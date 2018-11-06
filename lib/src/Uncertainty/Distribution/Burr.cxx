@@ -130,7 +130,7 @@ Scalar Burr::computePDF(const Point & point) const
 
   const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
-  return std::exp(computeLogPDF(point));
+  return SpecFunc::Exp(computeLogPDF(point));
 }
 
 Scalar Burr::computeLogPDF(const Point & point) const
@@ -140,7 +140,7 @@ Scalar Burr::computeLogPDF(const Point & point) const
   const Scalar x = point[0];
   if (x <= 0.0) return SpecFunc::LogMinScalar;
   const Scalar logX = std::log(x);
-  return std::log(c_ * k_) + (c_ - 1.0) * logX - (k_ + 1.0) * log1p(std::exp(c_ * logX));
+  return std::log(c_ * k_) + (c_ - 1.0) * logX - (k_ + 1.0) * log1p(SpecFunc::Exp(c_ * logX));
 }
 
 /* Get the CDF of the distribution */
@@ -150,7 +150,7 @@ Scalar Burr::computeCDF(const Point & point) const
 
   const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
-  return -expm1(-k_ * log1p(std::exp(c_ * std::log(x))));
+  return -expm1(-k_ * log1p(SpecFunc::Exp(c_ * std::log(x))));
 }
 
 /* Get the PDFGradient of the distribution */
@@ -163,7 +163,7 @@ Point Burr::computePDFGradient(const Point & point) const
   if (x <= 0.0) return pdfGradient;
   const Scalar pdf = computePDF(point);
   const Scalar logX = std::log(x);
-  pdfGradient[0] = ((1.0 - (1.0 + k_) / (1.0 + std::exp(-c_ * logX))) * logX + 1.0 / c_) * pdf;
+  pdfGradient[0] = ((1.0 - (1.0 + k_) / (1.0 + SpecFunc::Exp(-c_ * logX))) * logX + 1.0 / c_) * pdf;
   pdfGradient[1] = (1.0 / k_ - log1p(std::pow(x, c_))) * pdf;
   return pdfGradient;
 }
@@ -187,8 +187,8 @@ Point Burr::computeCDFGradient(const Point & point) const
 Scalar Burr::computeScalarQuantile(const Scalar prob,
                                    const Bool tail) const
 {
-  if (tail) return std::exp(std::log(expm1(-std::log(prob) / k_)) / c_);
-  return std::exp(std::log(expm1(-log1p(-prob) / k_)) / c_);
+  if (tail) return SpecFunc::Exp(std::log(expm1(-std::log(prob) / k_)) / c_);
+  return SpecFunc::Exp(std::log(expm1(-log1p(-prob) / k_)) / c_);
 }
 
 /* Compute the mean of the distribution */
@@ -231,7 +231,7 @@ void Burr::computeCovariance() const
 /* Get the moments of the standardized distribution */
 Point Burr::getStandardMoment(const UnsignedInteger n) const
 {
-  return Point(1, std::exp(SpecFunc::LogGamma(k_ - n / c_) + SpecFunc::LogGamma(n / c_ + 1.0) - SpecFunc::LogGamma(k_)));
+  return Point(1, SpecFunc::Exp(SpecFunc::LogGamma(k_ - n / c_) + SpecFunc::LogGamma(n / c_ + 1.0) - SpecFunc::LogGamma(k_)));
 }
 
 /* Parameters value accessor */

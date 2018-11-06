@@ -18,11 +18,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/GeometricProfile.hxx"
-#include "openturns/PersistentObjectFactory.hxx"
-
 #include <cmath>
 
+#include "openturns/GeometricProfile.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 namespace OT
 {
@@ -50,7 +50,7 @@ GeometricProfile * GeometricProfile::clone() const
 /** Compute temperature T(i) */
 Scalar GeometricProfile::operator()(UnsignedInteger i) const
 {
-  return T0_ * std::exp(i * logc_);
+  return T0_ * SpecFunc::Exp(i * logc_);
 }
 
 /* String converter */

@@ -67,7 +67,7 @@ Scalar SquaredExponential::computeStandardRepresentative(const Point & tau) cons
   Point tauOverTheta(inputDimension_);
   for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const Scalar tauOverTheta2 = tauOverTheta.normSquare();
-  return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-0.5 * tauOverTheta2);
+  return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : SpecFunc::Exp(-0.5 * tauOverTheta2);
 }
 
 Scalar SquaredExponential::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
@@ -81,7 +81,7 @@ Scalar SquaredExponential::computeStandardRepresentative(const Collection<Scalar
     const Scalar dx = (*s_it - *t_it) / scale_[i];
     tauOverTheta2 += dx * dx;
   }
-  return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-0.5 * tauOverTheta2);
+  return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : SpecFunc::Exp(-0.5 * tauOverTheta2);
 }
 
 /* Gradient */
@@ -97,7 +97,7 @@ Matrix SquaredExponential::partialGradient(const Point & s,
   // For zero norm
   if (norm2 == 0.0) return Matrix(inputDimension_, 1);
   // General case
-  const Scalar value = -std::exp(-0.5 * norm2);
+  const Scalar value = -SpecFunc::Exp(-0.5 * norm2);
   // Compute tau/theta^2
   for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] /= scale_[i];
   return Matrix(inputDimension_, 1, tauOverTheta * value) * amplitude_[0] * amplitude_[0];

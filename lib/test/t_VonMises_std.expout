@@ -50,7 +50,7 @@ entropy=1.44246
 entropy (MC)=1.44338
 mean=class=Point name=Unnamed dimension=1 values=[-0.5]
 standard deviation=class=Point name=Unnamed dimension=1 values=[1.04438]
-skewness=class=Point name=Unnamed dimension=1 values=[1.94923e-15]
+skewness=class=Point name=Unnamed dimension=1 values=[0]
 kurtosis=class=Point name=Unnamed dimension=1 values=[3.44545]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.09073]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]

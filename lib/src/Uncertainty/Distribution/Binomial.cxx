@@ -110,7 +110,7 @@ Scalar Binomial::computePDF(const Point & point) const
 
   const Scalar k = point[0];
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_) || (k > n_ + supportEpsilon_)) return 0.0;
-  return std::exp(SpecFunc::LnGamma(n_ + 1.0) - SpecFunc::LnGamma(n_ - k + 1.0) - SpecFunc::LnGamma(k + 1.0) + k * std::log(p_) + (n_ - k) * log1p(-p_));
+  return SpecFunc::Exp(SpecFunc::LnGamma(n_ + 1.0) - SpecFunc::LnGamma(n_ - k + 1.0) - SpecFunc::LnGamma(k + 1.0) + k * std::log(p_) + (n_ - k) * log1p(-p_));
 }
 
 

@@ -104,6 +104,9 @@ public:
 
   Scalar getCircularVariance() const;
 
+  /** Get the skewness of the distribution */
+  Point getSkewness() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
@@ -115,6 +118,9 @@ protected:
 
 
 private:
+
+  /** Compute the mean of the distribution */
+  void computeMean() const;
 
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();

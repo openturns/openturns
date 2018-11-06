@@ -152,7 +152,7 @@ Scalar ChiSquare::computePDF(const Point & point) const
 
   const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
-  return std::exp(computeLogPDF(point));
+  return SpecFunc::Exp(computeLogPDF(point));
 }
 
 Scalar ChiSquare::computeLogPDF(const Point & point) const
@@ -271,7 +271,7 @@ void ChiSquare::computeCovariance() const
 /* Get the moments of the standardized distribution */
 Point ChiSquare::getStandardMoment(const UnsignedInteger n) const
 {
-  return Point(1, std::exp(n * M_LN2 + SpecFunc::LnGamma(n + 0.5 * nu_) - SpecFunc::LnGamma(0.5 * nu_)));
+  return Point(1, SpecFunc::Exp(n * M_LN2 + SpecFunc::LnGamma(n + 0.5 * nu_) - SpecFunc::LnGamma(0.5 * nu_)));
 }
 
 /* Parameters value accessor */

@@ -311,7 +311,7 @@ Point Mesh::computeSimplicesVolume() const
     for (UnsignedInteger index = 0; index < nrSimplices; ++index)
     {
       buildSimplexMatrix(index, matrix);
-      result[index] = exp(matrix.computeLogAbsoluteDeterminant(sign, false) - logGamma);
+      result[index] = SpecFunc::Exp(matrix.computeLogAbsoluteDeterminant(sign, false) - logGamma);
     }
   }
   return result;

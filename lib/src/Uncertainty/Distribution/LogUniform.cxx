@@ -36,8 +36,8 @@ LogUniform::LogUniform()
   : ContinuousDistribution()
   , aLog_(-1.0)
   , bLog_(1.0)
-  , a_(std::exp(-1.0))
-  , b_(std::exp(1.0))
+  , a_(SpecFunc::Exp(-1.0))
+  , b_(SpecFunc::Exp(1.0))
 {
   setName( "LogUniform" );
   setDimension( 1 );
@@ -50,8 +50,8 @@ LogUniform::LogUniform(const Scalar aLog,
   : ContinuousDistribution()
   , aLog_(aLog)
   , bLog_(bLog)
-  , a_(std::exp(aLog_))
-  , b_(std::exp(bLog_))
+  , a_(SpecFunc::Exp(aLog_))
+  , b_(SpecFunc::Exp(bLog_))
 {
   if (bLog <= aLog) throw InvalidArgumentException(HERE) << "Error the lower bound aLog of a LogUniform distribution must be lesser than its upper bound bLog, here aLog=" << aLog << " bLog=" << bLog;
   setName( "LogUniform" );
@@ -109,7 +109,7 @@ void LogUniform::computeRange()
 /* Get one realization of the distribution */
 Point LogUniform::getRealization() const
 {
-  return Point(1, std::exp(aLog_ + (bLog_ - aLog_) * RandomGenerator::Generate()));
+  return Point(1, SpecFunc::Exp(aLog_ + (bLog_ - aLog_) * RandomGenerator::Generate()));
 }
 
 
@@ -207,8 +207,8 @@ Point LogUniform::computeCDFGradient(const Point & point) const
 Scalar LogUniform::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
-  if (tail) return std::exp(bLog_ - prob * (bLog_ - aLog_));
-  return std::exp(aLog_ + prob * (bLog_ - aLog_));
+  if (tail) return SpecFunc::Exp(bLog_ - prob * (bLog_ - aLog_));
+  return SpecFunc::Exp(aLog_ + prob * (bLog_ - aLog_));
 }
 
 /* Compute the mean of the distribution */
@@ -311,7 +311,7 @@ void LogUniform::setALog(const Scalar aLog)
   if (aLog != aLog_)
   {
     aLog_ = aLog;
-    a_ = std::exp(aLog_);
+    a_ = SpecFunc::Exp(aLog_);
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     computeRange();
@@ -330,7 +330,7 @@ void LogUniform::setBLog(const Scalar bLog)
   if (bLog != bLog_)
   {
     bLog_ = bLog;
-    b_ = std::exp(bLog);
+    b_ = SpecFunc::Exp(bLog);
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     computeRange();

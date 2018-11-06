@@ -103,7 +103,7 @@ PosteriorDistribution * PosteriorDistribution::clone() const
 /* Compute the likelihood of the observations */
 Point PosteriorDistribution::computeLikelihood(const Point & theta) const
 {
-  return Point(1, std::exp(computeLogLikelihood(theta)[0]));
+  return Point(1, SpecFunc::Exp(computeLogLikelihood(theta)[0]));
 }
 
 /* Compute the log-likelihood of the observations */
@@ -127,7 +127,7 @@ Scalar PosteriorDistribution::computePDF(const Point & point) const
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
   const Scalar value = conditionalDistribution_.getConditioningDistribution().computeLogPDF(point) - logNormalizationFactor_ + computeLogLikelihood(point)[0];
-  return std::exp(value);
+  return SpecFunc::Exp(value);
 }
 
 
@@ -210,7 +210,7 @@ void PosteriorDistribution::computeMean() const
   Description inputDescription(Description::BuildDefault(getDimension(), "x"));
   const SymbolicFunction meanFunction(inputDescription, inputDescription);
   const Function likelihood(bindMethod<PosteriorDistribution, Point, Point>(PosteriorDistribution(*this), &PosteriorDistribution::computeLikelihood, getDimension(), 1));
-  mean_ = conditionalDistribution_.computeExpectation(likelihood * meanFunction, getRange().getUpperBound()) / std::exp(logNormalizationFactor_);
+  mean_ = conditionalDistribution_.computeExpectation(likelihood * meanFunction, getRange().getUpperBound()) / SpecFunc::Exp(logNormalizationFactor_);
   isAlreadyComputedMean_ = true;
 }
 
@@ -259,7 +259,7 @@ void PosteriorDistribution::computeCovariance() const
   }
   const SymbolicFunction covarianceFunction(inputDescription, formulas);
   const Function likelihood(bindMethod<PosteriorDistribution, Point, Point>(PosteriorDistribution(*this), &PosteriorDistribution::computeLikelihood, getDimension(), 1));
-  const Point result(conditionalDistribution_.computeExpectation(likelihood * covarianceFunction, getRange().getUpperBound()) / std::exp(logNormalizationFactor_));
+  const Point result(conditionalDistribution_.computeExpectation(likelihood * covarianceFunction, getRange().getUpperBound()) / SpecFunc::Exp(logNormalizationFactor_));
   index = 0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
     for (UnsignedInteger j = 0; j <= i; ++j)

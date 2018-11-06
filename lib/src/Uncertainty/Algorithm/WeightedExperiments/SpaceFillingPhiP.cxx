@@ -18,11 +18,11 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/SpaceFillingPhiP.hxx"
-#include "openturns/PersistentObjectFactory.hxx"
-
 #include <limits>
 
+#include "openturns/SpaceFillingPhiP.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 namespace OT
 {
@@ -67,10 +67,10 @@ Scalar SpaceFillingPhiP::evaluate(const Sample & sample) const
         squaredNorm += delta * delta;
       }
       if (squaredNorm == 0.0) return std::numeric_limits<Scalar>::max();
-      sum += std::exp(-0.5 * p_ * std::log(squaredNorm));
+      sum += SpecFunc::Exp(-0.5 * p_ * std::log(squaredNorm));
     }
   }
-  return std::exp(std::log(sum) / p_);
+  return SpecFunc::Exp(std::log(sum) / p_);
 }
 
 /** Compute criterion when performing an elementary perturbation */
@@ -84,7 +84,7 @@ Scalar SpaceFillingPhiP::perturbLHS(Sample& oldDesign, OT::Scalar oldCriterion,
   const UnsignedInteger dimension(oldDesign.getDimension());
   const Scalar* addr_sample = &oldDesign(0, 0);
 
-  Scalar result = (oldCriterion <= 0.0 ? 0.0 : std::exp(p_ * std::log(oldCriterion)));
+  Scalar result = (oldCriterion <= 0.0 ? 0.0 : SpecFunc::Exp(p_ * std::log(oldCriterion)));
   Scalar oldSum = 0.0;
   Scalar* pt1(&oldDesign(0, 0) + dimension * row1);
   Scalar* pt2(&oldDesign(0, 0) + dimension * row2);
@@ -101,7 +101,7 @@ Scalar SpaceFillingPhiP::perturbLHS(Sample& oldDesign, OT::Scalar oldCriterion,
       const Scalar delta2(pt2[d] - ptI[d]);
       d2 += delta2 * delta2;
     }
-    oldSum += std::exp(-0.5 * p_ * std::log(d1)) + std::exp(-0.5 * p_ * std::log(d2));
+    oldSum += SpecFunc::Exp(-0.5 * p_ * std::log(d1)) + SpecFunc::Exp(-0.5 * p_ * std::log(d2));
   }
   // Swap coordinates
   std::swap(pt1[column], pt2[column]);
@@ -119,14 +119,14 @@ Scalar SpaceFillingPhiP::perturbLHS(Sample& oldDesign, OT::Scalar oldCriterion,
       const Scalar delta2(pt2[d] - ptI[d]);
       d2 += delta2 * delta2;
     }
-    newSum += std::exp(-0.5 * p_ * std::log(d1)) + std::exp(-0.5 * p_ * std::log(d2));
+    newSum += SpecFunc::Exp(-0.5 * p_ * std::log(d1)) + SpecFunc::Exp(-0.5 * p_ * std::log(d2));
   }
   // Swap coordinates to restore original sample
   std::swap(pt1[column], pt2[column]);
 
   result += newSum - oldSum;
   if (result <= 0.0) return 0.0;
-  return std::exp(std::log(result) / p_);
+  return SpecFunc::Exp(std::log(result) / p_);
 }
 
 /* String converter */

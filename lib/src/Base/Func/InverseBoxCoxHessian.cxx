@@ -22,6 +22,7 @@
 #include "openturns/InverseBoxCoxHessian.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/TBB.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -102,7 +103,7 @@ SymmetricTensor InverseBoxCoxHessian::hessian(const Point & inP) const
 
     // Applying the Box-Cox function
     const Scalar lambda_i = getLambda()[index];
-    if (std::abs(lambda_i * x * x) < 1e-8) result(0, 0, index) = exp(x) * (1.0 - lambda_i * (1.0 + x * (2.0 + 0.5 * x)));
+    if (std::abs(lambda_i * x * x) < 1e-8) result(0, 0, index) = SpecFunc::Exp(x) * (1.0 - lambda_i * (1.0 + x * (2.0 + 0.5 * x)));
     else result(0, 0, index) = (1.0 - lambda_i) * pow(x, 1.0 / lambda_i - 2.0);
   }
   return result;

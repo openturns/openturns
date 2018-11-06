@@ -104,7 +104,7 @@ SymmetricTensor BoxCoxHessian::hessian(const Point & inP) const
     const Scalar lambda_i = getLambda()[index];
     const Scalar logX = log(x);
     if (std::abs(lambda_i * logX) < 1e-8) result(0, 0, index) = -(1.0 + lambda_i * (logX - 1.0)) / (x * x);
-    else result(0, 0, index) = (lambda_i - 1.0) * exp((lambda_i - 2.0) * logX);
+    else result(0, 0, index) = (lambda_i - 1.0) * SpecFunc::Exp((lambda_i - 2.0) * logX);
   }
   return result;
 }

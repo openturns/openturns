@@ -21,6 +21,7 @@
 #include <cmath>
 #include "openturns/NatafIndependentCopulaGradient.hxx"
 #include "openturns/DistFunc.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -86,7 +87,7 @@ Matrix NatafIndependentCopulaGradient::gradient(const Point & inP) const
     // q = Normal(0,1).computeQuantile(x)
     const Scalar q = DistFunc::qNormal(x);
     // 2.506628274631000502415765 = sqrt(2*Pi)
-    result(i, i) = 2.506628274631000502415765 * exp(0.5 * q * q);
+    result(i, i) = 2.506628274631000502415765 * SpecFunc::Exp(0.5 * q * q);
   }
   return result;
 }

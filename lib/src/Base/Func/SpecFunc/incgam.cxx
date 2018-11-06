@@ -136,7 +136,7 @@ void invincgam(const Scalar a,
   Scalar eta = 0.0;
   if (logr < log(0.2 * (1.0 + a)))
   {
-    const Scalar r = exp(logr);
+    const Scalar r = SpecFunc::Exp(logr);
     const Scalar ap1 = a + 1.0;
     const Scalar ap12 = ap1 * ap1;
     const Scalar ap13 = ap1 * ap12;
@@ -149,7 +149,7 @@ void invincgam(const Scalar a,
     const Scalar ck4 = (2888.0 + a * (5661.0 + a * (3971.0 + a * (1179.0 + 125.0 * a)))) / (24.0 * (ap14 * ap22 * (a + 3.0) * (a + 4.0)));
     x = r * (1.0 + r * (ck1 + r * (ck2 + r * (ck3 + r * ck4))));
   } // logr < log(0.2 * (1 + a))
-  else if ((q < std::min(0.02, exp(-1.5 * a) / SpecFunc::Gamma(a))) && (a < 10.0))
+  else if ((q < std::min(0.02, SpecFunc::Exp(-1.5 * a) / SpecFunc::Gamma(a))) && (a < 10.0))
   {
     const Scalar b = 1.0 - a;
     eta = sqrt(-2.0 / a * log(q * gamstar(a) * SpecFunc::SQRT2PI / sqrt(a)));
@@ -168,7 +168,7 @@ void invincgam(const Scalar a,
   }
   else if (std::abs(porq - 0.5) < 1.0e-5) x = a - 1.0 / 3.0 + (8.0 / 405.0 + 184.0 / 25515.0 / a) / a;
   else if (std::abs(a - 1.0) < 1.0e-4) x = (pcase ? -log1p(-p) : -log(q));
-  else if (a < 1.0) x = (pcase ? exp((1.0 / a) * (log(porq) + SpecFunc::LogGamma(a + 1.0))) : exp((1.0 / a) * (log1p(-porq) + SpecFunc::LogGamma(a + 1.0))));
+  else if (a < 1.0) x = (pcase ? SpecFunc::Exp((1.0 / a) * (log(porq) + SpecFunc::LogGamma(a + 1.0))) : SpecFunc::Exp((1.0 / a) * (log1p(-porq) + SpecFunc::LogGamma(a + 1.0))));
   else
   {
     // a >= 1.0
@@ -194,9 +194,9 @@ void invincgam(const Scalar a,
         ierr = -1;
         continue;
       } // dlnr > log(giant)
-      r = exp(dlnr);
+      r = SpecFunc::Exp(dlnr);
     }
-    else r = x * gamstar(a) / (sqrt(a) * SpecFunc::ISQRT2PI * exp(-0.5 * a * eta * eta));
+    else r = x * gamstar(a) / (sqrt(a) * SpecFunc::ISQRT2PI * SpecFunc::Exp(-0.5 * a * eta * eta));
     SignedInteger ierrf;
     Scalar px = -1.0;
     Scalar qx = -1.0;
@@ -262,13 +262,13 @@ Scalar dompart(const Scalar a,
     }
     r += -0.5 * log(6.2832 * a);
   }
-  const Scalar dp = r < explow ? 0.0 : exp(r);
+  const Scalar dp = r < explow ? 0.0 : SpecFunc::Exp(r);
   if (qt) return dp;
-  if ((a < 3.0) || (x < 0.2)) return exp(a * lnx - x) / SpecFunc::Gamma(a + 1.0);
+  if ((a < 3.0) || (x < 0.2)) return SpecFunc::Exp(a * lnx - x) / SpecFunc::Gamma(a + 1.0);
   const Scalar mu = (x - a) / a;
   const Scalar c = lnec(mu);
   if ((a * c) > SpecFunc::LogMaxScalar) return -100.0;
-  return exp(a * c) / (sqrt(a) * SpecFunc::SQRT2PI * gamstar(a));
+  return SpecFunc::Exp(a * c) / (sqrt(a) * SpecFunc::SQRT2PI * gamstar(a));
 } // dompart
 
 Scalar chepolsum(const Scalar x,
@@ -320,8 +320,8 @@ Scalar gamstar(const Scalar x)
 {
   // gamstar(x) = exp(SpecFunc::GammaCorrection(x)), x > 0; or
   // gamma(x)/(exp(-x+(x-0.5)*ln(x))/sqrt(2pi)
-  if (x >= 3.0) return exp(SpecFunc::GammaCorrection(x));
-  if (x > 0.0) return SpecFunc::Gamma(x) / (exp(-x + (x - 0.5) * log(x)) * SpecFunc::SQRT2PI);
+  if (x >= 3.0) return SpecFunc::Exp(SpecFunc::GammaCorrection(x));
+  if (x > 0.0) return SpecFunc::Gamma(x) / (SpecFunc::Exp(-x + (x - 0.5) * std::log(x)) * SpecFunc::SQRT2PI);
   return SpecFunc::MaxScalar;
 } // gamstar
 
@@ -358,7 +358,7 @@ Scalar pqasymp(const Scalar a,
     v = -v;
   }
   const Scalar u = 0.5 * SpecFunc::ErfC(s * v);
-  v = s * exp(-y) * saeta(a, eta) / (SpecFunc::SQRT2PI * sqrt(a));
+  v = s * SpecFunc::Exp(-y) * saeta(a, eta) / (SpecFunc::SQRT2PI * sqrt(a));
   return u + v;
 } // FUNCTION pqasymp;
 
@@ -460,7 +460,7 @@ Scalar qtaylor(const Scalar a,
     t *= -p / q;
     v += t;
   }
-  v *= a * (1.0 - s) * exp((a + 1.0) * lnx) / (a + 1.0);
+  v *= a * (1.0 - s) * SpecFunc::Exp((a + 1.0) * lnx) / (a + 1.0);
   return u + v;
 } // qtaylor
 
@@ -659,7 +659,7 @@ Scalar lambdaeta(const Scalar eta)
   // with sign(lambda-1) = sign(eta);
   if (eta == 0.0) return 1.0;
   const Scalar z = 1.0 + 0.5 * eta * eta;
-  return exp(-z - SpecFunc::LambertW(-exp(-z), eta < 0.0));
+  return SpecFunc::Exp(-z - SpecFunc::LambertW(-SpecFunc::Exp(-z), eta < 0.0));
 } // lambdaeta
 
 Scalar invq(const Scalar x)
@@ -675,7 +675,7 @@ Scalar inverfc(const Scalar x)
   const Scalar y0 = 0.70710678 * invq(0.5 * x);
   const Scalar f = SpecFunc::ErfC(y0) - x;
   const Scalar y02 = y0 * y0;
-  const Scalar fp = -M_2_SQRTPI * exp(-y02);
+  const Scalar fp = -M_2_SQRTPI * SpecFunc::Exp(-y02);
   const Scalar c1 = -1.0 / fp;
   const Scalar c2 = y0;
   const Scalar c3 = (4.0 * y02 + 1.0) / 3.0;

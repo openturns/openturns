@@ -129,7 +129,7 @@ Scalar ExtremeValueCopula::computePDF(const Point & point) const
   const Scalar A = pickandFunction_(ratio)[0];
   const Scalar dA = pickandFunction_.gradient(ratio)(0, 0);
   const Scalar d2A = pickandFunction_.hessian(ratio)(0, 0, 0);
-  return ((A * logUV - dA * logV) * (logU * dA + logUV * A) - d2A * logU * ratio[0]) * std::exp(logUV * A) / (logUV * logUV * u * v);
+  return ((A * logUV - dA * logV) * (logU * dA + logUV * A) - d2A * logU * ratio[0]) * SpecFunc::Exp(logUV * A) / (logUV * logUV * u * v);
 }
 
 /* Get the log-PDF of the distribution */
@@ -191,7 +191,7 @@ Scalar ExtremeValueCopula::computeCDF(const Point & point) const
   const Scalar logUV = logU + logV;
   const Point ratio(1, logV / logUV);
   const Scalar A = pickandFunction_(ratio)[0];
-  return std::exp(logUV * A);
+  return SpecFunc::Exp(logUV * A);
 }
 
 // Conditional CDF for CDF inversion
@@ -220,7 +220,7 @@ public:
     const Point ratio(1, logV / logUV);
     const Scalar A = pickandFunction_(ratio)[0];
     const Scalar dA = pickandFunction_.gradient(ratio)(0, 0);
-    const Scalar conditionalCDF = (A - dA * ratio[0]) * std::exp(logUV * A) / u_;
+    const Scalar conditionalCDF = (A - dA * ratio[0]) * SpecFunc::Exp(logUV * A) / u_;
     return Point(1, conditionalCDF);
   }
 

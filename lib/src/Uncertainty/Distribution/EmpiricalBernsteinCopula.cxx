@@ -255,7 +255,7 @@ Scalar EmpiricalBernsteinCopula::computePDF(const Point & point) const
     {
       logPDFAtom += (logFactors_(i, j) - 1.0) * logX[j] + (binNumber_ - logFactors_(i, j)) * log1mX[j];
     } // j
-    pdfValue += std::exp(logPDFAtom);
+    pdfValue += SpecFunc::Exp(logPDFAtom);
   } // i
   return pdfValue / size;
 }
@@ -285,7 +285,7 @@ Scalar EmpiricalBernsteinCopula::computeLogPDF(const Point & point) const
   const Scalar maxValue = *std::max_element(matvec.begin(), matvec.end());
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    sumPDFValue += std::exp(matvec[i] - maxValue);
+    sumPDFValue += SpecFunc::Exp(matvec[i] - maxValue);
   } // i
   return maxValue + std::log(sumPDFValue) + log1mX * (binNumber_ - 1) - std::log(1.0 * size);
 }

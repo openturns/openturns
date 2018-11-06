@@ -91,7 +91,7 @@ Scalar RegularizedIncompleteBetaSlatec(const Scalar a,
   if ((p + q) * y < SpecFunc::ScalarEpsilon * (p + 1.0)) return (tail == isSwapped ? 1.0 : 0.0);
   const Scalar qFrac = std::max(1.0, q - floor(q));
   Scalar xBeta = p * log(y) - SpecFunc::LogBeta(qFrac, p) - log(p);
-  Scalar value = exp(xBeta);
+  Scalar value = SpecFunc::Exp(xBeta);
   Scalar term = p * value;
   if (qFrac < 1.0)
   {
@@ -105,7 +105,7 @@ Scalar RegularizedIncompleteBetaSlatec(const Scalar a,
   if (q <= 1.0) return (tail == isSwapped ? value : 0.5 + (0.5 - value));
   xBeta = p * log(y) + q * log1p(-y) - SpecFunc::LogBeta(p, q) - log(q);
   UnsignedInteger iBeta = static_cast<UnsignedInteger>(std::max(0.0, xBeta / SpecFunc::LogMinScalar));
-  term = exp(xBeta - iBeta * SpecFunc::LogMinScalar);
+  term = SpecFunc::Exp(xBeta - iBeta * SpecFunc::LogMinScalar);
   const Scalar c = 1.0 / (1.0 - y);
   const Bool smallCase = q * c <= (p + q - 1.0);
   Scalar finiteSum = 0.0;
@@ -167,8 +167,8 @@ Scalar RegularizedIncompleteBetaP(const Scalar a,
   if ((a <= 0.0) && (b <= 0.0)) throw InvalidArgumentException(HERE) << "Error: a and b cannot be null at the same time";
   if (x <= 0.0) return 0.0;
   if (x >= 1.0) return 1.0;
-  if (x * (a + b + 2) < a + 1.0) return RegularizedIncompleteBetaContinuedFraction(a, b, x) * exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log1p(-x)) / a;
-  return 1.0 - RegularizedIncompleteBetaContinuedFraction(b, a, 1.0 - x) * exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log1p(-x)) / b;
+  if (x * (a + b + 2) < a + 1.0) return RegularizedIncompleteBetaContinuedFraction(a, b, x) * SpecFunc::Exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log1p(-x)) / a;
+  return 1.0 - RegularizedIncompleteBetaContinuedFraction(b, a, 1.0 - x) * SpecFunc::Exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log1p(-x)) / b;
 }
 
 Scalar RegularizedIncompleteBetaQ(const Scalar a,
@@ -180,8 +180,8 @@ Scalar RegularizedIncompleteBetaQ(const Scalar a,
   if ((a <= 0.0) && (b <= 0.0)) throw InvalidArgumentException(HERE) << "Error: a and b cannot be null at the same time";
   if (x >= 1.0) return 0.0;
   if (x <= 0.0) return 1.0;
-  if (x * (a + b + 2) < a + 1.0) return 1.0 - RegularizedIncompleteBetaContinuedFraction(a, b, x) * exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log1p(-x)) / a;
-  return RegularizedIncompleteBetaContinuedFraction(b, a, 1.0 - x) * exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log1p(-x)) / b;
+  if (x * (a + b + 2) < a + 1.0) return 1.0 - RegularizedIncompleteBetaContinuedFraction(a, b, x) * SpecFunc::Exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log1p(-x)) / a;
+  return RegularizedIncompleteBetaContinuedFraction(b, a, 1.0 - x) * SpecFunc::Exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log1p(-x)) / b;
 }
 //#define USE_NEW_ALGO
 #ifdef USE_NEW_ALGO
@@ -331,11 +331,11 @@ Scalar BPSER(const Scalar a,
   if (x == 0.0) return 0.0;
   const Scalar pMin = std::min(a, b);
   Scalar value = 0.0;
-  if (pMin >= 1.0) value = exp(a * log(a) - SpecFunc::LnBeta(a, b)) / a;
+  if (pMin >= 1.0) value = SpecFunc::Exp(a * log(a) - SpecFunc::LnBeta(a, b)) / a;
   else
   {
     const Scalar pMax = std::max(a, b);
-    value = (pMax >= 8.0 ? pMin * exp(a * log(x) - SpecFunc::LogGamma1p(pMin) - ALGDIV(pMin, pMax)) / a : pow(x, a) * (b / (a + b)) * (1.0 + SpecFunc::IGamma1pm1(a)) * (1.0 + SpecFunc::IGamma1pm1(b)) / (1.0 + SpecFunc::IGamma1pm1(a + b)));
+    value = (pMax >= 8.0 ? pMin * SpecFunc::Exp(a * log(x) - SpecFunc::LogGamma1p(pMin) - ALGDIV(pMin, pMax)) / a : pow(x, a) * (b / (a + b)) * (1.0 + SpecFunc::IGamma1pm1(a)) * (1.0 + SpecFunc::IGamma1pm1(b)) / (1.0 + SpecFunc::IGamma1pm1(a + b)));
   } // pMin < 1.0
   const Scalar epsilon = SpecFunc::ScalarEpsilon / a;
   Scalar sum = 0.0;
@@ -398,7 +398,7 @@ Scalar BUP(const Scalar a,
     if (std::abs(term) <= value * SpecFunc::Precision) break;
     term *= x * (k - b) / (k * (k + a));
   }
-  return exp(a * log(x) - log(a) - SpecFunc::LogBeta(a, b)) * value;
+  return SpecFunc::Exp(a * log(x) - log(a) - SpecFunc::LogBeta(a, b)) * value;
 }
 Scalar BGRAT(const Scalar a,
              const Scalar b,

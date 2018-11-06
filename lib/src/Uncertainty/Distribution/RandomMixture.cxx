@@ -2457,7 +2457,7 @@ LevelSet RandomMixture::computeMinimumVolumeLevelSetWithThreshold(const Scalar p
   const UnsignedInteger size = SpecFunc::NextPowerOfTwo(ResourceMap::GetAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize"));
   const Sample minusLogPDFSample(computeLogPDF(getSampleByQMC(size)) * Point(1, -1.0));
   const Scalar minusLogPDFThreshold = minusLogPDFSample.computeQuantile(prob)[0];
-  threshold = std::exp(-minusLogPDFThreshold);
+  threshold = SpecFunc::Exp(-minusLogPDFThreshold);
 
   return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }

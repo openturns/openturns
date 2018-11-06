@@ -125,8 +125,8 @@ Point ClaytonCopula::getRealization() const
     const Scalar x = -std::log(u1);
     const Scalar y = -std::log(u2);
     const Scalar z = DistFunc::rGamma(1.0 / theta_);
-    realization[0] = std::exp(-theta_ * log1p(x / z));
-    realization[1] = std::exp(-theta_ * log1p(y / z));
+    realization[0] = SpecFunc::Exp(-theta_ * log1p(x / z));
+    realization[1] = SpecFunc::Exp(-theta_ * log1p(y / z));
     return realization;
   }
 #endif
@@ -205,13 +205,13 @@ Point ClaytonCopula::computeDDF(const Point & point) const
   const Scalar logU = std::log(u);
   const Scalar logV = std::log(v);
   const Scalar logUOverV = std::log(u / v);
-  if (theta_ < 100.0) factor = std::exp(theta_ * logU) * expm1(-theta_ * logV);
+  if (theta_ < 100.0) factor = SpecFunc::Exp(theta_ * logU) * expm1(-theta_ * logV);
   // Here we have to insure that theta is multiplied by a negative value to prevent overflow (but get possible underflow...)
   else factor = expm1(theta_ * logUOverV) - expm1(theta_ * logU);
   if (factor <= -1.0) return ddf;
-  const Scalar ddfU = theta_ * (1.0 + theta_) * (1.0 - (1.0 + 1.0 / theta_) * factor) * std::exp(-(3.0 + 1.0 / theta_) * log1p(factor) + (theta_ - 1.0) * logUOverV - 2.0 * logV);
-  const Scalar t = -std::exp(theta_ * logUOverV) + 1.0 / theta_ - (1.0 + 1.0 / theta_) * std::exp(theta_ * logU);
-  const Scalar ddfV = -theta_ * (1.0 + theta_) * (1.0 + t) * std::exp(-(3.0 + 1.0 / theta_) * log1p(factor) + theta_ * logUOverV - 2.0 * logV);
+  const Scalar ddfU = theta_ * (1.0 + theta_) * (1.0 - (1.0 + 1.0 / theta_) * factor) * SpecFunc::Exp(-(3.0 + 1.0 / theta_) * log1p(factor) + (theta_ - 1.0) * logUOverV - 2.0 * logV);
+  const Scalar t = -SpecFunc::Exp(theta_ * logUOverV) + 1.0 / theta_ - (1.0 + 1.0 / theta_) * SpecFunc::Exp(theta_ * logU);
+  const Scalar ddfV = -theta_ * (1.0 + theta_) * (1.0 + t) * SpecFunc::Exp(-(3.0 + 1.0 / theta_) * log1p(factor) + theta_ * logUOverV - 2.0 * logV);
   if (exchanged)
   {
     ddf[0] = ddfV;
@@ -263,11 +263,11 @@ Scalar ClaytonCopula::computePDF(const Point & point) const
   const Scalar logU = std::log(u);
   const Scalar logV = std::log(v);
   const Scalar logUOverV = std::log(u / v);
-  if (theta_ < 100.0) factor = std::exp(theta_ * logU) * expm1(-theta_ * logV);
+  if (theta_ < 100.0) factor = SpecFunc::Exp(theta_ * logU) * expm1(-theta_ * logV);
   // Here we have to insure that theta is multiplied by a negative value to prevent overflow (but get possible underflow...)
   else factor = expm1(theta_ * logUOverV) - expm1(theta_ * logU);
   if (factor <= -1.0) return 0.0;
-  return (1.0 + theta_) * std::exp(theta_ * logUOverV - logV - (1.0 / theta_ + 2.0) * log1p(factor));
+  return (1.0 + theta_) * SpecFunc::Exp(theta_ * logUOverV - logV - (1.0 / theta_ + 2.0) * log1p(factor));
 }
 
 /* Get the CDF of the distribution */
@@ -305,11 +305,11 @@ Scalar ClaytonCopula::computeCDF(const Point & point) const
   // C(u,v)=u(1+(u/v)^theta-u^theta)^(-1/theta)
   // For moderate theta, this form is cancellation-free
   Scalar factor = -1.0;
-  if (theta_ < 100.0) factor = std::exp(theta_ * std::log(u)) * expm1(-theta_ * std::log(v));
+  if (theta_ < 100.0) factor = SpecFunc::Exp(theta_ * std::log(u)) * expm1(-theta_ * std::log(v));
   // Here we have to insure that theta is multiplied by a negative value to prevent overflow (but get possible underflow...)
   else factor = expm1(theta_ * std::log(u / v)) - expm1(theta_ * std::log(u));
   if (factor <= -1.0) return 0.0;
-  return u * std::exp(-(log1p(factor)) / theta_);
+  return u * SpecFunc::Exp(-(log1p(factor)) / theta_);
 }
 
 /* Compute the covariance of the distribution */
@@ -398,7 +398,7 @@ Point ClaytonCopula::computeQuantile(const Scalar prob,
   // Independent case
   if (theta_ == 0.0) return Point(2, std::sqrt(q));
   // General case
-  return Point(2, std::exp((M_LN2 - log1p(std::pow(q, -theta_))) / theta_));
+  return Point(2, SpecFunc::Exp((M_LN2 - log1p(std::pow(q, -theta_))) / theta_));
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */

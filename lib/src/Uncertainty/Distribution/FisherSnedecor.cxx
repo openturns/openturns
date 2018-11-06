@@ -130,7 +130,7 @@ Scalar FisherSnedecor::computePDF(const Point & point) const
 
   const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
-  return std::exp(computeLogPDF(point));
+  return SpecFunc::Exp(computeLogPDF(point));
 }
 
 Scalar FisherSnedecor::computeLogPDF(const Point & point) const
@@ -225,7 +225,7 @@ Point FisherSnedecor::getKurtosis() const
 Point FisherSnedecor::getStandardMoment(const UnsignedInteger n) const
 {
   if (2 * n >= d2_) throw NotDefinedException(HERE) << "Error: The raw moment of a FisherSnedecor distribution is defined only up to order d2/2, here n=" << n << " and d2=" << d2_;
-  return Point(1, std::exp(n * std::log(d2_ / d1_) + SpecFunc::LogGamma(0.5 * d1_ + n) + SpecFunc::LogGamma(0.5 * d2_ - n) - SpecFunc::LogGamma(0.5 * d1_) - SpecFunc::LogGamma(0.5 * d2_)));
+  return Point(1, SpecFunc::Exp(n * std::log(d2_ / d1_) + SpecFunc::LogGamma(0.5 * d1_ + n) + SpecFunc::LogGamma(0.5 * d2_ - n) - SpecFunc::LogGamma(0.5 * d1_) - SpecFunc::LogGamma(0.5 * d2_)));
 }
 
 /* Compute the covariance of the distribution */

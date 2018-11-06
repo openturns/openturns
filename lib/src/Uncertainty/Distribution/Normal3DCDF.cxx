@@ -24,6 +24,7 @@
 #include "openturns/Normal3DCDF.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/Point.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -239,7 +240,7 @@ Scalar pntgnd(const Scalar ba,
     const Scalar ft = delta * delta / rr + bb * bb;
     if ((ft < -2.0 * NORMAL3DCDF_MIN_LOG) && (bt > NORMAL3DCDF_MINUS_INF))
     {
-      result = std::exp(-0.5 * ft);
+      result = SpecFunc::Exp(-0.5 * ft);
       if (bt < NORMAL3DCDF_PLUS_INF) result *= DistFunc::pNormal(bt);
     }
   }

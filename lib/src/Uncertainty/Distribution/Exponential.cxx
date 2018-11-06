@@ -118,7 +118,7 @@ Scalar Exponential::computePDF(const Point & point) const
 
   const Scalar x = point[0] - gamma_;
   if (x < 0.0) return 0.0;
-  return lambda_ * std::exp(-lambda_ * x);
+  return lambda_ * SpecFunc::Exp(-lambda_ * x);
 }
 
 Scalar Exponential::computeLogPDF(const Point & point) const
@@ -147,7 +147,7 @@ Scalar Exponential::computeComplementaryCDF(const Point & point) const
 
   const Scalar x = point[0] - gamma_;
   if (x < 0.0) return 1.0;
-  return std::exp(-lambda_ * x);
+  return SpecFunc::Exp(-lambda_ * x);
 }
 
 /* Compute the entropy of the distribution */
@@ -175,7 +175,7 @@ Point Exponential::computePDFGradient(const Point & point) const
   const Scalar x = point[0] - gamma_;
   Point pdfGradient(2, 0.0);
   if (x < 0.0) return pdfGradient;
-  const Scalar expX = std::exp(-lambda_ * x);
+  const Scalar expX = SpecFunc::Exp(-lambda_ * x);
   pdfGradient[0] = (1.0 - lambda_ * x) * expX;
   pdfGradient[1] = lambda_ * lambda_ * expX;
   return pdfGradient;
@@ -189,7 +189,7 @@ Point Exponential::computeCDFGradient(const Point & point) const
   const Scalar x = point[0] - gamma_;
   Point cdfGradient(2, 0.0);
   if (x < 0.0) return cdfGradient;
-  const Scalar expX = std::exp(-lambda_ * x);
+  const Scalar expX = SpecFunc::Exp(-lambda_ * x);
   cdfGradient[0] = x * expX;
   cdfGradient[1] = -lambda_ * expX;
   return cdfGradient;

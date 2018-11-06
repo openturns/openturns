@@ -128,11 +128,11 @@ Point GeneralizedPareto::computeDDF(const Point & point) const
   if (z < 0.0) return result;
   if (std::abs(std::sqrt(std::abs(xi_)) * z) < 1.0e-8)
   {
-    result[0] = -0.5 * std::exp(-z) * (1.0 + xi_ * z * (0.5 * z - 1.0)) / (sigma_ * sigma_);
+    result[0] = -0.5 * SpecFunc::Exp(-z) * (1.0 + xi_ * z * (0.5 * z - 1.0)) / (sigma_ * sigma_);
     return result;
   }
   if ((xi_ < 0.0) && (z >= -1.0 / xi_)) return result;
-  result[0] = -(1.0 + xi_) * std::exp(-(2.0 + 1.0 / xi_) * log1p(xi_ * z)) / (sigma_ * sigma_);
+  result[0] = -(1.0 + xi_) * SpecFunc::Exp(-(2.0 + 1.0 / xi_) * log1p(xi_ * z)) / (sigma_ * sigma_);
   return result;
 }
 
@@ -143,9 +143,9 @@ Scalar GeneralizedPareto::computePDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const Scalar z = point[0] / sigma_;
   if (z < 0.0) return 0.0;
-  if (std::abs(z) * std::sqrt(std::abs(xi_)) < 1.0e-8) return std::exp(-z) * (1.0 + z * xi_ * (0.5 * z - 1.0)) / sigma_;
+  if (std::abs(z) * std::sqrt(std::abs(xi_)) < 1.0e-8) return SpecFunc::Exp(-z) * (1.0 + z * xi_ * (0.5 * z - 1.0)) / sigma_;
   if ((xi_ < 0.0) && (z >= -1.0 / xi_)) return 0.0;
-  return std::exp(-(1.0 + 1.0 / xi_) * log1p(xi_ * z)) / sigma_;
+  return SpecFunc::Exp(-(1.0 + 1.0 / xi_) * log1p(xi_ * z)) / sigma_;
 }
 
 Scalar GeneralizedPareto::computeLogPDF(const Point & point) const
@@ -164,7 +164,7 @@ Scalar GeneralizedPareto::computeCDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const Scalar z = point[0] / sigma_;
   if (z <= 0.0) return 0.0;
-  if (std::abs(std::sqrt(xi_) * z) < 1.0e-8) return -expm1(-z) - 0.5 * xi_ * z * z * std::exp(-z);
+  if (std::abs(std::sqrt(xi_) * z) < 1.0e-8) return -expm1(-z) - 0.5 * xi_ * z * z * SpecFunc::Exp(-z);
   if ((xi_ < 0.0) && (z > -1.0 / xi_)) return 1.0;
   return -expm1(-log1p(xi_ * z) / xi_);
 }
@@ -175,9 +175,9 @@ Scalar GeneralizedPareto::computeComplementaryCDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const Scalar z = point[0] / sigma_;
   if (z <= 0.0) return 1.0;
-  if (std::abs(std::sqrt(xi_) * z) < 1.0e-8) return std::exp(-z) * (1.0 + 0.5 * xi_ * z * z);
+  if (std::abs(std::sqrt(xi_) * z) < 1.0e-8) return SpecFunc::Exp(-z) * (1.0 + 0.5 * xi_ * z * z);
   if ((xi_ < 0.0) && (z > -1.0 / xi_)) return 0.0;
-  return std::exp(-log1p(xi_ * z) / xi_);
+  return SpecFunc::Exp(-log1p(xi_ * z) / xi_);
 }
 
 /** Get the product minimum volume interval containing a given probability of the distribution */
@@ -193,7 +193,7 @@ LevelSet GeneralizedPareto::computeMinimumVolumeLevelSetWithThreshold(const Scal
   Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   Scalar minusLogPDFThreshold = -computeLogPDF(interval.getUpperBound()[0]);
-  threshold = std::exp(-minusLogPDFThreshold);
+  threshold = SpecFunc::Exp(-minusLogPDFThreshold);
   return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }
 
@@ -283,10 +283,10 @@ Point GeneralizedPareto::getStandardMoment(const UnsignedInteger n) const
   if (xi_ == 0.0) return Point(1, SpecFunc::Gamma(n + 1.0));
   if (xi_ > 0.0)
   {
-    if (n < trunc(1.0 / xi_)) return Point(1, std::exp(-std::log(xi_) * (n + 1.0) + SpecFunc::LogGamma(1.0 / xi_ - n) + SpecFunc::LogGamma(n + 1.0) - SpecFunc::LogGamma(1.0 + 1.0 / xi_)));
+    if (n < trunc(1.0 / xi_)) return Point(1, SpecFunc::Exp(-std::log(xi_) * (n + 1.0) + SpecFunc::LogGamma(1.0 / xi_ - n) + SpecFunc::LogGamma(n + 1.0) - SpecFunc::LogGamma(1.0 + 1.0 / xi_)));
     throw NotDefinedException(HERE) << "Error: the standard moments are defined up to order " << trunc(1.0 / xi_) << " and n=" << n;
   }
-  return Point(1, std::exp(-(n + 1.0) * std::log(-xi_) + SpecFunc::LogGamma(-1.0 / xi_) + SpecFunc::LogGamma(n + 1.0) - SpecFunc::LogGamma(-1.0 / xi_ + n + 1.0)));
+  return Point(1, SpecFunc::Exp(-(n + 1.0) * std::log(-xi_) + SpecFunc::LogGamma(-1.0 / xi_) + SpecFunc::LogGamma(n + 1.0) - SpecFunc::LogGamma(-1.0 / xi_ + n + 1.0)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */

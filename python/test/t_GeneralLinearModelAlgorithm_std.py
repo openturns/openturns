@@ -7,8 +7,8 @@ ot.TESTPREAMBLE()
 
 try:
 
-    # Set Numerical precision to 4
-    ot.PlatformInfo.SetNumericalPrecision(4)
+    # Set Numerical precision to 3
+    ot.PlatformInfo.SetNumericalPrecision(3)
     sampleSize = 40
     inputDimension = 1
 

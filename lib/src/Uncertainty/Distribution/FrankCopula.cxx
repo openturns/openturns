@@ -103,8 +103,8 @@ Point FrankCopula::getRealization() const
     realization[1] = v;
     return realization;
   }
-  const Scalar factor = (v - 1.0) * std::exp(-theta_ * u);
-  realization[1] = 1.0 + std::log((factor - v) / (factor * std::exp(theta_) - v)) / theta_;
+  const Scalar factor = (v - 1.0) * SpecFunc::Exp(-theta_ * u);
+  realization[1] = 1.0 + std::log((factor - v) / (factor * SpecFunc::Exp(theta_) - v)) / theta_;
   return realization;
 }
 
@@ -125,9 +125,9 @@ Point FrankCopula::computeDDF(const Point & point) const
   if (theta_ == 0.0) return Point(2, 0.0);
   // Optimized version given by Maple 11, as there are a lot of exp's involved
   const Scalar theta2 = theta_ * theta_;
-  const Scalar expMinusTheta = std::exp(-theta_);
-  const Scalar expMinusThetaU = std::exp(-theta_ * u);
-  const Scalar expMinusThetaV = std::exp(-theta_ * v);
+  const Scalar expMinusTheta = SpecFunc::Exp(-theta_);
+  const Scalar expMinusThetaU = SpecFunc::Exp(-theta_ * u);
+  const Scalar expMinusThetaV = SpecFunc::Exp(-theta_ * v);
   const Scalar product1 = expMinusThetaU * expMinusThetaV;
   const Scalar sum1 = expMinusTheta + product1 - expMinusThetaU - expMinusThetaV;
   const Scalar product2 = sum1 * sum1;
@@ -154,9 +154,9 @@ Scalar FrankCopula::computePDF(const Point & point) const
   // Independent case
   if (theta_ == 0.0) return 1.0;
   // General case
-  const Scalar expMinusTheta = std::exp(-theta_);
-  const Scalar expMinusThetaU = std::exp(-theta_ * point[0]);
-  const Scalar expMinusThetaV = std::exp(-theta_ * point[1]);
+  const Scalar expMinusTheta = SpecFunc::Exp(-theta_);
+  const Scalar expMinusThetaU = SpecFunc::Exp(-theta_ * point[0]);
+  const Scalar expMinusThetaV = SpecFunc::Exp(-theta_ * point[1]);
   const Scalar sum1 = expMinusTheta + expMinusThetaU * expMinusThetaV - expMinusThetaU - expMinusThetaV;
   return -theta_ * expMinusThetaU * expMinusThetaV * expm1(-theta_) / (sum1 * sum1);
 }
@@ -248,9 +248,9 @@ Point FrankCopula::computeQuantile(const Scalar prob,
   if (theta_ == 0.0) return Point(2, std::sqrt(q));
   // General case
   const Scalar thetaProb = theta_ * q;
-  const Scalar expTheta = std::exp(theta_);
+  const Scalar expTheta = SpecFunc::Exp(theta_);
   const Scalar expm1Theta = expm1(theta_);
-  const Scalar sqrtRatio = std::sqrt(expm1(thetaProb) * expTheta / (expm1Theta * std::exp(thetaProb)));
+  const Scalar sqrtRatio = std::sqrt(expm1(thetaProb) * expTheta / (expm1Theta * SpecFunc::Exp(thetaProb)));
   return Point(2, 1.0 - std::log(expTheta - sqrtRatio * expm1Theta) / theta_);
 }
 
@@ -264,9 +264,9 @@ Scalar FrankCopula::computeConditionalCDF(const Scalar x, const Point & y) const
   const Scalar u = y[0];
   const Scalar v = x;
   // If we are in the support
-  const Scalar alpha = std::exp(-theta_ * v);
-  const Scalar beta = std::exp(-theta_ * u) * (alpha - 1.0);
-  return -beta / (alpha - std::exp(-theta_) - beta);
+  const Scalar alpha = SpecFunc::Exp(-theta_ * v);
+  const Scalar beta = SpecFunc::Exp(-theta_ * u) * (alpha - 1.0);
+  return -beta / (alpha - SpecFunc::Exp(-theta_) - beta);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
@@ -281,8 +281,8 @@ Scalar FrankCopula::computeConditionalQuantile(const Scalar q, const Point & y) 
   // Special case when no contitioning or independent copula
   if ((conditioningDimension == 0) || hasIndependentCopula()) return q;
   const Scalar u = y[0];
-  const Scalar factor = (q - 1.0) * std::exp(-theta_ * u);
-  return 1.0 + std::log((factor - q) / (factor * std::exp(theta_) - q)) / theta_;
+  const Scalar factor = (q - 1.0) * SpecFunc::Exp(-theta_ * u);
+  return 1.0 + std::log((factor - q) / (factor * SpecFunc::Exp(theta_) - q)) / theta_;
 }
 
 /* Compute the archimedean generator of the archimedean copula, i.e.
@@ -301,9 +301,9 @@ Scalar FrankCopula::computeArchimedeanGenerator(const Scalar t) const
 Scalar FrankCopula::computeInverseArchimedeanGenerator(const Scalar t) const
 {
   // Independent case
-  if (theta_ == 0.0) return std::exp(-t);
+  if (theta_ == 0.0) return SpecFunc::Exp(-t);
   // General case
-  return 1.0 + (t - log1p(std::exp(theta_) * expm1(t))) / theta_;
+  return 1.0 + (t - log1p(SpecFunc::Exp(theta_) * expm1(t))) / theta_;
 }
 
 /* Compute the derivative of the density generator */
@@ -323,7 +323,7 @@ Scalar FrankCopula::computeArchimedeanGeneratorSecondDerivative(const Scalar t) 
   // General case
   Scalar thetaT = theta_ * t;
   Scalar ratio = theta_ / expm1(thetaT);
-  return ratio * ratio * std::exp(thetaT);
+  return ratio * ratio * SpecFunc::Exp(thetaT);
 }
 
 /* Parameters value accessor */
@@ -355,7 +355,7 @@ Scalar FrankCopula::computeEntropy() const
     return theta2 * (-1.0 / 72.0 + theta2 * (1.0 / 4800.0 - theta2 / 254016.0));
   const Scalar t1 = expm1(theta_);
   const Scalar t2 = std::log(t1);
-  const Scalar t3 = std::exp(theta_);
+  const Scalar t3 = SpecFunc::Exp(theta_);
   const Scalar t7 = std::log(theta_);
   const Scalar t11 = SpecFunc::DiLog(-t1);
   const Scalar t23 = SpecFunc::DiLog(1.0 / t3);

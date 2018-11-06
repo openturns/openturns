@@ -123,7 +123,7 @@ Point Weibull::computeDDF(const Point & point) const
   const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return Point(1, 0.0);
   const Scalar powX = std::pow(x / alpha_, beta_);
-  return Point(1, (beta_ * (1.0 - powX) - 1.0) / (x * x) * beta_ * powX * std::exp(-powX));
+  return Point(1, (beta_ * (1.0 - powX) - 1.0) / (x * x) * beta_ * powX * SpecFunc::Exp(-powX));
 }
 
 
@@ -134,7 +134,7 @@ Scalar Weibull::computePDF(const Point & point) const
 
   const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
-  return std::exp(computeLogPDF(point));
+  return SpecFunc::Exp(computeLogPDF(point));
 }
 
 Scalar Weibull::computeLogPDF(const Point & point) const
@@ -164,7 +164,7 @@ Scalar Weibull::computeComplementaryCDF(const Point & point) const
 
   const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return 1.0;
-  return std::exp(-std::pow(x / alpha_, beta_));
+  return SpecFunc::Exp(-std::pow(x / alpha_, beta_));
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
@@ -190,13 +190,13 @@ Complex Weibull::computeCharacteristicFunction(const Scalar x) const
   Bool increasing = true;
   while (increasing || (norm > std::abs(value) * SpecFunc::ScalarEpsilon))
   {
-    const Scalar term1 = std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_));
+    const Scalar term1 = SpecFunc::Exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_));
     ++r;
-    const Scalar term2 = std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_));
+    const Scalar term2 = SpecFunc::Exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_));
     ++r;
-    const Scalar term3 = std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_));
+    const Scalar term3 = SpecFunc::Exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_));
     ++r;
-    const Scalar term4 = std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_));
+    const Scalar term4 = SpecFunc::Exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_));
     ++r;
     const Complex term((term4 - term2) / beta_, sign * (term1 - term3) / beta_);
     oldNorm = norm;
@@ -225,7 +225,7 @@ Point Weibull::computePDFGradient(const Point & point) const
   Point pdfGradient(3, 0.0);
   if (x <= 0.0) return pdfGradient;
   const Scalar powX = std::pow(x / alpha_, beta_);
-  const Scalar factor = powX / x * std::exp(-powX);
+  const Scalar factor = powX / x * SpecFunc::Exp(-powX);
   pdfGradient[0] = factor * (powX - 1.0) * beta_ * beta_ / alpha_;
   pdfGradient[1] = factor * (1.0 + (1.0 - powX) * std::log(powX));
   pdfGradient[2] = factor * (1.0 - beta_ + beta_ * powX) / x * beta_;
@@ -241,7 +241,7 @@ Point Weibull::computeCDFGradient(const Point & point) const
   Point cdfGradient(3, 0.0);
   if (x <= 0.0) return cdfGradient;
   const Scalar powX = std::pow(x / alpha_, beta_);
-  const Scalar factor = powX * std::exp(-powX);
+  const Scalar factor = powX * SpecFunc::Exp(-powX);
   cdfGradient[0] = -factor * beta_ / alpha_;
   cdfGradient[1] = factor * std::log(x / alpha_);
   cdfGradient[2] = -factor * beta_ / x;

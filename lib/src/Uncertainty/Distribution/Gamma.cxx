@@ -222,7 +222,7 @@ Scalar Gamma::computePDF(const Point & point) const
 
   const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
-  return std::exp(computeLogPDF(point));
+  return SpecFunc::Exp(computeLogPDF(point));
 }
 
 /* Get the log PDF of the distribution */
@@ -301,7 +301,7 @@ Point Gamma::computeCDFGradient(const Point & point) const
   const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return cdfGradient;
   const Scalar lambdaX = lambda_ * x;
-  const Scalar factor = std::exp(k_ * std::log(lambdaX) - SpecFunc::LnGamma(k_) - lambdaX);
+  const Scalar factor = SpecFunc::Exp(k_ * std::log(lambdaX) - SpecFunc::LnGamma(k_) - lambdaX);
   const Scalar eps = std::pow(cdfEpsilon_, 1.0 / 3.0);
   cdfGradient[0] = (DistFunc::pGamma(k_ + eps, lambda_ * x) - DistFunc::pGamma(k_ - eps, lambda_ * x)) / (2.0 * eps);
   cdfGradient[1] = factor / lambda_;
@@ -344,7 +344,7 @@ Point Gamma::getKurtosis() const
 /* Get the moments of the standardized distribution */
 Point Gamma::getStandardMoment(const UnsignedInteger n) const
 {
-  return Point(1, std::exp(SpecFunc::LogGamma(n + k_) - SpecFunc::LogGamma(k_)));
+  return Point(1, SpecFunc::Exp(SpecFunc::LogGamma(n + k_) - SpecFunc::LogGamma(k_)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */

@@ -170,7 +170,7 @@ Scalar Multinomial::computePDF(const Point & point) const
     // Else only k == 0 is allowed, with a zero contribution to the log PDF
     else if (k > 0) return 0.0;
   }
-  return std::exp(logPDF);
+  return SpecFunc::Exp(logPDF);
 }
 
 /* Compute the generating function of a sum of truncated Poisson distributions as needed in the computeCDF() method */
@@ -203,7 +203,7 @@ Complex Multinomial::computeLocalPhi(const Complex & z,
   // Small value of a, evaluate the generating function as a polynomial
   if (a <= smallA_)
   {
-    Complex value(std::exp(-lambda));
+    Complex value(SpecFunc::Exp(-lambda));
     Complex term(value);
     for (UnsignedInteger i = 1; i <= iMax; ++i)
     {
@@ -263,7 +263,7 @@ Scalar Multinomial::computeCDF(const Point & point) const
     Scalar value = lgamma(n_ + 1.0);
     for (UnsignedInteger j = 0; j < dimension; ++j)
       value += point[j] * std::log(p_[j]) - lgamma(point[j] + 1.0);
-    return std::exp(value);
+    return SpecFunc::Exp(value);
   }
   // If the point covers the whole support of the distribution, return 1.0
   const UnsignedInteger size = indices.getSize();
@@ -635,7 +635,7 @@ void Multinomial::setN(const UnsignedInteger n)
     n_ = n;
     // Best overall performance for Poisson's formula, see reference
     r_ = std::pow(eta_, 1.0 / (2.0 * n));
-    normalizationCDF_ = std::exp(lgamma(n + 1.0) - n * std::log(1.0 * n) + n - std::log(2.0 * n) - 0.5 * std::log(eta_));
+    normalizationCDF_ = SpecFunc::Exp(lgamma(n + 1.0) - n * std::log(1.0 * n) + n - std::log(2.0 * n) - 0.5 * std::log(eta_));
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     isAlreadyCreatedGeneratingFunction_ = false;

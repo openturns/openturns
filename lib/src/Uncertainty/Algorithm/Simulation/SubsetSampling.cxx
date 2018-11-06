@@ -408,7 +408,7 @@ void SubsetSampling::generatePoints(Scalar threshold)
       for (UnsignedInteger k = 0; k < dimension_; ++ k)
       {
         // compute ratio
-        Scalar ratio = exp(0.5 * (oldPoint[k] * oldPoint[k] - newPoint[k] * newPoint[k]));
+        Scalar ratio = SpecFunc::Exp(0.5 * (oldPoint[k] * oldPoint[k] - newPoint[k] * newPoint[k]));
 
         // accept new point with probability ratio
         if (ratio < uniform[k])

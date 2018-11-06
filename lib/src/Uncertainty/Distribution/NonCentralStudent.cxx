@@ -140,7 +140,7 @@ Point NonCentralStudent::computeCDFGradient(const Point & point) const
 void NonCentralStudent::computeMean() const
 {
   if (!(nu_ > 1.0)) throw NotDefinedException(HERE) << "Error: the mean is defined only for nu > 1 for a non central Student distribution";
-  mean_ = Point(1, std::sqrt(0.5 * nu_) * std::exp(SpecFunc::LnGamma(0.5 * (nu_ - 1.0)) - SpecFunc::LnGamma(0.5 * nu_)) * delta_ + gamma_);
+  mean_ = Point(1, std::sqrt(0.5 * nu_) * SpecFunc::Exp(SpecFunc::LnGamma(0.5 * (nu_ - 1.0)) - SpecFunc::LnGamma(0.5 * nu_)) * delta_ + gamma_);
   isAlreadyComputedMean_ = true;
 }
 
@@ -174,7 +174,7 @@ Point NonCentralStudent::getStandardMoment(const UnsignedInteger n) const
   if (n >= nu_) throw NotDefinedException(HERE) << "Error: cannot compute a standard moment of order greater or equal to the number of degrees of freedom";
   UniVariatePolynomial p(Point(1, 1.0));
   for (UnsignedInteger k = 0; k < n; ++k) p = p.derivate() + p.incrementDegree(1);
-  return Point(1, p(delta_) * std::exp(0.5 * n * std::log(0.5 * nu_) + SpecFunc::LogGamma(0.5 * (nu_ - n)) - SpecFunc::LogGamma(0.5 * nu_)));
+  return Point(1, p(delta_) * SpecFunc::Exp(0.5 * n * std::log(0.5 * nu_) + SpecFunc::LogGamma(0.5 * (nu_ - n)) - SpecFunc::LogGamma(0.5 * nu_)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */

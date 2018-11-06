@@ -120,7 +120,7 @@ Point Rayleigh::computeDDF(const Point & point) const
   if (x <= 0.0) return Point(1, 0.0);
   const Scalar y = x / sigma_;
   const Scalar sigma2 = sigma_ * sigma_;
-  return Point(1, -std::exp(-0.5 * y * y) * (x - sigma_) * (x + sigma_) / (sigma2 * sigma2));
+  return Point(1, -SpecFunc::Exp(-0.5 * y * y) * (x - sigma_) * (x + sigma_) / (sigma2 * sigma2));
 }
 
 
@@ -132,7 +132,7 @@ Scalar Rayleigh::computePDF(const Point & point) const
   const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
   const Scalar y = x / (sigma_ * sigma_);
-  return y * std::exp(-0.5 * x * y);
+  return y * SpecFunc::Exp(-0.5 * x * y);
 }
 
 Scalar Rayleigh::computeLogPDF(const Point & point) const
@@ -154,7 +154,7 @@ Scalar Rayleigh::computeCDF(const Point & point) const
   const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
   const Scalar y = x / sigma_;
-  return 1.0 - std::exp(-0.5 * y * y);
+  return 1.0 - SpecFunc::Exp(-0.5 * y * y);
 }
 
 /* Compute the entropy of the distribution */
@@ -175,7 +175,7 @@ Scalar Rayleigh::computeEntropy() const
 Complex Rayleigh::computeCharacteristicFunction(const Scalar x) const
 {
   const Scalar t = sigma_ * x / std::sqrt(2.0);
-  return Complex(1 - 2 * t * SpecFunc::Dawson(t), t * std::exp(-t * t) * std::sqrt(M_PI)) * std::exp(Complex(0.0, x * gamma_));
+  return Complex(1 - 2 * t * SpecFunc::Dawson(t), t * SpecFunc::Exp(-t * t) * std::sqrt(M_PI)) * std::exp(Complex(0.0, x * gamma_));
 }
 
 /* Get the PDFGradient of the distribution */
@@ -248,7 +248,7 @@ Point Rayleigh::getKurtosis() const
 /* Get the moments of the distribution */
 Point Rayleigh::getStandardMoment(const UnsignedInteger n) const
 {
-  return Point(1, std::exp(0.5 * n * M_LN2 + SpecFunc::LnGamma(1.0 + 0.5 * n)));
+  return Point(1, SpecFunc::Exp(0.5 * n * M_LN2 + SpecFunc::LnGamma(1.0 + 0.5 * n)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */

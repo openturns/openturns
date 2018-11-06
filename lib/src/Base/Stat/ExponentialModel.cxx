@@ -22,6 +22,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Os.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -85,7 +86,7 @@ Scalar ExponentialModel::computeStandardRepresentative(const Point & tau) const
   for (UnsignedInteger i = 0; i < getInputDimension(); ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const Scalar tauOverThetaNorm = tauOverTheta.norm();
   // Return value
-  return (tauOverThetaNorm == 0.0 ? 1.0 + nuggetFactor_ : exp(- tauOverThetaNorm ));
+  return (tauOverThetaNorm == 0.0 ? 1.0 + nuggetFactor_ : SpecFunc::Exp(- tauOverThetaNorm ));
 }
 
 Scalar ExponentialModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
@@ -100,7 +101,7 @@ Scalar ExponentialModel::computeStandardRepresentative(const Collection<Scalar>:
     tauOverThetaNorm += dx * dx;
   }
   tauOverThetaNorm = sqrt(tauOverThetaNorm);
-  return (tauOverThetaNorm == 0.0 ? 1.0 + nuggetFactor_ : exp(- tauOverThetaNorm ));
+  return (tauOverThetaNorm == 0.0 ? 1.0 + nuggetFactor_ : SpecFunc::Exp(- tauOverThetaNorm ));
 }
 
 

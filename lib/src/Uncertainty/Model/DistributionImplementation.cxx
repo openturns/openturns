@@ -1251,7 +1251,7 @@ Scalar DistributionImplementation::computeEntropy() const
           for (UnsignedInteger i = 0; i < integrationNodesNumber_; ++i)
           {
             const Scalar logPI = logPDFAtNodes[i];
-            entropy += -logPI * std::exp(logPI) * weights[i] * delta;
+            entropy += -logPI * SpecFunc::Exp(logPI) * weights[i] * delta;
           } // integration nodes
         } // Singularities
       } // marginal
@@ -2536,7 +2536,7 @@ LevelSet DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(c
     const Sample logPDFSample(computeLogPDF(xSample));
     minusLogPDFThreshold = -logPDFSample.computeQuantile(1.0 - prob)[0];
   } // dimension > 1
-  threshold = std::exp(-minusLogPDFThreshold);
+  threshold = SpecFunc::Exp(-minusLogPDFThreshold);
 
   return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }
@@ -2552,7 +2552,7 @@ LevelSet DistributionImplementation::computeUnivariateMinimumVolumeLevelSetByQMC
   const Sample xQMC(getSampleByQMC(size));
   const Sample logPDFSample(computeLogPDF(xQMC));
   const Scalar minusLogPDFThreshold = -logPDFSample.computeQuantile(1.0 - prob)[0];
-  threshold = std::exp(-minusLogPDFThreshold);
+  threshold = SpecFunc::Exp(-minusLogPDFThreshold);
 
   return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }
@@ -2822,10 +2822,10 @@ void DistributionImplementation::computeCovarianceGeneral() const
           for(int rowNodeIndex = -N; rowNodeIndex < N + 1; ++rowNodeIndex)
           {
             const Scalar hi = h * rowNodeIndex;
-            const Scalar expHi = std::exp(hi);
+            const Scalar expHi = SpecFunc::Exp(hi);
             const Scalar iexpHi = 1.0 / expHi;
             const Scalar sinhHi = 0.5 * (expHi - iexpHi);
-            const Scalar expSinhHi = std::exp(sinhHi);
+            const Scalar expSinhHi = SpecFunc::Exp(sinhHi);
             const Scalar iexpSinhHi = 1.0 / expSinhHi;
             const Scalar iTwoCoshSinhHi = 1.0 / (expSinhHi + iexpSinhHi);
             const Scalar xip = mi + expSinhHi * iTwoCoshSinhHi * di * delta;
@@ -2834,10 +2834,10 @@ void DistributionImplementation::computeCovarianceGeneral() const
             for(int columnNodeIndex = -N; columnNodeIndex < N + 1; ++columnNodeIndex)
             {
               const Scalar hj = h * columnNodeIndex;
-              const Scalar expHj = std::exp(hj);
+              const Scalar expHj = SpecFunc::Exp(hj);
               const Scalar iexpHj = 1.0 / expHj;
               const Scalar sinhHj = 0.5 * (expHj - iexpHj);
-              const Scalar expSinhHj = std::exp(sinhHj);
+              const Scalar expSinhHj = SpecFunc::Exp(sinhHj);
               const Scalar iexpSinhHj = 1.0 / expSinhHj;
               const Scalar iTwoCoshSinhHj = 1.0 / (expSinhHj + iexpSinhHj);
               const Scalar xjp = mj + expSinhHj * iTwoCoshSinhHj * dj * delta;
@@ -3118,10 +3118,10 @@ Point DistributionImplementation::computeShiftedMomentGeneral(const UnsignedInte
     for (UnsignedInteger j = 1; j <= N; ++j)
     {
       const Scalar hj = h * j;
-      const Scalar expHj = std::exp(hj);
+      const Scalar expHj = SpecFunc::Exp(hj);
       const Scalar iexpHj = 1.0 / expHj;
       const Scalar sinhHj = 0.5 * (expHj - iexpHj);
-      const Scalar expSinhHj = std::exp(sinhHj);
+      const Scalar expSinhHj = SpecFunc::Exp(sinhHj);
       const Scalar iexpSinhHj = 1.0 / expSinhHj;
       const Scalar iTwoCoshSinhHj = 1.0 / (expSinhHj + iexpSinhHj);
       const Scalar xjm = iexpSinhHj * iTwoCoshSinhHj;
@@ -3142,10 +3142,10 @@ Point DistributionImplementation::computeShiftedMomentGeneral(const UnsignedInte
       for (UnsignedInteger j = 0; j <= N; ++j)
       {
         const Scalar hj = h * (2 * j + 1);
-        const Scalar expHj = std::exp(hj);
+        const Scalar expHj = SpecFunc::Exp(hj);
         const Scalar iexpHj = 1.0 / expHj;
         const Scalar sinhHj = 0.5 * (expHj - iexpHj);
-        const Scalar expSinhHj = std::exp(sinhHj);
+        const Scalar expSinhHj = SpecFunc::Exp(sinhHj);
         const Scalar iexpSinhHj = 1.0 / expSinhHj;
         const Scalar iTwoCoshSinhHj = 1.0 / (expSinhHj + iexpSinhHj);
         const Scalar xjm = iexpSinhHj * iTwoCoshSinhHj;
@@ -4449,9 +4449,9 @@ Distribution DistributionImplementation::exp() const
   const Scalar a = getRange().getLowerBound()[0];
   const Scalar b = getRange().getUpperBound()[0];
   Point bounds(1, a);
-  Point values(1, std::exp(a));
+  Point values(1, SpecFunc::Exp(a));
   bounds.add(b);
-  values.add(std::exp(b));
+  values.add(SpecFunc::Exp(b));
   return new CompositeDistribution(SymbolicFunction("x", "exp(x)"), clone(), bounds, values);
 }
 

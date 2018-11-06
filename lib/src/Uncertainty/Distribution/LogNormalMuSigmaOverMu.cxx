@@ -33,9 +33,9 @@ static const Factory<LogNormalMuSigmaOverMu> Factory_LogNormalMuSigmaOverMu;
 /* Default constructor */
 LogNormalMuSigmaOverMu::LogNormalMuSigmaOverMu()
   : DistributionParametersImplementation()
-  , mu_(exp(0.5))
-  , sigmaOverMu_(sqrt(exp(2.0) - exp(1.0)) / exp(0.5))
-  , gamma_(0.)
+  , mu_(SpecFunc::Exp(0.5))
+  , sigmaOverMu_(std::sqrt(SpecFunc::Exp(2.0) - SpecFunc::Exp(1.0)) / SpecFunc::Exp(0.5))
+  , gamma_(0.0)
 {
   // Nothing to do
 }

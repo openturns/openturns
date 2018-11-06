@@ -125,7 +125,7 @@ void LogNormal::computeRange()
 /* Get one realization of the distribution */
 Point LogNormal::getRealization() const
 {
-  return Point(1, gamma_ + std::exp(muLog_ + sigmaLog_ * DistFunc::rNormal()));
+  return Point(1, gamma_ + SpecFunc::Exp(muLog_ + sigmaLog_ * DistFunc::rNormal()));
 }
 
 /* Get the DDF of the distribution */
@@ -150,7 +150,7 @@ Scalar LogNormal::computePDF(const Point & point) const
   // Here we keep the bound within the special case as the distribution is continuous
   if (x <= 0.0) return 0.0;
   Scalar logX = (std::log(x) - muLog_) / sigmaLog_;
-  return normalizationFactor_ * std::exp(-0.5 * logX * logX) / x;
+  return normalizationFactor_ * SpecFunc::Exp(-0.5 * logX * logX) / x;
 }
 
 Scalar LogNormal::computeLogPDF(const Point & point) const
@@ -198,7 +198,7 @@ Scalar LogNormal::computeEntropy() const
 Complex LogNormal::characteristicIntegrand(const Scalar eta,
     const Scalar sStar) const
 {
-  return std::exp(Complex(-sStar * (eta - std::exp(sigmaLog_ * eta) / sigmaLog_), -M_PI * eta / (2.0 * sigmaLog_)));
+  return std::exp(Complex(-sStar * (eta - SpecFunc::Exp(sigmaLog_ * eta) / sigmaLog_), -M_PI * eta / (2.0 * sigmaLog_)));
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X))
@@ -218,14 +218,14 @@ Complex LogNormal::computeLogCharacteristicFunction(const Scalar x) const
   // Quick return for null argument
   if (x == 0.0) return 0.0;
   // Compute the characteristic function for the positive arguments
-  const Scalar nu = std::abs(x) * std::exp(muLog_);
+  const Scalar nu = std::abs(x) * SpecFunc::Exp(muLog_);
   const Scalar sigma2 = sigmaLog_ * sigmaLog_;
   Complex logCFValue(0.0);
   // Quick return for small argument
-  if (nu < 0.001 * std::exp(-1.5 * sigma2))
+  if (nu < 0.001 * SpecFunc::Exp(-1.5 * sigma2))
   {
     const Scalar nu2 = nu * nu;
-    logCFValue = std::log(Complex(1.0 - 0.5 * nu2 * std::exp(2.0 * sigma2), nu * std::exp(0.5 * sigma2) * (1.0 - nu2 * std::exp(4.0 * sigma2) / 6.0)));
+    logCFValue = std::log(Complex(1.0 - 0.5 * nu2 * SpecFunc::Exp(2.0 * sigma2), nu * SpecFunc::Exp(0.5 * sigma2) * (1.0 - nu2 * SpecFunc::Exp(4.0 * sigma2) / 6.0)));
   }
   else
   {
@@ -245,7 +245,7 @@ Complex LogNormal::computeLogCharacteristicFunction(const Scalar x) const
       // const UnsignedInteger minimumIntegrationNodesNumber(static_cast<UnsignedInteger>(8 * 2 * M_PI * nu));
       // integrationNodesNumber = std::max(integrationNodesNumber, static_cast<UnsignedInteger>(8 * 2 * M_PI * nu));
       Complex value(0.0);
-      for (UnsignedInteger i = 0; i < integrationNodesNumber; ++i) value += hermiteWeights_[i] * std::exp(Complex(0.0, nu * std::exp(sigmaLog_ * hermiteNodes_[i])));
+      for (UnsignedInteger i = 0; i < integrationNodesNumber; ++i) value += hermiteWeights_[i] * std::exp(Complex(0.0, nu * SpecFunc::Exp(sigmaLog_ * hermiteNodes_[i])));
       logCFValue = std::log(value);
     } // Small sigma
     else
@@ -274,7 +274,7 @@ Point LogNormal::computePDFGradient(const Point & point) const
   // Here we keep the bound within the special case as the distribution is continuous
   if (x <= 0.0) return pdfGradient;
   Scalar logX = (std::log(x) - muLog_) / sigmaLog_;
-  Scalar pdf = normalizationFactor_ * std::exp(-0.5 * logX * logX) / x;
+  Scalar pdf = normalizationFactor_ * SpecFunc::Exp(-0.5 * logX * logX) / x;
   pdfGradient[0] = pdf * logX / sigmaLog_;
   pdfGradient[1] = pdf * (logX - 1.0) * (logX + 1.0) / sigmaLog_;
   pdfGradient[2] = pdf * (1.0 + logX / sigmaLog_) / x;
@@ -291,7 +291,7 @@ Point LogNormal::computeCDFGradient(const Point & point) const
   // Here we keep the bound within the special case as the distribution is continuous
   if (x <= 0.0) return cdfGradient;
   Scalar logX = (std::log(x) - muLog_) / sigmaLog_;
-  Scalar pdf = normalizationFactor_ * std::exp(-0.5 * logX * logX) / x;
+  Scalar pdf = normalizationFactor_ * SpecFunc::Exp(-0.5 * logX * logX) / x;
   cdfGradient[0] = -x * pdf;
   cdfGradient[1] = -logX * x * pdf;
   cdfGradient[2] = -pdf;
@@ -302,41 +302,41 @@ Point LogNormal::computeCDFGradient(const Point & point) const
 Scalar LogNormal::computeScalarQuantile(const Scalar prob,
                                         const Bool tail) const
 {
-  return gamma_ + std::exp(muLog_ + sigmaLog_ * DistFunc::qNormal(prob, tail));
+  return gamma_ + SpecFunc::Exp(muLog_ + sigmaLog_ * DistFunc::qNormal(prob, tail));
 }
 
 /* Compute the mean of the distribution */
 void LogNormal::computeMean() const
 {
-  mean_ = Point(1, gamma_ + std::exp(muLog_ + 0.5 * sigmaLog_ * sigmaLog_));
+  mean_ = Point(1, gamma_ + SpecFunc::Exp(muLog_ + 0.5 * sigmaLog_ * sigmaLog_));
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
 Point LogNormal::getStandardDeviation() const
 {
-  Scalar expSigmaLog2 = std::exp(sigmaLog_ * sigmaLog_);
-  return Point(1, std::exp(muLog_) * std::sqrt(expSigmaLog2 * (expSigmaLog2 - 1.0)));
+  Scalar expSigmaLog2 = SpecFunc::Exp(sigmaLog_ * sigmaLog_);
+  return Point(1, SpecFunc::Exp(muLog_) * std::sqrt(expSigmaLog2 * (expSigmaLog2 - 1.0)));
 }
 
 /* Get the skewness of the distribution */
 Point LogNormal::getSkewness() const
 {
-  Scalar expSigmaLog2 = std::exp(sigmaLog_ * sigmaLog_);
+  Scalar expSigmaLog2 = SpecFunc::Exp(sigmaLog_ * sigmaLog_);
   return Point(1, (expSigmaLog2 + 2.0) * std::sqrt(expSigmaLog2 - 1.0));
 }
 
 /* Get the kurtosis of the distribution */
 Point LogNormal::getKurtosis() const
 {
-  Scalar expSigmaLog2 = std::exp(sigmaLog_ * sigmaLog_);
+  Scalar expSigmaLog2 = SpecFunc::Exp(sigmaLog_ * sigmaLog_);
   return Point(1, -3.0 + expSigmaLog2 * expSigmaLog2 * (3.0 + expSigmaLog2 * (2.0 + expSigmaLog2)));
 }
 
 /* Get the moments of the standardized distribution */
 Point LogNormal::getStandardMoment(const UnsignedInteger n) const
 {
-  return Point(1, std::exp(n * muLog_ + 0.5 * std::pow(n * sigmaLog_, 2)));
+  return Point(1, SpecFunc::Exp(n * muLog_ + 0.5 * std::pow(n * sigmaLog_, 2)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
@@ -349,8 +349,8 @@ Distribution LogNormal::getStandardRepresentative() const
 void LogNormal::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  const Scalar expSigmaLog2 = std::exp(sigmaLog_ * sigmaLog_);
-  covariance_(0, 0) = expSigmaLog2 * std::exp(2.0 * muLog_) * (expSigmaLog2 - 1.0);
+  const Scalar expSigmaLog2 = SpecFunc::Exp(sigmaLog_ * sigmaLog_);
+  covariance_(0, 0) = expSigmaLog2 * SpecFunc::Exp(2.0 * muLog_) * (expSigmaLog2 - 1.0);
   isAlreadyComputedCovariance_ = true;
 }
 

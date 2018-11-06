@@ -126,7 +126,7 @@ String Student::__str__(const String & offset) const
  *  be written as p(x) = phi(t(x-mu)S^(-1)(x-mu))                      */
 Scalar Student::computeDensityGenerator(const Scalar betaSquare) const
 {
-  return std::exp(studentNormalizationFactor_ - 0.5 * (nu_ + getDimension()) * log1p(betaSquare / nu_));
+  return SpecFunc::Exp(studentNormalizationFactor_ - 0.5 * (nu_ + getDimension()) * log1p(betaSquare / nu_));
 }
 
 Scalar Student::computeLogDensityGenerator(const Scalar betaSquare) const
@@ -139,7 +139,7 @@ Scalar Student::computeDensityGeneratorDerivative(const Scalar betaSquare) const
 {
   const Scalar iNu = 1.0 / nu_;
   const UnsignedInteger dimension = getDimension();
-  return -0.5 * std::exp(studentNormalizationFactor_ - (0.5 * (nu_ + dimension) + 1.0) * log1p(betaSquare * iNu)) * (1.0 + dimension * iNu);
+  return -0.5 * SpecFunc::Exp(studentNormalizationFactor_ - (0.5 * (nu_ + dimension) + 1.0) * log1p(betaSquare * iNu)) * (1.0 + dimension * iNu);
 }
 
 /* Compute the second derivative of the density generator */
@@ -147,7 +147,7 @@ Scalar Student::computeDensityGeneratorSecondDerivative(const Scalar betaSquare)
 {
   const Scalar iNu = 1.0 / nu_;
   const UnsignedInteger dimension = getDimension();
-  return 0.25 * std::exp(studentNormalizationFactor_ - (0.5 * (nu_ + dimension) + 2.0) * log1p(betaSquare * iNu)) * (1.0 + dimension * iNu) * (1.0 + (dimension + 2.0) * iNu);
+  return 0.25 * SpecFunc::Exp(studentNormalizationFactor_ - (0.5 * (nu_ + dimension) + 2.0) * log1p(betaSquare * iNu)) * (1.0 + dimension * iNu) * (1.0 + (dimension + 2.0) * iNu);
 }
 
 
@@ -355,7 +355,7 @@ Scalar Student::computeConditionalPDF(const Scalar x,
   //const Scalar sigmaRos(1.0 / inverseCholesky_(conditioningDimension, conditioningDimension));
   //for (UnsignedInteger i = 0; i < conditioningDimension; ++i) meanRos += inverseCholesky_(conditioningDimension, i) / std::sqrt(sigma_[i]) * (y[i] - mean_[i]);
   //meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
-  //return std::exp(-0.5 * std::pow(x - meanRos, 2.0) / (sigmaRos * sigmaRos)) / (sigmaRos * std::sqrt(2.0 * M_PI));
+  //return SpecFunc::Exp(-0.5 * std::pow(x - meanRos, 2.0) / (sigmaRos * sigmaRos)) / (sigmaRos * std::sqrt(2.0 * M_PI));
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */

@@ -32,8 +32,8 @@ static const Factory<LogNormalMuSigma> Factory_LogNormalMuSigma;
 /* Default constructor */
 LogNormalMuSigma::LogNormalMuSigma()
   : DistributionParametersImplementation()
-  , mu_(exp(0.5))
-  , sigma_(sqrt(exp(2.0) - exp(1.0)))
+  , mu_(SpecFunc::Exp(0.5))
+  , sigma_(std::sqrt(SpecFunc::Exp(2.0) - SpecFunc::Exp(1.0)))
   , gamma_(0.)
 {
   // Nothing to do
@@ -139,9 +139,9 @@ Point LogNormalMuSigma::inverse(const Point & inP) const
 
   if (!(sigmaLog > 0.0)) throw InvalidArgumentException(HERE) << "SigmaLog MUST be positive, here sigmaLog=" << sigmaLog;
 
-  const Scalar mu = gamma + std::exp(muLog + 0.5 * sigmaLog * sigmaLog);
-  const Scalar expSigmaLog2 = std::exp(sigmaLog * sigmaLog);
-  const Scalar sigma = std::exp(muLog) * std::sqrt(expSigmaLog2 * (expSigmaLog2 - 1.0));
+  const Scalar mu = gamma + SpecFunc::Exp(muLog + 0.5 * sigmaLog * sigmaLog);
+  const Scalar expSigmaLog2 = SpecFunc::Exp(sigmaLog * sigmaLog);
+  const Scalar sigma = SpecFunc::Exp(muLog) * std::sqrt(expSigmaLog2 * (expSigmaLog2 - 1.0));
 
   Point muSigmaParameters(inP);
   muSigmaParameters[0] = mu;

@@ -36,6 +36,7 @@
 #include "openturns/Indices.hxx"
 #include "openturns/Box.hxx"
 #include "openturns/Evaluation.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -324,7 +325,7 @@ Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
     const Scalar b = std::log(xMax);
     const Scalar dLogX = (b - a) / (pointNumber - 1.0);
     for (UnsignedInteger i = 0; i < pointNumber; ++i)
-      inputData(i, inputMarginal) = std::exp(a + i * dLogX);
+      inputData(i, inputMarginal) = SpecFunc::Exp(a + i * dLogX);
   }
   // Evaluate the function over all its input in one call in order to benefit from potential parallelism
   const Sample outputData((*this)(inputData));
@@ -377,7 +378,7 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
   x += Point(1, origin[0]);
   // Recover the original scale if the discretization has been done in the logarithmic scale
   if ((scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY))
-    for (UnsignedInteger i = 0; i < x.getDimension(); ++i) x(i, 0) = std::exp(x(i, 0));
+    for (UnsignedInteger i = 0; i < x.getDimension(); ++i) x(i, 0) = SpecFunc::Exp(x(i, 0));
   const Scalar nY = pointNumber[1] - 2;
   discretization[1] = nY;
   // Discretization of the second component
@@ -397,17 +398,17 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
   y += Point(1, origin[1]);
   // Recover the original scale if the discretization has been done in the logarithmic scale
   if ((scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY))
-    for (UnsignedInteger i = 0; i < y.getDimension(); ++i) y(i, 0) = std::exp(y(i, 0));
+    for (UnsignedInteger i = 0; i < y.getDimension(); ++i) y(i, 0) = SpecFunc::Exp(y(i, 0));
   // Discretization of the XY plane
   Sample inputSample((nX + 2) * (nY + 2), centralPoint);
   // Prepare the input sample
   UnsignedInteger index = 0;
   for (UnsignedInteger j = 0; j < nY + 2; ++j)
   {
-    const Scalar yJ = (scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY) ? exp(y(j, 0)) : y(j, 0);
+    const Scalar yJ = (scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY) ? SpecFunc::Exp(y(j, 0)) : y(j, 0);
     for (UnsignedInteger i = 0; i < nX + 2; ++i)
     {
-      const Scalar xI = (scale == GraphImplementation::LOGX) || (scale == GraphImplementation::LOGXY) ? exp(x(i, 0)) : x(i, 0);
+      const Scalar xI = (scale == GraphImplementation::LOGX) || (scale == GraphImplementation::LOGXY) ? SpecFunc::Exp(x(i, 0)) : x(i, 0);
       inputSample(index, firstInputMarginal)  = xI;
       inputSample(index, secondInputMarginal)  = yJ;
       ++index;

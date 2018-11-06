@@ -176,9 +176,9 @@ Scalar DistFunc::rBeta(const Scalar p1,
         const Scalar v = RandomGenerator::Generate();
         const Scalar logx = std::log(u) / p1;
         const Scalar logy = std::log(v) / p2;
-        const Scalar logsum = (logx > logy) ? logx + log1p(std::exp(logy - logx)) : logy + log1p(std::exp(logx - logy));
+        const Scalar logsum = (logx > logy) ? logx + log1p(SpecFunc::Exp(logy - logx)) : logy + log1p(SpecFunc::Exp(logx - logy));
         // Acceptation step
-        if (logsum <= 0.0) return std::exp(logy - logsum);
+        if (logsum <= 0.0) return SpecFunc::Exp(logy - logsum);
       }
     }
     // Usual form of the algorithm
@@ -202,7 +202,7 @@ Scalar DistFunc::rBeta(const Scalar p1,
       const Scalar u1 = RandomGenerator::Generate();
       const Scalar u2 = RandomGenerator::Generate();
       const Scalar v = lambda * std::log(u1 / (1.0 - u1));
-      const Scalar w = minp * std::exp(v);
+      const Scalar w = minp * SpecFunc::Exp(v);
       const Scalar z = u1 * u1 * u2;
       // 1.386294361119890618834464 = log(4)
       const Scalar r = c * v - 1.386294361119890618834464;
@@ -233,7 +233,7 @@ Scalar DistFunc::rBeta(const Scalar p1,
       }
       else
       {
-        const Scalar x = 1.0 - tc * std::exp(log1p((p - u) / (1.0 - p)) / maxp);
+        const Scalar x = 1.0 - tc * SpecFunc::Exp(log1p((p - u) / (1.0 - p)) / maxp);
         // Acceptation test
         if (e >= (1.0 - minp) * std::log(x / t)) return ((p1 == minp) ? x : 1.0 - x);
       }
@@ -254,7 +254,7 @@ Scalar DistFunc::rBeta(const Scalar p1,
     }
     else
     {
-      const Scalar x = 1.0 - tc * std::exp(log1p((p - u) / (1.0 - p)) / maxp);
+      const Scalar x = 1.0 - tc * SpecFunc::Exp(log1p((p - u) / (1.0 - p)) / maxp);
       if (e >= (1.0 - minp) * std::log(x / t)) return ((p1 == minp) ? x : 1.0 - x);
     }
   } // End Atkinson and Whittaker 2
@@ -648,14 +648,14 @@ Scalar DistFunc::dNonCentralChiSquare(const Scalar nu,
   if (x <= 0.0) return 0.0;
   const Scalar halfNu = 0.5 * nu;
   // Early exit for lambda == 0, central ChiSquare PDF
-  if (std::abs(lambda) < precision) return std::exp((halfNu - 1.0) * std::log(x) - 0.5 * x - SpecFunc::LnGamma(halfNu) - halfNu * M_LN2);
+  if (std::abs(lambda) < precision) return SpecFunc::Exp((halfNu - 1.0) * std::log(x) - 0.5 * x - SpecFunc::LnGamma(halfNu) - halfNu * M_LN2);
   // Case lambda <> 0
   const Scalar halfLambda = 0.5 * lambda;
   // Starting index in the sum: integral part of halfDelta2 and insure that it is at least 1
   const UnsignedInteger k = std::max(1UL, static_cast<UnsignedInteger>(floor(halfLambda)));
   // Loop forward and backward starting from k
   // Initialization
-  Scalar pForward = std::exp(-halfLambda - 0.5 * x + (halfNu + k - 1.0) * std::log(x) - SpecFunc::LogGamma(k + 1.0) - SpecFunc::LogGamma(halfNu + k) - (2.0 * k + halfNu) * M_LN2 + k * std::log(lambda));
+  Scalar pForward = SpecFunc::Exp(-halfLambda - 0.5 * x + (halfNu + k - 1.0) * std::log(x) - SpecFunc::LogGamma(k + 1.0) - SpecFunc::LogGamma(halfNu + k) - (2.0 * k + halfNu) * M_LN2 + k * std::log(lambda));
   Scalar pBackward = pForward;
   Scalar value = pForward;
   Scalar error = SpecFunc::MaxScalar;
@@ -723,8 +723,8 @@ Scalar DistFunc::pNonCentralChiSquare(const Scalar nu,
   // Loop forward and backward starting from k
   // Initialization
   const Scalar logHalfX = std::log(halfX);
-  Scalar xForward = std::exp((halfNu + k - 1) * logHalfX - halfX - SpecFunc::LogGamma(halfNu + k));
-  Scalar expForward = std::exp(-halfLambda + k * std::log(halfLambda) - SpecFunc::LogGamma(k + 1.0));
+  Scalar xForward = SpecFunc::Exp((halfNu + k - 1) * logHalfX - halfX - SpecFunc::LogGamma(halfNu + k));
+  Scalar expForward = SpecFunc::Exp(-halfLambda + k * std::log(halfLambda) - SpecFunc::LogGamma(k + 1.0));
   Scalar gammaForward = pGamma(halfNu + k, halfX);
   Scalar pForward = expForward * gammaForward;
   Scalar xBackward = xForward;
@@ -973,7 +973,7 @@ Scalar DistFunc::qNormal(const Scalar p,
      order) gives full machine precision... */
   // 2.50662827463100050241576528481 = sqrt(2.pi)
   const Scalar e = pNormal(x) - p;
-  const Scalar u = e * 2.50662827463100050241576528481 * std::exp(0.5 * x * x);
+  const Scalar u = e * 2.50662827463100050241576528481 * SpecFunc::Exp(0.5 * x * x);
   x -= u / (1.0 + 0.5 * x * u);
   return (tail ? -x : x);
 }
@@ -1011,9 +1011,9 @@ Scalar DistFunc::rNormal()
     const Scalar xI = NormalZigguratAbscissa[index];
     const Scalar xIp1 = NormalZigguratAbscissa[index + 1];
     const Scalar x = u * xIp1;
-    const Scalar pdfX = std::exp(-0.5 * x * x);
-    const Scalar pdfI = std::exp(-0.5 * xI * xI);
-    const Scalar pdfIp1 = std::exp(-0.5 * xIp1 * xIp1);
+    const Scalar pdfX = SpecFunc::Exp(-0.5 * x * x);
+    const Scalar pdfI = SpecFunc::Exp(-0.5 * xI * xI);
+    const Scalar pdfIp1 = SpecFunc::Exp(-0.5 * xIp1 * xIp1);
     if (RandomGenerator::Generate() * (pdfI - pdfIp1) < pdfX - pdfIp1) return x;
   }
 }
@@ -1059,7 +1059,7 @@ UnsignedInteger DistFunc::rPoisson(const Scalar lambda)
   if (mu < 6)
   {
     UnsignedInteger x = 0;
-    Scalar sum = std::exp(-lambda);
+    Scalar sum = SpecFunc::Exp(-lambda);
     Scalar prod = sum;
     const Scalar u = RandomGenerator::Generate();
     for (;;)
@@ -1171,7 +1171,7 @@ Scalar DistFunc::pSpearmanCorrelation(const UnsignedInteger size, const Scalar r
   const Scalar x = (rho + 6.0 / (y * (y + 1.0) * (y - 1.0))) * std::sqrt(y - 1);
   const Scalar x2 = x * x;
   const Scalar u = x * b * (c[0] + b * (c[1] + c[2] * b) + x2 * (-c[3] + b * (c[4] + c[5] * b) - x2 * b * (c[6] + c[7] * b - x2 * (c[8] - c[9] * b + x2 * b * (c[10] - c[11] * x2)))));
-  const Scalar beta = u / std::exp(0.5 * x2);
+  const Scalar beta = u / SpecFunc::Exp(0.5 * x2);
   const Scalar value = (tail ? beta : -beta) + pNormal(x, tail);
   return (value < 0.0 ? 0.0 : (value > 1.0 ? 1.0 : value));
 }
@@ -1256,8 +1256,8 @@ Scalar DistFunc::eZ1(const UnsignedInteger n)
   // Least square approximation of eZ1
   const Scalar z0 = -1.5270815222604243733 - 0.25091814704012410653 * std::log(static_cast<double>(n));
   for (UnsignedInteger i = 0; i < 128; ++i)
-    value += weights[i] * ((z0 + nodes[i]) * std::exp(-z0 * nodes[i]) * std::pow(pNormal(z0 + nodes[i], true), static_cast<int>(n - 1)) + (z0 - nodes[i]) * std::exp(z0 * nodes[i]) * std::pow(pNormal(z0 - nodes[i], true), static_cast<int>(n - 1)));
-  return n * exp(-0.5 * z0 * z0) * value;
+    value += weights[i] * ((z0 + nodes[i]) * SpecFunc::Exp(-z0 * nodes[i]) * std::pow(pNormal(z0 + nodes[i], true), static_cast<int>(n - 1)) + (z0 - nodes[i]) * SpecFunc::Exp(z0 * nodes[i]) * std::pow(pNormal(z0 - nodes[i], true), static_cast<int>(n - 1)));
+  return n * SpecFunc::Exp(-0.5 * z0 * z0) * value;
 }
 
 

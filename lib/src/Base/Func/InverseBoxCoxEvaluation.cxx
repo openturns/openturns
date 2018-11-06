@@ -21,6 +21,7 @@
 
 #include "openturns/InverseBoxCoxEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -125,7 +126,7 @@ struct InverseBoxCoxEvaluationComputeSamplePolicy
       {
         const Scalar lambda_j = evaluation_.getLambda()[j];
         const Scalar x = input_(i, j) - evaluation_.getShift()[j];
-        if (std::abs(lambda_j * x * x) < 1e-8) output_(i, j) = exp(x) * (1.0 - 0.5 * lambda_j * x * x);
+        if (std::abs(lambda_j * x * x) < 1e-8) output_(i, j) = SpecFunc::Exp(x) * (1.0 - 0.5 * lambda_j * x * x);
         else output_(i, j) = pow(lambda_j * x + 1.0, 1.0 / lambda_j);
       } // j
     } // i
@@ -159,7 +160,7 @@ Point InverseBoxCoxEvaluation::operator() (const Point & inP) const
   {
     const Scalar x = inP[index] - shift_[index];
     const Scalar lambda_i = lambda_[index];
-    if (std::abs(lambda_i * x * x) < 1e-8) result[index] = exp(x) * (1.0 - 0.5 * lambda_i * x * x);
+    if (std::abs(lambda_i * x * x) < 1e-8) result[index] = SpecFunc::Exp(x) * (1.0 - 0.5 * lambda_i * x * x);
     else
     {
       const Scalar evaluation = lambda_i * x + 1.0;

@@ -119,7 +119,7 @@ Point Frechet::computeDDF(const Point & point) const
   if (x <= 0.0) return Point(1, 0.0);
   const Scalar y = x / beta_;
   const Scalar minusAlphalogY = -alpha_ * std::log(y);
-  return Point(1, -alpha_ * (-alpha_ * expm1(minusAlphalogY) + 1.0) * std::exp(-std::exp(minusAlphalogY) + minusAlphalogY) / (x * x));
+  return Point(1, -alpha_ * (-alpha_ * expm1(minusAlphalogY) + 1.0) * SpecFunc::Exp(-SpecFunc::Exp(minusAlphalogY) + minusAlphalogY) / (x * x));
 }
 
 /* Get the PDF of the distribution */
@@ -129,7 +129,7 @@ Scalar Frechet::computeCDF(const Point & point) const
 
   const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
-  return std::exp(-std::pow(x / beta_, -alpha_));
+  return SpecFunc::Exp(-std::pow(x / beta_, -alpha_));
 }
 
 /* Get the PDF of the distribution */
@@ -137,7 +137,7 @@ Scalar Frechet::computePDF(const Point & point) const
 {
   const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
-  return std::exp(computeLogPDF(point));
+  return SpecFunc::Exp(computeLogPDF(point));
 }
 
 Scalar Frechet::computeLogPDF(const Point & point) const
@@ -162,7 +162,7 @@ LevelSet Frechet::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, S
   Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   Scalar minusLogPDFThreshold = -computeLogPDF(interval.getLowerBound()[0]);
-  threshold = std::exp(-minusLogPDFThreshold);
+  threshold = SpecFunc::Exp(-minusLogPDFThreshold);
   return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }
 
@@ -204,7 +204,7 @@ Point Frechet::computePDFGradient(const Point & point) const
   if (x <= gamma_) return pdfGradient;
   const Scalar logCdf = -std::pow((x - gamma_) / beta_, -alpha_);
   const Scalar logCdfm1 = std::pow((x - gamma_) / beta_, -alpha_ - 1.0);
-  const Scalar cdf = std::exp(logCdf);
+  const Scalar cdf = SpecFunc::Exp(logCdf);
   pdfGradient[0] = -alpha_ * logCdfm1 * cdf * std::log((x - gamma_) / beta_) / beta_ - alpha_ * logCdf * logCdfm1 * cdf * std::log((x - gamma_) / beta_) / beta_ + logCdfm1 * cdf / beta_;
   pdfGradient[1] = alpha_ * alpha_ * logCdf * logCdfm1 * cdf / (beta_ * beta_) - alpha_ * logCdfm1 * (-alpha_ - 1.0) * cdf / (beta_ * beta_) - alpha_ * logCdfm1 * cdf / (beta_ * beta_);
   pdfGradient[2] = alpha_ * alpha_ * logCdf * logCdfm1 * cdf / (beta_ * (x - gamma_)) - alpha_ * logCdfm1 * (-alpha_ - 1.0) * cdf / (beta_ * (x - gamma_));
@@ -220,7 +220,7 @@ Point Frechet::computeCDFGradient(const Point & point) const
   Point cdfGradient(3);
   if (x <= gamma_) return cdfGradient;
   const Scalar logCdf = -std::pow((x - gamma_) / beta_, -alpha_);
-  const Scalar cdf = std::exp(logCdf);
+  const Scalar cdf = SpecFunc::Exp(logCdf);
   cdfGradient[0] = -logCdf * cdf * std::log((x - gamma_) / beta_);
   cdfGradient[1] = alpha_ * logCdf * cdf / beta_;
   cdfGradient[2] = alpha_ * logCdf * cdf / (x - gamma_);

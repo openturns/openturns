@@ -129,7 +129,7 @@ Scalar Arcsine::computePDF(const Point & point) const
 
   const Scalar x = point[0];
   if ((x <= a_) || (x >= b_)) return 0.0;
-  return std::exp(computeLogPDF(point));
+  return SpecFunc::Exp(computeLogPDF(point));
 }
 
 Scalar Arcsine::computeLogPDF(const Point & point) const
@@ -263,7 +263,7 @@ Point Arcsine::getKurtosis() const /*throw(NotDefinedException)*/
 Point Arcsine::getStandardMoment(const UnsignedInteger n) const
 {
   if (n % 2 == 1) return Point(1, 0.0);
-  return Point(1, std::exp(SpecFunc::LogGamma(0.5 * n + 0.5) - SpecFunc::LogGamma(0.5 * n + 1)) / std::sqrt(M_PI));
+  return Point(1, SpecFunc::Exp(SpecFunc::LogGamma(0.5 * n + 0.5) - SpecFunc::LogGamma(0.5 * n + 1)) / std::sqrt(M_PI));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */

@@ -156,7 +156,7 @@ Scalar Chi::computePDF(const Point & point) const
 
   const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
-  return std::exp(computeLogPDF(point));
+  return SpecFunc::Exp(computeLogPDF(point));
 }
 
 Scalar Chi::computeLogPDF(const Point & point) const
@@ -197,7 +197,7 @@ Complex Chi::computeCharacteristicFunction(const Scalar x) const
 {
   const Scalar t = -0.5 * x * x;
   const Scalar real = SpecFunc::HyperGeom_1_1(0.5 * nu_, 0.5, t );
-  const Scalar imag = M_SQRT2 * x * std::exp(SpecFunc::LnGamma((nu_ + 1.0) * 0.5) - SpecFunc::LnGamma(0.5 * nu_)) * SpecFunc::HyperGeom_1_1((nu_ + 1.0) * 0.5, 1.5, t);
+  const Scalar imag = M_SQRT2 * x * SpecFunc::Exp(SpecFunc::LnGamma((nu_ + 1.0) * 0.5) - SpecFunc::LnGamma(0.5 * nu_)) * SpecFunc::HyperGeom_1_1((nu_ + 1.0) * 0.5, 1.5, t);
   const Complex result(real, imag);
   return result;
 }
@@ -245,14 +245,14 @@ Scalar Chi::computeEntropy() const
 
 void Chi::computeMean() const
 {
-  mean_ = Point(1, M_SQRT2 * std::exp( SpecFunc::LnGamma(0.5 * (nu_ + 1.0)) - SpecFunc::LnGamma(0.5 * nu_)));
+  mean_ = Point(1, M_SQRT2 * SpecFunc::Exp( SpecFunc::LnGamma(0.5 * (nu_ + 1.0)) - SpecFunc::LnGamma(0.5 * nu_)));
   isAlreadyComputedMean_ = true;
 }
 
 void Chi::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  covariance_(0, 0) = nu_ - 2.0 * std::exp(2.0 * (SpecFunc::LnGamma(0.5 * (nu_ + 1.0)) - SpecFunc::LnGamma(0.5 * nu_)));
+  covariance_(0, 0) = nu_ - 2.0 * SpecFunc::Exp(2.0 * (SpecFunc::LnGamma(0.5 * (nu_ + 1.0)) - SpecFunc::LnGamma(0.5 * nu_)));
   isAlreadyComputedCovariance_ = true;
 }
 
@@ -282,7 +282,7 @@ Point Chi::getKurtosis() const
 /* Get the moments of the standardized distribution */
 Point Chi::getStandardMoment(const UnsignedInteger n) const
 {
-  return Point(1, std::exp(0.5 * n * M_LN2 + SpecFunc::LnGamma(0.5 * (n + nu_)) - SpecFunc::LnGamma(0.5 * nu_)));
+  return Point(1, SpecFunc::Exp(0.5 * n * M_LN2 + SpecFunc::LnGamma(0.5 * (n + nu_)) - SpecFunc::LnGamma(0.5 * nu_)));
 }
 
 /* Parameters value accessor */

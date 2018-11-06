@@ -191,7 +191,7 @@ Sample Normal::getSample(const UnsignedInteger size) const
  *  be written as p(x) = phi(t(x-mu)S^(-1)(x-mu))                      */
 Scalar Normal::computeDensityGenerator(const Scalar betaSquare) const
 {
-  return std::exp(logNormalizationFactor_ - 0.5 * betaSquare);
+  return SpecFunc::Exp(logNormalizationFactor_ - 0.5 * betaSquare);
 }
 
 Scalar Normal::computeLogDensityGenerator(const Scalar betaSquare) const
@@ -202,13 +202,13 @@ Scalar Normal::computeLogDensityGenerator(const Scalar betaSquare) const
 /* Compute the derivative of the density generator */
 Scalar Normal::computeDensityGeneratorDerivative(const Scalar betaSquare) const
 {
-  return -0.5 * std::exp(logNormalizationFactor_ - 0.5 * betaSquare);
+  return -0.5 * SpecFunc::Exp(logNormalizationFactor_ - 0.5 * betaSquare);
 }
 
 /* Compute the seconde derivative of the density generator */
 Scalar Normal::computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const
 {
-  return 0.25 * std::exp(logNormalizationFactor_ - 0.5 * betaSquare);
+  return 0.25 * SpecFunc::Exp(logNormalizationFactor_ - 0.5 * betaSquare);
 }
 
 /* Get the CDF of the distribution */
@@ -508,7 +508,7 @@ Scalar Normal::computeConditionalPDF(const Scalar x,
     meanRos += inverseCholesky_(conditioningDimension, i) / std::sqrt(sigma_[i]) * (y[i] - mean_[i]);
   }
   meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
-  return std::exp(-0.5 * std::pow(x - meanRos, 2.0) / (sigmaRos * sigmaRos)) / (sigmaRos * std::sqrt(2.0 * M_PI));
+  return SpecFunc::Exp(-0.5 * std::pow(x - meanRos, 2.0) / (sigmaRos * sigmaRos)) / (sigmaRos * std::sqrt(2.0 * M_PI));
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */

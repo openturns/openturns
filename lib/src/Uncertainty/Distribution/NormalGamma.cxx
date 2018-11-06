@@ -154,7 +154,7 @@ Scalar NormalGamma::computePDF(const Point & point) const
 
   const Scalar logPDF = computeLogPDF(point);
   if (logPDF == -SpecFunc::LogMaxScalar) return 0.0;
-  return std::exp(logPDF);
+  return SpecFunc::Exp(logPDF);
 }
 
 /* Get the log PDF of the distribution */
@@ -210,7 +210,7 @@ public:
     const Scalar scale = std::sqrt(0.5 * kappa_ * y);
     const Scalar A = (flag_ == 0 ? 0.0 : SpecFunc::Erf(scale * uMin_));
     const Scalar B = (flag_ == 1 ? 1.0 : SpecFunc::Erf(scale * uMax_));
-    const Scalar kernelValue = 0.5 * std::exp(logNormalization_ + (alpha_ - 1.0) * std::log(y) - beta_ * y) * (B - A);
+    const Scalar kernelValue = 0.5 * SpecFunc::Exp(logNormalization_ + (alpha_ - 1.0) * std::log(y) - beta_ * y) * (B - A);
     return Point(1, kernelValue);
   }
 

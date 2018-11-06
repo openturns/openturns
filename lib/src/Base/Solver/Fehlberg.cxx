@@ -22,6 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Fehlberg.hxx"
 #include "openturns/PiecewiseHermiteEvaluation.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -284,7 +285,7 @@ Point Fehlberg::computeStep(Function & transitionFunction,
   const Scalar delta = (PhiI - PhiII).norm();
   if (delta > 0.0)
   {
-    const Scalar factor = std::exp(std::log(localPrecision_ / delta) / (order_ + 1.0));
+    const Scalar factor = SpecFunc::Exp(std::log(localPrecision_ / delta) / (order_ + 1.0));
     h *= factor;
   }
   return value;

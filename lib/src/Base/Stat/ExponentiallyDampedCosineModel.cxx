@@ -84,7 +84,7 @@ Scalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const Point
 
   const Scalar absTau = tauOverTheta.norm();
   if (absTau <= SpecFunc::ScalarEpsilon) return 1.0 + nuggetFactor_;
-  return exp(-absTau) * cos(2.0 * M_PI * absTau);
+  return SpecFunc::Exp(-absTau) * std::cos(2.0 * M_PI * absTau);
 }
 
 Scalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
@@ -100,7 +100,7 @@ Scalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const Colle
   }
   absTau = sqrt(absTau);
   if (absTau <= SpecFunc::ScalarEpsilon) return 1.0 + nuggetFactor_;
-  return exp(-absTau) * cos(2.0 * M_PI * absTau);
+  return SpecFunc::Exp(-absTau) * std::cos(2.0 * M_PI * absTau);
 }
 
 /* Discretize the covariance function on a given TimeGrid */

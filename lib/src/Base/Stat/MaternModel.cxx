@@ -96,7 +96,7 @@ Scalar MaternModel::computeStandardRepresentative(const Point & tau) const
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
     return 1.0 + nuggetFactor_;
   else
-    return exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
+    return SpecFunc::Exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
 }
 
 Scalar MaternModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
@@ -114,7 +114,7 @@ Scalar MaternModel::computeStandardRepresentative(const Collection<Scalar>::cons
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
     return 1.0 + nuggetFactor_;
   else
-    return exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
+    return SpecFunc::Exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
 }
 
 /* Gradient */
@@ -144,7 +144,7 @@ Matrix MaternModel::partialGradient(const Point & s,
     return Matrix(inputDimension_, 1);
   }
   // General case
-  const Scalar value = std::exp(logNormalizationFactor_ + nu_ * std::log(scaledTauNorm)) * (nu_ * SpecFunc::BesselK(nu_, scaledTauNorm) + SpecFunc::BesselKDerivative(nu_, scaledTauNorm) * scaledTauNorm) / norm2;
+  const Scalar value = SpecFunc::Exp(logNormalizationFactor_ + nu_ * std::log(scaledTauNorm)) * (nu_ * SpecFunc::BesselK(nu_, scaledTauNorm) + SpecFunc::BesselKDerivative(nu_, scaledTauNorm) * scaledTauNorm) / norm2;
   Point tauDotsquareSqrt2nuOverTheta(inputDimension_);
   for(UnsignedInteger i = 0; i < inputDimension_; ++i) tauDotsquareSqrt2nuOverTheta[i] = tau[i] * sqrt2nuOverTheta_[i] * sqrt2nuOverTheta_[i];
   return Matrix(inputDimension_, 1, tauDotsquareSqrt2nuOverTheta * value) * amplitude_[0] * amplitude_[0];

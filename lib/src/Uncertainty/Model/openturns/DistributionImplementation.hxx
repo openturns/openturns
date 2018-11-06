@@ -38,6 +38,7 @@
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/PiecewiseHermiteEvaluation.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -1361,7 +1362,7 @@ protected:
     Point operator() (const Point & point) const
     {
       const Scalar logPDF = p_distribution_->computeLogPDF(point);
-      return Point(1, -std::exp(logPDF) * logPDF);
+      return Point(1, -SpecFunc::Exp(logPDF) * logPDF);
     }
 
     Sample operator() (const Sample & sample) const
@@ -1372,7 +1373,7 @@ protected:
       for (UnsignedInteger i = 0; i < size; ++i)
       {
         const Scalar logPDFI = logPDF[i];
-        result(i, 0) = -std::exp(logPDFI) * logPDFI;
+        result(i, 0) = -SpecFunc::Exp(logPDFI) * logPDFI;
       }
       return result;
     };

@@ -288,7 +288,7 @@ Scalar AliMikhailHaqCopula::computeArchimedeanGenerator(const Scalar t) const
 Scalar AliMikhailHaqCopula::computeInverseArchimedeanGenerator(const Scalar t) const
 {
   const Scalar y = t * (theta_ - 1.0) / theta_;
-  return (y - SpecFunc::LambertW(-t * std::exp(y) / theta_)) / t;
+  return (y - SpecFunc::LambertW(-t * SpecFunc::Exp(y) / theta_)) / t;
 }
 
 /* Compute the derivative of the density generator */

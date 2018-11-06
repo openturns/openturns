@@ -106,8 +106,8 @@ Point GumbelCopula::getRealization() const
   const Scalar inverseTheta = 1.0 / theta_;
   const Scalar t = std::cos(u - u2 * inverseTheta) / e;
   const Scalar gamma = std::pow(std::sin(u2 * inverseTheta) / t, inverseTheta) * t / std::cos(u);
-  realization[0] = std::exp(-std::pow(-std::log(RandomGenerator::Generate()), inverseTheta) / gamma);
-  realization[1] = std::exp(-std::pow(-std::log(RandomGenerator::Generate()), inverseTheta) / gamma);
+  realization[0] = SpecFunc::Exp(-std::pow(-std::log(RandomGenerator::Generate()), inverseTheta) / gamma);
+  realization[1] = SpecFunc::Exp(-std::pow(-std::log(RandomGenerator::Generate()), inverseTheta) / gamma);
   return realization;
 }
 
@@ -136,7 +136,7 @@ Point GumbelCopula::computeDDF(const Point & point) const
   const Scalar t14 = t11 * t13;
   const Scalar t15 = t5 * t5;
   const Scalar t17 = 1.0 / t15 / t5;
-  const Scalar t20 = std::exp(-t7);
+  const Scalar t20 = SpecFunc::Exp(-t7);
   const Scalar t22 = -1.0 + theta_ + t7;
   const Scalar t23 = 1.0 / v;
   const Scalar t25 = 1.0 / t3;
@@ -187,7 +187,7 @@ Scalar GumbelCopula::computePDF(const Point & point) const
   const Scalar minusLogVPowerTheta = std::pow(-logV, theta_);
   const Scalar sum1 = minusLogUPowerTheta + minusLogVPowerTheta;
   const Scalar pow1 = std::pow(sum1, 1.0 / theta_);
-  return pow1 * minusLogUPowerTheta * minusLogVPowerTheta * std::exp(-pow1) * (pow1 + theta_ - 1.0) / (u * v * logU * logV * sum1 * sum1);
+  return pow1 * minusLogUPowerTheta * minusLogVPowerTheta * SpecFunc::Exp(-pow1) * (pow1 + theta_ - 1.0) / (u * v * logU * logV * sum1 * sum1);
 }
 
 /* Get the CDF of the distribution */
@@ -207,7 +207,7 @@ Scalar GumbelCopula::computeCDF(const Point & point) const
   // If we are outside of the support for v, in the upper part
   if (v >= 1.0) return u;
   // If we are in the support
-  return std::exp(-std::pow(std::pow(-std::log(u), theta_) + std::pow(-std::log(v), theta_), 1.0 / theta_));
+  return SpecFunc::Exp(-std::pow(std::pow(-std::log(u), theta_) + std::pow(-std::log(v), theta_), 1.0 / theta_));
 }
 
 /* Get the PDFGradient of the distribution */
@@ -242,7 +242,7 @@ Point GumbelCopula::computeCDFGradient(const Point & point) const
   const Scalar sum1 = minusLogUPowerTheta + minusLogVPowerTheta;
   const Scalar inverseTheta = 1.0 / theta_;
   const Scalar pow1 = std::pow(sum1, inverseTheta);
-  return Point(1, pow1 * std::exp(-pow1) * inverseTheta * (std::log(sum1) * inverseTheta - (minusLogUPowerTheta * std::log(-logU) + minusLogVPowerTheta * std::log(-logV)) / sum1));
+  return Point(1, pow1 * SpecFunc::Exp(-pow1) * inverseTheta * (std::log(sum1) * inverseTheta - (minusLogUPowerTheta * std::log(-logU) + minusLogVPowerTheta * std::log(-logV)) / sum1));
 }
 
 /* Get the quantile of the distribution */
@@ -253,7 +253,7 @@ Point GumbelCopula::computeQuantile(const Scalar prob,
   const Scalar q = tail ? 1.0 - prob : prob;
   if (q == 0.0) return getRange().getLowerBound();
   if (q == 1.0) return getRange().getUpperBound();
-  return Point(2, std::exp(-std::exp(std::log(-std::log(q)) - M_LN2 / theta_)));
+  return Point(2, SpecFunc::Exp(-SpecFunc::Exp(std::log(-std::log(q)) - M_LN2 / theta_)));
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -270,7 +270,7 @@ Scalar GumbelCopula::computeConditionalCDF(const Scalar x, const Point & y) cons
   const Scalar minusLogUPowTheta = std::pow(minusLogU, theta_);
   const Scalar minusLogVPowTheta = std::pow(-std::log(v), theta_);
   const Scalar sum = minusLogUPowTheta + minusLogVPowTheta;
-  return std::pow(sum, -1.0 + 1.0 / theta_) * minusLogUPowTheta * std::exp(-std::pow(sum, 1.0 / theta_)) / (u * minusLogU);
+  return std::pow(sum, -1.0 + 1.0 / theta_) * minusLogUPowTheta * SpecFunc::Exp(-std::pow(sum, 1.0 / theta_)) / (u * minusLogU);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
@@ -289,7 +289,7 @@ Scalar GumbelCopula::computeConditionalQuantile(const Scalar q, const Point & y)
   const Scalar minusLogU = -std::log(u);
   const Scalar minusLogUPowTheta = std::pow(minusLogU, theta_);
   const Scalar factor = minusLogUPowTheta / (u * q * minusLogU);
-  return std::exp(-std::pow(std::exp(theta_ * (std::log(factor) / (theta_ - 1.0) - SpecFunc::LambertW(std::pow(factor, inverseThetaMinusOne) * inverseThetaMinusOne))) - minusLogUPowTheta, 1.0 / theta_));
+  return SpecFunc::Exp(-std::pow(SpecFunc::Exp(theta_ * (std::log(factor) / (theta_ - 1.0) - SpecFunc::LambertW(std::pow(factor, inverseThetaMinusOne) * inverseThetaMinusOne))) - minusLogUPowTheta, 1.0 / theta_));
 }
 
 /* Compute the covariance of the distribution */
@@ -338,7 +338,7 @@ Scalar GumbelCopula::computeArchimedeanGenerator(const Scalar t) const
 /* Compute the inverse of the archimedean generator */
 Scalar GumbelCopula::computeInverseArchimedeanGenerator(const Scalar t) const
 {
-  return std::exp(-std::pow(t, 1.0 / theta_));
+  return SpecFunc::Exp(-std::pow(t, 1.0 / theta_));
 }
 
 /* Compute the derivative of the density generator */

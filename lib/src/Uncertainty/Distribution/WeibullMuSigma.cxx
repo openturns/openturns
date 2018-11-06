@@ -144,7 +144,7 @@ Point WeibullMuSigma::operator () (const Point & inP) const
     {
       betaMin -= step;
       step *= 0.5;
-      t = exp(SpecFunc::LnGamma(1.0 + 2.0 / betaMin) - 2.0 * SpecFunc::LnGamma(1.0 + 1.0 / betaMin));
+      t = SpecFunc::Exp(SpecFunc::LnGamma(1.0 + 2.0 / betaMin) - 2.0 * SpecFunc::LnGamma(1.0 + 1.0 / betaMin));
     }
     while (t < ratio);
     // Here, we know that betaMin <= beta < betaMin + 2.0 * step
@@ -157,7 +157,7 @@ Point WeibullMuSigma::operator () (const Point & inP) const
     {
       betaMax += step;
       step *= 2.0;
-      t = exp(SpecFunc::LnGamma(1.0 + 2.0 / betaMax) - 2.0 * SpecFunc::LnGamma(1.0 + 1.0 / betaMax));
+      t = SpecFunc::Exp(SpecFunc::LnGamma(1.0 + 2.0 / betaMax) - 2.0 * SpecFunc::LnGamma(1.0 + 1.0 / betaMax));
     }
     while (t >= ratio);
     // Here, we know that betaMax - 0.5 * step <= beta < betaMax
@@ -174,7 +174,7 @@ Point WeibullMuSigma::operator () (const Point & inP) const
       break;
     }
     // Non convergence, one step further
-    t = exp(SpecFunc::LnGamma(1.0 + 2.0 / beta) - 2.0 * SpecFunc::LnGamma(1.0 + 1.0 / beta));
+    t = SpecFunc::Exp(SpecFunc::LnGamma(1.0 + 2.0 / beta) - 2.0 * SpecFunc::LnGamma(1.0 + 1.0 / beta));
     if (t < ratio) betaMax = beta;
     else betaMin = beta;
   }

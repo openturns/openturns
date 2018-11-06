@@ -157,8 +157,8 @@ Scalar SmoothedUniform::computeCDF(const Point & point) const
   const Scalar ax = (a_ - x) / sigma_;
   const Scalar bx = (b_ - x) / sigma_;
   const Scalar ba = b_ - a_;
-  const Scalar phiAX = SpecFunc::ISQRT2PI * std::exp(-0.5 * ax * ax);
-  const Scalar phiBX = SpecFunc::ISQRT2PI * std::exp(-0.5 * bx * bx);
+  const Scalar phiAX = SpecFunc::ISQRT2PI * SpecFunc::Exp(-0.5 * ax * ax);
+  const Scalar phiBX = SpecFunc::ISQRT2PI * SpecFunc::Exp(-0.5 * bx * bx);
   const Scalar expPart = phiAX - phiBX;
   const Scalar PhiAX = DistFunc::pNormal(ax);
   const Scalar PhiBX = DistFunc::pNormal(bx);
@@ -174,8 +174,8 @@ Scalar SmoothedUniform::computeComplementaryCDF(const Point & point) const
   const Scalar ax = (a_ - x) / sigma_;
   const Scalar bx = (b_ - x) / sigma_;
   const Scalar ba = b_ - a_;
-  const Scalar phiAX = std::exp(-0.5 * ax * ax);
-  const Scalar phiBX = std::exp(-0.5 * bx * bx);
+  const Scalar phiAX = SpecFunc::Exp(-0.5 * ax * ax);
+  const Scalar phiBX = SpecFunc::Exp(-0.5 * bx * bx);
   const Scalar expPart = SpecFunc::ISQRT2PI * (phiAX - phiBX);
   const Scalar PhiAX = DistFunc::pNormal(ax);
   const Scalar PhiBX = DistFunc::pNormal(bx);
@@ -195,7 +195,7 @@ Complex SmoothedUniform::computeCharacteristicFunction(const Scalar x) const
     const Scalar idenom = 1.0 / (bx - ax);
     result = Complex(idenom * (std::sin(bx) - std::sin(ax)), idenom * (std::cos(ax) - std::cos(bx)));
   }
-  return result * std::exp(-0.5 * sigma_ * sigma_ * x * x);
+  return result * SpecFunc::Exp(-0.5 * sigma_ * sigma_ * x * x);
 }
 
 /* Get the PDFGradient of the distribution */
@@ -207,8 +207,8 @@ Point SmoothedUniform::computePDFGradient(const Point & point) const
   const Scalar ax = (a_ - x) / sigma_;
   const Scalar bx = (b_ - x) / sigma_;
   const Scalar ba = b_ - a_;
-  const Scalar phiAX = SpecFunc::ISQRT2PI * std::exp(-0.5 * ax * ax);
-  const Scalar phiBX = SpecFunc::ISQRT2PI * std::exp(-0.5 * bx * bx);
+  const Scalar phiAX = SpecFunc::ISQRT2PI * SpecFunc::Exp(-0.5 * ax * ax);
+  const Scalar phiBX = SpecFunc::ISQRT2PI * SpecFunc::Exp(-0.5 * bx * bx);
   const Scalar PhiAX = DistFunc::pNormal(ax);
   const Scalar PhiBX = DistFunc::pNormal(bx);
   Point pdfGradient(3, 0.0);
@@ -227,8 +227,8 @@ Point SmoothedUniform::computeCDFGradient(const Point & point) const
   const Scalar ax = (a_ - x) / sigma_;
   const Scalar bx = (b_ - x) / sigma_;
   const Scalar ba = b_ - a_;
-  const Scalar phiAX = SpecFunc::ISQRT2PI * std::exp(-0.5 * ax * ax);
-  const Scalar phiBX = SpecFunc::ISQRT2PI * std::exp(-0.5 * bx * bx);
+  const Scalar phiAX = SpecFunc::ISQRT2PI * SpecFunc::Exp(-0.5 * ax * ax);
+  const Scalar phiBX = SpecFunc::ISQRT2PI * SpecFunc::Exp(-0.5 * bx * bx);
   const Scalar PhiAX = DistFunc::pNormal(ax);
   const Scalar PhiBX = DistFunc::pNormal(bx);
   Point cdfGradient(3, 0.0);
@@ -256,8 +256,8 @@ Scalar SmoothedUniform::computeScalarQuantile(const Scalar prob,
   {
     const Scalar ax = (a_ - x) / sigma_;
     const Scalar bx = (b_ - x) / sigma_;
-    const Scalar phiAX = SpecFunc::ISQRT2PI * std::exp(-0.5 * ax * ax);
-    const Scalar phiBX = SpecFunc::ISQRT2PI * std::exp(-0.5 * bx * bx);
+    const Scalar phiAX = SpecFunc::ISQRT2PI * SpecFunc::Exp(-0.5 * ax * ax);
+    const Scalar phiBX = SpecFunc::ISQRT2PI * SpecFunc::Exp(-0.5 * bx * bx);
     const Scalar PhiBX = DistFunc::pNormal(bx);
     const Scalar PhiAX = DistFunc::pNormal(ax);
     const Scalar pdf = (PhiBX - PhiAX) / ba;

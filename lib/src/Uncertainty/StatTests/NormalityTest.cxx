@@ -24,6 +24,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/Path.hxx"
 #include "openturns/DistFunc.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -62,19 +63,19 @@ TestResult NormalityTest::AndersonDarlingNormal(const Sample & sample,
   Scalar pValue = 1.0;
   if (adjustedStatistic >= -1.38)
   {
-    pValue = 1 - exp(-13.436 + 101.14 * adjustedStatistic - 223.73 * adjustedStatistic * adjustedStatistic);
+    pValue = 1 - SpecFunc::Exp(-13.436 + 101.14 * adjustedStatistic - 223.73 * adjustedStatistic * adjustedStatistic);
   }
   if (adjustedStatistic >= 0.2)
   {
-    pValue = 1 - exp(-8.318 + 42.796 * adjustedStatistic - 59.938 * adjustedStatistic * adjustedStatistic);
+    pValue = 1 - SpecFunc::Exp(-8.318 + 42.796 * adjustedStatistic - 59.938 * adjustedStatistic * adjustedStatistic);
   }
   if (adjustedStatistic >= 0.34)
   {
-    pValue = exp(0.9177 - 4.279 * adjustedStatistic - 1.38 * adjustedStatistic * adjustedStatistic);
+    pValue = SpecFunc::Exp(0.9177 - 4.279 * adjustedStatistic - 1.38 * adjustedStatistic * adjustedStatistic);
   }
   if (adjustedStatistic >= 0.6)
   {
-    pValue = exp(1.2937 - 5.709 * adjustedStatistic + 0.0186 * adjustedStatistic * adjustedStatistic);
+    pValue = SpecFunc::Exp(1.2937 - 5.709 * adjustedStatistic + 0.0186 * adjustedStatistic * adjustedStatistic);
   }
   if (adjustedStatistic >= 153.0)
   {
@@ -106,19 +107,19 @@ TestResult NormalityTest::CramerVonMisesNormal(const Sample & sample,
   Scalar pValue = 1.0;
   if (adjustedStatistic >= -0.2)
   {
-    pValue = 1 - exp(-13.953 + 775.5 * adjustedStatistic - 12542.61 * adjustedStatistic * adjustedStatistic);
+    pValue = 1 - SpecFunc::Exp(-13.953 + 775.5 * adjustedStatistic - 12542.61 * adjustedStatistic * adjustedStatistic);
   }
   if (adjustedStatistic >= 0.0275)
   {
-    pValue = 1 - exp(-5.903 + 179.546 * adjustedStatistic - 1515.29 * adjustedStatistic * adjustedStatistic);
+    pValue = 1 - SpecFunc::Exp(-5.903 + 179.546 * adjustedStatistic - 1515.29 * adjustedStatistic * adjustedStatistic);
   }
   if (adjustedStatistic >= 0.051)
   {
-    pValue = exp(0.886 - 31.62 * adjustedStatistic + 10.897 * adjustedStatistic * adjustedStatistic);
+    pValue = SpecFunc::Exp(0.886 - 31.62 * adjustedStatistic + 10.897 * adjustedStatistic * adjustedStatistic);
   }
   if (adjustedStatistic >= 0.092)
   {
-    pValue = exp(1.111 - 34.242 * adjustedStatistic + 12.832 * adjustedStatistic * adjustedStatistic);
+    pValue = SpecFunc::Exp(1.111 - 34.242 * adjustedStatistic + 12.832 * adjustedStatistic * adjustedStatistic);
   }
   if (adjustedStatistic >= 2.636)
   {

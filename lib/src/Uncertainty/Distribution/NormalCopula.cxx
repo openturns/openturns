@@ -189,7 +189,7 @@ Point NormalCopula::computeDDF(const Point & point) const
     const Scalar xi = DistFunc::qNormal(point[i]);
     x[i] = xi;
     // .398942280401432677939946059934 = 1 / sqrt(2.pi)
-    const Scalar pdfI = 0.398942280401432677939946059934 * std::exp(-0.5 * xi * xi);
+    const Scalar pdfI = 0.398942280401432677939946059934 * SpecFunc::Exp(-0.5 * xi * xi);
     marginalPDF[i] = pdfI;
     marginalPDFProduct *= pdfI;
   }
@@ -227,7 +227,7 @@ Scalar NormalCopula::computePDF(const Point & point) const
     value += yi * yi;
   }
   // 0.398942280401432677939946059934 = 1 / sqrt(2.pi)
-  value = std::pow(0.398942280401432677939946059934, static_cast<int>(dimension)) * std::exp(-0.5 * value);
+  value = std::pow(0.398942280401432677939946059934, static_cast<int>(dimension)) * SpecFunc::Exp(-0.5 * value);
   return normal_.computePDF(normalPoint) / value;
 }
 

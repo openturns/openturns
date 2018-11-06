@@ -135,7 +135,7 @@ Scalar Dirichlet::computePDF(const Point & point) const
 
   const Scalar logPDF = computeLogPDF(point);
   if (logPDF == SpecFunc::LogMinScalar) return 0.0;
-  return std::exp(logPDF);
+  return SpecFunc::Exp(logPDF);
 }
 
 Scalar Dirichlet::computeLogPDF(const Point & point) const
@@ -229,7 +229,7 @@ Scalar Dirichlet::computeCDF(const Point & point) const
         sumX += (integrationNodes_[i][indexI] + 1.0) * lI;
         w *= integrationWeights_[i][indexI];
       }
-      const Scalar dCDF = w * std::exp(logFactor + (theta_[dimension] - 1.0) * log1p(-sumX));
+      const Scalar dCDF = w * SpecFunc::Exp(logFactor + (theta_[dimension] - 1.0) * log1p(-sumX));
       value += dCDF;
       // Update the indices
       ++indices[0];
@@ -313,7 +313,7 @@ Scalar Dirichlet::computeConditionalPDF(const Scalar x,
   const Scalar r = theta_[conditioningDimension];
   const Scalar s = sumTheta_ - sum - r;
   const Scalar z = x / (1.0 - sum);
-  return std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sum);
+  return SpecFunc::Exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sum);
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */

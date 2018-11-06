@@ -232,7 +232,7 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeExponentialFactor(const
   if (!useApproximation_)
   {
     const Scalar factor = computeFactor(k, x, y);
-    return std::exp(-factor);
+    return SpecFunc::Exp(-factor);
   }
   // Here we know that x < y, y > a, y < b, x < beta
   if (x <= a)

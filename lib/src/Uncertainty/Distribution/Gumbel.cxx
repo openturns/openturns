@@ -105,8 +105,8 @@ Point Gumbel::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar expX = std::exp(-alpha_ * (point[0] - beta_));
-  return Point(1, alpha_ * alpha_ * (expX - 1.0) * expX * std::exp(-expX));
+  const Scalar expX = SpecFunc::Exp(-alpha_ * (point[0] - beta_));
+  return Point(1, alpha_ * alpha_ * (expX - 1.0) * expX * SpecFunc::Exp(-expX));
 }
 
 
@@ -115,8 +115,8 @@ Scalar Gumbel::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar expX = std::exp(-alpha_ * (point[0] - beta_));
-  return alpha_ * expX * std::exp(-expX);
+  const Scalar expX = SpecFunc::Exp(-alpha_ * (point[0] - beta_));
+  return alpha_ * expX * SpecFunc::Exp(-expX);
 }
 
 Scalar Gumbel::computeLogPDF(const Point & point) const
@@ -124,7 +124,7 @@ Scalar Gumbel::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar X = -alpha_ * (point[0] - beta_);
-  return std::log(alpha_) + X - std::exp(X);
+  return std::log(alpha_) + X - SpecFunc::Exp(X);
 }
 
 
@@ -134,8 +134,8 @@ Scalar Gumbel::computeCDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = -alpha_ * (point[0] - beta_);
-  const Scalar expX = std::exp(x);
-  return std::exp(-expX);
+  const Scalar expX = SpecFunc::Exp(x);
+  return SpecFunc::Exp(-expX);
 }
 
 Scalar Gumbel::computeComplementaryCDF(const Point & point) const
@@ -143,7 +143,7 @@ Scalar Gumbel::computeComplementaryCDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = -alpha_ * (point[0] - beta_);
-  const Scalar expX = std::exp(x);
+  const Scalar expX = SpecFunc::Exp(x);
   // -2.419227917539996841 = numerical bound for which the approximation has a relative error less than 1e-16
   if (x < -2.419227917539996841)
   {
@@ -156,7 +156,7 @@ Scalar Gumbel::computeComplementaryCDF(const Point & point) const
     }
     return value;
   }
-  return 1.0 - std::exp(-expX);
+  return 1.0 - SpecFunc::Exp(-expX);
 }
 
 /* Compute the entropy of the distribution */
@@ -182,8 +182,8 @@ Point Gumbel::computePDFGradient(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0] - beta_;
-  const Scalar expX = std::exp(-alpha_ * x);
-  const Scalar pdf = alpha_ * expX * std::exp(-expX);
+  const Scalar expX = SpecFunc::Exp(-alpha_ * x);
+  const Scalar pdf = alpha_ * expX * SpecFunc::Exp(-expX);
   Point pdfGradient(2);
   pdfGradient[0] = (1.0 / alpha_ - x * (1.0 - expX)) * pdf;
   pdfGradient[1] = alpha_ * (1.0 - expX) * pdf;
@@ -196,8 +196,8 @@ Point Gumbel::computeCDFGradient(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0] - beta_;
-  const Scalar expX = std::exp(-alpha_ * x);
-  const Scalar cdf = std::exp(-expX);
+  const Scalar expX = SpecFunc::Exp(-alpha_ * x);
+  const Scalar cdf = SpecFunc::Exp(-expX);
   Point cdfGradient(2);
   cdfGradient[0] = x * expX * cdf;
   cdfGradient[1] = -alpha_ * expX * cdf;

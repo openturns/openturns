@@ -202,7 +202,7 @@ Scalar InverseGamma::computePDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   if (point[0] <= 0.0) return 0.0;
-  return std::exp(computeLogPDF(point));
+  return SpecFunc::Exp(computeLogPDF(point));
 }
 
 Scalar InverseGamma::computeLogPDF(const Point & point) const
@@ -326,7 +326,7 @@ Point InverseGamma::getKurtosis() const
 Point InverseGamma::getStandardMoment(const UnsignedInteger n) const
 {
   if (k_ <= n) throw NotDefinedException(HERE) << "InverseGamma standard moment of order " << n << " is defined only for k > " << n << ", here k=" << k_;
-  return Point(1, std::exp(SpecFunc::LogGamma(k_ - n) - SpecFunc::LogGamma(k_)));
+  return Point(1, SpecFunc::Exp(SpecFunc::LogGamma(k_ - n) - SpecFunc::LogGamma(k_)));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */

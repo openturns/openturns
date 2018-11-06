@@ -74,7 +74,7 @@ Scalar GeneralizedExponential::computeStandardRepresentative(const Point & tau) 
   Point tauOverTheta(inputDimension_);
   for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const Scalar tauOverThetaNorm = tauOverTheta.norm();
-  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-pow(tauOverThetaNorm, p_));
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : SpecFunc::Exp(-pow(tauOverThetaNorm, p_));
 }
 
 Scalar GeneralizedExponential::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
@@ -89,7 +89,7 @@ Scalar GeneralizedExponential::computeStandardRepresentative(const Collection<Sc
     tauOverThetaNorm += dx * dx;
   }
   tauOverThetaNorm = sqrt(tauOverThetaNorm);
-  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-pow(tauOverThetaNorm, p_));
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : SpecFunc::Exp(-pow(tauOverThetaNorm, p_));
 }
 
 /* Gradient wrt s */
@@ -119,7 +119,7 @@ Matrix GeneralizedExponential::partialGradient(const Point & s,
   }
   // General case
   const Scalar exponent = -std::pow(sqrt(norm2), p_);
-  const Scalar value = p_ * exponent * std::exp(exponent) / norm2;
+  const Scalar value = p_ * exponent * SpecFunc::Exp(exponent) / norm2;
   // Needs tau/theta ==> reuse same NP
   for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] /= scale_[i];
   return Matrix(inputDimension_, 1, tauOverTheta * value) * amplitude_[0] * amplitude_[0];

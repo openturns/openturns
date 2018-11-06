@@ -137,7 +137,20 @@ Scalar VonMises::getCircularMean() const
 
 Scalar VonMises::getCircularVariance() const
 {
-  return 1.0 - std::exp(SpecFunc::DeltaLogBesselI10(kappa_));
+  return 1.0 - SpecFunc::Exp(SpecFunc::DeltaLogBesselI10(kappa_));
+}
+
+/* Compute the mean of the distribution */
+void VonMises::computeMean() const
+{
+  mean_ = Point(1, mu_);
+  isAlreadyComputedMean_ = true;
+}
+
+/* Get the skewness of the distribution */
+Point VonMises::getSkewness() const
+{
+  return Point(1, 0.0);
 }
 
 /* Virtual constructor */
@@ -156,7 +169,7 @@ void VonMises::computeRange()
 void VonMises::update()
 {
   normalizationFactor_ = -std::log(2.0 * M_PI) - SpecFunc::LogBesselI0(kappa_);
-  ratioOfUniformsBound_ = (kappa_ > 1.3 ? 1.0 / std::sqrt(kappa_) : M_PI * std::exp(-kappa_));
+  ratioOfUniformsBound_ = (kappa_ > 1.3 ? 1.0 / std::sqrt(kappa_) : M_PI * SpecFunc::Exp(-kappa_));
 }
 
 
@@ -202,7 +215,7 @@ Scalar VonMises::computePDF(const Point & point) const
 
   const Scalar x = point[0];
   if (std::abs(x - mu_) > M_PI) return 0.0;
-  return std::exp(computeLogPDF(point));
+  return SpecFunc::Exp(computeLogPDF(point));
 }
 
 Scalar VonMises::computeLogPDF(const Point & point) const
@@ -228,7 +241,7 @@ Scalar VonMises::computeEntropy() const
 {
   const Scalar logI0 = SpecFunc::LogBesselI0(kappa_);
   const Scalar logI1 = SpecFunc::LogBesselI1(kappa_);
-  return -kappa_ * std::exp(logI1 - logI0) + 2.0 * SpecFunc::LOGSQRT2PI + logI0;
+  return -kappa_ * SpecFunc::Exp(logI1 - logI0) + 2.0 * SpecFunc::LOGSQRT2PI + logI0;
 }
 
 void VonMises::setParameter(const Point & parameter)

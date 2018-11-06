@@ -129,7 +129,7 @@ Scalar Rice::computePDF(const Point & point) const
   if (x <= 0.0) return 0.0;
   const Scalar xScaled = x / sigma_;
   const Scalar nuScaled = nu_ / sigma_;
-  return xScaled / sigma_ * std::exp(-0.5 * (xScaled * xScaled + nuScaled * nuScaled) + SpecFunc::LogBesselI0(xScaled * nuScaled));
+  return xScaled / sigma_ * SpecFunc::Exp(-0.5 * (xScaled * xScaled + nuScaled * nuScaled) + SpecFunc::LogBesselI0(xScaled * nuScaled));
 }
 
 

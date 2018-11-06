@@ -238,20 +238,16 @@ Point KernelMixture::computeDDF(const Point & point) const
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     Point atom(dimension, 0.0);
-    Point kernelPdfAtom(dimension, 0.0);
-    Scalar pdfAtom = 1.0;
+    Point kernelLogPdfAtom(dimension, 0.0);
+    Scalar logPDFAtom = 0.0;
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       atom[j] = (point[j] - sample_(i, j)) * bandwidthInverse_[j];
-      kernelPdfAtom[j] = kernel_.computePDF(Point(1, atom[j]));
-      pdfAtom *= kernelPdfAtom[j];
+      kernelLogPdfAtom[j] = kernel_.computeLogPDF(Point(1, atom[j]));
+      logPDFAtom += kernelLogPdfAtom[j];
     }
     for (UnsignedInteger j = 0; j < dimension; ++j)
-    {
-      // Only aggregate the values associated with kernelPdfAtom>0
-      if (kernelPdfAtom[j] > 0.0)
-        ddfValue[j] += pdfAtom / kernelPdfAtom[j] * kernel_.computeDDF(Point(1, atom[j]))[0] * bandwidthInverse_[j];
-    }
+      ddfValue[j] += SpecFunc::Exp(logPDFAtom - kernelLogPdfAtom[j]) * kernel_.computeDDF(Point(1, atom[j]))[0] * bandwidthInverse_[j];
   } /* end for */
   return normalizationFactor_ * ddfValue;
 }
@@ -277,16 +273,14 @@ Scalar KernelMixture::computePDF(const Point & point) const
   }
   // Quick rejection test
   if (!getRange().numericallyContains(point)) return pdfValue;
-  const Scalar pdfEpsilon = kernel_.getPDFEpsilon();
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar pdfAtom = kernel_.computePDF(Point(1, (point[0] - sample_(i, 0)) * bandwidthInverse_[0]));
+    Scalar logPdfAtom = kernel_.computeLogPDF(Point(1, (point[0] - sample_(i, 0)) * bandwidthInverse_[0]));
     for (UnsignedInteger j = 1; j < dimension; ++j)
     {
-      if (pdfAtom < pdfEpsilon) break;
-      pdfAtom *= kernel_.computePDF(Point(1, (point[j] - sample_(i, j)) * bandwidthInverse_[j]));
+      logPdfAtom += kernel_.computeLogPDF(Point(1, (point[j] - sample_(i, j)) * bandwidthInverse_[j]));
     }
-    pdfValue += pdfAtom;
+    pdfValue += SpecFunc::Exp(logPdfAtom);
   } /* end for */
   return normalizationFactor_ * pdfValue;
 }

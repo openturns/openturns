@@ -81,7 +81,7 @@ Frechet FrechetFactory::buildAsFrechet(const Sample & sample) const
   const Scalar betaGumbel = associatedGumbel.getBeta();
   // Now get the parameter estimate of the Frechet distribution
   const Scalar alphaFrechet = alphaGumbel;
-  const Scalar betaFrechet = std::exp(betaGumbel);
+  const Scalar betaFrechet = SpecFunc::Exp(betaGumbel);
   // Use them to start a MLE estimation
   Frechet model;
   MaximumLikelihoodFactory mleFactory(model);

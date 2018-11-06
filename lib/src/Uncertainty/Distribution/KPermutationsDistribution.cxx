@@ -145,7 +145,7 @@ Scalar KPermutationsDistribution::computePDF(const Point & point) const
 {
   const Scalar logPDF = computeLogPDF(point);
   if (logPDF == -SpecFunc::LogMaxScalar) return 0.0;
-  return std::exp(logPDF);
+  return SpecFunc::Exp(logPDF);
 }
 
 /* Get the CDF of the distribution */

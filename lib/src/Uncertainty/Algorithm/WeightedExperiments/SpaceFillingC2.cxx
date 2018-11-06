@@ -20,7 +20,7 @@
  */
 #include "openturns/SpaceFillingC2.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-
+#include "openturns/SpecFunc.hxx"
 
 namespace OT
 {
@@ -88,7 +88,7 @@ Scalar SpaceFillingC2::evaluate(const Sample & sample) const
       sum2 += prod;
     }
   }
-  return std::sqrt(std::exp(dimension * std::log(13.0 / 12.0)) - (2.0 / size) * sum1 + (1.0 / size / size) * sum2);
+  return std::sqrt(SpecFunc::Exp(dimension * std::log(13.0 / 12.0)) - (2.0 / size) * sum1 + (1.0 / size / size) * sum2);
 }
 
 /** Compute criterion when performing an elementary perturbation */

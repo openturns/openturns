@@ -997,7 +997,7 @@ Scalar MatrixImplementation::computeDeterminant (const Bool keepIntact)
   Scalar sign = 0.0;
   const Scalar logAbsoluteDeterminant = computeLogAbsoluteDeterminant(sign, keepIntact);
   if (logAbsoluteDeterminant == SpecFunc::LogMinScalar) return 0.0;
-  return sign * exp(logAbsoluteDeterminant);
+  return sign * SpecFunc::Exp(logAbsoluteDeterminant);
 }
 
 /* Compute determinant for a symmetric matrix */
@@ -1057,7 +1057,7 @@ Scalar MatrixImplementation::computeDeterminantSym (const Bool keepIntact)
   Scalar sign = 0.0;
   const Scalar logAbsoluteDeterminant = computeLogAbsoluteDeterminant(sign, keepIntact);
   if (logAbsoluteDeterminant == SpecFunc::LogMinScalar) return 0.0;
-  return sign * exp(logAbsoluteDeterminant);
+  return sign * SpecFunc::Exp(logAbsoluteDeterminant);
 }
 
 /* Compute trace */

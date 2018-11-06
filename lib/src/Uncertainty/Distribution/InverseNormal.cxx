@@ -114,7 +114,7 @@ Scalar InverseNormal::computePDF(const Point & point) const
 
   const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
-  return std::sqrt(lambda_ / (2.0 * M_PI * x * x * x)) * std::exp(- lambda_ * (x - mu_) * (x - mu_) / (2.0 * x * mu_ * mu_));
+  return std::sqrt(lambda_ / (2.0 * M_PI * x * x * x)) * SpecFunc::Exp(- lambda_ * (x - mu_) * (x - mu_) / (2.0 * x * mu_ * mu_));
 }
 
 Scalar InverseNormal::computeLogPDF(const Point & point) const
@@ -140,7 +140,7 @@ Scalar InverseNormal::computeCDF(const Point & point) const
   // InverseNormal CDF is greater than pNormal()
   if (phiArg1 > 8.24) return 1.0;
   const Scalar phiArg2 = -lx * ( x / mu_ + 1.0);
-  return DistFunc::pNormal(phiArg1) + std::exp(2.0 * lambda_ / mu_ + std::log(DistFunc::pNormal(phiArg2)));
+  return DistFunc::pNormal(phiArg1) + SpecFunc::Exp(2.0 * lambda_ / mu_ + std::log(DistFunc::pNormal(phiArg2)));
 }
 
 /** Get the minimum volume level set containing a given probability of the distribution */
@@ -150,7 +150,7 @@ LevelSet InverseNormal::computeMinimumVolumeLevelSetWithThreshold(const Scalar p
   Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   Scalar minusLogPDFThreshold = -computeLogPDF(interval.getLowerBound()[0]);
-  threshold = std::exp(-minusLogPDFThreshold);
+  threshold = SpecFunc::Exp(-minusLogPDFThreshold);
   return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }
 

@@ -148,7 +148,7 @@ Scalar Beta::computePDF(const Point & point) const
   const Scalar x = point[0];
   if ((x == b_) && (t_ - r_ == 1.0)) return 1.0;
   if ((x <= a_) || (x >= b_)) return 0.0;
-  return std::exp(computeLogPDF(point));
+  return SpecFunc::Exp(computeLogPDF(point));
 }
 
 Scalar Beta::computeLogPDF(const Point & point) const

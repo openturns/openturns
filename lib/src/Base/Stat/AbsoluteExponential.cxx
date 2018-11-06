@@ -67,7 +67,7 @@ Scalar AbsoluteExponential::computeStandardRepresentative(const Point & tau) con
   Point tauOverTheta(inputDimension_);
   for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const Scalar tauOverThetaNorm = tauOverTheta.norm1();
-  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-tauOverThetaNorm);
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : SpecFunc::Exp(-tauOverThetaNorm);
 }
 
 Scalar AbsoluteExponential::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
@@ -80,7 +80,7 @@ Scalar AbsoluteExponential::computeStandardRepresentative(const Collection<Scala
   {
     tauOverThetaNorm += std::abs(*s_it - *t_it) / scale_[i];
   }
-  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-tauOverThetaNorm);
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : SpecFunc::Exp(-tauOverThetaNorm);
 }
 
 /* Gradient */
@@ -103,7 +103,7 @@ Matrix AbsoluteExponential::partialGradient(const Point & s,
     return gradient;
   }
   // General case
-  const Scalar value = std::exp(-norm1);
+  const Scalar value = SpecFunc::Exp(-norm1);
   // Gradient take as factor sign(tau_i) /theta_i
   Point factor(inputDimension_);
   for (UnsignedInteger i = 0; i < inputDimension_; ++i)

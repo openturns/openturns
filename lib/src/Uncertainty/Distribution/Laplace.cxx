@@ -120,7 +120,7 @@ Scalar Laplace::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  return 0.5 * lambda_ * std::exp(-lambda_ * std::abs(point[0] - mu_));
+  return 0.5 * lambda_ * SpecFunc::Exp(-lambda_ * std::abs(point[0] - mu_));
 }
 
 Scalar Laplace::computeLogPDF(const Point & point) const
@@ -136,8 +136,8 @@ Scalar Laplace::computeCDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar u = lambda_ * (point[0] - mu_);
-  if (u < 0.0) return 0.5 * std::exp(u);
-  return 1.0 - 0.5 * std::exp(-u);
+  if (u < 0.0) return 0.5 * SpecFunc::Exp(u);
+  return 1.0 - 0.5 * SpecFunc::Exp(-u);
 }
 
 /* Get the complementary CDF of the distribution */
@@ -146,8 +146,8 @@ Scalar Laplace::computeComplementaryCDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar u = lambda_ * (point[0] - mu_);
-  if (u < 0.0) return 1.0 - 0.5 * std::exp(u);
-  return 0.5 * std::exp(-u);
+  if (u < 0.0) return 1.0 - 0.5 * SpecFunc::Exp(u);
+  return 0.5 * SpecFunc::Exp(-u);
 }
 
 /* Compute the entropy of the distribution */
@@ -176,7 +176,7 @@ Point Laplace::computePDFGradient(const Point & point) const
 
   Point pdfGradient(2, 0.0);
   const Scalar factor = std::abs(point[0] - mu_) * lambda_;
-  const Scalar expFactor = std::exp(-factor);
+  const Scalar expFactor = SpecFunc::Exp(-factor);
   pdfGradient[0] = 0.5 * expFactor * (1.0 - factor);
   pdfGradient[1] = (point[0] > mu_ ? 0.5 * lambda_ * lambda_ * expFactor : -0.5 * lambda_ * lambda_ * expFactor);
   return pdfGradient;
@@ -189,7 +189,7 @@ Point Laplace::computeCDFGradient(const Point & point) const
 
   Point cdfGradient(2, 0.0);
   const Scalar factor = std::abs(point[0] - mu_) * lambda_;
-  const Scalar expFactor = std::exp(-factor);
+  const Scalar expFactor = SpecFunc::Exp(-factor);
   cdfGradient[0] = 0.5 * factor / lambda_ * expFactor;
   cdfGradient[1] = -0.5 * lambda_ * expFactor;
   return cdfGradient;

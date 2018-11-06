@@ -32,8 +32,8 @@ int main(int, char *[])
 
   try
   {
-    // Set Numerical precision to 4
-    PlatformInfo::SetNumericalPrecision(4);
+    // Set Numerical precision to 3
+    PlatformInfo::SetNumericalPrecision(3);
     UnsignedInteger sampleSize = 40;
     UnsignedInteger inputDimension = 1;
 

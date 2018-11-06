@@ -143,7 +143,7 @@ struct PluginConstraint
         const Scalar dx = sample_(i, 0) - sample_(j, 0);
         const Scalar x = dx / h;
         // Clipping: if x is large enough, the exponential factor is 0.0
-        if (std::abs(x) < cutOffPlugin) phi += 2.0 * hermitePolynomial_(x) * std::exp(-0.5 * x * x);
+        if (std::abs(x) < cutOffPlugin) phi += 2.0 * hermitePolynomial_(x) * SpecFunc::Exp(-0.5 * x * x);
       }
     }
     const Scalar res = phi / ((N_ * (N_ - 1.0)) * std::pow(h, order_ + 1.0) * std::sqrt(2.0 * M_PI));

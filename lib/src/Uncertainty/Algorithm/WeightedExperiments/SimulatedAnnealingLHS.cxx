@@ -135,7 +135,7 @@ Sample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRestart) cons
       //          RandomGenerator::Generate() is called here.
       const Scalar bernoulliTrial = RandomGenerator::Generate();
       const Scalar newCriterion = spaceFilling_.perturbLHS(standardOptimalDesign, optimalValue, row1, row2, columnIndex);
-      const Scalar criteriaDifference = std::min(std::exp((optimalValue - newCriterion) / T), 1.0);
+      const Scalar criteriaDifference = std::min(SpecFunc::Exp((optimalValue - newCriterion) / T), 1.0);
       // Decision with respect to criteriaDifference
       if (optimalValue >= newCriterion)
       {

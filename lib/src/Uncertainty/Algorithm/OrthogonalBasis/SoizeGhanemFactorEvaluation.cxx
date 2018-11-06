@@ -101,7 +101,7 @@ Point SoizeGhanemFactorEvaluation::operator() (const Point & inP) const
     for (UnsignedInteger i = 0; i < inputDimension; ++i)
       logFactor += marginals_[i].computeLogPDF(inP[i]);
     // \sqrt{\frac{\prod_{k=1}^d p_k(x_k)}{p(x_1,\dots,x_d)}}
-    result[0] = std::exp(0.5 * (logFactor - measure_.computeLogPDF(inP)));
+    result[0] = SpecFunc::Exp(0.5 * (logFactor - measure_.computeLogPDF(inP)));
   }
   callsNumber_.increment();
   return result;
@@ -131,7 +131,7 @@ Sample SoizeGhanemFactorEvaluation::operator() (const Sample & inS) const
     // \sqrt{\frac{\prod_{k=1}^d p_k(x_k)}{p(x_1,\dots,x_d)}}
     const Sample logResult(logFactor - measure_.computeLogPDF(inS));
     for (UnsignedInteger i = 0; i < size; ++i)
-      result(i, 0) = std::exp(0.5 * logResult(i, 0));
+      result(i, 0) = SpecFunc::Exp(0.5 * logResult(i, 0));
   }
   callsNumber_.fetchAndAdd(size);
   return result;

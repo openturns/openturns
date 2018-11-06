@@ -428,7 +428,7 @@ LevelSet CompositeDistribution::computeMinimumVolumeLevelSetWithThreshold(const 
   const Sample sampleAntecedent(antecedent_.computeQuantile(q));
   const Sample minusLogPDFSample(computeLogPDF(function_(sampleAntecedent)) * Point(1, -1.0));
   const Scalar minusLogPDFThreshold = minusLogPDFSample.computeQuantile(prob)[0];
-  threshold = std::exp(-minusLogPDFThreshold);
+  threshold = SpecFunc::Exp(-minusLogPDFThreshold);
 
   return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
 }

@@ -24,6 +24,7 @@
 #include "openturns/Normal2DCDF.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/Point.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -113,7 +114,7 @@ Scalar Normal2DCDF(const Scalar x1,
     {
       const Scalar sinValueMinus = std::sin(0.5 * arcSinRho * (1.0 - nodes[shift + i]));
       const Scalar sinValuePlus = std::sin(0.5 * arcSinRho * (1.0 + nodes[shift + i]));
-      cdf += weights[shift + i] * (std::exp((sinValueMinus * u1u2 - halfSquare) / (1.0 - sinValueMinus * sinValueMinus)) + std::exp((sinValuePlus * u1u2 - halfSquare) / (1.0 - sinValuePlus * sinValuePlus)));
+      cdf += weights[shift + i] * (SpecFunc::Exp((sinValueMinus * u1u2 - halfSquare) / (1.0 - sinValueMinus * sinValueMinus)) + SpecFunc::Exp((sinValuePlus * u1u2 - halfSquare) / (1.0 - sinValuePlus * sinValuePlus)));
     }
     cdf *= arcSinRho / (4.0 * M_PI);
     cdf += DistFunc::pNormal(-u1) * DistFunc::pNormal(-u2);
@@ -134,11 +135,11 @@ Scalar Normal2DCDF(const Scalar x1,
     const Scalar d = 0.75 - 0.06125 * u1u2;
     const Scalar aSquareReduced = -0.5 * (bSquare / aSquare + u1u2);
     const Scalar firstTerm = c * (1.0 - 0.2 * d * bSquare) / 3.0;
-    if (aSquareReduced > NORMAL2DCDF_MIN_LOG) cdf = a * std::exp(aSquareReduced) * (1.0 - (bSquare - aSquare) * firstTerm + 0.2 * c * d * aSquare * aSquare);
+    if (aSquareReduced > NORMAL2DCDF_MIN_LOG) cdf = a * SpecFunc::Exp(aSquareReduced) * (1.0 - (bSquare - aSquare) * firstTerm + 0.2 * c * d * aSquare * aSquare);
     if (u1u2 < -2.0 * NORMAL2DCDF_MIN_LOG)
     {
       const Scalar sp = std::sqrt(2.0 * M_PI) * DistFunc::pNormal(-b / a);
-      cdf -= std::exp(-0.5 * u1u2) * sp * b * (1.0 - bSquare * firstTerm);
+      cdf -= SpecFunc::Exp(-0.5 * u1u2) * sp * b * (1.0 - bSquare * firstTerm);
     } // u1u2 < -2.0 * NORMAL2DCDF_MIN_LOG
     a *= 0.5;
     for(UnsignedInteger i = 0; i < size; ++i)
@@ -152,8 +153,8 @@ Scalar Normal2DCDF(const Scalar x1,
         {
           const Scalar rs = std::sqrt(1.0 - xSquare);
           const Scalar sp = 1.0 + c * xSquare * (1.0 + d * xSquare);
-          const Scalar ep = std::exp(-u1u2 * (1.0 - rs) / (2.0 * (1.0 + rs))) / rs;
-          cdf += a * weights[shift + i] * std::exp(asr) * (ep - sp);
+          const Scalar ep = SpecFunc::Exp(-u1u2 * (1.0 - rs) / (2.0 * (1.0 + rs))) / rs;
+          cdf += a * weights[shift + i] * SpecFunc::Exp(asr) * (ep - sp);
         } // asr > NORMAL2DCDF_MIN_LOG
       } // j
     } // i

@@ -75,10 +75,10 @@ IndicesCollection KPermutations::generate()
   Indices indices(k_);
   indices.fill();
   /* Size of the sample to be generated: A(k, n) */
-  const UnsignedInteger size = static_cast< UnsignedInteger >(round(exp(SpecFunc::LogGamma(n_ + 1) - SpecFunc::LogGamma(n_ - k_ + 1))));
+  const UnsignedInteger size = static_cast< UnsignedInteger >(round(SpecFunc::Exp(SpecFunc::LogGamma(n_ + 1) - SpecFunc::LogGamma(n_ - k_ + 1))));
   IndicesCollection allKPermutations(size, k_);
   /* First, generate all the permutations of k integers */
-  IndicesCollection allPermutations(static_cast< UnsignedInteger >(round(exp(SpecFunc::LogGamma(k_ + 1)))), k_);
+  IndicesCollection allPermutations(static_cast< UnsignedInteger >(round(SpecFunc::Exp(SpecFunc::LogGamma(k_ + 1)))), k_);
   std::copy(indices.begin(), indices.end(), allPermutations.begin_at(0));
   UnsignedInteger flatIndex = 1;
   while (std::next_permutation(indices.begin(), indices.end()))

@@ -171,7 +171,7 @@ struct LogNormalFactoryMMEParameterConstraint
   {
     const Scalar omega = parameter[0];
     if (!(omega > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on the given sample using the method of modified moments, probably because the sample is constant.";
-    return Point(1, alpha_ * std::pow(std::sqrt(omega) - std::exp(eZ1_ * std::sqrt(std::log(omega))), 2) - omega * (omega - 1.0));
+    return Point(1, alpha_ * std::pow(std::sqrt(omega) - SpecFunc::Exp(eZ1_ * std::sqrt(std::log(omega))), 2) - omega * (omega - 1.0));
   }
 
   Scalar getEZ1() const
@@ -226,7 +226,7 @@ LogNormal LogNormalFactory::buildMethodOfModifiedMoments(const Sample & sample) 
   const Scalar sigma = std::sqrt(std::log(omega));
   const Scalar eZ1 = constraint.getEZ1();
   const Scalar sqrtOmega = std::sqrt(omega);
-  const Scalar beta = (mean - xMin) / (sqrtOmega - std::exp(eZ1 * sigma));
+  const Scalar beta = (mean - xMin) / (sqrtOmega - SpecFunc::Exp(eZ1 * sigma));
   const Scalar gamma = mean - beta * sqrtOmega;
   const Scalar mu = std::log(beta);
   return LogNormal(mu, sigma, gamma);
