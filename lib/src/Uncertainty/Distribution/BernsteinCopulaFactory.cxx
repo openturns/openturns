@@ -316,33 +316,38 @@ UnsignedInteger BernsteinCopulaFactory::ComputePenalizedCsiszarDivergenceBinNumb
 }
 
 /* Build a Bernstein copula based on the given sample. The bin number is computed according to the rule given by ResourceMap */
-Distribution BernsteinCopulaFactory::build()
+Distribution BernsteinCopulaFactory::build() const
 {
   return buildAsEmpiricalBernsteinCopula().clone();
 }
 
+Distribution BernsteinCopulaFactory::build(const Sample & sample) const
+{
+  return buildAsEmpiricalBernsteinCopula(sample, ResourceMap::GetAsString("BernsteinCopulaFactory-BinNumberSelectionMethod")).clone();
+}
+
 Distribution BernsteinCopulaFactory::build(const Sample & sample,
     const String & method,
-    const Function & objective)
+    const Function & objective) const
 {
   return buildAsEmpiricalBernsteinCopula(sample, method, objective).clone();
 }
 
 Distribution BernsteinCopulaFactory::build(const Sample & sample,
-    const UnsignedInteger binNumber)
+    const UnsignedInteger binNumber) const
 {
   return buildAsEmpiricalBernsteinCopula(sample, binNumber).clone();
 }
 
 /* Build a Bernstein copula based on the given sample. */
-EmpiricalBernsteinCopula BernsteinCopulaFactory::buildAsEmpiricalBernsteinCopula()
+EmpiricalBernsteinCopula BernsteinCopulaFactory::buildAsEmpiricalBernsteinCopula() const
 {
   return EmpiricalBernsteinCopula();
 }
 
 EmpiricalBernsteinCopula BernsteinCopulaFactory::buildAsEmpiricalBernsteinCopula(const Sample & sample,
     const String & method,
-    const Function & objective)
+    const Function & objective) const
 {
   UnsignedInteger m = 0;
   if (method == "AMISE")
@@ -357,7 +362,7 @@ EmpiricalBernsteinCopula BernsteinCopulaFactory::buildAsEmpiricalBernsteinCopula
 }
 
 EmpiricalBernsteinCopula BernsteinCopulaFactory::buildAsEmpiricalBernsteinCopula(const Sample & sample,
-    const UnsignedInteger binNumber)
+    const UnsignedInteger binNumber) const
 {
   if (binNumber == 0) throw InvalidDimensionException(HERE) << "Error: the bin number must be positive for the BernsteinCopulaFactory";
   const UnsignedInteger size = sample.getSize();
