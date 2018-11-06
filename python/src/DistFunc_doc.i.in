@@ -173,3 +173,40 @@ Examples
 --------
 >>> import openturns as ot
 >>> k = ot.DistFunc.kFactor(5, 0.95, 0.9)"
+
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::pPearsonCorrelation
+"Asymptotic probability function for the Pearson :math:`\rho` correlation.
+
+Parameters
+----------
+n : int
+    The size of the population
+
+rho : float :math:`-1<rho<1`
+    The Pearson correlation coefficient
+
+tail : bool
+    Tells if we consider to be in the critical region (tTrue)
+    Default value is False
+
+Returns
+-------
+pvalue : float
+    The probability to be in the region of interest
+
+Notes
+-----
+This method allows to compute the *asymptotic* distribution of the
+`Pearson` correlation coefficient issued from two univariate samples
+of size `n`. Basically, we want to measure how coefficient is significatly
+different from `0`. If `tail` is True, the issued value measures probability
+to be in the critical region.
+
+Examples
+--------
+>>> import openturns as ot
+>>> pval = ot.DistFunc.pPearsonCorrelation(100, 0.3, True)"

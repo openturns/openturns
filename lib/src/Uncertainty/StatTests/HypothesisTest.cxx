@@ -31,6 +31,7 @@
 #include "openturns/DistFunc.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/OTconfig.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -54,7 +55,16 @@ TestResult HypothesisTest::Pearson(const Sample & firstSample,
                                    const Scalar level)
 {
   if ((firstSample.getDimension() != 1) || (secondSample.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the Pearson test can be performed only between two 1D samples.";
-  return RunTwoSamplesRTest(firstSample, secondSample, level, "TwoSamplePearson");
+  const UnsignedInteger size = firstSample.getSize();
+  if (secondSample.getSize() != size) throw InvalidArgumentException(HERE) << "Error: the Pearson test can be performed only between two samples of same size.";
+  if (size < 3)  throw InvalidArgumentException(HERE) << "Error: the Pearson test can not be performed with small samples.";
+  // Implement the test using basic rho statistic
+  Sample fullSample(firstSample);
+  fullSample.stack(secondSample);
+  const Scalar rho = fullSample.computePearsonCorrelation()(0, 1);
+  // Here we check if rho is significantly different from 0
+  const Scalar pValue = 2.0 * DistFunc::pPearsonCorrelation(size, rho, true);
+  return TestResult("Pearson", pValue > level, pValue, level);
 }
 
 /* Smirnov test if two scalar samples (of sizes not necessarily equal) follow the same distribution (only for continuous distributions)*/
@@ -146,7 +156,11 @@ HypothesisTest::TestResultCollection HypothesisTest::PartialPearson(const Sample
 {
   if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the partial Pearson test can be performed only with an 1-d ouput sample.";
   if (!selection.check(firstSample.getDimension())) throw InvalidArgumentException(HERE) << "Error: invalid selection, repeated indices or values out of bound";
-  return RunTwoSamplesASelectionRTest(firstSample, secondSample, selection, level, "PartialPearson");
+  const UnsignedInteger size = selection.getSize();
+  TestResultCollection results(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    results[i] = Pearson(firstSample.getMarginal(selection[i]), secondSample, level);
+  return results;
 }
 
 /* Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialRegression performs the Regression test simultaneously on all firstSample[i] and secondSample, for i in the selection. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used. */

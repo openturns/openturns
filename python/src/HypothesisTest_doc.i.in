@@ -426,7 +426,7 @@ Examples
 >>> secondSample = ot.Normal().getSample(30)
 >>> test_result = ot.HypothesisTest.Pearson(firstSample, secondSample)
 >>> print(test_result)
-class=TestResult name=Unnamed type=TwoSamplePearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.984737 description=[]
+class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.984737 description=[]
 "
 
 // ---------------------------------------------------------------------
