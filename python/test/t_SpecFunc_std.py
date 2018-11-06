@@ -19,3 +19,6 @@ for n in [4, 5, 17]:
         if k <= n:
             print('n=', n, 'k=', k, 'binom=',
                   ot.SpecFunc.BinomialCoefficient(n, k))
+
+x = [1.5 * i for i in range(7)]
+print('x=', x, 'exp=', ot.SpecFunc.Exp(x))

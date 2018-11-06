@@ -16,6 +16,7 @@ option (USE_TBB                      "Use Intel Threading Building Blocks librar
 option (USE_HMAT                     "Use HMat library"                                                      ON)
 option (USE_MUPARSER                 "Use muParser library"                                                  ON)
 option (USE_EXPRTK                   "Use ExprTK library"                                                    ON)
+option (USE_FMATH                    "Use FMATH library"                                                     ON)
 option (USE_LIBXML2                  "Use LibXml2 for XML support"                                           ON)
 option (USE_R                        "Use R for graph output support"                                        ON)
 option (USE_BOOST                    "Use Boost for distribution computation"                                ON)
@@ -185,6 +186,20 @@ if (USE_EXPRTK)
   set (OPENTURNS_HAVE_EXPRTK TRUE)
   set (OPENTURNS_HAVE_ANALYTICAL_PARSER TRUE)
   set (SYMBOLICPARSER_DEFAULT_BACKEND ExprTk)
+endif ()
+
+if (USE_FMATH)
+  try_compile (OPENTURNS_HAVE_SSE2
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/sse2.c)
+  message (STATUS "SSE2: ${OPENTURNS_HAVE_SSE2}")
+  try_compile (OPENTURNS_HAVE_AVX2
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/avx2.c)
+  message (STATUS "AVX2: ${OPENTURNS_HAVE_AVX2}")
+  if (OPENTURNS_HAVE_SSE2 AND NOT MSVC AND NOT MINGW) # expd_v crashes on vs14, results are incorrect in mingw
+    set (OPENTURNS_HAVE_FMATH TRUE)
+  endif ()
 endif ()
 
 if (USE_HMAT)
@@ -417,7 +432,6 @@ set (CPACK_BINARY_TBZ2    ON  CACHE BOOL "TBZ2")
 set (CPACK_BINARY_TGZ     ON  CACHE BOOL "TGZ" )
 set (CPACK_BINARY_TZ      OFF CACHE BOOL "TZ"  )
 set (CPACK_SOURCE_IGNORE_FILES "/.git;/build;.*~;${CPACK_SOURCE_IGNORE_FILES}")
-
 
 # Set global definitions
 # TODO: remove PACKAGE_<XX> from source code. Needed for compatibility with autotools

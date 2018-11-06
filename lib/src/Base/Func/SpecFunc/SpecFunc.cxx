@@ -54,6 +54,12 @@
 
 #endif
 
+#ifdef OPENTURNS_HAVE_FMATH
+
+#include "fmath.hpp"
+
+#endif
+
 BEGIN_NAMESPACE_OPENTURNS
 
 // 0.39894228040143267 = 1 / sqrt(2.pi)
@@ -305,7 +311,7 @@ Scalar SpecFunc::LogBesselK(const Scalar nu,
   {
     logFactor = nu * std::log(0.5 * x) - LogGamma(0.5 + nu) + 0.5 * std::log(M_PI);
     integrand = SymbolicFunction("t", String(OSS() << "exp(-" << x << "*cosh(t))*(sinh(t))^" << 2.0 * nu));
-    upper = std::log(ScalarEpsilon) / (2.0 * nu) - LambertW(-0.25 * x * std::exp(0.5 * std::log(ScalarEpsilon) / nu) / nu, false);
+    upper = std::log(ScalarEpsilon) / (2.0 * nu) - LambertW(-0.25 * x * SpecFunc::Exp(0.5 * std::log(ScalarEpsilon) / nu) / nu, false);
   }
   Scalar epsilon = -1.0;
   const Scalar integral = GaussKronrod().integrate(integrand, Interval(ScalarEpsilon, upper), epsilon)[0];
@@ -337,7 +343,7 @@ Scalar SpecFunc::BesselK(const Scalar nu,
   const Scalar logK = LogBesselK(nu, x);
   if (logK <= -LogMaxScalar) return 0.0;
   if (logK >= LogMaxScalar) return MaxScalar;
-  return std::exp(logK);
+  return SpecFunc::Exp(logK);
 #endif
 }
 
@@ -501,6 +507,31 @@ Scalar SpecFunc::DiLog(const Scalar x)
     value += powerX / (n * n);
   }
   return value;
+}
+
+// Exponential
+Scalar SpecFunc::Exp(const Scalar x)
+{
+#if defined(OPENTURNS_HAVE_FMATH)
+  return fmath::expd(x);
+#else
+  return std::exp(x);
+#endif
+}
+
+Point SpecFunc::Exp(const Point & x)
+{
+  const UnsignedInteger size = x.getSize();
+#if defined(OPENTURNS_HAVE_FMATH)
+  if (size == 0) return Point(0);
+  Point result(x);
+  fmath::expd_v(&result[0], size);
+#else
+  Point result(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    result[i] = std::exp(x[i]);
+#endif
+  return result;
 }
 
 // Exponential integral function: Ei(x) = -\int_{-x}^{\infty}exp(-t)/t dt

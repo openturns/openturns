@@ -345,6 +345,24 @@ result : float or complex (same as z)"
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::SpecFunc::Exp
+"Exponential function.
+
+Parameters
+----------
+x : float or sequence of float
+
+Returns
+-------
+result : float or sequence of float
+
+Notes
+-----
+It provides an interface to the highly efficient implementation provided by the *fmath* library.
+"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::SpecFunc::Faddeeva
 "Complex Faddeeva function.
 

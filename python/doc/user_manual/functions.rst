@@ -254,6 +254,7 @@ as Python functions.
     SpecFunc_ErfCX
     SpecFunc_ErfI
     SpecFunc_ErfInverse
+    SpecFunc_Exp
     SpecFunc_Expm1
     SpecFunc_Faddeeva
     SpecFunc_FaddeevaIm

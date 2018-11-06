@@ -22,6 +22,7 @@
 #define OPENTURNS_SPECFUNC_HXX
 
 #include "openturns/OTprivate.hxx"
+#include "openturns/Point.hxx"
 
 /* Many mathematical functions lack on Windows when using
    Microsoft or Intel compilers.  We use Boost to define
@@ -173,6 +174,9 @@ public:
                       const UnsignedInteger n);
   // DiLog function: Dilog(x) = -\int_0^x \log(1-t)/t dt
   static Scalar DiLog(const Scalar x);
+  // Exponential
+  static Scalar Exp(const Scalar x);
+  static Point Exp(const Point & x);
   // Exponential integral function: Ei(x) = -\int_{-x}^{\infty}exp(-t)/t dt
   static Scalar Ei(const Scalar x);
   // Complex exponential integral function: Ei(z) = -\int_{-z}^{\infty}exp(-t)/t dt
