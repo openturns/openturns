@@ -75,7 +75,11 @@ Discrete parametric distributions
     Binomial
     Dirac
     Geometric
+	       
+    :template: classWithPlot.rst_t
     Multinomial
+
+    :template: Distribution.rst_t
     NegativeBinomial
     Poisson
     Skellam

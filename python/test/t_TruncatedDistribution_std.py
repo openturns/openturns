@@ -12,6 +12,14 @@ def cleanPoint(inPoint):
             inPoint[i] = 0.0
     return inPoint
 
+def cleanCovariance(inCovariance):
+    dim = inCovariance.getDimension()
+    for j in range(dim):
+        for i in range(dim):
+            if (m.fabs(inCovariance[i, j]) < 1.e-10):
+                inCovariance[i, j] = 0.0
+    return inCovariance
+
 
 # Instanciate one distribution object
 referenceDistribution = [ot.TruncatedNormal(2.0, 1.5, 1.0, 4.0),
@@ -27,14 +35,21 @@ distribution = [ot.TruncatedDistribution(ot.Normal(2.0, 1.5), 1.0, 4.0),
 
 # add a 2-d test
 dimension = 2
-size = 70
-ref = ot.Normal([2.0] * dimension, ot.CovarianceMatrix(2))
-sample = ref.getSample(size)
-ks = ot.KernelSmoothing().build(sample)
+# This distribution takes too much time for the test
+#size = 70
+#ref = ot.Normal(dimension)
+#sample = ref.getSample(size)
+#ks = ot.KernelSmoothing().build(sample)
+# Use a multivariate Normal distribution instead
+ks = ot.Normal(2)
 truncatedKS = ot.TruncatedDistribution(
-    ks, ot.Interval([1.0] * dimension, [3.0] * dimension))
+    ks, ot.Interval([-0.5] * dimension, [2.0] * dimension))
 distribution.append(truncatedKS)
-referenceDistribution.append(ref)  # N/A
+referenceDistribution.append(ks)  # N/A
+# Add a non-truncated example
+weibull = ot.Weibull(2.0, 3.0)
+distribution.append(ot.TruncatedDistribution(weibull))
+referenceDistribution.append(weibull)
 ot.RandomGenerator.SetSeed(0)
 
 for testCase in range(len(distribution)):
@@ -59,7 +74,7 @@ for testCase in range(len(distribution)):
     print('covariance=', repr(oneSample.computeCovariance()))
 
     # Define a point
-    point = ot.Point(distribution[testCase].getDimension(), 2.5)
+    point = ot.Point(distribution[testCase].getDimension(), 1.5)
     print('Point= ', repr(point))
 
     # Show PDF and CDF of point
@@ -151,9 +166,9 @@ for testCase in range(len(distribution)):
     print('kurtosis (ref)=', repr(
         referenceDistribution[testCase].getKurtosis()))
     covariance = distribution[testCase].getCovariance()
-    print('covariance      =', repr(covariance))
+    print('covariance      =', repr(cleanCovariance(covariance)))
     print('covariance (ref)=', repr(
-        referenceDistribution[testCase].getCovariance()))
+        cleanCovariance(referenceDistribution[testCase].getCovariance())))
     parameters = distribution[testCase].getParametersCollection()
     print('parameters      =', repr(parameters))
     print('parameters (ref)=', repr(
@@ -168,11 +183,11 @@ for testCase in range(len(distribution)):
     print('Standard representative=', referenceDistribution[
           testCase].getStandardRepresentative())
 # Check simplification
-candidates = [Normal(1.0, 2.0), Uniform(1.0, 2.0), Exponential(1.0, 2.0),
-              TruncatedDistribution(Weibull(), 1.5, 7.8),
-              Beta(1.5, 7.8, -1.0, 2.0)]
-intervals = [Interval(-1.0, 4.0), Interval(0.2, 2.4), Interval(2.5, 65.0),
-             Interval(2.5, 6.0), Interval(-2.5, 6.0)]
+candidates = [ot.Normal(1.0, 2.0), ot.Uniform(1.0, 2.0), ot.Exponential(1.0, 2.0),
+              ot.TruncatedDistribution(ot.Weibull(), 1.5, 7.8),
+              ot.Beta(1.5, 7.8, -1.0, 2.0)]
+intervals = [ot.Interval(-1.0, 4.0), ot.Interval(0.2, 2.4), ot.Interval(2.5, 65.0),
+             ot.Interval(2.5, 6.0), ot.Interval(-2.5, 6.0)]
 for i in range(len(candidates)):
-    d = TruncatedDistribution(candidates[i], intervals[i])
+    d = ot.TruncatedDistribution(candidates[i], intervals[i])
     print("d=", d, "simplified=", d.getSimplifiedVersion())

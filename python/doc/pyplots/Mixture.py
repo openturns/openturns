@@ -14,15 +14,10 @@ mu2 = [3.0, 3.0]
 myNormal2 = ot.Normal(mu2, sigma, R2)
 
 myMixture = ot.Mixture([myNormal1, myNormal2], [0.3, 0.7])
+myMixture.setDescription(['$x_1$', '$x_2$'])
+
 graphPDF = myMixture.drawPDF()
-graphPDF.setXTitle('$x_1$')
-graphPDF.setYTitle('$x_1$')
-
-
 graphCDF = myMixture.drawCDF()
-graphCDF.setXTitle('$x_1$')
-graphCDF.setYTitle('$x_2$')
-
 
 fig = plt.figure(figsize=(8, 4))
 plt.suptitle("Mixture: 0.3*Normal1 + 0.7*Normal2: pdf and cdf")

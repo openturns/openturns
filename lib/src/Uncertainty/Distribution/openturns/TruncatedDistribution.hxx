@@ -37,7 +37,7 @@ class OT_API TruncatedDistribution
   CLASSNAME
 public:
 
-  enum BoundSide { LOWER, UPPER };
+  enum BoundSide { LOWER=0, UPPER };
 
   /** Default constructor */
   TruncatedDistribution();
@@ -58,6 +58,9 @@ public:
   TruncatedDistribution(const Distribution & distribution,
                         const Interval & truncationInterval,
                         const Scalar thresholdRealization = ResourceMap::GetAsScalar("TruncatedDistribution-DefaultThresholdRealization"));
+
+  /** Parameters constructor to use when the two bounds are finite */
+  explicit TruncatedDistribution(const Distribution & distribution);
 
   /** Comparison operator */
   using DistributionImplementation::operator ==;

@@ -119,6 +119,20 @@ TruncatedDistribution::TruncatedDistribution(const Distribution & distribution,
 }
 
 
+/* Parameters constructor to use when one of the bounds is not finite */
+TruncatedDistribution::TruncatedDistribution(const Distribution & distribution)
+  : DistributionImplementation()
+  , bounds_(distribution.getRange())
+{
+  setName("TruncatedDistribution");
+  // This call also set the range and compute the normalization factor
+  // Don't use the bounds accessor to avoid computing the range and
+  // the normalization factor twice
+  setDistribution(distribution);
+  setThresholdRealization(ResourceMap::GetAsScalar("TruncatedDistribution-DefaultThresholdRealization"));
+}
+
+
 /* Comparison operator */
 Bool TruncatedDistribution::operator ==(const TruncatedDistribution & other) const
 {
@@ -160,8 +174,15 @@ TruncatedDistribution * TruncatedDistribution::clone() const
 /* Get the simplified version (or clone the distribution) */
 Distribution TruncatedDistribution::getSimplifiedVersion() const
 {
-  // No simplification in the multivariate case for now
-  if (getDimension() > 1) return *this;
+  // No simplification in the multivariate case for now rxcepted for
+  // the trivial cases
+  if (getDimension() > 1)
+    {
+      // If no truncation
+      if (distribution_.getRange() == getRange()) return distribution_;
+      // Otherwise no simplification
+      return *this;
+    }
   // Simplification of the 1D case
   Distribution localDistribution(distribution_);
   String kind(localDistribution.getImplementation()->getClassName());
@@ -219,10 +240,20 @@ Distribution TruncatedDistribution::getSimplifiedVersion() const
 /* Compute the numerical range of the distribution given the parameters values */
 void TruncatedDistribution::computeRange()
 {
-  setRange(distribution_.getRange().intersect(bounds_));
-  const Scalar probability = distribution_.computeProbability(getRange());
-  if (!(probability > 0.0)) throw InvalidArgumentException(HERE) << "Error: the truncation interval does not contain a non-empty part of the support of the distribution";
-  normalizationFactor_ = 1.0 / probability;
+  const Interval distributionRange(distribution_.getRange());
+  if (distributionRange == bounds_)
+    {
+      setRange(distributionRange);
+      normalizationFactor_ = 1.0;
+    }
+  else
+    {
+      const Interval range(distributionRange.intersect(bounds_));
+      setRange(range);
+      const Scalar probability = distribution_.computeProbability(range);
+      if (!(probability > 0.0)) throw InvalidArgumentException(HERE) << "Error: the truncation interval does not contain a non-empty part of the support of the distribution";
+      normalizationFactor_ = 1.0 / probability;
+    }
   epsilonRange_ = getRange() + Interval(Point(dimension_, -quantileEpsilon_), Point(dimension_, quantileEpsilon_));
 }
 
@@ -308,11 +339,9 @@ Scalar TruncatedDistribution::computeSurvivalFunction(const Point & point) const
 /* Get the PDFGradient of the distribution */
 Point TruncatedDistribution::computePDFGradient(const Point & point) const
 {
-  if (getDimension() > 1) throw NotYetImplementedException(HERE) << "TruncatedDistribution::computeCDFGradient";
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
-  const Scalar x = point[0];
-  if ((x <= bounds_.getLowerBound()[0]) || (x > bounds_.getUpperBound()[0])) return Point(distribution_.getParametersCollection()[0].getDimension() + bounds_.getFiniteLowerBound()[0] + bounds_.getFiniteUpperBound()[0]);
+  if (!bounds_.contains(point)) return Point(getParameterDimension(), 0.0);
+  if (getDimension() > 1) return DistributionImplementation::computePDFGradient(point);
   const Point pdfGradientX(distribution_.computePDFGradient(point));
   const Point cdfGradientLowerBound(bounds_.getFiniteLowerBound()[0] ? distribution_.computeCDFGradient(bounds_.getLowerBound()) : Point(distribution_.getParametersCollection()[0].getDimension()));
   const Point cdfGradientUpperBound(bounds_.getFiniteUpperBound()[0] ? distribution_.computeCDFGradient(bounds_.getUpperBound()) : Point(distribution_.getParametersCollection()[0].getDimension()));
@@ -334,11 +363,9 @@ Point TruncatedDistribution::computePDFGradient(const Point & point) const
 /* Get the CDFGradient of the distribution */
 Point TruncatedDistribution::computeCDFGradient(const Point & point) const
 {
-  if (getDimension() > 1) throw NotYetImplementedException(HERE) << "TruncatedDistribution::computeCDFGradient";
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
-  const Scalar x = point[0];
-  if ((x <= bounds_.getLowerBound()[0]) || (x > bounds_.getUpperBound()[0])) return Point(distribution_.getParametersCollection()[0].getDimension() + bounds_.getFiniteLowerBound()[0] + bounds_.getFiniteUpperBound()[0]);
+  if (!bounds_.contains(point)) return Point(getParameterDimension(), 0.0);
+  if (getDimension() > 1) return DistributionImplementation::computeCDFGradient(point);
   const Point cdfGradientX(distribution_.computeCDFGradient(point));
   const Point cdfGradientLowerBound(bounds_.getFiniteLowerBound()[0] ? distribution_.computeCDFGradient(bounds_.getLowerBound()) : Point(distribution_.getParametersCollection()[0].getDimension()));
   const Point cdfGradientUpperBound(bounds_.getFiniteUpperBound()[0] ? distribution_.computeCDFGradient(bounds_.getUpperBound()) : Point(distribution_.getParametersCollection()[0].getDimension()));
@@ -371,9 +398,11 @@ Scalar TruncatedDistribution::computeScalarQuantile(const Scalar prob,
 Point TruncatedDistribution::getParameter() const
 {
   Point point(distribution_.getParameter());
+  // First the lower bound
   for (UnsignedInteger k = 0; k < getDimension(); ++ k)
     if (bounds_.getFiniteLowerBound()[k])
       point.add(bounds_.getLowerBound()[k]);
+  // Second the upper bound
   for (UnsignedInteger k = 0; k < getDimension(); ++ k)
     if (bounds_.getFiniteUpperBound()[k])
       point.add(bounds_.getUpperBound()[k]);
@@ -403,19 +432,20 @@ void TruncatedDistribution::setParameter(const Point & parameter)
 
   Point lowerBound(bounds_.getLowerBound());
   Point upperBound(bounds_.getUpperBound());
+  // First the lower bound
   for (UnsignedInteger k = 0; k < dimension; ++ k)
-  {
     if (bounds_.getFiniteLowerBound()[k])
     {
       lowerBound[k] = parameter[parametersSize + index];
       ++ index;
     }
+  // Second the upper bound
+  for (UnsignedInteger k = 0; k < dimension; ++ k)
     if (bounds_.getFiniteUpperBound()[k])
     {
       upperBound[k] = parameter[parametersSize + index];
       ++ index;
     }
-  }
   Interval bounds(lowerBound, upperBound, bounds_.getFiniteLowerBound(), bounds_.getFiniteUpperBound());
   const Scalar w = getWeight();
   *this = TruncatedDistribution(newDistribution, bounds);

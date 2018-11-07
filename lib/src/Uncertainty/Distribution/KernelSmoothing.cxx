@@ -21,9 +21,7 @@
 #include "openturns/KernelSmoothing.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/Dirac.hxx"
-#include "openturns/KernelMixture.hxx"
 #include "openturns/Mixture.hxx"
-#include "openturns/TruncatedDistribution.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/MethodBoundEvaluation.hxx"
@@ -53,13 +51,17 @@ KernelSmoothing::KernelSmoothing()
   , kernel_(Normal())
   , bined_(true)
   , binNumber_(ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-BinNumber" ))
-  , boundaryCorrection_(false)
+  , boundingOption_(NONE)
+  , lowerBound_(0.0)
+  , automaticLowerBound_(true)
+  , upperBound_(0.0)
+  , automaticUpperBound_(true)
 {
   setName("KernelSmoothing");
   if (binNumber_ < 2) throw InvalidArgumentException(HERE) << "Error: The default number of bins=" << binNumber_ << " is less than 2. Check the ResourceMap or the openturns.conf file.";
 }
 
-/* Default constructor */
+/* Parameter constructor */
 KernelSmoothing::KernelSmoothing(const Distribution & kernel,
                                  const Bool bined,
                                  const UnsignedInteger binNumber,
@@ -69,7 +71,11 @@ KernelSmoothing::KernelSmoothing(const Distribution & kernel,
   , kernel_(kernel)
   , bined_(bined)
   , binNumber_(binNumber)
-  , boundaryCorrection_(boundaryCorrection)
+  , boundingOption_(boundaryCorrection ? BOTH : NONE)
+  , lowerBound_(-SpecFunc::MaxScalar)
+  , automaticLowerBound_(true)
+  , upperBound_(SpecFunc::MaxScalar)
+  , automaticUpperBound_(true)
 {
   setName("KernelSmoothing");
   // Only 1D kernel allowed here
@@ -232,7 +238,7 @@ Distribution KernelSmoothing::build(const Sample & sample) const
 
 /* Build a Normal kernel mixture based on the given sample and bandwidth
  * For multi-dimentional data, no binning and no boundary correction
- * If boundary correction: mirroring on the two sides, followed by truncation
+ * If boundary correction: mirroring on the sides where needed, followed by truncation
  * If binning: condensation on a regular grid
  */
 Distribution KernelSmoothing::build(const Sample & sample,
@@ -240,127 +246,216 @@ Distribution KernelSmoothing::build(const Sample & sample,
 {
   const UnsignedInteger dimension = sample.getDimension();
   if (bandwidth.getDimension() != dimension) throw InvalidDimensionException(HERE) << "Error: the given bandwidth must have the same dimension as the given sample, here bandwidth dimension=" << bandwidth.getDimension() << " and sample dimension=" << dimension;
-  setBandwidth(bandwidth);
-  UnsignedInteger size = sample.getSize();
-  // The usual case: no boundary correction, no binning
-  const Bool mustBin = bined_ && (dimension * std::log(1.0 * binNumber_) < std::log(1.0 * size));
-  if (bined_ != mustBin) LOGINFO("Will not bin the data because the bin number is greater than the sample size");
-  if ((dimension > 2) || ((!mustBin) && (!boundaryCorrection_)))
-  {
-    KernelSmoothing::Implementation result(new KernelMixture(kernel_, bandwidth, sample));
-    result->setDescription(sample.getDescription());
-    return result;
-  }
   const Point xmin(sample.getMin());
   const Point xmax(sample.getMax());
+  // Check the degenerate case of constant sample
   if (xmin == xmax)
   {
+    setBandwidth(bandwidth);
     KernelSmoothing::Implementation result(new Dirac(xmin));
     result->setDescription(sample.getDescription());
     return result;
   }
+  // Check if we have to perform boundary correction
+  // In this case, call buildAsTruncatedDistribution(). It will take
+  // care of the other sub-cases
+  if (boundingOption_ != NONE) return buildAsTruncatedDistribution(sample, bandwidth);
+  // Here we know that no boundary correction is needed
+  // Check if we have to bin the data
+  UnsignedInteger size = sample.getSize();
+  const Bool mustBin = bined_ && (dimension * std::log(1.0 * binNumber_) < std::log(1.0 * size));
+  if (bined_ != mustBin) LOGINFO("Will not bin the data because the bin number is greater than the sample size");
+  // The usual case: no boundary correction, no binning
+  if ((dimension > 2) || (!mustBin)) return buildAsKernelMixture(sample, bandwidth);
+  // Only binning
+  return buildAsMixture(sample, bandwidth);
+}
+
+KernelMixture KernelSmoothing::buildAsKernelMixture(const Sample & sample,
+    const Point & bandwidth) const
+{
+  const UnsignedInteger dimension = sample.getDimension();
+  if (bandwidth.getDimension() != dimension) throw InvalidDimensionException(HERE) << "Error: the given bandwidth must have the same dimension as the given sample, here bandwidth dimension=" << bandwidth.getDimension() << " and sample dimension=" << dimension;
+  setBandwidth(bandwidth);
+  return KernelMixture(kernel_, bandwidth, sample);
+}
+
+Mixture KernelSmoothing::buildAsMixture(const Sample & sample,
+                                        const Point & bandwidth) const
+{
+  const UnsignedInteger dimension = sample.getDimension();
+  if (bandwidth.getDimension() != dimension) throw InvalidDimensionException(HERE) << "Error: the given bandwidth must have the same dimension as the given sample, here bandwidth dimension=" << bandwidth.getDimension() << " and sample dimension=" << dimension;
+  if (dimension > 2) throw InternalException(HERE) << "Error: binning is not available for dimension > 2, here dimension=" << dimension;
+  setBandwidth(bandwidth);
+  const UnsignedInteger size = sample.getSize();
   // 2D binning?
-  if ((dimension == 2) && mustBin)
+  if (dimension == 2)
   {
-    Point reducedData(binNumber_ * binNumber_);
-    Point x(binNumber_);
-    Point y(binNumber_);
-    const Scalar deltaX = (xmax[0] - xmin[0]) / (binNumber_ - 1);
-    const Scalar deltaY = (xmax[1] - xmin[1]) / (binNumber_ - 1);
-    const Scalar hX = 0.5 * deltaX;
-    const Scalar hY = 0.5 * deltaY;
-    for (UnsignedInteger i = 0; i < binNumber_; ++i)
+    const Point xMin(sample.getMin());
+    const Point xMax(sample.getMax());
+    Point weights((binNumber_ + 1) * (binNumber_ + 1));
+    Point gridX(binNumber_ + 1);
+    Point gridY(binNumber_ + 1);
+    const Scalar deltaX = (xMax[0] - xMin[0]) / binNumber_;
+    const Scalar deltaY = (xMax[1] - xMin[1]) / binNumber_;
+    const Scalar factor = 1.0 + SpecFunc::Precision;
+    for (UnsignedInteger i = 0; i <= binNumber_; ++i)
     {
-      x[i] = xmin[0] + i * deltaX;
-      y[i] = xmin[1] + i * deltaY;
+      gridX[i] = xMin[0] + i * deltaX;
+      gridY[i] = xMin[1] + i * deltaY;
     }
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      UnsignedInteger indexX = 0;
-      Scalar sliceX = (sample(i, 0) - (xmin[0] - hX)) / deltaX;
-      if (sliceX >= 0.0) indexX = static_cast< UnsignedInteger > (trunc(sliceX));
-      if (indexX >= binNumber_) indexX = binNumber_ - 1;
-      UnsignedInteger indexY = 0;
-      Scalar sliceY = (sample(i, 1) - (xmin[1] - hY)) / deltaY;
-      if (sliceY >= 0.0) indexY = static_cast< UnsignedInteger > (trunc(sliceY));
-      if (indexY >= binNumber_) indexY = binNumber_ - 1;
-      ++reducedData[indexX + indexY * binNumber_];
+      const Scalar x = sample(i, 0);
+      const UnsignedInteger indexX = static_cast< UnsignedInteger > (trunc(factor * (x - xMin[0]) / deltaX));
+      const Scalar y = sample(i, 1);
+      const UnsignedInteger indexY = static_cast< UnsignedInteger > (trunc(factor * (y - xMin[1]) / deltaY));
+      const Scalar wRight  = (x - gridX[indexX]) / deltaX;
+      const Scalar wLeft   = 1.0 - wRight;
+      const Scalar wTop    = (y - gridY[indexY]) / deltaY;
+      const Scalar wBottom = 1.0 - wTop;
+      if ((indexX > 0) && (indexX < binNumber_))
+      {
+        // Fully inside of a patch
+        if ((indexY > 0) && (indexY < binNumber_))
+        {
+          weights[indexX     + indexY * (binNumber_ + 1)]       += wLeft  * wBottom;
+          weights[indexX + 1 + indexY * (binNumber_ + 1)]       += wRight * wBottom;
+          weights[indexX     + (indexY + 1) * (binNumber_ + 1)] += wLeft  * wTop;
+          weights[indexX + 1 + (indexY + 1) * (binNumber_ + 1)] += wRight * wTop;
+        } // Fully inside of a patch
+        else
+        {
+          weights[indexX     + indexY * (binNumber_ + 1)] += wLeft;
+          weights[indexX + 1 + indexY * (binNumber_ + 1)] += wRight;
+        } // On an y boundary
+      } // Fully inside of the columns
+      else
+      {
+        // Fully inside of y
+        if ((indexY > 0) && (indexY < binNumber_))
+        {
+          weights[indexX     + indexY * (binNumber_ + 1)]       += wBottom;
+          weights[indexX     + (indexY + 1) * (binNumber_ + 1)] += wTop;
+        } // Fully inside of a patch
+        else
+        {
+          weights[indexX     + indexY * (binNumber_ + 1)] += 1.0;
+        } // On a corner
+      } // On an x-boundary
     }
-    Collection< Distribution > atoms(binNumber_ * binNumber_);
-    for (UnsignedInteger i = 0; i < binNumber_; ++i)
+    Collection< Distribution > atoms((binNumber_ + 1) * (binNumber_ + 1));
+    for (UnsignedInteger j = 0; j <= binNumber_; ++j)
     {
       Point point(2);
-      point[0] = x[i];
-      for (UnsignedInteger j = 0; j < binNumber_; ++j)
+      point[1] = gridY[j];
+      for (UnsignedInteger i = 0; i <= binNumber_; ++i)
       {
-        point[1] = y[j];
-        KernelMixture atom(kernel_, bandwidth, Sample(1, point));
-        atoms[i + j * binNumber_] = atom;
-      }
-    }
-    KernelSmoothing::Implementation result(new Mixture(atoms, reducedData));
-    result->setDescription(sample.getDescription());
+        point[0] = gridX[i];
+        atoms[i + j * (binNumber_ + 1)] = KernelMixture(kernel_, bandwidth, Sample(1, point));
+      } // i
+    } // j
+    Mixture result(atoms, weights);
+    result.setDescription(sample.getDescription());
     return result;
   } // 2D binning
+  // 1D binning
+  Scalar xMin = sample.getMin()[0];
+  Scalar xMax = sample.getMax()[0];
 
-  // Here we are in the 1D case, with at least binning or boundary boundary correction
-  Sample newSample(sample);
-  Scalar xminNew = xmin[0];
-  Scalar xmaxNew = xmax[0];
-  // If boundary correction,
-  if (boundaryCorrection_)
-  {
-    Scalar h = bandwidth[0];
-    // Reflect and add points close to the boundaries to the sample
-    for (UnsignedInteger i = 0; i < size; i++)
-    {
-      const Point realization(sample[i]);
-      if (realization[0] <= xmin[0] + h) newSample.add(2.0 * xmin - realization);
-      if (realization[0] >= xmax[0] - h) newSample.add(2.0 * xmax - realization);
-    }
-  }
-  // Now, work on the extended sample
-  if (!mustBin)
-  {
-    KernelSmoothing::Implementation result(new TruncatedDistribution(KernelMixture(kernel_, bandwidth, newSample), xmin[0], xmax[0]));
-    result->setDescription(sample.getDescription());
-    return result;
-  }
-  if (boundaryCorrection_)
-  {
-    xminNew = newSample.getMin()[0];
-    xmaxNew = newSample.getMax()[0];
-  }
-  size = newSample.getSize();
-  // Here, we have to bin the data
-  Point reducedData(binNumber_);
-  Point x(binNumber_);
-  const Scalar delta = (xmaxNew - xminNew) / (binNumber_ - 1);
-  const Scalar h = 0.5 * delta;
-  for (UnsignedInteger i = 0; i < binNumber_; ++i) x[i] = xminNew + i * delta;
+  Point weights(binNumber_ + 1);
+  Point grid(binNumber_ + 1);
+  const Scalar delta = (xMax - xMin) / binNumber_;
+  const Scalar factor = 1.0 + SpecFunc::Precision;
+  for (UnsignedInteger i = 0; i <= binNumber_; ++i) grid[i] = xMin + i * delta;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    UnsignedInteger index = 0;
-    Scalar slice = (newSample(i, 0) - (xminNew - h)) / delta;
-    if (slice >= 0.0) index = static_cast< UnsignedInteger > (trunc(slice));
-    if (index >= binNumber_) index = binNumber_ - 1;
-    ++reducedData[index];
+    const Scalar x = sample(i, 0);
+    // x will be located between grid[index] and grid[index+1] if 0<index<binNumber
+    // if index=0 then x=xMin and if index=binNumber then x=xMax
+    // Here we increase a little bit the slice number to insure that the max value will have an index equal to binNumber
+    const UnsignedInteger index = static_cast< UnsignedInteger > (trunc(factor * (x - xMin) / delta));
+    // Split the point contribution between the two endpoints of the bin containing
+    // the point using a linear split
+    if ((index > 0) && (index < binNumber_))
+    {
+      weights[index]     += (grid[index + 1] - x) / delta;
+      weights[index + 1] += (x - grid[index])     / delta;
+    }
+    // The full weight is given to the end points
+    else weights[index] += 1.0;
   }
-  Collection< Distribution > atoms(binNumber_);
-  for (UnsignedInteger i = 0; i < binNumber_; ++i)
+  Collection< Distribution > atoms(binNumber_ + 1);
+  for (UnsignedInteger i = 0; i <= binNumber_; ++i)
   {
-    KernelMixture atom(kernel_, bandwidth, Sample(1, Point(1, x[i])));
-    atoms[i] = atom;
+    atoms[i] = KernelMixture(kernel_, bandwidth, Sample(1, Point(1, grid[i])));
   }
-  if (boundaryCorrection_)
-  {
-    KernelSmoothing::Implementation result(new TruncatedDistribution(Mixture(atoms, reducedData), xmin[0], xmax[0]));
-    result->setDescription(sample.getDescription());
-    return result;
-  }
-  KernelSmoothing::Implementation result(new Mixture(atoms, reducedData));
-  result->setDescription(sample.getDescription());
+  Mixture result(atoms, weights);
+  result.setDescription(sample.getDescription());
   return result;
+}
+
+TruncatedDistribution KernelSmoothing::buildAsTruncatedDistribution(const Sample & sample,
+    const Point & bandwidth) const
+{
+  const UnsignedInteger dimension = sample.getDimension();
+  if (bandwidth.getDimension() != dimension) throw InvalidDimensionException(HERE) << "Error: the given bandwidth must have the same dimension as the given sample, here bandwidth dimension=" << bandwidth.getDimension() << " and sample dimension=" << dimension;
+  if (dimension > 1) throw InternalException(HERE) << "Error: cannot make boundary correction on samples with dimension>1, here dimension=" << dimension;
+  setBandwidth(bandwidth);
+  Scalar xMin = 0.0;
+  Scalar xMax = 0.0;
+  if ((boundingOption_ == LOWER) || (boundingOption_ == BOTH))
+    {
+      xMin = sample.getMin()[0];
+      if (!automaticLowerBound_)
+	{
+	  // Check the sample against the user-defined bounds
+	  if (!(lowerBound_ <= xMin)) throw InvalidArgumentException(HERE) << "Error: expected a sample with a minimum value at least equal to lowerBound=" << lowerBound_ << ", got xMin=" << xMin;
+	  xMin = lowerBound_;
+	} // !automaticLowerBound
+    } // Boundary correction on the lower bound
+  if ((boundingOption_ == UPPER) || (boundingOption_ == BOTH))
+    {
+      xMax = sample.getMax()[0];
+      if (!automaticUpperBound_)
+	{
+	  // Check the sample against the user-defined bounds
+	  if (!(upperBound_ >= xMax)) throw InvalidArgumentException(HERE) << "Error: expected a sample with a maximum value at most equal to upperBound=" << upperBound_ << ", got xMax=" << xMax;
+	  xMax = upperBound_;
+	} // !automaticUpperBound
+    } // Boundary correction on the upper bound
+  // Here we are in the 1D case with boundary boundary correction
+  Point newSampleData(sample.asPoint());
+  if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot make boundary correction on constant samples.";
+  const Scalar h = bandwidth[0];
+  // Reflect and add points close to the boundaries of the sample. No need to
+  // reflect the whole sample as suggested in the literature, only the point
+  // in the support of the kernels located at each boundary
+  const Scalar lower = kernel_.getRange().getLowerBound()[0];
+  const Scalar upper = kernel_.getRange().getUpperBound()[0];
+  UnsignedInteger size = sample.getSize();
+  const Bool doLower = ((boundingOption_ == LOWER)  || (boundingOption_ == BOTH)) && (xMin > -0.5 * SpecFunc::MaxScalar + h * lower);
+  const Bool doUpper = ((boundingOption_ == UPPER) || (boundingOption_ == BOTH)) && (xMax <  0.5 * SpecFunc::MaxScalar + h * upper);
+  for (UnsignedInteger i = 0; i < size; i++)
+  {
+    const Scalar x = newSampleData[i];
+    // lower < 0
+    if (doLower && (x <= xMin - h * lower)) newSampleData.add(2.0 * xMin - x);
+    // upper > 0
+    else if (doUpper && (x >= xMax - h * upper)) newSampleData.add(2.0 * xMax - x);
+  }
+  // Now, work on the extended sample
+  SampleImplementation newSample(newSampleData.getSize(), 1);
+  newSample.setData(newSampleData);
+  size = newSample.getSize();
+  const Bool mustBin = bined_ && (dimension * std::log(1.0 * binNumber_) < std::log(1.0 * size));
+  if (bined_ != mustBin) LOGINFO("Will not bin the data because the bin number is greater than the sample size");
+  Distribution baseDistribution;
+  if (mustBin) baseDistribution = buildAsMixture(newSample, bandwidth);
+  else baseDistribution = buildAsKernelMixture(newSample, bandwidth);
+  if (boundingOption_ == LOWER) return TruncatedDistribution(baseDistribution, xMin, TruncatedDistribution::LOWER);
+  if (boundingOption_ == UPPER) return TruncatedDistribution(baseDistribution, xMax, TruncatedDistribution::UPPER);
+  return TruncatedDistribution(baseDistribution, xMin, xMax);
 }
 
 /* Bandwidth accessor */
@@ -376,15 +471,48 @@ Point KernelSmoothing::getBandwidth() const
   return bandwidth_;
 }
 
+/* Kernel accessor */
 Distribution KernelSmoothing::getKernel() const
 {
   return kernel_;
 }
 
+/* Boundary management */
 void KernelSmoothing::setBoundaryCorrection(const Bool boundaryCorrection)
 {
-  boundaryCorrection_ = boundaryCorrection;
+  boundingOption_ = (boundaryCorrection ? BOTH : NONE);
 }
+
+/* Boundary correction accessor */
+void KernelSmoothing::setBoundingOption(const BoundingOption boundingOption)
+{
+  boundingOption_ = boundingOption;
+}
+
+/* Boundary accessor */
+void KernelSmoothing::setLowerBound(const Scalar lowerBound)
+{
+  lowerBound_ = lowerBound;
+  automaticLowerBound_ = false;
+}
+
+void KernelSmoothing::setUpperBound(const Scalar upperBound)
+{
+  upperBound_ = upperBound;
+  automaticUpperBound_ = false;
+}
+
+/* Automatic boundary accessor */
+void KernelSmoothing::setAutomaticLowerBound(const Bool automaticLowerBound)
+{
+  automaticLowerBound_ = automaticLowerBound;
+}
+
+void KernelSmoothing::setAutomaticUpperBound(const Bool automaticUpperBound)
+{
+  automaticUpperBound_ = automaticUpperBound;
+}
+
 
 /* Method save() stores the object through the StorageManager */
 void KernelSmoothing::save(Advocate & adv) const
@@ -394,7 +522,11 @@ void KernelSmoothing::save(Advocate & adv) const
   adv.saveAttribute("kernel_", kernel_);
   adv.saveAttribute("bined_", bined_);
   adv.saveAttribute("binNumber_", binNumber_);
-  adv.saveAttribute("boundaryCorrection_", boundaryCorrection_);
+  adv.saveAttribute("boundingOption_", static_cast<UnsignedInteger>(boundingOption_));
+  adv.saveAttribute("lowerBound_", lowerBound_);
+  adv.saveAttribute("automaticLowerBound_", automaticLowerBound_);
+  adv.saveAttribute("upperBound_", upperBound_);
+  adv.saveAttribute("automaticUpperBound_", automaticUpperBound_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -405,7 +537,13 @@ void KernelSmoothing::load(Advocate & adv)
   adv.loadAttribute("kernel_", kernel_);
   adv.loadAttribute("bined_", bined_);
   adv.loadAttribute("binNumber_", binNumber_);
-  adv.loadAttribute("boundaryCorrection_", boundaryCorrection_);
+  UnsignedInteger boundingOption = 0;
+  adv.loadAttribute("boundingOption_", boundingOption);
+  boundingOption_ = static_cast<BoundingOption>(boundingOption);
+  adv.loadAttribute("lowerBound_", lowerBound_);
+  adv.loadAttribute("automaticLowerBound_", automaticLowerBound_);
+  adv.loadAttribute("upperBound_", upperBound_);
+  adv.loadAttribute("automaticUpperBound_", automaticUpperBound_);
 }
 
 END_NAMESPACE_OPENTURNS

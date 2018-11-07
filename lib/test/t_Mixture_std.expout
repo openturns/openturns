@@ -20,10 +20,10 @@ Distribution Mixture((w = 0.333333, d = Normal(mu = [0.5,-0.5,1], sigma = [2,3,1
  [ 0   0.5 1   ]])))
 Elliptical = false
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=3 values=[2.07328,-1.03125,2.18976]
-oneSample first=class=Point name=Unnamed dimension=3 values=[-1.86277,-0.862642,2.91223] last=class=Point name=Unnamed dimension=3 values=[1.56533,-1.10765,2.76013]
-mean=class=Point name=Unnamed dimension=3 values=[1.64038,0.699193,2.03941]
-covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.88439,3.99293,0.644831,3.99293,9.41608,2.09091,0.644831,2.09091,1.58061]
+oneRealization=class=Point name=Unnamed dimension=3 values=[3.2333,0.688895,2.67016]
+oneSample first=class=Point name=Unnamed dimension=3 values=[-0.441051,-0.527644,-0.719129] last=class=Point name=Unnamed dimension=3 values=[-1.44725,-1.51101,-0.158348]
+mean=class=Point name=Unnamed dimension=3 values=[1.63782,0.700954,2.04811]
+covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[4.89245,4.00971,0.676225,4.00971,9.46346,2.13722,0.676225,2.13722,1.61532]
 Point= class=Point name=Unnamed dimension=3 values=[1,1,1]
 ddf     =class=Point name=Unnamed dimension=3 values=[0.00119456,-0.00197254,0.00476249]
 ddf (FD)=class=Point name=Unnamed dimension=3 values=[0.00119456,-0.00197254,0.00476249]

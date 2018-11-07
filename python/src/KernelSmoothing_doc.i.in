@@ -1,5 +1,5 @@
 %feature("docstring") OT::KernelSmoothing
-"Non parametric fitting technique with kernel smoothing.
+"Non parametric continuous distribution estimation by kernel smoothing.
 
 Refer to :ref:`kernel_smoothing`.
 
@@ -17,9 +17,16 @@ boundaryCorrection : bool, optional
 
 Notes
 -----
-The bining mecanism creates a regular grid of *binNumber* intervals: all the data falling in the same interval are regrouped and replaced by the central point of the interval, weighted by the number of data within the interval.
+The binning mecanism creates a regular grid of *binNumber* intervals in each
+dimension, then the unit weight of each point is linearly affected to the vertices
+of the bin containing the point. See [Wand1994]_ for the details.
 
-When applied to multivariate samples, the kernel is the kernel product of the univariate distribution specified in the constructor. 
+The boundary correction is available only in one dimension, and it is done using
+the mirroring technique. See the notes of the *setBoundingOption* method for the
+details.
+
+When applied to multivariate samples, the kernel is the kernel product of the
+univariate distribution specified in the constructor. 
 
 Examples
 --------
@@ -36,6 +43,93 @@ Compare the PDFs:
 >>> graph.add( ot.Gamma(6.0, 1.0).drawPDF())
 >>> graph.setColors(['blue', 'red'])
 >>> graph.setLegends(['KS dist', 'Gamma'])
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KernelSmoothing::buildAsKernelMixture
+"Fit a kernel smoothing distribution on data.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data on which the distribution is fitted. Any dimension.
+bandwidth : :class:`~openturns.Point`, optional
+    Contains the bandwith in each direction.
+
+Returns
+-------
+fittdDist : :class:`~openturns.KernelMixture`
+    The fitted distribution.
+
+Notes
+-----
+It builds a :math:`~openturns.KernelMixture` using the given data and bandwidth regardless of the binning or boundary treatment flags.
+
+Examples
+--------
+
+>>> import openturns as ot
+>>> sample = ot.Exponential(1.0).getSample(1000)
+>>> smoother = ot.KernelSmoothing()
+>>> kernelMixture = smoother.buildAsKernelMixture(sample, [1.0])
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KernelSmoothing::buildAsMixture
+"Fit a kernel smoothing distribution on data.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data on which the distribution is fitted. Any dimension.
+bandwidth : :class:`~openturns.Point`, optional
+    Contains the bandwith in each direction.
+
+Returns
+-------
+fittdDist : :class:`~openturns.KernelMixture`
+    The fitted distribution.
+
+Notes
+-----
+It builds a :math:`~openturns.Mixture` using the given bandwidth and a binning of the given data regardless of the bin number, the data size, the binning flag or boundary treatment flags. This method is available only for 1D or 2D samples.
+
+Examples
+--------
+
+>>> import openturns as ot
+>>> sample = ot.Exponential(1.0).getSample(1000)
+>>> smoother = ot.KernelSmoothing(ot.Normal(), True, 100, False)
+>>> mixture = smoother.buildAsMixture(sample, [1.0])
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::KernelSmoothing::buildAsTruncatedDistribution
+"Fit a kernel smoothing distribution on data.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Data on which the distribution is fitted. Any dimension.
+bandwidth : :class:`~openturns.Point`, optional
+    Contains the bandwith in each direction.
+
+Returns
+-------
+fittdDist : :class:`~openturns.KernelMixture`
+    The fitted distribution.
+
+Notes
+-----
+It builds a :math:`~openturns.TruncatedDistribution` using the given bandwidth and the given data regardless of the boundary treatment flags. A binning is done if asked for and if the sample size is greater than the bin number. Then, the corresponding :class:`~openturns.KernelMixture` if no binning, :class:`~openturns.Mixture` otherwise, is truncated to the range of the sample.
+
+Examples
+--------
+
+>>> import openturns as ot
+>>> sample = ot.Exponential(1.0).getSample(1000)
+>>> smoother = ot.KernelSmoothing(ot.Normal(), False, 0, True)
+>>> truncated = smoother.buildAsTruncatedDistribution(sample, [1.0])
 "
 
 // ---------------------------------------------------------------------
@@ -56,14 +150,16 @@ fittdDist : :class:`~openturns.Distribution`
 
 Notes
 -----
-According to the dimension of the data and the specified treatments, the type of the resulting distribution differs:
+According to the dimension of the data and the specified treatments, the resulting distribution differs.
 
-- In dimension 1: 
+- If the sample is constant, a :class:`~openturns.Dirac` distribution is built.
+- If dimension > 2 or if no treatment has been asked for, a :class:`~openturns.KernelMixture` is built by calling *buildAsKernelMixture*. 
+- If dimension = 1 and a boundary treatment has been asked for, a :class:`~openturns.TruncatedDistribution` is built by calling *buildAsTruncatedDistribution*
+- If dimension = 1 or 2 and no boundary treatment has been asked for, but a binning treatment has been asked for,
 
-    - if only the bining mecanism is activated, a :class:`~openturns.Mixture` is produced (all the weights differ).
-    - if only the boundary correction is activated, a :class:`~openturns.TruncatedDistribution` is produced: the truncation of a :class:`~openturns.KernelMixture`  (all the weights are identical). 
-    - if the bining mecanism and the boundary correction is activated, a :class:`~openturns.TruncatedDistribution` is produced: the truncation of a :class:`~openturns.Mixture` (all the weights differ).
-
+    - If the sample size is greater than the bin number, then a :class:`~openturns.Mixture` is built by calling *buildAsMixture*
+    - Otherwise a :class:`~openturns.KernelMixture` is built by calling *buildAsKernelMixture*
+    
 
 Examples
 --------
@@ -114,6 +210,87 @@ Parameters
 ----------
 boundaryCorrection : bool
     Activates the boundary correction using the mirroring technique."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KernelSmoothing::setBoundingOption
+"Accessor to the boundary correction option.
+
+Parameters
+----------
+boundingOption : int
+    Select the boundary correction option, see notes.
+
+Notes
+-----
+The possible values for the bounding option are:
+
+    - KernelSmoothing.NONE  or 0: no boundary correction
+    - KernelSmoothing.LOWER or 1: apply the boundary correction to the lower bound
+    - KernelSmoothing.UPPER or 2: apply the boundary correction to the upper bound
+    - KernelSmoothing.BOTH  or 3: apply the boundary correction to both bounds
+
+It applies only to 1D samples. Each bound can be defined by the user or computed
+automatically from the sample, see *setLowerBound*, *setUpperBound*,
+*setAutomaticLowerBound*, *setAutomaticUpperBound*."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KernelSmoothing::setLowerBound
+"Accessor to the lower bound for boundary correction.
+
+Parameters
+----------
+lowerBound : float
+    A user-defined lower bound to take into account for boundary correction.
+
+Notes
+-----
+This method automatically sets the *automaticLowerBound* flag to *False*.
+The given value will be taken into account only if *boundingOption* is set to
+either 1 or 3. If the algorithm is applied to a sample with a minimum value
+less than the user-defined lower bound and the *automaticLowerBound* is set to
+*False*, then an exception it raised.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KernelSmoothing::setUpperBound
+"Accessor to the upper bound for boundary correction.
+
+Parameters
+----------
+upperBound : float
+    A user-defined lower bound to take into account for boundary correction.
+
+Notes
+-----
+This method automatically sets the *automaticLowerBound* flag to *False*.
+The given value will be taken into account only if *boundingOption* is set to
+either 1 or 3. If the algorithm is applied to a sample with a minimum value
+less than the user-defined lower bound and the *automaticLowerBound* is set to
+*False*, then an exception it raised.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KernelSmoothing::setAutomaticLowerBound
+"Accessor to the flag for an automatic selection of lower bound.
+
+Parameters
+----------
+automaticLowerBound : bool
+    Flag to tell if the user-defined lower bound has to be taken into account (value *False*) or if the minimum of the given sample has to be used (value *True*)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KernelSmoothing::setAutomaticUpperBound
+"Accessor to the flag for an automatic selection of upper bound.
+
+Parameters
+----------
+automaticUpperBound : bool
+    Flag to tell if the user-defined upper bound has to be taken into account (value *False*) or if the maximum of the given sample has to be used (value *True*)."
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KernelSmoothing::computeSilvermanBandwidth

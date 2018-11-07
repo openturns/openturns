@@ -308,11 +308,28 @@ void RandomMixture::computeRange()
 {
   const UnsignedInteger size = distributionCollection_.getSize();
   // First, compute the *exact* range. It will be used to clip the asymptotic range if Poisson's formula is used (ie the collection has a size greater than the dimension)
-  Interval::BoolCollection finiteLowerBound(getDimension());
-  Interval::BoolCollection finiteUpperBound(getDimension());
+  const UnsignedInteger dimension = getDimension();
+  if (dimension == 1 && size == 1)
+  {
+    const Scalar w = weights_(0, 0);
+    const Scalar c = constant_[0];
+    const Scalar a = distributionCollection_[0].getRange().getLowerBound()[0];
+    const Scalar b = distributionCollection_[0].getRange().getUpperBound()[0];
+    const Interval::BoolCollection aFinite = distributionCollection_[0].getRange().getFiniteLowerBound();
+    const Interval::BoolCollection bFinite = distributionCollection_[0].getRange().getFiniteUpperBound();
+    if (w > 0.0)
+    {
+      setRange(Interval(Point(1, c + w * a), Point(1, c + w * b), aFinite, bFinite));
+      return;
+    }
+    setRange(Interval(Point(1, c + w * b), Point(1, c + w * a), bFinite, aFinite));
+    return;
+  }
+  Interval::BoolCollection finiteLowerBound(dimension);
+  Interval::BoolCollection finiteUpperBound(dimension);
   Point lowerBound(getDimension());
   Point upperBound(getDimension());
-  for (UnsignedInteger j = 0; j < getDimension(); ++j)
+  for (UnsignedInteger j = 0; j < dimension; ++j)
   {
     Interval range(constant_[j], constant_[j]);
     for (UnsignedInteger i = 0; i < size; ++i)
@@ -323,12 +340,12 @@ void RandomMixture::computeRange()
     finiteUpperBound[j] = range.getFiniteUpperBound()[0];
   }
   const Interval range(lowerBound, upperBound, finiteLowerBound, finiteUpperBound);
-  if (size <= getDimension())
+  if (size <= dimension)
   {
     setRange(range);
     return;
   } // Analytical case
-  if (getDimension() == 1)
+  if (dimension == 1)
   {
     const Point m(1, getPositionIndicator());
     const Point s(1, getDispersionIndicator());
@@ -338,7 +355,7 @@ void RandomMixture::computeRange()
   {
     Point m(constant_);
     Point s(getDimension(), 0.0);
-    for (UnsignedInteger j = 0; j < getDimension(); ++j)
+    for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       for(UnsignedInteger i = 0; i < size; ++i)
       {
@@ -346,8 +363,8 @@ void RandomMixture::computeRange()
         s[j] += std::pow(weights_(j, i) * distributionCollection_[i].getDispersionIndicator(), 2.0);
       }
     }
-    for (UnsignedInteger j = 0; j < getDimension(); ++j) s[j] = std::sqrt(s[j]);
-    setRange(range.intersect(Interval(getMean() - getStandardDeviation() * beta_, getMean() + getStandardDeviation() * beta_)));
+    for (UnsignedInteger j = 0; j < dimension; ++j) s[j] = std::sqrt(s[j]);
+    setRange(range.intersect(Interval(m - s * beta_, m + s * beta_)));
   } // dimension > 1
 }
 
@@ -418,14 +435,38 @@ Matrix RandomMixture::getWeights() const
 /* Distribution collection accessor */
 void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollection & coll,
     const Matrix & weights,
-    const Bool simplifyAtom)
+    const Bool simplifyAtoms)
 {
   weights_ = weights;
   // Size will be updated during the several treatments of the collection
   UnsignedInteger size = coll.getSize();
-  const UnsignedInteger dimension = getDimension();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a RandomMixture based on an empty distribution collection.";
-
+  // No simplification in the analytical case
+  const UnsignedInteger dimension = getDimension();
+  if ((size == dimension) && !simplifyAtoms)
+  {
+    isAnalytical_ = true;
+    if (dimension == 1)
+    {
+      detWeightsInverse_ = 1.0 / weights_(0, 0);
+      inverseWeights_ = SquareMatrix(1);
+      inverseWeights_(0, 0) = detWeightsInverse_;
+    }
+    else
+    {
+      inverseWeights_ = weights_.solveLinearSystem(IdentityMatrix(dimension));
+      detWeightsInverse_ = inverseWeights_.getImplementation().get()->computeDeterminant();
+    }
+    setParallel(coll[0].getImplementation()->isParallel());
+    distributionCollection_ = coll;
+    isAlreadyComputedMean_ = false;
+    isAlreadyComputedCovariance_ = false;
+    computeRange();
+    // No need to precompute Mean, Covariance, PositionIndicator, DispersionIndicator, ReferenceBandwidth, EquivalentNormal
+    return;
+  }
+  // In 1D case, collection's size might change
+  // When reducing collection to 1, computations become faster
   // First, flatten all the RandomMixture atoms
   DistributionCollection atomCandidates(0);
   // The weights are stored as a collection of scalars, to be read by blocks of size dimension.
@@ -469,7 +510,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
   } // Flatten the atoms of RandomMixture type
   // Update the size
   size = atomCandidates.getSize();
-  if (simplifyAtom)
+  if (simplifyAtoms)
   {
     // Second, split the atoms between the discrete ones, the continuous ones and the others
     // The Dirac atoms are optimized during this step

@@ -196,4 +196,7 @@ Bibliography
 .. [stoer1993] Stoer, J., Bulirsch, R. *Introduction to Numerical
     Analysis*, Second Edition, Springer-Verlag, 1993.
     `pdf <http://alvand.basu.ac.ir/~dezfoulian/files/Numericals/Springer%20-%20Introduction%20to%20numerical%20analysis,%20Bulirsch,%20Stoer.%20(2ed.,%201993)(400dpi)(ISBN%200387978.pdf>`__
+.. [Wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*
+    First Edition, Chapman & Hall, 1994.
+
 	       

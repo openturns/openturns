@@ -235,7 +235,7 @@ public:
 protected:
   void setDistributionCollectionAndWeights(const DistributionCollection & coll,
       const Matrix & weights,
-      const Bool simplifyAtom);
+      const Bool simplifyAtoms);
 
 public:
   /** Weights distribution accessor */

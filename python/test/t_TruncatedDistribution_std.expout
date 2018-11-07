@@ -5,18 +5,18 @@ oneRealization= class=Point name=Unnamed dimension=1 values=[2.9123]
 oneSample first= class=Point name=Unnamed dimension=1 values=[1.3426]  last= class=Point name=Unnamed dimension=1 values=[3.87446]
 mean= class=Point name=Unnamed dimension=1 values=[2.34616]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.63794]
-Point=  class=Point name=Unnamed dimension=1 values=[2.5]
-ddf      = class=Point name=Unnamed dimension=1 values=[-0.0851881]
-ddf (ref)= class=Point name=Unnamed dimension=1 values=[-0.0851881]
+Point=  class=Point name=Unnamed dimension=1 values=[1.5]
+ddf      = class=Point name=Unnamed dimension=1 values=[0.0851881]
+ddf (ref)= class=Point name=Unnamed dimension=1 values=[0.0851881]
 pdf      =0.383346
 pdf (ref)=0.383346
-cdf=0.576060
-ccdf=0.423940
-cdf (ref)=0.576060
-pdf gradient      = class=Point name=Unnamed dimension=4 values=[0.02466,-0.0590839,0.124394,-0.0638662]
-pdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[0.02466,-0.0590839,0.124394,-0.0638662]
-cdf gradient      = class=Point name=Unnamed dimension=4 values=[-0.149807,-0.0915298,-0.137567,-0.0959726]
-cdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.149807,-0.0915298,-0.137567,-0.0959726]
+cdf=0.178195
+ccdf=0.821805
+cdf (ref)=0.178195
+pdf gradient      = class=Point name=Unnamed dimension=4 values=[-0.145716,-0.0590839,0.124394,-0.0638662]
+pdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.145716,-0.0590839,0.124394,-0.0638662]
+cdf gradient      = class=Point name=Unnamed dimension=4 values=[-0.0869866,-0.0104158,-0.266672,-0.0296876]
+cdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.0869866,-0.0104158,-0.266672,-0.0296876]
 quantile= class=Point name=Unnamed dimension=1 values=[3.73264]
 quantile= class=Point name=Unnamed dimension=1 values=[3.73264]
 cdf(quantile)=0.950000
@@ -63,18 +63,18 @@ oneRealization= class=Point name=Unnamed dimension=1 values=[2.69199]
 oneSample first= class=Point name=Unnamed dimension=1 values=[2.79367]  last= class=Point name=Unnamed dimension=1 values=[1.76978]
 mean= class=Point name=Unnamed dimension=1 values=[2.64435]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.23607]
-Point=  class=Point name=Unnamed dimension=1 values=[2.5]
-ddf      = class=Point name=Unnamed dimension=1 values=[-0.0747934]
-ddf (ref)= class=Point name=Unnamed dimension=1 values=[-0.0747934]
+Point=  class=Point name=Unnamed dimension=1 values=[1.5]
+ddf      = class=Point name=Unnamed dimension=1 values=[0.0747934]
+ddf (ref)= class=Point name=Unnamed dimension=1 values=[0.0747934]
 pdf      =0.336570
 pdf (ref)=0.336570
-cdf=0.505769
-ccdf=0.494231
-cdf (ref)=0.505769
-pdf gradient      = class=Point name=Unnamed dimension=3 values=[-0.0210957,-0.135523,0.0958891]
-pdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.0210957,-0.135523,0.0958891,0]
-cdf gradient      = class=Point name=Unnamed dimension=3 values=[-0.195764,-0.206061,-0.140807]
-cdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.195764,-0.206061,-0.140807,0]
+cdf=0.156452
+ccdf=0.843548
+cdf (ref)=0.156452
+pdf gradient      = class=Point name=Unnamed dimension=3 values=[-0.170682,-0.135523,0.0958891]
+pdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.170682,-0.135523,0.0958891,0]
+cdf gradient      = class=Point name=Unnamed dimension=3 values=[-0.0962429,-0.0480282,-0.240327]
+cdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.0962429,-0.0480282,-0.240327,0]
 quantile= class=Point name=Unnamed dimension=1 values=[4.67299]
 quantile= class=Point name=Unnamed dimension=1 values=[4.67299]
 cdf(quantile)=0.950000
@@ -121,18 +121,18 @@ oneRealization= class=Point name=Unnamed dimension=1 values=[2.38239]
 oneSample first= class=Point name=Unnamed dimension=1 values=[1.09659]  last= class=Point name=Unnamed dimension=1 values=[0.440643]
 mean= class=Point name=Unnamed dimension=1 values=[1.72507]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.64216]
-Point=  class=Point name=Unnamed dimension=1 values=[2.5]
-ddf      = class=Point name=Unnamed dimension=1 values=[-0.0615199]
-ddf (ref)= class=Point name=Unnamed dimension=1 values=[-0.0615199]
+Point=  class=Point name=Unnamed dimension=1 values=[1.5]
+ddf      = class=Point name=Unnamed dimension=1 values=[0.0615199]
+ddf (ref)= class=Point name=Unnamed dimension=1 values=[0.0615199]
 pdf      =0.276840
 pdf (ref)=0.276840
-cdf=0.693845
-ccdf=0.306155
-cdf (ref)=0.693845
-pdf gradient      = class=Point name=Unnamed dimension=3 values=[0.0948276,-0.119643,-0.0333077]
-pdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[0.0948276,-0.119643,0,-0.0333077]
-cdf gradient      = class=Point name=Unnamed dimension=3 values=[-0.19336,0.0190258,-0.0834793]
-cdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.19336,0.0190258,0,-0.0834793]
+cdf=0.406521
+ccdf=0.593479
+cdf (ref)=0.406521
+pdf gradient      = class=Point name=Unnamed dimension=3 values=[-0.0282122,-0.119643,-0.0333077]
+pdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.0282122,-0.119643,0,-0.0333077]
+cdf gradient      = class=Point name=Unnamed dimension=3 values=[-0.22793,0.157493,-0.0489101]
+cdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.22793,0.157493,0,-0.0489101]
 quantile= class=Point name=Unnamed dimension=1 values=[3.64324]
 quantile= class=Point name=Unnamed dimension=1 values=[3.64324]
 cdf(quantile)=0.950000
@@ -179,18 +179,18 @@ oneRealization= class=Point name=Unnamed dimension=1 values=[1.19283]
 oneSample first= class=Point name=Unnamed dimension=1 values=[1.7907]  last= class=Point name=Unnamed dimension=1 values=[3.44825]
 mean= class=Point name=Unnamed dimension=1 values=[2.35742]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.643133]
-Point=  class=Point name=Unnamed dimension=1 values=[2.5]
-ddf      = class=Point name=Unnamed dimension=1 values=[-0.0851881]
-ddf (ref)= class=Point name=Unnamed dimension=1 values=[-0.0851881]
+Point=  class=Point name=Unnamed dimension=1 values=[1.5]
+ddf      = class=Point name=Unnamed dimension=1 values=[0.0851881]
+ddf (ref)= class=Point name=Unnamed dimension=1 values=[0.0851881]
 pdf      =0.383346
 pdf (ref)=0.383346
-cdf=0.576060
-ccdf=0.423940
-cdf (ref)=0.576060
-pdf gradient      = class=Point name=Unnamed dimension=4 values=[0.02466,-0.0590839,0.124394,-0.0638662]
-pdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[0.02466,-0.0590839,0.124394,-0.0638662]
-cdf gradient      = class=Point name=Unnamed dimension=4 values=[-0.149807,-0.0915298,-0.137567,-0.0959726]
-cdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.149807,-0.0915298,-0.137567,-0.0959726]
+cdf=0.178195
+ccdf=0.821805
+cdf (ref)=0.178195
+pdf gradient      = class=Point name=Unnamed dimension=4 values=[-0.145716,-0.0590839,0.124394,-0.0638662]
+pdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.145716,-0.0590839,0.124394,-0.0638662]
+cdf gradient      = class=Point name=Unnamed dimension=4 values=[-0.0869866,-0.0104158,-0.266672,-0.0296876]
+cdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[-0.0869866,-0.0104158,-0.266672,-0.0296876]
 quantile= class=Point name=Unnamed dimension=1 values=[3.73264]
 quantile= class=Point name=Unnamed dimension=1 values=[3.73264]
 cdf(quantile)=0.950000
@@ -230,114 +230,48 @@ standard moment n= 3  value= [-0.0546493]
 standard moment n= 4  value= [0.168124]
 standard moment n= 5  value= [-0.0377976]
 Standard representative= TruncatedNormal(mu = -0.333333, sigma = 1, a = -1, b = 1)
-Distribution  TruncatedDistribution(KernelMixture(kernel = Normal(mu = 0, sigma = 1), bandwidth = [0.44375,0.532881], sample = 
-     [ X0         X1         ]
- 0 : [  2.6082     0.733827  ]
- 1 : [  1.56173    3.20548   ]
- 2 : [ -0.181385   2.35004   ]
- 3 : [  1.64499    3.43725   ]
- 4 : [  2.81067    2.79316   ]
- 5 : [  1.52947    2.26102   ]
- 6 : [ -0.290062   0.717115  ]
- 7 : [  0.688219   1.90922   ]
- 8 : [  2.99579    1.86055   ]
- 9 : [  1.43979    2.44549   ]
-10 : [  2.32293    2.44579   ]
-11 : [  0.961923   1.14329   ]
-12 : [  2.47362    1.8745    ]
-13 : [  2.35142    3.78236   ]
-14 : [  2.07021    1.21863   ]
-15 : [  1.27847    1.75878   ]
-16 : [  0.212036   2.40136   ]
-17 : [  3.36783    3.00434   ]
-18 : [  2.74155    1.95639   ]
-19 : [  2.53934    2.29995   ]
-20 : [  2.40772    1.51489   ]
-21 : [  1.61701    1.24718   ]
-22 : [  2.25793    3.96876   ]
-23 : [  1.32871    3.85579   ]
-24 : [  2.05216    2.79045   ]
-25 : [  2.71635    1.25638   ]
-26 : [  2.18436    0.469266  ]
-27 : [  2.65503    2.53807   ]
-28 : [  3.73821    1.04128   ]
-29 : [  2.37792    1.819     ]
-30 : [  3.67297    0.961042  ]
-31 : [  1.64645    3.21381   ]
-32 : [  1.22297    0.631469  ]
-33 : [  2.10347    1.10818   ]
-34 : [  2.9056     2.33479   ]
-35 : [  1.51636    2.67796   ]
-36 : [  3.70938    3.07062   ]
-37 : [  1.49308    0.339136  ]
-38 : [  4.24623    2.7596    ]
-39 : [  1.48924    1.36693   ]
-40 : [  1.04293    2.54405   ]
-41 : [  2.81456    1.26529   ]
-42 : [  1.88854    2.99448   ]
-43 : [  1.83937    1.06123   ]
-44 : [  0.0313085  1.3424    ]
-45 : [  2.33875    3.01556   ]
-46 : [  2.63717    1.91009   ]
-47 : [  1.14411    3.27128   ]
-48 : [  1.76175    3.3263    ]
-49 : [  4.11968    1.09842   ]
-50 : [  0.483035   0.70062   ]
-51 : [  2.23037   -1.09737   ]
-52 : [  2.01323    0.74257   ]
-53 : [  3.02776    1.23357   ]
-54 : [  2.21751    3.04533   ]
-55 : [  2.33157    1.5118    ]
-56 : [  1.53452    2.33208   ]
-57 : [  1.83227    5.01263   ]
-58 : [  2.94204    2.61189   ]
-59 : [  2.61172    0.462503  ]
-60 : [ -0.406702   2.66294   ]
-61 : [  1.34384    1.24839   ]
-62 : [  2.43818    1.54467   ]
-63 : [  3.86038    2.21972   ]
-64 : [  3.72546    1.45659   ]
-65 : [  1.26325    1.49179   ]
-66 : [ -0.258672   1.4036    ]
-67 : [  1.68532    0.217262  ]
-68 : [  1.31527    2.06112   ]
-69 : [  2.87372    0.537047  ], bounds = [1, 3]
-[1, 3])
+Distribution  TruncatedDistribution(Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
+ [ 0 1 ]]), bounds = [-0.5, 2]
+[-0.5, 2])
 Elliptical =  False
 Continuous =  True
-oneRealization= class=Point name=Unnamed dimension=2 values=[2.26039,1.14922]
-oneSample first= class=Point name=Unnamed dimension=2 values=[2.28693,1.74037]  last= class=Point name=Unnamed dimension=2 values=[1.66762,2.17798]
-mean= class=Point name=Unnamed dimension=2 values=[2.05173,1.98412]
-covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.296857,-0.0133385,-0.0133385,0.31523]
-Point=  class=Point name=Unnamed dimension=2 values=[2.5,2.5]
-ddf      = class=Point name=Unnamed dimension=2 values=[-0.0147308,-0.104243]
-ddf (ref)= class=Point name=Unnamed dimension=2 values=[-0.061975,-0.061975]
-pdf      =0.275163
-pdf (ref)=0.123950
-cdf=0.562008
-ccdf=0.437992
-cdf (ref)=0.478120
-quantile= class=Point name=Unnamed dimension=2 values=[2.93996,2.94429]
-quantile= class=Point name=Unnamed dimension=2 values=[3.95451,3.95451]
+oneRealization= class=Point name=Unnamed dimension=2 values=[0.700632,0.685971]
+oneSample first= class=Point name=Unnamed dimension=2 values=[1.31238,-0.229081]  last= class=Point name=Unnamed dimension=2 values=[0.703041,0.833959]
+mean= class=Point name=Unnamed dimension=2 values=[0.446438,0.447146]
+covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.369052,0.00251245,0.00251245,0.375656]
+Point=  class=Point name=Unnamed dimension=2 values=[1.5,1.5]
+ddf      = class=Point name=Unnamed dimension=2 values=[-0.0562691,-0.0562691]
+ddf (ref)= class=Point name=Unnamed dimension=2 values=[-0.0251622,-0.0251622]
+pdf      =0.037513
+pdf (ref)=0.016775
+cdf=0.872574
+ccdf=0.127426
+cdf (ref)=0.870849
+pdf gradient      = class=Point name=Unnamed dimension=9 values=[0.039548,0.0628233,0.039548,0.0628233,0.0844037,0.0197498,0.0197498,-0.00302873,-0.00302873]
+pdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[0.0251622,0.0251622,0.0209685,0.0209685]
+cdf gradient      = class=Point name=Unnamed dimension=9 values=[-0.07807,-0.146682,-0.07807,-0.146682,0,-0.0324012,-0.0324012,-0.0704505,-0.0704505]
+cdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[0,0,0,0]
+quantile= class=Point name=Unnamed dimension=2 values=[1.75438,1.75438]
+quantile= class=Point name=Unnamed dimension=2 values=[1.95451,1.95451]
 cdf(quantile)=0.950000
-InverseSurvival= class=Point name=Unnamed dimension=2 values=[1.07724,1.0519]
+InverseSurvival= class=Point name=Unnamed dimension=2 values=[-0.452458,-0.452458]
 Survival(inverseSurvival)=0.950000
-entropy=1.374775
-mean      = class=Point name=Unnamed dimension=2 values=[2.02215,1.97088]
-mean (ref)= class=Point name=Unnamed dimension=2 values=[2,2]
-standard deviation      = class=Point name=Unnamed dimension=2 values=[0.538498,0.565823]
+entropy=1.608356
+mean      = class=Point name=Unnamed dimension=2 values=[0.445744,0.445744]
+mean (ref)= class=Point name=Unnamed dimension=2 values=[0,0]
+standard deviation      = class=Point name=Unnamed dimension=2 values=[0.613672,0.613672]
 standard deviation (ref)= class=Point name=Unnamed dimension=2 values=[1,1]
-skewness      = class=Point name=Unnamed dimension=2 values=[-0.0427286,0.0598339]
+skewness      = class=Point name=Unnamed dimension=2 values=[0.467305,0.467305]
 skewness (ref)= class=Point name=Unnamed dimension=2 values=[0,0]
-kurtosis      = class=Point name=Unnamed dimension=2 values=[1.93189,1.83596]
+kurtosis      = class=Point name=Unnamed dimension=2 values=[2.34902,2.34902]
 kurtosis (ref)= class=Point name=Unnamed dimension=2 values=[3,3]
-covariance      = class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.28998,-0.00755324,-0.00755324,0.320156]
+covariance      = class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.376594,0,0,0.376594]
 covariance (ref)= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]
-parameters      = [class=PointWithDescription name=X0 dimension=146 description=[x_0^0,x_0^1,x_1^0,x_1^1,x_2^0,x_2^1,x_3^0,x_3^1,x_4^0,x_4^1,x_5^0,x_5^1,x_6^0,x_6^1,x_7^0,x_7^1,x_8^0,x_8^1,x_9^0,x_9^1,x_10^0,x_10^1,x_11^0,x_11^1,x_12^0,x_12^1,x_13^0,x_13^1,x_14^0,x_14^1,x_15^0,x_15^1,x_16^0,x_16^1,x_17^0,x_17^1,x_18^0,x_18^1,x_19^0,x_19^1,x_20^0,x_20^1,x_21^0,x_21^1,x_22^0,x_22^1,x_23^0,x_23^1,x_24^0,x_24^1,x_25^0,x_25^1,x_26^0,x_26^1,x_27^0,x_27^1,x_28^0,x_28^1,x_29^0,x_29^1,x_30^0,x_30^1,x_31^0,x_31^1,x_32^0,x_32^1,x_33^0,x_33^1,x_34^0,x_34^1,x_35^0,x_35^1,x_36^0,x_36^1,x_37^0,x_37^1,x_38^0,x_38^1,x_39^0,x_39^1,x_40^0,x_40^1,x_41^0,x_41^1,x_42^0,x_42^1,x_43^0,x_43^1,x_44^0,x_44^1,x_45^0,x_45^1,x_46^0,x_46^1,x_47^0,x_47^1,x_48^0,x_48^1,x_49^0,x_49^1,x_50^0,x_50^1,x_51^0,x_51^1,x_52^0,x_52^1,x_53^0,x_53^1,x_54^0,x_54^1,x_55^0,x_55^1,x_56^0,x_56^1,x_57^0,x_57^1,x_58^0,x_58^1,x_59^0,x_59^1,x_60^0,x_60^1,x_61^0,x_61^1,x_62^0,x_62^1,x_63^0,x_63^1,x_64^0,x_64^1,x_65^0,x_65^1,x_66^0,x_66^1,x_67^0,x_67^1,x_68^0,x_68^1,x_69^0,x_69^1,h_0,h_1,lowerBound_0,lowerBound_1,upperBound_0,upperBound_1] values=[2.6082,0.733827,1.56173,3.20548,-0.181385,2.35004,1.64499,3.43725,2.81067,2.79316,1.52947,2.26102,-0.290062,0.717115,0.688219,1.90922,2.99579,1.86055,1.43979,2.44549,2.32293,2.44579,0.961923,1.14329,2.47362,1.8745,2.35142,3.78236,2.07021,1.21863,1.27847,1.75878,0.212036,2.40136,3.36783,3.00434,2.74155,1.95639,2.53934,2.29995,2.40772,1.51489,1.61701,1.24718,2.25793,3.96876,1.32871,3.85579,2.05216,2.79045,2.71635,1.25638,2.18436,0.469266,2.65503,2.53807,3.73821,1.04128,2.37792,1.819,3.67297,0.961042,1.64645,3.21381,1.22297,0.631469,2.10347,1.10818,2.9056,2.33479,1.51636,2.67796,3.70938,3.07062,1.49308,0.339136,4.24623,2.7596,1.48924,1.36693,1.04293,2.54405,2.81456,1.26529,1.88854,2.99448,1.83937,1.06123,0.0313085,1.3424,2.33875,3.01556,2.63717,1.91009,1.14411,3.27128,1.76175,3.3263,4.11968,1.09842,0.483035,0.70062,2.23037,-1.09737,2.01323,0.74257,3.02776,1.23357,2.21751,3.04533,2.33157,1.5118,1.53452,2.33208,1.83227,5.01263,2.94204,2.61189,2.61172,0.462503,-0.406702,2.66294,1.34384,1.24839,2.43818,1.54467,3.86038,2.21972,3.72546,1.45659,1.26325,1.49179,-0.258672,1.4036,1.68532,0.217262,1.31527,2.06112,2.87372,0.537047,0.44375,0.532881,1,1,3,3]]
-parameters (ref)= [class=PointWithDescription name=X0 dimension=2 description=[mean_0,standard_deviation_0] values=[2,1],class=PointWithDescription name=X1 dimension=2 description=[mean_1,standard_deviation_1] values=[2,1],class=PointWithDescription name=dependence dimension=1 description=[R_1_0] values=[0]]
-parameter       = class=Point name=Unnamed dimension=146 values=[2.6082,0.733827,1.56173,3.20548,-0.181385,2.35004,1.64499,3.43725,2.81067,2.79316,1.52947,2.26102,-0.290062,0.717115,0.688219,1.90922,2.99579,1.86055,1.43979,2.44549,2.32293,2.44579,0.961923,1.14329,2.47362,1.8745,2.35142,3.78236,2.07021,1.21863,1.27847,1.75878,0.212036,2.40136,3.36783,3.00434,2.74155,1.95639,2.53934,2.29995,2.40772,1.51489,1.61701,1.24718,2.25793,3.96876,1.32871,3.85579,2.05216,2.79045,2.71635,1.25638,2.18436,0.469266,2.65503,2.53807,3.73821,1.04128,2.37792,1.819,3.67297,0.961042,1.64645,3.21381,1.22297,0.631469,2.10347,1.10818,2.9056,2.33479,1.51636,2.67796,3.70938,3.07062,1.49308,0.339136,4.24623,2.7596,1.48924,1.36693,1.04293,2.54405,2.81456,1.26529,1.88854,2.99448,1.83937,1.06123,0.0313085,1.3424,2.33875,3.01556,2.63717,1.91009,1.14411,3.27128,1.76175,3.3263,4.11968,1.09842,0.483035,0.70062,2.23037,-1.09737,2.01323,0.74257,3.02776,1.23357,2.21751,3.04533,2.33157,1.5118,1.53452,2.33208,1.83227,5.01263,2.94204,2.61189,2.61172,0.462503,-0.406702,2.66294,1.34384,1.24839,2.43818,1.54467,3.86038,2.21972,3.72546,1.45659,1.26325,1.49179,-0.258672,1.4036,1.68532,0.217262,1.31527,2.06112,2.87372,0.537047,0.44375,0.532881,1,1,3,3]
-parameter desc  = [x_0^0,x_0^1,x_1^0,x_1^1,x_2^0,x_2^1,x_3^0,x_3^1,x_4^0,x_4^1,x_5^0,x_5^1,x_6^0,x_6^1,x_7^0,x_7^1,x_8^0,x_8^1,x_9^0,x_9^1,x_10^0,x_10^1,x_11^0,x_11^1,x_12^0,x_12^1,x_13^0,x_13^1,x_14^0,x_14^1,x_15^0,x_15^1,x_16^0,x_16^1,x_17^0,x_17^1,x_18^0,x_18^1,x_19^0,x_19^1,x_20^0,x_20^1,x_21^0,x_21^1,x_22^0,x_22^1,x_23^0,x_23^1,x_24^0,x_24^1,x_25^0,x_25^1,x_26^0,x_26^1,x_27^0,x_27^1,x_28^0,x_28^1,x_29^0,x_29^1,x_30^0,x_30^1,x_31^0,x_31^1,x_32^0,x_32^1,x_33^0,x_33^1,x_34^0,x_34^1,x_35^0,x_35^1,x_36^0,x_36^1,x_37^0,x_37^1,x_38^0,x_38^1,x_39^0,x_39^1,x_40^0,x_40^1,x_41^0,x_41^1,x_42^0,x_42^1,x_43^0,x_43^1,x_44^0,x_44^1,x_45^0,x_45^1,x_46^0,x_46^1,x_47^0,x_47^1,x_48^0,x_48^1,x_49^0,x_49^1,x_50^0,x_50^1,x_51^0,x_51^1,x_52^0,x_52^1,x_53^0,x_53^1,x_54^0,x_54^1,x_55^0,x_55^1,x_56^0,x_56^1,x_57^0,x_57^1,x_58^0,x_58^1,x_59^0,x_59^1,x_60^0,x_60^1,x_61^0,x_61^1,x_62^0,x_62^1,x_63^0,x_63^1,x_64^0,x_64^1,x_65^0,x_65^1,x_66^0,x_66^1,x_67^0,x_67^1,x_68^0,x_68^1,x_69^0,x_69^1,h_0,h_1,lowerBound_0,lowerBound_1,upperBound_0,upperBound_1]
-marginal 0      = class=TruncatedDistribution name=TruncatedDistribution distribution=class=KernelMixture name=KernelMixture kernel=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bandwidth=class=Point name=Unnamed dimension=1 values=[0.44375] sample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=70 dimension=1 description=[X0] data=[[2.6082],[1.56173],[-0.181385],[1.64499],[2.81067],[1.52947],[-0.290062],[0.688219],[2.99579],[1.43979],[2.32293],[0.961923],[2.47362],[2.35142],[2.07021],[1.27847],[0.212036],[3.36783],[2.74155],[2.53934],[2.40772],[1.61701],[2.25793],[1.32871],[2.05216],[2.71635],[2.18436],[2.65503],[3.73821],[2.37792],[3.67297],[1.64645],[1.22297],[2.10347],[2.9056],[1.51636],[3.70938],[1.49308],[4.24623],[1.48924],[1.04293],[2.81456],[1.88854],[1.83937],[0.0313085],[2.33875],[2.63717],[1.14411],[1.76175],[4.11968],[0.483035],[2.23037],[2.01323],[3.02776],[2.21751],[2.33157],[1.53452],[1.83227],[2.94204],[2.61172],[-0.406702],[1.34384],[2.43818],[3.86038],[3.72546],[1.26325],[-0.258672],[1.68532],[1.31527],[2.87372]] bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[1] upper bound=class=Point name=Unnamed dimension=1 values=[3] finite lower bound=[1] finite upper bound=[1] thresholdRealization=0.5
+parameters      = [class=PointWithDescription name=X0 dimension=9 description=[mean_0,standard_deviation_0,mean_1,standard_deviation_1,R_1_0,lowerBound_0,lowerBound_1,upperBound_0,upperBound_1] values=[0,1,0,1,0,-0.5,-0.5,2,2]]
+parameters (ref)= [class=PointWithDescription name=X0 dimension=2 description=[mean_0,standard_deviation_0] values=[0,1],class=PointWithDescription name=X1 dimension=2 description=[mean_1,standard_deviation_1] values=[0,1],class=PointWithDescription name=dependence dimension=1 description=[R_1_0] values=[0]]
+parameter       = class=Point name=Unnamed dimension=9 values=[0,1,0,1,0,-0.5,-0.5,2,2]
+parameter desc  = [mean_0,standard_deviation_0,mean_1,standard_deviation_1,R_1_0,lowerBound_0,lowerBound_1,upperBound_0,upperBound_1]
+marginal 0      = class=TruncatedDistribution name=TruncatedDistribution distribution=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.5] upper bound=class=Point name=Unnamed dimension=1 values=[2] finite lower bound=[1] finite upper bound=[1] thresholdRealization=0.5
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [0]
 standard moment n= 2  value= [1]
@@ -345,3 +279,66 @@ standard moment n= 3  value= [0]
 standard moment n= 4  value= [3]
 standard moment n= 5  value= [0]
 Standard representative= Normal(mu = 0, sigma = 1)
+Distribution  TruncatedDistribution(Weibull(alpha = 2, beta = 3, gamma = 0), bounds = [0, (6.36519) +inf[)
+Elliptical =  False
+Continuous =  True
+oneRealization= class=Point name=Unnamed dimension=1 values=[1.89179]
+oneSample first= class=Point name=Unnamed dimension=1 values=[2.8788]  last= class=Point name=Unnamed dimension=1 values=[1.60894]
+mean= class=Point name=Unnamed dimension=1 values=[1.79533]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.422322]
+Point=  class=Point name=Unnamed dimension=1 values=[1.5]
+ddf      = class=Point name=Unnamed dimension=1 values=[0.270908]
+ddf (ref)= class=Point name=Unnamed dimension=1 values=[0.270908]
+pdf      =0.553345
+pdf (ref)=0.553345
+cdf=0.344184
+ccdf=0.655816
+cdf (ref)=0.344184
+pdf gradient      = class=Point name=Unnamed dimension=4 values=[-0.479854,0.0924181,-0.270908,0]
+pdf gradient (ref)= class=Point name=Unnamed dimension=3 values=[-0.479854,0.0924181,-0.270908]
+cdf gradient      = class=Point name=Unnamed dimension=4 values=[-0.415009,-0.0795937,-0.553345,0]
+cdf gradient (ref)= class=Point name=Unnamed dimension=3 values=[-0.415009,-0.0795937,-0.553345]
+quantile= class=Point name=Unnamed dimension=1 values=[2.88313]
+quantile= class=Point name=Unnamed dimension=1 values=[2.88313]
+cdf(quantile)=0.950000
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.743105]
+Survival(inverseSurvival)=0.950000
+entropy=0.979345
+Minimum volume interval= [0.537171, 3.03076]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 2.24308} with f=
+MinimumVolumeLevelSetEvaluation(TruncatedDistribution(Weibull(alpha = 2, beta = 3, gamma = 0), bounds = [0, (6.36519) +inf[))
+beta= [0.106131]
+Bilateral confidence interval= [0.587271, 3.09026]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [0, 2.88313]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [0.743105, 6.36519]
+beta= [0.95]
+mean      = class=Point name=Unnamed dimension=1 values=[1.78596]
+mean (ref)= class=Point name=Unnamed dimension=1 values=[1.78596]
+standard deviation      = class=Point name=Unnamed dimension=1 values=[0.649101]
+standard deviation (ref)= class=Point name=Unnamed dimension=1 values=[0.649101]
+skewness      = class=Point name=Unnamed dimension=1 values=[0.168103]
+skewness (ref)= class=Point name=Unnamed dimension=1 values=[0.168103]
+kurtosis      = class=Point name=Unnamed dimension=1 values=[2.72946]
+kurtosis (ref)= class=Point name=Unnamed dimension=1 values=[2.72946]
+covariance      = class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.421332]
+covariance (ref)= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.421332]
+parameters      = [class=PointWithDescription name=X0 dimension=4 description=[alpha,beta,gamma,lowerBound] values=[2,3,0,0]]
+parameters (ref)= [class=PointWithDescription name=X0 dimension=3 description=[alpha,beta,gamma] values=[2,3,0]]
+parameter       = class=Point name=Unnamed dimension=4 values=[2,3,0,0]
+parameter desc  = [alpha,beta,gamma,lowerBound]
+marginal 0      = class=TruncatedDistribution name=TruncatedDistribution distribution=class=Weibull name=Weibull dimension=1 alpha=2 beta=3 gamma=0 bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[6.36519] finite lower bound=[1] finite upper bound=[0] thresholdRealization=0.5
+standard moment n= 0  value= [1]
+standard moment n= 1  value= [0.89298]
+standard moment n= 2  value= [0.902745]
+standard moment n= 3  value= [1]
+standard moment n= 4  value= [1.19064]
+standard moment n= 5  value= [1.50458]
+Standard representative= Weibull(alpha = 1, beta = 3, gamma = 0)
+d= TruncatedDistribution(Normal(mu = 1, sigma = 2), bounds = [-1, 4]) simplified= TruncatedNormal(mu = 1, sigma = 2, a = -1, b = 4)
+d= TruncatedDistribution(Uniform(a = 1, b = 2), bounds = [0.2, 2.4]) simplified= Uniform(a = 1, b = 2)
+d= TruncatedDistribution(Exponential(lambda = 1, gamma = 2), bounds = [2.5, 65]) simplified= Exponential(lambda = 1, gamma = 2.5)
+d= TruncatedDistribution(TruncatedDistribution(Weibull(alpha = 1, beta = 1, gamma = 0), bounds = [1.5, 7.8]), bounds = [2.5, 6]) simplified= TruncatedDistribution(Weibull(alpha = 1, beta = 1, gamma = 0), bounds = [2.5, 6])
+d= TruncatedDistribution(Beta(r = 1.5, t = 7.8, a = -1, b = 2), bounds = [-2.5, 6]) simplified= Beta(r = 1.5, t = 7.8, a = -1, b = 2)
