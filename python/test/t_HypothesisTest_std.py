@@ -1,38 +1,31 @@
 #! /usr/bin/env python
 
 from __future__ import print_function
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
+ot.RandomGenerator.SetSeed(0)
 
 try:
     dim = 10
-    R = CorrelationMatrix(dim)
+    R = ot.CorrelationMatrix(dim)
     for i in range(dim):
         for j in range(i):
             R[i, j] = (i + j + 1.0) / (2.0 * dim)
-    mean = Point(dim, 2.0)
-    sigma = Point(dim, 3.0)
-    distribution = Normal(mean, sigma, R)
+    mean = [2.0] * dim
+    sigma = [3.0] * dim
+    distribution = ot.Normal(mean, sigma, R)
 
     size = 100
     sample = distribution.getSample(size)
-    sampleX = Sample(size, dim - 1)
-    sampleY = Sample(size, 1)
-    for i in range(size):
-        sampleY[i] = Point(1, sample[i, 0])
-        p = Point(dim - 1)
-        for j in range(dim - 1):
-            p[j] = sample[i, j + 1]
-        sampleX[i] = p
+    sampleY = sample.getMarginal(0)
 
-    sampleZ = Sample(size, 1)
+    sampleZ = ot.Sample(size, 1)
     for i in range(size):
-        sampleZ[i] = Point(1, sampleY[i, 0] * sampleY[i, 0])
+        sampleZ[i, 0] = sampleY[i, 0] * sampleY[i, 0]
 
-    discreteSample1 = Poisson(0.1).getSample(size)
-    discreteSample2 = Geometric(0.4).getSample(size)
+    discreteSample1 = ot.Poisson(0.1).getSample(size)
+    discreteSample2 = ot.Geometric(0.4).getSample(size)
 
     # ChiSquared Independance test : test if two samples (of sizes not necessarily equal) are independant ?
     # Care : discrete samples only
@@ -40,9 +33,9 @@ try:
     # p-value threshold : probability of the H0 reject zone : 0.10
     # p-value : probability (test variable decision > test variable decision evaluated on the samples)
     # Test = True <=> p-value > p-value threshold
-    print("ChiSquared=", HypothesisTest.ChiSquared(
+    print("ChiSquared=", ot.HypothesisTest.ChiSquared(
         discreteSample1, discreteSample2, 0.10))
-    print("ChiSquared2=", HypothesisTest.ChiSquared(
+    print("ChiSquared2=", ot.HypothesisTest.ChiSquared(
         discreteSample1, discreteSample1, 0.10))
 
     # Pearson Test : test if two gaussian samples are independent (based on the evaluation of the linear correlation coefficient)
@@ -51,7 +44,7 @@ try:
     # p-value threshold : probability of the H0 reject zone : 0.10
     # p-value : probability (test variable decision > test variable decision evaluated on the samples)
     # Test = True <=> p-value > p-value threshold
-    print("Pearson=", HypothesisTest.Pearson(sampleY, sampleZ, 0.10))
+    print("Pearson=", ot.HypothesisTest.Pearson(sampleY, sampleZ, 0.10))
 
     # Smirnov Test : test if two samples (of sizes not necessarily equal) follow the same distribution
     # Care : continuous distributions only
@@ -60,7 +53,7 @@ try:
     # p-value threshold : probability of the H0 reject zone : 0.10
     # p-value : probability (test variable decision > test variable decision evaluated on the samples)
     # Test = True <=> p-value > p-value threshold
-    print("Smirnov=", HypothesisTest.Smirnov(sampleY, sampleZ, 0.10))
+    print("Smirnov=", ot.HypothesisTest.Smirnov(sampleY, sampleZ, 0.10))
 
 except:
     import sys

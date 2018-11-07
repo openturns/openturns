@@ -32,6 +32,8 @@
 #include "openturns/Os.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/UserDefined.hxx"
+#include "openturns/Log.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -40,13 +42,156 @@ HypothesisTest::HypothesisTest()
 }
 
 
-/* Independance test between 2 scalar scalar samples for discrete distributions  */
+/* Independence test between 2 scalar scalar samples for discrete distributions
+ * The samples here are issued from discrete distributions. Thus there is a transformation
+ * from sample to a contingency table in order to apply the Chi square independence test
+ * We rely on UserDefined distribution to get unique value samples and their proporprtions
+*/
 TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
                                       const Sample & secondSample,
                                       const Scalar level)
 {
   if ((firstSample.getDimension() != 1) || (secondSample.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the ChiSquared test can be performed only between two 1D samples.";
-  return RunTwoSamplesRTest(firstSample, secondSample, level, "TwoSampleChiSquared");
+  const UnsignedInteger size = firstSample.getSize();
+  if (secondSample.getSize() != size) throw InvalidArgumentException(HERE) << "Error: the ChiSquared test can be performed only between two samples of same size.";
+  
+  // Ensure that more than 80 % of classes contain at least nMin points
+  const UnsignedInteger nMin = ResourceMap::GetAsUnsignedInteger("FittingTest-ChiSquaredMinimumBinCount");
+  if (size < 2 * nMin) 
+      throw InvalidArgumentException(HERE) << "Error: ChiSquared test cannot be used with a sample size smaller than " << 2 * nMin 
+      << ". Reduce the value of \"FittingTest-ChiSquaredMinimumBinCount below " << size / 2 << " if you really want to use this test.";
+
+  // Derive unique values and frequencies for each 1D sample
+  // first sample --> table
+  const UserDefined discreteXDistribution(firstSample);
+  const Sample tableX(discreteXDistribution.getSupport());
+  const Point frequenciesX(discreteXDistribution.computePDF(tableX).asPoint());
+
+  // Define new classes ensuring we get nMin elements / class
+  UnsignedInteger binNumberX = 0;
+  // If the bin number was too high to get only nMin points per bin on average, reduce the number of bins to get only nonempty bins
+  Point ticksX(0);
+  Point binX(0);
+  const Scalar epsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
+  UnsignedInteger cumulatedPoints = 0;
+  ticksX.add(tableX(0 ,0) - epsilon * (1.0 + std::abs(tableX(0, 0))));
+
+  for (UnsignedInteger i = 0; i < tableX.getSize(); ++i)
+  {
+    cumulatedPoints += (frequenciesX[i] + epsilon) * size;
+    if (cumulatedPoints >= nMin)
+    {
+      binX.add(cumulatedPoints);
+      cumulatedPoints = 0;
+      if (i == tableX.getSize() - 1)
+        ticksX.add(tableX(i, 0) + epsilon * (1.0 + std::abs(tableX(i, 0))));
+      else
+        ticksX.add(0.5 * (tableX(i, 0) + tableX(i + 1, 0)));
+    }
+  } // i
+  binNumberX = ticksX.getSize() - 1;
+  // Check if there is a pending bin
+  if (cumulatedPoints > 0)
+  {
+    binX[binNumberX - 1] += cumulatedPoints;
+    ticksX[binNumberX] = tableX(tableX.getSize() - 1, 0) + epsilon * (1.0 + std::abs(tableX(tableX.getSize() - 1, 0)));
+  }
+  if (binNumberX < 2)
+    throw InvalidArgumentException(HERE) << "Error: the adjusted bin number=" << binNumberX << " must be at least equal to 2.";
+    
+ 
+  // second sample table
+  const UserDefined discreteYDistribution(secondSample);
+  const Sample tableY(discreteYDistribution.getSupport());
+  const Point frequenciesY(discreteYDistribution.computePDF(tableY).asPoint());
+
+  // Classes for second sample
+  UnsignedInteger binNumberY = 0;
+  // If the bin number was too high to get only nMin points per bin on average, reduce the number of bins to get only nonempty bins
+  Point ticksY(0);
+  Point binY(0);
+  cumulatedPoints = 0;
+  ticksY.add(tableY(0 ,0) - epsilon * (1.0 + std::abs(tableY(0, 0))));
+  for (UnsignedInteger i = 0; i < tableY.getSize(); ++i)
+  {
+    cumulatedPoints += (frequenciesY[i] + epsilon) * size;
+    if (cumulatedPoints >= nMin)
+    {
+      binY.add(cumulatedPoints);
+      cumulatedPoints = 0;
+      if (i == tableY.getSize() - 1)
+        ticksY.add(tableY(i, 0) + epsilon * (1.0 + std::abs(tableY(i, 0))));
+      else
+        ticksY.add(0.5 * (tableY(i, 0) + tableY(i + 1, 0)));
+    }
+  } // i
+  binNumberY = ticksY.getSize() - 1;
+  // Check if there is a pending bin
+  if (cumulatedPoints > 0)
+  {
+    binY[binNumberY - 1] += cumulatedPoints;
+    ticksY[binNumberY] = tableY(tableY.getSize() - 1, 0) + epsilon * (1.0 + std::abs(tableY(tableY.getSize() - 1, 0)));
+  }
+  if (binNumberY < 2)
+    throw InvalidArgumentException(HERE) << "Error: the adjusted bin number=" << binNumberY << " must be at least equal to 2.";
+
+  // Now we define the table with elements E_{i,j} where E[i,j] counts the occurence of the element [xi, yj]
+  // Bivariate sample
+  Sample data(firstSample);
+  data.stack(secondSample);
+  const UserDefined bivariateDiscreteDistribution(data);
+  const Sample table(bivariateDiscreteDistribution.getSupport());
+  const Point frequencies(bivariateDiscreteDistribution.getProbabilities());
+  const UnsignedInteger tableSize = table.getSize();
+
+  Point classes(binNumberX * binNumberY);
+  Point pointsInClasses(binNumberX * binNumberY);
+
+  for (UnsignedInteger k = 0; k < table.getSize(); ++k)
+  {
+    const Scalar xi = table(k , 0);
+    const Scalar yj = table(k , 1);
+    Bool condition = true;
+    UnsignedInteger indexI = 0;
+    while (condition)
+    {
+      indexI++;
+      condition = (xi > ticksX[indexI]) && (indexI < binNumberX);
+    }
+    // 
+    condition = true;
+    indexI--;
+    UnsignedInteger indexJ = 0;
+    while (condition)
+    {
+      indexJ++;
+      condition = (yj > ticksY[indexJ]) && (indexJ < binNumberY);
+    }
+    indexJ--;
+
+    // We get the corresponding class for the kth point
+    pointsInClasses[indexI * binNumberY + indexJ] += (frequencies[k] + epsilon) * size;
+  }
+
+  // Theoretical value under H0 assumption
+  Scalar theoretical = 0.0;
+  // Let us compute the statistic
+  Scalar squaredSum = 0.0;
+
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = 0; i < binNumberX; ++i)
+  {
+    for (UnsignedInteger j = 0; j < binNumberY; ++j)
+    {
+     theoretical = binX[i] * binY[j] / size;
+     squaredSum += std::pow( pointsInClasses[index]  - theoretical, 2) / theoretical;
+     index++;
+    }
+  }
+  const UnsignedInteger df = (binNumberX - 1)*(binNumberY -1);
+  const Scalar pValue =  DistFunc::pGamma(0.5 * df, 0.5 * squaredSum, true);
+  Log::Debug ( OSS() << "In ChiSquared independence test : df = " << df << ", statistic = " << squaredSum << ", pValue = " << pValue );
+  return TestResult("ChiSquared", pValue > level, pValue, level);
 }
 
 /* Independence Pearson test between 2 scalar samples which form a gaussian vector: test the linear relation  */

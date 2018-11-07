@@ -31,12 +31,12 @@ Examples
 --------
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
->>> distCol = [ot.Normal(), ot.Normal()]
+>>> distCol = [ot.Poisson(3), ot.Binomial(10, 0.3)]
 >>> distribution = ot.ComposedDistribution(distCol)
 >>> sample = distribution.getSample(30)
 >>> test_result = ot.HypothesisTest.ChiSquared(sample[:,0], sample[:,1])
 >>> print(test_result)
-class=TestResult name=Unnamed type=TwoSampleChiSquared binaryQualityMeasure=true p-value threshold=0.05 p-value=0.237197 description=[]
+class=TestResult name=Unnamed type=ChiSquared binaryQualityMeasure=true p-value threshold=0.05 p-value=0.855945 description=[]
 "
 
 // ---------------------------------------------------------------------
