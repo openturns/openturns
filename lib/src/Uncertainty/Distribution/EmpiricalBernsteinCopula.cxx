@@ -45,7 +45,7 @@ EmpiricalBernsteinCopula::EmpiricalBernsteinCopula()
   , logFactorsMinus1_()
 {
   setName("EmpiricalBernsteinCopula");
-  setCopulaSample(Sample(1, 1));
+  setCopulaSample(Sample(2, 1));
   computeRange();
 }
 
