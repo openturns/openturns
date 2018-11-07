@@ -1,6 +1,6 @@
 = New Features =
 
-== 1.12rc1 release (2018-10-02) == #release-1.12rc1
+== 1.12 release (2018-11-08) == #release-1.12
 
 === Library ===
 
@@ -52,7 +52,7 @@
 
 === Miscellaneous ===
  * CMake >= 2.8.7 is required to build OpenTURNS
- * The format of openturns.conf has changed to make a distiction between types of keys
+ * The format of openturns.conf has changed to make a distinction between types of keys
 
 === Bug fixes ===
  * #660 (Strange behavior of KernelSmoothing)
