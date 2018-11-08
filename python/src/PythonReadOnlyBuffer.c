@@ -537,14 +537,14 @@ struct module_state {
 static struct module_state _state;
 #endif
 
+#if PY_MAJOR_VERSION >= 3
+
 static PyObject *
 error_out(PyObject *m) {
     struct module_state *st = GETSTATE(m);
     PyErr_SetString(st->error, "something bad happened");
     return NULL;
 }
-
-#if PY_MAJOR_VERSION >= 3
 
 static PyMethodDef memoryview_methods[] = {
     {"error_out", (PyCFunction)error_out, METH_NOARGS, NULL},
