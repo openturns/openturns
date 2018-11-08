@@ -37,11 +37,6 @@ else
     with_tbb := -DUSE_TBB:BOOL=OFF
 endif
 
-# Disable NLopt_std tests on i386, it raises a roundoff-limited exception with AUGLAG_EQ algorithm
-ifeq ($(shell dpkg --print-architecture),i386)
-    test_discardflags := -E NLopt_std
-endif
-
 debRlib := $(CURDIR)/debian/tmp/usr/lib/R/site-library
 export R_LIBS=$(debRlib)
 PYVER = $(shell pyversions -d)
@@ -82,7 +77,6 @@ cmake-configure-%:
             -DLIB_VERSION=0.13.0 \
             -DOPENTURNS_SYSCONFIG_PATH:PATH=/etc/openturns-1.12 \
             -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp \
-            -DLINK_PYTHON_LIBRARY:BOOL=OFF \
             -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python$* \
             -DPYTHON_INCLUDE_DIR:PATH=$$(python$*-config --includes | sed -e 's/ .*//' -e 's/^-I//') \
             -DPYTHON_INCLUDE_DIR2:PATH=$$(python$*-config --includes | sed -e 's/ .*//' -e 's/^-I//') \
@@ -103,7 +97,7 @@ ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$${LD_LIBRARY_PATH}:}$(CURDIR)/debian/tmp/usr/lib \
 	  CTEST_OUTPUT_ON_FAILURE=1 \
 	  R_LIBS_SITE=$(CURDIR)/debian/tmp/usr/lib/R/site-library \
-	  $(MAKE) $(test_makeflags) -C build-python$* test ARGS="$(test_makeflags) $(test_discardflags) -R pyinstallcheck"
+	  $(MAKE) $(test_makeflags) -C build-python$* test ARGS="$(test_makeflags) -R pyinstallcheck"
 endif
 
 override_dh_makeshlibs:
@@ -129,7 +123,7 @@ ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	$(MAKE) $(test_makeflags) -C build-python$* tests
 	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$${LD_LIBRARY_PATH}:}$(CURDIR)/debian/tmp/usr/lib \
 	  CTEST_OUTPUT_ON_FAILURE=1 \
-	  $(MAKE) -C build-python$* test ARGS="$(test_makeflags) $(test_discardflags) -R cppcheck"
+	  $(MAKE) -C build-python$* test ARGS="$(test_makeflags) -R cppcheck"
 endif
 
 get-orig-source:
