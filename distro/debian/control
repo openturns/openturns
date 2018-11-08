@@ -6,7 +6,7 @@ Uploaders: Denis Barbier <barbier@debian.org>
 Build-Depends: debhelper (>= 10), dh-python, quilt, gfortran, g++ (>= 4:7),
  bison, flex, cmake, bc,
  libmuparser-dev, libxml2-dev, liblapack-dev, libblas-dev,
- libboost-math-dev, libhmat-oss-dev, libnlopt-dev,
+ libboost-math-dev, libhmat-oss-dev, libnlopt-cxx-dev,
  libtbb-dev [i386 amd64 ia64],
  r-base-core, python-dev, python3-dev, swig (>= 2.0.9)
 Standards-Version: 4.1.3
@@ -52,7 +52,7 @@ Package: libopenturns-dev
 Section: libdevel
 Architecture: any
 Depends: ${misc:Depends}, libopenturns0.13 (= ${binary:Version}),
-  libmuparser-dev, libxml2-dev, liblapack-dev, libblas-dev, libtbb-dev [i386 amd64 ia64], libhmat-oss-dev, libnlopt-dev
+  libmuparser-dev, libxml2-dev, liblapack-dev, libblas-dev, libtbb-dev [i386 amd64 ia64], libhmat-oss-dev, libnlopt-cxx-dev
 Replaces: python-openturns-dev (<< 1.5-2)
 Breaks: python-openturns-dev (<< 1.5-2)
 Description: headers and development libraries for OpenTURNS

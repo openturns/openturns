@@ -28,6 +28,10 @@ Files: lib/src/Base/Diff/Ev3/*
 Copyright: 2003-2006 Leo Liberti
 License: CPL-1.0
 
+Files: lib/src/Base/Func/openturns/exprtk.hpp
+Copyright: 1999-2018 Arash Partow
+License: Expat
+
 Files: lib/src/Base/Func/SpecFunc/Faddeeva.*
 Copyright: 2012 Massachusetts Institute of Technology
 License: Expat
@@ -362,4 +366,3 @@ License: GPL-3
  On Debian systems, the full text of the GNU General Public
  License version 2 can be found in the file
  `/usr/share/common-licenses/GPL-3'.
-
