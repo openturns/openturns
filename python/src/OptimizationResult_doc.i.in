@@ -43,7 +43,7 @@ absoluteError : float
 Returns
 -------
 absoluteErrorHistory : :class:`~openturns.Sample`
-    Value of the absolute error at each iteration of the solver."
+    Value of the absolute error at each function evaluation."
 
 // ---------------------------------------------------------------------
 
@@ -53,7 +53,7 @@ absoluteErrorHistory : :class:`~openturns.Sample`
 Returns
 -------
 constraintError : float
-    Constraint error, defined by :math:`\gamma_n=\|g(\vect{x}_n)\|_{\infty}` where :math:`\vect{x}_n` is the current approximation of the optimum and :math:`g` is the function that gather all the equality and inequality constraints."
+    Constraint error, defined by :math:`\gamma_n=\|g(\vect{x}_n)\|_{\infty}` where :math:`\vect{x}_n` is the current approximation of the optimum and :math:`g` is the function that gathers all the equality and inequality constraints (violated values only)."
 
 // ---------------------------------------------------------------------
 
@@ -63,7 +63,7 @@ constraintError : float
 Returns
 -------
 constraintErrorHistory : :class:`~openturns.Sample`
-    Value of the constrainte error at each iteration of the solver."
+    Value of the constraint error at each function evaluation."
 
 // ---------------------------------------------------------------------
 
@@ -123,7 +123,7 @@ relativeError : float
 Returns
 -------
 relativeErrorHistory : :class:`~openturns.Sample`
-    Value of the relative error at each iteration of the solver."
+    Value of the relative error at each function evaluation."
 
 // ---------------------------------------------------------------------
 
@@ -133,7 +133,7 @@ relativeErrorHistory : :class:`~openturns.Sample`
 Returns
 -------
 residualError : float
-    Residual error, defined by :math:`\eta^r_n=\|\nabla\cL{\vect{x}_n}\|_{\infty}` where :math:`\vect{x}_n` is the current approximation of the optimum and :math:`\cL` is the Lagrangian of the problem."
+    Relative error, defined by :math:`\epsilon^r_n=\frac{\|f(\vect{x}_{n+1})-f(\vect{x}_{n})\|}{\|f(\vect{x}_{n+1})\|}` if :math:`\|f(\vect{x}_{n+1})\|\neq 0`, else :math:`\epsilon^r_n=-1`."
 
 // ---------------------------------------------------------------------
 
@@ -143,7 +143,7 @@ residualError : float
 Returns
 -------
 residualErrorHistory : :class:`~openturns.Sample`
-    Value of the residual error at each iteration of the solver."
+    Value of the residual error at each function evaluation."
 
 // ---------------------------------------------------------------------
 

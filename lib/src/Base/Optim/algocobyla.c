@@ -32,8 +32,9 @@
  * http://plato.la.asu.edu/topics/problems/nlores.html
  */
 
-static char const rcsid[] =
-  "@(#) $Jeannot: cobyla.c,v 1.11 2004/04/18 09:51:36 js Exp $";
+/* static char const rcsid[] =
+  * "@(#) $Jeannot: cobyla.c,v 1.11 2004/04/18 09:51:36 js Exp $";
+  */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -914,7 +915,7 @@ int trstlp(int *n, int *m, double *a,
   double spabs;
   double temp, step;
   int icount;
-  int iout, i__, j, k;
+  int i__, j, k;
   int isave;
   int kk;
   int kl, kp, kw;
@@ -1133,7 +1134,6 @@ int trstlp(int *n, int *m, double *a,
       tempa = vmultc[k] / temp;
       if (ratio < 0. || tempa < ratio) {
         ratio = tempa;
-        iout = k;
       }
     }
     if (k >= 2) {

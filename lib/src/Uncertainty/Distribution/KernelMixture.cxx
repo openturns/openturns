@@ -434,6 +434,7 @@ Scalar KernelMixture::computeProbability(const Interval & interval) const
 Scalar KernelMixture::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
+  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
   if (!useApproximatePDFCDF_) return DistributionImplementation::computeScalarQuantile(prob, tail);
   const Scalar a = getRange().getLowerBound()[0];
   const Scalar b = getRange().getUpperBound()[0];

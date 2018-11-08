@@ -12,7 +12,7 @@
 
 # set NLOPT_INCLUDE_DIR
 find_path (NLOPT_INCLUDE_DIR
-  NAMES nlopt.h
+  NAMES nlopt.hpp
   DOC
     "Nlopt include directory"
 )
@@ -22,7 +22,7 @@ set (NLOPT_INCLUDE_DIRS ${NLOPT_INCLUDE_DIR})
 
 # set NLOPT_LIBRARY
 find_library (NLOPT_LIBRARY
-  NAMES nlopt nlopt_cxx
+  NAMES nlopt_cxx nlopt
   DOC
     "Nlopt library location"
 )

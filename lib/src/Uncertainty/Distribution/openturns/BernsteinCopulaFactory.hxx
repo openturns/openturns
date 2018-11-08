@@ -50,25 +50,27 @@ public:
 
   /** Build a Bernstein copula based on the given sample. The bin number is computed according to the inverse power rule */
   using DistributionFactoryImplementation::build;
-  virtual Distribution build();
+  virtual Distribution build() const;
+
+  virtual Distribution build(const Sample & sample) const;
 
   virtual Distribution build(const Sample & sample,
-                             const String & method = ResourceMap::GetAsString("BernsteinCopulaFactory-BinNumberSelectionMethod"),
-                             const Function & objective = Function());
+                             const String & method,
+                             const Function & objective = Function()) const;
 
   /** Build a Bernstein copula based on the given sample and bin number */
   virtual Distribution build(const Sample & sample,
-                             const UnsignedInteger binNumber);
+                             const UnsignedInteger binNumber) const;
 
   /** Build a Bernstein copula based on the given sample and bin number as a EmpiricalBernsteinCopula */
-  EmpiricalBernsteinCopula buildAsEmpiricalBernsteinCopula();
+  EmpiricalBernsteinCopula buildAsEmpiricalBernsteinCopula() const;
 
   EmpiricalBernsteinCopula buildAsEmpiricalBernsteinCopula(const Sample & sample,
       const String & method = ResourceMap::GetAsString("BernsteinCopulaFactory-BinNumberSelectionMethod"),
-      const Function & objective = Function());
+      const Function & objective = Function()) const;
 
   EmpiricalBernsteinCopula buildAsEmpiricalBernsteinCopula(const Sample & sample,
-      const UnsignedInteger binNumber);
+      const UnsignedInteger binNumber) const;
 
   /** Compute the number of bins according to the inverse power rule */
   static UnsignedInteger ComputeAMISEBinNumber(const Sample & sample);

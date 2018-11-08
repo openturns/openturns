@@ -2392,6 +2392,8 @@ Sample RandomMixture::computeQuantile(const Scalar qMin,
 Scalar RandomMixture::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
+  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions"; 
+
   // Special case for random mixture with only 1 atom: Y = alpha * X + beta
   // find Yq such that P(Y < Yq) = q
   // i.e. for alpha > 0

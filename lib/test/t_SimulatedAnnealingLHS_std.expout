@@ -30,7 +30,7 @@ design=     [ X0   X1   X2   ]
 24 : [ 0.62 0.38 0.66 ]
 PhiP=8.08648, C2=0.0804948, MinDist=0.132665
 optimal lhs=class=SimulatedAnnealingLHS name=Unnamed bounds=class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[0,0,0] upper bound=class=Point name=Unnamed dimension=3 values=[1,1,1] finite lower bound=[1,1,1] finite upper bound=[1,1,1] spaceFilling=class=SpaceFilling implementation=class=SpaceFillingC2 minimization=true profile=class=TemperatureProfile implementation=class=GeometricProfile name=Unnamed T0=10 c=0.95 iMax=2000
-Best design using geometric temperature and C2 space filling=     [ y0   y1   y2   ]
+Best design using geometric temperature and C2 space filling=     [ X0   X1   X2   ]
  0 : [ 0.06 0.1  0.3  ]
  1 : [ 0.26 0.82 0.26 ]
  2 : [ 0.34 0.62 0.74 ]
@@ -58,7 +58,7 @@ Best design using geometric temperature and C2 space filling=     [ y0   y1   y2
 24 : [ 0.54 0.7  0.02 ]
 Final criteria: C2=0.0395567, PhiP=4.64239, MinDist=0.215407
 optimal lhs=class=SimulatedAnnealingLHS name=Unnamed bounds=class=Interval name=Unnamed dimension=3 lower bound=class=Point name=Unnamed dimension=3 values=[0,0,0] upper bound=class=Point name=Unnamed dimension=3 values=[1,1,1] finite lower bound=[1,1,1] finite upper bound=[1,1,1] spaceFilling=class=SpaceFilling implementation=class=SpaceFillingPhiP p=10 profile=class=TemperatureProfile implementation=class=LinearProfile name=Unnamed T0=10 iMax=2000
-Best design using linear temperature profile and PhiP space filling=     [ y0   y1   y2   ]
+Best design using linear temperature profile and PhiP space filling=     [ X0   X1   X2   ]
  0 : [ 0.74 0.58 0.46 ]
  1 : [ 0.82 0.42 0.22 ]
  2 : [ 0.7  0.86 0.14 ]
@@ -85,7 +85,7 @@ Best design using linear temperature profile and PhiP space filling=     [ y0   
 23 : [ 0.58 0.34 0.94 ]
 24 : [ 0.66 0.94 0.66 ]
 Final criteria: C2=0.0572591, PhiP=5.45555, MinDist=0.183303
-Best design using linear temperature profile and PhiP space filling=     [ y0   y1   y2   ]
+Best design using linear temperature profile and PhiP space filling=     [ X0   X1   X2   ]
  0 : [ 0.94 0.22 0.7  ]
  1 : [ 0.58 0.18 0.9  ]
  2 : [ 0.7  0.5  0.5  ]

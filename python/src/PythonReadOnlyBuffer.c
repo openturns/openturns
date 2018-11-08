@@ -137,9 +137,9 @@ dim_repr(Py_ssize_t* dims, int size)
   char *ptr = s;
   int i;
 
-  ptr += sprintf(s, "%ld", dims[0]);
+  ptr += sprintf(s, "%ld", (long)dims[0]);
   for(i = 1; i < size; ++i)
-    ptr += sprintf(ptr, ",%ld", dims[i]);
+    ptr += sprintf(ptr, ",%ld", (long)dims[i]);
   return s;
 }
 
@@ -544,12 +544,12 @@ error_out(PyObject *m) {
     return NULL;
 }
 
+#if PY_MAJOR_VERSION >= 3
+
 static PyMethodDef memoryview_methods[] = {
     {"error_out", (PyCFunction)error_out, METH_NOARGS, NULL},
     {NULL, NULL, 0, NULL}
 };
-
-#if PY_MAJOR_VERSION >= 3
 
 static int memoryview_traverse(PyObject *m, visitproc visit, void *arg) {
     Py_VISIT(GETSTATE(m)->error);

@@ -50,6 +50,11 @@ endif ()
 
 target_link_libraries (OT ${OPENTURNS_LIBRARIES})
 target_link_libraries (OT ${OPENTURNS_PRIVATE_LIBRARIES})
+if (CMAKE_VERSION VERSION_LESS 2.8.11)
+  set_target_properties (OT PROPERTIES INTERFACE_INCLUDE_DIRECTORIES $<INSTALL_INTERFACE:include>)
+else ()
+  target_include_directories (OT INTERFACE $<INSTALL_INTERFACE:include>)
+endif ()
 
 # Build an empty executable to check link dependencies and completeness
 add_executable (linktest main.cxx)

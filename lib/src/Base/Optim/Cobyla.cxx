@@ -143,8 +143,8 @@ void Cobyla::run()
       const Point inPM(evaluationInputHistory_[i - 1]);
       const Point outPM(evaluationOutputHistory_[i - 1]);
       absoluteError = (inP - inPM).normInf();
-      relativeError = absoluteError / inP.normInf();
-      residualError = std::abs(outP[0] - outPM[0]);
+      relativeError = (inP.normInf() > 0.0) ? (absoluteError / inP.normInf()) : -1.0;
+      residualError = (std::abs(outP[0]) > 0.0) ? (std::abs(outP[0] - outPM[0]) / std::abs(outP[0])) : -1.0;
       constraintError = outP[1];
     }
     result_.store(inP, Point(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
@@ -278,7 +278,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   // only take violated constraints into account to compute error
   for (UnsignedInteger j = 0; j < constraintValue.getDimension(); ++ j)
   {
-    if (constraintValue[j] > 0.0) constraintValue[j] = 0.0;
+    constraintValue[j] = std::max(constraintValue[j], 0.0);
   }
   outPoint[1] = constraintValue.normInf();
 

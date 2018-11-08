@@ -574,6 +574,7 @@ Point UserDefined::getP() const
 Scalar UserDefined::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
+  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
   UnsignedInteger index = 0;
   const Scalar p = tail ? 1 - prob : prob;
   while (cumulativeProbabilities_[index] < p) ++index;

@@ -225,19 +225,19 @@ void TNC::run()
       const Point inPM(evaluationInputHistory_[i - 1]);
       const Point outPM(evaluationOutputHistory_[i - 1]);
       absoluteError = (inP - inPM).normInf();
-      relativeError = absoluteError / inP.normInf();
-      residualError = std::abs(outP[0] - outPM[0]);
+      relativeError = (inP.normInf() > 0.0) ? (absoluteError / inP.normInf()) : -1.0;
+      residualError = (std::abs(outP[0]) > 0.0) ? (std::abs(outP[0] - outPM[0]) / std::abs(outP[0])) : -1.0;
     }
     constraintError = 0.0;
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       if (finiteLow[j] && (inP[j] < low[j]))
       {
-        constraintError += low[j] - inP[j];
+        constraintError = std::max(constraintError, low[j] - inP[j]);
       }
       if (finiteUp[j] && (up[j] < inP[j]))
       {
-        constraintError += inP[j] - up[j];
+        constraintError = std::max(constraintError, inP[j] - up[j]);
       }
     } // for j
     result_.store(inP, Point(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
@@ -426,7 +426,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
     // Here we take the sign into account and convert the result into a Point in one shot
     objectiveGradient = problem.getObjective().gradient(inPoint) * Point(1, sign);
   }
-  catch(...)
+  catch (...)
   {
     return 1;
   }

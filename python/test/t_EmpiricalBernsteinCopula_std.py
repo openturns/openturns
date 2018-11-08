@@ -85,6 +85,8 @@ try:
         0.95, True)
     print("Unilateral confidence interval (upper tail)=", interval)
     print("beta=", Point(1, beta))
+    print("parameters=", copula.getParameter())
+    copula.setParameter(copula.getParameter())
 
     # Extract the marginals
     for i in range(dim):

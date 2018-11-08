@@ -27,6 +27,7 @@
 #include "openturns/ArcsineFactory.hxx"
 #include "openturns/BernoulliFactory.hxx"
 #include "openturns/BetaFactory.hxx"
+#include "openturns/BernsteinCopulaFactory.hxx"
 #include "openturns/BinomialFactory.hxx"
 #include "openturns/BurrFactory.hxx"
 #include "openturns/ChiFactory.hxx"
@@ -110,6 +111,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetConti
 {
   DistributionFactoryCollection collection(0);
   collection.add(AliMikhailHaqCopulaFactory());
+  collection.add(BernsteinCopulaFactory());
   collection.add(ClaytonCopulaFactory());
   collection.add(DirichletFactory());
   collection.add(FarlieGumbelMorgensternCopulaFactory());

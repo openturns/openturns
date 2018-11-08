@@ -3,7 +3,7 @@
 
 Available constructors:
     OptimizationProblem()
-    
+
     OptimizationProblem(*objective*)
 
     OptimizationProblem(*objective, equality, inequality, bounds*)

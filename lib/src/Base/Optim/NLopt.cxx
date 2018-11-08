@@ -221,7 +221,7 @@ void NLopt::run()
 
   opt.set_xtol_abs(getMaximumAbsoluteError());
   opt.set_xtol_rel(getMaximumRelativeError());
-  opt.set_ftol_abs(getMaximumResidualError());
+  opt.set_ftol_rel(getMaximumResidualError());
   opt.set_maxeval(getMaximumEvaluationNumber());
 
   if (getProblem().hasBounds())
@@ -286,7 +286,7 @@ void NLopt::run()
     nlopt::opt local_opt(local_algo, dimension);
     local_opt.set_xtol_abs(getMaximumAbsoluteError());
     local_opt.set_xtol_rel(getMaximumRelativeError());
-    local_opt.set_ftol_abs(getMaximumResidualError());
+    local_opt.set_ftol_rel(getMaximumResidualError());
     local_opt.set_maxeval(getMaximumEvaluationNumber());
     opt.set_local_optimizer(local_opt);
   }
@@ -297,7 +297,7 @@ void NLopt::run()
     nlopt::opt local_opt(local_algo, dimension);
     local_opt.set_xtol_abs(p_localSolver_->getMaximumAbsoluteError());
     local_opt.set_xtol_rel(p_localSolver_->getMaximumRelativeError());
-    local_opt.set_ftol_abs(p_localSolver_->getMaximumResidualError());
+    local_opt.set_ftol_rel(p_localSolver_->getMaximumResidualError());
     local_opt.set_maxeval(p_localSolver_->getMaximumEvaluationNumber());
     if (p_localSolver_->getInitialStep().getDimension() > 0)
     {
@@ -353,13 +353,28 @@ void NLopt::run()
   {
     const Point inP(evaluationInputHistory_[i]);
     const Point outP(evaluationOutputHistory_[i]);
+    constraintError = -1.0;
+    if (getProblem().hasEqualityConstraint())
+    {
+      const Point g(getProblem().getEqualityConstraint()(inP));
+      constraintError = std::max(constraintError, g.normInf());
+    }
+    if (getProblem().hasInequalityConstraint())
+    {
+      Point h(getProblem().getInequalityConstraint()(inP));
+      for (UnsignedInteger k = 0; k < getProblem().getInequalityConstraint().getOutputDimension(); ++ k)
+      {
+        h[k] = std::max(h[k], 0.0);// convention h(x)>=0 <=> admissibility
+      }
+      constraintError = std::max(constraintError, h.normInf());
+    }
     if (i > 0)
     {
       const Point inPM(evaluationInputHistory_[i - 1]);
       const Point outPM(evaluationOutputHistory_[i - 1]);
       absoluteError = (inP - inPM).normInf();
-      relativeError = absoluteError / inP.normInf();
-      residualError = std::abs(outP[0] - outPM[0]);
+      relativeError = (inP.normInf() > 0.0) ? (absoluteError / inP.normInf()) : -1.0;
+      residualError = (std::abs(outP[0]) > 0.0) ? (std::abs(outP[0] - outPM[0]) / std::abs(outP[0])) : -1.0;
     }
     result.store(inP, outP, absoluteError, relativeError, residualError, constraintError);
   }

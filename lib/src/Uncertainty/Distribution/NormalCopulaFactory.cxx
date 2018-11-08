@@ -61,17 +61,26 @@ Distribution NormalCopulaFactory::build() const
 NormalCopula NormalCopulaFactory::buildAsNormalCopula(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a NormalCopula distribution from an empty sample";
+  CorrelationMatrix R;
   try
   {
-    NormalCopula result(NormalCopula::GetCorrelationFromKendallCorrelation(sample.computeKendallTau()));
-    result.setDescription(sample.getDescription());
-    return result;
+    R = NormalCopula::GetCorrelationFromKendallCorrelation(sample.computeKendallTau());
   }
-  catch (...)
+  catch (NotSymmetricDefinitePositiveException &)
   {
     LOGWARN(OSS() << "Warning! Unable to build a NormalCopula using Kendall's tau, trying Spearman's rho instead.");
-    return NormalCopula(NormalCopula::GetCorrelationFromSpearmanCorrelation(sample.computeSpearmanCorrelation()));
+    try
+    {
+      R = NormalCopula::GetCorrelationFromSpearmanCorrelation(sample.computeSpearmanCorrelation());
+    }
+    catch (NotSymmetricDefinitePositiveException &)
+    {
+      throw InvalidArgumentException(HERE) << "Unable to build a NormalCopula using Spearman's rho";
+    }
   }
+  NormalCopula result(R);
+  result.setDescription(sample.getDescription());
+  return result;
 }
 
 NormalCopula NormalCopulaFactory::buildAsNormalCopula(const Point & parameters) const
