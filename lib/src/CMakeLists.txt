@@ -50,9 +50,9 @@ endif ()
 
 target_link_libraries (OT ${OPENTURNS_LIBRARIES})
 target_link_libraries (OT ${OPENTURNS_PRIVATE_LIBRARIES})
-if (CMAKE_VERSION VERSION_LESS 2.8.11)
-  set_target_properties (OT PROPERTIES INTERFACE_INCLUDE_DIRECTORIES $<INSTALL_INTERFACE:include>)
-else ()
+if (NOT CMAKE_VERSION VERSION_LESS 3.2)
+  # Else Debian packages of modules fail to build as destination is absolute
+  # https://gitlab.kitware.com/cmake/cmake/commit/dd089e08b578f20b7dc7d2ce658e3df05e346e35
   target_include_directories (OT INTERFACE $<INSTALL_INTERFACE:include>)
 endif ()
 
