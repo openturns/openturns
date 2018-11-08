@@ -51,7 +51,7 @@
 === Python module ===
 
 === Miscellaneous ===
- * CMake >= 2.8.7 is required to build OpenTURNS
+ * CMake >=2.8.8 is required to build OpenTURNS
  * The format of openturns.conf has changed to make a distinction between types of keys
 
 === Bug fixes ===
