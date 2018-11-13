@@ -9,8 +9,8 @@ variable :math:`Y^j` which is being studied for uncertainty. Here we
 attempt to measure linear relationships that exist between :math:`Y^j`
 and the different components :math:`X^i`.
 
-The principle of the multiple linear regression model (see for more
-details) consists of attempting to find the function that links the
+The principle of the multiple linear regression model consists of
+attempting to find the function that links the
 variable :math:`Y^j` to the :math:`n_x` variables
 :math:`X^1,\ldots,X^{n_X}` by means of a linear model:
 
