@@ -9,8 +9,8 @@ variable :math:`Y^j` which is being studied for uncertainty. Here we
 attempt to measure linear relationships that exist between :math:`Y^j`
 and the different components :math:`X^i`.
 
-The principle of the multiple linear regression model (see for more
-details) consists of attempting to find the function that links the
+The principle of the multiple linear regression model consists in
+attempting to find the function that links the
 variable :math:`Y^j` to the :math:`n_x` variables
 :math:`X^1,\ldots,X^{n_X}` by means of a linear model:
 
@@ -23,11 +23,12 @@ and standard deviation :math:`\sigma_{\varepsilon}^j` independent of the
 input variables :math:`X^i`. If the random variables
 :math:`X^1,\ldots,X^{n_X}` are independent and with finite variance
 :math:`\Var{X^k} = (\sigma_k)^2`, the variance of :math:`Y^j` can be
-written as follows:
+estimated as follows:
 
 .. math::
 
-    \Var{Y^j} = \sum_{i=1}^n (a_i^j)^2 \Var{X^i} + (\sigma_{\varepsilon}^j)^2
+    \Var{Y^j} = \sum_{i=1}^n (a_i^j)^2 \Var{X^i}
+
 
 The estimators for the regression coefficients
 :math:`a_0^j,\ldots,a_{n_X}^j`, and the standard deviation
@@ -46,7 +47,7 @@ which is estimated by:
 
 .. math::
 
-    \widehat{C}^j_k = \frac{\displaystyle (\widehat{a}_k^j)^2 \widehat{\sigma}_k^2}{\displaystyle \sum_{i=1}^{n_X} (a_i^j)^2 \widehat{\sigma}_i^2 + (\widehat{\sigma}_{\varepsilon}^j)^2}
+    \widehat{C}^j_k = \frac{\displaystyle (\widehat{a}_k^j)^2 \widehat{\sigma}_k^2}{\displaystyle \sum_{i=1}^{n_X} (a_i^j)^2 \widehat{\sigma}_i^2}
 
 
 where :math:`\widehat{\sigma}_i` describes the empirical standard

@@ -30,7 +30,7 @@ following three steps to be carried out:
 
 #. Determine the effect of other variables
    :math:`\left\{ X^j,\ j\neq i \right\}` on :math:`Y^j` by linear
-   regression (see ); when the values of variable
+   regression; when the values of variable
    :math:`\left\{ X^j,\ j\neq i \right\}` are known, the average
    forecast for the value of :math:`Y^j` is then available in the form
    of the equation:
@@ -58,8 +58,7 @@ following three steps to be carried out:
    correlation coefficient
    :math:`\widehat{\rho}_{Y^j-\widehat{Y^j},X^i-\widehat{X}^i}`
    estimated for the variables :math:`Y^j-\widehat{Y^j}` and
-   :math:`X^i-\widehat{X}^i` on the :math:`N`-sample of simulations (see
-   ).
+   :math:`X^i-\widehat{X}^i` on the :math:`N`-sample of simulations.
 
 One can then class the :math:`n_X` variables :math:`X^1,\ldots, X^{n_X}`
 according to the absolute value of the partial correlation coefficients:

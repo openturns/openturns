@@ -61,14 +61,16 @@ Point CorrelationAnalysis::SpearmanCorrelation(const Sample & inputSample,
 Point CorrelationAnalysis::SRC(const Sample & inputSample,
                                const Sample & outputSample)
 {
+  const UnsignedInteger dimension = inputSample.getDimension();
+  if (dimension < 2) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1";
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
-  const UnsignedInteger dimension = inputSample.getDimension();
   // Var(X+a) = Var(X); However for numerical stability, data are centered
   LinearLeastSquares regressionAlgorithm(inputSample - inputSample.computeMean(), outputSample);
   regressionAlgorithm.run();
   // Linear coefficients
-  const Point linear(regressionAlgorithm.getLinear() * Point(1, 1.0));
+  const Point linear(*regressionAlgorithm.getLinear().getImplementation());
+
   // Compute the output variance from the regression coefficients
   Scalar varOutput = 0.0;
   Point src(inputSample.computeVariance());
@@ -104,11 +106,16 @@ Point CorrelationAnalysis::PCC(const Sample & inputSample,
       remainingInput(i, 0) = inputSample(i, index);
     }
     // Build the linear models
-    const LinearModel outputVersusTruncatedInput(LinearModelFactory().build(truncatedInput, outputSample));
-    const LinearModel remainingVersusTruncatedInput(LinearModelFactory().build(truncatedInput, remainingInput));
+    LinearLeastSquares outputVersusTruncatedInput(truncatedInput, outputSample);
+    outputVersusTruncatedInput.run();
+
+    LinearLeastSquares remainingVersusTruncatedInput(truncatedInput, remainingInput);
+    remainingVersusTruncatedInput.run();
+
+    const Sample residualOutput(outputSample - outputVersusTruncatedInput.getResponseSurface()(truncatedInput));
+    const Sample residualRemaining(remainingInput - remainingVersusTruncatedInput.getResponseSurface()(truncatedInput));
+
     // Compute the correlation between the residuals
-    const Sample residualOutput(outputVersusTruncatedInput.getResidual(truncatedInput, outputSample));
-    const Sample residualRemaining(remainingVersusTruncatedInput.getResidual(truncatedInput, remainingInput));
     pcc[index] = PearsonCorrelation(residualOutput, residualRemaining)[0];
   }
   return pcc;
@@ -118,9 +125,23 @@ Point CorrelationAnalysis::PCC(const Sample & inputSample,
 Point CorrelationAnalysis::SRRC(const Sample & inputSample,
                                 const Sample & outputSample)
 {
+  const UnsignedInteger dimension = inputSample.getDimension();
+  if (dimension < 2) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1";
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
-  return SRC(inputSample.rank(), outputSample.rank());
+
+
+
+  // Rank values are in [0,1,2,...,n-1] with n the size
+  const Sample inputSampleRank(inputSample.rank());
+  const Sample outputSampleRank(outputSample.rank());
+  LinearLeastSquares regressionAlgorithm(inputSampleRank - inputSampleRank.computeMean(), outputSampleRank);
+  regressionAlgorithm.run();
+  // Linear coefficients
+  const Point linear(*regressionAlgorithm.getLinear().getImplementation());
+  // For SRRC, the marginal input/output variances is the same constant as we are working
+  // on rank values, so no need to compute the variances !
+  return linear.normalizeSquare();;
 }
 
 /* Compute the Partial Rank Correlation Coefficients (PRCC) between the input sample and the output sample */

@@ -31,6 +31,7 @@ Sensitivity analysis
     ranking_pearson
     ranking_spearman
     ranking_src
+    ranking_srrc
     ranking_pcc
     ranking_prcc
     sensitivity_sobol
