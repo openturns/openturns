@@ -276,7 +276,7 @@ Examples
 >>> sample1 = ot.Normal().getSample(20)
 >>> sample2 = ot.Normal(0.1, 1.1).getSample(30)
 >>> ot.FittingTest.TwoSamplesKolmogorov(sample1, sample2)
-class=TestResult name=Unnamed type=Kolmogorov Normal/Normal binaryQualityMeasure=true p-value threshold=0.05 p-value=0.554765 description=[sampleNormal vs sample Normal]"
+class=TestResult name=Unnamed type=TwoSamplesKolmogorov binaryQualityMeasure=true p-value threshold=0.05 p-value=0.554765 description=[sampleNormal vs sample Normal]"
 
 // ---------------------------------------------------------------------
 

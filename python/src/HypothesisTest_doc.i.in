@@ -480,7 +480,7 @@ Examples
 >>> secondSample = ot.Normal().getSample(30)
 >>> test_result = ot.HypothesisTest.Smirnov(firstSample, secondSample)
 >>> print(test_result)
-class=TestResult name=Unnamed type=TwoSampleSmirnov binaryQualityMeasure=true p-value threshold=0.05 p-value=0.807963 description=[]
+class=TestResult name=Unnamed type=TwoSamplesKolmogorov binaryQualityMeasure=true p-value threshold=0.05 p-value=0.739538 description=[sampleNormal vs sample Normal]
 "
 
 // ---------------------------------------------------------------------
@@ -533,3 +533,49 @@ Examples
 >>> print(test_result)
 class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.442067 description=[]
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HypothesisTest::TwoSamplesKolmogorov
+"Test whether two samples follows the same distribution.
+
+If the p-value is high, then we cannot reject the hypothesis that the
+distributions of the two samples are the same.
+
+Parameters
+----------
+sample1 : 2-d float array
+    A continuous distribution sample.
+sample2 : 2-d float array
+    Another continuous distribution sample, can be of different size.
+level : float, :math:`0 \leq \alpha \leq 1`, optional
+    This is the risk :math:`\alpha` of committing a Type I error,
+    that is an incorrect rejection of a true null hypothesis.
+    Default value is 0.05
+
+Returns
+-------
+test_result : :class:`~openturns.TestResult`
+    Test result.
+
+Notes
+-----
+This statistical test might be used to compare two samples :math:`\{x_1, \ldots, x_N\}`
+and :math:`\{x^{'}_1, \ldots, x^{'}_M\}` (of sizes not necessarily equal).
+The goal is to determine whether these two samples come from
+the same probability distribution or not. (without any information of the underlying
+distribution under the null hypothesis)
+
+As application, if null hypothesis could not be rejected, the two samples could be
+be aggregated in order to increase the robustness of further statistical analysis.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample1 = ot.Normal().getSample(20)
+>>> sample2 = ot.Normal(0.1, 1.1).getSample(30)
+>>> ot.HypothesisTest.TwoSamplesKolmogorov(sample1, sample2)
+class=TestResult name=Unnamed type=TwoSamplesKolmogorov binaryQualityMeasure=true p-value threshold=0.05 p-value=0.554765 description=[sampleNormal vs sample Normal]"
+
+// ---------------------------------------------------------------------

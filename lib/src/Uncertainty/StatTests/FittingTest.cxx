@@ -31,6 +31,7 @@
 #include "openturns/DistFunc.hxx"
 #include "openturns/NearestNeighbour1D.hxx"
 #include "openturns/OTconfig.hxx"
+#include "openturns/HypothesisTest.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -310,47 +311,11 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
 
 /* Two-sample Kolmogorov–Smirnov test */
 TestResult FittingTest::TwoSamplesKolmogorov(const Sample & sample1,
-    const Sample & sample2,
-    const Scalar level)
+                                             const Sample & sample2,
+                                             const Scalar level)
 {
-  if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Error: level must be in ]0, 1[, here level=" << level;
-  if ((sample1.getDimension() != 1) || (sample2.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test works only with 1D samples";
-  if ((sample1.getSize() == 0) || (sample2.getSize() == 0)) throw InvalidArgumentException(HERE) << "Error: the sample is empty";
-  const UnsignedInteger size1 = sample1.getSize();
-  const UnsignedInteger size2 = sample2.getSize();
-  Sample sampleAllSorted(sample1.sort());
-  sampleAllSorted.add(sample2.sort());
-  Scalar value = 0.0;
-  for (UnsignedInteger i = 0; i < size1 + size2; ++ i)
-  {
-    const Scalar sampleAllSorted_i = sampleAllSorted(i, 0);
-    Scalar cdf1 = 0.0;
-    for (UnsignedInteger j = 0; j < size1; ++ j)
-    {
-      if (sampleAllSorted(j, 0) <= sampleAllSorted_i)
-      {
-        cdf1 = (j + 1.0) / size1;
-      }
-      else
-        break;
-    }
-    Scalar cdf2 = 0.0;
-    for (UnsignedInteger j = 0; j < size2; ++ j)
-    {
-      if (sampleAllSorted(size1 + j, 0) <= sampleAllSorted_i)
-      {
-        cdf2 = (j + 1.0) / size2;
-      }
-      else
-        break;
-    }
-    value = std::max(value, std::abs(cdf1 - cdf2));
-  }
-  const Scalar pValue = DistFunc::pKolmogorov((size1 * size2) / (size1 + size2), value, true);
-  TestResult result(OSS(false) << "Kolmogorov " << sample1.getName() << "/" << sample2.getName(), pValue > level, pValue, level);
-  result.setDescription(Description(1, String(OSS() << "sample" << sample1.getName() << " vs sample " << sample2.getName())));
-  LOGDEBUG(OSS() << result);
-  return result;
+  LOGWARN(OSS() << "FittingTest::TwoSamplesKolmogorov(x, y, level) is deprecated, use HypothesisTest::TwoSamplesKolmogorov(x, y, level) instead");
+  return HypothesisTest::TwoSamplesKolmogorov(sample1, sample2, level);
 }
 
 /* Chi-squared test */

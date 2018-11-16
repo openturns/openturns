@@ -52,10 +52,16 @@ public:
                             const Sample & secondSample,
                             const Scalar level = 0.05);
 
+  /** @deprecated method : use TwoSamplesKolmogorov */
   /** Smirnov test if two scalar samples (of sizes not necessarily equal) follow the same distribution (only for continuous distributions) */
   static TestResult Smirnov(const Sample & firstSample,
                             const Sample & secondSample,
                             const Scalar level = 0.05);
+
+  /** Two-sample Kolmogorov–Smirnov test */
+  static TestResult TwoSamplesKolmogorov (const Sample & sample1,
+                                          const Sample & sample2,
+                                          const Scalar level = 0.05);
 
   /** Spearman test between 2 scalar samples : test the monotonous relation   */
   static TestResult Spearman(const Sample & firstSample,
@@ -109,6 +115,7 @@ protected:
                                        const Sample & secondSample,
                                        const Scalar level,
                                        const String & testName);
+
   HypothesisTest();
 }; /* class HypothesisTest */
 
