@@ -2,7 +2,7 @@
 "Sensitivity analysis using Jansen method.
 
 Available constructors:
-    JansenSensitivityAlgorithm(*inputDesign, outputDesign, N, computeSecondOrder*)
+    JansenSensitivityAlgorithm(*inputDesign, outputDesign, N*)
 
     JansenSensitivityAlgorithm(*distribution, N, model, computeSecondOrder*)
 
