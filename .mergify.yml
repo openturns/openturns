@@ -1,0 +1,11 @@
+pull_request_rules:
+  - name: automatic merge
+    conditions:
+      - status-success=continuous-integration/circleci/pr
+      - status-success=continuous-integration/appveyor/pr
+      - status-success=continuous-integration/travis/pr
+      - "#approved-by-reviews>=2"
+      - label!=in-progress
+    actions:
+       merge:
+          method: merge
