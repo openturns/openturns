@@ -72,14 +72,14 @@ Point CorrelationAnalysis::SRC(const Sample & inputSample,
   const Point linear(*regressionAlgorithm.getLinear().getImplementation());
 
   // Compute the output variance from the regression coefficients
-  Scalar varOutput = 0.0;
   Point src(inputSample.computeVariance());
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
     src[i] *= linear[i] * linear[i];
-    varOutput += src[i];
-  }
-  src /= varOutput;
+  const Scalar varOutput = outputSample.computeVariance()[0];
+  if (varOutput > 0.0)
+    src /= varOutput;
+  else
+    throw InvalidArgumentException(HERE) << "No output variance";
   return src;
 }
 
@@ -129,19 +129,7 @@ Point CorrelationAnalysis::SRRC(const Sample & inputSample,
   if (dimension < 2) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1";
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
-
-
-
-  // Rank values are in [0,1,2,...,n-1] with n the size
-  const Sample inputSampleRank(inputSample.rank());
-  const Sample outputSampleRank(outputSample.rank());
-  LinearLeastSquares regressionAlgorithm(inputSampleRank - inputSampleRank.computeMean(), outputSampleRank);
-  regressionAlgorithm.run();
-  // Linear coefficients
-  const Point linear(*regressionAlgorithm.getLinear().getImplementation());
-  // For SRRC, the marginal input/output variances is the same constant as we are working
-  // on rank values, so no need to compute the variances !
-  return linear.normalizeSquare();;
+  return SRC(inputSample.rank(), outputSample.rank());
 }
 
 /* Compute the Partial Rank Correlation Coefficients (PRCC) between the input sample and the output sample */
