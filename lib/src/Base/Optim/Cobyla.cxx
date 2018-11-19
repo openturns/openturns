@@ -286,6 +286,10 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   algorithm->evaluationInputHistory_.add(inPoint);
   algorithm->evaluationOutputHistory_.add(outPoint);
   int returnValue = 0;
+  if (algorithm->progressCallback_.first)
+  {
+    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumEvaluationNumber(), algorithm->progressCallback_.second);
+  }
   if (algorithm->stopCallback_.first)
   {
     Bool stop = algorithm->stopCallback_.first(algorithm->stopCallback_.second);
