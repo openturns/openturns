@@ -4,7 +4,7 @@ pull_request_rules:
       - status-success=continuous-integration/circleci/pr
       - status-success=continuous-integration/appveyor/pr
       - status-success=continuous-integration/travis/pr
-      - "#approved-by-reviews>=2"
+      - "#approved-reviews-by>=2"
       - label!=in-progress
     actions:
        merge:
