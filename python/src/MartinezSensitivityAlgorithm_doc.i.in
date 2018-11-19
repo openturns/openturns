@@ -2,7 +2,7 @@
 "Sensitivity analysis using Martinez method.
 
 Available constructors:
-    MartinezSensitivityAlgorithm(*inputDesign, outputDesign, N, computeSecondOrder*)
+    MartinezSensitivityAlgorithm(*inputDesign, outputDesign, N*)
 
     MartinezSensitivityAlgorithm(*distribution, N, model, computeSecondOrder*)
 

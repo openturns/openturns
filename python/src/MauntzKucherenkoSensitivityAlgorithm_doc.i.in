@@ -2,7 +2,7 @@
 "Sensitivity analysis using MauntzKucherenko method.
 
 Available constructors:
-    MauntzKucherenkoSensitivityAlgorithm(*inputDesign, outputDesign, N, computeSecondOrder*)
+    MauntzKucherenkoSensitivityAlgorithm(*inputDesign, outputDesign, N*)
 
     MauntzKucherenkoSensitivityAlgorithm(*distribution, N, model, computeSecondOrder*)
 

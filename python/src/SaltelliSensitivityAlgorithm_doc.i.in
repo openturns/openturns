@@ -2,7 +2,7 @@
 "Sensitivity analysis using Saltelli method.
 
 Available constructors:
-    SaltelliSensitivityAlgorithm(*inputDesign, outputDesign, N, computeSecondOrder*)
+    SaltelliSensitivityAlgorithm(*inputDesign, outputDesign, N*)
 
     SaltelliSensitivityAlgorithm(*distribution, N, model, computeSecondOrder*)
 
