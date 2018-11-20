@@ -31,6 +31,7 @@ Optimization solvers
     SQP
     TNC
     NLopt
+    OPTpp
     MultiStart
     EfficientGlobalOptimization
 

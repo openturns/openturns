@@ -90,6 +90,9 @@ try:
     except ImportError:
         print('no')
 
+    # check that opt++ was found
+    print('11: optimization (OPT++)'.ljust(width), end=' ')
+    print('OK' if ot.OPTpp.IsAvailable() else 'no')
 except:
     import os
     import traceback

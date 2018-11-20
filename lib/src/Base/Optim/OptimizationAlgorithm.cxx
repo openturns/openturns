@@ -20,8 +20,9 @@
  */
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Cobyla.hxx"
-#include "openturns/NLopt.hxx"
 #include "openturns/TNC.hxx"
+#include "openturns/NLopt.hxx"
+#include "openturns/OPTpp.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -233,6 +234,10 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
   {
     solver = NLopt(solverName);
   }
+  else if (OPTpp::IsAvailable() && OPTpp::GetAlgorithmNames().contains(solverName))
+  {
+    solver = OPTpp(solverName);
+  }
   else
     throw InvalidArgumentException(HERE) << "Unknown optimization solver:" << solverName;
   return solver;
@@ -246,6 +251,8 @@ Description OptimizationAlgorithm::GetAlgorithmNames()
   names.add("TNC");
   if (NLopt::IsAvailable())
     names.add(NLopt::GetAlgorithmNames());
+  if (OPTpp::IsAvailable())
+    names.add(OPTpp::GetAlgorithmNames());
   return names;
 }
 

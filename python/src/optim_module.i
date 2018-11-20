@@ -58,6 +58,7 @@
 %include SQP.i
 %include MultiStart.i
 %include NLopt.i
+%include OPTpp.i
 
 /* Base/Geom */
 %import geom_module.i

@@ -9,6 +9,9 @@ ot_add_source_file (openturns_library_ok.c)
 add_subdirectory (Base)
 add_subdirectory (Uncertainty)
 
+# OptPDS and OptGSS cannot both be included as OptDirect is redefined
+set_source_files_properties (Base/Optim/OptGSS.cxx PROPERTIES COTIRE_EXCLUDED ON)
+
 # SymbolicParserExprTk.cxx includes exprtk.hpp which is huge, exclude it from cotire builds
 # It also causes problems on Windows
 if (OPENTURNS_HAVE_EXPRTK)

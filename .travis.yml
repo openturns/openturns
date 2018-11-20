@@ -63,6 +63,8 @@ install:
   - cmake -DCMAKE_INSTALL_PREFIX=$HOME/.local -DINSTALL_LIB_DIR=$HOME/.local/lib -DBUILD_SHARED_LIBS:BOOL=ON -DNLOPT_PYTHON=OFF -DNLOPT_OCTAVE=OFF -DNLOPT_GUILE=OFF -DCMAKE_MACOSX_RPATH=ON .
   - make install -j4
   - popd
+# optpp with osx build patch
+  - git clone https://github.com/openturns/optpp.git && cd optpp && autoreconf -i && ./configure --disable-static --enable-shared --prefix=$HOME/.local && make -j4 && make install && cd ..
 
 # use tbb from sources for osx (not brew)
   - if test "$TRAVIS_OS_NAME" = "osx"; then
@@ -88,6 +90,8 @@ script:
               -DHMAT_DIR=~/.local/lib/cmake/hmat
               -DNLOPT_LIBRARY=~/.local/lib/libnlopt.so
               -DNLOPT_INCLUDE_DIR=~/.local/include
+              -DOPTPP_LIBRARY=~/.local/lib/libopt.so -DOPTPP_NEWMAT_LIBRARY=~/.local/lib/libnewmat.so
+              -DOPTPP_INCLUDE_DIR=~/.local/include
               -DUSE_COTIRE=ON
               -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j2"
               -DBUILD_PYTHON=${BUILD_PYTHON}
@@ -101,6 +105,8 @@ script:
               -DLAPACK_LIBRARIES="-framework Accelerate"
               -DNLOPT_LIBRARY=~/.local/lib/libnlopt.dylib
               -DNLOPT_INCLUDE_DIR=~/.local/include
+              -DOPTPP_LIBRARY=~/.local/lib/libopt.dylib -DOPTPP_NEWMAT_LIBRARY=~/.local/lib/libnewmat.dylib
+              -DOPTPP_INCLUDE_DIR=~/.local/include
               -DUSE_SPHINX=OFF
               -DBISON_EXECUTABLE=/usr/local/opt/bison/bin/bison
               -DFLEX_EXECUTABLE=/usr/local/opt/flex/bin/flex

@@ -53,68 +53,68 @@ public:
   virtual void run();
 
   /** Computes the Lagrange multipliers associated with the constraints as a post-processing of the result. Actual algorithms should overload this method. */
-  Point computeLagrangeMultipliers(const Point & x) const;
+  virtual Point computeLagrangeMultipliers(const Point & x) const;
 
   /** Starting point accessor */
-  Point getStartingPoint() const;
+  virtual Point getStartingPoint() const;
 
   /** Starting point accessor */
-  void setStartingPoint(const Point & startingPoint);
+  virtual void setStartingPoint(const Point & startingPoint);
 
   /** Problem accessor */
-  OptimizationProblem getProblem() const;
+  virtual OptimizationProblem getProblem() const;
   virtual void setProblem(const OptimizationProblem & problem);
 
   /** Result accessor */
-  OptimizationResult getResult() const;
+  virtual OptimizationResult getResult() const;
 
   /** Result accessor */
-  void setResult(const OptimizationResult & result);
+  virtual void setResult(const OptimizationResult & result);
 
   /** Maximum iterations number accessor */
-  void setMaximumIterationNumber(const UnsignedInteger maximumIterationNumber);
-  UnsignedInteger getMaximumIterationNumber() const;
+  virtual void setMaximumIterationNumber(const UnsignedInteger maximumIterationNumber);
+  virtual UnsignedInteger getMaximumIterationNumber() const;
 
   /** Maximum evaluations number accessor */
-  void setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber);
-  UnsignedInteger getMaximumEvaluationNumber() const;
+  virtual void setMaximumEvaluationNumber(const UnsignedInteger maximumEvaluationNumber);
+  virtual UnsignedInteger getMaximumEvaluationNumber() const;
 
   /** Maximum absolute error accessor */
-  Scalar getMaximumAbsoluteError() const;
+  virtual Scalar getMaximumAbsoluteError() const;
 
   /** Maximum absolute error accessor */
-  void setMaximumAbsoluteError(const Scalar maximumAbsoluteError);
+  virtual void setMaximumAbsoluteError(const Scalar maximumAbsoluteError);
 
   /** Maximum relative error accessor */
-  Scalar getMaximumRelativeError() const;
+  virtual Scalar getMaximumRelativeError() const;
 
   /** Maximum relative error accessor */
-  void setMaximumRelativeError(const Scalar maximumRelativeError);
+  virtual void setMaximumRelativeError(const Scalar maximumRelativeError);
 
   /** Maximum residual error accessor */
-  Scalar getMaximumResidualError() const;
+  virtual Scalar getMaximumResidualError() const;
 
   /** Maximum residual error accessor */
-  void setMaximumResidualError(const Scalar maximumResidualError);
+  virtual void setMaximumResidualError(const Scalar maximumResidualError);
 
   /** Maximum constraint error accessor */
-  Scalar getMaximumConstraintError() const;
+  virtual Scalar getMaximumConstraintError() const;
 
   /** Maximum constraint error accessor */
-  void setMaximumConstraintError(const Scalar maximumConstraintError);
+  virtual void setMaximumConstraintError(const Scalar maximumConstraintError);
 
   /** String converter */
-  String __repr__() const;
+  virtual String __repr__() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  virtual void save(Advocate & adv) const;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  virtual void load(Advocate & adv);
 
   /** Verbose accessor */
-  Bool getVerbose() const;
-  void setVerbose(const Bool verbose);
+  virtual Bool getVerbose() const;
+  virtual void setVerbose(const Bool verbose);
 
   /** Progress callback */
   typedef void (*ProgressCallback)(Scalar, void * state);
