@@ -258,7 +258,7 @@ void SQP::run()
     // callbacks
     if (progressCallback_.first)
     {
-      progressCallback_.first((100.0 * iterationNumber) / getMaximumIterationNumber(), progressCallback_.second);
+      progressCallback_.first((100.0 * evaluationNumber) / getMaximumEvaluationNumber(), progressCallback_.second);
     }
     if (stopCallback_.first)
     {

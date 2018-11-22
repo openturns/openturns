@@ -28,9 +28,11 @@ print('-- local search x*=', result.getOptimalPoint(),
 
 # multistart
 distribution = ot.Normal([0.0] * dim, [2.0] * dim, ot.CorrelationMatrix(dim))
-experiment = ot.LHSExperiment(distribution, 20)
+size = 20
+experiment = ot.LHSExperiment(distribution, size)
 startingPoints = experiment.generate()
 algo = ot.MultiStart(solver, startingPoints)
+algo.setMaximumEvaluationNumber(size*algo.getMaximumEvaluationNumber())
 algo.run()
 result = algo.getResult()
 print('-- multistart x*=', result.getOptimalPoint(),

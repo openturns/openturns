@@ -73,9 +73,12 @@ void MultiStart::run()
   resultCollection_.clear();
   Scalar bestValue = getProblem().isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
   const UnsignedInteger size = startingPoints_.getSize();
+  const UnsignedInteger initialEvaluationNumber = getProblem().getObjective().getEvaluationCallsNumber();
+  UnsignedInteger evaluationNumber = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     solver.setStartingPoint(startingPoints_[i]);
+    solver.setMaximumEvaluationNumber(getMaximumEvaluationNumber() - evaluationNumber);
     try
     {
       solver.run();
@@ -84,6 +87,7 @@ void MultiStart::run()
     {
       continue;
     }
+
     OptimizationResult result(solver.getResult());
     resultCollection_.add(result);
     Scalar currentValue = result.getOptimalValue()[0];
@@ -93,6 +97,27 @@ void MultiStart::run()
       bestValue = currentValue;
       setResult(result);
       LOGINFO(OSS() << "Best initial point so far=" << result.getOptimalPoint() << " value=" << result.getOptimalValue());
+    }
+
+    evaluationNumber += getProblem().getObjective().getEvaluationCallsNumber() - initialEvaluationNumber;
+    if (evaluationNumber > getMaximumEvaluationNumber())
+    {
+      break;
+    }
+
+    // callbacks
+    if (progressCallback_.first)
+    {
+      progressCallback_.first((100.0 * evaluationNumber) / getMaximumEvaluationNumber(), progressCallback_.second);
+    }
+    if (stopCallback_.first)
+    {
+      Bool stop = stopCallback_.first(stopCallback_.second);
+      if (stop)
+      {
+        LOGWARN(OSS() << "MultiStart was stopped by user");
+        break;
+      }
     }
   }
   LOGINFO(OSS() << resultCollection_.getSize() << " out of " << size << " local searches succeeded");

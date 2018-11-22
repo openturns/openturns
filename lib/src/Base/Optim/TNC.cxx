@@ -441,6 +441,10 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   algorithm->evaluationOutputHistory_.add(outPoint);
 
   // callbacks
+  if (algorithm->progressCallback_.first)
+  {
+    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumEvaluationNumber(), algorithm->progressCallback_.second);
+  }
   if (algorithm->stopCallback_.first)
   {
     Bool stop = algorithm->stopCallback_.first(algorithm->stopCallback_.second);

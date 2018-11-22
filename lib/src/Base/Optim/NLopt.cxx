@@ -495,6 +495,10 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
 
 #ifdef OPENTURNS_HAVE_NLOPT
   // callbacks
+  if (algorithm->progressCallback_.first)
+  {
+    algorithm->progressCallback_.first((100.0 * algorithm->evaluationInputHistory_.getSize()) / algorithm->getMaximumEvaluationNumber(), algorithm->progressCallback_.second);
+  }
   if (algorithm->stopCallback_.first)
   {
     Bool stop = algorithm->stopCallback_.first(algorithm->stopCallback_.second);
