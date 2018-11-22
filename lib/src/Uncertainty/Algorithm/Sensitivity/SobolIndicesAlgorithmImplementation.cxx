@@ -809,6 +809,71 @@ Graph SobolIndicesAlgorithmImplementation::DrawImportanceFactors(const Point & v
   return importanceFactorsGraph;
 }
 
+Graph SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients(const PointWithDescription & correlationCoefficients,
+                                                                       const String & title)
+{
+  return DrawCorrelationCoefficients(correlationCoefficients, correlationCoefficients.getDescription(), title);
+}
+
+Graph SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients(const Point & values,
+                                                                       const Description & names,
+                                                                       const String & title)
+{
+  /* build data for the pie */
+  const UnsignedInteger dimension = values.getDimension();
+  if (dimension == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw an importance factors pie based on empty data.";
+  if ((names.getSize() != 0) && (names.getSize() != dimension)) throw InvalidArgumentException(HERE) << "Error: the names size must match the value dimension.";
+
+
+  Graph graph(title, "inputs", "correlation coefficient", true, "");
+
+  // Define cloud
+  Sample data(dimension, 2);
+  for (UnsignedInteger k = 0; k < dimension; ++k)
+  {
+    data(k, 0) = k + 1.0;
+    data(k, 1) = values[k];
+  }
+  Cloud cloud(data, "red", "circle", "");
+  graph.add(cloud);
+
+  // Min & max rhos
+  const Scalar minRho = data.getMin()[1];
+  const Scalar maxRho = data.getMax()[1];
+
+  // Add text description
+  for (UnsignedInteger k = 0; k < dimension; ++k)
+  {
+    data(k, 0) = (k + 1.0) + dimension / 20.0;
+    data(k, 1) = 0.5 * values[k];
+  }
+
+  Text text(data, names, "right");
+  text.setColor("black");
+  graph.add(text);
+
+  // Set bounding box
+  Point lowerBound(2);
+  lowerBound[0] = 0.8;
+  if (minRho < 0)
+      lowerBound[1] = -1.1;
+  else
+      lowerBound[1] = -0.1;
+
+  Point upperBound(2, 1.1);
+  upperBound[0] = dimension + 1.6 * (dimension - 1.0) / (dimension + 2.0);
+
+  if (maxRho > 0)
+      upperBound[1] = 1.1;
+  else
+      upperBound[1] = 0.1;
+
+  graph.setBoundingBox(Interval(lowerBound, upperBound));
+
+  return graph;
+}
+
+
 void SobolIndicesAlgorithmImplementation::setUseAsymptoticDistribution(Bool useAsymptoticDistribution)
 {
   if (useAsymptoticDistribution_ != useAsymptoticDistribution)

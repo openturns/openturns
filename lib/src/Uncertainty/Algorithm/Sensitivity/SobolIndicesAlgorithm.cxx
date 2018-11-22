@@ -222,4 +222,17 @@ Graph SobolIndicesAlgorithm::DrawImportanceFactors(const Point & values,
   return SobolIndicesAlgorithmImplementation::DrawImportanceFactors(values, names, title);
 }
 
+Graph SobolIndicesAlgorithm::DrawCorrelationCoefficients(const PointWithDescription & correlationCoefficients,
+                                                         const String & title)
+{
+  return SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients(correlationCoefficients, title);
+}
+
+Graph SobolIndicesAlgorithm::DrawCorrelationCoefficients(const Point & values,
+                                                         const Description & names,
+                                                        const String & title)
+{
+  return SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients(values, names, title);
+}
+
 END_NAMESPACE_OPENTURNS
