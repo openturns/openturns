@@ -746,7 +746,7 @@ void DrawableImplementation::InitializeValidParameterList()
 
   /* Accepted fill styles */
   ValidFillStyles.setName("ValidFillStyles");
-  ValidFillStyles.add(ResourceMap::GetAsString("Drawable-DefaultFillStyle"));
+  ValidFillStyles.add("solid");
   ValidFillStyles.add("shaded");
 }
 
