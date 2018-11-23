@@ -20,7 +20,7 @@
 === Miscellaneous ===
 
 === Bug fixes ===
-
+ * #979 (Viewer does not handle BarPlot's fillStyle)
 
 == 1.12 release (2018-11-08) == #release-1.12
 
