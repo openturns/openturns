@@ -322,8 +322,8 @@ class View(object):
                 if 'linestyle' in bar_kwargs_default:
                     bar_kwargs.pop('linestyle')
                 if ('linestyle' not in plot_kwargs_default) and ('ls' not in plot_kwargs_default):
-                    lineStyleDict = {'solid': 'solid', 'dashed': 'dashed', 'dotted':
-                                     'dotted', 'dotdash': 'dashdot', 'longdash': 'dashed', 'twodash': 'dashed'}
+                    lineStyleDict = {'solid': '-', 'dashed': '--', 'dotted': ':',
+                                     'dotdash': '-.', 'longdash': '--', 'twodash': '--'}
                     if drawable.getLineStyle() in lineStyleDict:
                         bar_kwargs['linestyle'] = lineStyleDict[
                             drawable.getLineStyle()]
@@ -331,15 +331,20 @@ class View(object):
                         warnings.warn(
                             '-- Unknown line style: ' + drawable.getLineStyle())
 
+                # fillstyle
+                if drawable.getFillStyle() == 'shaded':
+                    bar_kwargs['fill'] = False
+                    bar_kwargs['hatch'] = '////'
+                    bar_kwargs['edgecolor'] = bar_kwargs['color']
+
                 xi = drawable.getOrigin()
                 for i in range(x.getSize()):
-                    # label only the first bar to avoid getting several legend
-                    # items
+                    # label only the first bar to avoid getting several items
                     if (i == 1) and ('label' in bar_kwargs):
                         bar_kwargs.pop('label')
                     self._ax[0].bar(
-                        xi, height=y[i][0], width=x[i][0], **bar_kwargs)
-                    xi += x[i][0]
+                        xi, height=y[i,0], width=x[i,0], align='edge', **bar_kwargs)
+                    xi += x[i,0]
 
             elif drawableKind == 'Cloud':
                 plot_kwargs['linestyle'] = 'None'
@@ -493,7 +498,7 @@ class View(object):
                     elif positions[i] == 'bottom':
                         vertical = 'top'
                     self._ax[0].text(
-                        x[i][0], y[i][0], text, horizontalalignment=horizontal, verticalalignment=vertical, **text_kwargs)
+                        x[i,0], y[i,0], text, horizontalalignment=horizontal, verticalalignment=vertical, **text_kwargs)
 
             else:
                 raise ValueError(
