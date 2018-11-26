@@ -1,0 +1,119 @@
+%feature("docstring") OT::NonLinearLeastSquaresCalibration
+"Non-inear least-squares calibration algorithm.
+
+Parameters
+----------
+model : :class:`~openturns.Function`
+    The parametric function to be calibrated.
+inputObservations : 2-d sequence of float
+    The sample of input values of the model linked to the observations.
+outputObservations : 2-d sequence of float
+    The sample of output values of the model linked to the observations.
+candidate : sequence of float
+    The a priori value of the parameter.
+
+Notes
+-----
+NonLinearLeastSquaresCalibration is the minimum variance estimator of the parameter of a given model with no assumption on the dependence of the model wrt the parameter.
+
+See also
+--------
+BLUE, LinearLeastSquaresCalibration, ThreeDVAR
+
+Examples
+--------
+Calibrate a nonlinear model using non-linear least-squares:
+
+>>> import openturns as ot
+>>> m = 10
+>>> x = [[0.5 + i] for i in range(m)]
+>>> inVars = ['a', 'b', 'c', 'x']
+>>> formulas = ['a + b * exp(c * x)']
+>>> model = ot.SymbolicFunction(inVars, formulas)
+>>> p_ref = [2.8, 1.2, 0.5]
+>>> params = [0, 1, 2]
+>>> modelX = ot.ParametricFunction(model, params, p_ref)
+>>> y = modelX(x)
+>>> y += ot.Normal(0.0, 0.05).getSample(m)
+>>> candidate = [1.0]*3
+>>> algo = ot.NonLinearLeastSquaresCalibration(modelX, x, y, candidate)
+>>> algo.run()
+>>> print(algo.getResult().getParameterMAP())
+[2.7716,1.20743,0.499343]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonLinearLeastSquaresCalibration::getModelObservations
+"Accessor to the model evaluation at the candidate.
+
+Returns
+-------
+modelObservation : :class:`~openturns.Sample`
+    Evaluation of the model at the candidate point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonLinearLeastSquaresCalibration::getGradientObservations
+"Accessor to the model gradient at the candidate.
+
+Returns
+-------
+gradientObservation : :class:`~openturns.Matrix`
+    Gradient of the model at the candidate point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonLinearLeastSquaresCalibration::getCandidate
+"Accessor to the parameter candidate.
+
+Returns
+-------
+candidate : :class:`~openturns.Point`
+    Parameter candidate."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonLinearLeastSquaresCalibration::getAlgorithm
+"Accessor to the optimization algorithm used for the computation.
+
+Returns
+-------
+algo : :class:`~openturns.OptimizationAlgorithm`
+    Optimization algorithm used for the computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonLinearLeastSquaresCalibration::setAlgorithm
+"Accessor to the optimization algorithm used for the computation.
+
+Parameters
+----------
+algo : :class:`~openturns.OptimizationAlgorithm`
+    Optimization algorithm to use for the computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonLinearLeastSquaresCalibration::getBootstrapSize
+"Accessor to the bootstrap size used to sample the posterior distribution.
+
+Returns
+-------
+size : int
+    Bootstrap size used to sample the posterior distribution. A value of 0
+    means that no bootstrap has been done but a linear approximation has
+    been used to get the posterior distribution, using the :class:`~openturns.BLUE`
+    algorithm at the maximum a posteriori estimate."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonLinearLeastSquaresCalibration::setBootstrapSize
+"Accessor to the bootstrap size used to sample the posterior distribution.
+
+Parameters
+----------
+size : int
+    Bootstrap size used to sample the posterior distribution. A value of 0
+    means that no bootstrap has to be done but a linear approximation has
+    been used to get the posterior distribution, using the :class:`~openturns.BLUE`
+    algorithm at the maximum a posteriori estimate."
+

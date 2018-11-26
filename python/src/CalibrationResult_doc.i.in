@@ -1,0 +1,97 @@
+%feature("docstring") OT::CalibrationResult
+"Calibration result.
+
+Returned by calibration algorithms, see :class:`~openturns.CalibrationAlgorithm`.
+
+Parameters
+----------
+parameterPrior : :class:`~openturns.Distribution`
+    The prior distribution of the parameter.
+parameterPosterior : :class:`~openturns.Distribution`
+    The posterior distribution of the parameter.
+parameterMap : sequence of float
+    The maximum a posteriori estimate of the parameter.
+observationsError : :class:`~openturns.Distribution`
+    The distribution of the observations error.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::getParameterPrior
+"Accessor to the parameter prior distribution.
+
+Returns
+-------
+parameterPrior : :class:`~openturns.Distribution`
+    The prior distribution of the parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::setParameterPrior
+"Accessor to the parameter prior distribution.
+
+Parameters
+----------
+parameterPrior : : :class:`~openturns.Distribution`
+    The prior distribution of the parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::getParameterPosterior
+"Accessor to the parameter posterior distribution.
+
+Returns
+-------
+parameterPosterior : :class:`~openturns.Distribution`
+    The posterior distribution of the parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::setParameterPosterior
+"Accessor to the parameter posterior distribution.
+
+Parameters
+----------
+parameterPosterior : : :class:`~openturns.Distribution`
+    The posterior distribution of the parameter."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::getObservationsError
+"Accessor to the observations error distribution.
+
+Returns
+-------
+observationsError : :class:`~openturns.Distribution`
+    The observations error distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::setObservationsError
+"Accessor to the observations error distribution.
+
+Parameters
+----------
+observationsError : :class:`~openturns.Distribution`
+    The observations error distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::getParameterMAP
+"Accessor to the maximum a posteriori parameter estimate.
+
+Returns
+-------
+parameterPosterior : :class:`~openturns.Point`
+    The maximum a posteriori parameter estimate."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::setParameterMAP
+"Accessor to the maximum a posteriori parameter estimate.
+
+Parameters
+----------
+parameterPosterior : sequence of float
+    The maximum a posteriori parameter estimate."
+

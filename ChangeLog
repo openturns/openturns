@@ -5,8 +5,9 @@
 === Library ===
 
 ==== Major changes ====
- * Add OPT++ solvers
+ * Added OPT++ solvers
  * Improved a lot the performace of all the Rosenblatt related computations
+ * Added elementary calibration capabilities
 
 ==== New classes ====
  * ParametricPointToFieldFunction
@@ -15,6 +16,8 @@
  * NearestPointProblem, LeastSquaresProblem
  * CMinpack
  * DiscreteMarkovChain
+ * CalibrationAlgorithm, CalibrationResult, BLUE, LinearLeastSquaresCalibration
+ * NonLinearLeastSquaresCalibration, ThreeDVAR
 
 ==== API changes ====
  * Removed deprecated FunctionalChaosRandomVector::getSobol* methods

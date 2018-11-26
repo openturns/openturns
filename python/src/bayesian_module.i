@@ -29,9 +29,16 @@
 %import randomvector_module.i
 
 /* Uncertainty/Bayesian */
+%include CalibrationResult.i
+%include CalibrationAlgorithmImplementation.i
+%include CalibrationAlgorithm.i
 %include CalibrationStrategyImplementation.i
 %include CalibrationStrategy.i
+%include BLUE.i
+%include LinearLeastSquaresCalibration.i
 %include MCMC.i
+%include NonLinearLeastSquaresCalibration.i
+%include ThreeDVAR.i
 %include RandomWalkMetropolisHastings.i
 
 /* At last we include template definitions */

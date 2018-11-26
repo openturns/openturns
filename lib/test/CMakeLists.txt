@@ -217,6 +217,9 @@ ot_check_test (BasisFactory_std)
 
 # Optim
 ot_check_test (AbdoRackwitz_std)
+if (CMINPACK_FOUND)
+ot_check_test (CMinpack_std)
+endif ()
 ot_check_test (Cobyla_std)
 ot_check_test (SQP_std)
 ot_check_test (TNC_std)
@@ -336,6 +339,7 @@ ot_check_test (GaussKronrod_std)
 ot_check_test (GaussLegendre_std)
 ot_check_test (IteratedQuadrature_std)
 ot_check_test (KarhunenLoeveP1Algorithm_std)
+ot_check_test (DesignProxy_std)
 ot_check_test (LeastSquaresMethod_std)
 ot_check_test (LeastSquaresMethod_weighted)
 ot_check_test (KarhunenLoeveSVDAlgorithm_std)
@@ -553,9 +557,13 @@ ot_check_test (BoxCoxFactory_glm)
 ot_check_test (TrendFactory_std)
 
 # Bayesian
+ot_check_test (BLUE_std)
 ot_check_test (CalibrationStrategy_std)
+ot_check_test (LinearLeastSquaresCalibration_std)
+ot_check_test (NonLinearLeastSquaresCalibration_std)
 ot_check_test (RandomWalkMetropolisHastings_std)
 ot_check_test (RandomWalkMetropolisHastings_regression)
+ot_check_test (ThreeDVAR_std)
 
 # Classification
 ot_check_test (MixtureClassifier_std)
