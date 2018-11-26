@@ -364,7 +364,7 @@ void NLopt::run()
       Point h(getProblem().getInequalityConstraint()(inP));
       for (UnsignedInteger k = 0; k < getProblem().getInequalityConstraint().getOutputDimension(); ++ k)
       {
-        h[k] = std::max(h[k], 0.0);// convention h(x)>=0 <=> admissibility
+        h[k] = std::min(h[k], 0.0);// convention h(x)>=0 <=> admissibility
       }
       constraintError = std::max(constraintError, h.normInf());
     }
