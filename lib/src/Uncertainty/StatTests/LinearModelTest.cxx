@@ -27,6 +27,10 @@
 #include "openturns/DistFunc.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/ChiSquare.hxx"
+#include "openturns/FisherSnedecor.hxx"
+#include "openturns/LinearLeastSquares.hxx"
+#include "openturns/LinearBasisFactory.hxx"
+#include "openturns/LinearCombinationFunction.hxx"
 #include "openturns/Path.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/OTconfig.hxx"
@@ -46,7 +50,34 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
     const LinearModel & linearModel,
     const Scalar level)
 {
-  return RunTwoSamplesALinearModelRTest(firstSample, secondSample, linearModel, level, "LmFisher");
+  const UnsignedInteger dimension = firstSample.getDimension();
+  if (secondSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
+  if (firstSample.getSize() != secondSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
+  const UnsignedInteger size = firstSample.getSize();
+  if (size < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
+  if (size < dimension + 1) throw InvalidArgumentException(HERE) << "Error: sample too small. Size should be greater than degree of freedom";
+  const UnsignedInteger df = size - dimension - 1;
+
+  // Regression coefficient
+  const LinearCombinationFunction fHat(LinearBasisFactory(dimension).build(), linearModel.getRegression());
+  const Sample yHat(fHat(firstSample)); 
+  const Sample residualSample(secondSample - yHat);
+  
+  // For the Fisher test, we need both Sum of Squared Explained (SSE)
+  // and the Sum of Squared Residuals
+
+  const Scalar sumSquaredExplained = (yHat - secondSample.computeMean()).computeRawMoment(2)[0] * firstSample.getSize() ;
+  const Scalar sumSquaredResiduals = residualSample.computeRawMoment(2)[0] * firstSample.getSize() ;
+
+
+  // The statistical test checks the nullity of the regression linear model coefficients
+  // H0 : Beta_i = 0
+  // H1 : Beta_i < 0 or Beta_i > 0
+  // The statistics follows a Fisher distribution
+  const Scalar statistic = sumSquaredResiduals / dimension / (sumSquaredExplained / (df));
+  Log::Debug(OSS() << "F-statistic = " << statistic);
+  const Scalar pValue =  FisherSnedecor(dimension, size - dimension - 1).computeComplementaryCDF(statistic);
+  return TestResult("Fisher", pValue > level, pValue, level);
 }
 
 /*  */
@@ -54,7 +85,36 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
     const Sample & secondSample,
     const Scalar level)
 {
-  return LinearModelFisher(firstSample, secondSample, LinearModelFactory().build(firstSample, secondSample, 1.0 - level), level);
+
+  const UnsignedInteger dimension = firstSample.getDimension();
+  if (secondSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
+  if (firstSample.getSize() != secondSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
+  const UnsignedInteger size = firstSample.getSize();
+  if (size < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
+  if (size < dimension + 1) throw InvalidArgumentException(HERE) << "Error: sample too small. Size should be greater than degree of freedom";
+  const UnsignedInteger df = size - dimension - 1;
+
+
+  LinearLeastSquares regressionAlgorithm(firstSample , secondSample);
+  regressionAlgorithm.run();
+  // Regression coefficient
+  const Sample yHat(regressionAlgorithm.getResponseSurface()(firstSample)); 
+  const Sample residualSample(secondSample - yHat);
+ 
+  // For the Fisher test, we need both Sum of Squared Explained (SSE)
+  // and the Sum of Squared Residuals
+  const Scalar sumSquaredExplained = (yHat - secondSample.computeMean()).computeRawMoment(2)[0] * firstSample.getSize() ;
+  const Scalar sumSquaredResiduals = residualSample.computeRawMoment(2)[0] * firstSample.getSize() ;
+  // The statistical test checks the nullity of the regression linear model coefficients
+  // H0 : Beta_i = 0
+  // H1 : Beta_i < 0 or Beta_i > 0
+  // The statistics follows a Fisher distribution
+  const Scalar numerator = sumSquaredExplained / dimension;
+  const Scalar denumerator = sumSquaredResiduals / df;
+  const Scalar statistic = numerator / denumerator;
+  Log::Debug(OSS() << "F-statistic = " << statistic);
+  const Scalar pValue =  FisherSnedecor(dimension, df).computeComplementaryCDF(statistic);
+  return TestResult("Fisher", pValue > level, pValue, level);
 }
 
 /*  */
@@ -63,7 +123,29 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
     const LinearModel & linearModel,
     const Scalar level)
 {
-  return RunTwoSamplesALinearModelRTest(firstSample, secondSample, linearModel, level, "LmResidualMean");
+  const UnsignedInteger dimension = firstSample.getDimension();
+  if (secondSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
+  if (firstSample.getSize() != secondSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
+    const UnsignedInteger size = firstSample.getSize();
+  if (size < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
+  if (size < dimension + 1) throw InvalidArgumentException(HERE) << "Error: sample too small. Size should be greater than degree of freedom";
+  const UnsignedInteger df = size - dimension - 1;
+
+  // Regression coefficient
+  const LinearCombinationFunction fHat(LinearBasisFactory(dimension).build(), linearModel.getRegression());
+  const Sample residualSample(secondSample - fHat(firstSample));
+  // Compute mean & standard deviation
+  const Scalar mean = residualSample.computeMean()[0];
+  const Scalar std = residualSample.computeStandardDeviationPerComponent()[0];
+  // The statistical test checks whether the mean is 0 or not
+  // H0 : mu = 0
+  // H1 : mu < 0 or mu > 0
+  // The statstic of test is then (xm - 0) / sd * sqrt(n)
+  // The statistics follows a Student distribution
+  const Scalar statistic = mean / std * std::sqrt(firstSample.getSize() * 1.0);
+  Log::Debug(OSS() << "t-statistic = " << statistic);
+  const Scalar pValue =  2.0 * DistFunc::pStudent(df, statistic, true);
+  return TestResult("ResidualMean", pValue > level, pValue, level);
 }
 
 /*  */
@@ -71,62 +153,29 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
     const Sample & secondSample,
     const Scalar level)
 {
-  return LinearModelResidualMean(firstSample, secondSample, LinearModelFactory().build(firstSample, secondSample, 1.0 - level), level);
-}
+  const UnsignedInteger dimension = firstSample.getDimension();
+  if (secondSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
+  if (firstSample.getSize() != secondSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
+  const UnsignedInteger size = firstSample.getSize();
+  if (size < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
+  if (size < dimension + 1) throw InvalidArgumentException(HERE) << "Error: sample too small. Size should be greater than degree of freedom";
+  const UnsignedInteger df = firstSample.getSize() - dimension - 1;
 
-/* Generic invocation of a R script for testing a linear model against two samples */
-TestResult LinearModelTest::RunTwoSamplesALinearModelRTest(const Sample & firstSample,
-    const Sample & secondSample,
-    const LinearModel & linearModel,
-    const Scalar level,
-    const String & testName)
-{
-  String firstDataFileName(firstSample.storeToTemporaryFile());
-  String secondDataFileName(secondSample.storeToTemporaryFile());
-  Sample regression(1, linearModel.getRegression());
-  String regressionFileName(regression.storeToTemporaryFile());
-  String resultFileName(Path::BuildTemporaryFileName("RResult.txt.XXXXXX"));
-  String commandFileName(Path::BuildTemporaryFileName("RCmd.R.XXXXXX"));
-  std::ofstream cmdFile(commandFileName.c_str(), std::ios::out);
-  // Fill-in the command file
-  cmdFile << "library(rot)" << std::endl;
-  cmdFile << "options(digits=17)" << std::endl;
-  cmdFile << "options(warn=-1)" << std::endl;
-  cmdFile << "options(stringsAsFactors = F)" << std::endl;
-  cmdFile << "firstSample <- data.matrix(read.table(\"" << firstDataFileName << "\"))" << std::endl;
-  cmdFile << "secondSample <- data.matrix(read.table(\"" << secondDataFileName << "\"))" << std::endl;
-  cmdFile << "regression <- t(data.matrix(read.table(\"" << regressionFileName << "\")))" << std::endl;
-  cmdFile << "res <- test" << testName;
-  cmdFile << "(firstSample, regression, secondSample, " << 1.0 - level << ")" << std::endl;
-  cmdFile << "f <- file(\"" << resultFileName << "\",\"wt\")" << std::endl;
-  cmdFile << "cat(res$test, res$testResult, res$threshold, res$pValue, sep=\"\\n\", file=f)" << std::endl;
-  cmdFile << "close(f)" << std::endl;
-  cmdFile.close();
-  const String RExecutable(ResourceMap::GetAsString("R-executable-command"));
-  OSS systemCommand;
-  if (RExecutable != "") systemCommand << RExecutable << " --no-save --silent < \"" << commandFileName << "\"" << Os::GetDeleteCommandOutput();
-  else throw NotYetImplementedException(HERE) << "In LinearModelTest::RunTwoSamplesALinearModelRTest(const Sample & firstSample, const Sample & secondSample, const LinearModel & linearModel, const Scalar level, const String & testName): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";
-  int returnCode(Os::ExecuteCommand(systemCommand));
-  if (returnCode != 0) throw InternalException(HERE) << "Error: unable to execute the system command " << String(systemCommand) << " returned code is " << returnCode;
-  // Parse result file
-  std::ifstream resultFile(resultFileName.c_str(), std::ios::in);
-  String testType;
-  resultFile >> testType;
-  Bool testResult;
-  resultFile >> testResult;
-  Scalar pThreshold = -1.0;
-  resultFile >> pThreshold;
-  Scalar pValue = -1.0;
-  resultFile >> pValue;
-
-  // Clean-up everything
-  Os::Remove(firstDataFileName);
-  Os::Remove(secondDataFileName);
-  Os::Remove(regressionFileName);
-  Os::Remove(resultFileName);
-  Os::Remove(commandFileName);
-
-  return TestResult(testType, testResult, pValue, pThreshold);
+  LinearLeastSquares regressionAlgorithm(firstSample , secondSample);
+  regressionAlgorithm.run();
+  const Sample residualSample(secondSample - regressionAlgorithm.getResponseSurface()(firstSample));
+  // Compute mean & standard deviation
+  const Scalar mean = residualSample.computeMean()[0];
+  const Scalar std = residualSample.computeStandardDeviationPerComponent()[0];
+  // The statistical test checks whether the mean is 0 or not
+  // H0 : mu = 0
+  // H1 : mu < 0 or mu > 0
+  // The statstic of test is then (xm - 0) / sd * sqrt(n)
+  // The statistics follows a Student distribution
+  const Scalar statistic = mean / std * std::sqrt(firstSample.getSize() * 1.0);
+  const Scalar pValue =  2.0 * DistFunc::pStudent(df, statistic, true);
+  Log::Debug(OSS() << "t-statistic = " << statistic);
+  return TestResult("ResidualMean", pValue > level, pValue, level);
 }
 
 /*  */

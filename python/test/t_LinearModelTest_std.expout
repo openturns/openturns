@@ -1,3 +1,3 @@
-LinearModelFisher= class=TestResult name=Unnamed type=Fisher binaryQualityMeasure=false p-value threshold=0.05 p-value=1 description=[]
+LinearModelFisher= class=TestResult name=Unnamed type=Fisher binaryQualityMeasure=false p-value threshold=0.05 p-value=6.40572e-08 description=[]
 LinearModelResidualMean= class=TestResult name=Unnamed type=ResidualMean binaryQualityMeasure=true p-value threshold=0.05 p-value=1 description=[]
 Durbin Watson =  class=TestResult name=Unnamed type=DurbinWatson binaryQualityMeasure=false p-value threshold=0.05 p-value=0.000219316 description=[H0: auto.cor=0]
