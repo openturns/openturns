@@ -27,7 +27,7 @@ estimated as follows:
 
 .. math::
 
-    \Var{Y^j} = \sum_{i=1}^n (a_i^j)^2 \Var{X^i}
+    \Var{Y^j} = \sum_{i=1}^n (a_i^j)^2 \Var{X^i} + (\sigma_{\varepsilon}^j)^2 = (\sigma^j)^2
 
 
 The estimators for the regression coefficients
@@ -47,7 +47,7 @@ which is estimated by:
 
 .. math::
 
-    \widehat{C}^j_k = \frac{\displaystyle (\widehat{a}_k^j)^2 \widehat{\sigma}_k^2}{\displaystyle \sum_{i=1}^{n_X} (a_i^j)^2 \widehat{\sigma}_i^2}
+    \widehat{C}^j_k = \frac{\displaystyle (\widehat{a}_k^j)^2 \widehat{\sigma}_k^2}{\displaystyle (\widehat{\sigma^j})^2}
 
 
 where :math:`\widehat{\sigma}_i` describes the empirical standard

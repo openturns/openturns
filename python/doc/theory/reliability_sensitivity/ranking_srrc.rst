@@ -35,7 +35,7 @@ estimated as follows:
 
 .. math::
 
-    \Var{rY^j} = \sum_{i=1}^n (a_i^j)^2 \Var{rX^i}
+    \Var{rY^j} = \sum_{i=1}^n (a_i^j)^2 \Var{rX^i} + (\sigma_{\varepsilon}^j)^2 = (\sigma^j)^2
 
 The estimators for the regression coefficients
 :math:`a_0^j,\ldots,a_{n_X}^j`, and the standard deviation
@@ -53,19 +53,12 @@ which is estimated by:
 
 .. math::
 
-    \widehat{C}^j_k = \frac{\displaystyle (\widehat{a}_k^j)^2 \widehat{\sigma}_k^2}{\displaystyle \sum_{i=1}^{n_X} (a_i^j)^2 \widehat{\sigma}_i^2}
+    \widehat{C}^j_k = \frac{\displaystyle (\widehat{a}_k^j)^2 \widehat{\sigma}_k^2}{\displaystyle (\widehat{\sigma^j})^2}
 
 
 where :math:`\widehat{\sigma}_i` describes the empirical standard deviation
-of the sample of the input variables. As we consider rank marginals, the marginal
-standard deviation is the same for all the input/output variables. Thus estimation simplifies:
-
-.. math::
-
-    \widehat{C}^j_k = \frac{\displaystyle (\widehat{a}_k^j)^2}{\displaystyle \sum_{i=1}^{n_X} (a_i^j)^2 }
-
-
-This estimated contribution is by definition between 0 and 1. The closer it is to 1,
+of the sample of the input variables. This estimated
+contribution is by definition between 0 and 1. The closer it is to 1,
 the greater the impact the variable :math:`X^i` has on the dispersion of :math:`Y^j`.
 
 The contribution to the variance :math:`C_i` is sometimes described in
