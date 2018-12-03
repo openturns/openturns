@@ -3,7 +3,9 @@
 from __future__ import print_function
 import openturns as ot
 import math as m
+import sys
 
+ot.TESTPREAMBLE()
 
 def printPoint(point, digits):
     oss = "["
@@ -22,19 +24,22 @@ def printPoint(point, digits):
     oss += "]"
     return oss
 
+def progress(percent):
+    sys.stderr.write('-- progress=' + str(percent) + '%\n')
 
-# bounds
-linear = ot.SymbolicFunction(
-    ['x1', 'x2', 'x3', 'x4'], ['x1+2*x2-3*x3+4*x4'])
+def stop():
+    sys.stderr.write('-- stop?\n')
+    return False
 
-dim = 4
-startingPoint = [0.0] * dim
-
-bounds = ot.Interval([-3.] * dim, [5.] * dim)
+# rosenbrock x*=(1,1), x*=(0.7864, 0.6177) on unit disk
+dim = 2
+f = ot.SymbolicFunction(['x1', 'x2'], ['1+100*(x2-x1^2)^2+(1-x1)^2'])
+startingPoint = [1e-3] * dim
+bounds = ot.Interval([-1.5] * dim, [1.5] * dim)
 algoNames = ot.NLopt.GetAlgorithmNames()
+print(algoNames)
 
 for algoName in algoNames:
-
     # STOGO might not be enabled
     # NEWUOA nan/-nan
     # COBYLA crashes on squeeze
@@ -49,39 +54,42 @@ for algoName in algoNames:
     for minimization in [True, False]:
         for inequality in [True, False]:
             for equality in [True, False]:
-                problem = ot.OptimizationProblem(
-                    linear, ot.Function(), ot.Function(), bounds)
-                problem.setMinimization(minimization)
-                if inequality:
-                    # x3 <= x1
-                    problem.setInequalityConstraint(ot.SymbolicFunction(
-                        ['x1', 'x2', 'x3', 'x4'], ['x1-x3']))
-                if equality:
-                    # x4 = 2
-                    problem.setEqualityConstraint(ot.SymbolicFunction(
-                        ['x1', 'x2', 'x3', 'x4'], ['x4-2']))
-                ot.NLopt.SetSeed(0)
-                try:
-                    algo.setProblem(problem)
-                except:
-                    print('-- Not supported: algo=', algoName,
-                          'inequality=', inequality, 'equality=', equality)
-                    continue
-                algo.setMaximumEvaluationNumber(5000)
-                algo.setStartingPoint(startingPoint)
-                # algo.setInitialStep([0.1] * dim)
-                print('algo=', algo)
-                try:
-                    algo.run()
-                except Exception as e:
-                    print('-- ', e)
-                    continue
-                result = algo.getResult()
-                print('x^=', printPoint(
-                      result.getOptimalPoint(), 3))
+                for bound in [True, False]:
 
+                    # global algorithms require bounds
+                    if not bound and (algoName.startswith('G') or 'LD_SLSQP' in algoName):
+                        continue
 
-# FORM
+                    print('algo=', algoName, 'minimization=', minimization, 'bounds=', bound, 'inequality=', inequality, 'equality=', equality)
+                    problem = ot.OptimizationProblem(f)
+                    problem.setMinimization(minimization)
+                    if inequality:
+                        # x1^2+x2^2 <= 1
+                        problem.setInequalityConstraint(ot.SymbolicFunction(
+                            ['x1', 'x2'], ['1-x1^2-x2^2']))
+                    if equality:
+                        # x1 = x2
+                        problem.setEqualityConstraint(ot.SymbolicFunction(
+                            ['x1', 'x2'], ['x1-x2']))
+                    if bound:
+                        problem.setBounds(bounds)
+                    ot.NLopt.SetSeed(0)
+                    try:
+                        algo.setProblem(problem)
+                    except:
+                        print('-- Not supported')
+                        continue
+                    #algo.setMaximumEvaluationNumber(100)
+                    algo.setStartingPoint(startingPoint)
+                    try:
+                        algo.run()
+                    except Exception as e:
+                        print('-- ', e)
+                        continue
+                    result = algo.getResult()
+                    print('x^=', printPoint(result.getOptimalPoint(), 3), 'y^=', result.getOptimalValue())
+
+## FORM
 f = ot.SymbolicFunction(
     ["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
 dim = f.getInputDimension()
@@ -91,15 +99,14 @@ R = ot.IdentityMatrix(dim)
 distribution = ot.Normal(mean, sigma, R)
 vect = ot.RandomVector(distribution)
 output = ot.CompositeRandomVector(f, vect)
-myEvent = ot.Event(output, ot.Less(), -3.0)
+event = ot.Event(output, ot.Less(), -3.0)
 solver = ot.NLopt('LD_AUGLAG')
 solver.setMaximumEvaluationNumber(400)
 solver.setMaximumAbsoluteError(1.0e-10)
 solver.setMaximumRelativeError(1.0e-10)
 solver.setMaximumResidualError(1.0e-10)
 solver.setMaximumConstraintError(1.0e-10)
-algo = ot.FORM(solver, myEvent, mean)
+algo = ot.FORM(solver, event, mean)
 algo.run()
 result = algo.getResult()
-print('generalized reliability index=%.6f' %
-      result.getGeneralisedReliabilityIndex())
+print('beta=%.6f' % result.getGeneralisedReliabilityIndex())
