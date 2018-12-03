@@ -89,8 +89,8 @@ void Cobyla::run()
     }
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
-      if (bounds.getFiniteLowerBound()[i]) ++m;
-      if (bounds.getFiniteUpperBound()[i]) ++m;
+      if (bounds.getFiniteLowerBound()[i]) ++ m;
+      if (bounds.getFiniteUpperBound()[i]) ++ m;
     }
   }
 
@@ -100,7 +100,7 @@ void Cobyla::run()
 
   // initialize history
   evaluationInputHistory_ = Sample(0, dimension);
-  evaluationOutputHistory_ = Sample(0, 2);
+  evaluationOutputHistory_ = Sample(0, 1);
 
   /*
    * cobyla : minimize a function subject to constraints
@@ -138,6 +138,32 @@ void Cobyla::run()
   {
     const Point inP(evaluationInputHistory_[i]);
     const Point outP(evaluationOutputHistory_[i]);
+    constraintError = 0.0;
+    if (getProblem().hasBounds())
+    {
+      const Interval bounds(getProblem().getBounds());
+      for (UnsignedInteger j = 0; j < dimension; ++ j)
+      {
+        if (bounds.getFiniteLowerBound()[j])
+          constraintError = std::max(constraintError, bounds.getLowerBound()[j] - inP[j]);
+        if (bounds.getFiniteUpperBound()[j])
+          constraintError = std::max(constraintError, inP[j] - bounds.getUpperBound()[j]);
+      }
+    }
+    if (getProblem().hasEqualityConstraint())
+    {
+      const Point g(getProblem().getEqualityConstraint()(inP));
+      constraintError = std::max(constraintError, g.normInf());
+    }
+    if (getProblem().hasInequalityConstraint())
+    {
+      Point h(getProblem().getInequalityConstraint()(inP));
+      for (UnsignedInteger k = 0; k < getProblem().getInequalityConstraint().getOutputDimension(); ++ k)
+      {
+        h[k] = std::min(h[k], 0.0);// convention h(x)>=0 <=> admissibility
+      }
+      constraintError = std::max(constraintError, h.normInf());
+    }
     if (i > 0)
     {
       const Point inPM(evaluationInputHistory_[i - 1]);
@@ -145,9 +171,8 @@ void Cobyla::run()
       absoluteError = (inP - inPM).normInf();
       relativeError = (inP.normInf() > 0.0) ? (absoluteError / inP.normInf()) : -1.0;
       residualError = (std::abs(outP[0]) > 0.0) ? (std::abs(outP[0] - outPM[0]) / std::abs(outP[0])) : -1.0;
-      constraintError = outP[1];
     }
-    result_.store(inP, Point(1, outP[0]), absoluteError, relativeError, residualError, constraintError);
+    result_.store(inP, outP, absoluteError, relativeError, residualError, constraintError);
   }
 
   UnsignedInteger optimalIndex = evaluationInputHistory_.find(x);
@@ -155,7 +180,7 @@ void Cobyla::run()
   if (optimalIndex >= size)
     optimalIndex = NearestNeighbourAlgorithm(evaluationInputHistory_).query(x);
   result_.setOptimalPoint(evaluationInputHistory_[optimalIndex]);
-  result_.setOptimalValue(Point(1, evaluationOutputHistory_(optimalIndex, 0)));
+  result_.setOptimalValue(evaluationOutputHistory_[optimalIndex]);
 
   result_.setEvaluationNumber(maxFun);
   result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
@@ -226,15 +251,12 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   memcpy(&inPoint[0], x, n * sizeof(Scalar));
 
   const OptimizationProblem problem(algorithm->getProblem());
-  Point outPoint(2);
-
-  Scalar result = problem.getObjective().operator()(inPoint)[0];
+  Point outPoint(problem.getObjective().operator()(inPoint));
   // cobyla freezes when dealing with MaxScalar
-  if (std::abs(result) == SpecFunc::MaxScalar) result /= 1.0e3;
-  outPoint[0] = result;
+  if (std::abs(outPoint[0]) == SpecFunc::MaxScalar) outPoint[0] /= 1.0e3;
 
   const Scalar sign = problem.isMinimization() ? 1.0 : -1.0;
-  *f = sign * result;
+  *f = sign * outPoint[0];
 
   UnsignedInteger shift = 0;
   UnsignedInteger nbIneqConst = problem.getInequalityConstraint().getOutputDimension();
@@ -274,13 +296,6 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   /* Convert the constraint vector in double format */
   if (constraintValue.getDimension() > 0)
     memcpy(con, &constraintValue[0], constraintValue.getDimension() * sizeof(Scalar));
-
-  // only take violated constraints into account to compute error
-  for (UnsignedInteger j = 0; j < constraintValue.getDimension(); ++ j)
-  {
-    constraintValue[j] = std::max(constraintValue[j], 0.0);
-  }
-  outPoint[1] = constraintValue.normInf();
 
   // track input/outputs
   algorithm->evaluationInputHistory_.add(inPoint);
