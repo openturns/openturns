@@ -642,15 +642,15 @@ ot_check_test (AdaptiveDirectionalSampling_std)
 # StatTests
 if (R_rot_FOUND)
 ot_check_test (VisualTest_std)
-ot_check_test (FittingTest_std)
 ot_check_test (HypothesisTest_correlation)
 ot_check_test (LinearModelTest_std)
-ot_check_test (NormalityTest_std)
 endif ()
 ot_check_test (HypothesisTest_std)
 ot_check_test (HypothesisTest_spearman)
 ot_check_test (DickeyFullerTest_std)
 ot_check_test (TaylorExpansionMoments_std)
+ot_check_test (FittingTest_std)
+ot_check_test (NormalityTest_std)
 
 ## Post-installation tests
 
