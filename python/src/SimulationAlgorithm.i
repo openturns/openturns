@@ -4,24 +4,20 @@
 #include "openturns/SimulationAlgorithm.hxx"
 #include "openturns/PythonWrappingFunctions.hxx"
 
-static void PythonProgressCallback(OT::Scalar percent, void * data) {
+static void SimulationAlgorithm_ProgressCallback(OT::Scalar percent, void * data) {
   PyObject * pyObj = reinterpret_cast<PyObject *>(data);
   OT::ScopedPyObjectPointer point(OT::convert< OT::Scalar, OT::_PyFloat_ >(percent));
   OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj, point.get(), NULL));
   if (result.isNull())
-  {
     OT::handleException();
-  }
 }
 
-static OT::Bool PythonStopCallback(void * data) {
+static OT::Bool SimulationAlgorithm_StopCallback(void * data) {
   PyObject * pyObj = reinterpret_cast<PyObject *>(data);
   OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj, NULL));
   if (result.isNull())
-  {
     OT::handleException();
-  }
-  return OT::convert< OT::_PyInt_, OT::UnsignedInteger >(result.get());
+  return OT::checkAndConvert< OT::_PyInt_, OT::UnsignedInteger >(result.get());
 }
 
 %}
@@ -42,7 +38,7 @@ SimulationAlgorithm(const SimulationAlgorithm & other) { return new OT::Simulati
 
 void setProgressCallback(PyObject * callBack) {
   if (PyCallable_Check(callBack)) {
-    self->setProgressCallback(&PythonProgressCallback, callBack);
+    self->setProgressCallback(&SimulationAlgorithm_ProgressCallback, callBack);
   }
   else {
     throw OT::InvalidArgumentException(HERE) << "Argument is not a callable object.";
@@ -51,7 +47,7 @@ void setProgressCallback(PyObject * callBack) {
 
 void setStopCallback(PyObject * callBack) {
   if (PyCallable_Check(callBack)) {
-    self->setStopCallback(&PythonStopCallback, callBack);
+    self->setStopCallback(&SimulationAlgorithm_StopCallback, callBack);
   }
   else {
     throw OT::InvalidArgumentException(HERE) << "Argument is not a callable object.";

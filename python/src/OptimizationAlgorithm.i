@@ -2,27 +2,6 @@
 
 %{
 #include "openturns/OptimizationAlgorithm.hxx"
-#include "openturns/PythonWrappingFunctions.hxx"
-
-static void OptimizationAlgorithm_ProgressCallback(OT::Scalar percent, void * data) {
-  PyObject * pyObj = reinterpret_cast<PyObject *>(data);
-  OT::ScopedPyObjectPointer point(OT::convert< OT::Scalar, OT::_PyFloat_ >(percent));
-  OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj, point.get(), NULL));
-  if (result.isNull())
-  {
-    OT::handleException();
-  }
-}
-
-static OT::Bool OptimizationAlgorithm_StopCallback(void * data) {
-  PyObject * pyObj = reinterpret_cast<PyObject *>(data);
-  OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj, NULL));
-  if (result.isNull())
-  {
-    OT::handleException();
-  }
-  return OT::convert< OT::_PyInt_, OT::UnsignedInteger >(result.get());
-}
 %}
 
 %include OptimizationAlgorithm_doc.i
@@ -40,7 +19,7 @@ OptimizationAlgorithm(const OptimizationAlgorithm & other) { return new OT::Opti
 
 void setProgressCallback(PyObject * callBack) {
   if (PyCallable_Check(callBack)) {
-    self->setProgressCallback(&OptimizationAlgorithm_ProgressCallback, callBack);
+    self->setProgressCallback(&OptimizationAlgorithmImplementation_ProgressCallback, callBack);
   }
   else {
     throw OT::InvalidArgumentException(HERE) << "Argument is not a callable object.";
@@ -49,7 +28,7 @@ void setProgressCallback(PyObject * callBack) {
 
 void setStopCallback(PyObject * callBack) {
   if (PyCallable_Check(callBack)) {
-    self->setStopCallback(&OptimizationAlgorithm_StopCallback, callBack);
+    self->setStopCallback(&OptimizationAlgorithmImplementation_StopCallback, callBack);
   }
   else {
     throw OT::InvalidArgumentException(HERE) << "Argument is not a callable object.";
