@@ -1081,6 +1081,10 @@ void ResourceMap::loadDefaultConfiguration()
   // FunctionalChaosSobolIndices parameters //
   setAsScalar( "FunctionalChaosSobolIndices-VariancePartThreshold", 1.0e-2);
 
+  // LinearModelAlgorithm parameters //
+  setAsString("LinearModelAlgorithm-DecompositionMethod", "QR");
+  setAsUnsignedInteger("LinearModelAnalysis-Identifiers", 3);
+
   // GeneralLinearModelAlgorithm parameters //
   setAsBool( "GeneralLinearModelAlgorithm-KeepCovariance", true);
   setAsBool( "GeneralLinearModelAlgorithm-NormalizeData", false);

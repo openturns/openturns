@@ -9,6 +9,7 @@
 
 ==== New classes ====
  * ParametricPointToFieldFunction
+ * LinearModelResult, LinearModelAlgorithm, LinearModelAnalysis
 
 ==== API changes ====
  * Removed deprecated FunctionalChaosRandomVector::getSobol* methods

@@ -564,6 +564,10 @@
   <!-- OT::FunctionalChaosSobolIndices parameters -->
   <FunctionalChaosSobolIndices-VariancePartThreshold value_float="1.0e-2" />
 
+  <!-- OT::LinearModelAlgorithm parameters -->
+  <LinearModelAnalysis-Identifiers                 value_int="3"      />
+  <LinearModelAlgorithm-DecompositionMethod        value_str="QR"      />
+
   <!-- OT::GeneralLinearModelAlgorithm parameters -->
   <GeneralLinearModelAlgorithm-KeepCovariance                 value_bool="true"      />
   <GeneralLinearModelAlgorithm-NormalizeData                  value_bool="false"     />

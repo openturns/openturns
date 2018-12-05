@@ -42,6 +42,7 @@
 /* Uncertainty/Algorithm/Metamodel */
 %include MetaModelResult.i
 %include KrigingResult.i
+%include LinearModelResult.i
 %include MetaModelAlgorithm.i
 %include LinearTaylor.i
 %include QuadraticTaylor.i
@@ -63,6 +64,8 @@
 %include GeneralLinearModelResult.i
 %include GeneralLinearModelAlgorithm.i
 %include KrigingAlgorithm.i
+%include LinearModelAlgorithm.i
+%include LinearModelAnalysis.i
 
 /* Uncertainty/Model */
 %include RandomVector.i

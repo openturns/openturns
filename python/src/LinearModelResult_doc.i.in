@@ -1,0 +1,150 @@
+%feature("docstring") OT::LinearModelResult
+"The LinearModelResult class is created through the method getResult of a LinearModelAlgorithm.
+
+
+Available constructors:
+    LinearModelResult(*inputSample, basis, design, outputSample, metaModel, trendCoefficients, formula, coefficientsNames, sampleResiduals, diagonalGramInverse, leverages, cookDistances*)
+
+
+Parameters
+----------
+inputSample, outputSample : :class:`~openturns.Sample`
+    The input and output samples of a model.
+metaModel : :class:`~openturns.Function`
+    The meta model.
+basis : :class:`~openturns.Basis`
+    Functional basis to estimate the trend.
+design : :class:`~openturns.Matrix`
+    The design matrix math:`X`.
+trendCoefficients : :class:`~openturns.Point`
+    The trend coeffients associated to the linearmodel. 
+formula : :class:`~openturns.String` 
+     The formula description. 
+coefficientsNames : :class:`~openturns.Description` 
+     The coefficients names of the basis.  
+sampleResiduals : :class:`~openturns.Point`
+    The residual errors.
+diagonalGramInverse : :class:`~openturns.Point`
+    The diagonal of the Gram inverse matrix.
+leverages : :class:`~openturns.Point`
+    The leverage score. 
+cookDistances : :class:`~openturns.Point`
+    The cook's distances.
+
+
+See Also
+--------
+LinearModelAlgorithm
+"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getInputSample
+"Accessor to the input sample.
+
+Returns
+-------
+inputSample : :class:`~openturns.Sample`
+    The Xsample which had been passed to the constructor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getOutputSample
+"Accessor to the output sample.
+
+Returns
+-------
+outputSample : :class:`~openturns.Sample`
+    The Ysample which had been passed to the constructor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getFittedSample
+"Accessor to the fitted sample.
+
+Returns
+-------
+outputSample : :class:`~openturns.Sample`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getTrendCoefficients
+"Accessor to the coefficients of the linear model of the trend.
+
+Returns
+-------
+beta : :class:`~openturns.Point`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getFormula
+"Accessor to the formula.
+
+Returns
+-------
+condensedFormula : :class:`~openturns.String`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getCoefficientsNames
+"Accessor to the coefficients names.
+
+Returns
+-------
+coefficientsNames : :class:`~openturns.Description`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getSampleResiduals
+"Accessor to the residuals.
+
+Returns
+-------
+sampleResiduals : :class:`~openturns.Sample`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getStandardizedResiduals
+"Accessor to the standardized residuals.
+
+Returns
+-------
+standardizedResiduals : :class:`~openturns.Sample`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getLeverages
+"Accessor to the leverages.
+
+Returns
+-------
+leverages : :class:`~openturns.Point`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getDiagonalGramInverse
+"Accessor to the diagonal gram inverse matrix.
+
+Returns
+-------
+diagonalGramInverse : :class:`~openturns.Point`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getCookDistances
+"Accessor to the cook's distances.
+
+Returns
+-------
+cookDistances : :class:`~openturns.Point`
+"
+

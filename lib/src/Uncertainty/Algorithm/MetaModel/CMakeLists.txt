@@ -17,4 +17,5 @@ ot_install_header_file (OTMetaModel.hxx)
 add_subdirectory (FunctionalChaos)
 add_subdirectory (Kriging)
 add_subdirectory (TensorApproximation)
+add_subdirectory (LinearModel)
 

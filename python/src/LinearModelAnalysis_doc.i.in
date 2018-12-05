@@ -1,0 +1,332 @@
+%feature("docstring") OT::LinearModelAnalysis
+"Analyse a linear model.
+
+Available constructors:
+
+    LinearModelAnalysis(linearModelResult)
+
+Parameters
+----------
+linearModelResult : :class:`~openturns.LinearModelResult`
+    A linear model result.
+
+See Also
+--------
+LinearModelResult
+
+Notes
+-----
+This class is used in order to create a linear model from numerical samples. The
+linear regression model between the scalar variable :math:`Y` and the :math:`n`
+-dimensional one :math:`\vect{X} = (X_i)_{i \leq n}` writes as follows:
+
+.. math::
+
+    \tilde{Y} = a_0 + \sum_{i=1}^n a_i X_i + \epsilon
+
+where :math:`\epsilon` is the residual, supposed to follow the standard Normal
+distribution.
+
+Each coefficient :math:`a_i` is evaluated from both samples :math:`Ysample` and
+:math:`Xsample` and is accompagnied by a confidence interval and a p-value (which
+tests if they are significantly different from 0.0).
+
+This class enables to test the quality of the model. It provides only numerical
+tests. If :math:`X` is scalar, a graphical validation test exists, that draws
+the residual couples :math:`(\epsilon_i, \epsilon_{i+1})`, where the residual
+:math:`\epsilon_i` is evaluated on the samples :math:`(Xsample, Ysample)`:
+:math:`\epsilon_i  = Ysample_i - \tilde{Y}_i` with
+:math:`\tilde{Y}_i = a_0 + \sum_{j=1}^{n} a_j \ (Xsample)_{ij}`. The OpenTURNS method is
+:class:`~openturns.VisualTest_DrawLinearModelResidual`.
+
+By default, labels of the 3 most significant points are displayed on graphs.
+This number can be changed by modifying the ResourceMap key
+(``LinearModelAnalysis-Identifiers``).
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> Xsample = distribution.getSample(30)
+>>> func = ot.SymbolicFunction(['x'], ['2 * x + 1'])
+>>> Ysample = func(Xsample) + ot.Normal().getSample(30)
+>>> algo = ot.LinearModelAlgorithm(Ysample, Xsample)
+>>> result = algo.getResult()
+>>> analysis = ot.LinearModelAnalysis(result)
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getLinearModelResult
+"Accessor to the linear model result.
+
+Returns
+-------
+linearModelResult : :class:`~openturns.LinearModelResult`
+    The  linear model result which had been passed to the constructor."
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getFormula
+"Accessor to the formula.
+
+Returns
+-------
+condensedFormula : :class:`~openturns.String`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getCoefficientsNames
+"Accessor to the coefficients names.
+
+Returns
+-------
+coefficientsNames : :class:`~openturns.Description`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getResiduals
+"Accessor to the residuals.
+
+Returns
+-------
+sampleResiduals : :class:`~openturns.Sample`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getStandardizedResiduals
+"Accessor to the standardized residuals.
+
+Returns
+-------
+standardizedResiduals : :class:`~openturns.Sample`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getCoefficientsEstimates
+"Accessor to the coefficients of the linear model of the trend.
+
+Returns
+-------
+beta : :class:`~openturns.Sample`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getCoefficientsStandardErrors
+"Accessor to the coefficients of standard error.
+
+Returns
+-------
+standardErrors : :class:`~openturns.Sample`
+"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getCoefficientsTScores
+"Accessor to the coefficients of linear expansion over their standard error.
+
+Returns
+-------
+tScores : :class:`~openturns.Sample`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getCoefficientsPValues
+"Accessor to the coefficients of the p values.
+
+Returns
+-------
+pValues : :class:`~openturns.Sample`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getLeverages
+"Accessor to the leverages.
+
+Returns
+-------
+leverages : :class:`~openturns.Point`
+"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getCookDistances
+"Accessor to the cook's distances.
+
+Returns
+-------
+cookDistances : :class:`~openturns.Point`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getDegreesOfFreedom
+"Accessor to the number of degrees of freedom.
+
+Returns
+-------
+dof : :class:`~openturns.UnsignedInteger`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getRSquared
+"Accessor to the R-squared test.
+
+Returns
+-------
+rSquared : float
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getAdjustedRSquared
+"Accessor to the Adjusted R-squared test.
+
+Returns
+-------
+adjustedRSquared : float
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getFisherScore
+"Accessor to the Fisher test.
+
+Returns
+-------
+fisherScore : float
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getFisherPValue
+"Accessor to the Fisher p value.
+
+Returns
+-------
+fisherPValue : float
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getNormalityTestResultChiSquared
+"Performs the Chi-Square statistical test to check Gaussian assumption of the model
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Test result class.
+
+Notes
+-----
+The Chi-Square test is a goodness of fit test which objective is to check the
+normality assumption (null hypothesis) of residuals (and thus the model).
+
+Usually, Chi-Square test applies for discrete distributions. Here we rely on
+the :class:`~openturns.FittingTest_ChiSquared` to check the normality.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getNormalityTestResultKolmogorovSmirnov
+"Performs Kolmogorov test to check Gaussian assumption of the model (null hypothesis).
+It is accepted when p-value is low.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Test result class.
+
+
+Notes
+-----
+We check that the residual is Gaussian thanks to :class:`~openturns.FittingTest::Kolmogorov`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::getNormalityTestResultAndersonDarling
+"Performs Anderson-Darling test to check Gaussian assumption of the model (null hypothesis).
+It is accepted when p-value is low.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Test result class.
+
+
+Notes
+-----
+We check that the residual is Gaussian thanks to :class:`~openturns.NormalityTest::AndersonDarling`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::drawResidualsVsFitted
+"Accessor to plot of residuals versus fitted values.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::drawScaleLocation
+"Accessor to a Scale-Location plot of sqrt(abs(residuals)) versus fitted values.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::drawQQplot
+"Accessor to plot a Normal quantiles-quantiles plot of standardized residuals.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::drawCookDistance
+"Accessor to plot of Cook's distances versus row labels.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::drawResidualsVsLeverages
+"Accessor to plot of residuals versus leverages that adds bands corresponding to Cook's distances of 0.5 and 1.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAnalysis::drawCookVsLeverages
+"Accessor to plot of Cook's distances versus leverage/(1-leverage). 
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+"
+

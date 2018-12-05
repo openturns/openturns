@@ -1,0 +1,4 @@
+Fit y ~ 3 - 2 x + 0.05 * sin(x) model using 20 points (sin(x) ~ noise)
+trend coefficients =  [3.01168,-2.00025]
+Fit y ~ 1 + 0.1 x + 10 x^2 model using 100 points
+trend coefficients =  [0.978992,0.110565,9.99924]
