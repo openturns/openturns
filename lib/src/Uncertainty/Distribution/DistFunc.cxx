@@ -1104,6 +1104,28 @@ Indices DistFunc::rPoisson(const Scalar lambda,
 }
 
 /********************************************************************************************/
+/* Pearson rho asymptotic distribution: let X & Y be two univariate samples of size.        */
+/* This function computes the probability that the Pearson correlation between the two      */
+/* samples is less or equal (tail = false) or is greater (tail = true) than the given value */
+/* under the assumption that samples are linearly independent.                                    */
+/********************************************************************************************/
+
+Scalar DistFunc::pPearsonCorrelation(const UnsignedInteger size, const Scalar rho, const Bool tail)
+{
+  if (size < 3) throw InvalidArgumentException(HERE) << "Error: in pPearsonCorrelation, size must be > 2";
+  // Border values for rho
+  if (rho >=  1.0) return (tail ? 0.0 : 1.0);
+  if (rho < -1.0) return (tail ? 1.0 : 0.0);
+  // Use a Student asymptotic approximation
+  if (rho <= -1.0 + SpecFunc::Precision) return (tail ? 1.0 : 0.0);
+  if (rho >=  1.0 - SpecFunc::Precision) return (tail ? 0.0 : 1.0);
+  const Scalar rhoSquared = rho * rho;
+  const Scalar t = std::abs(rho) * std::sqrt((size - 2.0) / (1.0 - rhoSquared));
+  return pStudent(size - 2.0, t, tail);
+}
+
+
+/********************************************************************************************/
 /* Spearman rho distribution: let (X_i) and (Y_i) be two samples of size n and dimension 1. */
 /* This function computes the probability that the Spearman correlation between the samples */
 /* is less or equal (tail = false) or is greater (tail = ture) than the given value under   */

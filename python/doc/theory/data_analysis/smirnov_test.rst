@@ -1,24 +1,21 @@
 .. _smirnov_test:
 
-Smirnov samples comparison test
--------------------------------
+Kolmogorov-Smirnov two samples test
+-----------------------------------
 
 Let :math:`X` be a scalar uncertain variable modeled as a random
 variable. This method deals with the construction of a dataset prior to
-the choice of a probability distribution for :math:`X`. Smirnov’s test
-is a tool that may be used to compare two samples
-:math:`\left\{x_1,\ldots,x_N \right\}` and
-:math:`\left\{x'_1,\ldots,x'_M \right\}`; the goal is to determine
+the choice of a probability distribution for :math:`X`. This statatistical
+test is used to compare two samples :math:`\left\{x_1,\ldots,x_N \right\}`
+and :math:`\left\{x'_1,\ldots,x'_M \right\}`; the goal is to determine
 whether these two samples come from the same probability distribution or
 not. If this is the case, the two samples should be aggregated in order
 to increase the robustness of further statistical analysis.
 
-Smirnov’s test is a statistical test based on the maximum distance
-between the cumulative distribution function :math:`\widehat{F}_N` and
-:math:`\widehat{F}'_M` of the samples
-:math:`\left\{x_1,\ldots,x_N \right\}` and
-:math:`\left\{x'_1,\ldots,x'_M \right\}` (see ). This distance is
-expressed as follows:
+The test relies on the maximum distance between the cumulative distribution
+functions :math:`\widehat{F}_N` and :math:`\widehat{F}'_M` of the samples
+:math:`\left\{x_1,\ldots,x_N \right\}` and :math:`\left\{x'_1,\ldots,x'_M \right\}`.
+This distance is expressed as follows:
 
 .. math::
 
@@ -53,7 +50,7 @@ samples.
 
 .. topic:: API:
 
-    - See :py:func:`~openturns.HypothesisTest_Smirnov`
+    - See :py:func:`~openturns.HypothesisTest_TwoSamplesKolmogorov`
 
 .. topic:: Examples:
 

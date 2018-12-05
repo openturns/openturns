@@ -175,7 +175,6 @@ Goodness-of-fit metrics & tests
     FittingTest_BIC
     FittingTest_ChiSquared
     FittingTest_Kolmogorov
-    FittingTest_TwoSamplesKolmogorov
     NormalityTest_AndersonDarlingNormal
     NormalityTest_CramerVonMisesNormal
 
@@ -203,7 +202,6 @@ Hypothesis tests
     :toctree: _generated/
     :template: function.rst_t
 
-    HypothesisTest_Smirnov
     HypothesisTest_ChiSquared
     HypothesisTest_FullPearson
     HypothesisTest_FullRegression
@@ -213,6 +211,7 @@ Hypothesis tests
     HypothesisTest_PartialSpearman
     HypothesisTest_Pearson
     HypothesisTest_Spearman
+    HypothesisTest_TwoSamplesKolmogorov
 
 Linear model tests
 ------------------

@@ -509,4 +509,4 @@ Sample=      [ X0 ]
 99 : [  3 ]  is not compatible with distribution= UserDefined({x = [1], p = 0.3}, {x = [2], p = 0.2}, {x = [3], p = 0.5})
 resultChiSquared= class=SquareMatrix dimension=5 implementation=class=MatrixImplementation name=Unnamed rows=5 columns=5 values=[0.717372,0,0,0,0,0,0.172559,0,0,0,0,0,0.349857,0,0,0,0,0,0.298738,0,0,0,0,0,0.754525]
 R example p-value=0.040594
-class=TestResult name=Unnamed type=Kolmogorov Normal/Normal binaryQualityMeasure=true p-value threshold=0.05 p-value=0.554765 description=[sampleNormal vs sample Normal]
+class=TestResult name=Unnamed type=TwoSamplesKolmogorov binaryQualityMeasure=true p-value threshold=0.05 p-value=0.554765 description=[sampleNormal vs sample Normal]

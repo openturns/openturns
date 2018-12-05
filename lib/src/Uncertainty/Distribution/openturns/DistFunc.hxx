@@ -163,6 +163,10 @@ public:
   static UnsignedInteger rPoisson(const Scalar lambda);
   static Indices rPoisson(const Scalar lambda,
                           const UnsignedInteger size);
+
+  // For Pearson test
+  static Scalar pPearsonCorrelation(const UnsignedInteger size, const Scalar rho, const Bool tail = false);
+
   // For Spearman test
   static Scalar pSpearmanCorrelation(const UnsignedInteger size, const Scalar rho, const Bool tail = false, const Bool ties = false);
   // For Student distribution

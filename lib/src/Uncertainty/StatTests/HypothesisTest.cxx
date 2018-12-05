@@ -31,6 +31,9 @@
 #include "openturns/DistFunc.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/OTconfig.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/UserDefined.hxx"
+#include "openturns/Log.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -39,13 +42,156 @@ HypothesisTest::HypothesisTest()
 }
 
 
-/* Independance test between 2 scalar scalar samples for discrete distributions  */
+/* Independence test between 2 scalar scalar samples for discrete distributions
+ * The samples here are issued from discrete distributions. Thus there is a transformation
+ * from sample to a contingency table in order to apply the Chi square independence test
+ * We rely on UserDefined distribution to get unique value samples and their proporprtions
+*/
 TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
                                       const Sample & secondSample,
                                       const Scalar level)
 {
   if ((firstSample.getDimension() != 1) || (secondSample.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the ChiSquared test can be performed only between two 1D samples.";
-  return RunTwoSamplesRTest(firstSample, secondSample, level, "TwoSampleChiSquared");
+  const UnsignedInteger size = firstSample.getSize();
+  if (secondSample.getSize() != size) throw InvalidArgumentException(HERE) << "Error: the ChiSquared test can be performed only between two samples of same size.";
+  
+  // Ensure that more than 80 % of classes contain at least nMin points
+  const UnsignedInteger nMin = ResourceMap::GetAsUnsignedInteger("FittingTest-ChiSquaredMinimumBinCount");
+  if (size < 2 * nMin) 
+      throw InvalidArgumentException(HERE) << "Error: ChiSquared test cannot be used with a sample size smaller than " << 2 * nMin 
+      << ". Reduce the value of \"FittingTest-ChiSquaredMinimumBinCount below " << size / 2 << " if you really want to use this test.";
+
+  // Derive unique values and frequencies for each 1D sample
+  // first sample --> table
+  const UserDefined discreteXDistribution(firstSample);
+  const Sample tableX(discreteXDistribution.getSupport());
+  const Point frequenciesX(discreteXDistribution.computePDF(tableX).asPoint());
+
+  // Define new classes ensuring we get nMin elements / class
+  UnsignedInteger binNumberX = 0;
+  // If the bin number was too high to get only nMin points per bin on average, reduce the number of bins to get only nonempty bins
+  Point ticksX(0);
+  Point binX(0);
+  const Scalar epsilon = ResourceMap::GetAsScalar("DiscreteDistribution-SupportEpsilon");
+  UnsignedInteger cumulatedPoints = 0;
+  ticksX.add(tableX(0 ,0) - epsilon * (1.0 + std::abs(tableX(0, 0))));
+
+  for (UnsignedInteger i = 0; i < tableX.getSize(); ++i)
+  {
+    cumulatedPoints += (frequenciesX[i] + epsilon) * size;
+    if (cumulatedPoints >= nMin)
+    {
+      binX.add(cumulatedPoints);
+      cumulatedPoints = 0;
+      if (i == tableX.getSize() - 1)
+        ticksX.add(tableX(i, 0) + epsilon * (1.0 + std::abs(tableX(i, 0))));
+      else
+        ticksX.add(0.5 * (tableX(i, 0) + tableX(i + 1, 0)));
+    }
+  } // i
+  binNumberX = ticksX.getSize() - 1;
+  // Check if there is a pending bin
+  if (cumulatedPoints > 0)
+  {
+    binX[binNumberX - 1] += cumulatedPoints;
+    ticksX[binNumberX] = tableX(tableX.getSize() - 1, 0) + epsilon * (1.0 + std::abs(tableX(tableX.getSize() - 1, 0)));
+  }
+  if (binNumberX < 2)
+    throw InvalidArgumentException(HERE) << "Error: the adjusted bin number=" << binNumberX << " must be at least equal to 2.";
+    
+ 
+  // second sample table
+  const UserDefined discreteYDistribution(secondSample);
+  const Sample tableY(discreteYDistribution.getSupport());
+  const Point frequenciesY(discreteYDistribution.computePDF(tableY).asPoint());
+
+  // Classes for second sample
+  UnsignedInteger binNumberY = 0;
+  // If the bin number was too high to get only nMin points per bin on average, reduce the number of bins to get only nonempty bins
+  Point ticksY(0);
+  Point binY(0);
+  cumulatedPoints = 0;
+  ticksY.add(tableY(0 ,0) - epsilon * (1.0 + std::abs(tableY(0, 0))));
+  for (UnsignedInteger i = 0; i < tableY.getSize(); ++i)
+  {
+    cumulatedPoints += (frequenciesY[i] + epsilon) * size;
+    if (cumulatedPoints >= nMin)
+    {
+      binY.add(cumulatedPoints);
+      cumulatedPoints = 0;
+      if (i == tableY.getSize() - 1)
+        ticksY.add(tableY(i, 0) + epsilon * (1.0 + std::abs(tableY(i, 0))));
+      else
+        ticksY.add(0.5 * (tableY(i, 0) + tableY(i + 1, 0)));
+    }
+  } // i
+  binNumberY = ticksY.getSize() - 1;
+  // Check if there is a pending bin
+  if (cumulatedPoints > 0)
+  {
+    binY[binNumberY - 1] += cumulatedPoints;
+    ticksY[binNumberY] = tableY(tableY.getSize() - 1, 0) + epsilon * (1.0 + std::abs(tableY(tableY.getSize() - 1, 0)));
+  }
+  if (binNumberY < 2)
+    throw InvalidArgumentException(HERE) << "Error: the adjusted bin number=" << binNumberY << " must be at least equal to 2.";
+
+  // Now we define the table with elements E_{i,j} where E[i,j] counts the occurence of the element [xi, yj]
+  // Bivariate sample
+  Sample data(firstSample);
+  data.stack(secondSample);
+  const UserDefined bivariateDiscreteDistribution(data);
+  const Sample table(bivariateDiscreteDistribution.getSupport());
+  const Point frequencies(bivariateDiscreteDistribution.getProbabilities());
+  const UnsignedInteger tableSize = table.getSize();
+
+  Point classes(binNumberX * binNumberY);
+  Point pointsInClasses(binNumberX * binNumberY);
+
+  for (UnsignedInteger k = 0; k < table.getSize(); ++k)
+  {
+    const Scalar xi = table(k , 0);
+    const Scalar yj = table(k , 1);
+    Bool condition = true;
+    UnsignedInteger indexI = 0;
+    while (condition)
+    {
+      indexI++;
+      condition = (xi > ticksX[indexI]) && (indexI < binNumberX);
+    }
+    // 
+    condition = true;
+    indexI--;
+    UnsignedInteger indexJ = 0;
+    while (condition)
+    {
+      indexJ++;
+      condition = (yj > ticksY[indexJ]) && (indexJ < binNumberY);
+    }
+    indexJ--;
+
+    // We get the corresponding class for the kth point
+    pointsInClasses[indexI * binNumberY + indexJ] += (frequencies[k] + epsilon) * size;
+  }
+
+  // Theoretical value under H0 assumption
+  Scalar theoretical = 0.0;
+  // Let us compute the statistic
+  Scalar squaredSum = 0.0;
+
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = 0; i < binNumberX; ++i)
+  {
+    for (UnsignedInteger j = 0; j < binNumberY; ++j)
+    {
+     theoretical = binX[i] * binY[j] / size;
+     squaredSum += std::pow( pointsInClasses[index]  - theoretical, 2) / theoretical;
+     index++;
+    }
+  }
+  const UnsignedInteger df = (binNumberX - 1)*(binNumberY -1);
+  const Scalar pValue =  DistFunc::pGamma(0.5 * df, 0.5 * squaredSum, true);
+  Log::Debug ( OSS() << "In ChiSquared independence test : df = " << df << ", statistic = " << squaredSum << ", pValue = " << pValue );
+  return TestResult("ChiSquared", pValue > level, pValue, level);
 }
 
 /* Independence Pearson test between 2 scalar samples which form a gaussian vector: test the linear relation  */
@@ -54,7 +200,16 @@ TestResult HypothesisTest::Pearson(const Sample & firstSample,
                                    const Scalar level)
 {
   if ((firstSample.getDimension() != 1) || (secondSample.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the Pearson test can be performed only between two 1D samples.";
-  return RunTwoSamplesRTest(firstSample, secondSample, level, "TwoSamplePearson");
+  const UnsignedInteger size = firstSample.getSize();
+  if (secondSample.getSize() != size) throw InvalidArgumentException(HERE) << "Error: the Pearson test can be performed only between two samples of same size.";
+  if (size < 3)  throw InvalidArgumentException(HERE) << "Error: the Pearson test can not be performed with small samples.";
+  // Implement the test using basic rho statistic
+  Sample fullSample(firstSample);
+  fullSample.stack(secondSample);
+  const Scalar rho = fullSample.computePearsonCorrelation()(0, 1);
+  // Here we check if rho is significantly different from 0
+  const Scalar pValue = 2.0 * DistFunc::pPearsonCorrelation(size, rho, true);
+  return TestResult("Pearson", pValue > level, pValue, level);
 }
 
 /* Smirnov test if two scalar samples (of sizes not necessarily equal) follow the same distribution (only for continuous distributions)*/
@@ -62,8 +217,53 @@ TestResult HypothesisTest::Smirnov(const Sample & firstSample,
                                    const Sample & secondSample,
                                    const Scalar level)
 {
-  if ((firstSample.getDimension() != 1) || (secondSample.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: the Smirnov test can be performed only between two 1D samples.";
-  return RunTwoSamplesRTest(firstSample, secondSample, level, "TwoSampleSmirnov");
+  LOGWARN(OSS() << "HypothesisTest::Smirnov(x, y, level) is deprecated, use HypothesisTest::TwoSamplesKolmogorov(x, y, level) instead");
+  return TwoSamplesKolmogorov(firstSample, secondSample, level);
+}
+
+/* Two-sample Kolmogorov–Smirnov test */
+TestResult HypothesisTest::TwoSamplesKolmogorov(const Sample & sample1,
+                                                const Sample & sample2,
+                                                const Scalar level)
+{
+  if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Error: level must be in ]0, 1[, here level=" << level;
+  if ((sample1.getDimension() != 1) || (sample2.getDimension() != 1)) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test works only with 1D samples";
+  if ((sample1.getSize() == 0) || (sample2.getSize() == 0)) throw InvalidArgumentException(HERE) << "Error: the sample is empty";
+  const UnsignedInteger size1 = sample1.getSize();
+  const UnsignedInteger size2 = sample2.getSize();
+  Sample sampleAllSorted(sample1.sort());
+  sampleAllSorted.add(sample2.sort());
+  Scalar value = 0.0;
+  for (UnsignedInteger i = 0; i < size1 + size2; ++ i)
+  {
+    const Scalar sampleAllSorted_i = sampleAllSorted(i, 0);
+    Scalar cdf1 = 0.0;
+    for (UnsignedInteger j = 0; j < size1; ++ j)
+    {
+      if (sampleAllSorted(j, 0) <= sampleAllSorted_i)
+      {
+        cdf1 = (j + 1.0) / size1;
+      }
+      else
+        break;
+    }
+    Scalar cdf2 = 0.0;
+    for (UnsignedInteger j = 0; j < size2; ++ j)
+    {
+      if (sampleAllSorted(size1 + j, 0) <= sampleAllSorted_i)
+      {
+        cdf2 = (j + 1.0) / size2;
+      }
+      else
+        break;
+    }
+    value = std::max(value, std::abs(cdf1 - cdf2));
+  }
+  const Scalar pValue = DistFunc::pKolmogorov((size1 * size2) / (size1 + size2), value, true);
+  TestResult result(OSS(false) << "TwoSamplesKolmogorov", pValue > level, pValue, level);
+  result.setDescription(Description(1, String(OSS() << "sample" << sample1.getName() << " vs sample " << sample2.getName())));
+  LOGDEBUG(OSS() << result);
+  return result;
 }
 
 /* Spearman test between 2 samples of dimension 1: it tests for null rank correlation between the two samples.*/
@@ -146,7 +346,11 @@ HypothesisTest::TestResultCollection HypothesisTest::PartialPearson(const Sample
 {
   if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the partial Pearson test can be performed only with an 1-d ouput sample.";
   if (!selection.check(firstSample.getDimension())) throw InvalidArgumentException(HERE) << "Error: invalid selection, repeated indices or values out of bound";
-  return RunTwoSamplesASelectionRTest(firstSample, secondSample, selection, level, "PartialPearson");
+  const UnsignedInteger size = selection.getSize();
+  TestResultCollection results(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    results[i] = Pearson(firstSample.getMarginal(selection[i]), secondSample, level);
+  return results;
 }
 
 /* Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialRegression performs the Regression test simultaneously on all firstSample[i] and secondSample, for i in the selection. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used. */
