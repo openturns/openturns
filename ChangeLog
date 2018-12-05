@@ -22,6 +22,7 @@
 === Bug fixes ===
  * #979 (Viewer does not handle BarPlot's fillStyle)
  * #977 (HypothesisTest::ChiSquared is bogus)
+ * #982 (LinearModelTest::LinearModelDurbinWatson with several factors)
 
 == 1.12 release (2018-11-08) == #release-1.12
 

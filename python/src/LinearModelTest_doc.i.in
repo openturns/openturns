@@ -300,7 +300,7 @@ class=TestResult name=Unnamed type=BreuschPagan binaryQualityMeasure=true p-valu
 Parameters
 ----------
 firstSample : 2-d sequence of float
-    First tested sample, of dimension 1.
+    First tested sample.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
 linearModel : :class:`~openturns.LinearModel`
@@ -352,5 +352,5 @@ Examples
 >>> secondSample = func(sample) + ot.Normal().getSample(30)
 >>> test_result = ot.LinearModelTest.LinearModelDurbinWatson(firstSample, secondSample)
 >>> print(test_result)
-class=TestResult name=Unnamed type=DurbinWatson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.653603 description=[Hypothesis test: autocorrelation equals 0.]
+class=TestResult name=Unnamed type=DurbinWatson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.653603 description=[H0: auto.cor=0]
 "
