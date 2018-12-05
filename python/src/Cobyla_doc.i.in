@@ -18,7 +18,7 @@ Notes
 It constructs successive linear approximations of the objective function and
 constraints via a simplex of :math:`d+1` points, and optimizes these
 approximations in a trust region at each step.
-This solver does not implement the progress callback.
+This solver use no derivative information and supports all types of constraints.
 
 See also
 --------

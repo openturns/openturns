@@ -1,6 +1,8 @@
 %feature("docstring") OT::SQP
 "Sequential Quadratic Programming solver.
 
+This solver uses second derivative information and can only be used to solve level function problems.
+
 Available constructors:
     SQP(*problem*)
 
