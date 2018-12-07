@@ -62,6 +62,7 @@ public:
 
   Point getGramInverseDiag() const;
   Point getHDiag() const;
+  SymmetricMatrix getH() const;
 
   Scalar getGramInverseTrace() const;
 

@@ -47,42 +47,39 @@ int main(int, char *[])
     indices.fill();
     DesignProxy proxy(x, coll);
 
-    {
-      QRMethod qrMethod(proxy, indices);
-      qrMethod.update(Indices(0), indices, Indices(0));
+    Description methods(3);
+    methods[0] = "QR";
+    methods[1] = "SVD";
+    methods[2] = "Cholesky";
 
-      fullprint << "QR" << std::endl;
-      fullprint << "Solve=" << qrMethod.solve(Point(size, 1.0)) << std::endl;
-      fullprint << "SolveNormal=" << qrMethod.solveNormal(Point(dimension, 1.0)) << std::endl;
-      fullprint << "GramInverse=" << qrMethod.getGramInverse() << std::endl;
-      fullprint << "HDiag=" << qrMethod.getHDiag() << std::endl;
-      fullprint << "GramInverseTrace=" << qrMethod.getGramInverseTrace() << std::endl;
-      fullprint << "GramInverseDiag=" << qrMethod.getGramInverseDiag() << std::endl;
-    }
-    {
-      SVDMethod svdMethod(proxy, indices);
-      svdMethod.update(Indices(0), indices, Indices(0));
+    Point hFromH(dimension);
 
-      fullprint << "SVD" << std::endl;
-      fullprint << "Solve=" << svdMethod.solve(Point(size, 1.0)) << std::endl;
-      fullprint << "SolveNormal=" << svdMethod.solveNormal(Point(dimension, 1.0)) << std::endl;
-      fullprint << "GramInverse=" << svdMethod.getGramInverse() << std::endl;
-      fullprint << "HDiag=" << svdMethod.getHDiag() << std::endl;
-      fullprint << "GramInverseTrace=" << svdMethod.getGramInverseTrace() << std::endl;
-      fullprint << "GramInverseDiag=" << svdMethod.getGramInverseDiag() << std::endl;
-    }
+    for (UnsignedInteger k = 0; k < 3; ++k)
     {
-      CholeskyMethod choleskyMethod(proxy, indices);
-      choleskyMethod.update(Indices(0), indices, Indices(0));
+      LeastSquaresMethod algo(LeastSquaresMethod::Build(methods[k], proxy, indices));
+      algo.update(Indices(0), indices, Indices(0));
 
-      fullprint << "Cholesky" << std::endl;
-      fullprint << "Solve=" << choleskyMethod.solve(Point(size, 1.0)) << std::endl;
-      fullprint << "SolveNormal=" << choleskyMethod.solveNormal(Point(dimension, 1.0)) << std::endl;
-      fullprint << "GramInverse=" << choleskyMethod.getGramInverse() << std::endl;
-      fullprint << "HDiag=" << choleskyMethod.getHDiag() << std::endl;
-      fullprint << "GramInverseTrace=" << choleskyMethod.getGramInverseTrace() << std::endl;
-      fullprint << "GramInverseDiag=" << choleskyMethod.getGramInverseDiag() << std::endl;
+      fullprint << methods[k] << std::endl;
+      fullprint << "Solve=" << algo.solve(Point(size, 1.0)) << std::endl;
+      fullprint << "SolveNormal=" << algo.solveNormal(Point(dimension, 1.0)) << std::endl;
+      fullprint << "GramInverse=" << algo.getGramInverse() << std::endl;
+      fullprint << "HDiag=" << algo.getHDiag() << std::endl;
+      fullprint << "GramInverseTrace=" << algo.getGramInverseTrace() << std::endl;
+      fullprint << "GramInverseDiag=" << algo.getGramInverseDiag() << std::endl;
+
+      // Validation of H
+      SymmetricMatrix H(algo.getH());
+
+      // Get the Diagonal of H matrix and compare it to the getHDiag
+      // Second method is already validated
+      // Note also that H^n = H so we could add this test
+      for (UnsignedInteger k = 0; k < dimension; ++ k) hFromH[k] = H(k, k);
+      assert_almost_equal(hFromH,  algo.getHDiag(), 1e-15, 1e-15);
+      SquareMatrix H2(H * H);
+      assert_almost_equal(*H2.getImplementation(),  *H.getImplementation(), 1e-15, 1e-15);
+
     }
+
   }
 
   catch (TestFailed & ex)
