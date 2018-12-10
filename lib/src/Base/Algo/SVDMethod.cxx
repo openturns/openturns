@@ -100,7 +100,10 @@ void SVDMethod::update(const Indices& addedIndices,
     } // column modification
 
     Matrix psiAk(computeWeightedDesign());
-    singularValues_ = psiAk.computeSVD(u_, vT_, false, false);
+    // Here we compute an economic SVD
+    // thus in case of least squares (nr > nc)
+    // the U is not orthogonal
+    singularValues_ = psiAk.computeSVD(u_, vT_, false, false); // fullSVD, keepIntact
 
     // check eigenvalues
     const UnsignedInteger svdSize = singularValues_.getSize();
@@ -163,6 +166,10 @@ Point SVDMethod::solveNormal(const Point & rhs)
 CovarianceMatrix SVDMethod::getGramInverse() const
 {
   // G^{-1}=V\Sigma^{-2}V^T
+  //       = V\Sigma^{-1}\Sigma^{-1} V^T
+  //       = V \Sigma^{-1}\Sigma^{-T} V^T
+  //       = (\Sigma^{-T} V^T)^T \Sigma^{-T} V^T
+  // Note that (\Sigma^{-T} V^T)_{i,j} = (V^T)_{i,j} / sigma_[i]
   const UnsignedInteger m = vT_.getNbRows();
   const UnsignedInteger n = vT_.getNbColumns();
   const MatrixImplementation & vTimpl(*vT_.getImplementation());
@@ -187,9 +194,22 @@ Scalar SVDMethod::getGramInverseTrace() const
   return traceInverse;
 }
 
+SymmetricMatrix SVDMethod::getH() const
+{
+  // H = Psi.G^{-1}.Psi^T
+  return u_.getImplementation()->genProd(*u_.getImplementation(), false, true);
+}
 
 Point SVDMethod::getHDiag() const
 {
+  // H is the Hat matrix corresponding to
+  // H = Psi.G^{-1}.Psi^T
+  // Considering :
+  // G^{-1}=V\Sigma^{-2}V^T
+  // H = Psi.V\Sigma^{-2}V^T.Psi^T
+  // Psi = U1 \Sigma V --> U1 is the reduced factor of U
+  // so that U1 * U1.transpose() != Identity
+  // H = U1 * U1.transpose()
   const UnsignedInteger sampleSize = u_.getNbRows();
   const UnsignedInteger basisSize = currentIndices_.getSize();
   Point h(sampleSize);

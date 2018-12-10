@@ -38,6 +38,9 @@ OT_LeastSquaresMethod_update_doc
 
 Parameters
 ----------
+name : str
+    The name of the least-squares method
+    Values are 'QR', 'SVD', 'Cholesky'
 proxy : :class:`~openturns.DesignProxy`
     Input sample
 weight : sequence of float, optional

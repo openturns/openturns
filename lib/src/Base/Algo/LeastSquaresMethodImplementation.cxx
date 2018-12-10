@@ -130,7 +130,7 @@ CovarianceMatrix LeastSquaresMethodImplementation::getGramInverse() const
 SymmetricMatrix LeastSquaresMethodImplementation::getH() const
 {
   MatrixImplementation psiAk(computeWeightedDesign());
-  // H = Psi.G.Psi^T
+  // H = Psi.G^{-1}.Psi^T
   return getGramInverse().getImplementation()->symProd(psiAk, 'R').genProd(psiAk, false, true);
 }
 

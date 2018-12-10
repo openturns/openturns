@@ -193,14 +193,14 @@ Scalar UserDefined::computePDF(const Point & point) const
   } // while
   // At this point we have upper == lower or upper == lower + 1, with lower - epsilon <= x < upper + epsilon
   SignedInteger index = upper;
-  while ((index < static_cast<SignedInteger>(size)) && (std::abs(x - points_[index][0]) <= supportEpsilon_))
+  while ((index < static_cast<SignedInteger>(size)) && (std::abs(x - points_(index, 0)) <= supportEpsilon_))
   {
     if ((point - points_[index]).norm() <= supportEpsilon_) pdf += probabilities_[index];
     ++ index;
   }
   index = upper;
   --index;
-  while ((index >= 0) && (std::abs(x - points_[index][0]) <= supportEpsilon_))
+  while ((index >= 0) && (std::abs(x - points_(index, 0)) <= supportEpsilon_))
   {
     if ((point - points_[index]).norm() <= supportEpsilon_) pdf += probabilities_[index];
     --index;
@@ -515,17 +515,17 @@ void UserDefined::setData(const Sample & sample,
   {
     const Point x(sample[i]);
     for (UnsignedInteger j = 0; j < dimension; ++j) weightedData(i, j) = x[j];
-    weightedData[i][dimension] = weights[i];
+    weightedData(i, dimension) = weights[i];
   }
   // Sort the pairs
   weightedData = weightedData.sortAccordingToAComponent(0);
   // Check the probabilities and normalize them
-  const Scalar firstProbability = weightedData[0][dimension];
+  const Scalar firstProbability = weightedData(0, dimension);
   Scalar sum = 0.0;
   cumulativeProbabilities_ = Point(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Scalar p = weightedData[i][dimension];
+    const Scalar p = weightedData(i, dimension);
     if (!(p >= 0.0)) throw InvalidArgumentException(HERE) << "UserDefined distribution must have positive probabilities";
     sum += p;
     cumulativeProbabilities_[i] = sum;
@@ -535,7 +535,7 @@ void UserDefined::setData(const Sample & sample,
   // Normalize the probabilities
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    weightedData[i][dimension] /= sum;
+    weightedData(i, dimension) /= sum;
     cumulativeProbabilities_[i] /= sum;
   }
   points_ = Sample(size, dimension);
@@ -545,7 +545,7 @@ void UserDefined::setData(const Sample & sample,
     Point x(dimension);
     for (UnsignedInteger j = 0; j < dimension; ++j) x[j] = weightedData(i, j);
     points_[i] = x;
-    probabilities_[i] = std::max(0.0, std::min(1.0, weightedData[i][dimension]));
+    probabilities_[i] = std::max(0.0, std::min(1.0, weightedData(i, dimension)));
   }
   // We augment slightly the last cumulative probability, which should be equal to 1.0 but we enforce a value > 1.0.
   cumulativeProbabilities_[size - 1] = 1.0 + 2.0 * supportEpsilon_;

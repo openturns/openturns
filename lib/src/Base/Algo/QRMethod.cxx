@@ -76,7 +76,7 @@ void QRMethod::update(const Indices & addedIndices,
                       const Indices & removedIndices,
                       const Bool row)
 {
-  // Update the SVD according to the row/column modifications of the design matrix.
+  // Update the QR according to the row/column modifications of the design matrix.
   // It should be done in an incremental way to improve speed
   // If something has changed since last call
   if ((addedIndices.getSize() > 0) || (removedIndices.getSize() > 0) || (conservedIndices != currentIndices_) || (q_.getNbColumns() == 0))
@@ -107,6 +107,8 @@ Point QRMethod::solve(const Point & rhs)
 {
   // This call insures that the decomposition has already been computed.
   // No cost if it is up to date.
+  // Solve min ||Mx - b||^2 using QR method
+  // x = R^{-1}(Q^t b)
   update(Indices(0), currentIndices_, Indices(0));
   Point b(rhs);
   if (!hasUniformWeight_)
@@ -114,7 +116,8 @@ Point QRMethod::solve(const Point & rhs)
     const UnsignedInteger size = rhs.getSize();
     for (UnsignedInteger i = 0; i < size; ++i) b[i] *= weightSqrt_[i];
   }
-  const Point c(q_.getImplementation()->genVectProd(b, true));
+  // compute c = Q^t b
+  const Point c(q_.getImplementation()->genVectProd(b, true)); // transpose
   const Point coefficients(r_.getImplementation()->solveLinearSystemTri(c, true, false, false)); // rhs, keep, lower, transpose
   return coefficients;
 }
@@ -154,6 +157,21 @@ Point QRMethod::getHDiag() const
   return diag;
 }
 
+SymmetricMatrix QRMethod::getH() const
+{
+  // if using a reduced QR, we can compute Q * Q^T
+  // Otherwise we use the parent method
+  const UnsignedInteger m = q_.getNbRows();
+  const UnsignedInteger n = currentIndices_.getSize();
+  if (m < n) // not full qr
+  {
+    // H = Q.Q^T
+    return q_.getImplementation()->genProd(*q_.getImplementation(), false, true);
+
+  }
+  return LeastSquaresMethodImplementation::getH();
+
+}
 
 CovarianceMatrix QRMethod::getGramInverse() const
 {
@@ -161,6 +179,7 @@ CovarianceMatrix QRMethod::getGramInverse() const
   const UnsignedInteger basisSize = currentIndices_.getSize();
   const MatrixImplementation b(*IdentityMatrix(basisSize).getImplementation());
   Matrix invR(r_.getImplementation()->solveLinearSystemTri(b, true, false));
+  // Compute gram matrix (false --> M.M^t)
   return invR.computeGram(false);
 }
 

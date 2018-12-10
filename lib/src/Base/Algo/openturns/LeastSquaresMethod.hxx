@@ -88,6 +88,10 @@ public:
 
   /** Get the diagonal of H */
   Point getHDiag() const;
+  SymmetricMatrix getH() const;
+
+  /** Get the inverse of the Gram matrix */
+  CovarianceMatrix getGramInverse() const;
 
   /** Get the diagonal of the Gram inverse */
   Point getGramInverseDiag() const;

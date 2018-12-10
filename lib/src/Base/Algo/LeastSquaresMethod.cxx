@@ -95,6 +95,16 @@ Point LeastSquaresMethod::getHDiag() const
   return getImplementation()->getHDiag();
 }
 
+SymmetricMatrix LeastSquaresMethod::getH() const
+{
+  return getImplementation()->getH();
+}
+
+CovarianceMatrix LeastSquaresMethod::getGramInverse() const
+{
+  return getImplementation()->getGramInverse();
+}
+
 Point LeastSquaresMethod::getGramInverseDiag() const
 {
   return getImplementation()->getGramInverseDiag();

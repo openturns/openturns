@@ -359,6 +359,39 @@ OT_SobolIndicesAlgorithm_draw_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_SobolIndicesAlgorithm_DrawCorrelationCoefficients_doc
+"Draw the correlation coefficients. 
+ As correlation coefficients are considered, values might be positive or negative.
+
+Available usages:
+    DrawCorrelationCoefficients(*correlationCoefficients, title='Correlation coefficients'*)
+
+    DrawCorrelationCoefficients(*values, names, title='Correlation coefficients'*)
+
+Parameters
+----------
+correlationCoefficients : :class:`~openturns.PointWithDescription`
+    Sequence containing the correlation coefficients with a description for each
+    component. The descriptions are used to build labels for the created graph.
+    If they are not mentioned, default labels will be used.
+values : sequence of float
+    Correlation coefficients.
+names : sequence of str
+    Variables' names used to build labels for the created the graph.
+title : str
+    Title of the graph.
+
+Returns
+-------
+Graph : :class:`~openturns.Graph`
+    A graph containing a :class:`~openturns.Cloud` and a :class:`~openturns.Text` 
+    of the correlation coefficients."
+%enddef
+%feature("docstring") OT::SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients
+OT_SobolIndicesAlgorithm_DrawCorrelationCoefficients_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_SobolIndicesAlgorithm_DrawImportanceFactors_doc
 "Draw the importance factors.
 
