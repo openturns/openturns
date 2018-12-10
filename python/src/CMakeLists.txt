@@ -337,8 +337,8 @@ ot_add_python_module(func func_module.i
                       DatabaseFunction.i DatabaseFunction_doc.i.in
                       DatabaseEvaluation.i DatabaseEvaluation_doc.i.in
                       IndicatorEvaluation.i
-                      PiecewiseLinearEvaluation.i
-                      PiecewiseHermiteEvaluation.i
+                      PiecewiseLinearEvaluation.i PiecewiseLinearEvaluation_doc.i.in
+                      PiecewiseHermiteEvaluation.i PiecewiseHermiteEvaluation_doc.i.in
                       ProductPolynomialEvaluation.i ProductPolynomialEvaluation_doc.i.in
                       ParametricEvaluation.i
                       ParametricGradient.i
