@@ -6,23 +6,7 @@ import math as m
 import sys
 
 ot.TESTPREAMBLE()
-
-def printPoint(point, digits):
-    oss = "["
-    eps = pow(0.1, digits)
-    format = "%." + str(digits) + "f"
-    for i in range(point.getDimension()):
-        if i == 0:
-            sep = ""
-        else:
-            sep = ","
-        if m.fabs(point[i]) < eps:
-            oss += sep + format % m.fabs(point[i])
-        else:
-            oss += sep + format % point[i]
-        sep = ","
-    oss += "]"
-    return oss
+ot.PlatformInfo.SetNumericalPrecision(3)
 
 def progress(percent):
     sys.stderr.write('-- progress=' + str(percent) + '%\n')
@@ -45,7 +29,8 @@ for algoName in algoNames:
     # COBYLA crashes on squeeze
     # ESCH not same results with 2.4.1
     # AUGLAG_EQ raises a roundoff-limited exception on i386
-    if 'STOGO' in algoName or 'NEWUOA' in algoName or 'COBYLA' in algoName or 'ESCH' in algoName or 'AUGLAG_EQ' in algoName:
+    # LD_SLSQP/LD_CCSAQ not same point on i386
+    if 'STOGO' in algoName or 'NEWUOA' in algoName or 'COBYLA' in algoName or 'ESCH' in algoName or 'AUGLAG_EQ' in algoName or 'LD_SLSQP' in algoName or 'LD_CCSAQ' in algoName:
         print('-- Skipped: algo=', algoName)
         continue
 
@@ -57,7 +42,7 @@ for algoName in algoNames:
                 for bound in [True, False]:
 
                     # global algorithms require bounds
-                    if not bound and (algoName.startswith('G') or 'LD_SLSQP' in algoName):
+                    if not bound and (algoName.startswith('G') or 'LN_BOBYQA' in algoName):
                         continue
 
                     print('algo=', algoName, 'minimization=', minimization, 'bounds=', bound, 'inequality=', inequality, 'equality=', equality)
@@ -87,7 +72,7 @@ for algoName in algoNames:
                         print('-- ', e)
                         continue
                     result = algo.getResult()
-                    print('x^=', printPoint(result.getOptimalPoint(), 3), 'y^=', result.getOptimalValue())
+                    print('x^=', result.getOptimalPoint(), 'y^=', result.getOptimalValue())
 
 ## FORM
 f = ot.SymbolicFunction(
