@@ -59,7 +59,47 @@ Point CorrelationAnalysis::SpearmanCorrelation(const Sample & inputSample,
 
 /* Compute the Standard Regression Coefficients (SRC) between the input sample and the output sample */
 Point CorrelationAnalysis::SRC(const Sample & inputSample,
-                               const Sample & outputSample)
+                               const Sample & outputSample,
+                               const Bool normalize)
+{
+  const UnsignedInteger dimension = inputSample.getDimension();
+  if (dimension < 2) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1";
+  if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
+  if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
+  // If normalize, then sum is equal to 1
+  // and no information about noise
+  // Othewise we use standard formulation of src
+  // normalize false ==> SRC = SignedSRC * SignedSRC
+  if (!normalize)
+  {
+    // Case normalize false : coefficients are square of SignedSRC
+    Point src(SignedSRC(inputSample, outputSample));
+    for (UnsignedInteger i = 0; i < dimension; ++ i) src[i] = (src[i] * src[i]);
+    return src;
+  }
+
+  // Case where normalize is true
+  // Var(X+a) = Var(X); However for numerical stability, data are centered
+  LinearLeastSquares regressionAlgorithm(inputSample - inputSample.computeMean(), outputSample);
+  regressionAlgorithm.run();
+  // Linear coefficients
+  const Point linear(*regressionAlgorithm.getLinear().getImplementation());
+
+  // Compute the output variance from the regression coefficients
+  Point src(inputSample.computeVariance());
+  for (UnsignedInteger i = 0; i < dimension; ++ i) src[i] *= linear[i] * linear[i];
+  Scalar varOutput = 0.0;
+  for (UnsignedInteger i = 0; i < dimension; ++ i) varOutput += src[i];
+  if (varOutput > 0.0)
+    src /= varOutput;
+  else
+    throw InvalidArgumentException(HERE) << "No output variance";
+  return src;
+}
+
+/* Compute the Standard Regression Coefficients (SRC) between the input sample and the output sample */
+Point CorrelationAnalysis::SignedSRC(const Sample & inputSample,
+                                     const Sample & outputSample)
 {
   const UnsignedInteger dimension = inputSample.getDimension();
   if (dimension < 2) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1";
@@ -71,15 +111,13 @@ Point CorrelationAnalysis::SRC(const Sample & inputSample,
   // Linear coefficients
   const Point linear(*regressionAlgorithm.getLinear().getImplementation());
 
-  // Compute the output variance from the regression coefficients
-  Point src(inputSample.computeVariance());
-  for (UnsignedInteger i = 0; i < dimension; ++ i)
-    src[i] *= linear[i] * linear[i];
-  const Scalar varOutput = outputSample.computeVariance()[0];
-  if (varOutput > 0.0)
-    src /= varOutput;
-  else
+  const Scalar stdOutput = outputSample.computeStandardDeviationPerComponent()[0];
+  if (!(stdOutput > 0.0))
     throw InvalidArgumentException(HERE) << "No output variance";
+
+  // Compute the output variance from the regression coefficients
+  Point src(inputSample.computeStandardDeviationPerComponent());
+  for (UnsignedInteger i = 0; i < dimension; ++ i) src[i] *= linear[i] / stdOutput;
   return src;
 }
 
@@ -123,13 +161,14 @@ Point CorrelationAnalysis::PCC(const Sample & inputSample,
 
 /* Compute the Standard Rank Regression Coefficients (SRRC) between the input sample and the output sample */
 Point CorrelationAnalysis::SRRC(const Sample & inputSample,
-                                const Sample & outputSample)
+                                const Sample & outputSample,
+                                const Bool normalize)
 {
   const UnsignedInteger dimension = inputSample.getDimension();
   if (dimension < 2) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1";
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
-  return SRC(inputSample.rank(), outputSample.rank());
+  return SRC(inputSample.rank(), outputSample.rank(), normalize);
 }
 
 /* Compute the Partial Rank Correlation Coefficients (PRCC) between the input sample and the output sample */
