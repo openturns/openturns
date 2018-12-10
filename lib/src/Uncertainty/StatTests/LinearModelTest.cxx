@@ -266,18 +266,27 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
   /* Normal approximation of dw to compute the p-value*/
   /* Create the matrix [1 x]*/
   Matrix X(residualSize, dimension + 1);
-  for(UnsignedInteger i = 0; i < residualSize; ++i)
+  for(UnsignedInteger j = 0; j < dimension; ++j)
   {
-    X(i, 0) = 1;
-    X(i, 1) = firstSample(i, 0);
+    for(UnsignedInteger i = 0; i < residualSize; ++i)
+    {
+        X(i, 0) = 1.0;
+        X(i, j+1) = firstSample(i, j);
+    }
   }
 
   Matrix AX(residualSize, dimension + 1);
-  AX(0, 1) = firstSample(0, 0) - firstSample(1, 0);
-  AX(residualSize - 1, 1) = firstSample(residualSize - 1, 0) - firstSample(residualSize - 2, 0);
-  for(UnsignedInteger i = 0; i < residualSize - 2; ++i)
+  for(UnsignedInteger j = 0; j < dimension; ++j)
   {
-    AX(i + 1, 1) = -firstSample(i, 0) + 2 * firstSample(i + 1, 0) - firstSample(i + 2, 0);
+    AX(0, j+1) = firstSample(0, j) - firstSample(1, j);
+    AX(residualSize - 1, j+1) = firstSample(residualSize - 1, j) - firstSample(residualSize - 2, j);
+  }
+  for(UnsignedInteger j = 0; j < dimension; ++j)
+  {
+    for(UnsignedInteger i = 0; i < residualSize - 2; ++i)
+    {
+      AX(i + 1, j+1) = -firstSample(i, j) + 2 * firstSample(i + 1, j) - firstSample(i + 2, j);
+    } 
   }
 
   CovarianceMatrix XtX(X.computeGram());
@@ -289,18 +298,22 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
   const Scalar dvar = 2.0 / ((residualSize - (dimension + 1)) * (residualSize - (dimension + 1) + 2)) * (Q - P * dmean);
 
   /* Compute the p-value with respect to the hypothesis */
-  // Initial values defined for hypothesis = "Equal"
-  Scalar pValue = 2.0 * DistFunc::pNormal(std::abs(dw - dmean) / std::sqrt(dvar), true);
-  Description description(1, "Hypothesis test: autocorrelation equals 0.");
-  if(hypothesis == "Less")
+  Scalar pValue;
+  Description description(1);
+  if (hypothesis == "Equal")
   {
-    pValue = 1 - pValue / 2;
-    description[0] = "Hypothesis test: autocorrelation is less than 0";
+    pValue = 2.0 * DistFunc::pNormal(std::abs(dw - dmean) / std::sqrt(dvar), true);
+    description[0] = "H0: auto.cor=0";
+  }
+  else if(hypothesis == "Less")
+  {
+    pValue = DistFunc::pNormal((dw - dmean) / std::sqrt(dvar));
+    description[0] = "H0: auto.cor<0";
   }
   else if(hypothesis == "Greater")
   {
-    pValue = pValue / 2;
-    description[0] = "Hypothesis test: autocorrelation is greater than 0";
+    pValue = DistFunc::pNormal((dw - dmean) / std::sqrt(dvar), true);
+    description[0] = "H0: auto.cor>0";
   }
 
   /* Set test result */

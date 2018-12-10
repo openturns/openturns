@@ -1,0 +1,72 @@
+
+------------------------------------------------------------
+
+Hypothesis H0:  Equal
+
+Result from OT :
+p-value : 0.23189413965453662
+H0: auto.cor=0
+
+Result from R :
+p-value : 0.24250597479451463
+Alternative hypothesis :  true autocorrelation is not 0
+dw stat :  2.417134963508616
+
+----------
+
+Result from R :
+p-value : 0.4987386173151879
+Alternative hypothesis :  true autocorrelation is not 0
+dw stat :  1.7873986690969137
+
+Result from OT :
+p-value : 0.4916002969527328
+H0: auto.cor=0
+
+------------------------------------------------------------
+
+Hypothesis H0:  Less
+
+Result from OT :
+p-value : 0.8840529301727317
+H0: auto.cor<0
+
+Result from R :
+p-value : 0.8787470126027427
+Alternative hypothesis :  true autocorrelation is greater than 0
+dw stat :  2.417134963508616
+
+----------
+
+Result from R :
+p-value : 0.24936930865759396
+Alternative hypothesis :  true autocorrelation is greater than 0
+dw stat :  1.7873986690969137
+
+Result from OT :
+p-value : 0.2458001484763664
+H0: auto.cor<0
+
+------------------------------------------------------------
+
+Hypothesis H0:  Greater
+
+Result from OT :
+p-value : 0.11594706982726831
+H0: auto.cor>0
+
+Result from R :
+p-value : 0.12125298739725732
+Alternative hypothesis :  true autocorrelation is less than 0
+dw stat :  2.417134963508616
+
+----------
+
+Result from R :
+p-value : 0.750630691342406
+Alternative hypothesis :  true autocorrelation is less than 0
+dw stat :  1.7873986690969137
+
+Result from OT :
+p-value : 0.7541998515236337
+H0: auto.cor>0
