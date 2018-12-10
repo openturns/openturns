@@ -1,16 +1,33 @@
 %feature("docstring") OT::PostAnalyticalImportanceSampling
 "Post analytical importance sampling.
 
-Available constructor:
-    Solver(*analyticalResult*)
+Simulation method where the original distribution is replaced by the
+distribution in the standard space centered around the provided design point.
 
 Parameters
 ----------
 analyticalResult : :class:`~openturns.AnalyticalResult`
     Result which contains the whole information on the analytical study
-    performed before the simulation study : in particular, the standard
+    performed before the simulation study: in particular, the standard
     distribution of the standard space and the standard space design point.
 
 See also
 --------
-PostAnalyticalSimulation, PostAnalyticalControlledImportanceSampling"
+PostAnalyticalControlledImportanceSampling
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
+>>> distribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
+>>> X = ot.RandomVector(distribution)
+>>> Y = ot.CompositeRandomVector(f, X)
+>>> event = ot.Event(Y, ot.Less(), -3.0)
+>>> solver = ot.AbdoRackwitz()
+>>> analytical = ot.FORM(solver, event, [50.0, 1.0, 10.0, 5.0])
+>>> analytical.run()
+>>> analyticalResult = analytical.getResult()
+>>> algo = ot.PostAnalyticalImportanceSampling(analyticalResult)
+>>> algo.run()
+>>> result = algo.getResult()
+>>> pf = result.getProbabilityEstimate()"
