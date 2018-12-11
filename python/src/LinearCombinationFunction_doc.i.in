@@ -26,12 +26,12 @@ scalarCoefficientColl : sequence of float
 Examples
 --------
 >>> import openturns as ot
->>> f1 = ot.SymbolicFunction(['x1', 'x2', 'x3'],
-...                          ['x1^2 + x2', 'x1 + x2 + x3'])
->>> f2 = ot.SymbolicFunction(['x1', 'x2', 'x3'],
-...                          ['x1 + 2 * x2 + x3', 'x1 + x2 - x3'])
->>> functions = [f1, f2]
->>> coefficients = [2.0, 4.0]
->>> linComb = ot.LinearCombinationFunction(functions, coefficients)
->>> print(linComb([1.0, 2.0, 3.0]))
-[38,12]"
+>>> f1 = ot.SymbolicFunction(['x'], ['sin(x)'])
+>>> f2 = ot.SymbolicFunction(['x'], ['x'])
+>>> f3 = ot.SymbolicFunction(['x'], ['cos(x)'])
+>>> f = ot.LinearCombinationFunction([f1, f2, f3], [1.0, 2.0, 3.0])
+
+Evaluate the function:
+
+>>> x = [1.0]
+>>> y = f(x)"

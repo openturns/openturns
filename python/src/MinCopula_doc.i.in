@@ -11,7 +11,7 @@ n : int, :math:`n \geq 1`
 
 Notes
 -----
-The MinCopula is defined by :
+The Min Copula is defined by:
 
 .. math::
 
@@ -28,7 +28,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> copula = ot.MinCopula(3)
+>>> copula = ot.MinCopula(2)
 
 Draw a sample:
 

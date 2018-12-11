@@ -7,7 +7,11 @@
     import openturns as ot
     from matplotlib import pyplot as plt
     from openturns.viewer import View
-    process = ot.{{ objname }}()
+    if ot.{{ objname }}().__class__.__name__ == 'Process':
+        # default to Gaussian for the interface class
+        process = ot.GaussianProcess()
+    else:
+        process = ot.{{ objname }}()
     process.setTimeGrid(ot.RegularGrid(0.0, 0.02, 50))
     process.setDescription(['$x$'])
     sample = process.getSample(6)

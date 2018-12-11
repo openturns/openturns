@@ -35,12 +35,11 @@ Create a *KernelMixture*:
 >>> kernel = ot.Uniform()
 >>> sample = ot.Normal().getSample(5)
 >>> bandwith = [1.0]
->>> myKernelMixture = ot.KernelMixture(kernel, bandwith, sample)
+>>> distribution = ot.KernelMixture(kernel, bandwith, sample)
  
-See the pdf:
+Draw a sample:
 
->>> graph = myKernelMixture.drawPDF(64)
->>> graph.setLegends(['KernelMixture'])"
+>>> sample = distribution.getSample(5)"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KernelMixture::getKernel

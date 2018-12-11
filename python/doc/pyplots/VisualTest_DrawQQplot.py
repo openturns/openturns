@@ -6,6 +6,6 @@ size = 100
 normal = ot.Normal(1)
 sample = normal.getSample(size)
 
-QQPlot = ot.VisualTest_DrawQQplot(sample, normal)
+QQPlot = ot.VisualTest.DrawQQplot(sample, normal)
 
 View(QQPlot, figure_kwargs={'figsize': (4.5, 4.5)})

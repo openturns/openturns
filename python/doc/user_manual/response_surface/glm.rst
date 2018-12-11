@@ -9,9 +9,11 @@ GLM algorithm
 
 .. autosummary::
     :toctree: _generated/
-    :template: class.rst_t
+    :template: classWithPlot.rst_t
 
     GeneralLinearModelAlgorithm
+
+    :template: class.rst_t
     GeneralLinearModelResult
 
 

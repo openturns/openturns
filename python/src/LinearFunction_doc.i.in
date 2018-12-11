@@ -33,4 +33,14 @@ where:
   input *linear*,
 - :math:`\vect{b}` is the :math:`\Rset^n` vector defined by the object *center*,
 
-- :math:`\vect{c}` is the :math:`\Rset^p` vector defined by the object *constant*."
+- :math:`\vect{c}` is the :math:`\Rset^p` vector defined by the object *constant*.
+
+Examples
+--------
+>>> import openturns as ot
+>>> center = [0.0]
+>>> constant = [3.0]
+>>> linear = ot.Matrix([[2.0]])
+>>> f = ot.LinearFunction(center, constant, linear)
+>>> print(f([1.0]))
+[5]"

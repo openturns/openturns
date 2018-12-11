@@ -9,9 +9,11 @@ Kriging algorithm
 
 .. autosummary::
     :toctree: _generated/
-    :template: class.rst_t
+    :template: classWithPlot.rst_t
 
     KrigingAlgorithm
+
+    :template: class.rst_t
     KrigingResult
 
 Construction of the regression basis

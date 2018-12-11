@@ -1,0 +1,18 @@
+%feature("docstring") OT::ConstantRandomVector
+"Constant Random Vector.
+
+Allows to define a constant random variable.
+
+Parameters
+----------
+point : sequence of float
+    Constant value
+
+Examples
+--------
+>>> import openturns as ot
+>>> X = ot.ConstantRandomVector([5.0, 6.0])
+
+Draw a sample:
+
+>>> sample = X.getSample(5)"

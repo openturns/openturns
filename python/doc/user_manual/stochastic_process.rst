@@ -9,7 +9,7 @@ General objects
 
 .. autosummary::
     :toctree: _generated/
-    :template: class.rst_t
+    :template: Process.rst_t
 
     Process
 

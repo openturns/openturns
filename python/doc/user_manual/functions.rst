@@ -14,8 +14,12 @@ General mathematical functions
     Function
     SymbolicFunction
     TranslationFunction
+
+    :template: classWithPlot.rst_t
     LinearFunction
     QuadraticFunction
+
+    :template: class.rst_t
     DatabaseFunction
     PythonFunction
     OpenTURNSPythonFunction
@@ -29,12 +33,24 @@ Algebra of functions
     :template: class.rst_t
 
     AggregatedFunction
+
+    :template: classWithPlot.rst_t
     ComposedFunction
+
+    :template: class.rst_t
     DualLinearCombinationFunction
+
+    :template: classWithPlot.rst_t
     IndicatorFunction
     LinearCombinationFunction
+
+    :template: class.rst_t
     ParametricFunction
+
+    :template: classWithPlot.rst_t
     ProductFunction
+
+    :template: class.rst_t
     PointToPointEvaluation
     FieldToFieldConnection
     FieldToPointConnection

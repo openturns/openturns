@@ -83,17 +83,16 @@ Examples
 Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
->>> # use of Hmat implementation
->>> # ot.ResourceMap.Set('KrigingAlgorithm-LinearAlgebra', 'HMAT')
->>> f = ot.SymbolicFunction(['x'], ['x * sin(x)'])
->>> inputSample = ot.Sample([[1.0], [3.0], [5.0], [6.0], [7.0], [8.0]])
->>> outputSample = f(inputSample)
+>>> f = ot.SymbolicFunction(['x'],  ['x * sin(x)'])
+>>> sampleX = [[1.0], [2.0], [3.0], [4.0], [5.0], [6.0], [7.0], [8.0]]
+>>> sampleY = f(sampleX)
 
 Create the algorithm:
 
->>> basis = ot.ConstantBasisFactory().build()
->>> covarianceModel = ot.SquaredExponential(1)
->>> algo = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
+>>> basis = ot.Basis([ot.SymbolicFunction(['x'], ['x']), ot.SymbolicFunction(['x'], ['x^2'])])
+>>> covarianceModel = ot.SquaredExponential([1.0])
+>>> covarianceModel.setActiveParameter([])
+>>> algo = ot.KrigingAlgorithm(sampleX, sampleY, covarianceModel, basis)
 >>> algo.run()
 
 Get the resulting meta model:

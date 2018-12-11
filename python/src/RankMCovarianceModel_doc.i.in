@@ -24,7 +24,7 @@ Let :math:`X` be a stochastic process defined by:
    X(\omega,\vect{t})=\sum_{i=1}^M\xi_i(\omega)\phi_i(\vect{t}), \quad \forall \omega \in \Omega, \vect{t} \in \cD
 
 where :math:`(\xi_1,\dots,\xi_M)` is a random vector of dimension :math:`M` and :math:`(\phi_i)_{i=1,\dots,M}` are the :math:`M` first elements of a given basis.
-   
+
 Its covariance function, a *rank-M* covariance function, is given by:
 
 .. math::
@@ -51,7 +51,7 @@ Examples
 >>> basis = ot.LinearBasisFactory().build()
 >>> myCovarianceModel = ot.RankMCovarianceModel(variance, basis)
 >>> covariance = ot.CovarianceMatrix(2, [1.0, 0.5, 0.5, 2.0])
->>> myCovarianceModel = ot.RankMCovarianceModel(covariance, basis)
+>>> covarianceModel = ot.RankMCovarianceModel(covariance, basis)
 "
 
 // ---------------------------------------------------------------------

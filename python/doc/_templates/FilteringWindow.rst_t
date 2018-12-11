@@ -7,16 +7,15 @@
     import openturns as ot
     from matplotlib import pyplot as plt
     from openturns.viewer import View
+
     filteringWindow = ot.{{ objname }}()
     numPoints = 512
     data = ot.Sample(numPoints, 2)
     for i in range(numPoints):
         x = -0.1 + (1.2 * i) / (numPoints - 1.0)
-        data[i, 0] = x 
-        data[i, 1] = filteringWindow(x) 
-    graph = ot.Graph(str(filteringWindow))
-    graph.setXTitle('$tau$')
-    graph.setYTitle('W')
+        data[i, 0] = x
+        data[i, 1] = filteringWindow(x)
+    graph = ot.Graph(str(filteringWindow), '$tau$', 'W', True)
     graph.add(ot.Curve(data))
     graph.setColors(['red'])
     fig = plt.figure(figsize=(10, 4))

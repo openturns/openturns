@@ -101,7 +101,10 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Normal(), ot.Uniform()])
+>>> coll = [ot.Triangular(0.0, 1.0, 5.0), ot.Uniform(-2.0, 2.0)]
+>>> weights = [0.8, 0.2]
+>>> cst = 3.0
+>>> distribution = ot.RandomMixture(coll, weights, cst)
 
 Draw a sample:
 

@@ -56,4 +56,14 @@ Create a product covariance function from two exponential functions, each one de
 >>> scale2 = [4.0]
 >>> cov1 = ot.ExponentialModel(scale1, amplitude)
 >>> cov2 = ot.ExponentialModel(scale2, amplitude)
->>> myCovarianceModel = ot.ProductCovarianceModel([cov1, cov2])"
+>>> covarianceModel = ot.ProductCovarianceModel([cov1, cov2])"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::ProductCovarianceModel::getCollection
+"Covariance model collection accessor.
+
+Returns
+-------
+coll : sequence of :class:`~openturns.CovarianceModel`"
+

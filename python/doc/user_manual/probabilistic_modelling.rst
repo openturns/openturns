@@ -95,9 +95,9 @@ Discrete parametric distributions
     Binomial
     Dirac
     Geometric
+    Multinomial
 
     :template: classWithPlot.rst_t
-    Multinomial
     NegativeBinomial
 
     :template: Distribution.rst_t
@@ -139,9 +139,11 @@ Combining and transforming distributions
 
 .. autosummary::
     :toctree: _generated/
-    :template: Distribution.rst_t
+    :template: classWithPlot.rst_t
 
     BayesDistribution
+
+    :template: Distribution.rst_t
     ComposedDistribution
 
     :template: classWithPlot.rst_t
@@ -167,11 +169,6 @@ Combining and transforming distributions
     :template: Distribution.rst_t
 
     ProductDistribution
-
-.. autosummary::
-    :toctree: _generated/
-    :template: class.rst_t
-
     RandomMixture
 
 .. autosummary::
@@ -208,14 +205,14 @@ Refer to :ref:`copula`.
     FrankCopula
     GumbelCopula
     IndependentCopula
-
-    :template: classWithPlot.rst_t
     EmpiricalBernsteinCopula
     ExtremeValueCopula
     MaximumEntropyOrderStatisticsCopula
-    
+
     :template: class.rst_t
     MinCopula
+
+    :template: Copula.rst_t
     NormalCopula
 
 
@@ -243,13 +240,15 @@ Random vectors
 
     RandomVector
     PythonRandomVector
-    CompositeRandomVector
 
     :template: classWithPlot.rst_t
+    CompositeRandomVector
     ConditionalRandomVector
 
     :template: class.rst_t
     ConstantRandomVector
+
+    :template: classWithPlot.rst_t
     UsualRandomVector
 
 Samplers

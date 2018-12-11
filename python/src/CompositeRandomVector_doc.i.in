@@ -1,0 +1,23 @@
+%feature("docstring") OT::CompositeRandomVector
+"Random Vector obtained by applying a function.
+
+Allows to define the random variable :math:`Y=f(X)` from a function :math:`f`
+and another random variable :math:`X`.
+
+Parameters
+----------
+f : :class:`~openturns.Function`
+    Function to apply to the antecedent.
+X : :class:`~openturns.RandomVector`
+    Random vector of the antecedent.
+
+Examples
+--------
+>>> import openturns as ot
+>>> X = ot.RandomVector(ot.Normal())
+>>> f = ot.SymbolicFunction(['x'], ['x^2*sin(x)'])
+>>> Y = ot.CompositeRandomVector(f, X)
+
+Draw a sample:
+
+>>> sample = Y.getSample(5)"

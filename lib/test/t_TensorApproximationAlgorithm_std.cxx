@@ -43,8 +43,6 @@ int main(int, char *[])
     ComposedDistribution distribution(ComposedDistribution::DistributionCollection(dim, Uniform()));
 
     Collection<OrthogonalUniVariateFunctionFamily> factoryCollection(dim, OrthogonalUniVariatePolynomialFunctionFactory(LegendreFactory()));
-//     factoryCollection = [ot.OrthogonalUniVariateFunctionFamily(ot.OrthogonalUniVariatePolynomialFunctionFactory(ot.LegendreFactory()))] * dim
-//     #factoryCollection = [ot.FourierSeriesFactory()] * dim
     OrthogonalProductFunctionFactory functionFactory(factoryCollection);
 
     UnsignedInteger size = 1000;

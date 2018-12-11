@@ -185,14 +185,18 @@ Examples
 Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
 
 >>> import openturns as ot
->>> f = ot.SymbolicFunction(['x'], ['x * sin(x)'])
+>>> f = ot.SymbolicFunction(['x'], ['x+x * sin(x)'])
 >>> inputSample = ot.Sample([[1.0], [3.0], [5.0], [6.0], [7.0], [8.0]])
 >>> outputSample = f(inputSample)
 
 Create the algorithm:
 
->>> basis = ot.ConstantBasisFactory().build()
->>> covarianceModel = ot.SquaredExponential(1)
+>>> f1 = ot.SymbolicFunction(['x'], ['sin(x)'])
+>>> f2 = ot.SymbolicFunction(['x'], ['x'])
+>>> f3 = ot.SymbolicFunction(['x'], ['cos(x)'])
+>>> basis = ot.Basis([f1,f2, f3])
+>>> covarianceModel = ot.SquaredExponential([1.0])
+>>> covarianceModel.setActiveParameter([])
 >>> algo = ot.GeneralLinearModelAlgorithm(inputSample, outputSample, covarianceModel, basis)
 >>> algo.run()
 
