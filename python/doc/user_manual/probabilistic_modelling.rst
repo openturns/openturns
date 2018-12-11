@@ -24,18 +24,34 @@ Continuous parametric distributions
     :template: Distribution.rst_t
 
     Arcsine
+
+    :template: classWithPlot.rst_t
     Beta
     Burr
+
+    :template: Distribution.rst_t
     Chi
     ChiSquare
+
+    :template: classWithPlot.rst_t
     Dirichlet
+
+    :template: Distribution.rst_t
     Epanechnikov
     Exponential
+
+    :template: classWithPlot.rst_t
     FisherSnedecor
+
+    :template: Distribution.rst_t
     Frechet
+
+    :template: classWithPlot.rst_t
     Gamma
     GeneralizedExtremeValue
     GeneralizedPareto
+
+    :template: Distribution.rst_t
     Gumbel
     Histogram
     InverseChiSquare
@@ -75,12 +91,12 @@ Discrete parametric distributions
     Binomial
     Dirac
     Geometric
-	       
+
     :template: classWithPlot.rst_t
     Multinomial
+    NegativeBinomial
 
     :template: Distribution.rst_t
-    NegativeBinomial
     Poisson
     Skellam
     UserDefined
