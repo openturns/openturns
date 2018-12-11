@@ -99,12 +99,6 @@ public:
       const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
 protected:
-  /** Generic invocation of a R script for testing a distribution against a sample */
-  static TestResult RunTwoSamplesALinearModelRTest(const Sample & firstSample,
-      const Sample & secondSample,
-      const LinearModel & linearModel,
-      const Scalar level,
-      const String & testName);
   LinearModelTest();
 }; /* class LinearModelTest */
 

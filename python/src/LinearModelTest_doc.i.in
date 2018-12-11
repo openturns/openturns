@@ -61,8 +61,8 @@ Examples
 >>> firstSample = sample
 >>> secondSample = func(sample) + ot.Normal().getSample(30)
 >>> test_result = ot.LinearModelTest.LinearModelFisher(firstSample, secondSample)
->>> print(test_result)
-class=TestResult name=Unnamed type=Fisher binaryQualityMeasure=false p-value threshold=0.05 p-value=1 description=[]
+>>> print(test_result.getPValue())
+5.1...e-12
 "
 
 // ---------------------------------------------------------------------
