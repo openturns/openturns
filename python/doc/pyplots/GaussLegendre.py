@@ -14,10 +14,10 @@ lower = ot.Cloud(nodes, ot.Sample(nodes.getSize(), 1))
 lower.setColor("magenta")
 lower.setPointStyle('circle')
 g.add(lower)
+g.setTitle(
+    r"GaussLegendre example: $\int_{-5/2}^{9/2}\sin(t)\,dt=$" + str(value[0]))
 
 fig = plt.figure(figsize=(8, 4))
-plt.suptitle(
-    r"GaussLegendre example: $\int_{-5/2}^{9/2}\sin(t)\,dt=$" + str(value[0]))
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
 View(g, figure=fig, axes=[axis], add_legend=False)

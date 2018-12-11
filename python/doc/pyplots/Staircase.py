@@ -18,7 +18,7 @@ for i in range(20):
     data[i] = cursor
 
 # Create an empty graph
-graph = ot.Graph("Some curves", "x1", "x2", True, "topleft")
+graph = ot.Graph("Staircase example", "x1", "x2", True, "topleft")
 
 # Create the staircase
 staircase = ot.Staircase(data, "blue", "solid", "s", "Normal CDF")
@@ -27,7 +27,6 @@ staircase = ot.Staircase(data, "blue", "solid", "s", "Normal CDF")
 graph.add(staircase)
 
 fig = plt.figure(figsize=(4.5, 4))
-plt.suptitle("Staircase example")
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
 View(graph, figure=fig, axes=[axis], add_legend=True)

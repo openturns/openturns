@@ -12,9 +12,9 @@ mesh2D = ot.Mesh(vertices, simplices)
 # Create a Graph
 graph = ot.Graph('Mesh 2D', '', '', True, 'bottomright')
 graph.add(mesh2D.draw())
+
 # Then, draw it
 fig = plt.figure(figsize=(4, 4))
-plt.suptitle("Mesh 2D")
 axis = fig.add_subplot(111)
 View(graph, figure=fig, axes=[axis], add_legend=True)
 axis.set_xlim(auto=True)

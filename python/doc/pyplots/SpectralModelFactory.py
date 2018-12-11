@@ -59,7 +59,7 @@ ind = ot.Indices(2)
 ind.fill()
 
 # Some cosmetics : labels, legend position, ...
-graph = ot.Graph("Estimated spectral function - Validation", "Frequency",
+graph = ot.Graph("Spectral model estimation", "Frequency",
                  "Spectral density function", True, "topright", 1.0, ot.GraphImplementation.LOGY)
 
 # The first curve is the estimate density as function of frequency
@@ -77,6 +77,5 @@ graph.add(curve1)
 graph.add(curve2)
 
 fig = plt.figure(figsize=(10, 4))
-plt.suptitle('Spectral model estimation')
 graph_axis = fig.add_subplot(111)
 view = View(graph, figure=fig, axes=[graph_axis], add_legend=False)

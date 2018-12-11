@@ -39,7 +39,6 @@ sensitivityAnalysis = ot.JansenSensitivityAlgorithm(
 graph = sensitivityAnalysis.draw()
 
 fig = plt.figure(figsize=(8, 4))
-plt.suptitle(graph.getTitle())
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
 View(graph, figure=fig, axes=[axis], add_legend=True)

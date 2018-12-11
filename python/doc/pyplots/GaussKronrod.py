@@ -24,10 +24,9 @@ lower = ot.Cloud(ai, ot.Point(ai.getDimension()))
 lower.setColor("magenta")
 lower.setPointStyle('circle')
 g.add(lower)
-
-fig = plt.figure(figsize=(8, 4))
-plt.suptitle(
+g.setTitle(
     r"GaussKronrod example: $\int_{-5/2}^{9/2}|\sin(t)|\,dt=$" + str(value))
+fig = plt.figure(figsize=(8, 4))
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
 View(g, figure=fig, axes=[axis], add_legend=False)

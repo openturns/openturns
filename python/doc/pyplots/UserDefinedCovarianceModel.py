@@ -23,8 +23,9 @@ for k in range(len(vertices)):
 
 covarianceModel = ot.UserDefinedCovarianceModel(myMesh, myCovariance)
 cov_graph = covarianceModel.draw(0, 0, -a, a, 512)
+cov_graph.setTitle('User defined covariance model')
+
 fig = plt.figure(figsize=(10, 4))
-plt.suptitle('User defined covariance model')
 cov_axis = fig.add_subplot(111)
 View(cov_graph, figure=fig, axes=[cov_axis],
      add_legend=False, square_axes=True)

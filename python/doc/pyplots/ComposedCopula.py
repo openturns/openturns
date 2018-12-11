@@ -14,7 +14,6 @@ graphCDF.setYTitle('$u_2$')
 
 
 fig = plt.figure(figsize=(10, 4))
-plt.suptitle("ComposedCopula(Clayton(0.3), NormalCopula(3)): pdf and cdf")
 pdf_axis = fig.add_subplot(121)
 cdf_axis = fig.add_subplot(122)
 pdf_axis.set_xlim(auto=True)
@@ -22,3 +21,4 @@ cdf_axis.set_xlim(auto=True)
 
 View(graphPDF, figure=fig, axes=[pdf_axis], add_legend=True)
 View(graphCDF, figure=fig, axes=[cdf_axis], add_legend=True)
+fig.suptitle("ComposedCopula(Clayton(0.3), NormalCopula(3)): pdf and cdf")

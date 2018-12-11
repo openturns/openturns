@@ -16,13 +16,12 @@
     sample = myPlane.generate()
 
     # Create the graph
-    graph = ot.Graph("", "x1", "x2", True, "")
+    graph = ot.Graph(sample.getName(), "x1", "x2", True, "")
     cloud = ot.Cloud(sample, "blue", "fsquare", "")
     graph.add(cloud)
 
     # Draw the graph
     fig = plt.figure(figsize=(4, 4))
-    plt.suptitle(sample.getName())
     axis = fig.add_subplot(111)
     View(graph, figure=fig, axes=[axis], add_legend=False, square_axes=True)
     axis.set_xlim(auto=True)

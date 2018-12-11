@@ -39,9 +39,9 @@ graph.setColors(['red', 'blue', 'black'])
 graph.setLegends(['estimated trend', 'real trend', 'sample'])
 graph.setLegendPosition('topleft')
 graph.setYTitle('values')
+graph.setTitle("Trend estimation from a field")
 
 fig = plt.figure(figsize=(8, 4))
-plt.suptitle("Trend estimation from a field")
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
 

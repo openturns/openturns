@@ -11,9 +11,9 @@ myProcess = ot.GaussianProcess(myCov, myTG)
 myTS = myProcess.getRealization()
 
 graph = myTS.drawMarginal(0)
+graph.setTitle("A time series")
 
 fig = plt.figure(figsize=(8, 4))
-plt.suptitle("A time series")
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
 

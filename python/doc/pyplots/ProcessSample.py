@@ -12,7 +12,8 @@ myPS = myProcess.getSample(6)
 
 
 sample_graph = myPS.drawMarginal(0)
+sample_graph.setTitle('A sample of fields')
+
 fig = plt.figure(figsize=(10, 4))
-plt.suptitle('A sample of fields')
 sample_axis = fig.add_subplot(111)
 View(sample_graph, figure=fig, axes=[sample_axis], add_legend=False)

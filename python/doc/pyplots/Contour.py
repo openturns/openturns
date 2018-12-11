@@ -15,7 +15,7 @@ inputData += [-5.0] * 2
 data = f(inputData)
 levels = [(0.5 + i) / 5 for i in range(5)]
 # Create an empty graph
-graph = ot.Graph("Complex iso lines", "u1", "u2", True, "")
+graph = ot.Graph("Complex iso lines example", "u1", "u2", True, "")
 
 # Create the contour
 contour = ot.Contour(nX + 2, nY + 2, data)
@@ -23,9 +23,7 @@ contour.setLevels(levels)
 
 # Then, draw it
 graph.add(contour)
-
 fig = plt.figure(figsize=(4, 4))
-plt.suptitle("Complex iso lines example")
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
 View(graph, figure=fig, axes=[axis], add_legend=False)

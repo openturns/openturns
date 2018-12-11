@@ -11,9 +11,9 @@ myProcess = ot.GaussianProcess(myCov, myMesh)
 myField = myProcess.getRealization()
 
 graph = myField.drawMarginal(0, False)
+graph.setTitle("A field")
 
 fig = plt.figure(figsize=(8, 4))
-plt.suptitle("A field")
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
 View(graph, figure=fig, axes=[axis], add_legend=True)

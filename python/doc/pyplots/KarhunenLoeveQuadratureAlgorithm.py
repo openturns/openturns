@@ -15,7 +15,7 @@ algo = ot.KarhunenLoeveQuadratureAlgorithm(
 algo.run()
 ev = algo.getResult().getEigenValues()
 modes = algo.getResult().getScaledModes()
-g = ot.Graph()
+g = ot.Graph("Quadrature approx. of KL expansion for $C(s,t)=e^{-|s-t|}$")
 g.setXTitle("$t$")
 g.setYTitle("$\sqrt{\lambda_n}\phi_n$")
 for mode in modes:
@@ -23,7 +23,6 @@ for mode in modes:
 g.setColors(ot.Drawable.BuildDefaultPalette(len(modes)))
 
 fig = plt.figure(figsize=(6, 4))
-plt.suptitle("Quadrature approx. of KL expansion for $C(s,t)=e^{-|s-t|}$")
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
 View(g, figure=fig, axes=[axis], add_legend=False)

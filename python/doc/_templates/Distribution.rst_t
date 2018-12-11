@@ -25,16 +25,16 @@
         pdf_graph = distribution.drawPDF()
         cdf_graph = distribution.drawCDF()
         fig = plt.figure(figsize=(10, 4))
-        plt.suptitle(str(distribution))
         pdf_axis = fig.add_subplot(121)
         cdf_axis = fig.add_subplot(122)
         View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False)
         View(cdf_graph, figure=fig, axes=[cdf_axis], add_legend=False)
+        fig.suptitle(str(distribution))
     elif dimension == 2:
         distribution.setDescription(['$x_1$', '$x_2$'])
         pdf_graph = distribution.drawPDF()
+        pdf_graph.setTitle(str(distribution))
         fig = plt.figure(figsize=(10, 5))
-        plt.suptitle(str(distribution))
         pdf_axis = fig.add_subplot(111)
         View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False, square_axes=True)
 

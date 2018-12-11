@@ -45,11 +45,11 @@ for k in range(N):
 myCurve = ot.Curve(x, 'UserSpectral')
 
 # Create the graph
-myGraph = ot.Graph('User Spectral Model', 'Frequency',
+myGraph = ot.Graph('User Defined Spectral Model', 'Frequency',
                    'Spectral density value', True)
 myGraph.add(myCurve)
 myGraph.setLegendPosition('topright')
+
 fig = plt.figure(figsize=(10, 4))
-plt.suptitle('User Defined Spectral Model')
 cov_axis = fig.add_subplot(111)
 view = View(myGraph, figure=fig, axes=[cov_axis], add_legend=False)

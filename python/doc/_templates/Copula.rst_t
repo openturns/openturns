@@ -18,11 +18,11 @@
     pdf_graph = copula.drawPDF()
     cdf_graph = copula.drawCDF()
     fig = plt.figure(figsize=(10, 4))
-    plt.suptitle(str(copula))
     pdf_axis = fig.add_subplot(121)
     cdf_axis = fig.add_subplot(122)
     View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False, square_axes=True)
     View(cdf_graph, figure=fig, axes=[cdf_axis], add_legend=False, square_axes=True)
+    fig.suptitle(str(copula))
 
 .. currentmodule:: {{ module }}
 

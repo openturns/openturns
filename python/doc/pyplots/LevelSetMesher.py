@@ -17,9 +17,9 @@ mesh = mesher.build(set, ot.Interval([-1.0] * 2, [1.0] * 2))
 graph = mesh.draw()
 graph.setXTitle('$x_0$')
 graph.setYTitle('$x_1$')
+graph.setTitle('Mesh of a level set')
 
 fig = plt.figure(figsize=(10, 4))
-plt.suptitle('Mesh of a level set')
 graph_axis = fig.add_subplot(111)
 graph_axis.set_xlim(auto=True)
 

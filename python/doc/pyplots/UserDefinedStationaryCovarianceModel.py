@@ -32,7 +32,8 @@ def f(tau):
 func = ot.PythonFunction(1, 1, f)
 func.setDescription(['$t$', '$cov$'])
 cov_graph = func.draw(0.0, 20.0, 512)
+cov_graph.setTitle('User defined stationary covariance model')
+
 fig = plt.figure(figsize=(10, 4))
-plt.suptitle('User defined covariance model')
 cov_axis = fig.add_subplot(111)
 View(cov_graph, figure=fig, axes=[cov_axis], add_legend=False)
