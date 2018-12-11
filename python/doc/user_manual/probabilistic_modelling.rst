@@ -67,7 +67,11 @@ Continuous parametric distributions
     NonCentralChiSquare
     NonCentralStudent
     Normal
+
+    :template: classWithPlot.rst_t
     NormalGamma
+
+    :template: Distribution.rst_t
     Rayleigh
     Rice
     SmoothedUniform
