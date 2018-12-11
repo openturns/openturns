@@ -103,7 +103,7 @@ DistributionFactoryResult NormalFactory::buildEstimator(const Sample & sample) c
   ComposedDistribution::DistributionCollection coll;
   Normal muDistribution(mu, sigma / sqrt(1.0 * size));
   coll.add(muDistribution);
-  Distribution sigmaDistribution(Chi(size - 1) * (1.0 / sqrt(1.0 * size - 1.0)));
+  Distribution sigmaDistribution(Chi(size - 1) * (sigma / sqrt(1.0 * size - 1.0)));
   coll.add(sigmaDistribution);
   ComposedDistribution parametersDistribution(coll);
   DistributionFactoryResult result(distribution, parametersDistribution);

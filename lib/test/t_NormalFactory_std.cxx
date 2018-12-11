@@ -66,6 +66,12 @@ int main(int, char *[])
     fullprint << "Default normal=" << estimatedNormal << std::endl;
     estimatedNormal = factory.buildAsNormal(distribution.getParameter());
     fullprint << "Normal from parameters=" << estimatedNormal << std::endl;
+
+    // 1D estimation
+    const DistributionFactoryResult result(factory.buildEstimator(sample.getMarginal(0)));
+    fullprint << "Estimated distribution= " << result.getDistribution() << std::endl;
+    fullprint << "Parameter distribution= " << result.getParameterDistribution() << std::endl;
+
   }
   catch (TestFailed & ex)
   {
