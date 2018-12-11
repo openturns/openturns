@@ -49,7 +49,7 @@ void NLopt::InitializeAlgorithmNames()
   AlgorithmNames_["GN_DIRECT_L_RAND_NOSCAL"] = nlopt::GN_DIRECT_L_RAND_NOSCAL;
   AlgorithmNames_["GN_ORIG_DIRECT"] = nlopt::GN_ORIG_DIRECT;
   AlgorithmNames_["GN_ORIG_DIRECT_L"] = nlopt::GN_ORIG_DIRECT_L;
-  // stogo is optional
+  // TODO: add stogo
 //   AlgorithmNames_["GD_STOGO"] = nlopt::GD_STOGO;
 //   AlgorithmNames_["GD_STOGO_RAND"] = nlopt::GD_STOGO_RAND;
   AlgorithmNames_["LD_LBFGS_NOCEDAL"] = nlopt::LD_LBFGS_NOCEDAL;
@@ -342,7 +342,7 @@ void NLopt::run()
   OptimizationResult result(dimension, 1);
   result.setProblem(getProblem());
 
-  UnsignedInteger size = evaluationInputHistory_.getSize();
+  const UnsignedInteger size = evaluationInputHistory_.getSize();
 
   Scalar absoluteError = -1.0;
   Scalar relativeError = -1.0;
@@ -353,7 +353,18 @@ void NLopt::run()
   {
     const Point inP(evaluationInputHistory_[i]);
     const Point outP(evaluationOutputHistory_[i]);
-    constraintError = -1.0;
+    constraintError = 0.0;
+    if (getProblem().hasBounds())
+    {
+      const Interval bounds(getProblem().getBounds());
+      for (UnsignedInteger j = 0; j < dimension; ++ j)
+      {
+        if (bounds.getFiniteLowerBound()[j])
+          constraintError = std::max(constraintError, bounds.getLowerBound()[j] - inP[j]);
+        if (bounds.getFiniteUpperBound()[j])
+          constraintError = std::max(constraintError, inP[j] - bounds.getUpperBound()[j]);
+      }
+    }
     if (getProblem().hasEqualityConstraint())
     {
       const Point g(getProblem().getEqualityConstraint()(inP));
@@ -364,7 +375,7 @@ void NLopt::run()
       Point h(getProblem().getInequalityConstraint()(inP));
       for (UnsignedInteger k = 0; k < getProblem().getInequalityConstraint().getOutputDimension(); ++ k)
       {
-        h[k] = std::max(h[k], 0.0);// convention h(x)>=0 <=> admissibility
+        h[k] = std::min(h[k], 0.0);// convention h(x)>=0 <=> admissibility
       }
       constraintError = std::max(constraintError, h.normInf());
     }

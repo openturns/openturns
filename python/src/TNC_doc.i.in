@@ -1,6 +1,9 @@
 %feature("docstring") OT::TNC
 "Truncated Newton Constrained solver.
 
+Tunrcated-Newton method Non-linear optimizer.
+This solver uses no derivative information and only supports bound constraints.
+
 Available constructors:
     TNC(*problem*)
 
@@ -28,11 +31,6 @@ fmin : float
     Minimum function value estimate.
 rescale : float
     f scaling factor (in log10) used to trigger f value rescaling
-
-Notes
------
-Non-linear optimizer supporting bound constraints.
-This solver does not implement the progress callback.
 
 See also
 --------

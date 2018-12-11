@@ -1,6 +1,8 @@
 %feature("docstring") OT::AbdoRackwitz
 "Abdo-Rackwitz solver.
 
+This solver uses first derivative information and can only be used to solve level function problems.
+
 Available constructors:
     AbdoRackwitz(*problem*)
 
