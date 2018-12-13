@@ -272,6 +272,22 @@ We check that the residual is Gaussian thanks to :class:`~openturns.NormalityTes
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::LinearModelAnalysis::getNormalityTestCramerVonMises
+"Performs Cramer-Von Mised test to check Gaussian assumption of the model (null hypothesis).
+It is accepted when p-value is low.
+
+Returns
+-------
+testResult : :class:`~openturns.TestResult`
+    Test result class.
+
+
+Notes
+-----
+We check that the residual is Gaussian thanks to :class:`~openturns.NormalityTest::CramerVonMisesNormal`."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::LinearModelAnalysis::drawResidualsVsFitted
 "Accessor to plot of residuals versus fitted values.
 

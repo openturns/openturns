@@ -100,6 +100,9 @@ public:
   /** Chi-Squared normality test */
   TestResult getNormalityTestResultChiSquared() const;
 
+  /** Cramer Von mises normality test */
+  TestResult getNormalityTestCramerVonMises() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 

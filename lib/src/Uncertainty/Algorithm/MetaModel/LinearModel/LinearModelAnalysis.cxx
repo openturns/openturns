@@ -160,11 +160,14 @@ String LinearModelAnalysis::__str__(const String & offset) const
   const Scalar normalitytest1(getNormalityTestResultAndersonDarling().getPValue());
   const Scalar normalitytest2(getNormalityTestResultChiSquared().getPValue());
   const Scalar normalitytest3(getNormalityTestResultKolmogorovSmirnov().getPValue());
+  const Scalar normalitytest4(getNormalityTestCramerVonMises().getPValue());
   st = OSS() << normalitytest1;
   lwidth = std::max( lwidth, st.size() );
   st = OSS() << normalitytest2;
   lwidth = std::max( lwidth, st.size() );
   st = OSS() << normalitytest3;
+  lwidth = std::max( lwidth, st.size() );
+  st = OSS() << normalitytest4;
   lwidth = std::max( lwidth, st.size() );
   awidth = twidth + 2 * separator.size() + lwidth - 1;
   oss << "\n" <<  String( awidth , '-' ) << "\n";
@@ -176,6 +179,11 @@ String LinearModelAnalysis::__str__(const String & offset) const
   st = "Anderson-Darling";
   oss << st << String( twidth - st.size(), ' ') << separator;
   st = OSS() << normalitytest1;
+  oss << st << String( lwidth - st.size(), ' ') << separatorEndLine;
+  oss << "\n";
+  st = "Cramer-Von Mises";
+  oss << st << String( twidth - st.size(), ' ') << separator;
+  st = OSS() << normalitytest4;
   oss << st << String( lwidth - st.size(), ' ') << separatorEndLine;
   oss << "\n";
   st = "Chi-Squared";
@@ -368,6 +376,12 @@ TestResult LinearModelAnalysis::getNormalityTestResultChiSquared() const
   // Using OT::FittingTest::ChiSquared
   const Normal normalDistribution(getResiduals().computeMean()[0], getResiduals().computeStandardDeviation()(0, 0));
   return FittingTest::ChiSquared(getResiduals(), normalDistribution);
+}
+
+/* Cramer Von Mises normality test */
+TestResult LinearModelAnalysis::getNormalityTestCramerVonMises() const
+{
+  return NormalityTest::CramerVonMisesNormal(getResiduals());
 }
 
 /* [1] Draw a plot of residuals versus fitted values */

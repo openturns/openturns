@@ -19,6 +19,7 @@ Adjusted R-squared   | 0.999985 |
 Normality test       | p-value    |
 -----------------------------------
 Anderson-Darling     | 0.00258386 |
+Cramer-Von Mises     | 0.00392808 |
 Chi-Squared          | 0.157724   |
 Kolmogorov-Smirnov   | 0.17747    |
 -----------------------------------
@@ -50,6 +51,7 @@ Adjusted R-squared   | 1 |
 Normality test       | p-value  |
 ---------------------------------
 Anderson-Darling     | 0.57332  |
+Cramer-Von Mises     | 0.535457 |
 Chi-Squared          | 0.783691 |
 Kolmogorov-Smirnov   | 0.821849 |
 ---------------------------------
