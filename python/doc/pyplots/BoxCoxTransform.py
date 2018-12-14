@@ -3,15 +3,15 @@ from matplotlib import pyplot as plt
 from openturns.viewer import View
 
 # Create a Box Cox transformation
-myLambda = ot.Point([0.0, 0.1, 1.0, 1.5])
+lambdas = [0.0, 0.1, 1.0, 1.5]
 
-graph = ot.Graph("Box Cox transformations")
-for i in range(myLambda.getDimension()):
-    myBoxCox = ot.BoxCoxTransform(myLambda[i])
-    graph.add(myBoxCox.draw(0.1, 2.1))
+graph = ot.Graph("Box Cox transformations", 'x', 'y', True)
+for i in range(len(lambdas)):
+    boxCoxT = ot.BoxCoxTransform(lambdas[i])
+    graph.add(boxCoxT.draw(0.1, 2.1))
 
 graph.setColors(['red', 'blue', 'black', 'green'])
-graph.setLegends(['lambda = ' + str(lam) for lam in myLambda])
+graph.setLegends(['lambda = ' + str(lam) for lam in lambdas])
 graph.setLegendPosition("bottomright")
 
 fig = plt.figure(figsize=(8, 4))
