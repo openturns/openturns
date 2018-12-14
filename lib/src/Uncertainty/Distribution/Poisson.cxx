@@ -105,7 +105,17 @@ Scalar Poisson::computePDF(const Point & point) const
 
   const Scalar k = point[0];
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return 0.0;
-  return std::exp(k * std::log(lambda_) - lambda_ - SpecFunc::LnGamma(k + 1.0));
+  return DistFunc::dPoisson(lambda_, static_cast<UnsignedInteger>(round(k)));
+}
+
+
+Scalar Poisson::computeLogPDF(const Point & point) const
+{
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+
+  const Scalar k = point[0];
+  if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return -SpecFunc::LogMaxScalar;
+  return DistFunc::logdPoisson(lambda_, static_cast<UnsignedInteger>(round(k)));
 }
 
 
