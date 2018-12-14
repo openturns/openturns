@@ -1,3 +1,89 @@
+%feature("docstring") OT::DistFunc::logpBinomial
+"Logarithm of the probability function of a binomial distribution.
+
+Parameters
+----------
+n : int, :math:`n>0`
+    The number of trials
+p : float, :math:`0\leq p\leq 1`
+    The success probability of each trial
+k : int
+    The number of success.
+
+Returns
+-------
+logp : float
+    The natural logarithm of the probability to get :math:`k` successes.
+
+Notes
+-----
+This method implements Loader's algorithm, the *fast* and *accurate* method described in [loader2000]_, with the further improvements mentioned in [dimitriadis2016]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> p = ot.DistFunc.logpBinomial(5, 0.2, 2)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::dBinomial
+"Probability function of a binomial distribution.
+
+Parameters
+----------
+n : int, :math:`n>0`
+    The number of trials
+p : float, :math:`0\leq p\leq 1`
+    The success probability of each trial
+k : int
+    The number of success.
+
+Returns
+-------
+probability : float
+    The probability to get :math:`k` successes.
+
+Notes
+-----
+This method implements Loader's algorithm, the *fast* and *accurate* method described in [loader2000]_, with the further improvements mentioned in [dimitriadis2016]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> p = ot.DistFunc.pBinomial(5, 0.2, 2)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::rBinomial
+"Realization of a binomial distribution.
+
+Parameters
+----------
+n : int, :math:`n>0`
+    The number of trials
+p : float, :math:`0\leq p\leq 1`
+    The success probability of each trial
+size : int
+    The number of realizations to generate.
+
+Returns
+-------
+realizations : int or :class:`~openturns.Indices`
+    The realizations of the discrete disctribution.
+
+Notes
+-----
+This method implements the rejection algorithm described in [hormann1993]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> r = ot.DistFunc.rBinomial([5, 0.3])
+>>> r = ot.DistFunc.rBinomial([5, 0.3], 10)"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::DistFunc::rDiscrete
 "Realization of a bounded integral discrete distribution.
 
@@ -174,8 +260,6 @@ Examples
 >>> import openturns as ot
 >>> k = ot.DistFunc.kFactor(5, 0.95, 0.9)"
 
-
-
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::pPearsonCorrelation
@@ -210,3 +294,85 @@ Examples
 --------
 >>> import openturns as ot
 >>> pval = ot.DistFunc.pPearsonCorrelation(100, 0.3, True)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::logpPoisson
+"Logarithm of the probability function of a Poisson distribution.
+
+Parameters
+----------
+lambda: float, :math:`\lambda\geq 0`
+    The intensity of the Poisson distribution
+k : int
+    The number of success.
+
+Returns
+-------
+logp : float
+    The natural logarithm of the probability to get :math:`k` successes.
+
+Notes
+-----
+This method implements Loader's algorithm, the *fast* and *accurate* method described in [loader2000]_, with the further improvements mentioned in [dimitriadis2016]_.
+Examples
+--------
+>>> import openturns as ot
+>>> p = ot.DistFunc.logpPoisson(5.0, 2)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::dPoisson
+"Probability function of a Poisson distribution.
+
+Parameters
+----------
+lambda: float, :math:`\lambda\geq 0`
+    The intensity of the Poisson distribution
+k : int
+    The number of success.
+
+Returns
+-------
+logp : float
+    The natural logarithm of the probability to get :math:`k` successes.
+
+Notes
+-----
+This method implements Loader's algorithm, the *fast* and *accurate* method described in [loader2000]_, with the further improvements mentioned in [dimitriadis2016]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> p = ot.DistFunc.dPoisson(5.0, 2)"
+
+%feature("docstring") OT::DistFunc::rPoisson
+"Realization of a Poisson distribution.
+
+Parameters
+----------
+lambda: float, :math:`\lambda\geq 0`
+    The intensity of the Poisson distribution
+size : int
+    The number of realizations to generate.
+
+Returns
+-------
+realizations : int or :class:`~openturns.Indices`
+    The realizations of the discrete disctribution.
+
+Notes
+-----
+For the small values of :math:`\lambda`, we use the method of inversion by
+sequential search described in [devroy1986]_ and with the important errata in
+[devroy1986b]_. For the large values of :math:`\lambda`, we use the ratio of
+uniform method described in [stadlober1990]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> r = ot.DistFunc.rPoisson(5.0)
+>>> r = ot.DistFunc.rPoisson(5.0, 10)"
+
+

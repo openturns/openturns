@@ -31,29 +31,59 @@ int main(int, char *[])
   setRandomGenerator();
 
   try
-  {
-    // Poisson related functions
     {
-      // rPoisson
-      Scalar lambdaMin = 0.2;
-      Scalar lambdaMax = 5.0;
-      UnsignedInteger n1 = 5;
-      UnsignedInteger nR = 5;
-      for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
+      // Poisson related functions
       {
-        Scalar lambda = lambdaMin + (lambdaMax - lambdaMin) * i1 / (n1 - 1);
-        for (UnsignedInteger iR = 0; iR < nR; ++iR)
-        {
-          fullprint << "rPoisson(" << lambda << ")=" << DistFunc::rPoisson(lambda) << std::endl;
-        }
-      }
-    } // rPoisson
-  }
+        // dPoisson
+        Scalar lambdaMin = 0.2;
+        Scalar lambdaMax = 5.0;
+        UnsignedInteger n1 = 5;
+        UnsignedInteger kMax = 10;
+        for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
+          {
+            Scalar lambda = lambdaMin + (lambdaMax - lambdaMin) * i1 / (n1 - 1);
+            for (UnsignedInteger k = 0; k < kMax; ++k)
+              {
+                fullprint << "dPoisson(" << lambda << ", " << k << ")=" << DistFunc::dPoisson(lambda, k) << std::endl;
+              }
+          }
+      } // dPoisson
+      {
+        // logdPoisson
+        Scalar lambdaMin = 0.2;
+        Scalar lambdaMax = 5.0;
+        UnsignedInteger n1 = 5;
+        UnsignedInteger kMax = 10;
+        for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
+          {
+            Scalar lambda = lambdaMin + (lambdaMax - lambdaMin) * i1 / (n1 - 1);
+            for (UnsignedInteger k = 0; k < kMax; ++k)
+              {
+                fullprint << "logdPoisson(" << lambda << ", " << k << ")=" << DistFunc::logdPoisson(lambda, k) << std::endl;
+              }
+          }
+      } // logdPoisson
+      {
+        // rPoisson
+        Scalar lambdaMin = 0.2;
+        Scalar lambdaMax = 5.0;
+        UnsignedInteger n1 = 5;
+        UnsignedInteger nR = 5;
+        for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
+          {
+            Scalar lambda = lambdaMin + (lambdaMax - lambdaMin) * i1 / (n1 - 1);
+            for (UnsignedInteger iR = 0; iR < nR; ++iR)
+              {
+                fullprint << "rPoisson(" << lambda << ")=" << DistFunc::rPoisson(lambda) << std::endl;
+              }
+          }
+      } // rPoisson
+    }
   catch (TestFailed & ex)
-  {
-    std::cerr << ex << std::endl;
-    return ExitCode::Error;
-  }
+    {
+      std::cerr << ex << std::endl;
+      return ExitCode::Error;
+    }
 
 
   return ExitCode::Success;

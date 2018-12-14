@@ -45,6 +45,13 @@ Bibliography
 .. [devroye1986] Devroye L, *Non-Uniform RandomVariate Generation*,
     Springer-Verlag, New York, 1986
     `pdf <http://doc.openturns.org/papers/devroye1986.pdf>`__
+.. [devroye1986b] Devroye L, *Non-Uniform RandomVariate Generation - Errata*,
+    `pdf <http://www.nrbook.com/devroye/Devroye_files/errors.pdf>`__
+.. [dimitriadis2016] Dimitriadis J., *On the Accuracy of Loader's Algorithm for
+    the Binomial Density and Algorithms for Rectangle Probabilities for Markov
+    Increments*, PhD thesis.
+    Trier University, 2016.
+    `pdf <https://ubt.opus.hbz-nrw.de/opus45-ubtr/frontdoor/deliver/index/docId/758/file/DissertationDimitriadis.pdf>`__
 .. [dixon1983] Dixon, W.J., Massey, F.J, *Introduction to statistical analysis*
     4th ed., McGraw-Hill, 1983
 .. [doornik2005] Doornik, J.A. *An Improved Ziggurat Method to Generate Normal Random Samples*,
@@ -56,9 +63,10 @@ Bibliography
 .. [fang2006] K-T. Fang, R. Li, and A. Sudjianto. *Design and modeling for
     computer experiments.* Chapman & Hall CRC, 2006.
 .. [gamboa2013] Gamboa, F., Janon, A., Klein, T. & Lagnoux, A. *Sensitivity
-    analysis for multidimensional and functional outputs.* 2013
+    analysis for multidimensional and functional outputs.* 2013.
     `pdf <http://doc.openturns.org/papers/gamboa2013.pdf>`__
-.. [hormann1992] Hormann W., *The generation of Binomial Random Variates*
+.. [hormann1993] Hormann W., *The generation of Binomial Random Variates* Journal
+    of Statistical Computation and Simulation 46, pp. 101-110, 1993.
     `pdf <http://doc.openturns.org/papers/hormann1992.pdf>`__
 .. [halko2010] Nathan Halko, Per-Gunnar Martinsson, Joel A. Tropp, *Finding
     structure with randomness: Probabilistic algorithms for constructing
@@ -112,6 +120,8 @@ Bibliography
     Modeling Uncertainty. International Series in Operations Research &
     Management Science, vol 46. Springer, Boston, MA
     `pdf <http://doc.openturns.org/papers/lecuyer2005.pdf>`__
+.. [loader2000] Loader C. *Fast and Accurate Computation of Binomial Probabilities*,
+    `pdf <http://octave.1599824.n4.nabble.com/attachment/3829107/0/loader2000Fast.pdf>`__
 .. [marsaglia1993] Marsaglia G. and Tsang W. W., *A Simple Method for Generating Gamma*,
     Journal of Statistical Computational and Simulation, vol 46, pp101 - 110,1993.
 .. [martinez2011] Martinez, J-M., *Analyse de sensibilite globale par decomposition de la variance*,
@@ -204,7 +214,7 @@ Bibliography
 .. [stoer1993] Stoer, J., Bulirsch, R. *Introduction to Numerical
     Analysis*, Second Edition, Springer-Verlag, 1993.
     `pdf <http://alvand.basu.ac.ir/~dezfoulian/files/Numericals/Springer%20-%20Introduction%20to%20numerical%20analysis,%20Bulirsch,%20Stoer.%20(2ed.,%201993)(400dpi)(ISBN%200387978.pdf>`__
-.. [Wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*
+.. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*
     First Edition, Chapman & Hall, 1994.
 
 	       

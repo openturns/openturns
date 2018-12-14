@@ -62,9 +62,17 @@ public:
                      const UnsignedInteger size);
   // For the Binomial distribution
 private:
-  static Scalar fcBinomial(const UnsignedInteger k);
+  static Scalar stirlerr(const UnsignedInteger n);
+  static Scalar bd0(const UnsignedInteger k,
+		    const Scalar np);
 
 public:
+  static Scalar logdBinomial(const UnsignedInteger n,
+			     const Scalar p,
+			     const UnsignedInteger k);
+  static Scalar dBinomial(const UnsignedInteger n,
+			  const Scalar p,
+			  const UnsignedInteger k);
   static UnsignedInteger rBinomial(const UnsignedInteger n,
                                    const Scalar p);
   static Indices rBinomial(const UnsignedInteger n,
@@ -161,6 +169,10 @@ public:
   static Scalar rNormal();
   static Point rNormal(const UnsignedInteger size);
   // For Poisson distribution
+  static Scalar logdPoisson(const Scalar lambda,
+			    const UnsignedInteger k );
+  static Scalar dPoisson(const Scalar lambda,
+                         const UnsignedInteger k);
   static Scalar qPoisson(const Scalar lambda,
                          const Scalar p,
                          const Bool tail = false);
