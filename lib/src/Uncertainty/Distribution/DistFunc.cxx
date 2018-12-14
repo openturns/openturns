@@ -272,64 +272,125 @@ Point DistFunc::rBeta(const Scalar p1,
 /*******************************************************************************************************/
 /* Binomial distribution, i.e. with a PDF equals to C(n, p) p^k (1 - p)^(n - k) */
 /*******************************************************************************************************/
+/* stirlerr(n) = log(n!) - log( sqrt(2*pi*n)*(n/e)^n )
+*     = log Gamma(n+1) - 1/2 * [log(2*pi) + log(n)] - n*[log(n) - 1]
+*     = log Gamma(n+1) - (n + 1/2) * log(n) + n - log(2*pi)/2 */
+Scalar DistFunc::stirlerr(const UnsignedInteger n)
+{
+  static const Scalar stirlerrTable[26] =
+  {
+    0.000000000000000000000, 8.10614667953272582e-02, 4.13406959554092941e-02,
+    2.76779256849983391e-02, 2.07906721037650931e-02, 1.66446911898211922e-02,
+    1.38761288230707480e-02, 1.18967099458917701e-02, 1.04112652619720965e-02,
+    9.25546218271273292e-03, 8.33056343336287126e-03, 7.57367548795184079e-03,
+    6.94284010720952987e-03, 6.40899418800420707e-03, 5.95137011275884774e-03,
+    5.55473355196280137e-03, 5.20765591960964044e-03, 4.90139594843473786e-03,
+    4.62915374933402859e-03, 4.38556024923232427e-03, 4.16631969199692246e-03,
+    3.96795421864085962e-03, 3.78761806844443458e-03, 3.62296022468309471e-03,
+    3.47202138297876696e-03, 3.33315563672809288e-03
+  };
+  if (n < 26) return stirlerrTable[n];
+  static Scalar S0 = 8.33333333333333333e-02;
+  static Scalar S1 = 2.77777777777777778e-03;
+  static Scalar S2 = 7.93650793650793651e-04;
+  static Scalar S3 = 5.95238095238095238e-04;
+  static Scalar S4 = 8.41750841750841751e-04;
+  const Scalar nn = (1.0 * n) * n;
+  if (n > 2559) return (S0 - S1 / nn) / n;
+  if (n > 82)  return (S0 - (S1 - S2 / nn) / nn) / n;
+  if (n > 50)  return (S0 - (S1 - (S2 - S3 / nn) / nn) / nn) / n;
+  return (S0 - (S1 - (S2 - (S3 - S4 / nn) / nn) / nn) / nn) / n;
+}
+
+Scalar DistFunc::bd0(const UnsignedInteger k,
+                     const Scalar np)
+{
+  const Scalar kpnp = k + np;
+  const Scalar kmnp = k - np;
+  if (std::abs(kmnp) < 0.1 * kpnp)
+  {
+    const Scalar v = kmnp / kpnp;
+    Scalar s = kmnp * v;
+    if (std::abs(s) < SpecFunc::Precision) return s;
+    Scalar ej = 2.0 * k * v;
+    const Scalar v2 = v * v;
+    for (UnsignedInteger j = 1; j < SpecFunc::MaximumIteration; ++j)
+    {
+      ej *= v2;
+      const Scalar s1 = s + ej / (2 * j + 1);
+      if (s1 == s) return s1;
+      s = s1;
+    }
+  }
+  return k * std::log(k / np) - kmnp;
+}
+
+/* Probability distribution function
+   We use the algorithm described in:
+   Catherine Loader, "Fast and Accurate Computation of Binomial Probabilities", On-
+line:   https://lists.gnu.org/archive/html/octave-maintainers/2011-09/pdfK0uKOST642.pdf, accessed 22 December 2018, 2000.
+   with the improvements discussed in:
+   Jannis Dimitriadis, "On the Accuracy of Loader’s Algorithm for the Binomial
+   Density and Algorithms for Rectangle Probabilities for Markov Increments",
+   Dissertation, Universitat Trier, August 2016.
+*/
+Scalar DistFunc::dBinomial(const UnsignedInteger n,
+                           const Scalar p,
+                           const UnsignedInteger k)
+{
+  if (p < 0.0) throw InvalidArgumentException(HERE) << "Error: dBinomial expects p>=0";
+  if (k > n) return 0.0;
+  if (p == 0.0) return (k == 0 ? 1.0 : 0.0);
+  if (p == 1.0) return (k == n ? 1.0 : 0.0);
+  if (k == 0)
+  {
+    if (n == 0) return 1.0;
+    const Scalar lc = (p < 0.1 ? -DistFunc::bd0(n, n * (1.0 - p)) - n * p : n * log1p(-p));
+    return std::exp(lc);
+  }
+  if (k == n)
+  {
+    const Scalar lc = (p > 0.9 ? -DistFunc::bd0(n, n * p) - n * (1.0 - p) : n * std::log(p));
+    return std::exp(lc);
+  }
+  const Scalar lc = DistFunc::stirlerr(n) - DistFunc::stirlerr(k) - DistFunc::stirlerr(n - k) - DistFunc::bd0(k, n * p) - DistFunc::bd0(n - k, n * (1.0 - p));
+  return std::exp(lc - SpecFunc::LOGSQRT2PI - 0.5 * (std::log(k) + log1p(-(1.0 * k) / n)));
+}
+
+Scalar DistFunc::logdBinomial(const UnsignedInteger n,
+                              const Scalar p,
+                              const UnsignedInteger k)
+{
+  if (k > n) return -SpecFunc::LogMaxScalar;
+  if (p == 0.0) return (k == 0 ? 0.0 : -SpecFunc::LogMaxScalar);
+  if (p == 1.0) return (k == n ? 0.0 : -SpecFunc::LogMaxScalar);
+  if (k == 0)
+  {
+    if (n == 0) return 0.0;
+    return (p < 0.1 ? -DistFunc::bd0(n, n * (1.0 - p)) - n * p : n * log1p(-p));
+  }
+  if (k == n)
+    return (p > 0.9 ? -DistFunc::bd0(n, n * p) - n * (1.0 - p) : n * std::log(p));
+  const Scalar lc = DistFunc::stirlerr(n) - DistFunc::stirlerr(k) - DistFunc::stirlerr(n - k) - DistFunc::bd0(k, n * p) - DistFunc::bd0(n - k, n * (1.0 - p));
+  return lc - SpecFunc::LOGSQRT2PI - 0.5 * (std::log(k) + log1p(-(1.0 * k) / n));
+}
+
 /* Random number generation
    We use the rejection algorithm described in:
    Wolfgang Hormann, "The Generation of Binomial Random Variates",
    Journal of Statistical Computation and Simulation 46, pp. 101-110, 1993
    http://epub.wu.ac.at/1242/
 */
-Scalar DistFunc::fcBinomial(const UnsignedInteger k)
-{
-  switch (k)
-  {
-    case 0:
-      return 0.08106146679532726;
-      break;
-    case 1:
-      return 0.04134069595540929;
-      break;
-    case 2:
-      return 0.02767792568499834;
-      break;
-    case 3:
-      return 0.02079067210376509;
-      break;
-    case 4:
-      return 0.01664469118982119;
-      break;
-    case 5:
-      return 0.01387612882307075;
-      break;
-    case 6:
-      return 0.01189670994589177;
-      break;
-    case 7:
-      return 0.01041126526197209;
-      break;
-    case 8:
-      return 0.009255462182712733;
-      break;
-    case 9:
-      return 0.008330563433362871;
-      break;
-    default:
-      const Scalar kp1Sq = (k + 1) * (k + 1);
-      return (1.0 / 12.0 - (1.0 / 360.0 - 1.0 / 1260. / kp1Sq) / kp1Sq) / (k + 1);
-      break;
-  } // switch
-}
-
 UnsignedInteger DistFunc::rBinomial(const UnsignedInteger n,
                                     const Scalar p)
 {
   // Quick return for degenerate cases
+  if (n == 0) return 0;
   if (p == 0.0) return 0;
   if (p == 1.0) return n;
   // Use symmetry
   const Scalar q = std::min(p, 1.0 - p);
   const Bool complementary = p > 0.5;
-  if (q == 1.0) return (complementary ? 0 : n);
-  if (q == 0.0) return (complementary ? n : 0);
   // Small case, use inversion
   if (n * q <= 15)
   {
@@ -420,10 +481,10 @@ UnsignedInteger DistFunc::rBinomial(const UnsignedInteger n,
     if (v < t - rho) return (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
     if (v > t + rho) continue;
     const Scalar nm = n - m + 1;
-    const Scalar h = (m + 0.5) * std::log((m + 1) / (r * nm)) + fcBinomial(static_cast<UnsignedInteger>(m)) + fcBinomial(static_cast<UnsignedInteger>(n - m));
+    const Scalar h = (m + 0.5) * std::log((m + 1) / (r * nm)) + stirlerr(static_cast<UnsignedInteger>(m + 1)) + stirlerr(static_cast<UnsignedInteger>(nm));
     // Final acceptance-rejection
     const Scalar nk = n - k + 1;
-    if (v <= h + (n + 1) * std::log(nm / nk) + (k + 0.5) * std::log(nk * r / (k + 1)) - fcBinomial(static_cast<UnsignedInteger>(k)) - fcBinomial(static_cast<UnsignedInteger>(n - k))) return (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
+    if (v <= h + (n + 1) * std::log(nm / nk) + (k + 0.5) * std::log(nk * r / (k + 1)) - stirlerr(static_cast<UnsignedInteger>(k + 1)) - stirlerr(static_cast<UnsignedInteger>(nk))) return (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
   } // for(;;)
 } // rBinomial
 
@@ -432,7 +493,131 @@ Indices DistFunc::rBinomial(const UnsignedInteger n,
                             const UnsignedInteger size)
 {
   Indices result(size);
-  for (UnsignedInteger i = 0; i < size; ++i) result[i] = rBinomial(n, p);
+  //for (UnsignedInteger i = 0; i < size; ++i) result[i] = rBinomial(n, p);
+  // Quick return for degenerate cases
+  if (n == 0) return result;
+  if (p == 0.0) return result;
+  if (p == 1.0) return Indices(size, n);
+  // Use symmetry
+  const Scalar q = std::min(p, 1.0 - p);
+  const Bool complementary = p > 0.5;
+  // Small case, use inversion
+  if (n * q <= 15)
+  {
+    const Scalar r = q / (1.0 - q);
+    Scalar t = std::pow(1.0 - q, static_cast<int>(n));
+    Scalar s = t;
+    for (UnsignedInteger index = 0; index < size; ++index)
+    {
+      const Scalar u = RandomGenerator::Generate();
+      for (UnsignedInteger k = 0; k <= n; ++k)
+      {
+        if (s >= u)
+        {
+          result[k] = (complementary ? n - k : k);
+          break;
+        }
+        t *= r * (n - k) / (k + 1.0);
+        s += t;
+      }
+      // Should never go there, except in case of round-off errors
+    } // index
+  } // n * q < 15
+  // Large case, use the algorithm described in the reference.
+  // Setup
+  const Scalar m = floor((n + 1) * q);
+  const Scalar r = q / (1.0 - q);
+  const Scalar nr = (n + 1) * r;
+  const Scalar npq = n * q * (1.0 - q);
+  const Scalar npqSqrt = std::sqrt(npq);
+  const Scalar b = 1.15 + 2.53 * npqSqrt;
+  const Scalar a = -0.0873 + 0.0248 * b + 0.01 * q;
+  const Scalar c = n * q + 0.5;
+  const Scalar alpha = (2.83 + 5.1 / b) * npqSqrt;
+  const Scalar vr = 0.92 - 4.2 / b;
+  const Scalar urvr = 0.86 * vr;
+  for (UnsignedInteger index = 0; index < size; ++index)
+  {
+    Scalar u = 0.0;
+    Scalar k = 0.0;
+    // Main loop
+    for (;;)
+    {
+      Scalar v = RandomGenerator::Generate();
+      if (v <= urvr)
+      {
+        u = v / vr - 0.43;
+        k = floor((2 * a / (0.5 - std::abs(u)) + b) * u + c);
+        result[index] = (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
+        break;
+      } // v <= urvr
+      if (v >= vr)
+      {
+        u = RandomGenerator::Generate() - 0.5;
+      } // v >= vr
+      else
+      {
+        u = v / vr - 0.93;
+        u = (u < 0.0 ? -0.5 : 0.5) - u;
+        v = RandomGenerator::Generate() * vr;
+      } // v < vr
+      const Scalar us = 0.5 - std::abs(u);
+      k = floor((2.0 * a / us + b) * u + c);
+      if ((k < 0.0) || (k > n)) continue;
+      v = v * alpha / (a / (us * us) + b);
+      const Scalar km = std::abs(k - m);
+      // Recursive evaluation of f(k)
+      if (km <= 15)
+      {
+        Scalar f = 1.0;
+        if (m < k)
+        {
+          Scalar i = m;
+          do
+          {
+            ++i;
+            f *= (nr / i - r);
+          }
+          while (i < k);
+        } // m < k
+        else if (m > k)
+        {
+          Scalar i = k;
+          do
+          {
+            ++i;
+            v *= (nr / i - r);
+          }
+          while (i < m);
+        } // m > k
+        if (v <= f)
+        {
+          result[index] = (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
+          break;
+        }
+        continue;
+      } // km <= 15
+      // Squeeze-acceptance or rejection
+      v = std::log(v);
+      const Scalar rho = km / npq * (((km / 3.0 + 0.625) * km + 1.0 / 6.0) / npq + 0.5);
+      const Scalar t = -km * km / (2.0 * npq);
+      if (v < t - rho)
+      {
+        result[index] = (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
+        break;
+      }
+      if (v > t + rho) continue;
+      const Scalar nm = n - m + 1;
+      const Scalar h = (m + 0.5) * std::log((m + 1) / (r * nm)) + stirlerr(static_cast<UnsignedInteger>(m + 1)) + stirlerr(static_cast<UnsignedInteger>(nm));
+      // Final acceptance-rejection
+      const Scalar nk = n - k + 1;
+      if (v <= h + (n + 1) * std::log(nm / nk) + (k + 0.5) * std::log(nk * r / (k + 1)) - stirlerr(static_cast<UnsignedInteger>(k + 1)) - stirlerr(static_cast<UnsignedInteger>(nk)))
+      {
+        result[index] = (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
+        break;
+      }
+    } // for(;;)
+  } // index
   return result;
 }
 
@@ -1126,6 +1311,31 @@ Point DistFunc::rNormal(const UnsignedInteger size)
 /**********************************************************************************/
 /* Poisson distribution, i.e. with a PDF equals to exp(-lambda) . lambda ^ k / k! */
 /**********************************************************************************/
+/* Probability distribution function
+   We use the algorithm described in:
+   Catherine Loader, "Fast and Accurate Computation of Binomial Probabilities", On-
+line:   https://lists.gnu.org/archive/html/octave-maintainers/2011-09/pdfK0uKOST642.pdf, accessed 22 December 2018, 2000.
+   with the improvements discussed in:
+   Jannis Dimitriadis, "On the Accuracy of Loader’s Algorithm for the Binomial
+   Density and Algorithms for Rectangle Probabilities for Markov Increments",
+   Dissertation, Universitat Trier, August 2016.
+*/
+Scalar DistFunc::logdPoisson(const Scalar lambda,
+                             const UnsignedInteger k)
+{
+  if (lambda == 0.0) return (k == 0 ? 0.0 : -SpecFunc::LogMaxScalar);
+  if (k == 0) return -lambda;
+  return -DistFunc::stirlerr(k) - DistFunc::bd0(k, lambda) - 0.5 * std::log(2.0 * M_PI * k);
+}
+
+Scalar DistFunc::dPoisson(const Scalar lambda,
+                          const UnsignedInteger k)
+{
+  if (lambda == 0.0) return (k == 0 ? 1.0 : 0.0);
+  if (k == 0) return std::exp(-lambda);
+  return std::exp(-DistFunc::stirlerr(k) - DistFunc::bd0(k, lambda)) / std::sqrt(2.0 * M_PI * k);
+}
+
 /* Quantile function
    We use the algorithm described in:
    Mikes Giles, "Fast evaluation of the inverse Poisson cumulative distribution function", https://people.maths.ox.ac.uk/gilesm/poissinv/paper.pdf
@@ -1146,7 +1356,7 @@ Scalar DistFunc::qPoisson(const Scalar lambda,
    Luc Devroye, "Non-Uniform RandomVariate Generation", Springer-Verlag, 1986, available online at:
    http://cg.scs.carleton.ca/~luc/nonuniformrandomvariates.zip
    and with the important errata at:
-   http://cg.scs.carleton.ca/~luc/errors.pdf
+   http://www.nrbook.com/devroye/Devroye_files/errors.pdf
    For the large values of lambda, we use the ratio of uniform method described in:
    E. Stadlober, "The ratio of uniforms approach for generating discrete random variates". Journal of Computational and Applied Mathematics, vol. 31, no. 1, 1990, pp. 181-189.
 */
