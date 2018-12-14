@@ -36,6 +36,7 @@ try:
     estimatedNormal = factory.buildAsNormal(
         distribution.getParameter())
     print("Normal from parameters=", estimatedNormal)
+    # 1D estimation
     result = factory.buildEstimator(sample[:, 0])
     estimatedDistribution = result.getDistribution()
     print('Estimated distribution            =', repr(estimatedDistribution))
