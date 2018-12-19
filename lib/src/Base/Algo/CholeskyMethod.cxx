@@ -63,6 +63,15 @@ CholeskyMethod::CholeskyMethod(const DesignProxy & proxy,
 }
 
 
+/* Parameters constructor */
+CholeskyMethod::CholeskyMethod(const Matrix & matrix)
+  : LeastSquaresMethodImplementation(matrix)
+  , l_(0)
+{
+  // Nothing to do
+}
+
+
 /* Virtual constructor */
 CholeskyMethod * CholeskyMethod::clone() const
 {

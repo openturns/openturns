@@ -28,3 +28,9 @@ print(design)
 proxy.setWeight([0.5] * sampleSize)
 design = proxy.computeDesign(full)
 print(design)
+
+proxy = ot.DesignProxy(design)
+full = range(basisSize)
+
+design = proxy.computeDesign(full)
+print(design)

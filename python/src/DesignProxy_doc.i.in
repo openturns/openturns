@@ -1,16 +1,26 @@
 %feature("docstring") OT::DesignProxy
 "Design matrix cache.
 
-Helps to cache evaluations of the design matrix.
+Available constructors:
+    DesignProxy(*x, basis*)
 
-Can be useful for an iterative least squares problem resolution.
+    DesignProxy(*matrix*)
 
 Parameters
 ----------
 x : :class:`~openturns.Sample`
     Input sample
 psi : sequence of :class:`~openturns.Function`
-    Basis"
+    Basis
+matrix : 2-d sequence of float
+The design matrix
+
+Notes:
+------
+Helps to cache evaluations of the design matrix. Can be useful for an iterative
+least squares problem resolution or in interaction with :class:`~openturns.LeastSquaresMethod`
+to select the algorithm used for the resolution of linear least-squares problems.
+"
 
 // ---------------------------------------------------------------------
 

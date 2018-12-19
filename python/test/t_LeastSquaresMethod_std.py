@@ -62,3 +62,33 @@ for method in methods:
 
     d = method.getGramInverseTrace()
     print('getGramInverseTrace: %.5g' % d)
+
+proxy = ot.DesignProxy(design)
+
+for method in methods:
+    name = method.__class__.__name__
+    print('-- method:', name)
+
+    x = method.solve(y)
+    print('solve:', x)
+
+    residual = m.sqrt((design * x - y).normSquare()) / sampleSize
+    print('residual: %.6g' % residual)
+
+    try:
+        x = method.solveNormal(yAt)
+        print('solveNormal:', x)
+    except RuntimeError:
+        print('-no solveNormal-')
+
+    d = method.getHDiag()
+    print('getHDiag:', d)
+
+    d = method.getGramInverse()
+    print('getGramInverse:', d)
+
+    d = method.getGramInverseDiag()
+    print('getGramInverseDiag:', d)
+
+    d = method.getGramInverseTrace()
+    print('getGramInverseTrace: %.5g' % d)

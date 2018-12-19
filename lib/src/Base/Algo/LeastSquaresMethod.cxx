@@ -55,6 +55,13 @@ LeastSquaresMethod::LeastSquaresMethod (const DesignProxy & proxy,
   // Nothing to do
 }
 
+/* Parameters constructor */
+LeastSquaresMethod::LeastSquaresMethod (const Matrix & matrix)
+  : TypedInterfaceObject<LeastSquaresMethodImplementation>(new SVDMethod(matrix))
+{
+  // Nothing to do
+}
+
 /* Constructor from implementation */
 LeastSquaresMethod::LeastSquaresMethod(const Implementation & p_implementation)
   : TypedInterfaceObject<LeastSquaresMethodImplementation>(p_implementation)
@@ -173,6 +180,16 @@ LeastSquaresMethod LeastSquaresMethod::Build(const String name,
   if      (name == "SVD")      return SVDMethod(proxy, indices);
   else if (name == "Cholesky") return CholeskyMethod(proxy, indices);
   else if (name == "QR")       return QRMethod(proxy, indices);
+  else throw InvalidArgumentException(HERE) << "Error: invalid value for decomposition method: " << name;
+  return LeastSquaresMethod();
+}
+
+LeastSquaresMethod LeastSquaresMethod::Build(const String name,
+    const Matrix & matrix)
+{
+  if      (name == "SVD")      return SVDMethod(matrix);
+  else if (name == "Cholesky") return CholeskyMethod(matrix);
+  else if (name == "QR")       return QRMethod(matrix);
   else throw InvalidArgumentException(HERE) << "Error: invalid value for decomposition method: " << name;
   return LeastSquaresMethod();
 }

@@ -79,6 +79,32 @@ int main(int, char *[])
       assert_almost_equal(*H2.getImplementation(),  *H.getImplementation(), 1e-15, 1e-15);
 
     }
+    Matrix design(proxy.computeDesign(indices));
+    for (UnsignedInteger k = 0; k < 3; ++k)
+    {
+      LeastSquaresMethod algo(LeastSquaresMethod::Build(methods[k], design));
+      algo.update(Indices(0), indices, Indices(0));
+
+      fullprint << methods[k] << std::endl;
+      fullprint << "Solve=" << algo.solve(Point(size, 1.0)) << std::endl;
+      fullprint << "SolveNormal=" << algo.solveNormal(Point(dimension, 1.0)) << std::endl;
+      fullprint << "GramInverse=" << algo.getGramInverse() << std::endl;
+      fullprint << "HDiag=" << algo.getHDiag() << std::endl;
+      fullprint << "GramInverseTrace=" << algo.getGramInverseTrace() << std::endl;
+      fullprint << "GramInverseDiag=" << algo.getGramInverseDiag() << std::endl;
+
+      // Validation of H
+      SymmetricMatrix H(algo.getH());
+
+      // Get the Diagonal of H matrix and compare it to the getHDiag
+      // Second method is already validated
+      // Note also that H^n = H so we could add this test
+      for (UnsignedInteger k = 0; k < dimension; ++ k) hFromH[k] = H(k, k);
+      assert_almost_equal(hFromH,  algo.getHDiag(), 1e-15, 1e-15);
+      SquareMatrix H2(H * H);
+      assert_almost_equal(*H2.getImplementation(),  *H.getImplementation(), 1e-15, 1e-15);
+
+    }
 
   }
 

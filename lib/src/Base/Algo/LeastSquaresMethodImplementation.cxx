@@ -71,6 +71,23 @@ LeastSquaresMethodImplementation::LeastSquaresMethodImplementation(const DesignP
 //   if (size == 0) throw InvalidArgumentException(HERE) << "Error: expected a non-empty output sample";
 }
 
+/* Parameters constructor */
+LeastSquaresMethodImplementation::LeastSquaresMethodImplementation(const Matrix & matrix)
+  : PersistentObject()
+  , proxy_(matrix)
+  , weight_(1, 1.0)
+  , weightSqrt_(1, 1.0)
+  , hasUniformWeight_(true)
+  , currentIndices_(0)
+  , initialIndices_(0)
+{
+  // Initialize the indices
+  Indices indices(matrix.getNbColumns());
+  indices.fill();
+  currentIndices_ = indices;
+  initialIndices_ = indices;
+}
+
 /* Weight accessor */
 void LeastSquaresMethodImplementation::setWeight(const Point & weight)
 {

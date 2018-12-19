@@ -55,6 +55,9 @@ public:
   LeastSquaresMethod (const DesignProxy & proxy,
                       const Indices & indices);
 
+  /** Parameters constructor */
+  explicit LeastSquaresMethod (const Matrix & matrix);
+
   /** Constructor from implementation */
   LeastSquaresMethod(const Implementation & p_implementation);
 
@@ -117,6 +120,9 @@ public:
   static LeastSquaresMethod Build(const String name,
                                   const DesignProxy & proxy,
                                   const Indices & indices);
+
+  static LeastSquaresMethod Build(const String name,
+                                  const Matrix & matrix);
 protected:
 
 }; /* class LeastSquaresMethod */

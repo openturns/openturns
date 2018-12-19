@@ -48,6 +48,9 @@ public:
   CholeskyMethod(const DesignProxy & proxy,
                  const Indices & indices);
 
+  /** Parameters constructor */
+  explicit CholeskyMethod(const Matrix & matrix);
+
   /** Virtual constructor */
   virtual CholeskyMethod * clone() const;
 
