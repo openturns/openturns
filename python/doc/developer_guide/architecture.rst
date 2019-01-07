@@ -237,12 +237,11 @@ The tools chosen for the development of the platform are:
 The versions given here are only meant as indications of minimum version and newer ones
 may be used.
 
+
 Compilation infrastructure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The historic autotools compilation infrastructure was replaced by CMake.
-CMake is a lot faster, and the resulting infrastructure is easier to
-maintain. It covers:
+The compilation infrastructure uses CMake, it covers:
 
 -  The detection and configuration aspects of the platform;
 
@@ -252,41 +251,42 @@ maintain. It covers:
 
 -  The regression tests.
 
-CMake could also provide a way to compile the Windows version using
-Microsoft compilers.
+
+Version control
+~~~~~~~~~~~~~~~
+
+The project uses Git version-control system.
+The code repositories are hosted on GitHub (https://github.com/openturns/).
+
+
+Continuous integration
+~~~~~~~~~~~~~~~~~~~~~~
+
+The git code repository is monitored for changes by automated builds,
+allowing developers to detect problems early.
+
+Each pull-request on the GitHub code repository triggers continuous integration
+jobs for the different target platforms to be run on several free
+continuous integration services:
+
+- CircleCI (https://circleci.com/) for Linux
+- Travis (https://travis-ci.org/) for macOS
+- AppVeyor (https://www.appveyor.com/) for Windows
+
+Each of these jobs checks that the library can be successfully compiled and
+that all unit tests pass. All jobs passing is one of the necessary conditions
+for the code to be integrated.
+
 
 Packaging
 ~~~~~~~~~
 
 The team officially provides binaries for the Debian operating system,
 and Windows. Note that is officially supported in Debian: it can be
-installed easily from the debian software repositories. Experimental
-packages may be available for some RPM-based distributions such as
+installed easily from the debian software repositories. Packages
+are also available for some RPM-based distributions such as
 Fedora, CentOS and openSUSE.
 
-Autobuilder
-~~~~~~~~~~~
-
-The project provides developers a continuous integration environment.
-It consists in an daemon monitoring the version control software for
-changes. It assumes new code to be involved in regression test. Also
-developers should regularly commit to the code base to ensure the origin
-of a problem is quickly detected.
-
-The autobuilder is triggered at each pull-request.
-
-The current test environment consists of the build on each of these
-platforms:
-
--  debian 6 x86\_64
-
--  debian 6 i686
-
--  mingw-w64 i686 (wine)
-
-The result of the autobuilder made public to anyone registered to the
-mailing list ``commits@openturns.org``. A summary of each build is
-provided by mail with links to the logs stored on the server.
 
 Design patterns
 ---------------
