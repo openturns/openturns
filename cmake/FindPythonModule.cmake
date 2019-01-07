@@ -10,7 +10,7 @@
 #  MODULE_VERSION_STRING - module version, if available through __version__
 #
 #=============================================================================
-# Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
+# Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
 #
 # Distributed under the OSI-approved BSD License (the "License");
 # see accompanying file Copyright.txt for details.

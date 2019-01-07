@@ -2,7 +2,7 @@
 "MinCopula.
 
 Available constructor:
-    MinCopula(*n=1*)
+    MinCopula(*n=2*)
 
 Parameters
 ----------

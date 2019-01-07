@@ -2,7 +2,7 @@
 /**
  *  @brief Abstract top-level class for all ComposedCopulas
  *
- *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -50,10 +50,8 @@ ComposedCopula::ComposedCopula()
   , isIndependent_(false)
 {
   setName("ComposedCopula");
-  setDimension(1);
-  CopulaCollection coll(1);
-  coll[0] = IndependentCopula(1);
-  setCopulaCollection( coll );
+  CopulaCollection coll(1, IndependentCopula(2));
+  setCopulaCollection(coll);
 }
 
 /* Default constructor */
