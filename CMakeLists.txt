@@ -287,6 +287,10 @@ if (POLICY CMP0078)
   # swig standard target names
   cmake_policy(SET CMP0078 NEW)
 endif ()
+if (POLICY CMP0086)
+  # UseSWIG honors SWIG_MODULE_NAME via -module flag
+  cmake_policy(SET CMP0086 NEW)
+endif ()
 
 try_compile(OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
   ${CMAKE_CURRENT_BINARY_DIR}
