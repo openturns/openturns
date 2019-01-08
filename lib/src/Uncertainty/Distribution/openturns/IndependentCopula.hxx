@@ -2,7 +2,7 @@
 /**
  *  @brief A class that implements an independent copula
  *
- *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -38,7 +38,7 @@ class OT_API IndependentCopula
 public:
 
   /** Default constructor */
-  explicit IndependentCopula(const UnsignedInteger dimension = 1);
+  explicit IndependentCopula(const UnsignedInteger dimension = 2);
 
 
   /** Comparison operator */

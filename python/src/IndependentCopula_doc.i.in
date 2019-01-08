@@ -2,7 +2,7 @@
 "Independent copula.
 
 Available constructor:
-    IndependentCopula(*n=1*)
+    IndependentCopula(*n=2*)
 
 Parameters
 ----------
