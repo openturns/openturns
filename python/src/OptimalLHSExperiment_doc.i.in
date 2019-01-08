@@ -29,7 +29,7 @@ OT_OptimalLHS_generate_doc
 
 Returns
 -------
-value : :class:`~ot.LHSResult`
+value : :class:`~openturns.LHSResult`
     Result of generation that contains the optimal design, some criteria and history"
 %enddef
 %feature("docstring") OT::OptimalLHSExperiment::getResult
@@ -53,7 +53,7 @@ OT_OptimalLHS_getlhs_doc
 
 Returns
 -------
-value : :class:`~ot.SpaceFilling`
+value : :class:`~openturns.SpaceFilling`
     Criterion function to be optimized"
 %enddef
 %feature("docstring") OT::OptimalLHSExperiment::getSpaceFilling

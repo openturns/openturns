@@ -14,7 +14,7 @@ lhsDesign : :class:`~openturns.LHSExperiment`
      Factory that generate designs
 N : int
     Number of simulations
-spaceFilling : :class:`~ot.SpaceFilling`
+spaceFilling : :class:`~openturns.SpaceFilling`
     Criterion to be optimized
     Default spaceFilling is MinDist
 
