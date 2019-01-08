@@ -48,8 +48,15 @@ if (BISON_FOUND AND FLEX_FOUND)
   add_dependencies (OT generate_csv_parser)
 endif ()
 
-target_link_libraries (OT ${OPENTURNS_LIBRARIES})
-target_link_libraries (OT ${OPENTURNS_PRIVATE_LIBRARIES})
+if (CMAKE_VERSION VERSION_LESS 3)
+  target_link_libraries (OT ${OPENTURNS_LIBRARIES})
+  target_link_libraries (OT ${OPENTURNS_PRIVATE_LIBRARIES})
+  set_target_properties (OT PROPERTIES INTERFACE_LINK_LIBRARIES "${OPENTURNS_LIBRARIES}")
+else ()
+  target_link_libraries (OT PUBLIC ${OPENTURNS_LIBRARIES})
+  target_link_libraries (OT PRIVATE ${OPENTURNS_PRIVATE_LIBRARIES})
+endif ()
+
 if (NOT CMAKE_VERSION VERSION_LESS 3.2)
   # Else Debian packages of modules fail to build as destination is absolute
   # https://gitlab.kitware.com/cmake/cmake/commit/dd089e08b578f20b7dc7d2ce658e3df05e346e35
