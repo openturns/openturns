@@ -188,7 +188,7 @@ class OpenTURNSPythonFunction(object):
         return self._exec_sample([X])[0]
 
 
-def _exec_sample_multiprocessing(func, n_cpus):
+def _exec_sample_multiprocessing_func(func, n_cpus):
     """Return a distributed function using multiprocessing.
 
     Parameters
@@ -335,7 +335,7 @@ class PythonFunction(Function):
             if n_cpus == -1:
                 import multiprocessing
                 n_cpus = multiprocessing.cpu_count()
-            instance._exec_sample = _exec_sample_multiprocessing(func, n_cpus)
+            instance._exec_sample = _exec_sample_multiprocessing_func(func, n_cpus)
         if gradient != None:
             if not isinstance(gradient, collections.Callable):
                 raise RuntimeError('gradient argument is not callable.')
