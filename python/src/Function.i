@@ -317,25 +317,34 @@ class PythonFunction(Function):
         if copy:
             instance._discard_openturns_memoryview = True
         import collections
-        if func != None:
-            if not isinstance(func, collections.Callable):
-                raise RuntimeError('func argument is not callable.')
-            instance._exec = func
-            instance._has_exec = True
-        if func_sample != None:
-            if not isinstance(func_sample, collections.Callable):
-                raise RuntimeError('func_sample argument is not callable.')
-            instance._exec_sample = func_sample
-            instance._has_exec_sample = True
-            if func == None:
-                instance._exec = instance._exec_point_on_exec_sample
-        elif n_cpus != None and n_cpus != 1:
+
+        if n_cpus != None:
             if not isinstance(n_cpus, int):
                 raise RuntimeError('n_cpus is not an integer')
             if n_cpus == -1:
                 import multiprocessing
                 n_cpus = multiprocessing.cpu_count()
-            instance._exec_sample = _exec_sample_multiprocessing_func(func, n_cpus)
+            if n_cpus <= 1:
+                n_cpus = None
+ 
+        if func != None:
+            if not isinstance(func, collections.Callable):
+                raise RuntimeError('func argument is not callable.')
+            instance._exec = func
+            if n_cpus != None:
+                instance._exec = _exec_sample_multiprocessing_func(func, n_cpus)
+            instance._has_exec = True
+ 
+        if func_sample != None and func == None:
+            if not isinstance(func_sample, collections.Callable):
+                raise RuntimeError('func_sample argument is not callable.') 
+            instance._exec = instance._exec_point_on_exec_sample
+
+        if func_sample != None:
+            instance._exec_sample = func_sample 
+            instance._has_exec_sample = True
+
+  
         if gradient != None:
             if not isinstance(gradient, collections.Callable):
                 raise RuntimeError('gradient argument is not callable.')
