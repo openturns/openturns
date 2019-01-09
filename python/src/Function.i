@@ -218,6 +218,51 @@ def _exec_sample_multiprocessing_func(func, n_cpus):
         return rs.get()
     return _exec_sample
 
+def _exec_sample_multiprocessing_func_sample(func_sample, n_cpus):
+    """Return a distributed function using multiprocessing.
+
+    Parameters
+    ----------
+    func_sample : Function or callable
+        A callable python object. Called when evaluated on multiple points at once.
+        
+    n_cpus : int
+        Number of CPUs on which to distribute the function calls.
+
+    Returns
+    -------
+    _exec_sample : Function or callable
+        The parallelized funtion.
+    """
+    def _exec_sample(X):
+        import warnings      
+        try:
+            from multiprocessing import Pool
+            p = Pool(processes=n_cpus)
+        except:
+            # multiprocessing is not working on this platform,
+            # fallback to sequential computations.
+            warnings.warn("-- Multiprocessing is not working on this platform"
+                  " fallback to sequential computations.")  
+            return func_sample(X)
+        try:
+            import numpy as np
+        except:
+            warnings.warn("-- Without numpy multiprocessing is not efficient")
+            p.close()  
+            return func_sample(X)
+
+        nsim = len(X)
+        if nsim < n_cpus:
+            return func_sample(X)
+
+        a = np.array(X, copy=False)
+        rs = p.map(func_sample, [a[r:r+(nsim//n_cpus), :] for r in range(0, nsim, nsim//n_cpus)])
+        p.close()
+        p.join()
+        return np.vstack(rs) 
+    return _exec_sample
+
 class PythonFunction(Function):
     """
     Override Function from Python.
@@ -242,9 +287,7 @@ class PythonFunction(Function):
         Default is None (uses finite-difference).
     n_cpus : integer
         Number of cpus on which func should be distributed using multiprocessing.
-        If -1, it uses all the cpus available. If 1, it does nothing. If n_cpus
-        and func_sample are both given as arguments, n_cpus will be ignored and
-        samples will be handled by func_sample.
+        If -1, it uses all the cpus available. If 1, it does nothing.
         Default is None.
     copy : bool, optional
         If True, input sample is converted into a Python 2-d sequence before calling
@@ -261,8 +304,7 @@ class PythonFunction(Function):
 
     Notes
     -----
-    Notice that if func_sample is provided, n_cpus is ignored. Note also that
-    if PythonFunction is distributed (n_cpus > 1), the traceback of a raised
+    Note that if PythonFunction is distributed (n_cpus > 1), the traceback of a raised
     exception by a func call is lost due to the way multiprocessing dispatches
     and handles func calls. This can be solved by temporarily deactivating
     n_cpus during the development of the wrapper or by manually handling the
@@ -341,7 +383,9 @@ class PythonFunction(Function):
             instance._exec = instance._exec_point_on_exec_sample
 
         if func_sample != None:
-            instance._exec_sample = func_sample 
+            instance._exec_sample = func_sample
+            if n_cpus != None:
+                instance._exec_sample = _exec_sample_multiprocessing_func_sample(func_sample, n_cpus) 
             instance._has_exec_sample = True
 
   
