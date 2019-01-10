@@ -138,6 +138,11 @@ try:
     pt[-1] = 8.
     print('pt[-1]=', pt[-1])
 
+    print(0 + pt1)
+    try:
+        1 + pt1
+    except:
+        print('ok')
 except:
     import traceback
     traceback.print_exc()

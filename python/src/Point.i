@@ -71,10 +71,13 @@ Point(PyObject * pyObj)
 
 OTCollectionOperatorsHelper(OT::Point, OT::Scalar)
 
-/* Point __add__(const Point & other) */
-/* { */
-/*  return *self + other; */
-/* } */
+Point __radd__(const Scalar s)
+{
+  // we allow 0+Point for the sum operator, but disable it for any other value
+  if (s != 0.0)
+    throw OT::NotYetImplementedException(HERE) << "Unsupported float+Point operator";
+  return *self;
+}
 
 Point operator +(const Point & other)
 {
