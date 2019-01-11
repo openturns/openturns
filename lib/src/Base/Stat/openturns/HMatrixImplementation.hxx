@@ -29,10 +29,6 @@
 #include "openturns/CovarianceMatrix.hxx"
 #include "openturns/CovarianceModel.hxx"
 
-#ifdef OPENTURNS_HAVE_HMAT
-# include <hmat/hmat.h>
-#endif
-
 BEGIN_NAMESPACE_OPENTURNS
 
 // Forward declaration
