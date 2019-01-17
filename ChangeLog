@@ -25,6 +25,7 @@
  * #977 (HypothesisTest::ChiSquared is bogus)
  * #982 (LinearModelTest::LinearModelDurbinWatson with several factors)
  * #983 (Bogus Normal parameter distribution)
+ * #995 (Pip does not recognize conda install of openturns)
 
 == 1.12 release (2018-11-08) == #release-1.12
 
