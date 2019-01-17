@@ -202,7 +202,7 @@ Sample PiecewiseHermiteEvaluation::operator () (const Sample & inSample) const
     const Scalar alpha = 1.0 - theta;
     const Scalar beta = theta * alpha;
     const Scalar gamma = 2.0 * theta - 1.0;
-    for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = alpha * values_(iLeft, i) + theta * values_(iLeft + 1, i) + beta * (gamma * (values_(iLeft + 1, i) - values_(iLeft, i)) + h * (alpha * derivatives_(iLeft, i) - theta * derivatives_(iLeft + 1, i)));
+    for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = alpha * values_(iLeft, j) + theta * values_(iLeft + 1, j) + beta * (gamma * (values_(iLeft + 1, j) - values_(iLeft, j)) + h * (alpha * derivatives_(iLeft, j) - theta * derivatives_(iLeft + 1, j)));
   }
   return output;
 }
