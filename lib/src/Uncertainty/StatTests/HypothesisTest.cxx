@@ -142,7 +142,6 @@ TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
   const UserDefined bivariateDiscreteDistribution(data);
   const Sample table(bivariateDiscreteDistribution.getSupport());
   const Point frequencies(bivariateDiscreteDistribution.getProbabilities());
-  const UnsignedInteger tableSize = table.getSize();
 
   Point classes(binNumberX * binNumberY);
   Point pointsInClasses(binNumberX * binNumberY);
