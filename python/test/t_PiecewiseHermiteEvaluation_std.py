@@ -18,6 +18,8 @@ evaluation = PiecewiseHermiteEvaluation(
     locations, values, derivatives)
 print("evaluation=", evaluation)
 # Check the values
-for i in range(2 * size):
-    x = [-1.0 + 12.0 * i / (2.0 * size - 1.0)]
+X = [[-1.0 + 12.0 * i / (2.0 * size - 1.0)] for i in range(2 * size)]
+for x in X:
     print("f( %.12g )=" % x[0], evaluation(x), ", ref=", ref(x))
+Y = evaluation(X)
+print(Y)
