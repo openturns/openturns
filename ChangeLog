@@ -5,6 +5,7 @@
 === Library ===
 
 ==== Major changes ====
+ * Add OPT++ solvers
 
 ==== New classes ====
  * ParametricPointToFieldFunction

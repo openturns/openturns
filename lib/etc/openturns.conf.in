@@ -130,7 +130,7 @@
   <OptimizationAlgorithm-DefaultMaximumResidualError    value_float="1.0e-5"        />
   <OptimizationAlgorithm-DefaultMaximumEvaluationNumber value_int="100" />
   <OptimizationAlgorithm-DefaultMaximumIterationNumber  value_int="100" />
-  
+
   <!-- OT::EfficientGlobalOptimization parameters -->
   <EfficientGlobalOptimization-DefaultAEITradeoff               value_float="1.0"           />
   <EfficientGlobalOptimization-DefaultCorrelationLengthFactor   value_float="1.0"           />
@@ -141,6 +141,13 @@
 
   <!-- OT::Cobyla parameters -->
   <Cobyla-DefaultRhoBeg value_float="0.1" />
+
+  <!-- OT::OPTpp parameters -->
+  <OPTpp-DefaultLineSearchTolerance                 value_float="1.0e-4" />
+  <OPTpp-DefaultMaximumStep                         value_float="1.0e3" />
+  <OPTpp-DefaultMinimumStep                         value_float="2.0e-16" />
+  <OPTpp-DefaultTrustRegionSize                     value_float="1.0e3" />
+  <OPTpp-DefaultMaximumLineSearchIterationNumber    value_int="5" />
 
   <!-- OT::SolverImplementation parameters -->
   <Solver-DefaultAbsoluteError             value_float="1.0e-5"        />

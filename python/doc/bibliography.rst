@@ -125,6 +125,10 @@ Bibliography
     methods for selecting values of input variables in the analysis of output
     from a computer code.* Technometrics 21(2): 239-245.
     `pdf <http://doc.openturns.org/papers/mckay1979.pdf>`__
+.. [meza2007] J. C. Meza, R. A. Oliva, P. D. Hough, and P. J. Williams.,
+    *OPT++: an object oriented toolkit for nonlinear optimization*,
+    ACM Transactions on Mathematical Software, 33(2), 2007.
+    `pdf <http://doc.openturns.org/papers/meza2007.pdf>`__
 .. [minka2012] Thomas P. Minka,
     *Estimating a Dirichlet distribution*, Microsoft Research report, 2000 (revised 2003, 2009, 2012).
     `pdf <http://research.microsoft.com/en-us/um/people/minka/papers/dirichlet/minka-dirichlet.pdf>`__

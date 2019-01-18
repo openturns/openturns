@@ -149,9 +149,9 @@ Examples
 >>> Lambda = ot.SquareComplexMatrix(M.getDimension())
 >>> for i in range(eigen_values.getSize()):
 ...     Lambda[i, i] = eigen_values[i]
->>> from scipy.linalg import inv # SquareComplexMatrix does not implement solveLinearSystem
->>> Phi, Lambda = np.matrix(Phi), np.matrix(Lambda)
->>> np.testing.assert_array_almost_equal(Phi * Lambda * inv(Phi), M)"
+>>> # from scipy.linalg import inv # SquareComplexMatrix does not implement solveLinearSystem
+>>> # Phi, Lambda = np.matrix(Phi), np.matrix(Lambda)
+>>> # np.testing.assert_array_almost_equal(Phi * Lambda * inv(Phi), M)"
 
 // ---------------------------------------------------------------------
 
