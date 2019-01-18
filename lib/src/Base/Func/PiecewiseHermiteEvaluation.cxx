@@ -152,7 +152,7 @@ Point PiecewiseHermiteEvaluation::operator () (const Point & inP) const
   const Scalar x = inP[0];
   UnsignedInteger iLeft = 0;
   if (x <= locations_[iLeft]) return values_[iLeft];
-  UnsignedInteger iRight = locations_.getSize() - 1;
+  const UnsignedInteger iRight = locations_.getSize() - 1;
   if (x >= locations_[iRight]) return values_[iRight];
   if (isRegular_)
     iLeft = static_cast<UnsignedInteger>(floor((x - locations_[0]) / (locations_[1] - locations_[0])));
@@ -176,7 +176,7 @@ Sample PiecewiseHermiteEvaluation::operator () (const Sample & inSample) const
   const UnsignedInteger size = inSample.getSize();
   const UnsignedInteger dimension = getOutputDimension();
   Sample output(size, dimension);
-  const UnsignedInteger maxIndex = locations_.getSize() - 1;
+  const UnsignedInteger iRight = locations_.getSize() - 1;
   UnsignedInteger iLeft = 0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -186,7 +186,6 @@ Sample PiecewiseHermiteEvaluation::operator () (const Sample & inSample) const
       for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(0, j);
       continue;
     }
-    UnsignedInteger iRight = maxIndex;
     if (x >= locations_[iRight])
     {
       for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = values_(iRight, j);
@@ -202,7 +201,7 @@ Sample PiecewiseHermiteEvaluation::operator () (const Sample & inSample) const
     const Scalar alpha = 1.0 - theta;
     const Scalar beta = theta * alpha;
     const Scalar gamma = 2.0 * theta - 1.0;
-    for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = alpha * values_(iLeft, i) + theta * values_(iLeft + 1, i) + beta * (gamma * (values_(iLeft + 1, i) - values_(iLeft, i)) + h * (alpha * derivatives_(iLeft, i) - theta * derivatives_(iLeft + 1, i)));
+    for (UnsignedInteger j = 0; j < dimension; ++j) output(i, j) = alpha * values_(iLeft, j) + theta * values_(iLeft + 1, j) + beta * (gamma * (values_(iLeft + 1, j) - values_(iLeft, j)) + h * (alpha * derivatives_(iLeft, j) - theta * derivatives_(iLeft + 1, j)));
   }
   return output;
 }

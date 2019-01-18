@@ -347,7 +347,7 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
   const Scalar dvar = 2.0 / ((residualSize - (dimension + 1)) * (residualSize - (dimension + 1) + 2)) * (Q - P * dmean);
 
   /* Compute the p-value with respect to the hypothesis */
-  Scalar pValue;
+  Scalar pValue = 0.0;
   Description description(1);
   if (hypothesis == "Equal")
   {
@@ -364,6 +364,8 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
     pValue = DistFunc::pNormal((dw - dmean) / std::sqrt(dvar), true);
     description[0] = "H0: auto.cor>0";
   }
+  else
+    throw InvalidArgumentException(HERE) << "Invalid hypothesis string, use Equal|Less|Greater";
 
   /* Set test result */
   TestResult result("DurbinWatson", pValue > level, pValue, level);
