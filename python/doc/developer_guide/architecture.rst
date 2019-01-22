@@ -414,17 +414,6 @@ the object.
 .. figure:: Figures/modeling_notions/composite.png
    :alt: Composite structure.
 
-Figure [fig:composite\_tree] shows an example of tree modeled by the
-Composite. The Composite objects make up the tree nodes whereas the
-leaves can be any concrete object deriving from Component.
-
-.. figure:: Figures/modeling_notions/composite_tree.png
-   :alt: Example of tree modeled by the Composite.
-
-The Composite pattern is an essential element of the design model for
-the  platform. It can be used to model numerical function composition,
-random vector composition, etc. It can be found in several aspects of
-the modeling brick. Any related objects tree structure can rely on the
-Composite pattern with benefit. For example, the classes
-ComposedDistribution, CompositeRandomVector,
-ComposedFunction follow this pattern.
+The Composite pattern is an essential element of the design model for the platform.
+It can be found in several modeling bricks, such as function composition (ComposedFunction)
+random vector composition (CompositeRandomVector), joint distributions (ComposedDistribution), etc.
