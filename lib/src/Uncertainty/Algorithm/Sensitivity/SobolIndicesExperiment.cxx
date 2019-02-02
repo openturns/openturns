@@ -24,6 +24,7 @@
 #include "openturns/LowDiscrepancyExperiment.hxx"
 #include "openturns/LHSExperiment.hxx"
 #include "openturns/MonteCarloExperiment.hxx"
+#include "openturns/ComposedDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -102,18 +103,14 @@ SobolIndicesExperiment::SobolIndicesExperiment(const Distribution & distribution
     case 1:
       {
         LHSExperiment lhsExperiment(distribution, size);
-        lhsExperiment.setAlwaysShuffle(true);
-        lhsExperiment.setRandomShift(true);
+        lhsExperiment.setRandomShift(false);
         experiment = lhsExperiment;
       }
       break;
     // QMC
     case 2:
       {
-        LowDiscrepancyExperiment sobolExperiment(SobolSequence(dimension), distribution, size);
-        sobolExperiment.setRestart(true);
-        sobolExperiment.setRandomize(true);
-        experiment = sobolExperiment;
+        experiment = LowDiscrepancyExperiment(SobolSequence(dimension), distribution, size);
       }
       break;
     default:
@@ -175,10 +172,31 @@ Bool SobolIndicesExperiment::hasUniformWeights() const
 Sample SobolIndicesExperiment::generateWithWeights(Point & weights) const
 {
   const UnsignedInteger size = experiment_.getSize();
-  Sample design(experiment_.generate()); // A
-  design.add(experiment_.generate()); // B
-  const UnsignedInteger dimension = design.getDimension();
-
+  // Here we generate the sample by doubling the distribution
+  // in order to allow for low discrepancy experiments
+  Distribution distribution(experiment_.getDistribution());
+  const UnsignedInteger dimension = distribution.getDimension();
+  ComposedDistribution::DistributionCollection marginals(2 * dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      marginals[i] = distribution.getMarginal(i);
+      marginals[dimension + i] = marginals[i];
+    }
+  const ComposedDistribution doubleDistribution(marginals);
+  // Generate a 2xdim sample of needed size
+  WeightedExperiment doubleExperiment(experiment_);
+  doubleExperiment.setDistribution(doubleDistribution);
+  const Sample doubleDesign(doubleExperiment.generate());
+  // Then reorganize the sample into a dim sample of twice the size
+  // A part
+  Sample design(2 * size, dimension);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      design(i, j) = doubleDesign(i, j);
+  // B part
+  for (UnsignedInteger i = 0; i < size; ++i)
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      design(i + size, j) = doubleDesign(i, dimension + j);
   // Compute designs of type Saltelli/Martinez for 1st order
   for (UnsignedInteger p = 0; p < dimension; ++ p)
   {
