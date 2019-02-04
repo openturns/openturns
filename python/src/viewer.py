@@ -299,9 +299,9 @@ class View(object):
 
             # retrieve data
             data = drawable.getData()
-            x = data.getMarginal(0)
+            x = data.getMarginal(0).asPoint()
             if data.getDimension() > 1:
-                y = data.getMarginal(1)
+                y = data.getMarginal(1).asPoint()
 
             # add label, title
             if drawableKind != 'Pie':
@@ -343,8 +343,8 @@ class View(object):
                     if (i == 1) and ('label' in bar_kwargs):
                         bar_kwargs.pop('label')
                     self._ax[0].bar(
-                        xi, height=y[i,0], width=x[i,0], align='edge', **bar_kwargs)
-                    xi += x[i,0]
+                        xi, height=y[i], width=x[i], align='edge', **bar_kwargs)
+                    xi += x[i]
 
             elif drawableKind == 'Cloud':
                 plot_kwargs['linestyle'] = 'None'
@@ -498,7 +498,7 @@ class View(object):
                     elif positions[i] == 'bottom':
                         vertical = 'top'
                     self._ax[0].text(
-                        x[i,0], y[i,0], text, horizontalalignment=horizontal, verticalalignment=vertical, **text_kwargs)
+                        x[i], y[i], text, horizontalalignment=horizontal, verticalalignment=vertical, **text_kwargs)
 
             else:
                 raise ValueError(
