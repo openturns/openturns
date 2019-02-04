@@ -25,19 +25,8 @@ try:
     print(analysis)
     # Compute confidence level (95%) for coefficients estimate (1-alpha = 0.95)
     alpha = 0.05
-    lower_sample = analysis.getCoefficientsEstimates() - analysis.getCoefficientsStandardErrors() * ot.Student(
-        analysis.getDegreesOfFreedom()).computeQuantile(1 - alpha)
-    upper_sample = analysis.getCoefficientsEstimates() + analysis.getCoefficientsStandardErrors() * ot.Student(
-        analysis.getDegreesOfFreedom()).computeQuantile(1 - alpha)
-    # lower and upper bounds as Point
-    lower_bounds = ot.Point(lower_sample.getSize())
-    for i in range(lower_bounds.getSize()):
-        lower_bounds[i] = lower_sample[i][0]
-    upper_bounds = ot.Point(upper_sample.getSize())
-    for i in range(upper_bounds.getSize()):
-        upper_bounds[i] = upper_sample[i][0]
     # interval confidence bounds
-    interval = ot.Interval(lower_bounds, upper_bounds)
+    interval = analysis.getCoefficientsConfidenceInterval(alpha)
     print("confidence intervals with level=%1.2f : %s" % (1 - alpha, interval))
 
     print("")
@@ -68,19 +57,8 @@ try:
     print(analysis)
     # Compute confidence level (95%) for coefficients estimate (1-alpha = 0.95)
     alpha = 0.05
-    lower_sample = analysis.getCoefficientsEstimates() - analysis.getCoefficientsStandardErrors() * ot.Student(
-        analysis.getDegreesOfFreedom()).computeQuantile(alpha / 2.0, True)
-    upper_sample = analysis.getCoefficientsEstimates() + analysis.getCoefficientsStandardErrors() * ot.Student(
-        analysis.getDegreesOfFreedom()).computeQuantile(alpha / 2.0, True)
-    # lower and upper bounds as Point
-    lower_bounds = ot.Point(lower_sample.getSize())
-    for i in range(lower_bounds.getSize()):
-        lower_bounds[i] = lower_sample[i][0]
-    upper_bounds = ot.Point(upper_sample.getSize())
-    for i in range(upper_bounds.getSize()):
-        upper_bounds[i] = upper_sample[i][0]
     # interval confidence bounds
-    interval = ot.Interval(lower_bounds, upper_bounds)
+    interval = analysis.getCoefficientsConfidenceInterval(alpha)
     print("confidence intervals with level=%1.2f : %s" % (1 - alpha, interval))
 
 except:

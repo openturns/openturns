@@ -71,14 +71,14 @@ String LinearModelAnalysis::__repr__() const
 /* Method that returns the ANOVA table (ANalyse Of VAriance) */
 String LinearModelAnalysis::__str__(const String & offset) const
 {
-  const Sample estimates(getCoefficientsEstimates());
-  const Sample standardErrors(getCoefficientsStandardErrors());
-  const Sample tscores(getCoefficientsTScores());
-  const Sample pValues(getCoefficientsPValues());
-  const Description names(getCoefficientsNames());
-  const Scalar sigma2 = getResiduals().computeRawMoment(2)[0];
-  const UnsignedInteger dof = getDegreesOfFreedom();
-  const UnsignedInteger n = getResiduals().getSize();
+  const Point estimates(linearModelResult_.getTrendCoefficients());
+  const Point standardErrors(getCoefficientsStandardErrors());
+  const Point tscores(getCoefficientsTScores());
+  const Point pValues(getCoefficientsPValues());
+  const Description names(linearModelResult_.getCoefficientsNames());
+  const Scalar sigma2 = linearModelResult_.getSampleResiduals().computeRawMoment(2)[0];
+  const UnsignedInteger dof = linearModelResult_.getDegreesOfFreedom();
+  const UnsignedInteger n = linearModelResult_.getSampleResiduals().getSize();
   const String separator(" | ");
   const String separatorEndLine(" |");
   size_t twidth = 0; // column title max width
@@ -91,18 +91,18 @@ String LinearModelAnalysis::__str__(const String & offset) const
   for (UnsignedInteger i = 0; i < names.getSize(); ++i)
   {
     twidth = std::max( twidth, names[i].size() );
-    st = OSS() << estimates[i][0];
+    st = OSS() << estimates[i];
     lwidth = std::max( lwidth, st.size() );
-    st = OSS() << standardErrors[i][0];
+    st = OSS() << standardErrors[i];
     lwidth = std::max( lwidth, st.size() );
-    st = OSS() << tscores[i][0];
+    st = OSS() << tscores[i];
     lwidth = std::max( lwidth, st.size() );
-    st = OSS() << pValues[i][0];
+    st = OSS() << pValues[i];
     lwidth = std::max( lwidth, st.size() );
   }
   awidth = twidth + 5 * separator.size() + 4 * lwidth - 1;
 
-  oss << getFormula() ;
+  oss << linearModelResult_.getFormula() ;
   oss << "\n\nCoefficients:\n"  ;
   oss <<  String( twidth , ' ' ) << separator;
   st = "Estimate";
@@ -118,13 +118,13 @@ String LinearModelAnalysis::__str__(const String & offset) const
   {
     st = names[i];
     oss << st << String( twidth - st.size(), ' ') << separator;
-    st = OSS() << estimates[i][0];
+    st = OSS() << estimates[i];
     oss << st << String( lwidth - st.size(), ' ') << separator;
-    st = OSS() << standardErrors[i][0];
+    st = OSS() << standardErrors[i];
     oss << st << String( lwidth - st.size(), ' ') << separator;
-    st = OSS() << tscores[i][0];
+    st = OSS() << tscores[i];
     oss << st << String( lwidth - st.size(), ' ') << separator;
-    st = OSS() << pValues[i][0];
+    st = OSS() << pValues[i];
     oss << st << String( lwidth - st.size(), ' ') << separatorEndLine;
     oss << "\n";
   }
@@ -206,67 +206,33 @@ LinearModelResult LinearModelAnalysis::getLinearModelResult() const
   return linearModelResult_;
 }
 
-String LinearModelAnalysis::getFormula() const
+Point LinearModelAnalysis::getCoefficientsStandardErrors() const
 {
-  return linearModelResult_.getFormula();
-}
-
-Description LinearModelAnalysis::getCoefficientsNames() const
-{
-  return linearModelResult_.getCoefficientsNames();
-}
-
-Sample LinearModelAnalysis::getResiduals() const
-{
-  return linearModelResult_.getSampleResiduals();
-}
-
-Sample LinearModelAnalysis::getStandardizedResiduals() const
-{
-  return linearModelResult_.getStandardizedResiduals();
-}
-
-Sample LinearModelAnalysis::getCoefficientsEstimates() const
-{
-  Point beta(linearModelResult_.getTrendCoefficients());
-  Sample result(beta.getDimension(), 1);
-  for (UnsignedInteger i = 0; i < beta.getDimension(); ++i)
-  {
-    result(i, 0) = beta[i];
-  }
-  return result;
-}
-
-Sample LinearModelAnalysis::getCoefficientsStandardErrors() const
-{
-  const Scalar sigma2(getResiduals().computeRawMoment(2)[0]);
-  const UnsignedInteger n = getResiduals().getSize();
-  const UnsignedInteger pPlusOne =  linearModelResult_.getCoefficientsNames().getSize();
-  const Scalar factor = n * sigma2 / (n - pPlusOne);
+  const Scalar sigma2 = linearModelResult_.getNoiseDistribution().getCovariance()(0, 0);
   const Point diagGramInv(linearModelResult_.getDiagonalGramInverse());
-  const UnsignedInteger p = diagGramInv.getSize();
-  Sample standardErrors(p, 1);
+  const UnsignedInteger basisSize = diagGramInv.getSize();
+  Point standardErrors(basisSize, 1);
   for (UnsignedInteger i = 0; i < standardErrors.getSize(); ++i)
   {
-    standardErrors(i, 0) = std::sqrt(std::abs(factor * diagGramInv[i]));
+    standardErrors[i] = std::sqrt(std::abs(sigma2 * diagGramInv[i]));
   }
   return standardErrors;
 }
 
-Sample LinearModelAnalysis::getCoefficientsTScores() const
+Point LinearModelAnalysis::getCoefficientsTScores() const
 {
   // The coefficients of linear expansion over their standard error
-  const Sample estimates(getCoefficientsEstimates());
-  const Sample standardErrors(getCoefficientsStandardErrors());
-  Sample tScores(estimates.getSize(), 1);
+  const Point estimates(linearModelResult_.getTrendCoefficients());
+  const Point standardErrors(getCoefficientsStandardErrors());
+  Point tScores(estimates.getSize(), 1);
   for (UnsignedInteger i = 0; i < tScores.getSize(); ++i)
   {
-    tScores(i, 0) = estimates(i, 0) / standardErrors(i, 0);
+    tScores[i] = estimates[i] / standardErrors[i];
   }
   return tScores;
 }
 
-Sample LinearModelAnalysis::getCoefficientsPValues() const
+Point LinearModelAnalysis::getCoefficientsPValues() const
 {
   // Interest is Pr(X > |t|) with t the statistic defined as
   // t: = beta / std_dev(beta)
@@ -274,42 +240,31 @@ Sample LinearModelAnalysis::getCoefficientsPValues() const
   // Pr(X > |t|) = Pr(X > sign(t)*t) + Pr(X < -sign(t)*t)
   //             = 2 * Pr(X > sign(t)*t) as Student distribution is symmetric
   //             = 2 * Pr(X > |t|)
-  const Sample tScores(getCoefficientsTScores());
-  const UnsignedInteger dof = getDegreesOfFreedom();
-  Sample pValues(tScores.getSize(), 1);
+  const Point tScores(getCoefficientsTScores());
+  const UnsignedInteger dof = linearModelResult_.getDegreesOfFreedom();
+  Point pValues(tScores.getSize());
   for (UnsignedInteger i = 0; i < pValues.getSize(); ++i)
   {
     // true flag define the complementary CDF, ie P(X > t)
-    pValues(i, 0) = 2.0 * DistFunc::pStudent(dof, std::abs(tScores(i, 0)), true);
+    pValues[i] = 2.0 * DistFunc::pStudent(dof, std::abs(tScores[i]), true);
   }
   return pValues;
 }
 
-/* Leverages */
-Point LinearModelAnalysis::getLeverages() const
+Interval LinearModelAnalysis::getCoefficientsConfidenceInterval(const Scalar level) const
 {
-  return linearModelResult_.getLeverages();
-}
-
-/* Cook's distances */
-Point LinearModelAnalysis::getCookDistances() const
-{
-  return linearModelResult_.getCookDistances();
-}
-
-/* Number of degrees of freedom */
-UnsignedInteger LinearModelAnalysis::getDegreesOfFreedom() const
-{
-  const UnsignedInteger n = linearModelResult_.getLeverages().getSize();
-  const UnsignedInteger pPlusOne = linearModelResult_.getCoefficientsNames().getSize();
-  return n - pPlusOne;
+  const Point beta(linearModelResult_.getTrendCoefficients());
+  const Scalar sigma_conf_int = DistFunc::qStudent(linearModelResult_.getDegreesOfFreedom(), level/2.0, true);
+  const Interval bounds(beta - getCoefficientsStandardErrors() * sigma_conf_int,
+    beta + getCoefficientsStandardErrors() * sigma_conf_int);
+  return bounds;
 }
 
 /* R-squared test */
 Scalar LinearModelAnalysis::getRSquared() const
 {
   // Get residuals and output samples
-  const Sample residuals(getResiduals());
+  const Sample residuals(linearModelResult_.getSampleResiduals());
   const Sample outputSample = (getLinearModelResult().getOutputSample());
   // Define RSS and SYY
   const Scalar RSS = residuals.computeRawMoment(2)[0];
@@ -321,34 +276,34 @@ Scalar LinearModelAnalysis::getRSquared() const
 /* Adjusted R-squared test */
 Scalar LinearModelAnalysis::getAdjustedRSquared() const
 {
-  const UnsignedInteger dof = getDegreesOfFreedom();
-  const UnsignedInteger n   = getResiduals().getSize();
+  const UnsignedInteger dof = linearModelResult_.getDegreesOfFreedom();
+  const UnsignedInteger size   = linearModelResult_.getSampleResiduals().getSize();
   const Scalar R2  = getRSquared();
-  return 1.0 - (1.0 - R2) * (n - 1) / dof;
+  return 1.0 - (1.0 - R2) * (size - 1) / dof;
 }
 
 /* Fisher test */
 Scalar LinearModelAnalysis::getFisherScore() const
 {
   // Get residuals and output samples
-  const Sample residuals(getResiduals());
+  const Sample residuals(linearModelResult_.getSampleResiduals());
   const Sample outputSample = (getLinearModelResult().getOutputSample());
   const UnsignedInteger size = residuals.getSize();
   // Get the number of parameter p
-  const UnsignedInteger p = getCoefficientsEstimates().getSize();
+  const UnsignedInteger p = linearModelResult_.getTrendCoefficients().getSize();
   // Define RSS and SYY
   const Scalar RSS = residuals.computeRawMoment(2)[0] * size;
   const Scalar SYY = outputSample.computeCenteredMoment(2)[0] * size;
-  const Scalar FStatistic = ((SYY - RSS) / (p - 1)) / (RSS / (size - p));
-  return FStatistic;
+  const Scalar fStatistic = ((SYY - RSS) / (p - 1)) / (RSS / (size - p));
+  return fStatistic;
 }
 
 Scalar LinearModelAnalysis::getFisherPValue() const
 {
   // size and number of parameters
-  const UnsignedInteger size = getResiduals().getSize();
+  const UnsignedInteger size = linearModelResult_.getSampleResiduals().getSize();
   // Get the number of parameter p
-  const UnsignedInteger p = getCoefficientsEstimates().getSize();
+  const UnsignedInteger p = linearModelResult_.getTrendCoefficients().getSize();
   const Scalar FStatistic = getFisherScore();
   return FisherSnedecor(p - 1, size - 1).computeComplementaryCDF(FStatistic);
 }
@@ -357,7 +312,7 @@ Scalar LinearModelAnalysis::getFisherPValue() const
 TestResult LinearModelAnalysis::getNormalityTestResultKolmogorovSmirnov() const
 {
   // We check that residuals are centered with variance = sigma2
-  const Sample residuals(getResiduals());
+  const Sample residuals(linearModelResult_.getSampleResiduals());
   // Compute Sigma2
   const Scalar sigma2(residuals.computeRawMoment(2)[0]);
   const Normal dist(0.0, std::sqrt(sigma2));
@@ -367,21 +322,85 @@ TestResult LinearModelAnalysis::getNormalityTestResultKolmogorovSmirnov() const
 /* Anderson-Darling normality test */
 TestResult LinearModelAnalysis::getNormalityTestResultAndersonDarling() const
 {
-  return NormalityTest::AndersonDarlingNormal(getResiduals());
+  return NormalityTest::AndersonDarlingNormal(linearModelResult_.getSampleResiduals());
 }
 
 /* Chi-Squared normality test */
 TestResult LinearModelAnalysis::getNormalityTestResultChiSquared() const
 {
   // Using OT::FittingTest::ChiSquared
-  const Normal normalDistribution(getResiduals().computeMean()[0], getResiduals().computeStandardDeviation()(0, 0));
-  return FittingTest::ChiSquared(getResiduals(), normalDistribution);
+  const Sample residuals(linearModelResult_.getSampleResiduals());
+  const Normal normalDistribution(residuals.computeMean()[0], residuals.computeStandardDeviation()(0, 0));
+  return FittingTest::ChiSquared(residuals, normalDistribution);
 }
 
 /* Cramer Von Mises normality test */
 TestResult LinearModelAnalysis::getNormalityTestCramerVonMises() const
 {
-  return NormalityTest::CramerVonMisesNormal(getResiduals());
+  return NormalityTest::CramerVonMisesNormal(linearModelResult_.getSampleResiduals());
+}
+
+/* [0] Draw model versus fitted values */
+Graph LinearModelAnalysis::drawModelVsFitted() const
+{
+  const Sample inputData(linearModelResult_.getInputSample());
+  const Function metamodel(linearModelResult_.getMetaModel());
+  const Sample fitted(metamodel(inputData));
+  const Sample outputData(linearModelResult_.getOutputSample());
+  const Sample residuals(linearModelResult_.getSampleResiduals());
+
+  const UnsignedInteger size(fitted.getSize());
+  
+  Sample dataFull(outputData);
+  dataFull.stack(fitted);
+  
+  // The graph object
+  Graph graph("Model vs Fitted", "Model", "Fitted values", true, "topright");
+
+  // Bissectrice graph
+  Sample bissectriceCurve(2, 2);
+  bissectriceCurve(0, 0) = outputData.getMin()[0];
+  bissectriceCurve(0, 1) = outputData.getMin()[0];
+
+  bissectriceCurve(1, 0) = outputData.getMax()[0];
+  bissectriceCurve(1, 1) = outputData.getMax()[0];
+
+  Curve curve(bissectriceCurve, "red", "solid");
+  graph.add(curve);
+
+  // model vs Fitted values
+  Cloud cloud(dataFull, "black", "fcircle");
+  graph.add(cloud);
+  // Add point identifiers for worst residuals
+  UnsignedInteger identifiers(ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-Identifiers"));
+  if (identifiers > 0)
+  {
+    if (identifiers > size)
+      identifiers = size;
+    Description annotations(size);
+    Sample dataWithIndex(size, 2);
+    for(UnsignedInteger i = 0; i < size; ++i)
+    {
+      dataWithIndex(i, 0) = std::abs(residuals(i, 0));
+      dataWithIndex(i, 1) = i;
+    }
+    const Sample sortedData(dataWithIndex.sortAccordingToAComponent(0));
+    Description positions(size, "top");
+    for(UnsignedInteger i = 0; i < identifiers; ++i)
+    {
+      const UnsignedInteger index = sortedData(size - 1 - i, 1);
+      annotations[index] = (OSS() << index + 1);
+      if (residuals(index, 0) < 0.0)
+        positions[index] = "top";
+      else
+        positions[index] = "bottom";
+    }
+    Text text(dataFull, annotations, "bottom");
+    text.setColor("red");
+    text.setTextPositions(positions);
+    graph.add(text);
+  }
+  return graph;
 }
 
 /* [1] Draw a plot of residuals versus fitted values */
@@ -390,7 +409,7 @@ Graph LinearModelAnalysis::drawResidualsVsFitted() const
   const Sample inputData(linearModelResult_.getInputSample());
   const Function metamodel(linearModelResult_.getMetaModel());
   const Sample fitted(metamodel(inputData));
-  const Sample residuals(getResiduals());
+  const Sample residuals(linearModelResult_.getSampleResiduals());
   const UnsignedInteger size(fitted.getSize());
   Sample dataFull(fitted);
   dataFull.stack(residuals);
@@ -432,18 +451,16 @@ Graph LinearModelAnalysis::drawResidualsVsFitted() const
 /* [2] a Scale-Location plot of sqrt(| residuals |) versus fitted values */
 Graph LinearModelAnalysis::drawScaleLocation() const
 {
-  const Sample inputData(linearModelResult_.getInputSample());
-  const Function metamodel(linearModelResult_.getMetaModel());
-  const Sample fitted(metamodel(inputData));
-  const Sample stdresiduals(getStandardizedResiduals());
+  const Sample fitted(linearModelResult_.getFittedSample());
+  const Sample stdResiduals(linearModelResult_.getStandardizedResiduals());
   const UnsignedInteger size(fitted.getSize());
   Sample dataFull(fitted);
-  Sample sqrtstdresiduals(size, 1);
+  Sample sqrtStdResiduals(size, 1);
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    sqrtstdresiduals(i, 0) = std::sqrt(std::abs(stdresiduals(i, 0)));
+    sqrtStdResiduals(i, 0) = std::sqrt(std::abs(stdResiduals(i, 0)));
   }
-  dataFull.stack(sqrtstdresiduals);
+  dataFull.stack(sqrtStdResiduals);
   Graph graph("Scale-Location", "Fitted values", "|Std. residuals|^0.5", true, "topright");
   Cloud cloud(dataFull, "black", "fcircle");
   graph.add(cloud);
@@ -457,7 +474,7 @@ Graph LinearModelAnalysis::drawScaleLocation() const
     Sample dataWithIndex(size, 2);
     for(UnsignedInteger i = 0; i < size; ++i)
     {
-      dataWithIndex(i, 0) = std::abs(stdresiduals(i, 0));
+      dataWithIndex(i, 0) = std::abs(stdResiduals(i, 0));
       dataWithIndex(i, 1) = i;
     }
     const Sample sortedData(dataWithIndex.sortAccordingToAComponent(0));
@@ -466,7 +483,7 @@ Graph LinearModelAnalysis::drawScaleLocation() const
     {
       const UnsignedInteger index = sortedData(size - 1 - i, 1);
       annotations[index] = (OSS() << index + 1);
-      if (stdresiduals(index, 0) < 0.0)
+      if (stdResiduals(index, 0) < 0.0)
         positions[index] = "top";
       else
         positions[index] = "bottom";
@@ -482,20 +499,21 @@ Graph LinearModelAnalysis::drawScaleLocation() const
 /* [3] a Normal quantiles-quantiles plot of standardized residuals */
 Graph LinearModelAnalysis::drawQQplot() const
 {
-  const Sample stdresiduals(getStandardizedResiduals());
-  const UnsignedInteger size(stdresiduals.getSize());
-  const Normal distribution(1); // Standart normal distribution
-  const Sample sortedSample(stdresiduals.sort(0));
+  const Sample stdResiduals(linearModelResult_.getStandardizedResiduals());
+  const UnsignedInteger size(stdResiduals.getSize());
+  const Normal distribution(1); // Standard normal distribution
+  const Sample sortedSample(stdResiduals.sort(0));
   Sample dataFull(size, 2);
   const Scalar step = 1.0 / size;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    dataFull[i][1] = sortedSample[i][0];
-    dataFull[i][0] = distribution.computeQuantile((i + 0.5) * step)[0];
+    dataFull(i, 0) = distribution.computeQuantile((i + 0.5) * step)[0];
+    dataFull(i, 1) = sortedSample(i,0);
   }
   Graph graph("Normal Q-Q", "Theoretical Quantiles", "Std. residuals", true, "topright");
   Cloud cloud(dataFull, "black", "fcircle");
   graph.add(cloud);
+
   // Add point identifiers for worst standardized residuals
   UnsignedInteger identifiers(ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-Identifiers"));
   if (identifiers > 0)
@@ -509,7 +527,7 @@ Graph LinearModelAnalysis::drawQQplot() const
     {
       dataWithIndex1(i, 0) = std::abs(dataFull(i, 1));
       dataWithIndex1(i, 1) = i;
-      dataWithIndex2(i, 0) = std::abs(stdresiduals(i, 0));
+      dataWithIndex2(i, 0) = std::abs(stdResiduals(i, 0));
       dataWithIndex2(i, 1) = i;
 
     }
@@ -521,10 +539,7 @@ Graph LinearModelAnalysis::drawQQplot() const
       const UnsignedInteger index1 = sortedData1(size - 1 - i, 1);
       const UnsignedInteger index2 = sortedData2(size - 1 - i, 1);
       annotations[index1] = (OSS() << index2 + 1);
-      if (dataFull(index1, 1) < 0.0)
-        positions[index1] = "top";
-      else
-        positions[index1] = "bottom";
+      positions[index1] = dataFull(index1, 1) < 0.0 ? "top" : "bottom";
     }
     Text text(dataFull, annotations, "bottom");
     text.setColor("red");
@@ -536,12 +551,16 @@ Graph LinearModelAnalysis::drawQQplot() const
   Point point(2);
   const UnsignedInteger id1Q = 0.25 * size - 0.5;
   const UnsignedInteger id3Q = 0.75 * size - 0.5;
-  point[0] = (dataFull[id3Q][1] - dataFull[id1Q][1]) / (dataFull[id3Q][0] - dataFull[id1Q][0]);
-  point[1] = dataFull[id3Q][1] - point[0] * dataFull[id3Q][0];
-  diagonal[0][0] = dataFull[0][0];
-  diagonal[0][1] = dataFull[0][0] * point[0] + point[1];
-  diagonal[1][0] = dataFull[size - 1][0];
-  diagonal[1][1] = dataFull[size - 1][0] * point[0] + point[1];
+  Scalar delta = dataFull(id3Q, 0) - dataFull(id1Q, 0);
+  // If quantiles are too close, bisectrice takes into account the min/max values
+  if (!(delta > 0) && !(delta < 0))
+    delta = dataFull(size - 1, 0) - dataFull(0, 0);
+  point[0] = (dataFull(id3Q, 1) - dataFull(id1Q, 1)) / delta;
+  point[1] = dataFull(id3Q, 1) - point[0] * dataFull(id3Q, 0);
+  diagonal(0, 0) = dataFull(0, 0);
+  diagonal(0, 1) = dataFull(0, 0) * point[0] + point[1];
+  diagonal(1, 0) = dataFull(size - 1, 0);
+  diagonal(1, 1) = dataFull(size - 1, 0) * point[0] + point[1];
   Curve curve(diagonal, "red", "dashed", 2);
   graph.add(curve);
   return graph;
@@ -550,7 +569,7 @@ Graph LinearModelAnalysis::drawQQplot() const
 /* [4] a plot of Cook's distances versus row labels */
 Graph LinearModelAnalysis::drawCookDistance() const
 {
-  const Point cookdistances(getCookDistances());
+  const Point cookdistances(linearModelResult_.getCookDistances());
   const UnsignedInteger size(cookdistances.getSize());
   // Add point identifiers for worst Cook's distance
   UnsignedInteger identifiers(ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-Identifiers"));
@@ -597,17 +616,17 @@ Graph LinearModelAnalysis::drawCookDistance() const
 /* [5] a plot of residuals versus leverages that adds bands corresponding to Cook's distances of 0.5 and 1. */
 Graph LinearModelAnalysis::drawResidualsVsLeverages() const
 {
-  const Point cookdistances(getCookDistances());
-  const Point leverages(getLeverages());
-  const Sample stdresiduals(getStandardizedResiduals());
-  const UnsignedInteger size(stdresiduals.getSize());
+  const Point cookdistances(linearModelResult_.getCookDistances());
+  const Point leverages(linearModelResult_.getLeverages());
+  const Sample stdResiduals(linearModelResult_.getStandardizedResiduals());
+  const UnsignedInteger size(stdResiduals.getSize());
   Sample leveragesS(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     leveragesS(i, 0) = leverages[i];
   }
   Sample dataFull(leveragesS);
-  dataFull.stack(stdresiduals);
+  dataFull.stack(stdResiduals);
   Graph graph("Residuals vs Leverage", "Leverage", "Std. residuals", true, "topright");
   Cloud cloud(dataFull, "black", "fcircle");
   graph.add(cloud);
@@ -630,10 +649,7 @@ Graph LinearModelAnalysis::drawResidualsVsLeverages() const
     {
       const UnsignedInteger index = sortedData(size - 1 - i, 1);
       annotations[index] = (OSS() << index + 1);
-      if (cookdistances[index] < 0.0)
-        positions[index] = "top";
-      else
-        positions[index] = "bottom";
+      positions[index] = (cookdistances[index] < 0.0 ? "top" : "bottom");
     }
     Text text(dataFull, annotations, "bottom");
     text.setColor("red");
@@ -659,15 +675,15 @@ Graph LinearModelAnalysis::drawResidualsVsLeverages() const
     for(UnsignedInteger i = 0; i < step - 1; ++i)
     {
       ptx = lowerBound[0] + i * (width) / step;
-      diagonal1[0][0] = ptx;
-      diagonal2[0][0] = ptx;
-      diagonal1[0][1] =  std::sqrt(std::abs(isovalues[k] * pPlusOne * (1.0 - ptx) / ptx));
-      diagonal2[0][1] = -diagonal1[0][1];
+      diagonal1(0, 0) = ptx;
+      diagonal2(0, 0) = ptx;
+      diagonal1(0, 1) =  std::sqrt(std::abs(isovalues[k] * pPlusOne * (1.0 - ptx) / ptx));
+      diagonal2(0, 1) = -diagonal1(0, 1);
       ptx = lowerBound[0] + (i + 1) * (width) / step;
-      diagonal1[1][0] = ptx;
-      diagonal2[1][0] = ptx;
-      diagonal1[1][1] =  std::sqrt(std::abs(isovalues[k] * pPlusOne * (1.0 - ptx) / ptx));
-      diagonal2[1][1] = -diagonal1[1][1];
+      diagonal1(1, 0) = ptx;
+      diagonal2(1, 0) = ptx;
+      diagonal1(1, 1) =  std::sqrt(std::abs(isovalues[k] * pPlusOne * (1.0 - ptx) / ptx));
+      diagonal2(1, 1) = -diagonal1(1, 1);
       Curve curve1(diagonal1, "red", "solid", 1);
       Curve curve2(diagonal2, "red", "solid", 1);
       graph.add(curve1);
@@ -694,8 +710,8 @@ Graph LinearModelAnalysis::drawResidualsVsLeverages() const
 /* [6] a plot of Cook's distances versus leverage/(1-leverage) */
 Graph LinearModelAnalysis::drawCookVsLeverages() const
 {
-  const Point leverages(getLeverages());
-  const Point cookdistances(getCookDistances());
+  const Point leverages(linearModelResult_.getLeverages());
+  const Point cookdistances(linearModelResult_.getCookDistances());
   const UnsignedInteger size(cookdistances.getSize());
   Sample dataFull(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -725,10 +741,8 @@ Graph LinearModelAnalysis::drawCookVsLeverages() const
     {
       const UnsignedInteger index = sortedData(size - 1 - i, 1);
       annotations[index] = (OSS() << index + 1);
-      if (cookdistances[index] < 0.0)
-        positions[index] = "top";
-      else
-        positions[index] = "bottom";
+      positions[index] = (cookdistances[index] < 0.0 ? "top" : "bottom");
+
     }
     Text text(dataFull, annotations, "bottom");
     text.setColor("red");
@@ -749,8 +763,8 @@ Graph LinearModelAnalysis::drawCookVsLeverages() const
   Point Pt(2);
   Description annotation(2);
   Sample diagonal(2, 2);
-  diagonal[0][0] = 0.0;
-  diagonal[0][1] = 0.0;
+  diagonal(0, 0) = 0.0;
+  diagonal(0, 1) = 0.0;
   for(UnsignedInteger k = 0; k < isovalues.getSize(); ++k)
   {
     Scalar coeff = isovalues[k] * isovalues[k];
@@ -758,13 +772,13 @@ Graph LinearModelAnalysis::drawCookVsLeverages() const
     Pt[1] = upperBound[0] * coeff;
     if (Pt[1] < upperBound[1])
     {
-      diagonal[1][0] = upperBound[0];
-      diagonal[1][1] = Pt[1];
+      diagonal(1, 0) = upperBound[0];
+      diagonal(1, 1) = Pt[1];
     }
     if (Pt[0] < upperBound[0])
     {
-      diagonal[1][0] = Pt[0];
-      diagonal[1][1] = upperBound[1];
+      diagonal(1, 0) = Pt[0];
+      diagonal(1, 1) = upperBound[1];
     }
     Curve curve(diagonal, "red", "solid", 1);
     graph.add(curve);

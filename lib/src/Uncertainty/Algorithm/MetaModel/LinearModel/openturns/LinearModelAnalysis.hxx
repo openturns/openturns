@@ -63,23 +63,10 @@ public:
   LinearModelResult getLinearModelResult() const;
 
   /** Accessors to data from ANOVA table */
-  String getFormula() const;
-  Description getCoefficientsNames() const;
-  Sample getResiduals() const;
-  Sample getStandardizedResiduals() const;
-  Sample getCoefficientsEstimates() const;
-  Sample getCoefficientsStandardErrors() const;
-  Sample getCoefficientsTScores() const;
-  Sample getCoefficientsPValues() const;
-
-  /**  leverages */
-  Point getLeverages() const;
-
-  /**  Cook's distances */
-  Point getCookDistances() const;
-
-  /** Number of degrees of freedom */
-  UnsignedInteger getDegreesOfFreedom() const;
+  Point getCoefficientsStandardErrors() const;
+  Point getCoefficientsTScores() const;
+  Point getCoefficientsPValues() const;
+  Interval getCoefficientsConfidenceInterval(const Scalar level=0.10) const;
 
   /** R-squared */
   Scalar getRSquared() const;
@@ -109,6 +96,10 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
+
+  /* [0] Draw model versus fitted values */
+  Graph drawModelVsFitted() const;
+  
   /** [1] Draw a plot of residuals versus fitted values  */
   Graph drawResidualsVsFitted() const;
 

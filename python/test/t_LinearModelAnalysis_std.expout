@@ -24,8 +24,8 @@ Chi-Squared          | 0.157724   |
 Kolmogorov-Smirnov   | 0.17747    |
 -----------------------------------
 
-confidence intervals with level=0.95 : [2.99568, 3.02768]
-[-2.00331, -1.9972]
+confidence intervals with level=0.95 : [2.99229, 3.03106]
+[-2.00396, -1.99655]
 
 
 

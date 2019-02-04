@@ -47,18 +47,7 @@ int main(int argc, char *argv[])
     fullprint << analysis.__str__() << std::endl;
     // Compute confidence level (95%) for coefficients estimate (1-alpha = 0.95)
     const Scalar alpha = 0.05;
-    const Scalar t = Student(analysis.getDegreesOfFreedom()).computeQuantile(alpha / 2.0, true)[0];
-    // Transform errors as Point
-    Point coefficientsErrors(analysis.getCoefficientsStandardErrors().getImplementation()->getData());
-    // Define lower and upper bounds
-    // First transform return type into NP
-    Point lowerBounds(analysis.getCoefficientsEstimates().getImplementation()->getData());
-    Point upperBounds(analysis.getCoefficientsEstimates().getImplementation()->getData());
-    // update bounds
-    lowerBounds -= coefficientsErrors * t;
-    upperBounds += coefficientsErrors * t;
-    // Finally define the interval
-    const Interval interval(lowerBounds, upperBounds);
+    const Interval interval(analysis.getCoefficientsConfidenceInterval(alpha));
     fullprint << "Confidence intervals with level=" << 1 - alpha << " : "  << interval << std::endl;
   }
 
@@ -92,18 +81,8 @@ int main(int argc, char *argv[])
     fullprint << analysis.__str__() << std::endl;
     // Compute confidence level (95%) for coefficients estimate (1-alpha = 0.95)
     const Scalar alpha = 0.05;
-    const Scalar t = Student(analysis.getDegreesOfFreedom()).computeQuantile(alpha / 2.0, true)[0];
-    // Transform errors as Point
-    Point coefficientsErrors(analysis.getCoefficientsStandardErrors().getImplementation()->getData());
-    // Define lower and upper bounds
-    // First transform return type into NP
-    Point lowerBounds(analysis.getCoefficientsEstimates().getImplementation()->getData());
-    Point upperBounds(analysis.getCoefficientsEstimates().getImplementation()->getData());
-    // update bounds
-    lowerBounds -= coefficientsErrors * t;
-    upperBounds += coefficientsErrors * t;
     // Finally define the interval
-    const Interval interval(lowerBounds, upperBounds);
+    const Interval interval(analysis.getCoefficientsConfidenceInterval(alpha));
     fullprint << "Confidence intervals with level=" << 1 - alpha << " : "  << interval << std::endl;
   }
 
