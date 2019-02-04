@@ -161,7 +161,8 @@ randomize : bool
 Parameters
 ----------
 randomize : bool
-    Use a cyclic scrambling of the low discrepancy sequence. See [lecuyer2005]_ for
-    the interest of such a scrambling.
-    Default is false.
+    Use a cyclic scrambling of the low discrepancy sequence, it means, the whole
+    low discrepancy sequence is translated by a random vector modulo 1.
+    See [lecuyer2005]_ for the interest of such a scrambling.
+    Default is False.
 "

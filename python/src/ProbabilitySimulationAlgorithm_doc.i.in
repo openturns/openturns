@@ -195,7 +195,7 @@ Estimate a probability by Randomized Quasi Monte Carlo
 >>> # Perform the simulation
 >>> myAlgo.run()
 >>> print('Probability estimate=%.6f' % myAlgo.getResult().getProbabilityEstimate())
-Probability estimate=0.145000
+Probability estimate=0.160000
 
 Estimate a probability by Randomized LHS
 

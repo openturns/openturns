@@ -192,14 +192,14 @@ Sample LowDiscrepancyExperiment::generateWithWeights(Point & weights) const
   Scalar tmp = -1.0;
   if (randomize_)
   {
+    const Point shift(RandomGenerator::Generate(dimension));
     for (UnsignedInteger i = 0; i < size_; ++ i)
     {
       for (UnsignedInteger j = 0; j < dimension; ++ j)
       {
         // with a cyclic scrambling of the low discrepancy point as in
         // L’Ecuyer P., Lemieux C. (2005) Recent Advances in Randomized Quasi-Monte Carlo Methods. In: Dror M., L’Ecuyer P., Szidarovszky F. (eds) Modeling Uncertainty. International Series in Operations Research & Management Science, vol 46. Springer, Boston, MA
-        const Scalar u = RandomGenerator::Generate();
-        sample(i, j) = std::modf(sample(i, j) + u, &tmp);
+        sample(i, j) = std::modf(sample(i, j) + shift[j], &tmp);
       } // j
     } // i
   } // randomize
