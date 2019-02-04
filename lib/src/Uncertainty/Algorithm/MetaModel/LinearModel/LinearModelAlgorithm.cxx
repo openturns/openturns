@@ -24,6 +24,7 @@
 #include "openturns/LeastSquaresMethod.hxx"
 #include "openturns/LinearCombinationFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -57,14 +58,20 @@ LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
   // Set samples
   inputSample_ = inputSample;
   outputSample_ = outputSample;
-  Collection<Function> functions;
-  const Description inputDescription(inputSample_.getDescription());
-  functions.add(SymbolicFunction(inputSample_.getDescription(), Description(1, "1")));
-  for(UnsignedInteger i = 0; i < inputSample_.getDimension(); ++i)
-  {
-    functions.add(SymbolicFunction(inputSample_.getDescription(), Description(1, inputDescription[i])));
-  }
-  basis_ = Basis(functions);
+
+  #ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
+    Collection<Function> functions;
+    const Description inputDescription(inputSample_.getDescription());
+    functions.add(SymbolicFunction(inputSample_.getDescription(), Description(1, "1")));
+    for(UnsignedInteger i = 0; i < inputSample_.getDimension(); ++i)
+    {
+      functions.add(SymbolicFunction(inputDescription, Description(1, inputDescription[i])));
+    }
+    basis_ = Basis(functions);
+  #else
+    basis_ = LinearBasisFactory(inputSample_.getDimension()).build();
+  #endif
+
 }
 
 
@@ -102,7 +109,10 @@ void LinearModelAlgorithm::run()
   if (hasRun_) return;
 
   const UnsignedInteger size = inputSample_.getSize();
-  const UnsignedInteger p = basis_.getSize();
+  const UnsignedInteger basisSize = basis_.getSize();
+  if(!(size - basisSize > 0))
+    throw InvalidArgumentException(HERE) << "Number of basis elements is great or equals the sample size. Data size = " << outputSample_.getSize()
+                                         << ", basis size = " << basisSize;
 
   // No particular strategy : using the full basis
   Indices indices(basis_.getSize());
@@ -116,19 +126,19 @@ void LinearModelAlgorithm::run()
   algo = LeastSquaresMethod::Build(ResourceMap::GetAsString("LinearModelAlgorithm-DecompositionMethod"), proxy, indices);
 
   // Solve linear system
-  Point coefficients(algo.solve(outputSample_.asPoint()));
+  const Point coefficients(algo.solve(outputSample_.asPoint()));
 
   // Define the metamodel
-  LinearCombinationFunction metaModel(basis_, coefficients);
+  const LinearCombinationFunction metaModel(basis_, coefficients);
 
   // Get the GramInverse
   const Point diagonalGramInverse(algo.getGramInverseDiag());
 
   // Leverage = diagonal of the Hat matrix
-  Point leverages(algo.getHDiag());
+  const Point leverages(algo.getHDiag());
 
   // The design proxy evaluated on the basis function
-  Matrix fX(proxy.computeDesign(indices));
+  const Matrix fX(proxy.computeDesign(indices));
 
   // Description of the basis
   Description coefficientsNames(0);
@@ -139,25 +149,32 @@ void LinearModelAlgorithm::run()
 
   // Residual sample
   const Sample residualSample(outputSample_ - metaModel(inputSample_));
-  // Sigma2 
-  const Point sigma2(residualSample.computeRawMoment(2));
 
-  const Scalar factor = size * sigma2[0] / (size - p);
+  // Sigma2 
+
+  const Scalar sigma2 = size * residualSample.computeRawMoment(2)[0] / (size - basisSize);
+
   Sample standardizedResiduals(size, 1);
+
+  // Loop over residual sample
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    standardizedResiduals(i, 0) = residualSample(i, 0) / std::sqrt(factor * (1.0 - leverages[i]));
+    const Scalar factorOneMinusLeverageI = sigma2 * (1.0 - leverages[i]);
+    if (!(factorOneMinusLeverageI > 0))
+      standardizedResiduals(i, 0) = SpecFunc::MaxScalar;
+    else
+      standardizedResiduals(i, 0) = residualSample(i, 0) / std::sqrt(factorOneMinusLeverageI);
   }
 
   Point cookDistances(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    cookDistances[i] = (1.0 / p) * standardizedResiduals(i, 0) * standardizedResiduals(i, 0) * (leverages[i] / (1.0 - leverages[i]));
+    cookDistances[i] = (1.0 / basisSize) * standardizedResiduals(i, 0) * standardizedResiduals(i, 0) * (leverages[i] / (1.0 - leverages[i]));
   }
 
   result_ = LinearModelResult(inputSample_, basis_, fX, outputSample_, metaModel,
                               coefficients, basis_.__str__(), coefficientsNames, residualSample,
-                              diagonalGramInverse, leverages, cookDistances);
+                              standardizedResiduals, diagonalGramInverse, leverages, cookDistances, sigma2);
 
   hasRun_ = true;
 }

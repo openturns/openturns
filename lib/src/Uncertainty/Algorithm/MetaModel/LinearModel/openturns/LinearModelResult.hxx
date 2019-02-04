@@ -26,6 +26,8 @@
 #include "openturns/Basis.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/Function.hxx"
+#include "openturns/Normal.hxx"
+
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -55,9 +57,11 @@ public:
                     const String & formula,
                     const Description & coefficientsNames,
                     const Sample & sampleResiduals,
+                    const Sample & standardizedResiduals,
                     const Point & diagonalGramInverse,
                     const Point & leverages,
-                    const Point & cookDistances);
+                    const Point & cookDistances,
+                    const Scalar sigma2);
 
   /** Virtual constructor */
   virtual LinearModelResult * clone() const;
@@ -82,8 +86,14 @@ public:
   /** Residuals accessor */
   virtual Sample getSampleResiduals() const;
 
+  /** Noise distribution */
+  virtual Normal getNoiseDistribution() const;
+
   /** Standardized residuals accessor */
   virtual Sample getStandardizedResiduals() const;
+
+  /** Number of degrees of freedom */
+  virtual UnsignedInteger getDegreesOfFreedom() const;
 
   /** Leverages accessor */
   virtual Point getLeverages() const;
@@ -101,9 +111,6 @@ public:
   virtual void load(Advocate & adv);
 
 private:
-
-  /** Compute standardized residuals */
-  void computeStandardizedResiduals();
 
   /** input data */
   Sample inputSample_;
@@ -140,6 +147,9 @@ private:
 
   /** Cook's distances */
   Point cookDistances_;
+
+  /** Sigma2 */
+  Scalar sigma2_;
 
 }; /* class LinearModelResult */
 

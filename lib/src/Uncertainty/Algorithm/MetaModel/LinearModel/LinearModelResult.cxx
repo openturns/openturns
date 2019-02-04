@@ -45,9 +45,11 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
                                      const String & formula,
                                      const Description & coefficientsNames,
                                      const Sample & sampleResiduals,
+                                     const Sample & standardizedResiduals,
                                      const Point & diagonalGramInverse,
                                      const Point & leverages,
-                                     const Point & cookDistances)
+                                     const Point & cookDistances,
+                                     const Scalar sigma2)
   : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, Point(1, 0.0), Point(1, 0.0))
   , inputSample_(inputSample)
   , basis_(basis)
@@ -57,15 +59,21 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
   , condensedFormula_(formula)
   , coefficientsNames_(coefficientsNames)
   , sampleResiduals_(sampleResiduals)
+  , standardizedResiduals_(standardizedResiduals)
   , diagonalGramInverse_(diagonalGramInverse)
   , leverages_(leverages)
   , cookDistances_(cookDistances)
+  , sigma2_(sigma2)
 {
   const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
     throw InvalidArgumentException(HERE) << "In LinearModelResult::LinearModelResult, input & output sample have different size. input sample size = " << size << ", output sample size = " << outputSample.getSize();
-  // Compute standardized residuals
-  computeStandardizedResiduals();
+  // Check DoF > 0
+  UnsignedInteger degreesOfFreedom = getDegreesOfFreedom();
+  if(!(degreesOfFreedom > 0))
+    throw InvalidArgumentException(HERE) << "Degrees of freedom is less or equal than 0. Data size = " << outputSample.getSize()
+                                         << ", basis size = " << beta_.getSize()
+                                         << ", degrees of freedom = " << degreesOfFreedom;
 }
 
 /* Virtual constructor */
@@ -123,6 +131,21 @@ Sample LinearModelResult::getSampleResiduals() const
   return sampleResiduals_;
 }
 
+/* Number of degrees of freedom */
+UnsignedInteger LinearModelResult::getDegreesOfFreedom() const
+{
+  const UnsignedInteger size = inputSample_.getSize();
+  const UnsignedInteger basisSize = beta_.getSize();
+  return size - basisSize;
+}
+
+/** Noise distribution */
+Normal LinearModelResult::getNoiseDistribution() const
+{
+  // Gaussian output
+  return Normal(0, std::sqrt(sigma2_));
+}
+
 Sample LinearModelResult::getStandardizedResiduals() const
 {
   return standardizedResiduals_;
@@ -143,19 +166,6 @@ Point LinearModelResult::getCookDistances() const
   return cookDistances_;
 }
 
-void LinearModelResult::computeStandardizedResiduals()
-{
-  Point sigma2(sampleResiduals_.computeRawMoment(2));
-  const UnsignedInteger size = sampleResiduals_.getSize();
-  const UnsignedInteger basisSize = beta_.getDimension();
-  const Scalar factor = size * sigma2[0] / (size - basisSize);
-  standardizedResiduals_ = Sample(size, 1);
-  for(UnsignedInteger i = 0; i < size; ++i)
-  {
-    standardizedResiduals_(i, 0) = sampleResiduals_(i, 0) / std::sqrt(factor * (1.0 - leverages_[i]));
-  }
-}
-
 /* Method save() stores the object through the StorageManager */
 void LinearModelResult::save(Advocate & adv) const
 {
@@ -172,6 +182,7 @@ void LinearModelResult::save(Advocate & adv) const
   adv.saveAttribute( "diagonalGramInverse_", diagonalGramInverse_ );
   adv.saveAttribute( "leverages_", leverages_ );
   adv.saveAttribute( "cookDistances_", cookDistances_ );
+  adv.saveAttribute( "sigma2_", sigma2_ );
 }
 
 
@@ -191,6 +202,7 @@ void LinearModelResult::load(Advocate & adv)
   adv.loadAttribute( "diagonalGramInverse_", diagonalGramInverse_ );
   adv.loadAttribute( "leverages_", leverages_ );
   adv.loadAttribute( "cookDistances_", cookDistances_ );
+  adv.loadAttribute( "sigma2_", sigma2_ );
 }
 
 END_NAMESPACE_OPENTURNS

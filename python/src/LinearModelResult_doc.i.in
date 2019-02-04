@@ -3,7 +3,7 @@
 
 
 Available constructors:
-    LinearModelResult(*inputSample, basis, design, outputSample, metaModel, trendCoefficients, formula, coefficientsNames, sampleResiduals, diagonalGramInverse, leverages, cookDistances*)
+    LinearModelResult(*inputSample, basis, design, outputSample, metaModel, trendCoefficients, formula, coefficientsNames, sampleResiduals, standardizedSampleResiduals, diagonalGramInverse, leverages, cookDistances, sigma2*)
 
 
 Parameters
@@ -22,14 +22,18 @@ formula : :class:`~openturns.String`
      The formula description. 
 coefficientsNames : :class:`~openturns.Description` 
      The coefficients names of the basis.  
-sampleResiduals : :class:`~openturns.Point`
+sampleResiduals : :class:`~openturns.Sample`
     The residual errors.
+standardizedSampleResiduals : :class:`~openturns.Sample`
+    The normalized residual errors.
 diagonalGramInverse : :class:`~openturns.Point`
     The diagonal of the Gram inverse matrix.
 leverages : :class:`~openturns.Point`
     The leverage score. 
 cookDistances : :class:`~openturns.Point`
     The cook's distances.
+sigma2 : float
+    The unbiased noise variance.
 
 
 See Also
@@ -106,6 +110,26 @@ coefficientsNames : :class:`~openturns.Description`
 Returns
 -------
 sampleResiduals : :class:`~openturns.Sample`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getDegreesOfFreedom
+"Accessor to the degrees of freedom.
+
+Returns
+-------
+dof : int
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getNoiseDistribution
+"Accessor to the noise distribution, ie the underlying distribution of the residual.
+
+Returns
+-------
+noiseDistribution : :class:`~openturns.Distribution`
 "
 
 // ---------------------------------------------------------------------
