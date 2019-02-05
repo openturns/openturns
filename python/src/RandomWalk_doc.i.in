@@ -9,7 +9,7 @@ origin : :class:`~openturns.Point`
 distribution : :class:`~openturns.Distribution` 
     Distribution of dimension equal to the dimension of `origin`.
 
-timeGrid : :class:`~openturns.TimeGrid`, optional
+timeGrid : :class:`~openturns.RegularGrid`, optional
     The time grid of the process.
     By default, the time grid is  reduced to one time stamp equal to 0.
 
