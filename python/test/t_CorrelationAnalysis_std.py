@@ -27,8 +27,18 @@ outputSample = analytical(inputSample)
 src = ot.CorrelationAnalysis.SRC(inputSample, outputSample)
 print("src=", src)
 
+# Src with normalize
+src_normalize = ot.CorrelationAnalysis.SRC(inputSample, outputSample, True)
+print("src with normalize=", src_normalize)
+
+signed_src = ot.CorrelationAnalysis.SignedSRC(inputSample, outputSample)
+print("signed src=", signed_src)
+
 srrc = ot.CorrelationAnalysis.SRRC(inputSample, outputSample)
 print("srrc=", srrc)
+
+srrc_normalize = ot.CorrelationAnalysis.SRRC(inputSample, outputSample)
+print("srrc with normalize=", srrc_normalize)
 
 pcc = ot.CorrelationAnalysis.PCC(inputSample, outputSample)
 print("pcc=", pcc)

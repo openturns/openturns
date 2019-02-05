@@ -48,7 +48,12 @@ public:
 
   /** Compute the Standard Regression Coefficients (SRC) between the input sample and the output sample */
   static Point SRC(const Sample & inputSample,
-                   const Sample & outputSample);
+                   const Sample & outputSample,
+                   const Bool normalize = false);
+
+  /** Compute the signed Standard Regression Coefficients (SRC) between the input sample and the output sample */
+  static Point SignedSRC(const Sample & inputSample,
+                         const Sample & outputSample);
 
   /** Compute the Partial Correlation Coefficients (PCC) between the input sample and the output sample */
   static Point PCC(const Sample & inputSample,
@@ -56,7 +61,8 @@ public:
 
   /** Compute the Standard Rank Regression Coefficients (SRRC) between the input sample and the output sample */
   static Point SRRC(const Sample & inputSample,
-                    const Sample & outputSample);
+                    const Sample & outputSample,
+                    const Bool normalize = false);
 
   /** Compute the Partial Rank Correlation Coefficients (PRCC) between the input sample and the output sample */
   static Point PRCC(const Sample & inputSample,

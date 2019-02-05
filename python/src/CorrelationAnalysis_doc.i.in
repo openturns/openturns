@@ -109,6 +109,10 @@ sample1 : 2-d sequence of float
     First sample, of dimension :math:`n \geq 1`.
 sample2 : 2-d sequence of float
     Second sample, of dimension = 1.
+normalize : bool
+    if True, coefficients sum to one.
+    Otherwise it includes noise variance
+    Default value is false.
 
 Returns
 -------
@@ -133,6 +137,10 @@ sample1 : 2-d sequence of float
     First sample, of dimension :math:`n \geq 1`.
 sample2 : 2-d sequence of float
     Second sample, of dimension = 1.
+normalize : bool
+    if True, coefficients sum to one.
+    Otherwise it includes noise variance
+    Default value is false.
 
 Returns
 -------
@@ -144,3 +152,28 @@ See Also
 --------
 CorrelationAnalysis_SpearmanCorrelation, CorrelationAnalysis_PRCC,
 CorrelationAnalysis_SRC"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CorrelationAnalysis::SignedSRC
+"Correlation evaluation based on the Signed Standard Rank Regression Coefficient.
+
+It takes into account the linear coefficient sign.
+
+Parameters
+----------
+sample1 : 2-d sequence of float
+    First sample, of dimension :math:`n \geq 1`.
+sample2 : 2-d sequence of float
+    Second sample, of dimension = 1.
+
+Returns
+-------
+coef : :class:`~openturns.Point`
+    The SRC evaluated between the *sample2* and each coordinate of the
+    *sample1* (based on the rank value).
+
+See Also
+--------
+CorrelationAnalysis_SpearmanCorrelation, CorrelationAnalysis_PRCC,
+CorrelationAnalysis_SRC, CorrelationAnalysis_SRRC"

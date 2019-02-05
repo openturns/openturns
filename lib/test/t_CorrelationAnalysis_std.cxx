@@ -56,14 +56,39 @@ int main(int, char *[])
 
     RandomVector randomVector(aDistribution);
     CompositeRandomVector composite(analytical, randomVector);
-    fullprint << "composite=" << composite << std::endl;
 
     // we create two input samples for the function
     Sample inputSample(randomVector.getSample(sampleSize));
     Sample outputSample(analytical(inputSample));
 
     Point src(CorrelationAnalysis::SRC(inputSample, outputSample));
-    fullprint << "src=" << src << std::endl;
+    fullprint << "src=" << src.__str__() << std::endl;
+
+    // Taking into account normalize
+    Point src_normalize(CorrelationAnalysis::SRC(inputSample, outputSample, true));
+    fullprint << "src with normalize=" << src_normalize.__str__() << std::endl;
+
+    Point signed_src(CorrelationAnalysis::SignedSRC(inputSample, outputSample));
+    fullprint << "signed src=" << signed_src.__str__() << std::endl;
+
+    Point srrc(CorrelationAnalysis::SRRC(inputSample, outputSample));
+    fullprint << "srrc=" << srrc.__str__() << std::endl;
+
+    // Taking into account normalize
+    Point srrc_normalize(CorrelationAnalysis::SRRC(inputSample, outputSample, true));
+    fullprint << "srrc with normalize=" << src_normalize.__str__() << std::endl;
+
+    Point pcc(CorrelationAnalysis::PCC(inputSample, outputSample));
+    fullprint << "pcc=" << pcc.__str__() << std::endl;
+
+    Point prcc(CorrelationAnalysis::PRCC(inputSample, outputSample));
+    fullprint << "prcc=" << prcc.__str__() << std::endl;
+
+    Point pearson(CorrelationAnalysis::PearsonCorrelation(inputSample, outputSample));
+    fullprint << "pearson=" << pearson.__str__() << std::endl;
+
+    Point spearman(CorrelationAnalysis::SpearmanCorrelation(inputSample, outputSample));
+    fullprint << "spearman=" << spearman.__str__() << std::endl;
 
   }
   catch (TestFailed & ex)
