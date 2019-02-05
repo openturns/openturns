@@ -1,0 +1,23 @@
+%feature("docstring") OT::PiecewiseLinearEvaluation
+"Piecewise linear interpolation evaluation.
+
+Parameters
+----------
+locations : sequence of float
+    Locations
+values : 1-d or 2-d sequence of float
+    Values at each location
+
+See also
+--------
+PiecewiseHermiteEvaluation
+
+Examples
+--------
+>>> import openturns as ot
+>>> locations = [1.0, 2.0, 3.0, 4.0, 5.0]
+>>> values = [-2.0, 2.0, 1.0, 3.0, 5.0]
+>>> evaluation = ot.PiecewiseLinearEvaluation(locations, values)
+>>> f = ot.Function(evaluation)
+>>> print(f([2.5]))
+[1.5]"

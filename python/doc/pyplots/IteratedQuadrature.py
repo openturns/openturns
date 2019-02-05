@@ -14,7 +14,7 @@ u = [ot.SymbolicFunction(['x'], ['-2-cos(x)'])]
 
 # Draw the graph of the integrand and the bounds:
 
-g = ot.Graph('Integration nodes', 'x', 'y', True, 'topright')
+g = ot.Graph('IteratedQuadrature example', 'x', 'y', True, 'topright')
 g.add(f.draw([a, a], [b, b]))
 curve = l[0].draw(a, b).getDrawable(0)
 curve.setLineWidth(2)
@@ -55,7 +55,6 @@ cloud.setColor('gold')
 g.add(cloud)
 
 fig = plt.figure(figsize=(4, 4))
-plt.suptitle("IteratedQuadrature example")
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
 View(g, figure=fig, axes=[axis], add_legend=False)

@@ -10,5 +10,9 @@ Response surface: low-rank approximation
 
     CanonicalTensorEvaluation
     CanonicalTensorGradient
+
+    :template: classWithPlot.rst_t
     TensorApproximationAlgorithm
+
+    :template: class.rst_t
     TensorApproximationResult

@@ -16,7 +16,7 @@ for i in range(inputDimension):
 model = ot.SymbolicFunction(inputVar, [expression])
 outputSample = model(inputSample)
 
-cobweb = ot.VisualTest_DrawCobWeb(
+cobweb = ot.VisualTest.DrawCobWeb(
     inputSample, outputSample, 2.5, 3.0, 'red', False)
 
 View(cobweb, figure_kwargs={'figsize': (10, 6)},

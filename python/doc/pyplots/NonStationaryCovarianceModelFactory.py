@@ -88,9 +88,9 @@ for i in range(alld.getSize()):
     d.setColor(palette[i])
     d.setDrawLabels(False)
     cov_graph.add(d)
+cov_graph.setTitle('Non stationary covariance model estimation')
 
 fig = plt.figure(figsize=(10, 4))
-plt.suptitle('Non stationary covariance model estimation')
 cov_axis = fig.add_subplot(111)
 View(cov_graph, figure=fig, axes=[cov_axis],
      add_legend=False, square_axes=True)

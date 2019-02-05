@@ -27,7 +27,6 @@ graph2.setXTitle('$x_0$')
 graph2.setYTitle('$x_1$')
 
 fig = plt.figure(figsize=(10, 4))
-plt.suptitle("Mesh of an interval: diamond=False/True")
 graph1_axis = fig.add_subplot(121)
 graph2_axis = fig.add_subplot(122)
 graph1_axis.set_xlim(auto=True)
@@ -35,3 +34,4 @@ graph2_axis.set_xlim(auto=True)
 
 View(graph1, figure=fig, axes=[graph1_axis], add_legend=True)
 View(graph2, figure=fig, axes=[graph2_axis], add_legend=True)
+fig.suptitle("Mesh of an interval: diamond=False/True")

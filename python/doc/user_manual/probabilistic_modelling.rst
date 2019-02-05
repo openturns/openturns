@@ -24,18 +24,34 @@ Continuous parametric distributions
     :template: Distribution.rst_t
 
     Arcsine
+
+    :template: classWithPlot.rst_t
     Beta
     Burr
+
+    :template: Distribution.rst_t
     Chi
     ChiSquare
+
+    :template: classWithPlot.rst_t
     Dirichlet
+
+    :template: Distribution.rst_t
     Epanechnikov
     Exponential
+
+    :template: classWithPlot.rst_t
     FisherSnedecor
+
+    :template: Distribution.rst_t
     Frechet
+
+    :template: classWithPlot.rst_t
     Gamma
     GeneralizedExtremeValue
     GeneralizedPareto
+
+    :template: Distribution.rst_t
     Gumbel
     Histogram
     InverseChiSquare
@@ -51,7 +67,11 @@ Continuous parametric distributions
     NonCentralChiSquare
     NonCentralStudent
     Normal
+
+    :template: classWithPlot.rst_t
     NormalGamma
+
+    :template: Distribution.rst_t
     Rayleigh
     Rice
     SmoothedUniform
@@ -75,12 +95,12 @@ Discrete parametric distributions
     Binomial
     Dirac
     Geometric
-	       
-    :template: classWithPlot.rst_t
     Multinomial
 
-    :template: Distribution.rst_t
+    :template: classWithPlot.rst_t
     NegativeBinomial
+
+    :template: Distribution.rst_t
     Poisson
     Skellam
     UserDefined
@@ -119,9 +139,11 @@ Combining and transforming distributions
 
 .. autosummary::
     :toctree: _generated/
-    :template: Distribution.rst_t
+    :template: classWithPlot.rst_t
 
     BayesDistribution
+
+    :template: Distribution.rst_t
     ComposedDistribution
 
     :template: classWithPlot.rst_t
@@ -147,11 +169,6 @@ Combining and transforming distributions
     :template: Distribution.rst_t
 
     ProductDistribution
-
-.. autosummary::
-    :toctree: _generated/
-    :template: class.rst_t
-
     RandomMixture
 
 .. autosummary::
@@ -188,14 +205,14 @@ Refer to :ref:`copula`.
     FrankCopula
     GumbelCopula
     IndependentCopula
-
-    :template: classWithPlot.rst_t
     EmpiricalBernsteinCopula
     ExtremeValueCopula
     MaximumEntropyOrderStatisticsCopula
-    
+
     :template: class.rst_t
     MinCopula
+
+    :template: Copula.rst_t
     NormalCopula
 
 
@@ -223,13 +240,15 @@ Random vectors
 
     RandomVector
     PythonRandomVector
-    CompositeRandomVector
 
     :template: classWithPlot.rst_t
+    CompositeRandomVector
     ConditionalRandomVector
 
     :template: class.rst_t
     ConstantRandomVector
+
+    :template: classWithPlot.rst_t
     UsualRandomVector
 
 Samplers

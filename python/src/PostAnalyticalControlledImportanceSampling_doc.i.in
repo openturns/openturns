@@ -1,8 +1,9 @@
 %feature("docstring") OT::PostAnalyticalControlledImportanceSampling
 "Post analytical controlled importance sampling.
 
-Available constructor:
-    Solver(*analyticalResult*)
+Simulation method where the original distribution is replaced by the
+distribution in the standard space centered around the provided design point
+and is controlled by the value of the linearized limit state function.
 
 Parameters
 ----------
@@ -13,4 +14,21 @@ analyticalResult : :class:`~openturns.AnalyticalResult`
 
 See also
 --------
-PostAnalyticalSimulation, PostAnalyticalImportanceSampling"
+PostAnalyticalImportanceSampling
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['-F*L^3/(3*E*I)'])
+>>> distribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
+>>> X = ot.RandomVector(distribution)
+>>> Y = ot.CompositeRandomVector(f, X)
+>>> event = ot.Event(Y, ot.Less(), -3.0)
+>>> solver = ot.AbdoRackwitz()
+>>> analytical = ot.FORM(solver, event, [50.0, 1.0, 10.0, 5.0])
+>>> analytical.run()
+>>> analyticalResult = analytical.getResult()
+>>> algo = ot.PostAnalyticalControlledImportanceSampling(analyticalResult)
+>>> algo.run()
+>>> result = algo.getResult()
+>>> pf = result.getProbabilityEstimate()"

@@ -347,32 +347,23 @@ where sources can be browsed.
 .. figure:: Figures/BrowseSource.png
    :alt: GitHub interface: the source browser
 
-Trac
-~~~~
+Bug tracking
+~~~~~~~~~~~~
 
-Trac is an open source, web-based project management and bug-tracking
-tool. Trac allows hyperlinking information between a bug database,
-revision control and wiki content. It also serves as a web interface to
-several revision control systems including Subversion.
+GitHub’s tracker is called *Issues*, and has its own section in every repository.
 
-The `timeline <http://trac.openturns.org/timeline>`_ lists the
-recent changes ticket database and wiki pages:
-
-.. figure:: Figures/Timeline.png
-   :alt: Trac interface: the timeline
-
-Trac provides a `bug-tracker <http://trac.openturns.org/report>`_.
-The snapshot shows the list of active tickets.
+The snapshot of the library `bug-tracker <https://github.com/openturns/openturns/issues>`_
+shows the list of active tickets:
 
 .. figure:: Figures/Tickets1.png
-   :alt: Trac interface: the ticket report view
+   :alt: GitHub interface: the ticket browser
 
 Each ticket features attributes to help classification, interactive
 comments and file attachment. This snapshot exposes the details
 of a ticket:
 
 .. figure:: Figures/Tickets2.png
-   :alt: Trac interface: details of a ticket report
+   :alt: GitHub interface: details of a ticket report
 
 Other requirements
 ------------------

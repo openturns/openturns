@@ -16,13 +16,13 @@
         distribution = factory.build(sample)
         if dimension == 1:
             distribution.setDescription(['$t$'])
-	    pdf_graph = distribution.drawPDF(256)
+            pdf_graph = distribution.drawPDF(256)
             cloud = ot.Cloud(sample, ot.Sample(sample.getSize(), 1))
             cloud.setColor('blue')
             cloud.setPointStyle('fcircle')
             pdf_graph.add(cloud)
+            pdf_graph.setTitle(str(distribution))
             fig = plt.figure(figsize=(10, 4))
-            plt.suptitle(str(distribution))
             pdf_axis = fig.add_subplot(111)
             View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False)
         else:
@@ -33,8 +33,8 @@
             cloud.setColor('red')
             cloud.setPointStyle('fcircle')
             pdf_graph.add(cloud)
+            pdf_graph.setTitle(str(distribution))
             fig = plt.figure(figsize=(10, 4))
-            plt.suptitle(str(distribution))
             pdf_axis = fig.add_subplot(111)
             View(pdf_graph, figure=fig, axes=[pdf_axis], add_legend=False, square_axes=True)
 

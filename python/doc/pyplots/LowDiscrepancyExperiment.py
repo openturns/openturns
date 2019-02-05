@@ -11,15 +11,15 @@ myPlane = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, size)
 sample = myPlane.generate()
 
 # Create an empty graph
-graph = ot.Graph("", "x1", "x2", True, "")
+graph = ot.Graph("Low Discrepancy experiment", "x1", "x2", True, "")
 
 # Create the cloud
 cloud = ot.Cloud(sample, "blue", "plus", "")
 
 # Then, draw it
 graph.add(cloud)
+
 fig = plt.figure(figsize=(4, 4))
-plt.suptitle("Low Discrepancy experiment")
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
 View(graph, figure=fig, axes=[axis], add_legend=False)

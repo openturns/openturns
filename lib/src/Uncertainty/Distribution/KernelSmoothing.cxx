@@ -277,7 +277,9 @@ KernelMixture KernelSmoothing::buildAsKernelMixture(const Sample & sample,
   const UnsignedInteger dimension = sample.getDimension();
   if (bandwidth.getDimension() != dimension) throw InvalidDimensionException(HERE) << "Error: the given bandwidth must have the same dimension as the given sample, here bandwidth dimension=" << bandwidth.getDimension() << " and sample dimension=" << dimension;
   setBandwidth(bandwidth);
-  return KernelMixture(kernel_, bandwidth, sample);
+  KernelMixture result(kernel_, bandwidth, sample);
+  result.setDescription(sample.getDescription());
+  return result;
 }
 
 Mixture KernelSmoothing::buildAsMixture(const Sample & sample,

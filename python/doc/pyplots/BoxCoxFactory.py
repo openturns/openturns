@@ -47,14 +47,12 @@ shift = [0.0]
 myModelTransform = myBoxCoxFactory.build(myField, shift, graph)
 graphMarginal2 = ot.KernelSmoothing().build(
     myModelTransform(myField).getValues()).drawPDF()
-graphMarginal2.setTitle("")
 graphMarginal2.setXTitle("T_lambda(X)")
 graphMarginal2.setLegendPosition("")
 
 graph.setLegendPosition("bottomright")
 
 fig = plt.figure(figsize=(12, 4))
-plt.suptitle("Box Cox log-likelihood example")
 axis = fig.add_subplot(131)
 axis.set_xlim(auto=True)
 View(graphMarginal1, figure=fig, axes=[axis], add_legend=True)
@@ -64,3 +62,4 @@ View(graph, figure=fig, axes=[axis], add_legend=True)
 axis = fig.add_subplot(133)
 axis.set_xlim(auto=True)
 View(graphMarginal2, figure=fig, axes=[axis], add_legend=True)
+fig.suptitle("Box Cox log-likelihood example")

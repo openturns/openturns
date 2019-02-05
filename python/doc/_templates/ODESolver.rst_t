@@ -39,11 +39,11 @@
     curve.setColor("red")
     curve.setLineWidth(2)
     graph.add(curve)
+    graph.setTitle("Lotka-Volterra ODE system")
 
     fig = plt.figure()
     ax = fig.add_subplot(111)
     View(graph, figure=fig)
-    plt.suptitle("Lotka-Volterra ODE system")
     plt.xlabel(r'$y_0$')
     plt.ylabel(r'$y_1$')
     plt.grid()

@@ -1,10 +1,10 @@
 // SWIG file PiecewiseHermiteEvaluation.i
 
-OTAutodoc(PiecewiseHermiteEvaluation)
-
 %{
 #include "openturns/PiecewiseHermiteEvaluation.hxx"
 %}
+
+%include PiecewiseHermiteEvaluation_doc.i
 
 %include openturns/PiecewiseHermiteEvaluation.hxx
 

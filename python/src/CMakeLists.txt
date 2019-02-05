@@ -337,8 +337,8 @@ ot_add_python_module(func func_module.i
                       DatabaseFunction.i DatabaseFunction_doc.i.in
                       DatabaseEvaluation.i DatabaseEvaluation_doc.i.in
                       IndicatorEvaluation.i
-                      PiecewiseLinearEvaluation.i
-                      PiecewiseHermiteEvaluation.i
+                      PiecewiseLinearEvaluation.i PiecewiseLinearEvaluation_doc.i.in
+                      PiecewiseHermiteEvaluation.i PiecewiseHermiteEvaluation_doc.i.in
                       ProductPolynomialEvaluation.i ProductPolynomialEvaluation_doc.i.in
                       ParametricEvaluation.i
                       ParametricGradient.i
@@ -538,8 +538,8 @@ ot_add_python_module(model_copula model_copula_module.i
 
 ot_add_python_module(randomvector randomvector_module.i
                       RandomVectorImplementation.i RandomVectorImplementation_doc.i.in
-                      ConstantRandomVector.i
-                      UsualRandomVector.i
+                      ConstantRandomVector.i ConstantRandomVector_doc.i.in
+                      UsualRandomVector.i UsualRandomVector_doc.i.in
                       UncertaintyRandomVectorTemplateDefs.i
                    )
 
@@ -800,7 +800,7 @@ ot_add_python_module(metamodel metamodel_module.i
                       PythonGradient.cxx
                       PythonHessian.cxx
                       PythonRandomVectorImplementation.cxx
-                      CompositeRandomVector.i
+                      CompositeRandomVector.i CompositeRandomVector_doc.i.in
                       EventRandomVector.i
                       EventDomain.i
                       EventProcess.i

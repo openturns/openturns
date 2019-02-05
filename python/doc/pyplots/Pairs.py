@@ -10,7 +10,7 @@ distribution = ot.Normal([0.] * 3, [5.] * 3, R)
 
 sample = distribution.getSample(200)
 # Create an empty graph
-graph = ot.Graph("Pairs", " ", " ", True, "")
+graph = ot.Graph("Pairs example", " ", " ", True, "")
 
 # Create the Pairs
 pairs = ot.Pairs(sample, "Pairs example",
@@ -20,7 +20,6 @@ pairs = ot.Pairs(sample, "Pairs example",
 graph.add(pairs)
 
 fig = plt.figure(figsize=(5, 4))
-plt.suptitle("Pairs example")
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
 View(graph, figure=fig, axes=[axis], add_legend=False)

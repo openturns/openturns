@@ -6,7 +6,7 @@ Available constructor:
 
 Parameters
 ----------
-spaceFilling : :class:`~ot.SpaceFilling`
+spaceFilling : :class:`~openturns.SpaceFilling`
     The space filling criteria used by optimization algorithm
 nRestart : int
     The number of restarts performed by optimization algorithm

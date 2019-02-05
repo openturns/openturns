@@ -17,7 +17,7 @@ for i in range(size):
 
 lmtest = ot.LinearModelFactory().build(firstSample, secondSample)
 
-drawLinearModel = ot.VisualTest_DrawLinearModel(
+drawLinearModel = ot.VisualTest.DrawLinearModel(
     firstSample, secondSample, lmtest)
 
 View(drawLinearModel, figure_kwargs={'figsize': (5, 5)})

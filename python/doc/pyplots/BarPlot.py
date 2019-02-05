@@ -21,7 +21,7 @@ for i in range(2000):
 
 # Create an empty graph
 graph = ot.Graph(
-    "Some barplots", "Realizations", "Frequency", True, "topright")
+    "Sample histogram example", "Realizations", "Frequency", True, "topright")
 
 # Create the barplot
 barPlot = ot.BarPlot(data, minSample, "Normal histogram")
@@ -30,7 +30,6 @@ barPlot = ot.BarPlot(data, minSample, "Normal histogram")
 graph.add(barPlot)
 
 fig = plt.figure(figsize=(6, 4))
-plt.suptitle("Sample histogram example")
 axis = fig.add_subplot(111)
 axis.set_xlim(auto=True)
 View(graph, figure=fig, axes=[axis], add_legend=True)

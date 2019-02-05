@@ -143,8 +143,8 @@ Parameters
 callback : callable
     Takes a float as argument as percentage of progress.
 
-Example
--------
+Examples
+--------
 >>> import sys
 >>> import openturns as ot
 >>> experiment = ot.MonteCarloExperiment()
@@ -171,8 +171,8 @@ Parameters
 callback : callable
     Returns an int deciding whether to stop or continue.
 
-Example
--------
+Examples
+--------
 Stop a Monte Carlo simulation algorithm using a time limit
 
 >>> import openturns as ot

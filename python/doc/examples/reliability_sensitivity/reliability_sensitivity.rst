@@ -27,3 +27,4 @@ Reliability, sensitivity
     sensitivity_ancova.ipynb
     sensitivity_fast.ipynb
     sensitivity_cobweb.ipynb
+    central_tendency.ipynb

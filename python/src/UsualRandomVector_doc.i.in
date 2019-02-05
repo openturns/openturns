@@ -1,0 +1,15 @@
+%feature("docstring") OT::UsualRandomVector
+"Random Vector from a distribution.
+
+Parameters
+----------
+X : :class:`~openturns.Distribution`
+   Distribution of X.
+
+Examples
+--------
+>>> import openturns as ot
+>>> X = ot.RandomVector(ot.Normal())
+
+# Draw a sample
+>>> sample = X.getSample(5)"

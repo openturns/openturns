@@ -25,10 +25,10 @@ initialDesign : 2d-array sequence
     Initial design to be optimized
 distribution : :class:`~openturns.Distribution`
     Distribution of designs
-profile : :class:`~ot.TemperatureProfile`
+profile : :class:`~openturns.TemperatureProfile`
     Temperature profile used by the simulated annealing algorithm
     Default one is GeometricProfile
-spaceFilling : :class:`~ot.SpaceFilling`
+spaceFilling : :class:`~openturns.SpaceFilling`
     Criterion to be optimized
     Default one is SpaceFillingMinDist
 

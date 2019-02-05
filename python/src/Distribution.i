@@ -18,8 +18,15 @@ class PythonDistribution(object):
     ----------
     dim : positive int
         the distribution dimension
+
+    Examples
+    --------
+    Not useful on its own, see the examples section on how to inherit from it.
     """
     def __init__(self, dim=0):
+        """
+        Constructor.
+        """
         self.__dim = dim
 
     def __str__(self):
@@ -29,9 +36,15 @@ class PythonDistribution(object):
         return self.__str__()
 
     def getDimension(self):
+        """
+        Dimension accessor.
+        """
         return self.__dim
 
     def computeCDF(self, X):
+        """
+        CDF accessor.
+        """
         raise RuntimeError('You must define a method computeCDF(x) -> cdf, where cdf is a float')
 
 

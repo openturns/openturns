@@ -1,10 +1,10 @@
 // SWIG file PiecewiseLinearEvaluation.i
 
-OTAutodoc(PiecewiseLinearEvaluation)
-
 %{
 #include "openturns/PiecewiseLinearEvaluation.hxx"
 %}
+
+%include PiecewiseLinearEvaluation_doc.i
 
 %include openturns/PiecewiseLinearEvaluation.hxx
 

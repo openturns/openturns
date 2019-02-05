@@ -33,11 +33,9 @@ Copula, SklarCopula
 Examples
 --------
 >>> import openturns as ot
->>> correlation = ot.CorrelationMatrix(2)
->>> correlation[1, 0] = 0.25
->>> aCopula = ot.NormalCopula(correlation)
->>> marginals = [ot.Normal(1.0, 2.0), ot.Normal(2.0, 3.0)]
->>> distribution = ot.ComposedDistribution(marginals, aCopula)
+>>> copula = ot.GumbelCopula(2.0)
+>>> marginals = [ot.Uniform(1.0, 2.0), ot.Normal(2.0, 3.0)]
+>>> distribution = ot.ComposedDistribution(marginals, copula)
 
 Draw a sample:
 
