@@ -1,0 +1,94 @@
+%feature("docstring") OT::DiscreteMarkovChain
+"Discrete Markov chain process.
+
+Parameters
+----------
+origin : :class:`~openturns.Distribution` or :math:`int`, optional
+    Probability distribution of the Markov chain origin, i.e. state of the process at :math:`t_0`.
+    By default, the origin is set to a Dirac distribution of value 0.0.
+
+transitionMatrix : :class:`~openturns.SquareMatrix`, optional
+    Transition matrix of the process. The matrix must be square, of dimension equal
+    to the number of possible states of the process.
+    By default, the transition matrix of the process is set to the 1x1 matrix [1].
+
+timeGrid : :class:`~openturns.TimeSeries`, optional
+    The time grid of the process.
+    By default, the time grid is  reduced to one time stamp equal to 0.
+
+
+Notes
+-----
+A discrete Markov chain is a process :math:`X: \Omega \times \cD \rightarrow E`, where :math:`\cD=\Rset` discretized on the time grid :math:`(t_i)_{i \geq 0}`, and :math:`E = [\![ 0,...,p-1]\!]` is the space of states, such that:
+
+.. math::
+
+    \forall n>0,\: \Prob ( X_{t_n} \> | \> X_{t_0},...X_{t_{n-1}} )  =  \Prob ( X_{t_n} \> | \> X_{t_{n-1}} )
+    
+The transition matrix of the process :math:`\cM = (m_{i,j})` can be defined such that:
+
+.. math::
+
+     \forall t_n \in \cD, \forall i,j \in [\![ 0,...,p-1]\!], m_{i+1 , j+1} = \Prob (X_{t_{n+1}} = j \> | \> X_{t_{n}} = i)
+
+The transition matrix :math:`\cM` of the process is square, and its dimension :math:`p` is equal to the number of states of the process. Besides, :math:`\cM` is a stochastic matrix, i.e.:
+        
+.. math::
+
+    \forall i,j \leq p , \: m_{i,j} \geq 0
+    
+    \forall i \leq p, \: \sum_{j=1}^{p}{m_{i,j}} = 1
+    
+The origin of the process must be provided either as a deterministic value :math:`x_0 \in [\![ 0,...,p-1]\!]`, or as a probability distribution. In this case, the distribution of :math:`X_0` must be 1D, and its support must be a part of :math:`[\![ 0,...,p-1]\!]`.
+
+
+Examples
+--------
+Create a Markov chain:
+
+>>> import openturns as ot
+>>> timeGrid = ot.RegularGrid(0, 0.1, 10)
+>>> transitionMatrix = ot.SquareMatrix([[0.9,0.05,0.05],[0.7,0.0,0.3],[0.8,0.0,0.2]])
+>>> origin = 0
+>>> myMarkovChain = ot.DiscreteMarkovChain(origin, transitionMatrix, timeGrid)
+
+Get a realization:
+
+>>> myReal = myMarkovChain.getRealization()"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::DiscreteMarkovChain::getTransitionMatrix
+"Accessor to the transition matrix.
+
+Returns
+-------
+matrix : :class:`~openturns.SquareMatrix` 
+    The transition matrix of the process, of dimension :math:`n`."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::DiscreteMarkovChain::getOrigin
+"Accessor to the origin.
+
+Returns
+-------
+origin : :class:`~openturns.Distribution` 
+    The probability distribution of the origin of the Markov chain."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::DiscreteMarkovChain::setTransitionMatrix
+"Accessor to the transition matrix.
+
+Parameters
+----------
+matrix : :class:`~openturns.SquareMatrix` 
+    The transition matrix of the process, of dimension :math:`n`."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::DiscreteMarkovChain::setOrigin
+"Accessor to the origin.
+
+Parameters
+----------
+origin : :class:`~openturns.Distribution` or :math:`int`
+    The probability distribution of the origin of the Markov chain."
+

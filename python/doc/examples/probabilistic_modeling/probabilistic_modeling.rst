@@ -57,6 +57,7 @@ Stochastic processes
     arma_manipulation.ipynb
     white_noise_process.ipynb
     random_walk_process.ipynb
+    discrete_markov_chain_process.ipynb
     functional_basis_process.ipynb
     add_trend.ipynb
     trend_transform.ipynb

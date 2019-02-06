@@ -551,6 +551,7 @@ ot_add_python_module(model_process model_process_module.i
                       Process.i Process_doc.i.in
                       WhiteNoise.i WhiteNoise_doc.i.in
                       RandomWalk.i RandomWalk_doc.i.in
+                      DiscreteMarkovChain.i DiscreteMarkovChain_doc.i.in
                       ARMACoefficients.i ARMACoefficients_doc.i.in
                       ARMAState.i ARMAState_doc.i.in
                       ARMA.i ARMA_doc.i.in

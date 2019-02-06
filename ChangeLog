@@ -13,6 +13,7 @@
  * OPTpp
  * NearestPointProblem, LeastSquaresProblem
  * CMinpack
+ * DiscreteMarkovChain
 
 ==== API changes ====
  * Removed deprecated FunctionalChaosRandomVector::getSobol* methods

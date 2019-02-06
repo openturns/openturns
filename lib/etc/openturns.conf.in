@@ -642,6 +642,9 @@
 
   <!-- OT::DiscreteDistribution parameters -->
   <DiscreteDistribution-SupportEpsilon value_float="1.0e-14" />
+  
+  <!-- OT::DiscreteMarkovChain parameters -->
+  <DiscreteMarkovChain-ProbabilitySumPrecision value_float="1.0e-6" />
 
   <!-- OT::DistributionFactoryImplementation parameters -->
   <DistributionFactory-BootstrapErrorTolerance value_float="0.1"           />
