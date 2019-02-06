@@ -368,27 +368,29 @@ class PythonFunction(Function):
                 n_cpus = multiprocessing.cpu_count()
             if n_cpus <= 1:
                 n_cpus = None
- 
+
         if func != None:
             if not isinstance(func, collections.Callable):
                 raise RuntimeError('func argument is not callable.')
-            instance._exec = func
             if n_cpus != None:
                 instance._exec = _exec_sample_multiprocessing_func(func, n_cpus)
+            else:
+                instance._exec = func
             instance._has_exec = True
- 
+
         if func_sample != None and func == None:
             if not isinstance(func_sample, collections.Callable):
-                raise RuntimeError('func_sample argument is not callable.') 
+                raise RuntimeError('func_sample argument is not callable.')
             instance._exec = instance._exec_point_on_exec_sample
 
         if func_sample != None:
-            instance._exec_sample = func_sample
             if n_cpus != None:
-                instance._exec_sample = _exec_sample_multiprocessing_func_sample(func_sample, n_cpus) 
+                instance._exec_sample = _exec_sample_multiprocessing_func_sample(func_sample, n_cpus)
+            else:
+                instance._exec_sample = func_sample
             instance._has_exec_sample = True
 
-  
+
         if gradient != None:
             if not isinstance(gradient, collections.Callable):
                 raise RuntimeError('gradient argument is not callable.')
@@ -396,6 +398,6 @@ class PythonFunction(Function):
         if hessian != None:
             if not isinstance(hessian, collections.Callable):
                 raise RuntimeError('hessian argument is not callable.')
-            instance._hessian = hessian 
+            instance._hessian = hessian
         return Function(instance)
 %}
