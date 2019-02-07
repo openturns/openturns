@@ -15,30 +15,11 @@ LinearModelResult
 
 Notes
 -----
-This class is used in order to create a linear model from numerical samples. The
-linear regression model between the scalar variable :math:`Y` and the :math:`n`
--dimensional one :math:`\vect{X} = (X_i)_{i \leq n}` writes as follows:
+This class relies on a linear model result structure and performs diagnostic 
+of linearity. This diagnostic mainly relies on graphics and a `summary` like
+function (pretty-print)
 
-.. math::
-
-    \tilde{Y} = a_0 + \sum_{i=1}^n a_i X_i + \epsilon
-
-where :math:`\epsilon` is the residual, supposed to follow the standard Normal
-distribution.
-
-Each coefficient :math:`a_i` is evaluated from both samples :math:`Ysample` and
-:math:`Xsample` and is accompagnied by a confidence interval and a p-value (which
-tests if they are significantly different from 0.0).
-
-This class enables to test the quality of the model. It provides only numerical
-tests. If :math:`X` is scalar, a graphical validation test exists, that draws
-the residual couples :math:`(\epsilon_i, \epsilon_{i+1})`, where the residual
-:math:`\epsilon_i` is evaluated on the samples :math:`(Xsample, Ysample)`:
-:math:`\epsilon_i  = Ysample_i - \tilde{Y}_i` with
-:math:`\tilde{Y}_i = a_0 + \sum_{j=1}^{n} a_j \ (Xsample)_{ij}`. The OpenTURNS method is
-:class:`~openturns.VisualTest_DrawLinearModelResidual`.
-
-By default, labels of the 3 most significant points are displayed on graphs.
+By default, on graphs, labels of the 3 most significant points are displayed.
 This number can be changed by modifying the ResourceMap key
 (``LinearModelAnalysis-Identifiers``).
 
@@ -148,7 +129,8 @@ fisherPValue : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::getNormalityTestResultChiSquared
-"Performs the Chi-Square statistical test to check Gaussian assumption of the model
+"Performs Chi-Square test.
+The statistical test checks the Gaussian assumption of the model (null hypothesis).
 
 Returns
 -------
@@ -167,8 +149,9 @@ the :class:`~openturns.FittingTest_ChiSquared` to check the normality.
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::getNormalityTestResultKolmogorovSmirnov
-"Performs Kolmogorov test to check Gaussian assumption of the model (null hypothesis).
-It is accepted when p-value is low.
+"Performs Kolmogorov test.
+
+Performs Kolmogorov test to check Gaussian assumption of the model (null hypothesis).
 
 Returns
 -------
@@ -183,8 +166,8 @@ We check that the residual is Gaussian thanks to :class:`~openturns.FittingTest:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::getNormalityTestResultAndersonDarling
-"Performs Anderson-Darling test to check Gaussian assumption of the model (null hypothesis).
-It is accepted when p-value is low.
+"Performs Anderson-Darling test.
+The statistical test checks the Gaussian assumption of the model (null hypothesis).
 
 Returns
 -------
@@ -199,8 +182,9 @@ We check that the residual is Gaussian thanks to :class:`~openturns.NormalityTes
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::LinearModelAnalysis::getNormalityTestCramerVonMises
-"Performs Cramer-Von Mised test to check Gaussian assumption of the model (null hypothesis).
-It is accepted when p-value is low.
+"Performs Cramer-Von Mises test.
+
+The statistical test checks the Gaussian assumption of the model (null hypothesis).
 
 Returns
 -------
