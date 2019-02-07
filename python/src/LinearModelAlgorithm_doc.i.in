@@ -7,35 +7,47 @@
 
     LinearModelAlgorithm(Xsample, basis, Ysample)
 
+Parameters
+----------
+XSample : :class:`~openturns.Sample`
+    The input samples of a model.
+
+XSample : :class:`~openturns.Sample`
+    The output samples of a model.
+
+basis : :class:`~openturns.Basis`
+    The :math:`\phi` basis .
+
 See Also
 --------
 LinearModelResult
 
 Notes
 -----
-This class is used in order to create a linear model from numerical samples. The
+This class is used in order to create a linear model from data samples. The
 linear regression model between the scalar variable :math:`Y` and the :math:`n`
--dimensional one :math:`\vect{X} = (X_i)_{i \leq n}` writes as follows:
+-dimensional vector :math:`\vect{X} = (X_i)_{i \leq n}` writes as follows:
+
+.. math::
+
+    \tilde{Y} = \sum_{i=0}^p a_i \phi_i(X) + \epsilon
+
+where :math:`\epsilon` is the residual, supposed to follow the standard Normal
+distribution, :math:`\phi` a functional basis.
+The algorithm class enables to estimate the coefficients of the linear expansion.
+
+If basis is not specified, the underlying model is :
 
 .. math::
 
     \tilde{Y} = a_0 + \sum_{i=1}^n a_i X_i + \epsilon
 
-where :math:`\epsilon` is the residual, supposed to follow the standard Normal
-distribution.
+The coefficients :math:`a_i` are evaluated using a least squares method. Default
+ method is `QR`. User might choose also `SVD` or `Cholesky` (usefull if basis
+ is orthogonal) and large dataset.
 
-Each coefficient :math:`a_i` is evaluated from both samples :math:`Ysample` and
-:math:`Xsample` and is accompagnied by a confidence interval and a p-value (which
-tests if they are significantly different from 0.0).
-
-This class enables to test the quality of the model. It provides only numerical
-tests. If :math:`X` is scalar, a graphical validation test exists, that draws
-the residual couples :math:`(\epsilon_i, \epsilon_{i+1})`, where the residual
-:math:`\epsilon_i` is evaluated on the samples :math:`(Xsample, Ysample)`:
-:math:`\epsilon_i  = Ysample_i - \tilde{Y}_i` with
-:math:`\tilde{Y}_i = a_0 + a_1 + Xsample_i`. The OpenTURNS method is 
-:class:`~openturns.VisualTest_DrawLinearModelResidual`.
-"
+The evaluation of the coefficients is completed by some usefull parameters that could
+help the diagnostic of the linearity."
 
 // ---------------------------------------------------------------------
 
