@@ -103,18 +103,6 @@ public:
       const Scalar level = 0.05);
 
 protected:
-  /** Generic invocation of a R script for executing a partial test between two samples */
-  static TestResultCollection RunTwoSamplesASelectionRTest(const Sample & firstSample,
-      const Sample & secondSample,
-      const Indices & selection,
-      const Scalar level,
-      const String & testName);
-
-  /** Generic invocation of a R script for executing a test between two 1D samples */
-  static TestResult RunTwoSamplesRTest(const Sample & firstSample,
-                                       const Sample & secondSample,
-                                       const Scalar level,
-                                       const String & testName);
 
   HypothesisTest();
 }; /* class HypothesisTest */
