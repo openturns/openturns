@@ -1909,14 +1909,14 @@ To be more specific:
     Hence, the iso-probabilistic transformation implements a gradient (and
     even a Hessian).
 
-.. [#spherical] A distribution is said to be *spherical* if is invariant by
+.. [#spherical] A distribution is said to be *spherical* if it is invariant by
     rotation. Mathematically, :math:`\vect{U}` has a spherical distribution
     if:
 
     .. math::
 
-        \mat{R}\,\vect{U} \sim \vect{U},
-        \quad \forall \mat{R} \in \cS\cP_n(\Rset)
+        \mat{Q}\,\vect{U} \sim \vect{U},
+        \quad \forall \mat{Q} \in \cO_n(\Rset)
 
 See also
 --------
