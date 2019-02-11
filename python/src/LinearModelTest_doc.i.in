@@ -18,7 +18,7 @@ firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-linearModel : :class:`~openturns.LinearModel`
+linearModel : 1-d sequence of float
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
     Threshold p-value of the test (= first kind risk), it must be
@@ -36,8 +36,8 @@ LinearModelTest_LinearModelResidualMean
 Notes
 -----
 The LinearModelTest class is used through its static methods in order to evaluate
-the quality of the linear regression model between two samples
-(see :class:`~openturns.LinearModel`). The linear regression model between the
+the quality of the linear regression model between two samples.
+The linear regression model between the
 scalar variable :math:`Y` and the :math:`n`-dimensional one
 :math:`\vect{X} = (X_i)_{i \leq n}` is as follows:
 
@@ -87,7 +87,7 @@ firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-linearModel : :class:`~openturns.LinearModel`
+linearModel : 1-d sequence of float
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
     Threshold p-value of the test (= first kind risk), it must be
@@ -105,8 +105,8 @@ LinearModelTest_LinearModelFisher, LinearModelTest_LinearModelHarrisonMcCabe
 Notes
 -----
 The LinearModelTest class is used through its static methods in order to evaluate
-the quality of the linear regression model between two samples
-(see :class:`~openturns.LinearModel`). The linear regression model between the
+the quality of the linear regression model between two samples.
+The linear regression model between the
 scalar variable :math:`Y` and the :math:`n`-dimensional one
 :math:`\vect{X} = (X_i)_{i \leq n}` is as follows:
 
@@ -156,7 +156,7 @@ firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-linearModel : :class:`~openturns.LinearModel`
+linearModel : 1-d sequence of float
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
     Threshold p-value of the test (= first kind risk), it must be
@@ -180,8 +180,8 @@ LinearModelTest_LinearModelDurbinWatson
 Notes
 -----
 The LinearModelTest class is used through its static methods in order to evaluate
-the quality of the linear regression model between two samples
-(see :class:`~openturns.LinearModel`). The linear regression model between the
+the quality of the linear regression model between two samples.
+The linear regression model between the
 scalar variable :math:`Y` and the :math:`n`-dimensional one
 :math:`\vect{X} = (X_i)_{i \leq n}` is as follows:
 
@@ -231,7 +231,7 @@ firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-linearModel : :class:`~openturns.LinearModel`
+linearModel : 1-d sequence of float
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
     Threshold p-value of the test (= first kind risk), it must be
@@ -250,8 +250,8 @@ LinearModelTest_LinearModelDurbinWatson
 Notes
 -----
 The LinearModelTest class is used through its static methods in order to evaluate
-the quality of the linear regression model between two samples
-(see :class:`~openturns.LinearModel`). The linear regression model between the
+the quality of the linear regression model between two samples.
+The linear regression model between the
 scalar variable :math:`Y` and the :math:`n`-dimensional one
 :math:`\vect{X} = (X_i)_{i \leq n}` is as follows:
 
@@ -303,7 +303,7 @@ firstSample : 2-d sequence of float
     First tested sample.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-linearModel : :class:`~openturns.LinearModel`
+linearModel : 1-d sequence of float
     A linear model. If not provided, it is built using the given samples.
 hypothesis : string
     Hypothesis H0 for the residuals. It can be : 'Equal' to 0, 'Less' than 0 or
@@ -324,8 +324,8 @@ LinearModelTest_LinearModelBreuschPagan, LinearModelTest_LinearModelHarrisonMcCa
 Notes
 -----
 The LinearModelTest class is used through its static methods in order to evaluate
-the quality of the linear regression model between two samples
-(see :class:`~openturns.LinearModel`). The linear regression model between the
+the quality of the linear regression model between two samples.
+The linear regression model between the
 scalar variable :math:`Y` and the :math:`n`-dimensional one
 :math:`\vect{X} = (X_i)_{i \leq n}` is as follows:
 

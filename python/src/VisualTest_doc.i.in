@@ -389,7 +389,7 @@ Parameters
 ----------
 sample1, sample2 : 2-d sequence of float
     Samples to draw.
-linearModel : :class:`~openturns.LinearModel`
+linearModel : 1-d sequence of float
     Linear model to plot.
 
 Returns
@@ -413,7 +413,7 @@ Examples
 >>> for i in range(size):
 ...     firstSample[i] = ot.Point(1, sample2D[i, 0])
 ...     secondSample[i] = ot.Point(1, sample2D[i, 1])
->>> lmtest = ot.LinearModelFactory().build(firstSample, secondSample)
+>>> lmtest = ot.LinearModelAlgorithm(firstSample, secondSample).getResult().getTrendCoefficients()
 >>> drawLinearModelVTest = ot.VisualTest.DrawLinearModel(firstSample, secondSample, lmtest)
 >>> View(drawLinearModelVTest).show()"
 
@@ -426,7 +426,7 @@ Parameters
 ----------
 sample1, sample2 : 2-d sequence of float
     Samples to draw.
-linearModel : :class:`~openturns.LinearModel`
+trendCoefficients : 1-d sequence of float
     Linear model to plot.
 
 Returns
@@ -450,6 +450,6 @@ Examples
 >>> for i in range(size):
 ...     firstSample[i] = ot.Point(1, sample2D[i, 0])
 ...     secondSample[i] = ot.Point(1, sample2D[i, 1])
->>> lmtest = ot.LinearModelFactory().build(firstSample, secondSample)
+>>> lmtest = ot.LinearModelAlgorithm(firstSample, secondSample).getResult().getTrendCoefficients()
 >>> drawLinearModelVTest = ot.VisualTest.DrawLinearModelResidual(firstSample, secondSample, lmtest)
 >>> View(drawLinearModelVTest).show()"

@@ -100,8 +100,7 @@ relationships, as in the following simple example where
     sampleX = sample.getMarginal(0)
     sampleX.setName('X')
     # Fit this linear model
-    factory = ot.LinearModelFactory()
-    regressionModel = factory.build(sampleX, sampleY, 0.9)
+    regressionModel = ot.LinearModelAlgorithm(sampleX, sampleY).getResult().getTrendCoefficients()
     # Test the linear model fitting
     graph = ot.VisualTest.DrawLinearModel(sampleX, sampleY, regressionModel)
     cloud = graph.getDrawable(0)
@@ -135,7 +134,7 @@ regression coefficients :math:`a_j`.
     sampleX = sample.getMarginal(0)
     sampleX.setName('X')
     # same as good test
-    regressionModel = ot.LinearModelFactory().build(sampleX, sampleY, 0.9)
+    regressionModel = ot.LinearModelAlgorithm(sampleX, sampleY).getResult().getTrendCoefficients()
     graph = ot.VisualTest.DrawLinearModel(sampleX, sampleY, regressionModel)
     cloud = graph.getDrawable(0)
     cloud.setPointStyle('times')
@@ -184,8 +183,7 @@ nor in he standard deviation.
     sampleX = sample.getMarginal(0)
     sampleX.setName('X')
     #create a linear model
-    factory = ot.LinearModelFactory()
-    regressionModel = factory.build(sampleX, sampleY, 0.9)
+    regressionModel = ot.LinearModelAlgorithm(sampleX, sampleY).getResult().getTrendCoefficients()
     graph = ot.VisualTest.DrawLinearModelResidual(sampleX, sampleY, regressionModel)
     cloud = graph.getDrawable(0)
     cloud.setPointStyle('times')
@@ -216,8 +214,7 @@ be abandoned, or at least used very cautiously.
     sampleX = sample.getMarginal(0)
     sampleX.setName('X')
     # same as good test
-    factory = ot.LinearModelFactory()
-    regressionModel = factory.build(sampleX, sampleY, 0.9)
+    regressionModel = ot.LinearModelAlgorithm(sampleX, sampleY).getResult().getTrendCoefficients()
     graph = ot.VisualTest.DrawLinearModelResidual(sampleX, sampleY, regressionModel)
     cloud = graph.getDrawable(0)
     cloud.setPointStyle('times')
@@ -228,8 +225,8 @@ be abandoned, or at least used very cautiously.
 
 .. topic:: API:
 
-    - See :class:`~openturns.LinearModelFactory` to build a linear model
-    - See :class:`~openturns.LinearModel` for the linear model itself
+    - See :class:`~openturns.LinearModelAlgorithm` to build a linear model
+    - See :class:`~openturns.LinearModelResult` for the associated results
     - See :py:func:`~openturns.VisualTest_DrawLinearModel` to draw a linear model
     - See :py:func:`~openturns.VisualTest_DrawLinearModelResidual` to draw the residual
     - See :py:func:`~openturns.LinearModelTest_LinearModelFisher` to assess the nullity of the coefficients

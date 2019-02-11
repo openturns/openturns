@@ -238,13 +238,4 @@ Model selection
     FittingTest_BestModelChiSquared
     FittingTest_BestModelKolmogorov
 
-Linear models
-=============
-
-.. autosummary::
-    :toctree: _generated/
-    :template: class.rst_t
-
-    LinearModel
-    LinearModelFactory
 

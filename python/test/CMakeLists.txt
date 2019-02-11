@@ -206,11 +206,9 @@ ot_pyinstallcheck_test (Sample_operators)
 ot_pyinstallcheck_test (HistoryStrategy_std)
 ot_pyinstallcheck_test (CovarianceMatrixLapack_std)
 ot_pyinstallcheck_test (CorrelationMatrix_std)
-if (R_rot_FOUND)
 ot_pyinstallcheck_test (LinearModel_std)
 ot_pyinstallcheck_test (LinearModelFactory_std)
 ot_pyinstallcheck_test (CorrelationAnalysis_std)
-endif ()
 ot_pyinstallcheck_test (Field_draw)
 ot_pyinstallcheck_test (ProcessSample_std)
 ot_pyinstallcheck_test (RandomGenerator_std)
@@ -647,11 +645,9 @@ ot_pyinstallcheck_test (ExpectationSimulationAlgorithm_std)
 ot_pyinstallcheck_test (SobolSimulationAlgorithm_std)
 
 ## StatTests
-if (R_rot_FOUND)
 ot_pyinstallcheck_test (VisualTest_std)
 ot_pyinstallcheck_test (HypothesisTest_correlation)
 ot_pyinstallcheck_test (LinearModelTest_std)
-endif ()
 ot_pyinstallcheck_test (HypothesisTest_std)
 ot_pyinstallcheck_test (HypothesisTest_spearman)
 ot_pyinstallcheck_test (DickeyFullerTest_std)
@@ -669,7 +665,7 @@ ot_pyinstallcheck_test (Waarts_system_series)
 ot_pyinstallcheck_test (Waarts_saddle)
 
 ## Misc
-if (NBCONVERT_FOUND AND MATPLOTLIB_FOUND AND R_rot_FOUND AND LIBXML2_FOUND AND NLOPT_FOUND AND OPTPP_FOUND)
+if (NBCONVERT_FOUND AND MATPLOTLIB_FOUND AND LIBXML2_FOUND AND NLOPT_FOUND AND OPTPP_FOUND)
   file (GLOB_RECURSE IPYNBS "${CMAKE_SOURCE_DIR}/python/doc/examples/*.ipynb")
   foreach (IPYNB ${IPYNBS})
     if (NOT IPYNB MATCHES checkpoint)
@@ -690,7 +686,7 @@ if (NOT WIN32)
 endif ()
 
 
-if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND AND R_rot_FOUND AND LIBXML2_FOUND AND NLOPT_FOUND AND OPTPP_FOUND)
+if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND AND LIBXML2_FOUND AND NLOPT_FOUND AND OPTPP_FOUND)
   # on py3k/swig<3.0.0, doctest fails with "NameError: Unknown C global variable"
   if (PYTHON_VERSION_MAJOR VERSION_EQUAL "2" OR SWIG_VERSION VERSION_GREATER "3")
     # source modules

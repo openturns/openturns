@@ -202,21 +202,6 @@ Section "!OpenTURNS" SEC01
 
   !insertmacro PRINT "Install conf files."
   File /r "${OPENTURNS_PREFIX}\etc\openturns\*.*"
-
-  !insertmacro PRINT "Install ghostcript and R."
-  SetOutPath "$OT_INSTALL_PATH\gs8.64"
-  File /r "${WINDEPS}\opt\gs8.64\*.*"
-  SetOutPath "$OT_INSTALL_PATH\R-2.12.0"
-  File /r "${WINDEPS}\opt\R-2.12.0\*.*"
-  
-  ; Replace wine R path with windows path in openturns.conf:
-  ; <R-executable-command    value_str="/home/michel/.wine/drive_c/R/R-2.12.0/bin/R.exe"         />
-  ; short mode allows to allow paths with spaces, like in C:/Program Files:
-  ; <R-executable-command    value_str="C:\PROGRAM~1\PYTHON27\Lib/SITE-P~1\OPENTU~1\R-212~1.0\bin\R.exe"         />
-  GetFullPathName /SHORT $R_EXE "$OT_INSTALL_PATH\R-2.12.0\bin\R.exe"
-  SetOutPath "$OT_INSTALL_PATH"
-  ${ConfigWrite} "openturns.conf"   "  <R-executable-command    value_str="   "$\"$R_EXE$\" />"   $R0
-
 !endif
 
   # create a version file

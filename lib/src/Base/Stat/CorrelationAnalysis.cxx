@@ -22,8 +22,6 @@
 
 #include "openturns/CorrelationAnalysis.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/LinearModelFactory.hxx"
-#include "openturns/LinearModel.hxx"
 #include "openturns/LinearLeastSquares.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

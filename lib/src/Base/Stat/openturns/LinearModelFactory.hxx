@@ -29,6 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class LinearModelFactory
+ * @deprecated
  *
  * Factory for linear model
  */

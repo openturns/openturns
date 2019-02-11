@@ -81,9 +81,21 @@ public:
   /** Draw the visual test for the LinearModel when its dimension is 1 */
   static Graph DrawLinearModel(const Sample & sample1,
                                const Sample & sample2,
+                               const Point & trendCoefficients);
+
+  /** Draw the visual test for the LinearModel when its dimension is 1
+   * @deprecated */
+  static Graph DrawLinearModel(const Sample & sample1,
+                               const Sample & sample2,
                                const LinearModel & linearModel);
 
   /** Draw the visual test for the LinearModel residuals when its dimension is 1 */
+  static Graph DrawLinearModelResidual(const Sample & sample1,
+                                       const Sample & sample2,
+                                       const Point & trendCoefficients);
+
+  /** Draw the visual test for the LinearModel residuals when its dimension is 1
+   * @deprecated*/
   static Graph DrawLinearModelResidual(const Sample & sample1,
                                        const Sample & sample2,
                                        const LinearModel & linearModel);

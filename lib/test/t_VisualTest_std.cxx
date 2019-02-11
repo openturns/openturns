@@ -116,7 +116,7 @@ int main(int, char *[])
       secondSample[i][0] = sample2D[i][1];
     }
 
-    LinearModel lmtest(LinearModelFactory().build(firstSample, secondSample));
+    Point lmtest(LinearModelAlgorithm(firstSample, secondSample).getResult().getTrendCoefficients());
     Graph drawLinearModelVTest(VisualTest::DrawLinearModel(firstSample, secondSample, lmtest));
     fullprint << "LinearModelV = " << drawLinearModelVTest << std::endl;
 

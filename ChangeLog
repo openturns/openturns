@@ -17,11 +17,13 @@
  * Removed deprecated UserDefinedCovarianceModel constructor based on a Collection<CovarianceMatrix>
  * Removed deprecated FieldFunction,FieldToPointFunction::getSpatialDimension
  * Removed deprecated LinearModelRSquared, LinearModelAdjustedRSquared
+ * Deprecated LinearModel, LinearModelFactory
 
 === Python module ===
 
 === Miscellaneous ===
  * Changed bugtracker to GitHub issues (https://github.com/openturns/openturns/issues)
+ * Dropped rot dependency
 
 === Bug fixes ===
  * #579 (There is no example of a typical "Central Tendency" study)

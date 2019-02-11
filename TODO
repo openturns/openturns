@@ -1,3 +1,4 @@
 Remove deprecated RandomVector ctors in 1.14
 Remove deprecated HypothesisTest::Smirnov
 Remove deprecated FittingTest::TwoSamplesKolmogorov
+Remove deprecated LinearModel, LinearModelFactory

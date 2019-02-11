@@ -36,6 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class LinearModel
+ * @deprecated
  *
  * LinearModel implements the notion of linear model
  */

@@ -26,7 +26,6 @@
 #include "openturns/Path.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/LinearModelFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/Os.hxx"

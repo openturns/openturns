@@ -23,7 +23,7 @@
 #include "openturns/Curve.hxx"
 #include "openturns/Cloud.hxx"
 #include "openturns/Staircase.hxx"
-#include "openturns/Point.hxx"
+#include "openturns/LinearBasisFactory.hxx"
 #include "openturns/Interval.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Description.hxx"
@@ -31,7 +31,7 @@
 #include "openturns/UserDefined.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/HistogramFactory.hxx"
-#include "openturns/Normal.hxx"
+#include "openturns/LinearCombinationFunction.hxx"
 #include "openturns/NormalFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -246,13 +246,16 @@ Graph VisualTest::DrawClouds(const Sample & sample1,
 /* Draw the visual test for the LinearModel when its dimension is 1 */
 Graph VisualTest::DrawLinearModel(const Sample & sample1,
                                   const Sample & sample2,
-                                  const LinearModel & linearModel)
+                                  const Point & trendCoefficients)
 {
   if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel visual test only if dimension equals 1, here dimension=" << sample1.getDimension();
   if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel visual test only if dimension equals 1, here dimension=" << sample2.getDimension();
   if (sample1.getSize() != sample2.getSize()) throw InvalidArgumentException(HERE) << "Error: can draw a LinearModel visual test only if sample 1 and sample 2 have the same size, here sample 1 size=" << sample1.getSize() << " and sample 2 size=" << sample2.getSize();
 
-  const Sample y(linearModel.getPredicted(sample1));
+  if (trendCoefficients.getSize() != sample1.getDimension()+1) throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
+  const LinearCombinationFunction fHat(LinearBasisFactory(trendCoefficients.getSize() - 1).build(), trendCoefficients);
+  const Sample y(fHat(sample1));
+  
   OSS oss;
   oss << sample1.getName() << " LinearModel visualTest";
   const UnsignedInteger size = sample1.getSize();
@@ -277,16 +280,29 @@ Graph VisualTest::DrawLinearModel(const Sample & sample1,
   return graphLinearModelTest;
 }
 
+/* Draw the visual test for the LinearModel when its dimension is 1 */
+Graph VisualTest::DrawLinearModel(const Sample & sample1,
+                                  const Sample & sample2,
+                                  const LinearModel & linearModel)
+{
+  LOGWARN(OSS() << "DrawLinearModel(..., LinearModel) is deprecated");
+  return DrawLinearModel(sample1, sample2, linearModel.getRegression());
+}
+
 /* Draw the visual test for the LinearModel residuals */
 Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
     const Sample & sample2,
-    const LinearModel & linearModel)
+    const Point & trendCoefficients)
 {
   if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if dimension equals 1, here dimension=" << sample1.getDimension();
   if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if dimension equals 1, here dimension=" << sample2.getDimension();
   if (sample1.getSize() != sample2.getSize()) throw InvalidArgumentException(HERE) << "Error: can draw a LinearModel residual visual test only if sample 1 and sample 2 have the same size, here sample 1 size=" << sample1.getSize() << " and sample 2 size=" << sample2.getSize();
 
-  const Sample y(linearModel.getResidual(sample1, sample2));
+  if (trendCoefficients.getSize() != sample1.getDimension()+1) throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
+  const LinearCombinationFunction fHat(LinearBasisFactory(trendCoefficients.getSize() - 1).build(), trendCoefficients);
+  const Sample yHat(fHat(sample1));
+  const Sample y(sample2 - yHat);
+
   const UnsignedInteger size = sample1.getSize();
   Sample data(size - 1, 2);
   for (UnsignedInteger i = 0; i < size - 1; ++i)
@@ -302,6 +318,14 @@ Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
   Graph graphLinearModelRTest("residual(i) versus residual(i-1)", "redidual(i-1)", "residual(i)", true, "topright");
   graphLinearModelRTest.add(cloudLinearModelRTest);
   return graphLinearModelRTest;
+}
+
+Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
+    const Sample & sample2,
+    const LinearModel & linearModel)
+{
+  LOGWARN(OSS() << "DrawLinearModelResidual(..., LinearModel) is deprecated");
+  return DrawLinearModelResidual(sample1, sample2, linearModel.getRegression());
 }
 
 /* Draw the CobWeb visual test */

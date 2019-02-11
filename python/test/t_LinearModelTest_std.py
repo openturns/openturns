@@ -45,7 +45,7 @@ try:
                    [8.57143], [10], [11.4286], [12.8571], [14.2857], [15.7143],
                    [17.1429], [18.5714], [20]])
     y = f(x) + eps.getSample(N)
-    linmodel = ot.LinearModelFactory().build(x, y)
+    linmodel = ot.LinearModelAlgorithm(x, y).getResult().getTrendCoefficients()
     dwTest = ot.LinearModelTest.LinearModelDurbinWatson(x, y)
     print('Durbin Watson = ', dwTest)
 
