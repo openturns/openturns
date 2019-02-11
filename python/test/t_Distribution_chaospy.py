@@ -3,12 +3,13 @@
 from __future__ import print_function
 import openturns as ot
 import chaospy as cp
+import numpy as np
 
 # A chaospy Triangle distribution
 d0 = cp.Triangle(2.0, 3.5, 4.0)
 d1 = cp.Kumaraswamy(2.0, 3.0, -1.0, 4.0)
 for chaospy_dist in [d0, d1]:
-    cp.seed(42)
+    np.random.seed(42)
 
     # create an openturns distribution
     py_dist = ot.ChaospyDistribution(chaospy_dist)

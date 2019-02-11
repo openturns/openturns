@@ -129,6 +129,7 @@ Correlation analysis
     CorrelationAnalysis_PRCC
     CorrelationAnalysis_SRC
     CorrelationAnalysis_SRRC
+    CorrelationAnalysis_SignedSRC
 
 Sensitivity Analysis
 ====================
