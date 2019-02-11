@@ -17,4 +17,8 @@ Linear model algorithm
 Post-processing
 ===============
 
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
     LinearModelAnalysis
