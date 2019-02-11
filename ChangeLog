@@ -26,6 +26,7 @@
  * Dropped rot dependency
 
 === Bug fixes ===
+ * #289 (Move the LinearModelFactory class from the Base namespace to the Uncertainty namespace)
  * #579 (There is no example of a typical "Central Tendency" study)
  * #839 (more optim solvers details)
  * #931 (The PostAnalyticalImportanceSampling and PostAnalyticalControlledImportanceSampling are too briefly documented)
