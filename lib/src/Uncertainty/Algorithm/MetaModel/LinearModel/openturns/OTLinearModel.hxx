@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The external header file of OpenTURNS for subdir MetaModel
+ *  @brief The external header file of OpenTURNS for subdir LinearModel
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -19,16 +19,11 @@
  *
  */
 
-#ifndef OPENTURNS_OTMETAMODEL_HXX
-#define OPENTURNS_OTMETAMODEL_HXX
+#ifndef OPENTURNS_LINEARMODELMETAMODEL_HXX
+#define OPENTURNS_LINEARMODELMETAMODEL_HXX
 
-#include "openturns/OTFunctionalChaos.hxx"
-#include "openturns/OTKriging.hxx"
-#include "openturns/OTTensorApproximation.hxx"
-#include "openturns/OTLinearModel.hxx"
+#include "openturns/LinearModelResult.hxx"
+#include "openturns/LinearModelAlgorithm.hxx"
+#include "openturns/LinearModelAnalysis.hxx"
 
-#include "openturns/MetaModelAlgorithm.hxx"
-#include "openturns/MetaModelResult.hxx"
-#include "openturns/MetaModelValidation.hxx"
-
-#endif /* OPENTURNS_OTMETAMODEL_HXX */
+#endif /* OPENTURNS_LINEARMODELMETAMODEL_HXX */

@@ -776,6 +776,7 @@ ot_add_python_module(metamodel metamodel_module.i
                       MetaModelResult.i MetaModelResult_doc.i.in
                       MetaModelAlgorithm.i MetaModelAlgorithm_doc.i.in
                       KrigingResult.i KrigingResult_doc.i.in
+                      LinearModelResult.i LinearModelResult_doc.i.in
                       MetaModelValidation.i MetaModelValidation_doc.i.in
 		      GeneralLinearModelResult.i GeneralLinearModelResult_doc.i.in
 		      GeneralLinearModelAlgorithm.i GeneralLinearModelAlgorithm_doc.i.in
@@ -795,6 +796,8 @@ ot_add_python_module(metamodel metamodel_module.i
                       FunctionalChaosResult.i FunctionalChaosResult_doc.i.in
                       FunctionalChaosAlgorithm.i FunctionalChaosAlgorithm_doc.i.in
                       KrigingAlgorithm.i KrigingAlgorithm_doc.i.in
+                      LinearModelAlgorithm.i LinearModelAlgorithm_doc.i.in
+                      LinearModelAnalysis.i LinearModelAnalysis_doc.i.in
                       RandomVector.i RandomVector_doc.i.in
                       PythonEvaluation.cxx
                       PythonGradient.cxx

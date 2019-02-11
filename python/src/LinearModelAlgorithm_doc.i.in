@@ -1,0 +1,91 @@
+%feature("docstring") OT::LinearModelAlgorithm
+"Class used to create a linear model from numerical samples.
+
+**Available usages**:
+
+    LinearModelAlgorithm(Xsample, Ysample)
+
+    LinearModelAlgorithm(Xsample, basis, Ysample)
+
+Parameters
+----------
+XSample : :class:`~openturns.Sample`
+    The input samples of a model.
+
+XSample : :class:`~openturns.Sample`
+    The output samples of a model.
+
+basis : :class:`~openturns.Basis`
+    The :math:`\phi` basis .
+
+See Also
+--------
+LinearModelResult
+
+Notes
+-----
+This class is used in order to create a linear model from data samples. The
+linear regression model between the scalar variable :math:`Y` and the :math:`n`
+-dimensional vector :math:`\vect{X} = (X_i)_{i \leq n}` writes as follows:
+
+.. math::
+
+    \tilde{Y} = \sum_{i=0}^p a_i \phi_i(X) + \epsilon
+
+where :math:`\epsilon` is the residual, supposed to follow the standard Normal
+distribution, :math:`\phi` a functional basis.
+The algorithm class enables to estimate the coefficients of the linear expansion.
+
+If basis is not specified, the underlying model is :
+
+.. math::
+
+    \tilde{Y} = a_0 + \sum_{i=1}^n a_i X_i + \epsilon
+
+The coefficients :math:`a_i` are evaluated using a least squares method. Default
+ method is `QR`. User might choose also `SVD` or `Cholesky` (usefull if basis
+ is orthogonal) and large dataset.
+
+The evaluation of the coefficients is completed by some usefull parameters that could
+help the diagnostic of the linearity."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAlgorithm::getInputSample
+"Accessor to the input sample.
+
+Returns
+-------
+inputSample : :class:`~openturns.Sample`
+    The Xsample which had been passed to the constructor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAlgorithm::getBasis
+"Accessor to the input basis.
+
+Returns
+-------
+basis : :class:`~openturns.Basis`
+    The basis which had been passed to the constructor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAlgorithm::getOutputSample
+"Accessor to the output sample.
+
+Returns
+-------
+outputSample : :class:`~openturns.Sample`
+    The Ysample which had been passed to the constructor."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelAlgorithm::getResult
+"Accessor to the computed linear model.
+
+Returns
+-------
+result : :class:`~openturns.LinearModelResult`
+    The linear model built from numerical samples, along with other useful informations."
+

@@ -37,4 +37,5 @@ Non-parametric
     glm
     kriging
     low_rank_approximation
+    lm
 
