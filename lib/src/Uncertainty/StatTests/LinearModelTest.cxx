@@ -467,8 +467,6 @@ LinearModelTest::TestResultCollection LinearModelTest::PartialRegression(const S
     const Indices & selection,
     const Scalar level)
 {
-  if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the Regression test can be performed only with an 1-d output sample.";
-
   LinearModelAlgorithm algo(firstSample.getMarginal(selection), secondSample);
   const LinearModelResult result(algo.getResult());
   const LinearModelAnalysis analysis(result);
