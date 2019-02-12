@@ -123,7 +123,7 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
   const String experimentKind(sobolExperiment.getWeightedExperiment().getImplementation()->getClassName());
   if (useAsymptoticDistribution_ && (experimentKind != "MonteCarloExperiment"))
   {
-    LOGWARN(OSS() << "Cannot use the asymptotic distribution of Sobol indices with non IID sampling, here sampling is " << sobolExperiment.getWeightedExperiment().getClassName());
+    LOGWARN(OSS() << "Cannot use the asymptotic distribution of Sobol indices with non IID outer sampling, here sampling is " << sobolExperiment.getWeightedExperiment().getClassName());
     useAsymptoticDistribution_ = false;
   }
   const Sample inputDesign(sobolExperiment.generate());

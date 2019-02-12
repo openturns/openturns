@@ -1,3 +1,4 @@
+Sampling method=MonteCarlo
 Method = SaltelliSensitivityAlgorithm
 First order Sobol indice of Y|X1 = 0.302751
 Total order Sobol indice of Y|X3 = 0.256687
@@ -27,3 +28,63 @@ Confidence interval of first order Y|X1 = [0.29234, 0.325464]
 Confidence interval of total order Y|X3 = [0.236059, 0.252527]
 First order indices distribution = class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[0.308902,0.459187,0.00683867] sigma=class=Point name=Unnamed dimension=3 values=[0.0084503,0.00760475,0.0136799] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
 Total order indices distribution = class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[0.567786,0.430754,0.244293] sigma=class=Point name=Unnamed dimension=3 values=[0.0125981,0.00757338,0.00420115] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
+Sampling method=LHS
+Method = SaltelliSensitivityAlgorithm
+First order Sobol indice of Y|X1 = 0.301561
+Total order Sobol indice of Y|X3 = 0.246015
+Second order Sobol indice of Y|X1,X3 = 0.268463
+Confidence interval of first order Y|X1 = [0.277416, 0.329659]
+Confidence interval of total order Y|X3 = [0.21859, 0.281204]
+Method = JansenSensitivityAlgorithm
+First order Sobol indice of Y|X1 = 0.299784
+Total order Sobol indice of Y|X3 = 0.250802
+Second order Sobol indice of Y|X1,X3 = 0.271345
+Confidence interval of first order Y|X1 = [0.272814, 0.32245]
+Confidence interval of total order Y|X3 = [0.240537, 0.26149]
+Method = MauntzKucherenkoSensitivityAlgorithm
+First order Sobol indice of Y|X1 = 0.306722
+Total order Sobol indice of Y|X3 = 0.246015
+Second order Sobol indice of Y|X1,X3 = 0.258141
+Confidence interval of first order Y|X1 = [0.281777, 0.332794]
+Confidence interval of total order Y|X3 = [0.207964, 0.276889]
+Method = MartinezSensitivityAlgorithm
+First order Sobol indice of Y|X1 = 0.301029
+Total order Sobol indice of Y|X3 = 0.249543
+Second order Sobol indice of Y|X1,X3 = 0.269003
+Confidence interval of first order Y|X1 = [0.281543, 0.317365]
+Confidence interval of total order Y|X3 = [0.211903, 0.291578]
+Asymptotic estimate
+Confidence interval of first order Y|X1 = [0.28442, 0.317638]
+Confidence interval of total order Y|X3 = [0.241081, 0.258004]
+First order indices distribution = class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[0.301029,0.437306,0.00396365] sigma=class=Point name=Unnamed dimension=3 values=[0.00847425,0.00792339,0.0132974] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
+Total order indices distribution = class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[0.580696,0.445198,0.249543] sigma=class=Point name=Unnamed dimension=3 values=[0.0127628,0.00778128,0.00431709] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
+Sampling method=QMC
+Method = SaltelliSensitivityAlgorithm
+First order Sobol indice of Y|X1 = 0.31427
+Total order Sobol indice of Y|X3 = 0.243082
+Second order Sobol indice of Y|X1,X3 = 0.240458
+Confidence interval of first order Y|X1 = [0.290814, 0.336693]
+Confidence interval of total order Y|X3 = [0.211317, 0.271027]
+Method = JansenSensitivityAlgorithm
+First order Sobol indice of Y|X1 = 0.313563
+Total order Sobol indice of Y|X3 = 0.24364
+Second order Sobol indice of Y|X1,X3 = 0.24154
+Confidence interval of first order Y|X1 = [0.283333, 0.335208]
+Confidence interval of total order Y|X3 = [0.233251, 0.25491]
+Method = MauntzKucherenkoSensitivityAlgorithm
+First order Sobol indice of Y|X1 = 0.313356
+Total order Sobol indice of Y|X3 = 0.243082
+Second order Sobol indice of Y|X1,X3 = 0.242286
+Confidence interval of first order Y|X1 = [0.289126, 0.341806]
+Confidence interval of total order Y|X3 = [0.211102, 0.275492]
+Method = MartinezSensitivityAlgorithm
+First order Sobol indice of Y|X1 = 0.314037
+Total order Sobol indice of Y|X3 = 0.243514
+Second order Sobol indice of Y|X1,X3 = 0.240691
+Confidence interval of first order Y|X1 = [0.295558, 0.332588]
+Confidence interval of total order Y|X3 = [0.209186, 0.282796]
+Asymptotic estimate
+Confidence interval of first order Y|X1 = [0.297137, 0.330938]
+Confidence interval of total order Y|X3 = [0.235164, 0.251863]
+First order indices distribution = class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[0.314037,0.443849,0.00146106] sigma=class=Point name=Unnamed dimension=3 values=[0.00862288,0.00795156,0.0135519] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
+Total order indices distribution = class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[0.557521,0.443567,0.243514] sigma=class=Point name=Unnamed dimension=3 values=[0.0124994,0.00765753,0.00426019] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
