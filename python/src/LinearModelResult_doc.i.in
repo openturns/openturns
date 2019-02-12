@@ -1,14 +1,9 @@
 %feature("docstring") OT::LinearModelResult
-"The LinearModelResult class is created through the method getResult of a LinearModelAlgorithm.
-
-
-Available constructors:
-    LinearModelResult(*inputSample, basis, design, outputSample, metaModel, trendCoefficients, formula, coefficientsNames, sampleResiduals, standardizedSampleResiduals, diagonalGramInverse, leverages, cookDistances, sigma2*)
-
+"Result of a LinearModelAlgorithm.
 
 Parameters
 ----------
-inputSample, outputSample : :class:`~openturns.Sample`
+inputSample, outputSample : 2-d sequence of float
     The input and output samples of a model.
 metaModel : :class:`~openturns.Function`
     The meta model.
@@ -16,21 +11,21 @@ basis : :class:`~openturns.Basis`
     Functional basis to estimate the trend.
 design : :class:`~openturns.Matrix`
     The design matrix math:`X`.
-trendCoefficients : :class:`~openturns.Point`
+trendCoefficients : sequence of float
     The trend coeffients associated to the linearmodel. 
-formula : :class:`~openturns.String` 
+formula : str
      The formula description. 
-coefficientsNames : :class:`~openturns.Description` 
+coefficientsNames : sequence of str
      The coefficients names of the basis.  
-sampleResiduals : :class:`~openturns.Sample`
+sampleResiduals : 2-d sequence of float
     The residual errors.
-standardizedSampleResiduals : :class:`~openturns.Sample`
+standardizedSampleResiduals : 2-d sequence of float
     The normalized residual errors.
-diagonalGramInverse : :class:`~openturns.Point`
+diagonalGramInverse : sequence of float
     The diagonal of the Gram inverse matrix.
-leverages : :class:`~openturns.Point`
+leverages : sequence of float
     The leverage score. 
-cookDistances : :class:`~openturns.Point`
+cookDistances : sequence of float
     The cook's distances.
 sigma2 : float
     The unbiased noise variance.
@@ -89,7 +84,7 @@ beta : :class:`~openturns.Point`
 
 Returns
 -------
-condensedFormula : :class:`~openturns.String`
+condensedFormula : str
 "
 
 // ---------------------------------------------------------------------
