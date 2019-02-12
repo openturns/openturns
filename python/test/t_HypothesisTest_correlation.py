@@ -55,35 +55,3 @@ print('FullPearsonXY=', HypothesisTest.FullPearson(
     sampleX, sampleY, 0.10))
 print('FullPearsonYY=', HypothesisTest.FullPearson(
     sampleY, sampleY, 0.10))
-
-# Regression test between 2 samples : firstSample of dimension n and
-# secondSample of dimension 1. If firstSample[i] is the numerical sample
-# extracted from firstSample (ith coordinate of each point of the
-# numerical sample), PartialRegression performs the Regression test
-# simultaneously on all firstSample[i] and secondSample, for i in the
-# selection. The Regression test tests ifthe regression model between two
-# scalar numerical samples is significant. It is based on the deviation
-# analysis of the regression. The Fisher distribution is used.
-
-# The two tests must be equal
-print('PartialRegressionX0Y=', HypothesisTest.PartialRegression(
-    sampleX, sampleY, selection2, 0.10))
-print('FullRegressionX0Y=', HypothesisTest.FullRegression(
-    sampleX0, sampleY, 0.10))
-
-print('PartialRegressionXY=', HypothesisTest.PartialRegression(
-    sampleX, sampleY, selection, 0.10))
-
-# Regression test between 2 samples : firstSample of dimension n and
-# secondSample of dimension 1. If firstSample[i] is the numerical sample
-# extracted from firstSample (ith coordinate of each point of the
-# numerical sample), FullRegression performs the Regression test
-# simultaneously on all firstSample[i] and secondSample. The Regression
-# test tests if the regression model between two scalar numerical samples
-# is significant. It is based on the deviation analysis of the regression.
-# The Fisher distribution is used.
-
-print('FullRegressionXZ=', HypothesisTest.FullRegression(
-    sampleX, sampleY, 0.10))
-print('FullRegressionZZ=', HypothesisTest.FullRegression(
-    sampleZ, sampleZ, 0.10))

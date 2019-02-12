@@ -54,6 +54,21 @@ int main(int, char *[])
       sampleX[i][j - 1] = sample[i][j];
     }
   }
+  
+  Indices selection(5);
+  for (UnsignedInteger i = 0; i < 5; i++)
+  {
+    selection[i] = i;
+  }
+
+  Indices selection2(1, 0);
+
+  Sample sampleX0(size, 1);
+  for (UnsignedInteger i = 0; i < size; i++)
+  {
+    sampleX0[i][0] = sampleX[i][0];
+  }
+
   Sample sampleZ(size, 1);
   for (UnsignedInteger i = 0; i < size; i++)
   {
@@ -61,5 +76,19 @@ int main(int, char *[])
   }
   fullprint << "LinearModelFisher=" << LinearModelTest::LinearModelFisher(sampleY, sampleZ) << std::endl;
   fullprint << "LinearModelResidualMean=" << LinearModelTest::LinearModelResidualMean(sampleY, sampleZ) << std::endl;
+  
+  // Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialRegression performs the Regression test simultaneously on all firstSample[i] and secondSample, for i in the selection. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used.
+
+  // The two tests must be equal
+  fullprint << "PartialRegressionX0Y=" << LinearModelTest::PartialRegression(sampleX, sampleY, selection2, 0.10) << std::endl;
+  fullprint << "FullRegressionX0Y=" << LinearModelTest::FullRegression(sampleX0, sampleY, 0.10) << std::endl;
+
+  fullprint << "PartialRegressionXY=" << LinearModelTest::PartialRegression(sampleX, sampleY, selection, 0.10) << std::endl;
+
+  // Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), FullRegression performs the Regression test simultaneously on all firstSample[i] and secondSample. The Regression test tests if the regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used.
+
+  fullprint << "FullRegressionXZ=" << LinearModelTest::FullRegression(sampleX, sampleZ, 0.10) << std::endl;
+  fullprint << "FullRegressionZZ=" << LinearModelTest::FullRegression(sampleZ, sampleZ, 0.10) << std::endl;
+
   return ExitCode::Success;
 }

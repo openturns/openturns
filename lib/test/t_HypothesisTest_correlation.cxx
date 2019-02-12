@@ -91,19 +91,5 @@ int main(int, char *[])
   fullprint << "FullPearsonX0Y=" << HypothesisTest::FullPearson(sampleX, sampleY, 0.10) << std::endl;
   fullprint << "FullPearsonYY=" << HypothesisTest::FullPearson(sampleY, sampleY, 0.10) << std::endl;
 
-  // Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialRegression performs the Regression test simultaneously on all firstSample[i] and secondSample, for i in the selection. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used.
-
-  // The two tests must be equal
-  fullprint << "PartialRegressionX0Y=" << HypothesisTest::PartialRegression(sampleX, sampleY, selection2, 0.10) << std::endl;
-  fullprint << "FullRegressionX0Y=" << HypothesisTest::FullRegression(sampleX0, sampleY, 0.10) << std::endl;
-
-  fullprint << "PartialRegressionXY=" << HypothesisTest::PartialRegression(sampleX, sampleY, selection, 0.10) << std::endl;
-
-  // Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), FullRegression performs the Regression test simultaneously on all firstSample[i] and secondSample. The Regression test tests if the regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used.
-
-  fullprint << "FullRegressionXZ=" << HypothesisTest::FullRegression(sampleX, sampleZ, 0.10) << std::endl;
-  fullprint << "FullRegressionZZ=" << HypothesisTest::FullRegression(sampleZ, sampleZ, 0.10) << std::endl;
-
-
   return ExitCode::Success;
 }

@@ -92,7 +92,7 @@ public:
                                           const Sample & secondSample,
                                           const Scalar level = 0.05);
 
-  /** Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), FullRegression performs the Regression test simultaneously on all firstSample[i] and secondSample. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used. */
+  /** @deprecated, moved to LinearModelTest */
   static TestResultCollection FullRegression(const Sample & firstSample,
       const Sample & secondSample,
       const Scalar level = 0.05);

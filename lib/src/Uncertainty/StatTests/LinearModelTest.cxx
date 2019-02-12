@@ -35,7 +35,7 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/Os.hxx"
+#include "openturns/LinearModelAnalysis.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -458,6 +458,42 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
                                  result.getTrendCoefficients(),
                                  hypothesis,
                                  level);
+}
+
+
+/* Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialRegression performs the Regression test simultaneously on all firstSample[i] and secondSample, for i in the selection. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used. */
+LinearModelTest::TestResultCollection LinearModelTest::PartialRegression(const Sample & firstSample,
+    const Sample & secondSample,
+    const Indices & selection,
+    const Scalar level)
+{
+  if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the Regression test can be performed only with an 1-d output sample.";
+
+  LinearModelAlgorithm algo(firstSample.getMarginal(selection), secondSample);
+  const LinearModelResult result(algo.getResult());
+  const LinearModelAnalysis analysis(result);
+  const UnsignedInteger size = selection.getSize() + 1;
+  const Point pValues(analysis.getCoefficientsPValues());
+
+  // Then, build the collection of results
+  TestResultCollection resultCollection;
+  for (UnsignedInteger i = 1; i < size; ++ i)
+  {
+    const Scalar pValue = pValues[i];
+    resultCollection.add(TestResult("Regression", pValue > level, pValue, level));
+  }
+  return resultCollection;
+}
+
+/* Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), FullRegression performs the Regression test simultaneously on all firstSample[i] and secondSample. The Regression test tests if the regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used. */
+LinearModelTest::TestResultCollection LinearModelTest::FullRegression(const Sample & firstSample,
+    const Sample & secondSample,
+    const Scalar level)
+{
+  const UnsignedInteger dimension = firstSample.getDimension();
+  Indices selection(dimension);
+  selection.fill();
+  return PartialRegression(firstSample, secondSample, selection, level);
 }
 
 END_NAMESPACE_OPENTURNS

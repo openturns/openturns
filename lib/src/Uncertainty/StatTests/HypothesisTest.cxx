@@ -21,17 +21,15 @@
 #include <cmath>
 #include <fstream>
 #include "openturns/HypothesisTest.hxx"
-#include "openturns/HypothesisTest.hxx"
-#include "openturns/LinearModelAnalysis.hxx"
 #include "openturns/Path.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/LinearModelAlgorithm.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/UserDefined.hxx"
 #include "openturns/Log.hxx"
+#include "openturns/LinearModelTest.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -302,22 +300,8 @@ HypothesisTest::TestResultCollection HypothesisTest::PartialRegression(const Sam
     const Indices & selection,
     const Scalar level)
 {
-  if (secondSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the Regression test can be performed only with an 1-d output sample.";
-
-  LinearModelAlgorithm algo(firstSample.getMarginal(selection), secondSample);
-  const LinearModelResult result(algo.getResult());
-  const LinearModelAnalysis analysis(result);
-  const UnsignedInteger size = selection.getSize() + 1;
-  const Point pValues(analysis.getCoefficientsPValues());
-
-  // Then, build the collection of results
-  TestResultCollection resultCollection;
-  for (UnsignedInteger i = 1; i < size; ++ i)
-  {
-    const Scalar pValue = pValues[i];
-    resultCollection.add(TestResult("Regression", pValue > level, pValue, level));
-  }
-  return resultCollection;
+  LOGWARN(OSS() << "HypothesisTest::PartialRegression is deprecated, use LinearModelTest::PartialRegression");
+  return LinearModelTest::PartialRegression(firstSample, secondSample, selection, level);
 }
 
 /* Spearman test between 2 samples : firstSample if of dimension n and secondSample of dimension 1. PartialSpearman tests for null rank correlation between the selected marginals of the first sample wrt the second sample.*/
@@ -351,10 +335,8 @@ HypothesisTest::TestResultCollection HypothesisTest::FullRegression(const Sample
     const Sample & secondSample,
     const Scalar level)
 {
-  const UnsignedInteger dimension = firstSample.getDimension();
-  Indices selection(dimension);
-  selection.fill();
-  return PartialRegression(firstSample, secondSample, selection, level);
+  LOGWARN(OSS() << "HypothesisTest::FullRegression is deprecated, use LinearModelTest::FullRegression");
+  return LinearModelTest::FullRegression(firstSample, secondSample, level);
 }
 
 /* Spearman test between 2 samples : firstSample if of dimension n and secondSample of dimension 1. FullSpearman tests for null rank correlation between the marginals of the first sample wrt the second sample.*/

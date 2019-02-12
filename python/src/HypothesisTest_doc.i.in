@@ -100,66 +100,6 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::HypothesisTest::FullRegression
-"Test whether two discrete samples are not linear.
-
-**Available usages**:
-
-    HypothesisTest.FullRegression(*firstSample, secondSample*)
-
-    HypothesisTest.FullRegression(*firstSample, secondSample, level*)
-
-
-Parameters
-----------
-firstSample : 2-d sequence of float
-    First tested sample, of dimension :math:`n \geq 1`.
-secondSample : 2-d sequence of float
-    Second tested sample, of dimension 1.
-level : positive float :math:`< 1`
-    Threshold p-value of the test (= first kind risk), it must be
-    :math:`< 1`, equal to 0.05 by default.
-
-Returns
--------
-testResult : :class:`~openturns.TestResult`
-    Structure containing the result of the test.
-
-See Also
---------
-HypothesisTest_PartialRegression, LinearModelTest_LinearModelFisher
-
-Notes
------
-The Full Regression Test is used to check the quality of the linear regression
-model between two samples: *firstSample* of dimension *n* and *secondSample* of
-dimension 1. If *firstSample[i]* is the sample extracted from
-*firstSample* (:math:`i^{th}` coordinate of each point of the sample),
-FullRegression performs the linear regression test simultaneously on all
-*firstSample[i]* and *secondSample*. The linear regression test tests if the
-linear regression model between two scalar samples is not significant.
-It is based on the deviation analysis of the regression. The Fisher distribution
-is used.
-
-Examples
---------
->>> import openturns as ot
->>> ot.RandomGenerator.SetSeed(0)
->>> dim = 3
->>> distCol = [ot.Normal()] * dim
->>> S = ot.CorrelationMatrix(dim)
->>> S[0, dim - 1] = 0.99
->>> copula = ot.NormalCopula(S)
->>> distribution = ot.ComposedDistribution(distCol, copula)
->>> sample = distribution.getSample(30)
->>> firstSample = sample[:, :2]
->>> secondSample = sample[:, 2]
->>> test_result = ot.HypothesisTest.FullRegression(firstSample, secondSample)
->>> print(test_result)
-[class=TestResult name=Unnamed type=Regression binaryQualityMeasure=false p-value threshold=0.05 p-value=9.70282e-27 description=[],class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.11352 description=[]]"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::HypothesisTest::FullSpearman
 "Test whether two samples have no rank correlation.
 
@@ -265,64 +205,6 @@ Examples
 [class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=false p-value threshold=0.05 p-value=1.17002e-10 description=[],class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.19193 description=[]]
 "
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::HypothesisTest::PartialRegression
-"Test whether two discrete samples are independent.
-
-**Available usages**:
-
-    HypothesisTest.PartialRegression(*firstSample, secondSample, selection*)
-
-    HypothesisTest.PartialRegression(*firstSample, secondSample, selection, level*)
-
-
-Parameters
-----------
-firstSample : 2-d sequence of float
-    First tested sample, of dimension :math:`n \geq 1`.
-secondSample : 2-d sequence of float
-    Second tested sample, of dimension 1.
-selection : sequence of int, maximum integer value :math:`< n`
-    List of indices selecting which subsets of the first sample will successively
-    be tested with the second sample through the regression test.
-level : positive float :math:`< 1`
-    Threshold p-value of the test (= first kind risk), it must be
-    :math:`< 1`, equal to 0.05 by default.
-
-Returns
--------
-testResult : :class:`~openturns.TestResult`
-    Structure containing the result of the test.
-
-See Also
---------
-HypothesisTest_FullRegression, LinearModelTest_LinearModelFisher
-
-Notes
------
-The Partial Regression Test is used to check the quality of the linear regression
-AnalyticalFmodel between two samples: *firstSample* of dimension *n* and *secondSample* of
-dimension 1. The parameter *selection* enables to select specific subsets of the
-*firstSample* to be tested.
-
-Examples
---------
->>> import openturns as ot
->>> ot.RandomGenerator.SetSeed(0)
->>> dim = 3
->>> distCol = [ot.Normal()] * dim
->>> S = ot.CorrelationMatrix(dim)
->>> S[0, dim - 1] = 0.99
->>> copula = ot.NormalCopula(S)
->>> distribution = ot.ComposedDistribution(distCol, copula)
->>> sample = distribution.getSample(30)
->>> firstSample = sample[:, :2]
->>> secondSample = sample[:, 2]
->>> selection = [1]
->>> test_result = ot.HypothesisTest.PartialRegression(firstSample, secondSample, selection)
->>> print(test_result)
-[class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.579638 description=[]]"
 
 // ---------------------------------------------------------------------
 

@@ -18,6 +18,7 @@
  * Removed deprecated FieldFunction,FieldToPointFunction::getSpatialDimension
  * Removed deprecated LinearModelRSquared, LinearModelAdjustedRSquared
  * Deprecated LinearModel, LinearModelFactory
+ * Moved HypothesisTest::(Partial|Full)Regression to LinearModelTest
 
 === Python module ===
 
@@ -33,6 +34,7 @@
  * #979 (Viewer does not handle BarPlot's fillStyle)
  * #977 (HypothesisTest::ChiSquared is bogus)
  * #980 (CorrelationAnalysis_SRC scales the coefficients so that they sum to 1)
+ * #981 (HypothesisTest_{Full, Partial} regression should be moved to LinearModelTest)
  * #982 (LinearModelTest::LinearModelDurbinWatson with several factors)
  * #983 (Bogus Normal parameter distribution)
  * #995 (Pip does not recognize conda install of openturns)

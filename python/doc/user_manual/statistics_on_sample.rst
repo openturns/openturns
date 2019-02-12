@@ -205,10 +205,8 @@ Hypothesis tests
 
     HypothesisTest_ChiSquared
     HypothesisTest_FullPearson
-    HypothesisTest_FullRegression
     HypothesisTest_FullSpearman
     HypothesisTest_PartialPearson
-    HypothesisTest_PartialRegression
     HypothesisTest_PartialSpearman
     HypothesisTest_Pearson
     HypothesisTest_Spearman
@@ -226,6 +224,8 @@ Linear model tests
     LinearModelTest_LinearModelHarrisonMcCabe
     LinearModelTest_LinearModelBreuschPagan
     LinearModelTest_LinearModelDurbinWatson
+    LinearModelTest_FullRegression
+    LinearModelTest_PartialRegression
 
 Model selection
 ---------------
