@@ -383,8 +383,8 @@ level : positive float :math:`< 1`
 
 Returns
 -------
-testResult : :class:`~openturns.TestResult`
-    Structure containing the result of the test.
+testResults : Collection of :class:`~openturns.TestResult`
+    Results for each component of the linear model including intercept.
 
 See Also
 --------
@@ -412,8 +412,8 @@ Examples
 >>> secondSample = sample[:, 2]
 >>> selection = [1]
 >>> test_result = ot.LinearModelTest.PartialRegression(firstSample, secondSample, selection)
->>> print(test_result)
-[class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.579638 description=[]]"
+>>> print(test_result[1])
+class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.579638 description=[]"
 
 
 // ---------------------------------------------------------------------
@@ -440,8 +440,8 @@ level : positive float :math:`< 1`
 
 Returns
 -------
-testResult : :class:`~openturns.TestResult`
-    Structure containing the result of the test.
+testResults : Collection of :class:`~openturns.TestResult`
+    Results for each component of the linear model including intercept.
 
 See Also
 --------
@@ -456,8 +456,7 @@ dimension 1. If *firstSample[i]* is the sample extracted from
 FullRegression performs the linear regression test simultaneously on all
 *firstSample[i]* and *secondSample*. The linear regression test tests if the
 linear regression model between two scalar samples is not significant.
-It is based on the deviation analysis of the regression. The Fisher distribution
-is used.
+It is based on the deviation analysis of the regression. The t-test is used.
 
 Examples
 --------
@@ -474,6 +473,6 @@ Examples
 >>> secondSample = sample[:, 2]
 >>> test_result = ot.LinearModelTest.FullRegression(firstSample, secondSample)
 >>> print(test_result)
-[class=TestResult name=Unnamed type=Regression binaryQualityMeasure=false p-value threshold=0.05 p-value=9.70282e-27 description=[],class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.11352 description=[]]"
+[class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.605 description=[],class=TestResult name=Unnamed type=Regression binaryQualityMeasure=false p-value threshold=0.05 p-value=9.70282e-27 description=[],class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.11352 description=[]]"
 
 

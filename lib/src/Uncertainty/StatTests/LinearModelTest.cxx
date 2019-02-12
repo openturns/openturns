@@ -477,7 +477,7 @@ LinearModelTest::TestResultCollection LinearModelTest::PartialRegression(const S
 
   // Then, build the collection of results
   TestResultCollection resultCollection;
-  for (UnsignedInteger i = 1; i < size; ++ i)
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
     const Scalar pValue = pValues[i];
     resultCollection.add(TestResult("Regression", pValue > level, pValue, level));

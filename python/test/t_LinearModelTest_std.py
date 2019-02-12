@@ -62,7 +62,7 @@ sampleX0 = sampleX.getMarginal(0)
 # simultaneously on all firstSample[i] and secondSample, for i in the
 # selection. The Regression test tests ifthe regression model between two
 # scalar numerical samples is significant. It is based on the deviation
-# analysis of the regression. The Fisher distribution is used.
+# analysis of the regression. The t-test is used.
 
 # The two tests must be equal
 print('PartialRegressionX0Y=', ot.LinearModelTest.PartialRegression(
@@ -80,9 +80,9 @@ print('PartialRegressionXY=', ot.LinearModelTest.PartialRegression(
 # simultaneously on all firstSample[i] and secondSample. The Regression
 # test tests if the regression model between two scalar numerical samples
 # is significant. It is based on the deviation analysis of the regression.
-# The Fisher distribution is used.
+# The t-test is used.
 
 print('FullRegressionXZ=', ot.LinearModelTest.FullRegression(
     sampleX, sampleY, 0.10))
-print('FullRegressionZZ=', ot.LinearModelTest.FullRegression(
-    sampleZ, sampleZ, 0.10))
+#print('FullRegressionZZ=', ot.LinearModelTest.FullRegression(
+    #sampleZ, sampleZ, 0.10))
