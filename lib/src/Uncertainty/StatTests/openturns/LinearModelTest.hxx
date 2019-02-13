@@ -25,6 +25,7 @@
 #include "openturns/TestResult.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/LinearModel.hxx"
+#include "openturns/LinearModelResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -40,7 +41,7 @@ public:
 
   static TestResult LinearModelFisher(const Sample & firstSample,
                                       const Sample & secondSample,
-                                      const Point & trendCoefficients,
+                                      const LinearModelResult & linearModelResult,
                                       const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
   /** @deprecated */
@@ -57,7 +58,7 @@ public:
   /**  */
   static TestResult LinearModelResidualMean(const Sample & firstSample,
       const Sample & secondSample,
-      const Point & trendCoefficients,
+      const LinearModelResult & linearModelResult,
       const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
   /** @deprecated */
@@ -74,7 +75,7 @@ public:
     /**  */
   static TestResult LinearModelHarrisonMcCabe(const Sample & firstSample,
       const Sample & secondSample,
-      const Point & trendCoefficients,
+      const LinearModelResult & linearModelResult,
       const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ),
       const Scalar breakPoint = ResourceMap::GetAsScalar( "LinearModelTest-DefaultHarrisonMcCabeBreakpoint" ),
       const Scalar simulationSize = ResourceMap::GetAsUnsignedInteger( "LinearModelTest-DefaultHarrisonMcCabeSimulationSize" ));
@@ -97,7 +98,7 @@ public:
   /**  */
   static TestResult LinearModelBreuschPagan(const Sample & firstSample,
       const Sample & secondSample,
-      const Point & trendCoefficients,
+      const LinearModelResult & linearModelResult,
       const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
   /** @deprecated */
@@ -114,7 +115,7 @@ public:
   /**  */
   static TestResult LinearModelDurbinWatson(const Sample & firstSample,
       const Sample & secondSample,
-      const Point & trendCoefficients,
+      const LinearModelResult & linearModelResult,
       const String hypothesis = ResourceMap::GetAsString( "LinearModelTest-DefaultDurbinWatsonHypothesis" ),
       const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 

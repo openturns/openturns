@@ -15,7 +15,7 @@ for i in range(size):
     firstSample[i] = ot.Point(1, sample[i, 0])
     secondSample[i] = ot.Point(1, sample[i, 1])
 
-lmtest = ot.LinearModelAlgorithm(firstSample, secondSample).getResult().getTrendCoefficients()
+lmtest = ot.LinearModelAlgorithm(firstSample, secondSample).getResult()
 
 drawLinearModelResidual = ot.VisualTest.DrawLinearModelResidual(
     firstSample, secondSample, lmtest)

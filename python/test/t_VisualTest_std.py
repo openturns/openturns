@@ -82,7 +82,7 @@ try:
         firstSample[i] = Point(1, sample2D[i, 0])
         secondSample[i] = Point(1, sample2D[i, 1])
 
-    lmtest = LinearModelAlgorithm(firstSample, secondSample).getResult().getTrendCoefficients()
+    lmtest = LinearModelAlgorithm(firstSample, secondSample).getResult()
     drawLinearModelVTest = VisualTest.DrawLinearModel(
         firstSample, secondSample, lmtest)
     print("LinearModelV = ", drawLinearModelVTest)

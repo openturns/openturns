@@ -61,7 +61,7 @@ public:
               const ScalarCollection & pValuesOfR);
 
   /** Constructor from Point */
-  LinearModel(const Point & vectorR);
+  explicit LinearModel(const Point & vectorR);
 
   /** Virtual constructor */
   virtual LinearModel * clone() const;

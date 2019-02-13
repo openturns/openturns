@@ -246,14 +246,15 @@ Graph VisualTest::DrawClouds(const Sample & sample1,
 /* Draw the visual test for the LinearModel when its dimension is 1 */
 Graph VisualTest::DrawLinearModel(const Sample & sample1,
                                   const Sample & sample2,
-                                  const Point & trendCoefficients)
+                                  const LinearModelResult & linearModelResult)
 {
   if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel visual test only if dimension equals 1, here dimension=" << sample1.getDimension();
   if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel visual test only if dimension equals 1, here dimension=" << sample2.getDimension();
   if (sample1.getSize() != sample2.getSize()) throw InvalidArgumentException(HERE) << "Error: can draw a LinearModel visual test only if sample 1 and sample 2 have the same size, here sample 1 size=" << sample1.getSize() << " and sample 2 size=" << sample2.getSize();
 
-  if (trendCoefficients.getSize() != sample1.getDimension()+1) throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
-  const LinearCombinationFunction fHat(LinearBasisFactory(trendCoefficients.getSize() - 1).build(), trendCoefficients);
+  if (linearModelResult.getTrendCoefficients().getSize() != 2)
+    throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
+  const Function fHat(linearModelResult.getMetaModel());
   const Sample y(fHat(sample1));
   
   OSS oss;
@@ -286,20 +287,23 @@ Graph VisualTest::DrawLinearModel(const Sample & sample1,
                                   const LinearModel & linearModel)
 {
   LOGWARN(OSS() << "DrawLinearModel(..., LinearModel) is deprecated");
-  return DrawLinearModel(sample1, sample2, linearModel.getRegression());
+  const UnsignedInteger dimension = sample1.getDimension();
+  const LinearCombinationFunction metaModel(LinearBasisFactory(dimension).build(), linearModel.getRegression());
+  LinearModelResult linearModelResult(Sample(), Basis(), Matrix(), Sample(), metaModel, linearModel.getRegression(), "", Description(), Sample(), Sample(), Point(), Point(), Point(), 0.0);
+  return DrawLinearModel(sample1, sample2, linearModelResult);
 }
 
 /* Draw the visual test for the LinearModel residuals */
 Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
     const Sample & sample2,
-    const Point & trendCoefficients)
+    const LinearModelResult & linearModelResult)
 {
   if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if dimension equals 1, here dimension=" << sample1.getDimension();
   if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if dimension equals 1, here dimension=" << sample2.getDimension();
   if (sample1.getSize() != sample2.getSize()) throw InvalidArgumentException(HERE) << "Error: can draw a LinearModel residual visual test only if sample 1 and sample 2 have the same size, here sample 1 size=" << sample1.getSize() << " and sample 2 size=" << sample2.getSize();
 
-  if (trendCoefficients.getSize() != sample1.getDimension()+1) throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
-  const LinearCombinationFunction fHat(LinearBasisFactory(trendCoefficients.getSize() - 1).build(), trendCoefficients);
+  if (linearModelResult.getTrendCoefficients().getSize() != 2) throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
+  const Function fHat(linearModelResult.getMetaModel());
   const Sample yHat(fHat(sample1));
   const Sample y(sample2 - yHat);
 
@@ -325,7 +329,10 @@ Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
     const LinearModel & linearModel)
 {
   LOGWARN(OSS() << "DrawLinearModelResidual(..., LinearModel) is deprecated");
-  return DrawLinearModelResidual(sample1, sample2, linearModel.getRegression());
+  const UnsignedInteger dimension = sample1.getDimension();
+  const LinearCombinationFunction metaModel(LinearBasisFactory(dimension).build(), linearModel.getRegression());
+  LinearModelResult linearModelResult(Sample(), Basis(), Matrix(), Sample(), metaModel, linearModel.getRegression(), "", Description(), Sample(), Sample(), Point(), Point(), Point(), 0.0);
+  return DrawLinearModelResidual(sample1, sample2, linearModelResult);
 }
 
 /* Draw the CobWeb visual test */

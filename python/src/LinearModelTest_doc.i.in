@@ -7,9 +7,9 @@
 
     LinearModelTest.LinearModelFisher(*firstSample, secondSample, level*)
 
-    LinearModelTest.LinearModelFisher(*firstSample, secondSample, linearModel*)
+    LinearModelTest.LinearModelFisher(*firstSample, secondSample, linearModelResult*)
 
-    LinearModelTest.LinearModelFisher(*firstSample, secondSample, linearModel, level*)
+    LinearModelTest.LinearModelFisher(*firstSample, secondSample, linearModelResult, level*)
 
 
 Parameters
@@ -18,7 +18,7 @@ firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-linearModel : 1-d sequence of float
+linearModelResult : :class:`~openturns.LinearModelResult`
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
     Threshold p-value of the test (= first kind risk), it must be
@@ -76,9 +76,9 @@ Examples
 
     LinearModelTest.LinearModelResidualMean(*firstSample, secondSample, level*)
 
-    LinearModelTest.LinearModelResidualMean(*firstSample, secondSample, linearModel*)
+    LinearModelTest.LinearModelResidualMean(*firstSample, secondSample, linearModelResult*)
 
-    LinearModelTest.LinearModelResidualMean(*firstSample, secondSample, linearModel, level*)
+    LinearModelTest.LinearModelResidualMean(*firstSample, secondSample, linearModelResult, level*)
 
 
 Parameters
@@ -87,7 +87,7 @@ firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-linearModel : 1-d sequence of float
+linearModelResult : :class:`~openturns.LinearModelResult`
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
     Threshold p-value of the test (= first kind risk), it must be
@@ -144,11 +144,11 @@ class=TestResult name=Unnamed type=ResidualMean binaryQualityMeasure=true p-valu
 
     LinearModelTest.LinearModelHarrisonMcCabe(*firstSample, secondSample*)
 
-    LinearModelTest.LinearModelHarrisonMcCabe(*firstSample, secondSample, linearModel*)
+    LinearModelTest.LinearModelHarrisonMcCabe(*firstSample, secondSample, linearModelResult*)
 
     LinearModelTest.LinearModelHarrisonMcCabe(*firstSample, secondSample, level, breakPoint, simulationSize*)
 
-    LinearModelTest.LinearModelHarrisonMcCabe(*firstSample, secondSample, linearModel, level, breakPoint, simulationSize*)
+    LinearModelTest.LinearModelHarrisonMcCabe(*firstSample, secondSample, linearModelResult, level, breakPoint, simulationSize*)
 
 Parameters
 ----------
@@ -156,7 +156,7 @@ firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-linearModel : 1-d sequence of float
+linearModelResult : :class:`~openturns.LinearModelResult`
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
     Threshold p-value of the test (= first kind risk), it must be
@@ -219,11 +219,11 @@ class=TestResult name=Unnamed type=HarrisonMcCabe binaryQualityMeasure=true p-va
 
     LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample*)
 
-    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, linearModel*)
+    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, linearModelResult*)
 
     LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, level*)
 
-    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, linearModel, level*)
+    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, linearModelResult, level*)
 
 Parameters
 ----------
@@ -231,7 +231,7 @@ firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-linearModel : 1-d sequence of float
+linearModelResult : :class:`~openturns.LinearModelResult`
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
     Threshold p-value of the test (= first kind risk), it must be
@@ -293,9 +293,9 @@ class=TestResult name=Unnamed type=BreuschPagan binaryQualityMeasure=true p-valu
 
     LinearModelTest.LinearModelDurbinWatson(*firstSample, secondSample, hypothesis, level*)
 
-    LinearModelTest.LinearModelDurbinWatson(*firstSample, secondSample, linearModel*)
+    LinearModelTest.LinearModelDurbinWatson(*firstSample, secondSample, linearModelResult*)
 
-    LinearModelTest.LinearModelDurbinWatson(*firstSample, secondSample, linearModel, hypothesis, level*)
+    LinearModelTest.LinearModelDurbinWatson(*firstSample, secondSample, linearModelResult, hypothesis, level*)
 
 Parameters
 ----------
@@ -303,7 +303,7 @@ firstSample : 2-d sequence of float
     First tested sample.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-linearModel : 1-d sequence of float
+linearModelResult : :class:`~openturns.LinearModelResult`
     A linear model. If not provided, it is built using the given samples.
 hypothesis : string
     Hypothesis H0 for the residuals. It can be : 'Equal' to 0, 'Less' than 0 or

@@ -63,16 +63,12 @@ int main(int, char *[])
 
   Indices selection2(1, 0);
 
-  Sample sampleX0(size, 1);
-  for (UnsignedInteger i = 0; i < size; i++)
-  {
-    sampleX0[i][0] = sampleX[i][0];
-  }
+  Sample sampleX0(sampleX.getMarginal(0));
 
   Sample sampleZ(size, 1);
   for (UnsignedInteger i = 0; i < size; i++)
   {
-    sampleZ[i][0] = sampleY[i][0] * sampleY[i][0];
+    sampleZ(i, 0) = sampleY(i, 0) * sampleY(i, 0);
   }
   fullprint << "LinearModelFisher=" << LinearModelTest::LinearModelFisher(sampleY, sampleZ) << std::endl;
   fullprint << "LinearModelResidualMean=" << LinearModelTest::LinearModelResidualMean(sampleY, sampleZ) << std::endl;
