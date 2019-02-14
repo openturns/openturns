@@ -392,9 +392,9 @@ LinearModelTest_FullRegression, LinearModelTest_LinearModelFisher
 
 Notes
 -----
-The Partial Regression Test is used to check the quality of the linear regression
-AnalyticalFmodel between two samples: *firstSample* of dimension *n* and *secondSample* of
-dimension 1. The parameter *selection* enables to select specific subsets of the
+The Partial Regression Test is used to assess the linearity between a subset of
+components of *firstSample* and *secondSample*.
+The parameter *selection* enables to select specific subsets of the
 *firstSample* to be tested.
 
 Examples
@@ -453,10 +453,10 @@ The Full Regression Test is used to check the quality of the linear regression
 model between two samples: *firstSample* of dimension *n* and *secondSample* of
 dimension 1. If *firstSample[i]* is the sample extracted from
 *firstSample* (:math:`i^{th}` coordinate of each point of the sample),
-FullRegression performs the linear regression test simultaneously on all
+FullRegression performs the linear regression test on all
 *firstSample[i]* and *secondSample*. The linear regression test tests if the
 linear regression model between two scalar samples is not significant.
-It is based on the deviation analysis of the regression. The t-test is used.
+It is based on the deviation analysis of the regression.
 
 Examples
 --------

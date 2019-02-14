@@ -77,6 +77,6 @@ Examples
 >>> LMF = ot.LinearModelFactory()
 >>> linearModel = LMF.build(Xsample, Ysample)
 >>> print(linearModel)
-LinearModel name=Unnamed regression=[1.1802,2.0034] confidence intervals=[1.16932, 1.19109]
-[1.99226, 2.01453] p-Values=[1.87486e-07,5.10531e-12]
+LinearModel name=Unnamed regression=[1.1802,2.0034] confidence intervals=[0.827755, 1.53265]
+[1.64293, 2.36387] p-Values=[1.87486e-07,5.10531e-12]
 "

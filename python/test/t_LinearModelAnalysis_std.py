@@ -23,11 +23,11 @@ try:
     result = ot.LinearModelResult(test.getResult())
     analysis = ot.LinearModelAnalysis(result)
     print(analysis)
-    # Compute confidence level (95%) for coefficients estimate (1-alpha = 0.95)
-    alpha = 0.05
+    # Compute confidence level (95%) for coefficients estimate
+    alpha = 0.95
     # interval confidence bounds
     interval = analysis.getCoefficientsConfidenceInterval(alpha)
-    print("confidence intervals with level=%1.2f : %s" % (1 - alpha, interval))
+    print("confidence intervals with level=%1.2f : %s" % (alpha, interval))
 
     print("")
     print("")
@@ -55,11 +55,11 @@ try:
     result = test.getResult()
     analysis = ot.LinearModelAnalysis(result)
     print(analysis)
-    # Compute confidence level (95%) for coefficients estimate (1-alpha = 0.95)
-    alpha = 0.05
+    # Compute confidence level (95%) for coefficients estimate
+    alpha = 0.95
     # interval confidence bounds
     interval = analysis.getCoefficientsConfidenceInterval(alpha)
-    print("confidence intervals with level=%1.2f : %s" % (1 - alpha, interval))
+    print("confidence intervals with level=%1.2f : %s" % (alpha, interval))
 
 except:
     import sys

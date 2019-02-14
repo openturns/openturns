@@ -66,7 +66,7 @@ public:
   Point getCoefficientsStandardErrors() const;
   Point getCoefficientsTScores() const;
   Point getCoefficientsPValues() const;
-  Interval getCoefficientsConfidenceInterval(const Scalar level=0.10) const;
+  Interval getCoefficientsConfidenceInterval(const Scalar level = 0.95) const;
 
   /** R-squared */
   Scalar getRSquared() const;
