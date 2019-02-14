@@ -203,13 +203,12 @@ UserDefinedSpectralModel WelchFactory::buildAsUserDefinedSpectralModel(const Fie
   const RegularGrid timeGrid(timeSeries.getTimeGrid());
   // Initialize the equivalent process sample with the correct time grid
   ProcessSample sample(blockNumber_, Field(RegularGrid(timeGrid.getStart(), timeGrid.getStep(), blockSize), dimension));
+  const Sample values(timeSeries.getValues());
   for (UnsignedInteger blockIndex = 0; blockIndex < blockNumber_; ++blockIndex)
   {
-    for (UnsignedInteger timeIndex = 0; timeIndex < blockSize; ++timeIndex)
-    {
-      for (UnsignedInteger i = 0; i < dimension; ++i)
-        sample[blockIndex](timeIndex, i) = timeSeries.getValues()(blockIndex * hopSize + timeIndex, i);
-    } // Loop on the time index
+    std::copy(&values(blockIndex * hopSize, 0),
+              &values(blockIndex * hopSize + blockSize - 1, dimension - 1) + 1,
+              &sample[blockIndex](0, 0));
   } // Loop on the blocks
   return buildAsUserDefinedSpectralModel(sample);
 }
