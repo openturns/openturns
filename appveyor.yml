@@ -13,7 +13,7 @@ install:
   - appveyor-retry appveyor DownloadFile https://sourceforge.net/projects/swig/files/swigwin/swigwin-3.0.12/swigwin-3.0.12.zip
   - 7z x swigwin-3.0.12.zip -oC:\Libraries > nul
 
-  - git clone https://bitbucket.org/dbarbier/ot-superbuild.git
+  - git clone --depth 1 https://bitbucket.org/dbarbier/ot-superbuild.git
 
   - appveyor-retry appveyor DownloadFile http://xmlsoft.org/sources/libxml2-sources-2.9.5.tar.gz
   - 7z x libxml2-sources-2.9.5.tar.gz > nul
@@ -32,13 +32,13 @@ install:
   - cmake --build . --config Release --target install
   - cd %APPVEYOR_BUILD_FOLDER%
 
-  - git clone https://github.com/stevengj/nlopt.git
+  - git clone --depth 1 https://github.com/stevengj/nlopt.git
   - pushd nlopt
   - cmake -G"%VS_GEN%" -DCMAKE_INSTALL_PREFIX=C:\Libraries\nlopt -DBUILD_SHARED_LIBS=OFF .
   - cmake --build . --config Release --target install
   - cd %APPVEYOR_BUILD_FOLDER%
 
-  - git clone https://github.com/wjakob/tbb.git
+  - git clone --depth 1 https://github.com/wjakob/tbb.git
   - pushd tbb
   - cmake -G"%VS_GEN%" -DCMAKE_INSTALL_PREFIX=C:\Libraries\tbb -DTBB_BUILD_TESTS=OFF -DTBB_BUILD_STATIC=OFF .
   - cmake --build . --config Release --target install
@@ -55,7 +55,7 @@ build_script:
   - mkdir build && cd build
   - cmake -G"%VS_GEN%" \
       -DCMAKE_INSTALL_PREFIX=%CD:\=/%/install \
-      -DBOOST_ROOT="C:/Libraries/boost_1_63_0" \
+      -DBOOST_ROOT="C:/Libraries/boost_1_69_0" \
       -DLAPACK_LIBRARIES="C:/Libraries/OpenBLAS-v0.2.15-Win32/lib/libopenblas.dll.a" \
       -DCMAKE_SHARED_LINKER_FLAGS_RELEASE="/OPT:NOREF /INCREMENTAL:NO" \
       -DUSE_HMAT=OFF \
@@ -75,4 +75,4 @@ build_script:
   - copy C:\Libraries\mingw32_dll\libquadmath-0.dll install\Lib\site-packages\openturns
   - copy C:\Libraries\OpenBLAS-v0.2.15-Win32\bin\libopenblas.dll install\Lib\site-packages\openturns
   - copy C:\Libraries\tbb\bin\tbb.dll install\Lib\site-packages\openturns
-  - ctest -C Release --output-on-failure --timeout 100 -E "cppcheck|Sequence|Entropy|Sklar|Sample_computation|InverseBox"
+  - ctest -C Release --output-on-failure --timeout 100 -E "cppcheck|Sequence|Entropy|Sklar|Sample_computation|InverseBox" -j4
