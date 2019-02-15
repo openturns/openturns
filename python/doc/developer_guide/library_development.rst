@@ -408,5 +408,55 @@ particularly the GUI which should offer keyboard shortcuts for any
 available function as well as keyboard-based (rather than mouse-based)
 mechanisms to handle and select objects.
 
+Profiling
+~~~~~~~~~
+
+`Flame Graphs <http://www.brendangregg.com/flamegraphs.html>`_ can help visualize
+where your functions spends the most time. Here are some commands to profile your
+code paths using the `perf <https://perf.wiki.kernel.org/index.php/Main_Page>`_ tool
+and generate the associated graph with `FlameGraph <https://github.com/brendangregg/FlameGraph>`_.
+
+.. figure:: Figures/perf_welch.png
+   :alt: Flame graph of WelchFactory
+
+First retrieve the graphing scripts:
+
+::
+
+    git clone https://github.com/brendangregg/FlameGraph.git /tmp/FlameGraph
+
+You will need to build without parallelization and with debug flags:
+
+::
+
+    cmake -DUSE_TBB=OFF -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS="-fno-omit-frame-pointer" .
+
+You will also want to disable openblas threads or openmp at any other level:
+
+::
+
+    export OMP_NUM_THREADS=1
+
+Now you are ready to profile your executable:
+
+::
+
+    perf record --call-graph dwarf -o /tmp/perf.data ./lib/test/t_WelchFactory_std
+
+Some Linux distros prevent normal users from collecting stats, in that case:
+
+::
+
+    # echo "-1"  > /proc/sys/kernel/perf_event_paranoid
+    # echo 0 > /proc/sys/kernel/kptr_restrict
+
+At this point you should be able to generate the graph from the perf data:
+
+::
+
+    perf script -i /tmp/perf.data | /tmp/FlameGraph/stackcollapse-perf.pl | /tmp/FlameGraph/flamegraph.pl > /tmp/perf.svg
+
+
+
 .. [1]
    English has been chosen as the native language for the platform.
