@@ -51,13 +51,10 @@ public:
     else
     {
       const Scalar cx = distance * stepX_;
-      Point element(1, cx);
-      element[0] = cx;
-      points[0] = element;
+      points(0, 0) = cx;
       if (!isSymmetric())
       {
-        element[0] = -cx;
-        points[1] = element;
+        points(1, 0) = -cx;
       }
     }
     return points;
@@ -115,14 +112,14 @@ public:
       for (UnsignedInteger ix = 0; ix < 2 * distance; ++ix, ++iterator)
       {
         element[0] = ix * stepX_ - cx;
-        points[iterator] = element;
+        std::copy(&element[0], &element[0] + 2, &points(iterator, 0));
       }
       // 2) right
       element[0] = cx;
       for (UnsignedInteger iy = 2 * distance; iy > 0; --iy, ++iterator)
       {
         element[1] = iy * stepY_ - cy;
-        points[iterator] = element;
+        std::copy(&element[0], &element[0] + 2, &points(iterator, 0));
       }
     }
     else
@@ -133,28 +130,28 @@ public:
       for (UnsignedInteger iy = 0; iy < 2 * distance; ++iy, ++iterator)
       {
         element[1] = iy * stepY_ - cy;
-        points[iterator] = element;
+        std::copy(&element[0], &element[0] + 2, &points(iterator, 0));
       }
       // 2) top
       element[1] = cy;
       for (UnsignedInteger ix = 0; ix < 2 * distance; ++ix, ++iterator)
       {
         element[0] = ix * stepX_ - cx;
-        points[iterator] = element;
+        std::copy(&element[0], &element[0] + 2, &points(iterator, 0));
       }
       // 3) right
       element[0] = cx;
       for (UnsignedInteger iy = 2 * distance; iy > 0; --iy, ++iterator)
       {
         element[1] = iy * stepY_ - cy;
-        points[iterator] = element;
+        std::copy(&element[0], &element[0] + 2, &points(iterator, 0));
       }
       // 4) bottom
       element[1] = - cy;
       for (UnsignedInteger ix = 2 * distance; ix > 0; --ix, ++iterator)
       {
         element[0] = ix * stepX_ - cx;
-        points[iterator] = element;
+        std::copy(&element[0], &element[0] + 2, &points(iterator, 0));
       }
     }
     if (iterator != size) throw InternalException(HERE) << "Error in SphereUniformNorm2D::getPoints";
@@ -224,14 +221,14 @@ public:
         for (UnsignedInteger iy = 0; iy < 2 * distance; ++iy, ++iterator)
         {
           element[1] = iy * stepY_ - cy;
-          points[iterator] = element;
+          std::copy(&element[0], &element[0] + 3, &points(iterator, 0));
         }
         // c) right
         element[1] = cy;
         for (UnsignedInteger ix = 2 * distance; ix > 0; --ix, ++iterator)
         {
           element[0] = ix * stepX_ - cx;
-          points[iterator] = element;
+          std::copy(&element[0], &element[0] + 3, &points(iterator, 0));
         }
       }
       // 2) top
@@ -242,7 +239,7 @@ public:
         for (UnsignedInteger iy = 1; iy < 2 * distance; ++iy, ++iterator)
         {
           element[1] = iy * stepY_ - cy;
-          points[iterator] = element;
+          std::copy(&element[0], &element[0] + 3, &points(iterator, 0));
         }
       }
     }
@@ -258,21 +255,21 @@ public:
         for (UnsignedInteger ix = 0; ix < 2 * distance; ++ix, ++iterator)
         {
           element[0] = ix * stepX_ - cx;
-          points[iterator] = element;
+          std::copy(&element[0], &element[0] + 3, &points(iterator, 0));
         }
         // b) front
         element[0] = cx;
         for (UnsignedInteger iy = 0; iy < 2 * distance; ++iy, ++iterator)
         {
           element[1] = iy * stepY_ - cy;
-          points[iterator] = element;
+          std::copy(&element[0], &element[0] + 3, &points(iterator, 0));
         }
         // c) right
         element[1] = cy;
         for (UnsignedInteger ix = 2 * distance; ix > 0; --ix, ++iterator)
         {
           element[0] = ix * stepX_ - cx;
-          points[iterator] = element;
+          std::copy(&element[0], &element[0] + 3, &points(iterator, 0));
         }
         // d) rear
         element[0] = - cx;
@@ -280,7 +277,7 @@ public:
         for (UnsignedInteger iy = 2 * distance; iy > 0; --iy, ++iterator)
         {
           element[1] = iy * stepY_ - cy;
-          points[iterator] = element;
+          std::copy(&element[0], &element[0] + 3, &points(iterator, 0));
         }
       }
       // 2) squares for |z| = distance
@@ -293,7 +290,7 @@ public:
           for (UnsignedInteger iy = 1; iy < 2 * distance; ++iy, ++iterator)
           {
             element[1] = iy * stepY_ - cy;
-            points[iterator] = element;
+            std::copy(&element[0], &element[0] + 3, &points(iterator, 0));
           }
         }
       }
