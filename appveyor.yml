@@ -1,9 +1,17 @@
 environment:
   matrix:
-    - VS_GEN: Visual Studio 10 2010
-    - VS_GEN: Visual Studio 14 2015
+    - TOOLCHAIN_VERSION: 14.0
+      VS_GEN: Visual Studio 14 2015
+    - TOOLCHAIN_VERSION: 10.0
+      VS_GEN: Visual Studio 10 2010
 
 install:
+  - SET PATH=C:\Program Files (x86)\MSBuild\%TOOLCHAIN_VERSION%\Bin;%PATH%
+  - set VCVARSALL="C:\Program Files (x86)\Microsoft Visual Studio %TOOLCHAIN_VERSION%\VC\vcvarsall.bat"
+  - set TARGET_ARCH=x86_64
+  - set TARGET_PROGRAM_FILES=%ProgramFiles%
+  - call %VCVARSALL% amd64
+  - choco install -y jom
   - appveyor-retry appveyor DownloadFile https://downloads.sourceforge.net/openblas/v0.2.15/OpenBLAS-v0.2.15-Win32.zip
   - 7z x OpenBLAS-v0.2.15-Win32.zip -oC:\Libraries > nil
 
@@ -28,20 +36,20 @@ install:
   - 7z x v2.2.5.zip -oC:\Libraries > nul
   - copy ot-superbuild\muParser.cmake\CMakeLists.txt C:\Libraries\muparser-2.2.5
   - pushd C:\Libraries\muparser-2.2.5
-  - cmake -G"%VS_GEN%" -DCMAKE_INSTALL_PREFIX=%CD:\=/% -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .
-  - cmake --build . --config Release --target install
+  - cmake -G"NMake Makefiles JOM" -DCMAKE_INSTALL_PREFIX=%CD:\=/% -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .
+  - jom install -j4
   - cd %APPVEYOR_BUILD_FOLDER%
 
   - git clone https://github.com/stevengj/nlopt.git
   - pushd nlopt
-  - cmake -G"%VS_GEN%" -DCMAKE_INSTALL_PREFIX=C:\Libraries\nlopt -DBUILD_SHARED_LIBS=OFF .
-  - cmake --build . --config Release --target install
+  - cmake -G"NMake Makefiles JOM" -DCMAKE_INSTALL_PREFIX=C:\Libraries\nlopt -DBUILD_SHARED_LIBS=OFF .
+  - jom install -j4
   - cd %APPVEYOR_BUILD_FOLDER%
 
   - git clone https://github.com/wjakob/tbb.git
   - pushd tbb
-  - cmake -G"%VS_GEN%" -DCMAKE_INSTALL_PREFIX=C:\Libraries\tbb -DTBB_BUILD_TESTS=OFF -DTBB_BUILD_STATIC=OFF .
-  - cmake --build . --config Release --target install
+  - cmake -G"NMake Makefiles JOM" -DCMAKE_INSTALL_PREFIX=C:\Libraries\tbb -DTBB_BUILD_TESTS=OFF -DTBB_BUILD_STATIC=OFF .
+  - jom install -j4
   - cd %APPVEYOR_BUILD_FOLDER%
 
   - appveyor-retry appveyor DownloadFile https://sourceforge.net/projects/gnuwin32/files/diffutils/2.8.7-1/diffutils-2.8.7-1-bin.zip
@@ -53,21 +61,21 @@ install:
 
 build_script:
   - mkdir build && cd build
-  - cmake -G"%VS_GEN%" \
+  - cmake -G"NMake Makefiles JOM" \
       -DCMAKE_INSTALL_PREFIX=%CD:\=/%/install \
-      -DBOOST_ROOT="C:/Libraries/boost_1_63_0" \
+      -DBOOST_ROOT="C:/Libraries/boost_1_69_0" \
       -DLAPACK_LIBRARIES="C:/Libraries/OpenBLAS-v0.2.15-Win32/lib/libopenblas.dll.a" \
       -DCMAKE_SHARED_LINKER_FLAGS_RELEASE="/OPT:NOREF /INCREMENTAL:NO" \
       -DUSE_HMAT=OFF \
       -DUSE_BISON=OFF \
       -DSWIG_EXECUTABLE="C:/Libraries/swigwin-3.0.12/swig.exe" \
-      -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j4" \
+      -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j8" \
       -DMUPARSER_LIBRARY=C:/Libraries/muparser-2.2.5/lib/muparser.lib -DMUPARSER_INCLUDE_DIR=C:/Libraries/muparser-2.2.5/include \
       -DTBB_LIBRARY=C:/Libraries/tbb/lib/tbb.lib -DTBB_INCLUDE_DIR=C:/Libraries/tbb/include \
       -DNLOPT_LIBRARY=C:/Libraries/nlopt/lib/nlopt.lib -DNLOPT_INCLUDE_DIR=C:/Libraries/nlopt/include \
       -DLIBXML2_LIBRARIES=C:/Libraries/libxml2/lib/libxml2.lib -DLIBXML2_INCLUDE_DIR=C:/Libraries/libxml2/include \
       ..
-  - cmake --build . --config Release --target install
+  - jom install -j2
   - set PYTHONPATH=%cd%\install\Lib\site-packages
   - copy install\bin\OT.dll install\Lib\site-packages\openturns
   - copy C:\Libraries\mingw32_dll\libgcc_s_sjlj-1.dll install\Lib\site-packages\openturns
@@ -75,4 +83,4 @@ build_script:
   - copy C:\Libraries\mingw32_dll\libquadmath-0.dll install\Lib\site-packages\openturns
   - copy C:\Libraries\OpenBLAS-v0.2.15-Win32\bin\libopenblas.dll install\Lib\site-packages\openturns
   - copy C:\Libraries\tbb\bin\tbb.dll install\Lib\site-packages\openturns
-  - ctest -C Release --output-on-failure --timeout 100 -E "cppcheck|Sequence|Entropy|Sklar|Sample_computation|InverseBox"
+  - ctest -C Release --output-on-failure --timeout 100 -E "cppcheck|Sequence|Entropy|Sklar|Sample_computation|InverseBox" -j4
