@@ -18,7 +18,6 @@ option (USE_MUPARSER                 "Use muParser library"                     
 option (USE_EXPRTK                   "Use ExprTK library"                                                    ON)
 option (USE_LIBXML2                  "Use LibXml2 for XML support"                                           ON)
 option (USE_R                        "Use R for graph output support"                                        ON)
-option (USE_OPENMP                   "Use OpenMP for multithreading"                                         OFF)
 option (USE_BOOST                    "Use Boost for distribution computation"                                ON)
 option (USE_SPHINX                   "Use sphinx for documentation"                                          ON)
 option (USE_NBSPHINX                 "Use nbsphinx for notebook examples documentation"                      ON)
@@ -30,10 +29,6 @@ option (USE_COTIRE                   "Use cotire for unity builds"              
 option (BUILD_PYTHON                 "Build the python module for the library"                               ON)
 option (BUILD_VALIDATION             "Build the validation files of the library"                             ON)
 option (BUILD_SHARED_LIBS            "Build shared libraries"                                                ON)
-
-if (MSVC)
-  option (BUILD_MULTIPROCESSOR       "Enable multiprocessor builds"                                          ON)
-endif ()
 
 # Defines our own module path
 list (APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
@@ -251,13 +246,6 @@ if (NOT R_EXECUTABLE)
   set (R_EXECUTABLE "R${CMAKE_EXECUTABLE_SUFFIX}")
 endif ()
 
-if (USE_OPENMP)
-  find_package (OpenMP)
-  if (OPENMP_FOUND)
-    set (CMAKE_CXX_FLAGS "${OpenMP_CXX_FLAGS} ${CMAKE_CXX_FLAGS}")
-  endif ()
-endif ()
-
 if (USE_NLOPT)
   find_package (NLopt)
   if (NLOPT_FOUND)
@@ -277,9 +265,6 @@ if (USE_OPTPP)
 endif ()
 
 if (MSVC)
-  if (BUILD_MULTIPROCESSOR)
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
-  endif ()
   # Disable some warnings
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4197 /wd4244 /wd4251 /wd4267 /wd4996")
 endif ()
