@@ -79,10 +79,6 @@ install:
        popd;
    fi
 
-before_script:
-  - R CMD INSTALL --library=$PWD utils/rot_1.4.6.tar.gz
-  - export R_LIBS=$PWD
-
 script:
   - if test "$TRAVIS_OS_NAME" = "linux"; then
         cmake -DCMAKE_INSTALL_PREFIX=~/.local

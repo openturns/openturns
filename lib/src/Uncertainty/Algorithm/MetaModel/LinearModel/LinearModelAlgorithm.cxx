@@ -85,6 +85,9 @@ LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
   , result_()
   , hasRun_(false)
 {
+  if (outputSample.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "LinearModelAlgorithm can only handle and 1-d output sample.";
+
   // Check the sample sizes
   if (inputSample.getSize() != outputSample.getSize())
     throw InvalidArgumentException(HERE) << "In LinearModelAlgorithm::LinearModelAlgorithm, input sample size (" << inputSample.getSize() << ") does not match output sample size (" << outputSample.getSize() << ").";

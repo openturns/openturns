@@ -25,6 +25,7 @@
 #include "openturns/TestResult.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/LinearModel.hxx"
+#include "openturns/LinearModelResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -36,8 +37,14 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API LinearModelTest
 {
 public:
+  typedef Collection<TestResult>      TestResultCollection;
 
-  /**  */
+  static TestResult LinearModelFisher(const Sample & firstSample,
+                                      const Sample & secondSample,
+                                      const LinearModelResult & linearModelResult,
+                                      const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
+
+  /** @deprecated */
   static TestResult LinearModelFisher(const Sample & firstSample,
                                       const Sample & secondSample,
                                       const LinearModel & linearModel,
@@ -51,6 +58,12 @@ public:
   /**  */
   static TestResult LinearModelResidualMean(const Sample & firstSample,
       const Sample & secondSample,
+      const LinearModelResult & linearModelResult,
+      const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
+
+  /** @deprecated */
+  static TestResult LinearModelResidualMean(const Sample & firstSample,
+      const Sample & secondSample,
       const LinearModel & linearModel,
       const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
@@ -59,7 +72,15 @@ public:
       const Sample & secondSample,
       const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
-  /**  */
+    /**  */
+  static TestResult LinearModelHarrisonMcCabe(const Sample & firstSample,
+      const Sample & secondSample,
+      const LinearModelResult & linearModelResult,
+      const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ),
+      const Scalar breakPoint = ResourceMap::GetAsScalar( "LinearModelTest-DefaultHarrisonMcCabeBreakpoint" ),
+      const Scalar simulationSize = ResourceMap::GetAsUnsignedInteger( "LinearModelTest-DefaultHarrisonMcCabeSimulationSize" ));
+
+  /** @deprecated */
   static TestResult LinearModelHarrisonMcCabe(const Sample & firstSample,
       const Sample & secondSample,
       const LinearModel & linearModel,
@@ -77,6 +98,12 @@ public:
   /**  */
   static TestResult LinearModelBreuschPagan(const Sample & firstSample,
       const Sample & secondSample,
+      const LinearModelResult & linearModelResult,
+      const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
+
+  /** @deprecated */
+  static TestResult LinearModelBreuschPagan(const Sample & firstSample,
+      const Sample & secondSample,
       const LinearModel & linearModel,
       const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
@@ -88,6 +115,13 @@ public:
   /**  */
   static TestResult LinearModelDurbinWatson(const Sample & firstSample,
       const Sample & secondSample,
+      const LinearModelResult & linearModelResult,
+      const String hypothesis = ResourceMap::GetAsString( "LinearModelTest-DefaultDurbinWatsonHypothesis" ),
+      const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
+
+  /** @deprecated */
+  static TestResult LinearModelDurbinWatson(const Sample & firstSample,
+      const Sample & secondSample,
       const LinearModel & linearModel,
       const String hypothesis = ResourceMap::GetAsString( "LinearModelTest-DefaultDurbinWatsonHypothesis" ),
       const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
@@ -97,6 +131,17 @@ public:
       const Sample & secondSample,
       const String hypothesis = ResourceMap::GetAsString( "LinearModelTest-DefaultDurbinWatsonHypothesis" ),
       const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
+
+  /** Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialRegression performs the Regression test simultaneously on all firstSample[i] and secondSample, for i in the selection. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The t-test is used. */
+  static TestResultCollection PartialRegression(const Sample & firstSample,
+      const Sample & secondSample,
+      const Indices & selection,
+      const Scalar level = 0.05);
+
+  /** Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), FullRegression performs the Regression test simultaneously on all firstSample[i] and secondSample. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The t-test is used. */
+  static TestResultCollection FullRegression(const Sample & firstSample,
+      const Sample & secondSample,
+      const Scalar level = 0.05);
 
 protected:
   LinearModelTest();

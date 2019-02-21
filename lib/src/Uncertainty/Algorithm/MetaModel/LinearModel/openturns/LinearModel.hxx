@@ -36,6 +36,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class LinearModel
+ * @deprecated
  *
  * LinearModel implements the notion of linear model
  */
@@ -60,7 +61,7 @@ public:
               const ScalarCollection & pValuesOfR);
 
   /** Constructor from Point */
-  LinearModel(const Point & vectorR);
+  explicit LinearModel(const Point & vectorR);
 
   /** Virtual constructor */
   virtual LinearModel * clone() const;

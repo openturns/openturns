@@ -9,11 +9,11 @@
 
 Parameters
 ----------
-XSample : :class:`~openturns.Sample`
+XSample : 2-d sequence of float
     The input samples of a model.
 
-XSample : :class:`~openturns.Sample`
-    The output samples of a model.
+YSample : 2-d sequence of float
+    The output samples of a model, must be of dimension 1.
 
 basis : :class:`~openturns.Basis`
     The :math:`\phi` basis .

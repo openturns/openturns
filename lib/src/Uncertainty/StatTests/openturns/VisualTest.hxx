@@ -22,7 +22,7 @@
 #define OPENTURNS_VISUALTEST_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/Sample.hxx"
+#include "openturns/LinearModelResult.hxx"
 #include "openturns/LinearModel.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Graph.hxx"
@@ -81,9 +81,21 @@ public:
   /** Draw the visual test for the LinearModel when its dimension is 1 */
   static Graph DrawLinearModel(const Sample & sample1,
                                const Sample & sample2,
+                               const LinearModelResult & linearModelResult);
+
+  /** Draw the visual test for the LinearModel when its dimension is 1
+   * @deprecated */
+  static Graph DrawLinearModel(const Sample & sample1,
+                               const Sample & sample2,
                                const LinearModel & linearModel);
 
   /** Draw the visual test for the LinearModel residuals when its dimension is 1 */
+  static Graph DrawLinearModelResidual(const Sample & sample1,
+                                       const Sample & sample2,
+                                       const LinearModelResult & linearModelResult);
+
+  /** Draw the visual test for the LinearModel residuals when its dimension is 1
+   * @deprecated*/
   static Graph DrawLinearModelResidual(const Sample & sample1,
                                        const Sample & sample2,
                                        const LinearModel & linearModel);

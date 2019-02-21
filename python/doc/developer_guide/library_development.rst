@@ -31,22 +31,8 @@ Or, you can pick up a stable version tarball:
 
 ::
 
-    wget https://github.com/openturns/openturns/archive/v1.7.tar.gz
-    tar xjf v1.7.tar.gz
-    cd openturns-1.7
-
-You may want to install the provided R package enabling additional
-statistical capabilities:
-
-::
-
-    R CMD INSTALL utils/rot_1.4.6.tar.gz
-
-You can verify it’s correct installation by typing:
-
-::
-
-    R --vanilla <<< 'library(rot)'
+    curl -L https://github.com/openturns/openturns/archive/v1.12.tar.gz | tar xz
+    cd openturns-1.12
 
 Build openturns
 ~~~~~~~~~~~~~~~

@@ -43,7 +43,6 @@ class OT_API LinearModelResult
   CLASSNAME
 
 public:
-
   /** Default constructor */
   LinearModelResult();
 

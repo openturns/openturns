@@ -37,7 +37,7 @@ static const Factory<LinearModel> Factory_LinearModel;
 /* Default constructor */
 LinearModel::LinearModel()
 {
-  // Nothing to do
+  LOGWARN(OSS() << "LinearModel is deprecated");
 }
 
 /* Standard constructor */
@@ -49,7 +49,7 @@ LinearModel::LinearModel(const Point & vectorR,
     confidenceIntervals_(intervals),
     pValues_(pValuesOfR)
 {
-  // Nothing to do
+  LOGWARN(OSS() << "LinearModel is deprecated");
 }
 
 /* Constructor from Point */
@@ -59,7 +59,7 @@ LinearModel::LinearModel(const Point & vectorR)
   , confidenceIntervals_(vectorR, vectorR)
   , pValues_(vectorR.getDimension(), 0.0)
 {
-  // Nothing to do
+  LOGWARN(OSS() << "LinearModel is deprecated");
 }
 
 /* Virtual constructor */

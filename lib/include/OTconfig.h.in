@@ -100,9 +100,6 @@
 /* Define to 1 if R has package base. */
 #cmakedefine HAVE_R_PACKAGE_BASE
 
-/* Define to 1 if R has package rot. */
-#cmakedefine HAVE_R_PACKAGE_ROT
-
 /* Define to 1 if stdbool.h conforms to C99. */
 #cmakedefine OPENTURNS_HAVE_STDBOOL_H
 

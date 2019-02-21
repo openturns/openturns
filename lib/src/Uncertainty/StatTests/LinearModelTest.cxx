@@ -21,7 +21,7 @@
 #include <cmath>
 #include <fstream>
 #include "openturns/LinearModelTest.hxx"
-#include "openturns/LinearModelFactory.hxx"
+#include "openturns/LinearModelAlgorithm.hxx"
 #include "openturns/TestResult.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/DistFunc.hxx"
@@ -30,12 +30,13 @@
 #include "openturns/FisherSnedecor.hxx"
 #include "openturns/LinearLeastSquares.hxx"
 #include "openturns/LinearBasisFactory.hxx"
-#include "openturns/LinearCombinationFunction.hxx"
 #include "openturns/Path.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/Os.hxx"
+#include "openturns/LinearModelAnalysis.hxx"
+#include "openturns/LinearCombinationFunction.hxx"
+
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,7 +48,7 @@ LinearModelTest::LinearModelTest()
 /*  */
 TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
     const Sample & secondSample,
-    const LinearModel & linearModel,
+    const LinearModelResult & linearModelResult,
     const Scalar level)
 {
   const UnsignedInteger dimension = firstSample.getDimension();
@@ -59,7 +60,7 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
   const UnsignedInteger df = size - dimension - 1;
 
   // Regression coefficient
-  const LinearCombinationFunction fHat(LinearBasisFactory(dimension).build(), linearModel.getRegression());
+  const Function fHat(linearModelResult.getMetaModel());
   const Sample yHat(fHat(firstSample)); 
   const Sample residualSample(secondSample - yHat);
   
@@ -78,6 +79,19 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
   Log::Debug(OSS() << "F-statistic = " << statistic);
   const Scalar pValue =  FisherSnedecor(dimension, size - dimension - 1).computeComplementaryCDF(statistic);
   return TestResult("Fisher", pValue > level, pValue, level);
+}
+
+/* @deprecated */
+TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
+    const Sample & secondSample,
+    const LinearModel & linearModel,
+    const Scalar level)
+{
+  LOGWARN(OSS() << "LinearModelFisher(..., LinearModel) is deprecated");
+  const UnsignedInteger dimension = firstSample.getDimension();
+  const LinearCombinationFunction metaModel(LinearBasisFactory(dimension).build(), linearModel.getRegression());
+  LinearModelResult linearModelResult(Sample(), Basis(), Matrix(), Sample(), metaModel, linearModel.getRegression(), "", Description(), Sample(), Sample(), Point(), Point(), Point(), 0.0);
+  return LinearModelFisher(firstSample, secondSample, linearModelResult);
 }
 
 /*  */
@@ -120,7 +134,7 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
 /*  */
 TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
     const Sample & secondSample,
-    const LinearModel & linearModel,
+    const LinearModelResult & linearModelResult,
     const Scalar level)
 {
   const UnsignedInteger dimension = firstSample.getDimension();
@@ -132,7 +146,7 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
   const UnsignedInteger df = size - dimension - 1;
 
   // Regression coefficient
-  const LinearCombinationFunction fHat(LinearBasisFactory(dimension).build(), linearModel.getRegression());
+  const Function fHat(linearModelResult.getMetaModel());
   const Sample residualSample(secondSample - fHat(firstSample));
   // Compute mean & standard deviation
   const Scalar mean = residualSample.computeMean()[0];
@@ -146,6 +160,19 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
   Log::Debug(OSS() << "t-statistic = " << statistic);
   const Scalar pValue =  2.0 * DistFunc::pStudent(df, statistic, true);
   return TestResult("ResidualMean", pValue > level, pValue, level);
+}
+
+/* @deprecated */
+TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
+    const Sample & secondSample,
+    const LinearModel & linearModel,
+    const Scalar level)
+{
+  LOGWARN(OSS() << "LinearModelResidualMean(..., LinearModel) is deprecated");
+  const UnsignedInteger dimension = firstSample.getDimension();
+  const LinearCombinationFunction metaModel(LinearBasisFactory(dimension).build(), linearModel.getRegression());
+  LinearModelResult linearModelResult(Sample(), Basis(), Matrix(), Sample(), metaModel, linearModel.getRegression(), "", Description(), Sample(), Sample(), Point(), Point(), Point(), 0.0);
+  return LinearModelResidualMean(firstSample, secondSample, linearModelResult, level);
 }
 
 /*  */
@@ -181,12 +208,18 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
 /*  */
 TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample,
     const Sample & secondSample,
-    const LinearModel & linearModel,
+    const LinearModelResult & linearModelResult,
     const Scalar level,
     const Scalar breakPoint,
     const Scalar simulationSize)
 {
-  const Sample residuals(linearModel.getResidual(firstSample, secondSample));
+  const UnsignedInteger dimension = firstSample.getDimension();
+  if (linearModelResult.getTrendCoefficients().getSize() != dimension + 1)
+    throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
+  const Function fHat(linearModelResult.getMetaModel());
+  const Sample yHat(fHat(firstSample)); 
+  const Sample residuals(secondSample - yHat);
+
   const UnsignedInteger residualSize = firstSample.getSize();
 
   /* Split the sample using the breakPoint*/
@@ -228,6 +261,21 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
   return TestResult("HarrisonMcCabe", pValue > level, pValue, level);
 }
 
+/* @deprecated  */
+TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample,
+    const Sample & secondSample,
+    const LinearModel & linearModel,
+    const Scalar level,
+    const Scalar breakPoint,
+    const Scalar simulationSize)
+{
+  LOGWARN(OSS() << "LinearModelHarrisonMcCabe(..., LinearModel) is deprecated");
+  const UnsignedInteger dimension = firstSample.getDimension();
+  const LinearCombinationFunction metaModel(LinearBasisFactory(dimension).build(), linearModel.getRegression());
+  LinearModelResult linearModelResult(Sample(), Basis(), Matrix(), Sample(), metaModel, linearModel.getRegression(), "", Description(), Sample(), Sample(), Point(), Point(), Point(), 0.0);
+  return LinearModelHarrisonMcCabe(firstSample, secondSample, linearModelResult, level, breakPoint, simulationSize);
+}
+
 /*  */
 TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample,
     const Sample & secondSample,
@@ -235,8 +283,10 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
     const Scalar breakPoint,
     const Scalar simulationSize)
 {
+  LinearModelAlgorithm algo(firstSample, secondSample);
+  const LinearModelResult result(algo.getResult());
   return LinearModelHarrisonMcCabe(firstSample, secondSample,
-                                   LinearModelFactory().build(firstSample, secondSample, 1.0 - level),
+                                   result,
                                    level,
                                    breakPoint,
                                    simulationSize);
@@ -245,10 +295,17 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
 /*  */
 TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
     const Sample & secondSample,
-    const LinearModel & linearModel,
+    const LinearModelResult & linearModelResult,
     const Scalar level)
 {
-  const Sample residuals(linearModel.getResidual(firstSample, secondSample));
+  // Regression coefficient
+  const UnsignedInteger dimension = firstSample.getDimension();
+  if (linearModelResult.getTrendCoefficients().getSize() != dimension + 1)
+    throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
+  const Function fHat(linearModelResult.getMetaModel());
+  const Sample yHat(fHat(firstSample));
+  const Sample residuals(secondSample - yHat);
+
   const UnsignedInteger residualSize = firstSample.getSize();
 
   /* compute variance of the residuals*/
@@ -262,7 +319,9 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
   }
 
   /* Build a linear model on the squared residuals */
-  const LinearModel linearModelResiduals(LinearModelFactory().build(firstSample, w));
+  LinearModelAlgorithm algo(firstSample, w);
+  const LinearModelResult result(algo.getResult());
+  const LinearModel linearModelResiduals(result.getTrendCoefficients());
   /* Predicted values of the squared residuals*/
   const Sample wPredicted(linearModelResiduals.getPredicted(firstSample));
   /* Compute variances */
@@ -278,13 +337,29 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
   return TestResult("BreuschPagan", pValue > level, pValue, level);
 }
 
+
+/* @deprecated */
+TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
+    const Sample & secondSample,
+    const LinearModel & linearModel,
+    const Scalar level)
+{
+  LOGWARN(OSS() << "LinearModelBreuschPagan(..., LinearModel) is deprecated");
+  const UnsignedInteger dimension = firstSample.getDimension();
+  const LinearCombinationFunction metaModel(LinearBasisFactory(dimension).build(), linearModel.getRegression());
+  LinearModelResult linearModelResult(Sample(), Basis(), Matrix(), Sample(), metaModel, linearModel.getRegression(), "", Description(), Sample(), Sample(), Point(), Point(), Point(), 0.0);
+  return LinearModelBreuschPagan(firstSample, secondSample, linearModelResult, level);
+}
+
 /*  */
 TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
     const Sample & secondSample,
     const Scalar level)
 {
+  LinearModelAlgorithm algo(firstSample, secondSample);
+  const LinearModelResult result(algo.getResult());
   return LinearModelBreuschPagan(firstSample, secondSample,
-                                 LinearModelFactory().build(firstSample, secondSample, 1.0 - level),
+                                 result,
                                  level);
 }
 
@@ -292,13 +367,18 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
 /*  */
 TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
     const Sample & secondSample,
-    const LinearModel & linearModel,
+    const LinearModelResult & linearModelResult,
     const String hypothesis,
     const Scalar level)
 {
-  const Sample residuals(linearModel.getResidual(firstSample, secondSample));
-  const UnsignedInteger residualSize = firstSample.getSize();
   const UnsignedInteger dimension = firstSample.getDimension();
+  if (linearModelResult.getTrendCoefficients().getSize() != dimension + 1)
+    throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
+  const Function fHat(linearModelResult.getMetaModel());
+  const Sample yHat(fHat(firstSample)); 
+  const Sample residuals(secondSample - yHat);
+
+  const UnsignedInteger residualSize = firstSample.getSize();
 
   const Scalar sumSquaredResiduals = residuals.computeVariance()[0] * (residualSize - 1);
 
@@ -373,16 +453,66 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
   return result;
 }
 
+/* @deprecated */
+TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
+    const Sample & secondSample,
+    const LinearModel & linearModel,
+    const String hypothesis,
+    const Scalar level)
+{
+  LOGWARN(OSS() << "LinearModelDurbinWatson(..., LinearModel) is deprecated");
+  const UnsignedInteger dimension = firstSample.getDimension();
+  const LinearCombinationFunction metaModel(LinearBasisFactory(dimension).build(), linearModel.getRegression());
+  LinearModelResult linearModelResult(Sample(), Basis(), Matrix(), Sample(), metaModel, linearModel.getRegression(), "", Description(), Sample(), Sample(), Point(), Point(), Point(), 0.0);
+  return LinearModelDurbinWatson(firstSample, secondSample, linearModelResult, hypothesis, level);
+}
+
 /*  */
 TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
     const Sample & secondSample,
     const String hypothesis,
     const Scalar level)
 {
+  LinearModelAlgorithm algo(firstSample, secondSample);
+  const LinearModelResult result(algo.getResult());
   return LinearModelDurbinWatson(firstSample, secondSample,
-                                 LinearModelFactory().build(firstSample, secondSample, 1.0 - level),
+                                 result,
                                  hypothesis,
                                  level);
+}
+
+
+/* Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialRegression performs the Regression test simultaneously on all firstSample[i] and secondSample, for i in the selection. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used. */
+LinearModelTest::TestResultCollection LinearModelTest::PartialRegression(const Sample & firstSample,
+    const Sample & secondSample,
+    const Indices & selection,
+    const Scalar level)
+{
+  LinearModelAlgorithm algo(firstSample.getMarginal(selection), secondSample);
+  const LinearModelResult result(algo.getResult());
+  const LinearModelAnalysis analysis(result);
+  const UnsignedInteger size = selection.getSize() + 1;
+  const Point pValues(analysis.getCoefficientsPValues());
+
+  // Then, build the collection of results
+  TestResultCollection resultCollection;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    const Scalar pValue = pValues[i];
+    resultCollection.add(TestResult("Regression", pValue > level, pValue, level));
+  }
+  return resultCollection;
+}
+
+/* Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), FullRegression performs the Regression test simultaneously on all firstSample[i] and secondSample. The Regression test tests if the regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used. */
+LinearModelTest::TestResultCollection LinearModelTest::FullRegression(const Sample & firstSample,
+    const Sample & secondSample,
+    const Scalar level)
+{
+  const UnsignedInteger dimension = firstSample.getDimension();
+  Indices selection(dimension);
+  selection.fill();
+  return PartialRegression(firstSample, secondSample, selection, level);
 }
 
 END_NAMESPACE_OPENTURNS

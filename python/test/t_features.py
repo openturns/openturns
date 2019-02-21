@@ -35,15 +35,6 @@ try:
     except:
         print('no')
 
-    # check that rot package is installed
-    print('4: linear model (R.rot)'.ljust(width), end=' ')
-    try:
-        lm = ot.LinearModelFactory().build(
-            ot.Normal(2).getSample(10), ot.Normal().getSample(10))
-        print('OK')
-    except:
-        print('no')
-
     # check XML support
     print('5: serialization (LibXML2)'.ljust(width), end=' ')
     try:

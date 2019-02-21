@@ -66,6 +66,8 @@
 %include KrigingAlgorithm.i
 %include LinearModelAlgorithm.i
 %include LinearModelAnalysis.i
+%include LinearModelTest.i
+%include VisualTest.i
 
 /* Uncertainty/Model */
 %include RandomVector.i

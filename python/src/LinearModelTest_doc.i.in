@@ -7,9 +7,9 @@
 
     LinearModelTest.LinearModelFisher(*firstSample, secondSample, level*)
 
-    LinearModelTest.LinearModelFisher(*firstSample, secondSample, linearModel*)
+    LinearModelTest.LinearModelFisher(*firstSample, secondSample, linearModelResult*)
 
-    LinearModelTest.LinearModelFisher(*firstSample, secondSample, linearModel, level*)
+    LinearModelTest.LinearModelFisher(*firstSample, secondSample, linearModelResult, level*)
 
 
 Parameters
@@ -18,7 +18,7 @@ firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-linearModel : :class:`~openturns.LinearModel`
+linearModelResult : :class:`~openturns.LinearModelResult`
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
     Threshold p-value of the test (= first kind risk), it must be
@@ -36,8 +36,8 @@ LinearModelTest_LinearModelResidualMean
 Notes
 -----
 The LinearModelTest class is used through its static methods in order to evaluate
-the quality of the linear regression model between two samples
-(see :class:`~openturns.LinearModel`). The linear regression model between the
+the quality of the linear regression model between two samples.
+The linear regression model between the
 scalar variable :math:`Y` and the :math:`n`-dimensional one
 :math:`\vect{X} = (X_i)_{i \leq n}` is as follows:
 
@@ -76,9 +76,9 @@ Examples
 
     LinearModelTest.LinearModelResidualMean(*firstSample, secondSample, level*)
 
-    LinearModelTest.LinearModelResidualMean(*firstSample, secondSample, linearModel*)
+    LinearModelTest.LinearModelResidualMean(*firstSample, secondSample, linearModelResult*)
 
-    LinearModelTest.LinearModelResidualMean(*firstSample, secondSample, linearModel, level*)
+    LinearModelTest.LinearModelResidualMean(*firstSample, secondSample, linearModelResult, level*)
 
 
 Parameters
@@ -87,7 +87,7 @@ firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-linearModel : :class:`~openturns.LinearModel`
+linearModelResult : :class:`~openturns.LinearModelResult`
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
     Threshold p-value of the test (= first kind risk), it must be
@@ -105,8 +105,8 @@ LinearModelTest_LinearModelFisher, LinearModelTest_LinearModelHarrisonMcCabe
 Notes
 -----
 The LinearModelTest class is used through its static methods in order to evaluate
-the quality of the linear regression model between two samples
-(see :class:`~openturns.LinearModel`). The linear regression model between the
+the quality of the linear regression model between two samples.
+The linear regression model between the
 scalar variable :math:`Y` and the :math:`n`-dimensional one
 :math:`\vect{X} = (X_i)_{i \leq n}` is as follows:
 
@@ -144,11 +144,11 @@ class=TestResult name=Unnamed type=ResidualMean binaryQualityMeasure=true p-valu
 
     LinearModelTest.LinearModelHarrisonMcCabe(*firstSample, secondSample*)
 
-    LinearModelTest.LinearModelHarrisonMcCabe(*firstSample, secondSample, linearModel*)
+    LinearModelTest.LinearModelHarrisonMcCabe(*firstSample, secondSample, linearModelResult*)
 
     LinearModelTest.LinearModelHarrisonMcCabe(*firstSample, secondSample, level, breakPoint, simulationSize*)
 
-    LinearModelTest.LinearModelHarrisonMcCabe(*firstSample, secondSample, linearModel, level, breakPoint, simulationSize*)
+    LinearModelTest.LinearModelHarrisonMcCabe(*firstSample, secondSample, linearModelResult, level, breakPoint, simulationSize*)
 
 Parameters
 ----------
@@ -156,7 +156,7 @@ firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-linearModel : :class:`~openturns.LinearModel`
+linearModelResult : :class:`~openturns.LinearModelResult`
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
     Threshold p-value of the test (= first kind risk), it must be
@@ -180,8 +180,8 @@ LinearModelTest_LinearModelDurbinWatson
 Notes
 -----
 The LinearModelTest class is used through its static methods in order to evaluate
-the quality of the linear regression model between two samples
-(see :class:`~openturns.LinearModel`). The linear regression model between the
+the quality of the linear regression model between two samples.
+The linear regression model between the
 scalar variable :math:`Y` and the :math:`n`-dimensional one
 :math:`\vect{X} = (X_i)_{i \leq n}` is as follows:
 
@@ -219,11 +219,11 @@ class=TestResult name=Unnamed type=HarrisonMcCabe binaryQualityMeasure=true p-va
 
     LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample*)
 
-    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, linearModel*)
+    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, linearModelResult*)
 
     LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, level*)
 
-    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, linearModel, level*)
+    LinearModelTest.LinearModelBreuschPagan(*firstSample, secondSample, linearModelResult, level*)
 
 Parameters
 ----------
@@ -231,7 +231,7 @@ firstSample : 2-d sequence of float
     First tested sample, of dimension 1.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-linearModel : :class:`~openturns.LinearModel`
+linearModelResult : :class:`~openturns.LinearModelResult`
     A linear model. If not provided, it is built using the given samples.
 level : positive float :math:`< 1`
     Threshold p-value of the test (= first kind risk), it must be
@@ -250,8 +250,8 @@ LinearModelTest_LinearModelDurbinWatson
 Notes
 -----
 The LinearModelTest class is used through its static methods in order to evaluate
-the quality of the linear regression model between two samples
-(see :class:`~openturns.LinearModel`). The linear regression model between the
+the quality of the linear regression model between two samples.
+The linear regression model between the
 scalar variable :math:`Y` and the :math:`n`-dimensional one
 :math:`\vect{X} = (X_i)_{i \leq n}` is as follows:
 
@@ -293,9 +293,9 @@ class=TestResult name=Unnamed type=BreuschPagan binaryQualityMeasure=true p-valu
 
     LinearModelTest.LinearModelDurbinWatson(*firstSample, secondSample, hypothesis, level*)
 
-    LinearModelTest.LinearModelDurbinWatson(*firstSample, secondSample, linearModel*)
+    LinearModelTest.LinearModelDurbinWatson(*firstSample, secondSample, linearModelResult*)
 
-    LinearModelTest.LinearModelDurbinWatson(*firstSample, secondSample, linearModel, hypothesis, level*)
+    LinearModelTest.LinearModelDurbinWatson(*firstSample, secondSample, linearModelResult, hypothesis, level*)
 
 Parameters
 ----------
@@ -303,7 +303,7 @@ firstSample : 2-d sequence of float
     First tested sample.
 secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
-linearModel : :class:`~openturns.LinearModel`
+linearModelResult : :class:`~openturns.LinearModelResult`
     A linear model. If not provided, it is built using the given samples.
 hypothesis : string
     Hypothesis H0 for the residuals. It can be : 'Equal' to 0, 'Less' than 0 or
@@ -324,8 +324,8 @@ LinearModelTest_LinearModelBreuschPagan, LinearModelTest_LinearModelHarrisonMcCa
 Notes
 -----
 The LinearModelTest class is used through its static methods in order to evaluate
-the quality of the linear regression model between two samples
-(see :class:`~openturns.LinearModel`). The linear regression model between the
+the quality of the linear regression model between two samples.
+The linear regression model between the
 scalar variable :math:`Y` and the :math:`n`-dimensional one
 :math:`\vect{X} = (X_i)_{i \leq n}` is as follows:
 
@@ -354,3 +354,125 @@ Examples
 >>> print(test_result)
 class=TestResult name=Unnamed type=DurbinWatson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.653603 description=[H0: auto.cor=0]
 "
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelTest::PartialRegression
+"Test whether two discrete samples are independent.
+
+**Available usages**:
+
+    LinearModelTest.PartialRegression(*firstSample, secondSample, selection*)
+
+    LinearModelTest.PartialRegression(*firstSample, secondSample, selection, level*)
+
+
+Parameters
+----------
+firstSample : 2-d sequence of float
+    First tested sample, of dimension :math:`n \geq 1`.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+selection : sequence of int, maximum integer value :math:`< n`
+    List of indices selecting which subsets of the first sample will successively
+    be tested with the second sample through the regression test.
+level : positive float :math:`< 1`
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
+
+Returns
+-------
+testResults : Collection of :class:`~openturns.TestResult`
+    Results for each component of the linear model including intercept.
+
+See Also
+--------
+LinearModelTest_FullRegression, LinearModelTest_LinearModelFisher
+
+Notes
+-----
+The Partial Regression Test is used to assess the linearity between a subset of
+components of *firstSample* and *secondSample*.
+The parameter *selection* enables to select specific subsets of the
+*firstSample* to be tested.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dim = 3
+>>> distCol = [ot.Normal()] * dim
+>>> S = ot.CorrelationMatrix(dim)
+>>> S[0, dim - 1] = 0.99
+>>> copula = ot.NormalCopula(S)
+>>> distribution = ot.ComposedDistribution(distCol, copula)
+>>> sample = distribution.getSample(30)
+>>> firstSample = sample[:, :2]
+>>> secondSample = sample[:, 2]
+>>> selection = [1]
+>>> test_result = ot.LinearModelTest.PartialRegression(firstSample, secondSample, selection)
+>>> print(test_result[1])
+class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.579638 description=[]"
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelTest::FullRegression
+"Test whether two discrete samples are not linear.
+
+**Available usages**:
+
+    LinearModelTest.FullRegression(*firstSample, secondSample*)
+
+    LinearModelTest.FullRegression(*firstSample, secondSample, level*)
+
+
+Parameters
+----------
+firstSample : 2-d sequence of float
+    First tested sample, of dimension :math:`n \geq 1`.
+secondSample : 2-d sequence of float
+    Second tested sample, of dimension 1.
+level : positive float :math:`< 1`
+    Threshold p-value of the test (= first kind risk), it must be
+    :math:`< 1`, equal to 0.05 by default.
+
+Returns
+-------
+testResults : Collection of :class:`~openturns.TestResult`
+    Results for each component of the linear model including intercept.
+
+See Also
+--------
+LinearModelTest_PartialRegression, LinearModelTest_LinearModelFisher
+
+Notes
+-----
+The Full Regression Test is used to check the quality of the linear regression
+model between two samples: *firstSample* of dimension *n* and *secondSample* of
+dimension 1. If *firstSample[i]* is the sample extracted from
+*firstSample* (:math:`i^{th}` coordinate of each point of the sample),
+FullRegression performs the linear regression test on all
+*firstSample[i]* and *secondSample*. The linear regression test tests if the
+linear regression model between two scalar samples is not significant.
+It is based on the deviation analysis of the regression.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dim = 3
+>>> distCol = [ot.Normal()] * dim
+>>> S = ot.CorrelationMatrix(dim)
+>>> S[0, dim - 1] = 0.99
+>>> copula = ot.NormalCopula(S)
+>>> distribution = ot.ComposedDistribution(distCol, copula)
+>>> sample = distribution.getSample(30)
+>>> firstSample = sample[:, :2]
+>>> secondSample = sample[:, 2]
+>>> test_result = ot.LinearModelTest.FullRegression(firstSample, secondSample)
+>>> print(test_result)
+[class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.605 description=[],class=TestResult name=Unnamed type=Regression binaryQualityMeasure=false p-value threshold=0.05 p-value=9.70282e-27 description=[],class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.11352 description=[]]"
+
+

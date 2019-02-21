@@ -45,10 +45,10 @@ int main(int argc, char *argv[])
     LinearModelResult result(test.getResult());
     LinearModelAnalysis analysis(result);
     fullprint << analysis.__str__() << std::endl;
-    // Compute confidence level (95%) for coefficients estimate (1-alpha = 0.95)
-    const Scalar alpha = 0.05;
+    // Compute confidence level (95%) for coefficients estimate
+    const Scalar alpha = 0.95;
     const Interval interval(analysis.getCoefficientsConfidenceInterval(alpha));
-    fullprint << "Confidence intervals with level=" << 1 - alpha << " : "  << interval << std::endl;
+    fullprint << "Confidence intervals with level=" << alpha << " : "  << interval << std::endl;
   }
 
   {
@@ -79,11 +79,11 @@ int main(int argc, char *argv[])
     LinearModelResult result(test.getResult());
     LinearModelAnalysis analysis(result);
     fullprint << analysis.__str__() << std::endl;
-    // Compute confidence level (95%) for coefficients estimate (1-alpha = 0.95)
-    const Scalar alpha = 0.05;
+    // Compute confidence level (95%) for coefficients estimate
+    const Scalar alpha = 0.95;
     // Finally define the interval
     const Interval interval(analysis.getCoefficientsConfidenceInterval(alpha));
-    fullprint << "Confidence intervals with level=" << 1 - alpha << " : "  << interval << std::endl;
+    fullprint << "Confidence intervals with level=" << alpha << " : "  << interval << std::endl;
   }
 
   return ExitCode::Success;
