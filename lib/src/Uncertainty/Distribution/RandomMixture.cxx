@@ -2572,10 +2572,9 @@ Complex RandomMixture::computeDeltaCharacteristicFunction(const Point & x) const
 /* Update cache */
 void RandomMixture::updateCacheDeltaCharacteristicFunction(const Sample & points) const
 {
-  Point x(dimension_);
   for(UnsignedInteger i = 0; i < points.getSize(); ++i)
   {
-    for (UnsignedInteger j = 0; j < dimension_; ++j) x[j] = points(i, j);
+    Point x(points[i]);
     // Computation of CF - NormalCF
     // Here we check if it is possible to reduce calculation
     // We reduce CF - NormalCF to NormalCF * (CF/NormalCF -1), which rewrites

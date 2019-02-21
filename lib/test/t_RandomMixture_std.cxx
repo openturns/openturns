@@ -334,9 +334,9 @@ int main(int, char *[])
     grid3D *= dist_3D.getStandardDeviation();
     // translating
     grid3D += dist_3D.getMean();
-    for (UnsignedInteger index = 0; index < grid3D.getSize(); ++ index)
+    for (UnsignedInteger index = 0; index < grid3D.getSize()/4; ++ index)
     {
-      const Point point(grid3D[index]);
+      const Point point(grid3D[4*index]);
       const Scalar PDF = dist_3D.computePDF(point);
       fullprint << "pdf      =" << PDF << std::endl;
     }
