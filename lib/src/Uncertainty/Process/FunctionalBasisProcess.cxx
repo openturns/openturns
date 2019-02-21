@@ -89,6 +89,16 @@ String FunctionalBasisProcess::__repr__() const
   return oss;
 }
 
+/* String converter */
+String FunctionalBasisProcess::__str__(const String & offset) const
+{
+  OSS oss;
+  oss << "FunctionalBasisProcess(distribution=" << distribution_.__str__(offset)
+      << ", basis=" << basis_.__str__(offset)
+      << ")";
+  return oss;
+}
+
 /* Covariance model accessor */
 CovarianceModel FunctionalBasisProcess::getCovarianceModel() const
 {
