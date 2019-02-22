@@ -297,8 +297,8 @@ try:
     # Grid ==> (mu, mu+sigma)
     grid3D = b.generate() * dist_3D.getStandardDeviation() + dist_3D.getMean()
 
-    for i in range(grid3D.getSize()):
-        point = grid3D[i]
+    for i in range(grid3D.getSize() // 4):
+        point = grid3D[4 * i]
         PDF = dist_3D.computePDF(point)
         print("pdf      = %.6g" % PDF)
 
