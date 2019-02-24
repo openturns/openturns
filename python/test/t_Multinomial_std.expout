@@ -4,8 +4,8 @@ Elliptical =  False
 Continuous =  False
 oneRealization= [1,2,0]
 oneSample first= class=Point name=Unnamed dimension=3 values=[0,1,4]  last= class=Point name=Unnamed dimension=3 values=[3,1,0]
-mean= class=Point name=Unnamed dimension=3 values=[1.2635,1.2335,1.2564]
-covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.937762,-0.300457,-0.315593,-0.300457,0.930871,-0.314301,-0.315593,-0.314301,0.947554]
+mean= class=Point name=Unnamed dimension=3 values=[1.2578,1.2409,1.2607]
+covariance= class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.941633,-0.305935,-0.321041,-0.305935,0.941561,-0.317234,-0.321041,-0.317234,0.956031]
 support=
  0 : [ 0 0 0 ]
  1 : [ 1 0 0 ]
@@ -81,6 +81,7 @@ Point=  class=Point name=Unnamed dimension=3 values=[1,1,1]
 log pdf=-2.837127
 pdf     =0.058594
 cdf=0.13281
+probability=1.00000
 quantile= class=Point name=Unnamed dimension=3 values=[3,3,3]
 cdf(quantile)= 0.953125
 entropy=3.709864
