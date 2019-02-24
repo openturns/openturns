@@ -66,13 +66,22 @@ public:
   /** Get one realization of the distribution */
   Point getRealization() const;
 
+  Sample getSample(const UnsignedInteger size) const;
+
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Indices & point) const;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;
   Scalar computeCDF(const Point & point) const;
+
+  /** Get the probability content of an interval */
+  Scalar computeProbability(const Interval & interval) const;
+
+  /** Get the survival function of the distribution */
+  using DiscreteDistribution::computeSurvivalFunction;
+  Scalar computeSurvivalFunction(const Point & point) const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using DistributionImplementation::computeConditionalPDF;
@@ -148,12 +157,17 @@ private:
 
   /** Compute the generating function of a sum of truncated Poisson distributions as needed in the computeCDF() method */
   Complex computeGlobalPhi(const Complex & z,
-                           const Point & x) const;
+                           const Indices & x) const;
+
+  /** Compute the generating function of a sum of truncated Poisson distributions as needed in the computeProbability() method */
+  Complex computeGlobalPhi(const Complex & z,
+                           const Indices & a,
+                           const Indices & b) const;
 
   /** Compute the generating function of a truncated Poisson distributions as needed in the computeCDF() method */
   Complex computeLocalPhi(const Complex & z,
                           const Scalar lambda,
-                          const Scalar a) const;
+                          const UnsignedInteger a) const;
 
   /** Quantile computation for dimension=1 */
   Scalar computeScalarQuantile(const Scalar prob,

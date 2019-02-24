@@ -136,49 +136,87 @@ Point Multinomial::getRealization() const
     const UnsignedInteger xI = DistFunc::rBinomial(n, p_[i] / sum);
     realization[i] = xI;
     n -= xI;
+    if (n == 0) break;
     sum -= p_[i];
   }
   return realization;
 }
 
-/* Get the PDF of the distribution */
-Scalar Multinomial::computePDF(const Point & point) const
+/* Get a sample of the distribution */
+Sample Multinomial::getSample(const UnsignedInteger size) const
 {
   const UnsignedInteger dimension = getDimension();
-  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+  SampleImplementation sample(size, dimension);
+  Scalar xI = 0.0;
+  UnsignedInteger n = 0;
+  Scalar sum = 0.0;
+  for (UnsignedInteger k = 0; k < size; ++k)
+  {
+    /* We use an elementary algorithm based on the definition of the Multinomial distribution:
+     * the i-th component is generated using a Binomial distribution */
+    n = n_;
+    sum = 1.0;
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      /* The current component follow a binomial distribution with parameters p_[i] and N */
+      xI = DistFunc::rBinomial(n, p_[i] / sum);
+      sample(k, i) = xI;
+      n -= xI;
+      if (n == 0) break;
+      sum -= p_[i];
+    }
+  }
+  return sample;
+}
 
+/* Get the PDF of the distribution */
+Scalar Multinomial::computePDF(const Indices & point) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (point.getSize() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getSize();
+
+  UnsignedInteger k = 0;
   // First, check the validity of the input
-  Scalar sumX = 0.0;
+  UnsignedInteger sumX = 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const Scalar k = point[i];
+    k = point[i];
     // Early exit if the given point is not in the support of the distribution
-    if ((std::abs(k - round(k)) > supportEpsilon_) || (k < -supportEpsilon_) || (k > n_ + supportEpsilon_)) return 0.0;
+    // Hear we cheat a little bit: if x_i is negative, the conversion to an
+    // unsigned integer leads to a value well above the value of n_, allowing
+    // to test for x_i < 0 and x_i > n in one test
+    if (k > n_) return 0.0;
     sumX += k;
   }
-  if (sumX > n_ + supportEpsilon_) return 0.0;
-  if ((sumP_ >= 1.0) && (sumX < n_ - supportEpsilon_)) return 0.0;
-  Scalar logPDF = -1.0;
-  if (sumP_ < 1.0) logPDF = lgamma(n_ + 1.0) - lgamma(n_ - sumX + 1.0) + (n_ - sumX) * log1p(-sumP_);
-  // In the case sumP_ >= 1.0, the PDF is positive only if sumX == n_
-  else logPDF = lgamma(n_ + 1.0);
+  if (sumX > n_) return 0.0;
+  if ((sumP_ >= 1.0) && (sumX < n_)) return 0.0;
+  Scalar sumP = sumP_;
+  UnsignedInteger sumK = 0;
+  k = n_ - sumX;
+  Scalar pdf = 0.0;
+  // If the multinomial distribution has been defined as X_1+...+X_d<=N, add a X_0 with value N-(X_1+...+X_d) and probability 1-sumP
+  if (sumP < 1.0)
+  {
+    pdf = DistFunc::dBinomial(n_, 1.0 - sumP, k);
+    sumK += k;
+  }
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    const Scalar k = point[i];
-    // For p_[i] > 0, it is possible to obtain any value of k between 0 and n
-    if (p_[i] > 0.0) logPDF += k * std::log(p_[i]) - lgamma(k + 1.0);
-    // Else only k == 0 is allowed, with a zero contribution to the log PDF
-    else if (k > 0) return 0.0;
+    // Here we know that round(point[i]) >= 0
+    k = point[i];
+    pdf *= DistFunc::dBinomial(n_ - sumK, p_[i] / sumP, k);
+    sumK += k;
+    sumP -= p_[i];
   }
-  return std::exp(logPDF);
+  return pdf;
 }
 
 /* Compute the generating function of a sum of truncated Poisson distributions as needed in the computeCDF() method */
 Complex Multinomial::computeGlobalPhi(const Complex & z,
-                                      const Point & x) const
+                                      const Indices & x) const
 {
   // Initialize with the non truncated term
-  Complex value(std::exp(-(1.0 - sumP_) * n_ * (1.0 - z)));
+  Complex value(sumP_ == 1.0 ? 1.0 : std::exp(-(1.0 - sumP_) * n_ * (1.0 - z)));
   const UnsignedInteger dimension = getDimension();
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -192,35 +230,59 @@ Complex Multinomial::computeGlobalPhi(const Complex & z,
   return value;
 }
 
+/* Compute the generating function of a sum of truncated Poisson distributions as needed in the computeProbability() method */
+Complex Multinomial::computeGlobalPhi(const Complex & z,
+                                      const Indices & a,
+                                      const Indices & b) const
+{
+  // Initialize with the non truncated term
+  Complex value(sumP_ == 1.0 ? 1.0 : std::exp(-(1.0 - sumP_) * n_ * (1.0 - z)));
+  const UnsignedInteger dimension = getDimension();
+  Scalar np = 0.0;
+  Complex term = 0.0;
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    np = n_ * p_[i];
+    term = computeLocalPhi(z, np, b[i]);
+    if (a[i] > 0) term -= computeLocalPhi(z, np, a[i] - 1);
+    value *= term;
+    if (std::abs(value) == 0.0)
+    {
+      LOGWARN("Underflow in Multinomial::computePhi");
+      return 0.0;
+    }
+  }
+  return value;
+}
+
 /* Compute the generating function of a truncated Poisson distributions as needed in the computeCDF() method */
 Complex Multinomial::computeLocalPhi(const Complex & z,
                                      const Scalar lambda,
-                                     const Scalar a) const
+                                     const UnsignedInteger a) const
 {
   if (z == 0.0) return 1.0;
   const Complex u(lambda * z);
-  const UnsignedInteger iMax = static_cast< UnsignedInteger > (floor(a));
   // Small value of a, evaluate the generating function as a polynomial
   if (a <= smallA_)
   {
     Complex value(std::exp(-lambda));
     Complex term(value);
-    for (UnsignedInteger i = 1; i <= iMax; ++i)
+    for (UnsignedInteger i = 1; i <= a; ++i)
     {
-      term *= u / Complex(i);
+      term *= u * (1.0 / i);
       value += term;
     }
     return value;
   } // smallA_
   // Large a
   Complex value(std::exp(-lambda + u));
-  UnsignedInteger i = iMax + 1;
-  Complex term(std::exp(-lambda + Complex(i) * std::log(u) - lgamma(i + 1.0)));
+  UnsignedInteger i = a + 1;
+  Complex term(std::exp(-lambda + (1.0 * i) * std::log(u) - lgamma(i + 1.0)));
   while (std::abs(term) > SpecFunc::Precision * std::abs(value))
   {
     value -= term;
     ++i;
-    term *= u / Complex(i);
+    term *= u * (1.0 / i);
   }
   return value - term;
 }
@@ -233,19 +295,18 @@ Scalar Multinomial::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
-
+  const Indices kPoint(point.begin(), point.end());
   // Early exit for 1D case
   if (dimension == 1)
   {
-    const Scalar k = point[0];
-    if (k < -supportEpsilon_) return 0.0;
-    if (k > n_ + supportEpsilon_) return 1.0;
-    return DistFunc::pBeta(n_ - floor(k), floor(k) + 1, 1.0 - p_[0]);
+    if (point[0] < -supportEpsilon_) return 0.0;
+    if (point[0] > n_ + supportEpsilon_) return 1.0;
+    return DistFunc::pBeta(n_ - kPoint[0], kPoint[0] + 1, 1.0 - p_[0]);
   }
   // First, check the bording cases
   Indices indices(0);
   Bool allZero = true;
-  Scalar sumX = 0.0;
+  UnsignedInteger sumX = 0;
   // Trivial cases
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
@@ -253,18 +314,12 @@ Scalar Multinomial::computeCDF(const Point & point) const
     if (point[i] < -supportEpsilon_) return 0.0;
     if (point[i] < n_ - supportEpsilon_) indices.add(i);
     allZero = allZero && (std::abs(point[i]) < supportEpsilon_);
-    sumX += point[i];
+    sumX += kPoint[i];
   }
   // If we are at the origin, CDF=PDF(0,...,0)
   if (allZero) return std::pow(1.0 - sumP_, static_cast<int>(n_));
   // If the atoms with non zero probability sum to N
-  if ((std::abs(sumP_ - 1.0) < supportEpsilon_) && (sumX == n_))
-  {
-    Scalar value = lgamma(n_ + 1.0);
-    for (UnsignedInteger j = 0; j < dimension; ++j)
-      value += point[j] * std::log(p_[j]) - lgamma(point[j] + 1.0);
-    return std::exp(value);
-  }
+  if ((std::abs(sumP_ - 1.0) < supportEpsilon_) && (sumX == n_)) return computePDF(kPoint);
   // If the point covers the whole support of the distribution, return 1.0
   const UnsignedInteger size = indices.getSize();
   if (size == 0) return 1.0;
@@ -282,9 +337,9 @@ Scalar Multinomial::computeCDF(const Point & point) const
     return Multinomial(n_, pReduced).computeCDF(xReduced);
   }
   // Evaluation of P(W=n) using Poisson's formula
-  Complex phiK(computeGlobalPhi(r_, point));
+  Complex phiK(computeGlobalPhi(Complex(r_, 0.0), kPoint));
   const Complex zetaN(std::exp(Complex(0.0, M_PI / n_)));
-  Complex phiKp1(computeGlobalPhi(r_ * zetaN, point));
+  Complex phiKp1(computeGlobalPhi(r_ * zetaN, kPoint));
   Complex delta(phiK - phiKp1);
   Scalar value = delta.real();
   const Scalar dv0 = std::abs(delta);
@@ -299,7 +354,7 @@ Scalar Multinomial::computeCDF(const Point & point) const
   {
     phiK = phiKp1;
     t *= zetaN;
-    phiKp1 = computeGlobalPhi(r_ * t, point);
+    phiKp1 = computeGlobalPhi(r_ * t, kPoint);
     delta = phiK - phiKp1;
     value += sign * delta.real();
     const Scalar dv = std::abs(delta);
@@ -308,6 +363,88 @@ Scalar Multinomial::computeCDF(const Point & point) const
   }
   // Due to round-off errors, the computed CDF can be slightly below 0 or over 1.
   return std::max(0.0, std::min(1.0, value * normalizationCDF_));
+}
+
+/* Compute the probability content of an interval */
+Scalar Multinomial::computeProbability(const Interval & interval) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
+
+  // Empty interval
+  if (interval.isNumericallyEmpty()) return 0.0;
+
+  // Early exit for 1D case
+  if (dimension == 1)
+  {
+    const Scalar a = interval.getLowerBound()[0];
+    const Scalar b = interval.getUpperBound()[0];
+    if ((a > n_ + supportEpsilon_) || (b < -supportEpsilon_)) return 0.0;
+    if ((a < -supportEpsilon_) && (b > n_ + supportEpsilon_)) return 1.0;
+    return DistFunc::pBeta(n_ - floor(b), floor(b) + 1, 1.0 - p_[0]) - DistFunc::pBeta(n_ - floor(a), floor(a) + 1, 1.0 - p_[0]);
+  }
+  const Point lower(interval.getLowerBound());
+  const Point upper(interval.getUpperBound());
+  Indices a(dimension_);
+  Indices b(dimension_);
+  UnsignedInteger sigmaA = 0;
+  UnsignedInteger sigmaB = 0;
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    {
+      a[i] = static_cast<UnsignedInteger>(std::max(0.0, std::ceil(lower[i])));
+      b[i] = static_cast<UnsignedInteger>(std::min(1.0 * n_, std::floor(upper[i])));
+      if (a[i] > b[i]) return 0.0;
+      sigmaA += a[i];
+      sigmaB += b[i];
+    }
+  if (sumP_ < 1.0)
+    {
+      a.add(0);
+      b.add(n_);
+      sigmaB += n_;
+    }
+  if (sigmaA > n_) return 0.0;
+  if (sigmaB < n_) return 0.0;
+  if (sigmaA == n_) return computePDF(a);
+  if (sigmaB == n_) return computePDF(b);
+  // Here we know that 0 <= a[j] < b[j] <= h[j]
+  const UnsignedInteger nA = n_ - sigmaA;
+  Scalar r = 1.0;
+  Scalar logCoefNorm = 0.0;
+  if (eta_ > 0.0)
+    {
+      r = std::pow(eta_, 1.0 / (2.0 * nA));
+      logCoefNorm = nA * std::log(r);
+    }
+  // Diametral term
+  const Scalar poisLogPDF = DistFunc::logdPoisson(n_, n_);
+  const Scalar coefNorm = std::exp(-logCoefNorm - poisLogPDF - sigmaA * std::log(r)) / (2.0 * nA);
+  Scalar value = coefNorm * computeGlobalPhi(r, a, b).real();
+  Scalar delta = SpecFunc::MaxScalar;
+  Scalar sign2 = -2.0 * coefNorm;
+  for (UnsignedInteger k = 1; k < nA; ++k)
+    {
+      if (std::abs(delta) <= SpecFunc::Precision * std::abs(value))
+	break;
+      const Complex zeta(r * std::exp(Complex(0.0, k * M_PI / nA)));
+      delta = sign2 * (computeGlobalPhi(zeta, a, b) * std::exp(Complex(0.0, k * sigmaA * M_PI / nA))).real();
+      value += delta;
+      sign2 = -sign2;
+    }
+  // Check if we have to take the last term into account
+  if (std::abs(delta) > SpecFunc::Precision * std::abs(value))
+    {
+      delta = coefNorm * computeGlobalPhi(-r, a, b).real();
+      if ((n_ + sigmaA) % 2 == 0) value += delta;
+      else value -= delta;
+    }
+  return std::min(1.0, std::max(0.0, value));
+}
+
+/* Get the survival function of the distribution */
+Scalar Multinomial::computeSurvivalFunction(const Point & point) const
+{
+  return computeProbability(Interval(point, Point(dimension_, n_)));
 }
 
 /* Compute the scalar quantile of the 1D multinomial distribution */
@@ -342,7 +479,7 @@ Scalar Multinomial::computeConditionalPDF(const Scalar x,
     sumP += p_[i];
   }
   if (sumY > n_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has a sum of components greater than the allowed range.";
-  return Binomial(static_cast<UnsignedInteger>(n_ - sumY), p_[conditioningDimension] / sumP).computePDF(x);
+  return DistFunc::dBinomial(static_cast<UnsignedInteger>(x), static_cast<UnsignedInteger>(n_ - sumY), p_[conditioningDimension] / sumP);
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -368,7 +505,7 @@ Scalar Multinomial::computeConditionalCDF(const Scalar x,
     sumP += p_[i];
   }
   if (sumY > n_) throw InvalidArgumentException(HERE) << "Error: the conditioning vector has a sum of components greater than the allowed range.";
-  return Binomial(static_cast<UnsignedInteger>(n_ - sumY), p_[conditioningDimension] / sumP).computeCDF(x);
+  return DistFunc::pBeta(n_ - sumY - floor(x), floor(x), 1.0 - p_[conditioningDimension] / sumP);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
