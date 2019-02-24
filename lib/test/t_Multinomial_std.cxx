@@ -80,18 +80,27 @@ int main(int, char *[])
 
     // Show PDF and CDF of point
     Scalar LPDF = distribution.computeLogPDF( point );
-    fullprint << "log pdf=" << LPDF << std::endl;
+    fullprint << "log pdf(" << point.__str__() << ")=" << LPDF << std::endl;
     Scalar PDF = distribution.computePDF( point );
-    fullprint << "pdf     =" << PDF << std::endl;
+    fullprint << "pdf    (" << point.__str__() << ")=" << PDF << std::endl;
     Scalar CDF = distribution.computeCDF( point );
-    fullprint << "cdf=" << std::setprecision(5) << CDF << std::setprecision(6) << std::endl;
+    fullprint << "cdf    (" << point.__str__() << ")=" << std::setprecision(5) << CDF << std::setprecision(6) << std::endl;
     Scalar CCDF = distribution.computeComplementaryCDF( point );
-    fullprint << "ccdf=" << std::setprecision(5) << CCDF << std::setprecision(6) << std::endl;
-    //    Scalar Survival = distribution.computeSurvivalFunction( point );
-    //    fullprint << "survival=" << Survival << std::endl;
+    fullprint << "ccdf   (" << point.__str__() << ")=" << std::setprecision(5) << CCDF << std::setprecision(6) << std::endl;
+    Scalar Survival = distribution.computeSurvivalFunction( point );
+    fullprint << "survival(" << point.__str__() << ")=" << Survival << std::endl;
     Point quantile = distribution.computeQuantile( 0.95 );
-    fullprint << "quantile=" << quantile << std::endl;
+    fullprint << "quantile(0.95)=" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
+    Point lower(distribution.getDimension());
+    Point upper(distribution.getDimension());
+    for (UnsignedInteger i = 0; i < distribution.getDimension(); ++i)
+      {
+	lower[i] = i;
+	upper[i] = i + 1.0;
+      }
+    interval = Interval(lower, upper);
+    fullprint << "probability(" << interval.__str__() << ")=" << distribution.computeProbability(interval) << std::endl;
     fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
     fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
     Point mean = distribution.getMean();
