@@ -97,6 +97,9 @@
 /* Define to 1 if you have the OPT++ library. */
 #cmakedefine OPENTURNS_HAVE_OPTPP
 
+/* Define to 1 if you have the CMinpack library. */
+#cmakedefine OPENTURNS_HAVE_CMINPACK
+
 /* Define to 1 if R has package base. */
 #cmakedefine HAVE_R_PACKAGE_BASE
 

@@ -12,6 +12,7 @@
  * LinearModelResult, LinearModelAlgorithm, LinearModelAnalysis
  * OPTpp
  * NearestPointProblem, LeastSquaresProblem
+ * CMinpack
 
 ==== API changes ====
  * Removed deprecated FunctionalChaosRandomVector::getSobol* methods

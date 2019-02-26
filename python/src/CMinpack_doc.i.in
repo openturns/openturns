@@ -1,0 +1,43 @@
+%feature("docstring") OT::CMinpack
+"Interface to CMinpack.
+
+This class exposes the solver from the non-linear optimization library [cminpack2007]_.
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem to solve.
+
+Notes
+-----
+The algorithm relies on the lmder function, based on first-order derivative.
+Box bound constraints are supported using a variable change.
+
+More details are available `here <http://devernay.free.fr/hacks/cminpack/minpack-documentation.txt>`_.
+
+See also
+--------
+AbdoRackwitz, Cobyla, NLopt, SQP, TNC
+
+Examples
+--------
+>>> import openturns as ot
+>>> n = 2
+>>> residualFunction = ot.SymbolicFunction(['x0', 'x1'], ['10*(x1-x0^2)', '1-x0'])
+>>> problem = ot.LeastSquaresProblem(residualFunction)
+>>> algo = ot.CMinpack(problem)
+>>> algo.setStartingPoint([0.0] * 2)
+>>> algo.run()
+>>> result = algo.getResult()
+>>> x_star = result.getOptimalPoint()
+>>> y_star = result.getOptimalValue()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CMinpack::IsAvailable
+"Ask whether CMinpack support is available.
+
+Returns
+-------
+available : bool
+    Whether CMinpack support is available."

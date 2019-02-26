@@ -55,6 +55,7 @@
 %include NearestPointCheckerResult.i
 %include NearestPointChecker.i
 %include AbdoRackwitz.i
+%include CMinpack.i
 %include Cobyla.i
 %include TNC.i
 %include SQP.i

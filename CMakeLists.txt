@@ -23,6 +23,7 @@ option (USE_SPHINX                   "Use sphinx for documentation"             
 option (USE_NBSPHINX                 "Use nbsphinx for notebook examples documentation"                      ON)
 option (USE_DOXYGEN                  "Use Doxygen for API documentation"                                     ON)
 option (USE_NLOPT                    "Use NLopt for additional optimization algorithms"                      ON)
+option (USE_CMINPACK                 "Use CMinpack for additional optimization algorithms"                   ON)
 option (USE_OPTPP                    "Use OPT++ for additional optimization algorithms"                      ON)
 option (USE_COTIRE                   "Use cotire for unity builds"                                           OFF)
 
@@ -261,6 +262,19 @@ if (USE_OPTPP)
     set (OPENTURNS_HAVE_OPTPP TRUE)
     list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${OPTPP_INCLUDE_DIRS})
     list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${OPTPP_LIBRARIES})
+  endif ()
+endif ()
+
+if (USE_CMINPACK)
+  find_package (CMinpack NO_MODULE QUIET)
+  if (NOT CMinpack_FOUND)
+    # fallback to our macro if CMinpackConfig is not provided
+    find_package (CMinpack)
+  endif ()
+  if (CMinpack_FOUND)
+    set (OPENTURNS_HAVE_CMINPACK TRUE)
+    list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${CMINPACK_INCLUDE_DIRS})
+    list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${CMINPACK_LIBRARIES})
   endif ()
 endif ()
 
