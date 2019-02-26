@@ -17,7 +17,7 @@ print("myGradient = ", repr(myGradient))
 levelFunction.setGradient(
     ot.NonCenteredFiniteDifferenceGradient(myGradient))
 startingPoint = ot.Point(4, 0.0)
-algo = ot.SQP(ot.OptimizationProblem(levelFunction, 3.0))
+algo = ot.SQP(ot.NearestPointProblem(levelFunction, 3.0))
 algo.setStartingPoint(startingPoint)
 print('algo=', algo)
 algo.run()
@@ -36,7 +36,7 @@ myGradient = ot.NonCenteredFiniteDifferenceGradient(
 levelFunction.setGradient(
     ot.NonCenteredFiniteDifferenceGradient(myGradient))
 startingPoint = ot.Point(4, 0.0)
-algo = ot.SQP(ot.OptimizationProblem(levelFunction, -0.5))
+algo = ot.SQP(ot.NearestPointProblem(levelFunction, -0.5))
 algo.setStartingPoint(startingPoint)
 print('algo=', algo)
 algo.run()

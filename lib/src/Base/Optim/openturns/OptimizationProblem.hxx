@@ -63,7 +63,7 @@ public:
                       const Function & inequalityConstraint,
                       const Interval & bounds);
 
-  /** Constructor with parameters */
+  /** @deprecated Constructor with parameters */
   OptimizationProblem(const Function & levelFunction,
                       Scalar levelValue);
 
@@ -95,6 +95,11 @@ public:
   /** Level value accessor */
   Scalar getLevelValue() const;
   void setLevelValue(Scalar levelValue);
+
+  /** Residual function accessor */
+  Function getResidualFunction() const;
+  void setResidualFunction(const Function & residualFunction);
+  Bool hasResidualFunction() const;
 
   /** Dimension accessor */
   UnsignedInteger getDimension() const;

@@ -394,6 +394,8 @@ ot_add_python_module(diff diff_module.i
 ot_add_python_module(optim optim_module.i
                       OptimizationProblem.i OptimizationProblem_doc.i.in
                       OptimizationProblemImplementation.i OptimizationProblemImplementation_doc.i.in
+		      NearestPointProblem.i NearestPointProblem_doc.i.in
+		      LeastSquaresProblem.i LeastSquaresProblem_doc.i.in
                       OptimizationAlgorithm.i OptimizationAlgorithm_doc.i.in
                       OptimizationResult.i OptimizationResult_doc.i.in
                       OptimizationAlgorithmImplementation.i OptimizationAlgorithmImplementation_doc.i.in

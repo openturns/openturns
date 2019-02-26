@@ -11,6 +11,7 @@
  * ParametricPointToFieldFunction
  * LinearModelResult, LinearModelAlgorithm, LinearModelAnalysis
  * OPTpp
+ * NearestPointProblem, LeastSquaresProblem
 
 ==== API changes ====
  * Removed deprecated FunctionalChaosRandomVector::getSobol* methods
@@ -19,6 +20,7 @@
  * Removed deprecated LinearModelRSquared, LinearModelAdjustedRSquared
  * Deprecated LinearModel, LinearModelFactory
  * Moved HypothesisTest::(Partial|Full)Regression to LinearModelTest
+ * Deprecated OptimizationProblem(levelFunction, levelValue)
 
 === Python module ===
 

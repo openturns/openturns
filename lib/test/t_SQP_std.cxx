@@ -57,7 +57,7 @@ int main(int, char *[])
     /** Substitute the gradient */
     levelFunction.setGradient(new NonCenteredFiniteDifferenceGradient(myGradient));
     Point startingPoint(4, 0.0);
-    SQP mySQPAlgorithm(OptimizationProblem(levelFunction, 3.0));
+    SQP mySQPAlgorithm(NearestPointProblem(levelFunction, 3.0));
     mySQPAlgorithm.setStartingPoint(startingPoint);
     fullprint << "mySQPAlgorithm=" << mySQPAlgorithm << std::endl;
     mySQPAlgorithm.run();
@@ -90,7 +90,7 @@ int main(int, char *[])
     /** Substitute the hessian */
     levelFunction.setHessian(new CenteredFiniteDifferenceHessian(myHessian));
     Point startingPoint(4, 0.0);
-    SQP mySQPAlgorithm(OptimizationProblem(levelFunction, 3.0));
+    SQP mySQPAlgorithm(NearestPointProblem(levelFunction, 3.0));
     mySQPAlgorithm.setStartingPoint(startingPoint);
     fullprint << "mySQPAlgorithm=" << mySQPAlgorithm << std::endl;
     mySQPAlgorithm.run();

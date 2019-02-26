@@ -16,6 +16,8 @@ Generic optimization classes
     :template: class.rst_t
 
     OptimizationProblem
+    NearestPointProblem
+    LeastSquaresProblem
     OptimizationAlgorithm
     OptimizationResult
 

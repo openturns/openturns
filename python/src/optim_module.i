@@ -47,6 +47,8 @@
 /* Base/Optim */
 %include OptimizationProblemImplementation.i
 %include OptimizationProblem.i
+%include NearestPointProblem.i
+%include LeastSquaresProblem.i
 %include OptimizationResult.i
 %include OptimizationAlgorithmImplementation.i
 %include OptimizationAlgorithm.i

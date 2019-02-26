@@ -53,7 +53,7 @@ int main(int, char *[])
     input[3] = "x4";
     SymbolicFunction levelFunction(input, Description(1, "x1+2*x2-3*x3+4*x4"));
     Point startingPoint(4, 0.0);
-    Cobyla myAlgorithm(OptimizationProblem(levelFunction, 3.0));
+    Cobyla myAlgorithm(NearestPointProblem(levelFunction, 3.0));
     myAlgorithm.setStartingPoint(startingPoint);
     fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
     myAlgorithm.run();
@@ -75,7 +75,7 @@ int main(int, char *[])
     input[3] = "x4";
     SymbolicFunction levelFunction(input, Description(1, "x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"));
     Point startingPoint(4, 0.0);
-    Cobyla myAlgorithm(OptimizationProblem(levelFunction, 3.0));
+    Cobyla myAlgorithm(NearestPointProblem(levelFunction, 3.0));
     myAlgorithm.setStartingPoint(startingPoint);
     myAlgorithm.setMaximumEvaluationNumber(400);
     myAlgorithm.setMaximumAbsoluteError(1.0e-10);

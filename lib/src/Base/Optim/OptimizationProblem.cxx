@@ -19,6 +19,7 @@
  *
  */
 #include "openturns/OptimizationProblem.hxx"
+#include "openturns/NearestPointProblem.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -65,9 +66,9 @@ OptimizationProblem::OptimizationProblem(const Function & objective,
 /* Constructor for nearest point problem */
 OptimizationProblem::OptimizationProblem(const Function & levelFunction,
     Scalar levelValue)
-  : TypedInterfaceObject<OptimizationProblemImplementation>(new OptimizationProblemImplementation(levelFunction, levelValue))
+  : TypedInterfaceObject<OptimizationProblemImplementation>(new NearestPointProblem(levelFunction, levelValue))
 {
-  // Nothing to do
+  LOGWARN(OSS() << "OptimizationProblem(levelFunction, levelValue) is deprecated, use NearestPointProblem");
 }
 
 /* Objective accessor */
@@ -164,6 +165,23 @@ Scalar OptimizationProblem::getLevelValue() const
 void OptimizationProblem::setLevelValue(Scalar levelValue)
 {
   getImplementation()->setLevelValue(levelValue);
+}
+
+/* Residual function accessor */
+Function OptimizationProblem::getResidualFunction() const
+{
+  return getImplementation()->getResidualFunction();
+}
+
+void OptimizationProblem::setResidualFunction(const Function & levelFunction)
+{
+  copyOnWrite();
+  getImplementation()->setResidualFunction(levelFunction);
+}
+
+Bool OptimizationProblem::hasResidualFunction() const
+{
+  return getImplementation()->hasResidualFunction();
 }
 
 /* Dimension accessor */

@@ -22,8 +22,8 @@
 
 #include "openturns/Analytical.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/ComparisonOperatorImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/NearestPointProblem.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,7 +46,7 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
   if (physicalStartingPoint.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Starting point dimension (" << physicalStartingPoint.getDimension() << ") does not match event dimension (" << dimension << ").";
   result_ = AnalyticalResult(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(physicalStartingPoint_), event, true);
   /* set the level function of the algorithm */
-  nearestPointAlgorithm_.setProblem(OptimizationProblem(event.getImplementation()->getFunction(), event.getThreshold()));
+  nearestPointAlgorithm_.setProblem(NearestPointProblem(event.getImplementation()->getFunction(), event.getThreshold()));
 }
 
 
@@ -78,7 +78,7 @@ Event Analytical::getEvent() const
 void Analytical::setEvent(const Event & event)
 {
   event_ =  event;
-  nearestPointAlgorithm_.setProblem(OptimizationProblem(event_.getImplementation()->getFunction(), event_.getThreshold()));
+  nearestPointAlgorithm_.setProblem(NearestPointProblem(event_.getImplementation()->getFunction(), event_.getThreshold()));
 }
 
 /* OptimizationAlgorithm accessor */
@@ -111,7 +111,7 @@ void Analytical::run()
   StandardEvent standardEvent(event_);
 
   /* set the level function of the algorithm */
-  nearestPointAlgorithm_.setProblem(OptimizationProblem(standardEvent.getImplementation()->getFunction(), standardEvent.getThreshold()));
+  nearestPointAlgorithm_.setProblem(NearestPointProblem(standardEvent.getImplementation()->getFunction(), standardEvent.getThreshold()));
 
   /* set the starting point of the algorithm in the standard space  */
   nearestPointAlgorithm_.setStartingPoint(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(physicalStartingPoint_));

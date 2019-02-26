@@ -3,3 +3,4 @@ Remove deprecated HypothesisTest::Smirnov
 Remove deprecated FittingTest::TwoSamplesKolmogorov
 Remove deprecated LinearModel, LinearModelFactory
 Remove deprecated HypothesisTest::(Partial|Full)Regression
+Remove deprecated OptimizationProblem(levelFunction, levelValue) ctor
