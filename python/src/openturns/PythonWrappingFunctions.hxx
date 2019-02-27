@@ -873,7 +873,9 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
     {
       // Check that object is a sequence, and has the right size
       check<_PySequence_>( pointObj );
-      if (static_cast<UnsignedInteger>(PySequence_Fast_GET_SIZE( newPyPointObj.get() )) != dimension) throw;
+      const UnsignedInteger subDim = static_cast<UnsignedInteger>(PySequence_Fast_GET_SIZE(newPyPointObj.get()));
+      if (subDim != dimension)
+        throw InvalidArgumentException(HERE) << "Inner sequences must have the same dimension";
     }
     for(UnsignedInteger j = 0; j < dimension; ++j)
     {
@@ -1004,33 +1006,34 @@ convert< _PySequence_, IndicesCollection >(PyObject * pyObj)
   if ( PyObject_HasAttrString(pyObj, const_cast<char *>("shape")) )
   {
     ScopedPyObjectPointer shapeObj(PyObject_GetAttrString( pyObj, "shape" ));
-    if ( !shapeObj.get() ) throw;
-
-    Indices shape( checkAndConvert< _PySequence_, Indices >( shapeObj.get() ) );
-    if ( shape.getSize() == 2 )
+    if (shapeObj.get())
     {
-      UnsignedInteger size = shape[0];
-      UnsignedInteger dimension = shape[1];
-      ScopedPyObjectPointer askObj(PyTuple_New(2));
-      ScopedPyObjectPointer methodObj(convert< String, _PyString_ >("__getitem__"));
-      IndicesCollection indices( size, dimension );
-      for ( UnsignedInteger i = 0; i < size; ++ i )
+      Indices shape( checkAndConvert< _PySequence_, Indices >( shapeObj.get() ) );
+      if ( shape.getSize() == 2 )
       {
-        PyTuple_SetItem( askObj.get(), 0, convert< UnsignedInteger, _PyInt_ >(i) );
-        for ( UnsignedInteger j = 0; j < dimension; ++ j )
+        UnsignedInteger size = shape[0];
+        UnsignedInteger dimension = shape[1];
+        ScopedPyObjectPointer askObj(PyTuple_New(2));
+        ScopedPyObjectPointer methodObj(convert< String, _PyString_ >("__getitem__"));
+        IndicesCollection indices( size, dimension );
+        for ( UnsignedInteger i = 0; i < size; ++ i )
         {
-          PyTuple_SetItem( askObj.get(), 1, convert< UnsignedInteger, _PyInt_ >(j) );
-          ScopedPyObjectPointer elt(PyObject_CallMethodObjArgs( pyObj, methodObj.get(), askObj.get(), NULL));
-          if (elt.get())
+          PyTuple_SetItem( askObj.get(), 0, convert< UnsignedInteger, _PyInt_ >(i) );
+          for ( UnsignedInteger j = 0; j < dimension; ++ j )
           {
-            indices( i, j ) = checkAndConvert<_PyInt_, UnsignedInteger>(elt.get());
+            PyTuple_SetItem( askObj.get(), 1, convert< UnsignedInteger, _PyInt_ >(j) );
+            ScopedPyObjectPointer elt(PyObject_CallMethodObjArgs( pyObj, methodObj.get(), askObj.get(), NULL));
+            if (elt.get())
+            {
+              indices( i, j ) = checkAndConvert<_PyInt_, UnsignedInteger>(elt.get());
+            }
           }
         }
+        return indices;
       }
-      return indices;
+      else
+        throw InvalidArgumentException(HERE) << "Invalid array dimension: " << shape.getSize();
     }
-    else
-      throw InvalidArgumentException(HERE) << "Invalid array dimension: " << shape.getSize();
   }
   // This object is a sequence; unlike Matrix and Sample, dimension is not constant.
   check<_PySequence_>(pyObj);
