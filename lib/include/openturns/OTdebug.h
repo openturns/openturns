@@ -47,13 +47,6 @@
 #   define REINTERPRET_CAST(T,V) ( reinterpret_cast< T > (V) )
 #  endif /* GCC 3.4.6 test */
 
-#  if !defined(WIN32) && !defined(__APPLE__) /* __GLIBC_PREREQ not defined on mingw or OSX */
-/* The pthread library is bogus for glibc < 2.10 */
-#    if defined(__GNU_LIBRARY__) && ! __GLIBC_PREREQ(2, 10)
-#     define BOGUS_PTHREAD_LIBRARY 1
-#    endif
-#  endif
-
 
 #  ifdef SWIG
 #   define DEPRECATED
