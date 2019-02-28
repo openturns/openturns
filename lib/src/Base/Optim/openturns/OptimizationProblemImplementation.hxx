@@ -53,10 +53,6 @@ public:
                                     const Function & inequalityConstraint,
                                     const Interval & bounds);
 
-  /** Constructor with parameters */
-  OptimizationProblemImplementation(const Function & levelFunction,
-                                    Scalar levelValue);
-
   /** Virtual constructor */
   virtual OptimizationProblemImplementation * clone() const;
 
@@ -81,13 +77,18 @@ public:
   Bool hasBounds() const;
 
   /** Level function accessor */
-  Function getLevelFunction() const;
-  void setLevelFunction(const Function & levelFunction);
-  Bool hasLevelFunction() const;
+  virtual Function getLevelFunction() const;
+  virtual void setLevelFunction(const Function & levelFunction);
+  virtual Bool hasLevelFunction() const;
 
   /** Level value accessor */
-  Scalar getLevelValue() const;
-  void setLevelValue(Scalar levelValue);
+  virtual Scalar getLevelValue() const;
+  virtual void setLevelValue(Scalar levelValue);
+
+  /** Residual function accessor */
+  virtual Function getResidualFunction() const;
+  virtual void setResidualFunction(const Function & residualFunction);
+  virtual Bool hasResidualFunction() const;
 
   /** Dimension accessor */
   UnsignedInteger getDimension() const;
@@ -105,10 +106,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
-private:
-  void clearLevelFunction();
-  void setNearestPointConstraints();
-
+protected:
   // The objective function
   Function objective_;
 
@@ -120,12 +118,6 @@ private:
 
   // The bounds
   Interval bounds_;
-
-  // The level function, for nearest point problems
-  Function levelFunction_;
-
-  // The level value, for nearest point problems
-  Scalar levelValue_;
 
   // Minimization problem
   Bool minimization_;

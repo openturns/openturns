@@ -73,21 +73,6 @@ OptimizationProblemImplementation::OptimizationProblemImplementation(const Funct
   setBounds(bounds);
 }
 
-/* Constructor for nearest point problem */
-OptimizationProblemImplementation::OptimizationProblemImplementation(const Function & levelFunction,
-    Scalar levelValue)
-  : PersistentObject()
-  , objective_()
-  , equalityConstraint_()
-  , inequalityConstraint_()
-  , bounds_()
-  , levelValue_(levelValue)
-  , minimization_(true)
-  , dimension_(0)
-{
-  setLevelFunction(levelFunction);
-}
-
 /* Virtual constructor */
 OptimizationProblemImplementation * OptimizationProblemImplementation::clone() const
 {
@@ -113,8 +98,6 @@ void OptimizationProblemImplementation::setObjective(const Function & objective)
     }
     bounds_ = Interval(0);
   }
-  clearLevelFunction();
-
   objective_ = objective;
   // Update dimension_ member accordingly
   dimension_ = objective.getInputDimension();
@@ -135,7 +118,6 @@ void OptimizationProblemImplementation::setEqualityConstraint(const Function & e
 {
   if ((equalityConstraint.getInputDimension() > 0) && (equalityConstraint.getInputDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given equality constraints have an input dimension=" << equalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
 
-  clearLevelFunction();
   equalityConstraint_ = equalityConstraint;
 }
 
@@ -154,7 +136,6 @@ void OptimizationProblemImplementation::setInequalityConstraint(const Function &
 {
   if ((inequalityConstraint.getInputDimension() > 0) && (inequalityConstraint.getInputDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given inequality constraints have an input dimension=" << inequalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
 
-  clearLevelFunction();
   inequalityConstraint_ = inequalityConstraint;
 }
 
@@ -184,61 +165,43 @@ Bool OptimizationProblemImplementation::hasBounds() const
 /* Level function accessor */
 Function OptimizationProblemImplementation::getLevelFunction() const
 {
-  return levelFunction_;
+  throw NotYetImplementedException(HERE);
 }
 
 void OptimizationProblemImplementation::setLevelFunction(const Function & levelFunction)
 {
-  if (levelFunction.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: level function has an output dimension=" << levelFunction.getOutputDimension() << " but only dimension 1 is supported.";
-
-  levelFunction_ = levelFunction;
-  dimension_ = levelFunction_.getInputDimension();
-  // Update objective function
-  const Point center(dimension_);
-  const Point constant(1);
-  const Matrix linear(dimension_, 1);
-  const IdentityMatrix identity(dimension_);
-  const SymmetricTensor quadratic(dimension_, 1, *(identity.getImplementation().get()));
-  objective_ = QuadraticFunction(center, constant, linear, quadratic);
-  setNearestPointConstraints();
+  throw NotYetImplementedException(HERE);
 }
 
 Bool OptimizationProblemImplementation::hasLevelFunction() const
 {
-  return levelFunction_.getEvaluation().getImplementation()->isActualImplementation();
+  return false;
+}
+
+Function OptimizationProblemImplementation::getResidualFunction() const
+{
+  throw NotYetImplementedException(HERE);
+}
+
+void OptimizationProblemImplementation::setResidualFunction(const Function & residualFunction)
+{
+  throw NotYetImplementedException(HERE);
+}
+
+Bool OptimizationProblemImplementation::hasResidualFunction() const
+{
+  return false;
 }
 
 /* Level value accessor */
 Scalar OptimizationProblemImplementation::getLevelValue() const
 {
-  return levelValue_;
+  throw NotYetImplementedException(HERE);
 }
 
 void OptimizationProblemImplementation::setLevelValue(Scalar levelValue)
 {
-  levelValue_ = levelValue;
-  // Update constraints
-  if (hasLevelFunction()) setNearestPointConstraints();
-}
-
-void OptimizationProblemImplementation::setNearestPointConstraints()
-{
-  const Point center(dimension_);
-  const Matrix linear(dimension_, 1);
-  LinearFunction constantFunction(center, Point(1, levelValue_), linear.transpose());
-  Function equalityConstraint(levelFunction_);
-  equalityConstraint_ = equalityConstraint.operator - (constantFunction);
-  inequalityConstraint_ = Function();
-}
-
-void OptimizationProblemImplementation::clearLevelFunction()
-{
-  if (levelFunction_.getEvaluation().getImplementation()->isActualImplementation())
-  {
-    LOGWARN(OSS() << "Clearing level function");
-    levelFunction_ = Function();
-  }
-  levelValue_ = 0.0;
+  throw NotYetImplementedException(HERE);
 }
 
 /* Dimension accessor */
@@ -263,17 +226,9 @@ String OptimizationProblemImplementation::__repr__() const
 {
   OSS oss;
   oss << "class=" << OptimizationProblemImplementation::GetClassName();
-  if (hasLevelFunction())
-  {
-    oss << " level function=" << levelFunction_.__repr__()
-        << " level value=" << levelValue_;
-  }
-  else
-  {
-    oss << " objective=" << objective_
-        << " equality constraint=" << (hasEqualityConstraint() ? equalityConstraint_.__repr__() : "none")
-        << " inequality constraint=" << (hasInequalityConstraint() ? inequalityConstraint_.__repr__() : "none");
-  }
+  oss << " objective=" << objective_
+      << " equality constraint=" << (hasEqualityConstraint() ? equalityConstraint_.__repr__() : "none")
+      << " inequality constraint=" << (hasInequalityConstraint() ? inequalityConstraint_.__repr__() : "none");
   oss << " bounds=" << (hasBounds() ? bounds_.__repr__() : "none")
       << " minimization=" << minimization_
       << " dimension=" << dimension_;

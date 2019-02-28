@@ -1,0 +1,22 @@
+%feature("docstring") OT::LeastSquaresProblem
+"Least-squares problem.
+
+This represents a least-squares problem:
+
+.. math::
+
+    \min \frac{1}{2}||f(x)||^2 \\
+    x
+
+where *f* is the residual function.
+
+Parameters
+----------
+residualFunction : :class:`~openturns.Function`
+    Residual function.
+
+Examples
+--------
+>>> import openturns as ot
+>>> residualFunction = ot.SymbolicFunction(['x1', 'x2'], ['(1-x1)^2+100*(x2-x1^2)^2'])
+>>> problem = ot.LeastSquaresProblem(residualFunction)"

@@ -44,4 +44,9 @@ OT_OptimizationProblem_setLevelValue_doc
 OT_OptimizationProblem_setMinimization_doc
 %feature("docstring") OT::OptimizationProblem::setObjective
 OT_OptimizationProblem_setObjective_doc
-
+%feature("docstring") OT::OptimizationProblem::setResidualFunction
+OT_OptimizationProblem_setResidualFunction_doc
+%feature("docstring") OT::OptimizationProblem::getResidualFunction
+OT_OptimizationProblem_getResidualFunction_doc
+%feature("docstring") OT::OptimizationProblem::hasResidualFunction
+OT_OptimizationProblem_hasResidualFunction_doc

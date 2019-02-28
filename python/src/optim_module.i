@@ -47,12 +47,15 @@
 /* Base/Optim */
 %include OptimizationProblemImplementation.i
 %include OptimizationProblem.i
+%include NearestPointProblem.i
+%include LeastSquaresProblem.i
 %include OptimizationResult.i
 %include OptimizationAlgorithmImplementation.i
 %include OptimizationAlgorithm.i
 %include NearestPointCheckerResult.i
 %include NearestPointChecker.i
 %include AbdoRackwitz.i
+%include CMinpack.i
 %include Cobyla.i
 %include TNC.i
 %include SQP.i

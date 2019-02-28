@@ -15,7 +15,7 @@ print("myGradient = ", repr(myGradient))
 levelFunction.setGradient(
     ot.NonCenteredFiniteDifferenceGradient(myGradient))
 startingPoint = [0.0] * 4
-algo = ot.AbdoRackwitz(ot.OptimizationProblem(levelFunction, 3.0))
+algo = ot.AbdoRackwitz(ot.NearestPointProblem(levelFunction, 3.0))
 algo.setStartingPoint(startingPoint)
 algo.run()
 print("result = ", algo.getResult())
@@ -31,7 +31,7 @@ print("myGradient = ", repr(myGradient))
 levelFunction.setGradient(
     ot.NonCenteredFiniteDifferenceGradient(myGradient))
 startingPoint = [0.0] * 4
-algo = ot.AbdoRackwitz(ot.OptimizationProblem(levelFunction, -0.5))
+algo = ot.AbdoRackwitz(ot.NearestPointProblem(levelFunction, -0.5))
 algo.setStartingPoint(startingPoint)
 print("myalgorithm=", repr(algo))
 algo.run()
