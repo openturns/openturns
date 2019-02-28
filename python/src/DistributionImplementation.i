@@ -61,6 +61,8 @@ Distribution __rsub__(const Scalar s)
   return (*self * (-1.0)) + s;
 }
 
+Distribution __neg__() { return -(*self); }
+
 Distribution __add__(const Scalar s)
 {
  return *self + s;
