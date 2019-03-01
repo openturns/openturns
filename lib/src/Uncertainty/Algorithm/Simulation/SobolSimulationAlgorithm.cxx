@@ -263,8 +263,8 @@ void SobolSimulationAlgorithm::run()
       const Bool separable = false; //distFO.computeScalarQuantile(indexQuantileLevel_, true) <= distTO.computeScalarQuantile(indexQuantileLevel_);
 
       // or, check if F and T confidence lengths are small enough
-      const Scalar foConfidenceLength = distFO.computeScalarQuantile(indexQuantileLevel_, true) - distFO.computeScalarQuantile(indexQuantileLevel_);
-      const Scalar toConfidenceLength = distTO.computeScalarQuantile(indexQuantileLevel_, true) - distTO.computeScalarQuantile(indexQuantileLevel_);
+      const Scalar foConfidenceLength = distFO.computeScalarQuantile(indexQuantileLevel_ * 0.5, true) - distFO.computeScalarQuantile(indexQuantileLevel_ * 0.5);
+      const Scalar toConfidenceLength = distTO.computeScalarQuantile(indexQuantileLevel_ * 0.5, true) - distTO.computeScalarQuantile(indexQuantileLevel_ * 0.5);
       const Bool tight = (foConfidenceLength <= indexQuantileEpsilon_) && (toConfidenceLength <= indexQuantileEpsilon_);
 
       // all indices must be either 'separable' or 'tight'
