@@ -7,15 +7,20 @@ Available constructors:
 Parameters
 ----------
 muLog : float
-    location parameter :math:`\mu_\ell`.
+    location parameter :math:`\mu_\ell`, the expectation of the logarithm of the log-normal random variable.
 sigmaLog : float, :math:`\sigma_\ell > 0`
-    scale parameter :math:`\sigma_\ell`.
+    scale parameter :math:`\sigma_\ell`, the standard deviation of the logarithm of the log-normal random variable.
 gamma : float, optional
     Shift parameter :math:`\gamma < \mu`.
 
 Notes
 -----
-Its probability density function is defined as:
+The :math:`\mu_\ell` (resp. :math:`\sigma_\ell`) parameter is 
+the mean (resp. the standard deviation) of the associated  
+gaussian random variable. 
+
+The probability density function of the log-normal 
+distribution is defined as:
 
 .. math::
 
