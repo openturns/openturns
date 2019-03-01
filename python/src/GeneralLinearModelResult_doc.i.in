@@ -12,7 +12,7 @@ Parameters
 inputSample, outputSample : :class:`~openturns.Sample`
     The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^d` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^p`.
 metaModel : :class:`~openturns.Function`
-    The meta model: :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:'metaModel'.
+    The meta model: :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:metaModel.
 residuals : :class:`~openturns.Point`
     The residual errors.
 relativeErrors : :class:`~openturns.Point`
