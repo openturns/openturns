@@ -62,7 +62,6 @@ the distribution of :math:`\widehat{D}_N` both for *N* large
 (asymptotic distribution) or for *N* finite. 
 This is because the distribution of :math:`\widehat{D}_N` does 
 not depend on the candidate distribution. 
-
 - The parameters of the distribution under test are estimated 
 from data. 
 In this case, the :math:`\widehat{D}_N` is generally smaller, because 
