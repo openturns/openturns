@@ -45,6 +45,7 @@ static const Factory<CovarianceModelImplementation> Factory_CovarianceModelImple
 CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteger inputDimension)
   : PersistentObject()
   , scale_(inputDimension, 1.0)
+  , scaleParametrization_(STANDARD)
   , inputDimension_(inputDimension)
   , amplitude_(1, 1.0)
   , outputDimension_(1)
@@ -65,6 +66,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
     const Point & amplitude)
   : PersistentObject()
   , scale_(0)
+  , scaleParametrization_(STANDARD)
   , inputDimension_(scale.getDimension())
   , amplitude_(0)
   , outputDimension_(amplitude.getDimension())
@@ -88,6 +90,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
     const CorrelationMatrix & spatialCorrelation)
   : PersistentObject()
   , scale_(0)
+  , scaleParametrization_(STANDARD)
   , inputDimension_(scale.getDimension())
   , amplitude_(0)
   , outputDimension_(amplitude.getDimension())
@@ -110,6 +113,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
     const CovarianceMatrix & spatialCovariance)
   : PersistentObject()
   , scale_(0)
+  , scaleParametrization_(STANDARD)
   , inputDimension_(scale.getDimension())
   , amplitude_(0)
   , outputDimension_(spatialCovariance.getDimension())
@@ -597,10 +601,82 @@ Point CovarianceModelImplementation::getScale() const
 void CovarianceModelImplementation::setScale(const Point & scale)
 {
   if (scale.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setScale: the given scale has a dimension=" << scale.getDimension() << " different from the input dimension=" << inputDimension_;
-  for (UnsignedInteger index = 0; index < inputDimension_; ++index)
-    if (!(scale[index] > 0.0))
-      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setScale: the component " << index << " of scale is non positive" ;
+  if ((scaleParametrization_ == STANDARD) || (scaleParametrization_ == INVERSE))
+    for (UnsignedInteger index = 0; index < inputDimension_; ++index)
+      if (!(scale[index] > 0.0))
+        throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setScale: the component " << index << " of scale is non positive" ;
   scale_ = scale;
+}
+
+
+// Scale parametrization accessor
+CovarianceModelImplementation::ScaleParametrization CovarianceModelImplementation::getScaleParametrization() const
+{
+  return scaleParametrization_;
+}
+
+void CovarianceModelImplementation::setScaleParametrization(const ScaleParametrization scaleParametrization)
+{
+  Point scale(getScale());
+  switch (scaleParametrization_)
+  {
+    case STANDARD:
+      switch (scaleParametrization)
+      {
+        case STANDARD:
+          // nothing to do
+          break;
+        case INVERSE:
+          // STANDARD -> INVERSE
+          for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+            scale[i] = 1.0 / scale[i];
+          break;
+        case LOGINVERSE:
+          // STANDARD -> LOGINVERSE
+          for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+            scale[i] = -std::log(scale[i]);
+          break;
+      }
+      break;
+    case INVERSE:
+      switch (scaleParametrization)
+      {
+        case STANDARD:
+          // INVERSE -> STANDARD
+          for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+            scale[i] = 1.0 / scale[i];
+          break;
+        case INVERSE:
+          // nothing to do
+          break;
+        case LOGINVERSE:
+          // INVERSE -> LOGINVERSE
+          for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+            scale[i] = -std::log(1.0 / scale[i]);
+          break;
+      }
+      break;
+    case LOGINVERSE:
+      switch (scaleParametrization)
+      {
+        case STANDARD:
+          // LOGINVERSE -> STANDARD
+          for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+            scale[i] = std::exp(- scale[i]);
+          break;
+        case INVERSE:
+          // LOGINVERSE -> INVERSE
+          for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+            scale[i] = 1.0 / std::exp(- scale[i]);
+          break;
+        case LOGINVERSE:
+          // nothing to do
+          break;
+      }
+      break;
+  }
+  scaleParametrization_ = scaleParametrization;
+  setScale(scale);
 }
 
 /* Output correlation accessor */
@@ -649,29 +725,23 @@ void CovarianceModelImplementation::setNuggetFactor(const Scalar nuggetFactor)
 void CovarianceModelImplementation::setFullParameter(const Point & parameter)
 {
   // Here we manage only the generic parameters
-  // First the scale parameter
-  UnsignedInteger index = 0;
   // Check the size
   const UnsignedInteger totalSize = inputDimension_ + outputDimension_ * (outputDimension_ + 1) / 2;
   if (parameter.getSize() < totalSize)
     throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setFullParameter, points have incompatible size. Point size = " << parameter.getSize()
                                          << " whereas expected size = " << totalSize ;
 
-  for (UnsignedInteger i = 0; i < inputDimension_; ++ i)
-  {
-    if (!(parameter[index] > 0.0))
-      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setParameter, the component " << index << " of scale is non positive" ;
-    scale_[i] = parameter[index];
-    ++ index;
-  }
+  // First the scale parameter
+  Point scale(inputDimension_);
+  std::copy(parameter.begin(), parameter.begin() + inputDimension_, scale.begin());
+  setScale(scale);
+
   // Second the amplitude parameter
-  for (UnsignedInteger i = 0; i < outputDimension_; ++ i)
-  {
-    if (!(parameter[index] > 0.0))
-      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setParameter, the component " << index << " of amplitude is non positive" ;
-    amplitude_[i] = parameter[index];
-    ++ index;
-  }
+  Point amplitude(outputDimension_);
+  std::copy(parameter.begin() + inputDimension_, parameter.begin() + inputDimension_ + outputDimension_, amplitude.begin());
+  setAmplitude(amplitude);
+
+  UnsignedInteger index = inputDimension_ + outputDimension_;
   CorrelationMatrix outputCorrelation(outputDimension_);
   // Third the output correlation parameter, only the lower triangle
   for (UnsignedInteger i = 0; i < outputDimension_; ++ i)
@@ -710,8 +780,21 @@ Description CovarianceModelImplementation::getFullParameterDescription() const
   // First the scale parameter
   Description description(0);
   // First the scale parameter
+  String scalePrefix;
+  switch (scaleParametrization_)
+  {
+    case STANDARD:
+      // empty
+      break;
+    case INVERSE:
+      scalePrefix = "inverse_";
+      break;
+    case LOGINVERSE:
+      scalePrefix = "loginverse_";
+      break;
+  }
   for (UnsignedInteger j = 0; j < inputDimension_; ++j)
-    description.add(OSS() << "scale_" << j);
+    description.add(OSS() << scalePrefix << "scale_" << j);
   // Second the amplitude parameter
   for (UnsignedInteger j = 0; j < outputDimension_; ++j)
     description.add(OSS() << "amplitude_" << j);
@@ -789,6 +872,12 @@ Bool CovarianceModelImplementation::isStationary() const
 Bool CovarianceModelImplementation::isDiagonal() const
 {
   return isDiagonal_;
+}
+
+/* Is it a composite model ? */
+Bool CovarianceModelImplementation::isComposite() const
+{
+  return false;
 }
 
 /* Marginal accessor */
@@ -937,6 +1026,7 @@ void CovarianceModelImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute("scale_", scale_);
+  adv.saveAttribute("scaleParametrization_", static_cast<UnsignedInteger>(scaleParametrization_));
   adv.saveAttribute("inputDimension_", inputDimension_);
   adv.saveAttribute("amplitude_", amplitude_);
   adv.saveAttribute("outputDimension_", outputDimension_);
@@ -952,6 +1042,9 @@ void CovarianceModelImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute("scale_", scale_);
+  UnsignedInteger scaleParametrization = 0;
+  adv.loadAttribute( "scaleParametrization_", scaleParametrization );
+  scaleParametrization_ = static_cast<ScaleParametrization>(scaleParametrization);
   adv.loadAttribute("inputDimension_", inputDimension_);
   adv.loadAttribute("amplitude_", amplitude_);
   adv.loadAttribute("outputDimension_", outputDimension_);

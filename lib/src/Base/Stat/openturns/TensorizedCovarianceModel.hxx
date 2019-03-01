@@ -82,6 +82,9 @@ public:
   /** Is it a diagonal covariance model ? */
   virtual Bool isDiagonal() const;
 
+  /** Is it a composite covariance model ? */
+  virtual Bool isComposite() const;
+
   /** String converter */
   String __repr__() const;
 

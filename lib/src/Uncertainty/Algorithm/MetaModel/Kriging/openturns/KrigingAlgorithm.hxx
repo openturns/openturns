@@ -46,6 +46,8 @@ public:
 
   typedef KrigingResult::BasisCollection BasisCollection;
   typedef KrigingResult::BasisPersistentCollection BasisPersistentCollection;
+  typedef GeneralLinearModelAlgorithm::ScalePrior ScalePrior;
+  typedef CovarianceModel::ScaleParametrization ScaleParametrization;
 
   /** Default constructor */
   KrigingAlgorithm();
@@ -102,6 +104,10 @@ public:
   /** Linear algebra method */
   void setMethod(const String & method);
   String getMethod() const;
+
+  /** Scale prior accessor */
+  ScalePrior getScalePrior() const;
+  void setScalePrior(const ScalePrior likelihoodPrior);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

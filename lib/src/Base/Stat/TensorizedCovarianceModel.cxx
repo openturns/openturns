@@ -261,6 +261,12 @@ Bool TensorizedCovarianceModel::isDiagonal() const
   return true;
 }
 
+/* Is it a composite model ? */
+Bool TensorizedCovarianceModel::isComposite() const
+{
+  return true;
+}
+
 /* String converter */
 String TensorizedCovarianceModel::__repr__() const
 {

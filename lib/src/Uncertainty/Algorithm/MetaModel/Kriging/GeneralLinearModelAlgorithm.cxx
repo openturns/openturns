@@ -72,6 +72,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm()
   , optimizeParameters_(true)
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
+  , scalePrior_(NONE)
 {
   // Set the default covariance to adapt the active parameters of the covariance model
   setCovarianceModel(CovarianceModel());
@@ -107,6 +108,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
+  , scalePrior_(NONE)
 {
   // Set data
   setData(inputSample, outputSample);
@@ -167,6 +169,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
+  , scalePrior_(NONE)
 {
   // Set data
   setData(inputSample, outputSample);
@@ -240,6 +243,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
+  , scalePrior_(NONE)
 {
   // Set data
   setData(inputSample, outputSample);
@@ -356,8 +360,8 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
     const Scalar scaleFactor(ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationScaleFactor"));
     if (!(scaleFactor > 0))
       throw InvalidArgumentException(HERE) << "Scale factor set in ResourceMap is invalid. It should be a positive value. Here, scale = " << scaleFactor ;
-    const Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound"));
-    Point upperBound(optimizationDimension, ResourceMap::GetAsScalar( "GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound"));
+    Point lowerBound(optimizationDimension, ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-DefaultOptimizationLowerBound"));
+    Point upperBound(optimizationDimension, ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-DefaultOptimizationUpperBound"));
     // We could set scale parameter if these parameters are enabled.
     // check if scale is active
     const Indices activeParameters(reducedCovarianceModel_.getActiveParameter());
@@ -370,13 +374,66 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
     if (isScaleActive)
     {
       const Point inputSampleRange(normalizedInputSample_.getMax() - normalizedInputSample_.getMin());
-      for (UnsignedInteger k = 0; k < reducedCovarianceModel_.getScale().getSize(); ++k) upperBound[k] = inputSampleRange[k] * scaleFactor;
+      for (UnsignedInteger k = 0; k < reducedCovarianceModel_.getScale().getSize(); ++ k)
+        upperBound[k] = inputSampleRange[k] * scaleFactor;
+
+      // transform bounds in the target parametrization
+      const ScaleParametrization scaleParametrization = reducedCovarianceModel_.getScaleParametrization();
+      switch (scaleParametrization)
+      {
+        case ScaleParametrization::STANDARD:
+          // nothing to do
+          break;
+        case ScaleParametrization::INVERSE:
+        {
+          for (UnsignedInteger k = 0; k < reducedCovarianceModel_.getScale().getSize(); ++k)
+          {
+            const Scalar lb = 1.0 / upperBound[k];
+            const Scalar ub = 1.0 / lowerBound[k];
+            lowerBound[k] = lb;
+            upperBound[k] = ub;
+          }
+          break;
+        }
+        case ScaleParametrization::LOGINVERSE:
+        {
+          for (UnsignedInteger k = 0; k < reducedCovarianceModel_.getScale().getSize(); ++k)
+          {
+            const Scalar lb = -std::log(upperBound[k]);
+            const Scalar ub = -std::log(lowerBound[k]);
+            lowerBound[k] = lb;
+            upperBound[k] = ub;
+          }
+          break;
+        }
+      }
     }
     LOGWARN(OSS() <<  "Warning! For coherency we set scale upper bounds = " << upperBound.__str__());
-
     optimizationBounds_ = Interval(lowerBound, upperBound);
   }
   else optimizationBounds_ = Interval();
+
+  if (scalePrior_ != NONE)
+  {
+    if (reducedCovarianceModel_.getOutputDimension() == 1)
+    {
+      const Description activeParametersDescription(reducedCovarianceModel_.getParameterDescription());
+      Bool activeAmplitude = false;
+      Bool activeScale = false;
+      // And one of the active parameters must be called amplitude_0
+      for (UnsignedInteger i = 0; i < activeParametersDescription.getSize(); ++i)
+      {
+        if (activeParametersDescription[i] == "amplitude_0")
+          activeAmplitude = true;
+        if (activeParametersDescription[i] == "scale_0")
+          activeScale = true;
+      }
+      if (!activeAmplitude || !activeScale)
+        throw NotYetImplementedException(HERE) << "Gu penalization cannot be used without active amplitude and scale";
+    }
+    else
+      throw NotYetImplementedException(HERE) << "Gu penalization cannot be used on multi-d models";
+}
 }
 
 CovarianceModel GeneralLinearModelAlgorithm::getCovarianceModel() const
@@ -672,6 +729,133 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   return optimalLogLikelihood;
 }
 
+
+// when the likelihood is integrated: log(\det{FtR^{-1}F})
+Scalar GeneralLinearModelAlgorithm::correctIntegratedLikelihoodLogDeterminant() const
+{
+  Matrix LiF(covarianceCholeskyFactor_.solveLinearSystem(F_));
+  Matrix LtiLiF(covarianceCholeskyFactor_.transpose().solveLinearSystem(LiF));
+  Scalar sign = 1.0;
+  SymmetricMatrix FtLtiLiF((F_.transpose()*LtiLiF).getImplementation());
+  const Scalar logDetFtLtiLiF = FtLtiLiF.computeLogAbsoluteDeterminant(sign, false);
+  return logDetFtLtiLiF;
+}
+
+
+// If a prior is used, compute its value as a penalization term
+Scalar GeneralLinearModelAlgorithm::computeLogIntegratedLikelihoodPenalization() const
+{
+  const UnsignedInteger size = inputSample_.getSize();
+  const UnsignedInteger inputDimension = inputSample_.getDimension();
+  Scalar penalizationFactor = 0.0;
+  switch (scalePrior_)
+  {
+    case NONE:
+      // nothing to do
+      break;
+    case JOINTLYROBUST:
+    {
+      const Scalar b0 = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-JointlyRobustPriorB0");
+      const Scalar b1 = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-JointlyRobustPriorB1");
+      // gu2018 formulation: maximum gap between design points instead of the mean gap
+      const Scalar b = b0 * std::pow(1.0 * size, -1.0 / inputDimension) * (b1 + inputDimension);
+      Point C((inputSample_.getMax() - inputSample_.getMin()) * std::pow(1.0 * size, -1.0 / inputDimension));
+
+      // the C*scale term does not depend on the parametrization
+      CovarianceModel reducedCovarianceModelCopy(reducedCovarianceModel_);
+      reducedCovarianceModelCopy.setScaleParametrization(ScaleParametrization::INVERSE);
+      const Point inverseScale(reducedCovarianceModelCopy.getScale());
+      const Scalar dotCscale = C.dot(inverseScale);
+
+      const Scalar nugget = reducedCovarianceModel_.getNuggetFactor();
+      penalizationFactor = b1 * std::log(dotCscale + nugget) - b * (dotCscale + nugget);
+      const ScaleParametrization scaleParametrization = reducedCovarianceModel_.getScaleParametrization();
+
+      // this term is the logarithm of the Jacobian determinant, only for standard and log-inverse parametrizations
+      const Point scale(reducedCovarianceModel_.getScale());
+      switch (scaleParametrization)
+      {
+        case ScaleParametrization::STANDARD:
+        {
+          Scalar sumLog = 0.0;
+          for (UnsignedInteger j = 0; j < inputDimension; ++ j)
+            sumLog += std::log(scale[j]);
+          penalizationFactor -= 2.0 * sumLog;
+          break;
+        }
+        case ScaleParametrization::INVERSE:
+          // nothing to do
+          break;
+        case ScaleParametrization::LOGINVERSE:
+        {
+          Scalar sumXi = 0.0;
+          for (UnsignedInteger j = 0; j < inputDimension; ++ j)
+            sumXi += scale[j];
+          penalizationFactor += sumXi;
+          break;
+        }
+      }
+      break;
+    }
+    case REFERENCE:
+    {
+      SymmetricMatrix iTheta(inputDimension + 1);
+
+      // discretize gradient wrt scale
+      Collection<SymmetricMatrix> dCds(inputDimension, SymmetricMatrix(size));
+      for (UnsignedInteger k1 = 0; k1 < size; ++ k1)
+      {
+        for (UnsignedInteger k2 = 0; k2 <= k1; ++ k2)
+        {
+          Matrix parameterGradient(reducedCovarianceModel_.parameterGradient(normalizedInputSample_[k1], normalizedInputSample_[k2]));
+          for (UnsignedInteger j = 0; j < inputDimension; ++ j)
+          {
+            // assume scale gradient is at the n first components
+            dCds[j](k1, k2) = parameterGradient(j, 0);
+          }
+        }
+      }
+
+      // TODO: cache sigmaTheta
+      SquareMatrix Linv(covarianceCholeskyFactor_.solveLinearSystem(IdentityMatrix(covarianceCholeskyFactor_.getNbRows())).getImplementation());
+      SquareMatrix LLtinv(covarianceCholeskyFactor_.transpose().solveLinearSystem(Linv).getImplementation());
+      SquareMatrix sigmaTheta(LLtinv);
+      if (F_.getNbColumns() > 0) {
+        SquareMatrix FtLLtinvF((F_.transpose()*LLtinv*F_).getImplementation());
+        Matrix FtLLtinvFiFtLLtinv((FtLLtinvF.solveLinearSystem(F_.transpose()*LLtinv)));
+        SquareMatrix LLtinvFFtLLtinvFiFtLLtinv((LLtinv*F_*FtLLtinvFiFtLLtinv).getImplementation());
+        sigmaTheta = sigmaTheta - LLtinvFFtLLtinvFiFtLLtinv;
+      }
+
+      // lower triangle
+      for (UnsignedInteger i = 0; i < inputDimension; ++ i)
+      {
+        for (UnsignedInteger j = 0; j <= i; ++ j)
+        {
+          iTheta(i, j) = (sigmaTheta * dCds[i] * sigmaTheta * dCds[j]).computeTrace();
+        }
+      }
+      // bottom line
+      for (UnsignedInteger j = 0; j < inputDimension; ++ j)
+      {
+        iTheta(inputDimension, j) = (sigmaTheta * dCds[j]).computeTrace();
+      }
+      // bottom right corner
+      iTheta(inputDimension, inputDimension) = size - beta_.getSize();
+
+      Scalar sign = 1.0;
+      penalizationFactor = 0.5 * iTheta.computeLogAbsoluteDeterminant(sign, false);
+      break;
+    }
+    case FLAT:
+    {
+      penalizationFactor = 0;
+      break;
+    }
+  }
+  return penalizationFactor;
+}
+
 Point GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const Point & parameters) const
 {
   // Check that the parameters have a size compatible with the covariance model
@@ -680,44 +864,71 @@ Point GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const Point & par
                                          << " covariance model requires an argument of size " << reducedCovarianceModel_.getParameter().getSize()
                                          << " but here we got " << parameters.getSize();
   LOGDEBUG(OSS(false) << "Compute reduced log-likelihood for parameters=" << parameters);
-  const Scalar constant = - SpecFunc::LOGSQRT2PI * static_cast<Scalar>(inputSample_.getSize()) * static_cast<Scalar>(outputSample_.getDimension());
-  Scalar logDeterminant = 0.0;
+  const UnsignedInteger size = inputSample_.getSize();
   // If the amplitude is deduced from the other parameters, work with
   // the correlation function
   if (analyticalAmplitude_) reducedCovarianceModel_.setAmplitude(Point(1, 1.0));
   reducedCovarianceModel_.setParameter(parameters);
   // First, compute the log-determinant of the Cholesky factor of the covariance
   // matrix. As a by-product, also compute rho.
+  Scalar logLikelihood = 0.0;
   if (method_ == 0)
-    logDeterminant = computeLapackLogDeterminantCholesky();
+    logLikelihood = computeLapackLogDeterminantCholesky();
   else
-    logDeterminant = computeHMatLogDeterminantCholesky();
-  // Compute the amplitude using an analytical formula if needed
-  // and update the reduced log-likelihood.
-  if (analyticalAmplitude_)
-  {
-    LOGDEBUG("Analytical amplitude");
-    // J(\sigma)=-\log(\sqrt{\sigma^{2N}\det{R}})-(Y-M)^tR^{-1}(Y-M)/(2\sigma^2)
-    //          =-N\log(\sigma)-\log(\det{R})/2-(Y-M)^tR^{-1}(Y-M)/(2\sigma^2)
-    // dJ/d\sigma=-N/\sigma+(Y-M)^tR^{-1}(Y-M)/\sigma^3=0
-    // \sigma=\sqrt{(Y-M)^tR^{-1}(Y-M)/N}
-    const UnsignedInteger size = inputSample_.getSize();
-    const Scalar sigma = std::sqrt(rho_.normSquare() / (ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance") ? size - beta_.getSize() : size));
-    LOGDEBUG(OSS(false) << "sigma=" << sigma);
-    reducedCovarianceModel_.setAmplitude(Point(1, sigma));
-    logDeterminant += 2.0 * size * std::log(sigma);
-    rho_ /= sigma;
-    LOGDEBUG(OSS(false) << "rho_=" << rho_);
-  } // analyticalAmplitude
+    logLikelihood = computeHMatLogDeterminantCholesky();
+  LOGDEBUG(OSS(false) << "log-determinant=" << logLikelihood << ", rho=" << rho_);
 
-  LOGDEBUG(OSS(false) << "log-determinant=" << logDeterminant << ", rho=" << rho_);
-  const Scalar epsilon = rho_.normSquare();
-  LOGDEBUG(OSS(false) << "epsilon=||rho||^2=" << epsilon);
-  if (epsilon <= 0) lastReducedLogLikelihood_ = SpecFunc::LogMinScalar;
-  // For the general multidimensional case, we have to compute the general log-likelihood (ie including marginal variances)
-  else lastReducedLogLikelihood_ = constant - 0.5 * (logDeterminant + epsilon);
-  LOGINFO(OSS(false) << "Reduced log-likelihood=" << lastReducedLogLikelihood_);
-  return Point(1, lastReducedLogLikelihood_);
+  // If no prior is used
+  if (scalePrior_ == NONE)
+  {
+    // Compute the amplitude using an analytical formula if needed
+    // and update the reduced log-likelihood.
+    if (analyticalAmplitude_)
+    {
+      LOGDEBUG("Analytical amplitude");
+      // J(\sigma)=-\log(\sqrt{\sigma^{2N}\det{R}})-(Y-M)^tR^{-1}(Y-M)/(2\sigma^2)
+      //          =-N\log(\sigma)-\log(\det{R})/2-(Y-M)^tR^{-1}(Y-M)/(2\sigma^2)
+      // dJ/d\sigma=-N/\sigma+(Y-M)^tR^{-1}(Y-M)/\sigma^3=0
+      // \sigma=\sqrt{(Y-M)^tR^{-1}(Y-M)/N}
+      const Scalar sigma = std::sqrt(rho_.normSquare() / (ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance") ? size - beta_.getSize() : size));
+      LOGDEBUG(OSS(false) << "sigma=" << sigma);
+      reducedCovarianceModel_.setAmplitude(Point(1, sigma));
+      logLikelihood += 2.0 * ((scalePrior_ == NONE) ? size : size - beta_.getSize()) * std::log(sigma);
+      rho_ /= sigma;
+      LOGDEBUG(OSS(false) << "rho_=" << rho_);
+    }
+
+    const Scalar epsilon = rho_.normSquare();
+    LOGDEBUG(OSS(false) << "epsilon=||rho||^2=" << epsilon);
+
+    if (epsilon <= 0.0)
+      logLikelihood = SpecFunc::LogMinScalar;
+    // For the general multidimensional case, we have to compute the general log-likelihood (ie including marginal variances)
+    else
+    {
+      const Scalar constant = -SpecFunc::LOGSQRT2PI * static_cast<Scalar>(size) * static_cast<Scalar>(outputSample_.getDimension());
+      logLikelihood = constant - 0.5 * (logLikelihood + epsilon);
+    }
+  }
+  // If a prior is used as penalization,
+  // compute it and return the log-posterior.
+  else
+  {
+    // we use the integrated likelihood, add log(\det{FtR^{-1}F}) term to the reduced log-likelihood
+    if (basisCollection_.getSize() > 0)
+      logLikelihood += correctIntegratedLikelihoodLogDeterminant();
+
+    // Compute logarithm of the prior penalization.
+    const Scalar penalizationFactor = computeLogIntegratedLikelihoodPenalization();
+    LOGINFO(OSS(false) << "penalizationFactor=" << penalizationFactor);
+
+    // Compute logarithm of the integrated likelihood.
+    const Scalar logIntegratedLikelihood = -0.5 * logLikelihood - 0.5 * (size - beta_.getSize()) * std::log(rho_.normSquare());
+    logLikelihood = logIntegratedLikelihood + penalizationFactor;
+  }
+  LOGINFO(OSS(false) << "log-likelihood=" << logLikelihood);
+  lastReducedLogLikelihood_ = logLikelihood;
+  return Point(1, logLikelihood);
 }
 
 
@@ -936,6 +1147,17 @@ Point GeneralLinearModelAlgorithm::getRho() const
   return rho_;
 }
 
+// Scale prior accessor
+GeneralLinearModelAlgorithm::ScalePrior GeneralLinearModelAlgorithm::getScalePrior() const
+{
+  return scalePrior_;
+}
+
+void GeneralLinearModelAlgorithm::setScalePrior(const ScalePrior scalePrior)
+{
+  scalePrior_ = scalePrior;
+}
+
 /* String converter */
 String GeneralLinearModelAlgorithm::__repr__() const
 {
@@ -1040,6 +1262,7 @@ void GeneralLinearModelAlgorithm::save(Advocate & adv) const
   adv.saveAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_ );
   adv.saveAttribute( "optimizeParameters_", optimizeParameters_ );
   adv.saveAttribute( "noise_", noise_ );
+  adv.saveAttribute( "scalePrior_", static_cast<UnsignedInteger>(scalePrior_) );
 }
 
 
@@ -1062,6 +1285,9 @@ void GeneralLinearModelAlgorithm::load(Advocate & adv)
   adv.loadAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_ );
   adv.loadAttribute( "optimizeParameters_", optimizeParameters_ );
   adv.loadAttribute( "noise_", noise_ );
+  UnsignedInteger scalePrior = 0;
+  adv.loadAttribute( "scalePrior_", scalePrior );
+  scalePrior_ = static_cast<ScalePrior>(scalePrior);
 }
 
 END_NAMESPACE_OPENTURNS

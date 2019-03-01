@@ -272,6 +272,17 @@ void KrigingAlgorithm::setMethod(const String & method)
   glmAlgo_.setMethod(0);
 }
 
+// Scale prior accessor
+KrigingAlgorithm::ScalePrior KrigingAlgorithm::getScalePrior() const
+{
+  return glmAlgo_.getScalePrior();
+}
+
+void KrigingAlgorithm::setScalePrior(const ScalePrior scalePrior)
+{
+  glmAlgo_.setScalePrior(scalePrior);
+}
+
 /* Method save() stores the object through the StorageManager */
 void KrigingAlgorithm::save(Advocate & adv) const
 {

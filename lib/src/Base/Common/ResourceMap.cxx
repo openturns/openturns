@@ -1218,6 +1218,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GeneralLinearModelAlgorithm-StartingScaling", 1.0e-13);
   addAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm", "TNC");
   addAsString("GeneralLinearModelAlgorithm-LinearAlgebra", "LAPACK");
+  addAsScalar( "GeneralLinearModelAlgorithm-JointlyRobustPriorB0", 1.0);
+  addAsScalar( "GeneralLinearModelAlgorithm-JointlyRobustPriorB1", 0.2);
 
   // KrigingAlgorithm parameters //
   addAsScalar("KrigingAlgorithm-MaximalScaling", 1.0e5);

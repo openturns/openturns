@@ -221,6 +221,18 @@ void CovarianceModel::setScale(const Point & scale)
   getImplementation()->setScale(scale);
 }
 
+/* Scale accessor */
+CovarianceModel::ScaleParametrization CovarianceModel::getScaleParametrization() const
+{
+  return getImplementation()->getScaleParametrization();
+}
+
+void CovarianceModel::setScaleParametrization(const ScaleParametrization scaleParametrization)
+{
+  copyOnWrite();
+  getImplementation()->setScaleParametrization(scaleParametrization);
+}
+
 /* Spatial correlation accessor */
 CorrelationMatrix CovarianceModel::getOutputCorrelation() const
 {
@@ -302,6 +314,12 @@ Bool CovarianceModel::isStationary() const
 Bool CovarianceModel::isDiagonal() const
 {
   return getImplementation()->isDiagonal();
+}
+
+/* Is it a composite covariance model ? */
+Bool CovarianceModel::isComposite() const
+{
+  return getImplementation()->isComposite();
 }
 
 /* Drawing method */

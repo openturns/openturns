@@ -410,3 +410,41 @@ Parameters
 ----------
 noise : sequence of positive float
     The noise variance :math:`\tau_k^2` of each output value."
+
+// ---------------------------------------------------------------------
+
+%define OT_GeneralLinearModelAlgorithm_setScalePrior_doc
+"Accessor to the scale prior type.
+
+Allows to choose bayesian priors.
+
+Parameters
+----------
+scale_prior : int
+    The type of prior for the parameters likelihood.
+    Available values:
+
+    - GeneralLinearModelAlgorithm.NONE: no bayesian prior (default)
+    - GeneralLinearModelAlgorithm.JOINTLYROBUST: jointly-robust prior
+    - GeneralLinearModelAlgorithm.REFERENCE: reference prior
+    - GeneralLinearModelAlgorithm.FLAT: flat prior
+
+Notes
+-----
+Bayesian priors are only available with an 1-d output."
+%enddef
+%feature("docstring") OT::GeneralLinearModelAlgorithm::setScalePrior
+OT_GeneralLinearModelAlgorithm_setScalePrior_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_GeneralLinearModelAlgorithm_getScalePrior_doc
+"Accessor to the scale prior type.
+
+Returns
+-------
+scale_prior : int
+    The type of prior for the parameters likelihood."
+%enddef
+%feature("docstring") OT::GeneralLinearModelAlgorithm::getScalePrior
+OT_GeneralLinearModelAlgorithm_getScalePrior_doc

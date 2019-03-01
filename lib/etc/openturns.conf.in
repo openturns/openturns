@@ -606,6 +606,8 @@
   <GeneralLinearModelAlgorithm-StartingScaling                value_float="1.0e-13" />
   <GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm   value_str="TNC"     />
   <GeneralLinearModelAlgorithm-LinearAlgebra                  value_str="LAPACK"  />
+  <GeneralLinearModelAlgorithm-JointlyRobustPriorB0           value_float="1.0" />
+  <GeneralLinearModelAlgorithm-JointlyRobustPriorB1           value_float="0.2" />
 
   <!-- OT::KrigingAlgorithm parameters -->
   <KrigingAlgorithm-MaximalScaling  value_float="1.0e5"   />

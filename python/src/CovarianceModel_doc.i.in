@@ -40,6 +40,8 @@ OT_CovarianceModel_getInputDimension_doc
 OT_CovarianceModel_isDiagonal_doc
 %feature("docstring") OT::CovarianceModel::isStationary
 OT_CovarianceModel_isStationary_doc
+%feature("docstring") OT::CovarianceModel::isComposite
+OT_CovarianceModel_isComposite_doc
 %feature("docstring") OT::CovarianceModel::partialGradient
 OT_CovarianceModel_partialGradient_doc
 %feature("docstring") OT::CovarianceModel::parameterGradient
@@ -66,3 +68,7 @@ OT_CovarianceModel_setFullParameter_doc
 OT_CovarianceModel_getFullParameter_doc
 %feature("docstring") OT::CovarianceModel::getFullParameterDescription
 OT_CovarianceModel_getFullParameterDescription_doc
+%feature("docstring") OT::CovarianceModel::setScaleParametrization
+OT_CovarianceModel_setScaleParametrization_doc
+%feature("docstring") OT::CovarianceModel::getScaleParametrization
+OT_CovarianceModel_getScaleParametrization_doc

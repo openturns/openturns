@@ -35,6 +35,7 @@ class OT_API MaternModel
   CLASSNAME
 
 public:
+  typedef CovarianceModelImplementation::ScaleParametrization ScaleParametrization;
 
   /** Constructor based on input dimension*/
   explicit MaternModel(const UnsignedInteger inputDimension = 1);
@@ -57,6 +58,7 @@ public:
   Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
                                        const Collection<Scalar>::const_iterator & t_begin) const;
 #endif
+  virtual void setScaleParametrization(const ScaleParametrization scaleParametrization);
 
   /** Gradient */
   virtual Matrix partialGradient(const Point & s,

@@ -39,6 +39,7 @@ class OT_API CovarianceModel
 public:
 
   typedef CovarianceModelImplementation::Implementation    Implementation;
+  typedef CovarianceModelImplementation::ScaleParametrization ScaleParametrization;
 
   /** Default constructor without parameter */
   CovarianceModel();
@@ -121,6 +122,10 @@ public:
   Point getScale() const;
   void setScale(const Point & scale);
 
+  /** Scale parametrization accessor */
+  ScaleParametrization getScaleParametrization() const;
+  void setScaleParametrization(const ScaleParametrization scaleParametrization);
+
   /** Spatial correlation accessors */
   CorrelationMatrix getOutputCorrelation() const;
   void setOutputCorrelation(const CorrelationMatrix & correlation);
@@ -149,6 +154,9 @@ public:
 
   /** Is it a diagonal model ? */
   virtual Bool isDiagonal() const;
+
+  /** Is it a composite model ? */
+  virtual Bool isComposite() const;
 
   /** Drawing method */
   virtual Graph draw(const UnsignedInteger rowIndex = 0,

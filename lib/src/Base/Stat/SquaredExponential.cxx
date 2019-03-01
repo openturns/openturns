@@ -64,8 +64,25 @@ SquaredExponential * SquaredExponential::clone() const
 Scalar SquaredExponential::computeStandardRepresentative(const Point & tau) const
 {
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
+
+  Point theta(scale_);
+  switch (scaleParametrization_)
+  {
+    case STANDARD:
+      // nothing to do
+      break;
+    case INVERSE:
+      for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+        theta[i] = 1.0 / scale_[i];
+      break;
+    case LOGINVERSE:
+      for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+        theta[i] = std::exp(- scale_[i]);
+      break;
+  }
+
   Point tauOverTheta(inputDimension_);
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / theta[i];
   const Scalar tauOverTheta2 = tauOverTheta.normSquare();
   return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-0.5 * tauOverTheta2);
 }
@@ -73,12 +90,28 @@ Scalar SquaredExponential::computeStandardRepresentative(const Point & tau) cons
 Scalar SquaredExponential::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
     const Collection<Scalar>::const_iterator & t_begin) const
 {
+  Point theta(scale_);
+  switch (scaleParametrization_)
+  {
+    case STANDARD:
+      // nothing to do
+      break;
+    case INVERSE:
+      for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+        theta[i] = 1.0 / scale_[i];
+      break;
+    case LOGINVERSE:
+      for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+        theta[i] = std::exp(- scale_[i]);
+      break;
+  }
+
   Scalar tauOverTheta2 = 0;
   Collection<Scalar>::const_iterator s_it = s_begin;
   Collection<Scalar>::const_iterator t_it = t_begin;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
   {
-    const Scalar dx = (*s_it - *t_it) / scale_[i];
+    const Scalar dx = (*s_it - *t_it) / theta[i];
     tauOverTheta2 += dx * dx;
   }
   return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-0.5 * tauOverTheta2);

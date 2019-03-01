@@ -322,3 +322,7 @@ The setter update the implementation and require new evaluation.
 We might also use the ResourceMap key to set the method when instantiating the algorithm.
 For that purpose, we can use ResourceMap.SetAsString(`GeneralLinearModelAlgorithm-LinearAlgebra`, key)
 with `key` being `HMAT` or `LAPACK`."
+%feature("docstring") OT::KrigingAlgorithm::setScalePrior
+OT_GeneralLinearModelAlgorithm_setScalePrior_doc
+%feature("docstring") OT::KrigingAlgorithm::getScalePrior
+OT_GeneralLinearModelAlgorithm_getScalePrior_doc

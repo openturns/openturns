@@ -82,7 +82,23 @@ Scalar ExponentialModel::computeStandardRepresentative(const Point & tau) const
     throw InvalidArgumentException(HERE) << "In ExponentialModel::computeStandardRepresentative: expected a shift of dimension=" << getInputDimension() << ", got dimension=" << tau.getDimension();
   // Absolute value of tau / scale
   Point tauOverTheta(getInputDimension());
-  for (UnsignedInteger i = 0; i < getInputDimension(); ++i) tauOverTheta[i] = tau[i] / scale_[i];
+  Point theta(scale_);
+  switch (scaleParametrization_)
+  {
+    case STANDARD:
+      // nothing to do
+      break;
+    case INVERSE:
+      for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+        theta[i] = 1.0 / scale_[i];
+      break;
+    case LOGINVERSE:
+      for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+        theta[i] = std::exp(- scale_[i]);
+      break;
+  }
+
+  for (UnsignedInteger i = 0; i < getInputDimension(); ++i) tauOverTheta[i] = tau[i] / theta[i];
   const Scalar tauOverThetaNorm = tauOverTheta.norm();
   // Return value
   return (tauOverThetaNorm == 0.0 ? 1.0 + nuggetFactor_ : exp(- tauOverThetaNorm ));
@@ -91,12 +107,28 @@ Scalar ExponentialModel::computeStandardRepresentative(const Point & tau) const
 Scalar ExponentialModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
     const Collection<Scalar>::const_iterator & t_begin) const
 {
+  Point theta(scale_);
+  switch (scaleParametrization_)
+  {
+    case STANDARD:
+      // nothing to do
+      break;
+    case INVERSE:
+      for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+        theta[i] = 1.0 / scale_[i];
+      break;
+    case LOGINVERSE:
+      for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+        theta[i] = std::exp(- scale_[i]);
+      break;
+  }
+
   Scalar tauOverThetaNorm = 0;
   Collection<Scalar>::const_iterator s_it = s_begin;
   Collection<Scalar>::const_iterator t_it = t_begin;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
   {
-    const Scalar dx = (*s_it - *t_it) / scale_[i];
+    const Scalar dx = (*s_it - *t_it) / theta[i];
     tauOverThetaNorm += dx * dx;
   }
   tauOverThetaNorm = sqrt(tauOverThetaNorm);

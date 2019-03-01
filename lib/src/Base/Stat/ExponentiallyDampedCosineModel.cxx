@@ -79,8 +79,25 @@ Scalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const Point
 {
   if (tau.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In ExponentiallyDampedCosineModel::computeStandardRepresentative: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
+
+  Point theta(scale_);
+  switch (scaleParametrization_)
+  {
+    case STANDARD:
+      // nothing to do
+      break;
+    case INVERSE:
+      for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+        theta[i] = 1.0 / scale_[i];
+      break;
+    case LOGINVERSE:
+      for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+        theta[i] = std::exp(- scale_[i]);
+      break;
+  }
+
   Point tauOverTheta(inputDimension_);
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / theta[i];
 
   const Scalar absTau = tauOverTheta.norm();
   if (absTau <= SpecFunc::ScalarEpsilon) return 1.0 + nuggetFactor_;
@@ -90,12 +107,28 @@ Scalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const Point
 Scalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
     const Collection<Scalar>::const_iterator & t_begin) const
 {
+  Point theta(scale_);
+  switch (scaleParametrization_)
+  {
+    case STANDARD:
+      // nothing to do
+      break;
+    case INVERSE:
+      for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+        theta[i] = 1.0 / scale_[i];
+      break;
+    case LOGINVERSE:
+      for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+        theta[i] = std::exp(- scale_[i]);
+      break;
+  }
+
   Scalar absTau = 0;
   Collection<Scalar>::const_iterator s_it = s_begin;
   Collection<Scalar>::const_iterator t_it = t_begin;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
   {
-    const Scalar dx = (*s_it - *t_it) / scale_[i];
+    const Scalar dx = (*s_it - *t_it) / theta[i];
     absTau += dx * dx;
   }
   absTau = sqrt(absTau);

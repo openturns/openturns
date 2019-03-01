@@ -46,6 +46,8 @@ public:
 
   typedef GeneralLinearModelResult::BasisCollection BasisCollection;
   typedef GeneralLinearModelResult::BasisPersistentCollection BasisPersistentCollection;
+  typedef enum {NONE, JOINTLYROBUST, REFERENCE, FLAT} ScalePrior;
+  typedef CovarianceModel::ScaleParametrization ScaleParametrization;
 
   /** Default constructor */
   GeneralLinearModelAlgorithm();
@@ -143,8 +145,18 @@ protected:
   // Initialize default optimization solver
   void initializeDefaultOptimizationAlgorithm();
 
+  // when the likelihood is integrated: log(\det{FtR^{-1}F})
+  Scalar correctIntegratedLikelihoodLogDeterminant() const;
+
+  // If a prior is used, compute its value as a penalization term
+  Scalar computeLogIntegratedLikelihoodPenalization() const;
+
   friend class KrigingAlgorithm;
   Point getRho() const;
+
+  // Scale prior accessor
+  ScalePrior getScalePrior() const;
+  void setScalePrior(const ScalePrior likelihoodPrior);
 
 private:
 
@@ -295,6 +307,10 @@ private:
 
   /** Cache of the last computed reduced log-likelihood */
   mutable Scalar lastReducedLogLikelihood_;
+
+  // scale prior
+  ScalePrior scalePrior_;
+
 }; // class GeneralLinearModelAlgorithm
 
 

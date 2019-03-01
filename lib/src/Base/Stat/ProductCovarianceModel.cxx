@@ -81,6 +81,12 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
   // Handle 'specific' parameters
   extraParameterNumber_ = Indices(collection.getSize());
 
+  // check that scale parametrizations match
+  const ScaleParametrization scaleParametrization = collection[0].getScaleParametrization();
+  for (UnsignedInteger i = 1; i < size; ++ i)
+    if (collection[i].getScaleParametrization() != scaleParametrization)
+      throw InvalidArgumentException(HERE) << "ProductCovarianceModel does not allow different scale parametrizations";
+
   // Filling the active parameters
   activeParameter_ = Indices(0);
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -360,11 +366,37 @@ void ProductCovarianceModel::setScale(const Point & scale)
   scale_ = scale;
 }
 
+// Scale parametrization accessor
+CovarianceModelImplementation::ScaleParametrization ProductCovarianceModel::getScaleParametrization() const
+{
+  return collection_[0].getScaleParametrization();
+}
+
+void ProductCovarianceModel::setScaleParametrization(const ScaleParametrization scaleParametrization)
+{
+  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
+  {
+    collection_[i].setScaleParametrization(scaleParametrization);
+  }
+
+  // copy back scale
+  Point scale;
+  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
+    scale.add(collection_[i].getScale());
+  scale_ = scale;
+}
+
 /* Is it a stationary model ? */
 Bool ProductCovarianceModel::isStationary() const
 {
   for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
     if (!collection_[i].isStationary()) return false;
+  return true;
+}
+
+/* Is it a composite model ? */
+Bool ProductCovarianceModel::isComposite() const
+{
   return true;
 }
 

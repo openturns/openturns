@@ -46,6 +46,7 @@ class OT_API CovarianceModelImplementation
 public:
 
   typedef Pointer<CovarianceModelImplementation> Implementation;
+  typedef enum {STANDARD, INVERSE, LOGINVERSE} ScaleParametrization;
 
   /** Dimension-based constructor */
   explicit CovarianceModelImplementation(const UnsignedInteger outputDimension = 1);
@@ -142,6 +143,9 @@ public:
   /** Is it a diagonal covariance model ? */
   virtual Bool isDiagonal() const;
 
+  /** Is it a composite covariance model ? */
+  virtual Bool isComposite() const;
+
   /** Amplitude accessors */
   virtual Point getAmplitude() const;
   virtual void setAmplitude(const Point & amplitude);
@@ -149,6 +153,10 @@ public:
   /** Scale accessors */
   virtual Point getScale() const;
   virtual void setScale(const Point & scale);
+
+  // Scale parametrization accessor
+  virtual ScaleParametrization getScaleParametrization() const;
+  virtual void setScaleParametrization(const ScaleParametrization scaleParametrization);
 
   /** Output correlation accessors */
   virtual CorrelationMatrix getOutputCorrelation() const;
@@ -206,6 +214,9 @@ protected:
 
   /** Container for scale values  */
   Point scale_;
+
+  // scale parametrization
+  ScaleParametrization scaleParametrization_;
 
   /** Input dimension */
   UnsignedInteger inputDimension_;

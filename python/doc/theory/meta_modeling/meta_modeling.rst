@@ -17,6 +17,7 @@ A special focus will be given to polynomial response surfaces.
     polynomial_least_squares
     polynomial_sparse_least_squares
     kriging
+    kriging_robust
 
 Functional chaos
 ----------------

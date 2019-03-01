@@ -76,8 +76,24 @@ void MaternModel::computeLogNormalizationFactor()
 
 void MaternModel::computeSqrt2nuOverTheta()
 {
+  Point theta(scale_);
+  switch (scaleParametrization_)
+  {
+    case STANDARD:
+      // nothing to do
+      break;
+    case INVERSE:
+      for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+        theta[i] = 1.0 / scale_[i];
+      break;
+    case LOGINVERSE:
+      for(UnsignedInteger i = 0; i < inputDimension_; ++i)
+        theta[i] = std::exp(- scale_[i]);
+      break;
+  }
+
   // Compute useful scaling factor
-  for(UnsignedInteger i = 0; i < inputDimension_; ++i) sqrt2nuOverTheta_[i] = sqrt(2.0 * nu_) / scale_[i];
+  for(UnsignedInteger i = 0; i < inputDimension_; ++i) sqrt2nuOverTheta_[i] = sqrt(2.0 * nu_) / theta[i];
 }
 
 /* Virtual constructor */
@@ -117,6 +133,13 @@ Scalar MaternModel::computeStandardRepresentative(const Collection<Scalar>::cons
     return exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
 }
 
+void MaternModel::setScaleParametrization(const ScaleParametrization scaleParametrization)
+{
+  CovarianceModelImplementation::setScaleParametrization(scaleParametrization);
+  computeSqrt2nuOverTheta();
+}
+
+
 /* Gradient */
 Matrix MaternModel::partialGradient(const Point & s,
                                     const Point & t) const
@@ -128,6 +151,7 @@ Matrix MaternModel::partialGradient(const Point & s,
   for(UnsignedInteger i = 0; i < inputDimension_; ++i) scaledTau[i] = tau[i] * sqrt2nuOverTheta_[i];
   const Scalar scaledTauNorm = scaledTau.norm();
   const Scalar norm2 = scaledTauNorm * scaledTauNorm;
+
   // For zero norm
   if (norm2 == 0.0)
   {

@@ -375,6 +375,20 @@ OT_CovarianceModel_isStationary_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_CovarianceModel_isComposite_doc
+"Test whether the model is defined from other models.
+
+Returns
+-------
+isComposite : bool
+    *True* if the model is composite."
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::isComposite
+OT_CovarianceModel_isComposite_doc
+
+
+// ---------------------------------------------------------------------
+
 %define OT_CovarianceModel_partialGradient_doc
 "Compute the gradient of the covariance function.
 
@@ -618,3 +632,38 @@ description : :class:`~openturns.Description`
 %feature("docstring") OT::CovarianceModelImplementation::getFullParameterDescription
 OT_CovarianceModel_getFullParameterDescription_doc
 
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_setScaleParametrization_doc
+"Accessor to the scale parametrization.
+
+Parameters
+----------
+scale_parametrization : int
+    The type of parametrization for the scale parameter.
+    Available values:
+
+    - CovarianceModel.STANDARD: :math:`\vect{\theta} = (\theta_1, \dots, \theta_n)`
+    - CovarianceModel.INVERSE: :math:`\vect{\mu} = (\theta_1^{-1}, \dots, \theta_n^{-1})`
+    - CovarianceModel.LOGINVERSE :math:`\vect{\xi} = (-log(\theta_1), \dots, -log(\theta_n))`"
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::setScaleParametrization
+OT_CovarianceModel_setScaleParametrization_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_CovarianceModel_getScaleParametrization_doc
+"Accessor to the scale parametrization.
+
+Returns
+-------
+scale_parametrization : int
+    The type of parametrization for the scale parameter.
+    Available values:
+
+    - CovarianceModel.STANDARD: :math:`\vect{\theta} = (\theta_1, \dots, \theta_n)`
+    - CovarianceModel.INVERSE: :math:`\vect{\mu} = (\theta_1^{-1}, \dots, \theta_n^{-1})`
+    - CovarianceModel.LOGINVERSE :math:`\vect{\xi} = (-log(\theta_1), \dots, -log(\theta_n1))`"
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::getScaleParametrization
+OT_CovarianceModel_getScaleParametrization_doc

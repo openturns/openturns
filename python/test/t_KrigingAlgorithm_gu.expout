@@ -1,0 +1,15 @@
+parameters= [0.0100001]
+parameters= [100]
+parameters= [4.60517]
+parameters= [0.108418]
+parameters= [0.186263]
+parameters= [0.440023]
+parameters= [0.0100001]
+parameters= [100]
+parameters= [4.60517]
+Test A : prior = REFERENCE, parametrization = STANDARD
+Test B : prior = REFERENCE, parametrization = INVERSE
+Test C : prior = REFERENCE, parametrization = LOGINVERSE
+Test D : prior = JOINTLYROBUST, parametrization = STANDARD
+Test E : prior = JOINTLYROBUST, parametrization = INVERSE
+Test F : prior = JOINTLYROBUST, parametrization = LOGINVERSE
