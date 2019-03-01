@@ -70,7 +70,6 @@ ot_install_header_file (Path.hxx)
 ot_install_header_file (TTY.hxx)
 
 ot_install_header_file (XMLToolbox.hxx)
-ot_install_header_file (XMLchar_traits.hxx)
 if (LIBXML2_FOUND)
   ot_install_header_file (XMLStorageManager.hxx)
 endif (LIBXML2_FOUND)

@@ -420,7 +420,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
   // Check it is an OpenTURNS' one
   xmlNodePtr rootElt = xmlDocGetRootElement( document );
   if (rootElt == NULL) throw ConfigurationFileParsingException(HERE) << "Wrapper file has no root element" << configurationFile;
-  if (xmlStrcmp( rootElt->name, REINTERPRET_CAST(const xmlChar *, RootElementName) ))
+  if (xmlStrcmp(rootElt->name, reinterpret_cast<const xmlChar *>(RootElementName)))
     throw ConfigurationFileParsingException(HERE) << "Wrapper file " << configurationFile
         << " has an invalid root element (" << rootElt->name << ")"
         << " at line " << xmlGetLineNo(rootElt);

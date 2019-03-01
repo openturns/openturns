@@ -54,7 +54,6 @@
 #include "openturns/OTconfig.hxx"
 #ifdef OPENTURNS_HAVE_LIBXML2
 #include "openturns/XMLStorageManager.hxx"
-#include "openturns/XMLchar_traits.hxx"
 #endif
 
 #endif /* OPENTURNS_OTCOMMON_HXX */
