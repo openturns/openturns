@@ -37,6 +37,7 @@
  * #981 (HypothesisTest_{Full, Partial} regression should be moved to LinearModelTest)
  * #982 (LinearModelTest::LinearModelDurbinWatson with several factors)
  * #983 (Bogus Normal parameter distribution)
+ * #989 (Fixed the documentation of BIC according to the code)
  * #995 (Pip does not recognize conda install of openturns)
  * #1000 (SaltelliSensitivityAlgorithm with LowDiscrepancyExperiment produces wrong results)
 
