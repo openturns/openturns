@@ -29,7 +29,7 @@ def printPoint(point, digits):
 levelFunction = ot.SymbolicFunction(
     ["x1", "x2", "x3", "x4"], ["x1+2*x2-3*x3+4*x4"])
 startingPoint = ot.Point(4, 0.0)
-algo = ot.Cobyla(ot.OptimizationProblem(levelFunction, 3.0))
+algo = ot.Cobyla(ot.NearestPointProblem(levelFunction, 3.0))
 algo.setStartingPoint(startingPoint)
 print('algo=', algo)
 algo.run()
@@ -42,7 +42,7 @@ print('lambda^=', printPoint(result.getLagrangeMultipliers(), 4))
 levelFunction = ot.SymbolicFunction(
     ["x1", "x2", "x3", "x4"], ["x1*cos(x1)+2*x2*x3-3*x3+4*x3*x4"])
 startingPoint = ot.Point(4, 0.0)
-algo = ot.Cobyla(ot.OptimizationProblem(levelFunction, 3.0))
+algo = ot.Cobyla(ot.NearestPointProblem(levelFunction, 3.0))
 algo.setStartingPoint(startingPoint)
 algo.setMaximumEvaluationNumber(400)
 algo.setMaximumAbsoluteError(1.0e-10)

@@ -81,7 +81,7 @@ int main(int, char *[])
     input[3] = "x4";
     SymbolicFunction levelFunction(input, Description(1, "x1+2*x2-3*x3+4*x4"));
     Point startingPoint(4, 1.0);
-    AbdoRackwitz myAlgorithm(OptimizationProblem(levelFunction, 3.0));
+    AbdoRackwitz myAlgorithm(NearestPointProblem(levelFunction, 3.0));
     myAlgorithm.setStartingPoint(startingPoint);
     myAlgorithm.setMaximumIterationNumber(100);
     myAlgorithm.setMaximumAbsoluteError(1.0e-10);

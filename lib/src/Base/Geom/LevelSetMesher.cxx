@@ -23,7 +23,7 @@
 #include "openturns/IntervalMesher.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
-#include "openturns/OptimizationProblem.hxx"
+#include "openturns/NearestPointProblem.hxx"
 #include "openturns/TranslationFunction.hxx"
 #include "openturns/AbdoRackwitz.hxx"
 #include "openturns/Cobyla.hxx"
@@ -144,7 +144,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   Indices flagMovedVertices(0);
   // Prepare the optimization problem for the projection
   TranslationFunction shiftFunction((Point(dimension)));
-  OptimizationProblem problem;
+  NearestPointProblem problem;
   problem.setLevelValue(level);
   // Create once some objects that will be reused a lot
   Sample localVertices(dimension + 1, dimension);

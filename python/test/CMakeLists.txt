@@ -272,6 +272,9 @@ ot_pyinstallcheck_test (NonCenteredFiniteDifferenceGradient_std)
 
 ## Optim
 ot_pyinstallcheck_test (AbdoRackwitz_std)
+if (CMinpack_FOUND)
+  ot_pyinstallcheck_test (CMinpack_std IGNOREOUT)
+endif ()
 ot_pyinstallcheck_test (Cobyla_std)
 ot_pyinstallcheck_test (SQP_std)
 ot_pyinstallcheck_test (TNC_std)

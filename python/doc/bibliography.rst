@@ -32,6 +32,8 @@ Bibliography
     multiscale modelling.* PhD thesis. Blaise Pascal University-Clermont II,
     France, 2012.
     `pdf <http://doc.openturns.org/papers/caniou2012.pdf>`__
+.. [cminpack2007] Devernay, F. *C/C++ Minpack*, 2007.
+    http://devernay.free.fr/hacks/cminpack
 .. [dagostino1986] D'Agostino, R.B. and Stephens, M.A. *Goodness-of-Fit Techniques*,
     Marcel Dekker, Inc., New York, 1986.
 .. [damblin2013] G. Damblin, M. Couplet and B. Iooss. *Numerical studies

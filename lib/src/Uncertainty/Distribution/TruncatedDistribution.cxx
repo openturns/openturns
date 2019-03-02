@@ -541,6 +541,14 @@ void TruncatedDistribution::setBounds(const Interval & bounds)
   if (bounds_ != bounds)
   {
     bounds_ = bounds;
+    // Precompute some useful quantities for dimension=1
+    if (getDimension() == 1)
+    {
+      pdfLowerBound_ = distribution_.computePDF(bounds.getLowerBound());
+      pdfUpperBound_ = distribution_.computePDF(bounds.getUpperBound());
+      cdfLowerBound_ = distribution_.computeCDF(bounds.getLowerBound());
+      cdfUpperBound_ = distribution_.computeCDF(bounds.getUpperBound());
+    }
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     isAlreadyCreatedGeneratingFunction_ = false;

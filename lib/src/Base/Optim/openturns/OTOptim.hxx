@@ -23,12 +23,16 @@
 #define OPENTURNS_OTOPTIM_HXX
 
 #include "openturns/AbdoRackwitz.hxx"
+#include "openturns/CMinpack.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/MultiStart.hxx"
 #include "openturns/NearestPointCheckerResult.hxx"
 #include "openturns/NearestPointChecker.hxx"
 #include "openturns/NLopt.hxx"
 #include "openturns/OptimizationProblem.hxx"
+#include "openturns/OptimizationProblemImplementation.hxx"
+#include "openturns/NearestPointProblem.hxx"
+#include "openturns/LeastSquaresProblem.hxx"
 #include "openturns/OptimizationProblemImplementation.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"

@@ -191,3 +191,9 @@ intervals = [ot.Interval(-1.0, 4.0), ot.Interval(0.2, 2.4), ot.Interval(2.5, 65.
 for i in range(len(candidates)):
     d = ot.TruncatedDistribution(candidates[i], intervals[i])
     print("d=", d, "simplified=", d.getSimplifiedVersion())
+
+# Check that we can set the bounds independently
+truncated = ot.TruncatedDistribution()
+truncated.setDistribution(ot.Normal(20.0, 7.5))
+truncated.setBounds(ot.Interval([0], [80], [True], [False]))
+print('after setbounds q@0.9=', truncated.computeQuantile(0.9))

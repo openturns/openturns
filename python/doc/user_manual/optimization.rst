@@ -16,6 +16,8 @@ Generic optimization classes
     :template: class.rst_t
 
     OptimizationProblem
+    NearestPointProblem
+    LeastSquaresProblem
     OptimizationAlgorithm
     OptimizationResult
 
@@ -27,6 +29,7 @@ Optimization solvers
     :template: class.rst_t
 
     AbdoRackwitz
+    CMinpack
     Cobyla
     SQP
     TNC

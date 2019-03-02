@@ -105,6 +105,11 @@ try:
     except:
         print('ok')
 
+    try:
+        # uneven points
+        s = Sample([[1.0, 2.0], [5.0]])
+    except:
+        print('ok')
 except:
     import sys
     print("t_Sample_std.py", sys.exc_info()[0], sys.exc_info()[1])
