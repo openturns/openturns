@@ -39,7 +39,8 @@
  * #983 (Bogus Normal parameter distribution)
  * #995 (Pip does not recognize conda install of openturns)
  * #1000 (SaltelliSensitivityAlgorithm with LowDiscrepancyExperiment produces wrong results)
-
+ * #1031 (The doc for LogNormal and LogNormalMuSigma is confusing)
+ 
 == 1.12 release (2018-11-08) == #release-1.12
 
 === Library ===
