@@ -3,71 +3,82 @@
 Taylor decomposition importance factors
 ---------------------------------------
 
-The importance factors derived from a quadratic combination method are
-defined to discriminate the influence of the different inputs towards
-the output variable for central dispersion analysis.
+The importance factors derived from a Taylor expansion are
+defined to rank the sensitivity of the inputs to 
+the output for central dispersion analysis.
 
-The importance factors are derived from the following expression. It
-can be shown by Taylor expansion of the output variable :math:`z`
-(:math:`n_Z = 1`) around :math:`\ux = \muX` and computation of the
-variance that :
-
-  .. math::
-
-     \Var Z \approx \nabla h(\muX).\Cov \uX .^t\nabla h(\muX)
-
-which can be re written :
+Let us denote by :math:`\uX` the input random vector. 
+Assume that the marginals of :math:`\uX` are independent. 
+Suppose that :math:`Z = h(\ux)` is a real function of the 
+input, i.e. :math:`n_Z = 1`. 
+Assume that the order 1 Taylor expansion of the function $h$ 
+at the point :math:`\ux = \muX` is exact, i.e. 
 
   .. math::
 
-     1 \approx \sum_{i=1}^{n_X}\frac{\partial h(\muX)}{\partial X^i}\times\frac{  \sum_{j=1}^{n_X} \frac{\partial h(\muX)}{\partial x^j}.(\Cov \uX)_{ij} }{\Var Z} \approx & \cF_1 + \cF_2 + \ldots + \cF_{n_X}
-
-
-  .. math::
-
-     \underline{\cF} = \nabla h(\muX) \times \frac{\Cov \uX .^t\nabla h(\muX)}{\Var Z}
-
-
-  .. math::
-
-     \cF_i = \frac{\partial h(\muX)}{\partial x^i} \times \frac{\sum_{j=1}^{n_X} \frac{\partial h(\muX)}{\partial x^j}.(\Cov \uX)_{ij} }{\Var Z}
-
+     h(\ux) = h(\muX) 
+	 + \sum_{i=1}^{n_X} \frac{\partial h}{\partial x_i} (\muX) (x_i - \mu_i)
 
 where:
 
--  :math:`\nabla h(\ux) = \left( \frac{\partial h(\ux)}{\partial x^i}\right)_{i=1,\ldots,n_X}`
-   is the gradient of the model at the point :math:`\ux`,
-
--  :math:`\Cov \uX` is the covariance matrix,
-
 -  :math:`\muX` is the mean of the input random vector,
 
--  :math:`\Var Z` is the variance of the output variable.
+-  :math:`\frac{\partial h}{\partial x_i} (\muX)`
+   is the partial derivative of the model :math:`h` 
+   with respect to the i-th input variable, 
+   evaluated at the point :math:`\ux`.
 
-| Let us note that this interpretation supposes that :math:`(X^i)_i` are
-  independent.
+Therefore the expectation of :math:`Z` is: 
+
+  .. math::
+
+     \Expect{Z} = h(\muX).
+
+The independence of the marginals implies:
+
+  .. math::
+
+     \Var Z = \sum_{i=1}^{n_X} \left(\frac{\partial h}{\partial x_i} (\muX)\right)^2 \sigma_i^2
+
+where:
+
+-  :math:`\Var Z` is the variance of the output variable,
+
+-  :math:`\sigma_i^2 = \Var X_i` is the variance of the i-th input variable. 
+
+Let :math:`\cF_i` be the importance factor of the i-th input 
+variable, defined by:
+
+  .. math::
+
+     \cF_i = \frac{\left(\frac{\partial h}{\partial x_i} (\muX)\right)^2 \sigma_i^2}{\Var Z}
+
+Therefore, the importance factors sum to one:
+
+  .. math::
+
+     1 = \cF_1 + \cF_2 + \ldots + \cF_{n_X}
+
 | Each coefficient :math:`\frac{\partial h(\ux)}{\partial x^i}` is a
   linear estimate of the number of units change in the variable
   :math:`y=h(\ux)` as a result of a unit change in the variable
   :math:`x^i`. This first term depends on the physical units of the
   variables and is meaningful only when the units of the model are
   known. In the general case, as the variables have different physical
-  units, it is not possible to compare these sensitivities
-  :math:`\frac{\partial h(\ux)}{\partial x^i}` the one with the others.
-  This is the reason why the importance factor proposed are
-  normalized factors. These factors enable to make the results
+  units, if :math:`i\neq j`, it is not possible to compare 
+  :math:`\frac{\partial h(\ux)}{\partial x_i}` with 
+  :math:`\frac{\partial h(\ux)}{\partial x_j}`. 
+  This is the reason why the importance factor are
+  normalized. These factors enable to make the results
   comparable independently of the original units of the inputs of the
-  model. The second term
-  :math:`\frac{\sum_{j=1}^{n_X} \frac{\partial h(\muX)}{\partial x^j}.(\Cov \uX)_{ij} }{\Var Z}`
-  is the renormalization factor.
-| To summarize, the coefficients :math:`(\cF_i)_{i=1,\ldots,n_X}`
-  represent a linear estimate of the percentage change in the variable
-  :math:`z = h(\ux)` caused by one percent change in the variable
-  :math:`x^i`. The importance factors are independent of the original
+  model. 
+| To summarize, the coefficients :math:`\cF_1, ..., \cF_{n_X}` 
+  represent a linear estimate of the change in the output variable
+  :math:`z = h(\ux)` caused by a small change in the input variable
+  :math:`x_i`. The importance factors are independent of the original
   units of the model, and are comparable with each other.
 
-
-These are also called Importance Factors derived from Perturbation Methods.
+These are also called importance factors derived from perturbation methods.
 
 
 .. topic:: API:
