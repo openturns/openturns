@@ -37,16 +37,6 @@
 #endif
 
 # ifdef __GNUC__
-#  define GCC_VERSION (__GNUC__ * 10000         \
-                       + __GNUC_MINOR__ * 100   \
-                       + __GNUC_PATCHLEVEL__)
-
-#  if GCC_VERSION <= 30406 /* GCC 3.4.6 and below */
-#   define REINTERPRET_CAST(T,V) ( (T) (V) )
-#  else /* GCC after 3.4.6 */
-#   define REINTERPRET_CAST(T,V) ( reinterpret_cast< T > (V) )
-#  endif /* GCC 3.4.6 test */
-
 
 #  ifdef SWIG
 #   define DEPRECATED
@@ -60,8 +50,6 @@
 
 # else /* not __GNUC_ */
 
-#  define REINTERPRET_CAST(T,V) ( reinterpret_cast< T > (V) )
-#  define GCC_VERSION 0
 #  define DEPRECATED
 #  define UNUSED
 #  define NOTHROW

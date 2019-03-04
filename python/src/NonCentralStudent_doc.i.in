@@ -37,7 +37,7 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{X} & = & \gamma + \delta sqrt{\frac{\nu}{2}}
+        \Expect{X} & = & \gamma + \delta \sqrt{\frac{\nu}{2}}
                          \frac{\Gamma\left(\frac{\nu - 1}{2}\right)}
                               {\Gamma \left(\frac{\nu}{2}\right)}
                        \quad \text{ if }\nu > 1\\

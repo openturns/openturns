@@ -25,7 +25,6 @@
 #include <cstdarg>
 #include "openturns/OTprivate.hxx"
 #include "openturns/OTconfig.hxx"
-#include "openturns/XMLchar_traits.hxx"
 
 #if defined OPENTURNS_HAVE_LIBXML2
 #include <libxml/parser.h>

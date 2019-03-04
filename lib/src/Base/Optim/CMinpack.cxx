@@ -352,13 +352,15 @@ void CMinpack::run()
 
   if (getProblem().hasBounds())
   {
-    Point jacfac;
-    Transform(x, n, bounds, jacfac);
+    Transform(x, n, bounds, wa1);
   }
   optimalValue = 0.5 * fvec.normSquare();
 
   switch (info)
   {
+    case -1:
+      // user stop
+      break;
     case 0:
       throw InvalidArgumentException(HERE) << "Improper input parameters";
     case 1:

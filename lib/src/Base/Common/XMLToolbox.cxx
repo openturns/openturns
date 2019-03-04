@@ -41,17 +41,17 @@ BEGIN_NAMESPACE_OPENTURNS
 static //inline
 String xmlStringToString( const XML::xmlString & xst )
 {
-  return String( reinterpret_cast<const char *>(xst.c_str()), xst.size() );
+  return String(reinterpret_cast<const char*>(xst.c_str()), xst.size());
 }
 
 static //inline
 XML::xmlString StringToXmlString( const String & st )
 {
-  return XML::xmlString( reinterpret_cast<const unsigned char *>(st.c_str()), st.size() );
+  return XML::xmlString(reinterpret_cast<const unsigned char *>(st.c_str()), st.size());
 }
 
 
-XMLDoc::XMLDoc() : doc_(xmlNewDoc( REINTERPRET_CAST( const xmlChar *, "1.0" ) ))
+XMLDoc::XMLDoc() : doc_(xmlNewDoc(reinterpret_cast<const xmlChar *> ("1.0")))
 {
   // Nothing to do
 }
@@ -136,7 +136,7 @@ String XMLDoc::__repr__() const
     return String();
   }
 
-  String data = REINTERPRET_CAST( char *, buf->content );
+  String data = reinterpret_cast<char *>(buf->content);
 
   xmlBufferFree( buf );
 
@@ -156,8 +156,8 @@ Bool XMLDoc::validate() const
   xmlValidCtxtPtr validCtxt = xmlNewValidCtxt();
   if (validCtxt != NULL)
   {
-    validCtxt->error    = REINTERPRET_CAST( xmlValidityErrorFunc,   XML::ErrorHandler   );
-    validCtxt->warning  = REINTERPRET_CAST( xmlValidityWarningFunc, XML::WarningHandler );
+    validCtxt->error    = reinterpret_cast<xmlValidityErrorFunc>(XML::ErrorHandler);
+    validCtxt->warning  = reinterpret_cast<xmlValidityWarningFunc>(XML::WarningHandler);
     ok = xmlValidateDocument( validCtxt, doc_ );
     xmlFreeValidCtxt( validCtxt );
   }
@@ -176,8 +176,8 @@ Bool XMLDoc::validate(const String & name, const FileName & dtd) const
   if (validCtxt != NULL)
   {
     validCtxt->userData = (void *) stderr;
-    validCtxt->error    = REINTERPRET_CAST( xmlValidityErrorFunc,   XML::ErrorHandler   );
-    validCtxt->warning  = REINTERPRET_CAST( xmlValidityWarningFunc, XML::WarningHandler );
+    validCtxt->error    = reinterpret_cast<xmlValidityErrorFunc>(XML::ErrorHandler);
+    validCtxt->warning  = reinterpret_cast<xmlValidityWarningFunc>(XML::WarningHandler);
     ok = xmlValidateDtd( validCtxt, doc_, theDTD );
     xmlFreeValidCtxt( validCtxt );
   }

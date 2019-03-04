@@ -42,6 +42,7 @@
  * #983 (Bogus Normal parameter distribution)
  * #995 (Pip does not recognize conda install of openturns)
  * #1000 (SaltelliSensitivityAlgorithm with LowDiscrepancyExperiment produces wrong results)
+ * #1005 (The stopping criteria of SobolSimulationAlgorithm is weird)
  * #1024 (The unary operator is undefined for Normal distribution)
  * #1025 (Empty throw in PythonWrappingFunctions)
  * #1028 (Build fails with clang-60: token is not a valid binary operator in a preprocessor subexpression)
