@@ -683,11 +683,7 @@ if (MATPLOTLIB_FOUND)
 endif ()
 ot_pyinstallcheck_test (features IGNOREOUT)
 
-# FIXME: check_get_line_col fails through wine on newer native version
-if (NOT WIN32)
-  ot_pyinstallcheck_test (coupling_tools)
-endif ()
-
+ot_pyinstallcheck_test (coupling_tools)
 
 if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND AND LIBXML2_FOUND AND NLOPT_FOUND AND OPTPP_FOUND)
   # on py3k/swig<3.0.0, doctest fails with "NameError: Unknown C global variable"
