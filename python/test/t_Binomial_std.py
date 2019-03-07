@@ -67,6 +67,14 @@ try:
               distribution.getStandardMoment(i))
     print("Standard representative=", distribution.getStandardRepresentative())
 
+    # discrete computeBilateralConfidenceInterval
+    n = 1000
+    pf = 0.5
+    alpha = 0.05
+    pf_dist = Binomial(n, pf)
+    bounds = pf_dist.computeBilateralConfidenceInterval(1.0-alpha)
+    print(bounds)
+
 except:
     import sys
     print("t_Binomial_std.py", sys.exc_info()[0], sys.exc_info()[1])
