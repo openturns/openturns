@@ -125,6 +125,9 @@ public:
   /** Tell if the distribution has independent copula */
   Bool hasIndependentCopula() const;
 
+  /** Parameters value and description accessor */
+  PointWithDescriptionCollection getParametersCollection() const;
+
   /** Tell if the distribution has elliptical copula */
   Bool hasEllipticalCopula() const;
 

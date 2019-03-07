@@ -327,6 +327,24 @@ Distribution MarginalDistribution::getStandardDistribution() const
   return distribution_.getStandardDistribution().getMarginal(indices_).getImplementation();
 }
 
+/* Parameters value and description accessor */
+MarginalDistribution::PointWithDescriptionCollection MarginalDistribution::getParametersCollection() const
+{
+  const PointWithDescriptionCollection allParameters(distribution_.getParametersCollection());
+  PointWithDescriptionCollection parametersCollection;
+  const UnsignedInteger size = indices_.getSize();
+  // marginal parameters, can be omitted (ComposedCopula)
+  if (allParameters.getSize() == distribution_.getDimension() + 1)
+    for (UnsignedInteger i = 0; i < size; ++ i)
+      parametersCollection.add(allParameters[indices_[i]]);
+  // dependency parameters, mandatory
+  if (distribution_.getDimension() > 1)
+  {
+    parametersCollection.add(allParameters[allParameters.getSize() - 1]);
+  }
+  return parametersCollection;
+} // getParametersCollection
+
 /* Tell if the distribution has independent copula */
 Bool MarginalDistribution::hasIndependentCopula() const
 {
