@@ -501,36 +501,51 @@ Distribution ComposedCopula::getMarginal(const Indices & indices) const
   CopulaCollection marginalCopulas;
   const UnsignedInteger indicesSize = indices.getSize();
   const UnsignedInteger size = copulaCollection_.getSize();
-  // For each copula, see if there is something to extract
-  UnsignedInteger currentPosition = 0;
-  UnsignedInteger currentIndex = indices[currentPosition];
-  // Lower bound of indices related to the current copula
-  UnsignedInteger lowerIndex = 0;
-  // Upper bound of indices related to the current copula plus 1
-  UnsignedInteger upperIndex = 0;
-  for (UnsignedInteger i = 0; i < size; ++i)
+
+  // helps reverse the copula indices
+  Indices copulaCumulatedDimension(size + 1);
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    const Copula copula(copulaCollection_[i]);
-    // Update index range for the current copula
-    lowerIndex = upperIndex;
-    upperIndex += copula.getDimension();
-    Indices copulaIndices(0);
-    // Find the indices related to the current copula
-    while ((currentPosition < indicesSize) && (currentIndex >= lowerIndex) && (currentIndex < upperIndex))
+    copulaCumulatedDimension[i + 1] = copulaCumulatedDimension[i] + copulaCollection_[i].getDimension();
+  }
+
+  Indices copulaOrder;
+  for (UnsignedInteger currentPosition = 0; currentPosition < indicesSize; ++ currentPosition)
+  {
+    UnsignedInteger currentIndex = indices[currentPosition];
+
+    // find the index of the current copula
+    UnsignedInteger copulaIndex = 0;
+    while (currentIndex >= copulaCumulatedDimension[copulaIndex + 1])
     {
-      copulaIndices.add(currentIndex - lowerIndex);
-      // Go to next index
-      ++currentPosition;
-      if (currentPosition == indicesSize) break;
-      currentIndex = indices[currentPosition];
+      ++ copulaIndex;
     }
-    // If there is something to extract
-    if (copulaIndices.getSize() > 0) marginalCopulas.add(copulaCollection_[i].getMarginal(copulaIndices));
-    // All the indices have been taken into account
-    if (currentPosition == indicesSize) break;
-    // non-contiguous dependency blocs case
-    if (currentIndex < lowerIndex)
+
+    // we already marked that copula, so we have non-contiguous blocs
+    if (copulaOrder.contains(copulaIndex))
       return new MarginalDistribution(*this, indices);
+
+    // mark this copula
+    copulaOrder.add(copulaIndex);
+
+    // bounds of the current copula
+    const UnsignedInteger lowerIndex = copulaCumulatedDimension[copulaIndex];
+    const UnsignedInteger upperIndex = copulaCumulatedDimension[copulaIndex + 1];
+
+    // store the current index wrt that copula
+    Indices copulaIndices(1, currentIndex - lowerIndex);
+
+    // store the next indices that also belong to that copula
+    while (currentPosition + 1 < indicesSize)
+    {
+      currentIndex = indices[currentPosition + 1];
+      if ((currentIndex >= lowerIndex) && (currentIndex < upperIndex))
+        copulaIndices.add(currentIndex - lowerIndex);
+      else
+        break;
+      ++ currentPosition;
+    }
+    marginalCopulas.add(copulaCollection_[copulaIndex].getMarginal(copulaIndices));
   }
   return new ComposedCopula(marginalCopulas);
 }
