@@ -21,12 +21,16 @@ random variable, i.e.
 
 .. math::
 
-    \Expect{X} &= \mu_\ell \\
-    \Var{X} &= \sigma_\ell^2
+    \Expect{X} &= \mu \\
+    \Var{X} &= \sigma^2
 
 where :math:`X` is the log-normal random variable. 
 
-The native parameters are defined as follows:
+The native parameters are :math:`\mu_\ell` 
+and :math:`\sigma_\ell`, which are the mean and 
+standard deviation of the logarithm of the log-normal variable, 
+i.e. the parameters of the associated normal variable.
+They are defined as follows:
 
 .. math::
 
