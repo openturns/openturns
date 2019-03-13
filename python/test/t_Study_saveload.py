@@ -233,6 +233,12 @@ try:
     wms_parameters = ot.WeibullMuSigma(1.3, 1.23, -0.5)
     myStudy.add('wms_parameters', wms_parameters)
 
+    # MemoizeFunction
+    f = ot.SymbolicFunction(['x1', 'x2'], ['x1*x2'])
+    memoize = ot.MemoizeFunction(f)
+    memoize([5, 6])
+    myStudy.add('memoize', memoize)
+
     # print ('Study = ' , myStudy)
     myStudy.save()
 
@@ -242,6 +248,13 @@ try:
 
     myStudy.load()
     # print 'loaded Study = ' , myStudy
+
+    # MemoizeFunction
+    memoize = ot.MemoizeFunction()
+    myStudy.fillObject('memoize', memoize)
+    print('memoize = ', repr(memoize))
+    memoize([5, 6])
+    print('memoize.getCacheHits()=', memoize.getCacheHits())
 
     # Create a Point from the one stored in the Study
     point = ot.Point()

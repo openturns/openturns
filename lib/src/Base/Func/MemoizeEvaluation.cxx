@@ -343,9 +343,7 @@ void MemoizeEvaluation::load(Advocate & adv)
   adv.loadAttribute("inputStrategy_", inputStrategy_);
   adv.loadAttribute("outputStrategy_", outputStrategy_);
   adv.loadAttribute("isHistoryEnabled_", isHistoryEnabled_);
-  TypedInterfaceObject<CacheType> cache;
-  adv.loadAttribute("cache_", cache);
-  p_cache_ = cache.getImplementation();
+  adv.loadAttribute("cache_", *p_cache_);
 }
 
 END_NAMESPACE_OPENTURNS

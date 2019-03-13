@@ -123,13 +123,13 @@ public:
     enabled_(other.enabled_),
     maxSize_(other.maxSize_),
     hits_(other.hits_),
-    keys_(other.keys_),
     points_()
   {
     for(list_key_reverse_iterator it = other.keys_.rbegin(); it != other.keys_.rend(); ++it)
     {
       const KeyType & key = *it;
-      points_.insert(std::make_pair(key, std::make_pair(other.find(key), it)));
+      keys_.push_front(key);
+      points_.insert(std::make_pair(key, std::make_pair(other.points_[key].first, keys_.begin())));
     }
   }
 
@@ -177,17 +177,15 @@ public:
       clear();
       PersistentObject::operator=(other);
       const_cast<UnsignedInteger&>(maxSize_) = other.maxSize_;
-      keys_                                  = other.keys_;
       hits_                                  = other.hits_;
       enabled_                               = other.enabled_;
       for(list_key_reverse_iterator it = other.keys_.rbegin(); it != other.keys_.rend(); ++it)
       {
         const KeyType & key = *it;
         keys_.push_front(key);
-        points_.insert(std::make_pair(key, std::make_pair(other.find(key), keys_.begin())));
+        points_.insert(std::make_pair(key, std::make_pair(other.points_[key].first, keys_.begin())));
       }
     }
-
     return *this;
   }
 
@@ -287,7 +285,8 @@ public:
       valueColl[index] = points_[key].first;
     }
     PersistentObject::save(adv);
-    adv.saveAttribute( "size", size );
+    adv.saveAttribute( "enabled_", enabled_ );
+    adv.saveAttribute( "hits_", hits_ );
     adv.saveAttribute( "keyColl", keyColl );
     adv.saveAttribute( "valueColl", valueColl );
   }
@@ -296,16 +295,15 @@ public:
   inline
   void load(Advocate & adv)
   {
+    clear();
     PersistentObject::load(adv);
-    UnsignedInteger size = 0;
-    adv.loadAttribute( "size", size );
-
-    PersistentCollection< KeyType >      keyColl(size);
-    PersistentCollection< ValueType >    valueColl(size);
+    adv.loadAttribute( "enabled_", enabled_ );
+    adv.loadAttribute( "hits_", hits_ );
+    PersistentCollection< KeyType >      keyColl;
+    PersistentCollection< ValueType >    valueColl;
     adv.loadAttribute( "keyColl", keyColl );
     adv.loadAttribute( "valueColl", valueColl );
-
-    clear();
+    const UnsignedInteger size = keyColl.getSize();
     for (UnsignedInteger i = 0; i < size; ++i)
       add(keyColl[i], valueColl[i]);
   }

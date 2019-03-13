@@ -22,10 +22,13 @@
 #include "openturns/MemoizeEvaluation.hxx"
 #include "openturns/NoGradient.hxx"
 #include "openturns/NoHessian.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(MemoizeFunction)
+
+static const Factory<MemoizeFunction> Factory_MemoizeFunction;
 
 /* Default constructor */
 MemoizeFunction::MemoizeFunction ()
@@ -43,6 +46,20 @@ MemoizeFunction::MemoizeFunction (const Function & function, const HistoryStrate
 {
   setUseDefaultGradientImplementation(function.getUseDefaultGradientImplementation());
   setUseDefaultHessianImplementation(function.getUseDefaultHessianImplementation());
+}
+
+
+/* Virtual constructor */
+MemoizeFunction * MemoizeFunction::clone() const
+{
+  return new MemoizeFunction(*this);
+}
+
+
+/* String converter */
+String MemoizeFunction::__repr__() const
+{
+  return FunctionImplementation::__repr__();
 }
 
 /** Operator () */
