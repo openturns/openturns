@@ -33,12 +33,12 @@ isoprobabilistic transformation (general normal)= [(RosenblattEvaluation(FrankCo
  [ -0.57735   1.1547    0        ]
  [ -0.348155  0.174078  1.04447  ]], E=Normal(mu = 0, sigma = 1))->Normal(mu = [0,0,0], sigma = [1,1,1], R = [[ 1 0 0 ]
  [ 0 1 0 ]
- [ 0 0 1 ]])))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1,x2]),(RosenblattEvaluation(ClaytonCopula(theta = 2)->Normal(2))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1])]
+ [ 0 0 1 ]])))o([x0,x1,x2,x3,x4,x5,x6]->[x2,x3,x4]),(RosenblattEvaluation(ClaytonCopula(theta = 2)->Normal(2))o([x0,x1,x2,x3,x4,x5,x6]->[x5,x6])]
 isoprobabilistic transformation (general non-normal)= [(RosenblattEvaluation(class=SklarCopula name=SklarCopula dimension=2 distribution=class=Student name=Student dimension=2 nu=3 mean=class=Point name=Unnamed dimension=2 values=[1,1] sigma=class=Point name=Unnamed dimension=2 values=[3,3] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]->Normal(2))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1]),(NatafEllipticalCopulaEvaluation(Copula(cholesky=[[  1         0         0        ]
  [ -0.57735   1.1547    0        ]
  [ -0.348155  0.174078  1.04447  ]], E=Normal(mu = 0, sigma = 1))->Normal(mu = [0,0,0], sigma = [1,1,1], R = [[ 1 0 0 ]
  [ 0 1 0 ]
- [ 0 0 1 ]])))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1,x2]),(RosenblattEvaluation(ClaytonCopula(theta = 2)->Normal(2))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1])]
+ [ 0 0 1 ]])))o([x0,x1,x2,x3,x4,x5,x6]->[x2,x3,x4]),(RosenblattEvaluation(ClaytonCopula(theta = 2)->Normal(2))o([x0,x1,x2,x3,x4,x5,x6]->[x5,x6])]
 isoprobabilistic transformation (independent)= NatafIndependentCopulaEvaluation(IndependentCopula(6)->Normal(6))
 isoprobabilistic transformation (single contributor)= (class=LinearEvaluation name=Unnamed center=[1,1] constant=[0,0] linear=[[ 0.333333 0        ]
  [ 0        0.333333 ]])o(| y0 = Uniform(a = 0, b = 1) -> y0 : Student(nu = 3, mu = 1, sigma = 3)

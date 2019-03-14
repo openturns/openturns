@@ -637,6 +637,7 @@ ComposedCopula::IsoProbabilisticTransformation ComposedCopula::getIsoProbabilist
     // Second, check if the isoprobabilistic transformation associated with the current copula maps to a Normal standard distribution
     if (copulaCollection_[i].getStandardDistribution().hasIndependentCopula()) atomTransformations[i] = ComposedFunction(copulaCollection_[i].getIsoProbabilisticTransformation(), projection);
     else atomTransformations[i] = ComposedFunction(RosenblattEvaluation(copulaCollection_[i]), projection);
+    shift += atomDimension;
   }
   return AggregatedFunction(atomTransformations);
 }
@@ -664,6 +665,7 @@ ComposedCopula::InverseIsoProbabilisticTransformation ComposedCopula::getInverse
     // Second, check if the isoprobabilistic transformation associated with the current copula maps to a Normal standard distribution
     if (copulaCollection_[i].getStandardDistribution().hasIndependentCopula()) atomTransformations[i] = ComposedFunction(copulaCollection_[i].getInverseIsoProbabilisticTransformation(), projection);
     else atomTransformations[i] = ComposedFunction(InverseRosenblattEvaluation(copulaCollection_[i]), projection);
+    shift += atomDimension;
   }
   return AggregatedFunction(atomTransformations);
 }
