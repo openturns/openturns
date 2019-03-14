@@ -21,7 +21,7 @@
 #include "openturns/LinearCombinationEvaluation.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Description.hxx"
+#include "openturns/IdentityFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -38,8 +38,8 @@ static const Factory<LinearCombinationEvaluation> Factory_LinearCombinationEvalu
 /* Default constructor */
 LinearCombinationEvaluation::LinearCombinationEvaluation()
   : EvaluationImplementation()
-  , functionsCollection_(0)
-  , coefficients_(0)
+  , functionsCollection_(1, IdentityFunction(1))
+  , coefficients_(1, 1.0)
   , isZero_(false)
 {
   // Nothing to do
@@ -319,7 +319,7 @@ Evaluation LinearCombinationEvaluation::getMarginal(const Indices & indices) con
 /* Method save() stores the object through the StorageManager */
 void LinearCombinationEvaluation::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
+  EvaluationImplementation::save(adv);
   adv.saveAttribute( "functionsCollection_", functionsCollection_ );
   adv.saveAttribute( "coefficients_", coefficients_ );
 }
@@ -328,7 +328,7 @@ void LinearCombinationEvaluation::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void LinearCombinationEvaluation::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
+  EvaluationImplementation::load(adv);
   FunctionPersistentCollection functionsCollection;
   Point coefficients;
   adv.loadAttribute( "functionsCollection_", functionsCollection );

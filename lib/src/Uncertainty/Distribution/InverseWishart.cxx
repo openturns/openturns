@@ -411,7 +411,7 @@ void InverseWishart::load(Advocate & adv)
   adv.loadAttribute( "cholesky_", cholesky_ );
   adv.loadAttribute( "nu_", nu_ );
   adv.loadAttribute( "inverseCholeskyInverse_", inverseCholeskyInverse_ );
-  adv.saveAttribute( "logNormalizationFactor_", logNormalizationFactor_ );
+  adv.loadAttribute( "logNormalizationFactor_", logNormalizationFactor_ );
   computeRange();
 }
 

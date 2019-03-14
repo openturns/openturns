@@ -31,7 +31,7 @@ static const Factory<ParametricHessian> Factory_ParametricHessian;
 /* Default constructor */
 ParametricHessian::ParametricHessian()
   : HessianImplementation()
-  , p_evaluation_()
+  , p_evaluation_(new ParametricEvaluation)
 {
   // Nothing to do
 }

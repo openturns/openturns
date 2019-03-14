@@ -588,7 +588,7 @@ void TensorApproximationAlgorithm::load(Advocate & adv)
   adv.loadAttribute("maximumAlternatingLeastSquaresIteration_", maximumAlternatingLeastSquaresIteration_);
   adv.loadAttribute("maximumRadiusError_", maximumRadiusError_);
   adv.loadAttribute("maximumResidualError_", maximumResidualError_);
-  adv.saveAttribute("result_", result_);
+  adv.loadAttribute("result_", result_);
 }
 
 

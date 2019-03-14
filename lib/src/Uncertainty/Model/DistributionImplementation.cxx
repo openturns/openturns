@@ -88,8 +88,8 @@ static const Factory<DistributionImplementation> Factory_DistributionImplementat
 /* Default constructor */
 DistributionImplementation::DistributionImplementation()
   : PersistentObject()
-  , mean_(Point(0))
-  , covariance_(CovarianceMatrix(0))
+  , mean_(Point(1, 0.0))
+  , covariance_(CovarianceMatrix(1))
   , gaussNodes_()
   , gaussWeights_()
   , integrationNodesNumber_(ResourceMap::GetAsUnsignedInteger("Distribution-DefaultIntegrationNodesNumber"))

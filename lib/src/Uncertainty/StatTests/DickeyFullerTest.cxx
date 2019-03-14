@@ -657,7 +657,6 @@ void DickeyFullerTest::save(Advocate & adv) const
   adv.saveAttribute("sum_y_t_", sum_yt_);
   adv.saveAttribute("drift_", drift_);
   adv.saveAttribute("sigmaDrift_", sigmaDrift_);
-  adv.saveAttribute("isComputedNoConstantCharacteristics_", isComputedNoConstantCharacteristics_);
   adv.saveAttribute("sum_t_yt_minus_one_", sum_t_yt_minus_one_);
   adv.saveAttribute("sum_t_yt_", sum_t_yt_);
   adv.saveAttribute("sum_ti_", sum_ti_);
@@ -684,7 +683,6 @@ void DickeyFullerTest::load(Advocate & adv)
   adv.loadAttribute("sum_y_t_", sum_yt_);
   adv.loadAttribute("drift_", drift_);
   adv.loadAttribute("sigmaDrift_", sigmaDrift_);
-  adv.loadAttribute("isComputedNoConstantCharacteristics_", isComputedNoConstantCharacteristics_);
   adv.loadAttribute("sum_t_yt_minus_one_", sum_t_yt_minus_one_);
   adv.loadAttribute("sum_t_yt_", sum_t_yt_);
   adv.loadAttribute("sum_ti_", sum_ti_);

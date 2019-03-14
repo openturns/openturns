@@ -201,14 +201,17 @@ HMatrixImplementation::HMatrixImplementation(const HMatrixImplementation& other)
   , hmat_(NULL)
 {
 #ifdef OPENTURNS_HAVE_HMAT
-  hmat_cluster_tree_t* ptr_other_ct = static_cast<hmat_cluster_tree_t*>(other.hmatClusterTree_.get()->get());
-  hmatClusterTree_ = new HMatrixClusterTree(hmat_copy_cluster_tree(ptr_other_ct), other.hmatClusterTree_.get()->getSize());
-  hmat_cluster_tree_t* ptr_ct = static_cast<hmat_cluster_tree_t*>(hmatClusterTree_.get()->get());
+  if (other.hmatClusterTree_.get())
+  { 
+    hmat_cluster_tree_t* ptr_other_ct = static_cast<hmat_cluster_tree_t*>(other.hmatClusterTree_.get()->get());
+    hmatClusterTree_ = new HMatrixClusterTree(hmat_copy_cluster_tree(ptr_other_ct), other.hmatClusterTree_.get()->getSize());
+    hmat_cluster_tree_t* ptr_ct = static_cast<hmat_cluster_tree_t*>(hmatClusterTree_.get()->get());
 
-  hmat_interface_t* ptr_interface = static_cast<hmat_interface_t*>(hmatInterface_);
-  hmat_matrix_t* hmat_copy = ptr_interface->copy(static_cast<hmat_matrix_t*>(other.hmat_));
-  ptr_interface->set_cluster_trees(hmat_copy, ptr_ct, ptr_ct);
-  hmat_ = hmat_copy;
+    hmat_interface_t* ptr_interface = static_cast<hmat_interface_t*>(hmatInterface_);
+    hmat_matrix_t* hmat_copy = ptr_interface->copy(static_cast<hmat_matrix_t*>(other.hmat_));
+    ptr_interface->set_cluster_trees(hmat_copy, ptr_ct, ptr_ct);
+    hmat_ = hmat_copy;
+  }
 #endif
 }
 

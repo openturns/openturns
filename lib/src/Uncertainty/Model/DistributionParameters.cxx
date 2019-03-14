@@ -27,7 +27,7 @@ CLASSNAMEINIT(DistributionParameters)
 
 /* Default constructor */
 DistributionParameters::DistributionParameters()
-  : TypedInterfaceObject<DistributionParametersImplementation>()
+  : TypedInterfaceObject<DistributionParametersImplementation>(new DistributionParametersImplementation)
 {
   // Nothing to do
 }

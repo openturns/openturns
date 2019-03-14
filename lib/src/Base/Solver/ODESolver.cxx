@@ -29,7 +29,7 @@ CLASSNAMEINIT(ODESolver)
 
 /* Default constructor */
 ODESolver::ODESolver()
-  : TypedInterfaceObject<ODESolverImplementation>()
+  : TypedInterfaceObject<ODESolverImplementation>(new ODESolverImplementation())
 {
   // Nothing to do
 }

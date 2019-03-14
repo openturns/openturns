@@ -94,12 +94,15 @@ namespace
 Bool computeRegular(const Point & locations)
 {
   const UnsignedInteger size = locations.getSize();
-  const Scalar step = locations[1] - locations[0];
-  const Scalar relativeEpsilon = ResourceMap::GetAsScalar("PiecewiseLinearEvaluation-EpsilonRegular") * std::abs(step);
-  for (UnsignedInteger i = 2; i < size; ++i)
+  if (size >= 2)
   {
-    if (!(std::abs(locations[i] - locations[0] - i * step) < relativeEpsilon))
-      return false;
+    const Scalar step = locations[1] - locations[0];
+    const Scalar relativeEpsilon = ResourceMap::GetAsScalar("PiecewiseLinearEvaluation-EpsilonRegular") * std::abs(step);
+    for (UnsignedInteger i = 2; i < size; ++i)
+    {
+      if (!(std::abs(locations[i] - locations[0] - i * step) < relativeEpsilon))
+        return false;
+    }
   }
   return true;
 }
