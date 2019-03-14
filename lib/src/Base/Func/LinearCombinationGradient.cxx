@@ -34,7 +34,7 @@ static const Factory<LinearCombinationGradient> Factory_LinearCombinationGradien
 /* Default constructor */
 LinearCombinationGradient::LinearCombinationGradient()
   : GradientImplementation()
-  , p_evaluation_()
+  , p_evaluation_(new LinearCombinationEvaluation)
 {
   // Nothing to do
 }
@@ -104,7 +104,7 @@ String LinearCombinationGradient::__str__(const String & ) const
 /* Method save() stores the object through the StorageManager */
 void LinearCombinationGradient::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
+  GradientImplementation::save(adv);
   adv.saveAttribute( "evaluation_", *p_evaluation_ );
 }
 
@@ -112,10 +112,8 @@ void LinearCombinationGradient::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void LinearCombinationGradient::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
-  TypedInterfaceObject<LinearCombinationEvaluation> evaluation;
-  adv.loadAttribute( "evaluation_", evaluation );
-  p_evaluation_ = evaluation.getImplementation();
+  GradientImplementation::load(adv);
+  adv.loadAttribute( "evaluation_", *p_evaluation_ );
 }
 
 

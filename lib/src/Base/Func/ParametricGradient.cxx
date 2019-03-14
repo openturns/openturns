@@ -31,7 +31,7 @@ static const Factory<ParametricGradient> Factory_ParametricGradient;
 /* Default constructor */
 ParametricGradient::ParametricGradient()
   : GradientImplementation()
-  , p_evaluation_()
+  , p_evaluation_(new ParametricEvaluation)
 {
   // Nothing to do
 }

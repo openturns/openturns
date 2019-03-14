@@ -33,7 +33,7 @@ CLASSNAMEINIT(LeastSquaresMethod)
 
 /* Default constructor */
 LeastSquaresMethod::LeastSquaresMethod()
-  : TypedInterfaceObject<LeastSquaresMethodImplementation>()
+  : TypedInterfaceObject<LeastSquaresMethodImplementation>(new LeastSquaresMethodImplementation())
 {
   // Nothing to do
 }

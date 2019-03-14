@@ -35,8 +35,8 @@ static const Factory<ComposedFunction> Factory_ComposedFunction;
 /* Default constructor */
 ComposedFunction::ComposedFunction()
   : FunctionImplementation()
-  , p_leftFunction_()
-  , p_rightFunction_()
+  , p_leftFunction_(new FunctionImplementation)
+  , p_rightFunction_(new FunctionImplementation)
 {
   // Nothing to do
 }

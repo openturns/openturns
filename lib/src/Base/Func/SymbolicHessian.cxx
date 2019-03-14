@@ -41,7 +41,7 @@ SymbolicHessian::SymbolicHessian()
   : HessianImplementation()
   , isInitialized_(false)
   , isAnalytical_(true)
-  , p_evaluation_()
+  , p_evaluation_(new SymbolicEvaluation)
 {
   // Nothing to do
 } // SymbolicHessian

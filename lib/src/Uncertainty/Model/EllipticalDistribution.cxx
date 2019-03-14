@@ -44,6 +44,8 @@ static const Factory<EllipticalDistribution> Factory_EllipticalDistribution;
 /* Default constructor */
 EllipticalDistribution::EllipticalDistribution()
   : ContinuousDistribution()
+  , sigma_(1, 1.0)
+  , R_(1)
 {
   // Nothing to do
 }

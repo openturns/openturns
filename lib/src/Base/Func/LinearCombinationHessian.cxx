@@ -35,7 +35,7 @@ static const Factory<LinearCombinationHessian> Factory_LinearCombinationHessian;
 /* Default constructor */
 LinearCombinationHessian::LinearCombinationHessian()
   : HessianImplementation(),
-    p_evaluation_()
+    p_evaluation_(new LinearCombinationEvaluation)
 {
   // Nothing to do
 }
@@ -116,7 +116,7 @@ String LinearCombinationHessian::__str__(const String & ) const
 /* Method save() stores the object through the StorageManager */
 void LinearCombinationHessian::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
+  HessianImplementation::save(adv);
   adv.saveAttribute( "evaluation_", *p_evaluation_ );
 }
 
@@ -124,10 +124,8 @@ void LinearCombinationHessian::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void LinearCombinationHessian::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
-  TypedInterfaceObject<LinearCombinationEvaluation> evaluation;
-  adv.loadAttribute( "evaluation_", evaluation );
-  p_evaluation_ = evaluation.getImplementation();
+  HessianImplementation::load(adv);
+  adv.loadAttribute( "evaluation_", *p_evaluation_ );
 }
 
 
