@@ -83,7 +83,8 @@ Point InverseRosenblattEvaluation::operator () (const Point & inP) const
  */
 Matrix InverseRosenblattEvaluation::parameterGradient(const Point & ) const
 {
-  throw NotYetImplementedException(HERE) << "In InverseRosenblattEvaluation::parameterGradient(const Point & inP) const";
+  Matrix grad(0, getOutputDimension());
+  return grad;
 }
 
 /* Accessor for input point dimension */
