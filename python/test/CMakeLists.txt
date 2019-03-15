@@ -370,6 +370,7 @@ ot_pyinstallcheck_test (BoxCoxFactory_std)
 ot_pyinstallcheck_test (BoxCoxFactory_glm)
 ot_pyinstallcheck_test (TrendFactory_std)
 ot_pyinstallcheck_test (DistributionTransformation_std)
+ot_pyinstallcheck_test (InverseRosenblattEvaluation_std IGNOREOUT)
 
 ## Distribution
 ot_pyinstallcheck_test (AliMikhailHaqCopula_std)
