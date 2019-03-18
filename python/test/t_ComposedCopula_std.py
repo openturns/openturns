@@ -147,6 +147,10 @@ try:
     sklarCopula = myEstimatedDist.getCopula()
     copulas.add(sklarCopula)
 
+    # test ComposedCopula.getMarginal in reverse
+    copula = ComposedCopula([IndependentCopula(2), NormalCopula(2)])
+    print(copula.getMarginal([3, 2, 1, 0]))
+
 except:
     import sys
     print("t_ComposedCopula.py", sys.exc_info()[0], sys.exc_info()[1])
