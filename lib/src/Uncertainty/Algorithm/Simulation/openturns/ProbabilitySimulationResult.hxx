@@ -27,6 +27,7 @@
 #include "openturns/Point.hxx"
 #include "openturns/PointWithDescription.hxx"
 #include "openturns/Graph.hxx"
+#include "openturns/Normal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -66,6 +67,9 @@ public:
   /** Variance estimate accessor */
   Scalar getVarianceEstimate() const;
   void setVarianceEstimate(const Scalar varianceEstimate);
+
+  /** Probability estimate distribution accessor */
+  Normal getProbabilityDistribution() const;
 
   /** Coefficient of variation estimate accessor */
   virtual Scalar getCoefficientOfVariation() const;

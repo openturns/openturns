@@ -80,6 +80,7 @@ for experiment in experiments:
 
     # Stream out the result
     print('algo result=', myAlgo.getResult())
+    print('probability distribution=', myAlgo.getResult().getProbabilityDistribution())
 
     # Use the standard deviation as a stoping rule
     experiment = ot.MonteCarloExperiment()
@@ -98,6 +99,7 @@ for experiment in experiments:
 
     # Stream out the result
     print('algo result=', myAlgo.getResult())
+    print('probability distribution=', myAlgo.getResult().getProbabilityDistribution())
 
 print('-' * 32)
 ot.RandomGenerator.SetSeed(0)
@@ -134,3 +136,4 @@ for i, event in enumerate(all_events):
     myAlgo.setMaximumCoefficientOfVariation(0.1)
     myAlgo.run()
     print('MonteCarlo result=', myAlgo.getResult())
+    print('probability distribution=', myAlgo.getResult().getProbabilityDistribution())

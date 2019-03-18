@@ -58,6 +58,7 @@ ProbabilitySimulationResult::ProbabilitySimulationResult(const Event & event,
   if (!(varianceEstimate >= 0.0)) throw InvalidArgumentException(HERE) << "The variance estimate must be >= 0";
 }
 
+
 /* Virtual constructor */
 ProbabilitySimulationResult * ProbabilitySimulationResult::clone() const
 {
@@ -95,6 +96,12 @@ Scalar ProbabilitySimulationResult::getVarianceEstimate() const
 void ProbabilitySimulationResult::setVarianceEstimate(const Scalar varianceEstimate)
 {
   varianceEstimate_ = varianceEstimate;
+}
+
+/* Probability estimate distribution accessor */
+Normal ProbabilitySimulationResult::getProbabilityDistribution() const
+{
+  return Normal(probabilityEstimate_, std::sqrt(varianceEstimate_));
 }
 
 /* Coefficient of variation estimate accessor */
