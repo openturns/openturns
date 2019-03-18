@@ -193,6 +193,11 @@ ot_pyinstallcheck_test (PointToFieldConnection_std)
 ot_pyinstallcheck_test (FieldToPointConnection_std)
 ot_pyinstallcheck_test (FieldToFieldConnection_std)
 
+# Parallel
+if (NUMPY_FOUND)
+ot_pyinstallcheck_test (PythonFunction_multiprocessing IGNOREOUT)
+endif()
+
 # Stat
 ot_pyinstallcheck_test (Sample_std)
 ot_pyinstallcheck_test (Sample_computation)
