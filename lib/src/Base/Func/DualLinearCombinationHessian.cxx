@@ -35,7 +35,7 @@ static const Factory<DualLinearCombinationHessian> Factory_DualLinearCombination
 /* Default constructor */
 DualLinearCombinationHessian::DualLinearCombinationHessian()
   : HessianImplementation()
-  , p_evaluation_()
+  , p_evaluation_(new DualLinearCombinationEvaluation)
 {
   // Nothing to do
 }

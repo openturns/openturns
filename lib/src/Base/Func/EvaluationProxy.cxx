@@ -20,7 +20,7 @@
  */
 #include "openturns/EvaluationProxy.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-
+#include "openturns/NoEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +32,7 @@ static const Factory<EvaluationProxy> Factory_EvaluationProxy;
 /* Default constructor */
 EvaluationProxy::EvaluationProxy()
   : EvaluationImplementation()
-  , evaluation_(0)
+  , evaluation_(new NoEvaluation())
 {
   // Nothing to do
 }

@@ -48,6 +48,9 @@ public:
   /** Constructor with parameters */
   explicit PostAnalyticalSimulation(const AnalyticalResult & analyticalResult);
 
+  /** Virtual constructor */
+  virtual PostAnalyticalSimulation * clone() const;
+
   /** Event accessor */
   AnalyticalResult getAnalyticalResult() const;
 

@@ -30,7 +30,7 @@ static const Factory<MarginalTransformationHessian> Factory_MarginalTransformati
 /* Default constructor */
 MarginalTransformationHessian::MarginalTransformationHessian():
   HessianImplementation(),
-  p_evaluation_()
+  p_evaluation_(new MarginalTransformationEvaluation)
 {
   // Nothing to do
 }

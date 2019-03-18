@@ -110,13 +110,16 @@ Sample ApproximationAlgorithmImplementation::getY() const
 void ApproximationAlgorithmImplementation::setWeight(const Point & weight)
 {
   const UnsignedInteger size = weight.getSize();
-  const Scalar firstWeight = weight[0];
-  hasUniformWeight_ = true;
-  for (UnsignedInteger i = 0; i < size; ++ i)
+  if (size > 0)
   {
-    const Scalar wI = weight[i];
-    if (!(wI > 0.0)) throw InvalidArgumentException(HERE) << "Error: can only use positive weight.";
-    hasUniformWeight_ = hasUniformWeight_ && (wI == firstWeight);
+    const Scalar firstWeight = weight[0];
+    hasUniformWeight_ = true;
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      const Scalar wI = weight[i];
+      if (!(wI > 0.0)) throw InvalidArgumentException(HERE) << "Error: can only use positive weight.";
+      hasUniformWeight_ = hasUniformWeight_ && (wI == firstWeight);
+    }
   }
   weight_ = weight;
 }

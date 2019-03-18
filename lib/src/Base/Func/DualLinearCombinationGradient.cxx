@@ -34,7 +34,7 @@ static const Factory<DualLinearCombinationGradient> Factory_DualLinearCombinatio
 /* Default constructor */
 DualLinearCombinationGradient::DualLinearCombinationGradient()
   : GradientImplementation()
-  , p_evaluation_()
+  , p_evaluation_(new DualLinearCombinationEvaluation)
 {
   // Nothing to do
 }
