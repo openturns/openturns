@@ -75,7 +75,8 @@ Point RosenblattEvaluation::operator () (const Point & inP) const
 /* Gradient according to the marginal parameters. */
 Matrix RosenblattEvaluation::parameterGradient(const Point & ) const
 {
-  throw NotYetImplementedException(HERE) << "In RosenblattEvaluation::parameterGradient(const Point & inP) const";
+  Matrix grad(0, getOutputDimension());
+  return grad;
 }
 
 /* Accessor for input point dimension */
