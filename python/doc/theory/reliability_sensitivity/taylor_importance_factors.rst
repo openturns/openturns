@@ -44,8 +44,7 @@ where:
 
 -  :math:`\Var Z` is the variance of the output variable,
 
--  :math:`\sigma_i^2 = \Var X_i` is the variance 
-of the i-th input variable. 
+-  :math:`\sigma_i^2 = \Var X_i` is the variance of the i-th input variable. 
 
 Let :math:`\cF_i` be the importance factor of the i-th input 
 variable, defined by:
