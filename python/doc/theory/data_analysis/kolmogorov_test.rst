@@ -55,16 +55,18 @@ Based on the p-value,
 - otherwise, the candidate distribution is not rejected.
 
 Two situations may occur in practice.
+- the parameters of the distribution under test are known,
+- the parameters of the distribution under test are estimated from data. 
 
-- The parameters of the distribution under test are known. 
-In this case, algorithms are available to directly compute 
+If the parameters of the distribution under test are known, 
+algorithms are available to directly compute 
 the distribution of :math:`\widehat{D}_N` both for *N* large 
 (asymptotic distribution) or for *N* finite. 
 This is because the distribution of :math:`\widehat{D}_N` does 
 not depend on the candidate distribution. 
-- The parameters of the distribution under test are estimated 
-from data. 
-In this case, the :math:`\widehat{D}_N` is generally smaller, because 
+
+If the parameters of the distribution under test are estimated 
+from data, the :math:`\widehat{D}_N` statistic is generally smaller, because 
 the parameters of the distribution have been computed from the 
 data. 
 In general, the distribution of :math:`\widehat{D}_N` is not known 
