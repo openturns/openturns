@@ -20,10 +20,13 @@
  */
 #include "openturns/UniformFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(UniformFactory)
+
+static const Factory<UniformFactory> Factory_UniformFactory;
 
 /* Default constructor */
 UniformFactory::UniformFactory()

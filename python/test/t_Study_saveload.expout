@@ -1,3 +1,5 @@
+memoize =  class=FunctionImplementation name=Unnamed description=[x1,x2,y0] evaluationImplementation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x1,x2] outputVariablesNames=[y0] formulas=[x1*x2] gradientImplementation=class=SymbolicGradient name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x1,x2] outputVariablesNames=[y0] formulas=[x1*x2] hessianImplementation=class=SymbolicHessian name=Unnamed evaluation=class=SymbolicEvaluation name=Unnamed inputVariablesNames=[x1,x2] outputVariablesNames=[y0] formulas=[x1*x2]
+memoize.getCacheHits()= 1
 point =  class=Point name=point dimension=2 values=[1000,1000]
 sample =  class=Sample name=mySample implementation=class=SampleImplementation name=mySample size=3 dimension=2 data=[[100,200],[101,201],[102,202]]
 matrix =  class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=3 values=[0,3,1,4,2,5]

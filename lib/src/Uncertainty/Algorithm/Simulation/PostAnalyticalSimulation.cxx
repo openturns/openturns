@@ -52,6 +52,12 @@ PostAnalyticalSimulation::PostAnalyticalSimulation(const AnalyticalResult & anal
   controlProbability_ = standardDistribution_.getMarginal(0).computeCDF(-analyticalResult.getHasoferReliabilityIndex());
 }
 
+/* Virtual constructor */
+PostAnalyticalSimulation * PostAnalyticalSimulation::clone() const
+{
+  return new PostAnalyticalSimulation(*this);
+}
+
 /* Analytical result accessor */
 AnalyticalResult PostAnalyticalSimulation::getAnalyticalResult() const
 {

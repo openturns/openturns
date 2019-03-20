@@ -1,6 +1,5 @@
 #                                               -*- cmake -*-
 
-set (ADAPT_CHECK_TESTS_EXPONENT)
 set (REPLACE_EOL " | cat ")
 if (WIN32)
   # replace dos eols
@@ -80,6 +79,7 @@ endif ()
 ot_pyinstallcheck_test (ComparisonOperator_std)
 if (LIBXML2_FOUND)
 ot_pyinstallcheck_test (Study_saveload)
+ot_pyinstallcheck_test (Study_std IGNOREOUT)
 endif ()
 ot_pyinstallcheck_test (Path_std IGNOREOUT)
 ot_pyinstallcheck_test (ResourceMap_std IGNOREOUT)
@@ -193,6 +193,11 @@ ot_pyinstallcheck_test (PointToPointConnection_std)
 ot_pyinstallcheck_test (PointToFieldConnection_std)
 ot_pyinstallcheck_test (FieldToPointConnection_std)
 ot_pyinstallcheck_test (FieldToFieldConnection_std)
+
+# Parallel
+if (NUMPY_FOUND)
+ot_pyinstallcheck_test (PythonFunction_multiprocessing IGNOREOUT)
+endif()
 
 # Stat
 ot_pyinstallcheck_test (Sample_std)
@@ -365,6 +370,7 @@ ot_pyinstallcheck_test (BoxCoxFactory_std)
 ot_pyinstallcheck_test (BoxCoxFactory_glm)
 ot_pyinstallcheck_test (TrendFactory_std)
 ot_pyinstallcheck_test (DistributionTransformation_std)
+ot_pyinstallcheck_test (InverseRosenblattEvaluation_std IGNOREOUT)
 
 ## Distribution
 ot_pyinstallcheck_test (AliMikhailHaqCopula_std)
@@ -683,11 +689,7 @@ if (MATPLOTLIB_FOUND)
 endif ()
 ot_pyinstallcheck_test (features IGNOREOUT)
 
-# FIXME: check_get_line_col fails through wine on newer native version
-if (NOT WIN32)
-  ot_pyinstallcheck_test (coupling_tools)
-endif ()
-
+ot_pyinstallcheck_test (coupling_tools)
 
 if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND AND LIBXML2_FOUND AND NLOPT_FOUND AND OPTPP_FOUND)
   # on py3k/swig<3.0.0, doctest fails with "NameError: Unknown C global variable"

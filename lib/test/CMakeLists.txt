@@ -19,7 +19,6 @@
 #
 #
 
-set (ADAPT_CHECK_TESTS_EXPONENT)
 set (REPLACE_EOL " | cat ")
 if (WIN32)
   # replace dos eols

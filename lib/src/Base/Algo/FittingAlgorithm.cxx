@@ -30,7 +30,7 @@ CLASSNAMEINIT(FittingAlgorithm)
 
 /* Default constructor */
 FittingAlgorithm::FittingAlgorithm()
-  : TypedInterfaceObject<FittingAlgorithmImplementation>()
+  : TypedInterfaceObject<FittingAlgorithmImplementation>(new FittingAlgorithmImplementation())
 {
   // Nothing to do
 }

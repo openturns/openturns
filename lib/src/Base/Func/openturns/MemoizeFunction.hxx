@@ -48,6 +48,12 @@ public:
   /** Constructor with parameters */
   explicit MemoizeFunction(const Function & function, const HistoryStrategy & historyStrategy = Full());
 
+  /** Virtual copy constructor */
+  virtual MemoizeFunction * clone() const;
+
+  /** String converter */
+  virtual String __repr__() const;
+
   /** Function implementation accessors */
   void setEvaluation(const Evaluation & evaluation);
 

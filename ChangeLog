@@ -40,6 +40,7 @@
  * #981 (HypothesisTest_{Full, Partial} regression should be moved to LinearModelTest)
  * #982 (LinearModelTest::LinearModelDurbinWatson with several factors)
  * #983 (Bogus Normal parameter distribution)
+ * #989 (Fixed the documentation of BIC according to the code)
  * #995 (Pip does not recognize conda install of openturns)
  * #1000 (SaltelliSensitivityAlgorithm with LowDiscrepancyExperiment produces wrong results)
  * #1005 (The stopping criteria of SobolSimulationAlgorithm is weird)
@@ -47,6 +48,7 @@
  * #1025 (Empty throw in PythonWrappingFunctions)
  * #1028 (Build fails with clang-60: token is not a valid binary operator in a preprocessor subexpression)
  * #1031 (The doc for LogNormal and LogNormalMuSigma is confusing )
+ * #1045 (LowDiscrepancyExperiment/ComposedCopula correlation across blocks ?)
 
 == 1.12 release (2018-11-08) == #release-1.12
 

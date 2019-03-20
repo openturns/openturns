@@ -556,46 +556,27 @@ def check_execute():
     # ensure previous print is print before following command output
     sys.stdout.flush()
 
-    # Care with -darwin systems
-
-    if ('darwin' in sys.platform) or ('win' not in sys.platform):
-        coupling_tools.execute('/bin/ls /bin/kill')
-        coupling_tools.execute('echo "hi"', is_shell=True)
-        coupling_tools.execute('echo "hi"', is_shell=True,
-                               shell_exe='/bin/bash')
-
-        ret, stdout = coupling_tools.execute('/bin/ls /bin/kill',
-                                             get_stdout=True)
-        if stdout != b'/bin/kill\n':
-            raise Exception("coupling_tools.execute error!")
-
-        ret, stdout, stderr = coupling_tools.execute('/bin/ls /bin/kill',
-                                                     get_stdout=True, get_stderr=True)
-        if stdout != b'/bin/kill\n' and stderr != b'':
-            raise Exception("coupling_tools.execute error!")
-
-        ret, stderr = coupling_tools.execute('/bin/ls /bin/kill 1>&2',
-                                             is_shell=True,
-                                             get_stderr=True)
-        if stderr != b'/bin/kill\n':
-            raise Exception("coupling_tools.execute error!")
+    if sys.platform.startswith('win'):
+        coupling_tools.execute('cmd.exe /c echo hello')
     else:
-        coupling_tools.execute('cmd.exe /c echo /bin/kill')
-        exec_in_wine = os.path.exists('/boot')
-        if exec_in_wine:
-            # command 'echo' do not work in python on wine for an unknown
-            # reason
-            print('hi')
-            print('hi')
-        else:
-            # native windows
-            coupling_tools.execute('echo hi', is_shell=True)
-            coupling_tools.execute('echo hi', is_shell=True, hide_win=False)
+        coupling_tools.execute('/bin/echo hello')
 
-            ret, stdout = coupling_tools.execute('echo hello', is_shell=True,
-                                                 get_stdout=True)
-            if ret != 0 or not str(stdout).startswith('hello'):
-                raise Exception("coupling_tools.execute error!")
+    coupling_tools.execute('echo hi', is_shell=True)
+
+    if sys.platform.startswith('win'):
+        coupling_tools.execute('echo hi', is_shell=True, hide_win=False)
+    else:
+        coupling_tools.execute('echo hi', is_shell=True, shell_exe='/bin/bash')
+
+    ret, stdout = coupling_tools.execute('echo hello', is_shell=True, get_stdout=True)
+    if ret != 0 or not stdout.decode().startswith('hello'):
+        raise Exception("coupling_tools.execute error!")
+
+    ret, stdout, stderr = coupling_tools.execute('echo hello', is_shell=True,
+                                                 get_stdout=True, get_stderr=True)
+    if ret != 0 or not stdout.decode().startswith('hello') or len(stderr)>0:
+        raise Exception("coupling_tools.execute error!")
+
     print("execute ok")
 
 

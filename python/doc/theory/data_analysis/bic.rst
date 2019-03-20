@@ -37,11 +37,11 @@ rank :math:`\cM_1,\dots,cM_K` according to the following quantity:
 .. math::
 
    \begin{aligned}
-       \textrm{BIC}_i = \log \left( L_i \right) - \frac{p_i}{2} \log(n)
+       \textrm{BIC}_i = -2 \frac{\log(L_i)}{n} + \frac{p_i \log(n)}{n} 
      \end{aligned}
 
 where :math:`p_i` denotes the number of parameters being adjusted for
-the model :math:`\cM_i`. The larger :math:`\textrm{BIC}_i`, the better
+the model :math:`\cM_i`. The smaller :math:`\textrm{BIC}_i`, the better
 the model. Note that the idea is to introduce a penalization term that
 increases with the numbers of parameters to be estimated. A complex
 model will then have a good score only if the gain in terms of
