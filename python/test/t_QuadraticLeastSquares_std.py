@@ -37,7 +37,7 @@ point[1] = 0.5
 data[8] = point
 myLeastSquares = ot.QuadraticLeastSquares(data, myFunc)
 myLeastSquares.run()
-responseSurface = myLeastSquares.getResponseSurface()
+responseSurface = myLeastSquares.getMetaModel()
 print("myLeastSquares=", repr(myLeastSquares))
 print("responseSurface=", repr(responseSurface))
 inPoint = ot.Point(myFunc.getInputDimension(), 0.2)
@@ -47,7 +47,7 @@ print("responseSurface(", repr(inPoint), ")=",
 dataOut = myFunc(data)
 myLeastSquares = ot.QuadraticLeastSquares(data, dataOut)
 myLeastSquares.run()
-responseSurface = myLeastSquares.getResponseSurface()
+responseSurface = myLeastSquares.getMetaModel()
 print("myLeastSquares=", repr(myLeastSquares))
 print("responseSurface=", repr(responseSurface))
 inPoint = ot.Point(myFunc.getInputDimension(), 0.2)

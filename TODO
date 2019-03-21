@@ -4,3 +4,4 @@ Remove deprecated FittingTest::TwoSamplesKolmogorov
 Remove deprecated LinearModel, LinearModelFactory
 Remove deprecated HypothesisTest::(Partial|Full)Regression
 Remove deprecated OptimizationProblem(levelFunction, levelValue) ctor
+Remove deprecated (Linear|Quadratic)(LeastSquares|Taylor)::getResponseSurface

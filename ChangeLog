@@ -22,6 +22,7 @@
  * Deprecated LinearModel, LinearModelFactory
  * Moved HypothesisTest::(Partial|Full)Regression to LinearModelTest
  * Deprecated OptimizationProblem(levelFunction, levelValue)
+ * Deprecated (Linear|Quadratic)(LeastSquares|Taylor)::getResponseSurface
 
 === Python module ===
 

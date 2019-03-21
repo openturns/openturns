@@ -207,9 +207,15 @@ Function QuadraticLeastSquares::getInputFunction() const
   return inputFunction_;
 }
 
-/* Response surface accessor */
+/* Metamodel accessor */
+Function QuadraticLeastSquares::getMetaModel() const
+{
+  return responseSurface_;
+}
+
 Function QuadraticLeastSquares::getResponseSurface() const
 {
+  LOGWARN(OSS() << "getResponseSurface is deprecated, use getMetaModel");
   return responseSurface_;
 }
 

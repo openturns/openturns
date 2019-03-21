@@ -103,9 +103,15 @@ Function LinearTaylor::getInputFunction() const
   return inputFunction_;
 }
 
-/* Response surface accessor */
+/* Metamodel accessor */
+Function LinearTaylor::getMetaModel() const
+{
+  return responseSurface_;
+}
+
 Function LinearTaylor::getResponseSurface() const
 {
+  LOGWARN(OSS() << "getResponseSurface is deprecated, use getMetaModel");
   return responseSurface_;
 }
 

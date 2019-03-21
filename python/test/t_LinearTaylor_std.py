@@ -13,7 +13,7 @@ for i in range(center.getDimension()):
     center[i] = 1.0 + i
 myTaylor = ot.LinearTaylor(center, myFunc)
 myTaylor.run()
-responseSurface = ot.Function(myTaylor.getResponseSurface())
+responseSurface = ot.Function(myTaylor.getMetaModel())
 print("myTaylor=", repr(myTaylor))
 print("responseSurface=", repr(responseSurface))
 print("myFunc(", repr(center), ")=", repr(myFunc(center)))

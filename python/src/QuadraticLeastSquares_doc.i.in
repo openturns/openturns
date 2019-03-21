@@ -92,7 +92,7 @@ Examples
 >>> data += [[0.25,0.25], [-0.25,-0.25], [-0.25,0.25], [0.25,-0.25]]
 >>> myLeastSquares = ot.QuadraticLeastSquares(data, myFunc)
 >>> myLeastSquares.run()
->>> responseSurface = myLeastSquares.getResponseSurface()
+>>> responseSurface = myLeastSquares.getMetaModel()
 >>> print(responseSurface([0.1,0.1]))
 [0.00960661,0.976781,1.0138]"
 
@@ -169,7 +169,7 @@ tensor : :class:`~openturns.SymmetricTensor`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticLeastSquares::getResponseSurface
+%feature("docstring") OT::QuadraticLeastSquares::getMetaModel
 "Get an approximation of the function.
 
 Returns

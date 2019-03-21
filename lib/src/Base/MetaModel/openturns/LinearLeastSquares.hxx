@@ -70,7 +70,10 @@ public:
   /** Input function accessor */
   Function getInputFunction() const;
 
-  /** Response surface accessor */
+  /** Metamodel accessor */
+  Function getMetaModel() const;
+
+  /** @deprecated Response surface accessor */
   Function getResponseSurface() const;
 
   /** Data in accessor */

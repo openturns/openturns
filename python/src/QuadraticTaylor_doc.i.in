@@ -63,7 +63,7 @@ Examples
 >>> myFunc = ot.SymbolicFunction(['x1', 'x2'], formulas)
 >>> myTaylor = ot.QuadraticTaylor([1, 2], myFunc)
 >>> myTaylor.run()
->>> responseSurface = myTaylor.getResponseSurface()
+>>> responseSurface = myTaylor.getMetaModel()
 >>> print(responseSurface([1.2,1.9]))
 [1.13655,-0.999155,0.214084]"
 
@@ -121,7 +121,7 @@ function : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::QuadraticTaylor::getResponseSurface
+%feature("docstring") OT::QuadraticTaylor::getMetaModel
 "Get an approximation of the function.
 
 Returns

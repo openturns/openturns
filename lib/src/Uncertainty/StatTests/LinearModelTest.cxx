@@ -112,7 +112,7 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
   LinearLeastSquares regressionAlgorithm(firstSample , secondSample);
   regressionAlgorithm.run();
   // Regression coefficient
-  const Sample yHat(regressionAlgorithm.getResponseSurface()(firstSample)); 
+  const Sample yHat(regressionAlgorithm.getMetaModel()(firstSample));
   const Sample residualSample(secondSample - yHat);
  
   // For the Fisher test, we need both Sum of Squared Explained (SSE)
@@ -190,7 +190,7 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
 
   LinearLeastSquares regressionAlgorithm(firstSample , secondSample);
   regressionAlgorithm.run();
-  const Sample residualSample(secondSample - regressionAlgorithm.getResponseSurface()(firstSample));
+  const Sample residualSample(secondSample - regressionAlgorithm.getMetaModel()(firstSample));
   // Compute mean & standard deviation
   const Scalar mean = residualSample.computeMean()[0];
   const Scalar std = residualSample.computeStandardDeviationPerComponent()[0];
