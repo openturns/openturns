@@ -1,5 +1,5 @@
 dist =  Uniform(a = -1, b = 1)
-process =  class=ProcessImplementation ouputDimension=1 description=[X0] mesh=class=Mesh name=Unnamed dimension=1 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=11 dimension=1 description=[t] data=[[0],[1],[2],[3],[4],[5],[6],[7],[8],[9],[10]] simplices=[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9],[9,10]]
+process =  RandomWalk(origin=[0], distribution=Uniform(a = -1, b = 1))
 timeSerie =       [ t           X0          ]
  0 : [  0           0          ]
  1 : [  1           0.259753   ]

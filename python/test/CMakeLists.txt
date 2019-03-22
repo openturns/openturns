@@ -341,6 +341,7 @@ ot_pyinstallcheck_test (RandomVector_python)
 ## Process
 ot_pyinstallcheck_test (WhiteNoise_std)
 ot_pyinstallcheck_test (RandomWalk_std)
+ot_pyinstallcheck_test (DiscreteMarkovChain_std)
 ot_pyinstallcheck_test (ARMAState_std)
 ot_pyinstallcheck_test (ARMACoefficients_std)
 ot_pyinstallcheck_test (ARMA_std)

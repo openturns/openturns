@@ -149,23 +149,17 @@ ARMA factory
     TrendEvaluation
     InverseTrendEvaluation
 
-RandomWalk
+Others
 ==========
 
 .. autosummary::
     :toctree: _generated/
     :template: Process.rst_t
 
+    DiscreteMarkovChain
     RandomWalk
-
-WhiteNoise
-==========
-
-.. autosummary::
-    :toctree: _generated/
-    :template: Process.rst_t
-
     WhiteNoise
+
 
 Check hypothesis on time series
 ===============================

@@ -31,6 +31,7 @@
 /* Uncertainty/Process */
 %include WhiteNoise.i
 %include RandomWalk.i
+%include DiscreteMarkovChain.i
 %include ARMACoefficients.i
 %include ARMAState.i
 %include ARMA.i
