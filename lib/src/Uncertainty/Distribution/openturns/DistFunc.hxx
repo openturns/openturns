@@ -62,7 +62,6 @@ public:
                      const UnsignedInteger size);
   // For the Binomial distribution
 private:
-  static Scalar stirlerr(const UnsignedInteger n);
   static Scalar bd0(const UnsignedInteger k,
 		    const Scalar np);
 
@@ -106,6 +105,28 @@ public:
   static Scalar rGamma(const Scalar k);
   static Point rGamma(const Scalar k,
                       const UnsignedInteger size);
+
+  // For Hypergeometric distribution
+  static Scalar dHypergeometric(const UnsignedInteger N,
+				const UnsignedInteger K,
+				const UnsignedInteger n,
+				const UnsignedInteger k);
+  static Scalar logdHypergeometric(const UnsignedInteger N,
+				   const UnsignedInteger K,
+				   const UnsignedInteger n,
+				   const UnsignedInteger k);
+  static Scalar pHypergeometric(const UnsignedInteger N,
+				const UnsignedInteger K,
+				const UnsignedInteger n,
+				const UnsignedInteger k,
+				const Bool tail = false);
+  static UnsignedInteger rHypergeometric(const UnsignedInteger N,
+					 const UnsignedInteger K,
+					 const UnsignedInteger n);
+  static Indices rHypergeometric(const UnsignedInteger N,
+				 const UnsignedInteger K,
+				 const UnsignedInteger n,
+				 const UnsignedInteger size);
   // For Kolmogorov distribution
   static Scalar pKolmogorov(const UnsignedInteger n,
                             const Scalar x,

@@ -95,6 +95,7 @@ Discrete parametric distributions
     Binomial
     Dirac
     Geometric
+    Hypergeometric
     Multinomial
 
     :template: classWithPlot.rst_t
@@ -259,12 +260,16 @@ Low-level distribution functions
     :template: function.rst_t
 
     DistFunc_dBinomial
+    DistFunc_dHypergeometric
     DistFunc_dPoisson
     DistFunc_logdBinomial
+    DistFunc_logdHypergeometric
     DistFunc_logdPoisson
+    DistFunc_pHypergeometric
     DistFunc_pNormal
     DistFunc_qNormal
     DistFunc_rBinomial
+    DistFunc_rHypergeometric
     DistFunc_rNormal
     DistFunc_rPoisson
     DistFunc_kFactor
