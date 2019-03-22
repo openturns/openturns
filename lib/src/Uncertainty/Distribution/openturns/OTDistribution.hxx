@@ -83,6 +83,7 @@
 #include "openturns/GumbelMuSigma.hxx"
 #include "openturns/Histogram.hxx"
 #include "openturns/HistogramFactory.hxx"
+#include "openturns/Hypergeometric.hxx"
 #include "openturns/IndependentCopula.hxx"
 #include "openturns/InverseChiSquare.hxx"
 #include "openturns/InverseGamma.hxx"

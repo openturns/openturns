@@ -181,6 +181,9 @@ public:
   static Complex Faddeeva(const Complex & z);
   // Imaginary part of the Faddeeva function: FaddeevaIm(z) = Im(Faddeeva(x))
   static Scalar FaddeevaIm(const Scalar x);
+  // Factorial and log-Factorial functions
+  static Scalar Factorial(UnsignedInteger n);
+  static Scalar LogFactorial(UnsignedInteger n);
   // Gamma function: gamma(a) = \int_0^{\infty} t^{a-1}\exp(-t) dt
   static Scalar Gamma(const Scalar a);
   // igamma1pm1(a) = 1 / gamma(1 + a) - 1
@@ -217,6 +220,8 @@ public:
   static Scalar DiGammaInv(const Scalar a);
   // Trigamma function: TriGamma(x) = ((d^2gamma/dx^2) / gamma)(x)
   static Scalar TriGamma(const Scalar x);
+  // Stirling error: Stirlerr(n) = log(n!) - log( sqrt(2*pi*n)*(n/e)^n )
+  static Scalar Stirlerr(const UnsignedInteger n);
   // Hypergeometric function of type (1,1): hyperGeom_1_1(p1, q1, x) = \sum_{n=0}^{\infty} [\prod_{k=0}^{n-1} (p1 + k) / (q1 + k)] * x^n / n!
   static Scalar HyperGeom_1_1(const Scalar p1,
                               const Scalar q1,
