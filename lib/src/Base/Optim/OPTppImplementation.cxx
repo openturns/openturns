@@ -214,6 +214,7 @@ void OPTppImplementation::ComputeInequalityConstraint(int mode, int ndim, const 
   // evaluation
   if (mode & OPTPP::NLPFunction) {
     const Point outP(constraint(inP));
+    algorithm->inequalityConstraintHistory_.add(outP);
     for (UnsignedInteger i = 0; i < constraintDimension; ++ i)
       fx(i + 1) = outP[i];// starts at 1!
     result = OPTPP::NLPFunction;
@@ -259,6 +260,7 @@ void OPTppImplementation::ComputeEqualityConstraint(int mode, int ndim, const NE
   // evaluation
   if (mode & OPTPP::NLPFunction) {
     const Point outP(constraint(inP));
+    algorithm->equalityConstraintHistory_.add(outP);
     for (UnsignedInteger i = 0; i < constraintDimension; ++ i)
       fx(i + 1) = outP[i];// starts at 1!
     result = OPTPP::NLPFunction;
@@ -474,6 +476,8 @@ void OPTppImplementation::run()
   // initialize history
   evaluationInputHistory_ = Sample(0, dimension);
   evaluationOutputHistory_ = Sample(0, 1);
+  equalityConstraintHistory_ = Sample(0, getProblem().getEqualityConstraint().getOutputDimension());
+  inequalityConstraintHistory_ = Sample(0, getProblem().getInequalityConstraint().getOutputDimension());
 
   Pointer<OPTPP::OptimizeClass> algo = instanciateSolver();
   // generic parameters
@@ -552,12 +556,12 @@ void OPTppImplementation::run()
     }
     if (getProblem().hasEqualityConstraint())
     {
-      const Point g(getProblem().getEqualityConstraint()(inP));
+      const Point g(equalityConstraintHistory_[i]);
       constraintError = std::max(constraintError, g.normInf());
     }
     if (getProblem().hasInequalityConstraint())
     {
-      Point h(getProblem().getInequalityConstraint()(inP));
+      Point h(inequalityConstraintHistory_[i]);
       for (UnsignedInteger k = 0; k < getProblem().getInequalityConstraint().getOutputDimension(); ++ k)
       {
         h[k] = std::min(h[k], 0.0);// convention h(x)>=0 <=> admissibility
