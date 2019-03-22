@@ -95,6 +95,7 @@ Discrete parametric distributions
     Binomial
     Dirac
     Geometric
+    Hypergeometric
     Multinomial
 
     :template: classWithPlot.rst_t

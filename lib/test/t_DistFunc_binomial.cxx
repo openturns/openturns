@@ -37,8 +37,8 @@ int main(int, char *[])
       // dBinomial
       Scalar pMin = 0.1;
       Scalar pMax = 0.9;
-      Scalar nMin = 2;
-      Scalar nMax = 12;
+      UnsignedInteger nMin = 2;
+      UnsignedInteger nMax = 12;
       UnsignedInteger n1 = 5;
       for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
@@ -56,8 +56,8 @@ int main(int, char *[])
       // logdBinomial
       Scalar pMin = 0.1;
       Scalar pMax = 0.9;
-      Scalar nMin = 2;
-      Scalar nMax = 12;
+      UnsignedInteger nMin = 2;
+      UnsignedInteger nMax = 12;
       UnsignedInteger n1 = 5;
       for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
@@ -75,8 +75,8 @@ int main(int, char *[])
       // rBinomial
       Scalar pMin = 0.1;
       Scalar pMax = 0.9;
-      Scalar nMin = 2;
-      Scalar nMax = 12;
+      UnsignedInteger nMin = 2;
+      UnsignedInteger nMax = 12;
       UnsignedInteger n1 = 5;
       UnsignedInteger nR = 5;
       for (UnsignedInteger i1 = 0; i1 < n1; ++i1)

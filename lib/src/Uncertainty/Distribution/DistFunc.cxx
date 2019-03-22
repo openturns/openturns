@@ -33,6 +33,12 @@
 #include "openturns/Normal3DCDF.hxx"
 #include "openturns/Exception.hxx"
 
+#ifdef OPENTURNS_HAVE_BOOST
+
+#include <boost/math/distributions/hypergeometric.hpp>
+
+#endif
+
 // The following implementation of the Kolmogorov CDF and tail CDF is used in a LGPL context with written permission of the author.
 #include "KolmogorovSmirnovDist.h"
 // The following implementation of the Poisson quantile is used in a LGPL context with written permission of the author.
@@ -272,36 +278,6 @@ Point DistFunc::rBeta(const Scalar p1,
 /*******************************************************************************************************/
 /* Binomial distribution, i.e. with a PDF equals to C(n, p) p^k (1 - p)^(n - k) */
 /*******************************************************************************************************/
-/* stirlerr(n) = log(n!) - log( sqrt(2*pi*n)*(n/e)^n )
-*     = log Gamma(n+1) - 1/2 * [log(2*pi) + log(n)] - n*[log(n) - 1]
-*     = log Gamma(n+1) - (n + 1/2) * log(n) + n - log(2*pi)/2 */
-Scalar DistFunc::stirlerr(const UnsignedInteger n)
-{
-  static const Scalar stirlerrTable[26] =
-  {
-    0.000000000000000000000, 8.10614667953272582e-02, 4.13406959554092941e-02,
-    2.76779256849983391e-02, 2.07906721037650931e-02, 1.66446911898211922e-02,
-    1.38761288230707480e-02, 1.18967099458917701e-02, 1.04112652619720965e-02,
-    9.25546218271273292e-03, 8.33056343336287126e-03, 7.57367548795184079e-03,
-    6.94284010720952987e-03, 6.40899418800420707e-03, 5.95137011275884774e-03,
-    5.55473355196280137e-03, 5.20765591960964044e-03, 4.90139594843473786e-03,
-    4.62915374933402859e-03, 4.38556024923232427e-03, 4.16631969199692246e-03,
-    3.96795421864085962e-03, 3.78761806844443458e-03, 3.62296022468309471e-03,
-    3.47202138297876696e-03, 3.33315563672809288e-03
-  };
-  if (n < 26) return stirlerrTable[n];
-  static Scalar S0 = 8.33333333333333333e-02;
-  static Scalar S1 = 2.77777777777777778e-03;
-  static Scalar S2 = 7.93650793650793651e-04;
-  static Scalar S3 = 5.95238095238095238e-04;
-  static Scalar S4 = 8.41750841750841751e-04;
-  const Scalar nn = (1.0 * n) * n;
-  if (n > 2559) return (S0 - S1 / nn) / n;
-  if (n > 82)  return (S0 - (S1 - S2 / nn) / nn) / n;
-  if (n > 50)  return (S0 - (S1 - (S2 - S3 / nn) / nn) / nn) / n;
-  return (S0 - (S1 - (S2 - (S3 - S4 / nn) / nn) / nn) / nn) / n;
-}
-
 Scalar DistFunc::bd0(const UnsignedInteger k,
                      const Scalar np)
 {
@@ -353,7 +329,7 @@ Scalar DistFunc::dBinomial(const UnsignedInteger n,
     const Scalar lc = (p > 0.9 ? -DistFunc::bd0(n, n * p) - n * (1.0 - p) : n * std::log(p));
     return std::exp(lc);
   }
-  const Scalar lc = DistFunc::stirlerr(n) - DistFunc::stirlerr(k) - DistFunc::stirlerr(n - k) - DistFunc::bd0(k, n * p) - DistFunc::bd0(n - k, n * (1.0 - p));
+  const Scalar lc = SpecFunc::Stirlerr(n) - SpecFunc::Stirlerr(k) - SpecFunc::Stirlerr(n - k) - DistFunc::bd0(k, n * p) - DistFunc::bd0(n - k, n * (1.0 - p));
   return std::exp(lc - SpecFunc::LOGSQRT2PI - 0.5 * (std::log(k) + log1p(-(1.0 * k) / n)));
 }
 
@@ -371,7 +347,7 @@ Scalar DistFunc::logdBinomial(const UnsignedInteger n,
   }
   if (k == n)
     return (p > 0.9 ? -DistFunc::bd0(n, n * p) - n * (1.0 - p) : n * std::log(p));
-  const Scalar lc = DistFunc::stirlerr(n) - DistFunc::stirlerr(k) - DistFunc::stirlerr(n - k) - DistFunc::bd0(k, n * p) - DistFunc::bd0(n - k, n * (1.0 - p));
+  const Scalar lc = SpecFunc::Stirlerr(n) - SpecFunc::Stirlerr(k) - SpecFunc::Stirlerr(n - k) - DistFunc::bd0(k, n * p) - DistFunc::bd0(n - k, n * (1.0 - p));
   return lc - SpecFunc::LOGSQRT2PI - 0.5 * (std::log(k) + log1p(-(1.0 * k) / n));
 }
 
@@ -481,10 +457,10 @@ UnsignedInteger DistFunc::rBinomial(const UnsignedInteger n,
     if (v < t - rho) return (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
     if (v > t + rho) continue;
     const Scalar nm = n - m + 1;
-    const Scalar h = (m + 0.5) * std::log((m + 1) / (r * nm)) + stirlerr(static_cast<UnsignedInteger>(m + 1)) + stirlerr(static_cast<UnsignedInteger>(nm));
+    const Scalar h = (m + 0.5) * std::log((m + 1) / (r * nm)) + SpecFunc::Stirlerr(static_cast<UnsignedInteger>(m + 1)) + SpecFunc::Stirlerr(static_cast<UnsignedInteger>(nm));
     // Final acceptance-rejection
     const Scalar nk = n - k + 1;
-    if (v <= h + (n + 1) * std::log(nm / nk) + (k + 0.5) * std::log(nk * r / (k + 1)) - stirlerr(static_cast<UnsignedInteger>(k + 1)) - stirlerr(static_cast<UnsignedInteger>(nk))) return (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
+    if (v <= h + (n + 1) * std::log(nm / nk) + (k + 0.5) * std::log(nk * r / (k + 1)) - SpecFunc::Stirlerr(static_cast<UnsignedInteger>(k + 1)) - SpecFunc::Stirlerr(static_cast<UnsignedInteger>(nk))) return (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
   } // for(;;)
 } // rBinomial
 
@@ -608,10 +584,10 @@ Indices DistFunc::rBinomial(const UnsignedInteger n,
       }
       if (v > t + rho) continue;
       const Scalar nm = n - m + 1;
-      const Scalar h = (m + 0.5) * std::log((m + 1) / (r * nm)) + stirlerr(static_cast<UnsignedInteger>(m + 1)) + stirlerr(static_cast<UnsignedInteger>(nm));
+      const Scalar h = (m + 0.5) * std::log((m + 1) / (r * nm)) + SpecFunc::Stirlerr(static_cast<UnsignedInteger>(m + 1)) + SpecFunc::Stirlerr(static_cast<UnsignedInteger>(nm));
       // Final acceptance-rejection
       const Scalar nk = n - k + 1;
-      if (v <= h + (n + 1) * std::log(nm / nk) + (k + 0.5) * std::log(nk * r / (k + 1)) - stirlerr(static_cast<UnsignedInteger>(k + 1)) - stirlerr(static_cast<UnsignedInteger>(nk)))
+      if (v <= h + (n + 1) * std::log(nm / nk) + (k + 0.5) * std::log(nk * r / (k + 1)) - SpecFunc::Stirlerr(static_cast<UnsignedInteger>(k + 1)) - SpecFunc::Stirlerr(static_cast<UnsignedInteger>(nk)))
       {
         result[index] = (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
         break;
@@ -626,7 +602,6 @@ Indices DistFunc::rBinomial(const UnsignedInteger n,
 /* It implements the alias method as described here: */
 /* http://keithschwarz.com/darts-dice-coins/ */
 /*******************************************************************************************************/
-
 Indices DistFunc::rDiscrete(const Point & probabilities,
                             const UnsignedInteger size)
 {
@@ -784,6 +759,167 @@ Point DistFunc::rGamma(const Scalar k,
   Point result(size);
   for (UnsignedInteger i = 0; i < size; ++i) result[i] = rGamma(k);
   return result;
+}
+
+/********************************/
+/* Hypergeometric distribution. */
+/********************************/
+/*
+Some useful symmetry relations:
+d(n,k,m,x) = d(n, n-k,   m, m-x)
+           = d(n,   k, n-m, k-x)
+           = d(n,   m,   k,   x)
+*/
+Scalar DistFunc::dHypergeometric(const UnsignedInteger n,
+                                 const UnsignedInteger k,
+                                 const UnsignedInteger m,
+                                 const UnsignedInteger x)
+{
+  if (x + n < k + m) return 0.0;
+  if (x > k || x > m) return 0.0;
+#ifdef OPENTURNS_HAVE_BOOST
+  return boost::math::pdf(boost::math::hypergeometric_distribution<Scalar>(k, m, n), x);
+#else  
+  // Check range
+  if ((x > m) || (x > k) || (x + n < m + k)) return 0.0;
+  if ((m == 0) || (m == n)) return 1.0;
+  return std::exp(logdHypergeometric(n, k, m, x));
+#endif
+}
+
+Scalar DistFunc::logdHypergeometric(const UnsignedInteger n,
+                                    const UnsignedInteger k,
+                                    const UnsignedInteger m,
+                                    const UnsignedInteger x)
+{
+  if (x + n < k + m) return -SpecFunc::LogMaxScalar;
+  if (x > k || x > m) return -SpecFunc::LogMaxScalar;
+#ifdef OPENTURNS_HAVE_BOOST
+  return std::log(boost::math::pdf(boost::math::hypergeometric_distribution<Scalar>(k, m, n), x));
+#else  
+  // Check range
+  if ((x > m) || (x > k) || (x + n < m + k)) return -SpecFunc::LogMaxScalar;
+  if ((m == 0) || (m == n)) return 0.0;
+  Scalar p = (1.0 * m) / n;
+  Scalar kx = 0.0;
+  if (x == 0) kx = k * log1p(-p);
+  else if (x == k) kx = x * std::log(p);
+  else kx = -SpecFunc::LOGSQRT2PI - 0.5 * std::log(x * (1.0 - (1.0 * x) / k)) + SpecFunc::Stirlerr(k) - SpecFunc::Stirlerr(x) - SpecFunc::Stirlerr(k - x) - bd0(x, k * p) - bd0(k - x, k * (1.0 - p));
+  Scalar nkmx = 0.0;
+  if (x == m) nkmx = (n - k) * log1p(-p);
+  else if (m - x == n - k) nkmx = (m - x) * std::log(p);
+  else nkmx = -SpecFunc::LOGSQRT2PI - 0.5 * std::log((m - x) * (1.0 - (1.0 * (m - x)) / (n - k))) + SpecFunc::Stirlerr(n - x) - SpecFunc::Stirlerr(m - x) - SpecFunc::Stirlerr(n - k - m + x) - bd0(m - x, (n - k) * p) - bd0(n - k - m + x, (n - k) * (1.0 - p));
+  const Scalar nm = -SpecFunc::LOGSQRT2PI - 0.5 * std::log(m * (1.0 - p)) + SpecFunc::Stirlerr(n) - SpecFunc::Stirlerr(m) - SpecFunc::Stirlerr(n - m);
+  return kx + nkmx - nm;
+#endif
+}
+
+Scalar DistFunc::pHypergeometric(const UnsignedInteger n,
+                                 const UnsignedInteger k,
+                                 const UnsignedInteger m,
+                                 const UnsignedInteger x,
+                                 const Bool tail)
+{
+  if (x + n < k + m) return 0.0;
+  if (x > k || x > m) return 1.0;
+#ifdef OPENTURNS_HAVE_BOOST
+  if (tail) return boost::math::cdf(boost::math::complement(boost::math::hypergeometric_distribution<Scalar>(k, m, n), x));
+  return boost::math::cdf(boost::math::hypergeometric_distribution<Scalar>(k, m, n), x);
+#else  
+  // Compute the summation on the same side of the mode, ie
+  // from 0 to x if x <= mode, or from x+1 to max(range) then complement if x > mode
+  // Wikipedia H(n, k, m; x), OT H(n, k, m; x), Boost H(x; r, m, n) r = k
+  const UnsignedInteger mode = ((m + 1) * (k + 1)) / (n + 2);
+  Bool complement = tail;
+  Scalar cdf = 0.0;
+  UnsignedInteger t = x;
+  if (x < mode)
+  {
+    cdf = dHypergeometric(n, k, m, x);
+    Scalar delta = cdf;
+    UnsignedInteger xMin = k + m > n ? k + m - n : 0;
+    Scalar epsilon = complement ? SpecFunc::Precision : cdf * SpecFunc::Precision;
+    while (delta > epsilon)
+    {
+      delta *= (t / (1.0 + k - t)) * ((n + t - m - k) / (1.0 + m - t));
+      cdf += delta;
+      if (t == xMin)
+        break;
+      --t;
+    }
+  } // x < mode
+  else
+  {
+    complement = !complement;
+    UnsignedInteger xMax = std::min(k, m);
+    if (t < xMax)
+    {
+      ++t;
+      cdf = dHypergeometric(n, k, m, t + 1);
+      Scalar delta = cdf;
+      Scalar epsilon = complement ? SpecFunc::Precision : cdf * SpecFunc::Precision;
+      while ((t <= xMax) && (delta > epsilon))
+      {
+        delta *= ((m - t) / (t + 1.0)) * ((k - t) / (n + t + 1.0 - m - k));
+        cdf += delta;
+        ++t;
+      }
+    } // x < xMax
+  } // x >= mode
+  if (complement) return 1.0 - cdf;
+  return cdf;
+#endif
+}
+
+UnsignedInteger DistFunc::rHypergeometric(const UnsignedInteger n,
+    const UnsignedInteger k,
+    const UnsignedInteger m)
+{
+  // Generate the probability table
+  Point probabilities(n + 1);
+  UnsignedInteger xMin = (k + m >= n ? k + m - n : 0);
+  UnsignedInteger xMax = std::min(m, k);
+  UnsignedInteger xMode = ((k + 1) * (m + 1)) / (n + 2);
+  Scalar p = DistFunc::dHypergeometric(n, k, m, xMode);
+  probabilities[xMode] = p;
+  for (UnsignedInteger x = xMode + 1; x <= xMax; ++x)
+    {
+      p *= ((1.0 + k - x) / x) * ((1.0 + m - x) / (n + x - m - k));
+      probabilities[k] = p;
+    }
+  p = probabilities[xMode];
+  for (UnsignedInteger x = xMode; x > xMin; --x)
+    {
+      p *= (x / (k - x + 1.0)) * ((n + x - m - k) / (m - x + 1.0));
+      probabilities[x - 1] = p;
+    }
+  return rDiscrete(probabilities);
+}
+
+Indices DistFunc::rHypergeometric(const UnsignedInteger n,
+                                  const UnsignedInteger k,
+                                  const UnsignedInteger m,
+                                  const UnsignedInteger size)
+{
+  // Generate the probability table
+  Point probabilities(n + 1);
+  UnsignedInteger xMin = (k + m >= n ? k + m - n : 0);
+  UnsignedInteger xMax = std::min(m, k);
+  UnsignedInteger xMode = ((k + 1) * (m + 1)) / (n + 2);
+  Scalar p = DistFunc::dHypergeometric(n, k, m, xMode);
+  probabilities[xMode] = p;
+  for (UnsignedInteger x = xMode + 1; x <= xMax; ++x)
+    {
+      p *= ((1.0 + k - x) / x) * ((1.0 + m - x) / (n + x - m - k));
+      probabilities[k] = p;
+    }
+  p = probabilities[xMode];
+  for (UnsignedInteger x = xMode; x > xMin; --x)
+    {
+      p *= (x / (k - x - 1.0)) * ((n + x - m - k) / (m - x - 1.0));
+      probabilities[x - 1] = p;
+    }
+  return rDiscrete(probabilities, size);
 }
 
 /****************************/
@@ -1325,7 +1461,7 @@ Scalar DistFunc::logdPoisson(const Scalar lambda,
 {
   if (lambda == 0.0) return (k == 0 ? 0.0 : -SpecFunc::LogMaxScalar);
   if (k == 0) return -lambda;
-  return -DistFunc::stirlerr(k) - DistFunc::bd0(k, lambda) - 0.5 * std::log(2.0 * M_PI * k);
+  return -SpecFunc::Stirlerr(k) - DistFunc::bd0(k, lambda) - 0.5 * std::log(2.0 * M_PI * k);
 }
 
 Scalar DistFunc::dPoisson(const Scalar lambda,
@@ -1333,7 +1469,7 @@ Scalar DistFunc::dPoisson(const Scalar lambda,
 {
   if (lambda == 0.0) return (k == 0 ? 1.0 : 0.0);
   if (k == 0) return std::exp(-lambda);
-  return std::exp(-DistFunc::stirlerr(k) - DistFunc::bd0(k, lambda)) / std::sqrt(2.0 * M_PI * k);
+  return std::exp(-SpecFunc::Stirlerr(k) - DistFunc::bd0(k, lambda)) / std::sqrt(2.0 * M_PI * k);
 }
 
 /* Quantile function

@@ -626,6 +626,7 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
 ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       Histogram.i Histogram_doc.i.in
                       HistogramFactory.i HistogramFactory_doc.i.in
+                      Hypergeometric.i Hypergeometric_doc.i.in
                       InverseChiSquare.i InverseChiSquare_doc.i.in
                       InverseGamma.i InverseGamma_doc.i.in
                       InverseNormal.i InverseNormal_doc.i.in

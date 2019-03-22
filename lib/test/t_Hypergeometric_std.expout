@@ -1,0 +1,51 @@
+Testing class Hypergeometric
+checkConstructorAndDestructor()
+checkCopyConstructor()
+streamObject(const T & anObject)
+class=Hypergeometric name=Hypergeometric dimension=1 n=25 k=7 m=14
+streamObject(const T & anObject)
+class=Hypergeometric name=Hypergeometric dimension=1 n=25 k=7 m=14
+areSameObjects(const T & firstObject, const T & secondObject)
+areDifferentObjects(const T & firstObject, const T & secondObject)
+Distribution class=Hypergeometric name=Hypergeometric dimension=1 n=25 k=7 m=14
+Distribution Hypergeometric(n = 25, k = 7, m = 14)
+Elliptical = false
+Continuous = false
+oneRealization=class=Point name=Unnamed dimension=1 values=[2]
+oneSample first=class=Point name=Unnamed dimension=1 values=[3] last=class=Point name=Unnamed dimension=1 values=[3]
+mean=class=Point name=Unnamed dimension=1 values=[3.956]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.3246]
+Point= class=Point name=Unnamed dimension=1 values=[5]
+log pdf=-1.47376
+pdf     =0.229062
+pdf (FD)=0.229062
+cdf=0.924142
+ccdf=0.0758581
+survival=0.0758581
+quantile=class=Point name=Unnamed dimension=1 values=[6]
+cdf(quantile)=0.99286
+quantile (tail)=class=Point name=Unnamed dimension=1 values=[1]
+cdf (tail)=0.985858
+characteristic function=(0.112692,0.314426)
+log characteristic function=(-1.09658,1.22665)
+generating function=(-0.0767727,-0.123723)
+log generating function=(-1.92684,-2.12617)
+entropy=1.54654
+entropy (MC)=1.54616
+mean=class=Point name=Unnamed dimension=1 values=[3.92]
+standard deviation=class=Point name=Unnamed dimension=1 values=[1.13737]
+skewness=class=Point name=Unnamed dimension=1 values=[-0.0504599]
+kurtosis=class=Point name=Unnamed dimension=1 values=[2.83749]
+covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.2936]
+correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+parameters=[[n : 25, k : 7, m : 14]]
+standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
+standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[3.92]
+standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[16.66]
+standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[75.3748]
+standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[358.978]
+standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[1785.54]
+Standard representative=Hypergeometric(n = 25, k = 7, m = 14)
+95% bilateral confidence interval = [2, 5]

@@ -212,7 +212,7 @@ The techniques implemented in each distribution are:
 .. topic:: References:
 
     - [devroye1986]_
-    - [hormann1992]_
+    - [hormann1993]_
     - [marsaglia1993]_
     - [doornik2005]_
     - [aas2004]_
