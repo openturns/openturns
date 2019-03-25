@@ -2447,7 +2447,6 @@ Interval DistributionImplementation::computeBilateralConfidenceInterval(const Sc
 Interval DistributionImplementation::computeBilateralConfidenceIntervalWithMarginalProbability(const Scalar prob,
     Scalar & marginalProb) const
 {
-  if (!isContinuous()) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeMinimumVolumeInterval()";
   if (prob <= 0.0)
   {
     const Point median(computeQuantile(0.5));
@@ -2465,6 +2464,7 @@ Interval DistributionImplementation::computeBilateralConfidenceIntervalWithMargi
     const Interval IC(computeQuantile(0.5 * (1.0 - prob), false), computeQuantile(0.5 * (1.0 - prob), true));
     return IC;
   }
+  if (!isContinuous()) throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeBilateralConfidenceIntervalWithMarginalProbability() for non continuous multivariate distributions";
   Collection<Distribution> marginals(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i) marginals[i] = getMarginal(i);
   const MinimumVolumeIntervalWrapper minimumVolumeIntervalWrapper(this, marginals, prob);

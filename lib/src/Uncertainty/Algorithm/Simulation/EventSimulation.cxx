@@ -183,8 +183,8 @@ void EventSimulation::run()
       {
         LOGINFO(OSS() << "Stopped due to user");
       }
-    }
-  }
+    } // stopCallback
+  } // while
 }
 
 /* Compute the block sample and the points that realized the event */
