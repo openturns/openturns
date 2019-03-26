@@ -141,6 +141,13 @@
 
   <!-- OT::Cobyla parameters -->
   <Cobyla-DefaultRhoBeg value_float="0.1" />
+  
+  <!-- OT::Dlib parameters -->
+  <Dlib-DefaultInitialTrustRegionRadius value_float="1.0"     />
+  <Dlib-DefaultWolfeRho                 value_float="0.01"    />
+  <Dlib-DefaultWolfeSigma               value_float ="0.9"    />
+  <Dlib-DefaultMaxLineSearchIterations  value_int="100"       />
+  <Dlib-DefaultMaxSize                  value_int="10"        />
 
   <!-- OT::OPTpp parameters -->
   <OPTpp-DefaultLineSearchTolerance                 value_float="1.0e-4" />

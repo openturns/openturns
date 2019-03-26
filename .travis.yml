@@ -33,7 +33,7 @@ matrix:
 before_install:
   - if test "$TRAVIS_OS_NAME" = "osx"; then
         brew update &&
-        brew install swig muparser R openblas bison flex cminpack ceres-solver &&
+        brew install swig muparser R openblas bison flex cminpack ceres-solver dlib &&
         export HOMEBREW_PREFIX=`brew --prefix`;
     fi
 
