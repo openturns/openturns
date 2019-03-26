@@ -248,6 +248,10 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
   {
     solver = OPTpp(solverName);
   }
+  else if (Dlib::IsAvailable() && Dlib::GetAlgorithmNames().contains(solverName))
+  {
+    solver = Dlib(solverName);
+  }
   else
     throw InvalidArgumentException(HERE) << "Unknown optimization solver:" << solverName;
   return solver;

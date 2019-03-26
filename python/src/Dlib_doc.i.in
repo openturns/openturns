@@ -1,0 +1,256 @@
+%feature("docstring") OT::Dlib
+"Base class for optimization solvers from dlib library.
+
+Available constructors:
+    Dlib(*algoName*)
+    
+    Dlib(*problem, algoName*)
+
+Parameters
+----------
+algoName : str, optional
+    Identifier of the optimization method to use. Use :func:`GetAlgorithmNames()` to
+    list available algorithms. Default is 'BFGS'.
+problem : :class:`~openturns.OptimizationProblem`, optional
+    Optimization problem to solve. Default is an empty problem.
+    
+Notes
+-----
+The table below presents some properties of the available algorithms from dlib.
+Details on optimization methods are available on http://dlib.net/optimization.html
+
++-------------+---------------------+----------------------+-------------------+--------------------+
+| Algorithm   | Description         | Problem type support | Derivatives info  | Constraint support |
++=============+=====================+======================+===================+====================+
+| CG          | Conjugate gradient  | General              | First derivative  | Bounds             |
++-------------+---------------------+----------------------+-------------------+--------------------+
+| BFGS        | BFGS                | General              | First derivative  | Bounds             |
++-------------+---------------------+----------------------+-------------------+--------------------+
+| LBFGS       | Limited memory BFGS | General              | First derivative  | Bounds             |
++-------------+---------------------+----------------------+-------------------+--------------------+
+| Newton      | Newton              | General              | First and second  | Bounds             |
+|             |                     |                      | derivatives       |                    |
++-------------+---------------------+----------------------+-------------------+--------------------+
+| Global      | Global optimization | General              | No derivative     | Bounds needed      |
++-------------+---------------------+----------------------+-------------------+--------------------+
+| LSQ         | Least squares (best | Least squares        | First derivative  | None               |
+|             | for large residual) |                      |                   |                    |
++-------------+---------------------+----------------------+-------------------+--------------------+
+| LSQLM       | Least squares LM    | Least squares        | First derivative  | None               |
+|             | (small residual)    |                      |                   |                    |
++-------------+---------------------+----------------------+-------------------+--------------------+
+| TrustRegion | Trust region        | General              | No derivative     | None               |
++-------------+---------------------+----------------------+-------------------+--------------------+
+
+Derivatives are managed automatically by openturns, according to the available
+data (analytical formula or finite differences computation).
+
+The global optimization algorithm requires finite fixed bounds for all input
+variables. In this strategy, the solver starts by refining a local extremum
+until no significant improvement is found. Then it tries to find better extrema
+in the rest of the domain defined by the user, until the maximum number of
+function evaluation is reached.
+
+In least squares and trust region methods, the optimization process continues
+until the user criteria on absolute, relative and residual errors are satisfied,
+or until no significant improvement can be achieved.
+
+See also
+--------
+AbdoRackwitz, Cobyla, NLopt
+
+Examples
+--------
+Define an optimization problem to find the minimum of the Rosenbrock function:
+
+>>> import openturns as ot
+>>> rosenbrock = ot.SymbolicFunction(['x1', 'x2'], ['(1-x1)^2+100*(x2-x1^2)^2'])
+>>> problem = ot.OptimizationProblem(rosenbrock)
+>>> cgSolver = ot.Dlib(problem,'CG')
+>>> cgSolver.setStartingPoint([0, 0])
+>>> cgSolver.setMaximumResidualError(1.e-3)
+>>> cgSolver.setMaximumIterationNumber(100)
+>>> cgSolver.run()
+>>> result = cgSolver.getResult()
+>>> x_star = result.getOptimalPoint()
+>>> y_star = result.getOptimalValue()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dlib::getSearchStrategyName
+"Accessor to searchStrategyName parameter.
+
+Returns
+-------
+searchStrategyName : str
+    The name of the optimization algorithm used."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dlib::setSearchStrategy
+"Accessor to searchStrategyName parameter. Sets the optimization algorithm to
+use, other attributes are set to the default value associated with the selected
+method.
+
+Parameters
+----------
+searchStrategyName : str
+    The name of the optimization algorithm to use."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dlib::getWolfeRho
+"Accessor to wolfeRho parameter. Relevant for algorithms CG, BFGS/LBFGS and
+Newton only.
+
+Returns
+-------
+wolfeRho : float
+    The value of the wolfeRho parameter used in the optimization process."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dlib::setWolfeRho
+"Accessor to wolfeRho parameter, sets the value to use during line search
+process.
+Relevant for algorithms CG, BFGS/LBFGS and Newton only.
+
+Parameters
+----------
+wolfeRho : float
+    The value of the wolfeRho parameter to use in the optimization process."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dlib::getWolfeSigma
+"Accessor to wolfeSigma parameter. Relevant for algorithms CG, BFGS/LBFGS
+and Newton only.
+
+Returns
+-------
+wolfeSigma : float
+    The value of the wolfeSigma parameter used in the optimization process."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dlib::setWolfeSigma
+"Accessor to wolfeSigma parameter, sets the value to use during line search
+process.
+Relevant for algorithms CG, BFGS/LBFGS and Newton only.
+
+Parameters
+----------
+wolfeSigma : float
+    The value of the wolfeSigma parameter to use in the optimization process."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dlib::getMaxLineSearchIterations
+"Accessor to maxLineSearchIterations parameter. Relevant for algorithms CG, 
+BFGS/LBFGS and Newton only.
+
+Returns
+-------
+maxLineSearchIterations : int
+    The maximum number of line search iterations to perform at each iteration
+    of the optimization process.
+    Relevant for algorithms CG, BFGS/LBFGS and Newton only."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dlib::setMaxLineSearchIterations
+"Accessor to maxLineSearchIterations parameter, sets the value to use during
+line search process.
+Relevant for algorithms CG, BFGS/LBFGS and Newton only.
+
+Parameters
+----------
+maxLineSearchIterations : int
+    The value of the maxLineSearchIterations parameter to use in the
+    optimization process."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dlib::getMaxSize
+"Accessor to maxSize parameter. Relevant for LBFGS algorithm only.
+
+Returns
+-------
+maxSize : int
+    The maximum amount of memory used during optimization process. 10 is a
+    typical value for maxSize. 
+    Relevant for LBFGS algorithm only."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dlib::setInitialTrustRegionRadius
+"Accessor to initialTrustRegionRadius parameter, sets the value to use
+during optimization process.
+Relevant for trust region, least squares and least squares LM algorithms only.
+
+Parameters
+----------
+initialTrustRegionRadius : float
+    The radius of the initial trust region to use in the optimization process."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dlib::getInitialTrustRegionRadius
+"Accessor to initialTrustRegionRadius parameter. Relevant for trust region,
+least squares and least squares LM algorithms only.
+
+Returns
+-------
+initialTrustRegionRadius : float
+    The radius of the initial trust region used in optimization algorithms."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dlib::setMaxSize
+"Accessor to maxSize parameter, sets the value to use during optimization
+process.
+Relevant for LBFGS algorithm only.
+
+Parameters
+----------
+maxSize : int
+    The maximum amount of memory to use during optimization process. 10 is a
+    typical value for maxSize. 
+    Relevant for LBFGS algorithm only."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dlib::run
+"Performs the actual optimization process. Results are stored in the :class:`~openturns.OptimizationResult`
+parameter of the :class:`~openturns.Dlib` object."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dlib::checkProblem
+"Check if the given :class:`~openturns.OptimizationProblem` is compatible
+with the algorithm used in dlib.
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    The problem to check."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dlib::IsAvailable
+"Check if dlib functions are available for use in openturns.
+
+Returns
+-------
+isAvailable : bool
+    Whether dlib algorithms can be used or not."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Dlib::GetAlgorithmNames
+"List of dlib available optimization algorithms.
+
+Returns
+-------
+algorithmNames : :class:`~openturns.Description`
+    List of the names of available dlib search strategies."
