@@ -32,12 +32,13 @@ Optimization solvers
     Ceres
     CMinpack
     Cobyla
-    SQP
-    TNC
+    Dlib
+    EfficientGlobalOptimization
+    MultiStart
     NLopt
     OPTpp
-    MultiStart
-    EfficientGlobalOptimization
+    SQP
+    TNC
 
 Nearest point assessment
 ========================

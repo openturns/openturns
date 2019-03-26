@@ -30,6 +30,7 @@
 #include "openturns/NearestPointCheckerResult.hxx"
 #include "openturns/NearestPointChecker.hxx"
 #include "openturns/NLopt.hxx"
+#include "openturns/Dlib.hxx"
 #include "openturns/OptimizationProblem.hxx"
 #include "openturns/OptimizationProblemImplementation.hxx"
 #include "openturns/NearestPointProblem.hxx"
