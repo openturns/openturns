@@ -207,6 +207,8 @@ void NLopt::run()
   // initialize history
   evaluationInputHistory_ = Sample(0, dimension);
   evaluationOutputHistory_ = Sample(0, 1);
+  equalityConstraintHistory_ = Sample(0, getProblem().getEqualityConstraint().getOutputDimension());
+  inequalityConstraintHistory_ = Sample(0, getProblem().getInequalityConstraint().getOutputDimension());
 
   nlopt::opt opt(algo, dimension);
 
@@ -367,12 +369,15 @@ void NLopt::run()
     }
     if (getProblem().hasEqualityConstraint())
     {
-      const Point g(getProblem().getEqualityConstraint()(inP));
+      const Point g(equalityConstraintHistory_[i]);
       constraintError = std::max(constraintError, g.normInf());
     }
     if (getProblem().hasInequalityConstraint())
     {
-      Point h(getProblem().getInequalityConstraint()(inP));
+      // some AUGLAG variants call inequality constraints less times
+      // https://github.com/stevengj/nlopt/blob/master/src/algs/auglag/auglag.c#L96
+      const Bool same = (inequalityConstraintHistory_.getSize() == evaluationInputHistory_.getSize());
+      Point h(same ? inequalityConstraintHistory_[i] : getProblem().getInequalityConstraint()(inP));
       for (UnsignedInteger k = 0; k < getProblem().getInequalityConstraint().getOutputDimension(); ++ k)
       {
         h[k] = std::min(h[k], 0.0);// convention h(x)>=0 <=> admissibility
@@ -536,6 +541,7 @@ double NLopt::ComputeInequalityConstraint(const std::vector< double >& x, std::v
 
   // evaluation
   Point outP(algorithm->getProblem().getInequalityConstraint()(inP));
+  algorithm->inequalityConstraintHistory_.add(outP);
 
   // gradient
   if (!grad.empty())
@@ -564,6 +570,7 @@ double NLopt::ComputeEqualityConstraint(const std::vector< double >& x, std::vec
 
   // evaluation
   Point outP(algorithm->getProblem().getEqualityConstraint()(inP));
+  algorithm->equalityConstraintHistory_.add(outP);
 
   // gradient
   if (!grad.empty())

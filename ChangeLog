@@ -51,6 +51,7 @@
  * #1028 (Build fails with clang-60: token is not a valid binary operator in a preprocessor subexpression)
  * #1035 (ProbabilitySimulationResult does not provide the distribution of the probability)
  * #1045 (LowDiscrepancyExperiment/ComposedCopula correlation across blocks ?)
+ * #1054 (Optimization algorithms ignore MaxEvaluationNumber parameter)
 
 == 1.12 release (2018-11-08) == #release-1.12
 

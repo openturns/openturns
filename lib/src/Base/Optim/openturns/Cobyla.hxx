@@ -89,6 +89,8 @@ private:
   /// temporary, used to track input/outputs
   Sample evaluationInputHistory_;
   Sample evaluationOutputHistory_;
+  Sample equalityConstraintHistory_;
+  Sample inequalityConstraintHistory_;
 
 }; /* class Cobyla */
 
