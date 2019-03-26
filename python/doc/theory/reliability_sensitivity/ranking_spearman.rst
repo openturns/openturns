@@ -58,7 +58,7 @@ the impact the variable :math:`X^i` has on the dispersion of
     # Quadratic model
     algo = ot.QuadraticLeastSquares(x, y)
     algo.run()
-    quadratic = algo.getResponseSurface()
+    quadratic = algo.getMetaModel()
 
     graph = ot.Graph("Null Spearman coefficient", "u", "v", True, "")
     graph.add(cloud1)

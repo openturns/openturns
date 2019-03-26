@@ -48,7 +48,7 @@ int main(int, char *[])
     }
     LinearTaylor myTaylor(center, myFunc);
     myTaylor.run();
-    Function responseSurface(myTaylor.getResponseSurface());
+    Function responseSurface(myTaylor.getMetaModel());
     fullprint << "myTaylor=" << myTaylor << std::endl;
     fullprint << "responseSurface=" << responseSurface << std::endl;
     fullprint << "myFunc(" << center << ")=" << myFunc(center) << std::endl;

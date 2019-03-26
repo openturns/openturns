@@ -179,9 +179,15 @@ Function LinearLeastSquares::getInputFunction() const
   return inputFunction_;
 }
 
-/* Response surface accessor */
+/* Metamodel accessor */
+Function LinearLeastSquares::getMetaModel() const
+{
+  return responseSurface_;
+}
+
 Function LinearLeastSquares::getResponseSurface() const
 {
+  LOGWARN(OSS() << "getResponseSurface is deprecated, use getMetaModel");
   return responseSurface_;
 }
 

@@ -148,8 +148,8 @@ Point CorrelationAnalysis::PCC(const Sample & inputSample,
     LinearLeastSquares remainingVersusTruncatedInput(truncatedInput, remainingInput);
     remainingVersusTruncatedInput.run();
 
-    const Sample residualOutput(outputSample - outputVersusTruncatedInput.getResponseSurface()(truncatedInput));
-    const Sample residualRemaining(remainingInput - remainingVersusTruncatedInput.getResponseSurface()(truncatedInput));
+    const Sample residualOutput(outputSample - outputVersusTruncatedInput.getMetaModel()(truncatedInput));
+    const Sample residualRemaining(remainingInput - remainingVersusTruncatedInput.getMetaModel()(truncatedInput));
 
     // Compute the correlation between the residuals
     pcc[index] = PearsonCorrelation(residualOutput, residualRemaining)[0];
