@@ -241,8 +241,6 @@ Section "OT python examples" SEC02
   !insertmacro PRINT "Install Python examples in $OT_INSTALL_PATH\examples."
   SetOutPath "$OT_INSTALL_PATH\examples"
   File "${OPENTURNS_PREFIX}\share\openturns\examples\*.py"
-  File "_drag_to_me_to_start_it.bat"
-  ${ConfigWrite} "_drag_to_me_to_start_it.bat" "set PYTHON_INSTALL_PATH=" "$\"$Python_INSTALL_PATH$\"" $R0
 !endif
 SectionEnd
 
