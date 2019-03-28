@@ -37,7 +37,7 @@ extensions = []
 extensions.append('sphinx.ext.autodoc')
 
 if LooseVersion(sphinx.__version__) >= '1.8':
-    autodoc_default_options = {'members': None, 'inherited-members': None}
+    autodoc_default_options = {'members': None, 'inherited-members': None, 'exclude-members': 'thisown'}
 else:
     autodoc_default_flags =  ['members', 'inherited-members']
 
