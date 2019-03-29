@@ -78,7 +78,7 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
   const Scalar statistic = sumSquaredResiduals / dimension / (sumSquaredExplained / (df));
   Log::Debug(OSS() << "F-statistic = " << statistic);
   const Scalar pValue =  FisherSnedecor(dimension, size - dimension - 1).computeComplementaryCDF(statistic);
-  return TestResult("Fisher", pValue > level, pValue, level);
+  return TestResult("Fisher", pValue > level, pValue, level, statistic);
 }
 
 /* @deprecated */
@@ -128,7 +128,7 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
   const Scalar statistic = numerator / denumerator;
   Log::Debug(OSS() << "F-statistic = " << statistic);
   const Scalar pValue =  FisherSnedecor(dimension, df).computeComplementaryCDF(statistic);
-  return TestResult("Fisher", pValue > level, pValue, level);
+  return TestResult("Fisher", pValue > level, pValue, level, statistic);
 }
 
 /*  */
@@ -159,7 +159,7 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
   const Scalar statistic = mean / std * std::sqrt(firstSample.getSize() * 1.0);
   Log::Debug(OSS() << "t-statistic = " << statistic);
   const Scalar pValue =  2.0 * DistFunc::pStudent(df, statistic, true);
-  return TestResult("ResidualMean", pValue > level, pValue, level);
+  return TestResult("ResidualMean", pValue > level, pValue, level, statistic);
 }
 
 /* @deprecated */
@@ -202,7 +202,7 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
   const Scalar statistic = mean / std * std::sqrt(firstSample.getSize() * 1.0);
   const Scalar pValue =  2.0 * DistFunc::pStudent(df, statistic, true);
   Log::Debug(OSS() << "t-statistic = " << statistic);
-  return TestResult("ResidualMean", pValue > level, pValue, level);
+  return TestResult("ResidualMean", pValue > level, pValue, level, statistic);
 }
 
 /*  */
@@ -258,7 +258,7 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
   }
   pValue = pValue / simulationSize;
 
-  return TestResult("HarrisonMcCabe", pValue > level, pValue, level);
+  return TestResult("HarrisonMcCabe", pValue > level, pValue, level, hmc);
 }
 
 /* @deprecated  */
@@ -328,13 +328,13 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
   const Scalar wPredictedVar = wPredicted.computeVariance()[0];
   const Scalar wVariance = w.computeVariance()[0];
   /* Compute the Breusch Pagan statistic */
-  const Scalar bp = residualSize * wPredictedVar / wVariance;
+  const Scalar statistic = residualSize * wPredictedVar / wVariance;
   /* Get the degree of freedom */
   const UnsignedInteger dof = firstSample.getDimension();
   /* Compute the p-value */
-  const Scalar pValue = ChiSquare(dof).computeComplementaryCDF(bp);
+  const Scalar pValue = ChiSquare(dof).computeComplementaryCDF(statistic);
 
-  return TestResult("BreuschPagan", pValue > level, pValue, level);
+  return TestResult("BreuschPagan", pValue > level, pValue, level, statistic);
 }
 
 
@@ -429,26 +429,30 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
   /* Compute the p-value with respect to the hypothesis */
   Scalar pValue = 0.0;
   Description description(1);
+  Scalar statistic;
   if (hypothesis == "Equal")
   {
-    pValue = 2.0 * DistFunc::pNormal(std::abs(dw - dmean) / std::sqrt(dvar), true);
+    statistic = std::abs(dw - dmean) / std::sqrt(dvar);
+    pValue = 2.0 * DistFunc::pNormal(statistic, true);
     description[0] = "H0: auto.cor=0";
   }
   else if(hypothesis == "Less")
   {
-    pValue = DistFunc::pNormal((dw - dmean) / std::sqrt(dvar));
+    statistic = (dw - dmean) / std::sqrt(dvar);
+    pValue = DistFunc::pNormal(statistic);
     description[0] = "H0: auto.cor<0";
   }
   else if(hypothesis == "Greater")
   {
-    pValue = DistFunc::pNormal((dw - dmean) / std::sqrt(dvar), true);
+    statistic = (dw - dmean) / std::sqrt(dvar);
+    pValue = DistFunc::pNormal(statistic, true);
     description[0] = "H0: auto.cor>0";
   }
   else
     throw InvalidArgumentException(HERE) << "Invalid hypothesis string, use Equal|Less|Greater";
 
   /* Set test result */
-  TestResult result("DurbinWatson", pValue > level, pValue, level);
+  TestResult result("DurbinWatson", pValue > level, pValue, level, statistic);
   result.setDescription(description);
   return result;
 }
@@ -493,13 +497,15 @@ LinearModelTest::TestResultCollection LinearModelTest::PartialRegression(const S
   const LinearModelAnalysis analysis(result);
   const UnsignedInteger size = selection.getSize() + 1;
   const Point pValues(analysis.getCoefficientsPValues());
+  const Point statistics(analysis.getCoefficientsTScores());
 
   // Then, build the collection of results
   TestResultCollection resultCollection;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     const Scalar pValue = pValues[i];
-    resultCollection.add(TestResult("Regression", pValue > level, pValue, level));
+    const Scalar statistic = statistics[i];
+    resultCollection.add(TestResult("Regression", pValue > level, pValue, level, statistic));
   }
   return resultCollection;
 }

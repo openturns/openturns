@@ -36,7 +36,7 @@ Examples
 >>> sample = distribution.getSample(30)
 >>> test_result = ot.HypothesisTest.ChiSquared(sample[:,0], sample[:,1])
 >>> print(test_result)
-class=TestResult name=Unnamed type=ChiSquared binaryQualityMeasure=true p-value threshold=0.05 p-value=0.855945 description=[]
+class=TestResult name=Unnamed type=ChiSquared binaryQualityMeasure=true p-value threshold=0.05 p-value=0.855945 statistic=4.74502 description=[]
 "
 
 // ---------------------------------------------------------------------
@@ -94,7 +94,7 @@ Examples
 >>> secondSample = sample[:, 2]
 >>> test_result = ot.HypothesisTest.FullPearson(firstSample, secondSample)
 >>> print(test_result)
-[class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=false p-value threshold=0.05 p-value=7.23...e-14 description=[],class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.895124 description=[]]
+[class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=false p-value threshold=0.05 p-value=7.23...e-14 statistic=13.61 description=[],class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.895124 statistic=-0.133027 description=[]]
 
 "
 
@@ -145,7 +145,7 @@ Examples
 >>> testedSample = func(sample)
 >>> test_result = ot.HypothesisTest.FullSpearman(testedSample, sample, 0.05)
 >>> print(test_result)
-[class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=false p-value threshold=0.05 p-value=0 description=[],class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.442067 description=[]]
+[class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=false p-value threshold=0.05 p-value=0 statistic=1.79769e+308 description=[],class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.442067 statistic=-0.774521 description=[]]
 "
 
 // ---------------------------------------------------------------------
@@ -202,7 +202,7 @@ Examples
 >>> secondSample = sample[:, 3]
 >>> test_result = ot.HypothesisTest.PartialPearson(firstSample, secondSample, [0, 2])
 >>> print(test_result)
-[class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=false p-value threshold=0.05 p-value=1.17002e-10 description=[],class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.19193 description=[]]
+[class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=false p-value threshold=0.05 p-value=1.17002e-10 statistic=9.91178 description=[],class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.19193 statistic=-1.33717 description=[]]
 "
 
 
@@ -257,7 +257,7 @@ Examples
 >>> testedSample = func(sample)
 >>> test_result = ot.HypothesisTest.PartialSpearman(testedSample, sample, [0,3])
 >>> print(test_result)
-[class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=false p-value threshold=0.05 p-value=0 description=[],class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.570533 description=[]]
+[class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=false p-value threshold=0.05 p-value=0 statistic=1.79769e+308 description=[],class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.570533 statistic=-0.569502 description=[]]
 "
 
 // ---------------------------------------------------------------------
@@ -308,7 +308,7 @@ Examples
 >>> secondSample = ot.Normal().getSample(30)
 >>> test_result = ot.HypothesisTest.Pearson(firstSample, secondSample)
 >>> print(test_result)
-class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.984737 description=[]
+class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.984737 statistic=0.019302 description=[]
 "
 
 // ---------------------------------------------------------------------
@@ -362,7 +362,7 @@ Examples
 >>> secondSample = ot.Normal().getSample(30)
 >>> test_result = ot.HypothesisTest.Smirnov(firstSample, secondSample)
 >>> print(test_result)
-class=TestResult name=Unnamed type=TwoSamplesKolmogorov binaryQualityMeasure=true p-value threshold=0.05 p-value=0.739538 description=[sampleNormal vs sample Normal]
+class=TestResult name=Unnamed type=TwoSamplesKolmogorov binaryQualityMeasure=true p-value threshold=0.05 p-value=0.739538 statistic=0.166667 description=[sampleNormal vs sample Normal]
 "
 
 // ---------------------------------------------------------------------
@@ -413,7 +413,7 @@ Examples
 >>> secondSample = func(firstSample)
 >>> test_result = ot.HypothesisTest.Spearman(firstSample, secondSample)
 >>> print(test_result)
-class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.442067 description=[]
+class=TestResult name=Unnamed type=Spearman binaryQualityMeasure=true p-value threshold=0.05 p-value=0.442067 statistic=-0.774521 description=[]
 "
 
 // ---------------------------------------------------------------------
@@ -458,6 +458,6 @@ Examples
 >>> sample1 = ot.Normal().getSample(20)
 >>> sample2 = ot.Normal(0.1, 1.1).getSample(30)
 >>> ot.HypothesisTest.TwoSamplesKolmogorov(sample1, sample2)
-class=TestResult name=Unnamed type=TwoSamplesKolmogorov binaryQualityMeasure=true p-value threshold=0.05 p-value=0.554765 description=[sampleNormal vs sample Normal]"
+class=TestResult name=Unnamed type=TwoSamplesKolmogorov binaryQualityMeasure=true p-value threshold=0.05 p-value=0.554765 statistic=0.216667 description=[sampleNormal vs sample Normal]"
 
 // ---------------------------------------------------------------------

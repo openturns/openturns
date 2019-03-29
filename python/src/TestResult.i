@@ -26,11 +26,13 @@ namespace OT {
     PyObject * item_1 = PySequence_Fast_GET_ITEM( newPyObj.get(), 1 ); check<_PyBool_>( item_1 );
     PyObject * item_2 = PySequence_Fast_GET_ITEM( newPyObj.get(), 2 ); check<_PyFloat_>( item_2 );
     PyObject * item_3 = PySequence_Fast_GET_ITEM( newPyObj.get(), 3 ); check<_PyFloat_>( item_3 );
+    PyObject * item_4 = PySequence_Fast_GET_ITEM( newPyObj.get(), 4 ); check<_PyFloat_>( item_4 );
 
     return OT::TestResult( convert<_PyString_,String>( item_0 ),
                                               convert<_PyBool_,Bool>( item_1 ),
                                               convert<_PyFloat_,Scalar>( item_2 ),
-                                              convert<_PyFloat_,Scalar>( item_3 ) );
+                                              convert<_PyFloat_,Scalar>( item_3 ),
+                                              convert<_PyFloat_,Scalar>( item_4 ) );
   }
 
 

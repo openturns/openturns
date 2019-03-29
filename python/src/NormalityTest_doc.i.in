@@ -39,7 +39,7 @@ Examples
 >>> sample = distribution.getSample(30)
 >>> test_result = ot.NormalityTest.AndersonDarlingNormal(sample)
 >>> print(test_result)
-class=TestResult name=Unnamed type=AndersonDarlingNormal binaryQualityMeasure=true p-value threshold=0.05 p-value=0.7268 description=[]
+class=TestResult name=Unnamed type=AndersonDarlingNormal binaryQualityMeasure=true p-value threshold=0.05 p-value=0.7268 statistic=0.255405 description=[]
 "
 
 // ---------------------------------------------------------------------
@@ -86,5 +86,5 @@ Examples
 >>> sample = distribution.getSample(30)
 >>> test_result = ot.NormalityTest.CramerVonMisesNormal(sample)
 >>> print(test_result)
-class=TestResult name=Unnamed type=CramerVonMisesNormal binaryQualityMeasure=true p-value threshold=0.05 p-value=0.682524 description=[]
+class=TestResult name=Unnamed type=CramerVonMisesNormal binaryQualityMeasure=true p-value threshold=0.05 p-value=0.682524 statistic=0.0399704 description=[]
 "
