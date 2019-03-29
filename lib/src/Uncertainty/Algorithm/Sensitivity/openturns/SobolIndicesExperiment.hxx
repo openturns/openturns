@@ -45,12 +45,12 @@ public:
 
   /** Parameters constructor */
   explicit SobolIndicesExperiment(const WeightedExperiment & experiment,
-                                  const Bool computeSecondOrder = true);
+                                  const Bool computeSecondOrder = false);
 
   /** Parameters constructor */
   SobolIndicesExperiment(const Distribution & distribution,
                          const UnsignedInteger size,
-                         const Bool computeSecondOrder = true);
+                         const Bool computeSecondOrder = false);
 
   /** Virtual constructor */
   virtual SobolIndicesExperiment * clone() const;

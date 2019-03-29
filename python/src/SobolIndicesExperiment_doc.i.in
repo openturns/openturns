@@ -2,9 +2,9 @@
 "Experiment to computeSobol' indices.
 
 Available constructors:
-    SobolIndicesExperiment(*distribution, size, computeSecondOrder=True*)
+    SobolIndicesExperiment(*distribution, size, computeSecondOrder=False*)
 
-    SobolIndicesExperiment(*experiment, computeSecondOrder=True*)
+    SobolIndicesExperiment(*experiment, computeSecondOrder=False*)
 
 Parameters
 ----------
@@ -16,7 +16,7 @@ size : positive int
     For the total size of the experiment see notes below.
 experiment : :class:`~openturns.WeightedExperiment`
     Design of experiment used to sample the distribution.
-computeSecondOrder : bool, defaults to True
+computeSecondOrder : bool, defaults to False
     Whether to add points to compute second order indices
 
 Notes
