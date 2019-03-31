@@ -85,7 +85,7 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
 TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
     const Sample & secondSample,
     const LinearModel & linearModel,
-    const Scalar level)
+    const Scalar )
 {
   LOGWARN(OSS() << "LinearModelFisher(..., LinearModel) is deprecated");
   const UnsignedInteger dimension = firstSample.getDimension();
