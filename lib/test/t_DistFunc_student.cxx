@@ -41,14 +41,17 @@ int main(int, char *[])
       Scalar xMin = -10.0;
       Scalar xMax = 10.0;
       UnsignedInteger nX = 20;
+      Point grid(nX);
       // First, the special cases: small integer nu
       for (UnsignedInteger nu = 1; nu <= 7; ++nu)
       {
         for (UnsignedInteger iX = 0; iX < nX; ++iX)
         {
           Scalar x = xMin + (xMax - xMin) * iX / (nX - 1);
+	  grid[iX] = x;
           fullprint << "pStudent(" << nu << ", " << x << ")=" << DistFunc::pStudent(nu, x) << ", complementary=" << DistFunc::pStudent(nu, x, true) << std::endl;
         }
+	fullprint << "pStudent(" << nu << ", " << grid << ")=" << DistFunc::pStudent(nu, grid) << std::endl;
       }
       // Second, the general case: medium real nu
       for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
@@ -57,8 +60,10 @@ int main(int, char *[])
         for (UnsignedInteger iX = 0; iX < nX; ++iX)
         {
           Scalar x = xMin + (xMax - xMin) * iX / (nX - 1);
+	  grid[iX] = x;
           fullprint << "pStudent(" << nu << ", " << x << ")=" << DistFunc::pStudent(nu, x) << ", complementary=" << DistFunc::pStudent(nu, x, true) << std::endl;
         }
+	fullprint << "pStudent(" << nu << ", " << grid << ")=" << DistFunc::pStudent(nu, grid) << std::endl;
       }
       // Third, the extreme case: large real nu
       Scalar logNuMin = 9.0;
@@ -69,8 +74,10 @@ int main(int, char *[])
         for (UnsignedInteger iX = 0; iX < nX; ++iX)
         {
           Scalar x = xMin + (xMax - xMin) * iX / (nX - 1);
+	  grid[iX] = x;
           fullprint << "pStudent(" << nu << ", " << x << ")=" << DistFunc::pStudent(nu, x) << ", complementary=" << DistFunc::pStudent(nu, x, true) << std::endl;
         }
+	fullprint << "pStudent(" << nu << ", " << grid << ")=" << DistFunc::pStudent(nu, grid) << std::endl;
       }
     } // pStudent
     {
@@ -81,24 +88,29 @@ int main(int, char *[])
       Scalar qMin = 0.1;
       Scalar qMax = 0.9;
       UnsignedInteger nQ = 10;
+      Point grid(nQ);
       // First, the special cases: small integer nu
       for (UnsignedInteger nu = 1; nu <= 6; ++nu)
       {
         for (UnsignedInteger iQ = 0; iQ < nQ; ++iQ)
         {
           Scalar q = qMin + (qMax - qMin) * iQ / (nQ - 1);
+	  grid[iQ] = q;
           fullprint << "qStudent(" << nu << ", " << q << ")=" << DistFunc::qStudent(nu, q) << ", complementary=" << DistFunc::qStudent(nu, q, true) << std::endl;
         }
+	fullprint << "qStudent(" << nu << ", " << grid << ")=" << DistFunc::qStudent(nu, grid) << std::endl;
       }
       // Second, the general case: medium real nu
       for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
         Scalar nu = nuMin + (nuMax - nuMin) * i1 / (n1 - 1);
-        for (UnsignedInteger iQ = 0; iQ < nQ; ++iQ)
+	for (UnsignedInteger iQ = 0; iQ < nQ; ++iQ)
         {
           Scalar q = qMin + (qMax - qMin) * iQ / (nQ - 1);
+	  grid[iQ] = q;
           fullprint << "qStudent(" << nu << ", " << q << ")=" << DistFunc::qStudent(nu, q) << ", complementary=" << DistFunc::qStudent(nu, q, true) << std::endl;
         }
+	fullprint << "qStudent(" << nu << ", " << grid << ")=" << DistFunc::qStudent(nu, grid) << std::endl;
       }
       // Third, the extreme case: large real nu
       Scalar logNuMin = 9.0;
@@ -109,8 +121,10 @@ int main(int, char *[])
         for (UnsignedInteger iQ = 0; iQ < nQ; ++iQ)
         {
           Scalar q = qMin + (qMax - qMin) * iQ / (nQ - 1);
+	  grid[iQ] = q;
           fullprint << "qStudent(" << nu << ", " << q << ")=" << DistFunc::qStudent(nu, q) << ", complementary=" << DistFunc::qStudent(nu, q, true) << std::endl;
         }
+	fullprint << "qStudent(" << nu << ", " << grid << ")=" << DistFunc::qStudent(nu, grid) << std::endl;
       }
     } // qStudent
     {

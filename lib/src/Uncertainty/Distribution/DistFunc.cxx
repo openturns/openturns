@@ -890,6 +890,20 @@ Scalar DistFunc::pNormal(const Scalar x,
   return 0.5 * SpecFunc::ErfC(-x * M_SQRT1_2);
 }
 
+Point DistFunc::pNormal(const Point & x,
+                         const Bool tail)
+{
+  const UnsignedInteger size = x.getSize();
+  Point result(size);
+  if (tail)
+    for (UnsignedInteger i = 0; i < size; ++i)
+      result[i] = 0.5 * SpecFunc::ErfC(x[i] * M_SQRT1_2);
+  else
+    for (UnsignedInteger i = 0; i < size; ++i)
+      result[i] = 0.5 * SpecFunc::ErfC(-x[i] * M_SQRT1_2);
+  return result;
+}
+
 Scalar DistFunc::pNormal2D(const Scalar x1,
                            const Scalar x2,
                            const Scalar rho,
@@ -916,8 +930,8 @@ Scalar DistFunc::pNormal3D(const Scalar x1,
 Scalar DistFunc::qNormal(const Scalar p,
                          const Bool tail)
 {
-  if (p == 0.0) return (tail ? 3.75193793471444863030e+01 : -3.75193793471444863030e+01);
-  if (p == 1.0) return (tail ? -8.125890664701906 : 8.125890664701906);
+  if (p == 0.0) return (tail ?  8.125890664701906 : -8.125890664701906);
+  if (p == 1.0) return (tail ? -8.125890664701906 :  8.125890664701906);
 
   static const Scalar a[6] =
   {
@@ -976,6 +990,90 @@ Scalar DistFunc::qNormal(const Scalar p,
   const Scalar u = e * 2.50662827463100050241576528481 * std::exp(0.5 * x * x);
   x -= u / (1.0 + 0.5 * x * u);
   return (tail ? -x : x);
+}
+
+Point DistFunc::qNormal(const Point & p,
+                         const Bool tail)
+{
+  static const Scalar a[6] =
+  {
+    -3.969683028665376e+01,  2.209460984245205e+02,
+    -2.759285104469687e+02,  1.383577518672690e+02,
+    -3.066479806614716e+01,  2.506628277459239e+00
+  };
+  static const Scalar b[5] =
+  {
+    -5.447609879822406e+01,  1.615858368580409e+02,
+    -1.556989798598866e+02,  6.680131188771972e+01,
+    -1.328068155288572e+01
+  };
+  static const Scalar c[6] =
+  {
+    -7.784894002430293e-03, -3.223964580411365e-01,
+    -2.400758277161838e+00, -2.549732539343734e+00,
+    4.374664141464968e+00,  2.938163982698783e+00
+  };
+  static const Scalar d[4] =
+  {
+    7.784695709041462e-03,  3.224671290700398e-01,
+    2.445134137142996e+00,  3.754408661907416e+00
+  };
+  const UnsignedInteger size = p.getSize();
+  Point result(size);
+  Scalar x = 0.0;
+  Scalar q = 0.0;
+  Scalar r = 0.0;
+  Scalar e = 0.0;
+  Scalar u = 0.0;
+  Scalar prob = 0.0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      prob = p[i];
+      if (prob == 0.0)
+	{
+	  result[i] = (tail ? 8.125890664701906 : -8.125890664701906);
+	  continue;
+	}
+      if (prob == 1.0)
+	{
+	  result[i] = (tail ? -8.125890664701906 : 8.125890664701906);
+	  continue;
+	}
+      // Left tail
+      if (prob < 0.02425)
+	{
+	  /* Rational approximation for tail region. */
+	  q = std::sqrt(-2.0 * std::log(prob));
+	  x = (((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5])
+	    / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1.0);
+	}
+      // Central region
+      else if (prob <= 0.97575)
+	{
+	  /* Rational approximation for central region. */
+	  q = prob - 0.5;
+	  r = q * q;
+	  x = q * (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5])
+	    / (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1.0);
+	}
+      // Right tail
+      else
+	{
+	  /* Rational approximation for tail region. */
+	  q = std::sqrt(-2.0 * log1p(-prob));
+	  x = -(((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5])
+	    / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1.0);
+	}
+      /* The relative error of the approximation has absolute value less
+	 than 1.15e-9.  One iteration of Newton's rational method (second
+	 order) gives full machine precision... */
+      // 2.50662827463100050241576528481 = sqrt(2.pi)
+      e = pNormal(x) - prob;
+      u = e * 2.50662827463100050241576528481 * std::exp(0.5 * x * x);
+      x -= u / (1.0 + 0.5 * x * u);
+      result[i] = (tail ? -x : x);
+    } // i
+  return result;
 }
 
 /* Random number generation
@@ -1185,6 +1283,16 @@ Scalar DistFunc::pStudent(const Scalar nu,
 {
   return StudentFunctions::StudentCDF(nu, x, tail);
 }
+Point DistFunc::pStudent(const Scalar nu,
+			 const Point & x,
+                         const Bool tail)
+{
+  const UnsignedInteger size = x.getSize();
+  Point result(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    result[i] = StudentFunctions::StudentCDF(nu, x[i], tail);
+  return result;
+}
 /* CDF inverse */
 Scalar DistFunc::qStudent(const Scalar nu,
                           const Scalar p,
@@ -1192,6 +1300,16 @@ Scalar DistFunc::qStudent(const Scalar nu,
 {
   if (!tail && (p > 1.0 - SpecFunc::ScalarEpsilon)) return StudentFunctions::StudentQuantile(nu, 1.0 - SpecFunc::ScalarEpsilon, tail);
   return StudentFunctions::StudentQuantile(nu, p, tail);
+}
+Point DistFunc::qStudent(const Scalar nu,
+			 const Point & p,
+                         const Bool tail)
+{
+  const UnsignedInteger size = p.getSize();
+  Point result(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    result[i] = qStudent(nu, p[i], tail);
+  return result;
 }
 /* Random number generation
    We use a transformation method based on Gamma and Normal transformation:

@@ -38,22 +38,28 @@ int main(int, char *[])
       Scalar xMin = 0.1;
       Scalar xMax = 0.9;
       UnsignedInteger nX = 10;
+      Point grid(nX);
       for (UnsignedInteger iX = 0; iX < nX; ++iX)
       {
         Scalar x = xMin + (xMax - xMin) * iX / (nX - 1);
+	grid[iX] = x;
         fullprint << "pNormal(" << x << ")=" << DistFunc::pNormal(x) << ", complementary=" << DistFunc::pNormal(x, true) << std::endl;
       }
+      fullprint << "pNormal(" << grid << ")=" << DistFunc::pNormal(grid) << std::endl;
     } // pNormal
     {
       // qNormal
       Scalar qMin = 0.1;
       Scalar qMax = 0.9;
       UnsignedInteger nQ = 10;
+      Point grid(nQ);
       for (UnsignedInteger iQ = 0; iQ < nQ; ++iQ)
       {
         Scalar q = qMin + (qMax - qMin) * iQ / (nQ - 1);
+	grid[iQ] = q;
         fullprint << "qNormal(" << q << ")=" << DistFunc::qNormal(q) << ", complementary=" << DistFunc::qNormal(q, true) << std::endl;
       }
+      fullprint << "qNormal(" << grid << ")=" << DistFunc::qNormal(grid) << std::endl;
     } // qNormal
     {
       // rNormal

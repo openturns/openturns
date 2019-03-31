@@ -8,6 +8,7 @@ pNormal(0.633333)=0.736742, complementary=0.263258
 pNormal(0.722222)=0.764921, complementary=0.235079
 pNormal(0.811111)=0.791349, complementary=0.208651
 pNormal(0.9)=0.81594, complementary=0.18406
+pNormal(class=Point name=Unnamed dimension=10 values=[0.1,0.188889,0.277778,0.366667,0.455556,0.544444,0.633333,0.722222,0.811111,0.9])=class=Point name=Unnamed dimension=10 values=[0.539828,0.57491,0.609409,0.643066,0.675645,0.706932,0.736742,0.764921,0.791349,0.81594]
 qNormal(0.1)=-1.28155, complementary=1.28155
 qNormal(0.188889)=-0.881998, complementary=0.881998
 qNormal(0.277778)=-0.589456, complementary=0.589456
@@ -18,6 +19,7 @@ qNormal(0.633333)=0.340695, complementary=-0.340695
 qNormal(0.722222)=0.589456, complementary=-0.589456
 qNormal(0.811111)=0.881998, complementary=-0.881998
 qNormal(0.9)=1.28155, complementary=-1.28155
+qNormal(class=Point name=Unnamed dimension=10 values=[0.1,0.188889,0.277778,0.366667,0.455556,0.544444,0.633333,0.722222,0.811111,0.9])=class=Point name=Unnamed dimension=10 values=[-1.28155,-0.881998,-0.589456,-0.340695,-0.111637,0.111637,0.340695,0.589456,0.881998,1.28155]
 rNormal()=0.608202
 rNormal()=-1.26617
 rNormal()=-0.438266
