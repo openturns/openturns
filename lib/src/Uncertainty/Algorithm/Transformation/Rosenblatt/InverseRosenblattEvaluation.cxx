@@ -59,16 +59,10 @@ Point InverseRosenblattEvaluation::operator () (const Point & inP) const
 {
   const UnsignedInteger dimension = getOutputDimension();
   if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inP.getDimension();
-  Point result(dimension);
-  Point y(0);
-  // Apply conditional Quantile o Phi over the components
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
-    result[i] = distribution_.computeConditionalQuantile(DistFunc::pNormal(inP[i]), y);
-    y.add(result[i]);
-  }
   callsNumber_.increment();
-  return result;
+  const Point q(DistFunc::pNormal(inP));
+  const Point y(distribution_.computeSequentialConditionalQuantile(q));
+  return y;
 }
 
 /*

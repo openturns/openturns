@@ -1,0 +1,5 @@
+transformation=class=RosenblattEvaluation description=[X0,X1,X2,X3,X4,Y0,Y1,Y2,Y3,Y4] distribution=class=Student name=Student dimension=5 nu=4.5 mean=class=Point name=Unnamed dimension=5 values=[0,0,0,0,0] sigma=class=Point name=Unnamed dimension=5 values=[1,1,1,1,1] correlationMatrix=class=CorrelationMatrix dimension=5 implementation=class=MatrixImplementation name=Unnamed rows=5 columns=5 values=[1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1]
+transformation([0.75,0.75,0.75,0.75,0.75])=[0.689391,0.727898,0.757754,0.781619,0.801153]
+transformation parameters gradient=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=0 columns=5 values=[]
+input dimension=5
+output dimension=5

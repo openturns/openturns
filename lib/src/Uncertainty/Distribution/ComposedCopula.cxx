@@ -426,7 +426,7 @@ Scalar ComposedCopula::computeConditionalPDF(const Scalar x, const Point & y) co
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
-  if ((conditioningDimension == 0) || (hasIndependentCopula())) return (x < 0.0 ? 0.0 : x > 1.0 ? 0.0 : 1);
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return ((x >= 0.0 && x < 1.0) ? 1.0 : 0.0);
   // General case
   UnsignedInteger copulaIndex = 0;
   UnsignedInteger partialDimension = copulaCollection_[copulaIndex].getDimension();
@@ -440,6 +440,32 @@ Scalar ComposedCopula::computeConditionalPDF(const Scalar x, const Point & y) co
   Point conditioningVector(conditioningSize);
   for (UnsignedInteger i = 0; i < conditioningSize; ++i) conditioningVector[i] = y[conditioningDimension - conditioningSize + i];
   return copulaCollection_[copulaIndex].computeConditionalPDF(x, conditioningVector);
+}
+
+Point ComposedCopula::computeSequentialConditionalPDF(const Point & x) const
+{
+  if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional PDF with an argument of dimension=" << x.getDimension() << " different from distribution dimension=" << dimension_;
+  Point result(dimension_);
+  if (hasIndependentCopula())
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      result[i] = ((x[i] >= 0.0 && x[i] < 1.0) ? 1.0 : 0.0);
+  else
+    {
+      const UnsignedInteger size = copulaCollection_.getSize();
+      UnsignedInteger start = 0;
+      UnsignedInteger stop = 0;
+      for (UnsignedInteger i = 0; i < size; ++i)
+	{
+	  const UnsignedInteger localDimension = copulaCollection_[i].getDimension();
+	  Point localX(localDimension);
+	  stop += localDimension;
+	  std::copy(x.begin() + start, x.begin() + stop, localX.begin());
+	  const Point localResult(copulaCollection_[i].computeSequentialConditionalPDF(localX));
+	  std::copy(localResult.begin(), localResult.end(), result.begin() + start);
+	  start = stop;
+	} // i
+    } // else
+  return result;
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -464,16 +490,42 @@ Scalar ComposedCopula::computeConditionalCDF(const Scalar x, const Point & y) co
   return copulaCollection_[copulaIndex].computeConditionalCDF(x, conditioningVector);
 }
 
+Point ComposedCopula::computeSequentialConditionalCDF(const Point & x) const
+{
+  if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional CDF with an argument of dimension=" << x.getDimension() << " different from distribution dimension=" << dimension_;
+  Point result(dimension_);
+  if (hasIndependentCopula())
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      result[i] = (x[i] < 0.0 ? 0.0 : x[i] > 1.0 ? 1.0 : x[i]);
+  else
+    {
+      const UnsignedInteger size = copulaCollection_.getSize();
+      UnsignedInteger start = 0;
+      UnsignedInteger stop = 0;
+      for (UnsignedInteger i = 0; i < size; ++i)
+	{
+	  const UnsignedInteger localDimension = copulaCollection_[i].getDimension();
+	  Point localX(localDimension);
+	  stop += localDimension;
+	  std::copy(x.begin() + start, x.begin() + stop, localX.begin());
+	  const Point localResult(copulaCollection_[i].computeSequentialConditionalCDF(localX));
+	  std::copy(localResult.begin(), localResult.end(), result.begin() + start);
+	  start = stop;
+	} // i
+    } // else
+  return result;
+}
+
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 Scalar ComposedCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension == 0) return q;
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
-  if (conditioningDimension == 0) return q;
   if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
   if (q == 0.0) return 0.0;
   if (q == 1.0) return 1.0;
+  if (conditioningDimension == 0) return q;
   // General case
   UnsignedInteger copulaIndex = 0;
   UnsignedInteger partialDimension = copulaCollection_[copulaIndex].getDimension();
@@ -490,6 +542,32 @@ Scalar ComposedCopula::computeConditionalQuantile(const Scalar q, const Point & 
     conditioningVector[i] = y[conditioningDimension - conditioningSize + i];
   }
   return copulaCollection_[copulaIndex].computeConditionalQuantile(q, conditioningVector);
+}
+
+Point ComposedCopula::computeSequentialConditionalQuantile(const Point & q) const
+{
+  if (q.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional quantile with an argument of dimension=" << q.getDimension() << " different from distribution dimension=" << dimension_;
+  Point result(dimension_);
+  if (hasIndependentCopula())
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      result[i] = (q[i] < 0.0 ? 0.0 : q[i] > 1.0 ? 1.0 : q[i]);
+  else
+    {
+      const UnsignedInteger size = copulaCollection_.getSize();
+      UnsignedInteger start = 0;
+      UnsignedInteger stop = 0;
+      for (UnsignedInteger i = 0; i < size; ++i)
+	{
+	  const UnsignedInteger localDimension = copulaCollection_[i].getDimension();
+	  Point localQ(localDimension);
+	  stop += localDimension;
+	  std::copy(q.begin() + start, q.begin() + stop, localQ.begin());
+	  const Point localResult(copulaCollection_[i].computeSequentialConditionalQuantile(localQ));
+	  std::copy(localResult.begin(), localResult.end(), result.begin() + start);
+	  start = stop;
+	} // i
+    } // else
+  return result;
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions

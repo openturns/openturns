@@ -222,6 +222,18 @@ int main(int, char *[])
       // Compute the radial CDF
       Scalar radius = 2.0;
       fullprint << "Radial CDF(" << radius << ")=" << distribution.computeRadialDistributionCDF(radius) << std::endl;
+      Scalar x = 0.6;
+      Point y(dim-1, 0.2);
+      Point pt(dim);
+      for (UnsignedInteger i = 0; i < dim; ++i) pt[i] = 1.0 * i + 1.5;
+      fullprint << "conditional PDF=" << distribution.computeConditionalPDF(x, y) << std::endl;
+      fullprint << "conditional CDF=" << distribution.computeConditionalCDF(x, y) << std::endl;
+      fullprint << "conditional quantile=" << distribution.computeConditionalQuantile(x, y) << std::endl;
+      fullprint << "sequential conditional PDF=" << distribution.computeSequentialConditionalPDF(pt) << std::endl;
+      Point resCDF(distribution.computeSequentialConditionalCDF(pt));
+      fullprint << "sequential conditional CDF(" << pt << ")=" << resCDF << std::endl;
+      fullprint << "sequential conditional quantile(" << resCDF << ")=" << distribution.computeSequentialConditionalQuantile(resCDF) << std::endl;
+
       // Extract the marginals
       for (UnsignedInteger i = 0; i < dim; i++)
       {

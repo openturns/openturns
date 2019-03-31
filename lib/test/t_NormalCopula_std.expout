@@ -23,6 +23,12 @@ covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImpleme
 correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.239359,0,0.239359,1,0.239359,0,0.239359,1]
 spearman=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.239359,0,0.239359,1,0.239359,0,0.239359,1]
 kendall=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.160861,0,0.160861,1,0.160861,0,0.160861,1]
+conditional PDF=0.971742
+conditional CDF=0.668753
+conditional quantile=0.530462
+sequential conditional PDF=class=Point name=Unnamed dimension=3 values=[1,1.4346,1.13184]
+sequential conditional CDF(class=Point name=Unnamed dimension=3 values=[0.05,0.15,0.25])=class=Point name=Unnamed dimension=3 values=[0.05,0.259229,0.299588]
+sequential conditional quantile(class=Point name=Unnamed dimension=3 values=[0.05,0.259229,0.299588])=class=Point name=Unnamed dimension=3 values=[0.05,0.15,0.25]
 margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25

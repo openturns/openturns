@@ -33,6 +33,12 @@ standard deviation= class=Point name=Unnamed dimension=1 values=[0.125988]
 skewness= class=Point name=Unnamed dimension=1 values=[1.92418]
 kurtosis= class=Point name=Unnamed dimension=1 values=[1.90909]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.126984]
+conditional PDF=0.442267
+conditional CDF=0.727715
+conditional quantile=0.329133
+sequential conditional PDF= [0.45354]
+sequential conditional CDF( [0.15] )= [0.482299]
+sequential conditional quantile( [0.482299] )= [0.15]
 margin= Dirichlet(theta = [0.25,0.5])
 margin PDF= 0.45353967
 margin CDF= 0.6831129

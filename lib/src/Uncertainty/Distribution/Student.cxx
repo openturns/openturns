@@ -339,40 +339,114 @@ Point Student::computeCDFGradient(const Point & point) const
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1)
-   For Student distributions, the conditional distribution is no more Student. See:
-   Samuel Kotz, Saralees Nadarajah, "Multivariate t Distributions and Their Applications", Cambridge University Press, 2001.
+   For Student distribution, the conditional distribution is also Student, with mean and covariance
+   such as:
+   mean_cond = mean(x) + cov(x, y).cov(y, y)^(-1)(y - mean(y))
+   cov_cond = cov(x, x) - cov(x, y).cov(y, y)^(-1)cov(x, y)
+   This expression simplifies if we use the inverse of the Cholesky factor of the covariance matrix.
+   See [Lebrun, Dutfoy, "Rosenblatt and Nataf transformation"]
+   The number of degrees of freedom is modified according to nu_cond = nu + dim(cond)
 */
 Scalar Student::computeConditionalPDF(const Scalar x,
-                                      const Point & y) const
+                                     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
-  // Special case for no conditioning
-  if (conditioningDimension == 0) return Distribution(getMarginal(conditioningDimension)).computePDF(x);
+  // Special case for no conditioning or independent copula
+  if (conditioningDimension == 0)
+    {
+      const Scalar z = (x - mean_[conditioningDimension]) / sigma_[conditioningDimension];
+      return std::exp(-0.5 * (nu_ + 1.0) * log1p(z * z / nu_) - SpecFunc::LogBeta(0.5, 0.5 * nu_)) / sigma_[conditioningDimension] / std::sqrt(nu_);
+    }
   // General case
-  throw NotYetImplementedException(HERE) << "In Student::computeConditionalPDF(const Scalar x, const Point & y) const";
-  //Scalar meanRos(0.0);
-  //const Scalar sigmaRos(1.0 / inverseCholesky_(conditioningDimension, conditioningDimension));
-  //for (UnsignedInteger i = 0; i < conditioningDimension; ++i) meanRos += inverseCholesky_(conditioningDimension, i) / std::sqrt(sigma_[i]) * (y[i] - mean_[i]);
-  //meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
-  //return std::exp(-0.5 * std::pow(x - meanRos, 2.0) / (sigmaRos * sigmaRos)) / (sigmaRos * std::sqrt(2.0 * M_PI));
+  // Extract the Cholesky factor of the covariance of Y
+  MatrixImplementation cholY(conditioningDimension, conditioningDimension);
+  UnsignedInteger start = 0;
+  UnsignedInteger stop = conditioningDimension;
+  UnsignedInteger shift = 0;
+  Point yCentered(conditioningDimension);
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    {
+      yCentered[i] = y[i] - mean_[i];
+      std::copy(cholesky_.getImplementation()->begin() + start, cholesky_.getImplementation()->begin() + stop, cholY.begin() + shift);
+      start += dimension_ + 1;
+      stop += dimension_;
+      shift += conditioningDimension + 1;
+    }
+  const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
+  const Scalar nuCond = nu_ + conditioningDimension;
+  Scalar sigmaCond = std::sqrt((nu_ + Point(cholY.solveLinearSystemTri(yCentered)).normSquare()) / nuCond) * sigmaRos;
+  Scalar meanRos = 0.0;
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    meanRos += inverseCholesky_(conditioningDimension, i) * yCentered[i] / std::sqrt(sigma_[i]);
+  meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
+  const Scalar z = (x - meanRos) / sigmaCond;
+  Scalar value = std::exp(-0.5 * (nuCond + 1.0) * log1p(z * z / nuCond) - SpecFunc::LogBeta(0.5, 0.5 * nuCond)) / sigmaCond / std::sqrt(nuCond);
+  return value;
+}
+
+Point Student::computeSequentialConditionalPDF(const Point & x) const
+{
+  if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional PDF with an argument of dimension=" << x.getDimension() << " different from distribution dimension=" << dimension_;
+  Point result(dimension_);
+  // Waiting for a better implementation
+  Point y(0);
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    {
+      const Scalar xI = x[i];
+      result[i] = computeConditionalPDF(xI, y);
+      y.add(xI);
+    }
+  return result;
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Scalar Student::computeConditionalCDF(const Scalar x,
-                                      const Point & y) const
+                                     const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
-  // Special case for no conditioning
-  if (conditioningDimension == 0) return Distribution(getMarginal(conditioningDimension)).computeCDF(x);
+  // Special case for no conditioning or independent copula
+  if (conditioningDimension == 0)
+    return DistFunc::pStudent(nu_, (x - mean_[conditioningDimension]) / sigma_[conditioningDimension]);
   // General case
-  throw NotYetImplementedException(HERE) << "in Scalar Student::computeConditionalCDF(const Scalar x, const Point & y) const";
-  //Scalar meanRos(0.0);
-  //const Scalar sigmaRos(1.0 / inverseCholesky_(conditioningDimension, conditioningDimension));
-  //for (UnsignedInteger i = 0; i < conditioningDimension; ++i) meanRos += inverseCholesky_(conditioningDimension, i) / std::sqrt(sigma_[i]) * (y[i] - mean_[i]);
-  //meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
-  //return DistFunc::pNormal((x - meanRos) / sigmaRos);
+  // Extract the Cholesky factor of the covariance of Y
+  MatrixImplementation cholY(conditioningDimension, conditioningDimension);
+  UnsignedInteger start = 0;
+  UnsignedInteger stop = conditioningDimension;
+  UnsignedInteger shift = 0;
+  Point yCentered(conditioningDimension);
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    {
+      yCentered[i] = y[i] - mean_[i];
+      std::copy(cholesky_.getImplementation()->begin() + start, cholesky_.getImplementation()->begin() + stop, cholY.begin() + shift);
+      start += dimension_ + 1;
+      stop += dimension_;
+      shift += conditioningDimension + 1;
+    }
+  const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
+  const Scalar nuCond = nu_ + conditioningDimension;
+  Scalar sigmaCond = std::sqrt((nu_ + Point(cholY.solveLinearSystemTri(yCentered)).normSquare()) / nuCond) * sigmaRos;
+  Scalar meanRos = 0.0;
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    meanRos += inverseCholesky_(conditioningDimension, i) * yCentered[i] / std::sqrt(sigma_[i]);
+  meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
+  return DistFunc::pStudent(nuCond, (x - meanRos) / sigmaCond);
+}
+
+Point Student::computeSequentialConditionalCDF(const Point & x) const
+{
+  if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional CDF with an argument of dimension=" << x.getDimension() << " different from distribution dimension=" << dimension_;
+  Point result(dimension_);
+  // Waiting for a better implementation
+  Point y(0);
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    {
+      const Scalar xI = x[i];
+      result[i] = computeConditionalCDF(xI, y);
+      y.add(xI);
+    }
+  return result;
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
@@ -382,17 +456,46 @@ Scalar Student::computeConditionalQuantile(const Scalar q,
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
-  // Special case when no contitioning
-  if (conditioningDimension == 0) return mean_[conditioningDimension] + sigma_[conditioningDimension] * DistFunc::qStudent(nu_, q);
+  // Special case when no contitioning or independent copula
+  if (conditioningDimension == 0) return mean_[0] + sigma_[0] * DistFunc::qStudent(nu_, q);
   // General case
-  throw NotYetImplementedException(HERE);
-  //Scalar meanRos(0.0);
-  //const Scalar sigmaRos(1.0 / inverseCholesky_(conditioningDimension, conditioningDimension));
-  //for (UnsignedInteger i = 0; i < conditioningDimension; ++i) meanRos += inverseCholesky_(conditioningDimension, i) / std::sqrt(sigma_[i]) * (y[i] - mean_[i]);
-  //meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
-  //if (q == 0.0) return meanRos - 0.5 * sigmaRos * std::sqrt(4.0 * (std::log(SpecFunc::ISQRT2PI / sigmaRos) - SpecFunc::LogMinScalar));
-  //if (q == 1.0) return meanRos + 0.5 * sigmaRos * std::sqrt(4.0 * (std::log(SpecFunc::ISQRT2PI / sigmaRos) - SpecFunc::LogMinScalar));
-  //return meanRos + sigmaRos * DistFunc::qNormal(q);
+  // Extract the Cholesky factor of the covariance of Y
+  MatrixImplementation cholY(conditioningDimension, conditioningDimension);
+  UnsignedInteger start = 0;
+  UnsignedInteger stop = conditioningDimension;
+  UnsignedInteger shift = 0;
+  Point yCentered(conditioningDimension);
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    {
+      yCentered[i] = y[i] - mean_[i];
+      std::copy(cholesky_.getImplementation()->begin() + start, cholesky_.getImplementation()->begin() + stop, cholY.begin() + shift);
+      start += dimension_ + 1;
+      stop += dimension_;
+      shift += conditioningDimension + 1;
+    }
+  const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
+  const Scalar nuCond = nu_ + conditioningDimension;
+  Scalar sigmaCond = std::sqrt((nu_ + Point(cholY.solveLinearSystemTri(yCentered)).normSquare()) / nuCond) * sigmaRos;
+  Scalar meanRos = 0.0;
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    meanRos += inverseCholesky_(conditioningDimension, i) * yCentered[i] / std::sqrt(sigma_[i]);
+  meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
+  return meanRos + sigmaCond * DistFunc::qStudent(nuCond, q);
+}
+
+Point Student::computeSequentialConditionalQuantile(const Point & q) const
+{
+  if (q.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional quantile with an argument of dimension=" << q.getDimension() << " different from distribution dimension=" << dimension_;
+  Point result(dimension_);
+  // Waiting for a better implementation
+  Point y(0);
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    {
+      const Scalar qI = q[i];
+      result[i] = computeConditionalQuantile(qI, y);
+      y.add(result[i]);
+    }
+  return result;
 }
 
 /* Get the i-th marginal distribution */

@@ -59,17 +59,10 @@ Point RosenblattEvaluation::operator () (const Point & inP) const
 {
   const UnsignedInteger dimension = getOutputDimension();
   if (inP.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension << ", got dimension=" << inP.getDimension();
-  Point result(dimension);
-  Point y(0);
-  // Apply Phi^{-1} o conditional CDF over the components
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
-    const Scalar conditionalCDF = distribution_.computeConditionalCDF(inP[i], y);
-    result[i] = DistFunc::qNormal(conditionalCDF);
-    y.add(inP[i]);
-  }
   callsNumber_.increment();
-  return result;
+  const Point q(distribution_.computeSequentialConditionalCDF(inP));
+  const Point y(DistFunc::qNormal(q));
+  return y;
 }
 
 /* Gradient according to the marginal parameters. */

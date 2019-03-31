@@ -73,14 +73,15 @@ int main(int, char *[])
     PlatformInfo::SetNumericalPrecision(precision);
 
     // Define a point
-    Point point( copula.getDimension(), 0.6 );
+    UnsignedInteger dim = copula.getDimension();
+    Point point( dim, 0.6 );
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
     //Scalar eps(1e-5);
     Point DDF = copula.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
-    Point ddfFD(copula.getDimension());
+    Point ddfFD(dim);
     fullprint << "ddf (FD)=" << copula.ContinuousDistribution::computeDDF(point) << std::endl;
     Scalar PDF = copula.computePDF( point );
     fullprint << "pdf     =" << PDF << std::endl;
@@ -97,7 +98,7 @@ int main(int, char *[])
     fullprint << "Quantile=" << quantile << std::endl;
     fullprint << "CDF(quantile)=" << copula.computeCDF(quantile) << std::endl;
 
-    if (copula.getDimension() <= 2)
+    if (dim <= 2)
     {
       // Confidence regions
       Scalar threshold;
@@ -133,6 +134,17 @@ int main(int, char *[])
     PlatformInfo::SetNumericalPrecision(precision);
     OrdinalSumCopula::PointWithDescriptionCollection parameters = copula.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
+    Scalar x = 0.6;
+    Point y(dim-1, 0.2);
+    fullprint << "conditional PDF=" << copula.computeConditionalPDF(x, y) << std::endl;
+    fullprint << "conditional CDF=" << copula.computeConditionalCDF(x, y) << std::endl;
+    fullprint << "conditional quantile=" << copula.computeConditionalQuantile(x, y) << std::endl;
+    Point pt(dim);
+    for (UnsignedInteger i = 0; i < dim; ++i) pt[i] = 0.1 * i + 0.05;
+    fullprint << "sequential conditional PDF=" << copula.computeSequentialConditionalPDF(pt) << std::endl;
+    Point resCDF(copula.computeSequentialConditionalCDF(pt));
+    fullprint << "sequential conditional CDF(" << pt << ")=" << resCDF << std::endl;
+    fullprint << "sequential conditional quantile(" << resCDF << ")=" << copula.computeSequentialConditionalQuantile(resCDF) << std::endl;
 
   }
   catch (TestFailed & ex)

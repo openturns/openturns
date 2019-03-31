@@ -103,16 +103,19 @@ public:
   Point getTheta() const;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-  using DistributionImplementation::computeConditionalPDF;
+  using ContinuousDistribution::computeConditionalPDF;
   Scalar computeConditionalPDF(const Scalar x, const Point & y) const;
+  Point computeSequentialConditionalPDF(const Point & x) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-  using DistributionImplementation::computeConditionalCDF;
+  using ContinuousDistribution::computeConditionalCDF;
   Scalar computeConditionalCDF(const Scalar x, const Point & y) const;
+  Point computeSequentialConditionalCDF(const Point & x) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-  using DistributionImplementation::computeConditionalQuantile;
+  using ContinuousDistribution::computeConditionalQuantile;
   Scalar computeConditionalQuantile(const Scalar q, const Point & y) const;
+  Point computeSequentialConditionalQuantile(const Point & q) const;
 
   /** Get the i-th marginal distribution */
   Distribution getMarginal(const UnsignedInteger i) const;

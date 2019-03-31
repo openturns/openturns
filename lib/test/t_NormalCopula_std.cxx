@@ -122,6 +122,18 @@ int main(int, char *[])
     fullprint << "spearman=" << spearman << std::endl;
     CorrelationMatrix kendall = copula.getKendallTau();
     fullprint << "kendall=" << kendall << std::endl;
+    Scalar x = 0.6;
+    Point y(dim-1, 0.2);
+    fullprint << "conditional PDF=" << copula.computeConditionalPDF(x, y) << std::endl;
+    fullprint << "conditional CDF=" << copula.computeConditionalCDF(x, y) << std::endl;
+    fullprint << "conditional quantile=" << copula.computeConditionalQuantile(x, y) << std::endl;
+    Point pt(dim);
+    for (UnsignedInteger i = 0; i < dim; ++i) pt[i] = 0.1 * i + 0.05;
+    fullprint << "sequential conditional PDF=" << copula.computeSequentialConditionalPDF(pt) << std::endl;
+    Point resCDF(copula.computeSequentialConditionalCDF(pt));
+    fullprint << "sequential conditional CDF(" << pt << ")=" << resCDF << std::endl;
+    fullprint << "sequential conditional quantile(" << resCDF << ")=" << copula.computeSequentialConditionalQuantile(resCDF) << std::endl;
+
     // Extract the marginals
     for (UnsignedInteger i = 0; i < dim; i++)
     {

@@ -39,6 +39,12 @@ margins CDF=0.0779034
 margins quantile=class=Point name=Unnamed dimension=2 values=[3.63486,2.0899]
 margins CDF(quantile)=0.5
 margins realization=class=Point name=Unnamed dimension=2 values=[2.80912,1.82864]
+conditional PDF=0.0833062
+conditional CDF=0.274253
+conditional quantile=4.01339
+sequential conditional PDF=class=Point name=Unnamed dimension=3 values=[0.193334,0.131147,0.0989594]
+sequential conditional CDF(class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5])=class=Point name=Unnamed dimension=3 values=[0.598706,0.566184,0.549738]
+sequential conditional quantile(class=Point name=Unnamed dimension=3 values=[0.598706,0.566184,0.549738])=class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5]
 Distribution class=ComposedDistribution name=myDist dimension=3 copula=class=NormalCopula name=Normal copula dimension=3 correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.25,0,0.25,1,0.25,0,0.25,1] marginal[0]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[2]=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 Parameters [[mean_0_marginal_0 : 1, standard_deviation_0_marginal_0 : 2],[mean_0_marginal_1 : 2, standard_deviation_0_marginal_1 : 3],[mean_0_marginal_2 : 3, standard_deviation_0_marginal_2 : 4],[R_2_1_copula : 0.25, R_3_1_copula : 0, R_3_2_copula : 0.25]]
 PDF      =0.00175369
@@ -52,6 +58,12 @@ Survival(inverse survival)=0.95
 Quantile      =class=Point name=Unnamed dimension=3 values=[5.21773,8.3266,11.4355]
 Quantile (ref)=class=Point name=Unnamed dimension=3 values=[5.21773,8.3266,11.4355]
 CDF(quantile)=0.95
+conditional PDF=0.0918679
+conditional CDF=0.314532
+conditional quantile=3.44569
+sequential conditional PDF=class=Point name=Unnamed dimension=3 values=[0.193334,0.136549,0.102715]
+sequential conditional CDF(class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5])=class=Point name=Unnamed dimension=3 values=[0.598706,0.542837,0.54008]
+sequential conditional quantile(class=Point name=Unnamed dimension=3 values=[0.598706,0.542837,0.54008])=class=Point name=Unnamed dimension=3 values=[1.5,2.5,3.5]
 Mean      =class=Point name=Unnamed dimension=3 values=[1,2,3]
 Mean (ref)=class=Point name=Unnamed dimension=3 values=[1,2,3]
 Standard deviation      =class=Point name=Unnamed dimension=3 values=[2,3,4]

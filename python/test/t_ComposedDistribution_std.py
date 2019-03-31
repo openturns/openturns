@@ -157,6 +157,15 @@ try:
     print("margins quantile=", repr(quantile))
     print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
     print("margins realization=", repr(margins.getRealization()))
+    x = 0.6
+    y = [0.2]
+    print("conditional PDF=%.6f" % distribution.computeConditionalPDF(x, y))
+    print("conditional CDF=%.6f" % distribution.computeConditionalCDF(x, y))
+    print("conditional quantile=%.6f" % distribution.computeConditionalQuantile(x, y))
+    point = [0.6]*dim
+    print("sequential conditional PDF=", distribution.computeSequentialConditionalPDF(point))
+    print("sequential conditional CDF=", distribution.computeSequentialConditionalCDF(point))
+    print("sequential conditional quantile=", distribution.computeSequentialConditionalQuantile(point))
 
 #
 
@@ -212,6 +221,16 @@ try:
     sample_inv = distribution.getInverseIsoProbabilisticTransformation()(
         sample_iso)
     print(sample_inv)
+    x = 0.6
+    y = [0.2]*(dim-1)
+    print("conditional PDF=%.6f" % distribution.computeConditionalPDF(x, y))
+    print("conditional CDF=%.6f" % distribution.computeConditionalCDF(x, y))
+    print("conditional quantile=%.6f" % distribution.computeConditionalQuantile(x, y))
+    pt = Point([i + 1.5 for i in range(dim)])
+    print("sequential conditional PDF=", distribution.computeSequentialConditionalPDF(point))
+    resCDF = distribution.computeSequentialConditionalCDF(pt)
+    print("sequential conditional CDF(", pt, ")=", resCDF)
+    print("sequential conditional quantile(", resCDF, ")=", distribution.computeSequentialConditionalQuantile(resCDF))
 
 except:
     import sys

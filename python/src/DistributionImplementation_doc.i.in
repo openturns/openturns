@@ -21,7 +21,7 @@ X : sequence of float, 2-d sequence of float
 Returns
 -------
 F : float, :class:`~openturns.Point`
-    CDF value(s) at input(s) `X`.
+    CDF value(s) at input(s) :math:`X`.
 
 Notes
 -----
@@ -49,7 +49,7 @@ Returns
 -------
 dFdtheta : :class:`~openturns.Point`
     Partial derivatives of the CDF with respect to the distribution
-    parameters at input `X`."
+    parameters at input :math:`X`."
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeCDFGradient
 OT_Distribution_computeCDFGradient_doc
@@ -67,7 +67,7 @@ t : float
 Returns
 -------
 phi : complex
-    Characteristic function value at input `t`.
+    Characteristic function value at input :math:`t`.
 
 Notes
 -----
@@ -79,7 +79,7 @@ The characteristic function is defined as:
 
 OpenTURNS features a generic implementation of the characteristic function for
 all its univariate distributions (both continuous and discrete). This default
-implementation might be time consuming, especially as the modulus of `t` gets
+implementation might be time consuming, especially as the modulus of :math:`t` gets
 high. Only some univariate distributions benefit from dedicated more efficient
 implementations."
 %enddef
@@ -99,7 +99,7 @@ X : sequence of float, 2-d sequence of float
 Returns
 -------
 C : float, :class:`~openturns.Point`
-    Complementary CDF value(s) at input(s) `X`.
+    Complementary CDF value(s) at input(s) :math:`X`.
 
 Notes
 -----
@@ -135,7 +135,7 @@ Xcond : sequence of float, 2-d sequence of float with size :math:`n-1`
 Returns
 -------
 F : float, sequence of float
-    Conditional CDF value(s) at input `Xn`, `Xcond`.
+    Conditional CDF value(s) at input :math:`X_n`, :math:`X_{cond}`.
 
 Notes
 -----
@@ -168,7 +168,7 @@ Xcond : sequence of float with dimension :math:`n-1`
 Returns
 -------
 d : float
-    Conditional DDF value at input `Xn`, `Xcond`.
+    Conditional DDF value at input :math:`X_n`, :math:`X_{cond}`.
 
 See Also
 --------
@@ -194,7 +194,7 @@ Xcond : sequence of float, 2-d sequence of float with size :math:`n-1`
 Returns
 -------
 F : float, sequence of float
-    Conditional PDF value(s) at input `Xn`, `Xcond`.
+    Conditional PDF value(s) at input :math:`X_n`, :math:`X_{cond}`.
 
 See Also
 --------
@@ -220,7 +220,7 @@ Xcond : sequence of float, 2-d sequence of float with size :math:`n-1`
 Returns
 -------
 X1 : float
-    Conditional quantile at input `p`, `Xcond`.
+    Conditional quantile at input :math:`p`, :math:`X_{cond}`.
 
 See Also
 --------
@@ -228,6 +228,122 @@ computeQuantile, computeConditionalCDF"
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeConditionalQuantile
 OT_Distribution_computeConditionalQuantile_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeSequentialConditionalCDF_doc
+"Compute the sequential conditional cumulative distribution functions.
+
+Parameters
+----------
+X : sequence of float, with size :math:`d`
+    Values to be taken sequentially as argument and conditioning part of the CDF.
+
+Returns
+-------
+F : sequence of float
+    Conditional CDF values at input.
+
+Notes
+-----
+The sequential conditional cumulative distribution function is defined as follows:
+
+.. math::
+
+    F^{seq}_{X_1,\ldots,X_d}(x_1,\ldots,x_d) = \left(\Prob{X_n \leq x_n \mid X_1=x_1, \ldots, X_{n-1}=x_{n-1}}\right)_{i=1,\ldots,d}
+
+ie its :math:`n`-th component is the conditional CDF of :math:`X_n` at :math:`x_n` given that :math:`X_1=x_1,\ldots,X_{n-1}=x_{n-1}`. For :math:`n=1` it reduces to :math:`\Prob{X_1 \leq x_1}`, ie the CDF of the first component at :math:`x_1`."
+
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeSequentialConditionalCDF
+OT_Distribution_computeSequentialConditionalCDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeSequentialConditionalDDF_doc
+"Compute the sequential conditional derivative density function.
+
+Parameters
+----------
+X : sequence of float, with size :math:`d`
+    Values to be taken sequentially as argument and conditioning part of the DDF.
+
+Returns
+-------
+ddf : sequence of float
+    Conditional DDF values at input.
+
+Notes
+-----
+The sequential conditional derivative density function is defined as follows:
+
+.. math::
+
+    ddf^{seq}_{X_1,\ldots,X_d}(x_1,\ldots,x_d) = \left(\dfrac{d^2}{d\,x_n^2}\Prob{X_n \leq x_n \mid X_1=x_1, \ldots, X_{n-1}=x_{n-1}}\right)_{i=1,\ldots,d}
+
+ie its :math:`n`-th component is the conditional DDF of :math:`X_n` at :math:`x_n` given that :math:`X_1=x_1,\ldots,X_{n-1}=x_{n-1}`. For :math:`n=1` it reduces to :math:`\dfrac{d^2}{d\,x_1^2}\Prob{X_1 \leq x_1}`, ie the DDF of the first component at :math:`x_1`."
+
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeSequentialConditionalDDF
+OT_Distribution_computeSequentialConditionalDDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeSequentialConditionalPDF_doc
+"Compute the sequential conditional probability density function.
+
+Parameters
+----------
+X : sequence of float, with size :math:`d`
+    Values to be taken sequentially as argument and conditioning part of the PDF.
+
+Returns
+-------
+pdf : sequence of float
+    Conditional PDF values at input.
+
+Notes
+-----
+The sequential conditional density function is defined as follows:
+
+.. math::
+
+    pdf^{seq}_{X_1,\ldots,X_d}(x_1,\ldots,x_d) = \left(\dfrac{d}{d\,x_n}\Prob{X_n \leq x_n \mid X_1=x_1, \ldots, X_{n-1}=x_{n-1}}\right)_{i=1,\ldots,d}
+
+ie its :math:`n`-th component is the conditional PDF of :math:`X_n` at :math:`x_n` given that :math:`X_1=x_1,\ldots,X_{n-1}=x_{n-1}`. For :math:`n=1` it reduces to :math:`\dfrac{d}{d\,x_1}\Prob{X_1 \leq x_1}`, ie the PDF of the first component at :math:`x_1`."
+
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeSequentialConditionalPDF
+OT_Distribution_computeSequentialConditionalPDF_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_computeSequentialConditionalQuantile_doc
+"Compute the conditional quantile function of the last component.
+
+Parameters
+----------
+q : sequence of float in :math:`[0,1]`, with size :math:`d`
+    Values to be taken sequentially as the argument of the conditional quantile.
+
+Returns
+-------
+Q : sequence of float
+    Conditional quantiles values at input.
+
+Notes
+-----
+The sequential conditional quantile function is defined as follows:
+
+.. math::
+
+    Q^{seq}_{X_1,\ldots,X_d}(q_1,\ldots,q_d) = \left(F^{-1}(q_n|X_1=x_1,\ldots,X_{n-1}=x_{n_1}\right)_{i=1,\ldots,d}
+
+where :math:`x_1,\ldots,x_{n-1}` are defined recursively as :math:`x_1=F_1^{-1}(q_1)` and given :math:`(x_i)_{i=1,\ldots,n-1}`, :math:`x_n=F^{-1}(q_n|X_1=x_1,\ldots,X_{n-1}=x_{n_1})`: the conditioning part is the set of already computed conditional quantiles."
+
+%enddef
+%feature("docstring") OT::DistributionImplementation::computeSequentialConditionalQuantile
+OT_Distribution_computeSequentialConditionalQuantile_doc
 
 // ---------------------------------------------------------------------
 
@@ -242,7 +358,7 @@ X : sequence of float, 2-d sequence of float
 Returns
 -------
 d : :class:`~openturns.Point`, :class:`~openturns.Sample`
-    DDF value(s) at input(s) `X`.
+    DDF value(s) at input(s) :math:`X`.
 
 Notes
 -----
@@ -274,7 +390,7 @@ beta2 : float
 Returns
 -------
 p : float
-    Density generator value at input `X`.
+    Density generator value at input :math:`X`.
 
 Notes
 -----
@@ -314,7 +430,7 @@ beta2 : float
 Returns
 -------
 p : float
-    Density generator first-order derivative value at input `X`.
+    Density generator first-order derivative value at input :math:`X`.
 
 Notes
 -----
@@ -342,7 +458,7 @@ beta2 : float
 Returns
 -------
 p : float
-    Density generator second-order derivative value at input `X`.
+    Density generator second-order derivative value at input :math:`X`.
 
 Notes
 -----
@@ -395,7 +511,7 @@ z : float or complex
 Returns
 -------
 g : float
-    Probability-generating function value at input `X`.
+    Probability-generating function value at input :math:`X`.
 
 Notes
 -----
@@ -428,13 +544,13 @@ t : float
 Returns
 -------
 phi : complex
-    Logarithm of the characteristic function value at input `t`.
+    Logarithm of the characteristic function value at input :math:`t`.
 
 Notes
 -----
 OpenTURNS features a generic implementation of the characteristic function for
 all its univariate distributions (both continuous and discrete). This default
-implementation might be time consuming, especially as the modulus of `t` gets
+implementation might be time consuming, especially as the modulus of :math:`t` gets
 high. Only some univariate distributions benefit from dedicated more efficient
 implementations.
 
@@ -458,7 +574,7 @@ z : float or complex
 Returns
 -------
 lg : float
-    Logarithm of the probability-generating function value at input `X`.
+    Logarithm of the probability-generating function value at input :math:`X`.
 
 Notes
 -----
@@ -485,7 +601,7 @@ X : sequence of float, 2-d sequence of float
 Returns
 -------
 f : float, :class:`~openturns.Point`
-    Logarithm of the PDF value(s) at input(s) `X`."
+    Logarithm of the PDF value(s) at input(s) :math:`X`."
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeLogPDF
 OT_Distribution_computeLogPDF_doc
@@ -504,7 +620,7 @@ Returns
 -------
 dfdtheta : :class:`~openturns.Point`
     Partial derivatives of the logPDF with respect to the distribution
-    parameters at input `X`."
+    parameters at input :math:`X`."
 %enddef
 %feature("docstring") OT::DistributionImplementation::computeLogPDFGradient
 OT_Distribution_computeLogPDFGradient_doc
@@ -522,7 +638,7 @@ X : sequence of float, 2-d sequence of float
 Returns
 -------
 f : float, :class:`~openturns.Point`
-    PDF value(s) at input(s) `X`.
+    PDF value(s) at input(s) :math:`X`.
 
 Notes
 -----
@@ -551,7 +667,7 @@ Returns
 -------
 dfdtheta : :class:`~openturns.Point`
     Partial derivatives of the PDF with respect to the distribution
-    parameters at input `X`."
+    parameters at input :math:`X`."
 %enddef
 %feature("docstring") OT::DistributionImplementation::computePDFGradient
 OT_Distribution_computePDFGradient_doc
@@ -604,7 +720,7 @@ p : float, :math:`0 < p < 1`
 Returns
 -------
 X : :class:`~openturns.Point`
-    Quantile at probability level `p`.
+    Quantile at probability level :math:`p`.
 
 Notes
 -----
@@ -635,7 +751,7 @@ r2 : float, :math:`0 \leq r^2`
 Returns
 -------
 F : float
-    CDF value at input `r2`.
+    CDF value at input :math:`r^2`.
 
 Notes
 -----
@@ -662,7 +778,7 @@ p : float, :math:`0 < p < 1`
 Returns
 -------
 X : float
-    Quantile at probability level `p`.
+    Quantile at probability level :math:`p`.
 
 Notes
 -----
@@ -866,7 +982,7 @@ levelSet : :class:`~openturns.LevelSet`
 
 Notes
 -----
-We consider an absolutely continuous measure :math:`\mu` with density function `p`. 
+We consider an absolutely continuous measure :math:`\mu` with density function :math:`p`. 
 
 The minimum volume confidence domain :math:`A^*_{\alpha}` is the set of minimum volume and which measure is at least :math:`\alpha`. It is defined by:
 
@@ -970,11 +1086,11 @@ confInterval : :class:`~openturns.Interval`
 
 Notes
 -----
-We consider an absolutely continuous measure :math:`\mu` with density function `p`. 
+We consider an absolutely continuous measure :math:`\mu` with density function :math:`p`. 
 
 The minimum volume confidence interval :math:`I^*_{\alpha}` is the cartesian product :math:`I^*_{\alpha} = [a_1, b_1] \times \dots \times [a_d, b_d]` where :math:`[a_i, b_i]   = \argmin_{I \in \Rset \, | \, \mu_i(I) = \beta} \lambda_i(I)` and :math:`\mu(I^*_{\alpha})  =  \alpha` with :math:`\lambda` is the Lebesgue measure on :math:`\Rset^d`. 
 
-This problem resorts to solving  `d` univariate non linear equations: for a fixed value :math:`\beta`, we find each intervals :math:`[a_i, b_i]` such that:
+This problem resorts to solving :math:`d` univariate non linear equations: for a fixed value :math:`\beta`, we find each intervals :math:`[a_i, b_i]` such that:
 
 .. math::
     :nowrap:
@@ -990,7 +1106,7 @@ which consists of finding the bound :math:`a_i` such that:
 
     p_i(a_i) =  p_i(F_i^{-1}(\beta + F_i(a_i)))
 
-To find :math:`\beta`, we use the Brent algorithm:  :math:`\mu([\vect{a}(\beta); \vect{b}(\beta)] = g(\beta) = \alpha` with `g` a non linear function.
+To find :math:`\beta`, we use the Brent algorithm:  :math:`\mu([\vect{a}(\beta); \vect{b}(\beta)] = g(\beta) = \alpha` with :math:`g` a non linear function.
 
 Examples
 --------
@@ -1073,9 +1189,9 @@ confInterval : :class:`~openturns.Interval`
 
 Notes
 -----
-We consider an absolutely continuous measure :math:`\mu` with density function `p`. 
+We consider an absolutely continuous measure :math:`\mu` with density function :math:`p`. 
 
-The bilateral confidence interval :math:`I^*_{\alpha}` is the cartesian product :math:`I^*_{\alpha} = [a_1, b_1] \times \dots \times [a_d, b_d]` where :math:`a_i = F_i^{-1}((1-\beta)/2)` and :math:`b_i = F_i^{-1}((1+\beta)/2)` for all `i` and which verifies :math:`\mu(I^*_{\alpha}) = \alpha`. 
+The bilateral confidence interval :math:`I^*_{\alpha}` is the cartesian product :math:`I^*_{\alpha} = [a_1, b_1] \times \dots \times [a_d, b_d]` where :math:`a_i = F_i^{-1}((1-\beta)/2)` and :math:`b_i = F_i^{-1}((1+\beta)/2)` for all :math:`i` and which verifies :math:`\mu(I^*_{\alpha}) = \alpha`. 
 
 Examples
 --------
@@ -1159,10 +1275,10 @@ Notes
 -----
 We consider an absolutely continuous measure :math:`\mu`.
 
-The left unilateral confidence interval :math:`I^*_{\alpha}` is the cartesian product :math:`I^*_{\alpha} = ]-\infty, b_1] \times \dots \times ]-\infty, b_d]` where :math:`b_i = F_i^{-1}(\beta)` for all `i` and which verifies :math:`\mu(I^*_{\alpha}) = \alpha`. 
+The left unilateral confidence interval :math:`I^*_{\alpha}` is the cartesian product :math:`I^*_{\alpha} = ]-\infty, b_1] \times \dots \times ]-\infty, b_d]` where :math:`b_i = F_i^{-1}(\beta)` for all :math:`i` and which verifies :math:`\mu(I^*_{\alpha}) = \alpha`. 
 It means that :math:`\vect{b}` is the quantile of level :math:`\alpha` of the measure :math:`\mu`, with iso-quantile components.
 
-The right unilateral confidence interval :math:`I^*_{\alpha}` is the cartesian product :math:`I^*_{\alpha} = ]a_1; +\infty[ \times \dots \times ]a_d; +\infty[` where :math:`a_i = F_i^{-1}(1-\beta)` for all `i` and which verifies :math:`\mu(I^*_{\alpha}) = \alpha`. 
+The right unilateral confidence interval :math:`I^*_{\alpha}` is the cartesian product :math:`I^*_{\alpha} = ]a_1; +\infty[ \times \dots \times ]a_d; +\infty[` where :math:`a_i = F_i^{-1}(1-\beta)` for all :math:`i` and which verifies :math:`\mu(I^*_{\alpha}) = \alpha`. 
 It means that :math:`S_{\mu}^{-1}(\vect{a}) = \alpha` with iso-quantile components, where :math:`S_{\mu}` is the survival function of the measure :math:`\mu`.
 
 Examples
@@ -2039,7 +2155,7 @@ k : int
 Returns
 -------
 m : :class:`~openturns.Point`
-    Componentwise moment of order `k`.
+    Componentwise moment of order :math:`k`.
 
 Notes
 -----
@@ -2396,7 +2512,7 @@ k : int
 Returns
 -------
 m : :class:`~openturns.Point`
-    Componentwise standard moment of order `k`.
+    Componentwise standard moment of order :math:`k`.
 
 Notes
 -----

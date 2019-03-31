@@ -1,0 +1,55 @@
+Copula  OrdinalSumCopula([0, 0.2], FrankCopula(theta = 3), [0.2, 0.7], NormalCopula(R = [[ 1   0.5 ]
+ [ 0.5 1   ]]), [0.7, 1], ClaytonCopula(theta = 2))
+Elliptical distribution=  False
+Continuous =  True
+Elliptical =  False
+Independent =  False
+oneRealization= [0.642995,0.249576]
+oneSample first= [0.81213,0.885594]  last= [0.506679,0.611576]
+mean= [0.502612,0.50223]
+covariance= [[ 0.082459 0.076198 ]
+ [ 0.076198 0.08287  ]]
+Point=  [0.6, 0.6]
+ddf     = [0.25786,0.25786]
+pdf     =2.92442
+cdf=0.54358
+Survival      =0.34358
+Survival (ref)=0.34358
+Inverse survival= [0.0299408,0.0299408]
+Survival(inverse survival)=0.95000
+Quantile= [0.567157,0.567157]
+CDF(quantile)= 0.5
+Minimum volume interval= [0.160334, 0.839666]
+[0.160334, 0.839666]
+threshold=0.67933
+Minimum volume level set= {x | f(x) <= -0.20884} with f=
+MinimumVolumeLevelSetEvaluation(OrdinalSumCopula([0, 0.2], FrankCopula(theta = 3), [0.2, 0.7], NormalCopula(R = [[ 1   0.5 ]
+ [ 0.5 1   ]]), [0.7, 1], ClaytonCopula(theta = 2)))
+beta=1.23225
+Bilateral confidence interval= [0.160334, 0.839666]
+[0.160334, 0.839666]
+beta=0.67933
+Unilateral confidence interval (lower tail)= [0, 0.971607]
+[0, 0.971607]
+beta=0.97161
+Unilateral confidence interval (upper tail)= [0.0299408, 1]
+[0.0299408, 1]
+beta=0.97006
+entropy=-1.25325
+entropy (MC)=-1.25315
+mean= [0.5,0.5]
+covariance= [[ 0.083333 0.076861 ]
+ [ 0.076861 0.083333 ]]
+correlation= [[ 1       0.92233 ]
+ [ 0.92233 1       ]]
+spearman= [[ 1       0.92233 ]
+ [ 0.92233 1       ]]
+kendall= [[ 1       0.76062 ]
+ [ 0.76062 1       ]]
+parameters= [[theta_copula_0 : 3, R_2_1_copula_1 : 0.5, theta_copula_2 : 2]]
+conditional PDF=0.000000
+conditional CDF=0.000000
+conditional quantile=1.000000
+sequential conditional PDF= [1,2.92442]
+sequential conditional CDF( [0.05,0.15] )= [0.05,0.883703]
+sequential conditional quantile( [0.05,0.883703] )= [0.05,0.15]

@@ -401,6 +401,142 @@ Point Mixture::computeCDFGradient(const Point & point) const
   return cdfGradientValue;
 }
 
+/* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1)
+*/
+Scalar Mixture::computeConditionalPDF(const Scalar x,
+                                      const Point & y) const
+{
+  const UnsignedInteger conditioningDimension = y.getDimension();
+  if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
+  // Special case for no conditioning or independent copula
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return getMarginal(conditioningDimension).computePDF(x);
+  // Build the conditional mixture weights
+  const UnsignedInteger size = distributionCollection_.getSize();
+  Scalar conditionedPDF = 0.0;
+  Scalar conditioningPDF = 0.0;
+  Indices conditioningIndices(conditioningDimension);
+  conditioningIndices.fill();
+  Indices conditionedIndices(conditioningIndices);
+  conditionedIndices.add(conditioningDimension);
+  Point z(y);
+  z.add(x);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Scalar wI = distributionCollection_[i].getWeight();
+    conditioningPDF += wI * distributionCollection_[i].getMarginal(conditioningIndices).computePDF(y);
+    if (conditioningPDF > 0.0)
+      conditionedPDF += wI * distributionCollection_[i].getMarginal(conditionedIndices).computePDF(z);
+  }
+  if (conditioningPDF == 0.0) return 0.0;
+  return conditionedPDF / conditioningPDF;
+}
+
+Point Mixture::computeSequentialConditionalPDF(const Point & x) const
+{
+  Point result(dimension_);
+  Indices conditioning(1, 0);
+  const UnsignedInteger size = distributionCollection_.getSize();
+  Point currentX(1, x[0]);
+  Scalar pdfConditioning = 0.0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+    pdfConditioning += distributionCollection_[i].getWeight() * distributionCollection_[i].getMarginal(conditioning).computePDF(currentX);
+  result[0] = pdfConditioning;
+  for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension_; ++conditioningDimension)
+  {
+    // Return the result as soon as a conditional pdf is zero
+    if (pdfConditioning == 0) return result;
+    conditioning.add(conditioningDimension);
+    currentX.add(x[conditioningDimension]);
+    Scalar pdfConditioned = 0.0;
+    for (UnsignedInteger i = 0; i < size; ++i)
+      pdfConditioned += distributionCollection_[i].getWeight() * distributionCollection_[i].getMarginal(conditioning).computePDF(currentX);
+    result[conditioningDimension] = pdfConditioned / pdfConditioning;
+    pdfConditioning = pdfConditioned;
+  } // conditioningDimension
+  return result;
+}
+
+/* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
+Scalar Mixture::computeConditionalCDF(const Scalar x,
+                                      const Point & y) const
+{
+  const UnsignedInteger conditioningDimension = y.getDimension();
+  if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
+  // Special case for no conditioning or independent copula
+  if ((conditioningDimension == 0) || (hasIndependentCopula())) return getMarginal(conditioningDimension).computeCDF(x);
+  // Build the conditional mixture weights
+  const UnsignedInteger size = distributionCollection_.getSize();
+  Scalar conditionedCDF = 0.0;
+  Scalar conditioningPDF = 0.0;
+  Indices conditioningIndices(conditioningDimension);
+  conditioningIndices.fill();
+  Indices conditionedIndices(conditioningIndices);
+  conditionedIndices.add(conditioningDimension);
+  Point z(y);
+  z.add(x);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Scalar weightedMarginalAtomPDF = distributionCollection_[i].getWeight() * distributionCollection_[i].getMarginal(conditioningIndices).computePDF(y);
+    conditioningPDF += weightedMarginalAtomPDF;
+    if (weightedMarginalAtomPDF > 0.0)
+      conditionedCDF += distributionCollection_[i].computeConditionalCDF(x, y) * weightedMarginalAtomPDF;
+  }
+  if (conditioningPDF <= 0.0) return 0.0;
+  // No need to normalize by 1/h as it simplifies
+  return std::min(1.0, conditionedCDF / conditioningPDF);
+}
+
+Point Mixture::computeSequentialConditionalCDF(const Point & x) const
+{
+  Point result(dimension_);
+  Indices conditioning(1, 0);
+  const UnsignedInteger size = distributionCollection_.getSize();
+  Point weights(size);
+  Point weightedAtomsPDF(size);
+  Scalar xConditioned = x[0];
+  Point currentX(1, xConditioned);
+  Scalar pdfConditioning = 0.0;
+  Scalar cdfConditioned = 0.0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Scalar wI = distributionCollection_[i].getWeight();
+    weights[i] = wI;
+    const Distribution marginalAtom(distributionCollection_[i].getMarginal(0));
+    const Scalar weightedMarginalAtomPDF = wI * marginalAtom.computePDF(xConditioned);
+    weightedAtomsPDF[i] = weightedMarginalAtomPDF;
+    pdfConditioning += weightedMarginalAtomPDF;
+    cdfConditioned += wI * marginalAtom.computeCDF(xConditioned);
+  } // i
+  result[0] = cdfConditioned;
+  Point y(0);
+  for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension_; ++conditioningDimension)
+  {
+    // Return the result as soon as a conditional pdf is zero
+    if (pdfConditioning == 0) return result;
+    y.add(xConditioned);
+    xConditioned = x[conditioningDimension];
+    conditioning.add(conditioningDimension);
+    currentX.add(xConditioned);
+    Scalar pdfConditioned = 0.0;
+    cdfConditioned = 0.0;
+    for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Scalar wI = weights[i];
+      const Distribution marginalAtom(distributionCollection_[i].getMarginal(conditioning));
+      const Scalar weightedMarginalAtomPDF = wI * marginalAtom.computePDF(currentX);
+      if (weightedMarginalAtomPDF > 0.0)
+      {
+        pdfConditioned += weightedMarginalAtomPDF;
+        cdfConditioned += marginalAtom.computeConditionalCDF(xConditioned, y) * weightedAtomsPDF[i];
+        weightedAtomsPDF[i] = weightedMarginalAtomPDF;
+      } // atomMarginalPDF > 0.0
+    } // i
+    result[conditioningDimension] = cdfConditioned / pdfConditioning;
+    pdfConditioning = pdfConditioned;
+  } // conditioningDimension
+  return result;
+}
+
 /* Get the i-th marginal distribution */
 Distribution Mixture::getMarginal(const UnsignedInteger i) const
 {
