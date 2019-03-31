@@ -1301,25 +1301,26 @@ Bool MatrixImplementation::isPositiveDefinite() const
 }
 
 MatrixImplementation::ScalarCollection MatrixImplementation::triangularVectProd(const ScalarCollection & pt,
-    const char side) const
+										const char side,
+										const Bool transpose) const
 {
-  char uplo(side);
-  int luplo(1);
+  char uplo = side;
+  int luplo = 1;
 
   // trans tells if the matrix is transposed or not
-  char trans('N');
-  int ltrans(1);
+  char trans = transpose ? 'T' : 'N';
+  int ltrans = 1;
 
   // diag tells if M is unit diagonal or not
-  char diag('N');
-  int ldiag(1);
+  char diag = 'N';
+  int ldiag = 1;
 
   // the dimension of the matrix
-  int n(nbRows_);
+  int n = nbRows_;
 
   // leading dimension of M
-  int lda(nbRows_);
-  int one(1);
+  int lda = nbRows_;
+  int one = 1;
 
   ScalarCollection x(nbRows_);
   for (UnsignedInteger i = 0; i < pt.getSize(); ++i) x[i] = pt[i];
@@ -1329,9 +1330,10 @@ MatrixImplementation::ScalarCollection MatrixImplementation::triangularVectProd(
 }
 
 MatrixImplementation::ScalarCollection MatrixImplementation::triangularVectProd(const Point & pt,
-    const char side) const
+    const char side,
+										const Bool transpose) const
 {
-  return triangularVectProd(pt.getCollection(), side);
+  return triangularVectProd(pt.getCollection(), side, transpose);
 }
 
 /* Build the Cholesky factorization of the matrix */
