@@ -52,6 +52,7 @@
  * #1035 (ProbabilitySimulationResult does not provide the distribution of the probability)
  * #1045 (LowDiscrepancyExperiment/ComposedCopula correlation across blocks ?)
  * #1054 (Optimization algorithms ignore MaxEvaluationNumber parameter)
+ * #1064 (The summary of a FunctionalChaosSobolIndices fails with more than 14 dimensions)
 
 == 1.12 release (2018-11-08) == #release-1.12
 
