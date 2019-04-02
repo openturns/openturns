@@ -75,6 +75,9 @@ public:
   /** Get the Kendall concordance of the distribution */
   CorrelationMatrix getKendallTau() const;
 
+  /** Get the Spearman correlation of the distribution */
+  CorrelationMatrix getSpearmanCorrelation() const;
+
   /** Get the PDFGradient of the distribution */
   Point computePDFGradient(const Point & point) const;
 

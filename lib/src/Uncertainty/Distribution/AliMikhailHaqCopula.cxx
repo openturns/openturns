@@ -206,8 +206,45 @@ void AliMikhailHaqCopula::computeCovariance() const
 CorrelationMatrix AliMikhailHaqCopula::getKendallTau() const
 {
   CorrelationMatrix tau(2);
-  tau(0, 1) = (std::abs(theta_) < 0.005149755205 ? (2.0 / 9.0 + (1.0 / 18.0 + (1.0 / 45.0 + (1.0 / 90.0 + (2.0 / 315.0 + (1.0 / 252.0 + theta_ / 378.0) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_ : 1.0 - 2.0 / (3.0 * theta_) + log1p(-theta_) * (-2.0 / 3.0 + 4.0 / (3.0 * theta_) - 2.0 / (3.0 * theta_ * theta_)));
+  tau(1, 0) = (std::abs(theta_) < 0.005149755205 ? (2.0 / 9.0 + (1.0 / 18.0 + (1.0 / 45.0 + (1.0 / 90.0 + (2.0 / 315.0 + (1.0 / 252.0 + theta_ / 378.0) * theta_) * theta_) * theta_) * theta_) * theta_) * theta_ : 1.0 - 2.0 / (3.0 * theta_) + log1p(-theta_) * (-2.0 / 3.0 + 4.0 / (3.0 * theta_) - 2.0 / (3.0 * theta_ * theta_)));
   return tau;
+}
+
+/* Get the Spearman correlation of the distribution
+We use the formulas developed in M. Machler, "Spearman's Rho for the AMH Copula:
+a Beautiful Formula", https://cran.r-project.org/web/packages/copula/vignettes/rhoAMH-dilog.pdf
+*/
+CorrelationMatrix AliMikhailHaqCopula::getSpearmanCorrelation() const
+{
+  CorrelationMatrix rho(2);
+  const Scalar t = std::abs(theta_);
+  if (t < 7.0e-16)
+    {
+      rho(1, 0) = theta_ / 3.0;
+      return rho;
+    }
+  if (t < 1.0e-04)
+    {
+      rho(1, 0) = theta_ / 3.0 * (1.0 + theta_ / 4.0);
+      return rho;
+    }
+  if (t < 0.002)
+    {
+      rho(1, 0) = theta_ * (1.0 / 3.0 + theta_ * (1.0 / 12.0 + theta_ * 3.0 / 100.0));
+      return rho;
+    }
+  if (t < 0.007)
+    {
+      rho(1, 0) = theta_ * (1.0 / 3.0 + theta_ * (1.0 / 12.0 + theta_ * (3.0 / 100.0 + theta_ / 75.0)));
+      return rho;
+    }
+  if (t < 0.016)
+    {
+      rho(1, 0) = theta_ * (1.0 / 3.0 + theta_ * (1.0 / 12.0 + theta_ * (3.0 / 100.0 + theta_ * (1.0 / 75.0 + theta_ / 147.0))));
+      return rho;
+    }
+  rho(1, 0) = 3.0 / theta_ * (4.0 * (1.0 + 1.0 / theta_) * SpecFunc::DiLog(theta_) - (theta_ < 1.0 ? 8.0 * (1.0 / theta_ - 1.0) * log1p(-theta_) : 0.0) - (theta_ + 12.0));
+  return rho;
 }
 
 /* Get the PDFGradient of the distribution */
