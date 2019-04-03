@@ -85,13 +85,13 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
 TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
     const Sample & secondSample,
     const LinearModel & linearModel,
-    const Scalar )
+    const Scalar level)
 {
   LOGWARN(OSS() << "LinearModelFisher(..., LinearModel) is deprecated");
   const UnsignedInteger dimension = firstSample.getDimension();
   const LinearCombinationFunction metaModel(LinearBasisFactory(dimension).build(), linearModel.getRegression());
   LinearModelResult linearModelResult(Sample(), Basis(), Matrix(), Sample(), metaModel, linearModel.getRegression(), "", Description(), Sample(), Sample(), Point(), Point(), Point(), 0.0);
-  return LinearModelFisher(firstSample, secondSample, linearModelResult);
+  return LinearModelFisher(firstSample, secondSample, linearModelResult, level);
 }
 
 /*  */
