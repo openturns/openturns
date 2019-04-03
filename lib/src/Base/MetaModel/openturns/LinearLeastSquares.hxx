@@ -41,7 +41,8 @@ class OT_API LinearLeastSquares
 {
   CLASSNAME
 public:
-
+  /** Default constructor */
+  LinearLeastSquares();
 
   /** Constructor with parameters */
   LinearLeastSquares(const Sample & dataIn,
@@ -83,6 +84,11 @@ public:
   void setDataOut(const Sample & dataOut);
   Sample getDataOut() const;
 
+  /** Method save() stores the object through the StorageManager */
+  virtual void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  virtual void load(Advocate & adv);
 protected:
 
 private:

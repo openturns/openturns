@@ -1008,12 +1008,12 @@ if (SPHINX_FOUND)
     endif ()
   endforeach ()
 
-  set (SPHINX_FLAGS "-W" CACHE STRING "sphinx flags")
+  set (SPHINX_FLAGS "-W -T" CACHE STRING "sphinx flags")
   if (NOT NBSPHINX_FOUND)
     # without notebook examples there are invalid links
     string (REPLACE "-W" "" SPHINX_FLAGS "${SPHINX_FLAGS}")
   endif ()
-  string (REPLACE " " ";" SPHINX_FLAGS "${SPHINX_FLAGS}")
+  separate_arguments (SPHINX_FLAGS)
 
   # generate sphinx rule for each format
   foreach (format ${doc_formats})

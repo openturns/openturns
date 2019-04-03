@@ -22,6 +22,7 @@
 #include "openturns/LinearEvaluation.hxx"
 #include "openturns/ConstantGradient.hxx"
 #include "openturns/ConstantHessian.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -29,6 +30,8 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 CLASSNAMEINIT(LinearTaylor)
+
+static const Factory<LinearTaylor> Factory_LinearTaylor;
 
 LinearTaylor::LinearTaylor()
   : PersistentObject()
@@ -113,6 +116,27 @@ Function LinearTaylor::getResponseSurface() const
 {
   LOGWARN(OSS() << "getResponseSurface is deprecated, use getMetaModel");
   return responseSurface_;
+}
+
+void LinearTaylor::save(Advocate & adv) const
+{
+  PersistentObject::save(adv);
+  adv.saveAttribute("center_", center_);
+  adv.saveAttribute("inputFunction_", inputFunction_);
+  adv.saveAttribute("responseSurface_", responseSurface_);
+  adv.saveAttribute("constant_", constant_);
+  adv.saveAttribute("linear_", linear_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void LinearTaylor::load(Advocate & adv)
+{
+  PersistentObject::load(adv);
+  adv.loadAttribute("center_", center_);
+  adv.loadAttribute("inputFunction_", inputFunction_);
+  adv.loadAttribute("responseSurface_", responseSurface_);
+  adv.loadAttribute("constant_", constant_);
+  adv.loadAttribute("linear_", linear_);
 }
 
 END_NAMESPACE_OPENTURNS

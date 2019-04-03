@@ -10,8 +10,7 @@ To launch OpenTURNS, type "import openturns" in a Python console.
 No environment variable need to be set.
 
   - examples
-Python examples can be found in C:\Python27\Lib\site-packages\openturns\examples directory.
-Start them by dragging .py to _drag_to_me_to_start_it.bat batch file.
+Python examples can be found in <python prefix>\Lib\site-packages\openturns\examples directory.
 
 
 2. developers

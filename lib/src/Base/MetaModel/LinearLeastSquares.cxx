@@ -23,13 +23,22 @@
 #include "openturns/LinearEvaluation.hxx"
 #include "openturns/ConstantGradient.hxx"
 #include "openturns/ConstantHessian.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 
-
-
 CLASSNAMEINIT(LinearLeastSquares)
+
+static const Factory<LinearLeastSquares> Factory_LinearLeastSquares;
+
+
+/* Default constructor */
+LinearLeastSquares::LinearLeastSquares()
+: PersistentObject()
+{
+  // Nothing to do
+}
 
 /* Constructor with parameters */
 LinearLeastSquares::LinearLeastSquares(const Sample & dataIn,
@@ -189,6 +198,29 @@ Function LinearLeastSquares::getResponseSurface() const
 {
   LOGWARN(OSS() << "getResponseSurface is deprecated, use getMetaModel");
   return responseSurface_;
+}
+
+void LinearLeastSquares::save(Advocate & adv) const
+{
+  PersistentObject::save(adv);
+  adv.saveAttribute("dataIn_", dataIn_);
+  adv.saveAttribute("dataOut_", dataOut_);
+  adv.saveAttribute("inputFunction_", inputFunction_);
+  adv.saveAttribute("responseSurface_", responseSurface_);
+  adv.saveAttribute("constant_", constant_);
+  adv.saveAttribute("linear_", linear_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void LinearLeastSquares::load(Advocate & adv)
+{
+  PersistentObject::load(adv);
+  adv.loadAttribute("dataIn_", dataIn_);
+  adv.loadAttribute("dataOut_", dataOut_);
+  adv.loadAttribute("inputFunction_", inputFunction_);
+  adv.loadAttribute("responseSurface_", responseSurface_);
+  adv.loadAttribute("constant_", constant_);
+  adv.loadAttribute("linear_", linear_);
 }
 
 END_NAMESPACE_OPENTURNS

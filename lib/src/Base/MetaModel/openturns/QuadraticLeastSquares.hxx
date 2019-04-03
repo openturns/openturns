@@ -41,7 +41,8 @@ class OT_API QuadraticLeastSquares
 {
   CLASSNAME
 public:
-
+  /** Default constructor */
+  QuadraticLeastSquares();
 
   /** Constructor with parameters */
   QuadraticLeastSquares(const Sample & dataIn,
@@ -86,6 +87,11 @@ public:
   void setDataOut(const Sample & dataOut);
   Sample getDataOut();
 
+  /** Method save() stores the object through the StorageManager */
+  virtual void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  virtual void load(Advocate & adv);
 protected:
 
 private:
