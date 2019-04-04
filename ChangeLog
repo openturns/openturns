@@ -51,6 +51,7 @@
  * #1025 (Empty throw in PythonWrappingFunctions)
  * #1028 (Build fails with clang-60: token is not a valid binary operator in a preprocessor subexpression)
  * #1035 (ProbabilitySimulationResult does not provide the distribution of the probability)
+ * #1043 (The DrawSobolIndices doc is wrong)
  * #1045 (LowDiscrepancyExperiment/ComposedCopula correlation across blocks ?)
  * #1051 (The default value of computeSecondOrder in SobolIndicesExperiment should be False)
  * #1054 (Optimization algorithms ignore MaxEvaluationNumber parameter)
