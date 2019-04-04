@@ -24,6 +24,7 @@
  * Moved HypothesisTest::(Partial|Full)Regression to LinearModelTest
  * Deprecated OptimizationProblem(levelFunction, levelValue)
  * Deprecated (Linear|Quadratic)(LeastSquares|Taylor)::getResponseSurface
+ * FittingTest::BestModelBIC returns the Distribution and the BIC value
 
 === Python module ===
 
@@ -53,6 +54,7 @@
  * #1045 (LowDiscrepancyExperiment/ComposedCopula correlation across blocks ?)
  * #1051 (The default value of computeSecondOrder in SobolIndicesExperiment should be False)
  * #1054 (Optimization algorithms ignore MaxEvaluationNumber parameter)
+ * #1057 (FittingTest.BestModelBIC to return bic value)
  * #1064 (The summary of a FunctionalChaosSobolIndices fails with more than 14 dimensions)
 
 == 1.12 release (2018-11-08) == #release-1.12

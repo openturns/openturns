@@ -125,7 +125,7 @@ try:
     factoryCollection[1] = BetaFactory()
     factoryCollection[2] = NormalFactory()
     aSample = Uniform(-1.5, 2.5).getSample(size)
-    model = FittingTest.BestModelBIC(aSample, factoryCollection)
+    model, best_bic = FittingTest.BestModelBIC(aSample, factoryCollection)
     print("best model BIC=", repr(model))
     model, best_result = FittingTest.BestModelKolmogorov(
         aSample, factoryCollection)

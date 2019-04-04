@@ -130,7 +130,8 @@ int main(int, char *[])
   factoryCollection.add(NormalFactory());
   Sample aSample(Uniform(-1.5, 2.5).getSample(size));
   TestResult bestResult;
-  fullprint << "best model BIC=" << FittingTest::BestModelBIC(aSample, factoryCollection) << std::endl;
+  Scalar bestBIC = -1.0;
+  fullprint << "best model BIC=" << FittingTest::BestModelBIC(aSample, factoryCollection, bestBIC) << std::endl;
   fullprint << "best model Kolmogorov=" << FittingTest::BestModelKolmogorov(aSample, factoryCollection, bestResult) << std::endl;
 
   SquareMatrix resultBIC(distributionNumber);
