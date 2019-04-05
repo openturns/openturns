@@ -44,7 +44,8 @@ FittingTest::FittingTest()
 
 /* Best model for a given numerical sample by BIC */
 Distribution FittingTest::BestModelBIC(const Sample & sample,
-                                       const DistributionFactoryCollection & factoryCollection)
+                                       const DistributionFactoryCollection & factoryCollection,
+				       Scalar & bestBICOut)
 {
   const UnsignedInteger size = factoryCollection.getSize();
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
@@ -77,12 +78,14 @@ Distribution FittingTest::BestModelBIC(const Sample & sample,
   }
   if(!builtAtLeastOne) throw InvalidArgumentException(HERE) << "None of the factories could build a model.";
   if (bestConcordanceMeasure == SpecFunc::MaxScalar) LOGWARN(OSS(false) << "Be careful, the best model has an infinite concordance measure. The output distribution must be severely wrong.");
+  bestBICOut = bestConcordanceMeasure;
   return bestDistribution;
 }
 
 /* Best model for a given numerical sample by BIC */
 Distribution FittingTest::BestModelBIC(const Sample  & sample,
-                                       const DistributionCollection & distributionCollection)
+                                       const DistributionCollection & distributionCollection,
+				       Scalar & bestBICOut)
 {
   const UnsignedInteger size = distributionCollection.getSize();
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
@@ -101,6 +104,7 @@ Distribution FittingTest::BestModelBIC(const Sample  & sample,
     }
   }
   if (bestConcordanceMeasure > SpecFunc::MaxScalar) LOGWARN(OSS(false) << "Be careful, the best model has an infinite concordance measure. The output distribution must be severely wrong.");
+  bestBICOut = bestConcordanceMeasure;
   return bestDistribution;
 }
 

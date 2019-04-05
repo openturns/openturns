@@ -433,7 +433,7 @@ inputDescription : sequence of str
     Variable names
 firstOrderIndices : sequence of float
     First order indices values
-secondOrderIndices : sequence of float
+totalOrderIndices : sequence of float
     Total order indices values
 
 Returns

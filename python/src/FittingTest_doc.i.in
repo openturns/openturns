@@ -14,6 +14,8 @@ best_model : :class:`~openturns.Distribution`
     The best distribution for the sample according to Bayesian information
     criterion.
     This may raise a warning if the best model does not perform well.
+best_bic : float
+    The Bayesian information criterion with the best model.
 
 See Also
 --------
@@ -26,7 +28,7 @@ Examples
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
 >>> tested_distributions = [ot.ExponentialFactory(), ot.NormalFactory()]
->>> best_model = ot.FittingTest.BestModelBIC(sample, tested_distributions)
+>>> best_model, best_bic = ot.FittingTest.BestModelBIC(sample, tested_distributions)
 >>> print(best_model)
 Normal(mu = -0.0944924, sigma = 0.989808)"
 
@@ -62,7 +64,7 @@ Examples
 >>> distribution = ot.Poisson()
 >>> sample = distribution.getSample(30)
 >>> tested_distributions = [ot.PoissonFactory(), ot.UserDefinedFactory()]
->>> best_model = ot.FittingTest.BestModelBIC(sample, tested_distributions)
+>>> best_model, best_bic = ot.FittingTest.BestModelBIC(sample, tested_distributions)
 >>> print(best_model)
 Poisson(lambda = 1.06667)"
 
