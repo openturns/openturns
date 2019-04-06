@@ -51,17 +51,21 @@ In general, the threshold p-value is chosen to be 0.05:
     p_{ref} = 0.05
 
 Based on the p-value, 
+
 - if  :math:`p<p_{ref}`, we reject the candidate distribution,
+
 - otherwise, the candidate distribution is not rejected.
 
 Two situations may occur in practice.
+
 - the parameters of the distribution under test are known,
+
 - the parameters of the distribution under test are estimated from data. 
 
 If the parameters of the distribution under test are known, 
 algorithms are available to directly compute 
 the distribution of :math:`\widehat{D}_N` both for *N* large 
-(asymptotic distribution) or for *N* finite. 
+(asymptotic distribution) or for *N* small (exact distribution). 
 This is because the distribution of :math:`\widehat{D}_N` does 
 not depend on the candidate distribution. 
 
