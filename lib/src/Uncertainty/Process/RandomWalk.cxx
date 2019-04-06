@@ -85,6 +85,16 @@ String RandomWalk::__repr__() const
   return oss;
 }
 
+/* String converter */
+String RandomWalk::__str__(const String & offset) const
+{
+  OSS oss;
+  oss << "RandomWalk(origin=" << origin_.__str__(offset)
+      << ", distribution=" << distribution_.__str__(offset)
+      << ")";
+  return oss;
+}
+
 /* Is the underlying stationary ? */
 Bool RandomWalk::isStationary() const
 {
@@ -116,16 +126,10 @@ Field RandomWalk::getRealization() const
 TimeSeries RandomWalk::getFuture(const UnsignedInteger stepNumber) const
 {
   /* TimeGrid of the process */
-  RegularGrid timeGrid;
-  try
-  {
-    timeGrid = getTimeGrid();
-  }
-  catch (...)
-  {
-    throw InternalException(HERE) << "Error: can extend the realization of a process only if defined on a regular grid.";
-  }
+  RegularGrid timeGrid(getTimeGrid());
+  
   if (stepNumber == 0) throw InvalidArgumentException(HERE) << "Error: the number of future steps must be positive.";
+  
   /* TimeGrid associated with the possible future */
   const Scalar timeStep = RegularGrid(mesh_).getStep();
   const RegularGrid futurTimeGrid(RegularGrid(mesh_).getEnd(), timeStep, stepNumber);
@@ -173,6 +177,13 @@ void RandomWalk::setOrigin(const Point & origin)
 {
   if (origin.getDimension() != getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given origin has a dimension=" << origin.getDimension() << " incompatible with the process dimension=" << getOutputDimension();
   origin_ = origin;
+}
+
+/* Mesh accessor */
+void RandomWalk::setMesh(const Mesh & mesh)
+{
+  if(!mesh.isRegular()) throw InvalidArgumentException(HERE) << "Error: the mesh must be regular.";
+  ProcessImplementation::setMesh(mesh);
 }
 
 /* Method save() stores the object through the StorageManager */

@@ -28,7 +28,6 @@ option (USE_OPTPP                    "Use OPT++ for additional optimization algo
 option (USE_COTIRE                   "Use cotire for unity builds"                                           OFF)
 
 option (BUILD_PYTHON                 "Build the python module for the library"                               ON)
-option (BUILD_VALIDATION             "Build the validation files of the library"                             ON)
 option (BUILD_SHARED_LIBS            "Build shared libraries"                                                ON)
 
 # Defines our own module path
@@ -103,10 +102,6 @@ set (OPENTURNS_DATA_PATH
 set (OPENTURNS_EXAMPLE_PATH
       share/openturns/examples
       CACHE PATH "The directory where the example files are installed"
-   )
-set (OPENTURNS_VALIDATION_PATH
-      share/openturns/validation
-      CACHE PATH "The directory where validation files are installed"
    )
 set (OPENTURNS_DOC_PATH
       share/openturns/doc
@@ -465,7 +460,7 @@ if (BUILD_PYTHON)
   endif ()
 
   find_package (PythonInterp)
-  find_package (PythonLibs)
+  find_package (PythonLibs ${PYTHON_VERSION_STRING} EXACT)
   include (FindPythonModule)
   find_python_module (numpy)
   find_python_module (scipy)
@@ -525,7 +520,7 @@ endif ()
 
 
 # Define variables without OPENTURNS_ prefix with absolute paths
-foreach (_var INSTALL_PATH LIBRARY_PATH INCLUDE_PATH CONFIG_CMAKE_PATH SYSCONFIG_PATH DATA_PATH EXAMPLE_PATH VALIDATION_PATH DOC_PATH PYTHON_MODULE_PATH)
+foreach (_var INSTALL_PATH LIBRARY_PATH INCLUDE_PATH CONFIG_CMAKE_PATH SYSCONFIG_PATH DATA_PATH EXAMPLE_PATH DOC_PATH PYTHON_MODULE_PATH)
   if (IS_ABSOLUTE "${OPENTURNS_${_var}}")
     set (${_var} ${OPENTURNS_${_var}})
   else ()
@@ -553,11 +548,6 @@ add_subdirectory (lib)
 
 if (PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND AND SWIG_FOUND)
   add_subdirectory (python)
-endif ()
-
-
-if (BUILD_VALIDATION)
-  add_subdirectory (validation)
 endif ()
 
 

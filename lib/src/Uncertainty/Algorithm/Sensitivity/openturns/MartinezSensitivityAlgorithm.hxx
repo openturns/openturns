@@ -51,12 +51,12 @@ public:
   MartinezSensitivityAlgorithm(const Distribution & distribution,
                                const UnsignedInteger size,
                                const Function & model,
-                               const Bool computeSecondOrder = true);
+                               const Bool computeSecondOrder = false);
 
   /** Constructor with experiment / model parameters */
   MartinezSensitivityAlgorithm(const WeightedExperiment & experiment,
                                const Function & model,
-                               const Bool computeSecondOrder = true);
+                               const Bool computeSecondOrder = false);
 
   /** Virtual constructor */
   virtual MartinezSensitivityAlgorithm * clone() const;

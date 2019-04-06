@@ -54,7 +54,7 @@ Examples
 >>> myFunc = ot.SymbolicFunction(['x1', 'x2'], formulas)
 >>> myTaylor = ot.LinearTaylor([1, 2], myFunc)
 >>> myTaylor.run()
->>> responseSurface = myTaylor.getResponseSurface()
+>>> responseSurface = myTaylor.getMetaModel()
 >>> print(responseSurface([1.2,1.9]))
 [1.13277,-1.0041,0.204127]"
 
@@ -102,7 +102,7 @@ function : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearTaylor::getResponseSurface
+%feature("docstring") OT::LinearTaylor::getMetaModel
 "Get an approximation of the function.
 
 Returns

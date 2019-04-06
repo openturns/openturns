@@ -1159,6 +1159,9 @@ void ResourceMap::loadDefaultConfiguration()
 
   // DiscreteDistribution parameters //
   setAsScalar( "DiscreteDistribution-SupportEpsilon", 1.0e-14 );
+  
+  // DiscreteMarkovChain parameters //
+  setAsScalar( "DiscreteMarkovChain-ProbabilitySumPrecision", 1.0e-6 );  
 
   // DistributionFactoryImplementation parameters //
   setAsScalar( "DistributionFactory-BootstrapErrorTolerance", 0.1 );

@@ -259,6 +259,19 @@ OT_SimulationResult_setProbabilityEstimate_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_SimulationResult_getProbabilityDistribution_doc
+"Accessor to the asymptotic probability distribution.
+
+Returns
+-------
+probaDistribution : :class:`~openturns.Normal`
+    Asymptotic normal distribution of the event probability estimate."
+%enddef
+%feature("docstring") OT::ProbabilitySimulationResult::getProbabilityDistribution
+OT_SimulationResult_getProbabilityDistribution_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_SimulationResult_drawImportanceFactors_doc
 "Draw the importance factors.
 

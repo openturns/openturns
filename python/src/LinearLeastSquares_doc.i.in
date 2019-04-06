@@ -90,7 +90,7 @@ Examples
 >>> data += [[0.25,0.25], [-0.25,-0.25], [-0.25,0.25], [0.25,-0.25]]
 >>> myLeastSquares = ot.LinearLeastSquares(data, myFunc)
 >>> myLeastSquares.run()
->>> responseSurface = myLeastSquares.getResponseSurface()
+>>> responseSurface = myLeastSquares.getMetaModel()
 >>> print(responseSurface([0.1,0.1]))
 [0.854471,1.06031]"
 
@@ -157,7 +157,7 @@ linearMatrix : :class:`~openturns.Matrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearLeastSquares::getResponseSurface
+%feature("docstring") OT::LinearLeastSquares::getMetaModel
 "Get an approximation of the function.
 
 Returns

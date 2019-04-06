@@ -33,9 +33,12 @@ People
 - Felipe Aguirre Martinez
 - Ivan Dutka-Malen
 - Julien Schueller
+- Kamal Abboud
 - Mathieu Couplet
 - Mathieu Lapointe
 - Mathieu Souchaud
+- Michael Baudin
+- Pierre Caclin
 - Regis Lebrun
 - Romuald Conty
 - Sofiane Haddad

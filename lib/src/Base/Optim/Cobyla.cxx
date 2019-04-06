@@ -101,6 +101,8 @@ void Cobyla::run()
   // initialize history
   evaluationInputHistory_ = Sample(0, dimension);
   evaluationOutputHistory_ = Sample(0, 1);
+  equalityConstraintHistory_ = Sample(0, getProblem().getEqualityConstraint().getOutputDimension());
+  inequalityConstraintHistory_ = Sample(0, getProblem().getInequalityConstraint().getOutputDimension());
 
   /*
    * cobyla : minimize a function subject to constraints
@@ -152,12 +154,12 @@ void Cobyla::run()
     }
     if (getProblem().hasEqualityConstraint())
     {
-      const Point g(getProblem().getEqualityConstraint()(inP));
+      const Point g(equalityConstraintHistory_[i]);
       constraintError = std::max(constraintError, g.normInf());
     }
     if (getProblem().hasInequalityConstraint())
     {
-      Point h(getProblem().getInequalityConstraint()(inP));
+      Point h(inequalityConstraintHistory_[i]);
       for (UnsignedInteger k = 0; k < getProblem().getInequalityConstraint().getOutputDimension(); ++ k)
       {
         h[k] = std::min(h[k], 0.0);// convention h(x)>=0 <=> admissibility
@@ -267,6 +269,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   if (problem.hasInequalityConstraint())
   {
     const Point constraintInequalityValue(problem.getInequalityConstraint().operator()(inPoint));
+    algorithm->inequalityConstraintHistory_.add(constraintInequalityValue);
     for(UnsignedInteger index = 0; index < nbIneqConst; ++index) constraintValue[index + shift] = constraintInequalityValue[index];
     shift += nbIneqConst;
   }
@@ -275,6 +278,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   if (problem.hasEqualityConstraint())
   {
     const Point constraintEqualityValue = problem.getEqualityConstraint().operator()(inPoint);
+    algorithm->equalityConstraintHistory_.add(constraintEqualityValue);
     for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index + shift] = constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
     shift += nbEqConst;
     for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index + shift] = -constraintEqualityValue[index] + algorithm->getMaximumConstraintError();

@@ -64,6 +64,9 @@ public:
   /** String converter */
   String __repr__() const;
 
+  /** String converter */
+  String __str__(const String & offsett = "") const;
+
   /** Is the underlying stationary ? */
   Bool isStationary() const;
 

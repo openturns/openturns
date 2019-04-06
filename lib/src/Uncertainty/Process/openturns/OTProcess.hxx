@@ -29,6 +29,7 @@
 #include "openturns/GaussianProcess.hxx"
 #include "openturns/WhiteNoise.hxx"
 #include "openturns/RandomWalk.hxx"
+#include "openturns/DiscreteMarkovChain.hxx"
 #include "openturns/AggregatedProcess.hxx"
 #include "openturns/CompositeProcess.hxx"
 #include "openturns/FunctionalBasisProcess.hxx"

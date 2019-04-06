@@ -111,6 +111,7 @@ int main(int, char *[])
       fullprint << "algo result=" << myAlgo.getResult() << std::endl;
       fullprint << "Confidence length at level 99%=" << myAlgo.getResult().getConfidenceLength(0.99) << std::endl;
       fullprint << "Confidence length at level 80%=" << myAlgo.getResult().getConfidenceLength(0.8) << std::endl;
+      fullprint << "Probability distribution=" << myAlgo.getResult().getProbabilityDistribution() << std::endl;
 
       /* Use the standard deviation as a stoping rule */
       myAlgo = ProbabilitySimulationAlgorithm(myEvent, experiments[i]);
@@ -126,6 +127,7 @@ int main(int, char *[])
 
       /* Stream out the result */
       fullprint << "algo result=" << myAlgo.getResult() << std::endl;
+      fullprint << "Probability distribution=" << myAlgo.getResult().getProbabilityDistribution() << std::endl;
     }
   }
   catch (TestFailed & ex)

@@ -551,6 +551,7 @@ ot_add_python_module(model_process model_process_module.i
                       Process.i Process_doc.i.in
                       WhiteNoise.i WhiteNoise_doc.i.in
                       RandomWalk.i RandomWalk_doc.i.in
+                      DiscreteMarkovChain.i DiscreteMarkovChain_doc.i.in
                       ARMACoefficients.i ARMACoefficients_doc.i.in
                       ARMAState.i ARMAState_doc.i.in
                       ARMA.i ARMA_doc.i.in
@@ -1007,12 +1008,12 @@ if (SPHINX_FOUND)
     endif ()
   endforeach ()
 
-  set (SPHINX_FLAGS "-W" CACHE STRING "sphinx flags")
+  set (SPHINX_FLAGS "-W -T" CACHE STRING "sphinx flags")
   if (NOT NBSPHINX_FOUND)
     # without notebook examples there are invalid links
     string (REPLACE "-W" "" SPHINX_FLAGS "${SPHINX_FLAGS}")
   endif ()
-  string (REPLACE " " ";" SPHINX_FLAGS "${SPHINX_FLAGS}")
+  separate_arguments (SPHINX_FLAGS)
 
   # generate sphinx rule for each format
   foreach (format ${doc_formats})

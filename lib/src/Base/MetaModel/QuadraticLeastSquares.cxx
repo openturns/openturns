@@ -20,6 +20,7 @@
  */
 #include "openturns/QuadraticLeastSquares.hxx"
 #include "openturns/QuadraticFunction.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -28,6 +29,15 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 CLASSNAMEINIT(QuadraticLeastSquares)
+
+static const Factory<QuadraticLeastSquares> Factory_QuadraticLeastSquares;
+
+/* Default constructor */
+QuadraticLeastSquares::QuadraticLeastSquares()
+: PersistentObject()
+{
+  // Nothing to do
+}
 
 /* Constructor with parameters */
 QuadraticLeastSquares::QuadraticLeastSquares(const Sample & dataIn,
@@ -207,10 +217,42 @@ Function QuadraticLeastSquares::getInputFunction() const
   return inputFunction_;
 }
 
-/* Response surface accessor */
-Function QuadraticLeastSquares::getResponseSurface() const
+/* Metamodel accessor */
+Function QuadraticLeastSquares::getMetaModel() const
 {
   return responseSurface_;
+}
+
+Function QuadraticLeastSquares::getResponseSurface() const
+{
+  LOGWARN(OSS() << "getResponseSurface is deprecated, use getMetaModel");
+  return responseSurface_;
+}
+
+
+void QuadraticLeastSquares::save(Advocate & adv) const
+{
+  PersistentObject::save(adv);
+  adv.saveAttribute("dataIn_", dataIn_);
+  adv.saveAttribute("dataOut_", dataOut_);
+  adv.saveAttribute("inputFunction_", inputFunction_);
+  adv.saveAttribute("responseSurface_", responseSurface_);
+  adv.saveAttribute("constant_", constant_);
+  adv.saveAttribute("linear_", linear_);
+  adv.saveAttribute("quadratic_", quadratic_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void QuadraticLeastSquares::load(Advocate & adv)
+{
+  PersistentObject::load(adv);
+  adv.loadAttribute("dataIn_", dataIn_);
+  adv.loadAttribute("dataOut_", dataOut_);
+  adv.loadAttribute("inputFunction_", inputFunction_);
+  adv.loadAttribute("responseSurface_", responseSurface_);
+  adv.loadAttribute("constant_", constant_);
+  adv.loadAttribute("linear_", linear_);
+  adv.loadAttribute("quadratic_", quadratic_);
 }
 
 END_NAMESPACE_OPENTURNS

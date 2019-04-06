@@ -144,7 +144,7 @@ String FunctionalChaosSobolIndices::summary() const
       oss << st << " | ";
 
       st = OSS() << multiIndices;
-      oss << st << String(29 - st.size(), ' ') << " | ";
+      oss << st << String(st.size() < 29 ? 29 - st.size() : 0, ' ') << " | ";
 
       st = OSS() << varianceOrder[i].second;
       oss << st << "\n";

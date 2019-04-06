@@ -3,14 +3,16 @@
 
 Parameters
 ----------
-inputSample, outputSample : 2-d sequence of float
-    The input and output samples of a model.
-metaModel : :class:`~openturns.Function`
-    The meta model.
+inputSample : 2-d sequence of float
+    The input sample of a model.
 basis : :class:`~openturns.Basis`
     Functional basis to estimate the trend.
 design : :class:`~openturns.Matrix`
-    The design matrix math:`X`.
+    The design matrix :math:`X`.
+outputSample : 2-d sequence of float
+   The output sample of a model.
+metaModel : :class:`~openturns.Function`
+    The meta model.
 trendCoefficients : sequence of float
     The trend coeffients associated to the linearmodel. 
 formula : str

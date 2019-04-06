@@ -48,3 +48,4 @@ standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[1255.59]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[14214.8]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[164186]
 Standard representative=Binomial(n = 15, p = 0.7)
+95% bilateral confidence interval = [7, 13]

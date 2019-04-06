@@ -20,6 +20,7 @@
  */
 #include "openturns/QuadraticTaylor.hxx"
 #include "openturns/QuadraticFunction.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -27,6 +28,8 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 CLASSNAMEINIT(QuadraticTaylor)
+
+static const Factory<QuadraticTaylor> Factory_QuadraticTaylor;
 
 QuadraticTaylor::QuadraticTaylor()
   : PersistentObject()
@@ -107,10 +110,39 @@ Function QuadraticTaylor::getInputFunction() const
   return inputFunction_;
 }
 
-/* Response surface accessor */
-Function QuadraticTaylor::getResponseSurface() const
+/* Metamodel accessor */
+Function QuadraticTaylor::getMetaModel() const
 {
   return responseSurface_;
+}
+
+Function QuadraticTaylor::getResponseSurface() const
+{
+  LOGWARN(OSS() << "getResponseSurface is deprecated, use getMetaModel");
+  return responseSurface_;
+}
+
+void QuadraticTaylor::save(Advocate & adv) const
+{
+  PersistentObject::save(adv);
+  adv.saveAttribute("center_", center_);
+  adv.saveAttribute("inputFunction_", inputFunction_);
+  adv.saveAttribute("responseSurface_", responseSurface_);
+  adv.saveAttribute("constant_", constant_);
+  adv.saveAttribute("linear_", linear_);
+  adv.saveAttribute("quadratic_", quadratic_);
+}
+
+/* Method load() reloads the object from the StorageManager */
+void QuadraticTaylor::load(Advocate & adv)
+{
+  PersistentObject::load(adv);
+  adv.loadAttribute("center_", center_);
+  adv.loadAttribute("inputFunction_", inputFunction_);
+  adv.loadAttribute("responseSurface_", responseSurface_);
+  adv.loadAttribute("constant_", constant_);
+  adv.loadAttribute("linear_", linear_);
+  adv.loadAttribute("quadratic_", quadratic_);
 }
 
 END_NAMESPACE_OPENTURNS
