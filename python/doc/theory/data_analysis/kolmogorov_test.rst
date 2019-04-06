@@ -60,7 +60,7 @@ Two situations may occur in practice.
 
 - the parameters of the distribution under test are known,
 
-- the parameters of the distribution under test are estimated from data. 
+- the parameters of the distribution under test are estimated from a sample. 
 
 If the parameters of the distribution under test are known, 
 algorithms are available to directly compute 
@@ -70,9 +70,9 @@ This is because the distribution of :math:`\widehat{D}_N` does
 not depend on the candidate distribution. 
 
 If the parameters of the distribution under test are estimated 
-from data, the :math:`\widehat{D}_N` statistic is generally smaller, because 
+from a sample, the :math:`\widehat{D}_N` statistic is generally smaller, because 
 the parameters of the distribution have been computed from the 
-data. 
+sample. 
 In general, the distribution of :math:`\widehat{D}_N` is not known 
 and depends on the candidate distribution.  
 Therefore, sampling methods can be used in order to estimate the p-value.  
