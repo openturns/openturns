@@ -6,9 +6,9 @@ ot.RandomGenerator.SetSeed(0)
 # Generate sample with the given plane
 distribution = ot.ComposedDistribution([ot.Uniform(0, 1)] * 2)
 size = 10
-myPlane = ot.LHSExperiment(distribution, size)
+myExperiment = ot.LHSExperiment(distribution, size)
 
-sample = myPlane.generate()
+sample = myExperiment.generate()
 
 # Create an empty graph
 graph = ot.Graph("LHS experiment", "x1", "x2", True, "")
