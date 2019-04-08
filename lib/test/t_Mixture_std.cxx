@@ -187,12 +187,24 @@ int main(int, char *[])
     fullprint << "covariance=" << covariance << std::endl;
     CovarianceMatrix correlation = distribution.getCorrelation();
     fullprint << "correlation=" << correlation << std::endl;
-//     CovarianceMatrix spearman = distribution.getSpearmanCorrelation();
-//     fullprint << "spearman=" << spearman << std::endl;
-//     CovarianceMatrix kendall = distribution.getKendallTau();
-//     fullprint << "kendall=" << kendall << std::endl;
+    /*    CovarianceMatrix spearman = distribution.getSpearmanCorrelation();
+    fullprint << "spearman=" << spearman << std::endl;
+    CovarianceMatrix kendall = distribution.getKendallTau();
+    fullprint << "kendall=" << kendall << std::endl;*/
     Mixture::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
+
+    Scalar x = 0.6;
+    Point y(1, 0.2);
+    fullprint << "conditional PDF=" << distribution.computeConditionalPDF(x, y) << std::endl;
+    fullprint << "conditional CDF=" << distribution.computeConditionalCDF(x, y) << std::endl;
+    fullprint << "conditional quantile=" << distribution.computeConditionalQuantile(x, y) << std::endl;
+    Point pt(distribution.getDimension());
+    for (UnsignedInteger i = 0; i < distribution.getDimension(); ++i) pt[i] = 1.0 * i + 1.5;
+    fullprint << "sequential conditional PDF=" << distribution.computeSequentialConditionalPDF(pt) << std::endl;
+    Point resCDF(distribution.computeSequentialConditionalCDF(pt));
+    fullprint << "sequential conditional CDF(" << pt << ")=" << resCDF << std::endl;
+    fullprint << "sequential conditional quantile(" << resCDF << ")=" << distribution.computeSequentialConditionalQuantile(resCDF) << std::endl;
 
     // Constructor with separate weights. Also check small weights removal
     Point weights;

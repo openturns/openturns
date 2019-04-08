@@ -24,6 +24,12 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 parameters collection=[[theta : 1.25, sum theta : 1.5]]
 before set=class=Dirichlet name=Dirichlet dimension=1 theta=class=Point name=Unnamed dimension=2 values=[1.25,1.5]
 after set= class=Dirichlet name=Dirichlet dimension=1 theta=class=Point name=Unnamed dimension=2 values=[1.25,1.5]
+conditional PDF=1.1145
+conditional CDF=0.68526
+conditional quantile=0.5256
+sequential conditional PDF=class=Point name=Unnamed dimension=1 values=[0.922829]
+sequential conditional CDF(class=Point name=Unnamed dimension=1 values=[0.05])=class=Point name=Unnamed dimension=1 values=[0.0373415]
+sequential conditional quantile(class=Point name=Unnamed dimension=1 values=[0.0373415])=class=Point name=Unnamed dimension=1 values=[0.05]
 margin=class=Dirichlet name=Dirichlet dimension=1 theta=class=Point name=Unnamed dimension=2 values=[1.25,1.5]
 margin PDF=1.1905
 margin CDF=0.56973
@@ -53,6 +59,12 @@ covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImpleme
 parameters collection=[[theta : 1.25, sum theta : 3.25],[theta : 1.5, sum theta : 3]]
 before set=class=Dirichlet name=Dirichlet dimension=2 theta=class=Point name=Unnamed dimension=3 values=[1.25,1.5,1.75]
 after set= class=Dirichlet name=Dirichlet dimension=2 theta=class=Point name=Unnamed dimension=3 values=[1.25,1.5,1.75]
+conditional PDF=1.1979
+conditional CDF=0.85514
+conditional quantile=0.42284
+sequential conditional PDF=class=Point name=Unnamed dimension=2 values=[2.12095,1.32086]
+sequential conditional CDF(class=Point name=Unnamed dimension=2 values=[0.05,0.15])=class=Point name=Unnamed dimension=2 values=[0.0893938,0.141993]
+sequential conditional quantile(class=Point name=Unnamed dimension=2 values=[0.0893938,0.141993])=class=Point name=Unnamed dimension=2 values=[0.05,0.15]
 margin=class=Dirichlet name=Dirichlet dimension=1 theta=class=Point name=Unnamed dimension=2 values=[1.25,3.25]
 margin PDF=0.88989
 margin CDF=0.85595

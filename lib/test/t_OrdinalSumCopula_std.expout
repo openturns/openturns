@@ -41,3 +41,9 @@ correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImple
 spearman=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.92233,0.92233,1]
 kendall=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.76062,0.76062,1]
 parameters=[[theta_copula_0 : 3, R_2_1_copula_1 : 0.5, theta_copula_2 : 2]]
+conditional PDF=0
+conditional CDF=0
+conditional quantile=1
+sequential conditional PDF=class=Point name=Unnamed dimension=2 values=[1,3.10331]
+sequential conditional CDF(class=Point name=Unnamed dimension=2 values=[0.05,0.15])=class=Point name=Unnamed dimension=2 values=[0.05,0.883703]
+sequential conditional quantile(class=Point name=Unnamed dimension=2 values=[0.05,0.883703])=class=Point name=Unnamed dimension=2 values=[0.05,0.15]

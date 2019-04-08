@@ -126,7 +126,6 @@ Point SparseMethod::solve(const Point & rhs)
 
     ++ iterations;
   }
-  //std::cout << "-- SparseMethod::solve optimalBasisIndices="<<optimalBasisIndices<<" minimum="<<minimumError<<std::endl;
 
   // solve in the optimal basis
   method_.update(Indices(), optimalBasisIndices, Indices());

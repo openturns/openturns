@@ -114,15 +114,18 @@ public:
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalPDF;
-  virtual Scalar computeConditionalPDF(const Scalar x, const Point & y) const;
+  Scalar computeConditionalPDF(const Scalar x, const Point & y) const;
+  Point computeSequentialConditionalPDF(const Point & x) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalCDF;
-  virtual Scalar computeConditionalCDF(const Scalar x, const Point & y) const;
+  Scalar computeConditionalCDF(const Scalar x, const Point & y) const;
+  Point computeSequentialConditionalCDF(const Point & x) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalQuantile;
-  virtual Scalar computeConditionalQuantile(const Scalar q, const Point & y) const;
+  Scalar computeConditionalQuantile(const Scalar q, const Point & y) const;
+  Point computeSequentialConditionalQuantile(const Point & q) const;
 
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const;

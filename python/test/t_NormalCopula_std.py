@@ -83,6 +83,26 @@ try:
               copula.computeUnilateralConfidenceInterval(0.95, True, beta))
         print("beta=", beta)
 
+    # Covariance and correlation
+    covariance = copula.getCovariance()
+    print("covariance=", covariance)
+    correlation = copula.getCorrelation()
+    print("correlation=", correlation)
+    spearman = copula.getSpearmanCorrelation()
+    print("spearman=", spearman)
+    kendall = copula.getKendallTau()
+    print("kendall=", kendall)
+    x = 0.6
+    y = [0.2]*(dim-1)
+    print("conditional PDF=%.6f" % copula.computeConditionalPDF(x, y))
+    print("conditional CDF=%.6f" % copula.computeConditionalCDF(x, y))
+    print("conditional quantile=%.6f" % copula.computeConditionalQuantile(x, y))
+    pt = Point([0.1 * i + 0.05 for i in range(dim)])
+    print("sequential conditional PDF=", copula.computeSequentialConditionalPDF(point))
+    resCDF = copula.computeSequentialConditionalCDF(pt)
+    print("sequential conditional CDF(", pt, ")=", resCDF)
+    print("sequential conditional quantile(", resCDF, ")=", copula.computeSequentialConditionalQuantile(resCDF))
+
     # Extract the marginals
     for i in range(dim):
         margin = copula.getMarginal(i)

@@ -6,6 +6,7 @@
 
 ==== Major changes ====
  * Add OPT++ solvers
+ * Improved a lot the performace of all the Rosenblatt related computations
 
 ==== New classes ====
  * ParametricPointToFieldFunction

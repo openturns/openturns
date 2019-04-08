@@ -13,6 +13,12 @@ ddf     = class=Point name=Unnamed dimension=3 values=[0.00119456,-0.00197254,0.
 ddf (FD)= class=Point name=Unnamed dimension=3 values=[0.00119456,-0.00197254,0.00476249]
 log pdf=-5.135163
 pdf     =0.005886
+conditional PDF0.184614
+conditional CDF0.120164
+conditional quantile2.198687
+sequential conditional PDF= [0.179079,0.144334,0.227727]
+sequential conditional CDF( [1.5,2.5,3.5] )= [0.5,0.779219,0.846484]
+sequential conditional quantile( [0.5,0.779219,0.846484] )= [1.5,2.5,3.5]
 cdf=0.115110
 ccdf=0.884890
 quantile= class=Point name=Unnamed dimension=3 values=[5.96551,6.93727,4.61725]

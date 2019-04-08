@@ -54,7 +54,7 @@ try:
     print("covariance=", repr(oneSample.computeCovariance()))
 
     # Define a point
-    point = Point(distribution.getDimension(), 1.0)
+    point = [1.0]*distribution.getDimension()
     print("Point= ", repr(point))
 
     # Show PDF and CDF of point
@@ -143,6 +143,11 @@ try:
     print("cond. quantile (vect)=", condQuantiles)
     print("cond. cdf(cond. quantile)=",
           distribution.computeConditionalCDF(condQuantiles, y))
+    pt = Point([i + 1.5 for i in range(dimension)])
+    print("sequential conditional PDF=", distribution.computeSequentialConditionalPDF(point))
+    resCDF = distribution.computeSequentialConditionalCDF(pt)
+    print("sequential conditional CDF(", pt, ")=", resCDF)
+    print("sequential conditional quantile(", resCDF, ")=", distribution.computeSequentialConditionalQuantile(resCDF))
 
     mean = distribution.getMean()
     print("mean=", repr(mean))

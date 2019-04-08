@@ -43,6 +43,12 @@ margins CDF=0.077903
 margins quantile= class=Point name=Unnamed dimension=2 values=[3.6349,2.0899]
 margins CDF(qantile)=0.500000
 margins realization= class=Point name=Unnamed dimension=2 values=[2.8045,-2.4028]
+conditional PDF=0.119261
+conditional CDF=0.320369
+conditional quantile=2.760041
+sequential conditional PDF= [0.19552,0.11926,0.083306]
+sequential conditional CDF= [0.42074,0.32037,0.27425]
+sequential conditional quantile= [1.5067,2.76,4.0134]
 Distribution  class=ComposedDistribution name=myDist dimension=3 copula=class=NormalCopula name=Normal copula dimension=3 correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.25,0,0.25,1,0.25,0,0.25,1] marginal[0]=class=Normal name=First dimension=1 mean=class=Point name=Unnamed dimension=1 values=[1] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[1]=class=Normal name=Second dimension=1 mean=class=Point name=Unnamed dimension=1 values=[2] sigma=class=Point name=Unnamed dimension=1 values=[3] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] marginal[2]=class=Normal name=Third dimension=1 mean=class=Point name=Unnamed dimension=1 values=[3] sigma=class=Point name=Unnamed dimension=1 values=[4] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 Parameters  [class=PointWithDescription name=One dimension=2 description=[mean_0_marginal_0,standard_deviation_0_marginal_0] values=[1,2],class=PointWithDescription name=Two dimension=2 description=[mean_0_marginal_1,standard_deviation_0_marginal_1] values=[2,3],class=PointWithDescription name=Three dimension=2 description=[mean_0_marginal_2,standard_deviation_0_marginal_2] values=[3,4],class=PointWithDescription name=Normal copula dimension=3 description=[R_2_1_copula,R_3_1_copula,R_3_2_copula] values=[0.25,0,0.25]]
 PDF      =0.001754
@@ -97,3 +103,9 @@ anotherSample covariance= class=CovarianceMatrix dimension=3 implementation=clas
 7 : [  0.64198   1.6486   -8.6943   ]
 8 : [ -0.095161  3.6142    1.7054   ]
 9 : [  1.5687    2.3176    4.3751   ]
+conditional PDF=0.091868
+conditional CDF=0.314532
+conditional quantile=3.445693
+sequential conditional PDF= [0.17603,0.11745,0.084824]
+sequential conditional CDF( [1.5,2.5,3.5] )= [0.59871,0.54284,0.54008]
+sequential conditional quantile( [0.59871,0.54284,0.54008] )= [1.5,2.5,3.5]

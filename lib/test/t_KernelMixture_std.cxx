@@ -116,6 +116,28 @@ int main(int, char *[])
     fullprint << "quantile=" << quantile << std::endl;
     fullprint << "quantile (ref)=" << distributionRef.computeQuantile( 0.95 ) << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
+    Point x(3);
+    x[0] = 1.1;
+    x[1] = 1.6;
+    x[2] = 2.2;
+    Point q(3);
+    q[0] = 0.1;
+    q[1] = 0.3;
+    q[2] = 0.7;
+    Sample y(3, 1);
+    y[0][0] = 0.2;
+    y[1][0] = 0.4;
+    y[2][0] = 0.5;
+
+    fullprint << "conditional PDF=" << distribution.computeConditionalPDF(x[0], y[0]) << std::endl;
+    fullprint << "conditional CDF=" << distribution.computeConditionalCDF(x[0], y[0]) << std::endl;
+    fullprint << "conditional quantile=" << distribution.computeConditionalQuantile(q[0], y[0]) << std::endl;
+    Point pt(dimension);
+    for (UnsignedInteger i = 0; i < dimension; ++i) pt[i] = 1.0 * i + 1.5;
+    fullprint << "sequential conditional PDF=" << distribution.computeSequentialConditionalPDF(pt) << std::endl;
+    Point resCDF(distribution.computeSequentialConditionalCDF(pt));
+    fullprint << "sequential conditional CDF(" << pt << ")=" << resCDF << std::endl;
+    fullprint << "sequential conditional quantile(" << resCDF << ")=" << distribution.computeSequentialConditionalQuantile(resCDF) << std::endl;
     if (distribution.getDimension() <= 2)
     {
       // Confidence regions
@@ -133,19 +155,6 @@ int main(int, char *[])
       fullprint << "Unilateral confidence interval (upper tail)=" << distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, true, beta) << std::endl;
       fullprint << "beta=" << beta << std::endl;
     }
-
-    Point x(3);
-    x[0] = 1.1;
-    x[1] = 1.6;
-    x[2] = 2.2;
-    Point q(3);
-    q[0] = 0.1;
-    q[1] = 0.3;
-    q[2] = 0.7;
-    Sample y(3, 1);
-    y[0][0] = -0.5;
-    y[1][0] =  0.5;
-    y[2][0] =  1.5;
 
     Scalar condCDF = distribution.computeConditionalCDF(x[0], y[0]);
     fullprint << "cond. cdf=" << condCDF << std::endl;
@@ -189,4 +198,3 @@ int main(int, char *[])
 
   return ExitCode::Success;
 }
-

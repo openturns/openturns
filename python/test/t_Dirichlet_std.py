@@ -108,6 +108,17 @@ try:
         covariance = distribution.getCovariance()
         print("covariance=", repr(covariance))
 
+        x = 0.6
+        y = [0.2]*(dim-1)
+        print("conditional PDF=%.6f" % distribution.computeConditionalPDF(x, y))
+        print("conditional CDF=%.6f" % distribution.computeConditionalCDF(x, y))
+        print("conditional quantile=%.6f" % distribution.computeConditionalQuantile(x, y))
+        pt = Point([0.1 * i + 0.15 for i in range(dim)])
+        print("sequential conditional PDF=", distribution.computeSequentialConditionalPDF(point))
+        resCDF = distribution.computeSequentialConditionalCDF(pt)
+        print("sequential conditional CDF(", pt, ")=", resCDF)
+        print("sequential conditional quantile(", resCDF, ")=", distribution.computeSequentialConditionalQuantile(resCDF))
+        
         # Extract the marginals
         for i in range(dim):
             margin = distribution.getMarginal(i)

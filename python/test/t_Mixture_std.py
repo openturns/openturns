@@ -89,6 +89,16 @@ try:
         print("pdf (FD)=%.6f" % ((distribution.computeCDF(point + Point(1, eps)) -
                                   distribution.computeCDF(point + Point(1, -eps))) / (2.0 * eps)))
 
+    x = 0.6
+    y = [0.2]*(dimension-1)
+    print("conditional PDF%.6f" % distribution.computeConditionalPDF(x, y))
+    print("conditional CDF%.6f" % distribution.computeConditionalCDF(x, y))
+    print("conditional quantile%.6f" % distribution.computeConditionalQuantile(x, y))
+    pt = Point([i + 1.5 for i in range(dimension)])
+    print("sequential conditional PDF=", distribution.computeSequentialConditionalPDF(point))
+    resCDF = distribution.computeSequentialConditionalCDF(pt)
+    print("sequential conditional CDF(", pt, ")=", resCDF)
+    print("sequential conditional quantile(", resCDF, ")=", distribution.computeSequentialConditionalQuantile(resCDF))
     # derivative of the PDF with regards the parameters of the distribution
     CDF = distribution.computeCDF(point)
     print("cdf=%.6f" % CDF)

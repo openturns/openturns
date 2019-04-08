@@ -6,8 +6,6 @@ oneRealization= class=Point name=Unnamed dimension=1 values=[1.46561]
 oneSample first= class=Point name=Unnamed dimension=1 values=[3.53872]  last= class=Point name=Unnamed dimension=1 values=[-0.636935]
 mean= class=Point name=Unnamed dimension=1 values=[-0.517373]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[5.598]
-Kolmogorov test for the generator, sample size= 100  is accepted
-Kolmogorov test for the generator, sample size= 1000  is accepted
 Point=  class=Point name=Unnamed dimension=1 values=[1]
 ddf     = class=Point name=Unnamed dimension=1 values=[-0.0560023]
 ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.0560023]
@@ -16,42 +14,65 @@ pdf     =0.140628
 pdf (FD)=0.140628
 cdf=0.760243
 ccdf=0.239757
-pdf gradient     = class=Point name=Unnamed dimension=3 values=[0.00144865,0.0560023,-0.0283123]
 pdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[0.00144865,0.0560023,-0.0283123]
-cdf gradient     = class=Point name=Unnamed dimension=3 values=[0.00194826,-0.140628,-0.105471]
-cdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[0.00194826,-0.140628,-0.105471]
-quantile= class=Point name=Unnamed dimension=1 values=[3.33347]
+Distribution  class=Student name=Student dimension=2 nu=7.5 mean=class=Point name=Unnamed dimension=2 values=[0,1] sigma=class=Point name=Unnamed dimension=2 values=[0.5,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.25,0.25,1]
+Distribution  Student(nu = 7.5, mu = [0,1], sigma = [0.5,1], R = [[ 1    0.25 ]
+ [ 0.25 1    ]])
+Elliptical =  True
+Continuous =  True
+oneRealization= class=Point name=Unnamed dimension=2 values=[-0.206151,0.951456]
+oneSample first= class=Point name=Unnamed dimension=2 values=[-0.0720972,-0.170981]  last= class=Point name=Unnamed dimension=2 values=[1.12613,2.71499]
+mean= class=Point name=Unnamed dimension=2 values=[-0.00682178,0.970749]
+covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.340606,0.166395,0.166395,1.41022]
+Point=  class=Point name=Unnamed dimension=2 values=[1,1]
+ddf     = class=Point name=Unnamed dimension=2 values=[-0.13334,0.0166675]
+log pdf=-3.251707
+pdf     =0.038708
+cdf=0.487148
+ccdf=0.512852
+quantile= class=Point name=Unnamed dimension=2 values=[1.14225,3.28449]
 cdf(quantile)=0.950000
-InverseSurvival= class=Point name=Unnamed dimension=1 values=[-4.33347]
+InverseSurvival= class=Point name=Unnamed dimension=2 values=[-1.14225,-1.28449]
 Survival(inverseSurvival)=0.950000
-entropy=2.271199
-Minimum volume interval= [-5.304, 4.304]
-threshold= [0.95]
-Minimum volume level set= {x | f(x) <= 4.03286} with f=
-MinimumVolumeLevelSetEvaluation(Student(nu = 6.5, mu = -0.5, sigma = 2))
-beta= [0.0177235]
-Bilateral confidence interval= [-5.304, 4.304]
-beta= [0.95]
-Unilateral confidence interval (lower tail)= [-543.532, 3.33347]
-beta= [0.95]
-Unilateral confidence interval (upper tail)= [-4.33347, 542.532]
-beta= [0.95]
-mean= class=Point name=Unnamed dimension=1 values=[-0.5]
-standard deviation= class=Point name=Unnamed dimension=1 values=[2.4037]
-skewness= class=Point name=Unnamed dimension=1 values=[0]
-kurtosis= class=Point name=Unnamed dimension=1 values=[5.4]
-covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[5.77778]
-parameters= [class=PointWithDescription name=Unnamed dimension=3 description=[nu,mean_0,standard_deviation_0] values=[6.5,-0.5,2]]
+entropy=2.379127
+Minimum volume interval= [-1.37255, 1.37255]
+[-1.7451, 3.7451]
+threshold= [0.973154]
+Minimum volume level set= {x | f(x) <= 5.63247} with f=
+MinimumVolumeLevelSetEvaluation(Student(nu = 7.5, mu = [0,1], sigma = [0.5,1], R = [[ 1    0.25 ]
+ [ 0.25 1    ]]))
+beta= [0.00357972]
+Bilateral confidence interval= [-1.37255, 1.37255]
+[-1.7451, 3.7451]
+beta= [0.973154]
+Unilateral confidence interval (lower tail)= [-77.5591, 1.14225]
+[-154.118, 3.28449]
+beta= [0.973087]
+Unilateral confidence interval (upper tail)= [-1.14225, 77.5591]
+[-1.28449, 156.118]
+beta= [0.973087]
+mean= class=Point name=Unnamed dimension=2 values=[0,1]
+standard deviation= class=Point name=Unnamed dimension=2 values=[0.583874,1.16775]
+skewness= class=Point name=Unnamed dimension=2 values=[0,0]
+kurtosis= class=Point name=Unnamed dimension=2 values=[4.71429,4.71429]
+covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.340909,0.170455,0.170455,1.36364]
+parameters= [class=PointWithDescription name=Unnamed dimension=3 description=[nu,mean_0,standard_deviation_0] values=[7.5,0,0.5],class=PointWithDescription name=Unnamed dimension=3 description=[nu,mean_1,standard_deviation_1] values=[7.5,1,1],class=PointWithDescription name=Unnamed dimension=2 description=[nu,R_1_0] values=[7.5,0.25]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [0]
-standard moment n= 2  value= [1.44444]
+standard moment n= 2  value= [1.36364]
 standard moment n= 3  value= [0]
-standard moment n= 4  value= [11.2667]
+standard moment n= 4  value= [8.76623]
 standard moment n= 5  value= [0]
-Standard representative= Student(nu = 6.5, mu = 0, sigma = 1)
-density generator=0.224500
-pdf via density generator=0.140628
-density generator derivative     =-0.112250
-density generator derivative (FD)=-0.112250
-density generator second derivative     =0.071092
-density generator second derivative (FD)=0.071092
+Standard representative= Student(nu = 7.5, mu = 0, sigma = 1)
+density generator=0.051781
+pdf via density generator=0.038708
+density generator derivative     =-0.025891
+density generator derivative (FD)=-0.025891
+density generator second derivative     =0.015671
+density generator second derivative (FD)=0.015671
+conditional PDF=0.348531
+conditional CDF=0.285577
+conditional quantile=1.381698
+sequential conditional PDF= [0.125473,0.277346]
+sequential conditional CDF( [1.5,2.5] )= [0.990805,0.623728]
+sequential conditional quantile( [0.990805,0.623728] )= [1.5,2.5]

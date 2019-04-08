@@ -91,7 +91,7 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
   const UnsignedInteger dimension = firstSample.getDimension();
   const LinearCombinationFunction metaModel(LinearBasisFactory(dimension).build(), linearModel.getRegression());
   LinearModelResult linearModelResult(Sample(), Basis(), Matrix(), Sample(), metaModel, linearModel.getRegression(), "", Description(), Sample(), Sample(), Point(), Point(), Point(), 0.0);
-  return LinearModelFisher(firstSample, secondSample, linearModelResult);
+  return LinearModelFisher(firstSample, secondSample, linearModelResult, level);
 }
 
 /*  */

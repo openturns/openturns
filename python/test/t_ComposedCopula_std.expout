@@ -22,6 +22,44 @@ entropy=-0.729842
 mean= class=Point name=Unnamed dimension=7 values=[0.5,0.5,0.5,0.5,0.5,0.5,0.5]
 covariance= class=CovarianceMatrix dimension=7 implementation=class=MatrixImplementation name=Unnamed rows=7 columns=7 values=[0.0833333,0.0373929,0,0,0,0,0,0.0373929,0.0833333,0,0,0,0,0,0,0,0.0833333,0.0402153,0.0199465,0,0,0,0,0.0402153,0.0833333,0,0,0,0,0,0.0199465,0,0.0833333,0,0,0,0,0,0,0,0.0833333,0.0568528,0,0,0,0,0,0.0568528,0.0833333]
 parameters= [class=PointWithDescription name=ComposedCopula dimension=5 description=[copula_0_theta,copula_1_R_2_1,copula_1_R_3_1,copula_1_R_3_2,copula_2_theta] values=[3,0.5,0.25,0,2]]
+covariance= 7x7
+[[ 0.08333 0.03739 0       0       0       0       0       ]
+ [ 0.03739 0.08333 0       0       0       0       0       ]
+ [ 0       0       0.08333 0.04022 0.01995 0       0       ]
+ [ 0       0       0.04022 0.08333 0       0       0       ]
+ [ 0       0       0.01995 0       0.08333 0       0       ]
+ [ 0       0       0       0       0       0.08333 0.05685 ]
+ [ 0       0       0       0       0       0.05685 0.08333 ]]
+correlation= 7x7
+[[ 1      0.4487 0      0      0      0      0      ]
+ [ 0.4487 1      0      0      0      0      0      ]
+ [ 0      0      1      0.4826 0.2394 0      0      ]
+ [ 0      0      0.4826 1      0      0      0      ]
+ [ 0      0      0.2394 0      1      0      0      ]
+ [ 0      0      0      0      0      1      0.6822 ]
+ [ 0      0      0      0      0      0.6822 1      ]]
+spearman= 7x7
+[[ 1      0.4487 0      0      0      0      0      ]
+ [ 0.4487 1      0      0      0      0      0      ]
+ [ 0      0      1      0.4826 0.2394 0      0      ]
+ [ 0      0      0.4826 1      0      0      0      ]
+ [ 0      0      0.2394 0      1      0      0      ]
+ [ 0      0      0      0      0      1      0.6822 ]
+ [ 0      0      0      0      0      0.6822 1      ]]
+kendall= 7x7
+[[ 1      0.3072 0      0      0      0      0      ]
+ [ 0.3072 1      0      0      0      0      0      ]
+ [ 0      0      1      0.3333 0.1609 0      0      ]
+ [ 0      0      0.3333 1      0      0      0      ]
+ [ 0      0      0.1609 0      1      0      0      ]
+ [ 0      0      0      0      0      1      0.5    ]
+ [ 0      0      0      0      0      0.5    1      ]]
+conditional PDF=0.467887
+conditional CDF=0.902087
+conditional quantile=0.299570
+sequential conditional PDF= [1,1.21219,1,1.17967,1.05262,1,1.45164]
+sequential conditional CDF( [0.05,0.15,0.25,0.35,0.45,0.55,0.65] )= [0.05,0.346653,0.25,0.477865,0.514559,0.55,0.595069]
+sequential conditional quantile( [0.05,0.346653,0.25,0.477865,0.514559,0.55,0.595069] )= [0.05,0.15,0.25,0.35,0.45,0.55,0.65]
 indices= [1,2,3,5,6]
 margins= class=ComposedCopula name=ComposedCopula dimension=5 copula[0]=class=IndependentCopula name=IndependentCopula dimension=1 copula[1]=class=NormalCopula name=NormalCopula dimension=2 correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.5,0.5,1] copula[2]=class=ClaytonCopula name=ClaytonCopula dimension=2 theta=2
 margins PDF=3.086065
@@ -39,10 +77,28 @@ isoprobabilistic transformation (general non-normal)= [(RosenblattEvaluation(cla
  [ -0.348155  0.174078  1.04447  ]], E=Normal(mu = 0, sigma = 1))->Normal(mu = [0,0,0], sigma = [1,1,1], R = [[ 1 0 0 ]
  [ 0 1 0 ]
  [ 0 0 1 ]])))o([x0,x1,x2,x3,x4,x5,x6]->[x2,x3,x4]),(RosenblattEvaluation(ClaytonCopula(theta = 2)->Normal(2))o([x0,x1,x2,x3,x4,x5,x6]->[x5,x6])]
+conditional PDF=0.467887
+conditional CDF=0.902087
+conditional quantile=0.299570
+sequential conditional PDF= [1,1.06099,1,1.24177,1.05204,1,1.39119]
+sequential conditional CDF( [0.05,0.15,0.25,0.35,0.45,0.55,0.65] )= [0.05,0.220267,0.25,0.477865,0.514559,0.55,0.595069]
+sequential conditional quantile( [0.05,0.220267,0.25,0.477865,0.514559,0.55,0.595069] )= [0.05,0.15,0.25,0.35,0.45,0.55,0.65]
 isoprobabilistic transformation (independent)= NatafIndependentCopulaEvaluation(IndependentCopula(6)->Normal(6))
+conditional PDF=1.000000
+conditional CDF=0.600000
+conditional quantile=0.600000
+sequential conditional PDF= [1,1,1,1,1,1]
+sequential conditional CDF( [0.05,0.15,0.25,0.35,0.45,0.55] )= [0.05,0.15,0.25,0.35,0.45,0.55]
+sequential conditional quantile( [0.05,0.15,0.25,0.35,0.45,0.55] )= [0.05,0.15,0.25,0.35,0.45,0.55]
 isoprobabilistic transformation (single contributor)= (class=LinearEvaluation name=Unnamed center=[1,1] constant=[0,0] linear=[[ 0.333333 0        ]
  [ 0        0.333333 ]])o(| y0 = Uniform(a = 0, b = 1) -> y0 : Student(nu = 3, mu = 1, sigma = 3)
 | y1 = Uniform(a = 0, b = 1) -> y1 : Student(nu = 3, mu = 1, sigma = 3)
 )
+conditional PDF=1.028301
+conditional CDF=0.602660
+conditional quantile=0.597413
+sequential conditional PDF= [1,1.06099]
+sequential conditional CDF( [0.05,0.15] )= [0.05,0.220267]
+sequential conditional quantile( [0.05,0.220267] )= [0.05,0.15]
 ComposedCopula(NormalCopula(R = [[ 1 0 ]
  [ 0 1 ]]), IndependentCopula(dimension = 2))

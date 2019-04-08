@@ -1947,6 +1947,12 @@ Scalar DistributionImplementation::computeConditionalDDF(const Scalar,
   throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeConditionalDDF(const Scalar x, const Point & y) const";
 }
 
+/* Compute the DDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
+Point DistributionImplementation::computeSequentialConditionalDDF(const Point & ) const
+{
+  throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeConditionalDDF(const Point & x) const";
+}
+
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Scalar DistributionImplementation::computeConditionalPDF(const Scalar x,
     const Point & y) const
@@ -1968,6 +1974,29 @@ Scalar DistributionImplementation::computeConditionalPDF(const Scalar x,
   const Implementation conditionedDistribution(getMarginal(conditioned).getImplementation());
   const Scalar pdfConditioned = conditionedDistribution->computePDF(z);
   return pdfConditioned / pdfConditioning;
+}
+
+/* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
+Point DistributionImplementation::computeSequentialConditionalPDF(const Point & x) const
+{
+  Point result(dimension_);
+  Indices conditioning(1, 0);
+  Implementation conditioningDistribution(getMarginal(conditioning).getImplementation());
+  Point currentX(1, x[0]);
+  Scalar pdfConditioning = conditioningDistribution->computePDF(currentX);
+  result[0] = pdfConditioning;
+  for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension_; ++conditioningDimension)
+    {
+      // Return the result as soon as a conditional pdf is zero
+      if (pdfConditioning == 0) return result;
+      conditioning.add(conditioningDimension);
+      conditioningDistribution = getMarginal(conditioning).getImplementation();
+      currentX.add(x[conditioningDimension]);
+      const Scalar pdfConditioned = conditioningDistribution->computePDF(currentX);
+      result[conditioningDimension] = pdfConditioned / pdfConditioning;
+      pdfConditioning = pdfConditioned;
+    } // conditioningDimension
+  return result;
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -2031,6 +2060,45 @@ Scalar DistributionImplementation::computeConditionalCDF(const Scalar x,
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
+Point DistributionImplementation::computeSequentialConditionalCDF(const Point & x) const
+{
+  Point result(dimension_);
+  Indices conditioning(1, 0);
+  Implementation conditioningDistribution(getMarginal(conditioning).getImplementation());
+  Point currentX(1, x[0]);
+  result[0] = conditioningDistribution->computeCDF(currentX);
+  Scalar pdfConditioning = conditioningDistribution->computePDF(currentX);
+  GaussKronrod algo;
+  for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension_; ++conditioningDimension)
+    {
+      // Return the result as soon as a conditional pdf is zero
+      if (pdfConditioning == 0) return result;
+      // If the current component is at the left of the marginal range, the conditional CDF is zero as well as the PDF
+      const Scalar xMin = range_.getLowerBound()[conditioningDimension];
+      if (x[conditioningDimension] <= xMin) return result;
+      conditioning.add(conditioningDimension);
+      conditioningDistribution = getMarginal(conditioning).getImplementation();
+      // If the current component is at the left of the marginal range, the conditional CDF is one and the conditional PDF is zero
+      const Scalar xMax = range_.getUpperBound()[conditioningDimension];
+      if (x[conditioningDimension] >= xMax)
+	{
+	  result[conditioningDimension] = 1.0;
+	}
+      else
+	{
+	  // Here we have to integrate something...
+	  p_conditionalPDFWrapper_ = new ConditionalPDFWrapper(conditioningDistribution);
+	  p_conditionalPDFWrapper_->setParameter(currentX);
+	  const Scalar cdfConditioned(algo.integrate(p_conditionalPDFWrapper_, Interval(xMin, std::min(x[conditioningDimension], xMax)))[0]);
+	  result[conditioningDimension] = cdfConditioned / pdfConditioning;
+	}
+      currentX.add(x[conditioningDimension]);
+      pdfConditioning = conditioningDistribution->computePDF(currentX);
+    } // conditioningDimension
+  return result;
+}
+
+/* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Point DistributionImplementation::computeConditionalCDF(const Point & x,
     const Sample & y) const
 {
@@ -2078,7 +2146,18 @@ Point DistributionImplementation::computeConditionalCDF(const Point & x,
 Scalar DistributionImplementation::computeConditionalQuantile(const Scalar q,
     const Point & y) const
 {
+  if (y.getDimension() == 0 || hasIndependentCopula()) return getMarginal(y.getDimension()).computeScalarQuantile(q);
   return computeConditionalQuantile(Point(1, q), Sample(1, y))[0];
+}
+
+/* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
+Point DistributionImplementation::computeSequentialConditionalQuantile(const Point & q) const
+{
+  Point result(0);
+  Point y(0);
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+    result.add(computeConditionalQuantile(q[i], result));
+  return result;
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */

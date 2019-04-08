@@ -141,6 +141,8 @@ public:
   // For Normal distribution
   static Scalar pNormal(const Scalar x,
                         const Bool tail = false);
+  static Point pNormal(const Point & x,
+                        const Bool tail = false);
   static Scalar pNormal2D(const Scalar x1,
                           const Scalar x2,
                           const Scalar rho,
@@ -153,6 +155,8 @@ public:
                           const Scalar rho23,
                           const Bool tail = false);
   static Scalar qNormal(const Scalar p,
+                        const Bool tail = false);
+  static Point qNormal(const Point & p,
                         const Bool tail = false);
   static Scalar rNormal();
   static Point rNormal(const UnsignedInteger size);
@@ -173,9 +177,15 @@ public:
   static Scalar pStudent(const Scalar nu,
                          const Scalar x,
                          const Bool tail = false);
+  static Point pStudent(const Scalar nu,
+			const Point & x,
+                        const Bool tail = false);
   static Scalar qStudent(const Scalar nu,
-                         const Scalar p,
-                         const Bool tail = false);
+			 const Scalar p,
+			 const Bool tail = false);
+  static Point qStudent(const Scalar nu,
+			const Point & p,
+                        const Bool tail = false);
   static Scalar rStudent(const Scalar nu);
   static Point rStudent(const Scalar nu,
                         const UnsignedInteger size);

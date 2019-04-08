@@ -152,9 +152,11 @@ public:
 
   /** Using triangular matrix */
   ScalarCollection triangularVectProd (const ScalarCollection & pt,
-                                       const char side = 'L') const;
+                                       const char side = 'L',
+                                       const Bool transpose = false) const;
   ScalarCollection triangularVectProd (const Point & pt,
-                                       const char side = 'L') const;
+                                       const char side = 'L',
+                                       const Bool transpose = false) const;
 
   /** Multiplication with a Scalar */
   MatrixImplementation operator * (const Scalar s) const;

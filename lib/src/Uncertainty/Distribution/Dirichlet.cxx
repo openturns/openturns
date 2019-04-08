@@ -308,12 +308,42 @@ Scalar Dirichlet::computeConditionalPDF(const Scalar x,
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
-  Scalar sum = 0.0;
-  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) sum += theta_[i];
   const Scalar r = theta_[conditioningDimension];
-  const Scalar s = sumTheta_ - sum - r;
-  const Scalar z = x / (1.0 - sum);
-  return std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sum);
+  Scalar s = sumTheta_ - r;
+  if (conditioningDimension == 0) return std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(x) + (s - 1.0) * log1p(-x));
+  Scalar sumThetaConditioning = 0.0;
+  Scalar sumY = 0.0;
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    {
+      sumThetaConditioning += theta_[i];
+      sumY += y[i];
+    }
+  if (sumY <= 0.0 || sumY >= 1.0) return 0.0;
+  s -= sumThetaConditioning;
+  const Scalar z = x / (1.0 - sumY);
+  return std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sumY);
+}
+
+Point Dirichlet::computeSequentialConditionalPDF(const Point & x) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (x.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: cannot compute a sequential conditional PDF at a point of dimension=" << x.getDimension() << " not equal to the distribution dimension=" << dimension;
+  Point result(dimension);
+  Scalar sumY = 0.0;
+  Scalar r = theta_[0];
+  Scalar s = sumTheta_ - r;
+  Scalar z = x[0];
+  result[0] = std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z));
+  for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension; ++conditioningDimension)
+    {
+      sumY += x[conditioningDimension - 1];
+      if (sumY <= 0.0 || sumY >= 1.0) return result;
+      s -= r;
+      r = theta_[conditioningDimension];
+      z = x[conditioningDimension] / (1.0 - sumY);
+      result[conditioningDimension] = std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sumY);
+    }
+  return result;
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -322,11 +352,42 @@ Scalar Dirichlet::computeConditionalCDF(const Scalar x,
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
-  Scalar sum = 0.0;
-  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) sum += theta_[i];
   const Scalar r = theta_[conditioningDimension];
-  const Scalar s = sumTheta_ - sum - r;
-  return DistFunc::pBeta(r, s, x / (1.0 - sum));
+  Scalar s = sumTheta_ - r;
+  if (conditioningDimension == 0) return DistFunc::pBeta(r, s, x);
+  Scalar sumThetaConditioning = 0.0;
+  Scalar sumY = 0.0;
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    {
+      sumThetaConditioning += theta_[i];
+      sumY += y[i];
+    }
+  if (sumY <= 0.0) return 0.0;
+  if (sumY >= 1.0) return 1.0;
+  s -= sumThetaConditioning;
+  return DistFunc::pBeta(r, s, x / (1.0 - sumY));
+}
+
+Point Dirichlet::computeSequentialConditionalCDF(const Point & x) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (x.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: cannot compute a sequential conditional PDF at a point of dimension=" << x.getDimension() << " not equal to the distribution dimension=" << dimension;
+  Point result(dimension);
+  Scalar sumY = 0.0;
+  Scalar r = theta_[0];
+  Scalar s = sumTheta_ - r;
+  Scalar z = x[0];
+  result[0] = DistFunc::pBeta(r, s, z);
+  for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension; ++conditioningDimension)
+    {
+      sumY += x[conditioningDimension - 1];
+      if (sumY <= 0.0 || sumY >= 1.0) return result;
+      s -= r;
+      r = theta_[conditioningDimension];
+      z = x[conditioningDimension] / (1.0 - sumY);
+      result[conditioningDimension] = DistFunc::pBeta(r, s, z);
+    }
+  return result;
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
@@ -336,11 +397,36 @@ Scalar Dirichlet::computeConditionalQuantile(const Scalar q,
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile with a conditioning point of dimension greater or equal to the distribution dimension.";
   if ((q < 0.0) || (q > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional quantile for a probability level outside of [0, 1]";
-  Scalar sum = 0.0;
-  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) sum += theta_[i];
+  Scalar sumThetaConditioning = 0.0;
+  Scalar sumY = 0.0;
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
+    {
+      sumThetaConditioning += theta_[i];
+      sumY += y[i];
+    }
   const Scalar r = theta_[conditioningDimension];
-  const Scalar s = sumTheta_ - sum - r;
-  return (1.0 - sum) * DistFunc::qBeta(r, s, q);
+  const Scalar s = sumTheta_ - sumThetaConditioning - r;
+  return (1.0 - sumY) * DistFunc::qBeta(r, s, q);
+}
+
+Point Dirichlet::computeSequentialConditionalQuantile(const Point & q) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (q.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: cannot compute a sequential conditional PDF at a quantile level vector of dimension=" << q.getDimension() << " not equal to the distribution dimension=" << dimension;
+  Point result(dimension);
+  Scalar sumY = 0.0;
+  Scalar r = theta_[0];
+  Scalar s = sumTheta_ - r;
+  result[0] = DistFunc::qBeta(r, s, q[0]);
+  for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension; ++conditioningDimension)
+    {
+      sumY += result[conditioningDimension - 1];
+      if (sumY <= 0.0 || sumY >= 1.0) return result;
+      s -= r;
+      r = theta_[conditioningDimension];
+      result[conditioningDimension] = (1.0 - sumY) * DistFunc::qBeta(r, s, q[conditioningDimension]);
+    }
+  return result;
 }
 
 /* Compute the mean of the distribution */

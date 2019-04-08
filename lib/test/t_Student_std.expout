@@ -52,7 +52,6 @@ skewness=class=Point name=Unnamed dimension=1 values=[0]
 kurtosis=class=Point name=Unnamed dimension=1 values=[5.4]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[36.1111]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 parameters=[[nu : 6.5, mean_0 : -0.5, standard_deviation_0 : 5]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
@@ -68,3 +67,65 @@ density generator derivative     =-0.11225
 density generator derivative (FD)=-0.11225
 density generator second derivative     =0.0710916
 density generator second derivative (FD)=0.0710916
+conditional PDF=0.0746825
+conditional CDF=0.58369
+conditional quantile=0.819678
+sequential conditional PDF=class=Point name=Unnamed dimension=1 values=[0.0700967]
+sequential conditional CDF(class=Point name=Unnamed dimension=1 values=[1.5])=class=Point name=Unnamed dimension=1 values=[0.649013]
+sequential conditional quantile(class=Point name=Unnamed dimension=1 values=[0.649013])=class=Point name=Unnamed dimension=1 values=[1.5]
+Distribution class=Student name=Student dimension=2 nu=4.5 mean=class=Point name=Unnamed dimension=2 values=[0,1] sigma=class=Point name=Unnamed dimension=2 values=[0.5,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.25,0.25,1]
+Distribution Student(nu = 4.5, mu = [0,1], sigma = [0.5,1], R = [[ 1    0.25 ]
+ [ 0.25 1    ]])
+Elliptical = true
+Continuous = true
+oneRealization=class=Point name=Unnamed dimension=2 values=[-0.0514572,0.198021]
+oneSample first=class=Point name=Unnamed dimension=2 values=[0.795066,1.60791] last=class=Point name=Unnamed dimension=2 values=[0.0814055,0.139903]
+mean=class=Point name=Unnamed dimension=2 values=[-0.000199308,0.991508]
+covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.445136,0.241282,0.241282,1.86502]
+Point= class=Point name=Unnamed dimension=2 values=[1,1]
+ddf     =class=Point name=Unnamed dimension=2 values=[-0.119059,0.0148823]
+log pdf=-3.27982
+pdf     =0.0376351
+cdf=0.482334
+ccdf=0.517666
+survival=0.0364632
+Inverse survival=class=Point name=Unnamed dimension=2 values=[-1.28731,-1.57463]
+Survival(inverse survival)=0.95
+quantile=class=Point name=Unnamed dimension=2 values=[1.28731,3.57463]
+cdf(quantile)=0.95
+Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-1.60007,-2.20015] upper bound=class=Point name=Unnamed dimension=2 values=[1.60007,4.20015] finite lower bound=[1,1] finite upper bound=[1,1]
+threshold=0.97216
+Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,X1,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Student(nu = 4.5, mu = [0,1], sigma = [0.5,1], R = [[ 1    0.25 ]
+ [ 0.25 1    ]])) gradientImplementation=MinimumVolumeLevelSetGradient(Student(nu = 4.5, mu = [0,1], sigma = [0.5,1], R = [[ 1    0.25 ]
+ [ 0.25 1    ]])) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Student(nu = 4.5, mu = [0,1], sigma = [0.5,1], R = [[ 1    0.25 ]
+ [ 0.25 1    ]])) level=6.16505
+beta=0.00210162
+Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-1.60007,-2.20015] upper bound=class=Point name=Unnamed dimension=2 values=[1.60007,4.20015] finite lower bound=[1,1] finite upper bound=[1,1]
+beta=0.97216
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-933.472,-1865.94] upper bound=class=Point name=Unnamed dimension=2 values=[1.28731,3.57463] finite lower bound=[1,1] finite upper bound=[1,1]
+beta=0.972498
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-1.28731,-1.57463] upper bound=class=Point name=Unnamed dimension=2 values=[933.472,1867.94] finite lower bound=[1,1] finite upper bound=[1,1]
+beta=0.972498
+entropy=2.55691
+entropy (MC)=2.55471
+mean=class=Point name=Unnamed dimension=2 values=[0,1]
+standard deviation=class=Point name=Unnamed dimension=2 values=[0.67082,1.34164]
+skewness=class=Point name=Unnamed dimension=2 values=[0,0]
+kurtosis=class=Point name=Unnamed dimension=2 values=[15,15]
+covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.45,0.225,0.225,1.8]
+correlation=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.25,0.25,1]
+kendall=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.160861,0.160861,1]
+parameters=[[nu : 4.5, mean_0 : 0, standard_deviation_0 : 0.5],[nu : 4.5, mean_1 : 1, standard_deviation_1 : 1],[nu : 4.5, R_1_0 : 0.25]]
+Standard representative=Student(nu = 4.5, mu = 0, sigma = 1)
+density generator=0.0481717
+pdf via density generator=0.0376351
+density generator derivative     =-0.0240859
+density generator derivative (FD)=-0.0240859
+density generator second derivative     =0.0157485
+density generator second derivative (FD)=0.0157485
+conditional PDF=0.346427
+conditional CDF=0.28387
+conditional quantile=1.3784
+sequential conditional PDF=class=Point name=Unnamed dimension=2 values=[0.0368059,0.239298]
+sequential conditional CDF(class=Point name=Unnamed dimension=2 values=[1.5,2.5])=class=Point name=Unnamed dimension=2 values=[0.98281,0.608644]
+sequential conditional quantile(class=Point name=Unnamed dimension=2 values=[0.98281,0.608644])=class=Point name=Unnamed dimension=2 values=[1.5,2.5]

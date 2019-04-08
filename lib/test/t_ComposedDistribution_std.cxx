@@ -154,6 +154,20 @@ int main(int, char *[])
     fullprint << "margins quantile=" << quantile << std::endl;
     fullprint << "margins CDF(quantile)=" << margins.computeCDF(quantile) << std::endl;
     fullprint << "margins realization=" << margins.getRealization() << std::endl;
+    {
+      Scalar x = 0.6;
+      Point y(dim - 1, 0.2);
+      fullprint << "conditional PDF=" << distribution.computeConditionalPDF(x, y) << std::endl;
+      fullprint << "conditional CDF=" << distribution.computeConditionalCDF(x, y) << std::endl;
+      fullprint << "conditional quantile=" << distribution.computeConditionalQuantile(x, y) << std::endl;
+      Point pt(dim);
+      for (UnsignedInteger i = 0; i < dim; ++i) pt[i] = 1.0 * i + 1.5;
+      fullprint << "sequential conditional PDF=" << distribution.computeSequentialConditionalPDF(pt) << std::endl;
+      Point resCDF(distribution.computeSequentialConditionalCDF(pt));
+      fullprint << "sequential conditional CDF(" << pt << ")=" << resCDF << std::endl;
+      fullprint << "sequential conditional quantile(" << resCDF << ")=" << distribution.computeSequentialConditionalQuantile(resCDF) << std::endl;
+    }
+
     // With a Normal copula
     CorrelationMatrix correlation(dim);
     for(UnsignedInteger i = 1; i < dim; i++)
@@ -185,7 +199,19 @@ int main(int, char *[])
     fullprint << "Quantile      =" << quantile << std::endl;
     fullprint << "Quantile (ref)=" << distributionRef.computeQuantile( 0.95 ) << std::endl;
     fullprint << "CDF(quantile)=" << distribution.computeCDF(quantile) << std::endl;
-
+    {
+      Scalar x = 0.6;
+      Point y(dim - 1, 0.2);
+      fullprint << "conditional PDF=" << distribution.computeConditionalPDF(x, y) << std::endl;
+      fullprint << "conditional CDF=" << distribution.computeConditionalCDF(x, y) << std::endl;
+      fullprint << "conditional quantile=" << distribution.computeConditionalQuantile(x, y) << std::endl;
+      Point pt(dim);
+      for (UnsignedInteger i = 0; i < dim; ++i) pt[i] = 1.0 * i + 1.5;
+      fullprint << "sequential conditional PDF=" << distribution.computeSequentialConditionalPDF(pt) << std::endl;
+      Point resCDF(distribution.computeSequentialConditionalCDF(pt));
+      fullprint << "sequential conditional CDF(" << pt << ")=" << resCDF << std::endl;
+      fullprint << "sequential conditional quantile(" << resCDF << ")=" << distribution.computeSequentialConditionalQuantile(resCDF) << std::endl;
+    }
     // Confidence regions
     if (distribution.getDimension() <= 2)
     {
@@ -230,4 +256,3 @@ int main(int, char *[])
 
   return ExitCode::Success;
 }
-

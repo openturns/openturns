@@ -410,21 +410,21 @@ Point OrdinalSumCopula::computeCDFGradient(const Point & point) const
 }
 
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar OrdinalSumCopula::computeConditionalPDF(const Scalar, const Point & ) const
+Scalar OrdinalSumCopula::computeConditionalPDF(const Scalar x, const Point & y) const
 {
-  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeConditionalPDF(const Scalar x, const Point & y) const";
+  return CopulaImplementation::computeConditionalPDF(x, y);
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-Scalar OrdinalSumCopula::computeConditionalCDF(const Scalar, const Point & ) const
+Scalar OrdinalSumCopula::computeConditionalCDF(const Scalar x, const Point & y) const
 {
-  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeConditionalCDF(const Scalar x, const Point & y) const";
+  return CopulaImplementation::computeConditionalCDF(x, y);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-Scalar OrdinalSumCopula::computeConditionalQuantile(const Scalar, const Point & ) const
+Scalar OrdinalSumCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
 {
-  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::computeConditionalQuantile(const Scalar q, const Point & y) const";
+  return CopulaImplementation::computeConditionalQuantile(q, y);
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -554,13 +554,13 @@ Bool OrdinalSumCopula::hasIndependentCopula() const
 /* Get the isoprobabilist transformation */
 OrdinalSumCopula::IsoProbabilisticTransformation OrdinalSumCopula::getIsoProbabilisticTransformation() const
 {
-  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::getIsoProbabilisticTransformation() const";
+  return CopulaImplementation::getIsoProbabilisticTransformation();
 }
 
 /* Get the inverse isoprobabilist transformation */
 OrdinalSumCopula::InverseIsoProbabilisticTransformation OrdinalSumCopula::getInverseIsoProbabilisticTransformation() const
 {
-  throw NotYetImplementedException(HERE) << "In OrdinalSumCopula::getInverseIsoProbabilisticTransformation() const";
+  return CopulaImplementation::getInverseIsoProbabilisticTransformation();
 }
 
 /* Method save() stores the object through the StorageManager */

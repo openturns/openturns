@@ -17,6 +17,24 @@ CDF(quantile)=0.500000
 InverseSurvival= class=Point name=Unnamed dimension=3 values=[0.0174781,0.0174781,0.0174781]
 Survival(inverseSurvival)=0.950000
 entropy=-0.066766
+covariance= [[ 0.0833333 0.0199465 0         ]
+ [ 0.0199465 0.0833333 0.0199465 ]
+ [ 0         0.0199465 0.0833333 ]]
+correlation= [[ 1        0.239359 0        ]
+ [ 0.239359 1        0.239359 ]
+ [ 0        0.239359 1        ]]
+spearman= [[ 1        0.239359 0        ]
+ [ 0.239359 1        0.239359 ]
+ [ 0        0.239359 1        ]]
+kendall= [[ 1        0.160861 0        ]
+ [ 0.160861 1        0.160861 ]
+ [ 0        0.160861 1        ]]
+conditional PDF=0.971742
+conditional CDF=0.668753
+conditional quantile=0.530462
+sequential conditional PDF= [1,1.18998,1.15697]
+sequential conditional CDF( [0.05,0.15,0.25] )= [0.05,0.259229,0.299588]
+sequential conditional quantile( [0.05,0.259229,0.299588] )= [0.05,0.15,0.25]
 margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
 margin CDF=0.250000

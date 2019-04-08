@@ -489,9 +489,13 @@ public:
   virtual Scalar computeConditionalDDF(const Scalar x,
                                        const Point & y) const;
 
+  virtual Point computeSequentialConditionalDDF(const Point & x) const;
+
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   virtual Scalar computeConditionalPDF(const Scalar x,
                                        const Point & y) const;
+
+  virtual Point computeSequentialConditionalPDF(const Point & x) const;
 
   virtual Point computeConditionalPDF(const Point & x,
                                       const Sample & y) const;
@@ -500,12 +504,16 @@ public:
   virtual Scalar computeConditionalCDF(const Scalar x,
                                        const Point & y) const;
 
+  virtual Point computeSequentialConditionalCDF(const Point & x) const;
+
   virtual Point computeConditionalCDF(const Point & x,
                                       const Sample & y) const;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   virtual Scalar computeConditionalQuantile(const Scalar q,
       const Point & y) const;
+
+  virtual Point computeSequentialConditionalQuantile(const Point & q) const;
 
   virtual Point computeConditionalQuantile(const Point & q,
       const Sample & y) const;
