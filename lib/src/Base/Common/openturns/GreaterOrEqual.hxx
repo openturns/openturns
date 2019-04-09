@@ -44,7 +44,7 @@ public:
 
   /* String converter */
   String __repr__() const;
-
+  String __str__(const String & offset = "") const;
 
   /* Here is the interface that all derived class must implement */
 

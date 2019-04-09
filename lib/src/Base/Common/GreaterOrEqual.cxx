@@ -41,6 +41,10 @@ String GreaterOrEqual::__repr__() const
          << " name=" << getName();
 }
 
+String GreaterOrEqual::__str__(const String & offset) const
+{
+  return ">=";
+}
 
 /* Here is the interface that all derived class must implement */
 
