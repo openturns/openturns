@@ -131,8 +131,6 @@ Examples
 >>> firstSample = sample
 >>> secondSample = func(sample) + ot.Normal().getSample(30)
 >>> test_result = ot.LinearModelTest.LinearModelResidualMean(firstSample, secondSample)
->>> print(test_result)
-class=TestResult name=Unnamed type=ResidualMean binaryQualityMeasure=true p-value threshold=0.05 p-value=1 statistic=-8.35701e-16 description=[]
 "
 
 // ---------------------------------------------------------------------

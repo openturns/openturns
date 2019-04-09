@@ -21,19 +21,15 @@ sample = distribution.getSample(size)
 sampleX = ot.Sample(size, dim - 1)
 sampleY = ot.Sample(size, 1)
 for i in range(size):
-    sampleY[i] = ot.Point(1, sample[i, 0])
-    p = ot.Point(dim - 1)
+    sampleY[i, 0] = sample[i, 0]
     for j in range(dim - 1):
-        p[j] = sample[i, j + 1]
-    sampleX[i] = p
+        sampleX[i, j] = sample[i, j + 1]
 
 sampleZ = ot.Sample(size, 1)
 for i in range(size):
-    sampleZ[i] = ot.Point(1, sampleY[i, 0] * sampleY[i, 0])
-print("LinearModelFisher=",
-      ot.LinearModelTest.LinearModelFisher(sampleY, sampleZ))
-print("LinearModelResidualMean=",
-      ot.LinearModelTest.LinearModelResidualMean(sampleY, sampleZ))
+    sampleZ[i, 0] = sampleY[i, 0] * sampleY[i, 0]
+print("LinearModelFisher pvalue=%1.2f"%ot.LinearModelTest.LinearModelFisher(sampleY, sampleZ).getPValue())
+print("LinearModelResidualMean pvalue=%1.2f"%ot.LinearModelTest.LinearModelResidualMean(sampleY, sampleZ).getPValue())
 
 # Durbin Watson
 ot.RandomGenerator.SetSeed(5415)
