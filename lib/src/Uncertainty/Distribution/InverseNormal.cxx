@@ -151,7 +151,7 @@ LevelSet InverseNormal::computeMinimumVolumeLevelSetWithThreshold(const Scalar p
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   Scalar minusLogPDFThreshold = -computeLogPDF(interval.getLowerBound()[0]);
   threshold = std::exp(-minusLogPDFThreshold);
-  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
+  return LevelSet(minimumVolumeLevelSetFunction, LessOrEqual(), minusLogPDFThreshold);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */

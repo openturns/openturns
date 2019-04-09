@@ -22,9 +22,7 @@
 #define OPENTURNS_LEVELSET_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Collection.hxx"
-#include "openturns/PersistentCollection.hxx"
-#include "openturns/Point.hxx"
+#include "openturns/LessOrEqual.hxx"
 #include "openturns/DomainImplementation.hxx"
 #include "openturns/Function.hxx"
 
@@ -48,6 +46,7 @@ public:
 
   /** Parameters constructor, simplified for 1D case */
   explicit LevelSet(const Function & function,
+                    const ComparisonOperator & op = LessOrEqual(),
                     const Scalar level = 0.0);
 
   /** Virtual constructor method */
@@ -99,6 +98,9 @@ private:
 
   /** Function defining the level set*/
   Function function_;
+
+  /** Comparison operator against level */
+  ComparisonOperator operator_;
 
   /** Level defining the level set */
   Scalar level_;

@@ -194,7 +194,7 @@ LevelSet GeneralizedPareto::computeMinimumVolumeLevelSetWithThreshold(const Scal
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   Scalar minusLogPDFThreshold = -computeLogPDF(interval.getUpperBound()[0]);
   threshold = std::exp(-minusLogPDFThreshold);
-  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
+  return LevelSet(minimumVolumeLevelSetFunction, LessOrEqual(), minusLogPDFThreshold);
 }
 
 /* Compute the entropy of the distribution */

@@ -228,7 +228,7 @@ LevelSet IndependentCopula::computeMinimumVolumeLevelSetWithThreshold(const Scal
     formula << "),abs(" << inVars[i] << "-0.5";
   formula << "))";
   threshold = std::pow(prob, 1.0 / dimension_);
-  return LevelSet(SymbolicFunction(inVars, Description(1, formula)), threshold);
+  return LevelSet(SymbolicFunction(inVars, Description(1, formula)), LessOrEqual(), threshold);
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */

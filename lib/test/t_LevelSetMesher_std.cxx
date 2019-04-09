@@ -45,7 +45,7 @@ int main(int, char *[])
 
     Scalar level = 0.5;
     SymbolicFunction function1D("x", "cos(x)/(1+0.1*x^2)");
-    LevelSet levelSet1D(function1D, level);
+    LevelSet levelSet1D(function1D, LessOrEqual(), level);
     // Manual bounding box
     Mesh mesh1D = mesher1D.build(levelSet1D, Interval(Point(1, -10.0), Point(1, 10.0)));
     fullprint << "mesh1D=" << mesh1D << std::endl;
@@ -55,7 +55,7 @@ int main(int, char *[])
     fullprint << "mesher2D=" << mesher2D << std::endl;
 
     SymbolicFunction function2D(Description::BuildDefault(2, "x"), Description(1, "cos(x0 * x1)/(1 + 0.1 * (x0^2 + x1^2))"));
-    LevelSet levelSet2D(function2D, level);
+    LevelSet levelSet2D(function2D, LessOrEqual(), level);
     // Manual bounding box
     Mesh mesh2D = mesher2D.build(levelSet2D, Interval(Point(2, -10.0), Point(2, 10.0)));
     fullprint << "mesh2D=" << mesh2D << std::endl;
@@ -65,7 +65,7 @@ int main(int, char *[])
     fullprint << "mesher3D=" << mesher3D << std::endl;
 
     SymbolicFunction function3D(Description::BuildDefault(3, "x"), Description(1, "cos(x0 * x1 + x2)/(1 + 0.1*(x0^2 + x1^2 + x2^2))"));
-    LevelSet levelSet3D(function3D, level);
+    LevelSet levelSet3D(function3D, LessOrEqual(), level);
     // Manual bounding box
     Mesh mesh3D = mesher3D.build(levelSet3D, Interval(Point(3, -10.0), Point(3, 10.0)));
     fullprint << "mesh3D=" << mesh3D << std::endl;

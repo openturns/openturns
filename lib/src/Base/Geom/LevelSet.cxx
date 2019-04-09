@@ -41,6 +41,7 @@ static const Factory<LevelSet> Factory_LevelSet;
 LevelSet::LevelSet(const UnsignedInteger dimension)
   : DomainImplementation(dimension)
   , function_(SymbolicFunction(Description::BuildDefault(dimension, "x"), Description(1, "1.0")))
+  , operator_(LessOrEqual())
   , level_(0.0)
   , lowerBound_(0)
   , upperBound_(0)
@@ -50,9 +51,11 @@ LevelSet::LevelSet(const UnsignedInteger dimension)
 
 /* Parameters constructor, simplified interface for 1D case */
 LevelSet::LevelSet(const Function & function,
+                   const ComparisonOperator & op,
                    const Scalar level)
   : DomainImplementation(function.getInputDimension())
   , function_(function)
+  , operator_(op)
   , level_(level)
   , lowerBound_(0)
   , upperBound_(0)
@@ -73,12 +76,14 @@ LevelSet LevelSet::intersect(const LevelSet & other) const
   if (this == &other) return (*this);
   // else check dimension compatibility
   if (other.dimension_ != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot intersect level sets of different dimensions";
-  // The intersectFunction is negative or zero iff the given point is inside of the resulting level set, ie if both functions are less or equal to their respective level
-  const SymbolicFunction intersectFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "max(x0 - " << level_ << ", x1 - " << other.level_ << ")")));
+  // The intersectFunction is negative or zero if the given point is inside of the resulting level set, ie if both functions are less or equal to their respective level
+  const String sign1 = operator_(1.0, 2.0) ? "" : "-";
+  const String sign2 = other.operator_(1.0, 2.0) ? "" : "-";
+  const SymbolicFunction intersectFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "max(" << sign1 << "(x0 - " << level_ << "), " << sign2 << "(x1 - " << other.level_ << "))")));
   Function::FunctionCollection coll(2);
   coll[0] = function_;
   coll[1] = other.function_;
-  LevelSet result(ComposedFunction(intersectFunction, AggregatedFunction(coll)), 0.0);
+  LevelSet result(ComposedFunction(intersectFunction, AggregatedFunction(coll)), LessOrEqual(), 0.0);
   // Check if we can compute a bounding box
   if ((lowerBound_.getDimension() == dimension_) &&
       (upperBound_.getDimension() == dimension_) &&
@@ -100,11 +105,13 @@ LevelSet LevelSet::join(const LevelSet & other) const
   // else check dimension compatibility
   if (other.dimension_ != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot intersect level sets of different dimensions";
   // The intersectFunction is negative or zero iff the given point is inside of the resulting level set, ie if at least on function is less or equal to its level
-  const SymbolicFunction intersectFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "min(x0 - " << level_ << ", x1 - " << other.level_ << ")")));
+  const String sign1 = operator_(1.0, 2.0) ? "" : "-";
+  const String sign2 = other.operator_(1.0, 2.0) ? "" : "-";
+  const SymbolicFunction intersectFunction(Description::BuildDefault(2, "x"), Description(1, (OSS() << "min(" << sign1 << "(x0 - " << level_ << "), " << sign2 << "(x1 - " << other.level_ << "))")));
   Function::FunctionCollection coll(2);
   coll[0] = function_;
   coll[1] = other.function_;
-  LevelSet result(ComposedFunction(intersectFunction, AggregatedFunction(coll)), 0.0);
+  LevelSet result(ComposedFunction(intersectFunction, AggregatedFunction(coll)), LessOrEqual(), 0.0);
   // Check if we can compute a bounding box
   if ((lowerBound_.getDimension() == dimension_) &&
       (upperBound_.getDimension() == dimension_) &&
@@ -124,7 +131,7 @@ Bool LevelSet::contains(const Point & point) const
   if (point.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension_ << ", got dimension=" << point.getDimension();
   // If a bounding box has been computed/provided
   if ((lowerBound_.getDimension() == dimension_) && (upperBound_.getDimension() == dimension_) && !Interval(lowerBound_, upperBound_).contains(point)) return false;
-  return function_(point)[0] <= level_;
+  return operator_(function_(point)[0], level_);
 }
 
 /* Check if the given points are inside of the closed levelSet */
@@ -148,13 +155,13 @@ LevelSet::BoolCollection LevelSet::contains(const Sample & sample) const
     const Sample insidePoints(sample.select(insideIndices));
     const Sample values(function_(insidePoints));
     for(UnsignedInteger i = 0; i < insideIndices.getSize(); ++i)
-      result[insideIndices[i]] = values(i, 0) <= level_;
+      result[insideIndices[i]] = operator_(values(i, 0), level_);
   }
   else
   {
     const Sample values(function_(sample));
     for(UnsignedInteger i = 0; i < size; ++i)
-      result[i] = values(i, 0) <= level_;
+      result[i] = operator_(values(i, 0), level_);
   }
   return result;
 }
@@ -163,7 +170,7 @@ LevelSet::BoolCollection LevelSet::contains(const Sample & sample) const
 Bool LevelSet::operator == (const LevelSet & other) const
 {
   if (this == &other) return true;
-  return (function_ == other.function_) && (level_ == other.level_);
+  return (function_ == other.function_) && (operator_ == other.operator_) && (level_ == other.level_);
 }
 
 /* Functio accessor */
@@ -220,13 +227,14 @@ String LevelSet::__repr__() const
          << " name=" << getName()
          << " dimension=" << dimension_
          << " function=" << function_.__repr__()
+//          << " operator=" << operator_.__repr__()
          << " level=" << level_;
 }
 
 String LevelSet::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "{x | f(x) <= " << level_ << "} with f=" << Os::GetEndOfLine() << offset << function_.__str__(offset);
+  oss << "{x | f(x) " << operator_.__str__() << " " << level_ << "} with f=" << Os::GetEndOfLine() << offset << function_.__str__(offset);
   return oss;
 }
 
@@ -234,6 +242,7 @@ void LevelSet::save(Advocate & adv) const
 {
   DomainImplementation::save(adv);
   adv.saveAttribute("function_", function_);
+  adv.saveAttribute("operator_", operator_);
   adv.saveAttribute("level_", level_);
 }
 
@@ -242,6 +251,7 @@ void LevelSet::load(Advocate & adv)
 {
   DomainImplementation::load(adv);
   adv.loadAttribute("function_", function_);
+  adv.loadAttribute("operator_", operator_);
   adv.loadAttribute("level_", level_);
 }
 

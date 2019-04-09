@@ -37,7 +37,7 @@ int main(int, char *[])
     inVars.add("y");
     Description formula1(1, "x^4 + y^4");
     SymbolicFunction function1(inVars, formula1);
-    LevelSet levelSet1(function1, 1.0);
+    LevelSet levelSet1(function1, LessOrEqual(), 1.0);
     fullprint << "levelSet1=" << levelSet1 << std::endl;
     Point p0(2);
     p0[0] = -0.5;
@@ -54,7 +54,7 @@ int main(int, char *[])
     // Intersection
     Description formula2(1, "(x-1)^2 + y^2");
     SymbolicFunction function2(inVars, formula2);
-    LevelSet levelSet2(function2, 1.0);
+    LevelSet levelSet2(function2, LessOrEqual(), 1.0);
     fullprint << "levelSet2=" << levelSet2 << std::endl;
     fullprint << "levelSet2 contains " << p0 << "? " << (levelSet2.contains(p0) ? "true" : "false") << std::endl;
     fullprint << "levelSet2 contains " << p1 << "? " << (levelSet2.contains(p1) ? "true" : "false") << std::endl;

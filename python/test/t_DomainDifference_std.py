@@ -12,7 +12,7 @@ cube = ot.Interval([0.0] * dim, [2.0] * dim)
 
 # Second domain: sphere center=(0,0) r=1
 function = ot.SymbolicFunction(["x", "y"], ["x^2 + y^2"])
-sphere = ot.LevelSet(function, 1.0)
+sphere = ot.LevelSet(function, ot.LessOrEqual(), 1.0)
 
 # Inside sphere but not cube
 p0 = [-0.25, 0.25]

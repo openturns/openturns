@@ -2617,7 +2617,7 @@ LevelSet DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(c
   } // dimension > 1
   threshold = std::exp(-minusLogPDFThreshold);
 
-  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
+  return LevelSet(minimumVolumeLevelSetFunction, LessOrEqual(), minusLogPDFThreshold);
 }
 
 LevelSet DistributionImplementation::computeUnivariateMinimumVolumeLevelSetByQMC(const Scalar prob,
@@ -2633,7 +2633,7 @@ LevelSet DistributionImplementation::computeUnivariateMinimumVolumeLevelSetByQMC
   const Scalar minusLogPDFThreshold = -logPDFSample.computeQuantile(1.0 - prob)[0];
   threshold = std::exp(-minusLogPDFThreshold);
 
-  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
+  return LevelSet(minimumVolumeLevelSetFunction, LessOrEqual(), minusLogPDFThreshold);
 }
 
 /* Get the mathematical and numerical range of the distribution.

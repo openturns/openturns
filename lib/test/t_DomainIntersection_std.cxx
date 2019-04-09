@@ -40,7 +40,7 @@ int main(int, char *[])
     inVars.add("y");
     Description formula(1, "x^2 + y^2");
     SymbolicFunction function(inVars, formula);
-    LevelSet sphere(function, 1.0);
+    LevelSet sphere(function, LessOrEqual(), 1.0);
 
     Point p0(2); // inside sphere but not cube
     p0[0] = -0.2;
