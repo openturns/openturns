@@ -32,6 +32,8 @@ Bibliography
     multiscale modelling.* PhD thesis. Blaise Pascal University-Clermont II,
     France, 2012.
     `pdf <http://doc.openturns.org/papers/caniou2012.pdf>`__
+.. [ceres2012] Sameer Agarwal and Keir Mierle and Others, *Ceres Solver*,
+    http://ceres-solver.org
 .. [cminpack2007] Devernay, F. *C/C++ Minpack*, 2007.
     http://devernay.free.fr/hacks/cminpack
 .. [dagostino1986] D'Agostino, R.B. and Stephens, M.A. *Goodness-of-Fit Techniques*,

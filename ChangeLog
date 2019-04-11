@@ -8,6 +8,7 @@
  * Added OPT++ solvers
  * Improved a lot the performace of all the Rosenblatt related computations
  * Added elementary calibration capabilities
+ * Added CMinpack, Ceres Solver least-squares solvers
 
 ==== New classes ====
  * ParametricPointToFieldFunction
@@ -15,6 +16,7 @@
  * OPTpp
  * NearestPointProblem, LeastSquaresProblem
  * CMinpack
+ * Ceres
  * DiscreteMarkovChain
  * CalibrationAlgorithm, CalibrationResult, BLUE, LinearLeastSquaresCalibration
  * NonLinearLeastSquaresCalibration, ThreeDVAR

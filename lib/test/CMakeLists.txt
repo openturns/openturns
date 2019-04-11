@@ -217,6 +217,9 @@ ot_check_test (BasisFactory_std)
 
 # Optim
 ot_check_test (AbdoRackwitz_std)
+if (Ceres_FOUND)
+ot_check_test (Ceres_std)
+endif ()
 if (CMINPACK_FOUND)
 ot_check_test (CMinpack_std)
 endif ()
