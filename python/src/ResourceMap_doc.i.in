@@ -334,3 +334,17 @@ Returns
 keys : tuple of str
     The list of *unsigned integer* identifiers."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ResourceMap::HasKey
+"Check if an entry exists.
+
+Parameters
+----------
+key : str
+    An identifier associated to the parameter.
+
+Returns
+-------
+has_key : bool
+    Whether an entry with that key exists."
