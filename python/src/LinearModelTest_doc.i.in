@@ -305,7 +305,7 @@ secondSample : 2-d sequence of float
     Second tested sample, of dimension 1.
 linearModelResult : :class:`~openturns.LinearModelResult`
     A linear model. If not provided, it is built using the given samples.
-hypothesis : string
+hypothesis : str
     Hypothesis H0 for the residuals. It can be : 'Equal' to 0, 'Less' than 0 or
     'Greater' than 0. Default is set to 'Equal' to 0.
 level : positive float :math:`< 1`
