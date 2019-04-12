@@ -41,6 +41,6 @@ Examples
 >>> mesh2d = ot.Mesh(vertices, simplices)
 >>> difference = ot.DomainDifference(interval2d, mesh2d)
 >>> difference.contains([0.2, 0.1])
-True
+False
 >>> difference.contains([0.1, 0.2])
 True"

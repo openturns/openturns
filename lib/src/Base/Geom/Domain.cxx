@@ -59,4 +59,9 @@ Domain::BoolCollection Domain::contains(const Sample & sample) const
   return getImplementation()->contains(sample);
 }
 
+String Domain::__repr__() const
+{
+  return getImplementation()->__repr__();
+}
+
 END_NAMESPACE_OPENTURNS
