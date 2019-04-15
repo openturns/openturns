@@ -43,6 +43,7 @@ VisualTest::VisualTest()
 /* Draw the empirical CDF of the Sample when its dimension is 1 */
 Graph VisualTest::DrawEmpiricalCDF(const Sample & sample)
 {
+  LOGWARN("VisualTest::DrawEmpiricalCDF is deprecated");
   if (sample.getDimension() != 1)
     throw InvalidDimensionException(HERE) << "In VisualTest::DrawEmpiricalCDF: sample should be of dimension 1, here dimension=" << sample.getDimension();
   return UserDefined(sample).drawCDF();
@@ -53,6 +54,7 @@ Graph VisualTest::DrawEmpiricalCDF(const Sample & sample,
                                    const Scalar xMin,
                                    const Scalar xMax)
 {
+  LOGWARN("VisualTest::DrawEmpiricalCDF is deprecated");
   if (sample.getDimension() != 1)
     throw InvalidDimensionException(HERE) << "In VisualTest::DrawEmpiricalCDF: sample should be of dimension 1, here dimension=" << sample.getDimension();
   return UserDefined(sample).drawCDF(xMin, xMax);
@@ -63,6 +65,7 @@ Graph VisualTest::DrawEmpiricalCDF(const Sample & sample,
 Graph VisualTest::DrawHistogram(const Sample & sample,
                                 const UnsignedInteger binNumber)
 {
+  LOGWARN("VisualTest::DrawHistogram is deprecated");
   // Create an empty graph
   Graph graphHist("sample histogram", "realizations", "frequency", true, "topright");
   graphHist.add(HistogramFactory().buildAsHistogram(sample, binNumber).drawPDF());
@@ -76,6 +79,7 @@ Graph VisualTest::DrawHistogram(const Sample & sample,
 /* Draw the Histogram of the Sample when its dimension is 1, Normal empirical rule for bin number */
 Graph VisualTest::DrawHistogram(const Sample & sample)
 {
+  LOGWARN("VisualTest::DrawHistogram is deprecated");
   // Create an empty graph
   Graph graphHist("sample histogram", "realizations", "frequency", true, "topright");
   graphHist.add(HistogramFactory().buildAsHistogram(sample).drawPDF());
@@ -209,6 +213,7 @@ Graph VisualTest::DrawHenryLine(const Sample & sample, const Distribution & norm
 Graph VisualTest::DrawClouds(const Sample & sample,
                              const Distribution & dist)
 {
+  LOGWARN("VisualTest::DrawClouds is deprecated");
   if (sample.getDimension() != 2) throw InvalidDimensionException(HERE) << "Error: can draw sample clouds only if dimension equals 2, here dimension=" << sample.getDimension();
   if (dist.getDimension() != 2) throw InvalidDimensionException(HERE) << "Error: can draw distribution clouds only if dimension equals 2, here dimension=" << dist.getDimension();
 
@@ -229,6 +234,7 @@ Graph VisualTest::DrawClouds(const Sample & sample,
 Graph VisualTest::DrawClouds(const Sample & sample1,
                              const Sample & sample2)
 {
+  LOGWARN("VisualTest::DrawClouds is deprecated");
   if (sample1.getDimension() != 2) throw InvalidDimensionException(HERE) << "Error: can draw sample clouds only if dimension equals 2, here dimension=" << sample1.getDimension();
   if (sample2.getDimension() != 2) throw InvalidDimensionException(HERE) << "Error: can draw sample clouds only if dimension equals 2, here dimension=" << sample2.getDimension();
 

@@ -68,7 +68,7 @@ The diagram below provides an illustration of an ordered sample
     sample = [[5.0], [6.0], [10.0], [22.0], [27.0]]
     xmin = 0.0
     xmax = 30.0
-    graph = ot.VisualTest.DrawEmpiricalCDF(sample, xmin, xmax)
+    graph = ot.UserDefined(sample).drawCDF(xmin, xmax)
     graph.setTitle('Empirical CDF')
     View(graph)
 
@@ -107,7 +107,6 @@ distribution function.
 .. topic:: API:
 
     - See :class:`~openturns.UserDefined` for the empirical distribution
-    - See :py:func:`~openturns.VisualTest_DrawEmpiricalCDF` to draw an empirical CDF
 
 .. topic:: Examples:
 

@@ -32,7 +32,7 @@ try:
     normal = ot.Normal(1)
     size = 100
     sample = normal.getSample(size)
-    graph = ot.VisualTest.DrawHistogram(sample, 10)
+    graph = ot.HistogramFactory().build(sample, 10).drawPDF()
     # graph.draw('curve3.png')
     view = View(graph)
     # view.save('curve3.png')
@@ -50,20 +50,19 @@ try:
     view.ShowAll(block=True)
 
     # Clouds tests
-    dimension = (2)
+    dimension = 2
     R = ot.CorrelationMatrix(dimension)
     R[0, 1] = 0.8
     distribution = ot.Normal(
         ot.Point(dimension, 3.0), ot.Point(dimension, 2.0), R)
     size = 100
-    sample2D = distribution.getSample(size)
-    firstSample = ot.Sample(size, 1)
-    secondSample = ot.Sample(size, 1)
-    for i in range(size):
-        firstSample[i] = ot.Point(1, sample2D[i, 0])
-        secondSample[i] = ot.Point(1, sample2D[i, 1])
-    graph = ot.VisualTest.DrawClouds(
-        sample2D, ot.Normal(ot.Point(dimension, 2.0), ot.Point(dimension, 3.0), R).getSample(size // 2))
+    sample1 = ot.Normal([3.0] * dimension, [2.0] * dimension, R).getSample(size)
+    sample2 = ot.Normal([2.0] * dimension, [3.0] * dimension, R).getSample(size // 2)
+    cloud1 = ot.Cloud(sample1, "blue", "fsquare", "Sample1 Cloud")
+    cloud2 = ot.Cloud(sample2, "red", "fsquare", "Sample2 Cloud")
+    graph = ot.Graph("two samples clouds", "x1", "x2", True, "topright")
+    graph.add(cloud1)
+    graph.add(cloud2)
     # graph.draw('curve5.png')
     view = View(graph)
     # view.save('curve5.png')

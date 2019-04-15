@@ -72,7 +72,7 @@ is the Exponential distribution with parameters :math:`\lambda = 0.07`,
     graph = candidate.drawCDF(0.0, 30.0)
 
     sample = ot.Sample([[5.0], [6.0], [10.0], [22.0], [27.0]])
-    empiricalDrawable = ot.VisualTest.DrawEmpiricalCDF(sample, 0.0, 30.0).getDrawable(0)
+    empiricalDrawable = ot.UserDefined(sample).drawCDF(0.0, 30.0).getDrawable(0)
     empiricalDrawable.setColor('darkblue')
     graph.add(empiricalDrawable)
 
