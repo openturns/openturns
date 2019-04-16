@@ -10,6 +10,7 @@ This section details classes, functions included in the Python bindings.
     :maxdepth: 1
 
     base_objects
+    calibration
     combinatorial_generators
     designs_of_experiments
     functions

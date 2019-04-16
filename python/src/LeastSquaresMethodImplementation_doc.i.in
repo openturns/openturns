@@ -6,6 +6,8 @@ Available constructors:
 
     LeastSquaresMethod(*proxy, indices*)
 
+    LeastSquaresMethod(*design*)
+
 Parameters
 ----------
 proxy : :class:`~openturns.DesignProxy`
@@ -14,6 +16,8 @@ weight : sequence of float
     Output weights
 indices : sequence of int
     Indices allowed in the basis
+design : 2-d sequence of float
+    A priori known design matrix
 
 See also
 --------

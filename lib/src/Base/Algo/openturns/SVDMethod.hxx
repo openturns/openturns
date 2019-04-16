@@ -48,6 +48,9 @@ public:
   SVDMethod(const DesignProxy & proxy,
             const Indices & indices);
 
+  /** Default constructor */
+  explicit SVDMethod(const Matrix & matrix);
+
   /** Virtual constructor */
   virtual SVDMethod * clone() const;
 

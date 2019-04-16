@@ -277,6 +277,90 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Matrix::reshape
+"Reshape the matrix.
+
+Parameters
+----------
+newRowDim : int
+    The row dimension of the reshaped matrix.
+newColDim : int
+    The column dimension of the reshaped matrix.
+
+Returns
+-------
+MT : :class:`~openturns.Matrix`
+    The reshaped matrix.
+
+Notes
+-----
+If the size of the reshaped matrix is smaller than the size of the matrix to be
+reshaped, only the :math:`newRowDim\times newColDim` first elements are kept (in
+a column-major storage sense). If the size is greater, the new elements are set
+to zero.
+    
+Examples
+--------
+>>> import openturns as ot
+>>> M = ot.Matrix([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
+>>> print(M)
+[[ 1 2 ]
+ [ 3 4 ]
+ [ 5 6 ]]
+>>> print(M.reshape(1, 6))
+1x6
+[[ 1 3 5 2 4 6 ]]
+>>> print(M.reshape(2, 2))
+[[ 1 5 ]
+ [ 3 2 ]]
+>>> print(M.reshape(2, 6))
+2x6
+[[ 1 5 4 0 0 0 ]
+ [ 3 2 6 0 0 0 ]]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Matrix::reshapeInPlace
+"Reshape the matrix, in place.
+
+Parameters
+----------
+newRowDim : int
+    The row dimension of the reshaped matrix.
+newColDim : int
+    The column dimension of the reshaped matrix.
+
+Notes
+-----
+If the size of the reshaped matrix is smaller than the size of the matrix to be
+reshaped, only the :math:`newRowDim\times newColDim` first elements are kept (in
+a column-major storage sense). If the size is greater, the new elements are set
+to zero. If the size is unchanged, no copy of data is done.
+    
+Examples
+--------
+>>> import openturns as ot
+>>> M = ot.Matrix([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0]])
+>>> print(M)
+[[ 1 2 ]
+ [ 3 4 ]
+ [ 5 6 ]]
+>>> M.reshapeInPlace(1, 6)
+>>> print(M)
+1x6
+[[ 1 3 5 2 4 6 ]]
+>>> M.reshapeInPlace(2, 2)
+>>> print(M)
+[[ 1 5 ]
+ [ 3 2 ]]
+>>> M.reshapeInPlace(2, 6)
+>>> print(M)
+2x6
+[[ 1 5 0 0 0 0 ]
+ [ 3 2 0 0 0 0 ]]"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Matrix::transpose
 "Transpose the matrix.
 

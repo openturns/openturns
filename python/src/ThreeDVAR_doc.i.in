@@ -1,0 +1,145 @@
+%feature("docstring") OT::ThreeDVAR
+"3D variational (3DVAR) calibration algorithm.
+
+Parameters
+----------
+model : :class:`~openturns.Function`
+    The parametric function to be calibrated.
+inputObservations : 2-d sequence of float
+    The sample of input values of the model linked to the observations.
+outputObservations : 2-d sequence of float
+    The sample of output values of the model linked to the observations.
+candidate : sequence of float
+    The a priori value of the parameter.
+parameterCovariance : 2-d sequence of float
+    The covariance of the parameter prior distribution.
+errorCovariance : 2-d sequence of float
+    The covariance of the observations error.
+
+Notes
+-----
+ThreeDVAR is the minimum variance estimator of the parameter of a given model under the assumption that this parameter is dispersed according to a known covariance matrix.
+
+See also
+--------
+BLUE, LinearLeastSquaresCalibration, NonLinearLeastSquaresCalibration
+
+Examples
+--------
+Calibrate a nonlinear model using 3DVAR:
+
+>>> import openturns as ot
+>>> m = 10
+>>> x = [[0.5 + i] for i in range(m)]
+>>> inVars = ['a', 'b', 'c', 'x']
+>>> formulas = ['a + b * exp(c * x)']
+>>> model = ot.SymbolicFunction(inVars, formulas)
+>>> p_ref = [2.8, 1.2, 0.5]
+>>> params = [0, 1, 2]
+>>> modelX = ot.ParametricFunction(model, params, p_ref)
+>>> y = modelX(x)
+>>> y += ot.Normal(0.0, 0.05).getSample(m)
+>>> candidate = [1.0]*3
+>>> priorCovariance = ot.CovarianceMatrix(3)
+>>> errorCovariance = ot.CovarianceMatrix(1, [0.1])
+>>> algo = ot.ThreeDVAR(modelX, x, y, candidate, priorCovariance, errorCovariance)
+>>> algo.run()
+>>> print(algo.getResult().getParameterMAP())
+[2.72425,1.21172,0.498945]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ThreeDVAR::getModelObservations
+"Accessor to the model evaluation at the candidate.
+
+Returns
+-------
+modelObservation : :class:`~openturns.Sample`
+    Evaluation of the model at the candidate point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ThreeDVAR::getGradientObservations
+"Accessor to the model gradient at the candidate.
+
+Returns
+-------
+gradientObservation : :class:`~openturns.Matrix`
+    Gradient of the model at the candidate point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ThreeDVAR::getCandidate
+"Accessor to the parameter candidate.
+
+Returns
+-------
+candidate : :class:`~openturns.Point`
+    Parameter candidate."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ThreeDVAR::getParameterCovariance
+"Accessor to the parameter prior covariance.
+
+Returns
+-------
+prior : :class:`~openturns.CovarianceMatrix`
+    Parameter prior covariance."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ThreeDVAR::getErrorCovariance
+"Accessor to the observation error covariance.
+
+Returns
+-------
+error : :class:`~openturns.CovarianceMatrix`
+    Observation error covariance."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ThreeDVAR::getAlgorithm
+"Accessor to the optimization algorithm used for the computation.
+
+Returns
+-------
+algo : :class:`~openturns.OptimizationAlgorithm`
+    Optimization algorithm used for the computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ThreeDVAR::setAlgorithm
+"Accessor to the optimization algorithm used for the computation.
+
+Parameters
+----------
+algo : :class:`~openturns.OptimizationAlgorithm`
+    Optimization algorithm to use for the computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ThreeDVAR::getBootstrapSize
+"Accessor to the bootstrap size used to sample the posterior distribution.
+
+Returns
+-------
+size : int
+    Bootstrap size used to sample the posterior distribution. A value of 0
+    means that no bootstrap has been done but a linear approximation has
+    been used to get the posterior distribution, using the :class:`~openturns.BLUE`
+    algorithm at the maximum a posteriori estimate."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ThreeDVAR::setBootstrapSize
+"Accessor to the bootstrap size used to sample the posterior distribution.
+
+Parameters
+----------
+size : int
+    Bootstrap size used to sample the posterior distribution. A value of 0
+    means that no bootstrap has to be done but a linear approximation has
+    been used to get the posterior distribution, using the :class:`~openturns.BLUE`
+    algorithm at the maximum a posteriori estimate."
+

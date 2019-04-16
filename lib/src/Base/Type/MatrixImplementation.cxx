@@ -171,7 +171,7 @@ UnsignedInteger MatrixImplementation::getDimension() const
 }
 
 /* MatrixImplementation transpose */
-MatrixImplementation MatrixImplementation::transpose () const
+MatrixImplementation MatrixImplementation::transpose() const
 {
   MatrixImplementation trans(nbColumns_, nbRows_);
   // The source matrix is accessed columnwise in the natural order
@@ -180,6 +180,22 @@ MatrixImplementation MatrixImplementation::transpose () const
       trans(j, i) = operator()(i, j);
   return trans;
 }
+
+/* MatrixImplementation reshape */
+MatrixImplementation MatrixImplementation::reshape(const UnsignedInteger newRowDim,
+						   const UnsignedInteger newColDim) const
+{
+  return MatrixImplementation(newRowDim, newColDim, *this);
+}
+
+void MatrixImplementation::reshapeInPlace(const UnsignedInteger newRowDim,
+					  const UnsignedInteger newColDim)
+{
+  if (newRowDim * newColDim != getSize()) resize(newRowDim * newColDim);
+  nbRows_ = newRowDim;
+  nbColumns_ = newColDim;
+}
+
 
 /* Row extraction */
 const MatrixImplementation MatrixImplementation::getRow(const UnsignedInteger rowIndex) const

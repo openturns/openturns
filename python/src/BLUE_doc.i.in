@@ -1,0 +1,117 @@
+%feature("docstring") OT::BLUE
+"Best Linear Unbiased Estimator calibration algorithm.
+
+Available constructors:
+    BLUE(*model, inputObservations, outputObservations, candidate, parameterCovariance, errorCovariance, methodName*)
+
+    BLUE(*modelObservations, gradientObservations, outputObservations, candidate, parameterCovariance, errorCovariance, methodName*)
+
+Parameters
+----------
+model : :class:`~openturns.Function`
+    The parametric function to be calibrated.
+inputObservations : 2-d sequence of float
+    The sample of input values of the model linked to the observations.
+outputObservations : 2-d sequence of float
+    The sample of output values of the model linked to the observations.
+candidate : sequence of float
+    The a priori value of the parameter.
+parameterCovariance : 2-d sequence of float
+    The covariance of the parameter prior distribution.
+errorCovariance : 2-d sequence of float
+    The covariance of the observations error.
+methodName : str
+    The name of the least-squares method to use for the calibration. By default, equal to *SVD*. Possible values are *SVD*, *QR*, *Cholesky*.
+
+Notes
+-----
+BLUE stands for Best Linear Unbiased Estimator. It is the minimum variance estimator of the parameter of a given model under the assumption that this parameter acts linearly in the model.
+
+See also
+--------
+LinearLeastSquaresCalibration, NonLinearLeastSquaresCalibration, ThreeDVAR
+
+Examples
+--------
+Calibrate a nonlinear model using BLUE:
+
+>>> import openturns as ot
+>>> m = 10
+>>> x = [[0.5 + i] for i in range(m)]
+>>> inVars = ['a', 'b', 'c', 'x']
+>>> formulas = ['a + b * exp(c * x)']
+>>> model = ot.SymbolicFunction(inVars, formulas)
+>>> p_ref = [2.8, 1.2, 0.5]
+>>> params = [0, 1, 2]
+>>> modelX = ot.ParametricFunction(model, params, p_ref)
+>>> y = modelX(x)
+>>> y += ot.Normal(0.0, 0.05).getSample(m)
+>>> candidate = [1.0]*3
+>>> priorCovariance = ot.CovarianceMatrix(3)
+>>> errorCovariance = ot.CovarianceMatrix(1, [0.1])
+>>> method = 'SVD'
+>>> algo = ot.BLUE(modelX, x, y, candidate, priorCovariance, errorCovariance, method)
+>>> algo.run()
+>>> print(algo.getResult().getParameterMAP())
+[0.997874,0.093813,0.991216]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BLUE::getModelObservations
+"Accessor to the model evaluation at the candidate.
+
+Returns
+-------
+modelObservation : :class:`~openturns.Sample`
+    Evaluation of the model at the candidate point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BLUE::getGradientObservations
+"Accessor to the model gradient at the candidate.
+
+Returns
+-------
+gradientObservation : :class:`~openturns.Matrix`
+    Gradient of the model at the candidate point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BLUE::getCandidate
+"Accessor to the parameter candidate.
+
+Returns
+-------
+candidate : :class:`~openturns.Point`
+    Parameter candidate."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BLUE::getParameterCovariance
+"Accessor to the parameter prior covariance.
+
+Returns
+-------
+prior : :class:`~openturns.CovarianceMatrix`
+    Parameter prior covariance."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BLUE::getErrorCovariance
+"Accessor to the observation error covariance.
+
+Returns
+-------
+error : :class:`~openturns.CovarianceMatrix`
+    Observation error covariance."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BLUE::getMethodName
+"Accessor to the name of least-squares method used for the resolution.
+
+Returns
+-------
+name : :class:`~openturns.String`
+    Name of least-squares method used for the resolution."
+

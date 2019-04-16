@@ -57,6 +57,13 @@ QRMethod::QRMethod(const DesignProxy & proxy,
   // Nothing to do
 }
 
+/* Parameters constructor */
+QRMethod::QRMethod(const Matrix & matrix)
+  : LeastSquaresMethodImplementation(matrix)
+{
+  // Nothing to do
+}
+
 
 /* Virtual constructor */
 QRMethod * QRMethod::clone() const

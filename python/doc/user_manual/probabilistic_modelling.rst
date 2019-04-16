@@ -251,17 +251,6 @@ Random vectors
     :template: classWithPlot.rst_t
     UsualRandomVector
 
-Samplers
-========
-
-.. autosummary::
-    :toctree: _generated/
-    :template: class.rst_t
-
-    MCMC
-    RandomWalkMetropolisHastings
-    CalibrationStrategy
-
 Low-level distribution functions
 ================================
 

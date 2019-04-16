@@ -88,9 +88,9 @@ The number of bins is computed by minimizing the asymptotic mean integrated squa
 
 .. math::
 
-    m = 1+\left\lfloor n^{\dfrac{2}{4+n}} \right\rfloor
+    m = 1+\left\lfloor n^{\dfrac{2}{4+d}} \right\rfloor
 
-where :math:`\lfloor x \rfloor` is the largest integer less than or equal to :math:`x`.
+where :math:`\lfloor x \rfloor` is the largest integer less than or equal to :math:`x`, :math:`n` the sample size and :math:`d` the sample dimension.
 "
 
 // ---------------------------------------------------------------------

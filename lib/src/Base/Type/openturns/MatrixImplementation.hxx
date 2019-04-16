@@ -107,7 +107,14 @@ public:
   UnsignedInteger getDimension() const;
 
   /** MatrixImplementation transpose */
-  MatrixImplementation transpose () const;
+  MatrixImplementation transpose() const;
+
+  /** MatrixImplementation reshape */
+  MatrixImplementation reshape(const UnsignedInteger newRowDim,
+			       const UnsignedInteger newColDim) const;
+  void reshapeInPlace(const UnsignedInteger newRowDim,
+		      const UnsignedInteger newColDim);
+  
 
   /** Row extraction */
   const MatrixImplementation getRow(const UnsignedInteger rowIndex) const;

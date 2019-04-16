@@ -48,6 +48,9 @@ public:
   QRMethod(const DesignProxy & proxy,
            const Indices & indices);
 
+  /** Parameters constructor */
+  explicit QRMethod(const Matrix & matrix);
+
   /** Virtual constructor */
   virtual QRMethod * clone() const;
 

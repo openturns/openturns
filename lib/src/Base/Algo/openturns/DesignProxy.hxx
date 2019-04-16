@@ -50,6 +50,9 @@ public:
   DesignProxy(const Sample & x,
               const FunctionCollection & basis);
 
+  /** Parameters constructor */
+  explicit DesignProxy(const Matrix & matrix);
+
   /** Virtual constructor */
   virtual DesignProxy * clone() const;
 

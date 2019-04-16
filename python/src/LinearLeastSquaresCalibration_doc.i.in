@@ -1,0 +1,95 @@
+%feature("docstring") OT::LinearLeastSquaresCalibration
+"Linear least squares calibration algorithm.
+
+Available constructors:
+    LinearLeastSquaresCalibration(*model, inputObservations, outputObservations, candidate, methodName*)
+
+    LinearLeastSquaresCalibration(*modelObservations, gradientObservations, outputObservations, candidate, methodName*)
+
+Parameters
+----------
+model : :class:`~openturns.Function`
+    The parametric function to be calibrated.
+inputObservations : 2-d sequence of float
+    The sample of input values of the model linked to the observations.
+outputObservations : 2-d sequence of float
+    The sample of output values of the model linked to the observations.
+candidate : sequence of float
+    The a priori value of the parameter.
+parameterCovariance : 2-d sequence of float
+    The covariance of the parameter prior distribution.
+errorCovariance : 2-d sequence of float
+    The covariance of the observations error.
+methodName : str
+    The name of the least-squares method to use for the calibration. By default, equal to *SVD*. Possible values are *SVD*, *QR*, *Cholesky*.
+
+Notes
+-----
+LinearLeastSquaresCalibration is the minimum variance estimator of the parameter of a given model under the assumption that this parameter acts linearly in the model.
+
+See also
+--------
+BLUE, NonLinearLeastSquaresCalibration, ThreeDVAR
+
+Examples
+--------
+Calibrate a nonlinear model using linear least-squares:
+
+>>> import openturns as ot
+>>> m = 10
+>>> x = [[0.5 + i] for i in range(m)]
+>>> inVars = ['a', 'b', 'c', 'x']
+>>> formulas = ['a + b * exp(c * x)']
+>>> model = ot.SymbolicFunction(inVars, formulas)
+>>> p_ref = [2.8, 1.2, 0.5]
+>>> params = [0, 1, 2]
+>>> modelX = ot.ParametricFunction(model, params, p_ref)
+>>> y = modelX(x)
+>>> y += ot.Normal(0.0, 0.05).getSample(m)
+>>> candidate = [1.0]*3
+>>> method = 'SVD'
+>>> algo = ot.LinearLeastSquaresCalibration(modelX, x, y, candidate, method)
+>>> algo.run()
+>>> print(algo.getResult().getParameterMAP())
+[8.22226,0.0767398,0.992964]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquaresCalibration::getModelObservations
+"Accessor to the model evaluation at the candidate.
+
+Returns
+-------
+modelObservation : :class:`~openturns.Sample`
+    Evaluation of the model at the candidate point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquaresCalibration::getGradientObservations
+"Accessor to the model gradient at the candidate.
+
+Returns
+-------
+gradientObservation : :class:`~openturns.Matrix`
+    Gradient of the model at the candidate point."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquaresCalibration::getCandidate
+"Accessor to the parameter candidate.
+
+Returns
+-------
+candidate : :class:`~openturns.Point`
+    Parameter candidate."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearLeastSquaresCalibration::getMethodName
+"Accessor to the name of least-squares method used for the resolution.
+
+Returns
+-------
+name : :class:`~openturns.String`
+    Name of least-squares method used for the resolution."
+

@@ -113,8 +113,14 @@ public:
   UnsignedInteger getNbColumns() const;
 
   /** Matrix transpose */
-  Matrix transpose () const;
+  Matrix transpose() const;
 
+  /** Matrix reshape */
+  Matrix reshape(const UnsignedInteger newRowDim,
+		 const UnsignedInteger newColDim) const;
+  void reshapeInPlace(const UnsignedInteger newRowDim,
+		      const UnsignedInteger newColDim);
+  
   /** Row extraction */
   const Matrix getRow(const UnsignedInteger rowIndex) const;
   /** Column extration */

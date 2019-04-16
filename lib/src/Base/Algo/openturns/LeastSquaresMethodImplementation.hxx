@@ -57,6 +57,9 @@ public:
   LeastSquaresMethodImplementation(const DesignProxy & proxy,
                                    const Indices & indices);
 
+  /** Parameters constructor */
+  explicit LeastSquaresMethodImplementation(const Matrix & matrix);
+
   /** Virtual constructor */
   virtual LeastSquaresMethodImplementation * clone() const;
 

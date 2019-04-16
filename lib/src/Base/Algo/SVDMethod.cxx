@@ -60,6 +60,14 @@ SVDMethod::SVDMethod(const DesignProxy & proxy,
 }
 
 
+/* Default constructor */
+SVDMethod::SVDMethod(const Matrix & matrix)
+  : LeastSquaresMethodImplementation(matrix)
+{
+  // Nothing to do
+}
+
+
 /* Virtual constructor */
 SVDMethod * SVDMethod::clone() const
 {
@@ -136,8 +144,7 @@ Point SVDMethod::solve(const Point & rhs)
   Point d(svdSize);
   for (UnsignedInteger i = 0; i < svdSize; ++i) d[i] = c[i] / singularValues_[i];
   // Third step
-  const Point coefficients(vT_.getImplementation()->genVectProd(d, true));
-  return coefficients;
+  return vT_.getImplementation()->genVectProd(d, true);
 }
 
 
