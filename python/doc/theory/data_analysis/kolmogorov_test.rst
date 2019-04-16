@@ -33,28 +33,49 @@ With a sample :math:`\left\{ x_1,x_2,\ldots,x_N \right\}`, the distance is estim
 
     \widehat{D}_N = \sup_{i=1 \ldots N}\left|F\left(x_i\right)-\frac{i-1}{N} ; \frac{i}{N}-F\left(x_i\right)\right|
 
-The probability distribution of the distance :math:`\widehat{D}_N` is
-asymptotically known (i.e. as the size of the sample tends to infinity).
-If *N* is sufficiently large, this means that for a probability
-:math:`\alpha` and a candidate distribution type, one can compute the
-threshold / critical value :math:`d_\alpha` such that:
+Assume that the sample is drawn from the candidate distribution. 
+By definition, the *p*-value of the test is the probability:
 
-- if  :math:`\widehat{D}_N>d_{\alpha}`, we reject the candidate distribution
-  with a risk of error :math:`\alpha`,
-- if  :math:`\widehat{D}_N \leq d_{\alpha}`, the candidate distribution is
-  considered acceptable.
+.. math::
 
-Note that :math:`d_\alpha` does not depend on the candidate distribution
-*F* being tested, and the test is therefore relevant for any continuous
-distribution.
+    p = P(D > \widehat{D}_N)
 
-An important notion is the so-called *p*-value of the test. This quantity is
-equal to the limit error probability :math:`\alpha_\textrm{lim}` under which
-the candidate distribution is rejected.
-Thus, the candidate distribution will be accepted if and only if
-:math:`\alpha_\textrm{lim}` is greater than the value :math:`\alpha` desired by
-the user.
-Note that the higher :math:`\alpha_\textrm{lim} - \alpha`, the more robust the decision.
+In the case where the fit is good, the value of :math:`\widehat{D}_N` is 
+small, which leads to a p-value closer to 1. 
+The candidate distribution will not be rejected if and only if 
+:math:`p` is larger than a given threshold probability. 
+In general, the threshold p-value is chosen to be 0.05:
+
+.. math::
+
+    p_{ref} = 0.05
+
+Based on the p-value, 
+
+- if  :math:`p<p_{ref}`, we reject the candidate distribution,
+
+- otherwise, the candidate distribution is not rejected.
+
+Two situations may occur in practice.
+
+- the parameters of the distribution under test are known,
+
+- the parameters of the distribution under test are estimated from a sample. 
+
+If the parameters of the distribution under test are known, 
+algorithms are available to directly compute 
+the distribution of :math:`\widehat{D}_N` both for *N* large 
+(asymptotic distribution) or for *N* small (exact distribution). 
+This is because the distribution of :math:`\widehat{D}_N` does 
+not depend on the candidate distribution. 
+
+If the parameters of the distribution under test are estimated 
+from a sample, the :math:`\widehat{D}_N` statistic is generally smaller, because 
+the parameters of the distribution have been computed from the 
+sample. 
+In general, the distribution of :math:`\widehat{D}_N` is not known 
+and depends on the candidate distribution.  
+Therefore, sampling methods can be used in order to estimate the p-value.  
 
 The diagram below illustrates the principle of comparison with the empirical
 cumulative distribution function for an ordered sample
@@ -86,20 +107,12 @@ and the candidate distribution, it is by nature highly sensitive to presence of
 local deviations (a candidate distribution may be rejected even if it correctly
 describes the sample for almost the whole domain of variation).
 
-We remind the reader that the underlying theoretical results of the test are
-asymptotic. There is no rule to determine the minimum number of data values one
+There is no rule to determine the minimum sample size one
 needs to use this test; but it is often considered a reasonable approximation
 when *N* is of an order of a few dozen. But whatever the value of *N*, the
 distance -- and similarly the *p*-value -- remains a useful tool for comparing
 different probability distributions to a sample. The distribution which minimizes
 :math:`\widehat{D}_N` -- or maximizes the *p*-value -- will be of interest to the analyst.
-
-We also point out that the calculation of :math:`d_\alpha` should in theory be
-modified if on is testing the goodness-of-fit to a parametric model where the
-parameters have been estimated from the same sample. The current version does
-not allow this modification, and the results should be therefore used with
-caution when the *p*-value :math:`\alpha_\textrm{lim}` and the desired error
-risk :math:`\alpha` are very close.
 
 This method is also referred to in the literature as Kolmogorov's Test.
 
