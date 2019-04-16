@@ -15,7 +15,7 @@ normal_distribution : :class:`~openturns.Normal`, optional
 
 Returns
 -------
-graph : class:`~openturns.Graph`
+graph : :class:`~openturns.Graph`
     The graph object
 
 Notes
@@ -100,7 +100,7 @@ n_points : int, optional
 
 Returns
 -------
-graph : class:`~openturns.Graph`
+graph : :class:`~openturns.Graph`
     The graph object
 
 Notes
@@ -179,7 +179,7 @@ quantileScale : bool
 
 Returns
 -------
-graph : class:`~openturns.Graph`
+graph : :class:`~openturns.Graph`
     The graph object
 
 Notes
@@ -249,7 +249,7 @@ distribution : :class:`~openturns.Distribution`
 
 Returns
 -------
-graph : class:`~openturns.Graph`
+graph : :class:`~openturns.Graph`
     The graph object
 
 Examples
@@ -281,7 +281,7 @@ linearModelResult : :class:`~openturns.LinearModelResult`
 
 Returns
 -------
-graph : class:`~openturns.Graph`
+graph : :class:`~openturns.Graph`
     The graph object
 
 Examples
@@ -318,7 +318,7 @@ linearModelResult : :class:`~openturns.LinearModelResult`
 
 Returns
 -------
-graph : class:`~openturns.Graph`
+graph : :class:`~openturns.Graph`
     The graph object
 
 Examples
