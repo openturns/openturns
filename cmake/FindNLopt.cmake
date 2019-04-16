@@ -50,6 +50,7 @@ find_package_handle_standard_args (NLopt DEFAULT_MSG NLOPT_LIBRARY
   NLOPT_ROOT_DIR
 )
 
+set (NLopt_FOUND ${NLOPT_FOUND})
 
 mark_as_advanced (
   NLOPT_LIBRARY
