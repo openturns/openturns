@@ -15,8 +15,8 @@ psi : sequence of :class:`~openturns.Function`
 matrix : 2-d sequence of float
 The design matrix
 
-Notes:
-------
+Notes
+-----
 Helps to cache evaluations of the design matrix. Can be useful for an iterative
 least squares problem resolution or in interaction with :class:`~openturns.LeastSquaresMethod`
 to select the algorithm used for the resolution of linear least-squares problems.
