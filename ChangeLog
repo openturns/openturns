@@ -31,6 +31,7 @@
  * Deprecated OptimizationProblem(levelFunction, levelValue)
  * Deprecated (Linear|Quadratic)(LeastSquares|Taylor)::getResponseSurface
  * FittingTest::BestModelBIC returns the Distribution and the BIC value
+ * Deprecated VisualTest::DrawEmpiricalCDF,DrawHistogram,DrawClouds
 
 === Python module ===
 

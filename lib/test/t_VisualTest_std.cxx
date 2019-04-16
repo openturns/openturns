@@ -30,31 +30,6 @@ int main(int, char *[])
   OStream fullprint(std::cout);
   setRandomGenerator();
 
-  /* EmpiricalCDF tests */
-  {
-    /* Generate a Normal sample */
-    Normal normal(1);
-    UnsignedInteger size = 100;
-    Sample sample(normal.getSample(size));
-    Graph sampleCDF(VisualTest::DrawEmpiricalCDF(sample, sample.getMin()[0] - 1.0, sample.getMax()[0] + 1.0));
-    fullprint << "sampleCDF = " << sampleCDF << std::endl;
-
-    sampleCDF = VisualTest::DrawEmpiricalCDF(sample, -0.5, 0.5);
-    fullprint << "EmpiricalCDF graph = " << sampleCDF << std::endl;
-  }
-
-  /* Histogram tests */
-  {
-    Normal normal(1);
-    UnsignedInteger size = 100;
-    Sample sample(normal.getSample(size));
-    Graph sampleHist(VisualTest::DrawHistogram(sample, 10));
-    fullprint << "sampleHist = " << sampleHist << std::endl;
-
-    sampleHist = VisualTest::DrawHistogram(sample);
-    fullprint << "Histogram graph = " << sampleHist << std::endl;
-  }
-
   /* QQPlot tests */
   {
     UnsignedInteger size = 100;
@@ -75,29 +50,6 @@ int main(int, char *[])
     Sample sample(normal.getSample(size));
     Graph henryPlot(VisualTest::DrawHenryLine(sample));
     fullprint << "Henry graph = " << henryPlot << std::endl;
-  }
-
-  /* Clouds tests */
-  {
-    UnsignedInteger dimension = 2;
-    CorrelationMatrix R(dimension);
-    R(0, 1) = 0.8;
-    Normal distribution(Point(dimension, 3.0), Point(dimension, 2.0), R);
-    UnsignedInteger size = 100;
-    Sample sample2D(distribution.getSample(size));
-    Sample firstSample(size, 1);
-    Sample secondSample(size, 1);
-    for (UnsignedInteger i = 0; i < size; i++)
-    {
-      firstSample[i][0] = sample2D[i][0];
-      secondSample[i][0] = sample2D[i][1];
-    }
-
-    Graph sampleSampleClouds(VisualTest::DrawClouds(sample2D, Normal(Point(dimension, 2.0), Point(dimension, 3.0), R).getSample(size / 2)));
-    fullprint << "sampleSampleClouds = " << sampleSampleClouds << std::endl;
-
-    Graph sampleDistributionClouds(VisualTest::DrawClouds(sample2D, Normal(Point(dimension, 2.5), Point(dimension, 1.0), R)));
-    fullprint << "sampleDistributionClouds = " << sampleDistributionClouds << std::endl;
   }
 
   /* LinearModel tests */

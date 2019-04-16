@@ -39,14 +39,14 @@ class OT_API VisualTest
 public:
 
 
-  /** Draw the empirical CDF of the Sample when its dimension is 1 */
+  /** @deprecated Draw the empirical CDF of the Sample when its dimension is 1 */
   static Graph DrawEmpiricalCDF(const Sample & sample);
 
   static Graph DrawEmpiricalCDF(const Sample & sample,
                                 const Scalar xMin,
                                 const Scalar xMax);
 
-  /** Draw the Histogram of the Sample when its dimension is 1 */
+  /** @deprecated Draw the Histogram of the Sample when its dimension is 1 */
   static Graph DrawHistogram(const Sample & sample,
                              const UnsignedInteger BarNumber);
 
@@ -70,7 +70,7 @@ public:
   static Graph DrawHenryLine(const Sample & sample,
                              const Distribution & normal);
 
-  /** Draw the clouds of one Sample and one model when its dimension is 2 */
+  /** @deprecated Draw the clouds of one Sample and one model when its dimension is 2 */
   static Graph DrawClouds(const Sample & sample1,
                           const Distribution & dist);
 

@@ -7,27 +7,6 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    # Generate a Normal sample
-    normal = Normal(1)
-    size = 100
-    sample = normal.getSample(size)
-    sampleCDF = VisualTest.DrawEmpiricalCDF(
-        sample, sample.getMin()[0] - 1.0, sample.getMax()[0] + 1.0)
-    print("sampleCDF = ", sampleCDF)
-
-    sampleCDF = VisualTest.DrawEmpiricalCDF(sample, -0.5, 0.5)
-    print("sampleCDFZoom = ", sampleCDF)
-
-    # Histogram tests
-    normal = Normal(1)
-    size = 100
-    sample = normal.getSample(size)
-    sampleHist = VisualTest.DrawHistogram(sample, 10)
-    print("sampleHist = ", sampleHist)
-
-    sampleHist = VisualTest.DrawHistogram(sample)
-    print("sampleHistOpt = ", sampleHist)
-
     # QQPlot tests
     size = 100
     normal = Normal(1)
@@ -45,28 +24,6 @@ try:
     sample = normal.getSample(size)
     henryPlot = VisualTest.DrawHenryLine(sample)
     print("HenryPlot = ", henryPlot)
-
-    # Clouds tests
-    dimension = (2)
-    R = CorrelationMatrix(dimension)
-    R[0, 1] = 0.8
-    distribution = Normal(
-        Point(dimension, 3.0), Point(dimension, 2.0), R)
-    size = 100
-    sample2D = distribution.getSample(size)
-    firstSample = Sample(size, 1)
-    secondSample = Sample(size, 1)
-    for i in range(size):
-        firstSample[i] = Point(1, sample2D[i, 0])
-        secondSample[i] = Point(1, sample2D[i, 1])
-
-    sampleSampleClouds = VisualTest.DrawClouds(
-        sample2D, Normal(Point(dimension, 2.0), Point(dimension, 3.0), R).getSample(size // 2))
-    print("sampleSampleClouds = ", sampleSampleClouds)
-
-    sampleDistributionClouds = VisualTest.DrawClouds(
-        sample2D, Normal(Point(dimension, 2.5), Point(dimension, 1.0), R))
-    print("sampleDistributionClouds = ", sampleDistributionClouds)
 
     # LinearModel tests
     dimension = 2

@@ -186,11 +186,8 @@ Graphical tests
     :toctree: _generated/
     :template: functionWithPlot.rst_t
 
-    VisualTest_DrawClouds
     VisualTest_DrawCobWeb
-    VisualTest_DrawEmpiricalCDF
     VisualTest_DrawHenryLine
-    VisualTest_DrawHistogram
     VisualTest_DrawKendallPlot
     VisualTest_DrawLinearModel
     VisualTest_DrawLinearModelResidual
