@@ -36,10 +36,10 @@ int main(int, char *[])
     Normal weightingDistribution(distribution);
     weightingDistribution.setMean(Point(4, 1.0));
     UnsignedInteger size = 10;
-    ImportanceSamplingExperiment myPlane(distribution, weightingDistribution, size);
-    fullprint << "myPlane = " << myPlane << std::endl;
+    ImportanceSamplingExperiment experiment(distribution, weightingDistribution, size);
+    fullprint << "experiment = " << experiment << std::endl;
     Point weights(0);
-    Sample sample(myPlane.generateWithWeights(weights));
+    Sample sample(experiment.generateWithWeights(weights));
     fullprint << "sample = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
   }

@@ -35,9 +35,9 @@ int main(int, char *[])
     levels.setName("levels");
     levels[0] = 4;
     levels[1] = 4;
-    Box myPlane(levels);
-    fullprint << "myPlane = " << myPlane << std::endl;
-    Sample sample(myPlane.generate());
+    Box experiment(levels);
+    fullprint << "experiment = " << experiment << std::endl;
+    Sample sample(experiment.generate());
     fullprint << "sample = " << sample << std::endl;
   }
   catch (TestFailed & ex)

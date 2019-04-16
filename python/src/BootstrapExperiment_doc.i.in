@@ -26,15 +26,15 @@ Examples
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sample = [[i,i+1] for i in range(5)]
->>> myPlane = ot.BootstrapExperiment(sample)
->>> print(myPlane.generate())
+>>> experiment = ot.BootstrapExperiment(sample)
+>>> print(experiment.generate())
     [ v0 v1 ]
 0 : [ 4  5  ]
 1 : [ 1  2  ]
 2 : [ 1  2  ]
 3 : [ 1  2  ]
 4 : [ 2  3  ]
->>> print(myPlane.getDistribution())
+>>> print(experiment.getDistribution())
 UserDefined({x = [0,1], p = 0.2}, {x = [1,2], p = 0.2}, {x = [2,3], p = 0.2}, {x = [3,4], p = 0.2}, {x = [4,5], p = 0.2})"
 
 // ---------------------------------------------------------------------

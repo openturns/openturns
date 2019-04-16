@@ -34,22 +34,22 @@ int main(int, char *[])
   {
     Normal distribution(4);
     UnsignedInteger size = 10;
-    LHSExperiment myPlane(distribution, size);
-    fullprint << "myPlane = " << myPlane << std::endl;
+    LHSExperiment experiment(distribution, size);
+    fullprint << "experiment = " << experiment << std::endl;
     Point weights(0);
-    Sample sample(myPlane.generateWithWeights(weights));
+    Sample sample(experiment.generateWithWeights(weights));
     fullprint << "sample  = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
-    fullprint << "sample2 = " << myPlane.generate() << std::endl;
-    myPlane = LHSExperiment(distribution, size, true, true);
-    fullprint << "sample  = " << myPlane.generate() << std::endl;
-    fullprint << "sample2 = " << myPlane.generate() << std::endl;
-    myPlane = LHSExperiment(distribution, size, false, false);
-    fullprint << "sample  = " << myPlane.generate() << std::endl;
-    fullprint << "sample2 = " << myPlane.generate() << std::endl;
-    myPlane = LHSExperiment(distribution, size, true, false);
-    fullprint << "sample  = " << myPlane.generate() << std::endl;
-    fullprint << "sample2 = " << myPlane.generate() << std::endl;
+    fullprint << "sample2 = " << experiment.generate() << std::endl;
+    experiment = LHSExperiment(distribution, size, true, true);
+    fullprint << "sample  = " << experiment.generate() << std::endl;
+    fullprint << "sample2 = " << experiment.generate() << std::endl;
+    experiment = LHSExperiment(distribution, size, false, false);
+    fullprint << "sample  = " << experiment.generate() << std::endl;
+    fullprint << "sample2 = " << experiment.generate() << std::endl;
+    experiment = LHSExperiment(distribution, size, true, false);
+    fullprint << "sample  = " << experiment.generate() << std::endl;
+    fullprint << "sample2 = " << experiment.generate() << std::endl;
   }
   catch (TestFailed & ex)
   {

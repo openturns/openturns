@@ -17,9 +17,9 @@ try:
     levels[0] = 4
     levels[1] = 8
     levels[2] = 16
-    myPlane = Composite(center, levels)
-    print("myPlane = ", myPlane)
-    sample = myPlane.generate()
+    experiment = Composite(center, levels)
+    print("experiment = ", experiment)
+    sample = experiment.generate()
     print("sample = ", repr(sample))
 
 except:

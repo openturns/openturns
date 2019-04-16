@@ -34,10 +34,10 @@ int main(int, char *[])
   {
     Normal distribution(4);
     UnsignedInteger size = 10;
-    MonteCarloExperiment myPlane(distribution, size);
-    fullprint << "myPlane = " << myPlane << std::endl;
+    MonteCarloExperiment experiment(distribution, size);
+    fullprint << "experiment = " << experiment << std::endl;
     Point weights(0);
-    Sample sample(myPlane.generateWithWeights(weights));
+    Sample sample(experiment.generateWithWeights(weights));
     fullprint << "sample = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
   }

@@ -18,9 +18,9 @@ try:
     levels[0] = 4
     levels[1] = 8
     levels[2] = 16
-    myPlane = Factorial(center, levels)
-    print("myPlane = ", myPlane)
-    sample = myPlane.generate()
+    experiment = Factorial(center, levels)
+    print("experiment = ", experiment)
+    sample = experiment.generate()
     print("sample = ", repr(sample))
 
 except:

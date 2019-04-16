@@ -6,9 +6,9 @@ ot.RandomGenerator.SetSeed(0)
 # Generate sample with the given plane
 distribution = ot.ComposedDistribution([ot.Uniform(0, 1)] * 2)
 size = 10
-myPlane = ot.MonteCarloExperiment(distribution, size)
+experiment = ot.MonteCarloExperiment(distribution, size)
 
-sample = myPlane.generate()
+sample = experiment.generate()
 
 # Create an empty graph
 graph = ot.Graph("Monte Carlo experiment", "x1", "x2", True, "")

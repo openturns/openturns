@@ -11,10 +11,10 @@ try:
     size = 10
     weightingDistribution = Normal(distribution)
     weightingDistribution.setMean(Point(4, 1.0))
-    myPlane = ImportanceSamplingExperiment(
+    experiment = ImportanceSamplingExperiment(
         distribution, weightingDistribution, size)
-    print("myPlane = ", myPlane)
-    sample, weights = myPlane.generateWithWeights()
+    print("experiment = ", experiment)
+    sample, weights = experiment.generateWithWeights()
     print("sample = ", repr(sample))
     print("weights = ", repr(weights))
 except:

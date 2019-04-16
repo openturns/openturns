@@ -35,8 +35,8 @@ Examples
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sample = [[i,i+1] for i in range(5)]
->>> myPlane = ot.FixedExperiment(sample)
->>> print(myPlane.generate())
+>>> experiment = ot.FixedExperiment(sample)
+>>> print(experiment.generate())
 0 : [ 0 1 ]
 1 : [ 1 2 ]
 2 : [ 2 3 ]

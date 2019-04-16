@@ -6,9 +6,9 @@ ot.RandomGenerator.SetSeed(0)
 # Generate sample with the given plane
 distribution = ot.ComposedDistribution([ot.Uniform(0, 1)] * 2)
 size = 200
-myPlane = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, size)
+experiment = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, size)
 
-sample = myPlane.generate()
+sample = experiment.generate()
 
 # Create an empty graph
 graph = ot.Graph("Low Discrepancy experiment", "x1", "x2", True, "")

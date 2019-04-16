@@ -45,8 +45,8 @@ int main(int, char *[])
     levels[1] = 5.;
     levels[2] = 5.;
     levels[3] = 5.;
-    Box myPlane(levels);
-    Sample sample(myPlane.generate());
+    Box experiment(levels);
+    Sample sample(experiment.generate());
     // Then, scale and move the cube to sample around the point of interrest
     Point point(inputDimension);
     point[0] = 2.1e11;

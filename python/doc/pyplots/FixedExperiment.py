@@ -13,9 +13,9 @@ for i in range(size):
         p[j] = i + j
     refSample[i] = p
 
-myPlane = ot.FixedExperiment(refSample)
+experiment = ot.FixedExperiment(refSample)
 
-sample = myPlane.generate()
+sample = experiment.generate()
 
 # Create an empty graph
 graph = ot.Graph("Fixed experiment", "x1", "x2", True, "")
