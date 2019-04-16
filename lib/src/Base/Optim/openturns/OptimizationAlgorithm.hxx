@@ -109,8 +109,11 @@ public:
   /** Build an instance from its name */
   static OptimizationAlgorithm Build(const String & solverName);
 
-  /** Get optimization algorithm names */
+  /** Get all optimization algorithm names */
   static Description GetAlgorithmNames();
+
+  /** Get least-squares optimization algorithm names */
+  static Description GetLeastSquaresAlgorithmNames();
 
   /** String converter */
   virtual String __repr__() const;

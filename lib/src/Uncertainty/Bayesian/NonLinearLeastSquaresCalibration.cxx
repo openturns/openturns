@@ -32,7 +32,6 @@
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/MultiStart.hxx"
 #include "openturns/TNC.hxx"
-#include "openturns/CMinpack.hxx"
 #include "openturns/LeastSquaresProblem.hxx"
 #include "openturns/LinearLeastSquaresCalibration.hxx"
 
@@ -67,12 +66,13 @@ NonLinearLeastSquaresCalibration::NonLinearLeastSquaresCalibration(const Functio
   if (model.getOutputDimension() != outputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of output dimension=" << outputDimension << ", got output dimension=" << model.getOutputDimension();
   const UnsignedInteger size = inputObservations.getSize();
   if (outputObservations.getSize() != size) throw InvalidArgumentException(HERE) << "Error: expected an output sample of size=" << size << ", got size=" << outputObservations.getSize();
+
   // Now the automatic selection of the algorithm
-#ifdef OPENTURNS_HAVE_CMINPACK
-  algorithm_ = CMinpack();
-#else
-  algorithm_ = MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-MultiStartSize")).generate());
-#endif
+  Description leastSquaresNames(OptimizationAlgorithm::GetLeastSquaresAlgorithmNames());
+  if (leastSquaresNames.getSize() > 0)
+    algorithm_ = OptimizationAlgorithm::Build(leastSquaresNames[0]);
+  else
+    algorithm_ = MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-MultiStartSize")).generate());
 }
 
 namespace NonLinearLeastSquaresCalibrationFunctions

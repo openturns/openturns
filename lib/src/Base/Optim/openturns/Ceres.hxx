@@ -53,7 +53,7 @@ public:
   void run();
 
   /** Algorithm names accessor */
-  static Description GetAlgorithmNames(const Bool leastSquares = true);
+  static Description GetAlgorithmNames();
 
   void setAlgorithmName(const String algoName);
   String getAlgorithmName() const;
@@ -77,8 +77,6 @@ protected:
   virtual void checkProblem(const OptimizationProblem & problem) const;
 
   String algoName_;
-
-  static Description AlgorithmNames_;
 
 private:
 

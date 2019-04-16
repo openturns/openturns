@@ -271,4 +271,14 @@ Description OptimizationAlgorithm::GetAlgorithmNames()
 }
 
 
+Description OptimizationAlgorithm::GetLeastSquaresAlgorithmNames()
+{
+  Description names;
+  if (CMinpack::IsAvailable())
+    names.add("CMinpack");
+  if (Ceres::IsAvailable())
+    names.add(Ceres::GetAlgorithmNames());
+  return names;
+}
+
 END_NAMESPACE_OPENTURNS

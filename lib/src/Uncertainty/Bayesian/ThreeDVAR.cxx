@@ -34,7 +34,6 @@
 #include "openturns/LeastSquaresProblem.hxx"
 #include "openturns/MultiStart.hxx"
 #include "openturns/TNC.hxx"
-#include "openturns/CMinpack.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -74,12 +73,13 @@ ThreeDVAR::ThreeDVAR(const Function & model,
   if (errorCovariance.getDimension() != outputDimension) throw InvalidArgumentException(HERE) << "Error: expected an error covariance of dimension=" << outputDimension << ", got dimension=" << errorCovariance.getDimension();
   const UnsignedInteger size = inputObservations.getSize();
   if (outputObservations.getSize() != size) throw InvalidArgumentException(HERE) << "Error: expected an output sample of size=" << size << ", got size=" << outputObservations.getSize();
+
   // Now the automatic selection of the algorithm
-#ifdef OPENTURNS_HAVE_CMINPACK
-  algorithm_ = CMinpack();
-#else
-  algorithm_ = MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-MultiStartSize")).generate());
-#endif
+  Description leastSquaresNames(OptimizationAlgorithm::GetLeastSquaresAlgorithmNames());
+  if (leastSquaresNames.getSize() > 0)
+    algorithm_ = OptimizationAlgorithm::Build(leastSquaresNames[0]);
+  else
+    algorithm_ = MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-MultiStartSize")).generate());
 }
 
 namespace ThreeDVARFunctions

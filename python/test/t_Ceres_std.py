@@ -28,7 +28,10 @@ f = ot.SymbolicFunction(['x1', 'x2'], ['1+100*(x2-x1^2)^2+(1-x1)^2'])
 startingPoint = [1e-3] * dim
 p_ref = [1.0] * dim
 
-for algoName in ot.Ceres.GetAlgorithmNames(False):
+for algoName in algoNames:
+    if algoName in ['LEVENBERG_MARQUARDT', 'DOGLEG']:
+        # only test general optimization algorithms
+        continue
     for minimization in [True, False]:
         if algoName == 'NONLINEAR_CONJUGATE_GRADIENT' and not minimization:
             # goes very far and the function cannot evaluate
@@ -69,9 +72,6 @@ bounds = ot.Interval([0, 0, 0], [2.5, 8.0, 19])
 
 for algoName in algoNames:
     for bound in [True, False]:
-        if bound and algoName in ot.Ceres.GetAlgorithmNames(False):
-            # line search algorithms support constraints
-            continue
         print('algoName=', algoName, 'bound=', bound)
         problem = ot.LeastSquaresProblem(residualFunction)
         if bound:
@@ -87,6 +87,7 @@ for algoName in algoNames:
         print(result)
         if bound:
             assert bounds.contains(x_star), "optimal point not in bounds"
-        if not bound and not algoName in ot.Ceres.GetAlgorithmNames(False):
-            # line search algorithms converge less well
-            ott.assert_almost_equal(x_star, p_ref, 0.1)
+        else:
+            if algoName in ['LEVENBERG_MARQUARDT', 'DOGLEG']:
+                # line search algorithms converge less well
+                ott.assert_almost_equal(x_star, p_ref, 0.1)

@@ -33,27 +33,22 @@ CLASSNAMEINIT(Ceres)
 
 static const Factory<Ceres> Factory_Ceres;
 
-Description Ceres::AlgorithmNames_;
-
-Description Ceres::GetAlgorithmNames(const Bool leastSquares)
+Description Ceres::GetAlgorithmNames()
 {
-  if (!AlgorithmNames_.getSize())
+  static Description AlgorithmNames;
+  if (!AlgorithmNames.getSize())
   {
+    // trust-region methods, not for general optimization
+    AlgorithmNames.add("LEVENBERG_MARQUARDT");// default nlls method, list it first
+    AlgorithmNames.add("DOGLEG");
+
     // line search methods, available for both least-squares and general optimization
-    AlgorithmNames_.add("STEEPEST_DESCENT");
-    AlgorithmNames_.add("NONLINEAR_CONJUGATE_GRADIENT");
-    AlgorithmNames_.add("LBFGS");
-    AlgorithmNames_.add("BFGS");
+    AlgorithmNames.add("STEEPEST_DESCENT");
+    AlgorithmNames.add("NONLINEAR_CONJUGATE_GRADIENT");
+    AlgorithmNames.add("LBFGS");
+    AlgorithmNames.add("BFGS");
   }
-  Description algorithmNames;
-  if (leastSquares)
-  {
-    // trust region methods, only available for least-squares
-    algorithmNames.add("LEVENBERG_MARQUARDT");// default nlls method, list it first
-    algorithmNames.add("DOGLEG");
-  }
-  algorithmNames.add(AlgorithmNames_);
-  return algorithmNames;
+  return AlgorithmNames;
 }
 
 
