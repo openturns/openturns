@@ -29,6 +29,7 @@ Optimization solvers
     :template: class.rst_t
 
     AbdoRackwitz
+    Ceres
     CMinpack
     Cobyla
     SQP

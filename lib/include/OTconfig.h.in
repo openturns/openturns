@@ -97,6 +97,9 @@
 /* Define to 1 if you have the OPT++ library. */
 #cmakedefine OPENTURNS_HAVE_OPTPP
 
+/* Define to 1 if you have the Ceres library. */
+#cmakedefine OPENTURNS_HAVE_CERES
+
 /* Define to 1 if you have the CMinpack library. */
 #cmakedefine OPENTURNS_HAVE_CMINPACK
 

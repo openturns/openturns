@@ -78,6 +78,9 @@ public:
   static std::vector<String> GetUnsignedIntegerKeys();
   static std::vector<String> GetBoolKeys();
 
+  /** Is the specific key present ? */
+  static Bool HasKey(const String & key);
+
   /** @copydoc Object::__repr__() const */
   String __repr__() const;
 
@@ -197,6 +200,9 @@ protected:
    * @param value The value as a double
    */
   void setAsScalar(const String & key, Scalar value);
+
+  /** Is the specific key present ? */
+  Bool hasKey(const String & key) const;
 
   /** Update the ResourceMap with information from the configuration file */
   void readConfigurationFile(const FileName & configurationFile);

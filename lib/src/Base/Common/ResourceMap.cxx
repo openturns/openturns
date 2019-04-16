@@ -192,6 +192,12 @@ void ResourceMap::SetAsScalar(const String & key, Scalar value)
   GetInstance().lock().setAsScalar( key, value );
 }
 
+Bool ResourceMap::HasKey(const String & key)
+{
+  return GetInstance().lock().hasKey(key);
+}
+
+
 /* Default constructor */
 ResourceMap::ResourceMap()
   : mapString_()
@@ -272,6 +278,19 @@ String ResourceMap::get(const String & key) const
     if (it != mapBool_.end()) return (OSS() << it->second);
   }
   throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap. Report Bug";
+}
+
+Bool ResourceMap::hasKey(const String & key) const
+{
+  try
+  {
+    get(key);
+  }
+  catch (InternalException &)
+  {
+    return false;
+  }
+  return true;
 }
 
 String ResourceMap::getAsString(const String & key) const

@@ -277,6 +277,9 @@ ot_pyinstallcheck_test (NonCenteredFiniteDifferenceGradient_std)
 
 ## Optim
 ot_pyinstallcheck_test (AbdoRackwitz_std)
+if (Ceres_FOUND)
+  ot_pyinstallcheck_test (Ceres_std IGNOREOUT)
+endif ()
 if (CMinpack_FOUND)
   ot_pyinstallcheck_test (CMinpack_std IGNOREOUT)
 endif ()

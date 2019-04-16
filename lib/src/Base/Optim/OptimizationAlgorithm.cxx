@@ -19,6 +19,8 @@
  *
  */
 #include "openturns/OptimizationAlgorithm.hxx"
+#include "openturns/Ceres.hxx"
+#include "openturns/CMinpack.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/NLopt.hxx"
@@ -222,7 +224,15 @@ void OptimizationAlgorithm::setStopCallback(StopCallback callBack, void * state)
 OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
 {
   OptimizationAlgorithm solver;
-  if (solverName == "Cobyla")
+  if (Ceres::IsAvailable() && Ceres::GetAlgorithmNames().contains(solverName))
+  {
+    solver = Ceres(solverName);
+  }
+  else if (CMinpack::IsAvailable() && (solverName == "CMinpack"))
+  {
+    solver = CMinpack();
+  }
+  else if (solverName == "Cobyla")
   {
     solver = Cobyla();
   }
@@ -247,6 +257,10 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
 Description OptimizationAlgorithm::GetAlgorithmNames()
 {
   Description names;
+  if (Ceres::IsAvailable())
+    names.add(Ceres::GetAlgorithmNames());
+  if (CMinpack::IsAvailable())
+    names.add("CMinpack");
   names.add("Cobyla");
   names.add("TNC");
   if (NLopt::IsAvailable())

@@ -402,6 +402,7 @@ ot_add_python_module(optim optim_module.i
                       NearestPointCheckerResult.i
                       NearestPointChecker.i
                       AbdoRackwitz.i AbdoRackwitz_doc.i.in
+                      Ceres.i Ceres_doc.i.in
                       CMinpack.i CMinpack_doc.i.in
                       Cobyla.i Cobyla_doc.i.in
                       TNC.i TNC_doc.i.in

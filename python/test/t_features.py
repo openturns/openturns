@@ -88,6 +88,10 @@ try:
     # check that cminpack was found
     print('12: optimization (CMinpack)'.ljust(width), end=' ')
     print('OK' if ot.CMinpack.IsAvailable() else 'no')
+
+    # check that ceres was found
+    print('13: optimization (Ceres Solver)'.ljust(width), end=' ')
+    print('OK' if ot.Ceres.IsAvailable() else 'no')
 except:
     import os
     import traceback
