@@ -142,8 +142,8 @@ void TNC::run()
   p_nfeval_ = &nfeval;
 
   // clear history
-  evaluationInputHistory_ = Sample(0.0, dimension);
-  evaluationOutputHistory_ = Sample(0.0, 2);
+  evaluationInputHistory_ = Sample(0, dimension);
+  evaluationOutputHistory_ = Sample(0, 1);
 
   Scalar f = -1.0;
 
@@ -406,39 +406,30 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
 
   /* Convert the input vector in OpenTURNS format */
   const UnsignedInteger dimension = algorithm->getStartingPoint().getDimension();
-  Point inPoint(dimension);
-  memcpy(&inPoint[0], &x[0], dimension * sizeof(Scalar));
+  Point inP(dimension);
+  std::copy(x, x + dimension, inP.begin());
   const OptimizationProblem problem(algorithm->getProblem());
 
-  /* Used for history purpose. We store the value of the objective function in the first component and the norm of its gradient in the second component. */
-  Point outPoint(2);
-
-  /* Compute the objective function at inPoint */
-  const Scalar result = problem.getObjective().operator()(inPoint)[0];
-  outPoint[0] = result;
-
-  const Scalar sign = problem.isMinimization() ? 1.0 : -1.0;
-  *f = sign * result;
+  /* Evaluate the objective function at inP */
+  const Point outP(problem.getObjective().operator()(inP));
+  *f = problem.isMinimization() ? outP[0] : -outP[0];
 
   Point objectiveGradient;
   try
   {
     // Here we take the sign into account and convert the result into a Point in one shot
-    objectiveGradient = problem.getObjective().gradient(inPoint) * Point(1, sign);
+    const Matrix gradient(problem.isMinimization() ? problem.getObjective().gradient(inP) : -1.0 * problem.getObjective().gradient(inP));
+      /* Convert the gradient into the output format */
+    std::copy(&gradient(0, 0), &gradient(0, 0) + dimension, g);
   }
   catch (...)
   {
     return 1;
   }
 
-  /* Convert the gradient into the output format */
-  memcpy(&g[0], &objectiveGradient[0], dimension * sizeof(Scalar));
-
-  outPoint[1] = objectiveGradient.norm();
-
   // track input/outputs
-  algorithm->evaluationInputHistory_.add(inPoint);
-  algorithm->evaluationOutputHistory_.add(outPoint);
+  algorithm->evaluationInputHistory_.add(inP);
+  algorithm->evaluationOutputHistory_.add(outP);
 
   // callbacks
   if (algorithm->progressCallback_.first)

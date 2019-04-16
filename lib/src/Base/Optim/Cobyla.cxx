@@ -247,63 +247,60 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
     void *state)
 {
   Cobyla *algorithm = static_cast<Cobyla *>(state);
-
-  /* Convert the input vector in OpenTURNS format */
-  Point inPoint(n);
-  memcpy(&inPoint[0], x, n * sizeof(Scalar));
-
   const OptimizationProblem problem(algorithm->getProblem());
-  Point outPoint(problem.getObjective().operator()(inPoint));
-  // cobyla freezes when dealing with MaxScalar
-  if (std::abs(outPoint[0]) == SpecFunc::MaxScalar) outPoint[0] /= 1.0e3;
 
-  const Scalar sign = problem.isMinimization() ? 1.0 : -1.0;
-  *f = sign * outPoint[0];
+  /* Convert the input vector to Point */
+  Point inP(n);
+  std::copy(x, x + n, inP.begin());
+
+  Point outP(problem.getObjective().operator()(inP));
+  // cobyla freezes when dealing with MaxScalar
+  if (std::abs(outP[0]) == SpecFunc::MaxScalar) outP[0] /= 1.0e3;
+  *f = problem.isMinimization() ? outP[0] : -outP[0];
 
   UnsignedInteger shift = 0;
   UnsignedInteger nbIneqConst = problem.getInequalityConstraint().getOutputDimension();
   UnsignedInteger nbEqConst = problem.getEqualityConstraint().getOutputDimension();
   Point constraintValue(nbIneqConst + 2 * nbEqConst);
 
-  /* Compute the inequality constraints at inPoint */
+  /* Compute the inequality constraints at inP */
   if (problem.hasInequalityConstraint())
   {
-    const Point constraintInequalityValue(problem.getInequalityConstraint().operator()(inPoint));
+    const Point constraintInequalityValue(problem.getInequalityConstraint().operator()(inP));
     algorithm->inequalityConstraintHistory_.add(constraintInequalityValue);
     for(UnsignedInteger index = 0; index < nbIneqConst; ++index) constraintValue[index + shift] = constraintInequalityValue[index];
     shift += nbIneqConst;
   }
 
-  /* Compute the equality constraints at inPoint */
+  /* Compute the equality constraints at inP */
   if (problem.hasEqualityConstraint())
   {
-    const Point constraintEqualityValue = problem.getEqualityConstraint().operator()(inPoint);
+    const Point constraintEqualityValue = problem.getEqualityConstraint().operator()(inP);
     algorithm->equalityConstraintHistory_.add(constraintEqualityValue);
     for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index + shift] = constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
     shift += nbEqConst;
     for(UnsignedInteger index = 0; index < nbEqConst; ++index) constraintValue[index + shift] = -constraintEqualityValue[index] + algorithm->getMaximumConstraintError();
   }
 
-  /* Compute the bound constraints at inPoint */
+  /* Compute the bound constraints at inP */
   if (problem.hasBounds())
   {
     const Interval bounds(problem.getBounds());
     for (UnsignedInteger index = 0; index < bounds.getDimension(); ++index)
     {
       if (bounds.getFiniteLowerBound()[index])
-        constraintValue.add(inPoint[index] - bounds.getLowerBound()[index]);
+        constraintValue.add(inP[index] - bounds.getLowerBound()[index]);
       if (bounds.getFiniteUpperBound()[index])
-        constraintValue.add(bounds.getUpperBound()[index] - inPoint[index]);
+        constraintValue.add(bounds.getUpperBound()[index] - inP[index]);
     }
   }
 
   /* Convert the constraint vector in double format */
-  if (constraintValue.getDimension() > 0)
-    memcpy(con, &constraintValue[0], constraintValue.getDimension() * sizeof(Scalar));
+  std::copy(constraintValue.begin(), constraintValue.end(), con);
 
   // track input/outputs
-  algorithm->evaluationInputHistory_.add(inPoint);
-  algorithm->evaluationOutputHistory_.add(outPoint);
+  algorithm->evaluationInputHistory_.add(inP);
+  algorithm->evaluationOutputHistory_.add(outP);
   int returnValue = 0;
   if (algorithm->progressCallback_.first)
   {
