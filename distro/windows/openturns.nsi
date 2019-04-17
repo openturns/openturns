@@ -191,7 +191,12 @@ Section "!OpenTURNS" SEC01
   File "COPYING.txt"
   File "README.txt"
   File openturns.ico
-  File "OpenTURNSDoc.url"
+
+  ; doc url link
+  FileOpen $0 $OT_INSTALL_PATH\OpenTURNSDoc.url w
+  FileWrite $0 "[InternetShortcut]$\r$\n"
+  FileWrite $0 "URL=http://openturns.github.io/openturns/${PRODUCT_VERSION}$\r$\n"
+  FileClose $0
 
 !ifndef DEBUG
   !insertmacro PRINT "Install binary files."
@@ -204,7 +209,7 @@ Section "!OpenTURNS" SEC01
   File /r "${OPENTURNS_PREFIX}\etc\openturns\*.*"
 !endif
 
-  # create a version file
+  ; create a version file
   ClearErrors
   FileOpen $0 $OT_INSTALL_PATH\VERSION.txt w
   IfErrors versionfile_fail
