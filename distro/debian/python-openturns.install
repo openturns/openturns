@@ -1,2 +1,3 @@
 usr/lib/python2*/*-packages/openturns/*.py
 usr/lib/python2*/*-packages/openturns/*.so
+usr/lib/python2*/*-packages/openturns-*.dist-info/*

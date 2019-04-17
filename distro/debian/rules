@@ -37,8 +37,6 @@ else
     with_tbb := -DUSE_TBB:BOOL=OFF
 endif
 
-debRlib := $(CURDIR)/debian/tmp/usr/lib/R/site-library
-export R_LIBS=$(debRlib)
 PYVER = $(shell pyversions -d)
 PY3VER = $(shell py3versions -d)
 PYALL = $(PYVER) $(PY3VER)
@@ -51,11 +49,7 @@ ifneq (,$(findstring $(shell dpkg-architecture -qDEB_HOST_ARCH), mips mipsel))
 endif
 	dh $@ --buildsystem=cmake --with python2,python3 --parallel
 
-debian/tmp/usr/lib/R/site-library/rot:
-	-mkdir -p $(debRlib)
-	R CMD INSTALL --library=$(debRlib) --built-timestamp='$(BUILD_DATE)' utils/rot_1.4.6.tar.gz
-
-override_dh_auto_configure: debian/tmp/usr/lib/R/site-library/rot $(PYALL:python%=cmake-configure-%) \
+override_dh_auto_configure: $(PYALL:python%=cmake-configure-%) \
 
 cmake-configure-%:
 	dh_auto_configure -Bbuild-python$* -- \
@@ -73,8 +67,8 @@ cmake-configure-%:
             -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
             -DCMAKE_INSTALL_LIBDIR:PATH=/usr/lib \
-            -DLIB_SOVERSION=0.13 \
-            -DLIB_VERSION=0.13.0 \
+            -DLIB_SOVERSION=0.14 \
+            -DLIB_VERSION=0.14.0 \
             -DOPENTURNS_SYSCONFIG_PATH:PATH=/etc/openturns-1.12 \
             -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp \
             -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python$* \
@@ -89,14 +83,13 @@ cmake-build-%:
 	$(MAKE) -j1 -C build-python$*/python
 	$(MAKE) $(test_makeflags) -C build-python$*
 
-override_dh_auto_install: debian/tmp/usr/lib/R/site-library/rot $(PYALL:python%=cmake-install-%)
+override_dh_auto_install: $(PYALL:python%=cmake-install-%)
 
 cmake-install-%:
 	dh_auto_install -Bbuild-python$*
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$${LD_LIBRARY_PATH}:}$(CURDIR)/debian/tmp/usr/lib \
 	  CTEST_OUTPUT_ON_FAILURE=1 \
-	  R_LIBS_SITE=$(CURDIR)/debian/tmp/usr/lib/R/site-library \
 	  $(MAKE) $(test_makeflags) -C build-python$* test ARGS="$(test_makeflags) -R pyinstallcheck"
 endif
 
@@ -104,7 +97,7 @@ override_dh_makeshlibs:
 	dh_makeshlibs -Xpyshared
 
 override_dh_strip:
-	dh_strip -plibopenturns0.13 -ppython-openturns -ppython3-openturns
+	dh_strip -plibopenturns0.14 -ppython-openturns -ppython3-openturns
 
 override_dh_python2:
 	dh_python2 -p python-openturns

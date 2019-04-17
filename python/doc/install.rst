@@ -93,10 +93,6 @@ The following packages should now be available:
     +----------------------+------------------------------------+
     | openturns-examples   | examples                           |
     +----------------------+------------------------------------+
-    | openturns-validation | validation files                   |
-    +----------------------+------------------------------------+
-    | r-other-rot          | R module                           |
-    +----------------------+------------------------------------+
 
 Use the following command to check::
 
