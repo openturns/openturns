@@ -16,9 +16,9 @@ try:
             p[j] = i + j
         refSample[i] = p
     print("ref. sample=", refSample)
-    myPlane = FixedExperiment(refSample)
-    print("myPlane = ", myPlane)
-    sample, weights = myPlane.generateWithWeights()
+    experiment = FixedExperiment(refSample)
+    print("experiment = ", experiment)
+    sample, weights = experiment.generateWithWeights()
     print("sample = ", repr(sample))
     print("weights = ", repr(weights))
 

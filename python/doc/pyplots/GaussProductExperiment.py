@@ -7,10 +7,10 @@ ot.RandomGenerator.SetSeed(0)
 distribution = ot.ComposedDistribution(
     ot.DistributionCollection([ot.Exponential(), ot.Triangular(-1.0, -0.5, 1.0)]))
 marginalDegrees = ot.Indices([3, 6])
-myPlane = ot.GaussProductExperiment(
+experiment = ot.GaussProductExperiment(
     ot.Distribution(distribution), marginalDegrees)
 
-sample = myPlane.generate()
+sample = experiment.generate()
 
 # Create an empty graph
 graph = ot.Graph("Gauss product experiment", "x1", "x2", True, "")

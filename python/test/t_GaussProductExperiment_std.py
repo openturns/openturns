@@ -14,10 +14,10 @@ try:
     # Test the constructor based on distribution
     print("experiment2=", GaussProductExperiment(distribution))
     # Test the constructor based on marginal degrees and distribution
-    myPlane = GaussProductExperiment(
+    experiment = GaussProductExperiment(
         Distribution(distribution), marginalDegrees)
-    print("myPlane = ", myPlane)
-    sample, weights = myPlane.generateWithWeights()
+    print("experiment = ", experiment)
+    sample, weights = experiment.generateWithWeights()
     print("sample = ", repr(sample))
     print("weights = ", repr(weights))
 except:

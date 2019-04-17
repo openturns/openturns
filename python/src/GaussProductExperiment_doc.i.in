@@ -31,8 +31,8 @@ Examples
 >>> import openturns as ot
 >>> distribution = ot.ComposedDistribution([ot.Exponential(), ot.Triangular(-1.0, -0.5, 1.0)])
 >>> marginalDegrees = [3, 2]
->>> myPlane = ot.GaussProductExperiment(distribution, marginalDegrees)
->>> print(myPlane.generate())
+>>> experiment = ot.GaussProductExperiment(distribution, marginalDegrees)
+>>> print(experiment.generate())
     [ X0        X1        ]
 0 : [  0.415775 -0.511215 ]
 1 : [  2.29428  -0.511215 ]

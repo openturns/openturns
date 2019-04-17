@@ -43,9 +43,9 @@ int main(int, char *[])
     levels[0] = 4;
     levels[1] = 8;
     levels[2] = 16;
-    Factorial myPlane(center, levels);
-    fullprint << "myPlane = " << myPlane << std::endl;
-    Sample sample(myPlane.generate());
+    Factorial experiment(center, levels);
+    fullprint << "experiment = " << experiment << std::endl;
+    Sample sample(experiment.generate());
     fullprint << "sample = " << sample << std::endl;
   }
   catch (TestFailed & ex)

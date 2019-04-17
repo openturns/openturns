@@ -9,9 +9,9 @@ RandomGenerator.SetSeed(0)
 try:
     distribution = Normal(4)
     size = 10
-    myPlane = MonteCarloExperiment(distribution, size)
-    print("myPlane = ", myPlane)
-    sample, weights = myPlane.generateWithWeights()
+    experiment = MonteCarloExperiment(distribution, size)
+    print("experiment = ", experiment)
+    sample, weights = experiment.generateWithWeights()
     print("sample = ", repr(sample))
     print("weights = ", repr(weights))
 except:

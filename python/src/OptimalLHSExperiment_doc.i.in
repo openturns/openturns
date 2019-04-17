@@ -1,6 +1,10 @@
 %define OT_OptimalLHS_doc
 "OptimalLHS base class.
 
+See also
+--------
+MonteCarloLHS, SimulatedAnnealingLHS
+
 Notes
 -----
 Perform the generation of optimal LHS designs.

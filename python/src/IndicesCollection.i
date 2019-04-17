@@ -4,6 +4,8 @@
 #include "openturns/IndicesCollection.hxx"
 %}
 
+%include IndicesCollection_doc.i
+
 OTTypedInterfaceObjectHelper(IndicesCollection)
 
 %typemap(in) const IndicesCollection & ($1_basetype temp) {

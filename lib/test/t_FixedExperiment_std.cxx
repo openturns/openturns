@@ -38,10 +38,10 @@ int main(int, char *[])
       for (UnsignedInteger j = 0; j < dim; ++j)
         refSample[i][j] = i + j;
     fullprint << "ref. sample=" << refSample << std::endl;
-    FixedExperiment myPlane(refSample);
-    fullprint << "myPlane = " << myPlane << std::endl;
+    FixedExperiment experiment(refSample);
+    fullprint << "experiment = " << experiment << std::endl;
     Point weights(0);
-    Sample sample(myPlane.generateWithWeights(weights));
+    Sample sample(experiment.generateWithWeights(weights));
     fullprint << "sample = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
   }

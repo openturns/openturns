@@ -30,8 +30,8 @@ Examples
 --------
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
->>> myPlane = ot.MonteCarloExperiment(ot.Normal(2), 5)
->>> print(myPlane.generate())
+>>> experiment = ot.MonteCarloExperiment(ot.Normal(2), 5)
+>>> print(experiment.generate())
     [ X0        X1        ]
 0 : [  0.608202 -1.26617  ]
 1 : [ -0.438266  1.20548  ]

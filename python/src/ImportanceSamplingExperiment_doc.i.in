@@ -38,8 +38,8 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.ComposedDistribution([ot.Uniform(0, 1)] * 2)
 >>> importanceDistribution = ot.ComposedDistribution([ot.Uniform(0, 1)] * 2)
->>> myPlane = ot.ImportanceSamplingExperiment(distribution, importanceDistribution, 5)
->>> print(myPlane.generate())
+>>> experiment = ot.ImportanceSamplingExperiment(distribution, importanceDistribution, 5)
+>>> print(experiment.generate())
     [ X0        X1        ]
 0 : [ 0.629877  0.882805  ]
 1 : [ 0.135276  0.0325028 ]

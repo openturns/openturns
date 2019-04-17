@@ -4,8 +4,8 @@ from openturns.viewer import View
 
 # Generate sample with the given plane
 levels = [4, 4]
-myPlane = ot.Box(levels)
-sample = myPlane.generate()
+experiment = ot.Box(levels)
+sample = experiment.generate()
 
 # Create an empty graph
 graph = ot.Graph("Box plane", "x1", "x2", True, "")

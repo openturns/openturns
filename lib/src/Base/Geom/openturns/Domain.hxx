@@ -55,6 +55,8 @@ public:
   /** Dimension accessors */
   virtual UnsignedInteger getDimension() const;
 
+  /** String converter */
+  virtual String __repr__() const;
 
 }; /* class Domain */
 

@@ -46,23 +46,23 @@ Examples
 Generate the sample with a reinitialization of the sequence at each change
 of distribution:
 
->>> myPlane = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, 5, True)
->>> print(myPlane.generate())
+>>> experiment = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, 5, True)
+>>> print(experiment.generate())
     [ y0    y1    ]
 0 : [ 0.5   0.5   ]
 1 : [ 0.75  0.25  ]
 2 : [ 0.25  0.75  ]
 3 : [ 0.375 0.375 ]
 4 : [ 0.875 0.875 ]
->>> print(myPlane.generate())
+>>> print(experiment.generate())
     [ y0     y1     ]
 0 : [ 0.625  0.125  ]
 1 : [ 0.125  0.625  ]
 2 : [ 0.1875 0.3125 ]
 3 : [ 0.6875 0.8125 ]
 4 : [ 0.9375 0.0625 ]
->>> myPlane.setDistribution(distribution)
->>> print(myPlane.generate())
+>>> experiment.setDistribution(distribution)
+>>> print(experiment.generate())
     [ y0    y1    ]
 0 : [ 0.5   0.5   ]
 1 : [ 0.75  0.25  ]
@@ -73,23 +73,23 @@ of distribution:
 Generate the sample keeping the previous state of the sequence at each change
 of distribution:
 
->>> myPlane = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, 5, False)
->>> print(myPlane.generate())
+>>> experiment = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, 5, False)
+>>> print(experiment.generate())
     [ y0    y1    ]
 0 : [ 0.5   0.5   ]
 1 : [ 0.75  0.25  ]
 2 : [ 0.25  0.75  ]
 3 : [ 0.375 0.375 ]
 4 : [ 0.875 0.875 ]
->>> print(myPlane.generate())
+>>> print(experiment.generate())
     [ y0     y1     ]
 0 : [ 0.625  0.125  ]
 1 : [ 0.125  0.625  ]
 2 : [ 0.1875 0.3125 ]
 3 : [ 0.6875 0.8125 ]
 4 : [ 0.9375 0.0625 ]
->>> myPlane.setDistribution(distribution)
->>> print(myPlane.generate())
+>>> experiment.setDistribution(distribution)
+>>> print(experiment.generate())
     [ y0     y1     ]
 0 : [ 0.4375 0.5625 ]
 1 : [ 0.3125 0.1875 ]
@@ -100,8 +100,8 @@ of distribution:
 Generate a sample according to a distribution with dependent marginals:
 
 >>> distribution = ot.Normal([0.0]*2, ot.CovarianceMatrix(2, [4.0, 1.0, 1.0, 9.0]))
->>> myPlane = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, 5, False)
->>> print(myPlane.generate())
+>>> experiment = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, 5, False)
+>>> print(experiment.generate())
     [ y0        y1        ]
 0 : [  0         0        ]
 1 : [  1.34898  -1.65792  ]

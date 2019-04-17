@@ -7,9 +7,9 @@ ot.RandomGenerator.SetSeed(0)
 distribution = ot.ComposedDistribution([ot.Uniform(0, 1)] * 2)
 size = 10
 weightingDistribution = ot.ComposedDistribution([ot.Uniform(0, 1)] * 2)
-myPlane = ot.ImportanceSamplingExperiment(
+experiment = ot.ImportanceSamplingExperiment(
     distribution, weightingDistribution, size)
-sample = myPlane.generate()
+sample = experiment.generate()
 
 # Create an empty graph
 graph = ot.Graph("Importance sampling experiment", "x1", "x2", True, "")

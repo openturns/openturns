@@ -43,10 +43,10 @@ int main(int, char *[])
     // Test the constructor based on distribution
     fullprint << "experiment2=" << GaussProductExperiment(distribution) << std::endl;
     // Test the constructor based on marginal degrees and distribution
-    GaussProductExperiment myPlane(distribution, marginalDegrees);
-    fullprint << "myPlane = " << myPlane << std::endl;
+    GaussProductExperiment experiment(distribution, marginalDegrees);
+    fullprint << "experiment = " << experiment << std::endl;
     Point weights(0);
-    Sample sample(myPlane.generateWithWeights(weights));
+    Sample sample(experiment.generateWithWeights(weights));
     fullprint << "sample = " << sample << std::endl;
     fullprint << "weights = " << weights << std::endl;
   }
