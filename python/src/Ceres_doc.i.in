@@ -266,13 +266,6 @@ algoName : str
 %feature("docstring") OT::Ceres::GetAlgorithmNames
 "Accessor to the list of algorithms provided, by names.
 
-Parameters
-----------
-leastSquares : bool, default to True
-    Whether to include all methods available to solve least-squares problems.
-    If false it does not include trust region methods that are not available
-    for general optimization.
-
 Returns
 -------
 names : :class:`~openturns.Description`

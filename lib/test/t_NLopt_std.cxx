@@ -24,23 +24,13 @@
 using namespace OT;
 using namespace OT::Test;
 
-inline String printPoint(const Point & point, const UnsignedInteger digits)
-{
-  OSS oss;
-  oss << "[";
-  Scalar eps = pow(0.1, 1.0 * digits);
-  for (UnsignedInteger i = 0; i < point.getDimension(); i++)
-  {
-    oss << std::fixed << std::setprecision(digits) << (i == 0 ? "" : ",") << Bulk<double>((std::abs(point[i]) < eps) ? std::abs(point[i]) : point[i]);
-  }
-  oss << "]";
-  return oss;
-}
 
 int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
+
+  PlatformInfo::SetNumericalPrecision(3);
 
   try
   {
@@ -48,16 +38,14 @@ int main(int, char *[])
     Description inVars;
     inVars.add("x1");
     inVars.add("x2");
-    inVars.add("x3");
-    inVars.add("x4");
-    Description formula(1, "x1+2*x2-3*x3+4*x4");
+    Description formula(1, "1+100*(x2-x1^2)^2+(1-x1)^2");
 
-    SymbolicFunction linear(inVars, formula);
+    SymbolicFunction f(inVars, formula);
 
-    UnsignedInteger dim = linear.getInputDimension();
-    Point startingPoint(dim);
+    UnsignedInteger dim = f.getInputDimension();
+    Point startingPoint(dim, 1e-3);
 
-    Interval bounds(Point(dim, -3.0), Point(dim, 5.0));
+    Interval bounds(Point(dim, -1.5), Point(dim, 1.5));
 
     Description algoNames(NLopt::GetAlgorithmNames());
     for (UnsignedInteger i = 0; i < algoNames.getSize(); ++i)
@@ -78,37 +66,36 @@ int main(int, char *[])
       }
 
       NLopt algo(algoNames[i]);
-      for (UnsignedInteger minimization = 0; minimization < 2; ++minimization)
-        for (UnsignedInteger inequality = 0; inequality < 2; ++inequality)
-          for (UnsignedInteger equality = 0; equality < 2; ++equality)
-          {
-            OptimizationProblem problem(linear, SymbolicFunction(), SymbolicFunction(), bounds);
-            problem.setMinimization(minimization == 0);
-            if (inequality == 0)
-              // x3 <= x1
-              problem.setInequalityConstraint(SymbolicFunction(inVars, Description(1, "x1-x3")));
-            if (equality == 0)
-              // x4 = 2
-              problem.setEqualityConstraint(SymbolicFunction(inVars, Description(1, "x4-2")));
-            try
+      for (SignedInteger minimization = 1; minimization >= 0; -- minimization)
+        for (SignedInteger inequality = 1; inequality >= 0; -- inequality)
+          for (SignedInteger equality = 1; equality >= 0; -- equality)
+            for(SignedInteger bound = 1; bound >= 0; -- bound)
             {
-              NLopt::SetSeed(0);
-              algo.setProblem(problem);
-              algo.setMaximumEvaluationNumber(5000);
-              //algo.setInitialStep(Point(dim, 0.1));
-              NLopt localAlgo("LD_MMA");
-              algo.setLocalSolver(localAlgo);
-              algo.setStartingPoint(startingPoint);
-              fullprint << "algo=" << algo << std::endl;
-              algo.run();
-              OptimizationResult result(algo.getResult());
-              fullprint << "x^=" << printPoint(result.getOptimalPoint(), 3) << std::endl;
-            }
-            catch (...)
-            {
-              fullprint << "-- Not supported: algo=" << algoNames[i] << " inequality=" << (inequality == 0 ? "true" : "false") << " equality=" << (equality == 0 ? "true" : "false") << std::endl;
-            }
-          } // equality
+              OptimizationProblem problem(f);
+              problem.setMinimization(minimization == 1);
+              if (inequality)
+                // x1^2+x2^2 <= 1
+                problem.setInequalityConstraint(SymbolicFunction(inVars, Description(1, "1-x1^2-x2^2")));
+              if (equality)
+                // x1 = x2
+                problem.setEqualityConstraint(SymbolicFunction(inVars, Description(1, "x1-x2")));
+              if (bound)
+                problem.setBounds(bounds);
+              try
+              {
+                NLopt::SetSeed(0);
+                algo.setProblem(problem);
+                algo.setStartingPoint(startingPoint);
+                fullprint << "algo=" << algoNames[i] << " minimization=" << minimization << " bounds=" << bound << " inequality=" << inequality << " equality=" << equality << std::endl;
+                algo.run();
+                OptimizationResult result(algo.getResult());
+                fullprint << "x^=" << result.getOptimalPoint().__str__() << " y^=" << result.getOptimalValue().__str__() << std::endl;
+              }
+              catch (...)
+              {
+                fullprint << "-- Not supported: algo=" << algoNames[i] << " inequality=" << (inequality == 1 ? "true" : "false") << " equality=" << (equality == 1 ? "true" : "false") << std::endl;
+              }
+            } // bound
     } // algo
   }
   catch (TestFailed & ex)
