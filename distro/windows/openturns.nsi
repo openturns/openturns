@@ -217,6 +217,11 @@ Section "!OpenTURNS" SEC01
   FileClose $0
   versionfile_fail:
 
+  !insertmacro PRINT "Install dist-info"
+  CreateDirectory "$Python_INSTALL_PATH\Lib\site-packages\openturns-${PRODUCT_VERSION}.dist-info"
+  SetOutPath "$Python_INSTALL_PATH\Lib\site-packages\openturns-${PRODUCT_VERSION}.dist-info"
+  File /r "${OPENTURNS_PREFIX}\Lib\site-packages\openturns-${PRODUCT_VERSION}.dist-info\*"
+
   ${If} "$UserInstall" == "0"
     !insertmacro PRINT "Put OpenTURNS in windows registry."
     WriteRegStr ${PRODUCT_INST_ROOT_KEY} ${PRODUCT_DIR_REGKEY} "Current Version" "${PRODUCT_VERSION}"
