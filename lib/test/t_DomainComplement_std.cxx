@@ -121,7 +121,7 @@ int main(int, char *[])
       inVars.add("y");
       Description formula(1, "x^4 + y^4");
       SymbolicFunction function(inVars, formula);
-      LevelSet levelSet(function, 1.0);
+      LevelSet levelSet(function, LessOrEqual(), 1.0);
       fullprint << "levelSet=" << levelSet << std::endl;
       Point p0(2);
       p0[0] = -0.5;

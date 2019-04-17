@@ -47,12 +47,17 @@ Bool ComparisonOperator::operator()(const Scalar a,
 {
   return (*getImplementation())(a, b);
 }
+
 Bool ComparisonOperator::compare(Scalar a, Scalar b) const
 {
   return (*getImplementation())(a, b);
 }
 
 
+String ComparisonOperator::__repr__() const
+{
+  return getImplementation()->__repr__();
+}
 
 
 END_NAMESPACE_OPENTURNS

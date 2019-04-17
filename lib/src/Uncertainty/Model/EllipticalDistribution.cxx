@@ -435,7 +435,7 @@ LevelSet EllipticalDistribution::computeMinimumVolumeLevelSetWithThreshold(const
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   const Scalar logThreshold = standard.computeLogPDF(point);
   threshold = std::exp(logThreshold);
-  return LevelSet(minimumVolumeLevelSetFunction, -logThreshold);
+  return LevelSet(minimumVolumeLevelSetFunction, LessOrEqual(), -logThreshold);
 }
 
 /* Update the derivative attributes */

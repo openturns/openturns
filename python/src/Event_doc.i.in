@@ -96,3 +96,33 @@ A process based event:
 >>> # The event
 >>> event = ot.Event(X, domain)
 "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Event::intersect
+"Intersection of two events.
+
+Parameters
+----------
+event : :class:`~openturns.Event`
+    A composite event
+
+Returns
+-------
+event : :class:`~openturns.Event`
+    Intersection event"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Event::join
+"Union of two events.
+
+Parameters
+----------
+event : :class:`~openturns.Event`
+    A composite event
+
+Returns
+-------
+event : :class:`~openturns.Event`
+    Union event"

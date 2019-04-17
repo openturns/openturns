@@ -41,6 +41,10 @@ String Equal::__repr__() const
          << " name=" << getName();
 }
 
+String Equal::__str__(const String & offset) const
+{
+  return "=";
+}
 
 /* Here is the interface that all derived class must implement */
 

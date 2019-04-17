@@ -10,7 +10,7 @@ try:
     inVars = ["x", "y"]
     formula1 = ["x^4 + y^4"]
     function1 = SymbolicFunction(inVars, formula1)
-    levelSet1 = LevelSet(function1, 1.0)
+    levelSet1 = LevelSet(function1, LessOrEqual(), 1.0)
     print("levelSet1=", levelSet1)
     p0 = [-0.5, -0.5]
     p1 = [0.5, 0.0]
@@ -21,7 +21,7 @@ try:
     # Intersection
     formula2 = ["(x-1)^2 + y^2"]
     function2 = SymbolicFunction(inVars, formula2)
-    levelSet2 = LevelSet(function2, 1.0)
+    levelSet2 = LevelSet(function2, LessOrEqual(), 1.0)
     print("levelSet2=", levelSet2)
     print("levelSet2 contains ", p0, "? ", levelSet2.contains(p0))
     print("levelSet2 contains ", p1, "? ", levelSet2.contains(p1))

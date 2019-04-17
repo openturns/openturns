@@ -163,7 +163,7 @@ LevelSet Frechet::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, S
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
   Scalar minusLogPDFThreshold = -computeLogPDF(interval.getLowerBound()[0]);
   threshold = std::exp(-minusLogPDFThreshold);
-  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
+  return LevelSet(minimumVolumeLevelSetFunction, LessOrEqual(), minusLogPDFThreshold);
 }
 
 /* Parameters value and description accessor */

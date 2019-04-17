@@ -25,6 +25,7 @@
 #include "openturns/EventDomain.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/OSS.hxx"
+#include "openturns/IdentityFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -44,13 +45,20 @@ EventDomain::EventDomain(const RandomVectorImplementation & antecedent,
   : CompositeRandomVector()
   , domain_(domain)
 {
-  // Event can only be constructed from composite random vectors
-  if (!antecedent.isComposite())
-    throw InvalidArgumentException(HERE) << "Event can only be constructed from composite random vectors. The random vector ("
-                                         << antecedent << ") passed as first argument of EventDomain "
-                                         << " has incorrect type";
-  function_ = antecedent.getFunction();
-  antecedent_ = antecedent.getAntecedent();
+  if (antecedent.isComposite())
+  {
+    function_ = antecedent.getFunction();
+    antecedent_ = antecedent.getAntecedent();
+  }
+  else
+  {
+    function_ = IdentityFunction(antecedent.getDimension());
+    antecedent_ = antecedent;
+  }
+
+  if (domain.getDimension() != antecedent.getDimension())
+    throw InvalidArgumentException(HERE) << "The domain dimension must match the vector dimension";
+
   setName(antecedent.getName());
   setDescription(Description(1, OSS() << antecedent.getName() << " in " << domain.getName()));
 }

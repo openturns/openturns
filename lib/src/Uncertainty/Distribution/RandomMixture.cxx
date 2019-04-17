@@ -2459,7 +2459,7 @@ LevelSet RandomMixture::computeMinimumVolumeLevelSetWithThreshold(const Scalar p
   const Scalar minusLogPDFThreshold = minusLogPDFSample.computeQuantile(prob)[0];
   threshold = std::exp(-minusLogPDFThreshold);
 
-  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
+  return LevelSet(minimumVolumeLevelSetFunction, LessOrEqual(), minusLogPDFThreshold);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */

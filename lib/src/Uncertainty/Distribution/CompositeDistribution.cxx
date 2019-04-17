@@ -430,7 +430,7 @@ LevelSet CompositeDistribution::computeMinimumVolumeLevelSetWithThreshold(const 
   const Scalar minusLogPDFThreshold = minusLogPDFSample.computeQuantile(prob)[0];
   threshold = std::exp(-minusLogPDFThreshold);
 
-  return LevelSet(minimumVolumeLevelSetFunction, minusLogPDFThreshold);
+  return LevelSet(minimumVolumeLevelSetFunction, LessOrEqual(), minusLogPDFThreshold);
 }
 
 /* Get the PDF singularities inside of the range - 1D only */

@@ -4,7 +4,7 @@
 Available constructors:
     LevelSet(*dim=1*)
 
-    LevelSet(*function=ot.SymbolicFunction(['x'], ['1.0']), level=0.0*)
+    LevelSet(*function=ot.SymbolicFunction(['x'], ['1.0']), operator=ot.LessOrEqual(), level=0.0*)
 
 Parameters
 ----------
@@ -13,6 +13,8 @@ dim : int, :math:`dim \geq 0`
 function : :class:`~openturns.Function`
     A function such that: :math:`f: \Rset^{dim} \mapsto \Rset` defining the
     LevelSet.
+operator : :class:`~openturns.ComparisonOperator`
+    Comparison operator against the level.
 level : float
     Level :math:`s` defining the LevelSet.
 
@@ -29,7 +31,8 @@ Examples
 >>> import openturns as ot
 >>> function = ot.SymbolicFunction(['x1', 'x2'], ['x1^4 + x2^4'])
 >>> s = 1.0
->>> levelSet = ot.LevelSet(function, s)"
+>>> op = ot.LessOrEqual()
+>>> levelSet = ot.LevelSet(function, op, s)"
 
 // ---------------------------------------------------------------------
 
@@ -53,10 +56,10 @@ Examples
 >>> import openturns as ot
 >>> # First level set
 >>> function = ot.SymbolicFunction(['x'], ['3*x-1'])
->>> levelSet1 = ot.LevelSet(function, 0.5)
+>>> levelSet1 = ot.LevelSet(function, ot.LessOrEqual(), 0.5)
 >>> # Second level set
 >>> function = ot.SymbolicFunction(['x'], ['x'])
->>> levelSet2 = ot.LevelSet(function, 0.5)
+>>> levelSet2 = ot.LevelSet(function, ot.LessOrEqual(), 0.5)
 >>> # Intersection between levelSet1 and levelSet2
 >>> intersection = levelSet1.intersect(levelSet2)
 >>> # Tests
@@ -87,10 +90,10 @@ Examples
 >>> import openturns as ot
 >>> # First level set
 >>> function = ot.SymbolicFunction(['x'], ['3*x-1'])
->>> levelSet1 = ot.LevelSet(function, 0.0)
+>>> levelSet1 = ot.LevelSet(function, ot.LessOrEqual(), 0.0)
 >>> # Second level set
 >>> function = ot.SymbolicFunction(['x'], ['x'])
->>> levelSet2 = ot.LevelSet(function, 0.0)
+>>> levelSet2 = ot.LevelSet(function, ot.LessOrEqual(), 0.0)
 >>> # Union between levelSet1 and levelSet2
 >>> join = levelSet1.join(levelSet2)
 >>> # Tests
@@ -114,7 +117,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> function = ot.SymbolicFunction(['x'], ['3*x-1'])
->>> levelSet = ot.LevelSet(function, 0.0)
+>>> levelSet = ot.LevelSet(function, ot.LessOrEqual(), 0.0)
 >>> print(levelSet.getFunction().getEvaluation())
 [x]->[3*x-1]"
 
@@ -150,7 +153,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> function = ot.SymbolicFunction(['x'], ['3*x-1'])
->>> levelSet = ot.LevelSet(function, 0.0)
+>>> levelSet = ot.LevelSet(function, ot.LessOrEqual(), 0.0)
 >>> print(levelSet.getLevel())
 0.0"
 
@@ -188,4 +191,24 @@ bound : sequence of floats
 Parameters
 ----------
 bound : sequence of floats
+    Upper bound of the bounding box of the level set. It allows to clip the level set."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LevelSet::getLowerBound
+"Get the lower bound of the bounding box.
+
+Returns
+-------
+bound : :class:`~openturns.Point`
+    Lower bound of the bounding box of the level set. It allows to clip the level set."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LevelSet::getUpperBound
+"Get the upper bound of the bounding box.
+
+Returns
+-------
+bound : :class:`~openturns.Point`
     Upper bound of the bounding box of the level set. It allows to clip the level set."

@@ -37,7 +37,7 @@ Create a mesh:
 >>> mesher = ot.LevelSetMesher([5, 10])
 >>> level = 1.0
 >>> function = ot.SymbolicFunction(['x0', 'x1'], ['x0^2+x1^2'])
->>> levelSet = ot.LevelSet(function, level)
+>>> levelSet = ot.LevelSet(function, ot.LessOrEqual(), level)
 >>> mesh = mesher.build(levelSet, ot.Interval([-2.0]*2, [2.0]*2))
 "
 

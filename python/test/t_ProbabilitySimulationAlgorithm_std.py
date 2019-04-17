@@ -113,7 +113,7 @@ Yvector = ot.CompositeRandomVector(f, Xvector)
 s = 1.0
 event1 = ot.Event(Yvector, ot.Greater(), s)
 description.add('composite vector/domain event')
-domain1D = ot.LevelSet(ot.SymbolicFunction(['x0'], ['sin(x0)']), -0.5)
+domain1D = ot.LevelSet(ot.SymbolicFunction(['x0'], ['sin(x0)']), ot.LessOrEqual(), -0.5)
 event2 = ot.Event(Yvector, domain1D)
 description.add('composite vector/interval event')
 interval = ot.Interval(0.5, 1.5)
@@ -121,7 +121,7 @@ event3 = ot.Event(Yvector, interval)
 description.add('process/domain event')
 Xprocess = ot.WhiteNoise(distribution, ot.RegularGrid(0.0, 0.1, 10))
 domain2D = ot.LevelSet(
-    ot.SymbolicFunction(['x0', 'x1'], ['(x0-1)^2+x1^2']), 1.0)
+    ot.SymbolicFunction(['x0', 'x1'], ['(x0-1)^2+x1^2']), ot.LessOrEqual(), 1.0)
 event4 = ot.Event(Xprocess, domain2D)
 all_events = [event1, event2, event3, event4]
 for i, event in enumerate(all_events):
