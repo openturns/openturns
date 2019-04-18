@@ -22,6 +22,7 @@
 #include "openturns/Ceres.hxx"
 #include "openturns/CMinpack.hxx"
 #include "openturns/Cobyla.hxx"
+#include "openturns/Dlib.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/NLopt.hxx"
 #include "openturns/OPTpp.hxx"
