@@ -14,6 +14,7 @@ This is the examples section.
     .. toctree::
         :maxdepth: 1
 
+        calibration/calibration.rst
         data_analysis/data_analysis.rst
         probabilistic_modeling/probabilistic_modeling.rst
         meta_modeling/meta_modeling.rst
