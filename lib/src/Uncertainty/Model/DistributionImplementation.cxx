@@ -670,7 +670,8 @@ Scalar DistributionImplementation::computeSurvivalFunction(const Point & point) 
       value += sign * contribution;
       sign = -sign;
     }
-  return value;
+  // Due to roundoff, the value can be slightly outside of [0,1]
+  return std::min(1.0, std::max(0.0, value));
 }
 
 Point DistributionImplementation::computeInverseSurvivalFunction(const Scalar prob) const
@@ -1098,11 +1099,12 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
       if (isDiscrete())
         {
           const Sample support(getSupport());
+	  const Point probabilities(getProbabilities());
           const UnsignedInteger size = support.getSize();
           for (UnsignedInteger i = 0; i < size; ++i)
             {
               const Scalar pt = support(i, 0);
-              value += computePDF(pt) * std::exp(Complex(0.0, x * pt));
+              value += probabilities[i] * std::exp(Complex(0.0, x * pt));
             }
         }
       // In the composite case, no default algorithm
@@ -1110,7 +1112,7 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
         {
           throw NotYetImplementedException(HERE) << "In DistributionImplementation::computeCharacteristicFunction(const Scalar x) const: no default algorithm to compute the characteristic function in the composite case.";
         }
-    }
+    } // !Continuous
   return value;
 }
 
@@ -2841,10 +2843,10 @@ void DistributionImplementation::computeCovarianceDiscrete() const
               if (!marginalDistribution->hasIndependentCopula())
                 {
                   const Sample support(marginalDistribution->getSupport());
-                  const Point samplePDF(marginalDistribution->getProbabilities());
+                  const Point probabilities(marginalDistribution->getProbabilities());
                   Scalar value = 0.0;
                   const UnsignedInteger size = support.getSize();
-                  for (UnsignedInteger i = 0; i < size; ++i) value += (support(i, 0) - muI) * (support(i, 1) - muJ) * samplePDF[i];
+                  for (UnsignedInteger i = 0; i < size; ++i) value += (support(i, 0) - muI) * (support(i, 1) - muJ) * probabilities[i];
                   covariance_(rowIndex, columnIndex) = value;
                 }
             } // loop over column indices
@@ -3169,10 +3171,10 @@ Point DistributionImplementation::computeShiftedMomentDiscrete(const UnsignedInt
   if (shift.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the shift dimension must match the distribution dimension.";
   Point moment(dimension_);
   const Sample support(getSupport());
-  const Point pdfSupport(getProbabilities());
+  const Point probabilities(getProbabilities());
   for (UnsignedInteger i = 0; i < support.getSize(); ++i)
     for (UnsignedInteger j = 0; j < dimension_; ++j)
-      moment[j] += std::pow(support(i, j) - shift[j], static_cast<int>(n)) * pdfSupport[i];
+      moment[j] += std::pow(support(i, j) - shift[j], static_cast<int>(n)) * probabilities[i];
   return moment;
 }
 
