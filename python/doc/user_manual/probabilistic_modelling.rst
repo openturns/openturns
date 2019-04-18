@@ -258,9 +258,15 @@ Low-level distribution functions
     :toctree: _generated/
     :template: function.rst_t
 
+    DistFunc_dBinomial
+    DistFunc_dPoisson
+    DistFunc_logdBinomial
+    DistFunc_logdPoisson
     DistFunc_pNormal
     DistFunc_qNormal
+    DistFunc_rBinomial
     DistFunc_rNormal
+    DistFunc_rPoisson
     DistFunc_kFactor
     DistFunc_kFactorPooled
 
