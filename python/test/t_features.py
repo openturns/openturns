@@ -92,6 +92,11 @@ try:
     # check that ceres was found
     print('13: optimization (Ceres Solver)'.ljust(width), end=' ')
     print('OK' if ot.Ceres.IsAvailable() else 'no')
+    
+    # check that dlib was found
+    print('14: optimization (dlib)'.ljust(width), end=' ')
+    print('OK' if ot.Dlib.IsAvailable() else 'no')
+
 except:
     import os
     import traceback
