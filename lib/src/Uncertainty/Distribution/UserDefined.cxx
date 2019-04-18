@@ -43,8 +43,7 @@ UserDefined::UserDefined()
   , alias_(0)
 {
   setName("UserDefined");
-  // Empty range
-  setRange(Interval(1.0, 0.0));
+  setData(Sample(1, 1), Point(1, 1.0));
 }
 
 /* Constructor from a sample */
