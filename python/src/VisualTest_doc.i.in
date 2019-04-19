@@ -155,6 +155,79 @@ Draw a two-sample QQ-plot:
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::VisualTest::DrawCDFplot
+"Draw a CDF-plot.
+
+Refer to :ref:`qqplot_graph`.
+
+Available usages:
+    VisualTest.DrawCDFplot(*sample1, sample2*)
+
+    VisualTest.DrawCDFplot(*sample1, distribution*);
+
+Parameters
+----------
+sample1, sample2 : 2-d sequences of float
+    Tested samples.
+ditribution : :class:`~openturns.Distribution`
+    Tested model.
+
+Returns
+-------
+graph : class:`~openturns.Graph`
+    The graph object
+
+Notes
+-----
+The CDF-plot is a visual fitting test for univariate distributions. It
+opposes the normalized sample ranks to those of the tested quantity (either a
+distribution or another sample) by plotting the following points cloud:
+
+.. math::
+
+    \left(\dfrac{i+1/2}{m},
+          F(x^{(i)})
+    \right), \quad i = 1, \ldots, m
+
+where :math:`F` denotes either the CDF function of the tested
+distribution or the empirical CDF of the second tested sample.
+
+If the given sample fits to the tested distribution or sample, then the points
+should be close to be aligned (up to the uncertainty associated with the
+estimation of the empirical probabilities) with the **first bissector**  whose
+equation reads:
+
+.. math::
+
+    y = x, \quad x \in [0,1]
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+
+Generate a random sample from a Normal distribution:
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Weibull(2.0, 0.5)
+>>> sample = distribution.getSample(30)
+>>> sample.setDescription(['Sample'])
+
+Draw a CDF-plot against a given (inferred) distribution:
+
+>>> tested_distribution = ot.WeibullFactory().build(sample)
+>>> CDF_plot = ot.VisualTest.DrawCDFplot(sample, tested_distribution)
+>>> View(CDF_plot).show()
+
+Draw a two-sample CDF-plot:
+
+>>> another_sample = distribution.getSample(50)
+>>> another_sample.setDescription(['Another sample'])
+>>> CDF_plot = ot.VisualTest.DrawCDFplot(sample, another_sample)
+>>> View(CDF_plot).show()"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::VisualTest::DrawCobWeb
 "Draw a Cobweb plot.
 

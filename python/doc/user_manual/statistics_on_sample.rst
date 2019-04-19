@@ -192,6 +192,7 @@ Graphical tests
     VisualTest_DrawLinearModel
     VisualTest_DrawLinearModelResidual
     VisualTest_DrawQQplot
+    VisualTest_DrawCDFplot
 
 Hypothesis tests
 ----------------

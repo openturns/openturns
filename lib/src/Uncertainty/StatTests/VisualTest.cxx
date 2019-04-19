@@ -162,6 +162,62 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
   return graphQQplot;
 }
 
+/* Draw the CDFplot of the two Samples when its dimension is 1 */
+Graph VisualTest::DrawCDFplot(const Sample & sample1,
+                             const Sample & sample2)
+{
+  if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDFplot only if dimension equals 1, here dimension=" << sample1.getDimension();
+  if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDFplot only if dimension equals 1, here dimension=" << sample2.getDimension();
+  const Sample sortedSample(sample1.sort(0));
+  const UnsignedInteger pointNumber(sample1.getSize());
+  const Sample data1(RegularGrid(0.5 / pointNumber, 1.0 / pointNumber, pointNumber).getVertices());
+  const Sample data2(UserDefined(sample2).computeCDF(sortedSample));
+  Cloud cloudCDFplot(data1, data2, "Data");
+  if (pointNumber < 100) cloudCDFplot.setPointStyle("fcircle");
+  else if (pointNumber < 1000) cloudCDFplot.setPointStyle("bullet");
+  else cloudCDFplot.setPointStyle("dot");
+  Graph graphCDFplot("Two sample CDF-plot", sample1.getDescription()[0], sample2.getDescription()[0], true, "topleft");
+  // First, the bisectrice
+  Sample diagonal(2, 2);
+  diagonal(1, 0) = 1.0;
+  diagonal(1, 1) = 1.0;
+  Curve bisectrice(diagonal, "Test line");
+  bisectrice.setColor("red");
+  bisectrice.setLineStyle("dashed");
+  graphCDFplot.add(bisectrice);
+  // Then the CDF plot
+  graphCDFplot.add(cloudCDFplot);
+  return graphCDFplot;
+}
+
+/* Draw the CDFplot of one Sample and one Distribution when its dimension is 1 */
+Graph VisualTest::DrawCDFplot(const Sample & sample,
+                             const Distribution & dist)
+{
+  if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDFplot only if dimension equals 1, here dimension=" << sample.getDimension();
+  if (dist.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDFplot only if dimension equals 1, here dimension=" << dist.getDimension();
+  const Sample sortedSample(sample.sort(0));
+  const UnsignedInteger pointNumber(sample.getSize());
+  const Sample data1(RegularGrid(0.5 / pointNumber, 1.0 / pointNumber, pointNumber).getVertices());
+  const Sample data2(dist.computeCDF(sortedSample));
+  Cloud cloudCDFplot(data1, data2, "Data");
+  if (pointNumber < 100) cloudCDFplot.setPointStyle("fcircle");
+  else if (pointNumber < 1000) cloudCDFplot.setPointStyle("bullet");
+  else cloudCDFplot.setPointStyle("dot");
+  Graph graphCDFplot("Sample versus model CDF-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
+  // First, the bisectrice
+  Sample diagonal(2, 2);
+  diagonal(1, 0) = 1.0;
+  diagonal(1, 1) = 1.0;
+  Curve bisectrice(diagonal, "Test line");
+  bisectrice.setColor("red");
+  bisectrice.setLineStyle("dashed");
+  graphCDFplot.add(bisectrice);
+  // Then the CDF plot
+  graphCDFplot.add(cloudCDFplot);
+  return graphCDFplot;
+}
+
 /* Draw the Henry line for a sample when its dimension is 1 */
 Graph VisualTest::DrawHenryLine(const Sample & sample)
 {

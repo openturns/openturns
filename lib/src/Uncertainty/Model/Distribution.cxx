@@ -28,8 +28,8 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(Distribution)
 
 /* Default constructor */
-  Distribution::Distribution()
-               : TypedInterfaceObject<DistributionImplementation>(new Uniform())
+Distribution::Distribution()
+  : TypedInterfaceObject<DistributionImplementation>(new Uniform())
 {
   // Nothing to do
 }
@@ -418,7 +418,7 @@ Point Distribution::computeInverseSurvivalFunction(const Scalar prob) const
 }
 
 Point Distribution::computeInverseSurvivalFunction(const Scalar prob,
-                                                   Scalar & marginalProb) const
+    Scalar & marginalProb) const
 {
   return getImplementation()->computeInverseSurvivalFunction(prob, marginalProb);
 }
@@ -561,8 +561,8 @@ Sample Distribution::computeCDF(const Scalar xMin,
 }
 
 Sample Distribution::computeComplementaryCDF(const Scalar xMin,
-                                             const Scalar xMax,
-                                             const UnsignedInteger pointNumber) const
+    const Scalar xMax,
+    const UnsignedInteger pointNumber) const
 {
   Sample grid;
   return getImplementation()->computeComplementaryCDF(xMin, xMax, pointNumber, grid);
@@ -632,7 +632,7 @@ Sample Distribution::computeQuantile(const Point & prob,
 }
 
 Scalar Distribution::computeScalarQuantile(const Scalar prob,
-                                           const Bool tail) const
+    const Bool tail) const
 {
   return getImplementation()->computeScalarQuantile(prob, tail);
 }
@@ -679,7 +679,7 @@ Interval Distribution::computeBilateralConfidenceIntervalWithMarginalProbability
    where in both cases \beta is such that P(X\in\prod_{i=1}^d[a_i, b_i])=p
 */
 Interval Distribution::computeUnilateralConfidenceInterval(const Scalar prob,
-                                                           const Bool tail) const
+    const Bool tail) const
 {
   return getImplementation()->computeUnilateralConfidenceInterval(prob, tail);
 }
@@ -806,7 +806,7 @@ Scalar Distribution::computeDensityGeneratorSecondDerivative(const Scalar betaSq
 
 /* Compute the radial distribution CDF */
 Scalar Distribution::computeRadialDistributionCDF (const Scalar radius,
-                                                   const Bool tail) const
+    const Bool tail) const
 {
   return getImplementation()->computeRadialDistributionCDF(radius, tail);
 }
@@ -995,10 +995,10 @@ Graph Distribution::drawLogPDF(const UnsignedInteger pointNumber,
 
 /* Draw the log-PDF of a 1D marginal */
 Graph Distribution::drawMarginal1DLogPDF(const UnsignedInteger marginalIndex,
-                                         const Scalar xMin,
-                                         const Scalar xMax,
-                                         const UnsignedInteger pointNumber,
-                                         const Bool logScale) const
+    const Scalar xMin,
+    const Scalar xMax,
+    const UnsignedInteger pointNumber,
+    const Bool logScale) const
 {
   return getImplementation()->drawMarginal1DLogPDF(marginalIndex, xMin, xMax, pointNumber, logScale);
 }
@@ -1032,12 +1032,12 @@ Graph Distribution::drawLogPDF(const Indices & pointNumber,
 
 /* Draw the log-PDF of a 2D marginal */
 Graph Distribution::drawMarginal2DLogPDF(const UnsignedInteger firstMarginal,
-                                         const UnsignedInteger secondMarginal,
-                                         const Point & xMin,
-                                         const Point & xMax,
-                                         const Indices & pointNumber,
-					 const Bool logScaleX,
-					 const Bool logScaleY) const
+    const UnsignedInteger secondMarginal,
+    const Point & xMin,
+    const Point & xMax,
+    const Indices & pointNumber,
+    const Bool logScaleX,
+    const Bool logScaleY) const
 {
   return getImplementation()->drawMarginal2DLogPDF(firstMarginal, secondMarginal, xMin, xMax, pointNumber, logScaleX, logScaleY);
 }
@@ -1101,73 +1101,73 @@ Graph Distribution::drawMarginal2DCDF(const UnsignedInteger firstMarginal,
                                       const Point & xMin,
                                       const Point & xMax,
                                       const Indices & pointNumber,
-				      const Bool logScaleX,
-				      const Bool logScaleY) const
+                                      const Bool logScaleX,
+                                      const Bool logScaleY) const
 {
   return getImplementation()->drawMarginal2DCDF(firstMarginal, secondMarginal, xMin, xMax, pointNumber, logScaleX, logScaleY);
 }
 
 /* Draw the SurvivalFunction of the distribution when its dimension is 1 */
 Graph Distribution::drawSurvivalFunction(const Scalar xMin,
-                                         const Scalar xMax,
-                                         const UnsignedInteger pointNumber,
-                                         const Bool logScale) const
+    const Scalar xMax,
+    const UnsignedInteger pointNumber,
+    const Bool logScale) const
 {
   return getImplementation()->drawSurvivalFunction(xMin, xMax, pointNumber, logScale);
 }
 
 /* Draw the SurvivalFunction of the distribution when its dimension is 1 */
 Graph Distribution::drawSurvivalFunction(const UnsignedInteger pointNumber,
-                                         const Bool logScale) const
+    const Bool logScale) const
 {
   return getImplementation()->drawSurvivalFunction(pointNumber, logScale);
 }
 
 /* Draw the SurvivalFunction of a 1D marginal */
 Graph Distribution::drawMarginal1DSurvivalFunction(const UnsignedInteger marginalIndex,
-                                                   const Scalar xMin,
-                                                   const Scalar xMax,
-                                                   const UnsignedInteger pointNumber,
-                                                   const Bool logScale) const
+    const Scalar xMin,
+    const Scalar xMax,
+    const UnsignedInteger pointNumber,
+    const Bool logScale) const
 {
   return getImplementation()->drawMarginal1DSurvivalFunction(marginalIndex, xMin, xMax, pointNumber, logScale);
 }
 
 /* Draw the SurvivalFunction of the distribution when its dimension is 2 */
 Graph Distribution::drawSurvivalFunction(const Point & xMin,
-                                         const Point & xMax,
-                                         const Indices & pointNumber,
-                                         const Bool logScaleX,
-                                         const Bool logScaleY) const
+    const Point & xMax,
+    const Indices & pointNumber,
+    const Bool logScaleX,
+    const Bool logScaleY) const
 {
   return getImplementation()->drawSurvivalFunction(xMin, xMax, pointNumber, logScaleX, logScaleY);
 }
 
 /* Draw the SurvivalFunction of the distribution when its dimension is 2 */
 Graph Distribution::drawSurvivalFunction(const Point & xMin,
-                                         const Point & xMax,
-                                         const Bool logScaleX,
-                                         const Bool logScaleY) const
+    const Point & xMax,
+    const Bool logScaleX,
+    const Bool logScaleY) const
 {
   return getImplementation()->drawSurvivalFunction(xMin, xMax, logScaleX, logScaleY);
 }
 
 /* Draw the SurvivalFunction of the distribution when its dimension is 2 */
 Graph Distribution::drawSurvivalFunction(const Indices & pointNumber,
-                                         const Bool logScaleX,
-                                         const Bool logScaleY) const
+    const Bool logScaleX,
+    const Bool logScaleY) const
 {
   return getImplementation()->drawSurvivalFunction(pointNumber, logScaleX, logScaleY);
 }
 
 /* Draw the SurvivalFunction of a 2D marginal */
 Graph Distribution::drawMarginal2DSurvivalFunction(const UnsignedInteger firstMarginal,
-                                                   const UnsignedInteger secondMarginal,
-                                                   const Point & xMin,
-                                                   const Point & xMax,
-                                                   const Indices & pointNumber,
-						   const Bool logScaleX,
-						   const Bool logScaleY) const
+    const UnsignedInteger secondMarginal,
+    const Point & xMin,
+    const Point & xMax,
+    const Indices & pointNumber,
+    const Bool logScaleX,
+    const Bool logScaleY) const
 {
   return getImplementation()->drawMarginal2DSurvivalFunction(firstMarginal, secondMarginal, xMin, xMax, pointNumber, logScaleX, logScaleY);
 }
