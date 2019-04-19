@@ -309,8 +309,8 @@ Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
   if (getInputDimension() < 1) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 1";
   if (inputMarginal >= getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given input marginal index=" << inputMarginal << " must be less than the input dimension=" << getInputDimension();
   if (outputMarginal >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given output marginal index=" << outputMarginal << " must be less than the output dimension=" << getOutputDimension();
-  if ((scale != GraphImplementation::NONE) && (scale != GraphImplementation::LOGX)) throw InvalidArgumentException(HERE) << "Error: expected scale=" << GraphImplementation::NONE << " or scale=" << GraphImplementation::LOGX << ", got scale=" << scale;
-  if ((scale == GraphImplementation::LOGX) && ((xMin <= 0.0) || (xMax <= 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values.";
+  if ((scale != GraphImplementation::NONE) && ((scale != GraphImplementation::LOGX) || (scale != GraphImplementation::LOGXY))) throw InvalidArgumentException(HERE) << "Error: expected scale=" << GraphImplementation::NONE << ", scale=" << GraphImplementation::LOGX << " or scale=" << GraphImplementation::LOGXY << ", got scale=" << scale;
+  if (((scale == GraphImplementation::LOGX) || (scale == GraphImplementation::LOGXY)) && ((xMin <= 0.0) || (xMax <= 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values.";
   Sample inputData(pointNumber, centralPoint);
   if (scale == GraphImplementation::NONE)
   {

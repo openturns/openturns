@@ -59,7 +59,7 @@ class OT_API DistributionImplementation
 public:
 
   typedef Pointer<DistributionImplementation>       Implementation;
-  typedef Function                     IsoProbabilisticTransformation;
+  typedef Function                                  IsoProbabilisticTransformation;
   typedef IsoProbabilisticTransformation            InverseIsoProbabilisticTransformation;
   typedef Collection<Point>                PointCollection;
   typedef Collection<PointWithDescription> PointWithDescriptionCollection;
@@ -540,122 +540,185 @@ protected:
 
 public:
   /** Draw the PDF of the distribution when its dimension is 1 or 2 */
-  virtual Graph drawPDF() const;
+  virtual Graph drawPDF(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+			const Bool logScale = false) const;
 
   /** Draw the PDF of the distribution when its dimension is 1 */
   virtual Graph drawPDF(const Scalar xMin,
                         const Scalar xMax,
-                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
-
-  virtual Graph drawPDF(const UnsignedInteger pointNumber) const;
+                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+                        const Bool logScale = false) const;
 
   /** Draw the PDF of a 1D marginal */
   virtual Graph drawMarginal1DPDF(const UnsignedInteger marginalIndex,
                                   const Scalar xMin,
                                   const Scalar xMax,
-                                  const UnsignedInteger pointNumber) const;
+                                  const UnsignedInteger pointNumber,
+                                  const Bool logScale = false) const;
 
   /** Draw the PDF of the distribution when its dimension is 2 */
   virtual Graph drawPDF(const Point & xMin,
                         const Point & xMax,
-                        const Indices & pointNumber) const;
-
+                        const Indices & pointNumber,
+                        const Bool logScaleX = false,
+                        const Bool logScaleY = false) const;
   virtual Graph drawPDF(const Point & xMin,
-                        const Point & xMax) const;
-
-  virtual Graph drawPDF(const Indices & pointNumber) const;
-
+                        const Point & xMax,
+                        const Bool logScaleX = false,
+                        const Bool logScaleY = false) const;
+  virtual Graph drawPDF(const Indices & pointNumber,
+                        const Bool logScaleX = false,
+                        const Bool logScaleY = false) const;
 
   /** Draw the PDF of a 2D marginal */
   virtual Graph drawMarginal2DPDF(const UnsignedInteger firstMarginal,
                                   const UnsignedInteger secondMarginal,
                                   const Point & xMin,
                                   const Point & xMax,
-                                  const Indices & pointNumber) const;
+                                  const Indices & pointNumber,
+				  const Bool logScaleX = false,
+				  const Bool logScaleY = false) const;
 
   /** Draw the log-PDF of the distribution when its dimension is 1 or 2 */
-  virtual Graph drawLogPDF() const;
+  virtual Graph drawLogPDF(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+			   const Bool logScale = false) const;
 
   /** Draw the log-PDF of the distribution when its dimension is 1 */
   virtual Graph drawLogPDF(const Scalar xMin,
                            const Scalar xMax,
-                           const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
-
-  virtual Graph drawLogPDF(const UnsignedInteger pointNumber) const;
+                           const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+                           const Bool logScale = false) const;
 
   /** Draw the log-PDF of a 1D marginal */
   virtual Graph drawMarginal1DLogPDF(const UnsignedInteger marginalIndex,
                                      const Scalar xMin,
                                      const Scalar xMax,
-                                     const UnsignedInteger pointNumber) const;
+                                     const UnsignedInteger pointNumber,
+                                     const Bool logScale = false) const;
 
   /** Draw the log-PDF of the distribution when its dimension is 2 */
   virtual Graph drawLogPDF(const Point & xMin,
                            const Point & xMax,
-                           const Indices & pointNumber) const;
-
+                           const Indices & pointNumber,
+                           const Bool logScaleX = false,
+                           const Bool logScaleY = false) const;
   virtual Graph drawLogPDF(const Point & xMin,
-                           const Point & xMax) const;
-
-  virtual Graph drawLogPDF(const Indices & pointNumber) const;
-
+                           const Point & xMax,
+                           const Bool logScaleX = false,
+                           const Bool logScaleY = false) const;
+  virtual Graph drawLogPDF(const Indices & pointNumber,
+                           const Bool logScaleX = false,
+                           const Bool logScaleY = false) const;
 
   /** Draw the PDF of a 2D marginal */
   virtual Graph drawMarginal2DLogPDF(const UnsignedInteger firstMarginal,
                                      const UnsignedInteger secondMarginal,
                                      const Point & xMin,
                                      const Point & xMax,
-                                     const Indices & pointNumber) const;
+                                     const Indices & pointNumber,
+				     const Bool logScaleX = false,
+				     const Bool logScaleY = false) const;
 
   /** Draw the CDF of the distribution when its dimension is 1 or 2 */
-  virtual Graph drawCDF() const;
+  virtual Graph drawCDF(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+			const Bool logScale = false) const;
 
   /** Draw the CDF of the distribution when its dimension is 1 */
   virtual Graph drawCDF(const Scalar xMin,
                         const Scalar xMax,
-                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
-
-  virtual Graph drawCDF(const UnsignedInteger pointNumber) const;
-
+                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+                        const Bool logScale = false) const;
 
   /** Draw the CDF of the distribution when its dimension is 2 */
   virtual Graph drawCDF(const Point & xMin,
                         const Point & xMax,
-                        const Indices & pointNumber) const;
-
+                        const Indices & pointNumber,
+			const Bool logScaleX = false,
+			const Bool logScaleY = false) const;
   virtual Graph drawCDF(const Point & xMin,
-                        const Point & xMax) const;
-
-  virtual Graph drawCDF(const Indices & pointNumber) const;
-
+                        const Point & xMax,
+			const Bool logScaleX = false,
+			const Bool logScaleY = false) const;
+  virtual Graph drawCDF(const Indices & pointNumber,
+			const Bool logScaleX = false,
+			const Bool logScaleY = false) const;
 
   /** Draw the CDF of a 1D marginal */
   virtual Graph drawMarginal1DCDF(const UnsignedInteger marginalIndex,
                                   const Scalar xMin,
                                   const Scalar xMax,
-                                  const UnsignedInteger pointNumber) const;
+                                  const UnsignedInteger pointNumber,
+                                  const Bool logScale = false) const;
 
   /** Draw the CDF of a 2D marginal */
   virtual Graph drawMarginal2DCDF(const UnsignedInteger firstMarginal,
                                   const UnsignedInteger secondMarginal,
                                   const Point & xMin,
                                   const Point & xMax,
-                                  const Indices & pointNumber) const;
+                                  const Indices & pointNumber,
+				  const Bool logScaleX = false,
+				  const Bool logScaleY = false) const;
+
+  /** Draw the SurvivalFunction of the distribution when its dimension is 1 or 2 */
+  virtual Graph drawSurvivalFunction(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+				     const Bool logScale = false) const;
+
+  /** Draw the SurvivalFunction of the distribution when its dimension is 1 */
+  virtual Graph drawSurvivalFunction(const Scalar xMin,
+                                     const Scalar xMax,
+                                     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+                                     const Bool logScale = false) const;
+
+  /** Draw the SurvivalFunction of the distribution when its dimension is 2 */
+  virtual Graph drawSurvivalFunction(const Point & xMin,
+                                     const Point & xMax,
+                                     const Indices & pointNumber,
+				     const Bool logScaleX = false,
+				     const Bool logScaleY = false) const;
+  virtual Graph drawSurvivalFunction(const Point & xMin,
+                                     const Point & xMax,
+				     const Bool logScaleX = false,
+				     const Bool logScaleY = false) const;
+  virtual Graph drawSurvivalFunction(const Indices & pointNumber,
+				     const Bool logScaleX = false,
+				     const Bool logScaleY = false) const;
+
+  /** Draw the SurvivalFunction of a 1D marginal */
+  virtual Graph drawMarginal1DSurvivalFunction(const UnsignedInteger marginalIndex,
+					       const Scalar xMin,
+					       const Scalar xMax,
+					       const UnsignedInteger pointNumber,
+					       const Bool logScale = false) const;
+
+  /** Draw the SurvivalFunction of a 2D marginal */
+  virtual Graph drawMarginal2DSurvivalFunction(const UnsignedInteger firstMarginal,
+					       const UnsignedInteger secondMarginal,
+					       const Point & xMin,
+					       const Point & xMax,
+					       const Indices & pointNumber,
+					       const Bool logScaleX = false,
+					       const Bool logScaleY = false) const;
 
   /** Draw the quantile of the distribution when its dimension is 1 or 2 */
-  virtual Graph drawQuantile(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
+  virtual Graph drawQuantile(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+                             const Bool logScale = false) const;
 
   virtual Graph drawQuantile(const Scalar qMin,
                              const Scalar qMax,
-                             const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
+                             const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+                             const Bool logScale = false) const;
+
 protected:
   virtual Graph drawQuantile1D(const Scalar qMin,
                                const Scalar qMax,
-                               const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
+                               const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+                               const Bool logScale = false) const;
 
   virtual Graph drawQuantile2D(const Scalar qMin,
                                const Scalar qMax,
-                               const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
+                               const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+			       const Bool logScaleX = false,
+			       const Bool logScaleY = false) const;
 public:
 
   /** Parameters value and description accessor */
@@ -704,17 +767,22 @@ protected:
   /** Draw the PDF of a discrete distribution */
   virtual Graph drawDiscretePDF(const Scalar xMin,
                                 const Scalar xMax,
-                                const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
+                                const Bool logScale = false) const;
 
   /** Draw the log-PDF of a discrete distribution */
   virtual Graph drawDiscreteLogPDF(const Scalar xMin,
                                    const Scalar xMax,
-                                   const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
+				   const Bool logScale = false) const;
 
   /** Draw the CDF of a discrete distribution */
   Graph drawDiscreteCDF(const Scalar xMin,
                         const Scalar xMax,
-                        const UnsignedInteger pointNumber) const;
+                        const Bool logScale = false) const;
+
+  /** Draw the SurvivalFunction of a discrete distribution */
+  Graph drawDiscreteSurvivalFunction(const Scalar xMin,
+				     const Scalar xMax,
+				     const Bool logScale = false) const;
 
   /** Compute the characteristic function of 1D distributions in a regular pattern with cache */
   virtual Complex computeCharacteristicFunction(const UnsignedInteger index,
@@ -793,11 +861,11 @@ protected:
 #ifndef SWIG
 
   // Class used to wrap the computePDF() method for interpolation purpose
-  class PDFWrapper: public FunctionImplementation
+  class PDFWrapper: public EvaluationImplementation
   {
   public:
     PDFWrapper(const DistributionImplementation * p_distribution)
-      : FunctionImplementation()
+      : EvaluationImplementation()
       , p_distribution_(p_distribution)
     {
       // Nothing to do
@@ -856,30 +924,171 @@ protected:
     const DistributionImplementation * p_distribution_;
   };  // class PDFWrapper
 
-  // Structure used to wrap the computeCDF() method for interpolation purpose
-  struct CDFWrapper
+  // Class used to wrap the computeLogPDF() method for interpolation purpose
+  class LogPDFWrapper: public EvaluationImplementation
   {
-    CDFWrapper(const DistributionImplementation * p_distribution):
-      p_distribution_(p_distribution) {};
+  public:
+    LogPDFWrapper(const DistributionImplementation * p_distribution)
+      : EvaluationImplementation()
+      , p_distribution_(p_distribution)
+    {
+      // Nothing to do
+    }
+
+    LogPDFWrapper * clone() const
+    {
+      return new LogPDFWrapper(*this);
+    }
+
+    Point operator() (const Point & point) const
+    {
+      return Point(1, p_distribution_->computeLogPDF(point));
+    }
+
+    Sample operator() (const Sample & sample) const
+    {
+      return p_distribution_->computeLogPDF(sample);
+    };
+
+    UnsignedInteger getInputDimension() const
+    {
+      return p_distribution_->getDimension();
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return 1;
+    }
+
+    Description getInputDescription() const
+    {
+      return p_distribution_->getDescription();
+    }
+
+    Description getOutputDescription() const
+    {
+      return Description(1, "logpdf");
+    }
+
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "LogPDFWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & ) const
+    {
+      OSS oss;
+      oss << "LogPDFWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+  private:
+    const DistributionImplementation * p_distribution_;
+  };  // class LogPDFWrapper
+
+  // Structure used to wrap the computeCDF() method for interpolation purpose
+  class CDFWrapper: public EvaluationImplementation
+  {
+  public:
+    CDFWrapper(const DistributionImplementation * p_distribution)
+      : EvaluationImplementation()
+      , p_distribution_(p_distribution)
+    {
+      // Nothing to do
+    }
+
+    CDFWrapper * clone() const
+    {
+      return new CDFWrapper(*this);
+    }
+
+    Point operator() (const Point & point) const
+    {
+      return computeCDF(point);
+    }
+
+    Sample operator() (const Sample & sample) const
+    {
+      return computeCDF(sample);
+    }
 
     Point computeCDF(const Point & point) const
     {
       return Point(1, p_distribution_->computeCDF(point));
     };
 
+    Sample computeCDF(const Sample & sample) const
+    {
+      return p_distribution_->computeCDF(sample);
+    };
+
+    UnsignedInteger getInputDimension() const
+    {
+      return p_distribution_->getDimension();
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return 1;
+    }
+
+    Description getInputDescription() const
+    {
+      return p_distribution_->getDescription();
+    }
+
+    Description getOutputDescription() const
+    {
+      return Description(1, "cdf");
+    }
+
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "CDFWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & ) const
+    {
+      OSS oss;
+      oss << "CDFWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+  private:
     const DistributionImplementation * p_distribution_;
-  }; // struct CDFWrapper
+  }; // class CDFWrapper
 
   // Structure used to implement the computeQuantile() method efficiently
-  struct QuantileWrapper
+  class QuantileWrapper: public EvaluationImplementation
   {
-    QuantileWrapper(const Collection< Implementation > marginals,
+  public:
+    QuantileWrapper(const Collection< Pointer<DistributionImplementation> > marginals,
                     const DistributionImplementation * p_distribution)
-      : marginals_(marginals)
+      : EvaluationImplementation()
+      , marginals_(marginals)
       , p_distribution_(p_distribution)
       , dimension_(p_distribution->getDimension())
     {
       // Nothing to do
+    }
+
+    QuantileWrapper * clone() const
+    {
+      return new QuantileWrapper(*this);
+    }
+
+    Point operator() (const Point & point) const
+    {
+      return p_distribution_->computeQuantile(point[0]);
+    }
+
+    Sample operator() (const Sample & sample) const
+    {
+      return p_distribution_->computeQuantile(sample.asPoint());
     }
 
     Point computeDiagonal(const Point & u) const
@@ -897,21 +1106,73 @@ protected:
       return x;
     }
 
-    const Collection< Implementation > marginals_;
+    UnsignedInteger getInputDimension() const
+    {
+      return 1;
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return p_distribution_->getDimension();
+    }
+
+    Description getInputDescription() const
+    {
+      return Description(1, "quantile");
+    }
+
+    Description getOutputDescription() const
+    {
+      return p_distribution_->getDescription();
+    }
+
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "QuantileWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & ) const
+    {
+      OSS oss;
+      oss << "QuantileWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+  private:
+    const Collection< Pointer<DistributionImplementation> > marginals_;
     const DistributionImplementation * p_distribution_;
     const UnsignedInteger dimension_;
   }; // struct QuantileWrapper
 
   // Structure used to implement the computeInverseSurvivalFunction() method efficiently
-  struct SurvivalFunctionWrapper
+  class SurvivalFunctionWrapper: public EvaluationImplementation
   {
-    SurvivalFunctionWrapper(const Collection< Implementation > marginals,
+  public:
+    SurvivalFunctionWrapper(const Collection< Pointer<DistributionImplementation> > marginals,
                             const DistributionImplementation * p_distribution)
-      : marginals_(marginals)
+      : EvaluationImplementation()
+      , marginals_(marginals)
       , p_distribution_(p_distribution)
       , dimension_(p_distribution->getDimension())
     {
       // Nothing to do
+    }
+
+    SurvivalFunctionWrapper * clone() const
+    {
+      return new SurvivalFunctionWrapper(*this);
+    }
+
+    Point operator() (const Point & point) const
+    {
+      return Point(1, p_distribution_->computeSurvivalFunction(point));
+    }
+
+    Sample operator() (const Sample & sample) const
+    {
+      return p_distribution_->computeSurvivalFunction(sample);
     }
 
     Point computeDiagonal(const Point & u) const
@@ -929,7 +1190,42 @@ protected:
       return x;
     }
 
-    const Collection< Implementation > marginals_;
+    UnsignedInteger getInputDimension() const
+    {
+      return p_distribution_->getDimension();
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return 1;
+    }
+
+    Description getInputDescription() const
+    {
+      return p_distribution_->getDescription();
+    }
+
+    Description getOutputDescription() const
+    {
+      return Description(1, "survival function");
+    }
+
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "SurvivalFunctionWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String & ) const
+    {
+      OSS oss;
+      oss << "SurvivalFunctionWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+  private:
+    const Collection< Pointer<DistributionImplementation> > marginals_;
     const DistributionImplementation * p_distribution_;
     const UnsignedInteger dimension_;
   }; // struct SurvivalFunctionWrapper
@@ -1079,13 +1375,13 @@ protected:
     const DistributionImplementation::Implementation p_distribution_;
   }; // class MinimumVolumeLevelSetGradient
 
-  class CovarianceWrapper: public FunctionImplementation
+  class CovarianceWrapper: public EvaluationImplementation
   {
   public:
     CovarianceWrapper(const DistributionImplementation::Implementation & p_distribution,
                       const Scalar muI,
                       const Scalar muJ)
-      : FunctionImplementation()
+      : EvaluationImplementation()
       , p_distribution_(p_distribution)
       , muI_(muI)
       , muJ_(muJ)
@@ -1152,13 +1448,13 @@ protected:
   };  // class CovarianceWrapper
 
   // Class used to wrap the computeConditionalPDF() method for the computation of the conditional CDF
-  class ShiftedMomentWrapper: public FunctionImplementation
+  class ShiftedMomentWrapper: public EvaluationImplementation
   {
   public:
     ShiftedMomentWrapper(const UnsignedInteger n,
                          const Scalar shift,
                          const DistributionImplementation::Implementation & p_distribution)
-      : FunctionImplementation()
+      : EvaluationImplementation()
       , n_(1.0 * n)
       , shift_(shift)
       , p_distribution_(p_distribution)
@@ -1219,11 +1515,11 @@ protected:
   }; // class ShiftedMomentWrapper
 
   // Class used to wrap the computeConditionalPDF() method for the computation of the conditional CDF
-  class ConditionalPDFWrapper: public FunctionImplementation
+  class ConditionalPDFWrapper: public EvaluationImplementation
   {
   public:
     ConditionalPDFWrapper(const DistributionImplementation::Implementation p_distribution)
-      : FunctionImplementation()
+      : EvaluationImplementation()
       , y_(0.0)
       , p_distribution_(p_distribution)
     {
@@ -1290,11 +1586,11 @@ protected:
   }; // class ConditionalPDFWrapper
 
   // Class used to wrap the computeConditionalCDF() method for the computation of the conditional quantile
-  class ConditionalCDFWrapper: public FunctionImplementation
+  class ConditionalCDFWrapper: public EvaluationImplementation
   {
   public:
     ConditionalCDFWrapper(const DistributionImplementation * p_distribution)
-      : FunctionImplementation()
+      : EvaluationImplementation()
       , y_(0.0)
       , p_distribution_(p_distribution)
     {
@@ -1351,11 +1647,11 @@ protected:
   }; // class ConditionalCDFWrapper
 
   // Class used to compute entropy
-  class EntropyKernel: public FunctionImplementation
+  class EntropyKernel: public EvaluationImplementation
   {
   public:
     EntropyKernel(const DistributionImplementation * p_distribution)
-      : FunctionImplementation()
+      : EvaluationImplementation()
       , p_distribution_(p_distribution)
     {
       // Nothing to do
@@ -1449,10 +1745,10 @@ protected:
   mutable Point pdfGrid_;
 
   /** Wrapper to compute conditional CDF */
-  mutable Pointer<FunctionImplementation> p_conditionalPDFWrapper_;
+  mutable Pointer<EvaluationImplementation> p_conditionalPDFWrapper_;
 
   /** Wrapper to compute conditional quantile */
-  mutable Pointer<FunctionImplementation> p_conditionalCDFWrapper_;
+  mutable Pointer<EvaluationImplementation> p_conditionalCDFWrapper_;
 
 }; /* class DistributionImplementation */
 
@@ -1509,4 +1805,3 @@ OT_API Distribution maximum(const DistributionImplementation & left,
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_DISTRIBUTIONIMPLEMENTATION_HXX */
-

@@ -866,9 +866,9 @@ OT_Distribution_computeInverseSurvivalFunction_doc
 "Draw the cumulative distribution function.
 
 Available constructors:
-    drawCDF(*x_min, x_max, pointNumber*)
+    drawCDF(*x_min, x_max, pointNumber, logScale*)
 
-    drawCDF(*lowerCorner, upperCorner, pointNbrInd*)
+    drawCDF(*lowerCorner, upperCorner, pointNbrInd, logScaleX, logScaleY*)
 
     drawCDF(*lowerCorner, upperCorner*)
 
@@ -886,12 +886,18 @@ pointNumber : int
     The number of points that is used for meshing each axis.
     Defaults uses `DistributionImplementation-DefaultPointNumber` from the
     :class:`~openturns.ResourceMap`.
+logScale : bool
+    Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
 lowerCorner : sequence of float, of dimension 2, optional
     The lower corner :math:`[x_{min}, y_{min}]`.
 upperCorner : sequence of float, of dimension 2, optional
     The upper corner :math:`[x_{max}, y_{max}]`.
 pointNbrInd : :class:`~openturns.Indices`, of dimension 2
     Number of points that is used for meshing each axis.
+logScaleX : bool
+    Flag to tell if the plot is done on a logarithmic scale for X. Default is *False*.
+logScaleY : bool
+    Flag to tell if the plot is done on a logarithmic scale for Y. Default is *False*.
 
 Returns
 -------
@@ -942,6 +948,8 @@ x_max : float, :math:`x_{\max} > x_{\min}`
     The ending value that is used for meshing the x-axis.
 n_points : int
     The number of points that is used for meshing the x-axis.
+logScale : bool
+    Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
 
 Returns
 -------
@@ -1369,6 +1377,8 @@ x_max : float, :math:`x_{\max} > x_{\min}`
     The ending value that is used for meshing the x-axis.
 n_points : int
     The number of points that is used for meshing the x-axis.
+logScale : bool
+    Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
 
 Returns
 -------
@@ -1406,6 +1416,8 @@ x_max : float, :math:`x_{\max} > x_{\min}`
     The ending value that is used for meshing the x-axis.
 n_points : int
     The number of points that is used for meshing the x-axis.
+logScale : bool
+    Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
 
 Returns
 -------
@@ -1445,6 +1457,10 @@ x_max : list of 2 floats, :math:`x_{\max} > x_{\min}`
     The ending values that are used for meshing the x- and y- axes.
 n_points : list of 2 ints
     The number of points that are used for meshing the x- and y- axes.
+logScaleX : bool
+    Flag to tell if the plot is done on a logarithmic scale for X. Default is *False*.
+logScaleY : bool
+    Flag to tell if the plot is done on a logarithmic scale for Y. Default is *False*.
 
 Returns
 -------
@@ -1485,6 +1501,10 @@ x_max : list of 2 floats, :math:`x_{\max} > x_{\min}`
     The ending values that are used for meshing the x- and y- axes.
 n_points : list of 2 ints
     The number of points that are used for meshing the x- and y- axes.
+logScaleX : bool
+    Flag to tell if the plot is done on a logarithmic scale for X. Default is *False*.
+logScaleY : bool
+    Flag to tell if the plot is done on a logarithmic scale for Y. Default is *False*.
 
 Returns
 -------
@@ -1525,6 +1545,10 @@ x_max : list of 2 floats, :math:`x_{\max} > x_{\min}`
     The ending values that are used for meshing the x- and y- axes.
 n_points : list of 2 ints
     The number of points that are used for meshing the x- and y- axes.
+logScaleX : bool
+    Flag to tell if the plot is done on a logarithmic scale for X. Default is *False*.
+logScaleY : bool
+    Flag to tell if the plot is done on a logarithmic scale for Y. Default is *False*.
 
 Returns
 -------
@@ -1554,9 +1578,9 @@ OT_Distribution_drawMarginal2DLogPDF_doc
 "Draw the graph or of iso-lines of probability density function.
 
 Available constructors:
-    drawPDF(*x_min, x_max, pointNumber*)
+    drawPDF(*x_min, x_max, pointNumber, logScale*)
 
-    drawPDF(*lowerCorner, upperCorner, pointNbrInd*)
+    drawPDF(*lowerCorner, upperCorner, pointNbrInd, logScaleX, logScaleY*)
 
     drawPDF(*lowerCorner, upperCorner*)
 
@@ -1574,12 +1598,18 @@ pointNumber : int
     The number of points that is used for meshing each axis.
     Defaults uses `DistributionImplementation-DefaultPointNumber` from the
     :class:`~openturns.ResourceMap`.
+logScale : bool
+    Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
 lowerCorner : sequence of float, of dimension 2, optional
     The lower corner :math:`[x_{min}, y_{min}]`.
 upperCorner : sequence of float, of dimension 2, optional
     The upper corner :math:`[x_{max}, y_{max}]`.
 pointNbrInd : :class:`~openturns.Indices`, of dimension 2
     Number of points that is used for meshing each axis.
+logScaleX : bool
+    Flag to tell if the plot is done on a logarithmic scale for X. Default is *False*.
+logScaleY : bool
+    Flag to tell if the plot is done on a logarithmic scale for Y. Default is *False*.
 
 Returns
 -------
@@ -1621,9 +1651,9 @@ OT_Distribution_drawPDF_doc
 "Draw the graph or of iso-lines of log-probability density function.
 
 Available constructors:
-    drawLogPDF(*x_min, x_max, pointNumber*)
+    drawLogPDF(*x_min, x_max, pointNumber, logScale*)
 
-    drawLogPDF(*lowerCorner, upperCorner, pointNbrInd*)
+    drawLogPDF(*lowerCorner, upperCorner, pointNbrInd, logScaleX, logScaleY*)
 
     drawLogPDF(*lowerCorner, upperCorner*)
 
@@ -1641,12 +1671,18 @@ pointNumber : int
     The number of points that is used for meshing each axis.
     Defaults uses `DistributionImplementation-DefaultPointNumber` from the
     :class:`~openturns.ResourceMap`.
+logScale : bool
+    Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
 lowerCorner : sequence of float, of dimension 2, optional
     The lower corner :math:`[x_{min}, y_{min}]`.
 upperCorner : sequence of float, of dimension 2, optional
     The upper corner :math:`[x_{max}, y_{max}]`.
 pointNbrInd : :class:`~openturns.Indices`, of dimension 2
     Number of points that is used for meshing each axis.
+logScaleX : bool
+    Flag to tell if the plot is done on a logarithmic scale for X. Default is *False*.
+logScaleY : bool
+    Flag to tell if the plot is done on a logarithmic scale for Y. Default is *False*.
 
 Returns
 -------
@@ -1697,6 +1733,8 @@ n_points : int, optional
     The number of points that is used for meshing the quantile curve.
     Defaults uses `DistributionImplementation-DefaultPointNumber` from the
     :class:`~openturns.ResourceMap`.
+logScale : bool
+    Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
 
 Returns
 -------
@@ -3023,3 +3061,161 @@ N : int
 %enddef
 %feature("docstring") OT::DistributionImplementation::getIntegrationNodesNumber
 OT_Distribution_getIntegrationNodesNumber_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_drawSurvivalFunction_doc
+"Draw the cumulative distribution function.
+
+Available constructors:
+    drawSurvivalFunction(*x_min, x_max, pointNumber, logScale*)
+
+    drawSurvivalFunction(*lowerCorner, upperCorner, pointNbrInd, logScaleX, logScaleY*)
+
+    drawSurvivalFunction(*lowerCorner, upperCorner*)
+
+Parameters
+----------
+x_min : float, optional
+    The min-value of the mesh of the x-axis.
+    Defaults uses the quantile associated to the probability level
+    `Distribution-QMin` from the :class:`~openturns.ResourceMap`.
+x_max : float, optional, :math:`x_{\max} > x_{\min}`
+    The max-value of the mesh of the y-axis.
+    Defaults uses the quantile associated to the probability level
+    `Distribution-QMax` from the :class:`~openturns.ResourceMap`.
+pointNumber : int
+    The number of points that is used for meshing each axis.
+    Defaults uses `DistributionImplementation-DefaultPointNumber` from the
+    :class:`~openturns.ResourceMap`.
+logScale : bool
+    Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
+lowerCorner : sequence of float, of dimension 2, optional
+    The lower corner :math:`[x_{min}, y_{min}]`.
+upperCorner : sequence of float, of dimension 2, optional
+    The upper corner :math:`[x_{max}, y_{max}]`.
+pointNbrInd : :class:`~openturns.Indices`, of dimension 2
+    Number of points that is used for meshing each axis.
+logScaleX : bool
+    Flag to tell if the plot is done on a logarithmic scale for X. Default is *False*.
+logScaleY : bool
+    Flag to tell if the plot is done on a logarithmic scale for Y. Default is *False*.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    A graphical representation of the SurvivalFunction.
+
+Notes
+-----
+Only valid for univariate and bivariate distributions.
+
+See Also
+--------
+computeSurvivalFunction, viewer.View, ResourceMap
+
+Examples
+--------
+View the SurvivalFunction of a univariate distribution:
+
+>>> import openturns as ot
+>>> dist = ot.Normal()
+>>> graph = dist.drawSurvivalFunction()
+>>> graph.setLegends(['normal cdf'])
+
+View the iso-lines SurvivalFunction of a bivariate distribution:
+
+>>> import openturns as ot
+>>> dist = ot.Normal(2)
+>>> graph2 = dist.drawSurvivalFunction()
+>>> graph2.setLegends(['iso- normal cdf'])
+>>> graph3 = dist.drawSurvivalFunction([-10, -5],[5, 10], [511, 511])
+"
+%enddef
+%feature("docstring") OT::DistributionImplementation::drawSurvivalFunction
+OT_Distribution_drawSurvivalFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_drawMarginal1DSurvivalFunction_doc
+"Draw the cumulative distribution function of a margin.
+
+Parameters
+----------
+i : int, :math:`1 \leq i \leq n`
+    The index of the margin of interest.
+x_min : float
+    The starting value that is used for meshing the x-axis.
+x_max : float, :math:`x_{\max} > x_{\min}`
+    The ending value that is used for meshing the x-axis.
+n_points : int
+    The number of points that is used for meshing the x-axis.
+logScale : bool
+    Flag to tell if the plot is done on a logarithmic scale. Default is *False*.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    A graphical representation of the SurvivalFunction of the requested margin.
+
+See Also
+--------
+computeSurvivalFunction, getMarginal, viewer.View, ResourceMap
+
+Examples
+--------
+
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> distribution = ot.Normal(10)
+>>> graph = distribution.drawMarginal1DSurvivalFunction(2, -6.0, 6.0, 100)
+>>> view = View(graph)
+>>> view.show()"
+%enddef
+%feature("docstring") OT::DistributionImplementation::drawMarginal1DSurvivalFunction
+OT_Distribution_drawMarginal1DSurvivalFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_drawMarginal2DSurvivalFunction_doc
+"Draw the cumulative distribution function of a couple of margins.
+
+Parameters
+----------
+i : int, :math:`1 \leq i \leq n`
+    The index of the first margin of interest.
+j : int, :math:`1 \leq i \neq j \leq n`
+    The index of the second margin of interest.
+x_min : list of 2 floats
+    The starting values that are used for meshing the x- and y- axes.
+x_max : list of 2 floats, :math:`x_{\max} > x_{\min}`
+    The ending values that are used for meshing the x- and y- axes.
+n_points : list of 2 ints
+    The number of points that are used for meshing the x- and y- axes.
+logScaleX : bool
+    Flag to tell if the plot is done on a logarithmic scale for X. Default is *False*.
+logScaleY : bool
+    Flag to tell if the plot is done on a logarithmic scale for Y. Default is *False*.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    A graphical representation of the marginal SurvivalFunction of the requested couple of
+    margins.
+
+See Also
+--------
+computeSurvivalFunction, getMarginal, viewer.View, ResourceMap
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> distribution = ot.Normal(10)
+>>> graph = distribution.drawMarginal2DSurvivalFunction(2, 3, [-6.0] * 2, [6.0] * 2, [100] * 2)
+>>> view = View(graph)
+>>> view.show()"
+%enddef
+%feature("docstring") OT::DistributionImplementation::drawMarginal2DSurvivalFunction
+OT_Distribution_drawMarginal2DSurvivalFunction_doc
+
