@@ -50,6 +50,7 @@ BLUE::BLUE(const Function & model,
   , modelObservations_(0, 0)
   , gradientObservations_(0, 0)
   , errorCovariance_(errorCovariance)
+  , globalErrorCovariance_(false)
   , methodName_(methodName)
 {
   // Check the input
@@ -60,9 +61,10 @@ BLUE::BLUE(const Function & model,
   if (model.getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of input dimension=" << inputDimension << ", got input dimension=" << model.getInputDimension();
   const UnsignedInteger outputDimension = outputObservations.getDimension();
   if (model.getOutputDimension() != outputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of output dimension=" << outputDimension << ", got output dimension=" << model.getOutputDimension();
-  if (errorCovariance.getDimension() != outputDimension) throw InvalidArgumentException(HERE) << "Error: expected an error covariance of dimension=" << outputDimension << ", got dimension=" << errorCovariance.getDimension();
   const UnsignedInteger size = inputObservations.getSize();
   if (outputObservations.getSize() != size) throw InvalidArgumentException(HERE) << "Error: expected an output sample of size=" << size << ", got size=" << outputObservations.getSize();
+  globalErrorCovariance_ = errorCovariance.getDimension() != outputDimension;
+  if (globalErrorCovariance_ && !(errorCovariance.getDimension() == outputDimension * size)) throw InvalidArgumentException(HERE) << "Error: expected an error covariance either of dimension=" << outputDimension << " or dimension=" << outputDimension * size << ", got dimension=" << errorCovariance.getDimension();
   // Compute the linearization
   Function parametrizedModel(model);
   parametrizedModel.setParameter(candidate);
@@ -91,6 +93,7 @@ BLUE::BLUE(const Sample & modelObservations,
   , modelObservations_(modelObservations)
   , gradientObservations_(gradientObservations)
   , errorCovariance_(errorCovariance)
+  , globalErrorCovariance_(false)
   , methodName_(methodName)
 {
   // Check the input
@@ -98,10 +101,11 @@ BLUE::BLUE(const Sample & modelObservations,
   const UnsignedInteger parameterDimension = candidate.getDimension();
   if (parameterCovariance.getDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a parameter covariance of dimension=" << parameterDimension << ", got dimension=" << parameterCovariance.getDimension();
   const UnsignedInteger outputDimension = outputObservations.getDimension();
-  if (errorCovariance.getDimension() != outputDimension) throw InvalidArgumentException(HERE) << "Error: expected an error covariance of dimension=" << outputDimension << ", got dimension=" << errorCovariance.getDimension();
   const UnsignedInteger size = outputObservations.getSize();
   if (gradientObservations.getNbColumns() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a gradient parameter of columns number=" << parameterDimension << ", got columns number=" << gradientObservations.getNbColumns();
   if (gradientObservations.getNbRows() != size * outputDimension) throw InvalidArgumentException(HERE) << "Error: expected a gradient parameter of rows number=" << size * outputDimension << ", got rows number=" << gradientObservations.getNbRows();
+  globalErrorCovariance_ = errorCovariance.getDimension() != outputDimension;
+  if (globalErrorCovariance_ && !(errorCovariance.getDimension() == outputDimension * size)) throw InvalidArgumentException(HERE) << "Error: expected an error covariance either of dimension=" << outputDimension << " or dimension=" << outputDimension * size << ", got dimension=" << errorCovariance.getDimension();
 }
 
 /* Performs the actual computation. Must be overloaded by the actual calibration algorithm */
@@ -113,15 +117,19 @@ void BLUE::run()
   const CovarianceMatrix invB(B.solveLinearSystem(IB).getImplementation());
   CovarianceMatrix R(deltaY.getSize());
   const UnsignedInteger dimension = errorCovariance_.getDimension();
-  if (dimension == 1) R = (R * errorCovariance_(0, 0)).getImplementation();
+  if (globalErrorCovariance_) R = errorCovariance_;
   else
-  {
-    const UnsignedInteger size = outputObservations_.getSize();
-    for (UnsignedInteger i = 0; i < size; ++i)
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-        for (UnsignedInteger k = 0; k < dimension; ++k)
-          R(i * dimension + j, i * dimension + k) = errorCovariance_(j, k);
-  }
+    {
+      if (dimension == 1) R = (R * errorCovariance_(0, 0)).getImplementation();
+      else
+	{
+	  const UnsignedInteger size = outputObservations_.getSize();
+	  for (UnsignedInteger i = 0; i < size; ++i)
+	    for (UnsignedInteger j = 0; j < dimension; ++j)
+	      for (UnsignedInteger k = 0; k < dimension; ++k)
+		R(i * dimension + j, i * dimension + k) = errorCovariance_(j, k);
+	}
+    }
   const IdentityMatrix IR(R.getDimension());
   const CovarianceMatrix invR(R.solveLinearSystem(IR).getImplementation());
   const Matrix M(gradientObservations_);
@@ -166,6 +174,12 @@ CovarianceMatrix BLUE::getErrorCovariance() const
   return errorCovariance_;
 }
 
+/* Global error covariance accessor */
+Bool BLUE::getGlobalErrorCovariance() const
+{
+  return globalErrorCovariance_;
+}
+
 /* Least squares method name accessor */
 String BLUE::getMethodName() const
 {
@@ -193,6 +207,7 @@ void BLUE::save(Advocate & adv) const
   adv.saveAttribute("modelObservations_", modelObservations_);
   adv.saveAttribute("gradientObservations_", gradientObservations_);
   adv.saveAttribute("errorCovariance_", errorCovariance_);
+  adv.saveAttribute("globalErrorCovariance_", globalErrorCovariance_);
   adv.saveAttribute("methodName_", methodName_);
 }
 
@@ -203,6 +218,7 @@ void BLUE::load(Advocate & adv)
   adv.loadAttribute("modelObservations_", modelObservations_);
   adv.loadAttribute("gradientObservations_", gradientObservations_);
   adv.loadAttribute("errorCovariance_", errorCovariance_);
+  adv.loadAttribute("globalErrorCovariance_", globalErrorCovariance_);
   adv.loadAttribute("methodName_", methodName_);
 }
 

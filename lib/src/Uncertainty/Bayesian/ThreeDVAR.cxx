@@ -61,6 +61,7 @@ ThreeDVAR::ThreeDVAR(const Function & model,
   , algorithm_()
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("ThreeDVAR-BootstrapSize"))
   , errorCovariance_(errorCovariance)
+  , globalErrorCovariance_(false)
 {
   // Check the input
   const UnsignedInteger parameterDimension = candidate.getDimension();
@@ -70,10 +71,10 @@ ThreeDVAR::ThreeDVAR(const Function & model,
   if (model.getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of input dimension=" << inputDimension << ", got input dimension=" << model.getInputDimension();
   const UnsignedInteger outputDimension = outputObservations.getDimension();
   if (model.getOutputDimension() != outputDimension) throw InvalidArgumentException(HERE) << "Error: expected a model of output dimension=" << outputDimension << ", got output dimension=" << model.getOutputDimension();
-  if (errorCovariance.getDimension() != outputDimension) throw InvalidArgumentException(HERE) << "Error: expected an error covariance of dimension=" << outputDimension << ", got dimension=" << errorCovariance.getDimension();
   const UnsignedInteger size = inputObservations.getSize();
   if (outputObservations.getSize() != size) throw InvalidArgumentException(HERE) << "Error: expected an output sample of size=" << size << ", got size=" << outputObservations.getSize();
-
+  globalErrorCovariance_ = errorCovariance.getDimension() != outputDimension;
+  if (globalErrorCovariance_ && !(errorCovariance.getDimension() == outputDimension * size)) throw InvalidArgumentException(HERE) << "Error: expected an error covariance either of dimension=" << outputDimension << " or dimension=" << outputDimension * size << ", got dimension=" << errorCovariance.getDimension();
   // Now the automatic selection of the algorithm
   Description leastSquaresNames(OptimizationAlgorithm::GetLeastSquaresAlgorithmNames());
   if (leastSquaresNames.getSize() > 0)
@@ -100,6 +101,7 @@ namespace ThreeDVARFunctions
       , candidate_(candidate)
       , parameterInverseCholesky_(parameterInverseCholesky)
       , errorInverseCholesky_(errorInverseCholesky)
+      , globalErrorInverseCholesky_(errorInverseCholesky.getDimension() != outputObservations_.getDimension())
     {
       // Check if the given input observations are compatible with the model
       if (inputObservations.getDimension() != model.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected input observations of dimension=" << model.getInputDimension() << ", got dimension=" << inputObservations.getDimension();
@@ -108,7 +110,7 @@ namespace ThreeDVARFunctions
       // Check if the given output observations are compatible with the model
       if (outputObservations.getDimension() != model.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected output observations of dimension=" << model.getOutputDimension() << ", got dimension=" << outputObservations.getDimension();
       // Check if the given error Cholesky is compatible with the model
-      if (errorInverseCholesky.getDimension() != model.getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: expected error inverse Cholesky of dimension=" << model.getOutputDimension() << ", got dimension=" << errorInverseCholesky.getDimension();
+      if (globalErrorInverseCholesky_ && (errorInverseCholesky.getDimension() != model.getOutputDimension() * outputObservations.getSize())) throw InvalidArgumentException(HERE) << "Error: expected error inverse Cholesky of dimension=" << model.getOutputDimension() << ", got dimension=" << errorInverseCholesky.getDimension();
     }
 
     CalibrationModelEvaluation * clone() const
@@ -121,7 +123,9 @@ namespace ThreeDVARFunctions
       Function localModel(model_);
       localModel.setParameter(point);
       const Point residualModel(localModel(inputObservations_).getImplementation()->getData() - outputObservations_.getImplementation()->getData());
-      Point result(errorInverseCholesky_.getImplementation()->triangularProd(MatrixImplementation(localModel.getOutputDimension(), inputObservations_.getSize(), Collection<Scalar>(residualModel))));
+      Point result;
+      if (globalErrorInverseCholesky_) result = errorInverseCholesky_ * residualModel;
+      else result = errorInverseCholesky_.getImplementation()->triangularProd(MatrixImplementation(localModel.getOutputDimension(), inputObservations_.getSize(), Collection<Scalar>(residualModel)));
       result.add(parameterInverseCholesky_ * (point - candidate_));
       return result;
     }
@@ -203,6 +207,11 @@ namespace ThreeDVARFunctions
       return errorInverseCholesky_;
     }
     
+    Bool getGlobalErrorInverseCholesky() const
+    {
+      return globalErrorInverseCholesky_;
+    }
+    
   private:
     const Function model_;
     const Sample inputObservations_;
@@ -210,6 +219,7 @@ namespace ThreeDVARFunctions
     const Point candidate_;
     const TriangularMatrix parameterInverseCholesky_;
     const TriangularMatrix errorInverseCholesky_;
+    const Bool globalErrorInverseCholesky_;
   }; // class CalibrationModelEvaluation
 
   class CalibrationModelGradient: public GradientImplementation
@@ -235,21 +245,39 @@ namespace ThreeDVARFunctions
       parametrizedModel.setParameter(point);
       const Sample inputObservations(evaluation_.getInputObservations());
       const UnsignedInteger size = inputObservations.getSize();
-      MatrixImplementation gradientObservations(parameterDimension, size * outputDimension + parameterDimension);
-      UnsignedInteger shift = 0;
+      const UnsignedInteger fullDimension = size * outputDimension;
+      MatrixImplementation gradientObservations(parameterDimension, fullDimension + parameterDimension);
       const TriangularMatrix parameterInverseCholesky(evaluation_.getParameterInverseCholesky().transpose());
-      const TriangularMatrix errorInverseCholesky(evaluation_.getErrorInverseCholesky().transpose());
-      const UnsignedInteger skip = parameterDimension * outputDimension;
-      for (UnsignedInteger i = 0; i < size; ++i)
+      const MatrixImplementation errorInverseCholesky(*evaluation_.getErrorInverseCholesky().getImplementation());
+      if (evaluation_.getGlobalErrorInverseCholesky())
 	{
-	  const Matrix parameterGradient(parametrizedModel.parameterGradient(inputObservations[i]));
-	  const Matrix scaledParameterGradient(parameterGradient * errorInverseCholesky);
-	  std::copy(scaledParameterGradient.getImplementation()->begin(), scaledParameterGradient.getImplementation()->end(), gradientObservations.begin() + shift);
-	  shift += skip;
-	}
+	  MatrixImplementation fullParameterGradient(parameterDimension, fullDimension);
+	  UnsignedInteger skip = parameterDimension * outputDimension;
+	  UnsignedInteger shift = 0;
+	  for (UnsignedInteger i = 0; i < size; ++i)
+	    {
+	      const MatrixImplementation parameterGradient(*parametrizedModel.parameterGradient(inputObservations[i]).getImplementation());
+	      std::copy(parameterGradient.begin(), parameterGradient.end(), fullParameterGradient.begin() + shift);
+	      shift += skip;
+	    }
+	  fullParameterGradient = fullParameterGradient.genProd(errorInverseCholesky, false, true);
+	  std::copy(fullParameterGradient.begin(), fullParameterGradient.end(), gradientObservations.begin());
+	} // evaluation_.getGlobalErrorInverseCholesky()
+      else
+	{
+	  const UnsignedInteger skip = parameterDimension * outputDimension;
+	  UnsignedInteger shift = 0;
+	  for (UnsignedInteger i = 0; i < size; ++i)
+	    {
+	      const MatrixImplementation parameterGradient(*parametrizedModel.parameterGradient(inputObservations[i]).getImplementation());
+	      const MatrixImplementation scaledParameterGradient(parameterGradient.genProd(errorInverseCholesky, false, true));
+	      std::copy(scaledParameterGradient.begin(), scaledParameterGradient.end(), gradientObservations.begin() + shift);
+	      shift += skip;
+	    }
+	} // !evaluation_.getGlobalErrorInverseCholesky()
       for (UnsignedInteger j = 0; j < parameterDimension; ++j)
 	for (UnsignedInteger i = 0; i <= j; ++i)
-	  gradientObservations(i, size * outputDimension + j) = parameterInverseCholesky(i, j);
+	  gradientObservations(i, fullDimension + j) = parameterInverseCholesky(i, j);
       return gradientObservations;
     }
 
@@ -377,6 +405,12 @@ CovarianceMatrix ThreeDVAR::getParameterCovariance() const
 CovarianceMatrix ThreeDVAR::getErrorCovariance() const
 {
   return errorCovariance_;
+}
+
+/* Global error covariance accessor */
+Bool ThreeDVAR::getGlobalErrorCovariance() const
+{
+  return globalErrorCovariance_;
 }
 
 /* Algorithm accessor */
