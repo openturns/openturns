@@ -8,15 +8,11 @@ import openturns as ot
 import numpy as np
 from openturns.viewer import View
 
-'''
-Une librairie pour l'assimilation de donnée.
-'''
-
 CalibrationGraphicsConstants_observationColor = "blue"
 CalibrationGraphicsConstants_beforeColor = "red"
 CalibrationGraphicsConstants_afterColor = "green"
 
-def plotModelVsObservations(theta,xobserved,yobserved,obsFunction):
+def drawModelVsObservations(theta,xobserved,yobserved,obsFunction):
     """
     Plots the observed output of the model at point theta depending 
     on the observed input.
@@ -61,7 +57,7 @@ def plotModelVsObservations(theta,xobserved,yobserved,obsFunction):
     graph.add(cloud)
     return graph
 
-def plotModelVsObservationsBeforeAndAFter(thetaReference,thetaStar,xobserved,yobserved,obsFunction):
+def drawModelVsObservationsBeforeAndAFter(thetaReference,thetaStar,xobserved,yobserved,obsFunction):
     """
     Plots the observed output of the model depending 
     on the observed input before and after calibration.
@@ -116,7 +112,7 @@ def plotModelVsObservationsBeforeAndAFter(thetaReference,thetaStar,xobserved,yob
     graph.add(cloud)
     return graph
 
-def plotObservationsVsPredictions(theta,xobserved,yobserved,obsFunction):
+def drawObservationsVsPredictions(theta,xobserved,yobserved,obsFunction):
     """
     Plots the output of the model (i.e. the predictions) depending 
     on the observed outputs.
@@ -148,7 +144,7 @@ def plotObservationsVsPredictions(theta,xobserved,yobserved,obsFunction):
     graph.add(cloud)
     return graph
 
-def plotResiduals(theta,xobserved,yobserved,obsFunction,errorCovariance=None):
+def drawResiduals(theta,xobserved,yobserved,obsFunction,errorCovariance=None):
     """
     Plot the distribution of the residuals. 
 
@@ -178,8 +174,6 @@ def plotResiduals(theta,xobserved,yobserved,obsFunction,errorCovariance=None):
     myGraph = ot.VisualTest_DrawHistogram(r)
     # Fit a gaussian on the residual sample
     fittedNormal = ot.NormalFactory().build(r)
-    mu = fittedNormal.getParameter()[0]
-    sigma = fittedNormal.getParameter()[1]
     ng = fittedNormal.drawPDF()
     ng.setColors(["blue"])
     myGraph.add(ng)
@@ -200,7 +194,7 @@ def plotResiduals(theta,xobserved,yobserved,obsFunction,errorCovariance=None):
     myGraph.setYTitle("Probability distribution function")
     return myGraph
 
-def plotObservationsVsPredictionsBeforeAfter(thetaReference,thetaStar,xobserved,yobserved,obsFunction):
+def drawObservationsVsPredictionsBeforeAfter(thetaReference,thetaStar,xobserved,yobserved,obsFunction):
     """
     Plots the output of the model depending 
     on the output observations before and after calibration.
@@ -251,7 +245,7 @@ def plotObservationsVsPredictionsBeforeAfter(thetaReference,thetaStar,xobserved,
     graph.add(cloud)
     return graph
 
-def plotThetaDistribution(thetaPrior,covariancePrior,distributionPosterior,labelsTheta=None):
+def drawPriorPosteriorThetaDistribution(thetaPrior,covariancePrior,distributionPosterior,labelsTheta=None):
     """
     Plots the prior and posterior distribution of the calibrated parameter theta.
 
@@ -267,26 +261,69 @@ def plotThetaDistribution(thetaPrior,covariancePrior,distributionPosterior,label
         The posterior distribution of theta.
 
     labelsTheta : a p-tuple of strings, the description of theta.
+        By default, no label is set.
     """
     # Plot the distribution of theta
     fig = pl.figure(figsize=(12, 4))
     thetaDim = len(thetaPrior)
     for i in range(thetaDim):
-        # Loi à posteriori
+        # Posterior distribution
         thetaPosterior = distributionPosterior.getMarginal(i)
         myGraph = thetaPosterior.drawPDF()
-        myGraph.setColors(["green"])
-        # Loi à priori
+        myGraph.setColors([CalibrationGraphicsConstants_afterColor])
+        # Prior distribution
         sigma_i = np.sqrt(covariancePrior[i,i])
         thetaGaussianPrior = ot.Normal(thetaPrior[i],sigma_i)
         pg = thetaGaussianPrior.drawPDF()
-        pg.setColors(["red"])
+        pg.setColors([CalibrationGraphicsConstants_beforeColor])
         myGraph.add(pg)
         #
-        myGraph.setXTitle(labelsTheta[i])
+        if not (labelsTheta is None):
+            myGraph.setXTitle(labelsTheta[i])
         if (i==0):
+            '''
+            Plot only a Y title for the first graphics so 
+            that there a superposition of the 
+            graphics is less likely to appear.
+            '''
             myGraph.setYTitle("PDF")
         myGraph.setLegends(["Posterior","Prior"])
+        myGraph.setTitle("Theta PDF")
+        # Add it to the graphics
+        ax = fig.add_subplot(1, thetaDim, i+1)
+        _ = View(myGraph, figure=fig, axes=[ax])
+    return fig
+
+def drawPosteriorThetaDistribution(distributionPosterior,labelsTheta=None):
+    """
+    Plots the posterior distribution of the calibrated parameter theta.
+
+    Parameters
+    ----------
+    distributionPosterior : :class:`~openturns.Distribution`
+        The posterior distribution of theta.
+
+    labelsTheta : a p-tuple of strings, the description of theta.
+        By default, no label is set.
+    """
+    # Plot the distribution of theta
+    fig = pl.figure(figsize=(12, 4))
+    thetaDim = distributionPosterior.getDimension()
+    for i in range(thetaDim):
+        # Posterior distribution
+        thetaPosterior = distributionPosterior.getMarginal(i)
+        myGraph = thetaPosterior.drawPDF()
+        #
+        if not (labelsTheta is None):
+            myGraph.setXTitle(labelsTheta[i])
+        if (i==0):
+            '''
+            Plot only a Y title for the first graphics so 
+            that there a superposition of the 
+            graphics is less likely to appear.
+            '''
+            myGraph.setYTitle("PDF")
+        myGraph.setLegends(["Posterior"])
         myGraph.setTitle("Theta PDF")
         # Add it to the graphics
         ax = fig.add_subplot(1, thetaDim, i+1)

@@ -8,4 +8,6 @@ Calibration
     calibration_flooding_before.ipynb
     calibration_flooding_gaussian_propagation.ipynb
     calibration_flooding_BLUE.ipynb
+    calibration_flooding_LLSQ.ipynb
+    calibration_flooding_NLLSQ.ipynb
 
