@@ -1,67 +1,189 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 - Michael Baudin
+"""
+A collection of graphics functions for calibration.
+"""
 
 import pylab as pl
 import openturns as ot
 import numpy as np
 from openturns.viewer import View
 
-
 '''
 Une librairie pour l'assimilation de donnée.
 '''
 
+CalibrationGraphicsConstants_observationColor = "blue"
+CalibrationGraphicsConstants_beforeColor = "red"
+CalibrationGraphicsConstants_afterColor = "green"
 
-def plotModelVsData(theta,xobserved,yobserved,obsFunction):
-    # Modele vs Donnees
-    y=obsFunction(theta)
-    pl.plot(xobserved,yobserved,"bo",label="Data")
-    pl.plot(xobserved,y,"ro",label="Model")
-    pl.legend(loc=2)
-    return None
+def plotModelVsObservations(theta,xobserved,yobserved,obsFunction):
+    """
+    Plots the observed output of the model at point theta depending 
+    on the observed input.
 
-def plotModelVsDataBeforeAndAFter(thetaB,thetaStar,xobserved,yobserved,obsFunction):
-    # Plot the fit
-    # Plot observations
-    pl.plot(xobserved,yobserved,"bo",label="Data")
-    # Plot observations before
-    obsFunction.setParameter(thetaB)
-    yBefore=obsFunction(xobserved)
-    pl.plot(xobserved,yBefore,"ro",label="Before DA")
-    # Plot observations after
+    Parameters
+    ----------
+    theta : :class:`~openturns.Point`
+        The parameters to calibrate.
+
+    xobserved : :class:`~openturns.Sample`
+        The input observations.
+
+    yobserved : :class:`~openturns.Sample`
+        The output observations.
+
+    obsFunction : :class:`~openturns.Function`
+        The model.
+    """
+    xDim = xobserved.getDimension()
+    if xDim > 1:
+        raise TypeError('Expected X observations in 1 dimension.')
+    yDim = yobserved.getDimension()
+    if yDim > 1:
+        raise TypeError('Expected Y observations in 1 dimension.')
+    xdescription = xobserved.getDescription()
+    ydescription = yobserved.getDescription()
+    graph = ot.Graph("",xdescription[0],ydescription[0],True,"topright")
+    # Observations
+    cloud = ot.Cloud(xobserved,yobserved)
+    cloud.setLegend("Observations")
+    cloud.setColor(CalibrationGraphicsConstants_observationColor)
+    graph.add(cloud)
+    # Model outputs
+    obsFunction.setParameter(theta)
+    y=obsFunction(xobserved)
+    yDim = y.getDimension()
+    if yDim > 1:
+        raise TypeError('Expected Y observations in 1 dimension.')
+    cloud = ot.Cloud(xobserved,y)
+    cloud.setColor(CalibrationGraphicsConstants_afterColor)
+    cloud.setLegend("Model outputs")
+    graph.add(cloud)
+    return graph
+
+def plotModelVsObservationsBeforeAndAFter(thetaReference,thetaStar,xobserved,yobserved,obsFunction):
+    """
+    Plots the observed output of the model depending 
+    on the observed input before and after calibration.
+
+    Parameters
+    ----------
+    thetaReference : :class:`~openturns.Point`
+        The value of the parameters before calibration.
+
+    thetaStar : :class:`~openturns.Point`
+        The value of the optimal parameters (i.e. after calibration).
+
+    xobserved : :class:`~openturns.Sample`
+        The input observations.
+
+    yobserved : :class:`~openturns.Sample`
+        The output observations.
+
+    obsFunction : :class:`~openturns.Function`
+        The calibrated model.
+    """
+    xDim = xobserved.getDimension()
+    if xDim > 1:
+        raise TypeError('Expected X observations in 1 dimension.')
+    yDim = yobserved.getDimension()
+    if yDim > 1:
+        raise TypeError('Expected Y observations in 1 dimension.')
+    xdescription = xobserved.getDescription()
+    ydescription = yobserved.getDescription()
+    graph = ot.Graph("",xdescription[0],ydescription[0],True,"topright")
+    # Observations
+    cloud = ot.Cloud(xobserved,yobserved)
+    cloud.setColor(CalibrationGraphicsConstants_observationColor)
+    cloud.setLegend("Observations")
+    graph.add(cloud)
+    # Model outputs before calibration
+    obsFunction.setParameter(thetaReference)
+    y=obsFunction(xobserved)
+    yDim = y.getDimension()
+    if yDim > 1:
+        raise TypeError('Expected Y observations in 1 dimension.')
+    cloud = ot.Cloud(xobserved,y)
+    cloud.setColor(CalibrationGraphicsConstants_beforeColor)
+    cloud.setLegend("Before")
+    graph.add(cloud)
+    # Model outputs after calibration
     obsFunction.setParameter(thetaStar)
-    yAfter=obsFunction(xobserved)
-    pl.plot(xobserved,yAfter,"go",label="After DA")
-    pl.legend(loc=2)
-    return None
+    y=obsFunction(xobserved)
+    cloud = ot.Cloud(xobserved,y)
+    cloud.setColor(CalibrationGraphicsConstants_afterColor)
+    cloud.setLegend("After")
+    graph.add(cloud)
+    return graph
 
-def plotObservationsVsPredictions(theta,yobserved,obsFunction):
-    # Plot the Ymodel vs Yobservations
+def plotObservationsVsPredictions(theta,xobserved,yobserved,obsFunction):
+    """
+    Plots the output of the model (i.e. the predictions) depending 
+    on the observed outputs.
+
+    Parameters
+    ----------
+    theta : :class:`~openturns.Point`
+        The value of the calibrated parameters.
+
+    yobserved : :class:`~openturns.Sample`
+        The output observations.
+
+    obsFunction : :class:`~openturns.Function`
+        The calibrated model.
+    """
+    yDim = yobserved.getDimension()
+    if yDim > 1:
+        raise TypeError('Expected Y observations in 1 dimension.')
+    graph = ot.Graph("","Observations","Predictions",True)
     # Plot the diagonal
-    pl.plot(yobserved, yobserved, "r-")
+    cloud = ot.Curve(yobserved, yobserved)
+    cloud.setColor(CalibrationGraphicsConstants_beforeColor)
+    graph.add(cloud)
     # Compute the observations
     obsFunction.setParameter(theta)
-    y=obsFunction(theta)
-    pl.plot(yobserved, y, "bo")
-    pl.xlabel("Observation")
-    pl.ylabel("Prediction")
-    pl.legend(loc=2)
-    return None
+    y=obsFunction(xobserved)
+    cloud = ot.Cloud(yobserved, y)
+    cloud.setColor(CalibrationGraphicsConstants_observationColor)
+    graph.add(cloud)
+    return graph
 
 def plotResiduals(theta,xobserved,yobserved,obsFunction,errorCovariance=None):
+    """
+    Plot the distribution of the residuals. 
+
+    Parameters
+    ----------
+    theta : :class:`~openturns.Point`
+        The value of the parameters to be calibrated.
+
+    xobserved : :class:`~openturns.Sample`
+        The input observations.
+
+    yobserved : :class:`~openturns.Sample`
+        The output observations.
+
+    obsFunction : :class:`~openturns.Function`
+        The calibrated model.
+
+    errorCovariance : :class:`~openturns.CovarianceMatrix`
+        The output covariance matrix. 
+        By default, the covariance matrix is not plotted.
+    """
+
     # Plot the distribution of the residuals
     obsFunction.setParameter(theta)
     yPredicted = obsFunction(xobserved)
     r = yPredicted - yobserved
     myGraph = ot.VisualTest_DrawHistogram(r)
-    # Loi normale ajustée
+    # Fit a gaussian on the residual sample
     fittedNormal = ot.NormalFactory().build(r)
     mu = fittedNormal.getParameter()[0]
     sigma = fittedNormal.getParameter()[1]
     ng = fittedNormal.drawPDF()
     ng.setColors(["blue"])
     myGraph.add(ng)
-    # Loi normale sur les observations
+    # Plot the gaussian distribution of the output covariance
     if not (errorCovariance is None):
         zero = ot.Point(1)
         obsDistr = ot.Normal(zero,errorCovariance)
@@ -70,49 +192,104 @@ def plotResiduals(theta,xobserved,yobserved,obsFunction,errorCovariance=None):
         myGraph.add(og)
     #
     if not (errorCovariance is None):
-        myGraph.setLegends(["Data","Normal data fit","Normal(0,%.4e)" % (errorCovariance[0,0])])
+        myGraph.setLegends(["Data","Normal residual fit","Normal output"])
     else:
-        myGraph.setLegends(["Data","Normal data fit"])
-    myGraph.setTitle("Residuals analysis - Mu=%.4e, Sigma=%.4e" % (mu,sigma))
+        myGraph.setLegends(["Data","Normal residual fit"])
+    myGraph.setTitle("Residuals analysis")
     myGraph.setXTitle("Residuals")
     myGraph.setYTitle("Probability distribution function")
     return myGraph
 
-def plotObservationsVsPredictionsBeforeAfter(theta0,thetaStar,xobserved,yobserved,obsFunction):
+def plotObservationsVsPredictionsBeforeAfter(thetaReference,thetaStar,xobserved,yobserved,obsFunction):
+    """
+    Plots the output of the model depending 
+    on the output observations before and after calibration.
+
+    Parameters
+    ----------
+    thetaReference : :class:`~openturns.Point`
+        The value of the parameters before calibration.
+
+    thetaStar : :class:`~openturns.Point`
+        The value of the optimal parameters (i.e. after calibration).
+
+    xobserved : :class:`~openturns.Sample`
+        The input observations.
+
+    yobserved : :class:`~openturns.Sample`
+        The output observations.
+
+    obsFunction : :class:`~openturns.Function`
+        The calibrated model.
+    """
+
     # Plot the Ymodel vs Yobservations
+    xDim = xobserved.getDimension()
+    if xDim > 1:
+        raise TypeError('Expected X observations in 1 dimension.')
+    yDim = yobserved.getDimension()
+    if yDim > 1:
+        raise TypeError('Expected Y observations in 1 dimension.')
+    graph = ot.Graph("","Observations","Predictions",True,"topleft")
     # Plot the diagonal
-    pl.plot(yobserved, yobserved, "b-")
+    cloud = ot.Curve(yobserved, yobserved)
+    cloud.setColor(CalibrationGraphicsConstants_observationColor)
+    graph.add(cloud)
     # Plot the predictions before
-    obsFunction.setParameter(theta0)
+    obsFunction.setParameter(thetaReference)
     yBefore=obsFunction(xobserved)
-    pl.plot(yobserved, yBefore, "ro", label="Before")
+    cloud = ot.Cloud(yobserved, yBefore)
+    cloud.setColor(CalibrationGraphicsConstants_beforeColor)
+    cloud.setLegend("Before")
+    graph.add(cloud)
     # Plot the predictions after
     obsFunction.setParameter(thetaStar)
     yAfter=obsFunction(xobserved)
-    pl.plot(yobserved, yAfter, "go", label="After")
-    pl.xlabel("Observation")
-    pl.ylabel("Prediction")    
-    pl.legend(loc=2)
-    return None
+    cloud = ot.Cloud(yobserved, yAfter)
+    cloud.setColor(CalibrationGraphicsConstants_afterColor)
+    cloud.setLegend("After")
+    graph.add(cloud)
+    return graph
 
-def plotThetaDistribution(thetaB,thetaStar,covariancePrior,distributionPosterior,labelsTheta=None):
+def plotThetaDistribution(thetaPrior,covariancePrior,distributionPosterior,labelsTheta=None):
+    """
+    Plots the prior and posterior distribution of the calibrated parameter theta.
+
+    Parameters
+    ----------
+    thetaPrior : :class:`~openturns.Point`
+        The mean of the gaussian prior of the parameters.
+
+    covariancePrior : :class:`~openturns.CovarianceMatrix`
+        The prior covariance matrix.
+
+    distributionPosterior : :class:`~openturns.Distribution`
+        The posterior distribution of theta.
+
+    labelsTheta : a p-tuple of strings, the description of theta.
+    """
     # Plot the distribution of theta
-    dimCalage = len(thetaStar)
-    for i in range(dimCalage):
+    fig = pl.figure(figsize=(12, 4))
+    thetaDim = len(thetaPrior)
+    for i in range(thetaDim):
         # Loi à posteriori
         thetaPosterior = distributionPosterior.getMarginal(i)
         myGraph = thetaPosterior.drawPDF()
         myGraph.setColors(["green"])
         # Loi à priori
-        thetaPrior = ot.Normal(thetaB[i],np.sqrt(covariancePrior[i,i]))
-        pg = thetaPrior.drawPDF()
+        sigma_i = np.sqrt(covariancePrior[i,i])
+        thetaGaussianPrior = ot.Normal(thetaPrior[i],sigma_i)
+        pg = thetaGaussianPrior.drawPDF()
         pg.setColors(["red"])
         myGraph.add(pg)
         #
         myGraph.setXTitle(labelsTheta[i])
-        myGraph.setYTitle("PDF")
+        if (i==0):
+            myGraph.setYTitle("PDF")
         myGraph.setLegends(["Posterior","Prior"])
         myGraph.setTitle("Theta PDF")
-        View(myGraph)
-    return None
+        # Add it to the graphics
+        ax = fig.add_subplot(1, thetaDim, i+1)
+        _ = View(myGraph, figure=fig, axes=[ax])
+    return fig
 
