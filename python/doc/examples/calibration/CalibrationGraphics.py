@@ -5,12 +5,10 @@ A collection of graphics functions for calibration.
 
 import pylab as pl
 import openturns as ot
-import numpy as np
-from openturns.viewer import View
 
-CalibrationGraphicsConstants_observationColor = "blue"
-CalibrationGraphicsConstants_beforeColor = "red"
-CalibrationGraphicsConstants_afterColor = "green"
+CalibrationGraphicsConstants_ObservationColor = "blue"
+CalibrationGraphicsConstants_PriorColor = "red"
+CalibrationGraphicsConstants_PosteriorColor = "green"
 
 def drawModelVsObservations(theta,xobserved,yobserved,obsFunction):
     """
@@ -43,7 +41,7 @@ def drawModelVsObservations(theta,xobserved,yobserved,obsFunction):
     # Observations
     cloud = ot.Cloud(xobserved,yobserved)
     cloud.setLegend("Observations")
-    cloud.setColor(CalibrationGraphicsConstants_observationColor)
+    cloud.setColor(CalibrationGraphicsConstants_ObservationColor)
     graph.add(cloud)
     # Model outputs
     obsFunction.setParameter(theta)
@@ -52,63 +50,8 @@ def drawModelVsObservations(theta,xobserved,yobserved,obsFunction):
     if yDim > 1:
         raise TypeError('Expected Y observations in 1 dimension.')
     cloud = ot.Cloud(xobserved,y)
-    cloud.setColor(CalibrationGraphicsConstants_afterColor)
+    cloud.setColor(CalibrationGraphicsConstants_PosteriorColor)
     cloud.setLegend("Model outputs")
-    graph.add(cloud)
-    return graph
-
-def drawModelVsObservationsBeforeAndAFter(thetaReference,thetaStar,xobserved,yobserved,obsFunction):
-    """
-    Plots the observed output of the model depending 
-    on the observed input before and after calibration.
-
-    Parameters
-    ----------
-    thetaReference : :class:`~openturns.Point`
-        The value of the parameters before calibration.
-
-    thetaStar : :class:`~openturns.Point`
-        The value of the optimal parameters (i.e. after calibration).
-
-    xobserved : :class:`~openturns.Sample`
-        The input observations.
-
-    yobserved : :class:`~openturns.Sample`
-        The output observations.
-
-    obsFunction : :class:`~openturns.Function`
-        The calibrated model.
-    """
-    xDim = xobserved.getDimension()
-    if xDim > 1:
-        raise TypeError('Expected X observations in 1 dimension.')
-    yDim = yobserved.getDimension()
-    if yDim > 1:
-        raise TypeError('Expected Y observations in 1 dimension.')
-    xdescription = xobserved.getDescription()
-    ydescription = yobserved.getDescription()
-    graph = ot.Graph("",xdescription[0],ydescription[0],True,"topright")
-    # Observations
-    cloud = ot.Cloud(xobserved,yobserved)
-    cloud.setColor(CalibrationGraphicsConstants_observationColor)
-    cloud.setLegend("Observations")
-    graph.add(cloud)
-    # Model outputs before calibration
-    obsFunction.setParameter(thetaReference)
-    y=obsFunction(xobserved)
-    yDim = y.getDimension()
-    if yDim > 1:
-        raise TypeError('Expected Y observations in 1 dimension.')
-    cloud = ot.Cloud(xobserved,y)
-    cloud.setColor(CalibrationGraphicsConstants_beforeColor)
-    cloud.setLegend("Before")
-    graph.add(cloud)
-    # Model outputs after calibration
-    obsFunction.setParameter(thetaStar)
-    y=obsFunction(xobserved)
-    cloud = ot.Cloud(xobserved,y)
-    cloud.setColor(CalibrationGraphicsConstants_afterColor)
-    cloud.setLegend("After")
     graph.add(cloud)
     return graph
 
@@ -134,13 +77,68 @@ def drawObservationsVsPredictions(theta,xobserved,yobserved,obsFunction):
     graph = ot.Graph("","Observations","Predictions",True)
     # Plot the diagonal
     cloud = ot.Curve(yobserved, yobserved)
-    cloud.setColor(CalibrationGraphicsConstants_beforeColor)
+    cloud.setColor(CalibrationGraphicsConstants_PriorColor)
     graph.add(cloud)
     # Compute the observations
     obsFunction.setParameter(theta)
     y=obsFunction(xobserved)
     cloud = ot.Cloud(yobserved, y)
-    cloud.setColor(CalibrationGraphicsConstants_observationColor)
+    cloud.setColor(CalibrationGraphicsConstants_ObservationColor)
+    graph.add(cloud)
+    return graph
+
+def drawModelVsObservationsBeforeAndAFter(thetaPrior,thetaPosterior,xobserved,yobserved,obsFunction):
+    """
+    Plots the observed output of the model depending 
+    on the observed input before and after calibration.
+
+    Parameters
+    ----------
+    thetaPrior : :class:`~openturns.Point`
+        The value of the parameters before calibration.
+
+    thetaPosterior : :class:`~openturns.Point`
+        The value of the optimal parameters (i.e. after calibration).
+
+    xobserved : :class:`~openturns.Sample`
+        The input observations.
+
+    yobserved : :class:`~openturns.Sample`
+        The output observations.
+
+    obsFunction : :class:`~openturns.Function`
+        The calibrated model.
+    """
+    xDim = xobserved.getDimension()
+    if xDim > 1:
+        raise TypeError('Expected X observations in 1 dimension.')
+    yDim = yobserved.getDimension()
+    if yDim > 1:
+        raise TypeError('Expected Y observations in 1 dimension.')
+    xdescription = xobserved.getDescription()
+    ydescription = yobserved.getDescription()
+    graph = ot.Graph("",xdescription[0],ydescription[0],True,"topright")
+    # Observations
+    cloud = ot.Cloud(xobserved,yobserved)
+    cloud.setColor(CalibrationGraphicsConstants_ObservationColor)
+    cloud.setLegend("Observations")
+    graph.add(cloud)
+    # Model outputs before calibration
+    obsFunction.setParameter(thetaPrior)
+    yAtPrior=obsFunction(xobserved)
+    yDim = yAtPrior.getDimension()
+    if yDim > 1:
+        raise TypeError('Expected Y observations in 1 dimension.')
+    cloud = ot.Cloud(xobserved,yAtPrior)
+    cloud.setColor(CalibrationGraphicsConstants_PriorColor)
+    cloud.setLegend("Before")
+    graph.add(cloud)
+    # Model outputs after calibration
+    obsFunction.setParameter(thetaPosterior)
+    yAtPosterior=obsFunction(xobserved)
+    cloud = ot.Cloud(xobserved,yAtPosterior)
+    cloud.setColor(CalibrationGraphicsConstants_PosteriorColor)
+    cloud.setLegend("After")
     graph.add(cloud)
     return graph
 
@@ -151,7 +149,7 @@ def drawResiduals(theta,xobserved,yobserved,obsFunction,errorCovariance=None):
     Parameters
     ----------
     theta : :class:`~openturns.Point`
-        The value of the parameters to be calibrated.
+        The value of the parameters.
 
     xobserved : :class:`~openturns.Sample`
         The input observations.
@@ -194,17 +192,17 @@ def drawResiduals(theta,xobserved,yobserved,obsFunction,errorCovariance=None):
     myGraph.setYTitle("Probability distribution function")
     return myGraph
 
-def drawObservationsVsPredictionsBeforeAfter(thetaReference,thetaStar,xobserved,yobserved,obsFunction):
+def drawObservationsVsPredictionsBeforeAfter(thetaPrior,thetaPosterior,xobserved,yobserved,obsFunction):
     """
     Plots the output of the model depending 
     on the output observations before and after calibration.
 
     Parameters
     ----------
-    thetaReference : :class:`~openturns.Point`
+    thetaPrior : :class:`~openturns.Point`
         The value of the parameters before calibration.
 
-    thetaStar : :class:`~openturns.Point`
+    thetaPosterior : :class:`~openturns.Point`
         The value of the optimal parameters (i.e. after calibration).
 
     xobserved : :class:`~openturns.Sample`
@@ -227,25 +225,25 @@ def drawObservationsVsPredictionsBeforeAfter(thetaReference,thetaStar,xobserved,
     graph = ot.Graph("","Observations","Predictions",True,"topleft")
     # Plot the diagonal
     cloud = ot.Curve(yobserved, yobserved)
-    cloud.setColor(CalibrationGraphicsConstants_observationColor)
+    cloud.setColor(CalibrationGraphicsConstants_ObservationColor)
     graph.add(cloud)
     # Plot the predictions before
-    obsFunction.setParameter(thetaReference)
-    yBefore=obsFunction(xobserved)
-    cloud = ot.Cloud(yobserved, yBefore)
-    cloud.setColor(CalibrationGraphicsConstants_beforeColor)
+    obsFunction.setParameter(thetaPrior)
+    yAtPrior=obsFunction(xobserved)
+    cloud = ot.Cloud(yobserved, yAtPrior)
+    cloud.setColor(CalibrationGraphicsConstants_PriorColor)
     cloud.setLegend("Before")
     graph.add(cloud)
     # Plot the predictions after
-    obsFunction.setParameter(thetaStar)
-    yAfter=obsFunction(xobserved)
-    cloud = ot.Cloud(yobserved, yAfter)
-    cloud.setColor(CalibrationGraphicsConstants_afterColor)
+    obsFunction.setParameter(thetaPosterior)
+    yAtPosterior=obsFunction(xobserved)
+    cloud = ot.Cloud(yobserved, yAtPosterior)
+    cloud.setColor(CalibrationGraphicsConstants_PosteriorColor)
     cloud.setLegend("After")
     graph.add(cloud)
     return graph
 
-def drawPriorPosteriorThetaDistribution(thetaPrior,covariancePrior,distributionPosterior,labelsTheta=None):
+def drawThetaDistribution(calibrationResult):
     """
     Plots the prior and posterior distribution of the calibrated parameter theta.
 
@@ -263,70 +261,45 @@ def drawPriorPosteriorThetaDistribution(thetaPrior,covariancePrior,distributionP
     labelsTheta : a p-tuple of strings, the description of theta.
         By default, no label is set.
     """
-    # Plot the distribution of theta
+    thetaPrior = calibrationResult.getParameterPrior()
+    thetaDescription = thetaPrior.getDescription()
+    thetaPosterior = calibrationResult.getParameterPosterior()
+    thetaDim = thetaPosterior.getDimension()
     fig = pl.figure(figsize=(12, 4))
-    thetaDim = len(thetaPrior)
     for i in range(thetaDim):
-        # Posterior distribution
-        thetaPosterior = distributionPosterior.getMarginal(i)
-        myGraph = thetaPosterior.drawPDF()
-        myGraph.setColors([CalibrationGraphicsConstants_afterColor])
+        graph = ot.Graph("",thetaDescription[i],"PDF",True,"topright")
         # Prior distribution
-        sigma_i = np.sqrt(covariancePrior[i,i])
-        thetaGaussianPrior = ot.Normal(thetaPrior[i],sigma_i)
-        pg = thetaGaussianPrior.drawPDF()
-        pg.setColors([CalibrationGraphicsConstants_beforeColor])
-        myGraph.add(pg)
-        #
-        if not (labelsTheta is None):
-            myGraph.setXTitle(labelsTheta[i])
-        if (i==0):
-            '''
-            Plot only a Y title for the first graphics so 
-            that there a superposition of the 
-            graphics is less likely to appear.
-            '''
-            myGraph.setYTitle("PDF")
-        myGraph.setLegends(["Posterior","Prior"])
-        myGraph.setTitle("Theta PDF")
-        # Add it to the graphics
-        ax = fig.add_subplot(1, thetaDim, i+1)
-        _ = View(myGraph, figure=fig, axes=[ax])
-    return fig
-
-def drawPosteriorThetaDistribution(distributionPosterior,labelsTheta=None):
-    """
-    Plots the posterior distribution of the calibrated parameter theta.
-
-    Parameters
-    ----------
-    distributionPosterior : :class:`~openturns.Distribution`
-        The posterior distribution of theta.
-
-    labelsTheta : a p-tuple of strings, the description of theta.
-        By default, no label is set.
-    """
-    # Plot the distribution of theta
-    fig = pl.figure(figsize=(12, 4))
-    thetaDim = distributionPosterior.getDimension()
-    for i in range(thetaDim):
+        thetaPrior_i = thetaPrior.getMarginal(i)
+        priorPDF = thetaPrior_i.drawPDF()
+        priorPDF.setColors([CalibrationGraphicsConstants_PriorColor])
+        priorPDF.setLegends(["Prior"])
+        graph.add(priorPDF)
         # Posterior distribution
-        thetaPosterior = distributionPosterior.getMarginal(i)
-        myGraph = thetaPosterior.drawPDF()
-        #
-        if not (labelsTheta is None):
-            myGraph.setXTitle(labelsTheta[i])
-        if (i==0):
-            '''
-            Plot only a Y title for the first graphics so 
-            that there a superposition of the 
-            graphics is less likely to appear.
-            '''
-            myGraph.setYTitle("PDF")
-        myGraph.setLegends(["Posterior"])
-        myGraph.setTitle("Theta PDF")
+        thetaPosterior_i = thetaPosterior.getMarginal(i)
+        postPDF = thetaPosterior_i.drawPDF()
+        postPDF.setColors([CalibrationGraphicsConstants_PosteriorColor])
+        postPDF.setLegends(["Posterior"])
+        graph.add(postPDF)
+        '''
+        If the prior is a Dirac, set the vertical axis bounds to the posterior. 
+        Otherwise, the Dirac set to [0,1], where the 1 can be much larger 
+        than the maximum PDF of the posterior.
+        '''
+        if (thetaPrior_i.getName()=="Dirac"):
+            # The vertical (PDF) bounds of the posterior
+            postbb = postPDF.getBoundingBox()
+            pdf_upper = postbb.getUpperBound()[1]
+            pdf_lower = postbb.getLowerBound()[1]
+            # Set these bounds to the graph
+            bb = graph.getBoundingBox()
+            graph_upper = bb.getUpperBound()
+            graph_upper[1] = pdf_upper
+            bb.setUpperBound(graph_upper)
+            graph_lower = bb.getLowerBound()
+            graph_lower[1] = pdf_lower
+            bb.setLowerBound(graph_lower)
+            graph.setBoundingBox(bb)
         # Add it to the graphics
         ax = fig.add_subplot(1, thetaDim, i+1)
-        _ = View(myGraph, figure=fig, axes=[ax])
+        _ = ot.viewer.View(graph, figure=fig, axes=[ax])
     return fig
-
