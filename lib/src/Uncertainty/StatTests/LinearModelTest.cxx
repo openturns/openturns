@@ -268,10 +268,13 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
     const LinearModelResult & linearModelResult,
     const Scalar level)
 {
+  if (firstSample.getSize() != secondSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
+  if (secondSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
+  const UnsignedInteger size = firstSample.getSize();
+  if (size < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
+
   // Regression coefficient
   const UnsignedInteger dimension = firstSample.getDimension();
-  if (linearModelResult.getTrendCoefficients().getSize() != dimension + 1)
-    throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
   const Function fHat(linearModelResult.getMetaModel());
   const Sample yHat(fHat(firstSample));
   const Sample residuals(secondSample - yHat);
@@ -288,20 +291,21 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
   }
 
   /* Build a linear model on the squared residuals */
-  LinearModelAlgorithm algo(firstSample, w);
+  LinearModelAlgorithm algo(firstSample, linearModelResult.getBasis(), w);
   const LinearModelResult result(algo.getResult());
-  const LinearModel linearModelResiduals(result.getTrendCoefficients());
+
   /* Predicted values of the squared residuals*/
-  const Sample wPredicted(linearModelResiduals.getPredicted(firstSample));
+  const Sample wPredicted(result.getMetaModel()(firstSample));
+
   /* Compute variances */
   const Scalar wPredictedVar = wPredicted.computeVariance()[0];
   const Scalar wVariance = w.computeVariance()[0];
   /* Compute the Breusch Pagan statistic */
   const Scalar statistic = residualSize * wPredictedVar / wVariance;
-  /* Get the degree of freedom */
-  const UnsignedInteger dof = firstSample.getDimension();
+  /* Get the basis size */
+  const UnsignedInteger basisSize = linearModelResult.getBasis().getSize();
   /* Compute the p-value */
-  const Scalar pValue = ChiSquare(dof).computeComplementaryCDF(statistic);
+  const Scalar pValue = DistFunc::pGamma(0.5 * (basisSize - 1), 0.5 * statistic, true);
 
   return TestResult("BreuschPagan", pValue > level, pValue, level, statistic);
 }
