@@ -107,25 +107,25 @@ public:
                       const UnsignedInteger size);
 
   // For Hypergeometric distribution
-  static Scalar dHypergeometric(const UnsignedInteger N,
-				const UnsignedInteger K,
-				const UnsignedInteger n,
-				const UnsignedInteger k);
-  static Scalar logdHypergeometric(const UnsignedInteger N,
-				   const UnsignedInteger K,
-				   const UnsignedInteger n,
-				   const UnsignedInteger k);
-  static Scalar pHypergeometric(const UnsignedInteger N,
-				const UnsignedInteger K,
-				const UnsignedInteger n,
+  static Scalar dHypergeometric(const UnsignedInteger n,
 				const UnsignedInteger k,
+				const UnsignedInteger m,
+				const UnsignedInteger x);
+  static Scalar logdHypergeometric(const UnsignedInteger n,
+				   const UnsignedInteger k,
+				   const UnsignedInteger m,
+				   const UnsignedInteger x);
+  static Scalar pHypergeometric(const UnsignedInteger n,
+				const UnsignedInteger k,
+				const UnsignedInteger m,
+				const UnsignedInteger x,
 				const Bool tail = false);
-  static UnsignedInteger rHypergeometric(const UnsignedInteger N,
-					 const UnsignedInteger K,
-					 const UnsignedInteger n);
-  static Indices rHypergeometric(const UnsignedInteger N,
-				 const UnsignedInteger K,
-				 const UnsignedInteger n,
+  static UnsignedInteger rHypergeometric(const UnsignedInteger n,
+					 const UnsignedInteger k,
+					 const UnsignedInteger m);
+  static Indices rHypergeometric(const UnsignedInteger n,
+				 const UnsignedInteger k,
+				 const UnsignedInteger m,
 				 const UnsignedInteger size);
   // For Kolmogorov distribution
   static Scalar pKolmogorov(const UnsignedInteger n,
