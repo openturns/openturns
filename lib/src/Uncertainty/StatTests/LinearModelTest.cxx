@@ -36,6 +36,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/LinearModelAnalysis.hxx"
 #include "openturns/LinearCombinationFunction.hxx"
+#include "openturns/DesignProxy.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -332,67 +333,82 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
 }
 
 
-/*  */
+/* Durbin-Watson test
+   Testing for Serial Correlation in Least Squares Regression. II
+   By J. Durbin and G.S. Watson
+   Biometrika Vol 38 No 1/2 (Hun 1951) pp 159-177   */
 TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
     const Sample & secondSample,
     const LinearModelResult & linearModelResult,
     const String hypothesis,
     const Scalar level)
 {
-  const UnsignedInteger dimension = firstSample.getDimension();
-  if (linearModelResult.getTrendCoefficients().getSize() != dimension + 1)
-    throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
+  if (firstSample.getSize() != secondSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
+  if (secondSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
+  const UnsignedInteger residualSize = firstSample.getSize();
+
+  if (residualSize < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
+
   const Function fHat(linearModelResult.getMetaModel());
   const Sample yHat(fHat(firstSample)); 
   const Sample residuals(secondSample - yHat);
 
-  const UnsignedInteger residualSize = firstSample.getSize();
 
   const Scalar sumSquaredResiduals = residuals.computeVariance()[0] * (residualSize - 1);
 
   Scalar sumSquaredDifference = 0;
   for(UnsignedInteger i = 1; i < residualSize; ++i)
   {
-    const Point residualDifference(residuals[i] - residuals[i - 1]);
-    sumSquaredDifference += residualDifference.normSquare();
+    const Scalar residualDifference = residuals(i, 0) - residuals(i - 1, 0);
+    sumSquaredDifference += residualDifference * residualDifference;
   }
 
   /* Compute the Durbin Watson statistic */
   const Scalar dw = sumSquaredDifference / sumSquaredResiduals;
 
   /* Normal approximation of dw to compute the p-value*/
-  /* Create the matrix [1 x]*/
-  Matrix X(residualSize, dimension + 1);
-  for(UnsignedInteger j = 0; j < dimension; ++j)
-  {
-    for(UnsignedInteger i = 0; i < residualSize; ++i)
-    {
-        X(i, 0) = 1.0;
-        X(i, j + 1) = firstSample(i, j);
-    }
-  }
+  /* Create the design matrix */
+  const Basis psi(linearModelResult.getBasis());
+  const UnsignedInteger basisSize = psi.getSize();
 
-  Matrix AX(residualSize, dimension + 1);
-  for(UnsignedInteger j = 0; j < dimension; ++j)
+  // Define the design proxy
+  DesignProxy proxy(firstSample, psi);
+  // The design proxy evaluated on the basis function
+  // Define the design matrix
+  Indices indices(basisSize);
+  indices.fill();
+  const Matrix X(proxy.computeDesign(indices));
+
+  // We compute A * X
+  // A is a real sym matrix (1D finite differences like)
+  // A = [1 -1 0 . . . 0]
+  //     [-1 2 1 . . . 0]
+  //     [0 -1 2 1 . . 0]
+  //     [. . -1 2 1 . 0]
+  //     [0 . . . . -1 1]
+  Matrix AX(residualSize, basisSize);
+  for(UnsignedInteger j = 0; j < basisSize; ++j)
   {
-    AX(0, j+1) = firstSample(0, j) - firstSample(1, j);
-    AX(residualSize - 1, j + 1) = firstSample(residualSize - 1, j) - firstSample(residualSize - 2, j);
+    AX(0, j) = X(0, j) - X(1, j);
+    AX(residualSize - 1, j) = X(residualSize - 1, j) - X(residualSize - 2, j);
   }
-  for(UnsignedInteger j = 0; j < dimension; ++j)
+  for(UnsignedInteger j = 0; j < basisSize; ++j)
   {
     for(UnsignedInteger i = 0; i < residualSize - 2; ++i)
     {
-      AX(i + 1, j+1) = -firstSample(i, j) + 2 * firstSample(i + 1, j) - firstSample(i + 2, j);
+      AX(i + 1, j) = -X(i, j) + 2 * X(i + 1, j) - X(i + 2, j);
     } 
   }
 
+  // Normal approximation of the dw statistic
+  // Eval dmean & dvar
   CovarianceMatrix XtX(X.computeGram());
   const SquareMatrix XAXQt(XtX.solveLinearSystem(AX.transpose() * X).getImplementation());
   const Scalar P = 2 * (residualSize - 1) - XAXQt.computeTrace();
   const Scalar XAXTrace = XtX.solveLinearSystem(AX.computeGram(), false).getImplementation()->computeTrace();
   const Scalar Q = 2 * (3 * residualSize - 4) - 2 * XAXTrace + (XAXQt * XAXQt).getImplementation()->computeTrace();
-  const Scalar dmean = P / (residualSize - (dimension + 1));
-  const Scalar dvar = 2.0 / ((residualSize - (dimension + 1)) * (residualSize - (dimension + 1) + 2)) * (Q - P * dmean);
+  const Scalar dmean = P / (residualSize - basisSize);
+  const Scalar dvar = 2.0 / ((residualSize - basisSize) * (residualSize - basisSize + 2)) * (Q - P * dmean);
 
   /* Compute the p-value with respect to the hypothesis */
   Scalar pValue = 0.0;
