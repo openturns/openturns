@@ -31,6 +31,7 @@ int main(int, char *[])
 
   try
   {
+    PlatformInfo::SetNumericalPrecision(5);
     UnsignedInteger m = 10;
     Sample x(m, 1);
     for (UnsignedInteger i = 0; i < m; ++i) x(i, 0) = 0.5 + i;

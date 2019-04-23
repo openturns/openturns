@@ -133,6 +133,29 @@ Sample ParametricEvaluation::operator() (const Sample & inSample) const
   return output;
 }
 
+/* Gradient according to the marginal parameters */
+Matrix ParametricEvaluation::parameterGradient(const Point & inP) const
+{
+  const UnsignedInteger parametersDimension = getParameterDimension();
+  const UnsignedInteger inputDimension = function_.getInputDimension();
+  const UnsignedInteger pointDimension = inP.getDimension();
+  if (pointDimension + parametersDimension != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << inputDimension - inputDimension << ", got dimension=" << pointDimension;
+  Point x(inputDimension);
+  for (UnsignedInteger i = 0; i < parametersDimension; ++i) x[parametersPositions_[i]] = parameter_[i];
+  for (UnsignedInteger i = 0; i < pointDimension; ++i) x[inputPositions_[i]] = inP[i];
+  const UnsignedInteger outputDimension = getOutputDimension();
+  const Matrix fullGradient(function_.gradient(x));
+  // The gradient wrt x corresponds to the parameterPositions rows of the full gradient
+  Matrix result(parametersDimension, outputDimension);
+  for (UnsignedInteger i = 0; i < parametersDimension; ++i)
+  {
+    const UnsignedInteger i0 = parametersPositions_[i];
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
+      result(i, j) = fullGradient(i0, j);
+  }
+  return result;
+}
+
 /* Parameters accessor */
 void ParametricEvaluation::setParameter(const Point & parameters)
 {

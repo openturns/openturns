@@ -8,7 +8,7 @@ import sys
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(3)
-ot.Log.Show(ot.Log.ALL)
+
 m = 10
 x = [[0.5 + i] for i in range(m)]
 
