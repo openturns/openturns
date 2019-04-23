@@ -186,12 +186,12 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
     const Scalar breakPoint,
     const Scalar simulationSize)
 {
-  const UnsignedInteger dimension = firstSample.getDimension();
-  if (linearModelResult.getTrendCoefficients().getSize() != dimension + 1)
-    throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
-  const Sample residuals(linearModelResult.getSampleResiduals());
-
+  if (firstSample.getSize() != secondSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
+  if (secondSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   const UnsignedInteger residualSize = firstSample.getSize();
+  if (residualSize < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
+  if (!(breakPoint > 0) && !(breakPoint < 1)) throw InvalidArgumentException(HERE) << "breakPoint should be in ]0,1[";
+  const Sample residuals(linearModelResult.getSampleResiduals());
 
   /* Split the sample using the breakPoint*/
   const UnsignedInteger breakIndex = std::floor(residualSize * breakPoint);
@@ -213,13 +213,13 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
   for(UnsignedInteger i = 0; i < simulationSize; ++i)
   {
     const Sample sample(Normal().getSample(residualSize));
-    const Sample stantardSample((sample - sample.computeMean()) / sample.computeStandardDeviationPerComponent());
+    const Sample standardSample((sample - sample.computeMean()) / sample.computeStandardDeviationPerComponent());
     Scalar sumSelectResidualsSimulation = 0;
     for (UnsignedInteger j = 0; j < breakIndex; ++ j)
     {
-      sumSelectResidualsSimulation += stantardSample(j, 0) * stantardSample(j, 0);
+      sumSelectResidualsSimulation += standardSample(j, 0) * standardSample(j, 0);
     }
-    const Scalar sumSquaredResidualsSimulation = stantardSample.computeVariance()[0] * (residualSize - 1);
+    const Scalar sumSquaredResidualsSimulation = standardSample.computeVariance()[0] * (residualSize - 1);
     const Scalar statistic = sumSelectResidualsSimulation / sumSquaredResidualsSimulation;
     if(statistic < hmc)
     {
@@ -274,7 +274,6 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
   if (size < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
 
   // Regression coefficient
-  const UnsignedInteger dimension = firstSample.getDimension();
   const Function fHat(linearModelResult.getMetaModel());
   const Sample yHat(fHat(firstSample));
   const Sample residuals(secondSample - yHat);
