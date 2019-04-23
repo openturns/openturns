@@ -19,7 +19,7 @@ Notes
 -----
 The binning mecanism creates a regular grid of *binNumber* intervals in each
 dimension, then the unit weight of each point is linearly affected to the vertices
-of the bin containing the point. See [Wand1994]_ for the details.
+of the bin containing the point. See [wand1994]_ for the details.
 
 The boundary correction is available only in one dimension, and it is done using
 the mirroring technique. See the notes of the *setBoundingOption* method for the

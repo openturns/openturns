@@ -489,8 +489,8 @@ realizations : int or :class:`~openturns.Indices`
 Notes
 -----
 For the small values of :math:`\lambda`, we use the method of inversion by
-sequential search described in [devroy1986]_ and with the important errata in
-[devroy1986b]_. For the large values of :math:`\lambda`, we use the ratio of
+sequential search described in [devroye1986]_ and with the important errata in
+[devroye1986b]_. For the large values of :math:`\lambda`, we use the ratio of
 uniform method described in [stadlober1990]_.
 
 Examples
