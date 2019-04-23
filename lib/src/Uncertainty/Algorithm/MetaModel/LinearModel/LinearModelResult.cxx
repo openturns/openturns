@@ -89,6 +89,10 @@ String LinearModelResult::__repr__() const
   return OSS(true) << "class=" << getClassName();
 }
 
+Basis LinearModelResult::getBasis() const
+{
+  return basis_;
+}
 
 /* Input sample accessor */
 Sample LinearModelResult::getInputSample() const
