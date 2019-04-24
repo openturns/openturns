@@ -16,4 +16,6 @@ Calibration
     calibration_flooding_NLLSQ.ipynb
     calibration_flooding_BLUE.ipynb
     calibration_flooding_ThreeDVar.ipynb
+    calibration_logistic.ipynb
+    calibration_logistic_LLSQ.ipynb
 
