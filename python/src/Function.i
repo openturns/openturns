@@ -50,7 +50,7 @@ OTTypedInterfaceObjectHelper(Function)
 
 %include openturns/Function.hxx
 
-namespace OT {  
+namespace OT {
 
 %extend Function {
 
@@ -68,6 +68,7 @@ Function(const Function & other)
 {
   return new OT::Function( other );
 }
+
 
 }
 
@@ -198,7 +199,7 @@ def _exec_point_on_func_sample(func_sample):
     Returns
     -------
     _exec : Function or callable
-        The exec point funtion.
+        The exec point function.
     """
     def _exec(X):
         return func_sample([X])[0]
@@ -219,7 +220,7 @@ def _exec_sample_multiprocessing_func(func, n_cpus):
     Returns
     -------
     _exec_sample : Function or callable
-        The parallelized funtion.
+        The parallelized function.
     """
     def _exec_sample(X):
         try:
@@ -248,7 +249,7 @@ def _exec_sample_multiprocessing_func_sample(func_sample, n_cpus):
     Returns
     -------
     _exec_sample : Function or callable
-        The parallelized funtion.
+        The parallelized function.
     """
     def _exec_sample(X):
         import warnings
@@ -369,14 +370,14 @@ class PythonFunction(Function):
      [ -1 ]]
     """
     def __new__(self, n, p, func=None, func_sample=None, gradient=None, hessian=None, n_cpus=None, copy=False):
-        if func == None and func_sample == None:
+        if func is None and func_sample is None:
             raise RuntimeError('no func nor func_sample given.')
         instance = OpenTURNSPythonFunction(n, p)
         if copy:
             instance._discard_openturns_memoryview = True
         import collections
 
-        if n_cpus != None:
+        if n_cpus is not None:
             if not isinstance(n_cpus, int):
                 raise RuntimeError('n_cpus is not an integer')
             if n_cpus == -1:
@@ -385,7 +386,7 @@ class PythonFunction(Function):
             if n_cpus <= 1:
                 n_cpus = None
 
-        if func != None:
+        if func is not None:
             if not isinstance(func, collections.Callable):
                 raise RuntimeError('func argument is not callable.')
             instance._exec = func
@@ -394,22 +395,22 @@ class PythonFunction(Function):
 
         instance._has_exec = True
 
-        if func_sample != None:
-            if n_cpus != None:
+        if func_sample is not None:
+            if n_cpus is not None:
                 instance._exec_sample = _exec_sample_multiprocessing_func_sample(func_sample, n_cpus)
             else:
                 instance._exec_sample = func_sample
             instance._has_exec_sample = True
         else:
-            if n_cpus != None:
+            if n_cpus is not None:
                 instance._exec_sample = _exec_sample_multiprocessing_func(func, n_cpus)
                 instance._has_exec_sample = True
 
-        if gradient != None:
+        if gradient is not None:
             if not isinstance(gradient, collections.Callable):
                 raise RuntimeError('gradient argument is not callable.')
             instance._gradient = gradient
-        if hessian != None:
+        if hessian is not None:
             if not isinstance(hessian, collections.Callable):
                 raise RuntimeError('hessian argument is not callable.')
             instance._hessian = hessian 

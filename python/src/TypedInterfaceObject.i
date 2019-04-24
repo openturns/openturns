@@ -12,7 +12,10 @@
 
 %typemap(in) const Namespace::Interface & {
   void * ptr = 0;
-  if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
+  if ($input == Py_None) {
+    // operators ignore the typecheck
+    SWIG_exception(SWIG_TypeError, "Object passed as argument is None");
+  } else if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
     // From interface class, ok
   } else if (SWIG_IsOK(SWIG_ConvertPtr($input, &ptr, SWIGTYPE_p_ ## Namespace ## __ ## Implementation, 0))) {
     // From Implementation*

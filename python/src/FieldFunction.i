@@ -226,11 +226,11 @@ class PythonFieldFunction(FieldFunction):
     >>> myFunc = ot.PythonFieldFunction(mesh, inputDim, mesh, outputDim, myPyFunc)
     """
     def __new__(self, inputMesh, inputDim, outputMesh, outputDim, func=None):
-        if func == None:
+        if func is None:
             raise RuntimeError('func not provided.')
         instance = OpenTURNSPythonFieldFunction(inputMesh, inputDim, outputMesh, outputDim)
         import collections
-        if func != None:
+        if func is not None:
             if not isinstance(func, collections.Callable):
                 raise RuntimeError('func argument is not callable.')
             instance._exec = func

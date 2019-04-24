@@ -221,11 +221,11 @@ class PythonPointToFieldFunction(PointToFieldFunction):
     >>> Yfield = myFunc([1.1, 2.2])
     """
     def __new__(self, inputDim, outputMesh, outputDim, func=None):
-        if func == None:
+        if func is None:
             raise RuntimeError('func not provided.')
         instance = OpenTURNSPythonPointToFieldFunction(inputDim, outputMesh, outputDim)
         import collections
-        if func != None:
+        if func is not None:
             if not isinstance(func, collections.Callable):
                 raise RuntimeError('func argument is not callable.')
             instance._exec = func
