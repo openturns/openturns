@@ -59,7 +59,7 @@ Calibrate a nonlinear model using BLUE:
 >>> algo = ot.BLUE(modelX, x, y, candidate, priorCovariance, errorCovariance, method)
 >>> algo.run()
 >>> print(algo.getResult().getParameterMAP())
-[0.997874,0.093813,0.991216]"
+[0.997874,0.0938131,0.991216]"
 
 // ---------------------------------------------------------------------
 

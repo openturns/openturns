@@ -57,6 +57,9 @@ public:
 
   Sample operator() (const Sample & inS) const;
 
+  /** Gradient according to the marginal parameters */
+ Matrix parameterGradient(const Point & inP) const;
+
   /** Parameters positions accessor */
   Indices getParametersPositions() const;
 
