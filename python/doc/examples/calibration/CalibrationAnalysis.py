@@ -157,31 +157,52 @@ class CalibrationAnalysis:
         """
         xSize = self.inputObservations.getSize()
         ySize = self.outputObservations.getSize()
-        if (xSize != ySize):
-            raise TypeError('X and Y observations do not have the same size.')
+        xDim = self.inputObservations.getDimension()
+        yDim = self.outputObservations.getDimension()
         xdescription = self.inputObservations.getDescription()
         ydescription = self.outputObservations.getDescription()
         graph = ot.Graph("",xdescription[0],ydescription[0],True,"topright")
         # Observations
-        for i in range(xSize):
-            cloud = ot.Cloud(self.inputObservations[i],self.outputObservations[i])
+        if (xDim==1) and (yDim==1):
+            cloud = ot.Cloud(self.inputObservations,self.outputObservations)
             cloud.setColor(self.observationColor)
             cloud.setLegend("Observations")
             graph.add(cloud)
+        elif (xSize==1) and (ySize==1):
+            cloud = ot.Cloud(self.inputObservations[0],self.outputObservations[0])
+            cloud.setColor(self.observationColor)
+            cloud.setLegend("Observations")
+            graph.add(cloud)
+        else:
+            raise TypeError('X observations and Y predictions do not fit in size or dimension.')
         # Model outputs before calibration
         yPriorSize = self.outputAtPrior.getSize()
-        if (xSize != yPriorSize):
-            raise TypeError('X observations and Y predictions do not have the same size.')
-        for i in range(xSize):
-            cloud = ot.Cloud(self.inputObservations[i],self.outputAtPrior[i])
+        yPriorDim = self.outputAtPrior.getDimension()
+        if (xDim==1) and (yPriorDim==1):
+            cloud = ot.Cloud(self.inputObservations,self.outputAtPrior)
             cloud.setColor(self.priorColor)
             cloud.setLegend("Before")
             graph.add(cloud)
+        elif (xSize==1) and (yPriorSize==1):
+            cloud = ot.Cloud(self.inputObservations[0],self.outputAtPrior[0])
+            cloud.setColor(self.priorColor)
+            cloud.setLegend("Before")
+            graph.add(cloud)
+        else:
+            raise TypeError('X observations and Y predictions do not fit in size or dimension.')
         # Model outputs after calibration
         yPosteriorSize = self.outputAtPosterior.getSize()
-        for i in range(xSize):
-            cloud = ot.Cloud(self.inputObservations[i],self.outputAtPosterior[i])
+        yPosteriorDim = self.outputAtPosterior.getDimension()
+        if (xDim==1) and (yPosteriorDim==1):
+            cloud = ot.Cloud(self.inputObservations,self.outputAtPosterior)
             cloud.setColor(self.posteriorColor)
             cloud.setLegend("After")
             graph.add(cloud)
+        elif (xSize==1) and (yPosteriorSize==1):        
+            cloud = ot.Cloud(self.inputObservations[0],self.outputAtPosterior[0])
+            cloud.setColor(self.posteriorColor)
+            cloud.setLegend("After")
+            graph.add(cloud)
+        else:
+            raise TypeError('X observations and Y predictions do not fit in size or dimension.')
         return graph
