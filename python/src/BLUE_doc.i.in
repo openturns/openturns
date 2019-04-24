@@ -25,7 +25,13 @@ methodName : str
 
 Notes
 -----
-BLUE stands for Best Linear Unbiased Estimator. It is the minimum variance estimator of the parameter of a given model under the assumption that this parameter acts linearly in the model.
+BLUE stands for Best Linear Unbiased Estimator. It is the minimum variance
+estimator of the parameter of a given model under the assumption that this
+parameter acts linearly in the model. The given observation error covariance
+can be either *local*, ie the same matrix applies for each observation and is of
+dimension the output dimension of the model, or *global*, ie the matrix describes
+the full set of observation errors, in which case its dimension is the product of
+the output dimension of the model and the number of observations.
 
 See also
 --------
@@ -104,6 +110,16 @@ Returns
 -------
 error : :class:`~openturns.CovarianceMatrix`
     Observation error covariance."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BLUE::getGlobalErrorCovariance
+"Accessor to the flag for a global observation error covariance.
+
+Returns
+-------
+flag : bool
+    Flag telling if the given observation error covariance is global or not."
 
 // ---------------------------------------------------------------------
 

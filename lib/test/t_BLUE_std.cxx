@@ -63,9 +63,16 @@ int main(int, char *[])
     CovarianceMatrix errorCovariance(2);
     for (UnsignedInteger i = 0; i < 2; ++i)
       {
-	priorCovariance(i, i) = 2.0 + (1.0 + i) * (1.0 + i);
+	errorCovariance(i, i) = 2.0 + (1.0 + i) * (1.0 + i);
 	for (UnsignedInteger j = 0; j < i; ++j)
 	  errorCovariance(i, j) = 1.0 / (1.0 + i + j);
+      }
+    CovarianceMatrix globalErrorCovariance(2 * m);
+    for (UnsignedInteger i = 0; i < 2 * m; ++i)
+      {
+	globalErrorCovariance(i, i) = 2.0 + (1.0 + i) * (1.0 + i);
+	for (UnsignedInteger j = 0; j < i; ++j)
+	  globalErrorCovariance(i, j) = 1.0 / (1.0 + i + j);
       }
     Description methods(0);
     methods.add("SVD");
@@ -91,6 +98,9 @@ int main(int, char *[])
 	algo = BLUE(modelObservations, transposedGradientObservations.transpose(), y, candidate, priorCovariance, errorCovariance, methods[n]);
 	algo.run();
 	fullprint << "result (const. 2)=" << algo.getResult() << std::endl;
+	algo = BLUE(modelX, x, y, candidate, priorCovariance, globalErrorCovariance, methods[n]);
+	algo.run();
+	fullprint << "result   (global)=" << algo.getResult() << std::endl;
       } // n
   }
   catch (TestFailed & ex)

@@ -64,9 +64,16 @@ int main(int, char *[])
     CovarianceMatrix errorCovariance(2);
     for (UnsignedInteger i = 0; i < 1; ++i)
       {
-	priorCovariance(i, i) = 2.0 + (1.0 + i) * (1.0 + i);
+	errorCovariance(i, i) = 2.0 + (1.0 + i) * (1.0 + i);
 	for (UnsignedInteger j = 0; j < i; ++j)
 	  errorCovariance(i, j) = 1.0 / (1.0 + i + j);
+      }
+    CovarianceMatrix globalErrorCovariance(2 * m);
+    for (UnsignedInteger i = 0; i < 2 * m; ++i)
+      {
+	globalErrorCovariance(i, i) = 2.0 + (1.0 + i) * (1.0 + i);
+	for (UnsignedInteger j = 0; j < i; ++j)
+	  globalErrorCovariance(i, j) = 1.0 / (1.0 + i + j);
       }
     Indices bootstrapSizes(0);
     bootstrapSizes.add(0);
@@ -77,10 +84,13 @@ int main(int, char *[])
 	algo.setBootstrapSize(bootstrapSizes[n]);
 	algo.run();
 	// To avoid discrepance between the plaforms with or without CMinpack
-	fullprint << "result (Auto)=" << algo.getResult().getParameterMAP() << std::endl;
+	fullprint << "result   (Auto)=" << algo.getResult().getParameterMAP() << std::endl;
 	algo.setAlgorithm(MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("ThreeDVAR-MultiStartSize")).generate()));
 	algo.run();
-	fullprint << "result  (TNC)=" << algo.getResult().getParameterMAP() << std::endl;
+	fullprint << "result    (TNC)=" << algo.getResult().getParameterMAP() << std::endl;
+	algo = ThreeDVAR(modelX, x, y, candidate, priorCovariance, globalErrorCovariance);
+	algo.run();
+	fullprint << "result (global)=" << algo.getResult() << std::endl;
       } // n
   }
   catch (TestFailed & ex)

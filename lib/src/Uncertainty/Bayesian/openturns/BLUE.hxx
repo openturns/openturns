@@ -85,6 +85,9 @@ public:
   /** Error covariance accessor */
   CovarianceMatrix getErrorCovariance() const;
 
+  /** Flag for the full error covariance accessor */
+  Bool getGlobalErrorCovariance() const;
+
   /** Least squares method name accessor */
   String getMethodName() const;
 
@@ -108,6 +111,9 @@ private:
 
   /* The error covariance */
   CovarianceMatrix errorCovariance_;
+  
+  /* Flag to tell if the error covariance is for the whole observations */
+  Bool globalErrorCovariance_;
   
   /* The least squares method name */
   String methodName_;

@@ -407,102 +407,173 @@ public:
   Distribution getStandardRepresentative() const;
 
   /** Draw the PDF of the distribution when its dimension is 1 or 2 */
-  virtual Graph drawPDF() const;
+  virtual Graph drawPDF(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+			const Bool logScale = false) const;
 
   /** Draw the PDF of the distribution when its dimension is 1 */
   virtual Graph drawPDF(const Scalar xMin,
                         const Scalar xMax,
-                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
-  virtual Graph drawPDF(const UnsignedInteger pointNumber) const;
+                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+                        const Bool logScale = false) const;
 
   /** Draw the PDF of a 1D marginal */
   virtual Graph drawMarginal1DPDF(const UnsignedInteger marginalIndex,
                                   const Scalar xMin,
                                   const Scalar xMax,
-                                  const UnsignedInteger pointNumber) const;
+                                  const UnsignedInteger pointNumber,
+                                  const Bool logScale = false) const;
 
   /** Draw the PDF of the distribution when its dimension is 2 */
   virtual Graph drawPDF(const Point & xMin,
                         const Point & xMax,
-                        const Indices & pointNumber) const;
+                        const Indices & pointNumber,
+                        const Bool logScaleX = false,
+                        const Bool logScaleY = false) const;
   virtual Graph drawPDF(const Point & xMin,
-                        const Point & xMax) const;
-  virtual Graph drawPDF(const Indices & pointNumber) const;
+                        const Point & xMax,
+                        const Bool logScaleX = false,
+                        const Bool logScaleY = false) const;
+  virtual Graph drawPDF(const Indices & pointNumber,
+                        const Bool logScaleX = false,
+                        const Bool logScaleY = false) const;
 
   /** Draw the PDF of a 2D marginal */
   virtual Graph drawMarginal2DPDF(const UnsignedInteger firstMarginal,
                                   const UnsignedInteger secondMarginal,
                                   const Point & xMin,
                                   const Point & xMax,
-                                  const Indices & pointNumber) const;
+                                  const Indices & pointNumber,
+				  const Bool logScaleX = false,
+				  const Bool logScaleY = false) const;
 
   /** Draw the log-PDF of the distribution when its dimension is 1 or 2 */
-  virtual Graph drawLogPDF() const;
+  virtual Graph drawLogPDF(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+			   const Bool logScale = false) const;
 
   /** Draw the log-PDF of the distribution when its dimension is 1 */
   virtual Graph drawLogPDF(const Scalar xMin,
                            const Scalar xMax,
-                           const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
-  virtual Graph drawLogPDF(const UnsignedInteger pointNumber) const;
+                           const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+                           const Bool logScale = false) const;
 
   /** Draw the log-PDF of a 1D marginal */
   virtual Graph drawMarginal1DLogPDF(const UnsignedInteger marginalIndex,
                                      const Scalar xMin,
                                      const Scalar xMax,
-                                     const UnsignedInteger pointNumber) const;
+                                     const UnsignedInteger pointNumber,
+                                     const Bool logScale = false) const;
 
   /** Draw the log-PDF of the distribution when its dimension is 2 */
   virtual Graph drawLogPDF(const Point & xMin,
                            const Point & xMax,
-                           const Indices & pointNumber) const;
+                           const Indices & pointNumber,
+                           const Bool logScaleX = false,
+                           const Bool logScaleY = false) const;
   virtual Graph drawLogPDF(const Point & xMin,
-                           const Point & xMax) const;
-  virtual Graph drawLogPDF(const Indices & pointNumber) const;
+                           const Point & xMax,
+                           const Bool logScaleX = false,
+                           const Bool logScaleY = false) const;
+  virtual Graph drawLogPDF(const Indices & pointNumber,
+                           const Bool logScaleX = false,
+                           const Bool logScaleY = false) const;
 
   /** Draw the PDF of a 2D marginal */
   virtual Graph drawMarginal2DLogPDF(const UnsignedInteger firstMarginal,
                                      const UnsignedInteger secondMarginal,
                                      const Point & xMin,
                                      const Point & xMax,
-                                     const Indices & pointNumber) const;
+                                     const Indices & pointNumber,
+				     const Bool logScaleX = false,
+				     const Bool logScaleY = false) const;
 
   /** Draw the CDF of the distribution when its dimension is 1 or 2 */
-  virtual Graph drawCDF() const;
+  virtual Graph drawCDF(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+			const Bool logScale = false) const;
 
   /** Draw the CDF of the distribution when its dimension is 1 */
   virtual Graph drawCDF(const Scalar xMin,
                         const Scalar xMax,
-                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
-
-  virtual Graph drawCDF(const UnsignedInteger pointNumber) const;
+                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+                        const Bool logScale = false) const;
 
   /** Draw the CDF of the distribution when its dimension is 2 */
   virtual Graph drawCDF(const Point & xMin,
                         const Point & xMax,
-                        const Indices & pointNumber) const;
+                        const Indices & pointNumber,
+			const Bool logScaleX = false,
+			const Bool logScaleY = false) const;
   virtual Graph drawCDF(const Point & xMin,
-                        const Point & xMax) const;
-  virtual Graph drawCDF(const Indices & pointNumber) const;
+                        const Point & xMax,
+			const Bool logScaleX = false,
+			const Bool logScaleY = false) const;
+  virtual Graph drawCDF(const Indices & pointNumber,
+			const Bool logScaleX = false,
+			const Bool logScaleY = false) const;
 
   /** Draw the CDF of a 1D marginal */
   virtual Graph drawMarginal1DCDF(const UnsignedInteger marginalIndex,
                                   const Scalar xMin,
                                   const Scalar xMax,
-                                  const UnsignedInteger pointNumber) const;
+                                  const UnsignedInteger pointNumber,
+                                  const Bool logScale = false) const;
 
   /** Draw the CDF of a 2D marginal */
   virtual Graph drawMarginal2DCDF(const UnsignedInteger firstMarginal,
                                   const UnsignedInteger secondMarginal,
                                   const Point & xMin,
                                   const Point & xMax,
-                                  const Indices & pointNumber) const;
+                                  const Indices & pointNumber,
+				  const Bool logScaleX = false,
+				  const Bool logScaleY = false) const;
+
+  /** Draw the SurvivalFunction of the distribution when its dimension is 1 or 2 */
+  virtual Graph drawSurvivalFunction(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+				     const Bool logScale = false) const;
+
+  /** Draw the SurvivalFunction of the distribution when its dimension is 1 */
+  virtual Graph drawSurvivalFunction(const Scalar xMin,
+                                     const Scalar xMax,
+                                     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+                                     const Bool logScale = false) const;
+
+  /** Draw the SurvivalFunction of the distribution when its dimension is 2 */
+  virtual Graph drawSurvivalFunction(const Point & xMin,
+                                     const Point & xMax,
+                                     const Indices & pointNumber,
+				     const Bool logScaleX = false,
+				     const Bool logScaleY = false) const;
+  virtual Graph drawSurvivalFunction(const Point & xMin,
+                                     const Point & xMax,
+				     const Bool logScaleX = false,
+				     const Bool logScaleY = false) const;
+  virtual Graph drawSurvivalFunction(const Indices & pointNumber,
+				     const Bool logScaleX = false,
+				     const Bool logScaleY = false) const;
+
+  /** Draw the SurvivalFunction of a 1D marginal */
+  virtual Graph drawMarginal1DSurvivalFunction(const UnsignedInteger marginalIndex,
+					       const Scalar xMin,
+					       const Scalar xMax,
+					       const UnsignedInteger pointNumber,
+					       const Bool logScale = false) const;
+
+  /** Draw the SurvivalFunction of a 2D marginal */
+  virtual Graph drawMarginal2DSurvivalFunction(const UnsignedInteger firstMarginal,
+					       const UnsignedInteger secondMarginal,
+					       const Point & xMin,
+					       const Point & xMax,
+					       const Indices & pointNumber,
+					       const Bool logScaleX = false,
+					       const Bool logScaleY = false) const;
 
   /** Draw the quantile of the distribution when its dimension is 1 or 2 */
-  virtual Graph drawQuantile(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
+  virtual Graph drawQuantile(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+                             const Bool logScale = false) const;
 
   virtual Graph drawQuantile(const Scalar qMin,
                              const Scalar qMax,
-                             const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
+                             const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+                             const Bool logScale = false) const;
 
   /** Parameters value and description accessor */
   PointWithDescriptionCollection getParametersCollection() const;
