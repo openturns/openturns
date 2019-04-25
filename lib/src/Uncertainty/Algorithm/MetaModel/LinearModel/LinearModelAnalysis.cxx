@@ -253,10 +253,10 @@ Point LinearModelAnalysis::getCoefficientsPValues() const
 
 Interval LinearModelAnalysis::getCoefficientsConfidenceInterval(const Scalar level) const
 {
+  const Point coefficientsErrors(getCoefficientsStandardErrors());
   const Point beta(linearModelResult_.getTrendCoefficients());
-  const Scalar sigma_conf_int = DistFunc::qStudent(linearModelResult_.getDegreesOfFreedom(), (1.0 - level) * 0.5, true);
-  const Interval bounds(beta - getCoefficientsStandardErrors() * sigma_conf_int,
-    beta + getCoefficientsStandardErrors() * sigma_conf_int);
+  const Scalar sigmaConfInt = DistFunc::qStudent(linearModelResult_.getDegreesOfFreedom(), (1.0 - level) * 0.5, true);
+  const Interval bounds(beta - coefficientsErrors * sigmaConfInt, beta + coefficientsErrors * sigmaConfInt);
   return bounds;
 }
 
