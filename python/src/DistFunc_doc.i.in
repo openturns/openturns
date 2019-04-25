@@ -17,7 +17,9 @@ logp : float
 
 Notes
 -----
-This method implements Loader's algorithm, the *fast* and *accurate* method described in [loader2000]_, with the further improvements mentioned in [dimitriadis2016]_.
+This method implements Loader's algorithm, the *fast* and *accurate* method
+described in [loader2000]_, with the further improvements mentioned
+in [dimitriadis2016]_.
 
 Examples
 --------
@@ -45,7 +47,9 @@ probability : float
 
 Notes
 -----
-This method implements Loader's algorithm, the *fast* and *accurate* method described in [loader2000]_, with the further improvements mentioned in [dimitriadis2016]_.
+This method implements Loader's algorithm, the *fast* and *accurate* method
+described in [loader2000]_, with the further improvements mentioned
+in [dimitriadis2016]_.
 
 Examples
 --------
@@ -90,7 +94,8 @@ Examples
 Parameters
 ----------
 probabilities : sequence of float
-    The probabilities of the discrete distribution :math:`p_k=\Prob{X=k}`, where :math:`p_k\in[0,1]` and :math:`\sum_{k=1}^n p_k=1`.
+    The probabilities of the discrete distribution :math:`p_k=\Prob{X=k}`,
+    where :math:`p_k\in[0,1]` and :math:`\sum_{k=1}^n p_k=1`.
 size : int
     The number of realizations to generate.
 
@@ -101,7 +106,9 @@ realizations : int or :class:`~openturns.Indices`
 
 Notes
 -----
-This method implements the *alias* method as described in [devroye1986]_, Chapter 3. It has an optimal space complexity of :math:`\cO(n)` and runtime CPU complexity of :math:`\cO(1)`.
+This method implements the *alias* method as described in [devroye1986]_,
+Chapter 3. It has an optimal space complexity of :math:`\cO(n)` and runtime CPU
+complexity of :math:`\cO(1)`.
 
 Examples
 --------
@@ -133,7 +140,9 @@ logp : float
 
 Notes
 -----
-This method is based on an algorithm similar to Loader's algorithm, the *fast* and *accurate* method described in [loader2000]_, with the further improvements mentioned in [dimitriadis2016]_.
+This method is based on an algorithm similar to Loader's algorithm, the *fast*
+and *accurate* method described in [loader2000]_, with the further improvements
+mentioned in [dimitriadis2016]_.
 
 Examples
 --------
@@ -163,7 +172,9 @@ p : float
 
 Notes
 -----
-This method is based on an algorithm similar to Loader's algorithm, the *fast* and *accurate* method described in [loader2000]_, with the further improvements mentioned in [dimitriadis2016]_.
+This method is based on an algorithm similar to Loader's algorithm, the *fast*
+and *accurate* method described in [loader2000]_, with the further improvements
+mentioned in [dimitriadis2016]_.
 
 Examples
 --------
@@ -195,7 +206,10 @@ p : float
 
 Notes
 -----
-This method is based on a summation of the probability function toward the upper bound or the lower bound of the range depending on the position of :math:`x` wrt the mode :math:`\left\lfloor\dfrac{(k+1)(m+1)}{n+2}\right\rfloor` of the distribution, then take the complement if needed.
+This method is based on a summation of the probability function toward the upper
+bound or the lower bound of the range depending on the position of :math:`x` wrt
+the mode :math:`\left\lfloor\dfrac{(k+1)(m+1)}{n+2}\right\rfloor` of the
+distribution, then take the complement if needed.
 
 Examples
 --------
@@ -439,7 +453,10 @@ logp : float
 
 Notes
 -----
-This method implements Loader's algorithm, the *fast* and *accurate* method described in [loader2000]_, with the further improvements mentioned in [dimitriadis2016]_.
+This method implements Loader's algorithm, the *fast* and *accurate* method
+described in [loader2000]_, with the further improvements mentioned
+in [dimitriadis2016]_.
+
 Examples
 --------
 >>> import openturns as ot
@@ -464,7 +481,9 @@ logp : float
 
 Notes
 -----
-This method implements Loader's algorithm, the *fast* and *accurate* method described in [loader2000]_, with the further improvements mentioned in [dimitriadis2016]_.
+This method implements Loader's algorithm, the *fast* and *accurate* method
+described in [loader2000]_, with the further improvements mentioned
+in [dimitriadis2016]_.
 
 Examples
 --------
