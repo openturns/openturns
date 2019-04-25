@@ -114,7 +114,7 @@ Sample LinearModelResult::getFittedSample() const
 }
 
 /* Formula accessor */
-Point LinearModelResult::getTrendCoefficients() const
+Point LinearModelResult::getCoefficients() const
 {
   return beta_;
 }

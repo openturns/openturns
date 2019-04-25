@@ -71,7 +71,7 @@ String LinearModelAnalysis::__repr__() const
 /* Method that returns the ANOVA table (ANalyse Of VAriance) */
 String LinearModelAnalysis::__str__(const String & offset) const
 {
-  const Point estimates(linearModelResult_.getTrendCoefficients());
+  const Point estimates(linearModelResult_.getCoefficients());
   const Point standardErrors(getCoefficientsStandardErrors());
   const Point tscores(getCoefficientsTScores());
   const Point pValues(getCoefficientsPValues());
@@ -222,7 +222,7 @@ Point LinearModelAnalysis::getCoefficientsStandardErrors() const
 Point LinearModelAnalysis::getCoefficientsTScores() const
 {
   // The coefficients of linear expansion over their standard error
-  const Point estimates(linearModelResult_.getTrendCoefficients());
+  const Point estimates(linearModelResult_.getCoefficients());
   const Point standardErrors(getCoefficientsStandardErrors());
   Point tScores(estimates.getSize(), 1);
   for (UnsignedInteger i = 0; i < tScores.getSize(); ++i)
@@ -254,7 +254,7 @@ Point LinearModelAnalysis::getCoefficientsPValues() const
 Interval LinearModelAnalysis::getCoefficientsConfidenceInterval(const Scalar level) const
 {
   const Point coefficientsErrors(getCoefficientsStandardErrors());
-  const Point beta(linearModelResult_.getTrendCoefficients());
+  const Point beta(linearModelResult_.getCoefficients());
   const Scalar sigmaConfInt = DistFunc::qStudent(linearModelResult_.getDegreesOfFreedom(), (1.0 - level) * 0.5, true);
   const Interval bounds(beta - coefficientsErrors * sigmaConfInt, beta + coefficientsErrors * sigmaConfInt);
   return bounds;
@@ -290,7 +290,7 @@ Scalar LinearModelAnalysis::getFisherScore() const
   const Sample outputSample = (getLinearModelResult().getOutputSample());
   const UnsignedInteger size = residuals.getSize();
   // Get the number of parameter p
-  const UnsignedInteger p = linearModelResult_.getTrendCoefficients().getSize();
+  const UnsignedInteger p = linearModelResult_.getCoefficients().getSize();
   // Define RSS and SYY
   const Scalar RSS = residuals.computeRawMoment(2)[0] * size;
   const Scalar SYY = outputSample.computeCenteredMoment(2)[0] * size;
@@ -303,7 +303,7 @@ Scalar LinearModelAnalysis::getFisherPValue() const
   // size and number of parameters
   const UnsignedInteger size = linearModelResult_.getSampleResiduals().getSize();
   // Get the number of parameter p
-  const UnsignedInteger p = linearModelResult_.getTrendCoefficients().getSize();
+  const UnsignedInteger p = linearModelResult_.getCoefficients().getSize();
   const Scalar FStatistic = getFisherScore();
   return FisherSnedecor(p - 1, size - 1).computeComplementaryCDF(FStatistic);
 }

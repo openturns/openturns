@@ -81,7 +81,7 @@ outputSample : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearModelResult::getTrendCoefficients
+%feature("docstring") OT::LinearModelResult::getCoefficients
 "Accessor to the coefficients of the linear model of the trend.
 
 Returns

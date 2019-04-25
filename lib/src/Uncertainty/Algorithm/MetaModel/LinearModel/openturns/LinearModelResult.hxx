@@ -75,7 +75,7 @@ public:
   virtual Sample getFittedSample() const;
 
   /** Condensed formula accessor */
-  virtual Point getTrendCoefficients() const;
+  virtual Point getCoefficients() const;
 
   /** Condensed formula accessor */
   virtual String getFormula() const;
