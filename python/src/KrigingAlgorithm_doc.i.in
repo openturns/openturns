@@ -50,11 +50,11 @@ where:
        \end{array}
      \right)
 
-with :math:`\mu_l(\vect{x}) = \sum_{j=1}^{n_l} \alpha_j^l \varphi_j^l(\vect{x})` and :math:`\varphi_j^l: \Rset^d \rightarrow \Rset` the trend functions.
+with :math:`\mu_l(\vect{x}) = \sum_{j=1}^{n_l} \beta_j^l \varphi_j^l(\vect{x})` and :math:`\varphi_j^l: \Rset^d \rightarrow \Rset` the trend functions.
 
 :math:`W` is a Gaussian process of dimension *p* with zero mean and covariance function :math:`C = C(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})` (see :class:`~openturns.CovarianceModel` for the notations).
 
-The estimation of the parameters :math:`\alpha_j^l, \vect{\theta}, \vect{\sigma}` are made by the :class:`~openturns.GeneralLinearModelAlgorithm` class.
+The estimation of the all parameters (the trend coefficients :math:`\beta_j^l, the scale \vect{\theta} and the amplitude \vect{\sigma}`) are made by the :class:`~openturns.GeneralLinearModelAlgorithm` class.
 
 The Kriging algorithm makes the general linear model interpolary on the input samples. The Kriging meta model :math:`\tilde{\cM}` is defined by:
 
@@ -205,11 +205,23 @@ outputSample : :class:`~openturns.Sample`
 Returns
 -------
 reducedLogLikelihood : :class:`~openturns.Function`
-    The reduced log-likelihood function as a function of :math:`(\vect{\theta}, \vect{\sigma})`.
+    The *potentially* reduced log-likelihood function.
 
 Notes
 -----
-The reduced log-likelihood function may be useful for some pre/postprocessing: vizuaisation of the maximizer, use of an external optimizers to maximize the reduced log-likelihood etc.
+We use the same notations as in :class:`~openturns.CovarianceModel` and :class:`~openturns.GeneralLinearModelAlgorithm` : :math:`\vect{\theta}` refers to the scale parameters and
+:math:`\vect{\sigma}` the amplitude. We can consider three situtations here:
+
+  - Output dimension is :math:`\geq 2`. In that case, we get the **full** log-likelihood function :math:`\mathcal{L}(\vect{\theta}, \vect{\sigma})`.
+
+  - Output dimension is **1** and the `GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate` key of :class:`~openturns.ResourceMap` is set to *True*.
+    The amplitude parameter of the covariance model :math:`\vect{\theta}` is in the active set of parameters and thus we get the **reduced**
+    log-likelihood function :math:`\mathcal{L}(\vect{\theta})`.
+
+  - Output dimension is **1** and the `GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate` key of :class:`~openturns.ResourceMap` is set to *False*.
+    In that case, we get the **full** log-likelihood :math:`\mathcal{L}(\vect{\theta}, \vect{\sigma})`.
+
+The reduced log-likelihood function may be useful for some pre/postprocessing: vizualisation of the maximizer, use of an external optimizers to maximize the reduced log-likelihood etc.
 
 
 Examples
