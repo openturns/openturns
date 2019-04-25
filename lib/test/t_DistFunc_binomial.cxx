@@ -47,7 +47,7 @@ int main(int, char *[])
 	  {
 	    for (UnsignedInteger k = 0; k <= n; ++k)
 	      {
-		fullprint << "dBinomial(" << n << ", " << p << ", " << k << ")=" << std::setprecision(4) << DistFunc::dBinomial(n, p, k) << std::endl;
+		fullprint << "dBinomial(" << n << ", " << p << ", " << k << ")=" << std::setprecision(3) << DistFunc::dBinomial(n, p, k) << std::endl;
 	      }
 	  }
       }
