@@ -567,7 +567,6 @@ ot_pyinstallcheck_test (SimulatedAnnealingLHS_std)
 ot_pyinstallcheck_test (LHSExperiment_std)
 ot_pyinstallcheck_test (LowDiscrepancyExperiment_std)
 ot_pyinstallcheck_test (MonteCarloExperiment_std)
-ot_pyinstallcheck_test (MinMax_computation)
 ot_pyinstallcheck_test (CombinatorialGenerator_std)
 ot_pyinstallcheck_test (Experiment_python)
 

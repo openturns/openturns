@@ -575,7 +575,6 @@ ot_check_test (ThreeDVAR_std)
 ot_check_test (MixtureClassifier_std)
 
 # Experiments
-ot_check_test (MinMax_computation)
 ot_check_test (Axial_std)
 ot_check_test (Box_std)
 ot_check_test (Composite_std)
