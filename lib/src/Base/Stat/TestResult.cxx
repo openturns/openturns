@@ -44,12 +44,14 @@ TestResult::TestResult():
 TestResult::TestResult(const String & type,
                        const Bool binMeasure,
                        const Scalar pVal,
-                       const Scalar pThreshold):
+                       const Scalar pThreshold,
+                       const Scalar statistic):
   PersistentObject(),
   testType_(type),
   binaryQualityMeasure_(binMeasure),
   pValueThreshold_(pThreshold),
   pValue_(pVal),
+  statistic_(statistic),
   description_(0)
 {
   // Nothing to do
@@ -81,6 +83,7 @@ String TestResult::__repr__() const
          << " binaryQualityMeasure=" << binaryQualityMeasure_
          << " p-value threshold=" << pValueThreshold_
          << " p-value=" << pValue_
+         << " statistic=" << statistic_
          << " description=" << description_;
 }
 
@@ -105,6 +108,11 @@ String TestResult::getTestType() const
   return testType_;
 }
 
+Scalar TestResult::getStatistic() const
+{
+  return statistic_;
+}
+
 /* Comparison operator */
 Bool TestResult::operator == (const TestResult & other) const
 {
@@ -122,6 +130,7 @@ void TestResult::save(Advocate & adv) const
   adv.saveAttribute("binaryQualityMeasure_", binaryQualityMeasure_);
   adv.saveAttribute("pValueThreshold_", pValueThreshold_);
   adv.saveAttribute("pValue_", pValue_);
+  adv.saveAttribute("statistic_", statistic_);
   adv.saveAttribute("description_", description_);
 }
 
@@ -133,6 +142,7 @@ void TestResult::load(Advocate & adv)
   adv.loadAttribute("binaryQualityMeasure_", binaryQualityMeasure_);
   adv.loadAttribute("pValueThreshold_", pValueThreshold_);
   adv.loadAttribute("pValue_", pValue_);
+  adv.loadAttribute("statistic_", statistic_);
   adv.loadAttribute("description_", description_);
 }
 

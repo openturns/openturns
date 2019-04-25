@@ -36,6 +36,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/LinearModelAnalysis.hxx"
 #include "openturns/LinearCombinationFunction.hxx"
+#include "openturns/DesignProxy.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -51,13 +52,13 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
     const LinearModelResult & linearModelResult,
     const Scalar level)
 {
-  const UnsignedInteger dimension = firstSample.getDimension();
-  if (secondSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (firstSample.getSize() != secondSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
+  if (secondSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   const UnsignedInteger size = firstSample.getSize();
   if (size < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
-  if (size < dimension + 1) throw InvalidArgumentException(HERE) << "Error: sample too small. Size should be greater than degree of freedom";
-  const UnsignedInteger df = size - dimension - 1;
+  // As we rely on a linear model result, we should be very generic
+  // Instead of using input dimension, one should use parameter size
+  const UnsignedInteger df = linearModelResult.getDegreesOfFreedom();
 
   // Regression coefficient
   const Function fHat(linearModelResult.getMetaModel());
@@ -75,10 +76,13 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
   // H0 : Beta_i = 0
   // H1 : Beta_i < 0 or Beta_i > 0
   // The statistics follows a Fisher distribution
-  const Scalar statistic = sumSquaredResiduals / dimension / (sumSquaredExplained / (df));
+  const Scalar numerator = sumSquaredExplained / (size - df - 1);
+  const Scalar denomerator = sumSquaredResiduals / df;
+
+  const Scalar statistic = numerator / denomerator;
   Log::Debug(OSS() << "F-statistic = " << statistic);
-  const Scalar pValue =  FisherSnedecor(dimension, size - dimension - 1).computeComplementaryCDF(statistic);
-  return TestResult("Fisher", pValue > level, pValue, level);
+  const Scalar pValue =  FisherSnedecor(size - df - 1, df).computeComplementaryCDF(statistic);
+  return TestResult("Fisher", pValue > level, pValue, level, statistic);
 }
 
 /* @deprecated */
@@ -100,35 +104,17 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
     const Scalar level)
 {
 
-  const UnsignedInteger dimension = firstSample.getDimension();
   if (secondSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (firstSample.getSize() != secondSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
   const UnsignedInteger size = firstSample.getSize();
+  const UnsignedInteger dimension = firstSample.getDimension();
   if (size < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
   if (size < dimension + 1) throw InvalidArgumentException(HERE) << "Error: sample too small. Size should be greater than degree of freedom";
-  const UnsignedInteger df = size - dimension - 1;
 
-
-  LinearLeastSquares regressionAlgorithm(firstSample , secondSample);
-  regressionAlgorithm.run();
-  // Regression coefficient
-  const Sample yHat(regressionAlgorithm.getMetaModel()(firstSample));
-  const Sample residualSample(secondSample - yHat);
- 
-  // For the Fisher test, we need both Sum of Squared Explained (SSE)
-  // and the Sum of Squared Residuals
-  const Scalar sumSquaredExplained = (yHat - secondSample.computeMean()).computeRawMoment(2)[0] * firstSample.getSize() ;
-  const Scalar sumSquaredResiduals = residualSample.computeRawMoment(2)[0] * firstSample.getSize() ;
-  // The statistical test checks the nullity of the regression linear model coefficients
-  // H0 : Beta_i = 0
-  // H1 : Beta_i < 0 or Beta_i > 0
-  // The statistics follows a Fisher distribution
-  const Scalar numerator = sumSquaredExplained / dimension;
-  const Scalar denumerator = sumSquaredResiduals / df;
-  const Scalar statistic = numerator / denumerator;
-  Log::Debug(OSS() << "F-statistic = " << statistic);
-  const Scalar pValue =  FisherSnedecor(dimension, df).computeComplementaryCDF(statistic);
-  return TestResult("Fisher", pValue > level, pValue, level);
+  LinearModelAlgorithm algo(firstSample, secondSample);
+  algo.run();
+  const LinearModelResult result(algo.getResult());
+  return LinearModelFisher(firstSample, secondSample, result, level);
 }
 
 /*  */
@@ -137,29 +123,28 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
     const LinearModelResult & linearModelResult,
     const Scalar level)
 {
-  const UnsignedInteger dimension = firstSample.getDimension();
-  if (secondSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
-  if (firstSample.getSize() != secondSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
-    const UnsignedInteger size = firstSample.getSize();
-  if (size < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
-  if (size < dimension + 1) throw InvalidArgumentException(HERE) << "Error: sample too small. Size should be greater than degree of freedom";
-  const UnsignedInteger df = size - dimension - 1;
 
-  // Regression coefficient
-  const Function fHat(linearModelResult.getMetaModel());
-  const Sample residualSample(secondSample - fHat(firstSample));
+  if (firstSample.getSize() != secondSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
+  if (secondSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
+  const UnsignedInteger size = firstSample.getSize();
+  if (size < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
+  // As we rely on a linear model result, we should be very generic
+  // Instead of using input dimension, one should use parameter size
+  const UnsignedInteger df = linearModelResult.getDegreesOfFreedom();
+  // Residuals
+  const Sample residualSample(linearModelResult.getSampleResiduals());
   // Compute mean & standard deviation
   const Scalar mean = residualSample.computeMean()[0];
   const Scalar std = residualSample.computeStandardDeviationPerComponent()[0];
   // The statistical test checks whether the mean is 0 or not
   // H0 : mu = 0
   // H1 : mu < 0 or mu > 0
-  // The statstic of test is then (xm - 0) / sd * sqrt(n)
+  // The statstic of test is then (xm - 0) / sd * sqrt(size)
   // The statistics follows a Student distribution
-  const Scalar statistic = mean / std * std::sqrt(firstSample.getSize() * 1.0);
+  const Scalar statistic = std::abs(mean) * std::sqrt(size * 1.0) / std;
   Log::Debug(OSS() << "t-statistic = " << statistic);
   const Scalar pValue =  2.0 * DistFunc::pStudent(df, statistic, true);
-  return TestResult("ResidualMean", pValue > level, pValue, level);
+  return TestResult("ResidualMean", pValue > level, pValue, level, statistic);
 }
 
 /* @deprecated */
@@ -180,29 +165,17 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
     const Sample & secondSample,
     const Scalar level)
 {
-  const UnsignedInteger dimension = firstSample.getDimension();
-  if (secondSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (firstSample.getSize() != secondSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
+  if (secondSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   const UnsignedInteger size = firstSample.getSize();
+  const UnsignedInteger dimension = firstSample.getDimension();
   if (size < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
   if (size < dimension + 1) throw InvalidArgumentException(HERE) << "Error: sample too small. Size should be greater than degree of freedom";
-  const UnsignedInteger df = firstSample.getSize() - dimension - 1;
 
-  LinearLeastSquares regressionAlgorithm(firstSample , secondSample);
-  regressionAlgorithm.run();
-  const Sample residualSample(secondSample - regressionAlgorithm.getMetaModel()(firstSample));
-  // Compute mean & standard deviation
-  const Scalar mean = residualSample.computeMean()[0];
-  const Scalar std = residualSample.computeStandardDeviationPerComponent()[0];
-  // The statistical test checks whether the mean is 0 or not
-  // H0 : mu = 0
-  // H1 : mu < 0 or mu > 0
-  // The statstic of test is then (xm - 0) / sd * sqrt(n)
-  // The statistics follows a Student distribution
-  const Scalar statistic = mean / std * std::sqrt(firstSample.getSize() * 1.0);
-  const Scalar pValue =  2.0 * DistFunc::pStudent(df, statistic, true);
-  Log::Debug(OSS() << "t-statistic = " << statistic);
-  return TestResult("ResidualMean", pValue > level, pValue, level);
+  LinearModelAlgorithm algo(firstSample, secondSample);
+  algo.run();
+  const LinearModelResult result(algo.getResult());
+  return LinearModelResidualMean(firstSample, secondSample, result, level);
 }
 
 /*  */
@@ -213,14 +186,12 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
     const Scalar breakPoint,
     const Scalar simulationSize)
 {
-  const UnsignedInteger dimension = firstSample.getDimension();
-  if (linearModelResult.getTrendCoefficients().getSize() != dimension + 1)
-    throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
-  const Function fHat(linearModelResult.getMetaModel());
-  const Sample yHat(fHat(firstSample)); 
-  const Sample residuals(secondSample - yHat);
-
+  if (firstSample.getSize() != secondSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
+  if (secondSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   const UnsignedInteger residualSize = firstSample.getSize();
+  if (residualSize < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
+  if (!(breakPoint > 0) && !(breakPoint < 1)) throw InvalidArgumentException(HERE) << "breakPoint should be in ]0,1[";
+  const Sample residuals(linearModelResult.getSampleResiduals());
 
   /* Split the sample using the breakPoint*/
   const UnsignedInteger breakIndex = std::floor(residualSize * breakPoint);
@@ -228,8 +199,8 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
   Scalar sumSelectResiduals = 0;
   for(UnsignedInteger i = 0; i < breakIndex; ++i)
   {
-    const Point residual(residuals[i]);
-    sumSelectResiduals += residual.normSquare();
+    // 1D algo : useless to create point twice!
+    sumSelectResiduals += residuals(i, 0) * residuals(i, 0);
   }
 
   const Scalar sumSquaredResiduals = residuals.computeVariance()[0] * (residualSize - 1);
@@ -242,14 +213,13 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
   for(UnsignedInteger i = 0; i < simulationSize; ++i)
   {
     const Sample sample(Normal().getSample(residualSize));
-    const Sample stantardSample((sample - sample.computeMean()) / sample.computeStandardDeviationPerComponent());
+    const Sample standardSample((sample - sample.computeMean()) / sample.computeStandardDeviationPerComponent());
     Scalar sumSelectResidualsSimulation = 0;
     for (UnsignedInteger j = 0; j < breakIndex; ++ j)
     {
-      const Point stantardSamplePoint(stantardSample[j]);
-      sumSelectResidualsSimulation += stantardSamplePoint.normSquare();
+      sumSelectResidualsSimulation += standardSample(j, 0) * standardSample(j, 0);
     }
-    const Scalar sumSquaredResidualsSimulation = stantardSample.computeVariance()[0] * (residualSize - 1);
+    const Scalar sumSquaredResidualsSimulation = standardSample.computeVariance()[0] * (residualSize - 1);
     const Scalar statistic = sumSelectResidualsSimulation / sumSquaredResidualsSimulation;
     if(statistic < hmc)
     {
@@ -258,7 +228,7 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
   }
   pValue = pValue / simulationSize;
 
-  return TestResult("HarrisonMcCabe", pValue > level, pValue, level);
+  return TestResult("HarrisonMcCabe", pValue > level, pValue, level, hmc);
 }
 
 /* @deprecated  */
@@ -298,10 +268,12 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
     const LinearModelResult & linearModelResult,
     const Scalar level)
 {
+  if (firstSample.getSize() != secondSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
+  if (secondSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
+  const UnsignedInteger size = firstSample.getSize();
+  if (size < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
+
   // Regression coefficient
-  const UnsignedInteger dimension = firstSample.getDimension();
-  if (linearModelResult.getTrendCoefficients().getSize() != dimension + 1)
-    throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
   const Function fHat(linearModelResult.getMetaModel());
   const Sample yHat(fHat(firstSample));
   const Sample residuals(secondSample - yHat);
@@ -314,27 +286,27 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
   Sample w(residualSize, 1);
   for(UnsignedInteger i = 0; i < residualSize; ++i)
   {
-    const Point residual(residuals[i]);
-    w(i, 0) = (residual.normSquare() - residualsVariance);
+    w(i, 0) = (residuals(i, 0) * residuals(i, 0) - residualsVariance);
   }
 
   /* Build a linear model on the squared residuals */
-  LinearModelAlgorithm algo(firstSample, w);
+  LinearModelAlgorithm algo(firstSample, linearModelResult.getBasis(), w);
   const LinearModelResult result(algo.getResult());
-  const LinearModel linearModelResiduals(result.getTrendCoefficients());
+
   /* Predicted values of the squared residuals*/
-  const Sample wPredicted(linearModelResiduals.getPredicted(firstSample));
+  const Sample wPredicted(result.getMetaModel()(firstSample));
+
   /* Compute variances */
   const Scalar wPredictedVar = wPredicted.computeVariance()[0];
   const Scalar wVariance = w.computeVariance()[0];
   /* Compute the Breusch Pagan statistic */
-  const Scalar bp = residualSize * wPredictedVar / wVariance;
-  /* Get the degree of freedom */
-  const UnsignedInteger dof = firstSample.getDimension();
+  const Scalar statistic = residualSize * wPredictedVar / wVariance;
+  /* Get the basis size */
+  const UnsignedInteger basisSize = linearModelResult.getBasis().getSize();
   /* Compute the p-value */
-  const Scalar pValue = ChiSquare(dof).computeComplementaryCDF(bp);
+  const Scalar pValue = DistFunc::pGamma(0.5 * (basisSize - 1), 0.5 * statistic, true);
 
-  return TestResult("BreuschPagan", pValue > level, pValue, level);
+  return TestResult("BreuschPagan", pValue > level, pValue, level, statistic);
 }
 
 
@@ -364,91 +336,110 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
 }
 
 
-/*  */
+/* Durbin-Watson test
+   Testing for Serial Correlation in Least Squares Regression. II
+   By J. Durbin and G.S. Watson
+   Biometrika Vol 38 No 1/2 (Hun 1951) pp 159-177   */
 TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
     const Sample & secondSample,
     const LinearModelResult & linearModelResult,
     const String hypothesis,
     const Scalar level)
 {
-  const UnsignedInteger dimension = firstSample.getDimension();
-  if (linearModelResult.getTrendCoefficients().getSize() != dimension + 1)
-    throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
+  if (firstSample.getSize() != secondSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
+  if (secondSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
+  const UnsignedInteger residualSize = firstSample.getSize();
+
+  if (residualSize < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
+
   const Function fHat(linearModelResult.getMetaModel());
   const Sample yHat(fHat(firstSample)); 
   const Sample residuals(secondSample - yHat);
 
-  const UnsignedInteger residualSize = firstSample.getSize();
 
   const Scalar sumSquaredResiduals = residuals.computeVariance()[0] * (residualSize - 1);
 
   Scalar sumSquaredDifference = 0;
   for(UnsignedInteger i = 1; i < residualSize; ++i)
   {
-    const Point residualDifference(residuals[i] - residuals[i - 1]);
-    sumSquaredDifference += residualDifference.normSquare();
+    const Scalar residualDifference = residuals(i, 0) - residuals(i - 1, 0);
+    sumSquaredDifference += residualDifference * residualDifference;
   }
 
   /* Compute the Durbin Watson statistic */
   const Scalar dw = sumSquaredDifference / sumSquaredResiduals;
 
   /* Normal approximation of dw to compute the p-value*/
-  /* Create the matrix [1 x]*/
-  Matrix X(residualSize, dimension + 1);
-  for(UnsignedInteger j = 0; j < dimension; ++j)
-  {
-    for(UnsignedInteger i = 0; i < residualSize; ++i)
-    {
-        X(i, 0) = 1.0;
-        X(i, j+1) = firstSample(i, j);
-    }
-  }
+  /* Create the design matrix */
+  const Basis psi(linearModelResult.getBasis());
+  const UnsignedInteger basisSize = psi.getSize();
 
-  Matrix AX(residualSize, dimension + 1);
-  for(UnsignedInteger j = 0; j < dimension; ++j)
+  // Define the design proxy
+  DesignProxy proxy(firstSample, psi);
+  // The design proxy evaluated on the basis function
+  // Define the design matrix
+  Indices indices(basisSize);
+  indices.fill();
+  const Matrix X(proxy.computeDesign(indices));
+
+  // We compute A * X
+  // A is a real sym matrix (1D finite differences like)
+  // A = [1 -1 0 . . . 0]
+  //     [-1 2 1 . . . 0]
+  //     [0 -1 2 1 . . 0]
+  //     [. . -1 2 1 . 0]
+  //     [0 . . . . -1 1]
+  Matrix AX(residualSize, basisSize);
+  for(UnsignedInteger j = 0; j < basisSize; ++j)
   {
-    AX(0, j+1) = firstSample(0, j) - firstSample(1, j);
-    AX(residualSize - 1, j+1) = firstSample(residualSize - 1, j) - firstSample(residualSize - 2, j);
+    AX(0, j) = X(0, j) - X(1, j);
+    AX(residualSize - 1, j) = X(residualSize - 1, j) - X(residualSize - 2, j);
   }
-  for(UnsignedInteger j = 0; j < dimension; ++j)
+  for(UnsignedInteger j = 0; j < basisSize; ++j)
   {
     for(UnsignedInteger i = 0; i < residualSize - 2; ++i)
     {
-      AX(i + 1, j+1) = -firstSample(i, j) + 2 * firstSample(i + 1, j) - firstSample(i + 2, j);
+      AX(i + 1, j) = -X(i, j) + 2 * X(i + 1, j) - X(i + 2, j);
     } 
   }
 
+  // Normal approximation of the dw statistic
+  // Eval dmean & dvar
   CovarianceMatrix XtX(X.computeGram());
   const SquareMatrix XAXQt(XtX.solveLinearSystem(AX.transpose() * X).getImplementation());
   const Scalar P = 2 * (residualSize - 1) - XAXQt.computeTrace();
   const Scalar XAXTrace = XtX.solveLinearSystem(AX.computeGram(), false).getImplementation()->computeTrace();
   const Scalar Q = 2 * (3 * residualSize - 4) - 2 * XAXTrace + (XAXQt * XAXQt).getImplementation()->computeTrace();
-  const Scalar dmean = P / (residualSize - (dimension + 1));
-  const Scalar dvar = 2.0 / ((residualSize - (dimension + 1)) * (residualSize - (dimension + 1) + 2)) * (Q - P * dmean);
+  const Scalar dmean = P / (residualSize - basisSize);
+  const Scalar dvar = 2.0 / ((residualSize - basisSize) * (residualSize - basisSize + 2)) * (Q - P * dmean);
 
   /* Compute the p-value with respect to the hypothesis */
   Scalar pValue = 0.0;
   Description description(1);
+  Scalar statistic;
   if (hypothesis == "Equal")
   {
-    pValue = 2.0 * DistFunc::pNormal(std::abs(dw - dmean) / std::sqrt(dvar), true);
+    statistic = std::abs(dw - dmean) / std::sqrt(dvar);
+    pValue = 2.0 * DistFunc::pNormal(statistic, true);
     description[0] = "H0: auto.cor=0";
   }
   else if(hypothesis == "Less")
   {
-    pValue = DistFunc::pNormal((dw - dmean) / std::sqrt(dvar));
+    statistic = (dw - dmean) / std::sqrt(dvar);
+    pValue = DistFunc::pNormal(statistic);
     description[0] = "H0: auto.cor<0";
   }
   else if(hypothesis == "Greater")
   {
-    pValue = DistFunc::pNormal((dw - dmean) / std::sqrt(dvar), true);
+    statistic = (dw - dmean) / std::sqrt(dvar);
+    pValue = DistFunc::pNormal(statistic, true);
     description[0] = "H0: auto.cor>0";
   }
   else
     throw InvalidArgumentException(HERE) << "Invalid hypothesis string, use Equal|Less|Greater";
 
   /* Set test result */
-  TestResult result("DurbinWatson", pValue > level, pValue, level);
+  TestResult result("DurbinWatson", pValue > level, pValue, level, statistic);
   result.setDescription(description);
   return result;
 }
@@ -493,13 +484,15 @@ LinearModelTest::TestResultCollection LinearModelTest::PartialRegression(const S
   const LinearModelAnalysis analysis(result);
   const UnsignedInteger size = selection.getSize() + 1;
   const Point pValues(analysis.getCoefficientsPValues());
+  const Point statistics(analysis.getCoefficientsTScores());
 
   // Then, build the collection of results
   TestResultCollection resultCollection;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     const Scalar pValue = pValues[i];
-    resultCollection.add(TestResult("Regression", pValue > level, pValue, level));
+    const Scalar statistic = statistics[i];
+    resultCollection.add(TestResult("Regression", pValue > level, pValue, level, statistic));
   }
   return resultCollection;
 }

@@ -15,7 +15,8 @@ try:
     testBool = True
     testVal = 0.372
     testThres = 0.42
-    testResultTest = TestResult(type, testBool, testVal, testThres)
+    statistic = 0.59
+    testResultTest = TestResult(type, testBool, testVal, testThres, statistic)
 
     # String converter
     print("testResultTest = ", testResultTest)
@@ -41,8 +42,9 @@ try:
     testBoolDiff = False
     testValDiff = 0.02
     testThresDiff = 0.12
+    statisticDiff = 0.19
     testResultTestDiff = TestResult(
-        typeDiff, testBoolDiff, testValDiff, testThresDiff)
+        typeDiff, testBoolDiff, testValDiff, testThresDiff, statisticDiff)
     print("testResultTestDiff = testResultTest ", (
         testResultTestDiff == testResultTest))
 
