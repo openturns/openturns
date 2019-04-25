@@ -232,7 +232,6 @@ Examples
 --------
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
->>> r = ot.DistFunc.rHypergeometric(10, 4, 7, 0.3)
 >>> r = ot.DistFunc.rHypergeometric(10, 4, 7, 10)"
 
 // ---------------------------------------------------------------------

@@ -330,7 +330,7 @@ Scalar DistFunc::dBinomial(const UnsignedInteger n,
     return std::exp(lc);
   }
   const Scalar lc = SpecFunc::Stirlerr(n) - SpecFunc::Stirlerr(k) - SpecFunc::Stirlerr(n - k) - DistFunc::bd0(k, n * p) - DistFunc::bd0(n - k, n * (1.0 - p));
-  return std::exp(lc - SpecFunc::LOGSQRT2PI - 0.5 * (std::log(k) + log1p(-(1.0 * k) / n)));
+  return std::exp(lc - SpecFunc::LOGSQRT2PI - 0.5 * (std::log(1.0 * k) + log1p(-(1.0 * k) / n)));
 }
 
 Scalar DistFunc::logdBinomial(const UnsignedInteger n,
@@ -348,7 +348,7 @@ Scalar DistFunc::logdBinomial(const UnsignedInteger n,
   if (k == n)
     return (p > 0.9 ? -DistFunc::bd0(n, n * p) - n * (1.0 - p) : n * std::log(p));
   const Scalar lc = SpecFunc::Stirlerr(n) - SpecFunc::Stirlerr(k) - SpecFunc::Stirlerr(n - k) - DistFunc::bd0(k, n * p) - DistFunc::bd0(n - k, n * (1.0 - p));
-  return lc - SpecFunc::LOGSQRT2PI - 0.5 * (std::log(k) + log1p(-(1.0 * k) / n));
+  return lc - SpecFunc::LOGSQRT2PI - 0.5 * (std::log(1.0 * k) + log1p(-(1.0 * k) / n));
 }
 
 /* Random number generation
