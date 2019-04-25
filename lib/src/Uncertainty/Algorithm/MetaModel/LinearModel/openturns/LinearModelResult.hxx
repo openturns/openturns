@@ -75,7 +75,8 @@ public:
   virtual Sample getFittedSample() const;
 
   /** Condensed formula accessor */
-  virtual Point getTrendCoefficients() const;
+  virtual Point getCoefficients() const;
+  virtual Point getCoefficientsStandardErrors() const;
 
   /** Condensed formula accessor */
   virtual String getFormula() const;
@@ -103,6 +104,12 @@ public:
 
   /** Cook distance accessor */
   virtual Point getCookDistances() const;
+
+  /** R-squared */
+  Scalar getRSquared() const;
+
+  /** Adjusted R-squared */
+  Scalar getAdjustedRSquared() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

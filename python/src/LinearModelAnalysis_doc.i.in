@@ -48,17 +48,6 @@ linearModelResult : :class:`~openturns.LinearModelResult`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearModelAnalysis::getCoefficientsStandardErrors
-"Accessor to the coefficients of standard error.
-
-Returns
--------
-standardErrors : :class:`~openturns.Point`
-"
-
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::LinearModelAnalysis::getCoefficientsTScores
 "Accessor to the coefficients of linear expansion over their standard error.
 
@@ -85,25 +74,6 @@ of the linear expansion
 Returns
 -------
 confidenceInterval : :class:`~openturns.Interval`
-"
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::LinearModelAnalysis::getRSquared
-"Accessor to the R-squared test.
-
-Returns
--------
-rSquared : float
-"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::LinearModelAnalysis::getAdjustedRSquared
-"Accessor to the Adjusted R-squared test.
-
-Returns
--------
-adjustedRSquared : float
 "
 
 // ---------------------------------------------------------------------

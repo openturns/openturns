@@ -21,7 +21,7 @@ try:
 
     test = ot.LinearModelAlgorithm(oneSample, twoSample)
     result = ot.LinearModelResult(test.getResult())
-    print ("trend coefficients = ", result.getTrendCoefficients())
+    print ("trend coefficients = ", result.getCoefficients())
 
     print("Fit y ~ 1 + 0.1 x + 10 x^2 model using 100 points")
     ot.RandomGenerator.SetSeed(0)
@@ -44,7 +44,7 @@ try:
             X[i, 0] * X[i, 0] + 0.1 * ot.DistFunc.rNormal()
     test = ot.LinearModelAlgorithm(X, Y)
     result = test.getResult()
-    print ("trend coefficients = ", result.getTrendCoefficients())
+    print ("trend coefficients = ", result.getCoefficients())
 
 except:
     import sys

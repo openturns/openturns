@@ -60,6 +60,7 @@
  * #1028 (Build fails with clang-60: token is not a valid binary operator in a preprocessor subexpression)
  * #1031 (The doc for LogNormal and LogNormalMuSigma is confusing )
  * #1035 (ProbabilitySimulationResult does not provide the distribution of the probability)
+ * #1036 (Doc error for KrigingAlgorithm method getReducedLogLikelihoodFunction())
  * #1043 (The DrawSobolIndices doc is wrong)
  * #1045 (LowDiscrepancyExperiment/ComposedCopula correlation across blocks ?)
  * #1051 (The default value of computeSecondOrder in SobolIndicesExperiment should be False)
@@ -67,6 +68,7 @@
  * #1057 (FittingTest.BestModelBIC to return bic value)
  * #1064 (The summary of a FunctionalChaosSobolIndices fails with more than 14 dimensions)
  * #1071 (Event cannot be created from a RandomVector)
+ * #1078 (KrigingAlgorithm documentation still references "inputTransformation")
  * #1090 (PythonFunction can make OT crash)
  * #1092 (The parameterGradient of a ParametricFunction can loss accuracy)
 

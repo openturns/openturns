@@ -43,7 +43,7 @@ int main(int, char *[])
     }
     LinearModelAlgorithm test(oneSample, twoSample);
     LinearModelResult result(test.getResult());
-    fullprint << "trend coefficients = " << result.getTrendCoefficients() << std::endl;
+    fullprint << "trend coefficients = " << result.getCoefficients() << std::endl;
   }
 
   {
@@ -69,7 +69,7 @@ int main(int, char *[])
       Y(i, 0) = 1.0 +  0.1 * X(i, 0) + 10.0 * X(i, 0) * X(i, 0) + 0.1 * DistFunc::rNormal() ;
     LinearModelAlgorithm test(X, Y);
     LinearModelResult result(test.getResult());
-    fullprint << "trend coefficients = " << result.getTrendCoefficients() << std::endl;
+    fullprint << "trend coefficients = " << result.getCoefficients() << std::endl;
   }
 
   return ExitCode::Success;
