@@ -931,6 +931,7 @@ void PythonDistribution::setParameter(const Point & parameter)
       handleException();
     }
   }
+  computeRange();
   // no else: DistributionImplementation::setParameter throws
 }
 
