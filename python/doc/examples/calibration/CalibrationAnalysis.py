@@ -44,7 +44,7 @@ class CalibrationAnalysis:
         self.outputAtPosterior=model(inputObservations)
         return None
 
-    def drawThetaDistribution(self):
+    def drawParameterDistributions(self):
         """
         Plots the prior and posterior distribution of the calibrated parameter theta.
         """
@@ -97,30 +97,54 @@ class CalibrationAnalysis:
         on the output observations before and after calibration.
         """
         ySize = self.outputObservations.getSize()
+        yDim = self.outputObservations.getDimension()
         graph = ot.Graph("","Observations","Predictions",True,"topleft")
         # Plot the diagonal
-        for i in range(ySize):
-            cloud = ot.Curve(self.outputObservations[i], self.outputObservations[i])
-            cloud.setColor(self.observationColor)
-            graph.add(cloud)
+        if (yDim==1):
+            curve = ot.Curve(self.outputObservations, self.outputObservations)
+            curve.setColor(self.observationColor)
+            graph.add(curve)
+        else:
+            for i in range(ySize):
+                cloud = ot.Curve(self.outputObservations[i], self.outputObservations[i])
+                cloud.setColor(self.observationColor)
+                graph.add(cloud)
         # Plot the predictions before
         yPriorSize = self.outputAtPrior.getSize()
+        yPriorDim = self.outputAtPrior.getDimension()
         if (ySize != yPriorSize):
             raise TypeError('Y observations and Y predictions do not have the same size.')
-        for i in range(ySize):
-            cloud = ot.Cloud(self.outputObservations[i], self.outputAtPrior[i])
+        if (yDim != yPriorDim):
+            raise TypeError('Y observations and Y predictions do not have the same dimension.')
+        if (yDim==1):
+            cloud = ot.Cloud(self.outputObservations, self.outputAtPrior)
             cloud.setColor(self.priorColor)
             cloud.setLegend("Before")
             graph.add(cloud)
+        else:
+            for i in range(ySize):
+                cloud = ot.Cloud(self.outputObservations[i], self.outputAtPrior[i])
+                cloud.setColor(self.priorColor)
+                cloud.setLegend("Before")
+                graph.add(cloud)
         # Plot the predictions after
         yPosteriorSize = self.outputAtPosterior.getSize()
+        yPosteriorDim = self.outputAtPosterior.getDimension()
         if (ySize != yPosteriorSize):
             raise TypeError('Y observations and Y predictions do not have the same size.')
-        for i in range(ySize):
-            cloud = ot.Cloud(self.outputObservations[i], self.outputAtPosterior[i])
+        if (yDim != yPosteriorDim):
+            raise TypeError('Y observations and Y predictions do not have the same dimension.')
+        if (yDim==1):
+            cloud = ot.Cloud(self.outputObservations, self.outputAtPosterior)
             cloud.setColor(self.posteriorColor)
             cloud.setLegend("After")
             graph.add(cloud)
+        else:
+            for i in range(ySize):
+                cloud = ot.Cloud(self.outputObservations[i], self.outputAtPosterior[i])
+                cloud.setColor(self.posteriorColor)
+                cloud.setLegend("After")
+                graph.add(cloud)
         return graph
 
     def drawResiduals(self):
@@ -130,17 +154,30 @@ class CalibrationAnalysis:
         """    
         graph = ot.Graph("Residuals analysis","Residuals","Probability distribution function",True,"topleft")
         ySize = self.outputObservations.getSize()
+        yDim = self.outputObservations.getDimension()
         yPriorSize = self.outputAtPrior.getSize()
+        yPriorDim = self.outputAtPrior.getDimension()
         if (ySize != yPriorSize):
             raise TypeError('Y observations and Y predictions do not have the same size.')
-        for i in range(ySize):
-            sampleResiduals = self.outputObservations[i] - self.outputAtPosterior[i]
+        if (yDim != yPriorDim):
+            raise TypeError('Y observations and Y predictions do not have the same dimension.')
+        if (yDim==1):
+            sampleResiduals = self.outputObservations - self.outputAtPosterior
             kernel = ot.KernelSmoothing()
-            fittedDist = kernel.build(ot.Sample(sampleResiduals,1))
+            fittedDist = kernel.build(sampleResiduals)
             residualPDF = fittedDist.drawPDF()
             residualPDF.setColors(["blue"])
             residualPDF.setLegends(["Residuals"])
             graph.add(residualPDF)
+        else:
+            for i in range(ySize):
+                sampleResiduals = self.outputObservations[i] - self.outputAtPosterior[i]
+                kernel = ot.KernelSmoothing()
+                fittedDist = kernel.build(ot.Sample(sampleResiduals,1))
+                residualPDF = fittedDist.drawPDF()
+                residualPDF.setColors(["blue"])
+                residualPDF.setLegends(["Residuals"])
+                graph.add(residualPDF)
         # Plot the distribution of the observation errors
         observationsError = self.calibrationResult.getObservationsError()
         if (observationsError.getDimension()==1):
@@ -206,3 +243,4 @@ class CalibrationAnalysis:
         else:
             raise TypeError('X observations and Y predictions do not fit in size or dimension.')
         return graph
+
