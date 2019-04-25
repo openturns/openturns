@@ -135,8 +135,8 @@ String LinearModelAnalysis::__str__(const String & offset) const
   //  R-squared & Adjusted R-squared tests
   lwidth = 0;
   twidth = 20;
-  const Scalar test1(getRSquared());
-  const Scalar test2(getAdjustedRSquared());
+  const Scalar test1 = linearModelResult_.getRSquared();
+  const Scalar test2 = linearModelResult_.getAdjustedRSquared();
   st = OSS() << test1;
   lwidth = std::max( lwidth, st.size() );
   st = OSS() << test2;
@@ -260,27 +260,6 @@ Interval LinearModelAnalysis::getCoefficientsConfidenceInterval(const Scalar lev
   return bounds;
 }
 
-/* R-squared test */
-Scalar LinearModelAnalysis::getRSquared() const
-{
-  // Get residuals and output samples
-  const Sample residuals(linearModelResult_.getSampleResiduals());
-  const Sample outputSample = (getLinearModelResult().getOutputSample());
-  // Define RSS and SYY
-  const Scalar RSS = residuals.computeRawMoment(2)[0];
-  const Scalar SYY = outputSample.computeCenteredMoment(2)[0];
-  const Scalar rSquared = 1.0 - RSS / SYY;
-  return rSquared;
-}
-
-/* Adjusted R-squared test */
-Scalar LinearModelAnalysis::getAdjustedRSquared() const
-{
-  const UnsignedInteger dof = linearModelResult_.getDegreesOfFreedom();
-  const UnsignedInteger size   = linearModelResult_.getSampleResiduals().getSize();
-  const Scalar R2  = getRSquared();
-  return 1.0 - (1.0 - R2) * (size - 1) / dof;
-}
 
 /* Fisher test */
 Scalar LinearModelAnalysis::getFisherScore() const

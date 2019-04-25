@@ -104,6 +104,12 @@ public:
   /** Cook distance accessor */
   virtual Point getCookDistances() const;
 
+  /** R-squared */
+  Scalar getRSquared() const;
+
+  /** Adjusted R-squared */
+  Scalar getAdjustedRSquared() const;
+
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 

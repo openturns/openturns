@@ -86,25 +86,6 @@ Returns
 -------
 confidenceInterval : :class:`~openturns.Interval`
 "
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::LinearModelAnalysis::getRSquared
-"Accessor to the R-squared test.
-
-Returns
--------
-rSquared : float
-"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::LinearModelAnalysis::getAdjustedRSquared
-"Accessor to the Adjusted R-squared test.
-
-Returns
--------
-adjustedRSquared : float
-"
 
 // ---------------------------------------------------------------------
 

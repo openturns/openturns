@@ -179,3 +179,23 @@ Returns
 cookDistances : :class:`~openturns.Point`
 "
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getRSquared
+"Accessor to the R-squared test.
+
+Returns
+-------
+rSquared : float
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getAdjustedRSquared
+"Accessor to the Adjusted R-squared test.
+
+Returns
+-------
+adjustedRSquared : float
+"
+

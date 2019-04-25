@@ -170,6 +170,28 @@ Point LinearModelResult::getCookDistances() const
   return cookDistances_;
 }
 
+/* R-squared test */
+Scalar LinearModelResult::getRSquared() const
+{
+  // Get residuals and output samples
+  const Sample residuals(getSampleResiduals());
+  const Sample outputSample(getOutputSample());
+  // Define RSS and SYY
+  const Scalar RSS = residuals.computeRawMoment(2)[0];
+  const Scalar SYY = outputSample.computeCenteredMoment(2)[0];
+  const Scalar rSquared = 1.0 - RSS / SYY;
+  return rSquared;
+}
+
+/* Adjusted R-squared test */
+Scalar LinearModelResult::getAdjustedRSquared() const
+{
+  const UnsignedInteger dof = getDegreesOfFreedom();
+  const UnsignedInteger size = getSampleResiduals().getSize();
+  const Scalar R2  = getRSquared();
+  return 1.0 - (1.0 - R2) * (size - 1) / dof;
+}
+
 /* Method save() stores the object through the StorageManager */
 void LinearModelResult::save(Advocate & adv) const
 {
