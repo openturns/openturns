@@ -69,6 +69,7 @@ public:
   virtual String __repr__() const;
 
   /** Sample accessors */
+  virtual Basis getBasis() const;
   virtual Sample getInputSample() const;
   virtual Sample getOutputSample() const;
   virtual Sample getFittedSample() const;

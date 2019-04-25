@@ -90,13 +90,6 @@ public:
   /** Cramer Von mises normality test */
   TestResult getNormalityTestCramerVonMises() const;
 
-  /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
-
-  /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
-
-
   /* [0] Draw model versus fitted values */
   Graph drawModelVsFitted() const;
   
@@ -117,6 +110,12 @@ public:
 
   /** [6] a plot of Cook's distances versus leverage/(1-leverage) */
   Graph drawCookVsLeverages() const;
+
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
 
 private:
 

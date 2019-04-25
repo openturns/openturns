@@ -36,10 +36,11 @@ int main(int, char *[])
 
     /* Default constructor */
     String type = "testResult";
-    Bool testBool = 1;
+    Bool testBool = true;
     Scalar testVal = 0.372;
     Scalar testThres = 0.42;
-    TestResult testResultTest(type, testBool, testVal, testThres);
+    Scalar statistic = 0.59;
+    TestResult testResultTest(type, testBool, testVal, testThres, statistic);
 
     /* String converter */
     fullprint << "testResultTest = " << testResultTest << std::endl;
@@ -68,7 +69,8 @@ int main(int, char *[])
     Bool testBoolDiff = 0;
     Scalar testValDiff = 0.02;
     Scalar testThresDiff = 0.12;
-    TestResult testResultTestDiff(typeDiff, testBoolDiff, testValDiff, testThresDiff);
+    Scalar statisticDiff = 0.19;
+    TestResult testResultTestDiff(typeDiff, testBoolDiff, testValDiff, testThresDiff, statisticDiff);
     fullprint << "testResultTestDiff = testResultTest " << (testResultTestDiff == testResultTest) << std::endl;
 
   }

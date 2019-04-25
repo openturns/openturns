@@ -290,8 +290,9 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
   }
   // The p-value is estimated using the empirical CDF of the K-statistics at the
   // actual sample K-statistics
-  const Scalar pValue = kolmogorovStatistics.computeEmpiricalCDF(Point(1, ComputeKolmogorovStatistics(sample, distribution)), true);
-  TestResult result(OSS(false) << "Kolmogorov " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level);
+  const Scalar statistic = ComputeKolmogorovStatistics(sample, distribution);
+  const Scalar pValue = kolmogorovStatistics.computeEmpiricalCDF(Point(1, statistic), true);
+  TestResult result(OSS(false) << "Kolmogorov " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level, statistic);
   result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
   LOGDEBUG(OSS() << result);
   return result;
@@ -306,8 +307,9 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: the sample is empty";
   if (!distribution.getImplementation()->isContinuous()) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test can be applied only to a continuous distribution";
   if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test works only with 1D distribution";
-  const Scalar pValue = DistFunc::pKolmogorov(sample.getSize(), ComputeKolmogorovStatistics(sample, distribution), true);
-  TestResult result(OSS(false) << "Kolmogorov " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level);
+  const Scalar statistic = ComputeKolmogorovStatistics(sample, distribution);
+  const Scalar pValue = DistFunc::pKolmogorov(sample.getSize(), statistic, true);
+  TestResult result(OSS(false) << "Kolmogorov " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level, statistic);
   result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
   LOGDEBUG(OSS() << result);
   return result;
@@ -427,7 +429,7 @@ TestResult FittingTest::ChiSquared(const Sample & sample,
   testStatistics *= size;
   // Use the asymptotic statistics corrected from the number of estimated parameters
   const Scalar pValue = DistFunc::pGamma(0.5 * (binNumber - (estimatedParameters + 1)), 0.5 * testStatistics, true);
-  TestResult result(OSS(false) << "ChiSquared " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level);
+  TestResult result(OSS(false) << "ChiSquared " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level, testStatistics);
   result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
   LOGDEBUG(OSS() << result);
   return result;

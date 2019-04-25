@@ -186,7 +186,7 @@ TestResult HypothesisTest::ChiSquared(const Sample & firstSample,
   const UnsignedInteger df = (binNumberX - 1)*(binNumberY -1);
   const Scalar pValue =  DistFunc::pGamma(0.5 * df, 0.5 * squaredSum, true);
   Log::Debug ( OSS() << "In ChiSquared independence test : df = " << df << ", statistic = " << squaredSum << ", pValue = " << pValue );
-  return TestResult("ChiSquared", pValue > level, pValue, level);
+  return TestResult("ChiSquared", pValue > level, pValue, level, squaredSum);
 }
 
 /* Independence Pearson test between 2 scalar samples which form a gaussian vector: test the linear relation  */
@@ -202,9 +202,15 @@ TestResult HypothesisTest::Pearson(const Sample & firstSample,
   Sample fullSample(firstSample);
   fullSample.stack(secondSample);
   const Scalar rho = fullSample.computePearsonCorrelation()(0, 1);
+  // statistic value
+  Scalar statistic;
+  if ((rho <= -1.0 + SpecFunc::Precision) || (rho >=  1.0 - SpecFunc::Precision))
+     statistic = SpecFunc::MaxScalar;
+  else
+     statistic = rho * std::sqrt((size - 2.0) / (1.0 - rho * rho));
   // Here we check if rho is significantly different from 0
   const Scalar pValue = 2.0 * DistFunc::pPearsonCorrelation(size, rho, true);
-  return TestResult("Pearson", pValue > level, pValue, level);
+  return TestResult("Pearson", pValue > level, pValue, level, statistic);
 }
 
 /* Smirnov test if two scalar samples (of sizes not necessarily equal) follow the same distribution (only for continuous distributions)*/
@@ -255,7 +261,7 @@ TestResult HypothesisTest::TwoSamplesKolmogorov(const Sample & sample1,
     value = std::max(value, std::abs(cdf1 - cdf2));
   }
   const Scalar pValue = DistFunc::pKolmogorov((size1 * size2) / (size1 + size2), value, true);
-  TestResult result(OSS(false) << "TwoSamplesKolmogorov", pValue > level, pValue, level);
+  TestResult result(OSS(false) << "TwoSamplesKolmogorov", pValue > level, pValue, level, value);
   result.setDescription(Description(1, String(OSS() << "sample" << sample1.getName() << " vs sample " << sample2.getName())));
   LOGDEBUG(OSS() << result);
   return result;
@@ -274,9 +280,15 @@ TestResult HypothesisTest::Spearman(const Sample & firstSample,
   Sample fullSample(firstSample);
   fullSample.stack(secondSample);
   const Scalar rho = fullSample.computeSpearmanCorrelation()(0, 1);
+  // statistic value
+  Scalar statistic;
+  if ((rho <= -1.0 + SpecFunc::Precision) || (rho >=  1.0 - SpecFunc::Precision))
+     statistic = SpecFunc::MaxScalar;
+  else
+     statistic = rho * std::sqrt((size - 2.0) / (1.0 - rho * rho));
   // Here we check if rho is significantly different from 0
   const Scalar pValue = 2.0 * DistFunc::pSpearmanCorrelation(size, std::abs(rho), true, ties);
-  return TestResult("Spearman", pValue > level, pValue, level);
+  return TestResult("Spearman", pValue > level, pValue, level, statistic);
 }
 
 /* Independence Pearson test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numeriacl sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialPearson performs the Independence Pearson test simultaneously on firstSample[i] and secondSample, for i in the selection. For all i, it is supposed that the couple (firstSample[i] and secondSample) is issued from a gaussian  vector. */

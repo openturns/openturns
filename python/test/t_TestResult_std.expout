@@ -1,7 +1,7 @@
 test number zero : default constructor and string converter
-testResultTest =  class=TestResult name=Unnamed type=testResult binaryQualityMeasure=true p-value threshold=0.42 p-value=0.372 description=[]
+testResultTest =  class=TestResult name=Unnamed type=testResult binaryQualityMeasure=true p-value threshold=0.42 p-value=0.372 statistic=0.59 description=[]
 test number one : string converter
-testResultTest =  class=TestResult name=Unnamed type=testResult binaryQualityMeasure=true p-value threshold=0.42 p-value=0.372 description=[]
+testResultTest =  class=TestResult name=Unnamed type=testResult binaryQualityMeasure=true p-value threshold=0.42 p-value=0.372 statistic=0.59 description=[]
 test number two : elements accessors
 testResultTest2 binary quality measure =  True
 testResultTest2 p value = 0.372000

@@ -38,6 +38,16 @@ See Also
 LinearModelAlgorithm
 "
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getBasis
+"Accessor to the basis.
+
+Returns
+-------
+basis : :class:`~openturns.Basis`
+    The basis which had been passed to the constructor."
+
 
 // ---------------------------------------------------------------------
 

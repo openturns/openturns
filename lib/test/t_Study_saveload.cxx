@@ -869,7 +869,8 @@ int main(int, char *[])
       Bool testBool = 1;
       Scalar testVal = 0.372;
       Scalar testThres = 0.42;
-      testResult = TestResult(type, testBool, testVal, testThres);
+      Scalar statistic = 0.59;
+      testResult = TestResult(type, testBool, testVal, testThres, statistic);
     }
     study.add("testResult", testResult);
 
