@@ -1,6 +1,6 @@
 = New Features =
 
-== 1.13 release (in progress) == #release-1.13
+== 1.13rc1 release (2019-04-26) == #release-1.13rc1
 
 === Library ===
 
@@ -20,6 +20,7 @@
  * DiscreteMarkovChain
  * CalibrationAlgorithm, CalibrationResult, BLUE, LinearLeastSquaresCalibration
  * NonLinearLeastSquaresCalibration, ThreeDVAR
+ * Hypergeometric
 
 ==== API changes ====
  * Removed deprecated FunctionalChaosRandomVector::getSobol* methods
@@ -32,7 +33,7 @@
  * Deprecated (Linear|Quadratic)(LeastSquares|Taylor)::getResponseSurface
  * FittingTest::BestModelBIC returns the Distribution and the BIC value
  * Deprecated VisualTest::DrawEmpiricalCDF,DrawHistogram,DrawClouds
- * Add statistic attribut and accessor to the TestResult class
+ * Add statistic attribute and accessor to the TestResult class
 
 === Python module ===
 
