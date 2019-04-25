@@ -63,7 +63,6 @@ public:
   LinearModelResult getLinearModelResult() const;
 
   /** Accessors to data from ANOVA table */
-  Point getCoefficientsStandardErrors() const;
   Point getCoefficientsTScores() const;
   Point getCoefficientsPValues() const;
   Interval getCoefficientsConfidenceInterval(const Scalar level = 0.95) const;

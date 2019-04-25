@@ -192,6 +192,19 @@ Scalar LinearModelResult::getAdjustedRSquared() const
   return 1.0 - (1.0 - R2) * (size - 1) / dof;
 }
 
+Point LinearModelResult::getCoefficientsStandardErrors() const
+{
+  const Scalar sigma2 = getNoiseDistribution().getCovariance()(0, 0);
+  const Point diagGramInv(getDiagonalGramInverse());
+  const UnsignedInteger basisSize = diagGramInv.getSize();
+  Point standardErrors(basisSize, 1);
+  for (UnsignedInteger i = 0; i < standardErrors.getSize(); ++i)
+  {
+    standardErrors[i] = std::sqrt(std::abs(sigma2 * diagGramInv[i]));
+  }
+  return standardErrors;
+}
+
 /* Method save() stores the object through the StorageManager */
 void LinearModelResult::save(Advocate & adv) const
 {

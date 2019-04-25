@@ -48,17 +48,6 @@ linearModelResult : :class:`~openturns.LinearModelResult`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearModelAnalysis::getCoefficientsStandardErrors
-"Accessor to the coefficients of standard error.
-
-Returns
--------
-standardErrors : :class:`~openturns.Point`
-"
-
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::LinearModelAnalysis::getCoefficientsTScores
 "Accessor to the coefficients of linear expansion over their standard error.
 

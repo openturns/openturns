@@ -91,6 +91,16 @@ beta : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::LinearModelResult::getCoefficientsStandardErrors
+"Accessor to the coefficients of standard error.
+
+Returns
+-------
+standardErrors : :class:`~openturns.Point`
+"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::LinearModelResult::getFormula
 "Accessor to the formula.
 

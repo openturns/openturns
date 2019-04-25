@@ -72,7 +72,7 @@ String LinearModelAnalysis::__repr__() const
 String LinearModelAnalysis::__str__(const String & offset) const
 {
   const Point estimates(linearModelResult_.getCoefficients());
-  const Point standardErrors(getCoefficientsStandardErrors());
+  const Point standardErrors(linearModelResult_.getCoefficientsStandardErrors());
   const Point tscores(getCoefficientsTScores());
   const Point pValues(getCoefficientsPValues());
   const Description names(linearModelResult_.getCoefficientsNames());
@@ -206,24 +206,11 @@ LinearModelResult LinearModelAnalysis::getLinearModelResult() const
   return linearModelResult_;
 }
 
-Point LinearModelAnalysis::getCoefficientsStandardErrors() const
-{
-  const Scalar sigma2 = linearModelResult_.getNoiseDistribution().getCovariance()(0, 0);
-  const Point diagGramInv(linearModelResult_.getDiagonalGramInverse());
-  const UnsignedInteger basisSize = diagGramInv.getSize();
-  Point standardErrors(basisSize, 1);
-  for (UnsignedInteger i = 0; i < standardErrors.getSize(); ++i)
-  {
-    standardErrors[i] = std::sqrt(std::abs(sigma2 * diagGramInv[i]));
-  }
-  return standardErrors;
-}
-
 Point LinearModelAnalysis::getCoefficientsTScores() const
 {
   // The coefficients of linear expansion over their standard error
   const Point estimates(linearModelResult_.getCoefficients());
-  const Point standardErrors(getCoefficientsStandardErrors());
+  const Point standardErrors(linearModelResult_.getCoefficientsStandardErrors());
   Point tScores(estimates.getSize(), 1);
   for (UnsignedInteger i = 0; i < tScores.getSize(); ++i)
   {
@@ -253,7 +240,7 @@ Point LinearModelAnalysis::getCoefficientsPValues() const
 
 Interval LinearModelAnalysis::getCoefficientsConfidenceInterval(const Scalar level) const
 {
-  const Point coefficientsErrors(getCoefficientsStandardErrors());
+  const Point coefficientsErrors(linearModelResult_.getCoefficientsStandardErrors());
   const Point beta(linearModelResult_.getCoefficients());
   const Scalar sigmaConfInt = DistFunc::qStudent(linearModelResult_.getDegreesOfFreedom(), (1.0 - level) * 0.5, true);
   const Interval bounds(beta - coefficientsErrors * sigmaConfInt, beta + coefficientsErrors * sigmaConfInt);

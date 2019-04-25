@@ -76,6 +76,7 @@ public:
 
   /** Condensed formula accessor */
   virtual Point getCoefficients() const;
+  virtual Point getCoefficientsStandardErrors() const;
 
   /** Condensed formula accessor */
   virtual String getFormula() const;
