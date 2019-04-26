@@ -85,8 +85,10 @@ PythonRandomVectorImplementation * PythonRandomVectorImplementation::clone() con
 /* Copy constructor */
 PythonRandomVectorImplementation::PythonRandomVectorImplementation(const PythonRandomVectorImplementation & other)
   : RandomVectorImplementation(other),
-    pyObj_(other.pyObj_)
+    pyObj_()
 {
+  ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
+  pyObj_ = pyObjClone.get();
   Py_XINCREF( pyObj_ );
 }
 

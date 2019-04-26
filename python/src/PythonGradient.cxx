@@ -67,8 +67,10 @@ PythonGradient * PythonGradient::clone() const
 /* Copy constructor */
 PythonGradient::PythonGradient(const PythonGradient & other)
   : GradientImplementation(other)
-  , pyObj_(other.pyObj_)
+  , pyObj_()
 {
+  ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
+  pyObj_ = pyObjClone.get();
   Py_XINCREF(pyObj_);
 }
 

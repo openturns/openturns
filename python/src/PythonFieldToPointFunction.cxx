@@ -109,8 +109,10 @@ PythonFieldToPointFunction * PythonFieldToPointFunction::clone() const
 /* Copy constructor */
 PythonFieldToPointFunction::PythonFieldToPointFunction(const PythonFieldToPointFunction & other)
   : FieldToPointFunctionImplementation(other)
-  , pyObj_(other.pyObj_)
+  , pyObj_()
 {
+  ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
+  pyObj_ = pyObjClone.get();
   Py_XINCREF(pyObj_);
 }
 

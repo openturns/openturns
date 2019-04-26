@@ -67,8 +67,10 @@ PythonHessian * PythonHessian::clone() const
 /* Copy constructor */
 PythonHessian::PythonHessian(const PythonHessian & other)
   : HessianImplementation(other)
-  , pyObj_(other.pyObj_)
+  , pyObj_()
 {
+  ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
+  pyObj_ = pyObjClone.get();
   Py_XINCREF(pyObj_);
 }
 
