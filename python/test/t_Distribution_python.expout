@@ -26,6 +26,9 @@ quantile= [0.5]
 parameter= [0.5,1]
 parameter= [0.4,1]
 parameterDesc= [a_0,b_0]
+Cloning distribution
+dist parameter= [0.4,1]
+copy dist parameter= [0.5,1]
 pyDist= PythonDistribution -> #2
 myDist= class=PythonDistribution name=UniformNdPy description=[X0,X1]
 dimension= 2
@@ -54,6 +57,11 @@ quantile= [0.5,0.5]
 parameter= [0.5,0.5,1,1]
 parameter= [0.4,0.5,1,1]
 parameterDesc= [a_0,a_1,b_0,b_1]
+Cloning distribution
+dist parameter= [0.4,0.5,1,1]
+copy dist parameter= [0.5,0.5,1,1]
 ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), class=PythonDistribution name=UniformNdPy)
 try with another Python distribution
 The construction failed on purpose as class=PythonDistribution name=UniformNdPy is not a copula
+saved dist= class=PythonDistribution name=UniformNdPy
+loaded dist= class=PythonDistribution name=UniformNdPy
