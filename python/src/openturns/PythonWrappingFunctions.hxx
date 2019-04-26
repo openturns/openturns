@@ -1833,6 +1833,27 @@ void pickleLoad(Advocate & adv, PyObject * & pyObj)
 }
 
 
+
+inline
+ScopedPyObjectPointer deepCopy(PyObject * pyObj)
+{
+  ScopedPyObjectPointer copyModule(PyImport_ImportModule("copy"));
+  assert(copyModule.get());
+
+  PyObject * copyDict = PyModule_GetDict(copyModule.get());
+  assert(copyDict);
+
+  PyObject * deepCopyMethod = PyDict_GetItemString(copyDict, "deepcopy");
+  assert(deepCopyMethod );
+
+  if (!PyCallable_Check(deepCopyMethod))
+    throw InternalException(HERE) << "Python 'copy' module has no 'deepcopy' method";
+
+  ScopedPyObjectPointer pyObjDeepCopy(PyObject_CallFunctionObjArgs(deepCopyMethod, pyObj, NULL));
+  handleException();
+  return pyObjDeepCopy;
+}
+
 END_NAMESPACE_OPENTURNS
 
 #endif /* OPENTURNS_PYTHONWRAPPINGFUNCTIONS_HXX */
