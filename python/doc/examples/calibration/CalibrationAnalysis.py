@@ -34,6 +34,7 @@ class CalibrationAnalysis:
         self.posteriorColor = "green"
         self.inputObservations = inputObservations
         self.outputObservations = outputObservations
+        self.unitlength = 6 # inch
         # Compute yAtPrior
         meanPrior = calibrationResult.getParameterPrior().getMean()
         model.setParameter(meanPrior)
@@ -96,93 +97,138 @@ class CalibrationAnalysis:
         Plots the output of the model depending 
         on the output observations before and after calibration.
         """
+        
         ySize = self.outputObservations.getSize()
         yDim = self.outputObservations.getDimension()
         graph = ot.Graph("","Observations","Predictions",True,"topleft")
         # Plot the diagonal
         if (yDim==1):
-            curve = ot.Curve(self.outputObservations, self.outputObservations)
+            graph = self._drawObservationsVsPredictions1Dimension(self.outputObservations,self.outputAtPrior,self.outputAtPosterior)
+        elif (ySize==1):
+            outputObservations = ot.Sample(self.outputObservations[0],1)
+            outputAtPrior = ot.Sample(self.outputAtPrior[0],1)
+            outputAtPosterior = ot.Sample(self.outputAtPosterior[0],1)
+            graph = self._drawObservationsVsPredictions1Dimension(outputObservations,outputAtPrior,outputAtPosterior)
+        else:
+            fig = pl.figure(figsize=(self.unitlength*yDim, self.unitlength))
+            for i in range(yDim):
+                outputObservations = self.outputObservations[:,i]
+                outputAtPrior = self.outputAtPrior[:,i]
+                outputAtPosterior = self.outputAtPosterior[:,i]
+                graph = self._drawObservationsVsPredictions1Dimension(outputObservations,outputAtPrior,outputAtPosterior)
+                ax = fig.add_subplot(1, yDim, i+1)
+                _ = ot.viewer.View(graph, figure=fig, axes=[ax])
+
+        return graph
+
+    def _drawObservationsVsPredictions1Dimension(self,outputObservations,outputAtPrior,outputAtPosterior):
+        """
+        Plots the output of the model depending 
+        on the output observations before and after calibration.
+        Can manage only 1D samples.
+        """
+        yDim = outputObservations.getDimension()
+        ydescription = outputObservations.getDescription()
+        xlabel = "%s Observations" % (ydescription[0])
+        ylabel = "%s Predictions" % (ydescription[0])
+        graph = ot.Graph("",xlabel,ylabel,True,"topleft")
+        # Plot the diagonal
+        if (yDim==1):
+            curve = ot.Curve(outputObservations, outputObservations)
             curve.setColor(self.observationColor)
             graph.add(curve)
         else:
-            for i in range(ySize):
-                cloud = ot.Curve(self.outputObservations[i], self.outputObservations[i])
-                cloud.setColor(self.observationColor)
-                graph.add(cloud)
+            raise TypeError('Output observations are not 1D.')
         # Plot the predictions before
-        yPriorSize = self.outputAtPrior.getSize()
-        yPriorDim = self.outputAtPrior.getDimension()
-        if (ySize != yPriorSize):
-            raise TypeError('Y observations and Y predictions do not have the same size.')
-        if (yDim != yPriorDim):
-            raise TypeError('Y observations and Y predictions do not have the same dimension.')
-        if (yDim==1):
-            cloud = ot.Cloud(self.outputObservations, self.outputAtPrior)
+        yPriorDim = outputAtPrior.getDimension()
+        if (yPriorDim==1):
+            cloud = ot.Cloud(outputObservations, outputAtPrior)
             cloud.setColor(self.priorColor)
-            cloud.setLegend("Before")
+            cloud.setLegend("Prior")
             graph.add(cloud)
         else:
-            for i in range(ySize):
-                cloud = ot.Cloud(self.outputObservations[i], self.outputAtPrior[i])
-                cloud.setColor(self.priorColor)
-                cloud.setLegend("Before")
-                graph.add(cloud)
+            raise TypeError('Output prior predictions are not 1D.')
         # Plot the predictions after
-        yPosteriorSize = self.outputAtPosterior.getSize()
-        yPosteriorDim = self.outputAtPosterior.getDimension()
-        if (ySize != yPosteriorSize):
-            raise TypeError('Y observations and Y predictions do not have the same size.')
-        if (yDim != yPosteriorDim):
-            raise TypeError('Y observations and Y predictions do not have the same dimension.')
-        if (yDim==1):
-            cloud = ot.Cloud(self.outputObservations, self.outputAtPosterior)
+        yPosteriorDim = outputAtPosterior.getDimension()
+        if (yPosteriorDim==1):
+            cloud = ot.Cloud(outputObservations, outputAtPosterior)
             cloud.setColor(self.posteriorColor)
-            cloud.setLegend("After")
+            cloud.setLegend("Posterior")
             graph.add(cloud)
         else:
-            for i in range(ySize):
-                cloud = ot.Cloud(self.outputObservations[i], self.outputAtPosterior[i])
-                cloud.setColor(self.posteriorColor)
-                cloud.setLegend("After")
-                graph.add(cloud)
+            raise TypeError('Output posterior predictions are not 1D.')
         return graph
-
+    
     def drawResiduals(self):
         """
         Plot the distribution of the residuals and 
         the distribution of the observation errors. 
         """    
-        graph = ot.Graph("Residuals analysis","Residuals","Probability distribution function",True,"topleft")
         ySize = self.outputObservations.getSize()
         yDim = self.outputObservations.getDimension()
         yPriorSize = self.outputAtPrior.getSize()
         yPriorDim = self.outputAtPrior.getDimension()
-        if (ySize != yPriorSize):
-            raise TypeError('Y observations and Y predictions do not have the same size.')
-        if (yDim != yPriorDim):
-            raise TypeError('Y observations and Y predictions do not have the same dimension.')
         if (yDim==1):
-            sampleResiduals = self.outputObservations - self.outputAtPosterior
+            observationsError = self.calibrationResult.getObservationsError()
+            graph = self._drawResiduals1Dimension(self.outputObservations,self.outputAtPrior,self.outputAtPosterior,observationsError)
+        elif (ySize==1):
+            outputObservations = ot.Sample(self.outputObservations[0],1)
+            outputAtPrior = ot.Sample(self.outputAtPrior[0],1)
+            outputAtPosterior = ot.Sample(self.outputAtPosterior[0],1)
+            observationsError = self.calibrationResult.getObservationsError()
+            # In this case, we cannot draw observationsError ; just 
+            # pass the required input argument, but it is not actually used.
+            graph = self._drawResiduals1Dimension(outputObservations,outputAtPrior,outputAtPosterior,observationsError)
+        else:
+            observationsError = self.calibrationResult.getObservationsError()
+            fig = pl.figure(figsize=(self.unitlength*yDim, self.unitlength))
+            for i in range(yDim):
+                outputObservations = self.outputObservations[:,i]
+                outputAtPrior = self.outputAtPrior[:,i]
+                outputAtPosterior = self.outputAtPosterior[:,i]
+                observationsErrorYi = observationsError.getMarginal(i)
+                graph = self._drawResiduals1Dimension(outputObservations,outputAtPrior,outputAtPosterior,observationsErrorYi)
+                ax = fig.add_subplot(1, yDim, i+1)
+                _ = ot.viewer.View(graph, figure=fig, axes=[ax])
+        return graph
+
+    def _drawResiduals1Dimension(self,outputObservations,outputAtPrior,outputAtPosterior,observationsError):
+        """
+        Plot the distribution of the residuals and 
+        the distribution of the observation errors. 
+        Can manage only 1D samples.
+        """    
+        ydescription = outputObservations.getDescription()
+        xlabel = "%s Residuals" % (ydescription[0])
+        graph = ot.Graph("Residuals analysis",xlabel,"Probability distribution function",True,"topright")
+        yDim = outputObservations.getDimension()
+        yPriorDim = outputAtPrior.getDimension()
+        yPosteriorDim = outputAtPrior.getDimension()
+        if (yDim==1) and (yPriorDim==1) :
+            posteriorResiduals = outputObservations - outputAtPrior
             kernel = ot.KernelSmoothing()
-            fittedDist = kernel.build(sampleResiduals)
+            fittedDist = kernel.build(posteriorResiduals)
             residualPDF = fittedDist.drawPDF()
-            residualPDF.setColors(["blue"])
-            residualPDF.setLegends(["Residuals"])
+            residualPDF.setColors([self.priorColor])
+            residualPDF.setLegends(["Prior"])
             graph.add(residualPDF)
         else:
-            for i in range(ySize):
-                sampleResiduals = self.outputObservations[i] - self.outputAtPosterior[i]
-                kernel = ot.KernelSmoothing()
-                fittedDist = kernel.build(ot.Sample(sampleResiduals,1))
-                residualPDF = fittedDist.drawPDF()
-                residualPDF.setColors(["blue"])
-                residualPDF.setLegends(["Residuals"])
-                graph.add(residualPDF)
+            raise TypeError('Output prior observations are not 1D.')
+        if (yDim==1) and (yPosteriorDim==1) :
+            posteriorResiduals = outputObservations - outputAtPosterior
+            kernel = ot.KernelSmoothing()
+            fittedDist = kernel.build(posteriorResiduals)
+            residualPDF = fittedDist.drawPDF()
+            residualPDF.setColors([self.posteriorColor])
+            residualPDF.setLegends(["Posterior"])
+            graph.add(residualPDF)
+        else:
+            raise TypeError('Output posterior observations are not 1D.')
         # Plot the distribution of the observation errors
-        observationsError = self.calibrationResult.getObservationsError()
         if (observationsError.getDimension()==1):
+            # In the other case, we just do not plot
             obserrgraph = observationsError.drawPDF()
-            obserrgraph.setColors(["green"])
+            obserrgraph.setColors([self.observationColor])
             obserrgraph.setLegends(["Observation errors"])
             graph.add(obserrgraph)
         return graph
@@ -198,49 +244,67 @@ class CalibrationAnalysis:
         yDim = self.outputObservations.getDimension()
         xdescription = self.inputObservations.getDescription()
         ydescription = self.outputObservations.getDescription()
-        graph = ot.Graph("",xdescription[0],ydescription[0],True,"topright")
         # Observations
         if (xDim==1) and (yDim==1):
-            cloud = ot.Cloud(self.inputObservations,self.outputObservations)
-            cloud.setColor(self.observationColor)
-            cloud.setLegend("Observations")
-            graph.add(cloud)
+            graph = self._drawObservationsVsInputs1Dimension(self.inputObservations,self.outputObservations,self.outputAtPrior,self.outputAtPosterior)
         elif (xSize==1) and (ySize==1):
-            cloud = ot.Cloud(self.inputObservations[0],self.outputObservations[0])
+            inputObservations = ot.Sample(self.inputObservations[0],1)
+            outputObservations = ot.Sample(self.outputObservations[0],1)
+            outputAtPrior = ot.Sample(self.outputAtPrior[0],1)
+            outputAtPosterior = ot.Sample(self.outputAtPosterior[0],1)
+            graph = self._drawObservationsVsInputs1Dimension(inputObservations,outputObservations,outputAtPrior,outputAtPosterior)
+        else:
+            fig = pl.figure(figsize=(xDim*self.unitlength, yDim*self.unitlength))
+            for i in range(xDim):
+                for j in range(yDim):
+                    k = xDim * j + i
+                    inputObservations = self.inputObservations[:,i]
+                    outputObservations = self.outputObservations[:,j]
+                    outputAtPrior = self.outputAtPrior[:,j]
+                    outputAtPosterior = self.outputAtPosterior[:,j]
+                    graph = self._drawObservationsVsInputs1Dimension(inputObservations,outputObservations,outputAtPrior,outputAtPosterior)
+                    ax = fig.add_subplot(yDim, xDim, k+1)
+                    _ = ot.viewer.View(graph, figure=fig, axes=[ax])
+        return graph
+
+    def _drawObservationsVsInputs1Dimension(self,inputObservations,outputObservations,outputAtPrior,outputAtPosterior):
+        """
+        Plots the observed output of the model depending 
+        on the observed input before and after calibration.
+        Can manage only 1D samples.
+        """
+        xDim = inputObservations.getDimension()
+        if (xDim!=1):
+            raise TypeError('Input observations are not 1D.')
+        yDim = outputObservations.getDimension()
+        xdescription = inputObservations.getDescription()
+        ydescription = outputObservations.getDescription()
+        graph = ot.Graph("",xdescription[0],ydescription[0],True,"topright")
+        # Observations
+        if (yDim==1):
+            cloud = ot.Cloud(inputObservations,outputObservations)
             cloud.setColor(self.observationColor)
             cloud.setLegend("Observations")
             graph.add(cloud)
         else:
-            raise TypeError('X observations and Y predictions do not fit in size or dimension.')
+            raise TypeError('Output observations are not 1D.')
         # Model outputs before calibration
-        yPriorSize = self.outputAtPrior.getSize()
-        yPriorDim = self.outputAtPrior.getDimension()
-        if (xDim==1) and (yPriorDim==1):
-            cloud = ot.Cloud(self.inputObservations,self.outputAtPrior)
+        yPriorDim = outputAtPrior.getDimension()
+        if (yPriorDim==1):
+            cloud = ot.Cloud(inputObservations,outputAtPrior)
             cloud.setColor(self.priorColor)
-            cloud.setLegend("Before")
-            graph.add(cloud)
-        elif (xSize==1) and (yPriorSize==1):
-            cloud = ot.Cloud(self.inputObservations[0],self.outputAtPrior[0])
-            cloud.setColor(self.priorColor)
-            cloud.setLegend("Before")
+            cloud.setLegend("Prior")
             graph.add(cloud)
         else:
-            raise TypeError('X observations and Y predictions do not fit in size or dimension.')
+            raise TypeError('Output prior predictions are not 1D.')
         # Model outputs after calibration
-        yPosteriorSize = self.outputAtPosterior.getSize()
-        yPosteriorDim = self.outputAtPosterior.getDimension()
-        if (xDim==1) and (yPosteriorDim==1):
-            cloud = ot.Cloud(self.inputObservations,self.outputAtPosterior)
+        yPosteriorDim = outputAtPosterior.getDimension()
+        if (yPosteriorDim==1):
+            cloud = ot.Cloud(inputObservations,outputAtPosterior)
             cloud.setColor(self.posteriorColor)
-            cloud.setLegend("After")
-            graph.add(cloud)
-        elif (xSize==1) and (yPosteriorSize==1):        
-            cloud = ot.Cloud(self.inputObservations[0],self.outputAtPosterior[0])
-            cloud.setColor(self.posteriorColor)
-            cloud.setLegend("After")
+            cloud.setLegend("Posterior")
             graph.add(cloud)
         else:
-            raise TypeError('X observations and Y predictions do not fit in size or dimension.')
+            raise TypeError('Output posterior predictions are not 1D.')
         return graph
 
