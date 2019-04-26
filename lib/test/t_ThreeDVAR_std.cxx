@@ -89,8 +89,9 @@ int main(int, char *[])
 	algo.run();
 	fullprint << "result    (TNC)=" << algo.getResult().getParameterMAP() << std::endl;
 	algo = ThreeDVAR(modelX, x, y, candidate, priorCovariance, globalErrorCovariance);
+  algo.setBootstrapSize(bootstrapSizes[n]);
 	algo.run();
-	fullprint << "result (global)=" << algo.getResult() << std::endl;
+	fullprint << "result (global)=" << algo.getResult().getParameterMAP() << std::endl;
       } // n
   }
   catch (TestFailed & ex)
