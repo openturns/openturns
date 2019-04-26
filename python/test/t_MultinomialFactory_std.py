@@ -10,6 +10,7 @@ try:
     distribution = Multinomial(5, Point(3, 0.25))
     size = 10000
     sample = distribution.getSample(size)
+    sample.exportToCSVFile("multinomial.csv")
     factory = MultinomialFactory()
     estimatedDistribution = factory.build(sample)
     print("distribution=", repr(distribution))

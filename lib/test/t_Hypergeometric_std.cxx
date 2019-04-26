@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class Multinomial for standard methods
+ *  @brief The test file of class Hypergeometric for standard methods
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -24,10 +24,10 @@
 using namespace OT;
 using namespace OT::Test;
 
-class TestObject : public Multinomial
+class TestObject : public Hypergeometric
 {
 public:
-  TestObject() : Multinomial(5, Point(3, 0.25)) {}
+  TestObject() : Hypergeometric(25, 7, 14) {}
   virtual ~TestObject() {}
 };
 
@@ -37,18 +37,14 @@ int main(int, char *[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
   setRandomGenerator();
+
   try
   {
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
-    {
-      // Instanciate one distribution object
-      Multinomial distribution;
-    }
-
     // Instanciate one distribution object
-    Multinomial distribution(5, Point(3, 0.25));
+    Hypergeometric distribution(25, 7, 14);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
 
@@ -68,53 +64,71 @@ int main(int, char *[])
     fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
     fullprint << "mean=" << oneSample.computeMean() << std::endl;
     fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
-    // Support
-    Sample support(distribution.getSupport());
-    fullprint << "support=" << support << std::endl;
-    Interval interval(Point(distribution.getDimension(), 1.0), Point(distribution.getDimension(), 3.0));
-    Sample restrictedSupport(distribution.getSupport(interval));
-    fullprint << "support restricted to the interval=" << interval << " gives=" << restrictedSupport << std::endl;
+#if 0
+    size = 100;
+    for (UnsignedInteger i = 0; i < 2; ++i)
+    {
+      fullprint << "ChiSquare test for the generator, sample size=" << size << " is " << (FittingTest::ChiSquared(distribution.getSample(size), distribution).getBinaryQualityMeasure() ? "accepted" : "rejected") << std::endl;
+      size *= 10;
+    }
+#endif
     // Define a point
-    Point point( distribution.getDimension(), 1.0 );
+    Point point( distribution.getDimension(), 5.0 );
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point
     Scalar LPDF = distribution.computeLogPDF( point );
-    fullprint << "log pdf(" << point.__str__() << ")=" << LPDF << std::endl;
+    fullprint << "log pdf=" << LPDF << std::endl;
     Scalar PDF = distribution.computePDF( point );
-    fullprint << "pdf    (" << point.__str__() << ")=" << PDF << std::endl;
+    fullprint << "pdf     =" << PDF << std::endl;
+    fullprint << "pdf (FD)=" << (distribution.computeCDF( point + Point(1, 0) ) - distribution.computeCDF( point  + Point(1, -1) )) << std::endl;
     Scalar CDF = distribution.computeCDF( point );
-    fullprint << "cdf    (" << point.__str__() << ")=" << std::setprecision(5) << CDF << std::setprecision(6) << std::endl;
+    fullprint << "cdf=" << CDF << std::endl;
     Scalar CCDF = distribution.computeComplementaryCDF( point );
-    fullprint << "ccdf   (" << point.__str__() << ")=" << std::setprecision(5) << CCDF << std::setprecision(6) << std::endl;
+    fullprint << "ccdf=" << CCDF << std::endl;
     Scalar Survival = distribution.computeSurvivalFunction( point );
-    fullprint << "survival(" << point.__str__() << ")=" << Survival << std::endl;
+    fullprint << "survival=" << Survival << std::endl;
     Point quantile = distribution.computeQuantile( 0.95 );
-    fullprint << "quantile(0.95)=" << quantile << std::endl;
+    fullprint << "quantile=" << quantile << std::endl;
     fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
-    Point lower(distribution.getDimension());
-    Point upper(distribution.getDimension());
-    for (UnsignedInteger i = 0; i < distribution.getDimension(); ++i)
-      {
-	lower[i] = i;
-	upper[i] = i + 1.0;
-      }
-    interval = Interval(lower, upper);
-    fullprint << "probability(" << interval.__str__() << ")=" << distribution.computeProbability(interval) << std::endl;
+    Point quantileTail = distribution.computeQuantile( 0.95, true );
+    fullprint << "quantile (tail)=" << quantileTail << std::endl;
+    Scalar CDFTail = distribution.computeComplementaryCDF( quantileTail );
+    fullprint << "cdf (tail)=" << CDFTail << std::endl;
+    Complex CF = distribution.computeCharacteristicFunction( point[0] );
+    fullprint << "characteristic function=" << CF << std::endl;
+    Complex LCF = distribution.computeLogCharacteristicFunction( point[0] );
+    fullprint << "log characteristic function=" << LCF << std::endl;
+    Complex GF = distribution.computeGeneratingFunction( Complex(0.3, 0.7) );
+    fullprint << "generating function=" << GF << std::endl;
+    Complex LGF = distribution.computeLogGeneratingFunction( Complex(0.3, 0.7) );
+    fullprint << "log generating function=" << LGF << std::endl;
     fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
     fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
     Point mean = distribution.getMean();
     fullprint << "mean=" << mean << std::endl;
+    Point standardDeviation = distribution.getStandardDeviation();
+    fullprint << "standard deviation=" << standardDeviation << std::endl;
+    Point skewness = distribution.getSkewness();
+    fullprint << "skewness=" << skewness << std::endl;
+    Point kurtosis = distribution.getKurtosis();
+    fullprint << "kurtosis=" << kurtosis << std::endl;
     CovarianceMatrix covariance = distribution.getCovariance();
     fullprint << "covariance=" << covariance << std::endl;
     CovarianceMatrix correlation = distribution.getCorrelation();
     fullprint << "correlation=" << correlation << std::endl;
-    //    CovarianceMatrix spearman = distribution.getSpearmanCorrelation();
-    //    fullprint << "spearman=" << spearman << std::endl;
-    //    CovarianceMatrix kendall = distribution.getKendallTau();
-    //    fullprint << "kendall=" << kendall << std::endl;
-    Multinomial::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
+    CovarianceMatrix spearman = distribution.getSpearmanCorrelation();
+    fullprint << "spearman=" << spearman << std::endl;
+    CovarianceMatrix kendall = distribution.getKendallTau();
+    fullprint << "kendall=" << kendall << std::endl;
+    Hypergeometric::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
+    for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
+    fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
+    Scalar alpha = 0.05;
+    Interval bounds(distribution.computeBilateralConfidenceInterval(1-alpha));
+    fullprint << (1-alpha)*100 << "% bilateral confidence interval = " << bounds.__str__() << std::endl;
+
   }
   catch (TestFailed & ex)
   {

@@ -110,7 +110,17 @@ Scalar Binomial::computePDF(const Point & point) const
 
   const Scalar k = point[0];
   if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_) || (k > n_ + supportEpsilon_)) return 0.0;
-  return std::exp(SpecFunc::LnGamma(n_ + 1.0) - SpecFunc::LnGamma(n_ - k + 1.0) - SpecFunc::LnGamma(k + 1.0) + k * std::log(p_) + (n_ - k) * log1p(-p_));
+  return DistFunc::dBinomial(n_, p_, static_cast<UnsignedInteger>(round(k)));
+}
+
+
+Scalar Binomial::computeLogPDF(const Point & point) const
+{
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+
+  const Scalar k = point[0];
+  if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_) || (k > n_ + supportEpsilon_)) return -SpecFunc::LogMaxScalar;
+  return DistFunc::logdBinomial(n_, p_, static_cast<UnsignedInteger>(round(k)));
 }
 
 

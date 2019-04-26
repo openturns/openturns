@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The Poisson distribution
+ *  @brief The Hypergeometric distribution
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_POISSON_HXX
-#define OPENTURNS_POISSON_HXX
+#ifndef OPENTURNS_HYPERGEOMETRIC_HXX
+#define OPENTURNS_HYPERGEOMETRIC_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DiscreteDistribution.hxx"
@@ -27,24 +27,26 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class Poisson
+ * @class Hypergeometric
  *
- * The Poisson distribution.
+ * The Hypergeometric distribution.
  */
-class OT_API Poisson
+class OT_API Hypergeometric
   : public DiscreteDistribution
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  Poisson();
+  Hypergeometric();
 
   /** Parameters constructor */
-  explicit Poisson(const Scalar lambda);
+  Hypergeometric(const UnsignedInteger n,
+		 const UnsignedInteger k,
+		 const UnsignedInteger m);
 
   /** Comparison operator */
-  Bool operator ==(const Poisson & other) const;
+  Bool operator ==(const Hypergeometric & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const;
 public:
@@ -53,12 +55,10 @@ public:
   String __repr__() const;
   String __str__(const String & offset = "") const;
 
-
-
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  virtual Poisson * clone() const;
+  virtual Hypergeometric * clone() const;
 
   /** Get one realization of the distribution */
   Point getRealization() const;
@@ -83,17 +83,12 @@ public:
   using DiscreteDistribution::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const;
 
-  /** Compute the characteristic function, i.e. phi(u) = E(exp(I*u*X)) */
-  Complex computeCharacteristicFunction(const Scalar x) const;
-  Complex computeLogCharacteristicFunction(const Scalar x) const;
-
-  /** Compute the generating function, i.e. psi(z) = E(z^X) */
-  Complex computeGeneratingFunction(const Complex & z) const;
-  Complex computeLogGeneratingFunction(const Complex & z) const;
-
   /** Get the support of a discrete distribution that intersect a given interval */
   using DistributionImplementation::getSupport;
   Sample getSupport(const Interval & interval) const;
+
+  /** Get the discrete probability levels */
+  Point getProbabilities() const;
 
   /** Get the standard deviation of the distribution */
   Point getStandardDeviation() const;
@@ -111,11 +106,22 @@ public:
   /** Parameters description accessor */
   Description getParameterDescription() const;
 
-  /* Interface specific to Poisson */
+  /** Check if the distribution is elliptical */
+  Bool isElliptical() const;
 
-  /** Lambda accessor */
-  void setLambda(const Scalar lambda);
-  Scalar getLambda() const;
+  /* Interface specific to Hypergeometric */
+
+  /** K accessor */
+  void setK(const UnsignedInteger h);
+  UnsignedInteger getK() const;
+
+  /** M accessor */
+  void setM(const UnsignedInteger m);
+  UnsignedInteger getM() const;
+
+  /** N accessor */
+  void setN(const UnsignedInteger n);
+  UnsignedInteger getN() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -137,12 +143,30 @@ private:
   Scalar computeScalarQuantile(const Scalar prob,
                                const Bool tail = false) const;
 
-  /** The Lambda of the Poisson distribution */
-  Scalar lambda_;
+  /** Compute the numerical range of the distribution given the parameters values */
+  void computeRange();
 
-}; /* class Poisson */
+  /** Compute the probability table of the distribution */
+  void computeProbabilities();
+
+  /** The population size */
+  UnsignedInteger n_;
+
+  /** The number of candidates in the population */
+  UnsignedInteger k_;
+
+  /** The size of the sample */
+  UnsignedInteger m_;
+
+  /** The probability table of the distribution */
+  Point probabilities_;
+
+  /** Structures used for the sampling */
+  Point base_;
+  Indices alias_;
+}; /* class Hypergeometric */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_POISSON_HXX */
+#endif /* OPENTURNS_HYPERGEOMETRIC_HXX */

@@ -132,7 +132,7 @@ The techniques implemented in each distribution are:
    - Rejection (Atkinson and Whittaker method 1) for :math:`t > 1, \max(r, t-r) < 1`.
    - Rejection (Atkinson and Whittaker method 2) for :math:`t > 1, \max(r, t-r) > 1`.
 
-- Binomial: Squeeze and Reject method: See [hormann1992]_.
+- Binomial: Squeeze and Reject method: See [hormann1993]_.
 - Burr: CDF inversion.
 - Chi: Transformation.
 - ChiSquare: See the Gamma distribution.
@@ -212,7 +212,7 @@ The techniques implemented in each distribution are:
 .. topic:: References:
 
     - [devroye1986]_
-    - [hormann1992]_
+    - [hormann1993]_
     - [marsaglia1993]_
     - [doornik2005]_
     - [aas2004]_

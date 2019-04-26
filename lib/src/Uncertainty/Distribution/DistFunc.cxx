@@ -33,6 +33,12 @@
 #include "openturns/Normal3DCDF.hxx"
 #include "openturns/Exception.hxx"
 
+#ifdef OPENTURNS_HAVE_BOOST
+
+#include <boost/math/distributions/hypergeometric.hpp>
+
+#endif
+
 // The following implementation of the Kolmogorov CDF and tail CDF is used in a LGPL context with written permission of the author.
 #include "KolmogorovSmirnovDist.h"
 // The following implementation of the Poisson quantile is used in a LGPL context with written permission of the author.
@@ -272,64 +278,95 @@ Point DistFunc::rBeta(const Scalar p1,
 /*******************************************************************************************************/
 /* Binomial distribution, i.e. with a PDF equals to C(n, p) p^k (1 - p)^(n - k) */
 /*******************************************************************************************************/
+Scalar DistFunc::bd0(const UnsignedInteger k,
+                     const Scalar np)
+{
+  const Scalar kpnp = k + np;
+  const Scalar kmnp = k - np;
+  if (std::abs(kmnp) < 0.1 * kpnp)
+  {
+    const Scalar v = kmnp / kpnp;
+    Scalar s = kmnp * v;
+    if (std::abs(s) < SpecFunc::Precision) return s;
+    Scalar ej = 2.0 * k * v;
+    const Scalar v2 = v * v;
+    for (UnsignedInteger j = 1; j < SpecFunc::MaximumIteration; ++j)
+    {
+      ej *= v2;
+      const Scalar s1 = s + ej / (2 * j + 1);
+      if (s1 == s) return s1;
+      s = s1;
+    }
+  }
+  return k * std::log(k / np) - kmnp;
+}
+
+/* Probability distribution function
+   We use the algorithm described in:
+   Catherine Loader, "Fast and Accurate Computation of Binomial Probabilities", On-
+line:   https://lists.gnu.org/archive/html/octave-maintainers/2011-09/pdfK0uKOST642.pdf, accessed 22 December 2018, 2000.
+   with the improvements discussed in:
+   Jannis Dimitriadis, "On the Accuracy of Loader’s Algorithm for the Binomial
+   Density and Algorithms for Rectangle Probabilities for Markov Increments",
+   Dissertation, Universitat Trier, August 2016.
+*/
+Scalar DistFunc::dBinomial(const UnsignedInteger n,
+                           const Scalar p,
+                           const UnsignedInteger k)
+{
+  if (p < 0.0) throw InvalidArgumentException(HERE) << "Error: dBinomial expects p>=0";
+  if (k > n) return 0.0;
+  if (p == 0.0) return (k == 0 ? 1.0 : 0.0);
+  if (p == 1.0) return (k == n ? 1.0 : 0.0);
+  if (k == 0)
+  {
+    if (n == 0) return 1.0;
+    const Scalar lc = (p < 0.1 ? -DistFunc::bd0(n, n * (1.0 - p)) - n * p : n * log1p(-p));
+    return std::exp(lc);
+  }
+  if (k == n)
+  {
+    const Scalar lc = (p > 0.9 ? -DistFunc::bd0(n, n * p) - n * (1.0 - p) : n * std::log(p));
+    return std::exp(lc);
+  }
+  const Scalar lc = SpecFunc::Stirlerr(n) - SpecFunc::Stirlerr(k) - SpecFunc::Stirlerr(n - k) - DistFunc::bd0(k, n * p) - DistFunc::bd0(n - k, n * (1.0 - p));
+  return std::exp(lc - SpecFunc::LOGSQRT2PI - 0.5 * (std::log(1.0 * k) + log1p(-(1.0 * k) / n)));
+}
+
+Scalar DistFunc::logdBinomial(const UnsignedInteger n,
+                              const Scalar p,
+                              const UnsignedInteger k)
+{
+  if (k > n) return -SpecFunc::LogMaxScalar;
+  if (p == 0.0) return (k == 0 ? 0.0 : -SpecFunc::LogMaxScalar);
+  if (p == 1.0) return (k == n ? 0.0 : -SpecFunc::LogMaxScalar);
+  if (k == 0)
+  {
+    if (n == 0) return 0.0;
+    return (p < 0.1 ? -DistFunc::bd0(n, n * (1.0 - p)) - n * p : n * log1p(-p));
+  }
+  if (k == n)
+    return (p > 0.9 ? -DistFunc::bd0(n, n * p) - n * (1.0 - p) : n * std::log(p));
+  const Scalar lc = SpecFunc::Stirlerr(n) - SpecFunc::Stirlerr(k) - SpecFunc::Stirlerr(n - k) - DistFunc::bd0(k, n * p) - DistFunc::bd0(n - k, n * (1.0 - p));
+  return lc - SpecFunc::LOGSQRT2PI - 0.5 * (std::log(1.0 * k) + log1p(-(1.0 * k) / n));
+}
+
 /* Random number generation
    We use the rejection algorithm described in:
    Wolfgang Hormann, "The Generation of Binomial Random Variates",
    Journal of Statistical Computation and Simulation 46, pp. 101-110, 1993
    http://epub.wu.ac.at/1242/
 */
-Scalar DistFunc::fcBinomial(const UnsignedInteger k)
-{
-  switch (k)
-  {
-    case 0:
-      return 0.08106146679532726;
-      break;
-    case 1:
-      return 0.04134069595540929;
-      break;
-    case 2:
-      return 0.02767792568499834;
-      break;
-    case 3:
-      return 0.02079067210376509;
-      break;
-    case 4:
-      return 0.01664469118982119;
-      break;
-    case 5:
-      return 0.01387612882307075;
-      break;
-    case 6:
-      return 0.01189670994589177;
-      break;
-    case 7:
-      return 0.01041126526197209;
-      break;
-    case 8:
-      return 0.009255462182712733;
-      break;
-    case 9:
-      return 0.008330563433362871;
-      break;
-    default:
-      const Scalar kp1Sq = (k + 1) * (k + 1);
-      return (1.0 / 12.0 - (1.0 / 360.0 - 1.0 / 1260. / kp1Sq) / kp1Sq) / (k + 1);
-      break;
-  } // switch
-}
-
 UnsignedInteger DistFunc::rBinomial(const UnsignedInteger n,
                                     const Scalar p)
 {
   // Quick return for degenerate cases
+  if (n == 0) return 0;
   if (p == 0.0) return 0;
   if (p == 1.0) return n;
   // Use symmetry
   const Scalar q = std::min(p, 1.0 - p);
   const Bool complementary = p > 0.5;
-  if (q == 1.0) return (complementary ? 0 : n);
-  if (q == 0.0) return (complementary ? n : 0);
   // Small case, use inversion
   if (n * q <= 15)
   {
@@ -420,10 +457,10 @@ UnsignedInteger DistFunc::rBinomial(const UnsignedInteger n,
     if (v < t - rho) return (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
     if (v > t + rho) continue;
     const Scalar nm = n - m + 1;
-    const Scalar h = (m + 0.5) * std::log((m + 1) / (r * nm)) + fcBinomial(static_cast<UnsignedInteger>(m)) + fcBinomial(static_cast<UnsignedInteger>(n - m));
+    const Scalar h = (m + 0.5) * std::log((m + 1) / (r * nm)) + SpecFunc::Stirlerr(static_cast<UnsignedInteger>(m + 1)) + SpecFunc::Stirlerr(static_cast<UnsignedInteger>(nm));
     // Final acceptance-rejection
     const Scalar nk = n - k + 1;
-    if (v <= h + (n + 1) * std::log(nm / nk) + (k + 0.5) * std::log(nk * r / (k + 1)) - fcBinomial(static_cast<UnsignedInteger>(k)) - fcBinomial(static_cast<UnsignedInteger>(n - k))) return (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
+    if (v <= h + (n + 1) * std::log(nm / nk) + (k + 0.5) * std::log(nk * r / (k + 1)) - SpecFunc::Stirlerr(static_cast<UnsignedInteger>(k + 1)) - SpecFunc::Stirlerr(static_cast<UnsignedInteger>(nk))) return (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
   } // for(;;)
 } // rBinomial
 
@@ -432,7 +469,131 @@ Indices DistFunc::rBinomial(const UnsignedInteger n,
                             const UnsignedInteger size)
 {
   Indices result(size);
-  for (UnsignedInteger i = 0; i < size; ++i) result[i] = rBinomial(n, p);
+  //for (UnsignedInteger i = 0; i < size; ++i) result[i] = rBinomial(n, p);
+  // Quick return for degenerate cases
+  if (n == 0) return result;
+  if (p == 0.0) return result;
+  if (p == 1.0) return Indices(size, n);
+  // Use symmetry
+  const Scalar q = std::min(p, 1.0 - p);
+  const Bool complementary = p > 0.5;
+  // Small case, use inversion
+  if (n * q <= 15)
+  {
+    const Scalar r = q / (1.0 - q);
+    Scalar t = std::pow(1.0 - q, static_cast<int>(n));
+    Scalar s = t;
+    for (UnsignedInteger index = 0; index < size; ++index)
+    {
+      const Scalar u = RandomGenerator::Generate();
+      for (UnsignedInteger k = 0; k <= n; ++k)
+      {
+        if (s >= u)
+        {
+          result[k] = (complementary ? n - k : k);
+          break;
+        }
+        t *= r * (n - k) / (k + 1.0);
+        s += t;
+      }
+      // Should never go there, except in case of round-off errors
+    } // index
+  } // n * q < 15
+  // Large case, use the algorithm described in the reference.
+  // Setup
+  const Scalar m = floor((n + 1) * q);
+  const Scalar r = q / (1.0 - q);
+  const Scalar nr = (n + 1) * r;
+  const Scalar npq = n * q * (1.0 - q);
+  const Scalar npqSqrt = std::sqrt(npq);
+  const Scalar b = 1.15 + 2.53 * npqSqrt;
+  const Scalar a = -0.0873 + 0.0248 * b + 0.01 * q;
+  const Scalar c = n * q + 0.5;
+  const Scalar alpha = (2.83 + 5.1 / b) * npqSqrt;
+  const Scalar vr = 0.92 - 4.2 / b;
+  const Scalar urvr = 0.86 * vr;
+  for (UnsignedInteger index = 0; index < size; ++index)
+  {
+    Scalar u = 0.0;
+    Scalar k = 0.0;
+    // Main loop
+    for (;;)
+    {
+      Scalar v = RandomGenerator::Generate();
+      if (v <= urvr)
+      {
+        u = v / vr - 0.43;
+        k = floor((2 * a / (0.5 - std::abs(u)) + b) * u + c);
+        result[index] = (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
+        break;
+      } // v <= urvr
+      if (v >= vr)
+      {
+        u = RandomGenerator::Generate() - 0.5;
+      } // v >= vr
+      else
+      {
+        u = v / vr - 0.93;
+        u = (u < 0.0 ? -0.5 : 0.5) - u;
+        v = RandomGenerator::Generate() * vr;
+      } // v < vr
+      const Scalar us = 0.5 - std::abs(u);
+      k = floor((2.0 * a / us + b) * u + c);
+      if ((k < 0.0) || (k > n)) continue;
+      v = v * alpha / (a / (us * us) + b);
+      const Scalar km = std::abs(k - m);
+      // Recursive evaluation of f(k)
+      if (km <= 15)
+      {
+        Scalar f = 1.0;
+        if (m < k)
+        {
+          Scalar i = m;
+          do
+          {
+            ++i;
+            f *= (nr / i - r);
+          }
+          while (i < k);
+        } // m < k
+        else if (m > k)
+        {
+          Scalar i = k;
+          do
+          {
+            ++i;
+            v *= (nr / i - r);
+          }
+          while (i < m);
+        } // m > k
+        if (v <= f)
+        {
+          result[index] = (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
+          break;
+        }
+        continue;
+      } // km <= 15
+      // Squeeze-acceptance or rejection
+      v = std::log(v);
+      const Scalar rho = km / npq * (((km / 3.0 + 0.625) * km + 1.0 / 6.0) / npq + 0.5);
+      const Scalar t = -km * km / (2.0 * npq);
+      if (v < t - rho)
+      {
+        result[index] = (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
+        break;
+      }
+      if (v > t + rho) continue;
+      const Scalar nm = n - m + 1;
+      const Scalar h = (m + 0.5) * std::log((m + 1) / (r * nm)) + SpecFunc::Stirlerr(static_cast<UnsignedInteger>(m + 1)) + SpecFunc::Stirlerr(static_cast<UnsignedInteger>(nm));
+      // Final acceptance-rejection
+      const Scalar nk = n - k + 1;
+      if (v <= h + (n + 1) * std::log(nm / nk) + (k + 0.5) * std::log(nk * r / (k + 1)) - SpecFunc::Stirlerr(static_cast<UnsignedInteger>(k + 1)) - SpecFunc::Stirlerr(static_cast<UnsignedInteger>(nk)))
+      {
+        result[index] = (complementary ? static_cast<UnsignedInteger>(n - k) : static_cast<UnsignedInteger>(k));
+        break;
+      }
+    } // for(;;)
+  } // index
   return result;
 }
 
@@ -441,7 +602,6 @@ Indices DistFunc::rBinomial(const UnsignedInteger n,
 /* It implements the alias method as described here: */
 /* http://keithschwarz.com/darts-dice-coins/ */
 /*******************************************************************************************************/
-
 Indices DistFunc::rDiscrete(const Point & probabilities,
                             const UnsignedInteger size)
 {
@@ -599,6 +759,167 @@ Point DistFunc::rGamma(const Scalar k,
   Point result(size);
   for (UnsignedInteger i = 0; i < size; ++i) result[i] = rGamma(k);
   return result;
+}
+
+/********************************/
+/* Hypergeometric distribution. */
+/********************************/
+/*
+Some useful symmetry relations:
+d(n,k,m,x) = d(n, n-k,   m, m-x)
+           = d(n,   k, n-m, k-x)
+           = d(n,   m,   k,   x)
+*/
+Scalar DistFunc::dHypergeometric(const UnsignedInteger n,
+                                 const UnsignedInteger k,
+                                 const UnsignedInteger m,
+                                 const UnsignedInteger x)
+{
+  if (x + n < k + m) return 0.0;
+  if (x > k || x > m) return 0.0;
+#ifdef OPENTURNS_HAVE_BOOST
+  return boost::math::pdf(boost::math::hypergeometric_distribution<Scalar>(k, m, n), x);
+#else  
+  // Check range
+  if ((x > m) || (x > k) || (x + n < m + k)) return 0.0;
+  if ((m == 0) || (m == n)) return 1.0;
+  return std::exp(logdHypergeometric(n, k, m, x));
+#endif
+}
+
+Scalar DistFunc::logdHypergeometric(const UnsignedInteger n,
+                                    const UnsignedInteger k,
+                                    const UnsignedInteger m,
+                                    const UnsignedInteger x)
+{
+  if (x + n < k + m) return -SpecFunc::LogMaxScalar;
+  if (x > k || x > m) return -SpecFunc::LogMaxScalar;
+#ifdef OPENTURNS_HAVE_BOOST
+  return std::log(boost::math::pdf(boost::math::hypergeometric_distribution<Scalar>(k, m, n), x));
+#else  
+  // Check range
+  if ((x > m) || (x > k) || (x + n < m + k)) return -SpecFunc::LogMaxScalar;
+  if ((m == 0) || (m == n)) return 0.0;
+  Scalar p = (1.0 * m) / n;
+  Scalar kx = 0.0;
+  if (x == 0) kx = k * log1p(-p);
+  else if (x == k) kx = x * std::log(p);
+  else kx = -SpecFunc::LOGSQRT2PI - 0.5 * std::log(x * (1.0 - (1.0 * x) / k)) + SpecFunc::Stirlerr(k) - SpecFunc::Stirlerr(x) - SpecFunc::Stirlerr(k - x) - bd0(x, k * p) - bd0(k - x, k * (1.0 - p));
+  Scalar nkmx = 0.0;
+  if (x == m) nkmx = (n - k) * log1p(-p);
+  else if (m - x == n - k) nkmx = (m - x) * std::log(p);
+  else nkmx = -SpecFunc::LOGSQRT2PI - 0.5 * std::log((m - x) * (1.0 - (1.0 * (m - x)) / (n - k))) + SpecFunc::Stirlerr(n - x) - SpecFunc::Stirlerr(m - x) - SpecFunc::Stirlerr(n - k - m + x) - bd0(m - x, (n - k) * p) - bd0(n - k - m + x, (n - k) * (1.0 - p));
+  const Scalar nm = -SpecFunc::LOGSQRT2PI - 0.5 * std::log(m * (1.0 - p)) + SpecFunc::Stirlerr(n) - SpecFunc::Stirlerr(m) - SpecFunc::Stirlerr(n - m);
+  return kx + nkmx - nm;
+#endif
+}
+
+Scalar DistFunc::pHypergeometric(const UnsignedInteger n,
+                                 const UnsignedInteger k,
+                                 const UnsignedInteger m,
+                                 const UnsignedInteger x,
+                                 const Bool tail)
+{
+  if (x + n < k + m) return 0.0;
+  if (x > k || x > m) return 1.0;
+#ifdef OPENTURNS_HAVE_BOOST
+  if (tail) return boost::math::cdf(boost::math::complement(boost::math::hypergeometric_distribution<Scalar>(k, m, n), x));
+  return boost::math::cdf(boost::math::hypergeometric_distribution<Scalar>(k, m, n), x);
+#else  
+  // Compute the summation on the same side of the mode, ie
+  // from 0 to x if x <= mode, or from x+1 to max(range) then complement if x > mode
+  // Wikipedia H(n, k, m; x), OT H(n, k, m; x), Boost H(x; r, m, n) r = k
+  const UnsignedInteger mode = ((m + 1) * (k + 1)) / (n + 2);
+  Bool complement = tail;
+  Scalar cdf = 0.0;
+  UnsignedInteger t = x;
+  if (x < mode)
+  {
+    cdf = dHypergeometric(n, k, m, x);
+    Scalar delta = cdf;
+    UnsignedInteger xMin = k + m > n ? k + m - n : 0;
+    Scalar epsilon = complement ? SpecFunc::Precision : cdf * SpecFunc::Precision;
+    while (delta > epsilon)
+    {
+      delta *= (t / (1.0 + k - t)) * ((n + t - m - k) / (1.0 + m - t));
+      cdf += delta;
+      if (t == xMin)
+        break;
+      --t;
+    }
+  } // x < mode
+  else
+  {
+    complement = !complement;
+    UnsignedInteger xMax = std::min(k, m);
+    if (t < xMax)
+    {
+      ++t;
+      cdf = dHypergeometric(n, k, m, t + 1);
+      Scalar delta = cdf;
+      Scalar epsilon = complement ? SpecFunc::Precision : cdf * SpecFunc::Precision;
+      while ((t <= xMax) && (delta > epsilon))
+      {
+        delta *= ((m - t) / (t + 1.0)) * ((k - t) / (n + t + 1.0 - m - k));
+        cdf += delta;
+        ++t;
+      }
+    } // x < xMax
+  } // x >= mode
+  if (complement) return 1.0 - cdf;
+  return cdf;
+#endif
+}
+
+UnsignedInteger DistFunc::rHypergeometric(const UnsignedInteger n,
+    const UnsignedInteger k,
+    const UnsignedInteger m)
+{
+  // Generate the probability table
+  Point probabilities(n + 1);
+  UnsignedInteger xMin = (k + m >= n ? k + m - n : 0);
+  UnsignedInteger xMax = std::min(m, k);
+  UnsignedInteger xMode = ((k + 1) * (m + 1)) / (n + 2);
+  Scalar p = DistFunc::dHypergeometric(n, k, m, xMode);
+  probabilities[xMode] = p;
+  for (UnsignedInteger x = xMode + 1; x <= xMax; ++x)
+    {
+      p *= ((1.0 + k - x) / x) * ((1.0 + m - x) / (n + x - m - k));
+      probabilities[k] = p;
+    }
+  p = probabilities[xMode];
+  for (UnsignedInteger x = xMode; x > xMin; --x)
+    {
+      p *= (x / (k - x + 1.0)) * ((n + x - m - k) / (m - x + 1.0));
+      probabilities[x - 1] = p;
+    }
+  return rDiscrete(probabilities);
+}
+
+Indices DistFunc::rHypergeometric(const UnsignedInteger n,
+                                  const UnsignedInteger k,
+                                  const UnsignedInteger m,
+                                  const UnsignedInteger size)
+{
+  // Generate the probability table
+  Point probabilities(n + 1);
+  UnsignedInteger xMin = (k + m >= n ? k + m - n : 0);
+  UnsignedInteger xMax = std::min(m, k);
+  UnsignedInteger xMode = ((k + 1) * (m + 1)) / (n + 2);
+  Scalar p = DistFunc::dHypergeometric(n, k, m, xMode);
+  probabilities[xMode] = p;
+  for (UnsignedInteger x = xMode + 1; x <= xMax; ++x)
+    {
+      p *= ((1.0 + k - x) / x) * ((1.0 + m - x) / (n + x - m - k));
+      probabilities[k] = p;
+    }
+  p = probabilities[xMode];
+  for (UnsignedInteger x = xMode; x > xMin; --x)
+    {
+      p *= (x / (k - x - 1.0)) * ((n + x - m - k) / (m - x - 1.0));
+      probabilities[x - 1] = p;
+    }
+  return rDiscrete(probabilities, size);
 }
 
 /****************************/
@@ -1126,6 +1447,31 @@ Point DistFunc::rNormal(const UnsignedInteger size)
 /**********************************************************************************/
 /* Poisson distribution, i.e. with a PDF equals to exp(-lambda) . lambda ^ k / k! */
 /**********************************************************************************/
+/* Probability distribution function
+   We use the algorithm described in:
+   Catherine Loader, "Fast and Accurate Computation of Binomial Probabilities", On-
+line:   https://lists.gnu.org/archive/html/octave-maintainers/2011-09/pdfK0uKOST642.pdf, accessed 22 December 2018, 2000.
+   with the improvements discussed in:
+   Jannis Dimitriadis, "On the Accuracy of Loader’s Algorithm for the Binomial
+   Density and Algorithms for Rectangle Probabilities for Markov Increments",
+   Dissertation, Universitat Trier, August 2016.
+*/
+Scalar DistFunc::logdPoisson(const Scalar lambda,
+                             const UnsignedInteger k)
+{
+  if (lambda == 0.0) return (k == 0 ? 0.0 : -SpecFunc::LogMaxScalar);
+  if (k == 0) return -lambda;
+  return -SpecFunc::Stirlerr(k) - DistFunc::bd0(k, lambda) - 0.5 * std::log(2.0 * M_PI * k);
+}
+
+Scalar DistFunc::dPoisson(const Scalar lambda,
+                          const UnsignedInteger k)
+{
+  if (lambda == 0.0) return (k == 0 ? 1.0 : 0.0);
+  if (k == 0) return std::exp(-lambda);
+  return std::exp(-SpecFunc::Stirlerr(k) - DistFunc::bd0(k, lambda)) / std::sqrt(2.0 * M_PI * k);
+}
+
 /* Quantile function
    We use the algorithm described in:
    Mikes Giles, "Fast evaluation of the inverse Poisson cumulative distribution function", https://people.maths.ox.ac.uk/gilesm/poissinv/paper.pdf
@@ -1146,7 +1492,7 @@ Scalar DistFunc::qPoisson(const Scalar lambda,
    Luc Devroye, "Non-Uniform RandomVariate Generation", Springer-Verlag, 1986, available online at:
    http://cg.scs.carleton.ca/~luc/nonuniformrandomvariates.zip
    and with the important errata at:
-   http://cg.scs.carleton.ca/~luc/errors.pdf
+   http://www.nrbook.com/devroye/Devroye_files/errors.pdf
    For the large values of lambda, we use the ratio of uniform method described in:
    E. Stadlober, "The ratio of uniforms approach for generating discrete random variates". Journal of Computational and Applied Mathematics, vol. 31, no. 1, 1990, pp. 181-189.
 */

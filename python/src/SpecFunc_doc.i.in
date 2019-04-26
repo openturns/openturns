@@ -1092,4 +1092,47 @@ Returns
 -------
 result : bool"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::LogFactorial
+"Logarithm of the factorial function.
+
+.. math::
+
+    \forall n \in \Nset, \quad
+    LogFactorial(n) = \log(n!)
+
+See also
+--------
+SpecFunc_Stirlerr
+
+Parameters
+----------
+n : int
+
+Returns
+-------
+result : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::Stirlerr
+"Error of the Stirling approximation of the factorial logarithm.
+
+.. math::
+
+    \forall n \in \Nset, \quad
+    Stirlerr(n) = \log(n!) - \log\left(sqrt{2\pi n}\left(\dfrac{n}{e}\right)^n\right)
+
+See also
+--------
+SpecFunc_LogFactorial
+
+Parameters
+----------
+n : int
+
+Returns
+-------
+result : float"
 
