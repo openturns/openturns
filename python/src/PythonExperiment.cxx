@@ -71,8 +71,10 @@ PythonExperiment * PythonExperiment::clone() const
 /* Copy constructor */
 PythonExperiment::PythonExperiment(const PythonExperiment & other)
   : ExperimentImplementation(other),
-    pyObj_(other.pyObj_)
+    pyObj_()
 {
+  ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
+  pyObj_ = pyObjClone.get();
   Py_XINCREF(pyObj_);
 }
 

@@ -116,9 +116,14 @@ PythonEvaluation * PythonEvaluation::clone() const
 /* Copy constructor */
 PythonEvaluation::PythonEvaluation(const PythonEvaluation & other)
   : EvaluationImplementation(other)
-  , pyObj_(other.pyObj_)
-  , pyBufferClass_(other.pyBufferClass_)
+  , pyObj_()
+  , pyBufferClass_()
 {
+  ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
+  pyObj_ = pyObjClone.get();
+
+  ScopedPyObjectPointer pyBufferClone(deepCopy(other.pyBufferClass_));
+  pyBufferClass_ = pyBufferClone.get();
   Py_XINCREF(pyObj_);
   Py_XINCREF(pyBufferClass_);
 }
