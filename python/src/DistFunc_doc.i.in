@@ -436,7 +436,7 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::DistFunc::logpPoisson
+%feature("docstring") OT::DistFunc::logdPoisson
 "Logarithm of the probability function of a Poisson distribution.
 
 Parameters
@@ -460,7 +460,7 @@ in [dimitriadis2016]_.
 Examples
 --------
 >>> import openturns as ot
->>> p = ot.DistFunc.logpPoisson(5.0, 2)"
+>>> p = ot.DistFunc.logdPoisson(5.0, 2)"
 
 // ---------------------------------------------------------------------
 

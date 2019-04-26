@@ -124,12 +124,14 @@ public:
 
   /** Draw the PDF of the Histogram using a specific presentation */
   //        using ContinuousDistribution::drawPDF;
-  virtual Graph drawPDF() const;
+  virtual Graph drawPDF(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+                        const Bool logScale = false) const;
 
   /** Draw the PDF of the Histogram using a specific presentation */
   virtual Graph drawPDF(const Scalar xMin,
                         const Scalar xMax,
-                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber")) const;
+                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+                        const Bool logScale = false) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

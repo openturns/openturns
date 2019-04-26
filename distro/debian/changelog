@@ -1,3 +1,15 @@
+openturns (1.13~rc1-1) experimental; urgency=low
+
+  [ Julien Schueller ]
+
+  * New upstream pre-release.
+  * debian/control: drop r-other-rot, openturns-validation
+  * python-openturns: include dist-info files
+  * debian/control: remove unneeded libopenturns-dev dependencies
+  * debian/control: require libcminpack-dev
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 23 Apr 2018 18:14:47 +0200
+
 openturns (1.12-1) experimental; urgency=low
 
   [ Julien Schueller ]
