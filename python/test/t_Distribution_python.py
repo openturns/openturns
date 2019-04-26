@@ -228,6 +228,13 @@ for pyDist in [UniformNdPy(), UniformNdPy([0.] * 2, [1.] * 2)]:
     print('parameter=', myDist.getParameter())
     print('parameterDesc=', myDist.getParameterDescription())
 
+    print("Cloning distribution")
+    newDist = ot.Distribution(myDist)
+    param[0] = 0.5
+    newDist.setParameter(param)
+    print('dist parameter=', myDist.getParameter())
+    print('copy dist parameter=', newDist.getParameter())
+
 # Use the distribution as a copula
 myDist = ot.Distribution(UniformNdPy([0.0] * 2, [1.0] * 2))
 print(ot.ComposedDistribution([ot.Normal(), ot.Normal()], myDist))
@@ -244,3 +251,23 @@ copula = myDist.getCopula()
 
 # Test computePDF over a sample (ticket #899)
 res = copula.computePDF([[0.5] * 2] * 10)
+
+st = ot.Study()
+fileName = 'PyDIST.xml'
+st.setStorageManager(ot.XMLStorageManager(fileName))
+
+st.add("myDist", myDist)
+st.save()
+
+print('saved dist=', myDist)
+
+dist = ot.Distribution()
+
+st = ot.Study()
+st.setStorageManager(ot.XMLStorageManager(fileName))
+
+st.load()
+
+st.fillObject("myDist", dist)
+print('loaded dist=', dist)
+os.remove(fileName)
