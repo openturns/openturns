@@ -18,7 +18,7 @@ NonLinearLeastSquaresCalibration is the minimum variance estimator of the parame
 
 See also
 --------
-BLUE, LinearLeastSquaresCalibration, ThreeDVAR
+GaussianLinearCalibration, LinearLeastSquaresCalibration, GaussianNonLinearCalibration
 
 Examples
 --------

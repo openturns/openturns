@@ -18,8 +18,8 @@
  * CMinpack
  * Ceres
  * DiscreteMarkovChain
- * CalibrationAlgorithm, CalibrationResult, BLUE, LinearLeastSquaresCalibration
- * NonLinearLeastSquaresCalibration, ThreeDVAR
+ * CalibrationAlgorithm, CalibrationResult, GaussianLinearCalibration, LinearLeastSquaresCalibration
+ * NonLinearLeastSquaresCalibration, GaussianNonLinearCalibration
  * Hypergeometric
 
 ==== API changes ====

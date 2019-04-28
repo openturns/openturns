@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief ThreeDVAR algorithm
+ *  @brief GaussianLinearCalibration algorithm
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,56 +18,63 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_THREEDVAR_HXX
-#define OPENTURNS_THREEDVAR_HXX
+#ifndef OPENTURNS_GAUSSIANLINEARCALIBRATION_HXX
+#define OPENTURNS_GAUSSIANLINEARCALIBRATION_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/CalibrationAlgorithmImplementation.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
-#include "openturns/OptimizationAlgorithm.hxx"
+#include "openturns/LeastSquaresMethod.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/CenteredFiniteDifferenceGradient.hxx"
+#include "openturns/CovarianceMatrix.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class THREEDVAR
+ * @class GaussianLinearCalibration
  *
- * @brief The class implements the 3D-VAR calibration
+ * @brief The class implements the best linear unbiased estimator (BLUE) calibration
  *
  */
-class OT_API ThreeDVAR
+class OT_API GaussianLinearCalibration
   : public CalibrationAlgorithmImplementation
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  ThreeDVAR();
+  GaussianLinearCalibration();
 
   /** Parameter constructor */
-  ThreeDVAR(const Function & model,
-	    const Sample & inputObservations,
-	    const Sample & outputObservations,
-	    const Point & candidate,
-	    const CovarianceMatrix & parameterCovariance,
-	    const CovarianceMatrix & errorCovariance);
+  GaussianLinearCalibration(const Function & model,
+       const Sample & inputObservations,
+       const Sample & outputObservations,
+       const Point & candidate,
+       const CovarianceMatrix & parameterCovariance,
+       const CovarianceMatrix & errorCovariance,
+       const String & methodName = ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
+
+  /** Parameter constructor */
+  GaussianLinearCalibration(const Sample & modelObservations,
+       const Matrix & gradientObservations,
+       const Sample & outputObservations,
+       const Point & candidate,
+       const CovarianceMatrix & parameterCovariance,
+       const CovarianceMatrix & errorCovariance,
+       const String & methodName = ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
 
   /** String converter */
   virtual String __repr__() const;
 
   /** Performs the actual computation. Must be overloaded by the actual calibration algorithm */
   virtual void run();
-  Point run(const Sample & inputObservations,
-	    const Sample & outputObservations,
-	    const Point & candidate,
-	    const TriangularMatrix & parameterInverseCholesky,
-	    const TriangularMatrix & errorInverseCholesky);
 
-  /** Algorithm accessor */
-  OptimizationAlgorithm getAlgorithm() const;
-  void setAlgorithm(const OptimizationAlgorithm & algorithm);
+  /** Model observations accessor */
+  Sample getModelObservations() const;
+
+  /** Model gradient wrt the parameter accessor */
+  Matrix getGradientObservations() const;
 
   /** Candidate accessor */
   Point getCandidate() const;
@@ -81,14 +88,13 @@ public:
   /** Flag for the full error covariance accessor */
   Bool getGlobalErrorCovariance() const;
 
-  /** Bootstrap size accessor */
-  UnsignedInteger getBootstrapSize() const;
-  void setBootstrapSize(const UnsignedInteger bootstrapSize);
+  /** Least squares method name accessor */
+  String getMethodName() const;
 
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual ThreeDVAR * clone() const;
+  virtual GaussianLinearCalibration * clone() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -97,28 +103,24 @@ public:
   virtual void load(Advocate & adv);
 
 private:
+  /* The model observations */
+  Sample modelObservations_;
 
-  /* Model to calibrate */
-  Function model_;
-
-  /* The input observations */
-  Sample inputObservations_;
-
-  /* The optimization algorithm */
-  OptimizationAlgorithm algorithm_;
-
-  /* Number of bootstrap replica */
-  UnsignedInteger bootstrapSize_;
+  /* The model gradient wrt the parameter */
+  Matrix gradientObservations_;
 
   /* The error covariance */
   CovarianceMatrix errorCovariance_;
-
+  
   /* Flag to tell if the error covariance is for the whole observations */
   Bool globalErrorCovariance_;
   
-}; /* class THREEDVAR */
+  /* The least squares method name */
+  String methodName_;
+
+}; /* class GaussianLinearCalibration */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_THREEDVAR_HXX */
+#endif /* OPENTURNS_GAUSSIANLINEARCALIBRATION_HXX */

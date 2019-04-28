@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief BLUE algorithm
+ *  @brief GaussianNonLinearCalibration algorithm
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,63 +18,56 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_BLUE_HXX
-#define OPENTURNS_BLUE_HXX
+#ifndef OPENTURNS_GAUSSIANNONLINEARCALIBRATION_HXX
+#define OPENTURNS_GAUSSIANNONLINEARCALIBRATION_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/CalibrationAlgorithmImplementation.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
-#include "openturns/LeastSquaresMethod.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/CovarianceMatrix.hxx"
+#include "openturns/CenteredFiniteDifferenceGradient.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class BLUE
+ * @class OPENTURNS_GAUSSIANNONLINEARCALIBRATION_HXX
  *
- * @brief The class implements the best linear unbiased estimator (BLUE) calibration
+ * @brief The class implements the gaussian non linear calibration (3DVAR)
  *
  */
-class OT_API BLUE
+class OT_API GaussianNonLinearCalibration
   : public CalibrationAlgorithmImplementation
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  BLUE();
+  GaussianNonLinearCalibration();
 
   /** Parameter constructor */
-  BLUE(const Function & model,
-       const Sample & inputObservations,
-       const Sample & outputObservations,
-       const Point & candidate,
-       const CovarianceMatrix & parameterCovariance,
-       const CovarianceMatrix & errorCovariance,
-       const String & methodName = ResourceMap::GetAsString("BLUE-Method"));
-
-  /** Parameter constructor */
-  BLUE(const Sample & modelObservations,
-       const Matrix & gradientObservations,
-       const Sample & outputObservations,
-       const Point & candidate,
-       const CovarianceMatrix & parameterCovariance,
-       const CovarianceMatrix & errorCovariance,
-       const String & methodName = ResourceMap::GetAsString("BLUE-Method"));
+  GaussianNonLinearCalibration(const Function & model,
+	    const Sample & inputObservations,
+	    const Sample & outputObservations,
+	    const Point & candidate,
+	    const CovarianceMatrix & parameterCovariance,
+	    const CovarianceMatrix & errorCovariance);
 
   /** String converter */
   virtual String __repr__() const;
 
   /** Performs the actual computation. Must be overloaded by the actual calibration algorithm */
   virtual void run();
+  Point run(const Sample & inputObservations,
+	    const Sample & outputObservations,
+	    const Point & candidate,
+	    const TriangularMatrix & parameterInverseCholesky,
+	    const TriangularMatrix & errorInverseCholesky);
 
-  /** Model observations accessor */
-  Sample getModelObservations() const;
-
-  /** Model gradient wrt the parameter accessor */
-  Matrix getGradientObservations() const;
+  /** Algorithm accessor */
+  OptimizationAlgorithm getAlgorithm() const;
+  void setAlgorithm(const OptimizationAlgorithm & algorithm);
 
   /** Candidate accessor */
   Point getCandidate() const;
@@ -88,13 +81,14 @@ public:
   /** Flag for the full error covariance accessor */
   Bool getGlobalErrorCovariance() const;
 
-  /** Least squares method name accessor */
-  String getMethodName() const;
+  /** Bootstrap size accessor */
+  UnsignedInteger getBootstrapSize() const;
+  void setBootstrapSize(const UnsignedInteger bootstrapSize);
 
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual BLUE * clone() const;
+  virtual GaussianNonLinearCalibration * clone() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -103,24 +97,27 @@ public:
   virtual void load(Advocate & adv);
 
 private:
-  /* The model observations */
-  Sample modelObservations_;
 
-  /* The model gradient wrt the parameter */
-  Matrix gradientObservations_;
+  /* Model to calibrate */
+  Function model_;
+
+  /* The input observations */
+  Sample inputObservations_;
+
+  /* The optimization algorithm */
+  OptimizationAlgorithm algorithm_;
+
+  /* Number of bootstrap replica */
+  UnsignedInteger bootstrapSize_;
 
   /* The error covariance */
   CovarianceMatrix errorCovariance_;
-  
+
   /* Flag to tell if the error covariance is for the whole observations */
   Bool globalErrorCovariance_;
   
-  /* The least squares method name */
-  String methodName_;
-
-}; /* class BLUE */
-
+}; /* class GAUSSIANNONLINEARCALIBRATION */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_BLUE_HXX */
+#endif /* OPENTURNS_GAUSSIANNONLINEARCALIBRATION_HXX */
