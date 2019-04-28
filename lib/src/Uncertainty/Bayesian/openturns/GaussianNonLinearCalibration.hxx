@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief ThreeDVAR algorithm
+ *  @brief GaussianNonLinearCalibration algorithm
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_THREEDVAR_HXX
-#define OPENTURNS_THREEDVAR_HXX
+#ifndef OPENTURNS_GAUSSIANNONLINEARCALIBRATION_HXX
+#define OPENTURNS_GAUSSIANNONLINEARCALIBRATION_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/CalibrationAlgorithmImplementation.hxx"
@@ -32,22 +32,22 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class THREEDVAR
+ * @class OPENTURNS_GAUSSIANNONLINEARCALIBRATION_HXX
  *
- * @brief The class implements the 3D-VAR calibration
+ * @brief The class implements the gaussian non linear calibration (3DVAR)
  *
  */
-class OT_API ThreeDVAR
+class OT_API GaussianNonLinearCalibration
   : public CalibrationAlgorithmImplementation
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  ThreeDVAR();
+  GaussianNonLinearCalibration();
 
   /** Parameter constructor */
-  ThreeDVAR(const Function & model,
+  GaussianNonLinearCalibration(const Function & model,
 	    const Sample & inputObservations,
 	    const Sample & outputObservations,
 	    const Point & candidate,
@@ -85,7 +85,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual ThreeDVAR * clone() const;
+  virtual GaussianNonLinearCalibration * clone() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -110,9 +110,9 @@ private:
   /* The error covariance */
   CovarianceMatrix errorCovariance_;
 
-}; /* class THREEDVAR */
+}; /* class OPENTURNS_GAUSSIANNONLINEARCALIBRATION_HXX */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_THREEDVAR_HXX */
+#endif /* OPENTURNS_GAUSSIANNONLINEARCALIBRATION_HXX */

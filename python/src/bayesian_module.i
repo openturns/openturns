@@ -34,11 +34,11 @@
 %include CalibrationAlgorithm.i
 %include CalibrationStrategyImplementation.i
 %include CalibrationStrategy.i
-%include BLUE.i
+%include GaussianLinearCalibration.i
 %include LinearLeastSquaresCalibration.i
 %include MCMC.i
 %include NonLinearLeastSquaresCalibration.i
-%include ThreeDVAR.i
+%include GaussianNonLinearCalibration.i
 %include RandomWalkMetropolisHastings.i
 
 /* At last we include template definitions */

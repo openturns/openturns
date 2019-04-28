@@ -1,5 +1,5 @@
-%feature("docstring") OT::ThreeDVAR
-"3D variational (3DVAR) calibration algorithm.
+%feature("docstring") OT::GaussianNonLinearCalibration
+"Gaussian non linear calibration algorithm (3DVAR).
 
 Parameters
 ----------
@@ -18,11 +18,11 @@ errorCovariance : 2-d sequence of float
 
 Notes
 -----
-ThreeDVAR is the minimum variance estimator of the parameter of a given model under the assumption that this parameter is dispersed according to a known covariance matrix.
+GaussianNonLinearCalibration is the minimum variance estimator of the parameter of a given model under the assumption that this parameter is dispersed according to a known covariance matrix.
 
 See also
 --------
-BLUE, LinearLeastSquaresCalibration, NonLinearLeastSquaresCalibration
+GaussianLinearCalibration, LinearLeastSquaresCalibration, NonLinearLeastSquaresCalibration
 
 Examples
 --------
@@ -42,14 +42,14 @@ Calibrate a nonlinear model using 3DVAR:
 >>> candidate = [1.0]*3
 >>> priorCovariance = ot.CovarianceMatrix(3)
 >>> errorCovariance = ot.CovarianceMatrix(1, [0.1])
->>> algo = ot.ThreeDVAR(modelX, x, y, candidate, priorCovariance, errorCovariance)
+>>> algo = ot.GaussianNonLinearCalibration(modelX, x, y, candidate, priorCovariance, errorCovariance)
 >>> algo.run()
 >>> print(algo.getResult().getParameterMAP())
 [2.72425,1.21172,0.498945]"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ThreeDVAR::getModelObservations
+%feature("docstring") OT::GaussianNonLinearCalibration::getModelObservations
 "Accessor to the model evaluation at the candidate.
 
 Returns
@@ -59,7 +59,7 @@ modelObservation : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ThreeDVAR::getGradientObservations
+%feature("docstring") OT::GaussianNonLinearCalibration::getGradientObservations
 "Accessor to the model gradient at the candidate.
 
 Returns
@@ -69,7 +69,7 @@ gradientObservation : :class:`~openturns.Matrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ThreeDVAR::getCandidate
+%feature("docstring") OT::GaussianNonLinearCalibration::getCandidate
 "Accessor to the parameter candidate.
 
 Returns
@@ -79,7 +79,7 @@ candidate : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ThreeDVAR::getParameterCovariance
+%feature("docstring") OT::GaussianNonLinearCalibration::getParameterCovariance
 "Accessor to the parameter prior covariance.
 
 Returns
@@ -89,7 +89,7 @@ prior : :class:`~openturns.CovarianceMatrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ThreeDVAR::getErrorCovariance
+%feature("docstring") OT::GaussianNonLinearCalibration::getErrorCovariance
 "Accessor to the observation error covariance.
 
 Returns
@@ -99,7 +99,7 @@ error : :class:`~openturns.CovarianceMatrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ThreeDVAR::getAlgorithm
+%feature("docstring") OT::GaussianNonLinearCalibration::getAlgorithm
 "Accessor to the optimization algorithm used for the computation.
 
 Returns
@@ -109,7 +109,7 @@ algo : :class:`~openturns.OptimizationAlgorithm`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ThreeDVAR::setAlgorithm
+%feature("docstring") OT::GaussianNonLinearCalibration::setAlgorithm
 "Accessor to the optimization algorithm used for the computation.
 
 Parameters
@@ -119,7 +119,7 @@ algo : :class:`~openturns.OptimizationAlgorithm`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ThreeDVAR::getBootstrapSize
+%feature("docstring") OT::GaussianNonLinearCalibration::getBootstrapSize
 "Accessor to the bootstrap size used to sample the posterior distribution.
 
 Returns
@@ -132,7 +132,7 @@ size : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ThreeDVAR::setBootstrapSize
+%feature("docstring") OT::GaussianNonLinearCalibration::setBootstrapSize
 "Accessor to the bootstrap size used to sample the posterior distribution.
 
 Parameters

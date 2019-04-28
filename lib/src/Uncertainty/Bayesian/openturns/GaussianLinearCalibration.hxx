@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief BLUE algorithm
+ *  @brief GaussianLinearCalibration algorithm
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_BLUE_HXX
-#define OPENTURNS_BLUE_HXX
+#ifndef OPENTURNS_GAUSSIANLINEARCALIBRATION_HXX
+#define OPENTURNS_GAUSSIANLINEARCALIBRATION_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/CalibrationAlgorithmImplementation.hxx"
@@ -32,37 +32,37 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class BLUE
+ * @class GaussianLinearCalibration
  *
  * @brief The class implements the best linear unbiased estimator (BLUE) calibration
  *
  */
-class OT_API BLUE
+class OT_API GaussianLinearCalibration
   : public CalibrationAlgorithmImplementation
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  BLUE();
+  GaussianLinearCalibration();
 
   /** Parameter constructor */
-  BLUE(const Function & model,
+  GaussianLinearCalibration(const Function & model,
        const Sample & inputObservations,
        const Sample & outputObservations,
        const Point & candidate,
        const CovarianceMatrix & parameterCovariance,
        const CovarianceMatrix & errorCovariance,
-       const String & methodName = ResourceMap::GetAsString("BLUE-Method"));
+       const String & methodName = ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
 
   /** Parameter constructor */
-  BLUE(const Sample & modelObservations,
+  GaussianLinearCalibration(const Sample & modelObservations,
        const Matrix & gradientObservations,
        const Sample & outputObservations,
        const Point & candidate,
        const CovarianceMatrix & parameterCovariance,
        const CovarianceMatrix & errorCovariance,
-       const String & methodName = ResourceMap::GetAsString("BLUE-Method"));
+       const String & methodName = ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
 
   /** String converter */
   virtual String __repr__() const;
@@ -91,7 +91,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual BLUE * clone() const;
+  virtual GaussianLinearCalibration * clone() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
@@ -112,9 +112,9 @@ private:
   /* The least squares method name */
   String methodName_;
 
-}; /* class BLUE */
+}; /* class GaussianLinearCalibration */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_BLUE_HXX */
+#endif /* OPENTURNS_GAUSSIANLINEARCALIBRATION_HXX */

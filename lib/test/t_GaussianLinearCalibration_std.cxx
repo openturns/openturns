@@ -74,7 +74,7 @@ int main(int, char *[])
     for (UnsignedInteger n = 0; n < methods.getSize(); ++n)
       {
 	fullprint << "method=" << methods[n] << std::endl;
-	BLUE algo(modelX, x, y, candidate, priorCovariance, errorCovariance, methods[n]);
+	GaussianLinearCalibration algo(modelX, x, y, candidate, priorCovariance, errorCovariance, methods[n]);
 	algo.run();
 	fullprint << "result (const. 1)=" << algo.getResult() << std::endl;
 	modelX.setParameter(candidate);
@@ -88,7 +88,7 @@ int main(int, char *[])
 	    std::copy(localGradient.getImplementation()->begin(), localGradient.getImplementation()->end(), transposedGradientObservations.getImplementation()->begin() + shift);
 	    shift += skip;
 	  }
-	algo = BLUE(modelObservations, transposedGradientObservations.transpose(), y, candidate, priorCovariance, errorCovariance, methods[n]);
+	algo = GaussianLinearCalibration(modelObservations, transposedGradientObservations.transpose(), y, candidate, priorCovariance, errorCovariance, methods[n]);
 	algo.run();
 	fullprint << "result (const. 2)=" << algo.getResult() << std::endl;
       } // n

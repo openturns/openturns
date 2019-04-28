@@ -1,10 +1,10 @@
-%feature("docstring") OT::BLUE
-"Best Linear Unbiased Estimator calibration algorithm.
+%feature("docstring") OT::GaussianLinearCalibration
+"Gaussian linear calibration algorithm (Best Linear Unbiased Estimator or BLUE).
 
 Available constructors:
-    BLUE(*model, inputObservations, outputObservations, candidate, parameterCovariance, errorCovariance, methodName*)
+    GaussianLinearCalibration(*model, inputObservations, outputObservations, candidate, parameterCovariance, errorCovariance, methodName*)
 
-    BLUE(*modelObservations, gradientObservations, outputObservations, candidate, parameterCovariance, errorCovariance, methodName*)
+    GaussianLinearCalibration(*modelObservations, gradientObservations, outputObservations, candidate, parameterCovariance, errorCovariance, methodName*)
 
 Parameters
 ----------
@@ -25,7 +25,7 @@ methodName : str
 
 Notes
 -----
-BLUE stands for Best Linear Unbiased Estimator. It is the minimum variance estimator of the parameter of a given model under the assumption that this parameter acts linearly in the model.
+GaussianLinearCalibration stands for Best Linear Unbiased Estimator (BLUE). It is the minimum variance estimator of the parameter of a given model under the assumption that this parameter acts linearly in the model.
 
 See also
 --------
@@ -33,7 +33,7 @@ LinearLeastSquaresCalibration, NonLinearLeastSquaresCalibration, ThreeDVAR
 
 Examples
 --------
-Calibrate a nonlinear model using BLUE:
+Calibrate a nonlinear model using GaussianLinearCalibration:
 
 >>> import openturns as ot
 >>> m = 10
@@ -50,14 +50,14 @@ Calibrate a nonlinear model using BLUE:
 >>> priorCovariance = ot.CovarianceMatrix(3)
 >>> errorCovariance = ot.CovarianceMatrix(1, [0.1])
 >>> method = 'SVD'
->>> algo = ot.BLUE(modelX, x, y, candidate, priorCovariance, errorCovariance, method)
+>>> algo = ot.GaussianLinearCalibration(modelX, x, y, candidate, priorCovariance, errorCovariance, method)
 >>> algo.run()
 >>> print(algo.getResult().getParameterMAP())
 [0.997874,0.093813,0.991216]"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BLUE::getModelObservations
+%feature("docstring") OT::GaussianLinearCalibration::getModelObservations
 "Accessor to the model evaluation at the candidate.
 
 Returns
@@ -67,7 +67,7 @@ modelObservation : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BLUE::getGradientObservations
+%feature("docstring") OT::GaussianLinearCalibration::getGradientObservations
 "Accessor to the model gradient at the candidate.
 
 Returns
@@ -77,7 +77,7 @@ gradientObservation : :class:`~openturns.Matrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BLUE::getCandidate
+%feature("docstring") OT::GaussianLinearCalibration::getCandidate
 "Accessor to the parameter candidate.
 
 Returns
@@ -87,7 +87,7 @@ candidate : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BLUE::getParameterCovariance
+%feature("docstring") OT::GaussianLinearCalibration::getParameterCovariance
 "Accessor to the parameter prior covariance.
 
 Returns
@@ -97,7 +97,7 @@ prior : :class:`~openturns.CovarianceMatrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BLUE::getErrorCovariance
+%feature("docstring") OT::GaussianLinearCalibration::getErrorCovariance
 "Accessor to the observation error covariance.
 
 Returns
@@ -107,7 +107,7 @@ error : :class:`~openturns.CovarianceMatrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BLUE::getMethodName
+%feature("docstring") OT::GaussianLinearCalibration::getMethodName
 "Accessor to the name of least-squares method used for the resolution.
 
 Returns

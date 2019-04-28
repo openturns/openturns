@@ -538,13 +538,13 @@ if (CHAOSPY_FOUND)
 endif ()
 
 ## Bayesian
-ot_pyinstallcheck_test (BLUE_std)
+ot_pyinstallcheck_test (GaussianLinearCalibration_std)
 ot_pyinstallcheck_test (CalibrationStrategy_std)
 ot_pyinstallcheck_test (LinearLeastSquaresCalibration_std)
 ot_pyinstallcheck_test (NonLinearLeastSquaresCalibration_std)
 ot_pyinstallcheck_test (RandomWalkMetropolisHastings_std)
 ot_pyinstallcheck_test (RandomWalkMetropolisHastings_regression IGNOREOUT)
-ot_pyinstallcheck_test (ThreeDVAR_std)
+ot_pyinstallcheck_test (GaussianNonLinearCalibration_std)
 
 ## Classification
 ot_pyinstallcheck_test (MixtureClassifier_std)

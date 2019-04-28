@@ -73,12 +73,12 @@ int main(int, char *[])
     bootstrapSizes.add(100);
     for (UnsignedInteger n = 0; n < bootstrapSizes.getSize(); ++n)
       {
-	ThreeDVAR algo(modelX, x, y, candidate, priorCovariance, errorCovariance);
+	GaussianNonLinearCalibration algo(modelX, x, y, candidate, priorCovariance, errorCovariance);
 	algo.setBootstrapSize(bootstrapSizes[n]);
 	algo.run();
 	// To avoid discrepance between the plaforms with or without CMinpack
 	fullprint << "result (Auto)=" << algo.getResult().getParameterMAP() << std::endl;
-	algo.setAlgorithm(MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("ThreeDVAR-MultiStartSize")).generate()));
+	algo.setAlgorithm(MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("GaussianNonLinearCalibration-MultiStartSize")).generate()));
 	algo.run();
 	fullprint << "result  (TNC)=" << algo.getResult().getParameterMAP() << std::endl;
       } // n

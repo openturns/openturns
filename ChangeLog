@@ -18,8 +18,8 @@
  * CMinpack
  * Ceres
  * DiscreteMarkovChain
- * CalibrationAlgorithm, CalibrationResult, BLUE, LinearLeastSquaresCalibration
- * NonLinearLeastSquaresCalibration, ThreeDVAR
+ * CalibrationAlgorithm, CalibrationResult, GaussianLinearCalibration, LinearLeastSquaresCalibration
+ * NonLinearLeastSquaresCalibration, GaussianNonLinearCalibration
 
 ==== API changes ====
  * Removed deprecated FunctionalChaosRandomVector::getSobol* methods

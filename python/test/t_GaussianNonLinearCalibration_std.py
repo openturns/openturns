@@ -8,7 +8,6 @@ import sys
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(3)
-ot.Log.Show(ot.Log.ALL)
 
 m = 10
 x = [[0.5 + i] for i in range(m)]
@@ -32,10 +31,14 @@ for i in range(2):
     errorCovariance[i, i] = 2.0 + (1.0 + i) * (1.0 + i)
     for j in range(i):
         errorCovariance[i, j] = 1.0 / (1.0 + i + j)
-
-methods = ["SVD", "QR", "Cholesky"]
-for method in methods:
-    print("method=", method)
-    algo = ot.BLUE(modelX, x, y, candidate, priorCovariance, errorCovariance, method)
+bootstrapSizes = [0, 100]
+for bootstrapSize in bootstrapSizes:
+    algo = ot.GaussianNonLinearCalibration(modelX, x, y, candidate, priorCovariance, errorCovariance)
+    algo.setBootstrapSize(bootstrapSize)
     algo.run()
-    print("result=", algo.getResult())
+    # To avoid discrepance between the plaforms with or without CMinpack
+    print("result (Auto)=", algo.getResult().getParameterMAP())
+    algo.setAlgorithm(ot.MultiStart(ot.TNC(), ot.LowDiscrepancyExperiment(ot.SobolSequence(), ot.Normal(candidate, ot.CovarianceMatrix(ot.Point(candidate).getDimension())), ot.ResourceMap.GetAsUnsignedInteger("GaussianNonLinearCalibration-MultiStartSize")).generate()))
+    algo.run()
+    # To avoid discrepance between the plaforms with or without CMinpack
+    print("result  (TNC)=", algo.getResult().getParameterMAP())
