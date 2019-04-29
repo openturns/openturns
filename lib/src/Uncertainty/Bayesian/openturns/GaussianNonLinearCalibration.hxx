@@ -32,7 +32,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class OPENTURNS_GAUSSIANNONLINEARCALIBRATION_HXX
+ * @class GaussianNonLinearCalibration
  *
  * @brief The class implements the gaussian non linear calibration (3DVAR)
  *
