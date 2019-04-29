@@ -408,7 +408,7 @@ CovarianceMatrix GaussianNonLinearCalibration::getErrorCovariance() const
 }
 
 /* Global error covariance accessor */
-Bool ThreeDVAR::getGlobalErrorCovariance() const
+Bool GaussianNonLinearCalibration::getGlobalErrorCovariance() const
 {
   return globalErrorCovariance_;
 }

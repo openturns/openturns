@@ -175,7 +175,7 @@ CovarianceMatrix GaussianLinearCalibration::getErrorCovariance() const
 }
 
 /* Global error covariance accessor */
-Bool BLUE::getGlobalErrorCovariance() const
+Bool GaussianLinearCalibration::getGlobalErrorCovariance() const
 {
   return globalErrorCovariance_;
 }
