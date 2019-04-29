@@ -114,7 +114,7 @@ error : :class:`~openturns.CovarianceMatrix`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BLUE::getGlobalErrorCovariance
+%feature("docstring") OT::GaussianLinearCalibration::getGlobalErrorCovariance
 "Accessor to the flag for a global observation error covariance.
 
 Returns

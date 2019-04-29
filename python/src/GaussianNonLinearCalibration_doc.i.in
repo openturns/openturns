@@ -105,8 +105,7 @@ error : :class:`~openturns.CovarianceMatrix`
 
 // ---------------------------------------------------------------------
 
-<<<<<<< HEAD:python/src/ThreeDVAR_doc.i.in
-%feature("docstring") OT::ThreeDVAR::getGlobalErrorCovariance
+%feature("docstring") OT::GaussianNonLinearCalibration::getGlobalErrorCovariance
 "Accessor to the flag for a global observation error covariance.
 
 Returns
@@ -116,10 +115,14 @@ flag : bool
 
 // ---------------------------------------------------------------------
 
+<<<<<<< HEAD
 %feature("docstring") OT::ThreeDVAR::getAlgorithm
 =======
 %feature("docstring") OT::GaussianNonLinearCalibration::getAlgorithm
 >>>>>>> Rename the classes BLUE and ThreeDVAR:python/src/GaussianNonLinearCalibration_doc.i.in
+=======
+%feature("docstring") OT::GaussianNonLinearCalibration::getAlgorithm
+>>>>>>> Fixed doc conflicts after merge
 "Accessor to the optimization algorithm used for the computation.
 
 Returns
