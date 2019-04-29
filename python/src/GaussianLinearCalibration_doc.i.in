@@ -29,7 +29,7 @@ GaussianLinearCalibration stands for Best Linear Unbiased Estimator (BLUE). It i
 
 See also
 --------
-LinearLeastSquaresCalibration, NonLinearLeastSquaresCalibration, ThreeDVAR
+LinearLeastSquaresCalibration, NonLinearLeastSquaresCalibration, GaussianNonLinearCalibration
 
 Examples
 --------
