@@ -672,9 +672,9 @@ Interval Distribution::computeBilateralConfidenceIntervalWithMarginalProbability
 /* Get the product unilateral confidence interval containing at least a given probability of the distribution.
    The bilateral confidence interval [a, b] is such that:
    if upper == false
-     for all i\in{1,...,d}, a_i=-\intfy and P(X_i<=b_i)=\beta
+   for all i\in{1,...,d}, a_i=-\intfy and P(X_i<=b_i)=\beta
    if upper == true
-     for all i\in{1,...,d}, P(a_i<=X_i)=\beta and b_i=\intfy
+   for all i\in{1,...,d}, P(a_i<=X_i)=\beta and b_i=\intfy
 
    where in both cases \beta is such that P(X\in\prod_{i=1}^d[a_i, b_i])=p
 */
@@ -785,8 +785,8 @@ Point Distribution::getSingularities() const
 }
 
 /* Compute the density generator of the elliptical generator, i.e.
-  *  the function phi such that the density of the distribution can
-  *  be written as p(x) = phi(t(x-mu)R(x-mu))                      */
+ *  the function phi such that the density of the distribution can
+ *  be written as p(x) = phi(t(x-mu)R(x-mu))                      */
 Scalar Distribution::computeDensityGenerator(const Scalar betaSquare) const
 {
   return getImplementation()->computeDensityGenerator(betaSquare);
@@ -915,45 +915,54 @@ Distribution Distribution::getStandardRepresentative() const
 /* Draw the PDF of the distribution when its dimension is 1 */
 Graph Distribution::drawPDF(const Scalar xMin,
                             const Scalar xMax,
-                            const UnsignedInteger pointNumber) const
+                            const UnsignedInteger pointNumber,
+                            const Bool logScale) const
 {
-  return getImplementation()->drawPDF(xMin, xMax, pointNumber);
+  return getImplementation()->drawPDF(xMin, xMax, pointNumber, logScale);
 }
 
 /* Draw the PDF of the distribution when its dimension is 1 */
-Graph Distribution::drawPDF(const UnsignedInteger pointNumber) const
+Graph Distribution::drawPDF(const UnsignedInteger pointNumber,
+                            const Bool logScale) const
 {
-  return getImplementation()->drawPDF(pointNumber);
+  return getImplementation()->drawPDF(pointNumber, logScale);
 }
 
 /* Draw the PDF of a 1D marginal */
 Graph Distribution::drawMarginal1DPDF(const UnsignedInteger marginalIndex,
                                       const Scalar xMin,
                                       const Scalar xMax,
-                                      const UnsignedInteger pointNumber) const
+                                      const UnsignedInteger pointNumber,
+                                      const Bool logScale) const
 {
-  return getImplementation()->drawMarginal1DPDF(marginalIndex, xMin, xMax, pointNumber);
+  return getImplementation()->drawMarginal1DPDF(marginalIndex, xMin, xMax, pointNumber, logScale);
 }
 
 /* Draw the PDF of the distribution when its dimension is 2 */
 Graph Distribution::drawPDF(const Point & xMin,
                             const Point & xMax,
-                            const Indices & pointNumber) const
+                            const Indices & pointNumber,
+                            const Bool logScaleX,
+                            const Bool logScaleY) const
 {
-  return getImplementation()->drawPDF(xMin, xMax, pointNumber);
+  return getImplementation()->drawPDF(xMin, xMax, pointNumber, logScaleX, logScaleY);
 }
 
 /* Draw the PDF of the distribution when its dimension is 2 */
 Graph Distribution::drawPDF(const Point & xMin,
-                            const Point & xMax) const
+                            const Point & xMax,
+                            const Bool logScaleX,
+                            const Bool logScaleY) const
 {
-  return getImplementation()->drawPDF(xMin, xMax);
+  return getImplementation()->drawPDF(xMin, xMax, logScaleX, logScaleY);
 }
 
 /* Draw the PDF of the distribution when its dimension is 2 */
-Graph Distribution::drawPDF(const Indices & pointNumber) const
+Graph Distribution::drawPDF(const Indices & pointNumber,
+                            const Bool logScaleX,
+                            const Bool logScaleY) const
 {
-  return getImplementation()->drawPDF(pointNumber);
+  return getImplementation()->drawPDF(pointNumber, logScaleX, logScaleY);
 }
 
 /* Draw the PDF of a 2D marginal */
@@ -961,59 +970,64 @@ Graph Distribution::drawMarginal2DPDF(const UnsignedInteger firstMarginal,
                                       const UnsignedInteger secondMarginal,
                                       const Point & xMin,
                                       const Point & xMax,
-                                      const Indices & pointNumber) const
+                                      const Indices & pointNumber,
+                                      const Bool logScaleX,
+                                      const Bool logScaleY) const
 {
-  return getImplementation()->drawMarginal2DPDF(firstMarginal, secondMarginal, xMin, xMax, pointNumber);
-}
-
-/* Draw the PDF of the distribution when its dimension is 1 or 2 */
-Graph Distribution::drawPDF() const
-{
-  return getImplementation()->drawPDF();
+  return getImplementation()->drawMarginal2DPDF(firstMarginal, secondMarginal, xMin, xMax, pointNumber, logScaleX, logScaleY);
 }
 
 /* Draw the log-PDF of the distribution when its dimension is 1 */
 Graph Distribution::drawLogPDF(const Scalar xMin,
                                const Scalar xMax,
-                               const UnsignedInteger pointNumber) const
+                               const UnsignedInteger pointNumber,
+                               const Bool logScale) const
 {
-  return getImplementation()->drawLogPDF(xMin, xMax, pointNumber);
+  return getImplementation()->drawLogPDF(xMin, xMax, pointNumber, logScale);
 }
 
 /* Draw the log-PDF of the distribution when its dimension is 1 */
-Graph Distribution::drawLogPDF(const UnsignedInteger pointNumber) const
+Graph Distribution::drawLogPDF(const UnsignedInteger pointNumber,
+                               const Bool logScale) const
 {
-  return getImplementation()->drawLogPDF(pointNumber);
+  return getImplementation()->drawLogPDF(pointNumber, logScale);
 }
 
 /* Draw the log-PDF of a 1D marginal */
 Graph Distribution::drawMarginal1DLogPDF(const UnsignedInteger marginalIndex,
     const Scalar xMin,
     const Scalar xMax,
-    const UnsignedInteger pointNumber) const
+    const UnsignedInteger pointNumber,
+    const Bool logScale) const
 {
-  return getImplementation()->drawMarginal1DLogPDF(marginalIndex, xMin, xMax, pointNumber);
+  return getImplementation()->drawMarginal1DLogPDF(marginalIndex, xMin, xMax, pointNumber, logScale);
 }
 
 /* Draw the log-PDF of the distribution when its dimension is 2 */
 Graph Distribution::drawLogPDF(const Point & xMin,
                                const Point & xMax,
-                               const Indices & pointNumber) const
+                               const Indices & pointNumber,
+                               const Bool logScaleX,
+                               const Bool logScaleY) const
 {
-  return getImplementation()->drawLogPDF(xMin, xMax, pointNumber);
+  return getImplementation()->drawLogPDF(xMin, xMax, pointNumber, logScaleX, logScaleY);
 }
 
 /* Draw the log-PDF of the distribution when its dimension is 2 */
 Graph Distribution::drawLogPDF(const Point & xMin,
-                               const Point & xMax) const
+                               const Point & xMax,
+                               const Bool logScaleX,
+                               const Bool logScaleY) const
 {
-  return getImplementation()->drawLogPDF(xMin, xMax);
+  return getImplementation()->drawLogPDF(xMin, xMax, logScaleX, logScaleY);
 }
 
 /* Draw the log-PDF of the distribution when its dimension is 2 */
-Graph Distribution::drawLogPDF(const Indices & pointNumber) const
+Graph Distribution::drawLogPDF(const Indices & pointNumber,
+                               const Bool logScaleX,
+                               const Bool logScaleY) const
 {
-  return getImplementation()->drawLogPDF(pointNumber);
+  return getImplementation()->drawLogPDF(pointNumber, logScaleX, logScaleY);
 }
 
 /* Draw the log-PDF of a 2D marginal */
@@ -1021,59 +1035,64 @@ Graph Distribution::drawMarginal2DLogPDF(const UnsignedInteger firstMarginal,
     const UnsignedInteger secondMarginal,
     const Point & xMin,
     const Point & xMax,
-    const Indices & pointNumber) const
+    const Indices & pointNumber,
+    const Bool logScaleX,
+    const Bool logScaleY) const
 {
-  return getImplementation()->drawMarginal2DLogPDF(firstMarginal, secondMarginal, xMin, xMax, pointNumber);
-}
-
-/* Draw the log-PDF of the distribution when its dimension is 1 or 2 */
-Graph Distribution::drawLogPDF() const
-{
-  return getImplementation()->drawLogPDF();
+  return getImplementation()->drawMarginal2DLogPDF(firstMarginal, secondMarginal, xMin, xMax, pointNumber, logScaleX, logScaleY);
 }
 
 /* Draw the CDF of the distribution when its dimension is 1 */
 Graph Distribution::drawCDF(const Scalar xMin,
                             const Scalar xMax,
-                            const UnsignedInteger pointNumber) const
+                            const UnsignedInteger pointNumber,
+                            const Bool logScale) const
 {
-  return getImplementation()->drawCDF(xMin, xMax, pointNumber);
+  return getImplementation()->drawCDF(xMin, xMax, pointNumber, logScale);
 }
 
 /* Draw the CDF of the distribution when its dimension is 1 */
-Graph Distribution::drawCDF(const UnsignedInteger pointNumber) const
+Graph Distribution::drawCDF(const UnsignedInteger pointNumber,
+                            const Bool logScale) const
 {
-  return getImplementation()->drawCDF(pointNumber);
+  return getImplementation()->drawCDF(pointNumber, logScale);
 }
 
 /* Draw the CDF of a 1D marginal */
 Graph Distribution::drawMarginal1DCDF(const UnsignedInteger marginalIndex,
                                       const Scalar xMin,
                                       const Scalar xMax,
-                                      const UnsignedInteger pointNumber) const
+                                      const UnsignedInteger pointNumber,
+                                      const Bool logScale) const
 {
-  return getImplementation()->drawMarginal1DCDF(marginalIndex, xMin, xMax, pointNumber);
+  return getImplementation()->drawMarginal1DCDF(marginalIndex, xMin, xMax, pointNumber, logScale);
 }
 
 /* Draw the CDF of the distribution when its dimension is 2 */
 Graph Distribution::drawCDF(const Point & xMin,
                             const Point & xMax,
-                            const Indices & pointNumber) const
+                            const Indices & pointNumber,
+                            const Bool logScaleX,
+                            const Bool logScaleY) const
 {
-  return getImplementation()->drawCDF(xMin, xMax, pointNumber);
+  return getImplementation()->drawCDF(xMin, xMax, pointNumber, logScaleX, logScaleY);
 }
 
 /* Draw the CDF of the distribution when its dimension is 2 */
 Graph Distribution::drawCDF(const Point & xMin,
-                            const Point & xMax) const
+                            const Point & xMax,
+                            const Bool logScaleX,
+                            const Bool logScaleY) const
 {
-  return getImplementation()->drawCDF(xMin, xMax);
+  return getImplementation()->drawCDF(xMin, xMax, logScaleX, logScaleY);
 }
 
 /* Draw the CDF of the distribution when its dimension is 2 */
-Graph Distribution::drawCDF(const Indices & pointNumber) const
+Graph Distribution::drawCDF(const Indices & pointNumber,
+                            const Bool logScaleX,
+                            const Bool logScaleY) const
 {
-  return getImplementation()->drawCDF(pointNumber);
+  return getImplementation()->drawCDF(pointNumber, logScaleX, logScaleY);
 }
 
 /* Draw the CDF of a 2D marginal */
@@ -1081,28 +1100,91 @@ Graph Distribution::drawMarginal2DCDF(const UnsignedInteger firstMarginal,
                                       const UnsignedInteger secondMarginal,
                                       const Point & xMin,
                                       const Point & xMax,
-                                      const Indices & pointNumber) const
+                                      const Indices & pointNumber,
+                                      const Bool logScaleX,
+                                      const Bool logScaleY) const
 {
-  return getImplementation()->drawMarginal2DCDF(firstMarginal, secondMarginal, xMin, xMax, pointNumber);
+  return getImplementation()->drawMarginal2DCDF(firstMarginal, secondMarginal, xMin, xMax, pointNumber, logScaleX, logScaleY);
 }
 
-/* Draw the CDF of the distribution when its dimension is 1 or 2 */
-Graph Distribution::drawCDF() const
+/* Draw the SurvivalFunction of the distribution when its dimension is 1 */
+Graph Distribution::drawSurvivalFunction(const Scalar xMin,
+    const Scalar xMax,
+    const UnsignedInteger pointNumber,
+    const Bool logScale) const
 {
-  return getImplementation()->drawCDF();
+  return getImplementation()->drawSurvivalFunction(xMin, xMax, pointNumber, logScale);
+}
+
+/* Draw the SurvivalFunction of the distribution when its dimension is 1 */
+Graph Distribution::drawSurvivalFunction(const UnsignedInteger pointNumber,
+    const Bool logScale) const
+{
+  return getImplementation()->drawSurvivalFunction(pointNumber, logScale);
+}
+
+/* Draw the SurvivalFunction of a 1D marginal */
+Graph Distribution::drawMarginal1DSurvivalFunction(const UnsignedInteger marginalIndex,
+    const Scalar xMin,
+    const Scalar xMax,
+    const UnsignedInteger pointNumber,
+    const Bool logScale) const
+{
+  return getImplementation()->drawMarginal1DSurvivalFunction(marginalIndex, xMin, xMax, pointNumber, logScale);
+}
+
+/* Draw the SurvivalFunction of the distribution when its dimension is 2 */
+Graph Distribution::drawSurvivalFunction(const Point & xMin,
+    const Point & xMax,
+    const Indices & pointNumber,
+    const Bool logScaleX,
+    const Bool logScaleY) const
+{
+  return getImplementation()->drawSurvivalFunction(xMin, xMax, pointNumber, logScaleX, logScaleY);
+}
+
+/* Draw the SurvivalFunction of the distribution when its dimension is 2 */
+Graph Distribution::drawSurvivalFunction(const Point & xMin,
+    const Point & xMax,
+    const Bool logScaleX,
+    const Bool logScaleY) const
+{
+  return getImplementation()->drawSurvivalFunction(xMin, xMax, logScaleX, logScaleY);
+}
+
+/* Draw the SurvivalFunction of the distribution when its dimension is 2 */
+Graph Distribution::drawSurvivalFunction(const Indices & pointNumber,
+    const Bool logScaleX,
+    const Bool logScaleY) const
+{
+  return getImplementation()->drawSurvivalFunction(pointNumber, logScaleX, logScaleY);
+}
+
+/* Draw the SurvivalFunction of a 2D marginal */
+Graph Distribution::drawMarginal2DSurvivalFunction(const UnsignedInteger firstMarginal,
+    const UnsignedInteger secondMarginal,
+    const Point & xMin,
+    const Point & xMax,
+    const Indices & pointNumber,
+    const Bool logScaleX,
+    const Bool logScaleY) const
+{
+  return getImplementation()->drawMarginal2DSurvivalFunction(firstMarginal, secondMarginal, xMin, xMax, pointNumber, logScaleX, logScaleY);
 }
 
 /* Draw the quantile of the distribution when its dimension is 1 or 2 */
-Graph Distribution::drawQuantile(const UnsignedInteger pointNumber) const
+Graph Distribution::drawQuantile(const UnsignedInteger pointNumber,
+                                 const Bool logScale) const
 {
-  return getImplementation()->drawQuantile(pointNumber);
+  return getImplementation()->drawQuantile(pointNumber, logScale);
 }
 
 Graph Distribution::drawQuantile(const Scalar qMin,
                                  const Scalar qMax,
-                                 const UnsignedInteger pointNumber) const
+                                 const UnsignedInteger pointNumber,
+                                 const Bool logScale) const
 {
-  return getImplementation()->drawQuantile(qMin, qMax, pointNumber);
+  return getImplementation()->drawQuantile(qMin, qMax, pointNumber, logScale);
 }
 
 /* Parameters value and description accessor */

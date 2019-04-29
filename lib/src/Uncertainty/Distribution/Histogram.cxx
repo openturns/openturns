@@ -482,18 +482,21 @@ Point Histogram::getSingularities() const
 }
 
 /* Draw the PDF of the Histogram using a specific presentation */
-Graph Histogram::drawPDF() const
+Graph Histogram::drawPDF(const UnsignedInteger pointNumber,
+                         const Bool logScale) const
 {
   const UnsignedInteger lastIndex = cumulatedWidth_.getSize() - 1;
   // Must prefix explicitely by the class name in order to avoid conflict with the methods in the upper class
-  return Histogram::drawPDF(first_ - 0.5 * width_[0], first_ + cumulatedWidth_[lastIndex] + 0.5 * width_[lastIndex]);
+  return Histogram::drawPDF(first_ - 0.5 * width_[0], first_ + cumulatedWidth_[lastIndex] + 0.5 * width_[lastIndex], pointNumber, logScale);
 }
 
 /* Draw the PDF of the Histogram using a specific presentation */
 Graph Histogram::drawPDF(const Scalar xMin,
                          const Scalar xMax,
-                         const UnsignedInteger ) const
+                         const UnsignedInteger,
+                         const Bool logScale) const
 {
+  if (logScale) throw NotYetImplementedException(HERE) << "in Histogram::drawPDF with logScale=true";
   if (xMax <= xMin) throw InvalidArgumentException(HERE) << "Error: cannot draw a PDF with xMax >= xMin, here xmin=" << xMin << " and xmax=" << xMax;
   const String title(OSS() << getDescription()[0] << " PDF");
   const String xName(getDescription()[0]);

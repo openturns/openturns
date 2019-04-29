@@ -50,7 +50,8 @@ public:
   TestResult(const String & type,
              const Bool binMeasure,
              const Scalar pVal,
-             const Scalar pThreshold);
+             const Scalar pThreshold,
+             const Scalar statistic);
 
 
   /** Virtual constructor */
@@ -68,6 +69,7 @@ public:
   Scalar getPValue() const;
   Scalar getThreshold() const;
   String getTestType() const;
+  Scalar getStatistic() const;
 
   /** Comparison operator */
   Bool operator ==(const TestResult & other) const;
@@ -84,6 +86,7 @@ protected:
   Bool binaryQualityMeasure_ ;
   Scalar pValueThreshold_ ;
   Scalar pValue_ ;
+  Scalar statistic_;
   Description description_;
 
 }

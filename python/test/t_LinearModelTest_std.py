@@ -21,19 +21,15 @@ sample = distribution.getSample(size)
 sampleX = ot.Sample(size, dim - 1)
 sampleY = ot.Sample(size, 1)
 for i in range(size):
-    sampleY[i] = ot.Point(1, sample[i, 0])
-    p = ot.Point(dim - 1)
+    sampleY[i, 0] = sample[i, 0]
     for j in range(dim - 1):
-        p[j] = sample[i, j + 1]
-    sampleX[i] = p
+        sampleX[i, j] = sample[i, j + 1]
 
 sampleZ = ot.Sample(size, 1)
 for i in range(size):
-    sampleZ[i] = ot.Point(1, sampleY[i, 0] * sampleY[i, 0])
-print("LinearModelFisher=",
-      ot.LinearModelTest.LinearModelFisher(sampleY, sampleZ))
-print("LinearModelResidualMean=",
-      ot.LinearModelTest.LinearModelResidualMean(sampleY, sampleZ))
+    sampleZ[i, 0] = sampleY[i, 0] * sampleY[i, 0]
+print("LinearModelFisher pvalue=%1.2f"%ot.LinearModelTest.LinearModelFisher(sampleY, sampleZ).getPValue())
+print("LinearModelResidualMean pvalue=%1.2f"%ot.LinearModelTest.LinearModelResidualMean(sampleY, sampleZ).getPValue())
 
 # Durbin Watson
 ot.RandomGenerator.SetSeed(5415)
@@ -44,7 +40,7 @@ x = ot.Sample([[0], [1.42857], [2.85714], [4.28571], [5.71429], [7.14286],
                 [8.57143], [10], [11.4286], [12.8571], [14.2857], [15.7143],
                 [17.1429], [18.5714], [20]])
 y = f(x) + eps.getSample(N)
-linmodel = ot.LinearModelAlgorithm(x, y).getResult().getTrendCoefficients()
+linmodel = ot.LinearModelAlgorithm(x, y).getResult().getCoefficients()
 dwTest = ot.LinearModelTest.LinearModelDurbinWatson(x, y)
 print('Durbin Watson = ', dwTest)
 

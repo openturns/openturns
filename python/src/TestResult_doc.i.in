@@ -59,3 +59,13 @@ Returns
 -------
 threshold : float, :math:`0 \leq \alpha \leq 1`
     Accepted risk of committing a Type I error."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TestResult::getStatistic
+"Accessor to the used statistic for decision.
+
+Returns
+-------
+statistic : float
+    Measure used for the statistical test."

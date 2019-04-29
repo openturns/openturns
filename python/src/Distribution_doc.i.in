@@ -92,12 +92,20 @@ OT_Distribution_drawMarginal2DCDF_doc
 OT_Distribution_drawMarginal2DPDF_doc
 %feature("docstring") OT::Distribution::drawMarginal2DLogPDF
 OT_Distribution_drawMarginal2DLogPDF_doc
+%feature("docstring") OT::Distribution::drawMarginal2DSurvivalFunction
+OT_Distribution_drawMarginal2DSurvivalFunction_doc
 %feature("docstring") OT::Distribution::drawPDF
 OT_Distribution_drawPDF_doc
 %feature("docstring") OT::Distribution::drawLogPDF
 OT_Distribution_drawLogPDF_doc
 %feature("docstring") OT::Distribution::drawQuantile
 OT_Distribution_drawQuantile_doc
+%feature("docstring") OT::Distribution::drawSurvivalFunction
+OT_Distribution_drawSurvivalFunction_doc
+%feature("docstring") OT::Distribution::drawMarginal1DSurvivalFunction
+OT_Distribution_drawMarginal1DSurvivalFunction_doc
+%feature("docstring") OT::Distribution::drawMarginal1DPDF
+OT_Distribution_drawMarginal1DPDF_doc
 %feature("docstring") OT::Distribution::getCDFEpsilon
 OT_Distribution_getCDFEpsilon_doc
 %feature("docstring") OT::Distribution::getCenteredMoment

@@ -1,10 +1,72 @@
-%feature("docstring") OT::DistFunc::rDiscrete
-"Realization of a bounded integral discrete distribution.
+%feature("docstring") OT::DistFunc::logdBinomial
+"Logarithm of the probability function of a binomial distribution.
 
 Parameters
 ----------
-probabilities : sequence of float
-    The probabilities of the discrete distribution :math:`p_k=\Prob{X=k}`, where :math:`p_k\in[0,1]` and :math:`\sum_{k=1}^n p_k=1`.
+n : int, :math:`n>0`
+    The number of trials
+p : float, :math:`0\leq p\leq 1`
+    The success probability of each trial
+k : int
+    The number of success.
+
+Returns
+-------
+logp : float
+    The natural logarithm of the probability to get :math:`k` successes.
+
+Notes
+-----
+This method implements Loader's algorithm, the *fast* and *accurate* method
+described in [loader2000]_, with the further improvements mentioned
+in [dimitriadis2016]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> p = ot.DistFunc.logdBinomial(5, 0.2, 2)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::dBinomial
+"Probability function of a binomial distribution.
+
+Parameters
+----------
+n : int, :math:`n>0`
+    The number of trials
+p : float, :math:`0\leq p\leq 1`
+    The success probability of each trial
+k : int
+    The number of success.
+
+Returns
+-------
+probability : float
+    The probability to get :math:`k` successes.
+
+Notes
+-----
+This method implements Loader's algorithm, the *fast* and *accurate* method
+described in [loader2000]_, with the further improvements mentioned
+in [dimitriadis2016]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> p = ot.DistFunc.dBinomial(5, 0.2, 2)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::rBinomial
+"Realization of a binomial distribution.
+
+Parameters
+----------
+n : int, :math:`n>0`
+    The number of trials
+p : float, :math:`0\leq p\leq 1`
+    The success probability of each trial
 size : int
     The number of realizations to generate.
 
@@ -15,7 +77,38 @@ realizations : int or :class:`~openturns.Indices`
 
 Notes
 -----
-This method implements the *alias* method as described in [devroye1986]_, Chapter 3. It has an optimal space complexity of :math:`\cO(n)` and runtime CPU complexity of :math:`\cO(1)`.
+This method implements the rejection algorithm described in [hormann1993]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> r = ot.DistFunc.rBinomial(5, 0.3)
+>>> r = ot.DistFunc.rBinomial(5, 0.3, 10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::rDiscrete
+"Realization of a bounded integral discrete distribution.
+
+Parameters
+----------
+probabilities : sequence of float
+    The probabilities of the discrete distribution :math:`p_k=\Prob{X=k}`,
+    where :math:`p_k\in[0,1]` and :math:`\sum_{k=1}^n p_k=1`.
+size : int
+    The number of realizations to generate.
+
+Returns
+-------
+realizations : int or :class:`~openturns.Indices`
+    The realizations of the discrete disctribution.
+
+Notes
+-----
+This method implements the *alias* method as described in [devroye1986]_,
+Chapter 3. It has an optimal space complexity of :math:`\cO(n)` and runtime CPU
+complexity of :math:`\cO(1)`.
 
 Examples
 --------
@@ -23,6 +116,138 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> r = ot.DistFunc.rDiscrete([0.2, 0.3, 0.5])
 >>> r = ot.DistFunc.rDiscrete([0.2, 0.3, 0.5], 10)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::logdHypergeometric
+"Logarithm of the probability function of an hypergeometric distribution.
+
+Parameters
+----------
+n : int, :math:`n\geq 0`
+    The population size
+k : int, :math:`0\leq k\leq n`
+    The number of candidates in the population
+m : int, :math:`0\leq m\leq n`
+    The number of individuals in a draw
+x : int, :math:`x\geq 0`
+    The number of candidates in a draw
+
+Returns
+-------
+logp : float
+    The natural logarithm of the probability to get :math:`x` candidates in a draw.
+
+Notes
+-----
+This method is based on an algorithm similar to Loader's algorithm, the *fast*
+and *accurate* method described in [loader2000]_, with the further improvements
+mentioned in [dimitriadis2016]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> p = ot.DistFunc.logdHypergeometric(10, 4, 7, 2)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::dHypergeometric
+"The probability function of an hypergeometric distribution.
+
+Parameters
+----------
+n : int, :math:`n\geq 0`
+    The population size
+k : int, :math:`0\leq k\leq n`
+    The number of candidates in the population
+m : int, :math:`0\leq m\leq n`
+    The number of individuals in a draw
+x : int, :math:`x\geq 0`
+    The number of candidates in a draw
+
+Returns
+-------
+p : float
+    The probability to get :math:`x` candidates in a draw.
+
+Notes
+-----
+This method is based on an algorithm similar to Loader's algorithm, the *fast*
+and *accurate* method described in [loader2000]_, with the further improvements
+mentioned in [dimitriadis2016]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> p = ot.DistFunc.dHypergeometric(10, 4, 7, 2)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::pHypergeometric
+"The cumulative probability function of an hypergeometric distribution.
+
+Parameters
+----------
+n : int, :math:`n\geq 0`
+    The population size
+k : int, :math:`0\leq k\leq n`
+    The number of candidates in the population
+m : int, :math:`0\leq m\leq n`
+    The number of individuals in a draw
+x : int, :math:`x\geq 0`
+    The number of candidates in a draw
+tail : bool
+    Flag to tell if it is the CDF or its complement which is evaluated
+
+Returns
+-------
+p : float
+    The probability to get at most :math:`x` candidates in a draw.
+
+Notes
+-----
+This method is based on a summation of the probability function toward the upper
+bound or the lower bound of the range depending on the position of :math:`x` wrt
+the mode :math:`\left\lfloor\dfrac{(k+1)(m+1)}{n+2}\right\rfloor` of the
+distribution, then take the complement if needed.
+
+Examples
+--------
+>>> import openturns as ot
+>>> p = ot.DistFunc.pHypergeometric(10, 4, 7, 2)
+>>> p = ot.DistFunc.pHypergeometric(10, 4, 7, 2, True)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::rHypergeometric
+"Realization of an hypergeometric distribution.
+
+Parameters
+----------
+n : int, :math:`n\geq 0`
+    The population size
+k : int, :math:`0\leq k\leq n`
+    The number of candidates in the population
+m : int, :math:`0\leq m\leq n`
+    The number of individuals in a draw
+size : int
+    The number of realizations to generate.
+
+Returns
+-------
+realizations : int or :class:`~openturns.Indices`
+    The realizations of the discrete disctribution.
+
+Notes
+-----
+This method is based on the alias method.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> r = ot.DistFunc.rHypergeometric(10, 4, 7)
+>>> r = ot.DistFunc.rHypergeometric(10, 4, 7, 10)"
 
 // ---------------------------------------------------------------------
 
@@ -174,8 +399,6 @@ Examples
 >>> import openturns as ot
 >>> k = ot.DistFunc.kFactor(5, 0.95, 0.9)"
 
-
-
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::pPearsonCorrelation
@@ -210,3 +433,90 @@ Examples
 --------
 >>> import openturns as ot
 >>> pval = ot.DistFunc.pPearsonCorrelation(100, 0.3, True)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::logdPoisson
+"Logarithm of the probability function of a Poisson distribution.
+
+Parameters
+----------
+lambda: float, :math:`\lambda\geq 0`
+    The intensity of the Poisson distribution
+k : int
+    The number of success.
+
+Returns
+-------
+logp : float
+    The natural logarithm of the probability to get :math:`k` successes.
+
+Notes
+-----
+This method implements Loader's algorithm, the *fast* and *accurate* method
+described in [loader2000]_, with the further improvements mentioned
+in [dimitriadis2016]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> p = ot.DistFunc.logdPoisson(5.0, 2)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::dPoisson
+"Probability function of a Poisson distribution.
+
+Parameters
+----------
+lambda: float, :math:`\lambda\geq 0`
+    The intensity of the Poisson distribution
+k : int
+    The number of success.
+
+Returns
+-------
+logp : float
+    The natural logarithm of the probability to get :math:`k` successes.
+
+Notes
+-----
+This method implements Loader's algorithm, the *fast* and *accurate* method
+described in [loader2000]_, with the further improvements mentioned
+in [dimitriadis2016]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> p = ot.DistFunc.dPoisson(5.0, 2)"
+
+%feature("docstring") OT::DistFunc::rPoisson
+"Realization of a Poisson distribution.
+
+Parameters
+----------
+lambda: float, :math:`\lambda\geq 0`
+    The intensity of the Poisson distribution
+size : int
+    The number of realizations to generate.
+
+Returns
+-------
+realizations : int or :class:`~openturns.Indices`
+    The realizations of the discrete disctribution.
+
+Notes
+-----
+For the small values of :math:`\lambda`, we use the method of inversion by
+sequential search described in [devroye1986]_ and with the important errata in
+[devroye1986b]_. For the large values of :math:`\lambda`, we use the ratio of
+uniform method described in [stadlober1990]_.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> r = ot.DistFunc.rPoisson(5.0)
+>>> r = ot.DistFunc.rPoisson(5.0, 10)"
+
+

@@ -131,8 +131,6 @@ Examples
 >>> firstSample = sample
 >>> secondSample = func(sample) + ot.Normal().getSample(30)
 >>> test_result = ot.LinearModelTest.LinearModelResidualMean(firstSample, secondSample)
->>> print(test_result)
-class=TestResult name=Unnamed type=ResidualMean binaryQualityMeasure=true p-value threshold=0.05 p-value=1 description=[]
 "
 
 // ---------------------------------------------------------------------
@@ -207,7 +205,7 @@ Examples
 >>> secondSample = func(sample) + ot.Normal().getSample(30)
 >>> test_result = ot.LinearModelTest.LinearModelHarrisonMcCabe(firstSample, secondSample)
 >>> print(test_result)
-class=TestResult name=Unnamed type=HarrisonMcCabe binaryQualityMeasure=true p-value threshold=0.05 p-value=0.142 description=[]
+class=TestResult name=Unnamed type=HarrisonMcCabe binaryQualityMeasure=true p-value threshold=0.05 p-value=0.142 statistic=0.373225 description=[]
 "
 
 // ---------------------------------------------------------------------
@@ -278,7 +276,7 @@ Examples
 >>> secondSample = func(sample) + ot.Normal().getSample(30)
 >>> test_result = ot.LinearModelTest.LinearModelBreuschPagan(firstSample, secondSample)
 >>> print(test_result)
-class=TestResult name=Unnamed type=BreuschPagan binaryQualityMeasure=true p-value threshold=0.05 p-value=0.700772 description=[]
+class=TestResult name=Unnamed type=BreuschPagan binaryQualityMeasure=true p-value threshold=0.05 p-value=0.700772 statistic=0.14767 description=[]
 "
 
 
@@ -352,7 +350,7 @@ Examples
 >>> secondSample = func(sample) + ot.Normal().getSample(30)
 >>> test_result = ot.LinearModelTest.LinearModelDurbinWatson(firstSample, secondSample)
 >>> print(test_result)
-class=TestResult name=Unnamed type=DurbinWatson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.653603 description=[H0: auto.cor=0]
+class=TestResult name=Unnamed type=DurbinWatson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.653603 statistic=0.448763 description=[H0: auto.cor=0]
 "
 
 
@@ -413,7 +411,7 @@ Examples
 >>> selection = [1]
 >>> test_result = ot.LinearModelTest.PartialRegression(firstSample, secondSample, selection)
 >>> print(test_result[1])
-class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.579638 description=[]"
+class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.579638 statistic=-0.560438 description=[]"
 
 
 // ---------------------------------------------------------------------
@@ -473,6 +471,6 @@ Examples
 >>> secondSample = sample[:, 2]
 >>> test_result = ot.LinearModelTest.FullRegression(firstSample, secondSample)
 >>> print(test_result)
-[class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.605 description=[],class=TestResult name=Unnamed type=Regression binaryQualityMeasure=false p-value threshold=0.05 p-value=9.70282e-27 description=[],class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.11352 description=[]]"
+[class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.605 statistic=-0.52335 description=[],class=TestResult name=Unnamed type=Regression binaryQualityMeasure=false p-value threshold=0.05 p-value=9.70282e-27 statistic=44.256 description=[],class=TestResult name=Unnamed type=Regression binaryQualityMeasure=true p-value threshold=0.05 p-value=0.11352 statistic=1.63564 description=[]]"
 
 

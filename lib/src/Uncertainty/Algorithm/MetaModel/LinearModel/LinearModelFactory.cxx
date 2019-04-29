@@ -42,7 +42,7 @@ LinearModel LinearModelFactory::build(const Sample & samplePred,
   const LinearModelResult result(algo.getResult());
   const LinearModelAnalysis analysis(result);
   const Interval confidenceIntervals(analysis.getCoefficientsConfidenceInterval(levelValue));
-  const Point regression(result.getTrendCoefficients());
+  const Point regression(result.getCoefficients());
   const LinearModel::ScalarCollection pValues(analysis.getCoefficientsPValues());
   return LinearModel(regression, confidenceIntervals, pValues);
 }

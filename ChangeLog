@@ -1,6 +1,6 @@
 = New Features =
 
-== 1.13 release (in progress) == #release-1.13
+== 1.13rc1 release (2019-04-26) == #release-1.13rc1
 
 === Library ===
 
@@ -20,6 +20,7 @@
  * DiscreteMarkovChain
  * CalibrationAlgorithm, CalibrationResult, GaussianLinearCalibration, LinearLeastSquaresCalibration
  * NonLinearLeastSquaresCalibration, GaussianNonLinearCalibration
+ * Hypergeometric
 
 ==== API changes ====
  * Removed deprecated FunctionalChaosRandomVector::getSobol* methods
@@ -32,6 +33,7 @@
  * Deprecated (Linear|Quadratic)(LeastSquares|Taylor)::getResponseSurface
  * FittingTest::BestModelBIC returns the Distribution and the BIC value
  * Deprecated VisualTest::DrawEmpiricalCDF,DrawHistogram,DrawClouds
+ * Add statistic attribute and accessor to the TestResult class
 
 === Python module ===
 
@@ -59,6 +61,7 @@
  * #1028 (Build fails with clang-60: token is not a valid binary operator in a preprocessor subexpression)
  * #1031 (The doc for LogNormal and LogNormalMuSigma is confusing )
  * #1035 (ProbabilitySimulationResult does not provide the distribution of the probability)
+ * #1036 (Doc error for KrigingAlgorithm method getReducedLogLikelihoodFunction())
  * #1043 (The DrawSobolIndices doc is wrong)
  * #1045 (LowDiscrepancyExperiment/ComposedCopula correlation across blocks ?)
  * #1051 (The default value of computeSecondOrder in SobolIndicesExperiment should be False)
@@ -66,6 +69,9 @@
  * #1057 (FittingTest.BestModelBIC to return bic value)
  * #1064 (The summary of a FunctionalChaosSobolIndices fails with more than 14 dimensions)
  * #1071 (Event cannot be created from a RandomVector)
+ * #1078 (KrigingAlgorithm documentation still references "inputTransformation")
+ * #1090 (PythonFunction can make OT crash)
+ * #1092 (The parameterGradient of a ParametricFunction can loss accuracy)
 
 == 1.12 release (2018-11-08) == #release-1.12
 

@@ -23,6 +23,7 @@
 /* Uncertainty/Distribution (except copulas) */
 %include Histogram.i
 %include HistogramFactory.i
+%include Hypergeometric.i
 %include BayesDistribution.i
 %include InverseChiSquare.i
 %include InverseGamma.i

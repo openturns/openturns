@@ -7,8 +7,7 @@ import math as m
 import sys
 
 ot.TESTPREAMBLE()
-ot.PlatformInfo.SetNumericalPrecision(3)
-ot.Log.Show(ot.Log.ALL)
+ot.PlatformInfo.SetNumericalPrecision(5)
 
 m = 10
 x = [[0.5 + i] for i in range(m)]
@@ -32,6 +31,11 @@ for i in range(2):
     errorCovariance[i, i] = 2.0 + (1.0 + i) * (1.0 + i)
     for j in range(i):
         errorCovariance[i, j] = 1.0 / (1.0 + i + j)
+globalErrorCovariance = ot.CovarianceMatrix(2 * m)
+for i in range(2 * m):
+    globalErrorCovariance[i, i] = 2.0 + (1.0 + i) * (1.0 + i)
+    for j in range(i):
+        globalErrorCovariance[i, j] = 1.0 / (1.0 + i + j)
 
 methods = ["SVD", "QR", "Cholesky"]
 for method in methods:
@@ -39,3 +43,6 @@ for method in methods:
     algo = ot.GaussianLinearCalibration(modelX, x, y, candidate, priorCovariance, errorCovariance, method)
     algo.run()
     print("result=", algo.getResult())
+    algo = ot.BLUE(modelX, x, y, candidate, priorCovariance, globalErrorCovariance, method)
+    algo.run()
+    print("result (global)=", algo.getResult())

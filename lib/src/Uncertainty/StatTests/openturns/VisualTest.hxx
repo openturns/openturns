@@ -63,6 +63,15 @@ public:
   static Graph DrawQQplot(const Sample & sample,
                           const Distribution & dist);
 
+  /** Draw the CDFplot of two Samples when its dimension is 1 */
+  static Graph DrawCDFplot(const Sample & sample1,
+			   const Sample & sample2);
+
+
+  /** Draw the CDFplot of one Sample and one Distribution when its dimension is 1 */
+  static Graph DrawCDFplot(const Sample & sample,
+			   const Distribution & dist);
+
   /** Draw the Henry curve for one Sample when its dimension is 1 */
   static Graph DrawHenryLine(const Sample & sample);
 

@@ -52,6 +52,11 @@ public:
   /** String converter */
   String __repr__() const;
 
+  /** Get the PDF of the distribution */
+  using DistributionImplementation::computePDF;
+  virtual Scalar computePDF(const Point & point) const;
+  virtual Scalar computePDF(const Indices & point) const;
+
   /* Methods inherited from upper classes */
 
   /** Tell if the distribution is continuous */

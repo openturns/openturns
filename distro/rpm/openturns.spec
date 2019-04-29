@@ -1,4 +1,5 @@
 # norootforbuild
+%{?__python2: %global __python %{__python2}}
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
 
 %define __cmake %{_bindir}/cmake
@@ -15,7 +16,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.12
+Version:        1.13rc1
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -29,6 +30,10 @@ BuildRequires:  muParser-devel
 BuildRequires:  libxml2-devel
 BuildRequires:  boost-devel
 BuildRequires:  nlopt-devel
+%if 0%{?fedora_version}
+BuildRequires:  cminpack-devel
+BuildRequires:  ceres-solver-devel
+%endif
 #BuildRequires:  hmat-oss-devel
 %if 0%{?suse_version}
 BuildRequires:  lapack
@@ -59,6 +64,10 @@ Requires:       libxml2
 %if ! 0%{?suse_version}
 Requires:       nlopt
 %endif
+%if 0%{?fedora_version}
+Requires:       cminpack
+Requires:       ceres-solver
+%endif
 #Requires:       libhmat-oss1
 
 %description libs
@@ -68,12 +77,10 @@ Uncertainty treatment library binaries
 Summary:        OpenTURNS development files
 Group:          Development/Libraries/C and C++
 Requires:       %{name}-libs = %{version}
-Requires:       muParser-devel
 Requires:       libxml2-devel
 %if ! 0%{?suse_version}
 Requires:       lapack-devel
 %endif
-Requires:       nlopt-devel
 
 %description devel
 Development files for OpenTURNS uncertainty library
@@ -84,14 +91,6 @@ Group:          Productivity/Scientific/Math
 
 %description examples
 OpenTURNS python examples
-
-%package validation
-BuildArch:      noarch
-Summary:        OpenTURNS validation files
-Group:          Productivity/Scientific/Math
-
-%description validation
-OpenTURNS validation text files
 
 %package -n python-%{name}
 Summary:        Uncertainty treatment library
@@ -108,8 +107,9 @@ Python textual interface to OpenTURNS uncertainty library
 %build
 %cmake -DINSTALL_DESTDIR:PATH=%{buildroot} \
        -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
-       -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES=-j16 \
-       -DPYTHON_EXECUTABLE=/usr/bin/python \
+       -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j16" \
+       -DPYTHON_EXECUTABLE=%{__python} \
+       -DSWIG_COMPILE_FLAGS="-O1" \
        -DOPENTURNS_SYSCONFIG_PATH=/etc .
 make %{?_smp_mflags} OT
 make
@@ -121,8 +121,7 @@ rm -r %{buildroot}%{_datadir}/%{name}/doc
 
 %check
 make tests %{?_smp_mflags}
-LD_LIBRARY_PATH=%{buildroot}%{_libdir} ctest %{?_smp_mflags} || cat Testing/Temporary/LastTest.log
-rm %{buildroot}%{python_sitearch}/%{name}/*.pyc
+LD_LIBRARY_PATH=%{buildroot}%{_libdir} ctest --output-on-failure %{?_smp_mflags}
 
 %clean
 rm -rf %{buildroot}
@@ -151,15 +150,15 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_datadir}/%{name}/examples/
 
-%files validation
-%defattr(-,root,root,-)
-%{_datadir}/%{name}/validation/
-
 %files -n python-%{name}
 %defattr(-,root,root,-)
 %{python_sitearch}/%{name}/
+%{python_sitearch}/%{name}-*.dist-info/
 
 %changelog
+* Tue Apr 23 2019 Julien Schueller <schueller at phimeca dot com> 1.13-1
+- New upstream release
+
 * Tue Oct 2 2018 Julien Schueller <schueller at phimeca dot com> 1.12-1
 - New upstream release
 

@@ -278,6 +278,7 @@ as Python functions.
     SpecFunc_LogBesselI1
     SpecFunc_LogBesselK
     SpecFunc_LogBeta
+    SpecFunc_LogFactorial
     SpecFunc_LogGamma
     SpecFunc_LogGamma1p
     SpecFunc_NextPowerOfTwo
@@ -286,6 +287,7 @@ as Python functions.
     SpecFunc_RegularizedIncompleteBetaInverse
     SpecFunc_RegularizedIncompleteGamma
     SpecFunc_RegularizedIncompleteGammaInverse
+    SpecFunc_Stirlerr
     SpecFunc_TriGamma
     TimerCallback
 

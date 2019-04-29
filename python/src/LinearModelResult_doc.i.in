@@ -38,6 +38,16 @@ See Also
 LinearModelAlgorithm
 "
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getBasis
+"Accessor to the basis.
+
+Returns
+-------
+basis : :class:`~openturns.Basis`
+    The basis which had been passed to the constructor."
+
 
 // ---------------------------------------------------------------------
 
@@ -71,12 +81,22 @@ outputSample : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearModelResult::getTrendCoefficients
+%feature("docstring") OT::LinearModelResult::getCoefficients
 "Accessor to the coefficients of the linear model of the trend.
 
 Returns
 -------
 beta : :class:`~openturns.Point`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getCoefficientsStandardErrors
+"Accessor to the coefficients of standard error.
+
+Returns
+-------
+standardErrors : :class:`~openturns.Point`
 "
 
 // ---------------------------------------------------------------------
@@ -167,5 +187,25 @@ diagonalGramInverse : :class:`~openturns.Point`
 Returns
 -------
 cookDistances : :class:`~openturns.Point`
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getRSquared
+"Accessor to the R-squared test.
+
+Returns
+-------
+rSquared : float
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::getAdjustedRSquared
+"Accessor to the Adjusted R-squared test.
+
+Returns
+-------
+adjustedRSquared : float
 "
 

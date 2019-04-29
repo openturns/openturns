@@ -36,10 +36,6 @@ set (CMINPACK_INCLUDE_DIRS ${CMINPACK_INCLUDE_DIR})
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(CMinpack DEFAULT_MSG CMINPACK_LIBRARY CMINPACK_INCLUDE_DIRS)
 
-if (NOT DEFINED CMinpack_FOUND)
-  set (CMinpack_FOUND ${CMINPACK_FOUND})
-endif ()
-
 mark_as_advanced (
   CMINPACK_LIBRARY
   CMINPACK_LIBRARIES

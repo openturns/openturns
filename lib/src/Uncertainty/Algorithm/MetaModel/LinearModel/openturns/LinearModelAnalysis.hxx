@@ -63,16 +63,9 @@ public:
   LinearModelResult getLinearModelResult() const;
 
   /** Accessors to data from ANOVA table */
-  Point getCoefficientsStandardErrors() const;
   Point getCoefficientsTScores() const;
   Point getCoefficientsPValues() const;
   Interval getCoefficientsConfidenceInterval(const Scalar level = 0.95) const;
-
-  /** R-squared */
-  Scalar getRSquared() const;
-
-  /** Adjusted R-squared */
-  Scalar getAdjustedRSquared() const;
 
   /** Fisher test */
   Scalar getFisherScore() const;
@@ -89,13 +82,6 @@ public:
 
   /** Cramer Von mises normality test */
   TestResult getNormalityTestCramerVonMises() const;
-
-  /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
-
-  /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
-
 
   /* [0] Draw model versus fitted values */
   Graph drawModelVsFitted() const;
@@ -117,6 +103,12 @@ public:
 
   /** [6] a plot of Cook's distances versus leverage/(1-leverage) */
   Graph drawCookVsLeverages() const;
+
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
 
 private:
 

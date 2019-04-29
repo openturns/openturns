@@ -514,6 +514,7 @@ ot_pyinstallcheck_test (Wishart_std)
 ot_pyinstallcheck_test (ZipfMandelbrot_std)
 ot_pyinstallcheck_test (DistributionParameters_std)
 ot_pyinstallcheck_test (DistFunc_beta)
+ot_pyinstallcheck_test (DistFunc_binomial)
 ot_pyinstallcheck_test (DistFunc_discrete)
 ot_pyinstallcheck_test (DistFunc_gamma)
 ot_pyinstallcheck_test (DistFunc_kfactor)
@@ -566,7 +567,6 @@ ot_pyinstallcheck_test (SimulatedAnnealingLHS_std)
 ot_pyinstallcheck_test (LHSExperiment_std)
 ot_pyinstallcheck_test (LowDiscrepancyExperiment_std)
 ot_pyinstallcheck_test (MonteCarloExperiment_std)
-ot_pyinstallcheck_test (MinMax_computation)
 ot_pyinstallcheck_test (CombinatorialGenerator_std)
 ot_pyinstallcheck_test (Experiment_python)
 
@@ -686,7 +686,7 @@ ot_pyinstallcheck_test (Waarts_system_series)
 ot_pyinstallcheck_test (Waarts_saddle)
 
 ## Misc
-if (NBCONVERT_FOUND AND MATPLOTLIB_FOUND AND LIBXML2_FOUND AND NLopt_FOUND AND OPTPP_FOUND)
+if (NBCONVERT_FOUND AND MATPLOTLIB_FOUND AND LIBXML2_FOUND AND NLopt_FOUND)
   file (GLOB_RECURSE IPYNBS "${CMAKE_SOURCE_DIR}/python/doc/examples/*.ipynb")
   foreach (IPYNB ${IPYNBS})
     if (NOT IPYNB MATCHES checkpoint)
@@ -703,7 +703,7 @@ ot_pyinstallcheck_test (features IGNOREOUT)
 
 ot_pyinstallcheck_test (coupling_tools)
 
-if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND AND LIBXML2_FOUND AND NLopt_FOUND AND OPTPP_FOUND)
+if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND AND LIBXML2_FOUND AND NLopt_FOUND)
   # on py3k/swig<3.0.0, doctest fails with "NameError: Unknown C global variable"
   if (PYTHON_VERSION_MAJOR VERSION_EQUAL "2" OR SWIG_VERSION VERSION_GREATER "3")
     # source modules

@@ -89,6 +89,10 @@ String LinearModelResult::__repr__() const
   return OSS(true) << "class=" << getClassName();
 }
 
+Basis LinearModelResult::getBasis() const
+{
+  return basis_;
+}
 
 /* Input sample accessor */
 Sample LinearModelResult::getInputSample() const
@@ -110,7 +114,7 @@ Sample LinearModelResult::getFittedSample() const
 }
 
 /* Formula accessor */
-Point LinearModelResult::getTrendCoefficients() const
+Point LinearModelResult::getCoefficients() const
 {
   return beta_;
 }
@@ -164,6 +168,41 @@ Point LinearModelResult::getDiagonalGramInverse() const
 Point LinearModelResult::getCookDistances() const
 {
   return cookDistances_;
+}
+
+/* R-squared test */
+Scalar LinearModelResult::getRSquared() const
+{
+  // Get residuals and output samples
+  const Sample residuals(getSampleResiduals());
+  const Sample outputSample(getOutputSample());
+  // Define RSS and SYY
+  const Scalar RSS = residuals.computeRawMoment(2)[0];
+  const Scalar SYY = outputSample.computeCenteredMoment(2)[0];
+  const Scalar rSquared = 1.0 - RSS / SYY;
+  return rSquared;
+}
+
+/* Adjusted R-squared test */
+Scalar LinearModelResult::getAdjustedRSquared() const
+{
+  const UnsignedInteger dof = getDegreesOfFreedom();
+  const UnsignedInteger size = getSampleResiduals().getSize();
+  const Scalar R2  = getRSquared();
+  return 1.0 - (1.0 - R2) * (size - 1) / dof;
+}
+
+Point LinearModelResult::getCoefficientsStandardErrors() const
+{
+  const Scalar sigma2 = getNoiseDistribution().getCovariance()(0, 0);
+  const Point diagGramInv(getDiagonalGramInverse());
+  const UnsignedInteger basisSize = diagGramInv.getSize();
+  Point standardErrors(basisSize, 1);
+  for (UnsignedInteger i = 0; i < standardErrors.getSize(); ++i)
+  {
+    standardErrors[i] = std::sqrt(std::abs(sigma2 * diagGramInv[i]));
+  }
+  return standardErrors;
 }
 
 /* Method save() stores the object through the StorageManager */

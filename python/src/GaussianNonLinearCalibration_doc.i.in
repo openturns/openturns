@@ -18,7 +18,13 @@ errorCovariance : 2-d sequence of float
 
 Notes
 -----
-GaussianNonLinearCalibration is the minimum variance estimator of the parameter of a given model under the assumption that this parameter is dispersed according to a known covariance matrix.
+GaussianNonLinearCalibration is the minimum variance estimator of the parameter of a given model
+under the assumption that this parameter is dispersed according to a known
+covariance matrix. The given observation error covariance can be either *local*,
+ie the same matrix applies for each observation and is of dimension the output
+dimension of the model, or *global*, ie the matrix describes the full set of
+observation errors, in which case its dimension is the product of the output
+dimension of the model and the number of observations.
 
 See also
 --------
@@ -99,7 +105,21 @@ error : :class:`~openturns.CovarianceMatrix`
 
 // ---------------------------------------------------------------------
 
+<<<<<<< HEAD:python/src/GaussianNonLinearCalibration_doc.i.in
 %feature("docstring") OT::GaussianNonLinearCalibration::getAlgorithm
+=======
+%feature("docstring") OT::ThreeDVAR::getGlobalErrorCovariance
+"Accessor to the flag for a global observation error covariance.
+
+Returns
+-------
+flag : bool
+    Flag telling if the given observation error covariance is global or not."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ThreeDVAR::getAlgorithm
+>>>>>>> upstream/master:python/src/ThreeDVAR_doc.i.in
 "Accessor to the optimization algorithm used for the computation.
 
 Returns

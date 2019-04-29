@@ -62,9 +62,16 @@ public:
                      const UnsignedInteger size);
   // For the Binomial distribution
 private:
-  static Scalar fcBinomial(const UnsignedInteger k);
+  static Scalar bd0(const UnsignedInteger k,
+		    const Scalar np);
 
 public:
+  static Scalar logdBinomial(const UnsignedInteger n,
+			     const Scalar p,
+			     const UnsignedInteger k);
+  static Scalar dBinomial(const UnsignedInteger n,
+			  const Scalar p,
+			  const UnsignedInteger k);
   static UnsignedInteger rBinomial(const UnsignedInteger n,
                                    const Scalar p);
   static Indices rBinomial(const UnsignedInteger n,
@@ -98,6 +105,28 @@ public:
   static Scalar rGamma(const Scalar k);
   static Point rGamma(const Scalar k,
                       const UnsignedInteger size);
+
+  // For Hypergeometric distribution
+  static Scalar dHypergeometric(const UnsignedInteger n,
+				const UnsignedInteger k,
+				const UnsignedInteger m,
+				const UnsignedInteger x);
+  static Scalar logdHypergeometric(const UnsignedInteger n,
+				   const UnsignedInteger k,
+				   const UnsignedInteger m,
+				   const UnsignedInteger x);
+  static Scalar pHypergeometric(const UnsignedInteger n,
+				const UnsignedInteger k,
+				const UnsignedInteger m,
+				const UnsignedInteger x,
+				const Bool tail = false);
+  static UnsignedInteger rHypergeometric(const UnsignedInteger n,
+					 const UnsignedInteger k,
+					 const UnsignedInteger m);
+  static Indices rHypergeometric(const UnsignedInteger n,
+				 const UnsignedInteger k,
+				 const UnsignedInteger m,
+				 const UnsignedInteger size);
   // For Kolmogorov distribution
   static Scalar pKolmogorov(const UnsignedInteger n,
                             const Scalar x,
@@ -161,6 +190,10 @@ public:
   static Scalar rNormal();
   static Point rNormal(const UnsignedInteger size);
   // For Poisson distribution
+  static Scalar logdPoisson(const Scalar lambda,
+			    const UnsignedInteger k );
+  static Scalar dPoisson(const Scalar lambda,
+                         const UnsignedInteger k);
   static Scalar qPoisson(const Scalar lambda,
                          const Scalar p,
                          const Bool tail = false);

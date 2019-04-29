@@ -18,18 +18,6 @@
 /* Define if F77 and FC dummy `main' functions are identical. */
 #cmakedefine FC_DUMMY_MAIN_EQ_F77
 
-/* Define to 1 if you have the `alarm' function. */
-#cmakedefine HAVE_ALARM
-
-/* Define to 1 if you have the <assert.h> header file. */
-#cmakedefine OPENTURNS_HAVE_ASSERT_H
-
-/* Define to 1 if you have the `atexit' function. */
-#cmakedefine HAVE_ATEXIT
-
-/* Define if you have a BLAS library. */
-#cmakedefine HAVE_BLAS
-
 /* Define if you have bison parser generator. */
 #cmakedefine OPENTURNS_HAVE_BISON
 
@@ -45,21 +33,6 @@
 /* Define to 1 if you have the `dladr` function. */
 #cmakedefine OPENTURNS_HAVE_DLADDR
 
-/* Define to 1 if you have the <errno.h> header file. */
-#cmakedefine OPENTURNS_HAVE_ERRNO_H
-
-/* Define to 1 if you have the `getcwd' function. */
-#cmakedefine HAVE_GETCWD
-
-/* Define to 1 if you have the `gethostbyname' function. */
-#cmakedefine HAVE_GETHOSTBYNAME
-
-/* Support for ghostscript */
-#cmakedefine HAVE_GS
-
-/* Define to 1 if you have the <inttypes.h> header file. */
-#cmakedefine OPENTURNS_HAVE_INTTYPES_H
-
 /* Define to 1 if you have the <libgen.h> header file. */
 #cmakedefine OPENTURNS_HAVE_LIBGEN_H
 
@@ -68,9 +41,6 @@
 
 /* Support for regular expression library */
 #cmakedefine OPENTURNS_HAVE_LIBXML2
-
-/* Define to 1 if you have the <math.h> header file. */
-#cmakedefine OPENTURNS_HAVE_MATH_H
 
 /* Define to 1 if you have the <memory.h> header file. */
 #cmakedefine OPENTURNS_HAVE_MEMORY_H
@@ -103,35 +73,14 @@
 /* Define to 1 if you have the CMinpack library. */
 #cmakedefine OPENTURNS_HAVE_CMINPACK
 
-/* Define to 1 if R has package base. */
-#cmakedefine HAVE_R_PACKAGE_BASE
-
-/* Define to 1 if stdbool.h conforms to C99. */
-#cmakedefine OPENTURNS_HAVE_STDBOOL_H
-
-/* Define to 1 if you have the <stdint.h> header file. */
-#cmakedefine OPENTURNS_HAVE_STDINT_H
-
 /* Define to 1 if you have the <stdlib.h> header file. */
 #cmakedefine OPENTURNS_HAVE_STDLIB_H
-
-/* Define to 1 if you have the <strings.h> header file. */
-#cmakedefine OPENTURNS_HAVE_STRINGS_H
-
-/* Define to 1 if you have the <string.h> header file. */
-#cmakedefine OPENTURNS_HAVE_STRING_H
 
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #cmakedefine OPENTURNS_HAVE_SYS_STAT_H
 
-/* Define to 1 if you have the <sys/time.h> header file. */
-#cmakedefine OPENTURNS_HAVE_SYS_TIME_H
-
 /* Define to 1 if you have the <sys/types.h> header file. */
 #cmakedefine OPENTURNS_HAVE_SYS_TYPES_H
-
-/* Define to 1 if you have the <sys/un.h> header file. */
-#cmakedefine OPENTURNS_HAVE_SYS_UN_H
 
 /* Support for TBB library */
 #cmakedefine OPENTURNS_HAVE_TBB
@@ -148,9 +97,6 @@
 
 /* Define to 1 if you have the <xlocale.h> header file. */
 #cmakedefine OPENTURNS_HAVE_XLOCALE_H
-
-/* Define to 1 if the system has the type `_Bool'. */
-#cmakedefine HAVE__BOOL
 
 /* Define to 1 if the system has Boost libraries. */
 #cmakedefine OPENTURNS_HAVE_BOOST

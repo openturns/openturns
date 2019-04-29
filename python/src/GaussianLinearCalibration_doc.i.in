@@ -25,7 +25,13 @@ methodName : str
 
 Notes
 -----
-GaussianLinearCalibration stands for Best Linear Unbiased Estimator (BLUE). It is the minimum variance estimator of the parameter of a given model under the assumption that this parameter acts linearly in the model.
+BLUE stands for Best Linear Unbiased Estimator. It is the minimum variance
+estimator of the parameter of a given model under the assumption that this
+parameter acts linearly in the model. The given observation error covariance
+can be either *local*, ie the same matrix applies for each observation and is of
+dimension the output dimension of the model, or *global*, ie the matrix describes
+the full set of observation errors, in which case its dimension is the product of
+the output dimension of the model and the number of observations.
 
 See also
 --------
@@ -53,7 +59,7 @@ Calibrate a nonlinear model using GaussianLinearCalibration:
 >>> algo = ot.GaussianLinearCalibration(modelX, x, y, candidate, priorCovariance, errorCovariance, method)
 >>> algo.run()
 >>> print(algo.getResult().getParameterMAP())
-[0.997874,0.093813,0.991216]"
+[0.997874,0.0938131,0.991216]"
 
 // ---------------------------------------------------------------------
 
@@ -107,7 +113,21 @@ error : :class:`~openturns.CovarianceMatrix`
 
 // ---------------------------------------------------------------------
 
+<<<<<<< HEAD:python/src/GaussianLinearCalibration_doc.i.in
 %feature("docstring") OT::GaussianLinearCalibration::getMethodName
+=======
+%feature("docstring") OT::BLUE::getGlobalErrorCovariance
+"Accessor to the flag for a global observation error covariance.
+
+Returns
+-------
+flag : bool
+    Flag telling if the given observation error covariance is global or not."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::BLUE::getMethodName
+>>>>>>> upstream/master:python/src/BLUE_doc.i.in
 "Accessor to the name of least-squares method used for the resolution.
 
 Returns

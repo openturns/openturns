@@ -66,6 +66,8 @@ public:
   /** Get the PDF of the distribution */
   using DiscreteDistribution::computePDF;
   Scalar computePDF(const Point & point) const;
+  using DiscreteDistribution::computeLogPDF;
+  Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using DiscreteDistribution::computeCDF;
