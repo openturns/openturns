@@ -43,6 +43,6 @@ for method in methods:
     algo = ot.GaussianLinearCalibration(modelX, x, y, candidate, priorCovariance, errorCovariance, method)
     algo.run()
     print("result=", algo.getResult())
-    algo = ot.BLUE(modelX, x, y, candidate, priorCovariance, globalErrorCovariance, method)
+    algo = ot.GaussianLinearCalibration(modelX, x, y, candidate, priorCovariance, globalErrorCovariance, method)
     algo.run()
     print("result (global)=", algo.getResult())
