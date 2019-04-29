@@ -36,7 +36,7 @@ the output dimension of the model and the number of observations.
 
 See also
 --------
-LinearLeastSquaresCalibration, NonLinearLeastSquaresCalibration, ThreeDVAR
+LinearLeastSquaresCalibration, NonLinearLeastSquaresCalibration, GaussianNonLinearCalibration
 
 Examples
 --------
