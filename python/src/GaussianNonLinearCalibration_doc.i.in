@@ -147,7 +147,7 @@ Returns
 size : int
     Bootstrap size used to sample the posterior distribution. A value of 0
     means that no bootstrap has been done but a linear approximation has
-    been used to get the posterior distribution, using the :class:`~openturns.BLUE`
+    been used to get the posterior distribution, using the :class:`~openturns.GaussianLinearCalibration`
     algorithm at the maximum a posteriori estimate."
 
 // ---------------------------------------------------------------------
@@ -160,6 +160,6 @@ Parameters
 size : int
     Bootstrap size used to sample the posterior distribution. A value of 0
     means that no bootstrap has to be done but a linear approximation has
-    been used to get the posterior distribution, using the :class:`~openturns.BLUE`
+    been used to get the posterior distribution, using the :class:`~openturns.GaussianLinearCalibration`
     algorithm at the maximum a posteriori estimate."
 
