@@ -111,12 +111,7 @@ Returns
 error : :class:`~openturns.CovarianceMatrix`
     Observation error covariance."
 
-// ---------------------------------------------------------------------
-
-<<<<<<< HEAD:python/src/GaussianLinearCalibration_doc.i.in
-%feature("docstring") OT::GaussianLinearCalibration::getMethodName
-=======
-%feature("docstring") OT::BLUE::getGlobalErrorCovariance
+%feature("docstring") OT::GaussianLinearCalibration::getGlobalErrorCovariance
 "Accessor to the flag for a global observation error covariance.
 
 Returns
@@ -126,8 +121,7 @@ flag : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::BLUE::getMethodName
->>>>>>> upstream/master:python/src/BLUE_doc.i.in
+%feature("docstring") OT::GaussianLinearCalibration::getMethodName
 "Accessor to the name of least-squares method used for the resolution.
 
 Returns

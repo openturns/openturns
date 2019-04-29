@@ -105,10 +105,7 @@ error : :class:`~openturns.CovarianceMatrix`
 
 // ---------------------------------------------------------------------
 
-<<<<<<< HEAD:python/src/GaussianNonLinearCalibration_doc.i.in
-%feature("docstring") OT::GaussianNonLinearCalibration::getAlgorithm
-=======
-%feature("docstring") OT::ThreeDVAR::getGlobalErrorCovariance
+%feature("docstring") OT::GaussianNonLinearCalibration::getGlobalErrorCovariance
 "Accessor to the flag for a global observation error covariance.
 
 Returns
@@ -118,8 +115,7 @@ flag : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ThreeDVAR::getAlgorithm
->>>>>>> upstream/master:python/src/ThreeDVAR_doc.i.in
+%feature("docstring") OT::GaussianNonLinearCalibration::getAlgorithm
 "Accessor to the optimization algorithm used for the computation.
 
 Returns
