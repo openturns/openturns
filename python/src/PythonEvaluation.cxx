@@ -417,8 +417,11 @@ UnsignedInteger PythonEvaluation::getOutputDimension() const
 void PythonEvaluation::save(Advocate & adv) const
 {
   EvaluationImplementation::save(adv);
-
   pickleSave(adv, pyObj_);
+  pickleSave(adv, pyBufferClass_, "pyBufferClass_");
+  adv.saveAttribute("pyObj_has_exec_", pyObj_has_exec_);
+  adv.saveAttribute("pyObj_has_exec_sample_", pyObj_has_exec_sample_);
+  adv.saveAttribute("pyObj_discard_openturns_memoryview_", pyObj_discard_openturns_memoryview_);
 }
 
 
@@ -426,9 +429,11 @@ void PythonEvaluation::save(Advocate & adv) const
 void PythonEvaluation::load(Advocate & adv)
 {
   EvaluationImplementation::load(adv);
-
   pickleLoad(adv, pyObj_);
-  initializePythonState();
+  pickleLoad(adv, pyBufferClass_, "pyBufferClass_");
+  adv.loadAttribute("pyObj_has_exec_", pyObj_has_exec_);
+  adv.loadAttribute("pyObj_has_exec_sample_", pyObj_has_exec_sample_);
+  adv.loadAttribute("pyObj_discard_openturns_memoryview_", pyObj_discard_openturns_memoryview_);
 }
 
 
