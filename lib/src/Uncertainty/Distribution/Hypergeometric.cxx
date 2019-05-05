@@ -49,8 +49,8 @@ Hypergeometric::Hypergeometric()
 
 /* Parameters constructor */
 Hypergeometric::Hypergeometric(const UnsignedInteger n,
-			       const UnsignedInteger k,
-			       const UnsignedInteger m)
+                               const UnsignedInteger k,
+                               const UnsignedInteger m)
   : DiscreteDistribution()
   , n_(n)
   , k_(k)
@@ -353,25 +353,21 @@ void Hypergeometric::computeProbabilities()
   Scalar p = DistFunc::dHypergeometric(n_, k_, m_, xMode);
   probabilities_[xMode] = p;
   for (UnsignedInteger x = xMode + 1; x <= xMax; ++x)
-    {
-      p *= ((1.0 + k_ - x) / x) * ((1.0 + m_ - x) / (n_ + x - m_ - k_));
-      probabilities_[x] = p;
-    }
+  {
+    p *= ((1.0 + k_ - x) / x) * ((1.0 + m_ - x) / (n_ + x - m_ - k_));
+    probabilities_[x] = p;
+  }
   p = probabilities_[xMode];
   for (UnsignedInteger x = xMode; x > xMin; --x)
-    {
-      p *= (x / (k_ - x + 1.0)) * ((n_ + x - m_ - k_) / (m_ - x + 1.0));
-      probabilities_[x - 1] = p;
-    }
-  /*  std::cerr << "probabilities (inc)=" << probabilities_ << std::endl;
-  for (UnsignedInteger x = 0; x <= n_; ++x)
-    probabilities_[x] = computePDF(Point(1, x));
-    std::cerr << "probabilities (PDF)=" << probabilities_ << std::endl;*/
+  {
+    p *= (x / (k_ - x + 1.0)) * ((n_ + x - m_ - k_) / (m_ - x + 1.0));
+    probabilities_[x - 1] = p;
+  }
 }
 
 /* Get the quantile of the distribution */
 Scalar Hypergeometric::computeScalarQuantile(const Scalar prob,
-                                       const Bool tail) const
+    const Bool tail) const
 {
   LOGDEBUG(OSS() << "in Hypergeometric::computeScalarQuantile, prob=" << prob << ", tail=" << tail);
   const Scalar a = getRange().getLowerBound()[0];
@@ -380,13 +376,13 @@ Scalar Hypergeometric::computeScalarQuantile(const Scalar prob,
   if (prob >= 1.0) return (tail ? a : b);
   Scalar quantile = (a + b) / 2;
   if (n_ > 3)
-    {
-      // Initialization by the Cornish-Fisher expansion
-      Scalar qNorm = DistFunc::qNormal(prob, tail);
-      Scalar gamma1 = getSkewness()[0];
-      Scalar gamma2 = getKurtosis()[0] - 3.0;
-      quantile = round(getMean()[0] + getStandardDeviation()[0] * (qNorm + (qNorm * qNorm - 1.0) * gamma1 / 6.0 + qNorm * (qNorm * qNorm - 3.0) * gamma2 / 24.0 - qNorm * (2.0 * qNorm * qNorm - 5.0) * gamma1 * gamma1 / 36.0));
-    }
+  {
+    // Initialization by the Cornish-Fisher expansion
+    Scalar qNorm = DistFunc::qNormal(prob, tail);
+    Scalar gamma1 = getSkewness()[0];
+    Scalar gamma2 = getKurtosis()[0] - 3.0;
+    quantile = round(getMean()[0] + getStandardDeviation()[0] * (qNorm + (qNorm * qNorm - 1.0) * gamma1 / 6.0 + qNorm * (qNorm * qNorm - 3.0) * gamma2 / 24.0 - qNorm * (2.0 * qNorm * qNorm - 5.0) * gamma1 * gamma1 / 36.0));
+  }
   if (quantile < a) quantile = a;
   if (quantile > b) quantile = b;
   // CDF of the guess
