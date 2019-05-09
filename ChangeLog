@@ -74,6 +74,7 @@
  * #1092 (The parameterGradient of a ParametricFunction can loss accuracy)
  * #1099 (PythonDistribution does not work with ConditionalDistribution)
  * #1111 (Function::draw() does not take the scale parameter properly into account)
+ * #1112 (Several bugs in Multinomial)
 
 == 1.12 release (2018-11-08) == #release-1.12
 

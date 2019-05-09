@@ -22,12 +22,12 @@ log pdf([1,1,1])=-2.83713
 pdf    ([1,1,1])=0.0585937
 cdf    ([1,1,1])=0.13281
 ccdf   ([1,1,1])=0.86719
-survival([1,1,1])=1
+survival([1,1,1])=0.380859
 quantile(0.95)=class=Point name=Unnamed dimension=3 values=[3,3,3]
 cdf(quantile)=0.953125
 probability([0, 1]
 [1, 2]
-[2, 3])=1
+[2, 3])=0.195313
 entropy=3.70986
 entropy (MC)=3.70971
 mean=class=Point name=Unnamed dimension=3 values=[1.25,1.25,1.25]

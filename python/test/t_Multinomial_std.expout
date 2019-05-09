@@ -81,7 +81,7 @@ Point=  class=Point name=Unnamed dimension=3 values=[1,1,1]
 log pdf=-2.837127
 pdf     =0.058594
 cdf=0.13281
-probability=1.00000
+probability=0.19531
 quantile= class=Point name=Unnamed dimension=3 values=[3,3,3]
 cdf(quantile)= 0.953125
 entropy=3.709864
