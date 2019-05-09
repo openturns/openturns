@@ -169,6 +169,12 @@ private:
                           const Scalar lambda,
                           const UnsignedInteger a) const;
 
+  /** Compute the generating function of a truncated Poisson distributions as needed in the computeProbability() method */
+  Complex computeLocalPhi(const Complex & z,
+                          const Scalar lambda,
+                          const UnsignedInteger a,
+                          const UnsignedInteger b) const;
+
   /** Quantile computation for dimension=1 */
   Scalar computeScalarQuantile(const Scalar prob,
                                const Bool tail = false) const;

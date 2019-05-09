@@ -182,18 +182,15 @@ Scalar Multinomial::computePDF(const Indices & point) const
   {
     k = point[i];
     // Early exit if the given point is not in the support of the distribution
-    // Hear we cheat a little bit: if x_i is negative, the conversion to an
-    // unsigned integer leads to a value well above the value of n_, allowing
-    // to test for x_i < 0 and x_i > n in one test
     if (k > n_) return 0.0;
     sumX += k;
   }
   if (sumX > n_) return 0.0;
-  if ((sumP_ >= 1.0) && (sumX < n_)) return 0.0;
+  if ((sumP_ == 1.0) && (sumX < n_)) return 0.0;
   Scalar sumP = sumP_;
   UnsignedInteger sumK = 0;
   k = n_ - sumX;
-  Scalar pdf = 0.0;
+  Scalar pdf = 1.0;
   // If the multinomial distribution has been defined as X_1+...+X_d<=N, add a X_0 with value N-(X_1+...+X_d) and probability 1-sumP
   if (sumP < 1.0)
   {
@@ -230,21 +227,22 @@ Complex Multinomial::computeGlobalPhi(const Complex & z,
   return value;
 }
 
-/* Compute the generating function of a sum of truncated Poisson distributions as needed in the computeProbability() method */
+/* Compute the generating function of a sum of shifted truncated Poisson distributions as needed in the computeProbability() method */
 Complex Multinomial::computeGlobalPhi(const Complex & z,
                                       const Indices & a,
                                       const Indices & b) const
 {
   // Initialize with the non truncated term
-  Complex value(sumP_ == 1.0 ? 1.0 : std::exp(-(1.0 - sumP_) * n_ * (1.0 - z)));
+  Complex value(1.0);
   const UnsignedInteger dimension = getDimension();
   Scalar np = 0.0;
   Complex term = 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     np = n_ * p_[i];
-    term = computeLocalPhi(z, np, b[i]);
-    if (a[i] > 0) term -= computeLocalPhi(z, np, a[i] - 1);
+    // term = computeLocalPhi(z, np, b[i]);
+    // if (a[i] > 0) term -= computeLocalPhi(z, np, a[i] - 1);
+    term = computeLocalPhi(z, np, a[i], b[i]);
     value *= term;
     if (std::abs(value) == 0.0)
     {
@@ -260,7 +258,7 @@ Complex Multinomial::computeLocalPhi(const Complex & z,
                                      const Scalar lambda,
                                      const UnsignedInteger a) const
 {
-  if (z == 0.0) return 1.0;
+  if (z == 0.0) return std::exp(-lambda);
   const Complex u(lambda * z);
   // Small value of a, evaluate the generating function as a polynomial
   if (a <= smallA_)
@@ -285,6 +283,51 @@ Complex Multinomial::computeLocalPhi(const Complex & z,
     term *= u * (1.0 / i);
   }
   return value - term;
+}
+
+/* Compute the generating function of a shifted truncated Poisson distributions as needed in the computeProbability() method */
+Complex Multinomial::computeLocalPhi(const Complex & z,
+                                     const Scalar lambda,
+                                     const UnsignedInteger a,
+                                     const UnsignedInteger b) const
+{
+  if (a == 0) return computeLocalPhi(z, lambda, b);
+  if (z == 0.0) return 0.0;
+  const Complex u(lambda * z);
+  if (b <= a + smallA_)
+    {
+      LOGDEBUG("Case b - a <= smallA_");
+      Complex value(DistFunc::dPoisson(lambda, a));
+      Complex term(value);
+      for (UnsignedInteger i = 1; i <= b - a; ++i)
+	{
+	  term *= u * (1.0 / (a + i));
+	  value += term;
+	}
+      return value;
+    } // smallA_
+  LOGDEBUG("Case b - a > smallA_");
+  // Large b - a
+  // Start from the non-truncated generating function
+  Complex value(std::exp(-lambda + u - (1.0 * a) * std::log(z)));
+  SignedInteger i = a;
+  Complex term(DistFunc::dPoisson(lambda, a));
+  while (i >= 0 && std::abs(term) > SpecFunc::Precision * std::abs(value))
+    {
+      term *= (1.0 * i) / u;
+      --i;
+      value -= term;
+    }
+  // And the upper terms
+  i = b;
+  term = DistFunc::dPoisson(lambda, b) * std::pow(z, 1.0 * (b - a));
+  while (std::abs(term) > SpecFunc::Precision * std::abs(value))
+    {
+      ++i;
+      term *= u * (1.0 / i);
+      value -= term;
+    }
+  return value;
 }
 
 /* Get the CDF of the distribution
@@ -371,20 +414,30 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
 
-  // Empty interval
-  if (interval.isNumericallyEmpty()) return 0.0;
-
   // Early exit for 1D case
   if (dimension == 1)
   {
     const Scalar a = interval.getLowerBound()[0];
     const Scalar b = interval.getUpperBound()[0];
+    if (p_[0] == 1.0) return (a <= 0.0 && b >= 0.0) ? 0.0 : 1.0;
     if ((a > n_ + supportEpsilon_) || (b < -supportEpsilon_)) return 0.0;
     if ((a < -supportEpsilon_) && (b > n_ + supportEpsilon_)) return 1.0;
-    return DistFunc::pBeta(n_ - floor(b), floor(b) + 1, 1.0 - p_[0]) - DistFunc::pBeta(n_ - floor(a), floor(a) + 1, 1.0 - p_[0]);
+    Scalar probability = DistFunc::pBeta(n_ - floor(b), floor(b) + 1, 1.0 - p_[0]);
+    if (a > 0.0) probability -= DistFunc::pBeta(n_ - floor(a), floor(a) + 1, 1.0 - p_[0]);
+    return probability;
   }
-  const Point lower(interval.getLowerBound());
-  const Point upper(interval.getUpperBound());
+  Point lower(interval.getLowerBound());
+  Point upper(interval.getUpperBound());
+  // Deal with the defective case first
+  if (sumP_ < 1.0)
+    {
+      Point p(p_);
+      p.add(1.0 - sumP_);
+      lower.add(0.0);
+      upper.add(n_);
+      return Multinomial(n_, p).computeProbability(Interval(lower, upper));
+    }
+  // Now we have sumP_ == 1
   Indices a(dimension_);
   Indices b(dimension_);
   UnsignedInteger sigmaA = 0;
@@ -397,12 +450,6 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
       sigmaA += a[i];
       sigmaB += b[i];
     }
-  if (sumP_ < 1.0)
-    {
-      a.add(0);
-      b.add(n_);
-      sigmaB += n_;
-    }
   if (sigmaA > n_) return 0.0;
   if (sigmaB < n_) return 0.0;
   if (sigmaA == n_) return computePDF(a);
@@ -411,6 +458,7 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
   const UnsignedInteger nA = n_ - sigmaA;
   Scalar r = 1.0;
   Scalar logCoefNorm = 0.0;
+  // Here r is not necessarily equal to r_ as nA can allow for a reduction
   if (eta_ > 0.0)
     {
       r = std::pow(eta_, 1.0 / (2.0 * nA));
@@ -418,7 +466,7 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
     }
   // Diametral term
   const Scalar poisLogPDF = DistFunc::logdPoisson(n_, n_);
-  const Scalar coefNorm = std::exp(-logCoefNorm - poisLogPDF - sigmaA * std::log(r)) / (2.0 * nA);
+  const Scalar coefNorm = std::exp(-logCoefNorm - poisLogPDF) / (2.0 * nA);
   Scalar value = coefNorm * computeGlobalPhi(r, a, b).real();
   Scalar delta = SpecFunc::MaxScalar;
   Scalar sign2 = -2.0 * coefNorm;
@@ -427,7 +475,7 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
       if (std::abs(delta) <= SpecFunc::Precision * std::abs(value))
 	break;
       const Complex zeta(r * std::exp(Complex(0.0, k * M_PI / nA)));
-      delta = sign2 * (computeGlobalPhi(zeta, a, b) * std::exp(Complex(0.0, k * sigmaA * M_PI / nA))).real();
+      delta = sign2 * computeGlobalPhi(zeta, a, b).real();
       value += delta;
       sign2 = -sign2;
     }
@@ -435,7 +483,7 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
   if (std::abs(delta) > SpecFunc::Precision * std::abs(value))
     {
       delta = coefNorm * computeGlobalPhi(-r, a, b).real();
-      if ((n_ + sigmaA) % 2 == 0) value += delta;
+      if (nA % 2 == 0) value += delta;
       else value -= delta;
     }
   return std::min(1.0, std::max(0.0, value));
@@ -577,7 +625,7 @@ Sample Multinomial::getSupport(const Interval & interval) const
 {
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval has a dimension that does not match the distribution dimension.";
-  Sample support(0, dimension);
+  Sample reducedSupport(0, dimension);
   // Quick return if the lower bound of the interval is already outside of the support
   const Point lowerBound(interval.getLowerBound());
   const Point upperBound(interval.getUpperBound());
@@ -586,34 +634,42 @@ Sample Multinomial::getSupport(const Interval & interval) const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     // One of the components of the upper bound is negative, so the intersection with the positive quadrant is empty
-    if (upperBound[i] < 0.0) return support;
+    if (upperBound[i] <= -supportEpsilon_) return reducedSupport;
     sumLower += lowerBound[i];
     sumUpper += upperBound[i];
   }
-  if ((sumLower > n_) || (sumUpper < 0.0)) return support;
+  // The given interval is fully disjoint with the support
+  if ((sumLower >= n_ + supportEpsilon_) || (sumUpper <= -supportEpsilon_)) return reducedSupport;
   // Here we know that all the components of the upper bound are positive or null
-  const Sample fullSupport(getSupport());
+  const Sample support(getSupport());
   // Quick return if the interval contains all the support
   // It cannot be possible if the sum of the components of the upper bound is less than n_
-  if ((sumUpper >= n_) && (sumLower <= 0.0))
+  if ((sumUpper >= n_ + supportEpsilon_) && (sumLower <= -supportEpsilon_))
   {
     Bool allInside = true;
     for (UnsignedInteger i = 0; i < dimension; ++i)
     {
-      allInside = allInside && (lowerBound[i] <= 0.0);
+      allInside = allInside && (lowerBound[i] <= supportEpsilon_) && (upperBound[i] >= n_ - supportEpsilon_);
       if (!allInside) break;
     }
-    if (allInside) return fullSupport;
+    if (allInside) return support;
   }
   // We have to remove some points
-  const UnsignedInteger size = fullSupport.getSize();
+  const UnsignedInteger size = support.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Point point(fullSupport[i]);
-    const Bool isInside = interval.contains(point);
-    if (isInside) support.add(point);
+    const Point point(support[i]);
+    // Don't use interval.contains() as it does not take into account
+    // supportEpsilon_
+    Bool isInside = true;
+    for (UnsignedInteger j = 0; j < dimension_; ++j)
+      {
+	isInside = isInside && (point[j] >= lowerBound[j] - supportEpsilon_) && (point[j] <= upperBound[j] + supportEpsilon_);
+	if (!isInside) break;
+      }
+    if (isInside) reducedSupport.add(point);
   }
-  return support;
+  return reducedSupport;
 }
 
 /* Get the support of a discrete distribution that intersect a given interval */
@@ -621,12 +677,13 @@ Sample Multinomial::getSupport() const
 {
   const UnsignedInteger dimension = getDimension();
   LinearEnumerateFunction enumerate(dimension);
-  const UnsignedInteger size = enumerate.getStrataCumulatedCardinal(n_);
-  Sample support(0, dimension);
-  for (UnsignedInteger i = 0; i < size; ++i)
+  const UnsignedInteger start = (sumP_ == 1.0 ? enumerate.getStrataCumulatedCardinal(n_ - 1) : 0);
+  const UnsignedInteger stop = enumerate.getStrataCumulatedCardinal(n_);
+  Sample support(stop - start, dimension);
+  for (UnsignedInteger i = start; i < stop; ++i)
   {
     Indices multi(enumerate(i));
-    support.add(Collection<Scalar>(multi.begin(), multi.end()));
+    support[i - start] = Point(Collection<Scalar>(multi.begin(), multi.end()));
   }
   return support;
 }
@@ -740,9 +797,9 @@ void Multinomial::setP(const Point & p)
     if (!(pI >= 0.0)) throw InvalidArgumentException(HERE) << "P elements MUST be nonnegative";
     sum += pI;
   }
-  if (sum > 1.0)
+  if (sum > 1.0 - cdfEpsilon_)
   {
-    LOGWARN(OSS() << "P elements have a sum=" << sum << " greater than 1. It has been renormalized to 1.0");
+    if (sum > 1.0 + cdfEpsilon_) LOGWARN(OSS() << "P elements have a sum=" << sum << " greater than 1. It has been renormalized to 1.0");
     p_ = p / sum;
     sumP_ = 1.0;
   }
