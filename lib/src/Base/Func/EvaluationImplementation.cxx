@@ -309,22 +309,23 @@ Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
   if (getInputDimension() < 1) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 1";
   if (inputMarginal >= getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given input marginal index=" << inputMarginal << " must be less than the input dimension=" << getInputDimension();
   if (outputMarginal >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given output marginal index=" << outputMarginal << " must be less than the output dimension=" << getOutputDimension();
-  if ((scale != GraphImplementation::NONE) && ((scale != GraphImplementation::LOGX) || (scale != GraphImplementation::LOGXY))) throw InvalidArgumentException(HERE) << "Error: expected scale=" << GraphImplementation::NONE << ", scale=" << GraphImplementation::LOGX << " or scale=" << GraphImplementation::LOGXY << ", got scale=" << scale;
-  if (((scale == GraphImplementation::LOGX) || (scale == GraphImplementation::LOGXY)) && ((xMin <= 0.0) || (xMax <= 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values.";
+  const Bool useLogX = (scale == GraphImplementation::LOGX || scale == GraphImplementation::LOGXY);
+  if (useLogX && ((xMin <= 0.0) || (xMax <= 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values.";
+  if (centralPoint.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a central point of dimension=" << getInputDimension() << ", got dimension=" << centralPoint.getDimension();
   Sample inputData(pointNumber, centralPoint);
-  if (scale == GraphImplementation::NONE)
-  {
-    const Scalar dx = (xMax - xMin) / (pointNumber - 1.0);
-    for (UnsignedInteger i = 0; i < pointNumber; ++i)
-      inputData(i, inputMarginal) = xMin + i * dx;
-  }
-  else
+  if (useLogX)
   {
     const Scalar a = std::log(xMin);
     const Scalar b = std::log(xMax);
     const Scalar dLogX = (b - a) / (pointNumber - 1.0);
     for (UnsignedInteger i = 0; i < pointNumber; ++i)
       inputData(i, inputMarginal) = std::exp(a + i * dLogX);
+  }
+  else
+  {
+    const Scalar dx = (xMax - xMin) / (pointNumber - 1.0);
+    for (UnsignedInteger i = 0; i < pointNumber; ++i)
+      inputData(i, inputMarginal) = xMin + i * dx;
   }
   // Evaluate the function over all its input in one call in order to benefit from potential parallelism
   const Sample outputData((*this)(inputData));
@@ -352,64 +353,57 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
   if (getInputDimension() < 2) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 2";
   if ((xMin.getDimension() != 2) || (xMax.getDimension() != 2) || (pointNumber.getSize() != 2)) throw InvalidArgumentException(HERE) << "Error: xMin, xMax and PointNumber must be bidimensional";
   if ((pointNumber[0] <= 2) || (pointNumber[1] <= 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
-  if ((scale != GraphImplementation::NONE) && (scale != GraphImplementation::LOGX) && (scale != GraphImplementation::LOGY) && (scale != GraphImplementation::LOGXY)) throw InvalidArgumentException(HERE) << "Error: expected scale=" << GraphImplementation::NONE << " or scale=" << GraphImplementation::LOGX << " or scale=" << GraphImplementation::LOGY << " or scale=" << GraphImplementation::LOGXY << ", got scale=" << scale;
-  if (((scale == GraphImplementation::LOGX) || (scale == GraphImplementation::LOGXY)) && ((xMin[0] <= 0.0) || (xMax[0] <= 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values for the first argument.";
-  if (((scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY)) && ((xMin[1] <= 0.0) || (xMax[1] <= 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values for the second argument.";
-  Point discretization(2);
-  Point scaling(2);
-  Point origin(2);
-  const Scalar nX = pointNumber[0] - 2;
-  discretization[0] = nX;
+  const Bool useLogX = (scale == GraphImplementation::LOGX || scale == GraphImplementation::LOGXY);
+  if (useLogX && ((xMin[0] <= 0.0) || (xMax[0] <= 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values for the first argument.";
+  const Bool useLogY = (scale == GraphImplementation::LOGY || scale == GraphImplementation::LOGXY);
+  if (useLogY && ((xMin[1] <= 0.0) || (xMax[1] <= 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values for the second argument.";
+  if (centralPoint.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a central point of dimension=" << getInputDimension() << ", got dimension=" << centralPoint.getDimension();
   // Discretization of the first component
-  Sample x(Box(Point(1, nX)).generate());
+  const UnsignedInteger nX = pointNumber[0];
+  Sample x(nX, 1);
+  if (useLogX)
   {
-    Scalar a = xMin[0];
-    Scalar b = xMax[0];
-    if ((scale == GraphImplementation::LOGX) || (scale == GraphImplementation::LOGXY))
-    {
-      a = std::log(a);
-      b = std::log(b);
-    }
-    origin[0] = a;
-    scaling[0] = b - a;
+    const Scalar a = std::log(xMin[0]);
+    const Scalar b = std::log(xMax[0]);
+    const Scalar dLogX = (b - a) / (nX - 1.0);
+    for (UnsignedInteger i = 0; i < nX; ++i)
+      x(i, 0) = std::exp(a + i * dLogX);
   }
-  x *= Point(1, scaling[0]);
-  x += Point(1, origin[0]);
-  // Recover the original scale if the discretization has been done in the logarithmic scale
-  if ((scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY))
-    for (UnsignedInteger i = 0; i < x.getDimension(); ++i) x(i, 0) = std::exp(x(i, 0));
-  const Scalar nY = pointNumber[1] - 2;
-  discretization[1] = nY;
+  else
+  {
+    const Scalar dX = (xMax[0] - xMin[0]) / (nX - 1.0);
+    for (UnsignedInteger i = 0; i < nX; ++i)
+      x(i, 0) = xMin[0] + i * dX;
+  }
   // Discretization of the second component
-  Sample y(Box(Point(1, nY)).generate());
+  const Scalar nY = pointNumber[1];
+  Sample y(nY, 1);
+  if (useLogY)
   {
-    Scalar a = xMin[1];
-    Scalar b = xMax[1];
-    if ((scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY))
-    {
-      a = std::log(a);
-      b = std::log(b);
-    }
-    origin[1] = a;
-    scaling[1] = b - a;
+    const Scalar a = std::log(xMin[1]);
+    const Scalar b = std::log(xMax[1]);
+    const Scalar dLogY = (b - a) / (nY - 1.0);
+    for (UnsignedInteger i = 0; i < nY; ++i)
+      y(i, 0) = std::exp(a + i * dLogY);
   }
-  y *= Point(1, scaling[1]);
-  y += Point(1, origin[1]);
-  // Recover the original scale if the discretization has been done in the logarithmic scale
-  if ((scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY))
-    for (UnsignedInteger i = 0; i < y.getDimension(); ++i) y(i, 0) = std::exp(y(i, 0));
+  else
+  {
+    const Scalar dY = (xMax[1] - xMin[1]) / (nY - 1.0);
+    for (UnsignedInteger i = 0; i < nY; ++i)
+      y(i, 0) = xMin[1] + i * dY;
+  }
   // Discretization of the XY plane
-  Sample inputSample((nX + 2) * (nY + 2), centralPoint);
+  Sample inputSample(nX * nY, centralPoint);
   // Prepare the input sample
   UnsignedInteger index = 0;
-  for (UnsignedInteger j = 0; j < nY + 2; ++j)
+  for (UnsignedInteger j = 0; j < nY; ++j)
   {
-    const Scalar yJ = (scale == GraphImplementation::LOGY) || (scale == GraphImplementation::LOGXY) ? exp(y(j, 0)) : y(j, 0);
-    for (UnsignedInteger i = 0; i < nX + 2; ++i)
+    const Scalar yJ = y(j, 0);
+    for (UnsignedInteger i = 0; i < nX; ++i)
     {
-      const Scalar xI = (scale == GraphImplementation::LOGX) || (scale == GraphImplementation::LOGXY) ? exp(x(i, 0)) : x(i, 0);
+      const Scalar xI = x(i, 0);
       inputSample(index, firstInputMarginal)  = xI;
-      inputSample(index, secondInputMarginal)  = yJ;
+      inputSample(index, secondInputMarginal) = yJ;
       ++index;
     } // i
   } // j
