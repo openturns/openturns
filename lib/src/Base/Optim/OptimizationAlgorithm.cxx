@@ -22,6 +22,7 @@
 #include "openturns/Ceres.hxx"
 #include "openturns/CMinpack.hxx"
 #include "openturns/Cobyla.hxx"
+#include "openturns/Dlib.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/NLopt.hxx"
 #include "openturns/OPTpp.hxx"
@@ -247,6 +248,10 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
   else if (OPTpp::IsAvailable() && OPTpp::GetAlgorithmNames().contains(solverName))
   {
     solver = OPTpp(solverName);
+  }
+  else if (Dlib::IsAvailable() && Dlib::GetAlgorithmNames().contains(solverName))
+  {
+    solver = Dlib(solverName);
   }
   else
     throw InvalidArgumentException(HERE) << "Unknown optimization solver:" << solverName;

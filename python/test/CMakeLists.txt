@@ -292,6 +292,13 @@ endif ()
 if (OPTPP_FOUND)
   ot_pyinstallcheck_test (OPTpp_std)
 endif ()
+if (dlib_FOUND)
+  ot_pyinstallcheck_test (Dlib_std IGNOREOUT)
+  ot_pyinstallcheck_test (Dlib_lsq IGNOREOUT)
+  if (dlib_VERSION VERSION_GREATER 19.7)
+    ot_pyinstallcheck_test (Dlib_global IGNOREOUT)
+  endif()
+endif ()
 ot_pyinstallcheck_test (MultiStart_std)
 
 ## Solver
@@ -684,7 +691,7 @@ ot_pyinstallcheck_test (Waarts_system_series)
 ot_pyinstallcheck_test (Waarts_saddle)
 
 ## Misc
-if (NBCONVERT_FOUND AND MATPLOTLIB_FOUND AND LIBXML2_FOUND AND NLopt_FOUND)
+if (NBCONVERT_FOUND AND MATPLOTLIB_FOUND AND LIBXML2_FOUND AND NLopt_FOUND AND dlib_FOUND)
   file (GLOB_RECURSE IPYNBS "${CMAKE_SOURCE_DIR}/python/doc/examples/*.ipynb")
   foreach (IPYNB ${IPYNBS})
     if (NOT IPYNB MATCHES checkpoint)
@@ -701,7 +708,7 @@ ot_pyinstallcheck_test (features IGNOREOUT)
 
 ot_pyinstallcheck_test (coupling_tools)
 
-if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND AND LIBXML2_FOUND AND NLopt_FOUND)
+if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND AND LIBXML2_FOUND AND NLopt_FOUND AND dlib_FOUND)
   # on py3k/swig<3.0.0, doctest fails with "NameError: Unknown C global variable"
   if (PYTHON_VERSION_MAJOR VERSION_EQUAL "2" OR SWIG_VERSION VERSION_GREATER "3")
     # source modules

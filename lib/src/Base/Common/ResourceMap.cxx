@@ -666,6 +666,14 @@ void ResourceMap::loadDefaultConfiguration()
   setAsScalar( "OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-5 );
   setAsUnsignedInteger( "OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100);
   setAsUnsignedInteger( "OptimizationAlgorithm-DefaultMaximumIterationNumber", 100 );
+  
+  // Dlib optimization parameters //
+  setAsScalar( "Dlib-DefaultInitialTrustRegionRadius", 1.0);
+  setAsScalar( "Dlib-DefaultWolfeRho", 0.01);
+  setAsScalar( "Dlib-DefaultWolfeSigma", 0.9);
+  setAsUnsignedInteger( "Dlib-DefaultMaxLineSearchIterations", 100);
+  setAsUnsignedInteger( "Dlib-DefaultMaxSize", 10);
+  
 
   // EfficientGlobalOptimization parameters //
   setAsScalar( "EfficientGlobalOptimization-DefaultAEITradeoff", 1.0);

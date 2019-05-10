@@ -8,6 +8,7 @@ Numerical methods
     combinatorial_generator.ipynb
     optimization_constraints.ipynb
     optimization_nlopt.ipynb
+    optimization_dlib.ipynb
     deterministic_design.ipynb
     probabilistic_design.ipynb
     mixed_design.ipynb

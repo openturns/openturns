@@ -79,6 +79,7 @@ where :math:`\alpha_k` is the parameter *stepmx*.
 
     - See :doc:`/examples/numerical_methods/optimization_constraints`
     - See :doc:`/examples/numerical_methods/optimization_nlopt`
+    - See :doc:`/examples/numerical_methods/optimization_dlib`
 
 .. topic:: References:
 
