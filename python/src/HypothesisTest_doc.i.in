@@ -291,7 +291,7 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-HypothesisTest_Smirnov, HypothesisTest_Spearman
+HypothesisTest_Spearman
 
 Notes
 -----
@@ -309,60 +309,6 @@ Examples
 >>> test_result = ot.HypothesisTest.Pearson(firstSample, secondSample)
 >>> print(test_result)
 class=TestResult name=Unnamed type=Pearson binaryQualityMeasure=true p-value threshold=0.05 p-value=0.984737 statistic=0.019302 description=[]
-"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::HypothesisTest::Smirnov
-"Test whether two samples follows the same distribution.
-
-Refer to :ref:`smirnov_test`.
-
-**Available usages**:
-
-    HypothesisTest.Smirnov(*firstSample, secondSample*)
-
-    HypothesisTest.Smirnov(*firstSample, secondSample, level*)
-
-
-Parameters
-----------
-firstSample : 2-d sequence of float
-    First tested sample, of dimension :math:`n \geq 1`.
-secondSample : 2-d sequence of float
-    Second tested sample, of dimension 1.
-level : positive float :math:`< 1`
-    Threshold p-value of the test (= first kind risk), it must be
-    :math:`< 1`, equal to 0.05 by default.
-
-Returns
--------
-testResult : :class:`~openturns.TestResult`
-    Structure containing the result of the test.
-
-See Also
---------
-HypothesisTest_Pearson, HypothesisTest_Spearman
-
-Notes
------
-Smirnov's test is a tool that may be used to compare two samples
-:math:`\{x_1, \ldots, x_N\}` and :math:`\{x^{'}_1, \ldots, x^{'}_M\}` (of sizes not
-necessarily equal). The goal is to determine whether these two samples come from
-the same probability distribution or not. If this is the case, the two samples
-should be aggregated in order to increase the robustness of further statistical
-analysis.
-
-Examples
---------
->>> import openturns as ot
->>> ot.RandomGenerator.SetSeed(0)
->>> distCol = [ot.Normal(), ot.Normal()]
->>> firstSample = ot.Normal().getSample(30)
->>> secondSample = ot.Normal().getSample(30)
->>> test_result = ot.HypothesisTest.Smirnov(firstSample, secondSample)
->>> print(test_result)
-class=TestResult name=Unnamed type=TwoSamplesKolmogorov binaryQualityMeasure=true p-value threshold=0.05 p-value=0.739538 statistic=0.166667 description=[sampleNormal vs sample Normal]
 "
 
 // ---------------------------------------------------------------------
@@ -396,7 +342,7 @@ testResult : :class:`~openturns.TestResult`
 
 See Also
 --------
-HypothesisTest_Smirnov, HypothesisTest_Pearson
+HypothesisTest_Pearson
 
 Notes
 -----

@@ -10,6 +10,7 @@
 
 ==== API changes ====
  * Removed specific RandomVector constructors
+ * Removed deprecated HypothesisTest::Smirnov
 
 === Python module ===
 

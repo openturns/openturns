@@ -213,15 +213,6 @@ TestResult HypothesisTest::Pearson(const Sample & firstSample,
   return TestResult("Pearson", pValue > level, pValue, level, statistic);
 }
 
-/* Smirnov test if two scalar samples (of sizes not necessarily equal) follow the same distribution (only for continuous distributions)*/
-TestResult HypothesisTest::Smirnov(const Sample & firstSample,
-                                   const Sample & secondSample,
-                                   const Scalar level)
-{
-  LOGWARN(OSS() << "HypothesisTest::Smirnov(x, y, level) is deprecated, use HypothesisTest::TwoSamplesKolmogorov(x, y, level) instead");
-  return TwoSamplesKolmogorov(firstSample, secondSample, level);
-}
-
 /* Two-sample Kolmogorov–Smirnov test */
 TestResult HypothesisTest::TwoSamplesKolmogorov(const Sample & sample1,
                                                 const Sample & sample2,

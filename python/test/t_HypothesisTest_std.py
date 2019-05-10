@@ -46,15 +46,6 @@ try:
     # Test = True <=> p-value > p-value threshold
     print("Pearson=", ot.HypothesisTest.Pearson(sampleY, sampleZ, 0.10))
 
-    # Smirnov Test : test if two samples (of sizes not necessarily equal) follow the same distribution
-    # Care : continuous distributions only
-    # H0 = same continuous distribution
-    # Test = True <=> same distribution
-    # p-value threshold : probability of the H0 reject zone : 0.10
-    # p-value : probability (test variable decision > test variable decision evaluated on the samples)
-    # Test = True <=> p-value > p-value threshold
-    print("Smirnov=", ot.HypothesisTest.Smirnov(sampleY, sampleZ, 0.10))
-
 except:
     import sys
     print("t_HypothesisTest_std.py", sys.exc_info()[0], sys.exc_info()[1])
