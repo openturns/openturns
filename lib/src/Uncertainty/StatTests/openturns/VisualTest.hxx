@@ -38,20 +38,6 @@ class OT_API VisualTest
 public:
 
 
-  /** @deprecated Draw the empirical CDF of the Sample when its dimension is 1 */
-  static Graph DrawEmpiricalCDF(const Sample & sample);
-
-  static Graph DrawEmpiricalCDF(const Sample & sample,
-                                const Scalar xMin,
-                                const Scalar xMax);
-
-  /** @deprecated Draw the Histogram of the Sample when its dimension is 1 */
-  static Graph DrawHistogram(const Sample & sample,
-                             const UnsignedInteger BarNumber);
-
-  /** Draw the Histogram of the Sample when its dimension is 1, using the Normal empirical rule */
-  static Graph DrawHistogram(const Sample & sample);
-
   /** Draw the QQplot of two Samples when its dimension is 1 */
   static Graph DrawQQplot(const Sample & sample1,
                           const Sample & sample2,
@@ -77,14 +63,6 @@ public:
   /** Draw the Henry line for a sample and a given normal distribution when its dimension is 1 */
   static Graph DrawHenryLine(const Sample & sample,
                              const Distribution & normal);
-
-  /** @deprecated Draw the clouds of one Sample and one model when its dimension is 2 */
-  static Graph DrawClouds(const Sample & sample1,
-                          const Distribution & dist);
-
-  /** Draw the clouds of two Samples when its dimension is 2 */
-  static Graph DrawClouds(const Sample & sample1,
-                          const Sample & sample2);
 
   /** Draw the visual test for the LinearModel when its dimension is 1 */
   static Graph DrawLinearModel(const Sample & sample1,

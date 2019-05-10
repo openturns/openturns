@@ -16,6 +16,7 @@
  * Removed deprecated HypothesisTest::(Partial|Full)Regression
  * Removed deprecated OptimizationProblem(levelFunction, levelValue) ctor
  * Removed deprecated (Linear|Quadratic)(LeastSquares|Taylor)::getResponseSurface
+ * Removed deprecated VisualTest::DrawEmpiricalCDF,DrawHistogram,DrawClouds
 
 === Python module ===
 
