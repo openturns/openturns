@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_OTBAYESIAN_HXX
 #define OPENTURNS_OTBAYESIAN_HXX
 
-#include "openturns/BLUE.hxx"
+#include "openturns/GaussianLinearCalibration.hxx"
 #include "openturns/CalibrationAlgorithm.hxx"
 #include "openturns/CalibrationAlgorithmImplementation.hxx"
 #include "openturns/CalibrationResult.hxx"
@@ -32,6 +32,6 @@
 #include "openturns/MCMC.hxx"
 #include "openturns/NonLinearLeastSquaresCalibration.hxx"
 #include "openturns/RandomWalkMetropolisHastings.hxx"
-#include "openturns/ThreeDVAR.hxx"
+#include "openturns/GaussianNonLinearCalibration.hxx"
 
 #endif /* OPENTURNS_OTBAYESIAN_HXX */

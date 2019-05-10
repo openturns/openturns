@@ -710,8 +710,8 @@
   <MCMC-DefaultBurnIn   value_int="0" />
   <MCMC-DefaultThinning value_int="1" />
 
-  <!-- OT::BLUE parameters -->
-  <BLUE-Method   value_string="QR" />
+  <!-- OT::GaussianLinearCalibration parameters -->
+  <GaussianLinearCalibration-Method   value_string="QR" />
 
   <!-- OT::LinearLeastSquaresCalibration parameters -->
   <LinearLeastSquaresCalibration-Regularization value_float="1e-12" />
@@ -721,9 +721,9 @@
   <NonLinearLeastSquaresCalibration-BootstrapSize  value_int="100" />
   <NonLinearLeastSquaresCalibration-MultiStartSize value_int="100"   />
 
-  <!-- OT::ThreeDVAR parameters -->
-  <ThreeDVAR-BootstrapSize  value_int="100" />
-  <ThreeDVAR-MultiStartSize value_int="100"   />
+  <!-- OT::GaussianNonLinearCalibration parameters -->
+  <GaussianNonLinearCalibration-BootstrapSize  value_int="100" />
+  <GaussianNonLinearCalibration-MultiStartSize value_int="100"   />
 
   <!-- OT::ARMA parameters -->
   <ARMA-MeanEpsilon value_float="1.0e-14" />

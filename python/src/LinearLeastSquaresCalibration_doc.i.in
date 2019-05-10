@@ -29,7 +29,7 @@ LinearLeastSquaresCalibration is the minimum variance estimator of the parameter
 
 See also
 --------
-BLUE, NonLinearLeastSquaresCalibration, ThreeDVAR
+GaussianLinearCalibration, NonLinearLeastSquaresCalibration, GaussianNonLinearCalibration
 
 Examples
 --------

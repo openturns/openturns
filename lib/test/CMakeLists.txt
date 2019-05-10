@@ -561,13 +561,13 @@ ot_check_test (BoxCoxFactory_glm)
 ot_check_test (TrendFactory_std)
 
 # Bayesian
-ot_check_test (BLUE_std)
+ot_check_test (GaussianLinearCalibration_std)
 ot_check_test (CalibrationStrategy_std)
 ot_check_test (LinearLeastSquaresCalibration_std)
 ot_check_test (NonLinearLeastSquaresCalibration_std)
 ot_check_test (RandomWalkMetropolisHastings_std)
 ot_check_test (RandomWalkMetropolisHastings_regression)
-ot_check_test (ThreeDVAR_std)
+ot_check_test (GaussianNonLinearCalibration_std)
 
 # Classification
 ot_check_test (MixtureClassifier_std)

@@ -702,7 +702,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                    )
 
 ot_add_python_module(bayesian bayesian_module.i
-                      BLUE.i BLUE_doc.i.in
+                      GaussianLinearCalibration.i GaussianLinearCalibration_doc.i.in
                       CalibrationAlgorithmImplementation.i CalibrationAlgorithmImplementation_doc.i.in
                       CalibrationAlgorithm.i CalibrationAlgorithm_doc.i.in
                       CalibrationResult.i CalibrationResult_doc.i.in
@@ -711,7 +711,7 @@ ot_add_python_module(bayesian bayesian_module.i
                       LinearLeastSquaresCalibration.i LinearLeastSquaresCalibration_doc.i.in
                       MCMC.i MCMC_doc.i.in
                       NonLinearLeastSquaresCalibration.i NonLinearLeastSquaresCalibration_doc.i.in
-                      ThreeDVAR.i ThreeDVAR_doc.i.in
+                      GaussianNonLinearCalibration.i GaussianNonLinearCalibration_doc.i.in
                       RandomWalkMetropolisHastings.i RandomWalkMetropolisHastings_doc.i.in
                       ConditionalRandomVector.i ConditionalRandomVector_doc.i.in
                       UncertaintyBayesianTemplateDefs.i
