@@ -1752,7 +1752,7 @@ inline PySliceObject* SliceCast(PyObject* pyObj)
 
 
 inline
-void pickleSave(Advocate & adv, PyObject * pyObj)
+void pickleSave(Advocate & adv, PyObject * pyObj, const String attributName = "pyInstance_")
 {
   ScopedPyObjectPointer pickleModule(PyImport_ImportModule("pickle")); // new reference
   assert(pickleModule.get());
@@ -1787,15 +1787,15 @@ void pickleSave(Advocate & adv, PyObject * pyObj)
   assert(base64Dump.get());
 
   String pyInstanceSt(convert< _PyBytes_, String >(base64Dump.get()));
-  adv.saveAttribute("pyInstance_", pyInstanceSt);
+  adv.saveAttribute(attributName, pyInstanceSt);
 }
 
 
 inline
-void pickleLoad(Advocate & adv, PyObject * & pyObj)
+void pickleLoad(Advocate & adv, PyObject * & pyObj, const String attributName = "pyInstance_")
 {
   String pyInstanceSt;
-  adv.loadAttribute("pyInstance_", pyInstanceSt);
+  adv.loadAttribute(attributName, pyInstanceSt);
 
   ScopedPyObjectPointer base64Dump(convert< String, _PyBytes_ >(pyInstanceSt)); // new reference
   assert(base64Dump.get());
@@ -1832,6 +1832,27 @@ void pickleLoad(Advocate & adv, PyObject * & pyObj)
   assert(pyObj);
 }
 
+
+
+inline
+ScopedPyObjectPointer deepCopy(PyObject * pyObj)
+{
+  ScopedPyObjectPointer copyModule(PyImport_ImportModule("copy"));
+  assert(copyModule.get());
+
+  PyObject * copyDict = PyModule_GetDict(copyModule.get());
+  assert(copyDict);
+
+  PyObject * deepCopyMethod = PyDict_GetItemString(copyDict, "deepcopy");
+  assert(deepCopyMethod );
+
+  if (!PyCallable_Check(deepCopyMethod))
+    throw InternalException(HERE) << "Python 'copy' module has no 'deepcopy' method";
+
+  ScopedPyObjectPointer pyObjDeepCopy(PyObject_CallFunctionObjArgs(deepCopyMethod, pyObj, NULL));
+  handleException();
+  return pyObjDeepCopy;
+}
 
 END_NAMESPACE_OPENTURNS
 

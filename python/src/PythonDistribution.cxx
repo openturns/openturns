@@ -88,8 +88,10 @@ PythonDistribution * PythonDistribution::clone() const
 /* Copy constructor */
 PythonDistribution::PythonDistribution(const PythonDistribution & other)
   : DistributionImplementation(other),
-    pyObj_(other.pyObj_)
+    pyObj_()
 {
+  ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
+  pyObj_ = pyObjClone.get();
   Py_XINCREF( pyObj_ );
 }
 
@@ -931,6 +933,7 @@ void PythonDistribution::setParameter(const Point & parameter)
       handleException();
     }
   }
+  computeRange();
   // no else: DistributionImplementation::setParameter throws
 }
 
