@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Default BLUE
+ *  @brief Default GaussianLinearCalibration
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/BLUE.hxx"
+#include "openturns/GaussianLinearCalibration.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Dirac.hxx"
 #include "openturns/Normal.hxx"
@@ -27,19 +27,19 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 
-CLASSNAMEINIT(BLUE)
+CLASSNAMEINIT(GaussianLinearCalibration)
 
-static const Factory<BLUE> Factory_BLUE;
+static const Factory<GaussianLinearCalibration> Factory_GaussianLinearCalibration;
 
 /* Default constructor */
-BLUE::BLUE()
+GaussianLinearCalibration::GaussianLinearCalibration()
   : CalibrationAlgorithmImplementation()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-BLUE::BLUE(const Function & model,
+GaussianLinearCalibration::GaussianLinearCalibration(const Function & model,
            const Sample & inputObservations,
            const Sample & outputObservations,
            const Point & candidate,
@@ -82,7 +82,7 @@ BLUE::BLUE(const Function & model,
 }
 
 /* Parameter constructor */
-BLUE::BLUE(const Sample & modelObservations,
+GaussianLinearCalibration::GaussianLinearCalibration(const Sample & modelObservations,
            const Matrix & gradientObservations,
            const Sample & outputObservations,
            const Point & candidate,
@@ -109,7 +109,7 @@ BLUE::BLUE(const Sample & modelObservations,
 }
 
 /* Performs the actual computation. Must be overloaded by the actual calibration algorithm */
-void BLUE::run()
+void GaussianLinearCalibration::run()
 {
   const Point deltaY(outputObservations_.getImplementation()->getData() - modelObservations_.getImplementation()->getData());
   CovarianceMatrix B(getParameterCovariance());
@@ -142,66 +142,66 @@ void BLUE::run()
 }
 
 /* Model observations accessor */
-Sample BLUE::getModelObservations() const
+Sample GaussianLinearCalibration::getModelObservations() const
 {
   return modelObservations_;
 }
 
 
 /* Model gradient wrt the parameter accessor */
-Matrix BLUE::getGradientObservations() const
+Matrix GaussianLinearCalibration::getGradientObservations() const
 {
   return gradientObservations_;
 }
 
 /* Candidate accessor */
-Point BLUE::getCandidate() const
+Point GaussianLinearCalibration::getCandidate() const
 {
   // The candidate is stored in the prior distribution, which is a Normal distribution
   return getParameterPrior().getMean();
 }
 
 /* Parameter covariance accessor */
-CovarianceMatrix BLUE::getParameterCovariance() const
+CovarianceMatrix GaussianLinearCalibration::getParameterCovariance() const
 {
   // The parameter covariance is stored in the prior distribution, which is a Normal distribution
   return getParameterPrior().getCovariance();
 }
 
 /* Error covariance accessor */
-CovarianceMatrix BLUE::getErrorCovariance() const
+CovarianceMatrix GaussianLinearCalibration::getErrorCovariance() const
 {
   return errorCovariance_;
 }
 
 /* Global error covariance accessor */
-Bool BLUE::getGlobalErrorCovariance() const
+Bool GaussianLinearCalibration::getGlobalErrorCovariance() const
 {
   return globalErrorCovariance_;
 }
 
 /* Least squares method name accessor */
-String BLUE::getMethodName() const
+String GaussianLinearCalibration::getMethodName() const
 {
   return methodName_;
 }
 
 /* String converter */
-String BLUE::__repr__() const
+String GaussianLinearCalibration::__repr__() const
 {
-  return OSS() << "class=" << BLUE::GetClassName()
+  return OSS() << "class=" << GaussianLinearCalibration::GetClassName()
          << " name=" << getName();
 }
 
 
-BLUE * BLUE::clone() const
+GaussianLinearCalibration * GaussianLinearCalibration::clone() const
 {
-  return new BLUE(*this);
+  return new GaussianLinearCalibration(*this);
 }
 
 
 /* Method save() stores the object through the StorageManager */
-void BLUE::save(Advocate & adv) const
+void GaussianLinearCalibration::save(Advocate & adv) const
 {
   CalibrationAlgorithmImplementation::save(adv);
   adv.saveAttribute("modelObservations_", modelObservations_);
@@ -212,7 +212,7 @@ void BLUE::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void BLUE::load(Advocate & adv)
+void GaussianLinearCalibration::load(Advocate & adv)
 {
   CalibrationAlgorithmImplementation::load(adv);
   adv.loadAttribute("modelObservations_", modelObservations_);

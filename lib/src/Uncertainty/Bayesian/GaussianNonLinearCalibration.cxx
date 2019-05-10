@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Default ThreeDVAR
+ *  @brief Default GaussianNonLinearCalibration
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/ThreeDVAR.hxx"
-#include "openturns/BLUE.hxx"
+#include "openturns/GaussianNonLinearCalibration.hxx"
+#include "openturns/GaussianLinearCalibration.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Dirac.hxx"
 #include "openturns/Normal.hxx"
@@ -37,19 +37,19 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(ThreeDVAR)
+CLASSNAMEINIT(GaussianNonLinearCalibration)
 
-static const Factory<ThreeDVAR> Factory_ThreeDVAR;
+static const Factory<GaussianNonLinearCalibration> Factory_GaussianNonLinearCalibration;
 
 /* Default constructor */
-ThreeDVAR::ThreeDVAR()
+GaussianNonLinearCalibration::GaussianNonLinearCalibration()
   : CalibrationAlgorithmImplementation()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-ThreeDVAR::ThreeDVAR(const Function & model,
+GaussianNonLinearCalibration::GaussianNonLinearCalibration(const Function & model,
                      const Sample & inputObservations,
                      const Sample & outputObservations,
                      const Point & candidate,
@@ -59,7 +59,7 @@ ThreeDVAR::ThreeDVAR(const Function & model,
   , model_(model)
   , inputObservations_(inputObservations)
   , algorithm_()
-  , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("ThreeDVAR-BootstrapSize"))
+  , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize"))
   , errorCovariance_(errorCovariance)
   , globalErrorCovariance_(false)
 {
@@ -328,7 +328,7 @@ namespace ThreeDVARFunctions
 }
 
 /* Performs the actual computation. Must be overloaded by the actual calibration algorithm */
-void ThreeDVAR::run()
+void GaussianNonLinearCalibration::run()
 {
   // Compute the posterior MAP
   // Error distribution
@@ -359,7 +359,7 @@ void ThreeDVAR::run()
     }
   else
     {
-      BLUE blueAlgo(model_, inputObservations_, outputObservations_, thetaStar, getParameterPrior().getCovariance(), error.getCovariance());
+      GaussianLinearCalibration blueAlgo(model_, inputObservations_, outputObservations_, thetaStar, getParameterPrior().getCovariance(), error.getCovariance());
       blueAlgo.run();
       parameterPosterior = blueAlgo.getResult().getParameterPosterior();
     }
@@ -367,7 +367,7 @@ void ThreeDVAR::run()
 }
 
 /* Perform a unique estimation */
-Point ThreeDVAR::run(const Sample & inputObservations,
+Point GaussianNonLinearCalibration::run(const Sample & inputObservations,
                      const Sample & outputObservations,
                      const Point & candidate,
 		     const TriangularMatrix & parameterInverseCholesky,
@@ -388,69 +388,69 @@ Point ThreeDVAR::run(const Sample & inputObservations,
 }
 
 /* Candidate accessor */
-Point ThreeDVAR::getCandidate() const
+Point GaussianNonLinearCalibration::getCandidate() const
 {
   // The candidate is stored in the prior distribution, which is a Normal distribution
   return getParameterPrior().getMean();
 }
 
 /* Parameter covariance accessor */
-CovarianceMatrix ThreeDVAR::getParameterCovariance() const
+CovarianceMatrix GaussianNonLinearCalibration::getParameterCovariance() const
 {
   // The parameter covariance is stored in the prior distribution, which is a Normal distribution
   return getParameterPrior().getCovariance();
 }
 
 /* Error covariance accessor */
-CovarianceMatrix ThreeDVAR::getErrorCovariance() const
+CovarianceMatrix GaussianNonLinearCalibration::getErrorCovariance() const
 {
   return errorCovariance_;
 }
 
 /* Global error covariance accessor */
-Bool ThreeDVAR::getGlobalErrorCovariance() const
+Bool GaussianNonLinearCalibration::getGlobalErrorCovariance() const
 {
   return globalErrorCovariance_;
 }
 
 /* Algorithm accessor */
-OptimizationAlgorithm ThreeDVAR::getAlgorithm() const
+OptimizationAlgorithm GaussianNonLinearCalibration::getAlgorithm() const
 {
   return algorithm_;
 }
 
-void ThreeDVAR::setAlgorithm(const OptimizationAlgorithm & algorithm)
+void GaussianNonLinearCalibration::setAlgorithm(const OptimizationAlgorithm & algorithm)
 {
   algorithm_ = algorithm;
 }
 
 /* Algorithm accessor */
-UnsignedInteger ThreeDVAR::getBootstrapSize() const
+UnsignedInteger GaussianNonLinearCalibration::getBootstrapSize() const
 {
   return bootstrapSize_;
 }
 
-void ThreeDVAR::setBootstrapSize(const UnsignedInteger bootstrapSize)
+void GaussianNonLinearCalibration::setBootstrapSize(const UnsignedInteger bootstrapSize)
 {
   bootstrapSize_ = bootstrapSize;
 }
 
 /* String converter */
-String ThreeDVAR::__repr__() const
+String GaussianNonLinearCalibration::__repr__() const
 {
-  return OSS() << "class=" << ThreeDVAR::GetClassName()
+  return OSS() << "class=" << GaussianNonLinearCalibration::GetClassName()
          << " name=" << getName();
 }
 
 
-ThreeDVAR * ThreeDVAR::clone() const
+GaussianNonLinearCalibration * GaussianNonLinearCalibration::clone() const
 {
-  return new ThreeDVAR(*this);
+  return new GaussianNonLinearCalibration(*this);
 }
 
 
 /* Method save() stores the object through the StorageManager */
-void ThreeDVAR::save(Advocate & adv) const
+void GaussianNonLinearCalibration::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute("model_", model_);
@@ -460,7 +460,7 @@ void ThreeDVAR::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void ThreeDVAR::load(Advocate & adv)
+void GaussianNonLinearCalibration::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute("model_", model_);

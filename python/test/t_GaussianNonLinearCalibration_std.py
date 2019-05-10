@@ -7,7 +7,7 @@ import math as m
 import sys
 
 ot.TESTPREAMBLE()
-ot.PlatformInfo.SetNumericalPrecision(5)
+ot.PlatformInfo.SetNumericalPrecision(3)
 
 m = 10
 x = [[0.5 + i] for i in range(m)]
@@ -36,13 +36,18 @@ for i in range(2 * m):
     globalErrorCovariance[i, i] = 2.0 + (1.0 + i) * (1.0 + i)
     for j in range(i):
         globalErrorCovariance[i, j] = 1.0 / (1.0 + i + j)
-
-methods = ["SVD", "QR", "Cholesky"]
-for method in methods:
-    print("method=", method)
-    algo = ot.BLUE(modelX, x, y, candidate, priorCovariance, errorCovariance, method)
+bootstrapSizes = [0, 100]
+for bootstrapSize in bootstrapSizes:
+    algo = ot.GaussianNonLinearCalibration(modelX, x, y, candidate, priorCovariance, errorCovariance)
+    algo.setBootstrapSize(bootstrapSize)
     algo.run()
-    print("result=", algo.getResult())
-    algo = ot.BLUE(modelX, x, y, candidate, priorCovariance, globalErrorCovariance, method)
+    # To avoid discrepance between the plaforms with or without CMinpack
+    print("result   (Auto)=", algo.getResult().getParameterMAP())
+    algo.setAlgorithm(ot.MultiStart(ot.TNC(), ot.LowDiscrepancyExperiment(ot.SobolSequence(), ot.Normal(candidate, ot.CovarianceMatrix(ot.Point(candidate).getDimension())), ot.ResourceMap.GetAsUnsignedInteger("GaussianNonLinearCalibration-MultiStartSize")).generate()))
     algo.run()
-    print("result (global)=", algo.getResult())
+    # To avoid discrepance between the plaforms with or without CMinpack
+    print("result    (TNC)=", algo.getResult().getParameterMAP())
+    algo = ot.GaussianNonLinearCalibration(modelX, x, y, candidate, priorCovariance, globalErrorCovariance)
+    algo.setBootstrapSize(bootstrapSize)
+    algo.run()
+    print("result (Global)=", algo.getResult().getParameterMAP())

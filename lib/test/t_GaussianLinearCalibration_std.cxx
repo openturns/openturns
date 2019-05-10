@@ -31,7 +31,7 @@ int main(int, char *[])
 
   try
   {
-    PlatformInfo::SetNumericalPrecision(3);
+    PlatformInfo::SetNumericalPrecision(5);
     UnsignedInteger m = 10;
     Sample x(m, 1);
     for (UnsignedInteger i = 0; i < m; ++i) x(i, 0) = 0.5 + i;
@@ -62,7 +62,7 @@ int main(int, char *[])
 	  priorCovariance(i, j) = 1.0 / (1.0 + i + j);
       }
     CovarianceMatrix errorCovariance(2);
-    for (UnsignedInteger i = 0; i < 1; ++i)
+    for (UnsignedInteger i = 0; i < 2; ++i)
       {
 	errorCovariance(i, i) = 2.0 + (1.0 + i) * (1.0 + i);
 	for (UnsignedInteger j = 0; j < i; ++j)
@@ -75,23 +75,33 @@ int main(int, char *[])
 	for (UnsignedInteger j = 0; j < i; ++j)
 	  globalErrorCovariance(i, j) = 1.0 / (1.0 + i + j);
       }
-    Indices bootstrapSizes(0);
-    bootstrapSizes.add(0);
-    bootstrapSizes.add(100);
-    for (UnsignedInteger n = 0; n < bootstrapSizes.getSize(); ++n)
+    Description methods(0);
+    methods.add("SVD");
+    methods.add("QR");
+    methods.add("Cholesky");
+    for (UnsignedInteger n = 0; n < methods.getSize(); ++n)
       {
-	ThreeDVAR algo(modelX, x, y, candidate, priorCovariance, errorCovariance);
-	algo.setBootstrapSize(bootstrapSizes[n]);
+	fullprint << "method=" << methods[n] << std::endl;
+	GaussianLinearCalibration algo(modelX, x, y, candidate, priorCovariance, errorCovariance, methods[n]);
 	algo.run();
-	// To avoid discrepance between the plaforms with or without CMinpack
-	fullprint << "result   (Auto)=" << algo.getResult().getParameterMAP() << std::endl;
-	algo.setAlgorithm(MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("ThreeDVAR-MultiStartSize")).generate()));
+	fullprint << "result (const. 1)=" << algo.getResult() << std::endl;
+	modelX.setParameter(candidate);
+	Sample modelObservations(modelX(x));
+	Matrix transposedGradientObservations(modelX.getParameterDimension(), y.getSize() * modelX.getOutputDimension());
+	UnsignedInteger shift = 0;
+	UnsignedInteger skip = modelX.getOutputDimension() * modelX.getParameterDimension();
+	for (UnsignedInteger i = 0; i < y.getSize(); ++i)
+	  {
+	    Matrix localGradient(modelX.parameterGradient(x[i]));
+	    std::copy(localGradient.getImplementation()->begin(), localGradient.getImplementation()->end(), transposedGradientObservations.getImplementation()->begin() + shift);
+	    shift += skip;
+	  }
+	algo = GaussianLinearCalibration(modelObservations, transposedGradientObservations.transpose(), y, candidate, priorCovariance, errorCovariance, methods[n]);
 	algo.run();
-	fullprint << "result    (TNC)=" << algo.getResult().getParameterMAP() << std::endl;
-	algo = ThreeDVAR(modelX, x, y, candidate, priorCovariance, globalErrorCovariance);
-  algo.setBootstrapSize(bootstrapSizes[n]);
+	fullprint << "result (const. 2)=" << algo.getResult() << std::endl;
+	algo = GaussianLinearCalibration(modelX, x, y, candidate, priorCovariance, globalErrorCovariance, methods[n]);
 	algo.run();
-	fullprint << "result (global)=" << algo.getResult().getParameterMAP() << std::endl;
+	fullprint << "result   (global)=" << algo.getResult() << std::endl;
       } // n
   }
   catch (TestFailed & ex)
