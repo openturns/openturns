@@ -9,8 +9,9 @@
 ==== New classes ====
 
 ==== API changes ====
- * Removed specific RandomVector constructors
+ * Removed deprecated specific RandomVector constructors
  * Removed deprecated HypothesisTest::Smirnov
+ * Removed deprecated FittingTest::TwoSamplesKolmogorov
 
 === Python module ===
 

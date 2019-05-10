@@ -250,38 +250,6 @@ class=TestResult name=Unnamed type=Kolmogorov Normal binaryQualityMeasure=true p
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::FittingTest::TwoSamplesKolmogorov
-"Perform a Kolmogorov goodness-of-fit test on two samples.
-
-If the p-value is high, then we cannot reject the hypothesis that the
-distributions of the two samples are the same.
-
-Parameters
-----------
-sample1 : 2-d float array
-    A continuous distribution sample.
-sample2 : 2-d float array
-    Another continuous distribution sample, can be of different size.
-level : float, :math:`0 \leq \alpha \leq 1`, optional
-    This is the risk :math:`\alpha` of committing a Type I error,
-    that is an incorrect rejection of a true null hypothesis.
-
-Returns
--------
-test_result : :class:`~openturns.TestResult`
-    Test result.
-
-Examples
---------
->>> import openturns as ot
->>> ot.RandomGenerator.SetSeed(0)
->>> sample1 = ot.Normal().getSample(20)
->>> sample2 = ot.Normal(0.1, 1.1).getSample(30)
->>> ot.FittingTest.TwoSamplesKolmogorov(sample1, sample2)
-class=TestResult name=Unnamed type=TwoSamplesKolmogorov binaryQualityMeasure=true p-value threshold=0.05 p-value=0.554765 statistic=0.216667 description=[sampleNormal vs sample Normal]"
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::FittingTest::ComputeKolmogorovStatistics
 "Compute the unscaled Kolmogorov distance between a sample and a distribution.
 
