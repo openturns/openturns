@@ -1,5 +1,5 @@
 %feature("docstring") OT::Dlib
-"Base class for optimization solvers from dlib library.
+"Base class for optimization solvers from the [dlib2009]_ library.
 
 Available constructors:
     Dlib(*algoName*)

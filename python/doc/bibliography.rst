@@ -54,6 +54,8 @@ Bibliography
     `pdf <https://ubt.opus.hbz-nrw.de/opus45-ubtr/frontdoor/deliver/index/docId/758/file/DissertationDimitriadis.pdf>`__
 .. [dixon1983] Dixon, W.J., Massey, F.J, *Introduction to statistical analysis*
     4th ed., McGraw-Hill, 1983
+.. [dlib2009] Davis E. King, *Dlib-ml: A Machine Learning Toolkit*,
+    Journal of Machine Learning Research, 10:1755-1758, 2009.
 .. [doornik2005] Doornik, J.A. *An Improved Ziggurat Method to Generate Normal Random Samples*,
     mimeo, Nuffield College, University of Oxford, 2005.
     `pdf <http://doc.openturns.org/papers/doornik2005.pdf>`__
