@@ -343,18 +343,6 @@ Graph VisualTest::DrawLinearModel(const Sample & sample1,
   return graphLinearModelTest;
 }
 
-/* Draw the visual test for the LinearModel when its dimension is 1 */
-Graph VisualTest::DrawLinearModel(const Sample & sample1,
-                                  const Sample & sample2,
-                                  const LinearModel & linearModel)
-{
-  LOGWARN(OSS() << "DrawLinearModel(..., LinearModel) is deprecated");
-  const UnsignedInteger dimension = sample1.getDimension();
-  const LinearCombinationFunction metaModel(LinearBasisFactory(dimension).build(), linearModel.getRegression());
-  LinearModelResult linearModelResult(Sample(), Basis(), Matrix(), Sample(), metaModel, linearModel.getRegression(), "", Description(), Sample(), Sample(), Point(), Point(), Point(), 0.0);
-  return DrawLinearModel(sample1, sample2, linearModelResult);
-}
-
 /* Draw the visual test for the LinearModel residuals */
 Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
     const Sample & sample2,
@@ -384,17 +372,6 @@ Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
   Graph graphLinearModelRTest("residual(i) versus residual(i-1)", "redidual(i-1)", "residual(i)", true, "topright");
   graphLinearModelRTest.add(cloudLinearModelRTest);
   return graphLinearModelRTest;
-}
-
-Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
-    const Sample & sample2,
-    const LinearModel & linearModel)
-{
-  LOGWARN(OSS() << "DrawLinearModelResidual(..., LinearModel) is deprecated");
-  const UnsignedInteger dimension = sample1.getDimension();
-  const LinearCombinationFunction metaModel(LinearBasisFactory(dimension).build(), linearModel.getRegression());
-  LinearModelResult linearModelResult(Sample(), Basis(), Matrix(), Sample(), metaModel, linearModel.getRegression(), "", Description(), Sample(), Sample(), Point(), Point(), Point(), 0.0);
-  return DrawLinearModelResidual(sample1, sample2, linearModelResult);
 }
 
 /* Draw the CobWeb visual test */

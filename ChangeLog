@@ -12,6 +12,7 @@
  * Removed deprecated specific RandomVector constructors
  * Removed deprecated HypothesisTest::Smirnov
  * Removed deprecated FittingTest::TwoSamplesKolmogorov
+ * Removed deprecated LinearModel, LinearModelFactory
 
 === Python module ===
 

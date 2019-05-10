@@ -188,9 +188,6 @@
   <AdaptiveStieltjesAlgorithm-MaximumError                    value_float="1.0e-12"      />
   <AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots value_int="64" />
 
-  <!-- OT::LinearModelFactory parameters -->
-  <LinearModelFactory-DefaultLevelValue value_float="0.95" />
-
   <!-- OT::LinearModelTest parameters -->
   <LinearModelTest-DefaultHarrisonMcCabeBreakpoint     value_float="0.5"            />
   <LinearModelTest-DefaultLevel                        value_float="0.05"           />
