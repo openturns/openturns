@@ -35,6 +35,7 @@ Examples
 Calibrate a nonlinear model using 3DVAR:
 
 >>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
 >>> m = 10
 >>> x = [[0.5 + i] for i in range(m)]
 >>> inVars = ['a', 'b', 'c', 'x']
@@ -51,7 +52,7 @@ Calibrate a nonlinear model using 3DVAR:
 >>> algo = ot.GaussianNonLinearCalibration(modelX, x, y, candidate, priorCovariance, errorCovariance)
 >>> algo.run()
 >>> print(algo.getResult().getParameterMAP())
-[2.72425,1.21172,0.498945]"
+[2.70532,1.21251,0.499001]"
 
 // ---------------------------------------------------------------------
 
