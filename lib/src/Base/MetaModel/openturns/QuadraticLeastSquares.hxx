@@ -77,9 +77,6 @@ public:
   /** Metamodel accessor */
   Function getMetaModel() const;
 
-  /** @deprecated Response surface accessor */
-  Function getResponseSurface() const;
-
   /** DataIn accessor */
   Sample getDataIn() const;
 

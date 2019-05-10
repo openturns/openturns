@@ -15,6 +15,7 @@
  * Removed deprecated LinearModel, LinearModelFactory
  * Removed deprecated HypothesisTest::(Partial|Full)Regression
  * Removed deprecated OptimizationProblem(levelFunction, levelValue) ctor
+ * Removed deprecated (Linear|Quadratic)(LeastSquares|Taylor)::getResponseSurface
 
 === Python module ===
 

@@ -79,9 +79,6 @@ public:
   /** Metamodel accessor */
   Function getMetaModel() const;
 
-  /** @deprecated Response surface accessor */
-  Function getResponseSurface() const;
-
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 

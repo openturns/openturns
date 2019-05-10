@@ -194,12 +194,6 @@ Function LinearLeastSquares::getMetaModel() const
   return responseSurface_;
 }
 
-Function LinearLeastSquares::getResponseSurface() const
-{
-  LOGWARN(OSS() << "getResponseSurface is deprecated, use getMetaModel");
-  return responseSurface_;
-}
-
 void LinearLeastSquares::save(Advocate & adv) const
 {
   PersistentObject::save(adv);

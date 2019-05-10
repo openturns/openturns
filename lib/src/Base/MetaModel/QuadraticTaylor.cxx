@@ -116,12 +116,6 @@ Function QuadraticTaylor::getMetaModel() const
   return responseSurface_;
 }
 
-Function QuadraticTaylor::getResponseSurface() const
-{
-  LOGWARN(OSS() << "getResponseSurface is deprecated, use getMetaModel");
-  return responseSurface_;
-}
-
 void QuadraticTaylor::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
