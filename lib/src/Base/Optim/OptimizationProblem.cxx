@@ -63,14 +63,6 @@ OptimizationProblem::OptimizationProblem(const Function & objective,
   // Nothing to do
 }
 
-/* Constructor for nearest point problem */
-OptimizationProblem::OptimizationProblem(const Function & levelFunction,
-    Scalar levelValue)
-  : TypedInterfaceObject<OptimizationProblemImplementation>(new NearestPointProblem(levelFunction, levelValue))
-{
-  LOGWARN(OSS() << "OptimizationProblem(levelFunction, levelValue) is deprecated, use NearestPointProblem");
-}
-
 /* Objective accessor */
 Function OptimizationProblem::getObjective() const
 {

@@ -1,3 +1,2 @@
-Remove deprecated OptimizationProblem(levelFunction, levelValue) ctor
 Remove deprecated (Linear|Quadratic)(LeastSquares|Taylor)::getResponseSurface
 Remove deprecated VisualTest::DrawEmpiricalCDF,DrawHistogram,DrawClouds
