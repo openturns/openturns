@@ -68,12 +68,6 @@ public:
       const Indices & selection,
       const Scalar level = 0.05);
 
-  /** Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialRegression performs the Regression test simultaneously on all firstSample[i] and secondSample, for i in the selection. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used. */
-  static TestResultCollection PartialRegression(const Sample & firstSample,
-      const Sample & secondSample,
-      const Indices & selection,
-      const Scalar level = 0.05);
-
   /** Spearman test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialSpearman performs the Independence Spearman test simultaneously on firstSample[i] and secondSample, for i in the selection.  */
   static TestResultCollection PartialSpearman(const Sample & firstSample,
       const Sample & secondSample,
@@ -84,11 +78,6 @@ public:
   static TestResultCollection FullPearson(const Sample & firstSample,
                                           const Sample & secondSample,
                                           const Scalar level = 0.05);
-
-  /** @deprecated, moved to LinearModelTest */
-  static TestResultCollection FullRegression(const Sample & firstSample,
-      const Sample & secondSample,
-      const Scalar level = 0.05);
 
   /** Spearman test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialSpearman performs the Independence Spearman test simultaneously on all firstSample[i] and secondSample. */
   static TestResultCollection FullSpearman(const Sample & firstSample,

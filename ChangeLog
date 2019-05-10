@@ -13,6 +13,7 @@
  * Removed deprecated HypothesisTest::Smirnov
  * Removed deprecated FittingTest::TwoSamplesKolmogorov
  * Removed deprecated LinearModel, LinearModelFactory
+ * Removed deprecated HypothesisTest::(Partial|Full)Regression
 
 === Python module ===
 
