@@ -1253,8 +1253,8 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "MCMC-DefaultBurnIn", 0 );
   setAsUnsignedInteger( "MCMC-DefaultThinning", 1 );
 
-  // BLUE parameters //
-  setAsString( "BLUE-Method", "QR" );
+  // GaussianLinearCalibration parameters //
+  setAsString( "GaussianLinearCalibration-Method", "QR" );
 
   // LinearLeastSquaresCalibration parameters //
   setAsScalar( "LinearLeastSquaresCalibration-Regularization", 1e-12 );
@@ -1264,9 +1264,9 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "NonLinearLeastSquaresCalibration-BootstrapSize", 100 );
   setAsUnsignedInteger( "NonLinearLeastSquaresCalibration-MultiStartSize", 100 );
 
-  // ThreeDVAR parameters //
-  setAsUnsignedInteger( "ThreeDVAR-BootstrapSize", 100 );
-  setAsUnsignedInteger( "ThreeDVAR-MultiStartSize", 100 );
+  // GaussianNonLinearCalibration parameters //
+  setAsUnsignedInteger( "GaussianNonLinearCalibration-BootstrapSize", 100 );
+  setAsUnsignedInteger( "GaussianNonLinearCalibration-MultiStartSize", 100 );
 
   // ARMA parameters //
   setAsScalar( "ARMA-MeanEpsilon", 1.0e-14 );
