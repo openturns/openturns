@@ -9,6 +9,7 @@
 ==== New classes ====
 
 ==== API changes ====
+ * Removed specific RandomVector constructors
 
 === Python module ===
 

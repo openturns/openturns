@@ -19,16 +19,12 @@
  *
  */
 #include "openturns/RandomVector.hxx"
-#include "openturns/ConstantRandomVector.hxx"
 #include "openturns/UsualRandomVector.hxx"
-#include "openturns/CompositeRandomVector.hxx"
 #include "openturns/EventRandomVector.hxx"
 #include "openturns/EventDomain.hxx"
 #include "openturns/EventProcess.hxx"
-#include "openturns/FunctionalChaosRandomVector.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
 #include "openturns/Domain.hxx"
-#include "openturns/ConditionalRandomVector.hxx"
 #include "openturns/Less.hxx"
 #include "openturns/Greater.hxx"
 #ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
@@ -70,44 +66,12 @@ RandomVector::RandomVector(RandomVectorImplementation * p_implementation)
   // Nothing to do
 }
 
-/* Constructor for constant vector */
-RandomVector::RandomVector(const Point & point)
-  : TypedInterfaceObject<RandomVectorImplementation>(new ConstantRandomVector(point))
-{
-  LOGWARN(OSS() << "RandomVector(Point) is deprecated, use ConstantRandomVector");
-}
-
 /* Constructor for distribution-based vector */
 RandomVector::RandomVector(const Distribution & distribution)
   : TypedInterfaceObject<RandomVectorImplementation>(new UsualRandomVector(distribution))
 {
   // Nothing to do
 }
-
-/* Constructor for distribution-based conditional vector */
-RandomVector::RandomVector(const Distribution & distribution,
-                           const RandomVector & randomParameters)
-  : TypedInterfaceObject<RandomVectorImplementation>(new ConditionalRandomVector(distribution, randomParameters))
-{
-  LOGWARN(OSS() << "RandomVector(Distribution, RandomVector) is deprecated, use ConditionalRandomVector");
-}
-
-/* Constructor for composite vector */
-RandomVector::RandomVector(const Function & function,
-                           const RandomVector & antecedent)
-  : TypedInterfaceObject<RandomVectorImplementation>(new CompositeRandomVector(function,
-      antecedent.getImplementation()))
-{
-  LOGWARN(OSS() << "RandomVector(Function, RandomVector) is deprecated, use CompositeRandomVector");
-}
-
-/* Constructor for functional chaos vector */
-RandomVector::RandomVector(const FunctionalChaosResult & functionalChaosResult)
-  : TypedInterfaceObject<RandomVectorImplementation>(new FunctionalChaosRandomVector(functionalChaosResult))
-{
-  LOGWARN(OSS() << "RandomVector(FunctionalChaosResult) is deprecated, use FunctionalChaosRandomVector");
-}
-
 
 /* String converter */
 String RandomVector::__repr__() const
