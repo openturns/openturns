@@ -724,9 +724,6 @@ void ResourceMap::loadDefaultConfiguration()
   setAsScalar( "AdaptiveStieltjesAlgorithm-MaximumError",  1.0e-12 );
   setAsUnsignedInteger( "AdaptiveStieltjesAlgorithm-MaximumSubIntervalsBetweenRoots", 64 );
 
-  // LinearModelFactory parameters //
-  setAsScalar( "LinearModelFactory-DefaultLevelValue", 0.95 );
-
   // LinearModelTest parameters //
   setAsScalar( "LinearModelTest-DefaultHarrisonMcCabeBreakpoint", 0.5 );
   setAsScalar( "LinearModelTest-DefaultLevel", 0.05 );

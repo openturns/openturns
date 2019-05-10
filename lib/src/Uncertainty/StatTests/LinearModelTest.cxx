@@ -85,19 +85,6 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
   return TestResult("Fisher", pValue > level, pValue, level, statistic);
 }
 
-/* @deprecated */
-TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
-    const Sample & secondSample,
-    const LinearModel & linearModel,
-    const Scalar level)
-{
-  LOGWARN(OSS() << "LinearModelFisher(..., LinearModel) is deprecated");
-  const UnsignedInteger dimension = firstSample.getDimension();
-  const LinearCombinationFunction metaModel(LinearBasisFactory(dimension).build(), linearModel.getRegression());
-  LinearModelResult linearModelResult(Sample(), Basis(), Matrix(), Sample(), metaModel, linearModel.getRegression(), "", Description(), Sample(), Sample(), Point(), Point(), Point(), 0.0);
-  return LinearModelFisher(firstSample, secondSample, linearModelResult, level);
-}
-
 /*  */
 TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
     const Sample & secondSample,
@@ -145,19 +132,6 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
   Log::Debug(OSS() << "t-statistic = " << statistic);
   const Scalar pValue =  2.0 * DistFunc::pStudent(df, statistic, true);
   return TestResult("ResidualMean", pValue > level, pValue, level, statistic);
-}
-
-/* @deprecated */
-TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
-    const Sample & secondSample,
-    const LinearModel & linearModel,
-    const Scalar level)
-{
-  LOGWARN(OSS() << "LinearModelResidualMean(..., LinearModel) is deprecated");
-  const UnsignedInteger dimension = firstSample.getDimension();
-  const LinearCombinationFunction metaModel(LinearBasisFactory(dimension).build(), linearModel.getRegression());
-  LinearModelResult linearModelResult(Sample(), Basis(), Matrix(), Sample(), metaModel, linearModel.getRegression(), "", Description(), Sample(), Sample(), Point(), Point(), Point(), 0.0);
-  return LinearModelResidualMean(firstSample, secondSample, linearModelResult, level);
 }
 
 /*  */
@@ -231,21 +205,6 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
   return TestResult("HarrisonMcCabe", pValue > level, pValue, level, hmc);
 }
 
-/* @deprecated  */
-TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample,
-    const Sample & secondSample,
-    const LinearModel & linearModel,
-    const Scalar level,
-    const Scalar breakPoint,
-    const Scalar simulationSize)
-{
-  LOGWARN(OSS() << "LinearModelHarrisonMcCabe(..., LinearModel) is deprecated");
-  const UnsignedInteger dimension = firstSample.getDimension();
-  const LinearCombinationFunction metaModel(LinearBasisFactory(dimension).build(), linearModel.getRegression());
-  LinearModelResult linearModelResult(Sample(), Basis(), Matrix(), Sample(), metaModel, linearModel.getRegression(), "", Description(), Sample(), Sample(), Point(), Point(), Point(), 0.0);
-  return LinearModelHarrisonMcCabe(firstSample, secondSample, linearModelResult, level, breakPoint, simulationSize);
-}
-
 /*  */
 TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample,
     const Sample & secondSample,
@@ -292,10 +251,8 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
   /* Build a linear model on the squared residuals */
   LinearModelAlgorithm algo(firstSample, linearModelResult.getBasis(), w);
   const LinearModelResult result(algo.getResult());
-
   /* Predicted values of the squared residuals*/
-  const Sample wPredicted(result.getMetaModel()(firstSample));
-
+  const Sample wPredicted(result.getFittedSample());
   /* Compute variances */
   const Scalar wPredictedVar = wPredicted.computeVariance()[0];
   const Scalar wVariance = w.computeVariance()[0];
@@ -309,19 +266,6 @@ TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
   return TestResult("BreuschPagan", pValue > level, pValue, level, statistic);
 }
 
-
-/* @deprecated */
-TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
-    const Sample & secondSample,
-    const LinearModel & linearModel,
-    const Scalar level)
-{
-  LOGWARN(OSS() << "LinearModelBreuschPagan(..., LinearModel) is deprecated");
-  const UnsignedInteger dimension = firstSample.getDimension();
-  const LinearCombinationFunction metaModel(LinearBasisFactory(dimension).build(), linearModel.getRegression());
-  LinearModelResult linearModelResult(Sample(), Basis(), Matrix(), Sample(), metaModel, linearModel.getRegression(), "", Description(), Sample(), Sample(), Point(), Point(), Point(), 0.0);
-  return LinearModelBreuschPagan(firstSample, secondSample, linearModelResult, level);
-}
 
 /*  */
 TestResult LinearModelTest::LinearModelBreuschPagan(const Sample & firstSample,
@@ -444,19 +388,6 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
   return result;
 }
 
-/* @deprecated */
-TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
-    const Sample & secondSample,
-    const LinearModel & linearModel,
-    const String hypothesis,
-    const Scalar level)
-{
-  LOGWARN(OSS() << "LinearModelDurbinWatson(..., LinearModel) is deprecated");
-  const UnsignedInteger dimension = firstSample.getDimension();
-  const LinearCombinationFunction metaModel(LinearBasisFactory(dimension).build(), linearModel.getRegression());
-  LinearModelResult linearModelResult(Sample(), Basis(), Matrix(), Sample(), metaModel, linearModel.getRegression(), "", Description(), Sample(), Sample(), Point(), Point(), Point(), 0.0);
-  return LinearModelDurbinWatson(firstSample, secondSample, linearModelResult, hypothesis, level);
-}
 
 /*  */
 TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,

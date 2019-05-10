@@ -96,11 +96,6 @@ public:
   static Scalar ComputeKolmogorovStatistics(const Sample & sample,
       const Distribution & distribution);
 
-  /** Two-sample Kolmogorov–Smirnov test */
-  static TestResult TwoSamplesKolmogorov (const Sample & sample1,
-                                          const Sample & sample2,
-                                          const Scalar level = 0.05);
-
   /** ChiSquared fitting test for discrete distributions */
   static TestResult ChiSquared(const Sample & sample,
                                const Distribution & distribution,

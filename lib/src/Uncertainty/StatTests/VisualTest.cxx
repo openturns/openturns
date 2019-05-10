@@ -40,56 +40,6 @@ VisualTest::VisualTest()
 {
 }
 
-/* Draw the empirical CDF of the Sample when its dimension is 1 */
-Graph VisualTest::DrawEmpiricalCDF(const Sample & sample)
-{
-  LOGWARN("VisualTest::DrawEmpiricalCDF is deprecated");
-  if (sample.getDimension() != 1)
-    throw InvalidDimensionException(HERE) << "In VisualTest::DrawEmpiricalCDF: sample should be of dimension 1, here dimension=" << sample.getDimension();
-  return UserDefined(sample).drawCDF();
-}
-
-/* Draw the empirical CDF of the Sample when its dimension is 1 */
-Graph VisualTest::DrawEmpiricalCDF(const Sample & sample,
-                                   const Scalar xMin,
-                                   const Scalar xMax)
-{
-  LOGWARN("VisualTest::DrawEmpiricalCDF is deprecated");
-  if (sample.getDimension() != 1)
-    throw InvalidDimensionException(HERE) << "In VisualTest::DrawEmpiricalCDF: sample should be of dimension 1, here dimension=" << sample.getDimension();
-  return UserDefined(sample).drawCDF(xMin, xMax);
-}
-
-
-/* Draw the Histogram of the Sample when its dimension is 1 */
-Graph VisualTest::DrawHistogram(const Sample & sample,
-                                const UnsignedInteger binNumber)
-{
-  LOGWARN("VisualTest::DrawHistogram is deprecated");
-  // Create an empty graph
-  Graph graphHist("sample histogram", "realizations", "frequency", true, "topright");
-  graphHist.add(HistogramFactory().buildAsHistogram(sample, binNumber).drawPDF());
-  // Create the barplot
-  OSS oss;
-  oss << sample.getName() << " histogram";
-  graphHist.setLegends(Description(1, oss));
-  return graphHist;
-}
-
-/* Draw the Histogram of the Sample when its dimension is 1, Normal empirical rule for bin number */
-Graph VisualTest::DrawHistogram(const Sample & sample)
-{
-  LOGWARN("VisualTest::DrawHistogram is deprecated");
-  // Create an empty graph
-  Graph graphHist("sample histogram", "realizations", "frequency", true, "topright");
-  graphHist.add(HistogramFactory().buildAsHistogram(sample).drawPDF());
-  // Create the barplot
-  OSS oss;
-  oss << sample.getName() << " histogram";
-  graphHist.setLegends(Description(1, oss));
-  return graphHist;
-}
-
 /* Draw the QQplot of the two Samples when its dimension is 1 */
 Graph VisualTest::DrawQQplot(const Sample & sample1,
                              const Sample & sample2,
@@ -265,46 +215,6 @@ Graph VisualTest::DrawHenryLine(const Sample & sample, const Distribution & norm
 }
 
 
-/* Draw the clouds of one Sample and one model when its dimension is 2 */
-Graph VisualTest::DrawClouds(const Sample & sample,
-                             const Distribution & dist)
-{
-  LOGWARN("VisualTest::DrawClouds is deprecated");
-  if (sample.getDimension() != 2) throw InvalidDimensionException(HERE) << "Error: can draw sample clouds only if dimension equals 2, here dimension=" << sample.getDimension();
-  if (dist.getDimension() != 2) throw InvalidDimensionException(HERE) << "Error: can draw distribution clouds only if dimension equals 2, here dimension=" << dist.getDimension();
-
-  const Sample distSample(dist.getSample(sample.getSize()));
-
-  const Cloud sampleCloud(sample, "blue", "fsquare", "Sample Cloud");
-  const Cloud distCloud(distSample, "red", "fsquare", "Model Cloud");
-
-  Graph myGraph("two samples clouds", "x1", "x2", true, "topright");
-  // Then, draw it
-  myGraph.add(sampleCloud);
-  myGraph.add(distCloud);
-
-  return myGraph;
-}
-
-/* Draw the clouds of two Sample and one model when its dimension is 2 */
-Graph VisualTest::DrawClouds(const Sample & sample1,
-                             const Sample & sample2)
-{
-  LOGWARN("VisualTest::DrawClouds is deprecated");
-  if (sample1.getDimension() != 2) throw InvalidDimensionException(HERE) << "Error: can draw sample clouds only if dimension equals 2, here dimension=" << sample1.getDimension();
-  if (sample2.getDimension() != 2) throw InvalidDimensionException(HERE) << "Error: can draw sample clouds only if dimension equals 2, here dimension=" << sample2.getDimension();
-
-  const Cloud sampleCloud1(sample1, "blue", "fsquare", "Sample1 Cloud");
-  const Cloud sampleCloud2(sample2, "red", "fsquare", "Sample2 Cloud");
-
-  Graph myGraph("two samples clouds", "x1", "x2", true, "topright");
-  // Then, draw it
-  myGraph.add(sampleCloud1);
-  myGraph.add(sampleCloud2);
-
-  return myGraph;
-}
-
 /* Draw the visual test for the LinearModel when its dimension is 1 */
 Graph VisualTest::DrawLinearModel(const Sample & sample1,
                                   const Sample & sample2,
@@ -343,18 +253,6 @@ Graph VisualTest::DrawLinearModel(const Sample & sample1,
   return graphLinearModelTest;
 }
 
-/* Draw the visual test for the LinearModel when its dimension is 1 */
-Graph VisualTest::DrawLinearModel(const Sample & sample1,
-                                  const Sample & sample2,
-                                  const LinearModel & linearModel)
-{
-  LOGWARN(OSS() << "DrawLinearModel(..., LinearModel) is deprecated");
-  const UnsignedInteger dimension = sample1.getDimension();
-  const LinearCombinationFunction metaModel(LinearBasisFactory(dimension).build(), linearModel.getRegression());
-  LinearModelResult linearModelResult(Sample(), Basis(), Matrix(), Sample(), metaModel, linearModel.getRegression(), "", Description(), Sample(), Sample(), Point(), Point(), Point(), 0.0);
-  return DrawLinearModel(sample1, sample2, linearModelResult);
-}
-
 /* Draw the visual test for the LinearModel residuals */
 Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
     const Sample & sample2,
@@ -384,17 +282,6 @@ Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
   Graph graphLinearModelRTest("residual(i) versus residual(i-1)", "redidual(i-1)", "residual(i)", true, "topright");
   graphLinearModelRTest.add(cloudLinearModelRTest);
   return graphLinearModelRTest;
-}
-
-Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
-    const Sample & sample2,
-    const LinearModel & linearModel)
-{
-  LOGWARN(OSS() << "DrawLinearModelResidual(..., LinearModel) is deprecated");
-  const UnsignedInteger dimension = sample1.getDimension();
-  const LinearCombinationFunction metaModel(LinearBasisFactory(dimension).build(), linearModel.getRegression());
-  LinearModelResult linearModelResult(Sample(), Basis(), Matrix(), Sample(), metaModel, linearModel.getRegression(), "", Description(), Sample(), Sample(), Point(), Point(), Point(), 0.0);
-  return DrawLinearModelResidual(sample1, sample2, linearModelResult);
 }
 
 /* Draw the CobWeb visual test */

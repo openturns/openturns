@@ -1,5 +1,31 @@
 = New Features =
 
+== 1.14 release (in progress) == #release-1.14
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+
+==== API changes ====
+ * Removed deprecated specific RandomVector constructors
+ * Removed deprecated HypothesisTest::Smirnov
+ * Removed deprecated FittingTest::TwoSamplesKolmogorov
+ * Removed deprecated LinearModel, LinearModelFactory
+ * Removed deprecated HypothesisTest::(Partial|Full)Regression
+ * Removed deprecated OptimizationProblem(levelFunction, levelValue) ctor
+ * Removed deprecated (Linear|Quadratic)(LeastSquares|Taylor)::getResponseSurface
+ * Removed deprecated VisualTest::DrawEmpiricalCDF,DrawHistogram,DrawClouds
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+=== Bug fixes ===
+ * https://github.com/openturns/openturns/milestone/4?closed=1
+
+
 == 1.13rc1 release (2019-04-26) == #release-1.13rc1
 
 === Library ===

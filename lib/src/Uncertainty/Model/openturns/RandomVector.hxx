@@ -54,23 +54,8 @@ public:
   RandomVector(RandomVectorImplementation * p_implementation);
 #endif
 
-  /** @deprecated Constructor for constant vector */
-  explicit RandomVector(const Point & point);
-
   /** Constructor for distribution-based vector */
   explicit RandomVector(const Distribution & distribution);
-
-  /** @deprecated Constructor for distribution-based conditional vector */
-  RandomVector(const Distribution & distribution,
-               const RandomVector & randomParameters);
-
-  /** @deprecated Constructor for composite vector */
-  RandomVector(const Function & function,
-               const RandomVector & antecedent);
-
-  /** @deprecated Constructor for functional chaos vector */
-  explicit RandomVector(const FunctionalChaosResult & functionalChaosResult);
-
 
   /** String converter */
   String __repr__() const;

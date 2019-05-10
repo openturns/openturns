@@ -169,12 +169,6 @@ try:
     d = UserDefined([[0.0], [1.0], [2.0], [3.0], [4.0]], [0.4, 0.2, 0.2, 0.15, 0.05])
     print("R example p-value=%.5g" % FittingTest.ChiSquared(s, d).getPValue())
 
-    RandomGenerator.SetSeed(0)
-    sample1 = Normal().getSample(20)
-    sample2 = Normal(0.1, 1.1).getSample(30)
-    resultTwoSamplesKolmogorov = FittingTest.TwoSamplesKolmogorov(
-        sample1, sample2)
-    print(resultTwoSamplesKolmogorov)
 except:
     import sys
     print("t_FittingTest_std.py", sys.exc_info()[0], sys.exc_info()[1])

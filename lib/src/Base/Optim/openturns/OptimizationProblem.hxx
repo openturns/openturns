@@ -63,10 +63,6 @@ public:
                       const Function & inequalityConstraint,
                       const Interval & bounds);
 
-  /** @deprecated Constructor with parameters */
-  OptimizationProblem(const Function & levelFunction,
-                      Scalar levelValue);
-
   /** Objective functions accessor */
   Function getObjective() const;
   void setObjective(const Function & objective);

@@ -38,8 +38,6 @@
 %include Last.i  
 %include Null.i  
 %include HMatrixParameters.i
-%include LinearModel.i  
-%include LinearModelFactory.i  
 %include TestResult.i  
 %include RandomGeneratorState.i
 %include RandomGenerator.i

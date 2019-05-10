@@ -315,15 +315,6 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
   return result;
 }
 
-/* Two-sample Kolmogorov–Smirnov test */
-TestResult FittingTest::TwoSamplesKolmogorov(const Sample & sample1,
-                                             const Sample & sample2,
-                                             const Scalar level)
-{
-  LOGWARN(OSS() << "FittingTest::TwoSamplesKolmogorov(x, y, level) is deprecated, use HypothesisTest::TwoSamplesKolmogorov(x, y, level) instead");
-  return HypothesisTest::TwoSamplesKolmogorov(sample1, sample2, level);
-}
-
 /* Chi-squared test */
 TestResult FittingTest::ChiSquared(const Sample & sample,
                                    const DistributionFactory & factory,

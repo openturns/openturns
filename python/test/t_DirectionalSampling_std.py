@@ -73,7 +73,7 @@ try:
     X2 = RandomVector(Uniform(-2, 2.0))
 
     for X in [X1, X2]:
-        vector = RandomVector(myFunction, X)
+        vector = CompositeRandomVector(myFunction, X)
         event = Event(vector, GreaterOrEqual(), 0.0)
 
         print('X:', X.getDistribution())

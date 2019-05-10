@@ -213,15 +213,6 @@ TestResult HypothesisTest::Pearson(const Sample & firstSample,
   return TestResult("Pearson", pValue > level, pValue, level, statistic);
 }
 
-/* Smirnov test if two scalar samples (of sizes not necessarily equal) follow the same distribution (only for continuous distributions)*/
-TestResult HypothesisTest::Smirnov(const Sample & firstSample,
-                                   const Sample & secondSample,
-                                   const Scalar level)
-{
-  LOGWARN(OSS() << "HypothesisTest::Smirnov(x, y, level) is deprecated, use HypothesisTest::TwoSamplesKolmogorov(x, y, level) instead");
-  return TwoSamplesKolmogorov(firstSample, secondSample, level);
-}
-
 /* Two-sample Kolmogorov–Smirnov test */
 TestResult HypothesisTest::TwoSamplesKolmogorov(const Sample & sample1,
                                                 const Sample & sample2,
@@ -306,16 +297,6 @@ HypothesisTest::TestResultCollection HypothesisTest::PartialPearson(const Sample
   return results;
 }
 
-/* Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialRegression performs the Regression test simultaneously on all firstSample[i] and secondSample, for i in the selection. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used. */
-HypothesisTest::TestResultCollection HypothesisTest::PartialRegression(const Sample & firstSample,
-    const Sample & secondSample,
-    const Indices & selection,
-    const Scalar level)
-{
-  LOGWARN(OSS() << "HypothesisTest::PartialRegression is deprecated, use LinearModelTest::PartialRegression");
-  return LinearModelTest::PartialRegression(firstSample, secondSample, selection, level);
-}
-
 /* Spearman test between 2 samples : firstSample if of dimension n and secondSample of dimension 1. PartialSpearman tests for null rank correlation between the selected marginals of the first sample wrt the second sample.*/
 HypothesisTest::TestResultCollection HypothesisTest::PartialSpearman(const Sample & firstSample,
     const Sample & secondSample,
@@ -340,15 +321,6 @@ HypothesisTest::TestResultCollection HypothesisTest::FullPearson(const Sample & 
   Indices selection(dimension);
   selection.fill();
   return PartialPearson(firstSample, secondSample, selection, level);
-}
-
-/* Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), FullRegression performs the Regression test simultaneously on all firstSample[i] and secondSample. The Regression test tests if the regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The Fisher distribution is used. */
-HypothesisTest::TestResultCollection HypothesisTest::FullRegression(const Sample & firstSample,
-    const Sample & secondSample,
-    const Scalar level)
-{
-  LOGWARN(OSS() << "HypothesisTest::FullRegression is deprecated, use LinearModelTest::FullRegression");
-  return LinearModelTest::FullRegression(firstSample, secondSample, level);
 }
 
 /* Spearman test between 2 samples : firstSample if of dimension n and secondSample of dimension 1. FullSpearman tests for null rank correlation between the marginals of the first sample wrt the second sample.*/

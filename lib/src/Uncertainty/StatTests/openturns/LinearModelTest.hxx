@@ -24,7 +24,6 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/TestResult.hxx"
 #include "openturns/Sample.hxx"
-#include "openturns/LinearModel.hxx"
 #include "openturns/LinearModelResult.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -44,12 +43,6 @@ public:
                                       const LinearModelResult & linearModelResult,
                                       const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
-  /** @deprecated */
-  static TestResult LinearModelFisher(const Sample & firstSample,
-                                      const Sample & secondSample,
-                                      const LinearModel & linearModel,
-                                      const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
-
   /**  */
   static TestResult LinearModelFisher(const Sample & firstSample,
                                       const Sample & secondSample,
@@ -59,12 +52,6 @@ public:
   static TestResult LinearModelResidualMean(const Sample & firstSample,
       const Sample & secondSample,
       const LinearModelResult & linearModelResult,
-      const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
-
-  /** @deprecated */
-  static TestResult LinearModelResidualMean(const Sample & firstSample,
-      const Sample & secondSample,
-      const LinearModel & linearModel,
       const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
   /**  */
@@ -80,14 +67,6 @@ public:
       const Scalar breakPoint = ResourceMap::GetAsScalar( "LinearModelTest-DefaultHarrisonMcCabeBreakpoint" ),
       const Scalar simulationSize = ResourceMap::GetAsUnsignedInteger( "LinearModelTest-DefaultHarrisonMcCabeSimulationSize" ));
 
-  /** @deprecated */
-  static TestResult LinearModelHarrisonMcCabe(const Sample & firstSample,
-      const Sample & secondSample,
-      const LinearModel & linearModel,
-      const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ),
-      const Scalar breakPoint = ResourceMap::GetAsScalar( "LinearModelTest-DefaultHarrisonMcCabeBreakpoint" ),
-      const Scalar simulationSize = ResourceMap::GetAsUnsignedInteger( "LinearModelTest-DefaultHarrisonMcCabeSimulationSize" ));
-
   /**  */
   static TestResult LinearModelHarrisonMcCabe(const Sample & firstSample,
       const Sample & secondSample,
@@ -101,12 +80,6 @@ public:
       const LinearModelResult & linearModelResult,
       const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
-  /** @deprecated */
-  static TestResult LinearModelBreuschPagan(const Sample & firstSample,
-      const Sample & secondSample,
-      const LinearModel & linearModel,
-      const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
-
   /**  */
   static TestResult LinearModelBreuschPagan(const Sample & firstSample,
       const Sample & secondSample,
@@ -116,13 +89,6 @@ public:
   static TestResult LinearModelDurbinWatson(const Sample & firstSample,
       const Sample & secondSample,
       const LinearModelResult & linearModelResult,
-      const String hypothesis = ResourceMap::GetAsString( "LinearModelTest-DefaultDurbinWatsonHypothesis" ),
-      const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
-
-  /** @deprecated */
-  static TestResult LinearModelDurbinWatson(const Sample & firstSample,
-      const Sample & secondSample,
-      const LinearModel & linearModel,
       const String hypothesis = ResourceMap::GetAsString( "LinearModelTest-DefaultDurbinWatsonHypothesis" ),
       const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 

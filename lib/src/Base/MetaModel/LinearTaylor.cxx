@@ -112,12 +112,6 @@ Function LinearTaylor::getMetaModel() const
   return responseSurface_;
 }
 
-Function LinearTaylor::getResponseSurface() const
-{
-  LOGWARN(OSS() << "getResponseSurface is deprecated, use getMetaModel");
-  return responseSurface_;
-}
-
 void LinearTaylor::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
