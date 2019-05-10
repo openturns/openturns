@@ -101,7 +101,7 @@ Thus, :math:`\hat{\gamma}_n` satisfies the relation:
 .. math::
     :label: mll_relation
     
-    S_0 (\gamma) \left(S_2(\gamma) - S_1(\gamma) \left( 1 + \frac{S_1(\gamma)}{n} \right) \right) + n S_4(\gamma) = 0
+    S_0 (\gamma) \left(S_2(\gamma) - S_1(\gamma) \left( 1 + \frac{S_1(\gamma)}{n} \right) \right) + n S_3(\gamma) = 0
 
 under the constraint :math:`\gamma \leq \min x_i`."
 
