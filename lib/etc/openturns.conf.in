@@ -615,15 +615,16 @@
   <HyperbolicAnisotropicEnumerateFunction-DefaultQ value_float="0.4" />
 
   <!-- OT::MarginalTransformationEvaluation parameters -->
-  <MarginalTransformationEvaluation-Simplify             value_bool="true"      />
+  <MarginalTransformationEvaluation-Simplify             value_bool="true"     />
   <MarginalTransformationEvaluation-DefaultTailThreshold value_float="0.99"    />
   <MarginalTransformationEvaluation-ParametersEpsilon    value_float="1.0e-14" />
 
   <!-- OT::DistributionImplementation parameters -->
-  <Distribution-MinimumVolumeLevelSetBySampling   value_bool="false"               />
-  <Distribution-Parallel                          value_bool="true"                />
-  <Distribution-ShowSupportDiscretePDF            value_bool="true"                />
-  <Distribution-UseCovarianceAdaptiveAlgorithm    value_bool="true"                />
+  <Distribution-MinimumVolumeLevelSetBySampling   value_bool="false"              />
+  <Distribution-Parallel                          value_bool="true"               />
+  <Distribution-ScaleColorsDiscretePDF            value_bool="true"               />
+  <Distribution-ShowSupportDiscretePDF            value_bool="true"               />
+  <Distribution-UseCovarianceAdaptiveAlgorithm    value_bool="true"               />
   <Distribution-DefaultCDFEpsilon                 value_float="1.0e-14"           />
   <Distribution-DefaultPDFEpsilon                 value_float="1.0e-14"           />
   <Distribution-DefaultQuantileEpsilon            value_float="1.0e-12"           />
