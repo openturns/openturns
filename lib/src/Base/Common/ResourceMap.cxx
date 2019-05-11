@@ -1154,6 +1154,7 @@ void ResourceMap::loadDefaultConfiguration()
   // DistributionImplementation parameters //
   setAsBool( "Distribution-MinimumVolumeLevelSetBySampling", false );
   setAsBool( "Distribution-Parallel", true);
+  setAsBool( "Distribution-ScaleColorsDiscretePDF", true);
   setAsBool( "Distribution-ShowSupportDiscretePDF", true);
   setAsBool( "Distribution-UseCovarianceAdaptiveAlgorithm", true );
   setAsScalar( "Distribution-QMin", 0.15 );

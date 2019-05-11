@@ -3562,48 +3562,60 @@ Graph DistributionImplementation::drawPDF(const Point & xMin,
   if (isDiscrete())
     {
       const Sample support(getSupport());
-      const Point probabilities(computePDF(support).asPoint());
-      const Scalar scaling = ResourceMap::GetAsScalar("Distribution-DiscreteDrawPDFScaling") / std::sqrt(*std::max_element(probabilities.begin(), probabilities.end()));
+      const Point probabilities(getProbabilities());
       const UnsignedInteger size = support.getSize();
+      SampleImplementation fullProba(size, 1);
+      fullProba.setData(probabilities);
+      fullProba.stack(*support.getImplementation());
+      fullProba = fullProba.sortAccordingToAComponent(0);
+      const Scalar pMin = fullProba(0, 0);
+      const Scalar pMax = fullProba(size-1, 0);
+      const Scalar scaling = ResourceMap::GetAsScalar("Distribution-DiscreteDrawPDFScaling") / std::sqrt(pMax);
       const String xName(description_[0]);
       const String yName(description_[1]);
       const String title(OSS() << getDescription() << " PDF");
       Graph graph(title, xName, yName, true, "topright", 1, scale);
+      const Bool scaleColors = ResourceMap::GetAsBool("Distribution-ScaleColorsDiscretePDF") && (pMin < pMax);
       for (UnsignedInteger i = 0; i < size; ++i)
         {
-          const Scalar x = support(i, 0);
-          const Scalar y = support(i, 1);
-          const Scalar p = std::sqrt(probabilities[i]) * scaling;
+          const Scalar x = fullProba(i, 1);
+          const Scalar y = fullProba(i, 2);
+	  const Scalar p = fullProba(i, 0);
+          const Scalar eta = std::sqrt(p) * scaling;
           Sample square(4, 2);
           if (logScaleX)
             {
-              square(0, 0) = x * (1.0 - p);
-              square(1, 0) = x * (1.0 - p);
-              square(2, 0) = x * (1.0 + p);
-              square(3, 0) = x * (1.0 + p);
+              square(0, 0) = x * (1.0 - eta);
+              square(1, 0) = x * (1.0 - eta);
+              square(2, 0) = x * (1.0 + eta);
+              square(3, 0) = x * (1.0 + eta);
             }
           else
             {
-              square(0, 0) = x - p;
-              square(1, 0) = x - p;
-              square(2, 0) = x + p;
-              square(3, 0) = x + p;
+              square(0, 0) = x - eta;
+              square(1, 0) = x - eta;
+              square(2, 0) = x + eta;
+              square(3, 0) = x + eta;
             }
           if (logScaleY)
             {
-              square(0, 1) = y * (1.0 - p);
-              square(1, 1) = y * (1.0 - p);
-              square(2, 1) = y * (1.0 + p);
-              square(3, 1) = y * (1.0 + p);
+              square(0, 1) = y * (1.0 - eta);
+              square(1, 1) = y * (1.0 + eta);
+              square(2, 1) = y * (1.0 + eta);
+              square(3, 1) = y * (1.0 - eta);
             }
           else
             {
-              square(0, 1) = y - p;
-              square(1, 1) = y - p;
-              square(2, 1) = y + p;
-              square(3, 1) = y + p;
+              square(0, 1) = y - eta;
+              square(1, 1) = y + eta;
+              square(2, 1) = y + eta;
+              square(3, 1) = y - eta;
             }
-          graph.add(Polygon(square));
+	  Polygon mark(square);
+	  const Scalar rho = (scaleColors ? (1.0 - 1.0 / size) * (p - pMin) / (pMax - pMin) : p);
+	  mark.setColor(Polygon::ConvertFromHSV(360.0 * rho, 1.0, 1.0));
+	  mark.setEdgeColor(Polygon::ConvertFromHSV(360.0 * rho, 1.0, 0.9));
+          graph.add(mark);
         }
       if (ResourceMap::GetAsBool("Distribution-ShowSupportDiscretePDF"))
         {
@@ -3804,47 +3816,59 @@ Graph DistributionImplementation::drawLogPDF(const Point & xMin,
     {
       const Sample support(getSupport());
       const Point probabilities(getProbabilities());
-      const Scalar scaling = ResourceMap::GetAsScalar("Distribution-DiscreteDrawPDFScaling") / std::sqrt(*std::max_element(probabilities.begin(), probabilities.end()));
       const UnsignedInteger size = support.getSize();
+      SampleImplementation fullProba(size, 1);
+      fullProba.setData(probabilities);
+      fullProba.stack(*support.getImplementation());
+      fullProba = fullProba.sortAccordingToAComponent(0);
+      const Scalar absLogPMin = -std::log(fullProba(0, 0));
+      const Scalar absLogPMax = -std::log(fullProba(size-1, 0));
+      const Scalar scaling = ResourceMap::GetAsScalar("Distribution-DiscreteDrawPDFScaling") / std::sqrt(absLogPMin);
       const String xName(description_[0]);
       const String yName(description_[1]);
       const String title(OSS() << getDescription() << " PDF");
       Graph graph(title, xName, yName, true, "topright", 1, scale);
+      const Bool scaleColors = ResourceMap::GetAsBool("Distribution-ScaleColorsDiscretePDF") && (absLogPMin < absLogPMax);
       for (UnsignedInteger i = 0; i < size; ++i)
         {
-          const Scalar x = support(i, 0);
-          const Scalar y = support(i, 1);
-          const Scalar p = std::sqrt(probabilities[i]) * scaling;
+          const Scalar x = fullProba(i, 1);
+          const Scalar y = fullProba(i, 2);
+	  const Scalar absLogP = -std::log(fullProba(i, 0));
+          const Scalar eta = scaling * std::sqrt(absLogP);
           Sample square(4, 2);
           if (logScaleX)
             {
-              square(0, 0) = x * (1.0 - p);
-              square(1, 0) = x * (1.0 - p);
-              square(2, 0) = x * (1.0 + p);
-              square(3, 0) = x * (1.0 + p);
+              square(0, 0) = x * (1.0 - eta);
+              square(1, 0) = x * (1.0 - eta);
+              square(2, 0) = x * (1.0 + eta);
+              square(3, 0) = x * (1.0 + eta);
             }
           else
             {
-              square(0, 0) = x - p;
-              square(1, 0) = x - p;
-              square(2, 0) = x + p;
-              square(3, 0) = x + p;
+              square(0, 0) = x - eta;
+              square(1, 0) = x - eta;
+              square(2, 0) = x + eta;
+              square(3, 0) = x + eta;
             }
           if (logScaleY)
             {
-              square(0, 1) = y * (1.0 - p);
-              square(1, 1) = y * (1.0 - p);
-              square(2, 1) = y * (1.0 + p);
-              square(3, 1) = y * (1.0 + p);
+              square(0, 1) = y * (1.0 - eta);
+              square(1, 1) = y * (1.0 + eta);
+              square(2, 1) = y * (1.0 + eta);
+              square(3, 1) = y * (1.0 - eta);
             }
           else
             {
-              square(0, 1) = y - p;
-              square(1, 1) = y - p;
-              square(2, 1) = y + p;
-              square(3, 1) = y + p;
+              square(0, 1) = y - eta;
+              square(1, 1) = y + eta;
+              square(2, 1) = y + eta;
+              square(3, 1) = y - eta;
             }
-          graph.add(Polygon(square));
+	  Polygon mark(square);
+	  const Scalar rho = (scaleColors ? (1.0 - 1.0 / size) * (absLogP - absLogPMin) / (absLogPMax - absLogPMin) : absLogP);
+	  mark.setColor(Polygon::ConvertFromHSV(360.0 * rho, 1.0, 1.0));
+	  mark.setEdgeColor(Polygon::ConvertFromHSV(360.0 * rho, 1.0, 0.9));
+          graph.add(mark);
         }
       if (ResourceMap::GetAsBool("Distribution-ShowSupportDiscretePDF"))
         {
