@@ -21,9 +21,9 @@ Examples
 --------
 >>> import openturns as ot
 >>> dim = 4
->>> bounds = ot.Interval([-3.0] * dim, [5.0] * dim)
 >>> linear = ot.SymbolicFunction(['x1', 'x2', 'x3', 'x4'], ['x1+2*x2-3*x3+4*x4'])
->>> problem = ot.OptimizationProblem(linear, ot.Function(), ot.Function(), bounds)
+>>> problem = ot.OptimizationProblem(linear)
+>>> problem.setBounds(ot.Interval([-3.0] * dim, [5.0] * dim))
 >>> # print(ot.OPTpp.GetAlgorithmNames())
 >>> # [OptBaNewton,OptBaQNewton,OptBCEllipsoid,...
 >>> # algo = ot.OPTpp(problem, 'OptBCEllipsoid')
