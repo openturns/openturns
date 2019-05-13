@@ -730,7 +730,7 @@ Comments and internal documentation
     *
     * <LGPL copyright>
     *
-    * Copyright 2005-20YY Airbus-EDF-IMACS-Phimeca
+    * Copyright 2005-20YY Airbus-EDF-IMACS-ONERA-Phimeca
     */
 
 These comments should avoid:

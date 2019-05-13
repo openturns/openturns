@@ -71,4 +71,6 @@ Funding
 
 `IMACS <http://imacs.polytechnique.fr/>`_ joined the partnership in 2014.
 
+`ONERA <http://www.onera.fr/>`_ joined the partnership in 2019.
+
 `Phimeca Engineering <http://www.phimeca.com/>`_ funds work since the beginning.
