@@ -86,8 +86,8 @@ void Ceres::checkProblem(const OptimizationProblem & problem) const
   if (problem.hasLevelFunction())
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support nearest-point problems";
 
-  if (problem.hasBounds() && !problem.hasResidualFunction())
-    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support bound constraints for general optimization";
+  if (problem.hasBounds() && (algoName_ != "LEVENBERG_MARQUARDT" && algoName_ != "DOGLEG"))
+    throw InvalidArgumentException(HERE) << "Error: Ceres line search algorithms do not support bound constraints";
 
   if (problem.hasInequalityConstraint())
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support inequality constraints";
@@ -365,7 +365,9 @@ void Ceres::run()
     ceres::Solver::Summary summary;
     ceres::Solve(options, &problem, &summary);
     LOGINFO(OSS() << summary.BriefReport());
-    if (summary.termination_type != ceres::CONVERGENCE)
+    if (summary.termination_type == ceres::FAILURE)
+      throw InternalException(HERE) << "Ceres terminated with failure.";
+    else if (summary.termination_type != ceres::CONVERGENCE)
       LOGWARN(OSS() << "Ceres terminated with " << ceres::TerminationTypeToString(summary.termination_type));
 
     optimalValue = summary.final_cost;

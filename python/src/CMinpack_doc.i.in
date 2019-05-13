@@ -1,12 +1,12 @@
 %feature("docstring") OT::CMinpack
 "Interface to CMinpack.
 
-This class exposes the solver from the non-linear optimization library [cminpack2007]_.
+This class exposes a least-squares solver from the non-linear optimization library [cminpack2007]_.
 
 Parameters
 ----------
 problem : :class:`~openturns.OptimizationProblem`
-    Optimization problem to solve.
+    Least-squares optimization problem to solve.
 
 Notes
 -----
@@ -22,11 +22,12 @@ AbdoRackwitz, Cobyla, NLopt, SQP, TNC
 Examples
 --------
 >>> import openturns as ot
->>> n = 2
->>> residualFunction = ot.SymbolicFunction(['x0', 'x1'], ['10*(x1-x0^2)', '1-x0'])
+>>> dim = 2
+>>> residualFunction = ot.SymbolicFunction(['x0', 'x1'], ['10*(x1-x0^2)', '0.5-x0', '0.3-2*x1'])
 >>> problem = ot.LeastSquaresProblem(residualFunction)
+>>> problem.setBounds(ot.Interval([-3.0] * dim, [5.0] * dim))
 >>> algo = ot.CMinpack(problem)
->>> algo.setStartingPoint([0.0] * 2)
+>>> algo.setStartingPoint([0.0] * dim)
 >>> algo.run()
 >>> result = algo.getResult()
 >>> x_star = result.getOptimalPoint()
