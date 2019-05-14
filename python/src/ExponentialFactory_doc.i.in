@@ -10,8 +10,8 @@ The parameters are estimated by method of moments:
     :nowrap:
 
     \begin{eqnarray*}
-      \displaystyle \Hat{\gamma}_n = (1-\mathrm{sign}(x_{(1,n)})/(2+n))x_{(1,n)}\\
-      \displaystyle \Hat{\lambda}_n= 1/\bar{x}_n-\Hat{\gamma}_n
+      \displaystyle \Hat{\gamma}_n = x_{(1,n)} - \frac{|x_{(1,n)}|}{2+n}\\
+      \displaystyle \Hat{\lambda}_n= \frac{1}{\bar{x}_n-\Hat{\gamma}_n}
     \end{eqnarray*}
 
 See also
