@@ -26,6 +26,7 @@ Its cumulative distribution function is defined as:
             \quad x \in [0; +\infty[
 
 with :math:`\sigma > 0` and :math:`\xi \in \Rset`.
+If :math:'xi \geq 0' then the range is :math:'x \geq 0'. If :math:'xi <0' then the range is :math:'x \in [0, -1/\xi['.
 
 Its first moments are:
 
