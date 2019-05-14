@@ -5,8 +5,7 @@ This represents a least-squares problem:
 
 .. math::
 
-    \min \frac{1}{2}||f(x)||^2 \\
-    x
+    \min_{x} \frac{1}{2}||f(x)||^2
 
 where *f* is the residual function.
 
