@@ -39,6 +39,7 @@
  * MultiFORM
  * JoeCopula
  * MarginalEvaluation/Gradient/Hessian
+ * MarshallOlkinCopula
 
 ==== API changes ====
  * Removed deprecated specific RandomVector constructors

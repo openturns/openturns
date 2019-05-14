@@ -51,6 +51,7 @@
 %include ComposedDistribution.i
 %include CumulativeDistributionNetwork.i
 %include ComposedCopula.i
+%include MarshallOlkinCopula.i
 %include OrdinalSumCopula.i
 
 /* At last we include template definitions */

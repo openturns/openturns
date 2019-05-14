@@ -168,6 +168,8 @@ Bibliography
     Systems Engineering and Operations Research Dept.,
     George Mason University, Fairfax, VA 22030.
     `pdf <http://doc.openturns.org/papers/nash1999.pdf>`__
+.. [nelsen2006] Roger B. Nelsen, *An Introduction to Copulas 2nd Edition*,
+    Springer, 2006.
 .. [nisthandbook] NIST/SEMATECH e-Handbook of Statistical Methods,
     http://www.itl.nist.gov/div898/handbook/
 .. [nlopt2009] Steven G. Johnson, The NLopt nonlinear-optimization package,

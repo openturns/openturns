@@ -111,6 +111,7 @@
 #include "openturns/LogUniformFactory.hxx"
 #include "openturns/OrderStatisticsMarginalChecker.hxx"
 #include "openturns/OrdinalSumCopula.hxx"
+#include "openturns/MarshallOlkinCopula.hxx"
 #include "openturns/MarginalDistribution.hxx"
 #include "openturns/MaximumDistribution.hxx"
 #include "openturns/MaximumEntropyOrderStatisticsDistribution.hxx"

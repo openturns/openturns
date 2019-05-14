@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Abstract top-level class for Continuous distributions
+ *  @brief Abstract top-level class for copulas
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
