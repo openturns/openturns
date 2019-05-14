@@ -22,8 +22,7 @@ Its cumulative distribution function is defined as:
                     & \text{ if } \xi \neq 0 \\
                \displaystyle 1 - \exp\left(-\frac{x}{\sigma}\right)
                     & \text{ if } \xi = 0
-            \end{array}\right.,
-            \quad x \in [0; +\infty[
+            \end{array}\right.
 
 with :math:`\sigma > 0` and :math:`\xi \in \Rset`.
 
