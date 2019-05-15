@@ -209,6 +209,7 @@ Refer to :ref:`copula`.
     IndependentCopula
     EmpiricalBernsteinCopula
     ExtremeValueCopula
+    JoeCopula
     MaximumEntropyOrderStatisticsCopula
 
     :template: class.rst_t
