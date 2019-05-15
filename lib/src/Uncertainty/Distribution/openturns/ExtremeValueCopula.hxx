@@ -102,8 +102,7 @@ protected:
 private:
 
   /** The Pickand function */
-  Function
-  pickandFunction_;
+  Function pickandFunction_;
 
 }; /* class ExtremeValueCopula */
 

@@ -35,6 +35,7 @@ People
 - Joseph Mure
 - Julien Schueller
 - Kamal Abboud
+- Kieran Delamotte
 - Mathieu Couplet
 - Mathieu Lapointe
 - Mathieu Souchaud

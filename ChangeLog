@@ -37,6 +37,7 @@
  * UnionEvent
  * SystemFORM
  * MultiFORM
+ * JoeCopula
 
 ==== API changes ====
  * Removed deprecated specific RandomVector constructors

@@ -606,6 +606,7 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       Exponential.i Exponential_doc.i.in
                       ExponentialFactory.i ExponentialFactory_doc.i.in
                       ExtremeValueCopula.i ExtremeValueCopula_doc.i.in
+                      JoeCopula.i JoeCopula_doc.i.in
                       FisherSnedecor.i FisherSnedecor_doc.i.in
                       FisherSnedecorFactory.i FisherSnedecorFactory_doc.i.in
                       Frechet.i Frechet_doc.i.in

@@ -49,6 +49,7 @@
 %include Exponential.i
 %include ExponentialFactory.i
 %include ExtremeValueCopula.i
+%include JoeCopula.i
 %include FisherSnedecor.i
 %include FisherSnedecorFactory.i
 %include Frechet.i
