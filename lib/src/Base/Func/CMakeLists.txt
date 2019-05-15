@@ -134,6 +134,7 @@ ot_add_source_file (MonomialFunctionFactory.cxx)
 ot_add_source_file (EvaluationProxy.cxx)
 ot_add_source_file (MemoizeEvaluation.cxx)
 ot_add_source_file (MemoizeFunction.cxx)
+ot_add_source_file (InverseDistanceWeightingInterpolation.cxx)
 
 ot_install_header_file (AggregatedFunction.hxx)
 ot_install_header_file (SymbolicParserImplementation.hxx)
@@ -264,6 +265,7 @@ ot_install_header_file (MonomialFunctionFactory.hxx)
 ot_install_header_file (EvaluationProxy.hxx)
 ot_install_header_file (MemoizeEvaluation.hxx)
 ot_install_header_file (MemoizeFunction.hxx)
+ot_install_header_file (InverseDistanceWeightingInterpolation.hxx)
 
 # Recurse in subdirectories
 add_subdirectory (SpecFunc)

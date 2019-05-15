@@ -374,6 +374,7 @@ ot_add_python_module(func func_module.i
                       ProcessSample.i ProcessSample_doc.i.in
                       ProcessSampleImplementation.i ProcessSampleImplementation_doc.i.in
                       BaseFuncTemplateDefs.i
+                      InverseDistanceWeightingInterpolation.i InverseDistanceWeightingInterpolation_doc.i.in
                    )
 
 ot_add_python_module(diff diff_module.i

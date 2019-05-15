@@ -214,6 +214,7 @@ ot_check_test (InverseTrendEvaluation_std)
 ot_check_test (InverseTrendTransform_std)
 ot_check_test (ExpertMixture_std)
 ot_check_test (BasisFactory_std)
+ot_check_test (InverseDistanceWeightingInterpolation)
 
 # Optim
 ot_check_test (AbdoRackwitz_std)
