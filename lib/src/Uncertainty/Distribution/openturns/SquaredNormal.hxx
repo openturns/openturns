@@ -66,6 +66,7 @@ public:
   Scalar computeCDF(const Point & point) const;
 
   /** Get the PDF of the distribution */
+  using ContinuousDistribution::computePDF;
   Scalar computePDF(const Point & point) const;
 
 protected:
@@ -74,6 +75,9 @@ private:
 
   /** Compute the mean of the distribution */
   void computeMean() const;
+
+  /** Compute the covariance of the distribution */
+  void computeCovariance() const;
   
   /** Compute the range */
   void computeRange();

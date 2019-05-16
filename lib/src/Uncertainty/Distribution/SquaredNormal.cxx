@@ -126,6 +126,14 @@ void SquaredNormal::computeMean() const
   isAlreadyComputedMean_ = true;
 }
 
+/* Compute the covariance of the distribution */
+void SquaredNormal::computeCovariance() const
+{
+  covariance_ = CovarianceMatrix(1);
+  covariance_(0, 0) = 2.0 * (2.0 * std::pow(mu_, 2.0) + std::pow(sigma_, 2.0)) * std::pow(sigma_, 2.0);
+  isAlreadyComputedCovariance_ = true;
+}
+
 void SquaredNormal::computeRange()
 {
   setRange(Interval(Point(1, 0.0), Point(1, std::pow(mu_ + 8.5 * sigma_, 2.0)),
