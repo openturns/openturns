@@ -17,6 +17,7 @@ Integration
 
     GaussKronrod
     GaussLegendre
+    Fejer1
 
 .. autosummary::
     :toctree: _generated/
