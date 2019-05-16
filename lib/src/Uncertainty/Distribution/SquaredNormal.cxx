@@ -42,6 +42,7 @@ SquaredNormal::SquaredNormal()
 SquaredNormal::SquaredNormal(Scalar mu, Scalar sigma)
   : ContinuousDistribution(), mu_(mu), sigma_(sigma), normal_(mu, sigma)
 {
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "The standard deviation must be > 0 sigma=" << sigma;
   setName("SquaredNormal");
   setDimension(1);
   computeRange();
