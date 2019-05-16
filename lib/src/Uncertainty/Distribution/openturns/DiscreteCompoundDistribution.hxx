@@ -31,27 +31,27 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class DiscreteIntegralCompound
+ * @class DiscreteCompoundDistribution
  *
- * The DiscreteIntegralCompound computed from 2 distributions : BaseDistribution (X) and CompoundDistribution(N).
+ * The DiscreteCompoundDistribution computed from 2 distributions : BaseDistribution (X) and CompoundDistribution(N).
  */
-class OT_API DiscreteIntegralCompound
+class OT_API DiscreteCompoundDistribution
   : public DiscreteDistribution
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  DiscreteIntegralCompound();
+  DiscreteCompoundDistribution();
 
   /** USELESS Parameters constructor */
   // explicit Geometric(const Scalar p);
 
   /** Constructor using distributions */
-  DiscreteIntegralCompound(const Distribution & base_distribution, const Distribution & compound_distribution);
+  DiscreteCompoundDistribution(const Distribution & base_distribution, const Distribution & compound_distribution);
 
   /** Comparison operator */
-  Bool operator ==(const DiscreteIntegralCompound & other) const;
+  Bool operator ==(const DiscreteCompoundDistribution & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const;
 public:
@@ -65,13 +65,13 @@ public:
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  virtual DiscreteIntegralCompound * clone() const;
+  virtual DiscreteCompoundDistribution * clone() const;
 
   /** Get one realization of the distribution */
   Point getRealization() const;
 
   /** Get table of probabilities */
-  Point computeProbabilities(const UnsignedInteger m, const Scalar epsilon=ResourceMap::GetAsScalar("DiscreteIntegralCompound-DefaultEpsilon")) const;
+  Point computeProbabilities(const UnsignedInteger m, const Scalar epsilon=ResourceMap::GetAsScalar("DiscreteCompoundDistribution-DefaultEpsilon")) const;
 
   /** Get upper bound of distribution */
   UnsignedInteger computeIntegerUpperBound();
@@ -156,7 +156,7 @@ private:
   /** Actual discrete integral compound */
   UserDefined distribution_;
 
-}; /* class DiscreteIntegralCompound */
+}; /* class DiscreteCompoundDistribution */
 
 
 END_NAMESPACE_OPENTURNS

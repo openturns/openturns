@@ -34,7 +34,7 @@ int main(int, char *[])
   try
   {
     // Instanciate one distribution object
-    DiscreteIntegralCompound distribution(Bernoulli(0.5), Poisson(20.0));
+    DiscreteCompoundDistribution distribution(Bernoulli(0.5), Poisson(20.0));
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
     std::cout << "Upper bound : " << distribution.computeIntegerUpperBound() << std::endl;

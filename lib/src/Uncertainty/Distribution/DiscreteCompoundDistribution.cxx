@@ -19,31 +19,31 @@
  *
  */
 #include <cmath>
-#include "openturns/DiscreteIntegralCompound.hxx"
+#include "openturns/DiscreteCompoundDistribution.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(DiscreteIntegralCompound)
+CLASSNAMEINIT(DiscreteCompoundDistribution)
 
-static const Factory<DiscreteIntegralCompound> Factory_DiscreteIntegralCompound;
+static const Factory<DiscreteCompoundDistribution> Factory_DiscreteCompoundDistribution;
 
 /* Default constructor */
-DiscreteIntegralCompound::DiscreteIntegralCompound()
+DiscreteCompoundDistribution::DiscreteCompoundDistribution()
   : DiscreteDistribution()
 {
-  setName( "DiscreteIntegralCompound" );
+  setName( "DiscreteCompoundDistribution" );
   setDimension( 1 );
   computeRange();
 }
 
   /** Constructor using distributions */
-DiscreteIntegralCompound::DiscreteIntegralCompound(const Distribution & base_distribution, const Distribution & compound_distribution)
+DiscreteCompoundDistribution::DiscreteCompoundDistribution(const Distribution & base_distribution, const Distribution & compound_distribution)
   : DiscreteDistribution()
 {
-  setName( "DiscreteIntegralCompound" );
+  setName( "DiscreteCompoundDistribution" );
 
   setDimension( 1 );
 
@@ -62,30 +62,30 @@ DiscreteIntegralCompound::DiscreteIntegralCompound(const Distribution & base_dis
 /* Constructs PDF */
 
 /* Comparison operator */
-Bool DiscreteIntegralCompound::operator ==(const DiscreteIntegralCompound & other) const
+Bool DiscreteCompoundDistribution::operator ==(const DiscreteCompoundDistribution & other) const
 {
   if (this == &other) return true;
   return baseDistribution_ == other.baseDistribution_ && compoundDistribution_ == other.compoundDistribution_;
 }
 
-Bool DiscreteIntegralCompound::equals(const DistributionImplementation & other) const
+Bool DiscreteCompoundDistribution::equals(const DistributionImplementation & other) const
 {
-  const DiscreteIntegralCompound* p_other = dynamic_cast<const DiscreteIntegralCompound*>(&other);
+  const DiscreteCompoundDistribution* p_other = dynamic_cast<const DiscreteCompoundDistribution*>(&other);
   return p_other && (*this == *p_other);
 }
 
 /* String converter */
-String DiscreteIntegralCompound::__repr__() const
+String DiscreteCompoundDistribution::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << DiscreteIntegralCompound::GetClassName()
+  oss << "class=" << DiscreteCompoundDistribution::GetClassName()
       << " name=" << getName();
       //<< " dimension=" << getDimension()
       //<< " p=" << p_;
   return oss;
 }
 
-String DiscreteIntegralCompound::__str__(const String & ) const
+String DiscreteCompoundDistribution::__str__(const String & ) const
 {
   OSS oss(false);
   oss << getClassName() << "Base distribution " << baseDistribution_ << " Compound distribution" << compoundDistribution_;
@@ -93,13 +93,13 @@ String DiscreteIntegralCompound::__str__(const String & ) const
 }
 
 /* Virtual constructor */
-DiscreteIntegralCompound * DiscreteIntegralCompound::clone() const
+DiscreteCompoundDistribution * DiscreteCompoundDistribution::clone() const
 {
-  return new DiscreteIntegralCompound(*this);
+  return new DiscreteCompoundDistribution(*this);
 }
 
 /* Compute the numerical range of the distribution given the parameters values */
-void DiscreteIntegralCompound::computeRange()
+void DiscreteCompoundDistribution::computeRange()
 {
   const Point lowerBound(1, 0.0);
   const Point upperBound(1, computeIntegerUpperBound());
@@ -109,7 +109,7 @@ void DiscreteIntegralCompound::computeRange()
 }
 
 /* Get one realization of the distribution */
-Point DiscreteIntegralCompound::getRealization() const
+Point DiscreteCompoundDistribution::getRealization() const
 {
   return distribution_.getRealization();
 }
@@ -117,7 +117,7 @@ Point DiscreteIntegralCompound::getRealization() const
 
 /* All values of the PDF */
 
-Point DiscreteIntegralCompound::computeProbabilities(const UnsignedInteger m, const Scalar epsilon) const // FIXME
+Point DiscreteCompoundDistribution::computeProbabilities(const UnsignedInteger m, const Scalar epsilon) const // FIXME
 {
 
   if (epsilon <= 0) throw InvalidArgumentException(HERE) << "Error parameter must be positive.";
@@ -145,12 +145,12 @@ Point DiscreteIntegralCompound::computeProbabilities(const UnsignedInteger m, co
 }
 
 
-UnsignedInteger DiscreteIntegralCompound::computeIntegerUpperBound()
+UnsignedInteger DiscreteCompoundDistribution::computeIntegerUpperBound()
 {
   return compoundDistribution_.getRange().getUpperBound()[0] * baseDistribution_.getRange().getUpperBound()[0];
 }
 
-void DiscreteIntegralCompound::createIntegralCompound()
+void DiscreteCompoundDistribution::createIntegralCompound()
 {
   UnsignedInteger m = computeIntegerUpperBound();
 
@@ -167,110 +167,110 @@ void DiscreteIntegralCompound::createIntegralCompound()
 }
 
 /* Get the PDF of the distribution */
-Scalar DiscreteIntegralCompound::computePDF(const Point & point) const
+Scalar DiscreteCompoundDistribution::computePDF(const Point & point) const
 {
   return distribution_.computePDF(point);
 }
 
 
 /* Get the CDF of the distribution */
-Scalar DiscreteIntegralCompound::computeCDF(const Point & point) const
+Scalar DiscreteCompoundDistribution::computeCDF(const Point & point) const
 {
   return distribution_.computeCDF(point);
 }
 
-Scalar DiscreteIntegralCompound::computeComplementaryCDF(const Point & point) const
+Scalar DiscreteCompoundDistribution::computeComplementaryCDF(const Point & point) const
 {
   return distribution_.computeComplementaryCDF(point);
 }
 
 /* Get the PDFGradient of the distribution */
-Point DiscreteIntegralCompound::computePDFGradient(const Point & point) const
+Point DiscreteCompoundDistribution::computePDFGradient(const Point & point) const
 {
   return distribution_.computePDFGradient(point);
 }
 
 /* Get the CDFGradient of the distribution */
-Point DiscreteIntegralCompound::computeCDFGradient(const Point & point) const
+Point DiscreteCompoundDistribution::computeCDFGradient(const Point & point) const
 {
   return distribution_.computeCDFGradient(point);
 }
 
 /* Get the quantile of the distribution */
-Scalar DiscreteIntegralCompound::computeScalarQuantile(const Scalar prob,
+Scalar DiscreteCompoundDistribution::computeScalarQuantile(const Scalar prob,
                                         const Bool tail) const
 {
   return distribution_.computeQuantile(prob, tail)[0];
 }
 
 /* Compute the entropy of the distribution */
-Scalar DiscreteIntegralCompound::computeEntropy() const
+Scalar DiscreteCompoundDistribution::computeEntropy() const
 {
   return distribution_.computeEntropy();
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-Complex DiscreteIntegralCompound::computeCharacteristicFunction(const Scalar x) const
+Complex DiscreteCompoundDistribution::computeCharacteristicFunction(const Scalar x) const
 {
   return distribution_.computeCharacteristicFunction(x);
 }
 
 /* Get the generating function of the distribution, i.e. psi(z) = E(z^X) */
-Complex DiscreteIntegralCompound::computeGeneratingFunction(const Complex & z) const
+Complex DiscreteCompoundDistribution::computeGeneratingFunction(const Complex & z) const
 {
   return compoundDistribution_.computeGeneratingFunction(baseDistribution_.computeGeneratingFunction(z));
 }
 
 /* Get the support of a discrete distribution that intersect a given interval */
-Sample DiscreteIntegralCompound::getSupport(const Interval & interval) const
+Sample DiscreteCompoundDistribution::getSupport(const Interval & interval) const
 {
   return distribution_.getSupport(interval);
 }
 
 /* Get the standard deviation of the distribution */
-Point DiscreteIntegralCompound::getStandardDeviation() const
+Point DiscreteCompoundDistribution::getStandardDeviation() const
 {
   return distribution_.getStandardDeviation();
 }
 
 /* Get the skewness of the distribution */
-Point DiscreteIntegralCompound::getSkewness() const
+Point DiscreteCompoundDistribution::getSkewness() const
 {
   return distribution_.getSkewness();
 }
 
 /* Get the kurtosis of the distribution */
-Point DiscreteIntegralCompound::getKurtosis() const
+Point DiscreteCompoundDistribution::getKurtosis() const
 {
   return distribution_.getKurtosis();
 }
 
 /* Parameters value accessor */
-Point DiscreteIntegralCompound::getParameter() const
+Point DiscreteCompoundDistribution::getParameter() const
 {
   return distribution_.getParameter();
 }
 
-void DiscreteIntegralCompound::setParameter(const Point & parameter)
+void DiscreteCompoundDistribution::setParameter(const Point & parameter)
 {
   return distribution_.setParameter(parameter);
 }
 
 /* Parameters description accessor */
-Description DiscreteIntegralCompound::getParameterDescription() const
+Description DiscreteCompoundDistribution::getParameterDescription() const
 {
   return distribution_.getParameterDescription();
 }
 
 /* Method save() stores the object through the StorageManager */
-void DiscreteIntegralCompound::save(Advocate & adv) const
+void DiscreteCompoundDistribution::save(Advocate & adv) const
 {
   DiscreteDistribution::save(adv);
   //distribution_.save(adv); // FIXME
 }
 
 /* Method load() reloads the object from the StorageManager */
-void DiscreteIntegralCompound::load(Advocate & adv)
+void DiscreteCompoundDistribution::load(Advocate & adv)
 {
   DiscreteDistribution::load(adv);
   //distribution_.load(adv); // FIXME
