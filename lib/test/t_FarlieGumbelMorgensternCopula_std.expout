@@ -10,7 +10,7 @@ oneRealization=class=Point name=Unnamed dimension=2 values=[0.976434,0.827543]
 oneSample=class=Sample name=a farlieGumbelMorgenstern copula implementation=class=SampleImplementation name=a farlieGumbelMorgenstern copula size=10 dimension=2 description=[X0,X1] data=[[0.084502,0.263863],[0.0111884,0.470051],[0.462462,0.22218],[0.587674,0.125421],[0.908026,0.853521],[0.00398058,0.446955],[0.373997,0.244501],[0.0134696,0.471166],[0.768466,0.224426],[0.663918,0.0878354]]
 anotherSample mean=class=Point name=Unnamed dimension=2 values=[0.497404,0.504402]
 anotherSample covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0826296,0.0190135,0.0190135,0.0826259]
-point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=class=Point name=Unnamed dimension=2 values=[-0.84,-0.84] ddf (FD)=class=Point name=Unnamed dimension=2 values=[-0.84,-0.84] pdf=1.252 cdf=0.05792
+point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=class=Point name=Unnamed dimension=2 values=[-0.84,-0.84] pdf=1.252 cdf=0.05792
 Survival      =0.65792
 Survival (ref)=0.65792
 Inverse survival=class=Point name=Unnamed dimension=2 values=[0.0255431,0.0255431]

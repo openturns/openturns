@@ -10,7 +10,7 @@ oneRealization=class=Point name=Unnamed dimension=2 values=[0.976434,0.9104]
 oneSample=class=Sample name=a clayton copula implementation=class=SampleImplementation name=a clayton copula size=10 dimension=2 description=[X0,X1] data=[[0.084502,0.0841681],[0.0111884,0.0165697],[0.462462,0.351093],[0.587674,0.336097],[0.908026,0.916299],[0.00398058,0.00569048],[0.373997,0.31094],[0.0134696,0.0199597],[0.768466,0.480384],[0.663918,0.322531]]
 anotherSample mean=class=Point name=Unnamed dimension=2 values=[0.497404,0.501523]
 anotherSample covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0826296,0.0614658,0.0614658,0.0830042]
-point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=[-8.01112,-8.01112] ddf (FD)=[-8.01111,-8.01111] pdf=3.3879 cdf=0.152117
+point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=[-8.01112,-8.01112] pdf=3.3879 cdf=0.152117
 Survival      =0.752117
 Survival (ref)=0.752117
 Inverse survival=class=Point name=Unnamed dimension=2 values=[0.0402547,0.0402547]

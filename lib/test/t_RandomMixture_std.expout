@@ -56,8 +56,8 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[0.5]
-ddf      =class=Point name=Unnamed dimension=1 values=[-0.0195592]
-ddf (ref)=class=Point name=Unnamed dimension=1 values=[-0.0195592]
+ddf      =class=Point name=Unnamed dimension=1 values=[-0.019559]
+ddf (ref)=class=Point name=Unnamed dimension=1 values=[-0.019559]
 pdf      =0.117355
 pdf  (FD)=0.117355
 pdf (ref)=0.117355
@@ -101,8 +101,8 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 Kolmogorov test for the generator, sample size=100 is rejected
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[0.5]
-ddf      =class=Point name=Unnamed dimension=1 values=[0.227448]
-ddf (ref)=class=Point name=Unnamed dimension=1 values=[0.227449]
+ddf      =class=Point name=Unnamed dimension=1 values=[0.22745]
+ddf (ref)=class=Point name=Unnamed dimension=1 values=[0.22745]
 pdf      =0.0758163
 pdf  (FD)=0.0758163
 pdf (ref)=0.0758163

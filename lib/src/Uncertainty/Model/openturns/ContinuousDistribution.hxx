@@ -47,10 +47,6 @@ public:
   Bool operator ==(const ContinuousDistribution & other) const;
 
   /** Get the PDF of the distribution */
-  using DistributionImplementation::computeDDF;
-  Point computeDDF(const Point & point) const;
-
-  /** Get the PDF of the distribution */
   using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const;
 
