@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The Normal distribution
+ *  @brief The Squared Normal distribution
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -68,6 +68,9 @@ public:
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
   Scalar computePDF(const Point & point) const;
+
+  /** Get the characteristic function of the distribution */
+  Complex computeCharacteristicFunction(const Scalar x) const;
 
 protected:
 

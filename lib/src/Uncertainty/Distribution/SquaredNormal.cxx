@@ -110,6 +110,14 @@ Scalar SquaredNormal::computePDF(const Point & point) const
   return (std::exp(-0.5 * std::pow((sqrtX + mu_), 2) / std::pow(sigma_, 2.0)) + std::exp(-0.5 * std::pow((sqrtX - mu_), 2.0) / std::pow(sigma_, 2))) / (2.0 * M_SQRT2 * sigma_ * std::sqrt(x * M_PI));
 } // computePDF
 
+/* Get the characteristic function of the distribution */
+Complex SquaredNormal::computeCharacteristicFunction(const Scalar x) const
+{
+  if (x == 0.0) return 1.0;
+  const Complex den(1.0, -2.0 * x * std::pow(sigma_, 2.0));
+  return std::exp(Complex(0.0, x * std::pow(mu_, 2.0)) / den) / std::sqrt(den);
+}
+
 void SquaredNormal::computeMean() const
 {
   mean_ = Point(1, std::pow(mu_, 2.0) + std::pow(sigma_, 2.0));
