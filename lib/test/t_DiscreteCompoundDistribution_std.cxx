@@ -37,18 +37,34 @@ int main(int, char *[])
     DiscreteCompoundDistribution distribution(Bernoulli(0.5), Poisson(20.0));
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
-    std::cout << "Upper bound : " << distribution.computeIntegerUpperBound() << std::endl;
+    UnsignedInteger upper_bound(distribution.computeIntegerUpperBound());
+    std::cout << "Upper bound : " << upper_bound << std::endl;
     
-    for (UnsignedInteger i=0; i<distribution.computeIntegerUpperBound(); i++)
+    for (UnsignedInteger i=0; i<upper_bound; i++)
     {
-	    std::cout << "Probability of "<< i << " = " << distribution.computePDF(Point(1, i)) << std::endl;
+	    fullprint << "Probability of "<< i << " = " << distribution.computePDF(Point(1, i)) << std::endl;
     }
 
-    Graph g = distribution.drawPDF(0.0, 20.0);
-    Drawable curve = Poisson(10.0).drawPDF(0.0, 20.0).getDrawable(0);
-    curve.setColor("green");
-    g.add(curve);
-    g.draw("~/discrete_integral_compound.png");
+  
+    Sample points(upper_bound, 1);
+
+    for(UnsignedInteger i=0;i<upper_bound;i++)
+    {
+	  points(i,0) = i;
+    }
+
+    Sample pdf(distribution.computePDF(points));
+
+    Poisson poisson_distribution(Poisson(10.0));
+    Sample poisson_pdf(poisson_distribution.computePDF(points));
+
+    assert_almost_equal(pdf, poisson_pdf, 1e-10, 1e-10);
+
+//    Graph g = distribution.drawPDF(0.0, 20.0);
+//    Drawable curve = Poisson(10.0).drawPDF(0.0, 20.0).getDrawable(0);
+//    curve.setColor("green");
+//    g.add(curve);
+//    g.draw("~/discrete_integral_compound.png");
 
   }
   catch (TestFailed & ex)
