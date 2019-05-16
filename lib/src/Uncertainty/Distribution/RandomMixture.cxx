@@ -2293,32 +2293,17 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
   }
   if ((dimension != 1) || (distributionCollection_.getSize() >= ResourceMap::GetAsUnsignedInteger( "RandomMixture-SmallSize" )))
   {
-    const Scalar oldPDFPrecision = pdfPrecision_;
     pdfPrecision_ = std::pow(SpecFunc::ScalarEpsilon, 2.0 / (3.0 * dimension_));
     const UnsignedInteger n1 = ResourceMap::GetAsUnsignedInteger("RandomMixture-MarginalIntegrationNodesNumber");
     const UnsignedInteger N = ResourceMap::GetAsUnsignedInteger("RandomMixture-MaximumIntegrationNodesNumber");
     const UnsignedInteger n2 = static_cast<UnsignedInteger>(round(std::pow(N, 1.0 / dimension_)));
     const UnsignedInteger marginalSize = SpecFunc::NextPowerOfTwo(std::min(n1, n2));
     setIntegrationNodesNumber(marginalSize);
-    const Scalar probability = DistributionImplementation::computeProbability(interval);
-    pdfPrecision_ = oldPDFPrecision;
-    return probability;
-#ifdef TRAPEZE
-    // For now, use a simple mid-point rule
-    const Point xMin(interval.getLowerBound());
-    const Point xMax(interval.getUpperBound());
-    Sample gridX;
-    const Indices discretization(dimension, marginalSize);
-    const Sample samplePDF(computePDF(xMin, xMax, discretization, gridX));
-    // Compute the elementary volume
-    const UnsignedInteger otherCornerIndex = static_cast<UnsignedInteger>(round((std::pow(marginalSize, dimension) - 1) / (marginalSize - 1)));
-    const Interval elementaryInterval(gridX[0], gridX[otherCornerIndex]);
-    const Scalar elementaryVolume = elementaryInterval.getVolume();
-    Scalar cdf = 0.0;
-    for (UnsignedInteger i = 0; i < gridX.getSize(); ++i)
-      if (interval.contains(gridX[i])) cdf += samplePDF(i, 0) * elementaryVolume;
-    return cdf;
-#endif
+    if (isContinuous()) return computeProbabilityContinuous(interval);
+    // Generic implementation for discrete distributions
+    if (isDiscrete())   return computeProbabilityDiscrete(interval);
+    // Generic implementation for general distributions
+    return computeProbabilityGeneral(interval);
   }
   // Special case for combination containing only one contributor
   if (isAnalytical_ && (dimension_ == 1))

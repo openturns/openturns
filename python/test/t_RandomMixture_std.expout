@@ -301,3 +301,4 @@ quantile= [0.894427]
 sum= RandomMixture(TruncatedDistribution(LogNormal(muLog = 0.346574, sigmaLog = 0.652004, gamma = 0), bounds = [0.2, 10]) + Uniform(a = 0, b = 2))
 CDF=0.306712
 quantile= [1.67422]
+CDF(0)=0.5
