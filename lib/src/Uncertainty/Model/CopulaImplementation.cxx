@@ -37,7 +37,7 @@ CLASSNAMEINIT(CopulaImplementation)
 
 /* Default constructor */
 CopulaImplementation::CopulaImplementation()
-  : ContinuousDistribution()
+  : DistributionImplementation()
 {
   // Set the flag isCopula_ here to avoid warnings on the initialization order
   isCopula_ = true;

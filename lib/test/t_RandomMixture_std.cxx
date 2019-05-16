@@ -94,9 +94,12 @@ int main(int, char *[])
 
       // Show PDF and CDF of point
       Scalar eps = 1e-5;
+      UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
+      PlatformInfo::SetNumericalPrecision(5);
       Point DDF = distribution.computeDDF(point);
       fullprint << "ddf      =" << DDF << std::endl;
       fullprint << "ddf (ref)=" << distributionReference.computeDDF(point) << std::endl;
+      PlatformInfo::SetNumericalPrecision(oldPrecision);
       Scalar PDF = distribution.computePDF(point);
       fullprint << "pdf      =" << PDF << std::endl;
       fullprint << "pdf  (FD)=" << (distribution.computeCDF( point + Point(1, eps) ) - distribution.computeCDF( point  + Point(1, -eps) )) / (2.0 * eps) << std::endl;

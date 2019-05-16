@@ -10,7 +10,7 @@ oneRealization=class=Point name=Unnamed dimension=2 values=[0.976434,0.806922]
 oneSample=class=Sample name=a aliMikhailHaq copula implementation=class=SampleImplementation name=a aliMikhailHaq copula size=10 dimension=2 description=[X0,X1] data=[[0.084502,0.261852],[0.0111884,0.476681],[0.462462,0.236299],[0.587674,0.13328],[0.908026,0.838293],[0.00398058,0.449778],[0.373997,0.25967],[0.0134696,0.47819],[0.768466,0.216182],[0.663918,0.0913715]]
 anotherSample mean=class=Point name=Unnamed dimension=2 values=[0.497404,0.504601]
 anotherSample covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0826296,0.0156204,0.0156204,0.0826746]
-point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=class=Point name=Unnamed dimension=2 values=[-0.860562,-0.860562] ddf (FD)=class=Point name=Unnamed dimension=2 values=[-0.860562,-0.860562] pdf=1.20853 cdf=0.0588235
+point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=class=Point name=Unnamed dimension=2 values=[-0.860562,-0.860562] pdf=1.20853 cdf=0.0588235
 Survival      =0.658824
 Survival (ref)=0.658824
 Inverse survival=class=Point name=Unnamed dimension=2 values=[0.025625,0.025625]

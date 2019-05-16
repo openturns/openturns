@@ -21,7 +21,6 @@ Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[0.5]
 ddf     =class=Point name=Unnamed dimension=1 values=[-0.176033]
-ddf (FD)=class=Point name=Unnamed dimension=1 values=[-0.176033]
 log pdf=-1.0439
 pdf     =0.35207
 pdf (FD)=0.35207
@@ -114,7 +113,6 @@ mean=class=Point name=Unnamed dimension=2 values=[-0.00303261,0.0232072]
 covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1.00407,1.01388,1.01388,4.10035]
 Point= class=Point name=Unnamed dimension=2 values=[0.5,0.5]
 ddf     =class=Point name=Unnamed dimension=2 values=[-0.0405455,0]
-ddf (FD)=class=Point name=Unnamed dimension=2 values=[-0.0405455,0]
 log pdf=-2.5122
 pdf     =0.081091
 cdf=0.48677
@@ -221,7 +219,6 @@ mean=class=Point name=Unnamed dimension=3 values=[-0.000853476,0.00793713,0.0069
 covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.994158,1.00338,0.0219978,1.00338,4.02393,3.09495,0.0219978,3.09495,9.24621]
 Point= class=Point name=Unnamed dimension=3 values=[0.5,0.5,0.5]
 ddf     =class=Point name=Unnamed dimension=3 values=[-0.00754529,0.0010779,-0.0010779]
-ddf (FD)=class=Point name=Unnamed dimension=3 values=[-0.00754529,0.0010779,-0.0010779]
 log pdf=-4.3478
 pdf     =0.012935
 cdf=0.32981
@@ -321,7 +318,6 @@ mean=class=Point name=Unnamed dimension=4 values=[0.0138666,0.0180498,0.0221654,
 covariance=class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.970503,0.951581,-0.0277311,-0.0130839,0.951581,3.89801,2.90873,-0.0330447,-0.0277311,2.90873,8.89229,5.93811,-0.0130839,-0.0330447,5.93811,15.6673]
 Point= class=Point name=Unnamed dimension=4 values=[0.5,0.5,0.5,0.5]
 ddf     =class=Point name=Unnamed dimension=4 values=[-0.000951889,0.000135984,-0.000135984,0]
-ddf (FD)=class=Point name=Unnamed dimension=4 values=[-0.000951889,0.000135984,-0.000135984,0]
 log pdf=-6.4181
 pdf     =0.0016318
 cdf=0.22145

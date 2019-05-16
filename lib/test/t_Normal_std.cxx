@@ -112,8 +112,6 @@ int main(int, char *[])
       Scalar eps = 1e-4;
       Point DDF = distribution.computeDDF( point );
       fullprint << "ddf     =" << clean(DDF) << std::endl;
-      Point ddfFD(distribution.ContinuousDistribution::computeDDF(point));
-      fullprint << "ddf (FD)=" << clean(ddfFD) << std::endl;
       Scalar LPDF = distribution.computeLogPDF( point );
       fullprint << "log pdf=" << LPDF << std::endl;
       Scalar PDF = distribution.computePDF( point );

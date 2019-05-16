@@ -91,7 +91,6 @@ int main(int, char *[])
     Scalar pointCDFRef = copulaRef.computeCDF( point );
     fullprint << "point= " << point
               << " ddf=" << pointDDF
-              << " ddf (FD)=" << copula.ContinuousDistribution::computeDDF(point)
               << " pdf=" << pointPDF
               << " pdf (ref)=" << pointPDFRef
               << " cdf=" << pointCDF

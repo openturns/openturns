@@ -22,7 +22,7 @@
 #define OPENTURNS_COPULAIMPLEMENTATION_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -30,7 +30,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * @class CopulaImplementation
  */
 class OT_API CopulaImplementation
-  : public ContinuousDistribution
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
@@ -66,7 +66,7 @@ public:
   Point getKurtosis() const;
 
   /** Get the i-th marginal copula */
-  using ContinuousDistribution::getMarginal;
+  using DistributionImplementation::getMarginal;
   Distribution getMarginal(const UnsignedInteger i) const;
 
   /** Get the copula */

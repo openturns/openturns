@@ -70,12 +70,11 @@ int main(int, char *[])
     Point point(dim, 0.2);
 
     // Show DDF, PDF and CDF of point
-    Point  pointDDF = copula.computeDDF( point );
+    // Point  pointDDF = copula.computeDDF( point );
     Scalar pointPDF = copula.computePDF( point );
     Scalar pointCDF = copula.computeCDF( point );
     fullprint << "point= " << point
-              << " ddf=" << pointDDF
-              << " ddf (FD)=" << copula.ContinuousDistribution::computeDDF(point)
+      // << " ddf=" << pointDDF
               << " pdf=" << pointPDF
               << " cdf=" << pointCDF
               << std::endl;

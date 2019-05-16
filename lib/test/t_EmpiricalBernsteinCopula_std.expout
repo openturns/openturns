@@ -22,7 +22,7 @@ oneRealization=class=Point name=Unnamed dimension=2 values=[0.178332,0.931747]
 oneSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=2 description=[X0,X1] data=[[0.53629,0.924819],[0.987974,0.634998],[0.954583,0.0236448],[0.0115511,0.233689],[0.381558,0.313065],[0.349841,0.933705],[0.648805,0.62688],[0.894093,0.86119],[0.988186,0.568698],[0.211512,0.676591]]
 anotherSample mean=class=Point name=Unnamed dimension=2 values=[0.503702,0.496977]
 anotherSample covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0845317,0.0119565,0.0119565,0.0845599]
-point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=[-1.248,0.312] ddf (FD)=[-1.248,0.312] pdf=1.1352 cdf=0.050752
+point= class=Point name=Unnamed dimension=2 values=[0.2,0.2] ddf=[-1.248,0.312] pdf=1.1352 cdf=0.050752
 Survival      =0.650752
 Survival (ref)=0.650752
 Inverse survival=class=Point name=Unnamed dimension=2 values=[0.0254747,0.0254747]

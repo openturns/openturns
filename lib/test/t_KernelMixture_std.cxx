@@ -87,8 +87,6 @@ int main(int, char *[])
     Point DDF = distribution.computeDDF( point );
     fullprint << "ddf     =" << DDF << std::endl;
     fullprint << "ddf (ref)=" << distributionRef.computeDDF( point ) << std::endl;
-    Point ddfFD(distribution.ContinuousDistribution::computeDDF(point));
-    fullprint << "ddf (FD)=" << ddfFD << std::endl;
     Scalar LPDF = distribution.computeLogPDF( point );
     fullprint << "log pdf=" << LPDF << std::endl;
     Scalar PDF = distribution.computePDF( point );

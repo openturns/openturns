@@ -19,7 +19,6 @@ Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[0.190476]
 ddf     =class=Point name=Unnamed dimension=1 values=[-32.6097]
-ddf (FD)=class=Point name=Unnamed dimension=1 values=[-32.6097]
 log pdf=0.538527
 pdf     =1.71348
 pdf (FD)=1.71348
@@ -76,7 +75,6 @@ Kolmogorov test for the generator, sample size=100 is rejected
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[0.133333]
 ddf     =class=Point name=Unnamed dimension=1 values=[-67.8131]
-ddf (FD)=class=Point name=Unnamed dimension=1 values=[-67.8131]
 log pdf=0.643708
 pdf     =1.90353
 pdf (FD)=1.90353
