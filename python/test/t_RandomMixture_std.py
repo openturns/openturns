@@ -335,6 +335,9 @@ try:
     print("sum=", sum)
     print("CDF=%.6g" % sum.computeCDF(2.0))
     print("quantile=", sum.computeQuantile(0.2))
+    # For ticket 1129
+    dist = RandomMixture([Uniform()]*200)
+    print("CDF(0)=%.5g" % dist.computeCDF([0]))
 except:
     import sys
     print("t_RandomMixture_std.py", sys.exc_info()[0], sys.exc_info()[1])

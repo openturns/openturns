@@ -378,6 +378,11 @@ int main(int, char *[])
       fullprint << "CDF=" << sum.computeCDF(2.0) << std::endl;
       fullprint << "quantile=" << sum.computeQuantile(0.2) << std::endl;
     }
+    // For ticket 1129
+    {
+      RandomMixture distribution(Collection<Distribution>(200, Uniform()));
+      fullprint << "CDF(0)=" << distribution.computeCDF(0.0) << std::endl;
+    }
   }
   catch (TestFailed & ex)
   {
