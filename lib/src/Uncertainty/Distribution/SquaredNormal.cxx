@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The Normal distribution
+ *  @brief The Squared Normal distribution
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -22,20 +22,20 @@
 #include <cmath>
 
 #include "openturns/SquaredNormal.hxx"
-#include "openturns/Distribution.hxx"
-#include "openturns/ChiSquare.hxx"
+//#include "openturns/Distribution.hxx"
+//#include "openturns/ChiSquare.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/Log.hxx"
-#include "openturns/OSS.hxx"
+//#include "openturns/Log.hxx"
+//#include "openturns/OSS.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Matrix.hxx"
-#include "openturns/MatrixImplementation.hxx"
-#include "openturns/IdentityMatrix.hxx"
+//#include "openturns/Matrix.hxx"
+//#include "openturns/MatrixImplementation.hxx"
+//#include "openturns/IdentityMatrix.hxx"
 //#include "openturns/NormalCopula.hxx"
-#include "openturns/ResourceMap.hxx"
-#include "openturns/RandomGenerator.hxx"
-#include "openturns/GaussKronrodRule.hxx"
+//#include "openturns/ResourceMap.hxx"
+//#include "openturns/RandomGenerator.hxx"
+//#include "openturns/GaussKronrodRule.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -43,11 +43,10 @@ CLASSNAMEINIT(SquaredNormal)
 
 static const Factory<SquaredNormal> Factory_SquaredNormal;
 
-/* Constructor for multiD standard normal distribution */
+/* Default Constructor */
 SquaredNormal::SquaredNormal()
-  : SquaredNormal(0.0, 1.0)
 {
-  setName("SquaredNormal");
+  *this=SquaredNormal(0.0, 1.0);
 }
 
 /* Constructor */
@@ -55,6 +54,7 @@ SquaredNormal::SquaredNormal(Scalar mu, Scalar sigma)
   : ContinuousDistribution(), mu_(mu), sigma_(sigma), normal_(mu, sigma)
 {
   setName("SquaredNormal");
+  setDimension(1);
   computeRange();
 }
 
@@ -62,7 +62,7 @@ SquaredNormal::SquaredNormal(Scalar mu, Scalar sigma)
 Bool SquaredNormal::operator ==(const SquaredNormal & other) const
 {
   if (this == &other) return true;
-  return this->normal_ == other.normal_;
+  return normal_ == other.normal_;
 }
 
 /* String converter */
@@ -89,15 +89,15 @@ SquaredNormal * SquaredNormal::clone() const
 
 Point SquaredNormal::getRealization() const
 {
-  return Point(std::pow(this->mu_ + this->sigma_ * DistFunc::rNormal(), 2));
+  return Point(std::pow(mu_ + sigma_ * DistFunc::rNormal(), 2.0));
 }
 
 Sample SquaredNormal::getSample(const UnsignedInteger size) const
 {
-  Point xi = DistFunc::rNormal(size);
+  const Point xi(DistFunc::rNormal(size));
   Sample result(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i)
-    result(i, 0) = std::pow((this->mu_ + this->sigma_ * xi[i]), 2); 
+    result(i, 0) = std::pow((mu_ + sigma_ * xi[i]), 2); 
   result.setName(getName());
   result.setDescription(getDescription());
   return result;
@@ -108,22 +108,27 @@ Scalar SquaredNormal::computeCDF(const Point & point) const
 {
   Scalar x = point[0];
   if (x <= 0.0) return 0.0;
-  return 0.5 * (SpecFunc::Erf((std::sqrt(x) + this->mu_) / (std::sqrt(2) * this->sigma_)) + SpecFunc::Erf((std::sqrt(x) - this->mu_) / (std::sqrt(2) * this->sigma_)));
+  return 0.5 * (SpecFunc::Erf((std::sqrt(x) + mu_) / (M_SQRT2 * sigma_)) + SpecFunc::Erf((std::sqrt(x) - mu_) / (M_SQRT2 * sigma_)));
 } // computeCDF
 
 /* Get the PDF of the distribution */
 Scalar SquaredNormal::computePDF(const Point & point) const
 {
-  Scalar x = point[0];
+  const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
   Scalar sqrtX = std::sqrt(x);
-  return (std::exp(-0.5 * std::pow((sqrtX + this->mu_), 2) / std::pow(this->sigma_, 2)) + std::exp(-0.5 * std::pow((sqrtX - this->mu_), 2) / std::pow(this->sigma_, 2))) / (2.0 * M_SQRT2 * this->sigma_ * std::sqrt(x * M_PI));
-} // computeCDF
+  return (std::exp(-0.5 * std::pow((sqrtX + mu_), 2) / std::pow(sigma_, 2.0)) + std::exp(-0.5 * std::pow((sqrtX - mu_), 2.0) / std::pow(sigma_, 2))) / (2.0 * M_SQRT2 * sigma_ * std::sqrt(x * M_PI));
+} // computePDF
 
+void SquaredNormal::computeMean() const
+{
+  mean_ = Point(1, std::pow(mu_, 2.0) + std::pow(sigma_, 2.0));
+  isAlreadyComputedMean_ = true;
+}
 
 void SquaredNormal::computeRange()
 {
-  setRange(Interval(Point(1, 0.0), Point(1, std::pow(this->mu_ + 8.5 * this->sigma_, 2)),
+  setRange(Interval(Point(1, 0.0), Point(1, std::pow(mu_ + 8.5 * sigma_, 2.0)),
 		    Interval::BoolCollection(1, true), Interval::BoolCollection(1, false)));
 }
 

@@ -39,8 +39,8 @@ class OT_API SquaredNormal
   CLASSNAME
 public:
 
-  // /** Default constructor */
-  explicit SquaredNormal();
+  /** Default constructor */
+  SquaredNormal();
 
   /** Constructor */
   SquaredNormal(Scalar mu, Scalar sigma);
@@ -68,17 +68,20 @@ public:
   /** Get the PDF of the distribution */
   Scalar computePDF(const Point & point) const;
 
-  /** Compute the range */
-  void computeRange();
-  
 protected:
 
 private:
 
+  /** Compute the mean of the distribution */
+  void computeMean() const;
+  
+  /** Compute the range */
+  void computeRange();
+  
   Scalar mu_;
   Scalar sigma_;
   Normal normal_;
-
+  
 }; /* class SquaredNormal */
 
 END_NAMESPACE_OPENTURNS
