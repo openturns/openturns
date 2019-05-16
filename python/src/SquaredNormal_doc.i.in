@@ -1,0 +1,24 @@
+%feature("docstring") OT::SquaredNormal
+"Squared Normal distribution.
+
+Available constructors:
+    Beta(*mu=0.0, sigma=1.0*)
+
+Parameters
+----------
+mu : float
+    shape parameter :math:`r > 0` with :math:`r = t * (\mu - a) / (b - a)`.
+sigma : float
+    shape parameter :math:`t > r` with :math:`t = (b - \mu) * (\mu - a) / \sigma^2 - 1`.
+
+Examples
+--------
+Create a distribution from its native parameters :math:`(mu, sigma)`:
+
+>>> import openturns as ot
+>>> myDist = ot.Beta(1.0, 2.0)
+
+Draw a sample:
+
+>>> sample = myDist.getSample(5)"
+

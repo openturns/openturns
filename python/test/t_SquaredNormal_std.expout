@@ -1,0 +1,13 @@
+Distribution  class=SquaredNormal squarenormal=class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+Distribution  SquaredNormal squared of class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+range =  [0, (72.25) +inf[
+cdf =  0.6826894921370859
+pdf =  0.24197072451914334
+sample(5) =      [ X0       ]
+0 : [ 0.369909 ]
+1 : [ 1.60319  ]
+2 : [ 0.192077 ]
+3 : [ 1.45318  ]
+4 : [ 4.75844  ]
+mean =  [1]
+covariance =  [[ 2 ]]

@@ -75,6 +75,7 @@ Continuous parametric distributions
     Rayleigh
     Rice
     SmoothedUniform
+    SquaredNormal
     Student
     Trapezoidal
     Triangular
