@@ -854,6 +854,9 @@ void ResourceMap::loadDefaultConfiguration()
   // ComposedDistribution parameters //
   setAsBool( "ComposedDistribution-UseGenericCovarianceAlgorithm", false);
 
+  // DiscreteIntegralDistribution tolerance //
+  setAsScalar( "DiscreteIntegralCompound-DefaultEpsilon", 1.0e-12);
+
   // Dirichlet parameters //
   setAsUnsignedInteger( "Dirichlet-DefaultIntegrationSize", 50 );
   setAsUnsignedInteger( "Dirichlet-DefaultSamplingSize", 500000 );
