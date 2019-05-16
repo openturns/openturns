@@ -15,6 +15,7 @@ Numerical methods
     minmax_design.ipynb
     minmax_optimization.ipynb
     estimate_integral_iterated_quadrature.ipynb
+    estimate_integral_Clenshaw_Curtis.ipynb
     control_termination.ipynb
     logistic_growth_model.ipynb
     study_save_load.ipynb
