@@ -3,7 +3,7 @@
 set -xe
 
 # build with frozen date unless on release for reproducible builds
-if test -z "${CIRCLE_TAG}"
+if test "${CIRCLE_BRANCH}" = "master"
 then
   export SOURCE_DATE_EPOCH=1514764800
 fi
