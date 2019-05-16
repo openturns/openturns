@@ -19,3 +19,4 @@ Numerical methods
     logistic_growth_model.ipynb
     study_save_load.ipynb
     ifs.ipynb
+    estimate_integral_Fejer2.ipynb
