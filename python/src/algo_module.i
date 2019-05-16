@@ -73,6 +73,7 @@
 %include GaussKronrodRule.i
 %include GaussKronrod.i
 %include GaussLegendre.i
+%include Fejer2.i
 %include IteratedQuadrature.i
 %include ExpertMixture.i
 %include KarhunenLoeveResultImplementation.i

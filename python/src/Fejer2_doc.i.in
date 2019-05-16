@@ -1,0 +1,103 @@
+%feature("docstring") OT::Fejer2
+"Tensorized integration algorithm of Fejer2.
+
+Available constructors:
+    Fejer2(*dimension=1*)
+
+    Fejer2(*discretization*)
+
+Parameters
+----------
+dimension : int, :math:`dimension>0`
+    The dimension of the functions to integrate. The default discretization is *Fejer2-DefaultMarginalIntegrationPointsNumber* in each dimension, see :class:`~openturns.ResourceMap`.
+discretization : sequence of int
+    The number of nodes in each dimension. The sequence must be non-empty and must contain only positive values.
+
+Notes
+-----
+The Fejer2 algorithm enables to approximate the definite integral:
+
+.. math::
+
+    \int_{\vect{a}}^\vect{b} f(\vect{t})\di{\vect{t}}
+
+
+with :math:`f: \Rset^d \mapsto \Rset^p`, :math:`\vect{a}, \vect{b}\in\Rset^d` using a fixed tensorized Fejer2 approximation:
+
+.. math::
+
+    \int_{\vect{a}}^\vect{b} f(\vect{t})\di{\vect{t}} = \sum_{\vect{n}\in \cN}\left(\prod_{i=1}^d w^{N_i}_{n_i}\right)f(\xi^{N_1}_{n_1},\dots,\xi^{N_d}_{n_d})
+
+where :math:`\xi^{N_i}_{n_i}` is the :math:`n_i`th node of the :math:`N_i`-points Fejer2 1D integration rule and :math:`w^{N_i}_{n_i}` the associated weight.
+
+Examples
+--------
+Create a Fejer2 algorithm:
+
+>>> import openturns as ot
+>>> algo = ot.Fejer2(2)
+>>> algo = ot.Fejer2([2, 4, 5])"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::Fejer2::integrate
+"Evaluation of the integral of :math:`f` on an interval.
+
+Available usages:
+    integrate(*f, interval*)
+
+    integrate(*f, interval, xi*)
+
+Parameters
+----------
+f : :class:`~openturns.Function`, :math:`f: \Rset^d \mapsto \Rset^p`
+    The integrand function.
+interval : :class:`~openturns.Interval`, :math:`interval \in \Rset^d` 
+    The integration domain. 
+xi : :class:`~openturns.Sample`
+    The integration nodes.
+
+Returns
+-------
+value : :class:`~openturns.Point`
+    Approximation of the integral.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x'], ['sin(x)'])
+>>> a = -2.5
+>>> b = 4.5
+>>> algoF2 = ot.Fejer2([10])
+>>> value = algoF2.integrate(f, ot.Interval(a, b))[0]
+>>> print(value)
+-0.590...
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::Fejer2::getDiscretization
+"Accessor to the discretization of the tensorized rule.
+
+Returns
+-------
+discretization : :class:`~openturns.Indices`
+    The number of integration point in each dimension."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::Fejer2::getNodes
+"Accessor to the integration nodes.
+
+Returns
+-------
+nodes : :class:`~openturns.Sample`
+    The tensorized Fejer2 integration nodes on :math:`[0,1]^d` where :math:`d>0` is the dimension of the integration algorithm."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::Fejer2::getWeights
+"Accessor to the integration weights.
+
+Returns
+-------
+weights : :class:`~openturns.Point`
+    The tensorized Fejer2 integration weights on :math:`[0,1]^d` where :math:`d>0` is the dimension of the integration algorithm."
+
