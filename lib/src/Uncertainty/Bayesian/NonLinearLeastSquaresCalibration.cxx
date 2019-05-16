@@ -73,6 +73,7 @@ NonLinearLeastSquaresCalibration::NonLinearLeastSquaresCalibration(const Functio
     algorithm_ = OptimizationAlgorithm::Build(leastSquaresNames[0]);
   else
     algorithm_ = MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-MultiStartSize")).generate());
+  parameterPrior_.setDescription(model.getParameterDescription());
 }
 
 namespace NonLinearLeastSquaresCalibrationFunctions
@@ -251,6 +252,16 @@ namespace NonLinearLeastSquaresCalibrationFunctions
   }; // class CalibrationModelGradient
 }
 
+/* Build the associated residual function */
+Function NonLinearLeastSquaresCalibration::BuildResidualFunction(const Function & model,
+								 const Sample & inputObservations,
+								 const Sample & outputObservations)
+{
+  // Build the residual function this way to benefit from the automatic Hessian
+  const NonLinearLeastSquaresCalibrationFunctions::CalibrationModelEvaluation residualEvaluation(model, inputObservations, outputObservations);
+  return Function(residualEvaluation, NonLinearLeastSquaresCalibrationFunctions::CalibrationModelGradient(residualEvaluation), CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), residualEvaluation));
+}
+
 /* Performs the actual computation. Must be overloaded by the actual calibration algorithm */
 void NonLinearLeastSquaresCalibration::run()
 {
@@ -287,8 +298,9 @@ void NonLinearLeastSquaresCalibration::run()
       linearAlgo.run();
       parameterPosterior = linearAlgo.getResult().getParameterPosterior();
     }
-  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error);
-  
+  parameterPosterior.setDescription(parameterPrior_.getDescription());
+  const MemoizeFunction residualFunction(BuildResidualFunction(model_, inputObservations_, outputObservations_));
+  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, outputObservations_, residualFunction);  
 }
 
 /* Perform a unique estimation */
@@ -297,10 +309,7 @@ Point NonLinearLeastSquaresCalibration::run(const Sample & inputObservations,
 					    const Point & candidate,
 					    Sample & residual)
 {
-  // Build the residual function this way to benefit from the automatic Hessian
-  const NonLinearLeastSquaresCalibrationFunctions::CalibrationModelEvaluation residualEvaluation(model_, inputObservations, outputObservations);
-  // Build the function in two steps, in order to benefit from the automatic Hessian 
-  MemoizeFunction residualFunction(Function(residualEvaluation, NonLinearLeastSquaresCalibrationFunctions::CalibrationModelGradient(residualEvaluation), CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), residualEvaluation)));
+  const MemoizeFunction residualFunction(BuildResidualFunction(model_, inputObservations, outputObservations));
   LeastSquaresProblem problem(residualFunction);
   algorithm_.setVerbose(true);
   algorithm_.setProblem(problem);

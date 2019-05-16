@@ -22,6 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Dirac.hxx"
 #include "openturns/Normal.hxx"
+#include "openturns/LinearFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -79,6 +80,7 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Function & model,
     shift += parameterDimension * outputDimension;
   }
   gradientObservations_ = transposedGradientObservations.transpose();
+  parameterPrior_.setDescription(model.getParameterDescription());
 }
 
 /* Parameter constructor */
@@ -111,7 +113,7 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Sample & modelObserva
 /* Performs the actual computation. Must be overloaded by the actual calibration algorithm */
 void GaussianLinearCalibration::run()
 {
-  const Point deltaY(outputObservations_.getImplementation()->getData() - modelObservations_.getImplementation()->getData());
+  const Point deltaY(modelObservations_.getImplementation()->getData() - outputObservations_.getImplementation()->getData());
   CovarianceMatrix B(getParameterCovariance());
   const IdentityMatrix IB(B.getDimension());
   const CovarianceMatrix invB(B.solveLinearSystem(IB).getImplementation());
@@ -135,10 +137,13 @@ void GaussianLinearCalibration::run()
   const Matrix M(gradientObservations_);
   const Matrix MtinvR(M.transpose() * invR);
   const Matrix K((invB + MtinvR * M).solveLinearSystem(MtinvR));
-  const Point thetaStar(getCandidate() + K * deltaY);
+  const Point thetaStar(getCandidate() - K * deltaY);
   const SquareMatrix L((IB - K * M).getImplementation());
   const CovarianceMatrix covarianceThetaStar((K * R * K.transpose() + L * B * L.transpose()).getImplementation());
-  result_ = CalibrationResult(parameterPrior_, Normal(thetaStar, covarianceThetaStar), thetaStar, Normal(Point(errorCovariance_.getDimension()), errorCovariance_));
+  Normal parameterPosterior(thetaStar, covarianceThetaStar);
+  parameterPosterior.setDescription(parameterPrior_.getDescription());
+  const LinearFunction residualFunction(getCandidate(), deltaY, gradientObservations_);
+  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, Normal(Point(errorCovariance_.getDimension()), errorCovariance_), outputObservations_, residualFunction);
 }
 
 /* Model observations accessor */

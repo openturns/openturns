@@ -118,3 +118,39 @@ size : int
     been used to get the posterior distribution, using the :class:`~openturns.GaussianLinearCalibration`
     algorithm at the maximum a posteriori estimate."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::NonLinearLeastSquaresCalibration::BuildResidualFunction
+"Build a residual function given a parametric model, input and output observations.
+
+Parameters
+----------
+model : :class:`~openturns.Function`
+    Parametric model.
+inputObservations : 2-d sequence of float
+    Input observations associated to the output observations.
+outputObservations : :class:`~openturns.Function`
+    Output observations.
+
+Returns
+-------
+residual : :class:`~openturns.Function`
+Residual function.
+
+Notes
+-----
+Given a parametric model :math:`F_{\theta}:\Rset^n\rightarrow\Rset^p` with
+parameter :math:`\theta\in\Rset^m`, a sample of input points
+:math:`(x_i)_{i=1,\dots,N}` and the associated output
+:math:`(y_i)_{i=1,\dots,N}`, the residual function :math:`f` is defined by:
+
+.. math::
+
+    \forall \theta\in\Rset^m, f(\theta)=\left(\begin{array}{c}
+    F_{\theta}(x_1)-y_1 \\
+    \vdots \\
+    F_{\theta}(x_N)-y_N
+    \end{array}
+    \right)
+
+"

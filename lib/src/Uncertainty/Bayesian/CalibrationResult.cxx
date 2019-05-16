@@ -41,12 +41,16 @@ CalibrationResult::CalibrationResult()
 CalibrationResult::CalibrationResult(const Distribution & parameterPrior,
 				     const Distribution & parameterPosterior,
 				     const Point & parameterMAP,
-				     const Distribution & observationsError)
+				     const Distribution & observationsError,
+				     const Sample & outputObservations,
+				     const Function & residualFunction)
   : PersistentObject()
   , parameterPrior_(parameterPrior)
   , parameterPosterior_(parameterPosterior)
   , parameterMAP_(parameterMAP)
   , observationsError_(observationsError)
+  , outputObservations_(outputObservations)
+  , residualFunction_(residualFunction)
 {
   // Nothing to do
 }
@@ -102,6 +106,28 @@ void CalibrationResult::setObservationsError(const Distribution & observationsEr
   observationsError_ = observationsError;
 }
 
+/* Output observations accessors */
+Sample CalibrationResult::getOutputObservations() const
+{
+  return outputObservations_;
+}
+
+void CalibrationResult::setOutputObservations(const Sample & outputObservations)
+{
+  outputObservations_ = outputObservations;
+}
+
+/* Residual function accessors */
+Function CalibrationResult::getResidualFunction() const
+{
+  return residualFunction_;
+}
+
+void CalibrationResult::setResidualFunction(const Function & residualFunction)
+{
+  residualFunction_ = residualFunction;
+}
+
 
 /* String converter */
 String CalibrationResult::__repr__() const
@@ -111,7 +137,9 @@ String CalibrationResult::__repr__() const
       << " parameter prior=" << parameterPrior_
       << " parameter posterior=" << parameterPosterior_
       << " parameter MAP=" << parameterMAP_
-      << " observations error=" << observationsError_;
+      << " observations error=" << observationsError_
+      << " output observation=" << outputObservations_
+      << " residual function=" << residualFunction_;
   return oss;
 }
 
@@ -123,6 +151,8 @@ void CalibrationResult::save(Advocate & adv) const
   adv.saveAttribute( "parameterPosterior_", parameterPosterior_ );
   adv.saveAttribute( "parameterMAP_", parameterMAP_ );
   adv.saveAttribute( "observationsError_", observationsError_ );
+  adv.saveAttribute( "outputObservations_", outputObservations_ );
+  adv.saveAttribute( "residualFunction_", residualFunction_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -133,6 +163,8 @@ void CalibrationResult::load(Advocate & adv)
   adv.loadAttribute( "parameterPosterior_", parameterPosterior_ );
   adv.loadAttribute( "parameterMAP_", parameterMAP_ );
   adv.loadAttribute( "observationsError_", observationsError_ );
+  adv.loadAttribute( "outputObservations_", outputObservations_ );
+  adv.loadAttribute( "residualFunction_", residualFunction_ );
 }
 
 

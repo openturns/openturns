@@ -24,6 +24,8 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Distribution.hxx"
+#include "openturns/Sample.hxx"
+#include "openturns/Function.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,7 +49,9 @@ public:
   CalibrationResult(const Distribution & parameterPrior,
 		    const Distribution & parameterPosterior,
 		    const Point & parameterMAP,
-		    const Distribution & observationsError);
+		    const Distribution & observationsError,
+		    const Sample & outputObservations,
+		    const Function & residualFunction);
 
   /** Virtual constructor */
   virtual CalibrationResult * clone() const;
@@ -67,6 +71,14 @@ public:
   /** Parameter maximum a posteriori accessors */
   void setParameterMAP(const Point & parameterMAP);
   Point getParameterMAP() const;
+
+  /** Output observations accessors */
+  void setOutputObservations(const Sample & outputObservations);
+  Sample getOutputObservations() const;
+
+  /** Residual function accessors */
+  void setResidualFunction(const Function & residualFunction);
+  Function getResidualFunction() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -90,7 +102,12 @@ private:
 
   /* Observations error distribution */
   Distribution observationsError_;
-  
+
+  /* Output observations */
+  Sample outputObservations_;
+
+  /* Residual function */
+  Function residualFunction_;
 }; // class CalibrationResult
 
 
