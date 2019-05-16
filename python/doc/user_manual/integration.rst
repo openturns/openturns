@@ -17,6 +17,7 @@ Integration
 
     GaussKronrod
     GaussLegendre
+    ClenshawCurtis
 
 .. autosummary::
     :toctree: _generated/
