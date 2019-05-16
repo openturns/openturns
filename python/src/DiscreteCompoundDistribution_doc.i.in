@@ -1,0 +1,52 @@
+%feature("docstring") OT::DiscreteCompoundDistribution
+"Discrete compound distribution.
+
+Available constructors:
+    DiscreteCompoundDistribution(base_distribution, compound_distribution)
+
+Parameters
+----------
+base_distribution : Distribution
+    Integer-valued Distribution of the summed independent random variables
+
+Notes
+-----
+Probability distribution of the random variable :math:`Y(\omega)` defined as:
+
+.. math::
+
+    Y(\omega) = \sum_{k=1}^{N(\omega)} X_i(\omega)
+
+where the :math:`X_i \; (i \in \mathbb{N}\setminus{0})` are independent identically distribution random variables following base_distribution
+and :math:`N` is a random variable following compound_distribution that is independent from all :math:`X_i \; (i \in \mathbb{N}\setminus{0})`.
+
+
+See Also
+--------
+Bernoulli
+
+Examples
+--------
+Create a discrete compound distribution from a Bernoulli distribution with parameter :math:`p=0.5`
+and a Poisson distribution with parameter :math:`\lambda=10`.
+
+>>> import openturns as ot
+>>> distribution = ot.DiscreteCompoundDistribution(Bernoulli(0.5), Poisson(10.0))
+
+This is mathematically equivalent to a Poisson distribution with parameter :math:`\lambda=5`.
+
+>>> poisson_distribution = ot.Poisson(5.0)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DiscreteCompoundDistribution::computeIntegerUpperBound
+"Computes the numerical upper bound of the distribution.
+
+Returns
+-------
+m : integer
+    The numerical upper bound of the discrete compound distribution."
