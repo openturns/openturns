@@ -24,10 +24,11 @@
 #include "openturns/TruncatedDistribution.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/RandomGenerator.hxx"
-#include "openturns/Uniform.hxx"
+#include "openturns/Exponential.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/TruncatedNormal.hxx"
-#include "openturns/Exponential.hxx"
+#include "openturns/Uniform.hxx"
+#include "openturns/UserDefined.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
 
@@ -174,67 +175,89 @@ TruncatedDistribution * TruncatedDistribution::clone() const
 /* Get the simplified version (or clone the distribution) */
 Distribution TruncatedDistribution::getSimplifiedVersion() const
 {
-  // No simplification in the multivariate case for now rxcepted for
-  // the trivial cases
-  if (getDimension() > 1)
-    {
-      // If no truncation
-      if (distribution_.getRange() == getRange()) return distribution_;
-      // Otherwise no simplification
-      return *this;
-    }
   // Simplification of the 1D case
   Distribution localDistribution(distribution_);
   String kind(localDistribution.getImplementation()->getClassName());
-  Scalar lower = bounds_.getLowerBound()[0];
-  Scalar upper = bounds_.getUpperBound()[0];
-  // Delve into the antecedents until we get something not truncated
+  // Delve into the antecedents until we get something which is not a truncated distribution
   while (kind == "TruncatedDistribution")
   {
     const TruncatedDistribution * truncatedDistribution = dynamic_cast<const TruncatedDistribution *>(localDistribution.getImplementation().get());
     localDistribution = truncatedDistribution->getDistribution();
     kind = localDistribution.getImplementation()->getClassName();
-    lower = std::max(lower, truncatedDistribution->getBounds().getLowerBound()[0]);
-    upper = std::min(upper, truncatedDistribution->getBounds().getUpperBound()[0]);
   }
-  const Scalar a = localDistribution.getRange().getLowerBound()[0];
-  const Scalar b = localDistribution.getRange().getUpperBound()[0];
   // If no truncation
   const Scalar w = getWeight();
-  if ((lower <= a) && (upper >= b))
-  {
-    localDistribution.setWeight(w);
-    return localDistribution;
-  }
-  // Intersect the underlying distribution range and the truncation range
-  const Scalar alpha = std::max(lower, a);
-  const Scalar beta = std::min(upper, b);
-  // Actual simplifications
-  if (kind == "Uniform")
-  {
-    Uniform simplified(alpha, beta);
-    simplified.setWeight(getWeight());
-    return simplified;
-  }
-  if (kind == "Normal")
-  {
-    const Normal * normal(dynamic_cast< const Normal * >(localDistribution.getImplementation().get()));
-    const Scalar mu = normal->getMean()[0];
-    const Scalar sigma = normal->getSigma()[0];
-    TruncatedNormal simplified(mu, sigma, alpha, beta);
-    simplified.setWeight(getWeight());
-    return simplified;
-  }
-  if ((kind == "Exponential") && (upper >= b))
-  {
-    const Exponential * exponential(dynamic_cast< const Exponential * >(localDistribution.getImplementation().get()));
-    const Scalar lambda = exponential->getLambda();
-    Exponential simplified(lambda, alpha);
-    simplified.setWeight(getWeight());
-    return simplified;
-  }
+  const Interval range(getRange());
+  if (distribution_.getRange() == range)
+    {
+      localDistribution.setWeight(w);
+      return localDistribution;
+    }
+  // If UserDefined
+  if (kind == "UserDefined")
+    {
+      const Sample support(localDistribution.getSupport());
+      const Point probabilities(localDistribution.getProbabilities());
+      Sample reducedSupport(0, localDistribution.getDimension());
+      Point reducedProbabilities(0);
+      for (UnsignedInteger i = 0; i < support.getSize(); ++i)
+	{
+	  const Point x(support[i]);
+	  if (range.contains(x))
+	    {
+	      reducedSupport.add(x);
+	      reducedProbabilities.add(probabilities[i]);
+	    }
+	}
+      UserDefined simplified(reducedSupport, reducedProbabilities);
+      simplified.setWeight(getWeight());
+      return simplified;
+    }
+  // At this point, no more simplification in the multivariate case
+  if (getDimension() == 1)
+    {
+      // Now, the 1D simplifications
+      const Scalar b = localDistribution.getRange().getUpperBound()[0];
+      const Scalar alpha = getRange().getLowerBound()[0];
+      const Scalar beta = getRange().getUpperBound()[0];
+      // Actual simplifications
+      if (kind == "Uniform")
+	{
+	  Uniform simplified(alpha, beta);
+	  simplified.setWeight(getWeight());
+	  return simplified;
+	}
+      if (kind == "Normal")
+	{
+	  const Normal * normal(dynamic_cast< const Normal * >(localDistribution.getImplementation().get()));
+	  const Scalar mu = normal->getMean()[0];
+	  const Scalar sigma = normal->getSigma()[0];
+	  TruncatedNormal simplified(mu, sigma, alpha, beta);
+	  simplified.setWeight(getWeight());
+	  return simplified;
+	}
+      if (kind == "TruncatedNormal")
+	{
+	  const TruncatedNormal * truncatedNormal(dynamic_cast< const TruncatedNormal * >(localDistribution.getImplementation().get()));
+	  const Scalar mu = truncatedNormal->getMu();
+	  const Scalar sigma = truncatedNormal->getSigma();
+	  TruncatedNormal simplified(mu, sigma, alpha, beta);
+	  simplified.setWeight(getWeight());
+	  return simplified;
+	}
+      if ((kind == "Exponential") && (beta >= b))
+	{
+	  const Exponential * exponential(dynamic_cast< const Exponential * >(localDistribution.getImplementation().get()));
+	  const Scalar lambda = exponential->getLambda();
+	  Exponential simplified(lambda, alpha);
+	  simplified.setWeight(getWeight());
+	  return simplified;
+	}
+    }
   // No simplification
-  return TruncatedDistribution(localDistribution, alpha, beta);
+  TruncatedDistribution simplifiedTruncated(localDistribution, getRange());
+  simplifiedTruncated.setWeight(w);
+  return simplifiedTruncated;
 }
 
 /* Compute the numerical range of the distribution given the parameters values */
