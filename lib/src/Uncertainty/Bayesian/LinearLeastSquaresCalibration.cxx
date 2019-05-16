@@ -22,6 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Dirac.hxx"
 #include "openturns/Normal.hxx"
+#include "openturns/LinearFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -73,6 +74,7 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Function & mo
     shift += skip;
   }
   gradientObservations_ = gradientObservations_.transpose();
+  parameterPrior_.setDescription(model.getParameterDescription());
 }
 
 /* Parameter constructor */
@@ -98,11 +100,11 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Sample & mode
 /* Performs the actual computation. Must be overloaded by the actual calibration algorithm */
 void LinearLeastSquaresCalibration::run()
 {
-  const Point deltaY(outputObservations_.getImplementation()->getData() - modelObservations_.getImplementation()->getData());
+  const Point deltaY(modelObservations_.getImplementation()->getData() - outputObservations_.getImplementation()->getData());
   LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, gradientObservations_));
   const Point deltaTheta(method.solve(deltaY));
-  const Point thetaStar(getCandidate() + deltaTheta);
-  const Point r(deltaY - gradientObservations_ * deltaTheta);
+  const Point thetaStar(getCandidate() - deltaTheta);
+  const Point r(deltaY + gradientObservations_ * deltaTheta);
   const Scalar varianceError = r.normSquare() / (deltaY.getDimension() - deltaTheta.getDimension());
   CovarianceMatrix covarianceThetaStar;
   const Scalar epsilon = ResourceMap::GetAsScalar("LinearLeastSquaresCalibration-Regularization");
@@ -114,10 +116,10 @@ void LinearLeastSquaresCalibration::run()
 	covarianceThetaStar(i, i) += shift;
     }
   const UnsignedInteger dimension = outputObservations_.getDimension();
-  Normal posterior;
+  Normal parameterPosterior;
   try
     {
-      posterior = Normal(thetaStar, covarianceThetaStar);
+      parameterPosterior = Normal(thetaStar, covarianceThetaStar);
     }
   catch (...)
     {
@@ -132,7 +134,9 @@ void LinearLeastSquaresCalibration::run()
     {
       error = Dirac(dimension);
     }
-  result_ = CalibrationResult(parameterPrior_, posterior, thetaStar, error);
+  parameterPosterior.setDescription(parameterPrior_.getDescription());
+  const LinearFunction residualFunction(getCandidate(), deltaY, gradientObservations_);
+  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, outputObservations_, residualFunction);
 }
 
 /* Model observations accessor */

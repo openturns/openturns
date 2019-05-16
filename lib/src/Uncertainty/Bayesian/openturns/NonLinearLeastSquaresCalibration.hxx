@@ -74,6 +74,11 @@ public:
 
   /* Here is the interface that all derived class must implement */
 
+  /* Build the associated residual function */
+  static Function BuildResidualFunction(const Function & model,
+					const Sample & inputObservations,
+					const Sample & outputObservations);
+  
   /** Virtual constructor */
   virtual NonLinearLeastSquaresCalibration * clone() const;
 
