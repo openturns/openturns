@@ -173,8 +173,8 @@ Alternatively, various orthogonalization methods such as the QR or the SVD decom
 be used to solve the linear least squares problem so that potential ill-conditionning 
 of the normal equations is mitigated. 
 
-This estimator can be proved to be the best linear unbiased estimator, the *BLUE*, that is 
-among the unbiased linear estimators, it is the one which minimizes the estimation variance. 
+This estimator can be proved to be the best linear unbiased estimator, the *BLUE*, that is, 
+among the unbiased linear estimators, it is the one which minimizes the variance of the estimator. 
 
 Assume that the random observations are gaussian:
 
@@ -197,8 +197,8 @@ Non Linear Least squares
 
 In the general case where the function :math:`\vect{h}` is non linear 
 with respect to the parameter :math:`\vect{\theta}`, then the nonlinear least 
-squares method involve the solution of an least squares optimization algorithm. 
-Instead of directly minimizing the squared euclidian norm, most implementation 
+squares method involves the solution of a least squares optimization algorithm. 
+Instead of directly minimizing the squared euclidian norm, most implementations 
 rely on the residual vector, which lead to an improved accuracy. 
 
 The difficulty in the nonlinear least squares is that, compared to the 
@@ -214,7 +214,7 @@ There are two practical solutions to overcome this limitation.
 The bootstrap method is based on the following 
 experiment. 
 Provided that we can generate a set of input and output observations, 
-we can compute the corresponding value of the parameter :math:`\hat{\vect{\theta}}\hat{\vect{\theta}}`. 
+we can compute the corresponding value of the parameter :math:`\hat{\vect{\theta}}`. 
 Reproducing this sampling experiment a large number of times would allow 
 to get the distribution of :math:`\hat{\vect{\theta}}`. 
 In practice, we only have one single set of observations. 
@@ -234,7 +234,8 @@ in the neighbourhood of the solution :math:`\hat{\vect{\theta}}` and use the
 gaussian distribution associated with the linear least squares. 
 This method is efficient, but only accurate when the function :math:`\vect{h}` 
 is approximately linear with respect to :math:`\hat{\vect{\theta}}` in the 
-neighbourhood of :math:`\hat{\vect{\theta}}`.
+neighbourhood of :math:`\hat{\vect{\theta}}`. 
+In the bayesian context, this method is named the *Laplace approximation*. 
 
 Least squares and minimization of likelihood
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -257,14 +258,14 @@ Regularization and ill-conditionned problems
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If a problem is ill-conditionned, a small change in the observations can 
-generate a large in the estimate :math:`\hat{\vect{\theta}}`. 
-Hence, for problems which are ill-conditionned, some methods include 
+generate a large change in the estimate :math:`\hat{\vect{\theta}}`. 
+Hence, for problems which are ill-conditionned, calibration methods may include 
 some regularization features. 
 
 An ill-conditionned problem may appear in the particular case where the 
 Jacobian matrix :math:`J` is rank-degenerate. 
-If linear least squares are considered, then some linear combinations of the 
-columns of :math:`J` are linearily dependent. 
+For example, suppose that a linear least squares problem is considered, 
+where some linear combinations of the columns of :math:`J` are linearily dependent. 
 This implies that there is a linear subspace of the parameter space :math:`\hat{\vect{\theta}}` 
 such that linear combinations of the parameters do not have any 
 impact on the output. 
