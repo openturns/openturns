@@ -22,20 +22,9 @@
 #include <cmath>
 
 #include "openturns/SquaredNormal.hxx"
-//#include "openturns/Distribution.hxx"
-//#include "openturns/ChiSquare.hxx"
 #include "openturns/SpecFunc.hxx"
-//#include "openturns/Log.hxx"
-//#include "openturns/OSS.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-//#include "openturns/Matrix.hxx"
-//#include "openturns/MatrixImplementation.hxx"
-//#include "openturns/IdentityMatrix.hxx"
-//#include "openturns/NormalCopula.hxx"
-//#include "openturns/ResourceMap.hxx"
-//#include "openturns/RandomGenerator.hxx"
-//#include "openturns/GaussKronrodRule.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
