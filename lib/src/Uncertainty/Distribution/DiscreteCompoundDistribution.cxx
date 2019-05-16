@@ -35,8 +35,16 @@ DiscreteCompoundDistribution::DiscreteCompoundDistribution()
   : DiscreteDistribution()
 {
   setName( "DiscreteCompoundDistribution" );
+
   setDimension( 1 );
-  computeRange();
+
+  baseDistribution_ = Bernoulli(0.5);
+  compoundDistribution_ = Poisson(10.0);
+
+ 
+ // Distribution of the sum
+
+  createIntegralCompound();
 }
 
   /** Constructor using distributions */
@@ -163,7 +171,7 @@ void DiscreteCompoundDistribution::createIntegralCompound()
   }
   
    distribution_ = UserDefined(points, weights);
-   std::cerr << "distribution_=" << distribution_ << std::endl;
+   //std::cerr << "distribution_=" << distribution_ << std::endl;
 }
 
 /* Get the PDF of the distribution */

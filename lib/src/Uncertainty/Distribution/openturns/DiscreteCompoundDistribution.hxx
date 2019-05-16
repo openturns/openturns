@@ -26,6 +26,8 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/FFT.hxx"
 #include "openturns/UserDefined.hxx"
+#include "openturns/Bernoulli.hxx"
+#include "openturns/Poisson.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -69,9 +71,6 @@ public:
 
   /** Get one realization of the distribution */
   Point getRealization() const;
-
-  /** Get table of probabilities */
-  Point computeProbabilities(const UnsignedInteger m, const Scalar epsilon=ResourceMap::GetAsScalar("DiscreteCompoundDistribution-DefaultEpsilon")) const;
 
   /** Get upper bound of distribution */
   UnsignedInteger computeIntegerUpperBound();
@@ -136,6 +135,8 @@ protected:
 
 private:
 
+  /** Get table of probabilities */
+  Point computeProbabilities(const UnsignedInteger m, const Scalar epsilon=ResourceMap::GetAsScalar("DiscreteCompoundDistribution-DefaultEpsilon")) const;
 
   /** Get the quantile of the distribution */
   Scalar computeScalarQuantile(const Scalar prob,
