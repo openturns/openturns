@@ -847,12 +847,12 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "ConditionalDistribution-MarginalIntegrationNodesNumber", 256 );
   setAsUnsignedInteger( "ConditionalDistribution-MaximumIntegrationNodesNumber", 100000 );
 
+  // ComposedDistribution parameters //
+  setAsBool( "ComposedDistribution-UseGenericCovarianceAlgorithm", false);
+
   // CompositeDistribution parameters //
   setAsScalar( "CompositeDistribution-SolverEpsilon", 1.0e-10 );
   setAsUnsignedInteger( "CompositeDistribution-StepNumber", 256 );
-
-  // ComposedDistribution parameters //
-  setAsBool( "ComposedDistribution-UseGenericCovarianceAlgorithm", false);
 
   // Dirichlet parameters //
   setAsUnsignedInteger( "Dirichlet-DefaultIntegrationSize", 50 );
@@ -861,6 +861,9 @@ void ResourceMap::loadDefaultConfiguration()
   // DirichletFactory parameters //
   setAsScalar( "DirichletFactory-ParametersEpsilon", 1.0e-12 );
   setAsUnsignedInteger( "DirichletFactory-MaximumIteration", 10 );
+
+  // DiscreteCompoundDistribution parameters //
+  setAsScalar( "DiscreteCompoundDistribution-DefaultEpsilon", 1.0e-12);
 
   // ExtremeValueCopula parameters //
   setAsBool( "ExtremeValueCopula-CheckPickandFunction", true );

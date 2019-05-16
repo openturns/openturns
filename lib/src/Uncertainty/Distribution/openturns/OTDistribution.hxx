@@ -54,6 +54,7 @@
 #include "openturns/DiracFactory.hxx"
 #include "openturns/Dirichlet.hxx"
 #include "openturns/DirichletFactory.hxx"
+#include "openturns/DiscreteCompoundDistribution.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/Epanechnikov.hxx"
 #include "openturns/Exponential.hxx"

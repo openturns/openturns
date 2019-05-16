@@ -330,6 +330,9 @@
   <DirichletFactory-ParametersEpsilon value_float="1.0e-12"      />
   <DirichletFactory-MaximumIteration  value_int="10" />
 
+  <!-- OT::DiscreteCompoundDistribution parameters -->
+  <DiscreteCompoundDistribution-DefaultEpsilon value_float="1.0e-12" />
+
   <!-- OT::ExtremeValueCopula parameters -->
   <ExtremeValueCopula-CheckPickandFunction value_bool="true"           />
   <ExtremeValueCopula-CheckGridSize        value_int="11" />

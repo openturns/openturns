@@ -157,6 +157,7 @@ Combining and transforming distributions
     :template: Distribution.rst_t
     ConditionalDistribution
     CumulativeDistributionNetwork
+    DiscreteCompoundDistribution
     MaximumDistribution
 
     :template: classWithPlot.rst_t

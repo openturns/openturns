@@ -32,6 +32,7 @@ People
 - Denis Barbier
 - Felipe Aguirre Martinez
 - Ivan Dutka-Malen
+- Joseph Mure
 - Julien Schueller
 - Kamal Abboud
 - Mathieu Couplet
