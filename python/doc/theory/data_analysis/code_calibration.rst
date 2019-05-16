@@ -277,8 +277,8 @@ named the *prior*.
 
 .. topic:: API:
 
-    - See :class:`~openturns.GaussianLinearCalibration`
-    - See :class:`~openturns.GaussianNonLinearCalibration`
+    - See :class:`~openturns.LinearCalibration`
+    - See :class:`~openturns.NonLinearCalibration`
 
 .. topic:: References:
 

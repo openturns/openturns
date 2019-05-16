@@ -25,6 +25,7 @@ Estimation of a parametric model
     maximum_likelihood
     bayesian_calibration
     code_calibration
+    gaussian_calibration
     metropolis_hastings
     parametric_estimation
 
