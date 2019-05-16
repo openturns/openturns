@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class GaussKronrod
+ *  @brief The test file of class SquaredNormal
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -36,14 +36,15 @@ int main(int, char *[])
   try
   {
     SquaredNormal sqn;
-    std::cout << sqn << std::endl;
-
-    std::cout << sqn.getRange() << std::endl;
-
-    std::cout << sqn.computeCDF(0.0) << std::endl;
-
-    std::cout << sqn.getSample(5) << std::endl;
-    //sqn.drawCDF().draw("density.png");
+    std::cout << "distribution = " << sqn << std::endl;
+    std::cout << "range = " << sqn.getRange() << std::endl;
+    std::cout << "cdf = " << sqn.computeCDF(1.0) << std::endl;
+    std::cout << "pdf = " << sqn.computePDF(1.0) << std::endl;
+    std::cout << "samples(5) = " << sqn.getSample(5) << std::endl;
+    std::cout << "mean = " << sqn.getMean() << std::endl;
+    std::cout << "covariance = " << sqn.getCovariance() << std::endl;
+    
+    sqn.drawPDF().draw("sqn.png");
   }
   catch (TestFailed & ex)
   {
