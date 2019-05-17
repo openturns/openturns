@@ -1,4 +1,4 @@
-obj = SquaredNormal squared of class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+distribution = SquaredNormal squared of class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[0] sigma=class=Point name=Unnamed dimension=1 values=[1] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 range = [0, (72.25) +inf[
 cdf = 0.682689
 pdf = 0.241971
@@ -9,4 +9,4 @@ samples(5) =     [ X0       ]
 3 : [ 1.45318  ]
 4 : [ 4.75844  ]
 mean = [1]
-cov = [[ 2 ]]
+covariance = [[ 2 ]]
