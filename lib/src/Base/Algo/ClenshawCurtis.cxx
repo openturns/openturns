@@ -89,7 +89,7 @@ Point ClenshawCurtis::integrateWithNodes(const Function & function,
   // Compute the integral
   for (UnsignedInteger i = 0; i < values.getSize(); ++i)
     integral += values[i] * weights_[i];
-  return std::pow(0.5,inputDimension)*integral * volume;
+  return std::pow(0.5,(Scalar) inputDimension)*integral * volume;
 }
 
 /* Generate nodes and weights */
@@ -150,7 +150,7 @@ void ClenshawCurtis::generateNodesAndWeights()
         {
         bj = 1.;
         }
-        terme = terme + bj/(4.*std::pow(l,2)-1)*cos(2*l*theta_k);
+        terme = terme + bj/(4.*std::pow((Scalar)l,2.0)-1)*cos(2*l*theta_k);
         }
         marginalWeights[i][k] = ck/(integrationNodesNumber-1)*(1-terme);
       }
