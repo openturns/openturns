@@ -89,7 +89,7 @@ Point Fejer1::integrateWithNodes(const Function & function,
   // Compute the integral
   for (UnsignedInteger i = 0; i < values.getSize(); ++i)
     integral += values[i] * weights_[i];
-  return std::pow(0.5,inputDimension)*integral * volume;
+  return std::pow(0.5,(Scalar)inputDimension)*integral * volume;
 }
 
 /* Generate nodes and weights */
@@ -134,7 +134,7 @@ void Fejer1::generateNodesAndWeights()
         UnsignedInteger end_sum = static_cast<UnsignedInteger>(std::floor((integrationNodesNumber)/2));
 	for (UnsignedInteger index_sum = 1; index_sum<=end_sum; ++index_sum)
 	{
-		sum_term = sum_term + (1./(4.*std::pow(index_sum,2)-1))*cos(2*index_sum*theta_);
+		sum_term = sum_term + (1./(4.*std::pow((Scalar)index_sum,2.0)-1))*cos(2*index_sum*theta_);
 	}
         marginalWeights[i][k] = (2./(integrationNodesNumber))*(1.-2.*sum_term);
       }
