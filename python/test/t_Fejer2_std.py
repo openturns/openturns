@@ -25,7 +25,8 @@ try:
     print("value=%.6f" %
           value[0], ", ref=%.6f" % ref, ", adaptedNodes=", adaptedNodes)
 
-    ott.assert_almost_equal(value,ref,1e-5,1e-5)
+
+    ott.assert_almost_equal(ref,value[0],1e-5,1e-5)
 
 except:
     import sys
