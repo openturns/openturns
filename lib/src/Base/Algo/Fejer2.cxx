@@ -83,7 +83,7 @@ Point Fejer2::integrateWithNodes(const Function & function,
   Point integral(function.getOutputDimension());
   if (volume == 0.0) return integral;
   // Adapt the nodes to the bounds of the interval
-  adaptedNodes = nodes_ * (interval.getUpperBound() - interval.getLowerBound())/2 + (interval.getUpperBound() - interval.getLowerBound())/2.+interval.getLowerBound();
+  adaptedNodes = nodes_ * (interval.getUpperBound() - interval.getLowerBound())/2. + interval.getLowerBound()+(interval.getUpperBound() - interval.getLowerBound())/2.;
   // Compute the function over the adapted nodes
   const Sample values(function(adaptedNodes));
   // Compute the integral
@@ -139,8 +139,6 @@ void Fejer2::generateNodesAndWeights()
         marginalNodes[i][k] = cos(theta_k);
         // Weights
         marginalWeights[i][k] = 4./(integrationNodesNumber-1) * sin(theta_k) * sum_sinus ;
-
-	sum_sinus=0.;
       }
 
     } // No match found

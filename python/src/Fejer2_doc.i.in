@@ -68,7 +68,7 @@ Examples
 >>> f = ot.SymbolicFunction(['x'], ['sin(x)'])
 >>> a = -2.5
 >>> b = 4.5
->>> algoF2 = ot.Fejer2([10])
+>>> algoF2 = ot.Fejer2([64])
 >>> value = algoF2.integrate(f, ot.Interval(a, b))[0]
 >>> print(value)
 -0.590...

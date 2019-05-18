@@ -13,12 +13,13 @@ try:
     a = -2.5
     b = 4.5
     # Default parameters
-    algo = Fejer2()
+    '''algo = Fejer2()
     print("Algo=", algo)
     # High-level interface
     value = algo.integrate(f, Interval(a, b))[0]
     ref = math.cos(a) - math.cos(b)
     print("value=%.6f" % value, ", ref=%.6f" % ref)
+    '''
     # Low-level interface
     algo = Fejer2([100])
     value, adaptedNodes = algo.integrateWithNodes(f, Interval(a, b))
