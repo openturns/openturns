@@ -44,6 +44,7 @@
 %include DiracFactory.i
 %include Dirichlet.i
 %include DirichletFactory.i
+%include DiscreteCompoundDistribution.i
 %include Epanechnikov.i
 %include Exponential.i
 %include ExponentialFactory.i
