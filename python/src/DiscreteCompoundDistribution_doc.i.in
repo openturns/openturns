@@ -23,7 +23,7 @@ and :math:`N` is a random variable following compound_distribution that is indep
 
 See Also
 --------
-Bernoulli
+Poisson
 
 Examples
 --------
