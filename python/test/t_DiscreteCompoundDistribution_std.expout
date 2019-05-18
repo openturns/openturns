@@ -1,66 +1,192 @@
 Distribution  class=DiscreteCompoundDistribution name=DiscreteCompoundDistribution
 Distribution  DiscreteCompoundDistributionBase distribution Bernoulli(p = 0.5) Compound distributionPoisson(lambda = 20)
 Upper bound : 63
-Probability of 0 = 4.539992976007499e-05
-Probability of 1 = 0.00045399929760075916
-Probability of 2 = 0.0022699964880038026
-Probability of 3 = 0.0075666549600126795
-Probability of 4 = 0.018916637400031706
-Probability of 5 = 0.03783327480006344
-Probability of 6 = 0.06305545800010573
-Probability of 7 = 0.09007922571443679
-Probability of 8 = 0.11259903214304602
-Probability of 9 = 0.12511003571449564
-Probability of 10 = 0.12511003571449575
-Probability of 11 = 0.11373639610408726
-Probability of 12 = 0.09478033008673961
-Probability of 13 = 0.07290794622056918
-Probability of 14 = 0.05207710444326415
-Probability of 15 = 0.03471806962884338
-Probability of 16 = 0.021698793518027833
-Probability of 17 = 0.012763996187076855
-Probability of 18 = 0.007091108992824276
-Probability of 19 = 0.003732162627807631
-Probability of 20 = 0.001866081313912247
-Probability of 21 = 0.0008886101494895873
-Probability of 22 = 0.0004039137043176602
-Probability of 23 = 0.00017561465405114288
-Probability of 24 = 7.317277250562811e-05
-Probability of 25 = 2.926910896475452e-05
-Probability of 26 = 1.1257349578326414e-05
-Probability of 27 = 4.169388815872525e-06
-Probability of 28 = 1.489067719431912e-06
-Probability of 29 = 5.134723082580672e-07
-Probability of 30 = 1.7115865761685612e-07
-Probability of 31 = 5.521424690307944e-08
-Probability of 32 = 1.7256732567655363e-08
-Probability of 33 = 5.232183618427917e-09
-Probability of 34 = 1.5424633115503796e-09
-Probability of 35 = 4.4650933898641935e-10
-Probability of 36 = 1.3232841404110072e-10
-Probability of 37 = 4.405869248461048e-11
-Probability of 38 = 1.4707047044486353e-11
-Probability of 39 = 5.157108943240544e-12
-Probability of 40 = 0.0
-Probability of 41 = 0.0
-Probability of 42 = 0.0
-Probability of 43 = 0.0
-Probability of 44 = 0.0
-Probability of 45 = 0.0
-Probability of 46 = 0.0
-Probability of 47 = 0.0
-Probability of 48 = 0.0
-Probability of 49 = 0.0
-Probability of 50 = 0.0
-Probability of 51 = 0.0
-Probability of 52 = 0.0
-Probability of 53 = 0.0
-Probability of 54 = 0.0
-Probability of 55 = 0.0
-Probability of 56 = 0.0
-Probability of 57 = 0.0
-Probability of 58 = 0.0
-Probability of 59 = 0.0
-Probability of 60 = 0.0
-Probability of 61 = 0.0
-Probability of 62 = 0.0
+
+Probability of 0 = 0.000
+Probability of 0 with equivalent Poisson distribution = 0.000
+
+Probability of 1 = 0.000
+Probability of 1 with equivalent Poisson distribution = 0.000
+
+Probability of 2 = 0.002
+Probability of 2 with equivalent Poisson distribution = 0.002
+
+Probability of 3 = 0.008
+Probability of 3 with equivalent Poisson distribution = 0.008
+
+Probability of 4 = 0.019
+Probability of 4 with equivalent Poisson distribution = 0.019
+
+Probability of 5 = 0.038
+Probability of 5 with equivalent Poisson distribution = 0.038
+
+Probability of 6 = 0.063
+Probability of 6 with equivalent Poisson distribution = 0.063
+
+Probability of 7 = 0.090
+Probability of 7 with equivalent Poisson distribution = 0.090
+
+Probability of 8 = 0.113
+Probability of 8 with equivalent Poisson distribution = 0.113
+
+Probability of 9 = 0.125
+Probability of 9 with equivalent Poisson distribution = 0.125
+
+Probability of 10 = 0.125
+Probability of 10 with equivalent Poisson distribution = 0.125
+
+Probability of 11 = 0.114
+Probability of 11 with equivalent Poisson distribution = 0.114
+
+Probability of 12 = 0.095
+Probability of 12 with equivalent Poisson distribution = 0.095
+
+Probability of 13 = 0.073
+Probability of 13 with equivalent Poisson distribution = 0.073
+
+Probability of 14 = 0.052
+Probability of 14 with equivalent Poisson distribution = 0.052
+
+Probability of 15 = 0.035
+Probability of 15 with equivalent Poisson distribution = 0.035
+
+Probability of 16 = 0.022
+Probability of 16 with equivalent Poisson distribution = 0.022
+
+Probability of 17 = 0.013
+Probability of 17 with equivalent Poisson distribution = 0.013
+
+Probability of 18 = 0.007
+Probability of 18 with equivalent Poisson distribution = 0.007
+
+Probability of 19 = 0.004
+Probability of 19 with equivalent Poisson distribution = 0.004
+
+Probability of 20 = 0.002
+Probability of 20 with equivalent Poisson distribution = 0.002
+
+Probability of 21 = 0.001
+Probability of 21 with equivalent Poisson distribution = 0.001
+
+Probability of 22 = 0.000
+Probability of 22 with equivalent Poisson distribution = 0.000
+
+Probability of 23 = 0.000
+Probability of 23 with equivalent Poisson distribution = 0.000
+
+Probability of 24 = 0.000
+Probability of 24 with equivalent Poisson distribution = 0.000
+
+Probability of 25 = 0.000
+Probability of 25 with equivalent Poisson distribution = 0.000
+
+Probability of 26 = 0.000
+Probability of 26 with equivalent Poisson distribution = 0.000
+
+Probability of 27 = 0.000
+Probability of 27 with equivalent Poisson distribution = 0.000
+
+Probability of 28 = 0.000
+Probability of 28 with equivalent Poisson distribution = 0.000
+
+Probability of 29 = 0.000
+Probability of 29 with equivalent Poisson distribution = 0.000
+
+Probability of 30 = 0.000
+Probability of 30 with equivalent Poisson distribution = 0.000
+
+Probability of 31 = 0.000
+Probability of 31 with equivalent Poisson distribution = 0.000
+
+Probability of 32 = 0.000
+Probability of 32 with equivalent Poisson distribution = 0.000
+
+Probability of 33 = 0.000
+Probability of 33 with equivalent Poisson distribution = 0.000
+
+Probability of 34 = 0.000
+Probability of 34 with equivalent Poisson distribution = 0.000
+
+Probability of 35 = 0.000
+Probability of 35 with equivalent Poisson distribution = 0.000
+
+Probability of 36 = 0.000
+Probability of 36 with equivalent Poisson distribution = 0.000
+
+Probability of 37 = 0.000
+Probability of 37 with equivalent Poisson distribution = 0.000
+
+Probability of 38 = 0.000
+Probability of 38 with equivalent Poisson distribution = 0.000
+
+Probability of 39 = 0.000
+Probability of 39 with equivalent Poisson distribution = 0.000
+
+Probability of 40 = 0.000
+Probability of 40 with equivalent Poisson distribution = 0.000
+
+Probability of 41 = 0.000
+Probability of 41 with equivalent Poisson distribution = 0.000
+
+Probability of 42 = 0.000
+Probability of 42 with equivalent Poisson distribution = 0.000
+
+Probability of 43 = 0.000
+Probability of 43 with equivalent Poisson distribution = 0.000
+
+Probability of 44 = 0.000
+Probability of 44 with equivalent Poisson distribution = 0.000
+
+Probability of 45 = 0.000
+Probability of 45 with equivalent Poisson distribution = 0.000
+
+Probability of 46 = 0.000
+Probability of 46 with equivalent Poisson distribution = 0.000
+
+Probability of 47 = 0.000
+Probability of 47 with equivalent Poisson distribution = 0.000
+
+Probability of 48 = 0.000
+Probability of 48 with equivalent Poisson distribution = 0.000
+
+Probability of 49 = 0.000
+Probability of 49 with equivalent Poisson distribution = 0.000
+
+Probability of 50 = 0.000
+Probability of 50 with equivalent Poisson distribution = 0.000
+
+Probability of 51 = 0.000
+Probability of 51 with equivalent Poisson distribution = 0.000
+
+Probability of 52 = 0.000
+Probability of 52 with equivalent Poisson distribution = 0.000
+
+Probability of 53 = 0.000
+Probability of 53 with equivalent Poisson distribution = 0.000
+
+Probability of 54 = 0.000
+Probability of 54 with equivalent Poisson distribution = 0.000
+
+Probability of 55 = 0.000
+Probability of 55 with equivalent Poisson distribution = 0.000
+
+Probability of 56 = 0.000
+Probability of 56 with equivalent Poisson distribution = 0.000
+
+Probability of 57 = 0.000
+Probability of 57 with equivalent Poisson distribution = 0.000
+
+Probability of 58 = 0.000
+Probability of 58 with equivalent Poisson distribution = 0.000
+
+Probability of 59 = 0.000
+Probability of 59 with equivalent Poisson distribution = 0.000
+
+Probability of 60 = 0.000
+Probability of 60 with equivalent Poisson distribution = 0.000
+
+Probability of 61 = 0.000
+Probability of 61 with equivalent Poisson distribution = 0.000
+
+Probability of 62 = 0.000
+Probability of 62 with equivalent Poisson distribution = 0.000
