@@ -88,10 +88,8 @@ Point Fejer2::integrateWithNodes(const Function & function,
   const Sample values(function(adaptedNodes));
   // Compute the integral
   for (UnsignedInteger i = 0; i < values.getSize(); ++i)
-   {
-    integral +=  values[i] * weights_[i];
-   }
-  return  std::pow(0.5,(Scalar)inputDimension)*integral * volume;
+    integral += values[i] * weights_[i];
+  return std::pow(0.5,(Scalar) inputDimension)*integral * volume;
 }
 
 /* Generate nodes and weights */
@@ -141,6 +139,8 @@ void Fejer2::generateNodesAndWeights()
         marginalNodes[i][k] = cos(theta_k);
         // Weights
         marginalWeights[i][k] = 4./(integrationNodesNumber-1) * sin(theta_k) * sum_sinus ;
+
+	sum_sinus=0.;
       }
 
     } // No match found

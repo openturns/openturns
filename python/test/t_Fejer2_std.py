@@ -20,7 +20,7 @@ try:
     ref = math.cos(a) - math.cos(b)
     print("value=%.6f" % value, ", ref=%.6f" % ref)
     # Low-level interface
-    algo = Fejer2([64])
+    algo = Fejer2([100])
     value, adaptedNodes = algo.integrateWithNodes(f, Interval(a, b))
     print("value=%.6f" %
           value[0], ", ref=%.6f" % ref, ", adaptedNodes=", adaptedNodes)
