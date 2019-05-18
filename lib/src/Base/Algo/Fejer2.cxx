@@ -132,7 +132,7 @@ void Fejer2::generateNodesAndWeights()
 
 	Scalar sum_sinus = 0.;
 
-        for (UnsignedInteger iter_= 1; iter_< (UnsignedInteger)(std::floor((integrationNodesNumber-1)/2)); ++iter_)
+        for (UnsignedInteger iter_= 1; iter_<= (UnsignedInteger)(std::floor((integrationNodesNumber-1)/2)); ++iter_)
         {
           sum_sinus+= sin((2*iter_-1)*theta_k)/(2*iter_-1);
         }
