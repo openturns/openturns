@@ -1,8 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The Geometric distribution
+ *  @brief The DiscreteCompoundDistribution distribution
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef DISCRETE_INTEGRAL_COMPOUND_HXX
-#define DISCRETE_INTEGRAL_COMPOUND_HXX
+#ifndef OPENTURNS_DISCRETE_COMPOUND_DISTRIBUTION_HXX
+#define OPENTURNS_DISCRETE_COMPOUND_DISTRIBUTION_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DiscreteDistribution.hxx"
@@ -162,4 +162,4 @@ private:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_GEOMETRIC_HXX */
+#endif /* OPENTURNS_DISCRETE_COMPOUND_DISTRIBUTION_HXX */
