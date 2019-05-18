@@ -31,7 +31,7 @@ Create a discrete compound distribution from a Bernoulli distribution with param
 and a Poisson distribution with parameter :math:`\lambda=10`.
 
 >>> import openturns as ot
->>> distribution = ot.DiscreteCompoundDistribution(Bernoulli(0.5), Poisson(10.0))
+>>> distribution = ot.DiscreteCompoundDistribution(ot.Bernoulli(0.5), ot.Poisson(10.0))
 
 This is mathematically equivalent to a Poisson distribution with parameter :math:`\lambda=5`.
 
