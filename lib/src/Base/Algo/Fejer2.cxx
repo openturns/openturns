@@ -87,7 +87,7 @@ Point Fejer2::integrateWithNodes(const Function & function,
   // Compute the function over the adapted nodes
   const Sample values(function(adaptedNodes));
   // Compute the integral
-  for (UnsignedInteger i = 0; i < values.getSize()+1; ++i)
+  for (UnsignedInteger i = 0; i < values.getSize(); ++i)
    {
     integral +=  values[i] * weights_[i];
    }
