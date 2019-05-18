@@ -42,7 +42,7 @@ int main(int, char *[])
     
     for (UnsignedInteger i=0; i<upper_bound; i++)
     {
-	    fullprint << "Probability of "<< i << " = " << distribution.computePDF(Point(1, i)) << std::endl;
+      fullprint << "Probability of "<< i << " = " << std::fixed << std::setprecision(3) << distribution.computePDF(Point(1, i)) << std::endl;
     }
 
   
@@ -50,7 +50,7 @@ int main(int, char *[])
 
     for(UnsignedInteger i=0;i<upper_bound;i++)
     {
-	  points(i,0) = i;
+      points(i,0) = i;
     }
 
     Sample pdf(distribution.computePDF(points));
