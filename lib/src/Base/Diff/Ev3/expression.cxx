@@ -4862,10 +4862,19 @@ Expression DiffNoSimplify(const Expression& ac, Int vi)
               // numeric exponent != 0,1,2
               ret = Diff(a->GetNode(0), vi); // f'
               tmp = a->GetCopyOfNode(0);     // f
+              const double coeff = tmp->GetCoeff();
               tmp = tmp ^ a->GetCopyOfNode(1);  // f^c
-              tmp->GetNode(1)->ConsolidateValue();
-              tmp->SetCoeff(tmp->GetCoeff() * tmp->GetNode(1)->GetValue());//cf^c
-              tmp->GetNode(1)->SetValue(tmp->GetNode(1)->GetValue() - 1); //cf^(c-1)
+              if (tmp->GetOpType() == VAR)
+              {
+                tmp->SetCoeff(tmp->GetExponent() * std::pow(coeff, tmp->GetExponent() - 1.0)); // cf^c
+                tmp->SetExponent(tmp->GetExponent() - 1); // cf^(c-1)
+              }
+              else
+              {
+                tmp->GetNode(1)->ConsolidateValue();
+                tmp->SetCoeff(tmp->GetCoeff() * tmp->GetNode(1)->GetValue());//cf^c
+                tmp->GetNode(1)->SetValue(tmp->GetNode(1)->GetValue() - 1); //cf^(c-1)
+              }
               // can dispense from using copy here - Diff returns copies anyway.
               // when temporary is deleted, its subnodes are not automatically
               // deleted unless their reference counter is zero - which won't be.
