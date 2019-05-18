@@ -146,8 +146,7 @@ Point DiscreteCompoundDistribution::computeProbabilities(const UnsignedInteger m
 
   for(UnsignedInteger i=0;i<m;i++)
   {
-	probabilities[i] = std::max(0.0, collection[i].real() / m / std::pow(r,i));
-  	//if (probabilities[i]<0.0) std::cerr<<"i = "<<i<<" , p = "<<probabilities[i]<<std::endl;
+    probabilities[i] = std::max(0.0, collection[i].real() / m / std::pow(r, (Scalar)i));
   }
   return probabilities;
 }
