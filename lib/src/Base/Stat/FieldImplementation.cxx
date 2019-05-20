@@ -507,9 +507,9 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
         UnsignedInteger i0 = currentSimplex[0];
         UnsignedInteger i1 = currentSimplex[1];
         UnsignedInteger i2 = currentSimplex[2];
-        Scalar v0 = marginalValues[i0][0];
-        Scalar v1 = marginalValues[i1][0];
-        Scalar v2 = marginalValues[i2][0];
+        Scalar v0 = marginalValues(i0, 0);
+        Scalar v1 = marginalValues(i1, 0);
+        Scalar v2 = marginalValues(i2, 0);
         // Sort the vertices such that v0 <= v1 <= v2
         if (v0 > v1)
         {
@@ -588,7 +588,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
           data.add(mesh_.getVertex(simplex[0]));
           data.add(mesh_.getVertex(simplex[1]));
           data.add(mesh_.getVertex(simplex[2]));
-          const Scalar meanValue = (marginalValues[simplex[0]][0] + marginalValues[simplex[1]][0] + marginalValues[simplex[2]][0]) / 3.0;
+          const Scalar meanValue = (marginalValues(simplex[0], 0) + marginalValues(simplex[1], 0) + marginalValues(simplex[2], 0)) / 3.0;
           const String color(palette[static_cast<UnsignedInteger>(round((size - 1) * (meanValue - minValue) / (maxValue - minValue)))]);
           colors.add(color);
         }
