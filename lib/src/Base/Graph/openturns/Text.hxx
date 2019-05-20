@@ -93,6 +93,10 @@ public:
   Description getTextPositions() const;
   void setTextPositions(const Description & textPositions);
 
+  /** Accessors to text size */
+  Scalar getTextSize() const;
+  void setTextSize(const Scalar size);
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
@@ -108,6 +112,9 @@ protected:
 
   /** Text position  */
   Description textPositions_;
+
+  /** Text size */
+  Scalar textSize_;
 
 private:
 

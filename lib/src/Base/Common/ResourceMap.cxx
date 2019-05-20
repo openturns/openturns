@@ -621,6 +621,9 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "Drawable-DataThreshold", 2000 );
   setAsUnsignedInteger( "Drawable-DefaultPalettePhase", 12 );
 
+  // Text drawable
+  setAsScalar( "Text-DefaultTextSize", 0.75 );
+
   // GraphImplementation parameters //
   setAsScalar( "Graph-DefaultHorizontalMargin", 0.05 );
   setAsScalar( "Graph-DefaultLegendFontSize", 1.0 );
