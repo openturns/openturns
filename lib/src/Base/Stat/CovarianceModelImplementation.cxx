@@ -485,7 +485,7 @@ struct CovarianceModelDiscretizeRowPolicy
       const UnsignedInteger base = i * outputDimension_;
       for (UnsignedInteger ii = 0; ii < outputDimension_; ++ii)
         for (UnsignedInteger jj = 0; jj < outputDimension_; ++jj)
-          output_[base + ii][jj] = localCovariance(ii, jj);
+          output_(base + ii, jj) = localCovariance(ii, jj);
     }
   }
 

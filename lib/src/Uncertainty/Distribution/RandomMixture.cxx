@@ -856,7 +856,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
             for (UnsignedInteger index = 1; index < newAggregatedSupportSize; ++index)
             {
               // If the current point is equal to the last one aggregate the probabilities
-              if (newAggregatedSupportAndProbabilities[index][0] == aggregatedSupport(k, 0))
+              if (newAggregatedSupportAndProbabilities(index, 0) == aggregatedSupport(k, 0))
               {
                 aggregatedProbabilities[k] += newAggregatedSupportAndProbabilities(index, 1);
               } // current point equals to the previous one

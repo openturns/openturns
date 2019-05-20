@@ -111,7 +111,7 @@ void OrderStatisticsMarginalChecker::check() const
 
     for (UnsignedInteger k = 0; k < quantileIteration; ++ k)
     {
-      const Scalar xMin = quantiles[i - 1][k];
+      const Scalar xMin = quantiles(i - 1, k);
       const Scalar xMax = quantiles(i, k);
       const Scalar xMiddle = 0.5 * (xMin + xMax);
 

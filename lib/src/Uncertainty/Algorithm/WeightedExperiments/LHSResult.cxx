@@ -265,7 +265,7 @@ Graph LHSResult::drawHistoryProbability(UnsignedInteger restart, const String & 
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     data(i, 0) = i;
-    data(i, 1) = collAlgoHistory_[restart][i][idx - 1];
+    data(i, 1) = collAlgoHistory_[restart](i, idx - 1);
   }
   Description description(2);
   description[0] = "Iterations";

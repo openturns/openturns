@@ -443,8 +443,8 @@ Graph AnalyticalResult::drawSensitivity(const Sensitivity & sensitivity,
     const UnsignedInteger dataSize = data.getSize();
     for (UnsignedInteger sensitivityIndex = 0; sensitivityIndex < dataSize; ++sensitivityIndex)
     {
-      data[sensitivityIndex][0] = width;
-      data[sensitivityIndex][1] = sensitivity[collectionIndex][sensitivityIndex];
+      data(sensitivityIndex, 0) = width;
+      data(sensitivityIndex, 1) = sensitivity[collectionIndex][sensitivityIndex];
     }
     // Add the barplot to the graph
     OSS oss;

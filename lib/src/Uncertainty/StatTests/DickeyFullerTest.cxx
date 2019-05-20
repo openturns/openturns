@@ -494,14 +494,14 @@ TestResult DickeyFullerTest::testUnitRootAndNoLinearTrendInDriftAndLinearTrendMo
     LOGWARN("The model has no unit root. The result test may have no sense. The statistical \"testNoUnitRootAndNoLinearTrendInDriftAndLinearTrendModel\" test is suggested ");
   }
 
-  const Scalar c = (timeSeries_[T_][1] - timeSeries_(0, 1)) / T_;
+  const Scalar c = (timeSeries_(T_, 1) - timeSeries_(0, 1)) / T_;
   Scalar SCR3c = 0.0;
   Scalar SCR3 = 0.0;
 
   const RegularGrid timeGrid(timeSeries_.getTimeGrid());
   for (UnsignedInteger t = 0; t < T_; ++t)
   {
-    const Scalar deltaX = timeSeries_[t + 1][1] - timeSeries_(t, 1);
+    const Scalar deltaX = timeSeries_(t + 1, 1) - timeSeries_(t, 1);
     const Scalar epsilon_t = deltaX - c;
     SCR3c += epsilon_t * epsilon_t;
     // Perform since it is computed previously
@@ -580,7 +580,7 @@ TestResult DickeyFullerTest::testUnitRootAndNoDriftInDriftModel(const Scalar lev
 
   for (UnsignedInteger t = 0; t < T_; ++ t)
   {
-    const Scalar epsilon_t = timeSeries_[t + 1][1] - timeSeries_(t, 1);
+    const Scalar epsilon_t = timeSeries_(t + 1, 1) - timeSeries_(t, 1);
     SCR2c += epsilon_t * epsilon_t;
     // Perform since it is computed previously
     const Scalar X = timeSeries_.getValueAtIndex(t)[0];
