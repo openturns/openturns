@@ -1,0 +1,59 @@
+{{ objname }}
+{{ underline }}
+
+.. plot::
+    :include-source: False
+
+    import openturns as ot
+    from matplotlib import pyplot as plt
+    from openturns.viewer import View
+
+    xMin = 0.0
+    xMax= 3.0
+    f = ot.MemoizeFunction(ot.SymbolicFunction("x", "x^3-2*x^2-1"))
+    solver = ot.{{ objname }}()
+    root = solver.solve(f, 0.0, xMin, xMax)
+    x = f.getInputHistory()
+    y = f.getOutputHistory()
+    g = f.draw(xMin, xMax)
+    c = ot.Cloud(x, y)
+    c.setColor("red")
+    c.setPointStyle("bullet")
+    g.add(c)
+    data = ot.Sample(0, 2)
+    msg = ot.Description(0)
+    for i in range(len(x)-1):
+    	data.add([x[i, 0], y[i, 0]])
+        data.add([x[i+1, 0], y[i, 0]])
+        data.add([x[i+1, 0], y[i+1, 0]])
+        if abs(x[i, 0] - x[i+1, 0]) + abs(y[i, 0] - y[i+1, 0]) > 0.4:
+            msg.add(r"$x_"+str(i)+r"$")
+        else:
+            msg.add("")
+    msg.add(r"$x_\infty$")
+    c = ot.Curve(data)
+    c.setColor("green")
+    g.add(c)
+    z = ot.Curve([[xMin, 0.0], [xMax, 0.0]])
+    z.setColor("black")
+    z.setLineStyle("dashed")
+    g.add(z)
+    t = ot.Text(x, y, msg)
+    t.setColor("black")
+    t.setLegend(r"$x_\infty$="+str(root))
+    g.add(t)
+    g.setTitle("Root finding using " + solver.getClassName())
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    View(g, figure=fig)
+    plt.xlabel(r'$x$')
+    plt.ylabel(r'$f(x)$')
+    plt.grid()
+
+.. currentmodule:: {{ module }}
+
+.. autoclass:: {{ objname }}
+
+   {% block methods %}
+   .. automethod:: __init__
+   {% endblock %}
