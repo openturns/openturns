@@ -1,5 +1,7 @@
 Default q : 0.4 
 
+inverse([0,0,0,0,0])= 0
+inverse([2,0,0,0,0])= 3
 First 10 values for dimension 1
 index= 0 [0]
 index= 1 [1]
