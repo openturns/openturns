@@ -468,7 +468,11 @@ class View(object):
 
                 # adjust font
                 if ('fontsize' not in text_kwargs_default) and ('size' not in text_kwargs_default):
-                    text_kwargs['fontsize'] = max(16 - dim, 4)
+                    # R API requiert a character exansion (cex)
+                    # considering default scale to be 1
+                    # Default fontsize in matplotlib is 10.0
+                    # thus we make corresponding the R & matplotlib values
+                    text_kwargs['fontsize'] = drawable.getTextSize() * 10.0
                 if 'horizontalalignment' in text_kwargs_default:
                     horizontal_default = text_kwargs['horizontalalignment']
                     del text_kwargs['horizontalalignment']
@@ -480,6 +484,7 @@ class View(object):
                 else:
                     vertical_default = 'center'
                 positions = drawable.getTextPositions()
+
                 for i, text in enumerate(drawable.getTextAnnotations()):
                     if len(text) == 0:
                         continue
