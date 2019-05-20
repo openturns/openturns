@@ -294,6 +294,18 @@ void Drawable::setTextPositions(const Description & textPositions)
   getImplementation()->setTextPositions(textPositions);
 }
 
+/* Accessor for font size */
+Scalar Drawable::getTextSize() const
+{
+  return getImplementation()->getTextSize();
+}
+
+void Drawable::setTextSize(const Scalar size)
+{
+  copyOnWrite();
+  getImplementation()->setTextSize(size);
+}
+
 /* Accessor for data */
 Sample Drawable::getData() const
 {

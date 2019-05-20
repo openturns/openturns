@@ -142,6 +142,10 @@ public:
   virtual Description getTextPositions() const;
   virtual void setTextPositions(const Description & textPositions);
 
+  /** Accessor for the text size */
+  virtual Scalar getTextSize() const;
+  virtual void setTextSize(const Scalar size);
+
   /** Bounding box accessor */
   virtual Interval getBoundingBox() const;
 
