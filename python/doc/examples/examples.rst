@@ -14,12 +14,12 @@ This is the examples section.
     .. toctree::
         :maxdepth: 1
 
-        calibration/calibration.rst
         data_analysis/data_analysis.rst
         probabilistic_modeling/probabilistic_modeling.rst
         meta_modeling/meta_modeling.rst
         reliability_sensitivity/reliability_sensitivity.rst
         functional_modeling/functional_modeling.rst
+        calibration/calibration.rst
         numerical_methods/numerical_methods.rst
 
     Advanced examples
