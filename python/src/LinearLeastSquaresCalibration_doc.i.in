@@ -18,14 +18,25 @@ candidate : sequence of float
     The a priori value of the parameter.
 parameterCovariance : 2-d sequence of float
     The covariance of the parameter prior distribution.
-errorCovariance : 2-d sequence of float
-    The covariance of the observations error.
 methodName : str
     The name of the least-squares method to use for the calibration. By default, equal to *SVD*. Possible values are *SVD*, *QR*, *Cholesky*.
 
 Notes
 -----
 LinearLeastSquaresCalibration is the minimum variance estimator of the parameter of a given model under the assumption that this parameter acts linearly in the model.
+
+In this case, the prior distribution of the parameter is a :class:`~openturns.Dirac` 
+and the posterior distribution of the parameter is :class:`~openturns.Normal`. 
+The associated covariance matrix may be regularized depending on the value of the 
+key `LinearLeastSquaresCalibration-Regularization` in the :class:`~openturns.ResourceMap`. 
+Let us denote by :math:`s_1` the smallest singular value of the covariance matrix. 
+The default value of the `LinearLeastSquaresCalibration-Regularization`, zero, 
+ensures that the singular values of the covariance matrix are left unmodified.  
+If this parameter is set to a nonzero, relatively small, value denoted by :math:`\epsilon`, 
+then all singular values of the covariance matrix are increased by :math:`\epsilon s_1`. 
+
+In the case of the linear least squares calibration, the resulting error distribution 
+is :class:`~openturns.Normal` with a zero mean and a diagonal covariance matrix. 
 
 See also
 --------
