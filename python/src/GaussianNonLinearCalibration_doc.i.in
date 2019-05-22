@@ -20,11 +20,30 @@ Notes
 -----
 GaussianNonLinearCalibration is the minimum variance estimator of the parameter of a given model
 under the assumption that this parameter is dispersed according to a known
-covariance matrix. The given observation error covariance can be either *local*,
+covariance matrix. 
+This algorithm is also known as *3DVAR*. 
+
+The given observation error covariance can be either *local*,
 ie the same matrix applies for each observation and is of dimension the output
 dimension of the model, or *global*, ie the matrix describes the full set of
 observation errors, in which case its dimension is the product of the output
 dimension of the model and the number of observations.
+
+The prior distribution of the parameter is a :class:`~openturns.Normal`.  
+
+The posterior distribution of the parameter is :class:`~openturns.Normal` and reflects the 
+variability of the optimum parameter depending on the observation sample. 
+By default, the posterior distribution is evaluated based on a linear approximation 
+of the model at the optimum. 
+This corresponds to using the :class:`~openturns.GaussianLinearLeastSquaresCalibration` at the optimum, 
+and is named *Laplace approximation* in the bayesian context. 
+However, if the key `GaussianNonLinearCalibration-BootstrapSize` in the :class:`~openturns.ResourceMap` 
+is set to a nonzero positive integer, then a bootstrap resampling of the observations 
+is performed and the posterior distribution is based on a :class:`~openturns.KernelSmoothing` 
+of the sample of boostrap optimum parameters. 
+
+The resulting error distribution is :class:`~openturns.Normal` and is based on the 
+`errorCovariance` input argument. 
 
 See also
 --------

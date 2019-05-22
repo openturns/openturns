@@ -25,8 +25,10 @@ Notes
 -----
 LinearLeastSquaresCalibration is the minimum variance estimator of the parameter of a given model under the assumption that this parameter acts linearly in the model.
 
-In this case, the prior distribution of the parameter is a :class:`~openturns.Dirac` 
-and the posterior distribution of the parameter is :class:`~openturns.Normal`. 
+The prior distribution of the parameter is a :class:`~openturns.Dirac`. 
+
+The posterior distribution of the parameter is :class:`~openturns.Normal` and reflects the 
+variability of the optimum parameter depending on the observation sample. 
 The associated covariance matrix may be regularized depending on the value of the 
 key `LinearLeastSquaresCalibration-Regularization` in the :class:`~openturns.ResourceMap`. 
 Let us denote by :math:`s_1` the smallest singular value of the covariance matrix. 
@@ -35,8 +37,8 @@ ensures that the singular values of the covariance matrix are left unmodified.
 If this parameter is set to a nonzero, relatively small, value denoted by :math:`\epsilon`, 
 then all singular values of the covariance matrix are increased by :math:`\epsilon s_1`. 
 
-In the case of the linear least squares calibration, the resulting error distribution 
-is :class:`~openturns.Normal` with a zero mean and a diagonal covariance matrix. 
+The resulting distribution of the output error is :class:`~openturns.Normal` with a zero mean 
+and a diagonal covariance matrix computed from the residuals. 
 
 See also
 --------
