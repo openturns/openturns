@@ -107,10 +107,10 @@ private:
   static double ComputeObjective(const std::vector<double> & x, std::vector<double> & grad, void * f_data);
 
   /** Compute the inequality constraint of the optimization problem */
-  static double ComputeInequalityConstraint(const std::vector<double> & x, std::vector<double> & grad, void * f_data);
+  static void ComputeInequalityConstraint(unsigned m, double * result, unsigned n, const double * x, double * grad, void * f_data);
 
   /** Compute the equality constraint of the optimization problem */
-  static double ComputeEqualityConstraint(const std::vector<double> & x, std::vector<double> & grad, void * f_data);
+  static void ComputeEqualityConstraint(unsigned m, double * result, unsigned n, const double * x, double * grad, void * f_data);
 
   /// temporary, used to track input/outputs
   Sample evaluationInputHistory_;
