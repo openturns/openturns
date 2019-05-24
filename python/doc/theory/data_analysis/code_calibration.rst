@@ -6,7 +6,7 @@ Code calibration
 Introduction
 ~~~~~~~~~~~~
 
-We consider a computer model :math:`\vect{h}` (*i.e.* a deterministic function)
+We consider a computer model :math:`\vect{h}` (i.e. a deterministic function)
 to calibrate:
 
 .. math::
@@ -24,16 +24,7 @@ where
 -  :math:`\vect{\theta} \in \Rset^{d_h}` are the unknown parameters of
    :math:`\vect{h}` to calibrate.
 
-In the remaining of this section, the input :math:`\vect{x}` is not involved 
-anymore in the expression. 
-This is why we simplify the equation into:
-
-.. math::
-
-   \begin{aligned}
-       \vect{z} = \vect{h}(\vect{\theta}).
-   \end{aligned}
-
+Let :math:`n \in \Nset` be the number of observations. 
 The standard hypothesis of the probabilistic calibration is:
 
 .. math::
@@ -42,7 +33,7 @@ The standard hypothesis of the probabilistic calibration is:
        \vect{Y}^i = \vect{z}^i + \vect{\varepsilon}^i,
    \end{aligned}
 
-where :math:`\vect{\varepsilon}^i` is a random measurement error such that:
+for :math:`i=1,...,n` where :math:`\vect{\varepsilon}^i` is a random measurement error such that:
 
 .. math::
 
@@ -50,18 +41,7 @@ where :math:`\vect{\varepsilon}^i` is a random measurement error such that:
        E(\varepsilon)=\vect{0} \in \Rset^{d_z}, \qquad Cov(\varepsilon)=\Sigma \in \Rset^{d_z\times d_z},
    \end{aligned}
 
-where :math:`Sigma` is the error covariance matrix. 
-
-The standard observation model makes the hypothesis that the covariance matrix 
-of the error is diagonal, i.e. 
-
-.. math::
-
-   \begin{aligned}
-       \Sigma = \sigma^2 {\bf I}
-   \end{aligned}
-
-where :math:`\sigma^2 \in \Rset` is the constant observation error variance. 
+where :math:`\Sigma` is the error covariance matrix. 
 
 The goal of calibration is to estimate :math:`\vect{\theta}`, based on 
 observations of :math:`n` inputs :math:`(\vect{x}^1, \ldots, \vect{x}^n)` 
@@ -76,6 +56,27 @@ random variable, the estimate of :math:`\vect{\theta}`, denoted by
 Hence, the secondary goal of calibration is to estimate the distribution of 
 :math:`\hat{\vect{\theta}}` representing the uncertainty of the calibration 
 process. 
+
+The standard observation model makes the hypothesis that the covariance matrix 
+of the error is diagonal, i.e. 
+
+.. math::
+
+   \begin{aligned}
+       \Sigma = \sigma^2 {\bf I}
+   \end{aligned}
+
+where :math:`\sigma^2 \in \Rset` is the constant observation error variance. 
+
+In the remaining of this section, the input :math:`\vect{x}` is not involved 
+anymore in the expression. 
+This is why we simplify the equation into:
+
+.. math::
+
+   \begin{aligned}
+       \vect{z} = \vect{h}(\vect{\theta}).
+   \end{aligned}
 
 Least squares
 ~~~~~~~~~~~~~
@@ -134,11 +135,9 @@ partial derivatives of :math:`\vect{h}` with respect to :math:`\vect{\theta}`:
        J(\vect{\theta}) = \frac{\partial \vect{h}}{\partial \vect{\theta}}.
    \end{aligned}
 
-Let :math:`\vect{\mu} \in \Rset^{d_h}` be a reference value of the parameter :math:`\vect{\theta}`, 
-named, depending on the context, the *background*, the *mean of the prior* or, simply, the 
-*candidate*. 
-Let us denote by :math:`J=J(\vect{\mu})` the value of the Jacobian at the point :math:`\vect{\mu}`. 
-Indeed, since the function is, by hypothesis, linear, the Jacobian is independent of the 
+Let :math:`\vect{\mu} \in \Rset^{d_h}` be a reference value of the parameter :math:`\vect{\theta}`. 
+Let us denote by :math:`J=J(\vect{\mu})` the value of the Jacobian at the reference point :math:`\vect{\mu}`. 
+Since the function is, by hypothesis, linear, the Jacobian is independent of the 
 point where it is evaluated. 
 Since :math:`\vect{h}` is linear, it is equal to its Taylor expansion:
 
@@ -216,9 +215,9 @@ experiment.
 Provided that we can generate a set of input and output observations, 
 we can compute the corresponding value of the parameter :math:`\hat{\vect{\theta}}`. 
 Reproducing this sampling experiment a large number of times would allow 
-to get the distribution of :math:`\hat{\vect{\theta}}`. 
-In practice, we only have one single set of observations. 
-If this set is large enough and correctly represents the variability 
+to get the distribution of the estimated parameter :math:`\hat{\vect{\theta}}`. 
+In practice, we only have one single sample of :math:`n` observations. 
+If this sample is large enough and correctly represents the variability 
 of the observations, the bootstrap method allows to generate 
 observations resamples, which, in turn, allow to get a sample of 
 :math:`\hat{\vect{\theta}}`. 
@@ -233,9 +232,8 @@ Alternatively, we can linearize the function :math:`\vect{h}`
 in the neighbourhood of the solution :math:`\hat{\vect{\theta}}` and use the 
 gaussian distribution associated with the linear least squares. 
 This method is efficient, but only accurate when the function :math:`\vect{h}` 
-is approximately linear with respect to :math:`\hat{\vect{\theta}}` in the 
+is approximately linear with respect to :math:`\vect{\theta}` in the 
 neighbourhood of :math:`\hat{\vect{\theta}}`. 
-In the bayesian context, this method is named the *Laplace approximation*. 
 
 Least squares and minimization of likelihood
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -251,7 +249,7 @@ problem maximizes the likelihood.
 This is the reason why, after a least squares calibration has been performed, 
 the distribution of the residuals may be interesting to analyze. 
 Indeed, if the distribution of the residuals is gaussian and if the outputs 
-are independent, then the least squares method is the maximum likelihood solution, 
+are independent, then the least squares estimator is the maximum likelihood estimator, 
 which gives a richer interpretation to the solution. 
 
 Regularization and ill-conditionned problems
