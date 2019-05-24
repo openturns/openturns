@@ -1,20 +1,23 @@
 %feature("docstring") OT::GaussianNonLinearCalibration
 "Gaussian non linear calibration algorithm (3DVAR).
 
+Available constructors:
+    GaussianNonLinearCalibration(*model, inputObservations, outputObservations, candidate, parameterCovariance, errorCovariance*)
+
 Parameters
 ----------
 model : :class:`~openturns.Function`
     The parametric function to be calibrated.
 inputObservations : 2-d sequence of float
-    The sample of input values of the model linked to the observations.
+    The sample of input observations.
 outputObservations : 2-d sequence of float
-    The sample of output values of the model linked to the observations.
+    The sample of output observations.
 candidate : sequence of float
-    The a priori value of the parameter.
+    The mean of the gaussian prior distribution of the parameter.
 parameterCovariance : 2-d sequence of float
-    The covariance of the parameter prior distribution.
+    The covariance matrix of the gaussian prior distribution of the parameter.
 errorCovariance : 2-d sequence of float
-    The covariance of the observations error.
+    The covariance matrix of the gaussian distribution of the observations error.
 
 Notes
 -----
@@ -31,8 +34,7 @@ dimension of the model and the number of observations.
 
 The prior distribution of the parameter is a :class:`~openturns.Normal`.  
 
-The posterior distribution of the parameter is :class:`~openturns.Normal` and reflects the 
-variability of the optimum parameter depending on the observation sample. 
+The posterior distribution of the parameter is :class:`~openturns.Normal`. 
 By default, the posterior distribution is evaluated based on a linear approximation 
 of the model at the optimum. 
 This corresponds to using the :class:`~openturns.GaussianLinearLeastSquaresCalibration` at the optimum, 

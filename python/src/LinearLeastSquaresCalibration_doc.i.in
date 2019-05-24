@@ -11,15 +11,17 @@ Parameters
 model : :class:`~openturns.Function`
     The parametric function to be calibrated.
 inputObservations : 2-d sequence of float
-    The sample of input values of the model linked to the observations.
+    The sample of input observations.
 outputObservations : 2-d sequence of float
-    The sample of output values of the model linked to the observations.
+    The sample of output observations.
 candidate : sequence of float
-    The a priori value of the parameter.
-parameterCovariance : 2-d sequence of float
-    The covariance of the parameter prior distribution.
+    The reference value of the parameter.
 methodName : str
     The name of the least-squares method to use for the calibration. By default, equal to *SVD*. Possible values are *SVD*, *QR*, *Cholesky*.
+modelObservations : 2-d sequence of float
+    The sample of output values of the model.
+gradientObservations : 2-d sequence of float
+    The Jacobian matrix of the model with respect to the parameter.
 
 Notes
 -----

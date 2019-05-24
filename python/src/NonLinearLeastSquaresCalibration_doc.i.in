@@ -1,16 +1,19 @@
 %feature("docstring") OT::NonLinearLeastSquaresCalibration
 "Non-inear least-squares calibration algorithm.
 
+Available constructors:
+    NonLinearLeastSquaresCalibration(*model, inputObservations, outputObservations, candidate*)
+
 Parameters
 ----------
 model : :class:`~openturns.Function`
     The parametric function to be calibrated.
 inputObservations : 2-d sequence of float
-    The sample of input values of the model linked to the observations.
+    The sample of input observations.
 outputObservations : 2-d sequence of float
-    The sample of output values of the model linked to the observations.
+    The sample of output observations.
 candidate : sequence of float
-    The a priori value of the parameter.
+    The reference value of the parameter.
 
 Notes
 -----
