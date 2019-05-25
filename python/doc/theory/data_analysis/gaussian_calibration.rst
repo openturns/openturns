@@ -46,7 +46,7 @@ Hence, the secondary goal of calibration is to estimate the distribution of
 process. 
 
 In the remaining of this section, the input :math:`\vect{x}` is not involved 
-anymore in the expression. 
+anymore in the equations. 
 This is why we simplify the equation into:
 
 .. math::
@@ -62,10 +62,10 @@ The first hypothesis is that the parameter :math:`\vect{\theta}` has
 a known distribution, called the *prior* distribution, and denoted by :math:`p(\vect{\theta})`. 
 
 The second hypothesis is that the output observations :math:`(\vect{y}^1, \ldots, \vect{y}^n)` 
-are sampled from a known distribution denoted by :math:`p(\vect{y} | \vect{\theta})`. 
+are sampled from a known conditional distribution denoted by :math:`p(\vect{y} | \vect{\theta})`. 
 
 For any :math:`\vect{y}\in\Rset^{d_z}` such that :math:`p(\vect{y})>0`, the Bayes theorem implies 
-that the distribution of :math:`\vect{\theta}` given :math:`\vect{y}` is:
+that the conditional distribution of :math:`\vect{\theta}` given :math:`\vect{y}` is:
 
 .. math::
 
@@ -95,7 +95,7 @@ where :math:`\vect{\mu}\in\Rset^{d_h}` is the mean of the gaussian prior distrib
 which is named the *background* and :math:`B\in\Rset^{d_h \times d_h}` is the covariance 
 matrix of the parameter.
 
-Secondly, we make the hypothesis that the output observations have the gaussian distribution:
+Secondly, we make the hypothesis that the output observations have the conditional gaussian distribution:
 
 .. math::
 
@@ -150,12 +150,12 @@ Regularity of solutions of the Gaussian Calibration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The gaussian calibration is a tradeoff, so that the 
-second expression acts as a spring which pulls the parameter 
+second expression acts as a *spring* which pulls the parameter 
 :math:`\vect{\theta}` closer to the background :math:`\vect{\mu}` 
 (depending on the "spring constant" :math:`B`, 
 meanwhile getting as close a possible to the observations. 
 Depending on the matrix :math:`B`, the computation may have 
-better regularity propreties than the plain non linear least squares problem. 
+better regularity properties than the plain non linear least squares problem. 
 
 Non Linear Gaussian Calibration : 3DVAR
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -169,7 +169,7 @@ The cost function of the gaussian nonlinear calibration problem is :
 
 for any :math:`\vect{\theta}\in\Rset^{d_h}`. 
 
-The non linear gaussian calibration consists in finding the 
+The goal of the non linear gaussian calibration is to find the 
 value of :math:`\vect{\theta}` which minimizes the cost function :math:`C`. 
 In general, this involves using a nonlinear unconstrained optimization solver. 
 
@@ -181,7 +181,7 @@ partial derivatives of :math:`\vect{h}` with respect to :math:`\vect{\theta}`:
        J(\vect{\theta}) = \frac{\partial \vect{h}}{\partial \vect{\theta}}.
 
 The Jacobian matrix of the cost function :math:`C` can be expressed 
-depending on the matrices :math:`R`, :math:`B` and the Jacobian matrix 
+depending on the matrices :math:`R` and :math:`B` and the Jacobian matrix 
 of the function :math:`h`:
 
 .. math::
@@ -203,6 +203,16 @@ for any :math:`\vect{\theta}\in\Rset^{d_h}`.
 If the covariance matrix :math:`B` is positive definite, 
 then the Hessian matrix of the cost function is positive definite. 
 Under this hypothesis, the solution of the nonlinear gaussian calibration is unique. 
+
+Solving the Non Linear Gaussian Calibration Problem
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The implementation of the resolution of the gaussian non linear calibration 
+problem involves the Cholesky decomposition of the covariance matrices :math:`B` 
+and :math:`R`. 
+This allows to transform the sum of two Mahalanobis distances into a single 
+euclidian norm. 
+This leads to a classical non linear least squares problem. 
 
 Linear Gaussian Calibration : bayesian BLUE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -234,6 +244,21 @@ observations :math:`\vect{y}` is:
 .. math::
 
     \hat{\vect{\theta}} = \vect{\mu} + K (\vect{y} - H(\vect{\mu})). 
+
+It can be proved that:
+
+.. math::
+
+    p(\vect{\theta} | \vect{y}) \propto 
+    \exp\left(\frac{1}{2} (\vect{\theta} - \hat{\vect{\theta}})^T A^{-1} (\vect{\theta} - \hat{\vect{\theta}}) \right)
+
+for any :math:`\vect{\theta}\in\Rset^{d_h}`. 
+
+This implies:
+
+.. math::
+
+    \hat{\vect{\theta}} \sim \mathcal{N}(\vect{\theta},A)
 
 .. topic:: API:
 

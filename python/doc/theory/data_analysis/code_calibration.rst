@@ -69,7 +69,7 @@ of the error is diagonal, i.e.
 where :math:`\sigma^2 \in \Rset` is the constant observation error variance. 
 
 In the remaining of this section, the input :math:`\vect{x}` is not involved 
-anymore in the expression. 
+anymore in the equations. 
 This is why we simplify the equation into:
 
 .. math::
@@ -195,13 +195,13 @@ Non Linear Least squares
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 In the general case where the function :math:`\vect{h}` is non linear 
-with respect to the parameter :math:`\vect{\theta}`, then the nonlinear least 
-squares method involves the solution of a least squares optimization algorithm. 
-Instead of directly minimizing the squared euclidian norm, most implementations 
-rely on the residual vector, which lead to an improved accuracy. 
+with respect to the parameter :math:`\vect{\theta}`, then the resolution   
+involves a non linear least squares optimization algorithm. 
+Instead of directly minimizing the squared euclidian norm of the residuals, 
+most implementations rely on the residual vector, which lead to an improved accuracy. 
 
 The difficulty in the nonlinear least squares is that, compared to the 
-linear situation, the theory does not provide the gaussian distribution 
+linear situation, the theory does not provide the distribution 
 of :math:`\hat{\vect{\theta}}` anymore. 
 
 There are two practical solutions to overcome this limitation. 
