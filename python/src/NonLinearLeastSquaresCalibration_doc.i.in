@@ -1,5 +1,5 @@
 %feature("docstring") OT::NonLinearLeastSquaresCalibration
-"Non-inear least-squares calibration algorithm.
+"Non-linear least-squares calibration algorithm.
 
 Available constructors:
     NonLinearLeastSquaresCalibration(*model, inputObservations, outputObservations, candidate*)
