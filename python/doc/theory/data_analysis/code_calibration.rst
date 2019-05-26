@@ -275,8 +275,8 @@ named the *prior*.
 
 .. topic:: API:
 
-    - See :class:`~openturns.LinearCalibration`
-    - See :class:`~openturns.NonLinearCalibration`
+    - See :class:`~openturns.LinearLeastSquaresCalibration`
+    - See :class:`~openturns.NonLinearLeastSquaresCalibration`
 
 .. topic:: References:
 
