@@ -43,8 +43,9 @@ int main(int, char *[])
     std::cout << "samples(5) = " << sqn.getSample(5) << std::endl;
     std::cout << "mean = " << sqn.getMean() << std::endl;
     std::cout << "covariance = " << sqn.getCovariance() << std::endl;
+    std::cout << "characteristic function = " << sqn.computeCharacteristicFunction(1.0) << std::endl;
     
-    sqn.drawPDF().draw("sqn.png");
+    //sqn.drawPDF().draw("sqn.png");
   }
   catch (TestFailed & ex)
   {

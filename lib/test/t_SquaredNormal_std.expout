@@ -10,3 +10,4 @@ samples(5) =     [ X0       ]
 4 : [ 4.75844  ]
 mean = [1]
 covariance = [[ 2 ]]
+characteristic function = (0.568864,0.351578)
