@@ -67,6 +67,7 @@
  * #1051 (The default value of computeSecondOrder in SobolIndicesExperiment should be False)
  * #1054 (Optimization algorithms ignore MaxEvaluationNumber parameter)
  * #1057 (FittingTest.BestModelBIC to return bic value)
+ * #1058 (GEV problem)
  * #1064 (The summary of a FunctionalChaosSobolIndices fails with more than 14 dimensions)
  * #1071 (Event cannot be created from a RandomVector)
  * #1078 (KrigingAlgorithm documentation still references "inputTransformation")
