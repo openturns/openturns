@@ -121,6 +121,7 @@ Distribution FittingTest::BestModelKolmogorov(const Sample & sample,
   const Scalar fakeLevel = 0.5;
   Bool builtAtLeastOne = false;
   Distribution bestDistribution;
+  Distribution distribution;
   Scalar bestPValue = -1.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -128,8 +129,7 @@ Distribution FittingTest::BestModelKolmogorov(const Sample & sample,
     try
     {
       LOGINFO(OSS(false) << "Trying factory " << factory);
-      const Distribution distribution(factory.build(sample));
-      const TestResult result(Kolmogorov(sample, factory, fakeLevel));
+      const TestResult result(Kolmogorov(sample, factory, distribution, fakeLevel));
       LOGINFO(OSS(false) << "Resulting distribution=" << distribution << ", test result=" << result);
       if (result.getPValue() > bestPValue)
       {
@@ -245,11 +245,13 @@ Scalar FittingTest::BIC(const Sample & sample,
 }
 
 /* Bayesian Information Criterion computation */
-Scalar FittingTest::BIC(const Sample & sample,
-                        const DistributionFactory & factory)
+Distribution FittingTest::BIC(const Sample & sample,
+                              const DistributionFactory & factory,
+                              Scalar & bestBICOut)
 {
   const Distribution distribution(factory.build(sample));
-  return BIC(sample, distribution, distribution.getParameterDimension());
+  bestBICOut =  BIC(sample, distribution, distribution.getParameterDimension());
+  return distribution;
 }
 
 
@@ -271,12 +273,14 @@ Scalar FittingTest::ComputeKolmogorovStatistics(const Sample & sample,
 
 TestResult FittingTest::Kolmogorov(const Sample & sample,
                                    const DistributionFactory & factory,
+                                   Distribution & estimatedDistribution,
                                    const Scalar level)
+
 {
   if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Error: level must be in ]0, 1[, here level=" << level;
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test works only with 1D samples";
+  if (!factory.build().isContinuous()) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test can be applied only to a continuous distribution";
   const Distribution distribution(factory.build(sample));
-  if (!distribution.getImplementation()->isContinuous()) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test can be applied only to a continuous distribution";
   if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test works only with 1D distribution";
   // The Kolmogorov test p-value is overestimated if parameters have been estimated
   // We fix it by computing a Monte Carlo estimate of the p-value
@@ -295,6 +299,7 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
   TestResult result(OSS(false) << "Kolmogorov " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level, statistic);
   result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
   LOGDEBUG(OSS() << result);
+  estimatedDistribution = distribution;
   return result;
 }
 
@@ -318,6 +323,7 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
 /* Chi-squared test */
 TestResult FittingTest::ChiSquared(const Sample & sample,
                                    const DistributionFactory & factory,
+                                   Distribution & estimatedDistribution,
                                    const Scalar level)
 {
   if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Error: level must be in ]0, 1[, here level=" << level;
@@ -326,6 +332,7 @@ TestResult FittingTest::ChiSquared(const Sample & sample,
   const Distribution distribution(factory.build(sample));
   if (distribution.getImplementation()->isContinuous()) throw InvalidArgumentException(HERE) << "Error: Chi-squared test cannot be applied to a continuous distribution";
   if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: ChiSquared test works only with 1D distribution";
+  estimatedDistribution = distribution;
   return ChiSquared(sample, distribution, level, distribution.getParameterDimension());
 }
 

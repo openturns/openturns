@@ -79,8 +79,9 @@ public:
                     const UnsignedInteger estimatedParameters = 0);
 
   /** Bayesian Information Criterion computation */
-  static Scalar BIC(const Sample & sample,
-                    const DistributionFactory & factory);
+  static Distribution BIC(const Sample & sample,
+                          const DistributionFactory & factory,
+                          Scalar & bestBICOut);
 
   /** Kolmogorov fitting test for continuous distributions */
   static TestResult Kolmogorov(const Sample & sample,
@@ -90,6 +91,7 @@ public:
   /** Kolmogorov fitting test for continuous distributions */
   static TestResult Kolmogorov(const Sample & sample,
                                const DistributionFactory & factory,
+                               Distribution & estimatedDistribution,
                                const Scalar level = 0.05);
 
   /** Kolmogorov statistics computation */
@@ -105,6 +107,7 @@ public:
   /** ChiSquared fitting test for discrete distributions */
   static TestResult ChiSquared(const Sample & sample,
                                const DistributionFactory & factory,
+                               Distribution & estimatedDistribution,
                                const Scalar level = 0.05);
 
 private:
