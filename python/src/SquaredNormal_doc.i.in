@@ -16,6 +16,29 @@ sigma : float :math:`\sigma`, optional
 
     Default is :math:`\sigma = 1.0`.
 
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_{X}(x) = \frac{1}{2\sqrt{2\pi x}}(e^{-\frac{1}{2}(\frac{\sqrt{x}+\mu}{\sigma})^2} 
+                + e^{-\frac{1}{2}(\frac{\sqrt{x}-\mu}{\sigma})^2}),
+                \quad x \in ]0; +\infty[
+
+with :math:`\sigma > 0`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \mu^2 + \sigma^2 \\
+        \Var{X} & = & 2(2\mu^2 + \sigma^2)\sigma^2
+    \end{eqnarray*}
+
+
 Examples
 --------
 Create a distribution from its native parameters :math:`(mu, sigma)`:
@@ -23,7 +46,7 @@ Create a distribution from its native parameters :math:`(mu, sigma)`:
 >>> import openturns as ot
 >>> myDist = ot.SquaredNormal(1.0, 2.0)
 
-Create a sample:
+Draw a sample:
 
 >>> sample = myDist.getSample(5)"
 
