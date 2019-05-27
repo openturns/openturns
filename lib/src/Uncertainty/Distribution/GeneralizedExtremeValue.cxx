@@ -163,13 +163,105 @@ Complex GeneralizedExtremeValue::computeLogCharacteristicFunction(const Scalar x
 /* Get the PDFGradient of the distribution */
 Point GeneralizedExtremeValue::computePDFGradient(const Point & point) const
 {
-  return actualDistribution_.computePDFGradient(point);
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+
+  const Scalar x = point[0];
+  Point result(3);
+  // From Maple...
+  if (xi_ == 0.0)
+  {
+    const Scalar t2 = 1.0 / sigma_;
+    const Scalar t4 = std::exp(t2 * (mu_ + x));
+    const Scalar t7 = std::exp(2.0 * mu_ * t2);
+    const Scalar t11 = std::exp(t2 * (-x + mu_));
+    const Scalar t16 = std::exp(-t2 * (t11 * sigma_ + 2.0 * x));
+    const Scalar t18 = sigma_ * sigma_;
+    const Scalar t21 = mu_ * t4;
+    const Scalar t23 = x * t4;
+    const Scalar t24 = mu_ * t7;
+    const Scalar t29 = 1.0 / (t18 * sigma_);
+    const Scalar t31 = mu_ * mu_;
+    const Scalar t39 = x * x;
+    result[0] = t16 * (t4 - t7) / t18;
+    result[1] = -t29 * t16 * (t4 * sigma_ + t7 * x + t21 - t23 - t24);
+    result[2] = 0.5 * t29 * t16 * (-2.0 * t21 * x + 2.0 * t21 * sigma_ - 2.0 * t23 * sigma_ + 2.0 * t24 * x + t31 * t4 - t31 * t7 + t39 * t4 - t39 * t7);
+  } // xi_ == 0.0
+  // From Maple...
+  else
+  {
+    const Scalar t1 = 1 / xi_;
+    const Scalar t2 = std::pow(sigma_, t1);
+    const Scalar t3 = x - mu_;
+    const Scalar t4 = xi_ * t3;
+    const Scalar t5 = t4 + sigma_;
+    const Scalar t6 = std::pow(t5, -t1);
+    const Scalar t8 = std::exp(-t6 * t2);
+    const Scalar t9 = 1.0 + xi_;
+    const Scalar t14 = std::pow(t5, (t1 * (-1.0 - 2.0 * xi_)));
+    const Scalar t17 = std::pow(sigma_, 2.0 * t1);
+    const Scalar t19 = std::pow(t5, -2.0 * t1 * t9);
+    const Scalar t25 = std::pow(sigma_, t1 * (2.0 - xi_));
+    const Scalar t29 = std::pow(t5, -t1 * t9);
+    const Scalar t35 = std::pow(sigma_, t1 * (1.0 - xi_));
+    const Scalar t40 = std::pow(sigma_, t1 * t9);
+    const Scalar t42 = t2 * t4 + t40;
+    const Scalar t43 = std::log(t5);
+    const Scalar t45 = std::log(sigma_);
+    const Scalar t49 = t3 * (t45 + 1.0);
+    const Scalar t52 = t5 * t5;
+    const Scalar t55 = 2.0 + xi_;
+    const Scalar t57 = std::pow(sigma_, t1 * t55);
+    const Scalar t67 = std::pow(t5, -t1 * t55);
+    const Scalar t69 = xi_ * xi_;
+    result[0] = (t14 * t2 * t9 - t17 * t19) * t8;
+    result[1] = t8 * (-t19 * t3 * t25 + t35 * (t14 * t3 * t9 - t29));
+    result[2] = t8 * (t29 * t52 * (-t2 * t49 * xi_ - t40 * t45 + t42 * t43) - t67 * (t43 * (t17 * t4 + t57) - t57 * t45 - t49 * t17 * xi_) * t52 - t3 * t42 * t69 * t6) / (t69 * t52 * t5);
+  } // xi_ != 0.0
+  return result;
 }
 
 /* Get the CDFGradient of the distribution */
 Point GeneralizedExtremeValue::computeCDFGradient(const Point & point) const
 {
-  return actualDistribution_.computeCDFGradient(point);
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+
+  const Scalar x = point[0];
+  Point result(3);
+  // From Maple...
+  if (xi_ == 0.0)
+  {
+    const Scalar t1 = 1.0 / sigma_;
+    const Scalar t2 = -x + mu_;
+    const Scalar t4 = std::exp(t2 * t1);
+    const Scalar t8 = std::exp(-t1 * (t4 * sigma_ - mu_ + x));
+    const Scalar t11 = sigma_ * sigma_;
+    const Scalar t12 = 1.0 / t11;
+    const Scalar t14 = mu_ * mu_;
+    const Scalar t17 = x * x;
+    result[0] = -t8 * t1;
+    result[1] = t12 * t2 * t8;
+    result[2] = -0.5 * t12 * (-2.0 * mu_ * x + t14 + t17) * t8;
+  } // xi_ == 0.0
+  // From Maple...
+  else
+  {
+    const Scalar t1 = 1.0 / xi_;
+    const Scalar t2 = std::pow(sigma_, t1);
+    const Scalar t3 = x - mu_;
+    const Scalar t4 = t3 * xi_;
+    const Scalar t5 = t4 + sigma_;
+    const Scalar t8 = std::pow(t5, t1 * (-1.0 - xi_));
+    const Scalar t10 = std::pow(t5, -t1);
+    const Scalar t12 = std::exp(-t10 * t2);
+    const Scalar t16 = std::pow(sigma_, t1 * (1.0 - xi_));
+    const Scalar t23 = std::log(t5);
+    const Scalar t25 = std::log(sigma_);
+    const Scalar t29 = xi_ * xi_;
+    result[0] = -t12 * t2 * t8;
+    result[1] = -t12 * t3 * t16 * t8;
+    result[2] = (t23 * (-t3 * xi_ - sigma_) + t25 * t5 + t4) * t2 * t8 * t12 / t29;
+  } // xi_ != 0.0
+  return result;
 }
 
 /* Get the quantile of the distribution */
@@ -424,4 +516,3 @@ void GeneralizedExtremeValue::load(Advocate & adv)
 }
 
 END_NAMESPACE_OPENTURNS
-
