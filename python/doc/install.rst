@@ -107,15 +107,15 @@ RPM-based distributions
 Add the repository corresponding to your operating system::
 
     curl http://download.opensuse.org/repositories/science:/openturns/CentOS_7/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_29/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.0/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_30/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.1/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
     curl http://download.opensuse.org/repositories/science:/openturns/Mageia_6/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
     rpm --import http://download.opensuse.org/repositories/science:/openturns/CentOS_7/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_29/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.0/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_30/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.1/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/Mageia_6/repodata/repomd.xml.key
 
 Install the package::
@@ -127,6 +127,12 @@ Archlinux
 Install from `AUR <https://aur.archlinux.org/packages/openturns/>`_::
 
     aurman -S openturns
+
+FreeBSD
+-------
+Install from `FreshPorts <https://www.freshports.org/math/openturns/>`_::
+
+    pkg install openturns
 
 
 From sources
