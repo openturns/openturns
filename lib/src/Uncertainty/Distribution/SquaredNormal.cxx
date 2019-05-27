@@ -107,7 +107,7 @@ Scalar SquaredNormal::computePDF(const Point & point) const
   const Scalar x = point[0];
   if (x <= 0.0) return 0.0;
   Scalar sqrtX = std::sqrt(x);
-  return (std::exp(-0.5 * std::pow((sqrtX + mu_), 2) / std::pow(sigma_, 2.0)) + std::exp(-0.5 * std::pow((sqrtX - mu_), 2.0) / std::pow(sigma_, 2))) / (2.0 * M_SQRT2 * sigma_ * std::sqrt(x * M_PI));
+  return (std::exp(-0.5 * std::pow((sqrtX + mu_), 2.0) / std::pow(sigma_, 2.0)) + std::exp(-0.5 * std::pow((sqrtX - mu_), 2.0) / std::pow(sigma_, 2.0))) / (2.0 * M_SQRT2 * sigma_ * std::sqrt(x * M_PI));
 } // computePDF
 
 /* Get the characteristic function of the distribution */
@@ -135,7 +135,7 @@ void SquaredNormal::computeCovariance() const
 void SquaredNormal::computeRange()
 {
   setRange(Interval(Point(1, 0.0), Point(1, std::pow(mu_ + 8.5 * sigma_, 2.0)),
-		    Interval::BoolCollection(1, true), Interval::BoolCollection(1, false)));
+		       Interval::BoolCollection(1, true), Interval::BoolCollection(1, false)));
 }
 
 
