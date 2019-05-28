@@ -37,4 +37,5 @@ Data analysis
     estimate_spectral_density_function.ipynb
     linear_regression.ipynb
     bayesian_calibration.ipynb
+    bayesian_calibration_flooding.ipynb
     quantile_estimation_wilks.ipynb
