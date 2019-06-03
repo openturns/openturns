@@ -149,6 +149,7 @@
 %include ConstantBasisFactory.i
 %include LinearBasisFactory.i
 %include QuadraticBasisFactory.i
+%include NullHessian.i
 
 /* At last we include template definitions */
 %include BaseFuncTemplateDefs.i

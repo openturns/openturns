@@ -271,6 +271,7 @@ ot_add_python_module(func func_module.i
                       NoEvaluation.i
                       NoGradient.i
                       NoHessian.i
+		      NullHessian.i
                       TranslationEvaluation.i TranslationEvaluation_doc.i.in
                       LinearEvaluation.i LinearEvaluation_doc.i.in
                       LinearGradient.i LinearGradient_doc.i.in

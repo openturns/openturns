@@ -148,5 +148,6 @@
 #include "openturns/EvaluationProxy.hxx"
 #include "openturns/MemoizeEvaluation.hxx"
 #include "openturns/MemoizeFunction.hxx"
+#include "openturns/NullHessian.hxx"
 
 #endif /* OPENTURNS_OTFUNC_HXX */
