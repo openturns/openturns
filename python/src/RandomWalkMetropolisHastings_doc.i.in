@@ -6,7 +6,7 @@ Refer to :ref:`bayesian_calibration`, :ref:`metropolis_hastings`.
 Available constructor:
     RandomWalkMetropolisHastings(*prior, conditional, observations, initialState, proposal*)
 
-    RandomWalkMetropolisHastings(*prior, conditional, model, parameters, observations, initialState, proposal*)
+    RandomWalkMetropolisHastings(*prior, conditional, model, modelParameters, observations, initialState, proposal*)
 
 Parameters
 ----------
@@ -17,14 +17,23 @@ conditional : :class:`~openturns.Distribution`
     Required distribution to define the likelihood of the underlying Bayesian
     statistical model.
 model : :class:`~openturns.Function`
-    Function required to define the likelihood.
+    Function required to define the likelihood. 
+    The dimension of the output of the `model` argument must be equal 
+    to the dimension of the `setParameter` method of the `conditional` argument. 
 observations : 2-d sequence of float
-    Observations required to define the likelihood.
+    Observations required to define the likelihood. 
+    If a `model` argument is specified, the `observations` correspond 
+    to the output of the `model`.
 initialState : sequence of float
     Initial state of the Monte-Carlo Markov chain on which the Sampler is
     based.
-parameters : 2-d sequence of float
-    Parameters of the model to be fixed.
+    The dimension of the `initialState` must be equal to the dimension of the `prior`. 
+modelParameters : 2-d sequence of float
+    Parameters of the model to be fixed. 
+    The dimension of the `modelParameters` argument must 
+    be equal to the dimension of the `setParameter` method of the `model` argument. 
+    The size of the `modelParameters` variable must 
+    be equal to the size of the `observations` argument. 
 proposal : list of :class:`~openturns.Distribution`
     Distributions from which the transition kernels of the
     :class:`~openturns.MCMC` are defined, as explained hereafter. In the
@@ -71,10 +80,10 @@ Examples
 ...      -13.0812290405651]
 >>> y_obs = ot.Sample(y, obsDim)
 >>> # Parameters
->>> p = ot.Sample(obsSize, chainDim)
+>>> modelParameters = ot.Sample(obsSize, chainDim)
 >>> for i in range(obsSize):
 ...     for j in range(chainDim):
-...         p[i, j] = (-2 + 5.0 * i / 9.0) ** j
+...         modelParameters[i, j] = (-2 + 5.0 * i / 9.0) ** j
 >>> # Model
 >>> fullModel = ot.SymbolicFunction(
 ...          ['p1', 'p2', 'p3', 'x1', 'x2', 'x3'],
@@ -98,13 +107,8 @@ Examples
 >>> # Conditional distribution y~N(z, 1.0)
 >>> conditional = ot.Normal()
 >>> # Create a metropolis-hastings sampler
->>> # prior =a distribution of dimension chainDim, the a priori distribution of the parameter
->>> # conditional =a distribution of dimension 1, the observation error on the output
->>> # model =the link between the parameters and the output
->>> # y_obs =noisy observations of the output
->>> # mu0 =starting point of the chain
 >>> sampler = ot.RandomWalkMetropolisHastings(
-...     prior, conditional, model, p, y_obs, mu0, proposalColl)
+...     prior, conditional, model, modelParameters, y_obs, mu0, proposalColl)
 >>> sampler.setCalibrationStrategyPerComponent(calibrationColl)
 >>> sampler.setBurnIn(200)
 >>> sampler.setThinning(10)
