@@ -23,6 +23,7 @@
 === Python module ===
 
 === Miscellaneous ===
+ * Dropped muParser dependency
 
 === Bug fixes ===
  * https://github.com/openturns/openturns/milestone/4?closed=1

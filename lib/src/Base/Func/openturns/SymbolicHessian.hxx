@@ -99,7 +99,7 @@ private:
   mutable Bool isAnalytical_;
   Pointer<SymbolicEvaluation> p_evaluation_;
 
-  /** A mathematical expression parser from the muParser library */
+  /** A mathematical expression parser */
   mutable SymbolicParser parser_;
 
 }; /* class SymbolicHessian */

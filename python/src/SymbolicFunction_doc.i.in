@@ -74,11 +74,9 @@ Available constants:
 
 Notes
 -----
-
 Up to version 1.10, OpenTURNS relied on `muParser <http://beltoforion.de/article.php?a=muparser>`_
 to parse analytical formulas. Since version 1.11, `ExprTk <http://www.partow.net/programming/exprtk/>`_
-is used by default, but both parsers can be used, if their support haved been compiled in.
-This is controlled by the 'SymbolicParser-Backend' ResourceMap entry.
+is used by default.
 
 Examples
 --------
@@ -120,8 +118,8 @@ sin(arg) -> sine function"
 %feature("docstring") OT::SymbolicFunction::GetValidParsers
 "Return the list of built-in parsers.
 
-Analytical formulas can be parsed by 'MuParser' or 'ExprTk'
-parsers, but this support may be disabled at build-time.
+Analytical formulas can be parsed by 'ExprTk'
+parser, but this support may be disabled at build-time.
 This method returns the list of parsers available at run-time.
 Parser can be switched by changing 'SymbolicParser-Backend'
 ResourceMap entry.

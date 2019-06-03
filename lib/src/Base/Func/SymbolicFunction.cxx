@@ -87,7 +87,7 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
     setHessian(new CenteredFiniteDifferenceHessian(epsilon, getEvaluation()));
   }
 #else
-  throw NotYetImplementedException(HERE) << "SymbolicFunction requires muParser or ExprTk";
+  throw NotYetImplementedException(HERE) << "SymbolicFunction requires ExprTk";
 #endif
 }
 
@@ -122,7 +122,7 @@ SymbolicFunction::SymbolicFunction (const Description & inputVariablesNames,
     setHessian(new CenteredFiniteDifferenceHessian(epsilon, getEvaluation()));
   }
 #else
-  throw NotYetImplementedException(HERE) << "SymbolicFunction requires muParser or ExprTk";
+  throw NotYetImplementedException(HERE) << "SymbolicFunction requires ExprTk";
 #endif
 }
 
@@ -221,10 +221,6 @@ void SymbolicFunction::InitializeDocumentation()
 #ifdef OPENTURNS_HAVE_EXPRTK
   ValidParsers_.add("ExprTk");
 #endif
-#ifdef OPENTURNS_HAVE_MUPARSER
-  ValidParsers_.add("MuParser");
-#endif
-
   IsDocumentationInitialized_ = true;
 }
 

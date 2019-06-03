@@ -32,7 +32,6 @@ int main(int, char *[])
 
   try
   {
-    ResourceMap::Set("SymbolicParser-Backend", "ExprTk");
     /* Check the elementary functions */
     Collection<String> elementaryFunctions(0);
     elementaryFunctions.add("sin");

@@ -26,7 +26,6 @@ Source0:        http://downloads.sourceforge.net/openturns/openturns/openturns-%
 Source1:        %{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:  gcc-c++, cmake, bison, flex, swig
-BuildRequires:  muParser-devel
 BuildRequires:  libxml2-devel
 BuildRequires:  boost-devel
 BuildRequires:  nlopt-devel
@@ -54,10 +53,8 @@ OpenTURNS Uncertainty treatment library
 Summary:        Uncertainty treatment library
 Group:          Development/Libraries/C and C++
 %if ! 0%{?mageia}
-Requires:       muParser
 Requires:       lapack
 %else
-Requires:       lib64muparser2
 Requires:       liblapack
 %endif
 Requires:       libxml2

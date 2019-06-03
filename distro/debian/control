@@ -5,7 +5,7 @@ Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.
 Uploaders: Denis Barbier <barbier@debian.org>
 Build-Depends: debhelper (>= 10), dh-python, quilt, gfortran, g++ (>= 4:7),
  bison, flex, cmake,
- libmuparser-dev, libxml2-dev, liblapack-dev, libblas-dev,
+ libxml2-dev, liblapack-dev, libblas-dev,
  libboost-math-dev, libhmat-oss-dev, libnlopt-cxx-dev, libcminpack-dev,
  libtbb-dev [i386 amd64 ia64],
  python-dev, python3-dev, swig (>= 2.0.9)

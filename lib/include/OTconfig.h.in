@@ -51,13 +51,10 @@
 /* Define to 1 if you have the <memory.h> header file. */
 #cmakedefine OPENTURNS_HAVE_MEMORY_H
 
-/* Define to 1 if you have the <muparser.h> header file. */
-#cmakedefine OPENTURNS_HAVE_MUPARSER
-
 /* Define to 1 if you have the <exprtk.hpp> header file. */
 #cmakedefine OPENTURNS_HAVE_EXPRTK
 
-#if defined(OPENTURNS_HAVE_MUPARSER) || defined(OPENTURNS_HAVE_EXPRTK)
+#if defined(OPENTURNS_HAVE_EXPRTK)
 # define OPENTURNS_HAVE_ANALYTICAL_PARSER 1
 #endif
 
@@ -143,7 +140,7 @@
 /* The path to the R executable */
 #define R_EXECUTABLE "@R_EXECUTABLE@"
 
-/* Default symbolic parser backend (MuParser if found, ExprTk otherwise) */
+/* Default symbolic parser backend (ExprTk) */
 #define SYMBOLICPARSER_DEFAULT_BACKEND "@SYMBOLICPARSER_DEFAULT_BACKEND@"
 
 /* Define to 1 if you have the ANSI C header files. */

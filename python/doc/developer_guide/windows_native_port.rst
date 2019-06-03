@@ -38,8 +38,6 @@ into OpenTURNS:
 
 -  `LibXML2 <http://www.xmlsoft.org/>`_
 
--  `muParser <http://muparser.beltoforion.de/>`_
-
 -  `TBB <https://www.threadingbuildingblocks.org/>`_
 
 Precompiled binaries for all these programs are available on

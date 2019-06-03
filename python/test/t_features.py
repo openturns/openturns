@@ -43,15 +43,6 @@ try:
     except:
         print('no')
 
-    # check that math parser is available
-    print('6: analytical function (muParser)'.ljust(width), end=' ')
-    try:
-        ot.ResourceMap.Set("SymbolicParser-Backend", "MuParser")
-        f = ot.SymbolicFunction(['x1', 'x2'], ['x1+x2'])
-        print('OK')
-    except:
-        print('no')
-
     # check that hmat library was found
     print('7: HMatrix (hmat-oss)'.ljust(width), end=' ')
     if ot.HMatrixFactory.IsAvailable():

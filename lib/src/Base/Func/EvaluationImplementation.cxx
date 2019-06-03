@@ -262,7 +262,7 @@ Evaluation EvaluationImplementation::getMarginal(const Indices & indices) const
   // We build an analytical function that extract the needed component
   // If X1,...,XN are the descriptions of the input of this function, it is a function from R^n to R^p
   // with formula Yk = Xindices[k] for k=1,...,p
-  // Build non-ambigous names for the inputs. We cannot simply use the output description, as it must be valid muParser identifiers
+  // Build non-ambigous names for the inputs. We cannot simply use the output description, as it must be valid identifiers for the parser
   const UnsignedInteger inputDimension = getOutputDimension();
   const UnsignedInteger outputDimension = indices.getSize();
 #ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER

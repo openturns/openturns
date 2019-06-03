@@ -23,9 +23,6 @@
 #ifdef OPENTURNS_HAVE_EXPRTK
 #include "openturns/SymbolicParserExprTk.hxx"
 #endif
-#ifdef OPENTURNS_HAVE_MUPARSER
-#include "openturns/SymbolicParserMuParser.hxx"
-#endif
 #include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -45,13 +42,6 @@ SymbolicParser::SymbolicParser()
     return;
   }
 #endif
-#ifdef OPENTURNS_HAVE_MUPARSER
-  if (name == "MuParser")
-  {
-    p_implementation_ = new SymbolicParserMuParser();
-    return;
-  }
-#endif
   throw InvalidArgumentException(HERE) << "Error: invalid value for symbolic parser: " << name;
 }
 
@@ -66,10 +56,6 @@ SymbolicParser::SymbolicParser(const Description & outputVariablesNames)
     p_implementation_ = new SymbolicParserExprTk(outputVariablesNames);
     return;
   }
-#endif
-#ifdef OPENTURNS_HAVE_MUPARSER
-  if (name == "MuParser")
-    throw NotYetImplementedException(HERE) << "MuParser does not support explicit output variables, use ExprTk instead.";
 #endif
   throw InvalidArgumentException(HERE) << "Error: invalid value for symbolic parser: " << name;
 }

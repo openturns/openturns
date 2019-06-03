@@ -108,7 +108,7 @@ private:
   Description outputVariablesNames_;
   Description formulas_;
 
-  /** A mathematical expression parser from the muParser library */
+  /** A mathematical expression parser */
   mutable SymbolicParser parser_;
 
 }; /* class SymbolicEvaluation */
