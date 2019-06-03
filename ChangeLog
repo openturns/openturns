@@ -9,6 +9,7 @@
 
 ==== New classes ====
  * Dlib
+ * SquaredNormal
 
 ==== API changes ====
  * Removed deprecated specific RandomVector constructors
