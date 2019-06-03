@@ -67,11 +67,12 @@ Point * Point::clone() const
 
 void Point::setDescription(const Description & )
 {
-  // Nothing to do
+  LOGWARN("Point::setDescription is deprecated");
 }
 
 Description Point::getDescription() const
 {
+  LOGWARN("Point::getDescription is deprecated");
   return Description( getDimension() );
 }
 
