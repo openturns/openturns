@@ -19,6 +19,7 @@ This is the examples section.
         meta_modeling/meta_modeling.rst
         reliability_sensitivity/reliability_sensitivity.rst
         functional_modeling/functional_modeling.rst
+        calibration/calibration.rst
         numerical_methods/numerical_methods.rst
 
     Advanced examples
