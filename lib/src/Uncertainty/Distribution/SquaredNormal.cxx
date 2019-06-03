@@ -60,14 +60,14 @@ String SquaredNormal::__repr__() const
 {
   OSS oss;
   oss << "class=" << SquaredNormal::GetClassName()
-      << " squarenormal=" << this->normal_;
+      << " squarenormal=" << normal_;
   return oss;
 }
 
 String SquaredNormal::__str__(const String & offset) const
 {
   OSS oss;
-  oss << getClassName() << " squared of " << this->normal_; 
+  oss << getClassName() << " squared of " << normal_; 
   return oss;
 }
 
@@ -138,5 +138,41 @@ void SquaredNormal::computeRange()
 		       Interval::BoolCollection(1, true), Interval::BoolCollection(1, false)));
 }
 
+/* Parameters value accessor */
+Point SquaredNormal::getParameter() const
+{
+  return normal_.getParameter();
+}
 
+void SquaredNormal::setParameter(const Point & parameter)
+{
+  normal_.setParameter(parameter);
+  Point params = normal_.getParameter();
+  mu_ = params[0];
+  sigma_ = params[1];
+}
+
+/* Parameters value and description accessor */
+Description SquaredNormal::getParameterDescription() const
+{
+  return normal_.getParameterDescription();
+}
+
+/* Method save() stores the object through the StorageManager */
+void SquaredNormal::save(Advocate & adv) const
+{
+  ContinuousDistribution::save(adv);
+  adv.saveAttribute( "mu_", mu_ );
+  adv.saveAttribute( "sigma_", sigma_ );
+}
+
+/* Method load() reloads the object from the StorageManager */
+void SquaredNormal::load(Advocate & adv)
+{
+  ContinuousDistribution::load(adv);
+  adv.loadAttribute( "mu_", mu_ );
+  adv.loadAttribute( "sigma_", sigma_ );
+  normal_ = Normal(mu_, sigma_);
+  computeRange();
+}
 END_NAMESPACE_OPENTURNS

@@ -44,7 +44,13 @@ int main(int, char *[])
     std::cout << "mean = " << sqn.getMean() << std::endl;
     std::cout << "covariance = " << sqn.getCovariance() << std::endl;
     std::cout << "characteristic function = " << sqn.computeCharacteristicFunction(1.0) << std::endl;
-    
+    std::cout << "parameters collection = " << sqn.getParametersCollection() << std::endl;
+
+    Point p(2, 0);
+    p[0] = 1.0; // new mu
+    p[1] = 2.0; // new sigma
+    sqn.setParameter(p);
+    std::cout << "new parameters collection = " << sqn.getParametersCollection() << std::endl;
     //sqn.drawPDF().draw("sqn.png");
   }
   catch (TestFailed & ex)

@@ -22,6 +22,8 @@ try:
     print("mean = ", mean)
     covariance = sqn.getCovariance()
     print("covariance = ", covariance)
+    params = sqn.getParametersCollection()
+    print("parameters collection = ", repr(params))
     
 except:
     import sys
