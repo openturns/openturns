@@ -93,14 +93,11 @@ and adding their weights.
 
 Notes
 -----
-The :math:`\varepsilon` has a default value stored in the ResourceMap: to
-change the default value the new value :math:`1.3e-3`, use the command:
-
->>> import openturns as ot
->>> ot.ResourceMap.SetAsScalar('DiscreteDistribution-SupportEpsilon', 1e-3)
+The :math:`\varepsilon` has a default value associated to the
+:class:`~openturns.ResourceMap` key *DiscreteDistribution-SupportEpsilon*.
 
 The method is always used for any univariate distributions and for upper
 dimensions, it is only used when the number of points defining the support is
-less than a limit specified in the ResourceMap in the key
-'UserDefined-SmallSize'. By default, the size limit is equal to :math:`1e4`.
+less than a limit specified by the :class:`~openturns.ResourceMap` key
+*UserDefined-SmallSize*. By default, the size limit is equal to :math:`1e4`.
 "

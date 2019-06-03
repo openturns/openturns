@@ -81,6 +81,7 @@
  * #1119 (The parameter description is not taken into account in CalibrationResult)
  * #1129 (Segmentation fault with RandomMixture)
  * #1139 (CopulaImplementation should derive from DistributionImplementation)
+ * #1143 (The ResourceMap is not correctly formatted in help pages)
  * #1148 (Fails to find cminpack)
  * #1155 (The description of Points can be set, but get is empty)
 
