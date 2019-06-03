@@ -382,7 +382,8 @@ void OPTppImplementation::InitializeAlgorithmNames()
   if (!AlgorithmNames_.isEmpty()) return;
   AlgorithmNames_.add("OptBaNewton");
   AlgorithmNames_.add("OptBaQNewton");
-  AlgorithmNames_.add("OptBCEllipsoid");
+  // OptBCEllipsoid can exit(0)
+//   AlgorithmNames_.add("OptBCEllipsoid");
   AlgorithmNames_.add("OptBCFDNewton");
   AlgorithmNames_.add("OptBCNewton");
   AlgorithmNames_.add("OptBCQNewton");
