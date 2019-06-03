@@ -557,6 +557,26 @@ Sample DistributionImplementation::getSampleByQMC(const UnsignedInteger size) co
 /* Get the DDF of the distribution */
 Point DistributionImplementation::computeDDF(const Point & point) const
 {
+  if (isContinuous())
+    {
+      const UnsignedInteger dimension = getDimension();
+      Point ddf(dimension);
+      const Scalar h = std::pow(pdfEpsilon_, 1.0 / 3.0);
+      LOGINFO(OSS() << "h=" << h);
+      for (UnsignedInteger i = 0; i < dimension; ++i)
+	{
+	  Point left(point);
+	  left[i] += h;
+	  Point right(point);
+	  right[i] -= h;
+	  const Scalar denom = left[i] - right[i];
+	  const Scalar pdfLeft = computePDF(left);
+	  const Scalar pdfRight = computePDF(right);
+	  ddf[i] = (pdfLeft - pdfRight) / denom;
+	  LOGINFO(OSS() << "left=" << left << ", right=" << right << ", pdfLeft=" << pdfLeft << ", pdfRight=" << pdfRight);
+	}
+      return ddf;
+    }
   if (dimension_ == 1)
     {
       Point ddf(dimension_);

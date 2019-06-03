@@ -17,7 +17,6 @@ mean=class=Point name=Unnamed dimension=1 values=[-0.20325]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.416712]
 Point= class=Point name=Unnamed dimension=1 values=[1]
 ddf     =class=Point name=Unnamed dimension=1 values=[-0.180043]
-ddf (FD)=class=Point name=Unnamed dimension=1 values=[-0.180043]
 log pdf=-2.35664
 pdf     =0.094738
 pdf (FD)=0.094738

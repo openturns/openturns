@@ -12,7 +12,6 @@ covariance=class=CovarianceMatrix dimension=3 implementation=class=MatrixImpleme
 Point= class=Point name=Unnamed dimension=3 values=[1,1,1]
 ddf     =class=Point name=Unnamed dimension=3 values=[1.17543e-05,-0.000596732,0.00275582]
 ddf (ref)=class=Point name=Unnamed dimension=3 values=[1.17543e-05,-0.000596732,0.00275582]
-ddf (FD)=class=Point name=Unnamed dimension=3 values=[1.17543e-05,-0.000596732,0.00275582]
 log pdf=-5.2181
 pdf     =0.00541761
 pdf (ref)=0.00541761

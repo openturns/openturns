@@ -59,28 +59,6 @@ String ContinuousDistribution::__repr__() const
   return oss;
 }
 
-/* Get the DDF of the distribution */
-Point ContinuousDistribution::computeDDF(const Point & point) const
-{
-  const UnsignedInteger dimension = getDimension();
-  Point ddf(dimension);
-  const Scalar h = std::pow(pdfEpsilon_, 1.0 / 3.0);
-  LOGINFO(OSS() << "h=" << h);
-  for (UnsignedInteger i = 0; i < dimension; ++i)
-  {
-    Point left(point);
-    left[i] += h;
-    Point right(point);
-    right[i] -= h;
-    const Scalar denom = left[i] - right[i];
-    const Scalar pdfLeft = computePDF(left);
-    const Scalar pdfRight = computePDF(right);
-    ddf[i] = (pdfLeft - pdfRight) / denom;
-    LOGINFO(OSS() << "left=" << left << ", right=" << right << ", pdfLeft=" << pdfLeft << ", pdfRight=" << pdfRight);
-  }
-  return ddf;
-}
-
 /* Get the PDF of the distribution */
 Scalar ContinuousDistribution::computePDF(const Point & ) const
 {

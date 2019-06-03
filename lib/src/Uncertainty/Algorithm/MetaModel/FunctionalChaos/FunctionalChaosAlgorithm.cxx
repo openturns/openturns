@@ -330,13 +330,17 @@ void FunctionalChaosAlgorithm::run()
   inverseTransformation_ = transformation.inverse();
 
   // Build the composed model g = f o T^{-1}, which is a function of Z so it can be decomposed upon an orthonormal basis based on Z distribution
-  LOGINFO("Transform the input sample in the measure space if needed");
   const Bool noTransformation = (measure == distribution_);
   if (noTransformation) composedModel_ = model_;
   else composedModel_ = ComposedFunction(model_, inverseTransformation_);
   // If the input and output databases have already been given to the projection strategy, transport them to the measure space
   const Sample initialInputSample(projectionStrategy_.getInputSample());
-  if (databaseProjection && !noTransformation) projectionStrategy_.setInputSample(transformation_(initialInputSample));
+  if (databaseProjection && !noTransformation)
+    {
+      LOGINFO("Transform the input sample in the measure space");
+      const Sample transformedSample(transformation_(initialInputSample));
+      projectionStrategy_.setInputSample(transformedSample);
+    }
   // Second, compute the results for each marginal output and merge
   // these marginal results.
   // As all the components have been projected using the same basis,

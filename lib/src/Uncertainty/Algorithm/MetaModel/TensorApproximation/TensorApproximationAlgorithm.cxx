@@ -274,7 +274,7 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
       {
         for (UnsignedInteger j2 = 0; j2 < dimension; ++ j2)
         {
-          if (j2 != j) w[p] *= V[j2][p];
+          if (j2 != j) w[p] *= V(j2, p);
         }
       }
 
@@ -481,7 +481,7 @@ void TensorApproximationAlgorithm::rankMComponent (const Sample & x,
       Scalar wi = 1.0;
       for (UnsignedInteger j2 = 0; j2 < dimension; ++ j2)
       {
-        if (j2 != j) wi *= V[i][j2][p];
+        if (j2 != j) wi *= V[i](j2, p);
       }
       w[p] += wi;
     }

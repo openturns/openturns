@@ -196,6 +196,12 @@ void StandardDistributionPolynomialFactory::checkSpecificFamily()
     referenceFamily = KrawtchoukFactory(static_cast<UnsignedInteger>(parameter[0]), parameter[1]);
     hasClassMatch = true;
   }
+  if (measureType == "Bernoulli")
+  {
+    const Point parameter(measure_.getParameter());
+    referenceFamily = KrawtchoukFactory(1, parameter[0]);
+    hasClassMatch = true;
+  }
   // Meixner factory
   if (measureType == "NegativeBinomial")
   {

@@ -80,7 +80,6 @@ int main(int, char *[])
     Scalar pointCDF = copula.computeCDF( point );
     fullprint << "point= " << point
               << " ddf=" << pointDDF
-              << " ddf (FD)=" << copula.ContinuousDistribution::computeDDF(point)
               << " pdf=" << pointPDF
               << " cdf=" << pointCDF
               << std::endl;

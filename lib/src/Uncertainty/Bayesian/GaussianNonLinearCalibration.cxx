@@ -20,6 +20,7 @@
  */
 #include "openturns/GaussianNonLinearCalibration.hxx"
 #include "openturns/GaussianLinearCalibration.hxx"
+#include "openturns/NonLinearLeastSquaresCalibration.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Dirac.hxx"
 #include "openturns/Normal.hxx"
@@ -81,9 +82,10 @@ GaussianNonLinearCalibration::GaussianNonLinearCalibration(const Function & mode
     algorithm_ = OptimizationAlgorithm::Build(leastSquaresNames[0]);
   else
     algorithm_ = MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-MultiStartSize")).generate());
+  parameterPrior_.setDescription(model.getParameterDescription());
 }
 
-namespace ThreeDVARFunctions
+namespace GaussianNonLinearFunctions
 {
     class CalibrationModelEvaluation: public EvaluationImplementation
   {
@@ -363,7 +365,10 @@ void GaussianNonLinearCalibration::run()
       blueAlgo.run();
       parameterPosterior = blueAlgo.getResult().getParameterPosterior();
     }
-  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error);
+  parameterPosterior.setDescription(parameterPrior_.getDescription());
+  // Build the residual function this way to benefit from the automatic Hessian
+  const MemoizeFunction residualFunction(NonLinearLeastSquaresCalibration::BuildResidualFunction(model_, inputObservations_, outputObservations_));
+  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, outputObservations_, residualFunction);
 }
 
 /* Perform a unique estimation */
@@ -374,10 +379,8 @@ Point GaussianNonLinearCalibration::run(const Sample & inputObservations,
 		     const TriangularMatrix & errorInverseCholesky)
 {
   // Build the residual function this way to benefit from the automatic Hessian
-  const ThreeDVARFunctions::CalibrationModelEvaluation residualEvaluation(model_, inputObservations, outputObservations, candidate, parameterInverseCholesky, errorInverseCholesky);
-  
-  // Build the function in two steps, in order to benefit from the automatic Hessian
-  MemoizeFunction residualFunction(Function(residualEvaluation, ThreeDVARFunctions::CalibrationModelGradient(residualEvaluation), CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), residualEvaluation)));
+  const GaussianNonLinearFunctions::CalibrationModelEvaluation residualEvaluation(model_, inputObservations, outputObservations, candidate, parameterInverseCholesky, errorInverseCholesky);
+  MemoizeFunction residualFunction(Function(residualEvaluation, GaussianNonLinearFunctions::CalibrationModelGradient(residualEvaluation), CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), residualEvaluation)));
   LeastSquaresProblem problem(residualFunction);
   algorithm_.setVerbose(true);
   algorithm_.setProblem(problem);

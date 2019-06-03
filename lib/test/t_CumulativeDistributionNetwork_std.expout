@@ -20,7 +20,6 @@ covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImpleme
 Point= class=Point name=Unnamed dimension=2 values=[1,1]
 log pdf=-1.7971
 pdf     =0.16578
-pdf (FD)=0.16578
 cdf=0.50107
 ccdf=0.49893
 survival=0.085345

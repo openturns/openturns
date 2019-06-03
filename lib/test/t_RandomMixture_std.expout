@@ -56,8 +56,8 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[0.5]
-ddf      =class=Point name=Unnamed dimension=1 values=[-0.0195592]
-ddf (ref)=class=Point name=Unnamed dimension=1 values=[-0.0195592]
+ddf      =class=Point name=Unnamed dimension=1 values=[-0.019559]
+ddf (ref)=class=Point name=Unnamed dimension=1 values=[-0.019559]
 pdf      =0.117355
 pdf  (FD)=0.117355
 pdf (ref)=0.117355
@@ -101,8 +101,8 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 Kolmogorov test for the generator, sample size=100 is rejected
 Kolmogorov test for the generator, sample size=1000 is accepted
 Point= class=Point name=Unnamed dimension=1 values=[0.5]
-ddf      =class=Point name=Unnamed dimension=1 values=[0.227448]
-ddf (ref)=class=Point name=Unnamed dimension=1 values=[0.227449]
+ddf      =class=Point name=Unnamed dimension=1 values=[0.22745]
+ddf (ref)=class=Point name=Unnamed dimension=1 values=[0.22745]
 pdf      =0.0758163
 pdf  (FD)=0.0758163
 pdf (ref)=0.0758163
@@ -314,3 +314,4 @@ quantile=class=Point name=Unnamed dimension=1 values=[0.894427]
 sum=class=RandomMixture name=RandomMixture distribution collection=[class=TruncatedDistribution name=TruncatedDistribution distribution=class=LogNormal name=LogNormal dimension=1 muLog=0.346574 sigmaLog=0.652004 gamma=0 bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.2] upper bound=class=Point name=Unnamed dimension=1 values=[10] finite lower bound=[1] finite upper bound=[1] thresholdRealization=0.5,class=Uniform name=Uniform dimension=1 a=0 b=2] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=2 values=[1,1] constant=class=Point name=Unnamed dimension=1 values=[0]
 CDF=0.306712
 quantile=class=Point name=Unnamed dimension=1 values=[1.67422]
+CDF(0)=0.5

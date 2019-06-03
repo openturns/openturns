@@ -172,15 +172,16 @@ UnsignedInteger HyperbolicAnisotropicEnumerateFunction::inverse(const Indices & 
   const UnsignedInteger size = indices.getSize();
   if (size != dimension) throw InvalidArgumentException(HERE)  << "Error: the size of the given indices must match the dimension.";
   UnsignedInteger result = 0;
-  while ((cache_[result] != indices) && (result < cache_.getSize())) ++ result;
+  while ((result < cache_.getSize()) && (cache_[result] != indices)) ++result;
   if (result == cache_.getSize())
   {
     do
     {
-      operator()(result);
-      ++ result;
+      (void) operator()(result);
+      ++result;
     }
-    while (cache_[result] != indices);
+    while (cache_[result - 1] != indices);
+    return result - 1;
   }
   return result;
 }

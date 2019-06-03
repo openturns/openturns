@@ -72,6 +72,8 @@ Non linear solvers
     :template: class.rst_t
 
     Solver
+
+    :template: Solver.rst_t
     Bisection
     Brent
     Secant

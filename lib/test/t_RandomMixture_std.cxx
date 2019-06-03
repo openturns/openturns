@@ -94,9 +94,12 @@ int main(int, char *[])
 
       // Show PDF and CDF of point
       Scalar eps = 1e-5;
+      UnsignedInteger oldPrecision = PlatformInfo::GetNumericalPrecision();
+      PlatformInfo::SetNumericalPrecision(5);
       Point DDF = distribution.computeDDF(point);
       fullprint << "ddf      =" << DDF << std::endl;
       fullprint << "ddf (ref)=" << distributionReference.computeDDF(point) << std::endl;
+      PlatformInfo::SetNumericalPrecision(oldPrecision);
       Scalar PDF = distribution.computePDF(point);
       fullprint << "pdf      =" << PDF << std::endl;
       fullprint << "pdf  (FD)=" << (distribution.computeCDF( point + Point(1, eps) ) - distribution.computeCDF( point  + Point(1, -eps) )) / (2.0 * eps) << std::endl;
@@ -377,6 +380,11 @@ int main(int, char *[])
       fullprint << "sum=" << sum << std::endl;
       fullprint << "CDF=" << sum.computeCDF(2.0) << std::endl;
       fullprint << "quantile=" << sum.computeQuantile(0.2) << std::endl;
+    }
+    // For ticket 1129
+    {
+      RandomMixture distribution(Collection<Distribution>(200, Uniform()));
+      fullprint << "CDF(0)=" << distribution.computeCDF(0.0) << std::endl;
     }
   }
   catch (TestFailed & ex)
