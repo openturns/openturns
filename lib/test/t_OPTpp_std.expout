@@ -31,38 +31,6 @@ algo=OptBaQNewton minimization=1 bounds=0 inequality=1 equality=1
 -- Not supported
 algo=OptBaQNewton minimization=1 bounds=1 inequality=1 equality=1
 -- Not supported
-algo=OptBCEllipsoid minimization=0 bounds=0 inequality=0 equality=0
--- Not supported
-algo=OptBCEllipsoid minimization=0 bounds=1 inequality=0 equality=0
-x^=class=Point name=Unnamed dimension=2 values=[-0.00336,1.5]
-algo=OptBCEllipsoid minimization=0 bounds=0 inequality=0 equality=1
--- Not supported
-algo=OptBCEllipsoid minimization=0 bounds=1 inequality=0 equality=1
--- Not supported
-algo=OptBCEllipsoid minimization=0 bounds=0 inequality=1 equality=0
--- Not supported
-algo=OptBCEllipsoid minimization=0 bounds=1 inequality=1 equality=0
--- Not supported
-algo=OptBCEllipsoid minimization=0 bounds=0 inequality=1 equality=1
--- Not supported
-algo=OptBCEllipsoid minimization=0 bounds=1 inequality=1 equality=1
--- Not supported
-algo=OptBCEllipsoid minimization=1 bounds=0 inequality=0 equality=0
--- Not supported
-algo=OptBCEllipsoid minimization=1 bounds=1 inequality=0 equality=0
-x^=class=Point name=Unnamed dimension=2 values=[0.999,0.998]
-algo=OptBCEllipsoid minimization=1 bounds=0 inequality=0 equality=1
--- Not supported
-algo=OptBCEllipsoid minimization=1 bounds=1 inequality=0 equality=1
--- Not supported
-algo=OptBCEllipsoid minimization=1 bounds=0 inequality=1 equality=0
--- Not supported
-algo=OptBCEllipsoid minimization=1 bounds=1 inequality=1 equality=0
--- Not supported
-algo=OptBCEllipsoid minimization=1 bounds=0 inequality=1 equality=1
--- Not supported
-algo=OptBCEllipsoid minimization=1 bounds=1 inequality=1 equality=1
--- Not supported
 algo=OptBCFDNewton minimization=0 bounds=0 inequality=0 equality=0
 x^=class=Point name=Unnamed dimension=2 values=[-348,34.8]
 algo=OptBCFDNewton minimization=0 bounds=1 inequality=0 equality=0

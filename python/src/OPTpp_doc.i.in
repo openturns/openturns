@@ -25,8 +25,8 @@ Examples
 >>> problem = ot.OptimizationProblem(linear)
 >>> problem.setBounds(ot.Interval([-3.0] * dim, [5.0] * dim))
 >>> # print(ot.OPTpp.GetAlgorithmNames())
->>> # [OptBaNewton,OptBaQNewton,OptBCEllipsoid,...
->>> # algo = ot.OPTpp(problem, 'OptBCEllipsoid')
+>>> # [OptBaNewton,OptBaQNewton,...
+>>> # algo = ot.OPTpp(problem, 'OptDHNIPS')
 >>> # algo.setStartingPoint([0.0] * 4)
 >>> # algo.run()
 >>> # result = algo.getResult()
@@ -62,8 +62,6 @@ Here are some properties of the different algorithms:
 +-------------------+-------------------+--------------------+
 | OptBCFDNewton     | first derivative  | none               |
 +-------------------+-------------------+--------------------+
-| OptBCEllipsoid    | first derivative  | bounds required    |
-+-------------------+-------------------+--------------------+
 | OptFDNIPS         | first derivative  | all                |
 +-------------------+-------------------+--------------------+
 | OptQNIPS          | first derivative  | all                |
@@ -81,6 +79,8 @@ Here are some properties of the different algorithms:
 | OptDHNIPS         | second derivative | bounds             |
 +-------------------+-------------------+--------------------+"
 
+
+// | OptBCEllipsoid    | first derivative  | bounds required    |
 
 // ---------------------------------------------------------------------
 
