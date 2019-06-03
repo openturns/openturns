@@ -1,3 +1,12 @@
+openturns (1.13-1) experimental; urgency=low
+
+  [ Julien Schueller ]
+
+  * New upstream release.
+  * debian/control: update description 
+
+ -- Denis Barbier <barbier@debian.org>  Thu, 06 Jun 2019 10:14:47 +0200
+
 openturns (1.13~rc1-1) experimental; urgency=low
 
   [ Julien Schueller ]
@@ -8,7 +17,7 @@ openturns (1.13~rc1-1) experimental; urgency=low
   * debian/control: remove unneeded libopenturns-dev dependencies
   * debian/control: require libcminpack-dev
 
- -- Denis Barbier <barbier@debian.org>  Tue, 23 Apr 2018 18:14:47 +0200
+ -- Denis Barbier <barbier@debian.org>  Tue, 23 Apr 2019 18:14:47 +0200
 
 openturns (1.12-1) experimental; urgency=low
 
