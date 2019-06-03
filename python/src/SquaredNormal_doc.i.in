@@ -50,3 +50,42 @@ Draw a sample:
 
 >>> sample = myDist.getSample(5)"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquaredNormal::getMu
+"Accessor to the normal distribution's mean which is squared.
+
+Returns
+-------
+mu : float
+    Mean."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquaredNormal::getSigma
+"Accessor to the normal distribution's standard deviation which is squared.
+
+Returns
+-------
+sigma : float
+    Standard deviation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquaredNormal::setMu
+"Accessor to the normal distribution's mean which is squared.
+
+Parameters
+----------
+mu : float
+    Mean."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquaredNormal::setSigma
+"Accessor to the normal distribution's standard deviation which is squared.
+
+Parameters
+----------
+sigma : float, :math:`\sigma > 0`
+    Standard deviation."

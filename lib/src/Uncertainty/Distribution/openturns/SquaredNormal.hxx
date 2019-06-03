@@ -47,6 +47,10 @@ public:
 
   /** Comparison operator */
   Bool operator ==(const SquaredNormal & other) const;
+protected:
+  Bool equals(const DistributionImplementation & other) const;
+
+public:
 
   /** String converter */
   String __repr__() const;
@@ -79,6 +83,16 @@ public:
   /** Parameters description accessor */
   virtual Description getParameterDescription() const;
 
+  /* Interface specific to Arcsine */
+
+  /** Mu accessor */
+  void setMu(const Scalar mu);
+  Scalar getMu() const;
+
+  /** Sigma accessor */
+  void setSigma(const Scalar sigma);
+  Scalar getSigma() const; 
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
@@ -100,7 +114,6 @@ private:
   
   Scalar mu_;
   Scalar sigma_;
-  Normal normal_;
   
 }; /* class SquaredNormal */
 

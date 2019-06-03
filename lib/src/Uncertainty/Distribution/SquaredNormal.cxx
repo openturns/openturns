@@ -40,7 +40,7 @@ SquaredNormal::SquaredNormal()
 
 /* Constructor */
 SquaredNormal::SquaredNormal(Scalar mu, Scalar sigma)
-  : ContinuousDistribution(), mu_(mu), sigma_(sigma), normal_(mu, sigma)
+  : ContinuousDistribution(), mu_(mu), sigma_(sigma)
 {
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "The standard deviation must be > 0 sigma=" << sigma;
   setName("SquaredNormal");
@@ -52,7 +52,13 @@ SquaredNormal::SquaredNormal(Scalar mu, Scalar sigma)
 Bool SquaredNormal::operator ==(const SquaredNormal & other) const
 {
   if (this == &other) return true;
-  return normal_ == other.normal_;
+  return mu_ == other.mu_ && sigma_ == other.sigma_;
+}
+
+Bool SquaredNormal::equals(const DistributionImplementation & other) const
+{
+  const SquaredNormal* p_other = dynamic_cast<const SquaredNormal*>(&other);
+  return p_other && (*this == *p_other);
 }
 
 /* String converter */
@@ -60,14 +66,17 @@ String SquaredNormal::__repr__() const
 {
   OSS oss;
   oss << "class=" << SquaredNormal::GetClassName()
-      << " squarenormal=" << normal_;
+      << " name=" << getName()
+      << " mu=" << mu_
+      << " sigma=" << sigma_;
   return oss;
 }
 
 String SquaredNormal::__str__(const String & offset) const
 {
-  OSS oss;
-  oss << getClassName() << " squared of " << normal_; 
+    OSS oss;
+  oss << getClassName();
+  oss << "(mu = " << getMu() << ", sigma = " << getSigma() << ")";
   return oss;
 }
 
@@ -79,7 +88,7 @@ SquaredNormal * SquaredNormal::clone() const
 
 Point SquaredNormal::getRealization() const
 {
-  return Point(std::pow(mu_ + sigma_ * DistFunc::rNormal(), 2.0));
+  return Point(1, std::pow(mu_ + sigma_ * DistFunc::rNormal(), 2.0));
 }
 
 Sample SquaredNormal::getSample(const UnsignedInteger size) const
@@ -141,21 +150,62 @@ void SquaredNormal::computeRange()
 /* Parameters value accessor */
 Point SquaredNormal::getParameter() const
 {
-  return normal_.getParameter();
+  Point point(2);
+  point[0] = mu_;
+  point[1] = sigma_;
+  return point;
 }
 
 void SquaredNormal::setParameter(const Point & parameter)
 {
-  normal_.setParameter(parameter);
-  Point params = normal_.getParameter();
-  mu_ = params[0];
-  sigma_ = params[1];
+  if (parameter.getSize() != 2) throw InvalidArgumentException(HERE) << "Error: expected 2 values, got " << parameter.getSize();
+  const Scalar w = getWeight();
+  *this = SquaredNormal(parameter[0], parameter[1]);
+  setWeight(w);
 }
 
-/* Parameters value and description accessor */
+/** Parameters description accessor */
 Description SquaredNormal::getParameterDescription() const
 {
-  return normal_.getParameterDescription();
+  Description description(2);
+  description[0] = "mu";
+  description[1] = "sigma";
+  return description;
+}
+
+/* Mu accessor */
+void SquaredNormal::setMu(const Scalar mu)
+{
+  if (mu != mu_)
+  {
+    mu_ = mu;
+    isAlreadyComputedMean_ = false;
+    isAlreadyComputedCovariance_ = false;
+    computeRange();
+  }
+}
+
+Scalar SquaredNormal::getMu() const
+{
+  return mu_;
+}
+
+/* Sigma accessor */
+void SquaredNormal::setSigma(const Scalar sigma)
+{
+  if (0 >= sigma) throw InvalidArgumentException(HERE) << "in SquaredNormal : sigma must be stricly positive";
+  if (sigma != sigma_)
+  {
+    sigma_ = sigma;
+    isAlreadyComputedMean_ = false;
+    isAlreadyComputedCovariance_ = false;
+    computeRange();
+  }
+}
+
+Scalar SquaredNormal::getSigma() const
+{
+  return sigma_;
 }
 
 /* Method save() stores the object through the StorageManager */
@@ -172,7 +222,6 @@ void SquaredNormal::load(Advocate & adv)
   ContinuousDistribution::load(adv);
   adv.loadAttribute( "mu_", mu_ );
   adv.loadAttribute( "sigma_", sigma_ );
-  normal_ = Normal(mu_, sigma_);
   computeRange();
 }
 END_NAMESPACE_OPENTURNS
