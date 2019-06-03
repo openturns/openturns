@@ -65,16 +65,6 @@ Point * Point::clone() const
   return new Point(*this);
 }
 
-void Point::setDescription(const Description & )
-{
-  LOGWARN("Point::setDescription is deprecated");
-}
-
-Description Point::getDescription() const
-{
-  LOGWARN("Point::getDescription is deprecated");
-  return Description( getDimension() );
-}
 
 /* Set small elements to zero */
 Point Point::clean(const Scalar threshold) const

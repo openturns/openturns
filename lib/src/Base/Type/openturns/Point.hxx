@@ -58,10 +58,6 @@ public:
   /** Virtual constructor */
   virtual Point * clone() const;
 
-  /** Description Accessor */
-  virtual void setDescription(const Description & description);
-  virtual Description getDescription() const;
-
   /** String converter */
   String __repr__() const;
   String __str__(const String & offset = "") const;
