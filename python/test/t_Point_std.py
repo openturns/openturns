@@ -143,6 +143,10 @@ try:
         1 + pt1
     except:
         print('ok')
+
+    # unary minus
+    x = Point([1, 2, 3])
+    print(-x)
 except:
     import traceback
     traceback.print_exc()

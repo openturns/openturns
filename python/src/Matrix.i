@@ -340,5 +340,7 @@ namespace OT {
   Matrix __truediv__(const Scalar s) { return (*self) / s; }
 #endif
 
+  Matrix __neg__() { return -1.0 * (*self); }
+
 } // Matrix
 } // OT

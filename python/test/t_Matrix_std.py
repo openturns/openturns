@@ -189,6 +189,9 @@ try:
     sampleResult1 = matrix32 * s
     print("matrix32*s = ", repr(sampleResult1))
 
+    # unary minus
+    A = Matrix([[1, 2],[3, 4]])
+    print(-A)
 except:
     import sys
     print("t_Matrix_std.py", sys.exc_info()[0], sys.exc_info()[1])
