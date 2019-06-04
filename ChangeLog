@@ -103,6 +103,7 @@
  * #1071 (Event cannot be created from a RandomVector)
  * #1078 (KrigingAlgorithm documentation still references "inputTransformation")
  * #1080 (Brent, Secant, Bissection documentation)
+ * #1085 (GPD documentation)
  * #1090 (PythonFunction can make OT crash)
  * #1092 (The parameterGradient of a ParametricFunction can loss accuracy)
  * #1099 (PythonDistribution does not work with ConditionalDistribution)
