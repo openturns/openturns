@@ -40,6 +40,7 @@ People
 - Michael Baudin
 - Pierre Caclin
 - Regis Lebrun
+- Remi Lafage
 - Romuald Conty
 - Sofiane Haddad
 - Vincent Dubourg

@@ -1,0 +1,91 @@
+%feature("docstring") OT::SquaredNormal
+"Squared Normal distribution.
+
+Available constructors:
+    SquaredNormal(*mu=0.0, sigma=1.0*)
+
+Parameters
+----------
+mu : float :math:`\mu`, optional
+    Mean.
+
+    Default is :math:`\mu = 0.0`.
+
+sigma : float :math:`\sigma`, optional
+    Standard deviation.
+
+    Default is :math:`\sigma = 1.0`.
+
+Notes
+-----
+Its probability density function is defined as:
+
+.. math::
+
+    f_{X}(x) = \frac{1}{2\sqrt{2\pi x}}(e^{-\frac{1}{2}(\frac{\sqrt{x}+\mu}{\sigma})^2} 
+                + e^{-\frac{1}{2}(\frac{\sqrt{x}-\mu}{\sigma})^2}),
+                \quad x \in ]0; +\infty[
+
+with :math:`\sigma > 0`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \mu^2 + \sigma^2 \\
+        \Var{X} & = & 2(2\mu^2 + \sigma^2)\sigma^2
+    \end{eqnarray*}
+
+
+Examples
+--------
+Create a distribution from its native parameters :math:`(mu, sigma)`:
+
+>>> import openturns as ot
+>>> myDist = ot.SquaredNormal(1.0, 2.0)
+
+Draw a sample:
+
+>>> sample = myDist.getSample(5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquaredNormal::getMu
+"Accessor to the normal distribution's mean which is squared.
+
+Returns
+-------
+mu : float
+    Mean."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquaredNormal::getSigma
+"Accessor to the normal distribution's standard deviation which is squared.
+
+Returns
+-------
+sigma : float
+    Standard deviation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquaredNormal::setMu
+"Accessor to the normal distribution's mean which is squared.
+
+Parameters
+----------
+mu : float
+    Mean."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SquaredNormal::setSigma
+"Accessor to the normal distribution's standard deviation which is squared.
+
+Parameters
+----------
+sigma : float, :math:`\sigma > 0`
+    Standard deviation."

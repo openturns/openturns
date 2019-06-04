@@ -1,0 +1,52 @@
+Distribution  class=SquaredNormal name=SquaredNormal mu=5.2 sigma=11.6
+Distribution  SquaredNormal(mu = 5.2, sigma = 11.6)
+Mean=  class=Point name=Unnamed dimension=1 values=[161.6]
+Covariance=  class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[50766.8]
+Elliptical =  False
+oneRealization= class=Point name=Unnamed dimension=1 values=[150.188]
+oneSample first= class=Point name=Unnamed dimension=1 values=[90.0147]  last= class=Point name=Unnamed dimension=1 values=[523.635]
+mean= class=Point name=Unnamed dimension=1 values=[160.083]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[50061.1]
+Kolmogorov test for the generator, sample size= 100  is accepted
+Kolmogorov test for the generator, sample size= 1000  is accepted
+Point=  class=Point name=Unnamed dimension=1 values=[9.1]
+ddf     = class=Point name=Unnamed dimension=1 values=[-0.000581252]
+ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.000581252]
+log pdf=-4.601591
+pdf     =0.010036
+pdf (FD)=0.010036
+cdf=0.185981
+ccdf=0.814019
+pdf gradient     = class=Point name=Unnamed dimension=2 values=[-0.00036172,-0.000656205]
+pdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.00036172,-0.000656205]
+cdf gradient     = class=Point name=Unnamed dimension=2 values=[-0.00702671,-0.012596]
+cdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.00702671,-0.012596]
+quantile= class=Point name=Unnamed dimension=1 values=[617.139]
+cdf(quantile)=0.950000
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.64685]
+Survival(inverseSurvival)=0.950000
+entropy=5.870512
+Minimum volume interval= [0, 617.139]
+threshold= [0.95]
+Minimum volume level set= {x | f(x) <= 8.57247} with f=
+MinimumVolumeLevelSetEvaluation(SquaredNormal(mu = 5.2, sigma = 11.6))
+beta= [0.000189245]
+Bilateral confidence interval= [0.161557, 802.599]
+beta= [0.95]
+Unilateral confidence interval (lower tail)= [0, 617.139]
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [0.64685, 10774.4]
+beta= [0.95]
+mean= class=Point name=Unnamed dimension=1 values=[161.6]
+standard deviation= class=Point name=Unnamed dimension=1 values=[225.315]
+skewness= class=Point name=Unnamed dimension=1 values=[2.73125]
+kurtosis= class=Point name=Unnamed dimension=1 values=[14.0137]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[50766.8]
+parameters= [class=PointWithDescription name=X0 dimension=2 description=[mu,sigma] values=[5.2,11.6]]
+standard moment n= 0  value= [1]
+standard moment n= 1  value= [161.6]
+standard moment n= 2  value= [76881.4]
+standard moment n= 3  value= [6.00734e+07]
+standard moment n= 4  value= [6.49482e+10]
+standard moment n= 5  value= [8.94146e+13]
+Standard representative= SquaredNormal(mu = 5.2, sigma = 11.6)
