@@ -27,7 +27,7 @@ find_path (CMINPACK_INCLUDE_DIR cminpack.h
 )
 
 find_library (CMINPACK_LIBRARY
-  NAMES cminpack
+  NAMES cminpack cminpack_s
 )
 
 set (CMINPACK_LIBRARIES ${CMINPACK_LIBRARY})

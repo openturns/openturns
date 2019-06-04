@@ -1,4 +1,4 @@
-[OptBaNewton,OptBaQNewton,OptBCEllipsoid,OptBCFDNewton,OptBCNewton,OptBCQNewton,OptCG,OptConstrFDNewton,OptConstrNewton,OptConstrQNewton,OptDHNIPS,OptFDNewton,OptFDNIPS,OptGSS,OptLBFGS,OptNewton,OptNIPS,OptPDS,OptQNewton,OptQNIPS]#20
+[OptBaNewton,OptBaQNewton,OptBCFDNewton,OptBCNewton,OptBCQNewton,OptCG,OptConstrFDNewton,OptConstrNewton,OptConstrQNewton,OptDHNIPS,OptFDNewton,OptFDNIPS,OptGSS,OptLBFGS,OptNewton,OptNIPS,OptPDS,OptQNewton,OptQNIPS]#19
 algo= OptBaQNewton minimization= False bounds= False inequality= False equality= False
 -- Not supported
 algo= OptBaQNewton minimization= False bounds= True inequality= False equality= False
@@ -30,38 +30,6 @@ algo= OptBaQNewton minimization= True bounds= True inequality= True equality= Fa
 algo= OptBaQNewton minimization= True bounds= False inequality= True equality= True
 -- Not supported
 algo= OptBaQNewton minimization= True bounds= True inequality= True equality= True
--- Not supported
-algo= OptBCEllipsoid minimization= False bounds= False inequality= False equality= False
--- Not supported
-algo= OptBCEllipsoid minimization= False bounds= True inequality= False equality= False
-x^= [-0.00336,1.5] y^= [227]
-algo= OptBCEllipsoid minimization= False bounds= False inequality= False equality= True
--- Not supported
-algo= OptBCEllipsoid minimization= False bounds= True inequality= False equality= True
--- Not supported
-algo= OptBCEllipsoid minimization= False bounds= False inequality= True equality= False
--- Not supported
-algo= OptBCEllipsoid minimization= False bounds= True inequality= True equality= False
--- Not supported
-algo= OptBCEllipsoid minimization= False bounds= False inequality= True equality= True
--- Not supported
-algo= OptBCEllipsoid minimization= False bounds= True inequality= True equality= True
--- Not supported
-algo= OptBCEllipsoid minimization= True bounds= False inequality= False equality= False
--- Not supported
-algo= OptBCEllipsoid minimization= True bounds= True inequality= False equality= False
-x^= [0.999,0.998] y^= [1]
-algo= OptBCEllipsoid minimization= True bounds= False inequality= False equality= True
--- Not supported
-algo= OptBCEllipsoid minimization= True bounds= True inequality= False equality= True
--- Not supported
-algo= OptBCEllipsoid minimization= True bounds= False inequality= True equality= False
--- Not supported
-algo= OptBCEllipsoid minimization= True bounds= True inequality= True equality= False
--- Not supported
-algo= OptBCEllipsoid minimization= True bounds= False inequality= True equality= True
--- Not supported
-algo= OptBCEllipsoid minimization= True bounds= True inequality= True equality= True
 -- Not supported
 algo= OptBCFDNewton minimization= False bounds= False inequality= False equality= False
 x^= [-348,34.8] y^= [1.46e+12]

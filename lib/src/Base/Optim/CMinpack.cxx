@@ -199,6 +199,9 @@ void CMinpack::run()
   const int m = getProblem().getResidualFunction().getOutputDimension();
   const int n = getProblem().getResidualFunction().getInputDimension();
 
+  if (n > m)
+    throw InvalidArgumentException(HERE) << "CMinpack does not support input dimension > residual number.";
+
   int info = 0;
   double optimalValue = 0.0;
 
@@ -362,7 +365,7 @@ void CMinpack::run()
       // user stop
       break;
     case 0:
-      throw InvalidArgumentException(HERE) << "Improper input parameters";
+      throw InvalidArgumentException(HERE) << "CMinpack: Improper input parameters";
     case 1:
       LOGINFO("ftol termination condition is satisfied.");
       break;

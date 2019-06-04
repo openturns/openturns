@@ -71,7 +71,11 @@ residualFunction = ot.PythonFunction(n, m, residualFunction_py)
 bounds = ot.Interval([0, 0, 0], [2.5, 8.0, 19])
 
 for algoName in algoNames:
+    line_search = not (algoName in ['LEVENBERG_MARQUARDT', 'DOGLEG'])
     for bound in [True, False]:
+        if bound and line_search:
+            # line search do not support bound constraints
+            continue
         print('algoName=', algoName, 'bound=', bound)
         problem = ot.LeastSquaresProblem(residualFunction)
         if bound:
@@ -88,6 +92,6 @@ for algoName in algoNames:
         if bound:
             assert bounds.contains(x_star), "optimal point not in bounds"
         else:
-            if algoName in ['LEVENBERG_MARQUARDT', 'DOGLEG']:
+            if not line_search:
                 # line search algorithms converge less well
                 ott.assert_almost_equal(x_star, p_ref, 0.1)
