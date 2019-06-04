@@ -11,7 +11,7 @@ Distribution class=SquaredNormal name=SquaredNormal mu=5.2 sigma=11.6
 Distribution SquaredNormal(mu = 5.2, sigma = 11.6)
 Elliptical = false
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=150 values=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+oneRealization=class=Point name=Unnamed dimension=1 values=[150.188]
 oneSample first=class=Point name=Unnamed dimension=1 values=[90.0147] last=class=Point name=Unnamed dimension=1 values=[523.635]
 mean=class=Point name=Unnamed dimension=1 values=[160.083]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[50061.1]
