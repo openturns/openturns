@@ -8,12 +8,12 @@ Calibration
     :toctree: _generated/
     :template: class.rst_t
 
-    GaussianLinearCalibration
     LinearLeastSquaresCalibration
     NonLinearLeastSquaresCalibration
+    GaussianLinearCalibration
+    GaussianNonLinearCalibration
     MCMC
     RandomWalkMetropolisHastings
-    GaussianNonLinearCalibration
     CalibrationAlgorithm
     CalibrationResult
     CalibrationStrategy
