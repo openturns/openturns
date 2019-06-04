@@ -96,7 +96,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> print(ot.OPTpp.GetAlgorithmNames())
-[OptBaNewton,OptBaQNewton,OptBCEllipsoid,..."
+[OptBaNewton,OptBaQNewton,..."
 
 // ---------------------------------------------------------------------
 
