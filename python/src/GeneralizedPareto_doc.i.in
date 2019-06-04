@@ -22,10 +22,11 @@ Its cumulative distribution function is defined as:
                     & \text{ if } \xi \neq 0 \\
                \displaystyle 1 - \exp\left(-\frac{x}{\sigma}\right)
                     & \text{ if } \xi = 0
-            \end{array}\right.,
-            \quad x \in [0; +\infty[
+            \end{array}\right.
 
 with :math:`\sigma > 0` and :math:`\xi \in \Rset`.
+If :math:`xi \geq 0` then the range is :math:`x \in (-\infty, 0]`.
+If :math:`xi <0` then the range is :math:`x \in [0, -\frac{1}{\xi})`.
 
 Its first moments are:
 
