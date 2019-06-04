@@ -65,15 +65,6 @@ Point * Point::clone() const
   return new Point(*this);
 }
 
-void Point::setDescription(const Description & )
-{
-  // Nothing to do
-}
-
-Description Point::getDescription() const
-{
-  return Description( getDimension() );
-}
 
 /* Set small elements to zero */
 Point Point::clean(const Scalar threshold) const
