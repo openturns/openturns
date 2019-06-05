@@ -18,10 +18,6 @@ candidate : sequence of float
     The reference value of the parameter.
 methodName : str
     The name of the least-squares method to use for the calibration. By default, equal to *SVD*. Possible values are *SVD*, *QR*, *Cholesky*.
-modelObservations : 2-d sequence of float
-    The sample of output values of the model.
-gradientObservations : 2-d sequence of float
-    The Jacobian matrix of the model with respect to the parameter.
 
 Notes
 -----
