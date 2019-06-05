@@ -23,7 +23,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Suggests: python-openturns
 Replaces: openturns-wrapper
 Breaks: openturns-wrapper
-Description: dynamic libraries for OpenTURNS
+Description: dynamic libraries
  OpenTURNS is a powerful and generic tool to treat and quantify
  uncertainties in numerical simulations in design, optimization and
  control. It allows both sensitivity and reliability analysis studies:
@@ -32,21 +32,10 @@ Description: dynamic libraries for OpenTURNS
   * propagate uncertainties and/or analyse sensitivity
   * rank the sources of uncertainty
  .
- OpenTURNS is a large project with more than 300 C++ classes which
- uses well known and supported software such as R for the statistical
- methods and BLAS/LAPACK for the linear algebra.
+ Targeted users are all engineers who want to introduce the
+ probabilistic dimension in their so far deterministic studies.
  .
  This package provides the dynamic libraries.
- .
- The library implements almost all the treatments of uncertainty that
- OpenTURNS can provide. It is designed to be linked against any user
- specific application, or with either the textual front-end (see
- python-openturns or python3-openturns packages).
- .
- The main function of that library is giving to specific applications
- all the functionalities needed to treat uncertainties in
- studies. Targeted users are all engineers who want to introduce the
- probabilistic dimension in their so far deterministic studies.
 
 Package: libopenturns-dev
 Section: libdevel
@@ -55,7 +44,7 @@ Depends: ${misc:Depends}, libopenturns0.14 (= ${binary:Version}),
   libxml2-dev, libtbb-dev [i386 amd64 ia64], libhmat-oss-dev
 Replaces: python-openturns-dev (<< 1.5-2)
 Breaks: python-openturns-dev (<< 1.5-2)
-Description: headers and development libraries for OpenTURNS
+Description: development package
  OpenTURNS is a powerful and generic tool to treat and quantify
  uncertainties in numerical simulations in design, optimization and
  control. It allows both sensitivity and reliability analysis studies:
@@ -64,12 +53,10 @@ Description: headers and development libraries for OpenTURNS
   * propagate uncertainties and/or analyse sensitivity and
   * rank the sources of uncertainty
  .
- OpenTURNS is a large project with more than 300 C++ classes which
- uses well known and supported software such as R for the statistical
- methods and BLAS/LAPACK for the linear algebra.
+ Targeted users are all engineers who want to introduce the
+ probabilistic dimension in their so far deterministic studies.
  .
- This package provides the OpenTURNS headers should be used if one
- wants to link its application against the library.
+ This package contains development files needed to build OpenTURNS applications.
 
 Package: python-openturns
 Section: python
@@ -77,7 +64,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, libopenturns0.14 (= ${binary:Version}), ${python:Depends}
 Provides: ${python:Provides}
 Suggests: python-matplotlib, python-scipy
-Description: Python front-end of OpenTURNS (aka TUI)
+Description: Python bindings
  OpenTURNS is a powerful and generic tool to treat and quantify
  uncertainties in numerical simulations in design, optimization and
  control. It allows both sensitivity and reliability analysis studies:
@@ -86,12 +73,7 @@ Description: Python front-end of OpenTURNS (aka TUI)
   * propagate uncertainties and/or analyse sensitivity and
   * rank the sources of uncertainty
  .
- OpenTURNS is a large project with more than 300 C++ classes which
- uses well known and supported software such as R for the statistical
- methods and BLAS/LAPACK for the linear algebra.
- .
- This package provides a textual user interface that gives access to
- all the functionalities provided by the OpenTURNS library.
+ This package provides the Python bindings to the library.
 
 Package: python3-openturns
 Section: python
@@ -99,7 +81,7 @@ Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, libopenturns0.14 (= ${binary:Version}), ${python3:Depends}
 Provides: ${python3:Provides}
 Suggests: python3-matplotlib, python3-scipy
-Description: Python3 front-end of OpenTURNS (aka TUI)
+Description: Python3 bindings
  OpenTURNS is a powerful and generic tool to treat and quantify
  uncertainties in numerical simulations in design, optimization and
  control. It allows both sensitivity and reliability analysis studies:
@@ -108,12 +90,10 @@ Description: Python3 front-end of OpenTURNS (aka TUI)
   * propagate uncertainties and/or analyse sensitivity and
   * rank the sources of uncertainty
  .
- OpenTURNS is a large project with more than 300 C++ classes which
- uses well known and supported software such as R for the statistical
- methods and BLAS/LAPACK for the linear algebra.
+ Targeted users are all engineers who want to introduce the
+ probabilistic dimension in their so far deterministic studies.
  .
- This package provides a textual user interface with Python3 that gives
- access to all the functionalities provided by the OpenTURNS library.
+ This package provides the Python3 bindings to the library.
 
 Package: openturns-examples
 Architecture: any
@@ -129,13 +109,7 @@ Description: examples of OpenTURNS functionalities
   * propagate uncertainties and/or analyse sensitivity and
   * rank the sources of uncertainty
  .
- OpenTURNS is a large project with more than 300 C++ classes which
- uses well known and supported software such as R for the statistical
- methods and BLAS/LAPACK for the linear algebra.
+ Targeted users are all engineers who want to introduce the
+ probabilistic dimension in their so far deterministic studies.
  .
- This package provides examples which are written either in C++ or in
- Python.
- .
- They are primarly used as validation tests for the whole
- platform but they can also be seen as tutorials for
- beginners.
+ This package provides C++ and Python examples.
