@@ -703,7 +703,7 @@ ot_pyinstallcheck_test (features IGNOREOUT)
 
 ot_pyinstallcheck_test (coupling_tools)
 
-if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND AND LIBXML2_FOUND AND NLopt_FOUND AND CMinpack_FOUND AND dlib_FOUND)
+if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND AND LIBXML2_FOUND AND NLopt_FOUND AND CMinpack_FOUND)
   # on py3k/swig<3.0.0, doctest fails with "NameError: Unknown C global variable"
   if (PYTHON_VERSION_MAJOR VERSION_EQUAL "2" OR SWIG_VERSION VERSION_GREATER "3")
     # source modules
