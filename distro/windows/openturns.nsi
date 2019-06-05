@@ -62,7 +62,6 @@ ShowInstDetails show
 ShowUnInstDetails show
 
 Var Python_INSTALL_PATH 
-Var R_EXE
 
 ; set $Python_INSTALL_PATH to python dir found
 Function CheckPython
