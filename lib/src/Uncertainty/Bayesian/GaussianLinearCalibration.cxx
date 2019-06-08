@@ -113,33 +113,54 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Sample & modelObserva
 /* Performs the actual computation. Must be overloaded by the actual calibration algorithm */
 void GaussianLinearCalibration::run()
 {
+  // Compute the difference of output observations and output predictions
   const Point deltaY(modelObservations_.getImplementation()->getData() - outputObservations_.getImplementation()->getData());
+  // Compute covariance matrix B of the parameter and its Cholesky decomposition
   CovarianceMatrix B(getParameterCovariance());
-  const IdentityMatrix IB(B.getDimension());
-  const CovarianceMatrix invB(B.solveLinearSystem(IB).getImplementation());
+  const TriangularMatrix LB(B.computeCholesky());
+  // Compute the covariance matrix R
   CovarianceMatrix R(deltaY.getSize());
   const UnsignedInteger dimension = errorCovariance_.getDimension();
+  const UnsignedInteger size = outputObservations_.getSize();
   if (globalErrorCovariance_) R = errorCovariance_;
   else
     {
       if (dimension == 1) R = (R * errorCovariance_(0, 0)).getImplementation();
       else
 	{
-	  const UnsignedInteger size = outputObservations_.getSize();
 	  for (UnsignedInteger i = 0; i < size; ++i)
 	    for (UnsignedInteger j = 0; j < dimension; ++j)
 	      for (UnsignedInteger k = 0; k < dimension; ++k)
 		R(i * dimension + j, i * dimension + k) = errorCovariance_(j, k);
 	}
     }
-  const IdentityMatrix IR(R.getDimension());
-  const CovarianceMatrix invR(R.solveLinearSystem(IR).getImplementation());
-  const Matrix M(gradientObservations_);
-  const Matrix MtinvR(M.transpose() * invR);
-  const Matrix K((invB + MtinvR * M).solveLinearSystem(MtinvR));
-  const Point thetaStar(getCandidate() - K * deltaY);
-  const SquareMatrix L((IB - K * M).getImplementation());
-  const CovarianceMatrix covarianceThetaStar((K * R * K.transpose() + L * B * L.transpose()).getImplementation());
+  // Compute the Cholesky decomposition of R
+  const TriangularMatrix LR(R.computeCholesky());
+  // Compute inv(LB), the first part of the extended design matrix
+  const IdentityMatrix ILB(LB.getDimension());
+  const Matrix invLB(LB.solveLinearSystem(ILB).getImplementation());
+  // Compute inv(LR)*J, the second part of the extended design matrix
+  const CovarianceMatrix invLRJ(LR.solveLinearSystem(gradientObservations_).getImplementation());
+  // Create the extended design matrix of the linear least squares problem
+  const UnsignedInteger parameterDimension = B.getDimension();
+  Matrix Abar(size+parameterDimension,parameterDimension);
+  for (UnsignedInteger i = 0; i < parameterDimension; ++i)
+    for (UnsignedInteger j = 0; j < parameterDimension; ++j)
+      Abar(i,j) = invLB(i,j)
+  for (UnsignedInteger i = parameterDimension; i < size + parameterDimension; ++i)
+    for (UnsignedInteger j = 0; j < parameterDimension; ++j)
+      Abar(i,j) = -invLRJ(i,j)
+  // Compute inv(LR)*deltay, the right hand size of the extended residual
+  const Point invLRz(LR.solveLinearSystem(deltaY))
+  // Create the right hand side of the extended linear least squares system
+  Point ybar(size+parameterDimension)
+  for (UnsignedInteger i = parameterDimension; i < size + parameterDimension; ++i)
+    ybar(i) = -invLRz(i)
+  // Solve the linear least squares problem
+  LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, Abar));
+  const Point deltaTheta(method.solve(ybar));
+  const Point thetaStar(getCandidate() + deltaTheta);
+  covarianceThetaStar = CovarianceMatrix(method.getGramInverse().getImplementation());
   Normal parameterPosterior(thetaStar, covarianceThetaStar);
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const LinearFunction residualFunction(getCandidate(), deltaY, gradientObservations_);
