@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class NLopt for standard methods
+ *  @brief The test file of class GaussianLinearCalibration for standard methods
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
