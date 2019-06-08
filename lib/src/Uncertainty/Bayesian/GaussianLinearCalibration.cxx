@@ -140,27 +140,27 @@ void GaussianLinearCalibration::run()
   const IdentityMatrix ILB(LB.getDimension());
   const Matrix invLB(LB.solveLinearSystem(ILB).getImplementation());
   // Compute inv(LR)*J, the second part of the extended design matrix
-  const CovarianceMatrix invLRJ(LR.solveLinearSystem(gradientObservations_).getImplementation());
+  const CovarianceMatrix invLRJ(LR.solveLinearSystem(gradientObservations_));
   // Create the extended design matrix of the linear least squares problem
   const UnsignedInteger parameterDimension = B.getDimension();
   Matrix Abar(size+parameterDimension,parameterDimension);
   for (UnsignedInteger i = 0; i < parameterDimension; ++i)
     for (UnsignedInteger j = 0; j < parameterDimension; ++j)
-      Abar(i,j) = invLB(i,j)
+      Abar(i,j) = invLB(i,j);
   for (UnsignedInteger i = parameterDimension; i < size + parameterDimension; ++i)
     for (UnsignedInteger j = 0; j < parameterDimension; ++j)
-      Abar(i,j) = -invLRJ(i,j)
+      Abar(i,j) = -invLRJ(i,j);
   // Compute inv(LR)*deltay, the right hand size of the extended residual
-  const Point invLRz(LR.solveLinearSystem(deltaY))
-  // Create the right hand side of the extended linear least squares system
-  Point ybar(size+parameterDimension)
-  for (UnsignedInteger i = parameterDimension; i < size + parameterDimension; ++i)
-    ybar(i) = -invLRz(i)
+  const Point invLRz(LR.solveLinearSystem(deltaY));
+  // Create the right hand side of the extended linear least squares system : ybar = -invLRz
+  Point ybar(size+parameterDimension);
+  std::copy(invLRz.begin(), invLRz.end(), ybar.begin() + parameterDimension);
+  ybar = -1. * ybar;
   // Solve the linear least squares problem
   LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, Abar));
   const Point deltaTheta(method.solve(ybar));
   const Point thetaStar(getCandidate() + deltaTheta);
-  covarianceThetaStar = CovarianceMatrix(method.getGramInverse().getImplementation());
+  const CovarianceMatrix covarianceThetaStar(method.getGramInverse().getImplementation());
   Normal parameterPosterior(thetaStar, covarianceThetaStar);
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const LinearFunction residualFunction(getCandidate(), deltaY, gradientObservations_);
