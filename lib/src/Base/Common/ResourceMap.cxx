@@ -1186,6 +1186,10 @@ void ResourceMap::loadDefaultConfiguration()
   setAsScalar( "DiscreteDistribution-SupportEpsilon", 1.0e-14 );
   
   // DiscreteMarkovChain parameters //
+  setAsString( "DiscreteMarkovChain-DOTArcColor", "black");
+  setAsString( "DiscreteMarkovChain-DOTLayout", "dot");
+  setAsString( "DiscreteMarkovChain-DOTNodeColor", "black");
+  setAsString( "DiscreteMarkovChain-DOTNodeShape", "oval");
   setAsScalar( "DiscreteMarkovChain-ProbabilitySumPrecision", 1.0e-6 );  
 
   // DistributionFactoryImplementation parameters //

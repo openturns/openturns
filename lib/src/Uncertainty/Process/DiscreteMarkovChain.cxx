@@ -294,6 +294,25 @@ void DiscreteMarkovChain::setMesh(const Mesh & mesh)
   ProcessImplementation::setMesh(mesh);
 }
 
+/* DOT export */
+void DiscreteMarkovChain::exportToDOTFile(const FileName & filename) const
+{
+  std::ofstream dotFile(filename.c_str());
+  if (dotFile.fail())
+    throw FileOpenException(HERE) << "Could not open file " << filename;
+  dotFile.imbue(std::locale("C"));
+  dotFile << "digraph " << getName() << " {\n";
+  dotFile << "layout=" << ResourceMap::Get("DiscreteMarkovChain-DOTLayout") << "\n";
+  dotFile << "node[shape=" << ResourceMap::Get("DiscreteMarkovChain-DOTNodeShape") << ", color=" << ResourceMap::Get("DiscreteMarkovChain-DOTNodeColor") << "]\n";
+  const String arcOptions((ResourceMap::Get("DiscreteMarkovChain-DOTArcColor") != "black") ? String(OSS() << ", color=" << ResourceMap::Get("DiscreteMarkovChain-DOTArcColor")) : "");
+  for (UnsignedInteger j = 0; j < transitionMatrix_.getNbRows(); ++ j)
+    for (UnsignedInteger i = 0; i < transitionMatrix_.getNbRows(); ++ i)
+      if (transitionMatrix_(i, j) > 0.0)
+        dotFile << j << "->" << i << " [label=" << transitionMatrix_(i, j) << arcOptions << "]\n";
+  dotFile << "}\n";
+  dotFile.close();
+}
+
 /* Method save() stores the object through the StorageManager */
 void DiscreteMarkovChain::save(Advocate & adv) const
 {
