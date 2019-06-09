@@ -250,9 +250,10 @@
   <SpectralModel-DefaultFrequencyNumber  value_int="129" />
 
   <!-- OT::FieldImplementation parameters -->
-  <Field-ArrowRatio   value_float="0.01"         />
-  <Field-ArrowScaling value_float="1.0"          />
-  <Field-LevelNumber  value_int="30" />
+  <Field-AutomaticScaling value_bool="true"  />
+  <Field-ArrowRatio       value_float="0.01" />
+  <Field-ArrowScaling     value_float="1.0"  />
+  <Field-LevelNumber      value_int="30"     />
 
   <!-- OT::SampleImplementation parameters -->
   <Sample-CommentMarkers         value_str="#"              />

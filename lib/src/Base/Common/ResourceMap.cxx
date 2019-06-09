@@ -787,6 +787,7 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "SpectralModel-DefaultFrequencyNumber",  129 );
 
   // FieldImplementation parameters //
+  setAsBool( "Field-AutomaticScaling", true );
   setAsScalar( "Field-ArrowRatio", 0.01 );
   setAsScalar( "Field-ArrowScaling", 1.0 );
   setAsUnsignedInteger( "Field-LevelNumber", 30 );

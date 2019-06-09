@@ -405,15 +405,24 @@ Graph FieldImplementation::draw() const
     const Sample vertices(mesh_.getVertices());
     const Point xMin(vertices.getMin());
     const Point xMax(vertices.getMax());
-    const Scalar delta = std::min(xMax[0] - xMin[0], xMax[1] - xMin[1]) * ResourceMap::GetAsScalar("Field-ArrowRatio");
-    const Scalar rho = ResourceMap::GetAsScalar("Field-ArrowScaling");
+    // To take into account the user-defined scaling factor
+    const Bool automaticScaling = ResourceMap::GetAsBool("Field-AutomaticScaling");
+    Scalar rho = ResourceMap::GetAsScalar("Field-ArrowScaling");
+    // To take into account the domain size in the scaling
+    const Scalar scaling = std::min(xMax[0] - xMin[0], xMax[1] - xMin[1]);
+    if (automaticScaling) rho *= 2.0 * scaling;
+    const Scalar delta = scaling * ResourceMap::GetAsScalar("Field-ArrowRatio");
     const UnsignedInteger size = values_.getSize();
+    // To take into account the field values in the scaling
     Sample normValues(size, 1);
     for (UnsignedInteger i = 0; i < size; ++i)
       normValues(i, 0) = Point(values_[i]).norm();
     Scalar normMin = normValues.getMin()[0];
     Scalar normMax = normValues.getMax()[0];
     if (normMax == normMin) normMax = normMin + 1.0;
+    if (automaticScaling) rho /= normMax; 
+    // To take into account the vertices number
+    if (automaticScaling) rho /= std::sqrt(vertices.getSize());
     const UnsignedInteger levelsNumber = ResourceMap::GetAsUnsignedInteger("Field-LevelNumber");
     Description palette(levelsNumber);
     for (UnsignedInteger i = 0; i < levelsNumber; ++i)
