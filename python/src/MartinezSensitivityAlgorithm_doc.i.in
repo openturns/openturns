@@ -74,7 +74,6 @@ Examples
 --------
 
 Estimate first and total order Sobol' indices:
-
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> formula = ['sin(pi_*X1)+7*sin(pi_*X2)^2+0.1*(pi_*X3)^4*sin(pi_*X1)']
@@ -92,7 +91,6 @@ Estimate first and total order Sobol' indices:
 [0.543004,0.29501,0.304615]
 
 Estimate first, total and second order Sobol' indices:
-
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> formula = ['sin(pi_*X1)+7*sin(pi_*X2)^2+0.1*(pi_*X3)^4*sin(pi_*X1)']
