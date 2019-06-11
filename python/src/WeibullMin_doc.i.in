@@ -39,7 +39,7 @@ Its first moments are:
 where :math:`\Gamma` denotes Euler's Gamma function
 :class:`~openturns.SpecFunc_Gamma`.
 
-It is possible to create a WeibullMin distribution from the alternative parametrization :math:`(\mu, \sigma, \gamma)`: see  :class:`~openturns.WeibullMuSigma`. In that case, all the results are presented in that new parametrization.
+It is possible to create a WeibullMin distribution from the alternative parametrization :math:`(\mu, \sigma, \gamma)`: see  :class:`~openturns.WeibullMinMuSigma`. In that case, all the results are presented in that new parametrization.
 
 In order to use the alternative  parametrization :math:`(\mu, \sigma, \gamma)` only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(\alpha, \beta, \gamma)`.
 
@@ -53,11 +53,11 @@ Create a distribution from its native parameters :math:`(\alpha, \beta, \gamma)`
 Create a it from the alternative parametrization :math:`(\mu, \sigma, \gamma)`:
 
 >>> myDist2 = ot.WeibullMin()
->>> myDist2.setParameter(ot.WeibullMuSigma()([2.8, 1.2, 1.0]))
+>>> myDist2.setParameter(ot.WeibullMinMuSigma()([2.8, 1.2, 1.0]))
 
 Create it from :math:`(\mu, \sigma,\gamma)` and keep that parametrization for the remaining study: 
 
->>> myParam = ot.WeibullMuSigma(2.8, 1.2, 1.0)
+>>> myParam = ot.WeibullMinMuSigma(2.8, 1.2, 1.0)
 >>> myDist3 = ot.ParametrizedDistribution(myParam)
 
 Draw a sample:

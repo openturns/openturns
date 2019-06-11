@@ -50,7 +50,7 @@
 %include VonMises.i
 %include WeibullMin.i
 %include WeibullFactory.i
-%include WeibullMuSigma.i
+%include WeibullMinMuSigma.i
 %include Wishart.i
 %include ZipfMandelbrot.i
 

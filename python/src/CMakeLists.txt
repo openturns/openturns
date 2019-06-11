@@ -698,7 +698,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       VonMises.i VonMises_doc.i.in
                       WeibullMin.i WeibullMin_doc.i.in
                       WeibullFactory.i WeibullFactory_doc.i.in
-                      WeibullMuSigma.i WeibullMuSigma_doc.i.in
+                      WeibullMinMuSigma.i WeibullMinMuSigma_doc.i.in
                       Wishart.i Wishart_doc.i.in
                       ZipfMandelbrot.i ZipfMandelbrot_doc.i.in
                       UncertaintyDistTemplateDefs.i

@@ -18,18 +18,18 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_WEIBULLMUSIGMA_HXX
-#define OPENTURNS_WEIBULLMUSIGMA_HXX
+#ifndef OPENTURNS_WEIBULLMINMUSIGMA_HXX
+#define OPENTURNS_WEIBULLMINMUSIGMA_HXX
 
 #include "openturns/DistributionParametersImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class WeibullMuSigma
+ * @class WeibullMinMuSigma
  *
  */
-class OT_API WeibullMuSigma
+class OT_API WeibullMinMuSigma
   : public DistributionParametersImplementation
 {
 
@@ -37,16 +37,16 @@ class OT_API WeibullMuSigma
 public:
 
   /** Default constructor */
-  WeibullMuSigma();
+  WeibullMinMuSigma();
 
   /** Constructor with parameters */
-  WeibullMuSigma(const Scalar mu, const Scalar sigma, const Scalar gamma = 0.);
+  WeibullMinMuSigma(const Scalar mu, const Scalar sigma, const Scalar gamma = 0.);
 
   /** Virtual constructor */
-  virtual WeibullMuSigma * clone() const;
+  virtual WeibullMinMuSigma * clone() const;
 
   /** Comparison operator */
-  Bool operator ==(const WeibullMuSigma & other) const;
+  Bool operator ==(const WeibullMinMuSigma & other) const;
 
   /** Build a distribution based on a set of native parameters */
   Distribution getDistribution() const;
@@ -79,9 +79,9 @@ private:
   Scalar mu_;
   Scalar sigma_;
   Scalar gamma_;
-}; /* class WeibullMuSigma */
+}; /* class WeibullMinMuSigma */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_WEIBULLMUSIGMA_HXX */
+#endif /* OPENTURNS_WEIBULLMINMUSIGMA_HXX */

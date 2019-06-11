@@ -11,7 +11,7 @@ distParams.append(ot.GumbelAB(-0.5, 0.5))
 distParams.append(ot.GumbelMuSigma(1.5, 1.3))
 distParams.append(ot.LogNormalMuSigma(0.63, 3.3, -0.5))
 distParams.append(ot.LogNormalMuSigmaOverMu(0.63, 5.24, -0.5))
-distParams.append(ot.WeibullMuSigma(1.3, 1.23, -0.5))
+distParams.append(ot.WeibullMinMuSigma(1.3, 1.23, -0.5))
 
 for distParam in distParams:
 

@@ -24,6 +24,7 @@
  * Removed deprecated VisualTest::DrawEmpiricalCDF,DrawHistogram,DrawClouds
  * Moved dot to Point::dot
  * Deprecated Weibull in favor of WeibullMin
+ * Deprecated WeibullMuSigma in favor of WeibullMinMuSigma
 
 === Python module ===
 

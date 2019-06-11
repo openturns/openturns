@@ -23,16 +23,16 @@
 #include "openturns/WeibullFactory.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/WeibullMuSigma.hxx"
+#include "openturns/WeibullMinMuSigma.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(WeibullMuSigma)
-static const Factory<WeibullMuSigma> Factory_WeibullMuSigma;
+CLASSNAMEINIT(WeibullMinMuSigma)
+static const Factory<WeibullMinMuSigma> Factory_WeibullMinMuSigma;
 
 /* Default constructor */
-WeibullMuSigma::WeibullMuSigma()
+WeibullMinMuSigma::WeibullMinMuSigma()
   : DistributionParametersImplementation()
   , mu_(1.0)
   , sigma_(1.0)
@@ -41,7 +41,7 @@ WeibullMuSigma::WeibullMuSigma()
   // Nothing to do
 }
 
-WeibullMuSigma::WeibullMuSigma(const Scalar mu, const Scalar sigma, const Scalar gamma)
+WeibullMinMuSigma::WeibullMinMuSigma(const Scalar mu, const Scalar sigma, const Scalar gamma)
   : DistributionParametersImplementation()
   , mu_(mu)
   , sigma_(sigma)
@@ -52,20 +52,20 @@ WeibullMuSigma::WeibullMuSigma(const Scalar mu, const Scalar sigma, const Scalar
 }
 
 /* Virtual constructor */
-WeibullMuSigma * WeibullMuSigma::clone() const
+WeibullMinMuSigma * WeibullMinMuSigma::clone() const
 {
-  return new WeibullMuSigma(*this);
+  return new WeibullMinMuSigma(*this);
 }
 
 /* Comparison operator */
-Bool WeibullMuSigma::operator ==(const WeibullMuSigma & other) const
+Bool WeibullMinMuSigma::operator ==(const WeibullMinMuSigma & other) const
 {
   return (this == &other);
 }
 
 
 /* Build a distribution based on a set of native parameters */
-Distribution WeibullMuSigma::getDistribution() const
+Distribution WeibullMinMuSigma::getDistribution() const
 {
   Point newParameters(3);
   newParameters[0] = mu_;
@@ -79,7 +79,7 @@ Distribution WeibullMuSigma::getDistribution() const
 
 
 /* Compute jacobian / native parameters */
-Matrix WeibullMuSigma::gradient() const
+Matrix WeibullMinMuSigma::gradient() const
 {
   Point newParameters(3);
   newParameters[0] = mu_;
@@ -118,7 +118,7 @@ Matrix WeibullMuSigma::gradient() const
 
 
 /* Conversion operator */
-Point WeibullMuSigma::operator () (const Point & inP) const
+Point WeibullMinMuSigma::operator () (const Point & inP) const
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
   const Scalar mu = inP[0];
@@ -187,7 +187,7 @@ Point WeibullMuSigma::operator () (const Point & inP) const
 }
 
 
-Point WeibullMuSigma::inverse(const Point & inP) const
+Point WeibullMinMuSigma::inverse(const Point & inP) const
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
   const Scalar alpha = inP[0];
@@ -209,7 +209,7 @@ Point WeibullMuSigma::inverse(const Point & inP) const
 
 
 /* Parameters value and description accessor */
-void WeibullMuSigma::setValues(const Point & inP)
+void WeibullMinMuSigma::setValues(const Point & inP)
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
   mu_ = inP[0];
@@ -217,7 +217,7 @@ void WeibullMuSigma::setValues(const Point & inP)
   gamma_ = inP[2];
 }
 
-Point WeibullMuSigma::getValues() const
+Point WeibullMinMuSigma::getValues() const
 {
   Point point(3);
   point[0] = mu_;
@@ -226,7 +226,7 @@ Point WeibullMuSigma::getValues() const
   return point;
 }
 
-Description WeibullMuSigma::getDescription() const
+Description WeibullMinMuSigma::getDescription() const
 {
   Description description(3);
   description[0] = "mu";
@@ -236,7 +236,7 @@ Description WeibullMuSigma::getDescription() const
 }
 
 /* String converter */
-String WeibullMuSigma::__repr__() const
+String WeibullMinMuSigma::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << GetClassName()
@@ -248,14 +248,14 @@ String WeibullMuSigma::__repr__() const
 }
 
 
-String WeibullMuSigma::__str__(const String & ) const
+String WeibullMinMuSigma::__str__(const String & ) const
 {
   OSS oss(false);
   oss << getClassName() << "(mu = " << mu_ << ", sigma = " << sigma_ << ", gamma = " << gamma_ << ")";
   return oss;
 }
 
-void WeibullMuSigma::save(Advocate & adv) const
+void WeibullMinMuSigma::save(Advocate & adv) const
 {
   DistributionParametersImplementation::save(adv);
   adv.saveAttribute( "mu_", mu_ );
@@ -263,7 +263,7 @@ void WeibullMuSigma::save(Advocate & adv) const
   adv.saveAttribute( "gamma_", gamma_ );
 }
 
-void WeibullMuSigma::load(Advocate & adv)
+void WeibullMinMuSigma::load(Advocate & adv)
 {
   DistributionParametersImplementation::load(adv);
   adv.loadAttribute( "mu_", mu_ );

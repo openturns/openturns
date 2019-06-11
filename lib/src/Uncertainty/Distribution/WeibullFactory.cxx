@@ -20,7 +20,7 @@
  */
 #include "openturns/WeibullFactory.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/WeibullMuSigma.hxx"
+#include "openturns/WeibullMinMuSigma.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -75,7 +75,7 @@ WeibullMin WeibullFactory::buildAsWeibull(const Sample & sample) const
     parameters[0] = mean;
     parameters[1] = sigma;
     parameters[2] = gamma;
-    WeibullMin result(buildAsWeibull(WeibullMuSigma()(parameters)));
+    WeibullMin result(buildAsWeibull(WeibullMinMuSigma()(parameters)));
     result.setDescription(sample.getDescription());
     return result;
   }

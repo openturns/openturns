@@ -229,8 +229,8 @@ try:
     # LogNormalMuSigmaOverMu parameter save
     lnmsm_parameters = ot.LogNormalMuSigmaOverMu(0.63, 5.24, -0.5)
     myStudy.add('lnmsm_parameters', lnmsm_parameters)
-    # WeibullMuSigma parameter save
-    wms_parameters = ot.WeibullMuSigma(1.3, 1.23, -0.5)
+    # WeibullMinMuSigma parameter save
+    wms_parameters = ot.WeibullMinMuSigma(1.3, 1.23, -0.5)
     myStudy.add('wms_parameters', wms_parameters)
 
     # MemoizeFunction
@@ -349,8 +349,8 @@ try:
     # LogNormalMuSigmaOverMu parameter loading
     lnmsm_parameters = ot.LogNormalMuSigmaOverMu()
     myStudy.fillObject('lnmsm_parameters', lnmsm_parameters)
-    # WeibullMuSigma parameter loading
-    wms_parameters = ot.WeibullMuSigma()
+    # WeibullMinMuSigma parameter loading
+    wms_parameters = ot.WeibullMinMuSigma()
     myStudy.fillObject('wms_parameters', wms_parameters)
 
     # cleanup

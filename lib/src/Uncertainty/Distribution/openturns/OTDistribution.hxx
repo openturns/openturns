@@ -160,7 +160,7 @@
 #include "openturns/VonMises.hxx"
 #include "openturns/WeibullMin.hxx"
 #include "openturns/WeibullFactory.hxx"
-#include "openturns/WeibullMuSigma.hxx"
+#include "openturns/WeibullMinMuSigma.hxx"
 #include "openturns/Wishart.hxx"
 #include "openturns/ZipfMandelbrot.hxx"
 

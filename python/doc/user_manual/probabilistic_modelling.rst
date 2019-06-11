@@ -124,7 +124,7 @@ Parametrized distributions
     GumbelAB
     LogNormalMuSigma
     LogNormalMuSigmaOverMu
-    WeibullMuSigma
+    WeibullMinMuSigma
 
 Pseudo-random numbers generator
 ===============================
