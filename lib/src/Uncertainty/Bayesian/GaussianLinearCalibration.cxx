@@ -99,7 +99,6 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Sample & modelObserva
   , methodName_(methodName)
 {
   // Check the input
-  // Check the input
   const UnsignedInteger parameterDimension = candidate.getDimension();
   if (parameterCovariance.getDimension() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected a parameter covariance of dimension=" << parameterDimension << ", got dimension=" << parameterCovariance.getDimension();
   const UnsignedInteger outputDimension = outputObservations.getDimension();
@@ -134,8 +133,8 @@ void GaussianLinearCalibration::run()
 		R(i * dimension + j, i * dimension + k) = errorCovariance_(j, k);
 	}
     }
-  // Compute the invserse of the Cholesky decomposition of R
-  const Normal error(Point(dimension), R);
+  // Compute the inverse of the Cholesky decomposition of R
+  const Normal error(Point(R.getDimension()), R);
   const TriangularMatrix errorInverseCholesky(error.getInverseCholesky());
   // Compute errorInverseCholesky*J, the second part of the extended design matrix
   const Matrix invLRJ = errorInverseCholesky * gradientObservations_;
@@ -152,8 +151,8 @@ void GaussianLinearCalibration::run()
   const Point invLRz = errorInverseCholesky * deltaY;
   // Create the right hand side of the extended linear least squares system : ybar = -invLRz
   Point ybar(size+parameterDimension);
-  std::copy(invLRz.begin(), invLRz.end(), ybar.begin() + parameterDimension);
-  ybar = -1. * ybar;
+  for (UnsignedInteger i = parameterDimension; i < size + parameterDimension; ++i)
+    ybar[i] = -invLRz[i];
   // Solve the linear least squares problem
   LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, Abar));
   const Point deltaTheta(method.solve(ybar));
