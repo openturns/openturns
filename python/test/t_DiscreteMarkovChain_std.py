@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 import openturns as ot
+import os
 
 ot.TESTPREAMBLE()
 
@@ -44,4 +45,13 @@ print(future)
 futures = process.getFuture(20, 3)
 print("3 different futures :")
 print(futures)
- 
+
+process.exportToDOTFile('markov.dot')
+with open('markov.dot') as f:
+    print(f.read())
+if 0:
+    from graphviz import Source
+    path = 'markov.dot'
+    s = Source.from_file(path)
+    s.view()
+os.remove('markov.dot')

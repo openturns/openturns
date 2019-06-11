@@ -92,3 +92,23 @@ Parameters
 origin : :class:`~openturns.Distribution` or :math:`int`
     The probability distribution of the origin of the Markov chain."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DiscreteMarkovChain::exportToDOTFile
+"Export to DOT graph.
+
+`DOT <https://en.wikipedia.org/wiki/DOT_(graph_description_language)>`_ is a graph description language.
+
+Parameters
+----------
+filename : str
+    The name of the file to be written.
+
+Notes
+-----
+The graph can be customized using the following :class:`~openturns.ResourceMap` string entries:
+
+- *DiscreteMarkovChain-DOTArcColor*
+- *DiscreteMarkovChain-DOTLayout*
+- *DiscreteMarkovChain-DOTNodeColor*
+- *DiscreteMarkovChain-DOTNodeShape*"

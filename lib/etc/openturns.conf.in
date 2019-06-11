@@ -649,6 +649,10 @@
   <DiscreteDistribution-SupportEpsilon value_float="1.0e-14" />
   
   <!-- OT::DiscreteMarkovChain parameters -->
+  <DiscreteMarkovChain-DOTArcColor value_str="black" />
+  <DiscreteMarkovChain-DOTLayout value_str="dot" />
+  <DiscreteMarkovChain-DOTNodeColor value_str="black" />
+  <DiscreteMarkovChain-DOTNodeShape value_str="oval" />
   <DiscreteMarkovChain-ProbabilitySumPrecision value_float="1.0e-6" />
 
   <!-- OT::DistributionFactoryImplementation parameters -->

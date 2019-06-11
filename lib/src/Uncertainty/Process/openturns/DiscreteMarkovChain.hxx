@@ -88,7 +88,10 @@ public:
   
   /** Mesh accessors */
   void setMesh(const Mesh & mesh);
-  
+
+  /** DOT export */
+  void exportToDOTFile(const FileName & filename) const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
