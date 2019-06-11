@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class Weibull for standard methods
+ *  @brief The test file of class WeibullMin for standard methods
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    Weibull distribution(1., 2.5, -1.0);
+    WeibullMin distribution(1., 2.5, -1.0);
     UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
     WeibullFactory factory;
@@ -47,12 +47,12 @@ int main(int, char *[])
     estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     // Test the specific build method
-    Weibull estimatedWeibull(factory.buildAsWeibull(sample));
+    WeibullMin estimatedWeibull(factory.buildAsWeibull(sample));
     fullprint << "Estimated weibull=" << estimatedWeibull << std::endl;
     estimatedWeibull = factory.buildAsWeibull();
     fullprint << "Default weibull=" << estimatedWeibull << std::endl;
     estimatedWeibull = factory.buildAsWeibull(distribution.getParameter());
-    fullprint << "Weibull from parameters=" << estimatedWeibull << std::endl;
+    fullprint << "WeibullMin from parameters=" << estimatedWeibull << std::endl;
     // Test for constant sample
     sample = Sample(size, Point(1, 0.0));
     estimatedDistribution = factory.build(sample);

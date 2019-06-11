@@ -9,7 +9,7 @@ RandomGenerator.SetSeed(0)
 dimension = 5
 indices = [2, 0, 1]
 fullDistribution = ComposedDistribution([Normal(), Uniform(), Exponential(
-), Weibull()], ComposedCopula([GumbelCopula(), ClaytonCopula()]))
+), WeibullMin()], ComposedCopula([GumbelCopula(), ClaytonCopula()]))
 distribution = MarginalDistribution(fullDistribution, indices)
 
 print('Distribution ', repr(distribution))

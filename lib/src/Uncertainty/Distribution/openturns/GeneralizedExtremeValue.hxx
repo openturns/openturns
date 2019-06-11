@@ -159,7 +159,7 @@ private:
                     const Scalar sigma,
                     const Scalar xi);
 
-  /** The actual distribution in {Weibull, Frechet, Gumbel} */
+  /** The actual distribution in {WeibullMin, Frechet, Gumbel} */
   Distribution actualDistribution_;
   Scalar mu_;
   Scalar sigma_;

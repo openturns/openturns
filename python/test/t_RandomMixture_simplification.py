@@ -19,7 +19,7 @@ try:
     print("d=", d)
     # Test flatten RandomMixture atoms: the RandomMixture should have 4 atoms.
     d = RandomMixture(
-        [Gumbel(), RandomMixture([Logistic(), Weibull()], [0.5, 1.5], 3.0), Frechet(4.0)], [2.0, 3.0, 4.0], 2.0)
+        [Gumbel(), RandomMixture([Logistic(), WeibullMin()], [0.5, 1.5], 3.0), Frechet(4.0)], [2.0, 3.0, 4.0], 2.0)
     print("d=", d)
     # Test merge of Normal atoms:
     d = RandomMixture(

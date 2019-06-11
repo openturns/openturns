@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Weibull distribution with mu and sigma as parameters
+ *  @brief WeibullMin distribution with mu and sigma as parameters
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *

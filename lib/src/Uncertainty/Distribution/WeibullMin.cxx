@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The Weibull distribution
+ *  @brief The WeibullMin distribution
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -19,7 +19,7 @@
  *
  */
 #include <cmath>
-#include "openturns/Weibull.hxx"
+#include "openturns/WeibullMin.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -28,24 +28,24 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Weibull)
+CLASSNAMEINIT(WeibullMin)
 
-static const Factory<Weibull> Factory_Weibull;
+static const Factory<WeibullMin> Factory_WeibullMin;
 
 /* Default constructor */
-Weibull::Weibull()
+WeibullMin::WeibullMin()
   : ContinuousDistribution()
   , alpha_(1.0)
   , beta_(1.0)
   , gamma_(0.0)
 {
-  setName("Weibull");
+  setName("WeibullMin");
   setDimension(1);
   computeRange();
 }
 
 /* Parameters constructor */
-Weibull::Weibull(const Scalar alpha,
+WeibullMin::WeibullMin(const Scalar alpha,
                  const Scalar beta,
                  const Scalar gamma)
   : ContinuousDistribution()
@@ -53,29 +53,29 @@ Weibull::Weibull(const Scalar alpha,
   , beta_(0.0)
   , gamma_(gamma)
 {
-  setName("Weibull");
+  setName("WeibullMin");
   setAlphaBeta(alpha, beta);
   setDimension(1);
 }
 
 /* Comparison operator */
-Bool Weibull::operator ==(const Weibull & other) const
+Bool WeibullMin::operator ==(const WeibullMin & other) const
 {
   if (this == &other) return true;
   return (alpha_ == other.alpha_) && (beta_ == other.beta_) && (gamma_ == other.gamma_);
 }
 
-Bool Weibull::equals(const DistributionImplementation & other) const
+Bool WeibullMin::equals(const DistributionImplementation & other) const
 {
-  const Weibull* p_other = dynamic_cast<const Weibull*>(&other);
+  const WeibullMin* p_other = dynamic_cast<const WeibullMin*>(&other);
   return p_other && (*this == *p_other);
 }
 
 /* String converter */
-String Weibull::__repr__() const
+String WeibullMin::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << Weibull::GetClassName()
+  oss << "class=" << WeibullMin::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
       << " alpha=" << alpha_
@@ -84,7 +84,7 @@ String Weibull::__repr__() const
   return oss;
 }
 
-String Weibull::__str__(const String & ) const
+String WeibullMin::__str__(const String & ) const
 {
   OSS oss(false);
   oss << getClassName() << "(alpha = " << alpha_ << ", beta = " << beta_ << ", gamma = " << gamma_ << ")";
@@ -92,13 +92,13 @@ String Weibull::__str__(const String & ) const
 }
 
 /* Virtual constructor */
-Weibull * Weibull::clone() const
+WeibullMin * WeibullMin::clone() const
 {
-  return new Weibull(*this);
+  return new WeibullMin(*this);
 }
 
 /* Compute the numerical range of the distribution given the parameters values */
-void Weibull::computeRange()
+void WeibullMin::computeRange()
 {
   const Point lowerBound(1, gamma_);
   const Point upperBound(computeUpperBound());
@@ -109,14 +109,14 @@ void Weibull::computeRange()
 
 
 /* Get one realization of the distribution */
-Point Weibull::getRealization() const
+Point WeibullMin::getRealization() const
 {
   return Point(1, gamma_ + alpha_ * std::pow(-std::log(1.0 - RandomGenerator::Generate()), 1.0 / beta_));
 }
 
 
 /* Get the DDF of the distribution */
-Point Weibull::computeDDF(const Point & point) const
+Point WeibullMin::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -128,7 +128,7 @@ Point Weibull::computeDDF(const Point & point) const
 
 
 /* Get the PDF of the distribution */
-Scalar Weibull::computePDF(const Point & point) const
+Scalar WeibullMin::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -137,7 +137,7 @@ Scalar Weibull::computePDF(const Point & point) const
   return std::exp(computeLogPDF(point));
 }
 
-Scalar Weibull::computeLogPDF(const Point & point) const
+Scalar WeibullMin::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -149,7 +149,7 @@ Scalar Weibull::computeLogPDF(const Point & point) const
 
 
 /* Get the CDF of the distribution */
-Scalar Weibull::computeCDF(const Point & point) const
+Scalar WeibullMin::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -158,7 +158,7 @@ Scalar Weibull::computeCDF(const Point & point) const
   return -expm1(-std::pow(x / alpha_, beta_));
 }
 
-Scalar Weibull::computeComplementaryCDF(const Point & point) const
+Scalar WeibullMin::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -168,7 +168,7 @@ Scalar Weibull::computeComplementaryCDF(const Point & point) const
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-Complex Weibull::computeCharacteristicFunction(const Scalar x) const
+Complex WeibullMin::computeCharacteristicFunction(const Scalar x) const
 {
   /*
   X=mu+sigma*Y;
@@ -211,13 +211,13 @@ Complex Weibull::computeCharacteristicFunction(const Scalar x) const
 }
 
 /* Compute the entropy of the distribution */
-Scalar Weibull::computeEntropy() const
+Scalar WeibullMin::computeEntropy() const
 {
   return 1.0 + SpecFunc::EulerConstant * (1.0 - 1.0 / beta_) + std::log(alpha_ / beta_);
 }
 
 /* Get the PDFGradient of the distribution */
-Point Weibull::computePDFGradient(const Point & point) const
+Point WeibullMin::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -233,7 +233,7 @@ Point Weibull::computePDFGradient(const Point & point) const
 }
 
 /* Get the CDFGradient of the distribution */
-Point Weibull::computeCDFGradient(const Point & point) const
+Point WeibullMin::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
@@ -249,7 +249,7 @@ Point Weibull::computeCDFGradient(const Point & point) const
 }
 
 /* Get the quantile of the distribution */
-Scalar Weibull::computeScalarQuantile(const Scalar prob,
+Scalar WeibullMin::computeScalarQuantile(const Scalar prob,
                                       const Bool tail) const
 {
   if (tail) return gamma_ + alpha_ * std::pow(-std::log(prob), 1.0 / beta_);
@@ -257,20 +257,20 @@ Scalar Weibull::computeScalarQuantile(const Scalar prob,
 }
 
 /* compute the mean of the distribution */
-void Weibull::computeMean() const
+void WeibullMin::computeMean() const
 {
   mean_ =  Point(1, gamma_ + alpha_ * SpecFunc::Gamma(1.0 + 1.0 / beta_));
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
-Point Weibull::getStandardDeviation() const
+Point WeibullMin::getStandardDeviation() const
 {
   return Point(1, alpha_ * std::sqrt(SpecFunc::Gamma(1.0 + 2.0 / beta_) - std::pow(SpecFunc::Gamma(1.0 + 1.0 / beta_), 2.0)));
 }
 
 /* Get the skewness of the distribution */
-Point Weibull::getSkewness() const
+Point WeibullMin::getSkewness() const
 {
   const Scalar gamma1 = SpecFunc::Gamma(1.0 + 1.0 / beta_);
   const Scalar gamma1_2 = gamma1 * gamma1;
@@ -280,7 +280,7 @@ Point Weibull::getSkewness() const
 }
 
 /* Get the kurtosis of the distribution */
-Point Weibull::getKurtosis() const
+Point WeibullMin::getKurtosis() const
 {
   const Scalar gamma1 = SpecFunc::Gamma(1.0 + 1.0 / beta_);
   const Scalar gamma1_2 = gamma1 * gamma1;
@@ -291,7 +291,7 @@ Point Weibull::getKurtosis() const
 }
 
 /* Compute the covariance of the distribution */
-void Weibull::computeCovariance() const
+void WeibullMin::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
   covariance_(0, 0) = std::pow(getStandardDeviation()[0], 2.0);
@@ -299,19 +299,19 @@ void Weibull::computeCovariance() const
 }
 
 /* Get the moments of the standardized distribution */
-Point Weibull::getStandardMoment(const UnsignedInteger n) const
+Point WeibullMin::getStandardMoment(const UnsignedInteger n) const
 {
   return Point(1, SpecFunc::Gamma(1.0 + n / beta_));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
-Distribution Weibull::getStandardRepresentative() const
+Distribution WeibullMin::getStandardRepresentative() const
 {
-  return new Weibull(1.0, beta_, 0.0);
+  return new WeibullMin(1.0, beta_, 0.0);
 }
 
 /* Parameters value accessor */
-Point Weibull::getParameter() const
+Point WeibullMin::getParameter() const
 {
   Point point(3);
   point[0] = alpha_;
@@ -320,16 +320,16 @@ Point Weibull::getParameter() const
   return point;
 }
 
-void Weibull::setParameter(const Point & parameter)
+void WeibullMin::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 3) throw InvalidArgumentException(HERE) << "Error: expected 3 values, got " << parameter.getSize();
   const Scalar w = getWeight();
-  *this = Weibull(parameter[0], parameter[1], parameter[2]);
+  *this = WeibullMin(parameter[0], parameter[1], parameter[2]);
   setWeight(w);
 }
 
 /* Parameters description accessor */
-Description Weibull::getParameterDescription() const
+Description WeibullMin::getParameterDescription() const
 {
   Description description(3);
   description[0] = "alpha";
@@ -339,7 +339,7 @@ Description Weibull::getParameterDescription() const
 }
 
 /* Beta accessor */
-void Weibull::setBeta(const Scalar beta)
+void WeibullMin::setBeta(const Scalar beta)
 {
   if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Beta MUST be positive";
   if (beta != beta_)
@@ -351,14 +351,14 @@ void Weibull::setBeta(const Scalar beta)
   }
 }
 
-Scalar Weibull::getBeta() const
+Scalar WeibullMin::getBeta() const
 {
   return beta_;
 }
 
 
 /* Alpha accessor */
-void Weibull::setAlpha(const Scalar alpha)
+void WeibullMin::setAlpha(const Scalar alpha)
 {
   if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
   if (alpha != alpha_)
@@ -370,13 +370,13 @@ void Weibull::setAlpha(const Scalar alpha)
   }
 }
 
-Scalar Weibull::getAlpha() const
+Scalar WeibullMin::getAlpha() const
 {
   return alpha_;
 }
 
 /* Alpha Beta accessor */
-void Weibull::setAlphaBeta(const Scalar alpha,
+void WeibullMin::setAlphaBeta(const Scalar alpha,
                            const Scalar beta)
 {
   if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
@@ -393,7 +393,7 @@ void Weibull::setAlphaBeta(const Scalar alpha,
 
 
 /* Gamma accessor */
-void Weibull::setGamma(const Scalar gamma)
+void WeibullMin::setGamma(const Scalar gamma)
 {
   if (gamma != gamma_)
   {
@@ -404,14 +404,14 @@ void Weibull::setGamma(const Scalar gamma)
   }
 }
 
-Scalar Weibull::getGamma() const
+Scalar WeibullMin::getGamma() const
 {
   return gamma_;
 }
 
 
 /* Method save() stores the object through the StorageManager */
-void Weibull::save(Advocate & adv) const
+void WeibullMin::save(Advocate & adv) const
 {
   ContinuousDistribution::save(adv);
   adv.saveAttribute( "alpha_", alpha_ );
@@ -420,7 +420,7 @@ void Weibull::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void Weibull::load(Advocate & adv)
+void WeibullMin::load(Advocate & adv)
 {
   ContinuousDistribution::load(adv);
   adv.loadAttribute( "alpha_", alpha_ );

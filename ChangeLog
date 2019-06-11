@@ -23,6 +23,7 @@
  * Removed deprecated (Linear|Quadratic)(LeastSquares|Taylor)::getResponseSurface
  * Removed deprecated VisualTest::DrawEmpiricalCDF,DrawHistogram,DrawClouds
  * Moved dot to Point::dot
+ * Deprecated Weibull in favor of WeibullMin
 
 === Python module ===
 

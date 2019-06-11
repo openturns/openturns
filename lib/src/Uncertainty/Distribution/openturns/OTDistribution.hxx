@@ -158,7 +158,7 @@
 #include "openturns/UserDefined.hxx"
 #include "openturns/UserDefinedFactory.hxx"
 #include "openturns/VonMises.hxx"
-#include "openturns/Weibull.hxx"
+#include "openturns/WeibullMin.hxx"
 #include "openturns/WeibullFactory.hxx"
 #include "openturns/WeibullMuSigma.hxx"
 #include "openturns/Wishart.hxx"

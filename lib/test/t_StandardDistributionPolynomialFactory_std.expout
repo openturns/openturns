@@ -70,14 +70,14 @@ Uniform polynomial(3)=1.15752 + 0.496078 * X - 2.48039 * X^2 + 0.826797 * X^3
 Uniform polynomial(4)=-0.867188 + 2.34375 * X + 2.10938 * X^2 - 3.28125 * X^3 + 0.820313 * X^4
 Uniform polynomial(4) roots=class=Point name=Unnamed dimension=4 values=[-0.722273,0.320038,1.67996,2.72227]
 Uniform polynomial(4) nodes=class=Point name=Unnamed dimension=4 values=[-0.722273,0.320038,1.67996,2.72227] and weights=class=Point name=Unnamed dimension=4 values=[0.173927,0.326073,0.326073,0.173927]
-polynomialFactory(Weibull=class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Weibull name=Weibull dimension=1 alpha=1 beta=3 gamma=0 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,-0.89298,0],class=Point name=Unnamed dimension=3 values=[1,-0.947537,-0.105333]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,0.105333] isElliptical=false
-Weibull polynomial(0)=1
-Weibull polynomial(1)=-2.75144 + 3.08119 * X
-Weibull polynomial(2)=5.3921 - 13.3967 * X + 7.27876 * X^2
-Weibull polynomial(3)=-8.91794 + 36.5275 * X - 42.8504 * X^2 + 14.9827 * X^3
-Weibull polynomial(4)=13.3264 - 79.2309 * X + 149.529 * X^2 - 111.023 * X^3 + 28.1044 * X^4
-Weibull polynomial(4) roots=class=Point name=Unnamed dimension=4 values=[0.315842,0.737023,1.19993,1.69759]
-Weibull polynomial(4) nodes=class=Point name=Unnamed dimension=4 values=[0.315842,0.737023,1.19993,1.69759] and weights=class=Point name=Unnamed dimension=4 values=[0.109605,0.491205,0.364361,0.03483]
+polynomialFactory(WeibullMin=class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=WeibullMin name=WeibullMin dimension=1 alpha=1 beta=3 gamma=0 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,-0.89298,0],class=Point name=Unnamed dimension=3 values=[1,-0.947537,-0.105333]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,0.105333] isElliptical=false
+WeibullMin polynomial(0)=1
+WeibullMin polynomial(1)=-2.75144 + 3.08119 * X
+WeibullMin polynomial(2)=5.3921 - 13.3967 * X + 7.27876 * X^2
+WeibullMin polynomial(3)=-8.91794 + 36.5275 * X - 42.8504 * X^2 + 14.9827 * X^3
+WeibullMin polynomial(4)=13.3264 - 79.2309 * X + 149.529 * X^2 - 111.023 * X^3 + 28.1044 * X^4
+WeibullMin polynomial(4) roots=class=Point name=Unnamed dimension=4 values=[0.315842,0.737023,1.19993,1.69759]
+WeibullMin polynomial(4) nodes=class=Point name=Unnamed dimension=4 values=[0.315842,0.737023,1.19993,1.69759] and weights=class=Point name=Unnamed dimension=4 values=[0.109605,0.491205,0.364361,0.03483]
 polynomialFactory(Beta=class=StandardDistributionPolynomialFactory hasSpecificFamily=true specificFamily=class=OrthogonalUniVariatePolynomialFamily implementation=class=JacobiFactory alpha=1 beta=0 measure=class=Beta name=Beta dimension=1 r=1 t=3 a=-1 b=1
 Beta polynomial(0)=1
 Beta polynomial(1)=0.707107 + 2.12132 * X

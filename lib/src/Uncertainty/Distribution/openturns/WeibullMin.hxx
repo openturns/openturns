@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The Weibull distribution
+ *  @brief The WeibullMin distribution
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,34 +18,34 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_WEIBULL_HXX
-#define OPENTURNS_WEIBULL_HXX
+#ifndef OPENTURNS_WEIBULLMIN_HXX
+#define OPENTURNS_WEIBULLMIN_HXX
 
 #include "openturns/ContinuousDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class Weibull
+ * @class WeibullMin
  *
- * The Weibull distribution.
+ * The WeibullMin distribution.
  */
-class OT_API Weibull
+class OT_API WeibullMin
   : public ContinuousDistribution
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  Weibull();
+  WeibullMin();
 
   /** Parameters constructor */
-  Weibull(const Scalar alpha,
+  WeibullMin(const Scalar alpha,
           const Scalar beta,
           const Scalar gamma = 0.0);
 
   /** Comparison operator */
-  Bool operator ==(const Weibull & other) const;
+  Bool operator ==(const WeibullMin & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const;
 public:
@@ -59,9 +59,9 @@ public:
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  virtual Weibull * clone() const;
+  virtual WeibullMin * clone() const;
 
-  /** Get one realization of the Weibull distribution */
+  /** Get one realization of the WeibullMin distribution */
   Point getRealization() const;
 
   /** Get the DDF of the distribution, i.e. the gradient of its PDF w.r.t. point */
@@ -123,7 +123,7 @@ public:
   /** Parameters description accessor */
   Description getParameterDescription() const;
 
-  /* Interface specific to Weibull */
+  /* Interface specific to WeibullMin */
 
   /** Beta accessor */
   void setBeta(const Scalar beta);
@@ -165,8 +165,8 @@ private:
   Scalar beta_;
   Scalar gamma_;
 
-}; /* class Weibull */
+}; /* class WeibullMin */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_WEIBULL_HXX */
+#endif /* OPENTURNS_WEIBULLMIN_HXX */

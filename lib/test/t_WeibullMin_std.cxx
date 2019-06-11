@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class Weibull for standard methods
+ *  @brief The test file of class WeibullMin for standard methods
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -24,10 +24,10 @@
 using namespace OT;
 using namespace OT::Test;
 
-class TestObject : public Weibull
+class TestObject : public WeibullMin
 {
 public:
-  TestObject() : Weibull(2.0, 1.5, -0.5) {}
+  TestObject() : WeibullMin(2.0, 1.5, -0.5) {}
   virtual ~TestObject() {}
 };
 
@@ -44,7 +44,7 @@ int main(int, char *[])
     checkClassWithClassName<TestObject>();
 
     // Instanciate one distribution object
-    Weibull distribution(2.0, 1.5, -0.5);
+    WeibullMin distribution(2.0, 1.5, -0.5);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
 
@@ -96,22 +96,22 @@ int main(int, char *[])
     Point PDFgr = distribution.computePDFGradient( point );
     fullprint << "pdf gradient     =" << PDFgr << std::endl;
     Point PDFgrFD(3);
-    PDFgrFD[0] = (Weibull(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getGamma()).computePDF(point) -
-                  Weibull(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getGamma()).computePDF(point)) / (2.0 * eps);
-    PDFgrFD[1] = (Weibull(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getGamma()).computePDF(point) -
-                  Weibull(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getGamma()).computePDF(point)) / (2.0 * eps);
-    PDFgrFD[2] = (Weibull(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() + eps).computePDF(point) -
-                  Weibull(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() - eps).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[0] = (WeibullMin(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getGamma()).computePDF(point) -
+                  WeibullMin(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getGamma()).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[1] = (WeibullMin(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getGamma()).computePDF(point) -
+                  WeibullMin(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getGamma()).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[2] = (WeibullMin(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() + eps).computePDF(point) -
+                  WeibullMin(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() - eps).computePDF(point)) / (2.0 * eps);
     fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
     Point CDFgr = distribution.computeCDFGradient( point );
     fullprint << "cdf gradient     =" << CDFgr << std::endl;
     Point CDFgrFD(3);
-    CDFgrFD[0] = (Weibull(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getGamma()).computeCDF(point) -
-                  Weibull(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getGamma()).computeCDF(point)) / (2.0 * eps);
-    CDFgrFD[1] = (Weibull(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getGamma()).computeCDF(point) -
-                  Weibull(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getGamma()).computeCDF(point)) / (2.0 * eps);
-    CDFgrFD[2] = (Weibull(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() + eps).computeCDF(point) -
-                  Weibull(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() - eps).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[0] = (WeibullMin(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getGamma()).computeCDF(point) -
+                  WeibullMin(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getGamma()).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[1] = (WeibullMin(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getGamma()).computeCDF(point) -
+                  WeibullMin(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getGamma()).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[2] = (WeibullMin(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() + eps).computeCDF(point) -
+                  WeibullMin(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() - eps).computeCDF(point)) / (2.0 * eps);
     fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
     Point quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;
@@ -148,7 +148,7 @@ int main(int, char *[])
     fullprint << "spearman=" << spearman << std::endl;
     CovarianceMatrix kendall = distribution.getKendallTau();
     fullprint << "kendall=" << kendall << std::endl;
-    Weibull::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
+    WeibullMin::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
     for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;

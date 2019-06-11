@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Factory for Weibull distribution
+ *  @brief Factory for WeibullMin distribution
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -59,23 +59,23 @@ Distribution WeibullFactory::build() const
   return buildAsWeibull().clone();
 }
 
-Weibull WeibullFactory::buildAsWeibull(const Sample & sample) const
+WeibullMin WeibullFactory::buildAsWeibull(const Sample & sample) const
 {
   const Scalar size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Weibull distribution from an empty sample";
-  if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Weibull distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a WeibullMin distribution from an empty sample";
+  if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a WeibullMin distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar xMin = sample.getMin()[0];
   Scalar gamma = xMin - std::abs(xMin) / (2.0 + size);
   const Scalar mean = sample.computeMean()[0];
   const Scalar sigma = sample.computeStandardDeviationPerComponent()[0];
-  if (!SpecFunc::IsNormal(gamma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Weibull distribution if data contains NaN or Inf";
+  if (!SpecFunc::IsNormal(gamma)) throw InvalidArgumentException(HERE) << "Error: cannot build a WeibullMin distribution if data contains NaN or Inf";
   try
   {
     Point parameters(3);
     parameters[0] = mean;
     parameters[1] = sigma;
     parameters[2] = gamma;
-    Weibull result(buildAsWeibull(WeibullMuSigma()(parameters)));
+    WeibullMin result(buildAsWeibull(WeibullMuSigma()(parameters)));
     result.setDescription(sample.getDescription());
     return result;
   }
@@ -83,29 +83,29 @@ Weibull WeibullFactory::buildAsWeibull(const Sample & sample) const
   catch (InvalidArgumentException &)
   {
     if (gamma == 0.0) gamma = SpecFunc::ScalarEpsilon;
-    Weibull result(100.0 * std::abs(gamma) * SpecFunc::ScalarEpsilon, 1.0, gamma);
+    WeibullMin result(100.0 * std::abs(gamma) * SpecFunc::ScalarEpsilon, 1.0, gamma);
     result.setDescription(sample.getDescription());
     return result;
   }
 }
 
-Weibull WeibullFactory::buildAsWeibull(const Point & parameters) const
+WeibullMin WeibullFactory::buildAsWeibull(const Point & parameters) const
 {
   try
   {
-    Weibull distribution;
+    WeibullMin distribution;
     distribution.setParameter(parameters);
     return distribution;
   }
   catch (InvalidArgumentException &)
   {
-    throw InvalidArgumentException(HERE) << "Error: cannot build a Weibull distribution from the given parameters";
+    throw InvalidArgumentException(HERE) << "Error: cannot build a WeibullMin distribution from the given parameters";
   }
 }
 
-Weibull WeibullFactory::buildAsWeibull() const
+WeibullMin WeibullFactory::buildAsWeibull() const
 {
-  return Weibull();
+  return WeibullMin();
 }
 
 END_NAMESPACE_OPENTURNS

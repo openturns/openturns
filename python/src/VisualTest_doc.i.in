@@ -136,7 +136,7 @@ Examples
 Generate a random sample from a Normal distribution:
 
 >>> ot.RandomGenerator.SetSeed(0)
->>> distribution = ot.Weibull(2.0, 0.5)
+>>> distribution = ot.WeibullMin(2.0, 0.5)
 >>> sample = distribution.getSample(30)
 >>> sample.setDescription(['Sample'])
 
@@ -209,7 +209,7 @@ Examples
 Generate a random sample from a Normal distribution:
 
 >>> ot.RandomGenerator.SetSeed(0)
->>> distribution = ot.Weibull(2.0, 0.5)
+>>> distribution = ot.WeibullMin(2.0, 0.5)
 >>> sample = distribution.getSample(30)
 >>> sample.setDescription(['Sample'])
 

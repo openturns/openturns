@@ -133,14 +133,14 @@ M=
  [ 0 0 1 0 0 ]
  [ 0 0 0 1 0 ]
  [ 0 0 0 0 1 ]]
-polynomialFactory( Weibull = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Weibull name=Weibull dimension=1 alpha=1 beta=3 gamma=0 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,-0.89298,0],class=Point name=Unnamed dimension=3 values=[1,-0.947537,-0.105333]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,0.105333] isElliptical=false )
-Weibull  polynomial( 0 )= 1
-Weibull  polynomial( 1 )= -2.75144 + 3.08119 * X
-Weibull  polynomial( 2 )= 5.3921 - 13.3967 * X + 7.27876 * X^2
-Weibull  polynomial( 3 )= -8.91794 + 36.5275 * X - 42.8504 * X^2 + 14.9827 * X^3
-Weibull  polynomial( 4 )= 13.3264 - 79.2309 * X + 149.529 * X^2 - 111.023 * X^3 + 28.1044 * X^4
-Weibull  polynomial( 4 ) roots= [0.315842,0.737023,1.19993,1.69759]
-Weibull  polynomial( 4 ) nodes= [0.315842,0.737023,1.19993,1.69759]  and weights= [0.109605,0.491205,0.364361,0.03483]
+polynomialFactory( WeibullMin = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=WeibullMin name=WeibullMin dimension=1 alpha=1 beta=3 gamma=0 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,-0.89298,0],class=Point name=Unnamed dimension=3 values=[1,-0.947537,-0.105333]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,0.105333] isElliptical=false )
+WeibullMin  polynomial( 0 )= 1
+WeibullMin  polynomial( 1 )= -2.75144 + 3.08119 * X
+WeibullMin  polynomial( 2 )= 5.3921 - 13.3967 * X + 7.27876 * X^2
+WeibullMin  polynomial( 3 )= -8.91794 + 36.5275 * X - 42.8504 * X^2 + 14.9827 * X^3
+WeibullMin  polynomial( 4 )= 13.3264 - 79.2309 * X + 149.529 * X^2 - 111.023 * X^3 + 28.1044 * X^4
+WeibullMin  polynomial( 4 ) roots= [0.315842,0.737023,1.19993,1.69759]
+WeibullMin  polynomial( 4 ) nodes= [0.315842,0.737023,1.19993,1.69759]  and weights= [0.109605,0.491205,0.364361,0.03483]
 M=
  5x5
 [[ 1 0 0 0 0 ]

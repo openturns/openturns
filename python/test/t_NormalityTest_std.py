@@ -52,7 +52,7 @@ try:
     distributionCollection.add(uniform)
     continuousDistributionCollection.add(uniform)
 
-    weibull = Weibull(1., 1., 2.)
+    weibull = WeibullMin(1., 1., 2.)
     distributionCollection.add(weibull)
     continuousDistributionCollection.add(weibull)
 

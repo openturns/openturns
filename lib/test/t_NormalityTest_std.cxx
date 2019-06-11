@@ -74,7 +74,7 @@ int main(int, char *[])
   distributionCollection.add(uniform);
   continuousDistributionCollection.add(uniform);
 
-  Weibull weibull(1., 1., 2.);
+  WeibullMin weibull(1., 1., 2.);
   distributionCollection.add(weibull);
   continuousDistributionCollection.add(weibull);
 

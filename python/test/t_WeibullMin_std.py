@@ -9,7 +9,7 @@ RandomGenerator.SetSeed(0)
 try:
 
     # Instanciate one distribution object
-    distribution = Weibull(2.0, 1.5, -0.5)
+    distribution = WeibullMin(2.0, 1.5, -0.5)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)
 
@@ -72,24 +72,24 @@ try:
     print("pdf gradient     =", repr(PDFgr))
     # by the finite difference technique
     PDFgrFD = Point(3)
-    PDFgrFD[0] = (Weibull(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getGamma()).computePDF(point) -
-                  Weibull(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getGamma()).computePDF(point)) / (2.0 * eps)
-    PDFgrFD[1] = (Weibull(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getGamma()).computePDF(point) -
-                  Weibull(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getGamma()).computePDF(point)) / (2.0 * eps)
-    PDFgrFD[2] = (Weibull(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() + eps).computePDF(point) -
-                  Weibull(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() - eps).computePDF(point)) / (2.0 * eps)
+    PDFgrFD[0] = (WeibullMin(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getGamma()).computePDF(point) -
+                  WeibullMin(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getGamma()).computePDF(point)) / (2.0 * eps)
+    PDFgrFD[1] = (WeibullMin(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getGamma()).computePDF(point) -
+                  WeibullMin(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getGamma()).computePDF(point)) / (2.0 * eps)
+    PDFgrFD[2] = (WeibullMin(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() + eps).computePDF(point) -
+                  WeibullMin(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() - eps).computePDF(point)) / (2.0 * eps)
     print("pdf gradient (FD)=", repr(PDFgrFD))
 
     # derivative of the PDF with regards the parameters of the distribution
     CDFgr = distribution.computeCDFGradient(point)
     print("cdf gradient     =", repr(CDFgr))
     CDFgrFD = Point(3)
-    CDFgrFD[0] = (Weibull(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getGamma()).computeCDF(point) -
-                  Weibull(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getGamma()).computeCDF(point)) / (2.0 * eps)
-    CDFgrFD[1] = (Weibull(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getGamma()).computeCDF(point) -
-                  Weibull(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getGamma()).computeCDF(point)) / (2.0 * eps)
-    CDFgrFD[2] = (Weibull(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() + eps).computeCDF(point) -
-                  Weibull(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() - eps).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[0] = (WeibullMin(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getGamma()).computeCDF(point) -
+                  WeibullMin(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getGamma()).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[1] = (WeibullMin(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getGamma()).computeCDF(point) -
+                  WeibullMin(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getGamma()).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[2] = (WeibullMin(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() + eps).computeCDF(point) -
+                  WeibullMin(distribution.getAlpha(), distribution.getBeta(), distribution.getGamma() - eps).computeCDF(point)) / (2.0 * eps)
     print("cdf gradient (FD)=",  repr(CDFgrFD))
 
     # quantile

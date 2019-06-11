@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Factory for Weibull distribution
+ *  @brief Factory for WeibullMin distribution
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -23,7 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionFactoryImplementation.hxx"
-#include "openturns/Weibull.hxx"
+#include "openturns/WeibullMin.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -48,9 +48,9 @@ public:
   Distribution build(const Sample & sample) const;
   Distribution build(const Point & parameters) const;
   Distribution build() const;
-  Weibull buildAsWeibull(const Sample & sample) const;
-  Weibull buildAsWeibull(const Point & parameters) const;
-  Weibull buildAsWeibull() const;
+  WeibullMin buildAsWeibull(const Sample & sample) const;
+  WeibullMin buildAsWeibull(const Point & parameters) const;
+  WeibullMin buildAsWeibull() const;
 
 }; /* class WeibullFactory */
 

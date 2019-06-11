@@ -50,7 +50,7 @@ int main(int, char *[])
     distributionCollection.add(Triangular(-1.0, 0.3, 1.0));
     distributionCollection.add(Uniform(-1.0, 1.0));
     distributionCollection.add(Uniform(-1.0, 3.0));
-    distributionCollection.add(Weibull(1.0, 3.0));
+    distributionCollection.add(WeibullMin(1.0, 3.0));
     distributionCollection.add(Beta(1.0, 3.0, -1.0, 1.0));
     distributionCollection.add(Beta(0.5, 1.0, -1.0, 1.0));
     distributionCollection.add(Beta(0.5, 1.0, -2.0, 3.0));

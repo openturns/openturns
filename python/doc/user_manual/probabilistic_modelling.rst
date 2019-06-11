@@ -82,7 +82,7 @@ Continuous parametric distributions
     TruncatedNormal
     Uniform
     VonMises
-    Weibull
+    WeibullMin
     Wishart
 
 Discrete parametric distributions

@@ -7,7 +7,7 @@ TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
 
 try:
-    distribution = Weibull(1.0, 2.5, -1.0)
+    distribution = WeibullMin(1.0, 2.5, -1.0)
     size = 10000
     sample = distribution.getSample(size)
     factory = WeibullFactory()
@@ -25,7 +25,7 @@ try:
     print("Default weibull=", estimatedWeibull)
     estimatedWeibull = factory.buildAsWeibull(
         distribution.getParameter())
-    print("Weibull from parameters=", estimatedWeibull)
+    print("WeibullMin from parameters=", estimatedWeibull)
     sample = [[0.0]] * size
     estimatedDistribution = factory.build(sample)
     print("Estimated distribution=", repr(estimatedDistribution))

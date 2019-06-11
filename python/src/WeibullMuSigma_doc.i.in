@@ -1,5 +1,5 @@
 %feature("docstring") OT::WeibullMuSigma
-"Weibull distribution parameters.
+"WeibullMin distribution parameters.
 
 Available constructors:
     WeibullMuSigma(*mu=1.0, sigma=1.0, gamma=0.*)
@@ -25,11 +25,11 @@ The native parameters :math:`\alpha` and :math:`\beta` are searched such as:
 
 See also
 --------
-Weibull
+WeibullMin
 
 Examples
 --------
-Create the parameters of the Weibull distribution:
+Create the parameters of the WeibullMin distribution:
 
 >>> import openturns as ot
 >>> parameters = ot.WeibullMuSigma(1.3, 1.23, -0.5)

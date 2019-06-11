@@ -190,18 +190,18 @@ int main(int, char *[])
     // graph.draw("logn_fois_logu.png");
     // Ticket #917
     // X+Y
-    result = Weibull() + Exponential();
+    result = WeibullMin() + Exponential();
     fullprint << "result=" << result << std::endl;
     fullprint << "cdf(1.0)=" << result.computeCDF(1.0) << std::endl;
     // -X+Y->bug using operators, as -X returns a smart pointer,
     // which is promoted into a Scalar by +!
-    //result = (Weibull() * (-1.0)) + Exponential();
+    //result = (WeibullMin() * (-1.0)) + Exponential();
     //fullprint << "result=" << result << std::endl;
     //fullprint << "cdf(1.0)=" << result.computeCDF(1.0) << std::endl;
     // so we do it by hand
     {
       Collection<Distribution> coll(2);
-      coll[0] = Weibull();
+      coll[0] = WeibullMin();
       coll[1] = Exponential();
       Point weights(2);
       weights[0] = -1.0;
@@ -211,18 +211,18 @@ int main(int, char *[])
       fullprint << "cdf(1.0)=" << result.computeCDF(1.0) << std::endl;
     }
     // X-Y
-    result = Weibull() - Exponential();
+    result = WeibullMin() - Exponential();
     fullprint << "result=" << result << std::endl;
     fullprint << "cdf(1.0)=" << result.computeCDF(1.0) << std::endl;
     // -X-Y->bug using operators, as -X returns a smart pointer,
     // which is promoted into a Scalar by +!
-    //result = Weibull() * (-1.0) - Exponential();
+    //result = WeibullMin() * (-1.0) - Exponential();
     //fullprint << "result=" << result << std::endl;
     //fullprint << "cdf(-1.0)=" << result.computeCDF(-1.0) << std::endl;
     // so we do it by hand
     {
       Collection<Distribution> coll(2);
-      coll[0] = Weibull();
+      coll[0] = WeibullMin();
       coll[1] = Exponential();
       Point weights(2);
       weights[0] = -1.0;

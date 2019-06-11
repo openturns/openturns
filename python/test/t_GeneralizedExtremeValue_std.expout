@@ -51,11 +51,11 @@ standard moment n= 2 , value= [9.81725]
 standard moment n= 3 , value= [42.4963]
 standard moment n= 4 , value= [209.086]
 standard moment n= 5 , value= [1135.1]
-Standard representative= RandomMixture(-Weibull(alpha = 10, beta = 6.66667, gamma = -12))
+Standard representative= RandomMixture(-WeibullMin(alpha = 10, beta = 6.66667, gamma = -12))
 mu= 2.0
 sigma= 1.5
 xi= -0.15
-Actual distribution= RandomMixture(-Weibull(alpha = 10, beta = 6.66667, gamma = -12))
+Actual distribution= RandomMixture(-WeibullMin(alpha = 10, beta = 6.66667, gamma = -12))
 Distribution from actual distribution= GeneralizedExtremeValue(mu=-2, sigma=-1.5, xi=-0.15)
 ##################################################
 Distribution  GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0)

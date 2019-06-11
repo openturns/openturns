@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/GeneralizedExtremeValue.hxx"
-#include "openturns/Weibull.hxx"
+#include "openturns/WeibullMin.hxx"
 #include "openturns/Frechet.hxx"
 #include "openturns/Gumbel.hxx"
 #include "openturns/RandomMixture.hxx"
@@ -378,15 +378,15 @@ void GeneralizedExtremeValue::setMuSigmaXi(const Scalar mu,
   mu_ = mu;
   sigma_ = sigma;
   xi_ = xi;
-  // Now build the actual Frechet/Gumbel/Weibull distribution
+  // Now build the actual Frechet/Gumbel/WeibullMin distribution
   const Scalar xiEpsilon = ResourceMap::GetAsScalar("GeneralizedExtremeValue-XiThreshold");
-  // Weibull case
+  // WeibullMin case
   if (xi_ < -xiEpsilon)
   {
     const Scalar alpha = -sigma / xi;
     const Scalar beta = -1.0 / xi;
     const Scalar gamma = sigma / xi - mu;
-    actualDistribution_ = Weibull(alpha, beta, gamma) * (-1.0);
+    actualDistribution_ = WeibullMin(alpha, beta, gamma) * (-1.0);
   }
   // Frechet case
   else if (xi_ > xiEpsilon)
@@ -451,11 +451,11 @@ void GeneralizedExtremeValue::setActualDistribution(const Distribution & distrib
     // Nothing to do
   }
   // Try to cast the given distribution into a RandomMixture
-  // with a Weibull atom with negative coefficient
+  // with a WeibullMin atom with negative coefficient
   try
   {
     const RandomMixture* p_mixture = dynamic_cast<const RandomMixture*>(distribution.getImplementation().get());
-    // If it worked try to catch the atom into a Weibull distribution
+    // If it worked try to catch the atom into a WeibullMin distribution
     if (p_mixture)
     {
       // First, the easy checks:
@@ -466,8 +466,8 @@ void GeneralizedExtremeValue::setActualDistribution(const Distribution & distrib
           (p_mixture->getDistributionCollection().getSize() == 1) &&
           (p_mixture->getWeights()(0, 0) < 0.0))
       {
-        // Try to catch the unique atom into a Weibull distribution
-        const Weibull* p_weibull = dynamic_cast<const Weibull*>(p_mixture->getDistributionCollection()[0].getImplementation().get());
+        // Try to catch the unique atom into a WeibullMin distribution
+        const WeibullMin* p_weibull = dynamic_cast<const WeibullMin*>(p_mixture->getDistributionCollection()[0].getImplementation().get());
         if (p_weibull)
         {
           const Scalar constant = p_mixture->getConstant()[0];

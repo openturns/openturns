@@ -299,8 +299,8 @@ int main(int, char *[])
     UserDefined userDefined(x, p);
     study.add("userDefined", userDefined);
 
-    // Create a Weibull distribution
-    Weibull weibull(2.0, 1.5, -0.5);
+    // Create a WeibullMin distribution
+    WeibullMin weibull(2.0, 1.5, -0.5);
     study.add("weibull", weibull);
 
     // Create a NormalCopula distribution
@@ -1050,7 +1050,7 @@ int main(int, char *[])
     compare<TruncatedNormal>(truncatedNormal, study2 );
     compare<Uniform >( uniform, study2 );
     compare<UserDefined>(userDefined, study2 );
-    compare<Weibull>(weibull, study2 );
+    compare<WeibullMin>(weibull, study2 );
 
     // Simulation
     compare<ProbabilitySimulationAlgorithm>(monteCarlo, study2 );

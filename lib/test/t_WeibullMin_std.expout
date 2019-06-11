@@ -1,14 +1,14 @@
-Testing class Weibull
+Testing class WeibullMin
 checkConstructorAndDestructor()
 checkCopyConstructor()
 streamObject(const T & anObject)
-class=Weibull name=Weibull dimension=1 alpha=2 beta=1.5 gamma=-0.5
+class=WeibullMin name=WeibullMin dimension=1 alpha=2 beta=1.5 gamma=-0.5
 streamObject(const T & anObject)
-class=Weibull name=Weibull dimension=1 alpha=2 beta=1.5 gamma=-0.5
+class=WeibullMin name=WeibullMin dimension=1 alpha=2 beta=1.5 gamma=-0.5
 areSameObjects(const T & firstObject, const T & secondObject)
 areDifferentObjects(const T & firstObject, const T & secondObject)
-Distribution class=Weibull name=Weibull dimension=1 alpha=2 beta=1.5 gamma=-0.5
-Distribution Weibull(alpha = 2, beta = 1.5, gamma = -0.5)
+Distribution class=WeibullMin name=WeibullMin dimension=1 alpha=2 beta=1.5 gamma=-0.5
+Distribution WeibullMin(alpha = 2, beta = 1.5, gamma = -0.5)
 Elliptical = false
 Continuous = true
 oneRealization=class=Point name=Unnamed dimension=1 values=[1.49188]
@@ -35,7 +35,7 @@ quantile=class=Point name=Unnamed dimension=1 values=[3.65622]
 cdf(quantile)=0.95
 Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.489737] upper bound=class=Point name=Unnamed dimension=1 values=[3.66304] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Weibull(alpha = 2, beta = 1.5, gamma = -0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(Weibull(alpha = 2, beta = 1.5, gamma = -0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Weibull(alpha = 2, beta = 1.5, gamma = -0.5)) level=2.92424
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(WeibullMin(alpha = 2, beta = 1.5, gamma = -0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(WeibullMin(alpha = 2, beta = 1.5, gamma = -0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(WeibullMin(alpha = 2, beta = 1.5, gamma = -0.5)) level=2.92424
 beta=0.0537054
 Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[-0.327556] upper bound=class=Point name=Unnamed dimension=1 values=[4.27485] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
@@ -60,4 +60,4 @@ standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.19064]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[2]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[4.0122]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[9.26053]
-Standard representative=Weibull(alpha = 1, beta = 1.5, gamma = 0)
+Standard representative=WeibullMin(alpha = 1, beta = 1.5, gamma = 0)
