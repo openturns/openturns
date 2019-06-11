@@ -10,7 +10,7 @@ try:
     distribution = WeibullMin(1.0, 2.5, -1.0)
     size = 10000
     sample = distribution.getSample(size)
-    factory = WeibullFactory()
+    factory = WeibullMinFactory()
     estimatedDistribution = factory.build(sample)
     print("distribution=", repr(distribution))
     print("Estimated distribution=", repr(estimatedDistribution))
@@ -19,11 +19,11 @@ try:
     estimatedDistribution = factory.build(
         distribution.getParameter())
     print("Distribution from parameters=", estimatedDistribution)
-    estimatedWeibull = factory.buildAsWeibull(sample)
+    estimatedWeibull = factory.buildAsWeibullMin(sample)
     print("Estimated weibull=", estimatedWeibull)
-    estimatedWeibull = factory.buildAsWeibull()
+    estimatedWeibull = factory.buildAsWeibullMin()
     print("Default weibull=", estimatedWeibull)
-    estimatedWeibull = factory.buildAsWeibull(
+    estimatedWeibull = factory.buildAsWeibullMin(
         distribution.getParameter())
     print("WeibullMin from parameters=", estimatedWeibull)
     sample = [[0.0]] * size

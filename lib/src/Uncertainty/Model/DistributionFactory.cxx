@@ -66,7 +66,7 @@
 #include "openturns/TruncatedNormalFactory.hxx"
 #include "openturns/UniformFactory.hxx"
 #include "openturns/UserDefinedFactory.hxx"
-#include "openturns/WeibullFactory.hxx"
+#include "openturns/WeibullMinFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -103,7 +103,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetConti
   collection.add(TriangularFactory());
   collection.add(TruncatedNormalFactory());
   collection.add(UniformFactory());
-  collection.add(WeibullFactory());
+  collection.add(WeibullMinFactory());
   return collection;
 }
 

@@ -90,7 +90,7 @@ Building distributions from samples
     TruncatedNormalFactory
     UniformFactory
     UserDefinedFactory
-    WeibullFactory
+    WeibullMinFactory
 
 Building copulas from samples
 =============================

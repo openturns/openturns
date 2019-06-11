@@ -25,7 +25,8 @@
  * Moved dot to Point::dot
  * Deprecated Weibull in favor of WeibullMin
  * Deprecated WeibullMuSigma in favor of WeibullMinMuSigma
-
+ * Deprecated WeibullFactory in favor of WeibullMinFactory, buildAsWeibull
+ 
 === Python module ===
 
 === Miscellaneous ===

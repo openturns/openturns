@@ -18,48 +18,48 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/WeibullFactory.hxx"
+#include "openturns/WeibullMinFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/WeibullMinMuSigma.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(WeibullFactory)
+CLASSNAMEINIT(WeibullMinFactory)
 
-static const Factory<WeibullFactory> Factory_WeibullFactory;
+static const Factory<WeibullMinFactory> Factory_WeibullMinFactory;
 
 /* Default constructor */
-WeibullFactory::WeibullFactory()
+WeibullMinFactory::WeibullMinFactory()
   : DistributionFactoryImplementation()
 {
   // Nothing to do
 }
 
 /* Virtual constructor */
-WeibullFactory * WeibullFactory::clone() const
+WeibullMinFactory * WeibullMinFactory::clone() const
 {
-  return new WeibullFactory(*this);
+  return new WeibullMinFactory(*this);
 }
 
 /* Here is the interface that all derived class must implement */
 
-Distribution WeibullFactory::build(const Sample & sample) const
+Distribution WeibullMinFactory::build(const Sample & sample) const
 {
-  return buildAsWeibull(sample).clone();
+  return buildAsWeibullMin(sample).clone();
 }
 
-Distribution WeibullFactory::build(const Point & parameters) const
+Distribution WeibullMinFactory::build(const Point & parameters) const
 {
-  return buildAsWeibull(parameters).clone();
+  return buildAsWeibullMin(parameters).clone();
 }
 
-Distribution WeibullFactory::build() const
+Distribution WeibullMinFactory::build() const
 {
-  return buildAsWeibull().clone();
+  return buildAsWeibullMin().clone();
 }
 
-WeibullMin WeibullFactory::buildAsWeibull(const Sample & sample) const
+WeibullMin WeibullMinFactory::buildAsWeibullMin(const Sample & sample) const
 {
   const Scalar size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a WeibullMin distribution from an empty sample";
@@ -75,7 +75,7 @@ WeibullMin WeibullFactory::buildAsWeibull(const Sample & sample) const
     parameters[0] = mean;
     parameters[1] = sigma;
     parameters[2] = gamma;
-    WeibullMin result(buildAsWeibull(WeibullMinMuSigma()(parameters)));
+    WeibullMin result(buildAsWeibullMin(WeibullMinMuSigma()(parameters)));
     result.setDescription(sample.getDescription());
     return result;
   }
@@ -89,7 +89,7 @@ WeibullMin WeibullFactory::buildAsWeibull(const Sample & sample) const
   }
 }
 
-WeibullMin WeibullFactory::buildAsWeibull(const Point & parameters) const
+WeibullMin WeibullMinFactory::buildAsWeibullMin(const Point & parameters) const
 {
   try
   {
@@ -103,9 +103,29 @@ WeibullMin WeibullFactory::buildAsWeibull(const Point & parameters) const
   }
 }
 
-WeibullMin WeibullFactory::buildAsWeibull() const
+WeibullMin WeibullMinFactory::buildAsWeibullMin() const
 {
   return WeibullMin();
 }
+
+
+WeibullMin WeibullMinFactory::buildAsWeibull(const Sample & sample) const
+{
+  LOGWARN("buildAsWeibull is deprecated");
+  return buildAsWeibullMin(sample);
+}
+
+WeibullMin WeibullMinFactory::buildAsWeibull(const Point & parameters) const
+{
+  LOGWARN("buildAsWeibull is deprecated");
+  return buildAsWeibullMin(parameters);
+}
+
+WeibullMin WeibullMinFactory::buildAsWeibull() const
+{
+  LOGWARN("buildAsWeibull is deprecated");
+  return buildAsWeibullMin();
+}
+
 
 END_NAMESPACE_OPENTURNS

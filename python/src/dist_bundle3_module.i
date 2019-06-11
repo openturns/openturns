@@ -49,7 +49,7 @@
 %include UserDefinedFactory.i
 %include VonMises.i
 %include WeibullMin.i
-%include WeibullFactory.i
+%include WeibullMinFactory.i
 %include WeibullMinMuSigma.i
 %include Wishart.i
 %include ZipfMandelbrot.i

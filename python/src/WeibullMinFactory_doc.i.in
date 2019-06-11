@@ -1,8 +1,8 @@
-%feature("docstring") OT::WeibullFactory
+%feature("docstring") OT::WeibullMinFactory
 "WeibullMin factory.
 
 Available constructor:
-    WeibullFactory()
+    WeibullMinFactory()
 
 The parameters are estimated by method of moments:
 

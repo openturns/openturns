@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_WEIBULLFACTORY_HXX
-#define OPENTURNS_WEIBULLFACTORY_HXX
+#ifndef OPENTURNS_WEIBULLMINFACTORY_HXX
+#define OPENTURNS_WEIBULLMINFACTORY_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionFactoryImplementation.hxx"
@@ -28,19 +28,19 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class WeibullFactory
+ * @class WeibullMinFactory
  */
-class OT_API WeibullFactory
+class OT_API WeibullMinFactory
   : public DistributionFactoryImplementation
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  WeibullFactory();
+  WeibullMinFactory();
 
   /** Virtual constructor */
-  virtual WeibullFactory * clone() const;
+  virtual WeibullMinFactory * clone() const;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
@@ -48,13 +48,17 @@ public:
   Distribution build(const Sample & sample) const;
   Distribution build(const Point & parameters) const;
   Distribution build() const;
+  WeibullMin buildAsWeibullMin(const Sample & sample) const;
+  WeibullMin buildAsWeibullMin(const Point & parameters) const;
+  WeibullMin buildAsWeibullMin() const;
+
+  /** @deprecated */
   WeibullMin buildAsWeibull(const Sample & sample) const;
   WeibullMin buildAsWeibull(const Point & parameters) const;
   WeibullMin buildAsWeibull() const;
-
-}; /* class WeibullFactory */
+}; /* class WeibullMinFactory */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_WEIBULLFACTORY_HXX */
+#endif /* OPENTURNS_WEIBULLMINFACTORY_HXX */

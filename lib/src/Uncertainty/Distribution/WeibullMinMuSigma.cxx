@@ -20,7 +20,7 @@
  */
 
 #include <cmath>
-#include "openturns/WeibullFactory.hxx"
+#include "openturns/WeibullMinFactory.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/WeibullMinMuSigma.hxx"
@@ -74,7 +74,7 @@ Distribution WeibullMinMuSigma::getDistribution() const
 
   Point nativeParameters(operator()(newParameters));
 
-  return WeibullFactory().build(nativeParameters);
+  return WeibullMinFactory().build(nativeParameters);
 }
 
 

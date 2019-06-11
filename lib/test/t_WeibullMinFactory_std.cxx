@@ -35,7 +35,7 @@ int main(int, char *[])
     WeibullMin distribution(1., 2.5, -1.0);
     UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
-    WeibullFactory factory;
+    WeibullMinFactory factory;
     CovarianceMatrix covariance;
     // Distribution estimatedDistribution(factory.build(sample, covariance));
     Distribution estimatedDistribution(factory.build(sample));
@@ -47,11 +47,11 @@ int main(int, char *[])
     estimatedDistribution = factory.build(distribution.getParameter());
     fullprint << "Distribution from parameters=" << estimatedDistribution << std::endl;
     // Test the specific build method
-    WeibullMin estimatedWeibull(factory.buildAsWeibull(sample));
+    WeibullMin estimatedWeibull(factory.buildAsWeibullMin(sample));
     fullprint << "Estimated weibull=" << estimatedWeibull << std::endl;
-    estimatedWeibull = factory.buildAsWeibull();
+    estimatedWeibull = factory.buildAsWeibullMin();
     fullprint << "Default weibull=" << estimatedWeibull << std::endl;
-    estimatedWeibull = factory.buildAsWeibull(distribution.getParameter());
+    estimatedWeibull = factory.buildAsWeibullMin(distribution.getParameter());
     fullprint << "WeibullMin from parameters=" << estimatedWeibull << std::endl;
     // Test for constant sample
     sample = Sample(size, Point(1, 0.0));
