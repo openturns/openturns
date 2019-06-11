@@ -116,7 +116,6 @@ void GaussianLinearCalibration::run()
   const Point deltaY(modelObservations_.getImplementation()->getData() - outputObservations_.getImplementation()->getData());
   // Compute invserse of the Cholesky decomposition of the covariance matrix of the parameter
   const TriangularMatrix parameterInverseCholesky(getParameterPrior().getInverseCholesky());
-
   // Compute the covariance matrix R
   CovarianceMatrix R(deltaY.getSize());
   const UnsignedInteger dimension = errorCovariance_.getDimension();
@@ -144,15 +143,15 @@ void GaussianLinearCalibration::run()
   for (UnsignedInteger i = 0; i < parameterDimension; ++i)
     for (UnsignedInteger j = 0; j < parameterDimension; ++j)
       Abar(i,j) = parameterInverseCholesky(i,j);
-  for (UnsignedInteger i = parameterDimension; i < size + parameterDimension; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
     for (UnsignedInteger j = 0; j < parameterDimension; ++j)
-      Abar(i,j) = -invLRJ(i,j);
+      Abar(i+parameterDimension,j) = -invLRJ(i,j);
   // Compute errorInverseCholesky*deltay, the right hand size of the extended residual
   const Point invLRz = errorInverseCholesky * deltaY;
   // Create the right hand side of the extended linear least squares system : ybar = -invLRz
   Point ybar(size+parameterDimension);
-  for (UnsignedInteger i = parameterDimension; i < size + parameterDimension; ++i)
-    ybar[i] = -invLRz[i];
+  for (UnsignedInteger i = 0; i < size; ++i)
+    ybar[i+parameterDimension] = invLRz[i];
   // Solve the linear least squares problem
   LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, Abar));
   const Point deltaTheta(method.solve(ybar));
