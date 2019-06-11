@@ -399,9 +399,9 @@ void GeneralizedExtremeValue::setMuSigmaXi(const Scalar mu,
   // Gumbel case
   else
   {
-    const Scalar alpha = 1.0 / sigma;
-    const Scalar beta = mu;
-    actualDistribution_ = Gumbel(alpha, beta);
+    const Scalar beta = sigma;
+    const Scalar gamma = mu;
+    actualDistribution_ = Gumbel(beta, gamma);
   }
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
@@ -418,7 +418,7 @@ void GeneralizedExtremeValue::setActualDistribution(const Distribution & distrib
     if (p_gumbel)
     {
       mu_ = p_gumbel->getBeta();
-      sigma_ = 1.0 / p_gumbel->getAlpha();
+      sigma_ = p_gumbel->getBeta();
       xi_ = 0.0;
       actualDistribution_ = Gumbel(*p_gumbel);
       isAlreadyComputedMean_ = false;

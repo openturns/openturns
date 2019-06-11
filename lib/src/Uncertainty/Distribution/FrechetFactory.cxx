@@ -77,8 +77,8 @@ Frechet FrechetFactory::buildAsFrechet(const Sample & sample) const
     logSample(i, 0) = std::log(sample(i, 0) - gamma);
   // Estimate the associated Gumbel
   const Gumbel associatedGumbel(GumbelFactory().buildAsGumbel(logSample));
-  const Scalar alphaGumbel = associatedGumbel.getAlpha();
-  const Scalar betaGumbel = associatedGumbel.getBeta();
+  const Scalar alphaGumbel = 1.0 / associatedGumbel.getBeta();
+  const Scalar betaGumbel = associatedGumbel.getGamma();
   // Now get the parameter estimate of the Frechet distribution
   const Scalar alphaFrechet = alphaGumbel;
   const Scalar betaFrechet = std::exp(betaGumbel);

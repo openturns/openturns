@@ -65,8 +65,8 @@ saved  GeneralizedPareto = class=GeneralizedPareto name=GeneralizedPareto dimens
 loaded GeneralizedPareto = class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=-0.2
 saved  Geometric = class=Geometric name=Geometric dimension=1 p=0.15
 loaded Geometric = class=Geometric name=Geometric dimension=1 p=0.15
-saved  Gumbel = class=Gumbel name=Gumbel dimension=1 alpha=2 beta=-0.5
-loaded Gumbel = class=Gumbel name=Gumbel dimension=1 alpha=2 beta=-0.5
+saved  Gumbel = class=Gumbel name=Gumbel dimension=1 beta=2 gamma=-0.5
+loaded Gumbel = class=Gumbel name=Gumbel dimension=1 beta=2 gamma=-0.5
 saved  IndependentCopula = class=IndependentCopula name=IndependentCopula dimension=5
 loaded IndependentCopula = class=IndependentCopula name=IndependentCopula dimension=5
 saved  InverseNormal = class=InverseNormal name=InverseNormal dimension=1 lambda=0.5 mu=2

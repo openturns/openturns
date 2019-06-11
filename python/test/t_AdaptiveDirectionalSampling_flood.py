@@ -25,7 +25,7 @@ def flood_model(X):
 function = ot.PythonFunction(dim, 1, flood_model)
 
 Q_law = ot.TruncatedDistribution(
-    ot.Gumbel(1.0 / 558.0, 1013.0), 0.0, ot.TruncatedDistribution.LOWER)
+    ot.Gumbel(558.0, 1013.0), 0.0, ot.TruncatedDistribution.LOWER)
 # alpha=1/b, beta=a | you can use Gumbel(a, b, Gumbel.AB) starting from OT 1.2
 Ks_law = ot.TruncatedDistribution(
     ot.Normal(30.0, 7.5), 0., ot.TruncatedDistribution.LOWER)

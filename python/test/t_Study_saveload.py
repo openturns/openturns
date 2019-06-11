@@ -217,9 +217,6 @@ try:
     # GammaMuSigma parameter save
     gmms_parameters = ot.GammaMuSigma(1.5, 2.5, -0.5)
     myStudy.add('gmms_parameters', gmms_parameters)
-    # GumbelAB parameter save
-    gab_parameters = ot.GumbelAB(-0.5, 0.5)
-    myStudy.add('gab_parameters', gab_parameters)
     # GumbelMuSigma parameter save
     gms_parameters = ot.GumbelMuSigma(1.5, 1.3)
     myStudy.add('gms_parameters', gms_parameters)
@@ -337,9 +334,6 @@ try:
     # GammaMuSigma parameter loading
     gmms_parameters = ot.GammaMuSigma()
     myStudy.fillObject('gmms_parameters', gmms_parameters)
-    # GumbelAB parameter loading
-    gab_parameters = ot.GumbelAB()
-    myStudy.fillObject('gab_parameters', gab_parameters)
     # GumbelMuSigma parameter loading
     gms_parameters = ot.GumbelMuSigma()
     myStudy.fillObject('gms_parameters', gms_parameters)

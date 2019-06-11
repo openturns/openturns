@@ -3,7 +3,7 @@
 from __future__ import print_function
 import openturns as ot
 
-distribution = ot.Gumbel(2.0, 2.5)
+distribution = ot.Gumbel(0.5, 2.5)
 size = 10000
 sample = distribution.getSample(size)
 factory = ot.GumbelFactory()

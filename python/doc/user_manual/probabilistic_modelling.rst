@@ -121,7 +121,6 @@ Parametrized distributions
     BetaMuSigma
     GammaMuSigma
     GumbelMuSigma
-    GumbelAB
     LogNormalMuSigma
     LogNormalMuSigmaOverMu
     WeibullMinMuSigma

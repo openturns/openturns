@@ -1,6 +1,6 @@
 d= RandomMixture(Dirac(point = [5.8]))
 d= RandomMixture(5 + Exponential(lambda = 1, gamma = 0))
-d= RandomMixture(11 + 2 * Gumbel(alpha = 1, beta = 0) + 1.5 * Logistic(alpha = 0, beta = 1) + 4.5 * WeibullMin(beta = 1, alpha = 1, gamma = 0) + 4 * Frechet(beta = 1, alpha = 4, gamma = 0))
+d= RandomMixture(11 + 2 * Gumbel(beta = 1, gamma = 0) + 1.5 * Logistic(alpha = 0, beta = 1) + 4.5 * WeibullMin(beta = 1, alpha = 1, gamma = 0) + 4 * Frechet(beta = 1, alpha = 4, gamma = 0))
 d= RandomMixture(2.5 * Logistic(alpha = 0, beta = 1) + Normal(mu = 8.5, sigma = 5))
 d= RandomMixture(6.5 + Gamma(k = 3, lambda = 0.5, gamma = 0) + Gamma(k = 8, lambda = 1, gamma = 0) + Exponential(lambda = 2, gamma = 0))
 d= RandomMixture(Triangular(a = 0, m = 1, b = 2) + Trapezoidal(a = -1, b = 3, c = 14, d = 18) + Uniform(a = 10, b = 14))
