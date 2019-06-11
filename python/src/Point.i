@@ -118,6 +118,11 @@ Point __isub__(const Point & other)
  return *self;
 }
 
+Point __neg__()
+{
+ return -1.0 * (*self);
+}
+
 } // %extend
 
 } // OT
