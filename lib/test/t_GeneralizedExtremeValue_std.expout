@@ -123,7 +123,7 @@ mu=2
 sigma=1.5
 xi=0
 Actual distribution=class=Gumbel name=Gumbel dimension=1 alpha=0.666667 beta=2
-Distribution class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=0.15 actual distribution=class=Frechet name=Frechet dimension=1 alpha=6.66667 beta=10 gamma=-8
+Distribution class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=0.15 actual distribution=class=Frechet name=Frechet dimension=1 beta=10 alpha=6.66667 gamma=-8
 Distribution GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0.15)
 Elliptical = false
 Continuous = true
@@ -176,8 +176,8 @@ standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.29806]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[1.61612]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[2.21815]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[3.62435]
-Standard representative=class=Frechet name=Frechet dimension=1 alpha=6.66667 beta=1 gamma=0
+Standard representative=class=Frechet name=Frechet dimension=1 beta=1 alpha=6.66667 gamma=0
 mu=2
 sigma=1.5
 xi=0.15
-Actual distribution=class=Frechet name=Frechet dimension=1 alpha=6.66667 beta=10 gamma=-8
+Actual distribution=class=Frechet name=Frechet dimension=1 beta=10 alpha=6.66667 gamma=-8

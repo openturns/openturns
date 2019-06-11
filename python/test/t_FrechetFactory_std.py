@@ -3,7 +3,7 @@
 from __future__ import print_function
 import openturns as ot
 ot.Log.Show(ot.Log.ALL)
-distribution = ot.Frechet(2.0, 2.5, -1.5)
+distribution = ot.Frechet(2.5, 2.0, -1.5)
 size = 10000
 sample = distribution.getSample(size)
 factory = ot.FrechetFactory()

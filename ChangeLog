@@ -26,7 +26,8 @@
  * Deprecated Weibull in favor of WeibullMin
  * Deprecated WeibullMuSigma in favor of WeibullMinMuSigma
  * Deprecated WeibullFactory in favor of WeibullMinFactory, buildAsWeibull
- 
+ * New argument ordering in Frechet ctor: scale(beta), shape(alpha), location(gamma) (swapped alpha and beta)
+
 === Python module ===
 
 === Miscellaneous ===

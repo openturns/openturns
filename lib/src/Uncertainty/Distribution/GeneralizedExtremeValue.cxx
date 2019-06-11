@@ -394,7 +394,7 @@ void GeneralizedExtremeValue::setMuSigmaXi(const Scalar mu,
     const Scalar alpha = 1.0 / xi;
     const Scalar beta = sigma / xi;
     const Scalar gamma = mu - sigma / xi;
-    actualDistribution_ = Frechet(alpha, beta, gamma);
+    actualDistribution_ = Frechet(beta, alpha, gamma);
   }
   // Gumbel case
   else
