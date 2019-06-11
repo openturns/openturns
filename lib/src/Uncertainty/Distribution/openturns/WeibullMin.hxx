@@ -40,8 +40,8 @@ public:
   WeibullMin();
 
   /** Parameters constructor */
-  WeibullMin(const Scalar alpha,
-          const Scalar beta,
+  WeibullMin(const Scalar beta,
+          const Scalar alpha,
           const Scalar gamma = 0.0);
 
   /** Comparison operator */
@@ -161,8 +161,8 @@ private:
   void computeRange();
 
   /** The main parameter set of the distribution */
-  Scalar alpha_;
   Scalar beta_;
+  Scalar alpha_;
   Scalar gamma_;
 
 }; /* class WeibullMin */

@@ -301,7 +301,7 @@ int main(int, char *[])
 
     // Create a WeibullMin distribution
     WeibullMin weibull(2.0, 1.5, -0.5);
-    study.add("weibull", weibull);
+    study.add("weibullMin", weibull);
 
     // Create a NormalCopula distribution
     CorrelationMatrix R(3);

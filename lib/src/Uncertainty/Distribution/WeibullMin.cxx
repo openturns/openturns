@@ -35,8 +35,8 @@ static const Factory<WeibullMin> Factory_WeibullMin;
 /* Default constructor */
 WeibullMin::WeibullMin()
   : ContinuousDistribution()
-  , alpha_(1.0)
   , beta_(1.0)
+  , alpha_(1.0)
   , gamma_(0.0)
 {
   setName("WeibullMin");
@@ -45,12 +45,12 @@ WeibullMin::WeibullMin()
 }
 
 /* Parameters constructor */
-WeibullMin::WeibullMin(const Scalar alpha,
-                 const Scalar beta,
+WeibullMin::WeibullMin(const Scalar beta,
+                 const Scalar alpha,
                  const Scalar gamma)
   : ContinuousDistribution()
-  , alpha_(0.0)
   , beta_(0.0)
+  , alpha_(0.0)
   , gamma_(gamma)
 {
   setName("WeibullMin");
@@ -62,7 +62,7 @@ WeibullMin::WeibullMin(const Scalar alpha,
 Bool WeibullMin::operator ==(const WeibullMin & other) const
 {
   if (this == &other) return true;
-  return (alpha_ == other.alpha_) && (beta_ == other.beta_) && (gamma_ == other.gamma_);
+  return (beta_ == other.beta_) && (alpha_ == other.alpha_) && (gamma_ == other.gamma_);
 }
 
 Bool WeibullMin::equals(const DistributionImplementation & other) const
@@ -78,8 +78,8 @@ String WeibullMin::__repr__() const
   oss << "class=" << WeibullMin::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
-      << " alpha=" << alpha_
       << " beta=" << beta_
+      << " alpha=" << alpha_
       << " gamma=" << gamma_;
   return oss;
 }
@@ -87,7 +87,7 @@ String WeibullMin::__repr__() const
 String WeibullMin::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << getClassName() << "(alpha = " << alpha_ << ", beta = " << beta_ << ", gamma = " << gamma_ << ")";
+  oss << getClassName() << "(beta = " << beta_ << ", alpha = " << alpha_ << ", gamma = " << gamma_ << ")";
   return oss;
 }
 
@@ -111,7 +111,7 @@ void WeibullMin::computeRange()
 /* Get one realization of the distribution */
 Point WeibullMin::getRealization() const
 {
-  return Point(1, gamma_ + alpha_ * std::pow(-std::log(1.0 - RandomGenerator::Generate()), 1.0 / beta_));
+  return Point(1, gamma_ + beta_ * std::pow(-std::log(1.0 - RandomGenerator::Generate()), 1.0 / alpha_));
 }
 
 
@@ -122,8 +122,8 @@ Point WeibullMin::computeDDF(const Point & point) const
 
   const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return Point(1, 0.0);
-  const Scalar powX = std::pow(x / alpha_, beta_);
-  return Point(1, (beta_ * (1.0 - powX) - 1.0) / (x * x) * beta_ * powX * std::exp(-powX));
+  const Scalar powX = std::pow(x / beta_, alpha_);
+  return Point(1, (alpha_ * (1.0 - powX) - 1.0) / (x * x) * alpha_ * powX * std::exp(-powX));
 }
 
 
@@ -143,8 +143,8 @@ Scalar WeibullMin::computeLogPDF(const Point & point) const
 
   const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return SpecFunc::LogMinScalar;
-  const Scalar y = x / alpha_;
-  return std::log(beta_) + (beta_ - 1.0) * std::log(y) - std::log(alpha_) - std::pow(y, beta_);
+  const Scalar y = x / beta_;
+  return std::log(alpha_) + (alpha_ - 1.0) * std::log(y) - std::log(beta_) - std::pow(y, alpha_);
 }
 
 
@@ -155,7 +155,7 @@ Scalar WeibullMin::computeCDF(const Point & point) const
 
   const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return 0.0;
-  return -expm1(-std::pow(x / alpha_, beta_));
+  return -expm1(-std::pow(x / beta_, alpha_));
 }
 
 Scalar WeibullMin::computeComplementaryCDF(const Point & point) const
@@ -164,7 +164,7 @@ Scalar WeibullMin::computeComplementaryCDF(const Point & point) const
 
   const Scalar x = point[0] - gamma_;
   if (x <= 0.0) return 1.0;
-  return std::exp(-std::pow(x / alpha_, beta_));
+  return std::exp(-std::pow(x / beta_, alpha_));
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
@@ -177,11 +177,11 @@ Complex WeibullMin::computeCharacteristicFunction(const Scalar x) const
   */
   if (x == 0.0) return 1.0;
   // Special case: beta == 1 -> exponential distribution
-  if (beta_ == 1.0) return 1.0 / Complex(1.0, -x / alpha_);
+  if (alpha_ == 1.0) return 1.0 / Complex(1.0, -x / beta_);
   // If beta < 1.0, the series based on the Gamma function is divergente so use the generic implementation
-  if (beta_ < 1.0) return DistributionImplementation::computeCharacteristicFunction(x);
+  if (alpha_ < 1.0) return DistributionImplementation::computeCharacteristicFunction(x);
   Complex value(1.0);
-  const Scalar u = x * alpha_;
+  const Scalar u = x * beta_;
   const Scalar sign = x < 0.0 ? -1.0 : 1.0;
   const Scalar logAbsU = std::log(std::abs(u));
   Scalar oldNorm = 0.0;
@@ -190,15 +190,15 @@ Complex WeibullMin::computeCharacteristicFunction(const Scalar x) const
   Bool increasing = true;
   while (increasing || (norm > std::abs(value) * SpecFunc::ScalarEpsilon))
   {
-    const Scalar term1 = std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_));
+    const Scalar term1 = std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / alpha_));
     ++r;
-    const Scalar term2 = std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_));
+    const Scalar term2 = std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / alpha_));
     ++r;
-    const Scalar term3 = std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_));
+    const Scalar term3 = std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / alpha_));
     ++r;
-    const Scalar term4 = std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / beta_));
+    const Scalar term4 = std::exp(r * logAbsU - SpecFunc::LogGamma(r) + SpecFunc::LogGamma(r / alpha_));
     ++r;
-    const Complex term((term4 - term2) / beta_, sign * (term1 - term3) / beta_);
+    const Complex term((term4 - term2) / alpha_, sign * (term1 - term3) / alpha_);
     oldNorm = norm;
     norm = std::abs(term);
     // If the term grows too much, the cancelation will be too large
@@ -213,7 +213,7 @@ Complex WeibullMin::computeCharacteristicFunction(const Scalar x) const
 /* Compute the entropy of the distribution */
 Scalar WeibullMin::computeEntropy() const
 {
-  return 1.0 + SpecFunc::EulerConstant * (1.0 - 1.0 / beta_) + std::log(alpha_ / beta_);
+  return 1.0 + SpecFunc::EulerConstant * (1.0 - 1.0 / alpha_) + std::log(beta_ / alpha_);
 }
 
 /* Get the PDFGradient of the distribution */
@@ -224,11 +224,11 @@ Point WeibullMin::computePDFGradient(const Point & point) const
   const Scalar x = point[0] - gamma_;
   Point pdfGradient(3, 0.0);
   if (x <= 0.0) return pdfGradient;
-  const Scalar powX = std::pow(x / alpha_, beta_);
+  const Scalar powX = std::pow(x / beta_, alpha_);
   const Scalar factor = powX / x * std::exp(-powX);
-  pdfGradient[0] = factor * (powX - 1.0) * beta_ * beta_ / alpha_;
-  pdfGradient[1] = factor * (1.0 + (1.0 - powX) * std::log(powX));
-  pdfGradient[2] = factor * (1.0 - beta_ + beta_ * powX) / x * beta_;
+  pdfGradient[0] = factor * (1.0 + (1.0 - powX) * std::log(powX));
+  pdfGradient[1] = factor * (powX - 1.0) * alpha_ * alpha_ / beta_;
+  pdfGradient[2] = factor * (1.0 - alpha_ + alpha_ * powX) / x * alpha_;
   return pdfGradient;
 }
 
@@ -240,11 +240,11 @@ Point WeibullMin::computeCDFGradient(const Point & point) const
   const Scalar x = point[0] - gamma_;
   Point cdfGradient(3, 0.0);
   if (x <= 0.0) return cdfGradient;
-  const Scalar powX = std::pow(x / alpha_, beta_);
+  const Scalar powX = std::pow(x / beta_, alpha_);
   const Scalar factor = powX * std::exp(-powX);
-  cdfGradient[0] = -factor * beta_ / alpha_;
-  cdfGradient[1] = factor * std::log(x / alpha_);
-  cdfGradient[2] = -factor * beta_ / x;
+  cdfGradient[0] = factor * std::log(x / beta_);
+  cdfGradient[1] = -factor * alpha_ / beta_;
+  cdfGradient[2] = -factor * alpha_ / x;
   return cdfGradient;
 }
 
@@ -252,41 +252,41 @@ Point WeibullMin::computeCDFGradient(const Point & point) const
 Scalar WeibullMin::computeScalarQuantile(const Scalar prob,
                                       const Bool tail) const
 {
-  if (tail) return gamma_ + alpha_ * std::pow(-std::log(prob), 1.0 / beta_);
-  return gamma_ + alpha_ * std::pow(-std::log(1.0 - prob), 1.0 / beta_);
+  if (tail) return gamma_ + beta_ * std::pow(-std::log(prob), 1.0 / alpha_);
+  return gamma_ + beta_ * std::pow(-std::log(1.0 - prob), 1.0 / alpha_);
 }
 
 /* compute the mean of the distribution */
 void WeibullMin::computeMean() const
 {
-  mean_ =  Point(1, gamma_ + alpha_ * SpecFunc::Gamma(1.0 + 1.0 / beta_));
+  mean_ =  Point(1, gamma_ + beta_ * SpecFunc::Gamma(1.0 + 1.0 / alpha_));
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
 Point WeibullMin::getStandardDeviation() const
 {
-  return Point(1, alpha_ * std::sqrt(SpecFunc::Gamma(1.0 + 2.0 / beta_) - std::pow(SpecFunc::Gamma(1.0 + 1.0 / beta_), 2.0)));
+  return Point(1, beta_ * std::sqrt(SpecFunc::Gamma(1.0 + 2.0 / alpha_) - std::pow(SpecFunc::Gamma(1.0 + 1.0 / alpha_), 2.0)));
 }
 
 /* Get the skewness of the distribution */
 Point WeibullMin::getSkewness() const
 {
-  const Scalar gamma1 = SpecFunc::Gamma(1.0 + 1.0 / beta_);
+  const Scalar gamma1 = SpecFunc::Gamma(1.0 + 1.0 / alpha_);
   const Scalar gamma1_2 = gamma1 * gamma1;
-  const Scalar gamma2 = SpecFunc::Gamma(1.0 + 2.0 / beta_);
-  const Scalar gamma3 = SpecFunc::Gamma(1.0 + 3.0 / beta_);
+  const Scalar gamma2 = SpecFunc::Gamma(1.0 + 2.0 / alpha_);
+  const Scalar gamma3 = SpecFunc::Gamma(1.0 + 3.0 / alpha_);
   return Point(1, (2.0 * gamma1_2 * gamma1 - 3.0 * gamma1 * gamma2 + gamma3) / std::pow((gamma2 - gamma1_2), 1.5));
 }
 
 /* Get the kurtosis of the distribution */
 Point WeibullMin::getKurtosis() const
 {
-  const Scalar gamma1 = SpecFunc::Gamma(1.0 + 1.0 / beta_);
+  const Scalar gamma1 = SpecFunc::Gamma(1.0 + 1.0 / alpha_);
   const Scalar gamma1_2 = gamma1 * gamma1;
-  const Scalar gamma2 = SpecFunc::Gamma(1.0 + 2.0 / beta_);
-  const Scalar gamma3 = SpecFunc::Gamma(1.0 + 3.0 / beta_);
-  const Scalar gamma4 = SpecFunc::Gamma(1.0 + 4.0 / beta_);
+  const Scalar gamma2 = SpecFunc::Gamma(1.0 + 2.0 / alpha_);
+  const Scalar gamma3 = SpecFunc::Gamma(1.0 + 3.0 / alpha_);
+  const Scalar gamma4 = SpecFunc::Gamma(1.0 + 4.0 / alpha_);
   return Point(1, (6.0 * gamma1_2 * gamma2 + gamma4 - 4.0 * gamma1 * gamma3 - 3.0 * gamma1_2 * gamma1_2) / std::pow(gamma2 - gamma1_2, 2.0));
 }
 
@@ -301,21 +301,21 @@ void WeibullMin::computeCovariance() const
 /* Get the moments of the standardized distribution */
 Point WeibullMin::getStandardMoment(const UnsignedInteger n) const
 {
-  return Point(1, SpecFunc::Gamma(1.0 + n / beta_));
+  return Point(1, SpecFunc::Gamma(1.0 + n / alpha_));
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution WeibullMin::getStandardRepresentative() const
 {
-  return new WeibullMin(1.0, beta_, 0.0);
+  return new WeibullMin(1.0, alpha_, 0.0);
 }
 
 /* Parameters value accessor */
 Point WeibullMin::getParameter() const
 {
   Point point(3);
-  point[0] = alpha_;
-  point[1] = beta_;
+  point[0] = beta_;
+  point[1] = alpha_;
   point[2] = gamma_;
   return point;
 }
@@ -332,8 +332,8 @@ void WeibullMin::setParameter(const Point & parameter)
 Description WeibullMin::getParameterDescription() const
 {
   Description description(3);
-  description[0] = "alpha";
-  description[1] = "beta";
+  description[0] = "beta";
+  description[1] = "alpha";
   description[2] = "gamma";
   return description;
 }
@@ -383,8 +383,8 @@ void WeibullMin::setAlphaBeta(const Scalar alpha,
   if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Beta MUST be positive";
   if ((alpha != alpha_) || (beta != beta_))
   {
-    alpha_ = alpha;
     beta_ = beta;
+    alpha_ = alpha;
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     computeRange();
@@ -414,8 +414,8 @@ Scalar WeibullMin::getGamma() const
 void WeibullMin::save(Advocate & adv) const
 {
   ContinuousDistribution::save(adv);
-  adv.saveAttribute( "alpha_", alpha_ );
   adv.saveAttribute( "beta_", beta_ );
+  adv.saveAttribute( "alpha_", alpha_ );
   adv.saveAttribute( "gamma_", gamma_ );
 }
 
@@ -423,8 +423,8 @@ void WeibullMin::save(Advocate & adv) const
 void WeibullMin::load(Advocate & adv)
 {
   ContinuousDistribution::load(adv);
-  adv.loadAttribute( "alpha_", alpha_ );
   adv.loadAttribute( "beta_", beta_ );
+  adv.loadAttribute( "alpha_", alpha_ );
   adv.loadAttribute( "gamma_", gamma_ );
   computeRange();
 }

@@ -91,27 +91,27 @@ Matrix WeibullMinMuSigma::gradient() const
   Point pt = Point(3);
 
   pt[0] = epsilon;
-  const Scalar dalphadmu = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[0];
-  const Scalar dbetadmu = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[1];
+  const Scalar dbetadmu = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[0];
+  const Scalar dalphadmu = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[1];
 
   pt[0] = 0.;
   pt[1] = epsilon;
-  const Scalar dalphadsigma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[0];
-  const Scalar dbetadsigma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[1];
+  const Scalar dbetadsigma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[0];
+  const Scalar dalphadsigma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[1];
 
   pt[1] = 0.;
   pt[2] = epsilon;
-  const Scalar dalphadgamma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[0];
-  const Scalar dbetadgamma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[1];
+  const Scalar dbetadgamma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[0];
+  const Scalar dalphadgamma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[1];
 
   SquareMatrix nativeParametersGradient(IdentityMatrix(3));
-  nativeParametersGradient(0, 0) = dalphadmu;
-  nativeParametersGradient(1, 0) = dalphadsigma;
-  nativeParametersGradient(2, 0) = dalphadgamma;
+  nativeParametersGradient(0, 0) = dbetadmu;
+  nativeParametersGradient(1, 0) = dbetadsigma;
+  nativeParametersGradient(2, 0) = dbetadgamma;
 
-  nativeParametersGradient(0, 1) = dbetadmu;
-  nativeParametersGradient(1, 1) = dbetadsigma;
-  nativeParametersGradient(2, 1) = dbetadgamma;
+  nativeParametersGradient(0, 1) = dalphadmu;
+  nativeParametersGradient(1, 1) = dalphadsigma;
+  nativeParametersGradient(2, 1) = dalphadgamma;
 
   return nativeParametersGradient;
 }
@@ -128,60 +128,60 @@ Point WeibullMinMuSigma::operator () (const Point & inP) const
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "sigma must be > 0, here sigma=" << sigma;
   if (mu <= gamma) throw InvalidArgumentException(HERE) << "mu must be greater than gamma, here mu=" << mu << " and gamma=" << gamma;
 
-  Scalar alpha = 0.;
-  Scalar beta = 0.;
+  Scalar alpha = 0.0;
+  Scalar beta = 0.0;
   const Scalar ratio = 1.0 + pow(sigma / (mu - gamma), 2.0);
   Scalar t = -1.0;
-  Scalar betaMin = 1.0;
-  Scalar betaMax = 1.0;
+  Scalar alphaMin = 1.0;
+  Scalar alphaMax = 1.0;
   Scalar step = 0.5;
 
   // Bracketing interval
-  // Case beta < 1, i.e. ratio > 2
+  // Case alpha < 1, i.e. ratio > 2
   if (ratio > 2)
   {
     do
     {
-      betaMin -= step;
+      alphaMin -= step;
       step *= 0.5;
-      t = exp(SpecFunc::LnGamma(1.0 + 2.0 / betaMin) - 2.0 * SpecFunc::LnGamma(1.0 + 1.0 / betaMin));
+      t = exp(SpecFunc::LnGamma(1.0 + 2.0 / alphaMin) - 2.0 * SpecFunc::LnGamma(1.0 + 1.0 / alphaMin));
     }
     while (t < ratio);
-    // Here, we know that betaMin <= beta < betaMin + 2.0 * step
-    betaMax = betaMin + 2.0 * step;
+    // Here, we know that alphaMin <= alpha < alphaMin + 2.0 * step
+    alphaMax = alphaMin + 2.0 * step;
   }
-  // Case beta >= 1, i.e. ratio <= 2
+  // Case alpha >= 1, i.e. ratio <= 2
   else
   {
     do
     {
-      betaMax += step;
+      alphaMax += step;
       step *= 2.0;
-      t = exp(SpecFunc::LnGamma(1.0 + 2.0 / betaMax) - 2.0 * SpecFunc::LnGamma(1.0 + 1.0 / betaMax));
+      t = exp(SpecFunc::LnGamma(1.0 + 2.0 / alphaMax) - 2.0 * SpecFunc::LnGamma(1.0 + 1.0 / alphaMax));
     }
     while (t >= ratio);
-    // Here, we know that betaMax - 0.5 * step <= beta < betaMax
-    betaMin = betaMax - 0.5 * step;
+    // Here, we know that alphaMax - 0.5 * step <= alpha < alphaMax
+    alphaMin = alphaMax - 0.5 * step;
   }
   // Bisection loop
   for (;;)
   {
-    beta = 0.5 * (betaMin + betaMax);
+    alpha = 0.5 * (alphaMin + alphaMax);
     // Convergence
-    if (betaMax - betaMin <= ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon") * (1.0 + std::abs(betaMax + betaMin)))
+    if (alphaMax - alphaMin <= ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon") * (1.0 + std::abs(alphaMax + alphaMin)))
     {
-      alpha = (mu - gamma) / SpecFunc::Gamma(1.0 + 1.0 / beta);
+      beta = (mu - gamma) / SpecFunc::Gamma(1.0 + 1.0 / alpha);
       break;
     }
     // Non convergence, one step further
-    t = exp(SpecFunc::LnGamma(1.0 + 2.0 / beta) - 2.0 * SpecFunc::LnGamma(1.0 + 1.0 / beta));
-    if (t < ratio) betaMax = beta;
-    else betaMin = beta;
+    t = exp(SpecFunc::LnGamma(1.0 + 2.0 / alpha) - 2.0 * SpecFunc::LnGamma(1.0 + 1.0 / alpha));
+    if (t < ratio) alphaMax = alpha;
+    else alphaMin = alpha;
   }
 
   Point nativeParameters(inP);
-  nativeParameters[0] = alpha;
-  nativeParameters[1] = beta;
+  nativeParameters[0] = beta;
+  nativeParameters[1] = alpha;
 
   return nativeParameters;
 }
@@ -190,15 +190,15 @@ Point WeibullMinMuSigma::operator () (const Point & inP) const
 Point WeibullMinMuSigma::inverse(const Point & inP) const
 {
   if (inP.getDimension() != 3) throw InvalidArgumentException(HERE) << "the given point must have dimension=3, here dimension=" << inP.getDimension();
-  const Scalar alpha = inP[0];
-  const Scalar beta = inP[1];
+  const Scalar beta = inP[0];
+  const Scalar alpha = inP[1];
   const Scalar gamma = inP[2];
 
   if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
   if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Beta MUST be positive";
 
-  const Scalar mu = gamma + alpha * SpecFunc::Gamma(1.0 + 1.0 / beta);
-  const Scalar sigma = alpha * std::sqrt(SpecFunc::Gamma(1.0 + 2.0 / beta) - std::pow(SpecFunc::Gamma(1.0 + 1.0 / beta), 2.0));
+  const Scalar mu = gamma + beta * SpecFunc::Gamma(1.0 + 1.0 / alpha);
+  const Scalar sigma = beta * std::sqrt(SpecFunc::Gamma(1.0 + 2.0 / alpha) - std::pow(SpecFunc::Gamma(1.0 + 1.0 / alpha), 2.0));
 
   Point muSigmaParameters(inP);
   muSigmaParameters[0] = mu;

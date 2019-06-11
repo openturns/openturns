@@ -1,5 +1,5 @@
-Distribution  class=WeibullMin name=WeibullMin dimension=1 alpha=2 beta=1.5 gamma=-0.5
-Distribution  WeibullMin(alpha = 2, beta = 1.5, gamma = -0.5)
+Distribution  class=WeibullMin name=WeibullMin dimension=1 beta=2 alpha=1.5 gamma=-0.5
+Distribution  WeibullMin(beta = 2, alpha = 1.5, gamma = -0.5)
 Elliptical =  False
 Continuous =  True
 oneRealization= class=Point name=Unnamed dimension=1 values=[1.49188]
@@ -15,9 +15,9 @@ log pdf=-1.081042
 pdf     =0.339242
 pdf (FD)=0.339242
 cdf=0.477703
-pdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.0891733,0.191956,0.107263]
+pdf gradient     = class=Point name=Unnamed dimension=3 values=[0.191956,-0.0891733,0.107263]
 pdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.0891733,0.191956,0.107263]
-cdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.254431,-0.0975938,-0.339242]
+cdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.0975938,-0.254431,-0.339242]
 cdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.254431,-0.0975938,-0.339242]
 quantile= class=Point name=Unnamed dimension=1 values=[3.65622]
 cdf(quantile)=0.950000
@@ -27,7 +27,7 @@ entropy=1.480087
 Minimum volume interval= [-0.489737, 3.66304]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 2.92424} with f=
-MinimumVolumeLevelSetEvaluation(WeibullMin(alpha = 2, beta = 1.5, gamma = -0.5))
+MinimumVolumeLevelSetEvaluation(WeibullMin(beta = 2, alpha = 1.5, gamma = -0.5))
 beta= [0.0537054]
 Bilateral confidence interval= [-0.327556, 4.27485]
 beta= [0.95]
@@ -40,11 +40,11 @@ standard deviation= class=Point name=Unnamed dimension=1 values=[1.22587]
 skewness= class=Point name=Unnamed dimension=1 values=[1.07199]
 kurtosis= class=Point name=Unnamed dimension=1 values=[4.3904]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.50276]
-parameters= [class=PointWithDescription name=X0 dimension=3 description=[alpha,beta,gamma] values=[2,1.5,-0.5]]
+parameters= [class=PointWithDescription name=X0 dimension=3 description=[beta,alpha,gamma] values=[2,1.5,-0.5]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [0.902745]
 standard moment n= 2  value= [1.19064]
 standard moment n= 3  value= [2]
 standard moment n= 4  value= [4.0122]
 standard moment n= 5  value= [9.26053]
-Standard representative= WeibullMin(alpha = 1, beta = 1.5, gamma = 0)
+Standard representative= WeibullMin(beta = 1, alpha = 1.5, gamma = 0)
