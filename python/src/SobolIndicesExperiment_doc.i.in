@@ -52,7 +52,8 @@ SobolIndicesAlgorithm
 Examples
 --------
 
-Create a sample suitable to estimate first and total order Sobol' indices
+Create a sample suitable to estimate first and total order Sobol' indices:
+
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> formula = ['sin(pi_*X1)+7*sin(pi_*X2)^2+0.1*(pi_*X3)^4*sin(pi_*X1)']
@@ -62,7 +63,8 @@ Create a sample suitable to estimate first and total order Sobol' indices
 >>> experiment = ot.SobolIndicesExperiment(distribution, size)
 >>> sample = experiment.generate()
 
-Create a sample suitable to estimate first, total order and second order Sobol' indices
+Create a sample suitable to estimate first, total order and second order Sobol' indices:
+
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> formula = ['sin(pi_*X1)+7*sin(pi_*X2)^2+0.1*(pi_*X3)^4*sin(pi_*X1)']
