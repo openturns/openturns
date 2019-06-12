@@ -120,6 +120,7 @@ Parametrized distributions
     ArcsineMuSigma
     BetaMuSigma
     GammaMuSigma
+    GumbelLambdaGamma
     GumbelMuSigma
     LogNormalMuSigma
     LogNormalMuSigmaOverMu

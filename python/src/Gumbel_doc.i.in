@@ -34,7 +34,7 @@ Its first moments are:
 where :math:`\gamma_e` is the Euler-Mascheroni constant.
 
 
-It is possible to create a Gumbel distribution from the alternative parametrizations :math:`(\mu, \sigma)`: see  :class:`~openturns.GumbelMuSigma` or :math:`(\lambda,\gamma)`: see  :class:`~openturns.GumbelAB`. In that case, all the results are presented in that new parametrization.
+It is possible to create a Gumbel distribution from the alternative parametrizations :math:`(\mu, \sigma)`: see  :class:`~openturns.GumbelMuSigma` or :math:`(\lambda,\gamma)`: see  :class:`~openturns.GumbelLambdaGamma`. In that case, all the results are presented in that new parametrization.
 
 In order to use the alternative  parametrization only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(\beta, \gamma)`.
 
@@ -53,7 +53,7 @@ Create a it with the alternative parametrization :math:`(\mu, \sigma)`:
 Create a it with the alternative parametrization :math:`(\lambda, \gamma)`:
 
 >>> myDist3 = ot.Gumbel()
->>> myDist3.setParameter(ot.GumbelAB()([1.0, 1.0]))
+>>> myDist3.setParameter(ot.GumbelLambdaGamma()([1.0, 1.0]))
 
 Create it from :math:`(\mu, \sigma)` and keep that parametrization for the remaining study: 
 
@@ -62,7 +62,7 @@ Create it from :math:`(\mu, \sigma)` and keep that parametrization for the remai
 
 Create it from :math:`(\lambda, \gamma)` and keep that parametrization for the remaining study: 
 
->>> myParam = ot.GumbelAB(1.0, 1.0)
+>>> myParam = ot.GumbelLambdaGamma(1.0, 1.0)
 >>> myDist5 = ot.ParametrizedDistribution(myParam)
 
 Draw a sample:

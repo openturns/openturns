@@ -12,6 +12,7 @@
  * Dlib
  * SquaredNormal
  * NullHessian
+ * GumbelLambdaGamma
 
 ==== API changes ====
  * Removed deprecated specific RandomVector constructors

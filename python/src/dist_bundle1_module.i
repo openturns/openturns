@@ -63,6 +63,7 @@
 %include Gumbel.i
 %include GumbelFactory.i
 %include GumbelAB.i
+%include GumbelLambdaGamma.i
 %include GumbelMuSigma.i
 
 /* At last we include template definitions */
