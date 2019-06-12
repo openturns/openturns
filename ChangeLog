@@ -4,6 +4,12 @@
 
 === Library ===
 
+==== IMPORTANT: Distributions parametrization changes ====
+ * New argument ordering in Frechet ctor: scale(beta), shape(alpha), location(gamma) (swapped alpha and beta)
+ * New parametrization in Gumbel: scale(beta), position(gamma) (beta=1/alpha for first argument)
+ * New parametrization in Beta: shape(alpha), shape(beta), location(a), location(b) (beta=t-r for second argument)
+ * New parametrization in InverseGamma: rate(lambda), shape(k) (swapped arguments)
+
 ==== Major changes ====
  * Add dlib solvers
  * FittingTest methods to return fitted distributions with factory as argument
@@ -28,11 +34,7 @@
  * Deprecated Weibull in favor of WeibullMin
  * Deprecated WeibullMuSigma in favor of WeibullMinMuSigma
  * Deprecated WeibullFactory in favor of WeibullMinFactory, buildAsWeibull
- * New argument ordering in Frechet ctor: scale(beta), shape(alpha), location(gamma) (swapped alpha and beta)
- * New parametrization ordering in Gumbel: scale(beta), location(gamma) (beta=1/alpha for first argument)
  * Deprecated GumbelAB
- * New parametrization in Beta: shape(alpha), shape(beta), location(a), location(b) (beta=t-r for second argument)
- * New parametrization in InverseGamma: rate(lambda), shape(k) (swapped arguments)
 
 === Python module ===
 
