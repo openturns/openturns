@@ -21,6 +21,7 @@
 #include "openturns/BetaFactory.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/BetaMuSigma.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -73,17 +74,13 @@ Beta BetaFactory::buildAsBeta(const Sample & sample) const
   if (xMin == xMax)
   {
     delta = std::max(std::abs(xMin), 100.0) * SpecFunc::ScalarEpsilon;
-    Beta result(1.0, 2.0, xMin - delta, xMax + delta);
+    Beta result(1.0, 1.0, xMin - delta, xMax + delta);
     result.setDescription(sample.getDescription());
     return result;
   }
-  const Scalar mean = sample.computeMean()[0];
+  const Scalar mu = sample.computeMean()[0];
   const Scalar sigma = sample.computeStandardDeviationPerComponent()[0];
-  const Scalar t = (b - mean) * (mean - a) / (sigma * sigma) - 1.0;
-  const Scalar r = t * (mean - a) / (b - a);
-  Beta result(r, t, a, b);
-  result.setDescription(sample.getDescription());
-  return result;
+  return buildAsBeta(BetaMuSigma(mu, sigma, a, b).evaluate());
 }
 
 Beta BetaFactory::buildAsBeta(const Point & parameters) const

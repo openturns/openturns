@@ -30,6 +30,7 @@
  * New argument ordering in Frechet ctor: scale(beta), shape(alpha), location(gamma) (swapped alpha and beta)
  * New parametrization ordering in Gumbel: scale(beta), location(gamma) (beta=1/alpha for first argument)
  * Deprecated GumbelAB
+ * New parametrization in Beta: shape(alpha), shape(beta), location(a), location(b) (beta=t-r for second argument)
 
 === Python module ===
 

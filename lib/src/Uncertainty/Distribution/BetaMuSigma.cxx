@@ -88,32 +88,30 @@ Matrix BetaMuSigma::gradient() const
   newParameters[2] = a_;
   newParameters[3] = b_;
 
-  const Scalar t = operator()(newParameters)[1];
-
   const Scalar mu = mu_;
   const Scalar sigma = sigma_;
   const Scalar a = a_;
   const Scalar b = b_;
 
-  const Scalar dtdmu = (a + b - 2.0 * mu) / (sigma * sigma);
-  const Scalar dtdsigma = 2.0 * (mu - a) * (mu - b) / (sigma * sigma * sigma);
-  const Scalar dtda = (mu - b) / (sigma * sigma);
-  const Scalar dtdb = (mu - a) / (sigma * sigma);
-  const Scalar drdmu = (t + dtdmu * (mu - a)) / (b - a);
-  const Scalar drdsigma = dtdsigma * (mu - a) / (b - a);
-  const Scalar drda = (a * a - 2.0 * a * b - sigma * sigma - mu * (mu - 2.0 * b)) * (mu - b) / ((b - a) * (b - a) * sigma * sigma);
-  const Scalar drdb = (sigma * sigma + (mu - a) * (mu - a)) * (mu - a) / ((b - a) * (b - a) * sigma * sigma);
+  const Scalar alphadmu = (sigma*sigma + (a - mu)*(b - mu) + (a - mu)*(a + b - 2*mu))/(sigma*sigma*(a - b));
+  const Scalar dalphadsigma = 2*(a - mu)*(a-mu)*(b - mu)/(sigma*sigma*sigma*(a - b));
+  const Scalar dalphada = (-(a - b)*(sigma*sigma + 2*(a - mu)*(b - mu)) + (a - mu)*(sigma*sigma + (a - mu)*(b - mu)))/(sigma*sigma*(a - b)*(a-b));
+  const Scalar dalphadb = -(a - mu)*(sigma*sigma + (a - b)*(a - mu) + (a - mu)*(b - mu))/(sigma*sigma*(a - b)*(a-b));
+  const Scalar dbetadmu = -(sigma*sigma + (a - mu)*(b - mu) + (b - mu)*(a + b - 2*mu))/(sigma*sigma*(a - b));
+  const Scalar dbetadsigma = 2*(-a + mu)*(b - mu)*(b-mu)/(sigma*sigma*sigma*(a - b));
+  const Scalar dbetada = (b - mu)*(-sigma*sigma + (a - b)*(b - mu) - (a - mu)*(b - mu))/(sigma*sigma*(a - b)*(a-b));
+  const Scalar dbetadb = ((a - b)*(sigma*sigma + 2*(a - mu)*(b - mu)) + (b - mu)*(sigma*sigma + (a - mu)*(b - mu)))/(sigma*sigma*(a - b)*(a-b));
 
   SquareMatrix nativeParametersGradient(IdentityMatrix(4));
-  nativeParametersGradient(0, 0) = drdmu;
-  nativeParametersGradient(1, 0) = drdsigma;
-  nativeParametersGradient(2, 0) = drda;
-  nativeParametersGradient(3, 0) = drdb;
+  nativeParametersGradient(0, 0) = alphadmu;
+  nativeParametersGradient(1, 0) = dalphadsigma;
+  nativeParametersGradient(2, 0) = dalphada;
+  nativeParametersGradient(3, 0) = dalphadb;
 
-  nativeParametersGradient(0, 1) = dtdmu;
-  nativeParametersGradient(1, 1) = dtdsigma;
-  nativeParametersGradient(2, 1) = dtda;
-  nativeParametersGradient(3, 1) = dtdb;
+  nativeParametersGradient(0, 1) = dbetadmu;
+  nativeParametersGradient(1, 1) = dbetadsigma;
+  nativeParametersGradient(2, 1) = dbetada;
+  nativeParametersGradient(3, 1) = dbetadb;
 
   return nativeParametersGradient;
 }
@@ -128,12 +126,14 @@ Point BetaMuSigma::operator () (const Point & inP) const
   const Scalar a = inP[2];
   const Scalar b = inP[3];
 
-  const Scalar t = (b - mu) * (mu - a) / (sigma * sigma) - 1.0;
-  const Scalar r = t * (mu - a) / (b - a);
+  if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "Sigma MUST be positive";
+
+  const Scalar alpha = ((mu-a)/(b-a))*(((b-mu)*(mu-a))/(sigma*sigma)-1.0);
+  const Scalar beta = (((b-mu)*(mu-a))/(sigma*sigma)-1.0)*((b-mu)/(b-a));
 
   Point nativeParameters(inP);
-  nativeParameters[0] = r;
-  nativeParameters[1] = t;
+  nativeParameters[0] = alpha;
+  nativeParameters[1] = beta;
 
   return nativeParameters;
 }
@@ -142,17 +142,16 @@ Point BetaMuSigma::operator () (const Point & inP) const
 Point BetaMuSigma::inverse(const Point & inP) const
 {
   if (inP.getDimension() != 4) throw InvalidArgumentException(HERE) << "the given point must have dimension=4, here dimension=" << inP.getDimension();
-  const Scalar r = inP[0];
-  const Scalar t = inP[1];
+  const Scalar alpha = inP[0];
+  const Scalar beta = inP[1];
   const Scalar a = inP[2];
   const Scalar b = inP[3];
 
-  if (!(r > 0.0)) throw InvalidArgumentException(HERE) << "R MUST be positive";
-  if (!(t > 0.0)) throw InvalidArgumentException(HERE) << "T MUST be positive";
-  if (t <= r) throw InvalidArgumentException(HERE) << "T MUST be greater than r, here t=" << t << " and r=" << r;
+  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
+  if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Beta MUST be positive";
 
-  const Scalar mu = a + (b - a) * r / t;
-  const Scalar sigma = (b - a) / t * std::sqrt(r * (t - r) / (t + 1.0));
+  const Scalar mu = a + (b - a) * alpha / (alpha + beta);
+  const Scalar sigma = (b - a) / (alpha + beta) * std::sqrt(alpha * beta / (alpha + beta + 1.0));
 
   Point muSigmaParameters(inP);
   muSigmaParameters[0] = mu;

@@ -1,4 +1,4 @@
-Distribution  MaximumEntropyOrderStatisticsDistribution(collection = [Trapezoidal(a = -2, b = -1.1, c = -1, d = 1),LogUniform(aLog = 1, bLog = 1.2),Triangular(a = 3, m = 4.5, b = 5),Beta(r = 2.5, t = 6, a = 4.7, b = 5.2)])
+Distribution  MaximumEntropyOrderStatisticsDistribution(collection = [Trapezoidal(a = -2, b = -1.1, c = -1, d = 1),LogUniform(aLog = 1, bLog = 1.2),Triangular(a = 3, m = 4.5, b = 5),Beta(alpha = 2.5, beta = 3.5, a = 4.7, b = 5.2)])
 Elliptical =  False
 oneRealization= class=Point name=Unnamed dimension=4 values=[-0.514848,3.2432,3.67427,4.75124]
 oneSample first= class=Point name=Unnamed dimension=4 values=[-1.01206,3.29988,4.7226,4.9015]  last= class=Point name=Unnamed dimension=4 values=[-0.845925,3.08338,3.64246,4.96147]
@@ -22,7 +22,7 @@ kurtosis= class=Point name=Unnamed dimension=4 values=[2.39815,1.80525,2.4,2.4]
 covariance= class=CovarianceMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[0.393268,0,0,0,0,0.0301637,0.00176556,0,0,0.00176556,0.180556,0.00188803,0,0,0.00188803,0.00868056]
 correlation= class=CorrelationMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0.023924,0,0,0.023924,1,0.0476904,0,0,0.0476904,1]
 spearman= class=CorrelationMatrix dimension=4 implementation=class=MatrixImplementation name=Unnamed rows=4 columns=4 values=[1,0,0,0,0,1,0.0168547,0,0,0.0168547,1,0.0488836,0,0,0.0488836,1]
-parameters= [class=PointWithDescription name=X0 dimension=4 description=[a_marginal_0,b_marginal_0,c_marginal_0,d_marginal_0] values=[-2,-1.1,-1,1],class=PointWithDescription name=X1 dimension=2 description=[aLog_marginal_1,bLog_marginal_1] values=[1,1.2],class=PointWithDescription name=X2 dimension=3 description=[a_marginal_2,m_marginal_2,b_marginal_2] values=[3,4.5,5],class=PointWithDescription name=X3 dimension=4 description=[r_marginal_3,t_marginal_3,a_marginal_3,b_marginal_3] values=[2.5,6,4.7,5.2]]
+parameters= [class=PointWithDescription name=X0 dimension=4 description=[a_marginal_0,b_marginal_0,c_marginal_0,d_marginal_0] values=[-2,-1.1,-1,1],class=PointWithDescription name=X1 dimension=2 description=[aLog_marginal_1,bLog_marginal_1] values=[1,1.2],class=PointWithDescription name=X2 dimension=3 description=[a_marginal_2,m_marginal_2,b_marginal_2] values=[3,4.5,5],class=PointWithDescription name=X3 dimension=4 description=[alpha_marginal_3,beta_marginal_3,a_marginal_3,b_marginal_3] values=[2.5,3.5,4.7,5.2]]
 margin= class=Trapezoidal name=Trapezoidal dimension=1 a=-2 b=-1.1 c=-1 d=1 h=0.645161
 margin PDF=0.322581
 margin CDF=0.838710
@@ -41,7 +41,7 @@ margin CDF=0.480000
 margin quantile= class=Point name=Unnamed dimension=1 values=[4.22474]
 margin realization= class=Point name=Unnamed dimension=1 values=[4.11996]
 margin range= class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[3] upper bound=class=Point name=Unnamed dimension=1 values=[5] finite lower bound=[1] finite upper bound=[1]
-margin= class=Beta name=Beta dimension=1 r=2.5 t=6 a=4.7 b=5.2
+margin= class=Beta name=Beta dimension=1 alpha=2.5 beta=3.5 a=4.7 b=5.2
 margin PDF=2.554910
 margin CDF=0.819685
 margin quantile= class=Point name=Unnamed dimension=1 values=[4.90342]

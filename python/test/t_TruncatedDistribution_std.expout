@@ -341,5 +341,5 @@ d= TruncatedDistribution(Normal(mu = 1, sigma = 2), bounds = [-1, 4]) simplified
 d= TruncatedDistribution(Uniform(a = 1, b = 2), bounds = [0.2, 2.4]) simplified= Uniform(a = 1, b = 2)
 d= TruncatedDistribution(Exponential(lambda = 1, gamma = 2), bounds = [2.5, 65]) simplified= Exponential(lambda = 1, gamma = 2.5)
 d= TruncatedDistribution(TruncatedDistribution(WeibullMin(beta = 1, alpha = 1, gamma = 0), bounds = [1.5, 7.8]), bounds = [2.5, 6]) simplified= TruncatedDistribution(WeibullMin(beta = 1, alpha = 1, gamma = 0), bounds = [2.5, 6])
-d= TruncatedDistribution(Beta(r = 1.5, t = 7.8, a = -1, b = 2), bounds = [-2.5, 6]) simplified= Beta(r = 1.5, t = 7.8, a = -1, b = 2)
+d= TruncatedDistribution(Beta(alpha = 1.5, beta = 6.3, a = -1, b = 2), bounds = [-2.5, 6]) simplified= Beta(alpha = 1.5, beta = 6.3, a = -1, b = 2)
 after setbounds q@0.9= [29.628]

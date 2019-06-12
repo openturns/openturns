@@ -27,7 +27,7 @@ using namespace OT::Test;
 class TestObject : public Beta
 {
 public:
-  TestObject() : Beta(2., 5., -1., 2.) {}
+  TestObject() : Beta(2., 3., -1., 2.) {}
   virtual ~TestObject() {}
 };
 
@@ -44,7 +44,7 @@ int main(int, char *[])
     checkClassWithClassName<TestObject>();
 
     // Instanciate one distribution object
-    Beta distribution(2.0, 5.0, -1.0, 2.0);
+    Beta distribution(2.0, 3.0, -1.0, 2.0);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
 
@@ -109,26 +109,26 @@ int main(int, char *[])
     Point PDFgr = distribution.computePDFGradient( point );
     fullprint << "pdf gradient     =" << PDFgr << std::endl;
     Point PDFgrFD(4);
-    PDFgrFD[0] = (Beta(distribution.getR() + eps, distribution.getT(), distribution.getA(), distribution.getB()).computePDF(point) -
-                  Beta(distribution.getR() - eps, distribution.getT(), distribution.getA(), distribution.getB()).computePDF(point)) / (2.0 * eps);
-    PDFgrFD[1] = (Beta(distribution.getR(), distribution.getT() + eps, distribution.getA(), distribution.getB()).computePDF(point) -
-                  Beta(distribution.getR(), distribution.getT() - eps, distribution.getA(), distribution.getB()).computePDF(point)) / (2.0 * eps);
-    PDFgrFD[2] = (Beta(distribution.getR(), distribution.getT(), distribution.getA() + eps, distribution.getB()).computePDF(point) -
-                  Beta(distribution.getR(), distribution.getT(), distribution.getA() - eps, distribution.getB()).computePDF(point)) / (2.0 * eps);
-    PDFgrFD[3] = (Beta(distribution.getR(), distribution.getT(), distribution.getA(), distribution.getB() + eps).computePDF(point) -
-                  Beta(distribution.getR(), distribution.getT(), distribution.getA(), distribution.getB() - eps).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[0] = (Beta(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getA(), distribution.getB()).computePDF(point) -
+                  Beta(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getA(), distribution.getB()).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[1] = (Beta(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getA(), distribution.getB()).computePDF(point) -
+                  Beta(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getA(), distribution.getB()).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[2] = (Beta(distribution.getAlpha(), distribution.getBeta(), distribution.getA() + eps, distribution.getB()).computePDF(point) -
+                  Beta(distribution.getAlpha(), distribution.getBeta(), distribution.getA() - eps, distribution.getB()).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[3] = (Beta(distribution.getAlpha(), distribution.getBeta(), distribution.getA(), distribution.getB() + eps).computePDF(point) -
+                  Beta(distribution.getAlpha(), distribution.getBeta(), distribution.getA(), distribution.getB() - eps).computePDF(point)) / (2.0 * eps);
     fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
     Point CDFgr = distribution.computeCDFGradient( point );
     fullprint << "cdf gradient     =" << CDFgr << std::endl;
     Point CDFgrFD(4);
-    CDFgrFD[0] = (Beta(distribution.getR() + eps, distribution.getT(), distribution.getA(), distribution.getB()).computeCDF(point) -
-                  Beta(distribution.getR() - eps, distribution.getT(), distribution.getA(), distribution.getB()).computeCDF(point)) / (2.0 * eps);
-    CDFgrFD[1] = (Beta(distribution.getR(), distribution.getT() + eps, distribution.getA(), distribution.getB()).computeCDF(point) -
-                  Beta(distribution.getR(), distribution.getT() - eps, distribution.getA(), distribution.getB()).computeCDF(point)) / (2.0 * eps);
-    CDFgrFD[2] = (Beta(distribution.getR(), distribution.getT(), distribution.getA() + eps, distribution.getB()).computeCDF(point) -
-                  Beta(distribution.getR(), distribution.getT(), distribution.getA() - eps, distribution.getB()).computeCDF(point)) / (2.0 * eps);
-    CDFgrFD[3] = (Beta(distribution.getR(), distribution.getT(), distribution.getA(), distribution.getB() + eps).computeCDF(point) -
-                  Beta(distribution.getR(), distribution.getT(), distribution.getA(), distribution.getB() - eps).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[0] = (Beta(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getA(), distribution.getB()).computeCDF(point) -
+                  Beta(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getA(), distribution.getB()).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[1] = (Beta(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getA(), distribution.getB()).computeCDF(point) -
+                  Beta(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getA(), distribution.getB()).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[2] = (Beta(distribution.getAlpha(), distribution.getBeta(), distribution.getA() + eps, distribution.getB()).computeCDF(point) -
+                  Beta(distribution.getAlpha(), distribution.getBeta(), distribution.getA() - eps, distribution.getB()).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[3] = (Beta(distribution.getAlpha(), distribution.getBeta(), distribution.getA(), distribution.getB() + eps).computeCDF(point) -
+                  Beta(distribution.getAlpha(), distribution.getBeta(), distribution.getA(), distribution.getB() - eps).computeCDF(point)) / (2.0 * eps);
     fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
     // Confidence regions
     Scalar threshold;

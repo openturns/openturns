@@ -26,9 +26,9 @@ distributionCollection = [ot.Laplace(1.0, 0.0),
                           ot.Uniform(-1.0, 1.0),
                           ot.Uniform(-1.0, 3.0),
                           ot.WeibullMin(1.0, 3.0),
-                          ot.Beta(1.0, 3.0, -1.0, 1.0),
-                          ot.Beta(0.5, 1.0, -1.0, 1.0),
-                          ot.Beta(0.5, 1.0, -2.0, 3.0),
+                          ot.Beta(1.0, 2.0, -1.0, 1.0),
+                          ot.Beta(0.5, 0.5, -1.0, 1.0),
+                          ot.Beta(0.5, 0.5, -2.0, 3.0),
                           ot.Gamma(1.0, 3.0),
                           ot.Arcsine()]
 for n in range(len(distributionCollection)):

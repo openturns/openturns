@@ -11,17 +11,17 @@ built dist= Arcsine(a = 5.21802, b = 11.582)
 Distribution Parameters  class=BetaMuSigma name=Unnamed mu=0.2 sigma=0.6 a=-1 b=2
 Distribution Parameters  BetaMuSigma(mu = 0.2, sigma = 0.6, a = -1, b = 2)
 non-native= [0.2,0.6,-1,2] [mu,sigma,a,b]
-native= [2,5,-1,2]
+native= [2,3,-1,2]
 non-native= [0.2,0.6,-1,2]
-built dist= Beta(r = 2, t = 5, a = -1, b = 2)
-[[   2.33333    1.66667    0          0        ]
- [  -8        -20          0          0        ]
- [  -3         -5          1          0        ]
- [   0.666667   3.33333    0          1        ]]
-[[   2.33333    1.66667    0          0        ]
- [  -8        -20          0          0        ]
- [  -3         -5          1          0        ]
- [   0.666667   3.33333    0          1        ]]
+built dist= Beta(alpha = 2, beta = 3, a = -1, b = 2)
+[[   2.33333   -0.666667   0          0        ]
+ [  -8        -12          0          0        ]
+ [  -3         -2          1          0        ]
+ [   0.666667   2.66667    0          1        ]]
+[[   2.33333   -0.666667   0          0        ]
+ [  -8        -12          0          0        ]
+ [  -3         -2          1          0        ]
+ [   0.666667   2.66667    0          1        ]]
 Distribution Parameters  class=GammaMuSigma name=Unnamed mu=1.5 sigma=2.5 gamma=-0.5
 Distribution Parameters  GammaMuSigma(mu = 1.5, sigma = 2.5, gamma = -0.5)
 non-native= [1.5,2.5,-0.5] [mu,sigma,gamma]

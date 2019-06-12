@@ -13,7 +13,7 @@ try:
     discreteDistributionCollection = DistributionCollection()
     distributionCollection = DistributionCollection()
 
-    beta = Beta(2.0, 3.0, 0.0, 1.0)
+    beta = Beta(2.0, 1.0, 0.0, 1.0)
     distributionCollection.add(beta)
     continuousDistributionCollection.add(beta)
 

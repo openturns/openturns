@@ -53,8 +53,8 @@ int main(int, char *[])
     kernels.add(Uniform());
     kernels.add(Triangular());
     kernels.add(Logistic());
-    kernels.add(Beta(2.0, 4.0, -1.0, 1.0));
-    kernels.add(Beta(3.0, 6.0, -1.0, 1.0));
+    kernels.add(Beta(2.0, 2.0, -1.0, 1.0));
+    kernels.add(Beta(3.0, 3.0, -1.0, 1.0));
     for (UnsignedInteger i = 0; i < kernels.getSize(); ++i)
     {
       Distribution kernel(kernels[i]);
@@ -78,7 +78,7 @@ int main(int, char *[])
     // Test for boundary correction
     Collection<Distribution> distributionCollection(2);
     distributionCollection[0] = Normal(0.0, 1.0);
-    distributionCollection[1] = Beta(0.7, 1.6, -1.0, 2.0);
+    distributionCollection[1] = Beta(0.7, 0.9, -1.0, 2.0);
     Collection<Sample> sampleCollection(2);
     sampleCollection[0] = distributionCollection[0].getSample(discretization);
     sampleCollection[1] = distributionCollection[1].getSample(discretization);

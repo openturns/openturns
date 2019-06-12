@@ -208,7 +208,7 @@ int main(int, char *[])
     Arcsine arcsine(5.2, 11.6);
     study.add("arcsine", arcsine);
 
-    Beta beta(3.0, 5.0, -1.0, 4.0);
+    Beta beta(3.0, 2.0, -1.0, 4.0);
     study.add("beta", beta);
 
     Chi chi(1.5);

@@ -138,7 +138,7 @@ void StandardDistributionPolynomialFactory::checkSpecificFamily()
   if (measureType == "Beta")
   {
     const Point parameter(measure_.getParameter());
-    const Scalar alpha = parameter[1] - parameter[0] - 1.0;
+    const Scalar alpha = parameter[1] - 1.0;
     const Scalar beta = parameter[0] - 1.0;
     // Here we set directly the specific family as the reference distribution
     // of the family has a different type (Arcsine) than the given distribution

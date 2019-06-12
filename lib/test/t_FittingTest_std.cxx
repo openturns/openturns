@@ -34,7 +34,7 @@ int main(int, char *[])
   Collection<Distribution> discreteDistributionCollection;
   Collection<Distribution> distributionCollection;
 
-  Beta beta(2.0, 3.0, 0.0, 1.0);
+  Beta beta(2.0, 1.0, 0.0, 1.0);
   distributionCollection.add(beta);
   continuousDistributionCollection.add(beta);
 

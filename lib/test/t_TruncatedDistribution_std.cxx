@@ -159,7 +159,7 @@ int main(int, char *[])
     intervals.add(Interval(2.5, 65.0));
     candidates.add(TruncatedDistribution(WeibullMin(), 1.5, 7.8));
     intervals.add(Interval(2.5, 6.0));
-    candidates.add(Beta(1.5, 7.8, -1.0, 2.0));
+    candidates.add(Beta(1.5, 6.3, -1.0, 2.0));
     intervals.add(Interval(-2.5, 6.0));
     for (UnsignedInteger i = 0; i < candidates.getSize(); ++i)
     {

@@ -107,7 +107,7 @@ try:
         myStudy.add(cName, instance)
 
     # Create a Beta distribution
-    beta = ot.Beta(3.0, 5.0, -1.0, 4.0)
+    beta = ot.Beta(3.0, 2.0, -1.0, 4.0)
     myStudy.add('beta', beta)
 
     # Create an analytical Function

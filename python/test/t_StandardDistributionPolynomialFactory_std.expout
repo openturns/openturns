@@ -148,7 +148,7 @@ M=
  [ 0 0 1 0 0 ]
  [ 0 0 0 1 0 ]
  [ 0 0 0 0 1 ]]
-polynomialFactory( Beta = class=StandardDistributionPolynomialFactory hasSpecificFamily=true specificFamily=class=OrthogonalUniVariatePolynomialFamily implementation=class=JacobiFactory alpha=1 beta=0 measure=class=Beta name=Beta dimension=1 r=1 t=3 a=-1 b=1 )
+polynomialFactory( Beta = class=StandardDistributionPolynomialFactory hasSpecificFamily=true specificFamily=class=OrthogonalUniVariatePolynomialFamily implementation=class=JacobiFactory alpha=1 beta=0 measure=class=Beta name=Beta dimension=1 alpha=1 beta=2 a=-1 b=1 )
 Beta  polynomial( 0 )= 1
 Beta  polynomial( 1 )= 0.707107 + 2.12132 * X
 Beta  polynomial( 2 )= -0.866025 + 1.73205 * X + 4.33013 * X^2
@@ -178,7 +178,7 @@ M=
  [ 0 0 1 0 0 ]
  [ 0 0 0 1 0 ]
  [ 0 0 0 0 1 ]]
-polynomialFactory( Beta = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Beta name=Beta dimension=1 r=0.5 t=1 a=-2 b=3 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,-0.5,0],class=Point name=Unnamed dimension=3 values=[1,-0.5,-3.125]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,3.125] isElliptical=true )
+polynomialFactory( Beta = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Beta name=Beta dimension=1 alpha=0.5 beta=0.5 a=-2 b=3 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,-0.5,0],class=Point name=Unnamed dimension=3 values=[1,-0.5,-3.125]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,3.125] isElliptical=true )
 Beta  polynomial( 0 )= 1
 Beta  polynomial( 1 )= -0.282843 + 0.565685 * X
 Beta  polynomial( 2 )= -1.30108 - 0.452548 * X + 0.452548 * X^2

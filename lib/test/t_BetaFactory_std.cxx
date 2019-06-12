@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    Beta distribution(0.2, 0.6, -1.0, 2.0);
+    Beta distribution(0.2, 0.4, -1.0, 2.0);
     UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
     BetaFactory factory;
@@ -42,21 +42,21 @@ int main(int, char *[])
     fullprint << "Distribution          =" << distribution << std::endl;
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
     // fullprint << "Covariance=" << covariance << std::endl;
-    distribution = Beta(0.5, 1.3, -1.0, 2.0);
+    distribution = Beta(0.5, 0.8, -1.0, 2.0);
     sample = distribution.getSample(size);
     // estimatedDistribution = factory.build(sample, covariance);
     estimatedDistribution = factory.build(sample);
     fullprint << "Distribution          =" << distribution << std::endl;
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
     // fullprint << "Covariance=" << covariance << std::endl;
-    distribution = Beta(0.5, 2.3, -1.0, 2.0);
+    distribution = Beta(0.5, 1.8, -1.0, 2.0);
     sample = distribution.getSample(size);
     // estimatedDistribution = factory.build(sample, covariance);
     estimatedDistribution = factory.build(sample);
     fullprint << "Distribution          =" << distribution << std::endl;
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
     // fullprint << "Covariance=" << covariance << std::endl;
-    distribution = Beta(1.5, 4.3, -1.0, 2.0);
+    distribution = Beta(1.5, 2.8, -1.0, 2.0);
     sample = distribution.getSample(size);
     // estimatedDistribution = factory.build(sample, covariance);
     estimatedDistribution = factory.build(sample);

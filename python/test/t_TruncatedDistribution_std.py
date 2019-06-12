@@ -185,7 +185,7 @@ for testCase in range(len(distribution)):
 # Check simplification
 candidates = [ot.Normal(1.0, 2.0), ot.Uniform(1.0, 2.0), ot.Exponential(1.0, 2.0),
               ot.TruncatedDistribution(ot.WeibullMin(), 1.5, 7.8),
-              ot.Beta(1.5, 7.8, -1.0, 2.0)]
+              ot.Beta(1.5, 6.3, -1.0, 2.0)]
 intervals = [ot.Interval(-1.0, 4.0), ot.Interval(0.2, 2.4), ot.Interval(2.5, 65.0),
              ot.Interval(2.5, 6.0), ot.Interval(-2.5, 6.0)]
 for i in range(len(candidates)):

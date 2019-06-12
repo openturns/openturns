@@ -57,7 +57,7 @@ int main(int, char *[])
     }
     {
       // Non-centered case
-      Beta distribution(0.5, 3.0, -1.0, 1.0);
+      Beta distribution(0.5, 2.5, -1.0, 1.0);
       JacobiFactory algo0(-0.5, 1.5);
       AdaptiveStieltjesAlgorithm algo1(distribution);
       fullprint << algo1 << std::endl;

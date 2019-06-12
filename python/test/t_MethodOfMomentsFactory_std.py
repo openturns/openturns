@@ -15,7 +15,7 @@ inf_distribution = factory.build(sample)
 print('estimated distribution=', inf_distribution)
 
 # set (a,b) out of (r, t, a, b)
-distribution = ot.Beta(2.3, 4.5, -1.0, 1.0)
+distribution = ot.Beta(2.3, 2.2, -1.0, 1.0)
 print('distribution=', distribution)
 sample = distribution.getSample(size)
 factory = ot.MethodOfMomentsFactory(ot.Beta())

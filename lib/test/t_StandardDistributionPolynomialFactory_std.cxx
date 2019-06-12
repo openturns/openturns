@@ -51,9 +51,9 @@ int main(int, char *[])
     distributionCollection.add(Uniform(-1.0, 1.0));
     distributionCollection.add(Uniform(-1.0, 3.0));
     distributionCollection.add(WeibullMin(1.0, 3.0));
-    distributionCollection.add(Beta(1.0, 3.0, -1.0, 1.0));
-    distributionCollection.add(Beta(0.5, 1.0, -1.0, 1.0));
-    distributionCollection.add(Beta(0.5, 1.0, -2.0, 3.0));
+    distributionCollection.add(Beta(1.0, 2.0, -1.0, 1.0));
+    distributionCollection.add(Beta(0.5, 0.5, -1.0, 1.0));
+    distributionCollection.add(Beta(0.5, 0.5, -2.0, 3.0));
     distributionCollection.add(Gamma(1.0, 3.0));
     distributionCollection.add(Arcsine());
     for (UnsignedInteger n = 0; n < distributionCollection.getSize(); ++n)
