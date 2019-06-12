@@ -75,7 +75,7 @@ Examples
 >>> inputDesign = ot.SobolIndicesExperiment(distribution, size).generate()
 >>> outputDesign = model(inputDesign)
 >>> # sensitivity analysis algorithm
->>> sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(inputDesign, outputDesign)
+>>> sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(inputDesign, outputDesign, size)
 >>> print(sensitivityAnalysis.getFirstOrderIndices())
 [0.249038,0.425106,-0.0623136]"
 
