@@ -77,5 +77,5 @@ Examples
 >>> # sensitivity analysis algorithm
 >>> sensitivityAnalysis = ot.MauntzKucherenkoSensitivityAlgorithm(inputDesign, outputDesign, size)
 >>> print(sensitivityAnalysis.getFirstOrderIndices())
-[0.182219,0.357106,-0.129096]"
+[0.18185,0.357918,-0.129502]"
 
