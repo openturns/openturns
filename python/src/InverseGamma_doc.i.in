@@ -3,21 +3,16 @@
 
 Helper class for defining the Inverse Gamma distribution which is the inverse of a :math:`\Gamma` distribution.
 
-Available constructors:
-    InverseGamma(*k, lambda*)
-
 Parameters
 ----------
+lambda : float, :math:`\lambda > 0`.
+    Rate parameter. By default, :math:`\lambda=1`.
 k : float, :math:`k > 0`,
     Shape parameter. By default, :math:`k=1`.
 
-lambda : float, :math:`\lambda > 0`.
-    Scale parameter. By default, :math:`\lambda=1`.
-     
-
 Notes
 -----
-:math:`X` follows an Inverse Gamma distribution of parameters :math:`(k, \lambda)` means that :math:`\dfrac{1}{X}` follows the :math:`\Gamma(k, \dfrac{1}{\lambda})` distribution, with :math:`k>0` and :math:`\lambda>0`.
+:math:`X` follows an Inverse Gamma distribution of parameters :math:`(\lambda, k)` means that :math:`\dfrac{1}{X}` follows the :math:`\Gamma(k, \dfrac{1}{\lambda})` distribution, with :math:`k>0` and :math:`\lambda>0`.
 
 Its probability density function is defined as:
 

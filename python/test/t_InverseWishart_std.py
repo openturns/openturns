@@ -59,7 +59,7 @@ class TestInverseWishartMethods(ut.TestCase):
         cls.k, cls.beta = 0.5 * DoF, 0.5 * scale
         cls.one_dimensional_inverse_wishart \
             = ot.InverseWishart(ot.CovarianceMatrix([[scale]]), DoF)
-        cls.inverse_gamma = ot.InverseGamma(cls.k, 1. / cls.beta)
+        cls.inverse_gamma = ot.InverseGamma(1. / cls.beta, cls.k)
         # attributes to test a multi-dimensional InverseWishart
         cls.dimension = 5
         cls.DoF = cls.dimension + 3 + U.getRealization()[0]
@@ -122,7 +122,7 @@ class TestInverseWishartMethods(ut.TestCase):
         logratio = - self.logmultigamma(dimension, 0.5 * DoF) \
             + dimension * ot.SpecFunc_LnGamma(0.5 * (DoF + dimension - 1))
         for d in range(dimension):
-            inverse_gamma = ot.InverseGamma(k, 2. / Scale[d, d])
+            inverse_gamma = ot.InverseGamma(2. / Scale[d, d], k)
             logdensity = logdensity - inverse_gamma.computeLogPDF(diagX[d, 0])
             logratio = logratio + 0.5 * \
                 (1 - dimension) * log(0.5 * Scale[d, d])
