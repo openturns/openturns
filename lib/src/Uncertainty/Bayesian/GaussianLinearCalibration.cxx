@@ -114,7 +114,7 @@ void GaussianLinearCalibration::run()
 {
   // Compute the difference of output observations and output predictions
   const Point deltaY(modelObservations_.getImplementation()->getData() - outputObservations_.getImplementation()->getData());
-  // Compute invserse of the Cholesky decomposition of the covariance matrix of the parameter
+  // Compute inverse of the Cholesky decomposition of the covariance matrix of the parameter
   const TriangularMatrix parameterInverseCholesky(getParameterPrior().getInverseCholesky());
   // Compute the covariance matrix R
   CovarianceMatrix R(deltaY.getSize());
@@ -129,7 +129,9 @@ void GaussianLinearCalibration::run()
 	  for (UnsignedInteger i = 0; i < size; ++i)
 	    for (UnsignedInteger j = 0; j < dimension; ++j)
 	      for (UnsignedInteger k = 0; k < dimension; ++k)
+              {
 		R(i * dimension + j, i * dimension + k) = errorCovariance_(j, k);
+              }
 	}
     }
   // Compute the inverse of the Cholesky decomposition of R
@@ -139,19 +141,22 @@ void GaussianLinearCalibration::run()
   const Matrix invLRJ = errorInverseCholesky * gradientObservations_;
   // Create the extended design matrix of the linear least squares problem
   const UnsignedInteger parameterDimension = getCandidate().getDimension();
-  Matrix Abar(size+parameterDimension,parameterDimension);
+  const UnsignedInteger outputDimension = outputObservations_.getDimension();
+  Matrix Abar(parameterDimension+size*outputDimension,parameterDimension);
   for (UnsignedInteger i = 0; i < parameterDimension; ++i)
     for (UnsignedInteger j = 0; j < parameterDimension; ++j)
       Abar(i,j) = parameterInverseCholesky(i,j);
   for (UnsignedInteger i = 0; i < size; ++i)
-    for (UnsignedInteger j = 0; j < parameterDimension; ++j)
-      Abar(i+parameterDimension,j) = -invLRJ(i,j);
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
+      for (UnsignedInteger k = 0; k < parameterDimension; ++k)
+        Abar(i*outputDimension+j+parameterDimension,k) = -invLRJ(i*outputDimension+j,k);
   // Compute errorInverseCholesky*deltay, the right hand size of the extended residual
   const Point invLRz = errorInverseCholesky * deltaY;
-  // Create the right hand side of the extended linear least squares system : ybar = -invLRz
-  Point ybar(size+parameterDimension);
+  // Create the extended right hand side of the extended linear least squares system : ybar = -invLRz
+  Point ybar(parameterDimension+size*outputDimension);
   for (UnsignedInteger i = 0; i < size; ++i)
-    ybar[i+parameterDimension] = invLRz[i];
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
+      ybar[i*outputDimension+j+parameterDimension] = invLRz[i*outputDimension+j];
   // Solve the linear least squares problem
   LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, Abar));
   const Point deltaTheta(method.solve(ybar));
