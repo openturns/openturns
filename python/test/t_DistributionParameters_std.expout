@@ -54,6 +54,18 @@ built dist= Gumbel(beta = 1.01361, gamma = 0.914931)
  [  0.779697 -0.450053 ]]
 [[  0         1        ]
  [  0.779697 -0.450053 ]]
+Distribution Parameters  class=LogNormalMuErrorFactor name=Unnamed muLog=0.63 EF=1.5 gamma=-0.5
+Distribution Parameters  LogNormalMuErrorFactor(muLog = 0.63, EF = 1.5, gamma = -0.5)
+non-native= [0.63,1.5,-0.5] [muLog,EF,gamma]
+native= [0.63,0.246505,-0.5]
+non-native= [0.63,1.5,-0.5]
+built dist= LogNormal(muLog = 0.63, sigmaLog = 0.246505, gamma = -0.5)
+[[ 1        0        0        ]
+ [ 0        0.405305 0        ]
+ [ 0        0        1        ]]
+[[ 1        0        0        ]
+ [ 0        0.405305 0        ]
+ [ 0        0        1        ]]
 Distribution Parameters  class=LogNormalMuSigma name=Unnamed mu=0.63 sigma=3.3 gamma=-0.5
 Distribution Parameters  LogNormalMuSigma(mu = 0.63, sigma = 3.3, gamma = -0.5)
 non-native= [0.63,3.3,-0.5] [mu,sigma,gamma]

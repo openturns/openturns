@@ -100,6 +100,7 @@
 #include "openturns/LogisticFactory.hxx"
 #include "openturns/LogNormal.hxx"
 #include "openturns/LogNormalFactory.hxx"
+#include "openturns/LogNormalMuErrorFactor.hxx"
 #include "openturns/LogNormalMuSigma.hxx"
 #include "openturns/LogNormalMuSigmaOverMu.hxx"
 #include "openturns/LogUniform.hxx"

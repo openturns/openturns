@@ -13,6 +13,7 @@
  * SquaredNormal
  * NullHessian
  * GumbelLambdaGamma
+ * LogNormalMuErrorFactor
 
 ==== API changes ====
  * Removed deprecated specific RandomVector constructors

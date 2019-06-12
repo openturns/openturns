@@ -642,6 +642,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       LogisticFactory.i LogisticFactory_doc.i.in
                       LogNormal.i LogNormal_doc.i.in
                       LogNormalFactory.i LogNormalFactory_doc.i.in
+                      LogNormalMuErrorFactor.i LogNormalMuErrorFactor_doc.i.in
                       LogNormalMuSigma.i LogNormalMuSigma_doc.i.in
                       LogNormalMuSigmaOverMu.i LogNormalMuSigmaOverMu_doc.i.in
                       LogUniform.i LogUniform_doc.i.in
