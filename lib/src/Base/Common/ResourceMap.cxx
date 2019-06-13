@@ -777,9 +777,9 @@ void ResourceMap::loadDefaultConfiguration()
 
   // CovarianceModelImplementation parameters //
   setAsScalar( "CovarianceModel-DefaultNuggetFactor", 1e-12 );
-  setAsScalar( "SpectralModel-DefaultTMax",  5.0 );
-  setAsScalar( "SpectralModel-DefaultTMin", -5.0 );
-  setAsUnsignedInteger( "SpectralModel-DefaultPointNumber",  129 );
+  setAsScalar( "CovarianceModel-DefaultTMax",  5.0 );
+  setAsScalar( "CovarianceModel-DefaultTMin", -5.0 );
+  setAsUnsignedInteger( "CovarianceModel-DefaultPointNumber",  129 );
 
   // SpectralModel parameters //
   setAsScalar( "SpectralModel-DefaultMaximumFrequency",  5.0 );
