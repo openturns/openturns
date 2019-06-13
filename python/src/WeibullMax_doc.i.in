@@ -1,5 +1,5 @@
-%feature("docstring") OT::WeibullMin
-"WeibullMin distribution.
+%feature("docstring") OT::WeibullMax
+"WeibullMax distribution.
 
 Parameters
 ----------
@@ -17,8 +17,8 @@ Its probability density function is defined as:
 .. math::
 
     f_X(x) = \frac{\alpha}{\beta}
-             \left(\frac{x - \gamma}{\beta} \right) ^ {\alpha-1}
-             \exp \left(-\left(\frac{x - \gamma}{\beta}\right)^{\alpha}\right),
+             \left(-\frac{x - \gamma}{\beta} \right) ^ {\alpha-1}
+             \exp \left(-\left(-\frac{x - \gamma}{\beta}\right)^{\alpha}\right),
              \quad x \in [\gamma; +\infty[
 
 Its first moments are:
@@ -27,8 +27,7 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{X} & = & \beta \,\Gamma\left(1 + \frac{1}{\alpha}\right)
-                       + \gamma \\
+        \Expect{X} & = & \gamma - \beta \,\Gamma\left(1 + \frac{1}{\alpha}\right)\\
         \Var{X} & = & \beta^2 \left( \Gamma ( 1 + \frac{2}{\alpha} ) -
                      \Gamma^2 ( 1 + \frac{1}{\alpha} ) \right)
     \end{eqnarray*}
@@ -36,30 +35,18 @@ Its first moments are:
 where :math:`\Gamma` denotes Euler's Gamma function
 :class:`~openturns.SpecFunc_Gamma`.
 
-It is possible to create a WeibullMin distribution from the alternative parametrization :math:`(\mu, \sigma, \gamma)`: see  :class:`~openturns.WeibullMinMuSigma`. In that case, all the results are presented in that new parametrization.
-
 In order to use the alternative  parametrization :math:`(\mu, \sigma, \gamma)` only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(\beta, \alpha, \gamma)`.
 
 See also
 --------
-WeibullMax
+WeibullMin
 
 Examples
 --------
 Create a distribution from its native parameters :math:`(\beta, \alpha, \gamma)`:
 
 >>> import openturns as ot
->>> myDist = ot.WeibullMin(2.0, 1.5, 1.0)
-
-Create a it from the alternative parametrization :math:`(\mu, \sigma, \gamma)`:
-
->>> myDist2 = ot.WeibullMin()
->>> myDist2.setParameter(ot.WeibullMinMuSigma()([2.8, 1.2, 1.0]))
-
-Create it from :math:`(\mu, \sigma, \gamma)` and keep that parametrization for the remaining study: 
-
->>> myParam = ot.WeibullMinMuSigma(2.8, 1.2, 1.0)
->>> myDist3 = ot.ParametrizedDistribution(myParam)
+>>> myDist = ot.WeibullMax(2.0, 1.5, 1.0)
 
 Draw a sample:
 
@@ -67,7 +54,7 @@ Draw a sample:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::WeibullMin::getAlpha
+%feature("docstring") OT::WeibullMax::getAlpha
 "Accessor to the distribution's shape parameter :math:`\alpha`.
 
 Returns
@@ -77,7 +64,7 @@ alpha : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::WeibullMin::getBeta
+%feature("docstring") OT::WeibullMax::getBeta
 "Accessor to the distribution's scale parameter :math:`\beta`.
 
 Returns
@@ -87,7 +74,7 @@ beta : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::WeibullMin::getGamma
+%feature("docstring") OT::WeibullMax::getGamma
 "Accessor to the distribution's location parameter :math:`\gamma`.
 
 Returns
@@ -97,7 +84,7 @@ gamma : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::WeibullMin::setAlpha
+%feature("docstring") OT::WeibullMax::setAlpha
 "Accessor to the distribution's shape parameter :math:`\alpha`.
 
 Parameters
@@ -107,7 +94,7 @@ alpha : float, :math:`\alpha > 0`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::WeibullMin::setBeta
+%feature("docstring") OT::WeibullMax::setBeta
 "Accessor to the distribution's scale parameter :math:`\beta`.
 
 Parameters
@@ -117,7 +104,7 @@ beta : float, :math:`\beta > 0`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::WeibullMin::setGamma
+%feature("docstring") OT::WeibullMax::setGamma
 "Accessor to the distribution's location parameter :math:`\gamma`.
 
 Parameters

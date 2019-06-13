@@ -83,6 +83,7 @@ Continuous parametric distributions
     Uniform
     VonMises
     WeibullMin
+    WeibullMax
     Wishart
 
 Discrete parametric distributions

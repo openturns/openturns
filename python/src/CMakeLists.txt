@@ -701,6 +701,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       WeibullMin.i WeibullMin_doc.i.in
                       WeibullMinFactory.i WeibullMinFactory_doc.i.in
                       WeibullMinMuSigma.i WeibullMinMuSigma_doc.i.in
+		      WeibullMax.i WeibullMax_doc.i.in
                       Wishart.i Wishart_doc.i.in
                       ZipfMandelbrot.i ZipfMandelbrot_doc.i.in
                       UncertaintyDistTemplateDefs.i
