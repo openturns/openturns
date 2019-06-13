@@ -21,7 +21,9 @@
 #ifndef OPENTURNS_GENERALIZEDEXTREMEVALUE_HXX
 #define OPENTURNS_GENERALIZEDEXTREMEVALUE_HXX
 
-#include "openturns/ContinuousDistribution.hxx"
+#include "openturns/WeibullMax.hxx"
+#include "openturns/Frechet.hxx"
+#include "openturns/Gumbel.hxx"
 #include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -44,6 +46,9 @@ public:
   GeneralizedExtremeValue(const Scalar mu,
                           const Scalar sigma,
                           const Scalar xi);
+
+  /** Parameter constructor from Weibull/Frechet/Gumbel */
+  GeneralizedExtremeValue(const Distribution & distribution);
 
   /** Comparison operator */
   Bool operator ==(const GeneralizedExtremeValue & other) const;
@@ -130,6 +135,11 @@ public:
   /** Actual distribution accessor */
   void setActualDistribution(const Distribution & distribution);
   Distribution getActualDistribution() const;
+
+  /** Actual distribution converter */
+  Frechet asFrechet() const;
+  WeibullMax asWeibullMax() const;
+  Gumbel asGumbel() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

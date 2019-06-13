@@ -15,6 +15,12 @@ try:
         print("#" * 50)
         print("Distribution ", distribution)
 
+        for dist in ['WeibullMax', 'Frechet', 'Gumbel']:
+            try:
+                eval("print('conversion as ', distribution.as" + dist + "())")
+            except:
+                pass
+
         # Is this distribution elliptical ?
         print("Elliptical = ", distribution.isElliptical())
 

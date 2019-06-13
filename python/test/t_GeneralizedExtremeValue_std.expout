@@ -1,5 +1,6 @@
 ##################################################
 Distribution  GeneralizedExtremeValue(mu=2, sigma=1.5, xi=-0.15)
+conversion as  WeibullMax(beta = 10, alpha = 6.66667, gamma = 12)
 Elliptical =  False
 Continuous =  True
 oneRealization= [2.00915]
@@ -30,7 +31,7 @@ Minimum volume interval= [-0.359967, 5.97545]
 threshold= 0.95
 Minimum volume level set= {x | f(x) <= 3.31111} with f=
 MinimumVolumeLevelSetEvaluation(GeneralizedExtremeValue(mu=2, sigma=1.5, xi=-0.15))
-beta= 0.03647578037903633
+beta= 0.0364757803790363
 Bilateral confidence interval= [-0.162817, 6.23879]
 beta= 0.95
 Unilateral confidence interval (lower tail)= [-4.83649, 5.59515]
@@ -47,19 +48,20 @@ spearman= [[ 1 ]]
 kendall= [[ 1 ]]
 parameters= [[mu : 2, sigma : 1.5, xi : -0.15]]
 standard moment n= 0 , value= [1]
-standard moment n= 1 , value= [2.66959]
-standard moment n= 2 , value= [9.81725]
-standard moment n= 3 , value= [42.4963]
-standard moment n= 4 , value= [209.086]
-standard moment n= 5 , value= [1135.1]
-Standard representative= RandomMixture(-WeibullMin(beta = 10, alpha = 6.66667, gamma = -12))
+standard moment n= 1 , value= [-0.933041]
+standard moment n= 2 , value= [0.897471]
+standard moment n= 3 , value= [-0.885661]
+standard moment n= 4 , value= [0.893515]
+standard moment n= 5 , value= [-0.919063]
+Standard representative= WeibullMax(beta = 1, alpha = 6.66667, gamma = 0)
 mu= 2.0
 sigma= 1.5
 xi= -0.15
-Actual distribution= RandomMixture(-WeibullMin(beta = 10, alpha = 6.66667, gamma = -12))
-Distribution from actual distribution= GeneralizedExtremeValue(mu=-5.33333, sigma=-0.666667, xi=-0.1)
+Actual distribution= WeibullMax(beta = 10, alpha = 6.66667, gamma = 12)
+Distribution from actual distribution= GeneralizedExtremeValue(mu=2, sigma=1.5, xi=-0.15)
 ##################################################
 Distribution  GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0)
+conversion as  Gumbel(beta = 1.5, gamma = 2)
 Elliptical =  False
 Continuous =  True
 oneRealization= [2.21357]
@@ -117,9 +119,10 @@ mu= 2.0
 sigma= 1.5
 xi= 0.0
 Actual distribution= Gumbel(beta = 1.5, gamma = 2)
-Distribution from actual distribution= GeneralizedExtremeValue(mu=1.5, sigma=1.5, xi=0)
+Distribution from actual distribution= GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0)
 ##################################################
 Distribution  GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0.15)
+conversion as  Frechet(beta = 10, alpha = 6.66667, gamma = -8)
 Elliptical =  False
 Continuous =  True
 oneRealization= [-0.353173]
