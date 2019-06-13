@@ -21,6 +21,7 @@
  * GumbelLambdaGamma
  * LogNormalMuErrorFactor
  * WeibullMax
+ * WeibullMaxFactory
 
 ==== API changes ====
  * Removed deprecated specific RandomVector constructors

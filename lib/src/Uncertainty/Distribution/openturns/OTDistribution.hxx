@@ -160,10 +160,11 @@
 #include "openturns/UserDefined.hxx"
 #include "openturns/UserDefinedFactory.hxx"
 #include "openturns/VonMises.hxx"
+#include "openturns/WeibullMax.hxx"
+#include "openturns/WeibullMaxFactory.hxx"
 #include "openturns/WeibullMin.hxx"
 #include "openturns/WeibullMinFactory.hxx"
 #include "openturns/WeibullMinMuSigma.hxx"
-#include "openturns/WeibullMax.hxx"
 #include "openturns/Wishart.hxx"
 #include "openturns/ZipfMandelbrot.hxx"
 

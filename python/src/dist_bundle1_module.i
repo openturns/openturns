@@ -61,6 +61,9 @@
 %include Geometric.i
 %include GeometricFactory.i
 %include Gumbel.i
+%include WeibullMax.i
+%include WeibullMaxFactory.i
+%include GeneralizedExtremeValue.i
 %include GumbelFactory.i
 %include GumbelAB.i
 %include GumbelLambdaGamma.i

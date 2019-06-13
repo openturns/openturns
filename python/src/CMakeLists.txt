@@ -612,6 +612,8 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       Gamma.i Gamma_doc.i.in
                       GammaFactory.i GammaFactory_doc.i.in
                       GammaMuSigma.i GammaMuSigma_doc.i.in
+                      WeibullMax.i WeibullMax_doc.i.in
+                      WeibullMaxFactory.i WeibullMaxFactory_doc.i.in
                       GeneralizedExtremeValue.i GeneralizedExtremeValue_doc.i.in
                       GeneralizedPareto.i GeneralizedPareto_doc.i.in
                       GeneralizedParetoFactory.i GeneralizedParetoFactory_doc.i.in
@@ -701,7 +703,6 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       WeibullMin.i WeibullMin_doc.i.in
                       WeibullMinFactory.i WeibullMinFactory_doc.i.in
                       WeibullMinMuSigma.i WeibullMinMuSigma_doc.i.in
-		      WeibullMax.i WeibullMax_doc.i.in
                       Wishart.i Wishart_doc.i.in
                       ZipfMandelbrot.i ZipfMandelbrot_doc.i.in
                       UncertaintyDistTemplateDefs.i

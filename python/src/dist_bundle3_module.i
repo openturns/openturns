@@ -51,7 +51,6 @@
 %include WeibullMin.i
 %include WeibullMinFactory.i
 %include WeibullMinMuSigma.i
-%include WeibullMax.i
 %include Wishart.i
 %include ZipfMandelbrot.i
 

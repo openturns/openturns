@@ -91,6 +91,7 @@ Building distributions from samples
     UniformFactory
     UserDefinedFactory
     WeibullMinFactory
+    WeibullMaxFactory
 
 Building copulas from samples
 =============================
