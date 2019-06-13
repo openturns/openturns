@@ -20,6 +20,7 @@
  */
 #include "openturns/Text.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,6 +53,7 @@ Text::Text(const Sample & data,
     throw InvalidArgumentException(HERE) << "The given text position = " << textPosition << " is invalid";
   }
   textPositions_ = Description(data_.getSize(), textPosition);
+  textSize_ = ResourceMap::GetAsScalar( "Text-DefaultTextSize");
 }
 
 /* Constructor from complex numbers */
@@ -77,6 +79,7 @@ Text::Text(const ComplexCollection & data,
     throw InvalidArgumentException(HERE) << "The given text position = " << textPosition << " is invalid";
   }
   textPositions_ = Description(data_.getSize(), textPosition);
+  textSize_ = ResourceMap::GetAsScalar("Text-DefaultTextSize");
 }
 
 /* Contructor from 2 data sets */
@@ -174,6 +177,17 @@ void Text::setTextPositions(const Description & textPositions)
   textPositions_ = textPositions;
 }
 
+ Scalar Text::getTextSize() const
+ {
+   return textSize_;
+ }
+ 
+ void Text::setTextSize(const Scalar size)
+ {
+   textSize_ = size;
+ }
+
+
 /* Draw method */
 String Text::draw() const
 {
@@ -197,7 +211,8 @@ String Text::draw() const
     }
   }
   oss << "indices <- which(labels != \"\")\n";
-  oss << "text(dataOT[indices,1], dataOT[indices,2], labels[indices], cex = 0.75, xpd = TRUE, pos = position[indices]"
+  oss << "text(dataOT[indices,1], dataOT[indices,2], labels[indices], cex = " << textSize_ 
+  	  << ", xpd = TRUE, pos = position[indices]"
       << ", col=\"" << color_ << "\""
       << ", offset = 0.25)\n";
 
