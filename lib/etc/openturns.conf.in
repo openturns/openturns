@@ -85,6 +85,10 @@
   <Drawable-DataThreshold       value_int="2000" />
   <Drawable-DefaultPalettePhase value_int="12"   />
 
+
+  <!-- OT::Text parameters -->
+  <Text-DefaultTextSize    value_float="0.75"            />
+
   <!-- OT::GraphImplementation parameters -->
   <Graph-DefaultHorizontalMargin value_float="0.05"          />
   <Graph-DefaultLegendFontSize   value_float="1.0"           />

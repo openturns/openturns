@@ -51,6 +51,7 @@ try:
     myText = Text(sample, labels)
     myText.setColor("red")
     myText.setTextPositions(position)
+    myText.setTextSize(1.0)
 
     myGraph.add(myText)
     myGraph.draw("Graph_Text_a_OT.png")

@@ -88,6 +88,9 @@ try:
     p = model.getParameter()
     print(p)
 
+    # draw bug
+    ExponentialModel().draw()
+    print('ok')
 except:
     import sys
     print("t_ExponentialModel_std.py", sys.exc_info()[0], sys.exc_info()[1])

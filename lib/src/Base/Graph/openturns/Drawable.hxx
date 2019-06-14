@@ -128,6 +128,10 @@ public:
   Description getTextPositions() const;
   void setTextPositions(const Description & textPositions);
 
+  /** Accessor for the text size */
+  Scalar getTextSize() const;
+  void setTextSize(const Scalar size);
+
   /** Accessor for data */
   Sample getData() const;
 

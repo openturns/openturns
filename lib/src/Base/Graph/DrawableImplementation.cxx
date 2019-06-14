@@ -1423,6 +1423,17 @@ void DrawableImplementation::setTextPositions(const Description & )
   throw NotDefinedException(HERE) << "Error: no flag textPositions in " << getClassName();
 }
 
+Scalar DrawableImplementation::getTextSize() const
+{
+  throw NotDefinedException(HERE) << "Error: no text size in " << getClassName();  
+}
+
+void DrawableImplementation::setTextSize(const Scalar size)
+{
+  throw NotDefinedException(HERE) << "Error: no text size in " << getClassName();  
+}
+
+
 /* R command generating method, for plotting through R */
 String DrawableImplementation::draw() const
 {

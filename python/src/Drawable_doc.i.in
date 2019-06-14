@@ -92,6 +92,10 @@ OT_Drawable_setTextAnnotations_doc
 OT_Drawable_getTextPositions_doc
 %feature("docstring") OT::Drawable::setTextPositions
 OT_Drawable_setTextPositions_doc
+%feature("docstring") OT::Drawable::getTextSize
+OT_Drawable_getTextSize_doc
+%feature("docstring") OT::Drawable::setTextSize
+OT_Drawable_setTextSize_doc
 %feature("docstring") OT::Drawable::getPattern
 OT_Drawable_getPattern_doc
 %feature("docstring") OT::Drawable::setPattern
