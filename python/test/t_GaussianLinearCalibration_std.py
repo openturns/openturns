@@ -101,7 +101,7 @@ def testCalibrationtExponential():
 
 def testCalibrationtChaboche():
     '''
-    Thanks to - Antoine Dumas, Phiméca
+    Thanks to - Antoine Dumas, Phimeca
     References
     - J. Lemaitre and J. L. Chaboche (2002) "Mechanics of solid materials" Cambridge University Press.
     '''
