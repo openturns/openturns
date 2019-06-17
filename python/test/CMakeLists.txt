@@ -710,8 +710,11 @@ if (MATPLOTLIB_FOUND)
   ot_pyinstallcheck_test (Viewer IGNOREOUT)
 endif ()
 ot_pyinstallcheck_test (features IGNOREOUT)
-
 ot_pyinstallcheck_test (coupling_tools)
+ot_pyinstallcheck_test (shims IGNOREOUT)
+
+
+
 
 if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND AND LIBXML2_FOUND AND NLopt_FOUND AND CMinpack_FOUND AND dlib_FOUND)
   # on py3k/swig<3.0.0, doctest fails with "NameError: Unknown C global variable"
