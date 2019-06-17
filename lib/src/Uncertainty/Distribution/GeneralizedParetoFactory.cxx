@@ -123,13 +123,16 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto() const
 GeneralizedPareto GeneralizedParetoFactory::buildMethodOfMoments(const Sample & sample) const
 {
   LOGINFO("Using method of moment");
-  const Scalar mean = sample.computeMean()[0];
+  const UnsignedInteger size = sample.getSize();
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar u = xMin - std::abs(xMin) / (2.0 + size);
+  const Scalar mean = sample.computeMean()[0] - u;
   const Scalar std = sample.computeStandardDeviationPerComponent()[0];
   const Scalar xi = 0.5 * (std::pow(mean / std, 2) - 1.0);
   // The moment estimator is valid only if the estimated xi parameter is greater than -1/4
   if (xi <= -0.25) throw InvalidArgumentException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution with the method of moments when the estimated xi parameter=" << xi << " is less than -0.25";
   const Scalar sigma = 0.5 * mean * (std::pow(mean / std, 2) + 1.0);
-  GeneralizedPareto result(sigma, xi);
+  GeneralizedPareto result(sigma, xi, u);
   result.setDescription(sample.getDescription());
   return result;
 }
@@ -191,7 +194,10 @@ struct GeneralizedParetoFactoryParameterConstraint
 GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(const Sample & sample) const
 {
   LOGINFO("Using method of exponential regression");
-  const Sample sortedSample(sample.sort(0));
+  const UnsignedInteger size = sample.getSize();
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar u = xMin - std::abs(xMin) / (2.0 + size);
+  const Sample sortedSample(sample.sort(0) - Point(1, u));
   GeneralizedParetoFactoryParameterConstraint constraint(sortedSample);
   Function f(bindMethod<GeneralizedParetoFactoryParameterConstraint, Point, Point>(constraint, &GeneralizedParetoFactoryParameterConstraint::computeConstraint, 1, 1));
   CenteredFiniteDifferenceGradient gradient(1.0e-5, f.getEvaluation());
@@ -215,14 +221,13 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
   // optimal point
   const Scalar xi = solver_.getResult().getOptimalPoint()[0];
 
-  const Scalar mean = sample.computeMean()[0];
+  const Scalar mean = sample.computeMean()[0] - u;
   // Compute the first probability weighted moment
   Scalar m = 0.0;
-  const UnsignedInteger size = sample.getSize();
   for (UnsignedInteger i = 0; i < size; ++i) m += (size - (i + 0.65)) * sortedSample(i, 0);
   m /= size * size;
   const Scalar sigma = 2.0 * mean * m / (mean - 2.0 * m);
-  GeneralizedPareto result(sigma, xi);
+  GeneralizedPareto result(sigma, xi, u);
   result.setDescription(sample.getDescription());
   return result;
 }
@@ -231,11 +236,13 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
 GeneralizedPareto GeneralizedParetoFactory::buildMethodOfProbabilityWeightedMoments(const Sample & sample) const
 {
   LOGINFO("Using method of probability weighted moment");
-  const Scalar mean = sample.computeMean()[0];
-  const Sample sortedSample(sample.sort(0));
+  const UnsignedInteger size = sample.getSize();
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar u = xMin - std::abs(xMin) / (2.0 + size);
+  const Scalar mean = sample.computeMean()[0] - u;
+  const Sample sortedSample(sample.sort(0) - Point(1, u));
   // Compute the first probability weighted moment
   Scalar m = 0.0;
-  const UnsignedInteger size = sample.getSize();
   for (UnsignedInteger i = 0; i < size; ++i) m += (size - (i + 0.65)) * sortedSample(i, 0);
   m /= size * size;
   // r=m/mu
@@ -250,7 +257,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfProbabilityWeightedMome
   }
   // sigma=2*m*/(1-2r)
   const Scalar sigma = 2.0 * m / (1.0 - 2.0 * rho);
-  GeneralizedPareto result(sigma, xi);
+  GeneralizedPareto result(sigma, xi, u);
   result.setDescription(sample.getDescription());
   return result;
 }

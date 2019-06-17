@@ -42,7 +42,7 @@ int main(int, char *[])
     GeneralizedPareto distribution;
     for (UnsignedInteger i = 0; i < 3; ++i)
     {
-      distribution = GeneralizedPareto(2.5, xi[i]);
+      distribution = GeneralizedPareto(2.5, xi[i], 0.5);
       Sample sample(distribution.getSample(size));
       // Distribution estimatedDistribution(factory.build(sample, covariance));
       Distribution estimatedDistribution(factory.build(sample));

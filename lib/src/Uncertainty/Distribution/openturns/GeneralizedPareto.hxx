@@ -41,7 +41,8 @@ public:
 
   /** Parameters constructor */
   GeneralizedPareto(const Scalar sigma,
-                    const Scalar xi);
+                    const Scalar xi,
+                    const Scalar u = 0.0);
 
   /** Comparison operator */
   Bool operator ==(const GeneralizedPareto & other) const;
@@ -131,6 +132,10 @@ public:
   void setXi(const Scalar xi);
   Scalar getXi() const;
 
+  /** U accessor */
+  void setU(const Scalar location);
+  Scalar getU() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
@@ -161,6 +166,8 @@ private:
   /** The shape parameter of the GeneralizedPareto distribution */
   Scalar xi_;
 
+  /** Location parameter */
+  Scalar u_;
 }; /* class GeneralizedPareto */
 
 

@@ -61,8 +61,8 @@ saved  FisherSnedecor = class=FisherSnedecor name=FisherSnedecor dimension=1 d1=
 loaded FisherSnedecor = class=FisherSnedecor name=FisherSnedecor dimension=1 d1=5.5 d2=10.5
 saved  Gamma = class=Gamma name=Gamma dimension=1 k=1.5 lambda=3 gamma=-2
 loaded Gamma = class=Gamma name=Gamma dimension=1 k=1.5 lambda=3 gamma=-2
-saved  GeneralizedPareto = class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=-0.2
-loaded GeneralizedPareto = class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=-0.2
+saved  GeneralizedPareto = class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=-0.2 u=0
+loaded GeneralizedPareto = class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=-0.2 u=0
 saved  Geometric = class=Geometric name=Geometric dimension=1 p=0.15
 loaded Geometric = class=Geometric name=Geometric dimension=1 p=0.15
 saved  Gumbel = class=Gumbel name=Gumbel dimension=1 beta=2 gamma=-0.5

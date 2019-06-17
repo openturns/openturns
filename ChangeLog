@@ -50,6 +50,7 @@
  * Add Domain.__contains__ operator
 
 === Miscellaneous ===
+ * Add GeneralizedPareto location parameter
 
 === Bug fixes ===
  * https://github.com/openturns/openturns/milestone/4?closed=1
