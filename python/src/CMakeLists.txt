@@ -614,6 +614,7 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       GammaMuSigma.i GammaMuSigma_doc.i.in
                       WeibullMax.i WeibullMax_doc.i.in
                       WeibullMaxFactory.i WeibullMaxFactory_doc.i.in
+		      WeibullMaxMuSigma.i WeibullMaxMuSigma_doc.i.in
                       GeneralizedExtremeValue.i GeneralizedExtremeValue_doc.i.in
                       GeneralizedPareto.i GeneralizedPareto_doc.i.in
                       GeneralizedParetoFactory.i GeneralizedParetoFactory_doc.i.in

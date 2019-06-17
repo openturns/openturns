@@ -125,6 +125,7 @@ Parametrized distributions
     GumbelMuSigma
     LogNormalMuSigma
     LogNormalMuSigmaOverMu
+    WeibullMaxMuSigma
     WeibullMinMuSigma
 
 Pseudo-random numbers generator

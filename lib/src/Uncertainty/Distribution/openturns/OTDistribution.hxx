@@ -162,6 +162,7 @@
 #include "openturns/VonMises.hxx"
 #include "openturns/WeibullMax.hxx"
 #include "openturns/WeibullMaxFactory.hxx"
+#include "openturns/WeibullMaxMuSigma.hxx"
 #include "openturns/WeibullMin.hxx"
 #include "openturns/WeibullMinFactory.hxx"
 #include "openturns/WeibullMinMuSigma.hxx"
