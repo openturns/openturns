@@ -304,6 +304,8 @@ inline void assert_almost_equal(Scalar a, Scalar b, Scalar rtol = 1.0e-5, Scalar
 
 inline void assert_almost_equal(const Point & a, const Point & b, Scalar rtol = 1.0e-5, Scalar atol = 1.0e-8)
 {
+  if (a.getDimension() != b.getDimension())
+    throw InvalidArgumentException(HERE) << "A and B must have the same dimension";
   const UnsignedInteger dimension = a.getDimension();
   for (UnsignedInteger j = 0; j < dimension; ++ j )
   {
@@ -314,13 +316,17 @@ inline void assert_almost_equal(const Point & a, const Point & b, Scalar rtol = 
 
 inline void assert_almost_equal(const Sample & a, const Sample & b, Scalar rtol = 1.0e-5, Scalar atol = 1.0e-8)
 {
+  if (a.getSize() != b.getSize())
+    throw InvalidArgumentException(HERE) << "A and B must have the same size";
+  if (a.getDimension() != b.getDimension())
+    throw InvalidArgumentException(HERE) << "A and B must have the same dimension";
   const UnsignedInteger size = a.getSize();
   const UnsignedInteger dimension = a.getDimension();
   for ( UnsignedInteger i = 0; i < size; ++ i )
   {
     for (UnsignedInteger j = 0; j < dimension; ++ j )
     {
-      assert_almost_equal(a[i][j], b[i][j], rtol, atol);
+      assert_almost_equal(a(i, j), b(i, j), rtol, atol);
     }
   }
 }
