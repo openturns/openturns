@@ -5,7 +5,7 @@ import openturns as ot
 
 ot.TESTPREAMBLE()
 
-
+ot.PlatformInfo.SetNumericalPrecision(5)
 size = 10000
 
 
