@@ -71,6 +71,7 @@
 #include "openturns/GammaFactory.hxx"
 #include "openturns/GammaMuSigma.hxx"
 #include "openturns/GeneralizedExtremeValue.hxx"
+#include "openturns/GeneralizedExtremeValueFactory.hxx"
 #include "openturns/GeneralizedPareto.hxx"
 #include "openturns/GeneralizedParetoFactory.hxx"
 #include "openturns/Geometric.hxx"

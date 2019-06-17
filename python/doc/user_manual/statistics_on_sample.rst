@@ -40,6 +40,7 @@ Building distributions from samples
     FisherSnedecorFactory
     FrechetFactory
     GammaFactory
+    GeneralizedExtremeValueFactory
     GeneralizedParetoFactory
     GeometricFactory
     GumbelFactory

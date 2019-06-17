@@ -23,6 +23,7 @@
  * WeibullMax
  * WeibullMaxFactory
  * WeibullMaxMuSigma
+ * GeneralizedExtremeValueFactory
 
 ==== API changes ====
  * Removed deprecated specific RandomVector constructors

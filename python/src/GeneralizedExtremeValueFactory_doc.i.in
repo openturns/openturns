@@ -1,0 +1,12 @@
+%feature("docstring") OT::GeneralizedExtremeValueFactory
+"GeneralizedExtremeValue factory.
+
+Available constructor:
+    ArcsineFactory()
+
+Returns the best model among the Frechet, Gumbel and Weibull estimates
+according to the BIC criterion.
+
+See also
+--------
+DistributionFactory, GeneralizedExtremeValue, FrechetFactory, GumbelFactory, WeibullMaxFactory"

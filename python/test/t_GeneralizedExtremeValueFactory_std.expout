@@ -1,0 +1,24 @@
+distribution= class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=-0.15 actual distribution=class=WeibullMax name=WeibullMax dimension=1 beta=10 alpha=6.66667 gamma=12
+Estimated distribution= class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2.02421 sigma=1.59275 xi=-0.21898 actual distribution=class=WeibullMax name=WeibullMax dimension=1 beta=7.27348 alpha=4.56662 gamma=9.29769
+Default distribution= GeneralizedExtremeValue(mu=0, sigma=1, xi=0)
+Distribution from parameters= GeneralizedExtremeValue(mu=2, sigma=1.5, xi=-0.15)
+GeneralizedExtremeValue          = GeneralizedExtremeValue(mu=2, sigma=1.5, xi=-0.15)
+Estimated GeneralizedExtremeValue= GeneralizedExtremeValue(mu=2.02421, sigma=1.59275, xi=-0.21898)
+Default GeneralizedExtremeValue= GeneralizedExtremeValue(mu=0, sigma=1, xi=0)
+GeneralizedExtremeValue from parameters= GeneralizedExtremeValue(mu=2, sigma=1.5, xi=-0.15)
+distribution= class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=0 actual distribution=class=Gumbel name=Gumbel dimension=1 beta=1.5 gamma=2
+Estimated distribution= class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=1.99506 sigma=1.50537 xi=0 actual distribution=class=Gumbel name=Gumbel dimension=1 beta=1.50537 gamma=1.99506
+Default distribution= GeneralizedExtremeValue(mu=0, sigma=1, xi=0)
+Distribution from parameters= GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0)
+GeneralizedExtremeValue          = GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0)
+Estimated GeneralizedExtremeValue= GeneralizedExtremeValue(mu=1.99506, sigma=1.50537, xi=0)
+Default GeneralizedExtremeValue= GeneralizedExtremeValue(mu=0, sigma=1, xi=0)
+GeneralizedExtremeValue from parameters= GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0)
+distribution= class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=2 sigma=1.5 xi=0.15 actual distribution=class=Frechet name=Frechet dimension=1 beta=10 alpha=6.66667 gamma=-8
+Estimated distribution= class=GeneralizedExtremeValue name=GeneralizedExtremeValue mu=1.99532 sigma=1.50812 xi=0.14567 actual distribution=class=Frechet name=Frechet dimension=1 beta=10.353 alpha=6.86484 gamma=-8.3577
+Default distribution= GeneralizedExtremeValue(mu=0, sigma=1, xi=0)
+Distribution from parameters= GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0.15)
+GeneralizedExtremeValue          = GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0.15)
+Estimated GeneralizedExtremeValue= GeneralizedExtremeValue(mu=1.99532, sigma=1.50812, xi=0.14567)
+Default GeneralizedExtremeValue= GeneralizedExtremeValue(mu=0, sigma=1, xi=0)
+GeneralizedExtremeValue from parameters= GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0.15)

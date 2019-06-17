@@ -64,6 +64,7 @@
 %include WeibullMaxFactory.i
 %include WeibullMaxMuSigma.i
 %include GeneralizedExtremeValue.i
+%include GeneralizedExtremeValueFactory.i
 %include GumbelFactory.i
 %include GumbelAB.i
 %include GumbelLambdaGamma.i
