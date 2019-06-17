@@ -21,7 +21,7 @@
 #include "openturns/LinearFunction.hxx"
 #include "openturns/LinearEvaluation.hxx"
 #include "openturns/ConstantGradient.hxx"
-#include "openturns/ConstantHessian.hxx"
+#include "openturns/NullHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -33,7 +33,7 @@ LinearFunction::LinearFunction(const Point & center,
                                const Matrix & linear)
   : Function(new LinearEvaluation(center, constant, linear.transpose()),
              new ConstantGradient(linear.transpose()),
-             new ConstantHessian(SymmetricTensor(center.getDimension(), constant.getDimension())))
+             new NullHessian(center.getDimension(), constant.getDimension()))
 {
   // Nothing to do
 }

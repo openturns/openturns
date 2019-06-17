@@ -166,6 +166,7 @@ Hessian functions
     DualLinearCombinationHessian
     LinearCombinationHessian
     NoHessian
+    NullHessian
     ParametricHessian
     ProductHessian
 

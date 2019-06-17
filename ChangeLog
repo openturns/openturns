@@ -10,6 +10,7 @@
 ==== New classes ====
  * Dlib
  * SquaredNormal
+ * NullHessian
 
 ==== API changes ====
  * Removed deprecated specific RandomVector constructors
