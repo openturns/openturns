@@ -2,11 +2,21 @@
 
 from __future__ import print_function
 import openturns as ot
-import numpy as np
 from openturns.testing import assert_almost_equal
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(5)
+
+def matrixToSample(matrix):
+    '''Converts a matrix into a Sample, so that we can  
+    assert_almost_equal a Matrix'''
+    size = matrix.getNbRows()
+    dimension = matrix.getNbColumns()
+    sample = ot.Sample(size,dimension)
+    for i in range(size):
+        for j in range(dimension):
+            sample[i,j] = matrix[i,j]
+    return sample
 
 def testCalibrationtExponential():
     '''
@@ -62,8 +72,8 @@ def testCalibrationtExponential():
         
         # Covariance matrix of theta
         thetaPosterior = calibrationResult.getParameterPosterior()
-        covarianceThetaStar = np.array(thetaPosterior.getCovariance())
-        exactCovarianceTheta = np.array(\
+        covarianceThetaStar = matrixToSample(thetaPosterior.getCovariance())
+        exactCovarianceTheta = ot.Sample(\
             [[ 0.308302, -0.000665387, 6.81135e-05 ], \
              [ -0.000665387, 8.36243e-06, -8.86775e-07 ], \
              [ 6.81135e-05, -8.86775e-07, 9.42234e-08 ]])
@@ -88,8 +98,8 @@ def testCalibrationtExponential():
         
         # Covariance matrix of theta
         thetaPosterior = calibrationResult.getParameterPosterior()
-        covarianceThetaStar = np.array(thetaPosterior.getCovariance())
-        exactCovarianceTheta = np.array(\
+        covarianceThetaStar = matrixToSample(thetaPosterior.getCovariance())
+        exactCovarianceTheta = ot.Sample(\
             [[ 1.27112112e+00, -4.52977089e-03,  4.71588017e-04], \
              [-4.52977089e-03,  5.93651856e-04, -6.36371482e-05], \
              [ 4.71588017e-04, -6.36371482e-05,  6.84130285e-06]])
@@ -106,13 +116,9 @@ def testCalibrationtChaboche():
     - J. Lemaitre and J. L. Chaboche (2002) "Mechanics of solid materials" Cambridge University Press.
     '''
     ot.RandomGenerator.SetSeed(0)
-    def modelChaboche(X):
-        strain,R,C,gamma = X
-        stress = R + C*(1-np.exp(-gamma*strain))
-        return [stress]
-
-    # Create the Python function.
-    g = ot.PythonFunction(4, 1, modelChaboche) 
+    
+    # Create the function.
+    g = ot.SymbolicFunction(["strain","R","C","gam"],["R + C*(1-exp(-gam*strain))"]) 
     
     # Define the random vector.
     Strain = ot.Uniform(0,0.07)
@@ -195,8 +201,8 @@ def testCalibrationtChaboche():
     
     # Covariance matrix of theta
     thetaPosterior = calibrationResult.getParameterPosterior()
-    covarianceThetaStar = np.array(thetaPosterior.getCovariance())
-    exactCovarianceTheta = np.array(\
+    covarianceThetaStar = matrixToSample(thetaPosterior.getCovariance())
+    exactCovarianceTheta = ot.Sample(\
         [[ 42.4899, 288.43, -1.70502 ],\
          [ 288.43, 15977.1, -67.6046 ],\
          [ -1.70502, -67.6046, 0.294659 ]])
