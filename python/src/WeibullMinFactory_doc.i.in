@@ -4,7 +4,35 @@
 Available constructor:
     WeibullMinFactory()
 
-The parameters are estimated by method of moments:
+The parameters are estimated by maximization of the likelihood,
+see :class:`~openturns.MaximumLikelihoodFactory`.
+
+See also
+--------
+DistributionFactory, WeibullMin"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::WeibullMinFactory::buildMethodOfLikelihoodMaximization
+"Method of likelihood maximization.
+
+Refer to :class:`~openturns.MaximumLikelihoodFactory`.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.WeibullMin`
+    The estimated distribution"
+
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::WeibullMinFactory::buildMethodOfMoments
+"Method of moments estimator.
 
 .. math::
     :nowrap:
@@ -18,6 +46,27 @@ The parameters are estimated by method of moments:
       \end{array}\right.
     \end{eqnarray*}
 
-See also
---------
-DistributionFactory, WeibullMin"
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.WeibullMin`
+    The estimated distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::WeibullMinFactory::buildAsWeibullMin
+"Estimate the distribution as native distribution.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.WeibullMin`
+    The estimated distribution"

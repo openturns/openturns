@@ -52,6 +52,10 @@ public:
   WeibullMin buildAsWeibullMin(const Point & parameters) const;
   WeibullMin buildAsWeibullMin() const;
 
+  /** Algorithm associated with the method of moments */
+  WeibullMin buildMethodOfMoments(const Sample & sample) const;
+  WeibullMin buildMethodOfLikelihoodMaximization(const Sample & sample) const;
+
   /** @deprecated */
   WeibullMin buildAsWeibull(const Sample & sample) const;
   WeibullMin buildAsWeibull(const Point & parameters) const;

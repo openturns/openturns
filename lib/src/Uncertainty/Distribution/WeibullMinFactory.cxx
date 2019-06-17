@@ -22,6 +22,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/WeibullMinMuSigma.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/MaximumLikelihoodFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -59,7 +60,7 @@ Distribution WeibullMinFactory::build() const
   return buildAsWeibullMin().clone();
 }
 
-WeibullMin WeibullMinFactory::buildAsWeibullMin(const Sample & sample) const
+WeibullMin WeibullMinFactory::buildMethodOfMoments(const Sample & sample) const
 {
   const Scalar size = sample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a WeibullMin distribution from an empty sample";
@@ -87,6 +88,18 @@ WeibullMin WeibullMinFactory::buildAsWeibullMin(const Sample & sample) const
     result.setDescription(sample.getDescription());
     return result;
   }
+}
+
+WeibullMin WeibullMinFactory::buildMethodOfLikelihoodMaximization(const Sample & sample) const
+{
+  LOGINFO("in WeibullMinFactory, using likelihood maximisation");
+  const MaximumLikelihoodFactory factory(buildMethodOfMoments(sample));
+  return buildAsWeibullMin(factory.build(sample).getParameter());
+}
+
+WeibullMin WeibullMinFactory::buildAsWeibullMin(const Sample & sample) const
+{
+  return buildMethodOfLikelihoodMaximization(sample);
 }
 
 WeibullMin WeibullMinFactory::buildAsWeibullMin(const Point & parameters) const
