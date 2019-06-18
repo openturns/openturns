@@ -6,7 +6,7 @@ Laplace polynomial(3)=-0.57735 * X + 0.0481125 * X^3
 Laplace polynomial(4)=0.329735 - 0.25646 * X^2 + 0.00763275 * X^4
 Laplace polynomial(4) roots=class=Point name=Unnamed dimension=4 values=[-5.67987,-1.15719,1.15719,5.67987]
 Laplace polynomial(4) nodes=class=Point name=Unnamed dimension=4 values=[-5.67987,-1.15719,1.15719,5.67987] and weights=class=Point name=Unnamed dimension=4 values=[0.0106869,0.489313,0.489313,0.0106869]
-polynomialFactory(Logistic=class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Logistic name=Logistic dimension=1 alpha=0 beta=1 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,0,0],class=Point name=Unnamed dimension=3 values=[1,0,-3.28987]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,3.28987] isElliptical=true
+polynomialFactory(Logistic=class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Logistic name=Logistic dimension=1 mu=0 beta=1 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,0,0],class=Point name=Unnamed dimension=3 values=[1,0,-3.28987]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,3.28987] isElliptical=true
 Logistic polynomial(0)=1
 Logistic polynomial(1)=0.551329 * X
 Logistic polynomial(2)=-0.559017 + 0.169921 * X^2

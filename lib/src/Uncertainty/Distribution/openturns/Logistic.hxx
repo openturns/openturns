@@ -41,7 +41,7 @@ public:
   Logistic();
 
   /** Parameters constructor */
-  Logistic(const Scalar alpha,
+  Logistic(const Scalar mu,
            const Scalar beta);
 
 
@@ -126,7 +126,11 @@ public:
 
   /* Interface specific to Logistic */
 
-  /** Alpha accessor */
+  /** Mu accessor */
+  void setMu(const Scalar mu);
+  Scalar getMu() const;
+
+  /** @deprecated Alpha accessor */
   void setAlpha(const Scalar alpha);
   Scalar getAlpha() const;
 
@@ -158,7 +162,7 @@ private:
                                const Bool tail = false) const;
 
   /** The main parameter set of the distribution */
-  Scalar alpha_;
+  Scalar mu_;
   Scalar beta_;
 
 

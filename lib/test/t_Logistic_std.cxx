@@ -100,18 +100,18 @@ int main(int, char *[])
     Point PDFgr = distribution.computePDFGradient( point );
     fullprint << "pdf gradient     =" << PDFgr << std::endl;
     Point PDFgrFD(2);
-    PDFgrFD[0] = (Logistic(distribution.getAlpha() + eps, distribution.getBeta()).computePDF(point) -
-                  Logistic(distribution.getAlpha() - eps, distribution.getBeta()).computePDF(point)) / (2.0 * eps);
-    PDFgrFD[1] = (Logistic(distribution.getAlpha(), distribution.getBeta() + eps).computePDF(point) -
-                  Logistic(distribution.getAlpha(), distribution.getBeta() - eps).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[0] = (Logistic(distribution.getMu() + eps, distribution.getBeta()).computePDF(point) -
+                  Logistic(distribution.getMu() - eps, distribution.getBeta()).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[1] = (Logistic(distribution.getMu(), distribution.getBeta() + eps).computePDF(point) -
+                  Logistic(distribution.getMu(), distribution.getBeta() - eps).computePDF(point)) / (2.0 * eps);
     fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
     Point CDFgr = distribution.computeCDFGradient( point );
     fullprint << "cdf gradient     =" << CDFgr << std::endl;
     Point CDFgrFD(2);
-    CDFgrFD[0] = (Logistic(distribution.getAlpha() + eps, distribution.getBeta()).computeCDF(point) -
-                  Logistic(distribution.getAlpha() - eps, distribution.getBeta()).computeCDF(point)) / (2.0 * eps);
-    CDFgrFD[1] = (Logistic(distribution.getAlpha(), distribution.getBeta() + eps).computeCDF(point) -
-                  Logistic(distribution.getAlpha(), distribution.getBeta() - eps).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[0] = (Logistic(distribution.getMu() + eps, distribution.getBeta()).computeCDF(point) -
+                  Logistic(distribution.getMu() - eps, distribution.getBeta()).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[1] = (Logistic(distribution.getMu(), distribution.getBeta() + eps).computeCDF(point) -
+                  Logistic(distribution.getMu(), distribution.getBeta() - eps).computeCDF(point)) / (2.0 * eps);
     fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
     Point quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;

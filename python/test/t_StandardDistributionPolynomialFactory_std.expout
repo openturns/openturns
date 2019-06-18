@@ -13,7 +13,7 @@ M=
  [ 0 0 1 0 0 ]
  [ 0 0 0 1 0 ]
  [ 0 0 0 0 1 ]]
-polynomialFactory( Logistic = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Logistic name=Logistic dimension=1 alpha=0 beta=1 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,0,0],class=Point name=Unnamed dimension=3 values=[1,0,-3.28987]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,3.28987] isElliptical=true )
+polynomialFactory( Logistic = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Logistic name=Logistic dimension=1 mu=0 beta=1 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,0,0],class=Point name=Unnamed dimension=3 values=[1,0,-3.28987]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,3.28987] isElliptical=true )
 Logistic  polynomial( 0 )= 1
 Logistic  polynomial( 1 )= 0.551329 * X
 Logistic  polynomial( 2 )= -0.559017 + 0.169921 * X^2

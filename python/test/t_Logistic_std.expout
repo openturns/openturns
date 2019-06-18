@@ -1,5 +1,5 @@
-Distribution  class=Logistic name=Logistic dimension=1 alpha=-0.5 beta=1.5
-Distribution  Logistic(alpha = -0.5, beta = 1.5)
+Distribution  class=Logistic name=Logistic dimension=1 mu=-0.5 beta=1.5
+Distribution  Logistic(mu = -0.5, beta = 1.5)
 Elliptical =  True
 Continuous =  True
 oneRealization= class=Point name=Unnamed dimension=1 values=[0.297531]
@@ -29,7 +29,7 @@ entropy=2.405465
 Minimum volume interval= [-5.99534, 4.99534]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 4.11966} with f=
-MinimumVolumeLevelSetEvaluation(Logistic(alpha = -0.5, beta = 1.5))
+MinimumVolumeLevelSetEvaluation(Logistic(mu = -0.5, beta = 1.5))
 beta= [0.01625]
 Bilateral confidence interval= [-5.99534, 4.99534]
 beta= [0.95]
@@ -42,11 +42,11 @@ standard deviation= class=Point name=Unnamed dimension=1 values=[2.7207]
 skewness= class=Point name=Unnamed dimension=1 values=[0]
 kurtosis= class=Point name=Unnamed dimension=1 values=[4.2]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[7.4022]
-parameters= [class=PointWithDescription name=X0 dimension=2 description=[alpha,beta] values=[-0.5,1.5]]
+parameters= [class=PointWithDescription name=X0 dimension=2 description=[mu,beta] values=[-0.5,1.5]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [0]
 standard moment n= 2  value= [3.28987]
 standard moment n= 3  value= [0]
 standard moment n= 4  value= [45.4576]
 standard moment n= 5  value= [0]
-Standard representative= Logistic(alpha = 0, beta = 1)
+Standard representative= Logistic(mu = 0, beta = 1)

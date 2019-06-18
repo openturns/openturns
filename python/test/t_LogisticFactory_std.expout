@@ -1,8 +1,8 @@
-distribution= class=Logistic name=Logistic dimension=1 alpha=2 beta=2.5
-Estimated distribution= class=Logistic name=Logistic dimension=1 alpha=2.04612 beta=2.51522
-Default distribution= Logistic(alpha = 0, beta = 1)
-Distribution from parameters= Logistic(alpha = 2, beta = 2.5)
-Logistic          = Logistic(alpha = 2, beta = 2.5)
-Estimated logistic= Logistic(alpha = 2.04612, beta = 2.51522)
-Default logistic= Logistic(alpha = 0, beta = 1)
-Logistic from parameters= Logistic(alpha = 2, beta = 2.5)
+distribution= class=Logistic name=Logistic dimension=1 mu=2 beta=2.5
+Estimated distribution= class=Logistic name=Logistic dimension=1 mu=2.04612 beta=2.51522
+Default distribution= Logistic(mu = 0, beta = 1)
+Distribution from parameters= Logistic(mu = 2, beta = 2.5)
+Logistic          = Logistic(mu = 2, beta = 2.5)
+Estimated logistic= Logistic(mu = 2.04612, beta = 2.51522)
+Default logistic= Logistic(mu = 0, beta = 1)
+Logistic from parameters= Logistic(mu = 2, beta = 2.5)
