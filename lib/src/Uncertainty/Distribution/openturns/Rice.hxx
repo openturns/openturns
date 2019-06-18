@@ -40,7 +40,7 @@ public:
   Rice();
 
   /** Parameters constructor */
-  explicit Rice(const Scalar sigma,
+  explicit Rice(const Scalar beta,
                 const Scalar nu = 0.0);
 
 
@@ -96,7 +96,11 @@ public:
 
   /* Interface specific to Rice */
 
-  /** Sigma accessor */
+  /** Beta accessor */
+  void setBeta(const Scalar beta);
+  Scalar getBeta() const;
+
+  /** @deprecated Sigma accessor */
   void setSigma(const Scalar sigma);
   Scalar getSigma() const;
 
@@ -128,7 +132,7 @@ private:
   void computeRange();
 
   /** The dispersion parameter */
-  Scalar sigma_;
+  Scalar beta_;
 
   /** The position parameter */
   Scalar nu_;

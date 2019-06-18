@@ -127,13 +127,13 @@ Rice RiceFactory::buildAsRice(const Sample & sample) const
   // u estimate
   const Scalar u = solver.solve(f, 0.0, a, b, fA, fB);
   const Scalar xiU = constraint.computeXi(u);
-  // Corresponding sigma estimate
-  const Scalar sigma = std / std::sqrt(xiU);
+  // Corresponding beta estimate
+  const Scalar beta = std / std::sqrt(xiU);
   // Corresponding nu estimate
-  const Scalar nu = std::sqrt(mu * mu + sigma * sigma * (xiU - 2.0));
+  const Scalar nu = std::sqrt(mu * mu + beta * beta * (xiU - 2.0));
   try
   {
-    Rice result(sigma, nu);
+    Rice result(beta, nu);
     result.setDescription(sample.getDescription());
     return result;
   }

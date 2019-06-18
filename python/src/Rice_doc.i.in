@@ -1,12 +1,9 @@
 %feature("docstring") OT::Rice
 "Rice distribution.
 
-Available constructors:
-    Rice(*sigma=1.0, nu=0.*)
-
 Parameters
 ----------
-sigma : float, :math:`\sigma > 0`
+beta : float, :math:`\beta > 0`
     Scale parameter.
 nu : float, :math:`\nu \geq 0`
     Location parameter.
@@ -17,8 +14,8 @@ Its probability density function is defined as:
 
 .. math::
 
-    f_X(x) = 2\frac{x}{\sigma^2}p_{\chi^2(2,\frac{\nu^2}{\sigma^2})}
-             \left(\frac{x^2}{\sigma^2}\right),
+    f_X(x) = 2\frac{x}{\beta^2}p_{\chi^2(2,\frac{\nu^2}{\beta^2})}
+             \left(\frac{x^2}{\beta^2}\right),
              \quad x \in [0; +\infty[
 
 where :math:`p_{\chi^2(\nu, \lambda)}` is the probability density function of a
@@ -30,10 +27,10 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{X} & = & \sigma \sqrt{\frac{\pi}{2}}
-                         \mathrm{L}_{1/2}\left(-\frac{\nu^2}{2\sigma^2}\right) \\
-        \Var{X} & = & 2\sigma^2 + \nu^2 - \frac{\pi\sigma^2}{2}
-                      \mathrm{L}_{1/2}^2\left(\frac{-\nu^2}{2\sigma^2}\right)
+        \Expect{X} & = & \beta \sqrt{\frac{\pi}{2}}
+                         \mathrm{L}_{1/2}\left(-\frac{\nu^2}{2\beta^2}\right) \\
+        \Var{X} & = & 2\beta^2 + \nu^2 - \frac{\pi\beta^2}{2}
+                      \mathrm{L}_{1/2}^2\left(\frac{-\nu^2}{2\beta^2}\right)
     \end{eqnarray*}
 
 where :math:`\mathrm{L}_q(x)` denotes a Laguerre polynomial.
@@ -52,12 +49,12 @@ Draw a sample:
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Rice::getSigma
-"Accessor to the distribution's scale parameter :math:`\sigma`.
+"Accessor to the distribution's scale parameter :math:`\beta`.
 
 Returns
 -------
-sigma : float
-    Scale parameter :math:`\sigma`."
+beta : float
+    Scale parameter :math:`\beta`."
 
 // ---------------------------------------------------------------------
 
@@ -72,12 +69,12 @@ nu : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Rice::setSigma
-"Accessor to the distribution's scale parameter :math:`\sigma`.
+"Accessor to the distribution's scale parameter :math:`\beta`.
 
 Parameters
 ----------
-sigma : float, :math:`\sigma > 0`
-    Scale parameter :math:`\sigma`."
+beta : float, :math:`\beta > 0`
+    Scale parameter :math:`\beta`."
 
 // ---------------------------------------------------------------------
 

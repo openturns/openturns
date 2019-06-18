@@ -89,8 +89,8 @@ saved  NormalCopula = class=NormalCopula name=NormalCopula dimension=3 correlati
 loaded NormalCopula = class=NormalCopula name=NormalCopula dimension=3 correlation=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0.5,0,0.5,1,0.5,0,0.5,1]
 saved  Rayleigh = class=Rayleigh name=Rayleigh dimension=1 sigma=2.5 gamma=-0.5
 loaded Rayleigh = class=Rayleigh name=Rayleigh dimension=1 sigma=2.5 gamma=-0.5
-saved  Rice = class=Rice name=Rice dimension=1 sigma=5 nu=4
-loaded Rice = class=Rice name=Rice dimension=1 sigma=5 nu=4
+saved  Rice = class=Rice name=Rice dimension=1 beta=5 nu=4
+loaded Rice = class=Rice name=Rice dimension=1 beta=5 nu=4
 saved  Student = class=Student name=Student dimension=1 nu=5 mean=class=Point name=Unnamed dimension=1 values=[-0.5] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 loaded Student = class=Student name=Student dimension=1 nu=5 mean=class=Point name=Unnamed dimension=1 values=[-0.5] sigma=class=Point name=Unnamed dimension=1 values=[2] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 saved  Trapezoidal = class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=1.2 c=3 d=14 h=0.135135
