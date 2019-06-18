@@ -1,8 +1,8 @@
 distribution= class=InverseNormal name=InverseNormal dimension=1 mu=2.5 lambda=1.5
-Estimated distribution= class=InverseNormal name=InverseNormal dimension=1 mu=1.47735 lambda=2.44924
+Estimated distribution= class=InverseNormal name=InverseNormal dimension=1 mu=2.44924 lambda=1.47735
 Default distribution= InverseNormal(mu = 1, lambda = 1)
 Distribution from parameters= InverseNormal(mu = 2.5, lambda = 1.5)
 InverseNormal          = InverseNormal(mu = 2.5, lambda = 1.5)
-Estimated inverseNormal= InverseNormal(mu = 1.47735, lambda = 2.44924)
+Estimated inverseNormal= InverseNormal(mu = 2.44924, lambda = 1.47735)
 Default inverseNormal= InverseNormal(mu = 1, lambda = 1)
 InverseNormal from parameters= InverseNormal(mu = 2.5, lambda = 1.5)

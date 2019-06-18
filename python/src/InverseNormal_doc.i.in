@@ -4,7 +4,7 @@
 Parameters
 ----------
 mu : float, :math:`\mu > 0`
-    Location (mean) parameter :math:`\mu`.
+    Mean parameter :math:`\mu`.
 lambda : float, :math:`\lambda > 0`
     Rate parameter :math:`\lambda`.
 
@@ -54,12 +54,12 @@ lambda : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::InverseNormal::getMu
-"Accessor to the distribution's location (mean) parameter.
+"Accessor to the distribution's mean parameter.
 
 Returns
 -------
 mu : float
-    Location (mean) parameter :math:`\mu`."
+    Mean parameter :math:`\mu`."
 
 // ---------------------------------------------------------------------
 
@@ -69,7 +69,7 @@ mu : float
 Parameters
 ----------
 mu : float, :math:`\mu > 0`
-    Location (mean) parameter :math:`\mu`.
+    Mean parameter :math:`\mu`.
 lambda : float, :math:`\lambda > 0`
     Rate parameter :math:`\lambda`."
 
