@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The GeneralizedPareto distribution
+ *  @brief The Pareto distribution
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,38 +18,34 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_GENERALIZEDPARETO_HXX
-#define OPENTURNS_GENERALIZEDPARETO_HXX
+#ifndef OPENTURNS_PARETO_HXX
+#define OPENTURNS_PARETO_HXX
 
 #include "openturns/ContinuousDistribution.hxx"
-#include "openturns/Pareto.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class GeneralizedPareto
+ * @class Pareto
  *
- * The GeneralizedPareto distribution.
+ * The Pareto distribution.
  */
-class OT_API GeneralizedPareto
+class OT_API Pareto
   : public ContinuousDistribution
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  GeneralizedPareto();
+  Pareto();
 
   /** Parameters constructor */
-  GeneralizedPareto(const Scalar sigma,
-                    const Scalar xi,
-                    const Scalar u = 0.0);
-
-  /** Constructor from Pareto */
-  GeneralizedPareto(const Pareto & pareto);
+  Pareto(const Scalar beta,
+         const Scalar alpha,
+         const Scalar gamma = 0.0);
 
   /** Comparison operator */
-  Bool operator ==(const GeneralizedPareto & other) const;
+  Bool operator ==(const Pareto & other) const;
 protected:
   Bool equals(const DistributionImplementation & other) const;
 public:
@@ -62,7 +58,7 @@ public:
 
   /* Interface inherited from Distribution */
   /** Virtual constructor */
-  virtual GeneralizedPareto * clone() const;
+  virtual Pareto * clone() const;
 
   /** Get one realization of the distribution */
   Point getRealization() const;
@@ -91,10 +87,6 @@ public:
 
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const;
-
-  /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  Complex computeCharacteristicFunction(const Scalar x) const;
-  Complex computeLogCharacteristicFunction(const Scalar x) const;
 
   /** Get the PDFGradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
@@ -126,22 +118,19 @@ public:
   /** Parameters description accessor */
   Description getParameterDescription() const;
 
-  /* Interface specific to GeneralizedPareto */
+  /* Interface specific to Pareto */
 
-  /** Sigma accessor */
-  void setSigma(const Scalar sigma);
-  Scalar getSigma() const;
+  /** Beta accessor */
+  void setBeta(const Scalar beta);
+  Scalar getBeta() const;
 
-  /** Xi accessor */
-  void setXi(const Scalar xi);
-  Scalar getXi() const;
+  /** Alpha accessor */
+  void setAlpha(const Scalar alpha);
+  Scalar getAlpha() const;
 
-  /** U accessor */
-  void setU(const Scalar location);
-  Scalar getU() const;
-
-  /** Pareto distribution converter */
-  Pareto asPareto() const;
+  /** Gamma accessor */
+  void setGamma(const Scalar gamma);
+  Scalar getGamma() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -167,17 +156,17 @@ private:
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
 
-  /** The scale parameter of the GeneralizedPareto distribution */
-  Scalar sigma_;
+  /** The scale parameter */
+  Scalar beta_;
 
-  /** The shape parameter of the GeneralizedPareto distribution */
-  Scalar xi_;
+  /** The shape parameter */
+  Scalar alpha_;
 
   /** Location parameter */
-  Scalar u_;
-}; /* class GeneralizedPareto */
+  Scalar gamma_;
+}; /* class Pareto */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_GENERALIZEDPARETO_HXX */
+#endif /* OPENTURNS_PARETO_HXX */

@@ -1,0 +1,104 @@
+%feature("docstring") OT::Pareto
+"Pareto distribution.
+
+Parameters
+----------
+beta : float
+    Scale parameter :math:`\beta`.
+alpha : float, :math:`\alpha > 0`
+    Shape parameter :math:`\alpha`.
+gamma : float
+    Location parameter :math:`\gamma`.
+
+Notes
+-----
+Its cumulative distribution function is defined as:
+
+.. math::
+
+    F_X(x) = 1 - \left( \frac{\beta}{x- \gamma} \right) ^{\alpha}
+
+with :math:`\alpha > 0` and :math:`\beta \in \Rset`.
+
+Its first moments are:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \Expect{X} & = & \gamma + \frac{\beta \alpha}{\alpha - 1}
+                         \quad \text{ if } \alpha > 1 \\
+        \Var{X} & = & \frac{\beta^2 \alpha}{(\alpha - 1)^2 (\alpha - 2)}
+                      \quad \text{ if } \alpha > 2
+    \end{eqnarray*}
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> distribution = ot.Pareto(1.0, 1.0, 0.0)
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pareto::getBeta
+"Accessor to the distribution's scale parameter :math:`\beta`.
+
+Returns
+-------
+sigma : float
+    Scale parameter :math:`\beta`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pareto::getAlpha
+"Accessor to the distribution's shape parameter :math:`\alpha`.
+
+Returns
+-------
+alpha : float
+    Shape parameter :math:`\alpha`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pareto::setBeta
+"Accessor to the distribution's scale parameter :math:`\beta`.
+
+Parameters
+----------
+beta : float, :math:`\alpha \in \Rset`
+    Scale parameter :math:`\beta`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pareto::setAlpha
+"Accessor to the distribution's shape parameter :math:`\alpha`.
+
+Parameters
+----------
+alpha : float, :math:`\alpha > 0`
+    Shape parameter :math:`\alpha`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pareto::setGamma
+"Accessor to the distribution's location parameter :math:`\gamma`.
+
+Parameters
+----------
+gamma : float, :math:`u \in \Rset`
+    Gamma parameter :math:`\gamma`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Pareto::getGamma
+"Accessor to the distribution's location parameter :math:`\gamma`.
+
+Returns
+-------
+gamma : float
+    Gamma parameter :math:`\gamma`."

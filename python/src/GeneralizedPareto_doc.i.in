@@ -4,6 +4,8 @@
 Available constructors:
     GeneralizedPareto(*sigma=1.0, xi=0.0, u=0.0*)
 
+    GeneralizedPareto(*pareto*)
+
 Parameters
 ----------
 sigma : float, :math:`\sigma > 0`
@@ -12,6 +14,8 @@ xi : float
     Shape parameter :math:`\xi`.
 u : float
     Location parameter :math:`u`.
+pareto : :class:`~openturns.Pareto`
+    Pareto distribution.
 
 Notes
 -----
@@ -112,3 +116,23 @@ Returns
 -------
 u : float
     Location parameter :math:`u`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedPareto::getLocation
+"Accessor to the distribution's location parameter :math:`u`.
+
+Returns
+-------
+u : float
+    Location parameter :math:`u`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedPareto::asPareto
+"Pareto distribution conversion.
+
+Returns
+-------
+pareto : :class:`~openturns.Pareto`
+    Pareto distribution."

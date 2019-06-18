@@ -59,6 +59,20 @@ GeneralizedPareto::GeneralizedPareto(const Scalar sigma,
   setSigma(sigma);
 }
 
+/* Parameters constructor */
+GeneralizedPareto::GeneralizedPareto(const Pareto & pareto)
+  : ContinuousDistribution()
+  , sigma_(0.0)
+  , xi_(1.0 / pareto.getAlpha())
+  , u_(pareto.getGamma()+pareto.getBeta())
+{
+  setName( "GeneralizedPareto" );
+  // We set the dimension of the GeneralizedPareto distribution
+  setDimension( 1 );
+  // This call set also the range.
+  setSigma(pareto.getBeta() / pareto.getAlpha());
+}
+
 /* Comparison operator */
 Bool GeneralizedPareto::operator ==(const GeneralizedPareto & other) const
 {
@@ -391,6 +405,13 @@ void GeneralizedPareto::setU(const Scalar u)
 Scalar GeneralizedPareto::getU() const
 {
   return u_;
+}
+
+Pareto GeneralizedPareto::asPareto() const
+{
+  if (!(xi_ > 0.0))
+    throw InvalidArgumentException(HERE) << "Cannot convert to Pareto";
+  return Pareto(sigma_ / xi_, 1.0 / xi_, u_ - sigma_/ xi_);
 }
 
 /* Method save() stores the object through the StorageManager */

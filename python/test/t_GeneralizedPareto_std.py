@@ -14,6 +14,9 @@ try:
         print("Distribution ", repr(distribution))
         print("Distribution ", distribution)
 
+        if xi > 0.0:
+            print("asPareto=", distribution.asPareto())
+
         # Is this distribution elliptical ?
         print("Elliptical = ", distribution.isElliptical())
 

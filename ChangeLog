@@ -27,6 +27,7 @@
  * WeibullMaxFactory
  * WeibullMaxMuSigma
  * GeneralizedExtremeValueFactory
+ * Pareto
 
 ==== API changes ====
  * Removed deprecated specific RandomVector constructors

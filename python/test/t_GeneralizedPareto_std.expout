@@ -96,6 +96,7 @@ standard moment n= 5  value= [120]
 Standard representative= GeneralizedPareto(sigma = 1, xi=0, u=0)
 Distribution  class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=0.2 u=0.5
 Distribution  GeneralizedPareto(sigma = 1.5, xi=0.2, u=0.5)
+asPareto= Pareto(beta = 7.5, alpha=5, gamma=-7)
 Elliptical =  False
 Continuous =  True
 oneRealization= class=Point name=Unnamed dimension=1 values=[1.97575]
