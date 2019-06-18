@@ -100,18 +100,18 @@ int main(int, char *[])
     Point PDFgr = distribution.computePDFGradient( point );
     fullprint << "pdf gradient     =" << PDFgr << std::endl;
     Point PDFgrFD(2);
-    PDFgrFD[0] = (Rayleigh(distribution.getSigma() + eps, distribution.getGamma()).computePDF(point) -
-                  Rayleigh(distribution.getSigma() - eps, distribution.getGamma()).computePDF(point)) / (2.0 * eps);
-    PDFgrFD[1] = (Rayleigh(distribution.getSigma(), distribution.getGamma() + eps).computePDF(point) -
-                  Rayleigh(distribution.getSigma(), distribution.getGamma() - eps).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[0] = (Rayleigh(distribution.getBeta() + eps, distribution.getGamma()).computePDF(point) -
+                  Rayleigh(distribution.getBeta() - eps, distribution.getGamma()).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[1] = (Rayleigh(distribution.getBeta(), distribution.getGamma() + eps).computePDF(point) -
+                  Rayleigh(distribution.getBeta(), distribution.getGamma() - eps).computePDF(point)) / (2.0 * eps);
     fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
     Point CDFgr = distribution.computeCDFGradient( point );
     fullprint << "cdf gradient     =" << CDFgr << std::endl;
     Point CDFgrFD(2);
-    CDFgrFD[0] = (Rayleigh(distribution.getSigma() + eps, distribution.getGamma()).computeCDF(point) -
-                  Rayleigh(distribution.getSigma() - eps, distribution.getGamma()).computeCDF(point)) / (2.0 * eps);
-    CDFgrFD[1] = (Rayleigh(distribution.getSigma(), distribution.getGamma() + eps).computeCDF(point) -
-                  Rayleigh(distribution.getSigma(), distribution.getGamma() - eps).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[0] = (Rayleigh(distribution.getBeta() + eps, distribution.getGamma()).computeCDF(point) -
+                  Rayleigh(distribution.getBeta() - eps, distribution.getGamma()).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[1] = (Rayleigh(distribution.getBeta(), distribution.getGamma() + eps).computeCDF(point) -
+                  Rayleigh(distribution.getBeta(), distribution.getGamma() - eps).computeCDF(point)) / (2.0 * eps);
     fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
     Point quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;
@@ -156,8 +156,7 @@ int main(int, char *[])
     fullprint << "skewness=" << skewness << std::endl;
     Point kurtosis = distribution.getKurtosis();
     fullprint << "kurtosis=" << kurtosis << std::endl;
-    Scalar sigma = distribution.getSigma();
-    fullprint << "sigma=" << sigma << std::endl;
+    fullprint << "beta=" << distribution.getBeta() << std::endl;
   }
   catch (TestFailed & ex)
   {

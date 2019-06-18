@@ -30,7 +30,7 @@ Normal polynomial(3)=0.816497 - 1.22474 * X^2 + 0.408248 * X^3
 Normal polynomial(4)=-0.408248 + 1.63299 * X + 4.02503e-10 * X^2 - 0.816497 * X^3 + 0.204124 * X^4
 Normal polynomial(4) roots=class=Point name=Unnamed dimension=4 values=[-1.33441,0.258036,1.74196,3.33441]
 Normal polynomial(4) nodes=class=Point name=Unnamed dimension=4 values=[-1.33441,0.258036,1.74196,3.33441] and weights=class=Point name=Unnamed dimension=4 values=[0.0458759,0.454124,0.454124,0.0458759]
-polynomialFactory(Rayleigh=class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Rayleigh name=Rayleigh dimension=1 sigma=1 gamma=0 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,-1.25331,0],class=Point name=Unnamed dimension=3 values=[1,-1.66678,-0.429204]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,0.429204] isElliptical=false
+polynomialFactory(Rayleigh=class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Rayleigh name=Rayleigh dimension=1 beta=1 gamma=0 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,-1.25331,0],class=Point name=Unnamed dimension=3 values=[1,-1.66678,-0.429204]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,0.429204] isElliptical=false
 Rayleigh polynomial(0)=1
 Rayleigh polynomial(1)=-1.91306 + 1.5264 * X
 Rayleigh polynomial(2)=2.84565 - 5.00639 * X + 1.71446 * X^2

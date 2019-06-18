@@ -40,7 +40,7 @@ public:
   Rayleigh();
 
   /** Parameters constructor */
-  explicit Rayleigh(const Scalar sigma,
+  explicit Rayleigh(const Scalar beta,
                     const Scalar gamma = 0.0);
 
 
@@ -116,7 +116,11 @@ public:
 
   /* Interface specific to Rayleigh */
 
-  /** Sigma accessor */
+  /** Beta accessor */
+  void setBeta(const Scalar beta);
+  Scalar getBeta() const;
+
+  /** @deprecated Sigma accessor */
   void setSigma(const Scalar sigma);
   Scalar getSigma() const;
 
@@ -147,8 +151,8 @@ private:
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
 
-  /** The dispersion parameter */
-  Scalar sigma_;
+  /** The scale parameter */
+  Scalar beta_;
 
   /** The position parameter */
   Scalar gamma_;

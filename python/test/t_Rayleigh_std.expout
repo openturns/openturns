@@ -1,5 +1,5 @@
-Distribution  class=Rayleigh name=Rayleigh dimension=1 sigma=2.5 gamma=-0.5
-Distribution  Rayleigh(sigma = 2.5, gamma = -0.5)
+Distribution  class=Rayleigh name=Rayleigh dimension=1 beta=2.5 gamma=-0.5
+Distribution  Rayleigh(beta = 2.5, gamma = -0.5)
 Elliptical =  False
 Continuous =  True
 oneRealization= class=Point name=Unnamed dimension=1 values=[1.90372]
@@ -27,7 +27,7 @@ entropy=1.858325
 Minimum volume interval= [-0.223821, 5.75046]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 3.12539} with f=
-MinimumVolumeLevelSetEvaluation(Rayleigh(sigma = 2.5, gamma = -0.5))
+MinimumVolumeLevelSetEvaluation(Rayleigh(beta = 2.5, gamma = -0.5))
 beta= [0.0439198]
 Bilateral confidence interval= [0.062559, 6.29051]
 beta= [0.95]
@@ -37,16 +37,16 @@ Unilateral confidence interval (upper tail)= [0.300729, 19.5737]
 beta= [0.95]
 mean= class=Point name=Unnamed dimension=1 values=[2.63329]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.68252]
-parameters= [class=PointWithDescription name=X0 dimension=2 description=[sigma,gamma] values=[2.5,-0.5]]
+parameters= [class=PointWithDescription name=X0 dimension=2 description=[beta,gamma] values=[2.5,-0.5]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [1.25331]
 standard moment n= 2  value= [2]
 standard moment n= 3  value= [3.75994]
 standard moment n= 4  value= [8]
 standard moment n= 5  value= [18.7997]
-Standard representative= Rayleigh(sigma = 1, gamma = 0)
+Standard representative= Rayleigh(beta = 1, gamma = 0)
 gamma= -0.5
 standard deviation= class=Point name=Unnamed dimension=1 values=[1.63784]
 skewness= class=Point name=Unnamed dimension=1 values=[0.631111]
 kurtosis= class=Point name=Unnamed dimension=1 values=[3.24509]
-sigma= 2.5
+beta= 2.5

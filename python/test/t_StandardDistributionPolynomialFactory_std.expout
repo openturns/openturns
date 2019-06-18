@@ -58,7 +58,7 @@ M=
  [ 0 0 1 0 0 ]
  [ 0 0 0 1 0 ]
  [ 0 0 0 0 1 ]]
-polynomialFactory( Rayleigh = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Rayleigh name=Rayleigh dimension=1 sigma=1 gamma=0 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,-1.25331,0],class=Point name=Unnamed dimension=3 values=[1,-1.66678,-0.429204]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,0.429204] isElliptical=false )
+polynomialFactory( Rayleigh = class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Rayleigh name=Rayleigh dimension=1 beta=1 gamma=0 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,-1.25331,0],class=Point name=Unnamed dimension=3 values=[1,-1.66678,-0.429204]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,0.429204] isElliptical=false )
 Rayleigh  polynomial( 0 )= 1
 Rayleigh  polynomial( 1 )= -1.91306 + 1.5264 * X
 Rayleigh  polynomial( 2 )= 2.84565 - 5.00639 * X + 1.71446 * X^2
