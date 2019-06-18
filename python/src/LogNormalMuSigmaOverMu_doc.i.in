@@ -1,17 +1,14 @@
 %feature("docstring") OT::LogNormalMuSigmaOverMu
 "LogNormal distribution parameters.
 
-Available constructors:
-    LogNormalMuSigmaOverMu(*mu=* :math:`\sqrt{e}` *, delta=* :math:`\sqrt{e-1}` *, gamma=0.0*)
-
 Parameters
 ----------
 mu : float
     Mean :math:`\mu > 0`.
 delta : float
-    Variation coefficient :math:`\delta = \sigma/\mu`.
+    Variation coefficient :math:`\delta = \frac{\sigma}{\mu}`.
 gamma : float, optional
-    Shift parameter.
+    Location parameter.
 
 Notes
 -----
