@@ -41,7 +41,7 @@ int main(int, char *[])
   {
     const UnsignedInteger iMax = 5;
     Collection<Distribution> distributionCollection;
-    distributionCollection.add(Laplace(1.0, 0.0));
+    distributionCollection.add(Laplace(0.0, 1.0));
     distributionCollection.add(Logistic(0.0, 1.0));
     distributionCollection.add(Normal(0.0, 1.0));
     distributionCollection.add(Normal(1.0, 1.0));

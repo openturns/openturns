@@ -27,7 +27,7 @@ using namespace OT::Test;
 class TestObject : public Laplace
 {
 public:
-  TestObject() : Laplace(1.5, 0.5) {}
+  TestObject() : Laplace(0.5, 1.5) {}
   virtual ~TestObject() {}
 };
 
@@ -44,7 +44,7 @@ int main(int, char *[])
     checkClassWithClassName<TestObject>();
 
     // Instanciate one distribution object
-    Laplace distribution(1.0 / 1.5, 0.5);
+    Laplace distribution(0.5, 1.0 / 1.5);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
 
@@ -100,18 +100,18 @@ int main(int, char *[])
     Point PDFgr = distribution.computePDFGradient( point );
     fullprint << "pdf gradient     =" << PDFgr << std::endl;
     Point PDFgrFD(2);
-    PDFgrFD[0] = (Laplace(distribution.getLambda() + eps, distribution.getMu()).computePDF(point) -
-                  Laplace(distribution.getLambda() - eps, distribution.getMu()).computePDF(point)) / (2.0 * eps);
-    PDFgrFD[1] = (Laplace(distribution.getLambda(), distribution.getMu() + eps).computePDF(point) -
-                  Laplace(distribution.getLambda(), distribution.getMu() - eps).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[0] = (Laplace(distribution.getMu() + eps, distribution.getLambda()).computePDF(point) -
+                  Laplace(distribution.getMu() - eps, distribution.getLambda()).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[1] = (Laplace(distribution.getMu(), distribution.getLambda() + eps).computePDF(point) -
+                  Laplace(distribution.getMu(), distribution.getLambda() - eps).computePDF(point)) / (2.0 * eps);
     fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
     Point CDFgr = distribution.computeCDFGradient( point );
     fullprint << "cdf gradient     =" << CDFgr << std::endl;
     Point CDFgrFD(2);
-    CDFgrFD[0] = (Laplace(distribution.getLambda() + eps, distribution.getMu()).computeCDF(point) -
-                  Laplace(distribution.getLambda() - eps, distribution.getMu()).computeCDF(point)) / (2.0 * eps);
-    CDFgrFD[1] = (Laplace(distribution.getLambda(), distribution.getMu() + eps).computeCDF(point) -
-                  Laplace(distribution.getLambda(), distribution.getMu() - eps).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[0] = (Laplace(distribution.getMu() + eps, distribution.getLambda()).computeCDF(point) -
+                  Laplace(distribution.getMu() - eps, distribution.getLambda()).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[1] = (Laplace(distribution.getMu(), distribution.getLambda() + eps).computeCDF(point) -
+                  Laplace(distribution.getMu(), distribution.getLambda() - eps).computeCDF(point)) / (2.0 * eps);
     fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
     Point quantile = distribution.computeQuantile( 0.95 );
     fullprint << "quantile=" << quantile << std::endl;

@@ -10,6 +10,7 @@
  * New parametrization in Beta: shape(alpha), shape(beta), location(a), location(b) (beta=t-r for second argument)
  * New parametrization in InverseGamma: rate(lambda), shape(k) (swapped arguments)
  * New parametrization in InverseNormal: location(mu), rate(lambda) (swapped arguments)
+ * New parametrization in Laplace: mean(mu), rate(lambda) (swapped arguments)
  => One can use "import openturns.shims as ot" to maintain compatibility with older scripts
 
 ==== Major changes ====

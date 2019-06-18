@@ -35,3 +35,8 @@ def InverseNormal(lambda_=1.0, mu=1.0):
     """
     return ot.InverseNormal(mu, lambda_)
 
+def Laplace(lambda_=1.0, mu=0.0):
+    """
+    Laplace compatibility shim.
+    """
+    return ot.Laplace(mu, lambda_)

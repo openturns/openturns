@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    Laplace distribution(2.5, -1.3);
+    Laplace distribution(-1.3, 2.5);
     UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
     LaplaceFactory factory;

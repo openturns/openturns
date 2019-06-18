@@ -251,7 +251,7 @@ int main(int, char *[])
     kernelSmoothing.build(independentCopula.getSample(20));
     study.add("kernelSmoothing", kernelSmoothing);
 
-    Laplace laplace(1.0 / 1.5, 0.5);
+    Laplace laplace(0.5, 1.0 / 1.5);
     study.add("laplace", laplace);
 
     Logistic logistic(0.5, 1.5);

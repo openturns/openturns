@@ -73,8 +73,8 @@ saved  InverseNormal = class=InverseNormal name=InverseNormal dimension=1 mu=2 l
 loaded InverseNormal = class=InverseNormal name=InverseNormal dimension=1 mu=2 lambda=0.5
 saved  KernelSmoothing = class=KernelSmoothing
 loaded KernelSmoothing = class=KernelSmoothing
-saved  Laplace = class=Laplace name=Laplace dimension=1 lambda=0.666667 mu=0.5
-loaded Laplace = class=Laplace name=Laplace dimension=1 lambda=0.666667 mu=0.5
+saved  Laplace = class=Laplace name=Laplace dimension=1 mu=0.5 lambda=0.666667
+loaded Laplace = class=Laplace name=Laplace dimension=1 mu=0.5 lambda=0.666667
 saved  Logistic = class=Logistic name=Logistic dimension=1 alpha=0.5 beta=1.5
 loaded Logistic = class=Logistic name=Logistic dimension=1 alpha=0.5 beta=1.5
 saved  LogNormal = class=LogNormal name=LogNormal dimension=1 muLog=0.5 sigmaLog=1.5 gamma=-1

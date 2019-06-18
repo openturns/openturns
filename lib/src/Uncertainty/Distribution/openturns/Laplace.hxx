@@ -40,8 +40,8 @@ public:
   Laplace();
 
   /** Parameters constructor */
-  explicit Laplace(const Scalar lambda,
-                   const Scalar mu = 0.0);
+  explicit Laplace(const Scalar mu,
+                   const Scalar lambda);
 
   /** Comparison operator */
   Bool operator ==(const Laplace & other) const;
@@ -154,11 +154,12 @@ private:
   Scalar computeScalarQuantile(const Scalar prob,
                                const Bool tail = false) const;
 
+  /** The mu of the Laplace distribution */
+  Scalar mu_;
+
   /** The lambda of the Laplace distribution */
   Scalar lambda_;
 
-  /** The mu of the Laplace distribution */
-  Scalar mu_;
 
 }; /* class Laplace */
 

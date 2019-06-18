@@ -18,3 +18,6 @@ ott.assert_almost_equal(ot.InverseGamma(2.0, 3.0).getParameter(), [3.0, 2.0])
 
 print(ot.InverseNormal(2.0, 3.0))
 ott.assert_almost_equal(ot.InverseNormal(2.0, 3.0).getParameter(), [3.0, 2.0])
+
+print(ot.Laplace(2.0, 3.0))
+ott.assert_almost_equal(ot.Laplace(2.0, 3.0).getParameter(), [3.0, 2.0])

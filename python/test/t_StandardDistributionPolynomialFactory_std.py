@@ -16,7 +16,7 @@ def clean(polynomial):
 
 
 iMax = 5
-distributionCollection = [ot.Laplace(1.0, 0.0),
+distributionCollection = [ot.Laplace(0.0, 1.0),
                           ot.Logistic(0.0, 1.0),
                           ot.Normal(0.0, 1.0),
                           ot.Normal(1.0, 1.0),

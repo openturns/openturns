@@ -1,4 +1,4 @@
-polynomialFactory(Laplace=class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Laplace name=Laplace dimension=1 lambda=1 mu=0 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,0,0],class=Point name=Unnamed dimension=3 values=[1,0,-2]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,2] isElliptical=true
+polynomialFactory(Laplace=class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Laplace name=Laplace dimension=1 mu=0 lambda=1 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,0,0],class=Point name=Unnamed dimension=3 values=[1,0,-2]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,2] isElliptical=true
 Laplace polynomial(0)=1
 Laplace polynomial(1)=0.707107 * X
 Laplace polynomial(2)=-0.447214 + 0.223607 * X^2
