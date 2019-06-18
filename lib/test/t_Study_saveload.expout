@@ -69,8 +69,8 @@ saved  Gumbel = class=Gumbel name=Gumbel dimension=1 beta=2 gamma=-0.5
 loaded Gumbel = class=Gumbel name=Gumbel dimension=1 beta=2 gamma=-0.5
 saved  IndependentCopula = class=IndependentCopula name=IndependentCopula dimension=5
 loaded IndependentCopula = class=IndependentCopula name=IndependentCopula dimension=5
-saved  InverseNormal = class=InverseNormal name=InverseNormal dimension=1 lambda=0.5 mu=2
-loaded InverseNormal = class=InverseNormal name=InverseNormal dimension=1 lambda=0.5 mu=2
+saved  InverseNormal = class=InverseNormal name=InverseNormal dimension=1 mu=2 lambda=0.5
+loaded InverseNormal = class=InverseNormal name=InverseNormal dimension=1 mu=2 lambda=0.5
 saved  KernelSmoothing = class=KernelSmoothing
 loaded KernelSmoothing = class=KernelSmoothing
 saved  Laplace = class=Laplace name=Laplace dimension=1 lambda=0.666667 mu=0.5

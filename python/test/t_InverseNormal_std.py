@@ -9,7 +9,7 @@ RandomGenerator.SetSeed(0)
 try:
 
     # Instanciate one distribution object
-    distribution = InverseNormal(0.5, 2.0)
+    distribution = InverseNormal(2.0, 0.5)
     print("Distribution ",  distribution)
 
     # Is this distribution elliptical ?

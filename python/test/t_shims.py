@@ -16,3 +16,5 @@ ott.assert_almost_equal(ot.Gumbel(558.0, 1013.0).getStandardDeviation(), [0.0022
 print(ot.InverseGamma(2.0, 3.0))
 ott.assert_almost_equal(ot.InverseGamma(2.0, 3.0).getParameter(), [3.0, 2.0])
 
+print(ot.InverseNormal(2.0, 3.0))
+ott.assert_almost_equal(ot.InverseNormal(2.0, 3.0).getParameter(), [3.0, 2.0])

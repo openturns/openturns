@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    InverseNormal distribution(2.5, 1.5);
+    InverseNormal distribution(1.5, 2.5);
     UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
     InverseNormalFactory factory;

@@ -1,4 +1,4 @@
-Distribution  InverseNormal(lambda = 0.5, mu = 2)
+Distribution  InverseNormal(mu = 2, lambda = 0.5)
 Elliptical =  False
 Continuous =  True
 oneRealization= class=Point name=Unnamed dimension=1 values=[0.632204]
@@ -22,7 +22,7 @@ entropy=1.423751
 Minimum volume interval= [0.0274495, 8.27076]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 4.73175} with f=
-MinimumVolumeLevelSetEvaluation(InverseNormal(lambda = 0.5, mu = 2))
+MinimumVolumeLevelSetEvaluation(InverseNormal(mu = 2, lambda = 0.5))
 beta= [0.00881103]
 Bilateral confidence interval= [0.0917281, 12.6739]
 beta= [0.95]
@@ -35,11 +35,11 @@ standard deviation= class=Point name=Unnamed dimension=1 values=[4]
 skewness= class=Point name=Unnamed dimension=1 values=[6]
 kurtosis= class=Point name=Unnamed dimension=1 values=[63]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[16]
-parameters= [class=PointWithDescription name=X0 dimension=2 description=[lambda,mu] values=[0.5,2]]
+parameters= [class=PointWithDescription name=X0 dimension=2 description=[mu,lambda] values=[2,0.5]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [2]
 standard moment n= 2  value= [20]
 standard moment n= 3  value= [488]
 standard moment n= 4  value= [19600]
 standard moment n= 5  value= [1.09955e+06]
-Standard representative= InverseNormal(lambda = 0.5, mu = 2)
+Standard representative= InverseNormal(mu = 2, lambda = 0.5)

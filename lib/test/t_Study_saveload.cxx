@@ -244,7 +244,7 @@ int main(int, char *[])
     IndependentCopula independentCopula(5);
     study.add("independentCopula", independentCopula);
 
-    InverseNormal inverseNormal(0.5, 2.0);
+    InverseNormal inverseNormal(2.0, 0.5);
     study.add("inverseNormal", inverseNormal);
 
     KernelSmoothing kernelSmoothing;

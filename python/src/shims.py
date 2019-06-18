@@ -29,3 +29,9 @@ def InverseGamma(lambda_=1.0, k=1.0):
     """
     return ot.InverseGamma(k, lambda_)
 
+def InverseNormal(lambda_=1.0, mu=1.0):
+    """
+    InverseNormal compatibility shim.
+    """
+    return ot.InverseNormal(mu, lambda_)
+
