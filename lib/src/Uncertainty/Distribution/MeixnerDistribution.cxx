@@ -40,36 +40,36 @@ static const Factory<MeixnerDistribution> Factory_MeixnerDistribution;
 MeixnerDistribution::MeixnerDistribution()
   : ContinuousDistribution()
   , solver_(new TNC())
-  , alpha_(0.0)
   , beta_(0.0)
+  , alpha_(0.0)
   , delta_(0.0)
-  , mu_(0.0)
+  , gamma_(0.0)
   , logNormalizationFactor_(0.0)
 {
   setName("MeixnerDistribution");
   // Create the optimization solver parameters using the parameters in the ResourceMap
   initializeOptimizationAlgorithmParameter();
-  setAlphaBetaDelta(1.0, 0.0, 1.0);
+  setBetaAlphaDelta(1.0, 0.0, 1.0);
   setDimension(1);
 }
 
 /* Parameters constructor */
-MeixnerDistribution::MeixnerDistribution(const Scalar alpha,
-    const Scalar beta,
+MeixnerDistribution::MeixnerDistribution(const Scalar beta,
+    const Scalar alpha,
     const Scalar delta,
     const Scalar mu)
   : ContinuousDistribution()
   , solver_(new TNC())
-  , alpha_(0.0)
   , beta_(0.0)
+  , alpha_(0.0)
   , delta_(0.0)
-  , mu_(mu)
+  , gamma_(mu)
   , logNormalizationFactor_(0.0)
 {
   setName("MeixnerDistribution");
   // Create the optimization solver parameters using the parameters in the ResourceMap
   initializeOptimizationAlgorithmParameter();
-  setAlphaBetaDelta(alpha, beta, delta);
+  setBetaAlphaDelta(beta, alpha, delta);
   setDimension(1);
 }
 
@@ -86,7 +86,7 @@ void MeixnerDistribution::initializeOptimizationAlgorithmParameter()
 Bool MeixnerDistribution::operator ==(const MeixnerDistribution & other) const
 {
   if (this == &other) return true;
-  return (alpha_ == other.alpha_) && (beta_ == other.beta_) && (delta_ == other.delta_) && (mu_ == other.mu_);
+  return (beta_ == other.beta_) && (alpha_ == other.alpha_) && (delta_ == other.delta_) && (gamma_ == other.gamma_);
 }
 
 Bool MeixnerDistribution::equals(const DistributionImplementation & other) const
@@ -102,10 +102,10 @@ String MeixnerDistribution::__repr__() const
   oss << "class=" << MeixnerDistribution::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
-      << " alpha=" << alpha_
       << " beta=" << beta_
+      << " alpha=" << alpha_
       << " delta=" << delta_
-      << " mu=" << mu_
+      << " gamma=" << gamma_
       << " logNormalizationFactor=" << logNormalizationFactor_
       << " b=" << b_
       << " c=" << c_
@@ -116,31 +116,14 @@ String MeixnerDistribution::__repr__() const
 String MeixnerDistribution::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << getClassName() << "(alpha = " << alpha_ << ", beta = " << beta_ << ", delta = " << delta_ << ", mu = " << mu_ << ")";
+  oss << getClassName() << "(beta = " << beta_ << ", alpha = " << alpha_ << ", delta = " << delta_ << ", gamma = " << gamma_ << ")";
   return oss;
 }
-
-/* Alpha accessor */
-void MeixnerDistribution::setAlpha(const Scalar alpha)
-{
-  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
-  if (alpha != alpha_)
-  {
-    alpha_ = alpha;
-    update();
-  }
-}
-
-Scalar MeixnerDistribution::getAlpha() const
-{
-  return alpha_;
-}
-
 
 /* Beta accessor */
 void MeixnerDistribution::setBeta(const Scalar beta)
 {
-  if (std::abs(beta) >= M_PI) throw InvalidArgumentException(HERE) << "Beta MUST be in (-pi, pi)";
+  if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Beta MUST be positive";
   if (beta != beta_)
   {
     beta_ = beta;
@@ -151,6 +134,23 @@ void MeixnerDistribution::setBeta(const Scalar beta)
 Scalar MeixnerDistribution::getBeta() const
 {
   return beta_;
+}
+
+
+/* Alpha accessor */
+void MeixnerDistribution::setAlpha(const Scalar alpha)
+{
+  if (std::abs(alpha) >= M_PI) throw InvalidArgumentException(HERE) << "Alpha MUST be in (-pi, pi)";
+  if (alpha != alpha_)
+  {
+    alpha_ = alpha;
+    update();
+  }
+}
+
+Scalar MeixnerDistribution::getAlpha() const
+{
+  return alpha_;
 }
 
 /* Delta accessor */
@@ -169,36 +169,49 @@ Scalar MeixnerDistribution::getDelta() const
   return delta_;
 }
 
-void MeixnerDistribution::setAlphaBetaDelta(const Scalar alpha,
-    const Scalar beta,
+void MeixnerDistribution::setBetaAlphaDelta(const Scalar beta,
+    const Scalar alpha,
     const Scalar delta)
 {
-  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
-  if (std::abs(beta) >= M_PI) throw InvalidArgumentException(HERE) << "Beta MUST be in (-pi, pi)";
+  if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Beta MUST be positive";
+  if (std::abs(alpha) >= M_PI) throw InvalidArgumentException(HERE) << "Alpha MUST be in (-pi, pi)";
   if (!(delta > 0.0)) throw InvalidArgumentException(HERE) << "Delta MUST be positive";
-  if ((alpha != alpha_) || (beta != beta_) || (delta != delta_))
+  if ((beta != beta_) || (alpha != alpha_) || (delta != delta_))
   {
-    alpha_ = alpha;
     beta_ = beta;
+    alpha_ = alpha;
     delta_ = delta;
     update();
   }
 }
 
 /* Mu accessor */
-void MeixnerDistribution::setMu(const Scalar mu)
+void MeixnerDistribution::setGamma(const Scalar gamma)
 {
-  if (mu_ != mu)
+  if (gamma_ != gamma)
   {
-    mu_ = mu;
+    gamma_ = gamma;
     computeRange();
   }
 }
 
+Scalar MeixnerDistribution::getGamma() const
+{
+  return gamma_;
+}
+
+void MeixnerDistribution::setMu(const Scalar mu)
+{
+  LOGWARN("MeixnerDistribution::setMu is deprecated");
+  setGamma(mu);
+}
+
 Scalar MeixnerDistribution::getMu() const
 {
-  return mu_;
+  LOGWARN("MeixnerDistribution::getMu is deprecated");
+  return gamma_;
 }
+
 
 /* Virtual constructor */
 MeixnerDistribution * MeixnerDistribution::clone() const
@@ -406,7 +419,7 @@ private:
 void MeixnerDistribution::update()
 {
   // First, the parameters of the distribution
-  logNormalizationFactor_ = 2.0 * delta_ * std::log(2.0 * std::cos(0.5 * beta_)) - std::log(2.0 * M_PI * alpha_) - SpecFunc::LogGamma(2.0 * delta_);
+  logNormalizationFactor_ = 2.0 * delta_ * std::log(2.0 * std::cos(0.5 * alpha_)) - std::log(2.0 * M_PI * beta_) - SpecFunc::LogGamma(2.0 * delta_);
   computeRange();
   // Second, the moments
   isAlreadyComputedMean_ = false;
@@ -477,8 +490,8 @@ Scalar MeixnerDistribution::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar z = (point[0] - mu_) / alpha_;
-  return logNormalizationFactor_ + beta_ * z + 2.0 * SpecFunc::LogGamma(Complex(delta_, z)).real();
+  const Scalar z = (point[0] - gamma_) / beta_;
+  return logNormalizationFactor_ + alpha_ * z + 2.0 * SpecFunc::LogGamma(Complex(delta_, z)).real();
 }
 
 /* Get the CDF of the distribution */
@@ -531,45 +544,45 @@ Complex MeixnerDistribution::computeCharacteristicFunction(const Scalar x) const
 
 Complex MeixnerDistribution::computeLogCharacteristicFunction(const Scalar x) const
 {
-  return Complex(2.0 * delta_ * std::log(std::cos(0.5 * beta_)), mu_ * x) - 2.0 * delta_ * std::log(std::cosh(Complex(0.5 * alpha_ * x, -0.5 * mu_)));
+  return Complex(2.0 * delta_ * std::log(std::cos(0.5 * alpha_)), gamma_ * x) - 2.0 * delta_ * std::log(std::cosh(Complex(0.5 * beta_ * x, -0.5 * gamma_)));
 }
 
 /* Compute the mean of the distribution */
 void MeixnerDistribution::computeMean() const
 {
-  mean_ = Point(1, alpha_ * delta_ * std::tan(0.5 * beta_) + mu_);
+  mean_ = Point(1, beta_ * delta_ * std::tan(0.5 * alpha_) + gamma_);
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
 Point MeixnerDistribution::getStandardDeviation() const
 {
-  return Point(1, alpha_ * std::sqrt(delta_ / (1.0 + std::cos(beta_))));
+  return Point(1, beta_ * std::sqrt(delta_ / (1.0 + std::cos(alpha_))));
 }
 
 /* Get the skewness of the distribution */
 Point MeixnerDistribution::getSkewness() const
 {
-  return Point(1, std::sin(0.5 * beta_) * std::sqrt(2.0 / delta_));
+  return Point(1, std::sin(0.5 * alpha_) * std::sqrt(2.0 / delta_));
 }
 
 /* Get the kurtosis of the distribution */
 Point MeixnerDistribution::getKurtosis() const
 {
-  return Point(1, 3.0 + (2.0 - std::cos(beta_)) / delta_);
+  return Point(1, 3.0 + (2.0 - std::cos(alpha_)) / delta_);
 }
 
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution MeixnerDistribution::getStandardRepresentative() const
 {
-  return new MeixnerDistribution(1.0, beta_, delta_, 0.0);
+  return new MeixnerDistribution(1.0, alpha_, delta_, 0.0);
 }
 
 /* Compute the covariance of the distribution */
 void MeixnerDistribution::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  covariance_(0, 0) = alpha_ * alpha_ * delta_ / (1.0 + std::cos(beta_));
+  covariance_(0, 0) = beta_ * beta_ * delta_ / (1.0 + std::cos(alpha_));
   isAlreadyComputedCovariance_ = true;
 }
 
@@ -577,10 +590,10 @@ void MeixnerDistribution::computeCovariance() const
 Point MeixnerDistribution::getParameter() const
 {
   Point point(4);
-  point[0] = alpha_;
-  point[1] = beta_;
+  point[0] = beta_;
+  point[1] = alpha_;
   point[2] = delta_;
-  point[3] = mu_;
+  point[3] = gamma_;
   return point;
 }
 
@@ -596,27 +609,27 @@ void MeixnerDistribution::setParameter(const Point & parameter)
 Description MeixnerDistribution::getParameterDescription() const
 {
   Description description(4);
-  description[0] = "alpha";
-  description[1] = "beta";
+  description[0] = "beta";
+  description[1] = "alpha";
   description[2] = "delta";
-  description[2] = "mu";
+  description[2] = "gamma";
   return description;
 }
 
 /* Check if the distribution is elliptical */
 Bool MeixnerDistribution::isElliptical() const
 {
-  return beta_ == 0.0;
+  return alpha_ == 0.0;
 }
 
 /* Method save() stores the object through the StorageManager */
 void MeixnerDistribution::save(Advocate & adv) const
 {
   ContinuousDistribution::save(adv);
-  adv.saveAttribute( "alpha_", alpha_ );
   adv.saveAttribute( "beta_", beta_ );
+  adv.saveAttribute( "alpha_", alpha_ );
   adv.saveAttribute( "delta_", delta_ );
-  adv.saveAttribute( "mu_", mu_ );
+  adv.saveAttribute( "gamma_", gamma_ );
   adv.saveAttribute( "logNormalizationFactor_", logNormalizationFactor_ );
 }
 
@@ -624,10 +637,20 @@ void MeixnerDistribution::save(Advocate & adv) const
 void MeixnerDistribution::load(Advocate & adv)
 {
   ContinuousDistribution::load(adv);
-  adv.loadAttribute( "alpha_", alpha_ );
   adv.loadAttribute( "beta_", beta_ );
+  adv.loadAttribute( "alpha_", alpha_ );
   adv.loadAttribute( "delta_", delta_ );
-  adv.loadAttribute( "mu_", mu_ );
+  if (adv.hasAttribute("mu_")) // old parameter set
+  {
+    adv.loadAttribute( "mu_", gamma_ );
+
+    // swap alpha, beta
+    const Scalar tmp = beta_;
+    beta_ = alpha_;
+    alpha_ = tmp;
+  }
+  else
+    adv.loadAttribute( "gamma_", gamma_ );
   adv.loadAttribute( "logNormalizationFactor_", logNormalizationFactor_ );
   update();
 }

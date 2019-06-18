@@ -1,19 +1,16 @@
 %feature("docstring") OT::MeixnerDistribution
 "Meixner distribution.
 
-Available constructors:
-    MeixnerDistribution(*alpha=1.0, beta=0.0, delta=1.0, mu=0.*)
-
 Parameters
 ----------
-alpha : float, :math:`\alpha > 0`
+beta : float, :math:`\beta > 0`
     Scale parameter.
-beta : float, :math:`\beta \in [-\pi; \pi]`
+alpha : float, :math:`\alpha \in [-\pi; \pi]`
     Skewness parameter.
 delta : float, :math:`\delta > 0`
     Shape parameter.
-mu : float
-    Location parameter :math:`\mu`.
+gamma : float
+    Position parameter :math:`\gamma`.
 
 Notes
 -----
@@ -21,15 +18,15 @@ Its probability density function is defined as:
 
 .. math::
 
-    f_X(x) = \frac{\left(2 \cos(\beta / 2)\right)^{2 \delta}}
-                  {2 \alpha \pi \Gamma(2 \delta)}
-             \exp\left(\frac{\beta (x - \mu)}{\alpha}\right)
-             \left|\Gamma\left(\delta + i \frac{x - \mu}{\alpha}
+    f_X(x) = \frac{\left(2 \cos(\alpha / 2)\right)^{2 \delta}}
+                  {2 \beta \pi \Gamma(2 \delta)}
+             \exp\left(\frac{\alpha (x - \gamma)}{\beta}\right)
+             \left|\Gamma\left(\delta + i \frac{x - \gamma}{\beta}
                                \right)\right|^2,
              \quad x \in \Rset
 
-with :math:`\alpha, \delta > 0`, :math:`\beta \in [-\pi; \pi]`,
-:math:`\mu \in \Rset` and where :math:`i^2 = -1`.
+with :math:`\beta, \delta > 0`, :math:`\alpha \in [-\pi; \pi]`,
+:math:`\gamma \in \Rset` and where :math:`i^2 = -1`.
 
 Its first moments are:
 
@@ -37,8 +34,8 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{X} & = & \alpha \delta \tan(\beta / 2) + \mu \\
-        \Var{X} & = & \frac{\alpha^2 \delta}{1 + \cos(\beta)}
+        \Expect{X} & = & \beta \delta \tan(\alpha / 2) + \gamma \\
+        \Var{X} & = & \frac{\beta^2 \delta}{1 + \cos(\alpha)}
     \end{eqnarray*}
 
 Examples
@@ -54,23 +51,23 @@ Draw a sample:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MeixnerDistribution::getAlpha
-"Accessor to the distribution's scale parameter :math:`\alpha`.
-
-Returns
--------
-alpha : float
-    Scale parameter :math:`\alpha`."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::MeixnerDistribution::getBeta
-"Accessor to the distribution's skewness parameter :math:`\beta`.
+"Accessor to the distribution's scale parameter :math:`\beta`.
 
 Returns
 -------
 beta : float
-    Skewness parameter :math:`\beta`."
+    Scale parameter :math:`\beta`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::getAlpha
+"Accessor to the distribution's skewness parameter :math:`\alpha`.
+
+Returns
+-------
+alpha : float
+    Skewness parameter :math:`\alpha`."
 
 // ---------------------------------------------------------------------
 
@@ -84,33 +81,33 @@ delta : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MeixnerDistribution::getMu
-"Accessor to the distribution's location parameter :math:`\mu`.
+%feature("docstring") OT::MeixnerDistribution::getGamma
+"Accessor to the distribution's position parameter :math:`\gamma`.
 
 Returns
 -------
-mu : float
-    Location parameter :math:`\mu`."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::MeixnerDistribution::setAlpha
-"Accessor to the distribution's scale parameter :math:`\alpha`.
-
-Parameters
-----------
-alpha : float, :math:`\alpha > 0`
-    Scale parameter :math:`\alpha`."
+gamma : float
+    Position parameter :math:`\gamma`."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::MeixnerDistribution::setBeta
-"Accessor to the distribution's skewness parameter :math:`\beta`.
+"Accessor to the distribution's scale parameter :math:`\beta`.
 
 Parameters
 ----------
-beta : float, :math:`\beta \in [-\pi; \pi]`
-    Skewness parameter :math:`\beta`."
+beta : float, :math:`\beta > 0`
+    Scale parameter :math:`\beta`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MeixnerDistribution::setAlpha
+"Accessor to the distribution's skewness parameter :math:`\alpha`.
+
+Parameters
+----------
+alpha : float, :math:`\alpha \in [-\pi; \pi]`
+    Skewness parameter :math:`\alpha`."
 
 // ---------------------------------------------------------------------
 
@@ -124,10 +121,10 @@ delta : float, :math:`\delta > 0`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MeixnerDistribution::setMu
-"Accessor to the distribution's location parameter :math:`\mu`.
+%feature("docstring") OT::MeixnerDistribution::setGamma
+"Accessor to the distribution's position parameter :math:`\gamma`.
 
 Parameters
 ----------
-mu : float, :math:`\mu \in \Rset`
-    Location parameter :math:`\mu`."
+gamma : float, :math:`\gamma \in \Rset`
+    Position parameter :math:`\gamma`."
