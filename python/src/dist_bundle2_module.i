@@ -34,6 +34,7 @@
 %include KernelMixture.i
 %include Laplace.i
 %include LaplaceFactory.i
+%include LeastSquaresFactory.i
 %include Logistic.i
 %include LogisticFactory.i
 %include LogNormal.i

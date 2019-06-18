@@ -54,6 +54,13 @@ Building distributions from samples
     :template: DistributionFactory.rst_t
 
     LaplaceFactory
+
+    :template: class.rst_t
+
+    LeastSquaresFactory
+
+    :template: DistributionFactory.rst_t
+
     LogisticFactory
     LogNormalFactory
     LogUniformFactory
