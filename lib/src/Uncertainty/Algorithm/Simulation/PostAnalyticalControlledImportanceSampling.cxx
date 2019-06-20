@@ -76,7 +76,7 @@ Sample PostAnalyticalControlledImportanceSampling::computeBlockSample()
   for (UnsignedInteger i = 0; i < blockSize; ++i)
   {
     const Point realization(inputSample[i]);
-    Bool failureControl = dot(realization, standardSpaceDesignPoint) > betaSquare;
+    Bool failureControl = realization.dot(standardSpaceDesignPoint) > betaSquare;
     // If the origin is not in the failure domain, the control is made using the linear event dot(u,u*) > beta^2,
     // else it is made using the linear event dot(u,u*) < beta^2.
     failureControl = (failureControl && !originFailure) || (!failureControl && originFailure);

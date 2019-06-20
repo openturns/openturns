@@ -301,7 +301,7 @@ void SobolIndicesAlgorithmImplementation::computeAsymptoticDistribution() const
 Scalar SobolIndicesAlgorithmImplementation::computeVariance(const Sample & u, const Function & psi) const
 {
   Point gradient(*psi.gradient(u.computeMean()).getImplementation());
-  return dot(gradient, u.computeCovariance() * gradient) / size_;
+  return gradient.dot(u.computeCovariance() * gradient) / size_;
 }
 
 void SobolIndicesAlgorithmImplementation::setConfidenceInterval(const Point & varianceFO,

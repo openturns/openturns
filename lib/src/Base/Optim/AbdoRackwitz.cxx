@@ -104,7 +104,7 @@ Scalar AbdoRackwitz::computeLineSearch()
   /* Min bound for step */
   const Scalar minStep = getMaximumAbsoluteError() / currentDirection_.norm();
   /* Minimum decrease for the penalized objective function */
-  const Scalar levelIncrement = omega_ * dot(currentPoint_ + (currentSigma_ * ((currentLevelValue_ > levelValue) ? 1.0 : -1.0)) * currentGradient_, currentDirection_);
+  const Scalar levelIncrement = omega_ * currentDirection_.dot(currentPoint_ + (currentSigma_ * ((currentLevelValue_ > levelValue) ? 1.0 : -1.0)) * currentGradient_);
   /* Initialization of the line search */
   /* We start with step=1 */
   Scalar step = 1.0;
@@ -175,7 +175,7 @@ void AbdoRackwitz::run()
       throw InternalException(HERE) << "Error in Abdo Rackwitz algorithm: the gradient of the level function is zero at point u=" << currentPoint_;
     }
     /* Lambda = (G - <Grad(G), u>) / ||Grad(G)||^2 */
-    currentLambda_ = (currentLevelValue_ - levelValue - dot(currentGradient_, currentPoint_)) / normGradientSquared;
+    currentLambda_ = (currentLevelValue_ - levelValue - currentGradient_.dot(currentPoint_)) / normGradientSquared;
     /* Compute the current direction Du = -Lambda Grad(G) - u */
     /* Be careful! currentGradient_ is an n by 1 matrix, we must multiply it by a 1 by 1
      * vector in order to get an n dimensional equivalente vector

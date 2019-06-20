@@ -125,7 +125,7 @@ void SORMResult::computeSortedCurvatures() const
   /* The curvatures are proportional to the eigenvalues of W
      If the normal of the boundary of the failure domain points to the origin at the design point, then we change
      the sign of the curvatures. It insure that a convexe failure domain will have positive curvatures */
-  sortedCurvatures_ = ((dot(gradientLimitStateFunction_, getStandardSpaceDesignPoint()) > 0.0 ? 1.0 : -1.0) * inverseGradientNorm) * realEigenValues;
+  sortedCurvatures_ = ((gradientLimitStateFunction_.dot(getStandardSpaceDesignPoint()) > 0.0 ? 1.0 : -1.0) * inverseGradientNorm) * realEigenValues;
   /* we sort the curvatures with increasing order */
   std::sort(sortedCurvatures_.begin(), sortedCurvatures_.end());
   isAlreadyComputedSortedCurvatures_ = true;

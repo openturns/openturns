@@ -113,7 +113,7 @@ try:
     J = Point(j * 3.)
     print("J = ", repr(J))
 
-    dotProduct = dot(I, J)
+    dotProduct = I.dot(J)
     print("dotProduct = %.6f" % dotProduct)
 
     # slicing

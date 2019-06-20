@@ -109,7 +109,7 @@ Scalar SQP::computeLineSearch()
   /* Min bound for step */
   const Scalar minStep = getMaximumAbsoluteError() / currentDirection_.norm();
   /* Minimum decrease for the penalized objective function */
-  const Scalar levelIncrement = omega_ * dot(currentPoint_ + (currentSigma_ * ((currentLevelValue_ > levelValue) ? 1.0 : -1.0)) * currentGradient_, currentDirection_);
+  const Scalar levelIncrement = omega_ * currentDirection_.dot(currentPoint_ + (currentSigma_ * ((currentLevelValue_ > levelValue) ? 1.0 : -1.0)) * currentGradient_);
   /* Initialization of the line search */
   /* We start with step=1 */
   Scalar step = 1.0;

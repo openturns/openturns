@@ -436,9 +436,9 @@ Scalar StrongMaximumTest::computeDeltaEpsilon()
 }
 
 /* the function that evaluate if a point is in the vicinity of the design point */
-Bool StrongMaximumTest::isInTheVicinityOfTheDesignPoint(const Point & numericalPoint)
+Bool StrongMaximumTest::isInTheVicinityOfTheDesignPoint(const Point & point)
 {
-  return (dot(numericalPoint, standardSpaceDesignPoint_) > numericalPoint.norm() * standardSpaceDesignPoint_.norm() * designPointVicinity_);
+  return point.dot(standardSpaceDesignPoint_) > point.norm() * standardSpaceDesignPoint_.norm() * designPointVicinity_;
 }
 
 /* The function that runs the Strong Max Test */

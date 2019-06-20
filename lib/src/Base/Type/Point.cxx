@@ -311,10 +311,9 @@ Point & Point::operator /=(const Scalar scalar)
 
 
 /* Dot product operator */
-Scalar dot(const Point & lhs,
-           const Point & rhs)
+Scalar Point::dot(const Point & rhs) const
 {
-  int n = lhs.getDimension();
+  int n = getDimension();
   if (n != (int)rhs.getDimension())
     throw InvalidArgumentException(HERE)
         << "Points of different dimensions cannot be added (LHS dimension = "
@@ -324,7 +323,7 @@ Scalar dot(const Point & lhs,
 
   int one = 1;
   if (n > 0)
-    return ddot_(&n, const_cast<double*>(&lhs[0]), &one, const_cast<double*>(&rhs[0]), &one);
+    return ddot_(&n, const_cast<double*>(&(*this)[0]), &one, const_cast<double*>(&rhs[0]), &one);
   else
     return 0.0;
 }
@@ -383,7 +382,7 @@ Scalar Point::normInf() const
 /*  Norm^2 */
 Scalar Point::normSquare() const
 {
-  return dot(*this, *this);
+  return dot(*this);
 }
 
 

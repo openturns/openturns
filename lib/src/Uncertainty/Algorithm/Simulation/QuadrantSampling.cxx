@@ -169,7 +169,7 @@ void QuadrantSampling::updateRotation()
       // fk -= SUM <ek, fi> fi
       for (UnsignedInteger i = 0; i < k; ++ i)
       {
-        f[k] -= dot(f[k], f[i]) * f[i];
+        f[k] -= Point(f[k]).dot(f[i]) * f[i];
       }
       // fk = fk / ||fk||
       f[k] /= Point(f[k]).norm();

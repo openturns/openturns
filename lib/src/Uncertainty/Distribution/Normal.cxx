@@ -312,7 +312,7 @@ Scalar Normal::computeCDF(const Point & point) const
     // Parallel evalusation of the PDF
     const Sample allPDF(computePDF(allNodes));
     // Some black magic to use BLAS on the internal representation of samples
-    const Scalar probability = dot(allWeights, allPDF.getImplementation()->getData());
+    const Scalar probability = allWeights.dot(allPDF.getImplementation()->getData());
     return probability;
   }
   // For very large dimension, use a MonteCarlo algorithm
@@ -385,7 +385,7 @@ Complex Normal::computeLogCharacteristicFunction(const Scalar x) const
 Complex Normal::computeLogCharacteristicFunction(const Point & x) const
 {
   if (x.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << x.getDimension();
-  return Complex(-0.5 * dot(x, getCovariance() * x), dot(x, mean_));
+  return Complex(-0.5 * x.dot(getCovariance() * x), x.dot(mean_));
 }
 
 /* Compute the probability content of an interval */

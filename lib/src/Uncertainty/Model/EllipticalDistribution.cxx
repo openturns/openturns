@@ -394,7 +394,7 @@ Point EllipticalDistribution::computePDFGradient(const Point & point) const
   const UnsignedInteger dimension = getDimension();
   const Point u(normalize(point));
   const Point iRu(inverseR_ * u);
-  const Scalar betaSquare = dot(u, iRu);
+  const Scalar betaSquare = u.dot(iRu);
   const Scalar phi = computeDensityGenerator(betaSquare);
   const Scalar phiDerivative = computeDensityGeneratorDerivative(betaSquare);
   Point pdfGradient(2 * dimension);

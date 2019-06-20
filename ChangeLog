@@ -21,6 +21,7 @@
  * Removed deprecated OptimizationProblem(levelFunction, levelValue) ctor
  * Removed deprecated (Linear|Quadratic)(LeastSquares|Taylor)::getResponseSurface
  * Removed deprecated VisualTest::DrawEmpiricalCDF,DrawHistogram,DrawClouds
+ * Moved dot to Point::dot
 
 === Python module ===
 
