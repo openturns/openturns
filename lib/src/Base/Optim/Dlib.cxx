@@ -22,6 +22,7 @@
 #include "openturns/Dlib.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObject.hxx"
+#include "openturns/OSS.hxx"
 
 #ifdef OPENTURNS_HAVE_DLIB
   #include "openturns/DlibFunctions.hxx"
@@ -455,7 +456,7 @@ void Dlib::setWolfeRho(const Scalar wolfeRho)
   wolfeRho_ = wolfeRho;
   
   if (wolfeRho >= wolfeSigma_) 
-    LOGWARN("Warning: wolfeRho must be strictly lower than wolfeSigma. Please adjust either of the parameters.");
+    LOGWARN(OSS() << "Warning: wolfeRho must be strictly lower than wolfeSigma. Please adjust either of the parameters.");
 }
   
 Scalar Dlib::getWolfeSigma() const
@@ -471,7 +472,7 @@ void Dlib::setWolfeSigma(const Scalar wolfeSigma)
   wolfeSigma_ = wolfeSigma;
   
   if (wolfeRho_ >= wolfeSigma)
-    LOGWARN("Warning: wolfeRho must be strictly lower than wolfeSigm. Please adjust either of the parameters.a");
+    LOGWARN(OSS() << "Warning: wolfeRho must be strictly lower than wolfeSigma. Please adjust either of the parameters.");
 }
 
 UnsignedInteger Dlib::getMaxLineSearchIterations() const
