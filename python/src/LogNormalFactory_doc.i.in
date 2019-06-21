@@ -209,3 +209,13 @@ Parameters
 ----------
 sample : 2-d sequence of float, of dimension 1
     The sample from which the distribution parameters are estimated."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LogNormalFactory::buildMethodOfLeastSquares
+"Build the distribution based on the least-squares estimator.
+
+Parameters
+----------
+sample : 2-d sequence of float, of dimension 1
+    The sample from which the distribution parameters are estimated."

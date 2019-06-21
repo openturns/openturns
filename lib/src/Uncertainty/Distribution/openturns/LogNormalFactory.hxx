@@ -65,7 +65,11 @@ public:
   /** Algorithm associated with the method of modified moments */
   LogNormal buildMethodOfModifiedMoments(const Sample & sample) const;
 
+  /** Algorithm associated with the method of least-squares */
+  LogNormal buildMethodOfLeastSquares(const Sample & sample) const;
+
 private:
+  LogNormal buildMethodOfLeastSquares(const Sample & sample, const Scalar gamma) const;
 
 }; /* class LogNormalFactory */
 

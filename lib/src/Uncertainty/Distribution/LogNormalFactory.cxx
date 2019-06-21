@@ -26,6 +26,11 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/DistFunc.hxx"
+#include "openturns/LinearLeastSquares.hxx"
+#include "openturns/LeastSquaresProblem.hxx"
+#include "openturns/OptimizationAlgorithm.hxx"
+#include "openturns/LeastSquaresFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -316,5 +321,122 @@ LogNormal LogNormalFactory::buildAsLogNormal() const
 {
   return LogNormal();
 }
+
+/* Algorithm associated with the method of least-squares */
+LogNormal LogNormalFactory::buildMethodOfLeastSquares(const Sample & sample, const Scalar gamma) const
+{
+  const UnsignedInteger size = sample.getSize();
+  Sample dataIn(size, 1);
+  Sample dataOut(size, 1);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    dataIn(i, 0) = std::log(sample(i, 0) - gamma);
+    dataOut(i, 0) = DistFunc::qNormal(sample.computeEmpiricalCDF(sample[i]));
+  }
+  LinearLeastSquares leastSquares(dataIn, dataOut);
+  leastSquares.run();
+  const Scalar a0 = leastSquares.getConstant()[0];
+  const Scalar a1 = leastSquares.getLinear()(0, 0);
+  const Scalar sigmaLog = 1.0 / a1;
+  const Scalar muLog = -a0 * sigmaLog;
+  return LogNormal(muLog, sigmaLog, gamma);
+}
+
+
+class LogNormalFactoryResidualEvaluation : public EvaluationImplementation
+{
+public:
+  LogNormalFactoryResidualEvaluation(const Sample & sample)
+    : EvaluationImplementation()
+    , sample_(sample)
+  {
+    const UnsignedInteger size = sample.getSize();
+    dataOut_ = Sample(size, 1);
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      dataOut_(i, 0) = DistFunc::qNormal(sample.computeEmpiricalCDF(sample[i]));
+    }
+  }
+
+  LogNormalFactoryResidualEvaluation * clone() const
+  {
+    return new LogNormalFactoryResidualEvaluation(*this);
+  }
+
+  UnsignedInteger getInputDimension() const
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const
+  {
+    return sample_.getSize();
+  }
+
+  Description getInputDescription() const
+  {
+    return Description(1, "gamma");
+  }
+
+  Description getOutputDescription() const
+  {
+    return Description(sample_.getSize(), "r");
+  }
+
+  Description getDescription() const
+  {
+    Description description(getInputDescription());
+    description.add(getOutputDescription());
+    return description;
+  }
+
+  Point operator() (const Point & parameter) const
+  {
+    const Scalar gamma = parameter[0];
+    const UnsignedInteger size = sample_.getSize();
+    Sample dataIn(size, 1);
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      dataIn(i, 0) = std::log(sample_(i, 0) - gamma);
+    }
+    LinearLeastSquares leastSquares(dataIn, dataOut_);
+    leastSquares.run();
+    const Scalar a0 = leastSquares.getConstant()[0];
+    const Scalar a1 = leastSquares.getLinear()(0, 0);
+    const Scalar sigmaLog = 1.0 / a1;
+    const Scalar muLog = -a0 * sigmaLog;
+    Point result(size);
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      result[i] = dataOut_(i, 0) - (dataIn(i, 0) / sigmaLog - muLog/sigmaLog);
+    }
+    return result;
+  }
+
+private:
+  Sample sample_;
+  Sample dataOut_;
+};
+
+
+LogNormal LogNormalFactory::buildMethodOfLeastSquares(const Sample & sample) const
+{
+  const UnsignedInteger size = sample.getSize();
+  const Scalar xMin = sample.getMin()[0];
+  Scalar gamma = xMin - std::abs(xMin) / (2 + size);
+  LogNormalFactoryResidualEvaluation residualEvaluation(sample);
+  const Function residualFunction(residualEvaluation.clone());
+  LeastSquaresProblem problem(residualFunction);
+  const Description leastSquaresNames(OptimizationAlgorithm::GetLeastSquaresAlgorithmNames());
+  if (!leastSquaresNames.getSize())
+    throw NotYetImplementedException(HERE) << "No least-squares solver";
+  OptimizationAlgorithm solver(OptimizationAlgorithm::Build(leastSquaresNames[0]));
+  solver.setProblem(problem);
+  solver.setStartingPoint(Point(1, gamma));
+  solver.run();
+  gamma = solver.getResult().getOptimalPoint()[0];
+  return buildMethodOfLeastSquares(sample, gamma);
+}
+
 
 END_NAMESPACE_OPENTURNS

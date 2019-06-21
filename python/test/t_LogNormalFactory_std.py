@@ -22,6 +22,7 @@ try:
           repr(estimatedDistribution))
     estimatedDistribution = factory.build(sample, 2)
     print("Estimated distribution (moments)=", repr(estimatedDistribution))
+    print("Estimated distribution (least squares)=", factory.buildMethodOfLeastSquares(sample))
     estimatedDistribution = factory.build()
     print("Default distribution=", estimatedDistribution)
     estimatedDistribution = factory.build(
