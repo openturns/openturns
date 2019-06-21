@@ -282,15 +282,10 @@ String ResourceMap::get(const String & key) const
 
 Bool ResourceMap::hasKey(const String & key) const
 {
-  try
-  {
-    get(key);
-  }
-  catch (InternalException &)
-  {
-    return false;
-  }
-  return true;
+  return ((mapString_.find(key) != mapString_.end())
+      || (mapScalar_.find(key) != mapScalar_.end())
+      || (mapUnsignedInteger_.find(key) != mapUnsignedInteger_.end())
+      || (mapBool_.find(key) != mapBool_.end()));
 }
 
 String ResourceMap::getAsString(const String & key) const
