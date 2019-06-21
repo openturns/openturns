@@ -134,6 +134,7 @@
 #include "openturns/NormalGamma.hxx"
 #include "openturns/ParametrizedDistribution.hxx"
 #include "openturns/Pareto.hxx"
+#include "openturns/ParetoFactory.hxx"
 #include "openturns/Poisson.hxx"
 #include "openturns/PoissonFactory.hxx"
 #include "openturns/PosteriorDistribution.hxx"

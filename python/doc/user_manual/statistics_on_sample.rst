@@ -82,6 +82,7 @@ Building distributions from samples
     MultinomialFactory
     NegativeBinomialFactory
     NormalFactory
+    ParetoFactory
     PoissonFactory
     RayleighFactory
 

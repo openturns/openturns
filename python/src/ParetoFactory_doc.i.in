@@ -1,0 +1,72 @@
+%feature("docstring") OT::ParetoFactory
+"Pareto factory.
+
+Available constructor:
+    ParetoFactory()
+
+The parameters are estimated by maximization of the likelihood,
+see :class:`~openturns.MaximumLikelihoodFactory`.
+
+See also
+--------
+DistributionFactory, Pareto"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::ParetoFactory::buildMethodOfLikelihoodMaximization
+"Method of likelihood maximization.
+
+Refer to :class:`~openturns.MaximumLikelihoodFactory`.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.Pareto`
+    The estimated distribution"
+
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::ParetoFactory::buildMethodOfMoments
+"Method of moments estimator.
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{\gamma}_n = (1-\mathrm{sign}(x_{(1,n)})/(2+n))x_{(1,n)}\\
+      (\Hat{\alpha}_n,\Hat{\beta}_n)\mbox{ solution of }\left\{
+      \begin{array}{l}
+        \bar{x}_n=\Hat{\gamma}_n+\Hat{\alpha}_n+\Gamma(1+1/\Hat{\beta}_n)\\
+        (\sigma_n^X)^2=\Hat{\alpha}_n\left(\Gamma(1+2/\Hat{\beta}_n)-\Gamma(1+1/\Hat{\beta}_n)^2\right)
+      \end{array}\right.
+    \end{eqnarray*}
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.Pareto`
+    The estimated distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::ParetoFactory::buildAsPareto
+"Estimate the distribution as native distribution.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.Pareto`
+    The estimated distribution"

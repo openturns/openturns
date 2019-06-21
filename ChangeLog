@@ -29,6 +29,7 @@
  * GeneralizedExtremeValueFactory
  * Pareto
  * LeastSquaresFactory
+ * ParetoFactory
 
 ==== API changes ====
  * Removed deprecated specific RandomVector constructors

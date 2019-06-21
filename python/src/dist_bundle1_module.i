@@ -56,6 +56,7 @@
 %include GammaFactory.i
 %include GammaMuSigma.i
 %include Pareto.i
+%include ParetoFactory.i
 %include GeneralizedPareto.i
 %include GeneralizedParetoFactory.i
 %include Geometric.i
