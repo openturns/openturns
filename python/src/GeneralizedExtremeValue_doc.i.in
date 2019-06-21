@@ -9,7 +9,7 @@ Available constructors:
 Parameters
 ----------
 mu : float
-    Location parameter :math:`\mu`.
+    Position parameter :math:`\mu`.
 sigma : float, :math:`\sigma > 0`
     Scale parameter :math:`\sigma`.
 xi : float
@@ -112,12 +112,12 @@ distribution : :class:`~openturns.Gumbel`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedExtremeValue::getMu
-"Accessor to the distribution's location parameter :math:`\mu`.
+"Accessor to the distribution's position parameter :math:`\mu`.
 
 Returns
 -------
 mu : float
-    Location parameter :math:`\mu`."
+    Position parameter :math:`\mu`."
 
 // ---------------------------------------------------------------------
 
@@ -152,12 +152,12 @@ distribution : :class:`~openturns.Distribution`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedExtremeValue::setMu
-"Accessor to the distribution's location parameter :math:`\mu`.
+"Accessor to the distribution's position parameter :math:`\mu`.
 
 Parameters
 ----------
 mu : float
-    Location parameter :math:`\mu`."
+    Position parameter :math:`\mu`."
 
 // ---------------------------------------------------------------------
 
