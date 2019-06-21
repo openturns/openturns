@@ -137,7 +137,7 @@ void GaussianLinearCalibration::run()
   const Normal error(Point(R.getDimension()), R);
   const TriangularMatrix errorInverseCholesky(error.getInverseCholesky());
   // Compute errorInverseCholesky*J, the second part of the extended design matrix
-  const Matrix invLRJ = errorInverseCholesky * gradientObservations_;
+  const Matrix invLRJ(errorInverseCholesky * gradientObservations_);
   // Create the extended design matrix of the linear least squares problem
   const UnsignedInteger parameterDimension = getCandidate().getDimension();
   const UnsignedInteger outputDimension = outputObservations_.getDimension();
