@@ -104,7 +104,7 @@ void LinearLeastSquaresCalibration::run()
   LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, gradientObservations_));
   const Point deltaTheta(method.solve(deltaY));
   const Point thetaStar(getCandidate() - deltaTheta);
-  const Point r(deltaY + gradientObservations_ * deltaTheta);
+  const Point r(deltaY - gradientObservations_ * deltaTheta);
   const Scalar varianceError = r.normSquare() / (deltaY.getDimension() - deltaTheta.getDimension());
   CovarianceMatrix covarianceThetaStar;
   const Scalar epsilon = ResourceMap::GetAsScalar("LinearLeastSquaresCalibration-Regularization");
