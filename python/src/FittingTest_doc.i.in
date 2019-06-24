@@ -200,7 +200,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Poisson()
 >>> sample = distribution.getSample(30)
->>> test_result, fitted_dist = ot.FittingTest.ChiSquared(sample, ot.PoissonFactory(), 0.01)
+>>> fitted_dist, test_result = ot.FittingTest.ChiSquared(sample, ot.PoissonFactory(), 0.01)
 >>> test_result
 class=TestResult name=Unnamed type=ChiSquared Poisson binaryQualityMeasure=true p-value threshold=0.01 p-value=0.698061 statistic=0.150497 description=[Poisson(lambda = 1.06667) vs sample Poisson]"
 
@@ -252,7 +252,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
->>> test_result, dist = ot.FittingTest.Kolmogorov(sample, ot.NormalFactory(), 0.01)
+>>> dist, test_result = ot.FittingTest.Kolmogorov(sample, ot.NormalFactory(), 0.01)
 >>> test_result
 class=TestResult name=Unnamed type=Kolmogorov Normal binaryQualityMeasure=true p-value threshold=0.01 p-value=0.7 statistic=0.106933 description=[Normal(mu = -0.0944924, sigma = 0.989808) vs sample Normal]"
 
