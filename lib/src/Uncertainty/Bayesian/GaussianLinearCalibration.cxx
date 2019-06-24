@@ -113,33 +113,55 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Sample & modelObserva
 /* Performs the actual computation. Must be overloaded by the actual calibration algorithm */
 void GaussianLinearCalibration::run()
 {
+  // Compute the difference of output observations and output predictions
   const Point deltaY(modelObservations_.getImplementation()->getData() - outputObservations_.getImplementation()->getData());
-  CovarianceMatrix B(getParameterCovariance());
-  const IdentityMatrix IB(B.getDimension());
-  const CovarianceMatrix invB(B.solveLinearSystem(IB).getImplementation());
+  // Compute inverse of the Cholesky decomposition of the covariance matrix of the parameter
+  const TriangularMatrix parameterInverseCholesky(getParameterPrior().getInverseCholesky());
+  // Compute the covariance matrix R
   CovarianceMatrix R(deltaY.getSize());
   const UnsignedInteger dimension = errorCovariance_.getDimension();
+  const UnsignedInteger size = outputObservations_.getSize();
   if (globalErrorCovariance_) R = errorCovariance_;
   else
     {
       if (dimension == 1) R = (R * errorCovariance_(0, 0)).getImplementation();
       else
 	{
-	  const UnsignedInteger size = outputObservations_.getSize();
 	  for (UnsignedInteger i = 0; i < size; ++i)
 	    for (UnsignedInteger j = 0; j < dimension; ++j)
 	      for (UnsignedInteger k = 0; k < dimension; ++k)
 		R(i * dimension + j, i * dimension + k) = errorCovariance_(j, k);
 	}
     }
-  const IdentityMatrix IR(R.getDimension());
-  const CovarianceMatrix invR(R.solveLinearSystem(IR).getImplementation());
-  const Matrix M(gradientObservations_);
-  const Matrix MtinvR(M.transpose() * invR);
-  const Matrix K((invB + MtinvR * M).solveLinearSystem(MtinvR));
-  const Point thetaStar(getCandidate() - K * deltaY);
-  const SquareMatrix L((IB - K * M).getImplementation());
-  const CovarianceMatrix covarianceThetaStar((K * R * K.transpose() + L * B * L.transpose()).getImplementation());
+  // Compute the inverse of the Cholesky decomposition of R
+  const Normal error(Point(R.getDimension()), R);
+  const TriangularMatrix errorInverseCholesky(error.getInverseCholesky());
+  // Compute errorInverseCholesky*J, the second part of the extended design matrix
+  const Matrix invLRJ(errorInverseCholesky * gradientObservations_);
+  // Create the extended design matrix of the linear least squares problem
+  const UnsignedInteger parameterDimension = getCandidate().getDimension();
+  const UnsignedInteger outputDimension = outputObservations_.getDimension();
+  Matrix Abar(parameterDimension+size*outputDimension,parameterDimension);
+  for (UnsignedInteger i = 0; i < parameterDimension; ++i)
+    for (UnsignedInteger j = 0; j < parameterDimension; ++j)
+      Abar(i,j) = parameterInverseCholesky(i,j);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
+      for (UnsignedInteger k = 0; k < parameterDimension; ++k)
+        Abar(i*outputDimension+j+parameterDimension,k) = -invLRJ(i*outputDimension+j,k);
+  // Compute errorInverseCholesky*deltay, the right hand size of the extended residual
+  const Point invLRz = errorInverseCholesky * deltaY;
+  // Create the extended right hand side of the extended linear least squares system : ybar = -invLRz
+  Point ybar(parameterDimension+size*outputDimension);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    for (UnsignedInteger j = 0; j < outputDimension; ++j)
+      ybar[i*outputDimension+j+parameterDimension] = invLRz[i*outputDimension+j];
+  // Solve the linear least squares problem
+  LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, Abar));
+  const Point deltaTheta(method.solve(ybar));
+  const Point thetaStar(getCandidate() + deltaTheta);
+  const CovarianceMatrix covarianceThetaStar(method.getGramInverse().getImplementation());
+  // Create the result object
   Normal parameterPosterior(thetaStar, covarianceThetaStar);
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const LinearFunction residualFunction(getCandidate(), deltaY, gradientObservations_);
