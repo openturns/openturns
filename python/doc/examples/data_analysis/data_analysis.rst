@@ -38,12 +38,4 @@ Data analysis
     linear_regression.ipynb
     quantile_estimation_wilks.ipynb
 
-Calibration
------------
-
-.. toctree::
-    :maxdepth: 1
-
-    bayesian_calibration.ipynb
-    bayesian_calibration_flooding.ipynb
 

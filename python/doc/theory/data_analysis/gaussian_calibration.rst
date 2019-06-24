@@ -265,6 +265,13 @@ This implies:
     - See :class:`~openturns.GaussianLinearCalibration`
     - See :class:`~openturns.GaussianNonLinearCalibration`
 
+.. topic:: Examples:
+
+    - See :doc:`/examples/calibration/calibration_flooding`
+    - See :doc:`/examples/calibration/calibration_chaboche`
+    - See :doc:`/examples/calibration/calibration_deflection_tube`
+    - See :doc:`/examples/calibration/calibration_logistic`
+
 .. topic:: References:
 
     - N. H. Bingham and John M. Fry (2010). *Regression, Linear Models in Statistics*, Springer Undergraduate Mathematics Series. Springer.

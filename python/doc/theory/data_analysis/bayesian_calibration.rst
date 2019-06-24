@@ -144,10 +144,10 @@ Monte-Carlo Markov-Chain (MCMC) methods. See :ref:`metropolis_hastings`.
 
     - See :class:`~openturns.RandomWalkMetropolisHastings`
 
-
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/bayesian_calibration`
+    - See :doc:`/examples/calibration/bayesian_calibration`
+    - See :doc:`/examples/calibration/bayesian_calibration_flooding`
 
 .. topic:: References:
 

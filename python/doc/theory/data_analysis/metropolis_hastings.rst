@@ -169,7 +169,7 @@ independent sampling.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/bayesian_calibration`
+    - See :doc:`/examples/calibration/bayesian_calibration`
 
 .. topic:: References:
 

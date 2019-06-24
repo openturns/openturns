@@ -1,6 +1,9 @@
 Calibration
 ===========
 
+Least squares and gaussian calibration
+--------------------------------------
+
 .. toctree::
     :maxdepth: 1
 
@@ -8,4 +11,13 @@ Calibration
     calibration_chaboche.ipynb
     calibration_logistic.ipynb
     calibration_deflection_tube.ipynb
+
+Bayesian Calibration
+--------------------
+
+.. toctree::
+    :maxdepth: 1
+
+    bayesian_calibration.ipynb
+    bayesian_calibration_flooding.ipynb
 

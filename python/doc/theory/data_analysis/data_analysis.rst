@@ -23,11 +23,18 @@ Estimation of a parametric model
     empirical_cdf
     kernel_smoothing
     maximum_likelihood
+    parametric_estimation
+
+Calibration
+-----------
+
+.. toctree::
+    :maxdepth: 1
+
     bayesian_calibration
     code_calibration
     gaussian_calibration
     metropolis_hastings
-    parametric_estimation
 
 Analysis of the goodness of fit of a parametric model
 -----------------------------------------------------
