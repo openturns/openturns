@@ -51,13 +51,25 @@ SobolIndicesAlgorithm
 
 Examples
 --------
+
+Create a sample suitable to estimate first and total order Sobol' indices:
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
->>> formula = ['sin(pi_*X1)+7*sin(pi_*X2)*sin(pi_*X2)+' + \
-...    '0.1*((pi_*X3)*(pi_*X3)*(pi_*X3)*(pi_*X3))*sin(pi_*X1)']
+>>> formula = ['sin(pi_*X1)+7*sin(pi_*X2)^2+0.1*(pi_*X3)^4*sin(pi_*X1)']
 >>> model = ot.SymbolicFunction(['X1', 'X2', 'X3'], formula)
->>> distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3, \
-...                                         ot.IndependentCopula(3))
+>>> distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3)
 >>> size = 10
->>> experiment = ot.SobolIndicesExperiment(distribution, size, True)
+>>> experiment = ot.SobolIndicesExperiment(distribution, size)
+>>> sample = experiment.generate()
+
+Create a sample suitable to estimate first, total order and second order Sobol' indices:
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> formula = ['sin(pi_*X1)+7*sin(pi_*X2)^2+0.1*(pi_*X3)^4*sin(pi_*X1)']
+>>> model = ot.SymbolicFunction(['X1', 'X2', 'X3'], formula)
+>>> distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3)
+>>> size = 10
+>>> computeSecondOrder = True
+>>> experiment = ot.SobolIndicesExperiment(distribution, size, computeSecondOrder)
 >>> sample = experiment.generate()"
+
