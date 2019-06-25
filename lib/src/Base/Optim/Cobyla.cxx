@@ -66,6 +66,8 @@ void Cobyla::checkProblem(const OptimizationProblem & problem) const
 {
   if (problem.hasMultipleObjective())
     throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization";
+  if (problem.hasResidualFunction())
+    throw InvalidArgumentException(HERE) << getClassName() << " does not support least-square problems";
 }
 
 /* Performs the actual computation by calling the Cobyla algorithm

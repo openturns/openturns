@@ -154,6 +154,8 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
 #ifdef OPENTURNS_HAVE_NLOPT
   if (problem.hasMultipleObjective())
     throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " does not support multi-objective optimization";
+  if (problem.hasResidualFunction())
+    throw InvalidArgumentException(HERE) << getClassName() << " does not support least-square problems";
 
   if (getAlgorithmName()[0] == 'G')
   {
