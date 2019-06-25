@@ -259,6 +259,27 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
 }
 
 
+OptimizationAlgorithm OptimizationAlgorithm::Build(const OptimizationProblem & problem)
+{
+  // return the first algorithm that accepts the problem
+  Description names(GetAlgorithmNames());
+  for (UnsignedInteger i = 0; i < names.getSize(); ++ i)
+  {
+    OptimizationAlgorithm algorithm(Build(names[i]));
+    try
+    {
+      algorithm.setProblem(problem);
+      return algorithm;
+    }
+    catch (InvalidArgumentException &)
+    {
+      // try next algorithm
+    }
+  }
+  throw NotYetImplementedException(HERE) << "No optimization algorithm available for this problem";
+}
+
+
 Description OptimizationAlgorithm::GetAlgorithmNames()
 {
   Description names;

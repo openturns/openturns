@@ -427,11 +427,7 @@ LogNormal LogNormalFactory::buildMethodOfLeastSquares(const Sample & sample) con
   LogNormalFactoryResidualEvaluation residualEvaluation(sample);
   const Function residualFunction(residualEvaluation.clone());
   LeastSquaresProblem problem(residualFunction);
-  const Description leastSquaresNames(OptimizationAlgorithm::GetLeastSquaresAlgorithmNames());
-  if (!leastSquaresNames.getSize())
-    throw NotYetImplementedException(HERE) << "No least-squares solver";
-  OptimizationAlgorithm solver(OptimizationAlgorithm::Build(leastSquaresNames[0]));
-  solver.setProblem(problem);
+  OptimizationAlgorithm solver(OptimizationAlgorithm::Build(problem));
   solver.setStartingPoint(Point(1, gamma));
   solver.run();
   gamma = solver.getResult().getOptimalPoint()[0];

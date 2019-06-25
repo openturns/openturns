@@ -53,10 +53,7 @@ LeastSquaresFactory::LeastSquaresFactory(const Distribution & distribution)
   : DistributionFactoryImplementation()
   , distribution_(distribution)
 {
-  Description leastSquaresNames(OptimizationAlgorithm::GetLeastSquaresAlgorithmNames());
-  if (leastSquaresNames.getSize() == 0)
-    throw NotYetImplementedException(HERE) << "No least-squares solver available";
-  solver_ = OptimizationAlgorithm::Build(leastSquaresNames[0]);
+  solver_ = OptimizationAlgorithm::Build(LeastSquaresProblem());
   // Initialize optimization solver parameter using the ResourceMap
   solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("MaximumLikelihoodFactory-MaximumEvaluationNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumAbsoluteError"));

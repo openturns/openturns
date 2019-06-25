@@ -68,11 +68,7 @@ NonLinearLeastSquaresCalibration::NonLinearLeastSquaresCalibration(const Functio
   if (outputObservations.getSize() != size) throw InvalidArgumentException(HERE) << "Error: expected an output sample of size=" << size << ", got size=" << outputObservations.getSize();
 
   // Now the automatic selection of the algorithm
-  Description leastSquaresNames(OptimizationAlgorithm::GetLeastSquaresAlgorithmNames());
-  if (leastSquaresNames.getSize() > 0)
-    algorithm_ = OptimizationAlgorithm::Build(leastSquaresNames[0]);
-  else
-    algorithm_ = MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-MultiStartSize")).generate());
+  algorithm_ = OptimizationAlgorithm::Build(LeastSquaresProblem());
   parameterPrior_.setDescription(model.getParameterDescription());
 }
 
