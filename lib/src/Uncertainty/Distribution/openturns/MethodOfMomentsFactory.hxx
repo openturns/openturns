@@ -63,6 +63,7 @@ public:
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
   OptimizationAlgorithm getOptimizationAlgorithm() const;
 
+  /** @deprecated */
   void setOptimizationProblem(const OptimizationProblem & problem);
   OptimizationProblem getOptimizationProblem() const;
 
@@ -83,7 +84,6 @@ protected:
 
   /* Solver & optimization problem for log-likelihood maximization */
   OptimizationAlgorithm solver_;
-  OptimizationProblem problem_;
 
   /* Known parameter */
   Point knownParameterValues_;
