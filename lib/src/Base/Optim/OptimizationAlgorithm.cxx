@@ -299,6 +299,7 @@ Description OptimizationAlgorithm::GetAlgorithmNames()
 
 Description OptimizationAlgorithm::GetLeastSquaresAlgorithmNames()
 {
+  LOGWARN("OptimizationAlgorithm::GetLeastSquaresAlgorithmNames is deprecated");
   Description names;
   if (CMinpack::IsAvailable())
     names.add("CMinpack");

@@ -2,3 +2,4 @@ Remove Weibull alias
 Remove WeibullMuSigma alias
 Remove WeibullFactory alias, +buildAsWeibull deprecated methods
 Remove deprecated GumbelAB
+Remove GetLeastSquaresAlgorithmNames

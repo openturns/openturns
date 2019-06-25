@@ -115,7 +115,7 @@ public:
   /** Get all optimization algorithm names */
   static Description GetAlgorithmNames();
 
-  /** Get least-squares optimization algorithm names */
+  /** @deprecated Get least-squares optimization algorithm names */
   static Description GetLeastSquaresAlgorithmNames();
 
   /** String converter */

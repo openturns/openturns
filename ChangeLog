@@ -48,6 +48,7 @@
  * Deprecated GaussianNonLinearCalibration,NonLinearLeastSquaresCalibration::set,getAlgorithm
  * Added getConditionalMarginalCovariance method to KrigingResult
  * Added getConditionalMarginalVariance method to KrigingResult
+ * Deprecated OptimizationAlgorithm::GetLeastSquaresAlgorithmNames
 
 === Python module ===
  * Add Domain.__contains__ operator

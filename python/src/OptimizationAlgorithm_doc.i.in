@@ -71,13 +71,3 @@ Returns
 -------
 names : :class:`~openturns.Description`
     List of available solver names."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::OptimizationAlgorithm::GetLeastSquaresAlgorithmNames
-"Get the list of available least-squares solver names.
-
-Returns
--------
-names : :class:`~openturns.Description`
-    List of available least-squares solver names."
