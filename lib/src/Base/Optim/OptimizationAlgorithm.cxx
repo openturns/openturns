@@ -288,6 +288,8 @@ Description OptimizationAlgorithm::GetAlgorithmNames()
   if (CMinpack::IsAvailable())
     names.add("CMinpack");
   names.add("Cobyla");
+  if (Dlib::IsAvailable())
+    names.add(Dlib::GetAlgorithmNames());
   names.add("TNC");
   if (NLopt::IsAvailable())
     names.add(NLopt::GetAlgorithmNames());
