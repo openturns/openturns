@@ -114,6 +114,7 @@ public:
 
   /** Get all optimization algorithm names */
   static Description GetAlgorithmNames();
+  static Description GetAlgorithmNames(const OptimizationProblem & problem);
 
   /** @deprecated Get least-squares optimization algorithm names */
   static Description GetLeastSquaresAlgorithmNames();

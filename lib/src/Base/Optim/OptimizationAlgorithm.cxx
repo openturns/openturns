@@ -299,6 +299,28 @@ Description OptimizationAlgorithm::GetAlgorithmNames()
 }
 
 
+Description OptimizationAlgorithm::GetAlgorithmNames(const OptimizationProblem & problem)
+{
+  // return the first algorithm that accepts the problem
+  Description names(GetAlgorithmNames());
+  Description result;
+  for (UnsignedInteger i = 0; i < names.getSize(); ++ i)
+  {
+    OptimizationAlgorithm algorithm(Build(names[i]));
+    try
+    {
+      algorithm.setProblem(problem);
+      result.add(names[i]);
+    }
+    catch (InvalidArgumentException &)
+    {
+      // try next algorithm
+    }
+  }
+  return result;
+}
+
+
 Description OptimizationAlgorithm::GetLeastSquaresAlgorithmNames()
 {
   LOGWARN("OptimizationAlgorithm::GetLeastSquaresAlgorithmNames is deprecated");

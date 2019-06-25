@@ -67,6 +67,11 @@ name : str or :class:`~openturns.OptimizationProblem`
 %feature("docstring") OT::OptimizationAlgorithm::GetAlgorithmNames
 "Get the list of available solver names.
 
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`, optional
+    Problem to solve.
+
 Returns
 -------
 names : :class:`~openturns.Description`
