@@ -181,6 +181,8 @@ n_parameters : int, :math:`0 \leq k`, optional
 
 Returns
 -------
+fitted_dist : :class:`~openturns.Distribution`
+    Estilmated distribution (if model is of type :class:`~openturns.DistributionFactory`).
 test_result : :class:`~openturns.TestResult`
     Test result.
 
@@ -231,6 +233,8 @@ n_parameters : int, :math:`0 \leq k`, optional
 
 Returns
 -------
+fitted_dist : :class:`~openturns.Distribution`
+    Estilmated distribution (if model is of type :class:`~openturns.DistributionFactory`).
 test_result : :class:`~openturns.TestResult`
     Test result.
 
@@ -252,7 +256,7 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
->>> dist, test_result = ot.FittingTest.Kolmogorov(sample, ot.NormalFactory(), 0.01)
+>>> fitted_dist, test_result = ot.FittingTest.Kolmogorov(sample, ot.NormalFactory(), 0.01)
 >>> test_result
 class=TestResult name=Unnamed type=Kolmogorov Normal binaryQualityMeasure=true p-value threshold=0.01 p-value=0.7 statistic=0.106933 description=[Normal(mu = -0.0944924, sigma = 0.989808) vs sample Normal]"
 
