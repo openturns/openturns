@@ -7,13 +7,13 @@ Available constructor:
 Parameters
 ----------
 theta : :class:`~openturns.Scalar`
-    Parameter :math:`A`, the Pickand function defining the extreme value copula. By default, it is the constant function equal to 0.5.
+    Parameter :math:`\theta`. By default, it is the constant scalar equal to 0.5.
 
 psi1 : :class:`~openturns.Scalar`
-    Parameter :math:`A`, the Pickand function defining the extreme value copula. By default, it is the constant function equal to 0.5.
+    Parameter :math:`\psi_1`. By default, it is the constant scalar equal to 0.5.
 
 psi2 : :class:`~openturns.Scalar`
-    Parameter :math:`A`, the Pickand function defining the extreme value copula. By default, it is the constant function equal to 0.5.
+    Parameter :math:`\psi_2`. By default, it is the constant scalar equal to 0.5.
 
 
 Notes
@@ -26,18 +26,19 @@ The Joe copula is a bivariate copula defined by:
 
 for :math:`(u_1, u_2) \in [0, 1]^2`
 
-Where :math:`A` is a convex function satisfying :math:`A(0)=A(1)=1`, :math:`\max(t, 1-t)\leq A(t)\leq 1`.
+Where :math:`A` is the following Pickand function 
+ :math:`t \in [0,1]`, :math:`A(t) = 1 - [ (\psi_1 (1-t))^{-1/ \theta} + (\psi_2 t)^{-1/ \theta}    ]^{- \theta}`
 
 See also
 --------
-Copula
+Copula, ExtremeValueCopula
 
 Examples
 --------
 Create a distribution:
 
 >>> import openturns as ot
->>> copula = ot.ExtremeValueCopula(ot.SymbolicFunction('t', '1'))
+>>> copula = ot.JoeCopula(0.5, 0.5, 0.5)
 
 Draw a sample:
 
@@ -45,23 +46,69 @@ Draw a sample:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ExtremeValueCopula::getPickandFunction
-"Get the Pickand function :math:`A`.
+%feature("docstring") OT::JoeCopula::getTheta
+"Get the Joe copula parameter :math:`\theta`.
 
 Returns
 -------
-A : :class:`~openturns.Function`
-    The Pickand function :math:`A` of the copula."
+theta : :class:`~openturns.Scalar`
+        The scalar parameter :math:`\theta > 0`.
+"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::ExtremeValueCopula::setPickandFunction
-"Set the Pickand function :math:`A`.
+%feature("docstring") OT::JoeCopula::setTheta
+"Set the Joe copula parameter :math:`\theta`.
 
 Parameters
 ----------
-A : :class:`~openturns.Function`
-    The Pickand function of the copula. It must be a convex function :math:`A` such that :math:`\forall t\in[0,1],\:\max(t, 1-t)\leq A(t)\leq 1`.
-check : bool
-    Flag to tell if the properties of a Pickand function are verified by the given function. Default value is *True*, given by the *ExtremeValueCopula-CheckPickandFunction* entry in the :class:`~openturns.ResourceMap`, and the test is done pointwise on a regular grid of size given by the *ExtremeValueCopula-CheckGridSize* entry in the :class:`~openturns.ResourceMap`.
+theta : :class:`~openturns.Scalar`
+        The scalar parameter :math:`\theta > 0`.
 "
+
+// ---------------------------------------------------------------------
+
+
+%feature("docstring") OT::JoeCopula::getPsi1
+"Get the Joe copula parameter :math:`\psi_1`.
+
+Returns
+-------
+psi1 : :class:`~openturns.Scalar`
+       The scalar parameter :math:`1> \psi_1 > 0`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JoeCopula::setPsi1
+"Set the Joe copula parameter :math:`\psi_1`.
+
+Parameters
+----------
+psi1 : :class:`~openturns.Scalar`
+       The scalar parameter :math:`1> \psi_1 > 0`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JoeCopula::getPsi2
+"Get the Joe copula parameter :math:`\psi_2`.
+
+Returns
+-------
+psi2 : :class:`~openturns.Scalar`
+       The scalar parameter :math:`1> \psi_2 > 0`.
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::JoeCopula::setPsi2
+"Set the Joe copula parameter :math:`\psi_2`.
+
+Parameters
+----------
+psi2 : :class:`~openturns.Scalar`
+       The scalar parameter :math:`1> \psi_2 > 0`.
+"
+
+// ---------------------------------------------------------------------
