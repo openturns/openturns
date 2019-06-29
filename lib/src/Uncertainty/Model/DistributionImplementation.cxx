@@ -155,6 +155,7 @@ Distribution DistributionImplementation::operator + (const DistributionImplement
 
   if (dimension_ == 1)
     {
+      if (getClassName() == "Dirac") return other + getRealization()[0];
       Collection< Distribution > coll(2);
       coll[0] = *this;
       coll[1] = other.clone();
@@ -166,12 +167,7 @@ Distribution DistributionImplementation::operator + (const DistributionImplement
 
   Collection< Distribution > marginals(dimension_);
   for (UnsignedInteger j = 0; j < dimension_; ++ j)
-    {
-      Collection< Distribution > coll(2);
-      coll[0] = getMarginal(j);
-      coll[1] = other.getMarginal(j);
-      marginals[j] = new RandomMixture(coll);
-    }
+    marginals[j] = getMarginal(j) + other.getMarginal(j);
   return new ComposedDistribution(marginals);
 }
 
@@ -181,24 +177,17 @@ Distribution DistributionImplementation::operator + (const Scalar value) const
 
   if (dimension_ == 1)
     {
+      if (getClassName() == "Dirac") return new Dirac(getRealization()[0] + value);
       Collection< Distribution > coll(2);
       coll[0] = *this;
       coll[1] = Dirac(Point(1, value));
       return new RandomMixture(coll);
     }
 
-  if (!hasIndependentCopula())
-    throw NotYetImplementedException(HERE) << "Can only add a constant to a distribution with an independent copula";
-
   Collection< Distribution > marginals(dimension_);
   for (UnsignedInteger j = 0; j < dimension_; ++ j)
-    {
-      Collection< Distribution > coll(2);
-      coll[0] = getMarginal(j);
-      coll[1] = Dirac(Point(1, value));
-      marginals[j] = new RandomMixture(coll);
-    }
-  return new ComposedDistribution(marginals);
+    marginals[j] = getMarginal(j) + value;
+  return new ComposedDistribution(marginals, getCopula());
 }
 
 /* Subtraction operator */
@@ -218,6 +207,7 @@ Distribution DistributionImplementation::operator - (const DistributionImplement
 
   if (dimension_ == 1)
     {
+      if (other.getClassName() == "Dirac") return *this - other.getRealization()[0];
       Collection< Distribution > coll(2);
       coll[0] = *this;
       coll[1] = other.clone();
@@ -229,39 +219,14 @@ Distribution DistributionImplementation::operator - (const DistributionImplement
 
   Collection< Distribution > marginals(dimension_);
   for (UnsignedInteger j = 0; j < dimension_; ++ j)
-    {
-      Collection< Distribution > coll(2);
-      coll[0] = getMarginal(j);
-      coll[1] = other.getMarginal(j);
-      marginals[j] = new RandomMixture(coll, weights);
-    }
+    marginals[j] = getMarginal(j) - other.getMarginal(j);
   return new ComposedDistribution(marginals);
 }
 
 Distribution DistributionImplementation::operator - (const Scalar value) const
 {
   if (value == 0.0) return clone();
-
-  if (dimension_ == 1)
-    {
-      Collection< Distribution > coll(2);
-      coll[0] = *this;
-      coll[1] = Dirac(Point(1, -value));
-      return new RandomMixture(coll);
-    }
-
-  if (!hasIndependentCopula())
-    throw NotYetImplementedException(HERE) << "Can only subtract a constant to a distribution with an independent copula";
-
-  Collection< Distribution > marginals(dimension_);
-  for (UnsignedInteger j = 0; j < dimension_; ++ j)
-    {
-      Collection< Distribution > coll(2);
-      coll[0] = getMarginal(j);
-      coll[1] = Dirac(Point(1, -value));
-      marginals[j] = new RandomMixture(coll);
-    }
-  return new ComposedDistribution(marginals);
+  return *this + (-value);
 }
 
 /* Multiplication operator */
@@ -272,6 +237,14 @@ Distribution DistributionImplementation::operator * (const Distribution & other)
 
 Distribution DistributionImplementation::operator * (const DistributionImplementation & other) const
 {
+  // Special case: Dirac distribution
+  if ((getDimension() == 1) && (other.getDimension() == 1))
+    {
+      if (getClassName() == "Dirac")
+	return other + getRealization()[0];
+      if (other.getClassName() == "Dirac")
+	return *this + other.getRealization()[0];
+    }
   // Special case: LogNormal distributions
   if ((getClassName() == "LogNormal") && (other.getClassName() == "LogNormal"))
     {
@@ -305,6 +278,7 @@ Distribution DistributionImplementation::operator * (const Scalar value) const
   if (dimension_ != 1) throw NotYetImplementedException(HERE) << "In DistributionImplementation::operator * (const Scalar value) const: can multiply by a constant 1D distributions only.";
   if (value == 0.0) return new Dirac(Point(1, 0.0));
   if (value == 1.0) return clone();
+  if (getClassName() == "Dirac") return new Dirac(getRealization()[0] * value);
   const Collection< Distribution > coll(1, *this);
   const Point weight(1, value);
   return new RandomMixture(coll, weight);
@@ -319,6 +293,12 @@ Distribution DistributionImplementation::operator / (const Distribution & other)
 Distribution DistributionImplementation::operator / (const DistributionImplementation & other) const
 {
   if ((dimension_ != 1) || (other.dimension_ != 1)) throw NotYetImplementedException(HERE) << "In DistributionImplementation::operator / (const DistributionImplementation & other) const: can multiply 1D distributions only.";
+  if (other.getClassName() == "Dirac")
+    {
+      const Scalar otherValue = other.getRealization()[0];
+      if (otherValue == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot divide by a Dirac distribution located in 0";
+      return *this / otherValue;
+    }
   return operator * (other.inverse());
 }
 

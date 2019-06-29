@@ -964,8 +964,11 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
   computePositionIndicator();
   computeDispersionIndicator();
   computeRange();
-  computeReferenceBandwidth();
-  computeEquivalentNormal();
+  if (distributionCollection_.getSize() > 1)
+    {
+      computeReferenceBandwidth();
+      computeEquivalentNormal();
+    }
   // In 1D case, collection's size might change
   // When reducing collection to 1, computations become faster
   if (distributionCollection_.getSize() == dimension)
