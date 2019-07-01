@@ -30,7 +30,7 @@
 #include "openturns/LinearLeastSquares.hxx"
 #include "openturns/LeastSquaresProblem.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
-#include "openturns/LeastSquaresFactory.hxx"
+#include "openturns/LeastSquaresDistributionFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

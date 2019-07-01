@@ -1,4 +1,4 @@
-%feature("docstring") OT::LeastSquaresFactory
+%feature("docstring") OT::LeastSquaresDistributionFactory
 "Least squares factory.
 
 Parameters
@@ -32,12 +32,12 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal(0.9, 1.7)
 >>> sample = distribution.getSample(10)
->>> factory = ot.LeastSquaresFactory(ot.Normal())
+>>> factory = ot.LeastSquaresDistributionFactory(ot.Normal())
 >>> inf_distribution = factory.build(sample)"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LeastSquaresFactory::setOptimizationAlgorithm
+%feature("docstring") OT::LeastSquaresDistributionFactory::setOptimizationAlgorithm
 "Accessor to the solver.
 
 Parameters
@@ -47,7 +47,7 @@ solver : :class:`~openturns.OptimizationAlgorithm`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LeastSquaresFactory::getOptimizationAlgorithm
+%feature("docstring") OT::LeastSquaresDistributionFactory::getOptimizationAlgorithm
 "Accessor to the solver.
 
 Returns
@@ -57,7 +57,7 @@ solver : :class:`~openturns.OptimizationAlgorithm`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LeastSquaresFactory::setOptimizationBounds
+%feature("docstring") OT::LeastSquaresDistributionFactory::setOptimizationBounds
 "Accessor to the optimization bounds.
 
 Parameters
@@ -67,7 +67,7 @@ problem : :class:`~openturns.Interval`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LeastSquaresFactory::getOptimizationBounds
+%feature("docstring") OT::LeastSquaresDistributionFactory::getOptimizationBounds
 "Accessor to the optimization bounds.
 
 Returns
@@ -77,7 +77,7 @@ problem : :class:`~openturns.Interval`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LeastSquaresFactory::setOptimizationInequalityConstraint
+%feature("docstring") OT::LeastSquaresDistributionFactory::setOptimizationInequalityConstraint
 "Accessor to the optimization inequality constraint.
 
 Parameters
@@ -87,7 +87,7 @@ inequalityConstraint : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LeastSquaresFactory::setKnownParameter
+%feature("docstring") OT::LeastSquaresDistributionFactory::setKnownParameter
 "Accessor to the known parameters.
 
 Parameters
@@ -103,14 +103,14 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Beta(2.3, 4.5, -1.0, 1.0)
 >>> sample = distribution.getSample(10)
->>> factory = ot.LeastSquaresFactory(ot.Beta())
+>>> factory = ot.LeastSquaresDistributionFactory(ot.Beta())
 >>> # set (a,b) out of (r, t, a, b)
 >>> factory.setKnownParameter([-1.0, 1.0], [2, 3])
 >>> inf_distribution = factory.build(sample)"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LeastSquaresFactory::getKnownParameterValues
+%feature("docstring") OT::LeastSquaresDistributionFactory::getKnownParameterValues
 "Accessor to the known parameters indices.
 
 Returns
@@ -120,7 +120,7 @@ values : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LeastSquaresFactory::getKnownParameterIndices
+%feature("docstring") OT::LeastSquaresDistributionFactory::getKnownParameterIndices
 "Accessor to the known parameters indices.
 
 Returns

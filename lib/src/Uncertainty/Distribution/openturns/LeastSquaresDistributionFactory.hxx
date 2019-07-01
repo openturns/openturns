@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_LEASTSQUARESFACTORY_HXX
-#define OPENTURNS_LEASTSQUARESFACTORY_HXX
+#ifndef OPENTURNS_LEASTSQUARESDISTRIBUTIONFACTORY_HXX
+#define OPENTURNS_LEASTSQUARESDISTRIBUTIONFACTORY_HXX
 
 #include "openturns/DistributionFactoryImplementation.hxx"
 #include "openturns/DistributionFactory.hxx"
@@ -28,21 +28,21 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class LeastSquaresFactory
+ * @class LeastSquaresDistributionFactory
  */
-class OT_API LeastSquaresFactory
+class OT_API LeastSquaresDistributionFactory
   : public DistributionFactoryImplementation
 {
   CLASSNAME
 public:
   /** Default constructor */
-  LeastSquaresFactory();
+  LeastSquaresDistributionFactory();
 
   /** Parameters constructor */
-  LeastSquaresFactory(const Distribution & distribution);
+  LeastSquaresDistributionFactory(const Distribution & distribution);
 
   /** Virtual constructor */
-  virtual LeastSquaresFactory * clone() const;
+  virtual LeastSquaresDistributionFactory * clone() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -98,9 +98,9 @@ protected:
   Point knownParameterValues_;
   Indices knownParameterIndices_;
 
-}; /* class LeastSquaresFactory */
+}; /* class LeastSquaresDistributionFactory */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_LEASTSQUARESFACTORY_HXX */
+#endif /* OPENTURNS_LEASTSQUARESDISTRIBUTIONFACTORY_HXX */

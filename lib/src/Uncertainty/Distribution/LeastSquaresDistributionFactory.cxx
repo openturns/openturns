@@ -21,7 +21,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <fstream>
-#include "openturns/LeastSquaresFactory.hxx"
+#include "openturns/LeastSquaresDistributionFactory.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/OTconfig.hxx"
@@ -37,19 +37,19 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(LeastSquaresFactory)
+CLASSNAMEINIT(LeastSquaresDistributionFactory)
 
-static const Factory<LeastSquaresFactory> Factory_LeastSquaresFactory;
+static const Factory<LeastSquaresDistributionFactory> Factory_LeastSquaresDistributionFactory;
 
 /* Default constructor */
-LeastSquaresFactory::LeastSquaresFactory()
+LeastSquaresDistributionFactory::LeastSquaresDistributionFactory()
   : DistributionFactoryImplementation()
 {
   // Nothing to do
 }
 
 /* Parameters constructor */
-LeastSquaresFactory::LeastSquaresFactory(const Distribution & distribution)
+LeastSquaresDistributionFactory::LeastSquaresDistributionFactory(const Distribution & distribution)
   : DistributionFactoryImplementation()
   , distribution_(distribution)
 {
@@ -63,13 +63,13 @@ LeastSquaresFactory::LeastSquaresFactory(const Distribution & distribution)
 }
 
 /* Virtual constructor */
-LeastSquaresFactory * LeastSquaresFactory::clone() const
+LeastSquaresDistributionFactory * LeastSquaresDistributionFactory::clone() const
 {
-  return new LeastSquaresFactory(*this);
+  return new LeastSquaresDistributionFactory(*this);
 }
 
 /* String converter */
-String LeastSquaresFactory::__repr__() const
+String LeastSquaresDistributionFactory::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << this->getClassName()
@@ -79,7 +79,7 @@ String LeastSquaresFactory::__repr__() const
 }
 
 /* String converter */
-String LeastSquaresFactory::__str__(const String & ) const
+String LeastSquaresDistributionFactory::__str__(const String & ) const
 {
   return this->getClassName();
 }
@@ -274,7 +274,7 @@ private:
   Indices unknownParameterIndices_;
 };
 
-Point LeastSquaresFactory::buildParameter(const Sample & sample) const
+Point LeastSquaresDistributionFactory::buildParameter(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
@@ -334,7 +334,7 @@ Point LeastSquaresFactory::buildParameter(const Sample & sample) const
 }
 
 
-Distribution LeastSquaresFactory::build(const Sample & sample) const
+Distribution LeastSquaresDistributionFactory::build(const Sample & sample) const
 {
   Distribution result(distribution_);
   result.setParameter(buildParameter(sample));
@@ -344,32 +344,32 @@ Distribution LeastSquaresFactory::build(const Sample & sample) const
 
 
 /* Accessor to optimization bounds */
-void LeastSquaresFactory::setOptimizationBounds(const Interval & optimizationBounds)
+void LeastSquaresDistributionFactory::setOptimizationBounds(const Interval & optimizationBounds)
 {
   optimizationBounds_ = optimizationBounds;
 }
 
-Interval LeastSquaresFactory::getOptimizationBounds() const
+Interval LeastSquaresDistributionFactory::getOptimizationBounds() const
 {
   return optimizationBounds_;
 }
 
-void LeastSquaresFactory::setOptimizationInequalityConstraint(const Function & optimizationInequalityConstraint)
+void LeastSquaresDistributionFactory::setOptimizationInequalityConstraint(const Function & optimizationInequalityConstraint)
 {
   optimizationInequalityConstraint_ = optimizationInequalityConstraint;
 }
 
-void LeastSquaresFactory::setOptimizationAlgorithm(const OptimizationAlgorithm& solver)
+void LeastSquaresDistributionFactory::setOptimizationAlgorithm(const OptimizationAlgorithm& solver)
 {
   solver_ = solver;
 }
 
-OptimizationAlgorithm LeastSquaresFactory::getOptimizationAlgorithm() const
+OptimizationAlgorithm LeastSquaresDistributionFactory::getOptimizationAlgorithm() const
 {
   return solver_;
 }
 
-void LeastSquaresFactory::setKnownParameter(const Point & values,
+void LeastSquaresDistributionFactory::setKnownParameter(const Point & values,
     const Indices & indices)
 {
   if (knownParameterValues_.getSize() != knownParameterIndices_.getSize()) throw InvalidArgumentException(HERE) << "Known parameters values and indices must have the same size";
@@ -377,19 +377,19 @@ void LeastSquaresFactory::setKnownParameter(const Point & values,
   knownParameterIndices_ = indices;
 }
 
-Indices LeastSquaresFactory::getKnownParameterIndices() const
+Indices LeastSquaresDistributionFactory::getKnownParameterIndices() const
 {
   return knownParameterIndices_;
 }
 
-Point LeastSquaresFactory::getKnownParameterValues() const
+Point LeastSquaresDistributionFactory::getKnownParameterValues() const
 {
   return knownParameterValues_;
 }
 
 
 /* Method save() stores the object through the StorageManager */
-void LeastSquaresFactory::save(Advocate & adv) const
+void LeastSquaresDistributionFactory::save(Advocate & adv) const
 {
   DistributionFactoryImplementation::save(adv);
   adv.saveAttribute("knownParameterValues_", knownParameterValues_);
@@ -399,7 +399,7 @@ void LeastSquaresFactory::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void LeastSquaresFactory::load(Advocate & adv)
+void LeastSquaresDistributionFactory::load(Advocate & adv)
 {
   DistributionFactoryImplementation::load(adv);
   adv.loadAttribute("knownParameterValues_", knownParameterValues_);

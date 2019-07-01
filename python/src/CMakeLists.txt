@@ -644,7 +644,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       KernelSmoothing.i KernelSmoothing_doc.i.in
                       Laplace.i Laplace_doc.i.in
                       LaplaceFactory.i LaplaceFactory_doc.i.in
-		      LeastSquaresFactory.i LeastSquaresFactory_doc.i.in
+		      LeastSquaresDistributionFactory.i LeastSquaresDistributionFactory_doc.i.in
                       Logistic.i Logistic_doc.i.in
                       LogisticFactory.i LogisticFactory_doc.i.in
                       LogNormal.i LogNormal_doc.i.in

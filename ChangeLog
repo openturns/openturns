@@ -28,7 +28,7 @@
  * WeibullMaxMuSigma
  * GeneralizedExtremeValueFactory
  * Pareto
- * LeastSquaresFactory
+ * LeastSquaresDistributionFactory
  * ParetoFactory
 
 ==== API changes ====

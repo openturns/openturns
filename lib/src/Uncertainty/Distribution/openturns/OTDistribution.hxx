@@ -97,7 +97,7 @@
 #include "openturns/KernelSmoothing.hxx"
 #include "openturns/Laplace.hxx"
 #include "openturns/LaplaceFactory.hxx"
-#include "openturns/LeastSquaresFactory.hxx"
+#include "openturns/LeastSquaresDistributionFactory.hxx"
 #include "openturns/Logistic.hxx"
 #include "openturns/LogisticFactory.hxx"
 #include "openturns/LogNormal.hxx"

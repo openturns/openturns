@@ -57,7 +57,7 @@ Building distributions from samples
 
     :template: class.rst_t
 
-    LeastSquaresFactory
+    LeastSquaresDistributionFactory
 
     :template: DistributionFactory.rst_t
 

@@ -25,7 +25,7 @@
 #include "openturns/MethodOfMomentsFactory.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/SymbolicFunction.hxx"
-#include "openturns/LeastSquaresFactory.hxx"
+#include "openturns/LeastSquaresDistributionFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -89,7 +89,7 @@ Pareto ParetoFactory::buildMethodOfLikelihoodMaximization(const Sample & sample)
 
 Pareto ParetoFactory::buildMethodOfLeastSquares(const Sample & sample) const
 {
-  const LeastSquaresFactory factory(buildMethodOfMoments(sample));
+  const LeastSquaresDistributionFactory factory(buildMethodOfMoments(sample));
   return buildAsPareto(factory.build(sample).getParameter());
 }
 
