@@ -152,7 +152,7 @@ void LARS::updateBasis(LeastSquaresMethod & method,
     if (getVerbose()) LOGINFO( OSS() << "Solved normal equation.");
 
     // normalization coefficient
-    Scalar cNorm = 1.0 / sqrt(dot(sC, ga1));
+    Scalar cNorm = 1.0 / sqrt(sC.dot(ga1));
 
     // descent direction
     const Point descentDirectionAk(cNorm * ga1);

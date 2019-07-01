@@ -313,7 +313,7 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
         f[p] *= V(j, p);
       }
     }
-    Scalar currentRadius = dot(f, yFlat) / f.normSquare();
+    Scalar currentRadius = f.dot(yFlat) / f.normSquare();
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       Point coefficients(tensor.getCoefficients(i, j));

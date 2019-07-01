@@ -150,7 +150,7 @@ int main(int, char *[])
       Point J(j * 3.);
       fullprint << "J = " << J << std::endl;
 
-      Scalar dotProduct = dot(I, J);
+      Scalar dotProduct = I.dot(J);
       fullprint << "dotProduct = " << dotProduct << std::endl;
 
     }

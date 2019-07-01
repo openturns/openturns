@@ -157,7 +157,7 @@ void KarhunenLoeveP1Algorithm::run()
     for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
       a[i] = eigenVectorsComplex(i, initialColumn).real();
     const Point Ga(G * a);
-    const Scalar norm = std::sqrt(dot(a, Ga));
+    const Scalar norm = std::sqrt(a.dot(Ga));
     const Scalar factor = a[0] < 0.0 ? -1.0 / norm : 1.0 / norm;
     // Store the eigen modes in two forms
     values.setData(a * factor);

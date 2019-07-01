@@ -137,6 +137,9 @@ public:
   /** Square normalize the vector */
   Point normalizeSquare() const;
 
+  /** Dot product operator */
+  Scalar dot(const Point & rhs) const;
+
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 
@@ -181,10 +184,6 @@ OT_API Point operator - (const Point & lhs,
                          const Point & rhs);
 
 #endif
-
-/** Dot product operator */
-OT_API Scalar dot(const Point & lhs,
-                  const Point & rhs);
 
 
 
