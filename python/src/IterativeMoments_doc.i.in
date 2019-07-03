@@ -1,0 +1,118 @@
+
+
+%feature("docstring") OT::IterativeMoments
+"Iterative moments.
+
+Available constructor:
+    IterativeMoments(*order*, *dimension*)
+
+Parameters
+----------
+order : integer
+    Maximum order of the moments wanted
+
+dimension : integer
+    Dimension of the input data
+
+Notes
+-----
+This class iteratively computes the centered moments up to a prescribed order of several :class:`~openturns.Point` or :class:`~openturns.Sample`.
+
+See also
+--------
+IterativeAlgorithm"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeMoments::getKurtosis
+"Returns the current value of the iterative kurtosis
+
+Returns
+-------
+kurtosis : :class:`~openturns.Point`
+    Current values of the iterative kurtosis."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeMoments::getSkewness
+"Returns the current value of the skewness from internal data
+
+Returns
+-------
+skewness : :class:`~openturns.Point`
+    Current values of the skewness."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeMoments::getVariance
+"Returns the current value of the variance from internal data
+
+Returns
+-------
+variance : :class:`~openturns.Point`
+    Current values of the variance."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeMoments::getStandardErrorOfTheMean
+"Returns the standard error of the mean
+
+Returns
+-------
+error : :class:`~openturns.Point`
+    Current value of the standard error of the mean."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeMoments::getCoefficientOfVariation
+"Returns the coefficient of variation from internal data
+
+Returns
+-------
+coefficientOfvariation : :class:`~openturns.Point`
+    Current value of the coefficients of variation."
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeMoments::getStandardDeviation
+"Returns the standard deviation from internal data
+
+Returns
+-------
+standardDeviation : :class:`~openturns.Point`
+    Current value of the standard deviation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeMoments::getMean
+"Returns the values of the mean from internal data
+
+Returns
+-------
+mean : :class:`~openturns.Point`
+    Current value of the mean."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeMoments::getCenteredMoments
+"Returns the centered moments from internal data
+
+Returns
+-------
+centeredMoments : :class:`~openturns.Sample`
+    Current value of the centered moments."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeMoments::getOrder
+"Returns the maximum order prescribed
+
+Returns
+-------
+order : integer
+    Prescribed order of the iterative object."
+
+// ---------------------------------------------------------------------
+
+
