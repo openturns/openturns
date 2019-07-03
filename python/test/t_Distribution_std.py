@@ -50,7 +50,8 @@ for factory in ot.DistributionFactory.GetContinuousUniVariateFactories():
     # pdf grad
     point = sample[0]
     PDFgr = distribution.computePDFGradient(point)
-    assert distribution.computePDFGradient([point]).getDimension() == len(PDFgr)
+    assert distribution.computePDFGradient(
+        [point]).getDimension() == len(PDFgr)
 
     # proba
     interval = distribution.getRange()

@@ -230,6 +230,15 @@ ot_add_python_module(statistics statistics_module.i
                       IsotropicCovarianceModel.i IsotropicCovarianceModel_doc.i.in
                    )
 
+ot_add_python_module(iterative_statistics iterative_statistics_module.i
+                      IterativeAlgorithm.i IterativeAlgorithm_doc.i.in
+                      IterativeAlgorithmImplementation.i IterativeAlgorithmImplementation_doc.i.in
+                      IterativeExtrema.i IterativeExtrema_doc.i.in
+                      IterativeThresholdExceedance.i IterativeThresholdExceedance_doc.i.in
+                      IterativeMoments.i IterativeMoments_doc.i.in
+                      BaseIterativeStatisticsTemplateDefs.i
+                   )
+
 ot_add_python_module(geom geom_module.i
                       Domain.i Domain_doc.i.in
                       BipartiteGraph.i BipartiteGraph_doc.i.in
@@ -916,7 +925,7 @@ ot_add_python_module(analytical analytical_module.i
                    )
 
 ot_add_python_module(simulation simulation_module.i
-	              ANCOVA.i ANCOVA_doc.i.in
+	                    ANCOVA.i ANCOVA_doc.i.in
                       SobolIndicesAlgorithmImplementation.i SobolIndicesAlgorithmImplementation_doc.i.in
                       SobolIndicesAlgorithm.i SobolIndicesAlgorithm_doc.i.in
                       MartinezSensitivityAlgorithm.i MartinezSensitivityAlgorithm_doc.i.in

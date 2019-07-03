@@ -1,0 +1,58 @@
+%define OT_IterativeAlgorithm_doc
+"
+Iterative algoritm
+
+Constructor:
+    IterativeAlgorithm(*dimension*)
+
+Parameters
+----------
+dimension : integer
+    Dimension of the input data. Default : 1
+
+Notes
+-----
+Base class for iterative algorithms: persistent objects that can be incremented iteratively.
+"
+%enddef
+
+%feature("docstring") OT::IterativeAlgorithmImplementation
+OT_IterativeAlgorithm_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_IterativeAlgorithm_increment_doc
+"increment the internal data of the IterativeAlgorithm.
+
+Parameters
+----------
+data : :class:`~openturns.Point` or :class:`~openturns.Sample`
+    New input point or sample."
+%enddef
+
+%feature("docstring") OT::IterativeAlgorithmImplementation::increment
+OT_IterativeAlgorithm_increment_doc
+
+%define OT_IterativeAlgorithm_getIteration_doc
+"Get the current iteration of the algorithm
+
+Returns
+-------
+iteration : :class:`~openturns.UnsignedInteger`
+    the current iteration of the algorithm"
+%enddef
+
+%feature("docstring") OT::IterativeAlgorithmImplementation::getIteration
+OT_IterativeAlgorithm_getIteration_doc
+
+%define OT_IterativeAlgorithm_getDimension_doc
+"Get the dimension of the algorithm
+
+Returns
+-------
+dimension : :class:`~openturns.UnsignedInteger`
+    the dimension of the algorithm"
+%enddef
+
+%feature("docstring") OT::IterativeAlgorithmImplementation::getDimension
+OT_IterativeAlgorithm_getDimension_doc

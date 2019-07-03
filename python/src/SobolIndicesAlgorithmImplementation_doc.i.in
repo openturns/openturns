@@ -395,7 +395,7 @@ OT_SobolIndicesAlgorithm_draw_doc
 // ---------------------------------------------------------------------
 
 %define OT_SobolIndicesAlgorithm_DrawCorrelationCoefficients_doc
-"Draw the correlation coefficients. 
+"Draw the correlation coefficients.
  As correlation coefficients are considered, values might be positive or negative.
 
 Available usages:
