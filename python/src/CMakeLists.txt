@@ -224,6 +224,14 @@ ot_add_python_module(statistics statistics_module.i
                       HMatrixImplementation.i HMatrixImplementation_doc.i.in
                       BaseStatisticsTemplateDefs.i
                    )
+                   
+ot_add_python_module(iterative_statistics iterative_statistics_module.i
+                      IterativeAlgorithm.i IterativeAlgorithm_doc.i.in
+                      MelissaStudy.i MelissaStudy_doc.i.in
+                      IterativeMeanImplementation.i IterativeMeanImplementation_doc.i.in
+                      IterativeMean.i IterativeMean_doc.i.in
+                      BaseIterativeStatisticsTemplateDefs.i
+                   )
 
 ot_add_python_module(geom geom_module.i
                       Domain.i Domain_doc.i.in

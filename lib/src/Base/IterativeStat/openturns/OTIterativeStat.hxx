@@ -1,8 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The external header file of OpenTURNS for subdir Base
+ *  @brief The external header file of OpenTURNS for subdir Common
  *
- *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -19,21 +19,12 @@
  *
  */
 
-#ifndef OPENTURNS_OTBASE_HXX
-#define OPENTURNS_OTBASE_HXX
+#ifndef OPENTURNS_OTITERATIVESTAT_HXX
+#define OPENTURNS_OTITERATIVESTAT_HXX
 
-#include "openturns/OTCommon.hxx"
-#include "openturns/OTBaseMetaModel.hxx"
-#include "openturns/OTDiff.hxx"
-#include "openturns/OTExperiments.hxx"
-#include "openturns/OTFunc.hxx"
-#include "openturns/OTGraph.hxx"
-#include "openturns/OTGeom.hxx"
-#include "openturns/OTOptim.hxx"
-#include "openturns/OTSolver.hxx"
-#include "openturns/OTStat.hxx"
-#include "openturns/OTType.hxx"
-#include "openturns/OTAlgo.hxx"
-#include "openturns/OTIterativeStat.hxx"
+#include "openturns/MelissaStudy.hxx"
+#include "openturns/IterativeAlgorithm.hxx"
+#include "openturns/IterativeMeanImplementation.hxx"
+#include "openturns/IterativeMean.hxx"
 
-#endif /* OPENTURNS_OTBASE_HXX */
+#endif /* OPENTURNS_OTITERATIVESTAT_HXX */

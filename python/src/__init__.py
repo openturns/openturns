@@ -64,6 +64,7 @@ from .graph import *
 from .geom import *
 from .func import *
 from .statistics import *
+from .iterative_statistics import *
 from .diff import *
 from .optim import *
 from .solver import *
