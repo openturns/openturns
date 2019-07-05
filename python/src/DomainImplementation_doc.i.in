@@ -5,13 +5,22 @@ Notes
 -----
 A Domain object can be created through its derived classes:
 
-- :class:`~openturns.Mesh`
-
-- :class:`~openturns.RegularGrid`
-
 - :class:`~openturns.Interval`
 
-- :class:`~openturns.LevelSet`"
+- :class:`~openturns.MeshDomain`
+
+- :class:`~openturns.LevelSet`
+
+- :class:`~openturns.DomainUnion`
+
+- :class:`~openturns.DomainDisjonctiveUnion`
+
+- :class:`~openturns.DomainIntersection`
+
+- :class:`~openturns.DomainComplement`
+
+- :class:`~openturns.DomainDifference`"
+
 %enddef
 %feature("docstring") OT::DomainImplementation
 OT_Domain_doc
