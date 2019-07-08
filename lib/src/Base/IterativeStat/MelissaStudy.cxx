@@ -20,27 +20,46 @@ MelissaStudy::MelissaStudy()
   p_storageManager_->setStudy(this);
 }
 
+
+/* Add a PersistentObject to the study */
+void MelissaStudy::add(const IterativeAlgorithm & io)
+{
+  map_[ io.getId() ] = io.getImplementationAsIterativeAlgorithm();
+}
+
+/* Add a PersistentObject to the study */
+void MelissaStudy::add(const String & label, const IterativeAlgorithm & io, Bool force)
+{
+  if ( hasObject( label ) )
+  {
+    if (force) remove( label );
+    else throw InvalidArgumentException(HERE) << "Label '" << label << "' already defined in study. Use 'force = true' to remove previously saved element before saving this one";
+  }
+  map_[ io.getId() ] = io.getImplementationAsIterativeAlgorithm();
+  defineLabel( io.getId(), label );
+}
+
 /* Add a IterativeAlgorithm to the study */
-void MelissaStudy::add(const IterativeAlgorithm & po)
+void MelissaStudy::add(const IterativeAlgorithmImplementation & po)
 {
   add(po.clone());
 }
 
 /* Add a IterativeAlgorithm to the study */
-void MelissaStudy::add(const String & label, const IterativeAlgorithm & po, Bool force)
+void MelissaStudy::add(const String & label, const IterativeAlgorithmImplementation & po, Bool force)
 {
   add(label, po.clone(), force);
 }
 
 /* Add a IterativeAlgorithm to the study (any map) */
-void MelissaStudy::add(const IterativeAlgorithm * po)
+void MelissaStudy::add(const IterativeAlgorithmImplementation * po)
 {
   if (! po) throw InvalidArgumentException(HERE) << "Null pointer passed to method";
-  map_[ po->getShadowedId() ] = const_cast<IterativeAlgorithm *>(po);
+  map_[ po->getShadowedId() ] = const_cast<IterativeAlgorithmImplementation *>(po);
 }
 
 /* Add a IterativeAlgorithm to the study (any map) */
-void MelissaStudy::add(const String & label, const IterativeAlgorithm * po, Bool force)
+void MelissaStudy::add(const String & label, const IterativeAlgorithmImplementation * po, Bool force)
 {
   if (! po) throw InvalidArgumentException(HERE) << "Null pointer passed to method";
   if ( hasObject( label ) )
@@ -48,7 +67,7 @@ void MelissaStudy::add(const String & label, const IterativeAlgorithm * po, Bool
     if (force) remove( label );
     else throw InvalidArgumentException(HERE) << "Label '" << label << "' already defined in study. Use 'force = true' to remove previously saved element before saving this one";
   }
-  map_[ po->getShadowedId() ] = const_cast<IterativeAlgorithm *>(po);
+  map_[ po->getShadowedId() ] = const_cast<IterativeAlgorithmImplementation *>(po);
   defineLabel( po->getShadowedId(), label );
 }
 
@@ -63,16 +82,9 @@ void MelissaStudy::increment(const Scalar newData)
 
 void MelissaStudy::increment(const Point & newData)
 {
-  LabelMap::iterator it = labelMap_.begin();
-//   (*((*it).second)).increment(newData);
-  std::cout << (*it).first << '\n';
-  it = labelMap_.end();
-  std::cout << (*it).first << '\n';
   for(LabelMap::iterator it = labelMap_.begin();
       it != labelMap_.end(); ++it)
   {
-    throw InvalidArgumentException(HERE) << " increment in study";
-    std::cout << (*it).first;
 //     (*((*it).second)).increment(newData);
   }
   for (auto& x: map_) {

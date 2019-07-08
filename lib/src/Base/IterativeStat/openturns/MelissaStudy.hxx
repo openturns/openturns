@@ -35,7 +35,7 @@ class OT_API MelissaStudy
   
 public:
     
-  typedef Pointer<IterativeAlgorithm> MapElement;
+  typedef Pointer<IterativeAlgorithmImplementation> MapElement;
   typedef std::map<Id, MapElement>  Map;
 
   /** Default constructor */
@@ -47,22 +47,28 @@ public:
 
   void increment(const Sample & newData);
 
-  /** Add a IterativeAlgorithm to the study */
-  /** We get the label from the name of the IterativeAlgorithm */
-  void add(const IterativeAlgorithm & po);
+  /** Add a PersistentObject to the study */
+  void add(const IterativeAlgorithm & io);
+
+  /** Add a PersistentObject to the study */
+  void add(const String & label, const IterativeAlgorithm & io, Bool force = false);
 
   /** Add a IterativeAlgorithm to the study */
-  void add(const String & label, const IterativeAlgorithm & po, Bool force = false);
+  /** We get the label from the name of the IterativeAlgorithm */
+  void add(const IterativeAlgorithmImplementation & po);
+
+  /** Add a IterativeAlgorithm to the study */
+  void add(const String & label, const IterativeAlgorithmImplementation & po, Bool force = false);
 // #ifndef SWIG
   /** Add a IterativeAlgorithm to the study
    * @throw InvalidArgumentException
    */
-  void add(const IterativeAlgorithm * po);
+  void add(const IterativeAlgorithmImplementation * po);
 
   /** Add a IterativeAlgorithm to the study
    * @throw InvalidArgumentException
    */
-  void add(const String & label, const IterativeAlgorithm * po, Bool force = false);
+  void add(const String & label, const IterativeAlgorithmImplementation * po, Bool force = false);
 // #endif
   
   void finalize();

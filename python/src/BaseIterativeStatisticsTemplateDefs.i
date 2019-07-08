@@ -1,3 +1,3 @@
 // SWIG file BaseIterativeStatisticsTemplateDefs.i
 
-%template(IterativeMeanImplementationPointer)  OT::Pointer<OT::IterativeMeanImplementation>;
+%template(IterativeMeanPointer)  OT::Pointer<OT::IterativeMean>;

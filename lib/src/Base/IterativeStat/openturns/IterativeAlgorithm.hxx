@@ -2,23 +2,28 @@
 #ifndef OPENTURNS_ITERATIVEALGORITHM_HXX
 #define OPENTURNS_ITERATIVEALGORITHM_HXX
 
-#include "openturns/OSS.hxx"
-#include "openturns/PersistentObject.hxx"
-#include "openturns/Point.hxx"
-#include "openturns/Sample.hxx"
-// #include <unordered_map>                   // for std::map
+#include "openturns/TypedInterfaceObject.hxx"
+#include "openturns/IterativeAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 
 class OT_API IterativeAlgorithm
-  : public PersistentObject
+  : public TypedInterfaceObject<IterativeAlgorithmImplementation>
 {
   CLASSNAME
   
 public:
 
 //   typedef std::unordered_map<std::string, void*> registry_map;
+
+//   typedef Pointer<IterativeAlgorithmImplementation>   IterativeAlgorithmImplementation_p;
+
+  /** Return a pointer to the underlying implementation object viewed as a PersistentObject */
+  Pointer<IterativeAlgorithmImplementation> getImplementationAsIterativeAlgorithm() const
+  {
+    return p_implementation_;
+  }
     
   /**
    * Default constructor
@@ -31,33 +36,6 @@ public:
    * use storage for it.
    */
 //   IterativeAlgorithm();
-
-  /**
-   * Virtual constructor
-   *
-   * @warning This method MUST be overloaded in derived classes.
-   * @return A pointer to a newly allocated object similar to this one
-   */
-  virtual IterativeAlgorithm * clone() const = 0;
-  
-  
-
-//   static registry_map & registry()
-//   {
-//     static registry_map algoMap;
-//     return algoMap;
-//   }
-
-//   template<typename ...T>
-//   static IterativeAlgorithm * instantiate(std::string const & AlgoName, T&&...args)
-//   {
-//     auto it = registry().find(AlgoName);
-//     if ( it == registry().end()) return 0;
-//     typedef IterativeAlgorithm* (*create_type)(T...);
-//     auto create_fun = reinterpret_cast<create_type>(it->second);
-//     return create_fun(args...);
-//   }
-  
   
   /**
    * Increment methods
@@ -65,70 +43,43 @@ public:
    * @warning These methods MUST be overloaded in derived classes.
    */
   
-  virtual void increment(const Scalar newData) = 0;
+  virtual void increment(const Scalar newData)
+  {
+    return getImplementation()->increment(newData);
+  }
   
 //   virtual void increment(const PersistentCollection<Scalar> & newData) = 0;
   
-  virtual void increment(const Point & newData) = 0;
-  
-  virtual void increment(const Sample & newData) = 0;
-  
-  virtual void finalize();
-  
-  /**
-   * Comparison operator
-   *
-   * This method compares objects based on their content.
-   */
-  inline virtual
-  Bool operator ==(const IterativeAlgorithm & /*other*/) const
+  virtual void increment(const Point & newData)
   {
-    return true;
+    return getImplementation()->increment(newData);
   }
-
-  /**
-   * Comparison operator
-   *
-   * This method compares objects based on their content.
-   */
-  inline virtual
-  Bool operator !=(const IterativeAlgorithm & other) const
+  
+  virtual void increment(const Sample & newData)
   {
-    return !operator==(other);
+    return getImplementation()->increment(newData);
+  }
+  
+  virtual void finalize()
+  {
+    return getImplementation()->finalize();
   }
 
   /* String converter */
   virtual
-  String __repr__() const;
+  String __repr__() const
+  {
+    return getImplementation()->__repr__();
+  }
 
   /* String converter */
   virtual
-  String __str__(const String & offset = "") const;
-
-  /** Method save() stores the object through the StorageManager
-   *
-   * @warning This method MUST be overloaded in derived classes.
-   * @internal
-   */
-  virtual void save(Advocate & adv) const = 0;
-
-  /** Method load() reloads the object from the StorageManager
-   *
-   * @warning This method MUST be overloaded in derived classes.
-   * @internal
-   */
-  virtual void load(Advocate & adv) = 0;
+  String __str__(const String & offset = "") const
+  {
+    return getImplementation()->__str__(offset);
+  }
     
 }; /* class IterativeAlgorithm */
-
-// struct AlgoRegister
-// {
-//     template<typename F>
-//     AlgoRegister(const std::string AlgoName, F func)
-//     {
-//         IterativeAlgorithm::registry()[AlgoName] = reinterpret_cast<void*>(func);
-//     }
-// };
 
 END_NAMESPACE_OPENTURNS
 

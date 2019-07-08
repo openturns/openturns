@@ -23,6 +23,6 @@
 
 /* Base/IterativeStat */
 %include IterativeAlgorithm.i
+%include IterativeAlgorithmImplementation.i
 %include MelissaStudy.i
-%include IterativeMeanImplementation.i
 %include IterativeMean.i

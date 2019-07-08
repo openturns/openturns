@@ -2,30 +2,22 @@
 #ifndef OPENTURNS_ITERATIVEMEAN_HXX
 #define OPENTURNS_ITERATIVEMEAN_HXX
 
-#include "openturns/TypedInterfaceObject.hxx"
-#include "openturns/IterativeMeanImplementation.hxx"
+#include "openturns/IterativeAlgorithmImplementation.hxx"
+// #include "openturns/PersistentCollection.hxx"
+#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 class OT_API IterativeMean
-  : public TypedInterfaceObject<IterativeMeanImplementation>
+  : public IterativeAlgorithmImplementation
 {
   CLASSNAME
   
 public:
   
   explicit IterativeMean(const UnsignedInteger size = 1);
-
-  /** Copy constructors */
-  IterativeMean(const IterativeMeanImplementation & implementation);
-
-  /** Constructor from implementation */
-  IterativeMean(const Pointer<IterativeMeanImplementation> & p_implementation);
-
-#ifndef SWIG
-  /** Constructor from implementation pointer */
-  IterativeMean(IterativeMeanImplementation * p_implementation);
-#endif
+  
+  IterativeMean * clone() const;
   
   void increment(const Scalar newData);
   
@@ -74,6 +66,12 @@ public:
   UnsignedInteger getIteration() const;
   
   Point getValues() const;
+
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv);
 
 //   static AlgoRegister reg;
   

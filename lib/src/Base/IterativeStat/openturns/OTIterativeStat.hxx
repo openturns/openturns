@@ -23,8 +23,8 @@
 #define OPENTURNS_OTITERATIVESTAT_HXX
 
 #include "openturns/MelissaStudy.hxx"
+#include "openturns/IterativeAlgorithmImplementation.hxx"
 #include "openturns/IterativeAlgorithm.hxx"
-#include "openturns/IterativeMeanImplementation.hxx"
 #include "openturns/IterativeMean.hxx"
 
 #endif /* OPENTURNS_OTITERATIVESTAT_HXX */

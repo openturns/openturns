@@ -1,37 +1,32 @@
 
 #include "openturns/IterativeMean.hxx"
+#include "openturns/IterativeAlgorithm.hxx"
+#include "openturns/Log.hxx"
+#include "openturns/PersistentObjectFactory.hxx"
+// #include "openturns/PersistentCollection.hxx"
+#include "openturns/Point.hxx"
+#include "openturns/IterativeMean.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(IterativeMean)
 
+// static const Factory<IterativeMean> Factory_IterativeMean;
+
 IterativeMean::IterativeMean(const UnsignedInteger size)
-  :  TypedInterfaceObject<IterativeMeanImplementation>(new IterativeMeanImplementation(size))
+  : IterativeAlgorithmImplementation()
+  , iteration_(0)
+  , size_(size)
+  , data_(size_, 0.0)
 {
   // Nothing to do
 }
 
-/* Parameters constructor */
-IterativeMean::IterativeMean(const IterativeMeanImplementation & implementation)
-  : TypedInterfaceObject<IterativeMeanImplementation>(implementation.clone())
+/* Virtual constructor */
+IterativeMean * IterativeMean::clone() const
 {
-  // Nothing to do
+  return new IterativeMean(*this);
 }
-
-/* Constructor from implementation */
-IterativeMean::IterativeMean(const Pointer<IterativeMeanImplementation> & p_implementation)
-  : TypedInterfaceObject<IterativeMeanImplementation>(p_implementation)
-{
-  // Nothing to do
-}
-
-/* Constructor from implementation pointer */
-IterativeMean::IterativeMean(IterativeMeanImplementation * p_implementation)
-  : TypedInterfaceObject<IterativeMeanImplementation>(p_implementation)
-{
-  // Nothing to do
-}
-
 
 // IterativeAlgorithm * IterativeMean::create(const int size)
 // {
@@ -41,12 +36,17 @@ IterativeMean::IterativeMean(IterativeMeanImplementation * p_implementation)
 /* String converter */
 String IterativeMean::__repr__() const
 {
-  return getImplementation()->__repr__();
+  OSS oss(true);
+  oss << "class=" << IterativeMean::GetClassName()
+      << " iteration=" << iteration_
+      << " size=" << size_
+      << " values=" << data_.__repr__();
+  return oss;
 }
 
 String IterativeMean::__str__(const String & offset) const
 {
-  return getImplementation()->__str__(offset);
+  return data_.__str__(offset);
 }
 
 // // Sample & IterativeMean::operator[] (const UnsignedInteger index)
@@ -63,22 +63,27 @@ String IterativeMean::__str__(const String & offset) const
 
 UnsignedInteger IterativeMean::getIteration() const
 {
-  return getImplementation()->getIteration();
+  return iteration_;
 }
 
 UnsignedInteger IterativeMean::getSize() const
 {
-  return getImplementation()->getSize();
+  return data_.getSize();
 }
   
 Point IterativeMean::getValues() const
 { 
-  return getImplementation()->getValues();
+  return data_;
 }
 
 void IterativeMean::increment(const Scalar newData)
 {
-  getImplementation()->increment(newData);
+  iteration_ += 1;
+  for (UnsignedInteger i = 0; i < size_; ++i)
+  {
+    Scalar temp = data_[i];
+    data_[i] = temp + (newData - temp)/iteration_;
+  }
 }
 
 // void IterativeMean::increment(PersistentCollection<Scalar> & newData)
@@ -93,17 +98,53 @@ void IterativeMean::increment(const Scalar newData)
 
 void IterativeMean::increment(const Point & newData)
 {
-  getImplementation()->increment(newData);
+  if (newData.getSize() != size_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the size of the iterative mean.";
+  iteration_ += 1;
+  for (UnsignedInteger i = 0; i < size_; ++i)
+  {
+    Scalar temp = data_[i];
+    data_[i] = temp + (newData[i] - temp)/iteration_;
+  }
 }
 
 void IterativeMean::increment(const Sample & newData)
 {
-  getImplementation()->increment(newData);
+  if (newData.getDimension() != size_) throw InvalidArgumentException(HERE) << "Error: the given Sample is not compatible with the size of the iterative mean.";
+  
+  for (UnsignedInteger i = 0; i < newData.getSize(); ++i)
+  {
+    Point rawData = newData[i];
+    iteration_ += 1;
+    for (UnsignedInteger j = 0; j < size_; ++j)
+    {
+      Scalar temp = data_[i];
+      data_[j] = temp + (rawData[j] - temp)/iteration_;
+    }
+  }
+}
+
+/* Method save() stores the object through the StorageManager */
+void IterativeMean::save(Advocate & adv) const
+{
+  PersistentObject::save(adv);
+  adv.saveAttribute( "size_", size_);
+  adv.saveAttribute( "iteration_", iteration_);
+  adv.saveAttribute( "data_", data_);
+}
+
+
+/* Method load() reloads the object from the StorageManager */
+void IterativeMean::load(Advocate & adv)
+{
+  PersistentObject::load(adv);
+  adv.loadAttribute( "size_", size_);
+  adv.loadAttribute( "iteration_", iteration_);
+  adv.loadAttribute( "data_", data_);
 }
 
 void IterativeMean::finalize()
 {
-  getImplementation()->finalize();
+  // Nothing to do
 };
 
 // AlgoRegister IterativeMean::reg("IterativeMean", &IterativeMean::create);
