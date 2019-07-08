@@ -16,6 +16,7 @@
 ==== Major changes ====
  * Add dlib solvers
  * FittingTest methods to return fitted distributions with factory as argument
+ * Add bonmin solvers for mixed integer optimization problems
 
 ==== New classes ====
  * Dlib
@@ -31,6 +32,7 @@
  * LeastSquaresDistributionFactory
  * ParetoFactory
  * DiscreteCompoundDistribution
+ * Bonmin
 
 ==== API changes ====
  * Removed deprecated specific RandomVector constructors
@@ -50,6 +52,8 @@
  * Added getConditionalMarginalCovariance method to KrigingResult
  * Added getConditionalMarginalVariance method to KrigingResult
  * Deprecated OptimizationAlgorithm::GetLeastSquaresAlgorithmNames
+ * Added linearity features to Function
+ * Added 'removeKey' method to ResourceMap
 
 === Python module ===
  * Add Domain.__contains__ operator

@@ -29,6 +29,7 @@ option (USE_CMINPACK                 "Use CMinpack for additional optimization a
 option (USE_DLIB                     "Use dlib for additional optimization algorithms"                       ON)
 option (USE_OPTPP                    "Use OPT++ for additional optimization algorithms"                      ON)
 option (USE_COTIRE                   "Use cotire for unity builds"                                           OFF)
+option (USE_BONMIN                   "Use Bonmin for MINLP problems"                                         ON)
 
 option (BUILD_PYTHON                 "Build the python module for the library"                               ON)
 option (BUILD_SHARED_LIBS            "Build shared libraries"                                                ON)
@@ -332,6 +333,15 @@ if (USE_CMINPACK)
     set (OPENTURNS_HAVE_CMINPACK TRUE)
     list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${CMINPACK_INCLUDE_DIRS})
     list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${CMINPACK_LIBRARIES})
+  endif ()
+endif ()
+
+if(USE_BONMIN)
+  find_package(COIN)
+  if (COIN_FOUND)
+    set (OPENTURNS_HAVE_BONMIN TRUE)
+    list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${COIN_INCLUDE_DIRS})
+    list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${COIN_BONMIN_LIBRARIES})
   endif ()
 endif ()
 

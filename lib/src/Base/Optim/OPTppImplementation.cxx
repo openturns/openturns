@@ -451,6 +451,9 @@ void OPTppImplementation::checkProblem(const OptimizationProblem & problem) cons
     throw InvalidArgumentException(HERE) << getClassName() << " does not support multi-objective optimization";
   if (problem.hasResidualFunction())
     throw InvalidArgumentException(HERE) << getClassName() << " does not support least-square problems";
+  if (!problem.isContinuous())
+    throw InvalidArgumentException(HERE) << getClassName() << " does not support non continuous problems";
+
 }
 
 

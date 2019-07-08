@@ -778,6 +778,11 @@ OT_Function_isLinear_doc
 %define OT_Function_isLinearlyDependent_doc
 "Accessor to the linearity of the function with regard to a specific variable.
 
+Parameters
+----------
+index : int
+    The index of the variable with regard to which linearity is evaluated.
+
 Returns
 -------
 linear : bool

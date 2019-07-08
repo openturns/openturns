@@ -170,7 +170,7 @@ public:
     description.add(getOutputDescription());
     return description;
   }
-
+  
   String __repr__() const
   {
     OSS oss;
@@ -267,15 +267,20 @@ void LeastSquaresProblem::setResidualFunction(const Function & residualFunction)
   // r = ||(f)||^2/2
   const UnsignedInteger residualSize = residualFunction.getOutputDimension();
   residualFunction_ = residualFunction;
-  const Function halfSquaredNorm(LeastSquaresProblemFunctions::HalfSquaredNormEvaluation(residualSize).clone(), LeastSquaresProblemFunctions::HalfSquaredNormGradient(residualSize).clone(), LeastSquaresProblemFunctions::HalfSquaredNormHessian(residualSize).clone());
+  const Function halfSquaredNorm(LeastSquaresProblemFunctions::HalfSquaredNormEvaluation(residualSize).clone(),
+                                 LeastSquaresProblemFunctions::HalfSquaredNormGradient(residualSize).clone(), LeastSquaresProblemFunctions::HalfSquaredNormHessian(residualSize).clone()
+                                );
   objective_ = ComposedFunction(halfSquaredNorm, residualFunction);
   dimension_ = residualFunction.getInputDimension();
+  
+  setVariablesType(Indices(dimension_,CONTINUOUS));
 }
 
 Bool LeastSquaresProblem::hasResidualFunction() const
 {
   return true;
 }
+
 
 /* String converter */
 String LeastSquaresProblem::__repr__() const

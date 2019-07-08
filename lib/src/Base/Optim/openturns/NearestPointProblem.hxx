@@ -56,7 +56,7 @@ public:
   /** Level value accessor */
   Scalar getLevelValue() const;
   void setLevelValue(Scalar levelValue);
-
+  
   /** String converter */
   virtual String __repr__() const;
 

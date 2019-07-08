@@ -87,6 +87,9 @@ void SQP::checkProblem(const OptimizationProblem & problem) const
     throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization";
   if (problem.hasBounds())
     throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " cannot solve bound-constrained optimization problems";
+  if (!problem.isContinuous())
+    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support non continuous problems";
+
 }
 
 void SQP::initialize()

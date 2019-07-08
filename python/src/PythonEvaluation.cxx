@@ -421,7 +421,7 @@ Bool PythonEvaluation::isLinear() const
                                   const_cast<char *>("isLinear"),
                                   const_cast<char *>("()")));
    
-    Bool isLinear = convert< _PyBool_, Bool >(result.get());
+    const Bool isLinear = convert< _PyBool_, Bool >(result.get());
     return isLinear;
   }
   else
@@ -442,7 +442,7 @@ Bool PythonEvaluation::isLinearlyDependent(const UnsignedInteger index) const
                                      methodName.get(),
                                      indexArg.get(), NULL));
    
-    Bool varLinear = convert< _PyBool_, Bool >(callResult.get());
+    const Bool varLinear = convert< _PyBool_, Bool >(callResult.get());
     return varLinear;
   }
   else

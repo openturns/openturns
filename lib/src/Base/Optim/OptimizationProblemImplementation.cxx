@@ -43,9 +43,9 @@ OptimizationProblemImplementation::OptimizationProblemImplementation()
   , bounds_()
   , minimization_(true)
   , dimension_(0)
+  , variablesType_(Indices(0,CONTINUOUS))
 {
-  // Set variables and constraints types and linearity
-  setVariablesType(Indices(0,CONTINUOUS));
+  // Nothing to do
 }
 
 OptimizationProblemImplementation::OptimizationProblemImplementation(const Function & objective)
@@ -53,10 +53,10 @@ OptimizationProblemImplementation::OptimizationProblemImplementation(const Funct
   , objective_()
   , minimization_(true)
   , dimension_(objective.getInputDimension())
+  , variablesType_(Indices(dimension_,CONTINUOUS))
 {
-  // Set objective function and variables types
+  // Set objective function
   setObjective(objective);
-  setVariablesType(Indices(objective.getInputDimension(),CONTINUOUS));
 }
 
 /*
@@ -70,10 +70,10 @@ OptimizationProblemImplementation::OptimizationProblemImplementation( const Func
   , objective_()
   , minimization_(true)
   , dimension_(objective.getInputDimension())
+  , variablesType_(Indices(dimension_,CONTINUOUS))
 {
   // Set objective function and variables types
   setObjective(objective);
-  setVariablesType(Indices(objective.getInputDimension(),CONTINUOUS));
   
   // Set constraints
   setEqualityConstraint(equalityConstraint);
@@ -119,7 +119,10 @@ void OptimizationProblemImplementation::setObjective(const Function & objective)
   objective_ = objective;
 
   // Update dimension_ member accordingly
-  dimension_ = objective.getInputDimension();  
+  dimension_ = objective.getInputDimension();
+  
+  // Update variablesType_ member accordingly
+  variablesType_ = Indices(dimension_, CONTINUOUS);
 }
 
 Bool OptimizationProblemImplementation::hasMultipleObjective() const
@@ -257,6 +260,9 @@ Indices OptimizationProblemImplementation::getVariablesType() const
 
 bool OptimizationProblemImplementation::isContinuous() const
 {
+  if (dimension_== 0)
+    return true;
+  
   for (UnsignedInteger i=0; i<dimension_; ++i)
     if (variablesType_[i] != CONTINUOUS) return false;
     

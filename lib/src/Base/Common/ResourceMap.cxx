@@ -200,6 +200,7 @@ Bool ResourceMap::HasKey(const String & key)
 void ResourceMap::Reload()
 {
   return GetInstance().lock().reload();
+}
 
 void ResourceMap::RemoveKey(const String & key)
 {

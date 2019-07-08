@@ -412,7 +412,7 @@ Dlib::Dlib(const OptimizationProblem & problem,
   setResult(OptimizationResult(problem.getDimension(),1));
   setStartingPoint(Point(problem.getDimension()));
   setAlgorithmName(algoName);
-} // Constructor
+}
 
 // Virtual constructor
 Dlib * Dlib::clone() const
@@ -512,11 +512,19 @@ void Dlib::checkProblem(const OptimizationProblem & problem) const
 #ifdef OPENTURNS_HAVE_DLIB
   
   // Cannot solve multi-objective problems
-  if (problem.hasMultipleObjective()) throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " does not support multi-objective optimization";
+  if (problem.hasMultipleObjective()) 
+    throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " does not support multi-objective optimization";
   
   // Cannot solve problems with equality/inequality constraints
-  if (problem.hasInequalityConstraint()) throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm does not support inequality constraints";  
-  if (problem.hasEqualityConstraint()) throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm does not support equality constraints";
+  if (problem.hasInequalityConstraint()) 
+    throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm does not support inequality constraints";  
+  if (problem.hasEqualityConstraint())
+    throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm does not support equality constraints";
+  
+  // Cannot solve non continuous problems
+  if (!problem.isContinuous())
+    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support non continuous problems";
+
   
   // "Global" requires finite bounds
   if (algoName_=="Global")

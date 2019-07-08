@@ -316,8 +316,12 @@ class PythonFunction(Function):
         If True, input sample is converted into a Python 2-d sequence before calling
         func_sample.  Otherwise, it is passed directy to func_sample.
         Default is False.
-        
-    //TODO: doc isLinear
+    functionLinearity : bool, optional
+        Indicates if the function is linear.
+        Default is False.
+    variablesLinearity : list of bool, optional
+        Indicates for each input variable if the function is linear with regard to this variable.
+        Default is [False]*inputDim
 
     You must provide at least func or func_sample arguments.  For efficiency
     reasons, these functions do not receive a :class:`~openturns.Point` or

@@ -54,7 +54,7 @@ public:
   OptimizationProblemImplementation();
 
   /** Constructor with parameters */
-  OptimizationProblemImplementation(const Function& objective);
+  explicit OptimizationProblemImplementation(const Function& objective);
 
   /** Constructor with parameters */
   OptimizationProblemImplementation(const Function & objective,

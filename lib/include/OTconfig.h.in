@@ -21,6 +21,9 @@
 /* Define if you have bison parser generator. */
 #cmakedefine OPENTURNS_HAVE_BISON
 
+/* Define if you have the `bonmin` library. */
+#cmakedefine OPENTURNS_HAVE_BONMIN
+
 /* Define to 1 if you have flex lexical analyser generator. */
 #cmakedefine OPENTURNS_HAVE_FLEX
 

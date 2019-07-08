@@ -82,6 +82,9 @@ void CMinpack::checkProblem(const OptimizationProblem & problem) const
   if (problem.hasEqualityConstraint())
     throw InvalidArgumentException(HERE) << getClassName() << " does not support equality constraints";
 
+  if (!problem.isContinuous())
+    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support non continuous problems";
+
 #else
   throw NotYetImplementedException(HERE) << "No CMinpack support";
 #endif

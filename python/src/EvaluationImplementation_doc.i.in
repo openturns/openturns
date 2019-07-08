@@ -392,6 +392,11 @@ OT_Evaluation_isLinear_doc
 %define OT_Evaluation_isLinearlyDependent_doc
 "Accessor to the linearity of the evaluation with regard to a specific variable.
 
+Parameters
+----------
+index : int
+    The index of the variable with regard to which linearity is evaluated.
+
 Returns
 -------
 linear : bool
