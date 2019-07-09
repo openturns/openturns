@@ -200,6 +200,10 @@ Bool ResourceMap::HasKey(const String & key)
 void ResourceMap::Reload()
 {
   return GetInstance().lock().reload();
+
+void ResourceMap::RemoveKey(const String & key)
+{
+  GetInstance().lock().removeKey(key);
 }
 
 /* Default constructor */
@@ -289,6 +293,22 @@ Bool ResourceMap::hasKey(const String & key) const
       || (mapScalar_.find(key) != mapScalar_.end())
       || (mapUnsignedInteger_.find(key) != mapUnsignedInteger_.end())
       || (mapBool_.find(key) != mapBool_.end()));
+}
+
+void ResourceMap::removeKey(const String & key)
+{
+  if (!hasKey(key))
+    throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap";
+  
+  String keyType(getType(key));
+  if (keyType == "string")
+    mapString_.erase(mapString_.find(key));
+  if (keyType == "float")
+    mapScalar_.erase(mapScalar_.find(key));
+  if (keyType == "unsigned int")
+    mapUnsignedInteger_.erase(mapUnsignedInteger_.find(key));
+  if (keyType == "bool")
+    mapBool_.erase(mapBool_.find(key));
 }
 
 String ResourceMap::getAsString(const String & key) const

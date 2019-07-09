@@ -80,6 +80,9 @@ public:
 
   /** Is the specific key present ? */
   static Bool HasKey(const String & key);
+  
+  /** Remove a key */
+  static void RemoveKey(const String & key);
 
   /** Reload configuration */
   static void Reload();
@@ -206,6 +209,9 @@ protected:
 
   /** Is the specific key present ? */
   Bool hasKey(const String & key) const;
+  
+  /** Remove a key from the resource map */
+  void removeKey(const String & key);
 
   /** Update the ResourceMap with information from the configuration file */
   void readConfigurationFile(const FileName & configurationFile);
