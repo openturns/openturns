@@ -44,34 +44,45 @@ OptimizationProblemImplementation::OptimizationProblemImplementation()
   , minimization_(true)
   , dimension_(0)
 {
-  // Nothing to do
+  // Set variables and constraints types and linearity
+  setVariablesType(Indices(0,CONTINUOUS));
 }
 
 OptimizationProblemImplementation::OptimizationProblemImplementation(const Function & objective)
   : PersistentObject()
-  , objective_(objective)
+  , objective_()
   , minimization_(true)
   , dimension_(objective.getInputDimension())
 {
-  // nothing to do
+  // Set objective function and variables types
+  setObjective(objective);
+  setVariablesType(Indices(objective.getInputDimension(),CONTINUOUS));
 }
 
 /*
  * @brief General multi-objective equality, inequality and bound constraints
  */
-OptimizationProblemImplementation::OptimizationProblemImplementation(const Function & objective,
-    const Function & equalityConstraint,
-    const Function & inequalityConstraint,
-    const Interval & bounds)
+OptimizationProblemImplementation::OptimizationProblemImplementation( const Function & objective,
+                                                                      const Function & equalityConstraint,
+                                                                      const Function & inequalityConstraint,
+                                                                      const Interval & bounds)
   : PersistentObject()
-  , objective_(objective)
+  , objective_()
   , minimization_(true)
   , dimension_(objective.getInputDimension())
 {
+  // Set objective function and variables types
+  setObjective(objective);
+  setVariablesType(Indices(objective.getInputDimension(),CONTINUOUS));
+  
+  // Set constraints
   setEqualityConstraint(equalityConstraint);
   setInequalityConstraint(inequalityConstraint);
+  
+  // Set bounds
   setBounds(bounds);
 }
+
 
 /* Virtual constructor */
 OptimizationProblemImplementation * OptimizationProblemImplementation::clone() const
@@ -89,18 +100,26 @@ void OptimizationProblemImplementation::setObjective(const Function & objective)
 {
   if (objective.getInputDimension() != objective_.getInputDimension())
   {
-    // clear constraints, bounds
+    LOGWARN(OSS() << "Clearing constraints, bounds and variables types");
+
+    // Clear constraints
     if (equalityConstraint_.getEvaluation().getImplementation()->isActualImplementation() || inequalityConstraint_.getEvaluation().getImplementation()->isActualImplementation())
     {
-      LOGWARN(OSS() << "Clearing constraints and bounds");
       equalityConstraint_ = Function();
       inequalityConstraint_ = Function();
     }
+    
+    // Clear bounds
     bounds_ = Interval(0);
+    
+    // Clear variables types
+    variablesType_ = Indices(dimension_,CONTINUOUS);  
+
   }
   objective_ = objective;
+
   // Update dimension_ member accordingly
-  dimension_ = objective.getInputDimension();
+  dimension_ = objective.getInputDimension();  
 }
 
 Bool OptimizationProblemImplementation::hasMultipleObjective() const
@@ -116,7 +135,8 @@ Function OptimizationProblemImplementation::getEqualityConstraint() const
 
 void OptimizationProblemImplementation::setEqualityConstraint(const Function & equalityConstraint)
 {
-  if ((equalityConstraint.getInputDimension() > 0) && (equalityConstraint.getInputDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given equality constraints have an input dimension=" << equalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
+  if ((equalityConstraint.getInputDimension() > 0) && (equalityConstraint.getInputDimension() != dimension_))
+    throw InvalidArgumentException(HERE) << "Error: the given equality constraints have an input dimension=" << equalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
 
   equalityConstraint_ = equalityConstraint;
 }
@@ -219,6 +239,28 @@ void OptimizationProblemImplementation::setMinimization(Bool minimization)
 Bool OptimizationProblemImplementation::isMinimization() const
 {
   return minimization_;
+}
+
+  // Variables type table
+void OptimizationProblemImplementation::setVariablesType(const Indices & variablesType)
+{
+  if (variablesType.getSize() != getDimension())
+    throw InvalidDimensionException(HERE) << "variables type table dimension is invalid (" << variablesType.getSize() << ", expected " << getDimension();
+    
+  variablesType_ = variablesType;
+}
+
+Indices OptimizationProblemImplementation::getVariablesType() const
+{
+  return variablesType_;
+}
+
+bool OptimizationProblemImplementation::isContinuous() const
+{
+  for (UnsignedInteger i=0; i<dimension_; ++i)
+    if (variablesType_[i] != CONTINUOUS) return false;
+    
+  return true;
 }
 
 /* String converter */
