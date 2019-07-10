@@ -37,6 +37,8 @@ public:
     
   typedef Pointer<IterativeAlgorithmImplementation> MapElement;
   typedef std::map<Id, MapElement>  Map;
+  typedef std::map<String, Id>      LabelMap;
+  typedef Pointer<StorageManager>   StorageManagerImplementation;
 
   /** Default constructor */
   MelissaStudy();
@@ -70,8 +72,87 @@ public:
    */
   void add(const String & label, const IterativeAlgorithmImplementation * po, Bool force = false);
 // #endif
+
+  /** Query if object is stored in study
+   * @param id The Id of the object
+   * @return True if the object is stored in the study
+   */
+  Bool hasObject(Id id) const;
+
+  /** Query if object is stored in study
+   * @param label The label of the object
+   * @return True if the object is stored in the study
+   */
+  Bool hasObject(const String & label) const;
+
+
+  /** Get object whose id is given
+   * @param id The Id of the object
+   * @return The object saved in the study
+   */
+  MapElement getObject(Id id) const;
+
+  /** Get object whose id is given
+   * @param label The label of the object
+   * @return The object saved in the study
+   */
+  MapElement getObject(const String & label) const;
+
+
+  /** Fill an object with one got from study
+   * @param po An object to be refilled (may be empty, ie default constructed)
+   * @param name The name of the object stored in the study
+   * @throw InvalidArgumentException
+   */
+  void fillObjectByName(IterativeAlgorithmImplementation & po, const String & name) const;
+
+  /** Fill an object with one got from study
+   * @param io An object to be refilled (may be empty, ie default constructed)
+   * @param name The name of the object stored in the study
+   * @throw InvalidArgumentException
+   */
+  void fillObjectByName(IterativeAlgorithm  & io, const String & name) const;
+
+  /** Fill an object with one got from study
+   * @param id The Id of the object stored in the study
+   * @param po An object to be refilled (may be empty, ie default constructed)
+   * @throw InvalidArgumentException
+   */
+  void fillObject(Id id, IterativeAlgorithmImplementation & po) const;
+
+  /** Fill an object with one got from study
+   * @param id The Id of the object stored in the study
+   * @param io An object to be refilled (may be empty, ie default constructed)
+   * @throw InvalidArgumentException
+   */
+  void fillObject(Id id, IterativeAlgorithm  & io) const;
+
+  /** Fill an object with one got from study
+   * @param label The label of the object stored in the study
+   * @param po An object to be refilled (may be empty, ie default constructed)
+   * @throw InvalidArgumentException
+   */
+  void fillObject(const String & name, IterativeAlgorithmImplementation & po) const;
+
+  /** Fill an object with one got from study
+   * @param label The label of the object stored in the study
+   * @param io An object to be refilled (may be empty, ie default constructed)
+   * @throw InvalidArgumentException
+   */
+  void fillObject(const String & name, IterativeAlgorithm  & io) const;
+
+  /** Print all the labels in the study */
+  String printLabels() const;
   
   void finalize();
+  
+protected:
+
+  /** Define a label for an object */
+  void defineLabel(Id id, const String & label);
+  
+  /** Get object whose class and name are given */
+  MapElement getObjectByName(const String & className, const String & name) const;
 
 
 private:

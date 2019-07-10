@@ -1,7 +1,7 @@
 // SWIG file iterative_statistics_module.i
 
 %module(package="openturns", docstring="Iterative statistics.") iterative_statistics
-//%feature("autodoc","1");
+// %feature("autodoc","1");
 
 %{
 #include "openturns/OTconfig.hxx"
@@ -22,7 +22,7 @@
 %import typ_module.i
 
 /* Base/IterativeStat */
-%include IterativeAlgorithm.i
 %include IterativeAlgorithmImplementation.i
+%include IterativeAlgorithm.i
 %include MelissaStudy.i
 %include IterativeMean.i

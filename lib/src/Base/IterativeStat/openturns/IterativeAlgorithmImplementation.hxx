@@ -30,7 +30,17 @@ public:
    * The object has the default name but it does not
    * use storage for it.
    */
-//   IterativeAlgorithmImplementation();
+  IterativeAlgorithmImplementation()
+    : PersistentObject()
+  {
+    // Nothing to do
+  }
+  
+  IterativeAlgorithmImplementation(const IterativeAlgorithmImplementation & other)
+    : PersistentObject(other)
+    {
+      // Nothing to do
+    }
 
   /**
    * Virtual constructor

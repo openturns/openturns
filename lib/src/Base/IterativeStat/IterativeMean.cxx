@@ -11,7 +11,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(IterativeMean)
 
-// static const Factory<IterativeMean> Factory_IterativeMean;
+static const Factory<IterativeMean> Factory_IterativeMean;
 
 IterativeMean::IterativeMean(const UnsignedInteger size)
   : IterativeAlgorithmImplementation()

@@ -6,8 +6,6 @@
 
 %include IterativeMean_doc.i
 
-OTTypedInterfaceObjectHelper(IterativeMean)
-
 %include openturns/IterativeMean.hxx
 
 namespace OT {

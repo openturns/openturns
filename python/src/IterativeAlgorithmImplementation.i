@@ -8,7 +8,7 @@
 
 %include openturns/IterativeAlgorithmImplementation.hxx
 namespace OT {
-%extend IterativeAlgorithm {
+%extend IterativeAlgorithmImplementation {
 
 IterativeAlgorithmImplementation(const IterativeAlgorithmImplementation & other)
 {

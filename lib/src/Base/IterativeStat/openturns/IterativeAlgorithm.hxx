@@ -18,12 +18,6 @@ public:
 //   typedef std::unordered_map<std::string, void*> registry_map;
 
 //   typedef Pointer<IterativeAlgorithmImplementation>   IterativeAlgorithmImplementation_p;
-
-  /** Return a pointer to the underlying implementation object viewed as a PersistentObject */
-  Pointer<IterativeAlgorithmImplementation> getImplementationAsIterativeAlgorithm() const
-  {
-    return p_implementation_;
-  }
     
   /**
    * Default constructor
@@ -35,7 +29,49 @@ public:
    * The object has the default name but it does not
    * use storage for it.
    */
-//   IterativeAlgorithm();
+  IterativeAlgorithm()
+    : TypedInterfaceObject<IterativeAlgorithmImplementation>()
+  {
+    // Nothing to do
+  }
+    
+  IterativeAlgorithm(const IterativeAlgorithmImplementation & implementation)
+    : TypedInterfaceObject<IterativeAlgorithmImplementation>(implementation.clone())
+  {
+    // Nothing to do
+  }
+  
+  IterativeAlgorithm(const Implementation & p_implementation)
+    : TypedInterfaceObject<IterativeAlgorithmImplementation>(p_implementation)
+  {
+    // Nothing to do
+  }
+  
+#ifndef SWIG
+  IterativeAlgorithm(IterativeAlgorithmImplementation * p_implementation)
+    : TypedInterfaceObject<IterativeAlgorithmImplementation>(p_implementation)
+  {
+    // Nothing to do
+  }
+#endif
+
+  /** Return a pointer to the underlying implementation object viewed as a PersistentObject */
+  Pointer<IterativeAlgorithmImplementation> getImplementationAsIterativeAlgorithm() const
+  {
+    return p_implementation_;
+  }
+
+  /** Set the pointer to the underlying implementation object */
+  void setImplementationAsIterativeAlgorithm(const Pointer<IterativeAlgorithmImplementation> & obj)
+  {
+    p_implementation_.assign(obj);
+  }
+
+//   /** Set the pointer to the underlying implementation object */
+//   inline virtual void setIterativeAlgorithm(const Pointer<IterativeAlgorithm> & obj)
+//   {
+//     p_implementation_.assign(obj);
+//   }
   
   /**
    * Increment methods

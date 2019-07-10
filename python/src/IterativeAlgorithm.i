@@ -6,6 +6,8 @@
 
 %include IterativeAlgorithm_doc.i
 
+OTTypedInterfaceObjectHelper(IterativeAlgorithm)
+
 %include openturns/IterativeAlgorithm.hxx
 namespace OT {
 %extend IterativeAlgorithm {
