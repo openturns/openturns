@@ -41,9 +41,8 @@ for algoName in algoNames:
             for equality in [True, False]:
                 for bound in [True, False]:
 
-                    # global algorithms require bounds
-                    if not bound and (algoName.startswith('G') or 'LN_BOBYQA' in algoName):
-                        continue
+                    if not bound and 'LN_BOBYQA' in algoName:
+                       continue
 
                     print('algo=', algoName, 'minimization=', minimization, 'bounds=', bound, 'inequality=', inequality, 'equality=', equality)
                     problem = ot.OptimizationProblem(f)

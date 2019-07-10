@@ -151,6 +151,18 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
   if (problem.hasMultipleObjective())
     throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " does not support multi-objective optimization";
 
+  if (getAlgorithmName()[0] == 'G')
+  {
+    if (!problem.hasBounds())
+      throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " global algorithm requires bounds";
+    else
+    {
+      Interval finiteBounds(problem.getBounds().getLowerBound(), problem.getBounds().getUpperBound());
+      if (problem.getBounds() != finiteBounds)
+        throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " global algorithm requires finite bounds";
+    }
+  }
+
   const UnsignedInteger dimension = problem.getDimension();
   const nlopt::algorithm algo = static_cast<nlopt::algorithm>(GetAlgorithmCode(getAlgorithmName()));
   nlopt::opt opt(algo, dimension);

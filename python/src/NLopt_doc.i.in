@@ -41,13 +41,13 @@ Here are some properties of the different algorithms:
 +----------------------------+-------------------+-----------------------------+
 | GN_DIRECT_L_RAND_NOSCAL    | no derivative     | bounds required             |
 +----------------------------+-------------------+-----------------------------+
-| GN_ESCH                    | no derivative     | bounds                      |
+| GN_ESCH                    | no derivative     | bounds required             |
 +----------------------------+-------------------+-----------------------------+
 | GN_ISRES                   | no derivative     | all, bounds required        |
 +----------------------------+-------------------+-----------------------------+
 | GN_MLSL                    | no derivative     | bounds required             |
 +----------------------------+-------------------+-----------------------------+
-| GN_MLSL_LDS                | no derivative     | bounds                      |
+| GN_MLSL_LDS                | no derivative     | bounds required             |
 +----------------------------+-------------------+-----------------------------+
 | GN_ORIG_DIRECT             | no derivative     | inequality, bounds required |
 +----------------------------+-------------------+-----------------------------+
