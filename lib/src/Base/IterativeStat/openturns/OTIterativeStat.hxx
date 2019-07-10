@@ -25,6 +25,7 @@
 #include "openturns/MelissaStudy.hxx"
 #include "openturns/IterativeAlgorithmImplementation.hxx"
 #include "openturns/IterativeAlgorithm.hxx"
+#include "openturns/IterativeVariance.hxx"
 #include "openturns/IterativeMean.hxx"
 
 #endif /* OPENTURNS_OTITERATIVESTAT_HXX */

@@ -22,6 +22,16 @@ IterativeMean::IterativeMean(const UnsignedInteger size)
   // Nothing to do
 }
 
+/* Constructor from variance */
+IterativeMean::IterativeMean(const IterativeVariance variance)
+  : IterativeAlgorithmImplementation()
+  , iteration_(variance.getIteration())
+  , size_(variance.getSize())
+  , data_(variance.getMean())
+{
+  // Nothing to do
+}
+
 /* Virtual constructor */
 IterativeMean * IterativeMean::clone() const
 {

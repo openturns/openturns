@@ -25,4 +25,5 @@
 %include IterativeAlgorithmImplementation.i
 %include IterativeAlgorithm.i
 %include MelissaStudy.i
+%include IterativeVariance.i
 %include IterativeMean.i

@@ -1,26 +1,23 @@
 
-#ifndef OPENTURNS_ITERATIVEMEAN_HXX
-#define OPENTURNS_ITERATIVEMEAN_HXX
+#ifndef OPENTURNS_ITERATIVEVARIANCE_HXX
+#define OPENTURNS_ITERATIVEVARIANCE_HXX
 
 #include "openturns/IterativeAlgorithmImplementation.hxx"
 // #include "openturns/PersistentCollection.hxx"
 #include "openturns/Point.hxx"
-#include "openturns/IterativeVariance.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-class OT_API IterativeMean
+class OT_API IterativeVariance
   : public IterativeAlgorithmImplementation
 {
   CLASSNAME
   
 public:
   
-  explicit IterativeMean(const UnsignedInteger size = 1);
+  explicit IterativeVariance(const UnsignedInteger size = 1);
   
-  IterativeMean(const IterativeVariance variance);
-  
-  IterativeMean * clone() const;
+  IterativeVariance * clone() const;
   
   void increment(const Scalar newData);
   
@@ -38,7 +35,7 @@ public:
    * This method compares objects based on their content.
    */
   inline
-  Bool operator ==(const IterativeMean & /*other*/) const
+  Bool operator ==(const IterativeVariance & /*other*/) const
   {
     return true;
   }
@@ -49,7 +46,7 @@ public:
    * This method compares objects based on their content.
    */
   inline
-  Bool operator !=(const IterativeMean & other) const
+  Bool operator !=(const IterativeVariance & other) const
   {
     return !operator==(other);
   }
@@ -69,23 +66,22 @@ public:
   UnsignedInteger getIteration() const;
   
   Point getValues() const;
+  
+  Point getMean() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
-
-//   static AlgoRegister reg;
   
 private:
-//   static IterativeAlgorithm * create(const int size);
   UnsignedInteger              iteration_;
   UnsignedInteger              size_;
-//   UnsignedInteger              dim_;
-  PersistentCollection<Scalar> data_;
+  PersistentCollection<Scalar> meanData_;
+  PersistentCollection<Scalar> varData_;
 };
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_ITERATIVEMEAN_HXX */
+#endif /* OPENTURNS_ITERATIVEVARIANCE_HXX */
