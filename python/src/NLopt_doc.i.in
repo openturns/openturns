@@ -65,8 +65,6 @@ Here are some properties of the different algorithms:
 +----------------------------+-------------------+-----------------------------+
 | LD_LBFGS                   | first derivative  | bounds                      |
 +----------------------------+-------------------+-----------------------------+
-| LD_LBFGS_NOCEDAL           | first derivative  | bounds                      |
-+----------------------------+-------------------+-----------------------------+
 | LD_MMA                     | first derivative  | bounds, inequality          |
 +----------------------------+-------------------+-----------------------------+
 | LD_SLSQP                   | first derivative  | all                         |
@@ -196,7 +194,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> print(ot.NLopt.GetAlgorithmNames())
-[AUGLAG,AUGLAG_EQ,GD_MLSL,GD_MLSL_LDS,GN_CRS2_LM,GN_DIRECT,GN_DIRECT_L,GN_DIRECT_L_NOSCAL,GN_DIRECT_L_RAND,GN_DIRECT_L_RAND_NOSCAL,GN_DIRECT_NOSCAL,GN_ESCH,GN_ISRES,GN_MLSL,GN_MLSL_LDS,GN_ORIG_DIRECT,GN_ORIG_DIRECT_L,G_MLSL,G_MLSL_LDS,LD_AUGLAG,LD_AUGLAG_EQ,LD_CCSAQ,LD_LBFGS,LD_LBFGS_NOCEDAL,LD_MMA,LD_SLSQP,LD_TNEWTON,LD_TNEWTON_PRECOND,LD_TNEWTON_PRECOND_RESTART,LD_TNEWTON_RESTART,LD_VAR1,LD_VAR2,LN_AUGLAG,LN_AUGLAG_EQ,LN_BOBYQA,LN_COBYLA,LN_NELDERMEAD,LN_NEWUOA,LN_NEWUOA_BOUND,LN_PRAXIS,LN_SBPLX]#41"
+[AUGLAG,AUGLAG_EQ,GD_MLSL,...,LN_NEWUOA_BOUND,LN_PRAXIS,LN_SBPLX]#40"
 
 // ---------------------------------------------------------------------
 

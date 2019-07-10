@@ -438,26 +438,6 @@ algo=LD_LBFGS minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
 algo=LD_LBFGS minimization=0 bounds=0 inequality=0 equality=0
 -- Not supported: algo=LD_LBFGS inequality=false equality=false
--- Not supported: algo=LD_LBFGS_NOCEDAL inequality=true equality=true
--- Not supported: algo=LD_LBFGS_NOCEDAL inequality=true equality=true
--- Not supported: algo=LD_LBFGS_NOCEDAL inequality=true equality=false
--- Not supported: algo=LD_LBFGS_NOCEDAL inequality=true equality=false
--- Not supported: algo=LD_LBFGS_NOCEDAL inequality=false equality=true
--- Not supported: algo=LD_LBFGS_NOCEDAL inequality=false equality=true
-algo=LD_LBFGS_NOCEDAL minimization=1 bounds=1 inequality=0 equality=0
--- Not supported: algo=LD_LBFGS_NOCEDAL inequality=false equality=false
-algo=LD_LBFGS_NOCEDAL minimization=1 bounds=0 inequality=0 equality=0
--- Not supported: algo=LD_LBFGS_NOCEDAL inequality=false equality=false
--- Not supported: algo=LD_LBFGS_NOCEDAL inequality=true equality=true
--- Not supported: algo=LD_LBFGS_NOCEDAL inequality=true equality=true
--- Not supported: algo=LD_LBFGS_NOCEDAL inequality=true equality=false
--- Not supported: algo=LD_LBFGS_NOCEDAL inequality=true equality=false
--- Not supported: algo=LD_LBFGS_NOCEDAL inequality=false equality=true
--- Not supported: algo=LD_LBFGS_NOCEDAL inequality=false equality=true
-algo=LD_LBFGS_NOCEDAL minimization=0 bounds=1 inequality=0 equality=0
--- Not supported: algo=LD_LBFGS_NOCEDAL inequality=false equality=false
-algo=LD_LBFGS_NOCEDAL minimization=0 bounds=0 inequality=0 equality=0
--- Not supported: algo=LD_LBFGS_NOCEDAL inequality=false equality=false
 -- Not supported: algo=LD_MMA inequality=true equality=true
 -- Not supported: algo=LD_MMA inequality=true equality=true
 algo=LD_MMA minimization=1 bounds=1 inequality=1 equality=0

@@ -1,4 +1,4 @@
-[AUGLAG,AUGLAG_EQ,GD_MLSL,GD_MLSL_LDS,GN_CRS2_LM,GN_DIRECT,GN_DIRECT_L,GN_DIRECT_L_NOSCAL,GN_DIRECT_L_RAND,GN_DIRECT_L_RAND_NOSCAL,GN_DIRECT_NOSCAL,GN_ESCH,GN_ISRES,GN_MLSL,GN_MLSL_LDS,GN_ORIG_DIRECT,GN_ORIG_DIRECT_L,G_MLSL,G_MLSL_LDS,LD_AUGLAG,LD_AUGLAG_EQ,LD_CCSAQ,LD_LBFGS,LD_LBFGS_NOCEDAL,LD_MMA,LD_SLSQP,LD_TNEWTON,LD_TNEWTON_PRECOND,LD_TNEWTON_PRECOND_RESTART,LD_TNEWTON_RESTART,LD_VAR1,LD_VAR2,LN_AUGLAG,LN_AUGLAG_EQ,LN_BOBYQA,LN_COBYLA,LN_NELDERMEAD,LN_NEWUOA,LN_NEWUOA_BOUND,LN_PRAXIS,LN_SBPLX]#41
+[AUGLAG,AUGLAG_EQ,GD_MLSL,GD_MLSL_LDS,GN_CRS2_LM,GN_DIRECT,GN_DIRECT_L,GN_DIRECT_L_NOSCAL,GN_DIRECT_L_RAND,GN_DIRECT_L_RAND_NOSCAL,GN_DIRECT_NOSCAL,GN_ESCH,GN_ISRES,GN_MLSL,GN_MLSL_LDS,GN_ORIG_DIRECT,GN_ORIG_DIRECT_L,G_MLSL,G_MLSL_LDS,LD_AUGLAG,LD_AUGLAG_EQ,LD_CCSAQ,LD_LBFGS,LD_MMA,LD_SLSQP,LD_TNEWTON,LD_TNEWTON_PRECOND,LD_TNEWTON_PRECOND_RESTART,LD_TNEWTON_RESTART,LD_VAR1,LD_VAR2,LN_AUGLAG,LN_AUGLAG_EQ,LN_BOBYQA,LN_COBYLA,LN_NELDERMEAD,LN_NEWUOA,LN_NEWUOA_BOUND,LN_PRAXIS,LN_SBPLX]#40
 algo= AUGLAG minimization= True bounds= True inequality= True equality= True
 x^= [0.001,0.001] y^= [2]
 algo= AUGLAG minimization= True bounds= False inequality= True equality= True
@@ -611,38 +611,6 @@ algo= LD_LBFGS minimization= False bounds= True inequality= False equality= Fals
 x^= [-1.5,-1.5] y^= [1.41e+03]
 algo= LD_LBFGS minimization= False bounds= False inequality= False equality= False
 --  InternalException : NLopt raised an exception: nlopt failure
-algo= LD_LBFGS_NOCEDAL minimization= True bounds= True inequality= True equality= True
--- Not supported
-algo= LD_LBFGS_NOCEDAL minimization= True bounds= False inequality= True equality= True
--- Not supported
-algo= LD_LBFGS_NOCEDAL minimization= True bounds= True inequality= True equality= False
--- Not supported
-algo= LD_LBFGS_NOCEDAL minimization= True bounds= False inequality= True equality= False
--- Not supported
-algo= LD_LBFGS_NOCEDAL minimization= True bounds= True inequality= False equality= True
--- Not supported
-algo= LD_LBFGS_NOCEDAL minimization= True bounds= False inequality= False equality= True
--- Not supported
-algo= LD_LBFGS_NOCEDAL minimization= True bounds= True inequality= False equality= False
---  InternalException : NLopt raised an exception: nlopt invalid argument
-algo= LD_LBFGS_NOCEDAL minimization= True bounds= False inequality= False equality= False
---  InternalException : NLopt raised an exception: nlopt invalid argument
-algo= LD_LBFGS_NOCEDAL minimization= False bounds= True inequality= True equality= True
--- Not supported
-algo= LD_LBFGS_NOCEDAL minimization= False bounds= False inequality= True equality= True
--- Not supported
-algo= LD_LBFGS_NOCEDAL minimization= False bounds= True inequality= True equality= False
--- Not supported
-algo= LD_LBFGS_NOCEDAL minimization= False bounds= False inequality= True equality= False
--- Not supported
-algo= LD_LBFGS_NOCEDAL minimization= False bounds= True inequality= False equality= True
--- Not supported
-algo= LD_LBFGS_NOCEDAL minimization= False bounds= False inequality= False equality= True
--- Not supported
-algo= LD_LBFGS_NOCEDAL minimization= False bounds= True inequality= False equality= False
---  InternalException : NLopt raised an exception: nlopt invalid argument
-algo= LD_LBFGS_NOCEDAL minimization= False bounds= False inequality= False equality= False
---  InternalException : NLopt raised an exception: nlopt invalid argument
 algo= LD_MMA minimization= True bounds= True inequality= True equality= True
 -- Not supported
 algo= LD_MMA minimization= True bounds= False inequality= True equality= True

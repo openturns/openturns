@@ -52,7 +52,8 @@ void NLopt::InitializeAlgorithmNames()
   // TODO: add stogo
 //   AlgorithmNames_["GD_STOGO"] = nlopt::GD_STOGO;
 //   AlgorithmNames_["GD_STOGO_RAND"] = nlopt::GD_STOGO_RAND;
-  AlgorithmNames_["LD_LBFGS_NOCEDAL"] = nlopt::LD_LBFGS_NOCEDAL;
+
+  // LD_LBFGS_NOCEDAL is not wired
   AlgorithmNames_["LD_LBFGS"] = nlopt::LD_LBFGS;
   AlgorithmNames_["LN_PRAXIS"] = nlopt::LN_PRAXIS;
   AlgorithmNames_["LD_VAR1"] = nlopt::LD_VAR1;
