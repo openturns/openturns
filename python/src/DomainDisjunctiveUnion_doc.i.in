@@ -40,7 +40,7 @@ Examples
 >>> simplices = [[0, 1, 2], [1, 2, 3]]
 >>> mesh2d = ot.Mesh(vertices, simplices)
 >>> disjunctive_union = ot.DomainDisjunctiveUnion(interval2d, mesh2d)
->>> disjunctive_union.contains([0.2, 0.1])
+>>> [0.2, 0.1] in disjunctive_union
 False
->>> disjunctive_union.contains([0.1, 0.2])
+>>> [0.1, 0.2] in disjunctive_union
 True"

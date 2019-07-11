@@ -48,10 +48,10 @@ try:
     # Inside
     p5 = (p1 + p2) * 0.5
     print("is point", p5, "inside", repr(
-        interval1), "? ", interval1.contains(p5))
+        interval1), "? ", p5 in interval1)
     p6 = p2 * 2.0
     print("is point", p6, "inside", repr(
-        interval1), "? ", interval1.contains(p6))
+        interval1), "? ", p6 in interval1)
     print('marginal(1)=', interval2.getMarginal(1))
     print('marginal(1,0)=', interval2.getMarginal([1, 0]))
 except:

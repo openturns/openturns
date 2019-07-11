@@ -53,7 +53,7 @@ for bound in [True, False]:
     x_star = result.getOptimalPoint()
     print(result)
     if bound:
-        assert bounds.contains(x_star), "optimal point not in bounds"
+        assert x_star in bounds, "optimal point not in bounds"
     else:
         ott.assert_almost_equal(x_star, p_ref)
         
