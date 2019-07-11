@@ -38,6 +38,7 @@
 %include LogisticFactory.i
 %include LogNormal.i
 %include LogNormalFactory.i
+%include LogNormalMuErrorFactor.i
 %include LogNormalMuSigma.i
 %include LogNormalMuSigmaOverMu.i
 %include LogUniform.i

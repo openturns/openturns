@@ -82,7 +82,8 @@ Continuous parametric distributions
     TruncatedNormal
     Uniform
     VonMises
-    Weibull
+    WeibullMin
+    WeibullMax
     Wishart
 
 Discrete parametric distributions
@@ -120,11 +121,12 @@ Parametrized distributions
     ArcsineMuSigma
     BetaMuSigma
     GammaMuSigma
+    GumbelLambdaGamma
     GumbelMuSigma
-    GumbelAB
     LogNormalMuSigma
     LogNormalMuSigmaOverMu
-    WeibullMuSigma
+    WeibullMaxMuSigma
+    WeibullMinMuSigma
 
 Pseudo-random numbers generator
 ===============================

@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    Frechet distribution(2.0, 2.5, -1.5);
+    Frechet distribution(2.5, 2.0, -1.5);
     UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
     FrechetFactory factory;

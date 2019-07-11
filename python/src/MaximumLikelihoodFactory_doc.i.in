@@ -108,7 +108,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
->>> distribution = ot.Beta(2.3, 4.5, -1.0, 1.0)
+>>> distribution = ot.Beta(2.3, 2.2, -1.0, 1.0)
 >>> sample = distribution.getSample(10)
 >>> factory = ot.MaximumLikelihoodFactory(ot.Beta())
 >>> # set (a,b) out of (r, t, a, b)

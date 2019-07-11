@@ -1,0 +1,40 @@
+%feature("docstring") OT::WeibullMaxMuSigma
+"WeibullMax distribution parameters.
+
+Available constructors:
+    WeibullMaxMuSigma(*mu=1.0, sigma=1.0, gamma=0.*)
+
+Parameters
+----------
+mu : float
+    Mean.
+sigma : float
+    Standard deviation :math:`\sigma > 0`.
+gamma : float, optional
+    Shift parameter :math:`\gamma > \mu`.
+
+Notes
+-----
+The native parameters :math:`\alpha` and :math:`\beta` are searched such as:
+
+.. math::
+
+    \alpha &= \frac{\gamma - \mu}{\Gamma(1+\frac{1}{\beta})} \\
+    \sigma^2 &= \alpha^2 \left( \Gamma ( 1 + \frac{2}{\beta} ) -
+                   \Gamma^2 (1 + \frac{1}{\beta} ) \right)
+
+See also
+--------
+WeibullMax
+
+Examples
+--------
+Create the parameters of the WeibullMax distribution:
+
+>>> import openturns as ot
+>>> parameters = ot.WeibullMaxMuSigma(1.3, 1.23, 3.1)
+
+Convert parameters into the native parameters:
+
+>>> print(parameters.evaluate())
+[1.99222,1.48961,3.1]"

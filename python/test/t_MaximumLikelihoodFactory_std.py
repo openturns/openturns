@@ -4,7 +4,7 @@ from __future__ import print_function
 import openturns as ot
 
 ot.PlatformInfo.SetNumericalPrecision(3)
-distribution = ot.Beta(2.3, 4.5, -1.0, 1.0)
+distribution = ot.Beta(2.3, 2.2, -1.0, 1.0)
 print('distribution=', distribution)
 sample = distribution.getSample(1000)
 factory = ot.MaximumLikelihoodFactory(ot.Beta())

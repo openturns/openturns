@@ -37,8 +37,8 @@ class OT_API Frechet
 public:
 
   /** Parameters constructor */
-  explicit Frechet(const Scalar alpha = 1.0,
-                   const Scalar beta = 1.0,
+  explicit Frechet(const Scalar beta = 1.0,
+                   const Scalar alpha = 1.0,
                    const Scalar gamma = 0.0);
 
   /** Comparison operator */
@@ -148,8 +148,8 @@ private:
   void computeRange();
 
   /** The main parameter set of the distribution */
-  Scalar alpha_;
   Scalar beta_;
+  Scalar alpha_;
   Scalar gamma_;
 
 }; /* class Frechet */

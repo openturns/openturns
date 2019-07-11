@@ -41,8 +41,8 @@ public:
   Gumbel();
 
   /** Parameters constructor */
-  Gumbel(const Scalar alpha,
-         const Scalar beta);
+  Gumbel(const Scalar beta,
+         const Scalar gamma);
 
   /** Comparison operator */
   Bool operator ==(const Gumbel & other) const;
@@ -116,13 +116,17 @@ public:
 
   /* Interface specific to Gumbel */
 
-  /** Alpha accessor */
+  /** @deprecated Alpha accessor */
   void setAlpha(const Scalar alpha);
   Scalar getAlpha() const;
 
   /** Beta accessor */
   void setBeta(const Scalar beta);
   Scalar getBeta() const;
+
+  /** Beta accessor */
+  void setGamma(const Scalar gamma);
+  Scalar getGamma() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -147,9 +151,8 @@ private:
                                const Bool tail = false) const;
 
   /** The main parameter set of the distribution */
-  Scalar alpha_;
   Scalar beta_;
-
+  Scalar gamma_;
 
 }; /* class Gumbel */
 

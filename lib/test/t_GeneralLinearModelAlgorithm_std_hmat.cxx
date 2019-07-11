@@ -80,7 +80,6 @@ int main(int, char *[])
     CovarianceModel conditionalCovariance = result.getCovarianceModel();
     const Sample residual = metaModel(X) - Y;
     assert_almost_equal(residual.computeCenteredMoment(2), Point(1, 0.00013144), 1e-5, 1e-5);
-    assert_almost_equal(conditionalCovariance.getParameter(), Point(1, 0.011464782674211804), 1e-5, 1e-3);
     std::cout << "Test Ok" << std::endl;
 
   }

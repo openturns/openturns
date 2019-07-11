@@ -1,8 +1,8 @@
-Distribution          =class=MeixnerDistribution name=MeixnerDistribution dimension=1 alpha=1.5 beta=0.5 delta=2.5 mu=-0.5 logNormalizationFactor=-2.11357 b=0.492762 c=-0.56861 dc=1.37171
-Estimated distribution=class=MeixnerDistribution name=MeixnerDistribution dimension=1 alpha=1.77682 beta=0.316056 delta=1.77799 mu=-0.0428205 logNormalizationFactor=-1.25571 b=0.502433 c=-0.548031 dc=1.3423
-Default distribution=class=MeixnerDistribution name=MeixnerDistribution dimension=1 alpha=1 beta=0 delta=1 mu=0 logNormalizationFactor=-0.451583 b=0.797885 c=-0.416958 dc=0.833916
-Distribution from parameters=class=MeixnerDistribution name=MeixnerDistribution dimension=1 alpha=1.5 beta=0.5 delta=2.5 mu=-0.5 logNormalizationFactor=-2.11357 b=0.492762 c=-0.56861 dc=1.37171
-MeixnerDistribution          =class=MeixnerDistribution name=MeixnerDistribution dimension=1 alpha=1.5 beta=0.5 delta=2.5 mu=-0.5 logNormalizationFactor=-2.11357 b=0.492762 c=-0.56861 dc=1.37171
-Estimated meixnerDistribution=class=MeixnerDistribution name=MeixnerDistribution dimension=1 alpha=1.77682 beta=0.316056 delta=1.77799 mu=-0.0428205 logNormalizationFactor=-1.25571 b=0.502433 c=-0.548031 dc=1.3423
-Default meixnerDistribution=class=MeixnerDistribution name=MeixnerDistribution dimension=1 alpha=1 beta=0 delta=1 mu=0 logNormalizationFactor=-0.451583 b=0.797885 c=-0.416958 dc=0.833916
-MeixnerDistribution from parameters=class=MeixnerDistribution name=MeixnerDistribution dimension=1 alpha=1.5 beta=0.5 delta=2.5 mu=-0.5 logNormalizationFactor=-2.11357 b=0.492762 c=-0.56861 dc=1.37171
+Distribution          =class=MeixnerDistribution name=MeixnerDistribution dimension=1 beta=1.5 alpha=0.5 delta=2.5 gamma=-0.5 logNormalizationFactor=-2.11357 b=0.492762 c=-0.56861 dc=1.37171
+Estimated distribution=class=MeixnerDistribution name=MeixnerDistribution dimension=1 beta=1.77682 alpha=0.316056 delta=1.77799 gamma=-0.0428205 logNormalizationFactor=-1.25571 b=0.502433 c=-0.548031 dc=1.3423
+Default distribution=class=MeixnerDistribution name=MeixnerDistribution dimension=1 beta=1 alpha=0 delta=1 gamma=0 logNormalizationFactor=-0.451583 b=0.797885 c=-0.416958 dc=0.833916
+Distribution from parameters=class=MeixnerDistribution name=MeixnerDistribution dimension=1 beta=1.5 alpha=0.5 delta=2.5 gamma=-0.5 logNormalizationFactor=-2.11357 b=0.492762 c=-0.56861 dc=1.37171
+MeixnerDistribution          =class=MeixnerDistribution name=MeixnerDistribution dimension=1 beta=1.5 alpha=0.5 delta=2.5 gamma=-0.5 logNormalizationFactor=-2.11357 b=0.492762 c=-0.56861 dc=1.37171
+Estimated meixnerDistribution=class=MeixnerDistribution name=MeixnerDistribution dimension=1 beta=1.77682 alpha=0.316056 delta=1.77799 gamma=-0.0428205 logNormalizationFactor=-1.25571 b=0.502433 c=-0.548031 dc=1.3423
+Default meixnerDistribution=class=MeixnerDistribution name=MeixnerDistribution dimension=1 beta=1 alpha=0 delta=1 gamma=0 logNormalizationFactor=-0.451583 b=0.797885 c=-0.416958 dc=0.833916
+MeixnerDistribution from parameters=class=MeixnerDistribution name=MeixnerDistribution dimension=1 beta=1.5 alpha=0.5 delta=2.5 gamma=-0.5 logNormalizationFactor=-2.11357 b=0.492762 c=-0.56861 dc=1.37171

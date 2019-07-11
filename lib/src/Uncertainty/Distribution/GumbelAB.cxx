@@ -35,7 +35,7 @@ GumbelAB::GumbelAB()
   , a_(0.0)
   , b_(1.0)
 {
-  // Nothing to do
+  LOGWARN("GumbelAB is deprecated");
 }
 
 GumbelAB::GumbelAB(const Scalar a, const Scalar b)
@@ -43,6 +43,7 @@ GumbelAB::GumbelAB(const Scalar a, const Scalar b)
   , a_(a)
   , b_(b)
 {
+  LOGWARN("GumbelAB is deprecated");
   if (!(b > 0.0)) throw InvalidArgumentException(HERE) << "b must be > 0, here b=" << b;
 }
 
@@ -74,17 +75,17 @@ Distribution GumbelAB::getDistribution() const
 /* Compute jacobian / native parameters */
 Matrix GumbelAB::gradient() const
 {
-  const Scalar dalphada = 0.0;
-  const Scalar dalphadb = -1 / (b_ * b_);
-  const Scalar dbetada = 1.0;
-  const Scalar dbetadb = 0.0;
+  const Scalar dbetada = 0.0;
+  const Scalar dbetadb = 1.0;
+  const Scalar dgammada = 1.0;
+  const Scalar dgammadb = 0.0;
 
   SquareMatrix nativeParametersGradient(IdentityMatrix(2));
-  nativeParametersGradient(0, 0) = dalphada;
-  nativeParametersGradient(1, 0) = dalphadb;
+  nativeParametersGradient(0, 0) = dbetada;
+  nativeParametersGradient(1, 0) = dbetadb;
 
-  nativeParametersGradient(0, 1) = dbetada;
-  nativeParametersGradient(1, 1) = dbetadb;
+  nativeParametersGradient(0, 1) = dgammada;
+  nativeParametersGradient(1, 1) = dgammadb;
 
   return nativeParametersGradient;
 }
@@ -99,12 +100,12 @@ Point GumbelAB::operator () (const Point & inP) const
 
   if (!(b > 0.0)) throw InvalidArgumentException(HERE) << "b must be > 0, here b=" << b;
 
-  const Scalar alpha = 1 / b;
-  const Scalar beta = a;
+  const Scalar beta = b;
+  const Scalar gamma = a;
 
   Point nativeParameters(inP);
-  nativeParameters[0] = alpha;
-  nativeParameters[1] = beta;
+  nativeParameters[0] = beta;
+  nativeParameters[1] = gamma;
 
   return nativeParameters;
 }
@@ -113,13 +114,13 @@ Point GumbelAB::operator () (const Point & inP) const
 Point GumbelAB::inverse(const Point & inP) const
 {
   if (inP.getDimension() != 2) throw InvalidArgumentException(HERE) << "the given point must have dimension=2, here dimension=" << inP.getDimension();
-  const Scalar alpha = inP[0];
-  const Scalar beta = inP[1];
+  const Scalar beta = inP[0];
+  const Scalar gamma = inP[1];
 
-  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "alpha must be > 0, here alpha=" << alpha;
+  if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "beta must be > 0, here beta=" << beta;
 
-  const Scalar a = beta;
-  const Scalar b = 1.0 / alpha;
+  const Scalar a = gamma;
+  const Scalar b = beta;
 
   Point abParameters(inP);
   abParameters[0] = a;

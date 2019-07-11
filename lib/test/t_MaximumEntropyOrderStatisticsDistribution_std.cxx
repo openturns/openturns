@@ -48,7 +48,7 @@ int main(int, char *[])
     coll.add(Trapezoidal(-2.0, -1.1, -1.0, 1.0));
     coll.add(LogUniform(1.0, 1.2));
     coll.add(Triangular(3.0, 4.5, 5.0));
-    coll.add(Beta(2.5, 6.0, 4.7, 5.2));
+    coll.add(Beta(2.5, 3.5, 4.7, 5.2));
 
     // Instanciate one distribution object
     MaximumEntropyOrderStatisticsDistribution distribution(coll);

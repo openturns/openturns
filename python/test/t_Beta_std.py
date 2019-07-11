@@ -8,7 +8,7 @@ RandomGenerator.SetSeed(0)
 
 try:
     # Instanciate one distribution object
-    distribution = Beta(2.0, 5.0, -1.0, 2.0)
+    distribution = Beta(2.0, 3.0, -1.0, 2.0)
     print("Distribution ", repr(distribution))
     print("Distribution ", distribution)
 
@@ -73,28 +73,28 @@ try:
     print("pdf gradient     =", repr(PDFgr))
     # by the finite difference technique
     PDFgrFD = Point(4)
-    PDFgrFD[0] = (Beta(distribution.getR() + eps, distribution.getT(), distribution.getA(), distribution.getB()).computePDF(point) -
-                  Beta(distribution.getR() - eps, distribution.getT(), distribution.getA(), distribution.getB()).computePDF(point)) / (2.0 * eps)
-    PDFgrFD[1] = (Beta(distribution.getR(), distribution.getT() + eps, distribution.getA(), distribution.getB()).computePDF(point) -
-                  Beta(distribution.getR(), distribution.getT() - eps, distribution.getA(), distribution.getB()).computePDF(point)) / (2.0 * eps)
-    PDFgrFD[2] = (Beta(distribution.getR(), distribution.getT(), distribution.getA() + eps, distribution.getB()).computePDF(point) -
-                  Beta(distribution.getR(), distribution.getT(), distribution.getA() - eps, distribution.getB()).computePDF(point)) / (2.0 * eps)
-    PDFgrFD[3] = (Beta(distribution.getR(), distribution.getT(), distribution.getA(), distribution.getB() + eps).computePDF(point) -
-                  Beta(distribution.getR(), distribution.getT(), distribution.getA(), distribution.getB() - eps).computePDF(point)) / (2.0 * eps)
+    PDFgrFD[0] = (Beta(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getA(), distribution.getB()).computePDF(point) -
+                  Beta(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getA(), distribution.getB()).computePDF(point)) / (2.0 * eps)
+    PDFgrFD[1] = (Beta(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getA(), distribution.getB()).computePDF(point) -
+                  Beta(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getA(), distribution.getB()).computePDF(point)) / (2.0 * eps)
+    PDFgrFD[2] = (Beta(distribution.getAlpha(), distribution.getBeta(), distribution.getA() + eps, distribution.getB()).computePDF(point) -
+                  Beta(distribution.getAlpha(), distribution.getBeta(), distribution.getA() - eps, distribution.getB()).computePDF(point)) / (2.0 * eps)
+    PDFgrFD[3] = (Beta(distribution.getAlpha(), distribution.getBeta(), distribution.getA(), distribution.getB() + eps).computePDF(point) -
+                  Beta(distribution.getAlpha(), distribution.getBeta(), distribution.getA(), distribution.getB() - eps).computePDF(point)) / (2.0 * eps)
     print("pdf gradient (FD)=", repr(PDFgrFD))
 
     # derivative of the PDF with regards the parameters of the distribution
     CDFgr = distribution.computeCDFGradient(point)
     print("cdf gradient     =", repr(CDFgr))
     CDFgrFD = Point(4)
-    CDFgrFD[0] = (Beta(distribution.getR() + eps, distribution.getT(), distribution.getA(), distribution.getB()).computeCDF(point) -
-                  Beta(distribution.getR() - eps, distribution.getT(), distribution.getA(), distribution.getB()).computeCDF(point)) / (2.0 * eps)
-    CDFgrFD[1] = (Beta(distribution.getR(), distribution.getT() + eps, distribution.getA(), distribution.getB()).computeCDF(point) -
-                  Beta(distribution.getR(), distribution.getT() - eps, distribution.getA(), distribution.getB()).computeCDF(point)) / (2.0 * eps)
-    CDFgrFD[2] = (Beta(distribution.getR(), distribution.getT(), distribution.getA() + eps, distribution.getB()).computeCDF(point) -
-                  Beta(distribution.getR(), distribution.getT(), distribution.getA() - eps, distribution.getB()).computeCDF(point)) / (2.0 * eps)
-    CDFgrFD[3] = (Beta(distribution.getR(), distribution.getT(), distribution.getA(), distribution.getB() + eps).computeCDF(point) -
-                  Beta(distribution.getR(), distribution.getT(), distribution.getA(), distribution.getB() - eps).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[0] = (Beta(distribution.getAlpha() + eps, distribution.getBeta(), distribution.getA(), distribution.getB()).computeCDF(point) -
+                  Beta(distribution.getAlpha() - eps, distribution.getBeta(), distribution.getA(), distribution.getB()).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[1] = (Beta(distribution.getAlpha(), distribution.getBeta() + eps, distribution.getA(), distribution.getB()).computeCDF(point) -
+                  Beta(distribution.getAlpha(), distribution.getBeta() - eps, distribution.getA(), distribution.getB()).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[2] = (Beta(distribution.getAlpha(), distribution.getBeta(), distribution.getA() + eps, distribution.getB()).computeCDF(point) -
+                  Beta(distribution.getAlpha(), distribution.getBeta(), distribution.getA() - eps, distribution.getB()).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[3] = (Beta(distribution.getAlpha(), distribution.getBeta(), distribution.getA(), distribution.getB() + eps).computeCDF(point) -
+                  Beta(distribution.getAlpha(), distribution.getBeta(), distribution.getA(), distribution.getB() - eps).computeCDF(point)) / (2.0 * eps)
     print("cdf gradient (FD)=",  repr(CDFgrFD))
 
     # quantile

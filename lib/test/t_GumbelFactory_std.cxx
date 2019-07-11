@@ -32,7 +32,7 @@ int main(int, char *[])
 
   try
   {
-    Gumbel distribution(2.0, 2.5);
+    Gumbel distribution(0.5, 2.5);
     UnsignedInteger size = 10000;
     Sample sample(distribution.getSample(size));
     GumbelFactory factory;

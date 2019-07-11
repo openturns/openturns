@@ -4,14 +4,18 @@
 Available constructors:
     GeneralizedExtremeValue(*mu=0.0, sigma=1.0, xi=0.0*)
 
+    GeneralizedExtremeValue(*distribution*)
+
 Parameters
 ----------
 mu : float
-    Location parameter :math:`\mu`.
+    Position parameter :math:`\mu`.
 sigma : float, :math:`\sigma > 0`
     Scale parameter :math:`\sigma`.
 xi : float
     Shape parameter :math:`\xi`.
+distribution : :class:`~openturns.WeibullMax`, :class:`~openturns.Frechet` or :class:`~openturns.Gumbel`
+    The underlying distribution.
 
 Notes
 -----
@@ -52,7 +56,7 @@ Its first moments are:
 
 where :math:`\gamma` is Euler's constant.
 
-Link with other distributions: if :math:`X\sim`:class:`~openturns.GeneralizedExtremeValue`:math:`(\mu, \sigma, \xi)`, then :math:`X\sim`:class:`~openturns.Frechet`:math:`(1/\xi, \sigma/\xi, \mu-\sigma/\xi)` if :math:`\xi>0`, :math:`-X\sim`:class:`~openturns.Weibull`:math:`(-\sigma/\xi, -1/\xi, \sigma/\xi-\mu)` if :math:`\xi<0` (note the minus sign) and :math:`X\sim`:class:`~openturns.Gumbel`:math:`(1/\sigma, \mu)` if :math:`\xi=0`.
+Link with other distributions: if :math:`X\sim`:class:`~openturns.GeneralizedExtremeValue`:math:`(\mu, \sigma, \xi)`, then :math:`X\sim`:class:`~openturns.Frechet`:math:`(1/\xi, \sigma/\xi, \mu-\sigma/\xi)` if :math:`\xi>0`, :math:`-X\sim`:class:`~openturns.WeibullMax`:math:`(-\sigma/\xi, -1/\xi, \sigma/\xi-\mu)` if :math:`\xi<0` (note the minus sign) and :math:`X\sim`:class:`~openturns.Gumbel`:math:`(1/\sigma, \mu)` if :math:`\xi=0`.
 
 Examples
 --------
@@ -73,17 +77,47 @@ Draw a sample:
 Returns
 -------
 distribution : :class:`~openturns.Distribution`
-     The actual distribution in charge of the computation (:class:`~openturns.Weibull`, :class:`~openturns.Frechet`, :class:`~openturns.Gumbel`)."
+     The actual distribution in charge of the computation (:class:`~openturns.WeibullMax`, :class:`~openturns.Frechet`, :class:`~openturns.Gumbel`)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValue::asFrechet
+"Accessor to the internal distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.Frechet`
+     The actual distribution in charge of the computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValue::asWeibullMax
+"Accessor to the internal distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.WeibullMax`
+     The actual distribution in charge of the computation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedExtremeValue::asGumbel
+"Accessor to the internal distribution.
+
+Returns
+-------
+distribution : :class:`~openturns.Gumbel`
+     The actual distribution in charge of the computation."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedExtremeValue::getMu
-"Accessor to the distribution's location parameter :math:`\mu`.
+"Accessor to the distribution's position parameter :math:`\mu`.
 
 Returns
 -------
 mu : float
-    Location parameter :math:`\mu`."
+    Position parameter :math:`\mu`."
 
 // ---------------------------------------------------------------------
 
@@ -113,17 +147,17 @@ xi : float
 Parameters
 ----------
 distribution : :class:`~openturns.Distribution`
-     The actual distribution in charge of the computation (:class:`~openturns.Weibull`, :class:`~openturns.Frechet`, :class:`~openturns.Gumbel`)."
+     The actual distribution in charge of the computation (:class:`~openturns.WeibullMax`, :class:`~openturns.Frechet`, :class:`~openturns.Gumbel`)."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedExtremeValue::setMu
-"Accessor to the distribution's location parameter :math:`\mu`.
+"Accessor to the distribution's position parameter :math:`\mu`.
 
 Parameters
 ----------
 mu : float
-    Location parameter :math:`\mu`."
+    Position parameter :math:`\mu`."
 
 // ---------------------------------------------------------------------
 

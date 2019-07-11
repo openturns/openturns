@@ -126,8 +126,8 @@ int main(int, char *[])
     fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
 
     // Specific to this distribution
-    Scalar mu = distribution.getMu();
-    fullprint << "mu=" << mu << std::endl;
+    Scalar gamma = distribution.getGamma();
+    fullprint << "gamma=" << gamma << std::endl;
     Point standardDeviation = distribution.getStandardDeviation();
     fullprint << "standard deviation=" << standardDeviation << std::endl;
     Point skewness = distribution.getSkewness();

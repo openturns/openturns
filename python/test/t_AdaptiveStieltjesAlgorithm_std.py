@@ -29,7 +29,7 @@ try:
               clean(algo1.getRecurrenceCoefficients(i)))
 
     # Second test
-    distribution = Beta(0.5, 3.0, -1.0, 1.0)
+    distribution = Beta(0.5, 2.5, -1.0, 1.0)
     algo0 = JacobiFactory(0.5, 3.0, 1)
     algo1 = AdaptiveStieltjesAlgorithm(distribution)
     print(algo1)

@@ -1,13 +1,10 @@
 %feature("docstring") OT::Logistic
 "Logistic distribution.
 
-Available constructors:
-    Logistic(*alpha=0.0, beta=1.0*)
-
 Parameters
 ----------
-alpha : float
-    Location parameter :math:`\alpha`.
+mu : float
+    Mean parameter :math:`\mu`.
 beta : float, :math:`\beta > 0`
     Scale parameter :math:`\beta`.
 
@@ -17,12 +14,12 @@ Its probability density function is defined as:
 
 .. math::
 
-    f_X(x) = \frac{\exp\left(\left(- \frac{x - \alpha}{\beta}\right)\right)}
-                  {\beta \left(1 + \exp\left(- \frac{x-\alpha}{\beta}
+    f_X(x) = \frac{\exp\left(\left(- \frac{x - \mu}{\beta}\right)\right)}
+                  {\beta \left(1 + \exp\left(- \frac{x-\mu}{\beta}
                                              \right)\right)^2},
              \quad x \in \Rset
 
-with :math:`\alpha \in \Rset` and :math:`\beta > 0`.
+with :math:`\mu \in \Rset` and :math:`\beta > 0`.
 
 Its first moments are:
 
@@ -30,7 +27,7 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{X} & = & \alpha \\
+        \Expect{X} & = & \mu \\
         \Var{X} & = & \frac{1}{3} \pi^2 \beta^2
     \end{eqnarray*}
 
@@ -47,13 +44,13 @@ Draw a sample:
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Logistic::getAlpha
-"Accessor to the distribution's location parameter :math:`\alpha`.
+%feature("docstring") OT::Logistic::getMu
+"Accessor to the distribution's mean parameter :math:`\mu`.
 
 Returns
 -------
-alpha : float
-    Location parameter :math:`\alpha`."
+mu : float
+    Mean parameter :math:`\mu`."
 
 // ---------------------------------------------------------------------
 
@@ -67,13 +64,13 @@ beta : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Logistic::setAlpha
-"Accessor to the distribution's location parameter :math:`\alpha`.
+%feature("docstring") OT::Logistic::setMu
+"Accessor to the distribution's mean parameter :math:`\mu`.
 
 Parameters
 ----------
-alpha : float, :math:`\alpha \in \Rset`
-    Location parameter :math:`\alpha`."
+mu : float, :math:`\mu \in \Rset`
+    Mean parameter :math:`\mu`."
 
 // ---------------------------------------------------------------------
 

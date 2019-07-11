@@ -30,8 +30,8 @@ try:
     kernels.add(Uniform())
     kernels.add(Triangular())
     kernels.add(Logistic())
-    kernels.add(Beta(2.0, 4.0, -1.0, 1.0))
-    kernels.add(Beta(3.0, 6.0, -1.0, 1.0))
+    kernels.add(Beta(2.0, 2.0, -1.0, 1.0))
+    kernels.add(Beta(3.0, 3.0, -1.0, 1.0))
     meanExact = distribution.getMean()
     covarianceExact = distribution.getCovariance()
     for i in range(kernels.getSize()):
@@ -62,7 +62,7 @@ try:
     # Test for boundary correction
     distributionCollection = DistributionCollection(2)
     distributionCollection[0] = Normal(0.0, 1.0)
-    distributionCollection[1] = Beta(0.7, 1.6, -1.0, 2.0)
+    distributionCollection[1] = Beta(0.7, 0.9, -1.0, 2.0)
     sampleCollection = [distributionCollection[0].getSample(
         discretization), distributionCollection[1].getSample(discretization)]
     for i in range(kernels.getSize()):

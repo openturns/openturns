@@ -41,8 +41,8 @@ public:
   InverseNormal();
 
   /** Parameters constructor */
-  InverseNormal(const Scalar lambda,
-                const Scalar mu);
+  InverseNormal(const Scalar mu,
+                const Scalar lambda);
 
 
   /** Comparison operator */
@@ -93,9 +93,14 @@ public:
   /** Get the raw moments of the standardized distribution */
   Point getStandardMoment(const UnsignedInteger n) const;
 
-  /* Interface specific to InverseNormal */
+  /** @deprecated Interface specific to InverseNormal */
   void setLambdaMu(const Scalar lambda,
                    const Scalar mu);
+
+  /** Interface specific to InverseNormal */
+  void setMuLambda(const Scalar mu,
+                   const Scalar lambda);
+
   /** lambda accessor */
   Scalar getLambda() const;
 
@@ -129,8 +134,8 @@ private:
   void computeCovariance() const;
 
   /** The main parameter set of the distribution */
-  Scalar lambda_;
   Scalar mu_;
+  Scalar lambda_;
 
 }; /* class InverseNormal */
 

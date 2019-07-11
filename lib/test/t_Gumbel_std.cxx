@@ -27,7 +27,7 @@ using namespace OT::Test;
 class TestObject : public Gumbel
 {
 public:
-  TestObject() : Gumbel(2.0, -0.5) {}
+  TestObject() : Gumbel(0.5, -0.5) {}
   virtual ~TestObject() {}
 };
 
@@ -44,7 +44,7 @@ int main(int, char *[])
     checkClassWithClassName<TestObject>();
 
     // Instanciate one distribution object
-    Gumbel distribution(2.0, -0.5);
+    Gumbel distribution(0.5, -0.5);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
 
@@ -90,18 +90,18 @@ int main(int, char *[])
     Point PDFgr = distribution.computePDFGradient( point );
     fullprint << "pdf gradient     =" << PDFgr << std::endl;
     Point PDFgrFD(2);
-    PDFgrFD[0] = (Gumbel(distribution.getAlpha() + eps, distribution.getBeta()).computePDF(point) -
-                  Gumbel(distribution.getAlpha() - eps, distribution.getBeta()).computePDF(point)) / (2.0 * eps);
-    PDFgrFD[1] = (Gumbel(distribution.getAlpha(), distribution.getBeta() + eps).computePDF(point) -
-                  Gumbel(distribution.getAlpha(), distribution.getBeta() - eps).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[0] = (Gumbel(distribution.getBeta() + eps, distribution.getGamma()).computePDF(point) -
+                  Gumbel(distribution.getBeta() - eps, distribution.getGamma()).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[1] = (Gumbel(distribution.getBeta(), distribution.getGamma() + eps).computePDF(point) -
+                  Gumbel(distribution.getBeta(), distribution.getGamma() - eps).computePDF(point)) / (2.0 * eps);
     fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
     Point CDFgr = distribution.computeCDFGradient( point );
     fullprint << "cdf gradient     =" << CDFgr << std::endl;
     Point CDFgrFD(2);
-    CDFgrFD[0] = (Gumbel(distribution.getAlpha() + eps, distribution.getBeta()).computeCDF(point) -
-                  Gumbel(distribution.getAlpha() - eps, distribution.getBeta()).computeCDF(point)) / (2.0 * eps);
-    CDFgrFD[1] = (Gumbel(distribution.getAlpha(), distribution.getBeta() + eps).computeCDF(point) -
-                  Gumbel(distribution.getAlpha(), distribution.getBeta() - eps).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[0] = (Gumbel(distribution.getBeta() + eps, distribution.getGamma()).computeCDF(point) -
+                  Gumbel(distribution.getBeta() - eps, distribution.getGamma()).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[1] = (Gumbel(distribution.getBeta(), distribution.getGamma() + eps).computeCDF(point) -
+                  Gumbel(distribution.getBeta(), distribution.getGamma() - eps).computeCDF(point)) / (2.0 * eps);
     fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
     Complex CF = distribution.computeCharacteristicFunction( point[0] );
     fullprint << "characteristic function=" << CF << std::endl;

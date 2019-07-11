@@ -4,6 +4,15 @@
 
 === Library ===
 
+==== IMPORTANT: Distributions parametrization changes ====
+ * New argument ordering in Frechet ctor: scale(beta), shape(alpha), location(gamma) (swapped alpha and beta)
+ * New parametrization in Gumbel: scale(beta), position(gamma) (beta=1/alpha for first argument)
+ * New parametrization in Beta: shape(alpha), shape(beta), location(a), location(b) (beta=t-r for second argument)
+ * New parametrization in InverseGamma: rate(lambda), shape(k) (swapped arguments)
+ * New parametrization in InverseNormal: location(mu), rate(lambda) (swapped arguments)
+ * New parametrization in Laplace: mean(mu), rate(lambda) (swapped arguments)
+ => One can use "import openturns.shims as ot" to maintain compatibility with older scripts
+
 ==== Major changes ====
  * Add dlib solvers
  * FittingTest methods to return fitted distributions with factory as argument
@@ -12,6 +21,12 @@
  * Dlib
  * SquaredNormal
  * NullHessian
+ * GumbelLambdaGamma
+ * LogNormalMuErrorFactor
+ * WeibullMax
+ * WeibullMaxFactory
+ * WeibullMaxMuSigma
+ * GeneralizedExtremeValueFactory
 
 ==== API changes ====
  * Removed deprecated specific RandomVector constructors
@@ -23,6 +38,10 @@
  * Removed deprecated (Linear|Quadratic)(LeastSquares|Taylor)::getResponseSurface
  * Removed deprecated VisualTest::DrawEmpiricalCDF,DrawHistogram,DrawClouds
  * Moved dot to Point::dot
+ * Deprecated Weibull in favor of WeibullMin
+ * Deprecated WeibullMuSigma in favor of WeibullMinMuSigma
+ * Deprecated WeibullFactory in favor of WeibullMinFactory, buildAsWeibull
+ * Deprecated GumbelAB
 
 === Python module ===
 

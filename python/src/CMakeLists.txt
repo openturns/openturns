@@ -612,7 +612,11 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       Gamma.i Gamma_doc.i.in
                       GammaFactory.i GammaFactory_doc.i.in
                       GammaMuSigma.i GammaMuSigma_doc.i.in
+                      WeibullMax.i WeibullMax_doc.i.in
+                      WeibullMaxFactory.i WeibullMaxFactory_doc.i.in
+		      WeibullMaxMuSigma.i WeibullMaxMuSigma_doc.i.in
                       GeneralizedExtremeValue.i GeneralizedExtremeValue_doc.i.in
+		      GeneralizedExtremeValueFactory.i GeneralizedExtremeValueFactory_doc.i.in
                       GeneralizedPareto.i GeneralizedPareto_doc.i.in
                       GeneralizedParetoFactory.i GeneralizedParetoFactory_doc.i.in
                       Geometric.i Geometric_doc.i.in
@@ -620,6 +624,7 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       Gumbel.i Gumbel_doc.i.in
                       GumbelFactory.i GumbelFactory_doc.i.in
                       GumbelAB.i GumbelAB_doc.i.in
+                      GumbelLambdaGamma.i GumbelLambdaGamma_doc.i.in
                       GumbelMuSigma.i GumbelMuSigma_doc.i.in
                    )
 
@@ -641,6 +646,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       LogisticFactory.i LogisticFactory_doc.i.in
                       LogNormal.i LogNormal_doc.i.in
                       LogNormalFactory.i LogNormalFactory_doc.i.in
+                      LogNormalMuErrorFactor.i LogNormalMuErrorFactor_doc.i.in
                       LogNormalMuSigma.i LogNormalMuSigma_doc.i.in
                       LogNormalMuSigmaOverMu.i LogNormalMuSigmaOverMu_doc.i.in
                       LogUniform.i LogUniform_doc.i.in
@@ -696,9 +702,9 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       UserDefined.i UserDefined_doc.i.in
                       UserDefinedFactory.i UserDefinedFactory_doc.i.in
                       VonMises.i VonMises_doc.i.in
-                      Weibull.i Weibull_doc.i.in
-                      WeibullFactory.i WeibullFactory_doc.i.in
-                      WeibullMuSigma.i WeibullMuSigma_doc.i.in
+                      WeibullMin.i WeibullMin_doc.i.in
+                      WeibullMinFactory.i WeibullMinFactory_doc.i.in
+                      WeibullMinMuSigma.i WeibullMinMuSigma_doc.i.in
                       Wishart.i Wishart_doc.i.in
                       ZipfMandelbrot.i ZipfMandelbrot_doc.i.in
                       UncertaintyDistTemplateDefs.i
@@ -945,7 +951,7 @@ endif ()
 install (TARGETS memoryview LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
 
 
-set (EXTRA_PYTHON_FILES __init__.py dist.py viewer.py coupling_tools.py)
+set (EXTRA_PYTHON_FILES __init__.py dist.py viewer.py coupling_tools.py shims.py)
 install (FILES ${EXTRA_PYTHON_FILES}
           DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns
        )

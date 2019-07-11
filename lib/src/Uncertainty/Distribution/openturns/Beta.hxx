@@ -40,8 +40,8 @@ public:
   Beta();
 
   /** Parameters constructor */
-  Beta(const Scalar r,
-       const Scalar t,
+  Beta(const Scalar alpha,
+       const Scalar beta,
        const Scalar a,
        const Scalar b);
 
@@ -123,11 +123,19 @@ public:
 
   /* Interface specific to Beta */
 
-  /** R accessor */
+  /** Alpha accessor */
+  void setAlpha(const Scalar alpha);
+  Scalar getAlpha() const;
+
+  /** Beta accessor */
+  void setBeta(const Scalar beta);
+  Scalar getBeta() const;
+
+  /** @deprecated R accessor */
   void setR(const Scalar r);
   Scalar getR() const;
 
-  /** T accessor */
+  /** @deprecated T accessor */
   void setT(const Scalar t);
   Scalar getT() const;
 
@@ -161,10 +169,6 @@ private:
   Scalar computeScalarQuantile(const Scalar prob,
                                const Bool tail = false) const;
 
-  /** RT accessor that avoid a check between the setting of r and the setting of t */
-  void setRT(const Scalar r,
-             const Scalar t);
-
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
 
@@ -172,8 +176,8 @@ private:
   void update();
 
   /** The main parameter set of the distribution */
-  Scalar r_;
-  Scalar t_;
+  Scalar alpha_;
+  Scalar beta_;
   Scalar a_;
   Scalar b_;
   Scalar normalizationFactor_;

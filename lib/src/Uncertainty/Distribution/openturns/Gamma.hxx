@@ -41,8 +41,8 @@ public:
   Gamma();
 
   /** Parameters constructor */
-  Gamma(const Scalar arg1,
-        const Scalar arg2,
+  Gamma(const Scalar k,
+        const Scalar lambda,
         const Scalar gamma = 0.0);
 
   /** Comparison operator */

@@ -38,13 +38,4 @@ Create the parameters of the Beta distribution:
 Convert parameters into the native parameters:
 
 >>> print(parameters.evaluate())
-[2,5,-1,2]
-
-The gradient of the transformation of the native parameters into the new
-parameters:
-
->>> print(parameters.gradient())
-[[   2.33333    1.66667    0          0        ]
- [  -8        -20          0          0        ]
- [  -3         -5          1          0        ]
- [   0.666667   3.33333    0          1        ]]"
+[2,3,-1,2]"

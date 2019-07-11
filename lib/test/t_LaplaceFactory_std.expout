@@ -1,8 +1,8 @@
-Distribution          =class=Laplace name=Laplace dimension=1 lambda=2.5 mu=-1.3
-Estimated distribution=class=Laplace name=Laplace dimension=1 lambda=2.46764 mu=-1.29551
-Default distribution=class=Laplace name=Laplace dimension=1 lambda=1 mu=0
-Distribution from parameters=class=Laplace name=Laplace dimension=1 lambda=2.5 mu=-1.3
-Laplace          =class=Laplace name=Laplace dimension=1 lambda=2.5 mu=-1.3
-Estimated laplace=class=Laplace name=Laplace dimension=1 lambda=2.46764 mu=-1.29551
-Default laplace=class=Laplace name=Laplace dimension=1 lambda=1 mu=0
-Laplace from parameters=class=Laplace name=Laplace dimension=1 lambda=2.5 mu=-1.3
+Distribution          =class=Laplace name=Laplace dimension=1 mu=-1.3 lambda=2.5
+Estimated distribution=class=Laplace name=Laplace dimension=1 mu=-1.29551 lambda=2.46764
+Default distribution=class=Laplace name=Laplace dimension=1 mu=0 lambda=1
+Distribution from parameters=class=Laplace name=Laplace dimension=1 mu=-1.3 lambda=2.5
+Laplace          =class=Laplace name=Laplace dimension=1 mu=-1.3 lambda=2.5
+Estimated laplace=class=Laplace name=Laplace dimension=1 mu=-1.29551 lambda=2.46764
+Default laplace=class=Laplace name=Laplace dimension=1 mu=0 lambda=1
+Laplace from parameters=class=Laplace name=Laplace dimension=1 mu=-1.3 lambda=2.5

@@ -27,7 +27,7 @@ using namespace OT::Test;
 class TestObject : public InverseGamma
 {
 public:
-  TestObject() : InverseGamma(1.5, 2.5) {}
+  TestObject() : InverseGamma(2.5, 1.5) {}
   virtual ~TestObject() {}
 };
 
@@ -45,8 +45,8 @@ int main(int, char *[])
 
     // Instanciate one distribution object
     Collection<InverseGamma> allDistributions(0);
-    allDistributions.add(InverseGamma(5.5, 2.5));
-    allDistributions.add(InverseGamma(15.0, 2.5));
+    allDistributions.add(InverseGamma(2.5, 5.5));
+    allDistributions.add(InverseGamma(2.5, 15.0));
     for (UnsignedInteger n = 0; n < allDistributions.getSize(); ++n)
     {
       InverseGamma distribution(allDistributions[n]);
@@ -77,7 +77,7 @@ int main(int, char *[])
       }
 
       // Define a point
-      Point point( distribution.getDimension(), 2.0 / (distribution.getK() * distribution.getLambda()) );
+      Point point( distribution.getDimension(), 2.0 / (distribution.getLambda() * distribution.getK()) );
       fullprint << "Point= " << point << std::endl;
 
       // Show PDF and CDF of point
@@ -105,18 +105,18 @@ int main(int, char *[])
       Point PDFgr = distribution.computePDFGradient( point );
       fullprint << "pdf gradient     =" << PDFgr << std::endl;
       Point PDFgrFD(2);
-      PDFgrFD[0] = (InverseGamma(distribution.getK() + eps, distribution.getLambda()).computePDF(point) -
-                    InverseGamma(distribution.getK() - eps, distribution.getLambda()).computePDF(point)) / (2.0 * eps);
-      PDFgrFD[1] = (InverseGamma(distribution.getK(), distribution.getLambda() + eps).computePDF(point) -
-                    InverseGamma(distribution.getK(), distribution.getLambda() - eps).computePDF(point)) / (2.0 * eps);
+      PDFgrFD[0] = (InverseGamma(distribution.getLambda() + eps, distribution.getK()).computePDF(point) -
+                    InverseGamma(distribution.getLambda() - eps, distribution.getK()).computePDF(point)) / (2.0 * eps);
+      PDFgrFD[1] = (InverseGamma(distribution.getLambda(), distribution.getK() + eps).computePDF(point) -
+                    InverseGamma(distribution.getLambda(), distribution.getK() - eps).computePDF(point)) / (2.0 * eps);
       fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
       Point CDFgr = distribution.computeCDFGradient( point );
       fullprint << "cdf gradient     =" << CDFgr << std::endl;
       Point CDFgrFD(2);
-      CDFgrFD[0] = (InverseGamma(distribution.getK() + eps, distribution.getLambda()).computeCDF(point) -
-                    InverseGamma(distribution.getK() - eps, distribution.getLambda()).computeCDF(point)) / (2.0 * eps);
-      CDFgrFD[1] = (InverseGamma(distribution.getK(), distribution.getLambda() + eps).computeCDF(point) -
-                    InverseGamma(distribution.getK(), distribution.getLambda() - eps).computeCDF(point)) / (2.0 * eps);
+      CDFgrFD[0] = (InverseGamma(distribution.getLambda() + eps, distribution.getK()).computeCDF(point) -
+                    InverseGamma(distribution.getLambda() - eps, distribution.getK()).computeCDF(point)) / (2.0 * eps);
+      CDFgrFD[1] = (InverseGamma(distribution.getLambda(), distribution.getK() + eps).computeCDF(point) -
+                    InverseGamma(distribution.getLambda(), distribution.getK() - eps).computeCDF(point)) / (2.0 * eps);
       fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
       Point quantile = distribution.computeQuantile( 0.95 );
       fullprint << "quantile=" << quantile << std::endl;

@@ -55,14 +55,19 @@
 %include Gamma.i
 %include GammaFactory.i
 %include GammaMuSigma.i
-%include GeneralizedExtremeValue.i
 %include GeneralizedPareto.i
 %include GeneralizedParetoFactory.i
 %include Geometric.i
 %include GeometricFactory.i
 %include Gumbel.i
+%include WeibullMax.i
+%include WeibullMaxFactory.i
+%include WeibullMaxMuSigma.i
+%include GeneralizedExtremeValue.i
+%include GeneralizedExtremeValueFactory.i
 %include GumbelFactory.i
 %include GumbelAB.i
+%include GumbelLambdaGamma.i
 %include GumbelMuSigma.i
 
 /* At last we include template definitions */

@@ -43,10 +43,10 @@ public:
   MeixnerDistribution();
 
   /** Parameters constructor */
-  MeixnerDistribution(const Scalar alpha,
-                      const Scalar beta,
+  MeixnerDistribution(const Scalar beta,
+                      const Scalar alpha,
                       const Scalar delta,
-                      const Scalar mu);
+                      const Scalar gamma);
 
 
   /** Comparison operator */
@@ -119,7 +119,11 @@ public:
   void setDelta(const Scalar delta);
   Scalar getDelta() const;
 
-  /** Mu accessor */
+  /** Gamma accessor */
+  void setGamma(const Scalar gamma);
+  Scalar getGamma() const;
+
+  /** @deprecated Mu accessor */
   void setMu(const Scalar mu);
   Scalar getMu() const;
 
@@ -151,6 +155,11 @@ private:
   void computeRange();
 
   /** Set simultaneously the tree scale and shape parameters */
+  void setBetaAlphaDelta(const Scalar beta,
+                         const Scalar alpha,
+                         const Scalar delta);
+
+  /** @deprecated Set simultaneously the tree scale and shape parameters */
   void setAlphaBetaDelta(const Scalar alpha,
                          const Scalar beta,
                          const Scalar delta);
@@ -165,10 +174,10 @@ private:
   void update();
 
   /** The main parameter set of the distribution */
-  Scalar alpha_;
   Scalar beta_;
+  Scalar alpha_;
   Scalar delta_;
-  Scalar mu_;
+  Scalar gamma_;
 
   /** The logarithm of the normalization factor */
   Scalar logNormalizationFactor_;

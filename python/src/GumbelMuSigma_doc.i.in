@@ -17,10 +17,10 @@ The native parameters are defined as follows:
 
 .. math::
 
-    \alpha &= \frac{\pi}{\sigma \sqrt{6}} \\
-    \beta &= \mu - \frac{\gamma \sigma \sqrt{6}}{\pi}
+    \beta &= \frac{\pi}{\sqrt{6}} \sigma \\
+    \gamma &= \mu - \frac{\gamma_e \sigma \sqrt{6}}{\pi}
 
-where :math:`\gamma` is the Euler-Mascheroni constant.
+where :math:`\gamma_e` is the Euler-Mascheroni constant.
 
 See also
 --------
@@ -36,11 +36,4 @@ Create the parameters of the Gumbel distribution:
 Convert parameters into the native parameters:
 
 >>> print(parameters.evaluate())
-[0.986577,0.914931]
-
-The gradient of the transformation of the native parameters into the new
-parameters:
-
->>> print(parameters.gradient())
-[[  0         1        ]
- [ -0.758905 -0.450053 ]]"
+[1.01361,0.914931]"

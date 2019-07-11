@@ -32,12 +32,12 @@ CLASSNAMEINIT(Frechet)
 static const Factory<Frechet> Factory_Frechet;
 
 /* Parameters constructor */
-Frechet::Frechet(const Scalar alpha,
-                 const Scalar beta,
+Frechet::Frechet(const Scalar beta,
+                 const Scalar alpha,
                  const Scalar gamma)
   : ContinuousDistribution()
-  , alpha_(alpha)
   , beta_(beta)
+  , alpha_(alpha)
   , gamma_(gamma)
 {
   setAlpha(alpha);
@@ -52,7 +52,7 @@ Frechet::Frechet(const Scalar alpha,
 Bool Frechet::operator ==(const Frechet & other) const
 {
   if (this == &other) return true;
-  return (alpha_ == other.alpha_) && (beta_ == other.beta_) && (gamma_ == other.gamma_);
+  return (beta_ == other.beta_) && (alpha_ == other.alpha_) && (gamma_ == other.gamma_);
 }
 
 Bool Frechet::equals(const DistributionImplementation & other) const
@@ -68,8 +68,8 @@ String Frechet::__repr__() const
   oss << "class=" << Frechet::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
-      << " alpha=" << alpha_
       << " beta=" << beta_
+      << " alpha=" << alpha_
       << " gamma=" << gamma_;
   return oss;
 }
@@ -77,7 +77,7 @@ String Frechet::__repr__() const
 String Frechet::__str__(const String & ) const
 {
   OSS oss;
-  oss << getClassName() << "(alpha = " << alpha_ << ", beta = " << beta_ << ", gamma = " << gamma_ << ")";
+  oss << getClassName() << "(beta = " << beta_ << ", alpha = " << alpha_ << ", gamma = " << gamma_ << ")";
   return oss;
 }
 
@@ -170,8 +170,8 @@ LevelSet Frechet::computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, S
 Point Frechet::getParameter() const
 {
   Point point(3);
-  point[0] = alpha_;
-  point[1] = beta_;
+  point[0] = beta_;
+  point[1] = alpha_;
   point[2] = gamma_;
   return point;
 }
@@ -188,8 +188,8 @@ void Frechet::setParameter(const Point & parameter)
 Description Frechet::getParameterDescription() const
 {
   Description description(3);
-  description[0] = "alpha";
-  description[1] = "beta";
+  description[0] = "beta";
+  description[1] = "alpha";
   description[2] = "gamma";
   return description;
 }
@@ -205,8 +205,8 @@ Point Frechet::computePDFGradient(const Point & point) const
   const Scalar logCdf = -std::pow((x - gamma_) / beta_, -alpha_);
   const Scalar logCdfm1 = std::pow((x - gamma_) / beta_, -alpha_ - 1.0);
   const Scalar cdf = std::exp(logCdf);
-  pdfGradient[0] = -alpha_ * logCdfm1 * cdf * std::log((x - gamma_) / beta_) / beta_ - alpha_ * logCdf * logCdfm1 * cdf * std::log((x - gamma_) / beta_) / beta_ + logCdfm1 * cdf / beta_;
-  pdfGradient[1] = alpha_ * alpha_ * logCdf * logCdfm1 * cdf / (beta_ * beta_) - alpha_ * logCdfm1 * (-alpha_ - 1.0) * cdf / (beta_ * beta_) - alpha_ * logCdfm1 * cdf / (beta_ * beta_);
+  pdfGradient[0] = alpha_ * alpha_ * logCdf * logCdfm1 * cdf / (beta_ * beta_) - alpha_ * logCdfm1 * (-alpha_ - 1.0) * cdf / (beta_ * beta_) - alpha_ * logCdfm1 * cdf / (beta_ * beta_);
+  pdfGradient[1] = -alpha_ * logCdfm1 * cdf * std::log((x - gamma_) / beta_) / beta_ - alpha_ * logCdf * logCdfm1 * cdf * std::log((x - gamma_) / beta_) / beta_ + logCdfm1 * cdf / beta_;
   pdfGradient[2] = alpha_ * alpha_ * logCdf * logCdfm1 * cdf / (beta_ * (x - gamma_)) - alpha_ * logCdfm1 * (-alpha_ - 1.0) * cdf / (beta_ * (x - gamma_));
   return pdfGradient;
 }
@@ -221,8 +221,8 @@ Point Frechet::computeCDFGradient(const Point & point) const
   if (x <= gamma_) return cdfGradient;
   const Scalar logCdf = -std::pow((x - gamma_) / beta_, -alpha_);
   const Scalar cdf = std::exp(logCdf);
-  cdfGradient[0] = -logCdf * cdf * std::log((x - gamma_) / beta_);
-  cdfGradient[1] = alpha_ * logCdf * cdf / beta_;
+  cdfGradient[0] = alpha_ * logCdf * cdf / beta_;
+  cdfGradient[1] = -logCdf * cdf * std::log((x - gamma_) / beta_);
   cdfGradient[2] = alpha_ * logCdf * cdf / (x - gamma_);
   return cdfGradient;
 }
@@ -291,7 +291,7 @@ Point Frechet::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Frechet::getStandardRepresentative() const
 {
-  return new Frechet(alpha_, 1.0, 0.0);
+  return new Frechet(1.0, alpha_, 0.0);
 }
 
 /* Alpha accessor */
@@ -353,8 +353,8 @@ Scalar Frechet::getGamma() const
 void Frechet::save(Advocate & adv) const
 {
   ContinuousDistribution::save(adv);
-  adv.saveAttribute( "alpha_", alpha_ );
   adv.saveAttribute( "beta_", beta_ );
+  adv.saveAttribute( "alpha_", alpha_ );
   adv.saveAttribute( "gamma_", gamma_ );
 }
 
@@ -362,8 +362,8 @@ void Frechet::save(Advocate & adv) const
 void Frechet::load(Advocate & adv)
 {
   ContinuousDistribution::load(adv);
-  adv.loadAttribute( "alpha_", alpha_ );
   adv.loadAttribute( "beta_", beta_ );
+  adv.loadAttribute( "alpha_", alpha_ );
   adv.loadAttribute( "gamma_", gamma_ );
   setDimension(1);
   computeRange();

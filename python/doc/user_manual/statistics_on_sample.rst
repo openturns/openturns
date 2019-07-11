@@ -40,6 +40,7 @@ Building distributions from samples
     FisherSnedecorFactory
     FrechetFactory
     GammaFactory
+    GeneralizedExtremeValueFactory
     GeneralizedParetoFactory
     GeometricFactory
     GumbelFactory
@@ -90,7 +91,8 @@ Building distributions from samples
     TruncatedNormalFactory
     UniformFactory
     UserDefinedFactory
-    WeibullFactory
+    WeibullMinFactory
+    WeibullMaxFactory
 
 Building copulas from samples
 =============================

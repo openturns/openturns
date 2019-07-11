@@ -1,5 +1,6 @@
 ##################################################
 Distribution  GeneralizedExtremeValue(mu=2, sigma=1.5, xi=-0.15)
+conversion as  WeibullMax(beta = 10, alpha = 6.66667, gamma = 12)
 Elliptical =  False
 Continuous =  True
 oneRealization= [2.00915]
@@ -10,32 +11,33 @@ Kolmogorov test for the generator, sample size= 100  is  True
 Kolmogorov test for the generator, sample size= 10000  is  True
 Point=  [1.0]
 ddf     = [0.108952]
-ddf (FD)= 0.10895225309
-log pdf= -1.75315345339
-pdf     = 0.17322681854
-pdf (FD)= 0.173226818544
-cdf= 0.151407657069
-ccdf= 0.848592342931
-survival= 0.848592342931
-Inverse survival= [5.59515]
-Survival(inverse survival)= 0.05
-pdf gradient     = []
+ddf (FD)= [0.108952]
+log pdf= [-1.75315]
+pdf     = [0.173227]
+pdf (FD)= [0.173227]
+cdf= [0.151408]
+ccdf= [0.848592]
+survival= [0.848592]
+Inverse survival= [0.211041]
+Survival(inverse survival)= [0.95]
+pdf gradient     = [-0.108952,-0.0428497,0.0749046]
 pdf gradient (FD)= [-0.108952,-0.0428497,0.0749046]
-cdf gradient     = []
+cdf gradient     = [-0.173227,0.115485,-0.0559084]
 cdf gradient (FD)= [-0.173227,0.115485,-0.0559084]
 quantile= [5.59515]
 cdf(quantile)= 0.95
+entropy=1.896098
 Minimum volume interval= [-0.359967, 5.97545]
 threshold= 0.95
 Minimum volume level set= {x | f(x) <= 3.31111} with f=
 MinimumVolumeLevelSetEvaluation(GeneralizedExtremeValue(mu=2, sigma=1.5, xi=-0.15))
-beta= 0.036475780379
-Bilateral confidence interval= [-0.162817, -0.162817]
-beta= 0.95
+beta= [0.0364758]
+Bilateral confidence interval= [-0.162817, 6.23879]
+beta= [0.95]
 Unilateral confidence interval (lower tail)= [-4.83649, 5.59515]
-beta= 0.95
-Unilateral confidence interval (upper tail)= [5.59515, 12]
-beta= 0.95
+beta= [0.95]
+Unilateral confidence interval (upper tail)= [0.211041, 12]
+beta= [0.95]
 mean= [2.66959]
 standard deviation= [1.64028]
 skewness= [0.435743]
@@ -46,19 +48,20 @@ spearman= [[ 1 ]]
 kendall= [[ 1 ]]
 parameters= [[mu : 2, sigma : 1.5, xi : -0.15]]
 standard moment n= 0 , value= [1]
-standard moment n= 1 , value= [2.66959]
-standard moment n= 2 , value= [9.81725]
-standard moment n= 3 , value= [42.4963]
-standard moment n= 4 , value= [209.086]
-standard moment n= 5 , value= [1135.1]
-Standard representative= RandomMixture(-Weibull(alpha = 10, beta = 6.66667, gamma = -12))
+standard moment n= 1 , value= [-0.933041]
+standard moment n= 2 , value= [0.897471]
+standard moment n= 3 , value= [-0.885661]
+standard moment n= 4 , value= [0.893515]
+standard moment n= 5 , value= [-0.919063]
+Standard representative= WeibullMax(beta = 1, alpha = 6.66667, gamma = 0)
 mu= 2.0
 sigma= 1.5
 xi= -0.15
-Actual distribution= RandomMixture(-Weibull(alpha = 10, beta = 6.66667, gamma = -12))
-Distribution from actual distribution= GeneralizedExtremeValue(mu=-2, sigma=-1.5, xi=-0.15)
+Actual distribution= WeibullMax(beta = 10, alpha = 6.66667, gamma = 12)
+Distribution from actual distribution= GeneralizedExtremeValue(mu=2, sigma=1.5, xi=-0.15)
 ##################################################
 Distribution  GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0)
+conversion as  Gumbel(beta = 1.5, gamma = 2)
 Elliptical =  False
 Continuous =  True
 oneRealization= [2.21357]
@@ -69,32 +72,33 @@ Kolmogorov test for the generator, sample size= 100  is  True
 Kolmogorov test for the generator, sample size= 10000  is  True
 Point=  [1.0]
 ddf     = [0.116989]
-ddf (FD)= 0.116988580193
-log pdf= -1.6865324825
-pdf     = 0.185160459257
-pdf (FD)= 0.185160459255
-cdf= 0.142596824326
-ccdf= 0.857403175674
-survival= 0.857403175674
+ddf (FD)= [0.116989]
+log pdf= [-1.68653]
+pdf     = [0.18516]
+pdf (FD)= [0.18516]
+cdf= [0.142597]
+ccdf= [0.857403]
+survival= [0.857403]
 Inverse survival= [0.354217]
-Survival(inverse survival)= 0.95
-pdf gradient     = [0.102258,-0.116989]
+Survival(inverse survival)= [0.95]
+pdf gradient     = [-0.116989,-0.0454479,0.0844441]
 pdf gradient (FD)= [-0.116989,-0.0454479,0.0844441]
-cdf gradient     = [-0.277741,-0.18516]
+cdf gradient     = [-0.18516,0.12344,-0.0617202]
 cdf gradient (FD)= [-0.18516,0.12344,-0.0617202]
 quantile= [6.45529]
 cdf(quantile)= 0.95
+entropy=1.982681
 Minimum volume interval= [-0.341999, 6.74221]
 threshold= 0.95
 Minimum volume level set= {x | f(x) <= 3.6093} with f=
 MinimumVolumeLevelSetEvaluation(GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0))
-beta= 0.0270707759809
+beta= [0.0270708]
 Bilateral confidence interval= [0.0420159, 7.51437]
-beta= 0.95
+beta= [0.95]
 Unilateral confidence interval (lower tail)= [-3.20963, 6.45529]
-beta= 0.95
+beta= [0.95]
 Unilateral confidence interval (upper tail)= [0.354217, 50.3543]
-beta= 0.95
+beta= [0.95]
 mean= [2.86582]
 standard deviation= [1.92382]
 skewness= [1.13955]
@@ -110,14 +114,15 @@ standard moment n= 2 , value= [1.97811]
 standard moment n= 3 , value= [5.44487]
 standard moment n= 4 , value= [23.5615]
 standard moment n= 5 , value= [117.839]
-Standard representative= Gumbel(alpha = 1, beta = 0)
+Standard representative= Gumbel(beta = 1, gamma = 0)
 mu= 2.0
 sigma= 1.5
 xi= 0.0
-Actual distribution= Gumbel(alpha = 0.666667, beta = 2)
+Actual distribution= Gumbel(beta = 1.5, gamma = 2)
 Distribution from actual distribution= GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0)
 ##################################################
 Distribution  GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0.15)
+conversion as  Frechet(beta = 10, alpha = 6.66667, gamma = -8)
 Elliptical =  False
 Continuous =  True
 oneRealization= [-0.353173]
@@ -128,32 +133,33 @@ Kolmogorov test for the generator, sample size= 100  is  True
 Kolmogorov test for the generator, sample size= 10000  is  True
 Point=  [1.0]
 ddf     = [0.127801]
-ddf (FD)= 0.12780130326
-log pdf= -1.61629961231
-pdf     = 0.198632357566
-pdf (FD)= 0.198632357558
-cdf= 0.132841517691
-ccdf= 0.867158482309
-survival= 0.867158482309
+ddf (FD)= [0.127801]
+log pdf= [-1.6163]
+pdf     = [0.198632]
+pdf (FD)= [0.198632]
+cdf= [0.132842]
+ccdf= [0.867158]
+survival= [0.867158]
 Inverse survival= [0.482513]
-Survival(inverse survival)= 0.95
-pdf gradient     = [0.00847762,-0.134884,-0.127801]
+Survival(inverse survival)= [0.95]
+pdf gradient     = [-0.127801,-0.0472207,0.095424]
 pdf gradient (FD)= [-0.127801,-0.0472207,0.095424]
-cdf gradient     = [-0.0282528,-0.178769,-0.198632]
+cdf gradient     = [-0.198632,0.132422,-0.0685353]
 cdf gradient (FD)= [-0.198632,0.132422,-0.0685353]
 quantile= [7.61316]
 cdf(quantile)= 0.95
+entropy=2.069263
 Minimum volume interval= [-0.261956, 7.81353]
 threshold= 0.95
 Minimum volume level set= {x | f(x) <= 3.47643e+56} with f=
 MinimumVolumeLevelSetEvaluation(GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0.15))
-beta= 0.0
+beta= [0]
 Bilateral confidence interval= [0.22178, 9.35746]
-beta= 0.95
+beta= [0.95]
 Unilateral confidence interval (lower tail)= [-8, 7.61316]
-beta= 0.95
+beta= [0.95]
 Unilateral confidence interval (upper tail)= [0.482513, 1251.08]
-beta= 0.95
+beta= [0.95]
 mean= [3.12484]
 standard deviation= [2.45836]
 skewness= [2.53025]
@@ -169,9 +175,9 @@ standard moment n= 2 , value= [1.29806]
 standard moment n= 3 , value= [1.61612]
 standard moment n= 4 , value= [2.21815]
 standard moment n= 5 , value= [3.62435]
-Standard representative= Frechet(alpha = 6.66667, beta = 1, gamma = 0)
+Standard representative= Frechet(beta = 1, alpha = 6.66667, gamma = 0)
 mu= 2.0
 sigma= 1.5
 xi= 0.15
-Actual distribution= Frechet(alpha = 6.66667, beta = 10, gamma = -8)
+Actual distribution= Frechet(beta = 10, alpha = 6.66667, gamma = -8)
 Distribution from actual distribution= GeneralizedExtremeValue(mu=2, sigma=1.5, xi=0.15)

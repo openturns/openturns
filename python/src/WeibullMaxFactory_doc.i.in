@@ -1,0 +1,9 @@
+%feature("docstring") OT::WeibullMaxFactory
+"WeibullMax factory.
+
+The parameters are estimated by method of moments, refer to :class:`~openturns.WeibullMinFactory`.
+
+See also
+--------
+DistributionFactory, WeibullMax"
+

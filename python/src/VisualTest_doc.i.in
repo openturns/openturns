@@ -136,13 +136,13 @@ Examples
 Generate a random sample from a Normal distribution:
 
 >>> ot.RandomGenerator.SetSeed(0)
->>> distribution = ot.Weibull(2.0, 0.5)
+>>> distribution = ot.WeibullMin(2.0, 0.5)
 >>> sample = distribution.getSample(30)
 >>> sample.setDescription(['Sample'])
 
 Draw a QQ-plot against a given (inferred) distribution:
 
->>> tested_distribution = ot.WeibullFactory().build(sample)
+>>> tested_distribution = ot.WeibullMinFactory().build(sample)
 >>> QQ_plot = ot.VisualTest.DrawQQplot(sample, tested_distribution)
 >>> View(QQ_plot).show()
 
@@ -209,13 +209,13 @@ Examples
 Generate a random sample from a Normal distribution:
 
 >>> ot.RandomGenerator.SetSeed(0)
->>> distribution = ot.Weibull(2.0, 0.5)
+>>> distribution = ot.WeibullMin(2.0, 0.5)
 >>> sample = distribution.getSample(30)
 >>> sample.setDescription(['Sample'])
 
 Draw a CDF-plot against a given (inferred) distribution:
 
->>> tested_distribution = ot.WeibullFactory().build(sample)
+>>> tested_distribution = ot.WeibullMinFactory().build(sample)
 >>> CDF_plot = ot.VisualTest.DrawCDFplot(sample, tested_distribution)
 >>> View(CDF_plot).show()
 

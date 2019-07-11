@@ -1,0 +1,39 @@
+%feature("docstring") OT::LogNormalMuErrorFactor
+"LogNormal distribution parameters.
+
+Parameters
+----------
+mu : float
+    The mean of the log-normal random variable.
+EF : float
+    The error factor, :math:`EF > 1`
+gamma : float, optional
+    Location parameter.
+
+Notes
+-----
+The :math:`EF` parameter is defined as:
+
+.. math::
+
+    EF = \sqrt{\frac{q_{95} - \gamma}{q_{5} - \gamma}} = \exp{\sigma_{l} q_{95}^N}
+
+with :math:`q_5` :math:`q_95` the quantiles of the log-normal and
+:math:`q_{95}^N` the centered and reduced gaussian quantile.
+
+
+See also
+--------
+LogNormal
+
+Examples
+--------
+Create the parameters of the LogNormal distribution:
+
+>>> import openturns as ot
+>>> parameters = ot.LogNormalMuErrorFactor(0.63, 1.5, -0.5)
+
+Convert parameters into the native parameters:
+
+>>> print(parameters.evaluate())
+[0.63,0.246505,-0.5]"

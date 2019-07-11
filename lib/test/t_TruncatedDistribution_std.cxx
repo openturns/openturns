@@ -66,7 +66,7 @@ int main(int, char *[])
     distributionCollection.add(truncatedKS);
     referenceDistributionCollection.add(truncatedKS);
     // Add a non-truncated example
-    Weibull weibull(2.0, 3.0);
+    WeibullMin weibull(2.0, 3.0);
     distributionCollection.add(truncatedKS);
     referenceDistributionCollection.add(weibull);
     for (UnsignedInteger testCase = 0; testCase < distributionCollection.getSize(); ++testCase)
@@ -157,9 +157,9 @@ int main(int, char *[])
     intervals.add(Interval(0.2, 2.4));
     candidates.add(Exponential(1.0, 2.0));
     intervals.add(Interval(2.5, 65.0));
-    candidates.add(TruncatedDistribution(Weibull(), 1.5, 7.8));
+    candidates.add(TruncatedDistribution(WeibullMin(), 1.5, 7.8));
     intervals.add(Interval(2.5, 6.0));
-    candidates.add(Beta(1.5, 7.8, -1.0, 2.0));
+    candidates.add(Beta(1.5, 6.3, -1.0, 2.0));
     intervals.add(Interval(-2.5, 6.0));
     for (UnsignedInteger i = 0; i < candidates.getSize(); ++i)
     {

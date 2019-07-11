@@ -19,12 +19,9 @@
  *
  */
 #include "openturns/GeneralizedExtremeValue.hxx"
-#include "openturns/Weibull.hxx"
-#include "openturns/Frechet.hxx"
-#include "openturns/Gumbel.hxx"
-#include "openturns/RandomMixture.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -52,6 +49,16 @@ GeneralizedExtremeValue::GeneralizedExtremeValue(const Scalar mu,
 {
   setName("GeneralizedExtremeValue");
   setMuSigmaXi(mu, sigma, xi);
+  setDimension(1);
+  computeRange();
+}
+
+/* Parameters constructor to use when the two bounds are finite */
+GeneralizedExtremeValue::GeneralizedExtremeValue(const Distribution & distribution)
+  : ContinuousDistribution()
+{
+  setName("GeneralizedExtremeValue");
+  setActualDistribution(distribution);
   setDimension(1);
   computeRange();
 }
@@ -378,30 +385,30 @@ void GeneralizedExtremeValue::setMuSigmaXi(const Scalar mu,
   mu_ = mu;
   sigma_ = sigma;
   xi_ = xi;
-  // Now build the actual Frechet/Gumbel/Weibull distribution
+  // Now build the actual Frechet/Gumbel/WeibullMax distribution
   const Scalar xiEpsilon = ResourceMap::GetAsScalar("GeneralizedExtremeValue-XiThreshold");
-  // Weibull case
+  // WeibullMax case
   if (xi_ < -xiEpsilon)
   {
-    const Scalar alpha = -sigma / xi;
-    const Scalar beta = -1.0 / xi;
-    const Scalar gamma = sigma / xi - mu;
-    actualDistribution_ = Weibull(alpha, beta, gamma) * (-1.0);
+    const Scalar beta = -sigma / xi;
+    const Scalar alpha = -1.0 / xi;
+    const Scalar gamma = mu - sigma / xi;
+    actualDistribution_ = WeibullMax(beta, alpha, gamma);
   }
   // Frechet case
   else if (xi_ > xiEpsilon)
   {
-    const Scalar alpha = 1.0 / xi;
     const Scalar beta = sigma / xi;
+    const Scalar alpha = 1.0 / xi;
     const Scalar gamma = mu - sigma / xi;
-    actualDistribution_ = Frechet(alpha, beta, gamma);
+    actualDistribution_ = Frechet(beta, alpha, gamma);
   }
   // Gumbel case
   else
   {
-    const Scalar alpha = 1.0 / sigma;
-    const Scalar beta = mu;
-    actualDistribution_ = Gumbel(alpha, beta);
+    const Scalar beta = sigma;
+    const Scalar gamma = mu;
+    actualDistribution_ = Gumbel(beta, gamma);
   }
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
@@ -417,8 +424,8 @@ void GeneralizedExtremeValue::setActualDistribution(const Distribution & distrib
     // If it worked create the actual distribution
     if (p_gumbel)
     {
-      mu_ = p_gumbel->getBeta();
-      sigma_ = 1.0 / p_gumbel->getAlpha();
+      mu_ = p_gumbel->getGamma();
+      sigma_ = p_gumbel->getBeta();
       xi_ = 0.0;
       actualDistribution_ = Gumbel(*p_gumbel);
       isAlreadyComputedMean_ = false;
@@ -450,48 +457,59 @@ void GeneralizedExtremeValue::setActualDistribution(const Distribution & distrib
   {
     // Nothing to do
   }
-  // Try to cast the given distribution into a RandomMixture
-  // with a Weibull atom with negative coefficient
+  // Try to cast the given distribution into a WeibullMax
   try
   {
-    const RandomMixture* p_mixture = dynamic_cast<const RandomMixture*>(distribution.getImplementation().get());
-    // If it worked try to catch the atom into a Weibull distribution
-    if (p_mixture)
+    const WeibullMax* p_weibull = dynamic_cast<const WeibullMax*>(distribution.getImplementation().get());
+    if (p_weibull)
     {
-      // First, the easy checks:
-      // + its diension is 1
-      // + there is only one atom
-      // + its weight is negative
-      if ((p_mixture->getDimension() == 1) &&
-          (p_mixture->getDistributionCollection().getSize() == 1) &&
-          (p_mixture->getWeights()(0, 0) < 0.0))
-      {
-        // Try to catch the unique atom into a Weibull distribution
-        const Weibull* p_weibull = dynamic_cast<const Weibull*>(p_mixture->getDistributionCollection()[0].getImplementation().get());
-        if (p_weibull)
-        {
-          const Scalar constant = p_mixture->getConstant()[0];
-          const Scalar weight = p_mixture->getWeights()(0, 0);
-          xi_ = -1.0 / p_weibull->getBeta();
-          sigma_ = -(weight * p_weibull->getAlpha()) * xi_;
-          mu_ = constant + sigma_ / xi_ - p_weibull->getGamma() * weight;
-          actualDistribution_ = RandomMixture(*p_mixture);
-          isAlreadyComputedMean_ = false;
-          isAlreadyComputedCovariance_ = false;
-          return;
-        } // p_weibull
-      } // mixture basic check
-    } // p_mixture
+      xi_ = -1.0 / p_weibull->getAlpha();
+      sigma_ = -p_weibull->getBeta() * xi_;
+      mu_ = p_weibull->getGamma() - p_weibull->getBeta();
+      actualDistribution_ = WeibullMax(*p_weibull);
+      isAlreadyComputedMean_ = false;
+      isAlreadyComputedCovariance_ = false;
+      return;
+    } // p_weibull
   }
   catch (...)
   {
-    throw InvalidArgumentException(HERE) << "Error: the distribution " << distribution << " cannot be used to define a GeneralizedExtremeValue distribution.";
+    // Nothing to do
   }
+  throw InvalidArgumentException(HERE) << "Error: the distribution " << distribution << " cannot be used to define a GeneralizedExtremeValue distribution.";
 }
 
 Distribution GeneralizedExtremeValue::getActualDistribution() const
 {
   return actualDistribution_;
+}
+
+/* Actual distribution converter */
+Frechet GeneralizedExtremeValue::asFrechet() const
+{
+  const Frechet* p_frechet = dynamic_cast<const Frechet*>(actualDistribution_.getImplementation().get());
+  if (p_frechet)
+    return Frechet(*p_frechet);
+  else
+    throw InvalidArgumentException(HERE) << "Cannot convert to Frechet";
+}
+
+WeibullMax GeneralizedExtremeValue::asWeibullMax() const
+{
+  const WeibullMax* p_weibull = dynamic_cast<const WeibullMax*>(actualDistribution_.getImplementation().get());
+  if (p_weibull)
+    return WeibullMax(*p_weibull);
+  else
+    throw InvalidArgumentException(HERE) << "Cannot convert to WeibullMax";
+}
+
+Gumbel GeneralizedExtremeValue::asGumbel() const
+{
+  const Gumbel* p_gumbel = dynamic_cast<const Gumbel*>(actualDistribution_.getImplementation().get());
+  if (p_gumbel)
+    return Gumbel(*p_gumbel);
+  else
+    throw InvalidArgumentException(HERE) << "Cannot convert to Gumbel";
 }
 
 /* Method save() stores the object through the StorageManager */

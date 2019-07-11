@@ -208,7 +208,7 @@ int main(int, char *[])
     Arcsine arcsine(5.2, 11.6);
     study.add("arcsine", arcsine);
 
-    Beta beta(3.0, 5.0, -1.0, 4.0);
+    Beta beta(3.0, 2.0, -1.0, 4.0);
     study.add("beta", beta);
 
     Chi chi(1.5);
@@ -244,14 +244,14 @@ int main(int, char *[])
     IndependentCopula independentCopula(5);
     study.add("independentCopula", independentCopula);
 
-    InverseNormal inverseNormal(0.5, 2.0);
+    InverseNormal inverseNormal(2.0, 0.5);
     study.add("inverseNormal", inverseNormal);
 
     KernelSmoothing kernelSmoothing;
     kernelSmoothing.build(independentCopula.getSample(20));
     study.add("kernelSmoothing", kernelSmoothing);
 
-    Laplace laplace(1.0 / 1.5, 0.5);
+    Laplace laplace(0.5, 1.0 / 1.5);
     study.add("laplace", laplace);
 
     Logistic logistic(0.5, 1.5);
@@ -299,9 +299,9 @@ int main(int, char *[])
     UserDefined userDefined(x, p);
     study.add("userDefined", userDefined);
 
-    // Create a Weibull distribution
-    Weibull weibull(2.0, 1.5, -0.5);
-    study.add("weibull", weibull);
+    // Create a WeibullMin distribution
+    WeibullMin weibull(2.0, 1.5, -0.5);
+    study.add("weibullMin", weibull);
 
     // Create a NormalCopula distribution
     CorrelationMatrix R(3);
@@ -1050,7 +1050,7 @@ int main(int, char *[])
     compare<TruncatedNormal>(truncatedNormal, study2 );
     compare<Uniform >( uniform, study2 );
     compare<UserDefined>(userDefined, study2 );
-    compare<Weibull>(weibull, study2 );
+    compare<WeibullMin>(weibull, study2 );
 
     // Simulation
     compare<ProbabilitySimulationAlgorithm>(monteCarlo, study2 );

@@ -34,8 +34,8 @@ static const Factory<InverseNormal> Factory_InverseNormal;
 /* Default constructor */
 InverseNormal::InverseNormal()
   : ContinuousDistribution()
-  , lambda_(1.0)
   , mu_(1.0)
+  , lambda_(1.0)
 {
   setName( "InverseNormal" );
   setDimension( 1 );
@@ -43,15 +43,15 @@ InverseNormal::InverseNormal()
 }
 
 /* Parameters constructor */
-InverseNormal::InverseNormal(const Scalar lambda,
-                             const Scalar mu)
+InverseNormal::InverseNormal(const Scalar mu,
+                             const Scalar lambda)
   : ContinuousDistribution()
-  , lambda_(0.0)
   , mu_(0.0)
+  , lambda_(0.0)
 {
   setName( "InverseNormal" );
   // This call set also the range
-  setLambdaMu(lambda, mu);
+  setMuLambda(mu, lambda);
   setDimension( 1 );
 }
 
@@ -75,15 +75,15 @@ String InverseNormal::__repr__() const
   oss << "class=" << InverseNormal::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
-      << " lambda=" << lambda_
-      << " mu=" << mu_;
+      << " mu=" << mu_
+      << " lambda=" << lambda_;
   return oss;
 }
 
 String InverseNormal::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << getClassName() << "(lambda = " << lambda_ << ", mu = " << mu_ << ")";
+  oss << getClassName() << "(mu = " << mu_ << ", lambda = " << lambda_ << ")";
   return oss;
 }
 
@@ -232,6 +232,13 @@ Point InverseNormal::getStandardMoment(const UnsignedInteger n) const
 void InverseNormal::setLambdaMu(const Scalar lambda,
                                 const Scalar mu)
 {
+  LOGWARN("InverseNormal::setLambdaMu is deprecated");
+  setMuLambda(mu, lambda);
+}
+
+void InverseNormal::setMuLambda(const Scalar mu,
+                                const Scalar lambda)
+{
   if ( (lambda <= 0.0) || (mu <= 0.0) ) throw InvalidArgumentException(HERE) << "lambda and mu MUST be positive";
   if ((lambda_ != lambda) || (mu_ != mu))
   {
@@ -260,8 +267,8 @@ Scalar InverseNormal::getMu() const
 Point InverseNormal::getParameter() const
 {
   Point point(2);
-  point[0] = lambda_;
-  point[1] = mu_;
+  point[0] = mu_;
+  point[1] = lambda_;
   return point;
 }
 
@@ -277,8 +284,8 @@ void InverseNormal::setParameter(const Point & parameter)
 Description InverseNormal::getParameterDescription() const
 {
   Description description(2);
-  description[0] = "lambda";
-  description[1] = "mu";
+  description[0] = "mu";
+  description[1] = "lambda";
   return description;
 }
 
@@ -286,16 +293,16 @@ Description InverseNormal::getParameterDescription() const
 void InverseNormal::save(Advocate & adv) const
 {
   ContinuousDistribution::save(adv);
-  adv.saveAttribute( "lambda_", lambda_ );
   adv.saveAttribute( "mu_", mu_ );
+  adv.saveAttribute( "lambda_", lambda_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void InverseNormal::load(Advocate & adv)
 {
   ContinuousDistribution::load(adv);
-  adv.loadAttribute( "lambda_", lambda_ );
   adv.loadAttribute( "mu_", mu_ );
+  adv.loadAttribute( "lambda_", lambda_ );
   computeRange();
 }
 

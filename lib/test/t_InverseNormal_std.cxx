@@ -27,7 +27,7 @@ using namespace OT::Test;
 class TestObject : public InverseNormal
 {
 public:
-  TestObject() : InverseNormal(0.5, 2.) {}
+  TestObject() : InverseNormal(2.0, 0.5) {}
   virtual ~TestObject() {}
 };
 
@@ -44,7 +44,7 @@ int main(int, char *[])
     checkClassWithClassName<TestObject>();
 
     // Instanciate one distribution object
-    InverseNormal distribution(0.5, 2.0);
+    InverseNormal distribution(2.0, 0.5);
     fullprint << "Distribution " << distribution << std::endl;
     std::cout << "Distribution " << distribution << std::endl;
 

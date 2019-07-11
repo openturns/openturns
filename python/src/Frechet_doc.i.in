@@ -1,16 +1,13 @@
 %feature("docstring") OT::Frechet
 "Frechet distribution.
 
-Available constructors:
-    Frechet(*alpha=1.0, beta=1.0, gamma=0.0*)
-
 Parameters
 ----------
+beta : float, :math:`\beta > 0`
+    Scale parameter
 alpha : float, :math:`\alpha > 0`
     Shape parameter
-beta : float, :math:`\beta > 0`
-    Concentration parameter
-gamma : float
+gamma : float, optional
     Location parameter
 
 Notes
@@ -34,7 +31,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.Frechet(3.0, 1.0, 0.0)
+>>> distribution = ot.Frechet(1.0, 3.0, 0.0)
 
 Draw a sample:
 

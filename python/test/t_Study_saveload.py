@@ -107,7 +107,7 @@ try:
         myStudy.add(cName, instance)
 
     # Create a Beta distribution
-    beta = ot.Beta(3.0, 5.0, -1.0, 4.0)
+    beta = ot.Beta(3.0, 2.0, -1.0, 4.0)
     myStudy.add('beta', beta)
 
     # Create an analytical Function
@@ -217,9 +217,6 @@ try:
     # GammaMuSigma parameter save
     gmms_parameters = ot.GammaMuSigma(1.5, 2.5, -0.5)
     myStudy.add('gmms_parameters', gmms_parameters)
-    # GumbelAB parameter save
-    gab_parameters = ot.GumbelAB(-0.5, 0.5)
-    myStudy.add('gab_parameters', gab_parameters)
     # GumbelMuSigma parameter save
     gms_parameters = ot.GumbelMuSigma(1.5, 1.3)
     myStudy.add('gms_parameters', gms_parameters)
@@ -229,8 +226,8 @@ try:
     # LogNormalMuSigmaOverMu parameter save
     lnmsm_parameters = ot.LogNormalMuSigmaOverMu(0.63, 5.24, -0.5)
     myStudy.add('lnmsm_parameters', lnmsm_parameters)
-    # WeibullMuSigma parameter save
-    wms_parameters = ot.WeibullMuSigma(1.3, 1.23, -0.5)
+    # WeibullMinMuSigma parameter save
+    wms_parameters = ot.WeibullMinMuSigma(1.3, 1.23, -0.5)
     myStudy.add('wms_parameters', wms_parameters)
 
     # MemoizeFunction
@@ -337,9 +334,6 @@ try:
     # GammaMuSigma parameter loading
     gmms_parameters = ot.GammaMuSigma()
     myStudy.fillObject('gmms_parameters', gmms_parameters)
-    # GumbelAB parameter loading
-    gab_parameters = ot.GumbelAB()
-    myStudy.fillObject('gab_parameters', gab_parameters)
     # GumbelMuSigma parameter loading
     gms_parameters = ot.GumbelMuSigma()
     myStudy.fillObject('gms_parameters', gms_parameters)
@@ -349,8 +343,8 @@ try:
     # LogNormalMuSigmaOverMu parameter loading
     lnmsm_parameters = ot.LogNormalMuSigmaOverMu()
     myStudy.fillObject('lnmsm_parameters', lnmsm_parameters)
-    # WeibullMuSigma parameter loading
-    wms_parameters = ot.WeibullMuSigma()
+    # WeibullMinMuSigma parameter loading
+    wms_parameters = ot.WeibullMinMuSigma()
     myStudy.fillObject('wms_parameters', wms_parameters)
 
     # cleanup

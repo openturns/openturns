@@ -77,8 +77,8 @@ Frechet FrechetFactory::buildAsFrechet(const Sample & sample) const
     logSample(i, 0) = std::log(sample(i, 0) - gamma);
   // Estimate the associated Gumbel
   const Gumbel associatedGumbel(GumbelFactory().buildAsGumbel(logSample));
-  const Scalar alphaGumbel = associatedGumbel.getAlpha();
-  const Scalar betaGumbel = associatedGumbel.getBeta();
+  const Scalar alphaGumbel = 1.0 / associatedGumbel.getBeta();
+  const Scalar betaGumbel = associatedGumbel.getGamma();
   // Now get the parameter estimate of the Frechet distribution
   const Scalar alphaFrechet = alphaGumbel;
   const Scalar betaFrechet = std::exp(betaGumbel);
@@ -87,19 +87,19 @@ Frechet FrechetFactory::buildAsFrechet(const Sample & sample) const
   MaximumLikelihoodFactory mleFactory(model);
   OptimizationAlgorithm algo(mleFactory.getOptimizationAlgorithm());
   Point startingPoint(3);
-  startingPoint[0] = alphaFrechet;
-  startingPoint[1] = betaFrechet;
+  startingPoint[0] = betaFrechet;
+  startingPoint[1] = alphaFrechet;
   startingPoint[2] = gamma;
   algo.setStartingPoint(startingPoint);
   mleFactory.setOptimizationAlgorithm(algo);
   const Scalar margin(std::max(1.0, ResourceMap::GetAsScalar("FrechetFactory-BoundMargin")));
   Point lower(3);
-  lower[0] = alphaFrechet / margin;
-  lower[1] = betaFrechet / margin;
+  lower[0] = betaFrechet / margin;
+  lower[1] = alphaFrechet / margin;
   lower[2] = gamma - margin * std::abs(gamma);
   Point upper(3);
-  upper[0] = margin * alphaFrechet;
-  upper[1] = margin * betaFrechet;
+  upper[0] = margin * betaFrechet;
+  upper[1] = margin * alphaFrechet;
   upper[2] = gamma + margin * std::abs(gamma);
   mleFactory.setOptimizationBounds(Interval(lower, upper));
   const Point parameters(mleFactory.buildParameter(sample));

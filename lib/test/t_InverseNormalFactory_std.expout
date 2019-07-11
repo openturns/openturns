@@ -1,10 +1,10 @@
-Distribution          =class=InverseNormal name=InverseNormal dimension=1 lambda=2.5 mu=1.5
-Estimated distribution=class=InverseNormal name=InverseNormal dimension=1 lambda=2.46246 mu=1.47866
-Distribution          =class=InverseNormal name=InverseNormal dimension=1 lambda=2.5 mu=1.5
-Estimated distribution=class=InverseNormal name=InverseNormal dimension=1 lambda=2.51756 mu=1.47866
-Default distribution=class=InverseNormal name=InverseNormal dimension=1 lambda=1 mu=1
-Distribution from parameters=class=InverseNormal name=InverseNormal dimension=1 lambda=2.5 mu=1.5
-InverseNormal          =class=InverseNormal name=InverseNormal dimension=1 lambda=2.5 mu=1.5
-Estimated inverseNormal=class=InverseNormal name=InverseNormal dimension=1 lambda=2.46246 mu=1.47866
-Default inverseNormal=class=InverseNormal name=InverseNormal dimension=1 lambda=1 mu=1
-InverseNormal from parameters=class=InverseNormal name=InverseNormal dimension=1 lambda=2.5 mu=1.5
+Distribution          =class=InverseNormal name=InverseNormal dimension=1 mu=1.5 lambda=2.5
+Estimated distribution=class=InverseNormal name=InverseNormal dimension=1 mu=1.47866 lambda=2.46246
+Distribution          =class=InverseNormal name=InverseNormal dimension=1 mu=1.5 lambda=2.5
+Estimated distribution=class=InverseNormal name=InverseNormal dimension=1 mu=1.47866 lambda=2.51756
+Default distribution=class=InverseNormal name=InverseNormal dimension=1 mu=1 lambda=1
+Distribution from parameters=class=InverseNormal name=InverseNormal dimension=1 mu=1.5 lambda=2.5
+InverseNormal          =class=InverseNormal name=InverseNormal dimension=1 mu=1.5 lambda=2.5
+Estimated inverseNormal=class=InverseNormal name=InverseNormal dimension=1 mu=1.47866 lambda=2.46246
+Default inverseNormal=class=InverseNormal name=InverseNormal dimension=1 mu=1 lambda=1
+InverseNormal from parameters=class=InverseNormal name=InverseNormal dimension=1 mu=1.5 lambda=2.5

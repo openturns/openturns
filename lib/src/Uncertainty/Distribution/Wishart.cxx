@@ -281,7 +281,7 @@ Wishart::PointWithDescriptionCollection Wishart::getParametersCollection() const
     for (UnsignedInteger j = 0; j <= i; ++j)
     {
       point[index] = V(i, j);
-      description[index] = String(OSS() << "v_" << i << "_" << j);
+      description[index] = String(OSS() << "V_" << i << "_" << j);
       ++index;
     }
   point[index] = nu_;

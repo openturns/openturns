@@ -12,7 +12,7 @@ copula = ot.MaximumEntropyOrderStatisticsCopula(
     [ot.Trapezoidal(-2.0, -1.1, -1.0, 1.0),
      ot.LogUniform(1.0, 1.2),
      ot.Triangular(3.0, 4.5, 5.0),
-     ot.Beta(2.5, 6.0, 4.7, 5.2)])
+     ot.Beta(2.5, 3.5, 4.7, 5.2)])
 
 dim = copula.getDimension()
 print("Copula ", copula)
