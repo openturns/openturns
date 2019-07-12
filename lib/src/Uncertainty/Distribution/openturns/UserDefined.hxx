@@ -164,8 +164,8 @@ private:
   Bool hasUniformWeights_;
 
   /** Structures for the alias sampling method */
-  Point base_;
-  Indices alias_;
+  mutable Point base_;
+  mutable Indices alias_;
 }; /* class UserDefined */
 
 END_NAMESPACE_OPENTURNS

@@ -5,10 +5,10 @@ Elliptical distribution= false
 Continuous = true
 Elliptical = false
 Independent = false
-oneRealization=class=Point name=Unnamed dimension=2 values=[0.642995,0.249576]
-oneSample first=class=Point name=Unnamed dimension=2 values=[0.81213,0.885594] last=class=Point name=Unnamed dimension=2 values=[0.506679,0.611576]
-mean=class=Point name=Unnamed dimension=2 values=[0.502612,0.50223]
-covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.082459,0.076198,0.076198,0.08287]
+oneRealization=class=Point name=Unnamed dimension=2 values=[0.251363,0.277809]
+oneSample first=class=Point name=Unnamed dimension=2 values=[0.207289,0.30774] last=class=Point name=Unnamed dimension=2 values=[0.506679,0.611576]
+mean=class=Point name=Unnamed dimension=2 values=[0.502599,0.50222]
+covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.08245,0.076185,0.076185,0.082852]
 Point= class=Point name=Unnamed dimension=2 values=[0.6,0.6]
 ddf     =class=Point name=Unnamed dimension=2 values=[0.25786,0.25786]
 pdf     =2.92442

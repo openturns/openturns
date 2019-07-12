@@ -137,7 +137,10 @@ Point UserDefined::getRealization() const
   // Efficient algorithm for uniform weights
   if (hasUniformWeights_) index = RandomGenerator::IntegerGenerate(size);
   // Alias method for nonuniform weights
-  else index = DistFunc::rDiscrete(base_, alias_);
+  else
+  {
+    index = base_.getSize() ? DistFunc::rDiscrete(base_, alias_) : DistFunc::rDiscrete(probabilities_, base_, alias_);
+  }
   return points_[index];
 }
 
@@ -153,7 +156,12 @@ Sample UserDefined::getSample(const UnsignedInteger size) const
       indices = Indices(values.begin(), values.end());
     }
   // Alias method for nonuniform weights
-  else indices = DistFunc::rDiscrete(base_, alias_, size);
+  else
+  {
+    if (!base_.getSize())
+      (void) DistFunc::rDiscrete(probabilities_, base_, alias_);
+    indices = DistFunc::rDiscrete(base_, alias_, size);
+  }
   return points_.select(indices);
 }
 
@@ -548,12 +556,13 @@ void UserDefined::setData(const Sample & sample,
   }
   // We augment slightly the last cumulative probability, which should be equal to 1.0 but we enforce a value > 1.0.
   cumulativeProbabilities_[size - 1] = 1.0 + 2.0 * supportEpsilon_;
-  // Initialize the alias method if the weigths are not uniform
-  if (!hasUniformWeights_) (void) DistFunc::rDiscrete(probabilities_, base_, alias_);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   isAlreadyCreatedGeneratingFunction_ = false;
   computeRange();
+  // trigger reset of alias method
+  base_.clear();
+  alias_.clear();
 }
 
 
@@ -728,7 +737,6 @@ void UserDefined::load(Advocate & adv)
   adv.loadAttribute( "probabilities_", probabilities_ );
   adv.loadAttribute( "cumulativeProbabilities_", cumulativeProbabilities_ );
   adv.loadAttribute( "hasUniformWeights_", hasUniformWeights_ );
-  if (!hasUniformWeights_) (void) DistFunc::rDiscrete(probabilities_, base_, alias_);
   computeRange();
 }
 
