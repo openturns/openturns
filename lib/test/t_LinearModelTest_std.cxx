@@ -44,17 +44,11 @@ int main(int, char *[])
   Point sigma(dim, 3.0);
   Normal distribution(mean, sigma, R);
   Sample sample(distribution.getSample(size));
-  Sample sampleX(size, dim - 1);
-  Sample sampleY(size, 1);
-  for (UnsignedInteger i = 0; i < size; i++)
-  {
-    sampleY[i][0] = sample[i][0];
-    for (UnsignedInteger j = 1; j < dim; j++)
-    {
-      sampleX[i][j - 1] = sample[i][j];
-    }
-  }
-  
+  Indices indices(dim - 1);
+  indices.fill(1);
+  Sample sampleX(sample.getMarginal(indices));
+  Sample sampleY(sample.getMarginal(0));
+
   Indices selection(5);
   for (UnsignedInteger i = 0; i < 5; i++)
   {
@@ -70,8 +64,8 @@ int main(int, char *[])
   {
     sampleZ(i, 0) = sampleY(i, 0) * sampleY(i, 0);
   }
-  fullprint << "LinearModelFisher=" << LinearModelTest::LinearModelFisher(sampleY, sampleZ) << std::endl;
-  fullprint << "LinearModelResidualMean=" << LinearModelTest::LinearModelResidualMean(sampleY, sampleZ) << std::endl;
+  fullprint << "LinearModelFisher pvalue=" << std::setprecision(2) << LinearModelTest::LinearModelFisher(sampleY, sampleZ).getPValue() << std::endl;
+  fullprint << "LinearModelResidualMean pvalue=" << std::setprecision(2) << LinearModelTest::LinearModelResidualMean(sampleY, sampleZ).getPValue() << std::endl;
   
   // Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialRegression performs the Regression test simultaneously on all firstSample[i] and secondSample, for i in the selection. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The t-test is used.
 

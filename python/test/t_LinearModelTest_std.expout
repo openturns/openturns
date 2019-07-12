@@ -1,5 +1,5 @@
-LinearModelFisher pvalue=0.00
-LinearModelResidualMean pvalue=1.00
+LinearModelFisher pvalue=6.4e-08
+LinearModelResidualMean pvalue=1
 Durbin Watson =  class=TestResult name=Unnamed type=DurbinWatson binaryQualityMeasure=false p-value threshold=0.05 p-value=0.000219316 statistic=3.69566 description=[H0: auto.cor=0]
 PartialRegressionX0Y= [class=TestResult name=Unnamed type=Regression binaryQualityMeasure=false p-value threshold=0.1 p-value=6.80062e-05 statistic=4.16127 description=[],class=TestResult name=Unnamed type=Regression binaryQualityMeasure=false p-value threshold=0.1 p-value=0.0952637 statistic=1.68452 description=[]]
 FullRegressionX0Y= [class=TestResult name=Unnamed type=Regression binaryQualityMeasure=false p-value threshold=0.1 p-value=6.80062e-05 statistic=4.16127 description=[],class=TestResult name=Unnamed type=Regression binaryQualityMeasure=false p-value threshold=0.1 p-value=0.0952637 statistic=1.68452 description=[]]
