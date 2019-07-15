@@ -3,7 +3,7 @@
 from __future__ import print_function
 import openturns as ot
 import math as m
-
+import os
 
 class UniformNdPy(ot.PythonDistribution):
 
