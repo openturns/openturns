@@ -193,4 +193,15 @@ Evaluation ComposedEvaluation::getRightEvaluation() const
   return rightFunction_;
 }
 
+/* Linearity accessors */
+Bool ComposedEvaluation::isLinear() const
+{
+  return leftFunction_.isLinear() && rightFunction_.isLinear();
+}
+
+Bool ComposedEvaluation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  return leftFunction_.isLinearlyDependent(index) && rightFunction_.isLinearlyDependent(index);
+}
+
 END_NAMESPACE_OPENTURNS

@@ -98,6 +98,10 @@ public:
   /** Get the function corresponding to indices components */
   Evaluation getMarginal(const Indices & indices) const;
 
+  /** Linearity accessors */
+  Bool isLinear() const;
+  Bool isLinearlyDependent(const UnsignedInteger index) const;
+
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 

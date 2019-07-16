@@ -121,6 +121,11 @@ public:
 
   /** Get the number of calls to operator() */
   UnsignedInteger getCallsNumber() const;
+  
+  /** Linearity accessors */
+  virtual Bool isLinear() const;
+  virtual Bool isLinearlyDependent(const UnsignedInteger index) const;
+
 
   /** Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
   virtual Graph draw(const UnsignedInteger inputMarginal,

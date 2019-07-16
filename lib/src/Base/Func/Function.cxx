@@ -350,6 +350,17 @@ UnsignedInteger Function::getHessianCallsNumber() const
   return getImplementation()->getHessianCallsNumber();
 }
 
+Bool Function::isLinear() const
+{
+  return getImplementation()->isLinear();
+}
+
+Bool Function::isLinearlyDependent(const UnsignedInteger index) const
+{
+  return getImplementation()->isLinearlyDependent(index);
+}
+
+
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph Function::draw(const UnsignedInteger inputMarginal,
                      const UnsignedInteger outputMarginal,

@@ -77,7 +77,11 @@ public:
   /** Parameters accessor */
   void setParameter(const Point & parameters);
 
-  /** String converter */
+  /** Linearity accessors */
+  Bool isLinear() const;
+  Bool isLinearlyDependent(const UnsignedInteger index) const;
+
+   /** String converter */
   String __repr__() const;
   String __str__(const String & offset = "") const;
 

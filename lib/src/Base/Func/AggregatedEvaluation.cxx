@@ -270,6 +270,25 @@ Description AggregatedEvaluation::getParameterDescription() const
   return description;
 }
 
+/* Linearity accessors */
+Bool AggregatedEvaluation::isLinear() const
+{ 
+  for (UnsignedInteger i=0; i<functionsCollection_.getSize(); ++i)
+    if (!functionsCollection_[i].isLinear())
+      return false;
+    
+  return true;
+}
+
+Bool AggregatedEvaluation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  for (UnsignedInteger i=0; i<functionsCollection_.getSize(); ++i)
+    if (!functionsCollection_[i].isLinearlyDependent(index))
+      return false;
+    
+  return true;
+}
+  
 /* Method save() stores the object through the StorageManager */
 void AggregatedEvaluation::save(Advocate & adv) const
 {

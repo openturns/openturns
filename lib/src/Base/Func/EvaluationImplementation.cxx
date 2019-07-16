@@ -296,6 +296,20 @@ UnsignedInteger EvaluationImplementation::getCallsNumber() const
   return callsNumber_.get();
 }
 
+/* Linearity accessors */
+Bool EvaluationImplementation::isLinear() const
+{
+  return false;
+}
+
+Bool EvaluationImplementation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  // Check dimension consistency
+  if (index > getInputDimension())
+    throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
+  
+  return false;
+}
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,

@@ -369,6 +369,17 @@ UnsignedInteger FunctionImplementation::getHessianCallsNumber() const
   return hessian_.getCallsNumber();
 }
 
+/** Linearity accessors */
+Bool FunctionImplementation::isLinear() const
+{
+  return evaluation_.isLinear();
+}
+
+Bool FunctionImplementation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  return evaluation_.isLinearlyDependent(index);
+}
+
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph FunctionImplementation::draw(const UnsignedInteger inputMarginal,
                                    const UnsignedInteger outputMarginal,

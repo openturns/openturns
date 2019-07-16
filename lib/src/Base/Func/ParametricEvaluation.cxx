@@ -198,6 +198,18 @@ UnsignedInteger ParametricEvaluation::getOutputDimension() const
   return function_.getOutputDimension();
 }
 
+/* Linearity accessors */
+Bool ParametricEvaluation::isLinear() const
+{
+  return function_.isLinear();
+}
+
+Bool ParametricEvaluation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  return function_.isLinearlyDependent(inputPositions_[index]);
+}
+
+
 /* String converter */
 String ParametricEvaluation::__repr__() const
 {

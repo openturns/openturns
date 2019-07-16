@@ -316,6 +316,8 @@ class PythonFunction(Function):
         If True, input sample is converted into a Python 2-d sequence before calling
         func_sample.  Otherwise, it is passed directy to func_sample.
         Default is False.
+        
+    //TODO: doc isLinear
 
     You must provide at least func or func_sample arguments.  For efficiency
     reasons, these functions do not receive a :class:`~openturns.Point` or
@@ -375,7 +377,7 @@ class PythonFunction(Function):
     [[  3 ]
      [ -1 ]]
     """
-    def __new__(self, n, p, func=None, func_sample=None, gradient=None, hessian=None, n_cpus=None, copy=False):
+    def __new__(self, n, p, func=None, func_sample=None, gradient=None, hessian=None, n_cpus=None, copy=False, functionLinearity=None, variablesLinearity=None):
         if func is None and func_sample is None:
             raise RuntimeError('no func nor func_sample given.')
         instance = OpenTURNSPythonFunction(n, p)
@@ -420,5 +422,12 @@ class PythonFunction(Function):
             if not isinstance(hessian, collections.Callable):
                 raise RuntimeError('hessian argument is not callable.')
             instance._hessian = hessian 
+            
+        if functionLinearity is not None:
+            instance.isLinear = functionLinearity
+            
+        if variablesLinearity is not None:
+            instance.isVariableLinear = variablesLinearity
+                          
         return Function(instance)
 %}

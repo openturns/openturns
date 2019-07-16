@@ -24,6 +24,8 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/OTconfig.hxx"
+#include "Ev3/expression.h"
+#include "Ev3/parser.h"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -185,6 +187,85 @@ Description SymbolicEvaluation::getOutputVariablesNames() const
 Description SymbolicEvaluation::getFormulas() const
 {
   return formulas_;
+}
+
+/* Linearity accessors */
+Bool SymbolicEvaluation::isLinear() const
+{
+  const UnsignedInteger inputSize = inputVariablesNames_.getSize();
+  const UnsignedInteger outputSize = outputVariablesNames_.getSize();
+  
+  // SymbolicEvaluation is linear if all its marginals are
+  for (UnsignedInteger columnIndex = 0; columnIndex < outputSize; ++columnIndex)
+  {
+    // Parse the current formula with Ev3
+    int nerr(0);
+    Ev3::ExpressionParser ev3Parser;
+    
+    // Initialize the variable indices in order to match the order of OpenTURNS in Ev3
+    for (UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex)
+      ev3Parser.SetVariableID(inputVariablesNames_[inputVariableIndex], 
+                              inputVariableIndex);
+    
+    Ev3::Expression ev3Expression;
+    
+    try
+    {
+      ev3Expression = ev3Parser.Parse(formulas_[columnIndex].c_str(), nerr);
+    }
+    catch (Ev3::ErrBase & exc)
+    {
+      throw InternalException(HERE) << exc.description_;
+    }
+    
+    if (nerr != 0)
+      return false;
+    
+    if (!ev3Expression->IsLinear())
+      return false;
+  }
+  
+  return true;
+}
+
+Bool SymbolicEvaluation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  const UnsignedInteger inputSize = inputVariablesNames_.getSize();
+  const UnsignedInteger outputSize = outputVariablesNames_.getSize();
+  
+  // Check index consistency
+  if (index >= inputSize)
+    throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << inputSize << ")";
+  
+  // Function depends linearly on variable i if all its marginals do
+  for (UnsignedInteger columnIndex = 0; columnIndex < outputSize; ++columnIndex)
+  {
+    // Parse the current formula with Ev3
+    int nerr(0);
+    Ev3::ExpressionParser ev3Parser;
+    
+    // Initialize the variable indices in order to match the order of OpenTURNS in Ev3
+    for (UnsignedInteger inputVariableIndex = 0; inputVariableIndex < inputSize; ++inputVariableIndex) ev3Parser.SetVariableID(inputVariablesNames_[inputVariableIndex], 
+                            inputVariableIndex);
+    Ev3::Expression ev3Expression;
+    
+    try
+    {
+      ev3Expression = ev3Parser.Parse(formulas_[columnIndex].c_str(), nerr);
+    }
+    catch (Ev3::ErrBase & exc)
+    {
+      throw InternalException(HERE) << exc.description_;
+    }
+    
+    if (nerr != 0)
+      return false;
+    
+    if (ev3Expression->DependsLinearlyOnVariable(index) == 0)
+      return false;
+  }
+  
+  return true;
 }
 
 /* Method save() stores the object through the StorageManager */

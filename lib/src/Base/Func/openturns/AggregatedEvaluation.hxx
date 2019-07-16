@@ -85,6 +85,10 @@ public:
 
   /** Parameters description accessor */
   virtual Description getParameterDescription() const;
+  
+  /** Linearity accessors */
+  Bool isLinear() const;
+  Bool isLinearlyDependent(const UnsignedInteger index) const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
