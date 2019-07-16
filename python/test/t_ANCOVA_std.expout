@@ -1,4 +1,8 @@
-ANCOVA index 0 = 0.41107658 absolute error=0.0040177641
-ANCOVA uncorrelated index 0 = 0.29867971 absolute error=0.0032070869
-ANCOVA index 1 = 0.58892342 absolute error=0.0040177641
-ANCOVA uncorrelated index 1 = 0.47652655 absolute error=0.0048284413
+ANCOVA index 0 = 0.411077 absolute error=0.00401776
+ANCOVA uncorrelated index 0 = 0.29867971 absolute error=0.00320709
+ANCOVA index 1 = 0.588923 absolute error=0.00401776
+ANCOVA uncorrelated index 1 = 0.47652655 absolute error=0.00482844
+indices/full= [0,1,2,3]
+indices/sparse= [1,2,3]
+Indice ancova, chaos normal : 0.495 0.105 0.400
+Indice ancova, chaos sparse : 0.495 0.105 0.400

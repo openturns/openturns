@@ -56,20 +56,17 @@ void ANCOVA::run() const
 
   for (UnsignedInteger input_i = 0; input_i < inputDimension; ++input_i)
   {
-    Indices coefList(coefSize);
-    UnsignedInteger counter = 0;
     // Search univariate polynomials
-    for (UnsignedInteger m = 0; m < coefSize - 1; ++m)
+    Indices coefList;
+    for (UnsignedInteger k = 0; k < coefSize; ++ k)
     {
       const Indices nullIndices(inputDimension);
-      Indices multiIndices(enumerateFunction(coefficientIndices[m + 1]));
-
+      Indices multiIndices(enumerateFunction(coefficientIndices[k]));
+      if (!multiIndices[input_i])
+        continue;
       multiIndices[input_i] = 0;
       if (multiIndices == nullIndices)
-      {
-        coefList[counter] = m + 1;
-        ++counter;
-      }
+        coefList.add(k);
     }
     for (UnsignedInteger marginal_k = 0; marginal_k < nbMarginals; ++marginal_k)
     {
@@ -83,7 +80,7 @@ void ANCOVA::run() const
       for (UnsignedInteger j = 0; j < inputSize; ++j)
       {
         Scalar temp = 0.;
-        for (UnsignedInteger k = 0; k < counter + 1; ++k)
+        for (UnsignedInteger k = 0; k < coefList.getSize(); ++k)
           temp += coefficients(coefList[k], 0) * B[coefList[k]](T(correlatedInput_[j]))[0];
 
         inputOutput(j, 0) = temp;
