@@ -17,7 +17,7 @@ outputObservations : 2-d sequence of float
 candidate : sequence of float
     The reference value of the parameter.
 methodName : str
-    The name of the least-squares method to use for the calibration. By default, equal to *SVD*. Possible values are *SVD*, *QR*, *Cholesky*.
+    The name of the least-squares method to use for the calibration. By default, equal to *QR*. Possible values are *SVD*, *QR*, *Cholesky*.
 
 Notes
 -----
