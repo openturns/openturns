@@ -466,6 +466,25 @@ Description UserDefined::getParameterDescription() const
   return description;
 }
 
+void UserDefined::setParameter(const Point & parameter)
+{
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger size = points_.getSize();
+  if (parameter.getSize() != (dimension + 1) * size)
+    throw InvalidArgumentException(HERE) << "Expected " << (dimension + 1) * size << " parameters";
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < size; ++ j)
+    {
+      points_(j, i) = parameter[i * size + j];
+    }
+  }
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    probabilities_[i] = parameter[dimension * size + i];
+  }
+  setData(points_, probabilities_);
+}
 
 /* Get the i-th marginal distribution */
 Distribution UserDefined::getMarginal(const UnsignedInteger i) const
