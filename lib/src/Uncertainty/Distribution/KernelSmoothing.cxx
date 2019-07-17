@@ -176,6 +176,7 @@ Point KernelSmoothing::computePluginBandwidth(const Sample & sample) const
   const UnsignedInteger dimension = sample.getDimension();
   if (dimension != 1) throw InvalidArgumentException(HERE) << "Error: plugin bandwidth is available only for 1D sample";
   const UnsignedInteger size = sample.getSize();
+  if (size < 2) return Point(1, 0.0);
   // Approximate the derivatives by smoothing under the Normal assumption
   const Scalar sd = sample.computeStandardDeviationPerComponent()[0];
   const Scalar phi6Normal = -15.0 / (16.0 * std::sqrt(M_PI)) * std::pow(sd, -7.0);
@@ -218,6 +219,7 @@ Point KernelSmoothing::computeMixedBandwidth(const Sample & sample) const
   const UnsignedInteger dimension = sample.getDimension();
   if (dimension != 1) throw InvalidArgumentException(HERE) << "Error: mixed bandwidth is available only for 1D sample";
   const UnsignedInteger size = sample.getSize();
+  if (size < 2) return Point(1, 0.0);
   // Small sample, just return the plugin bandwidth
   if (size <= ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-SmallSize" )) return computePluginBandwidth(sample);
   Sample smallSample(ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-SmallSize" ), 1);
@@ -251,7 +253,7 @@ Distribution KernelSmoothing::build(const Sample & sample,
   // Check the degenerate case of constant sample
   if (xmin == xmax)
   {
-    setBandwidth(bandwidth);
+    bandwidth_ = bandwidth;
     KernelSmoothing::Implementation result(new Dirac(xmin));
     result->setDescription(sample.getDescription());
     return result;
