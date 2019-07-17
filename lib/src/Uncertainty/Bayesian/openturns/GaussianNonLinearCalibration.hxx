@@ -32,9 +32,9 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class THREEDVAR
+ * @class GaussianNonLinearCalibration
  *
- * @brief The class implements the 3D-VAR calibration
+ * @brief The class implements the Gaussian non-linear calibration
  *
  */
 class OT_API GaussianNonLinearCalibration
@@ -115,8 +115,8 @@ private:
 
   /* Flag to tell if the error covariance is for the whole observations */
   Bool globalErrorCovariance_;
-  
-}; /* class THREEDVAR */
+
+}; /* class GaussianNonLinearCalibration */
 
 
 END_NAMESPACE_OPENTURNS
