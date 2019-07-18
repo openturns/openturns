@@ -689,6 +689,26 @@ int BasicExpression::DependsLinearlyOnVariable(Int vi) const
         return 2;
       }
     }
+    else if (GetOpType() == PRODUCT)
+    {
+      int nbBranchesDependingOnVariable=0;
+      for(i = 0; i < GetSize(); i++)
+      {
+        d = GetNode(i)->DependsLinearlyOnVariable(vi);
+        if (d == 0)
+          return 0;
+        
+        if (d == 1)
+          ++nbBranchesDependingOnVariable;
+      }
+      
+      if (nbBranchesDependingOnVariable == 0)
+        return 2;
+      else if (nbBranchesDependingOnVariable == 1)
+        return 1;
+      else
+        return 0;
+    }
     else
     {
       if (DependsOnVariable(vi))
