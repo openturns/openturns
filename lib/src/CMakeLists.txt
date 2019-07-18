@@ -68,6 +68,7 @@ if (NOT CMAKE_VERSION VERSION_LESS 3.2)
   # Else Debian packages of modules fail to build as destination is absolute
   # https://gitlab.kitware.com/cmake/cmake/commit/dd089e08b578f20b7dc7d2ce658e3df05e346e35
   target_include_directories (OT INTERFACE $<INSTALL_INTERFACE:include>)
+  target_include_directories (OT PUBLIC ${OPENTURNS_INCLUDE_DIRS})
 endif ()
 
 # Build an empty executable to check link dependencies and completeness
