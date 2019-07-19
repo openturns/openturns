@@ -181,16 +181,16 @@ private:
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange();
 
-  /** Weights distribution accessor */
-  void setWeightsDistribution(const UserDefined & weighstDistribution);
-  UserDefined getWeightsDistribution() const;
-
   /** The collection of distribution of the mixture */
   DistributionPersistentCollection distributionCollection_;
 
   /** The discrete distribution of the weights */
-  UserDefined weightsDistribution_;
-
+  /** Structures for the alias sampling method */
+  mutable Point base_;
+  mutable Indices alias_;
+  Bool uniformWeights_;
+  Point p_;
+  
   /** PDF approximation associated to the CDF approximation */
   PiecewiseHermiteEvaluation pdfApproximationCDF_;
 

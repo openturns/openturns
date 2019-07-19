@@ -11,10 +11,10 @@ Distribution class=NormalGamma name=NormalGamma mu=1 kappa=2 alpha=3 beta=4
 Distribution NormalGamma(mu=1, kappa=2, alpha=3, beta=4)
 Elliptical = false
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=2 values=[1.44541,0.565324]
-oneSample first=class=Point name=Unnamed dimension=2 values=[2.02201,0.616734] last=class=Point name=Unnamed dimension=2 values=[-1.3335,0.229233]
-mean=class=Point name=Unnamed dimension=2 values=[0.987909,0.752097]
-covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.979272,0.00926347,0.00926347,0.191989]
+oneRealization=class=Point name=Unnamed dimension=2 values=[0.52143,0.947065]
+oneSample first=class=Point name=Unnamed dimension=2 values=[-0.149655,1.80011] last=class=Point name=Unnamed dimension=2 values=[1.22109,0.934319]
+mean=class=Point name=Unnamed dimension=2 values=[0.988408,0.752078]
+covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.979077,0.0089155,0.0089155,0.191922]
 Point= class=Point name=Unnamed dimension=2 values=[1.5,1.5]
 ddf     =class=Point name=Unnamed dimension=2 values=[-0.127136,-0.218956]
 log pdf=-2.46797
@@ -32,8 +32,8 @@ quantile=class=Point name=Unnamed dimension=2 values=[4.59228,2.55849]
 cdf(quantile)=0.997715
 Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-1.80326,0.0390431] upper bound=class=Point name=Unnamed dimension=2 values=[3.80326,2.00954] finite lower bound=[1,1] finite upper bound=[1,1]
 threshold=0.986085
-Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,X1,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(NormalGamma(mu=1, kappa=2, alpha=3, beta=4)) gradientImplementation=MinimumVolumeLevelSetGradient(NormalGamma(mu=1, kappa=2, alpha=3, beta=4)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(NormalGamma(mu=1, kappa=2, alpha=3, beta=4)) level=3.73168
-beta=0.0239525
+Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,X1,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(NormalGamma(mu=1, kappa=2, alpha=3, beta=4)) gradientImplementation=MinimumVolumeLevelSetGradient(NormalGamma(mu=1, kappa=2, alpha=3, beta=4)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(NormalGamma(mu=1, kappa=2, alpha=3, beta=4)) level=3.73169
+beta=0.0239523
 Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-1.77733,0.0966867] upper bound=class=Point name=Unnamed dimension=2 values=[3.77733,2.20341] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.985531
 Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-368.978,0] upper bound=class=Point name=Unnamed dimension=2 values=[4.59228,2.55849] finite lower bound=[1,1] finite upper bound=[1,1]
