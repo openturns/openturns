@@ -81,6 +81,9 @@ public:
   /** Is the specific key present ? */
   static Bool HasKey(const String & key);
 
+  /** Reload configuration */
+  static void Reload();
+
   /** @copydoc Object::__repr__() const */
   String __repr__() const;
 
@@ -216,6 +219,8 @@ protected:
   /** Load the configuration defined at installation time */
   void loadDefaultConfiguration();
 
+  /** Reload configuration */
+  void reload();
 private:
 
   /** Default constructor */
