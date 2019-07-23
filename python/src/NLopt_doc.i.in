@@ -29,6 +29,12 @@ Here are some properties of the different algorithms:
 +----------------------------+-------------------+-----------------------------+
 | GD_MLSL_LDS                | first derivative  | bounds required             |
 +----------------------------+-------------------+-----------------------------+
+| GD_STOGO (optional)        | first derivative  | bounds required             |
++----------------------------+-------------------+-----------------------------+
+| GD_STOGO_RAND (optional)   | first derivative  | bounds required             |
++----------------------------+-------------------+-----------------------------+
+| GN_AGS (optional)          | no derivative     | bounds required, inequality |
++----------------------------+-------------------+-----------------------------+
 | GN_CRS2_LM                 | no derivative     | bounds required             |
 +----------------------------+-------------------+-----------------------------+
 | GN_DIRECT                  | no derivative     | bounds required             |
@@ -43,15 +49,15 @@ Here are some properties of the different algorithms:
 +----------------------------+-------------------+-----------------------------+
 | GN_ESCH                    | no derivative     | bounds required             |
 +----------------------------+-------------------+-----------------------------+
-| GN_ISRES                   | no derivative     | all, bounds required        |
+| GN_ISRES                   | no derivative     | bounds required, all        |
 +----------------------------+-------------------+-----------------------------+
 | GN_MLSL                    | no derivative     | bounds required             |
 +----------------------------+-------------------+-----------------------------+
 | GN_MLSL_LDS                | no derivative     | bounds required             |
 +----------------------------+-------------------+-----------------------------+
-| GN_ORIG_DIRECT             | no derivative     | inequality, bounds required |
+| GN_ORIG_DIRECT             | no derivative     | bounds required, inequality |
 +----------------------------+-------------------+-----------------------------+
-| GN_ORIG_DIRECT_L           | no derivative     | inequality, bounds required |
+| GN_ORIG_DIRECT_L           | no derivative     | bounds required, inequality |
 +----------------------------+-------------------+-----------------------------+
 | G_MLSL                     | no derivative     | bounds required             |
 +----------------------------+-------------------+-----------------------------+
@@ -99,6 +105,9 @@ Here are some properties of the different algorithms:
 +----------------------------+-------------------+-----------------------------+
 | LN_SBPLX                   | no derivative     | bounds                      |
 +----------------------------+-------------------+-----------------------------+
+
+Availability of algorithms marked as optional may vary depending on the NLopt version
+or compilation options used.
 
 See also
 --------
@@ -194,7 +203,7 @@ Examples
 --------
 >>> import openturns as ot
 >>> print(ot.NLopt.GetAlgorithmNames())
-[AUGLAG,AUGLAG_EQ,GD_MLSL,...,LN_NEWUOA_BOUND,LN_PRAXIS,LN_SBPLX]#40"
+[AUGLAG,AUGLAG_EQ,GD_MLSL,..."
 
 // ---------------------------------------------------------------------
 

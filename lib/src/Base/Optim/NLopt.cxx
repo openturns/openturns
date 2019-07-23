@@ -49,10 +49,10 @@ void NLopt::InitializeAlgorithmNames()
   AlgorithmNames_["GN_DIRECT_L_RAND_NOSCAL"] = nlopt::GN_DIRECT_L_RAND_NOSCAL;
   AlgorithmNames_["GN_ORIG_DIRECT"] = nlopt::GN_ORIG_DIRECT;
   AlgorithmNames_["GN_ORIG_DIRECT_L"] = nlopt::GN_ORIG_DIRECT_L;
-  // TODO: add stogo
-//   AlgorithmNames_["GD_STOGO"] = nlopt::GD_STOGO;
-//   AlgorithmNames_["GD_STOGO_RAND"] = nlopt::GD_STOGO_RAND;
-
+#ifdef OPENTURNS_NLOPT_HAVE_STOGO
+  AlgorithmNames_["GD_STOGO"] = nlopt::GD_STOGO;
+  AlgorithmNames_["GD_STOGO_RAND"] = nlopt::GD_STOGO_RAND;
+#endif
   // LD_LBFGS_NOCEDAL is not wired
   AlgorithmNames_["LD_LBFGS"] = nlopt::LD_LBFGS;
   AlgorithmNames_["LN_PRAXIS"] = nlopt::LN_PRAXIS;
@@ -86,6 +86,9 @@ void NLopt::InitializeAlgorithmNames()
   AlgorithmNames_["LD_SLSQP"] = nlopt::LD_SLSQP;
   AlgorithmNames_["LD_CCSAQ"] = nlopt::LD_CCSAQ;
   AlgorithmNames_["GN_ESCH"] = nlopt::GN_ESCH;
+#ifdef OPENTURNS_NLOPT_HAVE_AGS
+  AlgorithmNames_["GN_AGS"] = nlopt::GN_AGS;
+#endif
 #else
   throw NotYetImplementedException(HERE) << "No NLopt support";
 #endif
