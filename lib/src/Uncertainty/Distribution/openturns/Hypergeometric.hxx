@@ -161,9 +161,6 @@ private:
   /** The probability table of the distribution */
   Point probabilities_;
 
-  /** Structures used for the sampling */
-  Point base_;
-  Indices alias_;
 }; /* class Hypergeometric */
 
 
