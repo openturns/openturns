@@ -211,13 +211,34 @@ Scalar Normal::computeDensityGeneratorSecondDerivative(const Scalar betaSquare) 
   return 0.25 * std::exp(logNormalizationFactor_ - 0.5 * betaSquare);
 }
 
+/* Get the PDF of the distribution */
+Scalar Normal::computePDF(const Scalar x) const
+{
+  const Scalar y = (x - mean_[0]) / sigma_[0];
+  return std::exp(-0.5 * y * y) * SpecFunc::ISQRT2PI / sigma_[0];
+}
+
+Scalar Normal::computePDF(const Point & point) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
+  // Special case for dimension 1
+  if (dimension == 1) return computePDF(point[0]);
+  return EllipticalDistribution::computePDF(point);
+}
+
 /* Get the CDF of the distribution */
+Scalar Normal::computeCDF(const Scalar x) const
+{
+  return DistFunc::pNormal((x - mean_[0]) / sigma_[0]);
+}
+
 Scalar Normal::computeCDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
   // Special case for dimension 1
-  if (dimension == 1) return DistFunc::pNormal((point[0] - mean_[0]) / sigma_[0]);
+  if (dimension == 1) return computeCDF(point[0]);
   // Normalize the point to use the standard form of the multivariate normal distribution
   Point u(normalize(point));
   /* Special treatment for independent components */

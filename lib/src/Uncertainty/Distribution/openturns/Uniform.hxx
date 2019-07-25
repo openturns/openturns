@@ -72,12 +72,15 @@ public:
 
   /** Get the PDF of the distribution, i.e. P(point < X < point+dx) = PDF(point)dx + o(dx) */
   using ContinuousDistribution::computePDF;
+  Scalar computePDF(const Scalar scalar) const;
   Scalar computePDF(const Point & point) const;
 
   /** Get the CDF of the distribution, i.e. P(X <= point) = CDF(point) */
   using ContinuousDistribution::computeCDF;
+  Scalar computeCDF(const Scalar scalar) const;
   Scalar computeCDF(const Point & point) const;
   using ContinuousDistribution::computeComplementaryCDF;
+  Scalar computeComplementaryCDF(const Scalar scalar) const;
   Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */

@@ -30,6 +30,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Brent.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -41,7 +42,7 @@ static const Factory<KernelMixture> Factory_KernelMixture;
 /* Default constructor */
 KernelMixture::KernelMixture()
   : ContinuousDistribution()
-  , p_kernel_(Distribution().getImplementation())
+  , kernel_()
   , bandwidth_(0)
   , bandwidthInverse_(0)
   , normalizationFactor_(0.0)
@@ -61,7 +62,7 @@ KernelMixture::KernelMixture(const Distribution & kernel,
                              const Point & bandwidth,
                              const Sample & sample)
   : ContinuousDistribution()
-  , p_kernel_(kernel.getImplementation())
+  , kernel_(kernel)
   , bandwidth_(0)
   , bandwidthInverse_(0)
   , normalizationFactor_(0.0)
@@ -95,8 +96,8 @@ KernelMixture::KernelMixture(const Distribution & kernel,
 Bool KernelMixture::operator ==(const KernelMixture & other) const
 {
   if (this == &other) return true;
-  if (useApproximatePDFCDF_) return (bandwidth_ == other.bandwidth_) && (*p_kernel_ == *other.p_kernel_) && (pdfApproximationCDF_ == other.pdfApproximationCDF_) && (cdfApproximation_ == other.cdfApproximation_) && (pdfApproximationCCDF_ == other.pdfApproximationCCDF_) && (ccdfApproximation_ == other.ccdfApproximation_);
-  return (bandwidth_ == other.bandwidth_) && (*p_kernel_ == *other.p_kernel_) && (sample_ == other.sample_);
+  if (useApproximatePDFCDF_) return (bandwidth_ == other.bandwidth_) && (kernel_ == other.kernel_) && (pdfApproximationCDF_ == other.pdfApproximationCDF_) && (cdfApproximation_ == other.cdfApproximation_) && (pdfApproximationCCDF_ == other.pdfApproximationCCDF_) && (ccdfApproximation_ == other.ccdfApproximation_);
+  return (bandwidth_ == other.bandwidth_) && (kernel_ == other.kernel_) && (sample_ == other.sample_);
 }
 
 Bool KernelMixture::equals(const DistributionImplementation & other) const
@@ -111,7 +112,7 @@ String KernelMixture::__repr__() const
   OSS oss;
   oss << "class=" << KernelMixture::GetClassName()
       << " name=" << getName()
-      << " kernel=" << p_kernel_->__repr__()
+      << " kernel=" << kernel_
       << " bandwidth=" << bandwidth_
       << " sample=" << sample_;
   return oss;
@@ -120,7 +121,7 @@ String KernelMixture::__repr__() const
 String KernelMixture::__str__(const String & offset) const
 {
   OSS oss;
-  oss << getClassName() << "(kernel = " << p_kernel_->__str__() << ", bandwidth = " << bandwidth_.__str__() << ", sample = " << Os::GetEndOfLine() << offset << sample_.__str__(offset);
+  oss << getClassName() << "(kernel = " << kernel_.__str__() << ", bandwidth = " << bandwidth_.__str__() << ", sample = " << Os::GetEndOfLine() << offset << sample_.__str__(offset);
   return oss;
 }
 
@@ -128,7 +129,7 @@ String KernelMixture::__str__(const String & offset) const
 /* Compute the numerical range of the distribution given the parameters values */
 void KernelMixture::computeRange()
 {
-  const Interval kernelRange(p_kernel_->getRange());
+  const Interval kernelRange(kernel_.getRange());
   const UnsignedInteger dimension = getDimension();
   const Point lowerBound(sample_.getMin() + kernelRange.getLowerBound()[0] * bandwidth_);
   const Point upperBound(sample_.getMax() + kernelRange.getUpperBound()[0] * bandwidth_);
@@ -142,7 +143,7 @@ void KernelMixture::setKernel(const Distribution & kernel)
 {
   // We check if the kernel is 1D
   if (kernel.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the kernel must be 1D for product kernel mixture";
-  p_kernel_ = kernel.getImplementation();
+  kernel_ = kernel;
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   computeRange();
@@ -150,7 +151,7 @@ void KernelMixture::setKernel(const Distribution & kernel)
 
 Distribution KernelMixture::getKernel() const
 {
-  return *p_kernel_;
+  return kernel_;
 }
 
 /* Sample accessor */
@@ -220,7 +221,7 @@ Point KernelMixture::getRealization() const
   Point result(sample_[RandomGenerator::IntegerGenerate(sample_.getSize())]);
   // Then add a random noise according to the product kernel
   const UnsignedInteger dimension = getDimension();
-  const Sample kernelSample(p_kernel_->getSample(dimension));
+  const Sample kernelSample(kernel_.getSample(dimension));
   for (UnsignedInteger i = 0; i < dimension; ++i) result[i] += bandwidth_[i] * kernelSample(i, 0);
   return result;
 }
@@ -243,14 +244,14 @@ Point KernelMixture::computeDDF(const Point & point) const
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       atom[j] = (point[j] - sample_(i, j)) * bandwidthInverse_[j];
-      kernelPdfAtom[j] = p_kernel_->computePDF(Point(1, atom[j]));
+      kernelPdfAtom[j] = kernel_.computePDF(Point(1, atom[j]));
       pdfAtom *= kernelPdfAtom[j];
     }
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       // Only aggregate the values associated with kernelPdfAtom>0
       if (kernelPdfAtom[j] > 0.0)
-        ddfValue[j] += pdfAtom / kernelPdfAtom[j] * p_kernel_->computeDDF(Point(1, atom[j]))[0] * bandwidthInverse_[j];
+        ddfValue[j] += pdfAtom / kernelPdfAtom[j] * kernel_.computeDDF(Point(1, atom[j]))[0] * bandwidthInverse_[j];
     }
   } /* end for */
   return normalizationFactor_ * ddfValue;
@@ -272,23 +273,29 @@ Scalar KernelMixture::computePDF(const Point & point) const
   {
     const Scalar x = point[0];
     const Scalar h = bandwidth_[0];
-    for(UnsignedInteger i = 0; i < size; ++i) pdfValue += p_kernel_->computePDF((x - sample_(i, 0)) / h);
-    return pdfValue / (h * size);
+    for (UnsignedInteger i = 0; i < size; ++i)
+      {
+	const Scalar y = (x - sample_(i, 0)) / h;
+	pdfValue += std::exp(-0.5 * y * y);
+      }
+    return pdfValue * SpecFunc::ISQRT2PI / (h * size);
   }
   // Quick rejection test
-  //if (!getRange().numericallyContains(point)) return pdfValue;
-  //const Scalar pdfEpsilon = p_kernel_->getPDFEpsilon();
+  if (!getRange().numericallyContains(point)) return pdfValue;
+  const Scalar pdfEpsilon = kernel_.getPDFEpsilon();
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar pdfAtom = p_kernel_->computePDF((point[0] - sample_(i, 0)) * bandwidthInverse_[0]);
+    Scalar y = (point[0] - sample_(i, 0)) * bandwidthInverse_[0];
+    Scalar pdfAtom = std::exp(-0.5 * y * y);
     for (UnsignedInteger j = 1; j < dimension; ++j)
     {
-      //if (pdfAtom < pdfEpsilon) break;
-      pdfAtom *= p_kernel_->computePDF((point[j] - sample_(i, j)) * bandwidthInverse_[j]);
+      if (pdfAtom < pdfEpsilon) break;
+      y = (point[j] - sample_(i, j)) * bandwidthInverse_[j];
+      pdfAtom *= std::exp(-0.5 * y * y);
     }
     pdfValue += pdfAtom;
   } /* end for */
-  return normalizationFactor_ * pdfValue;
+  return normalizationFactor_ * pdfValue * std::pow(SpecFunc::ISQRT2PI, dimension);
 }
 
 /* Get the CDF of the KernelMixture */
@@ -308,7 +315,7 @@ Scalar KernelMixture::computeCDF(const Point & point) const
     const Scalar x = point[0];
     const Scalar h = bandwidth_[0];
     for(UnsignedInteger i = 0; i < size; ++i)
-      cdfValue += p_kernel_->computeCDF((x - sample_(i, 0)) / h);
+      cdfValue += kernel_.computeCDF((x - sample_(i, 0)) / h);
     return cdfValue / size;
   }
   // Check against the range of the distribution
@@ -323,14 +330,14 @@ Scalar KernelMixture::computeCDF(const Point & point) const
   }
   if (allTooLarge) return 1.0;
   if (oneTooSmall) return 0.0;
-  const Scalar cdfEpsilon = p_kernel_->getCDFEpsilon();
+  const Scalar cdfEpsilon = kernel_.getCDFEpsilon();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar cdfAtom = p_kernel_->computeCDF((point[0] - sample_(i, 0)) * bandwidthInverse_[0]);
+    Scalar cdfAtom = kernel_.computeCDF((point[0] - sample_(i, 0)) * bandwidthInverse_[0]);
     for (UnsignedInteger j = 1; j < dimension; ++j)
     {
       if (cdfAtom < cdfEpsilon) break;
-      cdfAtom *= p_kernel_->computeCDF((point[j] - sample_(i, j)) * bandwidthInverse_[j]);
+      cdfAtom *= kernel_.computeCDF((point[j] - sample_(i, j)) * bandwidthInverse_[j]);
     }
     cdfValue += cdfAtom;
   } /* end for */
@@ -375,16 +382,16 @@ Scalar KernelMixture::computeSurvivalFunction(const Point & point) const
   }
   if (oneTooLarge) return 0.0;
   if (allTooSmall) return 1.0;
-  const Scalar cdfEpsilon = p_kernel_->getCDFEpsilon();
+  const Scalar cdfEpsilon = kernel_.getCDFEpsilon();
   Scalar survivalValue = 0.0;
   const UnsignedInteger size = sample_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar cdfAtom = p_kernel_->computeSurvivalFunction((point[0] - sample_(i, 0)) * bandwidthInverse_[0]);
+    Scalar cdfAtom = kernel_.computeSurvivalFunction((point[0] - sample_(i, 0)) * bandwidthInverse_[0]);
     for (UnsignedInteger j = 1; j < dimension; ++j)
     {
       if (cdfAtom < cdfEpsilon) break;
-      cdfAtom *= p_kernel_->computeSurvivalFunction((point[j] - sample_(i, j)) * bandwidthInverse_[j]);
+      cdfAtom *= kernel_.computeSurvivalFunction((point[j] - sample_(i, j)) * bandwidthInverse_[j]);
     }
     survivalValue += cdfAtom;
   } /* end for */
@@ -413,17 +420,17 @@ Scalar KernelMixture::computeProbability(const Interval & interval) const
   {
     const Scalar hInverse = bandwidthInverse_[0];
     for(UnsignedInteger i = 0; i < size; ++i)
-      probability += p_kernel_->computeProbability(Interval((lowerBound[0] - sample_(i, 0)) * hInverse, (upperBound[0] - sample_(i, 0)) * hInverse));
+      probability += kernel_.computeProbability(Interval((lowerBound[0] - sample_(i, 0)) * hInverse, (upperBound[0] - sample_(i, 0)) * hInverse));
     return probability / size;
   }
-  const Scalar probabilityEpsilon = p_kernel_->getCDFEpsilon();
+  const Scalar probabilityEpsilon = kernel_.getCDFEpsilon();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar probabilityAtom = p_kernel_->computeProbability(Interval((lowerBound[0] - sample_(i, 0)) * bandwidthInverse_[0], (upperBound[0] - sample_(i, 0)) * bandwidthInverse_[0]));
+    Scalar probabilityAtom = kernel_.computeProbability(Interval((lowerBound[0] - sample_(i, 0)) * bandwidthInverse_[0], (upperBound[0] - sample_(i, 0)) * bandwidthInverse_[0]));
     for (UnsignedInteger j = 1; j < dimension; ++j)
     {
       if (probabilityAtom < probabilityEpsilon) break;
-      probabilityAtom *= p_kernel_->computeProbability(Interval((lowerBound[j] - sample_(i, j)) * bandwidthInverse_[j], (upperBound[j] - sample_(i, j)) * bandwidthInverse_[j]));
+      probabilityAtom *= kernel_.computeProbability(Interval((lowerBound[j] - sample_(i, j)) * bandwidthInverse_[j], (upperBound[j] - sample_(i, j)) * bandwidthInverse_[j]));
     }
     probability += probabilityAtom;
   } /* end for */
@@ -466,7 +473,7 @@ Complex KernelMixture::computeCharacteristicFunction(const Scalar x) const
   const UnsignedInteger size = sample_.getSize();
   for(UnsignedInteger i = 0; i < size; ++i)
   {
-    cfValue += p_kernel_->computeCharacteristicFunction(x * bandwidth_[0]) * std::exp(Complex(0.0, sample_(i, 0) * x));
+    cfValue += kernel_.computeCharacteristicFunction(x * bandwidth_[0]) * std::exp(Complex(0.0, sample_(i, 0) * x));
   } /* end for */
   return cfValue * (1.0 / size);
 }
@@ -506,9 +513,9 @@ Scalar KernelMixture::computeConditionalPDF(const Scalar x,
   {
     Scalar marginalAtomPDF = 1.0;
     for (UnsignedInteger j = 0; j < conditioningDimension; ++j)
-      marginalAtomPDF *= p_kernel_->computePDF((y[j] - sample_(i, j)) / bandwidth_[j]);
+      marginalAtomPDF *= kernel_.computePDF((y[j] - sample_(i, j)) / bandwidth_[j]);
     marginalPDF += marginalAtomPDF;
-    jointPDF += marginalAtomPDF * p_kernel_->computePDF((x - sample_(i, conditioningDimension)) / bandwidth_[conditioningDimension]);
+    jointPDF += marginalAtomPDF * kernel_.computePDF((x - sample_(i, conditioningDimension)) / bandwidth_[conditioningDimension]);
   }
   if (marginalPDF <= 0.0) return 0.0;
   // No need to normalize by 1/h as it simplifies
@@ -525,7 +532,7 @@ Point KernelMixture::computeSequentialConditionalPDF(const Point & x) const
   Scalar currentH = bandwidth_[0];
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    atomsValues[i] = p_kernel_->computePDF((currentX - sample_(i, 0)) / currentH);
+    atomsValues[i] = kernel_.computePDF((currentX - sample_(i, 0)) / currentH);
     pdfConditioning += atomsValues[i];
   }
   result[0] = pdfConditioning / (size * currentH);
@@ -538,7 +545,7 @@ Point KernelMixture::computeSequentialConditionalPDF(const Point & x) const
     Scalar pdfConditioned = 0.0;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      atomsValues[i] *= p_kernel_->computePDF((currentX - sample_(i, conditioningDimension)) / currentH);
+      atomsValues[i] *= kernel_.computePDF((currentX - sample_(i, conditioningDimension)) / currentH);
       pdfConditioned += atomsValues[i];
     }
     result[conditioningDimension] = pdfConditioned / pdfConditioning;
@@ -562,11 +569,11 @@ Scalar KernelMixture::computeConditionalCDF(const Scalar x,
   Scalar h = bandwidth_[conditioningDimension];
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar marginalAtomPDF = p_kernel_->computePDF((y[0] - sample_(i, 0)) / bandwidth_[0]);
+    Scalar marginalAtomPDF = kernel_.computePDF((y[0] - sample_(i, 0)) / bandwidth_[0]);
     for (UnsignedInteger j = 1; j < conditioningDimension; ++j)
-      marginalAtomPDF *= p_kernel_->computePDF((y[j] - sample_(i, j)) / bandwidth_[j]);
+      marginalAtomPDF *= kernel_.computePDF((y[j] - sample_(i, j)) / bandwidth_[j]);
     marginalPDF += marginalAtomPDF;
-    jointCDF += marginalAtomPDF * p_kernel_->computeCDF((x - sample_(i, conditioningDimension)) / h);
+    jointCDF += marginalAtomPDF * kernel_.computeCDF((x - sample_(i, conditioningDimension)) / h);
   }
   if (marginalPDF <= 0.0) return 0.0;
   // No need to normalize by 1/h as it simplifies
@@ -592,8 +599,8 @@ Point KernelMixture::computeSequentialConditionalCDF(const Point & x) const
   Scalar cdfConditioned = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Scalar kI = p_kernel_->computePDF((currentX - sample_(i, 0)) / currentH) / currentH;
-    cdfConditioned += p_kernel_->computeCDF((currentX - sample_(i, 0)) / currentH);;
+    const Scalar kI = kernel_.computePDF((currentX - sample_(i, 0)) / currentH) / currentH;
+    cdfConditioned += kernel_.computeCDF((currentX - sample_(i, 0)) / currentH);;
     atomsValues[i] = kI;
     pdfConditioning += kI;
   }
@@ -608,8 +615,8 @@ Point KernelMixture::computeSequentialConditionalCDF(const Point & x) const
     cdfConditioned = 0.0;
     for (UnsignedInteger i = 0; i < size; ++i)
     {
-      cdfConditioned += atomsValues[i] * p_kernel_->computeCDF((currentX - sample_(i, conditioningDimension)) / currentH);
-      atomsValues[i] *= p_kernel_->computePDF((currentX - sample_(i, conditioningDimension)) / currentH) / currentH;
+      cdfConditioned += atomsValues[i] * kernel_.computeCDF((currentX - sample_(i, conditioningDimension)) / currentH);
+      atomsValues[i] *= kernel_.computePDF((currentX - sample_(i, conditioningDimension)) / currentH) / currentH;
       pdfConditioned += atomsValues[i];
     }
     result[conditioningDimension] = cdfConditioned / pdfConditioning;
@@ -626,7 +633,7 @@ Distribution KernelMixture::getMarginal(const UnsignedInteger i) const
   // Special case for dimension 1
   if (dimension == 1) return clone();
   // General case
-  KernelMixture::Implementation marginal(new KernelMixture(*p_kernel_, Point(1, bandwidth_[i]), sample_.getMarginal(i)));
+  KernelMixture::Implementation marginal(new KernelMixture(kernel_, Point(1, bandwidth_[i]), sample_.getMarginal(i)));
   marginal->setDescription(Description(1, getDescription()[i]));
   return marginal;
 }
@@ -649,7 +656,7 @@ Distribution KernelMixture::getMarginal(const Indices & indices) const
     marginalBandwidth[i] = bandwidth_[index_i];
     marginalDescription[i] = description[index_i];
   }
-  KernelMixture::Implementation marginal(new KernelMixture(*p_kernel_, marginalBandwidth, sample_.getMarginal(indices)));
+  KernelMixture::Implementation marginal(new KernelMixture(kernel_, marginalBandwidth, sample_.getMarginal(indices)));
   marginal->setDescription(marginalDescription);
   return marginal;
 }
@@ -666,7 +673,7 @@ Distribution KernelMixture::getMarginal(const Indices & indices) const
 void KernelMixture::computeMean() const
 {
   // We know that the kernel is 1D, so its mean value is actually a scalar
-  const Scalar meanKernel = p_kernel_->getMean()[0];
+  const Scalar meanKernel = kernel_.getMean()[0];
   mean_ = sample_.computeMean();
   isAlreadyComputedMean_ = true;
   // Special case for symmetric kernel
@@ -682,7 +689,7 @@ void KernelMixture::computeCovariance() const
 {
   const UnsignedInteger dimension = getDimension();
   // We know that the kernel is 1D, so its standard deviation is actually a scalar
-  const Scalar sigmaKernel = p_kernel_->getStandardDeviation()[0];
+  const Scalar sigmaKernel = kernel_.getStandardDeviation()[0];
   // Covariance(sample) term, with the proper scaling
   covariance_ = CovarianceMatrix(dimension, Collection<Scalar>(sample_.computeCovariance().getImplementation()->operator*(1.0 - 1.0 / sample_.getSize())));
   // Add the diagonal kernel covariance contribution
@@ -698,7 +705,7 @@ Point KernelMixture::getStandardDeviation() const
 {
   const UnsignedInteger dimension = getDimension();
   // We know that the kernel is 1D, so its standard deviation is actually a scalar
-  const Scalar sigmaKernel = p_kernel_->getStandardDeviation()[0];
+  const Scalar sigmaKernel = kernel_.getStandardDeviation()[0];
   Point result(sample_.computeCenteredMoment(2));
   for (UnsignedInteger i = 0; i < dimension; ++i)
     result[i] = std::sqrt(result[i] + std::pow(bandwidth_[i] * sigmaKernel, 2));
@@ -712,9 +719,9 @@ Point KernelMixture::getSkewness() const
 {
   const UnsignedInteger dimension = getDimension();
   // We know that the kernel is 1D, so its standard deviation is actually a scalar
-  const Scalar sigmaKernel = p_kernel_->getStandardDeviation()[0];
+  const Scalar sigmaKernel = kernel_.getStandardDeviation()[0];
   // We know that the kernel is 1D, so its skewness is actually a scalar
-  const Scalar skewnessKernel = p_kernel_->getSkewness()[0];
+  const Scalar skewnessKernel = kernel_.getSkewness()[0];
   // Standard deviation of the KernelMixture
   const Point sigma(getStandardDeviation());
   Point result(sample_.computeCenteredMoment(3));
@@ -730,9 +737,9 @@ Point KernelMixture::getKurtosis() const
 {
   const UnsignedInteger dimension = getDimension();
   // We know that the kernel is 1D, so its standard deviation is actually a scalar
-  const Scalar sigmaKernel = p_kernel_->getStandardDeviation()[0];
+  const Scalar sigmaKernel = kernel_.getStandardDeviation()[0];
   // We know that the kernel is 1D, so its skewness is actually a scalar
-  const Scalar kurtosisKernel = p_kernel_->getKurtosis()[0];
+  const Scalar kurtosisKernel = kernel_.getKurtosis()[0];
   // Standard deviation of the sample
   const Point varSample(sample_.computeCenteredMoment(2));
   // Standard deviation of the KernelMixture
@@ -848,7 +855,7 @@ void KernelMixture::setParameter(const Point & parameter)
   }
   // Use the constructor in order to recompute the PDF/CDF approximation if needed
   const Scalar w = getWeight();
-  *this = KernelMixture(*p_kernel_, bandwidth_, sample_);
+  *this = KernelMixture(kernel_, bandwidth_, sample_);
   setWeight(w);
 }
 
@@ -859,15 +866,15 @@ Bool KernelMixture::isElliptical() const
   // No chance to have something symmetrical if sample size > 2
   if (sample_.getSize() > 2) return false;
   // In dimension 1, elliptical == symmetric
-  if (getDimension() == 1) return p_kernel_->isElliptical();
+  if (getDimension() == 1) return kernel_.isElliptical();
   // In dimension > 1, only samples with 1 point and Normal kernels lead to an elliptical distribution
-  return (sample_.getSize() == 1) && (p_kernel_->getClassName() == "Normal");
+  return (sample_.getSize() == 1) && (kernel_.getClassName() == "Normal");
 }
 
 /* Check if the distribution is continuos */
 Bool KernelMixture::isContinuous() const
 {
-  return p_kernel_->isContinuous();
+  return kernel_.getImplementation()->isContinuous();
 }
 
 /* Tell if the distribution has elliptical copula */
@@ -889,7 +896,7 @@ Bool KernelMixture::hasIndependentCopula() const
 void KernelMixture::save(Advocate & adv) const
 {
   ContinuousDistribution::save(adv);
-  adv.saveAttribute( "kernel_", Distribution(p_kernel_) );
+  adv.saveAttribute( "kernel_", kernel_ );
   adv.saveAttribute( "bandwidth_", bandwidth_ );
   adv.saveAttribute( "bandwidthInverse_", bandwidthInverse_ );
   adv.saveAttribute( "normalizationFactor_", normalizationFactor_ );
@@ -905,9 +912,7 @@ void KernelMixture::save(Advocate & adv) const
 void KernelMixture::load(Advocate & adv)
 {
   ContinuousDistribution::load(adv);
-  Distribution kernel;
-  adv.loadAttribute( "kernel_", kernel );
-  p_kernel_ = kernel.getImplementation();
+  adv.loadAttribute( "kernel_", kernel_ );
   adv.loadAttribute( "bandwidth_", bandwidth_ );
   adv.loadAttribute( "bandwidthInverse_", bandwidthInverse_ );
   adv.loadAttribute( "normalizationFactor_", normalizationFactor_ );

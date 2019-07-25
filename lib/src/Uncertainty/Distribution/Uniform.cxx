@@ -129,35 +129,44 @@ Point Uniform::computeDDF(const Point & point) const
 
 
 /* Get the PDF of the distribution */
-Scalar Uniform::computePDF(const Point & point) const
+Scalar Uniform::computePDF(const Scalar x) const
 {
-  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
-  const Scalar x = point[0];
   if ((x <= a_) || (x > b_)) return 0.0;
   return 1.0 / (b_ - a_);
 }
 
-
-/* Get the CDF of the distribution */
-Scalar Uniform::computeCDF(const Point & point) const
+Scalar Uniform::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+  return computePDF(point[0]);
+}
 
-  const Scalar x = point[0];
+
+/* Get the CDF of the distribution */
+Scalar Uniform::computeCDF(const Scalar x) const
+{
   if (x <= a_) return 0.0;
   if (x >= b_)  return 1.0;
   return (x - a_) / (b_ - a_);
 }
 
-Scalar Uniform::computeComplementaryCDF(const Point & point) const
+Scalar Uniform::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+  return computeCDF(point[0]);
+}
 
-  const Scalar x = point[0];
+Scalar Uniform::computeComplementaryCDF(const Scalar x) const
+{
   if (x <= a_) return 1.0;
   if (x > b_)  return 0.0;
   return (b_ - x) / (b_ - a_);
+}
+
+Scalar Uniform::computeComplementaryCDF(const Point & point) const
+{
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+  return computeComplementaryCDF(point[0]);
 }
 
 /* Get the product minimum volume interval containing a given probability of the distribution */

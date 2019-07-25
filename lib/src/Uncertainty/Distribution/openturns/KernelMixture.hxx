@@ -185,7 +185,7 @@ private:
   void computeNormalizationFactor();
 
   /** The kernel of the kernelMixture */
-  Distribution kernel_;
+  Pointer<DistributionImplementation>  p_kernel_;
 
   /** The bandwidth of the KernelMixture */
   Point bandwidth_;

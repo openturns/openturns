@@ -88,35 +88,44 @@ Point Epanechnikov::computeDDF(const Point & point) const
 
 
 /* Get the PDF of the distribution */
-Scalar Epanechnikov::computePDF(const Point & point) const
+Scalar Epanechnikov::computePDF(const Scalar x) const
 {
-  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
-  const Scalar x = point[0];
   if ((x <= -1.0) || (x > 1.0)) return 0.0;
   return 0.75 * (1.0 + x) * (1.0 - x);
 }
 
-
-/* Get the CDF of the distribution */
-Scalar Epanechnikov::computeCDF(const Point & point) const
+Scalar Epanechnikov::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+  return computePDF(point[0]);
+}
 
-  const Scalar x = point[0];
+
+/* Get the CDF of the distribution */
+Scalar Epanechnikov::computeCDF(const Scalar x) const
+{
   if (x <= -1.0) return 0.0;
   if (x >= 1.0) return 1.0;
   return 0.5 + x * (0.75 - 0.25 * x * x);
 }
 
-Scalar Epanechnikov::computeComplementaryCDF(const Point & point) const
+Scalar Epanechnikov::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+  return computeCDF(point[0]);
+}
 
-  const Scalar x = point[0];
+Scalar Epanechnikov::computeComplementaryCDF(const Scalar x) const
+{
   if (x <= -1.0) return 1.0;
   if (x > 1.0) return 0.0;
   return 0.5 - x * (0.75 - 0.25 * x * x);
+}
+
+Scalar Epanechnikov::computeComplementaryCDF(const Point & point) const
+{
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+  return computeComplementaryCDF(point[0]);
 }
 
 /** Get the PDFGradient of the distribution */
