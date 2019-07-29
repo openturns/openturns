@@ -46,7 +46,6 @@
 #include "openturns/PlatformInfo.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/SharedPointer.hxx"
 #include "openturns/StorageManager.hxx"
 #include "openturns/Study.hxx"
 #include "openturns/TypedCollectionInterfaceObject.hxx"
