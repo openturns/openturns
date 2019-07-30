@@ -135,25 +135,31 @@ class OpenTURNSPythonFunction(object):
         self.__descOut = ['y' + str(i) for i in range(p)]
 
     def setInputDescription(self, descIn):
+        """Input description accessor."""
         if (len(descIn) != self.__n):
             raise ValueError('Input description size does NOT match input dimension')
         self.__descIn = descIn
 
     def getInputDescription(self):
+        """Input description accessor."""
         return self.__descIn
 
     def setOutputDescription(self, descOut):
+        """Output description accessor."""
         if (len(descOut) != self.__p):
             raise ValueError('Output description size does NOT match output dimension')
         self.__descOut = descOut
 
     def getOutputDescription(self):
+        """Output description accessor."""
         return self.__descOut
 
     def getInputDimension(self):
+        """Input dimension accessor."""
         return self.__n
 
     def getOutputDimension(self):
+        """Output dimension accessor."""
         return self.__p
 
     def __str__(self):
