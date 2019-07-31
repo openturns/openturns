@@ -566,10 +566,11 @@ KrigingResult::CovarianceMatrixCollection KrigingResult::getConditionalMarginalC
     throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalCovariance, expected a non empty sample";
   
   CovarianceMatrixCollection collection(sampleSize);
-  Sample data(1, inputDimension);
+  Point data(inputDimension);
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
   {
-    for (UnsignedInteger j = 0; j < inputDimension; ++j) data(0, j) = xi(i, j);
+    for (UnsignedInteger j = 0; j < inputDimension; ++j) data[j] = xi(i, j);
+    // Rely on getConditionalCovariance(Point&)
     collection[i] = getConditionalCovariance(data);
   }
   return collection;
