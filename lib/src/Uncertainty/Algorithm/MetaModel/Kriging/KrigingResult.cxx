@@ -56,7 +56,6 @@ KrigingResult::KrigingResult(const Sample & inputSample,
   , trendCoefficients_(trendCoefficients)
   , covarianceModel_(covarianceModel)
   , covarianceCoefficients_(covarianceCoefficients)
-  , hasCholeskyFactor_(false)
   , covarianceCholeskyFactor_()
   , covarianceHMatrix_()
   , F_()
@@ -91,7 +90,6 @@ KrigingResult::KrigingResult(const Sample & inputSample,
   , trendCoefficients_(trendCoefficients)
   , covarianceModel_(covarianceModel)
   , covarianceCoefficients_(covarianceCoefficients)
-  , hasCholeskyFactor_(true)
   , covarianceCholeskyFactor_(covarianceCholeskyFactor)
   , covarianceHMatrix_(covarianceHMatrix)
   , F_()
@@ -325,8 +323,6 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
 {
   // For a process of dimension p & xi's size=s,
   // returned matrix should have dimensions (p * s) x (p * s)
-  if (!hasCholeskyFactor_)
-    throw InvalidArgumentException(HERE) << "In KrigingResult::getConditionalCovariance, Cholesky factor was not provided. This last one is mandatory to compute the covariance";
   const UnsignedInteger inputDimension = xi.getDimension();
   if (inputDimension != covarianceModel_.getInputDimension())
     throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalCovariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
@@ -481,7 +477,6 @@ void KrigingResult::save(Advocate & adv) const
   adv.saveAttribute( "trendCoefficients_", trendCoefficients_ );
   adv.saveAttribute( "covarianceModel_", covarianceModel_ );
   adv.saveAttribute( "covarianceCoefficients_", covarianceCoefficients_ );
-  adv.saveAttribute( "hasCholeskyFactor_", hasCholeskyFactor_);
   adv.saveAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_);
   adv.saveAttribute( "F_", F_);
   adv.saveAttribute( "phiT_", phiT_);
@@ -502,7 +497,6 @@ void KrigingResult::load(Advocate & adv)
   adv.loadAttribute( "trendCoefficients_", trendCoefficients_ );
   adv.loadAttribute( "covarianceModel_", covarianceModel_ );
   adv.loadAttribute( "covarianceCoefficients_", covarianceCoefficients_ );
-  adv.loadAttribute( "hasCholeskyFactor_", hasCholeskyFactor_);
   adv.loadAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_);
   adv.loadAttribute( "F_", F_);
   adv.loadAttribute( "phiT_", phiT_);

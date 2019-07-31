@@ -168,9 +168,6 @@ private:
   /** The covariance coefficients */
   Sample covarianceCoefficients_;
 
-  /** Boolean for cholesky. The factor is not mandatory (see KrigingAlgorithm) */
-  Bool hasCholeskyFactor_;
-
   /** Cholesky factor  */
   mutable TriangularMatrix covarianceCholeskyFactor_;
 
