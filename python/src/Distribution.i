@@ -164,9 +164,9 @@ class ChaospyDistribution(PythonDistribution):
     --------
     >>> import openturns as ot
     >>> import chaospy as cp  # doctest: +SKIP
-    >>> chaospy_dist = cp.J(cp.Triangular(1.0, 2.0, 3.0), cp.F(4.0, 5.0))  # doctest: SKIP
-    >>> distribution = ot.Distribution(ot.ChaospyDistribution(chaospy_dist))  # doctest: SKIP
-    >>> distribution.getRealization()  # doctest: SKIP
+    >>> chaospy_dist = cp.J(cp.Triangular(1.0, 2.0, 3.0), cp.F(4.0, 5.0))  # doctest: +SKIP
+    >>> distribution = ot.Distribution(ot.ChaospyDistribution(chaospy_dist))  # doctest: +SKIP
+    >>> distribution.getRealization()  # doctest: +SKIP
     """
     def __init__(self, dist):
         super(ChaospyDistribution, self).__init__(len(dist))

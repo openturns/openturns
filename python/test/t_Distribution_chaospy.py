@@ -33,7 +33,7 @@ for chaospy_dist in [d0, d1, d2]:
     print('kurtosis=', distribution.getKurtosis())
     print('kurtosis(sampling)=', sample.computeKurtosis())
     print('range=', distribution.getRange())
-    if len(dist) == 1:
+    if len(chaospy_dist) == 1:
         print('quantile=', distribution.computeQuantile(cdf))
         print('quantile (tail)=', distribution.computeQuantile(cdf, True))
         print('scalar quantile=%.6g' % distribution.computeScalarQuantile(cdf))
