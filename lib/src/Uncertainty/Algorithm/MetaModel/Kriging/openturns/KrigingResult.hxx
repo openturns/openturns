@@ -51,6 +51,7 @@ public:
   typedef PersistentCollection<Point> PointPersistentCollection;
   typedef Collection<Basis> BasisCollection;
   typedef PersistentCollection<Basis> BasisPersistentCollection;
+  typedef Collection<CovarianceMatrix> CovarianceMatrixCollection;
 
   /** Default constructor */
   KrigingResult();
@@ -117,6 +118,12 @@ public:
 
   /** Compute covariance matrix conditionnaly to observations*/
   virtual CovarianceMatrix getConditionalCovariance(const Point & xi) const;
+
+  /** Compute covariance matrices conditionnaly to observations (1 cov / point)*/
+  virtual CovarianceMatrixCollection getConditionalMarginalCovariance(const Sample & xi) const;
+
+  /** Compute covariance matrix conditionnaly to observations (1 cov of size outdimension)*/
+  virtual CovarianceMatrix getConditionalMarginalCovariance(const Point & xi) const;
 
   /** Compute joint normal distribution conditionnaly to observations*/
   virtual Normal operator()(const Sample & xi) const;

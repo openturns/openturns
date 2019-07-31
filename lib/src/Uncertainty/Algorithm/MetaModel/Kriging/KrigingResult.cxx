@@ -446,6 +446,38 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Point & xi) const
   return getConditionalCovariance(sample);
 }
 
+/** Compute covariance matrices conditionnaly to observations (1 cov / point)*/
+KrigingResult::CovarianceMatrixCollection KrigingResult::getConditionalMarginalCovariance(const Sample & xi) const
+{
+  // For a process of dimension p & xi's size=s,
+  // returned a s-collection of cov matrices (pxp) 
+  const UnsignedInteger inputDimension = xi.getDimension();
+  if (inputDimension != covarianceModel_.getInputDimension())
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalCovariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
+  const UnsignedInteger outputDimension = covarianceModel_.getOutputDimension();
+  const UnsignedInteger sampleSize = xi.getSize();
+  if (sampleSize == 0)
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalCovariance, expected a non empty sample";
+  
+  CovarianceMatrixCollection collection(sampleSize);
+  Sample data(1, inputDimension);
+  for (UnsignedInteger i = 0; i < sampleSize; ++i)
+  {
+    for (UnsignedInteger j = 0; j < inputDimension; ++j) data(0, j) = xi(i, j);
+    collection[i] = getConditionalCovariance(data);
+  }
+  return collection;
+}
+
+/** Compute covariance matrix conditionnaly to observations (1 cov of size outdimension)*/
+CovarianceMatrix KrigingResult::getConditionalMarginalCovariance(const Point & xi) const
+{
+  const UnsignedInteger inputDimension = xi.getDimension();
+  if (inputDimension != covarianceModel_.getInputDimension())
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalCovariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
+  return getConditionalCovariance(xi);
+}
+
 /* Compute joint normal distribution conditionnaly to observations*/
 Normal KrigingResult::operator()(const Sample & xi) const
 {

@@ -43,6 +43,7 @@
  * Deprecated WeibullFactory in favor of WeibullMinFactory, buildAsWeibull
  * Deprecated GumbelAB
  * Deprecated GaussianNonLinearCalibration,NonLinearLeastSquaresCalibration::set,getAlgorithm
+ * Added getConditionalMarginalCovariance method to KrigingResult
 
 === Python module ===
  * Add Domain.__contains__ operator
