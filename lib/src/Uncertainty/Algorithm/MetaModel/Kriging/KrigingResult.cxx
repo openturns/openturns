@@ -290,6 +290,23 @@ Matrix KrigingResult::getCrossMatrix(const Sample & x) const
   return result;
 }
 
+Matrix KrigingResult::getCrossMatrix(const Point & point) const
+{
+  const UnsignedInteger trainingSize = inputSample_.getSize();
+  const UnsignedInteger trainingFullSize = trainingSize * covarianceModel_.getOutputDimension();
+  const UnsignedInteger outputDimension = covarianceModel_.getOutputDimension();
+  Matrix result(trainingFullSize, outputDimension);
+  CovarianceMatrix covarianceMatrix;
+  for (UnsignedInteger k = 0; k < trainingSize; ++k)
+  {
+    covarianceMatrix = covarianceModel_(inputTransformedSample_[k], point);
+    for (UnsignedInteger i = 0; i < outputDimension; ++i)
+      for (UnsignedInteger j = 0; j <= i; ++j)
+        result(k * outputDimension + i, j) = covarianceMatrix(i, j);
+  }
+  return result;
+}
+
 /* Compute cross matrix method ==> not necessary square matrix  */
 void KrigingResult::computeF() const
 {
@@ -440,10 +457,99 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
 }
 
 /* Compute covariance matrix conditionnaly to observations*/
-CovarianceMatrix KrigingResult::getConditionalCovariance(const Point & xi) const
+CovarianceMatrix KrigingResult::getConditionalCovariance(const Point & point) const
 {
-  const Sample sample(1, xi);
-  return getConditionalCovariance(sample);
+  // For a process of output dimension p
+  // returned p x p matrix
+  const UnsignedInteger inputDimension = point.getDimension();
+  if (inputDimension != covarianceModel_.getInputDimension())
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalCovariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
+  const UnsignedInteger outputDimension = covarianceModel_.getOutputDimension();
+  // 0) Take into account transformation
+  Point data;
+  // Transform data if necessary
+  if (hasTransformation_)
+    data = inputTransformation_(point);
+  else
+    data = point;
+  // 1) compute \sigma_{x,x}
+  LOGINFO("Compute interactions Sigma_xx");
+  const CovarianceMatrix sigmaXX(covarianceModel_(Point(inputDimension, 0.0)));
+
+  // 2) compute \sigma_{y,x}
+  // compute r(x), the crossCovariance between the conditionned data & xi
+  LOGINFO("Compute cross-interactions sigmaYX");
+  const Matrix crossCovariance(getCrossMatrix(data));
+  // 3) Compute r^t R^{-1} r'(x)
+  // As we get the Cholesky factor L, we can solve triangular linear system
+  // We define B = L^{-1} * r(x)
+  Matrix B;
+  if (0 != covarianceCholeskyFactor_.getNbRows())
+  {
+    LOGINFO("Solve L.B = SigmaYX");
+    B = covarianceCholeskyFactor_.solveLinearSystem(crossCovariance);
+  }
+  else
+  {
+    LOGINFO("Solve L.B = SigmaYX (h-mat version)");
+    B = covarianceHMatrix_.solveLower(crossCovariance);
+  }
+  // Use of gram to compute B^{t} * B
+  // Default gram computes B*B^t
+  // With transpose argument=true, it performs B^t*B
+  // With full argument=false, lower triangular matrix B^t*B is not symmetrized
+  LOGINFO("Compute B^tB");
+  const CovarianceMatrix BtB(B.computeGram(true));
+
+  // Interest is to compute sigma_xx -= BtB
+  // However it is not trivial that A - B is a covariance matrix if A & B are covariance matrices
+  // Symmeric : ok but not necessary definite. Here by definition it is!
+  // So should we define  operator - & operator -= with covariances?
+  LOGINFO("Compute Sigma_xx-BtB");
+  CovarianceMatrix result(*sigmaXX.getImplementation() - *BtB.getImplementation() );
+
+  // Case of simple Kriging
+  if(basis_.getSize() == 0) return result;
+
+  // Case of universal Kriging: compute the covariance due to the regression part
+  // Additionnal information have to be computed
+  // 1) compute F
+  LOGINFO("Compute the regression matrix F");
+  computeF();
+  // 2) Interest is (F^t R^{-1} F)^{-1}
+  // F^{t} R^{-1} F = F^{t} L^{-t} L^{-1} F
+  // Solve first L phi = F
+  computePhi();
+  // 3) Compute u(x) = F^t *R^{-1} * r(x) - f(x)
+  //                 = F^{t} * L^{-1}^t * L{-1} * r(x) - f(x)
+  //                 = phiT_ * B - f(x)
+  LOGINFO("Compute psi = phi^t * B");
+  const Matrix psi(phiT_ * B);
+  // compute f(x) & define u = psi - f(x)
+  LOGINFO("Compute f(x)");
+  // Note that fx = F^{T} for x in inputSample_
+  Matrix fx(F_.getNbColumns(), covarianceModel_.getOutputDimension());
+  // Fill fx => equivalent to F for the x data with transposition
+  UnsignedInteger index = 0;
+  for (UnsignedInteger basisMarginal = 0; basisMarginal < basis_.getSize(); ++ basisMarginal )
+  {
+    const Basis localBasis(basis_[basisMarginal]);
+    const UnsignedInteger localBasisSize = localBasis.getSize();
+    for (UnsignedInteger j = 0; j < localBasisSize; ++ j )
+    {
+      fx(j + index, basisMarginal) = localBasis[j](data)[0];
+    }
+    index = index + localBasisSize;
+  }
+  LOGINFO("Compute ux = psi - fx");
+  const Matrix ux(psi - fx);
+
+  // interest now is to solve  G rho = ux
+  LOGINFO("Solve linear system G * rho = ux");
+  const Matrix rho(Gt_.solveLinearSystem(ux));
+  LOGINFO("Compute Sigma_xx-BtB + rho^{t}*rho");
+  result = result + rho.computeGram(true);
+  return result;
 }
 
 /** Compute covariance matrices conditionnaly to observations (1 cov / point)*/

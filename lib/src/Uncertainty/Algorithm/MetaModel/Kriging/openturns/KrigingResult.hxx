@@ -142,6 +142,7 @@ protected:
 
   /** Compute cross matrix method ==> not necessary square matrix  */
   Matrix getCrossMatrix(const Sample & x) const;
+  Matrix getCrossMatrix(const Point & point) const;
   void computeF() const;
   void computePhi() const;
 
