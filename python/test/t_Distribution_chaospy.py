@@ -24,8 +24,6 @@ for chaospy_dist in [d0, d1, d2]:
     print('pdf= %.6g' % distribution.computePDF(point))
     cdf = distribution.computeCDF(point)
     print('cdf= %.6g' % cdf)
-    print('quantile=', distribution.computeQuantile(cdf))
-    print('quantile (tail)=', distribution.computeQuantile(cdf, True))
     print('mean=', distribution.getMean())
     print('mean(sampling)=', sample.computeMean())
     print('std=', distribution.getStandardDeviation())
@@ -35,6 +33,9 @@ for chaospy_dist in [d0, d1, d2]:
     print('kurtosis=', distribution.getKurtosis())
     print('kurtosis(sampling)=', sample.computeKurtosis())
     print('range=', distribution.getRange())
-    print('scalar quantile=%.6g' % distribution.computeScalarQuantile(cdf))
-    print('scalar quantile (tail)=%.6g' %
-        distribution.computeScalarQuantile(cdf, True))
+    if len(dist) == 1:
+        print('quantile=', distribution.computeQuantile(cdf))
+        print('quantile (tail)=', distribution.computeQuantile(cdf, True))
+        print('scalar quantile=%.6g' % distribution.computeScalarQuantile(cdf))
+        print('scalar quantile (tail)=%.6g' %
+            distribution.computeScalarQuantile(cdf, True))

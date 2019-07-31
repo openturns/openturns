@@ -163,10 +163,10 @@ class ChaospyDistribution(PythonDistribution):
     Examples
     --------
     >>> import openturns as ot
-    >>> # import chaospy as cp
-    >>> # chaospy_dist = cp.J(cp.Triangular(1.0, 2.0, 3.0), cp.F(4.0, 5.0))
-    >>> # distribution = ot.Distribution(ot.ChaospyDistribution(chaospy_dist))
-    >>> # distribution.getRealization()
+    >>> import chaospy as cp  # doctest: +SKIP
+    >>> chaospy_dist = cp.J(cp.Triangular(1.0, 2.0, 3.0), cp.F(4.0, 5.0))  # doctest: SKIP
+    >>> distribution = ot.Distribution(ot.ChaospyDistribution(chaospy_dist))  # doctest: SKIP
+    >>> distribution.getRealization()  # doctest: SKIP
     """
     def __init__(self, dist):
         super(ChaospyDistribution, self).__init__(len(dist))
@@ -189,8 +189,8 @@ class ChaospyDistribution(PythonDistribution):
         return rvs
 
     def getSample(self, size):
-        rvs = self._dist.sample(size)
-        return rvs.reshape(size, 1)
+        rvs = self._dist.sample(size).T
+        return rvs.reshape(size, len(self._dist))
 
     def computePDF(self, X):
         pdf = self._dist.pdf(X)
@@ -201,13 +201,16 @@ class ChaospyDistribution(PythonDistribution):
         return cdf
 
     def computeScalarQuantile(self, p, tail=False):
+        if len(self._dist) > 1:
+            raise Exception(
+                "Multivariate distribution doesn't implement scalar quantile")
         q = self._dist.inv(1 - p if tail else p)
         return float(q)
 
     def computeQuantile(self, prob, tail=False):
         p = 1.0 - prob if tail else prob
-        q = self._dist.inv(p)
-        return [float(q)]
+        q = self._dist.inv(p).flatten()
+        return q
 %}
 
 %include UncertaintyModelCopulaCollection.i
@@ -221,7 +224,7 @@ OTTypedCollectionInterfaceObjectHelper(Distribution)
 
 %include openturns/Distribution.hxx
 
-namespace OT {  
+namespace OT {
 
 %extend Distribution {
 
@@ -233,7 +236,7 @@ Distribution(const Distribution & other)
 Distribution(PyObject * pyObj)
 {
   return new OT::Distribution( new OT::PythonDistribution( pyObj ) );
-} 
+}
 
 Distribution __add__ (Scalar s)
 {

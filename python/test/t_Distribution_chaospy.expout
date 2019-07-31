@@ -44,3 +44,5 @@ quantile= [2.6]
 quantile (tail)= [-0.0162159]
 scalar quantile=2.6
 scalar quantile (tail)=-0.0162159
+distribution= class=PythonDistribution name=ChaospyDistribution
+realization= [3.06001,2.97919]
