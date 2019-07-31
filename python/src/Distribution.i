@@ -156,21 +156,27 @@ class ChaospyDistribution(PythonDistribution):
     Parameters
     ----------
     dist : a chaospy.stats distribution
-        The distribution to wrap. It is currently limited to 1D distributions
-        as chaopy multivariate distributions don't implement CDF computation.
+        The distribution to wrap. It is currently limited to stochastically
+        independent distributions as chaopy distributions doesn't implement CDF
+        computation for dependencies.
 
     Examples
     --------
     >>> import openturns as ot
     >>> # import chaospy as cp
-    >>> # chaospy_dist = st.Triangular(1.0, 2.0, 3.0)
+    >>> # chaospy_dist = cp.J(cp.Triangular(1.0, 2.0, 3.0), cp.F(4.0, 5.0))
     >>> # distribution = ot.Distribution(ot.ChaospyDistribution(chaospy_dist))
     >>> # distribution.getRealization()
     """
     def __init__(self, dist):
         super(ChaospyDistribution, self).__init__(len(dist))
-        if len(dist)>1:
-            raise Exception("Multivariate chaospy don't implement CDF computation")
+        from chaospy import Iid, J, get_dependencies
+        independent = len(dist) == 1
+        independent |= isinstance(dist, Iid)
+        independent |= isinstance(dist, J) and not get_dependencies(*dist)
+        if not independent:
+            raise Exception(
+                "Dependent chaospy distributions doesn't implement CDF computation")
         self._dist = dist
         bounds = dist.range()
         self.__range = Interval(bounds[0], bounds[1])
