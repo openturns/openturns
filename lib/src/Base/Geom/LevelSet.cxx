@@ -185,6 +185,17 @@ void LevelSet::setFunction(const Function & function)
   function_ = function;
 }
 
+/* Operator accessor */
+ComparisonOperator LevelSet::getOperator() const
+{
+  return operator_;
+}
+
+void LevelSet::setOperator(const ComparisonOperator & op)
+{
+  operator_ = op;
+}
+
 /* Level accessor */
 Scalar LevelSet::getLevel() const
 {

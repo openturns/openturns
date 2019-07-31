@@ -141,6 +141,26 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::LevelSet::getOperator
+"Operator accessor.
+
+Returns
+-------
+op : :class:`~openturns.ComparisonOperator`
+    Comparison operator against the level."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LevelSet::setOperator
+"Operator accessor.
+
+Parameters
+----------
+op : :class:`~openturns.ComparisonOperator`
+    Comparison operator against the level."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::LevelSet::getLevel
 "Get the level defining the level set.
 
