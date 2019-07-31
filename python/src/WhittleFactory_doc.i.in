@@ -111,14 +111,14 @@ Estimate the ARMA process specifying the orders:
 
 Check the default SpectralModelFactory:
 
->>> #print(myFactory_42.getSpectralModelFactory())
+>>> print(myFactory_42.getSpectralModelFactory())  # doctest: +SKIP
 
 Set a particular spectral model: WelchFactory as SpectralModelFactory with the Hanning filtering window:
 
 >>> myFilteringWindow = ot. Hanning()
 >>> mySpectralFactory = ot.WelchFactory(myFilteringWindow, 4, 0)
 >>> myFactory_42.setSpectralModelFactory(mySpectralFactory)
->>> #print(myFactory_42.getSpectralModelFactory())
+>>> print(myFactory_42.getSpectralModelFactory())  # doctest: +SKIP
 
 Estimate the ARMA process specifying a range for the orders:
 
