@@ -23,6 +23,7 @@
 
 #include <iostream>              // for std::ostream
 #include <stack>                 // for std::stack
+#include <algorithm>             // for std::find
 #include "openturns/OTprivate.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/StorageManager.hxx"
@@ -54,7 +55,7 @@ public:
 
   Bool contains(UnsignedInteger v) const
   {
-    return find(versions_.begin(), versions_.end(), v) != versions_.end();
+    return std::find(versions_.begin(), versions_.end(), v) != versions_.end();
   }
 };
 

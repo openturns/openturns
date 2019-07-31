@@ -74,7 +74,6 @@ macro (ot_add_library name)
   endif ()
 endmacro ()
 
-
 set (OPENTURNS_HOME_ENV_VAR OPENTURNS_HOME    )
 
 if (NOT DEFINED CMAKE_INSTALL_LIBDIR)
@@ -130,6 +129,11 @@ set (TEMPDIR ${OPENTURNS_TEMPDIR})
 if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
   set(WINTEL TRUE)
 endif()
+
+if (NOT CMAKE_VERSION VERSION_LESS 3.1)
+  # beware swig<3.0 does not like c++11: https://github.com/swig/swig/issues/73
+  set (CMAKE_CXX_STANDARD 11)
+endif ()
 
 
 if (NOT DEFINED LAPACK_LIBRARIES)

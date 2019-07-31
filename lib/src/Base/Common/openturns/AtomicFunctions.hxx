@@ -25,7 +25,9 @@
 #include "openturns/OTconfig.hxx"
 #include "openturns/MutexLock.hxx"
 
-#ifdef OPENTURNS_HAVE_TBB
+#if __cplusplus > 199711L
+#include <atomic>
+#elif defined(OPENTURNS_HAVE_TBB)
 #include <tbb/tbb.h>
 #include "openturns/OTwindows.h"
 #endif
@@ -140,7 +142,68 @@ struct OT_API Atomic
 }; /* end struct Atomic */
 
 
-#if defined(OPENTURNS_HAVE_TBB)
+#if __cplusplus > 199711L
+
+class OT_API AtomicInt
+{
+
+  typedef std::atomic<int> Integer;
+  Integer val_;
+
+public:
+
+  AtomicInt(int v = 0) : val_(v)
+  {}
+
+  // marked as delete in std::atomic
+  AtomicInt(const AtomicInt & other) : val_(other.val_.load())
+  {}
+
+  inline
+  AtomicInt & operator = (int v)
+  {
+    val_ = v;
+    return *this;
+  }
+
+  // marked as delete in std::atomic
+  inline
+  AtomicInt & operator = (const AtomicInt & other)
+  {
+    if (this != &other)
+      val_ = other.val_.load();
+     return *this;
+  }
+
+  // Get p value, increment it by d and return the old value
+  inline
+  int fetchAndAdd( int d )
+  {
+    return val_.fetch_add(d);
+  }
+
+  inline
+  void increment()
+  {
+    ++ val_;
+  }
+
+  inline
+  void decrement()
+  {
+    -- val_;
+  }
+
+  inline
+  int get() const
+  {
+    return val_.load();
+  }
+
+}; // AtomicInt
+
+#elif defined(OPENTURNS_HAVE_TBB)
+
 class OT_API AtomicInt
 {
 

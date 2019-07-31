@@ -22,7 +22,12 @@
 #define OPENTURNS_POINTER_HXX
 
 #include "openturns/OTprivate.hxx"
+
+#if __cplusplus > 199711L
+#include <memory> // for std::shared_ptr
+#else
 #include "openturns/SharedPointer.hxx"
+#endif
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -40,36 +45,28 @@ BEGIN_NAMESPACE_OPENTURNS
  * MUST deep-copy it (copy-on-write strategy).
  */
 
-#ifdef SWIG
-template <class T>
+#if __cplusplus > 199711L
+template < class T,
+           template <class> class IMPL = std::shared_ptr >
 #else
 template < class T,
            template <class> class IMPL = SharedPointer >
 #endif
-
 class Pointer
 {
 
-
-#ifdef SWIG
-  template <class Y> friend class Pointer;
-#else
   template <class Y, template <class> class I> friend class Pointer;
-#endif
 
 public:
   /**
    * Pointer_type gives access to the shared pointer
    * implementation type
    */
-#ifdef SWIG
-  typedef SharedPointer<T> pointer_type;
-#else
+
   typedef IMPL<T> pointer_type;
-#endif
 
   /**
-   * The actual shared pointer is \em ptr_
+   * The actual shared pointer
    */
   pointer_type ptr_;
 
@@ -136,7 +133,12 @@ public:
   template <class Base>
   Pointer & assign(const Pointer<Base> & ref)
   {
+#if __cplusplus > 199711L
+    pointer_type ptr(std::dynamic_pointer_cast<T>(ref.ptr_));
+    ptr_.swap(ptr);
+#else
     ptr_.assign(ref.ptr_);
+#endif
     return *this;
   }
 
@@ -173,7 +175,6 @@ public:
     return *ptr_;
   }
 
-#ifndef SWIG
   /**
    * Operator -> dereferences the const shared pointer and gives
    * access to the underlying object
@@ -182,7 +183,6 @@ public:
   {
     return ptr_.get();
   }
-#endif
 
   /**
    * Operator * dereferences the shared pointer and gives
