@@ -35,7 +35,7 @@ int main(int, char *[])
     // Instanciate one distribution object
     CorrelationMatrix R(2);
     R(0, 1) = 0.5;
-    OrdinalSumCopula::CopulaCollection collection(3);
+    OrdinalSumCopula::DistributionCollection collection(3);
     collection[0] = FrankCopula(3.0);
     collection[1] = NormalCopula(R);
     collection[2] = ClaytonCopula(2.0);

@@ -30,7 +30,6 @@
 %include EllipticalDistribution.i
 %include DiscreteDistribution.i
 %include CopulaImplementation.i
-%include Copula.i
 %include ArchimedeanCopula.i
 %include SklarCopula.i
 

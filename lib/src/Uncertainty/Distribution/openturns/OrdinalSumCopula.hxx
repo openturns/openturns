@@ -23,7 +23,7 @@
 
 #include "openturns/CopulaImplementation.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/Copula.hxx"
+#include "openturns/Distribution.hxx"
 #include "openturns/UserDefined.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -41,14 +41,14 @@ class OT_API OrdinalSumCopula
 public:
 
   /** A type for distribution collection */
-  typedef Collection<Copula>                 CopulaCollection;
-  typedef PersistentCollection<Copula>       CopulaPersistentCollection;
+  typedef Collection<Distribution>                 DistributionCollection;
+  typedef PersistentCollection<Distribution>       DistributionPersistentCollection;
 
   /** Default constructor for save/load methods : 1D distribution with default Uniform marginal and IndependentCopula */
   OrdinalSumCopula();
 
   /** Default constructor */
-  OrdinalSumCopula(const CopulaCollection & coll,
+  OrdinalSumCopula(const DistributionCollection & coll,
                    const Point & bounds);
 
   /** Comparison operator */
@@ -63,8 +63,8 @@ public:
 
 
   /** Copula collection accessor */
-  void setCopulaCollection(const CopulaCollection & coll);
-  const CopulaCollection & getCopulaCollection() const;
+  void setCopulaCollection(const DistributionCollection & coll);
+  DistributionCollection getCopulaCollection() const;
 
   /** Bounds accessor */
   void setBounds(const Point & bounds);
@@ -161,7 +161,7 @@ private:
                  const UnsignedInteger index) const;
 
   /** The collection of distribution of the ComposedCopula */
-  CopulaPersistentCollection copulaCollection_;
+  DistributionPersistentCollection copulaCollection_;
 
   /** Bounds of the ordinal sum */
   Point bounds_;

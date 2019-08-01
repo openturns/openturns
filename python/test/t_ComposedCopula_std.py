@@ -194,16 +194,6 @@ try:
     print("sequential conditional CDF(", pt, ")=", resCDF)
     print("sequential conditional quantile(", resCDF, ")=", copula.computeSequentialConditionalQuantile(resCDF))
 
-    # test CopulaCollection
-    copulas = CopulaCollection(
-        [FrankCopula(3.0), NormalCopula(R), ClaytonCopula(2.0)])
-    test_distribution = ComposedDistribution([Normal(), Normal()])
-    sample_size = 10
-    sample = test_distribution.getSample(sample_size)
-    myEstimatedDist = KernelSmoothing().build(sample)
-    sklarCopula = myEstimatedDist.getCopula()
-    copulas.add(sklarCopula)
-
     # test ComposedCopula.getMarginal in reverse
     copula = ComposedCopula([IndependentCopula(2), NormalCopula(2)])
     print(copula.getMarginal([3, 2, 1, 0]))

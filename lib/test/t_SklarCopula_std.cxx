@@ -143,8 +143,8 @@ int main(int, char *[])
     // Extract the marginals
     for (UnsignedInteger i = 0; i < dim; i++)
     {
-      Copula margin(copula.getMarginal(i));
-      Copula marginRef(copulaRef.getMarginal(i));
+      Distribution margin(copula.getMarginal(i));
+      Distribution marginRef(copulaRef.getMarginal(i));
       fullprint << "margin=" << margin << std::endl;
       fullprint << "margin PDF      =" << margin.computePDF(Point(1, 0.25)) << std::endl;
       fullprint << "margin PDF (ref)=" << marginRef.computePDF(Point(1, 0.25)) << std::endl;
@@ -160,8 +160,8 @@ int main(int, char *[])
     indices[0] = 1;
     indices[1] = 0;
     fullprint << "indices=" << indices << std::endl;
-    Copula margins(copula.getMarginal(indices));
-    Copula marginsRef(copulaRef.getMarginal(indices));
+    Distribution margins(copula.getMarginal(indices));
+    Distribution marginsRef(copulaRef.getMarginal(indices));
     fullprint << "margins=" << margins << std::endl;
     fullprint << "margins PDF      =" << margins.computePDF(Point(2, 0.25)) << std::endl;
     fullprint << "margins PDF (ref)=" << marginsRef.computePDF(Point(2, 0.25)) << std::endl;

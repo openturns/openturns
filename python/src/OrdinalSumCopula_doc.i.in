@@ -37,7 +37,7 @@ erased from the list, for :math:`i=0 \dots n-1`.
 
 See also
 --------
-Copula
+Distribution
 
 Examples
 --------
@@ -53,7 +53,7 @@ Create a distribution:
 
 Returns
 -------
-copColl : list of :class:`~openturns.Copula` with the same dimension
+copColl : list of :class:`~openturns.Distribution` with the same dimension
     List of copulas that build the ordinal sum."
 
 // ---------------------------------------------------------------------
@@ -74,7 +74,7 @@ bounds : :class:`~openturns.Point`
 
 Parameters
 ----------
-copColl : list of :class:`~openturns.Copula` with the same dimension
+copColl : list of :class:`~openturns.Distribution` with the same dimension
     List of copulas that build the ordinal sum."
 
 // ---------------------------------------------------------------------

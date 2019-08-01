@@ -23,7 +23,7 @@
 
 #include "openturns/CopulaImplementation.hxx"
 #include "openturns/PersistentCollection.hxx"
-#include "openturns/Copula.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -40,14 +40,14 @@ class OT_API ComposedCopula
 public:
 
   /** A type for distribution collection */
-  typedef Collection<Copula>                 CopulaCollection;
-  typedef PersistentCollection<Copula>       CopulaPersistentCollection;
+  typedef Collection<Distribution>                 DistributionCollection;
+  typedef PersistentCollection<Distribution>       DistributionPersistentCollection;
 
   /** Default constructor for save/load methods : 1D distribution with default Uniform marginal and IndependentCopula */
   ComposedCopula();
 
   /** Default constructor */
-  explicit ComposedCopula(const CopulaCollection & coll);
+  explicit ComposedCopula(const DistributionCollection & coll);
 
   /** Comparison operator */
   Bool operator ==(const ComposedCopula & other) const;
@@ -61,8 +61,8 @@ public:
 
 
   /** Copula collection accessor */
-  void setCopulaCollection(const CopulaCollection & coll);
-  const CopulaCollection & getCopulaCollection() const;
+  void setCopulaCollection(const DistributionCollection & coll);
+  DistributionCollection getCopulaCollection() const;
 
   /* Here is the interface that all derived class must implement */
 
@@ -160,7 +160,7 @@ private:
   void computeCovariance() const;
 
   /** The collection of copules of the ComposedCopula */
-  CopulaPersistentCollection copulaCollection_;
+  DistributionPersistentCollection copulaCollection_;
 
   /** Flag to tell if the copula is independent */
   Bool isIndependent_;

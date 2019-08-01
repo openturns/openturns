@@ -515,7 +515,6 @@ ot_add_python_module(model_copula model_copula_module.i
                       EllipticalDistribution.i
                       DiscreteDistribution.i
                       CopulaImplementation.i CopulaImplementation_doc.i.in
-                      Copula.i Copula_doc.i.in
                       ArchimedeanCopula.i ArchimedeanCopula_doc.i.in
                       SklarCopula.i SklarCopula_doc.i.in
                       IndependentCopula.i IndependentCopula_doc.i.in

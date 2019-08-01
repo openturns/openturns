@@ -198,7 +198,6 @@ Refer to :ref:`copula`.
     :toctree: _generated/
     :template: class.rst_t
 
-    Copula
     ArchimedeanCopula
 
 .. autosummary::

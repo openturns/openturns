@@ -31,7 +31,7 @@ int main(int, char *[])
   setRandomGenerator();
   try
   {
-    Collection<Copula> coll;
+    Collection<Distribution> coll;
     coll.add(GumbelCopula(3.0));
     coll.add(ClaytonCopula(3.0));
     coll.add(FrankCopula(3.0));
@@ -39,7 +39,7 @@ int main(int, char *[])
     UnsignedInteger size = 100;
     for (UnsignedInteger i = 0; i < coll.getSize(); ++i)
     {
-      Copula ref_copula(coll[i]);
+      Distribution ref_copula(coll[i]);
       fullprint << "Reference copula " << ref_copula.__str__() << std::endl;
       Sample sample(ref_copula.getSample(size));
       // Default method: log-likelihood

@@ -36,9 +36,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<Copula>)
-static const Factory<PersistentCollection<Copula> > Factory_PersistentCollection_Copula;
-
 CLASSNAMEINIT(ComposedCopula)
 
 static const Factory<ComposedCopula> Factory_ComposedCopula;
@@ -50,12 +47,12 @@ ComposedCopula::ComposedCopula()
   , isIndependent_(false)
 {
   setName("ComposedCopula");
-  CopulaCollection coll(1, IndependentCopula(2));
+  DistributionCollection coll(1, IndependentCopula(2));
   setCopulaCollection(coll);
 }
 
 /* Default constructor */
-ComposedCopula::ComposedCopula(const CopulaCollection & coll)
+ComposedCopula::ComposedCopula(const DistributionCollection & coll)
   : CopulaImplementation()
   , copulaCollection_()
   , isIndependent_(false)
@@ -105,7 +102,7 @@ String ComposedCopula::__str__(const String & ) const
 }
 
 /* Copula collection accessor */
-void ComposedCopula::setCopulaCollection(const CopulaCollection & coll)
+void ComposedCopula::setCopulaCollection(const DistributionCollection & coll)
 {
   // Check if the collection is not empty
   const UnsignedInteger size = coll.getSize();
@@ -118,6 +115,8 @@ void ComposedCopula::setCopulaCollection(const CopulaCollection & coll)
   bool parallel = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
+    if (!coll[i].isCopula())
+      throw InvalidArgumentException(HERE) << "Element " << i << " is not a copula";
     const UnsignedInteger copulaDimension = coll[i].getDimension();
     dimension += copulaDimension;
     const Description copulaDescription(coll[i].getDescription());
@@ -144,7 +143,7 @@ void ComposedCopula::setCopulaCollection(const CopulaCollection & coll)
 
 
 /* Distribution collection accessor */
-const ComposedCopula::CopulaCollection & ComposedCopula::getCopulaCollection() const
+ComposedCopula::DistributionCollection ComposedCopula::getCopulaCollection() const
 {
   return copulaCollection_;
 }
@@ -192,7 +191,7 @@ Point ComposedCopula::computeDDF(const Point & point) const
   {
     // If one component is outside of the support, the PDF is null
     if ((point[i] <= 0.0) || (point[i] >= 1.0)) return Point(dimension);
-    const Copula copula(copulaCollection_[i]);
+    const Distribution copula(copulaCollection_[i]);
     const UnsignedInteger copulaDimension = copula.getDimension();
     Point component(copulaDimension);
     for (UnsignedInteger j = 0; j < copulaDimension; ++j)
@@ -317,7 +316,7 @@ Scalar ComposedCopula::computeProbability(const Interval & interval) const
   Scalar value = 1.0;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    const Copula copula(copulaCollection_[i]);
+    const Distribution copula(copulaCollection_[i]);
     const UnsignedInteger copulaDimension = copula.getDimension();
     Point lower(copulaDimension);
     Point upper(copulaDimension);
@@ -576,7 +575,7 @@ Distribution ComposedCopula::getMarginal(const Indices & indices) const
 {
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and must be different";
-  CopulaCollection marginalCopulas;
+  DistributionCollection marginalCopulas;
   const UnsignedInteger indicesSize = indices.getSize();
   const UnsignedInteger size = copulaCollection_.getSize();
 

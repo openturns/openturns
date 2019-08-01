@@ -827,7 +827,7 @@ Distribution ComposedDistribution::getMarginal(const UnsignedInteger i) const
 Distribution ComposedDistribution::getMarginal(const Indices & indices) const
 {
   // This call will check that indices are correct
-  const Copula marginalCopula(copula_.getMarginal(indices));
+  const Distribution marginalCopula(copula_.getMarginal(indices));
   DistributionCollection marginalDistributions(0);
   const UnsignedInteger size = indices.getSize();
   const Description description(getDescription());
