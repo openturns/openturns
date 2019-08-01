@@ -5,7 +5,6 @@
 
 #include "openturns/Object.hxx"
 #include "openturns/Pointer.hxx"
-#include "openturns/StorageManager.hxx"
 #include "openturns/IterativeAlgorithm.hxx"
 #include "openturns/Study.hxx"
 #include "openturns/Point.hxx"
@@ -13,32 +12,24 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-/* Forward declarations */
-// class IterativeAlgorithm;
-class StorageManager;
-
 /**
  * @class MelissaStudy
  * @brief Store and manage IterativeAlgoritm objects
  *
  * @see PersistentObject
- * @see StorageManager
  * @see IterativeAlgorithm
  */
 
 class OT_API MelissaStudy
-  : public Study
+  : public Object
 {
   CLASSNAME
-
-  friend class StorageManager;
   
 public:
     
   typedef Pointer<IterativeAlgorithmImplementation> MapElement;
   typedef std::map<Id, MapElement>  Map;
   typedef std::map<String, Id>      LabelMap;
-  typedef Pointer<StorageManager>   StorageManagerImplementation;
 
   /** Default constructor */
   MelissaStudy();
@@ -72,6 +63,12 @@ public:
    */
   void add(const String & label, const IterativeAlgorithmImplementation * po, Bool force = false);
 // #endif
+  
+  /** Remove a PersistentObject from the study */
+  void remove(const InterfaceObject & io);
+
+  /** Remove a PersistentObject from the study */
+  void remove(const String & label);
 
   /** Query if object is stored in study
    * @param id The Id of the object
@@ -162,9 +159,6 @@ private:
 
   /** The map storing the saved objects */
   LabelMap labelMap_;
-
-  /** The StorageManager that drives the load/store operations */
-  StorageManagerImplementation p_storageManager_;
     
 }; /* class MelissaStudy */
 

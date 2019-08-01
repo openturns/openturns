@@ -228,7 +228,6 @@ ot_add_python_module(statistics statistics_module.i
 ot_add_python_module(iterative_statistics iterative_statistics_module.i
                       IterativeAlgorithm.i IterativeAlgorithm_doc.i.in
                       IterativeAlgorithmImplementation.i IterativeAlgorithmImplementation_doc.i.in
-                      MelissaStudy.i MelissaStudy_doc.i.in
                       IterativeVariance.i IterativeVariance_doc.i.in
                       IterativeMean.i IterativeMean_doc.i.in
                       BaseIterativeStatisticsTemplateDefs.i

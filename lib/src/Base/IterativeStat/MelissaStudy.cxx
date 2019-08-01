@@ -14,10 +14,8 @@ CLASSNAMEINIT(MelissaStudy)
 
 MelissaStudy::MelissaStudy()
   : map_(),
-    labelMap_(),
-    p_storageManager_(new StorageManager)
+    labelMap_()
 {
-  p_storageManager_->setStudy(this);
 }
 
 
@@ -76,6 +74,23 @@ void MelissaStudy::add(const String & label, const IterativeAlgorithmImplementat
   }
   map_[ po->getShadowedId() ] = const_cast<IterativeAlgorithmImplementation *>(po);
   defineLabel( po->getShadowedId(), label );
+}
+
+/* Remove a PersistentObject from the study */
+void MelissaStudy::remove(const InterfaceObject & io)
+{
+  Map::iterator it = map_.find( io.getId() );
+  map_.erase(it);
+}
+
+/* Remove a PersistentObject from the study */
+void MelissaStudy::remove(const String & label)
+{
+  LabelMap::iterator it_label = labelMap_.find( label );
+  if (it_label == labelMap_.end()) throw InvalidArgumentException(HERE) << "No object with label '" << label << "' in study";
+  Map::iterator it_obj = map_.find( it_label->second );
+  map_.erase(it_obj);
+  labelMap_.erase( it_label );
 }
 
 

@@ -5,7 +5,6 @@
 #include "openturns/IterativeAlgorithmImplementation.hxx"
 // #include "openturns/PersistentCollection.hxx"
 #include "openturns/Point.hxx"
-#include "openturns/IterativeVariance.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -17,8 +16,6 @@ class OT_API IterativeMean
 public:
   
   explicit IterativeMean(const UnsignedInteger size = 1);
-  
-  IterativeMean(const IterativeVariance variance);
   
   IterativeMean * clone() const;
   

@@ -22,16 +22,6 @@ IterativeMean::IterativeMean(const UnsignedInteger size)
   // Nothing to do
 }
 
-/* Constructor from variance */
-IterativeMean::IterativeMean(const IterativeVariance variance)
-  : IterativeAlgorithmImplementation()
-  , iteration_(variance.getIteration())
-  , size_(variance.getSize())
-  , data_(variance.getMean())
-{
-  // Nothing to do
-}
-
 /* Virtual constructor */
 IterativeMean * IterativeMean::clone() const
 {
@@ -121,14 +111,14 @@ void IterativeMean::increment(const Sample & newData)
 {
   if (newData.getDimension() != size_) throw InvalidArgumentException(HERE) << "Error: the given Sample is not compatible with the size of the iterative mean.";
   
-  for (UnsignedInteger i = 0; i < newData.getSize(); ++i)
+  for (UnsignedInteger j = 0; j < newData.getSize(); ++j)
   {
-    Point rawData = newData[i];
+    Point rawData = newData[j];
     iteration_ += 1;
-    for (UnsignedInteger j = 0; j < size_; ++j)
+    for (UnsignedInteger i = 0; i < size_; ++i)
     {
       Scalar temp = data_[i];
-      data_[j] = temp + (rawData[j] - temp)/iteration_;
+      data_[i] = temp + (rawData[i] - temp)/iteration_;
     }
   }
 }

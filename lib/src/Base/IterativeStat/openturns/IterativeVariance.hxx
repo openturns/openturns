@@ -65,7 +65,7 @@ public:
   
   UnsignedInteger getIteration() const;
   
-  Point getValues() const;
+  Point getVariance() const;
   
   Point getMean() const;
 

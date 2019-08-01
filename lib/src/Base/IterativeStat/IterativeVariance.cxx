@@ -68,7 +68,7 @@ UnsignedInteger IterativeVariance::getSize() const
   return varData_.getSize();
 }
   
-Point IterativeVariance::getValues() const
+Point IterativeVariance::getVariance() const
 { 
   return varData_;
 }
@@ -84,9 +84,9 @@ void IterativeVariance::increment(const Scalar newData)
   {
     Scalar temp = meanData_[i];
     meanData_[i] = temp + (newData - temp) / (iteration_ + 1);
-    if (iteration_ > 1)
+    if (iteration_ > 0)
     {
-      varData_[i] = varData_[i] * (iteration_ - 1) + (newData - temp) * (newData - meanData_[i]) / iteration_;
+      varData_[i] = (varData_[i] * (iteration_ - 1) + (newData - temp) * (newData - meanData_[i])) / iteration_;
     }
   }
   iteration_ += 1;
@@ -100,9 +100,9 @@ void IterativeVariance::increment(const Point & newData)
   {
     Scalar temp = meanData_[i];
     meanData_[i] = temp + (newData[i] - temp) / (iteration_ + 1);
-    if (iteration_ > 1)
+    if (iteration_ > 0)
     {
-      varData_[i] = varData_[i] * (iteration_ - 1) + (newData[i] - temp) * (newData[i] - meanData_[i]) / iteration_;
+      varData_[i] = (varData_[i] * (iteration_ - 1) + (newData[i] - temp) * (newData[i] - meanData_[i])) / iteration_;
     }
   }
   iteration_ += 1;
@@ -119,9 +119,9 @@ void IterativeVariance::increment(const Sample & newData)
     {
       Scalar temp = meanData_[i];
       meanData_[i] = temp + (rawData[i] - temp) / (iteration_ + 1);
-      if (iteration_ > 1)
+      if (iteration_ > 0)
       {
-        varData_[i] = varData_[i] * (iteration_ - 1) + (rawData[i] - temp) * (rawData[i] - meanData_[i]) / iteration_;
+        varData_[i] = (varData_[i] * (iteration_ - 1) + (rawData[i] - temp) * (rawData[i] - meanData_[i])) / iteration_;
       }
     }
     iteration_ += 1;
@@ -131,7 +131,6 @@ void IterativeVariance::increment(const Sample & newData)
 /* Method save() stores the object through the StorageManager */
 void IterativeVariance::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
   PersistentObject::save(adv);
   adv.saveAttribute( "size_", size_);
   adv.saveAttribute( "iteration_", iteration_);

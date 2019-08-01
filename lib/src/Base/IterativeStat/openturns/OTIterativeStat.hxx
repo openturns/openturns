@@ -22,7 +22,6 @@
 #ifndef OPENTURNS_OTITERATIVESTAT_HXX
 #define OPENTURNS_OTITERATIVESTAT_HXX
 
-#include "openturns/MelissaStudy.hxx"
 #include "openturns/IterativeAlgorithmImplementation.hxx"
 #include "openturns/IterativeAlgorithm.hxx"
 #include "openturns/IterativeVariance.hxx"
