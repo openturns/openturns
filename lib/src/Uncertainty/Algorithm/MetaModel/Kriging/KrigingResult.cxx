@@ -318,6 +318,26 @@ void KrigingResult::computeF() const
   }
 }
 
+/* Compute cross matrix method ==> not necessary square matrix  */
+void KrigingResult::computePhi() const
+{
+  // Nothing to do if the design matrix has already been computed
+  if (Gt_.getNbRows() != 0) return;
+  Matrix Q;
+  LOGINFO("Solve linear system  L * phi= F");
+  Matrix phi;
+  if (0 != covarianceCholeskyFactor_.getNbRows())
+    phi = covarianceCholeskyFactor_.solveLinearSystem(F_);
+  else
+    phi = covarianceHMatrix_.solveLower(F_);
+  // Compute QR decomposition of Phi_
+  LOGINFO("Compute the QR decomposition of phi");
+  Matrix G;
+  Q = phi.computeQR(G);
+  Gt_ = G.transpose();
+  phiT_ = phi.transpose();
+}
+
 /* Compute covariance matrix conditionnaly to observations*/
 CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) const
 {
@@ -339,12 +359,12 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
     sample = xi;
   // 1) compute \sigma_{x,x}
   LOGINFO("Compute interactions Sigma_xx");
-  CovarianceMatrix sigmaXX(covarianceModel_.discretize(sample));
+  const CovarianceMatrix sigmaXX(covarianceModel_.discretize(sample));
 
   // 2) compute \sigma_{y,x}
   // compute r(x), the crossCovariance between the conditionned data & xi
   LOGINFO("Compute cross-interactions sigmaYX");
-  const Matrix crossCovariance = getCrossMatrix(sample);
+  const Matrix crossCovariance(getCrossMatrix(sample));
   // 3) Compute r^t R^{-1} r'(x)
   // As we get the Cholesky factor L, we can solve triangular linear system
   // We define B = L^{-1} * r(x)
@@ -364,7 +384,7 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
   // With transpose argument=true, it performs B^t*B
   // With full argument=false, lower triangular matrix B^t*B is not symmetrized
   LOGINFO("Compute B^tB");
-  CovarianceMatrix BtB(B.computeGram(true));
+  const CovarianceMatrix BtB(B.computeGram(true));
 
   // Interest is to compute sigma_xx -= BtB
   // However it is not trivial that A - B is a covariance matrix if A & B are covariance matrices
@@ -384,27 +404,12 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
   // 2) Interest is (F^t R^{-1} F)^{-1}
   // F^{t} R^{-1} F = F^{t} L^{-t} L^{-1} F
   // Solve first L phi = F
-  Matrix Q;
-  if (Gt_.getNbRows() == 0)
-  {
-    LOGINFO("Solve linear system  L * phi= F");
-    Matrix phi;
-    if (0 != covarianceCholeskyFactor_.getNbRows())
-      phi = covarianceCholeskyFactor_.solveLinearSystem(F_);
-    else
-      phi = covarianceHMatrix_.solveLower(F_);
-    // Compute QR decomposition of Phi_
-    LOGINFO("Compute the QR decomposition of phi");
-    Matrix G;
-    Q = phi.computeQR(G);
-    Gt_ = G.transpose();
-    phiT_ = phi.transpose();
-  }
+  computePhi();
   // 3) Compute u(x) = F^t *R^{-1} * r(x) - f(x)
   //                 = F^{t} * L^{-1}^t * L{-1} * r(x) - f(x)
   //                 = phiT_ * B - f(x)
   LOGINFO("Compute psi = phi^t * B");
-  Matrix psi(phiT_ * B);
+  const Matrix psi(phiT_ * B);
   // compute f(x) & define u = psi - f(x)
   LOGINFO("Compute f(x)");
   // Note that fx = F^{T} for x in inputSample_
@@ -424,11 +429,11 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
     index = index + localBasisSize;
   }
   LOGINFO("Compute ux = psi - fx");
-  Matrix ux(psi - fx);
+  const Matrix ux(psi - fx);
 
   // interest now is to solve  G rho = ux
   LOGINFO("Solve linear system G * rho = ux");
-  Matrix rho = Gt_.solveLinearSystem(ux);
+  const Matrix rho(Gt_.solveLinearSystem(ux));
   LOGINFO("Compute Sigma_xx-BtB + rho^{t}*rho");
   result = result + rho.computeGram(true);
   return result;
