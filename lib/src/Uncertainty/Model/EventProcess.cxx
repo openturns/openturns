@@ -95,6 +95,11 @@ Point EventProcess::getRealization() const
   return Point(1, checkTimeSerieValuesInDomain(process_.getRealization()));
 }
 
+Bool EventProcess::isEvent() const
+{
+  return true;
+}
+
 /* Method save() stores the object through the StorageManager */
 void EventProcess::save(Advocate & adv) const
 {

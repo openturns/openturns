@@ -376,3 +376,16 @@ description : :class:`~openturns.Description`
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getParameterDescription
 OT_RandomVector_getParameterDescription_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_RandomVector_isEvent_doc
+"Whether the random vector is an event.
+
+Returns
+-------
+isEvent : bool
+    Whether it takes it values in {0, 1}."
+%enddef
+%feature("docstring") OT::RandomVectorImplementation::isEvent
+OT_RandomVector_isEvent_doc

@@ -77,6 +77,9 @@ public:
   /** Covariance accessor */
   virtual CovarianceMatrix getCovariance() const;
 
+  /** Whether it is an event */
+  Bool isEvent() const;
+
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 

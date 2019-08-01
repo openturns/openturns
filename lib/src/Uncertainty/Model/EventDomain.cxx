@@ -111,6 +111,11 @@ Sample EventDomain::getSample(const UnsignedInteger size) const
   return result;
 }
 
+Bool EventDomain::isEvent() const
+{
+  return true;
+}
+
 /* Method save() stores the object through the StorageManager */
 void EventDomain::save(Advocate & adv) const
 {

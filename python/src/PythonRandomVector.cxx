@@ -215,6 +215,27 @@ CovarianceMatrix PythonRandomVector::getCovariance() const
   return covariance;
 }
 
+Bool PythonRandomVector::isEvent() const
+{
+  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("isEvent")))
+  {
+    ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
+                                const_cast<char *>( "isEvent" ),
+                                const_cast<char *>( "()" ) ));
+    if ( result.isNull() )
+    {
+      handleException();
+    }
+
+    Bool isEvent = checkAndConvert<_PyBool_, Bool>(result.get());
+    return isEvent;
+  }
+  else
+  {
+    return RandomVectorImplementation::isEvent();
+  }
+}
+
 /* Method save() stores the object through the StorageManager */
 void PythonRandomVector::save(Advocate & adv) const
 {

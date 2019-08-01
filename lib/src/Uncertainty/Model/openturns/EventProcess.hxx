@@ -71,6 +71,9 @@ public:
   /** Realization accessor */
   Point getRealization() const;
 
+  /** Whether it is an event */
+  virtual Bool isEvent() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 

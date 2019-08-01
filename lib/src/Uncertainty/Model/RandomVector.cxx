@@ -207,4 +207,9 @@ Description RandomVector::getParameterDescription() const
   return getImplementation()->getParameterDescription();
 }
 
+Bool RandomVector::isEvent() const
+{
+  return getImplementation()->isEvent();
+}
+
 END_NAMESPACE_OPENTURNS

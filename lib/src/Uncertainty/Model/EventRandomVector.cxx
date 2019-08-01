@@ -158,6 +158,11 @@ Description EventRandomVector::getParameterDescription() const
   return description;
 }
 
+Bool EventRandomVector::isEvent() const
+{
+  return true;
+}
+
 /* Method save() stores the object through the StorageManager */
 void EventRandomVector::save(Advocate & adv) const
 {

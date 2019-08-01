@@ -116,6 +116,9 @@ public:
   /** Parameters description accessor */
   Description getParameterDescription() const;
 
+  /** Whether it is an event */
+  Bool isEvent() const;
+
 protected:
 
 }; /* class RandomVector */
