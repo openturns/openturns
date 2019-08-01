@@ -826,7 +826,7 @@ ot_add_python_module(metamodel metamodel_module.i
                       PythonEvaluation.cxx
                       PythonGradient.cxx
                       PythonHessian.cxx
-                      PythonRandomVectorImplementation.cxx
+                      PythonRandomVector.cxx
                       CompositeRandomVector.i CompositeRandomVector_doc.i.in
                       EventRandomVector.i
                       EventDomain.i

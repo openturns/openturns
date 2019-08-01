@@ -2,7 +2,7 @@
 
 %{
 #include "openturns/RandomVector.hxx"
-#include "openturns/PythonRandomVectorImplementation.hxx"
+#include "openturns/PythonRandomVector.hxx"
 %}
 
 %include RandomVector_doc.i
@@ -75,7 +75,7 @@ class PythonRandomVector(object):
 
     """
     def __init__(self, dim=0):
-        # Warning: these names are used in PythonRandomVectorImplementation class. Synchronize the files if changed
+        # Warning: these names are used in PythonRandomVector class. Synchronize the files if changed
         self.__dim = dim
         self.__desc = ['x' + str(i) for i in range(dim)]
 
@@ -168,7 +168,7 @@ RandomVector(const RandomVector & other)
 
 RandomVector(PyObject * pyObj)
 {
-  return new OT::RandomVector( new OT::PythonRandomVectorImplementation(pyObj) );
+  return new OT::RandomVector( new OT::PythonRandomVector(pyObj) );
 } 
 
 } // class RandomVector
