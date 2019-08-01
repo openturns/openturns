@@ -57,6 +57,10 @@ covarianceColl = Point(var)
 theoricalVariance = Point(sampleSize)
 assert_almost_equal(covarianceColl, theoricalVariance, 1e-14, 1e-14)
 
+# Variance per marginal
+var = result.getConditionalMarginalVariance(X)
+assert_almost_equal(var, Point(sampleSize), 1e-14, 1e-14)
+
 # Test 2
 
 # Kriging use case
@@ -119,6 +123,9 @@ covarianceColl = Point(var)
 theoricalVariance = Point(len(var))
 assert_almost_equal(covarianceColl, theoricalVariance, 1e-14, 1e-14)
 
+# Variance per marginal
+var = result.getConditionalMarginalVariance(inputSample)
+assert_almost_equal(var, Point(len(inputSample)), 1e-14, 1e-14)
 
 # Estimation
 assert_almost_equal(outputValidSample,  metaModel(

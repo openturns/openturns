@@ -95,6 +95,9 @@ int main(int, char *[])
       for(UnsignedInteger k = 0; k < coll.getSize(); ++k)
         assert_almost_equal(Point(*coll[k].getImplementation()), Point(1, 0.0), 1e-14, 1e-14);
 
+      // Validation of marginal variance
+      const Point marginalVariance(result.getConditionalMarginalVariance(X));
+      assert_almost_equal(marginalVariance, Point(sampleSize), 1e-14, 1e-14);
     }
 
     {
@@ -173,6 +176,10 @@ int main(int, char *[])
 
       for(UnsignedInteger k = 0; k < coll.getSize(); ++k)
         assert_almost_equal(Point(*coll[k].getImplementation()), Point(1, 0.0), 1e-13, 1e-13);
+
+      // Validation of marginal variance
+      const Point marginalVariance(result.getConditionalMarginalVariance(X));
+      assert_almost_equal(marginalVariance, Point(sampleSize), 1e-14, 1e-14);
 
     }
 

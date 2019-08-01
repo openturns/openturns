@@ -601,6 +601,90 @@ Normal KrigingResult::operator()(const Sample & xi) const
   return Normal(mean, covarianceMatrix);
 }
 
+
+/** Compute marginal variance conditionnaly to observations (1 cov of size outdimension)*/
+Scalar KrigingResult::getConditionalMarginalVariance(const Point & point,
+                                                     const UnsignedInteger marginalIndex) const
+{
+  const UnsignedInteger inputDimension = point.getDimension();
+  const UnsignedInteger outputDimension = covarianceModel_.getOutputDimension();
+  if (inputDimension != covarianceModel_.getInputDimension())
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
+  if ( !(marginalIndex < outputDimension))
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, marginalIndex should be in [0," << outputDimension << "]. Here, marginalIndex = " << marginalIndex ;
+  // Compute the matrix & return only the marginalIndex diagonal element
+  const CovarianceMatrix covarianceMatrix(getConditionalMarginalCovariance(point));
+  return covarianceMatrix(marginalIndex, marginalIndex);
+}
+
+/** Compute marginal variance conditionnaly to observations (1 cov / point)*/
+Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
+                                                    const UnsignedInteger marginalIndex) const
+{
+
+  const UnsignedInteger inputDimension = xi.getDimension();
+  const UnsignedInteger outputDimension = covarianceModel_.getOutputDimension();
+  if (inputDimension != covarianceModel_.getInputDimension())
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
+  if ( !(marginalIndex < outputDimension))
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, marginalIndex should be in [0," << outputDimension << "]. Here, marginalIndex = " << marginalIndex ;
+  const UnsignedInteger sampleSize = xi.getSize();
+  if (sampleSize == 0)
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, expected a non empty sample";
+  Point marginalVariance(sampleSize);
+
+  Point data(inputDimension);
+  for (UnsignedInteger i = 0; i < sampleSize; ++i)
+  {
+    for (UnsignedInteger j = 0; j < inputDimension; ++j) data[j] = xi(i, j);
+    marginalVariance[i] = getConditionalMarginalVariance(data, marginalIndex);
+  }
+  return marginalVariance;
+}
+
+ Point KrigingResult::getConditionalMarginalVariance(const Point & point,
+                                                     const Indices &indices) const
+ {
+  const UnsignedInteger inputDimension = point.getDimension();
+  const UnsignedInteger outputDimension = covarianceModel_.getOutputDimension();
+  if (inputDimension != covarianceModel_.getInputDimension())
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
+  if (!indices.check(covarianceModel_.getOutputDimension()))
+    throw InvalidArgumentException(HERE) << "In KrigingResult::getConditionalMarginalVariance, the indices of a marginal sample must be in the range [0," << covarianceModel_.getOutputDimension()
+                                         << " ] and must be different";
+  // Compute the matrix & return only the marginalIndex diagonal element
+  const CovarianceMatrix covarianceMatrix(getConditionalMarginalCovariance(point));
+  Point result(indices.getSize());
+  for (UnsignedInteger j = 0; j < indices.getSize(); ++j) result[j] = covarianceMatrix(indices[j], indices[j]);
+  return result;
+ }
+
+ Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
+                                                     const Indices & indices) const
+ {
+
+  const UnsignedInteger inputDimension = xi.getDimension();
+  const UnsignedInteger outputDimension = covarianceModel_.getOutputDimension();
+  if (inputDimension != covarianceModel_.getInputDimension())
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
+  if (!indices.check(covarianceModel_.getOutputDimension()))
+    throw InvalidArgumentException(HERE) << "In KrigingResult::getConditionalMarginalVariance, the indices of a marginal sample must be in the range [0," << covarianceModel_.getOutputDimension()
+                                         << " ] and must be different";
+  const UnsignedInteger sampleSize = xi.getSize();
+  if (sampleSize == 0)
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, expected a non empty sample";
+  // Compute the matrix & return only the marginalIndex diagonal element
+  Point result(0);
+  Point data(inputDimension);
+  for (UnsignedInteger i = 0; i < sampleSize; ++i)
+  {
+    for (UnsignedInteger j = 0; j < inputDimension; ++j) data[j] = xi(i, j);
+    result.add(getConditionalMarginalVariance(data, indices));
+  }
+  return result;
+ }
+
+
 /* Compute joint normal distribution conditionnaly to observations*/
 Normal KrigingResult::operator()(const Point & xi) const
 {

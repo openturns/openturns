@@ -250,6 +250,48 @@ In case input parameter is a of type :class:`~openturns.Sample`, each element of
 covariance with respect to the input learning set (pointwise evaluation of the getConditionalCovariance)."
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::KrigingResult::getConditionalMarginalVariance
+"Compute the expected variance of the Gaussian process on a point (or several points).
+
+
+Available usages:
+    getConditionalMarginalVariance(x, marginalIndex)
+
+    getConditionalMarginalVariance(sampleX, marginalIndex)
+
+    getConditionalMarginalVariance(x, marginalIndices)
+
+    getConditionalMarginalVariance(sampleX, marginalIndices)
+
+Parameters
+----------
+x : sequence of float
+    The point :math:`\vect{x}` where the conditional mean of the output has to be evaluated.
+sampleX : 2-d sequence of float
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional mean of the output has to be evaluated (*M* can be equal to 1).
+marginalIndex : int
+    Marginal of interest (for multiple outputs).
+    Default value is 0
+marginalIndices : sequence of int
+    Marginals of interest (for multiple outputs).
+
+Returns
+-------
+var : float
+      Variance of interest.
+      float if one point (x) and one marginal of interest (x, marginalIndex)
+
+varPoint : sequence of float
+    The marginal variances
+
+
+Notes
+-----
+In case of fourth usage, the sequence of float is given as the concatenation of marginal variances 
+for each point in sampleX."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::KrigingResult::getMetaModel
 "Accessor to the metamodel.
 
