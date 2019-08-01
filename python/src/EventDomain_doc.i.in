@@ -1,0 +1,23 @@
+%feature("docstring") OT::EventDomain
+"Event defined from a domain.
+
+Parameters
+----------
+antecedent : :class:`~openturns.RandomVector` of dimension 1
+    Antecedent.
+domain : :class:`~openturns.Domain`
+    Domain, of same dimension.
+
+See also
+--------
+EventProcess, EventRandomVector
+
+Examples
+--------
+>>> import openturns as ot
+>>> dim = 2
+>>> X = ot.RandomVector(ot.Normal(dim))
+>>> model = ot.SymbolicFunction(['x1', 'x2'], ['x1+x2', '2*x1'])
+>>> Y = ot.CompositeRandomVector(model, X)
+>>> domain = ot.Interval(dim)
+>>> event = ot.EventDomain(Y, domain)"

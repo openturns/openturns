@@ -36,6 +36,8 @@ Event
     Event
     StandardEvent
     EventProcess
+    EventDomain
+    EventRandomVector
 
 Design point validation
 =======================

@@ -43,7 +43,7 @@ EventRandomVector::EventRandomVector()
 }
 
 /* Constructor from RandomVector */
-EventRandomVector::EventRandomVector(const RandomVectorImplementation & antecedent,
+EventRandomVector::EventRandomVector(const RandomVector & antecedent,
                                      const ComparisonOperator & op,
                                      const Scalar threshold)
   : CompositeRandomVector()

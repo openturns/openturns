@@ -1,0 +1,24 @@
+%feature("docstring") OT::EventRandomVector
+"Random vector defined from a comparison operator and a threshold.
+
+Parameters
+----------
+antecedent : :class:`~openturns.RandomVector` of dimension 1
+    Output variable of interest.
+comparisonOperator : :class:`~openturns.ComparisonOperator`
+    Comparison operator used to compare *antecedent* with *threshold*.
+threshold : float
+    *threshold* we want to compare to *antecedent*.
+
+See also
+--------
+EventProcess, EventDomain
+
+Examples
+--------
+>>> import openturns as ot
+>>> dim = 2
+>>> X = ot.RandomVector(ot.Normal(dim))
+>>> model = ot.SymbolicFunction(['x1', 'x2'], ['x1+x2'])
+>>> Y = ot.CompositeRandomVector(model, X)
+>>> event = ot.EventRandomVector(Y, ot.Less(), 1.0)"

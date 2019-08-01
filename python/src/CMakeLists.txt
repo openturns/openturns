@@ -828,9 +828,9 @@ ot_add_python_module(metamodel metamodel_module.i
                       PythonHessian.cxx
                       PythonRandomVector.cxx
                       CompositeRandomVector.i CompositeRandomVector_doc.i.in
-                      EventRandomVector.i
-                      EventDomain.i
-                      EventProcess.i
+                      EventRandomVector.i EventRandomVector_doc.i.in
+                      EventDomain.i EventDomain_doc.i.in
+                      EventProcess.i EventProcess_doc.i.in
                       Event.i Event_doc.i.in
                       StandardEvent.i StandardEvent_doc.i.in
                       FunctionalChaosRandomVector.i FunctionalChaosRandomVector_doc.i.in

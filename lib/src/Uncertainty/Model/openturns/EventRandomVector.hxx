@@ -28,7 +28,6 @@
 
 #include "openturns/CompositeRandomVector.hxx"
 
-
 BEGIN_NAMESPACE_OPENTURNS
 
 
@@ -51,7 +50,7 @@ public:
   EventRandomVector();
 
   /** Constructor from RandomVector */
-  EventRandomVector(const RandomVectorImplementation & antecedent,
+  EventRandomVector(const RandomVector & antecedent,
                     const ComparisonOperator & op,
                     const Scalar threshold);
 
