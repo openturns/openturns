@@ -63,5 +63,3 @@ copy dist parameter= [0.5,0.5,1,1]
 ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), class=PythonDistribution name=UniformNdPy)
 try with another Python distribution
 The construction failed on purpose as class=PythonDistribution name=UniformNdPy is not a copula
-saved dist= class=PythonDistribution name=UniformNdPy
-loaded dist= class=PythonDistribution name=UniformNdPy

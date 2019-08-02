@@ -3,6 +3,7 @@
 from __future__ import print_function
 import openturns as ot
 import math as m
+import os
 
 class UniformNdPy(ot.PythonDistribution):
 
@@ -134,120 +135,24 @@ class UniformNdPy(ot.PythonDistribution):
             self.b[i] = parameter[dim + i]
 
 
-for pyDist in [UniformNdPy(), UniformNdPy([0.] * 2, [1.] * 2)]:
-
-    print("pyDist=", pyDist)
-
-    # Instance creation
-    myDist = ot.Distribution(pyDist)
-    print("myDist=", repr(myDist))
-
-    # Copy constructor
-    newRV = ot.Distribution(myDist)
-
-    # Dimension
-    dim = myDist.getDimension()
-    print('dimension=', dim)
-
-    # Realization
-    X = myDist.getRealization()
-    print('realization=', X)
-
-    # Sample
-    X = myDist.getSample(5)
-    print('sample=', X)
-
-    # PDF
-    point = [0.2] * dim
-    pdf = myDist.computePDF(point)
-    print('pdf=', pdf)
-
-    # CDF
-    cdf = myDist.computeCDF(point)
-    print('cdf= %.12g' % cdf)
-
-    # roughness
-    roughness = myDist.getRoughness()
-    print('roughness=', roughness)
-
-    # Mean
-    mean = myDist.getMean()
-    print('mean=', mean)
-
-    # Standard deviation
-    standardDeviation = myDist.getStandardDeviation()
-    print('standard deviation=', standardDeviation)
-
-    # Skewness
-    skewness = myDist.getSkewness()
-    print('skewness=', skewness)
-
-    # Kurtosis
-    kurtosis = myDist.getKurtosis()
-    print('kurtosis=', kurtosis)
-
-    # standard moment
-    standardMoment = myDist.getStandardMoment(2)
-    print('standard moment=', standardMoment)
-
-    # Moment
-    moment = myDist.getMoment(3)
-    print('moment=', moment)
-
-    # Centered moment
-    centeredMoment = myDist.getCenteredMoment(3)
-    print('centered moment=', centeredMoment)
-
-    if dim == 1:
-        CF = myDist.computeCharacteristicFunction(point[0])
-        print("characteristic function= (%.12g%+.12gj)" % (CF.real, CF.imag))
-
-    isElliptical = myDist.isElliptical()
-    print('isElliptical=', isElliptical)
-
-    isCopula = myDist.isCopula()
-    print('isCopula=', isCopula)
-
-    # Range
-    range_ = myDist.getRange()
-    print('range=', range_)
-
-    # marginal
-    marginal = myDist.getMarginal(0)
-    print('marginal=', marginal)
-
-    # quantile
-    quantile = myDist.computeQuantile(0.5)
-    print('quantile=', quantile)
-
-    param = myDist.getParameter()
-    print('parameter=', param)
-    param[0] = 0.4
-    myDist.setParameter(param)
-    print('parameter=', myDist.getParameter())
-    print('parameterDesc=', myDist.getParameterDescription())
-
-    print("Cloning distribution")
-    newDist = ot.Distribution(myDist)
-    param[0] = 0.5
-    newDist.setParameter(param)
-    print('dist parameter=', myDist.getParameter())
-    print('copy dist parameter=', newDist.getParameter())
-
-# Use the distribution as a copula
-myDist = ot.Distribution(UniformNdPy([0.0] * 2, [1.0] * 2))
-print(ot.ComposedDistribution([ot.Normal(), ot.Normal()], myDist))
-try:
-    print("try with another Python distribution")
-    myDist = ot.Distribution(UniformNdPy([0.0] * 2, [2.0] * 2))
-    print(ot.ComposedDistribution([ot.Normal(), ot.Normal()], myDist))
-except:
-    print("The construction failed on purpose as", myDist, "is not a copula")
-
-# Extract the copula
 myDist = ot.Distribution(UniformNdPy([0.0] * 2, [2.0] * 2))
-copula = myDist.getCopula()
 
-# Test computePDF over a sample (ticket #899)
-res = copula.computePDF([[0.5] * 2] * 10)
+st = ot.Study()
+fileName = 'PyDIST.xml'
+st.setStorageManager(ot.XMLStorageManager(fileName))
 
+st.add("myDist", myDist)
+st.save()
+
+print('saved dist=', myDist)
+
+dist = ot.Distribution()
+
+st = ot.Study()
+st.setStorageManager(ot.XMLStorageManager(fileName))
+
+st.load()
+
+st.fillObject("myDist", dist)
+print('loaded dist=', dist)
+os.remove(fileName)

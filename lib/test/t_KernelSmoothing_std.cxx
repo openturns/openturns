@@ -124,7 +124,7 @@ int main(int, char *[])
     {
       Point left(1, -0.9);
       Point right(1, 0.9);
-      Sample sample = Uniform().getSample(500);
+      sample = Uniform().getSample(500);
       KernelSmoothing algo1(Normal(), false);
       algo1.setBoundingOption(KernelSmoothing::NONE);
       Distribution ks1 = algo1.build(sample);

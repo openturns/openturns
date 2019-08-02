@@ -21,16 +21,18 @@ f = ot.SymbolicFunction(['x1', 'x2'], ['1+100*(x2-x1^2)^2+(1-x1)^2'])
 startingPoint = [1e-3] * dim
 bounds = ot.Interval([-1.5] * dim, [1.5] * dim)
 algoNames = ot.NLopt.GetAlgorithmNames()
-print(algoNames)
 
 for algoName in algoNames:
-    # STOGO might not be enabled
+    # STOGO/AGS might not be enabled
+    if 'STOGO' in algoName or 'AGS' in algoName:
+        continue
+
     # NEWUOA nan/-nan
     # COBYLA crashes on squeeze
     # ESCH not same results with 2.4.1
     # AUGLAG_EQ raises a roundoff-limited exception on i386
     # LD_SLSQP/LD_CCSAQ not same point on i386
-    if 'STOGO' in algoName or 'NEWUOA' in algoName or 'COBYLA' in algoName or 'ESCH' in algoName or 'AUGLAG_EQ' in algoName or 'LD_SLSQP' in algoName or 'LD_CCSAQ' in algoName:
+    if 'NEWUOA' in algoName or 'COBYLA' in algoName or 'ESCH' in algoName or 'AUGLAG_EQ' in algoName or 'LD_SLSQP' in algoName or 'LD_CCSAQ' in algoName:
         print('-- Skipped: algo=', algoName)
         continue
 
@@ -41,9 +43,8 @@ for algoName in algoNames:
             for equality in [True, False]:
                 for bound in [True, False]:
 
-                    # global algorithms require bounds
-                    if not bound and (algoName.startswith('G') or 'LN_BOBYQA' in algoName):
-                        continue
+                    if not bound and 'LN_BOBYQA' in algoName:
+                       continue
 
                     print('algo=', algoName, 'minimization=', minimization, 'bounds=', bound, 'inequality=', inequality, 'equality=', equality)
                     problem = ot.OptimizationProblem(f)

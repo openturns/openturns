@@ -50,13 +50,14 @@ int main(int, char *[])
     Description algoNames(NLopt::GetAlgorithmNames());
     for (UnsignedInteger i = 0; i < algoNames.getSize(); ++i)
     {
-      // STOGO might not be enabled
+      // STOGO/AGS might not be enabled
+      if ((algoNames[i] == "GD_STOGO") || (algoNames[i] == "GD_STOGO_RAND") || (algoNames[i] == "GN_AGS"))
+        continue;
       // NEWUOA nan/-nan
       // COBYLA crashes on squeeze
       // ESCH not same results with 2.4.1
       // AUGLAG_EQ raises a roundoff-limited on i386
-      if ((algoNames[i] == "GD_STOGO") || (algoNames[i] == "GD_STOGO_RAND")
-          || (algoNames[i] == "LN_NEWUOA")
+      if ((algoNames[i] == "LN_NEWUOA")
           || (algoNames[i] == "LN_COBYLA")
           || (algoNames[i] == "GN_ESCH")
           || (algoNames[i] == "AUGLAG_EQ"))

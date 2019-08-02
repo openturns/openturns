@@ -4,11 +4,11 @@ Elliptical distribution=  False
 Continuous =  True
 Elliptical =  False
 Independent =  False
-oneRealization= [0.642995,0.249576]
-oneSample first= [0.81213,0.885594]  last= [0.506679,0.611576]
-mean= [0.502612,0.50223]
-covariance= [[ 0.082459 0.076198 ]
- [ 0.076198 0.08287  ]]
+oneRealization= [0.251363,0.277809]
+oneSample first= [0.207289,0.30774]  last= [0.506679,0.611576]
+mean= [0.502599,0.50222]
+covariance= [[ 0.08245  0.076185 ]
+ [ 0.076185 0.082852 ]]
 Point=  [0.6, 0.6]
 ddf     = [0.25786,0.25786]
 pdf     =2.92442

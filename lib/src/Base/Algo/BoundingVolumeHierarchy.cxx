@@ -82,7 +82,7 @@ void BoundingVolumeHierarchy::setVerticesAndSimplices(const Sample & vertices, c
   EnclosingSimplexAlgorithmImplementation::setVerticesAndSimplices(vertices, simplices);
 
   const UnsignedInteger nrSimplices = simplices_.getSize();
-  if (nrSimplices <= 1) return;
+  if (!nrSimplices) return;
 
   const UnsignedInteger dimension = vertices_.getDimension();
   for (UnsignedInteger i = 0; i < nrSimplices; ++i)
@@ -269,8 +269,11 @@ UnsignedInteger BoundingVolumeHierarchy::query(const Point & point) const
   if (point.getDimension() != vertices_.getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << vertices_.getDimension() << ", got dimension=" << point.getDimension();
 
   // First, check against the bounding box
-  const UnsignedInteger notFound = simplices_.getSize();
-  if (notFound == 0) return notFound;
+  const UnsignedInteger size = simplices_.getSize();
+  const UnsignedInteger notFound = size;
+
+  if (!size) return notFound;
+
   if (!boundingBox_.contains(point)) return notFound;
 
   const UnsignedInteger dimension = point.getDimension();

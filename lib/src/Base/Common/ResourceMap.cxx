@@ -197,6 +197,10 @@ Bool ResourceMap::HasKey(const String & key)
   return GetInstance().lock().hasKey(key);
 }
 
+void ResourceMap::Reload()
+{
+  return GetInstance().lock().reload();
+}
 
 /* Default constructor */
 ResourceMap::ResourceMap()
@@ -205,8 +209,7 @@ ResourceMap::ResourceMap()
   , mapUnsignedInteger_()
   , mapBool_()
 {
-  loadDefaultConfiguration();
-  loadConfigurationFile();
+  reload();
 }
 
 /* Method for retrieving information from the resource map */
@@ -282,15 +285,10 @@ String ResourceMap::get(const String & key) const
 
 Bool ResourceMap::hasKey(const String & key) const
 {
-  try
-  {
-    get(key);
-  }
-  catch (InternalException &)
-  {
-    return false;
-  }
-  return true;
+  return ((mapString_.find(key) != mapString_.end())
+      || (mapScalar_.find(key) != mapScalar_.end())
+      || (mapUnsignedInteger_.find(key) != mapUnsignedInteger_.end())
+      || (mapBool_.find(key) != mapBool_.end()));
 }
 
 String ResourceMap::getAsString(const String & key) const
@@ -533,8 +531,6 @@ void ResourceMap::loadConfigurationFile()
     LOGWARN(OSS() << "The configuration file has not been found, using default parameters.");
   }
 }
-
-
 
 /* Load the configuration defined at installation time */
 void ResourceMap::loadDefaultConfiguration()
@@ -1318,6 +1314,12 @@ void ResourceMap::loadDefaultConfiguration()
 
   // viewer.View parameters //
   setAsString( "View-ImageFormat", "png" );
+}
+
+void ResourceMap::reload()
+{
+  loadDefaultConfiguration();
+  loadConfigurationFile();
 }
 
 /* String converter */

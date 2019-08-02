@@ -64,7 +64,7 @@ int main(int, char *[])
 	algo.run();
 	// To avoid discrepance between the plaforms with or without CMinpack
 	fullprint << "result (Auto)=" << algo.getResult().getParameterMAP() << std::endl;
-	algo.setAlgorithm(MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-MultiStartSize")).generate()));
+	algo.setOptimizationAlgorithm(MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-MultiStartSize")).generate()));
 	algo.run();
 	fullprint << "result  (TNC)=" << algo.getResult().getParameterMAP() << std::endl;
       } // n

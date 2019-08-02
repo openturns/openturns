@@ -3,11 +3,11 @@ Distribution UserDefined({x = [1], p = 0.1875}, {x = [2], p = 0.0625}, {x = [3],
 Elliptical = false
 Continuous = false
 oneRealization=class=Point name=Unnamed dimension=1 values=[3]
-oneSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=1 description=[v0] data=[[3],[1],[3],[3],[1],[3],[3],[3],[2],[3]]
+oneSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=1 description=[v0] data=[[1],[3],[3],[1],[3],[3],[1],[3],[3],[3]]
 point= class=Point name=Unnamed dimension=1 values=[2] pdf=0.0625 cdf=0.25
 Quantile=class=Point name=Unnamed dimension=1 values=[3]
 entropy=0.702919
-entropy (MC)=0.703554
+entropy (MC)=0.703557
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[2.5625]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[7.1875]

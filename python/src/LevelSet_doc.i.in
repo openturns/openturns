@@ -63,9 +63,9 @@ Examples
 >>> # Intersection between levelSet1 and levelSet2
 >>> intersection = levelSet1.intersect(levelSet2)
 >>> # Tests
->>> print(intersection.contains([1.0]))
+>>> print([1.0] in intersection)
 False
->>> print(intersection.contains([0.25]))
+>>> print([0.25] in intersection)
 True"
 
 // ---------------------------------------------------------------------
@@ -97,9 +97,9 @@ Examples
 >>> # Union between levelSet1 and levelSet2
 >>> join = levelSet1.join(levelSet2)
 >>> # Tests
->>> print(join.contains([0.5]))
+>>> print([0.5] in join)
 False
->>> print(join.contains([0.25]))
+>>> print([0.25] in join)
 True"
 
 // ---------------------------------------------------------------------

@@ -43,7 +43,6 @@ Hypergeometric::Hypergeometric()
   // We set the dimension of the Hypergeometric distribution
   setDimension( 1 );
   computeProbabilities();
-  DistFunc::rDiscrete(probabilities_, base_, alias_);
   computeRange();
 }
 

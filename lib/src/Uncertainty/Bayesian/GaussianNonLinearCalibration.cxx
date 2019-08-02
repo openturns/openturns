@@ -353,17 +353,17 @@ void GaussianNonLinearCalibration::run()
       outputIndices.fill(inputIndices.getSize());
       Sample empty;
       for (UnsignedInteger i = 0; i < bootstrapSize_; ++i)
-	{
-	  const Sample joinedSample(bootstrap.generate());
-	  thetaSample[i] = run(joinedSample.getMarginal(inputIndices), joinedSample.getMarginal(outputIndices), thetaStar, parameterInverseCholesky, errorInverseCholesky);
-	}
+      {
+        const Sample joinedSample(bootstrap.generate());
+        thetaSample[i] = run(joinedSample.getMarginal(inputIndices), joinedSample.getMarginal(outputIndices), thetaStar, parameterInverseCholesky, errorInverseCholesky);
+      }
       parameterPosterior = KernelSmoothing().build(thetaSample);
     }
   else
     {
-      GaussianLinearCalibration blueAlgo(model_, inputObservations_, outputObservations_, thetaStar, getParameterPrior().getCovariance(), error.getCovariance());
-      blueAlgo.run();
-      parameterPosterior = blueAlgo.getResult().getParameterPosterior();
+      GaussianLinearCalibration algo(model_, inputObservations_, outputObservations_, thetaStar, getParameterPrior().getCovariance(), error.getCovariance());
+      algo.run();
+      parameterPosterior = algo.getResult().getParameterPosterior();
     }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   // Build the residual function this way to benefit from the automatic Hessian
@@ -417,13 +417,25 @@ Bool GaussianNonLinearCalibration::getGlobalErrorCovariance() const
 }
 
 /* Algorithm accessor */
+OptimizationAlgorithm GaussianNonLinearCalibration::getOptimizationAlgorithm() const
+{
+  return algorithm_;
+}
+
+void GaussianNonLinearCalibration::setOptimizationAlgorithm(const OptimizationAlgorithm & algorithm)
+{
+  algorithm_ = algorithm;
+}
+
 OptimizationAlgorithm GaussianNonLinearCalibration::getAlgorithm() const
 {
+  LOGWARN("GaussianNonLinearCalibration::getAlgorithm is deprecated");
   return algorithm_;
 }
 
 void GaussianNonLinearCalibration::setAlgorithm(const OptimizationAlgorithm & algorithm)
 {
+  LOGWARN("GaussianNonLinearCalibration::setAlgorithm is deprecated");
   algorithm_ = algorithm;
 }
 

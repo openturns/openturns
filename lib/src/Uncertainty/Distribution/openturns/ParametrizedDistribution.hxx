@@ -42,7 +42,7 @@ public:
   ParametrizedDistribution();
 
   /** Constructor with parameter */
-  ParametrizedDistribution(const DistributionParameters & distParam);
+  explicit ParametrizedDistribution(const DistributionParameters & distParam);
 
   /** Virtual constructor */
   virtual ParametrizedDistribution * clone() const;

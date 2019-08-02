@@ -15,9 +15,9 @@ try:
     p0 = [-0.5, -0.5]
     p1 = [0.5, 0.0]
     p2 = [1.5, 0.0]
-    print("levelSet1 contains ", p0, "? ", levelSet1.contains(p0))
-    print("levelSet1 contains ", p1, "? ", levelSet1.contains(p1))
-    print("levelSet1 contains ", p2, "? ", levelSet1.contains(p2))
+    print("levelSet1 contains ", p0, "? ", p0 in levelSet1)
+    print("levelSet1 contains ", p1, "? ", p1 in levelSet1)
+    print("levelSet1 contains ", p2, "? ", p2 in levelSet1)
     # Intersection
     formula2 = ["(x-1)^2 + y^2"]
     function2 = SymbolicFunction(inVars, formula2)

@@ -349,6 +349,7 @@ void Ceres::run()
     if (ResourceMap::HasKey("Ceres-inner_iteration_tolerance"))
       options.inner_iteration_tolerance = ResourceMap::GetAsScalar("Ceres-inner_iteration_tolerance");
     // logging_type: https://github.com/ceres-solver/ceres-solver/issues/470
+    options.logging_type = ceres::SILENT;
     if (ResourceMap::HasKey("Ceres-minimizer_progress_to_stdout"))
       options.minimizer_progress_to_stdout = ResourceMap::GetAsBool("Ceres-minimizer_progress_to_stdout");
     // trust_region_problem_dump_directory/trust_region_problem_dump_format_type: https://github.com/ceres-solver/ceres-solver/issues/470
@@ -426,6 +427,7 @@ void Ceres::run()
     if (ResourceMap::HasKey("Ceres-parameter_tolerance"))
       options.parameter_tolerance = ResourceMap::GetAsScalar("Ceres-parameter_tolerance");
     // logging_type: https://github.com/ceres-solver/ceres-solver/issues/470
+    options.logging_type = ceres::SILENT;
     if (ResourceMap::HasKey("Ceres-minimizer_progress_to_stdout"))
       options.minimizer_progress_to_stdout = ResourceMap::GetAsBool("Ceres-minimizer_progress_to_stdout");
 

@@ -134,7 +134,7 @@ flag : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GaussianNonLinearCalibration::getAlgorithm
+%feature("docstring") OT::GaussianNonLinearCalibration::getOptimizationAlgorithm
 "Accessor to the optimization algorithm used for the computation.
 
 Returns
@@ -144,7 +144,7 @@ algo : :class:`~openturns.OptimizationAlgorithm`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::GaussianNonLinearCalibration::setAlgorithm
+%feature("docstring") OT::GaussianNonLinearCalibration::setOptimizationAlgorithm
 "Accessor to the optimization algorithm used for the computation.
 
 Parameters

@@ -49,10 +49,11 @@ void NLopt::InitializeAlgorithmNames()
   AlgorithmNames_["GN_DIRECT_L_RAND_NOSCAL"] = nlopt::GN_DIRECT_L_RAND_NOSCAL;
   AlgorithmNames_["GN_ORIG_DIRECT"] = nlopt::GN_ORIG_DIRECT;
   AlgorithmNames_["GN_ORIG_DIRECT_L"] = nlopt::GN_ORIG_DIRECT_L;
-  // TODO: add stogo
-//   AlgorithmNames_["GD_STOGO"] = nlopt::GD_STOGO;
-//   AlgorithmNames_["GD_STOGO_RAND"] = nlopt::GD_STOGO_RAND;
-  AlgorithmNames_["LD_LBFGS_NOCEDAL"] = nlopt::LD_LBFGS_NOCEDAL;
+#ifdef OPENTURNS_NLOPT_HAVE_STOGO
+  AlgorithmNames_["GD_STOGO"] = nlopt::GD_STOGO;
+  AlgorithmNames_["GD_STOGO_RAND"] = nlopt::GD_STOGO_RAND;
+#endif
+  // LD_LBFGS_NOCEDAL is not wired
   AlgorithmNames_["LD_LBFGS"] = nlopt::LD_LBFGS;
   AlgorithmNames_["LN_PRAXIS"] = nlopt::LN_PRAXIS;
   AlgorithmNames_["LD_VAR1"] = nlopt::LD_VAR1;
@@ -85,6 +86,9 @@ void NLopt::InitializeAlgorithmNames()
   AlgorithmNames_["LD_SLSQP"] = nlopt::LD_SLSQP;
   AlgorithmNames_["LD_CCSAQ"] = nlopt::LD_CCSAQ;
   AlgorithmNames_["GN_ESCH"] = nlopt::GN_ESCH;
+#ifdef OPENTURNS_NLOPT_HAVE_AGS
+  AlgorithmNames_["GN_AGS"] = nlopt::GN_AGS;
+#endif
 #else
   throw NotYetImplementedException(HERE) << "No NLopt support";
 #endif
@@ -150,6 +154,18 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
 #ifdef OPENTURNS_HAVE_NLOPT
   if (problem.hasMultipleObjective())
     throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " does not support multi-objective optimization";
+
+  if (getAlgorithmName()[0] == 'G')
+  {
+    if (!problem.hasBounds())
+      throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " global algorithm requires bounds";
+    else
+    {
+      Interval finiteBounds(problem.getBounds().getLowerBound(), problem.getBounds().getUpperBound());
+      if (problem.getBounds() != finiteBounds)
+        throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " global algorithm requires finite bounds";
+    }
+  }
 
   const UnsignedInteger dimension = problem.getDimension();
   const nlopt::algorithm algo = static_cast<nlopt::algorithm>(GetAlgorithmCode(getAlgorithmName()));

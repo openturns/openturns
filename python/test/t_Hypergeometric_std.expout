@@ -1,0 +1,36 @@
+Distribution  class=Hypergeometric name=Hypergeometric dimension=1 n=25 k=7 m=14
+Distribution  Hypergeometric(n = 25, k = 7, m = 14)
+Elliptical =  False
+Continuous =  False
+oneRealization= [2]
+oneSample first= [3]  last= [3]
+mean= [3.956]
+covariance= [[ 1.3246 ]]
+Chi2 test for the generator, sample size= 100  is accepted
+Chi2 test for the generator, sample size= 1000  is accepted
+Point=  [5]
+log pdf= -1.47376350877
+pdf     = 0.229061784897
+pdf (FD)= 0.229061784897
+cdf= 0.92414187643
+ccdf= 0.0758581235698
+characteristic function= (0.112691702824+0.314426247514j)
+log characteristic function= (-1.09658163526+1.22665413395j)
+generating function= (-0.0767726758078-0.123723016677j)
+log generating function= (-1.92684335624-2.12616798622j)
+quantile= [6]
+cdf(quantile)= 0.992860411899
+entropy=1.546540
+mean= [3.92]
+standard deviation= [1.13737]
+skewness= [-0.0504599]
+kurtosis= [2.83749]
+covariance= [[ 1.2936 ]]
+parameters= [[n : 25, k : 7, m : 14]]
+standard moment n= 0 , value= [1]
+standard moment n= 1 , value= [3.92]
+standard moment n= 2 , value= [16.66]
+standard moment n= 3 , value= [75.3748]
+standard moment n= 4 , value= [358.978]
+standard moment n= 5 , value= [1785.54]
+Standard representative= Hypergeometric(n = 25, k = 7, m = 14)

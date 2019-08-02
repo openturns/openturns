@@ -238,7 +238,7 @@ void Mixture::setDistributionCollectionWithWeights(const DistributionCollection 
     x(i, 0) = i;
     p_[i] = normalizedWeight;
     parallel = parallel && distributionCollection_[i].getImplementation()->isParallel();
-    uniformWeights_ = uniformWeights_ && (std::abs(p_[i] - p_[0] < SpecFunc::Precision));
+    uniformWeights_ = uniformWeights_ && ((std::abs(p_[i] - p_[0]) < SpecFunc::Precision));
   } /* end for */
   setParallel(parallel);
   // To force initialization at the first call to getRealization()

@@ -90,7 +90,7 @@ for algoName in algoNames:
         x_star = result.getOptimalPoint()
         print(result)
         if bound:
-            assert bounds.contains(x_star), "optimal point not in bounds"
+            assert x_star in bounds, "optimal point not in bounds"
         else:
             if not line_search:
                 # line search algorithms converge less well

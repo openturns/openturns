@@ -17,8 +17,8 @@ try:
     # Accessors
     print("Dimension=", domain.getDimension())
     # Contains
-    print("is point ", p1, " inside ",  domain,  "? ",  domain.contains(p1))
-    print("is point ", p2, " inside ",  domain,  "? ",  domain.contains(p2))
+    print("is point ", p1, " inside ",  domain,  "? ",  p1 in domain)
+    print("is point ", p2, " inside ",  domain,  "? ",  p2 in domain)
 except:
     import sys
     print("t_Domain_std.py", sys.exc_info()[0], sys.exc_info()[1])
