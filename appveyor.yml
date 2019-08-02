@@ -56,7 +56,10 @@ install:
   - set PATH=C:\Libraries\bin;%PATH%
 
   # for sh, tr, cat ...
+  - del C:\msys64\usr\bin\python.exe
   - set PATH=C:\msys64\usr\bin;%PATH%
+  - python -V
+  - diff -v 
 
 build_script:
   - mkdir build && cd build
