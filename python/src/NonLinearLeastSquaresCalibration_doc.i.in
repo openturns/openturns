@@ -96,7 +96,7 @@ candidate : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NonLinearLeastSquaresCalibration::getAlgorithm
+%feature("docstring") OT::NonLinearLeastSquaresCalibration::getOptimizationAlgorithm
 "Accessor to the optimization algorithm used for the computation.
 
 Returns
@@ -106,7 +106,7 @@ algo : :class:`~openturns.OptimizationAlgorithm`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::NonLinearLeastSquaresCalibration::setAlgorithm
+%feature("docstring") OT::NonLinearLeastSquaresCalibration::setOptimizationAlgorithm
 "Accessor to the optimization algorithm used for the computation.
 
 Parameters

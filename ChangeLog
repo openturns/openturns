@@ -42,6 +42,7 @@
  * Deprecated WeibullMuSigma in favor of WeibullMinMuSigma
  * Deprecated WeibullFactory in favor of WeibullMinFactory, buildAsWeibull
  * Deprecated GumbelAB
+ * Deprecated GaussianNonLinearCalibration,NonLinearLeastSquaresCalibration::set,getAlgorithm
 
 === Python module ===
  * Add Domain.__contains__ operator

@@ -66,6 +66,10 @@ public:
 	    const TriangularMatrix & errorInverseCholesky);
 
   /** Algorithm accessor */
+  OptimizationAlgorithm getOptimizationAlgorithm() const;
+  void setOptimizationAlgorithm(const OptimizationAlgorithm & algorithm);
+
+  /** @deprecated */
   OptimizationAlgorithm getAlgorithm() const;
   void setAlgorithm(const OptimizationAlgorithm & algorithm);
 

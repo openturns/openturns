@@ -417,13 +417,25 @@ Bool GaussianNonLinearCalibration::getGlobalErrorCovariance() const
 }
 
 /* Algorithm accessor */
+OptimizationAlgorithm GaussianNonLinearCalibration::getOptimizationAlgorithm() const
+{
+  return algorithm_;
+}
+
+void GaussianNonLinearCalibration::setOptimizationAlgorithm(const OptimizationAlgorithm & algorithm)
+{
+  algorithm_ = algorithm;
+}
+
 OptimizationAlgorithm GaussianNonLinearCalibration::getAlgorithm() const
 {
+  LOGWARN("GaussianNonLinearCalibration::getAlgorithm is deprecated");
   return algorithm_;
 }
 
 void GaussianNonLinearCalibration::setAlgorithm(const OptimizationAlgorithm & algorithm)
 {
+  LOGWARN("GaussianNonLinearCalibration::setAlgorithm is deprecated");
   algorithm_ = algorithm;
 }
 

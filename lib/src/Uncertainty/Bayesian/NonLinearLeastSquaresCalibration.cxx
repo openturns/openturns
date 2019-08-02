@@ -333,13 +333,25 @@ Point NonLinearLeastSquaresCalibration::getCandidate() const
 }
 
 /* Algorithm accessor */
+OptimizationAlgorithm NonLinearLeastSquaresCalibration::getOptimizationAlgorithm() const
+{
+  return algorithm_;
+}
+
+void NonLinearLeastSquaresCalibration::setOptimizationAlgorithm(const OptimizationAlgorithm & algorithm)
+{
+  algorithm_ = algorithm;
+}
+
 OptimizationAlgorithm NonLinearLeastSquaresCalibration::getAlgorithm() const
 {
+  LOGWARN("NonLinearLeastSquaresCalibration::getAlgorithm is deprecated");
   return algorithm_;
 }
 
 void NonLinearLeastSquaresCalibration::setAlgorithm(const OptimizationAlgorithm & algorithm)
 {
+  LOGWARN("NonLinearLeastSquaresCalibration::setAlgorithm is deprecated");
   algorithm_ = algorithm;
 }
 
