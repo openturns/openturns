@@ -10,7 +10,7 @@ Available constructors:
 
 Parameters
 ----------
-event : :class:`~openturns.Event`
+event : :class:`~openturns.RandomVector`
     Event we are computing the probability of.
 rootStrategy : :class:`~openturns.RootStrategy`
     Strategy adopted to evaluate the intersections of each direction with the

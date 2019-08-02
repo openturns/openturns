@@ -47,7 +47,7 @@ Event::Event()
 Event::Event(const RandomVector & antecedent,
              const ComparisonOperator & op,
              const Scalar threshold)
-  : RandomVector(new EventRandomVector(*antecedent.getImplementation(), op, threshold))
+  : RandomVector(new EventRandomVector(antecedent, op, threshold))
 {
   // Nothing to do
 }
@@ -55,7 +55,7 @@ Event::Event(const RandomVector & antecedent,
 /* Constructor from RandomVector */
 Event::Event(const RandomVector & antecedent,
              const Domain & domain)
-  : RandomVector(new EventDomain(*antecedent.getImplementation(), domain))
+  : RandomVector(new EventDomain(antecedent, domain))
 {
   // Nothing to do
 }
@@ -90,7 +90,7 @@ Event Event::intersect(const RandomVector & other)
 
   LevelSet d1(getFunction(), getOperator(), getThreshold());
   LevelSet d2(other.getFunction(), other.getOperator(), other.getThreshold());
-  return Event(getAntecedent().getImplementation(), d1.intersect(d2));
+  return Event(getAntecedent(), d1.intersect(d2));
 }
 
 
@@ -107,7 +107,7 @@ Event Event::join(const RandomVector & other)
 
   LevelSet d1(getFunction(), getOperator(), getThreshold());
   LevelSet d2(other.getFunction(), other.getOperator(), other.getThreshold());
-  return Event(getAntecedent().getImplementation(), d1.join(d2));
+  return Event(getAntecedent(), d1.join(d2));
 }
 
 

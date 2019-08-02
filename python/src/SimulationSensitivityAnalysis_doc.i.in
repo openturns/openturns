@@ -18,7 +18,7 @@ comparisonOp : :class:`~openturns.ComparisonOperator`
     A comparison operator.
 threshold : float
     A threshold.
-event : :class:`~openturns.Event`
+event : :class:`~openturns.RandomVector`
     An event which it composite (test is with the method
     :meth:`isComposite <openturns.Event.isComposite>`).
 simulationRes : :class:`~openturns.ProbabilitySimulationResult`

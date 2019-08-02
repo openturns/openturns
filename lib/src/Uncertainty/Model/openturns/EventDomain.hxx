@@ -49,7 +49,7 @@ public:
   EventDomain();
 
   /** Constructor from RandomVector */
-  EventDomain(const RandomVectorImplementation & antecedent,
+  EventDomain(const RandomVector & antecedent,
               const Domain & domain);
 
   /** Virtual contructor */

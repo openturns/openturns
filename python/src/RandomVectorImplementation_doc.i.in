@@ -27,7 +27,7 @@ OT_RandomVector_doc
 Returns
 -------
 domain : :class:`~openturns.Domain`
-    Domain failure used to define the :class:`~openturns.Event`."
+    Domain failure used to define the :class:`~openturns.RandomVector`."
 
 // ---------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ domain : :class:`~openturns.Domain`
 Returns
 -------
 process : :class:`~openturns.Process`
-    Stochastic process used to define the :class:`~openturns.Event`."
+    Stochastic process used to define the :class:`~openturns.RandomVector`."
 
 // ---------------------------------------------------------------------
 
@@ -236,7 +236,7 @@ OT_RandomVector_getSample_doc
 Returns
 -------
 operator : :class:`~openturns.ComparisonOperator`
-    Comparaison operator used to define the :class:`~openturns.Event`."
+    Comparaison operator used to define the :class:`~openturns.RandomVector`."
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getOperator
 OT_RandomVector_getOperator_doc
@@ -249,7 +249,7 @@ OT_RandomVector_getOperator_doc
 Returns
 -------
 threshold : float
-    Threshold of the :class:`~openturns.Event`."
+    Threshold of the :class:`~openturns.RandomVector`."
 %enddef
 %feature("docstring") OT::RandomVectorImplementation::getThreshold
 OT_RandomVector_getThreshold_doc

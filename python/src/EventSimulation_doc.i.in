@@ -6,7 +6,7 @@ Available constructor:
 
 Parameters
 ----------
-event : :class:`~openturns.Event`
+event : :class:`~openturns.RandomVector`
     The event we are computing the probability of.
 verbose : bool
     If *True*, make the computation verbose.
@@ -67,7 +67,7 @@ results : :class:`~openturns.SimulationResult`
 
 Returns
 -------
-event : :class:`~openturns.Event`
+event : :class:`~openturns.RandomVector`
     Event we want to evaluate the probability."
 
 // ---------------------------------------------------------------------

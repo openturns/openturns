@@ -58,7 +58,7 @@ OT_SimulationResult_setBlockSize_doc
 
 Parameters
 ----------
-event : :class:`~openturns.Event`
+event : :class:`~openturns.RandomVector`
     Event we want to evaluate the probability."
 %enddef
 %feature("docstring") OT::ProbabilitySimulationResult::setEvent
@@ -71,7 +71,7 @@ OT_SimulationResult_setEvent_doc
 
 Returns
 -------
-event : :class:`~openturns.Event`
+event : :class:`~openturns.RandomVector`
     Event we want to evaluate the probability."
 %enddef
 %feature("docstring") OT::ProbabilitySimulationResult::getEvent

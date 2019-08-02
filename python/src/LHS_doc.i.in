@@ -6,7 +6,7 @@ Available constructors:
 
 Parameters
 ----------
-event : :class:`~openturns.Event`
+event : :class:`~openturns.RandomVector`
     Event we are computing the probability of.
 
 Notes
