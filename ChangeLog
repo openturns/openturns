@@ -63,7 +63,6 @@
  * Improved a lot the performace of all the Rosenblatt related computations
  * Added elementary calibration capabilities
  * Added CMinpack, Ceres Solver least-squares solvers
- * Add dlib solvers
 
 ==== New classes ====
  * ParametricPointToFieldFunction
