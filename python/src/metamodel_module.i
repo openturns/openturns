@@ -78,6 +78,7 @@
 %include ConditionalRandomVector.i
 %include Event.i
 %include StandardEvent.i
+%include IntersectionEvent.i
 
 /* Uncertainty/Algorithm/Metamodel */
 %include FunctionalChaosRandomVector.i

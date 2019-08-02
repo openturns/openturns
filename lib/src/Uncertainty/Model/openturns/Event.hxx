@@ -59,10 +59,6 @@ public:
   Event(const Process &  process,
         const Domain & domain);
 
-  /** Intersection operator */
-  Event intersect(const RandomVector & other);
-  Event join(const RandomVector & other);
-
   /** String converter */
   String __repr__() const;
 

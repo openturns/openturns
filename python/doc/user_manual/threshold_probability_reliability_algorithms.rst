@@ -38,6 +38,7 @@ Event
     EventProcess
     EventDomain
     EventRandomVector
+    IntersectionEvent
 
 Design point validation
 =======================

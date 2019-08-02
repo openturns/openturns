@@ -1,0 +1,30 @@
+%feature("docstring") OT::IntersectionEvent
+"Event defined as the intersection of several events.
+
+The occurence of all the events is necessary for the system event to occur (parallel system):
+
+.. math::
+
+    E_{sys} = \bigcap_{i=1}^N E_i
+
+Parameters
+----------
+coll : sequence of :class:`~openturns.RandomVector`
+    Collection of events
+
+See also
+--------
+Event
+
+Examples
+--------
+>>> import openturns as ot
+>>> dim = 2
+>>> X = ot.RandomVector(ot.Normal(dim))
+>>> f1 = ot.SymbolicFunction(['x1', 'x2'], ['x1'])
+>>> f2 = ot.SymbolicFunction(['x1', 'x2'], ['x2'])
+>>> Y1 = ot.CompositeRandomVector(f1, X)
+>>> Y2 = ot.CompositeRandomVector(f2, X)
+>>> e1 = ot.Event(Y1, ot.Less(), 0.0)
+>>> e2 = ot.Event(Y2, ot.Greater(), 0.0)
+>>> event = ot.IntersectionEvent([e1, e2])"

@@ -33,6 +33,7 @@
  * ParetoFactory
  * DiscreteCompoundDistribution
  * Bonmin
+ * IntersectionEvent
 
 ==== API changes ====
  * Removed deprecated specific RandomVector constructors

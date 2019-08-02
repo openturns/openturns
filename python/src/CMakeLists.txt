@@ -833,6 +833,7 @@ ot_add_python_module(metamodel metamodel_module.i
                       EventProcess.i EventProcess_doc.i.in
                       Event.i Event_doc.i.in
                       StandardEvent.i StandardEvent_doc.i.in
+		      IntersectionEvent.i IntersectionEvent_doc.i.in
                       FunctionalChaosRandomVector.i FunctionalChaosRandomVector_doc.i.in
                       FunctionalChaosSobolIndices.i FunctionalChaosSobolIndices_doc.i.in
                       KrigingRandomVector.i KrigingRandomVector_doc.i.in

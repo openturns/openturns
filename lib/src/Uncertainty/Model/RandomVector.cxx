@@ -212,4 +212,38 @@ Bool RandomVector::isEvent() const
   return getImplementation()->isEvent();
 }
 
+
+RandomVector RandomVector::intersect(const RandomVector & other)
+{
+  if (&other == this)
+    return *this;
+
+  if (!isComposite() || !other.isComposite())
+    throw InvalidArgumentException(HERE) << "Events must be composite";
+
+  if (getAntecedent().getImplementation()->getId() != other.getAntecedent().getImplementation()->getId())
+    throw NotYetImplementedException(HERE) << "Root cause not found";
+
+  LevelSet d1(getFunction(), getOperator(), getThreshold());
+  LevelSet d2(other.getFunction(), other.getOperator(), other.getThreshold());
+  return EventDomain(getAntecedent(), d1.intersect(d2));
+}
+
+
+RandomVector RandomVector::join(const RandomVector & other)
+{
+  if (&other == this)
+    return *this;
+
+  if (!isComposite() || !other.isComposite())
+    throw InvalidArgumentException(HERE) << "Events must be composite";
+
+  if (getAntecedent().getImplementation()->getId() != other.getAntecedent().getImplementation()->getId())
+    throw NotYetImplementedException(HERE) << "Root cause not found";
+
+  LevelSet d1(getFunction(), getOperator(), getThreshold());
+  LevelSet d2(other.getFunction(), other.getOperator(), other.getThreshold());
+  return EventDomain(getAntecedent().getImplementation(), d1.join(d2));
+}
+
 END_NAMESPACE_OPENTURNS

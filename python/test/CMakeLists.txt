@@ -354,7 +354,7 @@ ot_pyinstallcheck_test (RandomVector_distribution)
 ot_pyinstallcheck_test (RandomVector_composite)
 ot_pyinstallcheck_test (RandomVector_conditional)
 ot_pyinstallcheck_test (RandomVector_python)
-ot_pyinstallcheck_test (Event_system)
+ot_pyinstallcheck_test (Event_system IGNOREOUT)
 
 ## Process
 ot_pyinstallcheck_test (WhiteNoise_std)

@@ -77,38 +77,6 @@ Event::Event(const Process & process,
   // Nothing to do
 }
 
-Event Event::intersect(const RandomVector & other)
-{
-  if (&other == this)
-    return *this;
-
-  if (!isComposite() || !other.isComposite())
-    throw InvalidArgumentException(HERE) << "Events must be composite";
-
-  if (getAntecedent().getImplementation()->getId() != other.getAntecedent().getImplementation()->getId())
-    throw NotYetImplementedException(HERE) << "Root cause not found";
-
-  LevelSet d1(getFunction(), getOperator(), getThreshold());
-  LevelSet d2(other.getFunction(), other.getOperator(), other.getThreshold());
-  return Event(getAntecedent(), d1.intersect(d2));
-}
-
-
-Event Event::join(const RandomVector & other)
-{
-  if (&other == this)
-    return *this;
-
-  if (!isComposite() || !other.isComposite())
-    throw InvalidArgumentException(HERE) << "Events must be composite";
-
-  if (getAntecedent().getImplementation()->getId() != other.getAntecedent().getImplementation()->getId())
-    throw NotYetImplementedException(HERE) << "Root cause not found";
-
-  LevelSet d1(getFunction(), getOperator(), getThreshold());
-  LevelSet d2(other.getFunction(), other.getOperator(), other.getThreshold());
-  return Event(getAntecedent(), d1.join(d2));
-}
 
 
 /* String converter */
