@@ -46,7 +46,7 @@ static const Factory<SORMResult> Factory_SORMResult;
  * @brief  Standard constructor: the class is defined by an optimisation algorithm, a failure event and a physical starting point
  */
 SORMResult::SORMResult(const Point & standardSpaceDesignPoint,
-                       const Event & limitStateVariable,
+                       const RandomVector & limitStateVariable,
                        const Bool isStandardPointOriginInFailureSpace):
   AnalyticalResult(standardSpaceDesignPoint, limitStateVariable, isStandardPointOriginInFailureSpace),
   hessianLimitStateFunction_(),

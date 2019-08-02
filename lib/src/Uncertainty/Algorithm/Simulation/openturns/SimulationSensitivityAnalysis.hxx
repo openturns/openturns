@@ -58,7 +58,7 @@ public:
                                 const Scalar threshold);
 
   /** Standard constructor */
-  explicit SimulationSensitivityAnalysis(const Event & event);
+  explicit SimulationSensitivityAnalysis(const RandomVector & event);
 
   /** Standard constructor */
   explicit SimulationSensitivityAnalysis(const ProbabilitySimulationResult & result);

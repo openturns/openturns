@@ -104,6 +104,7 @@ try:
     for cName in cNameList:
         otClass = getattr(ot, cName)
         instance = otClass()
+        print('--', cName, instance)
         myStudy.add(cName, instance)
 
     # Create a Beta distribution
@@ -282,6 +283,7 @@ try:
         instance = otClass()
         saved = repr(instance)
         myStudy.fillObject(cName, instance)
+        print('--', cName, instance)
         loaded = repr(instance)
         if saved != loaded:
             print('saved=', saved)

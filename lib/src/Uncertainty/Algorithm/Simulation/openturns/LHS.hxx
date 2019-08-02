@@ -48,7 +48,7 @@ public:
   LHS();
 
   /** Constructor with parameters */
-  LHS(const Event & event);
+  LHS(const RandomVector & event);
 
 
   /** Virtual constructor */

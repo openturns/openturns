@@ -35,7 +35,7 @@ public:
   SubsetSamplingResult();
 
   /** Constructor with parameters */
-  SubsetSamplingResult(const Event & event,
+  SubsetSamplingResult(const RandomVector & event,
                        const Scalar probabilityEstimate,
                        const Scalar varianceEstimate,
                        const UnsignedInteger outerSampling,

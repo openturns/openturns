@@ -147,7 +147,7 @@ Event::Event(const Process & process,
   // Nothing to do
 }
 
-Event Event::intersect(const Event & other)
+Event Event::intersect(const RandomVector & other)
 {
   if (&other == this)
     return *this;
@@ -164,7 +164,7 @@ Event Event::intersect(const Event & other)
 }
 
 
-Event Event::join(const Event & other)
+Event Event::join(const RandomVector & other)
 {
   if (&other == this)
     return *this;

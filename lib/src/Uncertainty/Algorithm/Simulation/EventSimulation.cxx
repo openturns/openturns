@@ -21,10 +21,14 @@
  */
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/EventSimulation.hxx"
+#include "openturns/EventRandomVector.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/Less.hxx"
+#include "openturns/Uniform.hxx"
+#include "openturns/IdentityFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -39,7 +43,7 @@ static const Factory<EventSimulation> Factory_EventSimulation;
 /** For save/load mechanism */
 EventSimulation::EventSimulation(const Bool verbose, const HistoryStrategy & convergenceStrategy)
   : SimulationAlgorithm()
-  , event_()
+  , event_(new EventRandomVector(CompositeRandomVector(IdentityFunction(1), RandomVector(Uniform())), Less(), 0.0))
   , result_()
 {
   setVerbose(verbose);
@@ -47,7 +51,7 @@ EventSimulation::EventSimulation(const Bool verbose, const HistoryStrategy & con
 }
 
 /* Constructor with parameters */
-EventSimulation::EventSimulation(const Event & event,
+EventSimulation::EventSimulation(const RandomVector & event,
                                  const Bool verbose,
                                  const HistoryStrategy & convergenceStrategy)
   : SimulationAlgorithm()
@@ -56,6 +60,8 @@ EventSimulation::EventSimulation(const Event & event,
 {
   setVerbose(verbose);
   convergenceStrategy_ = convergenceStrategy;
+  if (!event.isEvent())
+    throw InvalidArgumentException(HERE) << "Not an event";
 }
 
 /* Virtual constructor */
@@ -65,7 +71,7 @@ EventSimulation * EventSimulation::clone() const
 }
 
 /*  Event accessor */
-Event EventSimulation::getEvent() const
+RandomVector EventSimulation::getEvent() const
 {
   return event_;
 }

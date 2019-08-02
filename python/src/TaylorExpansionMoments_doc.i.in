@@ -3,16 +3,11 @@
 
 Refer to :ref:`taylor_importance_factors`.
 
-Available constructors:
-    TaylorExpansionMoments(*limitStateVariable*)
-
 Parameters
 ----------
 limitStateVariable : :class:`~openturns.RandomVector`
-    This RandomVector must be of type *Composite*, which means it must have
-    been defined with the fourth usage of declaration of a RandomVector
-    (from a Function and an antecedent Distribution) or with
-    the class :class:`~openturns.CompositeRandomVector`.
+    It must be of type *Composite*, which means it must have
+    been defined with the class :class:`~openturns.CompositeRandomVector`.
 
 Notes
 -----

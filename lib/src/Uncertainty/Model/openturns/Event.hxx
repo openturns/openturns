@@ -60,8 +60,8 @@ public:
         const Domain & domain);
 
   /** Intersection operator */
-  Event intersect(const Event & other);
-  Event join(const Event & other);
+  Event intersect(const RandomVector & other);
+  Event join(const RandomVector & other);
 
   /** String converter */
   String __repr__() const;

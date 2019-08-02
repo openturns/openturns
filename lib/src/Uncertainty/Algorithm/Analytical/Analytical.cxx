@@ -35,7 +35,7 @@ static const Factory<Analytical> Factory_Analytical;
  * @brief  Standard constructor: the class is defined by an optimisation algorithm, a failure event and a physical starting point
  */
 Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
-                       const Event & event,
+                       const RandomVector & event,
                        const Point & physicalStartingPoint)
   : PersistentObject(),
     nearestPointAlgorithm_(nearestPointAlgorithm),
@@ -69,13 +69,13 @@ void Analytical::setPhysicalStartingPoint(const Point & physicalStartingPoint)
 }
 
 /* Event accessor */
-Event Analytical::getEvent() const
+RandomVector Analytical::getEvent() const
 {
   return event_;
 }
 
 /* Event accessor */
-void Analytical::setEvent(const Event & event)
+void Analytical::setEvent(const RandomVector & event)
 {
   event_ =  event;
   nearestPointAlgorithm_.setProblem(NearestPointProblem(event_.getImplementation()->getFunction(), event_.getThreshold()));

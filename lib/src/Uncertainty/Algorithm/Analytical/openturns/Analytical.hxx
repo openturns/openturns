@@ -55,7 +55,7 @@ public:
 
   /** Constructor with parameters */
   Analytical(const OptimizationAlgorithm & solver,
-             const Event & compositeEvent,
+             const RandomVector & compositeEvent,
              const Point & physicalStartingPoint);
 
 
@@ -69,10 +69,10 @@ public:
   void setPhysicalStartingPoint(const Point & physicalStartingPoint);
 
   /** Event accessor */
-  Event getEvent() const;
+  RandomVector getEvent() const;
 
   /** Event accessor */
-  void setEvent(const Event & event);
+  void setEvent(const RandomVector & event);
 
   /** OptimizationAlgorithm accessor */
   OptimizationAlgorithm getNearestPointAlgorithm() const;
@@ -105,7 +105,7 @@ protected:
 private:
 
   OptimizationAlgorithm nearestPointAlgorithm_;
-  Event event_;
+  RandomVector event_;
   Point physicalStartingPoint_;
   AnalyticalResult result_;
 

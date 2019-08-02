@@ -41,12 +41,12 @@ public:
                                  const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Constructor with parameters */
-  ProbabilitySimulationAlgorithm(const Event & event,
+  ProbabilitySimulationAlgorithm(const RandomVector & event,
                                  const Bool verbose = true,
                                  const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Constructor with parameters */
-  ProbabilitySimulationAlgorithm(const Event & event,
+  ProbabilitySimulationAlgorithm(const RandomVector & event,
                                  const WeightedExperiment & experiment,
                                  const Bool verbose = true,
                                  const HistoryStrategy & convergenceStrategy = Compact());

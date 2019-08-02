@@ -47,10 +47,10 @@ public:
   DirectionalSampling();
 
   /** Constructor with parameters */
-  explicit DirectionalSampling(const Event & event);
+  explicit DirectionalSampling(const RandomVector & event);
 
   /** Constructor with parameters */
-  DirectionalSampling(const Event & event,
+  DirectionalSampling(const RandomVector & event,
                       const RootStrategy & rootStrategy,
                       const SamplingStrategy & samplingStrategy);
 

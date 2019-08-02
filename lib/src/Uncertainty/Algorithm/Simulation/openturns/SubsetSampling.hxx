@@ -36,7 +36,7 @@ public:
   SubsetSampling();
 
   /** Constructor with parameters */
-  SubsetSampling(const Event & event,
+  SubsetSampling(const RandomVector & event,
                  const Scalar proposalRange = ResourceMap::GetAsScalar("SubsetSampling-DefaultProposalRange"),
                  const Scalar conditionalProbability = ResourceMap::GetAsScalar("SubsetSampling-DefaultConditionalProbability"));
 

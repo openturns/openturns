@@ -50,7 +50,7 @@ public:
 
 
   /** Default constructor */
-  TaylorExpansionMoments() {};
+  TaylorExpansionMoments();
 
   /** Constructor with parameters */
   explicit TaylorExpansionMoments(const RandomVector & limitStateVariable);

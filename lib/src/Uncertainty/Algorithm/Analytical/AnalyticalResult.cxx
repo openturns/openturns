@@ -28,8 +28,7 @@
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/BarPlot.hxx"
 #include "openturns/Description.hxx"
-#include "openturns/CompositeRandomVector.hxx"
-#include "openturns/ConstantRandomVector.hxx"
+#include "openturns/EventRandomVector.hxx"
 #include "openturns/RandomVector.hxx"
 #include "openturns/Less.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -50,7 +49,7 @@ static const Factory<AnalyticalResult> Factory_AnalyticalResult;
  * @brief  Standard constructor
  */
 AnalyticalResult::AnalyticalResult(const Point & standardSpaceDesignPoint,
-                                   const Event & limitStateVariable,
+                                   const RandomVector & limitStateVariable,
                                    const Bool isStandardPointOriginInFailureSpace):
   PersistentObject(),
   standardSpaceDesignPoint_(standardSpaceDesignPoint.getDimension()),
@@ -76,9 +75,7 @@ AnalyticalResult::AnalyticalResult():
   standardSpaceDesignPoint_(0),
   physicalSpaceDesignPoint_(0),
   // Fake event based on a fake 1D composite random vector, which requires a fake 1D Function
-  limitStateVariable_(RandomVector(CompositeRandomVector(SymbolicFunction(Description(0), Description(1)),
-                                   ConstantRandomVector(Point(0)))),
-                      Less(), 0.0),
+  limitStateVariable_(EventRandomVector()),
   isStandardPointOriginInFailureSpace_(false),
   hasoferReliabilityIndex_(0.0),
   importanceFactors_(0),
@@ -138,7 +135,7 @@ Point AnalyticalResult::getPhysicalSpaceDesignPoint() const
 }
 
 /* LimitStateVariable accessor */
-Event AnalyticalResult::getLimitStateVariable() const
+RandomVector AnalyticalResult::getLimitStateVariable() const
 {
   return limitStateVariable_;
 }
@@ -208,7 +205,7 @@ void AnalyticalResult::computeClassicalImportanceFactors() const
 
 void AnalyticalResult::computePhysicalImportanceFactors() const
 {
-  const Event myEvent(getLimitStateVariable());
+  const RandomVector myEvent(getLimitStateVariable());
   const StandardEvent mystandardEvent(myEvent);
   const Scalar sign = myEvent.getOperator().compare(0., 1.) ? 1.0 : -1.0;
   const Point currentStandardGradient(mystandardEvent.getImplementation()->getFunction().gradient(getStandardSpaceDesignPoint()) * Point(1, 1.0));

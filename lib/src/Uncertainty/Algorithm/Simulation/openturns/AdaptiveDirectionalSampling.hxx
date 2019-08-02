@@ -45,7 +45,7 @@ public:
   AdaptiveDirectionalSampling();
 
   /** Constructor with parameters */
-  AdaptiveDirectionalSampling(const Event & event,
+  AdaptiveDirectionalSampling(const RandomVector & event,
                               const RootStrategy & rootStrategy = RootStrategy(),
                               const SamplingStrategy & samplingStrategy = SamplingStrategy());
 

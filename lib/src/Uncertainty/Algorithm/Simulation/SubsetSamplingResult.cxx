@@ -37,7 +37,7 @@ SubsetSamplingResult::SubsetSamplingResult()
 
 
 /* Constructor with parameters */
-SubsetSamplingResult::SubsetSamplingResult(const Event & event,
+SubsetSamplingResult::SubsetSamplingResult(const RandomVector & event,
     const Scalar probabilityEstimate,
     const Scalar varianceEstimate,
     const UnsignedInteger outerSampling,
