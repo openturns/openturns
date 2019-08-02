@@ -49,10 +49,14 @@ public:
   /** Default constructor */
   EventRandomVector();
 
-  /** Constructor from RandomVector */
+  /** Constructor from comparison operator */
   EventRandomVector(const RandomVector & antecedent,
                     const ComparisonOperator & op,
                     const Scalar threshold);
+
+  /** Constructor from Interval */
+  EventRandomVector(const RandomVector & antecedent,
+                    const Interval & interval);
 
   /** Virtual constructor */
   virtual EventRandomVector * clone() const;

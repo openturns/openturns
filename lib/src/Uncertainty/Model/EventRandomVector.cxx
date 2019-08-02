@@ -66,6 +66,84 @@ EventRandomVector::EventRandomVector(const RandomVector & antecedent,
   setDescription(antecedent.getDescription());
 }
 
+
+/* Constructor from RandomVector */
+EventRandomVector::EventRandomVector(const RandomVector & antecedent,
+                                     const Interval & interval)
+  : CompositeRandomVector()
+{
+  const UnsignedInteger dimension = interval.getDimension();
+  const UnsignedInteger inputDimension = antecedent.getFunction().getInputDimension();
+  const Interval::BoolCollection finiteLowerBound(interval.getFiniteLowerBound());
+  const Interval::BoolCollection finiteUpperBound(interval.getFiniteUpperBound());
+  const Point lowerBound(interval.getLowerBound());
+  const Point upperBound(interval.getUpperBound());
+  SymbolicFunction testFunction(Description::BuildDefault(inputDimension, "x"), Description(1, "0.0"));
+
+  // easy case: 1d interval
+  if (interval.getDimension() == 1)
+  {
+    if (finiteLowerBound[0] && !finiteUpperBound[0])
+    {
+      *this = EventRandomVector(antecedent, Greater(), lowerBound[0]);
+    }
+    if (!finiteLowerBound[0] && finiteUpperBound[0])
+    {
+      *this = EventRandomVector(antecedent, Less(), upperBound[0]);
+    }
+
+    if (finiteLowerBound[0] && finiteUpperBound[0])
+    {
+      testFunction = SymbolicFunction("x", OSS() << "min(x-(" << lowerBound[0] << "), (" << upperBound[0] << ") - x)");
+      CompositeRandomVector newVector(ComposedFunction(testFunction, antecedent.getFunction()), antecedent.getAntecedent());
+      *this = EventRandomVector(newVector, Greater(), 0.0);
+    }
+    if (!finiteLowerBound[0] && !finiteUpperBound[0])
+    {
+      CompositeRandomVector newVector(Function(testFunction), antecedent.getAntecedent());
+      *this = EventRandomVector(newVector, Less(), 1.0);
+    }
+  }
+  // general case
+  else
+  {
+    const Description inVars(Description::BuildDefault(dimension, "y"));
+    Description slacks(0);
+    for (UnsignedInteger i = 0; i < dimension; ++ i)
+    {
+      if (finiteLowerBound[i])
+        slacks.add(OSS() << inVars[i] << "-(" << lowerBound[i] << ")");
+      if (finiteUpperBound[i])
+        slacks.add(OSS() << "(" << upperBound[i] << ")-" << inVars[i]);
+    }
+    // No constraint
+    if (slacks.getSize() == 0)
+    {
+      const CompositeRandomVector newVector(Function(testFunction), antecedent.getAntecedent());
+      *this = EventRandomVector(newVector, Less(), 1.0);
+    }
+    else
+    {
+      String formula;
+      if (slacks.getSize() == 1)
+      {
+        formula = slacks[0];
+      }
+      else
+      {
+        formula = "min(" + slacks[0];
+        for (UnsignedInteger i = 1; i < slacks.getSize(); ++ i)
+          formula += "," + slacks[i];
+        formula += ")";
+      }
+      testFunction = SymbolicFunction(inVars, Description(1, formula));
+      const CompositeRandomVector newVector(ComposedFunction(testFunction, antecedent.getFunction()), antecedent.getAntecedent());
+      *this = EventRandomVector(newVector, Greater(), 0.0);
+    }
+  }
+}
+
+
 EventRandomVector * EventRandomVector::clone() const
 {
   return new EventRandomVector(*this);
