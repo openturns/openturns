@@ -51,6 +51,7 @@ public:
   typedef PersistentCollection<Point> PointPersistentCollection;
   typedef Collection<Basis> BasisCollection;
   typedef PersistentCollection<Basis> BasisPersistentCollection;
+  typedef Collection<CovarianceMatrix> CovarianceMatrixCollection;
 
   /** Default constructor */
   KrigingResult();
@@ -118,6 +119,26 @@ public:
   /** Compute covariance matrix conditionnaly to observations*/
   virtual CovarianceMatrix getConditionalCovariance(const Point & xi) const;
 
+  /** Compute covariance matrices conditionnaly to observations (1 cov / point)*/
+  virtual CovarianceMatrixCollection getConditionalMarginalCovariance(const Sample & xi) const;
+
+  /** Compute covariance matrix conditionnaly to observations (1 cov of size outdimension)*/
+  virtual CovarianceMatrix getConditionalMarginalCovariance(const Point & xi) const;
+
+  /** Compute marginal variance conditionnaly to observations (1 cov of size outdimension)*/
+  virtual Scalar getConditionalMarginalVariance(const Point & point,
+                                                const UnsignedInteger marginalIndex = 0) const;
+
+  /** Compute marginal variance conditionnaly to observations (1 cov / point)*/
+  virtual Point getConditionalMarginalVariance(const Sample & xi,
+                                               const UnsignedInteger marginalIndex = 0) const;
+
+  virtual Point getConditionalMarginalVariance(const Point & point,
+                                               const Indices & indices) const;
+
+  virtual Point getConditionalMarginalVariance(const Sample & xi,
+                                               const Indices & indices) const;
+
   /** Compute joint normal distribution conditionnaly to observations*/
   virtual Normal operator()(const Sample & xi) const;
 
@@ -135,7 +156,9 @@ protected:
 
   /** Compute cross matrix method ==> not necessary square matrix  */
   Matrix getCrossMatrix(const Sample & x) const;
+  Matrix getCrossMatrix(const Point & point) const;
   void computeF() const;
+  void computePhi() const;
 
 private:
 
@@ -167,9 +190,6 @@ private:
 
   /** The covariance coefficients */
   Sample covarianceCoefficients_;
-
-  /** Boolean for cholesky. The factor is not mandatory (see KrigingAlgorithm) */
-  Bool hasCholeskyFactor_;
 
   /** Cholesky factor  */
   mutable TriangularMatrix covarianceCholeskyFactor_;

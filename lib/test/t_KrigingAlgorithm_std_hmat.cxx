@@ -89,6 +89,15 @@ int main(int, char *[])
       // Validation of the covariance ==> should be null on the learning set
       assert_almost_equal(Point(*covMatrix.getImplementation()), Point(sampleSize * sampleSize), 8.95e-7, 8.95e-7);
 
+      // Covariance per marginal & extract variance component
+      Collection<CovarianceMatrix> coll(result.getConditionalMarginalCovariance(X));
+
+      for(UnsignedInteger k = 0; k < coll.getSize(); ++k)
+        assert_almost_equal(Point(*coll[k].getImplementation()), Point(1, 0.0), 1e-14, 1e-14);
+
+      // Validation of marginal variance
+      const Point marginalVariance(result.getConditionalMarginalVariance(X));
+      assert_almost_equal(marginalVariance, Point(sampleSize), 1e-14, 1e-14);
     }
 
     {
@@ -161,6 +170,16 @@ int main(int, char *[])
       std::cout << "d^f(X0) & d^f(X0) FD similar ?" <<  std::endl;
       assert_almost_equal(Point(*gradientKriging.getImplementation()), Point(*gradientKrigingFD.getImplementation()), 1e-3, 1e-3);
       std::cout << "d^f(X0) & d^f(X0) FD are similar." <<  std::endl;
+
+      // Covariance per marginal & extract variance component
+      Collection<CovarianceMatrix> coll(result.getConditionalMarginalCovariance(X));
+
+      for(UnsignedInteger k = 0; k < coll.getSize(); ++k)
+        assert_almost_equal(Point(*coll[k].getImplementation()), Point(1, 0.0), 1e-13, 1e-13);
+
+      // Validation of marginal variance
+      const Point marginalVariance(result.getConditionalMarginalVariance(X));
+      assert_almost_equal(marginalVariance, Point(sampleSize), 1e-14, 1e-14);
 
     }
 

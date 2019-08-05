@@ -56,7 +56,6 @@ KrigingResult::KrigingResult(const Sample & inputSample,
   , trendCoefficients_(trendCoefficients)
   , covarianceModel_(covarianceModel)
   , covarianceCoefficients_(covarianceCoefficients)
-  , hasCholeskyFactor_(false)
   , covarianceCholeskyFactor_()
   , covarianceHMatrix_()
   , F_()
@@ -91,7 +90,6 @@ KrigingResult::KrigingResult(const Sample & inputSample,
   , trendCoefficients_(trendCoefficients)
   , covarianceModel_(covarianceModel)
   , covarianceCoefficients_(covarianceCoefficients)
-  , hasCholeskyFactor_(true)
   , covarianceCholeskyFactor_(covarianceCholeskyFactor)
   , covarianceHMatrix_(covarianceHMatrix)
   , F_()
@@ -292,6 +290,23 @@ Matrix KrigingResult::getCrossMatrix(const Sample & x) const
   return result;
 }
 
+Matrix KrigingResult::getCrossMatrix(const Point & point) const
+{
+  const UnsignedInteger trainingSize = inputSample_.getSize();
+  const UnsignedInteger trainingFullSize = trainingSize * covarianceModel_.getOutputDimension();
+  const UnsignedInteger outputDimension = covarianceModel_.getOutputDimension();
+  Matrix result(trainingFullSize, outputDimension);
+  CovarianceMatrix covarianceMatrix;
+  for (UnsignedInteger k = 0; k < trainingSize; ++k)
+  {
+    covarianceMatrix = covarianceModel_(inputTransformedSample_[k], point);
+    for (UnsignedInteger i = 0; i < outputDimension; ++i)
+      for (UnsignedInteger j = 0; j <= i; ++j)
+        result(k * outputDimension + i, j) = covarianceMatrix(i, j);
+  }
+  return result;
+}
+
 /* Compute cross matrix method ==> not necessary square matrix  */
 void KrigingResult::computeF() const
 {
@@ -320,13 +335,31 @@ void KrigingResult::computeF() const
   }
 }
 
+/* Compute cross matrix method ==> not necessary square matrix  */
+void KrigingResult::computePhi() const
+{
+  // Nothing to do if the design matrix has already been computed
+  if (Gt_.getNbRows() != 0) return;
+  Matrix Q;
+  LOGINFO("Solve linear system  L * phi= F");
+  Matrix phi;
+  if (0 != covarianceCholeskyFactor_.getNbRows())
+    phi = covarianceCholeskyFactor_.solveLinearSystem(F_);
+  else
+    phi = covarianceHMatrix_.solveLower(F_);
+  // Compute QR decomposition of Phi_
+  LOGINFO("Compute the QR decomposition of phi");
+  Matrix G;
+  Q = phi.computeQR(G);
+  Gt_ = G.transpose();
+  phiT_ = phi.transpose();
+}
+
 /* Compute covariance matrix conditionnaly to observations*/
 CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) const
 {
   // For a process of dimension p & xi's size=s,
   // returned matrix should have dimensions (p * s) x (p * s)
-  if (!hasCholeskyFactor_)
-    throw InvalidArgumentException(HERE) << "In KrigingResult::getConditionalCovariance, Cholesky factor was not provided. This last one is mandatory to compute the covariance";
   const UnsignedInteger inputDimension = xi.getDimension();
   if (inputDimension != covarianceModel_.getInputDimension())
     throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalCovariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
@@ -343,12 +376,12 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
     sample = xi;
   // 1) compute \sigma_{x,x}
   LOGINFO("Compute interactions Sigma_xx");
-  CovarianceMatrix sigmaXX(covarianceModel_.discretize(sample));
+  const CovarianceMatrix sigmaXX(covarianceModel_.discretize(sample));
 
   // 2) compute \sigma_{y,x}
   // compute r(x), the crossCovariance between the conditionned data & xi
   LOGINFO("Compute cross-interactions sigmaYX");
-  const Matrix crossCovariance = getCrossMatrix(sample);
+  const Matrix crossCovariance(getCrossMatrix(sample));
   // 3) Compute r^t R^{-1} r'(x)
   // As we get the Cholesky factor L, we can solve triangular linear system
   // We define B = L^{-1} * r(x)
@@ -368,7 +401,7 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
   // With transpose argument=true, it performs B^t*B
   // With full argument=false, lower triangular matrix B^t*B is not symmetrized
   LOGINFO("Compute B^tB");
-  CovarianceMatrix BtB(B.computeGram(true));
+  const CovarianceMatrix BtB(B.computeGram(true));
 
   // Interest is to compute sigma_xx -= BtB
   // However it is not trivial that A - B is a covariance matrix if A & B are covariance matrices
@@ -388,27 +421,12 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
   // 2) Interest is (F^t R^{-1} F)^{-1}
   // F^{t} R^{-1} F = F^{t} L^{-t} L^{-1} F
   // Solve first L phi = F
-  Matrix Q;
-  if (Gt_.getNbRows() == 0)
-  {
-    LOGINFO("Solve linear system  L * phi= F");
-    Matrix phi;
-    if (0 != covarianceCholeskyFactor_.getNbRows())
-      phi = covarianceCholeskyFactor_.solveLinearSystem(F_);
-    else
-      phi = covarianceHMatrix_.solveLower(F_);
-    // Compute QR decomposition of Phi_
-    LOGINFO("Compute the QR decomposition of phi");
-    Matrix G;
-    Q = phi.computeQR(G);
-    Gt_ = G.transpose();
-    phiT_ = phi.transpose();
-  }
+  computePhi();
   // 3) Compute u(x) = F^t *R^{-1} * r(x) - f(x)
   //                 = F^{t} * L^{-1}^t * L{-1} * r(x) - f(x)
   //                 = phiT_ * B - f(x)
   LOGINFO("Compute psi = phi^t * B");
-  Matrix psi(phiT_ * B);
+  const Matrix psi(phiT_ * B);
   // compute f(x) & define u = psi - f(x)
   LOGINFO("Compute f(x)");
   // Note that fx = F^{T} for x in inputSample_
@@ -428,21 +446,141 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
     index = index + localBasisSize;
   }
   LOGINFO("Compute ux = psi - fx");
-  Matrix ux(psi - fx);
+  const Matrix ux(psi - fx);
 
   // interest now is to solve  G rho = ux
   LOGINFO("Solve linear system G * rho = ux");
-  Matrix rho = Gt_.solveLinearSystem(ux);
+  const Matrix rho(Gt_.solveLinearSystem(ux));
   LOGINFO("Compute Sigma_xx-BtB + rho^{t}*rho");
   result = result + rho.computeGram(true);
   return result;
 }
 
 /* Compute covariance matrix conditionnaly to observations*/
-CovarianceMatrix KrigingResult::getConditionalCovariance(const Point & xi) const
+CovarianceMatrix KrigingResult::getConditionalCovariance(const Point & point) const
 {
-  const Sample sample(1, xi);
-  return getConditionalCovariance(sample);
+  // For a process of output dimension p
+  // returned p x p matrix
+  const UnsignedInteger inputDimension = point.getDimension();
+  if (inputDimension != covarianceModel_.getInputDimension())
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalCovariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
+  // 0) Take into account transformation
+  Point data;
+  // Transform data if necessary
+  if (hasTransformation_)
+    data = inputTransformation_(point);
+  else
+    data = point;
+  // 1) compute \sigma_{x,x}
+  LOGINFO("Compute interactions Sigma_xx");
+  const CovarianceMatrix sigmaXX(covarianceModel_(Point(inputDimension, 0.0)));
+
+  // 2) compute \sigma_{y,x}
+  // compute r(x), the crossCovariance between the conditionned data & xi
+  LOGINFO("Compute cross-interactions sigmaYX");
+  const Matrix crossCovariance(getCrossMatrix(data));
+  // 3) Compute r^t R^{-1} r'(x)
+  // As we get the Cholesky factor L, we can solve triangular linear system
+  // We define B = L^{-1} * r(x)
+  Matrix B;
+  if (0 != covarianceCholeskyFactor_.getNbRows())
+  {
+    LOGINFO("Solve L.B = SigmaYX");
+    B = covarianceCholeskyFactor_.solveLinearSystem(crossCovariance);
+  }
+  else
+  {
+    LOGINFO("Solve L.B = SigmaYX (h-mat version)");
+    B = covarianceHMatrix_.solveLower(crossCovariance);
+  }
+  // Use of gram to compute B^{t} * B
+  // Default gram computes B*B^t
+  // With transpose argument=true, it performs B^t*B
+  // With full argument=false, lower triangular matrix B^t*B is not symmetrized
+  LOGINFO("Compute B^tB");
+  const CovarianceMatrix BtB(B.computeGram(true));
+
+  // Interest is to compute sigma_xx -= BtB
+  // However it is not trivial that A - B is a covariance matrix if A & B are covariance matrices
+  // Symmeric : ok but not necessary definite. Here by definition it is!
+  // So should we define  operator - & operator -= with covariances?
+  LOGINFO("Compute Sigma_xx-BtB");
+  CovarianceMatrix result(*sigmaXX.getImplementation() - *BtB.getImplementation() );
+
+  // Case of simple Kriging
+  if(basis_.getSize() == 0) return result;
+
+  // Case of universal Kriging: compute the covariance due to the regression part
+  // Additionnal information have to be computed
+  // 1) compute F
+  LOGINFO("Compute the regression matrix F");
+  computeF();
+  // 2) Interest is (F^t R^{-1} F)^{-1}
+  // F^{t} R^{-1} F = F^{t} L^{-t} L^{-1} F
+  // Solve first L phi = F
+  computePhi();
+  // 3) Compute u(x) = F^t *R^{-1} * r(x) - f(x)
+  //                 = F^{t} * L^{-1}^t * L{-1} * r(x) - f(x)
+  //                 = phiT_ * B - f(x)
+  LOGINFO("Compute psi = phi^t * B");
+  const Matrix psi(phiT_ * B);
+  // compute f(x) & define u = psi - f(x)
+  LOGINFO("Compute f(x)");
+  // Note that fx = F^{T} for x in inputSample_
+  Matrix fx(F_.getNbColumns(), covarianceModel_.getOutputDimension());
+  // Fill fx => equivalent to F for the x data with transposition
+  UnsignedInteger index = 0;
+  for (UnsignedInteger basisMarginal = 0; basisMarginal < basis_.getSize(); ++ basisMarginal )
+  {
+    const Basis localBasis(basis_[basisMarginal]);
+    const UnsignedInteger localBasisSize = localBasis.getSize();
+    for (UnsignedInteger j = 0; j < localBasisSize; ++ j )
+    {
+      fx(j + index, basisMarginal) = localBasis[j](data)[0];
+    }
+    index = index + localBasisSize;
+  }
+  LOGINFO("Compute ux = psi - fx");
+  const Matrix ux(psi - fx);
+
+  // interest now is to solve  G rho = ux
+  LOGINFO("Solve linear system G * rho = ux");
+  const Matrix rho(Gt_.solveLinearSystem(ux));
+  LOGINFO("Compute Sigma_xx-BtB + rho^{t}*rho");
+  result = result + rho.computeGram(true);
+  return result;
+}
+
+/** Compute covariance matrices conditionnaly to observations (1 cov / point)*/
+KrigingResult::CovarianceMatrixCollection KrigingResult::getConditionalMarginalCovariance(const Sample & xi) const
+{
+  // For a process of dimension p & xi's size=s,
+  // returned a s-collection of cov matrices (pxp) 
+  const UnsignedInteger inputDimension = xi.getDimension();
+  if (inputDimension != covarianceModel_.getInputDimension())
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalCovariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
+  const UnsignedInteger sampleSize = xi.getSize();
+  if (sampleSize == 0)
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalCovariance, expected a non empty sample";
+  
+  CovarianceMatrixCollection collection(sampleSize);
+  Point data(inputDimension);
+  for (UnsignedInteger i = 0; i < sampleSize; ++i)
+  {
+    for (UnsignedInteger j = 0; j < inputDimension; ++j) data[j] = xi(i, j);
+    // Rely on getConditionalCovariance(Point&)
+    collection[i] = getConditionalCovariance(data);
+  }
+  return collection;
+}
+
+/** Compute covariance matrix conditionnaly to observations (1 cov of size outdimension)*/
+CovarianceMatrix KrigingResult::getConditionalMarginalCovariance(const Point & xi) const
+{
+  const UnsignedInteger inputDimension = xi.getDimension();
+  if (inputDimension != covarianceModel_.getInputDimension())
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalCovariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
+  return getConditionalCovariance(xi);
 }
 
 /* Compute joint normal distribution conditionnaly to observations*/
@@ -460,6 +598,88 @@ Normal KrigingResult::operator()(const Sample & xi) const
   // Finally return the distribution
   return Normal(mean, covarianceMatrix);
 }
+
+
+/** Compute marginal variance conditionnaly to observations (1 cov of size outdimension)*/
+Scalar KrigingResult::getConditionalMarginalVariance(const Point & point,
+                                                     const UnsignedInteger marginalIndex) const
+{
+  const UnsignedInteger inputDimension = point.getDimension();
+  const UnsignedInteger outputDimension = covarianceModel_.getOutputDimension();
+  if (inputDimension != covarianceModel_.getInputDimension())
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
+  if ( !(marginalIndex < outputDimension))
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, marginalIndex should be in [0," << outputDimension << "]. Here, marginalIndex = " << marginalIndex ;
+  // Compute the matrix & return only the marginalIndex diagonal element
+  const CovarianceMatrix covarianceMatrix(getConditionalMarginalCovariance(point));
+  return covarianceMatrix(marginalIndex, marginalIndex);
+}
+
+/** Compute marginal variance conditionnaly to observations (1 cov / point)*/
+Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
+                                                    const UnsignedInteger marginalIndex) const
+{
+
+  const UnsignedInteger inputDimension = xi.getDimension();
+  const UnsignedInteger outputDimension = covarianceModel_.getOutputDimension();
+  if (inputDimension != covarianceModel_.getInputDimension())
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
+  if ( !(marginalIndex < outputDimension))
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, marginalIndex should be in [0," << outputDimension << "]. Here, marginalIndex = " << marginalIndex ;
+  const UnsignedInteger sampleSize = xi.getSize();
+  if (sampleSize == 0)
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, expected a non empty sample";
+  Point marginalVariance(sampleSize);
+
+  Point data(inputDimension);
+  for (UnsignedInteger i = 0; i < sampleSize; ++i)
+  {
+    for (UnsignedInteger j = 0; j < inputDimension; ++j) data[j] = xi(i, j);
+    marginalVariance[i] = getConditionalMarginalVariance(data, marginalIndex);
+  }
+  return marginalVariance;
+}
+
+ Point KrigingResult::getConditionalMarginalVariance(const Point & point,
+                                                     const Indices &indices) const
+ {
+  const UnsignedInteger inputDimension = point.getDimension();
+  if (inputDimension != covarianceModel_.getInputDimension())
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
+  if (!indices.check(covarianceModel_.getOutputDimension()))
+    throw InvalidArgumentException(HERE) << "In KrigingResult::getConditionalMarginalVariance, the indices of a marginal sample must be in the range [0," << covarianceModel_.getOutputDimension()
+                                         << " ] and must be different";
+  // Compute the matrix & return only the marginalIndex diagonal element
+  const CovarianceMatrix covarianceMatrix(getConditionalMarginalCovariance(point));
+  Point result(indices.getSize());
+  for (UnsignedInteger j = 0; j < indices.getSize(); ++j) result[j] = covarianceMatrix(indices[j], indices[j]);
+  return result;
+ }
+
+ Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
+                                                     const Indices & indices) const
+ {
+
+  const UnsignedInteger inputDimension = xi.getDimension();
+  if (inputDimension != covarianceModel_.getInputDimension())
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
+  if (!indices.check(covarianceModel_.getOutputDimension()))
+    throw InvalidArgumentException(HERE) << "In KrigingResult::getConditionalMarginalVariance, the indices of a marginal sample must be in the range [0," << covarianceModel_.getOutputDimension()
+                                         << " ] and must be different";
+  const UnsignedInteger sampleSize = xi.getSize();
+  if (sampleSize == 0)
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, expected a non empty sample";
+  // Compute the matrix & return only the marginalIndex diagonal element
+  Point result(0);
+  Point data(inputDimension);
+  for (UnsignedInteger i = 0; i < sampleSize; ++i)
+  {
+    for (UnsignedInteger j = 0; j < inputDimension; ++j) data[j] = xi(i, j);
+    result.add(getConditionalMarginalVariance(data, indices));
+  }
+  return result;
+ }
+
 
 /* Compute joint normal distribution conditionnaly to observations*/
 Normal KrigingResult::operator()(const Point & xi) const
@@ -481,7 +701,6 @@ void KrigingResult::save(Advocate & adv) const
   adv.saveAttribute( "trendCoefficients_", trendCoefficients_ );
   adv.saveAttribute( "covarianceModel_", covarianceModel_ );
   adv.saveAttribute( "covarianceCoefficients_", covarianceCoefficients_ );
-  adv.saveAttribute( "hasCholeskyFactor_", hasCholeskyFactor_);
   adv.saveAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_);
   adv.saveAttribute( "F_", F_);
   adv.saveAttribute( "phiT_", phiT_);
@@ -502,7 +721,6 @@ void KrigingResult::load(Advocate & adv)
   adv.loadAttribute( "trendCoefficients_", trendCoefficients_ );
   adv.loadAttribute( "covarianceModel_", covarianceModel_ );
   adv.loadAttribute( "covarianceCoefficients_", covarianceCoefficients_ );
-  adv.loadAttribute( "hasCholeskyFactor_", hasCholeskyFactor_);
   adv.loadAttribute( "covarianceCholeskyFactor_", covarianceCholeskyFactor_);
   adv.loadAttribute( "F_", F_);
   adv.loadAttribute( "phiT_", phiT_);

@@ -88,7 +88,7 @@ public:
   {
     const Scalar mx = metaModelResult_.getConditionalMean(x)[0];
     const Scalar fmMk = optimalValue_ - mx;
-    const Scalar sk2 = metaModelResult_.getConditionalCovariance(x)(0, 0);
+    const Scalar sk2 = metaModelResult_.getConditionalMarginalVariance(x);
     const Scalar sk = sqrt(sk2);
     if (!SpecFunc::IsNormal(sk)) return Point(1, -SpecFunc::MaxScalar);
     const Scalar ratio = fmMk / sk;
@@ -183,7 +183,7 @@ void EfficientGlobalOptimization::run()
         optimalValuePrev = optimalValue;
 
         optimizer = inputSample[index];
-        optimalValue = outputSample[index][0];
+        optimalValue = outputSample(index, 0);
       }
   }
 
@@ -254,7 +254,7 @@ void EfficientGlobalOptimization::run()
       for (UnsignedInteger i = 0; i < size; ++ i)
       {
         const Point x(inputSample[i]);
-        const Scalar sk2 = metaModelResult.getConditionalCovariance(x)(0, 0);
+        const Scalar sk2 = metaModelResult.getConditionalMarginalVariance(x);
         const Scalar u = mx[i] + aeiTradeoff_ * sqrt(sk2);
         if ((problem.isMinimization() && (u < optimalValueSubstitute))
             || (!problem.isMinimization() && (u > optimalValueSubstitute)))

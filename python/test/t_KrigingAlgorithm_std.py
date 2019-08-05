@@ -42,13 +42,24 @@ assert_almost_equal(result.getResiduals(), [1.32804e-07], 1e-3, 1e-3)
 assert_almost_equal(result.getRelativeErrors(), [5.20873e-21])
 
 # Kriging variance is 0 on learning points
-var = result.getConditionalCovariance(X)
+covariance = result.getConditionalCovariance(X)
 
 # assert_almost_equal could not be applied to matrices
 # application to Point
-covariancePoint = Point(var.getImplementation())
+covariancePoint = Point(covariance.getImplementation())
 theoricalVariance = Point(sampleSize * sampleSize)
 assert_almost_equal(covariancePoint, theoricalVariance, 8.95e-7, 8.95e-7)
+
+# Covariance per marginal & extract variance component
+coll = result.getConditionalMarginalCovariance(X)
+var = [mat[0,0] for mat in coll]
+covarianceColl = Point(var)
+theoricalVariance = Point(sampleSize)
+assert_almost_equal(covarianceColl, theoricalVariance, 1e-14, 1e-14)
+
+# Variance per marginal
+var = result.getConditionalMarginalVariance(X)
+assert_almost_equal(var, Point(sampleSize), 1e-14, 1e-14)
 
 # Test 2
 
@@ -97,13 +108,24 @@ assert_almost_equal(outputSample,  metaModel(inputSample), 3.0e-5, 3.0e-5)
 
 
 # 5) Kriging variance is 0 on learning points
-var = result.getConditionalCovariance(inputSample)
+covariance = result.getConditionalCovariance(inputSample)
 
 # assert_almost_equal could not be applied to matrices
 # application to Point
-covariancePoint = Point(var.getImplementation())
+covariancePoint = Point(covariance.getImplementation())
 theoricalVariance = Point(covariancePoint.getSize(), 0.0)
 assert_almost_equal(covariancePoint, theoricalVariance, 7e-7, 7e-7)
+
+# Covariance per marginal & extract variance component
+coll = result.getConditionalMarginalCovariance(inputSample)
+var = [mat[0,0] for mat in coll]
+covarianceColl = Point(var)
+theoricalVariance = Point(len(var))
+assert_almost_equal(covarianceColl, theoricalVariance, 1e-14, 1e-14)
+
+# Variance per marginal
+var = result.getConditionalMarginalVariance(inputSample)
+assert_almost_equal(var, Point(len(inputSample)), 1e-14, 1e-14)
 
 # Estimation
 assert_almost_equal(outputValidSample,  metaModel(
