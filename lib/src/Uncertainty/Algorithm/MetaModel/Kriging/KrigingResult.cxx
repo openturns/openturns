@@ -464,7 +464,6 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Point & point) co
   const UnsignedInteger inputDimension = point.getDimension();
   if (inputDimension != covarianceModel_.getInputDimension())
     throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalCovariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
-  const UnsignedInteger outputDimension = covarianceModel_.getOutputDimension();
   // 0) Take into account transformation
   Point data;
   // Transform data if necessary
@@ -560,7 +559,6 @@ KrigingResult::CovarianceMatrixCollection KrigingResult::getConditionalMarginalC
   const UnsignedInteger inputDimension = xi.getDimension();
   if (inputDimension != covarianceModel_.getInputDimension())
     throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalCovariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
-  const UnsignedInteger outputDimension = covarianceModel_.getOutputDimension();
   const UnsignedInteger sampleSize = xi.getSize();
   if (sampleSize == 0)
     throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalCovariance, expected a non empty sample";
@@ -646,7 +644,6 @@ Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
                                                      const Indices &indices) const
  {
   const UnsignedInteger inputDimension = point.getDimension();
-  const UnsignedInteger outputDimension = covarianceModel_.getOutputDimension();
   if (inputDimension != covarianceModel_.getInputDimension())
     throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
   if (!indices.check(covarianceModel_.getOutputDimension()))
@@ -664,7 +661,6 @@ Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
  {
 
   const UnsignedInteger inputDimension = xi.getDimension();
-  const UnsignedInteger outputDimension = covarianceModel_.getOutputDimension();
   if (inputDimension != covarianceModel_.getInputDimension())
     throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
   if (!indices.check(covarianceModel_.getOutputDimension()))
