@@ -94,14 +94,19 @@ public:
     : EvaluationImplementation()
     , sample_(sample)
     , distribution_(distribution)
-    , knownParameterValues_(knownParameterValues)
-    , knownParameterIndices_(knownParameterIndices)
   {
     // build the unknown indices
     const UnsignedInteger effectiveParameterSize = distribution.getParameter().getSize();
+    effectiveParameter_ = Point(effectiveParameterSize);
+    // set known values
+    UnsignedInteger knownParametersSize = knownParameterIndices.getSize();
+    for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
+    {
+      effectiveParameter_[knownParameterIndices[j]] = knownParameterValues[j];
+    }
     for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
     {
-      if (!knownParameterIndices_.contains(j))
+      if (!knownParameterIndices.contains(j))
         unknownParameterIndices_.add(j);
     }
     empiricalCDF_ = Point(sample.getSize());
@@ -145,18 +150,12 @@ public:
   {
     // Define conditinned distribution
     Distribution distribution(distribution_);
-    Point effectiveParameter(distribution.getParameter());
+    Point effectiveParameter(effectiveParameter_);
     // set unknown values
     UnsignedInteger unknownParameterSize = unknownParameterIndices_.getSize();
     for (UnsignedInteger j = 0; j < unknownParameterSize; ++ j)
     {
       effectiveParameter[unknownParameterIndices_[j]] = parameter[j];
-    }
-    // set known values
-    UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
-    for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
-    {
-      effectiveParameter[knownParameterIndices_[j]] = knownParameterValues_[j];
     }
     try
     {
@@ -164,13 +163,13 @@ public:
     }
     catch (Exception &)
     {
-      return Point(getOutputDimension(), SpecFunc::LogMinScalar);
+      return Point(getOutputDimension(), SpecFunc::MaxScalar);
     }
 
     Point result(getOutputDimension());
 
     // compute residual of the CDF distribution vs sample
-    const Sample cdfSample = distribution.computeCDF(sample_);
+    const Sample cdfSample(distribution.computeCDF(sample_));
     for(UnsignedInteger i = 0 ; i < getOutputDimension(); ++ i)
       result[i] = cdfSample(i, 0) - empiricalCDF_[i];
     return result;
@@ -180,9 +179,8 @@ private:
   Sample sample_;
   Point empiricalCDF_;
   Distribution distribution_;
-  Point knownParameterValues_;
-  Indices knownParameterIndices_;
   Indices unknownParameterIndices_;
+  Point effectiveParameter_;
 };
 
 class LeastSquaresFactoryResidualGradient : public GradientImplementation
@@ -195,15 +193,19 @@ public:
     : GradientImplementation()
     , sample_(sample)
     , distribution_(distribution)
-    , knownParameterValues_(knownParameterValues)
-    , knownParameterIndices_(knownParameterIndices)
   {
     // build the unknown indices
     const UnsignedInteger effectiveParameterSize = distribution.getParameter().getSize();
     for (UnsignedInteger j = 0; j < effectiveParameterSize; ++ j)
     {
-      if (!knownParameterIndices_.contains(j))
+      if (!knownParameterIndices.contains(j))
         unknownParameterIndices_.add(j);
+    }
+    effectiveParameter_ = Point(effectiveParameterSize);
+    // set known values
+    for (UnsignedInteger j = 0; j < knownParameterIndices.getSize(); ++ j)
+    {
+      effectiveParameter_[knownParameterIndices[j]] = knownParameterValues[j];
     }
   }
 
@@ -243,18 +245,12 @@ public:
   {
     // Define conditinned distribution
     Distribution distribution(distribution_);
-    Point effectiveParameter(distribution.getParameter());
+    Point effectiveParameter(effectiveParameter_);
     // set unknown values
     UnsignedInteger unknownParameterSize = unknownParameterIndices_.getSize();
     for (UnsignedInteger j = 0; j < unknownParameterSize; ++ j)
     {
       effectiveParameter[unknownParameterIndices_[j]] = parameter[j];
-    }
-    // set known values
-    UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
-    for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
-    {
-      effectiveParameter[knownParameterIndices_[j]] = knownParameterValues_[j];
     }
     distribution.setParameter(effectiveParameter);
     // Matrix result
@@ -269,9 +265,8 @@ public:
 private:
   Sample sample_;
   Distribution distribution_;
-  Point knownParameterValues_;
-  Indices knownParameterIndices_;
   Indices unknownParameterIndices_;
+  Point effectiveParameter_;
 };
 
 Point LeastSquaresDistributionFactory::buildParameter(const Sample & sample) const
@@ -372,7 +367,10 @@ OptimizationAlgorithm LeastSquaresDistributionFactory::getOptimizationAlgorithm(
 void LeastSquaresDistributionFactory::setKnownParameter(const Point & values,
     const Indices & indices)
 {
-  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize()) throw InvalidArgumentException(HERE) << "Known parameters values and indices must have the same size";
+  if (knownParameterValues_.getSize() != knownParameterIndices_.getSize())
+    throw InvalidArgumentException(HERE) << "Known parameters values and indices must have the same size";
+  if (!indices.check(distribution_.getParameter().getSize()))
+    throw InvalidArgumentException(HERE) << "Know parameters indices must be < parameter dimension";
   knownParameterValues_ = values;
   knownParameterIndices_ = indices;
 }
