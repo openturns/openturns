@@ -41,6 +41,7 @@
 #include "openturns/EventRandomVector.hxx"
 #include "openturns/EventProcess.hxx"
 #include "openturns/IntersectionEvent.hxx"
+#include "openturns/UnionEvent.hxx"
 #include "openturns/FunctionalChaosRandomVector.hxx"
 #include "openturns/KrigingRandomVector.hxx"
 #include "openturns/ProcessImplementation.hxx"

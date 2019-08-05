@@ -79,6 +79,7 @@
 %include Event.i
 %include StandardEvent.i
 %include IntersectionEvent.i
+%include UnionEvent.i
 
 /* Uncertainty/Algorithm/Metamodel */
 %include FunctionalChaosRandomVector.i

@@ -61,3 +61,15 @@ proba_e5 = algo.getResult().getProbabilityEstimate()
 print("proba_e5 = %.3g" % proba_e5)
 ott.assert_almost_equal(proba_e5, 0.25, 1e-2, 1e-2)
 
+e6 = ot.UnionEvent([e1, e2])
+#print('e5=', e5)
+
+algo = ot.ProbabilitySimulationAlgorithm(e6)
+algo.setMaximumOuterSampling(2500)
+algo.setBlockSize(4)
+algo.setMaximumCoefficientOfVariation(-0.1)
+algo.run()
+proba_e6 = algo.getResult().getProbabilityEstimate()
+print("proba_e6 = %.3g" % proba_e6)
+ott.assert_almost_equal(proba_e6, 0.75, 1e-2, 1e-2)
+

@@ -39,6 +39,7 @@ Event
     EventDomain
     EventRandomVector
     IntersectionEvent
+    UnionEvent
 
 Design point validation
 =======================
