@@ -26,6 +26,10 @@
 #include "openturns/EventRandomVector.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
+#include "openturns/SymbolicFunction.hxx"
+#include "openturns/Less.hxx"
+#include "openturns/Greater.hxx"
+#include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

@@ -74,6 +74,9 @@ public:
   void load(Advocate & adv);
 
 
+  UnsignedInteger getRootCauseId() const;
+  RandomVector getComposedEvent() const;
+
 private:
 
   /** The process of the eventProcess */
@@ -82,7 +85,7 @@ private:
   /** id of the root cause */
   UnsignedInteger rootCauseId_;
 
-  RandomVector aggregatedEvent_;
+  RandomVector composedEvent_;
 }; /* class IntersectionEvent */
 
 

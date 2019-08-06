@@ -224,8 +224,38 @@ RandomVector RandomVector::intersect(const RandomVector & other)
   if (getAntecedent().getImplementation()->getId() != other.getAntecedent().getImplementation()->getId())
     throw NotYetImplementedException(HERE) << "Root cause not found";
 
-  LevelSet d1(getFunction(), getOperator(), getThreshold());
-  LevelSet d2(other.getFunction(), other.getOperator(), other.getThreshold());
+  LevelSet d1;
+  try {
+    // EventRandomVector
+    d1 = LevelSet(getFunction(), getOperator(), getThreshold());
+  }
+  catch (NotYetImplementedException &) {
+    // EventDomain with LevelSet
+    const EventDomain* eventDomain = dynamic_cast<EventDomain*>(getImplementation().get());
+    if (!eventDomain)
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+    const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
+    if (!levelSet)
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+    d1 = *levelSet;
+  }
+
+  LevelSet d2;
+  try {
+    // EventRandomVector
+    d2 = LevelSet(other.getFunction(), other.getOperator(), other.getThreshold());
+  }
+  catch (NotYetImplementedException &) {
+    // EventDomain with LevelSet
+    const EventDomain* eventDomain = dynamic_cast<EventDomain*>(other.getImplementation().get());
+    if (!eventDomain)
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+    const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
+    if (!levelSet)
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+    d2 = *levelSet;
+  }
+
   return EventDomain(getAntecedent(), d1.intersect(d2));
 }
 
@@ -241,8 +271,38 @@ RandomVector RandomVector::join(const RandomVector & other)
   if (getAntecedent().getImplementation()->getId() != other.getAntecedent().getImplementation()->getId())
     throw NotYetImplementedException(HERE) << "Root cause not found";
 
-  LevelSet d1(getFunction(), getOperator(), getThreshold());
-  LevelSet d2(other.getFunction(), other.getOperator(), other.getThreshold());
+LevelSet d1;
+  try {
+    // EventRandomVector
+    d1 = LevelSet(getFunction(), getOperator(), getThreshold());
+  }
+  catch (NotYetImplementedException &) {
+    // EventDomain with LevelSet
+    const EventDomain* eventDomain = dynamic_cast<EventDomain*>(getImplementation().get());
+    if (!eventDomain)
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+    const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
+    if (!levelSet)
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+    d1 = *levelSet;
+  }
+
+  LevelSet d2;
+  try {
+    // EventRandomVector
+    d2 = LevelSet(other.getFunction(), other.getOperator(), other.getThreshold());
+  }
+  catch (NotYetImplementedException &) {
+    // EventDomain with LevelSet
+    const EventDomain* eventDomain = dynamic_cast<EventDomain*>(other.getImplementation().get());
+    if (!eventDomain)
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+    const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
+    if (!levelSet)
+      throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
+    d2 = *levelSet;
+  }
+
   return EventDomain(getAntecedent().getImplementation(), d1.join(d2));
 }
 

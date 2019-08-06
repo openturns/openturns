@@ -30,6 +30,7 @@
 #include "openturns/Less.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/IdentityFunction.hxx"
+#include "openturns/EventRandomVector.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

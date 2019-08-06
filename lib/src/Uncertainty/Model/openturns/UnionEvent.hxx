@@ -73,6 +73,8 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
+  UnsignedInteger getRootCauseId() const;
+  RandomVector getComposedEvent() const;
 
 private:
 
@@ -82,7 +84,7 @@ private:
   /** id of the root cause */
   UnsignedInteger rootCauseId_;
 
-  RandomVector aggregatedEvent_;
+  RandomVector composedEvent_;
 }; /* class UnionEvent */
 
 
