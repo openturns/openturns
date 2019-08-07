@@ -634,6 +634,9 @@ ot_pyinstallcheck_test (SORM_std)
 ot_pyinstallcheck_test (StrongMaximumTest_std)
 ot_pyinstallcheck_test (StrongMaximumTest_other)
 ot_pyinstallcheck_test (StrongMaximumTest_tabulatedValues)
+if (NOT MSVC)
+ot_pyinstallcheck_test (SystemFORM_std IGNOREOUT)
+endif ()
 
 ## MetaModel
 ot_pyinstallcheck_test (LinearTaylor_std)

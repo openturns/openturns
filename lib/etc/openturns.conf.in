@@ -560,6 +560,10 @@
   <AnalyticalResult-DefaultWidth                    value_float="1.0"           />
   <AnalyticalResult-MeanPointIntegrationNodesNumber value_int="255" />
 
+  <!-- OT::SystemFORM parameters -->
+  <SystemFORM-MaximalScaling  value_float="1.0e5"   />
+  <SystemFORM-StartingScaling value_float="1.0e-13" />
+
   <!-- OT::StrongMaximumTest parameters -->
   <StrongMaximumTest-DefaultDeltaPrecision     value_float="1.0e-7"  />
   <StrongMaximumTest-Epsilon                   value_float="1.0e-10" />

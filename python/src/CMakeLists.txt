@@ -878,9 +878,11 @@ ot_add_python_module(analytical analytical_module.i
                       Analytical.i Analytical_doc.i.in
                       FORMResult.i FORMResult_doc.i.in
                       FORM.i FORM_doc.i.in
+		      MultiFORMResult.i MultiFORMResult_doc.i.in
                       SORMResult.i SORMResult_doc.i.in
                       SORM.i SORM_doc.i.in
                       StrongMaximumTest.i StrongMaximumTest_doc.i.in
+		      SystemFORM.i SystemFORM_doc.i.in
                       UncertaintyAnalyticalTemplateDefs.i
                    )
 

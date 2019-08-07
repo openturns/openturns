@@ -14,6 +14,7 @@ Reliability algorithms
      Analytical
      FORM
      SORM
+     SystemFORM
 
 Reliability results
 ===================
@@ -25,6 +26,7 @@ Reliability results
     AnalyticalResult
     FORMResult
     SORMResult
+    MultiFORMResult
 
 Event
 =====

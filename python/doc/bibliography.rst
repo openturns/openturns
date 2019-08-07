@@ -122,6 +122,7 @@ Bibliography
     Modeling Uncertainty. International Series in Operations Research &
     Management Science, vol 46. Springer, Boston, MA
     `pdf <http://doc.openturns.org/papers/lecuyer2005.pdf>`__
+.. [lemaire2009] Lemaire M., *Structural reliability*, John Wiley & Sons, 2009.
 .. [loader2000] Loader C. *Fast and Accurate Computation of Binomial Probabilities*,
     `pdf <http://octave.1599824.n4.nabble.com/attachment/3829107/0/loader2000Fast.pdf>`__
 .. [marsaglia1993] Marsaglia G. and Tsang W. W., *A Simple Method for Generating Gamma*,
