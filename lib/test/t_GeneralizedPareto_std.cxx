@@ -39,7 +39,7 @@ int main(int, char *[])
     xiValues[2] = 0.2;
     for (UnsignedInteger n = 0; n < 3; ++n)
     {
-      GeneralizedPareto distribution(1.5, xiValues[n]);
+      GeneralizedPareto distribution(1.5, xiValues[n], 0.5);
       fullprint << "Distribution " << distribution << std::endl;
       std::cout << "Distribution " << distribution << std::endl;
 
@@ -68,7 +68,7 @@ int main(int, char *[])
       }
 
       // Define a point
-      Point point( distribution.getDimension(), 1.0 );
+      Point point( distribution.getDimension(), 1.5 );
       fullprint << "Point= " << point << std::endl;
 
       // Show PDF and CDF of point
@@ -95,19 +95,23 @@ int main(int, char *[])
       fullprint << "log characteristic function=" << LCF << std::endl;
       Point PDFgr = distribution.computePDFGradient( point );
       fullprint << "pdf gradient     =" << PDFgr << std::endl;
-      Point PDFgrFD(2);
-      PDFgrFD[0] = (GeneralizedPareto(distribution.getSigma() + eps, distribution.getXi()).computePDF(point) -
-                    GeneralizedPareto(distribution.getSigma() - eps, distribution.getXi()).computePDF(point)) / (2.0 * eps);
-      PDFgrFD[1] = (GeneralizedPareto(distribution.getSigma(), distribution.getXi() + eps).computePDF(point) -
-                    GeneralizedPareto(distribution.getSigma(), distribution.getXi() - eps).computePDF(point)) / (2.0 * eps);
+      Point PDFgrFD(3);
+      PDFgrFD[0] = (GeneralizedPareto(distribution.getSigma() + eps, distribution.getXi(), distribution.getU()).computePDF(point) -
+                    GeneralizedPareto(distribution.getSigma() - eps, distribution.getXi(), distribution.getU()).computePDF(point)) / (2.0 * eps);
+      PDFgrFD[1] = (GeneralizedPareto(distribution.getSigma(), distribution.getXi() + eps, distribution.getU()).computePDF(point) -
+                    GeneralizedPareto(distribution.getSigma(), distribution.getXi() - eps, distribution.getU()).computePDF(point)) / (2.0 * eps);
+      PDFgrFD[2] = (GeneralizedPareto(distribution.getSigma(), distribution.getXi(), distribution.getU() + eps).computePDF(point) -
+                    GeneralizedPareto(distribution.getSigma(), distribution.getXi(), distribution.getU() - eps).computePDF(point)) / (2.0 * eps);
       fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
       Point CDFgr = distribution.computeCDFGradient( point );
       fullprint << "cdf gradient     =" << CDFgr << std::endl;
-      Point CDFgrFD(2);
-      CDFgrFD[0] = (GeneralizedPareto(distribution.getSigma() + eps, distribution.getXi()).computeCDF(point) -
-                    GeneralizedPareto(distribution.getSigma() - eps, distribution.getXi()).computeCDF(point)) / (2.0 * eps);
-      CDFgrFD[1] = (GeneralizedPareto(distribution.getSigma(), distribution.getXi() + eps).computeCDF(point) -
-                    GeneralizedPareto(distribution.getSigma(), distribution.getXi() - eps).computeCDF(point)) / (2.0 * eps);
+      Point CDFgrFD(3);
+      CDFgrFD[0] = (GeneralizedPareto(distribution.getSigma() + eps, distribution.getXi(), distribution.getU()).computeCDF(point) -
+                    GeneralizedPareto(distribution.getSigma() - eps, distribution.getXi(), distribution.getU()).computeCDF(point)) / (2.0 * eps);
+      CDFgrFD[1] = (GeneralizedPareto(distribution.getSigma(), distribution.getXi() + eps, distribution.getU()).computeCDF(point) -
+                    GeneralizedPareto(distribution.getSigma(), distribution.getXi() - eps, distribution.getU()).computeCDF(point)) / (2.0 * eps);
+      CDFgrFD[2] = (GeneralizedPareto(distribution.getSigma(), distribution.getXi(), distribution.getU() + eps).computeCDF(point) -
+                    GeneralizedPareto(distribution.getSigma(), distribution.getXi(), distribution.getU() - eps).computeCDF(point)) / (2.0 * eps);
       fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
       Point quantile = distribution.computeQuantile( 0.95 );
       fullprint << "quantile=" << quantile << std::endl;

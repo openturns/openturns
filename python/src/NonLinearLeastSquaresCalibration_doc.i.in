@@ -62,7 +62,7 @@ Calibrate a nonlinear model using non-linear least-squares:
 >>> algo = ot.NonLinearLeastSquaresCalibration(modelX, x, y, candidate)
 >>> algo.run()
 >>> print(algo.getResult().getParameterMAP())
-[2.77311,1.20351,0.499749]"
+[2.773...,1.203...,0.499...]"
 
 // ---------------------------------------------------------------------
 

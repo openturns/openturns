@@ -54,6 +54,13 @@ Building distributions from samples
     :template: DistributionFactory.rst_t
 
     LaplaceFactory
+
+    :template: class.rst_t
+
+    LeastSquaresDistributionFactory
+
+    :template: DistributionFactory.rst_t
+
     LogisticFactory
     LogNormalFactory
     LogUniformFactory
@@ -75,6 +82,7 @@ Building distributions from samples
     MultinomialFactory
     NegativeBinomialFactory
     NormalFactory
+    ParetoFactory
     PoissonFactory
     RayleighFactory
 

@@ -27,6 +27,9 @@
  * WeibullMaxFactory
  * WeibullMaxMuSigma
  * GeneralizedExtremeValueFactory
+ * Pareto
+ * LeastSquaresDistributionFactory
+ * ParetoFactory
 
 ==== API changes ====
  * Removed deprecated specific RandomVector constructors
@@ -45,11 +48,13 @@
  * Deprecated GaussianNonLinearCalibration,NonLinearLeastSquaresCalibration::set,getAlgorithm
  * Added getConditionalMarginalCovariance method to KrigingResult
  * Added getConditionalMarginalVariance method to KrigingResult
+ * Deprecated OptimizationAlgorithm::GetLeastSquaresAlgorithmNames
 
 === Python module ===
  * Add Domain.__contains__ operator
 
 === Miscellaneous ===
+ * Add GeneralizedPareto location parameter
 
 === Bug fixes ===
  * https://github.com/openturns/openturns/milestone/4?closed=1

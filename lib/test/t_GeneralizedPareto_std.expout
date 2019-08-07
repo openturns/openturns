@@ -1,14 +1,14 @@
-Distribution class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=-0.2
-Distribution GeneralizedPareto(sigma = 1.5, xi=-0.2)
+Distribution class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=-0.2 u=0.5
+Distribution GeneralizedPareto(sigma = 1.5, xi=-0.2, u=0.5)
 Elliptical = false
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=1 values=[0.662264]
-oneSample first=class=Point name=Unnamed dimension=1 values=[0.184665] last=class=Point name=Unnamed dimension=1 values=[1.18051]
-mean=class=Point name=Unnamed dimension=1 values=[1.24428]
+oneRealization=class=Point name=Unnamed dimension=1 values=[1.16226]
+oneSample first=class=Point name=Unnamed dimension=1 values=[0.684665] last=class=Point name=Unnamed dimension=1 values=[1.68051]
+mean=class=Point name=Unnamed dimension=1 values=[1.74428]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.12783]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
-Point= class=Point name=Unnamed dimension=1 values=[1]
+Point= class=Point name=Unnamed dimension=1 values=[1.5]
 ddf     =class=Point name=Unnamed dimension=1 values=[-0.231453]
 log pdf=-0.977868
 pdf     =0.376112
@@ -16,57 +16,57 @@ pdf (FD)=0.376112
 cdf=0.511054
 ccdf=0.488946
 survival=0.488946
-Inverse survival=class=Point name=Unnamed dimension=1 values=[0.0765466]
+Inverse survival=class=Point name=Unnamed dimension=1 values=[0.576547]
 Survival(inverse survival)=0.95
-characteristic function=(0.322373,0.527748)
-log characteristic function=(-0.480588,1.02244)
-pdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.096439,-0.188281]
-pdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[-0.096439,-0.188281]
-cdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.250741,-0.131347]
-cdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[-0.250741,-0.131347]
-quantile=class=Point name=Unnamed dimension=1 values=[3.3804]
+characteristic function=(-0.164894,0.396896)
+log characteristic function=(-0.844466,1.96456)
+pdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.096439,-0.188281,0.231453]
+pdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.096439,-0.188281,0.231453]
+cdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.250741,-0.131347,-0.376112]
+cdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.250741,-0.131347,-0.376112]
+quantile=class=Point name=Unnamed dimension=1 values=[3.8804]
 cdf(quantile)=0.95
-Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[3.3804] finite lower bound=[1] finite upper bound=[1]
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.5] upper bound=class=Point name=Unnamed dimension=1 values=[3.8804] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=-0.2)) gradientImplementation=MinimumVolumeLevelSetGradient(GeneralizedPareto(sigma = 1.5, xi=-0.2)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=-0.2)) level=2.80205
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=-0.2, u=0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(GeneralizedPareto(sigma = 1.5, xi=-0.2, u=0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=-0.2, u=0.5)) level=2.80205
 beta=0.0606855
-Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0378807] upper bound=class=Point name=Unnamed dimension=1 values=[3.91368] finite lower bound=[1] finite upper bound=[1]
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.537881] upper bound=class=Point name=Unnamed dimension=1 values=[4.41368] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[3.3804] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.5] upper bound=class=Point name=Unnamed dimension=1 values=[3.8804] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0765466] upper bound=class=Point name=Unnamed dimension=1 values=[7.5] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.576547] upper bound=class=Point name=Unnamed dimension=1 values=[8] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
 entropy=1.20547
 entropy (MC)=1.20644
-mean=class=Point name=Unnamed dimension=1 values=[1.25]
+mean=class=Point name=Unnamed dimension=1 values=[1.75]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.11607]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters=[[sigma : 1.5, xi : -0.2]]
+parameters=[[sigma : 1.5, xi : -0.2, location : 0.5]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0.833333]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.19048]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[2.23214]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[4.96032]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[12.4008]
-Standard representative=GeneralizedPareto(sigma = 1, xi=-0.2)
+Standard representative=GeneralizedPareto(sigma = 1, xi=-0.2, u=0)
 standard deviation=class=Point name=Unnamed dimension=1 values=[1.05644]
 skewness=class=Point name=Unnamed dimension=1 values=[1.18322]
 kurtosis=class=Point name=Unnamed dimension=1 values=[4.2]
 sigma=1.5
 xi=-0.2
-Distribution class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=0
-Distribution GeneralizedPareto(sigma = 1.5, xi=0)
+Distribution class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=0 u=0.5
+Distribution GeneralizedPareto(sigma = 1.5, xi=0, u=0.5)
 Elliptical = false
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=1 values=[0.666455]
-oneSample first=class=Point name=Unnamed dimension=1 values=[0.439697] last=class=Point name=Unnamed dimension=1 values=[3.10647]
-mean=class=Point name=Unnamed dimension=1 values=[1.46893]
+oneRealization=class=Point name=Unnamed dimension=1 values=[1.16645]
+oneSample first=class=Point name=Unnamed dimension=1 values=[0.939697] last=class=Point name=Unnamed dimension=1 values=[3.60647]
+mean=class=Point name=Unnamed dimension=1 values=[1.96893]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.14338]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
-Point= class=Point name=Unnamed dimension=1 values=[1]
+Point= class=Point name=Unnamed dimension=1 values=[1.5]
 ddf     =class=Point name=Unnamed dimension=1 values=[-0.114093]
 log pdf=-1.07213
 pdf     =0.342278
@@ -74,57 +74,57 @@ pdf (FD)=0.342278
 cdf=0.486583
 ccdf=0.513417
 survival=0.513417
-Inverse survival=class=Point name=Unnamed dimension=1 values=[0.0769399]
+Inverse survival=class=Point name=Unnamed dimension=1 values=[0.57694]
 Survival(inverse survival)=0.95
-characteristic function=(0.5,0.5)
-log characteristic function=(-0.346574,0.785398)
-pdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.0760618,-0.152124]
-pdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[-0.0760618,-0.152124]
-cdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.228185,-0.114093]
-cdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[-0.228185,-0.114093]
-quantile=class=Point name=Unnamed dimension=1 values=[4.4936]
+characteristic function=(0.307692,0.461538)
+log characteristic function=(-0.589327,0.982794)
+pdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.0760618,-0.152124,0.228185]
+pdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.0760618,-0.152124,0.228185]
+cdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.228185,-0.114093,-0.342278]
+cdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.228185,-0.114093,-0.342278]
+quantile=class=Point name=Unnamed dimension=1 values=[4.9936]
 cdf(quantile)=0.95
-Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[4.4936] finite lower bound=[1] finite upper bound=[1]
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.5] upper bound=class=Point name=Unnamed dimension=1 values=[4.9936] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=0)) gradientImplementation=MinimumVolumeLevelSetGradient(GeneralizedPareto(sigma = 1.5, xi=0)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=0)) level=3.4012
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=0, u=0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(GeneralizedPareto(sigma = 1.5, xi=0, u=0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=0, u=0.5)) level=3.4012
 beta=0.0333333
-Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0379767] upper bound=class=Point name=Unnamed dimension=1 values=[5.53332] finite lower bound=[1] finite upper bound=[1]
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.537977] upper bound=class=Point name=Unnamed dimension=1 values=[6.03332] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[4.4936] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.5] upper bound=class=Point name=Unnamed dimension=1 values=[4.9936] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0769399] upper bound=class=Point name=Unnamed dimension=1 values=[54.0655] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.57694] upper bound=class=Point name=Unnamed dimension=1 values=[54.5655] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
 entropy=1.40547
 entropy (MC)=1.40668
-mean=class=Point name=Unnamed dimension=1 values=[1.5]
+mean=class=Point name=Unnamed dimension=1 values=[2]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.25]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters=[[sigma : 1.5, xi : 0]]
+parameters=[[sigma : 1.5, xi : 0, location : 0.5]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[2]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[6]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[24]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[120]
-Standard representative=GeneralizedPareto(sigma = 1, xi=0)
+Standard representative=GeneralizedPareto(sigma = 1, xi=0, u=0)
 standard deviation=class=Point name=Unnamed dimension=1 values=[1.5]
 skewness=class=Point name=Unnamed dimension=1 values=[2]
 kurtosis=class=Point name=Unnamed dimension=1 values=[9]
 sigma=1.5
 xi=0
-Distribution class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=0.2
-Distribution GeneralizedPareto(sigma = 1.5, xi=0.2)
+Distribution class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=0.2 u=0.5
+Distribution GeneralizedPareto(sigma = 1.5, xi=0.2, u=0.5)
 Elliptical = false
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=1 values=[0.696963]
-oneSample first=class=Point name=Unnamed dimension=1 values=[0.452841] last=class=Point name=Unnamed dimension=1 values=[3.84865]
-mean=class=Point name=Unnamed dimension=1 values=[1.82357]
+oneRealization=class=Point name=Unnamed dimension=1 values=[1.19696]
+oneSample first=class=Point name=Unnamed dimension=1 values=[0.952841] last=class=Point name=Unnamed dimension=1 values=[4.34865]
+mean=class=Point name=Unnamed dimension=1 values=[2.32357]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[5.21249]
 Kolmogorov test for the generator, sample size=100 is accepted
 Kolmogorov test for the generator, sample size=1000 is accepted
-Point= class=Point name=Unnamed dimension=1 values=[1]
+Point= class=Point name=Unnamed dimension=1 values=[1.5]
 ddf     =class=Point name=Unnamed dimension=1 values=[-0.222073]
 log pdf=-1.15644
 pdf     =0.314603
@@ -132,41 +132,41 @@ pdf (FD)=0.314603
 cdf=0.465175
 ccdf=0.534825
 survival=0.534825
-Inverse survival=class=Point name=Unnamed dimension=1 values=[0.0773359]
+Inverse survival=class=Point name=Unnamed dimension=1 values=[0.577336]
 Survival(inverse survival)=0.95
-characteristic function=(0.298705,0.418886)
-log characteristic function=(-0.664599,0.951337)
-pdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.0616868,-0.125946]
-pdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[-0.0616868,-0.125946]
-cdf gradient     =class=Point name=Unnamed dimension=2 values=[-0.209735,-0.100495]
-cdf gradient (FD)=class=Point name=Unnamed dimension=2 values=[-0.209735,-0.100495]
-quantile=class=Point name=Unnamed dimension=1 values=[6.15423]
+characteristic function=(-0.10967,0.369641)
+log characteristic function=(-0.95304,1.85922)
+pdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.0616868,-0.125946,0.222073]
+pdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.0616868,-0.125946,0.222073]
+cdf gradient     =class=Point name=Unnamed dimension=3 values=[-0.209735,-0.100495,-0.314603]
+cdf gradient (FD)=class=Point name=Unnamed dimension=3 values=[-0.209735,-0.100495,-0.314603]
+quantile=class=Point name=Unnamed dimension=1 values=[6.65423]
 cdf(quantile)=0.95
-Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[6.15423] finite lower bound=[1] finite upper bound=[1]
+Minimum volume interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.5] upper bound=class=Point name=Unnamed dimension=1 values=[6.65423] finite lower bound=[1] finite upper bound=[1]
 threshold=0.95
-Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=0.2)) gradientImplementation=MinimumVolumeLevelSetGradient(GeneralizedPareto(sigma = 1.5, xi=0.2)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=0.2)) level=4.00034
+Minimum volume level set=class=LevelSet name=Unnamed dimension=1 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=0.2, u=0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(GeneralizedPareto(sigma = 1.5, xi=0.2, u=0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=1 values=[0.0001] evaluation=MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=0.2, u=0.5)) level=4.00034
 beta=0.0183093
-Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.038073] upper bound=class=Point name=Unnamed dimension=1 values=[8.18459] finite lower bound=[1] finite upper bound=[1]
+Bilateral confidence interval=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.538073] upper bound=class=Point name=Unnamed dimension=1 values=[8.68459] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0] upper bound=class=Point name=Unnamed dimension=1 values=[6.15423] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.5] upper bound=class=Point name=Unnamed dimension=1 values=[6.65423] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
-Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.0773359] upper bound=class=Point name=Unnamed dimension=1 values=[10126.3] finite lower bound=[1] finite upper bound=[1]
+Unilateral confidence interval (upper tail)=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.577336] upper bound=class=Point name=Unnamed dimension=1 values=[10126.8] finite lower bound=[1] finite upper bound=[1]
 beta=0.95
 entropy=1.60547
 entropy (MC)=1.60693
-mean=class=Point name=Unnamed dimension=1 values=[1.875]
+mean=class=Point name=Unnamed dimension=1 values=[2.375]
 covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[5.85938]
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters=[[sigma : 1.5, xi : 0.2]]
+parameters=[[sigma : 1.5, xi : 0.2, location : 0.5]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[1.25]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[4.16667]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[31.25]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[625]
 NotDefinedException : Error: the standard moments are defined up to order 5 and n=5
-Standard representative=GeneralizedPareto(sigma = 1, xi=0.2)
+Standard representative=GeneralizedPareto(sigma = 1, xi=0.2, u=0)
 standard deviation=class=Point name=Unnamed dimension=1 values=[2.42061]
 skewness=class=Point name=Unnamed dimension=1 values=[4.64758]
 kurtosis=class=Point name=Unnamed dimension=1 values=[73.8]

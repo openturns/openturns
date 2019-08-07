@@ -617,6 +617,8 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
 		      WeibullMaxMuSigma.i WeibullMaxMuSigma_doc.i.in
                       GeneralizedExtremeValue.i GeneralizedExtremeValue_doc.i.in
 		      GeneralizedExtremeValueFactory.i GeneralizedExtremeValueFactory_doc.i.in
+                      Pareto.i Pareto_doc.i.in
+		      ParetoFactory.i ParetoFactory_doc.i.in
                       GeneralizedPareto.i GeneralizedPareto_doc.i.in
                       GeneralizedParetoFactory.i GeneralizedParetoFactory_doc.i.in
                       Geometric.i Geometric_doc.i.in
@@ -642,6 +644,7 @@ ot_add_python_module(dist_bundle2 dist_bundle2_module.i
                       KernelSmoothing.i KernelSmoothing_doc.i.in
                       Laplace.i Laplace_doc.i.in
                       LaplaceFactory.i LaplaceFactory_doc.i.in
+		      LeastSquaresDistributionFactory.i LeastSquaresDistributionFactory_doc.i.in
                       Logistic.i Logistic_doc.i.in
                       LogisticFactory.i LogisticFactory_doc.i.in
                       LogNormal.i LogNormal_doc.i.in

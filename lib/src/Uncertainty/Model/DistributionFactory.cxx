@@ -56,6 +56,7 @@
 #include "openturns/NegativeBinomialFactory.hxx"
 #include "openturns/NormalCopulaFactory.hxx"
 #include "openturns/NormalFactory.hxx"
+#include "openturns/ParetoFactory.hxx"
 #include "openturns/PoissonFactory.hxx"
 #include "openturns/RayleighFactory.hxx"
 #include "openturns/RiceFactory.hxx"
@@ -97,6 +98,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetConti
   collection.add(LogUniformFactory());
   collection.add(MeixnerDistributionFactory());
   collection.add(NormalFactory());
+  collection.add(ParetoFactory());
   collection.add(RayleighFactory());
   collection.add(RiceFactory());
   collection.add(StudentFactory());

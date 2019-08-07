@@ -3,6 +3,7 @@ Estimated distribution= class=LogNormal name=LogNormal dimension=1 muLog=1.46531
 Estimated distribution (local likelihood)= class=LogNormal name=LogNormal dimension=1 muLog=1.46531 sigmaLog=2.50364 gamma=-1.49972
 Estimated distribution (modified moments)= class=LogNormal name=LogNormal dimension=1 muLog=2.42776 sigmaLog=2.04243 gamma=-1.50372
 Estimated distribution (moments)= class=LogNormal name=LogNormal dimension=1 muLog=4.64167 sigmaLog=1.42159 gamma=-195.16
+Estimated distribution (least squares)= LogNormal(muLog = 1.46468, sigmaLog = 2.49692, gamma = -1.5)
 Default distribution= LogNormal(muLog = 0, sigmaLog = 1, gamma = 0)
 Distribution from parameters= LogNormal(muLog = 1.5, sigmaLog = 2.5, gamma = -1.5)
 LogNormal          = LogNormal(muLog = 1.5, sigmaLog = 2.5, gamma = -1.5)

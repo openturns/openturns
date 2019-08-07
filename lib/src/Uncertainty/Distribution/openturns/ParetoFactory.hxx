@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Factory for LogNormal distribution
+ *  @brief Factory for Pareto distribution
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,61 +18,48 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_LOGNORMALFACTORY_HXX
-#define OPENTURNS_LOGNORMALFACTORY_HXX
+#ifndef OPENTURNS_PARETOFACTORY_HXX
+#define OPENTURNS_PARETOFACTORY_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/DistributionFactoryImplementation.hxx"
-#include "openturns/LogNormal.hxx"
+#include "openturns/Pareto.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class LogNormalFactory
+ * @class ParetoFactory
  */
-class OT_API LogNormalFactory
+class OT_API ParetoFactory
   : public DistributionFactoryImplementation
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  LogNormalFactory();
+  ParetoFactory();
 
   /** Virtual constructor */
-  virtual LogNormalFactory * clone() const;
+  virtual ParetoFactory * clone() const;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
   Distribution build(const Sample & sample) const;
-  Distribution build(const Sample & sample,
-                     const UnsignedInteger method) const;
   Distribution build(const Point & parameters) const;
   Distribution build() const;
-  LogNormal buildAsLogNormal(const Sample & sample) const;
-  LogNormal buildAsLogNormal(const Sample & sample,
-                             const UnsignedInteger method) const;
-  LogNormal buildAsLogNormal(const Point & parameters) const;
-  LogNormal buildAsLogNormal() const;
+  Pareto buildAsPareto(const Sample & sample) const;
+  Pareto buildAsPareto(const Point & parameters) const;
+  Pareto buildAsPareto() const;
 
   /** Algorithm associated with the method of moments */
-  LogNormal buildMethodOfMoments(const Sample & sample) const;
+  Pareto buildMethodOfMoments(const Sample & sample) const;
+  Pareto buildMethodOfLikelihoodMaximization(const Sample & sample) const;
+  Pareto buildMethodOfLeastSquares(const Sample & sample) const;
 
-  /** Algoritm associated with the method of local likelihood maximization */
-  LogNormal buildMethodOfLocalLikelihoodMaximization(const Sample & sample) const;
+}; /* class ParetoFactory */
 
-  /** Algorithm associated with the method of modified moments */
-  LogNormal buildMethodOfModifiedMoments(const Sample & sample) const;
-
-  /** Algorithm associated with the method of least-squares */
-  LogNormal buildMethodOfLeastSquares(const Sample & sample) const;
-
-private:
-  LogNormal buildMethodOfLeastSquares(const Sample & sample, const Scalar gamma) const;
-
-}; /* class LogNormalFactory */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_LOGNORMALFACTORY_HXX */
+#endif /* OPENTURNS_PARETOFACTORY_HXX */

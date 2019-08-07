@@ -381,8 +381,6 @@ Dlib::Dlib()
   , wolfeSigma_(ResourceMap::GetAsScalar("Dlib-DefaultWolfeSigma"))
   , maxLineSearchIterations_(ResourceMap::GetAsUnsignedInteger("Dlib-DefaultMaxLineSearchIterations"))
 {
-  setProblem(OptimizationProblem());
-  setResult(OptimizationResult());
 }
 
 
@@ -402,9 +400,6 @@ Dlib::Dlib(const String & algoName)
     setWolfeRho(ResourceMap::GetAsScalar("Dlib-DefaultWolfeRho"));
     setWolfeSigma(ResourceMap::GetAsScalar("Dlib-DefaultWolfeSigma"));
   }
-  
-  setProblem(OptimizationProblem());
-  setResult(OptimizationResult());
 }
 
 

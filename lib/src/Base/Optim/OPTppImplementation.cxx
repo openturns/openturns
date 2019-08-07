@@ -448,7 +448,9 @@ OPTppImplementation * OPTppImplementation::clone() const
 void OPTppImplementation::checkProblem(const OptimizationProblem & problem) const
 {
   if (problem.hasMultipleObjective())
-    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support multi-objective optimization";
+    throw InvalidArgumentException(HERE) << getClassName() << " does not support multi-objective optimization";
+  if (problem.hasResidualFunction())
+    throw InvalidArgumentException(HERE) << getClassName() << " does not support least-square problems";
 }
 
 
@@ -751,8 +753,7 @@ void CName::checkProblem(const OptimizationProblem & problem) const { \
 
 #define IMPLEMENT_CHECKPROBLEM_BOUNDS(CName) \
 void CName::checkProblem(const OptimizationProblem & problem) const { \
-  if (problem.hasMultipleObjective()) \
-    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support multi-objective optimization"; \
+  OPTppImplementation::checkProblem(problem); \
   if (problem.hasInequalityConstraint()) \
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support inequality constraints"; \
   if (problem.hasEqualityConstraint()) \
@@ -761,8 +762,7 @@ void CName::checkProblem(const OptimizationProblem & problem) const { \
 
 #define IMPLEMENT_CHECKPROBLEM_FORCEBOUNDS(CName) \
 void CName::checkProblem(const OptimizationProblem & problem) const { \
-  if (problem.hasMultipleObjective()) \
-    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support multi-objective optimization"; \
+  OPTppImplementation::checkProblem(problem); \
   if (!problem.hasBounds()) \
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " requires bound constraints"; \
   if (problem.hasInequalityConstraint()) \
@@ -773,8 +773,7 @@ void CName::checkProblem(const OptimizationProblem & problem) const { \
 
 #define IMPLEMENT_CHECKPROBLEM_UNCONSTRAINED(CName) \
 void CName::checkProblem(const OptimizationProblem & problem) const { \
-  if (problem.hasMultipleObjective()) \
-    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support multi-objective optimization"; \
+  OPTppImplementation::checkProblem(problem); \
   if (problem.hasBounds()) \
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support bound constraints"; \
   if (problem.hasInequalityConstraint()) \

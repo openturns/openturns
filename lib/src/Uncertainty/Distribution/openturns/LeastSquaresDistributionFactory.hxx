@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Estimation by method of moments
+ *  @brief Least squares estimation
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_METHODOFMOMENTSFACTORY_HXX
-#define OPENTURNS_METHODOFMOMENTSFACTORY_HXX
+#ifndef OPENTURNS_LEASTSQUARESDISTRIBUTIONFACTORY_HXX
+#define OPENTURNS_LEASTSQUARESDISTRIBUTIONFACTORY_HXX
 
 #include "openturns/DistributionFactoryImplementation.hxx"
 #include "openturns/DistributionFactory.hxx"
@@ -28,21 +28,21 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class MethodOfMomentsFactory
+ * @class LeastSquaresDistributionFactory
  */
-class OT_API MethodOfMomentsFactory
+class OT_API LeastSquaresDistributionFactory
   : public DistributionFactoryImplementation
 {
   CLASSNAME
 public:
   /** Default constructor */
-  MethodOfMomentsFactory();
+  LeastSquaresDistributionFactory();
 
   /** Parameters constructor */
-  MethodOfMomentsFactory(const Distribution & distribution);
+  LeastSquaresDistributionFactory(const Distribution & distribution);
 
   /** Virtual constructor */
-  virtual MethodOfMomentsFactory * clone() const;
+  virtual LeastSquaresDistributionFactory * clone() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -59,13 +59,16 @@ public:
   /** Build a distribution based on a set of parameters */
   virtual Point buildParameter(const Sample & sample) const;
 
-  /** Solver accessor */
+  /** Optimization solver accessor */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
   OptimizationAlgorithm getOptimizationAlgorithm() const;
 
-  /** @deprecated */
-  void setOptimizationProblem(const OptimizationProblem & problem);
-  OptimizationProblem getOptimizationProblem() const;
+  /** Accessor to optimization bounds */
+  void setOptimizationBounds(const Interval & optimizationBounds);
+  Interval getOptimizationBounds() const;
+
+  /** Accessor to inequality constraint */
+  void setOptimizationInequalityConstraint(const Function & optimizationInequalityConstraint);
 
   /** Accessor to known parameter */
   void setKnownParameter(const Point & values, const Indices & positions);
@@ -85,13 +88,19 @@ protected:
   /* Solver & optimization problem for log-likelihood maximization */
   OptimizationAlgorithm solver_;
 
+  // Bounds used for parameter optimization
+  Interval optimizationBounds_;
+
+  // Inequality constraint used for parameter optimization
+  Function optimizationInequalityConstraint_;
+
   /* Known parameter */
   Point knownParameterValues_;
   Indices knownParameterIndices_;
 
-}; /* class MethodOfMomentsFactory */
+}; /* class LeastSquaresDistributionFactory */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_METHODOFMOMENTSFACTORY_HXX */
+#endif /* OPENTURNS_LEASTSQUARESDISTRIBUTIONFACTORY_HXX */

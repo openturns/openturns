@@ -9,10 +9,13 @@ RandomGenerator.SetSeed(0)
 try:
     for xi in [-0.2, 0.0, 0.2]:
         # Instanciate one distribution object
-        distribution = GeneralizedPareto(1.5, xi)
+        distribution = GeneralizedPareto(1.5, xi, 0.5)
 
         print("Distribution ", repr(distribution))
         print("Distribution ", distribution)
+
+        if xi > 0.0:
+            print("asPareto=", distribution.asPareto())
 
         # Is this distribution elliptical ?
         print("Elliptical = ", distribution.isElliptical())
@@ -44,7 +47,7 @@ try:
             size *= 10
 
         # Define a point
-        point = Point(distribution.getDimension(), 1.0)
+        point = Point(distribution.getDimension(), 1.5)
         print("Point= ", repr(point))
 
         # Show PDF and CDF of point
@@ -63,19 +66,23 @@ try:
         # print "characteristic function=", CF
         PDFgr = distribution.computePDFGradient(point)
         print("pdf gradient     =", repr(PDFgr))
-        PDFgrFD = Point(2)
-        PDFgrFD[0] = (GeneralizedPareto(distribution.getSigma() + eps, distribution.getXi()).computePDF(point) -
-                      GeneralizedPareto(distribution.getSigma() - eps, distribution.getXi()).computePDF(point)) / (2.0 * eps)
-        PDFgrFD[1] = (GeneralizedPareto(distribution.getSigma(), distribution.getXi() + eps).computePDF(point) -
-                      GeneralizedPareto(distribution.getSigma(), distribution.getXi() - eps).computePDF(point)) / (2.0 * eps)
+        PDFgrFD = Point(3)
+        PDFgrFD[0] = (GeneralizedPareto(distribution.getSigma() + eps, distribution.getXi(), distribution.getU()).computePDF(point) -
+                      GeneralizedPareto(distribution.getSigma() - eps, distribution.getXi(), distribution.getU()).computePDF(point)) / (2.0 * eps)
+        PDFgrFD[1] = (GeneralizedPareto(distribution.getSigma(), distribution.getXi() + eps, distribution.getU()).computePDF(point) -
+                      GeneralizedPareto(distribution.getSigma(), distribution.getXi() - eps, distribution.getU()).computePDF(point)) / (2.0 * eps)
+        PDFgrFD[2] = (GeneralizedPareto(distribution.getSigma(), distribution.getXi(), distribution.getU() + eps).computePDF(point) -
+                      GeneralizedPareto(distribution.getSigma(), distribution.getXi(), distribution.getU() - eps).computePDF(point)) / (2.0 * eps)
         print("pdf gradient (FD)=", repr(PDFgrFD))
         CDFgr = distribution.computeCDFGradient(point)
         print("cdf gradient     =", repr(CDFgr))
-        CDFgrFD = Point(2)
-        CDFgrFD[0] = (GeneralizedPareto(distribution.getSigma() + eps, distribution.getXi()).computeCDF(point) -
-                      GeneralizedPareto(distribution.getSigma() - eps, distribution.getXi()).computeCDF(point)) / (2.0 * eps)
-        CDFgrFD[1] = (GeneralizedPareto(distribution.getSigma(), distribution.getXi() + eps).computeCDF(point) -
-                      GeneralizedPareto(distribution.getSigma(), distribution.getXi() - eps).computeCDF(point)) / (2.0 * eps)
+        CDFgrFD = Point(3)
+        CDFgrFD[0] = (GeneralizedPareto(distribution.getSigma() + eps, distribution.getXi(), distribution.getU()).computeCDF(point) -
+                      GeneralizedPareto(distribution.getSigma() - eps, distribution.getXi(), distribution.getU()).computeCDF(point)) / (2.0 * eps)
+        CDFgrFD[1] = (GeneralizedPareto(distribution.getSigma(), distribution.getXi() + eps, distribution.getU()).computeCDF(point) -
+                      GeneralizedPareto(distribution.getSigma(), distribution.getXi() - eps, distribution.getU()).computeCDF(point)) / (2.0 * eps)
+        CDFgrFD[2] = (GeneralizedPareto(distribution.getSigma(), distribution.getXi(), distribution.getU() + eps).computeCDF(point) -
+                      GeneralizedPareto(distribution.getSigma(), distribution.getXi(), distribution.getU() - eps).computeCDF(point)) / (2.0 * eps)
         print("cdf gradient (FD)=", repr(CDFgrFD))
         quantile = distribution.computeQuantile(0.95)
         print("quantile=", repr(quantile))

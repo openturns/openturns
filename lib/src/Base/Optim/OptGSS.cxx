@@ -53,13 +53,15 @@ OptGSS * OptGSS::clone() const
 void OptGSS::checkProblem(const OptimizationProblem & problem) const
 {
   if (problem.hasMultipleObjective())
-    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support multi-objective optimization";
+    throw InvalidArgumentException(HERE) << getClassName() << " does not support multi-objective optimization";
+  if (problem.hasResidualFunction())
+    throw InvalidArgumentException(HERE) << getClassName() << " does not support least-square problems";
   if (problem.hasBounds())
-    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support bound constraints";
+    throw InvalidArgumentException(HERE) << getClassName() << " does not support bound constraints";
   if (problem.hasInequalityConstraint())
-    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support inequality constraints";
+    throw InvalidArgumentException(HERE) << getClassName() << " does not support inequality constraints";
   if (problem.hasEqualityConstraint())
-    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support equality constraints";
+    throw InvalidArgumentException(HERE) << getClassName() << " does not support equality constraints";
 }
 
 

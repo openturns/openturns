@@ -412,6 +412,9 @@
   <Normal-MinimumNumberOfPoints          value_int="100000"   />
   <Normal-SmallDimension                 value_int="6"        />
 
+  <!-- OT::ParetoFactory parameters -->
+  <ParetoFactory-AlphaUpperBound value_float="1000.0" />
+
   <!-- OT::ProductDistribution parameters -->
   <ProductDistribution-LargeCharacteristicFunctionArgument value_float="10.0" />
 

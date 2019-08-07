@@ -1,144 +1,145 @@
-Distribution  class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=-0.2
-Distribution  GeneralizedPareto(sigma = 1.5, xi=-0.2)
+Distribution  class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=-0.2 u=0.5
+Distribution  GeneralizedPareto(sigma = 1.5, xi=-0.2, u=0.5)
 Elliptical =  False
 Continuous =  True
-oneRealization= class=Point name=Unnamed dimension=1 values=[0.662264]
-oneSample first= class=Point name=Unnamed dimension=1 values=[0.184665]  last= class=Point name=Unnamed dimension=1 values=[1.18051]
-mean= class=Point name=Unnamed dimension=1 values=[1.24428]
+oneRealization= class=Point name=Unnamed dimension=1 values=[1.16226]
+oneSample first= class=Point name=Unnamed dimension=1 values=[0.684665]  last= class=Point name=Unnamed dimension=1 values=[1.68051]
+mean= class=Point name=Unnamed dimension=1 values=[1.74428]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.12783]
 Kolmogorov test for the generator, sample size= 100  is accepted
 Kolmogorov test for the generator, sample size= 1000  is accepted
-Point=  class=Point name=Unnamed dimension=1 values=[1]
+Point=  class=Point name=Unnamed dimension=1 values=[1.5]
 ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.231453]
 pdf     = 0.376111934156
 pdf (FD)= 0.376111934
 cdf= 0.511054485597
-pdf gradient     = class=Point name=Unnamed dimension=2 values=[-0.096439,-0.188281]
-pdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.096439,-0.188281]
-cdf gradient     = class=Point name=Unnamed dimension=2 values=[-0.250741,-0.131347]
-cdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.250741,-0.131347]
-quantile= class=Point name=Unnamed dimension=1 values=[3.3804]
+pdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.096439,-0.188281,0.231453]
+pdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.096439,-0.188281,0.231453]
+cdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.250741,-0.131347,-0.376112]
+cdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.250741,-0.131347,-0.376112]
+quantile= class=Point name=Unnamed dimension=1 values=[3.8804]
 cdf(quantile)= 0.95
-InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.0765466]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.576547]
 Survival(inverseSurvival)=0.950000
 entropy=1.205465
-Minimum volume interval= [0, 3.3804]
+Minimum volume interval= [0.5, 3.8804]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 2.80205} with f=
-MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=-0.2))
+MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=-0.2, u=0.5))
 beta= [0.0606855]
-Bilateral confidence interval= [0.0378807, 3.91368]
+Bilateral confidence interval= [0.537881, 4.41368]
 beta= [0.95]
-Unilateral confidence interval (lower tail)= [0, 3.3804]
+Unilateral confidence interval (lower tail)= [0.5, 3.8804]
 beta= [0.95]
-Unilateral confidence interval (upper tail)= [0.0765466, 7.5]
+Unilateral confidence interval (upper tail)= [0.576547, 8]
 beta= [0.95]
-mean= class=Point name=Unnamed dimension=1 values=[1.25]
+mean= class=Point name=Unnamed dimension=1 values=[1.75]
 standard deviation= class=Point name=Unnamed dimension=1 values=[1.05644]
 skewness= class=Point name=Unnamed dimension=1 values=[1.18322]
 kurtosis= class=Point name=Unnamed dimension=1 values=[4.2]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1.11607]
-parameters= [class=PointWithDescription name=X0 dimension=2 description=[sigma,xi] values=[1.5,-0.2]]
+parameters= [class=PointWithDescription name=X0 dimension=3 description=[sigma,xi,location] values=[1.5,-0.2,0.5]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [0.833333]
 standard moment n= 2  value= [1.19048]
 standard moment n= 3  value= [2.23214]
 standard moment n= 4  value= [4.96032]
 standard moment n= 5  value= [12.4008]
-Standard representative= GeneralizedPareto(sigma = 1, xi=-0.2)
-Distribution  class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=0
-Distribution  GeneralizedPareto(sigma = 1.5, xi=0)
+Standard representative= GeneralizedPareto(sigma = 1, xi=-0.2, u=0)
+Distribution  class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=0 u=0.5
+Distribution  GeneralizedPareto(sigma = 1.5, xi=0, u=0.5)
 Elliptical =  False
 Continuous =  True
-oneRealization= class=Point name=Unnamed dimension=1 values=[2.26806]
-oneSample first= class=Point name=Unnamed dimension=1 values=[0.873113]  last= class=Point name=Unnamed dimension=1 values=[1.8084]
-mean= class=Point name=Unnamed dimension=1 values=[1.49864]
+oneRealization= class=Point name=Unnamed dimension=1 values=[2.76806]
+oneSample first= class=Point name=Unnamed dimension=1 values=[1.37311]  last= class=Point name=Unnamed dimension=1 values=[2.3084]
+mean= class=Point name=Unnamed dimension=1 values=[1.99864]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.31994]
 Kolmogorov test for the generator, sample size= 100  is accepted
 Kolmogorov test for the generator, sample size= 1000  is accepted
-Point=  class=Point name=Unnamed dimension=1 values=[1]
+Point=  class=Point name=Unnamed dimension=1 values=[1.5]
 ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.228185]
 pdf     = 0.342278079355
 pdf (FD)= 0.342278079
 cdf= 0.486582880967
-pdf gradient     = class=Point name=Unnamed dimension=2 values=[-0.0760618,-0.152124]
-pdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.0760618,-0.152124]
-cdf gradient     = class=Point name=Unnamed dimension=2 values=[-0.228185,-0.114093]
-cdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.228185,-0.114093]
-quantile= class=Point name=Unnamed dimension=1 values=[4.4936]
+pdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.0760618,-0.152124,0.228185]
+pdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.0760618,-0.152124,0.228185]
+cdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.228185,-0.114093,-0.342278]
+cdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.228185,-0.114093,-0.342278]
+quantile= class=Point name=Unnamed dimension=1 values=[4.9936]
 cdf(quantile)= 0.95
-InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.0769399]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.57694]
 Survival(inverseSurvival)=0.950000
 entropy=1.405465
-Minimum volume interval= [0, 4.4936]
+Minimum volume interval= [0.5, 4.9936]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 3.4012} with f=
-MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=0))
+MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=0, u=0.5))
 beta= [0.0333333]
-Bilateral confidence interval= [0.0379767, 5.53332]
+Bilateral confidence interval= [0.537977, 6.03332]
 beta= [0.95]
-Unilateral confidence interval (lower tail)= [0, 4.4936]
+Unilateral confidence interval (lower tail)= [0.5, 4.9936]
 beta= [0.95]
-Unilateral confidence interval (upper tail)= [0.0769399, 54.0655]
+Unilateral confidence interval (upper tail)= [0.57694, 54.5655]
 beta= [0.95]
-mean= class=Point name=Unnamed dimension=1 values=[1.5]
+mean= class=Point name=Unnamed dimension=1 values=[2]
 standard deviation= class=Point name=Unnamed dimension=1 values=[1.5]
 skewness= class=Point name=Unnamed dimension=1 values=[2]
 kurtosis= class=Point name=Unnamed dimension=1 values=[9]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[2.25]
-parameters= [class=PointWithDescription name=X0 dimension=2 description=[sigma,xi] values=[1.5,0]]
+parameters= [class=PointWithDescription name=X0 dimension=3 description=[sigma,xi,location] values=[1.5,0,0.5]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [1]
 standard moment n= 2  value= [2]
 standard moment n= 3  value= [6]
 standard moment n= 4  value= [24]
 standard moment n= 5  value= [120]
-Standard representative= GeneralizedPareto(sigma = 1, xi=0)
-Distribution  class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=0.2
-Distribution  GeneralizedPareto(sigma = 1.5, xi=0.2)
+Standard representative= GeneralizedPareto(sigma = 1, xi=0, u=0)
+Distribution  class=GeneralizedPareto name=GeneralizedPareto dimension=1 sigma=1.5 xi=0.2 u=0.5
+Distribution  GeneralizedPareto(sigma = 1.5, xi=0.2, u=0.5)
+asPareto= Pareto(beta = 7.5, alpha=5, gamma=-7)
 Elliptical =  False
 Continuous =  True
-oneRealization= class=Point name=Unnamed dimension=1 values=[1.47575]
-oneSample first= class=Point name=Unnamed dimension=1 values=[5.37434]  last= class=Point name=Unnamed dimension=1 values=[0.15915]
-mean= class=Point name=Unnamed dimension=1 values=[1.88187]
+oneRealization= class=Point name=Unnamed dimension=1 values=[1.97575]
+oneSample first= class=Point name=Unnamed dimension=1 values=[5.87434]  last= class=Point name=Unnamed dimension=1 values=[0.65915]
+mean= class=Point name=Unnamed dimension=1 values=[2.38187]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[5.82491]
 Kolmogorov test for the generator, sample size= 100  is accepted
 Kolmogorov test for the generator, sample size= 1000  is accepted
-Point=  class=Point name=Unnamed dimension=1 values=[1]
+Point=  class=Point name=Unnamed dimension=1 values=[1.5]
 ddf (FD)= class=Point name=Unnamed dimension=1 values=[-0.222073]
 pdf     = 0.31460293288
 pdf (FD)= 0.314602933
 cdf= 0.465175014104
-pdf gradient     = class=Point name=Unnamed dimension=2 values=[-0.0616868,-0.125946]
-pdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.0616868,-0.125946]
-cdf gradient     = class=Point name=Unnamed dimension=2 values=[-0.209735,-0.100495]
-cdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.209735,-0.100495]
-quantile= class=Point name=Unnamed dimension=1 values=[6.15423]
+pdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.0616868,-0.125946,0.222073]
+pdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.0616868,-0.125946,0.222073]
+cdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.209735,-0.100495,-0.314603]
+cdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.209735,-0.100495,-0.314603]
+quantile= class=Point name=Unnamed dimension=1 values=[6.65423]
 cdf(quantile)= 0.95
-InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.0773359]
+InverseSurvival= class=Point name=Unnamed dimension=1 values=[0.577336]
 Survival(inverseSurvival)=0.950000
 entropy=1.605465
-Minimum volume interval= [0, 6.15423]
+Minimum volume interval= [0.5, 6.65423]
 threshold= [0.95]
 Minimum volume level set= {x | f(x) <= 4.00034} with f=
-MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=0.2))
+MinimumVolumeLevelSetEvaluation(GeneralizedPareto(sigma = 1.5, xi=0.2, u=0.5))
 beta= [0.0183093]
-Bilateral confidence interval= [0.038073, 8.18459]
+Bilateral confidence interval= [0.538073, 8.68459]
 beta= [0.95]
-Unilateral confidence interval (lower tail)= [0, 6.15423]
+Unilateral confidence interval (lower tail)= [0.5, 6.65423]
 beta= [0.95]
-Unilateral confidence interval (upper tail)= [0.0773359, 10126.3]
+Unilateral confidence interval (upper tail)= [0.577336, 10126.8]
 beta= [0.95]
-mean= class=Point name=Unnamed dimension=1 values=[1.875]
+mean= class=Point name=Unnamed dimension=1 values=[2.375]
 standard deviation= class=Point name=Unnamed dimension=1 values=[2.42061]
 skewness= class=Point name=Unnamed dimension=1 values=[4.64758]
 kurtosis= class=Point name=Unnamed dimension=1 values=[73.8]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[5.85938]
-parameters= [class=PointWithDescription name=X0 dimension=2 description=[sigma,xi] values=[1.5,0.2]]
+parameters= [class=PointWithDescription name=X0 dimension=3 description=[sigma,xi,location] values=[1.5,0.2,0.5]]
 standard moment n= 0  value= [1]
 standard moment n= 1  value= [1.25]
 standard moment n= 2  value= [4.16667]
 standard moment n= 3  value= [31.25]
 standard moment n= 4  value= [625]
 NotDefinedException : Error: the standard moments are defined up to order 5 and n=5
-Standard representative= GeneralizedPareto(sigma = 1, xi=0.2)
+Standard representative= GeneralizedPareto(sigma = 1, xi=0.2, u=0)

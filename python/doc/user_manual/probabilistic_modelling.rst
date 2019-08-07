@@ -72,6 +72,7 @@ Continuous parametric distributions
     NormalGamma
 
     :template: Distribution.rst_t
+    Pareto
     Rayleigh
     Rice
     SmoothedUniform

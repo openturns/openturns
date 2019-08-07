@@ -944,6 +944,9 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "Normal-MinimumNumberOfPoints", 100000 );
   setAsUnsignedInteger( "Normal-SmallDimension", 6 );
 
+  // ParetoFactory parameters //
+  setAsScalar( "ParetoFactory-AlphaUpperBound", 1000.0 );
+
   // ProductDistribution parameters //
   setAsScalar( "ProductDistribution-LargeCharacteristicFunctionArgument", 10.0 );
 

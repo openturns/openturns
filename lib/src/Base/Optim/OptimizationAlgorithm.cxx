@@ -259,6 +259,27 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
 }
 
 
+OptimizationAlgorithm OptimizationAlgorithm::Build(const OptimizationProblem & problem)
+{
+  // return the first algorithm that accepts the problem
+  Description names(GetAlgorithmNames());
+  for (UnsignedInteger i = 0; i < names.getSize(); ++ i)
+  {
+    OptimizationAlgorithm algorithm(Build(names[i]));
+    try
+    {
+      algorithm.setProblem(problem);
+      return algorithm;
+    }
+    catch (InvalidArgumentException &)
+    {
+      // try next algorithm
+    }
+  }
+  throw NotYetImplementedException(HERE) << "No optimization algorithm available for this problem";
+}
+
+
 Description OptimizationAlgorithm::GetAlgorithmNames()
 {
   Description names;
@@ -267,6 +288,8 @@ Description OptimizationAlgorithm::GetAlgorithmNames()
   if (CMinpack::IsAvailable())
     names.add("CMinpack");
   names.add("Cobyla");
+  if (Dlib::IsAvailable())
+    names.add(Dlib::GetAlgorithmNames());
   names.add("TNC");
   if (NLopt::IsAvailable())
     names.add(NLopt::GetAlgorithmNames());
@@ -276,8 +299,31 @@ Description OptimizationAlgorithm::GetAlgorithmNames()
 }
 
 
+Description OptimizationAlgorithm::GetAlgorithmNames(const OptimizationProblem & problem)
+{
+  // return the first algorithm that accepts the problem
+  Description names(GetAlgorithmNames());
+  Description result;
+  for (UnsignedInteger i = 0; i < names.getSize(); ++ i)
+  {
+    OptimizationAlgorithm algorithm(Build(names[i]));
+    try
+    {
+      algorithm.setProblem(problem);
+      result.add(names[i]);
+    }
+    catch (InvalidArgumentException &)
+    {
+      // try next algorithm
+    }
+  }
+  return result;
+}
+
+
 Description OptimizationAlgorithm::GetLeastSquaresAlgorithmNames()
 {
+  LOGWARN("OptimizationAlgorithm::GetLeastSquaresAlgorithmNames is deprecated");
   Description names;
   if (CMinpack::IsAvailable())
     names.add("CMinpack");

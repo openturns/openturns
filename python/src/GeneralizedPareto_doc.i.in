@@ -2,7 +2,9 @@
 "Generalized Pareto distribution.
 
 Available constructors:
-    GeneralizedPareto(*sigma=1.0, xi=0.0*)
+    GeneralizedPareto(*sigma=1.0, xi=0.0, u=0.0*)
+
+    GeneralizedPareto(*pareto*)
 
 Parameters
 ----------
@@ -10,6 +12,10 @@ sigma : float, :math:`\sigma > 0`
     Scale parameter :math:`\sigma`.
 xi : float
     Shape parameter :math:`\xi`.
+u : float
+    Location parameter :math:`u`.
+pareto : :class:`~openturns.Pareto`
+    Pareto distribution.
 
 Notes
 -----
@@ -18,7 +24,7 @@ Its cumulative distribution function is defined as:
 .. math::
 
     F_X(x) = \left\{\begin{array}{ll}
-               \displaystyle 1 - \left[1 + \xi \frac{x}{\sigma}\right]^{-1/\xi}
+               \displaystyle 1 - \left[1 + \xi \frac{x - u}{\sigma}\right]^{-1/\xi}
                     & \text{ if } \xi \neq 0 \\
                \displaystyle 1 - \exp\left(-\frac{x}{\sigma}\right)
                     & \text{ if } \xi = 0
@@ -34,7 +40,7 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{X} & = & \frac{\sigma}{1 - \xi}
+        \Expect{X} & = & u + \frac{\sigma}{1 - \xi}
                          \quad \text{ if } \xi < 1 \\
         \Var{X} & = & \frac{\sigma^2}{(1 - 2 \xi) (1 - \xi)^2}
                       \quad \text{ if } \xi < \frac{1}{2}
@@ -45,7 +51,7 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.GeneralizedPareto(1.0, 0.0)
+>>> distribution = ot.GeneralizedPareto(1.0, 0.0, 0.0)
 
 Draw a sample:
 
@@ -90,3 +96,43 @@ Parameters
 ----------
 xi : float, :math:`\xi \in \Rset`
     Shape parameter :math:`\xi`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedPareto::setU
+"Accessor to the distribution's location parameter :math:`u`.
+
+Parameters
+----------
+u : float, :math:`u \in \Rset`
+    Location parameter :math:`u`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedPareto::getU
+"Accessor to the distribution's location parameter :math:`u`.
+
+Returns
+-------
+u : float
+    Location parameter :math:`u`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedPareto::getLocation
+"Accessor to the distribution's location parameter :math:`u`.
+
+Returns
+-------
+u : float
+    Location parameter :math:`u`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GeneralizedPareto::asPareto
+"Pareto distribution conversion.
+
+Returns
+-------
+pareto : :class:`~openturns.Pareto`
+    Pareto distribution."

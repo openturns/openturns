@@ -70,7 +70,7 @@ Calibrate a nonlinear model using 3DVAR:
 >>> algo = ot.GaussianNonLinearCalibration(modelX, x, y, candidate, priorCovariance, errorCovariance)
 >>> algo.run()
 >>> print(algo.getResult().getParameterMAP())
-[2.70532,1.21251,0.499001]"
+[2.705...,1.212...,0.499...]"
 
 // ---------------------------------------------------------------------
 
