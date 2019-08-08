@@ -18,6 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/LinearModelStepwiseAlgorithm.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Exception.hxx"
@@ -35,7 +36,7 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LinearModelStepwiseAlgorithm)
-static const Factory<LinearModelAlgorithm> Factory_LinearModelStepwiseAlgorithm;
+static const Factory<LinearModelStepwiseAlgorithm> Factory_LinearModelStepwiseAlgorithm;
 
 /* Default constructor */
 LinearModelStepwiseAlgorithm::LinearModelStepwiseAlgorithm()
@@ -246,9 +247,9 @@ struct UpdateForwardFunctor
       const Matrix vi(xi - di);
       memcpy(&viNP[0], &vi(0, 0), sizeof(Scalar)*size);
       memcpy(&xiNP[0], &xi(0, 0), sizeof(Scalar)*size);
-      const Scalar denominator = dot(xiNP, viNP);
+      const Scalar denominator = xiNP.dot(viNP);
       if (denominator == 0.0) continue;
-      const Scalar alpha = dot(xiNP, residualNP) / denominator;
+      const Scalar alpha = xiNP.dot(residualNP) / denominator;
       const Point newResidual(residualNP - alpha * viNP);
       const Scalar newCriterion(newResidual.normSquare());
       LOGDEBUG(OSS() << "Squared residual norm when adding column " << i << "(" << basis_[i] << "): " << newCriterion);
@@ -360,7 +361,7 @@ struct UpdateBackwardFunctor
       memcpy(&bi(0, 0), &biNP[0], sizeof(Scalar)*p);
       const Matrix di(Q_ * bi);
       memcpy(&diNP[0], &di(0, 0), sizeof(Scalar)*size);
-      const Scalar alpha = dot(diNP, yNP) / dot(biNP, biNP);
+      const Scalar alpha = diNP.dot(yNP) / biNP.dot(biNP);
       const Point newResidual(residualNP + alpha * diNP);
       const Scalar newCriterion(newResidual.normSquare());
       LOGDEBUG(OSS() << "Squared residual norm when removing column " << iMax << "(" << basis_[iMax] << "): " << newCriterion);
@@ -606,7 +607,7 @@ void LinearModelStepwiseAlgorithm::run()
   for (UnsignedInteger i = 0; i < p; ++i)
   {
     memcpy(&invRtiNP[0], &currentInvRt_(0, i), sizeof(Scalar)*p);
-    diagonalGramInverse[i] = dot(invRtiNP, invRtiNP);
+    diagonalGramInverse[i] = invRtiNP.dot(invRtiNP);
   }
   Point leverages(size);
   Matrix Qt(currentQ_.transpose());
@@ -614,7 +615,7 @@ void LinearModelStepwiseAlgorithm::run()
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     memcpy(&QtiNP[0], &Qt(0, i), sizeof(Scalar)*p);
-    leverages[i] = dot(QtiNP, QtiNP);
+    leverages[i] = QtiNP.dot(QtiNP);
   }
   Sample residualSample(size, 1);
   memcpy(&residualSample(0, 0), &currentResidual_(0, 0), sizeof(Scalar) * size);
@@ -643,8 +644,8 @@ void LinearModelStepwiseAlgorithm::run()
   LinearCombinationFunction metaModel(currentFunctions, regression);
 
   result_ = LinearModelResult(inputSample_, Basis(currentFunctions), currentX_, outputSample_, metaModel,
-                              regression, condensedFormula_, coefficientsNames, residualSample,
-                              diagonalGramInverse, leverages, cookDistances);
+                              regression, condensedFormula_, coefficientsNames, residualSample, standardizedResiduals,
+                              diagonalGramInverse, leverages, cookDistances, sigma2[0]);
   hasRun_ = true;
 }
 
