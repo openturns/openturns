@@ -1,8 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Factory for linear model
+ *  @brief Stepwise algorithms for linear model
  *
- *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,7 +18,7 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "otlm/LinearModelStepwiseAlgorithm.hxx"
+#include "openturns/LinearModelStepwiseAlgorithm.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Combinations.hxx"
@@ -32,12 +32,10 @@
 
 #include <cmath>
 
-using namespace OT;
-
-namespace OTLM
-{
+BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(LinearModelStepwiseAlgorithm)
+static const Factory<LinearModelAlgorithm> Factory_LinearModelStepwiseAlgorithm;
 
 /* Default constructor */
 LinearModelStepwiseAlgorithm::LinearModelStepwiseAlgorithm()
@@ -747,7 +745,4 @@ void LinearModelStepwiseAlgorithm::load(Advocate & adv)
   adv.loadAttribute( "hasRun_", hasRun_ );
 }
 
-
-
-} /* namespace OTLM */
-
+END_NAMESPACE_OPENTURNS

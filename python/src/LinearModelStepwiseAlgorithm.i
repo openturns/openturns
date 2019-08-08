@@ -1,10 +1,10 @@
 // SWIG file LinearModelStepwiseAlgorithm.i
 
 %{
-#include "otlm/LinearModelStepwiseAlgorithm.hxx"
+#include "openturns/LinearModelStepwiseAlgorithm.hxx"
 %}
 
 %include LinearModelStepwiseAlgorithm_doc.i
 
-%include otlm/LinearModelStepwiseAlgorithm.hxx
-namespace OTLM { %extend LinearModelStepwiseAlgorithm { LinearModelStepwiseAlgorithm(const LinearModelStepwiseAlgorithm & other) { return new OTLM::LinearModelStepwiseAlgorithm(other); } } }
+%include openturns/LinearModelStepwiseAlgorithm.hxx
+namespace OT { %extend LinearModelStepwiseAlgorithm { LinearModelStepwiseAlgorithm(const LinearModelStepwiseAlgorithm & other) { return new OT::LinearModelStepwiseAlgorithm(other); } } }

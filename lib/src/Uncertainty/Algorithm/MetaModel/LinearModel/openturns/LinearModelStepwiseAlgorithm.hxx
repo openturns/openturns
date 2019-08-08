@@ -2,7 +2,7 @@
 /**
  *  @brief Factory for linear model
  *
- *  Copyright 2005-2018 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -18,19 +18,17 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OTLM_LINEARMODELSTEPWISEFACTORY_HXX
-#define OTLM_LINEARMODELSTEPWISEFACTORY_HXX
+#ifndef OPENTEURNS_LINEARMODELSTEPWISEFACTORY_HXX
+#define OPENTEURNS_LINEARMODELSTEPWISEFACTORY_HXX
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Basis.hxx"
-#include "otlm/LinearModelResult.hxx"
-#include "otlm/otlmprivate.hxx"
+#include "openturns/LinearModelResult.hxx"
 
-namespace OTLM
-{
+BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class LinearModelStepwiseAlgorithm
@@ -38,8 +36,8 @@ namespace OTLM
  * The class building linear model using stepwise regression
  */
 
-class OTLM_API LinearModelStepwiseAlgorithm :
-  public OT::PersistentObject
+class OT_API LinearModelStepwiseAlgorithm :
+  public PersistentObject
 {
   CLASSNAME
 
@@ -51,45 +49,45 @@ public:
   LinearModelStepwiseAlgorithm();
 
   /** Parameters constructor FORWARD and BACKWARD */
-  LinearModelStepwiseAlgorithm(const OT::Sample & inputSample,
-                               const OT::Basis & basis,
-                               const OT::Sample & outputSample,
-                               const OT::Indices & minimalIndices,
-                               const OT::Bool isForward = true,
-                               const OT::Scalar penalty = -1.0 /* < 0 means BIC, by convention */,
-                               const OT::UnsignedInteger maximumIterationNumber = 1000);
+  LinearModelStepwiseAlgorithm(const Sample & inputSample,
+                               const Basis & basis,
+                               const Sample & outputSample,
+                               const Indices & minimalIndices,
+                               const Bool isForward = true,
+                               const Scalar penalty = -1.0 /* < 0 means BIC, by convention */,
+                               const UnsignedInteger maximumIterationNumber = 1000);
 
   /** Parameters constructor BOTH */
-  LinearModelStepwiseAlgorithm(const OT::Sample & inputSample,
-                               const OT::Basis & basis,
-                               const OT::Sample & outputSample,
-                               const OT::Indices & minimalIndices,
-                               const OT::Indices & startIndices,
-                               const OT::Scalar penalty = -1.0 /* < 0 means BIC, by convention */,
-                               const OT::UnsignedInteger maximumIterationNumber = 1000);
+  LinearModelStepwiseAlgorithm(const Sample & inputSample,
+                               const Basis & basis,
+                               const Sample & outputSample,
+                               const Indices & minimalIndices,
+                               const Indices & startIndices,
+                               const Scalar penalty = -1.0 /* < 0 means BIC, by convention */,
+                               const UnsignedInteger maximumIterationNumber = 1000);
 
   /** Virtual constructor */
   virtual LinearModelStepwiseAlgorithm * clone() const;
 
   /** String converter */
-  OT::String __repr__() const;
-  OT::String __str__(const OT::String & offset = "") const;
+  String __repr__() const;
+  String __str__(const String & offset = "") const;
 
   /** Sample accessors */
-  OT::Sample getInputSample() const;
-  OT::Sample getOutputSample() const;
+  Sample getInputSample() const;
+  Sample getOutputSample() const;
 
   /** Direction accessors */
   Direction getDirection() const;
 
   /** Penalty accessors */
-  OT::Scalar getPenalty() const;
+  Scalar getPenalty() const;
 
   /** Maximum number of iterations accessors */
-  OT::UnsignedInteger getMaximumIterationNumber() const;
+  UnsignedInteger getMaximumIterationNumber() const;
 
   /** Condensed formula accessor */
-  OT::String getFormula() const;
+  String getFormula() const;
 
   /** Perform regression */
   void run();
@@ -98,27 +96,27 @@ public:
   LinearModelResult getResult();
 
   /** Method save() stores the object through the StorageManager */
-  void save(OT::Advocate & adv) const;
+  void save(Advocate & adv) const;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(OT::Advocate & adv);
+  void load(Advocate & adv);
 
 private:
 
   /** Compute the likelihood function */
-  OT::Scalar computeLogLikelihood();
+  Scalar computeLogLikelihood();
 
   /** Build currentX_ and currentIndices_ from given indices */
-  void buildCurrentMatrixFromIndices(const OT::Indices & columns);
+  void buildCurrentMatrixFromIndices(const Indices & columns);
 
   /** Input sample */
-  OT::Sample inputSample_;
+  Sample inputSample_;
 
   /** The monomials collection */
-  OT::Basis basis_;
+  Basis basis_;
 
   /** Output sample */
-  OT::Sample outputSample_;
+  Sample outputSample_;
 
   /** The direction of the stepwise regression method */
   Direction direction_;
@@ -126,47 +124,47 @@ private:
   /** The multiple of the degrees of freedom used for the penalty of the stepwise regression method
       - 2      Akaike   information criterion (AIC)
       - log(n) Bayesian information criterion (BIC)  */
-  OT::Scalar penalty_;
+  Scalar penalty_;
 
   /** The maximum number of iterations of the stepwise regression method */
-  OT::UnsignedInteger maximumIterationNumber_;
+  UnsignedInteger maximumIterationNumber_;
 
   /** The indices of minimal model */
-  OT::Indices minimalIndices_;
+  Indices minimalIndices_;
 
   /** The indices of start model */
-  OT::Indices startIndices_;
+  Indices startIndices_;
 
   /** The formula description */
-  OT::String condensedFormula_;
+  String condensedFormula_;
 
   /** The output data, stored as a matrix  */
-  OT::Matrix Y_;
+  Matrix Y_;
 
   /** The matrix X_{max} containing all monomials */
-  OT::Matrix maxX_;
+  Matrix maxX_;
 
   /** The current matrix */
-  OT::Matrix currentX_;
+  Matrix currentX_;
 
   /** QR decomposition of the current matrix */
-  OT::Matrix currentQ_;
-  OT::Matrix currentInvRt_;
+  Matrix currentQ_;
+  Matrix currentInvRt_;
 
   /** The current residual R=Y - Q Q^T Y */
-  OT::Matrix currentResidual_;
+  Matrix currentResidual_;
 
   /** The indices of current model */
-  OT::Indices currentIndices_;
+  Indices currentIndices_;
 
   /** Result */
   LinearModelResult result_;
 
   /** Whether result is cached */
-  OT::Bool hasRun_;
+  Bool hasRun_;
 
 }; /* class LinearModelStepwiseAlgorithm */
 
-} /* namespace OTLM */
+END_NAMESPACE_OPENTURNS
 
-#endif /* OTLM_LINEARMODELSTEPWISEFACTORY_HXX */
+#endif /* OPENTEURNS_LINEARMODELSTEPWISEFACTORY_HXX */
