@@ -63,5 +63,5 @@ try:
 
 except:
     import sys
-    print("t_LinearModelAlgorithm_std.py",
+    print("t_LinearModelAnalysis_std.py",
           sys.exc_info()[0], sys.exc_info()[1])
