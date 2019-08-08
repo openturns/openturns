@@ -24,6 +24,7 @@
 
 #include "openturns/LinearModelResult.hxx"
 #include "openturns/LinearModelAlgorithm.hxx"
+#include "openturns/LinearModelStepwiseAlgorithm.hxx"
 #include "openturns/LinearModelAnalysis.hxx"
 
 #endif /* OPENTURNS_LINEARMODELMETAMODEL_HXX */
