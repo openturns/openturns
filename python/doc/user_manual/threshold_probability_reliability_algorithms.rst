@@ -13,6 +13,7 @@ Reliability algorithms
 
      Analytical
      FORM
+     MultiFORM
      SORM
      SystemFORM
 

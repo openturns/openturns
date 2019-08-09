@@ -564,6 +564,11 @@
   <SystemFORM-MaximalScaling  value_float="1.0e5"   />
   <SystemFORM-StartingScaling value_float="1.0e-13" />
 
+  <!-- OT::MultiFORM parameters -->
+  <MultiFORM-DefaultGamma value_float="1.1" />
+  <MultiFORM-DefaultDelta value_float="0.75" />
+  <MultiFORM-DefaultMaximumNumberOfDesignPoints value_int="4" />
+
   <!-- OT::StrongMaximumTest parameters -->
   <StrongMaximumTest-DefaultDeltaPrecision     value_float="1.0e-7"  />
   <StrongMaximumTest-Epsilon                   value_float="1.0e-10" />

@@ -40,6 +40,7 @@
 %include StrongMaximumTest.i
 %include MultiFORMResult.i
 %include SystemFORM.i
+%include MultiFORM.i
 
 /* At last we include template definitions */
 %include UncertaintyAnalyticalTemplateDefs.i

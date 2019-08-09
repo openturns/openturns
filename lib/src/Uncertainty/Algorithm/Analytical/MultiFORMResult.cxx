@@ -20,6 +20,7 @@
  */
 #include "openturns/MultiFORMResult.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/DistFunc.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -64,7 +65,7 @@ Scalar MultiFORMResult::getGeneralisedReliabilityIndex() const
   if (formResultCollection_.getSize() == 1)
     return formResultCollection_[0].getGeneralisedReliabilityIndex();
   else
-    throw NotDefinedException(HERE) << "Beta is not defined";
+    return DistFunc::qNormal(eventProbability_, true);
 }
 
 Scalar MultiFORMResult::getEventProbability() const
@@ -82,7 +83,8 @@ String MultiFORMResult::__repr__() const
 {
   OSS oss;
   oss << "class=" << MultiFORMResult::GetClassName()
-      << " eventProbability=" << eventProbability_;
+      << " eventProbability=" << eventProbability_
+      << " size=" << formResultCollection_.getSize();
   return oss;
 }
 
@@ -92,6 +94,7 @@ void MultiFORMResult::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute("eventProbability_", eventProbability_);
+  adv.saveAttribute("formResultCollection_", formResultCollection_);
 }
 
 
@@ -100,6 +103,7 @@ void MultiFORMResult::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute("eventProbability_", eventProbability_);
+  adv.loadAttribute("formResultCollection_", formResultCollection_);
 }
 
 

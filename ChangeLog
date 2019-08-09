@@ -36,6 +36,7 @@
  * IntersectionEvent
  * UnionEvent
  * SystemFORM
+ * MultiFORM
 
 ==== API changes ====
  * Removed deprecated specific RandomVector constructors
