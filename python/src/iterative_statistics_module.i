@@ -24,5 +24,7 @@
 /* Base/IterativeStat */
 %include IterativeAlgorithmImplementation.i
 %include IterativeAlgorithm.i
+%include IterativeKurtosis.i
+%include IterativeSkewness.i
 %include IterativeVariance.i
 %include IterativeMean.i

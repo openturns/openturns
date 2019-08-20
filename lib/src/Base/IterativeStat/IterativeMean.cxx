@@ -71,7 +71,7 @@ UnsignedInteger IterativeMean::getSize() const
   return data_.getSize();
 }
   
-Point IterativeMean::getValues() const
+Point IterativeMean::getMean() const
 { 
   return data_;
 }

@@ -67,6 +67,8 @@ public:
   
   Point getVariance() const;
   
+  Point getStandardDeviation() const;
+  
   Point getMean() const;
 
   /** Method save() stores the object through the StorageManager */

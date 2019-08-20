@@ -24,6 +24,8 @@
 
 #include "openturns/IterativeAlgorithmImplementation.hxx"
 #include "openturns/IterativeAlgorithm.hxx"
+#include "openturns/IterativeKurtosis.hxx"
+#include "openturns/IterativeSkewness.hxx"
 #include "openturns/IterativeVariance.hxx"
 #include "openturns/IterativeMean.hxx"
 

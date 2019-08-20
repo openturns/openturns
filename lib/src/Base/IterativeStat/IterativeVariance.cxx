@@ -73,6 +73,18 @@ Point IterativeVariance::getVariance() const
   return varData_;
 }
   
+Point IterativeVariance::getStandardDeviation() const
+{ 
+  PersistentCollection<Scalar> standardDeviationData(size_, 0.0);
+  
+  for (UnsignedInteger i = 0; i < size_; ++i)
+  {
+    standardDeviationData[i] = pow(varData_[i], 0.5);
+  }
+  
+  return standardDeviationData;
+}
+  
 Point IterativeVariance::getMean() const
 { 
   return meanData_;

@@ -5,4 +5,5 @@ Iterative statistics
     :maxdepth: 1
 
     iterative_mean.ipynb
+    iterative_variance.ipynb
 

@@ -1,6 +1,6 @@
 
-#ifndef OPENTURNS_ITERATIVEMEAN_HXX
-#define OPENTURNS_ITERATIVEMEAN_HXX
+#ifndef OPENTURNS_ITERATIVEKURTOSIS_HXX
+#define OPENTURNS_ITERATIVEKURTOSIS_HXX
 
 #include "openturns/IterativeAlgorithmImplementation.hxx"
 // #include "openturns/PersistentCollection.hxx"
@@ -8,16 +8,16 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-class OT_API IterativeMean
+class OT_API IterativeKurtosis
   : public IterativeAlgorithmImplementation
 {
   CLASSNAME
   
 public:
   
-  explicit IterativeMean(const UnsignedInteger size = 1);
+  explicit IterativeKurtosis(const UnsignedInteger size = 1);
   
-  IterativeMean * clone() const;
+  IterativeKurtosis * clone() const;
   
   void increment(const Scalar newData);
   
@@ -35,7 +35,7 @@ public:
    * This method compares objects based on their content.
    */
   inline
-  Bool operator ==(const IterativeMean & /*other*/) const
+  Bool operator ==(const IterativeKurtosis & /*other*/) const
   {
     return true;
   }
@@ -46,7 +46,7 @@ public:
    * This method compares objects based on their content.
    */
   inline
-  Bool operator !=(const IterativeMean & other) const
+  Bool operator !=(const IterativeKurtosis & other) const
   {
     return !operator==(other);
   }
@@ -65,6 +65,12 @@ public:
   
   UnsignedInteger getIteration() const;
   
+  Point getKurtosis() const;
+  
+  Point getSkewness() const;
+  
+  Point getVariance() const;
+  
   Point getMean() const;
 
   /** Method save() stores the object through the StorageManager */
@@ -72,17 +78,16 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
-
-//   static AlgoRegister reg;
   
 private:
-//   static IterativeAlgorithm * create(const int size);
   UnsignedInteger              iteration_;
   UnsignedInteger              size_;
-//   UnsignedInteger              dim_;
-  PersistentCollection<Scalar> data_;
+  PersistentCollection<Scalar> mean1Data_;
+  PersistentCollection<Scalar> mean2Data_;
+  PersistentCollection<Scalar> mean3Data_;
+  PersistentCollection<Scalar> mean4Data_;
 };
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_ITERATIVEMEAN_HXX */
+#endif /* OPENTURNS_ITERATIVEKURTOSIS_HXX */
