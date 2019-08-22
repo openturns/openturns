@@ -54,7 +54,7 @@ String IterativeMean::__str__(const String & offset) const
 // //   if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
 // //   return data_[index];
 // // }
-// // 
+// //
 // const Sample & IterativeMean::operator[] (const UnsignedInteger index) const
 // {
 //   if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
@@ -68,11 +68,11 @@ UnsignedInteger IterativeMean::getIteration() const
 
 UnsignedInteger IterativeMean::getSize() const
 {
-  return data_.getSize();
+  return size_;
 }
-  
+
 Point IterativeMean::getMean() const
-{ 
+{
   return data_;
 }
 
@@ -110,15 +110,15 @@ void IterativeMean::increment(const Point & newData)
 void IterativeMean::increment(const Sample & newData)
 {
   if (newData.getDimension() != size_) throw InvalidArgumentException(HERE) << "Error: the given Sample is not compatible with the size of the iterative mean.";
-  
+
   for (UnsignedInteger j = 0; j < newData.getSize(); ++j)
   {
-    Point rawData = newData[j];
+    Point tempData = newData[j];
     iteration_ += 1;
     for (UnsignedInteger i = 0; i < size_; ++i)
     {
       Scalar temp = data_[i];
-      data_[i] = temp + (rawData[i] - temp)/iteration_;
+      data_[i] = temp + (tempData[i] - temp)/iteration_;
     }
   }
 }

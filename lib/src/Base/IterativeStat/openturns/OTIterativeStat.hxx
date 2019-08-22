@@ -24,6 +24,8 @@
 
 #include "openturns/IterativeAlgorithmImplementation.hxx"
 #include "openturns/IterativeAlgorithm.hxx"
+#include "openturns/IterativeExtrema.hxx"
+#include "openturns/IterativeThresholdExceedance.hxx"
 #include "openturns/IterativeKurtosis.hxx"
 #include "openturns/IterativeSkewness.hxx"
 #include "openturns/IterativeVariance.hxx"

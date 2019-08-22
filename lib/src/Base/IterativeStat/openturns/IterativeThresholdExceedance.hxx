@@ -1,6 +1,6 @@
 
-#ifndef OPENTURNS_ITERATIVESKEWNESS_HXX
-#define OPENTURNS_ITERATIVESKEWNESS_HXX
+#ifndef OPENTURNS_ITERATIVETHRESHOLDEXCEEDANCE_HXX
+#define OPENTURNS_ITERATIVETHRESHOLDEXCEEDANCE_HXX
 
 #include "openturns/IterativeAlgorithmImplementation.hxx"
 // #include "openturns/PersistentCollection.hxx"
@@ -8,16 +8,16 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-class OT_API IterativeSkewness
+class OT_API IterativeThresholdExceedance
   : public IterativeAlgorithmImplementation
 {
   CLASSNAME
 
 public:
 
-  explicit IterativeSkewness(const UnsignedInteger size = 1);
+  explicit IterativeThresholdExceedance(const UnsignedInteger size = 1, const UnsignedInteger thresholdValue = 0.0);
 
-  IterativeSkewness * clone() const;
+  IterativeThresholdExceedance * clone() const;
 
   void increment(const Scalar newData);
 
@@ -35,7 +35,7 @@ public:
    * This method compares objects based on their content.
    */
   inline
-  Bool operator ==(const IterativeSkewness & /*other*/) const
+  Bool operator ==(const IterativeThresholdExceedance & /*other*/) const
   {
     return true;
   }
@@ -46,7 +46,7 @@ public:
    * This method compares objects based on their content.
    */
   inline
-  Bool operator !=(const IterativeSkewness & other) const
+  Bool operator !=(const IterativeThresholdExceedance & other) const
   {
     return !operator==(other);
   }
@@ -61,19 +61,13 @@ public:
 //
 //   const Sample & operator[] (const UnsignedInteger index) const;
 
+  UnsignedInteger getThresholdValue() const;
+
   UnsignedInteger getSize() const;
 
   UnsignedInteger getIteration() const;
 
-  Point getSkewness() const;
-
-  Point getVariance() const;
-
-  Point getCoeficientOfVariation() const;
-
-  Point getStandardDeviation() const;
-
-  Point getMean() const;
+  Point getThresholdExceedance() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -81,14 +75,16 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
+//   static AlgoRegister reg;
+
 private:
+//   static IterativeAlgorithm * create(const int size);
   UnsignedInteger              iteration_;
   UnsignedInteger              size_;
-  PersistentCollection<Scalar> mean1Data_;
-  PersistentCollection<Scalar> mean2Data_;
-  PersistentCollection<Scalar> mean3Data_;
+   UnsignedInteger             thresholdValue_;
+  PersistentCollection<Scalar> data_;
 };
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_ITERATIVESKEWNESS_HXX */
+#endif /* OPENTURNS_ITERATIVETHRESHOLDEXCEEDANCE_HXX */

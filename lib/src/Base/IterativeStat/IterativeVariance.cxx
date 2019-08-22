@@ -51,7 +51,7 @@ String IterativeVariance::__str__(const String & offset) const
 // //   if (index >= varData_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << varData_.getSize() - 1;
 // //   return varData_[index];
 // // }
-// // 
+// //
 // const Sample & IterativeVariance::operator[] (const UnsignedInteger index) const
 // {
 //   if (index >= varData_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << varData_.getSize() - 1;
@@ -65,33 +65,57 @@ UnsignedInteger IterativeVariance::getIteration() const
 
 UnsignedInteger IterativeVariance::getSize() const
 {
-  return varData_.getSize();
+  return size_;
 }
-  
+
 Point IterativeVariance::getVariance() const
-{ 
+{
   return varData_;
 }
-  
+
+Point IterativeVariance::getCoeficientOfVariation() const
+{
+  PersistentCollection<Scalar> coeficientOfVariationData(size_, 0.0);
+
+  for (UnsignedInteger i = 0; i < size_; ++i)
+  {
+    coeficientOfVariationData[i] = pow(varData_[i], 0.5) / meanData_[i];
+  }
+
+  return coeficientOfVariationData;
+}
+
+Point IterativeVariance::getStandardErrorOfTheMean() const
+{
+  PersistentCollection<Scalar> standardErrorOfTheMean(size_, 0.0);
+
+  for (UnsignedInteger i = 0; i < size_; ++i)
+  {
+    standardErrorOfTheMean[i] = pow(varData_[i], 0.5) / pow(iteration_, 0.5);
+  }
+
+  return standardErrorOfTheMean;
+}
+
 Point IterativeVariance::getStandardDeviation() const
-{ 
+{
   PersistentCollection<Scalar> standardDeviationData(size_, 0.0);
-  
+
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
     standardDeviationData[i] = pow(varData_[i], 0.5);
   }
-  
+
   return standardDeviationData;
 }
-  
+
 Point IterativeVariance::getMean() const
-{ 
+{
   return meanData_;
 }
 
 void IterativeVariance::increment(const Scalar newData)
-{  
+{
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
     Scalar temp = meanData_[i];
@@ -123,17 +147,17 @@ void IterativeVariance::increment(const Point & newData)
 void IterativeVariance::increment(const Sample & newData)
 {
   if (newData.getDimension() != size_) throw InvalidArgumentException(HERE) << "Error: the given Sample is not compatible with the size of the iterative variance.";
-  
+
   for (UnsignedInteger j = 0; j < newData.getSize(); ++j)
   {
-    Point rawData = newData[j];
+    Point tempData = newData[j];
     for (UnsignedInteger i = 0; i < size_; ++i)
     {
       Scalar temp = meanData_[i];
-      meanData_[i] = temp + (rawData[i] - temp) / (iteration_ + 1);
+      meanData_[i] = temp + (tempData[i] - temp) / (iteration_ + 1);
       if (iteration_ > 0)
       {
-        varData_[i] = (varData_[i] * (iteration_ - 1) + (rawData[i] - temp) * (rawData[i] - meanData_[i])) / iteration_;
+        varData_[i] = (varData_[i] * (iteration_ - 1) + (tempData[i] - temp) * (tempData[i] - meanData_[i])) / iteration_;
       }
     }
     iteration_ += 1;

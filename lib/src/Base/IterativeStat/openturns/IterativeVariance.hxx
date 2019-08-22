@@ -12,23 +12,23 @@ class OT_API IterativeVariance
   : public IterativeAlgorithmImplementation
 {
   CLASSNAME
-  
+
 public:
-  
+
   explicit IterativeVariance(const UnsignedInteger size = 1);
-  
+
   IterativeVariance * clone() const;
-  
+
   void increment(const Scalar newData);
-  
+
 //   void increment(PersistentCollection<Scalar> & newData);
-  
+
   void increment(const Point & newData);
-  
+
   void increment(const Sample & newData);
-  
+
   void finalize();
-  
+
   /**
    * Comparison operator
    *
@@ -56,19 +56,23 @@ public:
 
   /* String converter */
   String __str__(const String & offset = "") const;
-  
+
 //   Sample & operator[] (const UnsignedInteger index);
-//   
+//
 //   const Sample & operator[] (const UnsignedInteger index) const;
-  
+
   UnsignedInteger getSize() const;
-  
+
   UnsignedInteger getIteration() const;
-  
+
   Point getVariance() const;
-  
+
+  Point getStandardErrorOfTheMean() const;
+
+  Point getCoeficientOfVariation() const;
+
   Point getStandardDeviation() const;
-  
+
   Point getMean() const;
 
   /** Method save() stores the object through the StorageManager */
@@ -76,7 +80,7 @@ public:
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
-  
+
 private:
   UnsignedInteger              iteration_;
   UnsignedInteger              size_;

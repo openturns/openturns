@@ -1,4 +1,4 @@
- 
+
 
 #include "openturns/IterativeAlgorithm.hxx"
 #include "openturns/Log.hxx"
@@ -53,7 +53,7 @@ String IterativeSkewness::__str__(const String & offset) const
 // //   if (index >= varData_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << varData_.getSize() - 1;
 // //   return varData_[index];
 // // }
-// // 
+// //
 // const Sample & IterativeSkewness::operator[] (const UnsignedInteger index) const
 // {
 //   if (index >= varData_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << varData_.getSize() - 1;
@@ -69,11 +69,11 @@ UnsignedInteger IterativeSkewness::getSize() const
 {
   return size_;
 }
-  
+
 Point IterativeSkewness::getSkewness() const
-{ 
+{
   PersistentCollection<Scalar> skewnessData(size_, 0.0);
-  
+
   if (iteration_ > 0)
   {
     for (UnsignedInteger i = 0; i < size_; ++i)
@@ -88,24 +88,48 @@ Point IterativeSkewness::getSkewness() const
       skewnessData[i] = 0;
     }
   }
-  
+
   return skewnessData;
 }
-  
+
 Point IterativeSkewness::getVariance() const
-{ 
+{
   PersistentCollection<Scalar> varData(size_, 0.0);
-  
+
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
     varData[i] = mean2Data_[i] - pow(mean1Data_[i], 2);
   }
-  
+
   return varData;
 }
-  
+
+Point IterativeSkewness::getCoeficientOfVariation() const
+{
+  PersistentCollection<Scalar> coeficientOfVariationData(size_, 0.0);
+
+  for (UnsignedInteger i = 0; i < size_; ++i)
+  {
+    coeficientOfVariationData[i] = pow(mean2Data_[i] - pow(mean1Data_[i], 2), 0.5) / mean1Data_[i];
+  }
+
+  return coeficientOfVariationData;
+}
+
+Point IterativeSkewness::getStandardDeviation() const
+{
+  PersistentCollection<Scalar> standardDevData(size_, 0.0);
+
+  for (UnsignedInteger i = 0; i < size_; ++i)
+  {
+    standardDevData[i] = pow(mean2Data_[i] - pow(mean1Data_[i], 2), 0.5);
+  }
+
+  return standardDevData;
+}
+
 Point IterativeSkewness::getMean() const
-{   
+{
   return mean1Data_;
 }
 
@@ -117,13 +141,13 @@ void IterativeSkewness::increment(const Scalar newData)
     Scalar temp = mean1Data_[i];
     mean1Data_[i] = temp + (pow(newData, 1) - temp)/iteration_;
   }
-  
+
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
     Scalar temp = mean2Data_[i];
     mean2Data_[i] = temp + (pow(newData, 2) - temp)/iteration_;
   }
-  
+
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
     Scalar temp = mean3Data_[i];
@@ -134,20 +158,20 @@ void IterativeSkewness::increment(const Scalar newData)
 void IterativeSkewness::increment(const Point & newData)
 {
   if (newData.getSize() != size_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the size of the iterative skewness.";
-  
+
   iteration_ += 1;
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
     Scalar temp = mean1Data_[i];
     mean1Data_[i] = temp + (pow(newData[i], 1) - temp)/iteration_;
   }
-  
+
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
     Scalar temp = mean2Data_[i];
     mean2Data_[i] = temp + (pow(newData[i], 2) - temp)/iteration_;
   }
-  
+
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
     Scalar temp = mean3Data_[i];
@@ -158,28 +182,28 @@ void IterativeSkewness::increment(const Point & newData)
 void IterativeSkewness::increment(const Sample & newData)
 {
   if (newData.getDimension() != size_) throw InvalidArgumentException(HERE) << "Error: the given Sample is not compatible with the size of the iterative skewness.";
-  
+
   for (UnsignedInteger j = 0; j < newData.getSize(); ++j)
   {
-    Point newDataJ = newData[j];
-    
+    Point tempData = newData[j];
+
     iteration_ += 1;
     for (UnsignedInteger i = 0; i < size_; ++i)
     {
       Scalar temp = mean1Data_[i];
-      mean1Data_[i] = temp + (pow(newDataJ[i], 1) - temp)/iteration_;
+      mean1Data_[i] = temp + (pow(tempData[i], 1) - temp)/iteration_;
     }
-    
+
     for (UnsignedInteger i = 0; i < size_; ++i)
     {
       Scalar temp = mean2Data_[i];
-      mean2Data_[i] = temp + (pow(newDataJ[i], 2) - temp)/iteration_;
+      mean2Data_[i] = temp + (pow(tempData[i], 2) - temp)/iteration_;
     }
-    
+
     for (UnsignedInteger i = 0; i < size_; ++i)
     {
       Scalar temp = mean3Data_[i];
-      mean3Data_[i] = temp + (pow(newDataJ[i], 3) - temp)/iteration_;
+      mean3Data_[i] = temp + (pow(tempData[i], 3) - temp)/iteration_;
     }
   }
 }

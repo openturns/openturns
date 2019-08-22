@@ -195,7 +195,7 @@ ot_add_python_module(statistics statistics_module.i
                       SpectralModel.i SpectralModel_doc.i.in
                       CovarianceModelImplementation.i CovarianceModelImplementation_doc.i.in
                       CovarianceModel.i CovarianceModel_doc.i.in
-                      StationaryCovarianceModel.i 
+                      StationaryCovarianceModel.i
                       SpectralModelFactoryImplementation.i SpectralModelFactoryImplementation_doc.i.in
                       SpectralModelFactory.i SpectralModelFactory_doc.i.in
                       UserDefinedSpectralModel.i UserDefinedSpectralModel_doc.i.in
@@ -224,10 +224,12 @@ ot_add_python_module(statistics statistics_module.i
                       HMatrixImplementation.i HMatrixImplementation_doc.i.in
                       BaseStatisticsTemplateDefs.i
                    )
-                   
+
 ot_add_python_module(iterative_statistics iterative_statistics_module.i
                       IterativeAlgorithm.i IterativeAlgorithm_doc.i.in
                       IterativeAlgorithmImplementation.i IterativeAlgorithmImplementation_doc.i.in
+                      IterativeExtrema.i IterativeExtrema_doc.i.in
+                      IterativeThresholdExceedance.i IterativeThresholdExceedance_doc.i.in
                       IterativeKurtosis.i IterativeKurtosis_doc.i.in
                       IterativeSkewness.i IterativeSkewness_doc.i.in
                       IterativeVariance.i IterativeVariance_doc.i.in
@@ -583,7 +585,7 @@ ot_add_python_module(model_process model_process_module.i
                       ARMAFactoryImplementation.i ARMAFactoryImplementation_doc.i.in
                       WhittleFactory.i WhittleFactory_doc.i.in
                       WhittleFactoryState.i WhittleFactoryState_doc.i.in
-                      ARMALikelihoodFactory.i  ARMALikelihoodFactory_doc.i.in  
+                      ARMALikelihoodFactory.i  ARMALikelihoodFactory_doc.i.in
                       ARMAFactory.i ARMAFactory_doc.i.in
 		      ConditionedGaussianProcess.i ConditionedGaussianProcess_doc.i.in
 		      KarhunenLoeveQuadratureAlgorithm.i KarhunenLoeveQuadratureAlgorithm_doc.i.in
@@ -796,7 +798,7 @@ ot_add_python_module(orthogonalbasis orthogonalbasis_module.i
                       MeixnerFactory.i MeixnerFactory_doc.i.in
                       SoizeGhanemFactory.i SoizeGhanemFactory_doc.i.in
                       OrthogonalUniVariatePolynomialFamily.i OrthogonalUniVariatePolynomialFamily_doc.i.in
-                      OrthonormalizationAlgorithmImplementation.i OrthonormalizationAlgorithmImplementation_doc.i.in 
+                      OrthonormalizationAlgorithmImplementation.i OrthonormalizationAlgorithmImplementation_doc.i.in
                       OrthonormalizationAlgorithm.i OrthonormalizationAlgorithm_doc.i.in
                       AdaptiveStieltjesAlgorithm.i AdaptiveStieltjesAlgorithm_doc.i.in
                       StandardDistributionPolynomialFactory.i StandardDistributionPolynomialFactory_doc.i.in

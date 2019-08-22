@@ -1,5 +1,5 @@
- 
- 
+
+
 
 #include "openturns/IterativeAlgorithm.hxx"
 #include "openturns/Log.hxx"
@@ -41,8 +41,8 @@ String IterativeKurtosis::__repr__() const
       << " size=" << size_
       << " mean1 values=" << mean1Data_.__repr__()
       << " mean2 values=" << mean2Data_.__repr__()
-      << " mean2 values=" << mean3Data_.__repr__()
-      << " mean3 values=" << mean4Data_.__repr__();
+      << " mean3 values=" << mean3Data_.__repr__()
+      << " mean4 values=" << mean4Data_.__repr__();
   return oss;
 }
 
@@ -56,7 +56,7 @@ String IterativeKurtosis::__str__(const String & offset) const
 // //   if (index >= varData_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << varData_.getSize() - 1;
 // //   return varData_[index];
 // // }
-// // 
+// //
 // const Sample & IterativeKurtosis::operator[] (const UnsignedInteger index) const
 // {
 //   if (index >= varData_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << varData_.getSize() - 1;
@@ -72,11 +72,11 @@ UnsignedInteger IterativeKurtosis::getSize() const
 {
   return size_;
 }
-  
+
 Point IterativeKurtosis::getKurtosis() const
-{ 
+{
   PersistentCollection<Scalar> kurtosisData(size_, 0.0);
-  
+
   if (iteration_ > 0)
   {
     for (UnsignedInteger i = 0; i < size_; ++i)
@@ -91,14 +91,14 @@ Point IterativeKurtosis::getKurtosis() const
       kurtosisData[i] = 0;
     }
   }
-  
+
   return kurtosisData;
 }
-  
+
 Point IterativeKurtosis::getSkewness() const
-{ 
+{
   PersistentCollection<Scalar> skewnessData(size_, 0.0);
-  
+
   if (iteration_ > 0)
   {
     for (UnsignedInteger i = 0; i < size_; ++i)
@@ -113,24 +113,48 @@ Point IterativeKurtosis::getSkewness() const
       skewnessData[i] = 0;
     }
   }
-  
+
   return skewnessData;
 }
-  
+
 Point IterativeKurtosis::getVariance() const
-{ 
+{
   PersistentCollection<Scalar> varData(size_, 0.0);
-  
+
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
     varData[i] = mean2Data_[i] - pow(mean1Data_[i], 2);
   }
-  
+
   return varData;
 }
-  
+
+Point IterativeKurtosis::getCoeficientOfVariation() const
+{
+  PersistentCollection<Scalar> coeficientOfVariationData(size_, 0.0);
+
+  for (UnsignedInteger i = 0; i < size_; ++i)
+  {
+    coeficientOfVariationData[i] = pow(mean2Data_[i] - pow(mean1Data_[i], 2), 0.5) / mean1Data_[i];
+  }
+
+  return coeficientOfVariationData;
+}
+
+Point IterativeKurtosis::getStandardDeviation() const
+{
+  PersistentCollection<Scalar> standardDevData(size_, 0.0);
+
+  for (UnsignedInteger i = 0; i < size_; ++i)
+  {
+    standardDevData[i] = pow(mean2Data_[i] - pow(mean1Data_[i], 2), 0.5);
+  }
+
+  return standardDevData;
+}
+
 Point IterativeKurtosis::getMean() const
-{   
+{
   return mean1Data_;
 }
 
@@ -142,19 +166,19 @@ void IterativeKurtosis::increment(const Scalar newData)
     Scalar temp = mean1Data_[i];
     mean1Data_[i] = temp + (pow(newData, 1) - temp)/iteration_;
   }
-  
+
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
     Scalar temp = mean2Data_[i];
     mean2Data_[i] = temp + (pow(newData, 2) - temp)/iteration_;
   }
-  
+
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
     Scalar temp = mean3Data_[i];
     mean3Data_[i] = temp + (pow(newData, 3) - temp)/iteration_;
   }
-  
+
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
     Scalar temp = mean4Data_[i];
@@ -164,27 +188,27 @@ void IterativeKurtosis::increment(const Scalar newData)
 
 void IterativeKurtosis::increment(const Point & newData)
 {
-  if (newData.getSize() != size_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the size of the iterative skewness.";
-  
+  if (newData.getSize() != size_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the size of the iterative kurtosis.";
+
   iteration_ += 1;
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
     Scalar temp = mean1Data_[i];
     mean1Data_[i] = temp + (pow(newData[i], 1) - temp)/iteration_;
   }
-  
+
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
     Scalar temp = mean2Data_[i];
     mean2Data_[i] = temp + (pow(newData[i], 2) - temp)/iteration_;
   }
-  
+
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
     Scalar temp = mean3Data_[i];
     mean3Data_[i] = temp + (pow(newData[i], 3) - temp)/iteration_;
   }
-  
+
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
     Scalar temp = mean4Data_[i];
@@ -194,35 +218,35 @@ void IterativeKurtosis::increment(const Point & newData)
 
 void IterativeKurtosis::increment(const Sample & newData)
 {
-  if (newData.getDimension() != size_) throw InvalidArgumentException(HERE) << "Error: the given Sample is not compatible with the size of the iterative skewness.";
-  
+  if (newData.getDimension() != size_) throw InvalidArgumentException(HERE) << "Error: the given Sample is not compatible with the size of the iterative kurtosis.";
+
   for (UnsignedInteger j = 0; j < newData.getSize(); ++j)
   {
-    Point newDataJ = newData[j];
-    
+    Point tempData = newData[j];
+
     iteration_ += 1;
     for (UnsignedInteger i = 0; i < size_; ++i)
     {
       Scalar temp = mean1Data_[i];
-      mean1Data_[i] = temp + (pow(newDataJ[i], 1) - temp)/iteration_;
+      mean1Data_[i] = temp + (pow(tempData[i], 1) - temp)/iteration_;
     }
-    
+
     for (UnsignedInteger i = 0; i < size_; ++i)
     {
       Scalar temp = mean2Data_[i];
-      mean2Data_[i] = temp + (pow(newDataJ[i], 2) - temp)/iteration_;
+      mean2Data_[i] = temp + (pow(tempData[i], 2) - temp)/iteration_;
     }
-    
+
     for (UnsignedInteger i = 0; i < size_; ++i)
     {
       Scalar temp = mean3Data_[i];
-      mean3Data_[i] = temp + (pow(newDataJ[i], 3) - temp)/iteration_;
+      mean3Data_[i] = temp + (pow(tempData[i], 3) - temp)/iteration_;
     }
-    
+
     for (UnsignedInteger i = 0; i < size_; ++i)
     {
       Scalar temp = mean4Data_[i];
-      mean4Data_[i] = temp + (pow(newDataJ[i], 4) - temp)/iteration_;
+      mean4Data_[i] = temp + (pow(tempData[i], 4) - temp)/iteration_;
     }
   }
 }
