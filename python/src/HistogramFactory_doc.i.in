@@ -15,6 +15,28 @@ The bandwidth is the AMISE-optimal one:
 where :math:`\sigma_n^2` is the non biaised variance of the data.
 The range is :math:`[min(data), max(data)]`
 
+Examples
+--------
+Create an histogram:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(50)
+>>> histogram = ot.HistogramFactory().build(sample)
+
+Create an histogram from a number of bins:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(50)
+>>> binNumber = 10
+>>> histogram = ot.HistogramFactory().build(sample,binNumber)
+
+Create an histogram from a bandwidth:
+
+>>> import openturns as ot
+>>> sample = ot.Normal().getSample(50)
+>>> bandwidth = 0.5
+>>> histogram = ot.HistogramFactory().build(sample,bandwidth)
+
 See also
 --------
 DistributionFactory, Histogram"
