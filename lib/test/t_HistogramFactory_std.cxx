@@ -77,6 +77,17 @@ int main(int, char *[])
     sample = Sample(size, Point(1, 1.0));
     estimatedDistribution = factory.build(sample);
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
+    // Build from first and width
+    // 1. Create a Sample
+    Sample newsample(Normal().getSample(100));
+    // 2. Set the parameters first and width
+    Scalar first = newsample.getMin()[0];
+    UnsignedInteger binNumber = 10;
+    Scalar binwidth = 1.;
+    Point width = Point(binNumber,binwidth);
+    // 3. Create a new histogram from first and width
+    Distribution newDistribution(factory.build(newsample,first,width));
+    fullprint << "New histogram=" << newDistribution << std::endl;
   }
   catch (TestFailed & ex)
   {

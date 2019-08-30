@@ -63,6 +63,13 @@ Distribution HistogramFactory::build(const Sample & sample,
   return buildAsHistogram(sample, binNumber).clone();
 }
 
+Distribution HistogramFactory::build(const Sample & sample,
+                                     const Scalar first,
+                                     const Point & width) const
+{
+  return buildAsHistogram(sample, first, width).clone();
+}
+
 Distribution HistogramFactory::build() const
 {
   return buildAsHistogram().clone();
@@ -129,6 +136,65 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
   }
   const Scalar inverseArea = 1.0 / (hOpt * size);
   Histogram result(min, Point(binNumber, hOpt), heights * inverseArea);
+  result.setDescription(sample.getDescription());
+  return result;
+}
+
+Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
+    const Scalar first,
+    const Point & width) const
+{
+  const UnsignedInteger size = sample.getSize();
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram based on an empty sample.";
+  if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build an Histogram only if dimension equals 1, here dimension=" << sample.getDimension();
+  const UnsignedInteger binNumber = width.getSize();
+  if (binNumber == 0) throw InvalidArgumentException(HERE) << "Error: expected a positive number of bin, got 0.";
+  // Construct the histogram
+  Point heights(binNumber);
+  // It will extends from min to max.
+  const Scalar minvalue = sample.getMin()[0];
+  const Scalar maxvalue = sample.getMax()[0];
+  if (!SpecFunc::IsNormal(minvalue) || !SpecFunc::IsNormal(maxvalue)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
+  if (maxvalue == minvalue)
+  {
+    const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-DefaultCDFEpsilon");
+    const Scalar delta = std::max(std::abs(minvalue), 10.0) * epsilon;
+    Histogram result(minvalue - 0.5 * delta, Point(1, delta), Point(1, 1.0));
+    result.setDescription(sample.getDescription());
+    return result;
+  }
+  if (minvalue < first) throw InvalidArgumentException(HERE) << "Error: the minimum of the sample is smaller than first";
+  // Compute the right bound of the histogram = first + the sum of the widths
+  Scalar rightBound = first;
+  for(UnsignedInteger j = 0; j < binNumber; ++j)
+  {
+    if (width[j] <= 0.) throw InvalidArgumentException(HERE) << "Error: at least one width is nonpositive";
+    rightBound += width[j];
+  }
+  if (maxvalue >= rightBound) throw InvalidArgumentException(HERE) << "Error: the maximum of the sample is greater than the right boundary of the histogram";
+  // Count the number of points in each class with a naive loop
+  Scalar left = first;
+  Scalar right;
+  for(UnsignedInteger j = 0; j < binNumber; ++j) // Loop over the bins
+  {
+    right = left + width[j];
+    for(UnsignedInteger i = 0; i < size; ++i)    // Loop over the values
+    {
+      if ((sample(i,0) >= left) && (sample(i,0)<right))
+      {
+        heights[j] += 1.0;
+      }
+    }
+    left = right;
+  }
+  // Compute the area
+  Scalar area = 0.;
+  for(UnsignedInteger j = 0; j < binNumber; ++j) // Loop over the bins
+  {
+    area += width[j] * heights[j];
+  }
+  const Scalar inverseArea = 1.0 / area;
+  Histogram result(first, width, heights * inverseArea);
   result.setDescription(sample.getDescription());
   return result;
 }

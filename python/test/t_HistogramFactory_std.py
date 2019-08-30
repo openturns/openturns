@@ -26,6 +26,10 @@ try:
     estimatedHistogram = factory.buildAsHistogram(sample, 15)
     print("Histogram          =", distribution)
     print("Estimated histogram=", estimatedHistogram)
+    first = -2.
+    width = ot.Point(5,1.)
+    estimatedHistogram = factory.buildAsHistogram(sample, first, width)
+    print("Estimated histogram=", estimatedHistogram)
     estimatedHistogram = factory.buildAsHistogram()
     print("Default histogram=", estimatedHistogram)
     sample = [[0.0]] * size

@@ -50,12 +50,18 @@ public:
                      const Scalar bandwidth) const;
   Distribution build(const Sample & sample,
                      const UnsignedInteger binNumber) const;
+  Distribution build(const Sample & sample,
+                     const Scalar first,
+                     const Point & width) const;
   Distribution build() const;
   Histogram buildAsHistogram(const Sample & sample) const;
   Histogram buildAsHistogram(const Sample & sample,
                              const Scalar bandwidth) const;
   Histogram buildAsHistogram(const Sample & sample,
                              const UnsignedInteger binNumber) const;
+  Histogram buildAsHistogram(const Sample & sample,
+                             const Scalar first,
+                             const Point & width) const;
   Histogram buildAsHistogram() const;
 
   /** Compute the bandwidth according to Silverman's rule */

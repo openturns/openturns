@@ -37,6 +37,24 @@ Create an histogram from a bandwidth:
 >>> bandwidth = 0.5
 >>> histogram = ot.HistogramFactory().build(sample,bandwidth)
 
+Create an histogram from a first value and widths:
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.Normal().getSample(50)
+>>> first = -4
+>>> width = ot.Point(7,1.)
+>>> histogram = ot.HistogramFactory().build(sample,first,width)
+
+Compute Silverman's bandwidth:
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.Normal().getSample(50)
+>>> factory = ot.HistogramFactory()
+>>> factory.computeSilvermanBandwidth(sample)
+0.8207186166881978
+
 See also
 --------
 DistributionFactory, Histogram"
