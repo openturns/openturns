@@ -172,6 +172,24 @@ int main(int, char *[])
         indices[2] = 2;
         Scalar value = sensitivity.getSobolIndex(indices);
         fullprint << "Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - sobol(indices, a) / covTh) << std::endl;
+        // First order grouped indice
+        indices = Indices(2);
+        indices[0] = 0;
+        indices[1] = 1;
+        Scalar exactS = sobol(indices, a) / covTh;
+        value = sensitivity.getSobolGroupedIndex(indices);
+        fullprint << "Grouped First Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - exactS) << std::endl;
+        // Total order grouped indice
+        indices = Indices(2);
+        indices[0] = 0;
+        indices[1] = 1;
+        value = sensitivity.getSobolGroupedTotalIndex(indices);
+        Indices complementaryindices = Indices(3);
+        complementaryindices[0] = 2;
+        complementaryindices[1] = 3;
+        complementaryindices[2] = 4;
+        exactS = 1 - sensitivity.getSobolGroupedIndex(complementaryindices);
+        fullprint << "Grouped Total Sobol index " << indices << " =" << std::fixed << std::setprecision(5) << value << " absolute error=" << std::scientific << std::setprecision(1) << std::abs(value - exactS) << std::endl;
       }
     }
   }
