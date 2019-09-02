@@ -1451,6 +1451,7 @@ struct Sortable
 SampleImplementation SampleImplementation::sortAccordingToAComponent(const UnsignedInteger index) const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
+  if (index >= getDimension()) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << getDimension();
 
   Collection<Sortable> sortables(size_);
   for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = Sortable((*this)[i], index);
