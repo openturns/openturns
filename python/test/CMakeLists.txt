@@ -671,6 +671,7 @@ ot_pyinstallcheck_test (CanonicalTensorGradient_std IGNOREOUT)
 ot_pyinstallcheck_test (TensorApproximationAlgorithm_std)
 ot_pyinstallcheck_test (LinearModelAlgorithm_std)
 ot_pyinstallcheck_test (LinearModelAnalysis_std)
+ot_pyinstallcheck_test (LinearModelStepwiseAlgorithm_std)
 
 ## Sensitivity
 ot_pyinstallcheck_test (ANCOVA_std)
