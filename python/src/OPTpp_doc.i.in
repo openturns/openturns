@@ -95,7 +95,7 @@ names : :class:`~openturns.Description`
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.OPTpp.GetAlgorithmNames())
+>>> print(ot.OPTpp.GetAlgorithmNames())  # doctest: +SKIP
 [OptBaNewton,OptBaQNewton,..."
 
 // ---------------------------------------------------------------------
