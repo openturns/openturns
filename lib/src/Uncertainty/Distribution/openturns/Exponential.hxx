@@ -71,13 +71,17 @@ public:
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
   Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Scalar scalar) const;
   using ContinuousDistribution::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Scalar scalar) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
   Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Scalar scalar) const;
   using ContinuousDistribution::computeComplementaryCDF;
+  Scalar computeComplementaryCDF(const Scalar scalar) const;
   Scalar computeComplementaryCDF(const Point & point) const;
 
   /** Compute the entropy of the distribution */

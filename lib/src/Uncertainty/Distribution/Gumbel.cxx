@@ -115,16 +115,26 @@ Scalar Gumbel::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar expX = std::exp(-(1.0/beta_) * (point[0] - gamma_));
-  return (1.0/beta_) * expX * std::exp(-expX);
+  return computePDF(point[0]);
+}
+
+Scalar Gumbel::computePDF(const Scalar u) const
+{
+  const Scalar expX = std::exp(-(1.0 / beta_) * (u - gamma_));
+  return (1.0 / beta_) * expX * std::exp(-expX);
 }
 
 Scalar Gumbel::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar X = -(1.0/beta_) * (point[0] - gamma_);
-  return std::log((1.0/beta_)) + X - std::exp(X);
+  return computeLogPDF(point[0]);
+}
+
+Scalar Gumbel::computeLogPDF(const Scalar u) const
+{
+  const Scalar X = -(1.0 / beta_) * (u - gamma_);
+  return std::log((1.0 / beta_)) + X - std::exp(X);
 }
 
 
@@ -133,7 +143,12 @@ Scalar Gumbel::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar x = -(1.0/beta_) * (point[0] - gamma_);
+  return computeCDF(point[0]);
+}
+
+Scalar Gumbel::computeCDF(const Scalar u) const
+{
+  const Scalar x = -(1.0 / beta_) * (u - gamma_);
   const Scalar expX = std::exp(x);
   return std::exp(-expX);
 }
@@ -142,7 +157,12 @@ Scalar Gumbel::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar x = -(1.0/beta_) * (point[0] - gamma_);
+  return computeComplementaryCDF(point[0]);
+}
+
+Scalar Gumbel::computeComplementaryCDF(const Scalar u) const
+{
+  const Scalar x = -(1.0 / beta_) * (u - gamma_);
   const Scalar expX = std::exp(x);
   // -2.419227917539996841 = numerical bound for which the approximation has a relative error less than 1e-16
   if (x < -2.419227917539996841)

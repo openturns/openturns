@@ -116,7 +116,12 @@ Scalar Exponential::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar x = point[0] - gamma_;
+  return computePDF(point[0]);
+}
+
+Scalar Exponential::computePDF(const Scalar u) const
+{
+  const Scalar x = u - gamma_;
   if (x < 0.0) return 0.0;
   return lambda_ * std::exp(-lambda_ * x);
 }
@@ -125,7 +130,12 @@ Scalar Exponential::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar x = point[0] - gamma_;
+  return computeLogPDF(point[0]);
+}
+
+Scalar Exponential::computeLogPDF(const Scalar u) const
+{
+  const Scalar x = u - gamma_;
   if (x < 0.0) return SpecFunc::LogMinScalar;
   return std::log(lambda_) - lambda_ * x;
 }
@@ -135,7 +145,12 @@ Scalar Exponential::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar x = point[0] - gamma_;
+  return computeCDF(point[0]);
+}
+
+Scalar Exponential::computeCDF(const Scalar u) const
+{
+  const Scalar x = u - gamma_;
   if (x <= 0.0) return 0.0;
   return -expm1(-lambda_ * x);
 }
@@ -145,7 +160,13 @@ Scalar Exponential::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar x = point[0] - gamma_;
+  return computeComplementaryCDF(point[0]);
+}
+
+/* Get the complementary CDF of the distribution */
+Scalar Exponential::computeComplementaryCDF(const Scalar u) const
+{
+  const Scalar x = u - gamma_;
   if (x < 0.0) return 1.0;
   return std::exp(-lambda_ * x);
 }
