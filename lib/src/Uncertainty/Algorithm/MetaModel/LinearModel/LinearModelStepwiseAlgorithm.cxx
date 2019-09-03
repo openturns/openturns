@@ -394,12 +394,6 @@ void LinearModelStepwiseAlgorithm::run()
 {
   if (hasRun_) return;
 
-  if (outputSample_.getDimension() != 1)
-    throw InvalidArgumentException(HERE) << "Error: cannot perform step method based on output sample of dimension different from 1.";
-  if (inputSample_.getSize() != outputSample_.getSize())
-    throw InvalidArgumentException(HERE) << "Error: the size of the output sample=" << outputSample_.getSize() << " is different from the size of the input sample=" << inputSample_.getSize();
-
-  LOGDEBUG(OSS() << "Running LinearModelStepwiseAlgorithm " << __str__());
   const UnsignedInteger size(inputSample_.getSize());
   Y_ = Matrix(size, 1, outputSample_.getImplementation()->getData());
   const AggregatedFunction f(basis_);
@@ -531,7 +525,7 @@ void LinearModelStepwiseAlgorithm::run()
       currentIndices_ = newIndices;
     }
     LOGDEBUG(OSS() << "Index set is now " << currentIndices_.__str__());
-  }
+  } // end while
   // Update Q,(R^T)^{-1}, residual = Y - Q*Q^T*Y  (X=QR)
   const Scalar criterion(penalty_ * p + computeLogLikelihood());
   LOGDEBUG(OSS() << "Final indices are " << currentIndices_.__str__() << " and criterion is " << criterion);
