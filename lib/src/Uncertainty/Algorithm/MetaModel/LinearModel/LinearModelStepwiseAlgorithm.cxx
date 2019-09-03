@@ -406,41 +406,6 @@ void LinearModelStepwiseAlgorithm::run()
   Sample fx(f(inputSample_));
   LOGDEBUG(OSS() << "Total number of columns=" << fx.getDimension());
 
-  // Normalize input to improve numerical robustness.
-  Point normalizationMean(fx.computeMean());
-  Point normalizationStdev(fx.computeStandardDeviationPerComponent());
-  // Do not normalize the constant term
-  UnsignedInteger intercept = normalizationStdev.getDimension();
-  const Bool normalize = ResourceMap::GetAsBool("LinearModelStepwiseAlgorithm-normalize");
-  if (normalize)
-  {
-    for (UnsignedInteger i = 0; i < normalizationStdev.getDimension(); ++i)
-    {
-      if (normalizationStdev[i] == 0.0 && normalizationMean[i] == 1.0)
-      {
-        intercept = i;
-        break;
-      }
-    }
-  }
-
-  // We normalize only if there is a constant term
-  if (intercept < normalizationStdev.getDimension())
-  {
-    normalizationStdev[intercept] = 1.0;
-    normalizationMean[intercept] = 0.0;
-    fx -= normalizationMean;
-    for (UnsignedInteger i = 0; i < normalizationStdev.getDimension(); ++i)
-    {
-      if (std::abs(normalizationStdev[i]) <= SpecFunc::MinScalar)
-      {
-        normalizationStdev[i] = 1.0;
-      }
-    }
-    fx /= normalizationStdev;
-    LOGDEBUG(OSS() << "Normalize columns: index(intercept)=" << (intercept < normalizationStdev.getDimension() ? (OSS() << intercept).str() : "none") << " mean=" << normalizationMean << " stdev=" << normalizationStdev);
-  }
-
   {
     // Reduce scope of Xt
     Matrix Xt(fx.getDimension(), size, fx.getImplementation()->getData());
@@ -570,36 +535,6 @@ void LinearModelStepwiseAlgorithm::run()
   // Update Q,(R^T)^{-1}, residual = Y - Q*Q^T*Y  (X=QR)
   const Scalar criterion(penalty_ * p + computeLogLikelihood());
   LOGDEBUG(OSS() << "Final indices are " << currentIndices_.__str__() << " and criterion is " << criterion);
-
-  // Revert normalization
-  if (intercept < normalizationStdev.getDimension() && columnMaxToCurrent[intercept] < columnMaxToCurrent.getSize())
-  {
-    Point scaling(p, 1.0);
-    Point translation(p);
-    for (UnsignedInteger i = 0; i < columnMaxToCurrent.getSize(); ++i)
-    {
-      const UnsignedInteger currentIndex = columnMaxToCurrent[i];
-      if (currentIndex < columnMaxToCurrent.getSize())
-      {
-        scaling[currentIndex] = normalizationStdev[i];
-        translation[currentIndex] = normalizationMean[i];
-      }
-    }
-    for (UnsignedInteger j = 0; j < currentX_.getNbColumns(); ++j)
-    {
-      const Scalar scale = scaling[j];
-      const Scalar translate = translation[j];
-      for (UnsignedInteger i = 0; i < currentX_.getNbRows(); ++i)
-      {
-        currentX_(i, j) = translate + scale * currentX_(i, j);
-      }
-    }
-    Matrix R;
-    currentQ_ = currentX_.computeQR(R, size < p, true);
-    const MatrixImplementation b(*IdentityMatrix(p).getImplementation());
-    //                                                     keep intact, lower, transposed
-    currentInvRt_ = R.getImplementation()->solveLinearSystemTri(b, false, false, true);
-  }
 
   Point regression(p);
   const Matrix QtY(currentQ_.getImplementation()->genProd(*(Y_.getImplementation()), true, false));
