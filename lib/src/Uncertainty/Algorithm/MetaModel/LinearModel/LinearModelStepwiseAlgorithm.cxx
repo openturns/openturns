@@ -72,7 +72,10 @@ LinearModelStepwiseAlgorithm::LinearModelStepwiseAlgorithm(const Sample & inputS
   , condensedFormula_(basis.__str__())
   , hasRun_(false)
 {
-  //  Nothing to do
+  if (outputSample.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "Error: cannot perform step method based on output sample of dimension different from 1.";
+  if (inputSample.getSize() != outputSample.getSize())
+    throw InvalidArgumentException(HERE) << "Error: the size of the output sample=" << outputSample_.getSize() << " is different from the size of the input sample=" << inputSample_.getSize();
 }
 
 /* Parameters constructor BOTH */
@@ -95,7 +98,10 @@ LinearModelStepwiseAlgorithm::LinearModelStepwiseAlgorithm(const Sample & inputS
   , condensedFormula_(basis.__str__())
   , hasRun_(false)
 {
-  //  Nothing to do
+  if (outputSample.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "Error: cannot perform step method based on output sample of dimension different from 1.";
+  if (inputSample.getSize() != outputSample.getSize())
+    throw InvalidArgumentException(HERE) << "Error: the size of the output sample=" << outputSample_.getSize() << " is different from the size of the input sample=" << inputSample_.getSize();
 }
 
 /* Virtual constructor */
