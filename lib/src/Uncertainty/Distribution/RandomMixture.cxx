@@ -45,7 +45,6 @@
 #include "openturns/Poisson.hxx"
 #include "openturns/ComplexTensor.hxx"
 #include "openturns/FFT.hxx"
-#include "openturns/GaussKronrod.hxx"
 #include "openturns/TBB.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/SobolSequence.hxx"
@@ -86,6 +85,7 @@ RandomMixture::RandomMixture()
   , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
+  , algo_()
 {
   setName("RandomMixture");
   setDimension(1);
@@ -117,6 +117,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
+  , algo_()
 {
   setName("RandomMixture");
   setDimension(1);
@@ -152,6 +153,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
+  , algo_()
 {
   setName("RandomMixture");
   setDimension(1);
@@ -188,6 +190,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
+  , algo_()
 {
   setName("RandomMixture");
   if (constant.getSize() > 3) throw InvalidDimensionException(HERE) << "RandomMixture only possible for dimension 1,2 or 3";
@@ -225,6 +228,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
+  , algo_()
 {
   setName("RandomMixture");
   const UnsignedInteger dimension = weights.getNbRows();
@@ -259,6 +263,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
+  , algo_()
 {
   setName("RandomMixture");
   const UnsignedInteger dimension = constant.getSize();
@@ -291,6 +296,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , pdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultPDFEpsilon" ))
   , cdfPrecision_(ResourceMap::GetAsScalar( "RandomMixture-DefaultCDFEpsilon" ))
   , equivalentNormal_()
+  , algo_()
 {
   setName("RandomMixture");
   const UnsignedInteger dimension = weights.getDimension();
@@ -1052,53 +1058,132 @@ Point RandomMixture::computeDDF(const Point & point) const
   return DistributionImplementation::computeDDF(point);
 }
 
-/* Wrapper for the convolution in the 1D case with 2 atoms */
-struct RandomMixture2AtomsWrapper
+/* Integration kernels for the convolution in the 1D case with 2 continuous atoms */
+namespace
 {
-  RandomMixture2AtomsWrapper(const Scalar alpha1,
-                             const Scalar alpha2,
-                             const Distribution & atom1,
-                             const Distribution & atom2,
-                             const Scalar z0)
-    : alpha1_(alpha1)
-    , alpha2_(alpha2)
-    , atom1_(atom1)
-    , atom2_(atom2)
-    , z0_(z0)
+  // Class used to wrap the kernel of the integral defining the PDF of the convolution
+  class PDFKernelRandomMixture: public UniVariateFunctionImplementation
   {
-    // Nothing to do
-  }
+  public:
+    PDFKernelRandomMixture(const Scalar alpha1,
+	      const Scalar alpha2,
+	      const Pointer<DistributionImplementation> & p_atom1,
+	      const Pointer<DistributionImplementation> & p_atom2,
+	      const Scalar z0)
+      : UniVariateFunctionImplementation()
+      , alpha1_(alpha1)
+      , alpha2_(alpha2)
+      , p_atom1_(p_atom1)
+      , p_atom2_(p_atom2)
+      , z0_(z0)
+    {
+      // Nothing to do
+    };
+
+    PDFKernelRandomMixture * clone() const
+    {
+      return new PDFKernelRandomMixture(*this);
+    }
+
   // Z = alpha0 + alpha1 X1 + alpha2 X2
-  Point convolutionPDFKernel(const Point & point) const
-  {
-    const Scalar t = point[0];
-    const Scalar pdf = atom1_.computePDF(t);
-    if (pdf == 0.0) return Point(1, 0.0);
-    return Point(1, pdf * atom2_.computePDF((z0_ - alpha1_ * t) / alpha2_));
-  }
+    Scalar operator() (const Scalar u) const
+    {
+      const Scalar pdf = p_atom1_->computePDF(u);
+      if (pdf == 0.0) return 0.0;
+    return pdf * p_atom2_->computePDF((z0_ - alpha1_ * u) / alpha2_);
+    }
 
-  Point convolutionCDFKernel(const Point & point) const
-  {
-    const Scalar t = point[0];
-    const Scalar pdf = atom1_.computePDF(t);
-    if (pdf == 0.0) return Point(1, 0.0);
-    return Point(1, pdf * atom2_.computeCDF((z0_ - alpha1_ * t) / alpha2_));
-  }
+  private:
+    const Scalar alpha1_;
+    const Scalar alpha2_;
+    const Pointer<DistributionImplementation> p_atom1_;
+    const Pointer<DistributionImplementation> p_atom2_;
+    const Scalar z0_;
 
-  Point convolutionComplementaryCDFKernel(const Point & point) const
-  {
-    const Scalar t = point[0];
-    const Scalar pdf = atom1_.computePDF(t);
-    if (pdf == 0.0) return Point(1, 0.0);
-    return Point(1, pdf * atom2_.computeComplementaryCDF((z0_ - alpha1_ * t) / alpha2_));
-  }
+  }; // class PDFKernelRandomMixture
 
-  const Scalar alpha1_;
-  const Scalar alpha2_;
-  const Distribution & atom1_;
-  const Distribution & atom2_;
-  const Scalar z0_;
-};
+  // Class used to wrap the kernel of the integral defining the CDF of the convolution
+  class CDFKernelRandomMixture: public UniVariateFunctionImplementation
+  {
+  public:
+    CDFKernelRandomMixture(const Scalar alpha1,
+	      const Scalar alpha2,
+	      const Pointer<DistributionImplementation> & p_atom1,
+	      const Pointer<DistributionImplementation> & p_atom2,
+	      const Scalar z0)
+      : UniVariateFunctionImplementation()
+      , alpha1_(alpha1)
+      , alpha2_(alpha2)
+      , p_atom1_(p_atom1)
+      , p_atom2_(p_atom2)
+      , z0_(z0)
+    {
+      // Nothing to do
+    };
+
+    CDFKernelRandomMixture * clone() const
+    {
+      return new CDFKernelRandomMixture(*this);
+    }
+
+  // Z = alpha0 + alpha1 X1 + alpha2 X2
+    Scalar operator() (const Scalar u) const
+    {
+      const Scalar pdf = p_atom1_->computePDF(u);
+      if (pdf == 0.0) return 0.0;
+      return pdf * p_atom2_->computeCDF((z0_ - alpha1_ * u) / alpha2_);
+    }
+
+  private:
+    const Scalar alpha1_;
+    const Scalar alpha2_;
+    const Pointer<DistributionImplementation> p_atom1_;
+    const Pointer<DistributionImplementation> p_atom2_;
+    const Scalar z0_;
+
+  }; // class CDFKernelRandomMixture
+
+  // Class used to wrap the kernel of the integral defining the complementary CDF of the convolution
+  class ComplementaryCDFKernelRandomMixture: public UniVariateFunctionImplementation
+  {
+  public:
+    ComplementaryCDFKernelRandomMixture(const Scalar alpha1,
+	      const Scalar alpha2,
+	      const Pointer<DistributionImplementation> & p_atom1,
+	      const Pointer<DistributionImplementation> & p_atom2,
+	      const Scalar z0)
+      : UniVariateFunctionImplementation()
+      , alpha1_(alpha1)
+      , alpha2_(alpha2)
+      , p_atom1_(p_atom1)
+      , p_atom2_(p_atom2)
+      , z0_(z0)
+    {
+      // Nothing to do
+    };
+
+    ComplementaryCDFKernelRandomMixture * clone() const
+    {
+      return new ComplementaryCDFKernelRandomMixture(*this);
+    }
+
+  // Z = alpha0 + alpha1 X1 + alpha2 X2
+    Scalar operator() (const Scalar u) const
+    {
+      const Scalar pdf = p_atom1_->computePDF(u);
+      if (pdf == 0.0) return 0.0;
+      return pdf * p_atom2_->computeComplementaryCDF((z0_ - alpha1_ * u) / alpha2_);
+    }
+
+  private:
+    const Scalar alpha1_;
+    const Scalar alpha2_;
+    const Pointer<DistributionImplementation> p_atom1_;
+    const Pointer<DistributionImplementation> p_atom2_;
+    const Scalar z0_;
+
+  }; // class ComplementaryCDFKernelRandomMixture
+} // namespace
 
 /* Get the PDF of the RandomMixture. It uses the Poisson inversion formula as described in the reference:
    "Abate, J. and Whitt, W. (1992). The Fourier-series method for inverting
@@ -1173,10 +1258,8 @@ Scalar RandomMixture::computePDF(const Point & point) const
       lower = std::max(a, uc);
       upper = std::min(b, ud);
     }
-    GaussKronrod algo;
-    const RandomMixture2AtomsWrapper convolutionKernelWrapper(alpha1, alpha2, distributionCollection_[0], distributionCollection_[1], z0);
-    const Function convolutionKernel(bindMethod<RandomMixture2AtomsWrapper, Point, Point>(convolutionKernelWrapper, &RandomMixture2AtomsWrapper::convolutionPDFKernel, 1, 1));
-    return algo.integrate(convolutionKernel, Interval(lower, upper))[0] / std::abs(alpha2);
+    const PDFKernelRandomMixture convolutionKernel(alpha1, alpha2, distributionCollection_[0].getImplementation(), distributionCollection_[1].getImplementation(), z0);
+    return algo_.integrate(convolutionKernel, lower, upper) / std::abs(alpha2);
   }
 
   LOGDEBUG(OSS() << "Equivalent normal=" << equivalentNormal_);
@@ -2137,8 +2220,6 @@ Scalar RandomMixture::computeCDF(const Point & point) const
     const Scalar z0 = x - constant_[0];
     const Scalar alpha1 = weights_(0, 0);
     const Scalar alpha2 = weights_(0, 1);
-    const RandomMixture2AtomsWrapper convolutionKernelWrapper(alpha1, alpha2, distributionCollection_[0], distributionCollection_[1], z0);
-    GaussKronrod algo;
     // Get the bounds of the atoms
     const Scalar a = distributionCollection_[0].getRange().getLowerBound()[0];
     const Scalar b = distributionCollection_[0].getRange().getUpperBound()[0];
@@ -2148,7 +2229,7 @@ Scalar RandomMixture::computeCDF(const Point & point) const
     if (alpha2 > 0.0)
     {
       // F(z) = \int_R F_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1
-      const Function convolutionKernel(bindMethod<RandomMixture2AtomsWrapper, Point, Point>(convolutionKernelWrapper, &RandomMixture2AtomsWrapper::convolutionCDFKernel, 1, 1));
+      const CDFKernelRandomMixture convolutionKernel(alpha1, alpha2, distributionCollection_[0].getImplementation(), distributionCollection_[1].getImplementation(), z0);
       // bounds:
       // x1 >= a otherwise p_X1 == 0
       // x1 <= b otherwise p_X1 == 0
@@ -2163,7 +2244,7 @@ Scalar RandomMixture::computeCDF(const Point & point) const
         const Scalar lower = std::max(a, alpha);
         const Scalar upper = std::min(b, beta);
         Scalar cdf = 0.0;
-        if (lower < upper) cdf = algo.integrate(convolutionKernel, Interval(lower, upper))[0];
+        if (lower < upper) cdf = algo_.integrate(convolutionKernel, lower, upper);
         // Take into account a possible missing tail:
         // \int_a^alpha F_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1 = F_X1(alpha)
         if (lower > a) cdf += distributionCollection_[0].computeCDF(alpha);
@@ -2177,14 +2258,14 @@ Scalar RandomMixture::computeCDF(const Point & point) const
       const Scalar lower = std::max(a, alpha);
       const Scalar upper = std::min(b, beta);
       Scalar cdf = 0.0;
-      if (lower < upper) cdf = algo.integrate(convolutionKernel, Interval(lower, upper))[0];
+      if (lower < upper) cdf = algo_.integrate(convolutionKernel, lower, upper);
       // Take into account a possible missing tail:
       // \int_beta^b F_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1 = Fbar_X1(beta)
       if (upper < b) cdf += distributionCollection_[0].computeComplementaryCDF(beta);
       return cdf;
     } // alpha2 > 0
     // F(z) = \int_R Fbar_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1
-    const Function convolutionKernel(bindMethod<RandomMixture2AtomsWrapper, Point, Point>(convolutionKernelWrapper, &RandomMixture2AtomsWrapper::convolutionComplementaryCDFKernel, 1, 1));
+    const ComplementaryCDFKernelRandomMixture convolutionKernel(alpha1, alpha2, distributionCollection_[0].getImplementation(), distributionCollection_[1].getImplementation(), z0);
     // bounds:
     // x1 >= a otherwise p_X1 == 0
     // x1 <= b otherwise p_X1 == 0
@@ -2199,7 +2280,7 @@ Scalar RandomMixture::computeCDF(const Point & point) const
       const Scalar lower = std::max(a, alpha);
       const Scalar upper = std::min(b, beta);
       Scalar cdf = 0.0;
-      if (lower < upper) cdf = algo.integrate(convolutionKernel, Interval(lower, upper))[0];
+      if (lower < upper) cdf = algo_.integrate(convolutionKernel, lower, upper);
       // Take into account a possible missing tail:
       // \int_beta^b Fbar_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1 = Fbar_X1(beta)
       if (lower > a) cdf += distributionCollection_[0].computeCDF(alpha);
@@ -2213,7 +2294,7 @@ Scalar RandomMixture::computeCDF(const Point & point) const
     const Scalar lower = std::max(a, alpha);
     const Scalar upper = std::min(b, beta);
     Scalar cdf = 0.0;
-    if (lower < upper) cdf = algo.integrate(convolutionKernel, Interval(lower, upper))[0];
+    if (lower < upper) cdf = algo_.integrate(convolutionKernel, lower, upper);
     // Take into account a possible missing tail:
     // \int_a^alpha Fbar_X2((z0 - alpha1 x1) / alpha2)p_X1(x1)dx1 = F_X1(alpha)
     if (upper < b) cdf += distributionCollection_[0].computeComplementaryCDF(beta);
