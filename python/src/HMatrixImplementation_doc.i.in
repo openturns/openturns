@@ -208,6 +208,19 @@ OT_HMatrix_getDiagonal_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_HMatrix_addIdentity_doc
+"Add alpha*Identity to the Matrix.
+
+Parameters
+----------
+alpha : float
+    Coefficient."
+%enddef
+%feature("docstring") OT::HMatrixImplementation::addIdentity
+OT_HMatrix_addIdentity_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_HMatrix_solve_doc
 "Solve linear system op(A)*x=b, after A has been factorized.
 

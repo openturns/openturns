@@ -253,6 +253,15 @@ HMatrixImplementation::assemble(const HMatrixRealAssemblyFunction& f, char symme
 #endif
 }
 
+void HMatrixImplementation::addIdentity(Scalar alpha)
+{
+#ifdef OPENTURNS_HAVE_HMAT
+  static_cast<hmat_interface_t *>(hmatInterface_)->add_identity(static_cast<hmat_matrix_t *>(hmat_), &alpha);
+#else
+  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+#endif
+}
+
 UnsignedInteger HMatrixImplementation::getNbRows() const
 {
 #ifdef OPENTURNS_HAVE_HMAT
