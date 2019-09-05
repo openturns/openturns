@@ -249,7 +249,7 @@ HMatrixImplementation::assemble(const HMatrixRealAssemblyFunction& f, char symme
 
   static_cast<hmat_interface_t*>(hmatInterface_)->assemble_simple_interaction(static_cast<hmat_matrix_t*>(hmat_), const_cast<HMatrixRealAssemblyFunction*>(&f), &trampoline_simple, sym);
 #else
-  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
 
@@ -303,7 +303,7 @@ void HMatrixImplementation::assemble(const HMatrixTensorRealAssemblyFunction& f,
     const_cast<HMatrixTensorRealAssemblyFunction*>(&f),
     &trampoline_hmat_prepare_block, &trampoline_compute, sym);
 #else
-  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
 
@@ -334,7 +334,7 @@ void HMatrixImplementation::factorize(const String& method)
     throw InternalException(HERE) << ex.what();
   }
 #else
-  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
 
@@ -343,7 +343,7 @@ void HMatrixImplementation::scale(Scalar alpha)
 #ifdef OPENTURNS_HAVE_HMAT
   static_cast<hmat_interface_t*>(hmatInterface_)->scale(&alpha, static_cast<hmat_matrix_t*>(hmat_));
 #else
-  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
 
@@ -354,7 +354,7 @@ void HMatrixImplementation::gemv(char trans, Scalar alpha, const Point& x, Scala
   Point xcopy(x);
   static_cast<hmat_interface_t*>(hmatInterface_)->gemv(trans, &alpha, static_cast<hmat_matrix_t*>(hmat_), &xcopy[0], &beta, &y[0], 1);
 #else
-  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
 
@@ -363,7 +363,7 @@ void HMatrixImplementation::gemm(char transA, char transB, Scalar alpha, const H
 #ifdef OPENTURNS_HAVE_HMAT
   static_cast<hmat_interface_t*>(hmatInterface_)->gemm(transA, transB, &alpha, static_cast<hmat_matrix_t*>(a.hmat_), static_cast<hmat_matrix_t*>(b.hmat_), &beta, static_cast<hmat_matrix_t*>(hmat_));
 #else
-  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
 
@@ -372,7 +372,7 @@ void HMatrixImplementation::transpose()
 #ifdef OPENTURNS_HAVE_HMAT
   static_cast<hmat_interface_t*>(hmatInterface_)->transpose(static_cast<hmat_matrix_t*>(hmat_));
 #else
-  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
 
@@ -381,7 +381,7 @@ Scalar HMatrixImplementation::norm() const
 #ifdef OPENTURNS_HAVE_HMAT
   return static_cast<hmat_interface_t*>(hmatInterface_)->norm(static_cast<hmat_matrix_t*>(hmat_));
 #else
-  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
 
@@ -392,7 +392,7 @@ Point HMatrixImplementation::getDiagonal() const
   static_cast<hmat_interface_t*>(hmatInterface_)->extract_diagonal(static_cast<hmat_matrix_t*>(hmat_), &diag[0], diag.getDimension());
   return diag;
 #else
-  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
 
@@ -404,7 +404,7 @@ Point HMatrixImplementation::solve(const Point& b, Bool trans) const
   static_cast<hmat_interface_t*>(hmatInterface_)->solve_systems(static_cast<hmat_matrix_t*>(hmat_), &result[0], 1);
   return result;
 #else
-  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
 
@@ -416,7 +416,7 @@ Matrix HMatrixImplementation::solve(const Matrix& m, Bool trans) const
   static_cast<hmat_interface_t*>(hmatInterface_)->solve_systems(static_cast<hmat_matrix_t*>(hmat_), &result(0, 0), result.getNbColumns());
   return result;
 #else
-  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
 
@@ -428,7 +428,7 @@ Point HMatrixImplementation::solveLower(const Point& b, Bool trans) const
   static_cast<hmat_interface_t*>(hmatInterface_)->solve_lower_triangular(static_cast<hmat_matrix_t*>(hmat_), t, &result[0], 1);
   return result;
 #else
-  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
 
@@ -440,7 +440,7 @@ Matrix HMatrixImplementation::solveLower(const Matrix& m, Bool trans) const
   static_cast<hmat_interface_t*>(hmatInterface_)->solve_lower_triangular(static_cast<hmat_matrix_t*>(hmat_), t, &result(0, 0), result.getNbColumns());
   return result;
 #else
-  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
 
@@ -451,7 +451,7 @@ std::pair<size_t, size_t> HMatrixImplementation::compressionRatio() const
   static_cast<hmat_interface_t*>(hmatInterface_)->get_info(static_cast<hmat_matrix_t*>(hmat_), &mat_info);
   return std::pair<size_t, size_t>(mat_info.compressed_size, mat_info.uncompressed_size);
 #else
-  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
 
@@ -462,7 +462,7 @@ std::pair<size_t, size_t> HMatrixImplementation::fullrkRatio() const
   static_cast<hmat_interface_t*>(hmatInterface_)->get_info(static_cast<hmat_matrix_t*>(hmat_), &mat_info);
   return std::pair<size_t, size_t>(mat_info.full_size, mat_info.uncompressed_size - mat_info.full_size);
 #else
-  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
 
@@ -471,7 +471,7 @@ void HMatrixImplementation::dump(const String & name) const
 #ifdef OPENTURNS_HAVE_HMAT
   static_cast<hmat_interface_t*>(hmatInterface_)->dump_info(static_cast<hmat_matrix_t*>(hmat_), const_cast<char*>(name.c_str()));
 #else
-  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
 
@@ -509,7 +509,7 @@ Bool HMatrixImplementation::setKey(const String & name, const String & value)
   hmat_set_parameters(&settings);
   return true;
 #else
-  throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
 }
 
