@@ -80,6 +80,9 @@ class OT_API HMatrix :
   /** Get the diagonal */
   Point getDiagonal() const;
 
+  /** Bump the diagonal by an additive factor alpha */
+  void addIdentity(Scalar alpha);
+
   /** Solve system op(A)*X = b */
   Point solve(const Point& b, Bool trans = false) const;
 

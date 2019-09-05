@@ -146,6 +146,8 @@ public:
   /** Transpose matrix */
   void transpose();
 
+  void addIdentity(Scalar alpha);
+
   /** Get the Frobenius norm */
   Scalar norm() const;
 

@@ -109,6 +109,11 @@ Point HMatrix::getDiagonal() const
   return getImplementation()->getDiagonal();
 }
 
+void HMatrix::addIdentity(OT::Scalar alpha)
+{
+  getImplementation()->addIdentity(alpha);
+}
+
 /** Solve system op(A)*X = b */
 Point HMatrix::solve(const Point& b, Bool trans) const
 {
