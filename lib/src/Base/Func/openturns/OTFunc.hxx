@@ -149,5 +149,8 @@
 #include "openturns/MemoizeEvaluation.hxx"
 #include "openturns/MemoizeFunction.hxx"
 #include "openturns/NullHessian.hxx"
+#include "openturns/MarginalEvaluation.hxx"
+#include "openturns/MarginalGradient.hxx"
+#include "openturns/MarginalHessian.hxx"
 
 #endif /* OPENTURNS_OTFUNC_HXX */

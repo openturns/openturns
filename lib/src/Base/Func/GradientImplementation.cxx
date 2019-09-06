@@ -20,14 +20,8 @@
  */
 #include "openturns/GradientImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/OTconfig.hxx"
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-#include "openturns/SymbolicEvaluation.hxx"
-#else
-#include "openturns/LinearEvaluation.hxx"
-#endif
-#include "openturns/ConstantGradient.hxx"
 #include "openturns/ComposedGradient.hxx"
+#include "openturns/MarginalGradient.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -125,37 +119,7 @@ Gradient GradientImplementation::getMarginal(const UnsignedInteger i) const
 /* Get the function corresponding to indices components */
 Gradient GradientImplementation::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
-  // Here we use the linear algebra representation of the marginal extraction operation in order to extract the marginal gradient.
-  // The chain rule gives:
-  // D(Af) = AD(f) in our case, instead of D(gof) = Dg(f)Df, so we don't need f as in our case Dg(f) = A is a constant. As we don't
-  // have access to f here but only to Df, we build an arbitrary cheap evaluation with the proper dimension in order to reuse the
-  // generic implementation of the chain rule for the gradients. We choose to build a null function using an analytical function.
-  // Fake f
-  const UnsignedInteger inputDimension = getInputDimension();
-  const UnsignedInteger outputDimension = getOutputDimension();
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-  Description input(inputDimension);
-  for (UnsignedInteger index = 0; index < inputDimension; ++index)
-    input[index] = OSS() << "x" << index;
-  Description output(outputDimension);
-  for (UnsignedInteger index = 0; index < outputDimension; ++index)
-    output[index] = OSS() << "y" << index;
-  const Description formulas(outputDimension, "0.0");
-  const SymbolicEvaluation right(input, output, formulas);
-#else
-  Point center(inputDimension);
-  Matrix linear(inputDimension, outputDimension);
-  Point constant(outputDimension);
-  const LinearEvaluation right(center, constant, linear);
-#endif
-  // A
-  const UnsignedInteger marginalOutputDimension = indices.getSize();
-  Matrix gradientExtraction(outputDimension, marginalOutputDimension);
-  for (UnsignedInteger i = 0; i < marginalOutputDimension; ++i)
-    gradientExtraction(indices[i], i) = 1.0;
-  const ConstantGradient leftGradient(gradientExtraction);
-  return new ComposedGradient(leftGradient.clone(), right.clone(), clone());
+  return new MarginalGradient(clone(), indices);
 }
 
 /* Method save() stores the object through the StorageManager */

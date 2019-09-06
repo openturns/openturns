@@ -38,6 +38,7 @@
  * SystemFORM
  * MultiFORM
  * JoeCopula
+ * MarginalEvaluation/Gradient/Hessian
 
 ==== API changes ====
  * Removed deprecated specific RandomVector constructors

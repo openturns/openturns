@@ -22,20 +22,12 @@
 #include <iterator>
 
 #include "openturns/EvaluationImplementation.hxx"
-#include "openturns/ComposedEvaluation.hxx"
 #include "openturns/OTconfig.hxx"
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-#include "openturns/SymbolicEvaluation.hxx"
-#else
-#include "openturns/LinearEvaluation.hxx"
-#endif
-#include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Contour.hxx"
 #include "openturns/Curve.hxx"
-#include "openturns/Indices.hxx"
 #include "openturns/Box.hxx"
-#include "openturns/Evaluation.hxx"
+#include "openturns/MarginalEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -258,36 +250,7 @@ Evaluation EvaluationImplementation::getMarginal(const UnsignedInteger i) const
 /* Get the function corresponding to indices components */
 Evaluation EvaluationImplementation::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
-  // We build an analytical function that extract the needed component
-  // If X1,...,XN are the descriptions of the input of this function, it is a function from R^n to R^p
-  // with formula Yk = Xindices[k] for k=1,...,p
-  // Build non-ambigous names for the inputs. We cannot simply use the output description, as it must be valid muParser identifiers
-  const UnsignedInteger inputDimension = getOutputDimension();
-  const UnsignedInteger outputDimension = indices.getSize();
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-  Description input(inputDimension);
-  for (UnsignedInteger index = 0; index < inputDimension; ++index)
-    input[index] = OSS() << "x" << index;
-  // Extract the components
-  Description output(outputDimension);
-  Description formulas(outputDimension);
-  Description currentOutputDescription(getOutputDescription());
-  for (UnsignedInteger index = 0; index < outputDimension; ++index)
-  {
-    output[index] = currentOutputDescription[indices[index]];
-    formulas[index] = input[indices[index]];
-  }
-  const SymbolicEvaluation left(input, output, formulas);
-#else
-  Point center(inputDimension);
-  Matrix linear(inputDimension, outputDimension);
-  for ( UnsignedInteger index = 0; index < outputDimension; ++ index )
-    linear(indices[index], index) = 1.0;
-  Point constant(outputDimension);
-  const LinearEvaluation left(center, constant, linear);
-#endif
-  return new ComposedEvaluation(left.clone(), clone());
+  return new MarginalEvaluation(clone(), indices);
 }
 
 /* Get the number of calls to operator() */
