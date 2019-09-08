@@ -127,29 +127,35 @@ Point Triangular::computeDDF(const Point & point) const
 
 
 /* Get the PDF of the distribution */
-Scalar Triangular::computePDF(const Point & point) const
+Scalar Triangular::computePDF(const Scalar x) const
 {
-  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
-  const Scalar x = point[0];
   if ((x <= a_) || (x > b_)) return 0.0;
   const Scalar pdf = 2.0 / (b_ - a_);
   if (x < m_) return pdf * (x - a_) / (m_ - a_);
   return pdf * (x - b_) / (m_ - b_);
 }
 
-
-/* Get the CDF of the distribution */
-Scalar Triangular::computeCDF(const Point & point) const
+Scalar Triangular::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+  return computePDF(point[0]);
+}
 
-  const Scalar x = point[0];
+
+/* Get the CDF of the distribution */
+Scalar Triangular::computeCDF(const Scalar x) const
+{
   if (x <= a_) return 0.0;
   if (x >= b_) return 1.0;
   const Scalar cdf = 1.0 / (b_ - a_);
   if (x < m_) return (x - a_) * (x - a_) * cdf / (m_ - a_);
   return 1.0 - (x - b_) * (x - b_) * cdf / (b_ - m_);
+}
+
+Scalar Triangular::computeCDF(const Point & point) const
+{
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+  return computeCDF(point[0]);
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */

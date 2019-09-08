@@ -220,9 +220,13 @@ Scalar Gamma::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar x = point[0] - gamma_;
-  if (x <= 0.0) return 0.0;
-  return std::exp(computeLogPDF(point));
+  return computePDF(point[0]);
+}
+
+Scalar Gamma::computePDF(const Scalar u) const
+{
+  if (u <= gamma_) return 0.0;
+  return std::exp(computeLogPDF(u));
 }
 
 /* Get the log PDF of the distribution */
@@ -230,13 +234,18 @@ Scalar Gamma::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  // From textbook, we have log(PDF(x)) =  - lambda * (x - gamma) + (k - 1) * log(x - gamma) + k * log(lambda) - log(Gamma(k))
-  const Scalar u = lambda_ * (point[0] - gamma_);
-  if (u <= 0.0) return SpecFunc::LogMinScalar;
+  return computeLogPDF(point[0]);
+}
+
+Scalar Gamma::computeLogPDF(const Scalar u) const
+{
+  // From textbook, we have log(PDF(u)) =  - lambda * (u - gamma) + (k - 1) * log(u - gamma) + k * log(lambda) - log(Gamma(k))
+  const Scalar x = lambda_ * (u - gamma_);
+  if (x <= 0.0) return SpecFunc::LogMinScalar;
   // Use asymptotic expansion for large k
-  // Here log(PDF(x)) = L - lambda * (x - gamma) + (k - 1) * log(lambda * (x - gamma) / k)
-  if (k_ >= 6.9707081224932495879) return normalizationFactor_ - u + (k_ - 1.0) * std::log(u / k_);
-  return normalizationFactor_ + (k_ - 1) * std::log(u) - u;
+  // Here log(PDF(u)) = L - lambda * (u - gamma) + (k - 1) * log(lambda * (u - gamma) / k)
+  if (k_ >= 6.9707081224932495879) return normalizationFactor_ - x + (k_ - 1.0) * std::log(x / k_);
+  return normalizationFactor_ + (k_ - 1) * std::log(x) - x;
 }
 
 /* Get the CDF of the distribution */
@@ -244,20 +253,30 @@ Scalar Gamma::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar x = point[0] - gamma_;
+  return computeCDF(point[0]);
+}
+
+Scalar Gamma::computeCDF(const Scalar u) const
+{
+  const Scalar x = lambda_ * (u - gamma_);
   // No test here as the CDF is continuous for all k_
   if (x <= 0.0) return 0.0;
-  return DistFunc::pGamma(k_, lambda_ * x);
+  return DistFunc::pGamma(k_, x);
 }
 
 Scalar Gamma::computeComplementaryCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar x = point[0] - gamma_;
+  return computeComplementaryCDF(point[0]);
+}
+
+Scalar Gamma::computeComplementaryCDF(const Scalar u) const
+{
+  const Scalar x = lambda_ * (u - gamma_);
   // No test here as the CDF is continuous for all k_
   if (x <= 0.0) return 1.0;
-  return DistFunc::pGamma(k_, lambda_ * x, true);
+  return DistFunc::pGamma(k_, x, true);
 }
 
 /* Compute the entropy of the distribution */

@@ -23,6 +23,7 @@
 #define OPENTURNS_GAUSSKRONROD_HXX
 
 #include "openturns/IntegrationAlgorithmImplementation.hxx"
+#include "openturns/UniVariateFunction.hxx"
 #include "openturns/GaussKronrodRule.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -55,6 +56,10 @@ public:
    */
   using IntegrationAlgorithmImplementation::integrate;
 #ifndef SWIG
+  virtual Scalar integrate(const UniVariateFunction & function,
+			   const Scalar a,
+			   const Scalar b) const;
+
   virtual Point integrate(const Function & function,
                           const Interval & interval,
                           Scalar & error) const;
@@ -106,6 +111,11 @@ private:
                     const Scalar a,
                     const Scalar b,
                     Scalar & localError) const;
+
+  Scalar computeScalarRule(const UniVariateFunction & function,
+			   const Scalar a,
+			   const Scalar b,
+			   Scalar & localError) const;
 
   /* Maximum number of sub-intervals */
   UnsignedInteger maximumSubIntervals_;

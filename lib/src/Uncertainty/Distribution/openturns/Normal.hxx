@@ -82,8 +82,14 @@ public:
   Point getRealization() const;
   Sample getSample(const UnsignedInteger size) const;
 
+  /** Get the PDF of the Normal distribution */
+  using EllipticalDistribution::computePDF;
+  Scalar computePDF(const Scalar scalar) const;
+  Scalar computePDF(const Point & point) const;
+
   /** Get the CDF of the Normal distribution */
   using EllipticalDistribution::computeCDF;
+  Scalar computeCDF(const Scalar scalar) const;
   Scalar computeCDF(const Point & point) const;
 
   /** Compute the entropy of the distribution */

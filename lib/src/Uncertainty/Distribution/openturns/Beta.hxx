@@ -70,12 +70,15 @@ public:
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
+  Scalar computePDF(const Scalar scalar) const;
   Scalar computePDF(const Point & point) const;
   using ContinuousDistribution::computeLogPDF;
+  Scalar computeLogPDF(const Scalar scalar) const;
   Scalar computeLogPDF(const Point & point) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
+  Scalar computeCDF(const Scalar scalar) const;
   Scalar computeCDF(const Point & point) const;
 
   /** Get the PDFGradient of the distribution */

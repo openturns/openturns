@@ -27,6 +27,35 @@ using namespace OT::Test;
 
 typedef Collection<Complex> ComplexCollection;
 
+namespace OT
+{
+class UniVariateSymbolicFunction: public UniVariateFunctionImplementation
+{
+public:
+  UniVariateSymbolicFunction(const SymbolicFunction & f)
+    : UniVariateFunctionImplementation()
+    , f_(f)
+  {
+    // Nothing to do
+  }
+
+  UniVariateSymbolicFunction * clone() const
+  {
+    return new UniVariateSymbolicFunction(*this);
+  }
+
+  Scalar operator()(const Scalar x) const
+  {
+    return f_(Point(1, x))[0];
+  }
+
+private:
+  SymbolicFunction f_;
+
+};
+
+} // OT
+
 int main(int, char *[])
 {
   TESTPREAMBLE;
@@ -46,24 +75,32 @@ int main(int, char *[])
       for (UnsignedInteger i = 0; i < 5; ++i)
       {
         algo.setRule(rules[i]);
-        fullprint << "Algo=" << algo << std::endl;
-        // High-level interface
-        Scalar error = -1.0;
-        Scalar value = algo.integrate(f, Interval(a, b), error)[0];
-        Scalar ref = cos(a) - cos(b);
-        fullprint << "value=" << value << ", ref=" << ref << ", true error below bound? " << (std::abs(ref - value) < algo.getMaximumError() ? "true" : "false") << ", estimated error below bound? " << (error < algo.getMaximumError() ? "true" : "false") << std::endl;
+	fullprint << "Algo=" << algo << std::endl;
+	{
+          // High-level interface
+          Scalar error = -1.0;
+          Scalar value = algo.integrate(f, Interval(a, b), error)[0];
+          Scalar ref = cos(a) - cos(b);
+          fullprint << "value    (general)=" << value << ", ref=" << ref << ", true error below bound? " << (std::abs(ref - value) < algo.getMaximumError() ? "true" : "false") << ", estimated error below bound? " << (error < algo.getMaximumError() ? "true" : "false") << std::endl;
+        }
+        {
+          // High-level interface
+          Scalar value = algo.integrate(UniVariateFunction(UniVariateSymbolicFunction(f)), a, b);
+          Scalar ref = cos(a) - cos(b);
+          fullprint << "value (univariate)=" << value << ", ref=" << ref << ", true error below bound? " << (std::abs(ref - value) < algo.getMaximumError() ? "true" : "false") << std::endl;
+        }
         // Low-level interface
-//         Point ai;
-//         Point bi;
-//         Sample fi;
-//         Point ei;
-//         Scalar value2(algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]);
-//         ai.add(b);
-//         Graph g(f.draw(a, b, 512));
-//         Cloud lower(ai, Point(ai.getDimension()));
-//         lower.setColor("magenta");
-//         g.add(lower);
-//         g.draw(String(OSS() << "Smooth_function_adaptation_" << i));
+        //         Point ai;
+        //         Point bi;
+        //         Sample fi;
+        //         Point ei;
+        //         Scalar value2(algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]);
+        //         ai.add(b);
+        //         Graph g(f.draw(a, b, 512));
+        //         Cloud lower(ai, Point(ai.getDimension()));
+        //         lower.setColor("magenta");
+        //         g.add(lower);
+        //         g.draw(String(OSS() << "Smooth_function_adaptation_" << i));
       }
     }
     // Second, a piecewise smooth function
@@ -83,17 +120,17 @@ int main(int, char *[])
         fullprint << "value=" << value << ", ref=" << ref << ", true error below bound? " << (std::abs(ref - value) < algo.getMaximumError() ? "true" : "false") << ", estimated error below bound? " << (error < algo.getMaximumError() ? "true" : "false") << std::endl;
 
         // Low-level interface
-//         Point ai;
-//         Point bi;
-//         Sample fi;
-//         Point ei;
-//         Scalar value2(algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]);
-//         ai.add(b);
-//         Graph g(f.draw(a, b, 512));
-//         Cloud lower(ai, Point(ai.getDimension()));
-//         lower.setColor("magenta");
-//         g.add(lower);
-//         g.draw(String(OSS() << "Nonsmooth_function_adaptation_" << i));
+        //         Point ai;
+        //         Point bi;
+        //         Sample fi;
+        //         Point ei;
+        //         Scalar value2(algo.integrate(f, a, b, error, ai, bi, fi, ei)[0]);
+        //         ai.add(b);
+        //         Graph g(f.draw(a, b, 512));
+        //         Cloud lower(ai, Point(ai.getDimension()));
+        //         lower.setColor("magenta");
+        //         g.add(lower);
+        //         g.draw(String(OSS() << "Nonsmooth_function_adaptation_" << i));
       }
     }
   }

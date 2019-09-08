@@ -143,36 +143,48 @@ Point Beta::computeDDF(const Point & point) const
 
 
 /* Get the PDF of the distribution */
+/* Get the PDF of the distribution */
+Scalar Beta::computePDF(const Scalar x) const
+{
+  if ((x == b_) && (beta_ == 1.0)) return 1.0;
+  if ((x <= a_) || (x >= b_)) return 0.0;
+  return std::exp(computeLogPDF(x));
+}
+
 Scalar Beta::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar x = point[0];
-  if ((x == b_) && (beta_ == 1.0)) return 1.0;
-  if ((x <= a_) || (x >= b_)) return 0.0;
-  return std::exp(computeLogPDF(point));
+  return computePDF(point[0]);
 }
 
-Scalar Beta::computeLogPDF(const Point & point) const
+Scalar Beta::computeLogPDF(const Scalar x) const
 {
-  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
-  const Scalar x = point[0];
   if ((x == b_) && (beta_ == 1.0)) return 0.0;
   if ((x <= a_) || (x >= b_)) return SpecFunc::LogMinScalar;
   return normalizationFactor_ + (alpha_ - 1.0) * std::log(x - a_) + (beta_ - 1.0) * std::log(b_ - x);
 }
 
+Scalar Beta::computeLogPDF(const Point & point) const
+{
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+  return computeLogPDF(point[0]);
+}
+
 
 /* Get the CDF of the distribution */
+Scalar Beta::computeCDF(const Scalar x) const
+{
+  if (x <= a_) return 0.0;
+  if (x >= b_) return 1.0;
+  return DistFunc::pBeta(alpha_, beta_, (x - a_) / (b_ - a_));
+}
+
 Scalar Beta::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar x = point[0];
-  if (x <= a_) return 0.0;
-  if (x >= b_) return 1.0;
-  return DistFunc::pBeta(alpha_, beta_, (x - a_) / (b_ - a_));
+  return computeCDF(point[0]);
 }
 
 /* Get the PDFGradient of the distribution */

@@ -32,6 +32,7 @@
 #include "openturns/SphereUniformNorm.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/FFT.hxx"
+#include "openturns/GaussKronrod.hxx"
 #include <limits>       // std::numeric_limits
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -463,6 +464,9 @@ private:
   /** Helper object to retrieve points on a regular grid */
   SphereUniformNorm gridMesher_;
 
+  /** Integration algorithm */
+  GaussKronrod algo_;
+  
 }; /* class RandomMixture */
 
 

@@ -24,6 +24,7 @@
 #include "openturns/ProductDistribution.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/UniVariateFunctionImplementation.hxx"
 #include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/Uniform.hxx"
 
@@ -36,8 +37,9 @@ static const Factory<ProductDistribution> Factory_ProductDistribution;
 /* Default constructor */
 ProductDistribution::ProductDistribution()
   : ContinuousDistribution()
-  , left_(Uniform(0.0, 1.0))
-  , right_(Uniform(0.0, 1.0))
+  , p_left_(new Uniform(0.0, 1.0))
+  , p_right_(new Uniform(0.0, 1.0))
+  , algo_()
 {
   setName("ProductDistribution");
   setDimension(1);
@@ -49,8 +51,9 @@ ProductDistribution::ProductDistribution()
 ProductDistribution::ProductDistribution(const Distribution & left,
     const Distribution & right)
   : ContinuousDistribution()
-  , left_()
-  , right_()
+  , p_left_(left.getImplementation())
+  , p_right_(right.getImplementation())
+  , algo_()
 {
   setName("ProductDistribution");
   setLeft(left);
@@ -62,7 +65,7 @@ ProductDistribution::ProductDistribution(const Distribution & left,
 Bool ProductDistribution::operator ==(const ProductDistribution & other) const
 {
   if (this == &other) return true;
-  return (left_ == other.getLeft()) && (right_ == other.getRight());
+  return (p_left_ == other.getLeft().getImplementation()) && (p_right_ == other.getRight().getImplementation());
 }
 
 Bool ProductDistribution::equals(const DistributionImplementation & other) const
@@ -77,15 +80,15 @@ String ProductDistribution::__repr__() const
   OSS oss;
   oss << "class=" << ProductDistribution::GetClassName()
       << " name=" << getName()
-      << " left=" << left_
-      << " right=" << right_;
+      << " left=" << p_left_->__repr__()
+      << " right=" << p_right_->__repr__();
   return oss;
 }
 
 String ProductDistribution::__str__(const String & ) const
 {
   OSS oss;
-  oss << getClassName() << "(" << left_.__str__() << " * " << right_.__str__() << ")";
+  oss << getClassName() << "(" << p_left_->__str__() << " * " << p_right_->__str__() << ")";
   return oss;
 }
 
@@ -98,10 +101,10 @@ ProductDistribution * ProductDistribution::clone() const
 /* Compute the numerical range of the distribution given the parameters values */
 void ProductDistribution::computeRange()
 {
-  const Scalar a = left_.getRange().getLowerBound()[0];
-  const Scalar b = left_.getRange().getUpperBound()[0];
-  const Scalar c = right_.getRange().getLowerBound()[0];
-  const Scalar d = right_.getRange().getUpperBound()[0];
+  const Scalar a = p_left_->getRange().getLowerBound()[0];
+  const Scalar b = p_left_->getRange().getUpperBound()[0];
+  const Scalar c = p_right_->getRange().getLowerBound()[0];
+  const Scalar d = p_right_->getRange().getUpperBound()[0];
   const Scalar ac = a * c;
   const Scalar ad = a * d;
   const Scalar bc = b * c;
@@ -112,22 +115,210 @@ void ProductDistribution::computeRange()
 /* Get one realization of the distribution */
 Point ProductDistribution::getRealization() const
 {
-  return Point(1, left_.getRealization()[0] * right_.getRealization()[0]);
+  return Point(1, p_left_->getRealization()[0] * p_right_->getRealization()[0]);
 }
+
+namespace
+{
+  // Class used to wrap the kernel of the integral defining the PDF of the product
+  class PDFKernelProductDistribution: public UniVariateFunctionImplementation
+  {
+  public:
+    PDFKernelProductDistribution(const Pointer<DistributionImplementation> & p_left,
+	      const Pointer<DistributionImplementation> & p_right,
+	      const Scalar x)
+      : UniVariateFunctionImplementation()
+      , p_left_(p_left)
+      , p_right_(p_right)
+      , x_(x)
+      , isZero_(std::abs(x) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")), pdf0_(isZero_ ? p_right->computePDF(0.0) : 0.0)
+    {
+      // Nothing to do
+    };
+
+    PDFKernelProductDistribution * clone() const
+    {
+      return new PDFKernelProductDistribution(*this);
+    }
+
+    Scalar operator() (const Scalar u) const
+    {
+      const Scalar value = p_left_->computePDF(u);
+      if (value == 0.0) return 0.0;
+      const Scalar absU = std::abs(u);
+      // x_ == 0
+      if (isZero_)
+      {
+        if (pdf0_ == 0.0) return 0.0;
+        if (absU == 0.0) return SpecFunc::MaxScalar;
+        return value * pdf0_ / absU;
+      }
+      // x_ != 0
+      if (absU == 0.0)
+      {
+        const Scalar epsilon = 1e-7;
+        return value * 0.5 * (p_right_->computePDF(x_ / epsilon) + p_right_->computePDF(-x_ / epsilon)) / epsilon;
+      }
+      return value * p_right_->computePDF(x_ / u) / absU;
+    };
+
+  private:
+    const Pointer<DistributionImplementation> p_left_;
+    const Pointer<DistributionImplementation> p_right_;
+    const Scalar x_;
+    const Bool isZero_;
+    const Scalar pdf0_;
+
+  }; // class PDFKernelProductDistribution
+
+  // Class used to wrap the kernel of the integral defining the CDF of the product
+  class CDFKernelProductDistribution: public UniVariateFunctionImplementation
+  {
+  public:
+    CDFKernelProductDistribution(const Pointer<DistributionImplementation> & p_left,
+	      const Pointer<DistributionImplementation> & p_right,
+	      const Scalar x)
+      : UniVariateFunctionImplementation()
+      , p_left_(p_left)
+      , p_right_(p_right)
+      , x_(x)
+      , isZero_(std::abs(x) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon"))
+      , cdf0_(isZero_ ? p_right->computeCDF(0.0) : 0.0)
+      , ccdf0_(isZero_ ? p_right->computeComplementaryCDF(0.0) : 0.0)
+    {
+      // Nothing to do
+    };
+
+    CDFKernelProductDistribution * clone() const
+    {
+      return new CDFKernelProductDistribution(*this);
+    }
+
+    Scalar operator() (const Scalar u) const
+    {
+      const Scalar value = p_left_->computePDF(u);
+      if (value == 0.0) return 0.0;
+      // x_ == 0
+      if (isZero_) return value * cdf0_;
+      if (u == 0.0) return (x_ < 0.0 ? 0.0 : value);
+      return value * p_right_->computeCDF(x_ / u);
+    };
+
+  private:
+    const Pointer<DistributionImplementation> p_left_;
+    const Pointer<DistributionImplementation> p_right_;
+    const Scalar x_;
+    const Bool isZero_;
+    const Scalar cdf0_;
+    const Scalar ccdf0_;
+  }; // struct CDFKernelProductDistribution
+
+  // Class used to wrap the kernel of the integral defining the CDF of the product
+  class ComplementaryCDFKernelProductDistributionProductDistribution: public UniVariateFunctionImplementation
+  {
+  public:
+    ComplementaryCDFKernelProductDistributionProductDistribution(const Pointer<DistributionImplementation> & p_left,
+			   const Pointer<DistributionImplementation> & p_right,
+			   const Scalar x)
+      : UniVariateFunctionImplementation()
+      , p_left_(p_left)
+      , p_right_(p_right)
+      , x_(x)
+      , isZero_(std::abs(x) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon"))
+      , cdf0_(isZero_ ? p_right->computeCDF(0.0) : 0.0)
+      , ccdf0_(isZero_ ? p_right->computeComplementaryCDF(0.0) : 0.0)
+    {
+      // Nothing to do
+    };
+
+    ComplementaryCDFKernelProductDistributionProductDistribution * clone() const
+    {
+      return new ComplementaryCDFKernelProductDistributionProductDistribution(*this);
+    }
+
+    Scalar operator() (const Scalar u) const
+    {
+      const Scalar value = p_left_->computePDF(u);
+      if (value == 0.0) return 0.0;
+      // x_ == 0
+      if (isZero_) return value * ccdf0_;
+      if (u == 0.0) return (x_ < 0.0 ? 0.0 : value);
+      return value * p_right_->computeComplementaryCDF(x_ / u);
+    };
+
+  private:
+    const Pointer<DistributionImplementation> p_left_;
+    const Pointer<DistributionImplementation> p_right_;
+    const Scalar x_;
+    const Bool isZero_;
+    const Scalar cdf0_;
+    const Scalar ccdf0_;
+  }; // struct ComplementaryCDFKernelProductDistributionProductDistribution
+
+  // Class used to wrap the kernel of the integral defining the CDF of the product
+  class CFKernelProductDistribution: public EvaluationImplementation
+  {
+  public:
+    CFKernelProductDistribution(const Pointer<DistributionImplementation> & p_left,
+	     const Pointer<DistributionImplementation> & p_right,
+	     const Scalar x)
+      : EvaluationImplementation()
+      , p_left_(p_left)
+      , p_right_(p_right)
+      , x_(x)
+    {
+      // Nothing to do
+    };
+
+    CFKernelProductDistribution * clone() const
+    {
+      return new CFKernelProductDistribution(*this);
+    }
+
+    Point operator() (const Point & point) const
+    {
+      Point value(2);
+      const Scalar u = point[0];
+      const Complex phi(p_right_->computeCharacteristicFunction(u * x_));
+      const Scalar pdf = p_left_->computePDF(point);
+      value[0] = pdf * phi.real();
+      value[1] = pdf * phi.imag();
+      return value;
+    };
+
+    UnsignedInteger getInputDimension() const
+    {
+      return 1;
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return 2;
+    }
+
+  private:
+    const Pointer<DistributionImplementation> p_left_;
+    const Pointer<DistributionImplementation> p_right_;
+    const Scalar x_;
+  }; // struct CFKernelProductDistributionWrapper
+} // anonymous namespace
 
 /* Get the PDF of the distribution: PDF(x) = \int_R PDF_left(u) * PDF_right(x / u) * du / |u| */
 Scalar ProductDistribution::computePDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+  return computePDF(point[0]);
+}
 
-  const Scalar x = point[0];
+Scalar ProductDistribution::computePDF(const Scalar x) const
+{
   const Scalar a = getRange().getLowerBound()[0];
   const Scalar b = getRange().getUpperBound()[0];
   if ((x < a) || (x > b)) return 0.0;
-  const Scalar aLeft = left_.getRange().getLowerBound()[0];
-  const Scalar bLeft = left_.getRange().getUpperBound()[0];
-  const Scalar aRight = right_.getRange().getLowerBound()[0];
-  const Scalar bRight = right_.getRange().getUpperBound()[0];
+  const Scalar aLeft = p_left_->getRange().getLowerBound()[0];
+  const Scalar bLeft = p_left_->getRange().getUpperBound()[0];
+  const Scalar aRight = p_right_->getRange().getLowerBound()[0];
+  const Scalar bRight = p_right_->getRange().getUpperBound()[0];
   // First, the case where the joint support of left and right is included in a unique quadrant
   if ((aLeft >= 0.0) && (aRight >= 0.0))
   {
@@ -218,21 +409,19 @@ Scalar ProductDistribution::computePDFQ1(const Scalar x,
   LOGDEBUG(OSS() << "ac=" << ac << ", ad=" << ad << ", bc=" << bc << ", bd=" << bd);
   // Here the support is included into [ac, bd]
   if ((x < ac) || (x >= bd)) return 0.0;
-  GaussKronrod algo;
-  const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const Function pdfKernel(bindMethod<PDFKernelWrapper, Point, Point>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const PDFKernelProductDistribution pdfKernel(p_left_, p_right_, x);
   if (c == 0.0)
   {
     LOGDEBUG("c == 0.0");
     if (x < ad)
     {
       LOGDEBUG(OSS() << x << " < " << ad);
-      const Scalar value = algo.integrate(pdfKernel, Interval(a, b))[0];
+      const Scalar value = algo_.integrate(pdfKernel, a, b);
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     LOGDEBUG(OSS() << ad << " <= " << x);
-    const Scalar value = algo.integrate(pdfKernel, Interval(x / d, b))[0];
+    const Scalar value = algo_.integrate(pdfKernel, x / d, b);
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
@@ -242,19 +431,19 @@ Scalar ProductDistribution::computePDFQ1(const Scalar x,
     if (x < ad)
     {
       LOGDEBUG(OSS() << x << " < " << ad);
-      const Scalar value = algo.integrate(pdfKernel, Interval(a, x / c))[0];
+      const Scalar value = algo_.integrate(pdfKernel, a, x / c);
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if (x < bc)
     {
       LOGDEBUG(OSS() << x << " < " << bc);
-      const Scalar value = algo.integrate(pdfKernel, Interval(x / d, x / c))[0];
+      const Scalar value = algo_.integrate(pdfKernel, x / d, x / c);
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     LOGDEBUG(OSS() << x << " < " << bd);
-    const Scalar value = algo.integrate(pdfKernel, Interval(x / d, b))[0];
+    const Scalar value = algo_.integrate(pdfKernel, x / d, b);
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
@@ -262,19 +451,19 @@ Scalar ProductDistribution::computePDFQ1(const Scalar x,
   if (x < bc)
   {
     LOGDEBUG(OSS() << x << " < " << bc);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, x / c))[0];
+    const Scalar value = algo_.integrate(pdfKernel, a, x / c);
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   if (x < ad)
   {
     LOGDEBUG(OSS() << x << " < " << ad);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, b))[0];
+    const Scalar value = algo_.integrate(pdfKernel, a, b);
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   LOGDEBUG(OSS() << x << " < " << bd);
-  const Scalar value = algo.integrate(pdfKernel, Interval(x / d, b))[0];
+  const Scalar value = algo_.integrate(pdfKernel, x / d, b);
   LOGDEBUG(OSS() << "value=" << value);
   return value;
 }
@@ -294,21 +483,19 @@ Scalar ProductDistribution::computePDFQ2(const Scalar x,
   LOGDEBUG(OSS() << "ac=" << ac << ", ad=" << ad << ", bc=" << bc << ", bd=" << bd);
   // Here the support is included into [ad, bc]
   if ((x < ad) || (x >= bc)) return 0.0;
-  GaussKronrod algo;
-  const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const Function pdfKernel(bindMethod<PDFKernelWrapper, Point, Point>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const PDFKernelProductDistribution pdfKernel(p_left_, p_right_, x);
   if (c == 0.0)
   {
     LOGDEBUG("c == 0.0");
     if (x < bd)
     {
       LOGDEBUG(OSS() << x << " < " << bd);
-      const Scalar value = algo.integrate(pdfKernel, Interval(a, x / d))[0];
+      const Scalar value = algo_.integrate(pdfKernel, a, x / d);
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     LOGDEBUG(OSS() << x << " < " << 0.0);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, b))[0];
+    const Scalar value = algo_.integrate(pdfKernel, a, b);
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
@@ -318,19 +505,19 @@ Scalar ProductDistribution::computePDFQ2(const Scalar x,
     if (x < ac)
     {
       LOGDEBUG(OSS() << x << " < " << ac);
-      const Scalar value = algo.integrate(pdfKernel, Interval(a, x / d))[0];
+      const Scalar value = algo_.integrate(pdfKernel, a, x / d);
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if (x < bd)
     {
       LOGDEBUG(OSS() << x << " < " << bd);
-      const Scalar value = algo.integrate(pdfKernel, Interval(x / c, x / d))[0];
+      const Scalar value = algo_.integrate(pdfKernel, x / c, x / d);
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     LOGDEBUG(OSS() << x << " < " << bc);
-    const Scalar value = algo.integrate(pdfKernel, Interval(x / c, b))[0];
+    const Scalar value = algo_.integrate(pdfKernel, x / c, b);
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
@@ -338,19 +525,19 @@ Scalar ProductDistribution::computePDFQ2(const Scalar x,
   if (x < bd)
   {
     LOGDEBUG(OSS() << x << " < " << bd);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, x / d))[0];
+    const Scalar value = algo_.integrate(pdfKernel, a, x / d);
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   if (x < ac)
   {
     LOGDEBUG(OSS() << x << " < " << ac);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, b))[0];
+    const Scalar value = algo_.integrate(pdfKernel, a, b);
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   LOGDEBUG(OSS() << x << " < " << bc);
-  const Scalar value = algo.integrate(pdfKernel, Interval(x / c, b))[0];
+  const Scalar value = algo_.integrate(pdfKernel, x / c, b);
   LOGDEBUG(OSS() << "value=" << value);
   return value;
 }
@@ -370,21 +557,19 @@ Scalar ProductDistribution::computePDFQ3(const Scalar x,
   LOGDEBUG(OSS() << "ac=" << ac << ", ad=" << ad << ", bc=" << bc << ", bd=" << bd);
   // Here the support is included into [bd, ac]
   if ((x < bd) || (x >= ac)) return 0.0;
-  GaussKronrod algo;
-  const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const Function pdfKernel(bindMethod<PDFKernelWrapper, Point, Point>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const PDFKernelProductDistribution pdfKernel(p_left_, p_right_, x);
   if (d == 0.0)
   {
     LOGDEBUG("d == 0.0");
     if (x < bc)
     {
       LOGDEBUG(OSS() << x << " < " << bc);
-      const Scalar value = algo.integrate(pdfKernel, Interval(a, b))[0];
+      const Scalar value = algo_.integrate(pdfKernel, a, b);
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     LOGDEBUG(OSS() << x << " < " << ac);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, x / c))[0];
+    const Scalar value = algo_.integrate(pdfKernel, a, x / c);
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
@@ -394,19 +579,19 @@ Scalar ProductDistribution::computePDFQ3(const Scalar x,
     if (x < ad)
     {
       LOGDEBUG(OSS() << x << " < " << ad);
-      const Scalar value = algo.integrate(pdfKernel, Interval(x / d, b))[0];
+      const Scalar value = algo_.integrate(pdfKernel, x / d, b);
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if (x < bc)
     {
       LOGDEBUG(OSS() << x << " < " << bc);
-      const Scalar value = algo.integrate(pdfKernel, Interval(a, b))[0];
+      const Scalar value = algo_.integrate(pdfKernel, a, b);
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     LOGDEBUG(OSS() << x << " < " << ac);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, x / c))[0];
+    const Scalar value = algo_.integrate(pdfKernel, a, x / c);
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
@@ -414,19 +599,19 @@ Scalar ProductDistribution::computePDFQ3(const Scalar x,
   if (x < bc)
   {
     LOGDEBUG(OSS() << x << " < " << bc);
-    const Scalar value = algo.integrate(pdfKernel, Interval(x / d, b))[0];
+    const Scalar value = algo_.integrate(pdfKernel, x / d, b);
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   if (x < ad)
   {
     LOGDEBUG(OSS() << x << " < " << ad);
-    const Scalar value = algo.integrate(pdfKernel, Interval(x / d, x / c))[0];
+    const Scalar value = algo_.integrate(pdfKernel, x / d, x / c);
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   LOGDEBUG(OSS() << x << " < " << ac);
-  const Scalar value = algo.integrate(pdfKernel, Interval(a, x / c))[0];
+  const Scalar value = algo_.integrate(pdfKernel, a, x / c);
   LOGDEBUG(OSS() << "value=" << value);
   return value;
 }
@@ -446,21 +631,19 @@ Scalar ProductDistribution::computePDFQ4(const Scalar x,
   LOGDEBUG(OSS() << "ac=" << ac << ", ad=" << ad << ", bc=" << bc << ", bd=" << bd);
   // Here the support is included into [bc, ad]
   if ((x < bc) || (x >= ad)) return 0.0;
-  GaussKronrod algo;
-  const PDFKernelWrapper pdfKernelWrapper(left_, right_, x);
-  const Function pdfKernel(bindMethod<PDFKernelWrapper, Point, Point>(pdfKernelWrapper, &PDFKernelWrapper::eval, 1, 1));
+  const PDFKernelProductDistribution pdfKernel(p_left_, p_right_, x);
   if (d == 0.0)
   {
     LOGDEBUG("d == 0.0");
     if (x < ac)
     {
       LOGDEBUG(OSS() << x << " < " << ac);
-      const Scalar value = algo.integrate(pdfKernel, Interval(x / c, b))[0];
+      const Scalar value = algo_.integrate(pdfKernel, x / c, b);
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     LOGDEBUG(OSS() << x << " < " << 0.0);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, b))[0];
+    const Scalar value = algo_.integrate(pdfKernel, a, b);
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
@@ -470,19 +653,19 @@ Scalar ProductDistribution::computePDFQ4(const Scalar x,
     if (x < bd)
     {
       LOGDEBUG(OSS() << x << " < " << bd);
-      const Scalar value = algo.integrate(pdfKernel, Interval(x / c, b))[0];
+      const Scalar value = algo_.integrate(pdfKernel, x / c, b);
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     if (x < ac)
     {
       LOGDEBUG(OSS() << x << " < " << ac);
-      const Scalar value = algo.integrate(pdfKernel, Interval(x / c, x / d))[0];
+      const Scalar value = algo_.integrate(pdfKernel, x / c, x / d);
       LOGDEBUG(OSS() << "value=" << value);
       return value;
     }
     LOGDEBUG(OSS() << x << " < " << ad);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, x / d))[0];
+    const Scalar value = algo_.integrate(pdfKernel, a, x / d);
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
@@ -491,19 +674,19 @@ Scalar ProductDistribution::computePDFQ4(const Scalar x,
   if (x < ac)
   {
     LOGDEBUG(OSS() << x << " < " << ac);
-    const Scalar value = algo.integrate(pdfKernel, Interval(x / c, b))[0];
+    const Scalar value = algo_.integrate(pdfKernel, x / c, b);
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   if (x < bd)
   {
     LOGDEBUG(OSS() << x << " < " << bd);
-    const Scalar value = algo.integrate(pdfKernel, Interval(a, b))[0];
+    const Scalar value = algo_.integrate(pdfKernel, a, b);
     LOGDEBUG(OSS() << "value=" << value);
     return value;
   }
   LOGDEBUG(OSS() << bd << " <= " << x << " < " << ad);
-  const Scalar value = algo.integrate(pdfKernel, Interval(a, x / d))[0];
+  const Scalar value = algo_.integrate(pdfKernel, a, x / d);
   LOGDEBUG(OSS() << "value=" << value);
   return value;
 }
@@ -513,384 +696,30 @@ Scalar ProductDistribution::computeCDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar x = point[0];
+  return computeCDF(point[0]);
+}
+
+Scalar ProductDistribution::computeCDF(const Scalar x) const
+{
   const Scalar a = getRange().getLowerBound()[0];
   const Scalar b = getRange().getUpperBound()[0];
   if (x <= a) return 0.0;
   if (x >= b) return 1.0;
-  const Scalar aLeft = left_.getRange().getLowerBound()[0];
-  const Scalar bLeft = left_.getRange().getUpperBound()[0];
+  const Scalar aLeft = p_left_->getRange().getLowerBound()[0];
+  const Scalar bLeft = p_left_->getRange().getUpperBound()[0];
   Scalar value = 0.0;
   // First, compute the negative part
-  GaussKronrod algo;
-  const CDFKernelWrapper cdfKernelWrapper(left_, right_, x);
   if (aLeft < 0)
   {
-    const Function cdfKernel(bindMethod<CDFKernelWrapper, Point, Point>(cdfKernelWrapper, &CDFKernelWrapper::evalComplementary, 1, 1));
-    value += algo.integrate(cdfKernel, Interval(aLeft, std::min(bLeft, 0.0)))[0];
+    const ComplementaryCDFKernelProductDistributionProductDistribution cdfKernel(p_left_, p_right_, x);
+    value += algo_.integrate(cdfKernel, aLeft, std::min(bLeft, 0.0));
   }
   if (bLeft >= 0)
   {
-    const Function cdfKernel(bindMethod<CDFKernelWrapper, Point, Point>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
-    value += algo.integrate(cdfKernel, Interval(std::max(0.0, aLeft), bLeft))[0];
+    const CDFKernelProductDistribution cdfKernel(p_left_, p_right_, x);
+    value += algo_.integrate(cdfKernel, std::max(0.0, aLeft), bLeft);
   }
   return value;
-}
-
-/* Get the CDF of the distribution: CDF(x) = \int_Q1 PDF_left(u) * CDF_right(x / u) * du when left >= 0, right >= 0 */
-Scalar ProductDistribution::computeCDFQ1(const Scalar x,
-    const Scalar a,
-    const Scalar b,
-    const Scalar c,
-    const Scalar d) const
-{
-  LOGDEBUG(OSS() << "In ProductDistribution::computeCDFQ1, x=" << x << ", a=" << a << ", b=" << b << ", c=" << c << ", d=" << d);
-  const Scalar ac = a * c;
-  const Scalar ad = a * d;
-  const Scalar bc = b * c;
-  const Scalar bd = b * d;
-  LOGDEBUG(OSS() << "ac=" << ac << ", ad=" << ad << ", bc=" << bc << ", bd=" << bd);
-  GaussKronrod algo;
-  const CDFKernelWrapper cdfKernelWrapper(left_, right_, x);
-  const Function cdfKernel(bindMethod<CDFKernelWrapper, Point, Point>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
-  if (c == 0.0)
-  {
-    LOGDEBUG("c == 0.0");
-    if ((x >= 0.0) && (x < ad))
-    {
-      LOGDEBUG(OSS() << 0.0 << " <= " << x << " < " << ad);
-      const Scalar value = algo.integrate(cdfKernel, Interval(a, b))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    if ((x >= ad) && (x < bd))
-    {
-      LOGDEBUG(OSS() << ad << " <= " << x << " < " << bd);
-      const Scalar value = left_.computeCDF(x / d) + algo.integrate(cdfKernel, Interval(x / d, b))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    LOGDEBUG(OSS() << x << " not in [" << ac << ", " << 0.0 << "]");
-    return 0.0;
-  }
-  if (ad <= bc)
-  {
-    LOGDEBUG("ad <= bc");
-    if ((x >= ac) && (x < ad))
-    {
-      LOGDEBUG(OSS() << ac << " <= " << x << " < " << ad);
-      const Scalar value = algo.integrate(cdfKernel, Interval(a, x / c))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    if ((x >= ad) && (x < bc))
-    {
-      LOGDEBUG(OSS() << ad << " <= " << x << " < " << bc);
-      const Scalar value = left_.computeCDF(x / d) + algo.integrate(cdfKernel, Interval(x / d, x / c))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    if ((x >= bc) && (x < bd))
-    {
-      LOGDEBUG(OSS() << bc << " <= " << x << " < " << bd);
-      const Scalar value = left_.computeCDF(x / d) + algo.integrate(cdfKernel, Interval(x / d, b))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    LOGDEBUG(OSS() << x << " not in [" << ac << ", " << bd << "]");
-    return 0.0;
-  }
-  LOGDEBUG("ad > bc");
-  if ((x >= ac) && (x < bc))
-  {
-    LOGDEBUG(OSS() << ac << " <= " << x << " < " << bc);
-    const Scalar value = algo.integrate(cdfKernel, Interval(a, x / c))[0];
-    LOGDEBUG(OSS() << "value=" << value);
-    return value;
-  }
-  if ((x >= bc) && (x < ad))
-  {
-    LOGDEBUG(OSS() << bc << " <= " << x << " < " << ad);
-    const Scalar value = algo.integrate(cdfKernel, Interval(a, b))[0];
-    LOGDEBUG(OSS() << "value=" << value);
-    return value;
-  }
-  if ((x >= ad) && (x < bd))
-  {
-    LOGDEBUG(OSS() << ad << " <= " << x << " < " << bd);
-    const Scalar value = left_.computeCDF(x / d) + algo.integrate(cdfKernel, Interval(x / d, b))[0];
-    LOGDEBUG(OSS() << "value=" << value);
-    return value;
-  }
-  LOGDEBUG(OSS() << x << " not in [" << ac << ", " << bd << "]");
-  return 0.0;
-}
-
-/* Get the CDF of the distribution: CDF(x) = 1 - \int_Q2 PDF_left(u) * CDF_right(x / u) * du when left <= 0, right >= 0 */
-Scalar ProductDistribution::computeCDFQ2(const Scalar x,
-    const Scalar a,
-    const Scalar b,
-    const Scalar c,
-    const Scalar d) const
-{
-  LOGDEBUG(OSS() << "In ProductDistribution::computeCDFQ2, x=" << x << ", a=" << a << ", b=" << b << ", c=" << c << ", d=" << d);
-  const Scalar ac = a * c;
-  const Scalar ad = a * d;
-  const Scalar bc = b * c;
-  const Scalar bd = b * d;
-  LOGDEBUG(OSS() << "ac=" << ac << ", ad=" << ad << ", bc=" << bc << ", bd=" << bd);
-  GaussKronrod algo;
-  const CDFKernelWrapper cdfKernelWrapper(left_, right_, x);
-  const Function cdfKernel(bindMethod<CDFKernelWrapper, Point, Point>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
-  if (c == 0.0)
-  {
-    LOGDEBUG("c == 0.0");
-    if ((x >= ad) && (x < bd))
-    {
-      LOGDEBUG(OSS() << ad << " <= " << x << " < " << bd);
-      const Scalar value = left_.computeCDF(x / d) - algo.integrate(cdfKernel, Interval(a, x / d))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    if ((x >= bd) && (x < 0.0))
-    {
-      LOGDEBUG(OSS() << ad << " <= " << x << " < " << bd);
-      const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, b))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    LOGDEBUG(OSS() << x << " not in [" << ad << ", " << 0.0 << "]");
-    return 0.0;
-  }
-  if (ac <= bd)
-  {
-    LOGDEBUG("ac <= bd");
-    if ((x >= ad) && (x < ac))
-    {
-      LOGDEBUG(OSS() << ad << " <= " << x << " < " << ac);
-      const Scalar value = left_.computeCDF(x / d) - algo.integrate(cdfKernel, Interval(a, x / d))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    if ((x >= ac) && (x < bd))
-    {
-      LOGDEBUG(OSS() << ac << " <= " << x << " < " << bd);
-      const Scalar value = left_.computeCDF(x / d) - algo.integrate(cdfKernel, Interval(x / c, x / d))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    if ((x >= bd) && (x < bc))
-    {
-      LOGDEBUG(OSS() << bd << " <= " << x << " < " << bc);
-      const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(x / c, b))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    LOGDEBUG(OSS() << x << " not in [" << ad << ", " << bc << "]");
-    return 0.0;
-  }
-  LOGDEBUG("ac > bd");
-  if ((x >= ad) && (x < bd))
-  {
-    LOGDEBUG(OSS() << ad << " <= " << x << " < " << bd);
-    const Scalar value = left_.computeCDF(x / d) - algo.integrate(cdfKernel, Interval(a, x / d))[0];
-    LOGDEBUG(OSS() << "value=" << value);
-    return value;
-  }
-  if ((x >= bd) && (x < ac))
-  {
-    LOGDEBUG(OSS() << bd << " <= " << x << " < " << ac);
-    const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, b))[0];
-    LOGDEBUG(OSS() << "value=" << value);
-    return value;
-  }
-  if ((x >= ac) && (x < bc))
-  {
-    LOGDEBUG(OSS() << ac << " <= " << x << " < " << bc);
-    const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(x / c, b))[0];
-    LOGDEBUG(OSS() << "value=" << value);
-    return value;
-  }
-  LOGDEBUG(OSS() << x << " not in [" << ad << ", " << bc << "]");
-  return 0.0;
-}
-
-/* Get the CDF of the distribution: CDF(x) = 1 - \int_Q3 PDF_left(u) * CDF_right(x / u) * du when left <= 0, right <= 0 */
-Scalar ProductDistribution::computeCDFQ3(const Scalar x,
-    const Scalar a,
-    const Scalar b,
-    const Scalar c,
-    const Scalar d) const
-{
-  LOGDEBUG(OSS() << "In ProductDistribution::computePDFQ3, x=" << x << ", a=" << a << ", b=" << b << ", c=" << c << ", d=" << d);
-  const Scalar ac = a * c;
-  const Scalar ad = a * d;
-  const Scalar bc = b * c;
-  const Scalar bd = b * d;
-  LOGDEBUG(OSS() << "ac=" << ac << ", ad=" << ad << ", bc=" << bc << ", bd=" << bd);
-  GaussKronrod algo;
-  const CDFKernelWrapper cdfKernelWrapper(left_, right_, x);
-  const Function cdfKernel(bindMethod<CDFKernelWrapper, Point, Point>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
-  if (d == 0.0)
-  {
-    LOGDEBUG("d == 0.0");
-    if ((x >= 0.0) && (x < bc))
-    {
-      LOGDEBUG(OSS() << 0.0 << " <= " << x << " < " << bc);
-      const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, b))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    if ((x >= bc) && (x < ac))
-    {
-      LOGDEBUG(OSS() << bc << " <= " << x << " < " << ac);
-      const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, x / c))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    LOGDEBUG(OSS() << x << " not in [" << 0.0 << ", " << ac << "]");
-    return 0.0;
-  }
-  if (ad <= bc)
-  {
-    LOGDEBUG("ad <= bc");
-    if ((x >= bd) && (x < bc)) // BUG
-    {
-      LOGDEBUG(OSS() << bd << " <= " << x << " < " << ad);
-      const Scalar value = left_.computeComplementaryCDF(x / d) - algo.integrate(cdfKernel, Interval(x / d, b))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    if ((x >= bc) && (x < ad)) // BUG
-    {
-      LOGDEBUG(OSS() << ad << " <= " << x << " < " << bc);
-      const Scalar value = left_.computeComplementaryCDF(x / d) - algo.integrate(cdfKernel, Interval(x / d, x / c))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    if ((x >= ad) && (x < ac)) // BUG
-    {
-      LOGDEBUG(OSS() << bc << " <= " << x << " < " << ac);
-      const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, x / c))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    LOGDEBUG(OSS() << x << " not in [" << bd << ", " << ac << "]");
-    return 0.0;
-  }
-  LOGDEBUG("ad > bc");
-  if ((x >= bd) && (x < ad)) // BUG
-  {
-    LOGDEBUG(OSS() << bd << " <= " << x << " < " << bc);
-    const Scalar value = left_.computeComplementaryCDF(x / d) - algo.integrate(cdfKernel, Interval(x / d, b))[0];
-    LOGDEBUG(OSS() << "value=" << value);
-    return value;
-  }
-  if ((x >= ad) && (x < bc)) // BUG
-  {
-    LOGDEBUG(OSS() << bc << " <= " << x << " < " << ad);
-    const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, b))[0];
-    LOGDEBUG(OSS() << "value=" << value);
-    return value;
-  }
-  if ((x >= bc) && (x < ac)) // BUG
-  {
-    LOGDEBUG(OSS() << ad << " <= " << x << " < " << ac);
-    const Scalar value = 1.0 - algo.integrate(cdfKernel, Interval(a, x / c))[0];
-    LOGDEBUG(OSS() << "value=" << value);
-    return value;
-  }
-  LOGDEBUG(OSS() << x << " not in [" << bd << ", " << ac << "]");
-  return 0.0;
-}
-
-/* Get the CDF of the distribution: CDF(x) = \int_Q4 PDF_left(u) * CDF_right(x / u) * du when left >= 0, right <= 0 */
-Scalar ProductDistribution::computeCDFQ4(const Scalar x,
-    const Scalar a,
-    const Scalar b,
-    const Scalar c,
-    const Scalar d) const
-{
-  LOGDEBUG(OSS() << "In ProductDistribution::computeCDFQ4, x=" << x << ", a=" << a << ", b=" << b << ", c=" << c << ", d=" << d);
-  const Scalar ac = a * c;
-  const Scalar ad = a * d;
-  const Scalar bc = b * c;
-  const Scalar bd = b * d;
-  LOGDEBUG(OSS() << "ac=" << ac << ", ad=" << ad << ", bc=" << bc << ", bd=" << bd);
-  GaussKronrod algo;
-  const CDFKernelWrapper cdfKernelWrapper(left_, right_, x);
-  const Function cdfKernel(bindMethod<CDFKernelWrapper, Point, Point>(cdfKernelWrapper, &CDFKernelWrapper::eval, 1, 1));
-  if (d == 0.0)
-  {
-    LOGDEBUG("d == 0.0");
-    if ((x >= bc) && (x < 0.0))
-    {
-      LOGDEBUG(OSS() << ac << " <= " << x << " < " << 0.0);
-      const Scalar value = algo.integrate(cdfKernel, Interval(x / c, b))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    if ((x >= ac) && (x < 0.0))
-    {
-      LOGDEBUG(OSS() << bc << " <= " << x << " < " << ac);
-      const Scalar value = algo.integrate(cdfKernel, Interval(a, b))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    LOGDEBUG(OSS() << x << " not in [" << bc << ", " << 0.0 << "]");
-    return 0.0;
-  }
-  if (bd <= ac)
-  {
-    LOGDEBUG("bd <= ac");
-    if ((x >= bc) && (x < bd))
-    {
-      LOGDEBUG(OSS() << bc << " <= " << x << " < " << bd);
-      const Scalar value = algo.integrate(cdfKernel, Interval(x / c, b))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    if ((x >= bd) && (x < ac))
-    {
-      LOGDEBUG(OSS() << bd << " <= " << x << " < " << ac);
-      const Scalar value = left_.computeComplementaryCDF(x / d) + algo.integrate(cdfKernel, Interval(x / c, x / d))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    if ((x >= ac) && (x < ad))
-    {
-      LOGDEBUG(OSS() << ac << " <= " << x << " < " << ad);
-      const Scalar value = left_.computeComplementaryCDF(x / d) + algo.integrate(cdfKernel, Interval(a, x / d))[0];
-      LOGDEBUG(OSS() << "value=" << value);
-      return value;
-    }
-    LOGDEBUG(OSS() << x << " not in [" << bc << ", " << ad << "]");
-    return 0.0;
-  }
-  LOGDEBUG("bd > ac");
-  if ((x >= bc) && (x < ac))
-  {
-    LOGDEBUG(OSS() << bc << " <= " << x << " < " << ac);
-    const Scalar value = algo.integrate(cdfKernel, Interval(x / c, b))[0];
-    LOGDEBUG(OSS() << "value=" << value);
-    return value;
-  }
-  if ((x >= ac) && (x < bd))
-  {
-    LOGDEBUG(OSS() << ac << " <= " << x << " < " << bd);
-    const Scalar value = algo.integrate(cdfKernel, Interval(a, b))[0];
-    LOGDEBUG(OSS() << "value=" << value);
-    return value;
-  }
-  if ((x >= bd) && (x < ad))
-  {
-    LOGDEBUG(OSS() << bd << " <= " << x << " < " << ad);
-    const Scalar value = left_.computeComplementaryCDF(x / d) + algo.integrate(cdfKernel, Interval(a, x / d))[0];
-    LOGDEBUG(OSS() << "value=" << value);
-    return value;
-  }
-  LOGDEBUG(OSS() << x << " not in [" << bc << ", " << ad << "]");
-  return 0.0;
 }
 
 /* Compute the probability content of an interval */
@@ -902,21 +731,19 @@ Scalar ProductDistribution::computeProbability(const Interval & interval) const
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex ProductDistribution::computeCharacteristicFunction(const Scalar x) const
 {
-  const Scalar muLeft = left_.getMean()[0];
-  const Scalar muRight = right_.getMean()[0];
-  const Scalar varLeft = left_.getCovariance()(0, 0);
-  const Scalar varRight = right_.getCovariance()(0, 0);
+  const Scalar muLeft = p_left_->getMean()[0];
+  const Scalar muRight = p_right_->getMean()[0];
+  const Scalar varLeft = p_left_->getCovariance()(0, 0);
+  const Scalar varRight = p_right_->getCovariance()(0, 0);
   if (x * x * (varLeft + muLeft * muLeft + varRight + muRight * muRight) < 2.0 * SpecFunc::ScalarEpsilon) return Complex(1.0, -x * muLeft * muRight);
   if (std::abs(x) > ResourceMap::GetAsScalar("ProductDistribution-LargeCharacteristicFunctionArgument")) return ContinuousDistribution::computeCharacteristicFunction(x);
-  const Scalar aLeft = left_.getRange().getLowerBound()[0];
-  const Scalar bLeft = left_.getRange().getUpperBound()[0];
-  GaussKronrod algo;
-  const CFKernelWrapper cfKernelWrapper(left_, right_, x);
-  const Function cfKernel(bindMethod<CFKernelWrapper, Point, Point>(cfKernelWrapper, &CFKernelWrapper::eval, 1, 2));
+  const Scalar aLeft = p_left_->getRange().getLowerBound()[0];
+  const Scalar bLeft = p_left_->getRange().getUpperBound()[0];
+  const CFKernelProductDistribution cfKernel(p_left_, p_right_, x);
   Scalar negativeError = 0.0;
-  const Point negativePart(algo.integrate(cfKernel, Interval(aLeft, muLeft), negativeError));
+  const Point negativePart(algo_.integrate(cfKernel, Interval(aLeft, muLeft), negativeError));
   Scalar positiveError = 0.0;
-  const Point positivePart(algo.integrate(cfKernel, Interval(muLeft, bLeft), positiveError));
+  const Point positivePart(algo_.integrate(cfKernel, Interval(muLeft, bLeft), positiveError));
   Complex value(negativePart[0] + positivePart[0], negativePart[1] + positivePart[1]);
   return value;
 }
@@ -924,7 +751,7 @@ Complex ProductDistribution::computeCharacteristicFunction(const Scalar x) const
 /* Compute the mean of the distribution */
 void ProductDistribution::computeMean() const
 {
-  mean_ = Point(1, left_.getMean()[0] * right_.getMean()[0]);
+  mean_ = Point(1, p_left_->getMean()[0] * p_right_->getMean()[0]);
   isAlreadyComputedMean_ = true;
 }
 
@@ -932,10 +759,10 @@ void ProductDistribution::computeMean() const
 void ProductDistribution::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  const Scalar meanLeft = left_.getMean()[0];
-  const Scalar meanRight = right_.getMean()[0];
-  const Scalar varLeft = left_.getCovariance()(0, 0);
-  const Scalar varRight = right_.getCovariance()(0, 0);
+  const Scalar meanLeft = p_left_->getMean()[0];
+  const Scalar meanRight = p_right_->getMean()[0];
+  const Scalar varLeft = p_left_->getCovariance()(0, 0);
+  const Scalar varRight = p_right_->getCovariance()(0, 0);
   covariance_(0, 0) = meanLeft * meanLeft * varRight + meanRight * meanRight * varLeft + varLeft * varRight;
   isAlreadyComputedCovariance_ = true;
 }
@@ -943,12 +770,12 @@ void ProductDistribution::computeCovariance() const
 /* Get the skewness of the distribution */
 Point ProductDistribution::getSkewness() const
 {
-  const Scalar meanLeft = left_.getMean()[0];
-  const Scalar meanRight = right_.getMean()[0];
-  const Scalar varLeft = left_.getCovariance()(0, 0);
-  const Scalar varRight = right_.getCovariance()(0, 0);
-  const Scalar mu3Left = left_.getSkewness()[0] * std::pow(varLeft, 1.5);
-  const Scalar mu3Right = right_.getSkewness()[0] * std::pow(varRight, 1.5);
+  const Scalar meanLeft = p_left_->getMean()[0];
+  const Scalar meanRight = p_right_->getMean()[0];
+  const Scalar varLeft = p_left_->getCovariance()(0, 0);
+  const Scalar varRight = p_right_->getCovariance()(0, 0);
+  const Scalar mu3Left = p_left_->getSkewness()[0] * std::pow(varLeft, 1.5);
+  const Scalar mu3Right = p_right_->getSkewness()[0] * std::pow(varRight, 1.5);
   const Scalar variance = meanLeft * meanLeft * varRight + meanRight * meanRight * varLeft + varLeft * varRight;
   return Point(1, (mu3Left * mu3Right + mu3Left * std::pow(meanRight, 3.0) + mu3Right * std::pow(meanLeft, 3.0) + 3.0 * (mu3Left * varRight * meanRight + mu3Right * varLeft * meanLeft) + 6.0 * varLeft * varRight * meanLeft * meanRight) / std::pow(variance, 1.5));
 }
@@ -956,18 +783,18 @@ Point ProductDistribution::getSkewness() const
 /* Get the kurtosis of the distribution */
 Point ProductDistribution::getKurtosis() const
 {
-  const Scalar meanLeft = left_.getMean()[0];
+  const Scalar meanLeft = p_left_->getMean()[0];
   const Scalar meanLeft2 = meanLeft * meanLeft;
   const Scalar meanLeft4 = meanLeft2 * meanLeft2;
-  const Scalar meanRight = right_.getMean()[0];
+  const Scalar meanRight = p_right_->getMean()[0];
   const Scalar meanRight2 = meanRight * meanRight;
   const Scalar meanRight4 = meanRight2 * meanRight2;
-  const Scalar varLeft = left_.getCovariance()(0, 0);
-  const Scalar varRight = right_.getCovariance()(0, 0);
-  const Scalar mu3Left = left_.getSkewness()[0] * std::pow(varLeft, 1.5);
-  const Scalar mu3Right = right_.getSkewness()[0] * std::pow(varRight, 1.5);
-  const Scalar mu4Left = left_.getKurtosis()[0] * varLeft * varLeft;
-  const Scalar mu4Right = right_.getKurtosis()[0] * varRight * varRight;
+  const Scalar varLeft = p_left_->getCovariance()(0, 0);
+  const Scalar varRight = p_right_->getCovariance()(0, 0);
+  const Scalar mu3Left = p_left_->getSkewness()[0] * std::pow(varLeft, 1.5);
+  const Scalar mu3Right = p_right_->getSkewness()[0] * std::pow(varRight, 1.5);
+  const Scalar mu4Left = p_left_->getKurtosis()[0] * varLeft * varLeft;
+  const Scalar mu4Right = p_right_->getKurtosis()[0] * varRight * varRight;
   const Scalar variance = meanLeft * meanLeft * varRight + meanRight * meanRight * varLeft + varLeft * varRight;
   return Point(1, (mu4Left * mu4Right + mu4Left * meanRight4 + mu4Right * meanLeft4 + 4.0 * (mu4Left * mu3Right * meanRight + mu4Right * mu3Left * meanLeft) + 6.0 * (varLeft * meanLeft2 * varRight * meanRight2 + mu4Left * varRight * meanRight2 + mu4Right * varLeft * meanLeft2) + 12.0 * (mu3Left * meanLeft * mu3Right * meanRight + mu3Left * meanLeft * varRight * meanRight2 + mu3Right * meanRight * varLeft * meanLeft2)) / (variance * variance));
 }
@@ -975,30 +802,30 @@ Point ProductDistribution::getKurtosis() const
 /* Get the raw moments of the distribution */
 Point ProductDistribution::getMoment(const UnsignedInteger n) const
 {
-  return Point(1, left_.getMoment(n)[0] * right_.getMoment(n)[0]);
+  return Point(1, p_left_->getMoment(n)[0] * p_right_->getMoment(n)[0]);
 }
 
 
 /* Parameters value accessor */
 Point ProductDistribution::getParameter() const
 {
-  Point point(left_.getParameter());
-  point.add(right_.getParameter());
+  Point point(p_left_->getParameter());
+  point.add(p_right_->getParameter());
   return point;
 }
 
 void ProductDistribution::setParameter(const Point & parameter)
 {
-  const UnsignedInteger leftSize = left_.getParameterDimension();
-  const UnsignedInteger rightSize = right_.getParameterDimension();
+  const UnsignedInteger leftSize = p_left_->getParameterDimension();
+  const UnsignedInteger rightSize = p_right_->getParameterDimension();
   if (parameter.getSize() != leftSize + rightSize)
     throw InvalidArgumentException(HERE) << "Error: expected " << leftSize + rightSize << " values, got " << parameter.getSize();
   Point newLeftParameters(leftSize);
   Point newRightParameters(rightSize);
   std::copy(parameter.begin(), parameter.begin() + leftSize, newLeftParameters.begin());
   std::copy(parameter.begin() + leftSize, parameter.end(), newRightParameters.begin());
-  Distribution newLeft(left_);
-  Distribution newRight(right_);
+  Distribution newLeft(p_left_);
+  Distribution newRight(p_right_);
   newLeft.setParameter(newLeftParameters);
   newRight.setParameter(newRightParameters);
   const Scalar w = getWeight();
@@ -1009,15 +836,15 @@ void ProductDistribution::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description ProductDistribution::getParameterDescription() const
 {
-  Description description(left_.getParameterDescription());
-  description.add(right_.getParameterDescription());
+  Description description(p_left_->getParameterDescription());
+  description.add(p_right_->getParameterDescription());
   return description;
 }
 
 /* Check if the distribution is elliptical */
 Bool ProductDistribution::isElliptical() const
 {
-  return (left_.isElliptical() && (std::abs(left_.getRange().getLowerBound()[0] + left_.getRange().getUpperBound()[0]) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon"))) || (right_.isElliptical() && (std::abs(right_.getRange().getLowerBound()[0] + right_.getRange().getUpperBound()[0]) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")));
+  return (p_left_->isElliptical() && (std::abs(p_left_->getRange().getLowerBound()[0] + p_left_->getRange().getUpperBound()[0]) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon"))) || (p_right_->isElliptical() && (std::abs(p_right_->getRange().getLowerBound()[0] + p_right_->getRange().getUpperBound()[0]) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")));
 }
 
 /* Left accessor */
@@ -1025,17 +852,17 @@ void ProductDistribution::setLeft(const Distribution & left)
 {
   if (left.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can multiply only distribution with dimension=1, here dimension=" << left.getDimension();
   if (!left.isContinuous()) throw InvalidArgumentException(HERE) << "Error: can multiply only continuous distributions";
-  left_ = left;
+  p_left_ = left.getImplementation();
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   isAlreadyCreatedGeneratingFunction_ = false;
-  isParallel_ = left_.getImplementation()->isParallel();
+  isParallel_ = p_left_->isParallel();
   computeRange();
 }
 
 Distribution ProductDistribution::getLeft() const
 {
-  return left_;
+  return p_left_;
 }
 
 /* Right accessor */
@@ -1043,34 +870,34 @@ void ProductDistribution::setRight(const Distribution & right)
 {
   if (right.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can multiply only distribution with dimension=1, here dimension=" << right.getDimension();
   if (!right.isContinuous()) throw InvalidArgumentException(HERE) << "Error: can multiply only continuous distributions";
-  right_ = right;
+  p_right_ = right.getImplementation();
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   isAlreadyCreatedGeneratingFunction_ = false;
-  isParallel_ = right_.getImplementation()->isParallel();
+  isParallel_ = p_right_->isParallel();
   computeRange();
 }
 
 Distribution ProductDistribution::getRight() const
 {
-  return right_;
+  return p_right_;
 }
 
 Bool ProductDistribution::isContinuous() const
 {
-  return left_.isContinuous() && right_.isContinuous();
+  return p_left_->isContinuous() && p_right_->isContinuous();
 }
 
 /* Tell if the distribution is discrete */
 Bool ProductDistribution::isDiscrete() const
 {
-  return left_.isDiscrete() && right_.isDiscrete();
+  return p_left_->isDiscrete() && p_right_->isDiscrete();
 }
 
 /* Tell if the distribution is integer valued */
 Bool ProductDistribution::isIntegral() const
 {
-  return left_.isIntegral() && right_.isIntegral();
+  return p_left_->isIntegral() && p_right_->isIntegral();
 }
 
 /* Get the PDF singularities inside of the range - 1D only */
@@ -1085,16 +912,20 @@ Point ProductDistribution::getSingularities() const
 void ProductDistribution::save(Advocate & adv) const
 {
   ContinuousDistribution::save(adv);
-  adv.saveAttribute( "left_", left_ );
-  adv.saveAttribute( "right_", right_ );
+  adv.saveAttribute( "left_", *p_left_ );
+  adv.saveAttribute( "right_", *p_right_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ProductDistribution::load(Advocate & adv)
 {
   ContinuousDistribution::load(adv);
-  adv.loadAttribute( "left_", left_ );
-  adv.loadAttribute( "right_", right_ );
+  Distribution left;
+  adv.loadAttribute( "left_", left );
+  p_left_ = left.getImplementation();
+  Distribution right;
+  adv.loadAttribute( "right_", right );
+  p_right_ = right.getImplementation();
   computeRange();
 }
 

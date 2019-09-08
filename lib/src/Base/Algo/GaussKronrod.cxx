@@ -185,6 +185,90 @@ Point GaussKronrod::computeRule(const Function & function,
   return resultGaussKronrod;
 }
 
+/* Special case for univariate functions to avoid using costly Point */
+Scalar GaussKronrod::integrate(const UniVariateFunction & function,
+			       const Scalar a,
+			       const Scalar b) const
+{
+  Scalar result = 0.0;
+  Collection<Scalar> ai(maximumSubIntervals_);
+  ai[0] = a;
+  Collection<Scalar> bi(maximumSubIntervals_);
+  bi[0] = b;
+  Collection<Scalar> fi(maximumSubIntervals_);
+  Collection<Scalar> ei(maximumSubIntervals_);
+  UnsignedInteger ip = 0;
+  UnsignedInteger im = 0;
+  Scalar error = maximumError_;
+  while ((error > 0.25 * maximumError_) && (im < maximumSubIntervals_ - 1))
+  {
+    ++im;
+    bi[im] = bi[ip];
+    ai[im] = 0.5 * (ai[ip] + bi[ip]);
+    bi[ip] = ai[im];
+    fi[ip] = computeScalarRule(function, ai[ip], bi[ip], ei[ip]);
+    fi[im] = computeScalarRule(function, ai[im], bi[im], ei[im]);
+    UnsignedInteger iErrorMax = 0;
+    Scalar errorMax = 0.0;
+    error = 0.0;
+    result = 0.0;
+    for (UnsignedInteger i = 0; i <= im; ++i)
+    {
+      const Scalar localError = ei[i];
+      result += fi[i];
+      error += localError * localError;
+      // Add a test on the integration interval length to avoid too short intervals
+      if ((localError > errorMax) && (bi[i] - ai[i] > maximumError_))
+      {
+        errorMax = localError;
+        iErrorMax = i;
+      }
+    }
+    ip = iErrorMax;
+    error = sqrt(error);
+  } // while (error >...)
+  if (error > maximumError_) LOGINFO(OSS() << "The GaussKronrod algorithm was not able to reach the requested error=" << maximumError_ << ", the achieved error is " << error);
+  return result;
+}
+
+/* Compute the local GaussKronrod rule over [a, b]. */
+Scalar GaussKronrod::computeScalarRule(const UniVariateFunction & function,
+				       const Scalar a,
+				       const Scalar b,
+				       Scalar & localError) const
+{
+  const Scalar width = 0.5 * (b - a);
+  const Scalar center = 0.5 * (a + b);
+  // Generate the set of points
+  const UnsignedInteger size = 2 * rule_.order_ + 1;
+  Collection<Scalar> x(size);
+  x[0] = center;
+  for (UnsignedInteger i = 0; i < rule_.order_; ++i)
+  {
+    const Scalar t = width * rule_.otherKronrodNodes_[i];
+    x[2 * i + 1] = center - t;
+    x[2 * i + 2] = center + t;
+  }
+  Collection<Scalar> y(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    y[i] = function(x[i]);
+  Scalar value = y[0];
+  Scalar resultGauss = value * rule_.zeroGaussWeight_;
+  Scalar resultGaussKronrod = value * rule_.zeroKronrodWeight_;
+  for (UnsignedInteger j = 0; j < (rule_.order_ - 1) / 2; ++j)
+  {
+    value = y[4 * j + 1] + y[4 * j + 2];
+    resultGaussKronrod += value * rule_.otherKronrodWeights_[2 * j];
+    value = y[4 * j + 3] + y[4 * j + 4];
+    resultGaussKronrod += value * rule_.otherKronrodWeights_[2 * j + 1];
+    resultGauss += value * rule_.otherGaussWeights_[j];
+  }
+  value = y[2 * rule_.order_ - 1] + y[2 * rule_.order_];
+  resultGaussKronrod = (resultGaussKronrod + rule_.otherKronrodWeights_[rule_.order_ - 1] * value) * width;
+  localError = std::abs(resultGaussKronrod - resultGauss * width);
+  return resultGaussKronrod;
+}
+
 /* Maximum sub-intervals accessor */
 UnsignedInteger GaussKronrod::getMaximumSubIntervals() const
 {
