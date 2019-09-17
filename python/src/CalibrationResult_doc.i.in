@@ -13,7 +13,15 @@ parameterMap : sequence of float
     The maximum a posteriori estimate of the parameter.
 observationsError : :class:`~openturns.Distribution`
     The distribution of the observations error.
-"
+outputObservations : :class:`~openturns.Sample`
+    The sample of output observations.
+residualFunction : :class:`~openturns.Function`
+    The residual function.
+
+Notes
+-----
+
+The residual function returns `model(inputObservations) - outputObservations`."
 
 // ---------------------------------------------------------------------
 
