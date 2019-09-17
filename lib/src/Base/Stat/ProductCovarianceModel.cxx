@@ -207,7 +207,7 @@ Description ProductCovarianceModel::getFullParameterDescription() const
   for (UnsignedInteger i = 0; i < size - 1; ++i)
     description[i] = OSS() << "scale_" << i;
   // Last element is amplitude
-  description[size - 1] = "amplitude";
+  description[size - 1] = "amplitude_0";
   return description;
 }
 
