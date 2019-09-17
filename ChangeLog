@@ -60,6 +60,7 @@
  * https://github.com/openturns/openturns/milestone/4?closed=1
  * #1006 (Text drawable does not handle size)
  * #1130 (Inconsistency in FittingTest)
+ * #1216 (The CalibrationResult doc does not match the code)
  * #1247 (KrigingAlgorithm could not compute amplitude analytically with ProductCovarianceModel )
 
 == 1.13 release (2019-06-06) == #release-1.13
