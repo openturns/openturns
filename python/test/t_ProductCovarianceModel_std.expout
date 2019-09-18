@@ -1,0 +1,22 @@
+1D Full parameter :  [0.5,1,2.5]
+1D active cov. param.:  ['scale_0', 'amplitude_0']
+Activate nu parameter
+active cov. param.:  ['scale_0', 'amplitude_0', 'nu']
+Matern d-dimensional covariance as product
+Full parameter :  [0.5,0.5,0.5,1,2.5,2.5,2.5]
+active cov. param.:  ['scale_0', 'scale_1', 'scale_2', 'amplitude_0', 'nu_0', 'nu_1', 'nu_2']
+Disable nu for marginals 0 & 1 parameter :  [0.5,0.5,0.5,1,2.5,2.5,2.5]
+active cov. param.:  ['scale_0', 'scale_1', 'scale_2', 'amplitude_0', 'nu_2']
+Check that active parameter is correctly propagated
+Model  0  : active cov. param.:  ['scale_0', 'amplitude_0']
+Model  1  : active cov. param.:  ['scale_0', 'amplitude_0']
+Model  2  : active cov. param.:  ['scale_0', 'amplitude_0', 'nu']
+Model 1 :  [scale_0,amplitude_0,nu]
+Activate nu parameter and disable sigma2
+model1 active parameter:  ['scale_0', 'nu']
+Model 2 :  [scale_0,amplitude_0,frequency]
+Activate freq parameter
+model2 active parameter:  ['scale_0', 'amplitude_0', 'frequency']
+Product covariance model
+Full parameter :  [1,1,1,2.5,1]
+active cov. param.:  ['scale_0', 'scale_1', 'amplitude_0', 'nu_0', 'frequency_1']
