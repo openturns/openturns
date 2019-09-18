@@ -24,6 +24,7 @@
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Collection.hxx"
+#include "openturns/Indices.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -88,17 +89,21 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
-protected:
-  void setCollection(const CovarianceModelCollection & collection);
-
   /** Parameter accessor */
   virtual void setFullParameter(const Point & parameter);
   virtual Point getFullParameter() const;
   virtual Description getFullParameterDescription() const;
+  virtual void setActiveParameter(const Indices & active);
+
+protected:
+  void setCollection(const CovarianceModelCollection & collection);
 
 private:
   /** The collection of marginal models */
   CovarianceModelPersistentCollection collection_;
+
+  /** Handle extra parameters of the marginal models */
+  Indices extraParameterNumber_;
 
 } ; /* class ProductCovarianceModel */
 
