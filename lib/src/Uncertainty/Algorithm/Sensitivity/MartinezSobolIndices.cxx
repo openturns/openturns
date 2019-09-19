@@ -147,21 +147,6 @@ void MartinezSobolIndices::incrementIndices(const Sample & inputSample)
     Point yA = inputSample[iter];
     Point yB = inputSample[size + iter];
     iterations_ += 1;
-    for (UnsignedInteger p = 0; p < modelInputDimension_; ++p)
-    {
-      Point yE = inputSample[(2 + p) * size + iter];
-      covarianceI_[p] *= (Scalar)(iterations_ - 2) / (Scalar)(iterations_ - 1);
-      covarianceTI_[p] *= (Scalar)(iterations_ - 2) / (Scalar)(iterations_ - 1);
-      for (UnsignedInteger q = 0; q < modelOutputDimension_; ++q)
-      {
-        covarianceI_(p, q) += (yB[q] - variances_[1].getMean()[q]) * (yE[q] - variances_[2 + p].getMean()[q])  / (Scalar)(iterations_);
-        covarianceTI_(p, q) += (yA[q] - variances_[0].getMean()[q]) * (yE[q] - variances_[2 + p].getMean()[q])  / (Scalar)(iterations_);
-      }
-      variances_[p].increment(yE);
-      for (UnsignedInteger q = 0; q < modelOutputDimension_; ++ q)
-        if (!(variances_[p].getVariance()[q] > 0.0))
-          throw InvalidArgumentException(HERE) << "Null output sample variance";
-    }
     variances_[0].increment(yA);
     for (UnsignedInteger q = 0; q < modelOutputDimension_; ++ q)
       if (!(variances_[0].getVariance()[q] > 0.0))
@@ -170,6 +155,24 @@ void MartinezSobolIndices::incrementIndices(const Sample & inputSample)
     for (UnsignedInteger q = 0; q < modelOutputDimension_; ++ q)
       if (!(variances_[1].getVariance()[q] > 0.0))
         throw InvalidArgumentException(HERE) << "Null output sample variance";
+    for (UnsignedInteger p = 0; p < modelInputDimension_; ++p)
+    {
+      variances_[p].increment(yE);
+      for (UnsignedInteger q = 0; q < modelOutputDimension_; ++ q)
+        if (!(variances_[p].getVariance()[q] > 0.0))
+          throw InvalidArgumentException(HERE) << "Null output sample variance";
+    }
+    for (UnsignedInteger p = 0; p < modelInputDimension_; ++p)
+    {
+      Point yE = inputSample[(2 + p) * size + iter];
+      covarianceI_[p] *= (Scalar)(iterations_ - 1) / (Scalar)iterations_;
+      covarianceTI_[p] *= (Scalar)(iterations_ - 1) / (Scalar)iterations_;
+      for (UnsignedInteger q = 0; q < modelOutputDimension_; ++q)
+      {
+        covarianceI_(p, q) += (yB[q] - variances_[1].getMean()[q]) * (yE[q] - variances_[2 + p].getMean()[q])  / (Scalar)(iterations_ - 1);
+        covarianceTI_(p, q) += (yA[q] - variances_[0].getMean()[q]) * (yE[q] - variances_[2 + p].getMean()[q])  / (Scalar)(iterations_ - 1);
+      }
+    }
   }
 
   for (UnsignedInteger p = 0; p < modelInputDimension_; ++p)
