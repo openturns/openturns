@@ -13,12 +13,12 @@ CLASSNAMEINIT(IterativeVariance)
 
 static const Factory<IterativeVariance> Factory_IterativeVariance;
 
-IterativeVariance::IterativeVariance(const UnsignedInteger size)
+IterativeVariance::IterativeVariance(const UnsignedInteger dimension)
   : IterativeAlgorithmImplementation()
   , iteration_(0)
-  , size_(size)
-  , meanData_(size_, 0.0)
-  , varData_(size_, 0.0)
+  , dimension_(dimension)
+  , meanData_(dimension_, 0.0)
+  , varData_(dimension_, 0.0)
 {
   // Nothing to do
 }
@@ -35,7 +35,7 @@ String IterativeVariance::__repr__() const
   OSS oss(true);
   oss << "class=" << IterativeVariance::GetClassName()
       << " iteration=" << iteration_
-      << " size=" << size_
+      << " dimension=" << dimension_
       << " values=" << varData_.__repr__()
       << " mean values=" << meanData_.__repr__();
   return oss;
@@ -46,18 +46,6 @@ String IterativeVariance::__str__(const String & offset) const
   return varData_.__str__(offset);
 }
 
-// // Sample & IterativeVariance::operator[] (const UnsignedInteger index)
-// // {
-// //   if (index >= varData_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << varData_.getSize() - 1;
-// //   return varData_[index];
-// // }
-// //
-// const Sample & IterativeVariance::operator[] (const UnsignedInteger index) const
-// {
-//   if (index >= varData_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << varData_.getSize() - 1;
-//   return varData_[index];
-// }
-
 UnsignedInteger IterativeVariance::getIteration() const
 {
   return iteration_;
@@ -65,21 +53,28 @@ UnsignedInteger IterativeVariance::getIteration() const
 
 UnsignedInteger IterativeVariance::getSize() const
 {
-  return size_;
+  return dimension_;
 }
 
 Point IterativeVariance::getVariance() const
 {
-  return varData_;
+  PersistentCollection<Scalar> varianceData(dimension_, 0.0);
+
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+  {
+    varianceData[i] = varData_[i] / iteration_;
+  }
+
+  return varianceData;
 }
 
 Point IterativeVariance::getCoeficientOfVariation() const
 {
-  PersistentCollection<Scalar> coeficientOfVariationData(size_, 0.0);
+  PersistentCollection<Scalar> coeficientOfVariationData(dimension_, 0.0);
 
-  for (UnsignedInteger i = 0; i < size_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    coeficientOfVariationData[i] = pow(varData_[i], 0.5) / meanData_[i];
+    coeficientOfVariationData[i] = pow(varData_[i] / iteration_, 0.5) / meanData_[i];
   }
 
   return coeficientOfVariationData;
@@ -87,11 +82,11 @@ Point IterativeVariance::getCoeficientOfVariation() const
 
 Point IterativeVariance::getStandardErrorOfTheMean() const
 {
-  PersistentCollection<Scalar> standardErrorOfTheMean(size_, 0.0);
+  PersistentCollection<Scalar> standardErrorOfTheMean(dimension_, 0.0);
 
-  for (UnsignedInteger i = 0; i < size_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    standardErrorOfTheMean[i] = pow(varData_[i], 0.5) / pow(iteration_, 0.5);
+    standardErrorOfTheMean[i] = pow(varData_[i] / iteration_, 0.5) / pow(iteration_, 0.5);
   }
 
   return standardErrorOfTheMean;
@@ -99,11 +94,11 @@ Point IterativeVariance::getStandardErrorOfTheMean() const
 
 Point IterativeVariance::getStandardDeviation() const
 {
-  PersistentCollection<Scalar> standardDeviationData(size_, 0.0);
+  PersistentCollection<Scalar> standardDeviationData(dimension_, 0.0);
 
-  for (UnsignedInteger i = 0; i < size_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    standardDeviationData[i] = pow(varData_[i], 0.5);
+    standardDeviationData[i] = pow(varData_[i] / iteration_, 0.5);
   }
 
   return standardDeviationData;
@@ -114,53 +109,48 @@ Point IterativeVariance::getMean() const
   return meanData_;
 }
 
-void IterativeVariance::increment(const Scalar newData)
-{
-  for (UnsignedInteger i = 0; i < size_; ++i)
-  {
-    Scalar temp = meanData_[i];
-    meanData_[i] = temp + (newData - temp) / (iteration_ + 1);
-    if (iteration_ > 0)
-    {
-      varData_[i] = (varData_[i] * (iteration_ - 1) + (newData - temp) * (newData - meanData_[i])) / iteration_;
-    }
-  }
-  iteration_ += 1;
-}
-
 void IterativeVariance::increment(const Point & newData)
 {
-  if (newData.getSize() != size_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the size of the iterative variance.";
+  if (newData.getSize() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the dimension of the iterative variance.";
 
-  for (UnsignedInteger i = 0; i < size_; ++i)
+  if (iteration_ > 0)
   {
-    Scalar temp = meanData_[i];
-    meanData_[i] = temp + (newData[i] - temp) / (iteration_ + 1);
-    if (iteration_ > 0)
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
-      varData_[i] = (varData_[i] * (iteration_ - 1) + (newData[i] - temp) * (newData[i] - meanData_[i])) / iteration_;
+//     Scalar temp = meanData_[i];
+//       varData_[i] = (varData_[i] * (iteration_ - 1) + (newData[i] - temp) * (newData[i] - meanData_[i])) / iteration_;
+      varData_[i] = varData_[i] + (iteration_) * pow((newData[i] - meanData_[i]), 2) / (iteration_ - 1);
     }
   }
+  // update mean
   iteration_ += 1;
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+  {
+    meanData_[i] = meanData_[i] + (newData[i] - meanData_[i]) / iteration_;
+  }
 }
 
 void IterativeVariance::increment(const Sample & newData)
 {
-  if (newData.getDimension() != size_) throw InvalidArgumentException(HERE) << "Error: the given Sample is not compatible with the size of the iterative variance.";
+  if (newData.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Sample is not compatible with the dimension of the iterative variance.";
 
   for (UnsignedInteger j = 0; j < newData.getSize(); ++j)
   {
     Point tempData = newData[j];
-    for (UnsignedInteger i = 0; i < size_; ++i)
+    if (iteration_ > 0)
     {
-      Scalar temp = meanData_[i];
-      meanData_[i] = temp + (tempData[i] - temp) / (iteration_ + 1);
-      if (iteration_ > 0)
+//       Scalar temp = meanData_[i];
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
       {
-        varData_[i] = (varData_[i] * (iteration_ - 1) + (tempData[i] - temp) * (tempData[i] - meanData_[i])) / iteration_;
+//         varData_[i] = varData_[i] + (iteration_ - 1) * pow((tempData[i] - meanData_[i]), 2) / iteration_;
+        varData_[i] = varData_[i] + (iteration_) * pow((tempData[i] - meanData_[i]), 2) / (iteration_ - 1);
       }
     }
     iteration_ += 1;
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+    {
+      meanData_[i] = meanData_[i] + (tempData[i] - meanData_[i]) / iteration_;
+    }
   }
 }
 
@@ -168,7 +158,7 @@ void IterativeVariance::increment(const Sample & newData)
 void IterativeVariance::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "size_", size_);
+  adv.saveAttribute( "dimension_", dimension_);
   adv.saveAttribute( "iteration_", iteration_);
   adv.saveAttribute( "meanData_", meanData_);
   adv.saveAttribute( "varData_", varData_);
@@ -179,7 +169,7 @@ void IterativeVariance::save(Advocate & adv) const
 void IterativeVariance::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "size_", size_);
+  adv.loadAttribute( "dimension_", dimension_);
   adv.loadAttribute( "iteration_", iteration_);
   adv.loadAttribute( "meanData_", meanData_);
   adv.loadAttribute( "varData_", varData_);

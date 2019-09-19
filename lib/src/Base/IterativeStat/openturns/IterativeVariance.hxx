@@ -15,13 +15,9 @@ class OT_API IterativeVariance
 
 public:
 
-  explicit IterativeVariance(const UnsignedInteger size = 1);
+  explicit IterativeVariance(const UnsignedInteger dimension = 1);
 
   IterativeVariance * clone() const;
-
-  void increment(const Scalar newData);
-
-//   void increment(PersistentCollection<Scalar> & newData);
 
   void increment(const Point & newData);
 
@@ -57,10 +53,6 @@ public:
   /* String converter */
   String __str__(const String & offset = "") const;
 
-//   Sample & operator[] (const UnsignedInteger index);
-//
-//   const Sample & operator[] (const UnsignedInteger index) const;
-
   UnsignedInteger getSize() const;
 
   UnsignedInteger getIteration() const;
@@ -83,7 +75,7 @@ public:
 
 private:
   UnsignedInteger              iteration_;
-  UnsignedInteger              size_;
+  UnsignedInteger              dimension_;
   PersistentCollection<Scalar> meanData_;
   PersistentCollection<Scalar> varData_;
 };

@@ -12,13 +12,13 @@ class OT_API IterativeAlgorithm
   : public TypedInterfaceObject<IterativeAlgorithmImplementation>
 {
   CLASSNAME
-  
+
 public:
 
 //   typedef std::unordered_map<std::string, void*> registry_map;
 
 //   typedef Pointer<IterativeAlgorithmImplementation>   IterativeAlgorithmImplementation_p;
-    
+
   /**
    * Default constructor
    *
@@ -34,19 +34,19 @@ public:
   {
     // Nothing to do
   }
-    
+
   IterativeAlgorithm(const IterativeAlgorithmImplementation & implementation)
     : TypedInterfaceObject<IterativeAlgorithmImplementation>(implementation.clone())
   {
     // Nothing to do
   }
-  
+
   IterativeAlgorithm(const Implementation & p_implementation)
     : TypedInterfaceObject<IterativeAlgorithmImplementation>(p_implementation)
   {
     // Nothing to do
   }
-  
+
 #ifndef SWIG
   IterativeAlgorithm(IterativeAlgorithmImplementation * p_implementation)
     : TypedInterfaceObject<IterativeAlgorithmImplementation>(p_implementation)
@@ -72,30 +72,23 @@ public:
 //   {
 //     p_implementation_.assign(obj);
 //   }
-  
+
   /**
    * Increment methods
    *
    * @warning These methods MUST be overloaded in derived classes.
    */
-  
-  virtual void increment(const Scalar newData)
-  {
-    return getImplementation()->increment(newData);
-  }
-  
-//   virtual void increment(const PersistentCollection<Scalar> & newData) = 0;
-  
+
   virtual void increment(const Point & newData)
   {
     return getImplementation()->increment(newData);
   }
-  
+
   virtual void increment(const Sample & newData)
   {
     return getImplementation()->increment(newData);
   }
-  
+
   virtual void finalize()
   {
     return getImplementation()->finalize();
@@ -114,7 +107,7 @@ public:
   {
     return getImplementation()->__str__(offset);
   }
-    
+
 }; /* class IterativeAlgorithm */
 
 END_NAMESPACE_OPENTURNS

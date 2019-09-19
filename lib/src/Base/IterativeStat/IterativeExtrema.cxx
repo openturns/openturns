@@ -13,10 +13,10 @@ CLASSNAMEINIT(IterativeExtrema)
 
 static const Factory<IterativeExtrema> Factory_IterativeExtrema;
 
-IterativeExtrema::IterativeExtrema(const UnsignedInteger size)
+IterativeExtrema::IterativeExtrema(const UnsignedInteger dimension)
   : IterativeAlgorithmImplementation()
   , iteration_(0)
-  , size_(size)
+  , dimension_(dimension)
   , minData_(0)
   , maxData_(0)
 {
@@ -29,9 +29,9 @@ IterativeExtrema * IterativeExtrema::clone() const
   return new IterativeExtrema(*this);
 }
 
-// IterativeAlgorithm * IterativeExtrema::create(const int size)
+// IterativeAlgorithm * IterativeExtrema::create(const int dimension)
 // {
-//   return new IterativeExtrema(size);
+//   return new IterativeExtrema(dimension);
 // }
 
 /* String converter */
@@ -40,7 +40,7 @@ String IterativeExtrema::__repr__() const
   OSS oss(true);
   oss << "class=" << IterativeExtrema::GetClassName()
       << " iteration=" << iteration_
-      << " size=" << size_
+      << " dimension=" << dimension_
       << " min=" << minData_.__repr__()
       << " max=" << maxData_.__repr__();
   return oss;
@@ -51,25 +51,13 @@ String IterativeExtrema::__str__(const String & offset) const
   OSS oss(false);
   oss << getClassName() << "(";
   String separator("");
-  for (UnsignedInteger i = 0; i < size_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     oss << separator << "(min = " << minData_[i] << ", max = " << maxData_[i] << ")";
     separator = ", ";
   }
   return oss;
 }
-
-// // Sample & IterativeExtrema::operator[] (const UnsignedInteger index)
-// // {
-// //   if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
-// //   return data_[index];
-// // }
-// //
-// const Sample & IterativeExtrema::operator[] (const UnsignedInteger index) const
-// {
-//   if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
-//   return data_[index];
-// }
 
 UnsignedInteger IterativeExtrema::getIteration() const
 {
@@ -78,7 +66,7 @@ UnsignedInteger IterativeExtrema::getIteration() const
 
 UnsignedInteger IterativeExtrema::getSize() const
 {
-  return size_;
+  return dimension_;
 }
 
 Point IterativeExtrema::getMin() const
@@ -91,40 +79,13 @@ Point IterativeExtrema::getMax() const
   return maxData_;
 }
 
-void IterativeExtrema::increment(const Scalar newData)
-{
-  iteration_ += 1;
-  if (iteration_ > 1)
-  {
-    for (UnsignedInteger i = 0; i < size_; ++i)
-    {
-      if (newData > maxData_[i])
-      {
-        maxData_[i] = newData;
-      }
-      if (newData < minData_[i])
-      {
-        minData_[i] = newData;
-      }
-    }
-  }
-  else
-  {
-    for (UnsignedInteger i = 0; i < size_; ++i)
-    {
-      maxData_[i] = newData;
-      minData_[i] = newData;
-    }
-  }
-}
-
 void IterativeExtrema::increment(const Point & newData)
 {
-  if (newData.getSize() != size_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the size of the iterative extrema.";
+  if (newData.getSize() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the dimension of the iterative extrema.";
   iteration_ += 1;
   if (iteration_ > 1)
   {
-    for (UnsignedInteger i = 0; i < size_; ++i)
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
       if (newData[i] > maxData_[i])
       {
@@ -138,7 +99,7 @@ void IterativeExtrema::increment(const Point & newData)
   }
   else
   {
-    for (UnsignedInteger i = 0; i < size_; ++i)
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
       maxData_[i] = newData[i];
       minData_[i] = newData[i];
@@ -148,7 +109,7 @@ void IterativeExtrema::increment(const Point & newData)
 
 void IterativeExtrema::increment(const Sample & newData)
 {
-  if (newData.getDimension() != size_) throw InvalidArgumentException(HERE) << "Error: the given Sample is not compatible with the size of the extrema.";
+  if (newData.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Sample is not compatible with the dimension of the extrema.";
 
   for (UnsignedInteger j = 0; j < newData.getSize(); ++j)
   {
@@ -156,7 +117,7 @@ void IterativeExtrema::increment(const Sample & newData)
     iteration_ += 1;
     if (iteration_ > 1)
     {
-      for (UnsignedInteger i = 0; i < size_; ++i)
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
       {
         if (tempData[i] > maxData_[i])
         {
@@ -170,7 +131,7 @@ void IterativeExtrema::increment(const Sample & newData)
     }
     else
     {
-      for (UnsignedInteger i = 0; i < size_; ++i)
+      for (UnsignedInteger i = 0; i < dimension_; ++i)
       {
         maxData_[i] = tempData[i];
         minData_[i] = tempData[i];
@@ -183,7 +144,7 @@ void IterativeExtrema::increment(const Sample & newData)
 void IterativeExtrema::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "size_", size_);
+  adv.saveAttribute( "dimension_", dimension_);
   adv.saveAttribute( "iteration_", iteration_);
   adv.saveAttribute( "minData_", minData_);
   adv.saveAttribute( "maxData_", maxData_);
@@ -194,7 +155,7 @@ void IterativeExtrema::save(Advocate & adv) const
 void IterativeExtrema::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "size_", size_);
+  adv.loadAttribute( "dimension_", dimension_);
   adv.loadAttribute( "iteration_", iteration_);
   adv.loadAttribute( "minData_", minData_);
   adv.loadAttribute( "maxData_", maxData_);

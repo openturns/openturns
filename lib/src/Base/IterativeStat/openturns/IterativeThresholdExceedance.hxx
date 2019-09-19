@@ -15,13 +15,9 @@ class OT_API IterativeThresholdExceedance
 
 public:
 
-  explicit IterativeThresholdExceedance(const UnsignedInteger size = 1, const UnsignedInteger thresholdValue = 0.0);
+  explicit IterativeThresholdExceedance(const UnsignedInteger dimension = 1, const UnsignedInteger thresholdValue = 0.0);
 
   IterativeThresholdExceedance * clone() const;
-
-  void increment(const Scalar newData);
-
-//   void increment(PersistentCollection<Scalar> & newData);
 
   void increment(const Point & newData);
 
@@ -57,10 +53,6 @@ public:
   /* String converter */
   String __str__(const String & offset = "") const;
 
-//   Sample & operator[] (const UnsignedInteger index);
-//
-//   const Sample & operator[] (const UnsignedInteger index) const;
-
   UnsignedInteger getThresholdValue() const;
 
   UnsignedInteger getSize() const;
@@ -78,9 +70,9 @@ public:
 //   static AlgoRegister reg;
 
 private:
-//   static IterativeAlgorithm * create(const int size);
+//   static IterativeAlgorithm * create(const int dimension);
   UnsignedInteger              iteration_;
-  UnsignedInteger              size_;
+  UnsignedInteger              dimension_;
    UnsignedInteger             thresholdValue_;
   PersistentCollection<Scalar> data_;
 };

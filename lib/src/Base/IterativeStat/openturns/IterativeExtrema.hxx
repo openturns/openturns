@@ -15,13 +15,9 @@ class OT_API IterativeExtrema
 
 public:
 
-  explicit IterativeExtrema(const UnsignedInteger size = 1);
+  explicit IterativeExtrema(const UnsignedInteger dimension = 1);
 
   IterativeExtrema * clone() const;
-
-  void increment(const Scalar newData);
-
-//   void increment(PersistentCollection<Scalar> & newData);
 
   void increment(const Point & newData);
 
@@ -57,10 +53,6 @@ public:
   /* String converter */
   String __str__(const String & offset = "") const;
 
-//   Sample & operator[] (const UnsignedInteger index);
-//
-//   const Sample & operator[] (const UnsignedInteger index) const;
-
   UnsignedInteger getSize() const;
 
   UnsignedInteger getIteration() const;
@@ -78,9 +70,9 @@ public:
 //   static AlgoRegister reg;
 
 private:
-//   static IterativeAlgorithm * create(const int size);
+//   static IterativeAlgorithm * create(const int dimension);
   UnsignedInteger              iteration_;
-  UnsignedInteger              size_;
+  UnsignedInteger              dimension_;
   PersistentCollection<Scalar> minData_;
   PersistentCollection<Scalar> maxData_;
 };

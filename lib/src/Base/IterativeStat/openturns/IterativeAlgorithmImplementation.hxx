@@ -15,11 +15,9 @@ class OT_API IterativeAlgorithmImplementation
   : public PersistentObject
 {
   CLASSNAME
-  
+
 public:
 
-//   typedef std::unordered_map<std::string, void*> registry_map;
-    
   /**
    * Default constructor
    *
@@ -35,7 +33,7 @@ public:
   {
     // Nothing to do
   }
-  
+
   IterativeAlgorithmImplementation(const IterativeAlgorithmImplementation & other)
     : PersistentObject(other)
     {
@@ -49,45 +47,22 @@ public:
    * @return A pointer to a newly allocated object similar to this one
    */
   virtual IterativeAlgorithmImplementation * clone() const = 0;
-  
-  
 
-//   static registry_map & registry()
-//   {
-//     static registry_map algoMap;
-//     return algoMap;
-//   }
-
-//   template<typename ...T>
-//   static IterativeAlgorithmImplementation * instantiate(std::string const & AlgoName, T&&...args)
-//   {
-//     auto it = registry().find(AlgoName);
-//     if ( it == registry().end()) return 0;
-//     typedef IterativeAlgorithmImplementation* (*create_type)(T...);
-//     auto create_fun = reinterpret_cast<create_type>(it->second);
-//     return create_fun(args...);
-//   }
-  
-  
   /**
    * Increment methods
    *
    * @warning These methods MUST be overloaded in derived classes.
    */
-  
-  virtual void increment(const Scalar newData) = 0;
-  
-//   virtual void increment(const PersistentCollection<Scalar> & newData) = 0;
-  
+
   virtual void increment(const Point & newData) = 0;
-  
+
   virtual void increment(const Sample & newData) = 0;
-  
+
   virtual void finalize()
   {
     // Nothing to do
   }
-  
+
   /**
    * Comparison operator
    *
@@ -137,17 +112,8 @@ public:
    * @internal
    */
   virtual void load(Advocate & adv) = 0;
-    
-}; /* class IterativeAlgorithmImplementation */
 
-// struct AlgoRegister
-// {
-//     template<typename F>
-//     AlgoRegister(const std::string AlgoName, F func)
-//     {
-//         IterativeAlgorithmImplementation::registry()[AlgoName] = reinterpret_cast<void*>(func);
-//     }
-// };
+}; /* class IterativeAlgorithmImplementation */
 
 END_NAMESPACE_OPENTURNS
 

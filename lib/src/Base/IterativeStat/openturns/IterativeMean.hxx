@@ -12,23 +12,19 @@ class OT_API IterativeMean
   : public IterativeAlgorithmImplementation
 {
   CLASSNAME
-  
+
 public:
-  
-  explicit IterativeMean(const UnsignedInteger size = 1);
-  
+
+  explicit IterativeMean(const UnsignedInteger dimension = 1);
+
   IterativeMean * clone() const;
-  
-  void increment(const Scalar newData);
-  
-//   void increment(PersistentCollection<Scalar> & newData);
-  
+
   void increment(const Point & newData);
-  
+
   void increment(const Sample & newData);
-  
+
   void finalize();
-  
+
   /**
    * Comparison operator
    *
@@ -56,15 +52,11 @@ public:
 
   /* String converter */
   String __str__(const String & offset = "") const;
-  
-//   Sample & operator[] (const UnsignedInteger index);
-//   
-//   const Sample & operator[] (const UnsignedInteger index) const;
-  
+
   UnsignedInteger getSize() const;
-  
+
   UnsignedInteger getIteration() const;
-  
+
   Point getMean() const;
 
   /** Method save() stores the object through the StorageManager */
@@ -74,12 +66,10 @@ public:
   void load(Advocate & adv);
 
 //   static AlgoRegister reg;
-  
+
 private:
-//   static IterativeAlgorithm * create(const int size);
   UnsignedInteger              iteration_;
-  UnsignedInteger              size_;
-//   UnsignedInteger              dim_;
+  UnsignedInteger              dimension_;
   PersistentCollection<Scalar> data_;
 };
 

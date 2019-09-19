@@ -13,11 +13,11 @@ CLASSNAMEINIT(IterativeMean)
 
 static const Factory<IterativeMean> Factory_IterativeMean;
 
-IterativeMean::IterativeMean(const UnsignedInteger size)
+IterativeMean::IterativeMean(const UnsignedInteger dimension)
   : IterativeAlgorithmImplementation()
   , iteration_(0)
-  , size_(size)
-  , data_(size_, 0.0)
+  , dimension_(dimension)
+  , data_(dimension_, 0.0)
 {
   // Nothing to do
 }
@@ -28,9 +28,9 @@ IterativeMean * IterativeMean::clone() const
   return new IterativeMean(*this);
 }
 
-// IterativeAlgorithm * IterativeMean::create(const int size)
+// IterativeAlgorithm * IterativeMean::create(const int dimension)
 // {
-//   return new IterativeMean(size);
+//   return new IterativeMean(dimension);
 // }
 
 /* String converter */
@@ -39,7 +39,7 @@ String IterativeMean::__repr__() const
   OSS oss(true);
   oss << "class=" << IterativeMean::GetClassName()
       << " iteration=" << iteration_
-      << " size=" << size_
+      << " dimension=" << dimension_
       << " values=" << data_.__repr__();
   return oss;
 }
@@ -68,7 +68,7 @@ UnsignedInteger IterativeMean::getIteration() const
 
 UnsignedInteger IterativeMean::getSize() const
 {
-  return size_;
+  return dimension_;
 }
 
 Point IterativeMean::getMean() const
@@ -76,31 +76,11 @@ Point IterativeMean::getMean() const
   return data_;
 }
 
-void IterativeMean::increment(const Scalar newData)
-{
-  iteration_ += 1;
-  for (UnsignedInteger i = 0; i < size_; ++i)
-  {
-    Scalar temp = data_[i];
-    data_[i] = temp + (newData - temp)/iteration_;
-  }
-}
-
-// void IterativeMean::increment(PersistentCollection<Scalar> & newData)
-// {
-//   iteration_ += 1;
-//   for (UnsignedInteger i = 0; i < size_; ++i)
-//   {
-//     Scalar temp = data_[i];
-//     data_[i] = temp + (newData[i] - temp)/iteration_;
-//   }
-// }
-
 void IterativeMean::increment(const Point & newData)
 {
-  if (newData.getSize() != size_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the size of the iterative mean.";
+  if (newData.getSize() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the dimension of the iterative mean.";
   iteration_ += 1;
-  for (UnsignedInteger i = 0; i < size_; ++i)
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     Scalar temp = data_[i];
     data_[i] = temp + (newData[i] - temp)/iteration_;
@@ -109,13 +89,13 @@ void IterativeMean::increment(const Point & newData)
 
 void IterativeMean::increment(const Sample & newData)
 {
-  if (newData.getDimension() != size_) throw InvalidArgumentException(HERE) << "Error: the given Sample is not compatible with the size of the iterative mean.";
+  if (newData.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Sample is not compatible with the dimension of the iterative mean.";
 
   for (UnsignedInteger j = 0; j < newData.getSize(); ++j)
   {
     Point tempData = newData[j];
     iteration_ += 1;
-    for (UnsignedInteger i = 0; i < size_; ++i)
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
       Scalar temp = data_[i];
       data_[i] = temp + (tempData[i] - temp)/iteration_;
@@ -127,7 +107,7 @@ void IterativeMean::increment(const Sample & newData)
 void IterativeMean::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "size_", size_);
+  adv.saveAttribute( "dimension_", dimension_);
   adv.saveAttribute( "iteration_", iteration_);
   adv.saveAttribute( "data_", data_);
 }
@@ -137,7 +117,7 @@ void IterativeMean::save(Advocate & adv) const
 void IterativeMean::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "size_", size_);
+  adv.loadAttribute( "dimension_", dimension_);
   adv.loadAttribute( "iteration_", iteration_);
   adv.loadAttribute( "data_", data_);
 }
