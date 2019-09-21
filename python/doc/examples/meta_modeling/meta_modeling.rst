@@ -1,26 +1,8 @@
 Meta modeling
 =============
 
-Kriging
--------
-
-.. toctree::
-    :maxdepth: 1
-
-    kriging.ipynb
-    kriging_advanced.ipynb
-
-Meta modeling of a field function
----------------------------------
-
-.. toctree::
-    :maxdepth: 1
-
-    fieldfunction_metamodel.ipynb
-    viscous_fall_metamodel.ipynb
-
-Miscellaneous
--------------
+General purpose metamodels
+--------------------------
 
 .. toctree::
     :maxdepth: 1
@@ -31,8 +13,8 @@ Miscellaneous
     linear_model.ipynb
     general_linear_model.ipynb
 
-Polynomial chaos
-----------------
+Polynomial chaos metamodel
+--------------------------
 
 .. toctree::
     :maxdepth: 1
@@ -45,4 +27,26 @@ Polynomial chaos
     chaos_ishigami.ipynb
     chaos_ishigami_grouped_indices.ipynb
 
+Kriging metamodel
+-----------------
+
+.. toctree::
+    :maxdepth: 1
+
+    kriging_cantilever_beam.ipynb
+    kriging_beam_trend.ipynb
+    kriging.ipynb
+    kriging_1D.ipynb
+    kriging_simulate.ipynb
+    kriging_sequential.ipynb
+    kriging_advanced.ipynb
+
+Fields metamodels
+-----------------
+
+.. toctree::
+    :maxdepth: 1
+
+    fieldfunction_metamodel.ipynb
+    viscous_fall_metamodel.ipynb
 
