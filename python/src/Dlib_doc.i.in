@@ -66,14 +66,14 @@ Define an optimization problem to find the minimum of the Rosenbrock function:
 >>> import openturns as ot
 >>> rosenbrock = ot.SymbolicFunction(['x1', 'x2'], ['(1-x1)^2+100*(x2-x1^2)^2'])
 >>> problem = ot.OptimizationProblem(rosenbrock)
->>> cgSolver = ot.Dlib(problem,'CG')
->>> cgSolver.setStartingPoint([0, 0])
->>> cgSolver.setMaximumResidualError(1.e-3)
->>> cgSolver.setMaximumIterationNumber(100)
->>> cgSolver.run()
->>> result = cgSolver.getResult()
->>> x_star = result.getOptimalPoint()
->>> y_star = result.getOptimalValue()"
+>>> cgSolver = ot.Dlib(problem,'CG')  # doctest: +SKIP
+>>> cgSolver.setStartingPoint([0, 0])  # doctest: +SKIP
+>>> cgSolver.setMaximumResidualError(1.e-3)  # doctest: +SKIP
+>>> cgSolver.setMaximumIterationNumber(100)  # doctest: +SKIP
+>>> cgSolver.run()  # doctest: +SKIP
+>>> result = cgSolver.getResult()  # doctest: +SKIP
+>>> x_star = result.getOptimalPoint()  # doctest: +SKIP
+>>> y_star = result.getOptimalValue()  # doctest: +SKIP"
 
 // ---------------------------------------------------------------------
 
