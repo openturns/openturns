@@ -84,6 +84,11 @@ void SobolIndices::incrementIndices(const Sample inputSample)
   return getImplementation()->incrementIndices(inputSample);
 }
 
+UnsignedInteger SobolIndices::getIteration() const
+{
+  return getImplementation()->getIteration();
+}
+
 Point SobolIndices::getMean() const
 {
   return getImplementation()->getMean();

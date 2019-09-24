@@ -19,8 +19,6 @@ public:
 
   IterativeSkewness * clone() const;
 
-  void increment(const Scalar newData);
-
   void increment(const Point & newData);
 
   void increment(const Sample & newData);

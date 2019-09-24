@@ -69,6 +69,8 @@ public:
 
   void incrementIndices(const Sample inputSample);
 
+  UnsignedInteger getIteration() const;
+
   Point getMean() const;
 
   Point getVariance() const;

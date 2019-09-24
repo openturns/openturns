@@ -19,6 +19,7 @@
  *
  */
 
+#include "openturns/SobolIndices.hxx"
 #include "openturns/SobolIndicesAlgorithmImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
@@ -48,11 +49,12 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation()
   , size_(0)
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize"))
   , confidenceLevel_(ResourceMap::GetAsScalar("SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel"))
-  , referenceVariance_()
-  , varianceI_()
-  , varianceTI_()
-  , aggregatedFirstOrderIndices_()
-  , aggregatedTotalOrderIndices_()
+  , sobolIndices_()
+//   , referenceVariance_()
+//   , varianceI_()
+//   , varianceTI_()
+//   , aggregatedFirstOrderIndices_()
+//   , aggregatedTotalOrderIndices_()
   , secondOrderIndices_()
   , firstOrderIndiceDistribution_()
   , totalOrderIndiceDistribution_()
@@ -72,11 +74,12 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const S
   , size_(0)
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize"))
   , confidenceLevel_(ResourceMap::GetAsScalar("SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel"))
-  , referenceVariance_()
-  , varianceI_()
-  , varianceTI_()
-  , aggregatedFirstOrderIndices_()
-  , aggregatedTotalOrderIndices_()
+  , sobolIndices_()
+//   , referenceVariance_()
+//   , varianceI_()
+//   , varianceTI_()
+//   , aggregatedFirstOrderIndices_()
+//   , aggregatedTotalOrderIndices_()
   , secondOrderIndices_()
   , firstOrderIndiceDistribution_()
   , totalOrderIndiceDistribution_()
@@ -103,11 +106,12 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
   , size_(0)
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize"))
   , confidenceLevel_(ResourceMap::GetAsScalar("SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel"))
-  , referenceVariance_()
-  , varianceI_()
-  , varianceTI_()
-  , aggregatedFirstOrderIndices_()
-  , aggregatedTotalOrderIndices_()
+  , sobolIndices_()
+//   , referenceVariance_()
+//   , varianceI_()
+//   , varianceTI_()
+//   , aggregatedFirstOrderIndices_()
+//   , aggregatedTotalOrderIndices_()
   , secondOrderIndices_()
   , firstOrderIndiceDistribution_()
   , totalOrderIndiceDistribution_()
@@ -142,11 +146,12 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const W
   , size_(experiment.getSize())
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize"))
   , confidenceLevel_(ResourceMap::GetAsScalar("SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel"))
-  , referenceVariance_()
-  , varianceI_()
-  , varianceTI_()
-  , aggregatedFirstOrderIndices_()
-  , aggregatedTotalOrderIndices_()
+  , sobolIndices_()
+//   , referenceVariance_()
+//   , varianceI_()
+//   , varianceTI_()
+//   , aggregatedFirstOrderIndices_()
+//   , aggregatedTotalOrderIndices_()
   , secondOrderIndices_()
   , firstOrderIndiceDistribution_()
   , totalOrderIndiceDistribution_()
@@ -175,26 +180,27 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const W
 /* First order indices accessor */
 Point SobolIndicesAlgorithmImplementation::getFirstOrderIndices(const UnsignedInteger marginalIndex) const
 {
-  if (0 == varianceI_.getSize())
+  if (0 == sobolIndices_.getIteration())
   {
     // Invoke internal method to compute first/ total order indices indices
     // This method is defined in specific children classes
-    varianceI_ = computeIndices(outputDesign_, varianceTI_);
+    sobolIndices_.computeIndices(outputDesign_);
   }
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   if (marginalIndex >= outputDimension)
-    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalOrderIndices, marginalIndex should be in [0," << outputDimension - 1;
+    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getFirstOrderIndices, marginalIndex should be in [0," << outputDimension - 1;
   // return value
-  const Point firstOrderSensitivity(varianceI_[marginalIndex] / referenceVariance_[marginalIndex]);
+  const Point firstOrderSensitivity = sobolIndices_.getFirstOrderIndices(marginalIndex);
+  const Point totalOrderSensitivity = sobolIndices_.getTotalOrderIndices(marginalIndex);
   for (UnsignedInteger p = 0; p < inputDesign_.getDimension(); ++p)
   {
     if ((firstOrderSensitivity[p] > 1.0) || firstOrderSensitivity[p] < 0.0)
       LOGWARN(OSS() << "The estimated first order Sobol index (" << p << ") is not in the range [0, 1]. You may increase the sampling size. HERE we have: S_"
-              << p << "=" <<  firstOrderSensitivity << ", ST_" << p << "=" << varianceTI_(marginalIndex, p) / referenceVariance_[marginalIndex]);
+              << p << "=" <<  firstOrderSensitivity[p] << ", ST_" << p << "=" << totalOrderSensitivity[p]);
     // Another case : Si > STi
-    if (varianceI_(marginalIndex, p) > varianceTI_(marginalIndex, p))
+    if (firstOrderSensitivity[p] > totalOrderSensitivity[p])
       LOGWARN(OSS() << "The estimated first order Sobol index (" << p << ") is greater than its total order index . You may increase the sampling size. HERE we have: S_"
-              << p << "=" <<  firstOrderSensitivity << ", ST_" << p << "=" << varianceTI_(marginalIndex, p) / referenceVariance_[marginalIndex]);
+              << p << "=" <<  firstOrderSensitivity[p] << ", ST_" << p << "=" << totalOrderSensitivity[p]);
   }
   return firstOrderSensitivity;
 }
@@ -236,11 +242,14 @@ struct BootstrapPolicy
       for (UnsignedInteger i = 0; i < size_; ++i) outReference[i] = randomCollection[i];
       const Point variance(outReference.computeVariance());
       // Compute indices using this collection
-      const Sample Vi(sai_.computeIndices(randomCollection, VTi));
+//       const Sample Vi(sai_.computeIndices(randomCollection, VTi));
+      sai_.computeIndices(randomCollection);
       // Compute aggregated indices
-      bsFO_[k] = sai_.computeAggregatedIndices(Vi, VTi, variance, aggregatedTotal);
+//       bsFO_[k] = sai_.computeAggregatedIndices(Vi, VTi, variance, aggregatedTotal);
+      bsFO_[k] = sai_.getAggregatedFirstOrderIndices();
       // Add to sample
-      bsTO_[k] = aggregatedTotal;
+//       bsTO_[k] = aggregatedTotal;
+      bsTO_[k] = sai_.getAggregatedTotalOrderIndices();
     }
   }
 }; /* end struct BootstrapPolicy */
@@ -391,7 +400,7 @@ SymmetricMatrix SobolIndicesAlgorithmImplementation::getSecondOrderIndices(const
         {
           // Sij = (Vij - crossMean)/var - and S_{i}, S_{j}
           const Point firstOrderIndices(getFirstOrderIndices(q));
-          secondOrderIndices_(k1, k2, q) = (yEDotyC[q] / (size_ - 1.0) - crossSquareMean[q]) / referenceVariance_[q] - firstOrderIndices[k1] - firstOrderIndices[k2] ;
+          secondOrderIndices_(k1, k2, q) = (yEDotyC[q] / (size_ - 1.0) - crossSquareMean[q]) / sobolIndices_.getVariance()[q] - firstOrderIndices[k1] - firstOrderIndices[k2] ;
           if ((secondOrderIndices_(k1, k2, q) < 0.0) || (secondOrderIndices_(k1, k2, q) > 1.0))
             LOGWARN(OSS() << "The estimated second order Sobol index (" << k1 << ", " << k2 << ") is not in the range [0, 1]. You may increase the sampling size.");
         }
@@ -406,25 +415,27 @@ SymmetricMatrix SobolIndicesAlgorithmImplementation::getSecondOrderIndices(const
 /* Total order indices accessor */
 Point SobolIndicesAlgorithmImplementation::getTotalOrderIndices(const UnsignedInteger marginalIndex) const
 {
-  if (0 == varianceI_.getSize())
+  if (0 == sobolIndices_.getIteration())
   {
     // Invoke internal method to compute first/ total order indices indices
     // This method is defined in specific children classes
-    varianceI_ = computeIndices(outputDesign_, varianceTI_);
+    sobolIndices_.computeIndices(outputDesign_);
   }
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
   if (marginalIndex >= outputDimension)
-    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalOrderIndices, marginalIndex should be in [0," << outputDimension - 1;
+    throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalOrderIndices, marginalIndex should be in [0," << outputDimension - 1 << "]";
+  const Point firstOrderSensitivity = sobolIndices_.getFirstOrderIndices(marginalIndex);
+  const Point totalOrderSensitivity = sobolIndices_.getTotalOrderIndices(marginalIndex);
   for (UnsignedInteger p = 0; p < inputDimension; ++p)
   {
     // Another case : Si > STi
-    if (varianceI_(marginalIndex, p) > varianceTI_(marginalIndex, p))
-      LOGWARN(OSS() << "The estimated total order Sobol index (" << p << ") is lesser than first order index . You may increase the sampling size. HERE we have: S_"
-              << p << "=" <<  varianceI_(marginalIndex, p) / referenceVariance_[marginalIndex] << ", ST_" << p << "=" << varianceTI_(marginalIndex, p) / referenceVariance_[marginalIndex]);
+    if (firstOrderSensitivity[p] > totalOrderSensitivity[p])
+      LOGWARN(OSS() << "The estimated first order Sobol index (" << p << ") is greater than its total order index . You may increase the sampling size. HERE we have: S_"
+              << p << "=" <<  firstOrderSensitivity[p] << ", ST_" << p << "=" << totalOrderSensitivity[p]);
   }
   // return value
-  return varianceTI_[marginalIndex] / referenceVariance_[marginalIndex] ;
+  return totalOrderSensitivity;
 }
 
 /* Interval for the total order indices accessor */
@@ -476,35 +487,25 @@ Distribution SobolIndicesAlgorithmImplementation::getTotalOrderIndicesDistributi
 /* Aggregated first order indices accessor for multivariate samples */
 Point SobolIndicesAlgorithmImplementation::getAggregatedFirstOrderIndices() const
 {
-  if (0 == varianceI_.getSize())
+  if (0 == sobolIndices_.getIteration())
   {
     // Invoke internal method to compute first/ total order indices indices
-    varianceI_ = computeIndices(outputDesign_, varianceTI_);
-  }
-  if (0 == aggregatedFirstOrderIndices_.getDimension())
-  {
-    // Compute aggregate indices
-    aggregatedFirstOrderIndices_ = computeAggregatedIndices(varianceI_, varianceTI_, referenceVariance_, aggregatedTotalOrderIndices_);
+    sobolIndices_.computeIndices(outputDesign_);
   }
   // Indices computed
-  return aggregatedFirstOrderIndices_;
+  return sobolIndices_.getAggregatedFirstOrderIndices();
 }
 
 /* Aggregated total order indices accessor for multivariate samples */
 Point SobolIndicesAlgorithmImplementation::getAggregatedTotalOrderIndices() const
 {
-  if (0 == varianceI_.getSize())
+  if (0 == sobolIndices_.getIteration())
   {
     // Invoke internal method to compute first/ total order indices indices
-    varianceI_ = computeIndices(outputDesign_, varianceTI_);
-  }
-  if (0 == aggregatedFirstOrderIndices_.getDimension())
-  {
-    // Compute aggregate indices
-    aggregatedFirstOrderIndices_ = computeAggregatedIndices(varianceI_, varianceTI_, referenceVariance_, aggregatedTotalOrderIndices_);
+    sobolIndices_.computeIndices(outputDesign_);
   }
   // Indices computed
-  return aggregatedTotalOrderIndices_;
+  return sobolIndices_.getAggregatedTotalOrderIndices();
 }
 
 // Getter for bootstrap size
@@ -606,8 +607,7 @@ String SobolIndicesAlgorithmImplementation::__str__(const String & ) const
 }
 
 /** Internal method that compute Vi/VTi using a collection of samples */
-Sample SobolIndicesAlgorithmImplementation::computeIndices(const Sample &,
-    Sample & ) const
+void SobolIndicesAlgorithmImplementation::computeIndices(const Sample &) const
 {
   // Method is defined in Jansen/Saltelli/Martinez/Mauntz classes
   throw new NotYetImplementedException(HERE);
@@ -671,7 +671,7 @@ Graph SobolIndicesAlgorithmImplementation::draw() const
     graph.setTitle(OSS() << "Aggregated Sobol' indices - " << getClassName());
   else
     graph.setTitle(OSS() << "Sobol' indices - " << getClassName());
-  const UnsignedInteger dimension = aggregatedFirstOrderIndices_.getDimension();
+  const UnsignedInteger dimension = outputDesign_.getDimension();
 
   // Draw confidence intervals
   if (confidenceLevel_ > 0.0)
@@ -922,11 +922,14 @@ void SobolIndicesAlgorithmImplementation::setDesign(const Sample & inputDesign,
   Point muY(fullOutputDesign.computeMean());
   outputDesign_ = fullOutputDesign - muY;
 
-  // yA variance
-  referenceVariance_ = Sample(fullOutputDesign, 0, size).computeVariance();
-  for (UnsignedInteger j = 0; j < referenceVariance_.getDimension(); ++ j)
-    if (!(referenceVariance_[j] > 0.0))
-      throw InvalidArgumentException(HERE) << "Null output sample variance";
+//   // yA variance
+//   referenceVariance_ = Sample(fullOutputDesign, 0, size).computeVariance();
+//   for (UnsignedInteger j = 0; j < referenceVariance_.getDimension(); ++ j)
+//     if (!(referenceVariance_[j] > 0.0))
+//       throw InvalidArgumentException(HERE) << "Null output sample variance";
+
+  // Init Sobol indices struct
+  sobolIndices_ = SobolIndices(inputDesign.getDimension(), outputDesign.getDimension());
 
   alreadyComputedIndicesDistribution_ = false;
 }
@@ -940,11 +943,7 @@ void SobolIndicesAlgorithmImplementation::save(Advocate & adv) const
   adv.saveAttribute( "size_", size_ );
   adv.saveAttribute( "bootstrapSize_", bootstrapSize_ );
   adv.saveAttribute( "confidenceLevel_", confidenceLevel_ );
-  adv.saveAttribute( "referenceVariance_",  referenceVariance_);
-  adv.saveAttribute( "varianceI_", varianceI_);
-  adv.saveAttribute( "varianceTI_", varianceTI_);
-  adv.saveAttribute( "aggregatedFirstOrderIndices_", aggregatedFirstOrderIndices_);
-  adv.saveAttribute( "aggregatedTotalOrderIndices_", aggregatedTotalOrderIndices_);
+  adv.saveAttribute( "sobolIndices_",  sobolIndices_);
   adv.saveAttribute( "secondOrderIndices_", secondOrderIndices_);
   adv.saveAttribute( "firstOrderIndiceDistribution_", firstOrderIndiceDistribution_);
   adv.saveAttribute( "totalOrderIndiceDistribution_", totalOrderIndiceDistribution_);
@@ -961,11 +960,7 @@ void SobolIndicesAlgorithmImplementation::load(Advocate & adv)
   adv.loadAttribute( "size_", size_ );
   adv.loadAttribute( "bootstrapSize_", bootstrapSize_ );
   adv.loadAttribute( "confidenceLevel_", confidenceLevel_ );
-  adv.loadAttribute( "referenceVariance_",  referenceVariance_);
-  adv.loadAttribute( "varianceI_", varianceI_);
-  adv.loadAttribute( "varianceTI_", varianceTI_);
-  adv.loadAttribute( "aggregatedFirstOrderIndices_", aggregatedFirstOrderIndices_);
-  adv.loadAttribute( "aggregatedTotalOrderIndices_", aggregatedTotalOrderIndices_);
+  adv.loadAttribute( "sobolIndices_",  sobolIndices_);
   adv.loadAttribute( "secondOrderIndices_", secondOrderIndices_);
   adv.loadAttribute( "firstOrderIndiceDistribution_", firstOrderIndiceDistribution_);
   adv.loadAttribute( "totalOrderIndiceDistribution_", totalOrderIndiceDistribution_);

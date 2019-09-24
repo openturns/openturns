@@ -33,7 +33,7 @@ SobolIndicesImplementation::SobolIndicesImplementation()
   : PersistentObject()
   , referenceMean_()
   , referenceVariance_()
-  , iterations_(0) // Number of currently computed iterations
+  , iteration_(0) // Number of currently computed iterations
   , modelInputDimension_(0) // nb_parameters
   , modelOutputDimension_(0) // vect_size
   , firstOrderValues_()
@@ -48,7 +48,7 @@ SobolIndicesImplementation::SobolIndicesImplementation(const UnsignedInteger mod
   : PersistentObject()
   , referenceMean_(modelOutputDimension)
   , referenceVariance_(modelOutputDimension)
-  , iterations_(0) // Number of currently computed iterations
+  , iteration_(0) // Number of currently computed iterations
   , modelInputDimension_(modelInputDimension) // nb_parameters
   , modelOutputDimension_(modelOutputDimension) // vect_size
   , firstOrderValues_(modelOutputDimension, modelInputDimension)
@@ -96,6 +96,11 @@ void SobolIndicesImplementation::incrementIndices(const Sample & inputSample)
   throw new NotYetImplementedException(HERE);
 }
 
+UnsignedInteger SobolIndicesImplementation::getIteration() const
+{
+  return iteration_;
+}
+
 Point SobolIndicesImplementation::getMean() const
 {
   return referenceMean_;
@@ -108,7 +113,7 @@ Point SobolIndicesImplementation::getVariance() const
 
 Point SobolIndicesImplementation::getFirstOrderIndices(const UnsignedInteger marginalIndex) const
 {
-  if (0 == iterations_)
+  if (0 == iteration_)
   {
     throw InvalidArgumentException(HERE) << "In SobolIndicesImplementation::getFirstOrderIndices, not computed. Call SobolIndicesImplementation::computeIndices or SobolIndicesImplementation::incrementIndices first.";
   }
@@ -119,18 +124,18 @@ Point SobolIndicesImplementation::getFirstOrderIndices(const UnsignedInteger mar
   {
     if ((firstOrderValues_[marginalIndex][p] > 1.0) || firstOrderValues_[marginalIndex][p] < 0.0)
       LOGWARN(OSS() << "The estimated first order Sobol index (" << p << ") is not in the range [0, 1]. You may increase the sampling size. HERE we have: S_"
-              << p << "=" <<  firstOrderValues_ << ", ST_" << p << "=" << totalOrderValues_);
+              << p << "=" <<  firstOrderValues_[marginalIndex][p] << ", ST_" << p << "=" << totalOrderValues_[marginalIndex][p]);
     // Another case : Si > STi
     if (firstOrderValues_[marginalIndex][p] > totalOrderValues_[marginalIndex][p])
       LOGWARN(OSS() << "The estimated first order Sobol index (" << p << ") is greater than its total order index . You may increase the sampling size. HERE we have: S_"
-              << p << "=" <<  firstOrderValues_ << ", ST_" << p << "=" << totalOrderValues_);
+              << p << "=" <<  firstOrderValues_[marginalIndex][p] << ", ST_" << p << "=" << totalOrderValues_[marginalIndex][p]);
   }
   return firstOrderValues_[marginalIndex];
 }
 
 Point SobolIndicesImplementation::getTotalOrderIndices(const UnsignedInteger marginalIndex) const
 {
-  if (0 == iterations_)
+  if (0 == iteration_)
   {
     throw InvalidArgumentException(HERE) << "In SobolIndicesImplementation::getFirstOrderIndices, not computed. Call SobolIndicesImplementation::computeIndices or SobolIndicesImplementation::incrementIndices first.";
   }
@@ -141,11 +146,11 @@ Point SobolIndicesImplementation::getTotalOrderIndices(const UnsignedInteger mar
   {
     if ((firstOrderValues_[marginalIndex][p] > 1.0) || firstOrderValues_[marginalIndex][p] < 0.0)
       LOGWARN(OSS() << "The estimated first order Sobol index (" << p << ") is not in the range [0, 1]. You may increase the sampling size. HERE we have: S_"
-              << p << "=" <<  firstOrderValues_ << ", ST_" << p << "=" << totalOrderValues_);
+              << p << "=" <<  firstOrderValues_[marginalIndex][p] << ", ST_" << p << "=" << totalOrderValues_[marginalIndex][p]);
     // Another case : Si > STi
     if (firstOrderValues_[marginalIndex][p] > totalOrderValues_[marginalIndex][p])
       LOGWARN(OSS() << "The estimated first order Sobol index (" << p << ") is greater than its total order index . You may increase the sampling size. HERE we have: S_"
-              << p << "=" <<  firstOrderValues_ << ", ST_" << p << "=" << totalOrderValues_);
+              << p << "=" <<  firstOrderValues_[marginalIndex][p] << ", ST_" << p << "=" << totalOrderValues_[marginalIndex][p]);
   }
   return totalOrderValues_[marginalIndex];
 }
@@ -266,7 +271,7 @@ void SobolIndicesImplementation::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute( "referenceMean_",  referenceMean_);
   adv.saveAttribute( "referenceVariance_",  referenceVariance_);
-  adv.saveAttribute( "iterations_", iterations_);
+  adv.saveAttribute( "iteration_", iteration_);
   adv.saveAttribute( "modelInputDimension_", modelInputDimension_);
   adv.saveAttribute( "modelOutputDimension_", modelOutputDimension_);
   adv.saveAttribute( "firstOrderValues_", firstOrderValues_);
@@ -279,7 +284,7 @@ void SobolIndicesImplementation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "referenceMean_",  referenceMean_);
   adv.loadAttribute( "referenceVariance_",  referenceVariance_);
-  adv.loadAttribute( "iterations_", iterations_);
+  adv.loadAttribute( "iteration_", iteration_);
   adv.saveAttribute( "modelInputDimension_", modelInputDimension_);
   adv.saveAttribute( "modelOutputDimension_", modelOutputDimension_);
   adv.saveAttribute( "firstOrderValues_", firstOrderValues_);

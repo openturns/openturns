@@ -71,9 +71,9 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
-protected:
+// protected:
 
-private:
+// private:
 
   PersistentCollection<IterativeVariance> variances_;
 

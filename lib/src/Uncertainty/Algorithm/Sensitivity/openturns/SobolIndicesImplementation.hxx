@@ -65,6 +65,9 @@ public:
   virtual void incrementIndices(const Sample & inputSample);
 
   /** mean accessor */
+  UnsignedInteger getIteration() const;
+
+  /** mean accessor */
   Point getMean() const;
 
   /** variance accessor */
@@ -126,7 +129,7 @@ protected:
   Point referenceVariance_;
 
   /** Number of currently computed iterations */
-  UnsignedInteger iterations_;
+  UnsignedInteger iteration_;
 
   /** model dimensions */
   UnsignedInteger modelInputDimension_;

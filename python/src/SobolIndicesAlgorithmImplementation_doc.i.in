@@ -113,9 +113,6 @@ The major methods (`Saltelli`, `Jansen`, `Mauntz-Kucherenko`, `Martinez`) use th
    \right)
 
 The formulas for the evaluation of the indices are given in each class documentation:
-  - :class:`~openturns.SaltelliSensitivityAlgorithm` for the `Saltelli` method,
-  - :class:`~openturns.JansenSensitivityAlgorithm` for the `Jansen` method,
-  - :class:`~openturns.MauntzKucherenkoSensitivityAlgorithm` for the `Mauntz-Kucherenko` method,
   - :class:`~openturns.MartinezSensitivityAlgorithm` for the `Martinez` method
 
 For multivariate outputs (see [gamboa2013]_), aggregate indices can be computed thanks to the `getAggregatedFirstOrderIndices` and `getAggregatedTotalOrderIndices`. Such indices write as follow:
@@ -360,7 +357,7 @@ OT_SobolIndicesAlgorithm_draw_doc
 // ---------------------------------------------------------------------
 
 %define OT_SobolIndicesAlgorithm_DrawCorrelationCoefficients_doc
-"Draw the correlation coefficients. 
+"Draw the correlation coefficients.
  As correlation coefficients are considered, values might be positive or negative.
 
 Available usages:
@@ -384,7 +381,7 @@ title : str
 Returns
 -------
 Graph : :class:`~openturns.Graph`
-    A graph containing a :class:`~openturns.Cloud` and a :class:`~openturns.Text` 
+    A graph containing a :class:`~openturns.Cloud` and a :class:`~openturns.Text`
     of the correlation coefficients."
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients
