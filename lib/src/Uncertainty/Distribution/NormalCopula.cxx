@@ -418,6 +418,41 @@ Scalar NormalCopula::computeConditionalPDF(const Scalar x,
   return std::exp(-0.5 * (u * u - z * z)) / sigmaRos;
 }
 
+Point NormalCopula::computeConditionalPDF(const Point & x,
+                                     const Sample & y) const
+{
+  const UnsignedInteger conditioningDimension = y.getDimension();
+  if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning sample of dimension greater or equal to the distribution dimension.";
+  const UnsignedInteger size = x.getSize();
+  if (y.getSize() != x.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning sample of size different from the argument size.";
+  // Special case for no conditioning or independent copula
+  if ((conditioningDimension == 0) || (hasIndependentCopula()))
+    {
+      Point result(size, 1.0);
+      for (UnsignedInteger i = 0; i < size; ++i)
+	{
+	  if (x[i]  < 0.0) result[i] = 0.0;
+	  if (x[i] >= 1.0) result[i] = 0.0;
+	}
+      return result;
+    }
+  // General case
+  const TriangularMatrix inverseCholesky(normal_.getInverseCholesky());
+  const Scalar sigmaRos = 1.0 / inverseCholesky(conditioningDimension, conditioningDimension);
+  MatrixImplementation row(1, conditioningDimension);
+  for (UnsignedInteger i = 0; i < conditioningDimension; ++i) row(0, i) = inverseCholesky(conditioningDimension, i);
+  const MatrixImplementation qY(conditioningDimension, size, DistFunc::qNormal(y.getImplementation()->getData()));
+  const MatrixImplementation meanRos(row.genProd(qY));
+  Point result(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Scalar z = DistFunc::qNormal(x[i]);
+      const Scalar u = z / sigmaRos + meanRos[i];
+      result[i] = std::exp(-0.5 * (u * u - z * z)) / sigmaRos;
+    }
+  return result;
+}
+
 Point NormalCopula::computeSequentialConditionalPDF(const Point & x) const
 {
   if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional PDF with an argument of dimension=" << x.getDimension() << " different from distribution dimension=" << dimension_;
