@@ -2362,7 +2362,7 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
 
-  if (interval.isNumericallyEmpty()) return 0.0;
+  if (interval.isEmpty()) return 0.0;
   // Use direct convolution for two continuous atoms of dimension 1
   if ((dimension_ == 1) && (distributionCollection_.getSize() == 2) && distributionCollection_[0].isContinuous() && distributionCollection_[1].isContinuous())
   {
@@ -2398,7 +2398,7 @@ Scalar RandomMixture::computeProbability(const Interval & interval) const
   } // isAnalytical
   const Interval clippedInterval(getRange().intersect(interval));
   // Quick return if there is no mass in the clipped interval
-  if (clippedInterval.isNumericallyEmpty()) return 0.0;
+  if (clippedInterval.isEmpty()) return 0.0;
   const Bool finiteLowerBound = clippedInterval.getFiniteLowerBound()[0] == 1;
   const Bool finiteUpperBound = clippedInterval.getFiniteUpperBound()[0] == 1;
   // Quick return for integral over the whole real line

@@ -302,7 +302,7 @@ Scalar NormalCopula::computeProbability(const Interval & interval) const
   // Reduce the given interval to the support of the distribution, which is the nD unit cube
   const Interval intersect(interval.intersect(Interval(dimension)));
   // If the intersection is empty
-  if (intersect.isNumericallyEmpty()) return 0.0;
+  if (intersect.isEmpty()) return 0.0;
   const Point lowerBoundIntersect(intersect.getLowerBound());
   const Point upperBoundIntersect(intersect.getUpperBound());
   Point lowerBound(dimension);

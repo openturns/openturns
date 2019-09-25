@@ -906,7 +906,7 @@ Scalar DistributionImplementation::computeProbability(const Interval & interval)
 {
   if (interval.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected an interval of dimension=" << dimension_ << ", got dimension=" << interval.getDimension();
   // Empty interval, quick check. More checks will be done in the refined algorithms
-  if (interval.isNumericallyEmpty()) return 0.0;
+  if (interval.isEmpty()) return 0.0;
   // Generic implementation for univariate distributions
   if (dimension_ == 1)
     {
@@ -949,7 +949,7 @@ Scalar DistributionImplementation::computeProbability(const Interval & interval)
 Scalar DistributionImplementation::computeProbabilityContinuous(const Interval & interval) const
 {
   const Interval reducedInterval(interval.intersect(getRange()));
-  if (reducedInterval.isNumericallyEmpty()) return 0.0;
+  if (reducedInterval.isEmpty()) return 0.0;
   if (reducedInterval == getRange()) return 1.0;
   // Use adaptive multidimensional integration of the PDF on the reduced interval
   const PDFWrapper pdfWrapper(this);
@@ -1011,7 +1011,7 @@ Scalar DistributionImplementation::computeProbabilityDiscrete(const Interval & i
 Scalar DistributionImplementation::computeProbabilityGeneral(const Interval & interval) const
 {
   const Interval reducedInterval(interval.intersect(getRange()));
-  if (reducedInterval.isNumericallyEmpty()) return 0.0;
+  if (reducedInterval.isEmpty()) return 0.0;
   if (reducedInterval == getRange()) return 1.0;
   // P(\bigcap_i ai < Xi \leq bi) = \sum_c (−1)^n(c) F(c_1,c_2,...,c_n)
   // with c = (c_i, i =1, ..., n), c_i \in [a_i, b_i]

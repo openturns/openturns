@@ -312,7 +312,7 @@ Scalar EmpiricalBernsteinCopula::computeCDF(const Point & point) const
 /* Compute the probability content of an interval */
 Scalar EmpiricalBernsteinCopula::computeProbability(const Interval & interval) const
 {
-  if (interval.isNumericallyEmpty()) return 0.0;
+  if (interval.isEmpty()) return 0.0;
   const UnsignedInteger dimension = getDimension();
   Scalar probabilityValue = 0.0;
   const UnsignedInteger size = copulaSample_.getSize();

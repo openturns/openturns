@@ -412,7 +412,7 @@ Complex Normal::computeLogCharacteristicFunction(const Point & x) const
 /* Compute the probability content of an interval */
 Scalar Normal::computeProbability(const Interval & interval) const
 {
-  if (interval.isNumericallyEmpty()) return 0.0;
+  if (interval.isEmpty()) return 0.0;
   const UnsignedInteger dimension = getDimension();
   // The generic implementation provided by the DistributionImplementation upper class is more accurate than the generic implementation provided by the ContinuousDistribution upper class for dimension = 1
   if (dimension == 1) return DistributionImplementation::computeProbability(interval);

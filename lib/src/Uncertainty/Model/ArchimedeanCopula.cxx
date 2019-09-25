@@ -94,7 +94,7 @@ Scalar ArchimedeanCopula::computeProbability(const Interval & interval) const
 {
   Interval intersect(interval.intersect(Interval(2)));
   // Empty interval
-  if (intersect.isNumericallyEmpty()) return 0.0;
+  if (intersect.isEmpty()) return 0.0;
   Point lowerBound(intersect.getLowerBound());
   Point upperBound(intersect.getUpperBound());
   Scalar uuCDF = computeCDF(upperBound);
