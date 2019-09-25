@@ -427,14 +427,22 @@ LevelSet EllipticalDistribution::computeMinimumVolumeLevelSetWithThreshold(const
   if (getDimension() == 1) return DistributionImplementation::computeMinimumVolumeLevelSetWithThreshold(prob, threshold);
   RadialCDFWrapper radialWrapper(this);
   const Distribution standard(getStandardDistribution());
-  Point point(getDimension());
+  // First compute the log normalization factor between the distribution and its standard representative. It is made of two normalization factors:
+  // 1) The elliptical one, taking into account the covariance matrix. This coefficient is equal to one for standard representatives.
+  // 2) The specific one, taking into account the specific parameters (eg Normal vs Student)
+  // This last coefficient is embedded into computeLogDensityGenerator.
+  Scalar logThreshold = std::log(normalizationFactor_) + computeLogDensityGenerator(0) - standard.computeLogPDF(Point(dimension_));
+  // Then compute the log-pdf iso-value of the level-set
   const Scalar xMax = standard.getRange().getUpperBound().norm();
   Brent solver(quantileEpsilon_, pdfEpsilon_, pdfEpsilon_, quantileIterations_);
+  Point point(dimension_);
   point[0] = solver.solve(radialWrapper, prob, 0.0, xMax, 0.0, 1.0);
+  logThreshold += standard.computeLogPDF(point);
+  // Compute the pdf threshold
+  threshold = std::exp(logThreshold);
+  // Finally, build the level set
   Function minimumVolumeLevelSetFunction(MinimumVolumeLevelSetEvaluation(clone()).clone());
   minimumVolumeLevelSetFunction.setGradient(MinimumVolumeLevelSetGradient(clone()).clone());
-  const Scalar logThreshold = standard.computeLogPDF(point);
-  threshold = std::exp(logThreshold);
   return LevelSet(minimumVolumeLevelSetFunction, LessOrEqual(), -logThreshold);
 }
 
