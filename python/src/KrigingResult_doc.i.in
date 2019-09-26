@@ -195,9 +195,9 @@ Available usages:
 Parameters
 ----------
 x : sequence of float
-    The point :math:`\vect{x}` where the conditional mean of the output has to be evaluated.
+    The point :math:`\vect{x}` where the conditional covariance of the output has to be evaluated.
 sampleX : 2-d sequence of float
-     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional mean of the output has to be evaluated (*M* can be equal to 1).
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional covariance of the output has to be evaluated (*M* can be equal to 1).
 
 Returns
 -------
@@ -231,9 +231,9 @@ Available usages:
 Parameters
 ----------
 x : sequence of float
-    The point :math:`\vect{x}` where the conditional mean of the output has to be evaluated.
+    The point :math:`\vect{x}` where the conditional marginal covariance of the output has to be evaluated.
 sampleX : 2-d sequence of float
-     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional mean of the output has to be evaluated (*M* can be equal to 1).
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional marginal covariance of the output has to be evaluated (*M* can be equal to 1).
 
 Returns
 -------
@@ -266,9 +266,9 @@ Available usages:
 Parameters
 ----------
 x : sequence of float
-    The point :math:`\vect{x}` where the conditional mean of the output has to be evaluated.
+    The point :math:`\vect{x}` where the conditional variance of the output has to be evaluated.
 sampleX : 2-d sequence of float
-     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional mean of the output has to be evaluated (*M* can be equal to 1).
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional variance of the output has to be evaluated (*M* can be equal to 1).
 marginalIndex : int
     Marginal of interest (for multiple outputs).
     Default value is 0
