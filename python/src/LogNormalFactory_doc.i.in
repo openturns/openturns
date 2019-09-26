@@ -158,9 +158,10 @@ sample : 2-d sequence of float, of dimension 1
     The sample from which the distribution parameters are estimated.
 method : integer
     An integer ranges from 0 to 2 corresponding to a specific estimator method:
-    - 0 : Local likelihood maximum estimator
+    - 0 : Local likelihood maximum estimator (default)
     - 1 : Modified moment estimator
     - 2 : method of moment estimator.
+    The default value is from the :class:`~openturns.ResourceMap` key `LogNormalFactory-EstimationMethod`. 
 param : Collection of :class:`~openturns.PointWithDescription`
     A vector of parameters of the distribution.
 
