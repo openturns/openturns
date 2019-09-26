@@ -45,6 +45,20 @@ FisherSnedecorFactory * FisherSnedecorFactory::clone() const
 
 /* Here is the interface that all derived class must implement */
 
+/* Algorithm associated with the method of moments */
+FisherSnedecor FisherSnedecorFactory::buildMethodOfMoments(const Sample & sample) const
+{
+  const Scalar mu = sample.computeMean()[0];
+  if (mu <= 1.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a FisherSnedecor distribution based on a sample with sample mean less than 1 using the method of moments.";
+  const Scalar sigma2 = sample.computeCovariance()(0,0);
+  if (sigma2 == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a FisherSnedecor distribution based on a constant sample using the method of moments.";
+  const Scalar d2 = 2*mu/(mu-1);
+  const Scalar d1 = 2*std::pow(d2,2)*(d2-2)/(std::pow(d2-2,2)*(d2-4)*sigma2-2*std::pow(d2,2));
+  FisherSnedecor result(d1, d2);
+  result.setDescription(sample.getDescription());
+  return result;
+}
+
 Distribution FisherSnedecorFactory::build(const Sample & sample) const
 {
   return buildAsFisherSnedecor(sample).clone();

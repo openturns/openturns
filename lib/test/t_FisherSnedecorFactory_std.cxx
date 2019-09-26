@@ -54,6 +54,15 @@ int main(int, char *[])
     fullprint << "Default fisherSnedecor=" << estimatedFisherSnedecor << std::endl;
     estimatedFisherSnedecor = factory.buildAsFisherSnedecor(distribution.getParameter());
     fullprint << "FisherSnedecor from parameters=" << estimatedFisherSnedecor << std::endl;
+    // buildMethodOfMoments
+    estimatedFisherSnedecor = factory.buildMethodOfMoments(sample);
+    fullprint << "Estimated from moments=" << estimatedFisherSnedecor << std::endl;
+    const Scalar sample_mu = sample.computeMean()[0];
+    const Scalar sample_sigma2 = sample.computeCovariance()(0,0);
+    const Scalar distribution_mu = estimatedFisherSnedecor.computeMean()[0];
+    const Scalar distribution_sigma2 = estimatedFisherSnedecor.computeCovariance()(0,0);
+    assert_almost_equal(sample_mu, distribution_mu, 1e-15, 1e-15);
+    assert_almost_equal(sample_sigma2, distribution_sigma2, 1e-15, 1e-15);
   }
   catch (TestFailed & ex)
   {

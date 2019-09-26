@@ -31,8 +31,8 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{X} & = & \frac{d_2}{d_2 - 2} \\
-        \Var{X} & = & \frac{d_1 - 2}{d_1}\,\frac{d_2}{d_2 + 2}
+        \Expect{X} & = & \frac{d_2}{d_2 - 2} \textrm{ if } d_2>2\\
+        \Var{X} & = & \frac{2d_2^2(d_1+d_2-2)}{d_1(d_2-2)^2(d_2-4)} \textrm{ if } d_2>4
     \end{eqnarray*}
 
 Examples
