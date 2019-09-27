@@ -81,6 +81,10 @@ DistributionFactoryResult FisherSnedecorFactory::buildEstimator(const Sample & s
 
 FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const Sample & sample) const
 {
+  // Use method of moments as starting point
+  FisherSnedecor estimatedMomentsDistribution = buildMethodOfMoments(sample);
+  Point parametersFromMoments = estimatedMomentsDistribution.getParameter();
+
   const UnsignedInteger dimension = build().getParameterDimension();
   MaximumLikelihoodFactory factory(buildAsFisherSnedecor());
 
@@ -90,7 +94,7 @@ FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const Sample & sampl
 
   // override starting point
   OptimizationAlgorithm solver(factory.getOptimizationAlgorithm());
-  solver.setStartingPoint(parametersLowerBound);
+  solver.setStartingPoint(parametersFromMoments);
   factory.setOptimizationAlgorithm(solver);
 
   // override bounds
