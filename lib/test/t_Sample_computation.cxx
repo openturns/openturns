@@ -69,9 +69,7 @@ int main(int, char *[])
     indices[0] = 2;
     indices[1] = 0;
     fullprint << "Marginal [2, 0]=" << sample.getMarginal(indices) << std::endl;
-    fullprint << "Rank=" << sample.rank() << std::endl;
-    fullprint << "Sort=" << sample.sort() << std::endl;
-    fullprint << "Sort according to component 0=" << sample.sortAccordingToAComponent(0) << std::endl;
+    fullprint << "Rank           =" << sample.rank() << std::endl;
     Scalar prob = 0.25;
     fullprint << "Quantile per component(" << prob << ")=" << sample.computeQuantilePerComponent(prob) << std::endl;
     //    fullprint << "Quantile(" << prob << ")=" << sample.computeQuantile(prob) << std::endl;
@@ -113,10 +111,17 @@ int main(int, char *[])
     sample[3][0] = 2;
     sample[3][1] = 2;
     sample[3][2] = 9;
+    fullprint << "sample=" << sample << std::endl;
     fullprint << "Rank=" << sample.rank() << std::endl;
-    fullprint << "Sort=" << sample.sort() << std::endl;
     fullprint << "Rank component 0=" << sample.rank(0) << std::endl;
-    fullprint << "Sort according to component 0=" << sample.sortAccordingToAComponent(0) << std::endl;
+    fullprint << "Sort           =" << sample.sort() << std::endl;
+    Sample sampleTMP(sample);
+    sampleTMP.sortInPlace();
+    fullprint << "Sort (in place)=" << sampleTMP << std::endl;    
+    fullprint << "Sort according to component 0           =" << sample.sortAccordingToAComponent(0) << std::endl;
+    sampleTMP = sample;
+    sampleTMP.sortAccordingToAComponentInPlace(0);
+    fullprint << "Sort according to component 0 (in place)=" << sampleTMP << std::endl;
     fullprint << "Spearman correlation=" << sample.computeSpearmanCorrelation() << std::endl;
     fullprint << "Kendall tau=" << sample.computeKendallTau() << std::endl;
     UnsignedInteger size = 10000;
@@ -133,11 +138,17 @@ int main(int, char *[])
     fullprint << "Spearman correlation=" << RSpearman << std::endl;
 
     // Check sortUnique()
-    fullprint << "Unique=" << sample.sortUnique() << std::endl;
+    fullprint << "Unique           =" << sample.sortUnique() << std::endl;
+    sampleTMP = sample;
+    sampleTMP.sortUniqueInPlace();
+    fullprint << "Unique (in place)=" << sampleTMP << std::endl;
     sample[2][0] = 1;
     sample[2][1] = 0;
     sample[2][2] = 9;
-    fullprint << "Unique=" << sample.sortUnique() << std::endl;
+    fullprint << "Unique           =" << sample.sortUnique() << std::endl;
+    sampleTMP = sample;
+    sampleTMP.sortUniqueInPlace();
+    fullprint << "Unique (in place)=" << sampleTMP << std::endl;    
   }
   catch (TestFailed & ex)
   {

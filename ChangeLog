@@ -62,6 +62,7 @@
  * #1130 (Inconsistency in FittingTest)
  * #1185 (Bug with Normal.computeMinimumLevelSet method)
  * #1190 (computeProbability clamped by Domain-SmallVolume)
+ * #1202 (Sample::sort & Sample::sortAccordingToAComponent only return new Samples)
  * #1216 (The CalibrationResult doc does not match the code)
  * #1247 (KrigingAlgorithm could not compute amplitude analytically with ProductCovarianceModel )
 

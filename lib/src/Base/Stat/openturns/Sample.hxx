@@ -320,15 +320,18 @@ public:
 
   /** Sorted sample */
   Sample sort() const;
+  void sortInPlace();
 
   /** Sorted component */
   Sample sort(const UnsignedInteger index) const;
 
   /** Sorted according a component */
   Sample sortAccordingToAComponent(const UnsignedInteger index) const;
+  void sortAccordingToAComponentInPlace(const UnsignedInteger index);
 
   /* Sorted and duplicated points removed */
   Sample sortUnique() const;
+  void sortUniqueInPlace();
 
   /** Store a sample in a temporary text file, one realization by line. Returns the file name. */
   virtual String storeToTemporaryFile() const;
