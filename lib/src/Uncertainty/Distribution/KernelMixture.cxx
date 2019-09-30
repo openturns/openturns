@@ -398,7 +398,7 @@ Scalar KernelMixture::computeProbability(const Interval & interval) const
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
   const Interval reducedInterval(interval.intersect(getRange()));
   if (reducedInterval == getRange()) return 1.0;
-  if (reducedInterval.isNumericallyEmpty()) return 0.0;
+  if (reducedInterval.isEmpty()) return 0.0;
   const Point lowerBound(reducedInterval.getLowerBound());
   const Point upperBound(reducedInterval.getUpperBound());
   if (useApproximatePDFCDF_)

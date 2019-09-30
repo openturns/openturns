@@ -743,15 +743,18 @@ public:
 
   /** Sorted sample */
   SampleImplementation sort() const;
+  void sortInPlace();
 
   /** Sorted component */
   SampleImplementation sort(const UnsignedInteger index) const;
 
   /** Sorted component */
   SampleImplementation sortAccordingToAComponent(const UnsignedInteger index) const;
+  void sortAccordingToAComponentInPlace(const UnsignedInteger index);
 
   /* Sorted and duplicated points removed */
   SampleImplementation sortUnique() const;
+  void sortUniqueInPlace();
 
   /** Get the i-th marginal sample */
   SampleImplementation getMarginal(const UnsignedInteger index) const;

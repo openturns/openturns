@@ -320,7 +320,7 @@ Scalar NormalGamma::computeProbability(const Interval & interval) const
 
   const Interval reducedInterval(interval.intersect(getRange()));
   // If the interval is empty
-  if (reducedInterval.isNumericallyEmpty()) return 0.0;
+  if (reducedInterval.isEmpty()) return 0.0;
 
   // If the interval is the range
   if (reducedInterval == getRange()) return 1.0;

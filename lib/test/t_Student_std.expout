@@ -98,8 +98,8 @@ threshold=0.97216
 Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,X1,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(Student(nu = 4.5, mu = [0,1], sigma = [0.5,1], R = [[ 1    0.25 ]
  [ 0.25 1    ]])) gradientImplementation=MinimumVolumeLevelSetGradient(Student(nu = 4.5, mu = [0,1], sigma = [0.5,1], R = [[ 1    0.25 ]
  [ 0.25 1    ]])) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(Student(nu = 4.5, mu = [0,1], sigma = [0.5,1], R = [[ 1    0.25 ]
- [ 0.25 1    ]])) level=6.16505
-beta=0.00210162
+ [ 0.25 1    ]])) level=5.43963
+beta=0.00434109
 Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-1.60007,-2.20015] upper bound=class=Point name=Unnamed dimension=2 values=[1.60007,4.20015] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.97216
 Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-933.472,-1865.94] upper bound=class=Point name=Unnamed dimension=2 values=[1.28731,3.57463] finite lower bound=[1,1] finite upper bound=[1,1]

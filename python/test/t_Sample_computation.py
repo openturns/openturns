@@ -70,9 +70,15 @@ try:
     sample[3] = Point((2, 2, 9))
     print("Rank=", repr(sample.rank()))
     print("Rank component 0=", repr(sample.rank(0)))
-    print("Sort=", repr(sample.sort()))
-    print("Sort according to component 0=", repr(
+    print("Sort           =", repr(sample.sort()))
+    sample2 = Sample(sample)
+    sample2.sortInPlace()
+    print("Sort (in place)=", repr(sample2))
+    print("Sort according to component 0           =", repr(
         sample.sortAccordingToAComponent(0)))
+    sample2 = Sample(sample)
+    sample2.sortAccordingToAComponentInPlace(0)
+    print("Sort according to component 0 (in place)=", repr(sample2))
     print("Spearman correlation=", repr(sample.computeSpearmanCorrelation()))
     print("Kendall tau=", repr(sample.computeKendallTau()))
     size = 10000
@@ -85,9 +91,15 @@ try:
     print("Pearson correlation=", repr(RPearson))
     RSpearman = normalSample.computeSpearmanCorrelation()
     print("Spearman correlation=", repr(RSpearman))
-    print("Unique=", repr(sample.sortUnique()))
+    print("Unique           =", repr(sample.sortUnique()))
+    sample2 = Sample(sample)
+    sample2.sortUniqueInPlace()
+    print("Unique (in place)=", repr(sample2))
     sample[2] = Point((1, 0, 9))
-    print("Unique=", repr(sample.sortUnique()))
+    print("Unique           =", repr(sample.sortUnique()))
+    sample2 = Sample(sample)
+    sample2.sortUniqueInPlace()
+    print("Unique (in place)=", repr(sample2))
 # except TestFailed, ex :
 except:
     import sys

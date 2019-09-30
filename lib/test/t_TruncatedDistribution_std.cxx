@@ -166,7 +166,8 @@ int main(int, char *[])
       TruncatedDistribution d(candidates[i], intervals[i]);
       fullprint << "d=" << d << ", simplified=" << d.getSimplifiedVersion() << std::endl;
     }
-    // Test 
+    // Test for issue #1190
+    TruncatedDistribution dist(Normal(6.3e-19, 2.1e-19), 4.2e-19, TruncatedDistribution::LOWER);
   }
   catch (TestFailed & ex)
   {

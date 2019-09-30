@@ -995,6 +995,28 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::Sample::sortInPlace
+"Sort the sample in place.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.Normal(2).getSample(3)
+>>> print(sample)
+    [ X0        X1        ]
+0 : [  0.608202 -1.26617  ]
+1 : [ -0.438266  1.20548  ]
+2 : [ -2.18139   0.350042 ]
+>>> sample.sortInPlace()
+>>> print(sample)
+    [ X0        X1        ]
+0 : [ -2.18139   0.350042 ]
+1 : [ -0.438266  1.20548  ]
+2 : [  0.608202 -1.26617  ]"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::Sample::sortAccordingToAComponent
 "Sort the sample according to the given component.
 
@@ -1019,6 +1041,33 @@ Examples
 1 : [ -0.438266  1.20548  ]
 2 : [ -2.18139   0.350042 ]
 >>> print(sample.sortAccordingToAComponent(0))
+    [ X0        X1        ]
+0 : [ -2.18139   0.350042 ]
+1 : [ -0.438266  1.20548  ]
+2 : [  0.608202 -1.26617  ]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Sample::sortAccordingToAComponentInPlace
+"Sort the sample in place according to the given component.
+
+Parameters
+----------
+marginal_index : int, :math:`0 \leq i < n`
+    The component to use for sorting the sample.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.Normal(2).getSample(3)
+>>> print(sample)
+    [ X0        X1        ]
+0 : [  0.608202 -1.26617  ]
+1 : [ -0.438266  1.20548  ]
+2 : [ -2.18139   0.350042 ]
+>>> sample.sortAccordingToAComponentInPlace(0)
+>>> print(sample)
     [ X0        X1        ]
 0 : [ -2.18139   0.350042 ]
 1 : [ -0.438266  1.20548  ]
@@ -1185,6 +1234,26 @@ Examples
 2 : [ 0 2 2 ]
 3 : [ 1 1 0 ]
 >>> print(sample.sortUnique())
+0 : [ 0 2 2 ]
+1 : [ 1 1 0 ]
+2 : [ 3 0 3 ]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Sample::sortUniqueInPlace
+"Sort the sample in place and remove duplicate points.
+
+Examples
+--------
+>>> import openturns as ot
+>>> sample = ot.Sample([[3, 0, 3], [1, 1, 0], [0, 2, 2], [1, 1, 0]])
+>>> print(sample)
+0 : [ 3 0 3 ]
+1 : [ 1 1 0 ]
+2 : [ 0 2 2 ]
+3 : [ 1 1 0 ]
+>>> sample.sortUniqueInPlace()
+>>> print(sample)
 0 : [ 0 2 2 ]
 1 : [ 1 1 0 ]
 2 : [ 3 0 3 ]"

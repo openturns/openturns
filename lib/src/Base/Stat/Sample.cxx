@@ -720,6 +720,12 @@ Sample Sample::sort() const
   return getImplementation()->sort();
 }
 
+void Sample::sortInPlace()
+{
+  copyOnWrite();
+  getImplementation()->sortInPlace();
+}
+
 /* Sorted component */
 Sample Sample::sort(const UnsignedInteger index) const
 {
@@ -732,10 +738,22 @@ Sample Sample::sortAccordingToAComponent(const UnsignedInteger index) const
   return getImplementation()->sortAccordingToAComponent(index);
 }
 
+void Sample::sortAccordingToAComponentInPlace(const UnsignedInteger index)
+{
+  copyOnWrite();
+  getImplementation()->sortAccordingToAComponentInPlace(index);
+}
+
 /* Sort and remove duplicated points */
 Sample Sample::sortUnique() const
 {
   return getImplementation()->sortUnique();
+}
+
+void Sample::sortUniqueInPlace()
+{
+  copyOnWrite();
+  getImplementation()->sortUniqueInPlace();
 }
 
 /* Get the i-th marginal sample */

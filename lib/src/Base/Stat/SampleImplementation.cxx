@@ -1424,6 +1424,24 @@ SampleImplementation SampleImplementation::sort() const
   return sortedSample;
 }
 
+void SampleImplementation::sortInPlace()
+{
+  if (size_ == 0) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
+
+  // Special case for 1D sample
+  if (dimension_ == 1)
+  {
+    TBB::ParallelSort(data_.begin(), data_.end());
+    return;
+  }
+  // The nD samples
+  Collection<NSI_Sortable> sortables(size_);
+  SampleImplementation work(*this);
+  for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = NSI_Sortable(&work, i);
+  TBB::ParallelSort(sortables.begin(), sortables.end());
+  for (UnsignedInteger i = 0; i < size_; ++i) (*this)[i] = sortables[i];
+}
+
 /* Sorted sample, one component */
 SampleImplementation SampleImplementation::sort(const UnsignedInteger index) const
 {
@@ -1457,9 +1475,32 @@ SampleImplementation SampleImplementation::sortAccordingToAComponent(const Unsig
   for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = Sortable((*this)[i], index);
   TBB::ParallelSort(sortables.begin(), sortables.end());
   SampleImplementation sortedSample(size_, dimension_);
-  for (UnsignedInteger i = 0; i < size_; ++i) sortedSample[i] = Point(sortables[i].values_);
+  UnsignedInteger shift = 0;
+  for (UnsignedInteger i = 0; i < size_; ++i)
+    {
+      std::copy(sortables[i].values_.begin(), sortables[i].values_.end(), sortedSample.data_.begin() + shift);
+      shift += dimension_;
+    }
   if (!p_description_.isNull()) sortedSample.setDescription(getDescription());
   return sortedSample;
+}
+
+/* Sorted according a component */
+void SampleImplementation::sortAccordingToAComponentInPlace(const UnsignedInteger index)
+{
+  if (size_ == 0) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
+  if (index >= getDimension()) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << getDimension();
+
+  Collection<Sortable> sortables(size_);
+  SampleImplementation work(*this);
+  for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = Sortable(work[i], index);
+  TBB::ParallelSort(sortables.begin(), sortables.end());
+  UnsignedInteger shift = 0;
+  for (UnsignedInteger i = 0; i < size_; ++i)
+    {
+      std::copy(sortables[i].values_.begin(), sortables[i].values_.end(), data_.begin() + shift);
+      shift += dimension_;
+    }
 }
 
 /* Sort and remove duplicated points */
@@ -1480,6 +1521,21 @@ SampleImplementation SampleImplementation::sortUnique() const
   if (last + 1 < size_) sampleUnique.erase(last + 1, size_);
   if (!p_description_.isNull()) sampleUnique.setDescription(getDescription());
   return sampleUnique;
+}
+
+void SampleImplementation::sortUniqueInPlace()
+{
+  sortInPlace();
+  UnsignedInteger last = 0;
+  for (UnsignedInteger i = 1; i < size_; ++i)
+  {
+    if ((*this)[i] != (*this)[last])
+    {
+      ++last;
+      (*this)[last] = (*this)[i];
+    }
+  }
+  if (last + 1 < size_) erase(last + 1, size_);
 }
 
 /*

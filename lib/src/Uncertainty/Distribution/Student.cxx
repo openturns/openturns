@@ -233,7 +233,7 @@ Scalar Student::computeProbability(const Interval & interval) const
   const UnsignedInteger dimension = getDimension();
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
 
-  if (interval.isNumericallyEmpty()) return 0.0;
+  if (interval.isEmpty()) return 0.0;
   // The generic implementation provided by the DistributionImplementation upper class is more accurate than the generic implementation provided by the ContinuousDistribution upper class for dimension = 1
   if (dimension == 1) return DistributionImplementation::computeProbability(interval);
   // Decompose and normalize the interval

@@ -458,7 +458,7 @@ Scalar ComposedDistribution::computeProbability(const Interval & interval) const
   if (interval.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given interval must have dimension=" << dimension << ", here dimension=" << interval.getDimension();
 
   // If the interval is empty
-  if (interval.isNumericallyEmpty()) return 0.0;
+  if (interval.isEmpty()) return 0.0;
   const Point lower(interval.getLowerBound());
   const Point upper(interval.getUpperBound());
   const Interval::BoolCollection finiteLower(interval.getFiniteLowerBound());
