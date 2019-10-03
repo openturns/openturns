@@ -1,0 +1,24 @@
+Upper bound : 62
+Distribution  class=DiscreteCompoundDistribution name=DiscreteCompoundDistribution baseDistribution=class=Bernoulli name=Bernoulli dimension=1 p=0.5 compoundDistribution=class=Poisson name=Poisson dimension=1 lambda=20
+Distribution  DiscreteCompoundDistribution(base=Bernoulli(p = 0.5), compound=Poisson(lambda = 20))
+Elliptical =  False
+Continuous =  False
+oneRealization= class=Point name=Unnamed dimension=1 values=[4]
+oneSample first= class=Point name=Unnamed dimension=1 values=[12]  last= class=Point name=Unnamed dimension=1 values=[18]
+mean= class=Point name=Unnamed dimension=1 values=[9.9932]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[9.88734]
+quantile= class=Point name=Unnamed dimension=1 values=[15]
+cdf(quantile)=0.951260
+entropy=2.561410
+mean= class=Point name=Unnamed dimension=1 values=[10]
+standard deviation= class=Point name=Unnamed dimension=1 values=[3.16228]
+skewness= class=Point name=Unnamed dimension=1 values=[0.316228]
+kurtosis= class=Point name=Unnamed dimension=1 values=[3.1]
+covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[10]
+standard moment n= 0  value= [1]
+standard moment n= 1  value= [10]
+standard moment n= 2  value= [110]
+standard moment n= 3  value= [1310]
+standard moment n= 4  value= [16710]
+standard moment n= 5  value= [226510]
+Standard representative= DiscreteCompoundDistribution(base=Bernoulli(p = 0.5), compound=Poisson(lambda = 20))

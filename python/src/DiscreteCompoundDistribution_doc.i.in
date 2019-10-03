@@ -1,0 +1,59 @@
+%feature("docstring") OT::DiscreteCompoundDistribution
+"Discrete compound distribution.
+
+Parameters
+----------
+base_distribution : :class:`~openturns.Distribution`
+    Integer-valued distribution of the summed independent random variables
+compound_distribution : :class:`~openturns.Distribution`
+    Integer-valued distribution of the number of summed terms :math:`N`
+
+Notes
+-----
+Probability distribution of the random variable :math:`Y(\omega)` defined as:
+
+.. math::
+
+    Y(\omega) = \sum_{k=1}^{N(\omega)} X_i(\omega)
+
+where the :math:`X_i \; (i \in \mathbb{N}\setminus{0})` are independent
+identically distribution random variables following base_distribution
+and :math:`N` is a random variable following compound_distribution that is
+independent from all :math:`X_i \; (i \in \mathbb{N}\setminus{0})`.
+
+See Also
+--------
+Poisson
+
+Examples
+--------
+Create a discrete compound distribution from a Bernoulli distribution with parameter :math:`p=0.5`
+and a Poisson distribution with parameter :math:`\lambda=10`.
+This is mathematically equivalent to a Poisson distribution with parameter :math:`\lambda=5`.
+
+>>> import openturns as ot
+>>> distribution = ot.DiscreteCompoundDistribution(ot.Bernoulli(0.5), ot.Poisson(10.0))
+
+Draw a sample:
+
+>>> sample = distribution.getSample(5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DiscreteCompoundDistribution::getBaseDistribution
+"Base distribution accessor.
+
+Returns
+-------
+base_distribution : :class:`~openturns.Distribution`
+    Integer-valued distribution of the summed independent random variables"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DiscreteCompoundDistribution::getCompoundDistribution
+"Compound distribution accessor.
+
+Returns
+-------
+compound_distribution : :class:`~openturns.Distribution`
+    Integer-valued distribution of the number of summed terms :math:`N`"

@@ -601,6 +601,7 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       DiracFactory.i DiracFactory_doc.i.in
                       Dirichlet.i Dirichlet_doc.i.in
                       DirichletFactory.i DirichletFactory_doc.i.in
+                      DiscreteCompoundDistribution.i DiscreteCompoundDistribution_doc.i.in
                       Epanechnikov.i Epanechnikov_doc.i.in
                       Exponential.i Exponential_doc.i.in
                       ExponentialFactory.i ExponentialFactory_doc.i.in
