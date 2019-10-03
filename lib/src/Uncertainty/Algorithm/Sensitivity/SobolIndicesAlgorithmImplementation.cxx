@@ -106,7 +106,7 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
   , size_(0)
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize"))
   , confidenceLevel_(ResourceMap::GetAsScalar("SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel"))
-  , sobolIndices_()
+//   , sobolIndices_()
 //   , referenceVariance_()
 //   , varianceI_()
 //   , varianceTI_()
@@ -929,7 +929,7 @@ void SobolIndicesAlgorithmImplementation::setDesign(const Sample & inputDesign,
 //       throw InvalidArgumentException(HERE) << "Null output sample variance";
 
   // Init Sobol indices struct
-  sobolIndices_ = SobolIndices(inputDesign.getDimension(), outputDesign.getDimension());
+//   sobolIndices_.SetModelDimensions(inputDesign.getDimension(), outputDesign.getDimension());
 
   alreadyComputedIndicesDistribution_ = false;
 }

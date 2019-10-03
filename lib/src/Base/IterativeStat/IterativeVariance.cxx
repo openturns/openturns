@@ -119,7 +119,9 @@ void IterativeVariance::increment(const Point & newData)
     {
 //     Scalar temp = meanData_[i];
 //       varData_[i] = (varData_[i] * (iteration_ - 1) + (newData[i] - temp) * (newData[i] - meanData_[i])) / iteration_;
-      varData_[i] = varData_[i] * (iteration_ - 1)/iteration_ + pow((newData[i] - meanData_[i]), 2) / (iteration_ - 1);
+      varData_[i] = varData_[i] * (iteration_ - 2);
+      varData_[i] = varData_[i] + iteration_ * pow((newData[i] - meanData_[i]), 2) / (iteration_ - 1);
+      varData_[i] = varData_[i] / (iteration_ - 1);
     }
   }
 }
@@ -140,7 +142,9 @@ void IterativeVariance::increment(const Sample & newData)
     {
       for (UnsignedInteger i = 0; i < dimension_; ++i)
       {
-        varData_[i] = varData_[i] * (iteration_ - 1)/iteration_ + pow((tempData[i] - meanData_[i]), 2) / (iteration_ - 1);
+        varData_[i] = varData_[i] * (iteration_ - 2);
+        varData_[i] = varData_[i] + iteration_ * pow((tempData[i] - meanData_[i]), 2) / (iteration_ - 1);
+        varData_[i] = varData_[i] / (iteration_ - 1);
       }
     }
   }

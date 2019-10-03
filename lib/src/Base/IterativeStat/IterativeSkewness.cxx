@@ -86,7 +86,7 @@ Point IterativeSkewness::getVariance() const
 
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    varData[i] = mean2Data_[i] - pow(mean1Data_[i], 2);
+    varData[i] = (mean2Data_[i] - pow(mean1Data_[i], 2))*iteration_/(iteration_-1);
   }
 
   return varData;

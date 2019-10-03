@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_MARTINEZSOBOLINDICES_HXX
-#define OPENTURNS_MARTINEZSOBOLINDICES_HXX
+#ifndef OPENTURNS_MAUNTZKUCHERENKOSOBOLINDICES_HXX
+#define OPENTURNS_MAUNTZKUCHERENKOSOBOLINDICES_HXX
 
 #include "openturns/Point.hxx"
 #include "openturns/Interval.hxx"
@@ -29,11 +29,11 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class MartinezSobolIndices
+ * @class MauntzKucherenkoSobolIndices
  *
  */
 
-class OT_API MartinezSobolIndices
+class OT_API MauntzKucherenkoSobolIndices
   : public SobolIndicesImplementation
 {
   CLASSNAME
@@ -41,14 +41,14 @@ class OT_API MartinezSobolIndices
 public:
 
   /** Default constructor */
-  MartinezSobolIndices();
+  MauntzKucherenkoSobolIndices();
 
   /** Parameter constructor */
-  MartinezSobolIndices(const UnsignedInteger modelInputDimension,
+  MauntzKucherenkoSobolIndices(const UnsignedInteger modelInputDimension,
                        const UnsignedInteger modelOutputDimension);
 
   /** Virtual constructor */
-  virtual MartinezSobolIndices * clone() const;
+  virtual MauntzKucherenkoSobolIndices * clone() const;
 
   /** Method that compute first and total order indices using a collection of sample */
   void computeIndices(const Sample & inputSample);
@@ -75,14 +75,14 @@ protected:
 
 private:
 
-  PersistentCollection<IterativeVariance> variances_;
+  IterativeVariance varianceA_;
 
-  Sample covarianceI_;
+  Sample yEDotyA_;
+  Sample yEDotyB_;
+  Point yADotyB_;
 
-  Sample covarianceTI_;
-
-}; /* class MartinezSobolIndices */
+}; /* class MauntzKucherenkoSobolIndices */
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_MARTINEZSOBOLINDICES_HXX */
+#endif /* OPENTURNS_MAUNTZKUCHERENKOSOBOLINDICES_HXX */

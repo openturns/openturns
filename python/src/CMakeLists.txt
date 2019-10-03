@@ -915,13 +915,16 @@ ot_add_python_module(simulation simulation_module.i
 	                    ANCOVA.i ANCOVA_doc.i.in
                       SobolIndicesImplementation.i SobolIndicesImplementation_doc.i.in
                       SobolIndices.i SobolIndices_doc.i.in
+                      SaltelliSobolIndices.i SaltelliSobolIndices_doc.i.in
+                      MauntzKucherenkoSobolIndices.i MauntzKucherenkoSobolIndices_doc.i.in
+                      JansenSobolIndices.i JansenSobolIndices_doc.i.in
                       MartinezSobolIndices.i MartinezSobolIndices_doc.i.in
                       SobolIndicesAlgorithmImplementation.i SobolIndicesAlgorithmImplementation_doc.i.in
                       SobolIndicesAlgorithm.i SobolIndicesAlgorithm_doc.i.in
                       MartinezSensitivityAlgorithm.i MartinezSensitivityAlgorithm_doc.i.in
-#                       SaltelliSensitivityAlgorithm.i SaltelliSensitivityAlgorithm_doc.i.in
-#                       JansenSensitivityAlgorithm.i JansenSensitivityAlgorithm_doc.i.in
-#                       MauntzKucherenkoSensitivityAlgorithm.i MauntzKucherenkoSensitivityAlgorithm_doc.i.in
+                      SaltelliSensitivityAlgorithm.i SaltelliSensitivityAlgorithm_doc.i.in
+                      JansenSensitivityAlgorithm.i JansenSensitivityAlgorithm_doc.i.in
+                      MauntzKucherenkoSensitivityAlgorithm.i MauntzKucherenkoSensitivityAlgorithm_doc.i.in
                       SobolIndicesExperiment.i SobolIndicesExperiment_doc.i.in
                       SimulationSensitivityAnalysis.i SimulationSensitivityAnalysis_doc.i.in
                       ProbabilitySimulationResult.i ProbabilitySimulationResult_doc.i.in

@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/SobolIndices.hxx"
-#include "openturns/MartinezSobolIndices.hxx"
+#include "openturns/SobolIndicesImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -29,7 +29,7 @@ CLASSNAMEINIT(SobolIndices)
  * @brief  Default constructor
  */
 SobolIndices::SobolIndices() :
-  TypedInterfaceObject<SobolIndicesImplementation>(new MartinezSobolIndices())
+  TypedInterfaceObject<SobolIndicesImplementation>(new SobolIndicesImplementation())
 {
   // Nothing to do
 }
@@ -39,7 +39,7 @@ SobolIndices::SobolIndices() :
  */
 SobolIndices::SobolIndices(const UnsignedInteger modelInputDimension,
                            const UnsignedInteger modelOutputDimension) :
-  TypedInterfaceObject<SobolIndicesImplementation>(new MartinezSobolIndices(modelInputDimension, modelOutputDimension))
+  TypedInterfaceObject<SobolIndicesImplementation>(new SobolIndicesImplementation(modelInputDimension, modelOutputDimension))
 {
   // Nothing to do
 }

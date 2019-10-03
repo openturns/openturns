@@ -34,7 +34,7 @@ static const Factory<MartinezSensitivityAlgorithm> Factory_MartinezSensitivityAl
 MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm()
   : SobolIndicesAlgorithmImplementation()
 {
-  // Nothing to do
+  sobolIndices_ = MartinezSobolIndices();
 }
 
 /** Constructor with parameters */
@@ -43,7 +43,7 @@ MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const Sample & inputD
     const UnsignedInteger size)
   : SobolIndicesAlgorithmImplementation(inputDesign, outputDesign, size)
 {
-  // Nothing to do
+  sobolIndices_ = MartinezSobolIndices(inputDesign.getDimension(), outputDesign.getDimension());
 }
 
 /** Constructor with distribution / model parameters */
@@ -53,7 +53,7 @@ MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const Distribution & 
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(distribution, size, model, computeSecondOrder)
 {
-  // Nothing to do
+  sobolIndices_ = MartinezSobolIndices(inputDesign_.getDimension(), outputDesign_.getDimension());
 }
 
 /** Constructor with experiment / model parameters */
@@ -62,7 +62,7 @@ MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const WeightedExperim
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(experiment, model, computeSecondOrder)
 {
-  // Nothing to do
+  sobolIndices_ = MartinezSobolIndices(inputDesign_.getDimension(), outputDesign_.getDimension());
 }
 
 /* Virtual constructor */

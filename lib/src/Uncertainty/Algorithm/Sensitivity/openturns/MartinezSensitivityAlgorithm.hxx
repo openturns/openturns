@@ -78,8 +78,6 @@ protected:
   /** void method that computes asymptotic distribution */
   virtual void computeAsymptoticDistribution() const;
 
-  mutable MartinezSobolIndices sobolIndices_;
-
 private:
 
 }; /* class MartinezSensitivityAlgorithm */

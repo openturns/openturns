@@ -19,6 +19,7 @@
  *
  */
 
+#include "openturns/MauntzKucherenkoSobolIndices.hxx"
 #include "openturns/MauntzKucherenkoSensitivityAlgorithm.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -33,7 +34,7 @@ static const Factory<MauntzKucherenkoSensitivityAlgorithm> Factory_MauntzKuchere
 MauntzKucherenkoSensitivityAlgorithm::MauntzKucherenkoSensitivityAlgorithm()
   : SobolIndicesAlgorithmImplementation()
 {
-  // Nothing to do
+  sobolIndices_ = MauntzKucherenkoSobolIndices();
 }
 
 /** Constructor with parameters */
@@ -42,7 +43,7 @@ MauntzKucherenkoSensitivityAlgorithm::MauntzKucherenkoSensitivityAlgorithm(const
     const UnsignedInteger size)
   : SobolIndicesAlgorithmImplementation(inputDesign, outputDesign, size)
 {
-  // Nothing to do
+  sobolIndices_ = MauntzKucherenkoSobolIndices(inputDesign.getDimension(), outputDesign.getDimension());
 }
 
 /** Constructor with distribution / model parameters */
@@ -52,7 +53,7 @@ MauntzKucherenkoSensitivityAlgorithm::MauntzKucherenkoSensitivityAlgorithm(const
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(distribution, size, model, computeSecondOrder)
 {
-  // Nothing to do
+  sobolIndices_ = MauntzKucherenkoSobolIndices(inputDesign_.getDimension(), outputDesign_.getDimension());
 }
 
 /** Constructor with experiment / model parameters */
@@ -61,7 +62,7 @@ MauntzKucherenkoSensitivityAlgorithm::MauntzKucherenkoSensitivityAlgorithm(const
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(experiment, model, computeSecondOrder)
 {
-  // Nothing to do
+  sobolIndices_ = MauntzKucherenkoSobolIndices(inputDesign_.getDimension(), outputDesign_.getDimension());
 }
 
 /* Virtual constructor */
@@ -71,43 +72,9 @@ MauntzKucherenkoSensitivityAlgorithm * MauntzKucherenkoSensitivityAlgorithm::clo
 }
 
 /** Internal method that compute Vi/VTi using a huge sample */
-Sample MauntzKucherenkoSensitivityAlgorithm::computeIndices(const Sample & sample,
-    Sample & VTi) const
+void MauntzKucherenkoSensitivityAlgorithm::computeIndices(const Sample & sample) const
 {
-  const UnsignedInteger inputDimension = inputDesign_.getDimension();
-  const UnsignedInteger outputDimension = outputDesign_.getDimension();
-  const UnsignedInteger size = size_;
-  Sample varianceI(outputDimension, inputDimension);
-  VTi = Sample(outputDimension, inputDimension);
-
-  // Use reference samples
-  // Compute muA = mean(yA)
-  const Sample yA(sample, 0, size);
-  const Point muA(yA.computeMean());
-
-  // Compute crossMean
-  const Point yADotyB(computeSumDotSamples(sample, size_, 0,  size_));
-  // main loop
-  for (UnsignedInteger p = 0; p < inputDimension; ++p)
-  {
-    // yE correspond to the block that start at index (p + 2) * size_
-    // For first order indices, compute yE * yB
-    const Point yEDotyB(computeSumDotSamples(sample, size_, size_, (2 + p) * size_));
-    // Compute yE * yA
-    const Point yEDotyA(computeSumDotSamples(sample, size_, 0, (2 + p) * size_));
-    for (UnsignedInteger k = 0; k < size; ++k)
-    {
-      for (UnsignedInteger q = 0; q < outputDimension; ++q)
-      {
-        varianceI(q, p) =  (yEDotyB[q] - yADotyB[q]) / (size - 1.0);
-        // Vti = Var - V_{-i}
-        // \sum_{k} yA[k] * yA[k] - yA[k]*yE[k]
-        // yA[k] * yA[k]  = sigma_a^2 + muA^2
-        VTi(q, p) = referenceVariance_[q] + (size * muA[q] *  muA[q] - yEDotyA[q]) / (size - 1.0);
-      }
-    }
-  }
-  return varianceI;
+  sobolIndices_.computeIndices(sample);
 }
 
 void MauntzKucherenkoSensitivityAlgorithm::computeAsymptoticDistribution() const

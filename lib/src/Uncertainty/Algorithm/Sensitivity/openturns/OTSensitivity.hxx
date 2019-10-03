@@ -28,11 +28,14 @@
 #include "openturns/SobolIndices.hxx"
 #include "openturns/SobolIndicesAlgorithmImplementation.hxx"
 #include "openturns/SobolIndicesAlgorithm.hxx"
-// #include "openturns/SaltelliSensitivityAlgorithm.hxx"
-// #include "openturns/MauntzKucherenkoSensitivityAlgorithm.hxx"
+#include "openturns/SaltelliSensitivityAlgorithm.hxx"
+#include "openturns/MauntzKucherenkoSensitivityAlgorithm.hxx"
 #include "openturns/MartinezSensitivityAlgorithm.hxx"
-// #include "openturns/JansenSensitivityAlgorithm.hxx"
+#include "openturns/JansenSensitivityAlgorithm.hxx"
 #include "openturns/MartinezSobolIndices.hxx"
+#include "openturns/SaltelliSobolIndices.hxx"
+#include "openturns/JansenSobolIndices.hxx"
+#include "openturns/MauntzKucherenkoSobolIndices.hxx"
 #include "openturns/SobolIndicesExperiment.hxx"
 
 #endif /* OPENTURNS_OTSENSITIVITY_HXX */
