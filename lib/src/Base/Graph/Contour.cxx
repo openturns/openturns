@@ -133,7 +133,7 @@ Point Contour::getLevels() const
 void Contour::setLevels(const Point & levels)
 {
   levels_ = levels;
-  if (levels.getDimension() != labels_.getSize()) buildDefaultLabels();
+  buildDefaultLabels();
 }
 
 /* Accessor for labels */
