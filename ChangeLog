@@ -59,6 +59,7 @@
 
 === Bug fixes ===
  * https://github.com/openturns/openturns/milestone/4?closed=1
+ * #997 (Adding minimum volume set examples)
  * #1004 (The doc for SobolSimulationAlgorithm has issues)
  * #1006 (Text drawable does not handle size)
  * #1130 (Inconsistency in FittingTest)
@@ -66,7 +67,6 @@
  * #1190 (computeProbability clamped by Domain-SmallVolume)
  * #1202 (Sample::sort & Sample::sortAccordingToAComponent only return new Samples)
  * #1216 (The CalibrationResult doc does not match the code)
- * #1236 (Adding minimum volume set examples)
  * #1247 (KrigingAlgorithm could not compute amplitude analytically with ProductCovarianceModel )
 
 
