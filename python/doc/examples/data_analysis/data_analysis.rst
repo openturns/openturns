@@ -13,7 +13,17 @@ Manage data and samples
     sample_correlation.ipynb
     linear_regression.ipynb
     quantile_estimation_wilks.ipynb
+
+Sample analysis
+---------------
+
+.. toctree::
+    :maxdepth: 1
+
+    visualize_histogram.ipynb
     compare_unconditional_conditional_histograms.ipynb
+    visualize_empirical_cdf.ipynb
+    draw_survival.ipynb
 
 Distribution fitting
 --------------------
@@ -41,8 +51,8 @@ Statistical hypothesis testing
     andersondarling_test.ipynb
     fitted_distribution_ranking.ipynb
 
-Estimate dependency
--------------------
+Estimate dependency and copulas
+-------------------------------
 
 .. toctree::
     :maxdepth: 1
@@ -52,6 +62,7 @@ Estimate dependency
     estimate_non_parametric_copula.ipynb
     kendallplot_test.ipynb
     regression_test.ipynb
+    visualize_copula_validation.ipynb
 
 Estimate stochastic processes
 -----------------------------
@@ -73,7 +84,4 @@ Graphics
 
     visualize_clouds.ipynb
     visualize_pairs.ipynb
-    visualize_empirical_cdf.ipynb
-    visualize_histogram.ipynb
-    visualize_copula_validation.ipynb
 
