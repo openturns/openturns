@@ -52,8 +52,8 @@ FisherSnedecor FisherSnedecorFactory::buildMethodOfMoments(const Sample & sample
   if (mu <= 1.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a FisherSnedecor distribution based on a sample with sample mean less than 1 using the method of moments.";
   const Scalar sigma2 = sample.computeCovariance()(0,0);
   if (sigma2 == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a FisherSnedecor distribution based on a constant sample using the method of moments.";
-  const Scalar d2 = 2*mu/(mu-1);
-  const Scalar d1 = 2*std::pow(d2,2)*(d2-2)/(std::pow(d2-2,2)*(d2-4)*sigma2-2*std::pow(d2,2));
+  const Scalar d2 = 2 * mu / (mu - 1);
+  const Scalar d1 = 2 * std::pow(d2,2.0) * (d2 - 2)/(std::pow(d2 - 2.0,2.0) * (d2 - 4) * sigma2 - 2 * std::pow(d2,2.0));
   FisherSnedecor result(d1, d2);
   result.setDescription(sample.getDescription());
   return result;
@@ -82,7 +82,7 @@ DistributionFactoryResult FisherSnedecorFactory::buildEstimator(const Sample & s
 FisherSnedecor FisherSnedecorFactory::buildAsFisherSnedecor(const Sample & sample) const
 {
   // Use method of moments as starting point
-  FisherSnedecor estimatedMomentsDistribution = buildMethodOfMoments(sample);
+  const FisherSnedecor estimatedMomentsDistribution = buildMethodOfMoments(sample);
   Point parametersFromMoments = estimatedMomentsDistribution.getParameter();
 
   const UnsignedInteger dimension = build().getParameterDimension();
