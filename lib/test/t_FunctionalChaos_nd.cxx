@@ -158,7 +158,7 @@ int main(int, char *[])
     {
       polynomialCollection[i] = LegendreFactory();
     }
-    EnumerateFunction enumerateFunction(inputDimension);
+    LinearEnumerateFunction enumerateFunction(inputDimension);
     OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
 
     // Create the adaptive strategy

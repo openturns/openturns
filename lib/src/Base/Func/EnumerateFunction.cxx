@@ -28,6 +28,13 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(EnumerateFunction)
 
+/* Default constructor */
+EnumerateFunction::EnumerateFunction()
+  : TypedInterfaceObject<EnumerateFunctionImplementation>(new LinearEnumerateFunction(1))
+{
+  // Nothing to do
+}
+
 /* Constructor with parameters */
 EnumerateFunction::EnumerateFunction(const EnumerateFunctionImplementation & implementation)
   : TypedInterfaceObject<EnumerateFunctionImplementation>(implementation.clone())
@@ -46,7 +53,7 @@ EnumerateFunction::EnumerateFunction(Implementation & p_implementation)
 EnumerateFunction::EnumerateFunction(const UnsignedInteger dimension)
   : TypedInterfaceObject<EnumerateFunctionImplementation>(new LinearEnumerateFunction(dimension))
 {
-  // Nothing to do
+  LOGWARN("EnumerateFunction(UnsignedInteger) is deprecated, use LinearEnumerateFunction");
 }
 
 /* Parameter constructor */
@@ -54,7 +61,7 @@ EnumerateFunction::EnumerateFunction(const UnsignedInteger dimension,
                                      const Scalar q)
   : TypedInterfaceObject<EnumerateFunctionImplementation>(new HyperbolicAnisotropicEnumerateFunction(dimension, q))
 {
-  // Nothing to do
+  LOGWARN("EnumerateFunction(UnsignedInteger, Scalar) is deprecated, use HyperbolicAnisotropicEnumerateFunction");
 }
 
 /* Parameter constructor */
@@ -62,7 +69,7 @@ EnumerateFunction::EnumerateFunction(const Point & weight,
                                      const Scalar q)
   : TypedInterfaceObject<EnumerateFunctionImplementation>(new HyperbolicAnisotropicEnumerateFunction(weight, q))
 {
-  // Nothing to do
+  LOGWARN("EnumerateFunction(Point, Scalar) is deprecated, use HyperbolicAnisotropicEnumerateFunction");
 }
 
 /* String converter */

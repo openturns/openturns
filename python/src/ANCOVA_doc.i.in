@@ -108,7 +108,7 @@ Examples
 >>> CorrelatedInputDistribution = ot.ComposedDistribution([ot.Normal()] * 2, ot.NormalCopula(R))
 >>> sample = CorrelatedInputDistribution.getSample(200)
 >>> # Functional chaos computation
->>> productBasis = ot.OrthogonalProductPolynomialFactory([ot.HermiteFactory()] * 2, ot.EnumerateFunction(2))
+>>> productBasis = ot.OrthogonalProductPolynomialFactory([ot.HermiteFactory()] * 2, ot.LinearEnumerateFunction(2))
 >>> adaptiveStrategy = ot.FixedStrategy(productBasis, 15)
 >>> projectionStrategy = ot.LeastSquaresStrategy(ot.MonteCarloExperiment(100))
 >>> algo = ot.FunctionalChaosAlgorithm(model, distribution, adaptiveStrategy, projectionStrategy)

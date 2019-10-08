@@ -1,28 +1,6 @@
 %define OT_EnumerateFunction_doc
 "Enumerate function.
 
-Available constructors:
-    EnumerateFunction(*dim=1*)
-
-    EnumerateFunction(*dim, q*)
-
-    EnumerateFunction(*weight, q*)
-
-Parameters
-----------
-dim : positive int
-    If *dim* is the only argument mentioned, it is used to create
-    a :class:`~openturns.LinearEnumerateFunction` object of dimension *dim*.
-    If *q* is also mentioned, it is used to create
-    a :class:`~openturns.HyperbolicAnisotropicEnumerateFunction` object of
-    dimension *dim* and parameter *q*.
-q : float
-    The q-quasi-norm parameter used to create a
-    :class:`~openturns.HyperbolicAnisotropicEnumerateFunction` object.
-weight : sequence of float
-    The weights of the indices in each dimension used to create a
-    :class:`~openturns.HyperbolicAnisotropicEnumerateFunction` object.
-
 Notes
 -----
 *EnumerateFunction* represents a bijection from :math:`\Nset` to
@@ -67,7 +45,7 @@ multivariate basis, it is enough to sum all the integers given in the list.
 Examples
 --------
 >>> import openturns as ot
->>> enumerateFunction = ot.EnumerateFunction(ot.LinearEnumerateFunction(2))
+>>> enumerateFunction = ot.LinearEnumerateFunction(2)
 >>> for i in range(6):
 ...     print(enumerateFunction(i))
 [0,0]
@@ -75,7 +53,11 @@ Examples
 [0,1]
 [2,0]
 [1,1]
-[0,2]"
+[0,2]
+
+See Also
+--------
+LinearEnumerateFunction, HyperbolicEnumerateFunction"
 %enddef
 %feature("docstring") OT::EnumerateFunctionImplementation
 OT_EnumerateFunction_doc

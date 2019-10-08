@@ -43,20 +43,23 @@ public:
 
   typedef Pointer<EnumerateFunctionImplementation> Implementation;
 
+  /** Default constructor */
+  EnumerateFunction();
+
   /** Constructor with parameters */
   EnumerateFunction(const EnumerateFunctionImplementation & implementation);
 
   /** Constructor with parameters */
   EnumerateFunction(Implementation & p_implementation);
 
-  /** Parameter constructor */
-  explicit EnumerateFunction(const UnsignedInteger dimension = 1);
+  /** Parameter constructor @deprecated */
+  explicit EnumerateFunction(const UnsignedInteger dimension);
 
-  /** Parameter constructor */
+  /** Parameter constructor @deprecated */
   EnumerateFunction(const UnsignedInteger dimension,
                     const Scalar q);
 
-  /** Parameter constructor */
+  /** Parameter constructor @deprecated */
   EnumerateFunction(const Point & weight,
                     const Scalar q);
 

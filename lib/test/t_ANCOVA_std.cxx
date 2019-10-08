@@ -75,7 +75,7 @@ int main(int, char *[])
     for (UnsignedInteger i = 0; i < dimension; ++i)
       polynomialCollection[i] = HermiteFactory();
 
-    EnumerateFunction enumerateFunction(dimension);
+    LinearEnumerateFunction enumerateFunction(dimension);
     OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
 
     // Adaptive strategy
