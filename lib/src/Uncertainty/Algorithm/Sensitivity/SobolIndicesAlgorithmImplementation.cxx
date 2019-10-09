@@ -228,8 +228,7 @@ struct BootstrapPolicy
     for (UnsignedInteger k = r.begin(); k != r.end(); ++k)
     {
       // Extract indices
-      memcpy(&slice[0], &indices_[k * size_], size_ * sizeof(UnsignedInteger));
-
+      std::copy(&indices_[k * size_], &indices_[k * size_] + size_, &slice[0]);
       // Generate huge random sample using Bootstrap algorithm
       const Sample randomCollection(sai_.getBootstrapDesign(slice));
       // Pseudo-Reference variance
@@ -726,7 +725,7 @@ Sample SobolIndicesAlgorithmImplementation::getBootstrapDesign(const Indices & i
 
     const Scalar* yData = &outputDesign_(p * size_, 0);
     for (UnsignedInteger k = 0; k < size_; ++k, yPermData += outputDimension)
-      memcpy(yPermData, &yData[indices[k] * outputDimension], outputDimension * sizeof(Scalar));
+      std::copy(&yData[indices[k] * outputDimension], &yData[indices[k] * outputDimension] + outputDimension, yPermData);
     // add samples to the collection
     bootstrapDesign.add(y);
   }

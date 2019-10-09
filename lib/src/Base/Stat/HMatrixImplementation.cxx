@@ -599,7 +599,7 @@ void CovarianceBlockAssemblyFunction::compute(UnsignedInteger i, UnsignedInteger
     CovarianceMatrix localResult(covarianceModel_( vertices_[i],  vertices_[j] ));
     if (i == j && epsilon_ != 0.0)
       localResult = localResult + epsilonId_;
-    memcpy( &localValues->getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0), dimension_ * dimension_ * sizeof(Scalar) );
+    std::copy(&localResult.getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0)+ dimension_ * dimension_, &localValues->getImplementation()->operator[](0));
   }
 }
 
