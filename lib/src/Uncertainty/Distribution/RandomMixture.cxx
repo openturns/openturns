@@ -75,6 +75,10 @@ RandomMixture::RandomMixture()
   , detWeightsInverse_()
   , fftAlgorithm_()
   , isAnalytical_(false)
+  , positionIndicator_(0.0)
+  , isAlreadyComputedPositionIndicator_(false)
+  , dispersionIndicator_(0.0)
+  , isAlreadyComputedDispersionIndicator_(false)
   , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
   , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
@@ -107,6 +111,10 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , detWeightsInverse_()
   , fftAlgorithm_()
   , isAnalytical_(false)
+  , positionIndicator_(0.0)
+  , isAlreadyComputedPositionIndicator_(false)
+  , dispersionIndicator_(0.0)
+  , isAlreadyComputedDispersionIndicator_(false)
   , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
   , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
@@ -143,6 +151,10 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , detWeightsInverse_()
   , fftAlgorithm_()
   , isAnalytical_(false)
+  , positionIndicator_(0.0)
+  , isAlreadyComputedPositionIndicator_(false)
+  , dispersionIndicator_(0.0)
+  , isAlreadyComputedDispersionIndicator_(false)
   , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
   , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
@@ -171,7 +183,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
 /* Parameter constructor - nD */
 RandomMixture::RandomMixture(const DistributionCollection & coll,
                              const Matrix & weights,
-                             const Point constant)
+                             const Point & constant)
   : DistributionImplementation()
   , distributionCollection_()
   , constant_(constant)
@@ -180,6 +192,10 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , detWeightsInverse_()
   , fftAlgorithm_()
   , isAnalytical_(false)
+  , positionIndicator_(0.0)
+  , isAlreadyComputedPositionIndicator_(false)
+  , dispersionIndicator_(0.0)
+  , isAlreadyComputedDispersionIndicator_(false)
   , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
   , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
@@ -218,6 +234,10 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , detWeightsInverse_()
   , fftAlgorithm_()
   , isAnalytical_(false)
+  , positionIndicator_(0.0)
+  , isAlreadyComputedPositionIndicator_(false)
+  , dispersionIndicator_(0.0)
+  , isAlreadyComputedDispersionIndicator_(false)
   , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
   , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
@@ -244,7 +264,7 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
 /* Parameter constructor - nD */
 RandomMixture::RandomMixture(const DistributionCollection & coll,
                              const Sample & weights,
-                             const Point constant)
+                             const Point & constant)
   : DistributionImplementation()
   , distributionCollection_()
   , constant_(constant)
@@ -253,6 +273,10 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , detWeightsInverse_()
   , fftAlgorithm_()
   , isAnalytical_(false)
+  , positionIndicator_(0.0)
+  , isAlreadyComputedPositionIndicator_(false)
+  , dispersionIndicator_(0.0)
+  , isAlreadyComputedDispersionIndicator_(false)
   , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
   , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
@@ -286,6 +310,10 @@ RandomMixture::RandomMixture(const DistributionCollection & coll,
   , detWeightsInverse_()
   , fftAlgorithm_()
   , isAnalytical_(false)
+  , positionIndicator_(0.0)
+  , isAlreadyComputedPositionIndicator_(false)
+  , dispersionIndicator_(0.0)
+  , isAlreadyComputedDispersionIndicator_(false)
   , blockMin_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMin" ))
   , blockMax_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultBlockMax" ))
   , maxSize_(ResourceMap::GetAsUnsignedInteger( "RandomMixture-DefaultMaxSize"  ))
@@ -330,7 +358,7 @@ void RandomMixture::computeRange()
     }
     setRange(Interval(Point(1, c + w * b), Point(1, c + w * a), bFinite, aFinite));
     return;
-  }
+  } // dimension == 1 && size == 1
   Interval::BoolCollection finiteLowerBound(dimension);
   Interval::BoolCollection finiteUpperBound(dimension);
   Point lowerBound(getDimension());
@@ -344,7 +372,7 @@ void RandomMixture::computeRange()
     upperBound[j] = range.getUpperBound()[0];
     finiteLowerBound[j] = range.getFiniteLowerBound()[0];
     finiteUpperBound[j] = range.getFiniteUpperBound()[0];
-  }
+  } // j
   const Interval range(lowerBound, upperBound, finiteLowerBound, finiteUpperBound);
   if (size <= dimension)
   {
@@ -356,21 +384,25 @@ void RandomMixture::computeRange()
     const Point m(1, getPositionIndicator());
     const Point s(1, getDispersionIndicator());
     setRange(range.intersect(Interval(m - s * beta_, m + s * beta_)));
+    return;
   } // dimension == 1
   else
   {
     Point m(constant_);
-    Point s(getDimension(), 0.0);
+    Point s(getDimension());
     for (UnsignedInteger j = 0; j < dimension; ++j)
     {
       for(UnsignedInteger i = 0; i < size; ++i)
       {
-        m[j] += weights_(j, i) * distributionCollection_[i].getPositionIndicator();
-        s[j] += std::pow(weights_(j, i) * distributionCollection_[i].getDispersionIndicator(), 2.0);
+	const Scalar mI = distributionCollection_[i].getPositionIndicator();
+        m[j] += weights_(j, i) * mI;
+	const Scalar sI = distributionCollection_[i].getDispersionIndicator();
+        s[j] += std::pow(weights_(j, i) * sI, 2.0);
       }
     }
     for (UnsignedInteger j = 0; j < dimension; ++j) s[j] = std::sqrt(s[j]);
     setRange(range.intersect(Interval(m - s * beta_, m + s * beta_)));
+    return;
   } // dimension > 1
 }
 
@@ -449,7 +481,7 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a RandomMixture based on an empty distribution collection.";
   // No simplification in the analytical case
   const UnsignedInteger dimension = getDimension();
-  if ((size == dimension) && !simplifyAtoms)
+  if (size == dimension && !simplifyAtoms)
   {
     isAnalytical_ = true;
     if (dimension == 1)
@@ -463,7 +495,10 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
       inverseWeights_ = weights_.solveLinearSystem(IdentityMatrix(dimension));
       detWeightsInverse_ = inverseWeights_.getImplementation().get()->computeDeterminant();
     }
-    setParallel(coll[0].getImplementation()->isParallel());
+    Bool isParallel = coll[0].getImplementation()->isParallel();
+    for (UnsignedInteger i = 1; i < dimension; ++i)
+      isParallel = isParallel && coll[i].getImplementation()->isParallel();
+    setParallel(isParallel);
     distributionCollection_ = coll;
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
@@ -959,16 +994,18 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
   else setParallel(distributionCollection_[0].getImplementation()->isParallel());
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
-  computeMean();
-  computeCovariance();
-  computePositionIndicator();
-  computeDispersionIndicator();
+  // Need to precompute Mean, Covariance, PositionIndicator, DispersionIndicator, ReferenceBandwidth, EquivalentNormal only if at least two atoms
+  // Compute the range first, as it is needed for the reference bandwidth
   computeRange();
-  if (distributionCollection_.getSize() > 1)
-    {
-      computeReferenceBandwidth();
-      computeEquivalentNormal();
-    }
+  if ((dimension > 1) || (distributionCollection_.getSize() > 1))
+  {
+    computeMean();
+    computeCovariance();
+    (void) getPositionIndicator();
+    (void) getDispersionIndicator();
+    computeReferenceBandwidth();
+    computeEquivalentNormal();
+  }
   // In 1D case, collection's size might change
   // When reducing collection to 1, computations become faster
   if (distributionCollection_.getSize() == dimension)
@@ -2461,7 +2498,7 @@ Sample RandomMixture::computeQuantile(const Scalar qMin,
 Scalar RandomMixture::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
-  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions"; 
+  if (dimension_ != 1) throw InvalidDimensionException(HERE) << "Error: the method computeScalarQuantile is only defined for 1D distributions";
 
   // Special case for random mixture with only 1 atom: Y = alpha * X + beta
   // find Yq such that P(Y < Yq) = q
@@ -2870,7 +2907,12 @@ void RandomMixture::computePositionIndicator() const
     positionIndicator_ = constant_[0];
     const UnsignedInteger size = distributionCollection_.getSize();
     // Assume an additive behaviour of the position indicator. It is true for the mean value, and almost true for the median of moderatly skewed distributions
-    for(UnsignedInteger i = 0; i < size; ++i) positionIndicator_ += weights_(0, i) * distributionCollection_[i].getPositionIndicator();
+    for(UnsignedInteger i = 0; i < size; ++i)
+      {
+	const Scalar wi = weights_(0, i);
+	const Scalar mi = distributionCollection_[i].getPositionIndicator();
+	positionIndicator_ += wi * mi;
+      }
     isAlreadyComputedPositionIndicator_ = true;
   }
 }
@@ -2891,7 +2933,12 @@ void RandomMixture::computeDispersionIndicator() const
     dispersionIndicator_ = 0.0;
     const UnsignedInteger size = distributionCollection_.getSize();
     // Assume a quadratic additive behaviour of the dispersion indicator. It is true for the standard deviation value, and almost true for the interquartile of moderatly skewed distributions
-    for(UnsignedInteger i = 0; i < size; ++i) dispersionIndicator_ += std::pow(weights_(0, i) * distributionCollection_[i].getDispersionIndicator(), 2.0);
+    for(UnsignedInteger i = 0; i < size; ++i)
+      {
+	const Scalar wi = weights_(0, i);
+	const Scalar si = distributionCollection_[i].getDispersionIndicator();
+	dispersionIndicator_ += std::pow(wi * si, 2.0);
+      }
     dispersionIndicator_ = std::sqrt(dispersionIndicator_);
     isAlreadyComputedDispersionIndicator_ = true;
   }
@@ -2997,9 +3044,11 @@ void RandomMixture::computeReferenceBandwidth()
 {
   referenceBandwidth_ = Point(getDimension(), 0.0);
   Bool isFinite = true;
+  const Point a(getRange().getLowerBound());
+  const Point b(getRange().getUpperBound());
   for (UnsignedInteger k = 0; k < getDimension(); ++k)
   {
-    referenceBandwidth_[k] = 2.0 * M_PI / (getRange().getUpperBound()[k] - getRange().getLowerBound()[k]);
+    referenceBandwidth_[k] = 2.0 * M_PI / (b[k] - a[k]);
     isFinite &= (getRange().getFiniteLowerBound()[k] && getRange().getFiniteUpperBound()[k]);
   }
   // Shrink a little bit the bandwidth if the range is finite
@@ -3021,7 +3070,13 @@ void RandomMixture::computeReferenceBandwidth()
    the same standard deviation */
 void RandomMixture::computeEquivalentNormal()
 {
-  if (distributionCollection_.getSize() > 0) equivalentNormal_ = Normal(getMean(), getCovariance());
+  if (distributionCollection_.getSize() > 0)
+  {
+    // If dimension > 1 use the first and second moments
+    if (dimension_ > 1) equivalentNormal_ = Normal(getMean(), getCovariance());
+    // Otherwise use more general parameters
+    else equivalentNormal_ = Normal(getPositionIndicator(), getDispersionIndicator());
+  }
   else equivalentNormal_ = Normal();
 }
 
