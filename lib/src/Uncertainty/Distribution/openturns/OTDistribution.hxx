@@ -60,6 +60,7 @@
 #include "openturns/Exponential.hxx"
 #include "openturns/ExponentialFactory.hxx"
 #include "openturns/ExtremeValueCopula.hxx"
+#include "openturns/JoeCopula.hxx"
 #include "openturns/FarlieGumbelMorgensternCopula.hxx"
 #include "openturns/FarlieGumbelMorgensternCopulaFactory.hxx"
 #include "openturns/FrankCopula.hxx"
