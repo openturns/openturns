@@ -233,8 +233,7 @@ Scalar FunctionalChaosSobolIndices::getSobolIndex(const Indices & variableIndice
 Scalar FunctionalChaosSobolIndices::getSobolIndex(const UnsignedInteger variableIndex,
     const UnsignedInteger marginalIndex) const
 {
-  Indices index(1);
-  index[0] = variableIndex;
+  Indices index(1, variableIndex);
   return getSobolIndex(index, marginalIndex);
 }
 
@@ -290,12 +289,11 @@ Scalar FunctionalChaosSobolIndices::getSobolTotalIndex(const Indices & variableI
 Scalar FunctionalChaosSobolIndices::getSobolTotalIndex(const UnsignedInteger variableIndex,
     const UnsignedInteger marginalIndex) const
 {
-  Indices index(1);
-  index[0] = variableIndex;
+  Indices index(1, variableIndex);
   return getSobolTotalIndex(index, marginalIndex);
 }
 
-/* Sobol grouped index accessor */
+/* Sobol grouped (first order) index accessor */
 Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const Indices & variableIndices,
     const UnsignedInteger marginalIndex) const
 {
@@ -341,13 +339,33 @@ Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const Indices & variabl
   else return 0.0;
 }
 
-/* Sobol index accessor */
+/* Sobol (first order) index accessor */
 Scalar FunctionalChaosSobolIndices::getSobolGroupedIndex(const UnsignedInteger variableIndex,
     const UnsignedInteger marginalIndex) const
 {
-  Indices index(1);
-  index[0] = variableIndex;
+  Indices index(1, variableIndex);
   return getSobolGroupedIndex(index, marginalIndex);
+}
+
+/* Sobol grouped total index accessor */
+Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const Indices & variableIndices,
+    const UnsignedInteger marginalIndex) const
+{
+  // Compute the complementary indice
+  const UnsignedInteger inputDimension = functionalChaosResult_.getDistribution().getDimension();
+  if (!variableIndices.check(inputDimension)) throw InvalidArgumentException(HERE) << "The variable indices of a Sobol indice must be in the range [0, dim-1] and must be different.";
+  Indices complementaryVariableIndices = variableIndices.complement(inputDimension);
+  // Compute total index from complementary first index
+  Scalar complementaryFirstIndex = getSobolGroupedIndex(complementaryVariableIndices, marginalIndex);
+  Scalar groupTotalIndex = 1.0-complementaryFirstIndex;
+  return groupTotalIndex;
+}
+/* Sobol total index accessor */
+Scalar FunctionalChaosSobolIndices::getSobolGroupedTotalIndex(const UnsignedInteger variableIndex,
+    const UnsignedInteger marginalIndex) const
+{
+  Indices index(1, variableIndex);
+  return getSobolGroupedTotalIndex(index, marginalIndex);
 }
 
 /* Functional chaos result accessor */

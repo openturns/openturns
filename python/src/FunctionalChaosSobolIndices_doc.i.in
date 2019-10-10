@@ -16,8 +16,65 @@ FunctionalChaosAlgorithm, FunctionalChaosResult
 Notes
 -----
 This structure is created from a FunctionalChaosResult in order to evaluate the
-Sobol indices associated to the polynomial chaos decomposition of the model.
-"
+Sobol indices associated to the polynomial chaos decomposition of the model. 
+The SobolIndicesAlgorithm.DrawSobolIndices static method can be used to 
+draw the indices.
+
+Examples
+--------
+Create a polynomial chaos for the Ishigami function:
+
+>>> import openturns as ot
+>>> from math import pi
+>>> import openturns.viewer as otv
+
+Create the function:
+
+>>> ot.RandomGenerator.SetSeed(0)
+>>> formula = ['sin(X1) + 7. * sin(X2)^2 + 0.1 * X3^4 * sin(X1)']
+>>> input_names = ['X1', 'X2', 'X3']
+>>> g = ot.SymbolicFunction(input_names, formula)
+
+Create the probabilistic model:
+
+>>> distributionList = [ot.Uniform(-pi, pi)] * 3
+>>> distribution = ot.ComposedDistribution(distributionList)
+
+Create a training sample
+>>> N = 100 
+>>> inputTrain = distribution.getSample(N)
+>>> outputTrain = g(inputTrain)
+
+Create the chaos:
+
+>>> chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain)
+>>> chaosalgo.run()
+>>> result = chaosalgo.getResult()
+
+Print Sobol' indices :
+
+>>> chaosSI = ot.FunctionalChaosSobolIndices(result) 
+>>> #print( chaosSI.summary() )
+
+Get first order Sobol' indices for X0:
+
+>>> chaosSI.getSobolIndex(0)
+0.3400236...
+
+Get total order Sobol' indices for X0:
+
+>>> chaosSI.getSobolTotalIndex(0)
+0.4940954...
+
+Get first order Sobol' indices for group [X0,X1]:
+
+>>> chaosSI.getSobolGroupedIndex([0,1])
+0.7882764...
+
+Get total order Sobol' indices for group [X1,X2]:
+
+>>> chaosSI.getSobolGroupedTotalIndex([1,2])
+0.6599763..."
 
 // ---------------------------------------------------------------------
 
@@ -70,7 +127,7 @@ s : float
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::FunctionalChaosSobolIndices::getSobolGroupedIndex
-"Get the grouped Sobol indices.
+"Get the grouped Sobol first order indices.
 
 Parameters
 ----------
@@ -81,7 +138,23 @@ i : int or sequence of int, :math:`0 \leq i < d - 1`
 Returns
 -------
 s : float
-    The grouped Sobol indice."
+    The grouped Sobol first order indice."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FunctionalChaosSobolIndices::getSobolGroupedTotalIndex
+"Get the grouped Sobol total order indices.
+
+Parameters
+----------
+i : int or sequence of int, :math:`0 \leq i < d - 1`
+    Indice(s) of the variable(s) we want the associated grouped Sobol indices.
+    :math:`d` is the dimension of the input variables.
+
+Returns
+-------
+s : float
+    The grouped Sobol total order indice."
 
 // ---------------------------------------------------------------------
 
