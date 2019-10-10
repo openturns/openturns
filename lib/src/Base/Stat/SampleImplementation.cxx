@@ -424,7 +424,7 @@ Bool SampleImplementation::ParseStringAsDescription(const String & line,
 {
   // Here the speed is not critical at all
 
-  description = Description();
+  description.clear();
   UnsignedInteger start = 0;
   UnsignedInteger len = 0;
   Bool escaped = false;
@@ -439,7 +439,13 @@ Bool SampleImplementation::ParseStringAsDescription(const String & line,
     }
     else if ((line[i] == separator) && !escaped)
     {
-      description.add(line.substr(start, len));
+      String field(line.substr(start, len));
+      if (field.empty())
+      {
+        LOGINFO(OSS() << "empty component, description is ignored");
+        return false;
+      }
+      description.add(field);
       start = i + 1;
       len = 0;
     }
@@ -447,8 +453,15 @@ Bool SampleImplementation::ParseStringAsDescription(const String & line,
       ++ len;
   }
   if (len > 0)
-    description.add(line.substr(start, len));
-
+  {
+    String field(line.substr(start, len));
+    if (field.empty())
+    {
+      LOGINFO(OSS() << "empty component, description is ignored");
+      return false;
+    }
+    description.add(field);
+  }
   return true;
 }
 
