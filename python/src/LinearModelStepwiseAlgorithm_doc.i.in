@@ -15,9 +15,9 @@ inputSample, outputSample : :class:`~openturns.Sample`
     The input and output samples of a model.
 basis : :class:`~openturns.Basis`
     Functional basis to estimate the trend.
-minimalIndices : :class:`~openturns.Indices`
+minimalIndices :sequence of int
     The indices of minimal model
-isForward : :class:`~openturns.Bool`
+isForward : bool
       the boolean value used for the stepwise regression method direction FORWARD and BACKWARD. 
 startIndices : :class:`~openturns.Indices`
      The indices of start model used for the stepwise regression method direction BOTH.
@@ -25,7 +25,7 @@ penalty : float
      The multiple of the degrees of freedom used for the penalty of the stepwise regression method : 
      - 2      Akaike   information criterion (AIC)
      - log(n) Bayesian information criterion (BIC)  
-maximumIterationNumber : :class:`~openturns.UnsignedInteger`
+maximumIterationNumber : int
      The maximum number of iterations of the stepwise regression method. 
 
 

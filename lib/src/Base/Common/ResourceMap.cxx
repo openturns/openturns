@@ -1145,6 +1145,11 @@ void ResourceMap::loadDefaultConfiguration()
   setAsString("LinearModelAlgorithm-DecompositionMethod", "QR");
   setAsUnsignedInteger("LinearModelAnalysis-Identifiers", 3);
 
+  // LinearModelStepwiseAlgorithm parameters //
+  setAsBool("LinearModelStepwiseAlgorithm-IsForward", true);
+  setAsScalar("LinearModelStepwiseAlgorithm-Penalty", -1.0);
+  setAsUnsignedInteger("LinearModelStepwiseAlgorithm-MaximumIterations", 1000);
+
   // GeneralLinearModelAlgorithm parameters //
   setAsBool( "GeneralLinearModelAlgorithm-KeepCovariance", true);
   setAsBool( "GeneralLinearModelAlgorithm-NormalizeData", false);

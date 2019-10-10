@@ -53,9 +53,9 @@ public:
                                const Basis & basis,
                                const Sample & outputSample,
                                const Indices & minimalIndices,
-                               const Bool isForward = true,
-                               const Scalar penalty = -1.0 /* < 0 means BIC, by convention */,
-                               const UnsignedInteger maximumIterationNumber = 1000);
+                               const Bool isForward = ResourceMap::GetAsBool("LinearModelStepwiseAlgorithm-IsForward"),
+                               const Scalar penalty = ResourceMap::GetAsScalar("LinearModelStepwiseAlgorithm-Penalty"), /* < 0 means BIC, by convention */
+                               const UnsignedInteger maximumIterationNumber = ResourceMap::GetAsBool("LinearModelStepwiseAlgorithm-MaximumIterations"));
 
   /** Parameters constructor BOTH */
   LinearModelStepwiseAlgorithm(const Sample & inputSample,
@@ -63,8 +63,8 @@ public:
                                const Sample & outputSample,
                                const Indices & minimalIndices,
                                const Indices & startIndices,
-                               const Scalar penalty = -1.0 /* < 0 means BIC, by convention */,
-                               const UnsignedInteger maximumIterationNumber = 1000);
+                               const Scalar penalty = ResourceMap::GetAsScalar("LinearModelStepwiseAlgorithm-Penalty"), /* < 0 means BIC, by convention */
+                               const UnsignedInteger maximumIterationNumber = ResourceMap::GetAsBool("LinearModelStepwiseAlgorithm-MaximumIterations"));
 
   /** Virtual constructor */
   virtual LinearModelStepwiseAlgorithm * clone() const;
