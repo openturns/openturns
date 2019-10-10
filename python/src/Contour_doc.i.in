@@ -63,7 +63,7 @@ Parameters
 ----------
 n : int
     Number of levels. If not specified, the default value is taken in the
-    :class:`~openturns.ResourceMap` and :math:`n=10`.
+    :class:`~openturns.ResourceMap` in the `Contour-DefaultLevelsNumber` key and :math:`n=10`.
 
 Notes
 -----

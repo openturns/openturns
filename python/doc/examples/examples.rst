@@ -21,6 +21,7 @@ This is the examples section.
         functional_modeling/functional_modeling.rst
         calibration/calibration.rst
         numerical_methods/numerical_methods.rst
+        graphics/graphics.rst
 
     Advanced examples
     =================
