@@ -21,7 +21,7 @@
  */
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/EventSimulation.hxx"
-#include "openturns/EventRandomVector.hxx"
+#include "openturns/ThresholdEvent.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Point.hxx"
@@ -43,7 +43,7 @@ static const Factory<EventSimulation> Factory_EventSimulation;
 /** For save/load mechanism */
 EventSimulation::EventSimulation(const Bool verbose, const HistoryStrategy & convergenceStrategy)
   : SimulationAlgorithm()
-  , event_(new EventRandomVector(CompositeRandomVector(IdentityFunction(1), RandomVector(Uniform())), Less(), 0.0))
+  , event_(new ThresholdEvent(CompositeRandomVector(IdentityFunction(1), RandomVector(Uniform())), Less(), 0.0))
   , result_()
 {
   setVerbose(verbose);

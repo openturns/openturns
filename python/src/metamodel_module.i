@@ -73,7 +73,7 @@
 /* Uncertainty/Model */
 %include RandomVector.i
 %include CompositeRandomVector.i
-%include EventRandomVector.i
+%include ThresholdEvent.i
 %include EventDomain.i
 %include EventProcess.i
 %include ConditionalRandomVector.i

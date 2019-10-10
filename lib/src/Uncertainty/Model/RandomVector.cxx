@@ -20,7 +20,7 @@
  */
 #include "openturns/RandomVector.hxx"
 #include "openturns/UsualRandomVector.hxx"
-#include "openturns/EventRandomVector.hxx"
+#include "openturns/ThresholdEvent.hxx"
 #include "openturns/EventDomain.hxx"
 #include "openturns/EventProcess.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
@@ -226,7 +226,7 @@ RandomVector RandomVector::intersect(const RandomVector & other)
 
   LevelSet d1;
   try {
-    // EventRandomVector
+    // ThresholdEvent
     d1 = LevelSet(getFunction(), getOperator(), getThreshold());
   }
   catch (NotYetImplementedException &) {
@@ -242,7 +242,7 @@ RandomVector RandomVector::intersect(const RandomVector & other)
 
   LevelSet d2;
   try {
-    // EventRandomVector
+    // ThresholdEvent
     d2 = LevelSet(other.getFunction(), other.getOperator(), other.getThreshold());
   }
   catch (NotYetImplementedException &) {
@@ -273,7 +273,7 @@ RandomVector RandomVector::join(const RandomVector & other)
 
 LevelSet d1;
   try {
-    // EventRandomVector
+    // ThresholdEvent
     d1 = LevelSet(getFunction(), getOperator(), getThreshold());
   }
   catch (NotYetImplementedException &) {
@@ -289,7 +289,7 @@ LevelSet d1;
 
   LevelSet d2;
   try {
-    // EventRandomVector
+    // ThresholdEvent
     d2 = LevelSet(other.getFunction(), other.getOperator(), other.getThreshold());
   }
   catch (NotYetImplementedException &) {

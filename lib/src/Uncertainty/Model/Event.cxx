@@ -25,7 +25,7 @@
 #include "openturns/Less.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/EventDomain.hxx"
-#include "openturns/EventRandomVector.hxx"
+#include "openturns/ThresholdEvent.hxx"
 #include "openturns/Greater.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/EventProcess.hxx"
@@ -38,7 +38,7 @@ CLASSNAMEINIT(Event)
 
 /* Default constructor for save/load */
 Event::Event()
-  : RandomVector(new EventRandomVector(CompositeRandomVector(SymbolicFunction("x", "x"), ConstantRandomVector(Point(1, 0.0))), Less(), 0.0))
+  : RandomVector(new ThresholdEvent(CompositeRandomVector(SymbolicFunction("x", "x"), ConstantRandomVector(Point(1, 0.0))), Less(), 0.0))
 {
   // Nothing to do
 }
@@ -47,7 +47,7 @@ Event::Event()
 Event::Event(const RandomVector & antecedent,
              const ComparisonOperator & op,
              const Scalar threshold)
-  : RandomVector(new EventRandomVector(antecedent, op, threshold))
+  : RandomVector(new ThresholdEvent(antecedent, op, threshold))
 {
   // Nothing to do
 }
@@ -64,7 +64,7 @@ Event::Event(const RandomVector & antecedent,
 /* Constructor from RandomVector */
 Event::Event(const RandomVector & antecedent,
              const Interval & interval)
-  : RandomVector(new EventRandomVector(antecedent, interval))
+  : RandomVector(new ThresholdEvent(antecedent, interval))
 {
   // Nothing to do
 }

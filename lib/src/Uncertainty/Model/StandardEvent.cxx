@@ -30,7 +30,7 @@
 #include "openturns/Less.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/IdentityFunction.hxx"
-#include "openturns/EventRandomVector.hxx"
+#include "openturns/ThresholdEvent.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -41,7 +41,7 @@ CLASSNAMEINIT(StandardEvent)
 
 /* Default constructor */
 StandardEvent::StandardEvent()
-  : RandomVector(new EventRandomVector(CompositeRandomVector(IdentityFunction(1), RandomVector(Normal())), Less(), 0.0))
+  : RandomVector(new ThresholdEvent(CompositeRandomVector(IdentityFunction(1), RandomVector(Normal())), Less(), 0.0))
 {
   // Nothing to do
 }
@@ -50,7 +50,7 @@ StandardEvent::StandardEvent()
 StandardEvent::StandardEvent(const RandomVector & antecedent,
                              const ComparisonOperator & op,
                              const Scalar threshold)
-  : RandomVector(new EventRandomVector(antecedent, op, threshold))
+  : RandomVector(new ThresholdEvent(antecedent, op, threshold))
 {
   // StandardEvent can only be constructed from composite random vector whose antecedent has a spherical distribution. As we cannot check it, we just check that the distribution is elliptical
   if (!antecedent.getAntecedent().getDistribution().isElliptical()) throw InvalidArgumentException(HERE) << "Error: StandardEvent can only be constructed from composite random vectors whose antecedent is standard spherical, here the distribution is " << antecedent.getImplementation()->getAntecedent().getDistribution().getImplementation()->__str__();

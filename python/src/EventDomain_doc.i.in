@@ -10,7 +10,7 @@ domain : :class:`~openturns.Domain`
 
 See also
 --------
-EventProcess, EventRandomVector
+EventProcess, ThresholdEvent
 
 Examples
 --------

@@ -40,7 +40,7 @@ Event
     StandardEvent
     EventProcess
     EventDomain
-    EventRandomVector
+    ThresholdEvent
     IntersectionEvent
     UnionEvent
 

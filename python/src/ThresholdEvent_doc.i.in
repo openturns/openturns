@@ -1,4 +1,4 @@
-%feature("docstring") OT::EventRandomVector
+%feature("docstring") OT::ThresholdEvent
 "Random vector defined from a comparison operator and a threshold.
 
 Parameters
@@ -21,4 +21,4 @@ Examples
 >>> X = ot.RandomVector(ot.Normal(dim))
 >>> model = ot.SymbolicFunction(['x1', 'x2'], ['x1+x2'])
 >>> Y = ot.CompositeRandomVector(model, X)
->>> event = ot.EventRandomVector(Y, ot.Less(), 1.0)"
+>>> event = ot.ThresholdEvent(Y, ot.Less(), 1.0)"

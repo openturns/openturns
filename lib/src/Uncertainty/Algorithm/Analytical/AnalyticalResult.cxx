@@ -28,7 +28,7 @@
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/BarPlot.hxx"
 #include "openturns/Description.hxx"
-#include "openturns/EventRandomVector.hxx"
+#include "openturns/ThresholdEvent.hxx"
 #include "openturns/RandomVector.hxx"
 #include "openturns/Less.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -75,7 +75,7 @@ AnalyticalResult::AnalyticalResult():
   standardSpaceDesignPoint_(0),
   physicalSpaceDesignPoint_(0),
   // Fake event based on a fake 1D composite random vector, which requires a fake 1D Function
-  limitStateVariable_(EventRandomVector()),
+  limitStateVariable_(ThresholdEvent()),
   isStandardPointOriginInFailureSpace_(false),
   hasoferReliabilityIndex_(0.0),
   importanceFactors_(0),

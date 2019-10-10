@@ -38,7 +38,7 @@
 #include "openturns/EllipticalDistribution.hxx"
 #include "openturns/Event.hxx"
 #include "openturns/EventDomain.hxx"
-#include "openturns/EventRandomVector.hxx"
+#include "openturns/ThresholdEvent.hxx"
 #include "openturns/EventProcess.hxx"
 #include "openturns/IntersectionEvent.hxx"
 #include "openturns/UnionEvent.hxx"

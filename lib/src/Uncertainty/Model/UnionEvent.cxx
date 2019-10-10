@@ -75,7 +75,7 @@ void UnionEvent::setEventCollection(const RandomVectorCollection & collection)
   if (!size) throw InvalidArgumentException(HERE) << "Empty collection";
 
   // Explore the deepest leftmost node of the tree which is not Intersection/Union to get the root cause
-  // Also we initialize composedEvent_ if Intersection/Union use getComposedEvent from top node else take the EventRandomVector
+  // Also we initialize composedEvent_ if Intersection/Union use getComposedEvent from top node else take the ThresholdEvent
   if (!collection[0].isEvent())
     throw InvalidArgumentException(HERE) << "Element 0 is not an event";
   UnsignedInteger depth = 0;
@@ -129,7 +129,7 @@ void UnionEvent::setEventCollection(const RandomVectorCollection & collection)
     }
     else
     {
-      // EventRandomVector
+      // ThresholdEvent
       if (collection[i].getAntecedent().getImplementation()->getId() != rootCauseId_)
         throw NotYetImplementedException(HERE) << "Root cause not found";
       composedEvent_ = composedEvent_.join(collection[i]);
