@@ -201,7 +201,7 @@ int main(int, char *[])
     study.add("staircase", staircase);
 
     // Create a Simulation::Result
-    ProbabilitySimulationResult simulationResult(Event(), 0.5, 0.01, 150, 4);
+    ProbabilitySimulationResult simulationResult(ThresholdEvent(), 0.5, 0.01, 150, 4);
     simulationResult.setName("probabilitySimulationResult");
     study.add("probabilitySimulationResult", simulationResult);
 
@@ -340,7 +340,7 @@ int main(int, char *[])
     study.add("analytical", analytical);
 
     // Create an Event Object
-    Event event;
+    ThresholdEvent event;
     {
       Point point(3);
       point[0] = 101;
@@ -348,9 +348,9 @@ int main(int, char *[])
       point[2] = 303;
       ConstantRandomVector vect(point);
       CompositeRandomVector output(analytical.getMarginal(0), vect);
-      event = Event (output, Less(), 50);
+      event = ThresholdEvent(output, Less(), 50);
     }
-    study.add("event", event);
+    study.add("thresholdEvent", event);
 
     // Create a StandardEvent Object
     StandardEvent standardEvent(event);
@@ -445,7 +445,7 @@ int main(int, char *[])
       input3.setName("input");
       CompositeRandomVector output3(model, input3);
       output3.setName("output");
-      Event event(output3, Greater(), 1.0);
+      ThresholdEvent event(output3, Greater(), 1.0);
       event.setName("failureEvent");
       Point designPoint(2, 0.0);
       designPoint[0] = 1.0;
@@ -697,7 +697,7 @@ int main(int, char *[])
       Interval domain(dim);
       eventDomain = DomainEvent(Y, domain);
     }
-    study.add("eventDomain", eventDomain);
+    study.add("domainEvent", eventDomain);
 
     // Create an ProcessEvent
     ProcessEvent eventProcess;
@@ -709,7 +709,7 @@ int main(int, char *[])
       Interval domain(dim);
       eventProcess = ProcessEvent(X, domain);
     }
-    study.add("eventProcess", eventProcess);
+    study.add("processEvent", eventProcess);
 
     // Create a ConstantStep
     ConstantStep constantStep;
@@ -1014,7 +1014,7 @@ int main(int, char *[])
     compare<OptimizationAlgorithm >( tnc, study2, "tnc" );
 
     // Model
-    compare<Event >( event, study2 );
+    compare<ThresholdEvent >( event, study2 );
     compare<StandardEvent >( standardEvent, study2 );
 
     // Distribution

@@ -63,6 +63,7 @@
  * Added linearity features to Function
  * Added 'removeKey' method to ResourceMap
  * Removed Copula class
+ * Deprecated Event class, use ThresholdEvent/ProcessEvent/DomainEvent classes
 
 === Python module ===
  * Add Domain.__contains__ operator

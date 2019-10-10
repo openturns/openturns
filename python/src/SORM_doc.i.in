@@ -103,7 +103,7 @@ Examples
 >>> myDistribution = ot.Normal([50.0, 1.0, 10.0, 5.0], [1.0]*4, ot.IdentityMatrix(4))
 >>> vect = ot.RandomVector(myDistribution)
 >>> output = ot.CompositeRandomVector(myFunction, vect)
->>> event = ot.Event(output, ot.Less(), -3.0)
+>>> event = ot.ThresholdEvent(output, ot.Less(), -3.0)
 >>> # We create an OptimizationAlgorithm algorithm
 >>> solver = ot.AbdoRackwitz()
 >>> algo = ot.SORM(solver, event, [50.0, 1.0, 10.0, 5.0])

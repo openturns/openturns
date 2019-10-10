@@ -1,6 +1,8 @@
 %feature("docstring") OT::DomainEvent
 "Event defined from a domain.
 
+The event occurs when a realization of the underlying random vector belongs to the domain.
+
 Parameters
 ----------
 antecedent : :class:`~openturns.RandomVector` of dimension 1

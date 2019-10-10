@@ -5,7 +5,7 @@ import openturns as ot
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
-
+#ot.Log.Show(ot.Log.ALL)
 dim = 7
 
 # root cause
@@ -23,12 +23,12 @@ dist = ot.Normal(mean, sigma, R)
 # leaf events
 X = ot.RandomVector(dist)
 inputs = ['M1', 'M2', 'M3', 'M4', 'M5', 'H', 'V']
-e0 = ot.Event(ot.CompositeRandomVector(ot.SymbolicFunction(inputs, ['M1+M2+M4+M5-5*H']), X), ot.Less(), 0.0)
-e1 = ot.Event(ot.CompositeRandomVector(ot.SymbolicFunction(inputs, ['M2+2*M3+M4-5*V']), X), ot.Less(), 0.0)
-e2 = ot.Event(ot.CompositeRandomVector(ot.SymbolicFunction(inputs, ['M1+2*M3+2*M4+M5-5*H-5*V']), X), ot.Less(), 0.0)
-e3 = ot.Event(ot.CompositeRandomVector(ot.SymbolicFunction(inputs, ['-(M1+M2+M4+M5-5*80.0)']), X), ot.Less(), 0.0)
-e4 = ot.Event(ot.CompositeRandomVector(ot.SymbolicFunction(inputs, ['-(M2+2*M3+M4-5*70.0)']), X), ot.Less(), 0.0)
-e5 = ot.Event(ot.CompositeRandomVector(ot.SymbolicFunction(inputs, ['-(M1+2*M3+2*M4+M5-5*80.0-5*70.0)']), X), ot.Less(), 0.0)
+e0 = ot.ThresholdEvent(ot.CompositeRandomVector(ot.SymbolicFunction(inputs, ['M1+M2+M4+M5-5*H']), X), ot.Less(), 0.0)
+e1 = ot.ThresholdEvent(ot.CompositeRandomVector(ot.SymbolicFunction(inputs, ['M2+2*M3+M4-5*V']), X), ot.Less(), 0.0)
+e2 = ot.ThresholdEvent(ot.CompositeRandomVector(ot.SymbolicFunction(inputs, ['M1+2*M3+2*M4+M5-5*H-5*V']), X), ot.Less(), 0.0)
+e3 = ot.ThresholdEvent(ot.CompositeRandomVector(ot.SymbolicFunction(inputs, ['-(M1+M2+M4+M5-5*80.0)']), X), ot.Less(), 0.0)
+e4 = ot.ThresholdEvent(ot.CompositeRandomVector(ot.SymbolicFunction(inputs, ['-(M2+2*M3+M4-5*70.0)']), X), ot.Less(), 0.0)
+e5 = ot.ThresholdEvent(ot.CompositeRandomVector(ot.SymbolicFunction(inputs, ['-(M1+2*M3+2*M4+M5-5*80.0-5*70.0)']), X), ot.Less(), 0.0)
 
 # solver
 solver = ot.AbdoRackwitz()

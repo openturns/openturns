@@ -54,7 +54,7 @@ try:
     output = CompositeRandomVector(myFunction, vect)
 
     # We create an Event from this RandomVector
-    myEvent = Event(output, Less(), -1.5)
+    myEvent = ThresholdEvent(output, Less(), -1.5)
 
     # We create a NearestPoint algorithm
     myAbdoRackwitz = AbdoRackwitz()

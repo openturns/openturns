@@ -58,7 +58,7 @@ for dim in [3, 5, 8][1:2]:
 
             k = ot.Normal().computeQuantile(pft)[
                 0] * ot.Point(linears[ih]).norm()
-            event = ot.Event(composite, ot.Less(), k)
+            event = ot.ThresholdEvent(composite, ot.Less(), k)
 
             print('--------------------')
             print('model H' + str(ih) + ' dim=%d' %

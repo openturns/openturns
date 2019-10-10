@@ -96,7 +96,7 @@ try:
 
     # Create a Simulation::Result
     simulationResult = ot.ProbabilitySimulationResult(
-        ot.Event(), 0.5, 0.01, 150, 4)
+        ot.ThresholdEvent(), 0.5, 0.01, 150, 4)
     myStudy.add('simulationResult', simulationResult)
 
     cNameList = [
@@ -151,7 +151,7 @@ try:
     input3.setName('input')
     output3 = ot.CompositeRandomVector(model, input3)
     output3.setName('output')
-    event = ot.Event(output3, ot.Greater(), 1.0)
+    event = ot.ThresholdEvent(output3, ot.Greater(), 1.0)
     event.setName('failureEvent')
     designPoint = ot.Point(2, 0.0)
     designPoint[0] = 1.0

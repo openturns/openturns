@@ -1,6 +1,8 @@
 %feature("docstring") OT::ProcessEvent
 "Event defined from a process and a domain.
 
+The event occurs when the process enters the specified domain.
+
 Parameters
 ----------
 process : :class:`~openturns.Process`

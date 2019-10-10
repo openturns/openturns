@@ -48,7 +48,7 @@ try:
     output = CompositeRandomVector(myFunction, vect)
 
     # We create an Event from this RandomVector
-    myEvent = Event(output, Less(), -3.0)
+    myEvent = ThresholdEvent(output, Less(), -3.0)
 
     # We create an AnalyticalResult based on fictive results
     result = AnalyticalResult(sigma, myEvent, False)

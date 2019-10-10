@@ -72,7 +72,7 @@ int main(int, char *[])
     CompositeRandomVector output(myFunction, vect);
 
     /* We create an Event from this RandomVector */
-    Event myEvent(output, Less(), -3.0);
+    ThresholdEvent myEvent(output, Less(), -3.0);
 
     /* We create a NearestPoint algorithm */
     Cobyla myCobyla;

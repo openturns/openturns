@@ -77,7 +77,7 @@ def TimerCallback(duration):
     >>> distribution = ot.Normal(2)
     >>> vect = ot.RandomVector(distribution)
     >>> output = ot.CompositeRandomVector(model, vect)
-    >>> event = ot.Event(output, ot.Less(), 0.0)
+    >>> event = ot.ThresholdEvent(output, ot.Less(), 0.0)
     >>> experiment = ot.MonteCarloExperiment()
     >>> algo = ot.ProbabilitySimulationAlgorithm(event, experiment)
     >>> algo.setMaximumOuterSampling(int(1e9))

@@ -37,7 +37,7 @@ try:
 
     # We create an Event from this RandomVector
 
-    myEvent = Event(output, Less(), 50)
+    myEvent = ThresholdEvent(output, Less(), 50)
     print("myEvent=", repr(myEvent))
 
     # We compute one realization of the event

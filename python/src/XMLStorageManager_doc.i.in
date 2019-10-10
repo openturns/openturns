@@ -33,7 +33,7 @@ Examples
 >>> myStudy2 = ot.Study()
 >>> myStudy2.setStorageManager(ot.XMLStorageManager('myStudy2.xml.gz', 5))
 >>> # Add an object in the study:
->>> simulationResult = ot.ProbabilitySimulationResult(ot.Event(), 0.5, 0.01, 150, 4)
+>>> simulationResult = ot.ProbabilitySimulationResult(ot.ThresholdEvent(), 0.5, 0.01, 150, 4)
 >>> myStudy.add('simulationResult', simulationResult)
 >>> # Save the Study in the file myStudy.xml:
 >>> myStudy.save()"

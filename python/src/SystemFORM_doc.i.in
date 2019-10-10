@@ -56,8 +56,8 @@ Examples
 >>> import openturns as ot
 >>> dim = 2
 >>> X = ot.RandomVector(ot.Normal(dim))
->>> e1 = ot.Event(ot.CompositeRandomVector(ot.SymbolicFunction(['x1', 'x2'], ['(x1+2*x2)^2']), X), ot.Greater(), 5.0)
->>> e2 = ot.Event(ot.CompositeRandomVector(ot.SymbolicFunction(['x1', 'x2'], ['(x2+3*x1)^2']), X), ot.Greater(), 5.0)
+>>> e1 = ot.ThresholdEvent(ot.CompositeRandomVector(ot.SymbolicFunction(['x1', 'x2'], ['(x1+2*x2)^2']), X), ot.Greater(), 5.0)
+>>> e2 = ot.ThresholdEvent(ot.CompositeRandomVector(ot.SymbolicFunction(['x1', 'x2'], ['(x2+3*x1)^2']), X), ot.Greater(), 5.0)
 >>> event = ot.IntersectionEvent([e1, e2])
 >>> solver = ot.AbdoRackwitz()
 >>> starting_pt = [0.1] * dim

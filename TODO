@@ -3,3 +3,4 @@ Remove WeibullMuSigma alias
 Remove WeibullFactory alias, +buildAsWeibull deprecated methods
 Remove deprecated GumbelAB
 Remove GetLeastSquaresAlgorithmNames
+Remove Event class in 1.16

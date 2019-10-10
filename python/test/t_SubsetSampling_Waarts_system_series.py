@@ -31,7 +31,7 @@ vect = ot.RandomVector(myDistribution)
 
 output = ot.CompositeRandomVector(limitState, vect)
 
-myEvent = ot.Event(output, ot.Less(), 0.0)
+myEvent = ot.ThresholdEvent(output, ot.Less(), 0.0)
 
 #
 # Computation

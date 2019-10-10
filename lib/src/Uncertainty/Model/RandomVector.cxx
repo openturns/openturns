@@ -271,7 +271,7 @@ RandomVector RandomVector::join(const RandomVector & other)
   if (getAntecedent().getImplementation()->getId() != other.getAntecedent().getImplementation()->getId())
     throw NotYetImplementedException(HERE) << "Root cause not found";
 
-LevelSet d1;
+  LevelSet d1;
   try {
     // ThresholdEvent
     d1 = LevelSet(getFunction(), getOperator(), getThreshold());

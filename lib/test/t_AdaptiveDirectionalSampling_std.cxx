@@ -58,7 +58,7 @@ int main(int, char *[])
   CompositeRandomVector output(function, vect);
 
   /* We create an Event from this RandomVector */
-  Event myEvent(output, Less(), -3.0);
+  ThresholdEvent myEvent(output, Less(), -3.0);
 
   const UnsignedInteger n = 1000;
 

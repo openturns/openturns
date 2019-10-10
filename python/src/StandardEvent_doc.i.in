@@ -66,5 +66,5 @@ A StandardEvent created from a limit state function :
 
 A StandardEvent based on an event :
 
->>> myEvent = ot.Event(output, ot.Less(), 1.0)
+>>> myEvent = ot.ThresholdEvent(output, ot.Less(), 1.0)
 >>> myStandardEvent = ot.StandardEvent(myEvent)"

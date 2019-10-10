@@ -40,7 +40,7 @@ CLASSNAMEINIT(Event)
 Event::Event()
   : RandomVector(new ThresholdEvent(CompositeRandomVector(SymbolicFunction("x", "x"), ConstantRandomVector(Point(1, 0.0))), Less(), 0.0))
 {
-  // Nothing to do
+  LOGWARN("Event() is deprecated");
 }
 
 /* Constructor from RandomVector */
@@ -49,7 +49,7 @@ Event::Event(const RandomVector & antecedent,
              const Scalar threshold)
   : RandomVector(new ThresholdEvent(antecedent, op, threshold))
 {
-  // Nothing to do
+  LOGWARN("Event(RandomVector, ComparisonOperator, float) is deprecated, use ThresholdEvent");
 }
 
 /* Constructor from RandomVector */
@@ -57,7 +57,7 @@ Event::Event(const RandomVector & antecedent,
              const Domain & domain)
   : RandomVector(new DomainEvent(antecedent, domain))
 {
-  // Nothing to do
+  LOGWARN("Event(RandomVector, Domain) is deprecated, use EventDomain");
 }
 
 
@@ -66,7 +66,7 @@ Event::Event(const RandomVector & antecedent,
              const Interval & interval)
   : RandomVector(new ThresholdEvent(antecedent, interval))
 {
-  // Nothing to do
+  LOGWARN("Event(RandomVector, Interval) is deprecated, use ProcessEvent");
 }
 
 /* Constructor from RandomVector */
@@ -74,7 +74,7 @@ Event::Event(const Process & process,
              const Domain & domain)
   : RandomVector(new ProcessEvent(process, domain))
 {
-  // Nothing to do
+  LOGWARN("Event(Process, Domain) is deprecated, use ProcessEvent");
 }
 
 
