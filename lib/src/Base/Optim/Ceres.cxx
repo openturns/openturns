@@ -263,7 +263,7 @@ void Ceres::run()
     options.parameter_tolerance = getMaximumRelativeError();
 
     // Set remaining options from ResourceMap
-    if (ResourceMap::HasKey("Ceres-line_search_type") && !ceres::StringToLineSearchType(ResourceMap::Get("Ceres-line_search_type"), &options.line_search_type))
+    if (options_.hasKey("line_search_type") && !ceres::StringToLineSearchType(ResourceMap::Get("Ceres-line_search_type"), &options.line_search_type))
       throw InvalidArgumentException(HERE) << "Invalid value for line_search_type";
     if (ResourceMap::HasKey("Ceres-nonlinear_conjugate_gradient_type") && !ceres::StringToNonlinearConjugateGradientType(ResourceMap::Get("Ceres-nonlinear_conjugate_gradient_type"), &options.nonlinear_conjugate_gradient_type))
       throw InvalidArgumentException(HERE) << "Invalid value for nonlinear_conjugate_gradient_type";
@@ -521,6 +521,70 @@ String Ceres::getAlgorithmName() const
 {
   return algoName_;
 }
+
+/** Options accessors */
+void Ceres::setOptionAsString(const String & key, const String & value)
+{
+  options_.setAsString(key, value);
+}
+  
+String Ceres::getOptionAsString(const String & key)
+{
+  return options_.getAsString(key);
+}
+
+void Ceres::setOptionAsUnsignedInteger(const String & key, const UnsignedInteger value)
+{
+  options_.setAsUnsignedInteger(key, value);
+}
+
+UnsignedInteger Ceres::getOptionAsUnsignedInteger(const String & key)
+{
+  return options_.getAsUnsignedInteger(key);
+}
+
+void Ceres::setOptionAsScalar(const String & key, const Scalar value)
+{
+  options_.setAsScalar(key, value);
+}
+
+Scalar Ceres::getOptionAsScalar(const String & key)
+{
+  return options_.getAsScalar(key);
+}
+
+void Ceres::setOptionAsBool(const String & key, const Bool value)
+{
+  options_.setAsBool(key, value);
+}
+
+Bool Ceres::getOptionAsBool(const String & key)
+{
+  return options_.getAsBool(key);
+}
+
+Bool Ceres::hasOption(const String & key)
+{
+  return options_.hasKey(key);
+}
+
+String Ceres::getOptionType(const String & key)
+{
+  return options_.getType(key);
+}
+
+String Ceres::getOption(const String & key)
+{
+  return options_.get(key);
+}
+
+void Ceres::removeOption(const String & key)
+{
+  options_.removeKey(key);
+}
+
+
+
 
 /* Method save() stores the object through the StorageManager */
 void Ceres::save(Advocate & adv) const

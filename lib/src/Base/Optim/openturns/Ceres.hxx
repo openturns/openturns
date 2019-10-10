@@ -23,6 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
+#include "openturns/ResourceMapBase.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -57,6 +58,26 @@ public:
 
   void setAlgorithmName(const String algoName);
   String getAlgorithmName() const;
+  
+  /** Options accessors */
+  void setOptionAsString(const String & key, const String & value);
+  String getOptionAsString(const String & key);
+  
+  void setOptionAsUnsignedInteger(const String & key, const UnsignedInteger value);
+  UnsignedInteger getOptionAsUnsignedInteger(const String & key);
+
+  void setOptionAsScalar(const String & key, const Scalar value);
+  Scalar getOptionAsScalar(const String & key);
+
+  void setOptionAsBool(const String & key, const Bool value);
+  Bool getOptionAsBool(const String & key);
+  
+  Bool hasOption(const String & key);
+  String getOptionType(const String & key);
+  String getOption(const String & key);
+  void removeOption(const String & key);
+  
+  
 
   /** String converter */
   String __repr__() const;
@@ -83,6 +104,9 @@ private:
   // temporary, used to track input/outputs
   Sample evaluationInputHistory_;
   Sample evaluationOutputHistory_;
+  
+  // Local ResourceMapBase object, to set options
+  ResourceMapBase options_;
 
 };
 
