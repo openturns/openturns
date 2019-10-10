@@ -13,15 +13,11 @@ Distributions
     truncated_distribution.ipynb
     2d_gaussian_distribution.ipynb
     draw_2d_distribution.ipynb
-    create_copula.ipynb
     composed_distribution.ipynb
-    extract_copula.ipynb
     random_vector_manipulation.ipynb
     distribution_manipulation.ipynb
     python_randomvector.ipynb
     python_distribution.ipynb
-    composed_copula.ipynb
-    ordinal_sum_copula.ipynb
     mixture_distribution.ipynb
     random_mixture_distribution.ipynb
     random_mixture_distribution_discrete.ipynb
@@ -29,10 +25,23 @@ Distributions
     composite_distribution.ipynb
     composite_random_vector.ipynb
     maximum_distribution.ipynb
-    order_statistics_distribution.ipynb
     conditional_distribution.ipynb
     conditional_random_vector.ipynb
     bayes_distribution.ipynb
+    minimum_volume_level_set_1D.ipynb
+    minimum_volume_level_set_2D.ipynb
+
+Copulas
+-------
+
+.. toctree::
+    :maxdepth: 1
+
+    create_copula.ipynb
+    composed_copula.ipynb
+    extract_copula.ipynb
+    ordinal_sum_copula.ipynb
+    order_statistics_distribution.ipynb
 
 Stochastic processes
 --------------------

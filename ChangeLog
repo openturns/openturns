@@ -70,6 +70,7 @@
 
 === Bug fixes ===
  * https://github.com/openturns/openturns/milestone/4?closed=1
+ * #997 (Adding minimum volume set examples)
  * #1004 (The doc for SobolSimulationAlgorithm has issues)
  * #1006 (Text drawable does not handle size)
  * #1130 (Inconsistency in FittingTest)
