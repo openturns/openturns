@@ -188,12 +188,12 @@ Bool OptimizationProblemImplementation::hasBounds() const
 /* Level function accessor */
 Function OptimizationProblemImplementation::getLevelFunction() const
 {
-  throw NotYetImplementedException(HERE);
+  throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getLevelFunction";
 }
 
 void OptimizationProblemImplementation::setLevelFunction(const Function & levelFunction)
 {
-  throw NotYetImplementedException(HERE);
+  throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::setLevelFunction";
 }
 
 Bool OptimizationProblemImplementation::hasLevelFunction() const
@@ -203,12 +203,12 @@ Bool OptimizationProblemImplementation::hasLevelFunction() const
 
 Function OptimizationProblemImplementation::getResidualFunction() const
 {
-  throw NotYetImplementedException(HERE);
+  throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getResidualFunction";
 }
 
 void OptimizationProblemImplementation::setResidualFunction(const Function & residualFunction)
 {
-  throw NotYetImplementedException(HERE);
+  throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::setResidualFunction";
 }
 
 Bool OptimizationProblemImplementation::hasResidualFunction() const
@@ -219,12 +219,12 @@ Bool OptimizationProblemImplementation::hasResidualFunction() const
 /* Level value accessor */
 Scalar OptimizationProblemImplementation::getLevelValue() const
 {
-  throw NotYetImplementedException(HERE);
+  throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getLevelValue";
 }
 
 void OptimizationProblemImplementation::setLevelValue(Scalar levelValue)
 {
-  throw NotYetImplementedException(HERE);
+  throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::setLevelValue";
 }
 
 /* Dimension accessor */

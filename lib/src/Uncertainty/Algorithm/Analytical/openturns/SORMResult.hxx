@@ -41,7 +41,7 @@ public:
 
   /** Standard constructor */
   SORMResult(const Point & standardSpaceDesignPoint,
-             const Event & limitStateVariable,
+             const RandomVector & limitStateVariable,
              const Bool isStandardPointOriginInFailureSpace);
 
   /* Default constructor (required by SWIG :-<) */

@@ -37,7 +37,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * antecedent has a spherical distribution
  */
 class OT_API StandardEvent
-  : public Event
+  : public RandomVector
 {
   CLASSNAME
 
@@ -53,7 +53,7 @@ public:
                 const Scalar threshold);
 
   /** Constructor from Event */
-  StandardEvent(const Event & event);
+  StandardEvent(const RandomVector & event);
 
 
 protected:

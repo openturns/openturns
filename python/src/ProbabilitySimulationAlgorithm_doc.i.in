@@ -10,7 +10,7 @@ Available constructor:
 
 Parameters
 ----------
-event : :class:`~openturns.Event`
+event : :class:`~openturns.RandomVector`
     The event we are computing the probability of, must be composite.
 experiment : :class:`~openturns.WeightedExperiment`
     Sequential experiment

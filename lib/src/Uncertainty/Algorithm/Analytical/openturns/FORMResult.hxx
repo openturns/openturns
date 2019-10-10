@@ -40,7 +40,7 @@ public:
 
   /** Standard constructor */
   FORMResult(const Point & standardSpaceDesignPoint,
-             const Event & limitStateVariable,
+             const RandomVector & limitStateVariable,
              const Bool isStandardPointOriginInFailureSpace);
 
   /* Default constructor */

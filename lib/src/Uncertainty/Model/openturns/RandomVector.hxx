@@ -116,6 +116,13 @@ public:
   /** Parameters description accessor */
   Description getParameterDescription() const;
 
+  /** Whether it is an event */
+  Bool isEvent() const;
+
+  /** Intersection operator */
+  RandomVector intersect(const RandomVector & other);
+  RandomVector join(const RandomVector & other);
+
 protected:
 
 }; /* class RandomVector */

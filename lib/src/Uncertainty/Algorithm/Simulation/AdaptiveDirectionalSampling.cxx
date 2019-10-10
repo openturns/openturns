@@ -37,7 +37,7 @@ AdaptiveDirectionalSampling::AdaptiveDirectionalSampling()
 }
 
 /* Constructor with parameters */
-AdaptiveDirectionalSampling::AdaptiveDirectionalSampling(const Event & event,
+AdaptiveDirectionalSampling::AdaptiveDirectionalSampling(const RandomVector & event,
     const RootStrategy & rootStrategy,
     const SamplingStrategy & samplingStrategy)
   : EventSimulation(event)

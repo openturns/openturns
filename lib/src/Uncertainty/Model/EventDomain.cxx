@@ -40,7 +40,7 @@ EventDomain::EventDomain()
 }
 
 /* Constructor from RandomVector */
-EventDomain::EventDomain(const RandomVectorImplementation & antecedent,
+EventDomain::EventDomain(const RandomVector & antecedent,
                          const Domain & domain)
   : CompositeRandomVector()
   , domain_(domain)
@@ -109,6 +109,11 @@ Sample EventDomain::getSample(const UnsignedInteger size) const
   result.setName("EventDomain sample");
   result.setDescription(getDescription());
   return result;
+}
+
+Bool EventDomain::isEvent() const
+{
+  return true;
 }
 
 /* Method save() stores the object through the StorageManager */

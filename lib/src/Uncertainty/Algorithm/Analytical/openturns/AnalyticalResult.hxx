@@ -52,7 +52,7 @@ public:
 
   /** Standard constructor */
   AnalyticalResult(const Point & standardSpaceDesignPoint,
-                   const Event & limitStateVariable,
+                   const RandomVector & limitStateVariable,
                    const Bool isStandardPointOriginInFailureSpace);
 
   /* Default constructor (required by SWIG :-<) */
@@ -71,7 +71,7 @@ public:
   Point getPhysicalSpaceDesignPoint() const;
 
   /** LimitStateVariable accessor */
-  Event getLimitStateVariable() const;
+  RandomVector getLimitStateVariable() const;
 
   /** IsStandardPointOriginInFailureSpace  accessor */
   Bool getIsStandardPointOriginInFailureSpace() const;
@@ -154,7 +154,7 @@ private:
 
   Point    standardSpaceDesignPoint_;
   mutable Point    physicalSpaceDesignPoint_;
-  Event             limitStateVariable_;
+  RandomVector limitStateVariable_;
   Bool isStandardPointOriginInFailureSpace_;
   mutable Scalar hasoferReliabilityIndex_;
   mutable PointWithDescription importanceFactors_;

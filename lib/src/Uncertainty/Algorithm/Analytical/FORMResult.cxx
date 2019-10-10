@@ -38,7 +38,7 @@ typedef PersistentCollection<PointWithDescription> PersistentSensitivity;
  * @brief  Standard constructor: the class is defined by an optimisation algorithm, a failure event and a physical starting point
  */
 FORMResult::FORMResult(const Point & standardSpaceDesignPoint,
-                       const Event & limitStateVariable,
+                       const RandomVector & limitStateVariable,
                        const Bool isStandardPointOriginInFailureSpace):
   AnalyticalResult(standardSpaceDesignPoint, limitStateVariable, isStandardPointOriginInFailureSpace),
   eventProbability_(0.),

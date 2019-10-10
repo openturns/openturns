@@ -19,8 +19,8 @@
  *
  */
 
-#ifndef OPENTURNS_PYTHONRANDOMVECTORIMPLEMENTATION_HXX
-#define OPENTURNS_PYTHONRANDOMVECTORIMPLEMENTATION_HXX
+#ifndef OPENTURNS_PYTHONRANDOMVECTOR_HXX
+#define OPENTURNS_PYTHONRANDOMVECTOR_HXX
 
 #include <Python.h>
 #include "openturns/RandomVectorImplementation.hxx"
@@ -29,11 +29,11 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class PythonRandomVectorImplementation
+ * @class PythonRandomVector
  *
  * This class binds a Python object to an OpenTURNS' RandomVector
  */
-class PythonRandomVectorImplementation
+class PythonRandomVector
   : public RandomVectorImplementation
 {
   CLASSNAME
@@ -41,19 +41,19 @@ public:
 
 
   /** Constructor from Python object*/
-  PythonRandomVectorImplementation(PyObject * pyObject);
+  PythonRandomVector(PyObject * pyObject);
 
   /** Copy constructor */
-  PythonRandomVectorImplementation(const PythonRandomVectorImplementation & other);
+  PythonRandomVector(const PythonRandomVector & other);
 
   /** Virtual constructor */
-  virtual PythonRandomVectorImplementation * clone() const;
+  virtual PythonRandomVector * clone() const;
 
   /** Destructor */
-  virtual ~PythonRandomVectorImplementation();
+  virtual ~PythonRandomVector();
 
   /** Comparison operator */
-  Bool operator ==(const PythonRandomVectorImplementation & other) const;
+  Bool operator ==(const PythonRandomVector & other) const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -77,6 +77,9 @@ public:
   /** Covariance accessor */
   virtual CovarianceMatrix getCovariance() const;
 
+  /** Whether it is an event */
+  Bool isEvent() const;
+
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 
@@ -88,17 +91,17 @@ protected:
 
 private:
 
-  friend class Factory<PythonRandomVectorImplementation>;
+  friend class Factory<PythonRandomVector>;
 
   /** Default constructor */
-  PythonRandomVectorImplementation();
+  PythonRandomVector();
 
   /** The underlying Python object */
   PyObject * pyObj_;
 
-}; /* class PythonRandomVectorImplementation */
+}; /* class PythonRandomVector */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_PYTHONRANDOMVECTORIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_PYTHONRANDOMVECTOR_HXX */

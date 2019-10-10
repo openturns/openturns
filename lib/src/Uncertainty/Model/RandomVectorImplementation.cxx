@@ -179,6 +179,11 @@ Description RandomVectorImplementation::getParameterDescription() const
   throw NotYetImplementedException(HERE) << "In RandomVectorImplementation::getParameterDescription";
 }
 
+Bool RandomVectorImplementation::isEvent() const
+{
+  return false;
+}
+
 /* Method save() stores the object through the StorageManager */
 void RandomVectorImplementation::save(Advocate & adv) const
 {

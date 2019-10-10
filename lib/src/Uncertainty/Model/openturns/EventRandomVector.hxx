@@ -28,7 +28,6 @@
 
 #include "openturns/CompositeRandomVector.hxx"
 
-
 BEGIN_NAMESPACE_OPENTURNS
 
 
@@ -50,10 +49,14 @@ public:
   /** Default constructor */
   EventRandomVector();
 
-  /** Constructor from RandomVector */
-  EventRandomVector(const RandomVectorImplementation & antecedent,
+  /** Constructor from comparison operator */
+  EventRandomVector(const RandomVector & antecedent,
                     const ComparisonOperator & op,
                     const Scalar threshold);
+
+  /** Constructor from Interval */
+  EventRandomVector(const RandomVector & antecedent,
+                    const Interval & interval);
 
   /** Virtual constructor */
   virtual EventRandomVector * clone() const;
@@ -87,6 +90,9 @@ public:
 
   /** Parameters description accessor */
   virtual Description getParameterDescription() const;
+
+  /** Whether it is an event */
+  virtual Bool isEvent() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

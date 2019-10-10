@@ -47,7 +47,7 @@ Event::Event()
 Event::Event(const RandomVector & antecedent,
              const ComparisonOperator & op,
              const Scalar threshold)
-  : RandomVector(new EventRandomVector(*antecedent.getImplementation(), op, threshold))
+  : RandomVector(new EventRandomVector(antecedent, op, threshold))
 {
   // Nothing to do
 }
@@ -55,7 +55,7 @@ Event::Event(const RandomVector & antecedent,
 /* Constructor from RandomVector */
 Event::Event(const RandomVector & antecedent,
              const Domain & domain)
-  : RandomVector(new EventDomain(*antecedent.getImplementation(), domain))
+  : RandomVector(new EventDomain(antecedent, domain))
 {
   // Nothing to do
 }
@@ -64,79 +64,9 @@ Event::Event(const RandomVector & antecedent,
 /* Constructor from RandomVector */
 Event::Event(const RandomVector & antecedent,
              const Interval & interval)
-  : RandomVector(new EventDomain(*antecedent.getImplementation(), interval))
+  : RandomVector(new EventRandomVector(antecedent, interval))
 {
-#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-  UnsignedInteger dimension = interval.getDimension();
-  UnsignedInteger inputDimension = antecedent.getFunction().getInputDimension();
-  Interval::BoolCollection finiteLowerBound(interval.getFiniteLowerBound());
-  Interval::BoolCollection finiteUpperBound(interval.getFiniteUpperBound());
-  Point lowerBound(interval.getLowerBound());
-  Point upperBound(interval.getUpperBound());
-  SymbolicFunction testFunction(Description::BuildDefault(inputDimension, "x"), Description(1, "0.0"));
-
-  // easy case: 1d interval
-  if (interval.getDimension() == 1)
-  {
-    if (finiteLowerBound[0] && !finiteUpperBound[0])
-    {
-      *this = Event(antecedent, Greater(), lowerBound[0]);
-    }
-    if (!finiteLowerBound[0] && finiteUpperBound[0])
-    {
-      *this = Event(antecedent, Less(), upperBound[0]);
-    }
-
-    if (finiteLowerBound[0] && finiteUpperBound[0])
-    {
-      testFunction = SymbolicFunction("x", OSS() << "min(x-(" << lowerBound[0] << "), (" << upperBound[0] << ") - x)");
-      CompositeRandomVector newVector(ComposedFunction(testFunction, antecedent.getFunction()), antecedent.getAntecedent());
-      *this = Event(newVector, Greater(), 0.0);
-    }
-    if (!finiteLowerBound[0] && !finiteUpperBound[0])
-    {
-      CompositeRandomVector newVector(Function(testFunction), antecedent.getAntecedent());
-      *this = Event(newVector, Less(), 1.0);
-    }
-  }
-  // general case
-  else
-  {
-    Description inVars(Description::BuildDefault(dimension, "y"));
-    Description slacks(0);
-    for (UnsignedInteger i = 0; i < dimension; ++ i)
-    {
-      if (finiteLowerBound[i])
-        slacks.add(OSS() << inVars[i] << "-(" << lowerBound[i] << ")");
-      if (finiteUpperBound[i])
-        slacks.add(OSS() << "(" << upperBound[i] << ")-" << inVars[i]);
-    }
-    // No constraint
-    if (slacks.getSize() == 0)
-    {
-      CompositeRandomVector newVector(Function(testFunction), antecedent.getAntecedent());
-      *this = Event(newVector, Less(), 1.0);
-    }
-    else
-    {
-      String formula;
-      if (slacks.getSize() == 1)
-      {
-        formula = slacks[0];
-      }
-      else
-      {
-        formula = "min(" + slacks[0];
-        for (UnsignedInteger i = 1; i < slacks.getSize(); ++ i)
-          formula += "," + slacks[i];
-        formula += ")";
-      }
-      testFunction = SymbolicFunction(inVars, Description(1, formula));
-      CompositeRandomVector newVector(ComposedFunction(testFunction, antecedent.getFunction()), antecedent.getAntecedent());
-      *this = Event(newVector, Greater(), 0.0);
-    }
-  }
-#endif
+  // Nothing to do
 }
 
 /* Constructor from RandomVector */
@@ -147,38 +77,6 @@ Event::Event(const Process & process,
   // Nothing to do
 }
 
-Event Event::intersect(const Event & other)
-{
-  if (&other == this)
-    return *this;
-
-  if (!isComposite() || !other.isComposite())
-    throw InvalidArgumentException(HERE) << "Events must be composite";
-
-  if (getAntecedent().getImplementation()->getId() != other.getAntecedent().getImplementation()->getId())
-    throw NotYetImplementedException(HERE) << "Root cause not found";
-
-  LevelSet d1(getFunction(), getOperator(), getThreshold());
-  LevelSet d2(other.getFunction(), other.getOperator(), other.getThreshold());
-  return Event(getAntecedent().getImplementation(), d1.intersect(d2));
-}
-
-
-Event Event::join(const Event & other)
-{
-  if (&other == this)
-    return *this;
-
-  if (!isComposite() || !other.isComposite())
-    throw InvalidArgumentException(HERE) << "Events must be composite";
-
-  if (getAntecedent().getImplementation()->getId() != other.getAntecedent().getImplementation()->getId())
-    throw NotYetImplementedException(HERE) << "Root cause not found";
-
-  LevelSet d1(getFunction(), getOperator(), getThreshold());
-  LevelSet d2(other.getFunction(), other.getOperator(), other.getThreshold());
-  return Event(getAntecedent().getImplementation(), d1.join(d2));
-}
 
 
 /* String converter */

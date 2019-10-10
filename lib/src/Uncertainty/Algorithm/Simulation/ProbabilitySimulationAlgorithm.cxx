@@ -45,7 +45,7 @@ ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Bool verbos
 }
 
 /* Constructor with parameters */
-ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Event & event,
+ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const RandomVector & event,
     const Bool verbose,
     const HistoryStrategy & convergenceStrategy)
   : EventSimulation(event, verbose, convergenceStrategy)
@@ -55,14 +55,14 @@ ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Event & eve
 }
 
 /* Constructor with parameters */
-ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const Event & event,
+ProbabilitySimulationAlgorithm::ProbabilitySimulationAlgorithm(const RandomVector & event,
     const WeightedExperiment & experiment,
     const Bool verbose,
     const HistoryStrategy & convergenceStrategy)
   : EventSimulation(event, verbose, convergenceStrategy)
   , isExperimentProvided_(true)
 {
-  if (!getEvent().isComposite()) throw InvalidArgumentException(HERE) << "ProbabilitySimulationAlgorithm requires a composite event";
+  if (!event.isComposite()) throw InvalidArgumentException(HERE) << "ProbabilitySimulationAlgorithm requires a composite event";
   setExperiment(experiment);
 }
 

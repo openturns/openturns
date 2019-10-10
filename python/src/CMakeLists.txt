@@ -515,7 +515,6 @@ ot_add_python_module(model_copula model_copula_module.i
                       EllipticalDistribution.i
                       DiscreteDistribution.i
                       CopulaImplementation.i CopulaImplementation_doc.i.in
-                      Copula.i Copula_doc.i.in
                       ArchimedeanCopula.i ArchimedeanCopula_doc.i.in
                       SklarCopula.i SklarCopula_doc.i.in
                       IndependentCopula.i IndependentCopula_doc.i.in
@@ -827,13 +826,15 @@ ot_add_python_module(metamodel metamodel_module.i
                       PythonEvaluation.cxx
                       PythonGradient.cxx
                       PythonHessian.cxx
-                      PythonRandomVectorImplementation.cxx
+                      PythonRandomVector.cxx
                       CompositeRandomVector.i CompositeRandomVector_doc.i.in
-                      EventRandomVector.i
-                      EventDomain.i
-                      EventProcess.i
+                      EventRandomVector.i EventRandomVector_doc.i.in
+                      EventDomain.i EventDomain_doc.i.in
+                      EventProcess.i EventProcess_doc.i.in
                       Event.i Event_doc.i.in
                       StandardEvent.i StandardEvent_doc.i.in
+                      IntersectionEvent.i IntersectionEvent_doc.i.in
+                      UnionEvent.i UnionEvent_doc.i.in
                       FunctionalChaosRandomVector.i FunctionalChaosRandomVector_doc.i.in
                       FunctionalChaosSobolIndices.i FunctionalChaosSobolIndices_doc.i.in
                       KrigingRandomVector.i KrigingRandomVector_doc.i.in
@@ -877,9 +878,12 @@ ot_add_python_module(analytical analytical_module.i
                       Analytical.i Analytical_doc.i.in
                       FORMResult.i FORMResult_doc.i.in
                       FORM.i FORM_doc.i.in
+		      MultiFORMResult.i MultiFORMResult_doc.i.in
                       SORMResult.i SORMResult_doc.i.in
                       SORM.i SORM_doc.i.in
                       StrongMaximumTest.i StrongMaximumTest_doc.i.in
+		      SystemFORM.i SystemFORM_doc.i.in
+		      MultiFORM.i MultiFORM_doc.i.in
                       UncertaintyAnalyticalTemplateDefs.i
                    )
 

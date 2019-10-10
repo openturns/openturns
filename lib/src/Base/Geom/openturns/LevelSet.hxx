@@ -72,6 +72,10 @@ public:
   Function getFunction() const;
   void setFunction(const Function & function);
 
+  /** Operator accessor */
+  ComparisonOperator getOperator() const;
+  void setOperator(const ComparisonOperator & op);
+
   /** Level accessor */
   Scalar getLevel() const;
   void setLevel(const Scalar level);

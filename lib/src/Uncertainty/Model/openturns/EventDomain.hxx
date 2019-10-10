@@ -49,7 +49,7 @@ public:
   EventDomain();
 
   /** Constructor from RandomVector */
-  EventDomain(const RandomVectorImplementation & antecedent,
+  EventDomain(const RandomVector & antecedent,
               const Domain & domain);
 
   /** Virtual contructor */
@@ -71,6 +71,9 @@ public:
 
   /** Numerical sample accessor */
   virtual Sample getSample(const UnsignedInteger size) const;
+
+  /** Whether it is an event */
+  virtual Bool isEvent() const;
 
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;

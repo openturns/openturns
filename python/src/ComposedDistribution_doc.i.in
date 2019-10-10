@@ -28,7 +28,7 @@ distributions :math:`F_i` and the copula :math:`C` through the relation:
 
 See also
 --------
-Copula, SklarCopula
+SklarCopula
 
 Examples
 --------

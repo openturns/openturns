@@ -47,10 +47,10 @@ DirectionalSampling::DirectionalSampling()
 }
 
 /* Constructor with parameters */
-DirectionalSampling::DirectionalSampling(const Event & event)
+DirectionalSampling::DirectionalSampling(const RandomVector & event)
   : EventSimulation(event)
 {
-  if (!event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
+  if (!event.isEvent() || !event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
   standardEvent_ = StandardEvent(event);
   standardFunction_ = standardEvent_.getImplementation()->getFunction();
   inputDistribution_ = standardEvent_.getImplementation()->getAntecedent().getDistribution();
@@ -58,13 +58,13 @@ DirectionalSampling::DirectionalSampling(const Event & event)
 }
 
 /* Constructor with parameters */
-DirectionalSampling::DirectionalSampling(const Event & event,
+DirectionalSampling::DirectionalSampling(const RandomVector & event,
     const RootStrategy & rootStrategy,
     const SamplingStrategy & samplingStrategy)
   : EventSimulation(event)
   , rootStrategy_(rootStrategy)
 {
-  if (!event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
+  if (!event.isEvent() || !event.isComposite()) throw InvalidArgumentException(HERE) << "DirectionalSampling requires a composite event";
   standardEvent_ = StandardEvent(event);
   standardFunction_ = standardEvent_.getImplementation()->getFunction();
   inputDistribution_ = standardEvent_.getImplementation()->getAntecedent().getDistribution();

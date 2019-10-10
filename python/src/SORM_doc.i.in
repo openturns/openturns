@@ -10,7 +10,7 @@ Parameters
 ----------
 nearestPointAlgorithm : :class:`~openturns.OptimizationAlgorithm`
     Optimization algorithm used to research the design point.
-event : :class:`~openturns.Event`
+event : :class:`~openturns.RandomVector`
     Failure event.
 physicalStartingPoint : sequence of float
     Starting point of the optimization algorithm, declared in the physical

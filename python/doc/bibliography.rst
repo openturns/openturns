@@ -95,6 +95,9 @@ Bibliography
     *Global optimization of expensive black-box functions*,
     Journal of Global Optimization, 13(4), 455-492, 1998.
     `pdf <http://doc.openturns.org/papers/jones1998.pdf>`__
+.. [kiureghian1998] Kiureghian A., Dakessian T., *Multiple design points in first and second-order reliability*
+    Structural Safety, Volume 20, Issue 1, 1998, Pages 37-49
+    `pdf <http://doc.openturns.org/papers/kiureghian1998.pdf>`__
 .. [knight1966] Knight, W. R. *A Computer Method for Calculating Kendall's Tau
     with Ungrouped Data.* Journal of the American Statistical Association,
     1966, 61(314, Part 1), 436-439.
@@ -122,6 +125,7 @@ Bibliography
     Modeling Uncertainty. International Series in Operations Research &
     Management Science, vol 46. Springer, Boston, MA
     `pdf <http://doc.openturns.org/papers/lecuyer2005.pdf>`__
+.. [lemaire2009] Lemaire M., *Structural reliability*, John Wiley & Sons, 2009.
 .. [loader2000] Loader C. *Fast and Accurate Computation of Binomial Probabilities*,
     `pdf <http://octave.1599824.n4.nabble.com/attachment/3829107/0/loader2000Fast.pdf>`__
 .. [marsaglia1993] Marsaglia G. and Tsang W. W., *A Simple Method for Generating Gamma*,

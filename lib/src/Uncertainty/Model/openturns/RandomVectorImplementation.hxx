@@ -120,6 +120,9 @@ public:
   /** Parameters description accessor */
   virtual Description getParameterDescription() const;
 
+  /** Whether it is an event */
+  virtual Bool isEvent() const;
+
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 

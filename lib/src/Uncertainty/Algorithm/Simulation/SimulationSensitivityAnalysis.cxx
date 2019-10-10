@@ -84,7 +84,7 @@ SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const ProbabilitySi
 }
 
 /* Standard constructor */
-SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const Event & event)
+SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const RandomVector & event)
   : PersistentObject(),
     inputSample_(),
     outputSample_(),
@@ -93,7 +93,7 @@ SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const Event & event
     threshold_()
 {
   // Inspect the event to see if it is a composite random vector based event
-  if (!event.isComposite()) throw InvalidArgumentException(HERE) << "Error: cannot perform a sensitivity analysis based on the given event. Check if it is based on a composite random vector.";
+  if (!event.isEvent() || !event.isComposite()) throw InvalidArgumentException(HERE) << "Error: cannot perform a sensitivity analysis based on the given event. Check if it is based on a composite random vector.";
   // Get the input/output sample from the model
   MemoizeFunction model(event.getFunction());
   inputSample_  = model.getInputHistory();

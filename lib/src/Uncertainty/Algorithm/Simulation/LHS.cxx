@@ -46,7 +46,7 @@ LHS::LHS()
 }
 
 /* Constructor with parameters */
-LHS::LHS(const Event & event)
+LHS::LHS(const RandomVector & event)
   : EventSimulation(event)
   , dimension_(event.getImplementation()->getAntecedent().getDimension())
   , blockIndex_(0)

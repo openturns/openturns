@@ -107,7 +107,7 @@ and the limit state function is :
 .. topic:: API:
 
     - See :class:`~openturns.FORM`
-
+    - See :class:`~openturns.SystemFORM`
 
 .. topic:: Examples:
 

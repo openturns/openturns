@@ -19,7 +19,7 @@
  *
  */
 
-#include "openturns/PythonRandomVectorImplementation.hxx"
+#include "openturns/PythonRandomVector.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/Description.hxx"
 #include "openturns/PythonWrappingFunctions.hxx"
@@ -29,14 +29,14 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 
-CLASSNAMEINIT(PythonRandomVectorImplementation)
+CLASSNAMEINIT(PythonRandomVector)
 
-static const Factory<PythonRandomVectorImplementation> Factory_PythonRandomVectorImplementation;
+static const Factory<PythonRandomVector> Factory_PythonRandomVector;
 
 
 
 /* Default constructor */
-PythonRandomVectorImplementation::PythonRandomVectorImplementation()
+PythonRandomVector::PythonRandomVector()
   : RandomVectorImplementation(),
     pyObj_(0)
 {
@@ -45,7 +45,7 @@ PythonRandomVectorImplementation::PythonRandomVectorImplementation()
 
 
 /* Constructor from Python object*/
-PythonRandomVectorImplementation::PythonRandomVectorImplementation(PyObject * pyObject)
+PythonRandomVector::PythonRandomVector(PyObject * pyObject)
   : RandomVectorImplementation(),
     pyObj_(pyObject)
 {
@@ -77,13 +77,13 @@ PythonRandomVectorImplementation::PythonRandomVectorImplementation(PyObject * py
 }
 
 /* Virtual constructor */
-PythonRandomVectorImplementation * PythonRandomVectorImplementation::clone() const
+PythonRandomVector * PythonRandomVector::clone() const
 {
-  return new PythonRandomVectorImplementation(*this);
+  return new PythonRandomVector(*this);
 }
 
 /* Copy constructor */
-PythonRandomVectorImplementation::PythonRandomVectorImplementation(const PythonRandomVectorImplementation & other)
+PythonRandomVector::PythonRandomVector(const PythonRandomVector & other)
   : RandomVectorImplementation(other),
     pyObj_()
 {
@@ -93,32 +93,32 @@ PythonRandomVectorImplementation::PythonRandomVectorImplementation(const PythonR
 }
 
 /* Destructor */
-PythonRandomVectorImplementation::~PythonRandomVectorImplementation()
+PythonRandomVector::~PythonRandomVector()
 {
   Py_XDECREF( pyObj_ );
 }
 
 /* Comparison operator */
-Bool PythonRandomVectorImplementation::operator ==(const PythonRandomVectorImplementation & ) const
+Bool PythonRandomVector::operator ==(const PythonRandomVector & ) const
 {
   return true;
 }
 
 /* String converter */
-String PythonRandomVectorImplementation::__repr__() const
+String PythonRandomVector::__repr__() const
 {
   OSS oss;
-  oss << "class=" << PythonRandomVectorImplementation::GetClassName()
+  oss << "class=" << PythonRandomVector::GetClassName()
       << " name=" << getName()
       << " description=" << getDescription();
   return oss;
 }
 
 /* String converter */
-String PythonRandomVectorImplementation::__str__(const String & ) const
+String PythonRandomVector::__str__(const String & ) const
 {
   OSS oss;
-  oss << "class=" << PythonRandomVectorImplementation::GetClassName()
+  oss << "class=" << PythonRandomVector::GetClassName()
       << " name=" << getName();
   return oss;
 }
@@ -128,7 +128,7 @@ String PythonRandomVectorImplementation::__str__(const String & ) const
 
 
 /* Accessor for input point dimension */
-UnsignedInteger PythonRandomVectorImplementation::getDimension() const
+UnsignedInteger PythonRandomVector::getDimension() const
 {
   ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
                                const_cast<char *>( "getDimension" ),
@@ -142,7 +142,7 @@ UnsignedInteger PythonRandomVectorImplementation::getDimension() const
   return dim;
 }
 
-Point PythonRandomVectorImplementation::getRealization() const
+Point PythonRandomVector::getRealization() const
 {
   ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
                                const_cast<char *>( "getRealization" ),
@@ -157,7 +157,7 @@ Point PythonRandomVectorImplementation::getRealization() const
 
 
 /* Numerical sample accessor */
-Sample PythonRandomVectorImplementation::getSample(const UnsignedInteger size) const
+Sample PythonRandomVector::getSample(const UnsignedInteger size) const
 {
   Sample sample;
 
@@ -183,7 +183,7 @@ Sample PythonRandomVectorImplementation::getSample(const UnsignedInteger size) c
 
 
 /* Mean accessor */
-Point PythonRandomVectorImplementation::getMean() const
+Point PythonRandomVector::getMean() const
 {
   ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
                                const_cast<char *>( "getMean" ),
@@ -199,7 +199,7 @@ Point PythonRandomVectorImplementation::getMean() const
 }
 
 /* Covariance accessor */
-CovarianceMatrix PythonRandomVectorImplementation::getCovariance() const
+CovarianceMatrix PythonRandomVector::getCovariance() const
 {
   ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
                                const_cast<char *>( "getCovariance" ),
@@ -215,8 +215,29 @@ CovarianceMatrix PythonRandomVectorImplementation::getCovariance() const
   return covariance;
 }
 
+Bool PythonRandomVector::isEvent() const
+{
+  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("isEvent")))
+  {
+    ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
+                                const_cast<char *>( "isEvent" ),
+                                const_cast<char *>( "()" ) ));
+    if ( result.isNull() )
+    {
+      handleException();
+    }
+
+    Bool isEvent = checkAndConvert<_PyBool_, Bool>(result.get());
+    return isEvent;
+  }
+  else
+  {
+    return RandomVectorImplementation::isEvent();
+  }
+}
+
 /* Method save() stores the object through the StorageManager */
-void PythonRandomVectorImplementation::save(Advocate & adv) const
+void PythonRandomVector::save(Advocate & adv) const
 {
   RandomVectorImplementation::save( adv );
 
@@ -225,7 +246,7 @@ void PythonRandomVectorImplementation::save(Advocate & adv) const
 
 
 /* Method save() reloads the object from the StorageManager */
-void PythonRandomVectorImplementation::load(Advocate & adv)
+void PythonRandomVector::load(Advocate & adv)
 {
   RandomVectorImplementation::load( adv );
 

@@ -47,7 +47,7 @@ public:
   ProbabilitySimulationResult();
 
   /** Standard constructor */
-  ProbabilitySimulationResult(const Event & event,
+  ProbabilitySimulationResult(const RandomVector & event,
                               const Scalar probabilityEstimate,
                               const Scalar varianceEstimate,
                               const UnsignedInteger outerSampling,
@@ -57,8 +57,8 @@ public:
   virtual ProbabilitySimulationResult * clone() const;
 
   /** Event accessor */
-  Event getEvent() const;
-  void setEvent(const Event & event);
+  RandomVector getEvent() const;
+  void setEvent(const RandomVector & event);
 
   /** Probability estimate accessor */
   Scalar getProbabilityEstimate() const;
@@ -101,7 +101,7 @@ public:
 protected:
 
   /* The event we are interested in */
-  Event event_;
+  RandomVector event_;
   Scalar probabilityEstimate_;
   Scalar varianceEstimate_;
 

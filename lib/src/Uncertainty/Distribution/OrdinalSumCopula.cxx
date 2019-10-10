@@ -50,7 +50,7 @@ OrdinalSumCopula::OrdinalSumCopula()
 }
 
 /* Default constructor */
-OrdinalSumCopula::OrdinalSumCopula(const CopulaCollection & coll,
+OrdinalSumCopula::OrdinalSumCopula(const DistributionCollection & coll,
                                    const Point & bounds)
   : CopulaImplementation()
   , copulaCollection_(0)
@@ -113,7 +113,7 @@ String OrdinalSumCopula::__str__(const String & ) const
 }
 
 /* Copula collection accessor */
-void OrdinalSumCopula::setCopulaCollection(const CopulaCollection & coll)
+void OrdinalSumCopula::setCopulaCollection(const DistributionCollection & coll)
 {
   // Check if the collection is not empty
   const UnsignedInteger size = coll.getSize();
@@ -124,6 +124,8 @@ void OrdinalSumCopula::setCopulaCollection(const CopulaCollection & coll)
   Bool parallel = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
+    if (!coll[i].isCopula())
+      throw InvalidArgumentException(HERE) << "Element " << i << " is not a copula";
     if (coll[i].getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: expected copulas of dimension=" << dimension << " but copula " << i << " has dimension=" << coll[i].getDimension();
     parallel = parallel && coll[i].getImplementation()->isParallel();
   }
@@ -137,7 +139,7 @@ void OrdinalSumCopula::setCopulaCollection(const CopulaCollection & coll)
 
 
 /* Distribution collection accessor */
-const OrdinalSumCopula::CopulaCollection & OrdinalSumCopula::getCopulaCollection() const
+OrdinalSumCopula::DistributionCollection OrdinalSumCopula::getCopulaCollection() const
 {
   return copulaCollection_;
 }
@@ -158,7 +160,7 @@ void OrdinalSumCopula::setBounds(const Point & bounds)
   Sample support(0, 1);
   blockLengths_ = Point(0);
   Scalar lastBound = 0.0;
-  CopulaCollection coll(0);
+  DistributionCollection coll(0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar currentBound = bounds[i];
@@ -433,7 +435,7 @@ Distribution OrdinalSumCopula::getMarginal(const Indices & indices) const
   const UnsignedInteger dimension = getDimension();
   if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and must be different";
   const UnsignedInteger size = copulaCollection_.getSize();
-  CopulaCollection coll(size);
+  DistributionCollection coll(size);
   for (UnsignedInteger i = 0; i < size; ++i) coll[i] = copulaCollection_[i].getMarginal(indices);
   return new OrdinalSumCopula(coll, bounds_);
 }

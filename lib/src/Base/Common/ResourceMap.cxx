@@ -1113,6 +1113,15 @@ void ResourceMap::loadDefaultConfiguration()
   setAsScalar( "AnalyticalResult-DefaultWidth", 1.0 );
   setAsUnsignedInteger( "AnalyticalResult-MeanPointIntegrationNodesNumber", 255 );
 
+  // SystemFORM parameters //
+  setAsScalar( "SystemFORM-MaximalScaling", 1.0e5 );
+  setAsScalar( "SystemFORM-StartingScaling", 1.0e-13 );
+
+  // MultiFORM parameters //
+  setAsScalar( "MultiFORM-DefaultGamma", 1.1 );
+  setAsScalar( "MultiFORM-DefaultDelta", 0.75 );
+  setAsUnsignedInteger( "MultiFORM-DefaultMaximumNumberOfDesignPoints", 4 );
+
   // StrongMaximumTest parameters //
   setAsScalar( "StrongMaximumTest-DefaultDeltaPrecision", 1.0e-7 );
   setAsScalar( "StrongMaximumTest-Epsilon", 1.0e-10 );

@@ -36,7 +36,7 @@ int main(int, char *[])
     CorrelationMatrix R(3);
     R(0, 1) = 0.5;
     R(0, 2) = 0.25;
-    ComposedCopula::CopulaCollection collection(3);
+    ComposedCopula::DistributionCollection collection(3);
     collection[0] = FrankCopula(3.0);
     collection[1] = NormalCopula(R);
     collection[2] = ClaytonCopula(2.0);
@@ -155,7 +155,7 @@ int main(int, char *[])
     indices[3] = 5;
     indices[4] = 6;
     fullprint << "indices=" << indices << std::endl;
-    Copula margins(copula.getMarginal(indices));
+    Distribution margins(copula.getMarginal(indices));
     fullprint << "margins=" << margins << std::endl;
     fullprint << "margins PDF=" << margins.computePDF(point) << std::endl;
     fullprint << "margins CDF=" << margins.computeCDF(point) << std::endl;
@@ -191,7 +191,7 @@ int main(int, char *[])
       fullprint << "sequential conditional quantile(" << resCDF << ")=" << copula.computeSequentialConditionalQuantile(resCDF) << std::endl;
     }
     // Special case, single contributor
-    collection = Collection<Copula>(1);
+    collection = Collection<Distribution>(1);
     collection[0] = SklarCopula(Student(3.0, Point(2, 1.0), Point(2, 3.0), CorrelationMatrix(2)));
     copula = ComposedCopula(collection);
     fullprint << "isoprobabilistic transformation (single contributor)=" << copula.getIsoProbabilisticTransformation() << std::endl;

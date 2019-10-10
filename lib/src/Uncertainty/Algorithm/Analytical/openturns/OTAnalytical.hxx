@@ -27,7 +27,10 @@
 #include "openturns/StrongMaximumTest.hxx"
 #include "openturns/FORM.hxx"
 #include "openturns/FORMResult.hxx"
+#include "openturns/MultiFORMResult.hxx"
 #include "openturns/SORM.hxx"
 #include "openturns/SORMResult.hxx"
+#include "openturns/SystemFORM.hxx"
+#include "openturns/MultiFORM.hxx"
 
 #endif /* OPENTURNS_OTANALYTICAL_HXX */

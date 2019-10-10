@@ -13,7 +13,9 @@ Reliability algorithms
 
      Analytical
      FORM
+     MultiFORM
      SORM
+     SystemFORM
 
 Reliability results
 ===================
@@ -25,6 +27,7 @@ Reliability results
     AnalyticalResult
     FORMResult
     SORMResult
+    MultiFORMResult
 
 Event
 =====
@@ -36,6 +39,10 @@ Event
     Event
     StandardEvent
     EventProcess
+    EventDomain
+    EventRandomVector
+    IntersectionEvent
+    UnionEvent
 
 Design point validation
 =======================

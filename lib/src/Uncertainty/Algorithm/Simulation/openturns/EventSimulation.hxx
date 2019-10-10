@@ -44,7 +44,7 @@ class OT_API EventSimulation
 public:
 
   /** Constructor with parameters */
-  explicit EventSimulation(const Event & event,
+  explicit EventSimulation(const RandomVector & event,
                            const Bool verbose = true,
                            const HistoryStrategy & convergenceStrategy = Compact());
 
@@ -52,7 +52,7 @@ public:
   virtual EventSimulation * clone() const;
 
   /** Event accessor */
-  Event getEvent() const;
+  RandomVector getEvent() const;
 
   /** Result accessor */
   ProbabilitySimulationResult getResult() const;
@@ -87,7 +87,7 @@ protected:
   friend class Factory<EventSimulation>;
 
   // The event we are computing the probability of
-  Event event_;
+  RandomVector event_;
 
   // Result of the simulation
   ProbabilitySimulationResult result_;
