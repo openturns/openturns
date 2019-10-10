@@ -316,6 +316,28 @@ Evaluation LinearCombinationEvaluation::getMarginal(const Indices & indices) con
   return new LinearCombinationEvaluation(marginalFunctions, coefficients_);
 }
 
+/* Linearity accessors */
+Bool LinearCombinationEvaluation::isLinear() const
+{ 
+  for (UnsignedInteger i=0; i<functionsCollection_.getSize(); ++i)
+      if (!functionsCollection_[i].isLinear())
+      return false;
+    
+  return true;
+}
+
+Bool LinearCombinationEvaluation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  if (index > getOutputDimension())
+    throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function output dimension (" << getOutputDimension() << ")";
+    
+  for (UnsignedInteger i=0; i<functionsCollection_.getSize(); ++i)
+    if (!functionsCollection_[i].isLinearlyDependent(index))
+      return false;
+    
+  return true;}
+
+
 /* Method save() stores the object through the StorageManager */
 void LinearCombinationEvaluation::save(Advocate & adv) const
 {

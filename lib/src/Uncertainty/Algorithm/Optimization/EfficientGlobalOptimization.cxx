@@ -424,6 +424,9 @@ void EfficientGlobalOptimization::checkProblem(const OptimizationProblem & probl
     throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support multi-objective optimization";
   if (problem.hasInequalityConstraint() || problem.hasEqualityConstraint())
     throw InvalidArgumentException(HERE) << "Error : " << this->getClassName() << " does not support constraints";
+  if (!problem.isContinuous())
+    throw InvalidArgumentException(HERE) << "Error: " << this->getClassName() << " does not support non continuous problems";
+
 }
 
 

@@ -156,6 +156,8 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
     throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " does not support multi-objective optimization";
   if (problem.hasResidualFunction())
     throw InvalidArgumentException(HERE) << getClassName() << " does not support least-square problems";
+  if (!problem.isContinuous())
+    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support non continuous problems";
 
   if (getAlgorithmName()[0] == 'G')
   {

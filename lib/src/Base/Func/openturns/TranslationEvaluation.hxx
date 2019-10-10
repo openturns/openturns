@@ -72,6 +72,10 @@ public:
 
   /** Accessor for output point dimension */
   virtual UnsignedInteger getOutputDimension() const;
+  
+  /** Linearity accessors */
+  Bool isLinear() const;
+  Bool isLinearlyDependent(const UnsignedInteger index) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

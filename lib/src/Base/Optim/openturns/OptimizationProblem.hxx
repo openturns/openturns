@@ -42,7 +42,7 @@ class OT_API OptimizationProblem
 
   CLASSNAME
 public:
-
+  
   typedef Pointer<OptimizationProblemImplementation>   Implementation;
 
   /** Default constructor */
@@ -103,6 +103,11 @@ public:
   /** Minimization accessor */
   void setMinimization(Bool minimization);
   Bool isMinimization() const;
+
+  /** Variable types accessors */
+  void setVariablesType(const Indices & variableType);
+  Indices getVariablesType() const;
+  bool isContinuous() const;
 
   /** String converter */
   virtual String __repr__() const;

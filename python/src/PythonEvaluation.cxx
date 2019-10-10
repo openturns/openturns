@@ -412,6 +412,42 @@ UnsignedInteger PythonEvaluation::getOutputDimension() const
   return dim;
 }
 
+/* Linearity accessors */
+Bool PythonEvaluation::isLinear() const
+{  
+  if (PyObject_HasAttrString(pyObj_, "isLinear"))
+  {
+    ScopedPyObjectPointer result( PyObject_CallMethod (pyObj_,
+                                  const_cast<char *>("isLinear"),
+                                  const_cast<char *>("()")));
+   
+    const Bool isLinear = convert< _PyBool_, Bool >(result.get());
+    return isLinear;
+  }
+  else
+    return false;
+}
+    
+Bool PythonEvaluation::isLinearlyDependent(const UnsignedInteger index) const
+{  
+  // Check index consistency
+  if (index > getInputDimension())
+    throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
+  
+  if (PyObject_HasAttrString(pyObj_, "isVariableLinear"))
+  {   
+    ScopedPyObjectPointer methodName(convert< String, _PyString_ >("isVariableLinear"));
+    ScopedPyObjectPointer indexArg(convert< UnsignedInteger, _PyInt_ >( index ));
+    ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
+                                     methodName.get(),
+                                     indexArg.get(), NULL));
+   
+    const Bool varLinear = convert< _PyBool_, Bool >(callResult.get());
+    return varLinear;
+  }
+  else
+    return false;
+}
 
 /* Method save() stores the object through the StorageManager */
 void PythonEvaluation::save(Advocate & adv) const

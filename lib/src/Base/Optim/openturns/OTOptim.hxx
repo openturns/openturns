@@ -23,6 +23,7 @@
 #define OPENTURNS_OTOPTIM_HXX
 
 #include "openturns/AbdoRackwitz.hxx"
+#include "openturns/Bonmin.hxx"
 #include "openturns/Ceres.hxx"
 #include "openturns/CMinpack.hxx"
 #include "openturns/Cobyla.hxx"

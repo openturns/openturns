@@ -89,6 +89,10 @@ public:
   Evaluation getLeftEvaluation() const;
   Evaluation getRightEvaluation() const;
 
+  /** Linearity accessors */
+  Bool isLinear() const;
+  Bool isLinearlyDependent(const UnsignedInteger index) const;
+  
 protected:
 
   ComposedEvaluation() {};

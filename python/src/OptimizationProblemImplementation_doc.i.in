@@ -396,3 +396,59 @@ residualFunction : :class:`~openturns.Function`
 
 %feature("docstring") OT::OptimizationProblemImplementation::setResidualFunction
 OT_OptimizationProblem_setLevelFunction_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_setVariablesType_doc
+"Accessor to the variables type.
+
+Parameters
+----------
+variablesType : :class:`~openturns.Indices`
+    Types of the variables.
+    
+Notes
+-----
+Possible values for each variable are `ot.OptimizationProblemImplementation.CONTINUOUS`, `ot.OptimizationProblemImplementation.INTEGER` and `ot.OptimizationProblemImplementation.BINARY`."
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::setVariablesType
+OT_OptimizationProblem_setVariablesType_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_getVariablesType_doc
+"Accessor to the variables type.
+
+Returns
+-------
+variablesType : :class:`~openturns.Indices`
+    Types of the variables.
+    
+Notes
+-----
+Possible values for each variable are `ot.OptimizationProblemImplementation.CONTINUOUS`, `ot.OptimizationProblemImplementation.INTEGER` and ot.OptimizationProblemImplementation.`BINARY`."
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::getVariablesType
+OT_OptimizationProblem_getVariablesType_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationProblem_isContinuous_doc
+"Check if the problem is continuous.
+
+Returns
+-------
+isContinuous : bool
+    Returns True if all variables are continuous."
+%enddef
+
+%feature("docstring") OT::OptimizationProblemImplementation::isContinuous
+OT_OptimizationProblem_isContinuous_doc
+
+
+
+
+
+

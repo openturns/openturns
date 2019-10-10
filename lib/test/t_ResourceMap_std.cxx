@@ -32,7 +32,18 @@ int main(int, char *[])
   // Create a ResourceMap Object
   fullprint << ResourceMap::GetInstance() << std::endl;
 
-  fullprint << "Extract from ResourceMap : R-executable-command -> " << ResourceMap::GetAsString("R-executable-command") << std::endl;
+  fullprint << "Extract from ResourceMap: R-executable-command -> " << ResourceMap::GetAsString("R-executable-command") << std::endl;
+  
+  // Create string key
+  fullprint << "Create key: dummy_key" << std::endl;
+  ResourceMap::SetAsString("dummy_key", "A temporary key, to be removed");
+  fullprint << ResourceMap::GetInstance() << std::endl;
+
+  // Remove key
+  fullprint << "Remove key: dummy_key" << std::endl;
+  ResourceMap::RemoveKey("dummy_key");
+  fullprint << ResourceMap::GetInstance() << std::endl;
+
 
   return ExitCode::Success;
 }

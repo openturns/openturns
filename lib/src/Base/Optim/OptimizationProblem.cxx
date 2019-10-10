@@ -63,6 +63,7 @@ OptimizationProblem::OptimizationProblem(const Function & objective,
   // Nothing to do
 }
 
+
 /* Objective accessor */
 Function OptimizationProblem::getObjective() const
 {
@@ -192,6 +193,22 @@ void OptimizationProblem::setMinimization(Bool minimization)
 Bool OptimizationProblem::isMinimization() const
 {
   return getImplementation()->isMinimization();
+}
+
+/* Variables type table */
+void OptimizationProblem::setVariablesType(const Indices & variablesType)
+{
+  getImplementation()->setVariablesType(variablesType);
+}
+
+Indices OptimizationProblem::getVariablesType() const
+{
+  return getImplementation()->getVariablesType();
+}
+
+bool OptimizationProblem::isContinuous() const
+{
+  return getImplementation()->isContinuous();
 }
 
 /* String converter */

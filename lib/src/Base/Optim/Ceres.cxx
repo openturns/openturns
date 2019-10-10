@@ -94,6 +94,9 @@ void Ceres::checkProblem(const OptimizationProblem & problem) const
 
   if (problem.hasEqualityConstraint())
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support equality constraints";
+  
+  if (!problem.isContinuous())
+    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support non continuous problems";
 }
 
 #ifdef OPENTURNS_HAVE_CERES

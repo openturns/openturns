@@ -1,0 +1,169 @@
+%feature("docstring") OT::Bonmin
+"Base class for optimization solvers from `Bonmin <https://www.coin-or.org/Bonmin/index.html>`_ library.
+
+Available constructors:
+    Bonmin(*problem*)
+    
+    Bonmin(*problem, algoName*)
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`, optional
+    Optimization problem to solve. Default is an empty problem.
+
+algoName : str, optional
+    Identifier of the optimization method to use. Default is 'B-BB'
+        
+Notes
+-----
+
+*Available algorithms:*
+
+  Bonmin provides algorithms for the resolution of general optimization only. In particular, least squares problems or nearest point problems are not supported.
+
+
+  Bonmin provides the following algorithms:
+
+  +-----------+-------------------------------------------------+
+  | Algorithm | Description                                     |
+  +===========+=================================================+
+  | B-BB      | NLP-based branch-and-bound                      |
+  +-----------+-------------------------------------------------+
+  | B-OA      | Outer-approximation decomposition               |
+  +-----------+-------------------------------------------------+
+  | B-QG      | Quesada and Grossmann's branch-and-cut          |
+  +-----------+-------------------------------------------------+
+  | B-Hyb     | Hybrid outer-approximation based branch-and-cut |
+  +-----------+-------------------------------------------------+
+  | B-iFP     | Iterated feasibility pump algorithm             |
+  +-----------+-------------------------------------------------+
+
+
+*Algorithms parameters:*
+
+  Bonmin algorithms can be adapted using numerous parameters, described  `here <https://www.coin-or.org/Bonmin/options_list.html#sec:options_list>`_. These parameters can be modified using OpenTURNS' :class:`~openturns.ResourceMap`. For every option ``optionName``, one simply add a key named ``Bonmin-optionName`` with the value to use, as shown below::
+  
+    >>> import openturns as ot
+    >>> ot.ResourceMap.SetAsUnsignedInteger('Bonmin-bonmin.iteration_limit', 100)
+    >>> ot.ResourceMap.SetAsScalar('Bonmin-bonmin.time_limit', 30.0)
+
+*Convergence criteria:*
+
+  To estimate the convergence of the algorithm during the optimization process, Bonmin uses specific tolerance parameters, different from the standard absolute/relative/residual errors used in OpenTURNS. The definition of Bonmin's parameters can be found in `this paper, page 3 <http://www.optimization-online.org/DB_FILE/2004/03/836.pdf>`_.
+
+  Thus the attributes ``maximumAbsoluteError``, ``maximumRelativeError``, ``maximumResidualError`` and ``maximumConstraintError`` defined in OpenTURNS' ``OptimizationAlgorithm`` are not used in this case. The tolerances used by Bonmin can be set using specific options (e.g. ``tol``, ``bonmin.ecp_abs_tol`` and ``bonmin.ecp_rel_tol``), depending on the algorithm used.
+
+
+See also
+--------
+AbdoRackwitz, Cobyla, Dlib, NLopt
+
+Examples
+--------
+The code below ensures the optimization of the following problem:
+
+.. math:: min \left( - x_0 - x_1 - x_2 \right)
+    
+subject to
+
+.. math::
+
+    \left(x_1 - \frac{1}{2}\right)^2 + \left(x_2 - \frac{1}{2}\right)^2 \leq \frac{1}{4}
+    
+    x_0 - x_1 \leq 0
+
+    x_0 + x_2 + x_3 \leq 2
+
+    x_0 \in \{0,1\}^n
+    
+    (x_1, x_2) \in \mathbb{R}^2
+    
+    x_3 \in \mathbb{N}
+
+    
+>>> import openturns as ot
+
+>>> # Definition of objective function
+>>> objectiveFunction = ot.SymbolicFunction(['x0','x1','x2','x3'], ['-x0 -x1 -x2'])
+
+>>> # Definition of variables bounds
+>>> bounds = ot.Interval([0,0,0,0],[1,1e308,1e308,5],[True,True,True,True],[True,False,False,True])
+
+>>> # Definition of variables types
+>>> variablesType = [ot.OptimizationProblemImplementation.BINARY,
+... ot.OptimizationProblemImplementation.CONTINUOUS,
+... ot.OptimizationProblemImplementation.CONTINUOUS,
+... ot.OptimizationProblemImplementation.INTEGER]
+
+In OpenTURNS, inequality constraints are defined by a function :math:`h` such that :math:`h(x) \geq 0`. The inequality expression above has to be modified to match this formulation.
+
+>>> # Definition of constraints
+>>> # Constraints in OpenTURNS are defined as g(x) = 0 and h(x) >= 0
+>>> #    No equality constraint -> nothing to do
+>>> #    Inequality constraints:
+>>> h = ot.SymbolicFunction(['x0','x1','x2','x3'], ['-(x1-1/2)^2 - (x2-1/2)^2 + 1/4', '-x0 + x1', '-x0 - x2 - x3 + 2'])
+
+>>> # Setting up Bonmin problem
+>>> problem = ot.OptimizationProblem(objectiveFunction)
+>>> problem.setBounds(bounds)
+>>> problem.setVariablesType(variablesType)
+>>> problem.setInequalityConstraint(h)
+
+>>> bonminAlgorithm = ot.Bonmin(problem,'B-BB')
+>>> bonminAlgorithm.setStartingPoint([0,0,0,0])
+>>> bonminAlgorithm.setMaximumEvaluationNumber(10000)
+>>> bonminAlgorithm.setMaximumIterationNumber(1000)
+>>> ot.ResourceMap.SetAsString('Bonmin-mu_oracle','loqo')
+>>> ot.ResourceMap.SetAsScalar('Bonmin-bonmin.time_limit', 5.0)
+
+>>> # Running the solver
+>>> bonminAlgorithm.run() # doctest: +SKIP
+
+>>> # Retrieving the results
+>>> result = bonminAlgorithm.getResult() # doctest: +SKIP
+>>> optimalPoint = result.getOptimalPoint() # doctest: +SKIP
+>>> optimalValue = result.getOptimalValue() # doctest: +SKIP
+>>> evaluationNumber = result.getInputSample().getSize() # doctest: +SKIP "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Bonmin::GetAlgorithmNames
+"Retrieves the names of the available optimization algorithms.
+
+Returns
+-------
+algoName : :class:`~openturns.Description`
+    The names of the available optimization algorithms."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Bonmin::IsAvailable
+"Retrieves the names of the available optimization algorithms.
+
+Returns
+-------
+algoName : bool
+    Returns true if Bonmin support is available, false if not."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Bonmin::setAlgorithmName
+"Accessor to algoName parameter. Sets the optimization algorithm to
+use. Possible values for algoName are B-BB, B-OA, B-QG, B-Hyb, B-Ecp, B-iFP. See
+`Bonmin's online documentation <https://www.coin-or.org/Bonmin/index.html>`_ for more details.
+Defautl is B-BB.
+
+Parameters
+----------
+algoName : str
+    The name of the optimization algorithm to use."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Bonmin::getAlgorithmName
+"Accessor to algoName parameter. Retrieves the name of the optimization algorithm used.
+
+Returns
+-------
+algoName : str
+    The name of the optimization algorithm used."

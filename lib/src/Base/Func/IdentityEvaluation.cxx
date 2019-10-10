@@ -99,6 +99,20 @@ UnsignedInteger IdentityEvaluation::getOutputDimension() const
   return dimension_;
 }
 
+/* Linearity accessors */
+Bool IdentityEvaluation::isLinear() const
+{
+  return true;
+}
+
+Bool IdentityEvaluation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  if (index > getInputDimension())
+  throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
+  
+  return true;
+}
+
 /* Method save() stores the object through the StorageManager */
 void IdentityEvaluation::save(Advocate & adv) const
 {

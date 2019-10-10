@@ -22,6 +22,7 @@
 #include "openturns/Dlib.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObject.hxx"
+#include "openturns/OSS.hxx"
 
 #ifdef OPENTURNS_HAVE_DLIB
   #include "openturns/DlibFunctions.hxx"
@@ -411,7 +412,7 @@ Dlib::Dlib(const OptimizationProblem & problem,
   setResult(OptimizationResult(problem.getDimension(),1));
   setStartingPoint(Point(problem.getDimension()));
   setAlgorithmName(algoName);
-} // Constructor
+}
 
 // Virtual constructor
 Dlib * Dlib::clone() const
@@ -455,7 +456,7 @@ void Dlib::setWolfeRho(const Scalar wolfeRho)
   wolfeRho_ = wolfeRho;
   
   if (wolfeRho >= wolfeSigma_) 
-    LOGWARN("Warning: wolfeRho must be strictly lower than wolfeSigma. Please adjust either of the parameters.");
+    LOGWARN(OSS() << "Warning: wolfeRho must be strictly lower than wolfeSigma. Please adjust either of the parameters.");
 }
   
 Scalar Dlib::getWolfeSigma() const
@@ -471,7 +472,7 @@ void Dlib::setWolfeSigma(const Scalar wolfeSigma)
   wolfeSigma_ = wolfeSigma;
   
   if (wolfeRho_ >= wolfeSigma)
-    LOGWARN("Warning: wolfeRho must be strictly lower than wolfeSigm. Please adjust either of the parameters.a");
+    LOGWARN(OSS() << "Warning: wolfeRho must be strictly lower than wolfeSigma. Please adjust either of the parameters.");
 }
 
 UnsignedInteger Dlib::getMaxLineSearchIterations() const
@@ -511,11 +512,19 @@ void Dlib::checkProblem(const OptimizationProblem & problem) const
 #ifdef OPENTURNS_HAVE_DLIB
   
   // Cannot solve multi-objective problems
-  if (problem.hasMultipleObjective()) throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " does not support multi-objective optimization";
+  if (problem.hasMultipleObjective()) 
+    throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " does not support multi-objective optimization";
   
   // Cannot solve problems with equality/inequality constraints
-  if (problem.hasInequalityConstraint()) throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm does not support inequality constraints";  
-  if (problem.hasEqualityConstraint()) throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm does not support equality constraints";
+  if (problem.hasInequalityConstraint()) 
+    throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm does not support inequality constraints";  
+  if (problem.hasEqualityConstraint())
+    throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm does not support equality constraints";
+  
+  // Cannot solve non continuous problems
+  if (!problem.isContinuous())
+    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support non continuous problems";
+
   
   // "Global" requires finite bounds
   if (algoName_=="Global")

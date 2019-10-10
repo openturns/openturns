@@ -19,6 +19,7 @@
  *
  */
 #include "openturns/OptimizationAlgorithm.hxx"
+#include "openturns/Bonmin.hxx"
 #include "openturns/Ceres.hxx"
 #include "openturns/CMinpack.hxx"
 #include "openturns/Cobyla.hxx"
@@ -253,8 +254,13 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
   {
     solver = Dlib(solverName);
   }
+  else if (Bonmin::IsAvailable() && Bonmin::GetAlgorithmNames().contains(solverName))
+  {
+    solver = Bonmin(solverName);
+  }
   else
     throw InvalidArgumentException(HERE) << "Unknown optimization solver:" << solverName;
+    
   return solver;
 }
 
@@ -283,6 +289,8 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const OptimizationProblem & p
 Description OptimizationAlgorithm::GetAlgorithmNames()
 {
   Description names;
+  if (Bonmin::IsAvailable())
+    names.add(Bonmin::GetAlgorithmNames());
   if (Ceres::IsAvailable())
     names.add(Ceres::GetAlgorithmNames());
   if (CMinpack::IsAvailable())
@@ -295,6 +303,7 @@ Description OptimizationAlgorithm::GetAlgorithmNames()
     names.add(NLopt::GetAlgorithmNames());
   if (OPTpp::IsAvailable())
     names.add(OPTpp::GetAlgorithmNames());
+
   return names;
 }
 

@@ -9,6 +9,7 @@ Numerical methods
     optimization_constraints.ipynb
     optimization_nlopt.ipynb
     optimization_dlib.ipynb
+    optimization_bonmin.ipynb
     deterministic_design.ipynb
     probabilistic_design.ipynb
     mixed_design.ipynb

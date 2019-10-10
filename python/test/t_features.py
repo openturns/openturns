@@ -97,6 +97,10 @@ try:
     print('14: optimization (dlib)'.ljust(width), end=' ')
     print('OK' if ot.Dlib.IsAvailable() else 'no')
 
+    # check that dlib was found
+    print('15: optimization (bonmin)'.ljust(width), end=' ')
+    print('OK' if ot.Bonmin.IsAvailable() else 'no')
+
 except:
     import os
     import traceback

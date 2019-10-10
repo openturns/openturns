@@ -144,6 +144,20 @@ UnsignedInteger LinearEvaluation::getOutputDimension() const
   return constant_.getDimension();
 }
 
+/* Linearity accessors */
+Bool LinearEvaluation::isLinear() const
+{
+  return true;
+}
+
+Bool LinearEvaluation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  if (index > getInputDimension())
+    throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
+  
+  return true;
+}
+
 /* Method save() stores the object through the StorageManager */
 void LinearEvaluation::save(Advocate & adv) const
 {

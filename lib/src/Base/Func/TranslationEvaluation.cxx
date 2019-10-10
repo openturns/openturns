@@ -119,6 +119,20 @@ UnsignedInteger TranslationEvaluation::getOutputDimension() const
   return constant_.getDimension();
 }
 
+/* Linearity accessors */
+Bool TranslationEvaluation::isLinear() const
+{
+  return true;
+}
+
+Bool TranslationEvaluation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  if (index >= getInputDimension())
+    throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
+    
+  return true;
+}
+
 /* Method save() stores the object through the StorageManager */
 void TranslationEvaluation::save(Advocate & adv) const
 {

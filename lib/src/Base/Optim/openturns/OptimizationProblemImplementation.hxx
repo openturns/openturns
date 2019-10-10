@@ -38,14 +38,23 @@ class OT_API OptimizationProblemImplementation
 {
 
   CLASSNAME
-
+     
 public:
 
+  /** enum and typedef declarations */
+
+  enum VariableType
+    {
+      CONTINUOUS,
+      BINARY,
+      INTEGER
+    };
+    
   /** Default constructor */
   OptimizationProblemImplementation();
 
   /** Constructor with parameters */
-  explicit OptimizationProblemImplementation(const Function & objective);
+  explicit OptimizationProblemImplementation(const Function& objective);
 
   /** Constructor with parameters */
   OptimizationProblemImplementation(const Function & objective,
@@ -96,6 +105,11 @@ public:
   /** Minimization accessor */
   void setMinimization(Bool minimization);
   Bool isMinimization() const;
+  
+  /** Variable types accessors */
+  void setVariablesType(const Indices & variableType);
+  Indices getVariablesType() const;
+  bool isContinuous() const;
 
   /** String converter */
   virtual String __repr__() const;
@@ -124,6 +138,10 @@ protected:
 
   // The dimension of the search space
   UnsignedInteger dimension_;
+  
+  // The type of the variables
+  Indices variablesType_;
+    
 } ; /* class OptimizationProblemImplementation */
 
 

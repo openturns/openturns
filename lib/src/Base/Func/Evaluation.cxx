@@ -197,6 +197,16 @@ UnsignedInteger Evaluation::getCallsNumber() const
   return getImplementation()->getCallsNumber();
 }
 
+/* Linearity accessors */
+Bool Evaluation::isLinear() const
+{
+  return getImplementation()->isLinear();
+}
+
+Bool Evaluation::isLinearlyDependent(const UnsignedInteger index) const
+{
+  return getImplementation()->isLinearlyDependent(index);
+}
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph Evaluation::draw(const UnsignedInteger inputMarginal,
