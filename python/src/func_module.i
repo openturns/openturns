@@ -150,6 +150,9 @@
 %include LinearBasisFactory.i
 %include QuadraticBasisFactory.i
 %include NullHessian.i
+%include MarginalEvaluation.i
+%include MarginalGradient.i
+%include MarginalHessian.i
 
 /* At last we include template definitions */
 %include BaseFuncTemplateDefs.i

@@ -133,6 +133,7 @@ Evaluation functions
     ProductEvaluation
     ProductPolynomialEvaluation
     QuadraticEvaluation
+    MarginalEvaluation
 
 Gradient functions
 ==================
@@ -151,6 +152,7 @@ Gradient functions
     NoGradient
     ParametricGradient
     ProductGradient
+    MarginalGradient
 
 Hessian functions
 =================
@@ -169,6 +171,7 @@ Hessian functions
     NullHessian
     ParametricHessian
     ProductHessian
+    MarginalHessian
 
 Differential equation solvers
 =============================

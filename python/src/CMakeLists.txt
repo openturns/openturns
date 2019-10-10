@@ -374,6 +374,9 @@ ot_add_python_module(func func_module.i
                       TimeSeries.i TimeSeries_doc.i.in
                       ProcessSample.i ProcessSample_doc.i.in
                       ProcessSampleImplementation.i ProcessSampleImplementation_doc.i.in
+                      MarginalEvaluation.i
+                      MarginalGradient.i
+                      MarginalHessian.i
                       BaseFuncTemplateDefs.i
                    )
 
