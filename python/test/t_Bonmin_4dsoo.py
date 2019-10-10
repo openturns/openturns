@@ -55,7 +55,7 @@ algo = ot.Bonmin(problem,"B-BB")
 algo.setStartingPoint(x0)
 algo.setMaximumEvaluationNumber(10000)
 algo.setMaximumIterationNumber(1000)
-ot.ResourceMap.SetAsScalar('Bonmin-bonmin.time_limit', 60)
+algo.setOptionAsScalar('bonmin.time_limit', 60)
 algo.run()
 
 result = algo.getResult()

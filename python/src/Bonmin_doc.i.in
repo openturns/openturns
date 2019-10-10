@@ -41,11 +41,14 @@ Notes
 
 *Algorithms parameters:*
 
-  Bonmin algorithms can be adapted using numerous parameters, described  `here <https://www.coin-or.org/Bonmin/options_list.html#sec:options_list>`_. These parameters can be modified using OpenTURNS' :class:`~openturns.ResourceMap`. For every option ``optionName``, one simply add a key named ``Bonmin-optionName`` with the value to use, as shown below::
+  Bonmin algorithms can be adapted using numerous parameters, described  `here <https://www.coin-or.org/Bonmin/options_list.html#sec:options_list>`_. Options are also available for the underlying Ipopt algorithms, as described `in this page <https://www.coin-or.org/Ipopt/documentation/node40.html>`_. All these parameters can be modified using Bonmin ''setOptionAsType'' methods, as shown below::
   
     >>> import openturns as ot
-    >>> ot.ResourceMap.SetAsUnsignedInteger('Bonmin-bonmin.iteration_limit', 100)
-    >>> ot.ResourceMap.SetAsScalar('Bonmin-bonmin.time_limit', 30.0)
+    >>> algo = ot.Bonmin()
+    >>> algo.setOptionAsString('mu_oracle','loqo')
+    >>> algo.setOptionAsScalar('bonmin.time_limit', 30.0)
+    
+  N.B.: for options specific to Bonmin, a prefix ''bonmin.'' is added before the name of the option described in the documentation above.
 
 *Convergence criteria:*
 
@@ -113,8 +116,8 @@ In OpenTURNS, inequality constraints are defined by a function :math:`h` such th
 >>> bonminAlgorithm.setStartingPoint([0,0,0,0])
 >>> bonminAlgorithm.setMaximumEvaluationNumber(10000)
 >>> bonminAlgorithm.setMaximumIterationNumber(1000)
->>> ot.ResourceMap.SetAsString('Bonmin-mu_oracle','loqo')
->>> ot.ResourceMap.SetAsScalar('Bonmin-bonmin.time_limit', 5.0)
+>>> bonminAlgorithm.setOptionAsString('mu_oracle','loqo')
+>>> bonminAlgorithm.setOptionAsScalar('bonmin.time_limit', 5.0)
 
 >>> # Running the solver
 >>> bonminAlgorithm.run() # doctest: +SKIP
@@ -167,3 +170,185 @@ Returns
 -------
 algoName : str
     The name of the optimization algorithm used."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Bonmin::setOptionAsString
+"Accessor to string options. Sets an option defined by a key and its value.
+
+Parameters
+----------
+key : str
+    The name of the option to set.
+    
+value : str
+    The value of the specified option."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Bonmin::getOptionAsString
+"Accessor to string options. Retrieves the value of an option from its name.
+
+Parameters
+----------
+key : str
+    The name of the option to get.
+    
+Returns
+-------
+optionValue : str
+    The value of the specified option."
+
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Bonmin::setOptionAsScalar
+"Accessor to scalar options. Sets an option defined by a key and its value.
+
+Parameters
+----------
+key : str
+    The name of the option to set.
+    
+value : float
+    The value of the specified option."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Bonmin::getOptionAsScalar
+"Accessor to scalar options. Retrieves the value of an option from its name.
+
+Parameters
+----------
+key : str
+    The name of the option to get.
+    
+Returns
+-------
+optionValue : float
+    The value of the specified option."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Bonmin::setOptionAsUnsignedInteger
+"Accessor to integer options. Sets an option defined by a key and its value.
+
+Parameters
+----------
+key : str
+    The name of the option to set.
+    
+value : int
+    The value of the specified option."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Bonmin::getOptionAsUnsignedInteger
+"Accessor to integer options. Retrieves the value of an option from its name.
+
+Parameters
+----------
+key : str
+    The name of the option to get.
+    
+Returns
+-------
+optionValue : int
+    The value of the specified option."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Bonmin::getOptions
+"Accessor to the list of user-specified option names.
+
+Returns
+-------
+optionNames : :class:`~openturns.Description`
+    The list of the options defined by the user."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Bonmin::hasOption
+"Checks if a specific option is already defined.
+
+Parameters
+----------
+key : str
+    The name of the option to look for.
+
+Returns
+-------
+defined : bool
+    Returns True if the specified option is already defined by the user."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Bonmin::getOptionType
+"Accessor to the type of an option.
+
+Parameters
+----------
+key : str
+    The name of the option to check.
+
+Returns
+-------
+type : str
+    The type of the specified option. For Bonmin algorithms, possible types are ''str'', ''unsigned int'' and ''float''."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Bonmin::getOption
+"Accessor to any option, as a string.
+
+Parameters
+----------
+key : str
+    The name of the option to retrieve.
+
+Returns
+-------
+value : str
+    The value of the specified option, as a string."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Bonmin::removeOption
+"Removes a user-defined option. In this case, Bonmin will use default value.
+
+Parameters
+----------
+key : str
+    The name of the option to remove."
+
+// ---------------------------------------------------------------------
+
+
+
+    
+    
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

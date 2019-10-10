@@ -25,13 +25,6 @@
 using namespace OT;
 using namespace OT::Test;
 
-void debug(const String & message,
-           const String & where)
-{
-  std::cout << " DEBUG [" << where << "]: " << message << std::endl;
-}
-
-
 int main()
 {
   TESTPREAMBLE;
@@ -100,8 +93,9 @@ int main()
     bonminAlgorithm.setStartingPoint(Point(4,0));
     bonminAlgorithm.setMaximumEvaluationNumber(10000);
     bonminAlgorithm.setMaximumIterationNumber(1000);
-    ResourceMap::SetAsString("Bonmin-mu_oracle","loqo");
-    ResourceMap::SetAsScalar("Bonmin-bonmin.time_limit",5);
+    
+    bonminAlgorithm.setOptionAsString("mu_oracle","loqo");
+    bonminAlgorithm.setOptionAsScalar("bonmin.time_limit",5);
     
     // Test __repr__ method
     std::cout << bonminAlgorithm.__repr__() << std::endl;

@@ -263,107 +263,155 @@ void Ceres::run()
     options.parameter_tolerance = getMaximumRelativeError();
 
     // Set remaining options from ResourceMap
-    if (options_.hasKey("line_search_type") && !ceres::StringToLineSearchType(ResourceMap::Get("Ceres-line_search_type"), &options.line_search_type))
+    if (options_.hasKey("line_search_type") && !ceres::StringToLineSearchType(options_.get("line_search_type"), &options.line_search_type))
       throw InvalidArgumentException(HERE) << "Invalid value for line_search_type";
-    if (ResourceMap::HasKey("Ceres-nonlinear_conjugate_gradient_type") && !ceres::StringToNonlinearConjugateGradientType(ResourceMap::Get("Ceres-nonlinear_conjugate_gradient_type"), &options.nonlinear_conjugate_gradient_type))
+    if (options_.hasKey("nonlinear_conjugate_gradient_type") && !ceres::StringToNonlinearConjugateGradientType(options_.get("nonlinear_conjugate_gradient_type"), &options.nonlinear_conjugate_gradient_type))
       throw InvalidArgumentException(HERE) << "Invalid value for nonlinear_conjugate_gradient_type";
-    if (ResourceMap::HasKey("Ceres-max_lbfgs_rank"))
-      options.max_lbfgs_rank = ResourceMap::GetAsUnsignedInteger("Ceres-max_lbfgs_rank");
-    if (ResourceMap::HasKey("Ceres-use_approximate_eigenvalue_bfgs_scaling"))
-      options.use_approximate_eigenvalue_bfgs_scaling = ResourceMap::GetAsBool("Ceres-use_approximate_eigenvalue_bfgs_scaling");
-    if (ResourceMap::HasKey("Ceres-line_search_interpolation_type") && !ceres::StringToLineSearchInterpolationType(ResourceMap::Get("Ceres-line_search_interpolation_type"), &options.line_search_interpolation_type))
+    
+    if (options_.hasKey("max_lbfgs_rank"))
+      options.max_lbfgs_rank = options_.getAsUnsignedInteger("max_lbfgs_rank");
+    
+    if (options_.hasKey("use_approximate_eigenvalue_bfgs_scaling"))
+      options.use_approximate_eigenvalue_bfgs_scaling = options_.getAsBool("use_approximate_eigenvalue_bfgs_scaling");
+    
+    if (options_.hasKey("line_search_interpolation_type") && !ceres::StringToLineSearchInterpolationType(options_.get("line_search_interpolation_type"), &options.line_search_interpolation_type))
       throw InvalidArgumentException(HERE) << "Invalid value for line_search_interpolation_type";
-    if (ResourceMap::HasKey("Ceres-min_line_search_step_size"))
-      options.min_line_search_step_size = ResourceMap::GetAsScalar("Ceres-min_line_search_step_size");
-    if (ResourceMap::HasKey("Ceres-line_search_sufficient_function_decrease"))
-      options.line_search_sufficient_function_decrease = ResourceMap::GetAsScalar("Ceres-line_search_sufficient_function_decrease");
-    if (ResourceMap::HasKey("Ceres-max_line_search_step_contraction"))
-      options.max_line_search_step_contraction = ResourceMap::GetAsScalar("Ceres-max_line_search_step_contraction");
-    if (ResourceMap::HasKey("Ceres-min_line_search_step_contraction"))
-      options.min_line_search_step_contraction = ResourceMap::GetAsScalar("Ceres-min_line_search_step_contraction");
-    if (ResourceMap::HasKey("Ceres-max_num_line_search_step_size_iterations"))
-      options.max_num_line_search_step_size_iterations = ResourceMap::GetAsUnsignedInteger("Ceres-max_num_line_search_step_size_iterations");
-    if (ResourceMap::HasKey("Ceres-max_num_line_search_direction_restarts"))
-      options.max_num_line_search_direction_restarts = ResourceMap::GetAsUnsignedInteger("Ceres-max_num_line_search_direction_restarts");
-    if (ResourceMap::HasKey("Ceres-line_search_sufficient_curvature_decrease"))
-      options.line_search_sufficient_curvature_decrease = ResourceMap::GetAsScalar("Ceres-line_search_sufficient_curvature_decrease");
-    if (ResourceMap::HasKey("Ceres-max_line_search_step_expansion"))
-      options.max_line_search_step_expansion = ResourceMap::GetAsScalar("Ceres-max_line_search_step_expansion");
-    if (ResourceMap::HasKey("Ceres-dogleg_type") && !ceres::StringToDoglegType(ResourceMap::Get("Ceres-dogleg_type"), &options.dogleg_type))
+    
+    if (options_.hasKey("min_line_search_step_size"))
+      options.min_line_search_step_size = options_.getAsScalar("min_line_search_step_size");
+    
+    if (options_.hasKey("line_search_sufficient_function_decrease"))
+      options.line_search_sufficient_function_decrease = options_.getAsScalar("line_search_sufficient_function_decrease");
+    
+    if (options_.hasKey("max_line_search_step_contraction"))
+      options.max_line_search_step_contraction = options_.getAsScalar("max_line_search_step_contraction");
+    
+    if (options_.hasKey("min_line_search_step_contraction"))
+      options.min_line_search_step_contraction = options_.getAsScalar("min_line_search_step_contraction");
+    
+    if (options_.hasKey("max_num_line_search_step_size_iterations"))
+      options.max_num_line_search_step_size_iterations = options_.getAsUnsignedInteger("max_num_line_search_step_size_iterations");
+    
+    if (options_.hasKey("max_num_line_search_direction_restarts"))
+      options.max_num_line_search_direction_restarts = options_.getAsUnsignedInteger("max_num_line_search_direction_restarts");
+    
+    if (options_.hasKey("line_search_sufficient_curvature_decrease"))
+      options.line_search_sufficient_curvature_decrease = options_.getAsScalar("line_search_sufficient_curvature_decrease");
+    
+    if (options_.hasKey("max_line_search_step_expansion"))
+      options.max_line_search_step_expansion = options_.getAsScalar("max_line_search_step_expansion");
+    
+    if (options_.hasKey("dogleg_type") && !ceres::StringToDoglegType(options_.get("dogleg_type"), &options.dogleg_type))
       throw InvalidArgumentException(HERE) << "Invalid value for dogleg_type";
-    if (ResourceMap::HasKey("Ceres-use_nonmonotonic_steps"))
-      options.use_nonmonotonic_steps = ResourceMap::GetAsBool("Ceres-use_nonmonotonic_steps");
-    if (ResourceMap::HasKey("Ceres-max_consecutive_nonmonotonic_steps"))
-      options.max_consecutive_nonmonotonic_steps = ResourceMap::GetAsUnsignedInteger("Ceres-max_consecutive_nonmonotonic_steps");
-    if (ResourceMap::HasKey("Ceres-max_num_iterations"))
-      options.max_num_iterations = ResourceMap::GetAsUnsignedInteger("Ceres-max_num_iterations");
-    if (ResourceMap::HasKey("Ceres-max_solver_time_in_seconds"))
-      options.max_solver_time_in_seconds = ResourceMap::GetAsScalar("Ceres-max_solver_time_in_seconds");
-    if (ResourceMap::HasKey("Ceres-num_threads"))
-      options.num_threads = ResourceMap::GetAsUnsignedInteger("Ceres-num_threads");
-    if (ResourceMap::HasKey("Ceres-initial_trust_region_radius"))
-      options.initial_trust_region_radius = ResourceMap::GetAsScalar("Ceres-initial_trust_region_radius");
-    if (ResourceMap::HasKey("Ceres-max_trust_region_radius"))
-      options.max_trust_region_radius = ResourceMap::GetAsScalar("Ceres-max_trust_region_radius");
-    if (ResourceMap::HasKey("Ceres-min_trust_region_radius"))
-      options.min_trust_region_radius = ResourceMap::GetAsScalar("Ceres-min_trust_region_radius");
-    if (ResourceMap::HasKey("Ceres-min_relative_decrease"))
-      options.min_relative_decrease = ResourceMap::GetAsScalar("Ceres-min_relative_decrease");
-    if (ResourceMap::HasKey("Ceres-min_lm_diagonal"))
-      options.min_lm_diagonal = ResourceMap::GetAsScalar("Ceres-min_lm_diagonal");
-    if (ResourceMap::HasKey("Ceres-max_lm_diagonal"))
-      options.max_lm_diagonal = ResourceMap::GetAsScalar("Ceres-max_lm_diagonal");
-    if (ResourceMap::HasKey("Ceres-max_num_consecutive_invalid_steps"))
-      options.max_num_consecutive_invalid_steps = ResourceMap::GetAsUnsignedInteger("Ceres-max_num_consecutive_invalid_steps");
-    if (ResourceMap::HasKey("Ceres-function_tolerance"))
-      options.function_tolerance = ResourceMap::GetAsScalar("Ceres-function_tolerance");
-    if (ResourceMap::HasKey("Ceres-gradient_tolerance"))
-      options.gradient_tolerance = ResourceMap::GetAsScalar("Ceres-gradient_tolerance");
-    if (ResourceMap::HasKey("Ceres-parameter_tolerance"))
-      options.parameter_tolerance = ResourceMap::GetAsScalar("Ceres-parameter_tolerance");
-    if (ResourceMap::HasKey("Ceres-linear_solver_type") && !ceres::StringToLinearSolverType(ResourceMap::Get("Ceres-linear_solver_type"), &options.linear_solver_type))
+    
+    if (options_.hasKey("use_nonmonotonic_steps"))
+      options.use_nonmonotonic_steps = options_.getAsBool("use_nonmonotonic_steps");
+    
+    if (options_.hasKey("max_consecutive_nonmonotonic_steps"))
+      options.max_consecutive_nonmonotonic_steps = options_.getAsUnsignedInteger("max_consecutive_nonmonotonic_steps");
+    
+    if (options_.hasKey("max_num_iterations"))
+      options.max_num_iterations = options_.getAsUnsignedInteger("max_num_iterations");
+    
+    if (options_.hasKey("max_solver_time_in_seconds"))
+      options.max_solver_time_in_seconds = options_.getAsScalar("max_solver_time_in_seconds");
+    
+    if (options_.hasKey("num_threads"))
+      options.num_threads = options_.getAsUnsignedInteger("num_threads");
+    
+    if (options_.hasKey("initial_trust_region_radius"))
+      options.initial_trust_region_radius = options_.getAsScalar("initial_trust_region_radius");
+    
+    if (options_.hasKey("max_trust_region_radius"))
+      options.max_trust_region_radius = options_.getAsScalar("max_trust_region_radius");
+    
+    if (options_.hasKey("min_trust_region_radius"))
+      options.min_trust_region_radius = options_.getAsScalar("min_trust_region_radius");
+    
+    if (options_.hasKey("min_relative_decrease"))
+      options.min_relative_decrease = options_.getAsScalar("min_relative_decrease");
+    
+    if (options_.hasKey("min_lm_diagonal"))
+      options.min_lm_diagonal = options_.getAsScalar("min_lm_diagonal");
+    
+    if (options_.hasKey("max_lm_diagonal"))
+      options.max_lm_diagonal = options_.getAsScalar("max_lm_diagonal");
+    
+    if (options_.hasKey("max_num_consecutive_invalid_steps"))
+      options.max_num_consecutive_invalid_steps = options_.getAsUnsignedInteger("max_num_consecutive_invalid_steps");
+    
+    if (options_.hasKey("function_tolerance"))
+      options.function_tolerance = options_.getAsScalar("function_tolerance");
+    
+    if (options_.hasKey("gradient_tolerance"))
+      options.gradient_tolerance = options_.getAsScalar("gradient_tolerance");
+    
+    if (options_.hasKey("parameter_tolerance"))
+      options.parameter_tolerance = options_.getAsScalar("parameter_tolerance");
+    
+    if (options_.hasKey("linear_solver_type") && !ceres::StringToLinearSolverType(options_.get("linear_solver_type"), &options.linear_solver_type))
       throw InvalidArgumentException(HERE) << "Invalid value for linear_solver_type";
-    if (ResourceMap::HasKey("Ceres-preconditioner_type") && !ceres::StringToPreconditionerType(ResourceMap::Get("Ceres-preconditioner_type"), &options.preconditioner_type))
+    
+    if (options_.hasKey("preconditioner_type") && !ceres::StringToPreconditionerType(options_.get("preconditioner_type"), &options.preconditioner_type))
       throw InvalidArgumentException(HERE) << "Invalid value for preconditioner_type";
-    if (ResourceMap::HasKey("Ceres-visibility_clustering_type") && !ceres::StringToVisibilityClusteringType(ResourceMap::Get("Ceres-visibility_clustering_type"), &options.visibility_clustering_type))
+    
+    if (options_.hasKey("visibility_clustering_type") && !ceres::StringToVisibilityClusteringType(options_.get("visibility_clustering_type"), &options.visibility_clustering_type))
       throw InvalidArgumentException(HERE) << "Invalid value for visibility_clustering_type";
-    if (ResourceMap::HasKey("Ceres-dense_linear_algebra_library_type") && !ceres::StringToDenseLinearAlgebraLibraryType(ResourceMap::Get("Ceres-dense_linear_algebra_library_type"), &options.dense_linear_algebra_library_type))
+    
+    if (options_.hasKey("dense_linear_algebra_library_type") && !ceres::StringToDenseLinearAlgebraLibraryType(options_.get("dense_linear_algebra_library_type"), &options.dense_linear_algebra_library_type))
       throw InvalidArgumentException(HERE) << "Invalid value for dense_linear_algebra_library_type";
-    if (ResourceMap::HasKey("Ceres-sparse_linear_algebra_library_type") && !ceres::StringToSparseLinearAlgebraLibraryType(ResourceMap::Get("Ceres-sparse_linear_algebra_library_type"), &options.sparse_linear_algebra_library_type))
+    
+    if (options_.hasKey("sparse_linear_algebra_library_type") && !ceres::StringToSparseLinearAlgebraLibraryType(options_.get("sparse_linear_algebra_library_type"), &options.sparse_linear_algebra_library_type))
       throw InvalidArgumentException(HERE) << "Invalid value for sparse_linear_algebra_library_type";
-    if (ResourceMap::HasKey("Ceres-num_linear_solver_threads"))
-      options.num_linear_solver_threads = ResourceMap::GetAsUnsignedInteger("Ceres-num_linear_solver_threads");
-    if (ResourceMap::HasKey("Ceres-use_explicit_schur_complement"))
-      options.use_explicit_schur_complement = ResourceMap::GetAsBool("Ceres-use_explicit_schur_complement");
-    if (ResourceMap::HasKey("Ceres-use_postordering"))
-      options.use_postordering = ResourceMap::GetAsBool("Ceres-use_postordering");
-    if (ResourceMap::HasKey("Ceres-dynamic_sparsity"))
-      options.dynamic_sparsity = ResourceMap::GetAsBool("Ceres-dynamic_sparsity");
-    if (ResourceMap::HasKey("Ceres-min_linear_solver_iterations"))
-        options.min_linear_solver_iterations = ResourceMap::GetAsUnsignedInteger("Ceres-min_linear_solver_iterations");
-    if (ResourceMap::HasKey("Ceres-max_linear_solver_iterations"))
-        options.max_linear_solver_iterations = ResourceMap::GetAsUnsignedInteger("Ceres-max_linear_solver_iterations");
-    if (ResourceMap::HasKey("Ceres-eta"))
-      options.eta = ResourceMap::GetAsScalar("Ceres-eta");
-    if (ResourceMap::HasKey("Ceres-jacobi_scaling"))
-      options.jacobi_scaling = ResourceMap::GetAsBool("Ceres-jacobi_scaling");
-    if (ResourceMap::HasKey("Ceres-use_inner_iterations"))
-      options.use_inner_iterations = ResourceMap::GetAsBool("Ceres-use_inner_iterations");
-    if (ResourceMap::HasKey("Ceres-inner_iteration_tolerance"))
-      options.inner_iteration_tolerance = ResourceMap::GetAsScalar("Ceres-inner_iteration_tolerance");
+    
+    if (options_.hasKey("num_linear_solver_threads"))
+      options.num_linear_solver_threads = options_.getAsUnsignedInteger("num_linear_solver_threads");
+    
+    if (options_.hasKey("use_explicit_schur_complement"))
+      options.use_explicit_schur_complement = options_.getAsBool("use_explicit_schur_complement");
+    
+    if (options_.hasKey("use_postordering"))
+      options.use_postordering = options_.getAsBool("use_postordering");
+    
+    if (options_.hasKey("dynamic_sparsity"))
+      options.dynamic_sparsity = options_.getAsBool("dynamic_sparsity");
+    
+    if (options_.hasKey("min_linear_solver_iterations"))
+        options.min_linear_solver_iterations = options_.getAsUnsignedInteger("min_linear_solver_iterations");
+    
+    if (options_.hasKey("max_linear_solver_iterations"))
+        options.max_linear_solver_iterations = options_.getAsUnsignedInteger("max_linear_solver_iterations");
+    
+    if (options_.hasKey("eta"))
+      options.eta = options_.getAsScalar("eta");
+    
+    if (options_.hasKey("jacobi_scaling"))
+      options.jacobi_scaling = options_.getAsBool("jacobi_scaling");
+    
+    if (options_.hasKey("use_inner_iterations"))
+      options.use_inner_iterations = options_.getAsBool("use_inner_iterations");
+    
+    if (options_.hasKey("inner_iteration_tolerance"))
+      options.inner_iteration_tolerance = options_.getAsScalar("inner_iteration_tolerance");
+
     // logging_type: https://github.com/ceres-solver/ceres-solver/issues/470
     options.logging_type = ceres::SILENT;
-    if (ResourceMap::HasKey("Ceres-minimizer_progress_to_stdout"))
-      options.minimizer_progress_to_stdout = ResourceMap::GetAsBool("Ceres-minimizer_progress_to_stdout");
+    
+    if (options_.hasKey("minimizer_progress_to_stdout"))
+      options.minimizer_progress_to_stdout = options_.getAsBool("minimizer_progress_to_stdout");
+    
     // trust_region_problem_dump_directory/trust_region_problem_dump_format_type: https://github.com/ceres-solver/ceres-solver/issues/470
-    if (ResourceMap::HasKey("Ceres-check_gradients"))
-      options.check_gradients = ResourceMap::GetAsBool("Ceres-check_gradients");
-    if (ResourceMap::HasKey("Ceres-gradient_check_relative_precision"))
-      options.gradient_check_relative_precision = ResourceMap::GetAsScalar("Ceres-gradient_check_relative_precision");
-    if (ResourceMap::HasKey("Ceres-gradient_check_numeric_derivative_relative_step_size"))
-      options.gradient_check_numeric_derivative_relative_step_size = ResourceMap::GetAsScalar("Ceres-gradient_check_numeric_derivative_relative_step_size");
-    if (ResourceMap::HasKey("Ceres-update_state_every_iteration"))
-      options.update_state_every_iteration = ResourceMap::GetAsBool("Ceres-update_state_every_iteration");
+    if (options_.hasKey("check_gradients"))
+      options.check_gradients = options_.getAsBool("check_gradients");
+    
+    if (options_.hasKey("gradient_check_relative_precision"))
+      options.gradient_check_relative_precision = options_.getAsScalar("gradient_check_relative_precision");
+    
+    if (options_.hasKey("gradient_check_numeric_derivative_relative_step_size"))
+      options.gradient_check_numeric_derivative_relative_step_size = options_.getAsScalar("gradient_check_numeric_derivative_relative_step_size");
+    
+    if (options_.hasKey("update_state_every_iteration"))
+      options.update_state_every_iteration = options_.getAsBool("update_state_every_iteration");
 
     options.callbacks.push_back(new IterationCallbackInterface(*this));
     ceres::Solver::Summary summary;
@@ -392,47 +440,65 @@ void Ceres::run()
     options.parameter_tolerance = getMaximumRelativeError();
 
     // Set remaining options from ResourceMap
-    if (ResourceMap::HasKey("Ceres-line_search_type") && !ceres::StringToLineSearchType(ResourceMap::Get("Ceres-line_search_type"), &options.line_search_type))
+    if (hasOption("line_search_type") && !ceres::StringToLineSearchType(options_.get("line_search_type"), &options.line_search_type))
       throw InvalidArgumentException(HERE) << "Invalid value for line_search_type";
-    if (ResourceMap::HasKey("Ceres-nonlinear_conjugate_gradient_type") && !ceres::StringToNonlinearConjugateGradientType(ResourceMap::Get("Ceres-nonlinear_conjugate_gradient_type"), &options.nonlinear_conjugate_gradient_type))
+    
+    if (hasOption("nonlinear_conjugate_gradient_type") && !ceres::StringToNonlinearConjugateGradientType(options_.get("nonlinear_conjugate_gradient_type"), &options.nonlinear_conjugate_gradient_type))
       throw InvalidArgumentException(HERE) << "Invalid value for nonlinear_conjugate_gradient_type";
-    if (ResourceMap::HasKey("Ceres-max_lbfgs_rank"))
-      options.max_lbfgs_rank = ResourceMap::GetAsUnsignedInteger("Ceres-max_lbfgs_rank");
-    if (ResourceMap::HasKey("Ceres-use_approximate_eigenvalue_bfgs_scaling"))
-      options.use_approximate_eigenvalue_bfgs_scaling = ResourceMap::GetAsBool("Ceres-use_approximate_eigenvalue_bfgs_scaling");
-    if (ResourceMap::HasKey("Ceres-line_search_interpolation_type") && !ceres::StringToLineSearchInterpolationType(ResourceMap::Get("Ceres-line_search_interpolation_type"), &options.line_search_interpolation_type))
+    
+    if (options_.hasKey("max_lbfgs_rank"))
+      options.max_lbfgs_rank = options_.getAsUnsignedInteger("max_lbfgs_rank");
+    
+    if (options_.hasKey("use_approximate_eigenvalue_bfgs_scaling"))
+      options.use_approximate_eigenvalue_bfgs_scaling = options_.getAsBool("use_approximate_eigenvalue_bfgs_scaling");
+    
+    if (options_.hasKey("line_search_interpolation_type") && !ceres::StringToLineSearchInterpolationType(options_.get("line_search_interpolation_type"), &options.line_search_interpolation_type))
       throw InvalidArgumentException(HERE) << "Invalid value for line_search_interpolation_type";
 
-    if (ResourceMap::HasKey("Ceres-min_line_search_step_size"))
-      options.min_line_search_step_size = ResourceMap::GetAsScalar("Ceres-min_line_search_step_size");
-    if (ResourceMap::HasKey("Ceres-line_search_sufficient_function_decrease"))
-      options.line_search_sufficient_function_decrease = ResourceMap::GetAsScalar("Ceres-line_search_sufficient_function_decrease");
-    if (ResourceMap::HasKey("Ceres-max_line_search_step_contraction"))
-      options.max_line_search_step_contraction = ResourceMap::GetAsScalar("Ceres-max_line_search_step_contraction");
-    if (ResourceMap::HasKey("Ceres-min_line_search_step_contraction"))
-      options.min_line_search_step_contraction = ResourceMap::GetAsScalar("Ceres-min_line_search_step_contraction");
-    if (ResourceMap::HasKey("Ceres-max_num_line_search_step_size_iterations"))
-      options.max_num_line_search_step_size_iterations = ResourceMap::GetAsUnsignedInteger("Ceres-max_num_line_search_step_size_iterations");
-    if (ResourceMap::HasKey("Ceres-max_num_line_search_direction_restarts"))
-      options.max_num_line_search_direction_restarts = ResourceMap::GetAsUnsignedInteger("Ceres-max_num_line_search_direction_restarts");
-    if (ResourceMap::HasKey("Ceres-line_search_sufficient_curvature_decrease"))
-      options.line_search_sufficient_curvature_decrease = ResourceMap::GetAsScalar("Ceres-line_search_sufficient_curvature_decrease");
-    if (ResourceMap::HasKey("Ceres-max_line_search_step_expansion"))
-      options.max_line_search_step_expansion = ResourceMap::GetAsScalar("Ceres-max_line_search_step_expansion");
-    if (ResourceMap::HasKey("Ceres-max_num_iterations"))
-      options.max_num_iterations = ResourceMap::GetAsUnsignedInteger("Ceres-max_num_iterations");
-    if (ResourceMap::HasKey("Ceres-max_solver_time_in_seconds"))
-      options.max_solver_time_in_seconds = ResourceMap::GetAsScalar("Ceres-max_solver_time_in_seconds");
-    if (ResourceMap::HasKey("Ceres-function_tolerance"))
-      options.function_tolerance = ResourceMap::GetAsScalar("Ceres-function_tolerance");
-    if (ResourceMap::HasKey("Ceres-gradient_tolerance"))
-      options.gradient_tolerance = ResourceMap::GetAsScalar("Ceres-gradient_tolerance");
-    if (ResourceMap::HasKey("Ceres-parameter_tolerance"))
-      options.parameter_tolerance = ResourceMap::GetAsScalar("Ceres-parameter_tolerance");
+    if (options_.hasKey("min_line_search_step_size"))
+      options.min_line_search_step_size = options_.getAsScalar("min_line_search_step_size");
+    
+    if (options_.hasKey("line_search_sufficient_function_decrease"))
+      options.line_search_sufficient_function_decrease = options_.getAsScalar("line_search_sufficient_function_decrease");
+    
+    if (options_.hasKey("max_line_search_step_contraction"))
+      options.max_line_search_step_contraction = options_.getAsScalar("max_line_search_step_contraction");
+    
+    if (options_.hasKey("min_line_search_step_contraction"))
+      options.min_line_search_step_contraction = options_.getAsScalar("min_line_search_step_contraction");
+    
+    if (options_.hasKey("max_num_line_search_step_size_iterations"))
+      options.max_num_line_search_step_size_iterations = options_.getAsUnsignedInteger("max_num_line_search_step_size_iterations");
+    
+    if (options_.hasKey("max_num_line_search_direction_restarts"))
+      options.max_num_line_search_direction_restarts = options_.getAsUnsignedInteger("max_num_line_search_direction_restarts");
+    
+    if (options_.hasKey("line_search_sufficient_curvature_decrease"))
+      options.line_search_sufficient_curvature_decrease = options_.getAsScalar("line_search_sufficient_curvature_decrease");
+    
+    if (options_.hasKey("max_line_search_step_expansion"))
+      options.max_line_search_step_expansion = options_.getAsScalar("max_line_search_step_expansion");
+    
+    if (options_.hasKey("max_num_iterations"))
+      options.max_num_iterations = options_.getAsUnsignedInteger("max_num_iterations");
+    
+    if (options_.hasKey("max_solver_time_in_seconds"))
+      options.max_solver_time_in_seconds = options_.getAsScalar("max_solver_time_in_seconds");
+    
+    if (options_.hasKey("function_tolerance"))
+      options.function_tolerance = options_.getAsScalar("function_tolerance");
+    
+    if (options_.hasKey("gradient_tolerance"))
+      options.gradient_tolerance = options_.getAsScalar("gradient_tolerance");
+    
+    if (options_.hasKey("parameter_tolerance"))
+      options.parameter_tolerance = options_.getAsScalar("parameter_tolerance");
+    
     // logging_type: https://github.com/ceres-solver/ceres-solver/issues/470
     options.logging_type = ceres::SILENT;
-    if (ResourceMap::HasKey("Ceres-minimizer_progress_to_stdout"))
-      options.minimizer_progress_to_stdout = ResourceMap::GetAsBool("Ceres-minimizer_progress_to_stdout");
+    
+    if (options_.hasKey("minimizer_progress_to_stdout"))
+      options.minimizer_progress_to_stdout = options_.getAsBool("minimizer_progress_to_stdout");
 
     options.callbacks.push_back(new IterationCallbackInterface(*this));
     ceres::GradientProblemSolver::Summary summary;
@@ -582,9 +648,6 @@ void Ceres::removeOption(const String & key)
 {
   options_.removeKey(key);
 }
-
-
-
 
 /* Method save() stores the object through the StorageManager */
 void Ceres::save(Advocate & adv) const

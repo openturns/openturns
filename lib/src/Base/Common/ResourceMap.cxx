@@ -204,7 +204,7 @@ void ResourceMap::Reload()
 
 void ResourceMap::RemoveKey(const String & key)
 {
-  GetInstance().lock().removeKey(key);
+  GetInstance().lock().map_.removeKey(key);
 }
 
 /* Default constructor */
@@ -882,13 +882,13 @@ void ResourceMap::loadDefaultConfiguration()
   map_.setAsUnsignedInteger( "AnalyticalResult-MeanPointIntegrationNodesNumber", 255 );
 
   // SystemFORM parameters //
-  setAsScalar( "SystemFORM-MaximalScaling", 1.0e5 );
-  setAsScalar( "SystemFORM-StartingScaling", 1.0e-13 );
+  map_.setAsScalar( "SystemFORM-MaximalScaling", 1.0e5 );
+  map_.setAsScalar( "SystemFORM-StartingScaling", 1.0e-13 );
 
   // MultiFORM parameters //
-  setAsScalar( "MultiFORM-DefaultGamma", 1.1 );
-  setAsScalar( "MultiFORM-DefaultDelta", 0.75 );
-  setAsUnsignedInteger( "MultiFORM-DefaultMaximumNumberOfDesignPoints", 4 );
+  map_.setAsScalar( "MultiFORM-DefaultGamma", 1.1 );
+  map_.setAsScalar( "MultiFORM-DefaultDelta", 0.75 );
+  map_.setAsUnsignedInteger( "MultiFORM-DefaultMaximumNumberOfDesignPoints", 4 );
 
   // StrongMaximumTest parameters //
   map_.setAsScalar( "StrongMaximumTest-DefaultDeltaPrecision", 1.0e-7 );

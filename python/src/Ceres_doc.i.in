@@ -46,113 +46,113 @@ for more details.
 +------------------------------------------------------------+-------+
 | Key                                                        | Type  |
 +============================================================+=======+
-| Ceres-minimizer_type                                       | str   |
+| minimizer_type                                             | str   |
 +------------------------------------------------------------+-------+
-| Ceres-line_search_direction_type                           | str   |
+| line_search_direction_type                                 | str   |
 +------------------------------------------------------------+-------+
-| Ceres-line_search_type                                     | str   |
+| line_search_type                                           | str   |
 +------------------------------------------------------------+-------+
-| Ceres-nonlinear_conjugate_gradient_type                    | str   |
+| nonlinear_conjugate_gradient_type                          | str   |
 +------------------------------------------------------------+-------+
-| Ceres-max_lbfgs_rank                                       | int   |
+| max_lbfgs_rank                                             | int   |
 +------------------------------------------------------------+-------+
-| Ceres-use_approximate_eigenvalue_bfgs_scaling              | bool  |
+| use_approximate_eigenvalue_bfgs_scaling                    | bool  |
 +------------------------------------------------------------+-------+
-| Ceres-line_search_interpolation_type                       | str   |
+| line_search_interpolation_type                             | str   |
 +------------------------------------------------------------+-------+
-| Ceres-min_line_search_step_size                            | float |
+| min_line_search_step_size                                  | float |
 +------------------------------------------------------------+-------+
-| Ceres-line_search_sufficient_function_decrease             | float |
+| line_search_sufficient_function_decrease                   | float |
 +------------------------------------------------------------+-------+
-| Ceres-max_line_search_step_contraction                     | float |
+| max_line_search_step_contraction                           | float |
 +------------------------------------------------------------+-------+
-| Ceres-min_line_search_step_contraction                     | float |
+| min_line_search_step_contraction                           | float |
 +------------------------------------------------------------+-------+
-| Ceres-max_num_line_search_step_size_iterations             | int   |
+| max_num_line_search_step_size_iterations                   | int   |
 +------------------------------------------------------------+-------+
-| Ceres-max_num_line_search_direction_restarts               | int   |
+| max_num_line_search_direction_restarts                     | int   |
 +------------------------------------------------------------+-------+
-| Ceres-line_search_sufficient_curvature_decrease            | float |
+| line_search_sufficient_curvature_decrease                  | float |
 +------------------------------------------------------------+-------+
-| Ceres-max_line_search_step_expansion                       | float |
+| max_line_search_step_expansion                             | float |
 +------------------------------------------------------------+-------+
-| Ceres-trust_region_strategy_type                           | str   |
+| trust_region_strategy_type                                 | str   |
 +------------------------------------------------------------+-------+
-| Ceres-dogleg_type                                          | str   |
+| dogleg_type                                                | str   |
 +------------------------------------------------------------+-------+
-| Ceres-use_nonmonotonic_steps                               | bool  |
+| use_nonmonotonic_steps                                     | bool  |
 +------------------------------------------------------------+-------+
-| Ceres-max_consecutive_nonmonotonic_steps                   | int   |
+| max_consecutive_nonmonotonic_steps                         | int   |
 +------------------------------------------------------------+-------+
-| Ceres-max_num_iterations                                   | int   |
+| max_num_iterations                                         | int   |
 +------------------------------------------------------------+-------+
-| Ceres-max_solver_time_in_seconds                           | float |
+| max_solver_time_in_seconds                                 | float |
 +------------------------------------------------------------+-------+
-| Ceres-num_threads                                          | int   |
+| num_threads                                                | int   |
 +------------------------------------------------------------+-------+
-| Ceres-initial_trust_region_radius                          | float |
+| initial_trust_region_radius                                | float |
 +------------------------------------------------------------+-------+
-| Ceres-max_trust_region_radius                              | float |
+| max_trust_region_radius                                    | float |
 +------------------------------------------------------------+-------+
-| Ceres-min_trust_region_radius                              | float |
+| min_trust_region_radius                                    | float |
 +------------------------------------------------------------+-------+
-| Ceres-min_relative_decrease                                | float |
+| min_relative_decrease                                      | float |
 +------------------------------------------------------------+-------+
-| Ceres-min_lm_diagonal                                      | float |
+| min_lm_diagonal                                            | float |
 +------------------------------------------------------------+-------+
-| Ceres-max_lm_diagonal                                      | float |
+| max_lm_diagonal                                            | float |
 +------------------------------------------------------------+-------+
-| Ceres-max_num_consecutive_invalid_steps                    | int   |
+| max_num_consecutive_invalid_steps                          | int   |
 +------------------------------------------------------------+-------+
-| Ceres-function_tolerance                                   | float |
+| function_tolerance                                         | float |
 +------------------------------------------------------------+-------+
-| Ceres-gradient_tolerance                                   | float |
+| gradient_tolerance                                         | float |
 +------------------------------------------------------------+-------+
-| Ceres-parameter_tolerance                                  | float |
+| parameter_tolerance                                        | float |
 +------------------------------------------------------------+-------+
-| Ceres-preconditioner_type                                  | str   |
+| preconditioner_type                                        | str   |
 +------------------------------------------------------------+-------+
-| Ceres-visibility_clustering_type                           | str   |
+| visibility_clustering_type                                 | str   |
 +------------------------------------------------------------+-------+
-| Ceres-dense_linear_algebra_library_type                    | str   |
+| dense_linear_algebra_library_type                          | str   |
 +------------------------------------------------------------+-------+
-| Ceres-sparse_linear_algebra_library_type                   | str   |
+| sparse_linear_algebra_library_type                         | str   |
 +------------------------------------------------------------+-------+
-| Ceres-num_linear_solver_threads                            | int   |
+| num_linear_solver_threads                                  | int   |
 +------------------------------------------------------------+-------+
-| Ceres-use_explicit_schur_complement                        | bool  |
+| use_explicit_schur_complement                              | bool  |
 +------------------------------------------------------------+-------+
-| Ceres-use_postordering                                     | bool  |
+| use_postordering                                           | bool  |
 +------------------------------------------------------------+-------+
-| Ceres-dynamic_sparsity                                     | bool  |
+| dynamic_sparsity                                           | bool  |
 +------------------------------------------------------------+-------+
-| Ceres-min_linear_solver_iterations                         | int   |
+| min_linear_solver_iterations                               | int   |
 +------------------------------------------------------------+-------+
-| Ceres-max_linear_solver_iterations                         | int   |
+| max_linear_solver_iterations                               | int   |
 +------------------------------------------------------------+-------+
-| Ceres-eta                                                  | float |
+| eta                                                        | float |
 +------------------------------------------------------------+-------+
-| Ceres-jacobi_scaling                                       | bool  |
+| jacobi_scaling                                             | bool  |
 +------------------------------------------------------------+-------+
-| Ceres-use_inner_iterations                                 | bool  |
+| use_inner_iterations                                       | bool  |
 +------------------------------------------------------------+-------+
-| Ceres-inner_iteration_tolerance                            | float |
+| inner_iteration_tolerance                                  | float |
 +------------------------------------------------------------+-------+
-| Ceres-logging_type                                         | str   |
+| logging_type                                               | str   |
 +------------------------------------------------------------+-------+
-| Ceres-minimizer_progress_to_stdout                         | bool  |
+| minimizer_progress_to_stdout                               | bool  |
 +------------------------------------------------------------+-------+
-| Ceres-trust_region_problem_dump_directory                  | str   |
+| trust_region_problem_dump_directory                        | str   |
 +------------------------------------------------------------+-------+
-| Ceres-trust_region_problem_dump_format_type                | str   |
+| trust_region_problem_dump_format_type                      | str   |
 +------------------------------------------------------------+-------+
-| Ceres-check_gradients                                      | bool  |
+| check_gradients                                            | bool  |
 +------------------------------------------------------------+-------+
-| Ceres-gradient_check_relative_precision                    | float |
+| gradient_check_relative_precision                          | float |
 +------------------------------------------------------------+-------+
-| Ceres-gradient_check_numeric_derivative_relative_step_size | float |
+| gradient_check_numeric_derivative_relative_step_size       | float |
 +------------------------------------------------------------+-------+
-| Ceres-update_state_every_iteration                         | bool  |
+| update_state_every_iteration                               | bool  |
 +------------------------------------------------------------+-------+
 
 
@@ -162,47 +162,47 @@ refer to `gradient solver options <http://ceres-solver.org/gradient_solver.html#
 +------------------------------------------------------------+-------+
 | Key                                                        | Type  |
 +============================================================+=======+
-| Ceres-line_search_direction_type                           | str   |
+| line_search_direction_type                                 | str   |
 +------------------------------------------------------------+-------+
-| Ceres-line_search_type                                     | str   |
+| line_search_type                                           | str   |
 +------------------------------------------------------------+-------+
-| Ceres-nonlinear_conjugate_gradient_type                    | str   |
+| nonlinear_conjugate_gradient_type                          | str   |
 +------------------------------------------------------------+-------+
-| Ceres-max_lbfgs_rank                                       | int   |
+| max_lbfgs_rank                                             | int   |
 +------------------------------------------------------------+-------+
-| Ceres-use_approximate_eigenvalue_bfgs_scaling              | bool  |
+| use_approximate_eigenvalue_bfgs_scaling                    | bool  |
 +------------------------------------------------------------+-------+
-| Ceres-line_search_interpolation_type                       | str   |
+| line_search_interpolation_type                             | str   |
 +------------------------------------------------------------+-------+
-| Ceres-min_line_search_step_size                            | float |
+| min_line_search_step_size                                  | float |
 +------------------------------------------------------------+-------+
-| Ceres-line_search_sufficient_function_decrease             | float |
+| line_search_sufficient_function_decrease                   | float |
 +------------------------------------------------------------+-------+
-| Ceres-max_line_search_step_contraction                     | float |
+| max_line_search_step_contraction                           | float |
 +------------------------------------------------------------+-------+
-| Ceres-min_line_search_step_contraction                     | float |
+| min_line_search_step_contraction                           | float |
 +------------------------------------------------------------+-------+
-| Ceres-max_num_line_search_step_size_iterations             | int   |
+| max_num_line_search_step_size_iterations                   | int   |
 +------------------------------------------------------------+-------+
-| Ceres-max_num_line_search_direction_restarts               | int   |
+| max_num_line_search_direction_restarts                     | int   |
 +------------------------------------------------------------+-------+
-| Ceres-line_search_sufficient_curvature_decrease            | float |
+| line_search_sufficient_curvature_decrease                  | float |
 +------------------------------------------------------------+-------+
-| Ceres-max_line_search_step_expansion                       | float |
+| max_line_search_step_expansion                             | float |
 +------------------------------------------------------------+-------+
-| Ceres-max_num_iterations                                   | int   |
+| max_num_iterations                                         | int   |
 +------------------------------------------------------------+-------+
-| Ceres-max_solver_time_in_seconds                           | float |
+| max_solver_time_in_seconds                                 | float |
 +------------------------------------------------------------+-------+
-| Ceres-function_tolerance                                   | float |
+| function_tolerance                                         | float |
 +------------------------------------------------------------+-------+
-| Ceres-gradient_tolerance                                   | float |
+| gradient_tolerance                                         | float |
 +------------------------------------------------------------+-------+
-| Ceres-parameter_tolerance                                  | float |
+| parameter_tolerance                                        | float |
 +------------------------------------------------------------+-------+
-| Ceres-logging_type                                         | str   |
+| logging_type                                               | str   |
 +------------------------------------------------------------+-------+
-| Ceres-minimizer_progress_to_stdout                         | bool  |
+| minimizer_progress_to_stdout                               | bool  |
 +------------------------------------------------------------+-------+
 
 See also
@@ -291,4 +291,157 @@ Returns
 -------
 available : bool
     Whether Ceres support is available."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Ceres::setOptionAsString
+"Accessor to string options. Sets an option defined by a key and its value.
+
+Parameters
+----------
+key : str
+    The name of the option to set.
+    
+value : str
+    The value of the specified option."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Ceres::getOptionAsString
+"Accessor to string options. Retrieves the value of an option from its name.
+
+Parameters
+----------
+key : str
+    The name of the option to get.
+    
+Returns
+-------
+optionValue : str
+    The value of the specified option."
+
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Ceres::setOptionAsScalar
+"Accessor to scalar options. Sets an option defined by a key and its value.
+
+Parameters
+----------
+key : str
+    The name of the option to set.
+    
+value : float
+    The value of the specified option."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Ceres::getOptionAsScalar
+"Accessor to scalar options. Retrieves the value of an option from its name.
+
+Parameters
+----------
+key : str
+    The name of the option to get.
+    
+Returns
+-------
+optionValue : float
+    The value of the specified option."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Ceres::setOptionAsUnsignedInteger
+"Accessor to integer options. Sets an option defined by a key and its value.
+
+Parameters
+----------
+key : str
+    The name of the option to set.
+    
+value : int
+    The value of the specified option."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Ceres::getOptionAsUnsignedInteger
+"Accessor to integer options. Retrieves the value of an option from its name.
+
+Parameters
+----------
+key : str
+    The name of the option to get.
+    
+Returns
+-------
+optionValue : int
+    The value of the specified option."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Ceres::getOptions
+"Accessor to the list of user-specified option names.
+
+Returns
+-------
+optionNames : :class:`~openturns.Description`
+    The list of the options defined by the user."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Ceres::hasOption
+"Checks if a specific option is already defined.
+
+Parameters
+----------
+key : str
+    The name of the option to look for.
+
+Returns
+-------
+defined : bool
+    Returns True if the specified option is already defined by the user."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Ceres::getOptionType
+"Accessor to the type of an option.
+
+Parameters
+----------
+key : str
+    The name of the option to check.
+
+Returns
+-------
+type : str
+    The type of the specified option."
+    
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Ceres::getOption
+"Accessor to any option, as a string.
+
+Parameters
+----------
+key : str
+    The name of the option to retrieve.
+
+Returns
+-------
+value : str
+    The value of the specified option, as a string."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Ceres::removeOption
+"Removes a user-defined option. In this case, Ceres will use default value.
+
+Parameters
+----------
+key : str
+    The name of the option to remove."
+
+// ---------------------------------------------------------------------
+
 

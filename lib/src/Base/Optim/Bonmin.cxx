@@ -117,36 +117,6 @@ void Bonmin::checkProblem(const OptimizationProblem & problem) const
     throw InvalidArgumentException(HERE) << "Bonmin does not support least squares or nearest point problems";
 }
 
-
-#ifdef OPENTURNS_HAVE_BONMIN
-
-/** Accessors to Bonmin options */
-void getOptionsFromResourceMap(BonminSetup & bonmin)
-{
-//   Get options for Bonmin setup from ResourceMap
-//   See Bonmin/Ipopt user manuals for more details.
-  
-  std::vector<String> keys(ResourceMap::GetKeys());
-  const UnsignedInteger nbKeys = keys.size();
-    
-  for (UnsignedInteger i=0; i<nbKeys; ++i)
-    if (keys[i].substr(0, 7) == "Bonmin-")
-    {
-      String optionName(keys[i].substr(7));
-      String type(ResourceMap::GetType(keys[i]));
-      if (type == "string")
-        bonmin.options()->SetStringValue(optionName, ResourceMap::GetAsString(keys[i]));
-      else if (type == "float")
-        bonmin.options()->SetNumericValue(optionName, ResourceMap::GetAsScalar(keys[i]));
-      else if (type == "unsigned int")
-        bonmin.options()->SetIntegerValue(optionName, ResourceMap::GetAsUnsignedInteger(keys[i]));
-      else
-        throw InvalidArgumentException(HERE) << "Unsupported type " << type << " for Bonmin option " << optionName;
-    }
-}
-
-#endif
-
 /** Performs the actual computation. */
 void Bonmin::run()
 {
@@ -167,15 +137,25 @@ void Bonmin::run()
   BonminSetup bonmin;
   bonmin.initializeOptionsAndJournalist();
    
-  // Update algorithm name and other user defined options
-  getOptionsFromResourceMap(bonmin);
-  
-  if (ResourceMap::HasKey("Bonmin-bonmin.algorithm") && ResourceMap::GetAsString("Bonmin-bonmin.algorithm") != algoName_)
-    LOGWARN(OSS() << "Algorithm name specified in ResourceMap (" << ResourceMap::GetAsString("Bonmin-bonmin.algorithm") << ") will be ignored");
+  // Retrieve user defined options
+  Description optionNames(getOptions());
+  for (UnsignedInteger i=0; i<options_.getSize(); ++i)
+    if (options_.getType(optionNames[i]) == "string")
+      bonmin.options()->SetStringValue(optionNames[i], options_.getAsString(optionNames[i]));
+    else if (options_.getType(optionNames[i]) == "unsigned int")
+      bonmin.options()->SetIntegerValue(optionNames[i], options_.getAsUnsignedInteger(optionNames[i]));
+    else if (options_.getType(optionNames[i]) == "float")
+      bonmin.options()->SetNumericValue(optionNames[i], options_.getAsScalar(optionNames[i]));
+    else
+      throw InternalException(HERE) << "Unsupported option type " << options_.getType(optionNames[i]);
+
+  // Manage conflicts between user-defined options and Bonmin object attributes
+  if (options_.hasKey("bonmin.algorithm") && options_.getAsString("bonmin.algorithm") != algoName_)
+    LOGWARN(OSS() << "Algorithm name specified in local resource map (" << options_.getAsString("bonmin.algorithm") << ") will be ignored");
   bonmin.options()->SetStringValue("bonmin.algorithm", algoName_);
   
-  if (ResourceMap::HasKey("Bonmin-max_iter") && ResourceMap::GetAsUnsignedInteger("Bonmin-max_iter") != getMaximumIterationNumber())
-    LOGWARN(OSS() << "Maximum iteration number specified in ResourceMap (" << ResourceMap::GetAsUnsignedInteger("Bonmin-max_iter") << ") will be ignored");
+  if (options_.hasKey("max_iter") && options_.getAsUnsignedInteger("Bonmin-max_iter") != getMaximumIterationNumber())
+    LOGWARN(OSS() << "Maximum iteration number specified in local resource map (" << options_.getAsUnsignedInteger("max_iter") << ") will be ignored");
   bonmin.options()->SetIntegerValue("max_iter", getMaximumIterationNumber());
  
   // Update setup with BonminProblem
@@ -270,6 +250,66 @@ void Bonmin::run()
 #endif
 }
 
+/** Options accessors */
+Description Bonmin::getOptions() const
+{
+  Description keys(options_.getSize());
+  std::vector<String> vectorKeys(options_.getKeys());
+  
+  std::copy(vectorKeys.begin(), vectorKeys.end(), keys.begin());
+  
+  return keys;
+}
+
+void Bonmin::setOptionAsString(const String & key, const String & value)
+{
+  options_.setAsString(key, value);
+}
+  
+String Bonmin::getOptionAsString(const String & key) const
+{
+  return options_.getAsString(key);
+}
+
+void Bonmin::setOptionAsUnsignedInteger(const String & key, const UnsignedInteger value)
+{
+  options_.setAsUnsignedInteger(key, value);
+}
+
+UnsignedInteger Bonmin::getOptionAsUnsignedInteger(const String & key) const
+{
+  return options_.getAsUnsignedInteger(key);
+}
+
+void Bonmin::setOptionAsScalar(const String & key, const Scalar value)
+{
+  options_.setAsScalar(key, value);
+}
+
+Scalar Bonmin::getOptionAsScalar(const String & key) const
+{
+  return options_.getAsScalar(key);
+}
+
+Bool Bonmin::hasOption(const String & key) const
+{
+  return options_.hasKey(key);
+}
+
+String Bonmin::getOptionType(const String & key) const
+{
+  return options_.getType(key);
+}
+
+String Bonmin::getOption(const String & key) const
+{
+  return options_.get(key);
+}
+
+void Bonmin::removeOption(const String & key)
+{
+  options_.removeKey(key);
+}
 
 /** Description of object */
 String Bonmin::__str__(const String &) const
@@ -284,26 +324,8 @@ String Bonmin::__repr__() const
 {
   OSS oss(false);
   oss << __str__();
-  oss << "\noptions=\n";
-
-  // List user-defined options
-  std::vector<String> keys(ResourceMap::GetKeys());
-  UnsignedInteger nbKeys = keys.size();
-    
-  for (UnsignedInteger i=0; i<nbKeys; ++i)
-    if (keys[i].substr(0, 7) == "Bonmin-")
-    {
-      String optionName(keys[i].substr(7));
-      String type(ResourceMap::GetType(keys[i]));
-      if (type == "string")
-        oss << optionName << "=" << ResourceMap::GetAsString(keys[i]) << "\n";
-      else if (type == "float")
-        oss << optionName << "=" << ResourceMap::GetAsScalar(keys[i]) << "\n";
-      else if (type == "unsigned int")
-        oss << optionName << "=" << ResourceMap::GetAsUnsignedInteger(keys[i]) << "\n";
-      else
-        throw InvalidArgumentException(HERE) << "Unsupported type " << type << " for Bonmin option " << optionName;
-    }
+  oss << "\noptions= ";
+  oss << options_.__repr__();
     
   return oss;
 }
