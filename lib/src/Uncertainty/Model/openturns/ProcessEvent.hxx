@@ -20,8 +20,8 @@
  *
  */
 
-#ifndef OPENTURNS_EVENTPROCESS_HXX
-#define OPENTURNS_EVENTPROCESS_HXX
+#ifndef OPENTURNS_PROCESSEVENT_HXX
+#define OPENTURNS_PROCESSEVENT_HXX
 
 #include "openturns/RandomVectorImplementation.hxx"
 #include "openturns/Domain.hxx"
@@ -34,11 +34,11 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class EventProcess
+ * @class ProcessEvent
  *
  *
  */
-class OT_API EventProcess
+class OT_API ProcessEvent
   : public RandomVectorImplementation
 {
   CLASSNAME
@@ -47,14 +47,14 @@ public:
 
 
   /** Default constructor */
-  EventProcess();
+  ProcessEvent();
 
   /** Constructor from RandomVector */
-  EventProcess(const Process & process,
+  ProcessEvent(const Process & process,
                const Domain & domain);
 
   /** Virtual constructor */
-  virtual EventProcess * clone() const;
+  virtual ProcessEvent * clone() const;
 
   /** String converter */
   String __repr__() const;
@@ -91,9 +91,9 @@ private:
 
   /** Private method - check that values of a time serie are/are not in the domain */
   Bool checkTimeSerieValuesInDomain(const Field & ts) const;
-}; /* class EventProcess */
+}; /* class ProcessEvent */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_EVENTPROCESS_HXX */
+#endif /* OPENTURNS_PROCESSEVENT_HXX */

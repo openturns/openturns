@@ -28,7 +28,7 @@
 #include "openturns/ThresholdEvent.hxx"
 #include "openturns/Greater.hxx"
 #include "openturns/ComposedFunction.hxx"
-#include "openturns/EventProcess.hxx"
+#include "openturns/ProcessEvent.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -72,7 +72,7 @@ Event::Event(const RandomVector & antecedent,
 /* Constructor from RandomVector */
 Event::Event(const Process & process,
              const Domain & domain)
-  : RandomVector(new EventProcess(process, domain))
+  : RandomVector(new ProcessEvent(process, domain))
 {
   // Nothing to do
 }

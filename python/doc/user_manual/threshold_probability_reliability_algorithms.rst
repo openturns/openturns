@@ -38,7 +38,7 @@ Event
 
     Event
     StandardEvent
-    EventProcess
+    ProcessEvent
     EventDomain
     ThresholdEvent
     IntersectionEvent

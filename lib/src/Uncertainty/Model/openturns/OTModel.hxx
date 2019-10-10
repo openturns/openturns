@@ -39,7 +39,7 @@
 #include "openturns/Event.hxx"
 #include "openturns/EventDomain.hxx"
 #include "openturns/ThresholdEvent.hxx"
-#include "openturns/EventProcess.hxx"
+#include "openturns/ProcessEvent.hxx"
 #include "openturns/IntersectionEvent.hxx"
 #include "openturns/UnionEvent.hxx"
 #include "openturns/FunctionalChaosRandomVector.hxx"

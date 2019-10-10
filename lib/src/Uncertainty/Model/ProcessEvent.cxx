@@ -22,24 +22,24 @@
  *
  */
 
-#include "openturns/EventProcess.hxx"
+#include "openturns/ProcessEvent.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(EventProcess)
+CLASSNAMEINIT(ProcessEvent)
 
-static const Factory<EventProcess> Factory_EventProcess;
+static const Factory<ProcessEvent> Factory_ProcessEvent;
 
 /* Default constructor */
-EventProcess::EventProcess()
+ProcessEvent::ProcessEvent()
   : RandomVectorImplementation()
 {
   // Nothing to do
 }
 
 /* Constructor from RandomVector */
-EventProcess::EventProcess(const Process & process,
+ProcessEvent::ProcessEvent(const Process & process,
                            const Domain & domain)
   : RandomVectorImplementation()
   , process_(process)
@@ -49,59 +49,59 @@ EventProcess::EventProcess(const Process & process,
   setDescription(Description(1, OSS() << process.getName() << " in " << domain.getName()));
 }
 
-EventProcess * EventProcess::clone() const
+ProcessEvent * ProcessEvent::clone() const
 {
-  return new EventProcess(*this);
+  return new ProcessEvent(*this);
 }
 
 /* String converter */
-String EventProcess::__repr__() const
+String ProcessEvent::__repr__() const
 {
   OSS oss;
-  oss << "class=" << EventProcess::GetClassName()
+  oss << "class=" << ProcessEvent::GetClassName()
       << " domain=" << domain_
       << " process=" << process_ ;
   return oss;
 }
 
 /* Dimension accessor */
-UnsignedInteger EventProcess::getDimension() const
+UnsignedInteger ProcessEvent::getDimension() const
 {
   return 1;
 }
 
 /* Domain accessor */
-Domain EventProcess::getDomain() const
+Domain ProcessEvent::getDomain() const
 {
   return domain_;
 }
 
 /* Process accessor */
-Process EventProcess::getProcess() const
+Process ProcessEvent::getProcess() const
 {
   return process_;
 }
 
 /* check that a values of a field are/are not in the domain */
-Bool EventProcess::checkTimeSerieValuesInDomain(const Field & fld) const
+Bool ProcessEvent::checkTimeSerieValuesInDomain(const Field & fld) const
 {
   for (UnsignedInteger i = 0; i < fld.getSize(); ++i) if (domain_.contains(fld.getValueAtIndex(i))) return true;
   return false;
 }
 
 /* Realization accessor */
-Point EventProcess::getRealization() const
+Point ProcessEvent::getRealization() const
 {
   return Point(1, checkTimeSerieValuesInDomain(process_.getRealization()));
 }
 
-Bool EventProcess::isEvent() const
+Bool ProcessEvent::isEvent() const
 {
   return true;
 }
 
 /* Method save() stores the object through the StorageManager */
-void EventProcess::save(Advocate & adv) const
+void ProcessEvent::save(Advocate & adv) const
 {
   RandomVectorImplementation::save(adv);
   adv.saveAttribute( "domain_", domain_ );
@@ -109,7 +109,7 @@ void EventProcess::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void EventProcess::load(Advocate & adv)
+void ProcessEvent::load(Advocate & adv)
 {
   RandomVectorImplementation::load(adv);
   adv.loadAttribute( "domain_", domain_ );

@@ -12,7 +12,7 @@ threshold : float
 
 See also
 --------
-EventProcess, EventDomain
+ProcessEvent, EventDomain
 
 Examples
 --------

@@ -1,4 +1,4 @@
-%feature("docstring") OT::EventProcess
+%feature("docstring") OT::ProcessEvent
 "Event defined from a process and a domain.
 
 Parameters
@@ -19,4 +19,4 @@ Examples
 >>> dist = ot.Normal(dim)
 >>> X = ot.WhiteNoise(dist)
 >>> domain = ot.Interval(dim)
->>> event = ot.EventProcess(X, domain)"
+>>> event = ot.ProcessEvent(X, domain)"

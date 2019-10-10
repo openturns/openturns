@@ -22,7 +22,7 @@
 #include "openturns/UsualRandomVector.hxx"
 #include "openturns/ThresholdEvent.hxx"
 #include "openturns/EventDomain.hxx"
-#include "openturns/EventProcess.hxx"
+#include "openturns/ProcessEvent.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
 #include "openturns/Domain.hxx"
 #include "openturns/Less.hxx"

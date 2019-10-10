@@ -699,15 +699,15 @@ int main(int, char *[])
     }
     study.add("eventDomain", eventDomain);
 
-    // Create an EventProcess
-    EventProcess eventProcess;
+    // Create an ProcessEvent
+    ProcessEvent eventProcess;
     {
       UnsignedInteger dim = 2;
       Normal distribution(dim);
 
       WhiteNoise X(distribution);
       Interval domain(dim);
-      eventProcess = EventProcess(X, domain);
+      eventProcess = ProcessEvent(X, domain);
     }
     study.add("eventProcess", eventProcess);
 
@@ -1080,7 +1080,7 @@ int main(int, char *[])
     compare<GaussianProcess >( gaussianProcess, study2 );
     compare<Domain >( domain, study2 );
     compare<EventDomain >( eventDomain, study2 );
-    compare<EventProcess >( eventProcess, study2 );
+    compare<ProcessEvent >( eventProcess, study2 );
     compare<ConstantStep >( constantStep, study2 );
     compare<BlendedStep >( blendedStep, study2 );
     compare<FunctionalBasisProcess >( functionalBasisProcess, study2 );
