@@ -4,7 +4,47 @@
 Available constructor:
     FisherSnedecorFactory()
 
-The parameters are estimated by numerical maximum likelihood estimation.
+Notes
+-----
+Several estimators to build a FisherSnedecor distribution from a scalar sample
+are proposed.
+
+**Maximum likelihood estimator:**
+
+The parameters are estimated by numerical maximum likelihood estimation. 
+The starting point of the optimization algorithm is based on the moment based 
+estimator. 
+
+The optimization sets lower bounds for the :math:`d_1` and :math:`d_2` parameters 
+in order to ensure that :math:`d_1>0` and :math:`d_2>0`. 
+The default values for these lower bounds are from the :class:`~openturns.ResourceMap` 
+keys `FisherSnedecorFactory-D1LowerBound` and `FisherSnedecorFactory-D2LowerBound`. 
+
+**Moment based estimator:**
+
+Lets denote:
+
+- :math:`\displaystyle \overline{x}_n = \frac{1}{n} \sum_{i=1}^n x_i` the empirical
+  mean of the sample, 
+- :math:`\displaystyle s_n^2 = \frac{1}{n-1} \sum_{i=1}^n (x_i - \overline{x}_n)^2`
+  its empirical variance,
+
+We first compute :math:`d_2`:
+
+.. math::
+
+    d_2 = \frac{2 \overline{x}_n}{\overline{x}_n-1}
+
+if :math:`\overline{x}_n>1` (otherwise, the moment based estimator fails). 
+
+Then we compute :math:`d_1`:
+
+.. math::
+
+    d_1 = \frac{2 d_2^2 (d_2-2)}{(d_2-2)^2 (d_2-4)s_n^2 - 2d_2^2}
+
+if :math:`s_n^2>0` (otherwise, the moment based estimator fails). 
+
 
 See also
 --------
