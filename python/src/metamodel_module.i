@@ -74,7 +74,7 @@
 %include RandomVector.i
 %include CompositeRandomVector.i
 %include ThresholdEvent.i
-%include EventDomain.i
+%include DomainEvent.i
 %include ProcessEvent.i
 %include ConditionalRandomVector.i
 %include Event.i

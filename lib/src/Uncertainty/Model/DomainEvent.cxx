@@ -22,25 +22,25 @@
  *
  */
 
-#include "openturns/EventDomain.hxx"
+#include "openturns/DomainEvent.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/IdentityFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(EventDomain)
+CLASSNAMEINIT(DomainEvent)
 
-static const Factory<EventDomain> Factory_EventDomain;
+static const Factory<DomainEvent> Factory_DomainEvent;
 /* Default constructor */
-EventDomain::EventDomain()
+DomainEvent::DomainEvent()
   : CompositeRandomVector()
 {
   // Nothing to do
 }
 
 /* Constructor from RandomVector */
-EventDomain::EventDomain(const RandomVector & antecedent,
+DomainEvent::DomainEvent(const RandomVector & antecedent,
                          const Domain & domain)
   : CompositeRandomVector()
   , domain_(domain)
@@ -63,42 +63,42 @@ EventDomain::EventDomain(const RandomVector & antecedent,
   setDescription(Description(1, OSS() << antecedent.getName() << " in " << domain.getName()));
 }
 
-EventDomain * EventDomain::clone() const
+DomainEvent * DomainEvent::clone() const
 {
-  return new EventDomain(*this);
+  return new DomainEvent(*this);
 }
 
 /* String converter */
-String EventDomain::__repr__() const
+String DomainEvent::__repr__() const
 {
   OSS oss;
-  oss << "class=" << EventDomain::GetClassName()
+  oss << "class=" << DomainEvent::GetClassName()
       << " antecedent=" << CompositeRandomVector::__repr__()
       << " domain=" << domain_;
   return oss;
 }
 
 /* Dimension accessor */
-UnsignedInteger EventDomain::getDimension() const
+UnsignedInteger DomainEvent::getDimension() const
 {
   return 1;
 }
 
 /* Domain accessor */
-Domain EventDomain::getDomain() const
+Domain DomainEvent::getDomain() const
 {
   return domain_;
 }
 
 
 /* Realization accessor */
-Point EventDomain::getRealization() const
+Point DomainEvent::getRealization() const
 {
   return Point(1, domain_.contains(CompositeRandomVector::getRealization()));
 }
 
 /* Numerical sample accessor */
-Sample EventDomain::getSample(const UnsignedInteger size) const
+Sample DomainEvent::getSample(const UnsignedInteger size) const
 {
   // First, compute a sample of the event antecedent
   const Sample returnSample(CompositeRandomVector::getSample(size));
@@ -106,25 +106,25 @@ Sample EventDomain::getSample(const UnsignedInteger size) const
   Sample result(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i)
     result(i, 0) = domain_.contains(returnSample[i]);
-  result.setName("EventDomain sample");
+  result.setName("DomainEvent sample");
   result.setDescription(getDescription());
   return result;
 }
 
-Bool EventDomain::isEvent() const
+Bool DomainEvent::isEvent() const
 {
   return true;
 }
 
 /* Method save() stores the object through the StorageManager */
-void EventDomain::save(Advocate & adv) const
+void DomainEvent::save(Advocate & adv) const
 {
   CompositeRandomVector::save(adv);
   adv.saveAttribute( "domain_", domain_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
-void EventDomain::load(Advocate & adv)
+void DomainEvent::load(Advocate & adv)
 {
   CompositeRandomVector::load(adv);
   adv.loadAttribute( "domain_", domain_ );

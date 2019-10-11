@@ -37,7 +37,7 @@
 #include "openturns/DistributionParameters.hxx"
 #include "openturns/EllipticalDistribution.hxx"
 #include "openturns/Event.hxx"
-#include "openturns/EventDomain.hxx"
+#include "openturns/DomainEvent.hxx"
 #include "openturns/ThresholdEvent.hxx"
 #include "openturns/ProcessEvent.hxx"
 #include "openturns/IntersectionEvent.hxx"

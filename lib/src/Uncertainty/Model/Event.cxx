@@ -24,7 +24,7 @@
 #include "openturns/ConstantRandomVector.hxx"
 #include "openturns/Less.hxx"
 #include "openturns/SymbolicFunction.hxx"
-#include "openturns/EventDomain.hxx"
+#include "openturns/DomainEvent.hxx"
 #include "openturns/ThresholdEvent.hxx"
 #include "openturns/Greater.hxx"
 #include "openturns/ComposedFunction.hxx"
@@ -55,7 +55,7 @@ Event::Event(const RandomVector & antecedent,
 /* Constructor from RandomVector */
 Event::Event(const RandomVector & antecedent,
              const Domain & domain)
-  : RandomVector(new EventDomain(antecedent, domain))
+  : RandomVector(new DomainEvent(antecedent, domain))
 {
   // Nothing to do
 }

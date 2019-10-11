@@ -1,4 +1,4 @@
-%feature("docstring") OT::EventDomain
+%feature("docstring") OT::DomainEvent
 "Event defined from a domain.
 
 Parameters
@@ -20,4 +20,4 @@ Examples
 >>> model = ot.SymbolicFunction(['x1', 'x2'], ['x1+x2', '2*x1'])
 >>> Y = ot.CompositeRandomVector(model, X)
 >>> domain = ot.Interval(dim)
->>> event = ot.EventDomain(Y, domain)"
+>>> event = ot.DomainEvent(Y, domain)"

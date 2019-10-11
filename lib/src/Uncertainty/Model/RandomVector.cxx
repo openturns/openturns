@@ -21,7 +21,7 @@
 #include "openturns/RandomVector.hxx"
 #include "openturns/UsualRandomVector.hxx"
 #include "openturns/ThresholdEvent.hxx"
-#include "openturns/EventDomain.hxx"
+#include "openturns/DomainEvent.hxx"
 #include "openturns/ProcessEvent.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
 #include "openturns/Domain.hxx"
@@ -230,8 +230,8 @@ RandomVector RandomVector::intersect(const RandomVector & other)
     d1 = LevelSet(getFunction(), getOperator(), getThreshold());
   }
   catch (NotYetImplementedException &) {
-    // EventDomain with LevelSet
-    const EventDomain* eventDomain = dynamic_cast<EventDomain*>(getImplementation().get());
+    // DomainEvent with LevelSet
+    const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(getImplementation().get());
     if (!eventDomain)
       throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
     const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
@@ -246,8 +246,8 @@ RandomVector RandomVector::intersect(const RandomVector & other)
     d2 = LevelSet(other.getFunction(), other.getOperator(), other.getThreshold());
   }
   catch (NotYetImplementedException &) {
-    // EventDomain with LevelSet
-    const EventDomain* eventDomain = dynamic_cast<EventDomain*>(other.getImplementation().get());
+    // DomainEvent with LevelSet
+    const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(other.getImplementation().get());
     if (!eventDomain)
       throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
     const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
@@ -256,7 +256,7 @@ RandomVector RandomVector::intersect(const RandomVector & other)
     d2 = *levelSet;
   }
 
-  return EventDomain(getAntecedent(), d1.intersect(d2));
+  return DomainEvent(getAntecedent(), d1.intersect(d2));
 }
 
 
@@ -277,8 +277,8 @@ LevelSet d1;
     d1 = LevelSet(getFunction(), getOperator(), getThreshold());
   }
   catch (NotYetImplementedException &) {
-    // EventDomain with LevelSet
-    const EventDomain* eventDomain = dynamic_cast<EventDomain*>(getImplementation().get());
+    // DomainEvent with LevelSet
+    const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(getImplementation().get());
     if (!eventDomain)
       throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
     const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
@@ -293,8 +293,8 @@ LevelSet d1;
     d2 = LevelSet(other.getFunction(), other.getOperator(), other.getThreshold());
   }
   catch (NotYetImplementedException &) {
-    // EventDomain with LevelSet
-    const EventDomain* eventDomain = dynamic_cast<EventDomain*>(other.getImplementation().get());
+    // DomainEvent with LevelSet
+    const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(other.getImplementation().get());
     if (!eventDomain)
       throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
     const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
@@ -303,7 +303,7 @@ LevelSet d1;
     d2 = *levelSet;
   }
 
-  return EventDomain(getAntecedent().getImplementation(), d1.join(d2));
+  return DomainEvent(getAntecedent().getImplementation(), d1.join(d2));
 }
 
 END_NAMESPACE_OPENTURNS

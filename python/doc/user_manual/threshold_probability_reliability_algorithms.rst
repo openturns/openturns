@@ -39,7 +39,7 @@ Event
     Event
     StandardEvent
     ProcessEvent
-    EventDomain
+    DomainEvent
     ThresholdEvent
     IntersectionEvent
     UnionEvent
