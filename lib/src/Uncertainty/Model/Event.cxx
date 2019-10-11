@@ -25,7 +25,7 @@
 #include "openturns/Less.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/DomainEvent.hxx"
-#include "openturns/ThresholdEvent.hxx"
+#include "openturns/ThresholdEventImplementation.hxx"
 #include "openturns/Greater.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/ProcessEvent.hxx"
@@ -38,7 +38,7 @@ CLASSNAMEINIT(Event)
 
 /* Default constructor for save/load */
 Event::Event()
-  : RandomVector(new ThresholdEvent(CompositeRandomVector(SymbolicFunction("x", "x"), ConstantRandomVector(Point(1, 0.0))), Less(), 0.0))
+  : RandomVector(new ThresholdEventImplementation(CompositeRandomVector(SymbolicFunction("x", "x"), ConstantRandomVector(Point(1, 0.0))), Less(), 0.0))
 {
   LOGWARN("Event() is deprecated");
 }
@@ -47,7 +47,7 @@ Event::Event()
 Event::Event(const RandomVector & antecedent,
              const ComparisonOperator & op,
              const Scalar threshold)
-  : RandomVector(new ThresholdEvent(antecedent, op, threshold))
+  : RandomVector(new ThresholdEventImplementation(antecedent, op, threshold))
 {
   LOGWARN("Event(RandomVector, ComparisonOperator, float) is deprecated, use ThresholdEvent");
 }
@@ -64,7 +64,7 @@ Event::Event(const RandomVector & antecedent,
 /* Constructor from RandomVector */
 Event::Event(const RandomVector & antecedent,
              const Interval & interval)
-  : RandomVector(new ThresholdEvent(antecedent, interval))
+  : RandomVector(new ThresholdEventImplementation(antecedent, interval))
 {
   LOGWARN("Event(RandomVector, Interval) is deprecated, use ProcessEvent");
 }

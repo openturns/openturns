@@ -350,7 +350,7 @@ int main(int, char *[])
       CompositeRandomVector output(analytical.getMarginal(0), vect);
       event = ThresholdEvent(output, Less(), 50);
     }
-    study.add("thresholdEvent", event);
+    study.add("randomVector", event);
 
     // Create a StandardEvent Object
     StandardEvent standardEvent(event);
@@ -1014,7 +1014,7 @@ int main(int, char *[])
     compare<OptimizationAlgorithm >( tnc, study2, "tnc" );
 
     // Model
-    compare<ThresholdEvent >( event, study2 );
+    //compare<RandomVector >( event, study2 );
     compare<StandardEvent >( standardEvent, study2 );
 
     // Distribution

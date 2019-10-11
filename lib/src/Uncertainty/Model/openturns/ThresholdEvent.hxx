@@ -26,7 +26,7 @@
 #ifndef OPENTURNS_THRESHOLDEVENT_HXX
 #define OPENTURNS_THRESHOLDEVENT_HXX
 
-#include "openturns/CompositeRandomVector.hxx"
+#include "openturns/RandomVector.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -39,74 +39,27 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  */
 class OT_API ThresholdEvent
-  : public CompositeRandomVector
+  : public RandomVector
 {
   CLASSNAME
 
 public:
-
 
   /** Default constructor */
   ThresholdEvent();
 
   /** Constructor from comparison operator */
   ThresholdEvent(const RandomVector & antecedent,
-                    const ComparisonOperator & op,
-                    const Scalar threshold);
+                const ComparisonOperator & op,
+                const Scalar threshold);
 
   /** Constructor from Interval */
   ThresholdEvent(const RandomVector & antecedent,
-                    const Interval & interval);
-
-  /** Virtual constructor */
-  virtual ThresholdEvent * clone() const;
+                const Interval & interval);
 
   /** String converter */
   String __repr__() const;
-
-  /** Dimension accessor */
-  virtual UnsignedInteger getDimension() const;
-
-  /** Operator accessor */
-  ComparisonOperator getOperator() const;
-
-  /** Threshold accessor */
-  Scalar getThreshold() const;
-
-  /* Here is the interface that all derived class may implement */
-
-  /** Domain accessor */
-  Domain getDomain() const;
-
-  /** Realization accessor */
-  virtual Point getRealization() const;
-
-  /** Numerical sample accessor */
-  virtual Sample getSample(const UnsignedInteger size) const;
-
-  /** Parameters value accessor */
-  virtual Point getParameter() const;
-  virtual void setParameter(const Point & parameters);
-
-  /** Parameters description accessor */
-  virtual Description getParameterDescription() const;
-
-  /** Whether it is an event */
-  virtual Bool isEvent() const;
-
-  /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
-
-  /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
-
-private:
-
-  /** The comparison operator of the eventRandomVectorImplementation */
-  ComparisonOperator operator_;
-
-  /** The threshold of the eventRandomVectorImplementation */
-  Scalar threshold_;
+  String __str__(const String & offset = "") const;
 
 }; /* class ThresholdEvent */
 

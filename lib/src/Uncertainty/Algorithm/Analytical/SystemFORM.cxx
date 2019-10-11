@@ -87,10 +87,10 @@ void SystemFORM::setEvent(const RandomVector & event)
       const IntersectionEvent *intersectionEvent = dynamic_cast<IntersectionEvent*>(unionCollection[i].getImplementation().get());
       Collection<RandomVector> intersectionCollection(intersectionEvent->getEventCollection());
       for (UnsignedInteger j = 0; j < intersectionCollection.getSize(); ++ j)
-        if (intersectionCollection[j].getImplementation()->getClassName() != "ThresholdEvent")
+        if (intersectionCollection[j].getImplementation()->getClassName() != "ThresholdEventImplementation")
           throw InvalidArgumentException(HERE) << "Event is not in disjunctive normal form";
     }
-    else if (unionCollection[i].getImplementation()->getClassName() != "ThresholdEvent")
+    else if (unionCollection[i].getImplementation()->getClassName() != "ThresholdEventImplementation")
       throw InvalidArgumentException(HERE) << "Event is not in disjunctive normal form";
   }
   Analytical::setEvent(event);
