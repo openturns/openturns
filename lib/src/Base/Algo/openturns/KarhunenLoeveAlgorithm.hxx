@@ -50,6 +50,10 @@ public:
   Scalar getThreshold() const;
   void setThreshold(const Scalar threshold);
 
+  /** Number of modes accessors */
+  UnsignedInteger getNbModes() const;
+  void setNbModes(const UnsignedInteger nbModes);
+
   /** Covariance model accessors */
   CovarianceModel getCovarianceModel() const;
   void setCovarianceModel(const CovarianceModel & covariance);

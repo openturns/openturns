@@ -31,6 +31,9 @@ int main(int, char *[])
   OStream fullprint(std::cout);
   setRandomGenerator();
   
+  ResourceMap::SetAsString("KarhunenLoeveP1Algorithm-CovarianceMatrixStorage", "HMAT");
+  ResourceMap::SetAsString("KarhunenLoeveP1Algorithm-EigenvaluesSolver", "ARPACK");
+
   try
   {
     Mesh mesh(IntervalMesher(Indices(1, 9)).build(Interval(-1.0, 1.0)));

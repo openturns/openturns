@@ -20,6 +20,9 @@ set_source_files_properties (Base/Optim/Ceres.cxx PROPERTIES COTIRE_EXCLUDED ON 
 # Exclude Dlib sources from unity build (Lapack re-included)
 set_source_files_properties (Base/Optim/Dlib.cxx Base/Optim/DlibFunctions.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
 
+# Exclude Eigen3 sources from unity build
+set_source_files_properties (Base/Type/SparseMatrix.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+
 # SymbolicParserExprTk.cxx includes exprtk.hpp which is huge, exclude it from cotire builds
 # It also causes problems on Windows
 if (OPENTURNS_HAVE_EXPRTK)

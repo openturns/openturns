@@ -636,7 +636,7 @@ CovarianceBlockAssemblyFunction::CovarianceBlockAssemblyFunction(const Covarianc
 
 void CovarianceBlockAssemblyFunction::compute(UnsignedInteger i, UnsignedInteger j, Matrix* localValues) const
 {
-  if (definesComputeStandardRepresentative_)
+  if (definesComputeStandardRepresentative_ && (covarianceModel_.getOutputDimension() == 1))
   {
     localValues->getImplementation()->operator[](0) = covarianceModel_.getImplementation()->computeAsScalar(verticesBegin_ + i * inputDimension_, verticesBegin_ + j * inputDimension_);
   }

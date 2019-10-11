@@ -18,6 +18,9 @@
 /* Define if F77 and FC dummy `main' functions are identical. */
 #cmakedefine FC_DUMMY_MAIN_EQ_F77
 
+/* Define if you have ARPACK library. */
+#cmakedefine OPENTURNS_HAVE_ARPACK
+
 /* Define if you have bison parser generator. */
 #cmakedefine OPENTURNS_HAVE_BISON
 
@@ -41,6 +44,12 @@
 
 /* Define to 1 if you have the `dlib` with global optimization support. */
 #cmakedefine OPENTURNS_HAVE_DLIB_GLOBAL_OPTIMIZATION
+
+/* Define to 1 if you have the `eigen3` library. */
+#cmakedefine OPENTURNS_HAVE_EIGEN
+
+/* Define to 1 if you have 'spectra' library */
+#cmakedefine OPENTURNS_HAVE_SPECTRA
 
 /* Define to 1 if you have the <libgen.h> header file. */
 #cmakedefine OPENTURNS_HAVE_LIBGEN_H

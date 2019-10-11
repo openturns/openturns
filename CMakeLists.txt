@@ -30,6 +30,9 @@ option (USE_DLIB                     "Use dlib for additional optimization algor
 option (USE_OPTPP                    "Use OPT++ for additional optimization algorithms"                      ON)
 option (USE_COTIRE                   "Use cotire for unity builds"                                           OFF)
 option (USE_BONMIN                   "Use Bonmin for MINLP problems"                                         ON)
+option (USE_ARPACK                   "Use ARPACK for eigenvalues computation"                                ON)
+option (USE_EIGEN                    "Use Eigen for sparse matrices storage"                                 ON)
+option (USE_SPECTRA                  "Use Spectra for eigenvalues computation"                               ON)
 
 option (BUILD_PYTHON                 "Build the python module for the library"                               ON)
 option (BUILD_SHARED_LIBS            "Build shared libraries"                                                ON)
@@ -146,6 +149,26 @@ if (NOT DEFINED LAPACK_LIBRARIES)
 endif ()
 list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${LAPACK_LIBRARIES})
 
+
+find_package (arpack-ng MODULE)
+if (arpack-ng_FOUND)
+  set (OPENTURNS_HAVE_ARPACK TRUE)
+  list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${arpack_ng_LIBRARIES})
+  list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${arpack_ng_INCLUDE_DIRS})
+endif()
+
+find_package (Eigen3 NO_MODULE)
+if (Eigen3_FOUND)
+  set (OPENTURNS_HAVE_EIGEN TRUE)
+  message (STATUS "Found Eigen3: ${Eigen3_DIR}")
+  list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${EIGEN3_INCLUDE_DIRS})
+endif()
+
+find_package (Spectra)
+if (Spectra_FOUND)
+  set (OPENTURNS_HAVE_SPECTRA TRUE)
+  list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${SPECTRA_INCLUDE_DIRS})
+endif()
 
 if (USE_BISON)
   find_package (BISON 2.4)

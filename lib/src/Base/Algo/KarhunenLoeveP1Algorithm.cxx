@@ -25,8 +25,184 @@
 #include "openturns/P1LagrangeEvaluation.hxx"
 #include "openturns/PiecewiseLinearEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
+#include "openturns/SparseMatrix.hxx"
+#include "openturns/HMatrix.hxx"
+#include <algorithm>
+#ifdef OPENTURNS_HAVE_ARPACK
+  #include <arpack.hpp>
+#endif
+#if defined(OPENTURNS_HAVE_SPECTRA) && defined(OPENTURNS_HAVE_EIGEN)
+  #include <Spectra/GenEigsSolver.h>
+#endif
+
+
 
 BEGIN_NAMESPACE_OPENTURNS
+
+typedef Collection<Complex> ComplexCollection;
+
+
+/** Defining parent class KLGenMatProd **/
+class KLGenMatProd
+{
+  public:
+    
+  KLGenMatProd()
+  {    
+    // Nothing to do
+  }
+  
+  virtual ~KLGenMatProd()
+  {
+    // Nothing to do
+  }
+    
+  virtual int rows() const
+  {
+    throw NotYetImplementedException(HERE) << "method 'rows' not yet implemented";
+  }
+  
+  virtual int cols() const
+  {
+    throw NotYetImplementedException(HERE) << "method 'cols' not yet implemented";
+  }
+  
+  virtual void av(const Scalar *, Scalar *)
+  {
+    throw NotYetImplementedException(HERE) << "method 'av' not yet implemented";
+  }
+
+  virtual void perform_op(const Scalar *, Scalar *)
+  {
+    throw NotYetImplementedException(HERE) << "method 'perform_op' not yet implemented";
+  }
+
+  virtual CovarianceMatrix getC() const
+  {
+    throw NotYetImplementedException(HERE) << "method 'getC' not yet implemented";
+  }
+};
+
+
+/** Defining class KLMatProdLapack **/
+class KLMatProdLapack
+  : public KLGenMatProd
+{
+  public:
+    
+  KLMatProdLapack(const CovarianceMatrix & C,
+                  const SparseMatrix & G)
+  : C_(C)
+  , G_(G)
+  , rows_(C_.getNbRows())
+  , cols_(C_.getNbColumns())
+  {    
+    // Nothing to do
+  }
+    
+  int rows() const
+  {
+    return rows_;
+  }
+  
+  int cols() const
+  {
+    return cols_;
+  }
+  
+  // Matrix/vector product operator for use with arpack
+  void av(const Scalar * x_in, Scalar * y_out)
+  {
+    // Convert double array to Eigen::VectorXd
+    Point u(rows_);
+    std::copy(x_in, x_in+rows_, u.begin());
+    
+    // Compute product with sparse matrix G
+    Point v(G_*u);
+
+    // Compute product with dense matrix C
+    Point w(C_*v);
+        
+    // Output double array
+    std::copy(w.begin(), w.end(), y_out);
+  }
+
+  // Matrix/vector product operator for use with spectra
+  void perform_op(const Scalar * x_in, Scalar * y_out)
+  {
+    av(x_in, y_out);
+  }
+  
+  CovarianceMatrix getC() const
+  {
+    return C_;
+  }
+  
+  private:
+    CovarianceMatrix C_;
+    SparseMatrix G_;
+    int rows_;
+    int cols_;
+};
+
+/** Defining class KLMatProdHMat **/
+class KLMatProdHMat
+  : public KLGenMatProd
+{
+  public:
+    
+  KLMatProdHMat(  const HMatrix & C,
+                  const SparseMatrix & G)
+  : C_(C)
+  , G_(G)
+  , rows_(C_.getNbRows())
+  , cols_(C_.getNbColumns())
+  {    
+    // Nothing to do
+  }
+    
+  int rows() const
+  {
+    return rows_;
+  }
+  
+  int cols() const
+  {
+    return cols_;
+  }
+
+  // Matrix/vector product operator for use with arpack
+  void av(const Scalar * x_in, Scalar * y_out)
+  {
+    // Convert double array to Eigen::VectorXd
+    Point u(rows_);
+    std::copy(x_in, x_in+rows_, u.begin());
+    
+    // Compute product with sparse matrix G
+    Point v(G_*u);
+
+    // Compute product with dense hmatrix C
+    Point w(C_.getNbRows());
+    C_.gemv('N', 1.0, v, 0.0, w);
+        
+    // Output double array
+    std::copy(w.begin(), w.end(), y_out);
+  }
+  
+  // Matrix/vector product operator for use with spectra
+  void perform_op(const Scalar * x_in, Scalar * y_out)
+  {
+    av(x_in, y_out);
+  }
+
+  private:
+    HMatrix C_;
+    SparseMatrix G_;
+    int rows_;
+    int cols_;
+};
+
 
 /**
  * @class KarhunenLoeveP1Algorithm
@@ -45,9 +221,10 @@ KarhunenLoeveP1Algorithm::KarhunenLoeveP1Algorithm()
 }
 
 /* Constructor with parameters */
-KarhunenLoeveP1Algorithm::KarhunenLoeveP1Algorithm(const Mesh & mesh,
-    const CovarianceModel & covariance,
-    const Scalar threshold)
+KarhunenLoeveP1Algorithm::KarhunenLoeveP1Algorithm( const Mesh & mesh,
+                                                    const CovarianceModel & covariance,
+                                                    const Scalar threshold
+                                                  )
   : KarhunenLoeveAlgorithmImplementation(covariance, threshold)
   , mesh_(mesh)
 {
@@ -59,6 +236,190 @@ KarhunenLoeveP1Algorithm * KarhunenLoeveP1Algorithm::clone() const
 {
   return new KarhunenLoeveP1Algorithm( *this );
 }
+
+
+/* Compute P1 gram as a SparseMatrix */
+SparseMatrix computeSparseAugmentedP1Gram(const Mesh & mesh, const UnsignedInteger covarianceDimension)
+{
+  // If no simplex, the P1 gram matrix is null
+  if (mesh.getSimplicesNumber() == 0)
+    return SparseMatrix();
+  
+  const UnsignedInteger nbVertices  = mesh.getVerticesNumber();
+  const UnsignedInteger nbSimplices = mesh.getSimplicesNumber();
+  const UnsignedInteger verticesDim = mesh.getVertices().getDimension();
+  const UnsignedInteger simplexSize = verticesDim + 1;
+  const UnsignedInteger augmentedDimension = nbVertices * covarianceDimension;
+      
+  SparseMatrix augmentedGram(augmentedDimension, augmentedDimension);
+  
+  SquareMatrix elementaryGram(augmentedDimension,
+                              Point(augmentedDimension * augmentedDimension, 1.0 / SpecFunc::Gamma(simplexSize + 2.0))
+                             );
+  for (UnsignedInteger i = 0; i < simplexSize; ++i)
+    for (UnsignedInteger j = 0; j < verticesDim; ++j)
+      elementaryGram(i*verticesDim+j, i*verticesDim+j) *= 2.0;
+  
+  const Point simplexVolume(mesh.computeSimplicesVolume());
+
+  for (UnsignedInteger i = 0; i < nbSimplices; ++i)
+  {
+    const Indices simplex(mesh.getSimplex(i));
+    const Scalar delta = simplexVolume[i];
+        
+    if (delta != 0)
+      for (UnsignedInteger j = 0; j < simplexSize; ++j)
+        for (UnsignedInteger k = 0; k < simplexSize; ++k)
+          for (UnsignedInteger l=0; l < covarianceDimension; ++l)
+            augmentedGram(simplex[j]*covarianceDimension+l, simplex[k]*covarianceDimension+l) += delta * elementaryGram(j,k);
+  } // Loop over simplices
+  
+  return augmentedGram;
+}
+
+
+/* Call to arpack routines to compute EV */
+void computeEVWithArpack(const int nev,
+                         const int ncv,
+                         Pointer<KLGenMatProd> op,
+                         Point & eigenvalues,
+                         Matrix & eigenvectors)
+{    
+#ifdef OPENTURNS_HAVE_ARPACK
+  int const N = op->rows();
+  int const ldv = N;
+  int const ldz = N + 1;
+  int const lworkl = 3 * (ncv * ncv) + 6 * ncv;
+
+  Scalar const tol = ResourceMap::GetAsScalar("KarhunenLoeveP1Algorithm-ArpackTolerance");
+  Scalar const sigmar(0.0);
+  Scalar const sigmai(0.0);
+  
+  bool const rvec = true;
+
+  std::vector<Scalar> resid(N);
+  std::vector<Scalar> V(ncv * N);
+  std::vector<Scalar> workd(3 * N);
+  std::vector<Scalar> workl(lworkl);
+  std::vector<Scalar> dr(nev + 1);
+  std::vector<Scalar> di(nev + 1);
+  std::vector<Scalar> z((N + 1) * (nev + 1));
+  std::vector<Scalar> rwork(ncv);
+
+  std::array<int, 11> iparam{};
+  iparam[0] = 1;
+  iparam[2] = 10 * N;
+  iparam[3] = 1;
+  iparam[4] = 0;  // number of ev found by arpack.
+  iparam[6] = 1;
+
+  std::array<int, 14> ipntr{};
+
+  int info = 0, ido = 0;
+
+  while (ido != 99) 
+  {
+    arpack::naupd(ido,
+                  arpack::bmat::identity,
+                  N,
+                  arpack::which::largest_magnitude,
+                  nev,
+                  tol,
+                  resid.data(),
+                  ncv,
+                  V.data(),
+                  ldv,
+                  iparam.data(),
+                  ipntr.data(),
+                  workd.data(),
+                  workl.data(),
+                  lworkl,
+                  info);
+    
+    op->av(&(workd[ipntr[0] - 1]),
+          &(workd[ipntr[1] - 1]));
+  }
+  
+  // check number of ev found by arpack.
+  if (    iparam[4] < nev     // arpack may succeed to compute more EV than expected
+      ||  info != 0)
+    throw InternalException(HERE) << "Error inside ARPACK routines: iparam[4]=" << iparam[4] << ", nev=" << nev << ", ncv=" << ncv << ", info=" << info;
+
+  std::vector<Scalar> workev(3*ncv);
+  std::vector<int> select(ncv);
+
+  arpack::neupd(rvec,
+                arpack::howmny::ritz_vectors,
+                select.data(),
+                dr.data(),
+                di.data(),
+                z.data(),
+                ldz,
+                sigmar,
+                sigmai,
+                workev.data(),
+                arpack::bmat::identity,
+                N,
+                arpack::which::largest_magnitude,
+                nev,
+                tol,
+                resid.data(),
+                ncv,
+                V.data(),
+                ldv, 
+                iparam.data(),
+                ipntr.data(),
+                workd.data(),
+                workl.data(),
+                lworkl,
+                info);
+  
+  // Post-process eigenvalues and eigenvectors
+  std::copy(dr.data(),dr.data()+nev,eigenvalues.begin());
+  
+  Collection<Scalar> eigenvectorsData((N+1)*(nev+1));
+  
+  for (int i=0; i<nev; ++i)
+    std::copy(z.data()+i*(N+1), z.data()+i*(N+1)+N, eigenvectorsData.begin()+i*N);
+  
+  eigenvectors = Matrix(N, nev,eigenvectorsData);
+  
+#else
+  throw InternalException(HERE) << "ARPACK is not available";
+#endif // OPENTURNS_HAVE_ARPACK
+}
+
+/* Call to arpack routines to compute EV */
+void computeEVWithSpectra(const UnsignedInteger augmentedDimension,
+                          const int nev,
+                          const int ncv,
+                          Pointer<KLGenMatProd> op,
+                          Point & eigenvalues,
+                          Matrix & eigenvectors)
+{    
+#ifdef OPENTURNS_HAVE_SPECTRA
+  Spectra::GenEigsSolver<Scalar, Spectra::LARGEST_MAGN, KLGenMatProd> solver(&(*op), nev, ncv);
+ 
+  solver.init();
+  solver.compute();
+
+  if(solver.info() != Spectra::SUCCESSFUL)
+    throw InternalException(HERE) << "Error while computing the eigenvalues (nev=" << nev << ", ncv=" << ncv << ", solver.info()=" << solver.info() << ")";
+    
+  LOGINFO("Post-process the eigenvalue problem");  
+
+  Eigen::VectorXd eigenValuesEigen = solver.eigenvalues().real();
+  Eigen::MatrixXd eigenVectorsEigen = solver.eigenvectors().real();
+  
+  // Post-process eigenvalues and eigenvectors
+  std::copy(eigenValuesEigen.data(),eigenValuesEigen.data()+nev,eigenvalues.begin());
+  std::copy(eigenVectorsEigen.data(),eigenVectorsEigen.data()+nev*augmentedDimension,&eigenvectors(0,0));
+    
+#else
+  throw InternalException(HERE) << "ARPACK is not available";
+#endif // OPENTURNS_HAVE_ARPACK
+}
+
 
 /* Here we discretize the following Fredholm problem:
    \int_{\Omega}C(s,t)\phi_n(s)ds=\lambda_n\phi_n(t)
@@ -80,85 +441,207 @@ KarhunenLoeveP1Algorithm * KarhunenLoeveP1Algorithm::clone() const
    K_ij = \int_{\Omega}\theta_i(s)\theta_j(s)ds I
    with I the dxd identity matrix
 */
+
 void KarhunenLoeveP1Algorithm::run()
 {
-  // Compute the gram of the mesh
-  LOGINFO("Build the Gram matrix");
-  CovarianceMatrix gram(mesh_.computeP1Gram());
-  const UnsignedInteger numVertices = mesh_.getVerticesNumber();
-  if (!(gram.getDimension() == numVertices)) throw InternalException(HERE) << "Error: the P1 Gram matrix of the mesh has a dimension=" << gram.getDimension() << " different from the number of vertices=" << numVertices;
+        String eigenValuesSolver(ResourceMap::GetAsString("KarhunenLoeveP1Algorithm-EigenvaluesSolver"));
+  const String covarianceMatrixStorage(ResourceMap::GetAsString("KarhunenLoeveP1Algorithm-CovarianceMatrixStorage"));
+  
+#ifndef OPENTURNS_HAVE_ARPACK
+  if (eigenValuesSolver == "ARPACK")
+  {
+    LOGWARN(OSS() << "ARPACK is not available for eigenvalues computation. LAPACK will be used instead.");
+    eigenValuesSolver = "LAPACK";
+  }
+#endif
+  
+  // Retrieve relevant dimensions and constants
+  const UnsignedInteger meshDimension       = mesh_.getDimension();
+  const UnsignedInteger meshSize            = mesh_.getVerticesNumber();    
+  const UnsignedInteger dimension           = covariance_.getOutputDimension();
+  const UnsignedInteger augmentedDimension  = dimension * meshSize;
   const Scalar epsilon = ResourceMap::GetAsScalar("KarhunenLoeveP1Algorithm-RegularizationFactor");
-  if (epsilon > 0.0)
-    for (UnsignedInteger i = 0; i < gram.getDimension(); ++i) gram(i, i) += epsilon;
-  // Extend the Gram matrix of the mesh
-  const UnsignedInteger dimension = covariance_.getOutputDimension();
-  const UnsignedInteger augmentedDimension = dimension * numVertices;
-  CovarianceMatrix G;
-  if (dimension == 1) G = gram;
-  else
+
+  // Define maximum number of modes and the number of modes to compute
+  UnsignedInteger nbModesMax = augmentedDimension;
+  UnsignedInteger nev = nbModesMax;
+  
+  if (eigenValuesSolver == "ARPACK" || eigenValuesSolver == "SPECTRA")
   {
-    G = CovarianceMatrix(augmentedDimension);
-    for (UnsignedInteger i = 0; i < numVertices; ++i)
-    {
-      for (UnsignedInteger j = 0; j <= i; ++j)
-      {
-        const Scalar gij = gram(i, j);
-        for (UnsignedInteger k = 0; k < dimension; ++k)
-          G(i * dimension + k, j * dimension + k) = gij;
-      } // Loop over j
-    } // Loop over i
+    nbModesMax = augmentedDimension - 2;
+    nev = std::min(getNbModes(), nbModesMax);
   }
-  // Discretize the covariance model
-  LOGINFO("Discretize the covariance model");
-  CovarianceMatrix C(covariance_.discretize(mesh_.getVertices()));
-  LOGINFO("Discretize the Fredholm equation");
-  SquareMatrix M((C * G).getImplementation());
-  LOGINFO("Solve the eigenvalue problem");
-  SquareComplexMatrix eigenVectorsComplex;
-  SquareMatrix::ComplexCollection eigenValuesComplex(M.computeEV(eigenVectorsComplex, false));
-  LOGINFO("Post-process the eigenvalue problem");
-  Collection< std::pair<Scalar, UnsignedInteger> > eigenPairs(augmentedDimension);
-  for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
-    eigenPairs[i] = std::pair<Scalar, UnsignedInteger>(-eigenValuesComplex[i].real(), i);
-  // Sort the eigenvalues in decreasing order
-  std::sort(eigenPairs.begin(), eigenPairs.end());
-  Point eigenValues(augmentedDimension);
-  Scalar cumulatedVariance = 0.0;
-  for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
-  {
-    eigenValues[i] = -eigenPairs[i].first;
-    cumulatedVariance += eigenValues[i];
-  }
-  LOGDEBUG(OSS(false) << "eigenValues=" << eigenValues);
-  LOGINFO("Extract the relevant eigenpairs");
-  // Start at 0 if the given threshold is large (eg greater than 1)
+  
+  // Declare some useful variables
+  Matrix eigenVectors(augmentedDimension,nev);
+  Point eigenValues(nev);
+  Scalar computedVariance = 0.0;    // i.e. sum of /computed/ eigenvalues
+  Scalar cumulatedVariance = 0.0;   // i.e. sum of /all/ eigenvalues
   UnsignedInteger K = 0;
-  // Find the cut-off in the eigenvalues
-  while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance)) ++K;
-  LOGINFO(OSS() << "Selected " << K << " eigenvalues");
+  Scalar selectedVariance = 0.0;    // i.e. sum of eigenvalues selected after cut-off is applied
+  Point selectedEV;
+  
+  // Compute the extended Gram matrix of the mesh
+  LOGINFO("Build the Gram matrix");
+  SparseMatrix G(computeSparseAugmentedP1Gram(mesh_, dimension));
+  // Add epsilon to the diagonal of extended Gram matrix
+  if (epsilon > 0.0)
+    for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
+      G(i,i) += epsilon;  
+
+  if (eigenValuesSolver == "ARPACK" || eigenValuesSolver == "SPECTRA")
+  {
+     // Prepare matrix/vector product operator
+    LOGINFO("Discretize the covariance model");
+    Pointer<KLGenMatProd> op;
+
+    if (covarianceMatrixStorage == "LAPACK")
+    {
+      CovarianceMatrix C(covariance_.discretize(mesh_.getVertices()));
+      op = new KLMatProdLapack(C, G);
+    }
+    else if (covarianceMatrixStorage == "HMAT")
+    {
+      HMatrix C(covariance_.discretizeHMatrix(mesh_, HMatrixParameters()));
+      op = new KLMatProdHMat(C, G);
+    }
+    else
+    {
+      throw InternalException(HERE) << "unknown covariance matrix storage format: " << covarianceMatrixStorage;
+    }
+
+    // Define convergence index
+    const UnsignedInteger ncv = std::min(3*nev, augmentedDimension);
+    
+    // Solve EV problem
+    LOGINFO("Solve the eigenvalue problem");
+    if (eigenValuesSolver == "ARPACK")
+      computeEVWithArpack(nev,
+                          ncv,
+                          op,
+                          eigenValues,
+                          eigenVectors);
+    else
+      computeEVWithSpectra( augmentedDimension,
+                            nev,
+                            ncv,
+                            op,
+                            eigenValues,
+                            eigenVectors);
+              
+    LOGDEBUG(OSS(false) << "eigenValues=" << eigenValues);
+
+    // Compute computedVariance (i.e sum of computed eigenvalues)
+    LOGINFO("Post-process the eigenvalue problem");  
+    for (UnsignedInteger k=0; k< eigenValues.getSize(); ++k)
+      computedVariance += eigenValues[k];
+        
+    // Compute cumulatedVariance (i.e. sum of all eigenvalues)
+     if (covarianceMatrixStorage == "LAPACK")
+    {
+      // Here, cumulatedVariance is equal to tr(C * G)
+      SquareMatrix denseG(G.asDenseMatrix().getImplementation());
+      CovarianceMatrix C(op->getC());
+      cumulatedVariance = (C * denseG).computeTrace();
+    }
+    else
+      // Here, cumulatedVariance is estimated from the computed EV, assuming 
+      // that all the following EV are equal to the last one computed
+      cumulatedVariance = computedVariance + (augmentedDimension-eigenValues.getSize())*eigenValues[eigenValues.getSize()-1];
+    
+      LOGDEBUG(OSS(false) << "eigenValues=" << eigenValues);
+  }
+  
+  else if (eigenValuesSolver == "LAPACK")
+    
+  {
+    // LAPACK cannot solve EV problem based on HMatrix
+     if (covarianceMatrixStorage == "HMAT")
+       throw NotYetImplementedException(HERE) << "LAPACK cannot solve EV problem based on HMAT matrix storage";
+     else if (covarianceMatrixStorage != "LAPACK")
+       throw InternalException(HERE) << "unknown covariance matrix storage format: " << covarianceMatrixStorage;
+       
+     
+    // Declare complex eigenvectors variable
+    SquareComplexMatrix eigenVectorsComplex;
+    
+     // Discretize covariance model
+    LOGINFO("Discretize the covariance model");
+    CovarianceMatrix C(covariance_.discretize(mesh_.getVertices()));
+    
+    // Prepare matrix M = C*G, compute EV
+    SquareMatrix denseG(G.asDenseMatrix().getImplementation());
+    SquareMatrix M(C*denseG);
+    SquareMatrix::ComplexCollection eigenValuesComplex(M.computeEV(eigenVectorsComplex, false));
+    
+    // Format results, sort eigenvalues by decreasing order
+    LOGINFO("Post-process the eigenvalue problem");
+    
+    Collection< std::pair<Scalar, UnsignedInteger> > eigenPairs(augmentedDimension);
+    for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
+      eigenPairs[i] = std::pair<Scalar, UnsignedInteger>(-eigenValuesComplex[i].real(), i);
+    
+    std::sort(eigenPairs.begin(), eigenPairs.end());
+    
+    // Store eigenVectors in real matrix
+    for (UnsignedInteger j = 0; j < augmentedDimension; ++j)
+      for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
+        eigenVectors(i,j) = eigenVectorsComplex(i,eigenPairs[j].second).real();
+      
+    // Compute cumulatedVariance (i.e. sum of eigenvalues)
+    for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
+    {
+      eigenValues[i] = -eigenPairs[i].first;
+      cumulatedVariance += eigenValues[i];
+    }
+    
+    LOGDEBUG(OSS(false) << "eigenValues=" << eigenValues);
+  }
+  
+  else
+    
+  {
+    throw InternalException(HERE) << "unknown EV solver: " << eigenValuesSolver;
+  }
+    
+  
+  // Applying cut-off on spectrum
+  LOGINFO("Extract the relevant eigenvalues");
+  
+ while (K < getNbModes() && K < nbModesMax && (selectedVariance < (1.0 - threshold_) * cumulatedVariance)) 
+  {
+    selectedEV.add(eigenValues[K]);
+    selectedVariance += eigenValues[K];
+    ++K;
+  }
+  
+  LOGINFO(OSS() << "Selected " << K << " eigenvalues out of " << nev << " computed");
+    
   // Reduce and rescale the eigenvectors
   MatrixImplementation projection(K, augmentedDimension);
-  Point selectedEV(K);
+  std::copy(eigenValues.begin(), eigenValues.begin()+K, selectedEV.begin());
   Collection<Function> modes(0);
   ProcessSample modesAsProcessSample(mesh_, 0, dimension);
-  const UnsignedInteger meshDimension = mesh_.getDimension();
-  SampleImplementation values(numVertices, dimension);
+  SampleImplementation values(meshSize, dimension);
   Pointer<PiecewiseLinearEvaluation> evaluation1D;
   Pointer<P1LagrangeEvaluation> evaluationXD;
   if (meshDimension == 1)
     evaluation1D = new PiecewiseLinearEvaluation(mesh_.getVertices().getImplementation()->getData(), values);
   else
     evaluationXD = new P1LagrangeEvaluation(Field(mesh_, dimension));
+  
   Point a(augmentedDimension);
+  
   for (UnsignedInteger k = 0; k < K; ++k)
   {
-    selectedEV[k] = eigenValues[k];
-    const UnsignedInteger initialColumn = eigenPairs[k].second;
-    for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
-      a[i] = eigenVectorsComplex(i, initialColumn).real();
-    const Point Ga(G * a);
+    std::copy(eigenVectors.getImplementation()->begin()+k*augmentedDimension,
+              eigenVectors.getImplementation()->begin()+(k+1)*augmentedDimension,
+              a.begin());
+
+    const Point Ga(G * a);                                                  // TODO: useful?
     const Scalar norm = std::sqrt(a.dot(Ga));
     const Scalar factor = a[0] < 0.0 ? -1.0 / norm : 1.0 / norm;
+   
     // Store the eigen modes in two forms
     values.setData(a * factor);
     modesAsProcessSample.add(values);
@@ -178,6 +661,7 @@ void KarhunenLoeveP1Algorithm::run()
     for(UnsignedInteger i = 0; i < augmentedDimension; ++i)
       projection(k, i) = b[i];
   }
+  
   result_ = KarhunenLoeveResultImplementation(covariance_, threshold_, selectedEV, modes, modesAsProcessSample, projection);
 }
 

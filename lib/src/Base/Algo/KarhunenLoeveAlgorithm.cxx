@@ -54,6 +54,18 @@ void KarhunenLoeveAlgorithm::setThreshold(const Scalar threshold)
   return getImplementation()->setThreshold(threshold);
 }
 
+/* Number of modes accessors */
+UnsignedInteger KarhunenLoeveAlgorithm::getNbModes() const
+{
+  return getImplementation()->getNbModes();
+}
+
+void KarhunenLoeveAlgorithm::setNbModes(const UnsignedInteger nbModes)
+{
+  copyOnWrite();
+  return getImplementation()->setNbModes(nbModes);
+}
+
 /* Covariance model accessor */
 void KarhunenLoeveAlgorithm::setCovarianceModel(const CovarianceModel & covariance)
 {

@@ -1,0 +1,15 @@
+test number zero : default constructor and string converter
+matrix0 = class=SparseMatrix name=Unnamed
+test number one : constructor with size, operator() and string converter
+matrix1 = class=SparseMatrix name=Unnamed
+test number two : copy constructor and string converter
+matrix2 = class=SparseMatrix name=Unnamed
+test number three : get dimensions methods
+matrix1's nbRows = 10
+matrix1's nbColumns = 10
+matrix1's nbNonZeros = 4
+test number six : transposition method
+matrix1 transposed = class=SparseMatrix name=Unnamed
+test number ten : multiplication with a point method
+pt = class=Point name=Unnamed dimension=10 values=[1,0,3,4,-5,6.7,0,8,9.2,10]
+ptResult = class=Point name=Unnamed dimension=10 values=[10,0,0,-20,0,2,0,0,0,0]

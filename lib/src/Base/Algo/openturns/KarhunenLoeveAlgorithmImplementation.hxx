@@ -39,13 +39,12 @@ class OT_API KarhunenLoeveAlgorithmImplementation
 
 public:
 
-
   /** Default constructor */
   KarhunenLoeveAlgorithmImplementation();
 
   /** Default constructor */
   explicit KarhunenLoeveAlgorithmImplementation(const CovarianceModel & covariance,
-      const Scalar threshold = 0.0);
+                                                const Scalar threshold = 0.0);
 
   /** Virtual constructor */
   virtual KarhunenLoeveAlgorithmImplementation * clone() const;
@@ -53,7 +52,11 @@ public:
   /** Threshold accessors */
   Scalar getThreshold() const;
   void setThreshold(const Scalar threshold);
-
+  
+  /** Number of modes accessors */
+  UnsignedInteger getNbModes() const;
+  void setNbModes(const UnsignedInteger nbModes);
+  
   /** Covariance model accessors */
   virtual CovarianceModel getCovarianceModel() const;
   virtual void setCovarianceModel(const CovarianceModel & covariance);
@@ -78,8 +81,13 @@ protected:
   /** Covariance model */
   CovarianceModel covariance_;
 
-  /** Threshold */
+  /** Number of eigenvalues management
+   *  The number of modes computed by 'run' method can be defined:
+   *  - by specifing the threshold of spectrum cut-off
+   *  - by specifying the number of modes to compute */
   Scalar threshold_;
+  UnsignedInteger nbModes_;
+  
 
   /** Result */
   KarhunenLoeveResult result_;

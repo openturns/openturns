@@ -14,3 +14,7 @@ OT_KarhunenLoeveAlgorithm_setCovarianceModel_doc
 OT_KarhunenLoeveAlgorithm_run_doc
 %feature("docstring") OT::KarhunenLoeveAlgorithm::getResult
 OT_KarhunenLoeveAlgorithm_getResult_doc
+%feature("docstring") OT::KarhunenLoeveAlgorithm::getNbModes
+OT_KarhunenLoeveAlgorithm_getNbModes_doc
+%feature("docstring") OT::KarhunenLoeveAlgorithm::setNbModes
+OT_KarhunenLoeveAlgorithm_setNbModes_doc

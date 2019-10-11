@@ -31,6 +31,19 @@ The Galerkin approach and the collocation one are equivalent in the :math:`P_1` 
 
 where :math:`\mat{G} = (G_{ij})_{1\leq i,j \leq N}` with :math:`G_{i\ell}= \int_{\cD} \theta_i(\vect{s})\theta_\ell(\vect{s})\,  d\vect{s}`, :math:`\mat{\Lambda}=diag(\vect{\lambda})`.
 
+Though the eigenvalues computation is performed by LAPACK by default, several other solvers can be used. The solver to use must be specified by setting ``KarhunenLoeveP1Algorithm-EigenvaluesSolver`` key in :class:`~openturns.ResourceMap`. Some solvers set limits to the number of eigenvalues they can compute with regards to the size of the problem. The following table summarizes the supported solvers and their maximum number of eigenvalues for a problem of size :math:`n`: 
+
++-------------+---------------------+----------------------+
+| Solver      | ResourceMap key     | Maximum EV number    |
++=============+=====================+======================+
+| Lapack      | LAPACK              | :math:`n`            |
++-------------+---------------------+----------------------+
+| arpack-ng   | ARPACK              | :math:`n-2`          |
++-------------+---------------------+----------------------+
+| Spectra     | SPECTRA             | :math:`n-2`          |
++-------------+---------------------+----------------------+
+
+For large dimension problems, it can be useful to generate the covariance matrix of the problem as a :class:`~openturns.HMatrix` instead of a standard LAPACK matrix. In this case, one can set ``KarhunenLoeveP1Algorithm-CovarianceMatrixStorage`` key in :class:`~openturns.ResourceMap` to ``HMAT``.
 
 Examples
 --------
