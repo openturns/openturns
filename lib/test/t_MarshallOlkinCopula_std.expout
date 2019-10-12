@@ -14,6 +14,4 @@ Sample Kendall's tau =class=CorrelationMatrix dimension=2 implementation=class=M
 Exact Kendall's tau =class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.333333,0.333333,1]
 Sample Spearman's rho =class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.429919,0.429919,1]
 Exact Spearman's rho =class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.428571,0.428571,1]
-x=class=Point name=Unnamed dimension=2 values=[0,0], CDF = 0
-x=class=Point name=Unnamed dimension=2 values=[1,1], CDF = 1
 x=class=Point name=Unnamed dimension=2 values=[0.5,0.5], CDF at half = 0.353553

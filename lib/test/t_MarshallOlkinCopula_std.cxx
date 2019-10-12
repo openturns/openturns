@@ -24,6 +24,30 @@
 using namespace OT;
 using namespace OT::Test;
 
+// Check if point in [0,1]^2
+void check2DPointInUnitSquare(Point point)
+{
+  const UnsignedInteger dim = 2;
+  if (point.getDimension()!=2) throw TestFailed("Point is not dimension 2");
+  for ( UnsignedInteger index = 0; index < dim; ++ index)
+  {
+    if (SpecFunc::IsNaN(point[index])) throw TestFailed("Point component is nan");
+    if (point[index]>1.) throw TestFailed("Point component is >1");
+    if (point[index]<0.) throw TestFailed("Point component is <0");
+  }
+}
+// Check if bool is true
+void assertTrue(bool condition)
+{
+  if (!condition) throw TestFailed("Boolean is not true");
+}
+
+// Check if bool is true
+void assertEqual(Scalar value1, Scalar value2)
+{
+  if (value1!=value2) throw TestFailed("Values are not equal");
+}
+
 int main(int, char *[])
 {
   TESTPREAMBLE;
@@ -75,21 +99,58 @@ int main(int, char *[])
     // x=[0.0,0.0]
     Point zero(2);
     Scalar pointCDFAtZero = copula.computeCDF( zero );
-    fullprint << "x=" << zero << ", CDF = " << pointCDFAtZero << std::endl;
+    assertEqual(pointCDFAtZero, 0.0);
 
     // x=[1.0,1.0]
     Point one(2);
     one[0] = 1.0;
     one[1] = 1.0;
     Scalar pointCDFAtOne = copula.computeCDF( one );
-    fullprint << "x=" << one << ", CDF = " << pointCDFAtOne << std::endl;
+    assertEqual(pointCDFAtOne, 1.0);
 
     // x=[0.5,0.5]
     Scalar pointCDFAtHalf = copula.computeCDF( half );
     fullprint << "x=" << half << ", CDF at half = " << pointCDFAtHalf << std::endl;
 
     // copula.drawCDF().draw("pdf.png");
+    
+    // Special cases
 
+    // Special case alpha=0
+    copula = MarshallOlkinCopula(0.0,0.5);
+    bool isIndependent;
+    isIndependent = copula.hasIndependentCopula();
+    assertTrue(isIndependent);
+    Point random(2); 
+    random = copula.getRealization();
+    check2DPointInUnitSquare(random);
+    CorrelationMatrix correlation;
+    correlation = copula.getSpearmanCorrelation();
+    assertEqual(correlation(0,1), 0.0);
+    correlation = copula.getKendallTau();
+    assertEqual(correlation(0,1), 0.0);
+
+    // Special case beta=0
+    copula = MarshallOlkinCopula(0.5,0.0);
+    isIndependent = copula.hasIndependentCopula();
+    assertTrue(isIndependent);
+    random = copula.getRealization();
+    check2DPointInUnitSquare(random);
+    correlation = copula.getSpearmanCorrelation();
+    assertEqual(correlation(0,1), 0.0);
+    correlation = copula.getKendallTau();
+    assertEqual(correlation(0,1), 0.0);
+
+    // Special case alpha=beta=1
+    copula = MarshallOlkinCopula(1.0,1.0);
+    isIndependent = copula.hasIndependentCopula();
+    assertTrue(!isIndependent);
+    random = copula.getRealization();
+    check2DPointInUnitSquare(random);
+    correlation = copula.getSpearmanCorrelation();
+    assertEqual(correlation(0,1), 1.0);
+    correlation = copula.getKendallTau();
+    assertEqual(correlation(0,1), 1.0);
   }
   catch (TestFailed & ex)
   {

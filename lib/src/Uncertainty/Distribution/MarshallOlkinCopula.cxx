@@ -34,8 +34,8 @@ static const Factory<MarshallOlkinCopula> Factory_MarshallOlkinCopula;
 /* Default constructor */
 MarshallOlkinCopula::MarshallOlkinCopula()
   : CopulaImplementation()
-  , alpha_(0.)
-  , beta_(0.)
+  , alpha_(0.5)
+  , beta_(0.5)
 {
   setName( "MarshallOlkinCopula" );
   setDimension( 2 );
@@ -135,14 +135,16 @@ void MarshallOlkinCopula::setParameter(const Point & parameter)
 /* Tell if the distribution has independent copula */
 Bool MarshallOlkinCopula::hasIndependentCopula() const
 {
-  return ((alpha_ == 1.0) && (beta_ == 1.0));
+  return ((alpha_ == 0.0) || (beta_ == 0.0));
 }
 
 /* Alpha accessor */
 void MarshallOlkinCopula::setAlpha(const Scalar alpha)
 {
-  if ((alpha <= 0.0) || (alpha >= 1.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be in (0, 1), here alpha=" << alpha;
+  if ((alpha < 0.0) || (alpha > 1.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be in [0, 1], here alpha=" << alpha;
+  if ((alpha == 0.0) && (beta_ == 0.0)) throw InvalidArgumentException(HERE) << "Beta="<<beta_<<" so that alpha cannot be zero";
   alpha_ = alpha;
+  isAlreadyComputedCovariance_ = false;
 }
 
 /* Alpha accessor */
@@ -154,8 +156,10 @@ Scalar MarshallOlkinCopula::getAlpha() const
 /* Beta accessor */
 void MarshallOlkinCopula::setBeta(const Scalar beta)
 {
-  if ((beta <= 0.0) || (beta >= 1.0)) throw InvalidArgumentException(HERE) << "Beta MUST be in (0, 1), here beta=" << beta;
+  if ((beta < 0.0) || (beta > 1.0)) throw InvalidArgumentException(HERE) << "Beta MUST be in [0, 1], here beta=" << beta;
+  if ((alpha_ == 0.0) && (beta == 0.0)) throw InvalidArgumentException(HERE) << "Alpha="<<alpha_<<" so that beta cannot be zero";
   beta_ = beta;
+  isAlreadyComputedCovariance_ = false;
 }
 
 /* Beta accessor */
@@ -168,7 +172,14 @@ Scalar MarshallOlkinCopula::getBeta() const
 CorrelationMatrix MarshallOlkinCopula::getKendallTau() const
 {
   CorrelationMatrix tauKendall(2);
-  tauKendall(1, 0) = alpha_ * beta_ / (alpha_ + beta_ - alpha_ * beta_);
+  if ((alpha_==0.0) || (beta_==0.0))
+  {
+    tauKendall(1, 0) = 0.0;
+  } else if ((alpha_==1.0) && (beta_==1.0)) {
+    tauKendall(1, 0) = 1.0;
+  } else {
+    tauKendall(1, 0) = alpha_ * beta_ / (alpha_ + beta_ - alpha_ * beta_);
+  }
   return CorrelationMatrix(tauKendall);
 }
 
@@ -177,7 +188,14 @@ CorrelationMatrix MarshallOlkinCopula::getKendallTau() const
 CorrelationMatrix MarshallOlkinCopula::getSpearmanCorrelation() const
 {
   CorrelationMatrix rho(2);
-  rho(1, 0) = 3 * alpha_ * beta_ / (2 * alpha_ + 2 * beta_ - alpha_ * beta_);
+  if ((alpha_==0.0) || (beta_==0.0))
+  {
+    rho(1, 0) = 0.0;
+  } else if ((alpha_==1.0) && (beta_==1.0)) {
+    rho(1, 0) = 1.0;
+  } else {
+    rho(1, 0) = 3 * alpha_ * beta_ / (2 * alpha_ + 2 * beta_ - alpha_ * beta_);
+  }
   return rho;
 }
 
@@ -191,12 +209,18 @@ Point MarshallOlkinCopula::getRealization() const
 {
   Point realization(2);
   // We use the general algorithm based on conditional CDF inversion
-  if ((alpha_==0.0) && (beta_==0.0))
+  if ((alpha_==0.0) || (beta_==0.0))
   {
+    // This is the independent copula
     const Scalar u = RandomGenerator::Generate();
     const Scalar v = RandomGenerator::Generate();
     realization[0] = u;
     realization[1] = v;
+  } else if ((alpha_==1.0) && (beta_==1.0)) {
+    // This is the min-copula
+    const Scalar u = RandomGenerator::Generate();
+    realization[0] = u;
+    realization[1] = u;
   } else {
     const Scalar r = RandomGenerator::Generate();
     const Scalar s = RandomGenerator::Generate();
@@ -214,12 +238,12 @@ Point MarshallOlkinCopula::getRealization() const
     and set lambda12 to 1.
     */
     const Scalar lambda12 = 1.0;
-    const Scalar lambda1 = lambda12 /alpha_ - lambda12;
-    const Scalar lambda2 = lambda12 /beta_ - lambda12;
-    const Scalar x = std::min(-logr/lambda1,-logt);
-    const Scalar y = std::min(-logs/lambda2,-logt);
-    const Scalar u = std::exp(-(lambda1+lambda12)*x);
-    const Scalar v = std::exp(-(lambda2+lambda12)*y);
+    const Scalar lambda1 = lambda12 / alpha_ - lambda12;
+    const Scalar lambda2 = lambda12 / beta_ - lambda12;
+    const Scalar x = std::min(- logr / lambda1, - logt);
+    const Scalar y = std::min(- logs / lambda2, - logt);
+    const Scalar u = std::exp(- (lambda1 + lambda12) * x);
+    const Scalar v = std::exp(- (lambda2 + lambda12) * y);
     realization[0] = u;
     realization[1] = v;
   }

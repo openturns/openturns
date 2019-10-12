@@ -10,7 +10,7 @@ RandomGenerator.SetSeed(0)
 try:
     # Instanciate one distribution object
     dim = 2
-    copula = MarshallOlkinCopula(0.5,0.5)
+    copula = MarshallOlkinCopula()
 
     print("Copula ", repr(copula))
     print("Copula ", copula)
