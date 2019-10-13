@@ -1,0 +1,43 @@
+Copula  class=MarshallOlkinCopula name=MarshallOlkinCopula dimension=2 alpha=0.5 beta=0.5
+Copula  MarshallOlkinCopula(alpha = 0.5, beta = 0.5)
+Mean  class=Point name=Unnamed dimension=2 values=[0.5,0.5]
+Covariance  class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0833333,0.0357144,0.0357144,0.0833333]
+Elliptical distribution=  False
+Elliptical copula=  False
+Independent copula=  False
+alpha= 0.5
+beta= 0.5
+oneRealization= class=Point name=Unnamed dimension=2 values=[0.396744,0.779345]
+oneSample= class=Sample name=MarshallOlkinCopula implementation=class=SampleImplementation name=MarshallOlkinCopula size=10 dimension=2 description=[X0,X1] data=[[0.939781,0.939781],[0.847651,0.253049],[0.146966,0.510342],[0.780578,0.780578],[0.67373,0.862132],[0.468643,0.685629],[0.91154,0.346468],[0.0442859,0.436561],[0.175493,0.175493],[0.964012,0.913177]]
+anotherSample mean= class=Point name=Unnamed dimension=2 values=[0.502468,0.500984]
+anotherSample covariance= class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.0842064,0.0362275,0.0362275,0.0843318]
+Point =  class=Point name=Unnamed dimension=2 values=[0.2,0.2]  pdf=5190.572089  cdf=0.089443
+Quantile= class=Point name=Unnamed dimension=2 values=[0.629961,0.629961]
+CDF(quantile)=0.500000
+Quantile= class=Point name=Unnamed dimension=2 values=[0.135721,0.135721]
+InverseSurvival= class=Point name=Unnamed dimension=2 values=[0.027249,0.027249]
+Survival(inverseSurvival)=0.950000
+entropy=0.089466
+Unilateral confidence interval (lower tail)= [0, 0.966383]
+[0, 0.966383]
+beta= [0.966383]
+Unilateral confidence interval (upper tail)= [0.027249, 1]
+[0.027249, 1]
+beta= [0.972751]
+margin= class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1.000000
+margin CDF=0.250000
+margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.0998232]
+margin= class=IndependentCopula name=IndependentCopula dimension=1
+margin PDF=1.000000
+margin CDF=0.250000
+margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.33856]
+indices= [1,0]
+margins= class=MarginalDistribution name=MarginalDistribution dimension=2 distribution=class=MarshallOlkinCopula name=MarshallOlkinCopula dimension=2 alpha=0.5 beta=0.5 indices=[1,0]
+margins PDF=5802.986026
+margins CDF=0.125000
+margins quantile= class=Point name=Unnamed dimension=2 values=[0.966383,0.966383]
+margins CDF(qantile)=0.950000
+margins realization= class=Point name=Unnamed dimension=2 values=[0.29664,0.868128]

@@ -527,6 +527,7 @@ ot_add_python_module(model_copula model_copula_module.i
                       OrdinalSumCopula.i OrdinalSumCopula_doc.i.in
                       FarlieGumbelMorgensternCopula.i FarlieGumbelMorgensternCopula_doc.i.in
                       FarlieGumbelMorgensternCopulaFactory.i FarlieGumbelMorgensternCopulaFactory_doc.i.in
+                      MarshallOlkinCopula.i MarshallOlkinCopula_doc.i.in
                       AliMikhailHaqCopula.i AliMikhailHaqCopula_doc.i.in
                       AliMikhailHaqCopulaFactory.i AliMikhailHaqCopulaFactory_doc.i.in
                       FrankCopula.i FrankCopula_doc.i.in
