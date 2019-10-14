@@ -52,8 +52,11 @@ HMatrixParameters::HMatrixParameters()
     case 3:
       compressionMethod_ = "ACA+";
       break;
+    case 4:
+      compressionMethod_ = "ACA random";
+      break;
     default:
-      throw InvalidArgumentException(HERE) << "Unknown compression method: " << resourceCompressionMethod << ", valid choices are: 0 (SVD), 1 (ACA full), 2 (ACA partial) or 3 (ACA+)";
+      throw InvalidArgumentException(HERE) << "Unknown compression method: " << resourceCompressionMethod << ", valid choices are: 0 (SVD), 1 (ACA full), 2 (ACA partial), 3 (ACA+) or 5 (ACA random).";
       break;
   }
 }
@@ -129,8 +132,10 @@ UnsignedInteger HMatrixParameters::getCompressionMethodAsUnsignedInteger() const
     return 2;
   else if (compressionMethod_ == "ACA+")
     return 3;
+  else if (compressionMethod_ == "ACA random")
+    return 4;
   else
-    throw InvalidArgumentException(HERE) << "Unknown compression method: " << compressionMethod_ << ", valid choices are: SVD, ACA full, ACA partial or ACA+";
+    throw InvalidArgumentException(HERE) << "Unknown compression method: " << compressionMethod_ << ", valid choices are: SVD, ACA full, ACA partial, ACA+ or ACA random";
 }
 
 /* String converter */
