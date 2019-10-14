@@ -78,13 +78,13 @@ We note:
      \right)\in \Rset^{\sum_{\ell=1}^p n_\ell}
 
 
-The *GeneralLinearModelAlgorithm* class estimates the coefficients :math:`\beta_j^\ell, \vect{p}` where :math:`\vect{p}` is the vector of parameters of the covariance model (a subset of :math:`\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda}`) that has been declared as *active* (by default, the full vectors :math:`\vect{\theta}` and :math:`\vect{\sigma}`).
+The *GeneralLinearModelAlgorithm* class estimates the coefficients :math:`\beta_j^\ell` and :math:`\vect{p}` where :math:`\vect{p}` is the vector of parameters of the covariance model (a subset of :math:`\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda}`) that has been declared as *active* (by default, the full vectors :math:`\vect{\theta}` and :math:`\vect{\sigma}`).
 
 The estimation is done by maximizing the *reduced* log-likelihood of the model, see its expression below.
 
 If a normalizing transformation :math:`T` has been used, the meta model is built on the inputs :math:`\vect{z}_k = T(\vect{x}_k)`.
 
-**Estimation of the parameters** :math:`\beta_j^\ell, \vect{p}`
+**Estimation of the parameters** :math:`\beta_j^\ell` and :math:`\vect{p}`
 
 We note:
 

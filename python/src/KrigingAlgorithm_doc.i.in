@@ -54,7 +54,7 @@ with :math:`\mu_l(\vect{x}) = \sum_{j=1}^{n_l} \beta_j^l \varphi_j^l(\vect{x})` 
 
 :math:`W` is a Gaussian process of dimension *p* with zero mean and covariance function :math:`C = C(\vect{\theta}, \vect{\sigma}, \mat{R}, \vect{\lambda})` (see :class:`~openturns.CovarianceModel` for the notations).
 
-The estimation of the all parameters (the trend coefficients :math:`\beta_j^l, the scale \vect{\theta} and the amplitude \vect{\sigma}`) are made by the :class:`~openturns.GeneralLinearModelAlgorithm` class.
+The estimation of the all parameters (the trend coefficients :math:`\beta_j^l`, the scale :math:`\vect{\theta}` and the amplitude :math:`\vect{\sigma}`) are made by the :class:`~openturns.GeneralLinearModelAlgorithm` class.
 
 The Kriging algorithm makes the general linear model interpolary on the input samples. The Kriging meta model :math:`\tilde{\cM}` is defined by:
 
