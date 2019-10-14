@@ -28,8 +28,8 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #ifdef OPENTURNS_HAVE_BONMIN
   #include "openturns/BonminProblem.hxx"
-  #include "BonBonminSetup.hpp"
-  #include "BonCbc.hpp"
+  #include <BonBonminSetup.hpp>
+  #include <BonCbc.hpp>
   using namespace Bonmin;
   using namespace Ipopt;
 #endif
@@ -121,7 +121,7 @@ void Bonmin::checkProblem(const OptimizationProblem & problem) const
 #ifdef OPENTURNS_HAVE_BONMIN
 
 /** Accessors to Bonmin options */
-void getOptionsFromResourceMap(BonminSetup & bonmin)
+static void GetOptionsFromResourceMap(BonminSetup & bonmin)
 {
 //   Get options for Bonmin setup from ResourceMap
 //   See Bonmin/Ipopt user manuals for more details.
@@ -168,7 +168,7 @@ void Bonmin::run()
   bonmin.initializeOptionsAndJournalist();
    
   // Update algorithm name and other user defined options
-  getOptionsFromResourceMap(bonmin);
+  GetOptionsFromResourceMap(bonmin);
   
   if (ResourceMap::HasKey("Bonmin-bonmin.algorithm") && ResourceMap::GetAsString("Bonmin-bonmin.algorithm") != algoName_)
     LOGWARN(OSS() << "Algorithm name specified in ResourceMap (" << ResourceMap::GetAsString("Bonmin-bonmin.algorithm") << ") will be ignored");

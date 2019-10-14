@@ -26,7 +26,7 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/Bonmin.hxx"
 #include "openturns/MemoizeFunction.hxx"
-#include "BonTMINLP.hpp"
+#include <BonTMINLP.hpp>
 
 BEGIN_NAMESPACE_OPENTURNS
 
