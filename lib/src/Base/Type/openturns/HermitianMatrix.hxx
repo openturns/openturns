@@ -64,8 +64,13 @@ public:
   /** Constructor with implementation */
   HermitianMatrix(const Implementation & i);
 
+#ifndef SWIG
   /** Copy constructor, added to solve glitches with inheritance */
-  HermitianMatrix(const HermitianMatrix & h);
+  HermitianMatrix(const HermitianMatrix & other);
+
+  /** Assignment operator */
+  HermitianMatrix & operator=(const HermitianMatrix & rhs);
+#endif
 
   /** String converter */
   String __repr__() const;
