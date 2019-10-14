@@ -33,6 +33,9 @@ Statistical hypothesis testing
     :maxdepth: 1
 
     kolmogorov_test.ipynb
+    kolmogorov_statistics.ipynb
+    kolmogorov_pvalue.ipynb
+    kolmogorov_distribution.ipynb
     chi2_fitting_test.ipynb
     qqplot_graph.ipynb
     smirnov_test.ipynb
