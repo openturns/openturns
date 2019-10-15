@@ -248,9 +248,7 @@ int main(int, char *[])
     for (UnsignedInteger index = 0; index < grid.getSize(); ++ index)
     {
       const Point point(grid[index]);
-      std::cerr << "index=" << index << std::endl;
       const Scalar PDF = distribution2D.computePDF(point);
-      std::cerr << "PDF=" << PDF << std::endl;
       // Very small values are not very accurate on x86, skip them
       if (PDF < 1.e-12) continue;
       fullprint << "pdf      =" << PDF << std::endl;

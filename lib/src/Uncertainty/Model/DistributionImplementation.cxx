@@ -160,7 +160,12 @@ Distribution DistributionImplementation::operator + (const DistributionImplement
       Collection< Distribution > coll(2);
       coll[0] = *this;
       coll[1] = other.clone();
-      return new RandomMixture(coll);
+      RandomMixture res(coll);
+      // Check if a simplification has occured
+      if (res.getDistributionCollection().getSize() == 1)
+	return res.getDistributionCollection()[0];
+      // No simplification
+      return res.clone();
     }
 
   if (!hasIndependentCopula() || !other.hasIndependentCopula())
@@ -182,7 +187,12 @@ Distribution DistributionImplementation::operator + (const Scalar value) const
       Collection< Distribution > coll(2);
       coll[0] = *this;
       coll[1] = Dirac(Point(1, value));
-      return new RandomMixture(coll);
+      RandomMixture res(coll);
+      // Check if a simplification has occured
+      if (res.getDistributionCollection().getSize() == 1)
+	return res.getDistributionCollection()[0];
+      // No simplification
+      return res.clone();
     }
 
   Collection< Distribution > marginals(dimension_);
@@ -212,7 +222,12 @@ Distribution DistributionImplementation::operator - (const DistributionImplement
       Collection< Distribution > coll(2);
       coll[0] = *this;
       coll[1] = other.clone();
-      return new RandomMixture(coll, weights);
+      RandomMixture res(coll, weights);
+      // Check if a simplification has occured
+      if (res.getDistributionCollection().getSize() == 1)
+	return res.getDistributionCollection()[0];
+      // No simplification
+      return res.clone();
     }
 
   if (!hasIndependentCopula() || !other.hasIndependentCopula())
@@ -282,7 +297,11 @@ Distribution DistributionImplementation::operator * (const Scalar value) const
   if (getClassName() == "Dirac") return new Dirac(getRealization()[0] * value);
   const Collection< Distribution > coll(1, *this);
   const Point weight(1, value);
-  return new RandomMixture(coll, weight);
+  RandomMixture res(coll, weight);
+  // If the weight has been integrated into the unique atom
+  if (res.getWeights()(0, 0) == 1.0)
+    return res.getDistributionCollection()[0];
+  return res.clone();
 }
 
 /* Division operator */
@@ -4755,12 +4774,12 @@ Distribution DistributionImplementation::exp() const
   // Check if we can reuse an existing class
   if (getClassName() == "Normal")
     {
-      Point parameters(getParameter());
+      const Point parameters(getParameter());
       return new LogNormal(parameters[0], parameters[1]);
     }
   if (getClassName() == "Uniform")
     {
-      Point parameters(getParameter());
+      const Point parameters(getParameter());
       return new LogUniform(parameters[0], parameters[1]);
     }
   const Scalar a = getRange().getLowerBound()[0];
@@ -4778,12 +4797,12 @@ Distribution DistributionImplementation::log() const
   // Check if we can reuse an existing class
   if (getClassName() == "LogNormal")
     {
-      Point parameters(getParameter());
+      const Point parameters(getParameter());
       if (parameters[2] == 0.0) return new Normal(parameters[0], parameters[1]);
     }
   if (getClassName() == "LogUniform")
     {
-      Point parameters(getParameter());
+      const Point parameters(getParameter());
       return new Uniform(parameters[0], parameters[1]);
     }
   const Scalar a = getRange().getLowerBound()[0];
@@ -4877,12 +4896,12 @@ Distribution DistributionImplementation::sqr() const
   // Check if we can reuse an existing class
   if (getClassName() == "Chi")
     {
-      Point parameters(getParameter());
+      const Point parameters(getParameter());
       return new ChiSquare(parameters[0]);
     }
   if (getClassName() == "Normal")
     {
-      Point parameters(getParameter());
+      const Point parameters(getParameter());
       return new SquaredNormal(parameters[0], parameters[1]);
     }
   return pow(static_cast< SignedInteger >(2));
@@ -4944,7 +4963,7 @@ Distribution DistributionImplementation::sqrt() const
   // Check if we can reuse an existing class
   if (getClassName() == "ChiSquare")
     {
-      Point parameters(getParameter());
+      const Point parameters(getParameter());
       return new Chi(parameters[0]);
     }
   const Scalar a = getRange().getLowerBound()[0];

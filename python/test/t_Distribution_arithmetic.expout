@@ -1,8 +1,8 @@
 dist1: Normal(mu = 1, sigma = 0.5)
-dist1+2: RandomMixture(Normal(mu = 3, sigma = 0.5))
-dist1-2: RandomMixture(Normal(mu = -1, sigma = 0.5))
-dist1*2: RandomMixture(Normal(mu = 2, sigma = 1))
-dist1/2: RandomMixture(Normal(mu = 0.5, sigma = 0.25))
+dist1+2: Normal(mu = 3, sigma = 0.5)
+dist1-2: Normal(mu = -1, sigma = 0.5)
+dist1*2: Normal(mu = 2, sigma = 1)
+dist1/2: Normal(mu = 0.5, sigma = 0.25)
 2/dist1: RandomMixture(2 * CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[1.0 / x])
 cos(dist1): CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[cos(x)]
 sin(dist1): CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[sin(x)]
@@ -26,14 +26,14 @@ sqr(dist1): SquaredNormal(mu = 1, sigma = 0.5)
 sqrt(distG1): CompositeDistribution=f(LogNormal(muLog = 1, sigmaLog = 1, gamma = 1)) with f=[x]->[sqrt(x)]
 cbrt(dist1): CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[cbrt(x)]
 abs(dist1): CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[abs(x)]
-dist1+dist2: RandomMixture(Normal(mu = -1, sigma = 1.11803))
-dist1-dist2: RandomMixture(Normal(mu = 3, sigma = 1.11803))
+dist1+dist2: Normal(mu = -1, sigma = 1.11803)
+dist1-dist2: Normal(mu = 3, sigma = 1.11803)
 dist1*dist2: ProductDistribution(Normal(mu = 1, sigma = 0.5) * Normal(mu = -2, sigma = 1))
 dist1/dist2: ProductDistribution(Normal(mu = 1, sigma = 0.5) * CompositeDistribution=f(Normal(mu = -2, sigma = 1)) with f=[x]->[1.0 / x])
 logn*logn: LogNormal(muLog = 0, sigmaLog = 1.41421, gamma = 0)
-logu*logu: CompositeDistribution=f(RandomMixture(Triangular(a = -2, m = 0, b = 2))) with f=[x]->[exp(x)]
-logu*logn: CompositeDistribution=f(RandomMixture(SmoothedUniform(a = -1, b = 1, sigma = 1))) with f=[x]->[exp(x)]
-logn*logu: CompositeDistribution=f(RandomMixture(SmoothedUniform(a = -1, b = 1, sigma = 1))) with f=[x]->[exp(x)]
+logu*logu: CompositeDistribution=f(Triangular(a = -2, m = 0, b = 2)) with f=[x]->[exp(x)]
+logu*logn: CompositeDistribution=f(SmoothedUniform(a = -1, b = 1, sigma = 1)) with f=[x]->[exp(x)]
+logn*logu: CompositeDistribution=f(SmoothedUniform(a = -1, b = 1, sigma = 1)) with f=[x]->[exp(x)]
 WeibullMin+Exponential: RandomMixture(WeibullMin(beta = 1, alpha = 1, gamma = 0) + Exponential(lambda = 1, gamma = 0))
 result.CDF(1.0)=0.264241
 -WeibullMin+Exponential: RandomMixture(-WeibullMin(beta = 1, alpha = 1, gamma = 0) + Exponential(lambda = 1, gamma = 0))
@@ -42,10 +42,10 @@ WeibullMin-Exponential: RandomMixture(WeibullMin(beta = 1, alpha = 1, gamma = 0)
 result.CDF(1.0)=0.816060
 -WeibullMin-Exponential: RandomMixture(-WeibullMin(beta = 1, alpha = 1, gamma = 0) - Exponential(lambda = 1, gamma = 0))
 result.CDF(-1.0)=0.735759
-ComposedDistribution(RandomMixture(Normal(mu = 0, sigma = 1.41421)), RandomMixture(Normal(mu = 0, sigma = 1.41421)), IndependentCopula(dimension = 2))
-ComposedDistribution(RandomMixture(Normal(mu = 3, sigma = 1)), RandomMixture(Normal(mu = 3, sigma = 1)), NormalCopula(R = [[ 1 0 ]
+ComposedDistribution(Normal(mu = 0, sigma = 1.41421), Normal(mu = 0, sigma = 1.41421), IndependentCopula(dimension = 2))
+ComposedDistribution(Normal(mu = 3, sigma = 1), Normal(mu = 3, sigma = 1), NormalCopula(R = [[ 1 0 ]
  [ 0 1 ]]))
-ComposedDistribution(RandomMixture(Normal(mu = 0, sigma = 1.41421)), RandomMixture(Normal(mu = 0, sigma = 1.41421)), IndependentCopula(dimension = 2))
-ComposedDistribution(RandomMixture(Normal(mu = -3, sigma = 1)), RandomMixture(Normal(mu = -3, sigma = 1)), NormalCopula(R = [[ 1 0 ]
+ComposedDistribution(Normal(mu = 0, sigma = 1.41421), Normal(mu = 0, sigma = 1.41421), IndependentCopula(dimension = 2))
+ComposedDistribution(Normal(mu = -3, sigma = 1), Normal(mu = -3, sigma = 1), NormalCopula(R = [[ 1 0 ]
  [ 0 1 ]]))
-RandomMixture(Normal(mu = -7, sigma = 2))
+Normal(mu = -7, sigma = 2)
