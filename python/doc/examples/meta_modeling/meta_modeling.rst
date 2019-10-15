@@ -40,6 +40,8 @@ Kriging metamodel
     kriging_simulate.ipynb
     kriging_sequential.ipynb
     kriging_advanced.ipynb
+    kriging_beam_arbitrary_trend.ipynb
+    kriging_hyperparameters_optimization.ipynb
 
 Fields metamodels
 -----------------
