@@ -106,12 +106,12 @@ Scalar MarshallOlkinCopula::computeCDF(const Point & point) const
   const Scalar vbeta = std::pow(v, beta_);
   if (ualpha>vbeta)
   {
-    const Scalar p = std::pow(u, 1-alpha_) * v;
+    const Scalar p = std::pow(u, 1 - alpha_) * v;
     return p;
   }
   else
   {
-    const Scalar p = u * std::pow(v, 1-beta_);
+    const Scalar p = u * std::pow(v, 1 - beta_);
     return p;
   }
 }
@@ -172,12 +172,16 @@ Scalar MarshallOlkinCopula::getBeta() const
 CorrelationMatrix MarshallOlkinCopula::getKendallTau() const
 {
   CorrelationMatrix tauKendall(2);
-  if ((alpha_==0.0) || (beta_==0.0))
+  if ((alpha_ == 0.0) || (beta_ == 0.0))
   {
     tauKendall(1, 0) = 0.0;
-  } else if ((alpha_==1.0) && (beta_==1.0)) {
+  } 
+  else if ((alpha_ == 1.0) && (beta_ == 1.0)) 
+  {
     tauKendall(1, 0) = 1.0;
-  } else {
+  }
+  else 
+  {
     tauKendall(1, 0) = alpha_ * beta_ / (alpha_ + beta_ - alpha_ * beta_);
   }
   return CorrelationMatrix(tauKendall);
@@ -188,12 +192,16 @@ CorrelationMatrix MarshallOlkinCopula::getKendallTau() const
 CorrelationMatrix MarshallOlkinCopula::getSpearmanCorrelation() const
 {
   CorrelationMatrix rho(2);
-  if ((alpha_==0.0) || (beta_==0.0))
+  if ((alpha_ == 0.0) || (beta_ == 0.0))
   {
     rho(1, 0) = 0.0;
-  } else if ((alpha_==1.0) && (beta_==1.0)) {
+  } 
+  else if ((alpha_ == 1.0) && (beta_ == 1.0)) 
+  {
     rho(1, 0) = 1.0;
-  } else {
+  } 
+  else 
+  {
     rho(1, 0) = 3 * alpha_ * beta_ / (2 * alpha_ + 2 * beta_ - alpha_ * beta_);
   }
   return rho;
@@ -209,19 +217,23 @@ Point MarshallOlkinCopula::getRealization() const
 {
   Point realization(2);
   // We use the general algorithm based on conditional CDF inversion
-  if ((alpha_==0.0) || (beta_==0.0))
+  if ((alpha_ == 0.0) || (beta_ == 0.0))
   {
     // This is the independent copula
     const Scalar u = RandomGenerator::Generate();
     const Scalar v = RandomGenerator::Generate();
     realization[0] = u;
     realization[1] = v;
-  } else if ((alpha_==1.0) && (beta_==1.0)) {
+  } 
+  else if ((alpha_ == 1.0) && (beta_ == 1.0)) 
+  {
     // This is the min-copula
     const Scalar u = RandomGenerator::Generate();
     realization[0] = u;
     realization[1] = u;
-  } else {
+  } 
+  else 
+  {
     const Scalar r = RandomGenerator::Generate();
     const Scalar s = RandomGenerator::Generate();
     const Scalar t = RandomGenerator::Generate();
