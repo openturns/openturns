@@ -22,7 +22,7 @@ ln(distG1): CompositeDistribution=f(LogNormal(muLog = 1, sigmaLog = 1, gamma = 1
 dist1^3: CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[x^3]
 dist1^2.5: CompositeDistribution=f(LogNormal(muLog = 1, sigmaLog = 1, gamma = 1)) with f=[x]->[x^2.5]
 inverse(distG1): CompositeDistribution=f(LogNormal(muLog = 1, sigmaLog = 1, gamma = 1)) with f=[x]->[1.0 / x]
-sqr(dist1): CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[x^2]
+sqr(dist1): SquaredNormal(mu = 1, sigma = 0.5)
 sqrt(distG1): CompositeDistribution=f(LogNormal(muLog = 1, sigmaLog = 1, gamma = 1)) with f=[x]->[sqrt(x)]
 cbrt(dist1): CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[cbrt(x)]
 abs(dist1): CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[abs(x)]

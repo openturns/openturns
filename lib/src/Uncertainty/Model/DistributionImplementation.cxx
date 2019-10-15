@@ -42,6 +42,7 @@
 #include "openturns/RandomMixture.hxx"
 #include "openturns/MaximumDistribution.hxx"
 #include "openturns/ProductDistribution.hxx"
+#include "openturns/SquaredNormal.hxx"
 #include "openturns/TruncatedDistribution.hxx"
 #include "openturns/Uniform.hxx"
 #include "openturns/IndependentCopula.hxx"
@@ -207,7 +208,7 @@ Distribution DistributionImplementation::operator - (const DistributionImplement
 
   if (dimension_ == 1)
     {
-      if (other.getClassName() == "Dirac") return *this - other.getRealization()[0];
+      if (other.getClassName() == "Dirac") return *this + (-other.getRealization()[0]);
       Collection< Distribution > coll(2);
       coll[0] = *this;
       coll[1] = other.clone();
@@ -241,9 +242,9 @@ Distribution DistributionImplementation::operator * (const DistributionImplement
   if ((getDimension() == 1) && (other.getDimension() == 1))
     {
       if (getClassName() == "Dirac")
-	return other + getRealization()[0];
+	return other * getRealization()[0];
       if (other.getClassName() == "Dirac")
-	return *this + other.getRealization()[0];
+	return *this * other.getRealization()[0];
     }
   // Special case: LogNormal distributions
   if ((getClassName() == "LogNormal") && (other.getClassName() == "LogNormal"))
@@ -297,7 +298,7 @@ Distribution DistributionImplementation::operator / (const DistributionImplement
     {
       const Scalar otherValue = other.getRealization()[0];
       if (otherValue == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot divide by a Dirac distribution located in 0";
-      return *this / otherValue;
+      return *this * (1.0 / otherValue);
     }
   return operator * (other.inverse());
 }
@@ -4878,6 +4879,11 @@ Distribution DistributionImplementation::sqr() const
     {
       Point parameters(getParameter());
       return new ChiSquare(parameters[0]);
+    }
+  if (getClassName() == "Normal")
+    {
+      Point parameters(getParameter());
+      return new SquaredNormal(parameters[0], parameters[1]);
     }
   return pow(static_cast< SignedInteger >(2));
 }
