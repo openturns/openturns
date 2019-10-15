@@ -1,7 +1,7 @@
 import openturns as ot
 from math import log
 
-ot.ResourceMap.SetAsBool("LinearModelStepwiseAlgorithm-normalize", False)
+ot.TESTPREAMBLE()
 
 description = ["BIO", "SAL", "pH", "K", "Na", "Zn"]
 data = [[676, 33, 5, 1441.67, 35185.5, 16.4524],
