@@ -1,17 +1,17 @@
 Copula class=MarshallOlkinCopula name=MarshallOlkinCopula dimension=2 alpha=0.5 beta=0.5
 Copula MarshallOlkinCopula(alpha = 0.5, beta = 0.5)
-Dimension 2
-Continuous = true
-Independent = false
-PDF at half = 8205.95
-Kendall's tau = class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.333333,0.333333,1]
-Spearman's rho = class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.428571,0.428571,1]
-oneRealization=class=Point name=Unnamed dimension=2 values=[0.396744,0.779345]
-oneSample first=class=Point name=Unnamed dimension=2 values=[0.939781,0.939781] last=class=Point name=Unnamed dimension=2 values=[0.809022,0.809022]
-mean=class=Point name=Unnamed dimension=2 values=[0.502514,0.500974]
-covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.084242,0.0362301,0.0362301,0.0843411]
-Sample Kendall's tau =class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.334474,0.334474,1]
-Exact Kendall's tau =class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.333333,0.333333,1]
-Sample Spearman's rho =class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.429919,0.429919,1]
-Exact Spearman's rho =class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.428571,0.428571,1]
-x=class=Point name=Unnamed dimension=2 values=[0.5,0.5], CDF at half = 0.353553
+Dimension
+isContinuous
+hasIndependentCopula
+getKendallTau
+getSpearmanCorrelation
+getRealization
+getSample
+computeMean
+computeCovariance
+Sample Kendall's tau vs copula
+Sample Kendall's tau vs copula
+Special case alpha=0
+Special case beta=0
+Special case alpha=beta=1
+Special case alpha=beta=0

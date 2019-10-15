@@ -142,7 +142,6 @@ Bool MarshallOlkinCopula::hasIndependentCopula() const
 void MarshallOlkinCopula::setAlpha(const Scalar alpha)
 {
   if ((alpha < 0.0) || (alpha > 1.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be in [0, 1], here alpha=" << alpha;
-  if ((alpha == 0.0) && (beta_ == 0.0)) throw InvalidArgumentException(HERE) << "Beta="<<beta_<<" so that alpha cannot be zero";
   alpha_ = alpha;
   isAlreadyComputedCovariance_ = false;
 }
@@ -157,7 +156,6 @@ Scalar MarshallOlkinCopula::getAlpha() const
 void MarshallOlkinCopula::setBeta(const Scalar beta)
 {
   if ((beta < 0.0) || (beta > 1.0)) throw InvalidArgumentException(HERE) << "Beta MUST be in [0, 1], here beta=" << beta;
-  if ((alpha_ == 0.0) && (beta == 0.0)) throw InvalidArgumentException(HERE) << "Alpha="<<alpha_<<" so that beta cannot be zero";
   beta_ = beta;
   isAlreadyComputedCovariance_ = false;
 }
@@ -184,7 +182,7 @@ CorrelationMatrix MarshallOlkinCopula::getKendallTau() const
   {
     tauKendall(1, 0) = alpha_ * beta_ / (alpha_ + beta_ - alpha_ * beta_);
   }
-  return CorrelationMatrix(tauKendall);
+  return tauKendall;
 }
 
 /* Get the Spearman correlation of the distribution

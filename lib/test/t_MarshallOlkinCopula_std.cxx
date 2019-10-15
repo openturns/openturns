@@ -32,8 +32,8 @@ void check2DPointInUnitSquare(Point point)
   for ( UnsignedInteger index = 0; index < dim; ++ index)
   {
     if (SpecFunc::IsNaN(point[index])) throw TestFailed("Point component is nan");
-    if (point[index]>1.) throw TestFailed("Point component is >1");
-    if (point[index]<0.) throw TestFailed("Point component is <0");
+    if (point[index]>1.) throw TestFailed(OSS() << "Point's component " << index << "=" << point[index] << " is greater than 1");
+    if (point[index]<0.) throw TestFailed(OSS() << "Point's component " << index << "=" << point[index] << " is lower than 0");
   }
 }
 // Check if bool is true
@@ -42,10 +42,28 @@ void assertTrue(bool condition)
   if (!condition) throw TestFailed("Boolean is not true");
 }
 
-// Check if bool is true
+// Check if bool is false
+void assertFalse(bool condition)
+{
+  if (condition) throw TestFailed("Boolean is not false");
+}
+
+// Check if two Scalar are equal
 void assertEqual(Scalar value1, Scalar value2)
 {
-  if (value1!=value2) throw TestFailed("Values are not equal");
+  if (value1!=value2) 
+  {
+      throw TestFailed(OSS() << "Value " << value1 << " is not equal to " << value2);
+  }
+}
+
+// Check if two int are equal
+void assertEqual(int value1, int value2)
+{
+  if (value1!=value2) 
+  {
+      throw TestFailed(OSS() << "Value " << value1 << " is not equal to " << value2);
+  }
 }
 
 int main(int, char *[])
@@ -61,39 +79,64 @@ int main(int, char *[])
     fullprint << "Copula " << copula << std::endl;
     std::cout << "Copula " << copula << std::endl;
 
-    fullprint << "Dimension " << copula.getDimension() << std::endl;
+    fullprint << "Dimension"<< std::endl;
+    int dimension = copula.getDimension();
+    assertEqual(dimension, 2);
 
     // Is this copula continuous ?
-    fullprint << "Continuous = " << (copula.isContinuous() ? "true" : "false") << std::endl;
+    fullprint << "isContinuous"<< std::endl;
+    bool isContinuous = copula.isContinuous();
+    assertTrue(isContinuous);
 
     // Is this copula independent ?
-    fullprint << "Independent = " << copula.hasIndependentCopula()  << std::endl;
-
-    // Compute PDF
-    Point half(2,0.5);
-    Scalar pointPDF = copula.computePDF( half );
-    fullprint << "PDF at half = " << pointPDF << std::endl;
+    fullprint << "hasIndependentCopula"<< std::endl;
+    bool isIndependent = copula.hasIndependentCopula();
+    assertFalse(isIndependent);
 
     // Compute Kendall's tau
-    fullprint << "Kendall's tau = " << copula.getKendallTau() << std::endl;
+    fullprint << "getKendallTau"<< std::endl;
+    CorrelationMatrix correlation;
+    Scalar rtol = 1.0e-14;
+    correlation = copula.getKendallTau();
+    assert_almost_equal(correlation(1,0), 0.333333333333333333, rtol);
 
     // Compute Spearman's rho
-    fullprint << "Spearman's rho = " << copula.getSpearmanCorrelation() << std::endl;
-
+    fullprint << "getSpearmanCorrelation"<< std::endl;
+    correlation = copula.getSpearmanCorrelation();
+    assert_almost_equal(correlation(1,0), 0.42857142857142855, rtol);
+    
     // Test for realization of copula
+    fullprint << "getRealization"<< std::endl;
     Point oneRealization = copula.getRealization();
-    fullprint << "oneRealization=" << oneRealization << std::endl;
+    check2DPointInUnitSquare(oneRealization);
 
     // Test for sampling
+    fullprint << "getSample"<< std::endl;
     UnsignedInteger size = 10000;
     Sample oneSample(copula.getSample( size ));
-    fullprint << "oneSample first=" << oneSample[0] << " last=" << oneSample[size - 1] << std::endl;
-    fullprint << "mean=" << oneSample.computeMean() << std::endl;
-    fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
-    fullprint << "Sample Kendall's tau =" << oneSample.computeKendallTau() << std::endl;
-    fullprint << "Exact Kendall's tau =" << copula.getKendallTau() << std::endl;
-    fullprint << "Sample Spearman's rho =" << oneSample.computeSpearmanCorrelation() << std::endl;
-    fullprint << "Exact Spearman's rho =" << copula.getSpearmanCorrelation() << std::endl;
+    check2DPointInUnitSquare(oneSample[0]);
+    check2DPointInUnitSquare(oneSample[size - 1]);
+    fullprint << "computeMean"<< std::endl;
+    Point samplemean = oneSample.computeMean();
+    Scalar atol = 0.1;
+    assert_almost_equal(samplemean[0], 0.5, rtol, atol);
+    assert_almost_equal(samplemean[1], 0.5, rtol, atol);
+    fullprint << "computeCovariance"<< std::endl;
+    CovarianceMatrix samplecovariance = oneSample.computeCovariance();
+    assert_almost_equal(samplecovariance(0,0), 0.0, rtol, atol);
+    assert_almost_equal(samplecovariance(1,0), 0.0, rtol, atol);
+    assert_almost_equal(samplecovariance(0,1), 0.0, rtol, atol);
+    assert_almost_equal(samplecovariance(1,1), 0.0, rtol, atol);
+    fullprint << "Sample Kendall's tau vs copula"<< std::endl;
+    Scalar exact;
+    Scalar estimator;
+    exact = copula.getKendallTau()(1,0);
+    estimator = oneSample.computeKendallTau()(1,0);
+    assert_almost_equal(exact, estimator, rtol, atol);
+    fullprint << "Sample Kendall's tau vs copula" << std::endl;
+    exact = copula.getSpearmanCorrelation()(1,0);
+    estimator = oneSample.computeSpearmanCorrelation()(1,0);
+    assert_almost_equal(exact, estimator, rtol, atol);
 
     // Compute CDF
     // x=[0.0,0.0]
@@ -109,28 +152,31 @@ int main(int, char *[])
     assertEqual(pointCDFAtOne, 1.0);
 
     // x=[0.5,0.5]
+    Point half(2,0.5);
     Scalar pointCDFAtHalf = copula.computeCDF( half );
-    fullprint << "x=" << half << ", CDF at half = " << pointCDFAtHalf << std::endl;
+    assert_almost_equal(pointCDFAtHalf, 0.3535533905932738, rtol);
 
     // copula.drawCDF().draw("pdf.png");
     
     // Special cases
 
     // Special case alpha=0
+    fullprint << "Special case alpha=0" << std::endl;
     copula = MarshallOlkinCopula(0.0,0.5);
-    bool isIndependent;
     isIndependent = copula.hasIndependentCopula();
     assertTrue(isIndependent);
     Point random(2); 
     random = copula.getRealization();
     check2DPointInUnitSquare(random);
-    CorrelationMatrix correlation;
     correlation = copula.getSpearmanCorrelation();
     assertEqual(correlation(0,1), 0.0);
     correlation = copula.getKendallTau();
     assertEqual(correlation(0,1), 0.0);
+    pointCDFAtHalf = copula.computeCDF( half );
+    assertEqual(pointCDFAtHalf, 0.25);
 
     // Special case beta=0
+    fullprint << "Special case beta=0" << std::endl;
     copula = MarshallOlkinCopula(0.5,0.0);
     isIndependent = copula.hasIndependentCopula();
     assertTrue(isIndependent);
@@ -140,8 +186,11 @@ int main(int, char *[])
     assertEqual(correlation(0,1), 0.0);
     correlation = copula.getKendallTau();
     assertEqual(correlation(0,1), 0.0);
+    pointCDFAtHalf = copula.computeCDF( half );
+    assertEqual(pointCDFAtHalf, 0.25);
 
     // Special case alpha=beta=1
+    fullprint << "Special case alpha=beta=1" << std::endl;
     copula = MarshallOlkinCopula(1.0,1.0);
     isIndependent = copula.hasIndependentCopula();
     assertTrue(!isIndependent);
@@ -151,7 +200,24 @@ int main(int, char *[])
     assertEqual(correlation(0,1), 1.0);
     correlation = copula.getKendallTau();
     assertEqual(correlation(0,1), 1.0);
-  }
+    pointCDFAtHalf = copula.computeCDF( half );
+    assertEqual(pointCDFAtHalf, 0.5);
+
+    // Special case alpha=beta=0
+    fullprint << "Special case alpha=beta=0" << std::endl;
+    copula = MarshallOlkinCopula(0.0,0.0);
+    isIndependent = copula.hasIndependentCopula();
+    assertTrue(isIndependent);
+    random = copula.getRealization();
+    check2DPointInUnitSquare(random);
+    correlation = copula.getSpearmanCorrelation();
+    assertEqual(correlation(0,1), 0.0);
+    correlation = copula.getKendallTau();
+    assertEqual(correlation(0,1), 0.0);
+    pointCDFAtHalf = copula.computeCDF( half );
+    assertEqual(pointCDFAtHalf, 0.25);
+
+}
   catch (TestFailed & ex)
   {
     std::cerr << ex << std::endl;
