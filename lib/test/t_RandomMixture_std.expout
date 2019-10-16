@@ -308,7 +308,7 @@ case 1, q=0.384146
 case 1, q comp=0.000393214
 case 2, q=-0.000393214
 case 2, q comp=-0.384146
-sum=class=RandomMixture name=RandomMixture distribution collection=[class=Trapezoidal name=Trapezoidal dimension=1 a=0 b=1 c=2 d=3 h=0.5] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1] constant=class=Point name=Unnamed dimension=1 values=[0]
+sum=class=Trapezoidal name=Trapezoidal dimension=1 a=0 b=1 c=2 d=3 h=0.5
 CDF=0.75
 quantile=class=Point name=Unnamed dimension=1 values=[0.894427]
 sum=class=RandomMixture name=RandomMixture distribution collection=[class=TruncatedDistribution name=TruncatedDistribution distribution=class=LogNormal name=LogNormal dimension=1 muLog=0.346574 sigmaLog=0.652004 gamma=0 bounds=class=Interval name=Unnamed dimension=1 lower bound=class=Point name=Unnamed dimension=1 values=[0.2] upper bound=class=Point name=Unnamed dimension=1 values=[10] finite lower bound=[1] finite upper bound=[1] thresholdRealization=0.5,class=Uniform name=Uniform dimension=1 a=0 b=2] weights =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=2 values=[1,1] constant=class=Point name=Unnamed dimension=1 values=[0]

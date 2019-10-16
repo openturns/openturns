@@ -68,7 +68,7 @@ public:
   /** Parameter constructor - nD */
   RandomMixture(const DistributionCollection & coll,
                 const Matrix & weights,
-                const Point constant);
+                const Point & constant);
 
   /** Parameter constructor - nD */
   RandomMixture(const DistributionCollection & coll,
@@ -77,7 +77,7 @@ public:
   /** Parameter constructor - nD */
   RandomMixture(const DistributionCollection & coll,
                 const Sample & weights,
-                const Point constant);
+                const Point & constant);
 
   /** Parameter constructor - nD */
   RandomMixture(const DistributionCollection & coll,

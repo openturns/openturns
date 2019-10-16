@@ -237,7 +237,7 @@ Point Dirac::getStandardMoment(const UnsignedInteger n) const
 /* Compute the covariance of the distribution */
 void Dirac::computeCovariance() const
 {
-  covariance_ = CovarianceMatrix(getDimension());
+  covariance_ = SquareMatrix(getDimension()).getImplementation();
   isAlreadyComputedCovariance_ = true;
 }
 

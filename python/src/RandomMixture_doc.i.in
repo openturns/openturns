@@ -402,7 +402,7 @@ out : :class:`~openturns.Point`
 Examples
 --------
 >>> import openturns as ot
->>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Uniform(-1.0, 1.0)])
+>>> distribution = ot.RandomMixture([ot.Uniform(-1.0, 1.0), ot.Triangular(-1.0, 0.0, 1.0)])
 >>> # bw
 >>> bw = distribution.getReferenceBandwidth()
 >>> print(bw)
