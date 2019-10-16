@@ -141,7 +141,7 @@ Bool MarshallOlkinCopula::hasIndependentCopula() const
 /* Alpha accessor */
 void MarshallOlkinCopula::setAlpha(const Scalar alpha)
 {
-  if ((alpha < 0.0) || (alpha > 1.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be in [0, 1], here alpha=" << alpha;
+  if (!(alpha >= 0.0) || !(alpha <= 1.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be in [0, 1], here alpha=" << alpha;
   alpha_ = alpha;
   isAlreadyComputedCovariance_ = false;
 }
@@ -155,7 +155,7 @@ Scalar MarshallOlkinCopula::getAlpha() const
 /* Beta accessor */
 void MarshallOlkinCopula::setBeta(const Scalar beta)
 {
-  if ((beta < 0.0) || (beta > 1.0)) throw InvalidArgumentException(HERE) << "Beta MUST be in [0, 1], here beta=" << beta;
+  if (!(beta >= 0.0) || !(beta <= 1.0)) throw InvalidArgumentException(HERE) << "Beta MUST be in [0, 1], here beta=" << beta;
   beta_ = beta;
   isAlreadyComputedCovariance_ = false;
 }
