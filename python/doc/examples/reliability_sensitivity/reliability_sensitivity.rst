@@ -1,6 +1,18 @@
 Reliability, sensitivity
 ========================
 
+Central dispersion
+------------------
+
+.. toctree::
+    :maxdepth: 1
+
+    central_tendency.ipynb
+    estimate_moments_taylor.ipynb
+
+Reliability
+-----------
+
 .. toctree::
     :maxdepth: 1
 
@@ -17,16 +29,28 @@ Reliability, sensitivity
     post_analytical_importance_sampling.ipynb
     event_process.ipynb
     estimate_probability_monte_carlo_process.ipynb
-    composite_experiment.ipynb
-    monte_carlo_experiment.ipynb
-    gauss_product_experiment.ipynb
-    low_discrepancy_sequence.ipynb
-    estimate_moments_taylor.ipynb
+    event_system.ipynb
+
+Sensitivity analysis
+--------------------
+
+.. toctree::
+    :maxdepth: 1
+
     sensitivity_sobol.ipynb
     functional_chaos_sensitivity.ipynb
     sensitivity_ancova.ipynb
     sensitivity_fast.ipynb
     sensitivity_cobweb.ipynb
-    central_tendency.ipynb
-    event_system.ipynb
+
+Design of experiment
+--------------------
+
+.. toctree::
+    :maxdepth: 1
+
+    composite_experiment.ipynb
+    monte_carlo_experiment.ipynb
+    gauss_product_experiment.ipynb
+    low_discrepancy_sequence.ipynb
 
