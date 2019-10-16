@@ -92,6 +92,18 @@ PythonRandomVector::PythonRandomVector(const PythonRandomVector & other)
   Py_XINCREF( pyObj_ );
 }
 
+/* Copy assignment operator */
+PythonRandomVector & PythonRandomVector::operator=(const PythonRandomVector & rhs)
+{
+  if (this != &rhs)
+  {
+    ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
+    pyObj_ = pyObjClone.get();
+    Py_XINCREF( pyObj_ );
+  }
+  return *this;
+}
+
 /* Destructor */
 PythonRandomVector::~PythonRandomVector()
 {

@@ -47,6 +47,9 @@ public:
   /** Virtual constructor */
   virtual PythonPointToFieldFunction * clone() const;
 
+  /** Copy assignment operator */
+  PythonPointToFieldFunction & operator=(const PythonPointToFieldFunction & rhs);
+
   /** Destructor */
   virtual ~PythonPointToFieldFunction();
 

@@ -74,6 +74,18 @@ PythonGradient::PythonGradient(const PythonGradient & other)
   Py_XINCREF(pyObj_);
 }
 
+/* Copy assignment operator */
+PythonGradient & PythonGradient::operator=(const PythonGradient & rhs)
+{
+  if (this != &rhs)
+  {
+    ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
+    pyObj_ = pyObjClone.get();
+    Py_XINCREF(pyObj_);
+  }
+  return *this;
+}
+
 /* Destructor */
 PythonGradient::~PythonGradient()
 {

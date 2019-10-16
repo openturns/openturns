@@ -129,6 +129,18 @@ PythonFieldFunction::PythonFieldFunction(const PythonFieldFunction & other)
   Py_XINCREF(pyObj_);
 }
 
+/* Copy assignment operator */
+PythonFieldFunction & PythonFieldFunction::operator=(const PythonFieldFunction & rhs)
+{
+  if (this != &rhs)
+  {
+    ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
+    pyObj_ = pyObjClone.get();
+    Py_XINCREF(pyObj_);
+  }
+  return *this;
+}
+
 /* Destructor */
 PythonFieldFunction::~PythonFieldFunction()
 {

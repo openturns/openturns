@@ -74,6 +74,18 @@ PythonHessian::PythonHessian(const PythonHessian & other)
   Py_XINCREF(pyObj_);
 }
 
+/* Copy assignment operator */
+PythonHessian & PythonHessian::operator=(const PythonHessian & rhs)
+{
+  if (this != &rhs)
+  {
+    ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
+    pyObj_ = pyObjClone.get();
+    Py_XINCREF(pyObj_);
+  }
+  return *this;
+}
+
 /* Destructor */
 PythonHessian::~PythonHessian()
 {

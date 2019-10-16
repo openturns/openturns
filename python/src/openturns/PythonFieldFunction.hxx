@@ -47,6 +47,9 @@ public:
   /** Virtual constructor */
   virtual PythonFieldFunction * clone() const;
 
+  /** Copy assignment operator */
+  PythonFieldFunction & operator=(const PythonFieldFunction & rhs);
+
   /** Destructor */
   virtual ~PythonFieldFunction();
 

@@ -116,6 +116,18 @@ PythonPointToFieldFunction::PythonPointToFieldFunction(const PythonPointToFieldF
   Py_XINCREF(pyObj_);
 }
 
+/* Copy assignment operator */
+PythonPointToFieldFunction & PythonPointToFieldFunction::operator=(const PythonPointToFieldFunction & rhs)
+{
+  if (this != & rhs)
+  {
+    ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
+    pyObj_ = pyObjClone.get();
+    Py_XINCREF(pyObj_);
+  }
+  return *this;
+}
+
 /* Destructor */
 PythonPointToFieldFunction::~PythonPointToFieldFunction()
 {

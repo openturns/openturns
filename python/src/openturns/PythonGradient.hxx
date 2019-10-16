@@ -48,6 +48,9 @@ public:
   /** Virtual constructor */
   virtual PythonGradient * clone() const;
 
+  /** Copy assignment operator */
+  PythonGradient & operator=(const PythonGradient & rhs);
+
   /** Destructor */
   virtual ~PythonGradient();
 

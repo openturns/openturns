@@ -49,6 +49,9 @@ public:
   /** Virtual constructor */
   virtual PythonExperiment * clone() const;
 
+  /** Copy assignment operator */
+  PythonExperiment & operator=(const PythonExperiment & rhs);
+
   /** Destructor */
   virtual ~PythonExperiment();
 
