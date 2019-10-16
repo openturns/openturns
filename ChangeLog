@@ -71,6 +71,7 @@
 
 === Miscellaneous ===
  * Add GeneralizedPareto location parameter
+ * Add getSobolGroupedTotalIndex method for FunctionalChaosSobolIndices for the indice of a group of variables
 
 === Bug fixes ===
  * https://github.com/openturns/openturns/milestone/4?closed=1
