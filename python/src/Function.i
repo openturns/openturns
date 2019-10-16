@@ -323,16 +323,16 @@ class PythonFunction(Function):
         Indicates for each input variable if the function is linear with regard to this variable.
         Default is [False]*inputDim
 
-    You must provide at least func or func_sample arguments.  For efficiency
+    Notes
+    -----
+    You must provide at least func or func_sample arguments. For efficiency
     reasons, these functions do not receive a :class:`~openturns.Point` or
     :class:`~openturns.Sample` as arguments, but a proxy object which gives
-    access to internal object data.  This object supports indexing, but nothing
-    more.  It must be wrapped into anoter object, for instance
+    access to internal object data. This object supports indexing, but nothing
+    more. It must be wrapped into another object, for instance
     :class:`~openturns.Point` in func and :class:`~openturns.Sample` in
     func_sample, or in a Numpy array, for vectorized operations.
 
-    Notes
-    -----
     Note that if PythonFunction is distributed (n_cpus > 1), the traceback of a raised
     exception by a func call is lost due to the way multiprocessing dispatches
     and handles func calls. This can be solved by temporarily deactivating
