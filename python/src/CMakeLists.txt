@@ -825,6 +825,7 @@ ot_add_python_module(metamodel metamodel_module.i
                       FunctionalChaosResult.i FunctionalChaosResult_doc.i.in
                       FunctionalChaosAlgorithm.i FunctionalChaosAlgorithm_doc.i.in
                       KrigingAlgorithm.i KrigingAlgorithm_doc.i.in
+                      LinearModelStepwiseAlgorithm.i LinearModelStepwiseAlgorithm_doc.i.in
                       LinearModelAlgorithm.i LinearModelAlgorithm_doc.i.in
                       LinearModelAnalysis.i LinearModelAnalysis_doc.i.in
                       RandomVector.i RandomVector_doc.i.in

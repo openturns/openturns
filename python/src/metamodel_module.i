@@ -64,6 +64,7 @@
 %include GeneralLinearModelResult.i
 %include GeneralLinearModelAlgorithm.i
 %include KrigingAlgorithm.i
+%include LinearModelStepwiseAlgorithm.i
 %include LinearModelAlgorithm.i
 %include LinearModelAnalysis.i
 %include LinearModelTest.i

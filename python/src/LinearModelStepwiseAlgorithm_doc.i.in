@@ -1,0 +1,65 @@
+%feature("docstring") OT::LinearModelStepwiseAlgorithm
+"Class used to create a linear model from numerical samples.
+
+**Available usages**:
+
+    LinearModelStepwiseAlgorithm()
+
+    LinearModelStepwiseAlgorithm(*inputSample, basis, outputSample, minimalIndices, isForward, penalty, maximumIterationNumber*)
+
+    LinearModelStepwiseAlgorithm(*inputSample, basis, outputSample, minimalIndices, startIndices, penalty, maximumIterationNumber*)
+
+Parameters
+----------
+inputSample, outputSample : :class:`~openturns.Sample`
+    The input and output samples of a model.
+basis : :class:`~openturns.Basis`
+    Functional basis to estimate the trend.
+minimalIndices :sequence of int
+    The indices of minimal model
+isForward : bool
+      the boolean value used for the stepwise regression method direction FORWARD and BACKWARD. 
+startIndices : :class:`~openturns.Indices`
+     The indices of start model used for the stepwise regression method direction BOTH.
+penalty : float
+     The multiple of the degrees of freedom used for the penalty of the stepwise regression method : 
+     - 2      Akaike   information criterion (AIC)
+     - log(n) Bayesian information criterion (BIC)  
+maximumIterationNumber : int
+     The maximum number of iterations of the stepwise regression method. 
+
+
+See Also
+--------
+LinearModel, LinearModelResult
+
+Notes
+-----
+This class is used in order to create a linear model from numerical samples, by using
+the stepwise method. The linear regression model between the scalar variable :math:`Y`
+and the :math:`n`-dimensional one :math:`\vect{X} = (X_i)_{i \leq n}` writes as follows:
+
+.. math::
+
+    \tilde{Y} = a_0 + \sum_{i=1}^n a_i X_i + \epsilon
+
+where :math:`\epsilon` is the residual, supposed to follow the standard Normal
+distribution.
+
+Each coefficient :math:`a_i` is evaluated from both samples :math:`Ysample` and
+:math:`Xsample` and is accompagnied by a confidence interval and a p-value (which
+tests if they are significantly different from 0.0).
+
+By default, input sample is normalized.  It is possible to set Resource key
+(``LinearModelStepwiseAlgorithm-normalize``) to *False* in order to discard
+this normalization.
+
+This class enables to test the quality of the model. It provides only numerical
+tests. If :math:`X` is scalar, a graphical validation test exists, that draws
+the residual couples :math:`(\epsilon_i, \epsilon_{i+1})`, where the residual
+:math:`\epsilon_i` is evaluated on the samples :math:`(Xsample, Ysample)`:
+:math:`\epsilon_i  = Ysample_i - \tilde{Y}_i` with
+:math:`\tilde{Y}_i = a_0 + a_1 + Xsample_i`. The OpenTURNS method is 
+:class:`~openturns.VisualTest_DrawLinearModelResidual`.
+"
+
