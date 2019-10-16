@@ -28,3 +28,53 @@ Examples
 >>> e1 = ot.ThresholdEvent(Y1, ot.Less(), 0.0)
 >>> e2 = ot.ThresholdEvent(Y2, ot.Greater(), 0.0)
 >>> event = ot.IntersectionEvent([e1, e2])"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IntersectionEvent::getAntecedent
+"Accessor to the antecedent random vector.
+
+Returns
+-------
+antecedent : :class:`~openturns.RandomVector`
+    Defined as the root cause."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IntersectionEvent::getFunction
+"Accessor to the function.
+
+Returns
+-------
+function : :class:`~openturns.Function`
+    Composed function."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IntersectionEvent::setEventCollection
+"Accessor to sub events.
+
+Parameters
+----------
+events : sequence of :class:`~openturns.RandomVector`
+    List of sub events."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IntersectionEvent::getEventCollection
+"Accessor to sub events.
+
+Returns
+-------
+events : :class:`~openturns.RandomVectorCollection`
+    List of sub events."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IntersectionEvent::getComposedEvent
+"Accessor to the composed event.
+
+Returns
+-------
+composed : :class:`~openturns.RandomVector`
+    Composed event."

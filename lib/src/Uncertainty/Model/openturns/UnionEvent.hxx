@@ -67,13 +67,19 @@ public:
   /** Whether it is an event */
   virtual Bool isEvent() const;
 
+  /** Whether it is composite */
+  virtual Bool isComposite() const;
+
+  virtual RandomVector getAntecedent() const;
+  virtual Function getFunction() const;
+  virtual Domain getDomain() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
-  UnsignedInteger getRootCauseId() const;
   RandomVector getComposedEvent() const;
 
 private:
@@ -81,10 +87,11 @@ private:
   /** The process of the eventProcess */
   RandomVectorPersistentCollection eventCollection_;
 
-  /** id of the root cause */
-  UnsignedInteger rootCauseId_;
-
+  /** The antecedent is defined here as the root cause */
+  RandomVector antecedent_;
+  
   RandomVector composedEvent_;
+
 }; /* class UnionEvent */
 
 
