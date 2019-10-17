@@ -31,6 +31,8 @@ option (USE_COTIRE                   "Use cotire for unity builds"              
 option (USE_IPOPT                    "Use Ipopt for MINLP problems"                                          ON)
 option (USE_BONMIN                   "Use Bonmin for MINLP problems"                                         ON)
 option (USE_SPECTRA                  "Use Spectra for eigenvalues computation"                               ON)
+option (USE_OPENMP                   "Use OpenMP to disable threading"                                       ON)
+option (USE_OPENBLAS                 "Use OpenBLAS to disable threading"                                     ON)
 
 option (BUILD_PYTHON                 "Build the python module for the library"                               ON)
 option (BUILD_SHARED_LIBS            "Build shared libraries"                                                ON)
@@ -354,6 +356,15 @@ if (USE_IPOPT)
   endif ()
 endif ()
 
+if (USE_OPENMP)
+  find_package (OpenMP)
+  if (OPENMP_FOUND)
+    set (OPENTURNS_HAVE_OPENMP TRUE)
+    set (CMAKE_CXX_FLAGS "${OpenMP_CXX_FLAGS} ${CMAKE_CXX_FLAGS}")
+    set (CMAKE_SHARED_LINKER_FLAGS "${OpenMP_CXX_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS}")
+  endif ()
+endif ()
+
 if (MSVC)
   # Disable some warnings
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4197 /wd4244 /wd4251 /wd4267 /wd4996")
@@ -420,6 +431,17 @@ if (OPENTURNS_HAVE_DLFCN_H)
     list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${LIBDL_LIBRARIES})
   endif ()
   check_function_exists (dladdr OPENTURNS_HAVE_DLADDR)
+  set (CMAKE_REQUIRED_LIBRARIES)
+endif ()
+
+if (USE_OPENBLAS)
+  set (CMAKE_REQUIRED_LIBRARIES ${LAPACK_LIBRARIES})
+  check_function_exists("openblas_set_num_threads" OPENTURNS_HAVE_OPENBLAS_SET_NUM_THREADS)
+  check_function_exists("goto_get_num_procs" OPENTURNS_HAVE_GOTO_GET_NUM_PROCS)
+  if (OPENTURNS_HAVE_OPENBLAS_SET_NUM_THREADS AND OPENTURNS_HAVE_GOTO_GET_NUM_PROCS)
+    set (OPENTURNS_HAVE_OPENBLAS TRUE)
+  endif ()
+  set (CMAKE_REQUIRED_LIBRARIES)
 endif ()
 
 # Some useful macros to ease CMakeLists.txt file writing

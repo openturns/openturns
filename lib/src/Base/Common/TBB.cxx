@@ -29,9 +29,23 @@
 
 #include "openturns/TBB.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/Exception.hxx"
 
 #ifdef OPENTURNS_HAVE_TBB
 #include <tbb/task_scheduler_init.h>
+#endif
+
+#ifdef OPENTURNS_HAVE_OPENMP
+#include <omp.h>
+#endif
+
+#ifdef OPENTURNS_HAVE_OPENBLAS
+extern "C" {
+// This function is private
+int goto_get_num_procs(void);
+// This one is public but redeclare it in case regular cblas headers are used
+void openblas_set_num_threads(int num_threads);
+}
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -39,6 +53,7 @@ BEGIN_NAMESPACE_OPENTURNS
 static pthread_mutex_t TBB_InstanceMutex_;
 static TBB * TBB_P_instance_ = 0;
 static const TBB_init initializer_TBB;
+static UnsignedInteger TBB_NumberOfThreads_ = 1;
 
 #ifdef OPENTURNS_HAVE_TBB
 tbb::task_scheduler_init * TBB_P_scheduler_ = 0;
@@ -56,12 +71,18 @@ Bool TBB::IsAvailable()
 
 void TBB::SetNumberOfThreads(const UnsignedInteger numberOfThreads)
 {
+  if (!numberOfThreads)
+    throw InvalidArgumentException(HERE) << "Number of threads must be positive";
 #ifdef OPENTURNS_HAVE_TBB
   delete TBB_P_scheduler_;
   TBB_P_scheduler_ = new tbb::task_scheduler_init(numberOfThreads);
-#else
-  (void)numberOfThreads;
 #endif
+  TBB_NumberOfThreads_ = numberOfThreads;
+}
+
+UnsignedInteger TBB::GetNumberOfThreads()
+{
+  return TBB_NumberOfThreads_;
 }
 
 void TBB::Enable()
@@ -90,6 +111,7 @@ TBB_init::TBB_init()
 #else
     pthread_mutex_init( &TBB_InstanceMutex_, NULL );
 #endif
+
     TBB_P_instance_ = new TBB;
   }
   TBB::Enable();
@@ -107,5 +129,39 @@ TBB_init::~TBB_init()
 #endif /* OPENTURNS_HAVE_TBB */
 }
 
+
+TBBContext::TBBContext()
+: ompNumThreads_(0)
+, openblasNumThreads_(0)
+{
+  if (TBB::GetNumberOfThreads() > 1)
+  {
+    // disable threading
+#ifdef OPENTURNS_HAVE_OPENMP
+    ompNumThreads_ = omp_get_max_threads();
+    omp_set_num_threads(1);
+#endif
+#ifdef OPENTURNS_HAVE_OPENBLAS
+    openblasNumThreads_ = goto_get_num_procs();
+    openblas_set_num_threads(1);
+#endif
+  }
+  (void) ompNumThreads_;
+  (void) openblasNumThreads_;
+}
+
+TBBContext::~TBBContext()
+{
+  if (TBB::GetNumberOfThreads() > 1)
+  {
+    // restore threading
+#ifdef OPENTURNS_HAVE_OPENMP
+  omp_set_num_threads(ompNumThreads_);
+#endif
+#ifdef OPENTURNS_HAVE_OPENBLAS
+  openblas_set_num_threads(openblasNumThreads_);
+#endif
+  }
+}
 
 END_NAMESPACE_OPENTURNS

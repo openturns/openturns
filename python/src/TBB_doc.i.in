@@ -1,5 +1,8 @@
 %feature("docstring") OT::TBB
-"Threading parameters."
+"Threading parameters.
+
+By default the number of threads is the value associated to the `parallel-threads` key
+in :class:`~openturns.ResourceMap`."
 
 // ---------------------------------------------------------------------
 
@@ -14,12 +17,29 @@ available : bool
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::TBB::Enable
-"Enable threading.
-
-The number of threads is the value associated to the `parallel-threads` key
-in :class:`~openturns.ResourceMap`."
+"Enable threading."
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::TBB::Disable
 "Disable threading."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TBB::SetNumberOfThreads
+"Accessor to the maximum number of TBB threads.
+
+Parameters
+----------
+n_threads : int
+    Maximum number of TBB threads."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::TBB::GetNumberOfThreads
+"Accessor to the maximum number of TBB threads.
+
+Returns
+-------
+n_threads : int
+    Maximum number of TBB threads."
