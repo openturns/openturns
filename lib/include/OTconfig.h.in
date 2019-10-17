@@ -94,6 +94,12 @@
 /* Define to 1 if you have the CMinpack library. */
 #cmakedefine OPENTURNS_HAVE_CMINPACK
 
+/* Define to 1 if you have the OpenMP specification. */
+#cmakedefine OPENTURNS_HAVE_OPENMP
+
+/* Define to 1 if you have the openblas library. */
+#cmakedefine OPENTURNS_HAVE_OPENBLAS
+
 /* Define to 1 if you have the <stdlib.h> header file. */
 #cmakedefine OPENTURNS_HAVE_STDLIB_H
 

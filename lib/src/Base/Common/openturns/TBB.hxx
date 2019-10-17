@@ -106,6 +106,17 @@ void parallel_sort( ITERATOR first, ITERATOR last )
 
 BEGIN_NAMESPACE_OPENTURNS
 
+// disables blas threading inside TBB parallel regions
+class TBBContext
+{
+public:
+  TBBContext();
+  ~TBBContext();
+private:
+  int ompNumThreads_;
+  int openblasNumThreads_;
+};
+
 class OT_API TBB
 {
 public:
@@ -131,6 +142,7 @@ public:
   static inline
   void ParallelFor( UnsignedInteger from, UnsignedInteger to, const BODY & body, std::size_t gs = 1 )
   {
+    TBBContext context;
     tbb::parallel_for( tbb::blocked_range<UnsignedInteger>( from, to, gs ), body );
   }
 
@@ -138,6 +150,7 @@ public:
   static inline
   void ParallelReduce( UnsignedInteger from, UnsignedInteger to, BODY & body, std::size_t gs = 1)
   {
+    TBBContext context;
     tbb::parallel_reduce( tbb::blocked_range<UnsignedInteger>( from, to, gs ), body );
   }
 
@@ -145,16 +158,22 @@ public:
   static inline
   void ParallelSort( ITERATOR first, ITERATOR last )
   {
+    TBBContext context;
     tbb::parallel_sort( first, last );
   }
 
+  /* Whether TBB is available */
   static Bool IsAvailable();
+
+  /* Enable/disable */
   static void Enable();
   static void Disable();
 
-private:
+  /* Accessor to the maximum number of threads */
   static void SetNumberOfThreads(const UnsignedInteger numberOfThreads);
+  static UnsignedInteger GetNumberOfThreads();
 
+private:
   friend struct TBB_init;
 
 }; /* end class TBB */
