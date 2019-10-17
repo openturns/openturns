@@ -45,6 +45,7 @@ SubsetSampling::SubsetSampling()
   , iSubset_(false)
   , betaMin_(0.0)
   , keepEventSample_(false)
+  , minimumProbability_(std::sqrt(SpecFunc::MinScalar))
   , numberOfSteps_(0)
   , seedNumber_(0)
 {
@@ -61,6 +62,7 @@ SubsetSampling::SubsetSampling(const RandomVector & event,
   , iSubset_(false)
   , betaMin_(ResourceMap::GetAsScalar("SubsetSampling-DefaultBetaMin"))
   , keepEventSample_(false)
+  , minimumProbability_(std::sqrt(SpecFunc::MinScalar))
   , numberOfSteps_(0)
   , seedNumber_(0)
 {
@@ -225,11 +227,11 @@ void SubsetSampling::run()
     coefficientOfVariationPerStep_.add(sqrt(coefficientOfVariationSquare));
 
     // stop if the number of subset steps is too high, else results are not numerically defined anymore
-    if (std::abs(pow(probabilityEstimate, 2.)) < SpecFunc::MinScalar)
-      throw NotDefinedException(HERE) << "Probability estimate too low: " << probabilityEstimate;
+    if (probabilityEstimate < minimumProbability_)
+      throw NotDefinedException(HERE) << "Probability estimate too small: " << probabilityEstimate;
 
     // compute variance estimate
-    varianceEstimate = coefficientOfVariationSquare * pow(probabilityEstimate, 2.);
+    varianceEstimate = coefficientOfVariationSquare * pow(probabilityEstimate, 2.0);
 
     ++ numberOfSteps_;
   }
@@ -451,7 +453,7 @@ Scalar SubsetSampling::getProposalRange() const
 /* Ratio accessor */
 void SubsetSampling::setConditionalProbability(Scalar conditionalProbability)
 {
-  if ((conditionalProbability <= 0.0) || (conditionalProbability >= 1.0)) throw InvalidArgumentException(HERE) << "Probability should be in (0, 1)";
+  if (!(conditionalProbability > 0.0) || !(conditionalProbability < 1.0)) throw InvalidArgumentException(HERE) << "Probability should be in (0, 1)";
   conditionalProbability_ = conditionalProbability;
 }
 
@@ -459,6 +461,20 @@ void SubsetSampling::setConditionalProbability(Scalar conditionalProbability)
 Scalar SubsetSampling::getConditionalProbability() const
 {
   return conditionalProbability_;
+}
+
+
+void SubsetSampling::setMinimumProbability(const Scalar minimumProbability)
+{
+  if (!(minimumProbability > 0.0) || !(minimumProbability < 1.0))
+    throw InvalidArgumentException(HERE) << "Minimum probability should be in (0, 1)";
+  minimumProbability_ = minimumProbability;
+}
+
+
+Scalar SubsetSampling::getMinimumProbability() const
+{
+  return minimumProbability_;
 }
 
 
@@ -544,6 +560,7 @@ void SubsetSampling::save(Advocate & adv) const
   adv.saveAttribute("iSubset_", iSubset_);
   adv.saveAttribute("betaMin_", betaMin_);
   adv.saveAttribute("keepEventSample_", keepEventSample_);
+  adv.saveAttribute("minimumProbability_", minimumProbability_);
 
   adv.saveAttribute("numberOfSteps_", numberOfSteps_);
   adv.saveAttribute("thresholdPerStep_", thresholdPerStep_);
@@ -559,9 +576,10 @@ void SubsetSampling::load(Advocate & adv)
   EventSimulation::load(adv);
   adv.loadAttribute("proposalRange_", proposalRange_);
   adv.loadAttribute("conditionalProbability_", conditionalProbability_);
-  adv.loadAttribute("keepEventSample_", keepEventSample_);
   adv.loadAttribute("iSubset_", iSubset_);
   adv.loadAttribute("betaMin_", betaMin_);
+  adv.loadAttribute("keepEventSample_", keepEventSample_);
+  adv.loadAttribute("minimumProbability_", minimumProbability_);
 
   adv.loadAttribute("numberOfSteps_", numberOfSteps_);
   adv.loadAttribute("thresholdPerStep_", thresholdPerStep_);

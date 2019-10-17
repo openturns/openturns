@@ -161,8 +161,30 @@ prob : `~openturns.Point`
 
 // ---------------------------------------------------------------------------
 
+%feature("docstring") OT::SubsetSampling::setMinimumProbability
+"Minimum probability accessor.
+
+Allows to stop the algorithm if the probability becomes too small.
+
+Parameters
+----------
+prob_min : float, defaults to the square root of SpecFunc.MinScalar
+    Minimum probability."
+
+// ---------------------------------------------------------------------------
+
+%feature("docstring") OT::SubsetSampling::getMinimumProbability
+"Minimum probability accessor.
+
+Returns
+-------
+prob_min : float
+    Minimum probability."
+
+// ---------------------------------------------------------------------------
+
 %feature("docstring") OT::SubsetSampling::getNumberOfSteps
-"Subset steps number accesor.
+"Subset steps number accessor.
 
 Returns
 -------

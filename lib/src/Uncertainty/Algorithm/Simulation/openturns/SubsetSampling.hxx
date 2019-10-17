@@ -51,6 +51,10 @@ public:
   void setConditionalProbability(Scalar conditionalProbability);
   Scalar getConditionalProbability() const;
 
+  /** Accessor to the minimum probability */
+  void setMinimumProbability(const Scalar minimumProbability);
+  Scalar getMinimumProbability() const;
+
   /** Accessor to the achieved number of steps */
   UnsignedInteger getNumberOfSteps();
 
@@ -108,6 +112,7 @@ private:
   Bool iSubset_;// conditional pre-sampling
   Scalar betaMin_;// pre-sampling hypersphere exclusion radius
   Bool keepEventSample_;// do we keep the event sample ?
+  Scalar minimumProbability_;// limit on the smallest probability
 
   // some results
   UnsignedInteger numberOfSteps_;// number of subset steps
