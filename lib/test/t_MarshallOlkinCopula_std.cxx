@@ -174,6 +174,10 @@ int main(int, char *[])
     assertEqual(correlation(0,1), 0.0);
     pointCDFAtHalf = copula.computeCDF( half );
     assertEqual(pointCDFAtHalf, 0.25);
+    pointCDFAtZero = copula.computeCDF( zero );
+    assertEqual(pointCDFAtZero, 0.);
+    pointCDFAtOne = copula.computeCDF( one );
+    assertEqual(pointCDFAtOne, 1.);
 
     // Special case beta=0
     fullprint << "Special case beta=0" << std::endl;
@@ -188,6 +192,10 @@ int main(int, char *[])
     assertEqual(correlation(0,1), 0.0);
     pointCDFAtHalf = copula.computeCDF( half );
     assertEqual(pointCDFAtHalf, 0.25);
+    pointCDFAtZero = copula.computeCDF( zero );
+    assertEqual(pointCDFAtZero, 0.);
+    pointCDFAtOne = copula.computeCDF( one );
+    assertEqual(pointCDFAtOne, 1.);
 
     // Special case alpha=beta=1
     fullprint << "Special case alpha=beta=1" << std::endl;
@@ -202,6 +210,10 @@ int main(int, char *[])
     assertEqual(correlation(0,1), 1.0);
     pointCDFAtHalf = copula.computeCDF( half );
     assertEqual(pointCDFAtHalf, 0.5);
+    pointCDFAtZero = copula.computeCDF( zero );
+    assertEqual(pointCDFAtZero, 0.);
+    pointCDFAtOne = copula.computeCDF( one );
+    assertEqual(pointCDFAtOne, 1.);
 
     // Special case alpha=beta=0
     fullprint << "Special case alpha=beta=0" << std::endl;
@@ -216,6 +228,10 @@ int main(int, char *[])
     assertEqual(correlation(0,1), 0.0);
     pointCDFAtHalf = copula.computeCDF( half );
     assertEqual(pointCDFAtHalf, 0.25);
+    pointCDFAtZero = copula.computeCDF( zero );
+    assertEqual(pointCDFAtZero, 0.);
+    pointCDFAtOne = copula.computeCDF( one );
+    assertEqual(pointCDFAtOne, 1.);
 
 }
   catch (TestFailed & ex)

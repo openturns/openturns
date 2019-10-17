@@ -104,16 +104,30 @@ Scalar MarshallOlkinCopula::computeCDF(const Point & point) const
   const Scalar v = point[1];
   const Scalar ualpha = std::pow(u, alpha_);
   const Scalar vbeta = std::pow(v, beta_);
+  Scalar p;
   if (ualpha>vbeta)
   {
-    const Scalar p = std::pow(u, 1 - alpha_) * v;
-    return p;
+    if (alpha_==1.) /* Prevent zero exponent in pow */
+    {
+      p = v;
+    }
+    else
+    {
+      p = std::pow(u, 1 - alpha_) * v;
+    }
   }
   else
   {
-    const Scalar p = u * std::pow(v, 1 - beta_);
-    return p;
+    if (beta_==1.) /* Prevent zero exponent in pow */
+    {
+      p = u;
+    }
+    else
+    {
+      p = u * std::pow(v, 1 - beta_);
+    }
   }
+  return p;
 }
 
 /* Parameters value accessor */
