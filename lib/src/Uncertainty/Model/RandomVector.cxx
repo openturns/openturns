@@ -256,7 +256,9 @@ RandomVector RandomVector::intersect(const RandomVector & other)
     d2 = *levelSet;
   }
 
-  return DomainEvent(getAntecedent(), d1.intersect(d2));
+  LevelSet d3(d1.intersect(d2));
+  CompositeRandomVector composite(d3.getFunction(), getAntecedent());
+  return ThresholdEvent(composite, d3.getOperator(), d3.getLevel());
 }
 
 
@@ -303,7 +305,9 @@ RandomVector RandomVector::join(const RandomVector & other)
     d2 = *levelSet;
   }
 
-  return DomainEvent(getAntecedent().getImplementation(), d1.join(d2));
+  LevelSet d3(d1.join(d2));
+  CompositeRandomVector composite(d3.getFunction(), getAntecedent());
+  return ThresholdEvent(composite, d3.getOperator(), d3.getLevel());
 }
 
 END_NAMESPACE_OPENTURNS

@@ -70,9 +70,20 @@ public:
   /** Whether it is composite */
   virtual Bool isComposite() const;
 
+  /** Antecedent accessor */
   virtual RandomVector getAntecedent() const;
+
+  /** Function accessor */
   virtual Function getFunction() const;
+
+  /** Domain accessor */
   virtual Domain getDomain() const;
+
+  /** Operator accessor */
+  virtual ComparisonOperator getOperator() const;
+
+  /** Threshold accessor */
+  virtual Scalar getThreshold() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;

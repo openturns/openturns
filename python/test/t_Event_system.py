@@ -90,3 +90,15 @@ ott.assert_almost_equal(sim_event(e6), 0.75, 1e-2, 1e-2)
 
 ott.assert_almost_equal(sim_event(e7), 0.25, 1e-2, 1e-2)
 
+def subset_event(ev):
+    algo = ot.SubsetSampling(ev)
+    algo.setMaximumOuterSampling(2500)
+    algo.setBlockSize(4)
+    algo.run()
+    result = algo.getResult()
+    return result.getProbabilityEstimate()
+
+ott.assert_almost_equal(subset_event(e3), 0.25, 1e-2, 1e-2)
+ott.assert_almost_equal(subset_event(e5), 0.25, 1e-2, 1e-2)
+ott.assert_almost_equal(subset_event(e6), 0.75, 1e-2, 1e-2)
+ott.assert_almost_equal(subset_event(e7), 0.25, 1e-2, 1e-2)

@@ -170,8 +170,17 @@ Function UnionEvent::getFunction() const
 
 Domain UnionEvent::getDomain() const
 {
-  const DomainEvent* domainEvent = dynamic_cast<DomainEvent*>(composedEvent_.getImplementation().get());
-  return domainEvent->getDomain();
+  return composedEvent_.getDomain();
+}
+
+ComparisonOperator UnionEvent::getOperator() const
+{
+  return composedEvent_.getOperator();
+}
+
+Scalar UnionEvent::getThreshold() const
+{
+  return composedEvent_.getThreshold();
 }
 
 /* Method save() stores the object through the StorageManager */

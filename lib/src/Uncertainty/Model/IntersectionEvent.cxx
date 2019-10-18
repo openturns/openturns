@@ -23,6 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/UnionEvent.hxx"
 #include "openturns/DomainEvent.hxx"
+#include "openturns/ThresholdEvent.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -170,8 +171,17 @@ Function IntersectionEvent::getFunction() const
 
 Domain IntersectionEvent::getDomain() const
 {
-  const DomainEvent* domainEvent = dynamic_cast<DomainEvent*>(composedEvent_.getImplementation().get());
-  return domainEvent->getDomain();
+  return composedEvent_.getDomain();
+}
+
+ComparisonOperator IntersectionEvent::getOperator() const
+{
+  return composedEvent_.getOperator();
+}
+
+Scalar IntersectionEvent::getThreshold() const
+{
+  return composedEvent_.getThreshold();
 }
 
 /* Method save() stores the object through the StorageManager */
