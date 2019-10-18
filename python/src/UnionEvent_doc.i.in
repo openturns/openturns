@@ -27,7 +27,11 @@ Examples
 >>> Y2 = ot.CompositeRandomVector(f2, X)
 >>> e1 = ot.ThresholdEvent(Y1, ot.Less(), 0.0)
 >>> e2 = ot.ThresholdEvent(Y2, ot.Greater(), 0.0)
->>> event = ot.UnionEvent([e1, e2])"
+>>> event = ot.UnionEvent([e1, e2])
+
+Then it can be used for sampling (or with simulation algorithms):
+
+>>> p = event.getSample(1000).computeMean()"
 
 // ---------------------------------------------------------------------
 
