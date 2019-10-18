@@ -5,7 +5,7 @@ Parameters
 ----------
 mu : float
     Mean parameter :math:`\mu`.
-rate : float, :math:`\lambda > 0`
+lambda : float, :math:`\lambda > 0`
     Rate parameter :math:`\lambda`.
 
 Notes

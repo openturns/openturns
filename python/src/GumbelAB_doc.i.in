@@ -1,9 +1,6 @@
 %feature("docstring") OT::GumbelAB
 "Gumbel distribution parameters.
 
-Available constructors:
-    GumbelAB(*a=0.0, b=1.0*)
-
 Parameters
 ----------
 a : float
@@ -13,12 +10,12 @@ b : float
 
 Notes
 -----
-The native parameters are defined as follows:
+The native parameters  :math:`(\beta, \gamma)` are defined as follows:
 
 .. math::
 
-    \alpha &= b \\
-    \beta &= a
+    \beta &= b \\
+    \gamma &= a
 
 See also
 --------
@@ -26,7 +23,12 @@ Gumbel
 
 Examples
 --------
-Create the parameters of the Gumbel distribution:
+Create the parameters :math:`(a, b)`  of the Gumbel distribution:
 
 >>> import openturns as ot
->>> parameters = ot.GumbelAB(-0.5, 0.5)"
+>>> parameters = ot.GumbelAB(-0.5, 0.5)
+
+Convert parameters into the native parameters :math:`(\beta, \gamma)`:
+
+>>> print(parameters.evaluate())
+[0.5,-0.5]"

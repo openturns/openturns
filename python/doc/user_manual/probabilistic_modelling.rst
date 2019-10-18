@@ -83,8 +83,12 @@ Continuous parametric distributions
     TruncatedNormal
     Uniform
     VonMises
+
+    :template: classWithPlot.rst_t
     WeibullMin
     WeibullMax
+
+    :template: Distribution.rst_t
     Wishart
 
 Discrete parametric distributions

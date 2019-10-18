@@ -4,9 +4,9 @@
 Parameters
 ----------
 k : float
-    shape parameter :math:`k > 0` with :math:`k = (\mu - \gamma)^2 / \sigma^2`.
+    Shape parameter :math:`k > 0` with :math:`k = (\mu - \gamma)^2 / \sigma^2`.
 lambda : float
-    rate parameter :math:`\lambda > 0` with :math:`\lambda = (\mu - \gamma) / \sigma^2`.
+    Rate parameter :math:`\lambda > 0` with :math:`\lambda = (\mu - \gamma) / \sigma^2`.
 gamma : float, optional
     Location parameter :math:`\gamma`.
 

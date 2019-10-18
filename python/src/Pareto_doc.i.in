@@ -4,7 +4,7 @@
 Parameters
 ----------
 beta : float
-    Scale parameter :math:`\beta`.
+    Scale parameter :math:`\beta > 0`.
 alpha : float, :math:`\alpha > 0`
     Shape parameter :math:`\alpha`.
 gamma : float
@@ -12,13 +12,17 @@ gamma : float
 
 Notes
 -----
-Its cumulative distribution function is defined as:
+Its cumulative and probability distribution functions are defined as:
 
 .. math::
+    :nowrap:
 
-    F_X(x) = 1 - \left( \frac{\beta}{x- \gamma} \right) ^{\alpha}
+    \begin{eqnarray*}
+        F_X(x) & = & 1 - \left( \frac{x- \gamma}{\beta} \right) ^{-\alpha},  \quad \forall x \geq \gamma + \beta \\
+        p_X(x) & = & \dfrac{\alpha}{\beta} \left( \frac{x- \gamma}{\beta} \right) ^{-\alpha-1},  \quad \forall x \geq \gamma + \beta
+    \end{eqnarray*}
 
-with :math:`\alpha > 0` and :math:`\beta \in \Rset`.
+with :math:`\alpha > 0` and :math:`\beta >0`.
 
 Its first moments are:
 
@@ -26,10 +30,10 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{X} & = & \gamma + \frac{\beta \alpha}{\alpha - 1}
+        \Expect{X} & = & \gamma + \frac{\alpha}{\alpha + 1}\beta
                          \quad \text{ if } \alpha > 1 \\
-        \Var{X} & = & \frac{\beta^2 \alpha}{(\alpha - 1)^2 (\alpha - 2)}
-                      \quad \text{ if } \alpha > 2
+        \Var{X} & = & \dfrac{\alpha}{\alpha-2}\left(\dfrac{\beta}{\alpha - 1} \right)^2 \quad \text{ if } \alpha > 2 \\
+        Skew[X] & = & \dfrac{2(1+\alpha)}{\alpha-3}\sqrt{\dfrac{\alpha-2}{\alpha}} \quad \text{ if } \alpha > 3
     \end{eqnarray*}
 
 Examples

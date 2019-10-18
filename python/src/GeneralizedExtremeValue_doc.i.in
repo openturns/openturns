@@ -11,7 +11,7 @@ Parameters
 mu : float
     Position parameter :math:`\mu`.
 sigma : float, :math:`\sigma > 0`
-    Scale parameter :math:`\sigma`.
+    Scale parameter :math:`\sigma >0`.
 xi : float
     Shape parameter :math:`\xi`.
 distribution : :class:`~openturns.WeibullMax`, :class:`~openturns.Frechet` or :class:`~openturns.Gumbel`
@@ -19,20 +19,37 @@ distribution : :class:`~openturns.WeibullMax`, :class:`~openturns.Frechet` or :c
 
 Notes
 -----
-Its cumulative distribution function is defined as:
+Its cumulative and probability distribution functions are defined as:
 
 .. math::
+    :nowrap:
 
-    F_X(x) = \left\{\begin{array}{ll}
-               \displaystyle \exp\left\{-\left[1+\xi\left(\dfrac{x-\mu}{\sigma}\right)\right]^{-1/\xi}\right\}
-                    & \text{ if } \xi \neq 0 \\
-               \displaystyle \exp\left\{-\left(\dfrac{x-\mu}{\sigma}\right)\right\}
-                    & \text{ if } \xi = 0
-            \end{array}\right.
+    \begin{eqnarray*}
+        F_X(x) &  = & \exp(-t(x)), \quad \forall x \in \cS \\
+        p_X(x) & = & \dfrac{1}{\sigma}t^{1+\xi} \exp(-t(x)), \quad \forall x \in \cS
+    \end{eqnarray*}
 
-for :math:`\quad x \in [\mu-\sigma/\xi, +\infty) \text{ if } \xi>0, x \in \Rset \text{ if } \xi=0, x \in (-\infty,\mu-\sigma/\xi] \text{ if } \xi<0.`, with :math:`\sigma > 0` and :math:`\xi \in \Rset`.
+where 
 
-:math:`F_X` is zero for :math:`x` less than the lower bound of the support and one for :math:`x` greater than the upper bound of the support.
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        t(x) &  = & \left(1+\xi \dfrac{x-\mu}{\sigma}\right)^{-1/\xi} \quad \text{ if } \xi \neq 0\\
+        t(x) &  = & \exp \left(- \dfrac{x-\mu}{\sigma}\right) \quad \text{ if } \xi= 0
+    \end{eqnarray*}
+
+and 
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \cS &  = &  [\mu-\sigma/\xi, +\infty) \quad \text{ if } \xi > 0\\
+            &  = &  \Rset \quad \text{ if } \xi = 0\\
+            &  = &  (-\infty,\mu-\sigma/\xi] \quad \text{ if } \xi < 0
+    \end{eqnarray*}
+
 
 Its first moments are:
 
@@ -40,34 +57,72 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-    \Expect{X} & = & \left\{\begin{array}{ll}
-                     \mu+\sigma\dfrac{\Gamma(1-\xi)-1}{\xi} & \text{ if } \xi < 1, \xi\neq 0 \\
-                     \mu + \sigma\gamma & \text{ if } \xi= 0 \\
-                     \infty & \text{ if } \xi \geq 1
-                     \end{array}
-                     \right.\\
-        \Var{X} & = &  \left\{\begin{array}{ll}
-                     \sigma^2\dfrac{\Gamma(1-2\xi)-\Gamma^2(1-\xi)}{\xi^2} & \text{ if } \xi < 1/2, \xi\neq 0 \\
-                     \sigma^2\dfrac{\pi^2}{6} & \text{ if } \xi= 0 \\
-                     \infty & \text{ if } \xi \geq 1/2
-                     \end{array}
-                     \right.
+    \Expect{X} & = & \mu+\dfrac{\sigma}{\xi}\left(\Gamma(1-\xi)-1\right) \quad \text{ if } \xi < 1, \xi\neq 0 \\
+               & = &     \mu + \sigma\gamma_e \quad \text{ if } \xi= 0 \\
+               & = &    \infty  \quad \text{ if } \xi \geq 1
     \end{eqnarray*}
 
-where :math:`\gamma` is Euler's constant.
+    \begin{eqnarray*}
+        \Var{X} & = &  \dfrac{\sigma^2}{\xi^2}\left(\Gamma(1-2\xi)-\Gamma^2(1-\xi)\right) \quad \text{ if } \xi < 1/2, \xi\neq 0 \\
+                & = & \dfrac{1}{6} \sigma^2\pi^2 \quad \text{ if } \xi= 0 \\
+                & = & \infty \quad \text{ if } \xi \geq 1/2
+    \end{eqnarray*}
 
-Link with other distributions: if :math:`X\sim`:class:`~openturns.GeneralizedExtremeValue`:math:`(\mu, \sigma, \xi)`, then :math:`X\sim`:class:`~openturns.Frechet`:math:`(1/\xi, \sigma/\xi, \mu-\sigma/\xi)` if :math:`\xi>0`, :math:`-X\sim`:class:`~openturns.WeibullMax`:math:`(-\sigma/\xi, -1/\xi, \sigma/\xi-\mu)` if :math:`\xi<0` (note the minus sign) and :math:`X\sim`:class:`~openturns.Gumbel`:math:`(1/\sigma, \mu)` if :math:`\xi=0`.
+where :math:`\gamma_e` is Euler's constant.
+
+
+When the constructor from a :class:`~openturns.WeibullMax`:math:`(\beta, \alpha, \gamma)` distribution is used,  then it creates :class:`~openturns.GeneralizedExtremeValue`:math:`(\mu, \sigma, \xi)` where:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+       \mu & = & \gamma - \beta \\
+       \sigma & = & \dfrac{\beta}{\alpha} \\
+       \xi & = & -\dfrac{1}{\alpha}
+    \end{eqnarray*}
+
+
+
+When the constructor from a :class:`~openturns.Frechet`:math:`(\beta, \alpha, \gamma)` distribution is used,  then it creates :class:`~openturns.GeneralizedExtremeValue`:math:`(\mu, \sigma, \xi)` where:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+       \mu & = & \gamma - \beta \\
+       \sigma & = & \dfrac{\beta}{\alpha} \\
+       \xi & = & \dfrac{1}{\alpha}
+    \end{eqnarray*}
+
+
+
+When the constructor from a :class:`~openturns.Gumbel`:math:`(\beta, \gamma)` distribution is used,  then it creates :class:`~openturns.GeneralizedExtremeValue`:math:`(\mu, \sigma, \xi)` where:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+       \mu & = & \gamma  \\
+       \sigma & = & \beta \\
+       \xi & = & 0.0
+    \end{eqnarray*}
 
 Examples
 --------
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.GeneralizedExtremeValue(1.0, 2.0, -0.2)
+>>> dist1 = ot.GeneralizedExtremeValue(1.0, 2.0, -0.2)
+
+Create it from a Frechet distribution:
+
+>>> myFrechet = Frechet(1.0; 2.0, 3.0)
+>>> dist1 = ot.GeneralizedExtremeValue(myFrechet)
 
 Draw a sample:
 
->>> sample = distribution.getSample(5)"
+>>> sample = dist1.getSample(5)"
 
 // ---------------------------------------------------------------------
 
@@ -82,33 +137,71 @@ distribution : :class:`~openturns.Distribution`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedExtremeValue::asFrechet
-"Accessor to the internal distribution.
+"Temptative conversion to the underlying Frechet distribution.
 
 Returns
 -------
 distribution : :class:`~openturns.Frechet`
-     The actual distribution in charge of the computation."
+     The underlying Frechet distribution.
 
+Notes
+-----
+If :math:`\xi >0` then the :class:`~openturns.GeneralizedExtremeValue`:math:`(\mu, \sigma, \xi)` is actually a :class:`~openturns.Frechet`:math:`(\beta, \alpha, \gamma)` distribution where:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+       \beta & = & \dfrac{\sigma}{\xi} \\
+       \alpha & = & \dfrac{1}{\xi} \\
+       \gamma & = & \mu - \dfrac{\sigma}{\xi}
+    \end{eqnarray*}
+"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedExtremeValue::asWeibullMax
-"Accessor to the internal distribution.
+"Temptative conversion to the underlying WeibullMax distribution.
 
 Returns
 -------
 distribution : :class:`~openturns.WeibullMax`
-     The actual distribution in charge of the computation."
+     The underlying WeibullMax  distribution.
 
+Notes
+-----
+If :math:`\xi <0` then the :class:`~openturns.GeneralizedExtremeValue`:math:`(\mu, \sigma, \xi)` is actually a :class:`~openturns.WeibullMax`:math:`(\beta, \alpha, \gamma)` distribution where:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+       \beta & = & -\dfrac{\sigma}{\xi} \\
+       \alpha & = & -\dfrac{1}{\xi} \\
+       \gamma & = & \mu - \dfrac{\sigma}{\xi}
+    \end{eqnarray*}
+"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedExtremeValue::asGumbel
-"Accessor to the internal distribution.
+"Temptative conversion to the underlying Gumbel distribution.
 
 Returns
 -------
 distribution : :class:`~openturns.Gumbel`
-     The actual distribution in charge of the computation."
+     The underlying Gumbel distribution.
 
+Notes
+-----
+If :math:`\xi =0` then the :class:`~openturns.GeneralizedExtremeValue`:math:`(\mu, \sigma, 0.0)` is actually a :class:`~openturns.Gumbel`:math:`(\beta, \gamma)` distribution where:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+       \beta & = & \sigma \\
+       \gamma & = & \mu 
+    \end{eqnarray*}
+"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::GeneralizedExtremeValue::getMu

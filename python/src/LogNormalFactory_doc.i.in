@@ -91,7 +91,7 @@ The Maximum Likelihood estimator of :math:`(\mu_{l}, \sigma_{l}, \gamma)` is
 defined by:
 
 .. math::
-    :label: mll_estimator
+    :label: ln_mll_estimator
 
     \hat{\mu}_{l,n} &= \frac{S_1(\hat{\gamma})}{n} \\
     \hat{\sigma}_{l,n}^2 &= \frac{S_2(\hat{\gamma})}{n} - \hat{\mu}_{l,n}^2
@@ -99,8 +99,8 @@ defined by:
 Thus, :math:`\hat{\gamma}_n` satisfies the relation:
 
 .. math::
-    :label: mll_relation
-
+    :label: ln_mll_relation
+    
     S_0 (\gamma) \left(S_2(\gamma) - S_1(\gamma) \left( 1 + \frac{S_1(\gamma)}{n} \right) \right) + n S_3(\gamma) = 0
 
 under the constraint :math:`\gamma \leq \min x_i`.
@@ -198,7 +198,7 @@ In the second usage, the parameters are evaluated according the following strate
 
 - It first uses the local likelihood maximum based estimator. 
 - It uses the modified moments based estimator if the resolution of
-  :eq:`mll_relation` is not possible.
+  :eq:`ln_mll_relation` is not possible.
 - It uses the moments based estimator, which are always defined, if
   the resolution of :eq:`omega_modified_moment_relation` is not possible.
 

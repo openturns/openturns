@@ -17,7 +17,7 @@ Its probability density function is defined as:
 
 .. math::
 
-    f_X(x) = \frac{\Phi\left((b - x)/\sigma\right) - \Phi\left((a - x)/\sigma\right)}{b - a}, \quad x \in \Rset
+    f_X(x) = \frac{\Phi \left( (b - x)/\sigma \right) - \Phi \left( (a - x)/\sigma \right) }{ b - a }, \quad x \in \Rset
 
 where :math:`\Phi` is the CDF of the standard normal distribution.
 

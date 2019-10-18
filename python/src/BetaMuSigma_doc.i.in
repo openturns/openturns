@@ -1,9 +1,6 @@
 %feature("docstring") OT::BetaMuSigma
 "Beta distribution parameters.
 
-Available constructors:
-    BetaMuSigma(*mu=0.5, sigma=* :math:`1/(2\sqrt{5})` *, a=0.0, b=1.0*)
-
 Parameters
 ----------
 mu : float
@@ -17,12 +14,15 @@ b : float, :math:`b > a`
 
 Notes
 -----
-The native parameters are defined as follows:
+The native parameters  :math:`(\alpha, \beta, a, b)` are defined as follows:
 
 .. math::
+    :nowrap:
 
-    t &= \frac{(b - \mu) (\mu - a)}{\sigma^2} - 1.0 \\
-    r &= \frac{\mu - a}{b - a} t
+    \begin{eqnarray*}
+        \alpha & = & \left(\dfrac{\mu-a}{b-a}\right) \left( \dfrac{(b-\mu)(\mu-a)}{\sigma^2}-1\right) \\
+        \beta & = &  \left( \dfrac{b-\mu}{\mu-a}\right) \alpha
+    \end{eqnarray*}
 
 See also
 --------
@@ -30,12 +30,12 @@ Beta
 
 Examples
 --------
-Create the parameters of the Beta distribution:
+Create the parameters  :math:`(\mu, \sigma, a, b)` of the Beta distribution:
 
 >>> import openturns as ot
 >>> parameters = ot.BetaMuSigma(0.2, 0.6, -1, 2)
 
-Convert parameters into the native parameters:
+Convert parameters into the native parameters :math:`(\alpha, \beta, a, b)`:
 
 >>> print(parameters.evaluate())
 [2,3,-1,2]"

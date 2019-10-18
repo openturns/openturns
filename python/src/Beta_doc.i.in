@@ -31,8 +31,8 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{X} & = & a + \frac{(b - a)\,\alpha}{\alpha + \beta} \\
-        \Var{X} & = & \left(\frac{b - a}{\alpha + \beta}\right)^2 \frac{\alpha \beta}{\alpha + \beta + 1}
+        \Expect{X} & = & a + (b - a)\frac{\alpha}{\alpha + \beta} \\
+        \Var{X} & = & (b - a)^2 \frac{\alpha \beta}{(\alpha + \beta)^2(\alpha + \beta + 1)}
     \end{eqnarray*}
 
 
@@ -47,7 +47,7 @@ Create a distribution from its native parameters :math:`(\alpha, \beta, a, b)`:
 >>> import openturns as ot
 >>> myDist = ot.Beta(1.0, 2.0, 1.0, 5.0)
 
-Create a it from the alternative parametrization :math:`(\mu, \sigma, a, b)`:
+Create it from the alternative parametrization :math:`(\mu, \sigma, a, b)`:
 
 >>> myDist2 = ot.Beta()
 >>> myDist2.setParameter(ot.BetaMuSigma()([3.0, 1.15, 1.0, 5.0]))

@@ -10,14 +10,15 @@ gamma : float
 
 Notes
 -----
-Its probability density function is defined as:
+Its cumulative and probability density functions are defined as:
 
 .. math::
+    :nowrap:
 
-    f_X(x) = \alpha
-             \exp\left[- \alpha (x - \beta)
-                       - \exp\left(- \alpha (x - \beta)\right)\right],
-             \quad x \in \Rset
+    \begin{eqnarray*}
+        F_X(x) & = & \exp \left( -  \exp \left( -\dfrac{x-\gamma}{\beta} \right) \right), \quad x \in \Rset \\
+        f_X(x) & = & \dfrac{1}{\beta} \exp \left(- \dfrac{x-\gamma}{\beta} - \exp \left(- \dfrac{x-\gamma}{\beta} \right) \right), \quad x \in \Rset
+    \end{eqnarray*}
 
 with :math:`\beta > 0` and :math:`\gamma \in \Rset`.
 
@@ -28,7 +29,7 @@ Its first moments are:
 
     \begin{eqnarray*}
         \Expect{X} & = & \gamma + \gamma_e \beta \\
-        \Var{X} & = & \frac{\pi^2}{6} \beta^2
+        \Var{X} & = & \frac{1}{6} \pi^2 \beta^2
     \end{eqnarray*}
 
 where :math:`\gamma_e` is the Euler-Mascheroni constant.
@@ -45,12 +46,12 @@ Create a distribution in its native parameters :math:`(\beta, \gamma)`:
 >>> import openturns as ot
 >>> myDist = ot.Gumbel(1.0, 0.0)
 
-Create a it with the alternative parametrization :math:`(\mu, \sigma)`:
+Create it from the alternative parametrization :math:`(\mu, \sigma)`:
 
 >>> myDist2 = ot.Gumbel()
 >>> myDist2.setParameter(ot.GumbelMuSigma()([0.58, 1.28]))
 
-Create a it with the alternative parametrization :math:`(\lambda, \gamma)`:
+Create it from the alternative parametrization :math:`(\lambda, \gamma)`:
 
 >>> myDist3 = ot.Gumbel()
 >>> myDist3.setParameter(ot.GumbelLambdaGamma()([1.0, 1.0]))

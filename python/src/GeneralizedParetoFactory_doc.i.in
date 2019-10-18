@@ -16,18 +16,20 @@ Lets denote:
 - :math:`\displaystyle \overline{x}_n = \frac{1}{n} \sum_{i=1}^n x_i` the empirical
   mean of the sample, 
 - :math:`\displaystyle s_n^2 = \frac{1}{n-1} \sum_{i=1}^n (x_i - \overline{x}_n)^2`
-  its empirical variance,
+  its empirical variance.
 
-Then we estimate :math:`(\hat{\sigma}, \hat{\xi})`
-using:
+Then we estimate :math:`(\hat{\sigma}_n, \hat{\xi}_n)` using:
 
 .. math::
+    :nowrap:
     :label: gpd_moment_estimator
 
-    \hat{\xi} &= \dfrac{1}{2}\left(\dfrac{\overline{x}_n^2}{s_n^2}-1\right) \\
-    \hat{\sigma} &= \dfrac{\overline{x}_n}{2}\left(\dfrac{\overline{x}_n^2}{s_n^2}+1\right)
+    \begin{eqnarray*}
+        \hat{\xi}_n &= \dfrac{1}{2}\left(\dfrac{\overline{x}_n^2}{s_n^2}-1\right) \\
+        \hat{\sigma}_n &= \dfrac{\overline{x}_n}{2}\left(\dfrac{\overline{x}_n^2}{s_n^2}+1\right)
+    \end{eqnarray*}
 
-this estimator is well-defined only if :math:`\hat{\xi}>-1/4`, otherwise the second moment does not exist.
+This estimator is well-defined only if :math:`\hat{\xi}>-1/4`, otherwise the second moment does not exist.
 
 **Probability weighted moments based estimator:**
 
@@ -41,12 +43,36 @@ Then we estimate :math:`(\hat{\sigma}, \hat{\xi})`
 using:
 
 .. math::
+    :nowrap:
     :label: gpd_probability_weighted_moment_estimator
 
-    \hat{\xi} &= \dfrac{1-4\rho}{1-2\rho} \\
-    \hat{\sigma} &= \dfrac{2\overline{x}_n}{1-2\rho}
+    \begin{eqnarray*}
+        \hat{\xi}_n &= \dfrac{1-4\rho}{1-2\rho} \\
+        \hat{\sigma}_n &= \dfrac{2\overline{x}_n}{1-2\rho}
+    \end{eqnarray*}
 
-this estimator is well-defined only if :math:`\hat{\xi}>-1/2`, otherwise the first moment does not exist.
+This estimator is well-defined only if :math:`\hat{\xi}_n>-1/2`, otherwise the first moment does not exist.
+
+
+**Maximum likelihood based estimator:**
+
+These estimators are not yet implemented.
+
+For a given :math:`u < x_{(1,n)}`, we get :math:`(\hat{\sigma}_n(u),  \hat{\xi}_n(u)` by maximizing the likelihood of the sample :math:`\ell(\sigma(u),  \xi(u),u)`:
+
+.. math::
+
+    (\hat{\sigma}_n(u), \hat{\xi}_n(u)) = \argmax_{\sigma, \xi}   \ell(\sigma(u), \xi(u)|  x_1, \dots, x_n, u) 
+
+The threshold :math:`u` is obtained by maximizing the optimal likelihood :math:`\ell(\hat{\sigma}_n(u),  \hat{\xi}_n(u), u)`
+
+.. math::
+    
+    \hat{u}_n = \argmax_{u} \ell(\hat{\sigma}_n(u),  \hat{\xi}_n(u),u) \text{ under the constraint } u < x_{(1,n)}
+
+
+The initial point of the optimisation problem is :math:`u_0 = x_{(1,n)} - |x_{(1,n)}|/(2+n)`.
+
 
 **Exponential regression based estimator:**
 
@@ -125,7 +151,7 @@ In the second usage, the parameters are evaluated according the following strate
 - If the sample size is less or equal to `GeneralizedParetoFactory-SmallSize` from :class:`~openturns.ResourceMap`, then the method of probability weighted moments is used. If it fails, the method of exponential regression is used.
 - Otherwise, the first method tried is the method of exponential regression, then the method of probability weighted moments if the first one fails.
 
-In the fourth usage, a :class:`~openturns.GeneralizedPareto` distribution corresponding to the given parameters is built."
+In the third usage, a :class:`~openturns.GeneralizedPareto` distribution corresponding to the given parameters is built."
 
 // ---------------------------------------------------------------------
 

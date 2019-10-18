@@ -19,20 +19,37 @@ pareto : :class:`~openturns.Pareto`
 
 Notes
 -----
-Its cumulative distribution function is defined as:
+Its cumulative and probability distribution functions are defined as:
 
 .. math::
+    :nowrap:
 
-    F_X(x) = \left\{\begin{array}{ll}
-               \displaystyle 1 - \left[1 + \xi \frac{x - u}{\sigma}\right]^{-1/\xi}
-                    & \text{ if } \xi \neq 0 \\
-               \displaystyle 1 - \exp\left(-\frac{x}{\sigma}\right)
-                    & \text{ if } \xi = 0
-            \end{array}\right.
+    \begin{eqnarray*}
+        F_X(x) &  = & 1-t(x), \quad \forall x \in \cS \\
+        p_X(x) & = & -t'(x), \quad \forall x \in \cS
+    \end{eqnarray*}
+
+where 
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        t(x) &  = & \left(1+\xi \dfrac{x-\mu}{\sigma}\right)^{-1/\xi} \quad \text{ if } \xi \neq 0\\
+        t(x) &  = & \exp(-\dfrac{x-u}{\sigma}) \quad \text{ if } \xi= 0
+    \end{eqnarray*}
+
+and 
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \cS &  = &  [u, +\infty) \quad \text{ if } \xi \geq 0\\
+            &  = &  [u, u-\sigma/\xi] \quad \text{ if } \xi < 0
+    \end{eqnarray*}
 
 with :math:`\sigma > 0` and :math:`\xi \in \Rset`.
-If :math:`xi \geq 0` then the range is :math:`x \in (-\infty, 0]`.
-If :math:`xi <0` then the range is :math:`x \in [0, -\frac{1}{\xi})`.
 
 Its first moments are:
 
@@ -46,16 +63,35 @@ Its first moments are:
                       \quad \text{ if } \xi < \frac{1}{2}
     \end{eqnarray*}
 
+
+
+When the constructor from a :class:`~openturns.Pareto`:math:`(\beta, \alpha, \gamma)` distribution is used,  then it creates :class:`~openturns.GeneralizedPareto`:math:`(\sigma, \xi, u)` where:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+       u & = & \gamma + \beta \\
+       \sigma & = & \dfrac{\beta}{\alpha} \\
+       \xi & = & \dfrac{1}{\alpha}
+    \end{eqnarray*}
+
+
 Examples
 --------
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.GeneralizedPareto(1.0, 0.0, 0.0)
+>>> dist1 = ot.GeneralizedPareto(1.0, 0.0, 0.0)
+
+Create it from a Pareto distribution:
+
+>>> myPareto = Pareto(1.0; 2.0, 3.0)
+>>> dist1 = ot.GeneralizedPareto(myPareto)
 
 Draw a sample:
 
->>> sample = distribution.getSample(5)"
+>>> sample = dist1.getSample(5)"
 
 // ---------------------------------------------------------------------
 
@@ -135,4 +171,19 @@ u : float
 Returns
 -------
 pareto : :class:`~openturns.Pareto`
-    Pareto distribution."
+    Pareto distribution.
+
+Notes
+-----
+The Pareto associated to the :class:`~openturns.GeneralizedPareto`:math:`(\sigma, \xi, u)` is a  :class:`~openturns.Pareto`:math:`(\beta, \alpha, \gamma)` such that: 
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+       \beta & = & \dfrac{\sigma}{\xi} \\
+       \alpha & = & \dfrac{1}{\xi} \\
+       \gamma & = & u-\dfrac{\sigma}{\xi}
+    \end{eqnarray*}
+
+"
