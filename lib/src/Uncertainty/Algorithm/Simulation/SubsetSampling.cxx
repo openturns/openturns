@@ -150,6 +150,9 @@ void SubsetSampling::run()
       currentPointSample_[i * blockSize + j] = inputSample[j];
       currentLevelSample_[i * blockSize + j] = blockSample[j];
     }
+
+    if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
+      throw InternalException(HERE) << "User stopped simulation";
   }
   ++ numberOfSteps_;
 
@@ -234,6 +237,9 @@ void SubsetSampling::run()
     varianceEstimate = coefficientOfVariationSquare * pow(probabilityEstimate, 2.0);
 
     ++ numberOfSteps_;
+
+    if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
+      throw InternalException(HERE) << "User stopped simulation";
   }
 
   setResult(SubsetSamplingResult(getEvent(), probabilityEstimate, varianceEstimate, numberOfSteps_ * getMaximumOuterSampling(), getBlockSize(), sqrt(coefficientOfVariationSquare)));
