@@ -307,6 +307,34 @@ void HMatrixImplementation::assemble(const HMatrixTensorRealAssemblyFunction& f,
 #endif
 }
 
+/* Compute an approximation of the largest eigenValue (in magnitude) using power iterations */
+Scalar HMatrixImplementation::computeApproximateLargestEigenValue(const Scalar epsilon)
+{
+  const UnsignedInteger dimension = getNbRows();
+  Point currentEigenVector(dimension, 1.0);
+  Point nextEigenVector(dimension);
+  gemv('N', 1.0, currentEigenVector, 0.0, nextEigenVector);
+  Scalar nextEigenValue = nextEigenVector.norm();
+  Scalar currentEigenValue = nextEigenValue / std::sqrt(1.0 * dimension);
+  const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("HMatrix-LargestEigenValueRelativeIterations");
+  Bool found = false;
+  Scalar precision = 0.0;
+  for (UnsignedInteger iteration = 0; iteration < maximumIteration; ++iteration)
+    {
+      LOGDEBUG(OSS() << "(" << iteration << ") EigenValue=" << currentEigenValue);
+      currentEigenVector = nextEigenVector / nextEigenValue;
+      gemv('N', 1.0, currentEigenVector, 0.0, nextEigenVector);
+      nextEigenValue = nextEigenVector.norm();
+      precision = std::abs(nextEigenValue - currentEigenValue);
+      found = precision <= epsilon * nextEigenValue;
+      LOGDEBUG(OSS() << "(" << iteration << ") precison=" << precision << ", relative precision=" << precision / nextEigenValue << ", found=" << found);
+      if (found) break;
+      currentEigenValue = nextEigenValue;
+    }
+  if (!found) LOGWARN(OSS() << "Cannot reach the target relative precision=" << epsilon << ", got relative precision=" << precision / nextEigenValue);
+  return nextEigenValue;
+}
+
 void HMatrixImplementation::factorize(const String& method)
 {
 #ifdef OPENTURNS_HAVE_HMAT
@@ -320,19 +348,40 @@ void HMatrixImplementation::factorize(const String& method)
   else if (method != "LU")
     LOGWARN( OSS() << "Unknown factorization method: " << method << ". Valid values are: LU, LDLt, or LLt.");
 
-  try
-  {
-    hmat_factorization_context_t context;
-    hmat_factorization_context_init(&context);
-    context.factorization = fact_method;
-    context.progress = NULL;
-    static_cast<hmat_interface_t*>(hmatInterface_)->factorize_generic(static_cast<hmat_matrix_t*>(hmat_), &context);
-  }
-  catch (std::exception& ex)
-  {
-    // hmat::LapackException is not yet exported
-    throw InternalException(HERE) << ex.what();
-  }
+  // Compute a reasonable regularization factor
+  Scalar lambda = 2.0 * computeApproximateLargestEigenValue() * ResourceMap::GetAsScalar("HMatrix-AssemblyEpsilon");
+  // Do regularization
+  addIdentity(lambda);
+  Bool done = false;
+  String msg;
+  const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("HMatrix-FactorizationIterations");
+  for (UnsignedInteger iteration = 0; iteration < maximumIteration; ++ iteration)
+    {
+      LOGDEBUG(OSS() << "Factorization, regularization loop " << iteration << ", regularization factor=" << lambda);
+      try
+	{
+	  hmat_factorization_context_t context;
+	  hmat_factorization_context_init(&context);
+	  context.factorization = fact_method;
+	  context.progress = NULL;
+	  static_cast<hmat_interface_t*>(hmatInterface_)->factorize_generic(static_cast<hmat_matrix_t*>(hmat_), &context);
+	  done = true;
+	  LOGDEBUG("Factorization ok");
+	}
+      catch (std::exception& ex)
+	{
+	  // hmat::LapackException is not yet exported
+	  msg = ex.what();
+	  // Double the current regularization factor by adding it another time
+	  addIdentity(lambda);
+	  // And double its value for next loop
+	  lambda += lambda;
+	  LOGDEBUG(OSS() << "Must increase the regularization to " << lambda << " because " << msg);
+	}
+      if (done) break;
+    } // for
+  if (!done)
+    throw InternalException(HERE) << msg;
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif

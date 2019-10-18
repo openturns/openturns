@@ -87,7 +87,7 @@ int main(int, char *[])
     hmat.factorize("LLt");
 
     hmatRef.gemm('N', 'T', -1., hmat, hmat, 1.);
-    Scalar threshold = 1.e-10;
+    Scalar threshold = 5.e-3;
     fullprint << "|| M - L Lt || / || M ||" << ((hmatRef.norm() < threshold * refNorm) ? " < " : " > ") << threshold << std::endl;
 
     const Scalar normL(hmat.norm());

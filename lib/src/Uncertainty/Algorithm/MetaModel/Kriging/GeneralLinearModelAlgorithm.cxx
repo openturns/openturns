@@ -812,45 +812,19 @@ Scalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky() const
   HMatrixFactory hmatrixFactory;
   HMatrixParameters hmatrixParameters;
 
-  while (continuationCondition && (cumulatedScaling < maximalScaling))
-  {
-    try
+  covarianceCholeskyFactorHMatrix_ = hmatrixFactory.build(normalizedInputSample_, covarianceDimension, true, hmatrixParameters);
+  if (covarianceDimension == 1)
     {
-      covarianceCholeskyFactorHMatrix_ = hmatrixFactory.build(normalizedInputSample_, covarianceDimension, true, hmatrixParameters);
-      if (covarianceDimension == 1)
-      {
-        CovarianceAssemblyFunction simple(reducedCovarianceModel_, normalizedInputSample_, cumulatedScaling);
-        covarianceCholeskyFactorHMatrix_.assemble(simple, 'L');
-      }
-      else
-      {
-        CovarianceBlockAssemblyFunction block(reducedCovarianceModel_, normalizedInputSample_, cumulatedScaling);
-        covarianceCholeskyFactorHMatrix_.assemble(block, 'L');
-      }
-      // Factorize
-      covarianceCholeskyFactorHMatrix_.factorize("LLt");
-      continuationCondition = false;
+      CovarianceAssemblyFunction simple(reducedCovarianceModel_, normalizedInputSample_, cumulatedScaling);
+      covarianceCholeskyFactorHMatrix_.assemble(simple, 'L');
     }
-    // If it has not yet been computed, compute it and store it
-    catch (InternalException &)
+  else
     {
-      cumulatedScaling += scaling ;
-      scaling *= 2.0;
-      Scalar assemblyEpsilon = hmatrixParameters.getAssemblyEpsilon() / 10.0;
-      hmatrixParameters.setAssemblyEpsilon(assemblyEpsilon);
-      Scalar recompressionEpsilon = hmatrixParameters.getRecompressionEpsilon() / 10.0;
-      hmatrixParameters.setRecompressionEpsilon(recompressionEpsilon);
-      LOGDEBUG(OSS() <<  "Currently, scaling up to "  << cumulatedScaling << " to get an admissible covariance. Maybe compression & recompression factors are not adapted.");
-      LOGDEBUG(OSS() <<  "Currently, assembly espilon = "  << assemblyEpsilon );
-      LOGDEBUG(OSS() <<  "Currently, recompression epsilon "  <<  recompressionEpsilon);
+      CovarianceBlockAssemblyFunction block(reducedCovarianceModel_, normalizedInputSample_, cumulatedScaling);
+      covarianceCholeskyFactorHMatrix_.assemble(block, 'L');
     }
-  }
-  if (scaling >= maximalScaling)
-    throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::computeHMatLogLikelihood, could not compute the Cholesky factor"
-                                         << " Scaling up to "  << cumulatedScaling << " was not enough";
-  if (cumulatedScaling > 0.0)
-    LOGWARN(OSS() <<  "Warning! Scaling up to "  << cumulatedScaling << " was needed in order to get an admissible covariance. ");
-
+  // Factorize
+  covarianceCholeskyFactorHMatrix_.factorize("LLt");
   // y corresponds to output data
   // The PersistentCollection is returned as Point with the right memory map
   Point y(outputSample_.getImplementation()->getData());

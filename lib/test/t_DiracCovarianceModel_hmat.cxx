@@ -50,7 +50,7 @@ int main(int, char *[])
   try
   {
 
-    PlatformInfo::SetNumericalPrecision(4);
+    PlatformInfo::SetNumericalPrecision(3);
 
     ResourceMap::SetAsUnsignedInteger("HMatrix-MaxLeafSize", 6);
 
