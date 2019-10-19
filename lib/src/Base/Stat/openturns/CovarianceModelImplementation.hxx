@@ -122,24 +122,18 @@ public:
 
   /** Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
   virtual HMatrix discretizeHMatrix(const RegularGrid & timeGrid,
-                                    const Scalar nuggetFactor,
                                     const HMatrixParameters & parameters) const;
   virtual HMatrix discretizeHMatrix(const Mesh & mesh,
-                                    const Scalar nuggetFactor,
                                     const HMatrixParameters & parameters) const;
   virtual HMatrix discretizeHMatrix(const Sample & vertices,
-                                    const Scalar nuggetFactor,
                                     const HMatrixParameters & parameters) const;
 
   /** Discretize and factorize the covariance function on a given TimeGrid/Mesh using HMatrix */
   virtual HMatrix discretizeAndFactorizeHMatrix(const RegularGrid & timeGrid,
-      const Scalar nuggetFactor,
       const HMatrixParameters & parameters) const;
   virtual HMatrix discretizeAndFactorizeHMatrix(const Mesh & mesh,
-      const Scalar nuggetFactor,
       const HMatrixParameters & parameters) const;
   virtual HMatrix discretizeAndFactorizeHMatrix(const Sample & vertices,
-      const Scalar nuggetFactor,
       const HMatrixParameters & parameters) const;
 
   /** Is it a stationary covariance model ? */

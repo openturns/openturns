@@ -161,46 +161,40 @@ TriangularMatrix CovarianceModel::discretizeAndFactorize(const Sample & vertices
 
 /** Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
 HMatrix CovarianceModel::discretizeHMatrix(const RegularGrid & timeGrid,
-    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
-  return getImplementation()->discretizeHMatrix(timeGrid, nuggetFactor, parameters);
+  return getImplementation()->discretizeHMatrix(timeGrid, parameters);
 }
 
 HMatrix CovarianceModel::discretizeHMatrix(const Mesh & mesh,
-    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
-  return getImplementation()->discretizeHMatrix(mesh, nuggetFactor, parameters);
+  return getImplementation()->discretizeHMatrix(mesh, parameters);
 }
 
 HMatrix CovarianceModel::discretizeHMatrix(const Sample & vertices,
-    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
-  return getImplementation()->discretizeHMatrix(vertices, nuggetFactor, parameters);
+  return getImplementation()->discretizeHMatrix(vertices, parameters);
 }
 
 /** Discretize and factorize the covariance function on a given TimeGrid/Mesh using HMatrix */
 HMatrix CovarianceModel::discretizeAndFactorizeHMatrix(const RegularGrid & timeGrid,
-    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
-  return getImplementation()->discretizeAndFactorizeHMatrix(timeGrid, nuggetFactor, parameters);
+  return getImplementation()->discretizeAndFactorizeHMatrix(timeGrid, parameters);
 }
 
 HMatrix CovarianceModel::discretizeAndFactorizeHMatrix(const Mesh & mesh,
-    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
-  return getImplementation()->discretizeAndFactorizeHMatrix(mesh, nuggetFactor, parameters);
+  return getImplementation()->discretizeAndFactorizeHMatrix(mesh, parameters);
 }
 
 HMatrix CovarianceModel::discretizeAndFactorizeHMatrix(const Sample & vertices,
-    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
-  return getImplementation()->discretizeAndFactorizeHMatrix(vertices, nuggetFactor, parameters);
+  return getImplementation()->discretizeAndFactorizeHMatrix(vertices, parameters);
 }
 
 /* Amplitude accessor */

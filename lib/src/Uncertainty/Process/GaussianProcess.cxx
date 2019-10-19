@@ -123,30 +123,22 @@ void GaussianProcess::initialize() const
     LOGINFO(OSS() << "Discretize the covariance model");
     covarianceMatrix = CovarianceMatrix(covarianceModel_.discretize(mesh_));
   }
-  // Boolean flag to tell if the regularization is enough
-  Bool continuationCondition = true;
-  // Scaling factor of the matrix : M-> M + \lambda I with \lambda very small
-  // The regularization is needed for fast decreasing covariance models
-  const Scalar startingScaling = ResourceMap::GetAsScalar("GaussianProcess-StartingScaling");
-  const Scalar maximalScaling = ResourceMap::GetAsScalar("GaussianProcess-MaximalScaling");
-  Scalar cumulatedScaling = 0.0;
-  Scalar scaling = startingScaling;
-  HMatrixFactory hmatFactory;
-  HMatrixParameters hmatrixParameters;
 
   // There is a specific regularization for h-matrices
   if (samplingMethod_ == 1)
   {
+    HMatrixFactory hmatFactory;
+    HMatrixParameters hmatrixParameters;
     LOGINFO(OSS() << "Assemble and factor the covariance matrix");
     covarianceHMatrix_ = hmatFactory.build(mesh_.getVertices(), covarianceModel_.getOutputDimension(), true, hmatrixParameters);
     if (covarianceModel_.getOutputDimension() == 1)
     {
-      CovarianceAssemblyFunction simple(covarianceModel_, mesh_.getVertices(), cumulatedScaling);
+      CovarianceAssemblyFunction simple(covarianceModel_, mesh_.getVertices());
       covarianceHMatrix_.assemble(simple, 'L');
     }
     else
     {
-      CovarianceBlockAssemblyFunction block(covarianceModel_, mesh_.getVertices(), cumulatedScaling);
+      CovarianceBlockAssemblyFunction block(covarianceModel_, mesh_.getVertices());
       covarianceHMatrix_.assemble(block, 'L');
     }
     covarianceHMatrix_.factorize("LLt");
@@ -154,6 +146,14 @@ void GaussianProcess::initialize() const
   // Other sampling methods
   else
   {
+    // Boolean flag to tell if the regularization is enough
+    Bool continuationCondition = true;
+    // Scaling factor of the matrix : M-> M + \lambda I with \lambda very small
+    // The regularization is needed for fast decreasing covariance models
+    const Scalar startingScaling = ResourceMap::GetAsScalar("GaussianProcess-StartingScaling");
+    const Scalar maximalScaling = ResourceMap::GetAsScalar("GaussianProcess-MaximalScaling");
+    Scalar cumulatedScaling = 0.0;
+    Scalar scaling = startingScaling;
     while (continuationCondition && (cumulatedScaling < maximalScaling))
     {
       const UnsignedInteger fullSize = covarianceMatrix.getDimension();

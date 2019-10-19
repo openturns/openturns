@@ -578,7 +578,7 @@ String HMatrixImplementation::__str__(const String & ) const
   return oss;
 }
 
-CovarianceAssemblyFunction::CovarianceAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices, double epsilon)
+CovarianceAssemblyFunction::CovarianceAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices)
   : HMatrixRealAssemblyFunction()
   , covarianceModel_(covarianceModel)
   , definesComputeStandardRepresentative_(false)
@@ -586,7 +586,6 @@ CovarianceAssemblyFunction::CovarianceAssemblyFunction(const CovarianceModel & c
   , verticesBegin_(vertices.getImplementation()->data_begin())
   , inputDimension_(vertices.getDimension())
   , covarianceDimension_(covarianceModel.getOutputDimension())
-  , epsilon_(epsilon)
 {
   if (vertices_.getSize() == 0) return;
   try
@@ -603,28 +602,24 @@ CovarianceAssemblyFunction::CovarianceAssemblyFunction(const CovarianceModel & c
 Scalar CovarianceAssemblyFunction::operator()(UnsignedInteger i, UnsignedInteger j) const
 {
   if (definesComputeStandardRepresentative_)
-    return covarianceModel_.getImplementation()->computeAsScalar(verticesBegin_ + i * inputDimension_, verticesBegin_ + j * inputDimension_) + (i != j ? 0.0 : epsilon_);
+    return covarianceModel_.getImplementation()->computeAsScalar(verticesBegin_ + i * inputDimension_, verticesBegin_ + j * inputDimension_);
 
   const UnsignedInteger rowIndex = i / covarianceDimension_;
   const UnsignedInteger columnIndex = j / covarianceDimension_;
   const CovarianceMatrix localCovarianceMatrix(covarianceModel_( vertices_[rowIndex],  vertices_[columnIndex] ));
   const UnsignedInteger rowIndexLocal = i % covarianceDimension_;
   const UnsignedInteger columnIndexLocal = j % covarianceDimension_;
-  return localCovarianceMatrix(rowIndexLocal, columnIndexLocal) + (i != j ? 0.0 : epsilon_);
+  return localCovarianceMatrix(rowIndexLocal, columnIndexLocal);
 }
 
-CovarianceBlockAssemblyFunction::CovarianceBlockAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices, double epsilon)
+CovarianceBlockAssemblyFunction::CovarianceBlockAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices)
   : HMatrixTensorRealAssemblyFunction(covarianceModel.getOutputDimension())
   , covarianceModel_(covarianceModel)
   , definesComputeStandardRepresentative_(false)
   , vertices_(vertices)
   , verticesBegin_(vertices.getImplementation()->data_begin())
   , inputDimension_(vertices.getDimension())
-  , epsilon_(epsilon)
 {
-  Matrix eps = epsilon_ * IdentityMatrix(covarianceModel.getOutputDimension());
-  Pointer<MatrixImplementation> impl = eps.getImplementation();
-  epsilonId_ = CovarianceMatrix(covarianceModel.getOutputDimension(), *impl.get());
   if (vertices.getSize() == 0) return;
   try
   {
@@ -641,13 +636,11 @@ void CovarianceBlockAssemblyFunction::compute(UnsignedInteger i, UnsignedInteger
 {
   if (definesComputeStandardRepresentative_)
   {
-    localValues->getImplementation()->operator[](0) = covarianceModel_.getImplementation()->computeAsScalar(verticesBegin_ + i * inputDimension_, verticesBegin_ + j * inputDimension_) + (i != j ? 0.0 : epsilon_);
+    localValues->getImplementation()->operator[](0) = covarianceModel_.getImplementation()->computeAsScalar(verticesBegin_ + i * inputDimension_, verticesBegin_ + j * inputDimension_);
   }
   else
   {
     CovarianceMatrix localResult(covarianceModel_( vertices_[i],  vertices_[j] ));
-    if (i == j && epsilon_ != 0.0)
-      localResult = localResult + epsilonId_;
     std::copy(&localResult.getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0)+ dimension_ * dimension_, &localValues->getImplementation()->operator[](0));
   }
 }

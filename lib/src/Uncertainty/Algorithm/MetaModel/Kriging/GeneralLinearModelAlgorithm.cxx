@@ -802,11 +802,6 @@ Scalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky() const
   // Using the hypothesis that parameters = scale & model writes : C(s,t) = \sigma^2 * R(s,t) with R a correlation function
   LOGDEBUG(OSS(false) << "Compute the HMAT log-determinant of the Cholesky factor for covariance=" << reducedCovarianceModel_);
 
-  Bool continuationCondition = true;
-  const Scalar startingScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-StartingScaling");
-  const Scalar maximalScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-MaximalScaling");
-  Scalar cumulatedScaling = 0.0;
-  Scalar scaling = startingScaling;
   const UnsignedInteger covarianceDimension = reducedCovarianceModel_.getOutputDimension();
 
   HMatrixFactory hmatrixFactory;
@@ -815,12 +810,12 @@ Scalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky() const
   covarianceCholeskyFactorHMatrix_ = hmatrixFactory.build(normalizedInputSample_, covarianceDimension, true, hmatrixParameters);
   if (covarianceDimension == 1)
     {
-      CovarianceAssemblyFunction simple(reducedCovarianceModel_, normalizedInputSample_, cumulatedScaling);
+      CovarianceAssemblyFunction simple(reducedCovarianceModel_, normalizedInputSample_);
       covarianceCholeskyFactorHMatrix_.assemble(simple, 'L');
     }
   else
     {
-      CovarianceBlockAssemblyFunction block(reducedCovarianceModel_, normalizedInputSample_, cumulatedScaling);
+      CovarianceBlockAssemblyFunction block(reducedCovarianceModel_, normalizedInputSample_);
       covarianceCholeskyFactorHMatrix_.assemble(block, 'L');
     }
   // Factorize

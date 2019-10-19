@@ -512,21 +512,18 @@ Sample CovarianceModelImplementation::discretizeRow(const Sample & vertices,
 
 /* Discretize the covariance function on a given TimeGrid/Mesh using HMatrix */
 HMatrix CovarianceModelImplementation::discretizeHMatrix(const RegularGrid & timeGrid,
-    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
-  return discretizeHMatrix(timeGrid.getVertices(), nuggetFactor, parameters);
+  return discretizeHMatrix(timeGrid.getVertices(), parameters);
 }
 
 HMatrix CovarianceModelImplementation::discretizeHMatrix(const Mesh & mesh,
-    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
-  return discretizeHMatrix(mesh.getVertices(), nuggetFactor, parameters);
+  return discretizeHMatrix(mesh.getVertices(), parameters);
 }
 
 HMatrix CovarianceModelImplementation::discretizeHMatrix(const Sample & vertices,
-    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
 #ifdef OPENTURNS_HAVE_HMAT
@@ -534,18 +531,17 @@ HMatrix CovarianceModelImplementation::discretizeHMatrix(const Sample & vertices
   HMatrix covarianceHMatrix = hmatrixFactory.build(vertices, outputDimension_, true, parameters);
   if (outputDimension_ == 1)
   {
-    CovarianceAssemblyFunction simple(*this, vertices, nuggetFactor);
+    CovarianceAssemblyFunction simple(*this, vertices);
     covarianceHMatrix.assemble(simple, 'L');
   }
   else
   {
-    CovarianceBlockAssemblyFunction block(*this, vertices, nuggetFactor);
+    CovarianceBlockAssemblyFunction block(*this, vertices);
     covarianceHMatrix.assemble(block, 'L');
   }
   return covarianceHMatrix;
 #else
   (void) vertices;
-  (void) nuggetFactor;
   (void) parameters;
   throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::discretizeHMatrix, OpenTURNS had been compiled without HMat support";
 #endif
@@ -553,28 +549,25 @@ HMatrix CovarianceModelImplementation::discretizeHMatrix(const Sample & vertices
 
 /* Discretize and factorize the covariance function on a given TimeGrid/Mesh using HMatrix */
 HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const RegularGrid & timeGrid,
-    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
-  return discretizeAndFactorizeHMatrix(timeGrid.getVertices(), nuggetFactor, parameters);
+  return discretizeAndFactorizeHMatrix(timeGrid.getVertices(), parameters);
 }
 
 HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const Mesh & mesh,
-    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
-  return discretizeAndFactorizeHMatrix(mesh.getVertices(), nuggetFactor, parameters);
+  return discretizeAndFactorizeHMatrix(mesh.getVertices(), parameters);
 }
 
 HMatrix CovarianceModelImplementation::discretizeAndFactorizeHMatrix(const Sample & vertices,
-    const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
   // We suppose that covariance matrix is symmetric positive definite
   // We do not catch InternalException
   // Incremeant nugget factor to make matrix positive definite
   // Maybe parameters need to be adapted.
-  HMatrix covarianceFactor = discretizeHMatrix(vertices, nuggetFactor, parameters);
+  HMatrix covarianceFactor = discretizeHMatrix(vertices, parameters);
   covarianceFactor.factorize("LLt");
   return covarianceFactor;
 }
