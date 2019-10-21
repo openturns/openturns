@@ -25,8 +25,6 @@ for :math:`(u_1, u_2) \in [0, 1]^2`.
 
 This copula is also known as the generalized Cuadras-Auge copula. 
 
-We cannot have :math:`\alpha = 0` and :math:`\beta = 0` at the same time.
-
 Independence corresponds to :math:`\alpha = 0` or :math:`\beta = 0`.
 
 The minimum copula corresponds to :math:`\alpha = \beta = 1`.

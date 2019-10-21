@@ -104,16 +104,30 @@ Scalar MarshallOlkinCopula::computeCDF(const Point & point) const
   const Scalar v = point[1];
   const Scalar ualpha = std::pow(u, alpha_);
   const Scalar vbeta = std::pow(v, beta_);
+  Scalar p;
   if (ualpha>vbeta)
   {
-    const Scalar p = std::pow(u, 1-alpha_) * v;
-    return p;
+    if (alpha_==1.) /* Prevent zero exponent in pow */
+    {
+      p = v;
+    }
+    else
+    {
+      p = std::pow(u, 1 - alpha_) * v;
+    }
   }
   else
   {
-    const Scalar p = u * std::pow(v, 1-beta_);
-    return p;
+    if (beta_==1.) /* Prevent zero exponent in pow */
+    {
+      p = u;
+    }
+    else
+    {
+      p = u * std::pow(v, 1 - beta_);
+    }
   }
+  return p;
 }
 
 /* Parameters value accessor */
@@ -141,8 +155,7 @@ Bool MarshallOlkinCopula::hasIndependentCopula() const
 /* Alpha accessor */
 void MarshallOlkinCopula::setAlpha(const Scalar alpha)
 {
-  if ((alpha < 0.0) || (alpha > 1.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be in [0, 1], here alpha=" << alpha;
-  if ((alpha == 0.0) && (beta_ == 0.0)) throw InvalidArgumentException(HERE) << "Beta="<<beta_<<" so that alpha cannot be zero";
+  if (!(alpha >= 0.0) || !(alpha <= 1.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be in [0, 1], here alpha=" << alpha;
   alpha_ = alpha;
   isAlreadyComputedCovariance_ = false;
 }
@@ -156,8 +169,7 @@ Scalar MarshallOlkinCopula::getAlpha() const
 /* Beta accessor */
 void MarshallOlkinCopula::setBeta(const Scalar beta)
 {
-  if ((beta < 0.0) || (beta > 1.0)) throw InvalidArgumentException(HERE) << "Beta MUST be in [0, 1], here beta=" << beta;
-  if ((alpha_ == 0.0) && (beta == 0.0)) throw InvalidArgumentException(HERE) << "Alpha="<<alpha_<<" so that beta cannot be zero";
+  if (!(beta >= 0.0) || !(beta <= 1.0)) throw InvalidArgumentException(HERE) << "Beta MUST be in [0, 1], here beta=" << beta;
   beta_ = beta;
   isAlreadyComputedCovariance_ = false;
 }
@@ -172,15 +184,19 @@ Scalar MarshallOlkinCopula::getBeta() const
 CorrelationMatrix MarshallOlkinCopula::getKendallTau() const
 {
   CorrelationMatrix tauKendall(2);
-  if ((alpha_==0.0) || (beta_==0.0))
+  if ((alpha_ == 0.0) || (beta_ == 0.0))
   {
     tauKendall(1, 0) = 0.0;
-  } else if ((alpha_==1.0) && (beta_==1.0)) {
+  } 
+  else if ((alpha_ == 1.0) && (beta_ == 1.0)) 
+  {
     tauKendall(1, 0) = 1.0;
-  } else {
+  }
+  else 
+  {
     tauKendall(1, 0) = alpha_ * beta_ / (alpha_ + beta_ - alpha_ * beta_);
   }
-  return CorrelationMatrix(tauKendall);
+  return tauKendall;
 }
 
 /* Get the Spearman correlation of the distribution
@@ -188,12 +204,16 @@ CorrelationMatrix MarshallOlkinCopula::getKendallTau() const
 CorrelationMatrix MarshallOlkinCopula::getSpearmanCorrelation() const
 {
   CorrelationMatrix rho(2);
-  if ((alpha_==0.0) || (beta_==0.0))
+  if ((alpha_ == 0.0) || (beta_ == 0.0))
   {
     rho(1, 0) = 0.0;
-  } else if ((alpha_==1.0) && (beta_==1.0)) {
+  } 
+  else if ((alpha_ == 1.0) && (beta_ == 1.0)) 
+  {
     rho(1, 0) = 1.0;
-  } else {
+  } 
+  else 
+  {
     rho(1, 0) = 3 * alpha_ * beta_ / (2 * alpha_ + 2 * beta_ - alpha_ * beta_);
   }
   return rho;
@@ -209,19 +229,23 @@ Point MarshallOlkinCopula::getRealization() const
 {
   Point realization(2);
   // We use the general algorithm based on conditional CDF inversion
-  if ((alpha_==0.0) || (beta_==0.0))
+  if ((alpha_ == 0.0) || (beta_ == 0.0))
   {
     // This is the independent copula
     const Scalar u = RandomGenerator::Generate();
     const Scalar v = RandomGenerator::Generate();
     realization[0] = u;
     realization[1] = v;
-  } else if ((alpha_==1.0) && (beta_==1.0)) {
+  } 
+  else if ((alpha_ == 1.0) && (beta_ == 1.0)) 
+  {
     // This is the min-copula
     const Scalar u = RandomGenerator::Generate();
     realization[0] = u;
     realization[1] = u;
-  } else {
+  } 
+  else 
+  {
     const Scalar r = RandomGenerator::Generate();
     const Scalar s = RandomGenerator::Generate();
     const Scalar t = RandomGenerator::Generate();
