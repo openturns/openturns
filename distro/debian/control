@@ -16,7 +16,7 @@ Vcs-Git: https://salsa.debian.org/science-team/openturns.git
 X-Python-Version: current
 X-Python3-Version: current
 
-Package: libopenturns0.14
+Package: libopenturns0.15
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
@@ -40,7 +40,7 @@ Description: dynamic libraries
 Package: libopenturns-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends}, libopenturns0.14 (= ${binary:Version}),
+Depends: ${misc:Depends}, libopenturns0.15 (= ${binary:Version}),
   libxml2-dev, libtbb-dev [i386 amd64 ia64], libhmat-oss-dev
 Replaces: python-openturns-dev (<< 1.5-2)
 Breaks: python-openturns-dev (<< 1.5-2)
@@ -61,7 +61,7 @@ Description: development package
 Package: python-openturns
 Section: python
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libopenturns0.14 (= ${binary:Version}), ${python:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, libopenturns0.15 (= ${binary:Version}), ${python:Depends}
 Provides: ${python:Provides}
 Suggests: python-matplotlib, python-scipy
 Description: Python bindings
@@ -78,7 +78,7 @@ Description: Python bindings
 Package: python3-openturns
 Section: python
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libopenturns0.14 (= ${binary:Version}), ${python3:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, libopenturns0.15 (= ${binary:Version}), ${python3:Depends}
 Provides: ${python3:Provides}
 Suggests: python3-matplotlib, python3-scipy
 Description: Python3 bindings
