@@ -55,7 +55,7 @@ try:
 
     output = RandomVector(EtatLimite, vect)
 
-    myEvent = Event(output, Less(), 0.0)
+    myEvent = ThresholdEvent(output, Less(), 0.0)
 
     #
     # Calculs

@@ -23,7 +23,7 @@
  *
  */
 
-#include "openturns/EventRandomVector.hxx"
+#include "openturns/ThresholdEventImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
 #include "openturns/SymbolicFunction.hxx"
@@ -33,12 +33,12 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(EventRandomVector)
+CLASSNAMEINIT(ThresholdEventImplementation)
 
-static const Factory<EventRandomVector> Factory_EventRandomVector;
+static const Factory<ThresholdEventImplementation> Factory_ThresholdEventImplementation;
 
 /* Default constructor */
-EventRandomVector::EventRandomVector()
+ThresholdEventImplementation::ThresholdEventImplementation()
   : CompositeRandomVector()
   , operator_()
   , threshold_()
@@ -47,7 +47,7 @@ EventRandomVector::EventRandomVector()
 }
 
 /* Constructor from RandomVector */
-EventRandomVector::EventRandomVector(const RandomVector & antecedent,
+ThresholdEventImplementation::ThresholdEventImplementation(const RandomVector & antecedent,
                                      const ComparisonOperator & op,
                                      const Scalar threshold)
   : CompositeRandomVector()
@@ -57,12 +57,12 @@ EventRandomVector::EventRandomVector(const RandomVector & antecedent,
   // Event can only be constructed from composite random vectors
   if (!antecedent.isComposite())
     throw InvalidArgumentException(HERE) << "Event can only be constructed from composite random vectors. The random vector ("
-                                         << antecedent << ") passed as first argument of EventRandomVector "
+                                         << antecedent << ") passed as first argument of ThresholdEventImplementation "
                                          << " has incorrect type";
-  // EventRandomVector can only be constructed from 1D random vectors
+  // ThresholdEventImplementation can only be constructed from 1D random vectors
   if (antecedent.getDimension() != 1)
-    throw InvalidArgumentException(HERE) << "EventRandomVector can only be constructed from 1D random vectors. The random vector ("
-                                         << antecedent << ") passed as first argument of EventRandomVector "
+    throw InvalidArgumentException(HERE) << "ThresholdEventImplementation can only be constructed from 1D random vectors. The random vector ("
+                                         << antecedent << ") passed as first argument of ThresholdEventImplementation "
                                          << " has incorrect dimension";
   function_ = antecedent.getFunction();
   antecedent_ = antecedent.getAntecedent();
@@ -72,7 +72,7 @@ EventRandomVector::EventRandomVector(const RandomVector & antecedent,
 
 
 /* Constructor from RandomVector */
-EventRandomVector::EventRandomVector(const RandomVector & antecedent,
+ThresholdEventImplementation::ThresholdEventImplementation(const RandomVector & antecedent,
                                      const Interval & interval)
   : CompositeRandomVector()
 {
@@ -89,23 +89,23 @@ EventRandomVector::EventRandomVector(const RandomVector & antecedent,
   {
     if (finiteLowerBound[0] && !finiteUpperBound[0])
     {
-      *this = EventRandomVector(antecedent, Greater(), lowerBound[0]);
+      *this = ThresholdEventImplementation(antecedent, Greater(), lowerBound[0]);
     }
     if (!finiteLowerBound[0] && finiteUpperBound[0])
     {
-      *this = EventRandomVector(antecedent, Less(), upperBound[0]);
+      *this = ThresholdEventImplementation(antecedent, Less(), upperBound[0]);
     }
 
     if (finiteLowerBound[0] && finiteUpperBound[0])
     {
       testFunction = SymbolicFunction("x", OSS() << "min(x-(" << lowerBound[0] << "), (" << upperBound[0] << ") - x)");
       CompositeRandomVector newVector(ComposedFunction(testFunction, antecedent.getFunction()), antecedent.getAntecedent());
-      *this = EventRandomVector(newVector, Greater(), 0.0);
+      *this = ThresholdEventImplementation(newVector, Greater(), 0.0);
     }
     if (!finiteLowerBound[0] && !finiteUpperBound[0])
     {
       CompositeRandomVector newVector(Function(testFunction), antecedent.getAntecedent());
-      *this = EventRandomVector(newVector, Less(), 1.0);
+      *this = ThresholdEventImplementation(newVector, Less(), 1.0);
     }
   }
   // general case
@@ -124,7 +124,7 @@ EventRandomVector::EventRandomVector(const RandomVector & antecedent,
     if (slacks.getSize() == 0)
     {
       const CompositeRandomVector newVector(Function(testFunction), antecedent.getAntecedent());
-      *this = EventRandomVector(newVector, Less(), 1.0);
+      *this = ThresholdEventImplementation(newVector, Less(), 1.0);
     }
     else
     {
@@ -142,22 +142,22 @@ EventRandomVector::EventRandomVector(const RandomVector & antecedent,
       }
       testFunction = SymbolicFunction(inVars, Description(1, formula));
       const CompositeRandomVector newVector(ComposedFunction(testFunction, antecedent.getFunction()), antecedent.getAntecedent());
-      *this = EventRandomVector(newVector, Greater(), 0.0);
+      *this = ThresholdEventImplementation(newVector, Greater(), 0.0);
     }
   }
 }
 
 
-EventRandomVector * EventRandomVector::clone() const
+ThresholdEventImplementation * ThresholdEventImplementation::clone() const
 {
-  return new EventRandomVector(*this);
+  return new ThresholdEventImplementation(*this);
 }
 
 /* String converter */
-String EventRandomVector::__repr__() const
+String ThresholdEventImplementation::__repr__() const
 {
   OSS oss;
-  oss << "class=" << EventRandomVector::GetClassName()
+  oss << "class=" << ThresholdEventImplementation::GetClassName()
       << " antecedent=" << CompositeRandomVector::__repr__()
       << " operator=" << operator_
       << " threshold=" << threshold_;
@@ -165,25 +165,25 @@ String EventRandomVector::__repr__() const
 }
 
 /* Dimension accessor */
-UnsignedInteger EventRandomVector::getDimension() const
+UnsignedInteger ThresholdEventImplementation::getDimension() const
 {
   return 1;
 }
 
 /* Operator accessor */
-ComparisonOperator EventRandomVector::getOperator() const
+ComparisonOperator ThresholdEventImplementation::getOperator() const
 {
   return operator_;
 }
 
 /* Threshold accessor */
-Scalar EventRandomVector::getThreshold() const
+Scalar ThresholdEventImplementation::getThreshold() const
 {
   return threshold_;
 }
 
 
-Domain EventRandomVector::getDomain() const
+Domain ThresholdEventImplementation::getDomain() const
 {
   Interval result(threshold_, threshold_);
   if (operator_(1.0, 2.0))
@@ -194,13 +194,13 @@ Domain EventRandomVector::getDomain() const
 }
 
 /* Realization accessor */
-Point EventRandomVector::getRealization() const
+Point ThresholdEventImplementation::getRealization() const
 {
   return Point(1, operator_(CompositeRandomVector::getRealization()[0], threshold_));
 }
 
 /* Numerical sample accessor */
-Sample EventRandomVector::getSample(const UnsignedInteger size) const
+Sample ThresholdEventImplementation::getSample(const UnsignedInteger size) const
 {
   // We don't build the return sample element by element because it doesn't
   // use the potential distribution of the computation. As the returned
@@ -210,19 +210,19 @@ Sample EventRandomVector::getSample(const UnsignedInteger size) const
   // Then, we loop over the sample and substitute realizations of the eventRandomVectorImplementation
   // in place of the realizations of the antecedent
   for (UnsignedInteger i = 0; i < size; ++i) returnSample(i, 0) = operator_(returnSample(i, 0), threshold_);
-  returnSample.setName("EventRandomVector sample");
+  returnSample.setName("ThresholdEventImplementation sample");
   returnSample.setDescription(getDescription());
   return returnSample;
 }
 
-Point EventRandomVector::getParameter() const
+Point ThresholdEventImplementation::getParameter() const
 {
   Point parameter(CompositeRandomVector::getParameter());
   parameter.add(threshold_);
   return parameter;
 }
 
-void EventRandomVector::setParameter(const Point & parameter)
+void ThresholdEventImplementation::setParameter(const Point & parameter)
 {
   const UnsignedInteger compositeParameterDimension = CompositeRandomVector::getParameter().getDimension();
   if (parameter.getDimension() != (compositeParameterDimension + 1))
@@ -233,20 +233,20 @@ void EventRandomVector::setParameter(const Point & parameter)
   threshold_ = parameter[compositeParameterDimension];
 }
 
-Description EventRandomVector::getParameterDescription() const
+Description ThresholdEventImplementation::getParameterDescription() const
 {
   Description description(CompositeRandomVector::getParameterDescription());
   description.add("threshold");
   return description;
 }
 
-Bool EventRandomVector::isEvent() const
+Bool ThresholdEventImplementation::isEvent() const
 {
   return true;
 }
 
 /* Method save() stores the object through the StorageManager */
-void EventRandomVector::save(Advocate & adv) const
+void ThresholdEventImplementation::save(Advocate & adv) const
 {
   CompositeRandomVector::save(adv);
   adv.saveAttribute( "operator_", operator_ );
@@ -254,7 +254,7 @@ void EventRandomVector::save(Advocate & adv) const
 }
 
 /* Method load() reloads the object from the StorageManager */
-void EventRandomVector::load(Advocate & adv)
+void ThresholdEventImplementation::load(Advocate & adv)
 {
   CompositeRandomVector::load(adv);
   adv.loadAttribute( "operator_", operator_ );

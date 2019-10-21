@@ -58,7 +58,7 @@ try:
         # Analysis based on an event
         X = RandomVector(distribution)
         Y = CompositeRandomVector(f, X)
-        event = Event(Y, comparisonOperators[i], threshold)
+        event = ThresholdEvent(Y, comparisonOperators[i], threshold)
         # Get a sample of the event to simulate a Monte Carlo analysis. We
         # don't care of the result as the interesting values are stored in the
         # model history

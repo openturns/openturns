@@ -150,7 +150,7 @@ int main(int, char *[])
 
     CompositeRandomVector output(EtatLimite, vect);
 
-    Event myEvent(output, Less(), 0.0);
+    ThresholdEvent myEvent(output, Less(), 0.0);
 
     //   #########################################################################################################;
     //   # Calculs;

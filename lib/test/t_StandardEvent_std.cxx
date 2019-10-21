@@ -79,7 +79,7 @@ int main(int, char *[])
     CompositeRandomVector output2(myFunction, vect2);
 
     /* We create an Event from this RandomVector */
-    Event myEvent(output2, Less(), 1.0);
+    ThresholdEvent myEvent(output2, Less(), 1.0);
 
     /* Create a StandardEvent based on this Event */
     StandardEvent stdEvent(myEvent);

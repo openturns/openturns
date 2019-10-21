@@ -201,7 +201,7 @@ int main(int, char *[])
     study.add("staircase", staircase);
 
     // Create a Simulation::Result
-    ProbabilitySimulationResult simulationResult(Event(), 0.5, 0.01, 150, 4);
+    ProbabilitySimulationResult simulationResult(ThresholdEvent(), 0.5, 0.01, 150, 4);
     simulationResult.setName("probabilitySimulationResult");
     study.add("probabilitySimulationResult", simulationResult);
 
@@ -340,7 +340,7 @@ int main(int, char *[])
     study.add("analytical", analytical);
 
     // Create an Event Object
-    Event event;
+    ThresholdEvent event;
     {
       Point point(3);
       point[0] = 101;
@@ -348,9 +348,9 @@ int main(int, char *[])
       point[2] = 303;
       ConstantRandomVector vect(point);
       CompositeRandomVector output(analytical.getMarginal(0), vect);
-      event = Event (output, Less(), 50);
+      event = ThresholdEvent(output, Less(), 50);
     }
-    study.add("event", event);
+    study.add("randomVector", event);
 
     // Create a StandardEvent Object
     StandardEvent standardEvent(event);
@@ -445,7 +445,7 @@ int main(int, char *[])
       input3.setName("input");
       CompositeRandomVector output3(model, input3);
       output3.setName("output");
-      Event event(output3, Greater(), 1.0);
+      ThresholdEvent event(output3, Greater(), 1.0);
       event.setName("failureEvent");
       Point designPoint(2, 0.0);
       designPoint[0] = 1.0;
@@ -684,8 +684,8 @@ int main(int, char *[])
     }
     study.add("domain", domain);
 
-    // Create an EventDomain
-    EventDomain eventDomain;
+    // Create an DomainEvent
+    DomainEvent eventDomain;
     {
       UnsignedInteger dim = 2;
       Normal distribution(dim);
@@ -695,21 +695,21 @@ int main(int, char *[])
       SymbolicFunction model(inVars, inVars);
       CompositeRandomVector Y(model, X);
       Interval domain(dim);
-      eventDomain = EventDomain(Y, domain);
+      eventDomain = DomainEvent(Y, domain);
     }
-    study.add("eventDomain", eventDomain);
+    study.add("domainEvent", eventDomain);
 
-    // Create an EventProcess
-    EventProcess eventProcess;
+    // Create an ProcessEvent
+    ProcessEvent eventProcess;
     {
       UnsignedInteger dim = 2;
       Normal distribution(dim);
 
       WhiteNoise X(distribution);
       Interval domain(dim);
-      eventProcess = EventProcess(X, domain);
+      eventProcess = ProcessEvent(X, domain);
     }
-    study.add("eventProcess", eventProcess);
+    study.add("processEvent", eventProcess);
 
     // Create a ConstantStep
     ConstantStep constantStep;
@@ -1014,7 +1014,7 @@ int main(int, char *[])
     compare<OptimizationAlgorithm >( tnc, study2, "tnc" );
 
     // Model
-    compare<Event >( event, study2 );
+    //compare<RandomVector >( event, study2 );
     compare<StandardEvent >( standardEvent, study2 );
 
     // Distribution
@@ -1079,8 +1079,8 @@ int main(int, char *[])
     compare<SpectralGaussianProcess >( spectralGaussianProcess, study2 );
     compare<GaussianProcess >( gaussianProcess, study2 );
     compare<Domain >( domain, study2 );
-    compare<EventDomain >( eventDomain, study2 );
-    compare<EventProcess >( eventProcess, study2 );
+    compare<DomainEvent >( eventDomain, study2 );
+    compare<ProcessEvent >( eventProcess, study2 );
     compare<ConstantStep >( constantStep, study2 );
     compare<BlendedStep >( blendedStep, study2 );
     compare<FunctionalBasisProcess >( functionalBasisProcess, study2 );

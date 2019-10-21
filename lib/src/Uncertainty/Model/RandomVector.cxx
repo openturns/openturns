@@ -20,9 +20,9 @@
  */
 #include "openturns/RandomVector.hxx"
 #include "openturns/UsualRandomVector.hxx"
-#include "openturns/EventRandomVector.hxx"
-#include "openturns/EventDomain.hxx"
-#include "openturns/EventProcess.hxx"
+#include "openturns/ThresholdEvent.hxx"
+#include "openturns/DomainEvent.hxx"
+#include "openturns/ProcessEvent.hxx"
 #include "openturns/ComparisonOperatorImplementation.hxx"
 #include "openturns/Domain.hxx"
 #include "openturns/Less.hxx"
@@ -226,12 +226,12 @@ RandomVector RandomVector::intersect(const RandomVector & other)
 
   LevelSet d1;
   try {
-    // EventRandomVector
+    // ThresholdEvent
     d1 = LevelSet(getFunction(), getOperator(), getThreshold());
   }
   catch (NotYetImplementedException &) {
-    // EventDomain with LevelSet
-    const EventDomain* eventDomain = dynamic_cast<EventDomain*>(getImplementation().get());
+    // DomainEvent with LevelSet
+    const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(getImplementation().get());
     if (!eventDomain)
       throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
     const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
@@ -242,12 +242,12 @@ RandomVector RandomVector::intersect(const RandomVector & other)
 
   LevelSet d2;
   try {
-    // EventRandomVector
+    // ThresholdEvent
     d2 = LevelSet(other.getFunction(), other.getOperator(), other.getThreshold());
   }
   catch (NotYetImplementedException &) {
-    // EventDomain with LevelSet
-    const EventDomain* eventDomain = dynamic_cast<EventDomain*>(other.getImplementation().get());
+    // DomainEvent with LevelSet
+    const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(other.getImplementation().get());
     if (!eventDomain)
       throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
     const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
@@ -256,7 +256,9 @@ RandomVector RandomVector::intersect(const RandomVector & other)
     d2 = *levelSet;
   }
 
-  return EventDomain(getAntecedent(), d1.intersect(d2));
+  LevelSet d3(d1.intersect(d2));
+  CompositeRandomVector composite(d3.getFunction(), getAntecedent());
+  return ThresholdEvent(composite, d3.getOperator(), d3.getLevel());
 }
 
 
@@ -271,14 +273,14 @@ RandomVector RandomVector::join(const RandomVector & other)
   if (getAntecedent().getImplementation()->getId() != other.getAntecedent().getImplementation()->getId())
     throw NotYetImplementedException(HERE) << "Root cause not found";
 
-LevelSet d1;
+  LevelSet d1;
   try {
-    // EventRandomVector
+    // ThresholdEvent
     d1 = LevelSet(getFunction(), getOperator(), getThreshold());
   }
   catch (NotYetImplementedException &) {
-    // EventDomain with LevelSet
-    const EventDomain* eventDomain = dynamic_cast<EventDomain*>(getImplementation().get());
+    // DomainEvent with LevelSet
+    const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(getImplementation().get());
     if (!eventDomain)
       throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
     const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
@@ -289,12 +291,12 @@ LevelSet d1;
 
   LevelSet d2;
   try {
-    // EventRandomVector
+    // ThresholdEvent
     d2 = LevelSet(other.getFunction(), other.getOperator(), other.getThreshold());
   }
   catch (NotYetImplementedException &) {
-    // EventDomain with LevelSet
-    const EventDomain* eventDomain = dynamic_cast<EventDomain*>(other.getImplementation().get());
+    // DomainEvent with LevelSet
+    const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(other.getImplementation().get());
     if (!eventDomain)
       throw NotYetImplementedException(HERE) << "in RandomVector::intersect";
     const LevelSet* levelSet = dynamic_cast<LevelSet*>(eventDomain->getDomain().getImplementation().get());
@@ -303,7 +305,9 @@ LevelSet d1;
     d2 = *levelSet;
   }
 
-  return EventDomain(getAntecedent().getImplementation(), d1.join(d2));
+  LevelSet d3(d1.join(d2));
+  CompositeRandomVector composite(d3.getFunction(), getAntecedent());
+  return ThresholdEvent(composite, d3.getOperator(), d3.getLevel());
 }
 
 END_NAMESPACE_OPENTURNS

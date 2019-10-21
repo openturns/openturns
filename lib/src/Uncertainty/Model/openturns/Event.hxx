@@ -42,20 +42,20 @@ public:
   /** for save/load mecanism */
   Event();
 
-  /** Constructor from RandomVector */
+  /** @deprecated Constructor from RandomVector */
   Event(const RandomVector & antecedent,
         const ComparisonOperator & op,
         const Scalar threshold);
 
-  /** Constructor from RandomVector */
+  /** @deprecated Constructor from RandomVector */
   Event(const RandomVector & antecedent,
         const Domain & domain);
 
-  /** Constructor from RandomVector */
+  /** @deprecated Constructor from RandomVector */
   Event(const RandomVector & antecedent,
         const Interval & interval);
 
-  /** Constructor from RandomVector */
+  /** @deprecated Constructor from RandomVector */
   Event(const Process &  process,
         const Domain & domain);
 

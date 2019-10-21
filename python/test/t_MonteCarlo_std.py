@@ -44,7 +44,7 @@ vect = ot.RandomVector(myDistribution)
 output = ot.RandomVector(myFunction, vect)
 
 # We create an Event from this RandomVector
-myEvent = ot.Event(output, ot.Less(), -3.0)
+myEvent = ot.ThresholdEvent(output, ot.Less(), -3.0)
 
 # We create a Monte Carlo algorithm
 myAlgo = ot.MonteCarlo(myEvent)

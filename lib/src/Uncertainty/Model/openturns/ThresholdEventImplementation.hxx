@@ -23,8 +23,8 @@
  *
  */
 
-#ifndef OPENTURNS_EVENTRANDOMVECTOR_HXX
-#define OPENTURNS_EVENTRANDOMVECTOR_HXX
+#ifndef OPENTURNS_THRESHOLDEVENTIMPLEMENTATION_HXX
+#define OPENTURNS_THRESHOLDEVENTIMPLEMENTATION_HXX
 
 #include "openturns/CompositeRandomVector.hxx"
 
@@ -34,11 +34,11 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class EventRandomVector
+ * @class ThresholdEventImplementation
  *
  *
  */
-class OT_API EventRandomVector
+class OT_API ThresholdEventImplementation
   : public CompositeRandomVector
 {
   CLASSNAME
@@ -47,19 +47,19 @@ public:
 
 
   /** Default constructor */
-  EventRandomVector();
+  ThresholdEventImplementation();
 
   /** Constructor from comparison operator */
-  EventRandomVector(const RandomVector & antecedent,
+  ThresholdEventImplementation(const RandomVector & antecedent,
                     const ComparisonOperator & op,
                     const Scalar threshold);
 
   /** Constructor from Interval */
-  EventRandomVector(const RandomVector & antecedent,
+  ThresholdEventImplementation(const RandomVector & antecedent,
                     const Interval & interval);
 
   /** Virtual constructor */
-  virtual EventRandomVector * clone() const;
+  virtual ThresholdEventImplementation * clone() const;
 
   /** String converter */
   String __repr__() const;
@@ -108,9 +108,9 @@ private:
   /** The threshold of the eventRandomVectorImplementation */
   Scalar threshold_;
 
-}; /* class EventRandomVector */
+}; /* class ThresholdEventImplementation */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_EVENTRANDOMVECTOR_HXX */
+#endif /* OPENTURNS_THRESHOLDEVENTIMPLEMENTATION_HXX */

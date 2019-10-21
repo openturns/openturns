@@ -50,7 +50,7 @@ Examples
 >>> dist = ot.Normal(dim)
 >>> X = ot.RandomVector(dist)
 >>> Y = ot.CompositeRandomVector(f, X)
->>> event = ot.Event(Y, ot.Less(), 0.0)
+>>> event = ot.ThresholdEvent(Y, ot.Less(), 0.0)
 >>> solver = ot.Cobyla()
 >>> starting_pt = dist.getMean()
 >>> algo = ot.MultiFORM(solver, event, starting_pt)

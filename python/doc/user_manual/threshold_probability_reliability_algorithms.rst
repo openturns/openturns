@@ -38,9 +38,9 @@ Event
 
     Event
     StandardEvent
-    EventProcess
-    EventDomain
-    EventRandomVector
+    ProcessEvent
+    DomainEvent
+    ThresholdEvent
     IntersectionEvent
     UnionEvent
 

@@ -1,5 +1,7 @@
-%feature("docstring") OT::EventProcess
+%feature("docstring") OT::ProcessEvent
 "Event defined from a process and a domain.
+
+The event occurs when the process enters the specified domain.
 
 Parameters
 ----------
@@ -10,7 +12,7 @@ domain : :class:`~openturns.Domain`
 
 See also
 --------
-EventDomain, EventRandomVector
+DomainEvent, ThresholdEvent
 
 Examples
 --------
@@ -19,4 +21,4 @@ Examples
 >>> dist = ot.Normal(dim)
 >>> X = ot.WhiteNoise(dist)
 >>> domain = ot.Interval(dim)
->>> event = ot.EventProcess(X, domain)"
+>>> event = ot.ProcessEvent(X, domain)"

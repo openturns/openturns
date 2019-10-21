@@ -14,7 +14,7 @@ distribution = ot.ComposedDistribution(marginals, ot.ComposedCopula([ot.ClaytonC
 distribution.setDescription(['marginal'+str(i) for i in range(dim)])
 vect = ot.RandomVector(distribution)
 output = ot.CompositeRandomVector(model, vect)
-event = ot.Event(output, ot.Greater(), 0.0)
+event = ot.ThresholdEvent(output, ot.Greater(), 0.0)
 solver = ot.Cobyla()
 solver.setMaximumEvaluationNumber(200)
 solver.setMaximumAbsoluteError(1.0e-10)

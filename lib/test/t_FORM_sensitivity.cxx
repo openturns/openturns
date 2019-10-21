@@ -89,7 +89,7 @@ int main(int, char *[])
       output.setDescription(outputDescription);
 
       /* We create an Event from this RandomVector */
-      Event myEvent(output, Greater(), 0.0);
+      ThresholdEvent myEvent(output, Greater(), 0.0);
 
       /* We create a NearestPoint algorithm */
       Cobyla myCobyla;

@@ -35,7 +35,7 @@ try:
     output = CompositeRandomVector(myFunction, vect)
 
     # We create an Event from this RandomVector
-    myEvent = Event(output, Less(), -3)
+    myEvent = ThresholdEvent(output, Less(), -3)
 
     # We create a FORM algorithm
     # The first parameter is an OptimizationAlgorithm

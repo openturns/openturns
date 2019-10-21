@@ -14,7 +14,7 @@ f = ot.SymbolicFunction(['x0', 'x1'], ['5.0-x1-0.5*(x0-0.1)^2'])
 dist = ot.Normal(dim)
 X = ot.RandomVector(dist)
 Y = ot.CompositeRandomVector(f, X)
-event = ot.Event(Y, ot.Less(), 0.0)
+event = ot.ThresholdEvent(Y, ot.Less(), 0.0)
 
 # solver
 solver = ot.Cobyla()

@@ -81,7 +81,7 @@ int main(int, char *[])
       /* Analysis based on an event */
       RandomVector X(distribution);
       CompositeRandomVector Y(fh, X);
-      Event event(Y, comparisonOperators[i], threshold);
+      ThresholdEvent event(Y, comparisonOperators[i], threshold);
       /* Get a sample of the event to simulate a Monte Carlo analysis. We don't care
          of the result as the interesting values are stored in the model history */
       event.getSample(size);

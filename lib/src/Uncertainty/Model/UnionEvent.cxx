@@ -22,6 +22,7 @@
 #include "openturns/UnionEvent.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/IntersectionEvent.hxx"
+#include "openturns/DomainEvent.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -75,7 +76,7 @@ void UnionEvent::setEventCollection(const RandomVectorCollection & collection)
   if (!size) throw InvalidArgumentException(HERE) << "Empty collection";
 
   // Explore the deepest leftmost node of the tree which is not Intersection/Union to get the root cause
-  // Also we initialize composedEvent_ if Intersection/Union use getComposedEvent from top node else take the EventRandomVector
+  // Also we initialize composedEvent_ if Intersection/Union use getComposedEvent from top node else take the ThresholdEvent
   if (!collection[0].isEvent())
     throw InvalidArgumentException(HERE) << "Element 0 is not an event";
   UnsignedInteger depth = 0;
@@ -102,7 +103,9 @@ void UnionEvent::setEventCollection(const RandomVectorCollection & collection)
     ++ depth;
     implementationName = current.getImplementation()->getClassName();
   }
-  rootCauseId_ = current.getAntecedent().getImplementation()->getId();
+  // store root cause
+  antecedent_ = current.getAntecedent();
+  const UnsignedInteger rootCauseId = antecedent_.getImplementation()->getId();
   if (depth == 0) // no IntersectionEvent/Union was found, take the first node
     composedEvent_ = collection[0];
 
@@ -115,7 +118,7 @@ void UnionEvent::setEventCollection(const RandomVectorCollection & collection)
     {
       // IntersectionEvent
       IntersectionEvent* intersectionEvent = static_cast<IntersectionEvent*>(collection[i].getImplementation().get());
-      if (intersectionEvent->getRootCauseId() != rootCauseId_)
+      if (intersectionEvent->getAntecedent().getImplementation()->getId() != rootCauseId)
         throw InvalidArgumentException(HERE) << "Different root cause";
       composedEvent_ = composedEvent_.join(intersectionEvent->getComposedEvent());
     }
@@ -123,14 +126,14 @@ void UnionEvent::setEventCollection(const RandomVectorCollection & collection)
     {
       // UnionEvent
       UnionEvent* unionEvent = static_cast<UnionEvent*>(collection[i].getImplementation().get());
-      if (unionEvent->getRootCauseId() != rootCauseId_)
+      if (unionEvent->getAntecedent().getImplementation()->getId() != rootCauseId)
         throw InvalidArgumentException(HERE) << "Different root cause";
       composedEvent_ = composedEvent_.join(unionEvent->getComposedEvent());
     }
     else
     {
-      // EventRandomVector
-      if (collection[i].getAntecedent().getImplementation()->getId() != rootCauseId_)
+      // ThresholdEvent
+      if (collection[i].getAntecedent().getImplementation()->getId() != rootCauseId)
         throw NotYetImplementedException(HERE) << "Root cause not found";
       composedEvent_ = composedEvent_.join(collection[i]);
     }
@@ -150,6 +153,36 @@ Bool UnionEvent::isEvent() const
   return true;
 }
 
+Bool UnionEvent::isComposite() const
+{
+  return true;
+}
+
+RandomVector UnionEvent::getAntecedent() const
+{
+  return antecedent_;
+}
+
+Function UnionEvent::getFunction() const
+{
+  return composedEvent_.getFunction();
+}
+
+Domain UnionEvent::getDomain() const
+{
+  return composedEvent_.getDomain();
+}
+
+ComparisonOperator UnionEvent::getOperator() const
+{
+  return composedEvent_.getOperator();
+}
+
+Scalar UnionEvent::getThreshold() const
+{
+  return composedEvent_.getThreshold();
+}
+
 /* Method save() stores the object through the StorageManager */
 void UnionEvent::save(Advocate & adv) const
 {
@@ -161,12 +194,9 @@ void UnionEvent::save(Advocate & adv) const
 void UnionEvent::load(Advocate & adv)
 {
   RandomVectorImplementation::load(adv);
-  adv.loadAttribute( "eventCollection_", eventCollection_ );
-}
-
-UnsignedInteger UnionEvent::getRootCauseId() const
-{
-  return rootCauseId_;
+  RandomVectorPersistentCollection eventCollection;
+  adv.loadAttribute( "eventCollection_", eventCollection );
+  setEventCollection(eventCollection);
 }
 
 RandomVector UnionEvent::getComposedEvent() const

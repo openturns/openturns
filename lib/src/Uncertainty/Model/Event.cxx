@@ -24,11 +24,11 @@
 #include "openturns/ConstantRandomVector.hxx"
 #include "openturns/Less.hxx"
 #include "openturns/SymbolicFunction.hxx"
-#include "openturns/EventDomain.hxx"
-#include "openturns/EventRandomVector.hxx"
+#include "openturns/DomainEvent.hxx"
+#include "openturns/ThresholdEventImplementation.hxx"
 #include "openturns/Greater.hxx"
 #include "openturns/ComposedFunction.hxx"
-#include "openturns/EventProcess.hxx"
+#include "openturns/ProcessEvent.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -38,43 +38,43 @@ CLASSNAMEINIT(Event)
 
 /* Default constructor for save/load */
 Event::Event()
-  : RandomVector(new EventRandomVector(CompositeRandomVector(SymbolicFunction("x", "x"), ConstantRandomVector(Point(1, 0.0))), Less(), 0.0))
+  : RandomVector(new ThresholdEventImplementation(CompositeRandomVector(SymbolicFunction("x", "x"), ConstantRandomVector(Point(1, 0.0))), Less(), 0.0))
 {
-  // Nothing to do
+  LOGWARN("Event() is deprecated");
 }
 
 /* Constructor from RandomVector */
 Event::Event(const RandomVector & antecedent,
              const ComparisonOperator & op,
              const Scalar threshold)
-  : RandomVector(new EventRandomVector(antecedent, op, threshold))
+  : RandomVector(new ThresholdEventImplementation(antecedent, op, threshold))
 {
-  // Nothing to do
+  LOGWARN("Event(RandomVector, ComparisonOperator, float) is deprecated, use ThresholdEvent");
 }
 
 /* Constructor from RandomVector */
 Event::Event(const RandomVector & antecedent,
              const Domain & domain)
-  : RandomVector(new EventDomain(antecedent, domain))
+  : RandomVector(new DomainEvent(antecedent, domain))
 {
-  // Nothing to do
+  LOGWARN("Event(RandomVector, Domain) is deprecated, use EventDomain");
 }
 
 
 /* Constructor from RandomVector */
 Event::Event(const RandomVector & antecedent,
              const Interval & interval)
-  : RandomVector(new EventRandomVector(antecedent, interval))
+  : RandomVector(new ThresholdEventImplementation(antecedent, interval))
 {
-  // Nothing to do
+  LOGWARN("Event(RandomVector, Interval) is deprecated, use ProcessEvent");
 }
 
 /* Constructor from RandomVector */
 Event::Event(const Process & process,
              const Domain & domain)
-  : RandomVector(new EventProcess(process, domain))
+  : RandomVector(new ProcessEvent(process, domain))
 {
-  // Nothing to do
+  LOGWARN("Event(Process, Domain) is deprecated, use ProcessEvent");
 }
 
 

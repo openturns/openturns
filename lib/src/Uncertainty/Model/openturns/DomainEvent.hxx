@@ -22,8 +22,8 @@
  *
  */
 
-#ifndef OPENTURNS_EVENTDOMAIN_HXX
-#define OPENTURNS_EVENTDOMAIN_HXX
+#ifndef OPENTURNS_DOMAINEVENT_HXX
+#define OPENTURNS_DOMAINEVENT_HXX
 
 #include "openturns/CompositeRandomVector.hxx"
 #include "openturns/Domain.hxx"
@@ -34,11 +34,11 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class EventDomain
+ * @class DomainEvent
  *
  *
  */
-class OT_API EventDomain
+class OT_API DomainEvent
   : public CompositeRandomVector
 {
   CLASSNAME
@@ -46,14 +46,14 @@ class OT_API EventDomain
 public:
 
   /** Default constructor */
-  EventDomain();
+  DomainEvent();
 
   /** Constructor from RandomVector */
-  EventDomain(const RandomVector & antecedent,
+  DomainEvent(const RandomVector & antecedent,
               const Domain & domain);
 
   /** Virtual contructor */
-  virtual EventDomain * clone() const;
+  virtual DomainEvent * clone() const;
 
   /** String converter */
   String __repr__() const;
@@ -87,9 +87,9 @@ private:
   Domain domain_;
 
 
-}; /* class EventDomain */
+}; /* class DomainEvent */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_EVENTDOMAIN_HXX */
+#endif /* OPENTURNS_DOMAINEVENT_HXX */

@@ -1,0 +1,70 @@
+%feature("docstring") OT::ThresholdEvent
+"Random vector defined from a comparison operator and a threshold.
+
+The event occurs when the realization of the underlying random vector exceeds the threshold.
+
+Parameters
+----------
+antecedent : :class:`~openturns.RandomVector` of dimension 1
+    Output variable of interest.
+comparisonOperator : :class:`~openturns.ComparisonOperator`
+    Comparison operator used to compare *antecedent* with *threshold*.
+threshold : float
+    *threshold* we want to compare to *antecedent*.
+
+See also
+--------
+ProcessEvent, DomainEvent
+
+Notes
+-----
+An event is defined as follows:
+
+.. math::
+
+    \cD_f = \{\vect{X} \in \Rset^n \, / \, g(\vect{X},\vect{d}) \le 0\}
+
+where :math:`\vect{X}` denotes a random input vector, representing the sources
+of uncertainties, :math:`\vect{d}` is a determinist vector, representing the
+fixed variables and :math:`g(\vect{X},\vect{d})` is the limit state function of
+the model.
+The probability content of the event :math:`\cD_f` is :math:`P_f`:
+
+.. math::
+
+    P_f = \int_{g(\vect{X},\vect{d})\le 0}f_\vect{X}(\vect{x})\di{\vect{x}}
+
+Here, the event considered is explicited directly from the limit state function
+:math:`g(\vect{X}\,,\,\vect{d})` : this is the classical structural reliability
+formulation. However, if the event is a threshold exceedance, it is useful to
+explicite the variable of interest :math:`Z=\tilde{g}(\vect{X}\,,\,\vect{d})`,
+evaluated from the model :math:`\tilde{g}(.)`. In that case, the event
+considered, associated to the threshold :math:`z_s` has the formulation:
+
+.. math::
+
+    \cD_f = \{ \vect{X} \in \Rset^n \, / \, Z=\tilde{g}(\vect{X}\,,\,\vect{d}) > z_s \}
+
+and the limit state function is:
+
+.. math::
+
+    g(\vect{X}\,,\,\vect{d}) &= z_s - Z \\
+                             &= z_s - \tilde{g}(\vect{X}\,,\,\vect{d})
+
+:math:`P_f` is the threshold exceedance probability, defined as:
+
+.. math::
+
+    P_f &= P(Z \geq z_s) \\
+        &= \int_{g(\vect{X}, \vect{d}) \le 0} \pdf\di{\vect{x}}
+
+Examples
+--------
+>>> import openturns as ot
+>>> dim = 2
+>>> X = ot.RandomVector(ot.Normal(dim))
+>>> model = ot.SymbolicFunction(['x1', 'x2'], ['x1+x2'])
+>>> Y = ot.CompositeRandomVector(model, X)
+>>> event = ot.ThresholdEvent(Y, ot.Less(), 1.0)
+"

@@ -71,7 +71,7 @@ int main(int, char *[])
     CompositeRandomVector output(myFunction, vect);
 
     /* We create an Event from this RandomVector */
-    Event myEvent(output, Less(), -3.0);
+    ThresholdEvent myEvent(output, Less(), -3.0);
 
     /* We create an OptimizationAlgorithm algorithm */
     Cobyla myCobyla;

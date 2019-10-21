@@ -20,8 +20,8 @@ f2 = ot.SymbolicFunction(['x'+str(i) for i in range(dim)], ['x1'])
 Y1 = ot.CompositeRandomVector(f1, X)
 Y2 = ot.CompositeRandomVector(f2, X)
 
-e1 = ot.Event(Y1, ot.Less(), 0.0)
-e2 = ot.Event(Y2, ot.Greater(), 0.0)
+e1 = ot.ThresholdEvent(Y1, ot.Less(), 0.0)
+e2 = ot.ThresholdEvent(Y2, ot.Greater(), 0.0)
 
 e3 = e1.intersect(e2)
 #print('e3=', e3)
@@ -73,3 +73,32 @@ ott.assert_almost_equal(e11.getSample(10000).computeMean()[0], 0.75, 1e-2, 1e-2)
 e12 = ot.UnionEvent([ot.IntersectionEvent([e1, e2]), ot.IntersectionEvent([e1, e2])])
 ott.assert_almost_equal(e12.getSample(10000).computeMean()[0], 0.25, 1e-2, 1e-2)
 
+# through simulation
+def sim_event(ev):
+    experiment = ot.MonteCarloExperiment()
+    algo = ot.ProbabilitySimulationAlgorithm(ev, experiment)
+    algo.setMaximumOuterSampling(2500)
+    algo.setBlockSize(4)
+    algo.setMaximumCoefficientOfVariation(-1.0)
+    algo.run()
+    result = algo.getResult()
+    return result.getProbabilityEstimate()
+
+ott.assert_almost_equal(sim_event(e5), 0.25, 1e-2, 1e-2)
+
+ott.assert_almost_equal(sim_event(e6), 0.75, 1e-2, 1e-2)
+
+ott.assert_almost_equal(sim_event(e7), 0.25, 1e-2, 1e-2)
+
+def subset_event(ev):
+    algo = ot.SubsetSampling(ev)
+    algo.setMaximumOuterSampling(2500)
+    algo.setBlockSize(4)
+    algo.run()
+    result = algo.getResult()
+    return result.getProbabilityEstimate()
+
+ott.assert_almost_equal(subset_event(e3), 0.25, 1e-2, 1e-2)
+ott.assert_almost_equal(subset_event(e5), 0.25, 1e-2, 1e-2)
+ott.assert_almost_equal(subset_event(e6), 0.75, 1e-2, 1e-2)
+ott.assert_almost_equal(subset_event(e7), 0.25, 1e-2, 1e-2)

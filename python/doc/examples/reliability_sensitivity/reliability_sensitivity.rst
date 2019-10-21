@@ -28,3 +28,5 @@ Reliability, sensitivity
     sensitivity_fast.ipynb
     sensitivity_cobweb.ipynb
     central_tendency.ipynb
+    event_system.ipynb
+

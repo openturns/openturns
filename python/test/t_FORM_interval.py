@@ -53,7 +53,7 @@ for domain in intervals:
     outDim = domain.getDimension()
     f = ot.SymbolicFunction(inVars, inVars[0:outDim])
     Y = ot.CompositeRandomVector(f, X)
-    event = ot.Event(Y, domain)
+    event = ot.ThresholdEvent(Y, domain)
 
     ot.RandomGenerator.SetSeed(0)
     # algo = getattr(openturns, algoName)(event)
