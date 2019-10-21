@@ -69,7 +69,8 @@ public:
   LogNormal buildMethodOfLeastSquares(const Sample & sample) const;
 
 private:
-  LogNormal buildMethodOfLeastSquares(const Sample & sample, const Scalar gamma) const;
+  LogNormal buildMethodOfLeastSquares(const Sample & sample,
+                                      const Scalar gamma) const;
 
 }; /* class LogNormalFactory */
 
