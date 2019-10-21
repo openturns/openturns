@@ -46,15 +46,15 @@ We support the following Debian-based distributions:
     +-------------------------------------+----------------------------------------------+
     | Distribution name                   | Repository address                           |
     +=====================================+==============================================+
-    | Ubuntu 14.04 LTS 'Trusty Tahr'      | deb http://ubuntu.openturns.org trusty main  |
-    +-------------------------------------+----------------------------------------------+
     | Ubuntu 16.04 LTS 'Xenial Xerus'     | deb http://ubuntu.openturns.org xenial main  |
     +-------------------------------------+----------------------------------------------+
     | Ubuntu 18.04 LTS 'Bionic Beaver'    | deb http://ubuntu.openturns.org bionic main  |
     +-------------------------------------+----------------------------------------------+
-    | Debian 8.0 'Jessie'                 | deb http://debian.openturns.org jessie main  |
+    | Ubuntu 19.10 'Eoan Ermine'          | deb http://ubuntu.openturns.org eoan main    |
     +-------------------------------------+----------------------------------------------+
     | Debian 9.0 'Stretch'                | deb http://debian.openturns.org stretch main |
+    +-------------------------------------+----------------------------------------------+
+    | Debian 10.0 'Buster'                | deb http://debian.openturns.org buster main  |
     +-------------------------------------+----------------------------------------------+
 
 Add the mirror signature::
