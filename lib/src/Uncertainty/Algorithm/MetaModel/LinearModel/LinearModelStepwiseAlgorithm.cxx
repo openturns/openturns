@@ -242,17 +242,17 @@ struct UpdateForwardFunctor
     Point xiNP(size);
     Point viNP(size);
     Point residualNP(size);
-    std::copy_n(&residual_(0, 0), size, &residualNP[0]);
+    std::copy(&residual_(0, 0), &residual_(0, 0) + size, residualNP.begin());
 
     for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
     {
       const UnsignedInteger i = indexSet_[index];
-      std::copy_n(&Xmax_(0, i), size, &xi(0, 0));
+      std::copy(&Xmax_(0, i), &Xmax_(0, i) + size, &xi(0, 0));
       const Matrix Qtxi(Q_.getImplementation()->genProd(*(xi.getImplementation()), true, false));
       const Matrix di(Q_ * Qtxi);
       const Matrix vi(xi - di);
-      std::copy_n(&vi(0, 0), size, &viNP[0]);
-      std::copy_n(&xi(0, 0), size, &xiNP[0]);
+      std::copy(&vi(0, 0), &vi(0, 0) + size, viNP.begin());
+      std::copy(&xi(0, 0), &xi(0, 0) + size, xiNP.begin());
       const Scalar denominator = xiNP.dot(viNP);
       if (denominator == 0.0) continue;
       const Scalar alpha = xiNP.dot(residualNP) / denominator;
@@ -355,20 +355,20 @@ struct UpdateBackwardFunctor
     Point biNP(p);
     Point diNP(size);
     Point yNP(size);
-    std::copy_n(&Y_(0, 0), size, &yNP[0]);
+    std::copy(&Y_(0, 0), &Y_(0, 0) + size, yNP.begin());
 
     Point residualNP(size);
-    std::copy_n(&residual_(0, 0), size, &residualNP[0]);
+    std::copy(&residual_(0, 0), &residual_(0, 0) + size, residualNP.begin());
 
     for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
     {
       const UnsignedInteger iMax = indexSet_[index];
       const UnsignedInteger i = columnMaxToCurrent_[iMax];
-      std::copy_n(&invRt_(0, i), p, &biNP[0]);
-      std::copy_n(&biNP[0], p, &bi(0, 0));
+      std::copy(&invRt_(0, i), &invRt_(0, i) + p, biNP.begin());
+      std::copy(biNP.begin(), biNP.begin() + p, &bi(0, 0));
 
       const Matrix di(Q_ * bi);
-      std::copy_n(&di(0, 0), size, &diNP[0]);
+      std::copy(&di(0, 0), &di(0, 0) + size, diNP.begin());
       const Scalar alpha = diNP.dot(yNP) / biNP.dot(biNP);
       const Point newResidual(residualNP + alpha * diNP);
       const Scalar newCriterion(newResidual.normSquare());
@@ -493,8 +493,8 @@ void LinearModelStepwiseAlgorithm::run()
       // Add column indexF to currentX_
       columnMaxToCurrent[indexF] = p;
       Matrix newX(size, p + 1);
-      std::copy_n(&currentX_(0, 0), size * p, &newX(0, 0));
-      std::copy_n(&maxX_(0, indexF), size, &newX(0, p));
+      std::copy(&currentX_(0, 0), &currentX_(0, 0) + size * p, &newX(0, 0));
+      std::copy(&maxX_(0, indexF), &maxX_(0, indexF) + size, &newX(0, p));
       currentX_ = newX;
       ++p;
     }
@@ -504,10 +504,10 @@ void LinearModelStepwiseAlgorithm::run()
       // Remove column indexB from currentX_
       Matrix newX(size, p - 1);
       const UnsignedInteger pos(columnMaxToCurrent[indexB]);
-      std::copy_n(&currentX_(0, 0), size * pos, &newX(0, 0));
-      
+      std::copy(&currentX_(0, 0), &currentX_(0, 0) + size * pos, &newX(0, 0));
+
       if (pos + 1 != p)
-        std::copy_n(&currentX_(0, pos + 1), size * (p - pos - 1), &newX(0, pos));
+        std::copy(&currentX_(0, pos + 1), &currentX_(0, pos + 1) + size * (p - pos - 1), &newX(0, pos));
       currentX_ = newX;
       --p;
       // Update columnMaxToCurrent
@@ -536,29 +536,28 @@ void LinearModelStepwiseAlgorithm::run()
   Point regression(p);
   const Matrix QtY(currentQ_.getImplementation()->genProd(*(Y_.getImplementation()), true, false));
   const Matrix invRQtY(currentInvRt_.getImplementation()->genProd(*(QtY.getImplementation()), true, false));
-  std::copy_n(&invRQtY(0, 0), p, &regression[0]);
+  std::copy(&invRQtY(0, 0), &invRQtY(0, 0) + p, regression.begin());
 
 
   LOGDEBUG(OSS() << "regression=" << regression);
 
   Point diagonalGramInverse(p);
   Point invRtiNP(p);
-  for (UnsignedInteger i = 0; i < p; ++i)
+  for (UnsignedInteger i = 0; i < p; ++ i)
   {
-    std::copy_n(&currentInvRt_(0, i), p, &invRtiNP[0]);
-    
+    std::copy(&currentInvRt_(0, i), &currentInvRt_(0, i) + p, invRtiNP.begin());
     diagonalGramInverse[i] = invRtiNP.dot(invRtiNP);
   }
   Point leverages(size);
   Matrix Qt(currentQ_.transpose());
   Point QtiNP(p);
-  for (UnsignedInteger i = 0; i < size; ++i)
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    std::copy_n(&Qt(0, i), p, &QtiNP[0]);
+    std::copy(&Qt(0, i), &Qt(0, i) + p, QtiNP.begin());
     leverages[i] = QtiNP.dot(QtiNP);
   }
   Sample residualSample(size, 1);
-  std::copy_n(&currentResidual_(0, 0), size, &residualSample(0, 0));
+  std::copy(&currentResidual_(0, 0), &currentResidual_(0, 0) + size, &residualSample(0, 0));
 
 
   const Point sigma2(residualSample.computeRawMoment(2));
@@ -596,8 +595,8 @@ void LinearModelStepwiseAlgorithm::buildCurrentMatrixFromIndices(const Indices &
   const UnsignedInteger size(inputSample_.getSize());
   currentX_ = Matrix(size, columns.getSize());
   currentIndices_ = columns;
-  for (UnsignedInteger i = 0; i < columns.getSize(); ++i)
-    std::copy_n(&maxX_(0, columns[i]), size, &currentX_(0, i));
+  for (UnsignedInteger i = 0; i < columns.getSize(); ++ i)
+    std::copy(&maxX_(0, columns[i]), &maxX_(0, columns[i]) + size, &currentX_(0, i));
 }
 
 
@@ -623,8 +622,8 @@ Scalar LinearModelStepwiseAlgorithm::computeLogLikelihood()
   const Matrix QtY = currentQ_.getImplementation()->genProd(*(Y_.getImplementation()), true, false);
   const Matrix Yhat(currentQ_ * QtY);
   currentResidual_ = Y_ - Yhat;
-  Point residualNP(size, 0.0);
-  std::copy_n(&currentResidual_(0, 0), size, &residualNP[0]);
+  Point residualNP(size);
+  std::copy(&currentResidual_(0, 0), &currentResidual_(0, 0) + size, residualNP.begin());
 
   const Scalar normSquared = residualNP.normSquare();
   const Scalar result = size * std::log(normSquared / size);
