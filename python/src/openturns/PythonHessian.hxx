@@ -48,6 +48,9 @@ public:
   /** Virtual constructor */
   virtual PythonHessian * clone() const;
 
+  /** Copy assignment operator */
+  PythonHessian & operator=(const PythonHessian & rhs);
+
   /** Destructor */
   virtual ~PythonHessian();
 

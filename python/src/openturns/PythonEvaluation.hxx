@@ -48,6 +48,9 @@ public:
   /** Virtual constructor */
   virtual PythonEvaluation * clone() const;
 
+  /** Copy assignment operator */
+  PythonEvaluation & operator=(const PythonEvaluation & rhs);
+
   /** Destructor */
   virtual ~PythonEvaluation();
 

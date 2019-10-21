@@ -50,6 +50,9 @@ public:
   /** Virtual constructor */
   virtual PythonDistribution * clone() const;
 
+  /** Copy assignment operator */
+  PythonDistribution & operator=(const PythonDistribution & rhs);
+
   /** Destructor */
   virtual ~PythonDistribution();
 

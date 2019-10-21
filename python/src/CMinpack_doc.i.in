@@ -26,12 +26,12 @@ Examples
 >>> residualFunction = ot.SymbolicFunction(['x0', 'x1'], ['10*(x1-x0^2)', '0.5-x0', '0.3-2*x1'])
 >>> problem = ot.LeastSquaresProblem(residualFunction)
 >>> problem.setBounds(ot.Interval([-3.0] * dim, [5.0] * dim))
->>> algo = ot.CMinpack(problem)
->>> algo.setStartingPoint([0.0] * dim)
->>> algo.run()
->>> result = algo.getResult()
->>> x_star = result.getOptimalPoint()
->>> y_star = result.getOptimalValue()"
+>>> algo = ot.CMinpack(problem)  # doctest: +SKIP
+>>> algo.setStartingPoint([0.0] * dim)  # doctest: +SKIP
+>>> algo.run()  # doctest: +SKIP
+>>> result = algo.getResult()  # doctest: +SKIP
+>>> x_star = result.getOptimalPoint()  # doctest: +SKIP
+>>> y_star = result.getOptimalValue()  # doctest: +SKIP"
 
 // ---------------------------------------------------------------------
 

@@ -95,6 +95,18 @@ PythonDistribution::PythonDistribution(const PythonDistribution & other)
   Py_XINCREF( pyObj_ );
 }
 
+/* Copy assignment operator */
+PythonDistribution & PythonDistribution::operator=(const PythonDistribution & rhs)
+{
+  if (this != &rhs)
+  {
+    ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
+    pyObj_ = pyObjClone.get();
+    Py_XINCREF( pyObj_ );
+  }
+  return *this;
+}
+
 /* Destructor */
 PythonDistribution::~PythonDistribution()
 {

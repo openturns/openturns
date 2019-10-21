@@ -403,6 +403,7 @@ void NLopt::run()
   result.setLagrangeMultipliers(computeLagrangeMultipliers(optimizer));
   setResult(result);
 #else
+  (void) p_opt_;
   throw NotYetImplementedException(HERE) << "No NLopt support";
 #endif
 }

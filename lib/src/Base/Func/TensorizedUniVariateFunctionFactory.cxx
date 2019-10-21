@@ -27,6 +27,7 @@
 #include "openturns/ProductUniVariateFunctionEvaluation.hxx"
 #include "openturns/ProductUniVariateFunctionGradient.hxx"
 #include "openturns/ProductUniVariateFunctionHessian.hxx"
+#include "openturns/LinearEnumerateFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -57,7 +58,7 @@ TensorizedUniVariateFunctionFactory::TensorizedUniVariateFunctionFactory()
 TensorizedUniVariateFunctionFactory::TensorizedUniVariateFunctionFactory(const FunctionFamilyCollection & coll)
   : BasisImplementation()
   , coll_(coll)
-  , phi_(coll.getSize())
+  , phi_(LinearEnumerateFunction(coll.getSize()))
 {
   // Nothing to do
 }
@@ -99,7 +100,7 @@ void TensorizedUniVariateFunctionFactory::setFunctionFamilyCollection(const Func
   coll_ = coll;
   if (coll.getSize() != phi_.getDimension())
   {
-    setEnumerateFunction(EnumerateFunction(coll.getSize()));
+    setEnumerateFunction(LinearEnumerateFunction(coll.getSize()));
   }
 }
 

@@ -128,6 +128,23 @@ PythonEvaluation::PythonEvaluation(const PythonEvaluation & other)
   Py_XINCREF(pyBufferClass_);
 }
 
+
+/* Copy assignment operator */
+PythonEvaluation& PythonEvaluation::operator=(const PythonEvaluation & rhs)
+{
+  if (this != &rhs)
+  {
+    ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
+    pyObj_ = pyObjClone.get();
+
+    ScopedPyObjectPointer pyBufferClone(deepCopy(rhs.pyBufferClass_));
+    pyBufferClass_ = pyBufferClone.get();
+    Py_XINCREF(pyObj_);
+    Py_XINCREF(pyBufferClass_);
+  }
+  return *this;
+}
+
 /* Destructor */
 PythonEvaluation::~PythonEvaluation()
 {

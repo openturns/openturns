@@ -55,8 +55,13 @@ public:
   /** Constructor with implementation */
   SymmetricMatrix(const MatrixImplementation & i);
 
+#ifndef SWIG
   /** Copy constructor, added to solve glitches with inheritance */
-  SymmetricMatrix(const SymmetricMatrix & s);
+  SymmetricMatrix(const SymmetricMatrix & other);
+
+  /** Assignment operator */
+  SymmetricMatrix& operator=(const SymmetricMatrix & rhs);
+#endif
 
   /** Constructor with size (dim, which is the same for nbRows_ and nbColumns_) */
   explicit SymmetricMatrix(const UnsignedInteger dim);

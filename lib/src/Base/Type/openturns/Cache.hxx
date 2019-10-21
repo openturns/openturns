@@ -118,7 +118,6 @@ public:
     // Nothing to do
   }
 
-#ifdef SWIG
   Cache(const Cache & other) : PersistentObject(other),
     enabled_(other.enabled_),
     maxSize_(other.maxSize_),
@@ -132,8 +131,6 @@ public:
       points_.insert(std::make_pair(key, std::make_pair(other.points_[key].first, keys_.begin())));
     }
   }
-
-#endif
 
   /** Virtual constructor */
   inline virtual Cache * clone() const

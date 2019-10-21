@@ -29,6 +29,7 @@
 #include "openturns/ProductPolynomialGradient.hxx"
 #include "openturns/ProductPolynomialHessian.hxx"
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
+#include "openturns/LinearEnumerateFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -59,7 +60,7 @@ OrthogonalProductPolynomialFactory::OrthogonalProductPolynomialFactory()
 OrthogonalProductPolynomialFactory::OrthogonalProductPolynomialFactory(const PolynomialFamilyCollection & coll)
   : OrthogonalFunctionFactory()
   , coll_(coll)
-  , phi_(coll.getSize())
+  , phi_(LinearEnumerateFunction(coll.getSize()))
 {
   buildMeasure();
 }

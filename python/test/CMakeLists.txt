@@ -719,7 +719,7 @@ ot_pyinstallcheck_test (Waarts_system_series)
 ot_pyinstallcheck_test (Waarts_saddle)
 
 ## Misc
-if (NBCONVERT_FOUND AND MATPLOTLIB_FOUND AND LIBXML2_FOUND AND NLopt_FOUND AND dlib_FOUND)
+if (NBCONVERT_FOUND AND MATPLOTLIB_FOUND)
   file (GLOB_RECURSE IPYNBS "${CMAKE_SOURCE_DIR}/python/doc/examples/*.ipynb")
   foreach (IPYNB ${IPYNBS})
     if (NOT IPYNB MATCHES checkpoint)
@@ -731,6 +731,19 @@ if (NBCONVERT_FOUND AND MATPLOTLIB_FOUND AND LIBXML2_FOUND AND NLopt_FOUND AND d
   if (NOT COIN_FOUND)
     set_tests_properties (pyinstallcheck_notebook_optimization_bonmin PROPERTIES WILL_FAIL TRUE)
   endif()
+  if (NOT CMinpack_FOUND)
+    set_tests_properties (pyinstallcheck_notebook_calibration_flooding PROPERTIES WILL_FAIL TRUE)
+  endif ()
+  if (NOT dlib_FOUND)
+    set_tests_properties (pyinstallcheck_notebook_optimization_dlib PROPERTIES WILL_FAIL TRUE)
+  endif ()
+  if (NOT LIBXML2_FOUND)
+    set_tests_properties (pyinstallcheck_notebook_study_save_load PROPERTIES WILL_FAIL TRUE)
+  endif ()
+  if (NOT NLopt_FOUND)
+    set_tests_properties (pyinstallcheck_notebook_ego PROPERTIES WILL_FAIL TRUE)
+    set_tests_properties (pyinstallcheck_notebook_optimization_nlopt PROPERTIES WILL_FAIL TRUE)
+  endif ()
 endif ()
 if (MATPLOTLIB_FOUND)
   ot_pyinstallcheck_test (Viewer IGNOREOUT)
@@ -742,7 +755,7 @@ ot_pyinstallcheck_test (shims IGNOREOUT)
 
 
 
-if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND AND LIBXML2_FOUND AND NLopt_FOUND AND CMinpack_FOUND AND dlib_FOUND)
+if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND)
   # on py3k/swig<3.0.0, doctest fails with "NameError: Unknown C global variable"
   if (PYTHON_VERSION_MAJOR VERSION_EQUAL "2" OR SWIG_VERSION VERSION_GREATER "3")
     # source modules

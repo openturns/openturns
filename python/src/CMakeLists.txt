@@ -894,6 +894,7 @@ ot_add_python_module(analytical analytical_module.i
                    )
 
 ot_add_python_module(simulation simulation_module.i
+	              ANCOVA.i ANCOVA_doc.i.in
                       SobolIndicesAlgorithmImplementation.i SobolIndicesAlgorithmImplementation_doc.i.in
                       SobolIndicesAlgorithm.i SobolIndicesAlgorithm_doc.i.in
                       MartinezSensitivityAlgorithm.i MartinezSensitivityAlgorithm_doc.i.in
@@ -943,7 +944,6 @@ ot_add_python_module(stattests stattests_module.i
                     )
 
 ot_add_python_module(uncertainty uncertainty_module.i
-                      ANCOVA.i ANCOVA_doc.i.in
                       FAST.i FAST_doc.i.in
                       EfficientGlobalOptimization.i EfficientGlobalOptimization_doc.i.in
                       TaylorExpansionMoments.i TaylorExpansionMoments_doc.i.in

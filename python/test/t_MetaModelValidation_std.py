@@ -39,7 +39,7 @@ try:
     # Create the orthogonal basis
     polynomialCollection = [ot.LegendreFactory()] * dimension
 
-    enumerateFunction = ot.EnumerateFunction(dimension)
+    enumerateFunction = ot.LinearEnumerateFunction(dimension)
     productBasis = ot.OrthogonalProductPolynomialFactory(
         polynomialCollection, enumerateFunction)
 

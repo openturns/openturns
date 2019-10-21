@@ -34,6 +34,7 @@ unboundedPref = [0.0, 0.0]
 
 # Non-contraining bounds Global
 notConstrainingBoundsGlobal = ot.Dlib(notConstrainingBoundsProblem,"Global")
+notConstrainingBoundsGlobal.setStartingPoint([0.0]*2)
 notConstrainingBoundsGlobal.setMaximumEvaluationNumber(300)
 notConstrainingBoundsGlobal.run()
 printResults(notConstrainingBoundsGlobal.getResult(),"Non-constraining bounds Global")
@@ -41,6 +42,7 @@ printResults(notConstrainingBoundsGlobal.getResult(),"Non-constraining bounds Gl
 # Contraining bounds Global
 constrainingBoundsGlobal = ot.Dlib(constrainingBoundsProblem,"Global")
 constrainingBoundsGlobal.setMaximumEvaluationNumber(300)
+constrainingBoundsGlobal.setStartingPoint([0.0]*2)
 constrainingBoundsGlobal.run()
 printResults(constrainingBoundsGlobal.getResult(),"Constraining bounds Global")
 

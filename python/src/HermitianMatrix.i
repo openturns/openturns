@@ -20,6 +20,7 @@ HermitianMatrix.__getattribute__ = HermitianMatrix___getattribute__
 namespace OT {
 
 %extend HermitianMatrix {
+  HermitianMatrix(const HermitianMatrix & other) { return new  OT::HermitianMatrix(other); }
 
   HermitianMatrix(PyObject * pyObj) { return new OT::HermitianMatrix( OT::convert<OT::_PySequence_,OT::HermitianMatrix>(pyObj) ); }
 

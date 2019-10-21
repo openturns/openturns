@@ -51,11 +51,22 @@ SymmetricMatrix::SymmetricMatrix(const MatrixImplementation & i)
 }
 
 /* Copy constructor, added to solve glitches with inheritance */
-SymmetricMatrix::SymmetricMatrix(const SymmetricMatrix & s)
-  : SquareMatrix(static_cast<const SquareMatrix &>(s))
+SymmetricMatrix::SymmetricMatrix(const SymmetricMatrix & other)
+  : SquareMatrix(static_cast<const SquareMatrix &>(other))
   , hasBeenSymmetrized_(false)
 {
   // Nothing to do
+}
+
+/* Assignment operator */
+SymmetricMatrix & SymmetricMatrix::operator=(const SymmetricMatrix & rhs)
+{
+  if (this != &rhs)
+  {
+    SquareMatrix::operator=(rhs);
+    hasBeenSymmetrized_ = rhs.hasBeenSymmetrized_;
+  }
+  return *this;
 }
 
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/

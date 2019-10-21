@@ -40,7 +40,7 @@ myCorrelatedInputDistribution = ot.ComposedDistribution(
 sample = myCorrelatedInputDistribution.getSample(2000)
 
 # Orthogonal basis
-enumerateFunction = ot.EnumerateFunction(inputDimension)
+enumerateFunction = ot.LinearEnumerateFunction(inputDimension)
 productBasis = ot.OrthogonalProductPolynomialFactory(
     [ot.HermiteFactory()] * inputDimension, enumerateFunction)
 # Adaptive strategy
@@ -82,7 +82,7 @@ input_sample = distribution.getSample(n_sample)
 output_sample = model(input_sample)
 
 dim = 3
-enumerateFunction = ot.EnumerateFunction(dim)
+enumerateFunction = ot.LinearEnumerateFunction(dim)
 polyCol = [0.]*dim
 for i in range(dim):
     polyCol[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))

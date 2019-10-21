@@ -71,7 +71,7 @@ int main(int, char *[])
     // Create the orthogonal basis
     Collection<OrthogonalUniVariatePolynomialFamily> polynomialCollection(dimension, LegendreFactory());
 
-    EnumerateFunction enumerateFunction(dimension);
+    LinearEnumerateFunction enumerateFunction(dimension);
     OrthogonalProductPolynomialFactory productBasis(polynomialCollection, enumerateFunction);
 
     // Create the adaptive strategy

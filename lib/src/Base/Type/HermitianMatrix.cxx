@@ -63,6 +63,17 @@ HermitianMatrix::HermitianMatrix(const HermitianMatrix & h)
   // Nothing to do
 }
 
+/* Assignment operator */
+HermitianMatrix & HermitianMatrix::operator=(const HermitianMatrix & rhs)
+{
+  if (this != &rhs)
+  {
+    SquareComplexMatrix::operator=(rhs);
+    hasBeenHermitianized_ = rhs.hasBeenHermitianized_;
+  }
+  return *this;
+}
+
 /* String converter */
 String HermitianMatrix::__repr__() const
 {

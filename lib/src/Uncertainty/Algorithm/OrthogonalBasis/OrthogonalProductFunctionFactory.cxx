@@ -28,6 +28,7 @@
 #include "openturns/ProductUniVariateFunctionEvaluation.hxx"
 #include "openturns/ProductUniVariateFunctionGradient.hxx"
 #include "openturns/ProductUniVariateFunctionHessian.hxx"
+#include "openturns/LinearEnumerateFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -57,7 +58,7 @@ OrthogonalProductFunctionFactory::OrthogonalProductFunctionFactory()
 OrthogonalProductFunctionFactory::OrthogonalProductFunctionFactory(const FunctionFamilyCollection & coll)
   : OrthogonalFunctionFactory()
 {
-  buildTensorizedFunctionFactory(coll, EnumerateFunction(coll.getSize()) );
+  buildTensorizedFunctionFactory(coll, LinearEnumerateFunction(coll.getSize()) );
   buildMeasure(coll);
 }
 

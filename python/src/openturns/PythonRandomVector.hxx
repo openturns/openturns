@@ -49,6 +49,9 @@ public:
   /** Virtual constructor */
   virtual PythonRandomVector * clone() const;
 
+  /** Copy assignment operator */
+  PythonRandomVector & operator=(const PythonRandomVector & rhs);
+
   /** Destructor */
   virtual ~PythonRandomVector();
 

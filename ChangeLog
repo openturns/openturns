@@ -64,12 +64,15 @@
  * Added 'removeKey' method to ResourceMap
  * Removed Copula class
  * Deprecated Event class, use ThresholdEvent/ProcessEvent/DomainEvent classes
+ * Deprecated EnumerateFunction constructors
+ * Add a minimum probability accessor to SubsetSampling
 
 === Python module ===
  * Add Domain.__contains__ operator
 
 === Miscellaneous ===
  * Add GeneralizedPareto location parameter
+ * Add getSobolGroupedTotalIndex method for FunctionalChaosSobolIndices for the indice of a group of variables
 
 === Bug fixes ===
  * https://github.com/openturns/openturns/milestone/4?closed=1

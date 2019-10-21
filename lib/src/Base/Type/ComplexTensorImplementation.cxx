@@ -64,7 +64,6 @@ ComplexTensorImplementation::ComplexTensorImplementation(const UnsignedInteger r
 {
   const UnsignedInteger tensorSize = std::min(rowDim * colDim * sheetDim, elementsValues.getSize());
   std::copy(elementsValues.begin(), elementsValues.begin() + tensorSize, begin());
-  // memcpy(&(*this)[0], &elementsValues[0], tensorSize * sizeof(Complex));
 }
 
 
@@ -157,7 +156,6 @@ ComplexMatrix ComplexTensorImplementation::getSheet(const UnsignedInteger k) con
   ComplexMatrixImplementation sheet(nbRows_, nbColumns_);
   const UnsignedInteger shift = convertPosition(0, 0, k);
   std::copy(begin() + shift, begin() + shift + nbRows_ * nbColumns_, sheet.begin());
-  // memcpy( &sheet[0], &(*this)[this->convertPosition(0, 0, k)], nbRows_ * nbColumns_ * sizeof(Complex) );
   return sheet;
 }
 
@@ -169,7 +167,6 @@ void ComplexTensorImplementation::setSheet(const UnsignedInteger k,
   if (m.getNbRows() != nbRows_) throw InvalidDimensionException(HERE);
   if (m.getNbColumns() != nbColumns_) throw InvalidDimensionException(HERE);
   std::copy(m.getImplementation()->begin(), m.getImplementation()->end(), begin() + convertPosition(0, 0, k));
-  // memcpy( &(*this)[this->convertPosition(0, 0, k)], &m.getImplementation()->operator[](0), nbRows_ * nbColumns_ * sizeof(Complex) );
 }
 
 /* getSheetSym returns the hermitian sheet specified by its sheet number k */

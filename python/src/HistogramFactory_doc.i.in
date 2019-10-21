@@ -53,7 +53,7 @@ Compute Silverman's bandwidth:
 >>> sample = ot.Normal().getSample(50)
 >>> factory = ot.HistogramFactory()
 >>> factory.computeSilvermanBandwidth(sample)
-0.8207186166881978
+0.820718...
 
 See also
 --------

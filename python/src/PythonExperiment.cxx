@@ -78,6 +78,18 @@ PythonExperiment::PythonExperiment(const PythonExperiment & other)
   Py_XINCREF(pyObj_);
 }
 
+/* Copy assignment operator */
+PythonExperiment & PythonExperiment::operator=(const PythonExperiment & rhs)
+{
+  if (this != &rhs)
+  {
+    ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
+    pyObj_ = pyObjClone.get();
+    Py_XINCREF(pyObj_);
+  }
+  return *this;
+}
+
 /* Destructor */
 PythonExperiment::~PythonExperiment()
 {

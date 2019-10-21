@@ -58,7 +58,7 @@ public:
 public:
   NSI_point(SampleImplementation * p_nsi,
             const UnsignedInteger index);
-
+  NSI_point(const NSI_point & other);
   NSI_point & operator = (const NSI_point & rhs);
 
   template <typename POINT>

@@ -173,7 +173,7 @@ class DlibCgSearchStrategy
 
 class DlibBfgsSearchStrategy
   : public DlibSearchStrategyImplementation
-{  
+{
   public:
     DlibBfgsSearchStrategy(const Scalar wolfeRho,
                            const Scalar wolfeSigma,
@@ -214,13 +214,13 @@ class DlibLbfgsSearchStrategy
     {
       // Nothing to do
     }
-      
+
     /* Virtual constructor */
     DlibLbfgsSearchStrategy * clone() const
     {
       return new DlibLbfgsSearchStrategy(*this);
     }
-    
+
     /* Computation of the line search direction: call to dlib function */
     const DlibMatrix get_next_direction ( const DlibMatrix & x,
                                           const double f_value,
@@ -228,7 +228,7 @@ class DlibLbfgsSearchStrategy
     {
       return dlib::lbfgs_search_strategy(maxSize_).get_next_direction(x,f_value,funct_derivative);
     }
-    
+
   private:
     // Maximum amount of memory to use
     UnsignedInteger maxSize_;
@@ -237,7 +237,7 @@ class DlibLbfgsSearchStrategy
 /** Newton algorithm requires the user to provide the Hessian matrix of the objective function. **/
 class DlibNewtonSearchStrategy
   : public DlibSearchStrategyImplementation
-{ 
+{
   public:
     DlibNewtonSearchStrategy( const Scalar wolfeRho,
                               const Scalar wolfeSigma,
@@ -255,7 +255,7 @@ class DlibNewtonSearchStrategy
     {
       return new DlibNewtonSearchStrategy(*this);
     }
-    
+
     /* Computation of the line search direction: call to dlib function */
     const DlibMatrix get_next_direction ( const DlibMatrix & x,
                                           const double f_value,
@@ -263,7 +263,7 @@ class DlibNewtonSearchStrategy
     {
       return dlib::newton_search_strategy_obj<DlibHessian>(hessian_).get_next_direction(x,f_value,funct_derivative);
     }
-  
+
   private:
     // Hessian matrix (as a function) of the objective function
     DlibHessian hessian_;
@@ -286,22 +286,22 @@ class DlibStopStrategy
     {
       // Nothing to do
     }
-    
+
     bool should_continue_search(const DlibMatrix & x,
                                 const double funct_value,
                                 const DlibMatrix & )
-    { 
+    {
       optimizationResult_.setEvaluationNumber(objectiveFunction_.getEvaluationNumber());
-      
+
       Point xPoint(x.size());
       std::copy(x.begin(), x.end(), xPoint.begin());
       Point fxPoint(1, funct_value);
-        
+
       Scalar absoluteError = dlibAlgorithm_.getMaximumAbsoluteError();
       Scalar relativeError = dlibAlgorithm_.getMaximumRelativeError();
       Scalar residualError = dlibAlgorithm_.getMaximumResidualError();
       Scalar constraintError = 0.0;
-      
+
       if (optimizationResult_.getIterationNumber() > 0)
       { 
         absoluteError = (xPoint - lastInput_).norm();
@@ -309,29 +309,29 @@ class DlibStopStrategy
         residualError = (fxPoint - lastOutput_).norm();
         constraintError = 0.0;
       }
-      
+
       // Compute stop criterion
       bool stopSearch =  ((absoluteError < dlibAlgorithm_.getMaximumAbsoluteError())
                         &&(relativeError < dlibAlgorithm_.getMaximumRelativeError())
                         &&(residualError < dlibAlgorithm_.getMaximumResidualError()))
                         ||(optimizationResult_.getIterationNumber() >= dlibAlgorithm_.getMaximumIterationNumber())
                         ||(objectiveFunction_.getEvaluationNumber() >= dlibAlgorithm_.getMaximumEvaluationNumber());
-                
+
       lastInput_ = xPoint;
       lastOutput_ = fxPoint;
-      
+
       optimizationResult_.store(lastInput_,
                                 lastOutput_,
                                 absoluteError,
                                 relativeError,
                                 residualError,
                                 constraintError);
-      
+
       if (!stopSearch) optimizationResult_.setIterationNumber(optimizationResult_.getIterationNumber()+1);
 
       return !stopSearch;
     }
-    
+
 private:
   const Dlib & dlibAlgorithm_;
   OptimizationResult & optimizationResult_;
@@ -381,6 +381,7 @@ Dlib::Dlib()
   , wolfeRho_(ResourceMap::GetAsScalar("Dlib-DefaultWolfeRho"))
   , wolfeSigma_(ResourceMap::GetAsScalar("Dlib-DefaultWolfeSigma"))
   , maxLineSearchIterations_(ResourceMap::GetAsUnsignedInteger("Dlib-DefaultMaxLineSearchIterations"))
+  , initialTrustRegionRadius_(ResourceMap::GetAsScalar("Dlib-DefaultInitialTrustRegionRadius"))
 {
 }
 
@@ -388,30 +389,25 @@ Dlib::Dlib()
 Dlib::Dlib(const String & algoName)
   : OptimizationAlgorithmImplementation()
   , algoName_(algoName)
+  , wolfeRho_(ResourceMap::GetAsScalar("Dlib-DefaultWolfeRho"))
+  , wolfeSigma_(ResourceMap::GetAsScalar("Dlib-DefaultWolfeSigma"))
+  , maxLineSearchIterations_(ResourceMap::GetAsUnsignedInteger("Dlib-DefaultMaxLineSearchIterations"))
+  , initialTrustRegionRadius_(ResourceMap::GetAsScalar("Dlib-DefaultInitialTrustRegionRadius"))
 {
-  if (!GetAlgorithmNames().contains(algoName))
-    throw InvalidArgumentException(HERE) << " Error: unknown algorithm name " << algoName ;
-  else if (algoName == "CG")
-  {
-    setWolfeRho(0.001);
-    setWolfeSigma(0.1);
-  }
-  else
-  {
-    setWolfeRho(ResourceMap::GetAsScalar("Dlib-DefaultWolfeRho"));
-    setWolfeSigma(ResourceMap::GetAsScalar("Dlib-DefaultWolfeSigma"));
-  }
+  setAlgorithmName(algoName);
 }
 
 
-Dlib::Dlib(const OptimizationProblem & problem, 
+Dlib::Dlib(const OptimizationProblem & problem,
            const String & algoName)
+  : OptimizationAlgorithmImplementation(problem)
+  , wolfeRho_(ResourceMap::GetAsScalar("Dlib-DefaultWolfeRho"))
+  , wolfeSigma_(ResourceMap::GetAsScalar("Dlib-DefaultWolfeSigma"))
+  , maxLineSearchIterations_(ResourceMap::GetAsUnsignedInteger("Dlib-DefaultMaxLineSearchIterations"))
+  , initialTrustRegionRadius_(ResourceMap::GetAsScalar("Dlib-DefaultInitialTrustRegionRadius"))
 {
-  checkProblem(problem);
-  setProblem(problem);
-  setResult(OptimizationResult(problem.getDimension(),1));
-  setStartingPoint(Point(problem.getDimension()));
   setAlgorithmName(algoName);
+  checkProblem(problem);
 }
 
 // Virtual constructor
@@ -423,26 +419,17 @@ Dlib * Dlib::clone() const
 /** ACCESSORS */
 String Dlib::getAlgorithmName()
 {
-    return algoName_;
+  return algoName_;
 }
 
 void Dlib::setAlgorithmName(const String algoName)
 {
-  if (algoName == "CG") {
-    setWolfeRho(0.001);
-    setWolfeSigma(0.01);
-  } 
-  else if (!GetAlgorithmNames().contains(algoName)) 
-    throw NotYetImplementedException(HERE) << "Error: unknown strategy " << algoName;
-  
-  setWolfeRho(ResourceMap::GetAsScalar("Dlib-DefaultWolfeRho"));
-  setWolfeSigma(ResourceMap::GetAsScalar("Dlib-DefaultWolfeSigma"));
-  setInitialTrustRegionRadius(ResourceMap::GetAsScalar("Dlib-DefaultInitialTrustRegionRadius"));
-  setMaxLineSearchIterations(ResourceMap::GetAsUnsignedInteger("Dlib-DefaultMaxLineSearchIterations"));
-  
+  if (!GetAlgorithmNames().contains(algoName))
+    throw NotYetImplementedException(HERE) << "Unknown Dlib algorithm name: " << algoName;
+
   algoName_ = algoName;
 }
-  
+
 Scalar Dlib::getWolfeRho() const
 {
   return wolfeRho_;
@@ -450,15 +437,15 @@ Scalar Dlib::getWolfeRho() const
 
 void Dlib::setWolfeRho(const Scalar wolfeRho)
 {
-  if (wolfeRho <= 0) 
+  if (!(wolfeRho > 0.0))
     throw InvalidArgumentException(HERE) << "Error: wolfeRho parameter must be strictly positive";
-  
+
   wolfeRho_ = wolfeRho;
-  
-  if (wolfeRho >= wolfeSigma_) 
+
+  if (!(wolfeRho_ < wolfeSigma_))
     LOGWARN(OSS() << "Warning: wolfeRho must be strictly lower than wolfeSigma. Please adjust either of the parameters.");
 }
-  
+
 Scalar Dlib::getWolfeSigma() const
 {
   return wolfeSigma_;
@@ -466,12 +453,12 @@ Scalar Dlib::getWolfeSigma() const
 
 void Dlib::setWolfeSigma(const Scalar wolfeSigma)
 {
-  if (wolfeSigma <= 0) 
+  if (!(wolfeSigma > 0.0)) 
     throw InvalidArgumentException(HERE) << "Error: wolfeSigma parameter must be strictly positive";
-  
+
   wolfeSigma_ = wolfeSigma;
-  
-  if (wolfeRho_ >= wolfeSigma)
+
+  if (!(wolfeRho_ < wolfeSigma_))
     LOGWARN(OSS() << "Warning: wolfeRho must be strictly lower than wolfeSigma. Please adjust either of the parameters.");
 }
 
@@ -502,7 +489,8 @@ Scalar Dlib::getInitialTrustRegionRadius() const
 
 void Dlib::setInitialTrustRegionRadius(const Scalar radius)
 {
-  if (!(radius > 0.0)) throw InvalidArgumentException(HERE) << "Error: trust region radius must be positive.";
+  if (!(radius > 0.0))
+    throw InvalidArgumentException(HERE) << "Error: trust region radius must be positive.";
   initialTrustRegionRadius_ = radius;
 }
 
@@ -510,42 +498,45 @@ void Dlib::setInitialTrustRegionRadius(const Scalar radius)
 void Dlib::checkProblem(const OptimizationProblem & problem) const
 {
 #ifdef OPENTURNS_HAVE_DLIB
-  
   // Cannot solve multi-objective problems
   if (problem.hasMultipleObjective()) 
     throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " does not support multi-objective optimization";
-  
+
   // Cannot solve problems with equality/inequality constraints
   if (problem.hasInequalityConstraint()) 
     throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm does not support inequality constraints";  
   if (problem.hasEqualityConstraint())
     throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm does not support equality constraints";
-  
+
   // Cannot solve non continuous problems
   if (!problem.isContinuous())
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support non continuous problems";
 
-  
   // "Global" requires finite bounds
-  if (algoName_=="Global")
+  if (algoName_ == "Global")
   {
-    if (!problem.hasBounds()) throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm requires problem to have bounds.";
+    if (!problem.hasBounds())
+      throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm requires problem to have bounds.";
     else
     {
       Interval::BoolCollection finiteLowerBound(problem.getBounds().getFiniteLowerBound());
       Interval::BoolCollection finiteUpperBound(problem.getBounds().getFiniteUpperBound());
-      for (UnsignedInteger i=0; i<problem.getDimension(); ++i)
+      for (UnsignedInteger i = 0; i < problem.getDimension(); ++ i)
       {
-        if (!finiteLowerBound[i] || !finiteUpperBound[i]) throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm requires problem to have finite bounds.";
+        if (!finiteLowerBound[i] || !finiteUpperBound[i])
+          throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm requires problem to have finite bounds.";
       }
     }
   }
 
-  // "LSQ" and "LSQLM" require residual function
-  if ((algoName_=="LSQ" || algoName_=="LSQLM") && !problem.hasResidualFunction()) throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm requires problem to have a residual function.";
-  
+  // Only "LSQ" and "LSQLM" support least squares problems
+  if (problem.hasResidualFunction() && !(algoName_ == "LSQ" || algoName_ == "LSQLM"))
+    throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm does not support least squares problems.";
+
   // "LSQ", "LSQLM" and "TrustRegion" require non bounded variables
-  if ((algoName_=="LSQ" || algoName_=="LSQLM" || algoName_=="TrustRegion") && problem.hasBounds()) throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm cannot solve bounded problems.";
+  if (problem.hasBounds() && (algoName_ == "LSQ" || algoName_== "LSQLM" || algoName_ == "TrustRegion"))
+    throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm cannot solve bounded problems.";
+
 #else
   throw NotYetImplementedException(HERE) << "No Dlib support";
 #endif
@@ -557,37 +548,37 @@ void Dlib::run()
 {
 #ifdef OPENTURNS_HAVE_DLIB
   Point startingPoint(getStartingPoint());
-  
+
   /* Various checks */
   // Check search strategy
   if (!(GetAlgorithmNames().contains(algoName_)))
     throw NotYetImplementedException(HERE) << "Error: unknown algorithm (" << algoName_ << ")" ;
   // Check input dimension
   const UnsignedInteger dimension = getProblem().getDimension();
-  if (startingPoint.getDimension() != dimension)  throw InvalidArgumentException(HERE) << "Error: Invalid starting point dimension (" << startingPoint.getDimension() << ", expected " << dimension << ")";
-    
+  if (startingPoint.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Error: Invalid starting point dimension (" << startingPoint.getDimension() << ", expected " << dimension << ")";
+
   /** OBJECTIVE FUNCTION: convert objective function to DlibFunction */
   DlibFunction objectiveDlibFunction(getProblem().getObjective());
   DlibGradient objectiveDlibGradient(objectiveDlibFunction.getGradient());
-  
+
   /** STARTING POINT: Convert startingPoint to dlib::matrix */
-  DlibMatrix optimPoint(dimension,1);
-  for (UnsignedInteger i=0; i<startingPoint.getDimension(); ++i)
-  {
-    optimPoint(i,0) = startingPoint[i];
-  }
-  
+  DlibMatrix optimPoint(dimension, 1);
+  for (UnsignedInteger i = 0; i < startingPoint.getDimension(); ++ i)
+    optimPoint(i, 0) = startingPoint[i];
+
   /** BOUNDS **/
-  DlibMatrix lb(dimension,1);
-  DlibMatrix ub(dimension,1);
-  
+  DlibMatrix lb(dimension, 1);
+  DlibMatrix ub(dimension, 1);
+
   if (getProblem().hasBounds())
   {
     // Extraction of bounds as vectors
     Interval bounds(getProblem().getBounds());
-    
-    if (algoName_ != "Global" && !bounds.contains(startingPoint)) throw InvalidArgumentException(HERE) << "Error: starting point is not inside bounds x=" << startingPoint.__str__() << " bounds=" << bounds;
-    
+
+    if (algoName_ != "Global" && !bounds.contains(startingPoint))
+      throw InvalidArgumentException(HERE) << "Error: starting point is not inside bounds x=" << startingPoint.__str__() << " bounds=" << bounds;
+
     Interval::BoolCollection finiteLowerBound(bounds.getFiniteLowerBound());
     Interval::BoolCollection finiteUpperBound(bounds.getFiniteUpperBound());
     Point lowerBound(bounds.getLowerBound());
@@ -600,7 +591,7 @@ void Dlib::run()
       if (!finiteLowerBound[i]) lb(i) = -SpecFunc::MaxScalar;
       if (!finiteUpperBound[i]) ub(i) =  SpecFunc::MaxScalar;
     }
-  } 
+  }
   else
   {
     for (UnsignedInteger i = 0; i < dimension; ++ i)
@@ -609,13 +600,16 @@ void Dlib::run()
       ub(i) =  SpecFunc::MaxScalar;
     }
   }
-  
+
+  // initialize result
+  result_ = OptimizationResult(dimension, objectiveDlibFunction.getOutputDimension());
+
   /** SWITCH BETWEEN ALGORITHMS **/
-  if (   algoName_ == "CG" 
-      || algoName_ == "BFGS" 
-      || algoName_ == "LBFGS" 
-      || algoName_ == "Newton") 
-  {    
+  if (   algoName_ == "CG"
+      || algoName_ == "BFGS"
+      || algoName_ == "LBFGS"
+      || algoName_ == "Newton")
+  {
     // Create searchStrategy
     DlibSearchStrategy searchStrategy;
     if (algoName_ == "CG")
@@ -636,14 +630,15 @@ void Dlib::run()
                                                 wolfeSigma_,
                                                 maxLineSearchIterations_,
                                                 objectiveDlibFunction );
-    
+
     // Create stopStrategy
     DlibStopStrategy stopStrategy(*this,
                                   result_,
                                   objectiveDlibFunction);
-    
+
     // Switch on problem type
-    if (getProblem().isMinimization()) {    
+    if (getProblem().isMinimization())
+    {
       if (getProblem().hasBounds()) 
         dlib::find_min_box_constrained (searchStrategy,
                                         stopStrategy,
@@ -651,14 +646,17 @@ void Dlib::run()
                                         objectiveDlibGradient,
                                         optimPoint,
                                         lb,
-                                        ub );                                                       
-      else dlib::find_min ( searchStrategy,
-                            stopStrategy,
-                            objectiveDlibFunction,
-                            objectiveDlibGradient,
-                            optimPoint,
-                            -SpecFunc::MaxScalar );      
-    } else {
+                                        ub);
+      else 
+        dlib::find_min ( searchStrategy,
+                          stopStrategy,
+                          objectiveDlibFunction,
+                          objectiveDlibGradient,
+                          optimPoint,
+                          -SpecFunc::MaxScalar );
+    }
+    else
+    {
       if (getProblem().hasBounds()) 
         dlib::find_max_box_constrained (searchStrategy,
                                         stopStrategy,
@@ -666,22 +664,22 @@ void Dlib::run()
                                         objectiveDlibGradient,
                                         optimPoint,
                                         lb,
-                                        ub );                                                             
-      else dlib::find_max ( searchStrategy,
-                            stopStrategy,
-                            objectiveDlibFunction,
-                            objectiveDlibGradient,
-                            optimPoint,
-                            SpecFunc::MaxScalar );
+                                        ub);
+      else 
+        dlib::find_max (searchStrategy,
+                        stopStrategy,
+                        objectiveDlibFunction,
+                        objectiveDlibGradient,
+                        optimPoint,
+                        SpecFunc::MaxScalar);
     }
   } // CG, BFGS/LBFGS, Newton
-  
-  #ifdef OPENTURNS_HAVE_DLIB_GLOBAL_OPTIMIZATION
+#ifdef OPENTURNS_HAVE_DLIB_GLOBAL_OPTIMIZATION
   else if (algoName_ == "Global") 
   {
     // Declare result and lambda function
     dlib::function_evaluation globalOptimResult;
-    auto objectiveLambdaFunction = [&](dlib::matrix<double,0,1> input){return objectiveDlibFunction(input);};
+    auto objectiveLambdaFunction = [&](dlib::matrix<double,0,1> input) { return objectiveDlibFunction(input); };
 
     if (getProblem().isMinimization()) 
       globalOptimResult = dlib::find_min_global(objectiveLambdaFunction,
@@ -690,44 +688,38 @@ void Dlib::run()
                                                 std::vector<bool>(dimension,false),
                                                 dlib::max_function_calls(getMaximumEvaluationNumber()),
                                                 std::chrono::nanoseconds(dlib::FOREVER),
-                                                getMaximumAbsoluteError()
-                                                );
-      
-      
-    else 
+                                                getMaximumAbsoluteError());
+    else
       globalOptimResult = dlib::find_max_global(objectiveLambdaFunction,
                                                 lb,
                                                 ub,
                                                 std::vector<bool>(dimension,false),
                                                 dlib::max_function_calls(getMaximumEvaluationNumber()),
                                                 std::chrono::nanoseconds(dlib::FOREVER),
-                                                getMaximumAbsoluteError()
-                                                );
-      
+                                                getMaximumAbsoluteError());
+
     // Reconstruction of OptimizationResult
     Sample inputHistory(objectiveDlibFunction.getInputHistory());
     Sample outputHistory(objectiveDlibFunction.getOutputHistory());
-    
+
     Point optimalPoint(dimension);
     std::copy(globalOptimResult.x.begin(), globalOptimResult.x.end(), optimalPoint.begin());
-    
+
     result_.store(inputHistory[0],
                   outputHistory[0],
                   0.0,
                   0.0,
                   0.0,
-                  0.0
-                  );
-    
-    for (UnsignedInteger i=1; i<objectiveDlibFunction.getEvaluationNumber(); ++i) // Iterations 2 to last
+                  0.0);
+
+    for (UnsignedInteger i = 1; i < objectiveDlibFunction.getEvaluationNumber(); ++ i) // Iterations 2 to last
       result_.store(  inputHistory[i],
                       outputHistory[i],
-                      (inputHistory[i] - inputHistory[i-1]).norm(),
-                      (inputHistory[i] - inputHistory[i-1]).norm() / Point(inputHistory[i]).norm(),
-                      (outputHistory[i] - outputHistory[i-1]).norm(),
-                      0.0
-                    );
-    
+                      (inputHistory[i] - inputHistory[i - 1]).norm(),
+                      (inputHistory[i] - inputHistory[i - 1]).norm() / Point(inputHistory[i]).norm(),
+                      (outputHistory[i] - outputHistory[i - 1]).norm(),
+                      0.0);
+
     result_.setOptimalPoint(optimalPoint);
     result_.setOptimalValue(Point(1,globalOptimResult.y));
     result_.setEvaluationNumber(objectiveDlibFunction.getEvaluationNumber());
@@ -740,8 +732,8 @@ void Dlib::run()
     DlibStopStrategy stopStrategy(*this,
                                   result_,
                                   residualDlibFunction);
-    
-    // Create lambda functions to add a first variable as required by dlib::solve_least_squares        
+
+    // Create lambda functions to add a first variable as required by dlib::solve_least_squares
     auto augmentedResidualFunction = [&](int i, dlib::matrix<double,0,1> params)
     {
       return residualDlibFunction(i, params);
@@ -750,25 +742,24 @@ void Dlib::run()
     auto augmentedResidualDerivative = [&](int i, dlib::matrix<double,0,1> params) {
       return residualDlibFunction.gradient(i, params);
     };
-    
+
     // Create dummy 'list', as required by dlib
     std::vector<int> list(residualDlibFunction.getOutputDimension());
-    for (UnsignedInteger i=0; i< residualDlibFunction.getOutputDimension(); ++i) list[i]=i;
-    
+    for (UnsignedInteger i = 0; i < residualDlibFunction.getOutputDimension(); ++ i)
+      list[i] = i;
+
     // Create parameters vector
-    DlibMatrix params(dimension,1);
+    DlibMatrix params(dimension, 1);
     std::copy(startingPoint.begin(), startingPoint.end(), params.begin());
-    
+
     // Call to dlib::solve_least_squares: modification of params
     dlib::solve_least_squares(stopStrategy,
                               augmentedResidualFunction,
                               augmentedResidualDerivative,
                               list,
                               params,
-                              initialTrustRegionRadius_
-                              );
+                              initialTrustRegionRadius_);
   }
-  
   else if (algoName_ == "LSQLM")
   {
       // Create stopStrategy
@@ -776,25 +767,26 @@ void Dlib::run()
     DlibStopStrategy stopStrategy(*this,
                                   result_,
                                   residualDlibFunction);
-    
+
     // Create lambda functions to add a first variable as required by dlib::solve_least_squares
-    auto augmentedResidualFunction = [&](int i, dlib::matrix<double,0,1> params)
+    auto augmentedResidualFunction = [&](int i, dlib::matrix<double, 0, 1> params)
     {
       return residualDlibFunction(i, params);
     };
-    
-    auto augmentedResidualDerivative = [&](int i, dlib::matrix<double,0,1> params) {
+
+    auto augmentedResidualDerivative = [&](int i, dlib::matrix<double, 0, 1> params) {
       return residualDlibFunction.gradient(i, params);
     };
-    
+
     // Create dummy 'list', as required by dlib
     std::vector<double> list(residualDlibFunction.getOutputDimension());
-    for (UnsignedInteger i=0; i< residualDlibFunction.getOutputDimension(); ++i) list[i]=i;
-    
+    for (UnsignedInteger i = 0; i < residualDlibFunction.getOutputDimension(); ++ i)
+      list[i] = i;
+
     // Create parameters vector
-    DlibMatrix params(dimension,1);
+    DlibMatrix params(dimension, 1);
     std::copy(startingPoint.begin(), startingPoint.end(), params.begin());
-    
+
     // Call to dlib::solve_least_squares: modification of params
     dlib::solve_least_squares_lm(stopStrategy,
                               augmentedResidualFunction,
@@ -804,35 +796,31 @@ void Dlib::run()
                               initialTrustRegionRadius_
                               );
   }
-  
   else if (algoName_ == "TrustRegion")
   {
     // Create stopStrategy
     DlibStopStrategy stopStrategy(*this,
                                   result_,
                                   objectiveDlibFunction);
-          
+
     // Convert optimPoint to DlibFunction::column_vector
-    DlibFunction::column_vector optimizer(dimension,1);
-    for (UnsignedInteger i=0; i<dimension; ++i)
-    {
-      optimizer(i,0) = optimPoint(i,0);
-    }
-    
+    DlibFunction::column_vector optimizer(dimension, 1);
+    for (UnsignedInteger i = 0; i < dimension; ++i)
+      optimizer(i, 0) = optimPoint(i, 0);
+
     // Call to find_min/max_trust_region()
     if (getProblem().isMinimization())
       dlib::find_min_trust_region(  stopStrategy,
                                     objectiveDlibFunction,
                                     optimizer,
-                                    initialTrustRegionRadius_
-                                    );
-    else dlib::find_max_trust_region( stopStrategy,
+                                    initialTrustRegionRadius_);
+    else
+      dlib::find_max_trust_region( stopStrategy,
                                       objectiveDlibFunction,
                                       optimizer,
                                       initialTrustRegionRadius_
                                       );
   }
-  
   else
     throw NotYetImplementedException(HERE) << "Error: unknown strategy " << algoName_;
 #endif  // dlib_FOUND
@@ -866,6 +854,7 @@ void Dlib::save(Advocate & adv) const
   adv.saveAttribute("wolfeSigma_", wolfeSigma_);
   adv.saveAttribute("maxLineSearchIterations_", maxLineSearchIterations_);
   adv.saveAttribute("maxSize_", maxSize_);
+  adv.saveAttribute("initialTrustRegionRadius_", initialTrustRegionRadius_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -877,6 +866,7 @@ void Dlib::load(Advocate & adv)
   adv.loadAttribute("wolfeSigma_", wolfeSigma_);
   adv.loadAttribute("maxLineSearchIterations_", maxLineSearchIterations_);
   adv.loadAttribute("maxSize_", maxSize_);
+  adv.loadAttribute("initialTrustRegionRadius_", initialTrustRegionRadius_);
 }
 
 END_NAMESPACE_OPENTURNS
