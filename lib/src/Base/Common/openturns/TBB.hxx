@@ -34,7 +34,9 @@
 #  define __TBBMALLOC_NO_IMPLICIT_LINKAGE 1
 # endif
 #endif
-#include <tbb/tbb.h>
+#include <tbb/task_scheduler_init.h>
+#include <tbb/parallel_sort.h>
+#include <tbb/parallel_reduce.h>
 #include "openturns/OTwindows.h"
 #else /* OPENTURNS_HAVE_TBB */
 #include "openturns/Exception.hxx"
@@ -108,7 +110,7 @@ BEGIN_NAMESPACE_OPENTURNS
 class OT_API TBB
 {
 public:
-#ifndef SWIG // swig 1.3.40 fails to parse BlockedRange
+#ifndef SWIG // swig fails to parse nested struct or template
 
 #ifdef OPENTURNS_HAVE_TBB
   typedef tbb::split Split;
