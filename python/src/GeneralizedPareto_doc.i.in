@@ -86,7 +86,7 @@ Create a distribution:
 
 Create it from a Pareto distribution:
 
->>> myPareto = Pareto(1.0; 2.0, 3.0)
+>>> myPareto = Pareto(1.0, 2.0, 3.0)
 >>> dist1 = ot.GeneralizedPareto(myPareto)
 
 Draw a sample:
