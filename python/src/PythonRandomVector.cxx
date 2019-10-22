@@ -232,8 +232,8 @@ Bool PythonRandomVector::isEvent() const
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("isEvent")))
   {
     ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
-                                const_cast<char *>( "isEvent" ),
-                                const_cast<char *>( "()" ) ));
+                                 const_cast<char *>( "isEvent" ),
+                                 const_cast<char *>( "()" ) ));
     if ( result.isNull() )
     {
       handleException();

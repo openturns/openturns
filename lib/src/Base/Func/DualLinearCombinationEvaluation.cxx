@@ -377,20 +377,20 @@ Description DualLinearCombinationEvaluation::getParameterDescription() const
 
 /* Linearity accessors */
 Bool DualLinearCombinationEvaluation::isLinear() const
-{ 
-  for (UnsignedInteger i=0; i<functionsCollection_.getSize(); ++i)
+{
+  for (UnsignedInteger i = 0; i < functionsCollection_.getSize(); ++i)
     if (!functionsCollection_[i].isLinear())
       return false;
-    
+
   return true;
 }
 
 Bool DualLinearCombinationEvaluation::isLinearlyDependent(const UnsignedInteger index) const
 {
-  for (UnsignedInteger i=0; i<functionsCollection_.getSize(); ++i)
+  for (UnsignedInteger i = 0; i < functionsCollection_.getSize(); ++i)
     if (!functionsCollection_[i].isLinearlyDependent(index))
       return false;
-    
+
   return true;
 }
 

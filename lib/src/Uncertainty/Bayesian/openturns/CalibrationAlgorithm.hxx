@@ -46,7 +46,7 @@ public:
 
   /** Constructor with parameters*/
   CalibrationAlgorithm(const Sample & outputObservations,
-		       const Distribution & parameterPrior);
+                       const Distribution & parameterPrior);
 
   /** Constructor from implementation */
   CalibrationAlgorithm(const CalibrationAlgorithmImplementation & op);

@@ -166,7 +166,7 @@ public:
 
   /** Number of calls to the hessian */
   virtual UnsignedInteger getHessianCallsNumber() const;
-  
+
   /** Linearity accessors */
   Bool isLinear() const;
   Bool isLinearlyDependent(const UnsignedInteger index) const;

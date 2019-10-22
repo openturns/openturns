@@ -93,7 +93,7 @@ SymmetricTensor MarginalHessian::hessian(const Point & inP) const
   for (UnsignedInteger i = 0; i < getInputDimension(); ++ i)
     for (UnsignedInteger j = 0; j < i; ++ j)
       for (UnsignedInteger k = 0; k < getOutputDimension(); ++ k)
-      result(i, j, k) = fullHessian(i, j, indices_[k]);
+        result(i, j, k) = fullHessian(i, j, indices_[k]);
   return result;
 }
 

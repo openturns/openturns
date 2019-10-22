@@ -59,7 +59,7 @@ public:
       const Sample & secondSample,
       const Scalar level = ResourceMap::GetAsScalar( "LinearModelTest-DefaultLevel" ));
 
-    /**  */
+  /**  */
   static TestResult LinearModelHarrisonMcCabe(const Sample & firstSample,
       const Sample & secondSample,
       const LinearModelResult & linearModelResult,

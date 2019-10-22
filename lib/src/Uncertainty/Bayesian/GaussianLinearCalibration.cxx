@@ -41,12 +41,12 @@ GaussianLinearCalibration::GaussianLinearCalibration()
 
 /* Parameter constructor */
 GaussianLinearCalibration::GaussianLinearCalibration(const Function & model,
-           const Sample & inputObservations,
-           const Sample & outputObservations,
-           const Point & candidate,
-           const CovarianceMatrix & parameterCovariance,
-           const CovarianceMatrix & errorCovariance,
-           const String & methodName)
+    const Sample & inputObservations,
+    const Sample & outputObservations,
+    const Point & candidate,
+    const CovarianceMatrix & parameterCovariance,
+    const CovarianceMatrix & errorCovariance,
+    const String & methodName)
   : CalibrationAlgorithmImplementation(outputObservations, Normal(candidate, parameterCovariance))
   , modelObservations_(0, 0)
   , gradientObservations_(0, 0)
@@ -85,12 +85,12 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Function & model,
 
 /* Parameter constructor */
 GaussianLinearCalibration::GaussianLinearCalibration(const Sample & modelObservations,
-           const Matrix & gradientObservations,
-           const Sample & outputObservations,
-           const Point & candidate,
-           const CovarianceMatrix & parameterCovariance,
-           const CovarianceMatrix & errorCovariance,
-           const String & methodName)
+    const Matrix & gradientObservations,
+    const Sample & outputObservations,
+    const Point & candidate,
+    const CovarianceMatrix & parameterCovariance,
+    const CovarianceMatrix & errorCovariance,
+    const String & methodName)
   : CalibrationAlgorithmImplementation(outputObservations, Normal(candidate, parameterCovariance))
   , modelObservations_(modelObservations)
   , gradientObservations_(gradientObservations)
@@ -123,16 +123,16 @@ void GaussianLinearCalibration::run()
   const UnsignedInteger size = outputObservations_.getSize();
   if (globalErrorCovariance_) R = errorCovariance_;
   else
+  {
+    if (dimension == 1) R = (R * errorCovariance_(0, 0)).getImplementation();
+    else
     {
-      if (dimension == 1) R = (R * errorCovariance_(0, 0)).getImplementation();
-      else
-	{
-	  for (UnsignedInteger i = 0; i < size; ++i)
-	    for (UnsignedInteger j = 0; j < dimension; ++j)
-	      for (UnsignedInteger k = 0; k < dimension; ++k)
-		R(i * dimension + j, i * dimension + k) = errorCovariance_(j, k);
-	}
+      for (UnsignedInteger i = 0; i < size; ++i)
+        for (UnsignedInteger j = 0; j < dimension; ++j)
+          for (UnsignedInteger k = 0; k < dimension; ++k)
+            R(i * dimension + j, i * dimension + k) = errorCovariance_(j, k);
     }
+  }
   // Compute the inverse of the Cholesky decomposition of R
   const Normal error(Point(R.getDimension()), R);
   const TriangularMatrix errorInverseCholesky(error.getInverseCholesky());
@@ -141,21 +141,21 @@ void GaussianLinearCalibration::run()
   // Create the extended design matrix of the linear least squares problem
   const UnsignedInteger parameterDimension = getCandidate().getDimension();
   const UnsignedInteger outputDimension = outputObservations_.getDimension();
-  Matrix Abar(parameterDimension+size*outputDimension,parameterDimension);
+  Matrix Abar(parameterDimension + size * outputDimension, parameterDimension);
   for (UnsignedInteger i = 0; i < parameterDimension; ++i)
     for (UnsignedInteger j = 0; j < parameterDimension; ++j)
-      Abar(i,j) = parameterInverseCholesky(i,j);
+      Abar(i, j) = parameterInverseCholesky(i, j);
   for (UnsignedInteger i = 0; i < size; ++i)
     for (UnsignedInteger j = 0; j < outputDimension; ++j)
       for (UnsignedInteger k = 0; k < parameterDimension; ++k)
-        Abar(i*outputDimension+j+parameterDimension,k) = -invLRJ(i*outputDimension+j,k);
+        Abar(i * outputDimension + j + parameterDimension, k) = -invLRJ(i * outputDimension + j, k);
   // Compute errorInverseCholesky*deltay, the right hand size of the extended residual
   const Point invLRz = errorInverseCholesky * deltaY;
   // Create the extended right hand side of the extended linear least squares system : ybar = -invLRz
-  Point ybar(parameterDimension+size*outputDimension);
+  Point ybar(parameterDimension + size * outputDimension);
   for (UnsignedInteger i = 0; i < size; ++i)
     for (UnsignedInteger j = 0; j < outputDimension; ++j)
-      ybar[i*outputDimension+j+parameterDimension] = invLRz[i*outputDimension+j];
+      ybar[i * outputDimension + j + parameterDimension] = invLRz[i * outputDimension + j];
   // Solve the linear least squares problem
   LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, Abar));
   const Point deltaTheta(method.solve(ybar));

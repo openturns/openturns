@@ -51,7 +51,7 @@ public:
   Function getResidualFunction() const;
   void setResidualFunction(const Function & residualFunction);
   Bool hasResidualFunction() const;
-  
+
   /** String converter */
   virtual String __repr__() const;
 

@@ -74,7 +74,7 @@ int main(int, char *[])
     Scalar pointPDF = copula.computePDF( point );
     Scalar pointCDF = copula.computeCDF( point );
     fullprint << "point= " << point
-      // << " ddf=" << pointDDF
+              // << " ddf=" << pointDDF
               << " pdf=" << pointPDF
               << " cdf=" << pointCDF
               << std::endl;

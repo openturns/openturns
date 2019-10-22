@@ -100,7 +100,7 @@ private:
 
   /** The antecedent is defined here as the root cause */
   RandomVector antecedent_;
-  
+
   RandomVector composedEvent_;
 
 }; /* class UnionEvent */

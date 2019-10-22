@@ -394,9 +394,9 @@ void RandomMixture::computeRange()
     {
       for(UnsignedInteger i = 0; i < size; ++i)
       {
-	const Scalar mI = distributionCollection_[i].getPositionIndicator();
+        const Scalar mI = distributionCollection_[i].getPositionIndicator();
         m[j] += weights_(j, i) * mI;
-	const Scalar sI = distributionCollection_[i].getDispersionIndicator();
+        const Scalar sI = distributionCollection_[i].getDispersionIndicator();
         s[j] += std::pow(weights_(j, i) * sI, 2.0);
       }
     }
@@ -1101,128 +1101,128 @@ Point RandomMixture::computeDDF(const Point & point) const
 /* Integration kernels for the convolution in the 1D case with 2 continuous atoms */
 namespace
 {
-  // Class used to wrap the kernel of the integral defining the PDF of the convolution
-  class PDFKernelRandomMixture: public UniVariateFunctionImplementation
+// Class used to wrap the kernel of the integral defining the PDF of the convolution
+class PDFKernelRandomMixture: public UniVariateFunctionImplementation
+{
+public:
+  PDFKernelRandomMixture(const Scalar alpha1,
+                         const Scalar alpha2,
+                         const Pointer<DistributionImplementation> & p_atom1,
+                         const Pointer<DistributionImplementation> & p_atom2,
+                         const Scalar z0)
+    : UniVariateFunctionImplementation()
+    , alpha1_(alpha1)
+    , alpha2_(alpha2)
+    , p_atom1_(p_atom1)
+    , p_atom2_(p_atom2)
+    , z0_(z0)
   {
-  public:
-    PDFKernelRandomMixture(const Scalar alpha1,
-	      const Scalar alpha2,
-	      const Pointer<DistributionImplementation> & p_atom1,
-	      const Pointer<DistributionImplementation> & p_atom2,
-	      const Scalar z0)
-      : UniVariateFunctionImplementation()
-      , alpha1_(alpha1)
-      , alpha2_(alpha2)
-      , p_atom1_(p_atom1)
-      , p_atom2_(p_atom2)
-      , z0_(z0)
-    {
-      // Nothing to do
-    };
+    // Nothing to do
+  };
 
-    PDFKernelRandomMixture * clone() const
-    {
-      return new PDFKernelRandomMixture(*this);
-    }
+  PDFKernelRandomMixture * clone() const
+  {
+    return new PDFKernelRandomMixture(*this);
+  }
 
   // Z = alpha0 + alpha1 X1 + alpha2 X2
-    Scalar operator() (const Scalar u) const
-    {
-      const Scalar pdf = p_atom1_->computePDF(u);
-      if (pdf == 0.0) return 0.0;
+  Scalar operator() (const Scalar u) const
+  {
+    const Scalar pdf = p_atom1_->computePDF(u);
+    if (pdf == 0.0) return 0.0;
     return pdf * p_atom2_->computePDF((z0_ - alpha1_ * u) / alpha2_);
-    }
+  }
 
-  private:
-    const Scalar alpha1_;
-    const Scalar alpha2_;
-    const Pointer<DistributionImplementation> p_atom1_;
-    const Pointer<DistributionImplementation> p_atom2_;
-    const Scalar z0_;
+private:
+  const Scalar alpha1_;
+  const Scalar alpha2_;
+  const Pointer<DistributionImplementation> p_atom1_;
+  const Pointer<DistributionImplementation> p_atom2_;
+  const Scalar z0_;
 
-  }; // class PDFKernelRandomMixture
+}; // class PDFKernelRandomMixture
 
-  // Class used to wrap the kernel of the integral defining the CDF of the convolution
-  class CDFKernelRandomMixture: public UniVariateFunctionImplementation
+// Class used to wrap the kernel of the integral defining the CDF of the convolution
+class CDFKernelRandomMixture: public UniVariateFunctionImplementation
+{
+public:
+  CDFKernelRandomMixture(const Scalar alpha1,
+                         const Scalar alpha2,
+                         const Pointer<DistributionImplementation> & p_atom1,
+                         const Pointer<DistributionImplementation> & p_atom2,
+                         const Scalar z0)
+    : UniVariateFunctionImplementation()
+    , alpha1_(alpha1)
+    , alpha2_(alpha2)
+    , p_atom1_(p_atom1)
+    , p_atom2_(p_atom2)
+    , z0_(z0)
   {
-  public:
-    CDFKernelRandomMixture(const Scalar alpha1,
-	      const Scalar alpha2,
-	      const Pointer<DistributionImplementation> & p_atom1,
-	      const Pointer<DistributionImplementation> & p_atom2,
-	      const Scalar z0)
-      : UniVariateFunctionImplementation()
-      , alpha1_(alpha1)
-      , alpha2_(alpha2)
-      , p_atom1_(p_atom1)
-      , p_atom2_(p_atom2)
-      , z0_(z0)
-    {
-      // Nothing to do
-    };
+    // Nothing to do
+  };
 
-    CDFKernelRandomMixture * clone() const
-    {
-      return new CDFKernelRandomMixture(*this);
-    }
+  CDFKernelRandomMixture * clone() const
+  {
+    return new CDFKernelRandomMixture(*this);
+  }
 
   // Z = alpha0 + alpha1 X1 + alpha2 X2
-    Scalar operator() (const Scalar u) const
-    {
-      const Scalar pdf = p_atom1_->computePDF(u);
-      if (pdf == 0.0) return 0.0;
-      return pdf * p_atom2_->computeCDF((z0_ - alpha1_ * u) / alpha2_);
-    }
-
-  private:
-    const Scalar alpha1_;
-    const Scalar alpha2_;
-    const Pointer<DistributionImplementation> p_atom1_;
-    const Pointer<DistributionImplementation> p_atom2_;
-    const Scalar z0_;
-
-  }; // class CDFKernelRandomMixture
-
-  // Class used to wrap the kernel of the integral defining the complementary CDF of the convolution
-  class ComplementaryCDFKernelRandomMixture: public UniVariateFunctionImplementation
+  Scalar operator() (const Scalar u) const
   {
-  public:
-    ComplementaryCDFKernelRandomMixture(const Scalar alpha1,
-	      const Scalar alpha2,
-	      const Pointer<DistributionImplementation> & p_atom1,
-	      const Pointer<DistributionImplementation> & p_atom2,
-	      const Scalar z0)
-      : UniVariateFunctionImplementation()
-      , alpha1_(alpha1)
-      , alpha2_(alpha2)
-      , p_atom1_(p_atom1)
-      , p_atom2_(p_atom2)
-      , z0_(z0)
-    {
-      // Nothing to do
-    };
+    const Scalar pdf = p_atom1_->computePDF(u);
+    if (pdf == 0.0) return 0.0;
+    return pdf * p_atom2_->computeCDF((z0_ - alpha1_ * u) / alpha2_);
+  }
 
-    ComplementaryCDFKernelRandomMixture * clone() const
-    {
-      return new ComplementaryCDFKernelRandomMixture(*this);
-    }
+private:
+  const Scalar alpha1_;
+  const Scalar alpha2_;
+  const Pointer<DistributionImplementation> p_atom1_;
+  const Pointer<DistributionImplementation> p_atom2_;
+  const Scalar z0_;
+
+}; // class CDFKernelRandomMixture
+
+// Class used to wrap the kernel of the integral defining the complementary CDF of the convolution
+class ComplementaryCDFKernelRandomMixture: public UniVariateFunctionImplementation
+{
+public:
+  ComplementaryCDFKernelRandomMixture(const Scalar alpha1,
+                                      const Scalar alpha2,
+                                      const Pointer<DistributionImplementation> & p_atom1,
+                                      const Pointer<DistributionImplementation> & p_atom2,
+                                      const Scalar z0)
+    : UniVariateFunctionImplementation()
+    , alpha1_(alpha1)
+    , alpha2_(alpha2)
+    , p_atom1_(p_atom1)
+    , p_atom2_(p_atom2)
+    , z0_(z0)
+  {
+    // Nothing to do
+  };
+
+  ComplementaryCDFKernelRandomMixture * clone() const
+  {
+    return new ComplementaryCDFKernelRandomMixture(*this);
+  }
 
   // Z = alpha0 + alpha1 X1 + alpha2 X2
-    Scalar operator() (const Scalar u) const
-    {
-      const Scalar pdf = p_atom1_->computePDF(u);
-      if (pdf == 0.0) return 0.0;
-      return pdf * p_atom2_->computeComplementaryCDF((z0_ - alpha1_ * u) / alpha2_);
-    }
+  Scalar operator() (const Scalar u) const
+  {
+    const Scalar pdf = p_atom1_->computePDF(u);
+    if (pdf == 0.0) return 0.0;
+    return pdf * p_atom2_->computeComplementaryCDF((z0_ - alpha1_ * u) / alpha2_);
+  }
 
-  private:
-    const Scalar alpha1_;
-    const Scalar alpha2_;
-    const Pointer<DistributionImplementation> p_atom1_;
-    const Pointer<DistributionImplementation> p_atom2_;
-    const Scalar z0_;
+private:
+  const Scalar alpha1_;
+  const Scalar alpha2_;
+  const Pointer<DistributionImplementation> p_atom1_;
+  const Pointer<DistributionImplementation> p_atom2_;
+  const Scalar z0_;
 
-  }; // class ComplementaryCDFKernelRandomMixture
+}; // class ComplementaryCDFKernelRandomMixture
 } // namespace
 
 /* Get the PDF of the RandomMixture. It uses the Poisson inversion formula as described in the reference:
@@ -2908,11 +2908,11 @@ void RandomMixture::computePositionIndicator() const
     const UnsignedInteger size = distributionCollection_.getSize();
     // Assume an additive behaviour of the position indicator. It is true for the mean value, and almost true for the median of moderatly skewed distributions
     for(UnsignedInteger i = 0; i < size; ++i)
-      {
-	const Scalar wi = weights_(0, i);
-	const Scalar mi = distributionCollection_[i].getPositionIndicator();
-	positionIndicator_ += wi * mi;
-      }
+    {
+      const Scalar wi = weights_(0, i);
+      const Scalar mi = distributionCollection_[i].getPositionIndicator();
+      positionIndicator_ += wi * mi;
+    }
     isAlreadyComputedPositionIndicator_ = true;
   }
 }
@@ -2934,11 +2934,11 @@ void RandomMixture::computeDispersionIndicator() const
     const UnsignedInteger size = distributionCollection_.getSize();
     // Assume a quadratic additive behaviour of the dispersion indicator. It is true for the standard deviation value, and almost true for the interquartile of moderatly skewed distributions
     for(UnsignedInteger i = 0; i < size; ++i)
-      {
-	const Scalar wi = weights_(0, i);
-	const Scalar si = distributionCollection_[i].getDispersionIndicator();
-	dispersionIndicator_ += std::pow(wi * si, 2.0);
-      }
+    {
+      const Scalar wi = weights_(0, i);
+      const Scalar si = distributionCollection_[i].getDispersionIndicator();
+      dispersionIndicator_ += std::pow(wi * si, 2.0);
+    }
     dispersionIndicator_ = std::sqrt(dispersionIndicator_);
     isAlreadyComputedDispersionIndicator_ = true;
   }

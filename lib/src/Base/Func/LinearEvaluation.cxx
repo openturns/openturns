@@ -154,7 +154,7 @@ Bool LinearEvaluation::isLinearlyDependent(const UnsignedInteger index) const
 {
   if (index > getInputDimension())
     throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
-  
+
   return true;
 }
 

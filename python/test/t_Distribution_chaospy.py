@@ -38,4 +38,4 @@ for chaospy_dist in [d0, d1, d2]:
         print('quantile (tail)=', distribution.computeQuantile(cdf, True))
         print('scalar quantile=%.6g' % distribution.computeScalarQuantile(cdf))
         print('scalar quantile (tail)=%.6g' %
-            distribution.computeScalarQuantile(cdf, True))
+              distribution.computeScalarQuantile(cdf, True))

@@ -65,4 +65,3 @@ indices = ot.Indices(2)
 indices[0] = 2
 indices[1] = 0
 print("Marginal (2, 0)=", multivariateUserDefined.getMarginal(indices))
-

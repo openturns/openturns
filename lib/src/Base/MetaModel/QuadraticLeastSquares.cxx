@@ -34,7 +34,7 @@ static const Factory<QuadraticLeastSquares> Factory_QuadraticLeastSquares;
 
 /* Default constructor */
 QuadraticLeastSquares::QuadraticLeastSquares()
-: PersistentObject()
+  : PersistentObject()
 {
   // Nothing to do
 }

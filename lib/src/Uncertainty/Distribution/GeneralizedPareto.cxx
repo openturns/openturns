@@ -64,7 +64,7 @@ GeneralizedPareto::GeneralizedPareto(const Pareto & pareto)
   : ContinuousDistribution()
   , sigma_(0.0)
   , xi_(1.0 / pareto.getAlpha())
-  , u_(pareto.getGamma()+pareto.getBeta())
+  , u_(pareto.getGamma() + pareto.getBeta())
 {
   setName( "GeneralizedPareto" );
   // We set the dimension of the GeneralizedPareto distribution
@@ -132,7 +132,7 @@ void GeneralizedPareto::computeRange()
 Point GeneralizedPareto::getRealization() const
 {
   const Scalar u = RandomGenerator::Generate();
-  if (xi_ == 0.0) return Point(1, u_ -sigma_ * std::log(u));
+  if (xi_ == 0.0) return Point(1, u_ - sigma_ * std::log(u));
   return Point(1, u_ + sigma_ * expm1(-xi_ * std::log(u)) / xi_);
 }
 
@@ -264,8 +264,8 @@ Scalar GeneralizedPareto::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
   const Scalar logProb = tail ? std::log(prob) : log1p(-prob);
-  if (xi_ == 0.0) return u_-sigma_ * logProb;
-  else return u_+sigma_ * expm1(-xi_ * logProb) / xi_;
+  if (xi_ == 0.0) return u_ - sigma_ * logProb;
+  else return u_ + sigma_ * expm1(-xi_ * logProb) / xi_;
 }
 
 /* Compute the mean of the distribution */
@@ -411,7 +411,7 @@ Pareto GeneralizedPareto::asPareto() const
 {
   if (!(xi_ > 0.0))
     throw InvalidArgumentException(HERE) << "Cannot convert to Pareto";
-  return Pareto(sigma_ / xi_, 1.0 / xi_, u_ - sigma_/ xi_);
+  return Pareto(sigma_ / xi_, 1.0 / xi_, u_ - sigma_ / xi_);
 }
 
 /* Method save() stores the object through the StorageManager */

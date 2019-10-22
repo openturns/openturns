@@ -59,18 +59,18 @@ LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
   inputSample_ = inputSample;
   outputSample_ = outputSample;
 
-  #ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
-    Collection<Function> functions;
-    const Description inputDescription(inputSample_.getDescription());
-    functions.add(SymbolicFunction(inputSample_.getDescription(), Description(1, "1")));
-    for(UnsignedInteger i = 0; i < inputSample_.getDimension(); ++i)
-    {
-      functions.add(SymbolicFunction(inputDescription, Description(1, inputDescription[i])));
-    }
-    basis_ = Basis(functions);
-  #else
-    basis_ = LinearBasisFactory(inputSample_.getDimension()).build();
-  #endif
+#ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
+  Collection<Function> functions;
+  const Description inputDescription(inputSample_.getDescription());
+  functions.add(SymbolicFunction(inputSample_.getDescription(), Description(1, "1")));
+  for(UnsignedInteger i = 0; i < inputSample_.getDimension(); ++i)
+  {
+    functions.add(SymbolicFunction(inputDescription, Description(1, inputDescription[i])));
+  }
+  basis_ = Basis(functions);
+#else
+  basis_ = LinearBasisFactory(inputSample_.getDimension()).build();
+#endif
 
 }
 
@@ -153,7 +153,7 @@ void LinearModelAlgorithm::run()
   // Residual sample
   const Sample residualSample(outputSample_ - metaModel(inputSample_));
 
-  // Sigma2 
+  // Sigma2
 
   const Scalar sigma2 = size * residualSample.computeRawMoment(2)[0] / (size - basisSize);
 

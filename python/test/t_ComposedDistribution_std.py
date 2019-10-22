@@ -161,11 +161,15 @@ try:
     y = [0.2]
     print("conditional PDF=%.6f" % distribution.computeConditionalPDF(x, y))
     print("conditional CDF=%.6f" % distribution.computeConditionalCDF(x, y))
-    print("conditional quantile=%.6f" % distribution.computeConditionalQuantile(x, y))
+    print("conditional quantile=%.6f" %
+          distribution.computeConditionalQuantile(x, y))
     point = [0.6]*dim
-    print("sequential conditional PDF=", distribution.computeSequentialConditionalPDF(point))
-    print("sequential conditional CDF=", distribution.computeSequentialConditionalCDF(point))
-    print("sequential conditional quantile=", distribution.computeSequentialConditionalQuantile(point))
+    print("sequential conditional PDF=",
+          distribution.computeSequentialConditionalPDF(point))
+    print("sequential conditional CDF=",
+          distribution.computeSequentialConditionalCDF(point))
+    print("sequential conditional quantile=",
+          distribution.computeSequentialConditionalQuantile(point))
 
 #
 
@@ -225,12 +229,15 @@ try:
     y = [0.2]*(dim-1)
     print("conditional PDF=%.6f" % distribution.computeConditionalPDF(x, y))
     print("conditional CDF=%.6f" % distribution.computeConditionalCDF(x, y))
-    print("conditional quantile=%.6f" % distribution.computeConditionalQuantile(x, y))
+    print("conditional quantile=%.6f" %
+          distribution.computeConditionalQuantile(x, y))
     pt = Point([i + 1.5 for i in range(dim)])
-    print("sequential conditional PDF=", distribution.computeSequentialConditionalPDF(point))
+    print("sequential conditional PDF=",
+          distribution.computeSequentialConditionalPDF(point))
     resCDF = distribution.computeSequentialConditionalCDF(pt)
     print("sequential conditional CDF(", pt, ")=", resCDF)
-    print("sequential conditional quantile(", resCDF, ")=", distribution.computeSequentialConditionalQuantile(resCDF))
+    print("sequential conditional quantile(", resCDF, ")=",
+          distribution.computeSequentialConditionalQuantile(resCDF))
 
 except:
     import sys

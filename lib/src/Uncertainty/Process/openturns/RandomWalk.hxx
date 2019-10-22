@@ -60,8 +60,8 @@ public:
   String __repr__() const;
 
   /** String converter */
-  String __str__(const String & offsett = "") const;  
-  
+  String __str__(const String & offsett = "") const;
+
   /** Is the underlying stationary ? */
   Bool isStationary() const;
 
@@ -89,7 +89,7 @@ public:
 
   /** Origin accessor */
   void setOrigin(const Point & origin);
-  
+
   /** Mesh accessor */
   void setMesh(const Mesh & mesh);
 

@@ -187,8 +187,8 @@ Point GaussKronrod::computeRule(const Function & function,
 
 /* Special case for univariate functions to avoid using costly Point */
 Scalar GaussKronrod::integrate(const UniVariateFunction & function,
-			       const Scalar a,
-			       const Scalar b) const
+                               const Scalar a,
+                               const Scalar b) const
 {
   Scalar result = 0.0;
   Collection<Scalar> ai(maximumSubIntervals_);
@@ -233,9 +233,9 @@ Scalar GaussKronrod::integrate(const UniVariateFunction & function,
 
 /* Compute the local GaussKronrod rule over [a, b]. */
 Scalar GaussKronrod::computeScalarRule(const UniVariateFunction & function,
-				       const Scalar a,
-				       const Scalar b,
-				       Scalar & localError) const
+                                       const Scalar a,
+                                       const Scalar b,
+                                       Scalar & localError) const
 {
   const Scalar width = 0.5 * (b - a);
   const Scalar center = 0.5 * (a + b);

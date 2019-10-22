@@ -33,40 +33,40 @@ BEGIN_NAMESPACE_OPENTURNS
   */
 class OT_API SystemFORM : public Analytical
 {
-    CLASSNAME;
-  public:
+  CLASSNAME;
+public:
 
-    /** Default constructor */
-    SystemFORM();
+  /** Default constructor */
+  SystemFORM();
 
-    /** Constructor with parameters */
-    SystemFORM(const OptimizationAlgorithm & nearestPointAlgorithm,
-                const RandomVector & event,
-                const Point & physicalStartingPoint);
+  /** Constructor with parameters */
+  SystemFORM(const OptimizationAlgorithm & nearestPointAlgorithm,
+             const RandomVector & event,
+             const Point & physicalStartingPoint);
 
-    /** Virtual constructor */
-    virtual SystemFORM * clone() const;
+  /** Virtual constructor */
+  virtual SystemFORM * clone() const;
 
-    /** String converter */
-    String __repr__() const;
+  /** String converter */
+  String __repr__() const;
 
-    /** Event accessor */
-    virtual void setEvent(const RandomVector & systemEvent);
+  /** Event accessor */
+  virtual void setEvent(const RandomVector & systemEvent);
 
-    /** Function that computes the design point by re-using the Analytical::run() and creates a SystemFORM::Result */
-    void run();
+  /** Function that computes the design point by re-using the Analytical::run() and creates a SystemFORM::Result */
+  void run();
 
-    /** Result accessor */
-    MultiFORMResult getResult() const;
+  /** Result accessor */
+  MultiFORMResult getResult() const;
 
-    /** Method save() stores the object through the StorageManager */
-    virtual void save(Advocate & adv) const;
+  /** Method save() stores the object through the StorageManager */
+  virtual void save(Advocate & adv) const;
 
-    /** Method load() reloads the object from the StorageManager */
-    virtual void load(Advocate & adv);
+  /** Method load() reloads the object from the StorageManager */
+  virtual void load(Advocate & adv);
 
-  protected:
-    MultiFORMResult multiFORMResult_;
+protected:
+  MultiFORMResult multiFORMResult_;
 
 } ; /* class SystemFORM */
 

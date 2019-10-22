@@ -25,11 +25,11 @@
 #include "openturns/OSS.hxx"
 
 #ifdef OPENTURNS_HAVE_DLIB
-  #include "openturns/DlibFunctions.hxx"
-  #include <dlib/optimization.h>
-  #ifdef OPENTURNS_HAVE_DLIB_GLOBAL_OPTIMIZATION
-    #include <dlib/global_optimization.h>
-  #endif
+#include "openturns/DlibFunctions.hxx"
+#include <dlib/optimization.h>
+#ifdef OPENTURNS_HAVE_DLIB_GLOBAL_OPTIMIZATION
+#include <dlib/global_optimization.h>
+#endif
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -43,59 +43,59 @@ BEGIN_NAMESPACE_OPENTURNS
 #ifdef OPENTURNS_HAVE_DLIB
 class DlibSearchStrategyImplementation
   : public PersistentObject
-{ 
-  public:
-    DlibSearchStrategyImplementation()
+{
+public:
+  DlibSearchStrategyImplementation()
     : PersistentObject()
     , wolfeRho_(ResourceMap::GetAsScalar("Dlib-DefaultWolfeRho"))
     , wolfeSigma_(ResourceMap::GetAsScalar("Dlib-DefaultWolfeSigma"))
     , maxLineSearchIterations_(ResourceMap::GetAsUnsignedInteger("Dlib-DefaultMaxLineSearchIterations"))
-    {
-      // Nothing to do
-    }
-    
-    DlibSearchStrategyImplementation(const Scalar wolfeRho,
-                                     const Scalar wolfeSigma,
-                                     const UnsignedInteger maxLineSearchIterations )
+  {
+    // Nothing to do
+  }
+
+  DlibSearchStrategyImplementation(const Scalar wolfeRho,
+                                   const Scalar wolfeSigma,
+                                   const UnsignedInteger maxLineSearchIterations )
     : PersistentObject()
     , wolfeRho_(wolfeRho)
     , wolfeSigma_(wolfeSigma)
     , maxLineSearchIterations_(maxLineSearchIterations)
-    {
-      // Check wolfeRho and wolfeSigma
-      if (!(wolfeRho < wolfeSigma)) throw InvalidArgumentException(HERE) << "Error: wolfeRho must be lower than wolfeSigma";
-    }
-    
-      // Virtual constructor
-    virtual DlibSearchStrategyImplementation * clone() const
-    {
-      return new DlibSearchStrategyImplementation(*this);
-    }
-      
-    /** Accessors to search strategy parameters **/
-    virtual double get_wolfe_rho()
-    {
-      return wolfeRho_;
-    }
-    
-    virtual double get_wolfe_sigma()
-    {
-      return wolfeSigma_;
-    }
-    
-    virtual unsigned long get_max_line_search_iterations ()
-    {
-      return maxLineSearchIterations_;
-    }
-        
-    /* Computation of the line search direction */
-    /* Virtual function, must be overridden in actual implementation */
-    virtual const DlibMatrix get_next_direction ( const DlibMatrix & x,
-                                                  const double f_value,
-                                                  const DlibMatrix & funct_derivative)
-    {
-      throw NotYetImplementedException(HERE) << "Error: not yet implemented search strategy";
-    }
+  {
+    // Check wolfeRho and wolfeSigma
+    if (!(wolfeRho < wolfeSigma)) throw InvalidArgumentException(HERE) << "Error: wolfeRho must be lower than wolfeSigma";
+  }
+
+  // Virtual constructor
+  virtual DlibSearchStrategyImplementation * clone() const
+  {
+    return new DlibSearchStrategyImplementation(*this);
+  }
+
+  /** Accessors to search strategy parameters **/
+  virtual double get_wolfe_rho()
+  {
+    return wolfeRho_;
+  }
+
+  virtual double get_wolfe_sigma()
+  {
+    return wolfeSigma_;
+  }
+
+  virtual unsigned long get_max_line_search_iterations ()
+  {
+    return maxLineSearchIterations_;
+  }
+
+  /* Computation of the line search direction */
+  /* Virtual function, must be overridden in actual implementation */
+  virtual const DlibMatrix get_next_direction ( const DlibMatrix & x,
+      const double f_value,
+      const DlibMatrix & funct_derivative)
+  {
+    throw NotYetImplementedException(HERE) << "Error: not yet implemented search strategy";
+  }
 
 protected:
   // Parameters used in the line search process
@@ -107,166 +107,166 @@ protected:
 class DlibSearchStrategy
   : public TypedInterfaceObject<DlibSearchStrategyImplementation>
 {
-  public:
+public:
 
-    DlibSearchStrategy()
+  DlibSearchStrategy()
     : TypedInterfaceObject<DlibSearchStrategyImplementation>(new DlibSearchStrategyImplementation())
-    {
-      // Nothing to do
-    }
-    
-    DlibSearchStrategy(const DlibSearchStrategyImplementation & searchStrategy)
-    : TypedInterfaceObject<DlibSearchStrategyImplementation>(searchStrategy.clone())
-    {
-      // Nothing to do
-    }
-    
-    /* Accessors to search strategy parameters */
-    double get_wolfe_rho()
-    {
-      return getImplementation()->get_wolfe_rho();
-    }
-    double get_wolfe_sigma()
-    {
-      return getImplementation()->get_wolfe_sigma();
-    }
-    UnsignedInteger get_max_line_search_iterations ()
-    {
-      return getImplementation()->get_max_line_search_iterations();
-    }
+  {
+    // Nothing to do
+  }
 
-    /* Computation of the line search direction */
-    DlibMatrix get_next_direction (const DlibMatrix & x,
-                                   const double f_value,
-                                   const DlibMatrix & funct_derivative)
-    {
-      return getImplementation()->get_next_direction(x,f_value,funct_derivative);
-    }
+  DlibSearchStrategy(const DlibSearchStrategyImplementation & searchStrategy)
+    : TypedInterfaceObject<DlibSearchStrategyImplementation>(searchStrategy.clone())
+  {
+    // Nothing to do
+  }
+
+  /* Accessors to search strategy parameters */
+  double get_wolfe_rho()
+  {
+    return getImplementation()->get_wolfe_rho();
+  }
+  double get_wolfe_sigma()
+  {
+    return getImplementation()->get_wolfe_sigma();
+  }
+  UnsignedInteger get_max_line_search_iterations ()
+  {
+    return getImplementation()->get_max_line_search_iterations();
+  }
+
+  /* Computation of the line search direction */
+  DlibMatrix get_next_direction (const DlibMatrix & x,
+                                 const double f_value,
+                                 const DlibMatrix & funct_derivative)
+  {
+    return getImplementation()->get_next_direction(x, f_value, funct_derivative);
+  }
 };
 
 class DlibCgSearchStrategy
   : public DlibSearchStrategyImplementation
-{  
-  public:
-    DlibCgSearchStrategy( const Scalar wolfeRho,
-                          const Scalar wolfeSigma,
-                          const UnsignedInteger maxLineSearchIterations)
+{
+public:
+  DlibCgSearchStrategy( const Scalar wolfeRho,
+                        const Scalar wolfeSigma,
+                        const UnsignedInteger maxLineSearchIterations)
     : DlibSearchStrategyImplementation(wolfeRho, wolfeSigma, maxLineSearchIterations)
-    {
-      // Nothing to do
-    }
+  {
+    // Nothing to do
+  }
 
-    /* Virtual constructor */
-    DlibCgSearchStrategy * clone() const
-    {
-      return new DlibCgSearchStrategy(*this);
-    }
+  /* Virtual constructor */
+  DlibCgSearchStrategy * clone() const
+  {
+    return new DlibCgSearchStrategy(*this);
+  }
 
-    /* Computation of the line search direction: call to dlib function */
-    const DlibMatrix get_next_direction ( const DlibMatrix & x,
-                                          const double f_value,
-                                          const DlibMatrix & funct_derivative)
-    {
-      return dlib::cg_search_strategy().get_next_direction(x,f_value,funct_derivative);
-    }
+  /* Computation of the line search direction: call to dlib function */
+  const DlibMatrix get_next_direction ( const DlibMatrix & x,
+                                        const double f_value,
+                                        const DlibMatrix & funct_derivative)
+  {
+    return dlib::cg_search_strategy().get_next_direction(x, f_value, funct_derivative);
+  }
 };
 
 class DlibBfgsSearchStrategy
   : public DlibSearchStrategyImplementation
 {
-  public:
-    DlibBfgsSearchStrategy(const Scalar wolfeRho,
-                           const Scalar wolfeSigma,
-                           const UnsignedInteger maxLineSearchIterations)
+public:
+  DlibBfgsSearchStrategy(const Scalar wolfeRho,
+                         const Scalar wolfeSigma,
+                         const UnsignedInteger maxLineSearchIterations)
     : DlibSearchStrategyImplementation(wolfeRho, wolfeSigma, maxLineSearchIterations)
-    {
-      // Nothing to do
-    }
-      
-    /* Virtual constructor */
-    DlibBfgsSearchStrategy * clone() const
-    {
-      return new DlibBfgsSearchStrategy(*this);
-    }
+  {
+    // Nothing to do
+  }
 
-    /* Computation of the line search direction: call to dlib function */
-    const DlibMatrix get_next_direction ( const DlibMatrix & x,
-                                          const double f_value,
-                                          const DlibMatrix & funct_derivative)
-    {
-      return dlib::bfgs_search_strategy().get_next_direction(x,f_value,funct_derivative);
-    }
+  /* Virtual constructor */
+  DlibBfgsSearchStrategy * clone() const
+  {
+    return new DlibBfgsSearchStrategy(*this);
+  }
+
+  /* Computation of the line search direction: call to dlib function */
+  const DlibMatrix get_next_direction ( const DlibMatrix & x,
+                                        const double f_value,
+                                        const DlibMatrix & funct_derivative)
+  {
+    return dlib::bfgs_search_strategy().get_next_direction(x, f_value, funct_derivative);
+  }
 };
 
-/** In addition to the previous features, L-BFGS algorithm allows the user 
+/** In addition to the previous features, L-BFGS algorithm allows the user
  *  to define the maximum amount of memory to use during the process **/
 class DlibLbfgsSearchStrategy
   : public DlibSearchStrategyImplementation
-{  
-  public:
-    DlibLbfgsSearchStrategy(const Scalar wolfeRho,
-                            const Scalar wolfeSigma,
-                            const UnsignedInteger maxLineSearchIterations,
-                            const UnsignedInteger maxSize
-                           )
+{
+public:
+  DlibLbfgsSearchStrategy(const Scalar wolfeRho,
+                          const Scalar wolfeSigma,
+                          const UnsignedInteger maxLineSearchIterations,
+                          const UnsignedInteger maxSize
+                         )
     : DlibSearchStrategyImplementation(wolfeRho, wolfeSigma, maxLineSearchIterations)
     , maxSize_(maxSize)
-    {
-      // Nothing to do
-    }
+  {
+    // Nothing to do
+  }
 
-    /* Virtual constructor */
-    DlibLbfgsSearchStrategy * clone() const
-    {
-      return new DlibLbfgsSearchStrategy(*this);
-    }
+  /* Virtual constructor */
+  DlibLbfgsSearchStrategy * clone() const
+  {
+    return new DlibLbfgsSearchStrategy(*this);
+  }
 
-    /* Computation of the line search direction: call to dlib function */
-    const DlibMatrix get_next_direction ( const DlibMatrix & x,
-                                          const double f_value,
-                                          const DlibMatrix & funct_derivative)
-    {
-      return dlib::lbfgs_search_strategy(maxSize_).get_next_direction(x,f_value,funct_derivative);
-    }
+  /* Computation of the line search direction: call to dlib function */
+  const DlibMatrix get_next_direction ( const DlibMatrix & x,
+                                        const double f_value,
+                                        const DlibMatrix & funct_derivative)
+  {
+    return dlib::lbfgs_search_strategy(maxSize_).get_next_direction(x, f_value, funct_derivative);
+  }
 
-  private:
-    // Maximum amount of memory to use
-    UnsignedInteger maxSize_;
+private:
+  // Maximum amount of memory to use
+  UnsignedInteger maxSize_;
 };
 
 /** Newton algorithm requires the user to provide the Hessian matrix of the objective function. **/
 class DlibNewtonSearchStrategy
   : public DlibSearchStrategyImplementation
 {
-  public:
-    DlibNewtonSearchStrategy( const Scalar wolfeRho,
-                              const Scalar wolfeSigma,
-                              const UnsignedInteger maxLineSearchIterations,
-                              const Function objectiveFunction
-                           )
+public:
+  DlibNewtonSearchStrategy( const Scalar wolfeRho,
+                            const Scalar wolfeSigma,
+                            const UnsignedInteger maxLineSearchIterations,
+                            const Function objectiveFunction
+                          )
     : DlibSearchStrategyImplementation(wolfeRho, wolfeSigma, maxLineSearchIterations)
     , hessian_(objectiveFunction.getHessian())
-    {
-      // Nothing to do
-    }
+  {
+    // Nothing to do
+  }
 
-    /* Virtual constructor */
-    DlibNewtonSearchStrategy * clone() const
-    {
-      return new DlibNewtonSearchStrategy(*this);
-    }
+  /* Virtual constructor */
+  DlibNewtonSearchStrategy * clone() const
+  {
+    return new DlibNewtonSearchStrategy(*this);
+  }
 
-    /* Computation of the line search direction: call to dlib function */
-    const DlibMatrix get_next_direction ( const DlibMatrix & x,
-                                          const double f_value,
-                                          const DlibMatrix & funct_derivative)
-    {
-      return dlib::newton_search_strategy_obj<DlibHessian>(hessian_).get_next_direction(x,f_value,funct_derivative);
-    }
+  /* Computation of the line search direction: call to dlib function */
+  const DlibMatrix get_next_direction ( const DlibMatrix & x,
+                                        const double f_value,
+                                        const DlibMatrix & funct_derivative)
+  {
+    return dlib::newton_search_strategy_obj<DlibHessian>(hessian_).get_next_direction(x, f_value, funct_derivative);
+  }
 
-  private:
-    // Hessian matrix (as a function) of the objective function
-    DlibHessian hessian_;
+private:
+  // Hessian matrix (as a function) of the objective function
+  DlibHessian hessian_;
 };
 
 /**                               => End of search strategy classes definitions **/
@@ -274,63 +274,63 @@ class DlibNewtonSearchStrategy
 /** DEFINITION OF DLIBSTOPSTRATEGY CLASS **/
 class DlibStopStrategy
 {
-  public:
-    DlibStopStrategy( const Dlib& dlibAlgorithm,
-                            OptimizationResult& optimizationResult,
-                      const DlibFunction& objectiveFunction)
+public:
+  DlibStopStrategy( const Dlib& dlibAlgorithm,
+                    OptimizationResult& optimizationResult,
+                    const DlibFunction& objectiveFunction)
     : dlibAlgorithm_(dlibAlgorithm)
     , optimizationResult_(optimizationResult)
     , objectiveFunction_(objectiveFunction)
     , lastInput_(Point(dlibAlgorithm_.getProblem().getDimension()))
     , lastOutput_(Point(1))
+  {
+    // Nothing to do
+  }
+
+  bool should_continue_search(const DlibMatrix & x,
+                              const double funct_value,
+                              const DlibMatrix & )
+  {
+    optimizationResult_.setEvaluationNumber(objectiveFunction_.getEvaluationNumber());
+
+    Point xPoint(x.size());
+    std::copy(x.begin(), x.end(), xPoint.begin());
+    Point fxPoint(1, funct_value);
+
+    Scalar absoluteError = dlibAlgorithm_.getMaximumAbsoluteError();
+    Scalar relativeError = dlibAlgorithm_.getMaximumRelativeError();
+    Scalar residualError = dlibAlgorithm_.getMaximumResidualError();
+    Scalar constraintError = 0.0;
+
+    if (optimizationResult_.getIterationNumber() > 0)
     {
-      // Nothing to do
+      absoluteError = (xPoint - lastInput_).norm();
+      relativeError = (xPoint - lastInput_).norm() / xPoint.norm();
+      residualError = (fxPoint - lastOutput_).norm();
+      constraintError = 0.0;
     }
 
-    bool should_continue_search(const DlibMatrix & x,
-                                const double funct_value,
-                                const DlibMatrix & )
-    {
-      optimizationResult_.setEvaluationNumber(objectiveFunction_.getEvaluationNumber());
+    // Compute stop criterion
+    bool stopSearch =  ((absoluteError < dlibAlgorithm_.getMaximumAbsoluteError())
+                        && (relativeError < dlibAlgorithm_.getMaximumRelativeError())
+                        && (residualError < dlibAlgorithm_.getMaximumResidualError()))
+                       || (optimizationResult_.getIterationNumber() >= dlibAlgorithm_.getMaximumIterationNumber())
+                       || (objectiveFunction_.getEvaluationNumber() >= dlibAlgorithm_.getMaximumEvaluationNumber());
 
-      Point xPoint(x.size());
-      std::copy(x.begin(), x.end(), xPoint.begin());
-      Point fxPoint(1, funct_value);
+    lastInput_ = xPoint;
+    lastOutput_ = fxPoint;
 
-      Scalar absoluteError = dlibAlgorithm_.getMaximumAbsoluteError();
-      Scalar relativeError = dlibAlgorithm_.getMaximumRelativeError();
-      Scalar residualError = dlibAlgorithm_.getMaximumResidualError();
-      Scalar constraintError = 0.0;
+    optimizationResult_.store(lastInput_,
+                              lastOutput_,
+                              absoluteError,
+                              relativeError,
+                              residualError,
+                              constraintError);
 
-      if (optimizationResult_.getIterationNumber() > 0)
-      { 
-        absoluteError = (xPoint - lastInput_).norm();
-        relativeError = (xPoint - lastInput_).norm() / xPoint.norm();
-        residualError = (fxPoint - lastOutput_).norm();
-        constraintError = 0.0;
-      }
+    if (!stopSearch) optimizationResult_.setIterationNumber(optimizationResult_.getIterationNumber() + 1);
 
-      // Compute stop criterion
-      bool stopSearch =  ((absoluteError < dlibAlgorithm_.getMaximumAbsoluteError())
-                        &&(relativeError < dlibAlgorithm_.getMaximumRelativeError())
-                        &&(residualError < dlibAlgorithm_.getMaximumResidualError()))
-                        ||(optimizationResult_.getIterationNumber() >= dlibAlgorithm_.getMaximumIterationNumber())
-                        ||(objectiveFunction_.getEvaluationNumber() >= dlibAlgorithm_.getMaximumEvaluationNumber());
-
-      lastInput_ = xPoint;
-      lastOutput_ = fxPoint;
-
-      optimizationResult_.store(lastInput_,
-                                lastOutput_,
-                                absoluteError,
-                                relativeError,
-                                residualError,
-                                constraintError);
-
-      if (!stopSearch) optimizationResult_.setIterationNumber(optimizationResult_.getIterationNumber()+1);
-
-      return !stopSearch;
-    }
+    return !stopSearch;
+  }
 
 private:
   const Dlib & dlibAlgorithm_;
@@ -357,16 +357,16 @@ Bool Dlib::IsAvailable()
 Description Dlib::GetAlgorithmNames()
 {
   static Description algoNames;
-  
+
   if (!algoNames.getSize())
   {
     algoNames.add("CG");
     algoNames.add("BFGS");
     algoNames.add("LBFGS");
     algoNames.add("Newton");
-  #ifdef OPENTURNS_HAVE_DLIB_GLOBAL_OPTIMIZATION
+#ifdef OPENTURNS_HAVE_DLIB_GLOBAL_OPTIMIZATION
     algoNames.add("Global");
-  #endif
+#endif
     algoNames.add("LSQ");
     algoNames.add("LSQLM");
     algoNames.add("TrustRegion");
@@ -453,7 +453,7 @@ Scalar Dlib::getWolfeSigma() const
 
 void Dlib::setWolfeSigma(const Scalar wolfeSigma)
 {
-  if (!(wolfeSigma > 0.0)) 
+  if (!(wolfeSigma > 0.0))
     throw InvalidArgumentException(HERE) << "Error: wolfeSigma parameter must be strictly positive";
 
   wolfeSigma_ = wolfeSigma;
@@ -499,12 +499,12 @@ void Dlib::checkProblem(const OptimizationProblem & problem) const
 {
 #ifdef OPENTURNS_HAVE_DLIB
   // Cannot solve multi-objective problems
-  if (problem.hasMultipleObjective()) 
+  if (problem.hasMultipleObjective())
     throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " does not support multi-objective optimization";
 
   // Cannot solve problems with equality/inequality constraints
-  if (problem.hasInequalityConstraint()) 
-    throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm does not support inequality constraints";  
+  if (problem.hasInequalityConstraint())
+    throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm does not support inequality constraints";
   if (problem.hasEqualityConstraint())
     throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm does not support equality constraints";
 
@@ -534,7 +534,7 @@ void Dlib::checkProblem(const OptimizationProblem & problem) const
     throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm does not support least squares problems.";
 
   // "LSQ", "LSQLM" and "TrustRegion" require non bounded variables
-  if (problem.hasBounds() && (algoName_ == "LSQ" || algoName_== "LSQLM" || algoName_ == "TrustRegion"))
+  if (problem.hasBounds() && (algoName_ == "LSQ" || algoName_ == "LSQLM" || algoName_ == "TrustRegion"))
     throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm cannot solve bounded problems.";
 
 #else
@@ -606,9 +606,9 @@ void Dlib::run()
 
   /** SWITCH BETWEEN ALGORITHMS **/
   if (   algoName_ == "CG"
-      || algoName_ == "BFGS"
-      || algoName_ == "LBFGS"
-      || algoName_ == "Newton")
+         || algoName_ == "BFGS"
+         || algoName_ == "LBFGS"
+         || algoName_ == "Newton")
   {
     // Create searchStrategy
     DlibSearchStrategy searchStrategy;
@@ -622,14 +622,14 @@ void Dlib::run()
                                               maxLineSearchIterations_);
     else if (algoName_ == "LBFGS")
       searchStrategy = DlibLbfgsSearchStrategy( wolfeRho_,
-                                                wolfeSigma_,
-                                                maxLineSearchIterations_,
-                                                maxSize_);
+                       wolfeSigma_,
+                       maxLineSearchIterations_,
+                       maxSize_);
     else if (algoName_ == "Newton")
       searchStrategy = DlibNewtonSearchStrategy(wolfeRho_,
-                                                wolfeSigma_,
-                                                maxLineSearchIterations_,
-                                                objectiveDlibFunction );
+                       wolfeSigma_,
+                       maxLineSearchIterations_,
+                       objectiveDlibFunction );
 
     // Create stopStrategy
     DlibStopStrategy stopStrategy(*this,
@@ -639,7 +639,7 @@ void Dlib::run()
     // Switch on problem type
     if (getProblem().isMinimization())
     {
-      if (getProblem().hasBounds()) 
+      if (getProblem().hasBounds())
         dlib::find_min_box_constrained (searchStrategy,
                                         stopStrategy,
                                         objectiveDlibFunction,
@@ -647,17 +647,17 @@ void Dlib::run()
                                         optimPoint,
                                         lb,
                                         ub);
-      else 
+      else
         dlib::find_min ( searchStrategy,
-                          stopStrategy,
-                          objectiveDlibFunction,
-                          objectiveDlibGradient,
-                          optimPoint,
-                          -SpecFunc::MaxScalar );
+                         stopStrategy,
+                         objectiveDlibFunction,
+                         objectiveDlibGradient,
+                         optimPoint,
+                         -SpecFunc::MaxScalar );
     }
     else
     {
-      if (getProblem().hasBounds()) 
+      if (getProblem().hasBounds())
         dlib::find_max_box_constrained (searchStrategy,
                                         stopStrategy,
                                         objectiveDlibFunction,
@@ -665,7 +665,7 @@ void Dlib::run()
                                         optimPoint,
                                         lb,
                                         ub);
-      else 
+      else
         dlib::find_max (searchStrategy,
                         stopStrategy,
                         objectiveDlibFunction,
@@ -675,28 +675,31 @@ void Dlib::run()
     }
   } // CG, BFGS/LBFGS, Newton
 #ifdef OPENTURNS_HAVE_DLIB_GLOBAL_OPTIMIZATION
-  else if (algoName_ == "Global") 
+  else if (algoName_ == "Global")
   {
     // Declare result and lambda function
     dlib::function_evaluation globalOptimResult;
-    auto objectiveLambdaFunction = [&](dlib::matrix<double,0,1> input) { return objectiveDlibFunction(input); };
+    auto objectiveLambdaFunction = [&](dlib::matrix<double, 0, 1> input)
+    {
+      return objectiveDlibFunction(input);
+    };
 
-    if (getProblem().isMinimization()) 
+    if (getProblem().isMinimization())
       globalOptimResult = dlib::find_min_global(objectiveLambdaFunction,
-                                                lb,
-                                                ub,
-                                                std::vector<bool>(dimension,false),
-                                                dlib::max_function_calls(getMaximumEvaluationNumber()),
-                                                std::chrono::nanoseconds(dlib::FOREVER),
-                                                getMaximumAbsoluteError());
+                          lb,
+                          ub,
+                          std::vector<bool>(dimension, false),
+                          dlib::max_function_calls(getMaximumEvaluationNumber()),
+                          std::chrono::nanoseconds(dlib::FOREVER),
+                          getMaximumAbsoluteError());
     else
       globalOptimResult = dlib::find_max_global(objectiveLambdaFunction,
-                                                lb,
-                                                ub,
-                                                std::vector<bool>(dimension,false),
-                                                dlib::max_function_calls(getMaximumEvaluationNumber()),
-                                                std::chrono::nanoseconds(dlib::FOREVER),
-                                                getMaximumAbsoluteError());
+                          lb,
+                          ub,
+                          std::vector<bool>(dimension, false),
+                          dlib::max_function_calls(getMaximumEvaluationNumber()),
+                          std::chrono::nanoseconds(dlib::FOREVER),
+                          getMaximumAbsoluteError());
 
     // Reconstruction of OptimizationResult
     Sample inputHistory(objectiveDlibFunction.getInputHistory());
@@ -721,7 +724,7 @@ void Dlib::run()
                       0.0);
 
     result_.setOptimalPoint(optimalPoint);
-    result_.setOptimalValue(Point(1,globalOptimResult.y));
+    result_.setOptimalValue(Point(1, globalOptimResult.y));
     result_.setEvaluationNumber(objectiveDlibFunction.getEvaluationNumber());
   }
 #endif
@@ -734,12 +737,13 @@ void Dlib::run()
                                   residualDlibFunction);
 
     // Create lambda functions to add a first variable as required by dlib::solve_least_squares
-    auto augmentedResidualFunction = [&](int i, dlib::matrix<double,0,1> params)
+    auto augmentedResidualFunction = [&](int i, dlib::matrix<double, 0, 1> params)
     {
       return residualDlibFunction(i, params);
     };
 
-    auto augmentedResidualDerivative = [&](int i, dlib::matrix<double,0,1> params) {
+    auto augmentedResidualDerivative = [&](int i, dlib::matrix<double, 0, 1> params)
+    {
       return residualDlibFunction.gradient(i, params);
     };
 
@@ -762,7 +766,7 @@ void Dlib::run()
   }
   else if (algoName_ == "LSQLM")
   {
-      // Create stopStrategy
+    // Create stopStrategy
     DlibFunction residualDlibFunction(getProblem().getResidualFunction());
     DlibStopStrategy stopStrategy(*this,
                                   result_,
@@ -774,7 +778,8 @@ void Dlib::run()
       return residualDlibFunction(i, params);
     };
 
-    auto augmentedResidualDerivative = [&](int i, dlib::matrix<double, 0, 1> params) {
+    auto augmentedResidualDerivative = [&](int i, dlib::matrix<double, 0, 1> params)
+    {
       return residualDlibFunction.gradient(i, params);
     };
 
@@ -789,12 +794,12 @@ void Dlib::run()
 
     // Call to dlib::solve_least_squares: modification of params
     dlib::solve_least_squares_lm(stopStrategy,
-                              augmentedResidualFunction,
-                              augmentedResidualDerivative,
-                              list,
-                              params,
-                              initialTrustRegionRadius_
-                              );
+                                 augmentedResidualFunction,
+                                 augmentedResidualDerivative,
+                                 list,
+                                 params,
+                                 initialTrustRegionRadius_
+                                );
   }
   else if (algoName_ == "TrustRegion")
   {
@@ -816,10 +821,10 @@ void Dlib::run()
                                     initialTrustRegionRadius_);
     else
       dlib::find_max_trust_region( stopStrategy,
-                                      objectiveDlibFunction,
-                                      optimizer,
-                                      initialTrustRegionRadius_
-                                      );
+                                   objectiveDlibFunction,
+                                   optimizer,
+                                   initialTrustRegionRadius_
+                                 );
   }
   else
     throw NotYetImplementedException(HERE) << "Error: unknown strategy " << algoName_;

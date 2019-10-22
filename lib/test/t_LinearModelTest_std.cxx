@@ -66,7 +66,7 @@ int main(int, char *[])
   }
   fullprint << "LinearModelFisher pvalue=" << std::setprecision(2) << LinearModelTest::LinearModelFisher(sampleY, sampleZ).getPValue() << std::endl;
   fullprint << "LinearModelResidualMean pvalue=" << std::setprecision(2) << LinearModelTest::LinearModelResidualMean(sampleY, sampleZ).getPValue() << std::endl;
-  
+
   // Regression test between 2 samples : firstSample of dimension n and secondSample of dimension 1. If firstSample[i] is the numerical sample extracted from firstSample (ith coordinate of each point of the numerical sample), PartialRegression performs the Regression test simultaneously on all firstSample[i] and secondSample, for i in the selection. The Regression test tests ifthe regression model between two scalar numerical samples is significant. It is based on the deviation analysis of the regression. The t-test is used.
 
   // The two tests must be equal

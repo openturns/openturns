@@ -551,19 +551,19 @@ Point ComposedDistribution::computeSequentialConditionalPDF(const Point & x) con
   if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional PDF with an argument of dimension=" << x.getDimension() << " different from distribution dimension=" << dimension_;
   Point result(dimension_);
   if (hasIndependentCopula())
-    {
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-	result[i] = distributionCollection_[i].computePDF(x[i]);
-    }
+  {
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      result[i] = distributionCollection_[i].computePDF(x[i]);
+  }
   else
-    {
-      Point u(dimension_);
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-	u[i] = distributionCollection_[i].computeCDF(x[i]);
-      const Point copulaPDF(copula_.computeSequentialConditionalPDF(u));
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-	result[i] = distributionCollection_[i].computePDF(x[i]) * copulaPDF[i];
-    }
+  {
+    Point u(dimension_);
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      u[i] = distributionCollection_[i].computeCDF(x[i]);
+    const Point copulaPDF(copula_.computeSequentialConditionalPDF(u));
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      result[i] = distributionCollection_[i].computePDF(x[i]) * copulaPDF[i];
+  }
   return result;
 }
 
@@ -612,16 +612,16 @@ Point ComposedDistribution::computeSequentialConditionalQuantile(const Point & q
   if (q.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: cannot compute sequential conditional quantile with an argument of dimension=" << q.getDimension() << " different from distribution dimension=" << dimension_;
   Point result(dimension_);
   if (hasIndependentCopula())
-    {
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-	result[i] = distributionCollection_[i].computeScalarQuantile(q[i]);
-    }
+  {
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      result[i] = distributionCollection_[i].computeScalarQuantile(q[i]);
+  }
   else
-    {
-      const Point copulaQuantile(copula_.computeSequentialConditionalQuantile(q));
-      for (UnsignedInteger i = 0; i < dimension_; ++i)
-	result[i] = distributionCollection_[i].computeScalarQuantile(copulaQuantile[i]);
-    }
+  {
+    const Point copulaQuantile(copula_.computeSequentialConditionalQuantile(q));
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      result[i] = distributionCollection_[i].computeScalarQuantile(copulaQuantile[i]);
+  }
   return result;
 }
 

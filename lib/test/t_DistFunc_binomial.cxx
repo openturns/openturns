@@ -42,14 +42,14 @@ int main(int, char *[])
       UnsignedInteger n1 = 5;
       for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
-	Scalar p = pMin + i1 * (pMax - pMin) / (n1 - 1.0);
-	for (UnsignedInteger n = nMin; n <= nMax; ++n)
-	  {
-	    for (UnsignedInteger k = 0; k <= n; ++k)
-	      {
-		fullprint << "dBinomial(" << n << ", " << p << ", " << k << ")=" << std::setprecision(3) << DistFunc::dBinomial(n, p, k) << std::endl;
-	      }
-	  }
+        Scalar p = pMin + i1 * (pMax - pMin) / (n1 - 1.0);
+        for (UnsignedInteger n = nMin; n <= nMax; ++n)
+        {
+          for (UnsignedInteger k = 0; k <= n; ++k)
+          {
+            fullprint << "dBinomial(" << n << ", " << p << ", " << k << ")=" << std::setprecision(3) << DistFunc::dBinomial(n, p, k) << std::endl;
+          }
+        }
       }
     } // dBinomial
     {
@@ -61,14 +61,14 @@ int main(int, char *[])
       UnsignedInteger n1 = 5;
       for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
-	Scalar p = pMin + i1 * (pMax - pMin) / (n1 - 1.0);
-	for (UnsignedInteger n = nMin; n <= nMax; ++n)
-	  {
-	    for (UnsignedInteger k = 0; k <= n; ++k)
-	      {
-		fullprint << "logdBinomial(" << n << ", " << p << ", " << k << ")=" << DistFunc::logdBinomial(n, p, k) << std::endl;
-	      }
-	  }
+        Scalar p = pMin + i1 * (pMax - pMin) / (n1 - 1.0);
+        for (UnsignedInteger n = nMin; n <= nMax; ++n)
+        {
+          for (UnsignedInteger k = 0; k <= n; ++k)
+          {
+            fullprint << "logdBinomial(" << n << ", " << p << ", " << k << ")=" << DistFunc::logdBinomial(n, p, k) << std::endl;
+          }
+        }
       }
     } // logdBinomial
     {
@@ -81,14 +81,14 @@ int main(int, char *[])
       UnsignedInteger nR = 5;
       for (UnsignedInteger i1 = 0; i1 < n1; ++i1)
       {
-	Scalar p = pMin + i1 * (pMax - pMin) / (n1 - 1.0);
-	for (UnsignedInteger n = nMin; n <= nMax; ++n)
-	  {
-	    for (UnsignedInteger iR = 0; iR < nR; ++iR)
-	      {
-		fullprint << "rBinomial()=" << DistFunc::rBinomial(n, p) << std::endl;
-	      }
-	  }
+        Scalar p = pMin + i1 * (pMax - pMin) / (n1 - 1.0);
+        for (UnsignedInteger n = nMin; n <= nMax; ++n)
+        {
+          for (UnsignedInteger iR = 0; iR < nR; ++iR)
+          {
+            fullprint << "rBinomial()=" << DistFunc::rBinomial(n, p) << std::endl;
+          }
+        }
       }
     } // rBinomial
   }

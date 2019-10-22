@@ -42,8 +42,8 @@ public:
 
   /** Parameters constructor */
   Hypergeometric(const UnsignedInteger n,
-		 const UnsignedInteger k,
-		 const UnsignedInteger m);
+                 const UnsignedInteger k,
+                 const UnsignedInteger m);
 
   /** Comparison operator */
   Bool operator ==(const Hypergeometric & other) const;

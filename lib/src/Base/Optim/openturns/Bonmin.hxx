@@ -39,39 +39,39 @@ class OT_API Bonmin
   CLASSNAME
 
 public:
-  
+
   /** Constructors */
   explicit Bonmin(const String & algoName = "B-BB");
-  
+
   explicit Bonmin( OptimizationProblem & problem,
-          const String & algoName = "B-BB");
-  
+                   const String & algoName = "B-BB");
+
   /** Virtual constructor */
   virtual Bonmin * clone() const;
-  
+
   /** Bonmin static methods */
   static Bool IsAvailable();  // Check whether Bonmin support is available
   static Description GetAlgorithmNames(); // List available bonmin algorithm names
-  
-  
+
+
   /** Accessors to Bonmin attributes */
   void setAlgorithmName(const String & algoName);
   String getAlgorithmName() const;
-      
+
   /** Performing the actual computation. */
   void run();
-  
+
   /** Description of object */
   String __str__(const String & offset = "") const;
   String __repr__() const;
-  
+
 protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
   virtual void checkProblem(const OptimizationProblem & problem) const;
-  
-private:  
+
+private:
   String algoName_;
-  
+
 };
 
 END_NAMESPACE_OPENTURNS

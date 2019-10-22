@@ -59,13 +59,13 @@ String DiscreteDistribution::__repr__() const
 /* Get the PDF of the distribution */
 Scalar DiscreteDistribution::computePDF(const Point & point) const
 {
-  if (point.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a point with dimension=" << dimension_ <<", got dimension=" << point.getDimension();
+  if (point.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a point with dimension=" << dimension_ << ", got dimension=" << point.getDimension();
   Indices x(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      x[i] = static_cast< UnsignedInteger >(round(point[i]));
-      if (std::abs(x[i] - point[i]) > supportEpsilon_) return 0.0;
-    }
+  {
+    x[i] = static_cast< UnsignedInteger >(round(point[i]));
+    if (std::abs(x[i] - point[i]) > supportEpsilon_) return 0.0;
+  }
   return computePDF(x);
 }
 

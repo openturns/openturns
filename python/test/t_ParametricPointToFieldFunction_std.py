@@ -6,10 +6,14 @@ import openturns as ot
 ot.TESTPREAMBLE()
 
 mesh = ot.RegularGrid(0.0, 0.1, 11)
+
+
 def f(X):
     size = 11
     Y = [ot.Point(X)*i for i in range(size)]
     return Y
+
+
 inputDim = 2
 outputDim = 2
 function = ot.PythonPointToFieldFunction(inputDim, mesh, outputDim, f)
@@ -21,7 +25,8 @@ parametric = ot.ParametricPointToFieldFunction(function, [0], [5.0])
 
 # properties
 print ('dim=', parametric.getInputDimension(), parametric.getOutputDimension())
-print ('description=', parametric.getInputDescription(), parametric.getOutputDescription())
+print ('description=', parametric.getInputDescription(),
+       parametric.getOutputDescription())
 print ('mesh=', parametric.getOutputMesh())
 
 # op(Point)

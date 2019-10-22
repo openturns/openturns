@@ -270,7 +270,7 @@ Bool EvaluationImplementation::isLinearlyDependent(const UnsignedInteger index) 
   // Check dimension consistency
   if (index > getInputDimension())
     throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
-  
+
   return false;
 }
 

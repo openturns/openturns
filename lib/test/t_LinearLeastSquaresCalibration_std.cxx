@@ -59,26 +59,26 @@ int main(int, char *[])
     methods.add("QR");
     methods.add("Cholesky");
     for (UnsignedInteger n = 0; n < methods.getSize(); ++n)
+    {
+      fullprint << "method=" << methods[n] << std::endl;
+      LinearLeastSquaresCalibration algo(modelX, x, y, candidate, methods[n]);
+      algo.run();
+      fullprint << "result (const. 1)=" << algo.getResult() << std::endl;
+      modelX.setParameter(candidate);
+      Sample modelObservations(modelX(x));
+      Matrix transposedGradientObservations(modelX.getParameterDimension(), y.getSize() * modelX.getOutputDimension());
+      UnsignedInteger shift = 0;
+      UnsignedInteger skip = modelX.getOutputDimension() * modelX.getParameterDimension();
+      for (UnsignedInteger i = 0; i < y.getSize(); ++i)
       {
-	fullprint << "method=" << methods[n] << std::endl;
-	LinearLeastSquaresCalibration algo(modelX, x, y, candidate, methods[n]);
-	algo.run();
-	fullprint << "result (const. 1)=" << algo.getResult() << std::endl;
-	modelX.setParameter(candidate);
-	Sample modelObservations(modelX(x));
-	Matrix transposedGradientObservations(modelX.getParameterDimension(), y.getSize() * modelX.getOutputDimension());
-	UnsignedInteger shift = 0;
-	UnsignedInteger skip = modelX.getOutputDimension() * modelX.getParameterDimension();
-	for (UnsignedInteger i = 0; i < y.getSize(); ++i)
-	  {
-	    Matrix localGradient(modelX.parameterGradient(x[i]));
-	    std::copy(localGradient.getImplementation()->begin(), localGradient.getImplementation()->end(), transposedGradientObservations.getImplementation()->begin() + shift);
-	    shift += skip;
-	  }
-	algo = LinearLeastSquaresCalibration(modelObservations, transposedGradientObservations.transpose(), y, candidate, methods[n]);
-	algo.run();
-	fullprint << "result (const. 2)=" << algo.getResult() << std::endl;
-      } // n
+        Matrix localGradient(modelX.parameterGradient(x[i]));
+        std::copy(localGradient.getImplementation()->begin(), localGradient.getImplementation()->end(), transposedGradientObservations.getImplementation()->begin() + shift);
+        shift += skip;
+      }
+      algo = LinearLeastSquaresCalibration(modelObservations, transposedGradientObservations.transpose(), y, candidate, methods[n]);
+      algo.run();
+      fullprint << "result (const. 2)=" << algo.getResult() << std::endl;
+    } // n
   }
   catch (TestFailed & ex)
   {

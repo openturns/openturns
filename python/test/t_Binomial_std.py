@@ -69,7 +69,8 @@ try:
     # Confidence interval
     alpha = 0.05
     bounds = distribution.computeBilateralConfidenceInterval(1-alpha)
-    print("%.2f%% bilateral confidence interval" % ((1-alpha)*100), " =", bounds)
+    print("%.2f%% bilateral confidence interval" %
+          ((1-alpha)*100), " =", bounds)
 
 except:
     import sys

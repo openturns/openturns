@@ -88,9 +88,9 @@ class LeastSquaresFactoryResidualEvaluation : public EvaluationImplementation
 {
 public:
   LeastSquaresFactoryResidualEvaluation(const Sample & sample,
-                          const Distribution & distribution,
-                          const Point & knownParameterValues,
-                          const Indices & knownParameterIndices)
+                                        const Distribution & distribution,
+                                        const Point & knownParameterValues,
+                                        const Indices & knownParameterIndices)
     : EvaluationImplementation()
     , sample_(sample)
     , distribution_(distribution)
@@ -187,9 +187,9 @@ class LeastSquaresFactoryResidualGradient : public GradientImplementation
 {
 public:
   LeastSquaresFactoryResidualGradient(const Sample & sample,
-                        const Distribution & distribution,
-                        const Point & knownParameterValues,
-                        const Indices & knownParameterIndices)
+                                      const Distribution & distribution,
+                                      const Point & knownParameterValues,
+                                      const Indices & knownParameterIndices)
     : GradientImplementation()
     , sample_(sample)
     , distribution_(distribution)

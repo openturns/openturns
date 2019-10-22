@@ -568,13 +568,14 @@ def check_execute():
     else:
         coupling_tools.execute('echo hi', is_shell=True, shell_exe='/bin/bash')
 
-    ret, stdout = coupling_tools.execute('echo hello', is_shell=True, get_stdout=True)
+    ret, stdout = coupling_tools.execute(
+        'echo hello', is_shell=True, get_stdout=True)
     if ret != 0 or not stdout.decode().startswith('hello'):
         raise Exception("coupling_tools.execute error!")
 
     ret, stdout, stderr = coupling_tools.execute('echo hello', is_shell=True,
                                                  get_stdout=True, get_stderr=True)
-    if ret != 0 or not stdout.decode().startswith('hello') or len(stderr)>0:
+    if ret != 0 or not stdout.decode().startswith('hello') or len(stderr) > 0:
         raise Exception("coupling_tools.execute error!")
 
     print("execute ok")

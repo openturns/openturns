@@ -151,10 +151,10 @@ Sample UserDefined::getSample(const UnsignedInteger size) const
   Indices indices;
   // Efficient algorithm for uniform weights
   if (hasUniformWeights_)
-    {
-      Collection<UnsignedInteger> values(RandomGenerator::IntegerGenerate(size, supportSize));
-      indices = Indices(values.begin(), values.end());
-    }
+  {
+    Collection<UnsignedInteger> values(RandomGenerator::IntegerGenerate(size, supportSize));
+    indices = Indices(values.begin(), values.end());
+  }
   // Alias method for nonuniform weights
   else
   {

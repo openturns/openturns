@@ -190,7 +190,7 @@ try:
     print("matrix32*s = ", repr(sampleResult1))
 
     # unary minus
-    A = Matrix([[1, 2],[3, 4]])
+    A = Matrix([[1, 2], [3, 4]])
     print(-A)
 except:
     import sys

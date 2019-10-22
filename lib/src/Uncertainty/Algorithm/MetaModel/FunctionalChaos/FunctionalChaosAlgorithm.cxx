@@ -336,11 +336,11 @@ void FunctionalChaosAlgorithm::run()
   // If the input and output databases have already been given to the projection strategy, transport them to the measure space
   const Sample initialInputSample(projectionStrategy_.getInputSample());
   if (databaseProjection && !noTransformation)
-    {
-      LOGINFO("Transform the input sample in the measure space");
-      const Sample transformedSample(transformation_(initialInputSample));
-      projectionStrategy_.setInputSample(transformedSample);
-    }
+  {
+    LOGINFO("Transform the input sample in the measure space");
+    const Sample transformedSample(transformation_(initialInputSample));
+    projectionStrategy_.setInputSample(transformedSample);
+  }
   // Second, compute the results for each marginal output and merge
   // these marginal results.
   // As all the components have been projected using the same basis,

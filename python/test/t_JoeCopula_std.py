@@ -109,4 +109,3 @@ quantile = ot.Point(margins.computeQuantile(0.95))
 print("margins quantile=", repr(quantile))
 print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
 print("margins realization=", repr(margins.getRealization()))
-

@@ -105,8 +105,8 @@ Point Gumbel::computeDDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar expX = std::exp(-(1.0/beta_) * (point[0] - gamma_));
-  return Point(1, (1.0/beta_) * (1.0/beta_) * (expX - 1.0) * expX * std::exp(-expX));
+  const Scalar expX = std::exp(-(1.0 / beta_) * (point[0] - gamma_));
+  return Point(1, (1.0 / beta_) * (1.0 / beta_) * (expX - 1.0) * expX * std::exp(-expX));
 }
 
 
@@ -182,18 +182,18 @@ Scalar Gumbel::computeComplementaryCDF(const Scalar u) const
 /* Compute the entropy of the distribution */
 Scalar Gumbel::computeEntropy() const
 {
-  return -std::log((1.0/beta_)) + SpecFunc::EulerConstant + 1.0;
+  return -std::log((1.0 / beta_)) + SpecFunc::EulerConstant + 1.0;
 }
 
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex Gumbel::computeCharacteristicFunction(const Scalar x) const
 {
-  return SpecFunc::Gamma(Complex(1.0, -x / (1.0/beta_))) * std::exp(Complex(0.0, gamma_ * x));
+  return SpecFunc::Gamma(Complex(1.0, -x / (1.0 / beta_))) * std::exp(Complex(0.0, gamma_ * x));
 }
 
 Complex Gumbel::computeLogCharacteristicFunction(const Scalar x) const
 {
-  return std::log(SpecFunc::Gamma(Complex(1.0, -x / (1.0/beta_)))) + Complex(0.0, gamma_ * x);
+  return std::log(SpecFunc::Gamma(Complex(1.0, -x / (1.0 / beta_)))) + Complex(0.0, gamma_ * x);
 }
 
 /* Get the PDFGradient of the distribution */
@@ -203,10 +203,10 @@ Point Gumbel::computePDFGradient(const Point & point) const
 
   const Scalar x = point[0] - gamma_;
   const Scalar expX = std::exp(-x / beta_);
-  const Scalar pdf = (1.0/beta_) * expX * std::exp(-expX);
+  const Scalar pdf = (1.0 / beta_) * expX * std::exp(-expX);
   Point pdfGradient(2);
   pdfGradient[0] = (x * (1.0 - expX) - beta_) * std::exp((-beta_ * expX - x) / beta_) / (beta_ * beta_ * beta_);
-  pdfGradient[1] = (1.0/beta_) * (1.0 - expX) * pdf;
+  pdfGradient[1] = (1.0 / beta_) * (1.0 - expX) * pdf;
   return pdfGradient;
 }
 
@@ -220,7 +220,7 @@ Point Gumbel::computeCDFGradient(const Point & point) const
   const Scalar cdf = std::exp(-expX);
   Point cdfGradient(2);
   cdfGradient[0] = -x * expX * std::exp(-expX) / (beta_ * beta_);
-  cdfGradient[1] = -(1.0/beta_) * expX * cdf;
+  cdfGradient[1] = -(1.0 / beta_) * expX * cdf;
   return cdfGradient;
 }
 
@@ -228,21 +228,21 @@ Point Gumbel::computeCDFGradient(const Point & point) const
 Scalar Gumbel::computeScalarQuantile(const Scalar prob,
                                      const Bool tail) const
 {
-  if (tail) return gamma_ - std::log(-log1p(-prob)) / (1.0/beta_);
-  return gamma_ - std::log(-std::log(prob)) / (1.0/beta_);
+  if (tail) return gamma_ - std::log(-log1p(-prob)) / (1.0 / beta_);
+  return gamma_ - std::log(-std::log(prob)) / (1.0 / beta_);
 }
 
 /* Compute the mean of the distribution */
 void Gumbel::computeMean() const
 {
-  mean_ = Point(1, gamma_ + SpecFunc::EulerConstant / (1.0/beta_));
+  mean_ = Point(1, gamma_ + SpecFunc::EulerConstant / (1.0 / beta_));
   isAlreadyComputedMean_ = true;
 }
 
 /* Get the standard deviation of the distribution */
 Point Gumbel::getStandardDeviation() const
 {
-  return Point(1, SpecFunc::PI_SQRT6 / (1.0/beta_));
+  return Point(1, SpecFunc::PI_SQRT6 / (1.0 / beta_));
 }
 
 /* Get the skewness of the distribution */
@@ -269,7 +269,7 @@ Distribution Gumbel::getStandardRepresentative() const
 void Gumbel::computeCovariance() const
 {
   covariance_ = CovarianceMatrix(1);
-  covariance_(0, 0) = SpecFunc::PI2_6 / ((1.0/beta_) * (1.0/beta_));
+  covariance_(0, 0) = SpecFunc::PI2_6 / ((1.0 / beta_) * (1.0 / beta_));
   isAlreadyComputedCovariance_ = true;
 }
 
@@ -304,7 +304,7 @@ void Gumbel::setAlpha(const Scalar alpha)
 {
   LOGWARN("Gumbel::setAlpha is deprecated");
   if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
-  if (alpha != (1.0/beta_))
+  if (alpha != (1.0 / beta_))
   {
     beta_ = 1.0 / alpha;
     isAlreadyComputedMean_ = false;

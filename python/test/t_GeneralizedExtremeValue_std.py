@@ -8,8 +8,8 @@ RandomGenerator.SetSeed(0)
 
 
 all_cases = [GeneralizedExtremeValue(2.0, 1.5, -0.15),
-              GeneralizedExtremeValue(2.0, 1.5,  0.0),
-              GeneralizedExtremeValue(2.0, 1.5,  0.15)]
+             GeneralizedExtremeValue(2.0, 1.5,  0.0),
+             GeneralizedExtremeValue(2.0, 1.5,  0.15)]
 for i in range(len(all_cases)):
     distribution = all_cases[i]
     print("#" * 50)
@@ -145,4 +145,3 @@ for i in range(len(all_cases)):
     distribution.setActualDistribution(
         distribution.getActualDistribution())
     print("Distribution from actual distribution=", distribution)
-

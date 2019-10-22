@@ -63,15 +63,15 @@ public:
   // For the Binomial distribution
 private:
   static Scalar bd0(const UnsignedInteger k,
-		    const Scalar np);
+                    const Scalar np);
 
 public:
   static Scalar logdBinomial(const UnsignedInteger n,
-			     const Scalar p,
-			     const UnsignedInteger k);
+                             const Scalar p,
+                             const UnsignedInteger k);
   static Scalar dBinomial(const UnsignedInteger n,
-			  const Scalar p,
-			  const UnsignedInteger k);
+                          const Scalar p,
+                          const UnsignedInteger k);
   static UnsignedInteger rBinomial(const UnsignedInteger n,
                                    const Scalar p);
   static Indices rBinomial(const UnsignedInteger n,
@@ -108,25 +108,25 @@ public:
 
   // For Hypergeometric distribution
   static Scalar dHypergeometric(const UnsignedInteger n,
-				const UnsignedInteger k,
-				const UnsignedInteger m,
-				const UnsignedInteger x);
+                                const UnsignedInteger k,
+                                const UnsignedInteger m,
+                                const UnsignedInteger x);
   static Scalar logdHypergeometric(const UnsignedInteger n,
-				   const UnsignedInteger k,
-				   const UnsignedInteger m,
-				   const UnsignedInteger x);
+                                   const UnsignedInteger k,
+                                   const UnsignedInteger m,
+                                   const UnsignedInteger x);
   static Scalar pHypergeometric(const UnsignedInteger n,
-				const UnsignedInteger k,
-				const UnsignedInteger m,
-				const UnsignedInteger x,
-				const Bool tail = false);
+                                const UnsignedInteger k,
+                                const UnsignedInteger m,
+                                const UnsignedInteger x,
+                                const Bool tail = false);
   static UnsignedInteger rHypergeometric(const UnsignedInteger n,
-					 const UnsignedInteger k,
-					 const UnsignedInteger m);
+                                         const UnsignedInteger k,
+                                         const UnsignedInteger m);
   static Indices rHypergeometric(const UnsignedInteger n,
-				 const UnsignedInteger k,
-				 const UnsignedInteger m,
-				 const UnsignedInteger size);
+                                 const UnsignedInteger k,
+                                 const UnsignedInteger m,
+                                 const UnsignedInteger size);
   // For Kolmogorov distribution
   static Scalar pKolmogorov(const UnsignedInteger n,
                             const Scalar x,
@@ -171,7 +171,7 @@ public:
   static Scalar pNormal(const Scalar x,
                         const Bool tail = false);
   static Point pNormal(const Point & x,
-                        const Bool tail = false);
+                       const Bool tail = false);
   static Scalar pNormal2D(const Scalar x1,
                           const Scalar x2,
                           const Scalar rho,
@@ -186,12 +186,12 @@ public:
   static Scalar qNormal(const Scalar p,
                         const Bool tail = false);
   static Point qNormal(const Point & p,
-                        const Bool tail = false);
+                       const Bool tail = false);
   static Scalar rNormal();
   static Point rNormal(const UnsignedInteger size);
   // For Poisson distribution
   static Scalar logdPoisson(const Scalar lambda,
-			    const UnsignedInteger k );
+                            const UnsignedInteger k );
   static Scalar dPoisson(const Scalar lambda,
                          const UnsignedInteger k);
   static Scalar qPoisson(const Scalar lambda,
@@ -211,13 +211,13 @@ public:
                          const Scalar x,
                          const Bool tail = false);
   static Point pStudent(const Scalar nu,
-			const Point & x,
+                        const Point & x,
                         const Bool tail = false);
   static Scalar qStudent(const Scalar nu,
-			 const Scalar p,
-			 const Bool tail = false);
+                         const Scalar p,
+                         const Bool tail = false);
   static Point qStudent(const Scalar nu,
-			const Point & p,
+                        const Point & p,
                         const Bool tail = false);
   static Scalar rStudent(const Scalar nu);
   static Point rStudent(const Scalar nu,

@@ -127,17 +127,17 @@ public:
 
   /** Compute marginal variance conditionnaly to observations (1 cov of size outdimension)*/
   virtual Scalar getConditionalMarginalVariance(const Point & point,
-                                                const UnsignedInteger marginalIndex = 0) const;
+      const UnsignedInteger marginalIndex = 0) const;
 
   /** Compute marginal variance conditionnaly to observations (1 cov / point)*/
   virtual Point getConditionalMarginalVariance(const Sample & xi,
-                                               const UnsignedInteger marginalIndex = 0) const;
+      const UnsignedInteger marginalIndex = 0) const;
 
   virtual Point getConditionalMarginalVariance(const Point & point,
-                                               const Indices & indices) const;
+      const Indices & indices) const;
 
   virtual Point getConditionalMarginalVariance(const Sample & xi,
-                                               const Indices & indices) const;
+      const Indices & indices) const;
 
   /** Compute joint normal distribution conditionnaly to observations*/
   virtual Normal operator()(const Sample & xi) const;

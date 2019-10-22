@@ -6,7 +6,8 @@ ot.RandomGenerator.SetSeed(0)
 # Generate sample with the given plane
 distribution = ot.ComposedDistribution([ot.Uniform(0, 1)] * 2)
 size = 200
-experiment = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, size)
+experiment = ot.LowDiscrepancyExperiment(
+    ot.SobolSequence(), distribution, size)
 
 sample = experiment.generate()
 

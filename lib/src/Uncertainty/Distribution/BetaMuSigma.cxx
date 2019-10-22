@@ -93,14 +93,14 @@ Matrix BetaMuSigma::gradient() const
   const Scalar a = a_;
   const Scalar b = b_;
 
-  const Scalar alphadmu = (sigma*sigma + (a - mu)*(b - mu) + (a - mu)*(a + b - 2*mu))/(sigma*sigma*(a - b));
-  const Scalar dalphadsigma = 2*(a - mu)*(a-mu)*(b - mu)/(sigma*sigma*sigma*(a - b));
-  const Scalar dalphada = (-(a - b)*(sigma*sigma + 2*(a - mu)*(b - mu)) + (a - mu)*(sigma*sigma + (a - mu)*(b - mu)))/(sigma*sigma*(a - b)*(a-b));
-  const Scalar dalphadb = -(a - mu)*(sigma*sigma + (a - b)*(a - mu) + (a - mu)*(b - mu))/(sigma*sigma*(a - b)*(a-b));
-  const Scalar dbetadmu = -(sigma*sigma + (a - mu)*(b - mu) + (b - mu)*(a + b - 2*mu))/(sigma*sigma*(a - b));
-  const Scalar dbetadsigma = 2*(-a + mu)*(b - mu)*(b-mu)/(sigma*sigma*sigma*(a - b));
-  const Scalar dbetada = (b - mu)*(-sigma*sigma + (a - b)*(b - mu) - (a - mu)*(b - mu))/(sigma*sigma*(a - b)*(a-b));
-  const Scalar dbetadb = ((a - b)*(sigma*sigma + 2*(a - mu)*(b - mu)) + (b - mu)*(sigma*sigma + (a - mu)*(b - mu)))/(sigma*sigma*(a - b)*(a-b));
+  const Scalar alphadmu = (sigma * sigma + (a - mu) * (b - mu) + (a - mu) * (a + b - 2 * mu)) / (sigma * sigma * (a - b));
+  const Scalar dalphadsigma = 2 * (a - mu) * (a - mu) * (b - mu) / (sigma * sigma * sigma * (a - b));
+  const Scalar dalphada = (-(a - b) * (sigma * sigma + 2 * (a - mu) * (b - mu)) + (a - mu) * (sigma * sigma + (a - mu) * (b - mu))) / (sigma * sigma * (a - b) * (a - b));
+  const Scalar dalphadb = -(a - mu) * (sigma * sigma + (a - b) * (a - mu) + (a - mu) * (b - mu)) / (sigma * sigma * (a - b) * (a - b));
+  const Scalar dbetadmu = -(sigma * sigma + (a - mu) * (b - mu) + (b - mu) * (a + b - 2 * mu)) / (sigma * sigma * (a - b));
+  const Scalar dbetadsigma = 2 * (-a + mu) * (b - mu) * (b - mu) / (sigma * sigma * sigma * (a - b));
+  const Scalar dbetada = (b - mu) * (-sigma * sigma + (a - b) * (b - mu) - (a - mu) * (b - mu)) / (sigma * sigma * (a - b) * (a - b));
+  const Scalar dbetadb = ((a - b) * (sigma * sigma + 2 * (a - mu) * (b - mu)) + (b - mu) * (sigma * sigma + (a - mu) * (b - mu))) / (sigma * sigma * (a - b) * (a - b));
 
   SquareMatrix nativeParametersGradient(IdentityMatrix(4));
   nativeParametersGradient(0, 0) = alphadmu;
@@ -128,8 +128,8 @@ Point BetaMuSigma::operator () (const Point & inP) const
 
   if (!(sigma > 0.0)) throw InvalidArgumentException(HERE) << "Sigma MUST be positive";
 
-  const Scalar alpha = ((mu-a)/(b-a))*(((b-mu)*(mu-a))/(sigma*sigma)-1.0);
-  const Scalar beta = (((b-mu)*(mu-a))/(sigma*sigma)-1.0)*((b-mu)/(b-a));
+  const Scalar alpha = ((mu - a) / (b - a)) * (((b - mu) * (mu - a)) / (sigma * sigma) - 1.0);
+  const Scalar beta = (((b - mu) * (mu - a)) / (sigma * sigma) - 1.0) * ((b - mu) / (b - a));
 
   Point nativeParameters(inP);
   nativeParameters[0] = alpha;

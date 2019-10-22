@@ -47,9 +47,9 @@ public:
 
   /** Parameter constructor */
   NonLinearLeastSquaresCalibration(const Function & model,
-				   const Sample & inputObservations,
-				   const Sample & outputObservations,
-				   const Point & candidate);
+                                   const Sample & inputObservations,
+                                   const Sample & outputObservations,
+                                   const Point & candidate);
 
   /** String converter */
   virtual String __repr__() const;
@@ -57,9 +57,9 @@ public:
   /** Performs the actual computation. Must be overloaded by the actual calibration algorithm */
   virtual void run();
   Point run(const Sample & inputObservations,
-	    const Sample & outputObservations,
-	    const Point & candidate,
-	    Sample & residual);
+            const Sample & outputObservations,
+            const Point & candidate,
+            Sample & residual);
 
   /** Algorithm accessor */
   OptimizationAlgorithm getOptimizationAlgorithm() const;
@@ -80,9 +80,9 @@ public:
 
   /* Build the associated residual function */
   static Function BuildResidualFunction(const Function & model,
-					const Sample & inputObservations,
-					const Sample & outputObservations);
-  
+                                        const Sample & inputObservations,
+                                        const Sample & outputObservations);
+
   /** Virtual constructor */
   virtual NonLinearLeastSquaresCalibration * clone() const;
 

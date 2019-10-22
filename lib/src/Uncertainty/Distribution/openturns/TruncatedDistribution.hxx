@@ -37,7 +37,7 @@ class OT_API TruncatedDistribution
   CLASSNAME
 public:
 
-  enum BoundSide { LOWER=0, UPPER };
+  enum BoundSide { LOWER = 0, UPPER };
 
   /** Default constructor */
   TruncatedDistribution();

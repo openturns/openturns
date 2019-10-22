@@ -41,8 +41,8 @@ public:
 
   /** Parameters constructor */
   WeibullMax(const Scalar beta,
-          const Scalar alpha,
-          const Scalar gamma = 0.0);
+             const Scalar alpha,
+             const Scalar gamma = 0.0);
 
   /** Comparison operator */
   Bool operator ==(const WeibullMax & other) const;

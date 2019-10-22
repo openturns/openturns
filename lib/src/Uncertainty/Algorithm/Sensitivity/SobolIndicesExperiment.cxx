@@ -178,10 +178,10 @@ Sample SobolIndicesExperiment::generateWithWeights(Point & weights) const
   const UnsignedInteger dimension = distribution.getDimension();
   ComposedDistribution::DistributionCollection marginals(2 * dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      marginals[i] = distribution.getMarginal(i);
-      marginals[dimension + i] = marginals[i];
-    }
+  {
+    marginals[i] = distribution.getMarginal(i);
+    marginals[dimension + i] = marginals[i];
+  }
   const ComposedDistribution doubleDistribution(marginals);
   // Generate a 2xdim sample of needed size
   WeightedExperiment doubleExperiment(experiment_);

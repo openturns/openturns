@@ -92,7 +92,7 @@ public:
   /** Linearity accessors */
   Bool isLinear() const;
   Bool isLinearlyDependent(const UnsignedInteger index) const;
-  
+
 protected:
 
   ComposedEvaluation() {};

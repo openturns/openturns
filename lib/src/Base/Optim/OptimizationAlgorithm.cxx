@@ -260,7 +260,7 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
   }
   else
     throw InvalidArgumentException(HERE) << "Unknown optimization solver:" << solverName;
-    
+
   return solver;
 }
 

@@ -41,7 +41,7 @@ public:
 
   /** Parameters constructor */
   MarshallOlkinCopula(const Scalar alpha,
-                               const Scalar beta);
+                      const Scalar beta);
 
   /** Comparison operator */
   Bool operator ==(const MarshallOlkinCopula & other) const;

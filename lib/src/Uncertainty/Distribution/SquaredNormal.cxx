@@ -35,7 +35,7 @@ static const Factory<SquaredNormal> Factory_SquaredNormal;
 /* Default Constructor */
 SquaredNormal::SquaredNormal()
 {
-  *this=SquaredNormal(0.0, 1.0);
+  *this = SquaredNormal(0.0, 1.0);
 }
 
 /* Constructor */
@@ -74,7 +74,7 @@ String SquaredNormal::__repr__() const
 
 String SquaredNormal::__str__(const String & offset) const
 {
-    OSS oss;
+  OSS oss;
   oss << getClassName();
   oss << "(mu = " << getMu() << ", sigma = " << getSigma() << ")";
   return oss;
@@ -96,7 +96,7 @@ Sample SquaredNormal::getSample(const UnsignedInteger size) const
   const Point xi(DistFunc::rNormal(size));
   Sample result(size, 1);
   for (UnsignedInteger i = 0; i < size; ++i)
-    result(i, 0) = std::pow((mu_ + sigma_ * xi[i]), 2); 
+    result(i, 0) = std::pow((mu_ + sigma_ * xi[i]), 2);
   result.setName(getName());
   result.setDescription(getDescription());
   return result;
@@ -144,7 +144,7 @@ void SquaredNormal::computeCovariance() const
 void SquaredNormal::computeRange()
 {
   setRange(Interval(Point(1, 0.0), Point(1, std::pow(mu_ + 8.5 * sigma_, 2.0)),
-		       Interval::BoolCollection(1, true), Interval::BoolCollection(1, false)));
+                    Interval::BoolCollection(1, true), Interval::BoolCollection(1, false)));
 }
 
 /* Parameters value accessor */

@@ -35,7 +35,7 @@ static const Factory<LinearLeastSquares> Factory_LinearLeastSquares;
 
 /* Default constructor */
 LinearLeastSquares::LinearLeastSquares()
-: PersistentObject()
+  : PersistentObject()
 {
   // Nothing to do
 }

@@ -305,17 +305,17 @@ void XMLStorageManager::load(Study & study)
   {
     p_state_->current_ = node;
     try
+    {
+      XMLReadObject ro = readDOMElement();
+      if (ro.p_obj_)
       {
-	XMLReadObject ro = readDOMElement();
-	if (ro.p_obj_)
-	  {
-	    study.add( ro.label_, *(ro.p_obj_) );
-	  }
+        study.add( ro.label_, *(ro.p_obj_) );
       }
+    }
     catch (InternalException & ex)
-      {
-	LOGINFO(OSS() << ex);
-      }
+    {
+      LOGINFO(OSS() << ex);
+    }
     node = XML::GetNextNode(node);
   }
 }
@@ -336,15 +336,15 @@ XMLStorageManager::XMLReadObject XMLStorageManager::readDOMElement()
       ro.label_      = XML::GetAttributeByName(p_state_->current_, XML_STMGR::StudyLabel_attribute::Get());
       ro.visibility_ = XML::GetAttributeByName(p_state_->current_, XML_STMGR::StudyVisible_attribute::Get());
       try
-	{
-	  ro.p_obj_      = Catalog::Get(className).build(*this);
-	  if (! ro.visibility_.empty())
-	    ro.p_obj_->setVisibility(ro.visibility_ == "true");
-	}
+      {
+        ro.p_obj_      = Catalog::Get(className).build(*this);
+        if (! ro.visibility_.empty())
+          ro.p_obj_->setVisibility(ro.visibility_ == "true");
+      }
       catch(...)
-	{
-	  throw InternalException(HERE) << "Error trying to load " << ro.label_ << ", skipped.";
-	}
+      {
+        throw InternalException(HERE) << "Error trying to load " << ro.label_ << ", skipped.";
+      }
     }
   }
 

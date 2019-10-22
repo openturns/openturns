@@ -120,187 +120,187 @@ Point ProductDistribution::getRealization() const
 
 namespace
 {
-  // Class used to wrap the kernel of the integral defining the PDF of the product
-  class PDFKernelProductDistribution: public UniVariateFunctionImplementation
+// Class used to wrap the kernel of the integral defining the PDF of the product
+class PDFKernelProductDistribution: public UniVariateFunctionImplementation
+{
+public:
+  PDFKernelProductDistribution(const Pointer<DistributionImplementation> & p_left,
+                               const Pointer<DistributionImplementation> & p_right,
+                               const Scalar x)
+    : UniVariateFunctionImplementation()
+    , p_left_(p_left)
+    , p_right_(p_right)
+    , x_(x)
+    , isZero_(std::abs(x) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")), pdf0_(isZero_ ? p_right->computePDF(0.0) : 0.0)
   {
-  public:
-    PDFKernelProductDistribution(const Pointer<DistributionImplementation> & p_left,
-	      const Pointer<DistributionImplementation> & p_right,
-	      const Scalar x)
-      : UniVariateFunctionImplementation()
-      , p_left_(p_left)
-      , p_right_(p_right)
-      , x_(x)
-      , isZero_(std::abs(x) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")), pdf0_(isZero_ ? p_right->computePDF(0.0) : 0.0)
-    {
-      // Nothing to do
-    };
+    // Nothing to do
+  };
 
-    PDFKernelProductDistribution * clone() const
-    {
-      return new PDFKernelProductDistribution(*this);
-    }
-
-    Scalar operator() (const Scalar u) const
-    {
-      const Scalar value = p_left_->computePDF(u);
-      if (value == 0.0) return 0.0;
-      const Scalar absU = std::abs(u);
-      // x_ == 0
-      if (isZero_)
-      {
-        if (pdf0_ == 0.0) return 0.0;
-        if (absU == 0.0) return SpecFunc::MaxScalar;
-        return value * pdf0_ / absU;
-      }
-      // x_ != 0
-      if (absU == 0.0)
-      {
-        const Scalar epsilon = 1e-7;
-        return value * 0.5 * (p_right_->computePDF(x_ / epsilon) + p_right_->computePDF(-x_ / epsilon)) / epsilon;
-      }
-      return value * p_right_->computePDF(x_ / u) / absU;
-    };
-
-  private:
-    const Pointer<DistributionImplementation> p_left_;
-    const Pointer<DistributionImplementation> p_right_;
-    const Scalar x_;
-    const Bool isZero_;
-    const Scalar pdf0_;
-
-  }; // class PDFKernelProductDistribution
-
-  // Class used to wrap the kernel of the integral defining the CDF of the product
-  class CDFKernelProductDistribution: public UniVariateFunctionImplementation
+  PDFKernelProductDistribution * clone() const
   {
-  public:
-    CDFKernelProductDistribution(const Pointer<DistributionImplementation> & p_left,
-	      const Pointer<DistributionImplementation> & p_right,
-	      const Scalar x)
-      : UniVariateFunctionImplementation()
-      , p_left_(p_left)
-      , p_right_(p_right)
-      , x_(x)
-      , isZero_(std::abs(x) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon"))
-      , cdf0_(isZero_ ? p_right->computeCDF(0.0) : 0.0)
-      , ccdf0_(isZero_ ? p_right->computeComplementaryCDF(0.0) : 0.0)
-    {
-      // Nothing to do
-    };
+    return new PDFKernelProductDistribution(*this);
+  }
 
-    CDFKernelProductDistribution * clone() const
-    {
-      return new CDFKernelProductDistribution(*this);
-    }
-
-    Scalar operator() (const Scalar u) const
-    {
-      const Scalar value = p_left_->computePDF(u);
-      if (value == 0.0) return 0.0;
-      // x_ == 0
-      if (isZero_) return value * cdf0_;
-      if (u == 0.0) return (x_ < 0.0 ? 0.0 : value);
-      return value * p_right_->computeCDF(x_ / u);
-    };
-
-  private:
-    const Pointer<DistributionImplementation> p_left_;
-    const Pointer<DistributionImplementation> p_right_;
-    const Scalar x_;
-    const Bool isZero_;
-    const Scalar cdf0_;
-    const Scalar ccdf0_;
-  }; // struct CDFKernelProductDistribution
-
-  // Class used to wrap the kernel of the integral defining the CDF of the product
-  class ComplementaryCDFKernelProductDistributionProductDistribution: public UniVariateFunctionImplementation
+  Scalar operator() (const Scalar u) const
   {
-  public:
-    ComplementaryCDFKernelProductDistributionProductDistribution(const Pointer<DistributionImplementation> & p_left,
-			   const Pointer<DistributionImplementation> & p_right,
-			   const Scalar x)
-      : UniVariateFunctionImplementation()
-      , p_left_(p_left)
-      , p_right_(p_right)
-      , x_(x)
-      , isZero_(std::abs(x) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon"))
-      , cdf0_(isZero_ ? p_right->computeCDF(0.0) : 0.0)
-      , ccdf0_(isZero_ ? p_right->computeComplementaryCDF(0.0) : 0.0)
+    const Scalar value = p_left_->computePDF(u);
+    if (value == 0.0) return 0.0;
+    const Scalar absU = std::abs(u);
+    // x_ == 0
+    if (isZero_)
     {
-      // Nothing to do
-    };
-
-    ComplementaryCDFKernelProductDistributionProductDistribution * clone() const
-    {
-      return new ComplementaryCDFKernelProductDistributionProductDistribution(*this);
+      if (pdf0_ == 0.0) return 0.0;
+      if (absU == 0.0) return SpecFunc::MaxScalar;
+      return value * pdf0_ / absU;
     }
-
-    Scalar operator() (const Scalar u) const
+    // x_ != 0
+    if (absU == 0.0)
     {
-      const Scalar value = p_left_->computePDF(u);
-      if (value == 0.0) return 0.0;
-      // x_ == 0
-      if (isZero_) return value * ccdf0_;
-      if (u == 0.0) return (x_ < 0.0 ? 0.0 : value);
-      return value * p_right_->computeComplementaryCDF(x_ / u);
-    };
+      const Scalar epsilon = 1e-7;
+      return value * 0.5 * (p_right_->computePDF(x_ / epsilon) + p_right_->computePDF(-x_ / epsilon)) / epsilon;
+    }
+    return value * p_right_->computePDF(x_ / u) / absU;
+  };
 
-  private:
-    const Pointer<DistributionImplementation> p_left_;
-    const Pointer<DistributionImplementation> p_right_;
-    const Scalar x_;
-    const Bool isZero_;
-    const Scalar cdf0_;
-    const Scalar ccdf0_;
-  }; // struct ComplementaryCDFKernelProductDistributionProductDistribution
+private:
+  const Pointer<DistributionImplementation> p_left_;
+  const Pointer<DistributionImplementation> p_right_;
+  const Scalar x_;
+  const Bool isZero_;
+  const Scalar pdf0_;
 
-  // Class used to wrap the kernel of the integral defining the CDF of the product
-  class CFKernelProductDistribution: public EvaluationImplementation
+}; // class PDFKernelProductDistribution
+
+// Class used to wrap the kernel of the integral defining the CDF of the product
+class CDFKernelProductDistribution: public UniVariateFunctionImplementation
+{
+public:
+  CDFKernelProductDistribution(const Pointer<DistributionImplementation> & p_left,
+                               const Pointer<DistributionImplementation> & p_right,
+                               const Scalar x)
+    : UniVariateFunctionImplementation()
+    , p_left_(p_left)
+    , p_right_(p_right)
+    , x_(x)
+    , isZero_(std::abs(x) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon"))
+    , cdf0_(isZero_ ? p_right->computeCDF(0.0) : 0.0)
+    , ccdf0_(isZero_ ? p_right->computeComplementaryCDF(0.0) : 0.0)
   {
-  public:
-    CFKernelProductDistribution(const Pointer<DistributionImplementation> & p_left,
-	     const Pointer<DistributionImplementation> & p_right,
-	     const Scalar x)
-      : EvaluationImplementation()
-      , p_left_(p_left)
-      , p_right_(p_right)
-      , x_(x)
-    {
-      // Nothing to do
-    };
+    // Nothing to do
+  };
 
-    CFKernelProductDistribution * clone() const
-    {
-      return new CFKernelProductDistribution(*this);
-    }
+  CDFKernelProductDistribution * clone() const
+  {
+    return new CDFKernelProductDistribution(*this);
+  }
 
-    Point operator() (const Point & point) const
-    {
-      Point value(2);
-      const Scalar u = point[0];
-      const Complex phi(p_right_->computeCharacteristicFunction(u * x_));
-      const Scalar pdf = p_left_->computePDF(point);
-      value[0] = pdf * phi.real();
-      value[1] = pdf * phi.imag();
-      return value;
-    };
+  Scalar operator() (const Scalar u) const
+  {
+    const Scalar value = p_left_->computePDF(u);
+    if (value == 0.0) return 0.0;
+    // x_ == 0
+    if (isZero_) return value * cdf0_;
+    if (u == 0.0) return (x_ < 0.0 ? 0.0 : value);
+    return value * p_right_->computeCDF(x_ / u);
+  };
 
-    UnsignedInteger getInputDimension() const
-    {
-      return 1;
-    }
+private:
+  const Pointer<DistributionImplementation> p_left_;
+  const Pointer<DistributionImplementation> p_right_;
+  const Scalar x_;
+  const Bool isZero_;
+  const Scalar cdf0_;
+  const Scalar ccdf0_;
+}; // struct CDFKernelProductDistribution
 
-    UnsignedInteger getOutputDimension() const
-    {
-      return 2;
-    }
+// Class used to wrap the kernel of the integral defining the CDF of the product
+class ComplementaryCDFKernelProductDistributionProductDistribution: public UniVariateFunctionImplementation
+{
+public:
+  ComplementaryCDFKernelProductDistributionProductDistribution(const Pointer<DistributionImplementation> & p_left,
+      const Pointer<DistributionImplementation> & p_right,
+      const Scalar x)
+    : UniVariateFunctionImplementation()
+    , p_left_(p_left)
+    , p_right_(p_right)
+    , x_(x)
+    , isZero_(std::abs(x) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon"))
+    , cdf0_(isZero_ ? p_right->computeCDF(0.0) : 0.0)
+    , ccdf0_(isZero_ ? p_right->computeComplementaryCDF(0.0) : 0.0)
+  {
+    // Nothing to do
+  };
 
-  private:
-    const Pointer<DistributionImplementation> p_left_;
-    const Pointer<DistributionImplementation> p_right_;
-    const Scalar x_;
-  }; // struct CFKernelProductDistributionWrapper
+  ComplementaryCDFKernelProductDistributionProductDistribution * clone() const
+  {
+    return new ComplementaryCDFKernelProductDistributionProductDistribution(*this);
+  }
+
+  Scalar operator() (const Scalar u) const
+  {
+    const Scalar value = p_left_->computePDF(u);
+    if (value == 0.0) return 0.0;
+    // x_ == 0
+    if (isZero_) return value * ccdf0_;
+    if (u == 0.0) return (x_ < 0.0 ? 0.0 : value);
+    return value * p_right_->computeComplementaryCDF(x_ / u);
+  };
+
+private:
+  const Pointer<DistributionImplementation> p_left_;
+  const Pointer<DistributionImplementation> p_right_;
+  const Scalar x_;
+  const Bool isZero_;
+  const Scalar cdf0_;
+  const Scalar ccdf0_;
+}; // struct ComplementaryCDFKernelProductDistributionProductDistribution
+
+// Class used to wrap the kernel of the integral defining the CDF of the product
+class CFKernelProductDistribution: public EvaluationImplementation
+{
+public:
+  CFKernelProductDistribution(const Pointer<DistributionImplementation> & p_left,
+                              const Pointer<DistributionImplementation> & p_right,
+                              const Scalar x)
+    : EvaluationImplementation()
+    , p_left_(p_left)
+    , p_right_(p_right)
+    , x_(x)
+  {
+    // Nothing to do
+  };
+
+  CFKernelProductDistribution * clone() const
+  {
+    return new CFKernelProductDistribution(*this);
+  }
+
+  Point operator() (const Point & point) const
+  {
+    Point value(2);
+    const Scalar u = point[0];
+    const Complex phi(p_right_->computeCharacteristicFunction(u * x_));
+    const Scalar pdf = p_left_->computePDF(point);
+    value[0] = pdf * phi.real();
+    value[1] = pdf * phi.imag();
+    return value;
+  };
+
+  UnsignedInteger getInputDimension() const
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const
+  {
+    return 2;
+  }
+
+private:
+  const Pointer<DistributionImplementation> p_left_;
+  const Pointer<DistributionImplementation> p_right_;
+  const Scalar x_;
+}; // struct CFKernelProductDistributionWrapper
 } // anonymous namespace
 
 /* Get the PDF of the distribution: PDF(x) = \int_R PDF_left(u) * PDF_right(x / u) * du / |u| */

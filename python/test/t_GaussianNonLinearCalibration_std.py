@@ -38,16 +38,19 @@ for i in range(2 * m):
         globalErrorCovariance[i, j] = 1.0 / (1.0 + i + j)
 bootstrapSizes = [0, 100]
 for bootstrapSize in bootstrapSizes:
-    algo = ot.GaussianNonLinearCalibration(modelX, x, y, candidate, priorCovariance, errorCovariance)
+    algo = ot.GaussianNonLinearCalibration(
+        modelX, x, y, candidate, priorCovariance, errorCovariance)
     algo.setBootstrapSize(bootstrapSize)
     algo.run()
     # To avoid discrepance between the plaforms with or without CMinpack
     print("result   (Auto)=", algo.getResult().getParameterMAP())
-    algo.setOptimizationAlgorithm(ot.MultiStart(ot.TNC(), ot.LowDiscrepancyExperiment(ot.SobolSequence(), ot.Normal(candidate, ot.CovarianceMatrix(ot.Point(candidate).getDimension())), ot.ResourceMap.GetAsUnsignedInteger("GaussianNonLinearCalibration-MultiStartSize")).generate()))
+    algo.setOptimizationAlgorithm(ot.MultiStart(ot.TNC(), ot.LowDiscrepancyExperiment(ot.SobolSequence(), ot.Normal(candidate, ot.CovarianceMatrix(
+        ot.Point(candidate).getDimension())), ot.ResourceMap.GetAsUnsignedInteger("GaussianNonLinearCalibration-MultiStartSize")).generate()))
     algo.run()
     # To avoid discrepance between the plaforms with or without CMinpack
     print("result    (TNC)=", algo.getResult().getParameterMAP())
-    algo = ot.GaussianNonLinearCalibration(modelX, x, y, candidate, priorCovariance, globalErrorCovariance)
+    algo = ot.GaussianNonLinearCalibration(
+        modelX, x, y, candidate, priorCovariance, globalErrorCovariance)
     algo.setBootstrapSize(bootstrapSize)
     algo.run()
     print("result (Global)=", algo.getResult().getParameterMAP())

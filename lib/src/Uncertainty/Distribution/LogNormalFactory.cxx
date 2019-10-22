@@ -327,7 +327,7 @@ LogNormal LogNormalFactory::buildAsLogNormal() const
 
 /* Algorithm associated with the method of least-squares */
 LogNormal LogNormalFactory::buildMethodOfLeastSquares(const Sample & sample,
-                                                      const Scalar gamma) const
+    const Scalar gamma) const
 {
   const UnsignedInteger size = sample.getSize();
   Sample dataIn(size, 1);

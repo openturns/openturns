@@ -40,11 +40,11 @@ int main(int, char *[])
 
     /* Initialization of the RegularGrid timeGrid1*/
     RegularGrid timeGrid(Tmin, deltaT, N);
-    
+
     /* Process creation from int and matrix */
     DiscreteMarkovChain processIntSqMat(1, IdentityMatrix(2));
     fullprint << "### Process from int + SquareMatrix constructor:" << std::endl << processIntSqMat << std::endl << std::endl;
-    
+
     /* Process creation from default constructor */
     DiscreteMarkovChain processDefault;
     fullprint << "### Process from default constructor:" << std::endl << processDefault << std::endl << std::endl;
@@ -63,23 +63,23 @@ int main(int, char *[])
     transition(1, 2) = 0.30;
     transition(2, 2) = 0.20;
     fullprint << "### Transition matrix:" << std::endl << transition << std::endl << std::endl;
-    
+
     /* Origin choice (UserDefined distribution)*/
-    Sample states(3,1);
+    Sample states(3, 1);
     states(0, 0) = 0;
     states(1, 0) = 1;
     states(2, 0) = 2;
-    
-    Point weights(3,0);
+
+    Point weights(3, 0);
     weights[0] = 0.50;
     weights[1] = 0.15;
     weights[2] = 0.35;
-    
+
     UserDefined origin(states, weights);
 
     /* Transition matrix accessor */
     processDefault.setTransitionMatrix(transition);
-    
+
     /* Origin accessor */
     processDefault.setOrigin(origin);
 

@@ -48,21 +48,21 @@ public:
 
   /** Parameter constructor */
   GaussianLinearCalibration(const Function & model,
-       const Sample & inputObservations,
-       const Sample & outputObservations,
-       const Point & candidate,
-       const CovarianceMatrix & parameterCovariance,
-       const CovarianceMatrix & errorCovariance,
-       const String & methodName = ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
+                            const Sample & inputObservations,
+                            const Sample & outputObservations,
+                            const Point & candidate,
+                            const CovarianceMatrix & parameterCovariance,
+                            const CovarianceMatrix & errorCovariance,
+                            const String & methodName = ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
 
   /** Parameter constructor */
   GaussianLinearCalibration(const Sample & modelObservations,
-       const Matrix & gradientObservations,
-       const Sample & outputObservations,
-       const Point & candidate,
-       const CovarianceMatrix & parameterCovariance,
-       const CovarianceMatrix & errorCovariance,
-       const String & methodName = ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
+                            const Matrix & gradientObservations,
+                            const Sample & outputObservations,
+                            const Point & candidate,
+                            const CovarianceMatrix & parameterCovariance,
+                            const CovarianceMatrix & errorCovariance,
+                            const String & methodName = ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
 
   /** String converter */
   virtual String __repr__() const;
@@ -111,10 +111,10 @@ private:
 
   /* The error covariance */
   CovarianceMatrix errorCovariance_;
-  
+
   /* Flag to tell if the error covariance is for the whole observations */
   Bool globalErrorCovariance_;
-  
+
   /* The least squares method name */
   String methodName_;
 

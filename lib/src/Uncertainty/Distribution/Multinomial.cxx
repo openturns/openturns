@@ -295,17 +295,17 @@ Complex Multinomial::computeLocalPhi(const Complex & z,
   if (z == 0.0) return 0.0;
   const Complex u(lambda * z);
   if (b <= a + smallA_)
+  {
+    LOGDEBUG("Case b - a <= smallA_");
+    Complex value(DistFunc::dPoisson(lambda, a));
+    Complex term(value);
+    for (UnsignedInteger i = 1; i <= b - a; ++i)
     {
-      LOGDEBUG("Case b - a <= smallA_");
-      Complex value(DistFunc::dPoisson(lambda, a));
-      Complex term(value);
-      for (UnsignedInteger i = 1; i <= b - a; ++i)
-	{
-	  term *= u * (1.0 / (a + i));
-	  value += term;
-	}
-      return value;
-    } // smallA_
+      term *= u * (1.0 / (a + i));
+      value += term;
+    }
+    return value;
+  } // smallA_
   LOGDEBUG("Case b - a > smallA_");
   // Large b - a
   // Start from the non-truncated generating function
@@ -313,20 +313,20 @@ Complex Multinomial::computeLocalPhi(const Complex & z,
   SignedInteger i = a;
   Complex term(DistFunc::dPoisson(lambda, a));
   while (i >= 0 && std::abs(term) > SpecFunc::Precision * std::abs(value))
-    {
-      term *= (1.0 * i) / u;
-      --i;
-      value -= term;
-    }
+  {
+    term *= (1.0 * i) / u;
+    --i;
+    value -= term;
+  }
   // And the upper terms
   i = b;
   term = DistFunc::dPoisson(lambda, b) * std::pow(z, 1.0 * (b - a));
   while (std::abs(term) > SpecFunc::Precision * std::abs(value))
-    {
-      ++i;
-      term *= u * (1.0 / i);
-      value -= term;
-    }
+  {
+    ++i;
+    term *= u * (1.0 / i);
+    value -= term;
+  }
   return value;
 }
 
@@ -430,26 +430,26 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
   Point upper(interval.getUpperBound());
   // Deal with the defective case first
   if (sumP_ < 1.0)
-    {
-      Point p(p_);
-      p.add(1.0 - sumP_);
-      lower.add(0.0);
-      upper.add(n_);
-      return Multinomial(n_, p).computeProbability(Interval(lower, upper));
-    }
+  {
+    Point p(p_);
+    p.add(1.0 - sumP_);
+    lower.add(0.0);
+    upper.add(n_);
+    return Multinomial(n_, p).computeProbability(Interval(lower, upper));
+  }
   // Now we have sumP_ == 1
   Indices a(dimension_);
   Indices b(dimension_);
   UnsignedInteger sigmaA = 0;
   UnsignedInteger sigmaB = 0;
   for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      a[i] = static_cast<UnsignedInteger>(std::max(0.0, std::ceil(lower[i])));
-      b[i] = static_cast<UnsignedInteger>(std::min(1.0 * n_, std::floor(upper[i])));
-      if (a[i] > b[i]) return 0.0;
-      sigmaA += a[i];
-      sigmaB += b[i];
-    }
+  {
+    a[i] = static_cast<UnsignedInteger>(std::max(0.0, std::ceil(lower[i])));
+    b[i] = static_cast<UnsignedInteger>(std::min(1.0 * n_, std::floor(upper[i])));
+    if (a[i] > b[i]) return 0.0;
+    sigmaA += a[i];
+    sigmaB += b[i];
+  }
   if (sigmaA > n_) return 0.0;
   if (sigmaB < n_) return 0.0;
   if (sigmaA == n_) return computePDF(a);
@@ -460,10 +460,10 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
   Scalar logCoefNorm = 0.0;
   // Here r is not necessarily equal to r_ as nA can allow for a reduction
   if (eta_ > 0.0)
-    {
-      r = std::pow(eta_, 1.0 / (2.0 * nA));
-      logCoefNorm = nA * std::log(r);
-    }
+  {
+    r = std::pow(eta_, 1.0 / (2.0 * nA));
+    logCoefNorm = nA * std::log(r);
+  }
   // Diametral term
   const Scalar poisLogPDF = DistFunc::logdPoisson(n_, n_);
   const Scalar coefNorm = std::exp(-logCoefNorm - poisLogPDF) / (2.0 * nA);
@@ -471,21 +471,21 @@ Scalar Multinomial::computeProbability(const Interval & interval) const
   Scalar delta = SpecFunc::MaxScalar;
   Scalar sign2 = -2.0 * coefNorm;
   for (UnsignedInteger k = 1; k < nA; ++k)
-    {
-      if (std::abs(delta) <= SpecFunc::Precision * std::abs(value))
-	break;
-      const Complex zeta(r * std::exp(Complex(0.0, k * M_PI / nA)));
-      delta = sign2 * computeGlobalPhi(zeta, a, b).real();
-      value += delta;
-      sign2 = -sign2;
-    }
+  {
+    if (std::abs(delta) <= SpecFunc::Precision * std::abs(value))
+      break;
+    const Complex zeta(r * std::exp(Complex(0.0, k * M_PI / nA)));
+    delta = sign2 * computeGlobalPhi(zeta, a, b).real();
+    value += delta;
+    sign2 = -sign2;
+  }
   // Check if we have to take the last term into account
   if (std::abs(delta) > SpecFunc::Precision * std::abs(value))
-    {
-      delta = coefNorm * computeGlobalPhi(-r, a, b).real();
-      if (nA % 2 == 0) value += delta;
-      else value -= delta;
-    }
+  {
+    delta = coefNorm * computeGlobalPhi(-r, a, b).real();
+    if (nA % 2 == 0) value += delta;
+    else value -= delta;
+  }
   return std::min(1.0, std::max(0.0, value));
 }
 
@@ -663,10 +663,10 @@ Sample Multinomial::getSupport(const Interval & interval) const
     // supportEpsilon_
     Bool isInside = true;
     for (UnsignedInteger j = 0; j < dimension_; ++j)
-      {
-	isInside = isInside && (point[j] >= lowerBound[j] - supportEpsilon_) && (point[j] <= upperBound[j] + supportEpsilon_);
-	if (!isInside) break;
-      }
+    {
+      isInside = isInside && (point[j] >= lowerBound[j] - supportEpsilon_) && (point[j] <= upperBound[j] + supportEpsilon_);
+      if (!isInside) break;
+    }
     if (isInside) reducedSupport.add(point);
   }
   return reducedSupport;

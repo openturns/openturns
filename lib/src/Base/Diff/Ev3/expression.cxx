@@ -691,17 +691,17 @@ int BasicExpression::DependsLinearlyOnVariable(Int vi) const
     }
     else if (GetOpType() == PRODUCT)
     {
-      int nbBranchesDependingOnVariable=0;
+      int nbBranchesDependingOnVariable = 0;
       for(i = 0; i < GetSize(); i++)
       {
         d = GetNode(i)->DependsLinearlyOnVariable(vi);
         if (d == 0)
           return 0;
-        
+
         if (d == 1)
           ++nbBranchesDependingOnVariable;
       }
-      
+
       if (nbBranchesDependingOnVariable == 0)
         return 2;
       else if (nbBranchesDependingOnVariable == 1)

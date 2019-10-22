@@ -38,8 +38,8 @@ ParametricPointToFieldFunction::ParametricPointToFieldFunction ()
 
 /* Parameter constructor */
 ParametricPointToFieldFunction::ParametricPointToFieldFunction (const PointToFieldFunction & function,
-                                                                const Indices & set,
-                                                                const Point & referencePoint)
+    const Indices & set,
+    const Point & referencePoint)
   : PointToFieldFunctionImplementation(function.getInputDimension(), function.getOutputMesh(), function.getOutputDimension())
   , function_(function)
 {

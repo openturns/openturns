@@ -50,14 +50,14 @@ public:
                                 const Sample & inputObservations,
                                 const Sample & outputObservations,
                                 const Point & candidate,
-				const String & methodName = ResourceMap::GetAsString("LinearLeastSquaresCalibration-Method"));
+                                const String & methodName = ResourceMap::GetAsString("LinearLeastSquaresCalibration-Method"));
 
   /** Parameter constructor */
   LinearLeastSquaresCalibration(const Sample & modelObservations,
                                 const Matrix & gradientObservations,
                                 const Sample & outputObservations,
                                 const Point & candidate,
-				const String & methodName = ResourceMap::GetAsString("LinearLeastSquaresCalibration-Method"));
+                                const String & methodName = ResourceMap::GetAsString("LinearLeastSquaresCalibration-Method"));
 
   /** String converter */
   virtual String __repr__() const;

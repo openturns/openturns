@@ -50,7 +50,7 @@ ThresholdEvent::ThresholdEvent(const RandomVector & antecedent,
 
 /* Constructor from RandomVector */
 ThresholdEvent::ThresholdEvent(const RandomVector & antecedent,
-                                     const Interval & interval)
+                               const Interval & interval)
   : RandomVector(new ThresholdEventImplementation(antecedent, interval))
 {
   // Nothing to do

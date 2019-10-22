@@ -78,7 +78,7 @@ public:
 
   /** Accessor for output point dimension */
   virtual UnsignedInteger getOutputDimension() const;
-  
+
   /** Linearity accessors */
   Bool isLinear() const;
   Bool isLinearlyDependent(const UnsignedInteger index) const;

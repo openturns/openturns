@@ -6,6 +6,7 @@ import openturns as ot
 ot.TESTPREAMBLE()
 ot.RandomGenerator.SetSeed(0)
 
+
 def compute_max_error(ref_copula, est_copula):
     """
     Compute max error between ref_copula & estimated one
@@ -20,6 +21,7 @@ def compute_max_error(ref_copula, est_copula):
                 point) - est_copula.computeCDF(point)))
     return max_error
 
+
 def check_bernstein_copula(est_copula):
     """
     Check if an estimated distribution of kind EmpiricalBernstein
@@ -29,7 +31,7 @@ def check_bernstein_copula(est_copula):
     print("Maginal checking")
     dimension = est_copula.getDimension()
     for d in range(dimension):
-        print("Is marginal %d a copula ? --> %s"%(d,est_copula.isCopula()))
+        print("Is marginal %d a copula ? --> %s" % (d, est_copula.isCopula()))
 
 
 try:

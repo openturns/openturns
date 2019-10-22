@@ -197,7 +197,8 @@ void IntersectionEvent::load(Advocate & adv)
   RandomVectorImplementation::load(adv);
   RandomVectorPersistentCollection eventCollection;
   adv.loadAttribute( "eventCollection_", eventCollection );
-  setEventCollection(eventCollection);}
+  setEventCollection(eventCollection);
+}
 
 RandomVector IntersectionEvent::getComposedEvent() const
 {

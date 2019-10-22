@@ -62,9 +62,9 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
 
   // Regression coefficient
   const Function fHat(linearModelResult.getMetaModel());
-  const Sample yHat(fHat(firstSample)); 
+  const Sample yHat(fHat(firstSample));
   const Sample residualSample(secondSample - yHat);
-  
+
   // For the Fisher test, we need both Sum of Squared Explained (SSE)
   // and the Sum of Squared Residuals
 
@@ -297,7 +297,7 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
   if (residualSize < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
 
   const Function fHat(linearModelResult.getMetaModel());
-  const Sample yHat(fHat(firstSample)); 
+  const Sample yHat(fHat(firstSample));
   const Sample residuals(secondSample - yHat);
 
 
@@ -344,7 +344,7 @@ TestResult LinearModelTest::LinearModelDurbinWatson(const Sample & firstSample,
     for(UnsignedInteger i = 0; i < residualSize - 2; ++i)
     {
       AX(i + 1, j) = -X(i, j) + 2 * X(i + 1, j) - X(i + 2, j);
-    } 
+    }
   }
 
   // Normal approximation of the dw statistic

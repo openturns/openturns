@@ -14,6 +14,7 @@ ot.Log.Show(ot.Log.ALL)
 def progress(percent):
     sys.stderr.write('-- progress=' + str(percent) + '%\n')
 
+
 def stop():
     sys.stderr.write('-- stop?\n')
     return False
@@ -41,8 +42,8 @@ for algoName in algoNames:
         problem.setMinimization(minimization)
         algo = ot.Ceres(problem, algoName)
         algo.setStartingPoint(startingPoint)
-        #algo.setProgressCallback(progress)
-        #algo.setStopCallback(stop)
+        # algo.setProgressCallback(progress)
+        # algo.setStopCallback(stop)
         algo.run()
         result = algo.getResult()
         x_star = result.getOptimalPoint()
@@ -58,14 +59,18 @@ m = 10
 x = [[0.5 + i] for i in range(m)]
 
 
-model = ot.SymbolicFunction(['a', 'b', 'c', 'x'], ['a + b * exp(min(500, c * x))'])
-p_ref = [2.8, 1.2, 0.5] # a, b, c
+model = ot.SymbolicFunction(['a', 'b', 'c', 'x'], [
+                            'a + b * exp(min(500, c * x))'])
+p_ref = [2.8, 1.2, 0.5]  # a, b, c
 modelx = ot.ParametricFunction(model, [0, 1, 2], p_ref)
 y = modelx(x)
+
 
 def residualFunction_py(p):
     modelx = ot.ParametricFunction(model, [0, 1, 2], p)
     return [modelx(x[i])[0] - y[i, 0] for i in range(m)]
+
+
 residualFunction = ot.PythonFunction(n, m, residualFunction_py)
 
 bounds = ot.Interval([0, 0, 0], [2.5, 8.0, 19])
@@ -83,8 +88,8 @@ for algoName in algoNames:
         startingPoint = [1.0] * n
         algo = ot.Ceres(problem, algoName)
         algo.setStartingPoint(startingPoint)
-        #algo.setProgressCallback(progress)
-        #algo.setStopCallback(stop)
+        # algo.setProgressCallback(progress)
+        # algo.setStopCallback(stop)
         algo.run()
         result = algo.getResult()
         x_star = result.getOptimalPoint()

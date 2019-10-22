@@ -115,75 +115,75 @@ MatrixImplementation DesignProxy::computeDesign(const Indices & indices) const
   if (indices == alreadyComputed_)
     design = *designCache_.getImplementation();
   else
+  {
+    // Copy or compute the needed parts
+    const UnsignedInteger cacheSize = designCache_.getNbColumns();
+    design = MatrixImplementation(xSize, indicesSize);
+    MatrixImplementation::iterator startDesign(design.begin());
+    for (UnsignedInteger j = 0; j < indicesSize; ++j)
     {
-      // Copy or compute the needed parts
-      const UnsignedInteger cacheSize = designCache_.getNbColumns();
-      design = MatrixImplementation(xSize, indicesSize);
-      MatrixImplementation::iterator startDesign(design.begin());
-      for (UnsignedInteger j = 0; j < indicesSize; ++j)
-	{
-	  const UnsignedInteger phiIndex = indices[j];
-	  // If the index is too large for the cache, compute the column and copy it directly in the design matrix
-	  if (phiIndex >= cacheSize)
-	    {
-	      const Point column(basis_[phiIndex](x_).getImplementation()->getData());
-	      std::copy(column.begin(), column.end(), startDesign);
-	    } // Exceeds cache capacity
-	  else
-	    {
-	      MatrixImplementation::iterator startCache(designCache_.getImplementation()->begin() + phiIndex * xSize);
-	      // If the current index is already in the cache
-	      if (alreadyComputed_[phiIndex] != alreadyComputed_.getSize())
-		{
-		  // Simply copy the cache content in the design matrix
-		  std::copy(startCache, startCache + xSize, startDesign);
-		} // Values in the cache
-	      else
-		// The value is not in the cache
-		{
-		  // Compute the values
-		  Point column(basis_[phiIndex](x_).getImplementation()->getData());
-		  // Copy the values in the cache
-		  alreadyComputed_[phiIndex] = phiIndex;
-		  std::copy(column.begin(), column.end(), startCache);// copyOnWrite not called
-		  // And copy the value in the design matrix
-		  std::copy(column.begin(), column.end(), startDesign);
-		} // values stored in the cache
-	    } // Index in cache capacity
-	  startDesign += xSize;
-	} // j
-    } // indices != alreadyComputed_
+      const UnsignedInteger phiIndex = indices[j];
+      // If the index is too large for the cache, compute the column and copy it directly in the design matrix
+      if (phiIndex >= cacheSize)
+      {
+        const Point column(basis_[phiIndex](x_).getImplementation()->getData());
+        std::copy(column.begin(), column.end(), startDesign);
+      } // Exceeds cache capacity
+      else
+      {
+        MatrixImplementation::iterator startCache(designCache_.getImplementation()->begin() + phiIndex * xSize);
+        // If the current index is already in the cache
+        if (alreadyComputed_[phiIndex] != alreadyComputed_.getSize())
+        {
+          // Simply copy the cache content in the design matrix
+          std::copy(startCache, startCache + xSize, startDesign);
+        } // Values in the cache
+        else
+          // The value is not in the cache
+        {
+          // Compute the values
+          Point column(basis_[phiIndex](x_).getImplementation()->getData());
+          // Copy the values in the cache
+          alreadyComputed_[phiIndex] = phiIndex;
+          std::copy(column.begin(), column.end(), startCache);// copyOnWrite not called
+          // And copy the value in the design matrix
+          std::copy(column.begin(), column.end(), startDesign);
+        } // values stored in the cache
+      } // Index in cache capacity
+      startDesign += xSize;
+    } // j
+  } // indices != alreadyComputed_
   // Apply row filter if needed
   if (hasRowFilter())
+  {
+    const UnsignedInteger newRowDim = rowFilter_.getSize();
+    MatrixImplementation filteredDesign(newRowDim, indicesSize);
+    UnsignedInteger linearIndex = 0;
+    UnsignedInteger shift = 0;
+    for (UnsignedInteger j = 0; j < indicesSize; ++ j)
     {
-      const UnsignedInteger newRowDim = rowFilter_.getSize();
-      MatrixImplementation filteredDesign(newRowDim, indicesSize);
-      UnsignedInteger linearIndex = 0;
-      UnsignedInteger shift = 0;
-      for (UnsignedInteger j = 0; j < indicesSize; ++ j)
-	{
-	  for (UnsignedInteger i = 0; i < newRowDim; ++ i)
-	    {
-	      filteredDesign[linearIndex] = design[shift + rowFilter_[i]];
-	      ++ linearIndex;
-	    }
-	  shift += xSize;
-	}
-      design = filteredDesign;
-    } // hasRowFilter()
+      for (UnsignedInteger i = 0; i < newRowDim; ++ i)
+      {
+        filteredDesign[linearIndex] = design[shift + rowFilter_[i]];
+        ++ linearIndex;
+      }
+      shift += xSize;
+    }
+    design = filteredDesign;
+  } // hasRowFilter()
   if (hasWeight())
+  {
+    UnsignedInteger linearIndex = 0;
+    for (UnsignedInteger j = 0; j < design.getNbColumns(); ++ j)
     {
-      UnsignedInteger linearIndex = 0;
-      for (UnsignedInteger j = 0; j < design.getNbColumns(); ++ j)
-	{
-	  for (UnsignedInteger i = 0; i < design.getNbRows(); ++ i)
-	    {
-	      const UnsignedInteger newI = hasRowFilter() ? rowFilter_[i] : i;
-	      design[linearIndex] *= weight_[newI];
-	      ++ linearIndex;
-	    } // i
-	} // j
-    } // hasWeight()
+      for (UnsignedInteger i = 0; i < design.getNbRows(); ++ i)
+      {
+        const UnsignedInteger newI = hasRowFilter() ? rowFilter_[i] : i;
+        design[linearIndex] *= weight_[newI];
+        ++ linearIndex;
+      } // i
+    } // j
+  } // hasWeight()
   return design;
 }
 

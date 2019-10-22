@@ -63,17 +63,23 @@ e9 = ot.UnionEvent([e1, ot.UnionEvent([e1, e2])])
 ott.assert_almost_equal(e9.getSample(10000).computeMean()[0], 0.75, 1e-2, 1e-2)
 
 e10 = ot.UnionEvent([ot.UnionEvent([e1, e2]), e1])
-ott.assert_almost_equal(e10.getSample(10000).computeMean()[0], 0.75, 1e-2, 1e-2)
+ott.assert_almost_equal(e10.getSample(
+    10000).computeMean()[0], 0.75, 1e-2, 1e-2)
 
 # intersection of union
 e11 = ot.IntersectionEvent([ot.UnionEvent([e1, e2]), ot.UnionEvent([e1, e2])])
-ott.assert_almost_equal(e11.getSample(10000).computeMean()[0], 0.75, 1e-2, 1e-2)
+ott.assert_almost_equal(e11.getSample(
+    10000).computeMean()[0], 0.75, 1e-2, 1e-2)
 
 # union of intersection
-e12 = ot.UnionEvent([ot.IntersectionEvent([e1, e2]), ot.IntersectionEvent([e1, e2])])
-ott.assert_almost_equal(e12.getSample(10000).computeMean()[0], 0.25, 1e-2, 1e-2)
+e12 = ot.UnionEvent([ot.IntersectionEvent([e1, e2]),
+                     ot.IntersectionEvent([e1, e2])])
+ott.assert_almost_equal(e12.getSample(
+    10000).computeMean()[0], 0.25, 1e-2, 1e-2)
 
 # through simulation
+
+
 def sim_event(ev):
     experiment = ot.MonteCarloExperiment()
     algo = ot.ProbabilitySimulationAlgorithm(ev, experiment)
@@ -84,11 +90,13 @@ def sim_event(ev):
     result = algo.getResult()
     return result.getProbabilityEstimate()
 
+
 ott.assert_almost_equal(sim_event(e5), 0.25, 1e-2, 1e-2)
 
 ott.assert_almost_equal(sim_event(e6), 0.75, 1e-2, 1e-2)
 
 ott.assert_almost_equal(sim_event(e7), 0.25, 1e-2, 1e-2)
+
 
 def subset_event(ev):
     algo = ot.SubsetSampling(ev)
@@ -97,6 +105,7 @@ def subset_event(ev):
     algo.run()
     result = algo.getResult()
     return result.getProbabilityEstimate()
+
 
 ott.assert_almost_equal(subset_event(e3), 0.25, 1e-2, 1e-2)
 ott.assert_almost_equal(subset_event(e5), 0.25, 1e-2, 1e-2)

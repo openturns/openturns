@@ -50,12 +50,12 @@ public:
 
   /** Constructor from comparison operator */
   ThresholdEvent(const RandomVector & antecedent,
-                const ComparisonOperator & op,
-                const Scalar threshold);
+                 const ComparisonOperator & op,
+                 const Scalar threshold);
 
   /** Constructor from Interval */
   ThresholdEvent(const RandomVector & antecedent,
-                const Interval & interval);
+                 const Interval & interval);
 
   /** String converter */
   String __repr__() const;

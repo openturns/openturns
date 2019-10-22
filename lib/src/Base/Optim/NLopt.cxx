@@ -553,7 +553,7 @@ void NLopt::ComputeInequalityConstraint(unsigned m, double * result, unsigned n,
     Matrix gradient(algorithm->getProblem().getInequalityConstraint().gradient(inP));
     // nlopt solves h(x)<=0
     gradient = gradient * -1.0;
-    std::copy(&gradient(0,0), &gradient(n-1, m-1)+1, grad);
+    std::copy(&gradient(0, 0), &gradient(n - 1, m - 1) + 1, grad);
   }
 }
 
@@ -573,7 +573,7 @@ void NLopt::ComputeEqualityConstraint(unsigned m, double * result, unsigned n, c
   if (grad)
   {
     Matrix gradient(algorithm->getProblem().getEqualityConstraint().gradient(inP));
-    std::copy(&gradient(0,0), &gradient(n-1, m-1)+1, grad);
+    std::copy(&gradient(0, 0), &gradient(n - 1, m - 1) + 1, grad);
   }
 }
 

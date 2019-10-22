@@ -49,7 +49,7 @@ int main(int, char *[])
     for (UnsignedInteger i = 0; i < algoNames.getSize(); ++i)
     {
       // see t_Optpp_std.py
-      if ((algoNames[i] == "OptBaNewton") 
+      if ((algoNames[i] == "OptBaNewton")
           || (algoNames[i] == "OptBCNewton")
           || (algoNames[i] == "OptNewton")
           || (algoNames[i] == "OptFDNewton")
@@ -94,7 +94,7 @@ int main(int, char *[])
               {
                 fullprint << "-- Not supported" << std::endl;
               }
-          }
+            }
     } // algo
   }
   catch (TestFailed & ex)

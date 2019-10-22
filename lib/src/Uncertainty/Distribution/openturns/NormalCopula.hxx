@@ -107,7 +107,7 @@ public:
   Scalar computeConditionalPDF(const Scalar x,
                                const Point & y) const;
   Point computeConditionalPDF(const Point & x,
-			      const Sample & y) const;
+                              const Sample & y) const;
   Point computeSequentialConditionalPDF(const Point & x) const;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */

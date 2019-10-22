@@ -42,7 +42,7 @@ int main(int, char *[])
       for (UnsignedInteger iX = 0; iX < nX; ++iX)
       {
         Scalar x = xMin + (xMax - xMin) * iX / (nX - 1);
-	grid[iX] = x;
+        grid[iX] = x;
         fullprint << "pNormal(" << x << ")=" << DistFunc::pNormal(x) << ", complementary=" << DistFunc::pNormal(x, true) << std::endl;
       }
       fullprint << "pNormal(" << grid << ")=" << DistFunc::pNormal(grid) << std::endl;
@@ -56,7 +56,7 @@ int main(int, char *[])
       for (UnsignedInteger iQ = 0; iQ < nQ; ++iQ)
       {
         Scalar q = qMin + (qMax - qMin) * iQ / (nQ - 1);
-	grid[iQ] = q;
+        grid[iQ] = q;
         fullprint << "qNormal(" << q << ")=" << DistFunc::qNormal(q) << ", complementary=" << DistFunc::qNormal(q, true) << std::endl;
       }
       fullprint << "qNormal(" << grid << ")=" << DistFunc::qNormal(grid) << std::endl;

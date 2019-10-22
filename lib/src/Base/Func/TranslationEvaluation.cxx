@@ -129,7 +129,7 @@ Bool TranslationEvaluation::isLinearlyDependent(const UnsignedInteger index) con
 {
   if (index >= getInputDimension())
     throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
-    
+
   return true;
 }
 

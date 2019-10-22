@@ -7,7 +7,8 @@ ot.TESTPREAMBLE()
 
 
 # Instanciate one distribution object
-distribution = ot.DiscreteCompoundDistribution(ot.Bernoulli(0.5), ot.Poisson(20.0))
+distribution = ot.DiscreteCompoundDistribution(
+    ot.Bernoulli(0.5), ot.Poisson(20.0))
 upper_bound = int(distribution.getRange().getUpperBound()[0])
 print("Upper bound : {!r}".format(upper_bound))
 
@@ -15,7 +16,8 @@ print("Upper bound : {!r}".format(upper_bound))
 poisson_distribution = ot.Poisson(10.0)
 
 for i in range(upper_bound):
-    ott.assert_almost_equal(distribution.computePDF([i]), poisson_distribution.computePDF([i]))
+    ott.assert_almost_equal(distribution.computePDF(
+        [i]), poisson_distribution.computePDF([i]))
 
 print("Distribution ", repr(distribution))
 print("Distribution ", distribution)

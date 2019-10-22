@@ -58,16 +58,16 @@ int main(int, char *[])
     bootstrapSizes.add(0);
     bootstrapSizes.add(100);
     for (UnsignedInteger n = 0; n < bootstrapSizes.getSize(); ++n)
-      {
-	NonLinearLeastSquaresCalibration algo(modelX, x, y, candidate);
-	algo.setBootstrapSize(bootstrapSizes[n]);
-	algo.run();
-	// To avoid discrepance between the plaforms with or without CMinpack
-	fullprint << "result (Auto)=" << algo.getResult().getParameterMAP() << std::endl;
-	algo.setOptimizationAlgorithm(MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-MultiStartSize")).generate()));
-	algo.run();
-	fullprint << "result  (TNC)=" << algo.getResult().getParameterMAP() << std::endl;
-      } // n
+    {
+      NonLinearLeastSquaresCalibration algo(modelX, x, y, candidate);
+      algo.setBootstrapSize(bootstrapSizes[n]);
+      algo.run();
+      // To avoid discrepance between the plaforms with or without CMinpack
+      fullprint << "result (Auto)=" << algo.getResult().getParameterMAP() << std::endl;
+      algo.setOptimizationAlgorithm(MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-MultiStartSize")).generate()));
+      algo.run();
+      fullprint << "result  (TNC)=" << algo.getResult().getParameterMAP() << std::endl;
+    } // n
   }
   catch (TestFailed & ex)
   {

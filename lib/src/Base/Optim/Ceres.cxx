@@ -24,7 +24,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
 #ifdef OPENTURNS_HAVE_CERES
-  #include <ceres/ceres.h>
+#include <ceres/ceres.h>
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -94,7 +94,7 @@ void Ceres::checkProblem(const OptimizationProblem & problem) const
 
   if (problem.hasEqualityConstraint())
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support equality constraints";
-  
+
   if (!problem.isContinuous())
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support non continuous problems";
 }
@@ -108,7 +108,7 @@ public:
     , algorithm_(algorithm)
   {
     const OptimizationProblem problem(algorithm_.getProblem());
-    *mutable_parameter_block_sizes() = std::vector<ceres::int32>(1, problem.getDimension()); 
+    *mutable_parameter_block_sizes() = std::vector<ceres::int32>(1, problem.getDimension());
     set_num_residuals(problem.getResidualFunction().getOutputDimension());
   }
 
@@ -133,7 +133,7 @@ public:
     if (jacobians)
     {
       const Matrix gradient(problem.getResidualFunction().gradient(inP));
-      std::copy(&gradient(0, 0), &gradient(n-1, m-1)+1, jacobians[0]);
+      std::copy(&gradient(0, 0), &gradient(n - 1, m - 1) + 1, jacobians[0]);
     }
     return true;
   }
@@ -174,7 +174,7 @@ public:
     if (jacobian)
     {
       const Matrix gradient(problem.isMinimization() ? problem.getObjective().gradient(inP) : -1.0 * problem.getObjective().gradient(inP));
-      std::copy(&gradient(0, 0), &gradient(n-1, 0)+1, jacobian);
+      std::copy(&gradient(0, 0), &gradient(n - 1, 0) + 1, jacobian);
     }
     return true;
   }
@@ -340,9 +340,9 @@ void Ceres::run()
     if (ResourceMap::HasKey("Ceres-dynamic_sparsity"))
       options.dynamic_sparsity = ResourceMap::GetAsBool("Ceres-dynamic_sparsity");
     if (ResourceMap::HasKey("Ceres-min_linear_solver_iterations"))
-        options.min_linear_solver_iterations = ResourceMap::GetAsUnsignedInteger("Ceres-min_linear_solver_iterations");
+      options.min_linear_solver_iterations = ResourceMap::GetAsUnsignedInteger("Ceres-min_linear_solver_iterations");
     if (ResourceMap::HasKey("Ceres-max_linear_solver_iterations"))
-        options.max_linear_solver_iterations = ResourceMap::GetAsUnsignedInteger("Ceres-max_linear_solver_iterations");
+      options.max_linear_solver_iterations = ResourceMap::GetAsUnsignedInteger("Ceres-max_linear_solver_iterations");
     if (ResourceMap::HasKey("Ceres-eta"))
       options.eta = ResourceMap::GetAsScalar("Ceres-eta");
     if (ResourceMap::HasKey("Ceres-jacobi_scaling"))

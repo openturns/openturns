@@ -45,7 +45,7 @@ FittingTest::FittingTest()
 /* Best model for a given numerical sample by BIC */
 Distribution FittingTest::BestModelBIC(const Sample & sample,
                                        const DistributionFactoryCollection & factoryCollection,
-				       Scalar & bestBICOut)
+                                       Scalar & bestBICOut)
 {
   const UnsignedInteger size = factoryCollection.getSize();
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
@@ -85,7 +85,7 @@ Distribution FittingTest::BestModelBIC(const Sample & sample,
 /* Best model for a given numerical sample by BIC */
 Distribution FittingTest::BestModelBIC(const Sample  & sample,
                                        const DistributionCollection & distributionCollection,
-				       Scalar & bestBICOut)
+                                       Scalar & bestBICOut)
 {
   const UnsignedInteger size = distributionCollection.getSize();
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
@@ -371,18 +371,18 @@ TestResult FittingTest::ChiSquared(const Sample & sample,
     const Sample support(distribution.getSupport());
     // Here we should check that the given sample contains only values in the distribution support
     if (ResourceMap::GetAsBool("FittingTest-ChiSquaredCheckSample"))
-      {
-	const NearestNeighbour1D proximityAlgorithm(support);
-	const Indices indices(proximityAlgorithm.queryScalar(sortedSample.asPoint()));
-	for (UnsignedInteger i = 0; i < size; ++i)
-	  if (std::abs(sortedSample(i, 0) - support(indices[i], 0)) > epsilon)
-	    throw InvalidArgumentException(HERE) << "Error: the given sample contains points which are not in the support of the given distribution wrt the absolute precision=" << epsilon << ". Check the keys 'DiscreteDistribution-SupportEpsilon' and 'FittingTest-ChiSquaredCheckSample' in ResourceMap";
-      } // Check sample
+    {
+      const NearestNeighbour1D proximityAlgorithm(support);
+      const Indices indices(proximityAlgorithm.queryScalar(sortedSample.asPoint()));
+      for (UnsignedInteger i = 0; i < size; ++i)
+        if (std::abs(sortedSample(i, 0) - support(indices[i], 0)) > epsilon)
+          throw InvalidArgumentException(HERE) << "Error: the given sample contains points which are not in the support of the given distribution wrt the absolute precision=" << epsilon << ". Check the keys 'DiscreteDistribution-SupportEpsilon' and 'FittingTest-ChiSquaredCheckSample' in ResourceMap";
+    } // Check sample
     const Point probabilities(distribution.getProbabilities());
     const Scalar probabilityThreshold = (1.0 * nMin) / size;
     const UnsignedInteger supportSize = support.getSize();
     Scalar cumulatedProbabilities = 0.0;
-    ticks.add(support(0 ,0) - epsilon * (1.0 + std::abs(support(0, 0))));
+    ticks.add(support(0, 0) - epsilon * (1.0 + std::abs(support(0, 0))));
     for (UnsignedInteger i = 0; i < supportSize; ++i)
     {
       cumulatedProbabilities += probabilities[i];

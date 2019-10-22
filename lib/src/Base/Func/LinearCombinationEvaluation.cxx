@@ -318,11 +318,11 @@ Evaluation LinearCombinationEvaluation::getMarginal(const Indices & indices) con
 
 /* Linearity accessors */
 Bool LinearCombinationEvaluation::isLinear() const
-{ 
-  for (UnsignedInteger i=0; i<functionsCollection_.getSize(); ++i)
-      if (!functionsCollection_[i].isLinear())
+{
+  for (UnsignedInteger i = 0; i < functionsCollection_.getSize(); ++i)
+    if (!functionsCollection_[i].isLinear())
       return false;
-    
+
   return true;
 }
 
@@ -330,12 +330,13 @@ Bool LinearCombinationEvaluation::isLinearlyDependent(const UnsignedInteger inde
 {
   if (index > getOutputDimension())
     throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function output dimension (" << getOutputDimension() << ")";
-    
-  for (UnsignedInteger i=0; i<functionsCollection_.getSize(); ++i)
+
+  for (UnsignedInteger i = 0; i < functionsCollection_.getSize(); ++i)
     if (!functionsCollection_[i].isLinearlyDependent(index))
       return false;
-    
-  return true;}
+
+  return true;
+}
 
 
 /* Method save() stores the object through the StorageManager */

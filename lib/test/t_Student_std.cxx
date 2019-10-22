@@ -84,14 +84,14 @@ int main(int, char *[])
       fullprint << "mean=" << oneSample.computeMean() << std::endl;
       fullprint << "covariance=" << oneSample.computeCovariance() << std::endl;
       if (distribution.getDimension() == 1)
-	{
-	  size = 100;
-	  for (UnsignedInteger i = 0; i < 2; ++i)
-	    {
-	      fullprint << "Kolmogorov test for the generator, sample size=" << size << " is " << (FittingTest::Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure() ? "accepted" : "rejected") << std::endl;
-	      size *= 10;
-	    }
-	}
+      {
+        size = 100;
+        for (UnsignedInteger i = 0; i < 2; ++i)
+        {
+          fullprint << "Kolmogorov test for the generator, sample size=" << size << " is " << (FittingTest::Kolmogorov(distribution.getSample(size), distribution).getBinaryQualityMeasure() ? "accepted" : "rejected") << std::endl;
+          size *= 10;
+        }
+      }
       // Define a point
       Point point( dim, 1.0 );
       fullprint << "Point= " << point << std::endl;
@@ -101,13 +101,13 @@ int main(int, char *[])
       Point DDF = distribution.computeDDF( point );
       fullprint << "ddf     =" << DDF << std::endl;
       if (dim == 1)
-	fullprint << "ddf (FD)=" << Point(1, (distribution.computePDF( point + Point(1, eps) ) - distribution.computePDF( point  + Point(1, -eps) )) / (2.0 * eps)) << std::endl;
+        fullprint << "ddf (FD)=" << Point(1, (distribution.computePDF( point + Point(1, eps) ) - distribution.computePDF( point  + Point(1, -eps) )) / (2.0 * eps)) << std::endl;
       Scalar LPDF = distribution.computeLogPDF( point );
       fullprint << "log pdf=" << LPDF << std::endl;
       Scalar PDF = distribution.computePDF( point );
       fullprint << "pdf     =" << PDF << std::endl;
       if (dim == 1)
-	fullprint << "pdf (FD)=" << (distribution.computeCDF( point + Point(1, eps) ) - distribution.computeCDF( point  + Point(1, -eps) )) / (2.0 * eps) << std::endl;
+        fullprint << "pdf (FD)=" << (distribution.computeCDF( point + Point(1, eps) ) - distribution.computeCDF( point  + Point(1, -eps) )) / (2.0 * eps) << std::endl;
       Scalar CDF = distribution.computeCDF( point );
       fullprint << "cdf=" << CDF << std::endl;
       Scalar CCDF = distribution.computeComplementaryCDF( point );
@@ -117,29 +117,29 @@ int main(int, char *[])
       Point InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
       fullprint << "Inverse survival=" << InverseSurvival << std::endl;
       fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
-      if (dim==1)
-	{
-	  Point PDFgr = distribution.computePDFGradient( point );
-	  fullprint << "pdf gradient     =" << PDFgr << std::endl;
-	  Point PDFgrFD(3);
-	  PDFgrFD[0] = (Student(distribution.getNu() + eps, distribution.getMean(), distribution.getSigma(), distribution.getCorrelation()).computePDF(point) -
-			Student(distribution.getNu() - eps, distribution.getMean(), distribution.getSigma(), distribution.getCorrelation()).computePDF(point)) / (2.0 * eps);
-	  PDFgrFD[1] = (Student(distribution.getNu(), distribution.getMean() + Point(1, eps), distribution.getSigma(), distribution.getCorrelation()).computePDF(point) -
-			Student(distribution.getNu(), distribution.getMean() - Point(1, eps), distribution.getSigma(), distribution.getCorrelation()).computePDF(point)) / (2.0 * eps);
-	  PDFgrFD[2] = (Student(distribution.getNu(), distribution.getMean(), distribution.getSigma() + Point(1, eps), distribution.getCorrelation()).computePDF(point) -
-			Student(distribution.getNu(), distribution.getMean(), distribution.getSigma() - Point(1, eps), distribution.getCorrelation()).computePDF(point)) / (2.0 * eps);
-	  fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
-	  Point CDFgr = distribution.computeCDFGradient( point );
-	  fullprint << "cdf gradient     =" << CDFgr << std::endl;
-	  Point CDFgrFD(3);
-	  CDFgrFD[0] = (Student(distribution.getNu() + eps, distribution.getMean(), distribution.getSigma(), distribution.getCorrelation()).computeCDF(point) -
-			Student(distribution.getNu() - eps, distribution.getMean(), distribution.getSigma(), distribution.getCorrelation()).computeCDF(point)) / (2.0 * eps);
-	  CDFgrFD[1] = (Student(distribution.getNu(), distribution.getMean() + Point(1, eps), distribution.getSigma(), distribution.getCorrelation()).computeCDF(point) -
-			Student(distribution.getNu(), distribution.getMean() - Point(1, eps), distribution.getSigma(), distribution.getCorrelation()).computeCDF(point)) / (2.0 * eps);
-	  CDFgrFD[2] = (Student(distribution.getNu(), distribution.getMean(), distribution.getSigma() + Point(1, eps), distribution.getCorrelation()).computeCDF(point) -
-			Student(distribution.getNu(), distribution.getMean(), distribution.getSigma() - Point(1, eps), distribution.getCorrelation()).computeCDF(point)) / (2.0 * eps);
-	  fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
-	}
+      if (dim == 1)
+      {
+        Point PDFgr = distribution.computePDFGradient( point );
+        fullprint << "pdf gradient     =" << PDFgr << std::endl;
+        Point PDFgrFD(3);
+        PDFgrFD[0] = (Student(distribution.getNu() + eps, distribution.getMean(), distribution.getSigma(), distribution.getCorrelation()).computePDF(point) -
+                      Student(distribution.getNu() - eps, distribution.getMean(), distribution.getSigma(), distribution.getCorrelation()).computePDF(point)) / (2.0 * eps);
+        PDFgrFD[1] = (Student(distribution.getNu(), distribution.getMean() + Point(1, eps), distribution.getSigma(), distribution.getCorrelation()).computePDF(point) -
+                      Student(distribution.getNu(), distribution.getMean() - Point(1, eps), distribution.getSigma(), distribution.getCorrelation()).computePDF(point)) / (2.0 * eps);
+        PDFgrFD[2] = (Student(distribution.getNu(), distribution.getMean(), distribution.getSigma() + Point(1, eps), distribution.getCorrelation()).computePDF(point) -
+                      Student(distribution.getNu(), distribution.getMean(), distribution.getSigma() - Point(1, eps), distribution.getCorrelation()).computePDF(point)) / (2.0 * eps);
+        fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
+        Point CDFgr = distribution.computeCDFGradient( point );
+        fullprint << "cdf gradient     =" << CDFgr << std::endl;
+        Point CDFgrFD(3);
+        CDFgrFD[0] = (Student(distribution.getNu() + eps, distribution.getMean(), distribution.getSigma(), distribution.getCorrelation()).computeCDF(point) -
+                      Student(distribution.getNu() - eps, distribution.getMean(), distribution.getSigma(), distribution.getCorrelation()).computeCDF(point)) / (2.0 * eps);
+        CDFgrFD[1] = (Student(distribution.getNu(), distribution.getMean() + Point(1, eps), distribution.getSigma(), distribution.getCorrelation()).computeCDF(point) -
+                      Student(distribution.getNu(), distribution.getMean() - Point(1, eps), distribution.getSigma(), distribution.getCorrelation()).computeCDF(point)) / (2.0 * eps);
+        CDFgrFD[2] = (Student(distribution.getNu(), distribution.getMean(), distribution.getSigma() + Point(1, eps), distribution.getCorrelation()).computeCDF(point) -
+                      Student(distribution.getNu(), distribution.getMean(), distribution.getSigma() - Point(1, eps), distribution.getCorrelation()).computeCDF(point)) / (2.0 * eps);
+        fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
+      }
       Point quantile = distribution.computeQuantile( 0.95 );
       fullprint << "quantile=" << quantile << std::endl;
       fullprint << "cdf(quantile)=" << distribution.computeCDF(quantile) << std::endl;
@@ -179,8 +179,8 @@ int main(int, char *[])
       Student::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
       fullprint << "parameters=" << parameters << std::endl;
       distribution.setParametersCollection(parameters);
-      if (dim==1)
-	for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
+      if (dim == 1)
+        for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
       fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
 
       // Specific to this distribution

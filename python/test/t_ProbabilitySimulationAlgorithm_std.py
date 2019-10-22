@@ -80,7 +80,8 @@ for experiment in experiments:
 
     # Stream out the result
     print('algo result=', myAlgo.getResult())
-    print('probability distribution=', myAlgo.getResult().getProbabilityDistribution())
+    print('probability distribution=',
+          myAlgo.getResult().getProbabilityDistribution())
 
     # Use the standard deviation as a stoping rule
     experiment = ot.MonteCarloExperiment()
@@ -99,7 +100,8 @@ for experiment in experiments:
 
     # Stream out the result
     print('algo result=', myAlgo.getResult())
-    print('probability distribution=', myAlgo.getResult().getProbabilityDistribution())
+    print('probability distribution=',
+          myAlgo.getResult().getProbabilityDistribution())
 
 print('-' * 32)
 ot.RandomGenerator.SetSeed(0)
@@ -113,7 +115,8 @@ Yvector = ot.CompositeRandomVector(f, Xvector)
 s = 1.0
 event1 = ot.ThresholdEvent(Yvector, ot.Greater(), s)
 description.add('composite vector/domain event')
-domain1D = ot.LevelSet(ot.SymbolicFunction(['x0'], ['sin(x0)']), ot.LessOrEqual(), -0.5)
+domain1D = ot.LevelSet(ot.SymbolicFunction(
+    ['x0'], ['sin(x0)']), ot.LessOrEqual(), -0.5)
 event2 = ot.DomainEvent(Yvector, domain1D)
 description.add('composite vector/interval event')
 interval = ot.Interval(0.5, 1.5)
@@ -136,4 +139,5 @@ for i, event in enumerate(all_events):
     myAlgo.setMaximumCoefficientOfVariation(0.1)
     myAlgo.run()
     print('MonteCarlo result=', myAlgo.getResult())
-    print('probability distribution=', myAlgo.getResult().getProbabilityDistribution())
+    print('probability distribution=',
+          myAlgo.getResult().getProbabilityDistribution())

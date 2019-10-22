@@ -113,7 +113,8 @@ void OPTppImplementation::ComputeObjectiveGradient(int mode, int ndim, const NEW
   const Scalar sign = algorithm->getProblem().isMinimization() ? 1.0 : -1.0;
 
   // evaluation
-  if (mode & OPTPP::NLPFunction) {
+  if (mode & OPTPP::NLPFunction)
+  {
     const Point outP(algorithm->getProblem().getObjective()(inP));
     fx = sign * outP[0];
     result = OPTPP::NLPFunction;
@@ -124,7 +125,8 @@ void OPTppImplementation::ComputeObjectiveGradient(int mode, int ndim, const NEW
   }
 
   // gradient
-  if (mode & OPTPP::NLPGradient) {
+  if (mode & OPTPP::NLPGradient)
+  {
     const Matrix grad(algorithm->getProblem().getObjective().gradient(inP));
     for (UnsignedInteger i = 0; i < dimension; ++ i)
       g(i + 1) = sign * grad(i, 0);// starts at 1!
@@ -157,7 +159,8 @@ void OPTppImplementation::ComputeObjectiveGradientHessian(int mode, int ndim, co
   const Scalar sign = algorithm->getProblem().isMinimization() ? 1.0 : -1.0;
 
   // evaluation
-  if (mode & OPTPP::NLPFunction) {
+  if (mode & OPTPP::NLPFunction)
+  {
     const Point outP(algorithm->getProblem().getObjective()(inP));
     fx = sign * outP[0];
     result = OPTPP::NLPFunction;
@@ -168,7 +171,8 @@ void OPTppImplementation::ComputeObjectiveGradientHessian(int mode, int ndim, co
   }
 
   // gradient
-  if (mode & OPTPP::NLPGradient) {
+  if (mode & OPTPP::NLPGradient)
+  {
     const Matrix grad(algorithm->getProblem().getObjective().gradient(inP));
     for (UnsignedInteger i = 0; i < dimension; ++ i)
       g(i + 1) = sign * grad(i, 0);// starts at 1!
@@ -176,7 +180,8 @@ void OPTppImplementation::ComputeObjectiveGradientHessian(int mode, int ndim, co
   }
 
   // hessian
-  if (mode & OPTPP::NLPHessian) {
+  if (mode & OPTPP::NLPHessian)
+  {
     const SymmetricTensor hess(algorithm->getProblem().getObjective().hessian(inP));
     for (UnsignedInteger i = 0; i < dimension; ++ i)
       for (UnsignedInteger j = 0; j < i; ++ j)
@@ -212,7 +217,8 @@ void OPTppImplementation::ComputeInequalityConstraint(int mode, int ndim, const 
   const UnsignedInteger constraintDimension = constraint.getOutputDimension();
 
   // evaluation
-  if (mode & OPTPP::NLPFunction) {
+  if (mode & OPTPP::NLPFunction)
+  {
     const Point outP(constraint(inP));
     algorithm->inequalityConstraintHistory_.add(outP);
     for (UnsignedInteger i = 0; i < constraintDimension; ++ i)
@@ -221,7 +227,8 @@ void OPTppImplementation::ComputeInequalityConstraint(int mode, int ndim, const 
   }
 
   // gradient
-  if (mode & OPTPP::NLPGradient) {
+  if (mode & OPTPP::NLPGradient)
+  {
     const Matrix grad(constraint.gradient(inP));
     for (UnsignedInteger i = 0; i < dimension; ++ i)
       for (UnsignedInteger j = 0; j < constraintDimension; ++ j)
@@ -229,7 +236,8 @@ void OPTppImplementation::ComputeInequalityConstraint(int mode, int ndim, const 
     result = OPTPP::NLPGradient;
   }
 
-  if (mode & OPTPP::NLPHessian) {
+  if (mode & OPTPP::NLPHessian)
+  {
     const SymmetricTensor hessian(constraint.hessian(inP));
     for (UnsignedInteger k = 0; k < constraintDimension; ++ k)
     {
@@ -258,7 +266,8 @@ void OPTppImplementation::ComputeEqualityConstraint(int mode, int ndim, const NE
   const UnsignedInteger constraintDimension = constraint.getOutputDimension();
 
   // evaluation
-  if (mode & OPTPP::NLPFunction) {
+  if (mode & OPTPP::NLPFunction)
+  {
     const Point outP(constraint(inP));
     algorithm->equalityConstraintHistory_.add(outP);
     for (UnsignedInteger i = 0; i < constraintDimension; ++ i)
@@ -267,7 +276,8 @@ void OPTppImplementation::ComputeEqualityConstraint(int mode, int ndim, const NE
   }
 
   // gradient
-  if (mode & OPTPP::NLPGradient) {
+  if (mode & OPTPP::NLPGradient)
+  {
     const Matrix grad(constraint.gradient(inP));
     for (UnsignedInteger i = 0; i < dimension; ++ i)
       for (UnsignedInteger j = 0; j < constraintDimension; ++ j)
@@ -275,7 +285,8 @@ void OPTppImplementation::ComputeEqualityConstraint(int mode, int ndim, const NE
     result = OPTPP::NLPGradient;
   }
 
-  if (mode & OPTPP::NLPHessian) {
+  if (mode & OPTPP::NLPHessian)
+  {
     const SymmetricTensor hessian(constraint.hessian(inP));
     for (UnsignedInteger k = 0; k < constraintDimension; ++ k)
     {
