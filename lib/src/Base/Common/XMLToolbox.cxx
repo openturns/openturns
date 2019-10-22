@@ -295,7 +295,7 @@ Bool XML::ElementHasAttribute(const Node & elt, const String & name)
 {
   xmlString aName = StringToXmlString( name );
   assert(elt);
-  return xmlHasProp( elt, aName.c_str() );
+  return xmlHasProp(elt, aName.c_str()) != NULL;
 }
 
 

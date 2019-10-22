@@ -4388,7 +4388,7 @@ Graph DistributionImplementation::drawQuantile2D(const Scalar qMin,
   const String yName(getDescription()[1]);
   const GraphImplementation::LogScale scale = static_cast<GraphImplementation::LogScale>((logScaleX ? 1 : 0) + (logScaleY ? 2 : 0));
   Graph graphQuantile(title, xName, yName, true, "topleft", 1, scale);
-  graphQuantile.add(drawSurvivalFunction(data.getMin(), data.getMax(), scale).getDrawable(0));
+  graphQuantile.add(drawSurvivalFunction(data.getMin(), data.getMax(), logScaleX, logScaleY).getDrawable(0));
   graphQuantile.add(curveQuantile);
   Description legends(2);
   legends[0] = "iso-SurvivalFunction";

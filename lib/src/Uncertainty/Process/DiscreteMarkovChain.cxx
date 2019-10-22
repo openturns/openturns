@@ -269,9 +269,9 @@ void DiscreteMarkovChain::setOrigin(const Distribution & origin)
   
   // Check support consistence with transition matrix dimension
   const Interval support(origin.getRange());
-  const Bool flb = support.getFiniteLowerBound()[0];
+  const Bool flb = support.getFiniteLowerBound()[0] > 0;
   const Scalar lb(support.getLowerBound()[0]);
-  const Bool fub = support.getFiniteUpperBound()[0];
+  const Bool fub = support.getFiniteUpperBound()[0] > 0;
   const Scalar ub(support.getUpperBound()[0]);
 
   if (!flb || lb < 0.0) throw InvalidArgumentException(HERE) << "Error: the given origin distribution support must be positive.";
