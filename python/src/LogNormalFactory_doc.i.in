@@ -100,10 +100,30 @@ Thus, :math:`\hat{\gamma}_n` satisfies the relation:
 
 .. math::
     :label: mll_relation
-    
+
     S_0 (\gamma) \left(S_2(\gamma) - S_1(\gamma) \left( 1 + \frac{S_1(\gamma)}{n} \right) \right) + n S_3(\gamma) = 0
 
-under the constraint :math:`\gamma \leq \min x_i`."
+under the constraint :math:`\gamma \leq \min x_i`.
+
+**Least squares method estimator:**
+
+The parameter :math:`\gamma` is numerically optimized by non-linear least squares.
+
+When :math:`\gamma` is known and the x_i follow a Log-Normal distribution then
+we use linear least-squares to solve the relation:
+
+.. math::
+  :label: least_squares_estimator
+
+    \Phi^{-1}(\hat{F}_n(x_i)) = a_1 \log(x_i - \gamma) + a_0
+
+And the remaining parameters are estimated with:
+
+.. math::
+
+    \hat{\sigma}_l &= \frac{1}{a_1}\\
+    \hat{\mu}_l &= -a_0 \hat{\sigma}_l
+"
 
 // ---------------------------------------------------------------------
 
@@ -125,10 +145,13 @@ Parameters
 sample : 2-d sequence of float, of dimension 1
     The sample from which the distribution parameters are estimated.
 method : integer
-    An integer ranges from 0 to 2 corresponding to a specific estimator method:
+    An integer corresponding to a specific estimator method:
+
     - 0 : Local likelihood maximum estimator
     - 1 : Modified moment estimator
-    - 2 : method of moment estimator.
+    - 2 : Method of moment estimator
+    - 3 : Least squares method.
+
 param : Collection of :class:`~openturns.PointWithDescription`
     A vector of parameters of the distribution.
 
@@ -160,7 +183,9 @@ method : integer
     An integer ranges from 0 to 2 corresponding to a specific estimator method:
     - 0 : Local likelihood maximum estimator (default)
     - 1 : Modified moment estimator
-    - 2 : method of moment estimator.
+    - 2 : Method of moment estimator
+    - 3 : Least squares method.
+
     The default value is from the :class:`~openturns.ResourceMap` key `LogNormalFactory-EstimationMethod`. 
 param : Collection of :class:`~openturns.PointWithDescription`
     A vector of parameters of the distribution.
@@ -219,4 +244,5 @@ sample : 2-d sequence of float, of dimension 1
 Parameters
 ----------
 sample : 2-d sequence of float, of dimension 1
-    The sample from which the distribution parameters are estimated."
+    The sample from which the distribution parameters are estimated.
+"

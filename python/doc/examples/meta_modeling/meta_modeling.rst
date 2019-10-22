@@ -19,13 +19,16 @@ Polynomial chaos metamodel
 .. toctree::
     :maxdepth: 1
 
+    chaos_ishigami.ipynb
+    chaos_cantilever_beam_integration.ipynb
     functional_chaos.ipynb
     functional_chaos_advanced_ctors.ipynb
     functional_chaos_exploitation.ipynb
-    functional_chaos_graphs.ipynb
     functional_chaos_database.ipynb
-    chaos_ishigami.ipynb
     chaos_ishigami_grouped_indices.ipynb
+    chaos_build_distribution.ipynb
+    functional_chaos_graphs.ipynb
+    chaos_draw_validation.ipynb
 
 Kriging metamodel
 -----------------

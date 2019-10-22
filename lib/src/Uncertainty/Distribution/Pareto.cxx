@@ -55,7 +55,7 @@ Pareto::Pareto(const Scalar beta,
   setName( "Pareto" );
   // We set the dimension of the Pareto distribution
   setDimension( 1 );
-  if (!(beta > 0.0)) throw NotDefinedException(HERE) << "Beta must be positive, here beta=" << beta;
+  if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Beta must be positive, here beta=" << beta;
   // This call set also the range.
   setAlpha(alpha);
 }

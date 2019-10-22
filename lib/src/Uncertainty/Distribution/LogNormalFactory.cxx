@@ -298,6 +298,9 @@ LogNormal LogNormalFactory::buildAsLogNormal(const Sample & sample,
     case 2:
       return buildMethodOfMoments(sample);
       break;
+    case 3:
+      return buildMethodOfLeastSquares(sample);
+      break;
     default:
       throw InvalidArgumentException(HERE) << "Error: invalid value=" << method << " for the key 'LogNormalFactory-EstimationMethod' in ResourceMap";
   }
@@ -323,7 +326,8 @@ LogNormal LogNormalFactory::buildAsLogNormal() const
 }
 
 /* Algorithm associated with the method of least-squares */
-LogNormal LogNormalFactory::buildMethodOfLeastSquares(const Sample & sample, const Scalar gamma) const
+LogNormal LogNormalFactory::buildMethodOfLeastSquares(const Sample & sample,
+                                                      const Scalar gamma) const
 {
   const UnsignedInteger size = sample.getSize();
   Sample dataIn(size, 1);
@@ -403,12 +407,10 @@ public:
     leastSquares.run();
     const Scalar a0 = leastSquares.getConstant()[0];
     const Scalar a1 = leastSquares.getLinear()(0, 0);
-    const Scalar sigmaLog = 1.0 / a1;
-    const Scalar muLog = -a0 * sigmaLog;
     Point result(size);
     for (UnsignedInteger i = 0; i < size; ++ i)
     {
-      result[i] = dataOut_(i, 0) - (dataIn(i, 0) / sigmaLog - muLog/sigmaLog);
+      result[i] = dataOut_(i, 0) - (a1 * dataIn(i, 0) + a0);
     }
     return result;
   }
@@ -421,6 +423,8 @@ private:
 
 LogNormal LogNormalFactory::buildMethodOfLeastSquares(const Sample & sample) const
 {
+  if (sample.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "Error: can only build a LogNormal distribution from a sample of dimension 1, here dimension=" << sample.getDimension();
   const UnsignedInteger size = sample.getSize();
   const Scalar xMin = sample.getMin()[0];
   Scalar gamma = xMin - std::abs(xMin) / (2 + size);
