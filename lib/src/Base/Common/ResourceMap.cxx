@@ -1252,13 +1252,16 @@ void ResourceMap::loadDefaultConfiguration()
 
   // HMatrix parameters //
   setAsBool( "HMatrix-ForceSequential", false);
-  setAsScalar( "HMatrix-AdmissibilityFactor", 2.0 );
+  setAsScalar( "HMatrix-AdmissibilityFactor", 100.0 );
   setAsScalar( "HMatrix-AssemblyEpsilon", 1.0e-4);
+  setAsScalar( "HMatrix-LargestEigenValueRelativeError", 1.0e-1);
   setAsScalar( "HMatrix-RecompressionEpsilon", 1.0e-4);
   setAsScalar( "HMatrix-ValidationError", 0.0);
   setAsString( "HMatrix-ClusteringAlgorithm", "median" );
   setAsUnsignedInteger( "HMatrix-CompressionMethod", 1 );
-  setAsUnsignedInteger( "HMatrix-MaxLeafSize", 100);
+  setAsUnsignedInteger( "HMatrix-FactorizationIterations", 10);
+  setAsUnsignedInteger( "HMatrix-LargestEigenValueRelativeIterations", 10);
+  setAsUnsignedInteger( "HMatrix-MaxLeafSize", 250);
   setAsUnsignedInteger( "HMatrix-ValidationDump", 0);
   setAsUnsignedInteger( "HMatrix-ValidationRerun", 0);
 

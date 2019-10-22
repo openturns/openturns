@@ -143,6 +143,11 @@ public:
   /** Compute this <- alpha op(A) * p(B) + beta * this */
   void gemm(char transA, char transB, Scalar alpha, const HMatrixImplementation& a, const HMatrixImplementation& b, Scalar beta);
 
+ private:
+  /** Compute an approximation of the maximum eigenvalue */
+  Scalar computeApproximateLargestEigenValue(const Scalar epsilon = ResourceMap::GetAsScalar("HMatrix-LargestEigenValueRelativeError"));
+
+ public:
   /** Transpose matrix */
   void transpose();
 
@@ -199,7 +204,7 @@ private:
 class OT_API CovarianceAssemblyFunction : public HMatrixRealAssemblyFunction
 {
 public:
-  CovarianceAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices, double epsilon);
+  CovarianceAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices);
 
   Scalar operator()(UnsignedInteger i, UnsignedInteger j) const;
 
@@ -210,7 +215,6 @@ private:
   const Collection<Scalar>::const_iterator verticesBegin_;
   const UnsignedInteger inputDimension_;
   const UnsignedInteger covarianceDimension_;
-  const double epsilon_;
 };
 
 // Second implementation, by using HMatrixTensorRealAssemblyFunction
@@ -219,7 +223,7 @@ private:
 class OT_API CovarianceBlockAssemblyFunction : public HMatrixTensorRealAssemblyFunction
 {
 public:
-  CovarianceBlockAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices, double epsilon);
+  CovarianceBlockAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices);
 
   void compute(UnsignedInteger i, UnsignedInteger j, Matrix* localValues) const;
 
@@ -229,8 +233,6 @@ private:
   const Sample vertices_;
   const Collection<Scalar>::const_iterator verticesBegin_;
   const UnsignedInteger inputDimension_;
-  const double epsilon_;
-  CovarianceMatrix epsilonId_;
 };
 
 END_NAMESPACE_OPENTURNS

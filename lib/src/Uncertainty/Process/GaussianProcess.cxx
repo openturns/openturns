@@ -123,53 +123,38 @@ void GaussianProcess::initialize() const
     LOGINFO(OSS() << "Discretize the covariance model");
     covarianceMatrix = CovarianceMatrix(covarianceModel_.discretize(mesh_));
   }
-  // Boolean flag to tell if the regularization is enough
-  Bool continuationCondition = true;
-  // Scaling factor of the matrix : M-> M + \lambda I with \lambda very small
-  // The regularization is needed for fast decreasing covariance models
-  const Scalar startingScaling = ResourceMap::GetAsScalar("GaussianProcess-StartingScaling");
-  const Scalar maximalScaling = ResourceMap::GetAsScalar("GaussianProcess-MaximalScaling");
-  Scalar cumulatedScaling = 0.0;
-  Scalar scaling = startingScaling;
-  HMatrixFactory hmatFactory;
-  HMatrixParameters hmatrixParameters;
 
-  while (continuationCondition && (cumulatedScaling < maximalScaling))
+  // There is a specific regularization for h-matrices
+  if (samplingMethod_ == 1)
   {
-    // Unroll the regularization to optimize the computation
-    if (samplingMethod_ == 1)
+    HMatrixFactory hmatFactory;
+    HMatrixParameters hmatrixParameters;
+    LOGINFO(OSS() << "Assemble and factor the covariance matrix");
+    covarianceHMatrix_ = hmatFactory.build(mesh_.getVertices(), covarianceModel_.getOutputDimension(), true, hmatrixParameters);
+    if (covarianceModel_.getOutputDimension() == 1)
     {
-      LOGINFO(OSS() << "Assemble and factor the covariance matrix");
-      covarianceHMatrix_ = hmatFactory.build(mesh_.getVertices(), covarianceModel_.getOutputDimension(), true, hmatrixParameters);
-      if (covarianceModel_.getOutputDimension() == 1)
-      {
-        CovarianceAssemblyFunction simple(covarianceModel_, mesh_.getVertices(), cumulatedScaling);
-        covarianceHMatrix_.assemble(simple, 'L');
-      }
-      else
-      {
-        CovarianceBlockAssemblyFunction block(covarianceModel_, mesh_.getVertices(), cumulatedScaling);
-        covarianceHMatrix_.assemble(block, 'L');
-      }
-      try
-      {
-        covarianceHMatrix_.factorize("LLt");
-        continuationCondition = false;
-      }
-      catch (InternalException &)
-      {
-        cumulatedScaling += scaling ;
-        scaling *= 2.0;
-        Scalar assemblyEpsilon = hmatrixParameters.getAssemblyEpsilon() / 10.0;
-        hmatrixParameters.setAssemblyEpsilon(assemblyEpsilon);
-        Scalar recompressionEpsilon = hmatrixParameters.getRecompressionEpsilon() / 10.0;
-        hmatrixParameters.setRecompressionEpsilon(recompressionEpsilon);
-        LOGDEBUG(OSS() <<  "Currently, scaling up to "  << cumulatedScaling << " to get an admissible covariance. Maybe compression & recompression factors are not adapted.");
-        LOGDEBUG(OSS() <<  "Currently, assembly espilon = "  << assemblyEpsilon );
-        LOGDEBUG(OSS() <<  "Currently, recompression epsilon "  <<  recompressionEpsilon);
-      }
+      CovarianceAssemblyFunction simple(covarianceModel_, mesh_.getVertices());
+      covarianceHMatrix_.assemble(simple, 'L');
     }
     else
+    {
+      CovarianceBlockAssemblyFunction block(covarianceModel_, mesh_.getVertices());
+      covarianceHMatrix_.assemble(block, 'L');
+    }
+    covarianceHMatrix_.factorize("LLt");
+  } // samplingMethod_ == 1, ie hmat
+  // Other sampling methods
+  else
+  {
+    // Boolean flag to tell if the regularization is enough
+    Bool continuationCondition = true;
+    // Scaling factor of the matrix : M-> M + \lambda I with \lambda very small
+    // The regularization is needed for fast decreasing covariance models
+    const Scalar startingScaling = ResourceMap::GetAsScalar("GaussianProcess-StartingScaling");
+    const Scalar maximalScaling = ResourceMap::GetAsScalar("GaussianProcess-MaximalScaling");
+    Scalar cumulatedScaling = 0.0;
+    Scalar scaling = startingScaling;
+    while (continuationCondition && (cumulatedScaling < maximalScaling))
     {
       const UnsignedInteger fullSize = covarianceMatrix.getDimension();
       for (UnsignedInteger i = 0; i < fullSize; ++i) covarianceMatrix(i, i) += scaling;
@@ -184,15 +169,14 @@ void GaussianProcess::initialize() const
         cumulatedScaling += scaling ;
         scaling *= 2.0;
       }
-    }
-  } // While
+    } // While
+    if (scaling >= maximalScaling)
+      throw InvalidArgumentException(HERE) << "Error; Could not compute the Cholesky factor"
+                                           << " Scaling up to "  << cumulatedScaling << " was not enough";
 
-  if (scaling >= maximalScaling)
-    throw InvalidArgumentException(HERE) << "Error; Could not compute the Cholesky factor"
-                                         << " Scaling up to "  << cumulatedScaling << " was not enough";
-
-  if (cumulatedScaling > 0.0)
-    LOGWARN(OSS() <<  "Warning! Scaling up to "  << cumulatedScaling << " was needed in order to get an admissible covariance. ");
+    if (cumulatedScaling > 0.0)
+      LOGWARN(OSS() <<  "Warning! Scaling up to "  << cumulatedScaling << " was needed in order to get an admissible covariance. ");
+  } // else samplingMethod_ != 1
 
   // The process has been initialized
   isInitialized_ = true;

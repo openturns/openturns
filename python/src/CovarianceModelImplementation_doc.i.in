@@ -144,8 +144,6 @@ Parameters
 ----------
 meshOrGrid : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid`
     Mesh or time grid of size :math:`N` associated with the process.
-nuggetFactor: float
-    Nugget factor to be added to the discretized matrix
 hmatParam : :class:`~openturns.HMatrixParameters`
     Parameter values for the HMatrix
 
@@ -177,8 +175,6 @@ Parameters
 ----------
 meshOrGrid : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid`
     Mesh or time grid of size :math:`N` associated with the process.
-nuggetFactor: float
-    Nugget factor to be added to the discretized matrix
 hmatParam : :class:`~openturns.HMatrixParameters`
     Parameter values for the HMatrix
 
@@ -262,8 +258,7 @@ problem.
 Returns
 -------
 nuggetFactor : float
-    Nugget factor used for the regularization of the discretized covariance
-    matrix."
+    Nugget factor used to model the observation error variance."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getNuggetFactor
 OT_CovarianceModel_get_nugget_factor_doc
@@ -447,15 +442,14 @@ OT_CovarianceModel_setScale_doc
 // ---------------------------------------------------------------------
 
 %define OT_CovarianceModel_set_nugget_factor_doc
-"Set the nugget factor for the regularization.
+"Set the nugget factor for the variance of the observation error.
 
 Acts on the discretized covariance matrix.
 
 Parameters
 ----------
 nuggetFactor : float
-    nugget factor to be used for the regularization of the discretized
-    covariance matrix."
+    nugget factor to be used to model the variance of the observation error."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::setNuggetFactor
 OT_CovarianceModel_set_nugget_factor_doc

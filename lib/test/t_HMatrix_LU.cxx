@@ -101,8 +101,7 @@ int main(int, char *[])
       }
     }
     Scalar diffNorm = rhsCopy.norm();
-    Scalar threshold = 1.e-4;
-
+    Scalar threshold = 1.e-3;
     fullprint << "|| M X - b || / || b ||" << ((diffNorm < threshold * rhsCopyNorm) ? " < " : " > ") << threshold << std::endl;
   }
   catch (NotYetImplementedException & ex)
