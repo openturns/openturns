@@ -74,7 +74,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const Sampl
   Scalar xMin = sample.getMin()[0];
   if (!(xMin > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution based on a sample with nonpositive values.";
   Scalar smallSize = ResourceMap::GetAsUnsignedInteger( "GeneralizedParetoFactory-SmallSize" );
-  // The strategy is to use the probability weighted moment method for small size and to switch to the maximum likelihood if the estimator is not defined. For large size, we use the ML estimator in priority and switch to the probability weighted moment method if the estimator is not defined. No other fallback is proposed if both method failed.
+  // The strategy is to use the probability weighted moment method for small size and to switch to the method of exponential regression if the estimator is not defined. For large size, we use the method of exponential regression in priority and switch to the probability weighted moment method if the estimator is not defined. No other fallback is proposed if both method failed.
   if (size <= smallSize)
   {
     try
