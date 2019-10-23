@@ -12,6 +12,9 @@ add_subdirectory (Uncertainty)
 # OptPDS and OptGSS cannot both be included as OptDirect is redefined
 set_source_files_properties (Base/Optim/OptGSS.cxx PROPERTIES COTIRE_EXCLUDED ON)
 
+# Exclude Ceres sources from unity build (templates take much memory)
+set_source_files_properties (Base/Optim/Ceres.cxx PROPERTIES COTIRE_EXCLUDED ON)
+
 # Exclude Dlib sources from unity build (Lapack re-included)
 set_source_files_properties (Base/Optim/Dlib.cxx Base/Optim/DlibFunctions.cxx PROPERTIES COTIRE_EXCLUDED ON)
 
