@@ -11,6 +11,7 @@ add_custom_command (OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/openturns/swig_runtime.h
                      COMMENT "Swig header")
 add_custom_target (generate_swig_runtime DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/openturns/swig_runtime.hxx)
 add_custom_target (generate_docstrings)
+add_custom_target (pylib)
 
 include_directories (BEFORE ${CMAKE_CURRENT_BINARY_DIR})
 include_directories (BEFORE ${INTERNAL_INCLUDE_DIRS})
@@ -84,6 +85,7 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   install (TARGETS ${module_target}
             LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
 
+  add_dependencies (pylib ${module_target})
   list (APPEND OPENTURNS_PYTHON_MODULES ${MODULENAME})
 endmacro (ot_add_python_module)
 
