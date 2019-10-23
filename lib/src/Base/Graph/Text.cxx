@@ -177,15 +177,15 @@ void Text::setTextPositions(const Description & textPositions)
   textPositions_ = textPositions;
 }
 
- Scalar Text::getTextSize() const
- {
-   return textSize_;
- }
- 
- void Text::setTextSize(const Scalar size)
- {
-   textSize_ = size;
- }
+Scalar Text::getTextSize() const
+{
+  return textSize_;
+}
+
+void Text::setTextSize(const Scalar size)
+{
+  textSize_ = size;
+}
 
 
 /* Draw method */
@@ -211,8 +211,8 @@ String Text::draw() const
     }
   }
   oss << "indices <- which(labels != \"\")\n";
-  oss << "text(dataOT[indices,1], dataOT[indices,2], labels[indices], cex = " << textSize_ 
-  	  << ", xpd = TRUE, pos = position[indices]"
+  oss << "text(dataOT[indices,1], dataOT[indices,2], labels[indices], cex = " << textSize_
+      << ", xpd = TRUE, pos = position[indices]"
       << ", col=\"" << color_ << "\""
       << ", offset = 0.25)\n";
 

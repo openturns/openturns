@@ -304,7 +304,7 @@ Scalar SobolIndicesAlgorithmImplementation::computeVariance(const Sample & u, co
 }
 
 void SobolIndicesAlgorithmImplementation::setConfidenceInterval(const Point & varianceFO,
-                                                                const Point & varianceTO) const
+    const Point & varianceTO) const
 {
   const UnsignedInteger inputDimension = inputDesign_.getDimension();
   Point standardDeviationFO(inputDimension);
@@ -809,14 +809,14 @@ Graph SobolIndicesAlgorithmImplementation::DrawImportanceFactors(const Point & v
 }
 
 Graph SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients(const PointWithDescription & correlationCoefficients,
-                                                                       const String & title)
+    const String & title)
 {
   return DrawCorrelationCoefficients(correlationCoefficients, correlationCoefficients.getDescription(), title);
 }
 
 Graph SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients(const Point & values,
-                                                                       const Description & names,
-                                                                       const String & title)
+    const Description & names,
+    const String & title)
 {
   /* build data for the pie */
   const UnsignedInteger dimension = values.getDimension();
@@ -855,17 +855,17 @@ Graph SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients(const Poi
   Point lowerBound(2);
   lowerBound[0] = 0.8;
   if (minRho < 0)
-      lowerBound[1] = -1.1;
+    lowerBound[1] = -1.1;
   else
-      lowerBound[1] = -0.1;
+    lowerBound[1] = -0.1;
 
   Point upperBound(2, 1.1);
   upperBound[0] = dimension + 1.6 * (dimension - 1.0) / (dimension + 2.0);
 
   if (maxRho > 0)
-      upperBound[1] = 1.1;
+    upperBound[1] = 1.1;
   else
-      upperBound[1] = 0.1;
+    upperBound[1] = 0.1;
 
   graph.setBoundingBox(Interval(lowerBound, upperBound));
 
@@ -898,8 +898,8 @@ void SobolIndicesAlgorithmImplementation::setDesign(const Sample & inputDesign,
   // Check data is consistent
   const UnsignedInteger inputDimension = inputDesign.getDimension();
   if (outputDesign.getSize() < size * (inputDimension + 2))
-    throw InvalidArgumentException(HERE) << "Sobol experiment is too small ("<< outputDesign.getSize()
-                                         << " vs " << size * (inputDimension + 2)<<")";
+    throw InvalidArgumentException(HERE) << "Sobol experiment is too small (" << outputDesign.getSize()
+                                         << " vs " << size * (inputDimension + 2) << ")";
   if (inputDesign.getSize() != outputDesign.getSize())
     throw InvalidArgumentException(HERE) << "Input and output samples have different size (" << inputDesign.getSize()
                                          << " vs " << outputDesign.getSize() << ")";

@@ -42,7 +42,7 @@ class OT_API OptimizationProblem
 
   CLASSNAME
 public:
-  
+
   typedef Pointer<OptimizationProblemImplementation>   Implementation;
 
   /** Default constructor */

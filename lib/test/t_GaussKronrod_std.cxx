@@ -75,8 +75,8 @@ int main(int, char *[])
       for (UnsignedInteger i = 0; i < 5; ++i)
       {
         algo.setRule(rules[i]);
-	fullprint << "Algo=" << algo << std::endl;
-	{
+        fullprint << "Algo=" << algo << std::endl;
+        {
           // High-level interface
           Scalar error = -1.0;
           Scalar value = algo.integrate(f, Interval(a, b), error)[0];

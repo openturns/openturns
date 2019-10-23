@@ -16,12 +16,14 @@ try:
     for i1 in range(n1):
         lambda_ = lambdaMin + (lambdaMax - lambdaMin) * i1 / (n1 - 1)
         for k in range(kMax):
-            print("dPoisson(%.3g" % lambda_, ", ", k, ")=%.4g" % DistFunc.dPoisson(lambda_, k))
+            print("dPoisson(%.3g" % lambda_, ", ", k, ")=%.4g" %
+                  DistFunc.dPoisson(lambda_, k))
     # dPoisson
     for i1 in range(n1):
         lambda_ = lambdaMin + (lambdaMax - lambdaMin) * i1 / (n1 - 1)
         for k in range(kMax):
-            print("logdPoisson(%.3g" % lambda_, ", ", k, ")=%.4g" % DistFunc.logdPoisson(lambda_, k))
+            print("logdPoisson(%.3g" % lambda_, ", ", k, ")=%.4g" %
+                  DistFunc.logdPoisson(lambda_, k))
     # rPoisson
     nR = 5
     for i1 in range(n1):

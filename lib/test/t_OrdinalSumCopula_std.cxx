@@ -134,7 +134,7 @@ int main(int, char *[])
     OrdinalSumCopula::PointWithDescriptionCollection parameters = copula.getParametersCollection();
     fullprint << "parameters=" << parameters << std::endl;
     Scalar x = 0.6;
-    Point y(dim-1, 0.2);
+    Point y(dim - 1, 0.2);
     fullprint << "conditional PDF=" << copula.computeConditionalPDF(x, y) << std::endl;
     fullprint << "conditional CDF=" << copula.computeConditionalCDF(x, y) << std::endl;
     fullprint << "conditional quantile=" << copula.computeConditionalQuantile(x, y) << std::endl;

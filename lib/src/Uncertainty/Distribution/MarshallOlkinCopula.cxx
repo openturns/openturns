@@ -44,7 +44,7 @@ MarshallOlkinCopula::MarshallOlkinCopula()
 
 /* Parameters constructor */
 MarshallOlkinCopula::MarshallOlkinCopula(const Scalar alpha,
-                                         const Scalar beta)
+    const Scalar beta)
   : CopulaImplementation()
   , alpha_(alpha)
   , beta_(beta)
@@ -105,9 +105,9 @@ Scalar MarshallOlkinCopula::computeCDF(const Point & point) const
   const Scalar ualpha = std::pow(u, alpha_);
   const Scalar vbeta = std::pow(v, beta_);
   Scalar p;
-  if (ualpha>vbeta)
+  if (ualpha > vbeta)
   {
-    if (alpha_==1.) /* Prevent zero exponent in pow */
+    if (alpha_ == 1.) /* Prevent zero exponent in pow */
     {
       p = v;
     }
@@ -118,7 +118,7 @@ Scalar MarshallOlkinCopula::computeCDF(const Point & point) const
   }
   else
   {
-    if (beta_==1.) /* Prevent zero exponent in pow */
+    if (beta_ == 1.) /* Prevent zero exponent in pow */
     {
       p = u;
     }
@@ -187,12 +187,12 @@ CorrelationMatrix MarshallOlkinCopula::getKendallTau() const
   if ((alpha_ == 0.0) || (beta_ == 0.0))
   {
     tauKendall(1, 0) = 0.0;
-  } 
-  else if ((alpha_ == 1.0) && (beta_ == 1.0)) 
+  }
+  else if ((alpha_ == 1.0) && (beta_ == 1.0))
   {
     tauKendall(1, 0) = 1.0;
   }
-  else 
+  else
   {
     tauKendall(1, 0) = alpha_ * beta_ / (alpha_ + beta_ - alpha_ * beta_);
   }
@@ -207,12 +207,12 @@ CorrelationMatrix MarshallOlkinCopula::getSpearmanCorrelation() const
   if ((alpha_ == 0.0) || (beta_ == 0.0))
   {
     rho(1, 0) = 0.0;
-  } 
-  else if ((alpha_ == 1.0) && (beta_ == 1.0)) 
+  }
+  else if ((alpha_ == 1.0) && (beta_ == 1.0))
   {
     rho(1, 0) = 1.0;
-  } 
-  else 
+  }
+  else
   {
     rho(1, 0) = 3 * alpha_ * beta_ / (2 * alpha_ + 2 * beta_ - alpha_ * beta_);
   }
@@ -220,10 +220,10 @@ CorrelationMatrix MarshallOlkinCopula::getSpearmanCorrelation() const
 }
 
 /* Get one realization of the distribution
-Uses the algorithm from Devroye (1987) and 
-presented in 
-“An Introduction to Copulas”, 2nd Edition, Nelsen, Springer. 
-Section Exercice 3.4, page 58. 
+Uses the algorithm from Devroye (1987) and
+presented in
+“An Introduction to Copulas”, 2nd Edition, Nelsen, Springer.
+Section Exercice 3.4, page 58.
  */
 Point MarshallOlkinCopula::getRealization() const
 {
@@ -236,15 +236,15 @@ Point MarshallOlkinCopula::getRealization() const
     const Scalar v = RandomGenerator::Generate();
     realization[0] = u;
     realization[1] = v;
-  } 
-  else if ((alpha_ == 1.0) && (beta_ == 1.0)) 
+  }
+  else if ((alpha_ == 1.0) && (beta_ == 1.0))
   {
     // This is the min-copula
     const Scalar u = RandomGenerator::Generate();
     realization[0] = u;
     realization[1] = u;
-  } 
-  else 
+  }
+  else
   {
     const Scalar r = RandomGenerator::Generate();
     const Scalar s = RandomGenerator::Generate();
@@ -252,8 +252,8 @@ Point MarshallOlkinCopula::getRealization() const
     const Scalar logr = std::log(r);
     const Scalar logs = std::log(s);
     const Scalar logt = std::log(t);
-    /* Given the three parameters lambda1, lambda2, lambda12, 
-    we have 
+    /* Given the three parameters lambda1, lambda2, lambda12,
+    we have
     alpha = lambda12 /(lambda1 + lambda12 )
     beta = lambda12 /(lambda2 + lambda12 )
     We invert the equations:

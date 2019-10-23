@@ -117,7 +117,7 @@ int main(int, char *[])
     fullprint << "Sort           =" << sample.sort() << std::endl;
     Sample sampleTMP(sample);
     sampleTMP.sortInPlace();
-    fullprint << "Sort (in place)=" << sampleTMP << std::endl;    
+    fullprint << "Sort (in place)=" << sampleTMP << std::endl;
     fullprint << "Sort according to component 0           =" << sample.sortAccordingToAComponent(0) << std::endl;
     sampleTMP = sample;
     sampleTMP.sortAccordingToAComponentInPlace(0);
@@ -148,7 +148,7 @@ int main(int, char *[])
     fullprint << "Unique           =" << sample.sortUnique() << std::endl;
     sampleTMP = sample;
     sampleTMP.sortUniqueInPlace();
-    fullprint << "Unique (in place)=" << sampleTMP << std::endl;    
+    fullprint << "Unique (in place)=" << sampleTMP << std::endl;
   }
   catch (TestFailed & ex)
   {

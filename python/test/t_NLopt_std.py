@@ -8,12 +8,15 @@ import sys
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(3)
 
+
 def progress(percent):
     sys.stderr.write('-- progress=' + str(percent) + '%\n')
+
 
 def stop():
     sys.stderr.write('-- stop?\n')
     return False
+
 
 # rosenbrock x*=(1,1), x*=(0.7864, 0.6177) on unit disk
 dim = 2
@@ -44,9 +47,10 @@ for algoName in algoNames:
                 for bound in [True, False]:
 
                     if not bound and 'LN_BOBYQA' in algoName:
-                       continue
+                        continue
 
-                    print('algo=', algoName, 'minimization=', minimization, 'bounds=', bound, 'inequality=', inequality, 'equality=', equality)
+                    print('algo=', algoName, 'minimization=', minimization, 'bounds=',
+                          bound, 'inequality=', inequality, 'equality=', equality)
                     problem = ot.OptimizationProblem(f)
                     problem.setMinimization(minimization)
                     if inequality:
@@ -65,7 +69,7 @@ for algoName in algoNames:
                     except:
                         print('-- Not supported')
                         continue
-                    #algo.setMaximumEvaluationNumber(100)
+                    # algo.setMaximumEvaluationNumber(100)
                     algo.setStartingPoint(startingPoint)
                     try:
                         algo.run()
@@ -73,9 +77,10 @@ for algoName in algoNames:
                         print('-- ', e)
                         continue
                     result = algo.getResult()
-                    print('x^=', result.getOptimalPoint(), 'y^=', result.getOptimalValue())
+                    print('x^=', result.getOptimalPoint(),
+                          'y^=', result.getOptimalValue())
 
-## FORM
+# FORM
 f = ot.SymbolicFunction(
     ["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
 dim = f.getInputDimension()

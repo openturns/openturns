@@ -1,3 +1,13 @@
+openturns (1.14~rc1-1) experimental; urgency=low
+
+  [ Julien Schueller ]
+
+  * New upstream pre-release.
+  * debian/rules: set USE_COTIRE=ON
+  * debian/rules: set SWIG_COMPILE_FLAGS=-O1
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 22 Oct 2019 18:14:47 +0200
+
 openturns (1.13-1) experimental; urgency=low
 
   [ Julien Schueller ]

@@ -82,7 +82,7 @@ public:
 
   /** Accessor for the linear term */
   Matrix getLinear() const;
-  
+
   /** Linearity accessors */
   Bool isLinear() const;
   Bool isLinearlyDependent(const UnsignedInteger index) const;

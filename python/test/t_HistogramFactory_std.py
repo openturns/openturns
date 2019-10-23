@@ -27,7 +27,7 @@ try:
     print("Histogram          =", distribution)
     print("Estimated histogram=", estimatedHistogram)
     first = -2.
-    width = ot.Point(5,1.)
+    width = ot.Point(5, 1.)
     estimatedHistogram = factory.buildAsHistogram(sample, first, width)
     print("Estimated histogram=", estimatedHistogram)
     estimatedHistogram = factory.buildAsHistogram()

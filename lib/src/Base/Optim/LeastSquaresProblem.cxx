@@ -170,7 +170,7 @@ public:
     description.add(getOutputDescription());
     return description;
   }
-  
+
   String __repr__() const
   {
     OSS oss;
@@ -272,8 +272,8 @@ void LeastSquaresProblem::setResidualFunction(const Function & residualFunction)
                                 );
   objective_ = ComposedFunction(halfSquaredNorm, residualFunction);
   dimension_ = residualFunction.getInputDimension();
-  
-  setVariablesType(Indices(dimension_,CONTINUOUS));
+
+  setVariablesType(Indices(dimension_, CONTINUOUS));
 }
 
 Bool LeastSquaresProblem::hasResidualFunction() const

@@ -809,15 +809,15 @@ Scalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky() const
 
   covarianceCholeskyFactorHMatrix_ = hmatrixFactory.build(normalizedInputSample_, covarianceDimension, true, hmatrixParameters);
   if (covarianceDimension == 1)
-    {
-      CovarianceAssemblyFunction simple(reducedCovarianceModel_, normalizedInputSample_);
-      covarianceCholeskyFactorHMatrix_.assemble(simple, 'L');
-    }
+  {
+    CovarianceAssemblyFunction simple(reducedCovarianceModel_, normalizedInputSample_);
+    covarianceCholeskyFactorHMatrix_.assemble(simple, 'L');
+  }
   else
-    {
-      CovarianceBlockAssemblyFunction block(reducedCovarianceModel_, normalizedInputSample_);
-      covarianceCholeskyFactorHMatrix_.assemble(block, 'L');
-    }
+  {
+    CovarianceBlockAssemblyFunction block(reducedCovarianceModel_, normalizedInputSample_);
+    covarianceCholeskyFactorHMatrix_.assemble(block, 'L');
+  }
   // Factorize
   covarianceCholeskyFactorHMatrix_.factorize("LLt");
   // y corresponds to output data

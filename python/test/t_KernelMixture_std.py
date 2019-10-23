@@ -144,10 +144,12 @@ try:
     print("cond. cdf(cond. quantile)=",
           distribution.computeConditionalCDF(condQuantiles, y))
     pt = Point([i + 1.5 for i in range(dimension)])
-    print("sequential conditional PDF=", distribution.computeSequentialConditionalPDF(point))
+    print("sequential conditional PDF=",
+          distribution.computeSequentialConditionalPDF(point))
     resCDF = distribution.computeSequentialConditionalCDF(pt)
     print("sequential conditional CDF(", pt, ")=", resCDF)
-    print("sequential conditional quantile(", resCDF, ")=", distribution.computeSequentialConditionalQuantile(resCDF))
+    print("sequential conditional quantile(", resCDF, ")=",
+          distribution.computeSequentialConditionalQuantile(resCDF))
 
     mean = distribution.getMean()
     print("mean=", repr(mean))

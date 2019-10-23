@@ -221,7 +221,7 @@ int main(int, char *[])
       Scalar radius = 2.0;
       fullprint << "Radial CDF(" << radius << ")=" << distribution.computeRadialDistributionCDF(radius) << std::endl;
       Scalar x = 0.6;
-      Point y(dim-1, 0.2);
+      Point y(dim - 1, 0.2);
       Point pt(dim);
       for (UnsignedInteger i = 0; i < dim; ++i) pt[i] = 1.0 * i + 1.5;
       fullprint << "conditional PDF=" << distribution.computeConditionalPDF(x, y) << std::endl;

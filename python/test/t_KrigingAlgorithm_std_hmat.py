@@ -56,7 +56,7 @@ assert_almost_equal(covariancePoint, theoricalVariance, 8.95e-7, 8.95e-7)
 
 # Covariance per marginal & extract variance component
 coll = result.getConditionalMarginalCovariance(X)
-var = [mat[0,0] for mat in coll]
+var = [mat[0, 0] for mat in coll]
 covarianceColl = Point(var)
 theoricalVariance = Point(sampleSize)
 assert_almost_equal(covarianceColl, theoricalVariance, 1e-14, 1e-14)
@@ -122,7 +122,7 @@ assert_almost_equal(covariancePoint, theoricalVariance, 7e-7, 7e-7)
 
 # Covariance per marginal & extract variance component
 coll = result.getConditionalMarginalCovariance(inputSample)
-var = [mat[0,0] for mat in coll]
+var = [mat[0, 0] for mat in coll]
 covarianceColl = Point(var)
 theoricalVariance = Point(len(var))
 assert_almost_equal(covarianceColl, theoricalVariance, 1e-14, 1e-14)

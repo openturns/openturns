@@ -37,4 +37,5 @@ for left, right in coll:
 # with marginaltransformation
 copula = ot.ComposedCopula([ot.IndependentCopula(2), ot.IndependentCopula(2)])
 distribution = ot.ComposedDistribution([ot.Normal()]*4, copula)
-print(ot.DistributionTransformation(ot.IndependentCopula(4), distribution.getMarginal([3,1,2,0])))
+print(ot.DistributionTransformation(ot.IndependentCopula(
+    4), distribution.getMarginal([3, 1, 2, 0])))

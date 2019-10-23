@@ -126,11 +126,11 @@ public:
                                 const Point & secondOrderIndices);
 
   static Graph DrawCorrelationCoefficients(const Point & values,
-                                           const Description & names,
-                                           const String & title);
+      const Description & names,
+      const String & title);
 
   static Graph DrawCorrelationCoefficients(const PointWithDescription & correlationCoefficients,
-                                           const String & title);
+      const String & title);
 
   /** Method that draw (plot) the sensitivity graph */
   virtual Graph draw() const;

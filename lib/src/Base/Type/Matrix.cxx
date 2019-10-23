@@ -138,13 +138,13 @@ Matrix Matrix::transpose() const
 
 /* Matrix reshape */
 Matrix Matrix::reshape(const UnsignedInteger newRowDim,
-		       const UnsignedInteger newColDim) const
+                       const UnsignedInteger newColDim) const
 {
   return Implementation(getImplementation()->reshape(newRowDim, newColDim).clone());
 }
 
 void Matrix::reshapeInPlace(const UnsignedInteger newRowDim,
-			    const UnsignedInteger newColDim)
+                            const UnsignedInteger newColDim)
 {
   copyOnWrite();
   getImplementation()->reshapeInPlace(newRowDim, newColDim);

@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
   * @class MultiFORM
   */
 class OT_API MultiFORM
-: public FORM
+  : public FORM
 {
 
   CLASSNAME;

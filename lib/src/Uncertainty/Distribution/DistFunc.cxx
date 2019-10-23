@@ -779,7 +779,7 @@ Scalar DistFunc::dHypergeometric(const UnsignedInteger n,
   if (x > k || x > m) return 0.0;
 #ifdef OPENTURNS_HAVE_BOOST
   return boost::math::pdf(boost::math::hypergeometric_distribution<Scalar>(k, m, n), x);
-#else  
+#else
   // Check range
   if ((x > m) || (x > k) || (x + n < m + k)) return 0.0;
   if ((m == 0) || (m == n)) return 1.0;
@@ -796,7 +796,7 @@ Scalar DistFunc::logdHypergeometric(const UnsignedInteger n,
   if (x > k || x > m) return -SpecFunc::LogMaxScalar;
 #ifdef OPENTURNS_HAVE_BOOST
   return std::log(boost::math::pdf(boost::math::hypergeometric_distribution<Scalar>(k, m, n), x));
-#else  
+#else
   // Check range
   if ((x > m) || (x > k) || (x + n < m + k)) return -SpecFunc::LogMaxScalar;
   if ((m == 0) || (m == n)) return 0.0;
@@ -825,7 +825,7 @@ Scalar DistFunc::pHypergeometric(const UnsignedInteger n,
 #ifdef OPENTURNS_HAVE_BOOST
   if (tail) return boost::math::cdf(boost::math::complement(boost::math::hypergeometric_distribution<Scalar>(k, m, n), x));
   return boost::math::cdf(boost::math::hypergeometric_distribution<Scalar>(k, m, n), x);
-#else  
+#else
   // Compute the summation on the same side of the mode, ie
   // from 0 to x if x <= mode, or from x+1 to max(range) then complement if x > mode
   // Wikipedia H(n, k, m; x), OT H(n, k, m; x), Boost H(x; r, m, n) r = k
@@ -883,16 +883,16 @@ UnsignedInteger DistFunc::rHypergeometric(const UnsignedInteger n,
   Scalar p = DistFunc::dHypergeometric(n, k, m, xMode);
   probabilities[xMode] = p;
   for (UnsignedInteger x = xMode + 1; x <= xMax; ++x)
-    {
-      p *= ((1.0 + k - x) / x) * ((1.0 + m - x) / (n + x - m - k));
-      probabilities[k] = p;
-    }
+  {
+    p *= ((1.0 + k - x) / x) * ((1.0 + m - x) / (n + x - m - k));
+    probabilities[k] = p;
+  }
   p = probabilities[xMode];
   for (UnsignedInteger x = xMode; x > xMin; --x)
-    {
-      p *= (x / (k - x + 1.0)) * ((n + x - m - k) / (m - x + 1.0));
-      probabilities[x - 1] = p;
-    }
+  {
+    p *= (x / (k - x + 1.0)) * ((n + x - m - k) / (m - x + 1.0));
+    probabilities[x - 1] = p;
+  }
   return rDiscrete(probabilities);
 }
 
@@ -909,16 +909,16 @@ Indices DistFunc::rHypergeometric(const UnsignedInteger n,
   Scalar p = DistFunc::dHypergeometric(n, k, m, xMode);
   probabilities[xMode] = p;
   for (UnsignedInteger x = xMode + 1; x <= xMax; ++x)
-    {
-      p *= ((1.0 + k - x) / x) * ((1.0 + m - x) / (n + x - m - k));
-      probabilities[k] = p;
-    }
+  {
+    p *= ((1.0 + k - x) / x) * ((1.0 + m - x) / (n + x - m - k));
+    probabilities[k] = p;
+  }
   p = probabilities[xMode];
   for (UnsignedInteger x = xMode; x > xMin; --x)
-    {
-      p *= (x / (k - x - 1.0)) * ((n + x - m - k) / (m - x - 1.0));
-      probabilities[x - 1] = p;
-    }
+  {
+    p *= (x / (k - x - 1.0)) * ((n + x - m - k) / (m - x - 1.0));
+    probabilities[x - 1] = p;
+  }
   return rDiscrete(probabilities, size);
 }
 
@@ -1212,7 +1212,7 @@ Scalar DistFunc::pNormal(const Scalar x,
 }
 
 Point DistFunc::pNormal(const Point & x,
-                         const Bool tail)
+                        const Bool tail)
 {
   const UnsignedInteger size = x.getSize();
   Point result(size);
@@ -1257,21 +1257,21 @@ Scalar DistFunc::qNormal(const Scalar p,
   static const Scalar a[6] =
   {
     -3.969683028665376e+01,  2.209460984245205e+02,
-    -2.759285104469687e+02,  1.383577518672690e+02,
-    -3.066479806614716e+01,  2.506628277459239e+00
-  };
+      -2.759285104469687e+02,  1.383577518672690e+02,
+      -3.066479806614716e+01,  2.506628277459239e+00
+    };
   static const Scalar b[5] =
   {
     -5.447609879822406e+01,  1.615858368580409e+02,
-    -1.556989798598866e+02,  6.680131188771972e+01,
-    -1.328068155288572e+01
-  };
+      -1.556989798598866e+02,  6.680131188771972e+01,
+      -1.328068155288572e+01
+    };
   static const Scalar c[6] =
   {
     -7.784894002430293e-03, -3.223964580411365e-01,
-    -2.400758277161838e+00, -2.549732539343734e+00,
-    4.374664141464968e+00,  2.938163982698783e+00
-  };
+      -2.400758277161838e+00, -2.549732539343734e+00,
+      4.374664141464968e+00,  2.938163982698783e+00
+    };
   static const Scalar d[4] =
   {
     7.784695709041462e-03,  3.224671290700398e-01,
@@ -1314,26 +1314,26 @@ Scalar DistFunc::qNormal(const Scalar p,
 }
 
 Point DistFunc::qNormal(const Point & p,
-                         const Bool tail)
+                        const Bool tail)
 {
   static const Scalar a[6] =
   {
     -3.969683028665376e+01,  2.209460984245205e+02,
-    -2.759285104469687e+02,  1.383577518672690e+02,
-    -3.066479806614716e+01,  2.506628277459239e+00
-  };
+      -2.759285104469687e+02,  1.383577518672690e+02,
+      -3.066479806614716e+01,  2.506628277459239e+00
+    };
   static const Scalar b[5] =
   {
     -5.447609879822406e+01,  1.615858368580409e+02,
-    -1.556989798598866e+02,  6.680131188771972e+01,
-    -1.328068155288572e+01
-  };
+      -1.556989798598866e+02,  6.680131188771972e+01,
+      -1.328068155288572e+01
+    };
   static const Scalar c[6] =
   {
     -7.784894002430293e-03, -3.223964580411365e-01,
-    -2.400758277161838e+00, -2.549732539343734e+00,
-    4.374664141464968e+00,  2.938163982698783e+00
-  };
+      -2.400758277161838e+00, -2.549732539343734e+00,
+      4.374664141464968e+00,  2.938163982698783e+00
+    };
   static const Scalar d[4] =
   {
     7.784695709041462e-03,  3.224671290700398e-01,
@@ -1348,52 +1348,52 @@ Point DistFunc::qNormal(const Point & p,
   Scalar u = 0.0;
   Scalar prob = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    prob = p[i];
+    if (prob == 0.0)
     {
-      prob = p[i];
-      if (prob == 0.0)
-	{
-	  result[i] = (tail ? 8.125890664701906 : -8.125890664701906);
-	  continue;
-	}
-      if (prob == 1.0)
-	{
-	  result[i] = (tail ? -8.125890664701906 : 8.125890664701906);
-	  continue;
-	}
-      // Left tail
-      if (prob < 0.02425)
-	{
-	  /* Rational approximation for tail region. */
-	  q = std::sqrt(-2.0 * std::log(prob));
-	  x = (((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5])
-	    / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1.0);
-	}
-      // Central region
-      else if (prob <= 0.97575)
-	{
-	  /* Rational approximation for central region. */
-	  q = prob - 0.5;
-	  r = q * q;
-	  x = q * (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5])
-	    / (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1.0);
-	}
-      // Right tail
-      else
-	{
-	  /* Rational approximation for tail region. */
-	  q = std::sqrt(-2.0 * log1p(-prob));
-	  x = -(((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5])
-	    / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1.0);
-	}
-      /* The relative error of the approximation has absolute value less
-	 than 1.15e-9.  One iteration of Newton's rational method (second
-	 order) gives full machine precision... */
-      // 2.50662827463100050241576528481 = sqrt(2.pi)
-      e = pNormal(x) - prob;
-      u = e * 2.50662827463100050241576528481 * std::exp(0.5 * x * x);
-      x -= u / (1.0 + 0.5 * x * u);
-      result[i] = (tail ? -x : x);
-    } // i
+      result[i] = (tail ? 8.125890664701906 : -8.125890664701906);
+      continue;
+    }
+    if (prob == 1.0)
+    {
+      result[i] = (tail ? -8.125890664701906 : 8.125890664701906);
+      continue;
+    }
+    // Left tail
+    if (prob < 0.02425)
+    {
+      /* Rational approximation for tail region. */
+      q = std::sqrt(-2.0 * std::log(prob));
+      x = (((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5])
+          / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1.0);
+    }
+    // Central region
+    else if (prob <= 0.97575)
+    {
+      /* Rational approximation for central region. */
+      q = prob - 0.5;
+      r = q * q;
+      x = q * (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5])
+          / (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1.0);
+    }
+    // Right tail
+    else
+    {
+      /* Rational approximation for tail region. */
+      q = std::sqrt(-2.0 * log1p(-prob));
+      x = -(((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5])
+          / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1.0);
+    }
+    /* The relative error of the approximation has absolute value less
+    than 1.15e-9.  One iteration of Newton's rational method (second
+    order) gives full machine precision... */
+    // 2.50662827463100050241576528481 = sqrt(2.pi)
+    e = pNormal(x) - prob;
+    u = e * 2.50662827463100050241576528481 * std::exp(0.5 * x * x);
+    x -= u / (1.0 + 0.5 * x * u);
+    result[i] = (tail ? -x : x);
+  } // i
   return result;
 }
 
@@ -1630,7 +1630,7 @@ Scalar DistFunc::pStudent(const Scalar nu,
   return StudentFunctions::StudentCDF(nu, x, tail);
 }
 Point DistFunc::pStudent(const Scalar nu,
-			 const Point & x,
+                         const Point & x,
                          const Bool tail)
 {
   const UnsignedInteger size = x.getSize();
@@ -1648,7 +1648,7 @@ Scalar DistFunc::qStudent(const Scalar nu,
   return StudentFunctions::StudentQuantile(nu, p, tail);
 }
 Point DistFunc::qStudent(const Scalar nu,
-			 const Point & p,
+                         const Point & p,
                          const Bool tail)
 {
   const UnsignedInteger size = p.getSize();

@@ -39,8 +39,8 @@ SystemFORM::SystemFORM()
 }
 
 SystemFORM::SystemFORM(const OptimizationAlgorithm & nearestPointAlgorithm,
-                        const RandomVector & event,
-                        const Point & physicalStartingPoint)
+                       const RandomVector & event,
+                       const Point & physicalStartingPoint)
   : Analytical()
 {
   setNearestPointAlgorithm(nearestPointAlgorithm);
@@ -123,7 +123,8 @@ void SystemFORM::run()
       parallelRegionIdCollection.add(parallelRegionId);
     }
     else
-    { // single event in parallel region
+    {
+      // single event in parallel region
       leafEventCollection.add(unionCollection[i]);
       parallelRegionIdCollection.add(Indices(1, unionCollection[i].getId()));
     }

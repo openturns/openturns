@@ -108,8 +108,8 @@ Bool IdentityEvaluation::isLinear() const
 Bool IdentityEvaluation::isLinearlyDependent(const UnsignedInteger index) const
 {
   if (index > getInputDimension())
-  throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
-  
+    throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
+
   return true;
 }
 

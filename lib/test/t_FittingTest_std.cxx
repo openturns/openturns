@@ -160,14 +160,14 @@ int main(int, char *[])
     for (UnsignedInteger j = 0; j < discreteDistributionNumber; j++)
     {
       try
-	{
-	  const Scalar value = FittingTest::ChiSquared(discreteSampleCollection[i], discreteDistributionCollection[j], 0.05, 0).getPValue();
-	  resultChiSquared(i, j) = (std::abs(value) < 1.0e-6 ? 0.0 : value);
-	}
+      {
+        const Scalar value = FittingTest::ChiSquared(discreteSampleCollection[i], discreteDistributionCollection[j], 0.05, 0).getPValue();
+        resultChiSquared(i, j) = (std::abs(value) < 1.0e-6 ? 0.0 : value);
+      }
       catch (...)
-	{
-	  fullprint << "Sample=" << discreteSampleCollection[i] << " is not compatible with distribution=" << discreteDistributionCollection[j] << std::endl;
-	}
+      {
+        fullprint << "Sample=" << discreteSampleCollection[i] << " is not compatible with distribution=" << discreteDistributionCollection[j] << std::endl;
+      }
     }
   }
   fullprint << "resultChiSquared=" << resultChiSquared << std::endl;

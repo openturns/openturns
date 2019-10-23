@@ -12,12 +12,12 @@ print('Default q :', ResourceMap.GetAsScalar(
 f = HyperbolicAnisotropicEnumerateFunction((1., 2., 3., 4., 5.), 0.75)
 
 # check inverse when the cache is empty
-print("inverse([0,0,0,0,0])=", f.inverse([0,0,0,0,0]))
+print("inverse([0,0,0,0,0])=", f.inverse([0, 0, 0, 0, 0]))
 # fill the cache
 for i in range(4):
     res = f(i)
 # check inverse when the cache is filled
-print("inverse([2,0,0,0,0])=", f.inverse([2,0,0,0,0]))
+print("inverse([2,0,0,0,0])=", f.inverse([2, 0, 0, 0, 0]))
 
 # verify consistency with LinearEnumerateFunction
 size = 10

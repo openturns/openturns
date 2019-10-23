@@ -111,10 +111,10 @@ public:
 
   /** MatrixImplementation reshape */
   MatrixImplementation reshape(const UnsignedInteger newRowDim,
-			       const UnsignedInteger newColDim) const;
+                               const UnsignedInteger newColDim) const;
   void reshapeInPlace(const UnsignedInteger newRowDim,
-		      const UnsignedInteger newColDim);
-  
+                      const UnsignedInteger newColDim);
+
 
   /** Row extraction */
   const MatrixImplementation getRow(const UnsignedInteger rowIndex) const;

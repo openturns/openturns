@@ -43,7 +43,8 @@ try:
         for i in range(6):
             print("standard moment n=", i, " value=",
                   distribution.getStandardMoment(i))
-        print("Standard representative=", distribution.getStandardRepresentative())
+        print("Standard representative=",
+              distribution.getStandardRepresentative())
 
         print("Distribution ", repr(distribution))
         print("Distribution ", distribution)
@@ -127,13 +128,14 @@ try:
         # derivative of the PDF with regards the parameters of the distribution
         #   CDFgr = distribution.computeCDFGradient( point )
         #     print "cdf gradient     =" , CDFgr
-        
+
         # quantile
         quantile = distribution.computeQuantile(0.95)
         print("quantile=", repr(quantile))
         print("cdf(quantile)=%.6f" % distribution.computeCDF(quantile))
         # Get 95% survival function
-        inverseSurvival = Point(distribution.computeInverseSurvivalFunction(0.95))
+        inverseSurvival = Point(
+            distribution.computeInverseSurvivalFunction(0.95))
         print("InverseSurvival=", repr(inverseSurvival))
         print("Survival(inverseSurvival)=%.6f" %
               distribution.computeSurvivalFunction(inverseSurvival))
@@ -141,7 +143,7 @@ try:
         # Confidence regions
         if distribution.getDimension() <= 2:
             interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(
-            0.95)
+                0.95)
             print("Minimum volume interval=", interval)
             print("threshold=", Point(1, threshold))
             levelSet, beta = distribution.computeMinimumVolumeLevelSetWithThreshold(
@@ -157,10 +159,10 @@ try:
             print("Unilateral confidence interval (lower tail)=", interval)
             print("beta=", Point(1, beta))
             interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(
-            0.95, True)
+                0.95, True)
             print("Unilateral confidence interval (upper tail)=", interval)
             print("beta=", Point(1, beta))
-            
+
         mean = distribution.getMean()
         print("mean=", repr(mean))
         standardDeviation = distribution.getStandardDeviation()
@@ -201,14 +203,19 @@ try:
 
         x = 0.6
         y = [0.2]*(dim-1)
-        print("conditional PDF=%.6f" % distribution.computeConditionalPDF(x, y))
-        print("conditional CDF=%.6f" % distribution.computeConditionalCDF(x, y))
-        print("conditional quantile=%.6f" % distribution.computeConditionalQuantile(x, y))
+        print("conditional PDF=%.6f" %
+              distribution.computeConditionalPDF(x, y))
+        print("conditional CDF=%.6f" %
+              distribution.computeConditionalCDF(x, y))
+        print("conditional quantile=%.6f" %
+              distribution.computeConditionalQuantile(x, y))
         pt = Point([i + 1.5 for i in range(dim)])
-        print("sequential conditional PDF=", distribution.computeSequentialConditionalPDF(point))
+        print("sequential conditional PDF=",
+              distribution.computeSequentialConditionalPDF(point))
         resCDF = distribution.computeSequentialConditionalCDF(pt)
         print("sequential conditional CDF(", pt, ")=", resCDF)
-        print("sequential conditional quantile(", resCDF, ")=", distribution.computeSequentialConditionalQuantile(resCDF))
+        print("sequential conditional quantile(", resCDF, ")=",
+              distribution.computeSequentialConditionalQuantile(resCDF))
 
         # Extract the marginals
         for i in range(dim):

@@ -466,7 +466,7 @@ private:
 
   /** Integration algorithm */
   GaussKronrod algo_;
-  
+
 }; /* class RandomMixture */
 
 

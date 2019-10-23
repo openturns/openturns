@@ -67,7 +67,7 @@ public:
 
   /** Accessor to psi1 */
   Scalar getTheta() const;
-  
+
   /** Mutator of psi1 */
   void setPsi1(const Scalar psi1);
 

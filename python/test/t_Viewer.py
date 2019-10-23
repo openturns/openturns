@@ -56,8 +56,10 @@ try:
     distribution = ot.Normal(
         ot.Point(dimension, 3.0), ot.Point(dimension, 2.0), R)
     size = 100
-    sample1 = ot.Normal([3.0] * dimension, [2.0] * dimension, R).getSample(size)
-    sample2 = ot.Normal([2.0] * dimension, [3.0] * dimension, R).getSample(size // 2)
+    sample1 = ot.Normal([3.0] * dimension, [2.0] *
+                        dimension, R).getSample(size)
+    sample2 = ot.Normal([2.0] * dimension, [3.0] *
+                        dimension, R).getSample(size // 2)
     cloud1 = ot.Cloud(sample1, "blue", "fsquare", "Sample1 Cloud")
     cloud2 = ot.Cloud(sample2, "red", "fsquare", "Sample2 Cloud")
     graph = ot.Graph("two samples clouds", "x1", "x2", True, "topright")

@@ -1,6 +1,6 @@
 = New Features =
 
-== 1.14 release (in progress) == #release-1.14
+== 1.14rc1 release (2019-10-23) == #release-1.14rc1
 
 === Library ===
 
@@ -14,9 +14,12 @@
  => One can use "import openturns.shims as ot" to maintain compatibility with older scripts
 
 ==== Major changes ====
- * Add dlib solvers
- * FittingTest methods to return fitted distributions with factory as argument
- * Add bonmin solvers for mixed integer optimization problems
+ * New optimization solvers (Dlib, Bonmin for mixed integer optimization problems)
+ * New distributions (SquaredNormal, WeibullMax, Pareto, DiscreteCompoundDistribution)
+ * New estimators (ParetoFactory, GeneralizedExtremeValueFactory, LeastSquaresDistributionFactory)
+ * New copulas (JoeCopula, MarshallOlkinCopula)
+ * Linear model learner (LinearModelStepwiseAlgorithm)
+ * System events (IntersectionEvent, UnionEvent, SystemFORM, MultiFORM)
 
 ==== New classes ====
  * Dlib
@@ -43,6 +46,7 @@
  * LinearModelStepwiseAlgorithm
 
 ==== API changes ====
+ * FittingTest methods to return fitted distributions with factory as argument
  * Removed deprecated specific RandomVector constructors
  * Removed deprecated HypothesisTest::Smirnov
  * Removed deprecated FittingTest::TwoSamplesKolmogorov
@@ -75,17 +79,26 @@
  * Add getSobolGroupedTotalIndex method for FunctionalChaosSobolIndices for the indice of a group of variables
 
 === Bug fixes ===
- * https://github.com/openturns/openturns/milestone/4?closed=1
  * #997 (Adding minimum volume set examples)
  * #1004 (The doc for SobolSimulationAlgorithm has issues)
  * #1006 (Text drawable does not handle size)
  * #1130 (Inconsistency in FittingTest)
+ * #1160 (2-d GaussianProcess realization graph regression)
+ * #1169 (Missing key in ResourceMap)
+ * #1173 (There is no dot product example)
  * #1185 (Bug with Normal.computeMinimumLevelSet method)
  * #1190 (computeProbability clamped by Domain-SmallVolume)
+ * #1197 (Doc error: TrendTransform)
+ * #1198 (Doc error: ValueFunction)
  * #1202 (Sample::sort & Sample::sortAccordingToAComponent only return new Samples)
+ * #1204 (sortAccordingToAComponent does not check its inputs arguments)
  * #1209 (LinearModelStepwiseAlgorithm from otlm does not exist in OT)
  * #1216 (The CalibrationResult doc does not match the code)
  * #1247 (KrigingAlgorithm could not compute amplitude analytically with ProductCovarianceModel )
+ * #1264 (ProductCovarianceModel ignore active parameters of its 1d marginals)
+ * #1282 (The dlib example fails)
+ * #1283 (LogNormalFactory::buildMethodOfLeastSquares has no doc)
+ * #1289 (The help page of PythonFunction has formatting issues)
 
 
 == 1.13 release (2019-06-06) == #release-1.13

@@ -225,11 +225,13 @@ RandomVector RandomVector::intersect(const RandomVector & other)
     throw NotYetImplementedException(HERE) << "Root cause not found";
 
   LevelSet d1;
-  try {
+  try
+  {
     // ThresholdEvent
     d1 = LevelSet(getFunction(), getOperator(), getThreshold());
   }
-  catch (NotYetImplementedException &) {
+  catch (NotYetImplementedException &)
+  {
     // DomainEvent with LevelSet
     const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(getImplementation().get());
     if (!eventDomain)
@@ -241,11 +243,13 @@ RandomVector RandomVector::intersect(const RandomVector & other)
   }
 
   LevelSet d2;
-  try {
+  try
+  {
     // ThresholdEvent
     d2 = LevelSet(other.getFunction(), other.getOperator(), other.getThreshold());
   }
-  catch (NotYetImplementedException &) {
+  catch (NotYetImplementedException &)
+  {
     // DomainEvent with LevelSet
     const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(other.getImplementation().get());
     if (!eventDomain)
@@ -274,11 +278,13 @@ RandomVector RandomVector::join(const RandomVector & other)
     throw NotYetImplementedException(HERE) << "Root cause not found";
 
   LevelSet d1;
-  try {
+  try
+  {
     // ThresholdEvent
     d1 = LevelSet(getFunction(), getOperator(), getThreshold());
   }
-  catch (NotYetImplementedException &) {
+  catch (NotYetImplementedException &)
+  {
     // DomainEvent with LevelSet
     const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(getImplementation().get());
     if (!eventDomain)
@@ -290,11 +296,13 @@ RandomVector RandomVector::join(const RandomVector & other)
   }
 
   LevelSet d2;
-  try {
+  try
+  {
     // ThresholdEvent
     d2 = LevelSet(other.getFunction(), other.getOperator(), other.getThreshold());
   }
-  catch (NotYetImplementedException &) {
+  catch (NotYetImplementedException &)
+  {
     // DomainEvent with LevelSet
     const DomainEvent* eventDomain = dynamic_cast<DomainEvent*>(other.getImplementation().get());
     if (!eventDomain)

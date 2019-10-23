@@ -46,12 +46,12 @@ public:
   /** Best model for a given numerical sample by BIC */
   static Distribution BestModelBIC(const Sample  & sample,
                                    const DistributionFactoryCollection & factoryCollection,
-				   Scalar & bestBICOut);
+                                   Scalar & bestBICOut);
 
   /** Best model for a given numerical sample by BIC */
   static Distribution BestModelBIC(const Sample  & sample,
                                    const DistributionCollection & distributionCollection,
-				   Scalar & bestBICOut);
+                                   Scalar & bestBICOut);
 
   /** Best model for a given numerical sample by Kolmogorov */
   static Distribution BestModelKolmogorov(const Sample  & sample,

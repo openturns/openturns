@@ -47,7 +47,8 @@ try:
     print("pdf     =%.6f" % PDF)
     CDF = distribution.computeCDF(point)
     print("cdf=%.5f" % CDF)
-    proba = distribution.computeProbability(Interval([i for i in range(distribution.getDimension())], [i+1.0 for i in range(distribution.getDimension())]))
+    proba = distribution.computeProbability(Interval([i for i in range(
+        distribution.getDimension())], [i+1.0 for i in range(distribution.getDimension())]))
     print("probability=%.5f" % proba)
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", repr(quantile))

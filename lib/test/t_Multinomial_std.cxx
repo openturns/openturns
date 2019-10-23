@@ -95,10 +95,10 @@ int main(int, char *[])
     Point lower(distribution.getDimension());
     Point upper(distribution.getDimension());
     for (UnsignedInteger i = 0; i < distribution.getDimension(); ++i)
-      {
-	lower[i] = i;
-	upper[i] = i + 1.0;
-      }
+    {
+      lower[i] = i;
+      upper[i] = i + 1.0;
+    }
     interval = Interval(lower, upper);
     fullprint << "probability(" << interval.__str__() << ")=" << distribution.computeProbability(interval) << std::endl;
     fullprint << "entropy=" << distribution.computeEntropy() << std::endl;

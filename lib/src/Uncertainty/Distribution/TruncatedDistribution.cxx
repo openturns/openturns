@@ -189,71 +189,71 @@ Distribution TruncatedDistribution::getSimplifiedVersion() const
   const Scalar w = getWeight();
   const Interval range(getRange());
   if (distribution_.getRange() == range)
-    {
-      localDistribution.setWeight(w);
-      return localDistribution;
-    }
+  {
+    localDistribution.setWeight(w);
+    return localDistribution;
+  }
   // If UserDefined
   if (kind == "UserDefined")
+  {
+    const Sample support(localDistribution.getSupport());
+    const Point probabilities(localDistribution.getProbabilities());
+    Sample reducedSupport(0, localDistribution.getDimension());
+    Point reducedProbabilities(0);
+    for (UnsignedInteger i = 0; i < support.getSize(); ++i)
     {
-      const Sample support(localDistribution.getSupport());
-      const Point probabilities(localDistribution.getProbabilities());
-      Sample reducedSupport(0, localDistribution.getDimension());
-      Point reducedProbabilities(0);
-      for (UnsignedInteger i = 0; i < support.getSize(); ++i)
-	{
-	  const Point x(support[i]);
-	  if (range.contains(x))
-	    {
-	      reducedSupport.add(x);
-	      reducedProbabilities.add(probabilities[i]);
-	    }
-	}
-      UserDefined simplified(reducedSupport, reducedProbabilities);
+      const Point x(support[i]);
+      if (range.contains(x))
+      {
+        reducedSupport.add(x);
+        reducedProbabilities.add(probabilities[i]);
+      }
+    }
+    UserDefined simplified(reducedSupport, reducedProbabilities);
+    simplified.setWeight(getWeight());
+    return simplified;
+  }
+  // At this point, no more simplification in the multivariate case
+  if (getDimension() == 1)
+  {
+    // Now, the 1D simplifications
+    const Scalar b = localDistribution.getRange().getUpperBound()[0];
+    const Scalar alpha = getRange().getLowerBound()[0];
+    const Scalar beta = getRange().getUpperBound()[0];
+    // Actual simplifications
+    if (kind == "Uniform")
+    {
+      Uniform simplified(alpha, beta);
       simplified.setWeight(getWeight());
       return simplified;
     }
-  // At this point, no more simplification in the multivariate case
-  if (getDimension() == 1)
+    if (kind == "Normal")
     {
-      // Now, the 1D simplifications
-      const Scalar b = localDistribution.getRange().getUpperBound()[0];
-      const Scalar alpha = getRange().getLowerBound()[0];
-      const Scalar beta = getRange().getUpperBound()[0];
-      // Actual simplifications
-      if (kind == "Uniform")
-	{
-	  Uniform simplified(alpha, beta);
-	  simplified.setWeight(getWeight());
-	  return simplified;
-	}
-      if (kind == "Normal")
-	{
-	  const Normal * normal(dynamic_cast< const Normal * >(localDistribution.getImplementation().get()));
-	  const Scalar mu = normal->getMean()[0];
-	  const Scalar sigma = normal->getSigma()[0];
-	  TruncatedNormal simplified(mu, sigma, alpha, beta);
-	  simplified.setWeight(getWeight());
-	  return simplified;
-	}
-      if (kind == "TruncatedNormal")
-	{
-	  const TruncatedNormal * truncatedNormal(dynamic_cast< const TruncatedNormal * >(localDistribution.getImplementation().get()));
-	  const Scalar mu = truncatedNormal->getMu();
-	  const Scalar sigma = truncatedNormal->getSigma();
-	  TruncatedNormal simplified(mu, sigma, alpha, beta);
-	  simplified.setWeight(getWeight());
-	  return simplified;
-	}
-      if ((kind == "Exponential") && (beta >= b))
-	{
-	  const Exponential * exponential(dynamic_cast< const Exponential * >(localDistribution.getImplementation().get()));
-	  const Scalar lambda = exponential->getLambda();
-	  Exponential simplified(lambda, alpha);
-	  simplified.setWeight(getWeight());
-	  return simplified;
-	}
+      const Normal * normal(dynamic_cast< const Normal * >(localDistribution.getImplementation().get()));
+      const Scalar mu = normal->getMean()[0];
+      const Scalar sigma = normal->getSigma()[0];
+      TruncatedNormal simplified(mu, sigma, alpha, beta);
+      simplified.setWeight(getWeight());
+      return simplified;
     }
+    if (kind == "TruncatedNormal")
+    {
+      const TruncatedNormal * truncatedNormal(dynamic_cast< const TruncatedNormal * >(localDistribution.getImplementation().get()));
+      const Scalar mu = truncatedNormal->getMu();
+      const Scalar sigma = truncatedNormal->getSigma();
+      TruncatedNormal simplified(mu, sigma, alpha, beta);
+      simplified.setWeight(getWeight());
+      return simplified;
+    }
+    if ((kind == "Exponential") && (beta >= b))
+    {
+      const Exponential * exponential(dynamic_cast< const Exponential * >(localDistribution.getImplementation().get()));
+      const Scalar lambda = exponential->getLambda();
+      Exponential simplified(lambda, alpha);
+      simplified.setWeight(getWeight());
+      return simplified;
+    }
+  }
   // No simplification
   TruncatedDistribution simplifiedTruncated(localDistribution, getRange());
   simplifiedTruncated.setWeight(w);
@@ -265,18 +265,18 @@ void TruncatedDistribution::computeRange()
 {
   const Interval distributionRange(distribution_.getRange());
   if (distributionRange == bounds_)
-    {
-      setRange(distributionRange);
-      normalizationFactor_ = 1.0;
-    }
+  {
+    setRange(distributionRange);
+    normalizationFactor_ = 1.0;
+  }
   else
-    {
-      const Interval range(distributionRange.intersect(bounds_));
-      setRange(range);
-      const Scalar probability = distribution_.computeProbability(range);
-      if (!(probability > 0.0)) throw InvalidArgumentException(HERE) << "Error: the truncation interval does not contain a non-empty part of the support of the distribution";
-      normalizationFactor_ = 1.0 / probability;
-    }
+  {
+    const Interval range(distributionRange.intersect(bounds_));
+    setRange(range);
+    const Scalar probability = distribution_.computeProbability(range);
+    if (!(probability > 0.0)) throw InvalidArgumentException(HERE) << "Error: the truncation interval does not contain a non-empty part of the support of the distribution";
+    normalizationFactor_ = 1.0 / probability;
+  }
   epsilonRange_ = getRange() + Interval(Point(dimension_, -quantileEpsilon_), Point(dimension_, quantileEpsilon_));
 }
 

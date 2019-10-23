@@ -8,12 +8,15 @@ import sys
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(3)
 
+
 def progress(percent):
     sys.stderr.write('-- progress=' + str(percent) + '%\n')
+
 
 def stop():
     sys.stderr.write('-- stop?\n')
     return False
+
 
 # rosenbrock x*=(1,1), x*=(0.7864, 0.6177) on unit disk
 dim = 2
@@ -31,7 +34,7 @@ for algoName in algoNames:
     # OptPDS goes very far
     # OptNewton goes to nan on osx, does not move on linux
     # OptNIPS/OptFDNIPS Singular Jacobian exits if newmat11/include.h defines SimulateExceptions (default), best to use UseExceptions
-    if 'OptBaNewton' in algoName or 'OptBCNewton' in algoName or 'OptNewton' in algoName or 'OptFDNewton' in algoName  or 'OptConstrFDNewton' in algoName or 'OptConstrNewton' in algoName or 'OptDHNIPS' in algoName or 'OptPDS' in algoName or 'OptNIPS' in algoName or 'OptFDNIPS' in algoName:
+    if 'OptBaNewton' in algoName or 'OptBCNewton' in algoName or 'OptNewton' in algoName or 'OptFDNewton' in algoName or 'OptConstrFDNewton' in algoName or 'OptConstrNewton' in algoName or 'OptDHNIPS' in algoName or 'OptPDS' in algoName or 'OptNIPS' in algoName or 'OptFDNIPS' in algoName:
         continue
 
     algo = ot.OPTpp(algoName)
@@ -40,7 +43,8 @@ for algoName in algoNames:
         for inequality in [False, True]:
             for equality in [False, True]:
                 for bound in [False, True]:
-                    print('algo=', algoName, 'minimization=', minimization, 'bounds=', bound, 'inequality=', inequality, 'equality=', equality)
+                    print('algo=', algoName, 'minimization=', minimization, 'bounds=',
+                          bound, 'inequality=', inequality, 'equality=', equality)
                     problem = ot.OptimizationProblem(f)
                     problem.setMinimization(minimization)
                     if inequality:
@@ -59,7 +63,7 @@ for algoName in algoNames:
                     except:
                         print('-- Not supported')
                         continue
-                    #algo.setMaximumEvaluationNumber(100)
+                    # algo.setMaximumEvaluationNumber(100)
                     algo.setStartingPoint(startingPoint)
                     try:
                         algo.run()
@@ -67,9 +71,10 @@ for algoName in algoNames:
                         print('-- ', e)
                         continue
                     result = algo.getResult()
-                    print('x^=', result.getOptimalPoint(), 'y^=', result.getOptimalValue())
+                    print('x^=', result.getOptimalPoint(),
+                          'y^=', result.getOptimalValue())
 
-## FORM
+# FORM
 f = ot.SymbolicFunction(
     ["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
 dim = f.getInputDimension()

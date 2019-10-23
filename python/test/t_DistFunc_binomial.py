@@ -18,13 +18,15 @@ try:
         p = pMin + i1 * (pMax - pMin) / (n1 - 1.0)
         for n in range(nMin, nMax + 1):
             for k in range(n + 1):
-                print("dBinomial(", n, ", %.3g" % p, ", ", k, ")=%.2g" % DistFunc.dBinomial(n, p, k))
+                print("dBinomial(", n, ", %.3g" % p, ", ", k, ")=%.2g" %
+                      DistFunc.dBinomial(n, p, k))
                 # logdBinomial
     for i1 in range(n1):
         p = pMin + i1 * (pMax - pMin) / (n1 - 1.0)
         for n in range(nMin, nMax + 1):
             for k in range(n + 1):
-                print("logdBinomial(", n, ", %.3g" % p, ", ", k, ")=%.2g" % DistFunc.logdBinomial(n, p, k))
+                print("logdBinomial(", n, ", %.3g" % p, ", ", k, ")=%.2g" %
+                      DistFunc.logdBinomial(n, p, k))
                 # rBinomial
     nR = 5
     for i1 in range(n1):

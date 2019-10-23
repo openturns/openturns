@@ -6,7 +6,7 @@ import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
-# We create a numerical math function 
+# We create a numerical math function
 dim = 2
 
 # event
@@ -43,10 +43,15 @@ assert n_design_pts == 2, "should get 2 design points"
 
 for form_result in result.getFORMResultCollection():
     print('-'*50)
-    print("generalized reliability indexes=", form_result.getGeneralisedReliabilityIndex())
+    print("generalized reliability indexes=",
+          form_result.getGeneralisedReliabilityIndex())
     print("pf=", form_result.getEventProbability())
-    print("standard space design points=", form_result.getStandardSpaceDesignPoint())
-    print("physical space design points=", form_result.getPhysicalSpaceDesignPoint())
-    print("is standard point origin in failure space? %s" % (form_result.getIsStandardPointOriginInFailureSpace() and "true" or "false"))
+    print("standard space design points=",
+          form_result.getStandardSpaceDesignPoint())
+    print("physical space design points=",
+          form_result.getPhysicalSpaceDesignPoint())
+    print("is standard point origin in failure space? %s" % (
+        form_result.getIsStandardPointOriginInFailureSpace() and "true" or "false"))
     print("importance factors=", form_result.getImportanceFactors())
-    print("Hasofer reliability indexes=", form_result.getHasoferReliabilityIndex())
+    print("Hasofer reliability indexes=",
+          form_result.getHasoferReliabilityIndex())

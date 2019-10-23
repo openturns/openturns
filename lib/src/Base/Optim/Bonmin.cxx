@@ -27,11 +27,11 @@
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #ifdef OPENTURNS_HAVE_BONMIN
-  #include "openturns/BonminProblem.hxx"
-  #include <BonBonminSetup.hpp>
-  #include <BonCbc.hpp>
-  using namespace Bonmin;
-  using namespace Ipopt;
+#include "openturns/BonminProblem.hxx"
+#include <BonBonminSetup.hpp>
+#include <BonCbc.hpp>
+using namespace Bonmin;
+using namespace Ipopt;
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -44,17 +44,17 @@ static const Factory<Bonmin> Factory_Bonmin;
 Bonmin::Bonmin(const String & algoName)
   : OptimizationAlgorithmImplementation()
   , algoName_()
-  {
-    setAlgorithmName(algoName);
-  }   
+{
+  setAlgorithmName(algoName);
+}
 
 Bonmin::Bonmin( OptimizationProblem & problem,
                 const String & algoName)
   : OptimizationAlgorithmImplementation(problem)
   , algoName_()
-  {
-    setAlgorithmName(algoName);
-  }
+{
+  setAlgorithmName(algoName);
+}
 
 /* Virtual constructor */
 Bonmin * Bonmin::clone() const
@@ -62,56 +62,56 @@ Bonmin * Bonmin::clone() const
   return new Bonmin(*this);
 }
 
-  
-  
-  /** Bonmin static methods */
-  Bool Bonmin::IsAvailable()
-  {
-    #ifdef OPENTURNS_HAVE_BONMIN
-      return true;
-    #else
-      return false;
-    #endif
-  }
-  
-  Description Bonmin::GetAlgorithmNames()
-  {
-    Description algoNames(5);
-    algoNames[0] = "B-BB";
-    algoNames[1] = "B-OA";
-    algoNames[2] = "B-QG";
-    algoNames[3] = "B-Hyb";
-    algoNames[4] = "B-iFP";
-    
-    return algoNames;
-  }
 
-  /** Accessors to Bonmin attributes */
-  void Bonmin::setAlgorithmName(const String & algoName)
-  {
-    // Check algoName
-    if (!GetAlgorithmNames().contains(algoName))
-    {
-      if (algoName == "B-Ecp")
-        throw InternalException(HERE) << "B-Ecp solver is unavailable.";
-      else
-        throw InvalidArgumentException(HERE) << "Unknown solver " << algoName;
-    }
-    algoName_ = algoName;
-  }
-  
-  String Bonmin::getAlgorithmName() const
-  {
-    return algoName_;
-  }
 
-  
+/** Bonmin static methods */
+Bool Bonmin::IsAvailable()
+{
+#ifdef OPENTURNS_HAVE_BONMIN
+  return true;
+#else
+  return false;
+#endif
+}
+
+Description Bonmin::GetAlgorithmNames()
+{
+  Description algoNames(5);
+  algoNames[0] = "B-BB";
+  algoNames[1] = "B-OA";
+  algoNames[2] = "B-QG";
+  algoNames[3] = "B-Hyb";
+  algoNames[4] = "B-iFP";
+
+  return algoNames;
+}
+
+/** Accessors to Bonmin attributes */
+void Bonmin::setAlgorithmName(const String & algoName)
+{
+  // Check algoName
+  if (!GetAlgorithmNames().contains(algoName))
+  {
+    if (algoName == "B-Ecp")
+      throw InternalException(HERE) << "B-Ecp solver is unavailable.";
+    else
+      throw InvalidArgumentException(HERE) << "Unknown solver " << algoName;
+  }
+  algoName_ = algoName;
+}
+
+String Bonmin::getAlgorithmName() const
+{
+  return algoName_;
+}
+
+
 /** Check whether this problem can be solved by this solver. */
 void Bonmin::checkProblem(const OptimizationProblem & problem) const
 {
   // Cannot solve multi-objective problems
   if (problem.hasMultipleObjective()) throw InvalidArgumentException(HERE) << "Error: Bonmin algorithm " << algoName_ << " does not support multi-objective optimization";
-  
+
   // No LeastSquaresProblem / NearestPointProblem
   if (problem.hasResidualFunction() || problem.hasLevelFunction())
     throw InvalidArgumentException(HERE) << "Bonmin does not support least squares or nearest point problems";
@@ -125,11 +125,11 @@ static void GetOptionsFromResourceMap(BonminSetup & bonmin)
 {
 //   Get options for Bonmin setup from ResourceMap
 //   See Bonmin/Ipopt user manuals for more details.
-  
+
   std::vector<String> keys(ResourceMap::GetKeys());
   const UnsignedInteger nbKeys = keys.size();
-    
-  for (UnsignedInteger i=0; i<nbKeys; ++i)
+
+  for (UnsignedInteger i = 0; i < nbKeys; ++i)
     if (keys[i].substr(0, 7) == "Bonmin-")
     {
       String optionName(keys[i].substr(7));
@@ -150,45 +150,45 @@ static void GetOptionsFromResourceMap(BonminSetup & bonmin)
 /** Performs the actual computation. */
 void Bonmin::run()
 {
-  #ifdef OPENTURNS_HAVE_BONMIN
+#ifdef OPENTURNS_HAVE_BONMIN
   // Check problem
   checkProblem(getProblem());
-  
+
   // Check starting point
   if (getStartingPoint().getDimension() != getProblem().getDimension())
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << getStartingPoint().getDimension() << "), expected " << getProblem().getDimension();
-  
+
   // Create BonminProblem
-  Ipopt::SmartPtr<BonminProblem> tminlp = new BonminProblem(getProblem(),getStartingPoint(), getMaximumEvaluationNumber());
+  Ipopt::SmartPtr<BonminProblem> tminlp = new BonminProblem(getProblem(), getStartingPoint(), getMaximumEvaluationNumber());
   tminlp->setProgressCallback(progressCallback_.first, progressCallback_.second);
   tminlp->setStopCallback(stopCallback_.first, stopCallback_.second);
-                              
+
   // Create setup, initialize options
   BonminSetup bonmin;
   bonmin.initializeOptionsAndJournalist();
-   
+
   // Update algorithm name and other user defined options
   GetOptionsFromResourceMap(bonmin);
-  
+
   if (ResourceMap::HasKey("Bonmin-bonmin.algorithm") && ResourceMap::GetAsString("Bonmin-bonmin.algorithm") != algoName_)
     LOGWARN(OSS() << "Algorithm name specified in ResourceMap (" << ResourceMap::GetAsString("Bonmin-bonmin.algorithm") << ") will be ignored");
   bonmin.options()->SetStringValue("bonmin.algorithm", algoName_);
-  
+
   if (ResourceMap::HasKey("Bonmin-max_iter") && ResourceMap::GetAsUnsignedInteger("Bonmin-max_iter") != getMaximumIterationNumber())
     LOGWARN(OSS() << "Maximum iteration number specified in ResourceMap (" << ResourceMap::GetAsUnsignedInteger("Bonmin-max_iter") << ") will be ignored");
   bonmin.options()->SetIntegerValue("max_iter", getMaximumIterationNumber());
- 
+
   // Update setup with BonminProblem
   bonmin.initialize(GetRawPtr(tminlp));
 
   // Solve problem
   Bab solver;
   solver(bonmin);
-  
+
   // Retrieve MemoizeFunction input/output history
   Sample inputHistory(tminlp->getInputHistory());
   Sample outputHistory(tminlp->getOutputHistory());
-  
+
   // Create OptimizationResult, initialize error values
   OptimizationResult optimResult(getProblem().getDimension());
   Scalar absoluteError = -1.0;
@@ -197,14 +197,14 @@ void Bonmin::run()
   Scalar constraintError = -1.0;
 
   /* Populate OptimizationResult from memoize history */
-  
+
   for (UnsignedInteger i = 0; i < inputHistory.getSize(); ++ i)
   {
     const Point inP(inputHistory[i]);
     const Point outP(outputHistory[i]);
     constraintError = 0.0;
-    
-    // Constraint error on bounds    
+
+    // Constraint error on bounds
     if (getProblem().hasBounds())
     {
       Interval bounds(getProblem().getBounds());
@@ -216,15 +216,15 @@ void Bonmin::run()
           constraintError = std::max(constraintError, inP[j] - bounds.getUpperBound()[j]);
       }
     }
-    
+
     // Constraint error on equality constraints
     if (getProblem().hasEqualityConstraint())
     {
       const Point g(getProblem().getEqualityConstraint()(inP));
       constraintError = std::max(constraintError, g.normInf());
     }
-    
-    // Constraint error on inequality constraints    
+
+    // Constraint error on inequality constraints
     if (getProblem().hasInequalityConstraint())
     {
       Point h(getProblem().getInequalityConstraint()(inP));
@@ -234,7 +234,7 @@ void Bonmin::run()
       }
       constraintError = std::max(constraintError, h.normInf());
     }
-    
+
     // Computing errors, storing into OptimizationResult
     if (i > 0)
     {
@@ -244,7 +244,7 @@ void Bonmin::run()
       relativeError = (inP.normInf() > 0.0) ? (absoluteError / inP.normInf()) : -1.0;
       residualError = (std::abs(outP[0]) > 0.0) ? (std::abs(outP[0] - outPM[0]) / std::abs(outP[0])) : -1.0;
     }
-    
+
     optimResult.store(inP,
                       outP,
                       absoluteError,
@@ -252,19 +252,19 @@ void Bonmin::run()
                       residualError,
                       constraintError);
   }
-  
+
   // Optimum is not the last call to objective function
   optimResult.setOptimalPoint(tminlp->getOptimalPoint());
   optimResult.setOptimalValue(tminlp->getOptimalValue());
-  
+
   setResult(optimResult);
-  
+
   String allOptions;
   bonmin.options()->PrintList(allOptions);
   LOGINFO(allOptions);
-  
+
 #else
-  
+
   throw NotYetImplementedException(HERE) << "No Bonmin support";
 
 #endif
@@ -289,8 +289,8 @@ String Bonmin::__repr__() const
   // List user-defined options
   std::vector<String> keys(ResourceMap::GetKeys());
   UnsignedInteger nbKeys = keys.size();
-    
-  for (UnsignedInteger i=0; i<nbKeys; ++i)
+
+  for (UnsignedInteger i = 0; i < nbKeys; ++i)
     if (keys[i].substr(0, 7) == "Bonmin-")
     {
       String optionName(keys[i].substr(7));
@@ -304,7 +304,7 @@ String Bonmin::__repr__() const
       else
         throw InvalidArgumentException(HERE) << "Unsupported type " << type << " for Bonmin option " << optionName;
     }
-    
+
   return oss;
 }
 

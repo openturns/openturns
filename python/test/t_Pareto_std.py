@@ -49,14 +49,14 @@ print("range= ", distribution.getRange())
 
 # Show PDF and CDF of point
 eps = 1e-5
-DDF = distribution.computeDDF( point )
+DDF = distribution.computeDDF(point)
 print("ddf     =", repr(DDF))
 print("ddf (FD)=", repr(ot.Point(1, (distribution.computePDF(
     point + ot.Point(1, eps)) - distribution.computePDF(point + ot.Point(1, -eps))) / (2.0 * eps))))
 PDF = distribution.computePDF(point)
 print("pdf     = %.12g" % PDF)
 print("pdf (FD)= %.9f" % ((distribution.computeCDF(point + ot.Point(1, eps)) -
-                            distribution.computeCDF(point + ot.Point(1, -eps))) / (2.0 * eps), ))
+                           distribution.computeCDF(point + ot.Point(1, -eps))) / (2.0 * eps), ))
 
 CDF = distribution.computeCDF(point)
 print("cdf= %.12g" % CDF)

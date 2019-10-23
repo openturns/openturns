@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 using namespace Bonmin;
 using namespace Ipopt;
-  
+
 typedef TMINLP::VariableType * VariableTypeTable;
 typedef Ipopt::TNLP::LinearityType * LinearityTypeTable;
 
@@ -41,45 +41,45 @@ class BonminProblem
 {
 
 public:
-  
+
   /** Constructor with parameters */
   BonminProblem( const OptimizationProblem & optimProblem,
-                const Point & startingPoint,
-                const UnsignedInteger maximumEvaluationNumber
-              );
-  
+                 const Point & startingPoint,
+                 const UnsignedInteger maximumEvaluationNumber
+               );
+
   /** Retrieving objective function input.output history */
   Sample getInputHistory() const;
   Sample getOutputHistory() const;
-  
-  /** Overloading functions from Bonmin::TMINLP 
+
+  /** Overloading functions from Bonmin::TMINLP
    See BonTMINLP.hpp for description */
-  
+
   // n: number of variables
-  // m: number of constraints  
-  
+  // m: number of constraints
+
   bool get_nlp_info(int & n,
                     int & m,
                     int & nnz_jac_g, // Number of non-zero components in the Jacobian of g
                     int & nnz_h_lag, // Number of non-zero components in Hessian of Lagrangean
                     Ipopt::TNLP::IndexStyleEnum & index_style);
-        
+
   bool get_variables_types( int n,
                             VariableTypeTable var_types);
-  
-  bool get_variables_linearity( int n, 
+
+  bool get_variables_linearity( int n,
                                 LinearityTypeTable var_types);
 
   bool get_constraints_linearity( int m,
                                   LinearityTypeTable const_types);
-  
+
   bool get_bounds_info( int n,
                         double* x_l,  // Lower bounds
                         double* x_u,  // Upper bounds
                         int m,
                         double* g_l,  // Lower bounds
                         double* g_u); // Upper bounds
-  
+
   bool get_starting_point(int n,
                           bool init_x,
                           double* x,
@@ -132,7 +132,7 @@ public:
                bool new_x,
                int i,
                double& gi);
-    
+
   bool eval_grad_gi(int n,
                     const double* x,
                     bool new_x,
@@ -140,7 +140,7 @@ public:
                     int& nele_grad_gi,
                     int* jCol,
                     double* values);
-  
+
   void finalize_solution( TMINLP::SolverReturn status,
                           Ipopt::Index n,
                           const Ipopt::Number* x,
@@ -155,27 +155,27 @@ public:
   {
     return NULL;
   };
-  
+
   Point getOptimalPoint() const
   {
     return optimalPoint_;
   }
-  
+
   Point getOptimalValue() const
   {
     return optimalValue_;
   }
-  
+
   virtual void setProgressCallback(OptimizationAlgorithmImplementation::ProgressCallback callBack, void * state = 0)
   {
     progressCallback_ = std::pair<OptimizationAlgorithmImplementation::ProgressCallback, void *>(callBack, state);
   }
-  
+
   virtual void setStopCallback(OptimizationAlgorithmImplementation::StopCallback callBack, void * state = 0)
   {
     stopCallback_ = std::pair<OptimizationAlgorithmImplementation::StopCallback, void *>(callBack, state);
   }
-  
+
 private:
   const OptimizationProblem optimProblem_;
   const Point startingPoint_;
@@ -187,7 +187,7 @@ private:
   std::pair< OptimizationAlgorithmImplementation::ProgressCallback, void *> progressCallback_;
   std::pair< OptimizationAlgorithmImplementation::StopCallback, void *> stopCallback_;
 
-  
+
 };
 
 END_NAMESPACE_OPENTURNS

@@ -177,4 +177,3 @@ print(ot.Normal(2) - 3.0)
 # unary minus
 x = ot.Normal(7.0, 2.0)
 print(-x)
-

@@ -5,6 +5,7 @@ import openturns as ot
 
 ot.TESTPREAMBLE()
 
+
 class RVEC(ot.PythonRandomVector):
 
     def __init__(self):
@@ -30,6 +31,7 @@ class RVEC(ot.PythonRandomVector):
 
     def isEvent(self):
         return False
+
 
 R = RVEC()
 print(R)

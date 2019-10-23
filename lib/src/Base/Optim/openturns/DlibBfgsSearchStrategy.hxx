@@ -27,7 +27,7 @@
 #include "openturns/PersistentObject.hxx"
 
 #ifdef OPENTURNS_HAVE_DLIB
-  #include <dlib/optimization.h>
+#include <dlib/optimization.h>
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS

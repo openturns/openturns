@@ -121,7 +121,7 @@ public:
 
   /** Get the number of calls to operator() */
   UnsignedInteger getCallsNumber() const;
-  
+
   /** Linearity accessors */
   virtual Bool isLinear() const;
   virtual Bool isLinearlyDependent(const UnsignedInteger index) const;

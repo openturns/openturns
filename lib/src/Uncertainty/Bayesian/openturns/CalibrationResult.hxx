@@ -47,11 +47,11 @@ public:
 
   /** Standard constructor */
   CalibrationResult(const Distribution & parameterPrior,
-		    const Distribution & parameterPosterior,
-		    const Point & parameterMAP,
-		    const Distribution & observationsError,
-		    const Sample & outputObservations,
-		    const Function & residualFunction);
+                    const Distribution & parameterPosterior,
+                    const Point & parameterMAP,
+                    const Distribution & observationsError,
+                    const Sample & outputObservations,
+                    const Function & residualFunction);
 
   /** Virtual constructor */
   virtual CalibrationResult * clone() const;

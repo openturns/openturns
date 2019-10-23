@@ -28,7 +28,7 @@
 #include "openturns/Sample.hxx"
 
 #ifdef OPENTURNS_HAVE_DLIB
-  #include <dlib/optimization.h>
+#include <dlib/optimization.h>
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -43,10 +43,10 @@ class DlibGradient
 public:
   // Constructor
   explicit DlibGradient(const Gradient & gradient);
-  
+
   // Operator () for use with DlibFunction
   DlibMatrix operator() (const DlibMatrix & inP) const;
-  
+
   // Operator () for use with residual DlibFunction
   DlibMatrix operator() (const UnsignedInteger i,
                          const DlibMatrix & inP) const;
@@ -60,7 +60,7 @@ class DlibHessian
 public:
   // Constructor
   explicit DlibHessian(const Hessian & hessian);
-  
+
   // Operator ()
   DlibMatrix operator() (const DlibMatrix & inP) const;
 } ;
@@ -71,48 +71,48 @@ class DlibFunction
 {
   CLASSNAME
 
-/** Define types for use with dlib::find_min_trust_region() **/
-typedef dlib::matrix<double,0,1> column_vector;  
-typedef DlibMatrix general_matrix;
-  
+  /** Define types for use with dlib::find_min_trust_region() **/
+  typedef dlib::matrix<double, 0, 1> column_vector;
+  typedef DlibMatrix general_matrix;
+
 public:
   // Constructor
   explicit DlibFunction(const Function & function);
-  
+
   // Operator ()
   double operator() (const DlibMatrix & inP) const;
 
   // Operator ()
   double operator() ( const UnsignedInteger i,
                       const DlibMatrix & inP) const;
-  
+
   /* Accessors to gradient */
-    // As a DlibGradient
+  // As a DlibGradient
   DlibGradient getGradient() const;
-  
-    // Compute at point
+
+  // Compute at point
   DlibMatrix gradient(const DlibMatrix & inP) const;
-  
+
   DlibMatrix gradient(const UnsignedInteger i,
                       const DlibMatrix & inP) const;
 
   /* Accessor to hessian */
-    // As a DlibHessian
+  // As a DlibHessian
   DlibHessian getHessian() const;
-  
+
   // Compute at point
   DlibMatrix hessian(const DlibMatrix & inP) const;
-  
+
   // Compute gradient and hessian at once
   void get_derivative_and_hessian(const column_vector x,
-                                        column_vector & grad,
-                                        general_matrix & hess) const;
-    
+                                  column_vector & grad,
+                                  general_matrix & hess) const;
+
   /* Accessors to attributes */
   UnsignedInteger getEvaluationNumber() const;
   Sample getInputHistory();
   Sample getOutputHistory();
-  
+
 protected:
   mutable Sample inputHistory_;
   mutable Sample outputHistory_;

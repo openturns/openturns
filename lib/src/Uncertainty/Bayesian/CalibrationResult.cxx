@@ -39,11 +39,11 @@ CalibrationResult::CalibrationResult()
 
 /* Parameter constructor */
 CalibrationResult::CalibrationResult(const Distribution & parameterPrior,
-				     const Distribution & parameterPosterior,
-				     const Point & parameterMAP,
-				     const Distribution & observationsError,
-				     const Sample & outputObservations,
-				     const Function & residualFunction)
+                                     const Distribution & parameterPosterior,
+                                     const Point & parameterMAP,
+                                     const Distribution & observationsError,
+                                     const Sample & outputObservations,
+                                     const Function & residualFunction)
   : PersistentObject()
   , parameterPrior_(parameterPrior)
   , parameterPosterior_(parameterPosterior)

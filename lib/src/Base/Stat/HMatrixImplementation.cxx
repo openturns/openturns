@@ -202,7 +202,7 @@ HMatrixImplementation::HMatrixImplementation(const HMatrixImplementation& other)
 {
 #ifdef OPENTURNS_HAVE_HMAT
   if (other.hmatClusterTree_.get())
-  { 
+  {
     hmat_cluster_tree_t* ptr_other_ct = static_cast<hmat_cluster_tree_t*>(other.hmatClusterTree_.get()->get());
     hmatClusterTree_ = new HMatrixClusterTree(hmat_copy_cluster_tree(ptr_other_ct), other.hmatClusterTree_.get()->getSize());
     hmat_cluster_tree_t* ptr_ct = static_cast<hmat_cluster_tree_t*>(hmatClusterTree_.get()->get());
@@ -320,17 +320,17 @@ Scalar HMatrixImplementation::computeApproximateLargestEigenValue(const Scalar e
   Bool found = false;
   Scalar precision = 0.0;
   for (UnsignedInteger iteration = 0; iteration < maximumIteration; ++iteration)
-    {
-      LOGDEBUG(OSS() << "(" << iteration << ") EigenValue=" << currentEigenValue);
-      currentEigenVector = nextEigenVector / nextEigenValue;
-      gemv('N', 1.0, currentEigenVector, 0.0, nextEigenVector);
-      nextEigenValue = nextEigenVector.norm();
-      precision = std::abs(nextEigenValue - currentEigenValue);
-      found = precision <= epsilon * nextEigenValue;
-      LOGDEBUG(OSS() << "(" << iteration << ") precison=" << precision << ", relative precision=" << precision / nextEigenValue << ", found=" << found);
-      if (found) break;
-      currentEigenValue = nextEigenValue;
-    }
+  {
+    LOGDEBUG(OSS() << "(" << iteration << ") EigenValue=" << currentEigenValue);
+    currentEigenVector = nextEigenVector / nextEigenValue;
+    gemv('N', 1.0, currentEigenVector, 0.0, nextEigenVector);
+    nextEigenValue = nextEigenVector.norm();
+    precision = std::abs(nextEigenValue - currentEigenValue);
+    found = precision <= epsilon * nextEigenValue;
+    LOGDEBUG(OSS() << "(" << iteration << ") precison=" << precision << ", relative precision=" << precision / nextEigenValue << ", found=" << found);
+    if (found) break;
+    currentEigenValue = nextEigenValue;
+  }
   if (!found) LOGWARN(OSS() << "Cannot reach the target relative precision=" << epsilon << ", got relative precision=" << precision / nextEigenValue);
   return nextEigenValue;
 }
@@ -356,30 +356,30 @@ void HMatrixImplementation::factorize(const String& method)
   String msg;
   const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("HMatrix-FactorizationIterations");
   for (UnsignedInteger iteration = 0; iteration < maximumIteration; ++ iteration)
+  {
+    LOGDEBUG(OSS() << "Factorization, regularization loop " << iteration << ", regularization factor=" << lambda);
+    try
     {
-      LOGDEBUG(OSS() << "Factorization, regularization loop " << iteration << ", regularization factor=" << lambda);
-      try
-	{
-	  hmat_factorization_context_t context;
-	  hmat_factorization_context_init(&context);
-	  context.factorization = fact_method;
-	  context.progress = NULL;
-	  static_cast<hmat_interface_t*>(hmatInterface_)->factorize_generic(static_cast<hmat_matrix_t*>(hmat_), &context);
-	  done = true;
-	  LOGDEBUG("Factorization ok");
-	}
-      catch (std::exception& ex)
-	{
-	  // hmat::LapackException is not yet exported
-	  msg = ex.what();
-	  // Double the current regularization factor by adding it another time
-	  addIdentity(lambda);
-	  // And double its value for next loop
-	  lambda += lambda;
-	  LOGDEBUG(OSS() << "Must increase the regularization to " << lambda << " because " << msg);
-	}
-      if (done) break;
-    } // for
+      hmat_factorization_context_t context;
+      hmat_factorization_context_init(&context);
+      context.factorization = fact_method;
+      context.progress = NULL;
+      static_cast<hmat_interface_t*>(hmatInterface_)->factorize_generic(static_cast<hmat_matrix_t*>(hmat_), &context);
+      done = true;
+      LOGDEBUG("Factorization ok");
+    }
+    catch (std::exception& ex)
+    {
+      // hmat::LapackException is not yet exported
+      msg = ex.what();
+      // Double the current regularization factor by adding it another time
+      addIdentity(lambda);
+      // And double its value for next loop
+      lambda += lambda;
+      LOGDEBUG(OSS() << "Must increase the regularization to " << lambda << " because " << msg);
+    }
+    if (done) break;
+  } // for
   if (!done)
     throw InternalException(HERE) << msg;
 #else
@@ -641,7 +641,7 @@ void CovarianceBlockAssemblyFunction::compute(UnsignedInteger i, UnsignedInteger
   else
   {
     CovarianceMatrix localResult(covarianceModel_( vertices_[i],  vertices_[j] ));
-    std::copy(&localResult.getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0)+ dimension_ * dimension_, &localValues->getImplementation()->operator[](0));
+    std::copy(&localResult.getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0) + dimension_ * dimension_, &localValues->getImplementation()->operator[](0));
   }
 }
 

@@ -67,10 +67,12 @@ cmake-configure-%:
             -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
             -DCMAKE_INSTALL_LIBDIR:PATH=/usr/lib \
-            -DLIB_SOVERSION=0.14 \
-            -DLIB_VERSION=0.14.0 \
-            -DOPENTURNS_SYSCONFIG_PATH:PATH=/etc/openturns-1.12 \
+            -DLIB_SOVERSION=0.15 \
+            -DLIB_VERSION=0.15.0 \
+            -DOPENTURNS_SYSCONFIG_PATH:PATH=/etc/openturns-1.14 \
             -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp \
+            -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES:STRING='-j32' \
+            -DSWIG_COMPILE_FLAGS:STRING='-O1' \
             -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python$* \
             -DPYTHON_INCLUDE_DIR:PATH=$$(python$*-config --includes | sed -e 's/ .*//' -e 's/^-I//') \
             -DPYTHON_INCLUDE_DIR2:PATH=$$(python$*-config --includes | sed -e 's/ .*//' -e 's/^-I//') \
@@ -97,7 +99,7 @@ override_dh_makeshlibs:
 	dh_makeshlibs -Xpyshared
 
 override_dh_strip:
-	dh_strip -plibopenturns0.14 -ppython-openturns -ppython3-openturns
+	dh_strip -plibopenturns0.15 -ppython-openturns -ppython3-openturns
 
 override_dh_python2:
 	dh_python2 -p python-openturns

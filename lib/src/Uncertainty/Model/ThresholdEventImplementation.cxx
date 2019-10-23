@@ -48,8 +48,8 @@ ThresholdEventImplementation::ThresholdEventImplementation()
 
 /* Constructor from RandomVector */
 ThresholdEventImplementation::ThresholdEventImplementation(const RandomVector & antecedent,
-                                     const ComparisonOperator & op,
-                                     const Scalar threshold)
+    const ComparisonOperator & op,
+    const Scalar threshold)
   : CompositeRandomVector()
   , operator_(op)
   , threshold_(threshold)
@@ -73,7 +73,7 @@ ThresholdEventImplementation::ThresholdEventImplementation(const RandomVector & 
 
 /* Constructor from RandomVector */
 ThresholdEventImplementation::ThresholdEventImplementation(const RandomVector & antecedent,
-                                     const Interval & interval)
+    const Interval & interval)
   : CompositeRandomVector()
 {
   const UnsignedInteger dimension = interval.getDimension();

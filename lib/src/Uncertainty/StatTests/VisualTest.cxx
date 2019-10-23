@@ -114,7 +114,7 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
 
 /* Draw the CDFplot of the two Samples when its dimension is 1 */
 Graph VisualTest::DrawCDFplot(const Sample & sample1,
-                             const Sample & sample2)
+                              const Sample & sample2)
 {
   if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDFplot only if dimension equals 1, here dimension=" << sample1.getDimension();
   if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDFplot only if dimension equals 1, here dimension=" << sample2.getDimension();
@@ -142,7 +142,7 @@ Graph VisualTest::DrawCDFplot(const Sample & sample1,
 
 /* Draw the CDFplot of one Sample and one Distribution when its dimension is 1 */
 Graph VisualTest::DrawCDFplot(const Sample & sample,
-                             const Distribution & dist)
+                              const Distribution & dist)
 {
   if (sample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDFplot only if dimension equals 1, here dimension=" << sample.getDimension();
   if (dist.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a CDFplot only if dimension equals 1, here dimension=" << dist.getDimension();
@@ -228,7 +228,7 @@ Graph VisualTest::DrawLinearModel(const Sample & sample1,
     throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
   const Function fHat(linearModelResult.getMetaModel());
   const Sample y(fHat(sample1));
-  
+
   OSS oss;
   oss << sample1.getName() << " LinearModel visualTest";
   const UnsignedInteger size = sample1.getSize();

@@ -348,16 +348,16 @@ Point Student::computeCDFGradient(const Point & point) const
    The number of degrees of freedom is modified according to nu_cond = nu + dim(cond)
 */
 Scalar Student::computeConditionalPDF(const Scalar x,
-                                     const Point & y) const
+                                      const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional PDF with a conditioning point of dimension greater or equal to the distribution dimension.";
   // Special case for no conditioning or independent copula
   if (conditioningDimension == 0)
-    {
-      const Scalar z = (x - mean_[conditioningDimension]) / sigma_[conditioningDimension];
-      return std::exp(-0.5 * (nu_ + 1.0) * log1p(z * z / nu_) - SpecFunc::LogBeta(0.5, 0.5 * nu_)) / sigma_[conditioningDimension] / std::sqrt(nu_);
-    }
+  {
+    const Scalar z = (x - mean_[conditioningDimension]) / sigma_[conditioningDimension];
+    return std::exp(-0.5 * (nu_ + 1.0) * log1p(z * z / nu_) - SpecFunc::LogBeta(0.5, 0.5 * nu_)) / sigma_[conditioningDimension] / std::sqrt(nu_);
+  }
   // General case
   // Extract the Cholesky factor of the covariance of Y
   MatrixImplementation cholY(conditioningDimension, conditioningDimension);
@@ -366,13 +366,13 @@ Scalar Student::computeConditionalPDF(const Scalar x,
   UnsignedInteger shift = 0;
   Point yCentered(conditioningDimension);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    {
-      yCentered[i] = y[i] - mean_[i];
-      std::copy(cholesky_.getImplementation()->begin() + start, cholesky_.getImplementation()->begin() + stop, cholY.begin() + shift);
-      start += dimension_ + 1;
-      stop += dimension_;
-      shift += conditioningDimension + 1;
-    }
+  {
+    yCentered[i] = y[i] - mean_[i];
+    std::copy(cholesky_.getImplementation()->begin() + start, cholesky_.getImplementation()->begin() + stop, cholY.begin() + shift);
+    start += dimension_ + 1;
+    stop += dimension_;
+    shift += conditioningDimension + 1;
+  }
   const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
   const Scalar nuCond = nu_ + conditioningDimension;
   Scalar sigmaCond = std::sqrt((nu_ + Point(cholY.solveLinearSystemTri(yCentered)).normSquare()) / nuCond) * sigmaRos;
@@ -392,17 +392,17 @@ Point Student::computeSequentialConditionalPDF(const Point & x) const
   // Waiting for a better implementation
   Point y(0);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      const Scalar xI = x[i];
-      result[i] = computeConditionalPDF(xI, y);
-      y.add(xI);
-    }
+  {
+    const Scalar xI = x[i];
+    result[i] = computeConditionalPDF(xI, y);
+    y.add(xI);
+  }
   return result;
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Scalar Student::computeConditionalCDF(const Scalar x,
-                                     const Point & y) const
+                                      const Point & y) const
 {
   const UnsignedInteger conditioningDimension = y.getDimension();
   if (conditioningDimension >= getDimension()) throw InvalidArgumentException(HERE) << "Error: cannot compute a conditional CDF with a conditioning point of dimension greater or equal to the distribution dimension.";
@@ -417,13 +417,13 @@ Scalar Student::computeConditionalCDF(const Scalar x,
   UnsignedInteger shift = 0;
   Point yCentered(conditioningDimension);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    {
-      yCentered[i] = y[i] - mean_[i];
-      std::copy(cholesky_.getImplementation()->begin() + start, cholesky_.getImplementation()->begin() + stop, cholY.begin() + shift);
-      start += dimension_ + 1;
-      stop += dimension_;
-      shift += conditioningDimension + 1;
-    }
+  {
+    yCentered[i] = y[i] - mean_[i];
+    std::copy(cholesky_.getImplementation()->begin() + start, cholesky_.getImplementation()->begin() + stop, cholY.begin() + shift);
+    start += dimension_ + 1;
+    stop += dimension_;
+    shift += conditioningDimension + 1;
+  }
   const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
   const Scalar nuCond = nu_ + conditioningDimension;
   Scalar sigmaCond = std::sqrt((nu_ + Point(cholY.solveLinearSystemTri(yCentered)).normSquare()) / nuCond) * sigmaRos;
@@ -441,11 +441,11 @@ Point Student::computeSequentialConditionalCDF(const Point & x) const
   // Waiting for a better implementation
   Point y(0);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      const Scalar xI = x[i];
-      result[i] = computeConditionalCDF(xI, y);
-      y.add(xI);
-    }
+  {
+    const Scalar xI = x[i];
+    result[i] = computeConditionalCDF(xI, y);
+    y.add(xI);
+  }
   return result;
 }
 
@@ -466,13 +466,13 @@ Scalar Student::computeConditionalQuantile(const Scalar q,
   UnsignedInteger shift = 0;
   Point yCentered(conditioningDimension);
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    {
-      yCentered[i] = y[i] - mean_[i];
-      std::copy(cholesky_.getImplementation()->begin() + start, cholesky_.getImplementation()->begin() + stop, cholY.begin() + shift);
-      start += dimension_ + 1;
-      stop += dimension_;
-      shift += conditioningDimension + 1;
-    }
+  {
+    yCentered[i] = y[i] - mean_[i];
+    std::copy(cholesky_.getImplementation()->begin() + start, cholesky_.getImplementation()->begin() + stop, cholY.begin() + shift);
+    start += dimension_ + 1;
+    stop += dimension_;
+    shift += conditioningDimension + 1;
+  }
   const Scalar sigmaRos = 1.0 / inverseCholesky_(conditioningDimension, conditioningDimension);
   const Scalar nuCond = nu_ + conditioningDimension;
   Scalar sigmaCond = std::sqrt((nu_ + Point(cholY.solveLinearSystemTri(yCentered)).normSquare()) / nuCond) * sigmaRos;
@@ -490,11 +490,11 @@ Point Student::computeSequentialConditionalQuantile(const Point & q) const
   // Waiting for a better implementation
   Point y(0);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
-    {
-      const Scalar qI = q[i];
-      result[i] = computeConditionalQuantile(qI, y);
-      y.add(result[i]);
-    }
+  {
+    const Scalar qI = q[i];
+    result[i] = computeConditionalQuantile(qI, y);
+    y.add(result[i]);
+  }
   return result;
 }
 

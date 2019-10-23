@@ -85,7 +85,7 @@ public:
 
   /** Parameters description accessor */
   virtual Description getParameterDescription() const;
-  
+
   /** Linearity accessors */
   Bool isLinear() const;
   Bool isLinearlyDependent(const UnsignedInteger index) const;

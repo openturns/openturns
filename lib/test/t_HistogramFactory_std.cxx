@@ -84,9 +84,9 @@ int main(int, char *[])
     Scalar first = newsample.getMin()[0];
     UnsignedInteger binNumber = 10;
     Scalar binwidth = 1.;
-    Point width = Point(binNumber,binwidth);
+    Point width = Point(binNumber, binwidth);
     // 3. Create a new histogram from first and width
-    Distribution newDistribution(factory.build(newsample,first,width));
+    Distribution newDistribution(factory.build(newsample, first, width));
     fullprint << "New histogram=" << newDistribution << std::endl;
   }
   catch (TestFailed & ex)

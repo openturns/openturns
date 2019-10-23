@@ -29,7 +29,7 @@ typedef dlib::matrix<double> DlibMatrix;
 /** Class DlibGradient to ensure interface between OT::Gradient and dlib functions **/
 
 DlibGradient::DlibGradient(const Gradient & gradient)
-: Gradient(gradient)
+  : Gradient(gradient)
 {
   // Nothing to do
 }
@@ -43,17 +43,17 @@ DlibMatrix DlibGradient::operator() (const DlibMatrix & inP) const
   if (inputDimension != gradientDimension) throw InvalidArgumentException(HERE) << "Error: gradient input argument dimension (" << inputDimension << ") is inconsistent with expected dimension (" << gradientDimension << ").";
 
   // Conversion from DlibMatrix to Point
-  Point inPoint(inputDimension,0.0);
+  Point inPoint(inputDimension, 0.0);
   std::copy(inP.begin(), inP.end(), inPoint.begin());
 
   // Call to OT function
   Matrix gradientAsOTMatrix(gradient(inPoint));
-  
+
   // Conversion to DlibMatrix
   PersistentCollection<Scalar> gradientAsCollection(*gradientAsOTMatrix.getImplementation());
-  DlibMatrix gradientAsDlibMatrix(inputDimension,1);
+  DlibMatrix gradientAsDlibMatrix(inputDimension, 1);
   std::copy(gradientAsCollection.begin(), gradientAsCollection.end(), gradientAsDlibMatrix.begin());
-  
+
   return gradientAsDlibMatrix;
 }
 
@@ -68,30 +68,30 @@ DlibMatrix DlibGradient::operator() (const UnsignedInteger i,
   if (inputDimension != gradientInputDimension) throw InvalidArgumentException(HERE) << "Error: gradient input argument dimension (" << inputDimension << ") is inconsistent with expected dimension (" << gradientInputDimension << ").";
 
   // Conversion from DlibMatrix to Point
-  Point inPoint(inputDimension,0.0);
+  Point inPoint(inputDimension, 0.0);
   std::copy(inP.begin(), inP.end(), inPoint.begin());
 
   // Call to OT function
   Matrix gradientAsOTMatrix(gradient(inPoint));
-  
+
   // Conversion to DlibMatrix
-  DlibMatrix gradientAsDlibMatrix(inputDimension,1);
+  DlibMatrix gradientAsDlibMatrix(inputDimension, 1);
   //std::copy(&transitionMatrix_(0,currentState_), &transitionMatrix_(0,currentState_)+dimension, weights.begin());
-  std::copy(&(gradientAsOTMatrix(0,i)),
-            &(gradientAsOTMatrix(0,i))+gradientInputDimension,
+  std::copy(&(gradientAsOTMatrix(0, i)),
+            &(gradientAsOTMatrix(0, i)) + gradientInputDimension,
             gradientAsDlibMatrix.begin());
-  
+
   return gradientAsDlibMatrix;
 }
 
 /**  Class DlibHessian to ensure interface between OT::Hessian and dlib functions  **/
 
 DlibHessian::DlibHessian(const Hessian & hessian)
-: Hessian(hessian)
+  : Hessian(hessian)
 {
   // Nothing to do
 }
-  
+
 // Operator ()
 DlibMatrix DlibHessian::operator() (const DlibMatrix & inP) const
 {
@@ -101,17 +101,17 @@ DlibMatrix DlibHessian::operator() (const DlibMatrix & inP) const
   if (inputDimension != hessianDimension) throw InvalidArgumentException(HERE) << "Error: hessian input argument dimension (" << inputDimension << ") is inconsistent with expected dimension (" << hessianDimension << ").";
 
   // Conversion from DlibMatrix to Point
-  Point inPoint(inputDimension,0.0);
+  Point inPoint(inputDimension, 0.0);
   std::copy(inP.begin(), inP.end(), inPoint.begin());
 
   // Call to OT function
   SymmetricTensor hessianAsOTTensor(hessian(inPoint));
-  
+
   // Conversion to DlibMatrix
   PersistentCollection<Scalar> hessianAsCollection(*hessianAsOTTensor.getImplementation());
-  DlibMatrix hessianAsDlibMatrix(inputDimension,inputDimension);
+  DlibMatrix hessianAsDlibMatrix(inputDimension, inputDimension);
   std::copy(hessianAsCollection.begin(), hessianAsCollection.end(), hessianAsDlibMatrix.begin());
-  
+
   return hessianAsDlibMatrix;
 }
 
@@ -121,81 +121,81 @@ DlibMatrix DlibHessian::operator() (const DlibMatrix & inP) const
 CLASSNAMEINIT(DlibFunction)
 
 DlibFunction::DlibFunction(const Function & function)
-: Function(function)
-, inputHistory_( Sample(0, getInputDimension()) )
-, outputHistory_( Sample(0, getOutputDimension()) )
+  : Function(function)
+  , inputHistory_( Sample(0, getInputDimension()) )
+  , outputHistory_( Sample(0, getOutputDimension()) )
 {
   // Nothing to do
 }
-  
+
 // Operator ()
 double DlibFunction::operator() (const DlibMatrix & inP) const
-{    
+{
   // Check dimension consistency
   UnsignedInteger inputDimension = inP.size();
   UnsignedInteger functionDimension = getInputDimension();
   if (inputDimension != functionDimension) throw InvalidArgumentException(HERE) << "Error: input argument dimension (" << inputDimension << ") is inconsistent with expected dimension (" << functionDimension << ").";
 
   // Conversion from DlibMatrix to Point
-  Point inPoint(inputDimension,0.0);
+  Point inPoint(inputDimension, 0.0);
   std::copy(inP.begin(), inP.end(), inPoint.begin());
 
   // Call to OT function
   Point outPoint;
   outPoint = getImplementation()->operator()(inPoint);
-  
+
   // Update evaluationNumber_ and input/output history
   inputHistory_.add(inPoint);
   outputHistory_.add(outPoint);
-  
+
   // Return scalar value
   return outPoint[0];
 }
 
 double DlibFunction::operator() (const UnsignedInteger i,
                                  const DlibMatrix & inP) const
-{    
+{
   // Check dimension consistency
   UnsignedInteger inputDimension = inP.size();
   UnsignedInteger functionDimension = getInputDimension();
   if (inputDimension != functionDimension) throw InvalidArgumentException(HERE) << "Error: input argument dimension (" << inputDimension << ") is inconsistent with expected dimension (" << functionDimension << ")";
-  if (!(i<getOutputDimension()))
-    throw InvalidArgumentException(HERE) << "Error: residual component index (" << i << ") exceeds residual dimension (" << getOutputDimension() <<")";
+  if (!(i < getOutputDimension()))
+    throw InvalidArgumentException(HERE) << "Error: residual component index (" << i << ") exceeds residual dimension (" << getOutputDimension() << ")";
 
   // Conversion from DlibMatrix to Point
-  Point inPoint(inputDimension,0.0);
+  Point inPoint(inputDimension, 0.0);
   std::copy(inP.begin(), inP.end(), inPoint.begin());
 
   // Call to OT function
   Point outPoint;
-  if (inputHistory_.contains(inPoint)) 
+  if (inputHistory_.contains(inPoint))
     outPoint = outputHistory_[inputHistory_.find(inPoint)];
-  else 
+  else
   {
     outPoint = getImplementation()->operator()(inPoint);
     // Update evaluationNumber_ and input/output history
     inputHistory_.add(inPoint);
     outputHistory_.add(outPoint);
   }
-  
+
   // Return scalar value
   return outPoint[i];
 }
 
 /* Accessors to gradient */
-  // As a DlibGradient
+// As a DlibGradient
 DlibGradient DlibFunction::getGradient() const
 {
   return DlibGradient(getImplementation()->getGradient());
-} 
+}
 
-  // Compute at point
+// Compute at point
 DlibMatrix DlibFunction::gradient(const DlibMatrix & inP) const
 {
   return getGradient()(inP);
 }
 
-  // Compute at point
+// Compute at point
 DlibMatrix DlibFunction::gradient(const UnsignedInteger i,
                                   const DlibMatrix & inP) const
 {
@@ -203,11 +203,11 @@ DlibMatrix DlibFunction::gradient(const UnsignedInteger i,
 }
 
 /* Accessor to hessian */
-  // As a DlibHessian
+// As a DlibHessian
 DlibHessian DlibFunction::getHessian() const
 {
   return DlibHessian(getImplementation()->getHessian());
-} 
+}
 
 // Compute at point
 DlibMatrix DlibFunction::hessian(const DlibMatrix & inP) const
@@ -216,8 +216,8 @@ DlibMatrix DlibFunction::hessian(const DlibMatrix & inP) const
 }
 
 void DlibFunction::get_derivative_and_hessian(const column_vector x,
-                                                    column_vector & grad,
-                                                    general_matrix & hess) const
+    column_vector & grad,
+    general_matrix & hess) const
 {
   grad = gradient(x);
   hess = hessian(x);

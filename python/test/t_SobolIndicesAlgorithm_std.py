@@ -123,16 +123,19 @@ for method in methods:
 
 
 # special case in dim=2
-ot.ResourceMap.SetAsString('SobolIndicesExperiment-SamplingMethod', 'MonteCarlo')
+ot.ResourceMap.SetAsString(
+    'SobolIndicesExperiment-SamplingMethod', 'MonteCarlo')
 ot.RandomGenerator.SetSeed(0)
 distribution = ot.ComposedDistribution([ot.Uniform()] * 2)
 size = 1000
 model = ot.SymbolicFunction(['X1', 'X2'], ['2*X1 + X2'])
-sensitivity_algorithm = ot.SaltelliSensitivityAlgorithm(distribution, size, model, True)
+sensitivity_algorithm = ot.SaltelliSensitivityAlgorithm(
+    distribution, size, model, True)
 print(sensitivity_algorithm.getSecondOrderIndices())
 ot.RandomGenerator.SetSeed(0)
 experiment = ot.MonteCarloExperiment(distribution, size)
-sensitivity_algorithm = ot.SaltelliSensitivityAlgorithm(experiment, model, True)
+sensitivity_algorithm = ot.SaltelliSensitivityAlgorithm(
+    experiment, model, True)
 print(sensitivity_algorithm.getSecondOrderIndices())
 ot.RandomGenerator.SetSeed(0)
 x = ot.SobolIndicesExperiment(distribution, size, True).generate()
@@ -143,10 +146,12 @@ print(sensitivity_algorithm.getSecondOrderIndices())
 
 # null contribution case: X3 not in output formula
 model = ot.SymbolicFunction(['X1', 'X2', 'X3'], ['10+3*X1+X2'])
-distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * input_dimension)
+distribution = ot.ComposedDistribution(
+    [ot.Uniform(-1.0, 1.0)] * input_dimension)
 size = 10000
 for method in methods:
-    sensitivity_algorithm = eval('ot.' + method + "SensitivityAlgorithm(distribution, size, model, False)")
+    sensitivity_algorithm = eval(
+        'ot.' + method + "SensitivityAlgorithm(distribution, size, model, False)")
     sensitivity_algorithm.setUseAsymptoticDistribution(True)
     fo = sensitivity_algorithm.getFirstOrderIndices()
     print("First order indices = ", fo)

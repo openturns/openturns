@@ -61,7 +61,7 @@ int main(int, char *[])
     proxy = DesignProxy(design);
     design = proxy.computeDesign(full);
     fullprint << design << std::endl;
-    
+
   }
 
   catch (TestFailed & ex)

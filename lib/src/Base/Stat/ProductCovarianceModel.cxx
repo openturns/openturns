@@ -127,7 +127,7 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
     // if extraParameterNumber_[i] > 0, check if the parameters are active
     for (UnsignedInteger j = 0; j < extraParameterNumber_[i]; ++j)
     {
-      if (localActiveParameter.contains(localInputDimension+j+1))
+      if (localActiveParameter.contains(localInputDimension + j + 1))
         activeParameter_.add(index + j);
     }
     // update index
@@ -235,7 +235,7 @@ void ProductCovarianceModel::setFullParameter(const Point & parameter)
   UnsignedInteger start = 0;
   // Index for extra parameters
   UnsignedInteger index = inputDimension_ + 1;
-  Point scale(inputDimension_); 
+  Point scale(inputDimension_);
   for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
   {
     const UnsignedInteger atomInputDimension = collection_[i].getScale().getDimension();
@@ -287,7 +287,7 @@ void ProductCovarianceModel::setActiveParameter(const Indices & active)
     // Handle extra param
     for (UnsignedInteger j = 0; j < extraParameterNumber_[i]; ++j)
     {
-      if (active.contains(index+j))
+      if (active.contains(index + j))
         localActiveParameter.add(localInputDimension + j + 1);
     }
     // update index
@@ -337,7 +337,7 @@ Description ProductCovarianceModel::getFullParameterDescription() const
         description.add(OSS() << localFullParameterDescription[localInputDimension + 1 + k] << "_" << i);
     }
   }
- 
+
   return description;
 }
 

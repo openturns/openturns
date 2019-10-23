@@ -72,7 +72,7 @@ JoeCopula::JoeCopula(const Scalar theta,
 void JoeCopula::updatePickandFunction()
 {
   String formula(OSS() << "1-((" << psi1_ << "*(1-t))^(-1.0/" << theta_ << ")+(" << psi2_
-                       << "*t)^(-1.0/"  <<  theta_    << "))^(-" <<    theta_ <<  ")");
+                 << "*t)^(-1.0/"  <<  theta_    << "))^(-" <<    theta_ <<  ")");
 
   ExtremeValueCopula::setPickandFunction(SymbolicFunction(Description(1, "t"), Description(1, formula)), false);
 

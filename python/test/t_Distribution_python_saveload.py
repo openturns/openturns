@@ -5,6 +5,7 @@ import openturns as ot
 import math as m
 import os
 
+
 class UniformNdPy(ot.PythonDistribution):
 
     def __init__(self, a=[0.0], b=[1.0]):

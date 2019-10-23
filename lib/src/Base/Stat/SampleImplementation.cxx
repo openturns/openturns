@@ -1493,10 +1493,10 @@ SampleImplementation SampleImplementation::sortAccordingToAComponent(const Unsig
   SampleImplementation sortedSample(size_, dimension_);
   UnsignedInteger shift = 0;
   for (UnsignedInteger i = 0; i < size_; ++i)
-    {
-      std::copy(sortables[i].values_.begin(), sortables[i].values_.end(), sortedSample.data_.begin() + shift);
-      shift += dimension_;
-    }
+  {
+    std::copy(sortables[i].values_.begin(), sortables[i].values_.end(), sortedSample.data_.begin() + shift);
+    shift += dimension_;
+  }
   if (!p_description_.isNull()) sortedSample.setDescription(getDescription());
   return sortedSample;
 }
@@ -1513,10 +1513,10 @@ void SampleImplementation::sortAccordingToAComponentInPlace(const UnsignedIntege
   TBB::ParallelSort(sortables.begin(), sortables.end());
   UnsignedInteger shift = 0;
   for (UnsignedInteger i = 0; i < size_; ++i)
-    {
-      std::copy(sortables[i].values_.begin(), sortables[i].values_.end(), data_.begin() + shift);
-      shift += dimension_;
-    }
+  {
+    std::copy(sortables[i].values_.begin(), sortables[i].values_.end(), data_.begin() + shift);
+    shift += dimension_;
+  }
 }
 
 /* Sort and remove duplicated points */

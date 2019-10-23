@@ -5,7 +5,7 @@ from openturns.viewer import View
 pdf_graph = ot.Graph('PDF graph', 'x', 'PDF', True, 'topleft')
 cdf_graph = ot.Graph('CDF graph', 'x', 'CDF', True, 'topleft')
 palette = ot.Drawable.BuildDefaultPalette(10)
-for i, p in enumerate([(0.5,0.5),(5,1),(1,3),(2,2),(2,5)]):
+for i, p in enumerate([(0.5, 0.5), (5, 1), (1, 3), (2, 2), (2, 5)]):
     alpha, beta = p
     distribution = ot.Beta(alpha, beta, -1.0, 1.0)
     pdf_curve = distribution.drawPDF().getDrawable(0)

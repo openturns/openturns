@@ -183,13 +183,13 @@ MatrixImplementation MatrixImplementation::transpose() const
 
 /* MatrixImplementation reshape */
 MatrixImplementation MatrixImplementation::reshape(const UnsignedInteger newRowDim,
-						   const UnsignedInteger newColDim) const
+    const UnsignedInteger newColDim) const
 {
   return MatrixImplementation(newRowDim, newColDim, *this);
 }
 
 void MatrixImplementation::reshapeInPlace(const UnsignedInteger newRowDim,
-					  const UnsignedInteger newColDim)
+    const UnsignedInteger newColDim)
 {
   if (newRowDim * newColDim != getSize()) resize(newRowDim * newColDim);
   nbRows_ = newRowDim;
@@ -1317,8 +1317,8 @@ Bool MatrixImplementation::isPositiveDefinite() const
 }
 
 MatrixImplementation::ScalarCollection MatrixImplementation::triangularVectProd(const ScalarCollection & pt,
-										const char side,
-										const Bool transpose) const
+    const char side,
+    const Bool transpose) const
 {
   char uplo = side;
   int luplo = 1;
@@ -1347,7 +1347,7 @@ MatrixImplementation::ScalarCollection MatrixImplementation::triangularVectProd(
 
 MatrixImplementation::ScalarCollection MatrixImplementation::triangularVectProd(const Point & pt,
     const char side,
-										const Bool transpose) const
+    const Bool transpose) const
 {
   return triangularVectProd(pt.getCollection(), side, transpose);
 }

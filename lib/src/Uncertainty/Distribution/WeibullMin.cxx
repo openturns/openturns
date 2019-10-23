@@ -46,8 +46,8 @@ WeibullMin::WeibullMin()
 
 /* Parameters constructor */
 WeibullMin::WeibullMin(const Scalar beta,
-                 const Scalar alpha,
-                 const Scalar gamma)
+                       const Scalar alpha,
+                       const Scalar gamma)
   : ContinuousDistribution()
   , beta_(0.0)
   , alpha_(0.0)
@@ -250,7 +250,7 @@ Point WeibullMin::computeCDFGradient(const Point & point) const
 
 /* Get the quantile of the distribution */
 Scalar WeibullMin::computeScalarQuantile(const Scalar prob,
-                                      const Bool tail) const
+    const Bool tail) const
 {
   if (tail) return gamma_ + beta_ * std::pow(-std::log(prob), 1.0 / alpha_);
   return gamma_ + beta_ * std::pow(-std::log(1.0 - prob), 1.0 / alpha_);
@@ -377,7 +377,7 @@ Scalar WeibullMin::getAlpha() const
 
 /* Alpha Beta accessor */
 void WeibullMin::setAlphaBeta(const Scalar alpha,
-                           const Scalar beta)
+                              const Scalar beta)
 {
   if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
   if (!(beta > 0.0)) throw InvalidArgumentException(HERE) << "Beta MUST be positive";

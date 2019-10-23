@@ -420,7 +420,7 @@ Graph FieldImplementation::draw() const
     Scalar normMin = normValues.getMin()[0];
     Scalar normMax = normValues.getMax()[0];
     if (normMax == normMin) normMax = normMin + 1.0;
-    if (automaticScaling) rho /= normMax; 
+    if (automaticScaling) rho /= normMax;
     // To take into account the vertices number
     if (automaticScaling) rho /= std::sqrt(static_cast<Scalar>(vertices.getSize()));
     const UnsignedInteger levelsNumber = ResourceMap::GetAsUnsignedInteger("Field-LevelNumber");

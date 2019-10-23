@@ -49,7 +49,7 @@ try:
     # Define y
     Y = ot.Sample(size, 1)
     for i in range(size):
-        Y[i, 0] = 1.0 +  0.1 * X[i, 0] + 10.0 * \
+        Y[i, 0] = 1.0 + 0.1 * X[i, 0] + 10.0 * \
             X[i, 0] * X[i, 0] + 0.1 * ot.DistFunc.rNormal()
     test = ot.LinearModelAlgorithm(X, Y)
     result = test.getResult()

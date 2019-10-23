@@ -51,12 +51,12 @@ public:
 
   /** Constructor from comparison operator */
   ThresholdEventImplementation(const RandomVector & antecedent,
-                    const ComparisonOperator & op,
-                    const Scalar threshold);
+                               const ComparisonOperator & op,
+                               const Scalar threshold);
 
   /** Constructor from Interval */
   ThresholdEventImplementation(const RandomVector & antecedent,
-                    const Interval & interval);
+                               const Interval & interval);
 
   /** Virtual constructor */
   virtual ThresholdEventImplementation * clone() const;

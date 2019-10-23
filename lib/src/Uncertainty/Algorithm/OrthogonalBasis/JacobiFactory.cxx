@@ -43,7 +43,7 @@ JacobiFactory::JacobiFactory()
 JacobiFactory::JacobiFactory(const Scalar alpha,
                              const Scalar beta,
                              const ParameterSet parameterization)
-  : OrthogonalUniVariatePolynomialFactory((parameterization == ANALYSIS ? Beta(beta + 1.0, alpha + 1.0, -1.0, 1.0) : Beta(alpha, beta-alpha, -1.0, 1.0)))
+  : OrthogonalUniVariatePolynomialFactory((parameterization == ANALYSIS ? Beta(beta + 1.0, alpha + 1.0, -1.0, 1.0) : Beta(alpha, beta - alpha, -1.0, 1.0)))
   , alpha_(0.0)
   , beta_(0.0)
 {

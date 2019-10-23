@@ -43,7 +43,7 @@ DiscreteCompoundDistribution::DiscreteCompoundDistribution()
 
 /** Constructor using distributions */
 DiscreteCompoundDistribution::DiscreteCompoundDistribution(const Distribution & baseDistribution,
-                                                           const Distribution & compoundDistribution)
+    const Distribution & compoundDistribution)
   : DiscreteDistribution()
 {
   setName("DiscreteCompoundDistribution");
@@ -137,7 +137,7 @@ UnsignedInteger DiscreteCompoundDistribution::computeIntegerUpperBound()
 }
 
 void DiscreteCompoundDistribution::setBaseAndCompoundDistributions(const Distribution & baseDistribution,
-                                                                   const Distribution & compoundDistribution)
+    const Distribution & compoundDistribution)
 {
   if (!baseDistribution.isIntegral()) throw InvalidArgumentException(HERE) << "Error: the base distribution must be integer-valued.";
   if (!compoundDistribution.isIntegral()) throw InvalidArgumentException(HERE) << "Error: the compound distribution must be integer-valued.";
@@ -193,7 +193,7 @@ Point DiscreteCompoundDistribution::computeCDFGradient(const Point & point) cons
 
 /* Get the quantile of the distribution */
 Scalar DiscreteCompoundDistribution::computeScalarQuantile(const Scalar prob,
-                                        const Bool tail) const
+    const Bool tail) const
 {
   return distribution_.computeQuantile(prob, tail)[0];
 }

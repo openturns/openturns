@@ -48,11 +48,11 @@ public:
 
   /** Parameter constructor */
   GaussianNonLinearCalibration(const Function & model,
-	    const Sample & inputObservations,
-	    const Sample & outputObservations,
-	    const Point & candidate,
-	    const CovarianceMatrix & parameterCovariance,
-	    const CovarianceMatrix & errorCovariance);
+                               const Sample & inputObservations,
+                               const Sample & outputObservations,
+                               const Point & candidate,
+                               const CovarianceMatrix & parameterCovariance,
+                               const CovarianceMatrix & errorCovariance);
 
   /** String converter */
   virtual String __repr__() const;
@@ -60,10 +60,10 @@ public:
   /** Performs the actual computation. Must be overloaded by the actual calibration algorithm */
   virtual void run();
   Point run(const Sample & inputObservations,
-	    const Sample & outputObservations,
-	    const Point & candidate,
-	    const TriangularMatrix & parameterInverseCholesky,
-	    const TriangularMatrix & errorInverseCholesky);
+            const Sample & outputObservations,
+            const Point & candidate,
+            const TriangularMatrix & parameterInverseCholesky,
+            const TriangularMatrix & errorInverseCholesky);
 
   /** Algorithm accessor */
   OptimizationAlgorithm getOptimizationAlgorithm() const;

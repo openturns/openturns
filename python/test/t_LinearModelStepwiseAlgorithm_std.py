@@ -60,7 +60,8 @@ Y = sample[:, 0]
 # Build a model BIO~SAL+pH+K+Na+Zn
 dim = X.getDimension()
 enumerateFunction = ot.EnumerateFunction(dim)
-factory = ot.TensorizedUniVariateFunctionFactory([ot.MonomialFunctionFactory()]*dim, enumerateFunction)
+factory = ot.TensorizedUniVariateFunctionFactory(
+    [ot.MonomialFunctionFactory()]*dim, enumerateFunction)
 
 # Build 'interactions' as a list of list [a1,a2,a3,a4,a5], and we will generate tensorized
 # polynomials SAL^a1*pH^a2*K^a3*Na^a4*Zn^a5.

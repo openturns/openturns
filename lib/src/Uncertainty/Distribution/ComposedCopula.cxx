@@ -449,21 +449,21 @@ Point ComposedCopula::computeSequentialConditionalPDF(const Point & x) const
     for (UnsignedInteger i = 0; i < dimension_; ++i)
       result[i] = ((x[i] >= 0.0 && x[i] < 1.0) ? 1.0 : 0.0);
   else
+  {
+    const UnsignedInteger size = copulaCollection_.getSize();
+    UnsignedInteger start = 0;
+    UnsignedInteger stop = 0;
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const UnsignedInteger size = copulaCollection_.getSize();
-      UnsignedInteger start = 0;
-      UnsignedInteger stop = 0;
-      for (UnsignedInteger i = 0; i < size; ++i)
-	{
-	  const UnsignedInteger localDimension = copulaCollection_[i].getDimension();
-	  Point localX(localDimension);
-	  stop += localDimension;
-	  std::copy(x.begin() + start, x.begin() + stop, localX.begin());
-	  const Point localResult(copulaCollection_[i].computeSequentialConditionalPDF(localX));
-	  std::copy(localResult.begin(), localResult.end(), result.begin() + start);
-	  start = stop;
-	} // i
-    } // else
+      const UnsignedInteger localDimension = copulaCollection_[i].getDimension();
+      Point localX(localDimension);
+      stop += localDimension;
+      std::copy(x.begin() + start, x.begin() + stop, localX.begin());
+      const Point localResult(copulaCollection_[i].computeSequentialConditionalPDF(localX));
+      std::copy(localResult.begin(), localResult.end(), result.begin() + start);
+      start = stop;
+    } // i
+  } // else
   return result;
 }
 
@@ -497,21 +497,21 @@ Point ComposedCopula::computeSequentialConditionalCDF(const Point & x) const
     for (UnsignedInteger i = 0; i < dimension_; ++i)
       result[i] = (x[i] < 0.0 ? 0.0 : x[i] > 1.0 ? 1.0 : x[i]);
   else
+  {
+    const UnsignedInteger size = copulaCollection_.getSize();
+    UnsignedInteger start = 0;
+    UnsignedInteger stop = 0;
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const UnsignedInteger size = copulaCollection_.getSize();
-      UnsignedInteger start = 0;
-      UnsignedInteger stop = 0;
-      for (UnsignedInteger i = 0; i < size; ++i)
-	{
-	  const UnsignedInteger localDimension = copulaCollection_[i].getDimension();
-	  Point localX(localDimension);
-	  stop += localDimension;
-	  std::copy(x.begin() + start, x.begin() + stop, localX.begin());
-	  const Point localResult(copulaCollection_[i].computeSequentialConditionalCDF(localX));
-	  std::copy(localResult.begin(), localResult.end(), result.begin() + start);
-	  start = stop;
-	} // i
-    } // else
+      const UnsignedInteger localDimension = copulaCollection_[i].getDimension();
+      Point localX(localDimension);
+      stop += localDimension;
+      std::copy(x.begin() + start, x.begin() + stop, localX.begin());
+      const Point localResult(copulaCollection_[i].computeSequentialConditionalCDF(localX));
+      std::copy(localResult.begin(), localResult.end(), result.begin() + start);
+      start = stop;
+    } // i
+  } // else
   return result;
 }
 
@@ -551,21 +551,21 @@ Point ComposedCopula::computeSequentialConditionalQuantile(const Point & q) cons
     for (UnsignedInteger i = 0; i < dimension_; ++i)
       result[i] = (q[i] < 0.0 ? 0.0 : q[i] > 1.0 ? 1.0 : q[i]);
   else
+  {
+    const UnsignedInteger size = copulaCollection_.getSize();
+    UnsignedInteger start = 0;
+    UnsignedInteger stop = 0;
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      const UnsignedInteger size = copulaCollection_.getSize();
-      UnsignedInteger start = 0;
-      UnsignedInteger stop = 0;
-      for (UnsignedInteger i = 0; i < size; ++i)
-	{
-	  const UnsignedInteger localDimension = copulaCollection_[i].getDimension();
-	  Point localQ(localDimension);
-	  stop += localDimension;
-	  std::copy(q.begin() + start, q.begin() + stop, localQ.begin());
-	  const Point localResult(copulaCollection_[i].computeSequentialConditionalQuantile(localQ));
-	  std::copy(localResult.begin(), localResult.end(), result.begin() + start);
-	  start = stop;
-	} // i
-    } // else
+      const UnsignedInteger localDimension = copulaCollection_[i].getDimension();
+      Point localQ(localDimension);
+      stop += localDimension;
+      std::copy(q.begin() + start, q.begin() + stop, localQ.begin());
+      const Point localResult(copulaCollection_[i].computeSequentialConditionalQuantile(localQ));
+      std::copy(localResult.begin(), localResult.end(), result.begin() + start);
+      start = stop;
+    } // i
+  } // else
   return result;
 }
 

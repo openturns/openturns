@@ -190,7 +190,7 @@ private:
   mutable Indices alias_;
   Bool uniformWeights_;
   Point p_;
-  
+
   /** PDF approximation associated to the CDF approximation */
   PiecewiseHermiteEvaluation pdfApproximationCDF_;
 

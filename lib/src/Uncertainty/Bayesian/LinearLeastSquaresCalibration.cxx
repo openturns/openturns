@@ -110,30 +110,30 @@ void LinearLeastSquaresCalibration::run()
   const Scalar epsilon = ResourceMap::GetAsScalar("LinearLeastSquaresCalibration-Regularization");
   covarianceThetaStar = CovarianceMatrix((method.getGramInverse() * varianceError).getImplementation());
   if (epsilon > 0.0)
-    {
-      const Scalar shift = epsilon * covarianceThetaStar.computeSingularValues()[0];
-      for (UnsignedInteger i = 0; i < covarianceThetaStar.getDimension(); ++i)
-	covarianceThetaStar(i, i) += shift;
-    }
+  {
+    const Scalar shift = epsilon * covarianceThetaStar.computeSingularValues()[0];
+    for (UnsignedInteger i = 0; i < covarianceThetaStar.getDimension(); ++i)
+      covarianceThetaStar(i, i) += shift;
+  }
   const UnsignedInteger dimension = outputObservations_.getDimension();
   Normal parameterPosterior;
   try
-    {
-      parameterPosterior = Normal(thetaStar, covarianceThetaStar);
-    }
+  {
+    parameterPosterior = Normal(thetaStar, covarianceThetaStar);
+  }
   catch (...)
-    {
-      throw InternalException(HERE) << "Error: the covariance of the posterior distribution is not definite positive. The problem may be not identifiable. Try to increase the \"LinearLeastSquaresCalibration-Regularization\" key in ResourceMap";
-    }
+  {
+    throw InternalException(HERE) << "Error: the covariance of the posterior distribution is not definite positive. The problem may be not identifiable. Try to increase the \"LinearLeastSquaresCalibration-Regularization\" key in ResourceMap";
+  }
   Distribution error;
-    try
-    {
-      error = Normal(Point(dimension), CovarianceMatrix((IdentityMatrix(dimension) * varianceError).getImplementation()));
-    }
+  try
+  {
+    error = Normal(Point(dimension), CovarianceMatrix((IdentityMatrix(dimension) * varianceError).getImplementation()));
+  }
   catch (...)
-    {
-      error = Dirac(dimension);
-    }
+  {
+    error = Dirac(dimension);
+  }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const LinearFunction residualFunction(getCandidate(), deltaY, gradientObservations_);
   result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, outputObservations_, residualFunction);
@@ -169,7 +169,7 @@ String LinearLeastSquaresCalibration::getMethodName() const
 String LinearLeastSquaresCalibration::__repr__() const
 {
   return OSS() << "class=" << LinearLeastSquaresCalibration::GetClassName()
-	       << " name=" << getName();
+         << " name=" << getName();
 }
 
 

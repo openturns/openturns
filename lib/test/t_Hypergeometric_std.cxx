@@ -126,8 +126,8 @@ int main(int, char *[])
     for (UnsignedInteger i = 0; i < 6; ++i) fullprint << "standard moment n=" << i << ", value=" << distribution.getStandardMoment(i) << std::endl;
     fullprint << "Standard representative=" << distribution.getStandardRepresentative().__str__() << std::endl;
     Scalar alpha = 0.05;
-    Interval bounds(distribution.computeBilateralConfidenceInterval(1-alpha));
-    fullprint << (1-alpha)*100 << "% bilateral confidence interval = " << bounds.__str__() << std::endl;
+    Interval bounds(distribution.computeBilateralConfidenceInterval(1 - alpha));
+    fullprint << (1 - alpha) * 100 << "% bilateral confidence interval = " << bounds.__str__() << std::endl;
 
   }
   catch (TestFailed & ex)

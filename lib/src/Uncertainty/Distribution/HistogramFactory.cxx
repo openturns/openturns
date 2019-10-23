@@ -180,7 +180,7 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
     right = left + width[j];
     for(UnsignedInteger i = 0; i < size; ++i)    // Loop over the values
     {
-      if ((sample(i,0) >= left) && (sample(i,0)<right))
+      if ((sample(i, 0) >= left) && (sample(i, 0) < right))
       {
         heights[j] += 1.0;
       }

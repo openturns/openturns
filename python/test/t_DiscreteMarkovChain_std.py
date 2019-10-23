@@ -10,11 +10,12 @@ process = ot.DiscreteMarkovChain()
 print("Default constructor : process = ")
 print(process)
 
-process = ot.DiscreteMarkovChain(0,ot.SquareMatrix([[1.0, 0.0],[0.0, 1.0]]))
+process = ot.DiscreteMarkovChain(0, ot.SquareMatrix([[1.0, 0.0], [0.0, 1.0]]))
 print("Constructor from int and SquareMatrix: process = ")
 print(process)
 
-transitionMatrix = ot.SquareMatrix([[0.0, 0.5, 0.5], [0.7, 0.0, 0.3], [0.8, 0.0, 0.2]])
+transitionMatrix = ot.SquareMatrix(
+    [[0.0, 0.5, 0.5], [0.7, 0.0, 0.3], [0.8, 0.0, 0.2]])
 print("transition matrix =")
 print(transitionMatrix)
 

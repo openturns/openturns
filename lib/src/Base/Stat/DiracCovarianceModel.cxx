@@ -48,7 +48,7 @@ public:
   {
     if (i == j)
     {
-      std::copy(&covarianceMatrix_.getImplementation()->operator[](0), &covarianceMatrix_.getImplementation()->operator[](0)+dimension_ * dimension_, &localValues->getImplementation()->operator[](0));
+      std::copy(&covarianceMatrix_.getImplementation()->operator[](0), &covarianceMatrix_.getImplementation()->operator[](0) + dimension_ * dimension_, &localValues->getImplementation()->operator[](0));
     }
   }
 };

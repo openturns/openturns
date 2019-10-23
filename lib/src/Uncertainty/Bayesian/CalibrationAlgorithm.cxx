@@ -36,7 +36,7 @@ CalibrationAlgorithm::CalibrationAlgorithm()
 
 /* Constructor with parameters */
 CalibrationAlgorithm::CalibrationAlgorithm(const Sample & outputObservations,
-		       const Distribution & parameterPrior)
+    const Distribution & parameterPrior)
   : TypedInterfaceObject<CalibrationAlgorithmImplementation>(new CalibrationAlgorithmImplementation(outputObservations, parameterPrior))
 {
   // Nothing to do
@@ -75,7 +75,7 @@ void CalibrationAlgorithm::setResult(const CalibrationResult & result)
 
 CalibrationResult CalibrationAlgorithm::getResult() const
 {
-  return getImplementation()->getResult();  
+  return getImplementation()->getResult();
 }
 
 

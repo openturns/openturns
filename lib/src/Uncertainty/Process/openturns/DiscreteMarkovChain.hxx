@@ -48,20 +48,20 @@ public:
 
   /** Standard constructors */
   DiscreteMarkovChain(const Distribution & origin,
-             const SquareMatrix & transition);
+                      const SquareMatrix & transition);
 
   DiscreteMarkovChain(const Distribution & origin,
-             const SquareMatrix & transition,
-             const RegularGrid & timeGrid);
+                      const SquareMatrix & transition,
+                      const RegularGrid & timeGrid);
 
   /** Constructors with fixed origin */
   DiscreteMarkovChain(const UnsignedInteger origin,
-             const SquareMatrix & transition);
+                      const SquareMatrix & transition);
 
   DiscreteMarkovChain(const UnsignedInteger origin,
-             const SquareMatrix & transition,
-             const RegularGrid & timeGrid);
-  
+                      const SquareMatrix & transition,
+                      const RegularGrid & timeGrid);
+
   /** Virtual constructor */
   virtual DiscreteMarkovChain * clone() const;
 
@@ -74,7 +74,7 @@ public:
   Field getRealization() const;
 
   /** Continuation of the last realization on a given number of steps  */
-  using ProcessImplementation::getFuture;                                   
+  using ProcessImplementation::getFuture;
   TimeSeries getFuture(const UnsignedInteger stepNumber) const;
 
   /** Transition matrix accessors */
@@ -85,7 +85,7 @@ public:
   Distribution getOrigin() const;
   void setOrigin(const Distribution & origin);
   void setOrigin(const UnsignedInteger origin);
-  
+
   /** Mesh accessors */
   void setMesh(const Mesh & mesh);
 
@@ -104,7 +104,7 @@ private:
   Distribution origin_;
 
   /** The transition matr
-ix of the chain */
+  ix of the chain */
   SquareMatrix transitionMatrix_ ;
 
   /** The current position of the chain */

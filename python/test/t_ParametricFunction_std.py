@@ -27,13 +27,13 @@ print('g3=', g3)
 print('g3(x)=', g3(x))
 
 # From ticket #1092
-modelFunc = ot.SymbolicFunction(["s", "r", "c"],["r + c"])
+modelFunc = ot.SymbolicFunction(["s", "r", "c"], ["r + c"])
 s = [1.]
 r = 1e9
 c = 1e8
-theta = ot.Point([r,c])
-calibratedIndices = [1,2]
+theta = ot.Point([r, c])
+calibratedIndices = [1, 2]
 mycf = ot.ParametricFunction(modelFunc, calibratedIndices, theta)
 
-print(modelFunc.gradient([s[0],r,c]).transpose())
+print(modelFunc.gradient([s[0], r, c]).transpose())
 print(mycf.parameterGradient(s).transpose())

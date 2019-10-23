@@ -26,4 +26,3 @@ try:
 except TypeError:
     # swig<4
     print(False)
-

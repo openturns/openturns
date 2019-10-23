@@ -117,10 +117,10 @@ public:
 
   /** Matrix reshape */
   Matrix reshape(const UnsignedInteger newRowDim,
-		 const UnsignedInteger newColDim) const;
+                 const UnsignedInteger newColDim) const;
   void reshapeInPlace(const UnsignedInteger newRowDim,
-		      const UnsignedInteger newColDim);
-  
+                      const UnsignedInteger newColDim);
+
   /** Row extraction */
   const Matrix getRow(const UnsignedInteger rowIndex) const;
   /** Column extration */

@@ -34,8 +34,8 @@ static Factory<MultiFORM> Factory_MultiFORM;
 
 /* Default constructor */
 MultiFORM::MultiFORM()
-: FORM()
-, maximumNumberOfDesignPoints_(ResourceMap::GetAsUnsignedInteger("MultiFORM-DefaultMaximumNumberOfDesignPoints"))
+  : FORM()
+  , maximumNumberOfDesignPoints_(ResourceMap::GetAsUnsignedInteger("MultiFORM-DefaultMaximumNumberOfDesignPoints"))
 {
   // Nothing to do
 }
@@ -44,10 +44,10 @@ MultiFORM::MultiFORM()
   * @brief Standard constructor: the class is defined by an optimization algorithm, a failure event and a physical starting point
   */
 MultiFORM::MultiFORM(const OptimizationAlgorithm & solver,
-                      const RandomVector & event,
-                      const Point & physicalStartingPoint)
-: FORM(solver, event, physicalStartingPoint)
-, maximumNumberOfDesignPoints_(ResourceMap::GetAsUnsignedInteger("MultiFORM-DefaultMaximumNumberOfDesignPoints"))
+                     const RandomVector & event,
+                     const Point & physicalStartingPoint)
+  : FORM(solver, event, physicalStartingPoint)
+  , maximumNumberOfDesignPoints_(ResourceMap::GetAsUnsignedInteger("MultiFORM-DefaultMaximumNumberOfDesignPoints"))
 {
   // Nothing to do
 }
@@ -181,9 +181,9 @@ void MultiFORM::run()
     {
       StandardEvent standardEventI(formResultCollection[i].getLimitStateVariable());
       //   to take in consideration the sens of the limitStatefunction we look at the comparaisonOperator
-      const Scalar sign = standardEventI.getOperator()(-1.0,1.0) ? 1.0 : -1.0;
+      const Scalar sign = standardEventI.getOperator()(-1.0, 1.0) ? 1.0 : -1.0;
       const Point standardSpaceDesignPoint(formResultCollection[i].getStandardSpaceDesignPoint());
-      const Point currentStandardGradient(sign *(standardEventI.getImplementation()->getFunction().gradient(standardSpaceDesignPoint) * Point(1, 1.0))); 
+      const Point currentStandardGradient(sign * (standardEventI.getImplementation()->getFunction().gradient(standardSpaceDesignPoint) * Point(1, 1.0)));
       directionCosines[i] = 1.0 / currentStandardGradient.norm() * currentStandardGradient;
       betaCollection[i] = formResultCollection[i].getHasoferReliabilityIndex();
     }

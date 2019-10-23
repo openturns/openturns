@@ -85,7 +85,7 @@ public:
 
   /* [0] Draw model versus fitted values */
   Graph drawModelVsFitted() const;
-  
+
   /** [1] Draw a plot of residuals versus fitted values  */
   Graph drawResidualsVsFitted() const;
 

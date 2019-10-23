@@ -91,7 +91,7 @@ public:
 
   /** Sigma accessor */
   void setSigma(const Scalar sigma);
-  Scalar getSigma() const; 
+  Scalar getSigma() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
@@ -108,13 +108,13 @@ private:
 
   /** Compute the covariance of the distribution */
   void computeCovariance() const;
-  
+
   /** Compute the range */
   void computeRange();
-  
+
   Scalar mu_;
   Scalar sigma_;
-  
+
 }; /* class SquaredNormal */
 
 END_NAMESPACE_OPENTURNS

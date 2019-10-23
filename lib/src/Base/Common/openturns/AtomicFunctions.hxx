@@ -172,7 +172,7 @@ public:
   {
     if (this != &other)
       val_ = other.val_.load();
-     return *this;
+    return *this;
   }
 
   // Get p value, increment it by d and return the old value

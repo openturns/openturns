@@ -92,7 +92,7 @@ int main(int, char *[])
       Collection<CovarianceMatrix> coll(result.getConditionalMarginalCovariance(X));
 
       for(UnsignedInteger k = 0; k < coll.getSize(); ++k)
-	assert_almost_equal(Point(*coll[k].getImplementation()), Point(1, 0.0), 5.e-3, 5.e-3);
+        assert_almost_equal(Point(*coll[k].getImplementation()), Point(1, 0.0), 5.e-3, 5.e-3);
 
       // Validation of marginal variance
       const Point marginalVariance(result.getConditionalMarginalVariance(X));
@@ -182,7 +182,7 @@ int main(int, char *[])
       Collection<CovarianceMatrix> coll(result.getConditionalMarginalCovariance(X));
 
       for(UnsignedInteger k = 0; k < coll.getSize(); ++k)
-	assert_almost_equal(Point(*coll[k].getImplementation()), Point(1, 0.0), 1.5e-2, 1.5e-2);
+        assert_almost_equal(Point(*coll[k].getImplementation()), Point(1, 0.0), 1.5e-2, 1.5e-2);
 
       // Validation of marginal variance
       const Point marginalVariance(result.getConditionalMarginalVariance(X));

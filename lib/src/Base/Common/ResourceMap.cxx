@@ -291,16 +291,16 @@ String ResourceMap::get(const String & key) const
 Bool ResourceMap::hasKey(const String & key) const
 {
   return ((mapString_.find(key) != mapString_.end())
-      || (mapScalar_.find(key) != mapScalar_.end())
-      || (mapUnsignedInteger_.find(key) != mapUnsignedInteger_.end())
-      || (mapBool_.find(key) != mapBool_.end()));
+          || (mapScalar_.find(key) != mapScalar_.end())
+          || (mapUnsignedInteger_.find(key) != mapUnsignedInteger_.end())
+          || (mapBool_.find(key) != mapBool_.end()));
 }
 
 void ResourceMap::removeKey(const String & key)
 {
   if (!hasKey(key))
     throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap";
-  
+
   String keyType(getType(key));
   if (keyType == "string")
     mapString_.erase(mapString_.find(key));
@@ -686,14 +686,14 @@ void ResourceMap::loadDefaultConfiguration()
   setAsScalar( "OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-5 );
   setAsUnsignedInteger( "OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100);
   setAsUnsignedInteger( "OptimizationAlgorithm-DefaultMaximumIterationNumber", 100 );
-  
+
   // Dlib optimization parameters //
   setAsScalar( "Dlib-DefaultInitialTrustRegionRadius", 1.0);
   setAsScalar( "Dlib-DefaultWolfeRho", 0.01);
   setAsScalar( "Dlib-DefaultWolfeSigma", 0.9);
   setAsUnsignedInteger( "Dlib-DefaultMaxLineSearchIterations", 100);
   setAsUnsignedInteger( "Dlib-DefaultMaxSize", 10);
-  
+
 
   // EfficientGlobalOptimization parameters //
   setAsScalar( "EfficientGlobalOptimization-DefaultAEITradeoff", 1.0);
@@ -1225,13 +1225,13 @@ void ResourceMap::loadDefaultConfiguration()
 
   // DiscreteDistribution parameters //
   setAsScalar( "DiscreteDistribution-SupportEpsilon", 1.0e-14 );
-  
+
   // DiscreteMarkovChain parameters //
   setAsString( "DiscreteMarkovChain-DOTArcColor", "black");
   setAsString( "DiscreteMarkovChain-DOTLayout", "dot");
   setAsString( "DiscreteMarkovChain-DOTNodeColor", "black");
   setAsString( "DiscreteMarkovChain-DOTNodeShape", "oval");
-  setAsScalar( "DiscreteMarkovChain-ProbabilitySumPrecision", 1.0e-6 );  
+  setAsScalar( "DiscreteMarkovChain-ProbabilitySumPrecision", 1.0e-6 );
 
   // DistributionFactoryImplementation parameters //
   setAsScalar( "DistributionFactory-BootstrapErrorTolerance", 0.1 );

@@ -43,7 +43,7 @@ OptimizationProblemImplementation::OptimizationProblemImplementation()
   , bounds_()
   , minimization_(true)
   , dimension_(0)
-  , variablesType_(Indices(0,CONTINUOUS))
+  , variablesType_(Indices(0, CONTINUOUS))
 {
   // Nothing to do
 }
@@ -53,7 +53,7 @@ OptimizationProblemImplementation::OptimizationProblemImplementation(const Funct
   , objective_()
   , minimization_(true)
   , dimension_(objective.getInputDimension())
-  , variablesType_(Indices(dimension_,CONTINUOUS))
+  , variablesType_(Indices(dimension_, CONTINUOUS))
 {
   // Set objective function
   setObjective(objective);
@@ -63,22 +63,22 @@ OptimizationProblemImplementation::OptimizationProblemImplementation(const Funct
  * @brief General multi-objective equality, inequality and bound constraints
  */
 OptimizationProblemImplementation::OptimizationProblemImplementation( const Function & objective,
-                                                                      const Function & equalityConstraint,
-                                                                      const Function & inequalityConstraint,
-                                                                      const Interval & bounds)
+    const Function & equalityConstraint,
+    const Function & inequalityConstraint,
+    const Interval & bounds)
   : PersistentObject()
   , objective_()
   , minimization_(true)
   , dimension_(objective.getInputDimension())
-  , variablesType_(Indices(dimension_,CONTINUOUS))
+  , variablesType_(Indices(dimension_, CONTINUOUS))
 {
   // Set objective function and variables types
   setObjective(objective);
-  
+
   // Set constraints
   setEqualityConstraint(equalityConstraint);
   setInequalityConstraint(inequalityConstraint);
-  
+
   // Set bounds
   setBounds(bounds);
 }
@@ -108,19 +108,19 @@ void OptimizationProblemImplementation::setObjective(const Function & objective)
       equalityConstraint_ = Function();
       inequalityConstraint_ = Function();
     }
-    
+
     // Clear bounds
     bounds_ = Interval(0);
-    
+
     // Clear variables types
-    variablesType_ = Indices(dimension_,CONTINUOUS);  
+    variablesType_ = Indices(dimension_, CONTINUOUS);
 
   }
   objective_ = objective;
 
   // Update dimension_ member accordingly
   dimension_ = objective.getInputDimension();
-  
+
   // Update variablesType_ member accordingly
   variablesType_ = Indices(dimension_, CONTINUOUS);
 }
@@ -244,12 +244,12 @@ Bool OptimizationProblemImplementation::isMinimization() const
   return minimization_;
 }
 
-  // Variables type table
+// Variables type table
 void OptimizationProblemImplementation::setVariablesType(const Indices & variablesType)
 {
   if (variablesType.getSize() != getDimension())
     throw InvalidDimensionException(HERE) << "variables type table dimension is invalid (" << variablesType.getSize() << ", expected " << getDimension();
-    
+
   variablesType_ = variablesType;
 }
 
@@ -260,12 +260,12 @@ Indices OptimizationProblemImplementation::getVariablesType() const
 
 bool OptimizationProblemImplementation::isContinuous() const
 {
-  if (dimension_== 0)
+  if (dimension_ == 0)
     return true;
-  
-  for (UnsignedInteger i=0; i<dimension_; ++i)
+
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
     if (variablesType_[i] != CONTINUOUS) return false;
-    
+
   return true;
 }
 

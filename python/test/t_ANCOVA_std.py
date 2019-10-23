@@ -85,30 +85,33 @@ dim = 3
 enumerateFunction = ot.LinearEnumerateFunction(dim)
 polyCol = [0.]*dim
 for i in range(dim):
-    polyCol[i] = ot.StandardDistributionPolynomialFactory(distribution.getMarginal(i))
+    polyCol[i] = ot.StandardDistributionPolynomialFactory(
+        distribution.getMarginal(i))
 
 ####### Chaos definition ######
-multivariateBasis = ot.OrthogonalProductPolynomialFactory(polyCol, enumerateFunction)
+multivariateBasis = ot.OrthogonalProductPolynomialFactory(
+    polyCol, enumerateFunction)
 indexMax = enumerateFunction.getStrataCumulatedCardinal(1)
 strategy = ot.FixedStrategy(multivariateBasis, indexMax)
 
 approximation_algorithm = ot.LeastSquaresMetaModelSelectionFactory(ot.LARS(),
-                                                                  ot.CorrectedLeaveOneOut())
+                                                                   ot.CorrectedLeaveOneOut())
 evaluationStrategy_sparse = ot.LeastSquaresStrategy(approximation_algorithm)
 evaluationStrategy = ot.LeastSquaresStrategy()
 
 # sparse and not sparse
 chaos = ot.FunctionalChaosAlgorithm(input_sample, output_sample, distribution,
-                                          strategy, evaluationStrategy)
+                                    strategy, evaluationStrategy)
 chaos.run()
 chaos_sparse = ot.FunctionalChaosAlgorithm(input_sample, output_sample, distribution,
-                                          strategy, evaluationStrategy_sparse)
+                                           strategy, evaluationStrategy_sparse)
 chaos_sparse.run()
 print('indices/full=', chaos.getResult().getIndices())
 print('indices/sparse=', chaos_sparse.getResult().getIndices())
 
 ancova = ot.ANCOVA(chaos.getResult(), input_sample)
 ancova_sparse = ot.ANCOVA(chaos_sparse.getResult(), input_sample)
-print('Indice ancova, chaos normal : {:0.3f} {:0.3f} {:0.3f}'.format(*ancova.getIndices()))
-print('Indice ancova, chaos sparse : {:0.3f} {:0.3f} {:0.3f}'.format(*ancova_sparse.getIndices()))
-
+print('Indice ancova, chaos normal : {:0.3f} {:0.3f} {:0.3f}'.format(
+    *ancova.getIndices()))
+print('Indice ancova, chaos sparse : {:0.3f} {:0.3f} {:0.3f}'.format(
+    *ancova_sparse.getIndices()))

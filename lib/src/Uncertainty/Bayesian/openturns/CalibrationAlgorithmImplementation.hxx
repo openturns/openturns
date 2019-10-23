@@ -48,7 +48,7 @@ public:
 
   /** Parameter constructor */
   CalibrationAlgorithmImplementation(const Sample & outputObservations,
-				     const Distribution & parameterPrior);
+                                     const Distribution & parameterPrior);
 
   /** String converter */
   virtual String __repr__() const;
@@ -65,7 +65,7 @@ public:
   /** Calibration result accessor */
   CalibrationResult getResult() const;
   void setResult(const CalibrationResult & result);
-  
+
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */

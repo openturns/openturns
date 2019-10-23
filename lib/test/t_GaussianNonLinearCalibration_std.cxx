@@ -56,43 +56,43 @@ int main(int, char *[])
     Point candidate(3, 1.0);
     CovarianceMatrix priorCovariance(3);
     for (UnsignedInteger i = 0; i < 3; ++i)
-      {
-	priorCovariance(i, i) = 3.0 + (1.0 + i) * (1.0 + i);
-	for (UnsignedInteger j = 0; j < i; ++j)
-	  priorCovariance(i, j) = 1.0 / (1.0 + i + j);
-      }
+    {
+      priorCovariance(i, i) = 3.0 + (1.0 + i) * (1.0 + i);
+      for (UnsignedInteger j = 0; j < i; ++j)
+        priorCovariance(i, j) = 1.0 / (1.0 + i + j);
+    }
     CovarianceMatrix errorCovariance(2);
     for (UnsignedInteger i = 0; i < 1; ++i)
-      {
-	errorCovariance(i, i) = 2.0 + (1.0 + i) * (1.0 + i);
-	for (UnsignedInteger j = 0; j < i; ++j)
-	  errorCovariance(i, j) = 1.0 / (1.0 + i + j);
-      }
+    {
+      errorCovariance(i, i) = 2.0 + (1.0 + i) * (1.0 + i);
+      for (UnsignedInteger j = 0; j < i; ++j)
+        errorCovariance(i, j) = 1.0 / (1.0 + i + j);
+    }
     CovarianceMatrix globalErrorCovariance(2 * m);
     for (UnsignedInteger i = 0; i < 2 * m; ++i)
-      {
-	globalErrorCovariance(i, i) = 2.0 + (1.0 + i) * (1.0 + i);
-	for (UnsignedInteger j = 0; j < i; ++j)
-	  globalErrorCovariance(i, j) = 1.0 / (1.0 + i + j);
-      }
+    {
+      globalErrorCovariance(i, i) = 2.0 + (1.0 + i) * (1.0 + i);
+      for (UnsignedInteger j = 0; j < i; ++j)
+        globalErrorCovariance(i, j) = 1.0 / (1.0 + i + j);
+    }
     Indices bootstrapSizes(0);
     bootstrapSizes.add(0);
     bootstrapSizes.add(100);
     for (UnsignedInteger n = 0; n < bootstrapSizes.getSize(); ++n)
-      {
-	GaussianNonLinearCalibration algo(modelX, x, y, candidate, priorCovariance, errorCovariance);
-	algo.setBootstrapSize(bootstrapSizes[n]);
-	algo.run();
-	// To avoid discrepance between the plaforms with or without CMinpack
-	fullprint << "result   (Auto)=" << algo.getResult().getParameterMAP() << std::endl;
-	algo.setOptimizationAlgorithm(MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("GaussianNonLinearCalibration-MultiStartSize")).generate()));
-	algo.run();
-	fullprint << "result    (TNC)=" << algo.getResult().getParameterMAP() << std::endl;
-	algo = GaussianNonLinearCalibration(modelX, x, y, candidate, priorCovariance, globalErrorCovariance);
-  algo.setBootstrapSize(bootstrapSizes[n]);
-	algo.run();
-	fullprint << "result (global)=" << algo.getResult().getParameterMAP() << std::endl;
-      } // n
+    {
+      GaussianNonLinearCalibration algo(modelX, x, y, candidate, priorCovariance, errorCovariance);
+      algo.setBootstrapSize(bootstrapSizes[n]);
+      algo.run();
+      // To avoid discrepance between the plaforms with or without CMinpack
+      fullprint << "result   (Auto)=" << algo.getResult().getParameterMAP() << std::endl;
+      algo.setOptimizationAlgorithm(MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("GaussianNonLinearCalibration-MultiStartSize")).generate()));
+      algo.run();
+      fullprint << "result    (TNC)=" << algo.getResult().getParameterMAP() << std::endl;
+      algo = GaussianNonLinearCalibration(modelX, x, y, candidate, priorCovariance, globalErrorCovariance);
+      algo.setBootstrapSize(bootstrapSizes[n]);
+      algo.run();
+      fullprint << "result (global)=" << algo.getResult().getParameterMAP() << std::endl;
+    } // n
   }
   catch (TestFailed & ex)
   {

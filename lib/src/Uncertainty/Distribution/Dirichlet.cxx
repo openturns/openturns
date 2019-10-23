@@ -314,10 +314,10 @@ Scalar Dirichlet::computeConditionalPDF(const Scalar x,
   Scalar sumThetaConditioning = 0.0;
   Scalar sumY = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    {
-      sumThetaConditioning += theta_[i];
-      sumY += y[i];
-    }
+  {
+    sumThetaConditioning += theta_[i];
+    sumY += y[i];
+  }
   if (sumY <= 0.0 || sumY >= 1.0) return 0.0;
   s -= sumThetaConditioning;
   const Scalar z = x / (1.0 - sumY);
@@ -335,14 +335,14 @@ Point Dirichlet::computeSequentialConditionalPDF(const Point & x) const
   Scalar z = x[0];
   result[0] = std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z));
   for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension; ++conditioningDimension)
-    {
-      sumY += x[conditioningDimension - 1];
-      if (sumY <= 0.0 || sumY >= 1.0) return result;
-      s -= r;
-      r = theta_[conditioningDimension];
-      z = x[conditioningDimension] / (1.0 - sumY);
-      result[conditioningDimension] = std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sumY);
-    }
+  {
+    sumY += x[conditioningDimension - 1];
+    if (sumY <= 0.0 || sumY >= 1.0) return result;
+    s -= r;
+    r = theta_[conditioningDimension];
+    z = x[conditioningDimension] / (1.0 - sumY);
+    result[conditioningDimension] = std::exp(- SpecFunc::LnBeta(r, s) + (r - 1.0) * std::log(z) + (s - 1.0) * log1p(-z)) / (1.0 - sumY);
+  }
   return result;
 }
 
@@ -358,10 +358,10 @@ Scalar Dirichlet::computeConditionalCDF(const Scalar x,
   Scalar sumThetaConditioning = 0.0;
   Scalar sumY = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    {
-      sumThetaConditioning += theta_[i];
-      sumY += y[i];
-    }
+  {
+    sumThetaConditioning += theta_[i];
+    sumY += y[i];
+  }
   if (sumY <= 0.0) return 0.0;
   if (sumY >= 1.0) return 1.0;
   s -= sumThetaConditioning;
@@ -379,14 +379,14 @@ Point Dirichlet::computeSequentialConditionalCDF(const Point & x) const
   Scalar z = x[0];
   result[0] = DistFunc::pBeta(r, s, z);
   for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension; ++conditioningDimension)
-    {
-      sumY += x[conditioningDimension - 1];
-      if (sumY <= 0.0 || sumY >= 1.0) return result;
-      s -= r;
-      r = theta_[conditioningDimension];
-      z = x[conditioningDimension] / (1.0 - sumY);
-      result[conditioningDimension] = DistFunc::pBeta(r, s, z);
-    }
+  {
+    sumY += x[conditioningDimension - 1];
+    if (sumY <= 0.0 || sumY >= 1.0) return result;
+    s -= r;
+    r = theta_[conditioningDimension];
+    z = x[conditioningDimension] / (1.0 - sumY);
+    result[conditioningDimension] = DistFunc::pBeta(r, s, z);
+  }
   return result;
 }
 
@@ -400,10 +400,10 @@ Scalar Dirichlet::computeConditionalQuantile(const Scalar q,
   Scalar sumThetaConditioning = 0.0;
   Scalar sumY = 0.0;
   for (UnsignedInteger i = 0; i < conditioningDimension; ++i)
-    {
-      sumThetaConditioning += theta_[i];
-      sumY += y[i];
-    }
+  {
+    sumThetaConditioning += theta_[i];
+    sumY += y[i];
+  }
   const Scalar r = theta_[conditioningDimension];
   const Scalar s = sumTheta_ - sumThetaConditioning - r;
   return (1.0 - sumY) * DistFunc::qBeta(r, s, q);
@@ -419,13 +419,13 @@ Point Dirichlet::computeSequentialConditionalQuantile(const Point & q) const
   Scalar s = sumTheta_ - r;
   result[0] = DistFunc::qBeta(r, s, q[0]);
   for (UnsignedInteger conditioningDimension = 1; conditioningDimension < dimension; ++conditioningDimension)
-    {
-      sumY += result[conditioningDimension - 1];
-      if (sumY <= 0.0 || sumY >= 1.0) return result;
-      s -= r;
-      r = theta_[conditioningDimension];
-      result[conditioningDimension] = (1.0 - sumY) * DistFunc::qBeta(r, s, q[conditioningDimension]);
-    }
+  {
+    sumY += result[conditioningDimension - 1];
+    if (sumY <= 0.0 || sumY >= 1.0) return result;
+    s -= r;
+    r = theta_[conditioningDimension];
+    result[conditioningDimension] = (1.0 - sumY) * DistFunc::qBeta(r, s, q[conditioningDimension]);
+  }
   return result;
 }
 

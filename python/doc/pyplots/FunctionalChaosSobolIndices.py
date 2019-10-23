@@ -10,24 +10,27 @@ g = ot.SymbolicFunction(input_names, formula)
 distributionList = [ot.Uniform(-pi, pi)] * 3
 distribution = ot.ComposedDistribution(distributionList)
 # Create a training sample
-N = 500 
+N = 500
 inputTrain = distribution.getSample(N)
 outputTrain = g(inputTrain)
 # Create the chaos
 multivariateBasis = ot.OrthogonalProductPolynomialFactory(distributionList)
 selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
-projectionStrategy = ot.LeastSquaresStrategy(inputTrain, outputTrain, selectionAlgorithm)
+projectionStrategy = ot.LeastSquaresStrategy(
+    inputTrain, outputTrain, selectionAlgorithm)
 totalDegree = 8
 enumfunc = multivariateBasis.getEnumerateFunction()
 P = enumfunc.getStrataCumulatedCardinal(totalDegree)
 adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
-chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain, distribution, adaptiveStrategy, projectionStrategy)
+chaosalgo = ot.FunctionalChaosAlgorithm(
+    inputTrain, outputTrain, distribution, adaptiveStrategy, projectionStrategy)
 chaosalgo.run()
 result = chaosalgo.getResult()
 # Draw Sobol' indices
-chaosSI = ot.FunctionalChaosSobolIndices(result) 
+chaosSI = ot.FunctionalChaosSobolIndices(result)
 dim_input = distribution.getDimension()
 first_order = [chaosSI.getSobolIndex(i) for i in range(dim_input)]
 total_order = [chaosSI.getSobolTotalIndex(i) for i in range(dim_input)]
 input_names = g.getInputDescription()
-View(ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, first_order, total_order))
+View(ot.SobolIndicesAlgorithm.DrawSobolIndices(
+    input_names, first_order, total_order))

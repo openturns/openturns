@@ -16,7 +16,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.13
+Version:        1.14rc1
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -34,7 +34,7 @@ BuildRequires:  nlopt-devel
 BuildRequires:  cminpack-devel
 BuildRequires:  ceres-solver-devel
 %endif
-#BuildRequires:  hmat-oss-devel
+BuildRequires:  tbb-devel
 %if 0%{?suse_version}
 BuildRequires:  lapack
 %else
@@ -68,7 +68,7 @@ Requires:       nlopt
 Requires:       cminpack
 Requires:       ceres-solver
 %endif
-#Requires:       libhmat-oss1
+Requires:       tbb
 
 %description libs
 Uncertainty treatment library binaries 
@@ -81,6 +81,7 @@ Requires:       libxml2-devel
 %if ! 0%{?suse_version}
 Requires:       lapack-devel
 %endif
+Requires:       tbb-devel
 
 %description devel
 Development files for OpenTURNS uncertainty library
@@ -107,7 +108,7 @@ Python textual interface to OpenTURNS uncertainty library
 %build
 %cmake -DINSTALL_DESTDIR:PATH=%{buildroot} \
        -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
-       -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j16" \
+       -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j32" \
        -DPYTHON_EXECUTABLE=%{__python} \
        -DSWIG_COMPILE_FLAGS="-O1" \
        -DOPENTURNS_SYSCONFIG_PATH=/etc .

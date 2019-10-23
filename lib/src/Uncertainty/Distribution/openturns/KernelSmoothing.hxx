@@ -42,7 +42,7 @@ class OT_API KernelSmoothing
   CLASSNAME
 public:
 
-  enum BoundingOption { NONE=0, LOWER, UPPER, BOTH };
+  enum BoundingOption { NONE = 0, LOWER, UPPER, BOTH };
 
   /** Default constructor */
   KernelSmoothing();
@@ -51,7 +51,7 @@ public:
   explicit KernelSmoothing(const Distribution & kernel,
                            const Bool bined = true,
                            const UnsignedInteger binNumber = ResourceMap::GetAsUnsignedInteger("KernelSmoothing-BinNumber"),
-			   const Bool boundaryCorrection = false);
+                           const Bool boundaryCorrection = false);
 
   /** Virtual constructor */
   virtual KernelSmoothing * clone() const;
@@ -141,7 +141,7 @@ private:
   Bool automaticLowerBound_;
   Scalar upperBound_;
   Bool automaticUpperBound_;
-  
+
 }; /* class KernelSmoothing */
 
 

@@ -56,53 +56,53 @@ int main(int, char *[])
     Point candidate(3, 1.0);
     CovarianceMatrix priorCovariance(3);
     for (UnsignedInteger i = 0; i < 3; ++i)
-      {
-	priorCovariance(i, i) = 3.0 + (1.0 + i) * (1.0 + i);
-	for (UnsignedInteger j = 0; j < i; ++j)
-	  priorCovariance(i, j) = 1.0 / (1.0 + i + j);
-      }
+    {
+      priorCovariance(i, i) = 3.0 + (1.0 + i) * (1.0 + i);
+      for (UnsignedInteger j = 0; j < i; ++j)
+        priorCovariance(i, j) = 1.0 / (1.0 + i + j);
+    }
     CovarianceMatrix errorCovariance(2);
     for (UnsignedInteger i = 0; i < 2; ++i)
-      {
-	errorCovariance(i, i) = 2.0 + (1.0 + i) * (1.0 + i);
-	for (UnsignedInteger j = 0; j < i; ++j)
-	  errorCovariance(i, j) = 1.0 / (1.0 + i + j);
-      }
+    {
+      errorCovariance(i, i) = 2.0 + (1.0 + i) * (1.0 + i);
+      for (UnsignedInteger j = 0; j < i; ++j)
+        errorCovariance(i, j) = 1.0 / (1.0 + i + j);
+    }
     CovarianceMatrix globalErrorCovariance(2 * m);
     for (UnsignedInteger i = 0; i < 2 * m; ++i)
-      {
-	globalErrorCovariance(i, i) = 2.0 + (1.0 + i) * (1.0 + i);
-	for (UnsignedInteger j = 0; j < i; ++j)
-	  globalErrorCovariance(i, j) = 1.0 / (1.0 + i + j);
-      }
+    {
+      globalErrorCovariance(i, i) = 2.0 + (1.0 + i) * (1.0 + i);
+      for (UnsignedInteger j = 0; j < i; ++j)
+        globalErrorCovariance(i, j) = 1.0 / (1.0 + i + j);
+    }
     Description methods(0);
     methods.add("SVD");
     methods.add("QR");
     methods.add("Cholesky");
     for (UnsignedInteger n = 0; n < methods.getSize(); ++n)
+    {
+      fullprint << "method=" << methods[n] << std::endl;
+      GaussianLinearCalibration algo(modelX, x, y, candidate, priorCovariance, errorCovariance, methods[n]);
+      algo.run();
+      fullprint << "result (const. 1)=" << algo.getResult() << std::endl;
+      modelX.setParameter(candidate);
+      Sample modelObservations(modelX(x));
+      Matrix transposedGradientObservations(modelX.getParameterDimension(), y.getSize() * modelX.getOutputDimension());
+      UnsignedInteger shift = 0;
+      UnsignedInteger skip = modelX.getOutputDimension() * modelX.getParameterDimension();
+      for (UnsignedInteger i = 0; i < y.getSize(); ++i)
       {
-	fullprint << "method=" << methods[n] << std::endl;
-	GaussianLinearCalibration algo(modelX, x, y, candidate, priorCovariance, errorCovariance, methods[n]);
-	algo.run();
-	fullprint << "result (const. 1)=" << algo.getResult() << std::endl;
-	modelX.setParameter(candidate);
-	Sample modelObservations(modelX(x));
-	Matrix transposedGradientObservations(modelX.getParameterDimension(), y.getSize() * modelX.getOutputDimension());
-	UnsignedInteger shift = 0;
-	UnsignedInteger skip = modelX.getOutputDimension() * modelX.getParameterDimension();
-	for (UnsignedInteger i = 0; i < y.getSize(); ++i)
-	  {
-	    Matrix localGradient(modelX.parameterGradient(x[i]));
-	    std::copy(localGradient.getImplementation()->begin(), localGradient.getImplementation()->end(), transposedGradientObservations.getImplementation()->begin() + shift);
-	    shift += skip;
-	  }
-	algo = GaussianLinearCalibration(modelObservations, transposedGradientObservations.transpose(), y, candidate, priorCovariance, errorCovariance, methods[n]);
-	algo.run();
-	fullprint << "result (const. 2)=" << algo.getResult() << std::endl;
-	algo = GaussianLinearCalibration(modelX, x, y, candidate, priorCovariance, globalErrorCovariance, methods[n]);
-	algo.run();
-	fullprint << "result   (global)=" << algo.getResult() << std::endl;
-      } // n
+        Matrix localGradient(modelX.parameterGradient(x[i]));
+        std::copy(localGradient.getImplementation()->begin(), localGradient.getImplementation()->end(), transposedGradientObservations.getImplementation()->begin() + shift);
+        shift += skip;
+      }
+      algo = GaussianLinearCalibration(modelObservations, transposedGradientObservations.transpose(), y, candidate, priorCovariance, errorCovariance, methods[n]);
+      algo.run();
+      fullprint << "result (const. 2)=" << algo.getResult() << std::endl;
+      algo = GaussianLinearCalibration(modelX, x, y, candidate, priorCovariance, globalErrorCovariance, methods[n]);
+      algo.run();
+      fullprint << "result   (global)=" << algo.getResult() << std::endl;
+    } // n
   }
   catch (TestFailed & ex)
   {

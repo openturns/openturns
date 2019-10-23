@@ -58,7 +58,7 @@ public:
   Sample operator() (const Sample & inS) const;
 
   /** Gradient according to the marginal parameters */
- Matrix parameterGradient(const Point & inP) const;
+  Matrix parameterGradient(const Point & inP) const;
 
   /** Parameters positions accessor */
   Indices getParametersPositions() const;
@@ -81,7 +81,7 @@ public:
   Bool isLinear() const;
   Bool isLinearlyDependent(const UnsignedInteger index) const;
 
-   /** String converter */
+  /** String converter */
   String __repr__() const;
   String __str__(const String & offset = "") const;
 

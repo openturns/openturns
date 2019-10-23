@@ -55,10 +55,10 @@ int main(int, char *[])
     UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
     PlatformInfo::SetNumericalPrecision(20);
     for (UnsignedInteger i = 0; i < x.getSize(); ++i)
-      {
-	ParametricFunction modelXi(model, Indices(1, 3), x[i]);
-	components.add(modelXi - SymbolicFunction(modelXi.getInputDescription(), Description(1, String(OSS(true) << y(i, 0)))));
-      }
+    {
+      ParametricFunction modelXi(model, Indices(1, 3), x[i]);
+      components.add(modelXi - SymbolicFunction(modelXi.getInputDescription(), Description(1, String(OSS(true) << y(i, 0)))));
+    }
     PlatformInfo::SetNumericalPrecision(precision);
     AggregatedFunction residualFunction(components);
 
@@ -70,21 +70,21 @@ int main(int, char *[])
     Interval bounds(lower, upper);
 
     for (UnsignedInteger bound = 0; bound < 2; ++bound)
-      {
-	LeastSquaresProblem problem(residualFunction);
-	if (bound == 0) problem.setBounds(bounds);
-	Point startingPoint(n, 1.0);
-	CMinpack algo(problem);
-	algo.setStartingPoint(startingPoint);
-	algo.run();
-	OptimizationResult result = algo.getResult();
-	Point x_star = result.getOptimalPoint();
-	fullprint << "Param opt=" << result.getOptimalPoint() << std::endl;
-	if (bound == 0)
-	  assert_almost_equal(bounds.contains(x_star), true);
-	else
-	  assert_almost_equal(x_star, p_ref);
-      } // bound
+    {
+      LeastSquaresProblem problem(residualFunction);
+      if (bound == 0) problem.setBounds(bounds);
+      Point startingPoint(n, 1.0);
+      CMinpack algo(problem);
+      algo.setStartingPoint(startingPoint);
+      algo.run();
+      OptimizationResult result = algo.getResult();
+      Point x_star = result.getOptimalPoint();
+      fullprint << "Param opt=" << result.getOptimalPoint() << std::endl;
+      if (bound == 0)
+        assert_almost_equal(bounds.contains(x_star), true);
+      else
+        assert_almost_equal(x_star, p_ref);
+    } // bound
   }
   catch (TestFailed & ex)
   {

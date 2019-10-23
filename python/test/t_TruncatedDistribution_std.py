@@ -12,6 +12,7 @@ def cleanPoint(inPoint):
             inPoint[i] = 0.0
     return inPoint
 
+
 def cleanCovariance(inCovariance):
     dim = inCovariance.getDimension()
     for j in range(dim):
@@ -198,5 +199,5 @@ truncated.setDistribution(ot.Normal(20.0, 7.5))
 truncated.setBounds(ot.Interval([0], [80], [True], [False]))
 print('after setbounds q@0.9=', truncated.computeQuantile(0.9))
 # Test for issue #1190
-dist = ot.Normal(6.3E-19, 2.1E-19)             
+dist = ot.Normal(6.3E-19, 2.1E-19)
 dist = ot.TruncatedDistribution(dist, 4.2E-19, ot.TruncatedDistribution.LOWER)

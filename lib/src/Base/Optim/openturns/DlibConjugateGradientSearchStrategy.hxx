@@ -27,7 +27,7 @@
 #include "openturns/PersistentObject.hxx"
 
 #ifdef OPENTURNS_HAVE_DLIB
-  #include <dlib/optimization.h>
+#include <dlib/optimization.h>
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -44,25 +44,25 @@ class DlibConjugateGradientSearchStrategy
   : public DlibSearchStrategyImplementation
 {
   CLASSNAME
-  
-  public:
-      // Constructor with parameters 
-    DlibConjugateGradientSearchStrategy(const Scalar wolfeRho,
-                                        const Scalar wolfeSigma,
-                                        const UnsignedInteger maxLineSearchIterations);
 
-      // Virtual constructor
-    virtual DlibConjugateGradientSearchStrategy * clone() const;
-      
-    /** ACCESSORS **/    
-    String getAlgorithmName() const;
-    
-    /** FUNCTION USED IN ACTUAL SEARCH **/
-    const DlibMatrix get_next_direction ( const DlibMatrix& x,
-                                          const double f_value,
-                                          const DlibMatrix& funct_derivative);
-  
-  private:
+public:
+  // Constructor with parameters
+  DlibConjugateGradientSearchStrategy(const Scalar wolfeRho,
+                                      const Scalar wolfeSigma,
+                                      const UnsignedInteger maxLineSearchIterations);
+
+  // Virtual constructor
+  virtual DlibConjugateGradientSearchStrategy * clone() const;
+
+  /** ACCESSORS **/
+  String getAlgorithmName() const;
+
+  /** FUNCTION USED IN ACTUAL SEARCH **/
+  const DlibMatrix get_next_direction ( const DlibMatrix& x,
+                                        const double f_value,
+                                        const DlibMatrix& funct_derivative);
+
+private:
 
 
 } ; /* class DlibConjugateGradientSearchStrategy */

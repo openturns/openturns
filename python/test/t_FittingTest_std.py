@@ -162,11 +162,13 @@ try:
                     value = 0.0
                 resultChiSquared[i, j] = value
             except:
-                print("Sample=", discreteSampleCollection[i], " is not compatible with distribution=", discreteDistributionCollection[j])
+                print(
+                    "Sample=", discreteSampleCollection[i], " is not compatible with distribution=", discreteDistributionCollection[j])
     print("resultChiSquared=", repr(resultChiSquared))
     # Example taken from the R documentation of chisq.test
     s = [[0.0]]*89 + [[1.0]]*37 + [[2.0]]*30 + [[3.0]]*28 + [[4.0]]*2
-    d = UserDefined([[0.0], [1.0], [2.0], [3.0], [4.0]], [0.4, 0.2, 0.2, 0.15, 0.05])
+    d = UserDefined([[0.0], [1.0], [2.0], [3.0], [4.0]],
+                    [0.4, 0.2, 0.2, 0.15, 0.05])
     print("R example p-value=%.5g" % FittingTest.ChiSquared(s, d).getPValue())
 
 except:

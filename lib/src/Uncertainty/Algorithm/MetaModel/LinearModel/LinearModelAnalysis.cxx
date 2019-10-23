@@ -104,7 +104,7 @@ String LinearModelAnalysis::__str__(const String & offset) const
 
   oss << offset << linearModelResult_.getFormula() ;
   oss << offset << "\n\nCoefficients:\n"  ;
-  oss << offset << String( twidth , ' ' ) << separator;
+  oss << offset << String( twidth, ' ' ) << separator;
   st = "Estimate";
   oss << offset << st << String( lwidth - st.size(), ' ') << separator;
   st = "Std Error";
@@ -113,7 +113,7 @@ String LinearModelAnalysis::__str__(const String & offset) const
   oss << offset << st << String( lwidth - st.size(), ' ') << separator;
   st = "Pr(>|t|)";
   oss << offset << st << String( lwidth - st.size(), ' ') << separatorEndLine;
-  oss << offset << "\n" <<  String( awidth , '-' ) << "\n";
+  oss << offset << "\n" <<  String( awidth, '-' ) << "\n";
   for (UnsignedInteger i = 0; i < pValues.getSize(); ++i)
   {
     st = names[i];
@@ -128,7 +128,7 @@ String LinearModelAnalysis::__str__(const String & offset) const
     oss << st << String( lwidth - st.size(), ' ') << separatorEndLine;
     oss << "\n";
   }
-  oss << offset << String( awidth , '-' ) << "\n\n";
+  oss << offset << String( awidth, '-' ) << "\n\n";
   oss << offset << "Residual standard error: " <<  std::sqrt(sigma2 * n / dof)  << " on " << dof << " degrees of freedom\n";
   oss << offset << "F-statistic: " << getFisherScore() << " , " << " p-value: " <<  getFisherPValue() << "\n";
 
@@ -142,7 +142,7 @@ String LinearModelAnalysis::__str__(const String & offset) const
   st = OSS() << test2;
   lwidth = std::max( lwidth, st.size() );
   awidth = twidth + 2 * separator.size() + lwidth - 1;
-  oss << offset << String( awidth , '-' ) << "\n";
+  oss << offset << String( awidth, '-' ) << "\n";
   st = "Multiple R-squared";
   oss << offset << st << String( twidth - st.size(), ' ') << separator;
   st = OSS() << test1;
@@ -152,7 +152,7 @@ String LinearModelAnalysis::__str__(const String & offset) const
   oss << offset << st << String( twidth - st.size(), ' ') << separator;
   st = OSS() << test2;
   oss << st << String( lwidth - st.size(), ' ') << separatorEndLine;
-  oss << "\n" << offset << String( awidth , '-' ) << "\n";
+  oss << "\n" << offset << String( awidth, '-' ) << "\n";
 
   // normality tests
   lwidth = 0;
@@ -170,12 +170,12 @@ String LinearModelAnalysis::__str__(const String & offset) const
   st = OSS() << normalitytest4;
   lwidth = std::max( lwidth, st.size() );
   awidth = twidth + 2 * separator.size() + lwidth - 1;
-  oss << "\n" << offset << String( awidth , '-' ) << "\n";
+  oss << "\n" << offset << String( awidth, '-' ) << "\n";
   st = "Normality test";
   oss << offset << st << String( twidth - st.size(), ' ') << separator;
   st = "p-value";
   oss << st << String( lwidth - st.size(), ' ') << separatorEndLine;
-  oss << "\n" <<  String( awidth , '-' ) << "\n";
+  oss << "\n" <<  String( awidth, '-' ) << "\n";
   st = "Anderson-Darling";
   oss << offset << st << String( twidth - st.size(), ' ') << separator;
   st = OSS() << normalitytest1;
@@ -195,7 +195,7 @@ String LinearModelAnalysis::__str__(const String & offset) const
   oss << offset << st << String( twidth - st.size(), ' ') << separator;
   st = OSS() << normalitytest3;
   oss << st << String( lwidth - st.size(), ' ') << separatorEndLine;
-  oss << "\n" <<  String( awidth , '-' ) << "\n";
+  oss << "\n" <<  String( awidth, '-' ) << "\n";
   return oss;
 }
 
@@ -316,10 +316,10 @@ Graph LinearModelAnalysis::drawModelVsFitted() const
   const Sample residuals(linearModelResult_.getSampleResiduals());
 
   const UnsignedInteger size(fitted.getSize());
-  
+
   Sample dataFull(outputData);
   dataFull.stack(fitted);
-  
+
   // The graph object
   Graph graph("Model vs Fitted", "Model", "Fitted values", true, "topright");
 
@@ -474,7 +474,7 @@ Graph LinearModelAnalysis::drawQQplot() const
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     dataFull(i, 0) = distribution.computeQuantile((i + 0.5) * step)[0];
-    dataFull(i, 1) = sortedSample(i,0);
+    dataFull(i, 1) = sortedSample(i, 0);
   }
   Graph graph("Normal Q-Q", "Theoretical Quantiles", "Std. residuals", true, "topright");
   Cloud cloud(dataFull, "black", "fcircle");

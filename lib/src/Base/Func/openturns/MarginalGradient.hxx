@@ -84,7 +84,7 @@ private:
 
   /** The indices of the marginals */
   Indices indices_;
-  
+
 }; /* class MarginalGradient */
 
 
