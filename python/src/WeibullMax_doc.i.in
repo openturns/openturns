@@ -4,22 +4,29 @@
 Parameters
 ----------
 beta : float
-    scale parameter :math:`\beta > 0`.
+    Scale parameter :math:`\beta > 0`.
 alpha : float
-    shape parameter :math:`\alpha > 0`.
+    Shape parameter :math:`\alpha > 0`.
 gamma : float, optional
-    Location parameter :math:`\gamma > \mu`.
+    Location parameter.
 
 Notes
 -----
-Its probability density function is defined as:
+Its cumulative and probability density functions are defined as:
 
 .. math::
+    :nowrap:
 
-    f_X(x) = \frac{\alpha}{\beta}
+    \begin{eqnarray*}
+        F_X(x) & = &  \exp \left(-\left(-\frac{x - \gamma}{\beta}\right)^{\alpha}\right), \quad \forall x \in ( - \infty; \gamma] \\
+        f_X(x) &  = & \frac{\alpha}{\beta}
              \left(-\frac{x - \gamma}{\beta} \right) ^ {\alpha-1}
              \exp \left(-\left(-\frac{x - \gamma}{\beta}\right)^{\alpha}\right),
-             \quad x \in [\gamma; +\infty[
+             \quad x \in ( - \infty; \gamma]
+    \end{eqnarray*}
+
+with :math:`\beta > 0` and :math:`\alpha > 0`.
+        
 
 Its first moments are:
 
@@ -27,17 +34,19 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{X} & = & \gamma - \beta \,\Gamma\left(1 + \frac{1}{\alpha}\right)\\
-        \Var{X} & = & \beta^2 \left( \Gamma ( 1 + \frac{2}{\alpha} ) -
-                     \Gamma^2 ( 1 + \frac{1}{\alpha} ) \right)
+        \Expect{X} & = & \gamma - \beta \,\Gamma \left( 1 + \frac{1}{\alpha} \right) \\
+        \Var{X} & = & \beta^2 \left( \Gamma  \left( 1 + \frac{2}{\alpha} \right) -
+                     \Gamma^2  \left( 1 + \frac{1}{\alpha} \right) \right)
     \end{eqnarray*}
 
 where :math:`\Gamma` denotes Euler's Gamma function
 :class:`~openturns.SpecFunc_Gamma`.
 
-It is possible to create a WeibullMin distribution from the alternative parametrization :math:`(\mu, \sigma, \gamma)`: see  :class:`~openturns.WeibullMaxMuSigma`. In that case, all the results are presented in that new parametrization.
+It is possible to create a WeibullMax distribution from the alternative parametrization :math:`(\mu, \sigma, \gamma)`: see  :class:`~openturns.WeibullMaxMuSigma`. In that case, all the results are presented in that new parametrization.
 
 In order to use the alternative  parametrization :math:`(\mu, \sigma, \gamma)` only to create the distribution, see the example below: all the results will be presented in the native parametrization :math:`(\beta, \alpha, \gamma)`.
+
+Note that if :math:`X` follows a WeibullMax :math:`(\beta, \alpha, \gamma)` distribution, then  :math:`(-X)` follows a WeibullMin :math:`(\beta, \alpha, -\gamma)` distribution.
 
 See also
 --------
@@ -50,7 +59,7 @@ Create a distribution from its native parameters :math:`(\beta, \alpha, \gamma)`
 >>> import openturns as ot
 >>> myDist = ot.WeibullMax(2.0, 1.5, 3.0)
 
-Create a it from the alternative parametrization :math:`(\mu, \sigma, \gamma)`:
+Create it from the alternative parametrization :math:`(\mu, \sigma, \gamma)`:
 
 >>> myDist2 = ot.WeibullMin()
 >>> myDist2.setParameter(ot.WeibullMaxMuSigma()([2.8, 1.2, 4.6]))

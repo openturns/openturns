@@ -154,7 +154,7 @@ Scalar WeibullMax::computeCDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0] - gamma_;
-  if (x >= 0.0) return 0.0;
+  if (x >= 0.0) return 1.0;
   return std::exp(-std::pow(-x / beta_, alpha_));
 }
 
@@ -163,7 +163,7 @@ Scalar WeibullMax::computeComplementaryCDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0] - gamma_;
-  if (x >= 0.0) return 1.0;
+  if (x >= 0.0) return 0.0;
   return -expm1(-std::pow(-x / beta_, alpha_));
 }
 

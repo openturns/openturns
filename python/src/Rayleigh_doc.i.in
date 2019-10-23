@@ -24,7 +24,7 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{X} & = & \beta sqrt{\frac{\pi}{2}} + \gamma \\
+        \Expect{X} & = & \beta \sqrt{\frac{\pi}{2}} + \gamma \\
         \Var{X} & = & \frac{4 - \pi}{2} \beta^2
     \end{eqnarray*}
 

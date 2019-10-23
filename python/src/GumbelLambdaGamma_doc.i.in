@@ -10,11 +10,13 @@ gamma : float
 
 Notes
 -----
-The native parameters are defined as follows:
+The native parameters :math:`(\beta, \gamma)` are defined as follows:
 
 .. math::
 
-    \beta &= \frac{1}{\lambda} \\
+   \beta &= \frac{1}{\lambda} \\
+
+The :math:`\gamma` parameter is the same.
 
 See also
 --------
@@ -22,12 +24,12 @@ Gumbel
 
 Examples
 --------
-Create the parameters of the Gumbel distribution:
+Create the parameters :math:`(\lambda, \gamma)` of the Gumbel distribution:
 
 >>> import openturns as ot
 >>> parameters = ot.GumbelLambdaGamma(2.0, 0.5)
 
-Convert parameters into the native parameters:
+Convert parameters into the native parameters :math:`(\beta, \gamma)`:
 
 >>> print(parameters.evaluate())
 [0.5,0.5]"

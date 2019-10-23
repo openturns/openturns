@@ -1,8 +1,9 @@
 %feature("docstring") OT::ParetoFactory
 "Pareto factory.
 
-Available constructor:
-    ParetoFactory()
+See also
+--------
+DistributionFactory, Pareto
 
 Notes
 -----
@@ -11,34 +12,93 @@ are proposed.
 
 **Moments based estimator:**
 
-First \hat{\alpha}_l is found using numerical inversion of the relationship:
+Lets denote:
+
+- :math:`\displaystyle \overline{x}_n = \frac{1}{n} \sum_{i=1}^n x_i` the empirical mean of the sample, 
+- :math:`\displaystyle s_n^2 = \frac{1}{n-1} \sum_{i=1}^n (x_i - \overline{x}_n)^2` its empirical variance,
+- :math:`\displaystyle skew_n` the empirical skewness of the sample
+
+The estimator :math:`(\hat{\beta}_n, \hat{\alpha}_n, \hat{\gamma}_n)` of
+:math:`(\beta, \alpha, \gamma)` is defined as follows :
+
+The parameter :math:`\hat{\alpha}_n` is solution of the equation: 
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        skew_n & =  & \dfrac{ 2(1+\hat{\alpha}_n) }{ \hat{\alpha}_n-3 } \sqrt{ \dfrac{ \hat{\alpha}_n-2 }{ \hat{\alpha}_n } } 
+    \end{eqnarray*}
+
+There exists a symbolic solution. If :math:`\hat{\alpha}_n >3`, then we get :math:`(\hat{\beta}_n, \hat{\gamma}_n)` as follows: 
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+       \hat{\beta}_n & = & (\hat{\alpha}_n-1) \sqrt{\dfrac{\hat{\alpha}_n-2}{\hat{\alpha}_n}}s_n \\
+       \hat{\gamma}_n & = & \overline{x}_n - \dfrac{\hat{\alpha}_n}{\hat{\alpha}_n+1} \hat{\beta}_n
+    \end{eqnarray*}
+
+
+**Maximum likelihood based estimator:**
+
+The likelihood of the sample is defined by:
 
 .. math::
 
-    2 (1+\alpha)/(\alpha-3) \sqrt{\frac{\alpha - 2}{\alpha}} = \hat{Sk}
+    \ell(\alpha, \beta, \gamma|  x_1, \dots, x_n) = n\log \alpha + n\alpha \log \beta - (\alpha+1) \sum_{i=1}^n \log(x_i-\gamma)
 
-with :math:`\hat{Sk}` the skewness of the sample
 
-Then the remaining parameters are derived from the moments:
+The maximum likelihood based estimator :math:`(\hat{\beta}_n, \hat{\alpha}_n, \hat{\gamma}_n)` of :math:`(\beta, \alpha, \gamma)` maximizes the likelihood:
 
 .. math::
 
-    \hat{\beta}_l &= (\alpha - 1) \sqrt{ \hat{\sigma} \frac{\alpha - 2}{\alpha}}\\
-    \hat{\gamma}_l &= \hat{\mu} - \beta \frac{\alpha}{\alpha - 1}
+    (\hat{\beta}_n, \hat{\alpha}_n, \hat{\gamma}_n) = \argmax_{\alpha, \beta, \gamma} \ell(\alpha, \beta, \gamma|  x_1, \dots, x_n)
 
-**Maximum likelihood estimator:**
+The following strategy is to be implemented soon: 
+For a given :math:`\gamma`, the likelihood of the sample is defined by:
 
-The generic maximum likelihood estimator is used.
+.. math::
 
-**Least squares method estimator:**
+    \ell(\alpha(\gamma), \beta(\gamma)|  x_1, \dots, x_n, \gamma) = n\log \alpha(\gamma) + n\alpha(\gamma) \log \beta(\gamma) - (\alpha(\gamma)+1) \sum_{i=1}^n \log(x_i-\gamma)
 
-The generic least-squares estimator is used.
+We get :math:`(\hat{\beta}_n( \gamma), \hat{\alpha}_n( \gamma))` which maximizes :math:`\ell(\alpha, \beta|  x_1, \dots, x_n, \gamma)` :
+
+.. math::
+
+    (\hat{\beta}_n( \gamma), \hat{\alpha}_n( \gamma)) = \argmax_{\alpha, \beta}   \ell(\alpha(\gamma), \beta(\gamma)|  x_1, \dots, x_n, \gamma) \text{ under the constraint } \gamma + \hat{\beta}_n(\gamma) \leq x_{(1,n)}
+
+We get:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+        \hat{\beta}_n( \gamma) & = & x_{(1,n)} - \gamma \\
+         \hat{\alpha}_n( \gamma) & = & \dfrac{n}{\sum_{i=1}^n \log\left( \dfrac{x_i - \gamma}{\hat{\beta}_n( \gamma)}\right)}
+    \end{eqnarray*}
 
 
-See also
---------
-DistributionFactory, Pareto"
+Then the parameter :math:`\gamma` is obtained by maximizing the likelihood :math:`\ell(\hat{\beta}_n( \gamma), \hat{\alpha}_n( \gamma), \gamma)`:
 
+.. math::
+
+    \hat{\gamma}_n = \argmax_{\gamma}  \ell(\hat{\beta}_n( \gamma), \hat{\alpha}_n( \gamma), \gamma)
+
+The initial point of the optimisation problem is :math:`\gamma_0 = x_{(1,n)} - |x_{(1,n)}|/(2+n)`.
+
+
+**Least squares estimator:**
+
+The least squares estimator  :math:`(\hat{\alpha}_n, \hat{\beta}_n, \hat{\gamma}_n)` is defined by:
+
+.. math::
+
+  (\hat{\alpha}_n, \hat{\beta}_n, \hat{\gamma}_n) = \argmin_{\alpha, \beta, \gamma} \sum_{i=1}^n (\hat{F}_n(x_i) - F_{\alpha, \beta, \gamma}(x_i))^2
+   
+where :math:`\hat{F}_n` is the empirical cumulative distribution function of the sample.
+"
 // ----------------------------------------------------------------------------
 
 %feature("docstring") OT::ParetoFactory::buildMethodOfLikelihoodMaximization
@@ -62,17 +122,6 @@ distribution : :class:`~openturns.Pareto`
 %feature("docstring") OT::ParetoFactory::buildMethodOfMoments
 "Method of moments estimator.
 
-.. math::
-    :nowrap:
-
-    \begin{eqnarray*}
-      \displaystyle\Hat{\gamma}_n = (1-\mathrm{sign}(x_{(1,n)})/(2+n))x_{(1,n)}\\
-      (\Hat{\alpha}_n,\Hat{\beta}_n)\mbox{ solution of }\left\{
-      \begin{array}{l}
-        \bar{x}_n=\Hat{\gamma}_n+\Hat{\alpha}_n+\Gamma(1+1/\Hat{\beta}_n)\\
-        (\sigma_n^X)^2=\Hat{\alpha}_n\left(\Gamma(1+2/\Hat{\beta}_n)-\Gamma(1+1/\Hat{\beta}_n)^2\right)
-      \end{array}\right.
-    \end{eqnarray*}
 
 Parameters
 ----------
@@ -98,3 +147,22 @@ Returns
 -------
 distribution : :class:`~openturns.Pareto`
     The estimated distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::ParetoFactory::build
+"Estimate the distribution using the default strategy.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.Pareto`
+    The estimated distribution
+
+Notes
+-----
+The default strategy is using the least squares estimators."

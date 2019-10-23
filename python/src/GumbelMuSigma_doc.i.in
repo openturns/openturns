@@ -1,9 +1,6 @@
 %feature("docstring") OT::GumbelMuSigma
 "Gumbel distribution parameters.
 
-Available constructors:
-    GumbelMuSigma(*mu=* :math:`\gamma` *, sigma=* :math:`\pi/\sqrt{6}`)
-
 Parameters
 ----------
 mu : float
@@ -13,12 +10,15 @@ sigma : float
 
 Notes
 -----
-The native parameters are defined as follows:
+The native parameters  :math:`(\beta, \gamma)` are defined as follows:
 
 .. math::
+    :nowrap:
 
-    \beta &= \frac{\pi}{\sqrt{6}} \sigma \\
-    \gamma &= \mu - \frac{\gamma_e \sigma \sqrt{6}}{\pi}
+    \begin{eqnarray*}
+        \mu & = & \gamma + \gamma_e \beta \\
+        \sigma^2 & = & \frac{1}{6} \pi^2 \beta^2
+    \end{eqnarray*}
 
 where :math:`\gamma_e` is the Euler-Mascheroni constant.
 
@@ -28,12 +28,12 @@ Gumbel
 
 Examples
 --------
-Create the parameters of the Gumbel distribution:
+Create the parameters :math:`(\mu, \sigma)` of the Gumbel distribution:
 
 >>> import openturns as ot
 >>> parameters = ot.GumbelMuSigma(1.5, 1.3)
 
-Convert parameters into the native parameters:
+Convert parameters into the native parameters :math:`(\beta, \gamma)`:
 
 >>> print(parameters.evaluate())
 [1.01361,0.914931]"

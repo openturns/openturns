@@ -12,19 +12,36 @@ gamma : float, optional
 
 Notes
 -----
-Its probability density function is defined as:
+Its cumulative and probability density functions are defined as:
 
 .. math::
+    :nowrap:
 
-    f_X(x) = \frac{\alpha}{\beta}\left(\frac{x-\gamma}{\beta}\right)^{-1-\alpha}\exp\left\{-\left(\frac{x-\gamma}{\beta}\right)^{-\alpha}\right\}
+    \begin{eqnarray*}
+        F_X(x) & = & \exp\left(-\left(\frac{x-\gamma}{\beta}\right)^{-\alpha}\right), \quad x \in [ \gamma; +\infty) \\
+        f_X(x) & = & \frac{\alpha}{\beta}\left(\frac{x-\gamma}{\beta}\right)^{-1-\alpha}\exp\left(-\left(\frac{x-\gamma}{\beta}\right)^{-\alpha}\right),
+             \quad x \in [ \gamma; +\infty)
+    \end{eqnarray*}
 
-with :math:`\alpha > 0` and :math:`\beta > 0`.
+with :math:`\beta > 0` and :math:`\alpha > 0`.
 
-Its cumulative density function is defined as:
+
+Its first moments are:
 
 .. math::
+    :nowrap:
 
-    F_X(x) = \exp\left\{-\left(\frac{x-\gamma}{\beta}\right)^{-\alpha}\right\}
+    \begin{eqnarray*}
+        \Expect{X} & = & \gamma + \beta \,\Gamma\left(1 - \frac{1}{\alpha}\right)
+                        \quad \text{ if } \alpha > 1\\
+                   & = & +\infty  \quad\text{ if } \alpha \leq 1\\
+        \Var{X} & = & \beta^2 \left( \Gamma \left( 1 - \frac{2}{\alpha} \right) -
+                     \Gamma^2 \left( 1 - \frac{1}{\alpha} \right) \right) \quad \text{ if } \alpha > 2\\
+                   & = & +\infty  \quad \text{ if } \alpha \leq 2\\
+    \end{eqnarray*}
+
+where :math:`\Gamma` denotes Euler's Gamma function
+:class:`~openturns.SpecFunc_Gamma`.
 
 Examples
 --------

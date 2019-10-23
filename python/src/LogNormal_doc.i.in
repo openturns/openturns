@@ -4,9 +4,9 @@
 Parameters
 ----------
 muLog : float
-    location parameter :math:`\mu_\ell`, the expectation of the logarithm of the log-normal random variable.
+    Location parameter :math:`\mu_\ell`, the expectation of the logarithm of the log-normal random variable.
 sigmaLog : float, :math:`\sigma_\ell > 0`
-    scale parameter :math:`\sigma_\ell`, the standard deviation of the logarithm of the log-normal random variable.
+    Scale parameter :math:`\sigma_\ell`, the standard deviation of the logarithm of the log-normal random variable.
 gamma : float, optional
     Location parameter :math:`\gamma < \mu`.
 
