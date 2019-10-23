@@ -10,6 +10,7 @@
 
 ==== API changes ====
  * Removed deprecated OptimizationAlgorithm::GetLeastSquaresAlgorithmNames
+ * Removed deprecated GaussianNonLinearCalibration,NonLinearLeastSquaresCalibration::set,getAlgorithm
 
 === Python module ===
 
