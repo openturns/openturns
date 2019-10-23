@@ -9,6 +9,7 @@
 ==== New classes ====
 
 ==== API changes ====
+ * Removed deprecated OptimizationAlgorithm::GetLeastSquaresAlgorithmNames
 
 === Python module ===
 
