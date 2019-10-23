@@ -11,6 +11,7 @@
 ==== API changes ====
  * Removed deprecated OptimizationAlgorithm::GetLeastSquaresAlgorithmNames
  * Removed deprecated GaussianNonLinearCalibration,NonLinearLeastSquaresCalibration::set,getAlgorithm
+ * Removed deprecated MethodOfMomentsFactory::set,getOptimizationProblem
 
 === Python module ===
 

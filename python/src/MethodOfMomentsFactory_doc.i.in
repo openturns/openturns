@@ -58,26 +58,6 @@ solver : :class:`~openturns.OptimizationAlgorithm`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MethodOfMomentsFactory::setOptimizationProblem
-"Accessor to the problem.
-
-Parameters
-----------
-problem : :class:`~openturns.OptimizationProblem`
-    The problem used for numerical optimization of the moments."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::MethodOfMomentsFactory::getOptimizationProblem
-"Accessor to the problem.
-
-Returns
--------
-problem : :class:`~openturns.OptimizationProblem`
-    The problem used for numerical optimization of the moments."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::MethodOfMomentsFactory::setKnownParameter
 "Accessor to the known parameters.
 
