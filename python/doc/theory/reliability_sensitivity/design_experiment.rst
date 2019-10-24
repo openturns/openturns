@@ -275,6 +275,6 @@ The following figures illustrates the different patterns obtained.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/numerical_methods/deterministic_design`
-    - See :doc:`/examples/numerical_methods/probabilistic_design`
+    - See :doc:`/examples/reliability_sensitivity/deterministic_design`
+    - See :doc:`/examples/reliability_sensitivity/probabilistic_design`
 

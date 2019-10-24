@@ -16,6 +16,9 @@ Reliability
 .. toctree::
     :maxdepth: 1
 
+    axial_stressed_beam_quickstart.ipynb
+    axial_stressed_beam.ipynb
+    flood_model.ipynb
     event_manipulation.ipynb
     estimate_probability_monte_carlo.ipynb
     estimate_probability_lhs.ipynb
@@ -43,14 +46,18 @@ Sensitivity analysis
     sensitivity_fast.ipynb
     sensitivity_cobweb.ipynb
 
-Design of experiment
---------------------
+Design of experiments
+---------------------
 
 .. toctree::
     :maxdepth: 1
 
-    composite_experiment.ipynb
     monte_carlo_experiment.ipynb
+    composite_experiment.ipynb
     gauss_product_experiment.ipynb
     low_discrepancy_sequence.ipynb
+    deterministic_design.ipynb
+    probabilistic_design.ipynb
+    mixed_design.ipynb
+    optimal_lhs.ipynb
 
