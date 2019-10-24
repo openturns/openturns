@@ -23,6 +23,7 @@ Field functions
     :maxdepth: 1
 
     viscous_fall_field_function.ipynb
+    viscous_fall_field_function_connection.ipynb
     value_function.ipynb
     vertexvalue_function.ipynb
 
