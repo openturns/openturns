@@ -22,5 +22,7 @@ Field functions
   .. toctree::
     :maxdepth: 1
 
+    viscous_fall_field_function.ipynb
     value_function.ipynb
     vertexvalue_function.ipynb
+
