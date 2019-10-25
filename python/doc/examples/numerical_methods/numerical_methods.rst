@@ -7,7 +7,6 @@ Numerical methods
     random_generator.ipynb
     combinatorial_generator.ipynb
     estimate_integral_iterated_quadrature.ipynb
-    logistic_growth_model.ipynb
     study_save_load.ipynb
     ifs.ipynb
 
