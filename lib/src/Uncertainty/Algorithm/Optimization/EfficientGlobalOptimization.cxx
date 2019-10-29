@@ -228,6 +228,7 @@ void EfficientGlobalOptimization::run()
   OptimizationResult result(dimension);
   result.setProblem(getProblem());
 
+  UnsignedInteger iterationNumber = 0;
   while ((!exitLoop) && (evaluationNumber < getMaximumEvaluationNumber()))
   {
     // use the provided kriging result at first iteration
@@ -383,6 +384,8 @@ void EfficientGlobalOptimization::run()
       noise.add(newOutput[1]);
     }
 
+    ++ iterationNumber;
+
     // callbacks
     if (progressCallback_.first)
     {
@@ -401,6 +404,7 @@ void EfficientGlobalOptimization::run()
   result.setOptimalPoint(optimizer);
   result.setOptimalValue(Point(1, optimalValue));
   result.setEvaluationNumber(evaluationNumber);
+  result.setIterationNumber(iterationNumber);
   setResult(result);
 }
 
