@@ -112,8 +112,6 @@ DistributionImplementation::DistributionImplementation()
   , description_(1)
   , isParallel_(ResourceMap::GetAsBool("Distribution-Parallel"))
   , isCopula_(false)
-  , isInitializedCF_(false)
-  , pdfGrid_(0)
 {
   description_[0] = "X0";
 }
@@ -1081,14 +1079,13 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
       const Scalar T = 0.5 * (b - a);
       const Scalar c = 0.5 * (a + b);
       const Scalar dt = T / N;
-      if (!isInitializedCF_)
+      static Point pdfGrid;
+      if (!pdfGrid.getSize())
       {
-        //              const UnsignedInteger nMax(ResourceMap::GetAsUnsignedLong("Distribution-CharacteristicFunctionNMax"));
         Sample locations(Box(Indices(1, 2 * N - 1)).generate());
         locations *= Point(1, b - a);
         locations += Point(1, a);
-        pdfGrid_ = computePDF(locations).getImplementation()->getData();
-        isInitializedCF_ = true;
+        pdfGrid = computePDF(locations).getImplementation()->getData();
       }
       const Scalar omegaDt = x * dt;
       const Scalar omegaDt2 = omegaDt * omegaDt;
@@ -1101,13 +1098,13 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
       const Scalar sinNOmegaDt = std::sin(N * omegaDt);
       // The bound 4.3556e-4 is such that we get full double precision
       const Scalar w = std::abs(omegaDt) < 4.3556e-4 ? std::pow(std::sin(0.5 * omegaDt) / (0.5 * omegaDt), 2) : 1.0 - omegaDt2 / 12.0;
-      //      value = pdfGrid_[N] * w + pdfGrid_[0] * wM * Complex(cosNOmegaDt, -sinNOmegaDt) + pdfGrid_[2 * N] * wP * Complex(cosNOmegaDt, sinNOmegaDt);
-      value = pdfGrid_[0] * wM * Complex(cosNOmegaDt, -sinNOmegaDt) + pdfGrid_[2 * N - 1] * wP * Complex(cosNOmegaDt, sinNOmegaDt);
+      //      value = pdfGrid[N] * w + pdfGrid[0] * wM * Complex(cosNOmegaDt, -sinNOmegaDt) + pdfGrid[2 * N] * wP * Complex(cosNOmegaDt, sinNOmegaDt);
+      value = pdfGrid[0] * wM * Complex(cosNOmegaDt, -sinNOmegaDt) + pdfGrid[2 * N - 1] * wP * Complex(cosNOmegaDt, sinNOmegaDt);
       for (UnsignedInteger n = 1; n < N; ++n)
       {
         const Scalar cosN = std::cos(n * omegaDt);
         const Scalar sinN = std::sin(n * omegaDt);
-        value += Complex(w * cosN * (pdfGrid_[N + n - 1] + pdfGrid_[N - n]), w * sinN * (pdfGrid_[N + n - 1] - pdfGrid_[N - n]));
+        value += Complex(w * cosN * (pdfGrid[N + n - 1] + pdfGrid[N - n]), w * sinN * (pdfGrid[N + n - 1] - pdfGrid[N - n]));
       }
       return dt * value * Complex(std::cos(x * c), std::sin(x * c));
     }

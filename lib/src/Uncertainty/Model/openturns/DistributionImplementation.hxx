@@ -1739,11 +1739,6 @@ protected:
   /** Flag to tell if the distribution is indeed a copula */
   Bool isCopula_;
 
-  /** Data for characteristic function computation */
-  mutable Bool isInitializedCF_;
-
-  mutable Point pdfGrid_;
-
 }; /* class DistributionImplementation */
 
 #ifndef SWIG
