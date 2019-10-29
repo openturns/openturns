@@ -1744,12 +1744,6 @@ protected:
 
   mutable Point pdfGrid_;
 
-  /** Wrapper to compute conditional CDF */
-  mutable Pointer<EvaluationImplementation> p_conditionalPDFWrapper_;
-
-  /** Wrapper to compute conditional quantile */
-  mutable Pointer<EvaluationImplementation> p_conditionalCDFWrapper_;
-
 }; /* class DistributionImplementation */
 
 #ifndef SWIG
