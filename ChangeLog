@@ -36,8 +36,8 @@
 ==== Major changes ====
  * New optimization solvers (Dlib, Bonmin for mixed integer optimization problems)
  * New distributions (SquaredNormal, WeibullMax, Pareto, DiscreteCompoundDistribution, MixedHistogramUserDefined)
- * New estimators (ParetoFactory, GeneralizedExtremeValueFactory, LeastSquaresDistributionFactory)
- * New copulas (JoeCopula, MarshallOlkinCopula)
+ * New estimators (ParetoFactory, GeneralizedExtremeValueFactory, LeastSquaresDistributionFactory, PlackettCopulaFactory)
+ * New copulas (JoeCopula, MarshallOlkinCopula, PlackettCopula)
  * Linear model learner (LinearModelStepwiseAlgorithm)
  * System events (IntersectionEvent, UnionEvent, SystemFORM, MultiFORM)
 
@@ -65,6 +65,8 @@
  * MarshallOlkinCopula
  * LinearModelStepwiseAlgorithm
  * MixedHistogramUserDefined
+ * PlackettCopula
+ * PlackettCopulaFactory
 
 ==== API changes ====
  * FittingTest methods to return fitted distributions with factory as argument
@@ -90,7 +92,8 @@
  * Removed Copula class
  * Deprecated Event class, use ThresholdEvent/ProcessEvent/DomainEvent classes
  * Deprecated EnumerateFunction constructors
- * Add a minimum probability accessor to SubsetSampling
+ * Added a minimum probability accessor to SubsetSampling
+ * Added a UniVariateFunction interface to solvers and integration algorithms
 
 === Python module ===
  * Add Domain.__contains__ operator

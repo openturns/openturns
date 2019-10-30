@@ -1,0 +1,16 @@
+%feature("docstring") OT::PlackettCopulaFactory
+"Plackett Copula factory.
+
+The parameter is estimated using the follwing equation:
+
+:math:`\Hat{\theta}_n` is solution of
+
+.. math::
+
+    \displaystyle \Hat{\tau}_n = \frac{4m_n^2}{(1-2m_n)^2}
+
+where :math:`m_n` is the value of the empirical CDF :math:`F_n` at the median point :math:`({U_1}_{\lceil n/2 \rceil},{U_2}_{\lceil n/2 \rceil})` of the sample :math:`({U_1}_k,{U_2}_k)_{k\in\{1,\dots,n\}}`.
+
+See also
+--------
+DistributionFactory, PlackettCopula"
