@@ -541,6 +541,8 @@ ot_add_python_module(model_copula model_copula_module.i
                       ComposedDistribution.i ComposedDistribution_doc.i.in
                       ComposedCopula.i ComposedCopula_doc.i.in
                       CumulativeDistributionNetwork.i CumulativeDistributionNetwork_doc.i.in
+                      PlackettCopula.i PlackettCopula_doc.i.in
+                      PlackettCopulaFactory.i PlackettCopulaFactory_doc.i.in
                       PythonDistribution.cxx
                       UncertaintyModelCopulaCollection.i
                       UncertaintyModelCopulaTemplateDefs.i

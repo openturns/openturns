@@ -215,6 +215,7 @@ Refer to :ref:`copula`.
     FrankCopula
     GumbelCopula
     IndependentCopula
+    PlackettCopula
     EmpiricalBernsteinCopula
     ExtremeValueCopula
     JoeCopula

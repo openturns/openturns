@@ -57,6 +57,7 @@
 #include "openturns/NormalCopulaFactory.hxx"
 #include "openturns/NormalFactory.hxx"
 #include "openturns/ParetoFactory.hxx"
+#include "openturns/PlackettCopulaFactory.hxx"
 #include "openturns/PoissonFactory.hxx"
 #include "openturns/RayleighFactory.hxx"
 #include "openturns/RiceFactory.hxx"
@@ -123,6 +124,7 @@ DistributionFactory::DistributionFactoryCollection DistributionFactory::GetConti
   collection.add(GumbelCopulaFactory());
   collection.add(NormalCopulaFactory());
   collection.add(NormalFactory());
+  collection.add(PlackettCopulaFactory());
   collection.add(StudentFactory());
   return collection;
 }
