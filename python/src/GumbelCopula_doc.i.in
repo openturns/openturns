@@ -1,13 +1,10 @@
 %feature("docstring") OT::GumbelCopula
 "Gumbel copula.
 
-Available constructor:
-    GumbelCopula(*theta=2.0*)
-
 Parameters
 ----------
-theta : float, :math:`\theta \geq 1`
-    Parameter :math:`\theta`.
+theta : float
+    Parameter :math:`\theta`, :math:`\theta \geq 1`. Default is :math:`\theta=2`.
 
 Notes
 -----

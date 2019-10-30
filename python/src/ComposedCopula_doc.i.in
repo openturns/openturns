@@ -4,7 +4,7 @@
 Parameters
 ----------
 copulas : list of copulas.
-    The collection of  copulas to be merged.
+    The collection of copulas to be merged.
 
 Notes
 -----

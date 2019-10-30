@@ -3,11 +3,11 @@
 
 Parameters
 ----------
-alpha : float, :math:`0 \leq \alpha \leq 1`
-    Parameter :math:`\alpha` (default :math:`\alpha=0.5`).
+alpha : float
+    Parameter :math:`\alpha`, :math:`0 \leq \alpha \leq 1`. Default is :math:`\alpha=0.5`.
 
-beta : float, :math:`0 \leq \beta \leq 1`
-    Parameter :math:`\beta` (default :math:`\beta=0.5`).
+beta : float
+    Parameter :math:`\beta`, :math:`0 \leq \beta \leq 1`. Default is :math:`\beta=0.5`.
 
 Notes
 -----

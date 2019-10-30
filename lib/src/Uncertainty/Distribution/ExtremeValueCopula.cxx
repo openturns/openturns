@@ -317,6 +317,7 @@ void ExtremeValueCopula::setPickandFunction(const Function & pickandFunction,
     } // i
   } // check
   pickandFunction_ = pickandFunction;
+  isAlreadyComputedCovariance_ = false;
 }
 
 /* Pickand function accessor */

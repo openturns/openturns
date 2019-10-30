@@ -372,7 +372,11 @@ Bool AliMikhailHaqCopula::hasIndependentCopula() const
 void AliMikhailHaqCopula::setTheta(const Scalar theta)
 {
   if ((theta <= -1.0) || (theta >= 1.0)) throw InvalidArgumentException(HERE) << "Theta MUST be in (-1, 1), here theta=" << theta;
-  theta_ = theta;
+  if (theta != theta_)
+    {
+      theta_ = theta;
+      isAlreadyComputedCovariance_ = false;
+    }
 }
 
 /* Theta accessor */

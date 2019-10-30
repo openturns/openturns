@@ -494,7 +494,11 @@ Description ClaytonCopula::getParameterDescription() const
 void ClaytonCopula::setTheta(const Scalar theta)
 {
   if (theta < -1.0) throw InvalidArgumentException(HERE) << "Theta MUST be greater or equal to -1";
-  theta_ = theta;
+  if (theta != theta_)
+    {
+      theta_ = theta;
+      isAlreadyComputedCovariance_ = false;
+    }
 }
 
 /* Theta accessor */

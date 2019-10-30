@@ -1,9 +1,6 @@
 %feature("docstring") OT::NormalCopulaFactory
 "Normal Copula factory.
 
-Available constructor:
-    NormalCopulaFactory()
-
 We note :math:`\Hat{\tau}_n` the Kendall-\ :math:`\tau` of the sample.
 
 The correlation matrix :math:`\mat{R}` is estimated by:
