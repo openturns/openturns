@@ -7,6 +7,8 @@ Distributions
 .. toctree::
     :maxdepth: 1
 
+    quick_start_guide_distributions.ipynb
+    overview_univariate_distributions.ipynb
     gaussian_distribution.ipynb
     geometric_distribution.ipynb
     draw_1d_distribution.ipynb
