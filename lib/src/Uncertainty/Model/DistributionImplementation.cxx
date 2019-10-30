@@ -112,8 +112,6 @@ DistributionImplementation::DistributionImplementation()
   , description_(1)
   , isParallel_(ResourceMap::GetAsBool("Distribution-Parallel"))
   , isCopula_(false)
-  , isInitializedCF_(false)
-  , pdfGrid_(0)
 {
   description_[0] = "X0";
 }
@@ -1081,14 +1079,13 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
       const Scalar T = 0.5 * (b - a);
       const Scalar c = 0.5 * (a + b);
       const Scalar dt = T / N;
-      if (!isInitializedCF_)
+      static Point pdfGrid;
+      if (!pdfGrid.getSize())
       {
-        //              const UnsignedInteger nMax(ResourceMap::GetAsUnsignedLong("Distribution-CharacteristicFunctionNMax"));
         Sample locations(Box(Indices(1, 2 * N - 1)).generate());
         locations *= Point(1, b - a);
         locations += Point(1, a);
-        pdfGrid_ = computePDF(locations).getImplementation()->getData();
-        isInitializedCF_ = true;
+        pdfGrid = computePDF(locations).getImplementation()->getData();
       }
       const Scalar omegaDt = x * dt;
       const Scalar omegaDt2 = omegaDt * omegaDt;
@@ -1101,13 +1098,13 @@ Complex DistributionImplementation::computeCharacteristicFunction(const Scalar x
       const Scalar sinNOmegaDt = std::sin(N * omegaDt);
       // The bound 4.3556e-4 is such that we get full double precision
       const Scalar w = std::abs(omegaDt) < 4.3556e-4 ? std::pow(std::sin(0.5 * omegaDt) / (0.5 * omegaDt), 2) : 1.0 - omegaDt2 / 12.0;
-      //      value = pdfGrid_[N] * w + pdfGrid_[0] * wM * Complex(cosNOmegaDt, -sinNOmegaDt) + pdfGrid_[2 * N] * wP * Complex(cosNOmegaDt, sinNOmegaDt);
-      value = pdfGrid_[0] * wM * Complex(cosNOmegaDt, -sinNOmegaDt) + pdfGrid_[2 * N - 1] * wP * Complex(cosNOmegaDt, sinNOmegaDt);
+      //      value = pdfGrid[N] * w + pdfGrid[0] * wM * Complex(cosNOmegaDt, -sinNOmegaDt) + pdfGrid[2 * N] * wP * Complex(cosNOmegaDt, sinNOmegaDt);
+      value = pdfGrid[0] * wM * Complex(cosNOmegaDt, -sinNOmegaDt) + pdfGrid[2 * N - 1] * wP * Complex(cosNOmegaDt, sinNOmegaDt);
       for (UnsignedInteger n = 1; n < N; ++n)
       {
         const Scalar cosN = std::cos(n * omegaDt);
         const Scalar sinN = std::sin(n * omegaDt);
-        value += Complex(w * cosN * (pdfGrid_[N + n - 1] + pdfGrid_[N - n]), w * sinN * (pdfGrid_[N + n - 1] - pdfGrid_[N - n]));
+        value += Complex(w * cosN * (pdfGrid[N + n - 1] + pdfGrid[N - n]), w * sinN * (pdfGrid[N + n - 1] - pdfGrid[N - n]));
       }
       return dt * value * Complex(std::cos(x * c), std::sin(x * c));
     }
@@ -2073,11 +2070,10 @@ Scalar DistributionImplementation::computeConditionalCDF(const Scalar x,
   const Scalar xMax = conditionedDistribution->getRange().getUpperBound()[conditioningDimension];
   if (x >= xMax) return 1.0;
   // Numerical integration with respect to x
-  // Here we recreate a ConditionalPDFWrapper only if none has been created or if the parameter dimension has changed
-  if (p_conditionalPDFWrapper_.isNull() || (p_conditionalPDFWrapper_->getParameter().getDimension() != y.getDimension())) p_conditionalPDFWrapper_ = new ConditionalPDFWrapper(conditionedDistribution);
-  p_conditionalPDFWrapper_->setParameter(y);
+  Pointer<EvaluationImplementation> p_conditionalPDFWrapper = new ConditionalPDFWrapper(conditionedDistribution);
+  p_conditionalPDFWrapper->setParameter(y);
   GaussKronrod algo;
-  const Point value(algo.integrate(Function(*p_conditionalPDFWrapper_), Interval(xMin, x)));
+  const Point value(algo.integrate(Function(*p_conditionalPDFWrapper), Interval(xMin, x)));
   return std::min(1.0, std::max(0.0, value[0] / pdfConditioning));
 }
 
@@ -2109,9 +2105,9 @@ Point DistributionImplementation::computeSequentialConditionalCDF(const Point & 
     else
     {
       // Here we have to integrate something...
-      p_conditionalPDFWrapper_ = new ConditionalPDFWrapper(conditioningDistribution);
-      p_conditionalPDFWrapper_->setParameter(currentX);
-      const Scalar cdfConditioned(algo.integrate(Function(*p_conditionalPDFWrapper_), Interval(xMin, std::min(x[conditioningDimension], xMax)))[0]);
+      Pointer<EvaluationImplementation> p_conditionalPDFWrapper = new ConditionalPDFWrapper(conditioningDistribution);
+      p_conditionalPDFWrapper->setParameter(currentX);
+      const Scalar cdfConditioned(algo.integrate(Function(*p_conditionalPDFWrapper), Interval(xMin, std::min(x[conditioningDimension], xMax)))[0]);
       result[conditioningDimension] = cdfConditioned / pdfConditioning;
     }
     currentX.add(x[conditioningDimension]);
@@ -2146,8 +2142,7 @@ Point DistributionImplementation::computeConditionalCDF(const Point & x,
   const Scalar xMin = conditionedDistribution->getRange().getLowerBound()[conditioningDimension];
   const Scalar xMax = conditionedDistribution->getRange().getUpperBound()[conditioningDimension];
   Point result(size);
-  // Here we recreate a ConditionalPDFWrapper only if none has been created or if the parameter dimension has changed
-  if (p_conditionalPDFWrapper_.isNull() || (p_conditionalPDFWrapper_->getParameter().getDimension() != y.getDimension())) p_conditionalPDFWrapper_ = new ConditionalPDFWrapper(conditionedDistribution);
+  Pointer<EvaluationImplementation> p_conditionalPDFWrapper = new ConditionalPDFWrapper(conditionedDistribution);
   GaussKronrod algo;
   for (UnsignedInteger i = 0; i < size; ++i)
     if (pdfConditioning(i, 0) > 0.0)
@@ -2156,8 +2151,8 @@ Point DistributionImplementation::computeConditionalCDF(const Point & x,
       else if (x[i] > xMin)
       {
         // Numerical integration with respect to x
-        p_conditionalPDFWrapper_->setParameter(y[i]);
-        const Point value(algo.integrate(Function(*p_conditionalPDFWrapper_), Interval(xMin, x[i])));
+        p_conditionalPDFWrapper->setParameter(y[i]);
+        const Point value(algo.integrate(Function(*p_conditionalPDFWrapper), Interval(xMin, x[i])));
         result[i] = std::min(1.0, std::max(0.0, value[0] / pdfConditioning(i, 0)));
       } // xMin < x < xMax
     } // pdfConditioning(i, 0) > 0
@@ -2200,13 +2195,12 @@ Point DistributionImplementation::computeConditionalQuantile(const Point & q,
   const Scalar xMin = getRange().getLowerBound()[conditioningDimension];
   const Scalar xMax = getRange().getUpperBound()[conditioningDimension];
   Point result(size);
-  // Here we recreate a ConditionalCDFWrapper only if none has been created or if the parameter dimension has changed
-  if (p_conditionalCDFWrapper_.isNull() || (p_conditionalCDFWrapper_->getParameter().getDimension() != y.getDimension())) p_conditionalCDFWrapper_ = new ConditionalCDFWrapper(this);
+  Pointer <EvaluationImplementation> p_conditionalCDFWrapper = new ConditionalCDFWrapper(this);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    p_conditionalCDFWrapper_->setParameter(y[i]);
+    p_conditionalCDFWrapper->setParameter(y[i]);
     Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
-    result[i] = solver.solve(Function(*p_conditionalCDFWrapper_), q[i], xMin, xMax, 0.0, 1.0);
+    result[i] = solver.solve(Function(*p_conditionalCDFWrapper), q[i], xMin, xMax, 0.0, 1.0);
   }
   return result;
 }

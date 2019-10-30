@@ -1739,17 +1739,6 @@ protected:
   /** Flag to tell if the distribution is indeed a copula */
   Bool isCopula_;
 
-  /** Data for characteristic function computation */
-  mutable Bool isInitializedCF_;
-
-  mutable Point pdfGrid_;
-
-  /** Wrapper to compute conditional CDF */
-  mutable Pointer<EvaluationImplementation> p_conditionalPDFWrapper_;
-
-  /** Wrapper to compute conditional quantile */
-  mutable Pointer<EvaluationImplementation> p_conditionalCDFWrapper_;
-
 }; /* class DistributionImplementation */
 
 #ifndef SWIG
