@@ -34,6 +34,7 @@
 #include "openturns/Description.hxx"
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/GradientImplementation.hxx"
+#include "openturns/UniVariateFunctionImplementation.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/PiecewiseHermiteEvaluation.hxx"
@@ -1515,34 +1516,21 @@ protected:
   }; // class ShiftedMomentWrapper
 
   // Class used to wrap the computeConditionalPDF() method for the computation of the conditional CDF
-  class ConditionalPDFWrapper: public EvaluationImplementation
+  class ConditionalPDFWrapper: public UniVariateFunctionImplementation
   {
   public:
     ConditionalPDFWrapper(const DistributionImplementation::Implementation p_distribution)
-      : EvaluationImplementation()
-      , y_(0.0)
+      : UniVariateFunctionImplementation()
+      , y_(1, 0.0)
       , p_distribution_(p_distribution)
     {
       // Nothing to do
     };
 
-    ConditionalPDFWrapper * clone() const
+    Scalar operator() (const Scalar x) const
     {
-      return new ConditionalPDFWrapper(*this);
-    }
-
-    Point operator() (const Point & point) const
-    {
-      Point z(y_);
-      z.add(point[0]);
-      return Point(1, p_distribution_->computePDF(z));
-    };
-
-    Sample operator() (const Sample & sample) const
-    {
-      const UnsignedInteger size = sample.getSize();
-      Sample z(size, y_);
-      z.stack(sample);
+      Collection<Scalar> z(y_);
+      z.add(x);
       return p_distribution_->computePDF(z);
     };
 
@@ -1554,16 +1542,6 @@ protected:
     Point getParameter() const
     {
       return y_;
-    }
-
-    UnsignedInteger getInputDimension() const
-    {
-      return 1;
-    }
-
-    UnsignedInteger getOutputDimension() const
-    {
-      return 1;
     }
 
     String __repr__() const
@@ -1581,17 +1559,17 @@ protected:
     }
 
   private:
-    Point y_;
+    Collection<Scalar> y_;
     const DistributionImplementation::Implementation p_distribution_;
   }; // class ConditionalPDFWrapper
 
   // Class used to wrap the computeConditionalCDF() method for the computation of the conditional quantile
-  class ConditionalCDFWrapper: public EvaluationImplementation
+  class ConditionalCDFWrapper: public UniVariateFunctionImplementation
   {
   public:
     ConditionalCDFWrapper(const DistributionImplementation * p_distribution)
-      : EvaluationImplementation()
-      , y_(0.0)
+      : UniVariateFunctionImplementation()
+      , y_(1, 0.0)
       , p_distribution_(p_distribution)
     {
       // Nothing to do
@@ -1602,9 +1580,9 @@ protected:
       return new ConditionalCDFWrapper(*this);
     }
 
-    Point operator() (const Point & point) const
+    Scalar operator() (const Scalar x) const
     {
-      return Point(1, p_distribution_->computeConditionalCDF(point[0], y_));
+      return p_distribution_->computeConditionalCDF(x, y_);
     };
 
     void setParameter(const Point & parameters)
@@ -1615,16 +1593,6 @@ protected:
     Point getParameter() const
     {
       return y_;
-    }
-
-    UnsignedInteger getInputDimension() const
-    {
-      return 1;
-    }
-
-    UnsignedInteger getOutputDimension() const
-    {
-      return 1;
     }
 
     String __repr__() const
