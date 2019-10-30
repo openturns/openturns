@@ -60,14 +60,13 @@ String Bisection::__repr__() const
 }
 
 /* Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) with the bisection method */
-Scalar Bisection::solve(const Function & function,
+Scalar Bisection::solve(const UniVariateFunction & function,
                         const Scalar value,
                         const Scalar infPoint,
                         const Scalar supPoint,
                         const Scalar infValue,
                         const Scalar supValue) const
 {
-  if ((function.getInputDimension() != 1) || (function.getOutputDimension() != 1)) throw InvalidDimensionException(HERE) << "Error: the bisection method requires a scalar function, here input dimension=" << function.getInputDimension() << " and output dimension=" << function.getOutputDimension();
   /* We transform the equation function(x) = value into function(x) - value = 0 */
   UnsignedInteger usedFunctionEvaluation = 0;
   const UnsignedInteger maximumFunctionEvaluation = getMaximumFunctionEvaluation();
@@ -95,7 +94,7 @@ Scalar Bisection::solve(const Function & function,
     // If all the evaluation budget has been spent, return the approximation
     if (usedFunctionEvaluation == maximumFunctionEvaluation) break;
     // New evaluation
-    fC = function(Point(1, c))[0] - value;
+    fC = function(c) - value;
     ++usedFunctionEvaluation;
     // If the function takes a value at middle on the same side of value that at left
     if (fC * fA > 0.0)

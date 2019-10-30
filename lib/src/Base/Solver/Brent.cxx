@@ -61,14 +61,13 @@ String Brent::__repr__() const
 }
 
 /* Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) with the Brent method */
-Scalar Brent::solve(const Function & function,
+Scalar Brent::solve(const UniVariateFunction & function,
                     const Scalar value,
                     const Scalar infPoint,
                     const Scalar supPoint,
                     const Scalar infValue,
                     const Scalar supValue) const
 {
-  if ((function.getInputDimension() != 1) || (function.getOutputDimension() != 1)) throw InvalidDimensionException(HERE) << "Error: Brent's method requires a scalar function, here input dimension=" << function.getInputDimension() << " and output dimension=" << function.getOutputDimension();
   /* We transform the equation function(x) = value into function(x) - value = 0 */
   UnsignedInteger usedFunctionEvaluation = 0;
   const UnsignedInteger maximumFunctionEvaluation = getMaximumFunctionEvaluation();
@@ -151,7 +150,7 @@ Scalar Brent::solve(const Function & function,
     // If all the evaluation budget has been spent, return the approximation
     if (usedFunctionEvaluation == maximumFunctionEvaluation) break;
     // New evaluation
-    fB = function(Point(1, b))[0] - value;
+    fB = function(b) - value;
     ++usedFunctionEvaluation;
     // Enforce that the root is within [b, c]
     if (fB * fC > 0.0)
