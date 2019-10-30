@@ -25,7 +25,6 @@
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/UniVariateFunctionImplementation.hxx"
-#include "openturns/MethodBoundEvaluation.hxx"
 #include "openturns/Uniform.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
