@@ -1,9 +1,6 @@
 %feature("docstring") OT::ClaytonCopulaFactory
 "Clayton Copula factory.
 
-Available constructor:
-    ClaytonCopulaFactory()
-
 We use the following estimator:
 
 .. math::

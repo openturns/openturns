@@ -1,9 +1,6 @@
 %feature("docstring") OT::AliMikhailHaqCopulaFactory
 "AliMikhailHaq copula factory.
 
-Available constructor:
-    AliMikhailHaqCopulaFactory()
-
 We note :math:`\Hat{\tau}_n` the Kendall-\ :math:`\tau` of the sample.
 
 The parameter :math:`\Hat{\theta}_n` is solution of
