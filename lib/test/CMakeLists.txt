@@ -48,7 +48,8 @@ macro (ot_check_test TESTNAME)
     target_link_libraries (${TESTNAME_TGT} CRT_fp8)
   endif ()
   set_target_properties (${TESTNAME_TGT} PROPERTIES
-                                          INSTALL_RPATH "${CMAKE_BINARY_DIR}/lib/src;${CMAKE_INSTALL_RPATH}")
+                         UNITY_BUILD OFF
+                         INSTALL_RPATH "${CMAKE_BINARY_DIR}/lib/src;${CMAKE_INSTALL_RPATH}")
   set (TESTNAME_LOC ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME_TGT}${CMAKE_EXECUTABLE_SUFFIX})
 
   set (_CMD)

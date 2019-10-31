@@ -10,19 +10,19 @@ add_subdirectory (Base)
 add_subdirectory (Uncertainty)
 
 # OptPDS and OptGSS cannot both be included as OptDirect is redefined
-set_source_files_properties (Base/Optim/OptGSS.cxx PROPERTIES COTIRE_EXCLUDED ON)
+set_source_files_properties (Base/Optim/OptGSS.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
 
 # Exclude Ceres sources from unity build (templates take much memory)
-set_source_files_properties (Base/Optim/Ceres.cxx PROPERTIES COTIRE_EXCLUDED ON)
+set_source_files_properties (Base/Optim/Ceres.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
 
 # Exclude Dlib sources from unity build (Lapack re-included)
-set_source_files_properties (Base/Optim/Dlib.cxx Base/Optim/DlibFunctions.cxx PROPERTIES COTIRE_EXCLUDED ON)
+set_source_files_properties (Base/Optim/Dlib.cxx Base/Optim/DlibFunctions.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
 
 
 # SymbolicParserExprTk.cxx includes exprtk.hpp which is huge, exclude it from cotire builds
 # It also causes problems on Windows
 if (OPENTURNS_HAVE_EXPRTK)
-  set_source_files_properties ("Base/Func/SymbolicParserExprTk.cxx" PROPERTIES COTIRE_EXCLUDED ON)
+  set_source_files_properties ("Base/Func/SymbolicParserExprTk.cxx" PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
   if (MINGW)
     set_source_files_properties ("Base/Func/SymbolicParserExprTk.cxx" PROPERTIES COMPILE_FLAGS "-Wa,-mbig-obj -g0")
   elseif (WIN32 AND CMAKE_CXX_COMPILER_ID MATCHES "MSVC|Intel")
