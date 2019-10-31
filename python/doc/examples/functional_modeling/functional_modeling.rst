@@ -7,6 +7,7 @@ Vectorial functions
   .. toctree::
     :maxdepth: 1
 
+    quick_start_functions.ipynb
     symbolic_function.ipynb
     python_function.ipynb
     function_manipulation.ipynb
