@@ -32,6 +32,7 @@ Distributions
     bayes_distribution.ipynb
     minimum_volume_level_set_1D.ipynb
     minimum_volume_level_set_2D.ipynb
+    generate_by_inversion.ipynb
 
 Copulas
 -------
