@@ -19,7 +19,6 @@ Reliability
     axial_stressed_beam_quickstart.ipynb
     axial_stressed_beam.ipynb
     flood_model.ipynb
-    event_manipulation.ipynb
     estimate_probability_monte_carlo.ipynb
     estimate_probability_lhs.ipynb
     estimate_probability_importance_sampling.ipynb
@@ -30,9 +29,17 @@ Reliability
     estimate_probability_form.ipynb
     strong_maximum_test.ipynb
     post_analytical_importance_sampling.ipynb
+    event_system.ipynb
+    event_manipulation.ipynb
+
+Reliabiliy: processes
+---------------------
+
+.. toctree::
+    :maxdepth: 1
+
     event_process.ipynb
     estimate_probability_monte_carlo_process.ipynb
-    event_system.ipynb
 
 Sensitivity analysis
 --------------------

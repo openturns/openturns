@@ -43,14 +43,15 @@ correlation matrix. The usual isoprobabilistic transformations are the
 Generalized Nataf transformation and the Rosenblatt one.
 
 In that new U-space, the event has the new expression defined
-from the transformed limit state function of the model
-:math:`G : \cD_f = \{\vect{U} \in \Rset^n \, | \, G(\vect{U}\,,\,\vect{d}) \le 0\}`
-and its boundary :
-:math:`\{\vect{U} \in \Rset^n \, | \,G(\vect{U}\,,\,\vect{d}) = 0\}`.
+from the transformed limit state function of the model :math:`g`
+
+.. math::
+
+    \cD_f = \{\vect{U} \in \Rset^n \, | \, g(\vect{U}\,,\,\vect{d}) \le 0\}
 
 See also
 --------
-Analytical, SORM, FORM, SORMResult, FORMResult, StrongMaximumTest
+Analytical, SORM, FORM, SORMResult, FORMResult, StrongMaximumTest, ImportanceSamplingExperiment
 
 Examples
 --------
