@@ -19,9 +19,9 @@ entropy=-0.079520
 Minimum volume interval= [0.0127327, 0.987267]
 [0.0127327, 0.987267]
 threshold= [0.974535]
-Minimum volume level set= {x | f(x) <= 0.654811} with f=
+Minimum volume level set= {x | f(x) <= 0.665792} with f=
 MinimumVolumeLevelSetEvaluation(FrankCopula(theta = 2.5))
-beta= [0.51954]
+beta= [0.513866]
 Bilateral confidence interval= [0.0127327, 0.987267]
 [0.0127327, 0.987267]
 beta= [0.974535]
@@ -35,16 +35,16 @@ margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
 margin CDF=0.250000
 margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization= class=Point name=Unnamed dimension=1 values=[0.782625]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.185475]
 margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
 margin CDF=0.250000
 margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization= class=Point name=Unnamed dimension=1 values=[0.132158]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.219923]
 indices= [1,0]
 margins= class=FrankCopula name=FrankCopula dimension=2 theta=2.5
 margins PDF=1.334391
 margins CDF=0.107307
 margins quantile= class=Point name=Unnamed dimension=2 values=[0.974144,0.974144]
 margins CDF(qantile)=0.950000
-margins realization= class=Point name=Unnamed dimension=2 values=[0.454536,0.457051]
+margins realization= class=Point name=Unnamed dimension=2 values=[0.0964744,0.429225]

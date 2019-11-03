@@ -149,7 +149,7 @@ bool BonminProblem::get_variables_linearity( int n,
   return true;
 }
 
-bool BonminProblem::get_constraints_linearity( int m,
+bool BonminProblem::get_constraints_linearity( int /*m*/,
     LinearityTypeTable const_types)
 {
   // Retrieving number of constraints
@@ -189,7 +189,7 @@ bool BonminProblem::get_constraints_linearity( int m,
 bool BonminProblem::get_bounds_info( int n,
                                      double* x_l,  // Lower bounds
                                      double* x_u,  // Upper bounds
-                                     int m,
+                                     int /*m*/,
                                      double* g_l,  // Lower bounds
                                      double* g_u)  // Upper bounds
 {
@@ -242,15 +242,15 @@ bool BonminProblem::get_bounds_info( int n,
   return true;
 }
 
-bool BonminProblem::get_starting_point(int n,
-                                       bool init_x,
+bool BonminProblem::get_starting_point(int /*n*/,
+                                       bool /*init_x*/,
                                        double* x,
-                                       bool init_z,
-                                       double* z_L,
-                                       double* z_U,
-                                       int m,
-                                       bool init_lambda,
-                                       double* lambda)
+                                       bool /*init_z*/,
+                                       double* /*z_L*/,
+                                       double* /*z_U*/,
+                                       int /*m*/,
+                                       bool /*init_lambda*/,
+                                       double* /*lambda*/)
 {
   // Retrieve number of constraints
   UnsignedInteger nbConstraints = 0;
@@ -267,7 +267,7 @@ bool BonminProblem::get_starting_point(int n,
 
 bool BonminProblem::eval_f(int n,
                            const double* x,
-                           bool new_x,
+                           bool /*new_x*/,
                            double& obj_value)
 {
   // Convert x to OT::Point
@@ -298,7 +298,7 @@ bool BonminProblem::eval_f(int n,
 
 bool BonminProblem::eval_grad_f( int n,
                                  const double* x,
-                                 bool new_x,
+                                 bool /*new_x*/,
                                  double* grad_f)
 {
   // Convert x to OT::Point
@@ -320,8 +320,8 @@ bool BonminProblem::eval_grad_f( int n,
 
 bool BonminProblem::eval_g(int n,
                            const double* x,
-                           bool new_x,
-                           int m,
+                           bool /*new_x*/,
+                           int /*m*/,
                            double* g)
 {
   // Convert x to OT::Point
@@ -354,9 +354,9 @@ bool BonminProblem::eval_g(int n,
 
 bool BonminProblem::eval_jac_g(int n,
                                const double* x,
-                               bool new_x,
+                               bool /*new_x*/,
                                int m,
-                               int nnz_jac,
+                               int /*nnz_jac*/,
                                int* iRow,
                                int *jCol,
                                double* values)
@@ -416,12 +416,12 @@ bool BonminProblem::eval_jac_g(int n,
 
 bool BonminProblem::eval_h(int n,
                            const double* x,
-                           bool new_x,
+                           bool /*new_x*/,
                            double obj_factor,
-                           int m,
+                           int /*m*/,
                            const double* lambda,
-                           bool new_lambda,
-                           int nele_hess,
+                           bool /*new_lambda*/,
+                           int /*nele_hess*/,
                            int* iRow,
                            int* jCol,
                            double* values)
@@ -498,7 +498,7 @@ bool BonminProblem::eval_h(int n,
 
 bool BonminProblem::eval_gi(int n,
                             const double* x,
-                            bool new_x,
+                            bool /*new_x*/,
                             int i,
                             double& gi)
 {
@@ -522,7 +522,7 @@ bool BonminProblem::eval_gi(int n,
 
 bool BonminProblem::eval_grad_gi(int n,
                                  const double* x,
-                                 bool new_x,
+                                 bool /*new_x*/,
                                  int i,
                                  int& nele_grad_gi,
                                  int* jCol,

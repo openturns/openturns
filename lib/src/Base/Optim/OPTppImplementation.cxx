@@ -56,7 +56,7 @@ OPTppImplementation* OPTppImplementation::P_current_opt_ = 0;
 Description OPTppImplementation::AlgorithmNames_;
 
 
-void OPTppImplementation::InitializeProblem(int ndim, NEWMAT::ColumnVector& x)
+void OPTppImplementation::InitializeProblem(int /*ndim*/, NEWMAT::ColumnVector& x)
 {
   if (!P_current_opt_)
     throw InternalException(HERE) << "P_current_opt_ is null";
@@ -67,7 +67,7 @@ void OPTppImplementation::InitializeProblem(int ndim, NEWMAT::ColumnVector& x)
 }
 
 
-void OPTppImplementation::ComputeObjective(int ndim, const NEWMAT::ColumnVector & x, double & fx, int & result, void* v)
+void OPTppImplementation::ComputeObjective(int /*ndim*/, const NEWMAT::ColumnVector & x, double & fx, int & result, void* v)
 {
   OPTppImplementation *algorithm = static_cast<OPTppImplementation *>(v);
 
@@ -101,7 +101,7 @@ void OPTppImplementation::ComputeObjective(int ndim, const NEWMAT::ColumnVector 
 }
 
 
-void OPTppImplementation::ComputeObjectiveGradient(int mode, int ndim, const NEWMAT::ColumnVector & x, double & fx, NEWMAT::ColumnVector & g, int & result, void* v)
+void OPTppImplementation::ComputeObjectiveGradient(int mode, int /*ndim*/, const NEWMAT::ColumnVector & x, double & fx, NEWMAT::ColumnVector & g, int & result, void* v)
 {
   OPTppImplementation *algorithm = static_cast<OPTppImplementation *>(v);
 
@@ -147,7 +147,7 @@ void OPTppImplementation::ComputeObjectiveGradient(int mode, int ndim, const NEW
 }
 
 
-void OPTppImplementation::ComputeObjectiveGradientHessian(int mode, int ndim, const NEWMAT::ColumnVector & x, double & fx, NEWMAT::ColumnVector & g, NEWMAT::SymmetricMatrix & H, int & result, void* v)
+void OPTppImplementation::ComputeObjectiveGradientHessian(int mode, int /*ndim*/, const NEWMAT::ColumnVector & x, double & fx, NEWMAT::ColumnVector & g, NEWMAT::SymmetricMatrix & H, int & result, void* v)
 {
   OPTppImplementation *algorithm = static_cast<OPTppImplementation *>(v);
 
@@ -203,7 +203,7 @@ void OPTppImplementation::ComputeObjectiveGradientHessian(int mode, int ndim, co
 }
 
 
-void OPTppImplementation::ComputeInequalityConstraint(int mode, int ndim, const NEWMAT::ColumnVector & x, NEWMAT::ColumnVector & fx, NEWMAT::Matrix & g, OPTPP::OptppArray<NEWMAT::SymmetricMatrix> & H, int & result)
+void OPTppImplementation::ComputeInequalityConstraint(int mode, int /*ndim*/, const NEWMAT::ColumnVector & x, NEWMAT::ColumnVector & fx, NEWMAT::Matrix & g, OPTPP::OptppArray<NEWMAT::SymmetricMatrix> & H, int & result)
 {
   if (!P_current_opt_)
     throw InternalException(HERE) << "P_current_opt_ is null";
@@ -252,7 +252,7 @@ void OPTppImplementation::ComputeInequalityConstraint(int mode, int ndim, const 
 }
 
 
-void OPTppImplementation::ComputeEqualityConstraint(int mode, int ndim, const NEWMAT::ColumnVector & x, NEWMAT::ColumnVector & fx, NEWMAT::Matrix & g, OPTPP::OptppArray<NEWMAT::SymmetricMatrix> & H, int & result)
+void OPTppImplementation::ComputeEqualityConstraint(int mode, int /*ndim*/, const NEWMAT::ColumnVector & x, NEWMAT::ColumnVector & fx, NEWMAT::Matrix & g, OPTPP::OptppArray<NEWMAT::SymmetricMatrix> & H, int & result)
 {
   if (!P_current_opt_)
     throw InternalException(HERE) << "P_current_opt_ is null";

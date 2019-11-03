@@ -26,9 +26,9 @@ entropy=1.765404
 Minimum volume interval= [-1.80326, 3.80326]
 [0.0390431, 2.00954]
 threshold=0.986085
-Minimum volume level set= {x | f(x) <= 3.73169} with f=
+Minimum volume level set= {x | f(x) <= 3.69414} with f=
 MinimumVolumeLevelSetEvaluation(NormalGamma(mu=1, kappa=2, alpha=3, beta=4))
-beta=0.023952
+beta=0.024869
 Bilateral confidence interval= [-1.77733, 3.77733]
 [0.0966867, 2.20341]
 beta=0.985531

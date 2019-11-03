@@ -19,8 +19,8 @@ Quantile=class=Point name=Unnamed dimension=2 values=[0.674166,0.674166]
 CDF(quantile)=0.5
 Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0127281,0.0127281] upper bound=class=Point name=Unnamed dimension=2 values=[0.987272,0.987272] finite lower bound=[1,1] finite upper bound=[1,1]
 threshold=0.974544
-Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,X1,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(PlackettCopula(theta = 2.5)) gradientImplementation=MinimumVolumeLevelSetGradient(PlackettCopula(theta = 2.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(PlackettCopula(theta = 2.5)) level=0.516531
-beta=0.596587
+Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,X1,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(PlackettCopula(theta = 2.5)) gradientImplementation=MinimumVolumeLevelSetGradient(PlackettCopula(theta = 2.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(PlackettCopula(theta = 2.5)) level=0.509014
+beta=0.601088
 Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0127281,0.0127281] upper bound=class=Point name=Unnamed dimension=2 values=[0.987272,0.987272] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.974544
 Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0,0] upper bound=class=Point name=Unnamed dimension=2 values=[0.974228,0.974228] finite lower bound=[1,1] finite upper bound=[1,1]
@@ -35,16 +35,16 @@ margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.568102]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.703242]
 margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.761047]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.762006]
 indices=[1,0]
 margins=class=PlackettCopula name=a plackett copula dimension=2 theta=2.5
 margins PDF=1.26102
 margins CDF=0.0974207
 margins quantile=class=Point name=Unnamed dimension=2 values=[0.974228,0.974228]
 margins CDF(quantile)=0.95
-margins realization=class=Point name=Unnamed dimension=2 values=[0.68799,0.154194]
+margins realization=class=Point name=Unnamed dimension=2 values=[0.852602,0.980755]
