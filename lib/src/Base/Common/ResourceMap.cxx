@@ -1243,7 +1243,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // MaximumEntropyOrderStatisticsDistribution //
   setAsBool( "MaximumEntropyOrderStatisticsDistribution-CheckMarginals", true );
-  setAsBool( "MaximumEntropyOrderStatisticsDistribution-UseApproximation", true );
+  setAsBool( "MaximumEntropyOrderStatisticsDistribution-UseApproximation", false );
   setAsScalar( "MaximumEntropyOrderStatisticsDistribution-SupportShift", 1.0e-15 );
   setAsUnsignedInteger( "MaximumEntropyOrderStatisticsDistribution-CDFIntegrationNodesNumber", 16);
   setAsUnsignedInteger( "MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization", 100 );

@@ -7,6 +7,9 @@ ot.TESTPREAMBLE()
 ot.RandomGenerator.SetSeed(0)
 
 
+# Force the use of the approximation to avoid timeout
+ResourceMap.SetAsBool("MaximumEntropyOrderStatisticsDistribution-UseApproximation", True)
+
 # Instanciate one copula object
 copula = ot.MaximumEntropyOrderStatisticsCopula(
     [ot.Trapezoidal(-2.0, -1.1, -1.0, 1.0),
