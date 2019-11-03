@@ -41,9 +41,9 @@ String Greater::__repr__() const
          << " name=" << getName();
 }
 
-String Greater::__str__(const String & /*offset*/) const
+String Greater::__str__(const String & offset) const
 {
-  return ">";
+  return OSS() << offset << ">";
 }
 
 /* Here is the interface that all derived class must implement */

@@ -1216,8 +1216,8 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "Distribution-DefaultPointNumber", 129 );
   setAsUnsignedInteger( "Distribution-DefaultQuantileCacheSize", 128 );
   setAsUnsignedInteger( "Distribution-DefaultQuantileIteration", 100 );
-  setAsUnsignedInteger( "Distribution-EntropySamplingSize", 1048576 );
-  setAsUnsignedInteger( "Distribution-MinimumVolumeLevelSetSamplingSize", 1048576 );
+  setAsUnsignedInteger( "Distribution-EntropySamplingSize", 524288 );
+  setAsUnsignedInteger( "Distribution-MinimumVolumeLevelSetSamplingSize", 16384 );
   setAsUnsignedInteger( "Distribution-SmallDimensionEntropy", 3 );
 
   // ContinuousDistribution parameters //

@@ -205,10 +205,8 @@ private:
 
     String __str__(const String & offset) const
     {
-      // Silence compiler warnings about unused parameter
-      (void) offset;
       // Don't print algorithm_ here as it will result in an infinite loop!
-      return __repr__();
+      return OSS() << offset << __repr__();
     }
 
   private:

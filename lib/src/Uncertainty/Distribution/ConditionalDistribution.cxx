@@ -319,7 +319,11 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
   {
     Collection< Distribution > atoms(1, conditionedDistribution);
     atoms[0].setParameter(diracValues_);
+    // Hide warnings
+    Log::Severity oldSeverity = Log::Flags();
+    Log::Show(oldSeverity & ~Log::WARN);
     setDistributionCollection(atoms);
+    Log::Show(oldSeverity & ~Log::WARN);
     return;
   }
   // First case: only Dirac and stochastic discrete marginals with at least one stochastic discrete marginal
@@ -352,7 +356,11 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
       ++atomIndex;
     } // Discrete measure
     // Now, update the underlying Mixture
+    // Hide warnings
+    Log::Severity oldSeverity = Log::Flags();
+    Log::Show(oldSeverity & ~Log::WARN);
     setDistributionCollection(atoms);
+    Log::Show(oldSeverity & ~Log::WARN);
     return;
   } // No continuous marginal
   // Second case: only Dirac and continuous marginals with at least one continuous marginal
@@ -386,7 +394,11 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
       ++atomIndex;
     } // Continuous measure
     // Now, update the underlying Mixture
+    // Hide warnings
+    Log::Severity oldSeverity = Log::Flags();
+    Log::Show(oldSeverity & ~Log::WARN);
     setDistributionCollection(atoms);
+    Log::Show(oldSeverity & ~Log::WARN);
     return;
   } // No discrete marginal
   // Third case: Dirac, stochastic discrete and continuous marginal distributions with at least one stochastic discrete marginal and one continuous marginal
@@ -426,7 +438,11 @@ void ConditionalDistribution::setConditionedAndConditioningDistributionsAndLinkF
     ++atomIndex;
   }
   // Now, update the underlying Mixture
+  // Hide warnings
+  Log::Severity oldSeverity = Log::Flags();
+  Log::Show(oldSeverity & ~Log::WARN);
   setDistributionCollection(atoms);
+  Log::Show(oldSeverity & ~Log::WARN);
 }
 
 /* Compute the expectation of f(\theta)1_{\theta\leq \theta^*} with respect to the prior distribution of \theta */

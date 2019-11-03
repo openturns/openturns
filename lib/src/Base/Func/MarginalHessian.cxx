@@ -65,9 +65,9 @@ MarginalHessian * MarginalHessian::clone() const
 }
 
 /* Comparison operator */
-Bool MarginalHessian::operator ==(const MarginalHessian & /*other*/) const
+Bool MarginalHessian::operator ==(const MarginalHessian & other) const
 {
-  return true;
+  return (this == &other);
 }
 
 /* String converter */

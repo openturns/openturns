@@ -41,9 +41,9 @@ String Less::__repr__() const
          << " name=" << getName();
 }
 
-String Less::__str__(const String & /*offset*/) const
+String Less::__str__(const String & offset) const
 {
-  return "<";
+  return OSS() << offset << "<";
 }
 
 /* Here is the interface that all derived class must implement */

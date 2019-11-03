@@ -31,7 +31,7 @@ entropy=-0.019026
 Minimum volume interval= [0.0126794, 0.987321]
 [0.0126794, 0.987321]
 threshold= [0.974641]
-Minimum volume level set= {x | f(x) <= 0.230258} with f=
+Minimum volume level set= {x | f(x) <= 0.229087} with f=
 MinimumVolumeLevelSetEvaluation(EmpiricalBernsteinCopula( copulaSample=     [ X0        X1        ]
  0 : [ 0.833333  0.166667  ]
  1 : [ 0.583333  0.916667  ]
@@ -45,7 +45,7 @@ MinimumVolumeLevelSetEvaluation(EmpiricalBernsteinCopula( copulaSample=     [ X0
  9 : [ 0.416667  0.666667  ]
 10 : [ 0.75      0.75      ]
 11 : [ 0.333333  0.25      ] binNumber=3))
-beta= [0.794328]
+beta= [0.795259]
 Bilateral confidence interval= [0.0126794, 0.987321]
 [0.0126794, 0.987321]
 beta= [0.974641]
@@ -60,16 +60,16 @@ margin= class=EmpiricalBernsteinCopula name=EmpiricalBernsteinCopula dimension=1
 margin PDF=1.000000
 margin CDF=0.250000
 margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization= class=Point name=Unnamed dimension=1 values=[0.354782]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.28876]
 margin= class=EmpiricalBernsteinCopula name=EmpiricalBernsteinCopula dimension=1 copulaSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=12 dimension=1 description=[X1] data=[[0.166667],[0.916667],[0.583333],[1],[0.833333],[0.5],[0.0833333],[0.416667],[0.333333],[0.666667],[0.75],[0.25]] binNumber=3
 margin PDF=1.000000
 margin CDF=0.250000
 margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization= class=Point name=Unnamed dimension=1 values=[0.739996]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.986902]
 indices= [1,0]
 margins= class=EmpiricalBernsteinCopula name=EmpiricalBernsteinCopula dimension=2 copulaSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=12 dimension=2 description=[X1,X0] data=[[0.166667,0.833333],[0.916667,0.583333],[0.583333,0.166667],[1,0.666667],[0.833333,0.916667],[0.5,0.5],[0.0833333,0.0833333],[0.416667,0.25],[0.333333,1],[0.666667,0.416667],[0.75,0.75],[0.25,0.333333]] binNumber=3
 margins PDF=1.095703
 margins CDF=0.076782
 margins quantile= class=Point name=Unnamed dimension=2 values=[0.974525,0.974525]
 margins CDF(qantile)=0.950000
-margins realization= class=Point name=Unnamed dimension=2 values=[0.565228,0.790266]
+margins realization= class=Point name=Unnamed dimension=2 values=[0.411452,0.531198]

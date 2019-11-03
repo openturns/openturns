@@ -67,8 +67,8 @@ Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=
  8 : [ 1         0.333333  ]
  9 : [ 0.416667  0.666667  ]
 10 : [ 0.75      0.75      ]
-11 : [ 0.333333  0.25      ] binNumber=3)) level=0.231283
-beta=0.793515
+11 : [ 0.333333  0.25      ] binNumber=3)) level=0.230448
+beta=0.794177
 Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0126794,0.0126794] upper bound=class=Point name=Unnamed dimension=2 values=[0.987321,0.987321] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.974641
 Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0,0] upper bound=class=Point name=Unnamed dimension=2 values=[0.974525,0.974525] finite lower bound=[1,1] finite upper bound=[1,1]
@@ -83,16 +83,16 @@ margin=class=EmpiricalBernsteinCopula name=EmpiricalBernsteinCopula dimension=1 
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.960577]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.716177]
 margin=class=EmpiricalBernsteinCopula name=EmpiricalBernsteinCopula dimension=1 copulaSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=12 dimension=1 description=[X1] data=[[0.166667],[0.916667],[0.583333],[1],[0.833333],[0.5],[0.0833333],[0.416667],[0.333333],[0.666667],[0.75],[0.25]] binNumber=3
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.0182254]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.875912]
 indices=[1,0]
 margins=class=EmpiricalBernsteinCopula name=EmpiricalBernsteinCopula dimension=2 copulaSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=12 dimension=2 description=[X1,X0] data=[[0.166667,0.833333],[0.916667,0.583333],[0.583333,0.166667],[1,0.666667],[0.833333,0.916667],[0.5,0.5],[0.0833333,0.0833333],[0.416667,0.25],[0.333333,1],[0.666667,0.416667],[0.75,0.75],[0.25,0.333333]] binNumber=3
 margins PDF=1.0957
 margins CDF=0.0767822
 margins quantile=class=Point name=Unnamed dimension=2 values=[0.974525,0.974525]
 margins CDF(quantile)=0.95
-margins realization=class=Point name=Unnamed dimension=2 values=[0.944591,0.804734]
+margins realization=class=Point name=Unnamed dimension=2 values=[0.00985624,0.0968128]

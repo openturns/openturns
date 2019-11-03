@@ -148,8 +148,7 @@ public:
   inline virtual
   String __str__(const String & offset = "") const
   {
-    (void)offset;
-    return __repr__();
+    return OSS() << offset << __repr__();
   }
 
 
