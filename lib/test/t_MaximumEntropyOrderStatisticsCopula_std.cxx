@@ -44,6 +44,9 @@ int main(int, char *[])
     // Test basic functionnalities
     checkClassWithClassName<TestObject>();
 
+    // Force the use of the approximation to avoid timeout
+    ResourceMap::SetAsBool("MaximumEntropyOrderStatisticsDistribution-UseApproximation", true);
+
     ComposedDistribution::DistributionCollection coll;
     coll.add(Trapezoidal(-2.0, -1.1, -1.0, 1.0));
     coll.add(LogUniform(1.0, 1.2));
