@@ -108,8 +108,10 @@ Scalar OrthogonalUniVariatePolynomial::operator() (const Scalar x) const
   Scalar uN = 1.0;
   // Special case: degree == 0, constant unitary polynomial
   if (size == 0) return uN;
-  Coefficients aN(recurrenceCoefficients_[size - 1]);
-  Scalar uNMinus1 = aN[0] * x + aN[1];
+  Scalar aN2 = recurrenceCoefficients_[size - 1][2];
+  Scalar aN1 = recurrenceCoefficients_[size - 1][1];
+  Scalar aN0 = recurrenceCoefficients_[size - 1][0];
+  Scalar uNMinus1 = aN0 * x + aN1;
   // Special case: degree == 1, affine polynomial
   if (size == 1) return uNMinus1;
   Scalar uNMinus2 = 0.0;
@@ -120,11 +122,15 @@ Scalar OrthogonalUniVariatePolynomial::operator() (const Scalar x) const
   // with P-1 = 0, P0 = 1
   for (UnsignedInteger n = size - 1; n > 0; --n)
   {
-    const Coefficients aNMinus1(recurrenceCoefficients_[n - 1]);
-    uNMinus2 = (aNMinus1[0] * x + aNMinus1[1]) * uNMinus1 + aN[2] * uN;
+    const Scalar aNMinus12 = recurrenceCoefficients_[n - 1][2];
+    const Scalar aNMinus11 = recurrenceCoefficients_[n - 1][1];
+    const Scalar aNMinus10 = recurrenceCoefficients_[n - 1][0];
+    uNMinus2 = (aNMinus10 * x + aNMinus11) * uNMinus1 + aN2 * uN;
     uN = uNMinus1;
     uNMinus1 = uNMinus2;
-    aN = aNMinus1;
+    aN2 = aNMinus12;
+    aN1 = aNMinus11;
+    aN0 = aNMinus10;
   }
   return uNMinus2;
 }
