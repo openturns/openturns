@@ -4,7 +4,7 @@
  *         basis and eigenvalues of a given covariance model based on
  *         SVD decomposition of a process sample.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by

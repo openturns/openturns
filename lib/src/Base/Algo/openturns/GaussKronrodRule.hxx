@@ -3,7 +3,7 @@
  *  @brief This class defines embredded Gauss/Kronrod integration rules
  *         used by the GaussKronrod integration method for 1D scalar function
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by

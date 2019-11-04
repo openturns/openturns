@@ -3,7 +3,7 @@
  *  @brief Field to point function allowing to perform the projection of a
  *         field over a Karhunen-Loeve basis
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-Phimeca
+ *  Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
