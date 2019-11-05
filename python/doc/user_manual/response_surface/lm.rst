@@ -13,6 +13,7 @@ Linear model algorithm
 
     LinearModelAlgorithm
     LinearModelResult
+    LinearModelStepwiseAlgorithm
 
 Post-processing
 ===============
