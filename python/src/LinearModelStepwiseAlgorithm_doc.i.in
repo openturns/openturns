@@ -3,23 +3,21 @@
 
 **Available usages**:
 
-    LinearModelStepwiseAlgorithm()
-
     LinearModelStepwiseAlgorithm(*inputSample, basis, outputSample, minimalIndices, isForward, penalty, maximumIterationNumber*)
 
     LinearModelStepwiseAlgorithm(*inputSample, basis, outputSample, minimalIndices, startIndices, penalty, maximumIterationNumber*)
 
 Parameters
 ----------
-inputSample, outputSample : :class:`~openturns.Sample`
+inputSample, outputSample : 2-d sequence of float
     The input and output samples of a model.
 basis : :class:`~openturns.Basis`
     Functional basis to estimate the trend.
-minimalIndices :sequence of int
+minimalIndices : sequence of int
     The indices of minimal model
 isForward : bool
       the boolean value used for the stepwise regression method direction FORWARD and BACKWARD. 
-startIndices : :class:`~openturns.Indices`
+startIndices : sequence of int
      The indices of start model used for the stepwise regression method direction BOTH.
 penalty : float
      The multiple of the degrees of freedom used for the penalty of the stepwise regression method : 
