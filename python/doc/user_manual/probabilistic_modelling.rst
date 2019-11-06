@@ -171,6 +171,7 @@ Combining and transforming distributions
     :toctree: _generated/
     :template: class.rst_t
 
+    MixedHistogramUserDefined
     OrderStatisticsMarginalChecker
     PosteriorDistribution
 

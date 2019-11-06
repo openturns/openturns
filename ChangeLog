@@ -35,7 +35,7 @@
 
 ==== Major changes ====
  * New optimization solvers (Dlib, Bonmin for mixed integer optimization problems)
- * New distributions (SquaredNormal, WeibullMax, Pareto, DiscreteCompoundDistribution)
+ * New distributions (SquaredNormal, WeibullMax, Pareto, DiscreteCompoundDistribution, MixedHistogramUserDefined)
  * New estimators (ParetoFactory, GeneralizedExtremeValueFactory, LeastSquaresDistributionFactory)
  * New copulas (JoeCopula, MarshallOlkinCopula)
  * Linear model learner (LinearModelStepwiseAlgorithm)
@@ -64,6 +64,7 @@
  * MarginalEvaluation/Gradient/Hessian
  * MarshallOlkinCopula
  * LinearModelStepwiseAlgorithm
+ * MixedHistogramUserDefined
 
 ==== API changes ====
  * FittingTest methods to return fitted distributions with factory as argument
