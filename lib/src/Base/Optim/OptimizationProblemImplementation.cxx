@@ -191,7 +191,7 @@ Function OptimizationProblemImplementation::getLevelFunction() const
   throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getLevelFunction";
 }
 
-void OptimizationProblemImplementation::setLevelFunction(const Function & levelFunction)
+void OptimizationProblemImplementation::setLevelFunction(const Function & /*levelFunction*/)
 {
   throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::setLevelFunction";
 }
@@ -206,7 +206,7 @@ Function OptimizationProblemImplementation::getResidualFunction() const
   throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getResidualFunction";
 }
 
-void OptimizationProblemImplementation::setResidualFunction(const Function & residualFunction)
+void OptimizationProblemImplementation::setResidualFunction(const Function & /*residualFunction*/)
 {
   throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::setResidualFunction";
 }
@@ -222,7 +222,7 @@ Scalar OptimizationProblemImplementation::getLevelValue() const
   throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::getLevelValue";
 }
 
-void OptimizationProblemImplementation::setLevelValue(Scalar levelValue)
+void OptimizationProblemImplementation::setLevelValue(Scalar /*levelValue*/)
 {
   throw NotYetImplementedException(HERE) << "in OptimizationProblemImplementation::setLevelValue";
 }

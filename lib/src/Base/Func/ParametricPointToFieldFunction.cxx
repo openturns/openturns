@@ -205,7 +205,7 @@ String ParametricPointToFieldFunction::__str__(const String & offset) const
   parameters.setDescription(getParameterDescription());
 
   OSS oss(false);
-  oss << PointToFieldFunction::GetClassName()
+  oss << offset << PointToFieldFunction::GetClassName()
       << "(" << function_
       << ", parameters positions=" << parametersPositions_
       << ", parameters=" << parameters << ")";

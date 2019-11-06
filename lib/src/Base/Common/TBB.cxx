@@ -56,6 +56,8 @@ void TBB::SetNumberOfThreads(const UnsignedInteger numberOfThreads)
 #ifdef OPENTURNS_HAVE_TBB
   delete TBB_P_scheduler_;
   TBB_P_scheduler_ = new tbb::task_scheduler_init(numberOfThreads);
+#else
+  (void)numberOfThreads;
 #endif
 }
 

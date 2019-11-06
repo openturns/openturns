@@ -93,6 +93,8 @@ void OPTpp::initialize(const String & algoName)
     p_impl_ = new OptQNIPS(getProblem());
   else
     throw InvalidArgumentException(HERE) << "Invalid solver name: " << algoName;
+#else
+  (void)algoName;
 #endif
 }
 
@@ -122,6 +124,7 @@ void OPTpp::setProblem(const OptimizationProblem & problem)
 #ifdef OPENTURNS_HAVE_OPTPP
   p_impl_->setProblem(problem);
 #else
+  (void)problem;
   throw NotYetImplementedException(HERE) << "No OPTpp support";
 #endif
 }
@@ -162,6 +165,7 @@ void OPTpp::setMinimumStep(const Scalar minimumStep)
 #ifdef OPENTURNS_HAVE_OPTPP
   p_impl_->setMinimumStep(minimumStep);
 #else
+  (void)minimumStep;
   throw NotYetImplementedException(HERE) << "No OPTpp support";
 #endif
 }
@@ -181,6 +185,7 @@ void OPTpp::setMaximumStep(const Scalar maximumStep)
 #ifdef OPENTURNS_HAVE_OPTPP
   p_impl_->setMaximumStep(maximumStep);
 #else
+  (void)maximumStep;
   throw NotYetImplementedException(HERE) << "No OPTpp support";
 #endif
 }
@@ -200,6 +205,7 @@ void OPTpp::setLineSearchTolerance(const Scalar lineSearchTolerance)
 #ifdef OPENTURNS_HAVE_OPTPP
   p_impl_->setLineSearchTolerance(lineSearchTolerance);
 #else
+  (void)lineSearchTolerance;
   throw NotYetImplementedException(HERE) << "No OPTpp support";
 #endif
 }
@@ -219,6 +225,7 @@ void OPTpp::setMaximumLineSearchIterationNumber(const UnsignedInteger maximumLin
 #ifdef OPENTURNS_HAVE_OPTPP
   p_impl_->setMaximumLineSearchIterationNumber(maximumLineSearchIterationNumber);
 #else
+  (void)maximumLineSearchIterationNumber;
   throw NotYetImplementedException(HERE) << "No OPTpp support";
 #endif
 }
@@ -238,6 +245,7 @@ void OPTpp::setTrustRegionSize(const Scalar trustRegionSize)
 #ifdef OPENTURNS_HAVE_OPTPP
   p_impl_->setTrustRegionSize(trustRegionSize);
 #else
+  (void)trustRegionSize;
   throw NotYetImplementedException(HERE) << "No OPTpp support";
 #endif
 }
@@ -267,7 +275,7 @@ String OPTpp::__repr__() const
 String OPTpp::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << getClassName();
+  oss << offset << "class=" << getClassName();
 #ifdef OPENTURNS_HAVE_OPTPP
   oss << " " << p_impl_->__str__(offset);
 #endif

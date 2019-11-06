@@ -90,9 +90,9 @@ public:
 
   /* Computation of the line search direction */
   /* Virtual function, must be overridden in actual implementation */
-  virtual const DlibMatrix get_next_direction ( const DlibMatrix & x,
-      const double f_value,
-      const DlibMatrix & funct_derivative)
+  virtual const DlibMatrix get_next_direction ( const DlibMatrix & /*x*/,
+      const double /*f_value*/,
+      const DlibMatrix & /*funct_derivative*/)
   {
     throw NotYetImplementedException(HERE) << "Error: not yet implemented search strategy";
   }
