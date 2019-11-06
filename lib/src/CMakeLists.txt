@@ -30,6 +30,10 @@ if (OPENTURNS_HAVE_EXPRTK)
   endif ()
 endif()
 
+if (OPENTURNS_HAVE_BONMIN AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=unused-parameter -Wno-error=implicit-fallthrough")
+endif ()
+
 # Build main library
 foreach (built_source ${BUILT_SOURCEFILES})
   set_source_files_properties (${built_source} PROPERTIES GENERATED TRUE)
