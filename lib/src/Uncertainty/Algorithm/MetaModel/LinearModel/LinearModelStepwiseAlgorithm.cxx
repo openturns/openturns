@@ -125,7 +125,7 @@ String LinearModelStepwiseAlgorithm::__repr__() const
 }
 
 /* String converter */
-String LinearModelStepwiseAlgorithm::__str__(const String & offset) const
+String LinearModelStepwiseAlgorithm::__str__(const String & /*offset*/) const
 {
   OSS oss(false);
   oss << "class=" << getClassName()

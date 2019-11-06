@@ -1428,7 +1428,7 @@ Scalar DrawableImplementation::getTextSize() const
   throw NotDefinedException(HERE) << "Error: no text size in " << getClassName();
 }
 
-void DrawableImplementation::setTextSize(const Scalar size)
+void DrawableImplementation::setTextSize(const Scalar )
 {
   throw NotDefinedException(HERE) << "Error: no text size in " << getClassName();
 }
