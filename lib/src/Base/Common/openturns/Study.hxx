@@ -212,9 +212,6 @@ protected:
 
 private:
 
-  /** Assignment */
-  Study & operator =(const Study & other);
-
   /** The map storing the saved objects */
   Map map_;
 
