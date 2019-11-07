@@ -330,15 +330,4 @@ Description OptimizationAlgorithm::GetAlgorithmNames(const OptimizationProblem &
 }
 
 
-Description OptimizationAlgorithm::GetLeastSquaresAlgorithmNames()
-{
-  LOGWARN("OptimizationAlgorithm::GetLeastSquaresAlgorithmNames is deprecated");
-  Description names;
-  if (CMinpack::IsAvailable())
-    names.add("CMinpack");
-  if (Ceres::IsAvailable())
-    names.add(Ceres::GetAlgorithmNames());
-  return names;
-}
-
 END_NAMESPACE_OPENTURNS

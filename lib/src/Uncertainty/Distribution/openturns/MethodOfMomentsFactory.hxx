@@ -63,10 +63,6 @@ public:
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
   OptimizationAlgorithm getOptimizationAlgorithm() const;
 
-  /** @deprecated */
-  void setOptimizationProblem(const OptimizationProblem & problem);
-  OptimizationProblem getOptimizationProblem() const;
-
   /** Accessor to known parameter */
   void setKnownParameter(const Point & values, const Indices & positions);
   Point getKnownParameterValues() const;

@@ -130,7 +130,7 @@ void CMinpack::InverseTransform(Point & x, int n, const Interval & bounds)
   }
 }
 
-int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, Scalar *fvec, Scalar *fjac, int ldfjac, int iflag)
+int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, Scalar *fvec, Scalar *fjac, int /*ldfjac*/, int iflag)
 {
   CMinpack *algorithm = static_cast<CMinpack *>(p);
   if (!algorithm)

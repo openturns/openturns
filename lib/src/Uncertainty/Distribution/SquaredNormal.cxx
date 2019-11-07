@@ -72,7 +72,7 @@ String SquaredNormal::__repr__() const
   return oss;
 }
 
-String SquaredNormal::__str__(const String & offset) const
+String SquaredNormal::__str__(const String & /*offset*/) const
 {
   OSS oss;
   oss << getClassName();

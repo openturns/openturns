@@ -41,7 +41,7 @@ String GreaterOrEqual::__repr__() const
          << " name=" << getName();
 }
 
-String GreaterOrEqual::__str__(const String & offset) const
+String GreaterOrEqual::__str__(const String & /*offset*/) const
 {
   return ">=";
 }

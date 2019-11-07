@@ -41,7 +41,7 @@ String Equal::__repr__() const
          << " name=" << getName();
 }
 
-String Equal::__str__(const String & offset) const
+String Equal::__str__(const String & /*offset*/) const
 {
   return "=";
 }

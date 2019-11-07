@@ -268,17 +268,6 @@ Distribution MethodOfMomentsFactory::build(const Sample & sample) const
   return result.getImplementation();
 }
 
-void MethodOfMomentsFactory::setOptimizationProblem(const OptimizationProblem& problem)
-{
-  LOGWARN("MethodOfMomentsFactory::setOptimizationProblem is deprecated");
-}
-
-OptimizationProblem MethodOfMomentsFactory::getOptimizationProblem() const
-{
-  LOGWARN("MethodOfMomentsFactory::getOptimizationProblem is deprecated");
-  return OptimizationProblem();
-}
-
 void MethodOfMomentsFactory::setOptimizationAlgorithm(const OptimizationAlgorithm& solver)
 {
   solver_ = solver;

@@ -134,7 +134,7 @@ public:
 
 
   /** Comparison operator */
-  Bool operator ==(const MethodBoundEvaluation & other) const
+  Bool operator ==(const MethodBoundEvaluation & /*other*/) const
   {
     return true;
   }

@@ -423,18 +423,6 @@ void GaussianNonLinearCalibration::setOptimizationAlgorithm(const OptimizationAl
   algorithm_ = algorithm;
 }
 
-OptimizationAlgorithm GaussianNonLinearCalibration::getAlgorithm() const
-{
-  LOGWARN("GaussianNonLinearCalibration::getAlgorithm is deprecated");
-  return algorithm_;
-}
-
-void GaussianNonLinearCalibration::setAlgorithm(const OptimizationAlgorithm & algorithm)
-{
-  LOGWARN("GaussianNonLinearCalibration::setAlgorithm is deprecated");
-  algorithm_ = algorithm;
-}
-
 /* Algorithm accessor */
 UnsignedInteger GaussianNonLinearCalibration::getBootstrapSize() const
 {

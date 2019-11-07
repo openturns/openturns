@@ -339,18 +339,6 @@ void NonLinearLeastSquaresCalibration::setOptimizationAlgorithm(const Optimizati
   algorithm_ = algorithm;
 }
 
-OptimizationAlgorithm NonLinearLeastSquaresCalibration::getAlgorithm() const
-{
-  LOGWARN("NonLinearLeastSquaresCalibration::getAlgorithm is deprecated");
-  return algorithm_;
-}
-
-void NonLinearLeastSquaresCalibration::setAlgorithm(const OptimizationAlgorithm & algorithm)
-{
-  LOGWARN("NonLinearLeastSquaresCalibration::setAlgorithm is deprecated");
-  algorithm_ = algorithm;
-}
-
 /* Algorithm accessor */
 UnsignedInteger NonLinearLeastSquaresCalibration::getBootstrapSize() const
 {
