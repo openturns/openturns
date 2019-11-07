@@ -31,7 +31,11 @@ if (OPENTURNS_HAVE_EXPRTK)
 endif()
 
 if (OPENTURNS_HAVE_BONMIN AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=unused-parameter -Wno-error=implicit-fallthrough")
+  if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7)
+    set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=unused-parameter")
+  else ()
+    set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=unused-parameter -Wno-error=implicit-fallthrough")
+  endif ()
 endif ()
 
 # Build main library
