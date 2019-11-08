@@ -14,7 +14,6 @@
 %include std_vector.i
 
 /* Base/Common */
-%include Memory.i
 %include TBB.i
 %include Object.i
 %include PersistentObject.i

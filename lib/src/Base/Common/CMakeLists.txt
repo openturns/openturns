@@ -3,7 +3,6 @@
 # Register current directory files
 ot_add_current_dir_to_include_dirs ()
 
-ot_add_source_file (Memory.cxx)
 ot_add_source_file (OSS.cxx)
 ot_add_source_file (PlatformInfo.cxx)
 ot_add_source_file (AtomicFunctions.cxx)
@@ -51,7 +50,6 @@ ot_install_header_file (MutexLock.hxx)
 ot_install_header_file (Equal.hxx)
 ot_install_header_file (Pointer.hxx)
 ot_install_header_file (IdFactory.hxx)
-ot_install_header_file (Memory.hxx)
 ot_install_header_file (PersistentObjectFactory.hxx)
 ot_install_header_file (ComparisonOperator.hxx)
 ot_install_header_file (TypedInterfaceObject.hxx)
