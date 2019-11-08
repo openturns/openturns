@@ -23,6 +23,7 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/Function.hxx"
+#include "openturns/UniVariateFunction.hxx"
 #include "openturns/PersistentObject.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -68,6 +69,20 @@ public:
 
   /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) */
   virtual Scalar solve(const Function & function,
+                       const Scalar value,
+                       const Scalar infPoint,
+                       const Scalar supPoint,
+                       const Scalar infValue,
+                       const Scalar supValue) const;
+
+  /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] */
+  virtual Scalar solve(const UniVariateFunction & function,
+                       const Scalar value,
+                       const Scalar infPoint,
+                       const Scalar supPoint) const;
+
+  /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) */
+  virtual Scalar solve(const UniVariateFunction & function,
                        const Scalar value,
                        const Scalar infPoint,
                        const Scalar supPoint,

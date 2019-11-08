@@ -1,9 +1,6 @@
 %feature("docstring") OT::OrdinalSumCopula
 "Copula built as an ordinal sum of copulas.
 
-Available constructors:
-    OrdinalSumCopula(*collCopula, bounds*)
-
 Parameters
 ----------
 collCopula : list of :class:`~openturns.Distribution`

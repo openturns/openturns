@@ -1,9 +1,6 @@
 %feature("docstring") OT::FrankCopulaFactory
 "Frank Copula factory.
 
-Available constructor:
-    FrankCopulaFactory()
-
 The paramters are estimated using the follwing equations:
 
 :math:`\Hat{\theta}_n` is solution of

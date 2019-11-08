@@ -54,6 +54,9 @@ JoeCopula::JoeCopula(const Scalar theta,
                      const Scalar psi1,
                      const Scalar psi2)
   : ExtremeValueCopula()
+  , theta_(0.0) // To force the update in the accessor
+  , psi1_(-1.0) // To force the update in the accessor
+  , psi2_(-1.0) // To force the update in the accessor
 {
   setTheta(theta);
   setPsi1(psi1);
@@ -164,8 +167,11 @@ void JoeCopula::setTheta(const Scalar theta)
 {
   if (!(theta > 0.0))
     throw InvalidArgumentException(HERE) << "Theta must be positive";
-  theta_ = theta;
-  updatePickandFunction();
+  if (theta != theta_)
+    {
+      theta_ = theta;
+      updatePickandFunction();
+    }
 }
 
 /* theta parameter accessor */
@@ -173,8 +179,11 @@ void JoeCopula::setPsi1(const Scalar psi1)
 {
   if (!(psi1 >= 0.0) || !(psi1 <= 1.0))
     throw InvalidArgumentException(HERE) << "Psi1 must be in [0, 1]";
-  psi1_ = psi1;
-  updatePickandFunction();
+  if (psi1 != psi1_)
+    {
+      psi1_ = psi1;
+      updatePickandFunction();
+    }
 }
 
 /* theta parameter accessor */

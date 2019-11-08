@@ -46,8 +46,8 @@ MarshallOlkinCopula::MarshallOlkinCopula()
 MarshallOlkinCopula::MarshallOlkinCopula(const Scalar alpha,
     const Scalar beta)
   : CopulaImplementation()
-  , alpha_(alpha)
-  , beta_(beta)
+  , alpha_(-2.0) // To force the update using accessors
+  , beta_(-2.0) // To force the update using accessors
 {
   setName( "MarshallOlkinCopula" );
   // We set the dimension of the MarshallOlkinCopula distribution
@@ -156,8 +156,11 @@ Bool MarshallOlkinCopula::hasIndependentCopula() const
 void MarshallOlkinCopula::setAlpha(const Scalar alpha)
 {
   if (!(alpha >= 0.0) || !(alpha <= 1.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be in [0, 1], here alpha=" << alpha;
-  alpha_ = alpha;
-  isAlreadyComputedCovariance_ = false;
+  if (alpha != alpha_)
+    {
+      alpha_ = alpha;
+      isAlreadyComputedCovariance_ = false;
+    }
 }
 
 /* Alpha accessor */

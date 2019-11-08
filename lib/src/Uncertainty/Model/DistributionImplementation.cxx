@@ -2070,11 +2070,11 @@ Scalar DistributionImplementation::computeConditionalCDF(const Scalar x,
   const Scalar xMax = conditionedDistribution->getRange().getUpperBound()[conditioningDimension];
   if (x >= xMax) return 1.0;
   // Numerical integration with respect to x
-  Pointer<EvaluationImplementation> p_conditionalPDFWrapper = new ConditionalPDFWrapper(conditionedDistribution);
+  Pointer<ConditionalPDFWrapper> p_conditionalPDFWrapper = new ConditionalPDFWrapper(conditionedDistribution);
   p_conditionalPDFWrapper->setParameter(y);
   GaussKronrod algo;
-  const Point value(algo.integrate(Function(*p_conditionalPDFWrapper), Interval(xMin, x)));
-  return std::min(1.0, std::max(0.0, value[0] / pdfConditioning));
+  const Scalar value = algo.integrate(UniVariateFunction(p_conditionalPDFWrapper), xMin, x);
+  return std::min(1.0, std::max(0.0, value / pdfConditioning));
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
@@ -2105,9 +2105,9 @@ Point DistributionImplementation::computeSequentialConditionalCDF(const Point & 
     else
     {
       // Here we have to integrate something...
-      Pointer<EvaluationImplementation> p_conditionalPDFWrapper = new ConditionalPDFWrapper(conditioningDistribution);
+      Pointer<ConditionalPDFWrapper> p_conditionalPDFWrapper = new ConditionalPDFWrapper(conditioningDistribution);
       p_conditionalPDFWrapper->setParameter(currentX);
-      const Scalar cdfConditioned(algo.integrate(Function(*p_conditionalPDFWrapper), Interval(xMin, std::min(x[conditioningDimension], xMax)))[0]);
+      const Scalar cdfConditioned = algo.integrate(UniVariateFunction(p_conditionalPDFWrapper), xMin, std::min(x[conditioningDimension], xMax));
       result[conditioningDimension] = cdfConditioned / pdfConditioning;
     }
     currentX.add(x[conditioningDimension]);
@@ -2142,7 +2142,7 @@ Point DistributionImplementation::computeConditionalCDF(const Point & x,
   const Scalar xMin = conditionedDistribution->getRange().getLowerBound()[conditioningDimension];
   const Scalar xMax = conditionedDistribution->getRange().getUpperBound()[conditioningDimension];
   Point result(size);
-  Pointer<EvaluationImplementation> p_conditionalPDFWrapper = new ConditionalPDFWrapper(conditionedDistribution);
+  Pointer<ConditionalPDFWrapper> p_conditionalPDFWrapper = new ConditionalPDFWrapper(conditionedDistribution);
   GaussKronrod algo;
   for (UnsignedInteger i = 0; i < size; ++i)
     if (pdfConditioning(i, 0) > 0.0)
@@ -2152,8 +2152,8 @@ Point DistributionImplementation::computeConditionalCDF(const Point & x,
       {
         // Numerical integration with respect to x
         p_conditionalPDFWrapper->setParameter(y[i]);
-        const Point value(algo.integrate(Function(*p_conditionalPDFWrapper), Interval(xMin, x[i])));
-        result[i] = std::min(1.0, std::max(0.0, value[0] / pdfConditioning(i, 0)));
+        const Scalar value(algo.integrate(UniVariateFunction(p_conditionalPDFWrapper), xMin, x[i]));
+        result[i] = std::min(1.0, std::max(0.0, value / pdfConditioning(i, 0)));
       } // xMin < x < xMax
     } // pdfConditioning(i, 0) > 0
   return result;
@@ -2195,12 +2195,13 @@ Point DistributionImplementation::computeConditionalQuantile(const Point & q,
   const Scalar xMin = getRange().getLowerBound()[conditioningDimension];
   const Scalar xMax = getRange().getUpperBound()[conditioningDimension];
   Point result(size);
-  Pointer <EvaluationImplementation> p_conditionalCDFWrapper = new ConditionalCDFWrapper(this);
+  // Here we recreate a ConditionalCDFWrapper only if none has been created or if the parameter dimension has changed
+  Pointer<ConditionalCDFWrapper> p_conditionalCDFWrapper = new ConditionalCDFWrapper(this);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     p_conditionalCDFWrapper->setParameter(y[i]);
     Brent solver(quantileEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
-    result[i] = solver.solve(Function(*p_conditionalCDFWrapper), q[i], xMin, xMax, 0.0, 1.0);
+    result[i] = solver.solve(UniVariateFunction(p_conditionalCDFWrapper), q[i], xMin, xMax, 0.0, 1.0);
   }
   return result;
 }

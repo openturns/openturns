@@ -1,13 +1,10 @@
 %feature("docstring") OT::IndependentCopula
 "Independent copula.
 
-Available constructor:
-    IndependentCopula(*n=2*)
-
 Parameters
 ----------
-n : int, :math:`n \geq 1`
-    Dimension of the copula.
+n : int
+    Dimension of the copula, :math:`n \geq 1`. Default is :math:`n=2`.
 
 Notes
 -----

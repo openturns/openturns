@@ -4,11 +4,11 @@
 Parameters
 ----------
 theta : float
-    Parameter :math:`\theta > 0`.
+    Parameter :math:`\theta > 0`. Default is :math:`\theta=0.5`.
 psi1 : float
-    Parameter :math:`\psi_1 \in [0, 1]`. By default, it is equal to 0.5.
+    Parameter :math:`\psi_1 \in [0, 1]`. Default is :math:`\psi_1=0.5`.
 psi2 : float
-    Parameter :math:`\psi_2 \in [0, 1]`. By default, it is equal to 0.5.
+    Parameter :math:`\psi_2 \in [0, 1]`. Default is :math:`\psi_2=0.5`.
 
 Notes
 -----

@@ -11,9 +11,9 @@ Parameters
 n : int, :math:`n \geq 1`
     Dimension of the copula.
 R : :class:`~openturns.CorrelationMatrix`
-    Correlation matrix :math:`\mat{R}` which is not the Kendall nor the
-    Spearman rank correlation matrix of the distribution. The :math:`\mat{R}`
-    matrix can be evaluated from the Spearman or Kendall correlation matrix.
+    Shape matrix :math:`\mat{R}` of the copula, ie the correlation matrix of
+    any normal distribution with this copula (it is not the Kendall nor the
+    Spearman rank correlation matrix of the distribution).
 
 Notes
 -----
@@ -23,8 +23,8 @@ The Normal copula is defined by :
 
     C(u_1, \cdots, u_n) = \Phi_{\mat{R}}^n(\Phi^{-1}(u_1), \cdots, \Phi^{-1}(u_n))
 
-where :math:`\Phi_{\mat{R}}^n` is the multinormal cumulative density function in
-dimension :math:`n` :
+where :math:`\Phi_{\mat{R}}^n` is the cumulative distribution function of the
+normal distribution with zero mean, unit marginal variances and correlation :math:`R`:
 
 .. math::
 
@@ -34,19 +34,16 @@ dimension :math:`n` :
                                         {{(2\pi\det{\mat{R}})}^{\frac{n}{2}}}
                                  \exp \left(-\frac{\Tr{\vect{u}}\mat{R}\vect{u}}{2} \right)\di{\vect{u}}
 
-with :math:`\Phi` is the cumulative distribution function of the normal law in
-dimension 1:
+with :math:`\Phi` given by:
 
 .. math::
 
       \Phi(x) = \int_{-\infty}^x \frac{1}{\sqrt{2\pi}} e^{-\frac{t^2}{2}}\di{t}
 
-and with :math:`\mat{R}` is the correlation matrix. This matrix is defined
-by its algebric properties: symmetric, definite and positive.
+The correlation matrix :math:`\mat{R}` is linked to the Spearman correlation
+and the Kendall concordance through the following relations:      
 
-The correlation matrix :math:`\mat{R}` is obtainable by different ways:
-
-- If the Spearman correlation matrix is known :
+- From the Spearman correlation matrix:
 
   .. math ::
 
@@ -54,7 +51,7 @@ The correlation matrix :math:`\mat{R}` is obtainable by different ways:
 
   where :math:`\rho_{ij}^S = \rho^S(X_i,X_j) = \rho^P(F_{X_i}(X_i),F_{X_j}(X_j))`
 
-- If the Kendall measure of correlation is known :
+- From the Kendall concordance matrix:
 
   .. math::
 
@@ -68,8 +65,8 @@ The correlation matrix :math:`\mat{R}` is obtainable by different ways:
                 = \Prob{(X_{i_1} - X_{i_2})(X_{j_1} - X_{j_2}) > 0} -
                   \Prob{(X_{i_1} - X_{i_2})(X_{j_1} - X_{j_2}) < 0}
 
-  where :math:`(X_{i_1},X_{j_1}` and :math:`(X_{i_2},X_{j_2})` follow the law
-  of :math:`(X_i,X_j)`.
+  where :math:`(X_{i_1},X_{j_1}` and :math:`(X_{i_2},X_{j_2})` follow the
+  distribution of :math:`(X_i,X_j)`.
 
 See also
 --------

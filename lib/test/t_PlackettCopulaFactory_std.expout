@@ -1,0 +1,8 @@
+Distribution          =class=PlackettCopula name=PlackettCopula dimension=2 theta=1.5
+Estimated distribution=class=PlackettCopula name=PlackettCopula dimension=2 theta=1.42321
+Default distribution=class=PlackettCopula name=PlackettCopula dimension=2 theta=2
+Distribution from parameters=class=PlackettCopula name=PlackettCopula dimension=2 theta=1.5
+PlackettCopula          =class=PlackettCopula name=PlackettCopula dimension=2 theta=1.5
+Estimated plackettCopula=class=PlackettCopula name=PlackettCopula dimension=2 theta=1.42321
+Default plackettCopula=class=PlackettCopula name=PlackettCopula dimension=2 theta=2
+PlackettCopula from parameters=class=PlackettCopula name=PlackettCopula dimension=2 theta=1.5

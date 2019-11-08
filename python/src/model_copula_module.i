@@ -53,6 +53,8 @@
 %include ComposedCopula.i
 %include MarshallOlkinCopula.i
 %include OrdinalSumCopula.i
+%include PlackettCopula.i
+%include PlackettCopulaFactory.i
 
 /* At last we include template definitions */
 %include UncertaintyModelCopulaTemplateDefs.i

@@ -68,14 +68,13 @@ String Secant::__repr__() const
    C     DEC., 1984, P. 473.
    see http://www.netlib.org/toms/626
 */
-Scalar Secant::solve(const Function & function,
+Scalar Secant::solve(const UniVariateFunction & function,
                      const Scalar value,
                      const Scalar infPoint,
                      const Scalar supPoint,
                      const Scalar infValue,
                      const Scalar supValue) const
 {
-  if ((function.getInputDimension() != 1) || (function.getOutputDimension() != 1)) throw InvalidDimensionException(HERE) << "Error: the secant method requires a scalar function, here input dimension=" << function.getInputDimension() << " and output dimension=" << function.getOutputDimension();
   /* We transform the equation function(x) = value into function(x) - value = 0 */
   UnsignedInteger usedFunctionEvaluation = 0;
   const UnsignedInteger maximumFunctionEvaluation = getMaximumFunctionEvaluation();
@@ -145,7 +144,7 @@ Scalar Secant::solve(const Function & function,
     // If all the evaluation budget has been spent, return the approximation
     if (usedFunctionEvaluation == maximumFunctionEvaluation) break;
     // New evaluation
-    fB = function(Point(1, b))[0] - value;
+    fB = function(b) - value;
     ++usedFunctionEvaluation;
     if (fG * fB < 0.0)
     {

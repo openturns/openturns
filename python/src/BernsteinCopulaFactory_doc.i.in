@@ -1,9 +1,6 @@
 %feature("docstring") OT::BernsteinCopulaFactory
 "BernsteinCopula copula factory.
 
-Available constructors:
-    BernsteinCopulaFactory()
-
 This class allows to estimate a copula in a nonparametric way as an :class:`~openturns.EmpiricalBernsteinCopula`.
 
 See also

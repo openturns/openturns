@@ -1,13 +1,10 @@
 %feature("docstring") OT::ClaytonCopula
 "Clayton copula.
 
-Available constructor:
-    ClaytonCopula(*theta=2.0*)
-
 Parameters
 ----------
 theta : float
-    Parameter :math:`\theta \geq -1`.
+    Parameter :math:`\theta`, :math:`\theta \geq -1`. Default is :math:`\theta=2`.
 
 Notes
 -----

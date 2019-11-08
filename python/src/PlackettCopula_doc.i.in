@@ -1,0 +1,62 @@
+%feature("docstring") OT::PlackettCopula
+"Plackett copula.
+
+Parameters
+----------
+theta : float
+    Parameter :math:`\theta`, :math:`\theta \geq 0`. Default is :math:`\theta=2`.
+
+Notes
+-----
+The Plackett copula is a bivariate symmetric copula defined by:
+
+.. math::
+
+    C(u_1, u_2) = \frac{\left[1+(\theta-1)(u_1+u_2)\right]-
+                  \sqrt{\left[1+(\theta-1)(u_1+u_2)\right]^2-
+                  4u_1u_2\theta(\theta-1)}}{2(\theta-1)}
+
+for :math:`(u_1, u_2) \in [0, 1]^2`
+
+This copula is the only copula with constant *odd ratio* :math:`\theta\geq 0`:
+
+.. math::
+
+   \theta = \frac{\Prob{U_1\leq u_1,U_2\leq u_2}\Prob{U_1>u_1,U_2>u_2}}{\Prob{U_1\leq u_1,U_2>u_2}\Prob{U_1>u_1,U_2\leq u_2}} = \frac{C(u_1,u_2)\left[1-u_1-u_2+C(u_1,u_2)\right]}{\left[u_1-C(u_1,u_2)\right]\left[u_2-C(u_1,u_2)\right]}
+
+This is a *comprehensive family* of copulas as it contains:
+  
+- the Frechet lower bound :math:`W(u_1,u_2)=\max(0,u_1+u_2-1)=\lim_{\theta\rightarrow\infty}C(u_1,u_2)`,
+- the Frechet upper bound :math:`M(u_1,u_2)=\min(u_1,u_2)=C_0(u_1,u_2)`
+- the independent copula :math:`\Pi(u_1,u_2)=u_1u_2=C_1(u_1,u_2)`.
+
+Examples
+--------
+Create a distribution:
+
+>>> import openturns as ot
+>>> copula = ot.PlackettCopula(2.5)
+
+Draw a sample:
+
+>>> sample = copula.getSample(5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlackettCopula::getTheta
+"Get the parameter :math:`\theta`.
+
+Returns
+-------
+theta : float
+    Parameter :math:`\theta` of the copula."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlackettCopula::setTheta
+"Set the parameter :math:`\theta`.
+
+Parameters
+----------
+theta : float
+    Parameter :math:`\theta\geq 0` of the copula."
