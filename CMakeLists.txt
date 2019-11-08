@@ -244,7 +244,7 @@ if (USE_BOOST)
 endif ()
 
 if (USE_R)
-  find_package (R COMPONENTS base)
+  find_package (R COMPONENTS base QUIET)
 endif ()
 if (NOT R_EXECUTABLE)
   set (R_EXECUTABLE "R${CMAKE_EXECUTABLE_SUFFIX}")
