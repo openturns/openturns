@@ -162,7 +162,7 @@ Distribution DistributionImplementation::operator + (const DistributionImplement
     coll[1] = other.clone();
     RandomMixture res(coll);
     // Check if a simplification has occured
-    if (res.getDistributionCollection().getSize() == 1)
+    if ((res.getDistributionCollection().getSize() == 1) && (res.getWeights()(0, 0) == 1.0))
       return res.getDistributionCollection()[0];
     // No simplification
     return res.clone();
@@ -189,7 +189,7 @@ Distribution DistributionImplementation::operator + (const Scalar value) const
     coll[1] = Dirac(Point(1, value));
     RandomMixture res(coll);
     // Check if a simplification has occured
-    if (res.getDistributionCollection().getSize() == 1)
+    if ((res.getDistributionCollection().getSize() == 1) && (res.getWeights()(0, 0) == 1.0))
       return res.getDistributionCollection()[0];
     // No simplification
     return res.clone();
@@ -224,7 +224,7 @@ Distribution DistributionImplementation::operator - (const DistributionImplement
     coll[1] = other.clone();
     RandomMixture res(coll, weights);
     // Check if a simplification has occured
-    if (res.getDistributionCollection().getSize() == 1)
+    if ((res.getDistributionCollection().getSize() == 1) && (res.getWeights()(0, 0) == 1.0))
       return res.getDistributionCollection()[0];
     // No simplification
     return res.clone();
