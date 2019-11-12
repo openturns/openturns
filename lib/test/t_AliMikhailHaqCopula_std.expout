@@ -19,8 +19,8 @@ Quantile=class=Point name=Unnamed dimension=2 values=[0.689898,0.689898]
 CDF(quantile)=0.5
 Minimum volume interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0126791,0.0126791] upper bound=class=Point name=Unnamed dimension=2 values=[0.987321,0.987321] finite lower bound=[1,1] finite upper bound=[1,1]
 threshold=0.974642
-Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,X1,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(AliMikhailHaqCopula(theta = 0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(AliMikhailHaqCopula(theta = 0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(AliMikhailHaqCopula(theta = 0.5)) level=0.339586
-beta=0.712065
+Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[X0,X1,-logPDF] evaluationImplementation=MinimumVolumeLevelSetEvaluation(AliMikhailHaqCopula(theta = 0.5)) gradientImplementation=MinimumVolumeLevelSetGradient(AliMikhailHaqCopula(theta = 0.5)) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(AliMikhailHaqCopula(theta = 0.5)) level=0.336066
+beta=0.714576
 Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0.0126791,0.0126791] upper bound=class=Point name=Unnamed dimension=2 values=[0.987321,0.987321] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=0.974642
 Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[0,0] upper bound=class=Point name=Unnamed dimension=2 values=[0.974521,0.974521] finite lower bound=[1,1] finite upper bound=[1,1]
@@ -35,16 +35,16 @@ margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.568102]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.703242]
 margin=class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.761047]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.762006]
 indices=[1,0]
 margins=class=AliMikhailHaqCopula name=a aliMikhailHaq copula dimension=2 theta=0.5
 margins PDF=1.13619
 margins CDF=0.0869565
 margins quantile=class=Point name=Unnamed dimension=2 values=[0.974521,0.974521]
 margins CDF(quantile)=0.95
-margins realization=class=Point name=Unnamed dimension=2 values=[0.68799,0.135676]
+margins realization=class=Point name=Unnamed dimension=2 values=[0.852602,0.976162]

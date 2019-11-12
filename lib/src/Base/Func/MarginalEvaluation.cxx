@@ -72,9 +72,9 @@ MarginalEvaluation * MarginalEvaluation::clone() const
 }
 
 /* Comparison operator */
-Bool MarginalEvaluation::operator ==(const MarginalEvaluation & ) const
+Bool MarginalEvaluation::operator ==(const MarginalEvaluation & other) const
 {
-  return true;
+  return (this == &other);
 }
 
 /* String converter */

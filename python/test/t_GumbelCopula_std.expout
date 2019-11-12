@@ -18,9 +18,9 @@ entropy=-0.561983
 Minimum volume interval= [0.0164093, 0.983591]
 [0.0164093, 0.983591]
 threshold= [0.967181]
-Minimum volume level set= {x | f(x) <= 0.936355} with f=
+Minimum volume level set= {x | f(x) <= 0.909453} with f=
 MinimumVolumeLevelSetEvaluation(GumbelCopula(theta = 2.5))
-beta= [0.392054]
+beta= [0.402745]
 Bilateral confidence interval= [0.0164093, 0.983591]
 [0.0164093, 0.983591]
 beta= [0.967181]
@@ -34,16 +34,16 @@ margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
 margin CDF=0.250000
 margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization= class=Point name=Unnamed dimension=1 values=[0.147353]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.00033239]
 margin= class=IndependentCopula name=IndependentCopula dimension=1
 margin PDF=1.000000
 margin CDF=0.250000
 margin quantile= class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization= class=Point name=Unnamed dimension=1 values=[0.14101]
+margin realization= class=Point name=Unnamed dimension=1 values=[0.910321]
 indices= [1,0]
 margins= class=GumbelCopula name=GumbelCopula dimension=2 theta=2.5
 margins PDF=2.034871
 margins CDF=0.160538
 margins quantile= class=Point name=Unnamed dimension=2 values=[0.961873,0.961873]
 margins CDF(qantile)=0.950000
-margins realization= class=Point name=Unnamed dimension=2 values=[0.942824,0.944184]
+margins realization= class=Point name=Unnamed dimension=2 values=[0.281456,0.596274]

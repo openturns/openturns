@@ -1216,8 +1216,8 @@ void ResourceMap::loadDefaultConfiguration()
   setAsUnsignedInteger( "Distribution-DefaultPointNumber", 129 );
   setAsUnsignedInteger( "Distribution-DefaultQuantileCacheSize", 128 );
   setAsUnsignedInteger( "Distribution-DefaultQuantileIteration", 100 );
-  setAsUnsignedInteger( "Distribution-EntropySamplingSize", 1048576 );
-  setAsUnsignedInteger( "Distribution-MinimumVolumeLevelSetSamplingSize", 1048576 );
+  setAsUnsignedInteger( "Distribution-EntropySamplingSize", 524288 );
+  setAsUnsignedInteger( "Distribution-MinimumVolumeLevelSetSamplingSize", 16384 );
   setAsUnsignedInteger( "Distribution-SmallDimensionEntropy", 3 );
 
   // ContinuousDistribution parameters //
@@ -1243,7 +1243,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // MaximumEntropyOrderStatisticsDistribution //
   setAsBool( "MaximumEntropyOrderStatisticsDistribution-CheckMarginals", true );
-  setAsBool( "MaximumEntropyOrderStatisticsDistribution-UseApproximation", true );
+  setAsBool( "MaximumEntropyOrderStatisticsDistribution-UseApproximation", false );
   setAsScalar( "MaximumEntropyOrderStatisticsDistribution-SupportShift", 1.0e-15 );
   setAsUnsignedInteger( "MaximumEntropyOrderStatisticsDistribution-CDFIntegrationNodesNumber", 16);
   setAsUnsignedInteger( "MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization", 100 );

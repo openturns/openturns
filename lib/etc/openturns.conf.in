@@ -663,8 +663,8 @@
   <Distribution-DefaultPointNumber                value_int="129"     />
   <Distribution-DefaultQuantileCacheSize          value_int="128"     />
   <Distribution-DefaultQuantileIteration          value_int="100"     />
-  <Distribution-EntropySamplingSize               value_int="1048576" />
-  <Distribution-MinimumVolumeLevelSetSamplingSize value_int="1048576" />
+  <Distribution-EntropySamplingSize               value_int="524288"  />
+  <Distribution-MinimumVolumeLevelSetSamplingSize value_int="16384"   />
   <Distribution-SmallDimensionEntropy             value_int="3"       />
   
   <!-- OT::ContinuousDistribution parameters -->
@@ -689,8 +689,8 @@
   <OrderStatisticsMarginalChecker-QuantileIteration   value_int="100" />
 
   <!-- OT::MaximumEntropyOrderStatisticsDistribution parameters -->
-  <MaximumEntropyOrderStatisticsDistribution-CheckMarginals                  value_bool="true"            />
-  <MaximumEntropyOrderStatisticsDistribution-UseApproximation                value_bool="true"            />
+  <MaximumEntropyOrderStatisticsDistribution-CheckMarginals                  value_bool="true"           />
+  <MaximumEntropyOrderStatisticsDistribution-UseApproximation                value_bool="false"          />
   <MaximumEntropyOrderStatisticsDistribution-SupportShift                    value_float="1.0e-15"       />
   <MaximumEntropyOrderStatisticsDistribution-CDFIntegrationNodesNumber       value_int="16"  />
   <MaximumEntropyOrderStatisticsDistribution-ExponentialFactorDiscretization value_int="100" />

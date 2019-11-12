@@ -24,9 +24,9 @@ InverseSurvival= class=Point name=Unnamed dimension=1 values=[-0.78963]
 Survival(inverseSurvival)=0.950000
 Minimum volume interval= [-0.800977, 4.91251]
 threshold= [0.95]
-Minimum volume level set= {x | f(x) <= 3.43805} with f=
+Minimum volume level set= {x | f(x) <= 3.43834} with f=
 MinimumVolumeLevelSetEvaluation(CompositeDistribution=f(Normal(mu = 0, sigma = 1)) with f=[x]->[x^2 + 2 * sin(x)])
-beta= [0.0321272]
+beta= [0.0321178]
 Bilateral confidence interval= [-0.79814, 5.94149]
 beta= [0.95]
 Unilateral confidence interval (lower tail)= [-0.800977, 4.91251]
