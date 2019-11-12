@@ -16,15 +16,16 @@ basis : :class:`~openturns.Basis`
 minimalIndices : sequence of int
     The indices of minimal model
 isForward : bool
-      the boolean value used for the stepwise regression method direction FORWARD and BACKWARD. 
+      the boolean value used for the stepwise regression method direction FORWARD and BACKWARD.
 startIndices : sequence of int
      The indices of start model used for the stepwise regression method direction BOTH.
 penalty : float
-     The multiple of the degrees of freedom used for the penalty of the stepwise regression method : 
+     The multiple of the degrees of freedom used for the penalty of the stepwise regression method:
+
      - 2      Akaike   information criterion (AIC)
-     - log(n) Bayesian information criterion (BIC)  
+     - log(n) Bayesian information criterion (BIC)
 maximumIterationNumber : int
-     The maximum number of iterations of the stepwise regression method. 
+     The maximum number of iterations of the stepwise regression method.
 
 
 See Also
@@ -57,7 +58,81 @@ tests. If :math:`X` is scalar, a graphical validation test exists, that draws
 the residual couples :math:`(\epsilon_i, \epsilon_{i+1})`, where the residual
 :math:`\epsilon_i` is evaluated on the samples :math:`(Xsample, Ysample)`:
 :math:`\epsilon_i  = Ysample_i - \tilde{Y}_i` with
-:math:`\tilde{Y}_i = a_0 + a_1 + Xsample_i`. The OpenTURNS method is 
+:math:`\tilde{Y}_i = a_0 + a_1 + Xsample_i`. The method is
 :class:`~openturns.VisualTest_DrawLinearModelResidual`.
 "
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelStepwiseAlgorithm::getDirection
+"Accessor to the direction.
+
+Returns
+-------
+direction : int
+    Direction."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelStepwiseAlgorithm::getFormula
+"Accessor to the formula.
+
+Returns
+-------
+formula : str
+    Formula."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelStepwiseAlgorithm::getInputSample
+"Accessor to the input sample.
+
+Returns
+-------
+input_sample : :class:`~openturns.Sample`
+    Input sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelStepwiseAlgorithm::getMaximumIterationNumber
+"Accessor to the maximum iteration number.
+
+Returns
+-------
+maximum_iteration : int
+    Maximum number of iterations."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelStepwiseAlgorithm::getOutputSample
+"Accessor to the output sample.
+
+Returns
+-------
+output_sample : :class:`~openturns.Sample`
+    Output sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelStepwiseAlgorithm::getPenalty
+"Accessor to the penalty.
+
+Returns
+-------
+penalty : float
+    Penalty."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelStepwiseAlgorithm::getResult
+"Accessor to the result.
+
+Returns
+-------
+result : :class:`~openturns.LinearModelResult`
+    Result."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelStepwiseAlgorithm::run
+"Run the algorithm."
