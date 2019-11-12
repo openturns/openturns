@@ -1,3 +1,11 @@
+openturns (1.14-1) experimental; urgency=low
+
+  [ Julien Schueller ]
+
+  * New upstream release.
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 12 Nov 2019 10:14:47 +0100
+
 openturns (1.14~rc1-1) experimental; urgency=low
 
   [ Julien Schueller ]
