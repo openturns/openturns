@@ -842,7 +842,7 @@ Scalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky() const
   for (UnsignedInteger i = 0; i < rho_.getSize(); ++i )
   {
     const Scalar lii = diagonal[i];
-    if (lii <= 0.0) return SpecFunc::MaxScalar;
+    if (lii <= 0.0) return -SpecFunc::LogMaxScalar;
     logDetL += log(lii);
   }
   return 2.0 * logDetL;
