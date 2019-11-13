@@ -17,8 +17,8 @@ IterativeExtrema::IterativeExtrema(const UnsignedInteger dimension)
   : IterativeAlgorithmImplementation()
   , iteration_(0)
   , dimension_(dimension)
-  , minData_(0)
-  , maxData_(0)
+  , minData_(dimension, 0.0)
+  , maxData_(dimension, 0.0)
 {
   // Nothing to do
 }

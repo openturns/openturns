@@ -5,7 +5,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 // #include "openturns/PersistentCollection.hxx"
 #include "openturns/Point.hxx"
-#include "openturns/IterativeMean.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

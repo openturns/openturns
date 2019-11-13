@@ -228,6 +228,7 @@ ot_add_python_module(statistics statistics_module.i
 ot_add_python_module(iterative_statistics iterative_statistics_module.i
                       IterativeAlgorithm.i IterativeAlgorithm_doc.i.in
                       IterativeAlgorithmImplementation.i IterativeAlgorithmImplementation_doc.i.in
+                      IterativeQuantile.i IterativeQuantile_doc.i.in
                       IterativeExtrema.i IterativeExtrema_doc.i.in
                       IterativeThresholdExceedance.i IterativeThresholdExceedance_doc.i.in
                       IterativeKurtosis.i IterativeKurtosis_doc.i.in
