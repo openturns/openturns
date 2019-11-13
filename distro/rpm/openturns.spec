@@ -46,6 +46,9 @@ BuildRequires:  gcc-fortran
 BuildRequires:  gcc-gfortran
 %endif
 BuildRequires:  python-devel
+%if 0%{?fedora_version} >= 31
+BuildRequires:  python2-devel
+%endif
 
 %description
 OpenTURNS Uncertainty treatment library
