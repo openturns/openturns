@@ -371,6 +371,8 @@ Scalar Hypergeometric::computeScalarQuantile(const Scalar prob,
   LOGDEBUG(OSS() << "in Hypergeometric::computeScalarQuantile, prob=" << prob << ", tail=" << tail);
   const Scalar a = getRange().getLowerBound()[0];
   const Scalar b = getRange().getUpperBound()[0];
+  if (a == b)
+    return a;
   if (prob <= 0.0) return (tail ? b : a);
   if (prob >= 1.0) return (tail ? a : b);
   Scalar quantile = (a + b) / 2;
