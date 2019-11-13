@@ -62,20 +62,22 @@ Multinomial MultinomialFactory::buildAsMultinomial(const Sample & sample) const
   UnsignedInteger size = sample.getSize();
   UnsignedInteger dimension = sample.getDimension();
   Point p(dimension, 0.0);
-  Scalar max = sample(0, 0);
+  UnsignedInteger maxSum = 0;
   for (UnsignedInteger i = 0; i < size; i++)
   {
+    UnsignedInteger sumI = 0;
     for (UnsignedInteger j = 0; j < dimension; j++)
     {
       Scalar x = sample(i, j);
       if ((x != trunc(x)) || (x < 0.0)) throw InvalidArgumentException(HERE) << "Error: can build a Multinomial distribution only from a sample with positive integer components, here sample[" << i << "][" << j << "]=" << x;
-      if (x > max) max = x;
+      sumI += static_cast<UnsignedInteger>(x);
       p[j] += x;
     }
+    if (sumI > maxSum)
+      maxSum = sumI;
   }
-  const UnsignedInteger n = (UnsignedInteger)max;
-  p *= 1.0 / (max * size);
-  Multinomial result(n, p);
+  p *= 1.0 / (maxSum * size);
+  Multinomial result(maxSum, p);
   result.setDescription(sample.getDescription());
   return result;
 }

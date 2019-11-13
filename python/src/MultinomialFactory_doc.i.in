@@ -1,22 +1,20 @@
 %feature("docstring") OT::MultinomialFactory
 "Multinomial factory.
 
-Available constructor:
-    MultinomialFactory()
-
-Maximum likelihood estimators are used in the n-d case,
-else in 1-d we use the following equations:
+The parameters :math:`N` and :math:`p=(p_1,\dots,p_d)` are estimated using their
+maximum likelihood estimators:
 
 .. math::
     :nowrap:
 
     \begin{eqnarray*}
       data : (\vect{x}^1, \hdots,\vect{x}^n)\\
-      N = max_{i,k} \, x_i^k\\
+      N = \max_{k} \sum_{i=1}^d x_i^k\\
       p_i = \frac{1}{nN} \sum_{k=1}^{n} x_i^k
     \end{eqnarray*}
 
-The resolution is done using Brents method.
+Remember that the OpenTURNS multinomial distribution is such that
+:math:`\sum_{k=1}^d X_i\leq N`.
 
 See also
 --------
