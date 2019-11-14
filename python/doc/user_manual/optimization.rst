@@ -35,6 +35,7 @@ Optimization solvers
     Cobyla
     Dlib
     EfficientGlobalOptimization
+    Ipopt
     MultiStart
     NLopt
     OPTpp

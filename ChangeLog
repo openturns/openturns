@@ -8,6 +8,7 @@
  * New EV solver for KarhunenLoeveP1Algorithm (Spectra), with sparse matrix and HMatrix support
 
 ==== New classes ====
+ * Ipopt
 
 ==== Documentation ====
 

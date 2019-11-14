@@ -412,6 +412,7 @@ ot_add_python_module(optim optim_module.i
                       CMinpack.i CMinpack_doc.i.in
                       Cobyla.i Cobyla_doc.i.in
                       Dlib.i Dlib_doc.i.in
+                      Ipopt.i Ipopt_doc.i.in
                       TNC.i TNC_doc.i.in
                       SQP.i SQP_doc.i.in
                       MultiStart.i MultiStart_doc.i.in

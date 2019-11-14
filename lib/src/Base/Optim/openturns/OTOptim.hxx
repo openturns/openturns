@@ -27,6 +27,7 @@
 #include "openturns/Ceres.hxx"
 #include "openturns/CMinpack.hxx"
 #include "openturns/Cobyla.hxx"
+#include "openturns/Ipopt.hxx"
 #include "openturns/MultiStart.hxx"
 #include "openturns/NearestPointCheckerResult.hxx"
 #include "openturns/NearestPointChecker.hxx"

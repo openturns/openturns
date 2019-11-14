@@ -4,7 +4,7 @@
 # The module defines the following variables:
 #  COIN_FOUND        - True if coin found.
 #  COIN_INCLUDE_DIRS - where to find CbcModel.hpp, etc.
-#  COIN_LIBRARIES    - List of libraries when using coin.
+#  COIN_<COMPONENT>_LIBRARIES  - Libraries to link for each component.
 #
 #=============================================================================
 # Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
@@ -21,7 +21,7 @@
 #
 # Find the path based on a required header file
 #
-find_path (COIN_INCLUDE_DIR CbcModel.hpp
+find_path (COIN_INCLUDE_DIR NAMES CbcModel.hpp IpNLP.hpp
   PATH_SUFFIXES coin
   HINTS "${COIN_INCLUDE_DIR}"
   HINTS "${COIN_ROOT_DIR}/include/coin"
@@ -102,22 +102,25 @@ if (EXISTS "${COIN_INCLUDE_DIR}/BonminConfig.h")
   endif ()
 endif ()
 
+
 include (FindPackageHandleStandardArgs)
 find_package_handle_standard_args (COIN DEFAULT_MSG
   COIN_INCLUDE_DIR
-  COIN_CBC_LIBRARY
-  COIN_CBC_SOLVER_LIBRARY
-  COIN_CGL_LIBRARY
-  COIN_CLP_LIBRARY
-  COIN_COIN_UTILS_LIBRARY
-  COIN_OSI_LIBRARY
-  COIN_OSI_CBC_LIBRARY
-  COIN_OSI_CLP_LIBRARY
-  COIN_ZLIB_LIBRARY
-  COIN_BZ2_LIBRARY
-  COIN_BONMIN_LIBRARY
-  COIN_IPOPT_LIBRARY
 )
+
+foreach (_component ${COIN_FIND_COMPONENTS})
+  string (TOUPPER ${_component} _component_upper)
+  if (NOT COIN_${_component}_FOUND)
+    if (COIN_INCLUDE_DIR AND COIN_${_component_upper}_LIBRARY)
+      message (STATUS "Found ${_component}: ${COIN_${_component_upper}_LIBRARY}")
+      set (COIN_${_component}_FOUND 1 CACHE INTERNAL "True if COIN package ${_component} is here")
+    else ()
+      message (STATUS "Could NOT find ${_component}")
+      set (COIN_${_component}_FOUND 0 CACHE INTERNAL "True if COIN package ${_component} is here")
+    endif ()
+  endif ()
+endforeach ()
+
 
 #
 # Set all required cmake variables based on our findings
@@ -134,7 +137,8 @@ if (COIN_FOUND)
   set (COIN_CBC_LIBRARIES "${COIN_CBC_LIBRARY};${COIN_CBC_SOLVER_LIBRARY};${COIN_CGL_LIBRARY};${COIN_OSI_LIBRARY};${COIN_OSI_CBC_LIBRARY};${COIN_OSI_CLP_LIBRARY};${COIN_CLP_LIBRARIES}")
   set (COIN_CBC_LIBRARIES "${COIN_CBC_LIBRARY};${COIN_CBC_SOLVER_LIBRARY};${COIN_CGL_LIBRARY};${COIN_OSI_LIBRARY};${COIN_OSI_CLP_LIBRARY};${COIN_CLP_LIBRARIES}")
   set (COIN_BONMIN_LIBRARIES ${COIN_BONMIN_LIBRARY} ${COIN_IPOPT_LIBRARY} ${COIN_COIN_UTILS_LIBRARY} ${COIN_CBC_LIBRARIES})
-  set (COIN_LIBRARIES ${COIN_BONMIN_LIBRARIES})
+  set (COIN_IPOPT_LIBRARIES ${COIN_IPOPT_LIBRARY})
+  set (COIN_LIBRARIES ${COIN_IPOPT_LIBRARIES})
 endif ()
 
 mark_as_advanced (COIN_INCLUDE_DIR

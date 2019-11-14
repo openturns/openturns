@@ -23,6 +23,9 @@ set_source_files_properties (Base/Optim/Dlib.cxx Base/Optim/DlibFunctions.cxx PR
 # Exclude Eigen3 sources from unity build
 set_source_files_properties (Base/Type/SparseMatrix.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
 
+# Exclude Bonmin/Ipopt sources
+set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+
 # SymbolicParserExprTk.cxx includes exprtk.hpp which is huge, exclude it from cotire builds
 # It also causes problems on Windows
 if (OPENTURNS_HAVE_EXPRTK)
@@ -34,11 +37,12 @@ if (OPENTURNS_HAVE_EXPRTK)
   endif ()
 endif()
 
-if (OPENTURNS_HAVE_BONMIN AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+set_source_files_properties (Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COMPILE_DEFINITIONS "HAVE_STDDEF_H") # required for ipopt 3.11
+if ((OPENTURNS_HAVE_BONMIN OR OPENTURNS_HAVE_IPOPT) AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7)
-    set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=unused-parameter")
+    set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=unused-parameter")
   else ()
-    set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=unused-parameter -Wno-error=implicit-fallthrough")
+    set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=unused-parameter -Wno-error=implicit-fallthrough")
   endif ()
 endif ()
 

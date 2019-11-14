@@ -24,6 +24,7 @@
 #include "openturns/CMinpack.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/Dlib.hxx"
+#include "openturns/Ipopt.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/NLopt.hxx"
 #include "openturns/OPTpp.hxx"
@@ -258,6 +259,10 @@ OptimizationAlgorithm OptimizationAlgorithm::Build(const String & solverName)
   {
     solver = Bonmin(solverName);
   }
+  else if (solverName == "Ipopt")
+  {
+    solver = Ipopt();
+  }
   else
     throw InvalidArgumentException(HERE) << "Unknown optimization solver:" << solverName;
 
@@ -291,6 +296,8 @@ Description OptimizationAlgorithm::GetAlgorithmNames()
   Description names;
   if (Bonmin::IsAvailable())
     names.add(Bonmin::GetAlgorithmNames());
+  if (Ipopt::IsAvailable())
+    names.add("Ipopt");
   if (Ceres::IsAvailable())
     names.add(Ceres::GetAlgorithmNames());
   if (CMinpack::IsAvailable())

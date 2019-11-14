@@ -60,6 +60,7 @@
 %include CMinpack.i
 %include Cobyla.i
 %include Dlib.i
+%include Ipopt.i
 %include TNC.i
 %include SQP.i
 %include MultiStart.i
