@@ -22,11 +22,11 @@ For an intersection (parallel system) the probability writes:
 In practice the event has to be defined under its disjonctive normal form
 (union of intersections).
 Each probability of intersection region is computed using the previous formula,
-then the Poincarre formula is used to combine each union:
+then the Poincaré formula is used to combine each union:
 
 .. math::
 
-    P(E_{sys}) = P(\bigcup_{i=1}^N E_i) = \sum_{i=1}^n P(E_i) - \sum_{j=2}^n \sum_{i=1}^j P(E_i \cap E_j) + \dots + (-1)^n P(E_1 \cap E_2 \cap \dots \cap E_n)
+    P(E_{sys}) = P(\bigcup_{i=1}^N E_i) = \sum_{i=1}^N P(E_i) - \sum_{i < j} P(E_i \cap E_j) + \dots + (-1)^N P(E_1 \cap E_2 \cap \dots \cap E_N)
 
 More details can be found in [lemaire2009]_, at the chapter *Reliability of systems*.
 
