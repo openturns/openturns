@@ -60,7 +60,7 @@ class SciPyDistribution(PythonDistribution):
     Examples
     --------
     >>> import openturns as ot
-    >>> import scipy.stats as st
+    >>> import scipy.stats as st  # doctest: +SKIP
     >>> scipy_dist = st.johnsonsu(2.55, 2.25)  # doctest: +SKIP
     >>> distribution = ot.Distribution(ot.SciPyDistribution(scipy_dist))  # doctest: +SKIP
     >>> distribution.getRealization()  # doctest: +SKIP
