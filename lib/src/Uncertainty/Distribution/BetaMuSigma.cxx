@@ -102,7 +102,7 @@ Matrix BetaMuSigma::gradient() const
   const Scalar dbetada = (b - mu) * (-sigma * sigma + (a - b) * (b - mu) - (a - mu) * (b - mu)) / (sigma * sigma * (a - b) * (a - b));
   const Scalar dbetadb = ((a - b) * (sigma * sigma + 2 * (a - mu) * (b - mu)) + (b - mu) * (sigma * sigma + (a - mu) * (b - mu))) / (sigma * sigma * (a - b) * (a - b));
 
-  SquareMatrix nativeParametersGradient(IdentityMatrix(4));
+  Matrix nativeParametersGradient(IdentityMatrix(4));
   nativeParametersGradient(0, 0) = alphadmu;
   nativeParametersGradient(1, 0) = dalphadsigma;
   nativeParametersGradient(2, 0) = dalphada;

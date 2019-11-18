@@ -80,7 +80,7 @@ Matrix GumbelAB::gradient() const
   const Scalar dgammada = 1.0;
   const Scalar dgammadb = 0.0;
 
-  SquareMatrix nativeParametersGradient(IdentityMatrix(2));
+  Matrix nativeParametersGradient(IdentityMatrix(2));
   nativeParametersGradient(0, 0) = dbetada;
   nativeParametersGradient(1, 0) = dbetadb;
 

@@ -81,7 +81,7 @@ Matrix ArcsineMuSigma::gradient() const
   const Scalar dbdmu = 1.0;
   const Scalar dbdsigma = sqrt(2.0);
 
-  SquareMatrix nativeParametersGradient(IdentityMatrix(2));
+  Matrix nativeParametersGradient(IdentityMatrix(2));
   nativeParametersGradient(0, 0) = dadmu;
   nativeParametersGradient(1, 0) = dadsigma;
 

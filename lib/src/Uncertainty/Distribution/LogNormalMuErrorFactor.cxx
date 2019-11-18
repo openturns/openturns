@@ -83,7 +83,7 @@ Matrix LogNormalMuErrorFactor::gradient() const
 {
   const Scalar dsigmalogdef = 1.0 / (DistFunc::qNormal(0.95) * ef_);
 
-  SquareMatrix nativeParametersGradient(IdentityMatrix(3));
+  Matrix nativeParametersGradient(IdentityMatrix(3));
   nativeParametersGradient(1, 1) = dsigmalogdef;
 
   return nativeParametersGradient;
