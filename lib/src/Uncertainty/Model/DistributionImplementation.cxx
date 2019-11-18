@@ -2671,6 +2671,12 @@ void DistributionImplementation::setRange(const Interval & range)
 /* Compute the numerical range of the distribution given the parameters values */
 void DistributionImplementation::computeRange()
 {
+  // Quick return for copulas
+  if (isCopula())
+    {
+      range_ = Interval(dimension_);
+      return;
+    }
   const Interval::BoolCollection finiteLowerBound(dimension_, false);
   const Interval::BoolCollection finiteUpperBound(dimension_, false);
   // Initialize the range with inverted bounds in order to inform the generic implementation of the
@@ -3351,6 +3357,8 @@ Scalar DistributionImplementation::computeDensityGeneratorSecondDerivative(const
 /* Get the i-th marginal distribution */
 Distribution DistributionImplementation::getMarginal(const UnsignedInteger i) const
 {
+  if (isCopula())
+    return Uniform(0.0, 1.0);
   return getMarginal(Indices(1, i));
 }
 
