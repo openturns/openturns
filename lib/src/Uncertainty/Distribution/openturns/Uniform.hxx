@@ -134,6 +134,9 @@ public:
   /** Check if the distribution is elliptical */
   Bool isElliptical() const;
 
+  /** Check if the distribution is a copula */
+  Bool isCopula() const;
+
   /* Interface specific to Uniform */
 
   /** A accessor */
