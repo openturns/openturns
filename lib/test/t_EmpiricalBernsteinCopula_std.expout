@@ -79,20 +79,20 @@ covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImpleme
 correlation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.125,0.125,1]
 spearman=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.125,0.125,1]
 kendall=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.2712,0.2712,1]
-margin=class=EmpiricalBernsteinCopula name=EmpiricalBernsteinCopula dimension=1 copulaSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=12 dimension=1 description=[X0] data=[[0.833333],[0.583333],[0.166667],[0.666667],[0.916667],[0.5],[0.0833333],[0.25],[1],[0.416667],[0.75],[0.333333]] binNumber=3
+margin=class=Uniform name=Uniform dimension=1 a=0 b=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.716177]
-margin=class=EmpiricalBernsteinCopula name=EmpiricalBernsteinCopula dimension=1 copulaSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=12 dimension=1 description=[X1] data=[[0.166667],[0.916667],[0.583333],[1],[0.833333],[0.5],[0.0833333],[0.416667],[0.333333],[0.666667],[0.75],[0.25]] binNumber=3
+margin realization=class=Point name=Unnamed dimension=1 values=[0.967116]
+margin=class=Uniform name=Uniform dimension=1 a=0 b=1
 margin PDF=1
 margin CDF=0.25
 margin quantile=class=Point name=Unnamed dimension=1 values=[0.95]
-margin realization=class=Point name=Unnamed dimension=1 values=[0.875912]
+margin realization=class=Point name=Unnamed dimension=1 values=[0.367334]
 indices=[1,0]
 margins=class=EmpiricalBernsteinCopula name=EmpiricalBernsteinCopula dimension=2 copulaSample=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=12 dimension=2 description=[X1,X0] data=[[0.166667,0.833333],[0.916667,0.583333],[0.583333,0.166667],[1,0.666667],[0.833333,0.916667],[0.5,0.5],[0.0833333,0.0833333],[0.416667,0.25],[0.333333,1],[0.666667,0.416667],[0.75,0.75],[0.25,0.333333]] binNumber=3
 margins PDF=1.0957
 margins CDF=0.0767822
 margins quantile=class=Point name=Unnamed dimension=2 values=[0.974525,0.974525]
 margins CDF(quantile)=0.95
-margins realization=class=Point name=Unnamed dimension=2 values=[0.00985624,0.0968128]
+margins realization=class=Point name=Unnamed dimension=2 values=[0.875912,0.449469]

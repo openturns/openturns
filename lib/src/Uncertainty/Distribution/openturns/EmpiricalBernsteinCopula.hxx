@@ -93,6 +93,7 @@ public:
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   using ContinuousDistribution::getMarginal;
+  Distribution getMarginal(const UnsignedInteger i) const;
   Distribution getMarginal(const Indices & indices) const;
 
   /** Get the Spearman correlation of the distribution */
@@ -125,6 +126,9 @@ private:
 
   /** Compute the normalization factors */
   void update();
+
+  /** Compute the numerical range of the distribution given the parameters values */
+  void computeRange();
 
   /** The underlying sample */
   Sample copulaSample_;
