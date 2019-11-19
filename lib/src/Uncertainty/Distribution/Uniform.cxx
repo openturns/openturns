@@ -334,9 +334,14 @@ Description Uniform::getParameterDescription() const
 /* Check if the distribution is elliptical */
 Bool Uniform::isElliptical() const
 {
-  return getDimension() == 1;
+  return true;
 }
 
+/* Check if the distribution is a copula */
+Bool Uniform::isCopula() const
+{
+  return (a_ == 0.0) && (b_ == 1.0);
+}
 
 
 /* A accessor */

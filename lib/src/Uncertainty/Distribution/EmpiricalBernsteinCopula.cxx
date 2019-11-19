@@ -25,6 +25,7 @@
 #include "openturns/Exception.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
+#include "openturns/Uniform.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/RandomGenerator.hxx"
 
@@ -332,6 +333,15 @@ Scalar EmpiricalBernsteinCopula::computeProbability(const Interval & interval) c
   return probabilityValue / size;
 }
 
+
+/* Get the distribution of the marginal distribution corresponding to the index */
+Distribution EmpiricalBernsteinCopula::getMarginal(const UnsignedInteger i) const
+{
+  if (i >= dimension_) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
+  if (isCopula()) return Uniform(0.0, 1.0);
+  return getMarginal(Indices(1, i));
+}
+
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 Distribution EmpiricalBernsteinCopula::getMarginal(const Indices & indices) const
 {
@@ -386,6 +396,12 @@ Bool EmpiricalBernsteinCopula::hasEllipticalCopula() const
 Bool EmpiricalBernsteinCopula::hasIndependentCopula() const
 {
   return (getDimension() == 1);
+}
+
+/* Compute the numerical range of the distribution given the parameters values */
+void EmpiricalBernsteinCopula::computeRange()
+{
+  range_ = Interval(dimension_);
 }
 
 /* Compute the normalization factors */
