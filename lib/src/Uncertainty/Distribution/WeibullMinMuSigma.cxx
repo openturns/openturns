@@ -104,7 +104,7 @@ Matrix WeibullMinMuSigma::gradient() const
   const Scalar dbetadgamma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[0];
   const Scalar dalphadgamma = ((operator()(newParameters + pt) - operator()(newParameters - pt)) / (2 * epsilon))[1];
 
-  SquareMatrix nativeParametersGradient(IdentityMatrix(3));
+  Matrix nativeParametersGradient(IdentityMatrix(3));
   nativeParametersGradient(0, 0) = dbetadmu;
   nativeParametersGradient(1, 0) = dbetadsigma;
   nativeParametersGradient(2, 0) = dbetadgamma;

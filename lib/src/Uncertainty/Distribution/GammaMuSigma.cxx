@@ -91,7 +91,7 @@ Matrix GammaMuSigma::gradient() const
   const Scalar dlambdadsigma = -2.0 * (mu - gamma) / (sigma * sigma * sigma);
   const Scalar dlambdadgamma = -dlambdadmu;
 
-  SquareMatrix nativeParametersGradient(IdentityMatrix(3));
+  Matrix nativeParametersGradient(IdentityMatrix(3));
   nativeParametersGradient(0, 0) = dkdmu;
   nativeParametersGradient(1, 0) = dkdsigma;
   nativeParametersGradient(2, 0) = dkdgamma;

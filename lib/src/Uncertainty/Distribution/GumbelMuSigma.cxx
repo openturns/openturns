@@ -81,7 +81,7 @@ Matrix GumbelMuSigma::gradient() const
   const Scalar dgammadmu = 1.0;
   const Scalar dgammadsigma = -SpecFunc::EULERSQRT6_PI;
 
-  SquareMatrix nativeParametersGradient(IdentityMatrix(2));
+  Matrix nativeParametersGradient(IdentityMatrix(2));
   nativeParametersGradient(0, 0) = dbetadmu;
   nativeParametersGradient(1, 0) = dbetadsigma;
 

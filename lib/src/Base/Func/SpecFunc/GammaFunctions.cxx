@@ -25,9 +25,10 @@
 #include "openturns/Exception.hxx"
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/incgam.hxx"
 #ifdef OPENTURNS_HAVE_BOOST
 #include <boost/math/special_functions/gamma.hpp>
+#else
+#include "openturns/incgam.hxx"
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -75,7 +76,14 @@ Scalar RegularizedIncompleteGammaInverse(const Scalar a,
 {
   if (!(a > 0.0)) throw InvalidArgumentException(HERE) << "Error: a must be positive, here a=" << a;
 #ifdef OPENTURNS_HAVE_BOOST
-  return (tail ? boost::math::gamma_q_inv(a, x) : boost::math::gamma_p_inv(a, x));
+  try
+  {
+    return (tail ? boost::math::gamma_q_inv(a, x) : boost::math::gamma_p_inv(a, x));
+  }
+  catch (boost::math::evaluation_error & ex)
+  {
+    throw InvalidArgumentException(HERE) << ex.what();
+  }
 #else
   const Scalar y = 0.5 + (0.5 - x);
   Scalar xr = -1.0;

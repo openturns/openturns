@@ -79,7 +79,7 @@ Matrix GumbelLambdaGamma::gradient() const
   const Scalar dgammadlambda = 0.0;
   const Scalar dgammadgamma = 1.0;
 
-  SquareMatrix nativeParametersGradient(IdentityMatrix(2));
+  Matrix nativeParametersGradient(IdentityMatrix(2));
   nativeParametersGradient(0, 0) = dbetadlambda;
   nativeParametersGradient(1, 0) = dbetadgamma;
 
