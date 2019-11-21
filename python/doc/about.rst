@@ -23,6 +23,7 @@ reliability analysis.
 - 2016: (1.7, 1.8) Karhunen-Loeve process decomposition, NLopt bindings
 - 2017: (1.9, 1.10) Canonical format low-rank tensor approximation, field functions
 - 2018: (1.11, 1.12) Domains arithmetic, asymptotic Sobol' estimators, new simulation algorithms
+- 2019: (1.13, 1.14) Calibration, new optimization algorithms, system events
 
 People
 ------
