@@ -1,1 +1,54 @@
- 
+%feature("docstring") OT::IterativeMean
+"Iterative sample mean.
+
+Available constructor:
+    IterativeMean(dimension)
+
+Parameters
+----------
+dimension : UnsignedInteger
+    Dimension of the input data
+
+Notes
+-----
+This class iteratively computes the sample mean of several :class:`~openturns.Point` or :class:`~openturns.Sample`.
+
+This mean is defined as:
+
+.. math::
+
+   \mu_{0} = 0
+   \mu_{i} = \mu_{i-1} + \frac{1}{i}(u(i) - \mu_{i-1})
+
+With u(i) the new input point.
+
+See also
+--------
+IterativeAlgorithm
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dim = 5
+>>> myMean = ot.IterativeMean(dim)
+>>> n = ot.Normal(dim)
+>>> size = 50
+>>> for i in range(size):
+>>>     point = n.getRealization()
+>>>     myMean.increment(point)
+>>>
+>>> print (myMean.getIteration())
+>>> print (myMean.getMean())
+"
+
+// ---------------------------------------------------------------------
+
+
+%feature("docstring") OT::IterativeMean::getMean
+"Returns the values of the mean
+
+Returns
+-------
+mean : :class:`~openturns.Point`
+    current values of the iterative mean."
