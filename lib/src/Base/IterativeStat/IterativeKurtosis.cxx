@@ -15,9 +15,7 @@ CLASSNAMEINIT(IterativeKurtosis)
 static const Factory<IterativeKurtosis> Factory_IterativeKurtosis;
 
 IterativeKurtosis::IterativeKurtosis(const UnsignedInteger dimension)
-  : IterativeAlgorithmImplementation()
-  , iteration_(0)
-  , dimension_(dimension)
+  : IterativeAlgorithmImplementation(dimension)
   , mean1Data_(dimension_, 0.0)
   , mean2Data_(dimension_, 0.0)
   , mean3Data_(dimension_, 0.0)
@@ -62,16 +60,6 @@ String IterativeKurtosis::__str__(const String & offset) const
 //   if (index >= varData_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << varData_.getSize() - 1;
 //   return varData_[index];
 // }
-
-UnsignedInteger IterativeKurtosis::getIteration() const
-{
-  return iteration_;
-}
-
-UnsignedInteger IterativeKurtosis::getSize() const
-{
-  return dimension_;
-}
 
 Point IterativeKurtosis::getKurtosis() const
 {
@@ -226,9 +214,7 @@ void IterativeKurtosis::increment(const Sample & newData)
 /* Method save() stores the object through the StorageManager */
 void IterativeKurtosis::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
-  adv.saveAttribute( "dimension_", dimension_);
-  adv.saveAttribute( "iteration_", iteration_);
+  IterativeAlgorithmImplementation::save(adv);
   adv.saveAttribute( "mean1Data_", mean1Data_);
   adv.saveAttribute( "mean2Data_", mean2Data_);
   adv.saveAttribute( "mean3Data_", mean3Data_);
@@ -239,9 +225,7 @@ void IterativeKurtosis::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void IterativeKurtosis::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
-  adv.loadAttribute( "dimension_", dimension_);
-  adv.loadAttribute( "iteration_", iteration_);
+  IterativeAlgorithmImplementation::load(adv);
   adv.loadAttribute( "mean1Data_", mean1Data_);
   adv.loadAttribute( "mean2Data_", mean2Data_);
   adv.loadAttribute( "mean3Data_", mean3Data_);

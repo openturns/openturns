@@ -17,9 +17,7 @@ IterativeQuantile::IterativeQuantile(const UnsignedInteger dimension,
                                      const Scalar order,
                                      const UnsignedInteger nmax
                                     )
-  : IterativeAlgorithmImplementation()
-  , iteration_(0)
-  , dimension_(dimension)
+  : IterativeAlgorithmImplementation(dimension)
   , data_(dimension_, 0.0)
   , order_(order)
   , nmax_(nmax)
@@ -52,16 +50,6 @@ String IterativeQuantile::__repr__() const
 String IterativeQuantile::__str__(const String & offset) const
 {
   return data_.__str__(offset);
-}
-
-UnsignedInteger IterativeQuantile::getIteration() const
-{
-  return iteration_;
-}
-
-UnsignedInteger IterativeQuantile::getSize() const
-{
-  return dimension_;
 }
 
 UnsignedInteger IterativeQuantile::getOrder() const
@@ -149,9 +137,7 @@ void IterativeQuantile::increment(const Sample & newData)
 /* Method save() stores the object through the StorageManager */
 void IterativeQuantile::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
-  adv.saveAttribute( "dimension_", dimension_);
-  adv.saveAttribute( "iteration_", iteration_);
+  IterativeAlgorithmImplementation::save(adv);
   adv.saveAttribute( "order_", order_);
   adv.saveAttribute( "nmax_", nmax_);
   adv.saveAttribute( "data_", data_);
@@ -161,9 +147,7 @@ void IterativeQuantile::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void IterativeQuantile::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
-  adv.loadAttribute( "dimension_", dimension_);
-  adv.loadAttribute( "iteration_", iteration_);
+  IterativeAlgorithmImplementation::load(adv);
   adv.loadAttribute( "order_", order_);
   adv.loadAttribute( "nmax_", nmax_);
   adv.loadAttribute( "data_", data_);

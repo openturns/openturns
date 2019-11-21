@@ -13,10 +13,8 @@ CLASSNAMEINIT(IterativeThresholdExceedance)
 
 static const Factory<IterativeThresholdExceedance> Factory_IterativeThresholdExceedance;
 
-IterativeThresholdExceedance::IterativeThresholdExceedance(const UnsignedInteger dimension, const UnsignedInteger thresholdValue)
-  : IterativeAlgorithmImplementation()
-  , iteration_(0)
-  , dimension_(dimension)
+IterativeThresholdExceedance::IterativeThresholdExceedance(const UnsignedInteger dimension, const Scalar thresholdValue)
+  : IterativeAlgorithmImplementation(dimension)
   , thresholdValue_(thresholdValue)
   , data_(dimension_, 0.0)
 {
@@ -51,19 +49,9 @@ String IterativeThresholdExceedance::__str__(const String & offset) const
   return data_.__str__(offset);
 }
 
-UnsignedInteger IterativeThresholdExceedance::getIteration() const
-{
-  return iteration_;
-}
-
-UnsignedInteger IterativeThresholdExceedance::getThresholdValue() const
+Scalar IterativeThresholdExceedance::getThresholdValue() const
 {
   return thresholdValue_;
-}
-
-UnsignedInteger IterativeThresholdExceedance::getSize() const
-{
-  return data_.getSize();
 }
 
 Point IterativeThresholdExceedance::getThresholdExceedance() const
@@ -105,9 +93,7 @@ void IterativeThresholdExceedance::increment(const Sample & newData)
 /* Method save() stores the object through the StorageManager */
 void IterativeThresholdExceedance::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
-  adv.saveAttribute( "dimension_", dimension_);
-  adv.saveAttribute( "iteration_", iteration_);
+  IterativeAlgorithmImplementation::save(adv);
   adv.saveAttribute( "thresholdValue_", thresholdValue_);
   adv.saveAttribute( "data_", data_);
 }
@@ -116,9 +102,7 @@ void IterativeThresholdExceedance::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void IterativeThresholdExceedance::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
-  adv.loadAttribute( "dimension_", dimension_);
-  adv.loadAttribute( "iteration_", iteration_);
+  IterativeAlgorithmImplementation::load(adv);
   adv.loadAttribute( "thresholdValue_", thresholdValue_);
   adv.loadAttribute( "data_", data_);
 }

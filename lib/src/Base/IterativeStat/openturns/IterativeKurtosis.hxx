@@ -53,10 +53,6 @@ public:
   /* String converter */
   String __str__(const String & offset = "") const;
 
-  UnsignedInteger getSize() const;
-
-  UnsignedInteger getIteration() const;
-
   Point getKurtosis() const;
 
   Point getSkewness() const;
@@ -76,8 +72,6 @@ public:
   void load(Advocate & adv);
 
 private:
-  UnsignedInteger              iteration_;
-  UnsignedInteger              dimension_;
   PersistentCollection<Scalar> mean1Data_;
   PersistentCollection<Scalar> mean2Data_;
   PersistentCollection<Scalar> mean3Data_;

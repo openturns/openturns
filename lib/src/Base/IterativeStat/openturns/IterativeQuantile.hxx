@@ -56,10 +56,6 @@ public:
   /* String converter */
   String __str__(const String & offset = "") const;
 
-  UnsignedInteger getSize() const;
-
-  UnsignedInteger getIteration() const;
-
   UnsignedInteger getOrder() const;
 
   UnsignedInteger getNmax() const;
@@ -75,8 +71,6 @@ public:
 //   static AlgoRegister reg;
 
 private:
-  UnsignedInteger              iteration_;
-  UnsignedInteger              dimension_;
   Scalar                       order_;
   UnsignedInteger              nmax_;
   PersistentCollection<Scalar> data_;

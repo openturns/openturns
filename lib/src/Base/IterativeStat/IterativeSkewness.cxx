@@ -14,9 +14,7 @@ CLASSNAMEINIT(IterativeSkewness)
 static const Factory<IterativeSkewness> Factory_IterativeSkewness;
 
 IterativeSkewness::IterativeSkewness(const UnsignedInteger dimension)
-  : IterativeAlgorithmImplementation()
-  , iteration_(0)
-  , dimension_(dimension)
+  : IterativeAlgorithmImplementation(dimension)
   , mean1Data_(dimension_, 0.0)
   , mean2Data_(dimension_, 0.0)
   , mean3Data_(dimension_, 0.0)
@@ -46,16 +44,6 @@ String IterativeSkewness::__repr__() const
 String IterativeSkewness::__str__(const String & offset) const
 {
   return getSkewness().__str__(offset);
-}
-
-UnsignedInteger IterativeSkewness::getIteration() const
-{
-  return iteration_;
-}
-
-UnsignedInteger IterativeSkewness::getSize() const
-{
-  return dimension_;
 }
 
 Point IterativeSkewness::getSkewness() const
@@ -177,9 +165,7 @@ void IterativeSkewness::increment(const Sample & newData)
 /* Method save() stores the object through the StorageManager */
 void IterativeSkewness::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
-  adv.saveAttribute( "dimension_", dimension_);
-  adv.saveAttribute( "iteration_", iteration_);
+  IterativeAlgorithmImplementation::save(adv);
   adv.saveAttribute( "mean1Data_", mean1Data_);
   adv.saveAttribute( "mean2Data_", mean2Data_);
   adv.saveAttribute( "mean3Data_", mean3Data_);
@@ -189,9 +175,7 @@ void IterativeSkewness::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void IterativeSkewness::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
-  adv.loadAttribute( "dimension_", dimension_);
-  adv.loadAttribute( "iteration_", iteration_);
+  IterativeAlgorithmImplementation::load(adv);
   adv.loadAttribute( "mean1Data_", mean1Data_);
   adv.loadAttribute( "mean2Data_", mean2Data_);
   adv.loadAttribute( "mean3Data_", mean3Data_);

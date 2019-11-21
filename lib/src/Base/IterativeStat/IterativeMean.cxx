@@ -13,10 +13,8 @@ CLASSNAMEINIT(IterativeMean)
 static const Factory<IterativeMean> Factory_IterativeMean;
 
 IterativeMean::IterativeMean(const UnsignedInteger dimension)
-  : IterativeAlgorithmImplementation()
-  , iteration_(0)
-  , dimension_(dimension)
-  , data_(dimension_, 0.0)
+  : IterativeAlgorithmImplementation(dimension)
+  , data_(dimension, 0.0)
 {
   // Nothing to do
 }
@@ -60,16 +58,6 @@ String IterativeMean::__str__(const String & offset) const
 //   return data_[index];
 // }
 
-UnsignedInteger IterativeMean::getIteration() const
-{
-  return iteration_;
-}
-
-UnsignedInteger IterativeMean::getSize() const
-{
-  return dimension_;
-}
-
 Point IterativeMean::getMean() const
 {
   return data_;
@@ -105,9 +93,7 @@ void IterativeMean::increment(const Sample & newData)
 /* Method save() stores the object through the StorageManager */
 void IterativeMean::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
-  adv.saveAttribute( "dimension_", dimension_);
-  adv.saveAttribute( "iteration_", iteration_);
+  IterativeAlgorithmImplementation::save(adv);
   adv.saveAttribute( "data_", data_);
 }
 
@@ -115,9 +101,7 @@ void IterativeMean::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void IterativeMean::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
-  adv.loadAttribute( "dimension_", dimension_);
-  adv.loadAttribute( "iteration_", iteration_);
+  IterativeAlgorithmImplementation::load(adv);
   adv.loadAttribute( "data_", data_);
 }
 

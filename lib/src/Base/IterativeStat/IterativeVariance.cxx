@@ -14,11 +14,9 @@ CLASSNAMEINIT(IterativeVariance)
 static const Factory<IterativeVariance> Factory_IterativeVariance;
 
 IterativeVariance::IterativeVariance(const UnsignedInteger dimension)
-  : IterativeAlgorithmImplementation()
-  , iteration_(0)
-  , dimension_(dimension)
-  , meanData_(dimension_, 0.0)
-  , varData_(dimension_, 0.0)
+  : IterativeAlgorithmImplementation(dimension)
+  , meanData_(dimension, 0.0)
+  , varData_(dimension, 0.0)
 {
   // Nothing to do
 }
@@ -46,19 +44,8 @@ String IterativeVariance::__str__(const String & offset) const
   return varData_.__str__(offset);
 }
 
-UnsignedInteger IterativeVariance::getIteration() const
-{
-  return iteration_;
-}
-
-UnsignedInteger IterativeVariance::getSize() const
-{
-  return dimension_;
-}
-
 Point IterativeVariance::getVariance() const
 {
-
   return varData_;
 }
 
@@ -153,9 +140,7 @@ void IterativeVariance::increment(const Sample & newData)
 /* Method save() stores the object through the StorageManager */
 void IterativeVariance::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
-  adv.saveAttribute( "dimension_", dimension_);
-  adv.saveAttribute( "iteration_", iteration_);
+  IterativeAlgorithmImplementation::save(adv);
   adv.saveAttribute( "meanData_", meanData_);
   adv.saveAttribute( "varData_", varData_);
 }
@@ -164,9 +149,7 @@ void IterativeVariance::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void IterativeVariance::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
-  adv.loadAttribute( "dimension_", dimension_);
-  adv.loadAttribute( "iteration_", iteration_);
+  IterativeAlgorithmImplementation::load(adv);
   adv.loadAttribute( "meanData_", meanData_);
   adv.loadAttribute( "varData_", varData_);
 }

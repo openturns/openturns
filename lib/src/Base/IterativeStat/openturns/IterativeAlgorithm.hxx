@@ -4,6 +4,7 @@
 
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/IterativeAlgorithmImplementation.hxx"
+#include "openturns/IterativeMean.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,6 +32,12 @@ public:
    */
   IterativeAlgorithm()
     : TypedInterfaceObject<IterativeAlgorithmImplementation>()
+  {
+    // Nothing to do
+  }
+
+  IterativeAlgorithm(const UnsignedInteger dimension)
+    : TypedInterfaceObject<IterativeAlgorithmImplementation>(new IterativeMean(dimension))
   {
     // Nothing to do
   }
@@ -89,9 +96,29 @@ public:
     return getImplementation()->increment(newData);
   }
 
-  virtual void finalize()
+//   virtual void finalize()
+//   {
+//     return getImplementation()->finalize();
+//   }
+
+  /**
+   * Iteration accessor
+   *
+   * This method returns the current iteration number of the algorithm.
+   */
+  UnsignedInteger getIteration() const
   {
-    return getImplementation()->finalize();
+    return getImplementation()->getIteration();
+  }
+
+  /**
+   * Dimension accessor
+   *
+   * This method returns the dimension of the object.
+   */
+  UnsignedInteger getDimension() const
+  {
+    return getImplementation()->getDimension();
   }
 
   /* String converter */

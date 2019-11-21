@@ -53,10 +53,6 @@ public:
   /* String converter */
   String __str__(const String & offset = "") const;
 
-  UnsignedInteger getSize() const;
-
-  UnsignedInteger getIteration() const;
-
   Point getVariance() const;
 
   Point getStandardErrorOfTheMean() const;
@@ -74,8 +70,6 @@ public:
   void load(Advocate & adv);
 
 private:
-  UnsignedInteger              iteration_;
-  UnsignedInteger              dimension_;
   PersistentCollection<Scalar> meanData_;
   PersistentCollection<Scalar> varData_;
 };

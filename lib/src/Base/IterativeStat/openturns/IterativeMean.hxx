@@ -53,10 +53,6 @@ public:
   /* String converter */
   String __str__(const String & offset = "") const;
 
-  UnsignedInteger getSize() const;
-
-  UnsignedInteger getIteration() const;
-
   Point getMean() const;
 
   /** Method save() stores the object through the StorageManager */
@@ -68,8 +64,6 @@ public:
 //   static AlgoRegister reg;
 
 private:
-  UnsignedInteger              iteration_;
-  UnsignedInteger              dimension_;
   PersistentCollection<Scalar> data_;
 };
 

@@ -53,10 +53,6 @@ public:
   /* String converter */
   String __str__(const String & offset = "") const;
 
-  UnsignedInteger getSize() const;
-
-  UnsignedInteger getIteration() const;
-
   Point getMin() const;
 
   Point getMax() const;
@@ -71,8 +67,6 @@ public:
 
 private:
 //   static IterativeAlgorithm * create(const int dimension);
-  UnsignedInteger              iteration_;
-  UnsignedInteger              dimension_;
   PersistentCollection<Scalar> minData_;
   PersistentCollection<Scalar> maxData_;
 };

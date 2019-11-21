@@ -14,9 +14,7 @@ CLASSNAMEINIT(IterativeExtrema)
 static const Factory<IterativeExtrema> Factory_IterativeExtrema;
 
 IterativeExtrema::IterativeExtrema(const UnsignedInteger dimension)
-  : IterativeAlgorithmImplementation()
-  , iteration_(0)
-  , dimension_(dimension)
+  : IterativeAlgorithmImplementation(dimension)
   , minData_(dimension, 0.0)
   , maxData_(dimension, 0.0)
 {
@@ -57,16 +55,6 @@ String IterativeExtrema::__str__(const String & offset) const
     separator = ", ";
   }
   return oss;
-}
-
-UnsignedInteger IterativeExtrema::getIteration() const
-{
-  return iteration_;
-}
-
-UnsignedInteger IterativeExtrema::getSize() const
-{
-  return dimension_;
 }
 
 Point IterativeExtrema::getMin() const
@@ -143,9 +131,7 @@ void IterativeExtrema::increment(const Sample & newData)
 /* Method save() stores the object through the StorageManager */
 void IterativeExtrema::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
-  adv.saveAttribute( "dimension_", dimension_);
-  adv.saveAttribute( "iteration_", iteration_);
+  IterativeAlgorithmImplementation::save(adv);
   adv.saveAttribute( "minData_", minData_);
   adv.saveAttribute( "maxData_", maxData_);
 }
@@ -154,9 +140,7 @@ void IterativeExtrema::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void IterativeExtrema::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
-  adv.loadAttribute( "dimension_", dimension_);
-  adv.loadAttribute( "iteration_", iteration_);
+  IterativeAlgorithmImplementation::load(adv);
   adv.loadAttribute( "minData_", minData_);
   adv.loadAttribute( "maxData_", maxData_);
 }

@@ -28,8 +28,16 @@ public:
    * The object has the default name but it does not
    * use storage for it.
    */
-  IterativeAlgorithmImplementation()
+//   IterativeAlgorithmImplementation()
+//     : PersistentObject()
+//   {
+//     // Nothing to do
+//   }
+
+  explicit IterativeAlgorithmImplementation(const UnsignedInteger dimension = 1)
     : PersistentObject()
+    , iteration_(0)
+    , dimension_(dimension)
   {
     // Nothing to do
   }
@@ -58,9 +66,29 @@ public:
 
   virtual void increment(const Sample & newData) = 0;
 
-  virtual void finalize()
+//   virtual void finalize()
+//   {
+//     // Nothing to do
+//   }
+
+  /**
+   * Iteration accessor
+   *
+   * This method returns the current iteration number of the algorithm.
+   */
+  UnsignedInteger getIteration() const
   {
-    // Nothing to do
+    return iteration_;
+  }
+
+  /**
+   * Dimension accessor
+   *
+   * This method returns the dimension of the object.
+   */
+  UnsignedInteger getDimension() const
+  {
+    return dimension_;
   }
 
   /**
@@ -104,14 +132,28 @@ public:
    * @warning This method MUST be overloaded in derived classes.
    * @internal
    */
-  virtual void save(Advocate & adv) const = 0;
+  virtual void save(Advocate & adv) const
+  {
+    PersistentObject::save(adv);
+    adv.saveAttribute( "dimension_", dimension_);
+    adv.saveAttribute( "iteration_", iteration_);
+  }
 
   /** Method load() reloads the object from the StorageManager
    *
    * @warning This method MUST be overloaded in derived classes.
    * @internal
    */
-  virtual void load(Advocate & adv) = 0;
+  virtual void load(Advocate & adv)
+  {
+    PersistentObject::load(adv);
+    adv.loadAttribute( "dimension_", dimension_);
+    adv.loadAttribute( "iteration_", iteration_);
+  }
+
+protected:
+  UnsignedInteger              iteration_;
+  UnsignedInteger              dimension_;
 
 }; /* class IterativeAlgorithmImplementation */
 
