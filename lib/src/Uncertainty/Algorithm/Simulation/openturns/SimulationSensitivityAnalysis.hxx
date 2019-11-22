@@ -44,18 +44,15 @@ class OT_API SimulationSensitivityAnalysis
 
   CLASSNAME
 public:
-
   typedef Function IsoProbabilisticTransformation;
 
   /** Default constructor */
   SimulationSensitivityAnalysis();
 
   /** Standard constructor */
-  SimulationSensitivityAnalysis(const Sample & inputSample,
-                                const Sample & outputSample,
-                                const IsoProbabilisticTransformation & transformation,
-                                const ComparisonOperator & comparisonOperator,
-                                const Scalar threshold);
+  SimulationSensitivityAnalysis(const RandomVector & event,
+                                const Sample & inputSample,
+                                const Sample & outputSample);
 
   /** Standard constructor */
   explicit SimulationSensitivityAnalysis(const RandomVector & event);
@@ -74,6 +71,7 @@ public:
   PointWithDescription computeImportanceFactors() const;
   PointWithDescription computeImportanceFactors(const Scalar threshold) const;
 
+  PointWithDescription computeEventProbabilitySensitivity() const;
 public:
 
   /** Importance factors drawing */
@@ -90,14 +88,12 @@ public:
 
   /** Threshold accessors */
   Scalar getThreshold() const;
-  void setThreshold(const Scalar threshold);
 
   /** Iso-probabilistic transformation accessor */
   IsoProbabilisticTransformation getTransformation() const;
 
   /** Comparison operator accessors */
   ComparisonOperator getComparisonOperator() const;
-  void setComparisonOperator(const ComparisonOperator & comparisonOperator);
 
   /** String converter */
   virtual String __repr__() const;
@@ -116,14 +112,8 @@ protected:
   /* Associated output sample */
   Sample outputSample_;
 
-  /* Iso probabilistic transformation associated with the input sample distribution */
-  IsoProbabilisticTransformation transformation_;
-
-  /* Comparison operator defining the event we are interested in */
-  ComparisonOperator comparisonOperator_;
-
-  /* Main threshold of interest */
-  Scalar threshold_;
+  /* Event */
+  RandomVector event_;
 
 }; // class SimulationSensitivityAnalysis
 

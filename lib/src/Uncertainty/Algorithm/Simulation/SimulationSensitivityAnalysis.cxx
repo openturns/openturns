@@ -36,28 +36,19 @@ static const Factory<SimulationSensitivityAnalysis> Factory_SimulationSensitivit
 
 /* Default constructor */
 SimulationSensitivityAnalysis::SimulationSensitivityAnalysis()
-  : PersistentObject(),
-    inputSample_(),
-    outputSample_(),
-    transformation_(),
-    comparisonOperator_(),
-    threshold_(0.0)
+  : PersistentObject()
 {
   // Nothing to do
 }
 
 /* Standard constructor */
-SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const Sample & inputSample,
-    const Sample & outputSample,
-    const IsoProbabilisticTransformation & transformation,
-    const ComparisonOperator & comparisonOperator,
-    const Scalar threshold)
+SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const RandomVector & event,
+                                                             const Sample & inputSample,
+                                                             const Sample & outputSample)
   : PersistentObject(),
     inputSample_(inputSample),
     outputSample_(outputSample),
-    transformation_(transformation),
-    comparisonOperator_(comparisonOperator),
-    threshold_(threshold)
+    event_(event)
 {
   const UnsignedInteger inputSize = inputSample.getSize();
   const UnsignedInteger inputDimension = inputSample.getDimension();
@@ -66,19 +57,14 @@ SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const Sample & inpu
   // Check if the samples are not empty
   if (inputSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform analysis based on empty samples.";
   // Check if the iso-probabilistic transformation is compatible with the input sample
-  if (inputDimension != transformation.getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given iso-probabilistic transformation has a dimension=" << transformation.getInputDimension() << " that is different from the input sample dimension=" << inputDimension;
+  if (inputDimension != getTransformation().getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given iso-probabilistic transformation has a dimension=" << getTransformation().getInputDimension() << " that is different from the input sample dimension=" << inputDimension;
   // Check if the output sample is uni dimensional
   if (outputSample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given output sample must have a dimension=1, here dimension=" << outputSample.getDimension();
 }
 
 /* Standard constructor */
 SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const ProbabilitySimulationResult & result)
-  : PersistentObject(),
-    inputSample_(),
-    outputSample_(),
-    transformation_(),
-    comparisonOperator_(),
-    threshold_()
+  : PersistentObject()
 {
   *this = SimulationSensitivityAnalysis(result.getEvent());
 }
@@ -86,11 +72,7 @@ SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const ProbabilitySi
 /* Standard constructor */
 SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const RandomVector & event)
   : PersistentObject(),
-    inputSample_(),
-    outputSample_(),
-    transformation_(),
-    comparisonOperator_(),
-    threshold_()
+    event_(event)
 {
   // Inspect the event to see if it is a composite random vector based event
   if (!event.isEvent() || !event.isComposite()) throw InvalidArgumentException(HERE) << "Error: cannot perform a sensitivity analysis based on the given event. Check if it is based on a composite random vector.";
@@ -101,13 +83,7 @@ SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const RandomVector 
   if (inputSample_.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot perform analysis based on empty samples.";
   // We are sure that the output sample has the same size as the input sample
   outputSample_ = model.getOutputHistory();
-  // Get the transformation from the input distribution
-  transformation_ = event.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation();
   inputSample_.setDescription(event.getImplementation()->getAntecedent().getDistribution().getDescription());
-  // Get the comparison operator
-  comparisonOperator_ = event.getOperator();
-  // Get the threshold
-  threshold_ = event.getThreshold();
 }
 
 /* Virtual constructor */
@@ -123,27 +99,66 @@ Point SimulationSensitivityAnalysis::computeMeanPointInEventDomain(const Scalar 
   Sample filteredSample(0, inputSample_.getDimension());
   // Filter the input points with respect to the considered event
   for (UnsignedInteger i = 0; i < inputSize; ++i)
-    if (comparisonOperator_(outputSample_(i, 0), threshold)) filteredSample.add(inputSample_[i]);
+    if (getComparisonOperator()(outputSample_(i, 0), threshold)) filteredSample.add(inputSample_[i]);
   if (filteredSample.getSize() == 0) throw NotDefinedException(HERE) << "Error: cannont compute the mean point if no point is in the event domain.";
   return filteredSample.computeMean();
 }
 
 Point SimulationSensitivityAnalysis::computeMeanPointInEventDomain() const
 {
-  return computeMeanPointInEventDomain(threshold_);
+  return computeMeanPointInEventDomain(getThreshold());
 }
 
 /* Importance factors computation */
 PointWithDescription SimulationSensitivityAnalysis::computeImportanceFactors(const Scalar threshold) const
 {
-  PointWithDescription result(transformation_(computeMeanPointInEventDomain(threshold)).normalizeSquare());
+  PointWithDescription result(getTransformation()(computeMeanPointInEventDomain(threshold)).normalizeSquare());
   result.setDescription(inputSample_.getDescription());
   return result;
 }
 
 PointWithDescription SimulationSensitivityAnalysis::computeImportanceFactors() const
 {
-  return computeImportanceFactors(threshold_);
+  return computeImportanceFactors(getThreshold());
+}
+
+PointWithDescription SimulationSensitivityAnalysis::computeEventProbabilitySensitivity() const
+{
+  const UnsignedInteger dimension = inputSample_.getDimension();
+  const UnsignedInteger size = inputSample_.getSize();
+
+  // only marginal parameters are handled here as the pdf gradient of copulas is not implemented
+  Description description(event_.getImplementation()->getAntecedent().getDistribution().getParameterDescription());
+  UnsignedInteger parameterDimension = 0;
+  Collection<Distribution> marginals(dimension);
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
+  {
+    marginals[j] = event_.getImplementation()->getAntecedent().getDistribution().getMarginal(j);
+    parameterDimension += marginals[j].getParameter().getSize();
+  }
+   // remove copula parameters
+  description.erase(description.begin() + parameterDimension, description.end());
+  Point sumGrad(parameterDimension);
+  const ComparisonOperator op(getComparisonOperator());
+  const Scalar threshold = getThreshold();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    if (op(outputSample_(i, 0), threshold))
+    {
+      Point grad(parameterDimension);
+      UnsignedInteger index = 0;
+      for (UnsignedInteger j = 0; j < dimension; ++ j)
+      {
+        Point gradj(marginals[j].computeLogPDFGradient(Point(1, inputSample_(i, j))));
+        std::copy(gradj.begin(), gradj.end(), grad.begin() + index);
+        index += gradj.getDimension();
+      }
+      sumGrad += grad / size;
+    }
+  }
+  PointWithDescription sensitivity(sumGrad);
+  sensitivity.setDescription(description);
+  return sensitivity;
 }
 
 /* Importance factors drawing */
@@ -161,9 +176,9 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
 {
   // Here we choose if we have to go forward or backward through the data
   // True if < or <=
-  const Bool goForward = comparisonOperator_(0.0, 1.0);
+  const Bool goForward = getComparisonOperator()(0.0, 1.0);
   // True if > or >=
-  const Bool goBackward = comparisonOperator_(1.0, 0.0);
+  const Bool goBackward = getComparisonOperator()(1.0, 0.0);
   // If both are false, the comparison operator checks for equality, for which the method is not implemented
   if ( (!goForward) && (!goBackward) ) throw InternalException(HERE) << "Error: the drawImportanceFactorsRange is not implemented for an equality comparison operator.";
   // Load the preconized sample margin to avoid too noisy estimate of importance factors
@@ -205,7 +220,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   {
     for (UnsignedInteger j = 0; j < inputDimension; ++j) mergedSample(i, j) = inputSample_(i, j);
     mergedSample[i][inputDimension] = outputSample_(i, 0);
-    good += comparisonOperator_(outputSample_(i, 0), threshold_);
+    good += getComparisonOperator()(outputSample_(i, 0), getThreshold());
   }
   if ((good < sampleMargin) || (good >= size - sampleMargin)) LOGWARN(OSS() << "Warning: the default threshold does not correspond to well-estimated importance factors according to the default sample margin. The number of points defining the event is " << good << " and should be in [" << sampleMargin << ", " << size - sampleMargin - 1 << "] according to the SimulationSensitivityAnalysis-DefaulSampleMargin key value in ResourceMap.");
   // Sort the merged sample according to its last component
@@ -224,7 +239,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
     SignedInteger iThreshold = i;
     Scalar currentThreshold = mergedSample[iThreshold][inputDimension];
     // First, search for a valid threshold, ie one that needs to accumulate more points than the ones already accumulated
-    while (!comparisonOperator_(mergedSample[i][inputDimension], currentThreshold))
+    while (!getComparisonOperator()(mergedSample[i][inputDimension], currentThreshold))
     {
       // Accumulate the current threshold candidate, as it will be accepted as soon as a valid threshold will be found
       const Point current(mergedSample[iThreshold]);
@@ -240,10 +255,10 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
     // The accumulator hes accumulated all the points that didn't compare with the previous threshold value, which means that there are no remaining points if the comparison operator is strict, or there can be additional points to accumulate if the operator is not strict. We have to accumulate all the points associated with a value equals to this threshold
     // i is the index associated with the last point having a value equal to the threshold. It is iThreshold if the comparison is strict.
     i = iThreshold;
-    if (comparisonOperator_(currentThreshold, currentThreshold))
+    if (getComparisonOperator()(currentThreshold, currentThreshold))
     {
       SignedInteger iTies = iThreshold;
-      while (comparisonOperator_(mergedSample[iTies][inputDimension], currentThreshold))
+      while (getComparisonOperator()(mergedSample[iTies][inputDimension], currentThreshold))
       {
         // Accumulate the current threshold
         const Point current(mergedSample[iTies]);
@@ -272,7 +287,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
         // Check if the importance factors are well-defined for the current threshold
         try
         {
-          importanceFactors = transformation_(accumulator / accumulated).normalizeSquare();
+          importanceFactors = getTransformation()(accumulator / accumulated).normalizeSquare();
           const Point ref(computeImportanceFactors(currentThreshold));
           for (UnsignedInteger j = 0; j < inputDimension; ++j)
           {
@@ -295,7 +310,7 @@ Graph SimulationSensitivityAnalysis::drawImportanceFactorsRange(const Bool proba
   } // while (i != iStopDrawing)
   // Initialize with values associated with probabilityScale == false
   String xLabel("threshold");
-  Scalar internalX = threshold_;
+  Scalar internalX = getThreshold();
   // Change the values if probabilityScale == true
   if (probabilityScale)
   {
@@ -344,29 +359,19 @@ Sample SimulationSensitivityAnalysis::getOutputSample() const
 /* Threshold accessors */
 Scalar SimulationSensitivityAnalysis::getThreshold() const
 {
-  return threshold_;
-}
-
-void SimulationSensitivityAnalysis::setThreshold(const Scalar threshold)
-{
-  threshold_ = threshold;
+  return event_.getThreshold();
 }
 
 /* Comparison operator accessors */
 ComparisonOperator SimulationSensitivityAnalysis::getComparisonOperator() const
 {
-  return comparisonOperator_;
-}
-
-void SimulationSensitivityAnalysis::setComparisonOperator(const ComparisonOperator & comparisonOperator)
-{
-  comparisonOperator_ = comparisonOperator;
+  return event_.getOperator();
 }
 
 /* Iso-probabilistic transformation accessor */
 SimulationSensitivityAnalysis::IsoProbabilisticTransformation SimulationSensitivityAnalysis::getTransformation() const
 {
-  return transformation_;
+  return event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation();
 }
 
 /* String converter */
@@ -376,9 +381,7 @@ String SimulationSensitivityAnalysis::__repr__() const
   oss << "class=" << GetClassName()
       << " inputSample=" << inputSample_
       << " outputSample=" << outputSample_
-      << " transformation=" << transformation_
-      << " operator=" << comparisonOperator_
-      << " threshold=" << threshold_;
+      << " event=" << event_;
   return oss;
 }
 
@@ -388,9 +391,7 @@ void SimulationSensitivityAnalysis::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute("inputSample_", inputSample_);
   adv.saveAttribute("outputSample_", outputSample_);
-  adv.saveAttribute("transformation_", transformation_);
-  adv.saveAttribute("comparisonOperator_", comparisonOperator_);
-  adv.saveAttribute("threshold_", threshold_);
+  adv.saveAttribute("event_", event_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -399,9 +400,7 @@ void SimulationSensitivityAnalysis::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute("inputSample_", inputSample_);
   adv.loadAttribute("outputSample_", outputSample_);
-  adv.loadAttribute("transformation_", transformation_);
-  adv.loadAttribute("comparisonOperator_", comparisonOperator_);
-  adv.loadAttribute("threshold_", threshold_);
+  adv.loadAttribute("event_", event_);
 }
 
 END_NAMESPACE_OPENTURNS
