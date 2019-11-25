@@ -42,7 +42,7 @@ SobolIndicesImplementation::SobolIndicesImplementation()
  // Nothing to do
 }
 
-/* Default constructor */
+/* Parameter constructor */
 SobolIndicesImplementation::SobolIndicesImplementation(const UnsignedInteger modelInputDimension,
                                                        const UnsignedInteger modelOutputDimension)
   : PersistentObject()

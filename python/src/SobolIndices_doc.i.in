@@ -1,0 +1,28 @@
+%feature("docstring") OT::SobolIndicesImplementation
+OT_SobolIndices_doc
+%feature("docstring") OT::SobolIndicesImplementation::SetModelDimensions
+OT_SobolIndices_SetModelDimensions_doc
+%feature("docstring") OT::SobolIndicesImplementation::GetModelInputDimensions
+OT_SobolIndices_GetModelInputDimensions_doc
+%feature("docstring") OT::SobolIndicesImplementation::GetModelOutputDimensions
+OT_SobolIndices_GetModelOutputDimensions_doc
+%feature("docstring") OT::SobolIndicesImplementation::computeIndices
+OT_SobolIndices_computeIndices_doc
+%feature("docstring") OT::SobolIndicesImplementation::incrementIndices
+OT_SobolIndices_incrementIndices_doc
+%feature("docstring") OT::SobolIndicesImplementation::getMean
+OT_SobolIndices_getMean_doc
+%feature("docstring") OT::SobolIndicesImplementation::getVariance
+OT_SobolIndices_getVariance_doc
+%feature("docstring") OT::SobolIndicesImplementation::getFirstOrderIndices
+OT_SobolIndices_getFirstOrderIndices_doc
+%feature("docstring") OT::SobolIndicesImplementation::getTotalOrderIndices
+OT_SobolIndices_getTotalOrderIndices_doc
+%feature("docstring") OT::SobolIndicesImplementation::getFirstOrderIndicesInterval
+OT_SobolIndices_getFirstOrderIndicesInterval_doc
+%feature("docstring") OT::SobolIndicesImplementation::getTotalOrderIndicesInterval
+OT_SobolIndices_getTotalOrderIndicesInterval_doc
+%feature("docstring") OT::SobolIndicesImplementation::getAggregatedFirstOrderIndices
+OT_SobolIndices_getAggregatedFirstOrderIndices_doc
+%feature("docstring") OT::SobolIndicesImplementation::getAggregatedTotalOrderIndices
+OT_SobolIndices_getAggregatedTotalOrderIndices_doc

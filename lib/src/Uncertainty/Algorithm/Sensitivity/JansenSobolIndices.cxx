@@ -39,7 +39,7 @@ JansenSobolIndices::JansenSobolIndices()
 
 /* Default constructor */
 JansenSobolIndices::JansenSobolIndices(const UnsignedInteger modelInputDimension,
-                                           const UnsignedInteger modelOutputDimension)
+                                       const UnsignedInteger modelOutputDimension)
   : SobolIndicesImplementation(modelInputDimension, modelOutputDimension)
 {
  // Nothing to do
