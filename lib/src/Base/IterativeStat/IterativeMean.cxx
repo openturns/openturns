@@ -25,11 +25,6 @@ IterativeMean * IterativeMean::clone() const
   return new IterativeMean(*this);
 }
 
-// IterativeAlgorithm * IterativeMean::create(const int dimension)
-// {
-//   return new IterativeMean(dimension);
-// }
-
 /* String converter */
 String IterativeMean::__repr__() const
 {
@@ -45,18 +40,6 @@ String IterativeMean::__str__(const String & offset) const
 {
   return data_.__str__(offset);
 }
-
-// // Sample & IterativeMean::operator[] (const UnsignedInteger index)
-// // {
-// //   if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
-// //   return data_[index];
-// // }
-// //
-// const Sample & IterativeMean::operator[] (const UnsignedInteger index) const
-// {
-//   if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
-//   return data_[index];
-// }
 
 Point IterativeMean::getMean() const
 {

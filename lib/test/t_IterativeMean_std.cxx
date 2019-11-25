@@ -123,7 +123,7 @@ int main(int, char *[])
 	assertEqual(iteration, 3);
 	
 	// Iterative mean, one single sample, then one point at a time
-    fullprint << "Iterative mean, one single sample" << std::endl;
+    fullprint << "Iterative mean, one single sample, then one point at a time" << std::endl;
     IterativeMean itermeanMixed(dimension);
 	itermeanMixed.increment(sample1);
 	itermeanMixed.increment(point1);
