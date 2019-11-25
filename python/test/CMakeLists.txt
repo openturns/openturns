@@ -608,6 +608,9 @@ ot_pyinstallcheck_test (MonteCarloExperiment_std)
 ot_pyinstallcheck_test (CombinatorialGenerator_std)
 ot_pyinstallcheck_test (Experiment_python)
 
+# IterativeStat
+ot_pyinstallcheck_test (IterativeMean_std)
+
 ## OrthogonalBasis
 ot_pyinstallcheck_test (LinearEnumerateFunction_std)
 ot_pyinstallcheck_test (HyperbolicAnisotropicEnumerateFunction_std)
