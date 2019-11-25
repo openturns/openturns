@@ -1,5 +1,5 @@
 Iterative statistics
-=============
+====================
 
 .. toctree::
     :maxdepth: 1
@@ -10,4 +10,3 @@ Iterative statistics
     iterative_sobol_martinez.ipynb
     iterative_sobol_mauntz_kucherenko.ipynb
     iterative_sobol_saltelli.ipynb
-
