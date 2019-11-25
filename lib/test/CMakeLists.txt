@@ -614,6 +614,9 @@ ot_check_test (LHSExperiment_std)
 ot_check_test (LowDiscrepancyExperiment_std)
 ot_check_test (MonteCarloExperiment_std)
 
+# IterativeStat
+ot_check_test (IterativeMean_std)
+
 # OrthogonalBasis
 ot_check_test (LinearEnumerateFunction_std)
 ot_check_test (HyperbolicAnisotropicEnumerateFunction_std)
