@@ -39,11 +39,11 @@ One way to evaluate the probability content :math:`P_f` of the event :math:`\cD_
 is to use an isoprobabilistic transformation to move from the physical space
 to a standard normal space (U-space) where distributions are spherical
 (invariant by rotation by definition), with zero mean, unit variance and unit
-correlation matrix. The usual isoprobabilistic transformations are the
-Generalized Nataf transformation and the Rosenblatt one.
+correlation matrix. The usual isoprobabilistic transformations are the 
+Generalized Nataf transformation and Rosenblatt transformation.
 
-In that new U-space, the event has the new expression defined
-from the transformed limit state function of the model :math:`g`
+In that new U-space, the event can be expressed in terms of 
+the transformed limit state function of the model :math:`g`
 
 .. math::
 
