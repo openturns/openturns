@@ -80,6 +80,8 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
     set_target_properties (${module_target} PROPERTIES COMPILE_FLAGS ${SWIG_COMPILE_FLAGS})
   endif ()
 
+  set_target_properties (${module_target} PROPERTIES UNITY_BUILD OFF)
+
   install (FILES ${CMAKE_CURRENT_BINARY_DIR}/${MODULENAME}.py
            DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
   install (TARGETS ${module_target}

@@ -9,6 +9,8 @@ ot_add_source_file (openturns_library_ok.c)
 add_subdirectory (Base)
 add_subdirectory (Uncertainty)
 
+set_source_files_properties (Base/Func/SpecFunc/Faddeeva.cc PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
+
 # OptPDS and OptGSS cannot both be included as OptDirect is redefined
 set_source_files_properties (Base/Optim/OptGSS.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
 
@@ -17,7 +19,6 @@ set_source_files_properties (Base/Optim/Ceres.cxx PROPERTIES COTIRE_EXCLUDED ON 
 
 # Exclude Dlib sources from unity build (Lapack re-included)
 set_source_files_properties (Base/Optim/Dlib.cxx Base/Optim/DlibFunctions.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
-
 
 # SymbolicParserExprTk.cxx includes exprtk.hpp which is huge, exclude it from cotire builds
 # It also causes problems on Windows
