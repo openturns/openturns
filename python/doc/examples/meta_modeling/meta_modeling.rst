@@ -37,6 +37,7 @@ Kriging metamodel
     :maxdepth: 1
 
     kriging_cantilever_beam.ipynb
+    kriging_cantilever_beam_hmat.ipynb    
     kriging_beam_trend.ipynb
     kriging.ipynb
     kriging_1D.ipynb
@@ -54,4 +55,3 @@ Fields metamodels
 
     fieldfunction_metamodel.ipynb
     viscous_fall_metamodel.ipynb
-
