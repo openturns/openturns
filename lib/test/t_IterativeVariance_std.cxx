@@ -37,9 +37,9 @@ void assertFalse(bool condition)
 }
 
 // Check if two Scalar are equal
-void assertEqual(Scalar value1, Scalar value2)
+void assertEqual(Scalar value1, Scalar value2, Scalar epsilon = 0.0)
 {
-  if (value1 != value2)
+  if (abs(value1 - value2) > epsilon)
   {
     throw TestFailed(OSS() << "Value " << value1 << " is not equal to " << value2);
   }
@@ -56,7 +56,7 @@ void assertEqual(int value1, int value2)
 }
 
 // Check if two Point are equal
-void assertEqual(Point value1, Point value2)
+void assertEqual(Point value1, Point value2, Scalar epsilon = 0.0)
 {
   int dim1 = value1.getDimension();
   int dim2 = value2.getDimension();
@@ -64,7 +64,7 @@ void assertEqual(Point value1, Point value2)
   for ( UnsignedInteger index = 0; index < dim1; ++ index)
   {
     std::cout<<"Checking Point. index="<<index<<", value1="<<value1[index]<<", value2="<<value2[index]<<std::endl;
-    if (value1[index] != value2[index])
+    if (abs(value1[index] - value2[index]) > epsilon)
     {
       throw TestFailed(OSS() << "Value " << value1[index] \
                        << " is not equal to " << value2[index] \

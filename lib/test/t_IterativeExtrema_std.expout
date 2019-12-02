@@ -1,0 +1,27 @@
+sample1=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=2 data=[[10,20],[11,21],[12,22]]
+referencemin=class=Point name=Unnamed dimension=2 values=[10,20]
+referencemax=class=Point name=Unnamed dimension=2 values=[12,22]
+Iterative extrema, one point at a time
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=10, value2=10
+Checking Point. index=1, value1=20, value2=20
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=12, value2=12
+Checking Point. index=1, value1=22, value2=22
+Checking int. value1=3, value2=3
+Iterative extrema, one single sample
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=10, value2=10
+Checking Point. index=1, value1=20, value2=20
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=12, value2=12
+Checking Point. index=1, value1=22, value2=22
+Checking int. value1=3, value2=3
+Iterative extrema, one single sample, then one point at a time
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=10, value2=10
+Checking Point. index=1, value1=20, value2=20
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=12, value2=12
+Checking Point. index=1, value1=22, value2=22
+Checking int. value1=6, value2=6

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class IterativeMean for standard methods
+ *  @brief The test file of class IterativeExtrema for standard methods
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -99,39 +99,47 @@ int main(int, char *[])
     sample1.add(point2);
     sample1.add(point3);
     fullprint << "sample1=" << sample1 << std::endl;
-    Point referencemean = sample1.computeMean();
-    fullprint << "referencemean=" << referencemean << std::endl;
+    Point referencemin = point1;
+    fullprint << "referencemin=" << referencemin << std::endl;
+    Point referencemax = point3;
+    fullprint << "referencemax=" << referencemax << std::endl;
 
-    // Iterative mean, one point at a time
-    fullprint << "Iterative mean, one point at a time" << std::endl;
-    IterativeMean itermeanPoint(dimension);
-    itermeanPoint.increment(point1);
-    itermeanPoint.increment(point2);
-    itermeanPoint.increment(point3);
-    Point computedmean = itermeanPoint.getMean();
-    assertEqual(referencemean, computedmean);
-    UnsignedInteger iteration = itermeanPoint.getIteration();
+    // Iterative extrema, one point at a time
+    fullprint << "Iterative extrema, one point at a time" << std::endl;
+    IterativeExtrema iterextremaPoint(dimension);
+    iterextremaPoint.increment(point1);
+    iterextremaPoint.increment(point2);
+    iterextremaPoint.increment(point3);
+    Point computedmin = iterextremaPoint.getMin();
+    assertEqual(referencemin, computedmin);
+    Point computedmax = iterextremaPoint.getMax();
+    assertEqual(referencemax, computedmax);
+    UnsignedInteger iteration = iterextremaPoint.getIteration();
     assertEqual(iteration, 3);
 
-    // Iterative mean, one single sample
-    fullprint << "Iterative mean, one single sample" << std::endl;
-    IterativeMean itermeanSample(dimension);
-    itermeanSample.increment(sample1);
-    computedmean = itermeanSample.getMean();
-    assertEqual(referencemean, computedmean);
-    iteration = itermeanSample.getIteration();
+    // Iterative extrema, one single sample
+    fullprint << "Iterative extrema, one single sample" << std::endl;
+    IterativeExtrema iterextremaSample(dimension);
+    iterextremaSample.increment(sample1);
+    computedmin = iterextremaSample.getMin();
+    assertEqual(referencemin, computedmin);
+    computedmax = iterextremaSample.getMax();
+    assertEqual(referencemax, computedmax);
+    iteration = iterextremaSample.getIteration();
     assertEqual(iteration, 3);
 
-    // Iterative mean, one single sample, then one point at a time
-    fullprint << "Iterative mean, one single sample, then one point at a time" << std::endl;
-    IterativeMean itermeanMixed(dimension);
-    itermeanMixed.increment(sample1);
-    itermeanMixed.increment(point1);
-    itermeanMixed.increment(point2);
-    itermeanMixed.increment(point3);
-    computedmean = itermeanMixed.getMean();
-    assertEqual(referencemean, computedmean);
-    iteration = itermeanMixed.getIteration();
+    // Iterative extrema, one single sample, then one point at a time
+    fullprint << "Iterative extrema, one single sample, then one point at a time" << std::endl;
+    IterativeExtrema iterextremaMixed(dimension);
+    iterextremaMixed.increment(sample1);
+    iterextremaMixed.increment(point1);
+    iterextremaMixed.increment(point2);
+    iterextremaMixed.increment(point3);
+    computedmin = iterextremaMixed.getMin();
+    assertEqual(referencemin, computedmin);
+    computedmax = iterextremaMixed.getMax();
+    assertEqual(referencemax, computedmax);
+    iteration = iterextremaMixed.getIteration();
     assertEqual(iteration, 6);
   }
   catch (TestFailed & ex)

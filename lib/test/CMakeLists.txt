@@ -617,6 +617,9 @@ ot_check_test (MonteCarloExperiment_std)
 # IterativeStat
 ot_check_test (IterativeMean_std)
 ot_check_test (IterativeVariance_std)
+ot_check_test (IterativeSkewness_std)
+ot_check_test (IterativeKurtosis_std)
+ot_check_test (IterativeExtrema_std)
 
 # OrthogonalBasis
 ot_check_test (LinearEnumerateFunction_std)

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class IterativeMean for standard methods
+ *  @brief The test file of class IterativeKurtosis for standard methods
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -98,40 +98,57 @@ int main(int, char *[])
     sample1.add(point1);
     sample1.add(point2);
     sample1.add(point3);
+    // We mix the Sample ans the Points
+    Sample mixedsample = sample1;
+    mixedsample.add(point1);
+    mixedsample.add(point2);
+    mixedsample.add(point3);
     fullprint << "sample1=" << sample1 << std::endl;
     Point referencemean = sample1.computeMean();
     fullprint << "referencemean=" << referencemean << std::endl;
+    Point referencevariance = sample1.computeVariance();
+    fullprint << "referencevariance=" << referencevariance << std::endl;
+    Point referencemixedmean = mixedsample.computeMean();
+    fullprint << "referencemixedmean=" << referencemixedmean << std::endl;
+    Point referencemixedvariance = mixedsample.computeVariance();
+    fullprint << "referencemixedvariance=" << referencemixedvariance << std::endl;
 
-    // Iterative mean, one point at a time
-    fullprint << "Iterative mean, one point at a time" << std::endl;
-    IterativeMean itermeanPoint(dimension);
-    itermeanPoint.increment(point1);
-    itermeanPoint.increment(point2);
-    itermeanPoint.increment(point3);
-    Point computedmean = itermeanPoint.getMean();
+    // Iterative kurtosis, one point at a time
+    fullprint << "Iterative kurtosis, one point at a time" << std::endl;
+    IterativeKurtosis iterkurtosisPoint(dimension);
+    iterkurtosisPoint.increment(point1);
+    iterkurtosisPoint.increment(point2);
+    iterkurtosisPoint.increment(point3);
+    Point computedmean = iterkurtosisPoint.getMean();
     assertEqual(referencemean, computedmean);
-    UnsignedInteger iteration = itermeanPoint.getIteration();
+    Point computedvariance = iterkurtosisPoint.getVariance();
+    assertEqual(referencevariance, computedvariance, 1.0e12);
+    UnsignedInteger iteration = iterkurtosisPoint.getIteration();
     assertEqual(iteration, 3);
 
-    // Iterative mean, one single sample
-    fullprint << "Iterative mean, one single sample" << std::endl;
-    IterativeMean itermeanSample(dimension);
-    itermeanSample.increment(sample1);
-    computedmean = itermeanSample.getMean();
+    // Iterative kurtosis, one single sample
+    fullprint << "Iterative kurtosis, one single sample" << std::endl;
+    IterativeKurtosis iterkurtosisSample(dimension);
+    iterkurtosisSample.increment(sample1);
+    computedmean = iterkurtosisSample.getMean();
     assertEqual(referencemean, computedmean);
-    iteration = itermeanSample.getIteration();
+    computedvariance = iterkurtosisSample.getVariance();
+    assertEqual(referencevariance, computedvariance, 1.0e12);
+    iteration = iterkurtosisSample.getIteration();
     assertEqual(iteration, 3);
 
-    // Iterative mean, one single sample, then one point at a time
-    fullprint << "Iterative mean, one single sample, then one point at a time" << std::endl;
-    IterativeMean itermeanMixed(dimension);
-    itermeanMixed.increment(sample1);
-    itermeanMixed.increment(point1);
-    itermeanMixed.increment(point2);
-    itermeanMixed.increment(point3);
-    computedmean = itermeanMixed.getMean();
-    assertEqual(referencemean, computedmean);
-    iteration = itermeanMixed.getIteration();
+    // Iterative kurtosis, one single sample, then one point at a time
+    fullprint << "Iterative kurtosis, one single sample, then one point at a time" << std::endl;
+    IterativeKurtosis iterkurtosisMixed(dimension);
+    iterkurtosisMixed.increment(sample1);
+    iterkurtosisMixed.increment(point1);
+    iterkurtosisMixed.increment(point2);
+    iterkurtosisMixed.increment(point3);
+    computedmean = iterkurtosisMixed.getMean();
+    assertEqual(referencemixedmean, computedmean);
+    computedvariance = iterkurtosisMixed.getVariance();
+    assertEqual(referencemixedvariance, computedvariance, 1.0e12);
+    iteration = iterkurtosisMixed.getIteration();
     assertEqual(iteration, 6);
   }
   catch (TestFailed & ex)
