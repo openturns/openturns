@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class IterativeMean for standard methods
+ *  @brief The test file of class IterativeVariance for standard methods
  *
  *  Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -98,40 +98,57 @@ int main(int, char *[])
     sample1.add(point1);
     sample1.add(point2);
     sample1.add(point3);
+    // We mix the Sample ans the Points
+    Sample mixedsample = sample1;
+    mixedsample.add(point1);
+    mixedsample.add(point2);
+    mixedsample.add(point3);
     fullprint << "sample1=" << sample1 << std::endl;
     Point referencemean = sample1.computeMean();
     fullprint << "referencemean=" << referencemean << std::endl;
+    Point referencevariance = sample1.computeVariance();
+    fullprint << "referencevariance=" << referencevariance << std::endl;
+    Point referencemixedmean = mixedsample.computeMean();
+    fullprint << "referencemixedmean=" << referencemixedmean << std::endl;
+    Point referencemixedvariance = mixedsample.computeVariance();
+    fullprint << "referencemixedvariance=" << referencemixedvariance << std::endl;
 
-    // Iterative mean, one point at a time
-    fullprint << "Iterative mean, one point at a time" << std::endl;
-    IterativeMean itermeanPoint(dimension);
-    itermeanPoint.increment(point1);
-    itermeanPoint.increment(point2);
-    itermeanPoint.increment(point3);
-    Point computedmean = itermeanPoint.getMean();
+    // Iterative variance, one point at a time
+    fullprint << "Iterative variance, one point at a time" << std::endl;
+    IterativeVariance itervariancePoint(dimension);
+    itervariancePoint.increment(point1);
+    itervariancePoint.increment(point2);
+    itervariancePoint.increment(point3);
+    Point computedmean = itervariancePoint.getMean();
     assertEqual(referencemean, computedmean);
-    UnsignedInteger iteration = itermeanPoint.getIteration();
+    Point computedvariance = itervariancePoint.getVariance();
+    assertEqual(referencevariance, computedvariance);
+    UnsignedInteger iteration = itervariancePoint.getIteration();
     assertEqual(iteration, 3);
 
-    // Iterative mean, one single sample
-    fullprint << "Iterative mean, one single sample" << std::endl;
-    IterativeMean itermeanSample(dimension);
-    itermeanSample.increment(sample1);
-    computedmean = itermeanSample.getMean();
+    // Iterative variance, one single sample
+    fullprint << "Iterative variance, one single sample" << std::endl;
+    IterativeVariance itervarianceSample(dimension);
+    itervarianceSample.increment(sample1);
+    computedmean = itervarianceSample.getMean();
     assertEqual(referencemean, computedmean);
-    iteration = itermeanSample.getIteration();
+    computedvariance = itervarianceSample.getVariance();
+    assertEqual(referencevariance, computedvariance);
+    iteration = itervarianceSample.getIteration();
     assertEqual(iteration, 3);
 
-    // Iterative mean, one single sample, then one point at a time
-    fullprint << "Iterative mean, one single sample, then one point at a time" << std::endl;
-    IterativeMean itermeanMixed(dimension);
-    itermeanMixed.increment(sample1);
-    itermeanMixed.increment(point1);
-    itermeanMixed.increment(point2);
-    itermeanMixed.increment(point3);
-    computedmean = itermeanMixed.getMean();
-    assertEqual(referencemean, computedmean);
-    iteration = itermeanMixed.getIteration();
+    // Iterative variance, one single sample, then one point at a time
+    fullprint << "Iterative variance, one single sample, then one point at a time" << std::endl;
+    IterativeVariance itervarianceMixed(dimension);
+    itervarianceMixed.increment(sample1);
+    itervarianceMixed.increment(point1);
+    itervarianceMixed.increment(point2);
+    itervarianceMixed.increment(point3);
+    computedmean = itervarianceMixed.getMean();
+    assertEqual(referencemixedmean, computedmean);
+    computedvariance = itervarianceMixed.getVariance();
+    assertEqual(referencemixedvariance, computedvariance);
+    iteration = itervarianceMixed.getIteration();
     assertEqual(iteration, 6);
   }
   catch (TestFailed & ex)

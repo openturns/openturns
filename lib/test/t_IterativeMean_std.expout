@@ -10,7 +10,7 @@ Checking int. value1=2, value2=2
 Checking Point. index=0, value1=11, value2=11
 Checking Point. index=1, value1=21, value2=21
 Checking int. value1=3, value2=3
-Iterative mean, one single sample
+Iterative mean, one single sample, then one point at a time
 Checking int. value1=2, value2=2
 Checking Point. index=0, value1=11, value2=11
 Checking Point. index=1, value1=21, value2=21
