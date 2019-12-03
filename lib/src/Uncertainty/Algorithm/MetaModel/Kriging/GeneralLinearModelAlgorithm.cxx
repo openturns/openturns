@@ -982,6 +982,11 @@ void GeneralLinearModelAlgorithm::initializeMethod()
     method_ = 1;
 }
 
+UnsignedInteger GeneralLinearModelAlgorithm::getMethod() const
+{
+  return method_;
+}
+
 /* Method accessor (lapack/hmat) - Protected but friend with GeneralLinearModelAlgorithm class */
 void GeneralLinearModelAlgorithm::setMethod(const UnsignedInteger method)
 {

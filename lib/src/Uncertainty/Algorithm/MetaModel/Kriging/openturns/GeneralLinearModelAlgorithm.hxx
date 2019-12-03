@@ -135,6 +135,7 @@ protected:
   /** Method accessor (lapack/hmat) */
   void initializeMethod();
   void setMethod(const UnsignedInteger method);
+  UnsignedInteger getMethod() const;
 
   // Initialize default optimization solver
   void initializeDefaultOptimizationAlgorithm();
