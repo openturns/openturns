@@ -29,6 +29,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/OTconfig.hxx"
 #ifdef OPENTURNS_HAVE_BOOST
+#define BOOST_MATH_NO_LONG_DOUBLE_MATH_FUNCTIONS
 #include <boost/math/distributions/students_t.hpp>
 #include <boost/math/distributions/non_central_t.hpp>
 #endif
