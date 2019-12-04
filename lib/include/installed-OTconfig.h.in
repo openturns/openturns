@@ -18,6 +18,13 @@
  *
  */
 
+//  OPENTURNS_VERSION % 100 is the patch level
+//  OPENTURNS_VERSION / 100 % 1000 is the minor version
+//  OPENTURNS_VERSION / 100000 is the major version
+#define OPENTURNS_VERSION @OPENTURNS_VERSION_NR@
+
+#define OPENTURNS_VERSION_STR "@PACKAGE_VERSION@"
+
 /* Support for regular expression library */
 #cmakedefine OPENTURNS_HAVE_LIBXML2
 
