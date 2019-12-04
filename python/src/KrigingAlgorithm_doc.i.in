@@ -46,7 +46,7 @@ where:
       \begin{array}{l}
         \mu_1(\vect{x}) \\
         \dots  \\
-        \mu_p(\vect{x}) 
+        \mu_p(\vect{x})
        \end{array}
      \right)
 
@@ -60,15 +60,15 @@ The Kriging algorithm makes the general linear model interpolary on the input sa
 
 
 .. math::
-    
+
     \tilde{\cM}(\vect{x}) =  \vect{\mu}(\vect{x}) + \Expect{\vect{Y}(\omega, \vect{x})\, | \,  \cC}
 
 where :math:`\cC` is the condition :math:`\vect{Y}(\omega, \vect{x}_k) = \vect{y}_k` for each :math:`k \in [1, N]`.
-    
+
 :eq:`metaModelKrigAlgo` writes:
 
 .. math::
-    
+
     \tilde{\cM}(\vect{x}) = \vect{\mu}(\vect{x}) + \Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega, \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_N))} \vect{\gamma}
 
 where :math:`\Cov{\vect{Y}(\omega, \vect{x}), (\vect{Y}(\omega, \vect{x}_1), \dots, \vect{Y}(\omega, \vect{x}_N))} = \left( \mat{C}( \vect{x},  \vect{x}_1) | \dots | \mat{C}( \vect{x},  \vect{x}_N)  \right)` is a matrix in :math:`\cM_{p,NP}(\Rset)` and :math:`\vect{\gamma} = \mat{C}^{-1}(\vect{y}-\vect{m})`.
@@ -296,3 +296,29 @@ Returns
 noise : sequence of positive float
     The noise variance :math:`\tau_k^2` of each output value."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingAlgorithm::getMethod
+"Linear algebra method accessor.
+
+Returns
+-------
+method : str
+       Used linear algebra method."
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KrigingAlgorithm::setMethod
+"Linear algebra method set accessor.
+
+Parameters
+----------
+method : str
+       Used linear algebra method.
+       Value should be `LAPACK` or `HMAT`
+
+Notes
+-----
+The setter update the implementation and require new evaluation.
+We might also use the ResourceMap key to set the method when instantiating the algorithm.
+For that purpose, we can use ResourceMap.SetAsString(`GeneralLinearModelAlgorithm-LinearAlgebra`, key)
+with `key` being `HMAT` or `LAPACK`."

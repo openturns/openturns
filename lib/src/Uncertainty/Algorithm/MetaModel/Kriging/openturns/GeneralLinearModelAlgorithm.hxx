@@ -137,6 +137,9 @@ protected:
   void setMethod(const UnsignedInteger method);
   UnsignedInteger getMethod() const;
 
+  /** reset method - If one change method */
+  void reset();
+
   // Initialize default optimization solver
   void initializeDefaultOptimizationAlgorithm();
 
