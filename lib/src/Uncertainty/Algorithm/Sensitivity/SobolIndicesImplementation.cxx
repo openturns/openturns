@@ -169,30 +169,34 @@ Interval SobolIndicesImplementation::getTotalOrderIndicesInterval() const
 
 Point SobolIndicesImplementation::getAggregatedFirstOrderIndices() const
 {
-  Point aggregatedFirstOrderIndices(modelInputDimension_);
+  Point aggregatedFirstOrderIndices(modelInputDimension_, 0);
+  Scalar sumVariance = referenceVariance_.norm1();
   for (UnsignedInteger i = 0; i < modelInputDimension_; i++)
   {
     for (UnsignedInteger j = 0; j < modelOutputDimension_; j++)
     {
-      aggregatedFirstOrderIndices[i] += firstOrderValues_(j, i);
+      aggregatedFirstOrderIndices[i] += firstOrderValues_(j, i) * referenceVariance_[j];
     }
+    aggregatedFirstOrderIndices[i] /= sumVariance;
   }
 
-  return aggregatedFirstOrderIndices /= modelOutputDimension_;
+  return aggregatedFirstOrderIndices;
 }
 
 Point SobolIndicesImplementation::getAggregatedTotalOrderIndices() const
 {
-  Point aggregatedTotalOrderIndices(modelInputDimension_);
+  Point aggregatedTotalOrderIndices(modelInputDimension_, 0);
+  Scalar sumVariance = referenceVariance_.norm1();
   for (UnsignedInteger i = 0; i < modelInputDimension_; i++)
   {
     for (UnsignedInteger j = 0; j < modelOutputDimension_; j++)
     {
-      aggregatedTotalOrderIndices[i] += totalOrderValues_(j, i);
+      aggregatedTotalOrderIndices[i] += totalOrderValues_(j, i) * referenceVariance_[j];
     }
+    aggregatedTotalOrderIndices[i] /= sumVariance;
   }
 
-  return aggregatedTotalOrderIndices /= modelOutputDimension_;
+  return aggregatedTotalOrderIndices;
 }
 
 // Multiplication and sum of two Samples

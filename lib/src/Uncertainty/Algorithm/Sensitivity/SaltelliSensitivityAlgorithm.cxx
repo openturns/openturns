@@ -43,7 +43,7 @@ SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const Sample & inputD
     const UnsignedInteger size)
   : SobolIndicesAlgorithmImplementation(inputDesign, outputDesign, size)
 {
-  sobolIndices_ = SaltelliSobolIndices(inputDesign.getDimension(), outputDesign.getDimension());
+  sobolIndices_ = SaltelliSobolIndices(inputDesign_.getDimension(), outputDesign_.getDimension());
 }
 
 /** Constructor with distribution / model parameters */

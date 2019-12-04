@@ -114,7 +114,7 @@ void MartinezSobolIndices::computeIndices(const Sample & inputSample)
       // Si = rho(yB, yE) thus Vi = Si * V
       firstOrderValues_(q, p) = yEDotyB[q] / (size - 1.0);
       // STi = 1 - rho(yA, yE),  Vti = V -varianceTI thus varianceTI = rho(yA, yE) * var(yA)
-      totalOrderValues_(q, p) = 1 - yEDotyA[q] / (size - 1.0);
+      totalOrderValues_(q, p) = 1 - (yEDotyA[q] / (size - 1.0)) / sigmaA[q];
     }
   }
   iteration_ = size;

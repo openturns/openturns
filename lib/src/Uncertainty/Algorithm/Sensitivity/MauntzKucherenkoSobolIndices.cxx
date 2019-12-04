@@ -92,7 +92,7 @@ void MauntzKucherenkoSobolIndices::computeIndices(const Sample & inputSample)
     for (UnsignedInteger q = 0; q < modelOutputDimension_; ++q)
     {
       firstOrderValues_(q, p) =  (yEDotyB_(p, q) - yADotyB_[q]) / ((size - 1.0) * referenceVariance_[q]);
-      totalOrderValues_(q, p) = 1.0 - (size * referenceMean_[q] * referenceMean_[q] - yEDotyA_(p, q)) / ((size - 1.0) * referenceVariance_[q]);
+      totalOrderValues_(q, p) = 1.0 + (size * referenceMean_[q] * referenceMean_[q] - yEDotyA_(p, q)) / ((size - 1.0) * referenceVariance_[q]);
     }
   }
   iteration_ = size;
@@ -158,7 +158,7 @@ void MauntzKucherenkoSobolIndices::incrementIndices(const Sample & inputSample)
       for (UnsignedInteger q = 0; q < modelOutputDimension_; ++q)
       {
         firstOrderValues_(q, p) =  (yEDotyB_(p, q) - yADotyB_[q]) / ((iteration_ - 1.0) * referenceVariance_[q]);
-        totalOrderValues_(q, p) = 1.0 - (iteration_ * referenceMean_[q] * referenceMean_[q] - yEDotyA_(p, q)) / ((iteration_ - 1.0) * referenceVariance_[q]);
+        totalOrderValues_(q, p) = 1.0 + (iteration_ * referenceMean_[q] * referenceMean_[q] - yEDotyA_(p, q)) / ((iteration_ - 1.0) * referenceVariance_[q]);
       }
     }
   }

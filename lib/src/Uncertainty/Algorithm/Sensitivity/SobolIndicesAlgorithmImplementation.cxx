@@ -180,19 +180,21 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const W
 /* First order indices accessor */
 Point SobolIndicesAlgorithmImplementation::getFirstOrderIndices(const UnsignedInteger marginalIndex) const
 {
+  const UnsignedInteger outputDimension = outputDesign_.getDimension();
+  const UnsignedInteger inputDimension = inputDesign_.getDimension();
   if (0 == sobolIndices_.getIteration())
   {
     // Invoke internal method to compute first/ total order indices indices
     // This method is defined in specific children classes
-    sobolIndices_.computeIndices(outputDesign_);
+    Sample firsfOrderOutputDesign(outputDesign_, 0, size_ * (inputDimension + 2));
+    sobolIndices_.computeIndices(firsfOrderOutputDesign);
   }
-  const UnsignedInteger outputDimension = outputDesign_.getDimension();
   if (marginalIndex >= outputDimension)
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getFirstOrderIndices, marginalIndex should be in [0," << outputDimension - 1;
   // return value
   const Point firstOrderSensitivity = sobolIndices_.getFirstOrderIndices(marginalIndex);
   const Point totalOrderSensitivity = sobolIndices_.getTotalOrderIndices(marginalIndex);
-  for (UnsignedInteger p = 0; p < inputDesign_.getDimension(); ++p)
+  for (UnsignedInteger p = 0; p < inputDimension; ++p)
   {
     if ((firstOrderSensitivity[p] > 1.0) || firstOrderSensitivity[p] < 0.0)
       LOGWARN(OSS() << "The estimated first order Sobol index (" << p << ") is not in the range [0, 1]. You may increase the sampling size. HERE we have: S_"
@@ -238,9 +240,9 @@ struct BootstrapPolicy
       // Generate huge random sample using Bootstrap algorithm
       const Sample randomCollection(sai_.getBootstrapDesign(slice));
       // Pseudo-Reference variance
-      Sample outReference(size_, sai_.outputDesign_.getDimension());
-      for (UnsignedInteger i = 0; i < size_; ++i) outReference[i] = randomCollection[i];
-      const Point variance(outReference.computeVariance());
+//       Sample outReference(size_, sai_.outputDesign_.getDimension());
+//       for (UnsignedInteger i = 0; i < size_; ++i) outReference[i] = randomCollection[i];
+//       const Point variance(outReference.computeVariance());
       // Compute indices using this collection
 //       const Sample Vi(sai_.computeIndices(randomCollection, VTi));
       sai_.computeIndices(randomCollection);
@@ -415,14 +417,15 @@ SymmetricMatrix SobolIndicesAlgorithmImplementation::getSecondOrderIndices(const
 /* Total order indices accessor */
 Point SobolIndicesAlgorithmImplementation::getTotalOrderIndices(const UnsignedInteger marginalIndex) const
 {
+  const UnsignedInteger outputDimension = outputDesign_.getDimension();
+  const UnsignedInteger inputDimension = inputDesign_.getDimension();
   if (0 == sobolIndices_.getIteration())
   {
     // Invoke internal method to compute first/ total order indices indices
     // This method is defined in specific children classes
-    sobolIndices_.computeIndices(outputDesign_);
+    Sample firsfOrderOutputDesign(outputDesign_, 0, size_ * (inputDimension + 2));
+    sobolIndices_.computeIndices(firsfOrderOutputDesign);
   }
-  const UnsignedInteger outputDimension = outputDesign_.getDimension();
-  const UnsignedInteger inputDimension = inputDesign_.getDimension();
   if (marginalIndex >= outputDimension)
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalOrderIndices, marginalIndex should be in [0," << outputDimension - 1 << "]";
   const Point firstOrderSensitivity = sobolIndices_.getFirstOrderIndices(marginalIndex);
@@ -490,7 +493,8 @@ Point SobolIndicesAlgorithmImplementation::getAggregatedFirstOrderIndices() cons
   if (0 == sobolIndices_.getIteration())
   {
     // Invoke internal method to compute first/ total order indices indices
-    sobolIndices_.computeIndices(outputDesign_);
+    Sample firsfOrderOutputDesign(outputDesign_, 0, size_ * (inputDesign_.getDimension() + 2));
+    sobolIndices_.computeIndices(firsfOrderOutputDesign);
   }
   // Indices computed
   return sobolIndices_.getAggregatedFirstOrderIndices();
@@ -502,7 +506,8 @@ Point SobolIndicesAlgorithmImplementation::getAggregatedTotalOrderIndices() cons
   if (0 == sobolIndices_.getIteration())
   {
     // Invoke internal method to compute first/ total order indices indices
-    sobolIndices_.computeIndices(outputDesign_);
+    Sample firsfOrderOutputDesign(outputDesign_, 0, size_ * (inputDesign_.getDimension() + 2));
+    sobolIndices_.computeIndices(firsfOrderOutputDesign);
   }
   // Indices computed
   return sobolIndices_.getAggregatedTotalOrderIndices();
