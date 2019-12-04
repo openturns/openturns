@@ -131,9 +131,13 @@ void MartinezSobolIndices::incrementIndices(const Sample & inputSample)
   if (inputSample.getDimension() != modelOutputDimension_)
     throw InvalidArgumentException(HERE) << "Sample dimension does not match model output dimension";
 
-  if (variances_.getSize() == 0)
+  if (variances_.getSize() == 0 || iteration_ == 0)
   {
-    variances_ = PersistentCollection<IterativeVariance>(modelInputDimension_ + 2, IterativeVariance(modelOutputDimension_));
+    variances_ = PersistentCollection<IterativeVariance>(modelInputDimension_ + 2);
+    for (UnsignedInteger i = 0; i < modelInputDimension_ + 2; ++i)
+    {
+      variances_[i] = IterativeVariance(modelOutputDimension_);
+    }
     covarianceI_ = Sample(modelInputDimension_, modelOutputDimension_);
     covarianceTI_ = Sample(modelInputDimension_, modelOutputDimension_);
     if (iteration_ != 0)

@@ -92,7 +92,7 @@ Point IterativeVariance::getMean() const
 
 void IterativeVariance::increment(const Point & newData)
 {
-  if (newData.getSize() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the dimension of the iterative variance.";
+  if (newData.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the dimension of the iterative variance.";
 
   // update mean
   iteration_ += 1;
