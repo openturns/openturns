@@ -35,7 +35,7 @@ where
     :nowrap:
 
     \begin{eqnarray*}
-        t(x) &  = & \left(1+\xi \dfrac{x-\mu}{\sigma}\right)^{-1/\xi} \quad \text{ if } \xi \neq 0\\
+        t(x) &  = & \left(1+\xi \dfrac{x-u}{\sigma}\right)^{-1/\xi} \quad \text{ if } \xi \neq 0\\
         t(x) &  = & \exp(-\dfrac{x-u}{\sigma}) \quad \text{ if } \xi= 0
     \end{eqnarray*}
 
