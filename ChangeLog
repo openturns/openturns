@@ -20,6 +20,8 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #1213 (The legend of the graphics in MetaModelValidation is wrong)
+ * #1222 (There is no kriging example based on HMAT)
  * #1331 (FittingTest_BestModelBIC sometimes fail)
 
 
