@@ -177,17 +177,17 @@ void ResourceMap::SetAsString(const String & key, const String & value)
   GetInstance().lock().setAsString( key, value );
 }
 
-void ResourceMap::SetAsBool(const String & key, Bool value)
+void ResourceMap::SetAsBool(const String & key, const Bool value)
 {
   GetInstance().lock().setAsBool( key, value );
 }
 
-void ResourceMap::SetAsUnsignedInteger(const String & key, UnsignedInteger value)
+void ResourceMap::SetAsUnsignedInteger(const String & key, const UnsignedInteger value)
 {
   GetInstance().lock().setAsUnsignedInteger( key, value );
 }
 
-void ResourceMap::SetAsScalar(const String & key, Scalar value)
+void ResourceMap::SetAsScalar(const String & key, const Scalar value)
 {
   GetInstance().lock().setAsScalar( key, value );
 }
@@ -431,17 +431,17 @@ void ResourceMap::setAsString(const String & key, const String & value)
   mapString_[ key ] = value;
 }
 
-void ResourceMap::setAsBool(const String & key, Bool value)
+void ResourceMap::setAsBool(const String & key, const Bool value)
 {
   mapBool_[ key ] = value;
 }
 
-void ResourceMap::setAsUnsignedInteger(const String & key, UnsignedInteger value)
+void ResourceMap::setAsUnsignedInteger(const String & key, const UnsignedInteger value)
 {
   mapUnsignedInteger_[ key ] = value;
 }
 
-void ResourceMap::setAsScalar(const String & key, Scalar value)
+void ResourceMap::setAsScalar(const String & key, const Scalar value)
 {
   mapScalar_[ key ] = value;
 }

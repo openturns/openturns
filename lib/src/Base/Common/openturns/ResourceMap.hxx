@@ -60,9 +60,9 @@ public:
   /** Set a value in the maps */
   static void Set(const String & key, const String & value);
   static void SetAsString(const String & key, const String & value);
-  static void SetAsBool(const String & key, Bool value);
-  static void SetAsUnsignedInteger(const String & key, UnsignedInteger value);
-  static void SetAsScalar(const String & key, Scalar value);
+  static void SetAsBool(const String & key, const Bool value);
+  static void SetAsUnsignedInteger(const String & key, const UnsignedInteger value);
+  static void SetAsScalar(const String & key, const Scalar value);
 
   /** Get the total size of the maps */
   static UnsignedInteger GetSize();
@@ -193,19 +193,19 @@ protected:
    * @param key The name under which the value is stored in the ResourceMap
    * @param value The value as a boolean
    */
-  void setAsBool(const String & key, Bool value);
+  void setAsBool(const String & key, const Bool value);
 
   /** Method for setting information into the resource map
    * @param key The name under which the value is stored in the ResourceMap
    * @param value The value as an integer
    */
-  void setAsUnsignedInteger(const String & key, UnsignedInteger value);
+  void setAsUnsignedInteger(const String & key, const UnsignedInteger value);
 
   /** Method for setting information into the resource map
    * @param key The name under which the value is stored in the ResourceMap
    * @param value The value as a double
    */
-  void setAsScalar(const String & key, Scalar value);
+  void setAsScalar(const String & key, const Scalar value);
 
   /** Is the specific key present ? */
   Bool hasKey(const String & key) const;
