@@ -90,8 +90,8 @@ int main(int, char *[])
     point2[0] = 11.;
     point2[1] = 21.;
     Point point3(dimension);
-    point3[0] = 12.;
-    point3[1] = 22.;
+    point3[0] = 15.;
+    point3[1] = 25.;
 
     // We create a Sample
     Sample sample1(0, 2);
@@ -108,10 +108,14 @@ int main(int, char *[])
     fullprint << "referencemean=" << referencemean << std::endl;
     Point referencevariance = sample1.computeVariance();
     fullprint << "referencevariance=" << referencevariance << std::endl;
+    Point referenceskewness = sample1.computeSkewness();
+    fullprint << "referenceskewness=" << referenceskewness << std::endl;
     Point referencemixedmean = mixedsample.computeMean();
     fullprint << "referencemixedmean=" << referencemixedmean << std::endl;
     Point referencemixedvariance = mixedsample.computeVariance();
     fullprint << "referencemixedvariance=" << referencemixedvariance << std::endl;
+    Point referencemixedskewness = mixedsample.computeSkewness();
+    fullprint << "referencemixedskewness=" << referencemixedskewness << std::endl;
 
     // Iterative skewness, one point at a time
     fullprint << "Iterative skewness, one point at a time" << std::endl;
@@ -122,7 +126,11 @@ int main(int, char *[])
     Point computedmean = iterskewnessPoint.getMean();
     assertEqual(referencemean, computedmean);
     Point computedvariance = iterskewnessPoint.getVariance();
-    assertEqual(referencevariance, computedvariance, 1.0e12);
+    assertEqual(referencevariance, computedvariance, 1.0e-12);
+    Point computedskewness = iterskewnessPoint.getSkewness();
+    Scalar size = sample1.getSize();
+    Scalar factor = sqrt(size) * sqrt(size - 1.0) / (size - 2.0);
+    assertEqual(referenceskewness, computedskewness * factor, 1.0e-12);
     UnsignedInteger iteration = iterskewnessPoint.getIteration();
     assertEqual(iteration, 3);
 
@@ -133,7 +141,9 @@ int main(int, char *[])
     computedmean = iterskewnessSample.getMean();
     assertEqual(referencemean, computedmean);
     computedvariance = iterskewnessSample.getVariance();
-    assertEqual(referencevariance, computedvariance, 1.0e12);
+    assertEqual(referencevariance, computedvariance, 1.0e-12);
+    computedskewness = iterskewnessSample.getSkewness();
+    assertEqual(referenceskewness, computedskewness * factor, 1.0e-12);
     iteration = iterskewnessSample.getIteration();
     assertEqual(iteration, 3);
 
@@ -147,7 +157,11 @@ int main(int, char *[])
     computedmean = iterskewnessMixed.getMean();
     assertEqual(referencemixedmean, computedmean);
     computedvariance = iterskewnessMixed.getVariance();
-    assertEqual(referencemixedvariance, computedvariance, 1.0e12);
+    assertEqual(referencemixedvariance, computedvariance, 1.0e-12);
+    computedskewness = iterskewnessMixed.getSkewness();
+    size = sample1.getSize() * 2;
+    factor = sqrt(size) * sqrt(size - 1.0) / (size - 2.0);
+    assertEqual(referencemixedskewness, computedskewness * factor, 1.0e-12);
     iteration = iterskewnessMixed.getIteration();
     assertEqual(iteration, 6);
   }

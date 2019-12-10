@@ -3,7 +3,6 @@
 #define OPENTURNS_ITERATIVETHRESHOLDEXCEEDANCE_HXX
 
 #include "openturns/IterativeAlgorithmImplementation.hxx"
-// #include "openturns/PersistentCollection.hxx"
 #include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -65,7 +64,7 @@ public:
 
 private:
   Scalar thresholdValue_;
-  PersistentCollection<Scalar> data_;
+  Point data_;
 };
 
 END_NAMESPACE_OPENTURNS

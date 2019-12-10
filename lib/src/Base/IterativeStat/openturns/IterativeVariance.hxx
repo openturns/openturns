@@ -3,7 +3,6 @@
 #define OPENTURNS_ITERATIVEVARIANCE_HXX
 
 #include "openturns/IterativeAlgorithmImplementation.hxx"
-// #include "openturns/PersistentCollection.hxx"
 #include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -70,8 +69,8 @@ public:
   void load(Advocate & adv);
 
 private:
-  PersistentCollection<Scalar> meanData_;
-  PersistentCollection<Scalar> varData_;
+  Point meanData_;
+  Point varData_;
 };
 
 END_NAMESPACE_OPENTURNS

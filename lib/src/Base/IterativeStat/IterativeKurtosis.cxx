@@ -46,7 +46,7 @@ String IterativeKurtosis::__repr__() const
 
 String IterativeKurtosis::__str__(const String & offset) const
 {
-  return getSkewness().__str__(offset);
+  return getKurtosis().__str__(offset);
 }
 
 // // Sample & IterativeKurtosis::operator[] (const UnsignedInteger index)
@@ -63,13 +63,13 @@ String IterativeKurtosis::__str__(const String & offset) const
 
 Point IterativeKurtosis::getKurtosis() const
 {
-  PersistentCollection<Scalar> kurtosisData(dimension_, 0.0);
+  Point kurtosisData(dimension_, 0.0);
 
-  if (iteration_ > 0)
+  if (iteration_ > 3)
   {
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
-      kurtosisData[i] = mean4Data_[i] - 4 * mean1Data_[i] * mean3Data_[i] + 6 * pow(mean1Data_[i], 2) * mean2Data_[i] - 3 * pow(mean1Data_[i], 4) / (mean3Data_[i] - 3 * mean1Data_[i] * mean2Data_[i] + 2 * pow(mean1Data_[i], 3));
+      kurtosisData[i] = (mean4Data_[i] - 4 * mean1Data_[i] * mean3Data_[i] + 6 * pow(mean1Data_[i], 2) * mean2Data_[i] - 3 * pow(mean1Data_[i], 4)) / pow(mean3Data_[i] - 3 * mean1Data_[i] * mean2Data_[i] + 2 * pow(mean1Data_[i], 3), 2);
     }
   }
   else
@@ -85,13 +85,13 @@ Point IterativeKurtosis::getKurtosis() const
 
 Point IterativeKurtosis::getSkewness() const
 {
-  PersistentCollection<Scalar> skewnessData(dimension_, 0.0);
+  Point skewnessData(dimension_, 0.0);
 
   if (iteration_ > 0)
   {
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
-      skewnessData[i] = mean3Data_[i] - 3 * mean1Data_[i] * mean2Data_[i] + 2 * pow(mean1Data_[i], 3) / pow(mean2Data_[i] - pow(mean1Data_[i], 2), 1.5);
+      skewnessData[i] = (mean3Data_[i] - 3 * mean1Data_[i] * mean2Data_[i] + 2 * pow(mean1Data_[i], 3)) / pow(mean2Data_[i] - pow(mean1Data_[i], 2), 1.5);
     }
   }
   else
@@ -107,7 +107,7 @@ Point IterativeKurtosis::getSkewness() const
 
 Point IterativeKurtosis::getVariance() const
 {
-  PersistentCollection<Scalar> varData(dimension_, 0.0);
+  Point varData(dimension_, 0.0);
 
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
@@ -119,7 +119,7 @@ Point IterativeKurtosis::getVariance() const
 
 Point IterativeKurtosis::getCoeficientOfVariation() const
 {
-  PersistentCollection<Scalar> coeficientOfVariationData(dimension_, 0.0);
+  Point coeficientOfVariationData(dimension_, 0.0);
 
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
@@ -131,7 +131,7 @@ Point IterativeKurtosis::getCoeficientOfVariation() const
 
 Point IterativeKurtosis::getStandardDeviation() const
 {
-  PersistentCollection<Scalar> standardDevData(dimension_, 0.0);
+  Point standardDevData(dimension_, 0.0);
 
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
@@ -148,7 +148,7 @@ Point IterativeKurtosis::getMean() const
 
 void IterativeKurtosis::increment(const Point & newData)
 {
-  if (newData.getSize() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the dimension of the iterative kurtosis.";
+  if (newData.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the dimension of the iterative kurtosis.";
 
   iteration_ += 1;
   for (UnsignedInteger i = 0; i < dimension_; ++i)

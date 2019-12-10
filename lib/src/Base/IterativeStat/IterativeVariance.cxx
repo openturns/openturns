@@ -51,7 +51,7 @@ Point IterativeVariance::getVariance() const
 
 Point IterativeVariance::getCoeficientOfVariation() const
 {
-  PersistentCollection<Scalar> coeficientOfVariationData(dimension_, 0.0);
+  Point coeficientOfVariationData(dimension_, 0.0);
 
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
@@ -63,7 +63,7 @@ Point IterativeVariance::getCoeficientOfVariation() const
 
 Point IterativeVariance::getStandardErrorOfTheMean() const
 {
-  PersistentCollection<Scalar> standardErrorOfTheMean(dimension_, 0.0);
+  Point standardErrorOfTheMean(dimension_, 0.0);
 
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
@@ -75,7 +75,7 @@ Point IterativeVariance::getStandardErrorOfTheMean() const
 
 Point IterativeVariance::getStandardDeviation() const
 {
-  PersistentCollection<Scalar> standardDeviationData(dimension_, 0.0);
+  Point standardDeviationData(dimension_, 0.0);
 
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {

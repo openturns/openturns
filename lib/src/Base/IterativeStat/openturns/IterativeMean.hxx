@@ -3,7 +3,6 @@
 #define OPENTURNS_ITERATIVEMEAN_HXX
 
 #include "openturns/IterativeAlgorithmImplementation.hxx"
-// #include "openturns/PersistentCollection.hxx"
 #include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -64,7 +63,7 @@ public:
 //   static AlgoRegister reg;
 
 private:
-  PersistentCollection<Scalar> data_;
+  Point data_;
 };
 
 END_NAMESPACE_OPENTURNS

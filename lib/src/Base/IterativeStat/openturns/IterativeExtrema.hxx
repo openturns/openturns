@@ -3,7 +3,6 @@
 #define OPENTURNS_ITERATIVEEXTREMA_HXX
 
 #include "openturns/IterativeAlgorithmImplementation.hxx"
-// #include "openturns/PersistentCollection.hxx"
 #include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -67,8 +66,8 @@ public:
 
 private:
 //   static IterativeAlgorithm * create(const int dimension);
-  PersistentCollection<Scalar> minData_;
-  PersistentCollection<Scalar> maxData_;
+  Point minData_;
+  Point maxData_;
 };
 
 END_NAMESPACE_OPENTURNS

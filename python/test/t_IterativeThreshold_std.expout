@@ -1,0 +1,6 @@
+Iterative threshold, one point at a time
+result= [0,3]
+Iterative threshold, one single sample
+result= [0,3]
+Iterative threshold, one single sample, then one point at a time
+result= [0,6]

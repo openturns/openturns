@@ -48,13 +48,13 @@ String IterativeSkewness::__str__(const String & offset) const
 
 Point IterativeSkewness::getSkewness() const
 {
-  PersistentCollection<Scalar> skewnessData(dimension_, 0.0);
+  Point skewnessData(dimension_, 0.0);
 
   if (iteration_ > 0)
   {
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
-      skewnessData[i] = mean3Data_[i] - 3 * mean1Data_[i] * mean2Data_[i] + 2 * pow(mean1Data_[i], 3) / pow(mean2Data_[i] - pow(mean1Data_[i], 2), 1.5);
+      skewnessData[i] = (mean3Data_[i] - 3 * mean1Data_[i] * mean2Data_[i] + 2 * pow(mean1Data_[i], 3)) / pow(mean2Data_[i] - pow(mean1Data_[i], 2), 1.5);
     }
   }
   else
@@ -70,7 +70,7 @@ Point IterativeSkewness::getSkewness() const
 
 Point IterativeSkewness::getVariance() const
 {
-  PersistentCollection<Scalar> varData(dimension_, 0.0);
+  Point varData(dimension_, 0.0);
 
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
@@ -82,7 +82,7 @@ Point IterativeSkewness::getVariance() const
 
 Point IterativeSkewness::getCoeficientOfVariation() const
 {
-  PersistentCollection<Scalar> coeficientOfVariationData(dimension_, 0.0);
+  Point coeficientOfVariationData(dimension_, 0.0);
 
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
@@ -94,7 +94,7 @@ Point IterativeSkewness::getCoeficientOfVariation() const
 
 Point IterativeSkewness::getStandardDeviation() const
 {
-  PersistentCollection<Scalar> standardDevData(dimension_, 0.0);
+  Point standardDevData(dimension_, 0.0);
 
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
@@ -111,7 +111,7 @@ Point IterativeSkewness::getMean() const
 
 void IterativeSkewness::increment(const Point & newData)
 {
-  if (newData.getSize() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the dimension of the iterative skewness.";
+  if (newData.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the given Point is not compatible with the dimension of the iterative skewness.";
 
   iteration_ += 1;
   for (UnsignedInteger i = 0; i < dimension_; ++i)

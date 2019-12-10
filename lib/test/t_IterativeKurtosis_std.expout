@@ -1,29 +1,42 @@
-sample1=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=2 data=[[10,20],[11,21],[12,22]]
-referencemean=class=Point name=Unnamed dimension=2 values=[11,21]
-referencevariance=class=Point name=Unnamed dimension=2 values=[1,1]
-referencemixedmean=class=Point name=Unnamed dimension=2 values=[11,21]
-referencemixedvariance=class=Point name=Unnamed dimension=2 values=[0.8,0.8]
+sample1=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=4 dimension=2 data=[[10,20],[11,21],[12,22],[15,25]]
+referencemean=class=Point name=Unnamed dimension=2 values=[12,22]
+referencevariance=class=Point name=Unnamed dimension=2 values=[4.66667,4.66667]
+referenceskewness=class=Point name=Unnamed dimension=2 values=[1.19034,1.19034]
+referencekurtosis=class=Point name=Unnamed dimension=2 values=[0.125,0.125]
+referencemixedmean=class=Point name=Unnamed dimension=2 values=[12,22]
+referencemixedvariance=class=Point name=Unnamed dimension=2 values=[4,4]
+referencemixedskewness=class=Point name=Unnamed dimension=2 values=[0.857143,0.857143]
+referencemixedkurtosis=class=Point name=Unnamed dimension=2 values=[0.03125,0.03125]
 Iterative kurtosis, one point at a time
 Checking int. value1=2, value2=2
-Checking Point. index=0, value1=11, value2=11
-Checking Point. index=1, value1=21, value2=21
+Checking Point. index=0, value1=12, value2=12
+Checking Point. index=1, value1=22, value2=22
 Checking int. value1=2, value2=2
-Checking Point. index=0, value1=1, value2=1
-Checking Point. index=1, value1=1, value2=1
-Checking int. value1=3, value2=3
+Checking Point. index=0, value1=4.66667, value2=4.66667
+Checking Point. index=1, value1=4.66667, value2=4.66667
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=1.19034, value2=1.19034
+Checking Point. index=1, value1=1.19034, value2=1.19034
+Checking int. value1=4, value2=4
 Iterative kurtosis, one single sample
 Checking int. value1=2, value2=2
-Checking Point. index=0, value1=11, value2=11
-Checking Point. index=1, value1=21, value2=21
+Checking Point. index=0, value1=12, value2=12
+Checking Point. index=1, value1=22, value2=22
 Checking int. value1=2, value2=2
-Checking Point. index=0, value1=1, value2=1
-Checking Point. index=1, value1=1, value2=1
-Checking int. value1=3, value2=3
+Checking Point. index=0, value1=4.66667, value2=4.66667
+Checking Point. index=1, value1=4.66667, value2=4.66667
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=1.19034, value2=1.19034
+Checking Point. index=1, value1=1.19034, value2=1.19034
+Checking int. value1=4, value2=4
 Iterative kurtosis, one single sample, then one point at a time
 Checking int. value1=2, value2=2
-Checking Point. index=0, value1=11, value2=11
-Checking Point. index=1, value1=21, value2=21
+Checking Point. index=0, value1=12, value2=12
+Checking Point. index=1, value1=22, value2=22
 Checking int. value1=2, value2=2
-Checking Point. index=0, value1=0.8, value2=0.8
-Checking Point. index=1, value1=0.8, value2=0.8
-Checking int. value1=6, value2=6
+Checking Point. index=0, value1=4, value2=4
+Checking Point. index=1, value1=4, value2=4
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=0.857143, value2=0.857143
+Checking Point. index=1, value1=0.857143, value2=0.857143
+Checking int. value1=8, value2=8

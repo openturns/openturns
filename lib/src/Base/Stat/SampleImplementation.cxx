@@ -1725,7 +1725,8 @@ Point SampleImplementation::computeKurtosis() const
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     if (centeredMoments[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The kurtosis is not defined.";
-    kurtosis[i] = factor1 * centeredMoments[i + dimension_] / (centeredMoments[i] * centeredMoments[i]) + factor2;
+//     kurtosis[i] = factor1 * centeredMoments[i + dimension_] / (centeredMoments[i] * centeredMoments[i]) + factor2;
+    kurtosis[i] = centeredMoments[i + dimension_] / (centeredMoments[i] * centeredMoments[i] * size_);
   }
   return kurtosis;
 }

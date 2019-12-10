@@ -29,18 +29,6 @@ nptest.assert_equal(referencemean, computedmean)
 iteration = itermeanPoint.getIteration()
 nptest.assert_equal(iteration, 3)
 
-# Iterative mean, one point at a time
-print("Iterative mean, one point at a time")
-itermeanPoint = ot.IterativeMean(dimension)
-itermeanPoint.increment(point1)
-itermeanPoint.increment(point2)
-itermeanPoint.increment(point3)
-print("result=",itermeanPoint)
-computedmean = itermeanPoint.getMean()
-nptest.assert_equal(referencemean, computedmean)
-iteration = itermeanPoint.getIteration()
-nptest.assert_equal(iteration, 3)
-	  
 # Iterative mean, one single sample
 print("Iterative mean, one single sample")
 itermeanSample = ot.IterativeMean(dimension)
@@ -50,7 +38,7 @@ computedmean = itermeanSample.getMean()
 nptest.assert_equal(referencemean, computedmean)
 iteration = itermeanSample.getIteration()
 nptest.assert_equal(iteration, 3)
-	
+
 # Iterative mean, one single sample, then one point at a time
 print("Iterative mean, one single sample, then one point at a time")
 itermeanMixed = ot.IterativeMean(dimension)

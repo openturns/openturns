@@ -4,7 +4,6 @@
 #define OPENTURNS_ITERATIVEQUANTILE_HXX
 
 #include "openturns/IterativeAlgorithmImplementation.hxx"
-// #include "openturns/PersistentCollection.hxx"
 #include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -71,9 +70,9 @@ public:
 //   static AlgoRegister reg;
 
 private:
-  Scalar                       order_;
-  UnsignedInteger              nmax_;
-  PersistentCollection<Scalar> data_;
+  Scalar          order_;
+  UnsignedInteger nmax_;
+  Point           data_;
 };
 
 END_NAMESPACE_OPENTURNS
