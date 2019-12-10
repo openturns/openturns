@@ -12,7 +12,7 @@ inputSample, outputSample : :class:`~openturns.Sample` or 2d-array
     The samples :math:`(\vect{x}_k)_{1 \leq k \leq N} \in \Rset^n` and :math:`(\vect{y}_k)_{1 \leq k \leq N}\in \Rset^d`.
 
 basis : :class:`~openturns.Basis`
-    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^n \rightarrow \Rset`. 
+    Functional basis to estimate the trend: :math:`(\varphi_j)_{1 \leq j \leq n_1}: \Rset^n \rightarrow \Rset`.
 
     If :math:`d>1`, the same basis is used for each marginal output.
 basisCollection : collection of :class:`~openturns.Basis`
@@ -49,7 +49,7 @@ where:
       \begin{array}{l}
         \mu_1(\vect{x}) \\
         \dots  \\
-        \mu_d(\vect{x}) 
+        \mu_d(\vect{x})
        \end{array}
      \right)
 
@@ -68,7 +68,7 @@ We note:
         \beta_{n_\ell}^\ell
        \end{array}
      \right) \in \Rset^{n_\ell}
-     \quad \mbox{ and } \quad 
+     \quad \mbox{ and } \quad
      \vect{\beta} = \left(
       \begin{array}{l}
          \vect{\beta}^1\\
@@ -97,7 +97,7 @@ We note:
         \vect{y}_N
        \end{array}
      \right) \in \Rset^{dN},
-     \quad 
+     \quad
      \vect{m}_{\vect{\beta}} = \left(
       \begin{array}{l}
         \vect{\mu}(\vect{x}_1) \\
@@ -106,7 +106,7 @@ We note:
        \end{array}
      \right) \in \Rset^{dN}
 
- and 
+ and
 
 .. math::
 
@@ -118,7 +118,7 @@ We note:
        \end{array}
      \right) \in \cS_{dN}^+(\Rset)
 
-where :math:`\mat{C}_{ij} = C_{\vect{p}}(\vect{x}_i, \vect{x}_j)`. 
+where :math:`\mat{C}_{ij} = C_{\vect{p}}(\vect{x}_i, \vect{x}_j)`.
 
 The model likelihood writes:
 
@@ -152,9 +152,9 @@ showing that :math:`\vect{\beta}^*` is a function of :math:`\vect{q}^*` only, an
 .. math::
 
     \vect{\sigma}^*(\vect{q}^*)=\dfrac{1}{N}\| \mat{L}_{\vect{q}^*}^{-1}(\vect{y}-\vect{m}_{\vect{\beta}^*(\vect{q}^*)}) \|^2
-   
+
 which leads to a further reduction of the log-likelihood function where both :math:`\vect{\beta}` and :math:`\sigma` are replaced by their expression in terms of :math:`\vect{q}`.
-    
+
 The default optimizer is :class:`~openturns.TNC` and can be changed thanks to the *setOptimizationAlgorithm* method.
 User could also change the default optimization solver by setting the `GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm` resource map key to one of the :class:`~openturns.NLopt` solver names.
 
@@ -166,8 +166,8 @@ It is also possible to proceed as follows:
     - tell the algorithm not to optimize the parameter using *setOptimizeParameters*
 
 The behaviour of the reduction is controlled by the following keys in :class:`~openturns.ResourceMap`:
-    - *ResourceMap.SetAsBool('GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate', true)* to use the reduction associated to :math:`\sigma`. It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`
-    - *ResourceMap.SetAsBool('GeneralLinearModelAlgorithm-UnbiasedVariance', true)* allows to use the *unbiased* estimate of :math:`\sigma` where :math:`\dfrac{1}{N}` is replaced by :math:`\dfrac{1}{N-p}` in the optimality condition for :math:`\sigma`.
+    - *ResourceMap.SetAsBool('GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate', True)* to use the reduction associated to :math:`\sigma`. It has no effect if :math:`d>1` or if :math:`d=1` and :math:`\sigma` is not part of :math:`\vect{p}`
+    - *ResourceMap.SetAsBool('GeneralLinearModelAlgorithm-UnbiasedVariance', True)* allows to use the *unbiased* estimate of :math:`\sigma` where :math:`\dfrac{1}{N}` is replaced by :math:`\dfrac{1}{N-p}` in the optimality condition for :math:`\sigma`.
 
 With huge samples, the `hierarchical matrix <http://en.wikipedia.org/wiki/Hierarchical_matrix>`_  implementation could be used if OpenTURNS had been compiled with `hmat-oss` support.
 
@@ -410,4 +410,3 @@ Parameters
 ----------
 noise : sequence of positive float
     The noise variance :math:`\tau_k^2` of each output value."
-

@@ -870,6 +870,8 @@ void GeneralLinearModelAlgorithm::setInputTransformation(const Function & inputT
   inputTransformation_ = inputTransformation;
   // Set normalize to true
   normalize_ = true;
+  // Need to reset
+  reset();
 }
 
 Function GeneralLinearModelAlgorithm::getInputTransformation() const
@@ -915,8 +917,9 @@ void GeneralLinearModelAlgorithm::setNoise(const Point & noise)
   for (UnsignedInteger i = 0; i < size; ++ i)
     if (!(noise[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Noise must be positive";
   noise_ = noise;
+  // If we update noise, we need to reset
+  reset();
 }
-
 
 Point GeneralLinearModelAlgorithm::getNoise() const
 {
@@ -971,7 +974,8 @@ Function GeneralLinearModelAlgorithm::getObjectiveFunction()
   computeF();
   MemoizeFunction logLikelihood(ReducedLogLikelihoodEvaluation(*this));
   // Here we change the finite difference gradient for a non centered one in order to reduce the computational cost
-  logLikelihood.setGradient(NonCenteredFiniteDifferenceGradient(ResourceMap::GetAsScalar( "NonCenteredFiniteDifferenceGradient-DefaultEpsilon" ), logLikelihood.getEvaluation()).clone());
+  const Scalar finiteDifferenceEpsilon = ResourceMap::GetAsScalar( "NonCenteredFiniteDifferenceGradient-DefaultEpsilon" );
+  logLikelihood.setGradient(NonCenteredFiniteDifferenceGradient(finiteDifferenceEpsilon, logLikelihood.getEvaluation()).clone());
   logLikelihood.enableCache();
   return logLikelihood;
 }
@@ -982,10 +986,35 @@ void GeneralLinearModelAlgorithm::initializeMethod()
     method_ = 1;
 }
 
+UnsignedInteger GeneralLinearModelAlgorithm::getMethod() const
+{
+  return method_;
+}
+
+void GeneralLinearModelAlgorithm::reset()
+{
+  // Reset elements for new computation
+  // No need to update F_ as computeF /setBasisCollection are private
+  // Same remark for setCovarianceModel & setData
+  covarianceCholeskyFactor_ = TriangularMatrix();
+  covarianceCholeskyFactorHMatrix_ = HMatrix();
+  hasRun_ = false;
+  lastReducedLogLikelihood_ = SpecFunc::LogMinScalar;
+}
+
 /* Method accessor (lapack/hmat) - Protected but friend with GeneralLinearModelAlgorithm class */
 void GeneralLinearModelAlgorithm::setMethod(const UnsignedInteger method)
 {
-  method_ = method;
+  // First update only if method has changed. It avoids useless reset
+  if (method != method_)
+  {
+    if (method > 1)
+      throw InvalidArgumentException(HERE) << "Expecting 0 (LAPACK) or 1 (HMAT)";
+    // Set new method
+    method_ = method;
+    // reset for new computation
+    reset();
+  }
 }
 
 /* Method save() stores the object through the StorageManager */

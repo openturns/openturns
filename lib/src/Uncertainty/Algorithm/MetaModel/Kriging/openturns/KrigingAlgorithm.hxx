@@ -99,6 +99,10 @@ public:
   void setNoise(const Point & noise);
   Point getNoise() const;
 
+  /** Linear algebra method */
+  void setMethod(const String & method);
+  String getMethod() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 

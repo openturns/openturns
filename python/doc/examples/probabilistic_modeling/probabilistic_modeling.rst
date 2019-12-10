@@ -60,6 +60,7 @@ Stochastic processes
     userdefined_covariance_model.ipynb
     gaussian_processes_comparison.ipynb
     gaussian_process_covariance.ipynb
+    gaussian_process_covariance_hmat.ipynb
     gaussian_process_spectral.ipynb
     parametric_spectral_density.ipynb
     userdefined_spectral_model.ipynb

@@ -258,6 +258,20 @@ Point KrigingAlgorithm::getNoise() const
   return glmAlgo_.getNoise();
 }
 
+String KrigingAlgorithm::getMethod() const
+{
+  const UnsignedInteger method = glmAlgo_.getMethod();
+  if (method) return "HMAT";
+  return "LAPACK";
+}
+
+void KrigingAlgorithm::setMethod(const String & method)
+{
+  if (method == "HMAT")
+    glmAlgo_.setMethod(1);
+  glmAlgo_.setMethod(0);
+}
+
 /* Method save() stores the object through the StorageManager */
 void KrigingAlgorithm::save(Advocate & adv) const
 {
