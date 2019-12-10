@@ -44,8 +44,8 @@ Notes
   Bonmin algorithms can be adapted using numerous parameters, described  `here <https://www.coin-or.org/Bonmin/options_list.html#sec:options_list>`_. These parameters can be modified using OpenTURNS' :class:`~openturns.ResourceMap`. For every option ``optionName``, one simply add a key named ``Bonmin-optionName`` with the value to use, as shown below::
   
     >>> import openturns as ot
-    >>> ot.ResourceMap.SetAsUnsignedInteger('Bonmin-bonmin.iteration_limit', 100)
-    >>> ot.ResourceMap.SetAsScalar('Bonmin-bonmin.time_limit', 30.0)
+    >>> ot.ResourceMap.AddAsUnsignedInteger('Bonmin-bonmin.iteration_limit', 100)
+    >>> ot.ResourceMap.AddAsScalar('Bonmin-bonmin.time_limit', 30.0)
 
 *Convergence criteria:*
 
@@ -113,7 +113,7 @@ In OpenTURNS, inequality constraints are defined by a function :math:`h` such th
 >>> bonminAlgorithm.setStartingPoint([0,0,0,0])
 >>> bonminAlgorithm.setMaximumEvaluationNumber(10000)
 >>> bonminAlgorithm.setMaximumIterationNumber(1000)
->>> ot.ResourceMap.SetAsString('Bonmin-mu_oracle','loqo')
+>>> ot.ResourceMap.AddAsString('Bonmin-mu_oracle','loqo')
 >>> ot.ResourceMap.SetAsScalar('Bonmin-bonmin.time_limit', 5.0)
 
 >>> # Running the solver

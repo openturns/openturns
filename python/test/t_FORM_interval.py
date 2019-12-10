@@ -13,7 +13,7 @@ ot.ResourceMap.SetAsScalar(
 ot.ResourceMap.SetAsScalar(
     'SimulationAlgorithm-DefaultMaximumStandardDeviation', 0.0)
 ot.ResourceMap.SetAsScalar(
-    'RootStrategyImplementation-DefaultStepSize', 0.1)
+    'RootStrategy-DefaultStepSize', 0.1)
 
 algorithms = ['MonteCarlo',
               'LHS',

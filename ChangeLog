@@ -14,6 +14,7 @@
  * Removed deprecated OptimizationAlgorithm::GetLeastSquaresAlgorithmNames
  * Removed deprecated GaussianNonLinearCalibration,NonLinearLeastSquaresCalibration::set,getAlgorithm
  * Removed deprecated MethodOfMomentsFactory::set,getOptimizationProblem
+ * ResourceMap::Set* methods no longer add new keys, the new Add* methods must be used instead
 
 === Python module ===
 
@@ -23,7 +24,7 @@
  * #1213 (The legend of the graphics in MetaModelValidation is wrong)
  * #1222 (There is no kriging example based on HMAT)
  * #1331 (FittingTest_BestModelBIC sometimes fail)
-
+ * #1335 (The return of the unsafe ResourceMap)
 
 == 1.14 release (2019-11-13) == #release-1.14
 

@@ -64,6 +64,12 @@ public:
   static void SetAsUnsignedInteger(const String & key, const UnsignedInteger value);
   static void SetAsScalar(const String & key, const Scalar value);
 
+  /** Add a value in the maps */
+  static void AddAsString(const String & key, const String & value);
+  static void AddAsBool(const String & key, const Bool value);
+  static void AddAsUnsignedInteger(const String & key, const UnsignedInteger value);
+  static void AddAsScalar(const String & key, const Scalar value);
+
   /** Get the total size of the maps */
   static UnsignedInteger GetSize();
   static UnsignedInteger GetStringSize();
@@ -206,6 +212,30 @@ protected:
    * @param value The value as a double
    */
   void setAsScalar(const String & key, const Scalar value);
+
+  /** Method for adding information into the resource map
+   * @param key The name under which the value is stored in the ResourceMap
+   * @param value The value written to a string
+   */
+  void addAsString(const String & key, const String & value);
+
+  /** Method for adding information into the resource map
+   * @param key The name under which the value is stored in the ResourceMap
+   * @param value The value as a boolean
+   */
+  void addAsBool(const String & key, const Bool value);
+
+  /** Method for adding information into the resource map
+   * @param key The name under which the value is stored in the ResourceMap
+   * @param value The value as an integer
+   */
+  void addAsUnsignedInteger(const String & key, const UnsignedInteger value);
+
+  /** Method for adding information into the resource map
+   * @param key The name under which the value is stored in the ResourceMap
+   * @param value The value as a double
+   */
+  void addAsScalar(const String & key, const Scalar value);
 
   /** Is the specific key present ? */
   Bool hasKey(const String & key) const;

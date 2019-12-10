@@ -26,7 +26,6 @@ using namespace OT::Test;
 
 int main(int, char *[])
 {
-  ResourceMap::SetAsBool("Distribution-parallel", true);
   TESTPREAMBLE;
   OStream fullprint(std::cout);
   setRandomGenerator();

@@ -36,7 +36,7 @@ int main(int, char *[])
 
   // Create string key
   fullprint << "Create key: dummy_key" << std::endl;
-  ResourceMap::SetAsString("dummy_key", "A temporary key, to be removed");
+  ResourceMap::AddAsString("dummy_key", "A temporary key, to be removed");
   fullprint << ResourceMap::GetInstance() << std::endl;
 
   // Remove key
