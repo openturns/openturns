@@ -2,11 +2,11 @@ sample1=class=Sample name=Unnamed implementation=class=SampleImplementation name
 referencemean=class=Point name=Unnamed dimension=2 values=[12,22]
 referencevariance=class=Point name=Unnamed dimension=2 values=[4.66667,4.66667]
 referenceskewness=class=Point name=Unnamed dimension=2 values=[1.19034,1.19034]
-referencekurtosis=class=Point name=Unnamed dimension=2 values=[0.125,0.125]
+referencekurtosis=class=Point name=Unnamed dimension=2 values=[4.5,4.5]
 referencemixedmean=class=Point name=Unnamed dimension=2 values=[12,22]
 referencemixedvariance=class=Point name=Unnamed dimension=2 values=[4,4]
 referencemixedskewness=class=Point name=Unnamed dimension=2 values=[0.857143,0.857143]
-referencemixedkurtosis=class=Point name=Unnamed dimension=2 values=[0.03125,0.03125]
+referencemixedkurtosis=class=Point name=Unnamed dimension=2 values=[2.3,2.3]
 Iterative kurtosis, one point at a time
 Checking int. value1=2, value2=2
 Checking Point. index=0, value1=12, value2=12
