@@ -4,6 +4,7 @@ from openturns import coupling_tools
 import os
 import time
 import sys
+import openturns.testing as ott
 
 wanted_lines = '# ooo\nE=@E\nE1=@E\nFE1=@F#oo\nZ=@Z@Z\n# ooo\n'
 semi_parsed = '# ooo\nE=2\nE1=2\nFE1=@F#oo\nZ=@Z@Z\n# ooo\n'
@@ -580,6 +581,13 @@ def check_execute():
 
     print("execute ok")
 
+def check_get_value():
+    with open('result.txt', 'w') as f:
+        f.write('name,X0,X1,X2,X3,X4,X5\n')
+        f.write('val,0.125,1.1,2.3,3.5,4.7,5.99\n')
+    ott.assert_almost_equal(coupling_tools.get_value('result.txt', skip_line=1, skip_col=3,col_sep=','), 2.3)
+    ott.assert_almost_equal(coupling_tools.get_value('result.txt', skip_line=1, skip_col=-1,col_sep=','), 5.99)
+    os.remove('result.txt')
 
 check_execute()
 check_replace()
@@ -595,3 +603,4 @@ check_get_tokens_skip_line_col()
 check_get_tokens_perf()
 check_get_tokens_skip_perf()
 check_get_line_col_perf()
+check_get_value()
