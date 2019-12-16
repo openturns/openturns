@@ -17,12 +17,13 @@ This variance is defined as:
 
 .. math::
 
-   V_{0} = 0
-   V_{1} = 0
-   2 \leq  i
-   V_{i} = \frac{i-2}{i-1} V_{i-1}  \\+  \frac{(u(i)-\mu_{i-1}) (u(i)-\mu_{i})}{i-1}
+   \begin{array}{cccc}
+   V_{0} & = & 0 & \\
+   V_{1} & = & 0 & \\
+   V_{i} & = & \frac{i-2}{i-1} V_{i-1}  +  \frac{(u(i)-\mu_{i-1}) (u(i)-\mu_{i})}{i-1} & \forall i > 1
+   \end{array}
 
-With u(i) the new input point.
+With :math:`u(i)` the :math:`i^{th}` input point.
 
 This class don't store the input data in memory.
 
@@ -38,9 +39,19 @@ Examples
 >>> myVariance = ot.IterativeVariance(dim)
 >>> n = ot.Normal(dim)
 >>> size = 50
+>>>
+>>> # increment with 50 points
 >>> for i in range(size):
 >>>     point = n.getRealization()
 >>>     myVariance.increment(point)
+>>>
+>>> print (myVariance.getIteration())
+>>> print (myVariance.getMean())
+>>> print (myVariance.getVariance())
+>>>
+>>> # increment with one sample of size 50
+>>> sample = n.getSample(size)
+>>> myVariance.increment(sample)
 >>>
 >>> print (myVariance.getIteration())
 >>> print (myVariance.getMean())

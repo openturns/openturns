@@ -154,9 +154,4 @@ void IterativeVariance::load(Advocate & adv)
   adv.loadAttribute( "varData_", varData_);
 }
 
-void IterativeVariance::finalize()
-{
-  // Nothing to do
-};
-
 END_NAMESPACE_OPENTURNS

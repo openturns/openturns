@@ -8,8 +8,8 @@ Parameters
 ----------
 dimension : UnsignedInteger
     Dimension of the input data (default : 1)
-dimension : Scalar
-    Dimension of the input data (default : 0.0)
+thresholdValue : Scalar
+    Threshold value (default : 0.0)
 
 Notes
 -----
@@ -39,7 +39,7 @@ Examples
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::IterativeThresholdExceedance::getMin
+%feature("docstring") OT::IterativeThresholdExceedance::getThresholdExceedance
 "Returns the number of threshold exceedances component per component
 
 Returns

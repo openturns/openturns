@@ -145,11 +145,6 @@ void IterativeExtrema::load(Advocate & adv)
   adv.loadAttribute( "maxData_", maxData_);
 }
 
-void IterativeExtrema::finalize()
-{
-  // Nothing to do
-};
-
 // AlgoRegister IterativeExtrema::reg("IterativeExtrema", &IterativeExtrema::create);
 
 END_NAMESPACE_OPENTURNS

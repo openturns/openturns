@@ -107,11 +107,6 @@ void IterativeThresholdExceedance::load(Advocate & adv)
   adv.loadAttribute( "data_", data_);
 }
 
-void IterativeThresholdExceedance::finalize()
-{
-  // Nothing to do
-};
-
 // AlgoRegister IterativeThresholdExceedance::reg("IterativeThresholdExceedance", &IterativeThresholdExceedance::create);
 
 END_NAMESPACE_OPENTURNS

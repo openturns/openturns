@@ -1,1 +1,53 @@
- 
+%feature("docstring") OT::IterativeQuantile
+"Iterative quantile.
+
+Available constructor:
+    IterativeQuantile(dimension, order, nmax)
+
+Parameters
+----------
+dimension : UnsignedInteger
+    Dimension of the input data
+dimension : Scalar
+    Quantile order
+nmax : UnsignedInteger
+    Max number of iterations
+
+Notes
+-----
+This class iteratively computes the requested quantile of several :class:`~openturns.Point` or :class:`~openturns.Sample`.
+Warning : the algorithm is not validated.
+
+See also
+--------
+IterativeAlgorithm
+"
+
+// ---------------------------------------------------------------------
+
+
+%feature("docstring") OT::IterativeQuantile::getQuantile
+"Returns the values of the quantile
+
+Returns
+-------
+quantile : :class:`~openturns.Point`
+    current values of the iterative quantile."
+
+
+%feature("docstring") OT::IterativeQuantile::getOrder
+"Returns the quantile order
+
+Returns
+-------
+order : :class:`~openturns.UnsignedInteger`
+    the quantile order"
+
+
+%feature("docstring") OT::IterativeQuantile::getNmax
+"Returns the maximum number of iterations
+
+Returns
+-------
+nmax : :class:`~openturns.UnsignedInteger`
+    the quantile maximum number of iterations"

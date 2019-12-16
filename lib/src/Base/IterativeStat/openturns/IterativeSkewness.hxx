@@ -22,8 +22,6 @@ public:
 
   void increment(const Sample & newData);
 
-  void finalize();
-
   /**
    * Comparison operator
    *

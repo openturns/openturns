@@ -88,11 +88,6 @@ void IterativeMean::load(Advocate & adv)
   adv.loadAttribute( "data_", data_);
 }
 
-void IterativeMean::finalize()
-{
-  // Nothing to do
-};
-
 // AlgoRegister IterativeMean::reg("IterativeMean", &IterativeMean::create);
 
 END_NAMESPACE_OPENTURNS

@@ -30,12 +30,7 @@ Parameters
 sample : :class:`~openturns.Sample`
     New input sample.
 point : :class:`~openturns.Point`
-    New input point.
-
-Returns
--------
-indices : :class:`~openturns.Point`
-    Sequence containing first order Sobol indices."
+    New input point."
 %enddef
 
 %feature("docstring") OT::IterativeAlgorithmImplementation::increment

@@ -21,9 +21,6 @@ public:
   void increment(const Point & newData);
 
   void increment(const Sample & newData);
-
-  void finalize();
-
   /**
    * Comparison operator
    *

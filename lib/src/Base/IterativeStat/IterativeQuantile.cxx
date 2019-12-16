@@ -153,9 +153,4 @@ void IterativeQuantile::load(Advocate & adv)
   adv.loadAttribute( "data_", data_);
 }
 
-void IterativeQuantile::finalize()
-{
-  // Nothing to do
-};
-
 END_NAMESPACE_OPENTURNS

@@ -29,9 +29,21 @@ Examples
 >>> myKurtosis = ot.IterativeKurtosis(dim)
 >>> n = ot.Normal(dim)
 >>> size = 50
+>>>
+>>> # increment with 50 points
 >>> for i in range(size):
 >>>     point = n.getRealization()
 >>>     myKurtosis.increment(point)
+>>>
+>>> print (myKurtosis.getIteration())
+>>> print (myKurtosis.getMean())
+>>> print (myKurtosis.getVariance())
+>>> print (myKurtosis.getSkewness())
+>>> print (myKurtosis.getKurtosis())
+>>>
+>>> # increment with one sample of size 50
+>>> sample = n.getSample(size)
+>>> myKurtosis.increment(sample)
 >>>
 >>> print (myKurtosis.getIteration())
 >>> print (myKurtosis.getMean())

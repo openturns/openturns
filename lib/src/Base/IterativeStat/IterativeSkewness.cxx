@@ -181,9 +181,4 @@ void IterativeSkewness::load(Advocate & adv)
   adv.loadAttribute( "mean3Data_", mean3Data_);
 }
 
-void IterativeSkewness::finalize()
-{
-  // Nothing to do
-};
-
 END_NAMESPACE_OPENTURNS

@@ -232,9 +232,4 @@ void IterativeKurtosis::load(Advocate & adv)
   adv.loadAttribute( "mean4Data_", mean4Data_);
 }
 
-void IterativeKurtosis::finalize()
-{
-  // Nothing to do
-};
-
 END_NAMESPACE_OPENTURNS
