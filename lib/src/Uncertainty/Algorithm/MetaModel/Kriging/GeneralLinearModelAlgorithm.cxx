@@ -324,7 +324,7 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
   analyticalAmplitude_ = false;
   if (!optimizeParameters_) reducedCovarianceModel_.setActiveParameter(Indices());
   // Second, check if the amplitude parameter is unique and active
-  else if (ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate"))
+  else if (ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate") && (!noise_.getSize()))
   {
     // The model has to be of dimension 1
     if (reducedCovarianceModel_.getOutputDimension() == 1)
