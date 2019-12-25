@@ -25,6 +25,7 @@
  * #1222 (There is no kriging example based on HMAT)
  * #1331 (FittingTest_BestModelBIC sometimes fail)
  * #1335 (The return of the unsafe ResourceMap)
+ * #1351 (Text has a zero size)
 
 == 1.14 release (2019-11-13) == #release-1.14
 
@@ -1027,7 +1028,7 @@
  * LinearBasisFactory
  * QuadraticBasisFactory
 
-==== New classes ==== 
+==== New classes ====
  * Skellam
  * SkellamFactory
  * MeixnerDistribution
@@ -1036,7 +1037,7 @@
  * GaussKronrodRule
  * TriangularMatrix
  * QuadraticNumericalMathFunction
- 
+
 ==== API changes ====
  * Removed framework field in generic wrapper
  * Added the getVerticesNumber(), getSimplicesNumber() and getClosestVertexIndex() methods to the Mesh class.
@@ -1065,12 +1066,12 @@
  * Removed deprecated method Drawable::set|getLegendName
  * Removed deprecated method Pie::Pie(NumericalSample), Pie::Pie(NumericalSample, Description, NumericalPoint)
  * Deprecated method NumericalPoint::norm2 in favor of normSquare, normalize2 in favor of normalizeSquare
- 
+
 === Python module ===
  * Added NumericalSample::_repr_html_ for html representation in IPython
  * Allow to reuse figure/axes instances from matplotlib viewer
  * PythonFunction now prints the complete traceback
- 
+
 === Miscellaneous ===
  * Improved numerical stability of InverseNormal
  * Preserve history state in the marginal function.
@@ -1078,7 +1079,7 @@
  * Added a new simplification rule to the MarginalTransformationEvaluation for the case where the input and output distributions are linked by an affine transformation.
  * Propagated the use of potential parallel evaluations of the computeDDF(), computePDF() and computeCDF() methods in many places, which greatly improves the performance of many algorithms.
  * Allowed for non-continuous prior distributions in the MCMC class.
-  
+
 === Bug fixes ===
  * #442 (OT r1.0 Box Cox is only for Time Series Not for Linear Model)
  * #506 (There are unit tests which fail on Windows with OT 1.0)
@@ -1124,13 +1125,13 @@
  * Tuples
  * CombinatorialGenerator
  * Combinations
- 
-==== New classes ==== 
+
+==== New classes ====
  * PiecewiseEvaluationImplementation
  * GeneralizedPareto
  * GeneralizedParetoFactory
  * RungeKutta
- 
+
 ==== API changes ====
  * Switched from getLegendName() and setLegendName() to getLegend() and setLegend() in the drawables.
  * Extended the add() method of the Collection class to append a collection to a given collection;
@@ -1141,7 +1142,7 @@
  * Removed deprecated method Distribution::computeCharacteristicFunction(NumericalScalar x, Bool logScale)
  * Removed deprecated method Distribution::computeGeneratingFunction(NumericalComplex z, Bool logScale)
  * Removed deprecated method Distribution::computeCDF(x, tail)
- 
+
 ==== Python module ====
  * The distributed python wrapper is now shipped separately
  * No more need for base class casts
@@ -1153,7 +1154,7 @@
  * Added a binning capability to the KernelSmoothing class. It greatly improves its performance for large samples (300x faster for 10^6 points and above)
  * Changed the definition of the sample skewness and kurtosis. Now, we use the unbiased estimators for normal populations.
  * Changed back to the first (thinest) definition of hyperbolic stratas. Added a function to control the number of terms per degree.
- 
+
 ==== Bug fixes ====
  * #411 (Long time to instanciate a NumericaMathFunction (analytical function))
  * #586 (The Pie graphics could be easily improved.)
@@ -1178,7 +1179,7 @@
  * #637 (The docstring of coupling_tools is not up-to-date.)
  * #638 (libopenturns-dev should bring libxml2-dev)
 
- 
+
 == 1.1 release == #release-1.1
 
 === Library ===
@@ -1200,7 +1201,7 @@ New bayesian updating classes:
  * Sampler
  * CalibrationStrategy
  * PosteriorRandomVector
- 
+
 New distributions:
  * AliMikhailHaqCopula
  * AliMikhailHaqCopulaFactory
@@ -1237,7 +1238,7 @@ New classes:
  * Added a draw() method to the NumericalMathFunction class.
  * Changed the return type of the build() method for all the DistributionImplementationFactory related classes. Now, it returns a smart pointer on a DistributionImplementation rather than a C++ pointer. It closes the memory leak mentioned in ticket #545.
  * Changed the return type of the getMarginal() method of the DistributionImplementation, RandomVectorImplementation and ProcessImplementation related classes. Now, it returns smart pointers instead of C++ pointers to avoid memory leak.
-    
+
 === Python module ===
  * DistributedPythonFunction: new python wrapper module, which allows to launch a function
  to several nodes and cores in parallel
@@ -1247,7 +1248,7 @@ New classes:
  * Added NumericalSample, NumericalPoint, Description, Indice slicing
  * Added automatic python conversion to BoolCollection
  * Allowed use of wrapper data enums using their corresponding xml tags
- 
+
 === Miscellaneous ===
  * Added NumericalMathFunction::clearCache
  * CMake: MinGW build support
@@ -1301,7 +1302,7 @@ New classes:
  * #586 (The Pie graphics could be easily improved.)
  * #587 (Cannot save a NumericalMathFunction if built from a NumericalMathEvaluationImplementation)
  * #592 (View and Show)
- 
+
 == 1.0 release == #release-1.0
 
 ==== Library ====
@@ -1539,7 +1540,7 @@ Enhancement of existing classes:
    * Generic wrapper (no compilation required anymore)
  * NumericalSample
    * Use of TBB library for multithreading
-   * New imlementation allowing storage up to 8Gb 
+   * New imlementation allowing storage up to 8Gb
    * Added clear() method to erase all content
    * Added merge() method to merge two instances
    * New accessors
@@ -1560,7 +1561,7 @@ Enhancement of existing classes:
   * CobWeb plot
   * Copula fitting test (Kendall plot)
   * Cloud from complex numbers
-  
+
 
 Methods:
  * Added a constructor based on two input/output NumericalSamples to the NumericalMathFunction allowing to use the FunctionalChaos provided a sample.
@@ -1577,7 +1578,7 @@ Moved classes:
 
 ==== Bug fixes ====
 Fixes:
- * Fixed Mixture distribution 
+ * Fixed Mixture distribution
 
 === Python module ===
 ==== Enhancements ====

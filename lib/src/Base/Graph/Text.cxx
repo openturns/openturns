@@ -53,7 +53,7 @@ Text::Text(const Sample & data,
     throw InvalidArgumentException(HERE) << "The given text position = " << textPosition << " is invalid";
   }
   textPositions_ = Description(data_.getSize(), textPosition);
-  textSize_ = ResourceMap::GetAsScalar( "Text-DefaultTextSize");
+  textSize_ = ResourceMap::GetAsScalar("Text-DefaultTextSize");
 }
 
 /* Constructor from complex numbers */
@@ -103,6 +103,7 @@ Text::Text(const Sample & dataX,
     throw InvalidArgumentException(HERE) << "The given text position = " << textPosition << " is invalid";
   }
   textPositions_ = Description(data_.getSize(), textPosition);
+  textSize_ = ResourceMap::GetAsScalar("Text-DefaultTextSize");
 }
 
 Text::Text(const Point & dataX,
@@ -128,6 +129,7 @@ Text::Text(const Point & dataX,
     throw InvalidArgumentException(HERE) << "The given text position = " << textPosition << " is invalid";
   }
   textPositions_ = Description(data_.getSize(), textPosition);
+  textSize_ = ResourceMap::GetAsScalar("Text-DefaultTextSize");
 }
 
 /* String converter */
@@ -240,6 +242,7 @@ void Text::save(Advocate & adv) const
   DrawableImplementation::save(adv);
   adv.saveAttribute( "textAnnotations_", textAnnotations_ );
   adv.saveAttribute( "textPositions_", textPositions_ );
+  adv.saveAttribute( "textSize_", textSize_ );
 }
 
 Bool Text::IsValidTextPosition(String textPosition)
@@ -268,6 +271,7 @@ void Text::load(Advocate & adv)
   DrawableImplementation::load(adv);
   adv.loadAttribute( "textAnnotations_", textAnnotations_ );
   adv.loadAttribute( "textPositions_", textPositions_ );
+  adv.loadAttribute( "textSize_", textSize_ );
 }
 
 
