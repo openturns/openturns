@@ -3,7 +3,7 @@
  *  @brief This class acts like a (possibly truncated) KernelMixture factory, implementing density estimation
  *         using the kernel smoothing method. It uses Silverman's rule for product kernel.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by

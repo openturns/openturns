@@ -3,7 +3,7 @@
 # @brief Gives functions that help coupling against external code,
 #   .i.e: manipulate template file.
 #
-# Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
+# Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
 #
 # This library is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by

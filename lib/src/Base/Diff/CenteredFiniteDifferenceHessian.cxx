@@ -4,7 +4,7 @@
  *         form a numerical math evaluation implementation by using centered
  *         finite difference formula.
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
