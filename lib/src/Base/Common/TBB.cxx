@@ -30,6 +30,9 @@
 #include "openturns/TBB.hxx"
 #include "openturns/ResourceMap.hxx"
 
+#ifdef OPENTURNS_HAVE_TBB
+#include <tbb/task_scheduler_init.h>
+#endif
 
 BEGIN_NAMESPACE_OPENTURNS
 

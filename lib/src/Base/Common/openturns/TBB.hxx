@@ -34,7 +34,6 @@
 #  define __TBBMALLOC_NO_IMPLICIT_LINKAGE 1
 # endif
 #endif
-#include <tbb/task_scheduler_init.h>
 #include <tbb/parallel_sort.h>
 #include <tbb/parallel_reduce.h>
 #include "openturns/OTwindows.h"
