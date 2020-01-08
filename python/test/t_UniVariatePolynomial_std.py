@@ -56,8 +56,6 @@ try:
     print("P1*P2=", P1 * P2)
 
     # Multiplication of two polynomials using FFT
-    ResourceMap.SetAsUnsignedInteger(
-        "UniVariatePolynomialImplementation-LargeDegree", 0)
     print("P1*P2=", P1 * P2)
 
 except:

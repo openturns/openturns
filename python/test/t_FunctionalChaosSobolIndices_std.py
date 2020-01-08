@@ -37,8 +37,7 @@ x = distribution.getSample(size)
 y = model(x)
 
 # To reduce the time needed by the test
-ot.ResourceMap.SetAsUnsignedInteger(
-    "FittingTest-KolmogorovTestSamplingSize", 4)
+ot.ResourceMap.SetAsUnsignedInteger("FittingTest-KolmogorovSamplingSize", 4)
 algo = ot.FunctionalChaosAlgorithm(x, y)
 algo.run()
 result = algo.getResult()

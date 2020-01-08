@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class ResourceMap for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -36,7 +36,7 @@ int main(int, char *[])
 
   // Create string key
   fullprint << "Create key: dummy_key" << std::endl;
-  ResourceMap::SetAsString("dummy_key", "A temporary key, to be removed");
+  ResourceMap::AddAsString("dummy_key", "A temporary key, to be removed");
   fullprint << ResourceMap::GetInstance() << std::endl;
 
   // Remove key

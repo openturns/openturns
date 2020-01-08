@@ -2,7 +2,7 @@
 /**
  *  @brief This file supplies support for multithreading
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -34,7 +34,6 @@
 #  define __TBBMALLOC_NO_IMPLICIT_LINKAGE 1
 # endif
 #endif
-#include <tbb/task_scheduler_init.h>
 #include <tbb/parallel_sort.h>
 #include <tbb/parallel_reduce.h>
 #include "openturns/OTwindows.h"

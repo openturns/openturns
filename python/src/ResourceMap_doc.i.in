@@ -62,7 +62,7 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ResourceMap::Set
-"Access a parameter.
+"Access an existing parameter.
 
 Parameters
 ----------
@@ -102,7 +102,7 @@ True"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ResourceMap::SetAsBool
-"Access a boolean parameter.
+"Set an existing boolean parameter.
 
 Parameters
 ----------
@@ -119,8 +119,27 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::ResourceMap::AddAsBool
+"Add a new boolean parameter.
+
+Parameters
+----------
+key : str
+    An identifier associated to the parameter.
+value : bool
+    The value associated to that key. The key is added to the bool map even if
+    it already exists in another map (float, unsigned int or string).
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.ResourceMap.AddAsBool('MaximumEntropyOrderStatisticsDistribution-CheckMarginals2', True)
+>>> ot.ResourceMap.RemoveKey('MaximumEntropyOrderStatisticsDistribution-CheckMarginals2')"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::ResourceMap::SetAsScalar
-"Access a floating-point parameter.
+"Set an existing floating-point parameter.
 
 Parameters
 ----------
@@ -134,6 +153,25 @@ Examples
 --------
 >>> import openturns as ot
 >>> ot.ResourceMap.SetAsScalar('SQP-DefaultTau', 0.5)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ResourceMap::AddAsScalar
+"Add a new floating-point parameter.
+
+Parameters
+----------
+key : str
+    An identifier associated to the parameter.
+value : float
+    The value associated to that key. The key is added to the float map even if
+    it already exists in another map (string, unsigned int or bool).
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.ResourceMap.AddAsScalar('SQP-DefaultTau2', 0.5)
+>>> ot.ResourceMap.RemoveKey('SQP-DefaultTau2')"
 
 // ---------------------------------------------------------------------
 
@@ -159,7 +197,7 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ResourceMap::SetAsString
-"Access a parameter.
+"Set an existing string parameter.
 
 Parameters
 ----------
@@ -176,8 +214,27 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::ResourceMap::AddAsString
+"Add a new string parameter.
+
+Parameters
+----------
+key : str
+    An identifier associated to the parameter.
+value : str
+    The value associated to that key. The key is added to the string map even if
+    it already exists in another map (float, unsigned int or bool).
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.ResourceMap.AddAsString('View-ImageFormat2', 'png')
+>>> ot.ResourceMap.RemoveKey('View-ImageFormat2')"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::ResourceMap::GetAsString
-"Access a parameter.
+"Access a string parameter.
 
 Parameters
 ----------
@@ -198,7 +255,7 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ResourceMap::SetAsUnsignedInteger
-"Access an integer parameter.
+"Set an existing integer parameter.
 
 Parameters
 ----------
@@ -212,6 +269,25 @@ Examples
 --------
 >>> import openturns as ot
 >>> ot.ResourceMap.SetAsUnsignedInteger('MCMC-DefaultBurnIn', 0)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ResourceMap::AddAsUnsignedInteger
+"Add a new integer parameter.
+
+Parameters
+----------
+key : str
+    An identifier associated to the parameter.
+value : int
+    The value associated to that key. The key is added to the unsigned integer
+    map even if it already exists in another map (float, string or bool).
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.ResourceMap.AddAsUnsignedInteger('MCMC-DefaultBurnIn2', 0)
+>>> ot.ResourceMap.RemoveKey('MCMC-DefaultBurnIn2')"
 
 // ---------------------------------------------------------------------
 
@@ -370,5 +446,5 @@ key : str
 Examples
 --------
 >>> import openturns as ot
->>> ot.ResourceMap.SetAsString('dummy_key', 'key_to_be_removed')
+>>> ot.ResourceMap.AddAsString('dummy_key', 'key_to_be_removed')
 >>> ot.ResourceMap.RemoveKey('dummy_key')"

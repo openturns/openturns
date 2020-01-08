@@ -9,7 +9,7 @@ Available constructors:
 Parameters
 ----------
 points : 2-d sequence of float
-    `n` lists of `d` points :math:`x_{ij}, i = 1, \ldots, n, j = 1, \ldots, d`.
+    `List of `n` points of dimension `d` :math:`x_{ij}, i = 1, \ldots, n, j = 1, \ldots, d`.
 weights : sequence of float
     List of `n` weights :math:`p_i, i = 1, \ldots, n`.
     If not :math:`\sum_1^n  p_i = 1.0`, the weights are normalized.

@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class Bonmin
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -100,8 +100,8 @@ int main()
     bonminAlgorithm.setStartingPoint(Point(4, 0));
     bonminAlgorithm.setMaximumEvaluationNumber(10000);
     bonminAlgorithm.setMaximumIterationNumber(1000);
-    ResourceMap::SetAsString("Bonmin-mu_oracle", "loqo");
-    ResourceMap::SetAsScalar("Bonmin-bonmin.time_limit", 5);
+    ResourceMap::AddAsString("Bonmin-mu_oracle", "loqo");
+    ResourceMap::AddAsScalar("Bonmin-bonmin.time_limit", 5);
 
     // Test __repr__ method
     std::cout << bonminAlgorithm.__repr__() << std::endl;

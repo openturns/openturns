@@ -3,7 +3,7 @@
 # @brief Gives functions that help coupling against external code,
 #   .i.e: manipulate template file.
 #
-# Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
+# Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
 #
 # This library is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Lesser General Public License as published by
@@ -401,7 +401,7 @@ def read_line(handle, seek=0, encoding=default_encoding):
     return line
 
 
-def get_line_col(filename, skip_line=0, skip_col=0, seek=0, encoding=default_encoding):
+def get_line_col(filename, skip_line=0, skip_col=0, col_sep=None, seek=0, encoding=default_encoding):
     """
     Get a value at specific line/columns coordinates.
 
@@ -418,6 +418,9 @@ def get_line_col(filename, skip_line=0, skip_col=0, seek=0, encoding=default_enc
         Number of columns skipped from the beginning or end of the line.
         If skip_col < 0: count col backward from the end of the line.
         Default: 0: no column skipped
+    col_sep : str
+        Column separator
+        Default: None: whitespace separator, see str.split
     seek : int, default=0
         if > 0, consider the file starts at pos seek.
         if < 0, consider the file ends at pos -seek (and NOT (end-(-seek))!).
@@ -501,7 +504,7 @@ def get_line_col(filename, skip_line=0, skip_col=0, seek=0, encoding=default_enc
     # get the good col
     if skip_col != 0:
         try:
-            line_found = line_found.split()[skip_col]
+            line_found = line_found.split(col_sep)[skip_col]
         except:
             raise EOFError('error: value not found on this line: (' +
                            line_found + ')!')
@@ -512,7 +515,7 @@ def get_line_col(filename, skip_line=0, skip_col=0, seek=0, encoding=default_enc
     return result
 
 
-def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, encoding=default_encoding):
+def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, col_sep=None, encoding=default_encoding):
     """
     Get a value from a file using a delimiter and/or offsets.
 
@@ -548,6 +551,9 @@ def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, encod
         If skip_col < 0: count col backward from the end of the line or from
         the token.
         Default: 0: no column skipped
+    col_sep : str
+        Column separator
+        Default: None: whitespace separator, see str.split
     encoding : str
         File encoding
         see http://docs.python.org/2/library/codecs.html#codec-base-classes
@@ -607,7 +613,7 @@ def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, encod
 
     result = None
     if not token:
-        result = get_line_col(filename, skip_line, skip_col, encoding=encoding)
+        result = get_line_col(filename, skip_line, skip_col, col_sep=col_sep, encoding=encoding)
     else:
         handle = open(filename, 'rb')
 
@@ -676,7 +682,7 @@ def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, encod
                 seek_pos = token_pos[1]
             handle.close()
             result = get_line_col(
-                filename, skip_line, skip_col, seek_pos, encoding=encoding)
+                filename, skip_line, skip_col, col_sep=col_sep, seek=seek_pos, encoding=encoding)
 
     return result
 

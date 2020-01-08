@@ -8,7 +8,7 @@
 #  MUPARSER_LIBRARIES    - List of libraries when using muParser.
 #
 #=============================================================================
-# Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
+# Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
 #
 # Distributed under the OSI-approved BSD License (the "License");
 # see accompanying file Copyright.txt for details.

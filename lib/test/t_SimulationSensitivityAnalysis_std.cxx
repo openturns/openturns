@@ -2,7 +2,7 @@
 /**
  *  @brief The test file of class SimulationSensitivityAnalysis for standard methods
  *
- *  Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -56,37 +56,12 @@ int main(int, char *[])
     Scalar threshold = 3.0;
     for (UnsignedInteger i = 0; i < 4; ++i)
     {
-      {
-        SimulationSensitivityAnalysis algo(inputSample, outputSample, distribution.getIsoProbabilisticTransformation(), comparisonOperators[i], threshold);
-        fullprint << "algo=" << algo << std::endl;
-        /* Perform the analysis */
-        fullprint << "Mean point in event domain=" << algo.computeMeanPointInEventDomain() << std::endl;
-        fullprint << "Importance factors at " << threshold << " =" << algo.computeImportanceFactors() << std::endl;
-        fullprint << "Importance factors at " << threshold / 2 << " =" << algo.computeImportanceFactors(threshold / 2) << std::endl;
-        Graph importanceFactorsGraph(algo.drawImportanceFactors());
-        fullprint << "importanceFactorsGraph=" << importanceFactorsGraph << std::endl;
-
-        /* Importance factors evolution on probability scale */
-        Graph importanceFactorsRangeGraphProbability(algo.drawImportanceFactorsRange());
-        fullprint << "importanceFactorsRangeGraphProbability=" << importanceFactorsRangeGraphProbability << std::endl;
-
-        /* Importance factors evolution on threshold scale */
-        Graph importanceFactorsRangeGraphThreshold(algo.drawImportanceFactorsRange(false));
-        fullprint << "importanceFactorsRangeGraphThreshold=" << importanceFactorsRangeGraphThreshold << std::endl;
-      }
-
-      /* Must activate the history mechanism if one want to perform sensitivity analysis */
-      MemoizeFunction fh(f);
-
       /* Analysis based on an event */
       RandomVector X(distribution);
-      CompositeRandomVector Y(fh, X);
+      CompositeRandomVector Y(f, X);
       ThresholdEvent event(Y, comparisonOperators[i], threshold);
-      /* Get a sample of the event to simulate a Monte Carlo analysis. We don't care
-         of the result as the interesting values are stored in the model history */
-      event.getSample(size);
       {
-        SimulationSensitivityAnalysis algo(event);
+        SimulationSensitivityAnalysis algo(event, inputSample, outputSample);
         fullprint << "algo=" << algo << std::endl;
         /* Perform the analysis */
         fullprint << "Mean point in event domain=" << algo.computeMeanPointInEventDomain() << std::endl;

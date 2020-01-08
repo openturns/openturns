@@ -22,6 +22,7 @@ cst : float
     Default value is zero.
 weights :  sequence of float
     Weights of the affine combination in dimension 1.
+    Default value is (1, ...,1).
 constant : sequence of float
     Constant vector of the affine expression.
     Its size should be equal to the dimension of the distribution.
@@ -102,7 +103,7 @@ Create a distribution:
 
 >>> import openturns as ot
 >>> coll = [ot.Triangular(0.0, 1.0, 5.0), ot.Uniform(-2.0, 2.0)]
->>> weights = [0.8, 0.2]
+>>> weights = [3.0, 2.0]
 >>> cst = 3.0
 >>> distribution = ot.RandomMixture(coll, weights, cst)
 
