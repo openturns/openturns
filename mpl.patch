@@ -1,0 +1,13 @@
+diff --git a/lib/matplotlib/backends/backend_pdf.py b/lib/matplotlib/backends/backend_pdf.py
+index 2b9ec5366..6659bf4d2 100644
+--- a/lib/matplotlib/backends/backend_pdf.py
++++ b/lib/matplotlib/backends/backend_pdf.py
+@@ -143,7 +143,7 @@ def pdfRepr(obj):
+     # should adapt to the magnitude of the number?
+     elif isinstance(obj, (float, np.floating)):
+         if not np.isfinite(obj):
+-            raise ValueError("Can only output finite numbers in PDF")
++            raise ValueError("Can only output finite numbers in PDF obj="+str(obj))
+         r = b"%.10f" % obj
+         return r.rstrip(b'0').rstrip(b'.')
+ 

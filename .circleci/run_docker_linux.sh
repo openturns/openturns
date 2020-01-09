@@ -16,6 +16,8 @@ else
   source_dir=`pwd`  # circleci
 fi
 
+cd /usr/lib/python3.8/site-packages/matplotlib/ && sudo patch -p3 -i ${source_dir}/mpl.patch && cd -
+
 mkdir build && cd build
 
 cmake -DCMAKE_INSTALL_PREFIX=~/.local \
