@@ -17,8 +17,8 @@ Here are the steps required to propose a modification with git:
 
 2. Register on `GitHub <https://github.com>`_ and add a new ssh key in https://github.com/settings/ssh::
 
-    ssh-keygen -f ~/.ssh/id_rsa-github
-    cat ~/.ssh/id_rsa-github.pub
+    ssh-keygen -t ed25519 -C "johndoe@example.com"
+    cat ~/.ssh/id_ed25519.pub
 
 
 3. Fork the library repository https://github.com/openturns/openturns and clone it via ssh::
