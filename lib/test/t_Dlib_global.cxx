@@ -103,7 +103,7 @@ int main()
     fullprint << "      -- optimalValue = " << constrainingBoundsGlobal.getResult().getOptimalValue().__str__() << std::endl << std::endl;
 
     // Check results
-    if (notConstrainingBoundsGlobal.getResult().getOptimalValue()[0] > 1.0)
+    if (notConstrainingBoundsGlobal.getResult().getOptimalValue()[0] > 4.0)
       throw InvalidArgumentException(HERE) << "optimum not found";
     assert_almost_equal(constrainingBoundsGlobal.getResult().getOptimalPoint(), boundedRefPoint, 1, 1e-2);
 
