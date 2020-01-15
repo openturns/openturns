@@ -60,3 +60,7 @@ OT_Function_getParameterDescription_doc
 OT_Function_setParameterDescription_doc
 %feature("docstring") OT::Function::parameterGradient
 OT_Function_parameterGradient_doc
+%feature("docstring") OT::Function::isLinear
+OT_Function_isLinear_doc
+%feature("docstring") OT::Function::isLinearlyDependent
+OT_Function_isLinearlyDependent_doc
