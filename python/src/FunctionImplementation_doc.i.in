@@ -770,7 +770,7 @@ Returns
 linear : bool
     *True* if the function is linear, *False* otherwise."
 %enddef
-%feature("docstring") OT::FunctionImplementation::isLinearDependent
+%feature("docstring") OT::FunctionImplementation::isLinear
 OT_Function_isLinear_doc
 
 // ---------------------------------------------------------------------
