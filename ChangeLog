@@ -26,6 +26,7 @@
  * #1331 (FittingTest_BestModelBIC sometimes fail)
  * #1335 (The return of the unsafe ResourceMap)
  * #1337 (The rDiscrete function has no help page)
+ * #1349 (Problem in the graph of Histogram)
  * #1351 (Text has a zero size)
  * #1354 (The doc of GeneralizedParetoFactory does not reflect the implementation)
 
