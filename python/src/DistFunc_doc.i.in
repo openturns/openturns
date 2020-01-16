@@ -360,7 +360,7 @@ of freedom and :math:`R(x;p)` the solution of:
 
 .. math::
     \Phi(x + R) - \Phi(x - R) = p
-    
+
 Examples
 --------
 >>> import openturns as ot
@@ -476,8 +476,8 @@ k : int
 
 Returns
 -------
-logp : float
-    The natural logarithm of the probability to get :math:`k` successes.
+p : float
+    The probability to get :math:`k` successes.
 
 Notes
 -----
@@ -489,6 +489,8 @@ Examples
 --------
 >>> import openturns as ot
 >>> p = ot.DistFunc.dPoisson(5.0, 2)"
+
+// ---------------------------------------------------------------------
 
 %feature("docstring") OT::DistFunc::rPoisson
 "Realization of a Poisson distribution.
@@ -519,4 +521,47 @@ Examples
 >>> r = ot.DistFunc.rPoisson(5.0)
 >>> r = ot.DistFunc.rPoisson(5.0, 10)"
 
+// ---------------------------------------------------------------------
 
+%feature("docstring") OT::DistFunc::dNonCentralChiSquare
+"Probability function of a NonCentralChiSquare distribution.
+
+Parameters
+----------
+nu : float
+lambda : float
+x : float
+precision : float, optional
+maximum_iteration : int, optional
+
+Returns
+-------
+p : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::dNonCentralStudent
+"Probability function of a NonCentralStudent distribution.
+
+Parameters
+----------
+nu : float
+delta : float
+x : float
+
+Returns
+-------
+p : float"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::DistFunc::eZ1
+"Expectation of the min of n independent standard normal random variables.
+
+Parameters
+----------
+n : int
+
+Returns
+-------
+mu : float"
