@@ -178,7 +178,7 @@ The sensitivity of the probability Pf wrt the distribution parameters :math:`\th
 
 .. math::
 
-    \vect{sens_{Pf}} = \frac{1}{n} \sum_{i=1}^n \mathbb{1}_{event} \vect{\frac{\delta \Phi(\vect{X}_i)}{\delta \theta}}_i
+    \vect{sens_{Pf}}_j = \frac{1}{n} \sum_{i=1}^n \mathbf{1}_{event} \vect{\frac{\delta log(f_{\uX})(\vect{X}_i)}{\delta \theta_j}}
 
 Returns
 -------
