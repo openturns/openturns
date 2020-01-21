@@ -497,7 +497,6 @@ void Dlib::setInitialTrustRegionRadius(const Scalar radius)
 /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
 void Dlib::checkProblem(const OptimizationProblem & problem) const
 {
-#ifdef OPENTURNS_HAVE_DLIB
   // Cannot solve multi-objective problems
   if (problem.hasMultipleObjective())
     throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " does not support multi-objective optimization";
@@ -537,7 +536,7 @@ void Dlib::checkProblem(const OptimizationProblem & problem) const
   if (problem.hasBounds() && (algoName_ == "LSQ" || algoName_ == "LSQLM" || algoName_ == "TrustRegion"))
     throw InvalidArgumentException(HERE) << "Error: " << algoName_ << " algorithm cannot solve bounded problems.";
 
-#else
+#ifndef OPENTURNS_HAVE_DLIB
   throw NotYetImplementedException(HERE) << "No Dlib support";
 #endif
 }
