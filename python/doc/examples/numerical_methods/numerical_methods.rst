@@ -6,17 +6,22 @@ Numerical methods
 
     random_generator.ipynb
     combinatorial_generator.ipynb
+    estimate_integral_iterated_quadrature.ipynb
+    study_save_load.ipynb
+    ifs.ipynb
+
+Optimization
+------------
+
+  .. toctree::
+    :maxdepth: 1
+
+    ego.ipynb
     optimization_constraints.ipynb
     optimization_nlopt.ipynb
     optimization_dlib.ipynb
     optimization_bonmin.ipynb
-    deterministic_design.ipynb
-    probabilistic_design.ipynb
-    mixed_design.ipynb
-    minmax_design.ipynb
     minmax_optimization.ipynb
-    estimate_integral_iterated_quadrature.ipynb
+    minmax_by_random_design.ipynb
     control_termination.ipynb
-    logistic_growth_model.ipynb
-    study_save_load.ipynb
-    ifs.ipynb
+
