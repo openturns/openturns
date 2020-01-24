@@ -44,8 +44,9 @@ public:
 
   /** Default constructor with size */
   SparseMatrix( const UnsignedInteger nbRows,
-                const UnsignedInteger nbCols);
-  
+                const UnsignedInteger nbCols,
+                const UnsignedInteger size = 1);
+
   /** Constructor from OT::Matrix */
   SparseMatrix(const Matrix & m);
 
@@ -90,10 +91,18 @@ public:
 // 
 //   /** Method load() reloads the object from the StorageManager */
 //   virtual void load(Advocate & adv);
-  
+
 private:
-  
   void * impl_;
+  // compressed column storage
+  mutable std::vector<Scalar> values_;
+  mutable std::vector<UnsignedInteger> columnIndex_;
+  mutable std::vector<UnsignedInteger> rowIndex_;
+  mutable UnsignedInteger size_;
+  mutable UnsignedInteger maxSize_;
+  mutable UnsignedInteger nbRows_;
+  mutable UnsignedInteger nbColumns_;
+  
 } ; /* class SparseMatrix */
 
 END_NAMESPACE_OPENTURNS

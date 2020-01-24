@@ -32,19 +32,39 @@ CLASSNAMEINIT(SparseMatrix)
 SparseMatrix::SparseMatrix()
   : PersistentObject()
   , impl_(0)
+  , size_(0)
+  , maxSize_(0)
+  , nbRows_(0)
+  , nbColumns_(0)
 {
   // Nothing to do
 }
 
 /* Constructor with dimensions */
 SparseMatrix::SparseMatrix( const UnsignedInteger nbRows,
-                            const UnsignedInteger nbCols)
+                            const UnsignedInteger nbColumns,
+                            const UnsignedInteger maxSize)
   : PersistentObject()
+  , size_(0)
+  , maxSize_(maxSize)
+  , nbRows_(nbRows)
+  , nbColumns_(nbColumns)
 {
 #ifdef OPENTURNS_HAVE_EIGEN
-  impl_ = new Eigen::SparseMatrix<Scalar>(nbRows, nbCols);
+  impl_ = new Eigen::SparseMatrix<Scalar>(nbRows, nbColumns);
+  (void)size_;
+  (void)maxSize_;
+  (void)nbRows_;
+  (void)nbColumns_;
 #else
-  impl_ = new Matrix(nbRows, nbCols);
+  if (!maxSize)
+    throw InvalidArgumentException(HERE) << "maxSize must be positive";
+  nbRows_ = nbRows;
+  nbColumns_ = nbColumns;
+  maxSize_ = 1;
+  values_.resize(maxSize, 0.0);
+  rowIndex_.resize(maxSize, 0);
+  columnIndex_.resize(nbColumns + 1, 0);
 #endif
 }
 
@@ -54,12 +74,15 @@ SparseMatrix::SparseMatrix(const Matrix & m)
 {
 #ifdef OPENTURNS_HAVE_EIGEN
   impl_ = new Eigen::SparseMatrix<Scalar>(m.getNbRows(), m.getNbColumns());
-  for (UnsignedInteger i=0; i<m.getNbRows(); ++i)
-    for (UnsignedInteger j=0; j<m.getNbColumns(); ++j)
-      if (m(i,j) != 0)
-        static_cast<Eigen::SparseMatrix<Scalar> *>(impl_)->coeffRef(i,j) += m(i,j);
+  for (UnsignedInteger i=0; i < m.getNbRows(); ++i)
+    for (UnsignedInteger j = 0; j < m.getNbColumns(); ++j)
+      if (m(i,j) != 0.0)
+        static_cast<Eigen::SparseMatrix<Scalar> *>(impl_)->coeffRef(i, j) += m(i, j);
 #else
-  impl_ = new Matrix(m);
+  for (UnsignedInteger i = 0; i < m.getNbRows(); ++i)
+    for (UnsignedInteger j = 0; j < m.getNbColumns(); ++j)
+      if (m(i,j) != 0)
+        this->operator()(i,j) = m(i, j);
 #endif
 }
 
@@ -82,9 +105,16 @@ SparseMatrix * SparseMatrix::clone() const
 Scalar SparseMatrix::operator()(const UnsignedInteger i, const UnsignedInteger j) const
 {
 #ifdef OPENTURNS_HAVE_EIGEN
-  return static_cast< Eigen::SparseMatrix<Scalar> *>(impl_)->coeff(i,j);
+  return static_cast< Eigen::SparseMatrix<Scalar> *>(impl_)->coeff(i, j);
 #else
-  return static_cast<Matrix *>(impl_)->operator()(i,j);
+  if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
+  if (j >= nbColumns_) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
+  for (UnsignedInteger k = columnIndex_[j]; k < columnIndex_[j + 1]; ++ k)
+  {
+    if (rowIndex_[k] == i)
+      return values_[k];
+  }
+  return 0.0;
 #endif
 }
 
@@ -92,27 +122,58 @@ Scalar SparseMatrix::operator()(const UnsignedInteger i, const UnsignedInteger j
 Scalar & SparseMatrix::operator()(const UnsignedInteger i, const UnsignedInteger j)
 {
 #ifdef OPENTURNS_HAVE_EIGEN
-  return static_cast<Eigen::SparseMatrix<Scalar> *>(impl_)->coeffRef(i,j);
+  return static_cast<Eigen::SparseMatrix<Scalar> *>(impl_)->coeffRef(i, j);
 #else
-  return static_cast<Matrix *>(impl_)->operator()(i,j);
+  if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
+  if (j >= nbColumns_) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
+  if (size_ >= maxSize_)
+  {
+    maxSize_ *= 2;
+    values_.resize(maxSize_, 0.0);
+    rowIndex_.resize(maxSize_, 0);
+  }
+  UnsignedInteger index = columnIndex_[j + 1];
+  for (UnsignedInteger k = columnIndex_[j]; k < columnIndex_[j + 1]; ++ k)
+  {
+    if (i < rowIndex_[k])
+    {
+      index = k;
+      break;
+    }
+    if (rowIndex_[k] == i)
+    {
+      return values_[k];
+    }
+  }
+  ++ size_;
+  rowIndex_.insert(rowIndex_.begin() + index, i);
+  values_.insert(values_.begin() + index, 0.0);
+  for (UnsignedInteger k = j; k < nbColumns_; ++ k)
+    columnIndex_[k + 1] += 1;
+  return values_[index];
 #endif
 }
 
 /** Multiplication by a vector */
 Point SparseMatrix::operator *(const Point & rhs) const
 {
-#ifdef OPENTURNS_HAVE_EIGEN  
+#ifdef OPENTURNS_HAVE_EIGEN
   Eigen::VectorXd v(rhs.getSize());
   std::copy(rhs.begin(), rhs.end(), v.data());
-  
+
   Eigen::VectorXd w( *(static_cast<Eigen::SparseMatrix<Scalar> *>(impl_)) * v);
-  
+
   Point output(w.size());
   std::copy(w.data(), w.data() + w.size(), output.begin());
-  
+
   return output;
 #else
-  return static_cast<Matrix *>(impl_)->operator*(rhs);
+  if (rhs.getDimension() != nbColumns_) throw InvalidDimensionException(HERE) << "Invalid rhs size";
+  Point output(nbRows_);
+  for (UnsignedInteger j = 0; j < nbColumns_; ++ j)
+    for (UnsignedInteger k = columnIndex_[j]; k < columnIndex_[j + 1]; ++ k)
+      output[rowIndex_[k]] += values_[k] * rhs[j];
+  return output;
 #endif
 }
 
@@ -120,65 +181,68 @@ Point SparseMatrix::operator *(const Point & rhs) const
 /** Number of rows */
 UnsignedInteger SparseMatrix::getNbRows() const
 {
-#ifdef OPENTURNS_HAVE_EIGEN  
+#ifdef OPENTURNS_HAVE_EIGEN
   return static_cast<Eigen::SparseMatrix<Scalar> *>(impl_)->rows();
 #else
-  return static_cast<Matrix *>(impl_)->getNbRows();
-#endif  
+  return nbRows_;
+#endif
 }
 
 /** Number of columns */
 UnsignedInteger SparseMatrix::getNbColumns() const
 {
-#ifdef OPENTURNS_HAVE_EIGEN  
+#ifdef OPENTURNS_HAVE_EIGEN
   return static_cast<Eigen::SparseMatrix<Scalar> *>(impl_)->cols();
 #else
-  return static_cast<Matrix *>(impl_)->getNbColumns();
+  return nbColumns_;
 #endif
 }
 
 /** Get the number of non-zeros elements */
 UnsignedInteger SparseMatrix::getNbNonZeros() const
 {
-#ifdef OPENTURNS_HAVE_EIGEN  
+#ifdef OPENTURNS_HAVE_EIGEN
   return static_cast<Eigen::SparseMatrix<Scalar> *>(impl_)->nonZeros();
 #else
-  Matrix m(* static_cast<Matrix *>(impl_));
-  return m.getNbColumns() * m.getNbRows();
+  return size_;
 #endif
 }
 
 /** Transposition */
 SparseMatrix SparseMatrix::transpose() const
 {
-#ifdef OPENTURNS_HAVE_EIGEN  
+#ifdef OPENTURNS_HAVE_EIGEN
   // Casting impl_ to actual implementation of Eigen::SparseMatrix
   Eigen::SparseMatrix<Scalar> sparseMat(*static_cast<Eigen::SparseMatrix<Scalar> *>(impl_));
-  
+
   // Create OT::Matrix with relevant dimensions
-  SparseMatrix output(sparseMat.rows(), sparseMat.cols());
-  
+  SparseMatrix output(sparseMat.cols(), sparseMat.rows());
+
   // Iterate on non-zeros elements of Eigen::SparseMatrix, populate OT::Matrix
   for (int k=0; k<sparseMat.outerSize(); ++k)
     for (Eigen::SparseMatrix<double>::InnerIterator it(sparseMat,k); it; ++it)
       output(it.col(), it.row()) += it.value();
-    
+
   return output;
 #else
-  return new SparseMatrix(static_cast<Matrix *>(impl_)->transpose());
-#endif  
+  SparseMatrix output(getNbColumns(), getNbRows());
+  for (UnsignedInteger j = 0; j < nbColumns_; ++ j)
+    for (UnsignedInteger k = columnIndex_[j]; k < columnIndex_[j + 1]; ++ k)
+      output(j, rowIndex_[k]) = values_[k];
+  return output;
+#endif
 }
-    
+
 /** Sparse / dense conversions */
 Matrix SparseMatrix::asDenseMatrix() const
 {
 #ifdef OPENTURNS_HAVE_EIGEN
   // Casting impl_ to actual implementation of Eigen::SparseMatrix
   Eigen::SparseMatrix<Scalar> sparseMat(*static_cast<Eigen::SparseMatrix<Scalar> *>(impl_));
-  
+
   // Create OT::Matrix with relevant dimensions
   Matrix output(sparseMat.rows(), sparseMat.cols());
-  
+
   // Iterate on non-zeros elements of Eigen::SparseMatrix, populate OT::Matrix
   for (int k=0; k<sparseMat.outerSize(); ++k)
     for (Eigen::SparseMatrix<double>::InnerIterator it(sparseMat,k); it; ++it)
@@ -190,9 +254,12 @@ Matrix SparseMatrix::asDenseMatrix() const
 
   return output;
 #else
-  return Matrix(* static_cast<Matrix *>(impl_));
+  Matrix result(nbRows_, nbColumns_);
+  for (UnsignedInteger j = 0; j < nbColumns_; ++ j)
+    for (UnsignedInteger k = columnIndex_[j]; k < columnIndex_[j + 1]; ++ k)
+      result(rowIndex_[k], j) = values_[k];
+  return result;
 #endif
-  
 }
 
 END_NAMESPACE_OPENTURNS

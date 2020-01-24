@@ -29,7 +29,7 @@
 #include "openturns/SparseMatrix.hxx"
 #include "openturns/HMatrix.hxx"
 #include <algorithm>
-#if defined(OPENTURNS_HAVE_SPECTRA) && defined(OPENTURNS_HAVE_EIGEN)
+#if defined(OPENTURNS_HAVE_SPECTRA)
   #include <Spectra/GenEigsSolver.h>
 #endif
 
@@ -245,14 +245,13 @@ SparseMatrix computeSparseAugmentedP1Gram(const Mesh & mesh, const UnsignedInteg
   {
     const Indices simplex(mesh.getSimplex(i));
     const Scalar delta = simplexVolume[i];
-        
+
     if (delta != 0)
       for (UnsignedInteger j = 0; j < simplexSize; ++j)
         for (UnsignedInteger k = 0; k < simplexSize; ++k)
           for (UnsignedInteger l=0; l < covarianceDimension; ++l)
             augmentedGram(simplex[j]*covarianceDimension+l, simplex[k]*covarianceDimension+l) += delta * elementaryGram(j,k);
   } // Loop over simplices
-  
   return augmentedGram;
 }
 
