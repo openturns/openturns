@@ -32,7 +32,7 @@ int main(int, char *[])
   setRandomGenerator();
   
   ResourceMap::SetAsString("KarhunenLoeveP1Algorithm-CovarianceMatrixStorage", "HMAT");
-  ResourceMap::SetAsString("KarhunenLoeveP1Algorithm-EigenvaluesSolver", "ARPACK");
+  ResourceMap::SetAsString("KarhunenLoeveP1Algorithm-EigenvaluesSolver", "SPECTRA");
 
   try
   {

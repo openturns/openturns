@@ -18,9 +18,6 @@
 /* Define if F77 and FC dummy `main' functions are identical. */
 #cmakedefine FC_DUMMY_MAIN_EQ_F77
 
-/* Define if you have ARPACK library. */
-#cmakedefine OPENTURNS_HAVE_ARPACK
-
 /* Define if you have bison parser generator. */
 #cmakedefine OPENTURNS_HAVE_BISON
 

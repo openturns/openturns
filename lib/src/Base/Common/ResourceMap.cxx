@@ -808,7 +808,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("KarhunenLoeveP1Algorithm-RegularizationFactor", 0.0);
   addAsString("KarhunenLoeveP1Algorithm-CovarianceMatrixStorage", "LAPACK");
   addAsString("KarhunenLoeveP1Algorithm-EigenvaluesSolver", "LAPACK");
-  addAsScalar("KarhunenLoeveP1Algorithm-ArpackTolerance", 1e-3);
 
   // AdaptiveStieltjesAlgorithm parameters //
   addAsScalar("AdaptiveStieltjesAlgorithm-MaximumError",  1.0e-12);
