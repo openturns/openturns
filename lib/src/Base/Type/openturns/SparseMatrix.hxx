@@ -50,9 +50,6 @@ public:
   /** Constructor from OT::Matrix */
   SparseMatrix(const Matrix & m);
 
-  /** Constructor from implementation */
-  SparseMatrix(void * impl);
-
   /** Virtual copy constructor */
   virtual SparseMatrix * clone() const;
 
@@ -61,16 +58,17 @@ public:
 
   /** Filling matrix from coordinates and value */
   Scalar & operator()(const UnsignedInteger i, const UnsignedInteger j);
-  
+
   /** Multiplication by a vector */
   Point operator *(const Point & rhs) const;
 
   /** Get the dimensions of the matrix */
   /** Number of rows */
   UnsignedInteger getNbRows() const;
+
   /** Number of columns */
   UnsignedInteger getNbColumns() const;
-  
+
   /** Get the number of non-zeros elements */
   UnsignedInteger getNbNonZeros() const;
 
@@ -93,16 +91,14 @@ public:
 //   virtual void load(Advocate & adv);
 
 private:
-  void * impl_;
   // compressed column storage
-  mutable std::vector<Scalar> values_;
-  mutable std::vector<UnsignedInteger> columnIndex_;
-  mutable std::vector<UnsignedInteger> rowIndex_;
-  mutable UnsignedInteger size_;
-  mutable UnsignedInteger maxSize_;
-  mutable UnsignedInteger nbRows_;
-  mutable UnsignedInteger nbColumns_;
-  
+  std::vector<Scalar> values_;
+  std::vector<UnsignedInteger> columnIndex_;
+  std::vector<UnsignedInteger> rowIndex_;
+  UnsignedInteger size_;
+  UnsignedInteger maxSize_;
+  UnsignedInteger nbRows_;
+  UnsignedInteger nbColumns_;
 } ; /* class SparseMatrix */
 
 END_NAMESPACE_OPENTURNS
