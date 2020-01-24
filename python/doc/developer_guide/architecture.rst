@@ -197,8 +197,6 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+-----------------------------------------------------------+-------------------+
 | Linear algebra (optional)             | `HMat <https://github.com/jeromerobert/hmat-oss>`_        | 1.2               |
 +---------------------------------------+-----------------------------------------------------------+-------------------+
-| Linear algebra (optional)             | `Eigen <http://eigen.tuxfamily.org>`_                     | 3.2               |
-+---------------------------------------+-----------------------------------------------------------+-------------------+
 | Linear algebra (optional)             | `Spectra <https://spectralib.org/>`_                      | 0.8.1             |
 +---------------------------------------+-----------------------------------------------------------+-------------------+
 | Analytical parser (optional)          | `muParser <http://muparser.beltoforion.de/>`_             | 2.2.3             |

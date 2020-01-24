@@ -42,9 +42,6 @@
 /* Define to 1 if you have the `dlib` with global optimization support. */
 #cmakedefine OPENTURNS_HAVE_DLIB_GLOBAL_OPTIMIZATION
 
-/* Define to 1 if you have the `eigen3` library. */
-#cmakedefine OPENTURNS_HAVE_EIGEN
-
 /* Define to 1 if you have 'spectra' library */
 #cmakedefine OPENTURNS_HAVE_SPECTRA
 
