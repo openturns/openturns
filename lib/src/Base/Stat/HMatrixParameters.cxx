@@ -56,7 +56,7 @@ HMatrixParameters::HMatrixParameters()
       compressionMethod_ = "ACA random";
       break;
     default:
-      throw InvalidArgumentException(HERE) << "Unknown compression method: " << resourceCompressionMethod << ", valid choices are: 0 (SVD), 1 (ACA full), 2 (ACA partial), 3 (ACA+) or 5 (ACA random).";
+      throw InvalidArgumentException(HERE) << "Unknown compression method: " << resourceCompressionMethod << ", valid choices are: 0 (SVD), 1 (ACA full), 2 (ACA partial), 3 (ACA+) or 4 (ACA random).";
       break;
   }
 }
