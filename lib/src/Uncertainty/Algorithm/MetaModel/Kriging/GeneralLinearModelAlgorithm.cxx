@@ -914,6 +914,10 @@ void GeneralLinearModelAlgorithm::setNoise(const Point & noise)
 {
   const UnsignedInteger size = inputSample_.getSize();
   if (noise.getSize() != size) throw InvalidArgumentException(HERE) << "Noise size=" << noise.getSize()  << " does not match sample size=" << size;
+  // Currently setNoise is not handled with HMAT
+  // We should first rework on the hmat side to promote this possibility
+  if (getMethod() == 1)
+    throw NotYetImplementedException(HERE) << "Noise is not be handled with HMAT method";
   for (UnsignedInteger i = 0; i < size; ++ i)
     if (!(noise[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Noise must be positive";
   noise_ = noise;
