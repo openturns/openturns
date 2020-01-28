@@ -24,7 +24,8 @@ find_path (SPECTRA_INCLUDE_DIR
   HINTS "${SPECTRA_ROOT_DIR}/include"
 )
 
-set (SPECTRA_INCLUDE_DIRS ${SPECTRA_INCLUDE_DIR})
+find_package(Eigen3 NO_MODULE)
+set (SPECTRA_INCLUDE_DIRS ${EIGEN3_INCLUDE_DIRS} ${SPECTRA_INCLUDE_DIR})
 
 include (FindPackageHandleStandardArgs)
-find_package_handle_standard_args (Spectra DEFAULT_MSG SPECTRA_INCLUDE_DIRS)
+find_package_handle_standard_args (Spectra DEFAULT_MSG SPECTRA_INCLUDE_DIRS EIGEN3_INCLUDE_DIRS)

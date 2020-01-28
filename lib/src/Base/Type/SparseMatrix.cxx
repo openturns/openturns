@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief SparseMatrix implements Eigen sparse matrix class interface
+ *  @brief Compressed sparse column matrix representation
  *
  *  Copyright 2005-2020 Airbus-EDF-IMACS-Phimeca
  *
@@ -28,7 +28,6 @@ CLASSNAMEINIT(SparseMatrix)
 SparseMatrix::SparseMatrix()
   : PersistentObject()
   , size_(0)
-  , maxSize_(0)
   , nbRows_(0)
   , nbColumns_(0)
 {
@@ -37,32 +36,70 @@ SparseMatrix::SparseMatrix()
 
 /* Constructor with dimensions */
 SparseMatrix::SparseMatrix( const UnsignedInteger nbRows,
-                            const UnsignedInteger nbColumns,
-                            const UnsignedInteger maxSize)
+                            const UnsignedInteger nbColumns)
   : PersistentObject()
   , size_(0)
-  , maxSize_(maxSize)
   , nbRows_(nbRows)
   , nbColumns_(nbColumns)
 {
-  if (!maxSize)
-    throw InvalidArgumentException(HERE) << "maxSize must be positive";
-  nbRows_ = nbRows;
-  nbColumns_ = nbColumns;
-  maxSize_ = 1;
-  values_.resize(maxSize, 0.0);
-  rowIndex_.resize(maxSize, 0);
-  columnIndex_.resize(nbColumns + 1, 0);
+  columnPointer_.resize(nbColumns + 1, 0);
 }
 
-/** Constructor from matrix */
-SparseMatrix::SparseMatrix(const Matrix & m)
+/** Constructor from triples */
+SparseMatrix::SparseMatrix(const UnsignedInteger nbRows,
+                           const UnsignedInteger nbColumns,
+                           const Indices & rowIndices,
+                           const Indices & columnIndices,
+                           const Point & values)
   : PersistentObject()
+  , size_(0)
+  , nbRows_(nbRows)
+  , nbColumns_(nbColumns)
 {
-  for (UnsignedInteger i = 0; i < m.getNbRows(); ++i)
-    for (UnsignedInteger j = 0; j < m.getNbColumns(); ++j)
-      if (m(i,j) != 0)
-        this->operator()(i,j) = m(i, j);
+  const UnsignedInteger size = values.getSize();
+  size_ = size;
+  if ((rowIndices.getSize() != size) || (columnIndices.getSize() != size)) throw InvalidArgumentException(HERE) << "Invalid triplets size";
+
+  columnPointer_.resize(nbColumns + 1, 0);
+
+  // allocate storage
+  rowIndex_.resize(size, 0);
+  values_.resize(size, 0.0);
+
+  // compute number of non-zero entries per column
+  for (UnsignedInteger n = 0; n < size; ++ n)
+    columnPointer_[columnIndices[n]] ++;
+
+  // initialize column pointer array
+  UnsignedInteger cumsum = 0;
+  for (UnsignedInteger j = 0; j < nbColumns; ++ j)
+  {
+    const UnsignedInteger temp = columnPointer_[j];
+    columnPointer_[j] = cumsum;
+    cumsum += temp;
+  }
+  columnPointer_[nbColumns] = size;
+
+  // fill values
+  for (UnsignedInteger n = 0; n < size; ++ n)
+  {
+    const UnsignedInteger column = columnIndices[n];
+    const UnsignedInteger row = rowIndices[n];
+    const UnsignedInteger dest = columnPointer_[column];
+    rowIndex_[dest] = row;
+    values_[dest] = values[n];
+    // update column pointer to the next element to insert
+    ++ columnPointer_[column];
+  }
+
+  // shift column pointer
+  UnsignedInteger last = 0;
+  for (UnsignedInteger j = 0; j < nbColumns; ++ j)
+  {
+    const UnsignedInteger temp = columnPointer_[j];
+    columnPointer_[j] = last;
+    last = temp;
+  }
 }
 
 /* Virtual constructor */
@@ -76,8 +113,9 @@ Scalar SparseMatrix::operator()(const UnsignedInteger i, const UnsignedInteger j
 {
   if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
   if (j >= nbColumns_) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
-  for (UnsignedInteger k = columnIndex_[j]; k < columnIndex_[j + 1]; ++ k)
+  for (UnsignedInteger k = columnPointer_[j]; k < columnPointer_[j + 1]; ++ k)
   {
+    // TODO: sum duplicate coordinate values
     if (rowIndex_[k] == i)
       return values_[k];
   }
@@ -89,30 +127,23 @@ Scalar & SparseMatrix::operator()(const UnsignedInteger i, const UnsignedInteger
 {
   if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
   if (j >= nbColumns_) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
-  if (size_ >= maxSize_)
-  {
-    maxSize_ *= 2;
-    values_.resize(maxSize_, 0.0);
-    rowIndex_.resize(maxSize_, 0);
-  }
-  UnsignedInteger index = columnIndex_[j + 1];
-  for (UnsignedInteger k = columnIndex_[j]; k < columnIndex_[j + 1]; ++ k)
+  UnsignedInteger index = columnPointer_[j + 1];
+  for (UnsignedInteger k = columnPointer_[j]; k < columnPointer_[j + 1]; ++ k)
   {
     if (i < rowIndex_[k])
     {
       index = k;
       break;
     }
+    // TODO: handle duplicate coordinate values
     if (rowIndex_[k] == i)
-    {
       return values_[k];
-    }
   }
   ++ size_;
   rowIndex_.insert(rowIndex_.begin() + index, i);
   values_.insert(values_.begin() + index, 0.0);
   for (UnsignedInteger k = j; k < nbColumns_; ++ k)
-    columnIndex_[k + 1] += 1;
+    columnPointer_[k + 1] += 1;
   return values_[index];
 }
 
@@ -122,7 +153,7 @@ Point SparseMatrix::operator *(const Point & rhs) const
   if (rhs.getDimension() != nbColumns_) throw InvalidDimensionException(HERE) << "Invalid rhs size";
   Point output(nbRows_);
   for (UnsignedInteger j = 0; j < nbColumns_; ++ j)
-    for (UnsignedInteger k = columnIndex_[j]; k < columnIndex_[j + 1]; ++ k)
+    for (UnsignedInteger k = columnPointer_[j]; k < columnPointer_[j + 1]; ++ k)
       output[rowIndex_[k]] += values_[k] * rhs[j];
   return output;
 }
@@ -151,8 +182,8 @@ SparseMatrix SparseMatrix::transpose() const
 {
   SparseMatrix output(getNbColumns(), getNbRows());
   for (UnsignedInteger j = 0; j < nbColumns_; ++ j)
-    for (UnsignedInteger k = columnIndex_[j]; k < columnIndex_[j + 1]; ++ k)
-      output(j, rowIndex_[k]) = values_[k];
+    for (UnsignedInteger k = columnPointer_[j]; k < columnPointer_[j + 1]; ++ k)
+      output(j, rowIndex_[k]) += values_[k];
   return output;
 }
 
@@ -161,9 +192,17 @@ Matrix SparseMatrix::asDenseMatrix() const
 {
   Matrix result(nbRows_, nbColumns_);
   for (UnsignedInteger j = 0; j < nbColumns_; ++ j)
-    for (UnsignedInteger k = columnIndex_[j]; k < columnIndex_[j + 1]; ++ k)
-      result(rowIndex_[k], j) = values_[k];
+    for (UnsignedInteger k = columnPointer_[j]; k < columnPointer_[j + 1]; ++ k)
+      result(rowIndex_[k], j) += values_[k];
   return result;
+}
+
+/** Sparse / dense conversions */
+String SparseMatrix::__repr__() const
+{
+  return OSS(true) << "class=" << getClassName()
+                  << " rows=" << getNbRows()
+                  << " columns=" << getNbColumns();
 }
 
 END_NAMESPACE_OPENTURNS

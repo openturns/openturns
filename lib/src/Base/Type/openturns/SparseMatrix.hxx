@@ -1,8 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief This class implements the computation of the Karhunen-Loeve
- *         basis and eigenvalues of a given covariance model based on
- *         P1 Lagrange approximation.
+ *  @brief Compressed sparse column matrix representation
  *
  *  Copyright 2005-2020 Airbus-EDF-IMACS-Phimeca
  *
@@ -43,12 +41,15 @@ public:
   SparseMatrix();
 
   /** Default constructor with size */
-  SparseMatrix( const UnsignedInteger nbRows,
-                const UnsignedInteger nbCols,
-                const UnsignedInteger size = 1);
+  SparseMatrix(const UnsignedInteger nbRows,
+               const UnsignedInteger nbCols);
 
-  /** Constructor from OT::Matrix */
-  SparseMatrix(const Matrix & m);
+  /** Constructor from triplets, duplicates are summed */
+  SparseMatrix(const UnsignedInteger nbRows,
+               const UnsignedInteger nbCols,
+               const Indices & rowIndices,
+               const Indices & columnIndices,
+               const Point & values);
 
   /** Virtual copy constructor */
   virtual SparseMatrix * clone() const;
@@ -78,9 +79,12 @@ public:
   /** Sparse <> dense conversions */
   Matrix asDenseMatrix() const;
 
-//   /** String converter */
-//   virtual String __repr__() const;
-// 
+  /** Compress to column storage */
+  void compress() const;
+
+  /** String converter */
+  virtual String __repr__() const;
+//
 //   /** String converter */
 //   virtual String __str__(const String & offset = "") const;
 // 
@@ -91,12 +95,11 @@ public:
 //   virtual void load(Advocate & adv);
 
 private:
-  // compressed column storage
+
   std::vector<Scalar> values_;
-  std::vector<UnsignedInteger> columnIndex_;
+  std::vector<UnsignedInteger> columnPointer_;
   std::vector<UnsignedInteger> rowIndex_;
   UnsignedInteger size_;
-  UnsignedInteger maxSize_;
   UnsignedInteger nbRows_;
   UnsignedInteger nbColumns_;
 } ; /* class SparseMatrix */

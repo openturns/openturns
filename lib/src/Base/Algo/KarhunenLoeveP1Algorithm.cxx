@@ -43,23 +43,23 @@ typedef Collection<Complex> ComplexCollection;
 /** Defining parent class KLGenMatProd **/
 class KLGenMatProd
 {
-  public:
-    
+public:
+
   KLGenMatProd()
-  {    
+  {
     // Nothing to do
   }
-  
+
   virtual ~KLGenMatProd()
   {
     // Nothing to do
   }
-    
+
   virtual int rows() const
   {
     throw NotYetImplementedException(HERE) << "method 'rows' not yet implemented";
   }
-  
+
   virtual int cols() const
   {
     throw NotYetImplementedException(HERE) << "method 'cols' not yet implemented";
@@ -231,27 +231,28 @@ SparseMatrix computeSparseAugmentedP1Gram(const Mesh & mesh, const UnsignedInteg
   const UnsignedInteger simplexSize = verticesDim + 1;
   const UnsignedInteger augmentedDimension = nbVertices * covarianceDimension;
 
-  SparseMatrix augmentedGram(augmentedDimension, augmentedDimension);
-  SquareMatrix elementaryGram(augmentedDimension,
-                              Point(augmentedDimension * augmentedDimension, 1.0 / SpecFunc::Gamma(simplexSize + 2.0))
-                             );
-  for (UnsignedInteger i = 0; i < simplexSize; ++i)
-    for (UnsignedInteger j = 0; j < verticesDim; ++j)
-      elementaryGram(i*verticesDim+j, i*verticesDim+j) *= 2.0;
-  
+  SquareMatrix elementaryGram(simplexSize, Point(simplexSize * simplexSize, 1.0 / SpecFunc::Gamma(simplexSize + 2.0)));
+  for (UnsignedInteger i = 0; i < simplexSize; ++i) elementaryGram(i, i) *= 2.0;
   const Point simplexVolume(mesh.computeSimplicesVolume());
-
+  Point values;
+  Indices rowIndices;
+  Indices columnIndices;
   for (UnsignedInteger i = 0; i < nbSimplices; ++i)
   {
     const Indices simplex(mesh.getSimplex(i));
     const Scalar delta = simplexVolume[i];
 
-    if (delta != 0)
+    if (delta != 0.0)
       for (UnsignedInteger j = 0; j < simplexSize; ++j)
         for (UnsignedInteger k = 0; k < simplexSize; ++k)
-          for (UnsignedInteger l=0; l < covarianceDimension; ++l)
-            augmentedGram(simplex[j]*covarianceDimension+l, simplex[k]*covarianceDimension+l) += delta * elementaryGram(j,k);
+          for (UnsignedInteger l = 0; l < covarianceDimension; ++l)
+          {
+            rowIndices.add(simplex[j] * covarianceDimension + l);
+            columnIndices.add(simplex[k] * covarianceDimension + l);
+            values.add(delta * elementaryGram(j, k));
+          }
   } // Loop over simplices
+  SparseMatrix augmentedGram(augmentedDimension, augmentedDimension, rowIndices, columnIndices, values);
   return augmentedGram;
 }
 
@@ -315,7 +316,7 @@ void KarhunenLoeveP1Algorithm::run()
 
   // Retrieve relevant dimensions and constants
   const UnsignedInteger meshDimension       = mesh_.getDimension();
-  const UnsignedInteger meshSize            = mesh_.getVerticesNumber();    
+  const UnsignedInteger meshSize            = mesh_.getVerticesNumber();
   const UnsignedInteger dimension           = covariance_.getOutputDimension();
   const UnsignedInteger augmentedDimension  = dimension * meshSize;
   const Scalar epsilon = ResourceMap::GetAsScalar("KarhunenLoeveP1Algorithm-RegularizationFactor");
@@ -345,7 +346,7 @@ void KarhunenLoeveP1Algorithm::run()
   // Add epsilon to the diagonal of extended Gram matrix
   if (epsilon > 0.0)
     for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
-      G(i,i) += epsilon;  
+      G(i,i) += epsilon;
 
   if (eigenValuesSolver == "SPECTRA")
   {
@@ -364,9 +365,7 @@ void KarhunenLoeveP1Algorithm::run()
       op = new KLMatProdHMat(C, G);
     }
     else
-    {
       throw InternalException(HERE) << "unknown covariance matrix storage format: " << covarianceMatrixStorage;
-    }
 
     // Define convergence index
     const UnsignedInteger ncv = std::min(3*nev, augmentedDimension);
@@ -387,19 +386,10 @@ void KarhunenLoeveP1Algorithm::run()
     for (UnsignedInteger k=0; k< eigenValues.getSize(); ++k)
       computedVariance += eigenValues[k];
 
-    // Compute cumulatedVariance (i.e. sum of all eigenvalues)
-     if (covarianceMatrixStorage == "LAPACK")
-    {
-      // Here, cumulatedVariance is equal to tr(C * G)
-      SquareMatrix denseG(G.asDenseMatrix().getImplementation());
-      CovarianceMatrix C(op->getC());
-      cumulatedVariance = (C * denseG).computeTrace();
-    }
-    else
-      // Here, cumulatedVariance is estimated from the computed EV, assuming 
-      // that all the following EV are equal to the last one computed
-      cumulatedVariance = computedVariance + (augmentedDimension-eigenValues.getSize())*eigenValues[eigenValues.getSize()-1];
-      LOGDEBUG(OSS(false) << "eigenValues=" << eigenValues);
+    // Here, cumulatedVariance is estimated from the computed EV, assuming
+    // that all the following EV are equal to the last one computed
+    cumulatedVariance = computedVariance + (augmentedDimension-eigenValues.getSize())*eigenValues[eigenValues.getSize()-1];
+    LOGDEBUG(OSS(false) << "eigenValues=" << eigenValues);
   }
   else if (eigenValuesSolver == "LAPACK")
   {
@@ -412,7 +402,7 @@ void KarhunenLoeveP1Algorithm::run()
     // Declare complex eigenvectors variable
     SquareComplexMatrix eigenVectorsComplex;
 
-     // Discretize covariance model
+    // Discretize covariance model
     LOGINFO("Discretize the covariance model");
     CovarianceMatrix C(covariance_.discretize(mesh_.getVertices()));
 

@@ -43,17 +43,17 @@ int main(int, char *[])
   fullprint << "test number one : constructor with size, operator() and string converter" << std::endl;
 
   /* Constructor with size */
-  SparseMatrix matrix1(10, 10);
+  SparseMatrix matrix1(4, 5);
 
   /* Check operator() methods */
-  matrix1(0, 0) = 1. ;
-  matrix1(5, 0) = 2. ;
-  matrix1(0, 2) = 3. ;
-  matrix1(3, 4) = 4. ;
+  matrix1(0, 2) = 5. ;
+  matrix1(1, 0) = 8. ;
+  matrix1(2, 4) = 2. ;
+  matrix1(3, 2) = 9. ;
 
   /* String converter */
   fullprint << "matrix1 = " << matrix1 << std::endl;
-
+  fullprint << "matrix1 as dense = " << matrix1.asDenseMatrix().__str__() << std::endl;
 
   /** TEST NUMBER TWO : COPY CONSTRUCTOR AND STRING CONVERTER */
   fullprint << "test number two : copy constructor and string converter" << std::endl;
@@ -79,29 +79,64 @@ int main(int, char *[])
 
   /* Check transpose method */
   SparseMatrix matrix4 = matrix1.transpose();
-  fullprint << "matrix1 transposed = " << matrix4 << std::endl;
+  fullprint << "matrix1 transposed = " << matrix4.asDenseMatrix().__str__() << std::endl;
 
 
   /** TEST NUMBER FIVE : MULTIPLICATION WITH A POINT METHOD */
   fullprint << "test number ten : multiplication with a point method" << std::endl;
 
   /* Create the point */
-  Point pt(10) ;
-  pt[0] = 1;
-  pt[1] = 0;
-  pt[2] = 3;
-  pt[3] = 4;
-  pt[4] = -5;
-  pt[5] = 6.7;
-  pt[6] = 0;
-  pt[7] = 8;
-  pt[8] = 9.2;
-  pt[9] = 10;
+  Point pt(5);
+  for(int i = 0;i < 5; ++ i)
+    pt[i] = i+1;
   fullprint << "pt = " << pt << std::endl;
 
   /* Check the product method */
   Point ptResult = matrix1.operator * ( pt ) ;
   fullprint << "ptResult = " << ptResult << std::endl;
+
+  /** triplet ctor */
+  Indices rowIndices;
+  Indices columnIndices;
+  Point values;
+
+  rowIndices.add(0);
+  columnIndices.add(2);
+  values.add(5.0);
+
+  rowIndices.add(1);
+  columnIndices.add(0);
+  values.add(8.0);
+
+  rowIndices.add(2);
+  columnIndices.add(4);
+  values.add(2.0);
+
+  rowIndices.add(3);
+  columnIndices.add(2);
+  values.add(9.0);
+
+  SparseMatrix matrix3(4, 5, rowIndices, columnIndices, values);
+  fullprint << "matrix3=" << matrix3 << std::endl;
+  fullprint << "matrix3 as dense = " << matrix3.asDenseMatrix().__str__() << std::endl;
+  fullprint << "ptResult = " << matrix3*pt << std::endl;
+
+  // item accessor
+  Scalar a24 = matrix3(2, 4);
+  fullprint << "matrix3(2, 4)=" << a24 << std::endl;
+  matrix3(2, 4) = 8.0;
+  a24 = matrix3(2, 4);
+  fullprint << "matrix3(2, 4)=" << a24 << std::endl;
+
+  // sum values at duplicate indices
+  rowIndices.add(2);
+  columnIndices.add(4);
+  values.add(2.0);
+
+  SparseMatrix matrix5(4, 5, rowIndices, columnIndices, values);
+  fullprint << "matrix5=" << matrix5 << std::endl;
+  fullprint << "matrix5 as dense = " << matrix5.asDenseMatrix().__str__() << std::endl;
+  fullprint << "ptResult = " << matrix5*pt << std::endl;
 
   return ExitCode::Success;
 }
