@@ -243,9 +243,6 @@ if (NLopt_FOUND)
 ot_check_test (NLopt_std)
 endif ()
 ot_check_test (MultiStart_std)
-if (OPTpp_FOUND)
-ot_check_test (OPTpp_std)
-endif ()
 
 # Solver
 ot_check_test (Bisection_std)

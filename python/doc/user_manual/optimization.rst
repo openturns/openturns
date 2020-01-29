@@ -38,7 +38,6 @@ Optimization solvers
     Ipopt
     MultiStart
     NLopt
-    OPTpp
     SQP
     TNC
 

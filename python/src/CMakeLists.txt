@@ -417,7 +417,6 @@ ot_add_python_module(optim optim_module.i
                       SQP.i SQP_doc.i.in
                       MultiStart.i MultiStart_doc.i.in
                       NLopt.i NLopt_doc.i.in
-                      OPTpp.i OPTpp_doc.i.in
                       LevelSet.i LevelSet_doc.i.in
                       LevelSetMesher.i LevelSetMesher_doc.i.in
                       BaseOptimTemplateDefs.i

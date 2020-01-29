@@ -153,13 +153,6 @@
   <Dlib-DefaultMaxLineSearchIterations  value_int="100"       />
   <Dlib-DefaultMaxSize                  value_int="10"        />
 
-  <!-- OT::OPTpp parameters -->
-  <OPTpp-DefaultLineSearchTolerance                 value_float="1.0e-4" />
-  <OPTpp-DefaultMaximumStep                         value_float="1.0e3" />
-  <OPTpp-DefaultMinimumStep                         value_float="2.0e-16" />
-  <OPTpp-DefaultTrustRegionSize                     value_float="1.0e3" />
-  <OPTpp-DefaultMaximumLineSearchIterationNumber    value_int="5" />
-
   <!-- OT::SolverImplementation parameters -->
   <Solver-DefaultAbsoluteError             value_float="1.0e-5"        />
   <Solver-DefaultRelativeError             value_float="1.0e-5"        />

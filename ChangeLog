@@ -17,6 +17,7 @@
  * Removed deprecated GaussianNonLinearCalibration,NonLinearLeastSquaresCalibration::set,getAlgorithm
  * Removed deprecated MethodOfMomentsFactory::set,getOptimizationProblem
  * ResourceMap::Set* methods no longer add new keys, the new Add* methods must be used instead
+ * Removed OPTpp
 
 === Python module ===
 

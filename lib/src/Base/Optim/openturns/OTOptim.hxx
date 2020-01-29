@@ -41,7 +41,6 @@
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/OptimizationResult.hxx"
-#include "openturns/OPTpp.hxx"
 #include "openturns/SQP.hxx"
 #include "openturns/TNC.hxx"
 
