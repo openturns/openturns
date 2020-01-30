@@ -22,6 +22,7 @@ This is relevant to the `Conda <http://conda.pydata.org/>`_ userland Python pack
 Install the package from `Anaconda.org <https://anaconda.org/conda-forge/openturns>`_::
 
     conda config --add channels conda-forge
+    conda config --set channel_priority strict
     conda install openturns
 
 Alternatively, you can download the `otconda <https://github.com/openturns/otconda>`_ bundle
