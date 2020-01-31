@@ -97,6 +97,10 @@ try:
     print('15: optimization (bonmin)'.ljust(width), end=' ')
     print('OK' if ot.Bonmin.IsAvailable() else 'no')
 
+    # check that ipopt was found
+    print('16: optimization (ipopt)'.ljust(width), end=' ')
+    print('OK' if ot.Ipopt.IsAvailable() else 'no')
+
 except:
     import os
     import traceback

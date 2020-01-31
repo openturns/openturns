@@ -232,7 +232,7 @@ if (dlib_FOUND)
     ot_check_test (Dlib_global IGNOREOUT)
   endif()
 endif()
-if (COIN_Bonmin_FOUND)
+if (Bonmin_FOUND)
   ot_check_test (Bonmin_std IGNOREOUT)
 endif()
 
