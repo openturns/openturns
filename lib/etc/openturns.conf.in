@@ -704,7 +704,7 @@
   <HMatrix-RecompressionEpsilon value_float="1.0e-4"         />
   <HMatrix-ValidationError      value_float="0.0"            />
   <HMatrix-ClusteringAlgorithm  value_str="median"         />
-  <HMatrix-CompressionMethod    value_int="1"    />
+  <HMatrix-CompressionMethod    value_str="AcaRandom"    />
   <HMatrix-MaxLeafSize          value_int="100"  />
   <HMatrix-MaxParallelLeaves    value_int="5000" />
   <HMatrix-ValidationDump       value_int="0"    />
