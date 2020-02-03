@@ -89,12 +89,7 @@ void Bonmin::setAlgorithmName(const String & algoName)
 {
   // Check algoName
   if (!GetAlgorithmNames().contains(algoName))
-  {
-    if (algoName == "B-Ecp")
-      throw InternalException(HERE) << "B-Ecp solver is unavailable.";
-    else
-      throw InvalidArgumentException(HERE) << "Unknown solver " << algoName;
-  }
+    throw InvalidArgumentException(HERE) << "Unknown solver " << algoName;
   algoName_ = algoName;
 }
 
@@ -162,26 +157,26 @@ void Bonmin::run()
   tminlp->setStopCallback(stopCallback_.first, stopCallback_.second);
 
   // Create setup, initialize options
-  BonminSetup bonmin;
-  bonmin.initializeOptionsAndJournalist();
-
-  // Update algorithm name and other user defined options
-  GetOptionsFromResourceMap(bonmin);
-
-  if (ResourceMap::HasKey("Bonmin-bonmin.algorithm") && ResourceMap::GetAsString("Bonmin-bonmin.algorithm") != algoName_)
-    LOGWARN(OSS() << "Algorithm name specified in ResourceMap (" << ResourceMap::GetAsString("Bonmin-bonmin.algorithm") << ") will be ignored");
-  bonmin.options()->SetStringValue("bonmin.algorithm", algoName_);
-
-  if (ResourceMap::HasKey("Bonmin-max_iter") && ResourceMap::GetAsUnsignedInteger("Bonmin-max_iter") != getMaximumIterationNumber())
-    LOGWARN(OSS() << "Maximum iteration number specified in ResourceMap (" << ResourceMap::GetAsUnsignedInteger("Bonmin-max_iter") << ") will be ignored");
-  bonmin.options()->SetIntegerValue("max_iter", getMaximumIterationNumber());
+  BonminSetup app;
+  app.initializeOptionsAndJournalist();
+  app.options()->SetStringValue("bonmin.algorithm", algoName_);
+  app.options()->SetIntegerValue("max_iter", getMaximumIterationNumber());
+  app.options()->SetStringValue("sb", "yes"); // skip ipopt banner
+  app.options()->SetIntegerValue("print_level", 0);
+  app.options()->SetIntegerValue("bonmin.bb_log_level", 0);
+  app.options()->SetIntegerValue("bonmin.nlp_log_level", 0);
+  app.options()->SetIntegerValue("bonmin.lp_log_level", 0);
+  app.options()->SetIntegerValue("bonmin.oa_log_level", 0);
+  app.options()->SetIntegerValue("bonmin.fp_log_level", 0);
+  app.options()->SetIntegerValue("bonmin.milp_log_level", 0);
+  GetOptionsFromResourceMap(app);
 
   // Update setup with BonminProblem
-  bonmin.initialize(GetRawPtr(tminlp));
+  app.initialize(GetRawPtr(tminlp));
 
   // Solve problem
   Bab solver;
-  solver(bonmin);
+  solver(app);
 
   // Retrieve MemoizeFunction input/output history
   Sample inputHistory(tminlp->getInputHistory());
@@ -258,7 +253,7 @@ void Bonmin::run()
   setResult(optimResult);
 
   String allOptions;
-  bonmin.options()->PrintList(allOptions);
+  app.options()->PrintList(allOptions);
   LOGINFO(allOptions);
 
 #else
