@@ -563,7 +563,7 @@ Graph Histogram::drawPDF(const Scalar xMin,
   }
   // Central part of the graph
   Scalar startX = first_;
-  if (indexLeft + shiftFull > 0) startX += cumulatedWidth_[indexLeft + shiftFull];
+  if (shiftFull > 0) startX += cumulatedWidth_[indexLeft];
   for (UnsignedInteger i = indexLeft + shiftFull; i < indexRight; ++i)
   {
     Sample data(4, 2);

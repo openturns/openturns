@@ -140,7 +140,7 @@ rm -rf %{buildroot}
 %config %{_sysconfdir}/%{name}/%{name}.conf
 %{_libdir}/*.so.*
 %dir %{_datadir}/%{name}
-%{_datadir}/gdb/auto-load%{_libdir}/libOT*-gdb.py*
+%{_datadir}/gdb/auto-load/
 
 %files devel
 %defattr(-,root,root,-)
@@ -172,7 +172,7 @@ rm -rf %{buildroot}
 * Mon Apr 9 2018 Julien Schueller <schueller at phimeca dot com> 1.11-1
 - New upstream release
 
-* Mon Oct 11 2017 Julien Schueller <schueller at phimeca dot com> 1.10-1
+* Wed Oct 11 2017 Julien Schueller <schueller at phimeca dot com> 1.10-1
 - New upstream release
 
 * Mon Apr 3 2017 Julien Schueller <schueller at phimeca dot com> 1.9-1

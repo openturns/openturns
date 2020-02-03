@@ -151,7 +151,6 @@ NLopt * NLopt::clone() const
 /* Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
 void NLopt::checkProblem(const OptimizationProblem & problem) const
 {
-#ifdef OPENTURNS_HAVE_NLOPT
   if (problem.hasMultipleObjective())
     throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " does not support multi-objective optimization";
   if (problem.hasResidualFunction())
@@ -170,7 +169,7 @@ void NLopt::checkProblem(const OptimizationProblem & problem) const
         throw InvalidArgumentException(HERE) << "Error: " << getAlgorithmName() << " global algorithm requires finite bounds";
     }
   }
-
+#ifdef OPENTURNS_HAVE_NLOPT
   const UnsignedInteger dimension = problem.getDimension();
   const nlopt::algorithm algo = static_cast<nlopt::algorithm>(GetAlgorithmCode(getAlgorithmName()));
   nlopt::opt opt(algo, dimension);

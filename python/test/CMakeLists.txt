@@ -77,7 +77,7 @@ if (LIBXML2_FOUND)
   ot_pyinstallcheck_test (Object_pickle)
 endif ()
 ot_pyinstallcheck_test (ComparisonOperator_std)
-if (LIBXML2_FOUND)
+if (LIBXML2_FOUND AND SWIG_VERSION VERSION_GREATER 3) # Study_std/py3k: NameError: Unknown C global variable
 ot_pyinstallcheck_test (Study_saveload)
 ot_pyinstallcheck_test (Study_std IGNOREOUT)
 endif ()

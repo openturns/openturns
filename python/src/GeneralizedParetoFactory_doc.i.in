@@ -6,8 +6,16 @@ Available constructor:
 
 Notes
 -----
-OpenTURNS proposes several estimators to build a GeneralizedPareto distribution
+Several estimators are available to build a GeneralizedPareto distribution
 from a scalar sample (see [matthys2003]_ for the theory).
+
+The chosen algorithm depends on the size of the sample compared to the
+:class:`~openturns.ResourceMap` key `GeneralizedParetoFactory-SmallSize`:
+
+- When the size of the sample is small the method of moments is used,
+  with a fallback on the exponential regression method
+- When the size of the sample is large the exponential regression method is used,
+  with a fallback on the moments estimator
 
 **Moments based estimator:**
 
@@ -18,7 +26,7 @@ Lets denote:
 - :math:`\displaystyle s_n^2 = \frac{1}{n-1} \sum_{i=1}^n (x_i - \overline{x}_n)^2`
   its empirical variance.
 
-Then we estimate :math:`(\hat{\sigma}_n, \hat{\xi}_n)` using:
+Then we estimate :math:`(\hat{\sigma}_n, \hat{\xi}_n, \hat{u}_n)` using:
 
 .. math::
     :nowrap:
@@ -26,7 +34,8 @@ Then we estimate :math:`(\hat{\sigma}_n, \hat{\xi}_n)` using:
 
     \begin{eqnarray*}
         \hat{\xi}_n &= \dfrac{1}{2}\left(\dfrac{\overline{x}_n^2}{s_n^2}-1\right) \\
-        \hat{\sigma}_n &= \dfrac{\overline{x}_n}{2}\left(\dfrac{\overline{x}_n^2}{s_n^2}+1\right)
+        \hat{\sigma}_n &= \dfrac{\overline{x}_n}{2}\left(\dfrac{\overline{x}_n^2}{s_n^2}+1\right) \\
+        \hat{u}_n &= x_{(1)} - \frac{x_{(1)}}{2 + n}
     \end{eqnarray*}
 
 This estimator is well-defined only if :math:`\hat{\xi}>-1/4`, otherwise the second moment does not exist.
@@ -39,8 +48,7 @@ Lets denote:
 - :math:`m=\dfrac{1}{n}\sum_{i=1}^n\left(1-\dfrac{i-7/20}{n}\right)x_{(i)}`
 - :math:`\rho=\dfrac{m}{\overline{x}_n}`
 
-Then we estimate :math:`(\hat{\sigma}, \hat{\xi})`
-using:
+Then we estimate :math:`(\hat{\sigma}, \hat{\xi}, \hat{u})` using:
 
 .. math::
     :nowrap:
@@ -48,7 +56,8 @@ using:
 
     \begin{eqnarray*}
         \hat{\xi}_n &= \dfrac{1-4\rho}{1-2\rho} \\
-        \hat{\sigma}_n &= \dfrac{2\overline{x}_n}{1-2\rho}
+        \hat{\sigma}_n &= \dfrac{2\overline{x}_n}{1-2\rho} \\
+        \hat{u}_n &= x_{(1)} - \frac{x_{(1)}}{2 + n}
     \end{eqnarray*}
 
 This estimator is well-defined only if :math:`\hat{\xi}_n>-1/2`, otherwise the first moment does not exist.
@@ -80,14 +89,15 @@ Lets denote:
 
 - :math:`y_{i}=i\log\left(\dfrac{x_{(n-i)}-x_{(1)}}{x_{(n-i-1)}-x_{(1)}}\right)` for :math:`i\in\{1,n-3\}`
 
-Then we estimate :math:`(\hat{\sigma}, \hat{\xi})`
+Then we estimate :math:`(\hat{\sigma}, \hat{\xi}, \hat{u})`
 using:
 
 .. math::
     :label: gpd_exponential_estimator
 
     \hat{\xi} &= \xi^* \\
-    \hat{\sigma} &= \dfrac{2\overline{x}_n}{1-2\rho}
+    \hat{\sigma} &= \dfrac{2\overline{x}_n}{1-2\rho} \\
+    \hat{u} &= x_{(1)} - \frac{x_{(1)}}{2 + n}
 
 Where :math:`\xi^*` maximizes:
 
