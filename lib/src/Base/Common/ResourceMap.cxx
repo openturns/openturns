@@ -1317,7 +1317,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("HMatrix-RecompressionEpsilon", 1.0e-4);
   addAsScalar("HMatrix-ValidationError", 0.0);
   addAsString("HMatrix-ClusteringAlgorithm", "median");
-  addAsUnsignedInteger("HMatrix-CompressionMethod", 1);
+  addAsString("HMatrix-CompressionMethod", "AcaRandom");
   addAsUnsignedInteger("HMatrix-FactorizationIterations", 10);
   addAsUnsignedInteger("HMatrix-LargestEigenValueRelativeIterations", 10);
   addAsUnsignedInteger("HMatrix-MaxLeafSize", 250);

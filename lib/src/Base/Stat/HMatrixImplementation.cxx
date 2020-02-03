@@ -531,14 +531,16 @@ Bool HMatrixImplementation::setKey(const String & name, const String & value)
   hmat_get_parameters(&settings);
   if (name == "compression")
   {
-    if (value == "SVD")
+    if (value == "Svd")
       settings.compressionMethod = hmat_compress_svd;
-    else if (value == "ACAfull")
+    else if (value == "AcaFull")
       settings.compressionMethod = hmat_compress_aca_full;
-    else if (value == "ACApartial")
+    else if (value == "AcaPartial")
       settings.compressionMethod = hmat_compress_aca_partial;
-    else if (value == "ACA+")
+    else if (value == "AcaPlus+")
       settings.compressionMethod = hmat_compress_aca_plus;
+    else if (value == "AcaRandom")
+      settings.compressionMethod = hmat_compress_aca_random;
     else
       LOGWARN( OSS() << "Unknown compression method: " << value << ". Valid values are: SVD, ACAfull, ACApartial or ACA+");
   }

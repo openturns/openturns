@@ -35,30 +35,9 @@ HMatrixParameters::HMatrixParameters()
   , recompressionEpsilon_(ResourceMap::GetAsScalar("HMatrix-RecompressionEpsilon"))
   , admissibilityFactor_(ResourceMap::GetAsScalar("HMatrix-AdmissibilityFactor"))
   , clusteringAlgorithm_(ResourceMap::GetAsString("HMatrix-ClusteringAlgorithm"))
+  , compressionMethod_(ResourceMap::GetAsString("HMatrix-CompressionMethod"))
 {
-  // Convert numerical value into a string
-  const UnsignedInteger resourceCompressionMethod = ResourceMap::GetAsUnsignedInteger("HMatrix-CompressionMethod");
-  switch(resourceCompressionMethod)
-  {
-    case 0:
-      compressionMethod_ = "SVD";
-      break;
-    case 1:
-      compressionMethod_ = "ACA full";
-      break;
-    case 2:
-      compressionMethod_ = "ACA partial";
-      break;
-    case 3:
-      compressionMethod_ = "ACA+";
-      break;
-    case 4:
-      compressionMethod_ = "ACA random";
-      break;
-    default:
-      throw InvalidArgumentException(HERE) << "Unknown compression method: " << resourceCompressionMethod << ", valid choices are: 0 (SVD), 1 (ACA full), 2 (ACA partial), 3 (ACA+) or 4 (ACA random).";
-      break;
-  }
+  // Nothing to do
 }
 
 /* Virtual constructor */
@@ -124,18 +103,18 @@ String HMatrixParameters::getCompressionMethod() const
 
 UnsignedInteger HMatrixParameters::getCompressionMethodAsUnsignedInteger() const
 {
-  if (compressionMethod_ == "SVD")
+  if (compressionMethod_ == "Svd")
     return 0;
-  else if (compressionMethod_ == "ACA full")
+  else if (compressionMethod_ == "AcaFull")
     return 1;
-  else if (compressionMethod_ == "ACA partial")
+  else if (compressionMethod_ == "AcaPartial")
     return 2;
-  else if (compressionMethod_ == "ACA+")
+  else if (compressionMethod_ == "AcaPlus")
     return 3;
-  else if (compressionMethod_ == "ACA random")
+  else if (compressionMethod_ == "AcaRandom")
     return 4;
   else
-    throw InvalidArgumentException(HERE) << "Unknown compression method: " << compressionMethod_ << ", valid choices are: SVD, ACA full, ACA partial, ACA+ or ACA random";
+    throw InvalidArgumentException(HERE) << "Unknown compression method: " << compressionMethod_ << ", valid choices are: Svd, AcaFull, AcaPartial, AcaPlus or AcaRandom";
 }
 
 /* String converter */
