@@ -18,7 +18,7 @@ Parametric spectral density functions
 | This use case illustrates how the User can create a density spectral
   function from parametric models. The library proposes the *Cauchy
   spectral model* as a parametric model for the spectral density
-  fucntion :math:`S`.
+  function :math:`S`.
 
 **The Cauchy spectral model**
 
@@ -32,7 +32,7 @@ Its is associated to the Exponential covariance model. The Cauchy spectral model
 where :math:`\mat{R}`, :math:`\vect{a}` and :math:`\vect{\lambda}`
 are the parameters of the Exponential covariance model defined in
 section [ParamStationaryCovarianceFunction]. The relation
-:eq:`cauchyModel` can be explicited with the spatial covariance function
+:eq:`cauchyModel` can be explained with the spatial covariance function
 :math:`\mat{C}^{spat}(\tau)` defined in :eq:`relRA`.
 
 .. topic:: API:

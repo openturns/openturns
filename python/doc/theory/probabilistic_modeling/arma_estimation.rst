@@ -95,12 +95,12 @@ The Whitle estimation requires that:
 
 -  the determinant of the eigenvalues of the companion matrix
    associated to the polynomial :math:`1 + a_1X + \dots + a_pX^p` are
-   outside the unit disc,, which garantees the stationarity of the
+   outside the unit disc,, which guarantees the stationarity of the
    process;
 
 -  the determinant of the eigenvalues of the companion matrix
    associated to the polynomial :math:`1 + ba_1X + \dots + b_qX^q` are
-   outside the unit disc, which garantees the invertibility of the
+   outside the unit disc, which guarantees the invertibility of the
    process.
 
 **Multivariate estimation**

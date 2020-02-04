@@ -133,7 +133,7 @@ parameters:
   :math:`\delta_{\varepsilon} = \sqrt{1 - 2 \frac{\ln(\varepsilon)}{\beta^2}}- 1`.
 | The test will detect with a probability greater than :math:`(1 - q)`
   any point of :math:`\cD_f` which contribution to :math:`P_f` is not
-  negligeable (i.e. which density value in the :math:`\vect{u}`-space is
+  negligible (i.e. which density value in the :math:`\vect{u}`-space is
   greater than :math:`\varepsilon` times the density value at the design
   point).
 
@@ -166,7 +166,7 @@ Points are described by their coordinates in the :math:`\vect{x}`-space.
 | The parameter :math:`\tau` also serves as a measure of distance from
   the design point :math:`\vect{OP}^*` for a hypothetical local maximum:
   the greater it is, the further we search for another local maximum.
-| Numerical experiments show that it is recommanded to take
+| Numerical experiments show that it is recommended to take
   :math:`\tau \leq 4` (see the given reference below).
 | The following table helps to quantify the parameters of the test for a
   problem of dimension 5.
@@ -263,7 +263,7 @@ trace of the limit state function on the sphere of radius
      state function is reasonably linear in the vicinity of
      :math:`\vect{OP}^*`, which can validate the second hypothesis of
      FORM.
-   | If the behaviour of the limit state function is not linear, we can
+   | If the behavior of the limit state function is not linear, we can
      decide to use an importance sampling version of the Monte Carlo
      method for computing the probability of failure.
      However, the information obtained through the Strong Max Test,

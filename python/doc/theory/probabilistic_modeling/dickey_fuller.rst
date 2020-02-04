@@ -18,7 +18,7 @@ When :math:`a \neq 0` and :math:`b=0`, the model :eq:`DFmodel` is said to have a
 
 In the model :eq:`DFmodel`, the only way to have stochastic non stationarity is to have :math:`\rho = 1` (if :math:`\rho > 1`, then the process diverges with time which is readily seen in the data). In the general case, the Dickey-Fuller test is a unit root test to detect whether :math:`\rho=1` against :math:`\rho < 1`:
 
-The test statistics and its limit distribution depend on the a priori knowledge we have on :math:`a` and :math:`b`. In case of absence of a priori knowledge on the structure of the model, several authors have proposed a global strategy to cover all the subcases of the model :eq:`DFmodel`, depending on the possible values on :math:`a` and :math:`b`. 
+The test statistics and its limit distribution depend on the a priori knowledge we have on :math:`a` and :math:`b`. In case of absence of a priori knowledge on the structure of the model, several authors have proposed a global strategy to cover all the sub-cases of the model :eq:`DFmodel`, depending on the possible values on :math:`a` and :math:`b`. 
 
 The strategy implemented is recommended by Enders (*Applied Econometric Times Series*, Enders, W., second edition, John Wiley \& sons editions, 2004.).
 

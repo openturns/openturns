@@ -10,7 +10,7 @@ Low Discrepancy Sequence
   sequence falling into an arbitrary set B is close to proportional to
   the measure of B, as would happen on average (but not for particular
   samples) in the case of a uniform distribution. Specific definitions
-  of discrepancy differ regarding the choice of B (hyperspheres,
+  of discrepancy differ regarding the choice of B (hyper-spheres,
   hypercubes, etc.) and how the discrepancy for every B is computed
   (usually normalized) and combined (usually by taking the worst value).
 | Low-discrepancy sequences are also called quasi-random or sub-random
@@ -123,7 +123,7 @@ the discrepancy :math:`D^*_N(x_1,\hdots,x_N)`.
 
 where :math:`C` is a certain constant, depending on the sequence.
 These sequences are believed to have the best possible order of
-convergence. See also: van der Corput sequence, Halton sequences,
+convergence. See also: Van der Corput sequence, Halton sequences,
 Sobol sequences. In the case of the Haselgrove sequence, we have:
 
   .. math::
@@ -140,7 +140,7 @@ sequence, but can be interesting for finite sample size.
 | If :math:`\{x_1, \hdots, x_N\}` is a low-discrepancy sequence, then
   :math:`\displaystyle \frac{1}{N} \sum_{i=1}^{N} \delta_{x_i}`
   converges weakly towards :math:`\lambda^s` the :math:`s`-dimensional
-  Lebesgue measure on :math:`[0,1]^s`, which garanties that for all test
+  Lebesgue measure on :math:`[0,1]^s`, which guarantees that for all test
   function (continuous and bounded) :math:`\phi`,
   :math:`\displaystyle <\frac{1}{N} \sum_{i=1}^{N} \delta_{x_i},\phi>`
   converges towards :math:`<\lambda^s, \phi> = \int \phi \, d\lambda^s`.
@@ -174,11 +174,11 @@ the Koksma-Hlawka inequality.
 
 | The low-discrepancy sequences have performances that deteriorate
   rapidly with the problem dimension, as the bound on the discrepancy
-  increases exponentially with the dimension. This behaviour is shared
+  increases exponentially with the dimension. This behavior is shared
   by all the low discrepancy sequences, even if all the standard
-  low-discrepancy sequences don’t exhibit this behaviour with the same
+  low-discrepancy sequences don’t exhibit this behavior with the same
   intensity. According to the given reference, the following
-  recommandation can be made:
+  recommendation can be made:
 
 -  The Sobol can be used for dimensions up to several hundreds (but
    our implementation of the Sobol sequence is limited to

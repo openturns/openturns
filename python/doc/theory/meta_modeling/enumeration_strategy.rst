@@ -203,7 +203,7 @@ Hyperbolic enumeration strategy
   bijection :math:`\tau` defined in the previous paragraph and (2) an
   appropriate increasing sequence :math:`(\lambda_n)_{\Nset}` that tends
   to infinity. Such a sequence can be used to define a specific
-  partition of :math:`\NM` into *stratas* :math:`(\Delta_n)_{\Nset}`.
+  partition of :math:`\NM` into *strata* :math:`(\Delta_n)_{\Nset}`.
   Precisely, the enumeration of the multi-indices is achieved by sorting
   the elements of :math:`\Delta_n` in ascending order of the
   :math:`q`-norm, and then by sorting the possible elements having the
@@ -212,7 +212,7 @@ Hyperbolic enumeration strategy
 | *Partition based on the total degree.* We can simply define the
   sequence :math:`(\lambda_n)_{\Nset}` as the set of natural integers
   :math:`\Nset`. Thus we build up a sequence :math:`(\Delta_n)_{\Nset}`
-  of stratas as follows:
+  of strata as follows:
 
   .. math::
 
@@ -293,7 +293,7 @@ Hyperbolic enumeration strategy
 
   In other words, :math:`\lambda_n` is the infimum of the real numbers
   :math:`\lambda` for which the new front contains only element which do
-  not belong to the former one. Hence the sequence of stratas:
+  not belong to the former one. Hence the sequence of strata:
 
   .. math::
 
@@ -305,7 +305,7 @@ Hyperbolic enumeration strategy
        \right.
 
   Note that this partition of :math:`\NM` is finer than the one based
-  on total degrees, since the cardinality of the stratas is smaller.
+  on total degrees, since the cardinality of the strata is smaller.
 
 Anisotropic hyperbolic enumeration strategy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -332,7 +332,7 @@ Anisotropic hyperbolic enumeration strategy
 
   .. math:: \cA_{\lambda} \, \, = \, \, \{\idx \in \NM \, : \, \alpha_{i^*} \, \leq \lambda \} \quad \quad , \quad \quad i^* \, \, = \, \, \mbox{arg} \min \left\{w_i \; , \; 1\leq i \leq n_X \right\}
 
-  If stratas with larger cardinalities are of interest, one may rather
+  If strata with larger cardinalities are of interest, one may rather
   consider the partial degree of the least significant variable, i.e.
   the one associated with the *greatest* weight :math:`w_i`. To this
   end, the index :math:`i^*` in the previous formula has to be defined

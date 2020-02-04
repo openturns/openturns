@@ -79,7 +79,7 @@ Several classical techniques exist:
    search the smallest integer :math:`k` such that
    :math:`u\leq\sum_{i=0}^kp_i`, where :math:`p_i=\Prob{X=i}`.
 
--  The stable distribution method (archimedean copulas): to be detailed.
+-  The stable distribution method (Archimedean copulas): to be detailed.
 
 -  The conditional CDF inversion (general copula or general multivariate
    distributions): this method is a general procedure to sample a

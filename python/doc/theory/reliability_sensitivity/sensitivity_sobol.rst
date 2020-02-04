@@ -1,9 +1,9 @@
 .. _sensitivity_sobol:
 
-Sensivity analysis using Sobol indices
---------------------------------------
+Sensitivity analysis using Sobol indices
+----------------------------------------
 
-This method deals with analysing the influence the random vector
+This method deals with analyzing the influence the random vector
 :math:`\vect{X} = \left( X^1,\ldots,X^{n_X} \right)` has on a random variable
 :math:`Y^k` which is being studied for uncertainty. Here we attempt to evaluate the
 part of variance of :math:`Y^k` due to the different components :math:`X^i`.
@@ -15,7 +15,7 @@ that is two sets of *N* vectors of dimension :math:`n_X`
 :math:`(x_{11}^{(1)},\ldots,x_{1n_X})^{(1)},\ldots,(x_{N^1}^{(1)},\ldots,x_{Nn_X}^{(1)})`
 and :math:`(x_{11}^{(2)},\ldots,x_{1n_X})^{(2)},\ldots,(x_{N^1}^{(2)},\ldots,x_{Nn_X}^{(2)})`
 
-The estimation of sensivity indices for first order consists in estimating the quantity
+The estimation of sensitivity indices for first order consists in estimating the quantity
 
 .. math::
 

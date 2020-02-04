@@ -1,7 +1,7 @@
 .. _sensitivity_fast:
 
-Sensivity analysis by Fourier decomposition
--------------------------------------------
+Sensitivity analysis by Fourier decomposition
+---------------------------------------------
 
 FAST is a sensitivity analysis method which is based upon the ANOVA
 decomposition of the variance of the model response
@@ -129,7 +129,7 @@ vector of :math:`n_X` independent components.
    portion of :math:`D` arising from the uncertainty of the
    :math:`i^{th}` input. :math:`N` the size of the sample using to
    compute the Fourier series and :math:`M` is the interference factor.
-   Saltelli et al. (1999) recommanded to set :math:`M` to a value in the
+   Saltelli et al. (1999) recommended to set :math:`M` to a value in the
    range :math:`[4, 6]`.
 
    The total order indices are estimated as follows:
