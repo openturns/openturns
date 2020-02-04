@@ -35,12 +35,12 @@ Box Cox transformation
   scalar case (:math:`d`\ =1), using the Taylor development of
   :math:`h: \Rset \rightarrow \Rset` at the mean point of
   :math:`X_{\vect{t}}`.
-| In the mutlivariate case, we estimate the Box Cox transformation
+| In the multivariate case, we estimate the Box Cox transformation
   component by component and we define the multivariate Box Cox
   transformation as the aggregation of the marginal Box Cox
   transformations.
 
-| **Marginal Box Cox tranformation:** 
+| **Marginal Box Cox transformation:** 
 | The first order Taylor development of :math:`h` around
   :math:`\Expect{Y_{\vect{t}}}` writes:
 
@@ -113,7 +113,7 @@ The inverse Box Cox transformation is defined by:
      \end{array}
      \right.
 
-| **Estimation of the Box Cox tranformation:** 
+| **Estimation of the Box Cox transformation:** 
 | The parameter :math:`\lambda` is estimated from a given field of the
   process :math:`X` as follows.
 | The estimation of :math:`\lambda` given below is optimized in the case
@@ -191,7 +191,7 @@ are:
 
 where :math:`C` is a constant.
 
-The parameter :math:`\hat{\lambda}` is the one maximising :math:`\ell(\lambda)` defined in :eq:`lLambda`.
+The parameter :math:`\hat{\lambda}` is the one maximizing :math:`\ell(\lambda)` defined in :eq:`lLambda`.
 
 .. topic:: API:
 

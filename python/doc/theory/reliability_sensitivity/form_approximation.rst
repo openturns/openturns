@@ -89,7 +89,7 @@ The method proceeds in three steps:
      distribution function with zero mean, unit variance and which type
      is :math:`\psi`.
 
-Here, the event considered is explicited directly from the limit state
+Here, the event considered is explained directly from the limit state
 function :math:`g(\vect{X}\,,\,\vect{d})` : this is the classical
 structural reliability formulation.
 However, if the event is a threshold exceedance, it is useful to

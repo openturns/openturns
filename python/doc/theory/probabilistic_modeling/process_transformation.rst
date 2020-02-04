@@ -46,7 +46,7 @@ and the process :math:`X`.
 
 The library enables to directly convert the function
 :math:`f_{trend}` into the vertex-value function :math:`f_{temp}` thanks
-to the *TrendTranform* object which maps :math:`f_{trend}` into the
+to the *TrendTransform* object which maps :math:`f_{trend}` into the
 vertex-value function :math:`f_{temp}`.
 
 Then, the process :math:`Y` is built with the object

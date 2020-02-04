@@ -174,4 +174,4 @@ independent sampling.
 .. topic:: References:
 
     - Robert, C.P. and Casella, G. (2004). *Monte Carlo Statistical Methods* (Second Edition), Springer.
-    - Meyn, S. and Tweedie R.L. (2009). *Markov Chains ans Stochastic Stability* (Second Edition), Cambridge University Press.
+    - Meyn, S. and Tweedie R.L. (2009). *Markov Chains and Stochastic Stability* (Second Edition), Cambridge University Press.

@@ -332,4 +332,4 @@ according to the mirroring technique:
 .. topic:: References:
 
      - *Kernel smoothing*, M.P. Wand and M.C. Jones, Chapman & Hall/CRC edition, ISNB 0-412-55270-1.
-     - *Multivariate Density Estimation, practice and Visualisation, Theory*, David W. Scott, Wiley edition.
+     - *Multivariate Density Estimation, practice and Visualization, Theory*, David W. Scott, Wiley edition.

@@ -16,7 +16,7 @@ Let us limit the case to :math:`n_X = 1`. Thus we denote
 :math:`\vect{X} = X^1 = X`. We also note that as we are considering
 discrete distributions i.e. those for which the possible values of
 :math:`X` belong to a discrete set :math:`\cE`, the candidate
-distribution is characterised by the probabilities
+distribution is characterized by the probabilities
 :math:`\left\{ p(x;\vect{\theta}) \right\}_{x \in \cE}`.
 
 | The chi squared test is based on the fact that if the candidate

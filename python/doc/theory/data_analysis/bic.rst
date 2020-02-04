@@ -24,7 +24,7 @@ denote by :math:`L_i` the maximized likelihood for the model
 By definition of the likelihood, the higher :math:`L_i`, the better the
 model describes the sample. However, using the likelihood as a criterion
 to rank the candidate probability distributions would involve a risk:
-one would almost always favour complex models involving many parameters.
+one would almost always favor complex models involving many parameters.
 If such models provide indeed a large numbers of degrees-of-freedom that
 can be used to fit the sample, one has to keep in mind that complex
 models may be less robust that simpler models with less parameters.
@@ -48,7 +48,7 @@ model will then have a good score only if the gain in terms of
 likelihood is high enough to justify the number of parameters used.
 
 The term “Bayesian Information Criterion” comes the interpretation of
-the quantity :math:`\textrm{BIC}_i`. In a bayesian context, the unknow
+the quantity :math:`\textrm{BIC}_i`. In a bayesian context, the unknown
 “true” model may be seen as a random variable. Suppose now that the user
 does not have any informative prior information on which model is more
 relevant among :math:`\cM_1`,…, :math:`\cM_K`; all the models are thus

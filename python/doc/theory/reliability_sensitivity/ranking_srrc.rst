@@ -3,7 +3,7 @@
 Uncertainty ranking: SRRC
 -------------------------
 
-This method deals with analysing the influence the random vector
+This method deals with analyzing the influence the random vector
 :math:`\vect{X} = \left( X^1,\ldots,X^{n_X} \right)` has on a random
 variable :math:`Y^j` which is being studied for uncertainty. Here we
 attempt to measure monotonic relationships that exist between :math:`Y^j`

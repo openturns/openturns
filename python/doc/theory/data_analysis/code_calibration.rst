@@ -169,7 +169,7 @@ The previous equations are the *normal equations*.
 Notice, however, that the previous linear system of equations is not implemented as is, 
 i.e. we generally do not compute and invert the Gram matrix :math:`J^T J`. 
 Alternatively, various orthogonalization methods such as the QR or the SVD decomposition can 
-be used to solve the linear least squares problem so that potential ill-conditionning 
+be used to solve the linear least squares problem so that potential ill-conditioning 
 of the normal equations is mitigated. 
 
 This estimator can be proved to be the best linear unbiased estimator, the *BLUE*, that is, 
@@ -224,16 +224,16 @@ observations resamples, which, in turn, allow to get a sample of
 An approximate distribution of :math:`\hat{\vect{\theta}}` can then be computed 
 based on kernel smoothing, for example. 
 In order to get a relatively accurate distribution of :math:`\hat{\vect{\theta}}`, the 
-boostrap sample size must be large enough. 
+bootstrap sample size must be large enough. 
 Hence, this method requires to solve a number of optimization problems, which can be 
 time consuming. 
 
 Alternatively, we can linearize the function :math:`\vect{h}` 
-in the neighbourhood of the solution :math:`\hat{\vect{\theta}}` and use the 
+in the neighborhood of the solution :math:`\hat{\vect{\theta}}` and use the 
 gaussian distribution associated with the linear least squares. 
 This method is efficient, but only accurate when the function :math:`\vect{h}` 
 is approximately linear with respect to :math:`\vect{\theta}` in the 
-neighbourhood of :math:`\hat{\vect{\theta}}`. 
+neighborhood of :math:`\hat{\vect{\theta}}`. 
 
 Least squares and minimization of likelihood
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -252,23 +252,23 @@ Indeed, if the distribution of the residuals is gaussian and if the outputs
 are independent, then the least squares estimator is the maximum likelihood estimator, 
 which gives a richer interpretation to the solution. 
 
-Regularization and ill-conditionned problems
+Regularization and ill-conditioned problems
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If a problem is ill-conditionned, a small change in the observations can 
+If a problem is ill-conditioned, a small change in the observations can 
 generate a large change in the estimate :math:`\hat{\vect{\theta}}`. 
-Hence, for problems which are ill-conditionned, calibration methods may include 
+Hence, for problems which are ill-conditioned, calibration methods may include 
 some regularization features. 
 
-An ill-conditionned problem may appear in the particular case where the 
+An ill-conditioned problem may appear in the particular case where the 
 Jacobian matrix :math:`J` is rank-degenerate. 
 For example, suppose that a linear least squares problem is considered, 
-where some linear combinations of the columns of :math:`J` are linearily dependent. 
+where some linear combinations of the columns of :math:`J` are linearly dependent. 
 This implies that there is a linear subspace of the parameter space :math:`\hat{\vect{\theta}}` 
 such that linear combinations of the parameters do not have any 
 impact on the output. 
 In this case, it is not possible to estimate the projection of the solution on that 
-particular subpace. 
+particular subspace. 
 Gaussian calibration is a way of mitigating this situation, by 
 constraining the solution to be *not too far away* from a reference solution, 
 named the *prior*. 

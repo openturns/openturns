@@ -173,7 +173,7 @@ In this example the test validates the hypothesis of a gaussian distribution.
     View(graph)
 
 In this second example, the hypothesis of a gaussian distribution seems
-far less relevant because of the behaviour for small values of
+far less relevant because of the behavior for small values of
 :math:`X`.
 
 **Kendall plot**
@@ -213,7 +213,7 @@ independent and follow :math:`Uniform(0,1)` distributions.
 | Equation :eq:`Wi` is evaluated with the Monte Carlo
   sampling method : it generates :math:`n` samples of size
   :math:`N` from the bivariate copula :math:`C`, in order to have
-  :math:`n` realisations of the statistics
+  :math:`n` realizations of the statistics
   :math:`H_{(i)},\forall 1 \leq i \leq N` and have an estimation of
   :math:`W_i = E[H_{(i)}], \forall i \leq N`.
 

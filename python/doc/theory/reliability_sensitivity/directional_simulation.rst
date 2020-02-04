@@ -56,7 +56,7 @@ dimension 2.
 The Central Limit Theorem enables the difference between the estimated
 value and the sought value to be controlled by means of a confidence
 interval (if N is sufficiently large, typically :math:`N` > a few dozens
-even if there is now way to say for sure if the asymptotic behaviour is
+even if there is now way to say for sure if the asymptotic behavior is
 reached). For a probability :math:`\alpha` strictly between 0 and 1
 chosen by the user, one can, for example, be sure with a confidence
 :math:`\alpha`, that the true value of :math:`P_f` is between
