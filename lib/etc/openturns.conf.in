@@ -194,7 +194,7 @@
 
   <!-- OT::KarhunenLoeveP1Algorithm parameters -->
   <KarhunenLoeveP1Algorithm-RegularizationFactor value_float="0.0" />
-  <KarhunenLoeveP1Algorithm-CovarianceMatrixStorage value_str="LAPACK" />
+  <KarhunenLoeveP1Algorithm-CovarianceMatrixStorage value_str="DENSE" />
   <KarhunenLoeveP1Algorithm-EigenvaluesSolver value_str="LAPACK" />
 
   <!-- OT::AdaptiveStieltjesAlgorithm parameters -->

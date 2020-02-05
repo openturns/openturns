@@ -354,7 +354,7 @@ void KarhunenLoeveP1Algorithm::run()
     LOGINFO("Discretize the covariance model");
     Pointer<KLGenMatProd> op;
 
-    if (covarianceMatrixStorage == "LAPACK")
+    if (covarianceMatrixStorage == "DENSE")
     {
       CovarianceMatrix C(covariance_.discretize(mesh_.getVertices()));
       op = new KLMatProdLapack(C, G);
@@ -396,7 +396,7 @@ void KarhunenLoeveP1Algorithm::run()
     // LAPACK cannot solve EV problem based on HMatrix
      if (covarianceMatrixStorage == "HMAT")
        throw NotYetImplementedException(HERE) << "LAPACK cannot solve EV problem based on HMAT matrix storage";
-     else if (covarianceMatrixStorage != "LAPACK")
+     else if (covarianceMatrixStorage != "DENSE")
        throw InternalException(HERE) << "unknown covariance matrix storage format: " << covarianceMatrixStorage;
 
     // Declare complex eigenvectors variable
