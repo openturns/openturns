@@ -80,7 +80,7 @@ FieldFunction(const FieldFunction & other) { return new OT::FieldFunction( other
 import openturns.geom
 
 class OpenTURNSPythonFieldFunction(object):
-    """
+    r"""
     Override FieldFunction from Python.
 
     Parameters
@@ -193,7 +193,7 @@ class OpenTURNSPythonFieldFunction(object):
         return self._exec_sample([X])[0]
 
 class PythonFieldFunction(FieldFunction):
-    """
+    r"""
     Override FieldFunction from Python.
 
     Parameters
