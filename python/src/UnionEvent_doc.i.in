@@ -1,5 +1,5 @@
 %feature("docstring") OT::UnionEvent
-"Event defined as the intersection of several events.
+"Event defined as the union of several events.
 
 An occurence of one single event :math:`E_i` yields the occurence of the system event (series system):
 
