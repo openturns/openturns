@@ -20,7 +20,7 @@ Its probability density function is defined as:
     \Prob{X = k} = C_n^k p^k (1-p)^{n-k},
                    \quad \forall k \in \{0, \ldots, n\}
 
-with :math:`n \in \Nset` and :math:`0 \leq p \leq 1`. It is evaluated using  Loader's algorithm, the *fast* and *accurate* method described in [loader2000]_, with the further improvements mentioned in [dimitriadis2016]_, see :meth:`~openturns.DistFunc.dBinomial`.
+with :math:`n \in \Nset` and :math:`0 \leq p \leq 1`. It is evaluated using  Loader's algorithm, the *fast* and *accurate* method described in [loader2000]_, with the further improvements mentioned in [dimitriadis2016]_, see :meth:`~openturns.DistFunc_dBinomial`.
 
 Its first moments are:
 
@@ -32,7 +32,7 @@ Its first moments are:
         \Var{X} & = & n\,p\,(1-p)
     \end{eqnarray*}
 
-The sampling is done using the rejection algorithm described in [hormann1993]_, see :meth:`~openturns.DistFunc.rBinomial`.
+The sampling is done using the rejection algorithm described in [hormann1993]_, see :meth:`~openturns.DistFunc_rBinomial`.
     
 See Also
 --------

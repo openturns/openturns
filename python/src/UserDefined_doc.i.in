@@ -37,7 +37,7 @@ Its first moments are:
 
 with :math:`j =1, \ldots, d` and `d` the distribution's dimension.
 
-The sampling is done using the *alias* method as described in [devroye1986]_, Chapter 3. It has an optimal space complexity of :math:`\cO(n)` and runtime CPU complexity of :math:`\cO(1)`, see :meth:`~openturns.DistFunc.rDiscrete`.
+The sampling is done using the *alias* method as described in [devroye1986]_, Chapter 3. It has an optimal space complexity of :math:`\cO(n)` and runtime CPU complexity of :math:`\cO(1)`, see :meth:`~openturns.DistFunc_rDiscrete`.
 
 Examples
 --------
