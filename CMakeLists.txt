@@ -199,7 +199,7 @@ if (USE_EXPRTK)
 endif ()
 
 if (USE_HMAT)
-  find_package (HMAT 1.2 NO_MODULE)
+  find_package (HMAT 1.6 NO_MODULE)
 endif ()
 if (HMAT_FOUND)
   set (OPENTURNS_HAVE_HMAT TRUE)
