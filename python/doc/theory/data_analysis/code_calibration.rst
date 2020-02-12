@@ -154,7 +154,7 @@ The corresponding linear least squares problem is:
 .. math::
 
    \begin{aligned}
-       \hat{\vect{\theta}} = \argmin_{\vect{\theta} \in \Rset^{d_h}} \frac{1}{2} \|\vect{y} - \vect{h}(\vect{\mu}) + J (\vect{\theta} - \vect{\mu})\|^2.
+       \hat{\vect{\theta}} = \argmin_{\vect{\theta} \in \Rset^{d_h}} \frac{1}{2} \|\vect{y} - \vect{h}(\vect{\mu}) - J (\vect{\theta} - \vect{\mu})\|^2.
    \end{aligned}
 
 The Gauss-Markov theorem applied to this problem states that the solution is:
