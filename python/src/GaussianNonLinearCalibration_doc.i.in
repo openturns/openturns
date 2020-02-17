@@ -34,7 +34,7 @@ The prior distribution of the parameter is a :class:`~openturns.Normal`.
 The posterior distribution of the parameter is :class:`~openturns.Normal`. 
 By default, the posterior distribution is evaluated based on a linear approximation 
 of the model at the optimum. 
-This corresponds to using the :class:`~openturns.GaussianLinearLeastSquaresCalibration` at the optimum, 
+This corresponds to using the :class:`~openturns.GaussianLinearCalibration` at the optimum,
 and is named *Laplace approximation* in the bayesian context. 
 However, if the key `GaussianNonLinearCalibration-BootstrapSize` in the :class:`~openturns.ResourceMap` 
 is set to a nonzero positive integer, then a bootstrap resampling of the observations 
