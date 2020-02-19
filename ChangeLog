@@ -20,6 +20,7 @@
 === Python module ===
 
 === Miscellaneous ===
+ * Add Sample::getMarginal(Description)
 
 === Bug fixes ===
  * #1213 (The legend of the graphics in MetaModelValidation is wrong)

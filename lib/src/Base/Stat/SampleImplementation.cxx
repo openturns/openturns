@@ -2227,7 +2227,7 @@ SampleImplementation SampleImplementation::getMarginal(const UnsignedInteger ind
   return marginalSample;
 }
 
-/* Get the marginal sample corresponding to indices dimensions */
+/* Get the marginal by indices */
 SampleImplementation SampleImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(dimension_)) throw InvalidArgumentException(HERE) << "The indices of a marginal sample must be in the range [0, dim-1] and must be different";
@@ -2259,6 +2259,20 @@ SampleImplementation SampleImplementation::getMarginal(const Indices & indices) 
   }
 
   return marginalSample;
+}
+
+/* Get the marginal by identifiers */
+SampleImplementation SampleImplementation::getMarginal(const Description & description) const
+{
+  Indices indices;
+  for (UnsignedInteger i = 0; i < description.getSize(); ++ i)
+  {
+    const UnsignedInteger index = getDescription().find(description[i]);
+    if (index >= getDimension())
+      throw InvalidArgumentException(HERE) << "Marginal " << description[i] << " not found";
+    indices.add(index);
+  }
+  return getMarginal(indices);
 }
 
 /* Select points as a sample */

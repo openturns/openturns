@@ -339,8 +339,11 @@ public:
   /** Get the i-th marginal sample */
   Sample getMarginal(const UnsignedInteger index) const;
 
-  /** Get the marginal sample corresponding to indices dimensions */
+  /** Get the marginal sample by indices */
   Sample getMarginal(const Indices & indices) const;
+
+  /** Get the marginal sample by identifiers */
+  Sample getMarginal(const Description & description) const;
 
   /** Select points in the sample */
   Sample select(const UnsignedIntegerCollection & indices) const;

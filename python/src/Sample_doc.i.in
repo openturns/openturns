@@ -856,8 +856,9 @@ n : int
 
 Parameters
 ----------
-indices : int or sequence of int, :math:`0 \leq i < n`
-    The index(es) of the wanted marginal(s).
+indices : int, sequence of int, :math:`0 \leq i < n` or sequence of str
+    The identifiers of the wanted marginal(s).
+    When the description contains duplicate labels, the first marginal is picked up.
 
 Returns
 -------

@@ -762,10 +762,16 @@ Sample Sample::getMarginal(const UnsignedInteger index) const
   return getImplementation()->getMarginal(index);
 }
 
-/* Get the marginal sample corresponding to indices dimensions */
+/* Get the marginal sample by indices */
 Sample Sample::getMarginal(const Indices & indices) const
 {
   return getImplementation()->getMarginal(indices);
+}
+
+/* Get the marginal sample by identifiers */
+Sample Sample::getMarginal(const Description & description) const
+{
+  return getImplementation()->getMarginal(description);
 }
 
 /* Select points as a sample */
