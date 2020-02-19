@@ -273,16 +273,21 @@ void computeEVWithSpectra(const UnsignedInteger augmentedDimension,
   if(solver.info() != Spectra::SUCCESSFUL)
     throw InternalException(HERE) << "Error while computing the eigenvalues (nev=" << nev << ", ncv=" << ncv << ", solver.info()=" << solver.info() << ")";
 
-  LOGINFO("Post-process the eigenvalue problem");  
+  LOGINFO("Post-process the eigenvalue problem");
 
   Eigen::VectorXd eigenValuesEigen = solver.eigenvalues().real();
   Eigen::MatrixXd eigenVectorsEigen = solver.eigenvectors().real();
 
   // Post-process eigenvalues and eigenvectors
-  std::copy(eigenValuesEigen.data(),eigenValuesEigen.data()+nev,eigenvalues.begin());
-  std::copy(eigenVectorsEigen.data(),eigenVectorsEigen.data()+nev*augmentedDimension,&eigenvectors(0,0));
-
+  std::copy(eigenValuesEigen.data(), eigenValuesEigen.data() + nev, eigenvalues.begin());
+  std::copy(eigenVectorsEigen.data(), eigenVectorsEigen.data() + nev * augmentedDimension, &eigenvectors(0,0));
 #else
+  (void)augmentedDimension;
+  (void)nev;
+  (void)ncv;
+  (void)op;
+  (void)eigenvalues;
+  (void)eigenvectors;
   throw InternalException(HERE) << "SPECTRA is not available";
 #endif
 }
