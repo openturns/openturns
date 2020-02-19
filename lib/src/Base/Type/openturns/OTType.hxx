@@ -32,6 +32,7 @@
 #include "openturns/IndicesCollection.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/MatrixImplementation.hxx"
+#include "openturns/SparseMatrix.hxx"
 #include "openturns/Mesh.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/PointWithDescription.hxx"

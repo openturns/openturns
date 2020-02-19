@@ -30,6 +30,7 @@ option (USE_DLIB                     "Use dlib for additional optimization algor
 option (USE_OPTPP                    "Use OPT++ for additional optimization algorithms"                      ON)
 option (USE_COTIRE                   "Use cotire for unity builds"                                           OFF)
 option (USE_BONMIN                   "Use Bonmin for MINLP problems"                                         ON)
+option (USE_SPECTRA                  "Use Spectra for eigenvalues computation"                               ON)
 
 option (BUILD_PYTHON                 "Build the python module for the library"                               ON)
 option (BUILD_SHARED_LIBS            "Build shared libraries"                                                ON)
@@ -146,6 +147,13 @@ if (NOT DEFINED LAPACK_LIBRARIES)
 endif ()
 list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${LAPACK_LIBRARIES})
 
+if (USE_SPECTRA)
+  find_package (Spectra)
+endif ()
+if (Spectra_FOUND)
+  set (OPENTURNS_HAVE_SPECTRA TRUE)
+  list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${SPECTRA_INCLUDE_DIRS})
+endif()
 
 if (USE_BISON)
   find_package (BISON 2.4)

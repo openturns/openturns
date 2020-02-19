@@ -38,14 +38,15 @@ class OT_API KarhunenLoeveP1Algorithm
   CLASSNAME
 
 public:
-
+  
   /** Default constructor without parameters */
   KarhunenLoeveP1Algorithm();
 
-  /** Default constructor without parameters */
-  KarhunenLoeveP1Algorithm(const Mesh & mesh,
-                           const CovarianceModel & covariance,
-                           const Scalar threshold = 0.0);
+  /** Constructor with parameters */
+  KarhunenLoeveP1Algorithm( const Mesh & mesh,
+                            const CovarianceModel & covariance,
+                            const Scalar threshold = 0.0
+                          );
 
   /** Virtual copy constructor */
   virtual KarhunenLoeveP1Algorithm * clone() const;
@@ -56,10 +57,10 @@ public:
    * where C is a given covariance model, using P1 approximation
    */
   void run();
-
+  
   /** Mesh accessor */
   Mesh getMesh() const;
-
+  
   /** String converter */
   virtual String __repr__() const;
 

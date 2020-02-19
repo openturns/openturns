@@ -1,0 +1,41 @@
+test number zero : default constructor and string converter
+matrix0 = class=SparseMatrix rows=0 columns=0
+test number one : constructor with size, operator() and string converter
+matrix1 = class=SparseMatrix rows=4 columns=5
+matrix1 as dense = 4x5
+[[ 0 0 5 0 0 ]
+ [ 8 0 0 0 0 ]
+ [ 0 0 0 0 2 ]
+ [ 0 0 9 0 0 ]]
+test number two : copy constructor and string converter
+matrix2 = class=SparseMatrix rows=4 columns=5
+test number three : get dimensions methods
+matrix1's nbRows = 4
+matrix1's nbColumns = 5
+matrix1's nbNonZeros = 4
+test number six : transposition method
+matrix1 transposed = 5x4
+[[ 0 8 0 0 ]
+ [ 0 0 0 0 ]
+ [ 5 0 0 9 ]
+ [ 0 0 0 0 ]
+ [ 0 0 2 0 ]]
+test number ten : multiplication with a point method
+pt = class=Point name=Unnamed dimension=5 values=[1,2,3,4,5]
+ptResult = class=Point name=Unnamed dimension=4 values=[15,8,10,27]
+matrix3=class=SparseMatrix rows=4 columns=5
+matrix3 as dense = 4x5
+[[ 0 0 5 0 0 ]
+ [ 8 0 0 0 0 ]
+ [ 0 0 0 0 2 ]
+ [ 0 0 9 0 0 ]]
+ptResult = class=Point name=Unnamed dimension=4 values=[15,8,10,27]
+matrix3(2, 4)=2
+matrix3(2, 4)=8
+matrix5=class=SparseMatrix rows=4 columns=5
+matrix5 as dense = 4x5
+[[ 0 0 5 0 0 ]
+ [ 8 0 0 0 0 ]
+ [ 0 0 0 0 4 ]
+ [ 0 0 9 0 0 ]]
+ptResult = class=Point name=Unnamed dimension=4 values=[15,8,20,27]
