@@ -164,3 +164,4 @@ with automatic boundaries correction, pdf(left)=0.521461 , pdf(right)=0.505805
 with user defined lower/automatic upper boundaries correction, pdf(left)=0.506608 , pdf(right)=0.505805
 with automatic lower/user defined upper boundaries correction, pdf(left)=0.521461 , pdf(right)=0.504241
 with user defined boundaries correction, pdf(left)=0.506608 , pdf(right)=0.504241
+['KernelMixture', 'Dirac']

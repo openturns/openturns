@@ -30,6 +30,7 @@
  * #1349 (Problem in the graph of Histogram)
  * #1351 (Text has a zero size)
  * #1354 (The doc of GeneralizedParetoFactory does not reflect the implementation)
+ * #1377 (The `setKnownParameter` method is not compatible with `buildEstimator`)
  * #1378 (Kriging-related covariance model weirdness)
 
 == 1.14 release (2019-11-13) == #release-1.14

@@ -31,6 +31,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/ComposedDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -248,16 +249,30 @@ Distribution KernelSmoothing::build(const Sample & sample,
 {
   const UnsignedInteger dimension = sample.getDimension();
   if (bandwidth.getDimension() != dimension) throw InvalidDimensionException(HERE) << "Error: the given bandwidth must have the same dimension as the given sample, here bandwidth dimension=" << bandwidth.getDimension() << " and sample dimension=" << dimension;
+
+  // Check the degenerate case of constant sample
   const Point xmin(sample.getMin());
   const Point xmax(sample.getMax());
-  // Check the degenerate case of constant sample
-  if (xmin == xmax)
+  Bool degenerate = false;
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
+    if (xmin[j] == xmax[j])
+      degenerate = true;
+  if (degenerate)
   {
+    ComposedDistribution::DistributionCollection coll(dimension);
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
+    {
+      if (xmax[j] > xmin[j])
+        coll[j] = build(sample.getMarginal(j), Point(1, bandwidth[j]));
+      else
+        coll[j] = Dirac(xmin[j]);
+    }
+    ComposedDistribution result(coll);
+    result.setDescription(sample.getDescription());
     bandwidth_ = bandwidth;
-    KernelSmoothing::Implementation result(new Dirac(xmin));
-    result->setDescription(sample.getDescription());
     return result;
   }
+
   // Check if we have to perform boundary correction
   // In this case, call buildAsTruncatedDistribution(). It will take
   // care of the other sub-cases
