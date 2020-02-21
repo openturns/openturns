@@ -27,6 +27,12 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(KarhunenLoeveAlgorithm)
 
+/* Default constructor */
+KarhunenLoeveAlgorithm::KarhunenLoeveAlgorithm()
+  : TypedInterfaceObject<KarhunenLoeveAlgorithmImplementation>(new KarhunenLoeveAlgorithmImplementation)
+{
+  // Nothing to do
+}
 
 /* Constructor from implementation */
 KarhunenLoeveAlgorithm::KarhunenLoeveAlgorithm(const KarhunenLoeveAlgorithmImplementation & implementation)

@@ -40,6 +40,9 @@ public:
 
   typedef TypedInterfaceObject<KarhunenLoeveAlgorithmImplementation>::Implementation Implementation;
 
+  /** Default constructor */
+  KarhunenLoeveAlgorithm();
+
   /** Constructor from implementation */
   KarhunenLoeveAlgorithm(const KarhunenLoeveAlgorithmImplementation & implementation);
 

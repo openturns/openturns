@@ -27,6 +27,12 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(ApproximationAlgorithm)
 
+/* Default constructor */
+ApproximationAlgorithm::ApproximationAlgorithm()
+  : TypedInterfaceObject<ApproximationAlgorithmImplementation>(new ApproximationAlgorithmImplementation)
+{
+  // Nothing to do
+}
 
 /* Constructor from implementation */
 ApproximationAlgorithm::ApproximationAlgorithm(const ApproximationAlgorithmImplementation & implementation)

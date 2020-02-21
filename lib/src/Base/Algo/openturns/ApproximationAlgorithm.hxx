@@ -42,6 +42,9 @@ public:
 
   typedef TypedInterfaceObject<ApproximationAlgorithmImplementation>::Implementation Implementation;
 
+  /** Default constructor */
+  ApproximationAlgorithm();
+
   /** Constructor from implementation */
   ApproximationAlgorithm(const ApproximationAlgorithmImplementation & implementation);
 
