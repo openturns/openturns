@@ -181,6 +181,7 @@ void MultiStart::save(Advocate & adv) const
   OptimizationAlgorithmImplementation::save(adv);
   adv.saveAttribute("solver_", solver_);
   adv.saveAttribute("startingPoints_", startingPoints_);
+  adv.saveAttribute("resultCollection_", resultCollection_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -189,6 +190,7 @@ void MultiStart::load(Advocate & adv)
   OptimizationAlgorithmImplementation::load(adv);
   adv.loadAttribute("solver_", solver_);
   adv.loadAttribute("startingPoints_", startingPoints_);
+  adv.loadAttribute("resultCollection_", resultCollection_);
 }
 
 END_NAMESPACE_OPENTURNS
