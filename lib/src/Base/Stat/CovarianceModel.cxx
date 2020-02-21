@@ -278,6 +278,7 @@ Indices CovarianceModel::getActiveParameter() const
 /* setter for the full parameter */
 void CovarianceModel::setFullParameter(const Point & parameter)
 {
+  copyOnWrite();
   getImplementation()->setFullParameter(parameter);
 }
 
