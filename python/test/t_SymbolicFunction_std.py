@@ -190,3 +190,7 @@ print(f, ", f([-1]) is normal?", ot.SpecFunc.IsNormal(f([-1.0])[0]))
 f = ot.SymbolicFunction(['t'], ['(t*3)^(-1)'])
 t = [2.0]
 print(f.gradient(t))
+
+# case-sensitivity
+g = ot.SymbolicFunction(["D", "d"], ["D-d"])
+assert g([5, 4])[0] == 1.0, "case sensitivity"
