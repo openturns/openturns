@@ -22,6 +22,8 @@
 #include "openturns/SymbolicParserExprTk.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+
+#define exprtk_disable_caseinsensitivity
 #include "openturns/exprtk.hpp"
 
 BEGIN_NAMESPACE_OPENTURNS

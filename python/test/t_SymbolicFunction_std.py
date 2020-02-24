@@ -196,3 +196,7 @@ try:
     f([3])
 except Exception:
     print('OK')
+
+# case-sensitivity
+g = ot.SymbolicFunction(["D", "d"], ["D-d"])
+assert g([5, 4])[0] == 1.0, "case sensitivity"
