@@ -231,6 +231,12 @@ int main(int, char *[])
       fullprint << "result=" << result << std::endl;
       fullprint << "cdf(-1.0)=" << result.computeCDF(-1.0) << std::endl;
     }
+    // Bug when there is a single atom after simplification:
+    // the nonzero constants were not taken into account
+    {
+      result = Poisson(5.0) + 1.0;
+      fullprint << "result=" << result << std::endl;
+    }
   }
   catch (TestFailed & ex)
   {

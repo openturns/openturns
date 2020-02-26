@@ -181,3 +181,11 @@ print(-x)
 # simplification of sum
 x = -ot.Exponential() - ot.Exponential()
 print(x)
+
+# take into account the weight and the constant in simplification
+x = 2*(-ot.Exponential() - ot.Exponential())
+print(x)
+x = 2*(-ot.Exponential() - ot.Exponential()) + 1.0
+print(x)
+x = ot.Poisson(5.0) + 1.0
+print(x)
