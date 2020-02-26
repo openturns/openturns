@@ -387,7 +387,6 @@ class PythonFunction(Function):
         instance = OpenTURNSPythonFunction(n, p)
         if copy:
             instance._discard_openturns_memoryview = True
-        import collections
 
         if n_cpus is not None:
             if not isinstance(n_cpus, int):
@@ -399,7 +398,7 @@ class PythonFunction(Function):
                 n_cpus = None
 
         if func is not None:
-            if not isinstance(func, collections.Callable):
+            if not callable(func):
                 raise RuntimeError('func argument is not callable.')
             instance._exec = func
         else:
@@ -419,11 +418,11 @@ class PythonFunction(Function):
                 instance._has_exec_sample = True
 
         if gradient is not None:
-            if not isinstance(gradient, collections.Callable):
+            if not callable(gradient):
                 raise RuntimeError('gradient argument is not callable.')
             instance._gradient = gradient
         if hessian is not None:
-            if not isinstance(hessian, collections.Callable):
+            if not callable(hessian):
                 raise RuntimeError('hessian argument is not callable.')
             instance._hessian = hessian 
             
