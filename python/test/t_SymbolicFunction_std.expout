@@ -195,3 +195,4 @@ OK
 [x]->[sqrt(x)] , f([-1]) not defined
 [x]->[sqrt(x)] , f([-1]) is normal? False
 [[ -0.0833332 ]]
+OK
