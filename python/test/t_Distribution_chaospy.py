@@ -18,7 +18,7 @@ for chaospy_dist in [d0, d1, d2]:
 
     print('distribution=', distribution)
     print('realization=', distribution.getRealization())
-    sample = distribution.getSample(10)
+    sample = distribution.getSample(10000)
     print('sample=', sample[0:5])
     point = [2.6]*distribution.getDimension()
     print('pdf= %.6g' % distribution.computePDF(point))
@@ -32,6 +32,9 @@ for chaospy_dist in [d0, d1, d2]:
     print('skewness(sampling)=', sample.computeSkewness())
     print('kurtosis=', distribution.getKurtosis())
     print('kurtosis(sampling)=', sample.computeKurtosis())
+    if len(chaospy_dist) == 1:
+        for i in [1, 2, 3, 4]:
+            print('moment('+str(i)+')=', distribution.getMoment(i))
     print('range=', distribution.getRange())
     if len(chaospy_dist) == 1:
         print('quantile=', distribution.computeQuantile(cdf))
