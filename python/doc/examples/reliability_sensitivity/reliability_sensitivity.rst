@@ -68,4 +68,6 @@ Design of experiments
     mixed_design.ipynb
     optimal_lhs.ipynb
     design_of_experiment_continuous_discrete.ipynb
+    design_of_experiments.ipynb
+    plot_design.ipynb
 

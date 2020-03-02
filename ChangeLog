@@ -55,6 +55,7 @@
  * #1354 (The doc of GeneralizedParetoFactory does not reflect the implementation)
  * #1371 (Memory leak in ot.TruncatedDistribution)
  * #1372 (wrap MultiStart::OptimizationResultCollection)
+ * #1376 (The View class has no example)
  * #1378 (Kriging-related covariance model weirdness)
  * #1384 (The ExprTk engine is not case-sensitive)
  * #1388 (Kolmogorov fails on a PythonDistribution)
