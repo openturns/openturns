@@ -15,9 +15,9 @@
    version="1.1"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
    sodipodi:docname="flooding_section_detail.svg"
-   inkscape:export-filename="/home/osboxes/GIT/openturns-examples/openturns/python/doc/examples/reliability_sensitivity/flooding_section_detail.png"
-   inkscape:export-xdpi="150.59033"
-   inkscape:export-ydpi="150.59033">
+   inkscape:export-filename="flooding_section_detail.png"
+   inkscape:export-xdpi="100.30759"
+   inkscape:export-ydpi="100.30759">
   <defs
      id="defs4">
     <marker
@@ -323,8 +323,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
-     inkscape:cx="119.7051"
-     inkscape:cy="165.82451"
+     inkscape:cx="28.791372"
+     inkscape:cy="163.8042"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
