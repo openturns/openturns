@@ -849,8 +849,10 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
       }
       return sample;
     }
+    else if (shape.getSize() == 1)
+      throw InvalidArgumentException(HERE) << "Invalid array dimension 1 is ambiguous, please set the dimension explicitly";
     else
-      throw InvalidArgumentException(HERE) << "Invalid array dimension: " << shape.getSize();
+      throw InvalidArgumentException(HERE) << "Invalid array dimension: " << shape.getSize() << " is greater than 2";
   }
   check<_PySequence_>(pyObj);
   ScopedPyObjectPointer newPyObj(PySequence_Fast(pyObj, ""));
