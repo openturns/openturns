@@ -586,7 +586,7 @@ class View(object):
         """
         Display the graph.
 
-        See http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure.show
+        See https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure.show
 
         Examples
         --------
@@ -632,7 +632,7 @@ class View(object):
             A string containing a path to a filename from which file format is deduced.
 
         kwargs:
-            Refer to matplotlib.figure.Figure.savefig documentation for valid keyword arguments.
+            See https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure.savefig documentation for valid keyword arguments.
         
         Examples
         --------
@@ -648,7 +648,7 @@ class View(object):
         """
         Accessor to the underlying figure object.
 
-        Refer to matplotlib.figure.Figure for further information.
+        See https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure for further information.
         
         Examples
         --------
@@ -665,7 +665,7 @@ class View(object):
         """
         Get the list of Axes objects.
 
-        Refer to matplotlib.axes.Axes for further information.
+        See https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes for further information.
         
         Examples
         --------
