@@ -49,7 +49,4 @@ Graphical visualisation object
     :template: function.rst_t
     viewer.PlotDesign
     viewer.ToImageString
-    viewer.CheckDict
-    viewer.ToUnicode
-    viewer.ShowAll
 
