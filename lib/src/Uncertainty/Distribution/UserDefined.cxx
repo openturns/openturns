@@ -734,7 +734,7 @@ Bool UserDefined::hasEllipticalCopula() const
 /* Tell if the distribution has independent copula */
 Bool UserDefined::hasIndependentCopula() const
 {
-  return points_.getSize() == 1;
+  return (dimension_ == 1) || (points_.getSize() == 1);
 }
 
 

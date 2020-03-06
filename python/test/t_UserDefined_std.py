@@ -18,6 +18,9 @@ print("Elliptical = ", distribution.isElliptical())
 # Is this distribution continuous ?
 print("Continuous = ", distribution.isContinuous())
 
+# Has this distribution an independent copula ?
+print("Has independent copula = ", distribution.hasIndependentCopula())
+
 # Test for realization of distribution
 oneRealization = distribution.getRealization()
 print("oneRealization=", repr(oneRealization))
@@ -60,6 +63,10 @@ for i in range(4):
 
 multivariateUserDefined = ot.UserDefined(sample)
 print("Multivariate UserDefined=", multivariateUserDefined)
+
+# Has this distribution an independent copula ?
+print("Has independent copula = ", multivariateUserDefined.hasIndependentCopula())
+
 print("Marginal 0=", multivariateUserDefined.getMarginal(0))
 indices = ot.Indices(2)
 indices[0] = 2
