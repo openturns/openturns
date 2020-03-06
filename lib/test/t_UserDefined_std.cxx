@@ -52,6 +52,9 @@ int main(int, char *[])
     // Is this distribution continuous ?
     fullprint << "Continuous = " << (distribution.isContinuous() ? "true" : "false") << std::endl;
 
+    // Has the distribution an independent copula ?
+    fullprint << "Independent copula = " << (distribution.hasIndependentCopula() ? "true" : "false") << std::endl;
+
     // Test for realization of distribution
     Point oneRealization = distribution.getRealization();
     fullprint << "oneRealization=" << oneRealization << std::endl;
@@ -95,6 +98,9 @@ int main(int, char *[])
     fullprint << "Multivariate UserDefined=" << multivariateUserDefined << std::endl;
     multivariateUserDefined.compactSupport();
     fullprint << "Multivariate UserDefined=" << multivariateUserDefined << std::endl;
+    // Has the distribution an independent copula ?
+    fullprint << "Independent copula = " << (multivariateUserDefined.hasIndependentCopula() ? "true" : "false") << std::endl;
+
     fullprint << "entropy=" << multivariateUserDefined.computeEntropy() << std::endl;
     fullprint << "entropy (MC)=" << -multivariateUserDefined.computeLogPDF(multivariateUserDefined.getSample(1000000)).computeMean()[0] << std::endl;
     fullprint << "Marginal 0=" << Distribution(multivariateUserDefined.getMarginal(0)) << std::endl;
