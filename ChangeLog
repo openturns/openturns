@@ -57,6 +57,7 @@
  * #1372 (wrap MultiStart::OptimizationResultCollection)
  * #1376 (The View class has no example)
  * #1378 (Kriging-related covariance model weirdness)
+ * #1383 (The ExprTk engine for SymbolicFunction does not document the "var" keyword)
  * #1384 (The ExprTk engine is not case-sensitive)
  * #1388 (Kolmogorov fails on a PythonDistribution)
  * #1390 (The doc for the `computeQuantile` method does not describe the optional `tail` argument)

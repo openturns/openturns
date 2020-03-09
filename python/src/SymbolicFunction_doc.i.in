@@ -91,10 +91,26 @@ ExprTk allows to write multiple outputs; in this case, the constructor has a spe
 it contains input variables names, but also output variables names, and formula is a string:
 
 >>> import openturns as ot
->>> ot.ResourceMap.Set('SymbolicParser-Backend', 'ExprTk')
 >>> f = ot.SymbolicFunction(['x0', 'x1'], ['y0', 'y1'], 'y0 := x0 + x1; y1 := x0 - x1')
 >>> print(f([1, 2]))
 [3,-1]
+
+ExprTk allows to manage intermediate variables with the 'var' keyword. 
+This is convenient in the situation where several outputs require 
+the same intermediate calculation or if the output is a complex 
+function of the input. 
+In the following example, we compute the 'alpha' variable which is 
+the slope of the river in the flooding example. 
+This slope is then used in the computation of the height 'H'. 
+
+>>> import openturns as ot
+>>> inputs = ['Q', 'Ks', 'Zv', 'Zm', 'Hd', 'Zb', 'L', 'B']
+>>> outputs = ['H', 'S']
+>>> formula = 'var alpha := (Zm - Zv)/L; H := (Q/(Ks*B*sqrt(alpha)))^(3.0/5.0); var Zc := H + Zv; var Zd := Zb + Hd; S := Zc - Zd'
+>>> myFunction = ot.SymbolicFunction(inputs, outputs, formula)
+>>> X = [1013.0, 30.0, 50.0, 55.0, 8, 55.5, 5000.0, 300.0]
+>>> print(myFunction(X))
+[2.142,-11.358]
 
 See ExprTk documentation for details.
 "
