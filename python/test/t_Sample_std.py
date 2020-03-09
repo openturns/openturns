@@ -110,6 +110,10 @@ try:
         s = Sample([[1.0, 2.0], [5.0]])
     except:
         print('ok')
+
+    # getMarginal by identifiers
+    sample = Normal(4).getSample(5)
+    assert sample.getMarginal(['X3', 'X1']).getDescription() == ['X3', 'X1'], "wrong marginal"
 except:
     import sys
     print("t_Sample_std.py", sys.exc_info()[0], sys.exc_info()[1])

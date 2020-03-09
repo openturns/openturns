@@ -466,7 +466,7 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Sample::computeQuantile
-"Estimate the quantile of the **joint** distribution underlying the sample.
+"Estimate the quantile of the joint distribution underlying the sample.
 
 Parameters
 ----------
@@ -476,7 +476,7 @@ p : float, :math:`0 \leq p \leq 1`, or sequence of float
 Returns
 -------
 quantile : :class:`~openturns.Point` or :class:`~openturns.Sample`
-    Quantile of the joint distribution at probability level :math:`p`,
+    Quantile of the **joint** distribution at probability level :math:`p`,
     estimated from the sample.
 
 Raises
@@ -856,8 +856,9 @@ n : int
 
 Parameters
 ----------
-indices : int or sequence of int, :math:`0 \leq i < n`
-    The index(es) of the wanted marginal(s).
+indices : int, sequence of int, :math:`0 \leq i < n` or sequence of str
+    The identifiers of the wanted marginal(s).
+    When the description contains duplicate labels, the first marginal is picked up.
 
 Returns
 -------

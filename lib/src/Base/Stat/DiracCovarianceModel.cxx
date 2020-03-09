@@ -290,6 +290,9 @@ HMatrix DiracCovarianceModel::discretizeHMatrix(const Sample & vertices,
   outputCovariance_ = CovarianceMatrix(oldCovariance);
   return covarianceHMatrix;
 #else
+  (void)vertices;
+  (void)nuggetFactor;
+  (void)parameters;
   throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
 #endif
 }

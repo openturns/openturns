@@ -22,6 +22,8 @@
 #include "openturns/SymbolicParserExprTk.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+
+#define exprtk_disable_caseinsensitivity
 #include "openturns/exprtk.hpp"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -199,11 +201,13 @@ void SymbolicParserExprTk::initialize() const
   symbol_table.add_function("besselY1", y1);
   for (UnsignedInteger inputIndex = 0; inputIndex < inputDimension; ++ inputIndex)
   {
-    symbol_table.add_variable(inputVariablesNames_[inputIndex], inputStack_[inputIndex]);
+    if (!symbol_table.add_variable(inputVariablesNames_[inputIndex], inputStack_[inputIndex]))
+      throw InvalidArgumentException(HERE) << "Invalid input variable: " << inputVariablesNames_[inputIndex];
   }
   for (UnsignedInteger outputIndex = 0; outputIndex < numberOutputVariables; ++ outputIndex)
   {
-    symbol_table.add_variable(outputVariablesNames_[outputIndex], inputStack_[inputDimension + outputIndex]);
+    if (!symbol_table.add_variable(outputVariablesNames_[outputIndex], inputStack_[inputDimension + outputIndex]))
+      throw InvalidArgumentException(HERE) << "Invalid output variable: " << outputVariablesNames_[outputIndex];
   }
   exprtk::parser<Scalar> parser;
   // For each parser of a formula, do

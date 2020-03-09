@@ -208,11 +208,7 @@ Scalar MixedHistogramUserDefined::computePDF(const Point & point) const
   for (UnsignedInteger j = 0; j < discreteIndices_.getSize(); ++ j)
   {
     const Point ticks(ticksCollection_[discreteIndices_[j]]);
-    UnsignedInteger index = ticks.getSize();
-    // TODO: Add Collection::find(T value)->UnsignedInteger
-    for (UnsignedInteger i = 0; i < ticks.getSize(); ++i)
-      if (ticks[i] == point[discreteIndices_[j]])
-        index = i;
+    const UnsignedInteger index = ticks.find(point[discreteIndices_[j]]);
     if (index >= ticks.getSize())
       return 0.0;
     discreteTicksIndices[j] = index;

@@ -89,6 +89,7 @@ KernelMixture::KernelMixture(const Distribution & kernel,
     ccdfApproximation_ = coll[3];
     useApproximatePDFCDF_ = true;
   }
+  setParallel(p_kernel_->isParallel());
 }
 
 /* Comparison operator */

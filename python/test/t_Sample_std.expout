@@ -17,9 +17,9 @@ selection=     [ v0 ]
 3 : [ 3  ]
 4 : [ 2  ]
 <TABLE><TR><TD></TD><TH>a0</TH><TH>a1</TH></TR>
-<TR><TD>0</TD><TD>10.0</TD><TD>20.0</TD></TR>
-<TR><TD>1</TD><TD>11.0</TD><TD>21.0</TD></TR>
-<TR><TD>2</TD><TD>1000.0</TD><TD>2000.0</TD></TR>
+<TR><TH>0</TH><TD>10</TD><TD>20</TD></TR>
+<TR><TH>1</TH><TD>11</TD><TD>21</TD></TR>
+<TR><TH>2</TH><TD>1000</TD><TD>2000</TD></TR>
 </TABLE>
 ok
 ok

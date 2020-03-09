@@ -170,8 +170,7 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
     hide_win : str, default=True
         Hide cmd.exe popup on windows platform.
     check_exit_code : bool, default=True
-        If set to True: raise a RuntimeError exception if return code
-        of process != 0
+        If set to True: raise RuntimeError if return code of process != 0
     get_stdout : bool, default=False
         Whether the standard output of the command is returned
     get_stderr : bool, default=False
@@ -244,8 +243,9 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
 
     # check return code
     if check_exit_code and ret != 0:
-        raise RuntimeError(
-            'Command "' + cmd + '" returned exit code ' + str(ret))
+        # append sample of stderr to the exception message if available
+        err_msg = (':\n' + stderr_data[:200].decode()) if stderr_data is not None else ''
+        raise RuntimeError('Command "' + cmd + '" returned exit code ' + str(ret) + err_msg)
 
     if get_stdout and get_stderr:
         return ret, stdout_data, stderr_data

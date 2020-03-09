@@ -155,7 +155,7 @@ class ChaospyDistribution(PythonDistribution):
 
     Parameters
     ----------
-    dist : a chaospy.stats distribution
+    dist : a chaospy distribution
         The distribution to wrap. It is currently limited to stochastically
         independent distributions as chaopy distributions doesn't implement CDF
         computation for dependencies.
@@ -178,8 +178,7 @@ class ChaospyDistribution(PythonDistribution):
             raise Exception(
                 "Dependent chaospy distributions doesn't implement CDF computation")
         self._dist = dist
-        bounds = dist.range()
-        self.__range = Interval(bounds[0], bounds[1])
+        self.__range = Interval(dist.lower, dist.upper)
 
     def getRange(self):
         return self.__range
@@ -199,6 +198,30 @@ class ChaospyDistribution(PythonDistribution):
     def computeCDF(self, X):
         cdf = self._dist.cdf(X)
         return cdf
+
+    def getMean(self):
+        import chaospy as cp
+        mean = cp.E(self._dist).reshape([len(self._dist)])
+        return mean
+
+    def getStandardDeviation(self):
+        import chaospy as cp
+        std = cp.Std(self._dist).reshape([len(self._dist)])
+        return std
+
+    def getSkewness(self):
+        import chaospy as cp
+        skewness = cp.Skew(self._dist).reshape([len(self._dist)])
+        return skewness
+
+    def getKurtosis(self):
+        import chaospy as cp
+        kurtosis = cp.Kurt(self._dist).reshape([len(self._dist)]) + 3.0
+        return kurtosis
+
+    def getMoment(self, n):
+        moment = self._dist.mom([n] * len(self._dist))
+        return moment
 
     def computeScalarQuantile(self, p, tail=False):
         if len(self._dist) > 1:

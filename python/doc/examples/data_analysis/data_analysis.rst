@@ -14,6 +14,7 @@ Manage data and samples
     sample_correlation.ipynb
     linear_regression.ipynb
     quantile_estimation_wilks.ipynb
+    sample_pandas.ipynb
 
 Sample analysis
 ---------------

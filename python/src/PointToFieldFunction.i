@@ -224,9 +224,8 @@ class PythonPointToFieldFunction(PointToFieldFunction):
         if func is None:
             raise RuntimeError('func not provided.')
         instance = OpenTURNSPythonPointToFieldFunction(inputDim, outputMesh, outputDim)
-        import collections
         if func is not None:
-            if not isinstance(func, collections.Callable):
+            if not callable(func):
                 raise RuntimeError('func argument is not callable.')
             instance._exec = func
         return PointToFieldFunction(instance)

@@ -80,7 +80,7 @@ FieldFunction(const FieldFunction & other) { return new OT::FieldFunction( other
 import openturns.geom
 
 class OpenTURNSPythonFieldFunction(object):
-    """
+    r"""
     Override FieldFunction from Python.
 
     Parameters
@@ -193,7 +193,7 @@ class OpenTURNSPythonFieldFunction(object):
         return self._exec_sample([X])[0]
 
 class PythonFieldFunction(FieldFunction):
-    """
+    r"""
     Override FieldFunction from Python.
 
     Parameters
@@ -229,9 +229,8 @@ class PythonFieldFunction(FieldFunction):
         if func is None:
             raise RuntimeError('func not provided.')
         instance = OpenTURNSPythonFieldFunction(inputMesh, inputDim, outputMesh, outputDim)
-        import collections
         if func is not None:
-            if not isinstance(func, collections.Callable):
+            if not callable(func):
                 raise RuntimeError('func argument is not callable.')
             instance._exec = func
         return FieldFunction(instance)

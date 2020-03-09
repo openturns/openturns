@@ -103,3 +103,42 @@ Parameters
 parameterPosterior : sequence of float
     The maximum a posteriori parameter estimate."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::getOutputObservations
+"Accessor to the output observations.
+
+Returns
+-------
+outputObservations : :class:`~openturns.Sample`
+    The sample of output observations."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::setOutputObservations
+"Accessor to the output observations.
+
+Parameters
+----------
+outputObservations : :class:`~openturns.Sample`
+    The sample of output observations."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::getResidualFunction
+"Accessor to the residual function.
+
+Returns
+-------
+residualFunction : :class:`~openturns.Function`
+    The residual function."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::CalibrationResult::setResidualFunction
+"Accessor to the residual function.
+
+Parameters
+----------
+residualFunction : :class:`~openturns.Function`
+    The residual function."

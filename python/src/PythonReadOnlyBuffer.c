@@ -413,7 +413,36 @@ static PyTypeObject BufferType = {
     0,                            /* tp_descr_get */
     0,                            /* tp_descr_set */
     0,                            /* tp_dictoffset */
-    (initproc)Buffer_init         /* tp_init */
+    (initproc)Buffer_init,         /* tp_init */
+    0,                                    /* tp_alloc */
+      0,                                    /* tp_new */
+      0,                                    /* tp_free */
+      0,                                    /* tp_is_gc */
+      0,                                    /* tp_bases */
+      0,                                    /* tp_mro */
+      0,                                    /* tp_cache */
+      0,                                    /* tp_subclasses */
+      0,                                    /* tp_weaklist */
+      0,                                    /* tp_del */
+      0,                                    /* tp_version_tag */
+#if PY_VERSION_HEX >= 0x03040000
+      0,                                    /* tp_finalize */
+#endif
+#if PY_VERSION_HEX >= 0x03080000
+      0,                                    /* tp_vectorcall */
+#endif
+#if PY_VERSION_HEX < 0x03090000
+#if PY_VERSION_HEX >= 0x03080000
+      0,                                    /* tp_print */
+#endif
+#ifdef COUNT_ALLOCS
+      0,                                    /* tp_allocs */
+      0,                                    /* tp_frees */
+      0,                                    /* tp_maxalloc */
+      0,                                    /* tp_prev */
+      0                                     /* tp_next */
+#endif
+#endif
 };
 
 static Py_ssize_t
