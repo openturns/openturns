@@ -55,6 +55,7 @@
  * #1354 (The doc of GeneralizedParetoFactory does not reflect the implementation)
  * #1371 (Memory leak in ot.TruncatedDistribution)
  * #1372 (wrap MultiStart::OptimizationResultCollection)
+ * #1374 (The setKnownParameter of the factories are not documented enough)
  * #1376 (The View class has no example)
  * #1378 (Kriging-related covariance model weirdness)
  * #1383 (The ExprTk engine for SymbolicFunction does not document the "var" keyword)

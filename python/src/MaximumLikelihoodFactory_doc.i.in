@@ -35,12 +35,32 @@ DistributionFactory
 
 Examples
 --------
+
+In the following example, we estimate the parameters of a 'Normal' distribution 
+with maximum likelihood estimation. 
+
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal(0.9, 1.7)
 >>> sample = distribution.getSample(10)
 >>> factory = ot.MaximumLikelihoodFactory(ot.Normal())
->>> inf_distribution = factory.build(sample)"
+>>> inf_distribution = factory.build(sample)
+
+There are situations where a subset of the parameters 
+is known. 
+In this case, only the other parameters must be estimated 
+from data. 
+In the following example, we estimate the first two parameters from a sample 
+and set the third parameter (at indice 2), 
+the location parameter, to a known value equal to 3. 
+
+>>> import openturns as ot
+>>> distribution = ot.Gamma(1.0, 1.0, 3.0)
+>>> sample = distribution.getSample(100)
+>>> factory = ot.MaximumLikelihoodFactory(distribution)
+>>> factory.setKnownParameter([3.0],[2])
+>>> myGammaConstrained_est = factory.build(sample)
+"
 
 // ---------------------------------------------------------------------
 
