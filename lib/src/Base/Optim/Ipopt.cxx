@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Bonmin allows to describe a MINLP optimization algorithm
+ *  @brief Ipopt optimization solver.
  *
  *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,132 +18,104 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/Bonmin.hxx"
+#include "openturns/Ipopt.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#ifdef OPENTURNS_HAVE_BONMIN
-#include "openturns/BonminProblem.hxx"
-#include <BonBonminSetup.hpp>
-#include <BonCbc.hpp>
-using namespace Bonmin;
+#ifdef OPENTURNS_HAVE_IPOPT
+#include "openturns/IpoptProblem.hxx"
+#include <IpIpoptApplication.hpp>
 using namespace Ipopt;
 #endif
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(Bonmin)
+CLASSNAMEINIT(Ipopt)
 
-static const Factory<Bonmin> Factory_Bonmin;
+static const Factory<Ipopt> Factory_Ipopt;
 
 /** Constructors */
-Bonmin::Bonmin(const String & algoName)
+Ipopt::Ipopt()
   : OptimizationAlgorithmImplementation()
-  , algoName_()
 {
-  setAlgorithmName(algoName);
+  // Nothing to do
 }
 
-Bonmin::Bonmin( OptimizationProblem & problem,
-                const String & algoName)
+Ipopt::Ipopt( OptimizationProblem & problem)
   : OptimizationAlgorithmImplementation(problem)
-  , algoName_()
 {
-  setAlgorithmName(algoName);
+  // Nothing to do
 }
 
 /* Virtual constructor */
-Bonmin * Bonmin::clone() const
+Ipopt * Ipopt::clone() const
 {
-  return new Bonmin(*this);
+  return new Ipopt(*this);
 }
 
 
 
-/** Bonmin static methods */
-Bool Bonmin::IsAvailable()
+/** Ipopt static methods */
+Bool Ipopt::IsAvailable()
 {
-#ifdef OPENTURNS_HAVE_BONMIN
+#ifdef OPENTURNS_HAVE_IPOPT
   return true;
 #else
   return false;
 #endif
 }
 
-Description Bonmin::GetAlgorithmNames()
-{
-  Description algoNames(5);
-  algoNames[0] = "B-BB";
-  algoNames[1] = "B-OA";
-  algoNames[2] = "B-QG";
-  algoNames[3] = "B-Hyb";
-  algoNames[4] = "B-iFP";
-
-  return algoNames;
-}
-
-/** Accessors to Bonmin attributes */
-void Bonmin::setAlgorithmName(const String & algoName)
-{
-  // Check algoName
-  if (!GetAlgorithmNames().contains(algoName))
-    throw InvalidArgumentException(HERE) << "Unknown solver " << algoName;
-  algoName_ = algoName;
-}
-
-String Bonmin::getAlgorithmName() const
-{
-  return algoName_;
-}
-
-
 /** Check whether this problem can be solved by this solver. */
-void Bonmin::checkProblem(const OptimizationProblem & problem) const
+void Ipopt::checkProblem(const OptimizationProblem & problem) const
 {
   // Cannot solve multi-objective problems
-  if (problem.hasMultipleObjective()) throw InvalidArgumentException(HERE) << "Bonmin does not support multi-objective optimization";
+  if (problem.hasMultipleObjective()) throw InvalidArgumentException(HERE) << "Ipopt does not support multi-objective optimization";
 
   // No LeastSquaresProblem / NearestPointProblem
   if (problem.hasResidualFunction() || problem.hasLevelFunction())
-    throw InvalidArgumentException(HERE) << "Bonmin does not support least squares or nearest point problems";
+    throw InvalidArgumentException(HERE) << "Ipopt does not support least squares or nearest point problems";
+
+  // Cannot solve non continuous problems
+  if (!problem.isContinuous())
+    throw InvalidArgumentException(HERE) << "Ipopt does not support non continuous problems";
 }
 
 
-#ifdef OPENTURNS_HAVE_BONMIN
+#ifdef OPENTURNS_HAVE_IPOPT
 
-/** Accessors to Bonmin options */
-static void GetOptionsFromResourceMap(BonminSetup & bonmin)
+/** Accessors to Ipopt options */
+static void GetOptionsFromResourceMap(SmartPtr<OptionsList> options)
 {
-//   Get options for Bonmin setup from ResourceMap
-//   See Bonmin/Ipopt user manuals for more details.
+//   Get options for Ipopt setup from ResourceMap
+//   See Ipopt/Ipopt user manuals for more details.
 
   std::vector<String> keys(ResourceMap::GetKeys());
   const UnsignedInteger nbKeys = keys.size();
 
-  for (UnsignedInteger i = 0; i < nbKeys; ++i)
-    if (keys[i].substr(0, 7) == "Bonmin-")
+  for (UnsignedInteger i = 0; i < nbKeys; ++ i)
+    if (keys[i].substr(0, 6) == "Ipopt-")
     {
-      String optionName(keys[i].substr(7));
+      String optionName(keys[i].substr(6));
       String type(ResourceMap::GetType(keys[i]));
       if (type == "string")
-        bonmin.options()->SetStringValue(optionName, ResourceMap::GetAsString(keys[i]));
+        options->SetStringValue(optionName, ResourceMap::GetAsString(keys[i]));
       else if (type == "float")
-        bonmin.options()->SetNumericValue(optionName, ResourceMap::GetAsScalar(keys[i]));
+        options->SetNumericValue(optionName, ResourceMap::GetAsScalar(keys[i]));
       else if (type == "unsigned int")
-        bonmin.options()->SetIntegerValue(optionName, ResourceMap::GetAsUnsignedInteger(keys[i]));
+        options->SetIntegerValue(optionName, ResourceMap::GetAsUnsignedInteger(keys[i]));
       else
-        throw InvalidArgumentException(HERE) << "Unsupported type " << type << " for Bonmin option " << optionName;
+        throw InvalidArgumentException(HERE) << "Unsupported type " << type << " for Ipopt option " << optionName;
     }
 }
 
 #endif
 
 /** Performs the actual computation. */
-void Bonmin::run()
+void Ipopt::run()
 {
-#ifdef OPENTURNS_HAVE_BONMIN
+#ifdef OPENTURNS_HAVE_IPOPT
   // Check problem
   checkProblem(getProblem());
 
@@ -152,35 +124,97 @@ void Bonmin::run()
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << getStartingPoint().getDimension() << "), expected " << getProblem().getDimension();
 
   // Create BonminProblem
-  Ipopt::SmartPtr<BonminProblem> tminlp = new BonminProblem(getProblem(), getStartingPoint(), getMaximumEvaluationNumber());
-  tminlp->setProgressCallback(progressCallback_.first, progressCallback_.second);
-  tminlp->setStopCallback(stopCallback_.first, stopCallback_.second);
+  ::Ipopt::SmartPtr<IpoptProblem> ipoptProblem = new IpoptProblem(getProblem(), getStartingPoint(), getMaximumEvaluationNumber());
+  ipoptProblem->setProgressCallback(progressCallback_.first, progressCallback_.second);
+  ipoptProblem->setStopCallback(stopCallback_.first, stopCallback_.second);
 
-  // Create setup, initialize options
-  BonminSetup app;
-  app.initializeOptionsAndJournalist();
-  app.options()->SetStringValue("bonmin.algorithm", algoName_);
-  app.options()->SetIntegerValue("max_iter", getMaximumIterationNumber());
-  app.options()->SetStringValue("sb", "yes"); // skip ipopt banner
-  app.options()->SetIntegerValue("print_level", 0);
-  app.options()->SetIntegerValue("bonmin.bb_log_level", 0);
-  app.options()->SetIntegerValue("bonmin.nlp_log_level", 0);
-  app.options()->SetIntegerValue("bonmin.lp_log_level", 0);
-  app.options()->SetIntegerValue("bonmin.oa_log_level", 0);
-  app.options()->SetIntegerValue("bonmin.fp_log_level", 0);
-  app.options()->SetIntegerValue("bonmin.milp_log_level", 0);
-  GetOptionsFromResourceMap(app);
+  SmartPtr<IpoptApplication> app = IpoptApplicationFactory();
+  app->Options()->SetIntegerValue("print_level", 0);
+  app->Options()->SetIntegerValue("max_iter", getMaximumIterationNumber());
+  app->Options()->SetStringValue("sb", "yes"); // skip banner
+  GetOptionsFromResourceMap(app->Options());
 
-  // Update setup with BonminProblem
-  app.initialize(GetRawPtr(tminlp));
+  // Intialize the IpoptApplication and process the options
+  ApplicationReturnStatus status = app->Initialize();
+  if (status != Solve_Succeeded) {
+    throw InternalException(HERE) << "ipopt failed with code " << status;
+  }
 
-  // Solve problem
-  Bab solver;
-  solver(app);
+  // Ask Ipopt to solve the problem
+  status = app->OptimizeTNLP(ipoptProblem);
+  String statusString;
+  switch (status)
+  {
+    // info/warning (>0)
+    case Solved_To_Acceptable_Level:
+      statusString = "Solved to acceptable level";
+      break;
+    case Infeasible_Problem_Detected:
+      statusString = "Infeasible problem detected";
+      break;
+    case Search_Direction_Becomes_Too_Small:
+      statusString = "Search direction becomes too small";
+      break;
+    case Diverging_Iterates:
+      statusString = "Diverging iterates";
+      break;
+    case User_Requested_Stop:
+      statusString = "User requested stop";
+      break;
+    case Feasible_Point_Found:
+      statusString = "Feasible point found";
+      break;
+    // errors/exception (<0)
+    case Maximum_Iterations_Exceeded:
+      statusString = "Maximum iterations exceeded";
+      break;
+    case Restoration_Failed:
+      statusString = "Restoration failed";
+      break;
+    case Error_In_Step_Computation:
+      statusString = "Error in step computation";
+      break;
+    case Maximum_CpuTime_Exceeded:
+      statusString = "Maximum CPU time exceeded";
+      break;
+    case Not_Enough_Degrees_Of_Freedom:
+      statusString = "Not enough degrees of freedom";
+      break;
+    case Invalid_Problem_Definition:
+      statusString = "Invalid problem definition";
+      break;
+    case Invalid_Option:
+      statusString = "Invalid option";
+      break;
+    case Invalid_Number_Detected:
+      statusString = "Invalid number detected";
+      break;
+    case Unrecoverable_Exception:
+      statusString = "Unrecoverable exception";
+      break;
+    case NonIpopt_Exception_Thrown:
+      statusString = "NonIpopt exception thrown";
+      break;
+    case Insufficient_Memory:
+      statusString = "Insufficient memory";
+      break;
+    case Internal_Error:
+      statusString = "Internal Error";
+      break;
+    default:
+      statusString = (OSS() << status);
+      break;
+  }
+  if (status > 0) {
+    LOGINFO(OSS() << "Ipopt exited with status: " << statusString);
+  }
+  else if (status < 0) {
+    throw InternalException(HERE) << "Ipopt error: " << statusString;
+  }
 
   // Retrieve MemoizeFunction input/output history
-  Sample inputHistory(tminlp->getInputHistory());
-  Sample outputHistory(tminlp->getOutputHistory());
+  Sample inputHistory(ipoptProblem->getInputHistory());
+  Sample outputHistory(ipoptProblem->getOutputHistory());
 
   // Create OptimizationResult, initialize error values
   OptimizationResult optimResult(getProblem().getDimension());
@@ -247,33 +281,26 @@ void Bonmin::run()
   }
 
   // Optimum is not the last call to objective function
-  optimResult.setOptimalPoint(tminlp->getOptimalPoint());
-  optimResult.setOptimalValue(tminlp->getOptimalValue());
+  optimResult.setOptimalPoint(ipoptProblem->getOptimalPoint());
+  optimResult.setOptimalValue(ipoptProblem->getOptimalValue());
 
   setResult(optimResult);
 
-  String allOptions;
-  app.options()->PrintList(allOptions);
-  LOGINFO(allOptions);
-
 #else
-
-  throw NotYetImplementedException(HERE) << "No Bonmin support";
-
+  throw NotYetImplementedException(HERE) << "No Ipopt support";
 #endif
 }
 
 
 /** Description of object */
-String Bonmin::__str__(const String &) const
+String Ipopt::__str__(const String &) const
 {
   OSS oss(false);
-  oss << "class=" << getClassName()
-      << "\nalgorithm=" << algoName_;
+  oss << "class=" << getClassName();
   return oss;
 }
 
-String Bonmin::__repr__() const
+String Ipopt::__repr__() const
 {
   OSS oss(false);
   oss << __str__();
@@ -284,9 +311,9 @@ String Bonmin::__repr__() const
   UnsignedInteger nbKeys = keys.size();
 
   for (UnsignedInteger i = 0; i < nbKeys; ++i)
-    if (keys[i].substr(0, 7) == "Bonmin-")
+    if (keys[i].substr(0, 6) == "Ipopt-")
     {
-      String optionName(keys[i].substr(7));
+      String optionName(keys[i].substr(6));
       String type(ResourceMap::GetType(keys[i]));
       if (type == "string")
         oss << optionName << "=" << ResourceMap::GetAsString(keys[i]) << "\n";
@@ -295,7 +322,7 @@ String Bonmin::__repr__() const
       else if (type == "unsigned int")
         oss << optionName << "=" << ResourceMap::GetAsUnsignedInteger(keys[i]) << "\n";
       else
-        throw InvalidArgumentException(HERE) << "Unsupported type " << type << " for Bonmin option " << optionName;
+        throw InvalidArgumentException(HERE) << "Unsupported type " << type << " for Ipopt option " << optionName;
     }
 
   return oss;

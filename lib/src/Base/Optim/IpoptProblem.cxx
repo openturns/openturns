@@ -1,10 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief BonminProblem implements the interface between OT and Bonmin as
- * for optimization problems. It is derived from Bonmin::TMINLP to ensure
- * compatibility with Bonmin algorithms.
+ *  @brief IpoptProblem implements the Ipopt::TNLP interface
  *
- *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,19 +18,18 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/BonminProblem.hxx"
+#include "openturns/IpoptProblem.hxx"
 #include "openturns/SpecFunc.hxx"
 
-using namespace Bonmin;
 using namespace Ipopt;
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /** Constructor with parameters */
-BonminProblem::BonminProblem( const OptimizationProblem & optimProblem,
+IpoptProblem::IpoptProblem( const OptimizationProblem & optimProblem,
                               const Point & startingPoint,
                               const UnsignedInteger maximumEvaluationNumber)
-  : TMINLP()
+  : TNLP()
   , optimProblem_(optimProblem)
   , startingPoint_(startingPoint)
   , objectiveFunction_(optimProblem.getObjective())
@@ -46,12 +43,12 @@ BonminProblem::BonminProblem( const OptimizationProblem & optimProblem,
 }
 
 /** Retrieving objective function input.output history */
-Sample BonminProblem::getInputHistory() const
+Sample IpoptProblem::getInputHistory() const
 {
   return objectiveFunction_.getInputHistory();
 }
 
-Sample BonminProblem::getOutputHistory() const
+Sample IpoptProblem::getOutputHistory() const
 {
   return objectiveFunction_.getOutputHistory();
 }
@@ -61,7 +58,7 @@ Sample BonminProblem::getOutputHistory() const
     https://coin-or.github.io/Ipopt/INTERFACES.html#INTERFACE_CPP
     for description */
 
-bool BonminProblem::get_nlp_info(int & n,
+bool IpoptProblem::get_nlp_info(int & n,
                                  int & m,
                                  int & nnz_jac_g, // Number of non-zero components in the Jacobian of g
                                  int & nnz_h_lag, // Number of non-zero components in Hessian of Lagrangean
@@ -87,38 +84,8 @@ bool BonminProblem::get_nlp_info(int & n,
   return true;
 }
 
-bool BonminProblem::get_variables_types( int n,
-    VariableTypeTable var_types)
-{
-  Indices variablesTypes(optimProblem_.getVariablesType());
 
-  // Conversion from OptimizationProblemImplementation::VariableType to TMINLP::VariableType
-  for (int i = 0; i < n; ++i)
-  {
-    switch (optimProblem_.getVariablesType()[i])
-    {
-      case OptimizationProblemImplementation::CONTINUOUS:
-      {
-        var_types[i] = TMINLP::CONTINUOUS;
-        break;
-      }
-      case OptimizationProblemImplementation::INTEGER:
-      {
-        var_types[i] = TMINLP::INTEGER;
-        break;
-      }
-      case OptimizationProblemImplementation::BINARY:
-      {
-        var_types[i] = TMINLP::BINARY;
-        break;
-      }
-    }
-  }
-
-  return true;
-}
-
-bool BonminProblem::get_variables_linearity( int n,
+bool IpoptProblem::get_variables_linearity( int n,
     LinearityTypeTable var_types)
 {
   Function objective(optimProblem_.getObjective());
@@ -152,7 +119,7 @@ bool BonminProblem::get_variables_linearity( int n,
   return true;
 }
 
-bool BonminProblem::get_constraints_linearity( int /*m*/,
+bool IpoptProblem::get_constraints_linearity( int /*m*/,
     LinearityTypeTable const_types)
 {
   // Retrieving number of constraints
@@ -189,7 +156,7 @@ bool BonminProblem::get_constraints_linearity( int /*m*/,
   return true;
 }
 
-bool BonminProblem::get_bounds_info( int n,
+bool IpoptProblem::get_bounds_info( int n,
                                      double* x_l,  // Lower bounds
                                      double* x_u,  // Upper bounds
                                      int /*m*/,
@@ -245,7 +212,7 @@ bool BonminProblem::get_bounds_info( int n,
   return true;
 }
 
-bool BonminProblem::get_starting_point(int /*n*/,
+bool IpoptProblem::get_starting_point(int /*n*/,
                                        bool /*init_x*/,
                                        double* x,
                                        bool /*init_z*/,
@@ -268,7 +235,7 @@ bool BonminProblem::get_starting_point(int /*n*/,
   return true;
 }
 
-bool BonminProblem::eval_f(int n,
+bool IpoptProblem::eval_f(int n,
                            const double* x,
                            bool /*new_x*/,
                            double& obj_value)
@@ -299,7 +266,7 @@ bool BonminProblem::eval_f(int n,
 }
 
 
-bool BonminProblem::eval_grad_f( int n,
+bool IpoptProblem::eval_grad_f( int n,
                                  const double* x,
                                  bool /*new_x*/,
                                  double* grad_f)
@@ -321,7 +288,7 @@ bool BonminProblem::eval_grad_f( int n,
   return true;
 }
 
-bool BonminProblem::eval_g(int n,
+bool IpoptProblem::eval_g(int n,
                            const double* x,
                            bool /*new_x*/,
                            int /*m*/,
@@ -355,7 +322,7 @@ bool BonminProblem::eval_g(int n,
   return true;
 }
 
-bool BonminProblem::eval_jac_g(int n,
+bool IpoptProblem::eval_jac_g(int n,
                                const double* x,
                                bool /*new_x*/,
                                int m,
@@ -417,7 +384,7 @@ bool BonminProblem::eval_jac_g(int n,
 }
 
 
-bool BonminProblem::eval_h(int n,
+bool IpoptProblem::eval_h(int n,
                            const double* x,
                            bool /*new_x*/,
                            double obj_factor,
@@ -459,7 +426,7 @@ bool BonminProblem::eval_h(int n,
     std::copy(x, x + n, xPoint.begin());
 
     // Compute objective hessian
-    SymmetricMatrix objectiveHessian(obj_factor * optimProblem_.getObjective().hessian(xPoint).getSheet(0));
+    const SymmetricMatrix objectiveHessian(obj_factor * optimProblem_.getObjective().hessian(xPoint).getSheet(0));
 
     // Compute constraints hessian
     int k = 0;
@@ -467,7 +434,7 @@ bool BonminProblem::eval_h(int n,
 
     if (optimProblem_.hasEqualityConstraint())
     {
-      SymmetricTensor equalityConstraintHessian(optimProblem_.getEqualityConstraint().hessian(xPoint));
+      const SymmetricTensor equalityConstraintHessian(optimProblem_.getEqualityConstraint().hessian(xPoint));
       for (UnsignedInteger i = 0; i < nbEqualityConstraints; ++i)
       {
         constraintsHessian = constraintsHessian + lambda[k] * equalityConstraintHessian.getSheet(i);
@@ -477,7 +444,7 @@ bool BonminProblem::eval_h(int n,
 
     if (optimProblem_.hasInequalityConstraint())
     {
-      SymmetricTensor inequalityConstraintHessian(optimProblem_.getInequalityConstraint().hessian(xPoint));
+      const SymmetricTensor inequalityConstraintHessian(optimProblem_.getInequalityConstraint().hessian(xPoint));
       for (UnsignedInteger i = 0; i < nbInequalityConstraints; ++i)
       {
         constraintsHessian = constraintsHessian + lambda[k] * inequalityConstraintHessian.getSheet(i);
@@ -486,7 +453,7 @@ bool BonminProblem::eval_h(int n,
     }
 
     // Filling 'values' array
-    SymmetricMatrix lagrangianHessian(objectiveHessian + constraintsHessian);
+    const SymmetricMatrix lagrangianHessian(objectiveHessian + constraintsHessian);
     k = 0;
     for (int i = 0; i < n; ++i)
       for (int j = 0; j < n; ++j)
@@ -499,7 +466,7 @@ bool BonminProblem::eval_h(int n,
   return true;
 }
 
-bool BonminProblem::eval_gi(int n,
+bool IpoptProblem::eval_gi(int n,
                             const double* x,
                             bool /*new_x*/,
                             int i,
@@ -523,7 +490,7 @@ bool BonminProblem::eval_gi(int n,
   return true;
 }
 
-bool BonminProblem::eval_grad_gi(int n,
+bool IpoptProblem::eval_grad_gi(int n,
                                  const double* x,
                                  bool /*new_x*/,
                                  int i,
@@ -562,25 +529,14 @@ bool BonminProblem::eval_grad_gi(int n,
   return true;
 }
 
-void BonminProblem::finalize_solution( TMINLP::SolverReturn status,
-                                       Ipopt::Index n,
-                                       const Ipopt::Number* x,
-                                       Ipopt::Number obj_value)
+
+void IpoptProblem::finalize_solution(::Ipopt::SolverReturn status, ::Ipopt::Index n,
+                               const ::Ipopt::Number* x, const ::Ipopt::Number* z_L,
+                               const ::Ipopt::Number* z_U, ::Ipopt::Index m, const ::Ipopt::Number* g,
+                               const ::Ipopt::Number* lambda, ::Ipopt::Number obj_value,
+                               const ::Ipopt::IpoptData* ip_data,
+                               ::Ipopt::IpoptCalculatedQuantities* ip_cq)
 {
-  // Check if solver succeeded
-  Description bonminExitStatus(6);
-  bonminExitStatus[0] = "SUCCESS";
-  bonminExitStatus[1] = "INFEASIBLE";
-  bonminExitStatus[2] = "CONTINUOUS_UNBOUNDED";
-  bonminExitStatus[3] = "LIMIT_EXCEEDED";
-  bonminExitStatus[4] = "USER_INTERRUPT";
-  bonminExitStatus[5] = "MINLP_ERROR";
-  if (status >= bonminExitStatus.getSize())
-    throw InternalException(HERE) << "Bonmin solver exited with status UNKNOWN ERROR";
-
-  if (status != SUCCESS)
-    throw InternalException(HERE) << "Bonmin solver exited with status " << bonminExitStatus[status];
-
   // Convert x to OT::Point
   std::copy(x, x + n, optimalPoint_.begin());
   if (optimProblem_.isMinimization())

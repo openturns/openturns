@@ -232,7 +232,7 @@ if (dlib_FOUND)
     ot_check_test (Dlib_global IGNOREOUT)
   endif()
 endif()
-if (COIN_FOUND)
+if (Bonmin_FOUND)
   ot_check_test (Bonmin_std IGNOREOUT)
 endif()
 
@@ -243,9 +243,6 @@ if (NLopt_FOUND)
 ot_check_test (NLopt_std)
 endif ()
 ot_check_test (MultiStart_std)
-if (OPTpp_FOUND)
-ot_check_test (OPTpp_std)
-endif ()
 
 # Solver
 ot_check_test (Bisection_std)

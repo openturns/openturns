@@ -1,10 +1,8 @@
 //                                               -*- C++ -*-
 /**
- *  @brief BonminProblem implements the interface between OT and Bonmin for
- * optimization problems. It is derived from Bonmin::TMINLP to ensure
- * compatibility with Bonmin algorithms.
+ *  @brief IpoptProblem implements the Ipopt::TNLP interface
  *
- *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2019 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
@@ -20,30 +18,27 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_BONMINPROBLEM_HXX
-#define OPENTURNS_BONMINPROBLEM_HXX
+#ifndef OPENTURNS_IPOPTPROBLEM_HXX
+#define OPENTURNS_IPOPTPROBLEM_HXX
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/MemoizeFunction.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 
-#include <BonTMINLP.hpp>
 #include <IpTNLP.hpp>
 
 BEGIN_NAMESPACE_OPENTURNS
 
-typedef ::Bonmin::TMINLP::VariableType * VariableTypeTable;
 typedef ::Ipopt::TNLP::LinearityType * LinearityTypeTable;
 
-
-class BonminProblem
-  : public ::Bonmin::TMINLP // Namespace to be confirmed
+class IpoptProblem
+  : public ::Ipopt::TNLP
 {
 
 public:
 
   /** Constructor with parameters */
-  BonminProblem( const OptimizationProblem & optimProblem,
+  IpoptProblem( const OptimizationProblem & optimProblem,
                  const Point & startingPoint,
                  const UnsignedInteger maximumEvaluationNumber
                );
@@ -51,9 +46,6 @@ public:
   /** Retrieving objective function input.output history */
   Sample getInputHistory() const;
   Sample getOutputHistory() const;
-
-  /** Overloading functions from Bonmin::TMINLP
-   See BonTMINLP.hpp for description */
 
   // n: number of variables
   // m: number of constraints
@@ -63,9 +55,6 @@ public:
                     int & nnz_jac_g, // Number of non-zero components in the Jacobian of g
                     int & nnz_h_lag, // Number of non-zero components in Hessian of Lagrangean
                     ::Ipopt::TNLP::IndexStyleEnum & index_style);
-
-  bool get_variables_types( int n,
-                            VariableTypeTable var_types);
 
   bool get_variables_linearity( int n,
                                 LinearityTypeTable var_types);
@@ -141,20 +130,12 @@ public:
                     int* jCol,
                     double* values);
 
-  void finalize_solution( ::Bonmin::TMINLP::SolverReturn status,
-                          ::Ipopt::Index n,
-                          const ::Ipopt::Number* x,
-                          ::Ipopt::Number obj_value);
-
-  const ::Bonmin::TMINLP::BranchingInfo * branchingInfo() const
-  {
-    return NULL;
-  };
-
-  const ::Bonmin::TMINLP::SosInfo * sosConstraints() const
-  {
-    return NULL;
-  };
+  virtual void finalize_solution(::Ipopt::SolverReturn status, ::Ipopt::Index n,
+                               const ::Ipopt::Number* x, const ::Ipopt::Number* z_L,
+                               const ::Ipopt::Number* z_U, ::Ipopt::Index m, const ::Ipopt::Number* g,
+                               const ::Ipopt::Number* lambda, ::Ipopt::Number obj_value,
+                               const ::Ipopt::IpoptData* ip_data,
+                               ::Ipopt::IpoptCalculatedQuantities* ip_cq);
 
   Point getOptimalPoint() const
   {

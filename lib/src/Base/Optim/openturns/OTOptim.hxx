@@ -27,6 +27,7 @@
 #include "openturns/Ceres.hxx"
 #include "openturns/CMinpack.hxx"
 #include "openturns/Cobyla.hxx"
+#include "openturns/Ipopt.hxx"
 #include "openturns/MultiStart.hxx"
 #include "openturns/NearestPointCheckerResult.hxx"
 #include "openturns/NearestPointChecker.hxx"
@@ -40,7 +41,6 @@
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/OptimizationResult.hxx"
-#include "openturns/OPTpp.hxx"
 #include "openturns/SQP.hxx"
 #include "openturns/TNC.hxx"
 

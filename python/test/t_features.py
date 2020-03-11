@@ -81,10 +81,6 @@ try:
     except ImportError:
         print('no')
 
-    # check that opt++ was found
-    print('11: optimization (OPT++)'.ljust(width), end=' ')
-    print('OK' if ot.OPTpp.IsAvailable() else 'no')
-
     # check that cminpack was found
     print('12: optimization (CMinpack)'.ljust(width), end=' ')
     print('OK' if ot.CMinpack.IsAvailable() else 'no')
@@ -100,6 +96,10 @@ try:
     # check that dlib was found
     print('15: optimization (bonmin)'.ljust(width), end=' ')
     print('OK' if ot.Bonmin.IsAvailable() else 'no')
+
+    # check that ipopt was found
+    print('16: optimization (ipopt)'.ljust(width), end=' ')
+    print('OK' if ot.Ipopt.IsAvailable() else 'no')
 
 except:
     import os

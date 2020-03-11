@@ -765,13 +765,6 @@ void ResourceMap::loadDefaultConfiguration()
   // Cobyla parameters //
   addAsScalar("Cobyla-DefaultRhoBeg", 0.1);
 
-  // OPTpp parameters //
-  addAsScalar("OPTpp-DefaultLineSearchTolerance", 1.0e-4);
-  addAsScalar("OPTpp-DefaultMaximumStep", 1.0e3);
-  addAsScalar("OPTpp-DefaultMinimumStep", 2.0e-16);
-  addAsScalar("OPTpp-DefaultTrustRegionSize", 1.0e3);
-  addAsUnsignedInteger("OPTpp-DefaultMaximumLineSearchIterationNumber", 5);
-
   // SolverImplementation parameters //
   addAsScalar("Solver-DefaultAbsoluteError",  1.0e-5);
   addAsScalar("Solver-DefaultRelativeError",  1.0e-5);

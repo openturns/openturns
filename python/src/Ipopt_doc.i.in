@@ -1,0 +1,96 @@
+%feature("docstring") OT::Ipopt
+"Ipopt optimization solver `Ipopt <https://coin-or.github.io/Ipopt/>`_.
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`, optional
+    Optimization problem to solve. Default is an empty problem.
+
+Notes
+-----
+*Algorithms parameters:*
+
+  Ipopt algorithms can be adapted using numerous parameters, described  `here <https://coin-or.github.io/Ipopt/OPTIONS.html>`_.
+  These parameters can be modified using the :class:`~openturns.ResourceMap`.
+  For every option ``optionName``, one simply add a key named ``Ipopt-optionName`` with the value to use, as shown below::
+
+    >>> import openturns as ot
+    >>> ot.ResourceMap.AddAsUnsignedInteger('Ipopt-print_level', 5)
+    >>> ot.ResourceMap.AddAsScalar('Ipopt-diverging_iterates_tol', 1e15)
+
+*Convergence criteria:*
+
+  To estimate the convergence of the algorithm during the optimization process, Ipopt uses specific tolerance parameters, different from the standard absolute/relative/residual errors used in OpenTURNS. The definition of Ipopt's parameters can be found in `this paper, page 3 <http://www.optimization-online.org/DB_FILE/2004/03/836.pdf>`_.
+
+  Thus the attributes ``maximumAbsoluteError``, ``maximumRelativeError``, ``maximumResidualError`` and ``maximumConstraintError`` defined in' ``OptimizationAlgorithm`` are not used in this case. The tolerances used by Ipopt can be set using specific options (e.g. ``tol``, ``dual_inf_tol`` ...).
+
+
+See also
+--------
+Bonmin
+
+Examples
+--------
+The code below ensures the optimization of the following problem:
+
+.. math:: min \left( - x_0 - x_1 - x_2 \right)
+
+subject to
+
+.. math::
+
+    \left(x_1 - \frac{1}{2}\right)^2 + \left(x_2 - \frac{1}{2}\right)^2 \leq \frac{1}{4}
+
+    x_0 - x_1 \leq 0
+
+    x_0 + x_2 + x_3 \leq 2
+
+    x_0 \in \{0,1\}^n
+
+    (x_1, x_2) \in \mathbb{R}^2
+
+    x_3 \in \mathbb{N}
+
+
+>>> import openturns as ot
+
+>>> # Definition of objective function
+>>> objectiveFunction = ot.SymbolicFunction(['x0','x1','x2','x3'], ['-x0 -x1 -x2'])
+
+>>> # Definition of variables bounds
+>>> bounds = ot.Interval([0,0,0,0],[1,1e308,1e308,5],[True,True,True,True],[True,False,False,True])
+
+Inequality constraints are defined by a function :math:`h` such that :math:`h(x) \geq 0`. The inequality expression above has to be modified to match this formulation.
+
+>>> # Definition of constraints
+>>> h = ot.SymbolicFunction(['x0','x1','x2','x3'], ['-(x1-1/2)^2 - (x2-1/2)^2 + 1/4', '-x0 + x1', '-x0 - x2 - x3 + 2'])
+
+>>> # Setting up Ipopt problem
+>>> problem = ot.OptimizationProblem(objectiveFunction)
+>>> problem.setBounds(bounds)
+>>> problem.setInequalityConstraint(h)
+
+>>> algo = ot.Ipopt(problem)
+>>> algo.setStartingPoint([0,0,0,0])
+>>> algo.setMaximumEvaluationNumber(1000)
+>>> algo.setMaximumIterationNumber(1000)
+>>> ot.ResourceMap.AddAsScalar('Ipopt-max_cpu_time', 5.0)
+
+>>> # Running the solver
+>>> algo.run() # doctest: +SKIP
+
+>>> # Retrieving the results
+>>> result = algo.getResult() # doctest: +SKIP
+>>> optimalPoint = result.getOptimalPoint() # doctest: +SKIP
+>>> optimalValue = result.getOptimalValue() # doctest: +SKIP
+>>> evaluationNumber = result.getInputSample().getSize() # doctest: +SKIP "
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Ipopt::IsAvailable
+"Retrieves the names of the available optimization algorithms.
+
+Returns
+-------
+algoName : bool
+    Returns true if Ipopt support is available, false if not."

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief OPTpp solver implementation
+ *  @brief Ipopt optimization solver.
  *
  *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,41 +18,54 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_OPTGSS_HXX
-#define OPENTURNS_OPTGSS_HXX
+#ifndef OPENTURNS_IPOPT_HXX
+#define OPENTURNS_IPOPT_HXX
 
-#include "openturns/OPTppImplementation.hxx"
-
+#include "openturns/OTprivate.hxx"
+#include "openturns/OptimizationAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class OptGSS
- * OptGSS solver
+ * @class Ipopt
+ * Ipopt allows to solve a MINLP optimization problem, including:
+ * + objective functions of continuous, discrete or binary variables
+ * + multiple equality, inequality and bounds constraints
  */
-class OptGSS : public OPTppImplementation
+
+class OT_API Ipopt
+  : public OptimizationAlgorithmImplementation
 {
   CLASSNAME
+
 public:
 
-  /** Default constructor */
-  OptGSS();
+  /** Constructors */
+  Ipopt();
 
-  /** Constructor with parameters */
-  explicit OptGSS(const OptimizationProblem & problem);
+  explicit Ipopt( OptimizationProblem & problem);
 
   /** Virtual constructor */
-  virtual OptGSS * clone() const;
+  virtual Ipopt * clone() const;
 
+  /** Ipopt static methods */
+  static Bool IsAvailable();  // Check whether Ipopt support is available
+
+  /** Performing the actual computation. */
+  void run();
+
+  /** Description of object */
+  String __str__(const String & offset = "") const;
+  String __repr__() const;
 
 protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
   virtual void checkProblem(const OptimizationProblem & problem) const;
 
-  /** Instanciate the solver */
-  virtual Pointer<OPTPP::OptimizeClass> instanciateSolver();
+private:
+
 };
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_OPTGSS_HXX */
+#endif

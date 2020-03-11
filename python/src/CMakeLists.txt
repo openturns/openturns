@@ -412,11 +412,11 @@ ot_add_python_module(optim optim_module.i
                       CMinpack.i CMinpack_doc.i.in
                       Cobyla.i Cobyla_doc.i.in
                       Dlib.i Dlib_doc.i.in
+                      Ipopt.i Ipopt_doc.i.in
                       TNC.i TNC_doc.i.in
                       SQP.i SQP_doc.i.in
                       MultiStart.i MultiStart_doc.i.in
                       NLopt.i NLopt_doc.i.in
-                      OPTpp.i OPTpp_doc.i.in
                       LevelSet.i LevelSet_doc.i.in
                       LevelSetMesher.i LevelSetMesher_doc.i.in
                       BaseOptimTemplateDefs.i
