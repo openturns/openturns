@@ -320,10 +320,12 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
   // All the computation will be done on the reduced covariance model. We keep the initial covariance model (ie the one we just built) in order to reinitialize the reduced covariance model if some flags are changed after the creation of the algorithm.
   reducedCovarianceModel_ = covarianceModel_;
   // Now, adapt the model parameters.
-  // First, check if the parameters have to be optimized. If not, remove all the active parameters.
+  // First, check if the inputSample was normalized. If so, then the scale parameter should also be normalized.
+  if(normalize_) reducedCovarianceModel_.setScale(getInputTransformation()(covarianceModel_.getScale()) + inputSample_.computeMean());
+  // Second, check if the parameters have to be optimized. If not, remove all the active parameters.
   analyticalAmplitude_ = false;
   if (!optimizeParameters_) reducedCovarianceModel_.setActiveParameter(Indices());
-  // Second, check if the amplitude parameter is unique and active
+  // Third, check if the amplitude parameter is unique and active
   else if (ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate") && (!noise_.getSize()))
   {
     // The model has to be of dimension 1
