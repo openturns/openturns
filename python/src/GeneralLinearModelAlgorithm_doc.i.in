@@ -222,8 +222,7 @@ Parameters
 ----------
 transformation : :class:`~openturns.Function`
     Function that normalizes the input.
-    The input dimension should be the same as input's sample dimension, output dimension
-    should be output sample's dimension"
+    The input and output dimensions should be the same as the input sample dimension."
 
 // ---------------------------------------------------------------------
 
