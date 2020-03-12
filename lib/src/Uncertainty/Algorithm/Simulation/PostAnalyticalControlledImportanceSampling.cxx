@@ -64,14 +64,12 @@ Sample PostAnalyticalControlledImportanceSampling::computeBlockSample()
   // Get the reliability index
   const Scalar reliabilityIndex = analyticalResult_.getHasoferReliabilityIndex();
   const Scalar betaSquare = reliabilityIndex * reliabilityIndex;
-  // Initialize the probability with the control probability
-  Scalar probability = controlProbability_;
   // First, compute a sample of the importance distribution. It is simply
   // the standard distribution translated to the design point
   Sample inputSample(standardDistribution_.getSample(blockSize));
   inputSample += standardSpaceDesignPoint;
   // Then, evaluate the function on this sample
-  Sample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
+  Sample blockSample(standardEvent_.getImplementation()->getFunction()(inputSample));
   // Then, modify in place this sample to take into account the change in the input distribution
   for (UnsignedInteger i = 0; i < blockSize; ++i)
   {
@@ -80,10 +78,11 @@ Sample PostAnalyticalControlledImportanceSampling::computeBlockSample()
     // If the origin is not in the failure domain, the control is made using the linear event dot(u,u*) > beta^2,
     // else it is made using the linear event dot(u,u*) < beta^2.
     failureControl = (failureControl && !originFailure) || (!failureControl && originFailure);
-    const Bool failureEvent = getEvent().getDomain().contains(blockSample[i]);
-    blockSample(i, 0) = probability;
+    const Bool failureEvent = standardEvent_.getDomain().contains(blockSample[i]);
+    blockSample(i, 0) = controlProbability_;
     const Scalar factor = (!failureControl && failureEvent) - (failureControl && !failureEvent);
-    if (factor != 0.0) blockSample(i, 0) = blockSample(i, 0) + factor * standardDistribution_.computePDF(realization) / standardDistribution_.computePDF(realization - standardSpaceDesignPoint);
+    if (factor != 0.0)
+      blockSample(i, 0) += factor * standardDistribution_.computePDF(realization) / standardDistribution_.computePDF(realization - standardSpaceDesignPoint);
   }
   return blockSample;
 }

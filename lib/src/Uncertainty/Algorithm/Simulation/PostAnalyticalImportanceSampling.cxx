@@ -65,10 +65,10 @@ Sample PostAnalyticalImportanceSampling::computeBlockSample()
   Sample inputSample(standardDistribution_.getSample(blockSize));
   inputSample += standardSpaceDesignPoint;
   // Then, evaluate the function on this sample
-  Sample blockSample(getEvent().getImplementation()->getFunction()(inputSample));
+  Sample blockSample(standardEvent_.getImplementation()->getFunction()(inputSample));
   // realizedEventSample = Sample(blockSize_, inputSample.getDimension());
   // Then, modify in place this sample to take into account the change in the input distribution
-  const DomainImplementation::BoolCollection isRealized(getEvent().getDomain().contains(blockSample));
+  const DomainImplementation::BoolCollection isRealized(standardEvent_.getDomain().contains(blockSample));
   Indices realizedIndices(0);
   for (UnsignedInteger i = 0; i < blockSize; ++i)
   {
