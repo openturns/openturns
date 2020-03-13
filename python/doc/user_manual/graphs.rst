@@ -42,11 +42,10 @@ Graphical visualisation object
 
 .. autosummary::
     :toctree: _generated/
-    :template: class.rst_t
+    :template: classWithPlot.rst_t
 
     viewer.View
 
-    :template: function.rst_t
+    :template: functionWithPlot.rst_t
     viewer.PlotDesign
-    viewer.ToImageString
 

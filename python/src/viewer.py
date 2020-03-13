@@ -695,7 +695,7 @@ class View(object):
         plt.close(self._fig)
 
 
-def ToImageString(graph):
+def _ToImageString(graph):
     """
     Convert as image string.
 
@@ -715,7 +715,7 @@ def ToImageString(graph):
     >>> import openturns.viewer as otv
     >>> n = ot.Normal()
     >>> graph = n.drawPDF()
-    >>> imageString = otv.ToImageString(graph)
+    >>> imageString = otv._ToImageString(graph)
     """
     # save interactive mode state
     ision = plt.isinteractive()
@@ -741,7 +741,8 @@ def ToImageString(graph):
 
 
 def PlotDesign(design, bounds = None, subdivisions = None, 
-               plot_kwargs=None, axes_kwargs=None, text_kwargs=None, 
+               figure = None, axes=[], 
+               plot_kwargs = None, axes_kwargs = None, text_kwargs = None, 
                enableTicks = True):
     """
     Plot a design using a scatter plot approach (plots 2D marginals).
@@ -753,6 +754,11 @@ def PlotDesign(design, bounds = None, subdivisions = None,
     ----------
     design : 2-d sequence of float
         The sample. 
+    figure : a Matplotlib figure. 
+        If this is not None, then create a new figure. 
+        Otherwise, use the existing figure. 
+    axes : a Matplotlib axis. 
+        If empty, then create new axes. 
     bounds: :class:`openturns.Interval`
         Bounds of the plot. By default, compute the bounds from the sample. 
     subdivisions : a list of integers
@@ -765,27 +771,34 @@ def PlotDesign(design, bounds = None, subdivisions = None,
     Returns
     -------
     fig : matplotlib figure
-          Figure representing the LHS
+          Figure representing the sample.
 
     Examples
     --------
+    
+    Plot a sample in 2 dimensions.
+    
     >>> import openturns as ot
     >>> from openturns.viewer import PlotDesign
-    >>> # Bounds are [0,1]^5
-    >>> # Size of sample
+    >>> dim = 20
+    >>> X = [ot.Uniform()] * dim
+    >>> distribution = ot.ComposedDistribution(X)
+    >>> sampleSize = 10
+    >>> sample = distribution.getSample(sampleSize)
+    >>> fig = PlotDesign(sample)
+
+    Plot a sample in 5 dimensions.
+
+    >>> import openturns as ot
+    >>> from openturns.viewer import PlotDesign
     >>> dim = 5
     >>> size = 10
-    >>> # Factory: lhs generates (here centered)
     >>> distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*dim)
     >>> bounds = distribution.getRange()
     >>> lhs = ot.LHSExperiment(distribution, size)
-    >>> lhs.setRandomShift(False) # centered
-    >>> lhs.setAlwaysShuffle(True) # randomized
-    >>> # Generate a design
-    >>> design = lhs.generate()
-    >>> # Plot the design
+    >>> sample = lhs.generate()
     >>> subdivisions = [size]*dim
-    >>> fig = PlotDesign(design, bounds, subdivisions)
+    >>> fig = PlotDesign(sample, bounds, subdivisions)
     """
     # check that arguments are dictionnaries
     axes_kwargs = View.CheckDict(axes_kwargs)
@@ -835,8 +848,11 @@ def PlotDesign(design, bounds = None, subdivisions = None,
         axes_kwargs['yticks'] = []
 
     # set figure
-    figure = plt.figure()
-    axes = figure.axes
+    if figure is None:
+        figure = plt.figure()
+    else:
+        # Figure exists: get the axes
+        axes = figure.axes
 
     # Special case of dim=2
     if dim == 2:

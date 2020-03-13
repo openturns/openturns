@@ -3,6 +3,7 @@
 import os
 import traceback
 import sys
+from matplotlib import pyplot as plt
 
 try:
 
@@ -65,6 +66,13 @@ try:
     bounds = distribution.getRange()    
     design = distribution.getSample(samplesize)
     PlotDesign(design, bounds, [10, 5, 3]);
+
+    # Plot 2D - set figure prior to calling the plot
+    distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*2)
+    bounds = distribution.getRange()    
+    design = distribution.getSample(samplesize)
+    fig = plt.figure()
+    PlotDesign(design, figure = fig);
 
 except:
     traceback.print_exc()
