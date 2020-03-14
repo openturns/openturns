@@ -121,6 +121,9 @@ public:
   /** Virtual copy constructor */
   virtual HMatrixImplementation * clone() const;
 
+  /** Copy assignment operator */
+  HMatrixImplementation& operator=(const HMatrixImplementation& rhs);
+
   // Destructor
   virtual ~HMatrixImplementation();
 
