@@ -745,10 +745,13 @@ def PlotDesign(design, bounds = None, subdivisions = None,
                plot_kwargs = None, axes_kwargs = None, text_kwargs = None, 
                enableTicks = True):
     """
-    Plot a design using a scatter plot approach (plots 2D marginals).
+    Plot a design using a scatter plot. 
+    If the dimension is equal to 2, then plots the 2D projection. 
+    If the dimension is greater or equal to 3, then plots all 2D projections.
 
     In addition, the function plots a grid, i.e. horizontal and vertical lines
     to see the dispersion of the points. 
+    This allows to see how the sample fills the space. 
 
     Parameters
     ----------
