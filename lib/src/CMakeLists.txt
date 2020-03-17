@@ -11,9 +11,6 @@ add_subdirectory (Uncertainty)
 
 set_source_files_properties (Base/Func/SpecFunc/Faddeeva.cc PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 
-# OptPDS and OptGSS cannot both be included as OptDirect is redefined
-set_source_files_properties (Base/Optim/OptGSS.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
-
 # Exclude Ceres sources from unity build (templates take much memory)
 set_source_files_properties (Base/Optim/Ceres.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
 
