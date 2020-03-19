@@ -48,7 +48,88 @@ if :math:`s_n^2>0` (otherwise, the moment based estimator fails).
 
 See also
 --------
-DistributionFactory, FisherSnedecor"
+DistributionFactory, FisherSnedecor
+
+Examples
+--------
+
+In the following example, the parameters of a :class:`~openturns.FisherSnedecor` 
+are estimated from a sample. 
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> size = 10000
+>>> distribution = ot.FisherSnedecor(4.5, 8.4)
+>>> sample = distribution.getSample(size)
+>>> factory = ot.TruncatedNormalFactory()
+>>> estimated = factory.build(sample)
+>>> estimated = factory.buildMethodOfMoments(sample)
+>>> estimated = factory.buildMethodOfLikelihoodMaximization(sample)"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::FisherSnedecorFactory::buildMethodOfLikelihoodMaximization
+"Method of likelihood maximization.
+
+Refer to :class:`~openturns.MaximumLikelihoodFactory`.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.FisherSnedecor`
+    The estimated distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::FisherSnedecorFactory::buildMethodOfMoments
+"Method of moments estimator.
 
 
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.FisherSnedecor`
+    The estimated distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::FisherSnedecorFactory::buildAsFisherSnedecor
+"Estimate the distribution as native distribution.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.FisherSnedecor`
+    The estimated distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::FisherSnedecorFactory::build
+"Estimate the distribution using the default strategy.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.FisherSnedecor`
+    The estimated distribution
+
+Notes
+-----
+The default strategy is using the maximum likelihood estimators."
 

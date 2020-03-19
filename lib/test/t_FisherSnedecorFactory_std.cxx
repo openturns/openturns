@@ -59,10 +59,19 @@ int main(int, char *[])
     fullprint << "Estimated from moments=" << estimatedFisherSnedecor << std::endl;
     const Scalar sample_mu = sample.computeMean()[0];
     const Scalar sample_sigma2 = sample.computeCovariance()(0, 0);
-    const Scalar distribution_mu = estimatedFisherSnedecor.getMean()[0];
-    const Scalar distribution_sigma2 = estimatedFisherSnedecor.getCovariance()(0, 0);
-    assert_almost_equal(sample_mu, distribution_mu, 1e-15, 1e-15);
-    assert_almost_equal(sample_sigma2, distribution_sigma2, 1e-15, 1e-15);
+    const Scalar computed_mu = estimatedFisherSnedecor.getMean()[0];
+    const Scalar computed_sigma2 = estimatedFisherSnedecor.getCovariance()(0, 0);
+    assert_almost_equal(sample_mu, computed_mu, 1e-15, 1e-15);
+    assert_almost_equal(sample_sigma2, computed_sigma2, 1e-15, 1e-15);
+    // buildMethodOfLikelihoodMaximization
+    estimatedFisherSnedecor = factory.buildMethodOfLikelihoodMaximization(sample);
+    fullprint << "Estimated from likelihoodMaximization=" << estimatedFisherSnedecor << std::endl;
+    const Scalar exact_d1 = distribution.getD1();
+    const Scalar exact_d2 = distribution.getD2();
+    const Scalar computed_d1 = estimatedFisherSnedecor.getD1();
+    const Scalar computed_d2 = estimatedFisherSnedecor.getD2();
+    assert_almost_equal(computed_d1, exact_d1, 0.0, 20.0 / sqrt(size));
+    assert_almost_equal(computed_d2, exact_d2, 0.0, 20.0 / sqrt(size));
   }
   catch (TestFailed & ex)
   {

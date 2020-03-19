@@ -4,18 +4,45 @@
 Available constructor:
     BetaFactory()
 
-The parameters are estimated by method of moments:
+Let :math:`x_{min}` be the sample minimum and :math:`x_{max}` be the sample maximum. 
+Let :math:`\delta = x_{max} - x_{min}` be the sample range. 
+
+Then the distribution bounds are computed from the equations:
 
 .. math::
     :nowrap:
 
     \begin{eqnarray*}
-      \displaystyle\Hat{a}_n=(1-\mathrm{sign}(x_{(1,n)})/(2+n))x_{(1,n)}\\
-      \displaystyle\Hat{b}_n=(1+\mathrm{sign}(x_{(n,n)})/(2+n))x_{(n,n)}\\
-      \displaystyle\Hat{t}_n=\frac{(\Hat{b}_n-\bar{x}_n)(\bar{x}_n-\Hat{a}_n)}{(\sigma_n^X)^2-1}\\
-      \displaystyle\Hat{r}_n=\frac{t(\bar{x}_n-\Hat{a}_n)}{\Hat{b}_n-\Hat{a}_n}
+      \displaystyle\Hat{a}_n = x_{min} - \frac{\delta}{n + 2}\\
+      \displaystyle\Hat{b}_n = x_{max} + \frac{\delta}{n + 2}\\
+    \end{eqnarray*}
+
+Let :math:`\bar{x}_n` be the sample mean and :math:`\hat{\sigma}_n` be the sample 
+standard deviation. 
+The remaining parameters are estimated from the method of moments:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{t}_n=\frac{(\Hat{b}_n-\bar{x}_n)(\bar{x}_n-\Hat{a}_n)}{\hat{\sigma}_n^2-1}\\
+      \displaystyle\Hat{r}_n=\frac{\displaystyle\Hat{t}_n (\bar{x}_n-\Hat{a}_n)}{\Hat{b}_n-\Hat{a}_n}
     \end{eqnarray*}
 
 See also
 --------
-DistributionFactory, Beta"
+DistributionFactory, Beta
+
+Examples
+--------
+
+In the following example, the parameters of a :class:`~openturns.Beta` 
+are estimated from a sample. 
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> size = 10000
+>>> distribution = ot.Beta(0.2, 0.4, -1.0, 2.0)
+>>> sample = distribution.getSample(size)
+>>> factory = ot.BetaFactory()
+>>> estimated = factory.build(sample)"

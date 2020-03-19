@@ -112,7 +112,6 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfMoments(const Sample & samp
 
 TruncatedNormal TruncatedNormalFactory::buildMethodOfLikelihoodMaximization(const Sample & sample) const
 {
-  const UnsignedInteger size = sample.getSize();
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a TruncatedNormal distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];

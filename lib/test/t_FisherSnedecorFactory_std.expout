@@ -7,3 +7,4 @@ Estimated fisherSnedecor=class=FisherSnedecor name=FisherSnedecor dimension=1 d1
 Default fisherSnedecor=class=FisherSnedecor name=FisherSnedecor dimension=1 d1=1 d2=5
 FisherSnedecor from parameters=class=FisherSnedecor name=FisherSnedecor dimension=1 d1=4.5 d2=8.4
 Estimated from moments=class=FisherSnedecor name=FisherSnedecor dimension=1 d1=5.082 d2=8.2315
+Estimated from likelihoodMaximization=class=FisherSnedecor name=FisherSnedecor dimension=1 d1=4.5705 d2=8.2066
