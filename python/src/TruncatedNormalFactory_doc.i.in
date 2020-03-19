@@ -4,11 +4,134 @@
 Available constructor:
     TruncatedNormalFactory()
 
-The parameters are estimated by numerical maximum likelihood estimation.
+Notes
+-----
+Several estimators to build a TruncatedNormal distribution from a scalar sample
+are available.
+
+**Maximum likelihood estimator:**
+
+The parameters are estimated by numerical maximum likelihood estimation. 
+The starting point of the optimization algorithm is based on the moment based 
+estimator. 
+
+**Moment based estimator:**
+
+Let :math:`x_{min}` be the sample minimum and :math:`x_{max}` be the sample maximum. 
+Let :math:`\delta = x_{max} - x_{min}` be the sample range. 
+
+Then the distribution bounds are computed from the equations:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{a}_n = x_{min} - \frac{\delta}{n + 2}\\
+      \displaystyle\Hat{b}_n = x_{max} + \frac{\delta}{n + 2}\\
+    \end{eqnarray*}
+
+Then the :math:`\mu` and :math:`\sigma` parameters are estimated from the 
+methods of moments. 
 
 See also
 --------
-DistributionFactory, TruncatedNormal"
+DistributionFactory, TruncatedNormal
 
-// ---------------------------------------------------------------------
+Examples
+--------
+
+In the following example, the parameters of a :class:`~openturns.TruncatedNormal` 
+are estimated from a sample. 
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> size = 10000
+>>> distribution = ot.TruncatedNormal(2.0, 3.0, -1.0, 4.0)
+>>> sample = distribution.getSample(size)
+>>> factory = ot.TruncatedNormalFactory()
+>>> estimated = factory.build(sample)
+>>> estimated = factory.buildMethodOfMoments(sample)
+>>> estimated = factory.buildMethodOfLikelihoodMaximization(sample)"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedNormalFactory::buildMethodOfLikelihoodMaximization
+"Method of likelihood maximization.
+
+Refer to :class:`~openturns.MaximumLikelihoodFactory`.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.TruncatedNormal`
+    The estimated distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedNormalFactory::buildMethodOfMoments
+"Method of moments estimator.
+
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.TruncatedNormal`
+    The estimated distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedNormalFactory::buildMethodOfScaledLikelihoodMaximization
+"Method of likelihood maximization with scaling.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.TruncatedNormal`
+    The estimated distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedNormalFactory::buildAsTruncatedNormal
+"Estimate the distribution as native distribution.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.TruncatedNormal`
+    The estimated distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedNormalFactory::build
+"Estimate the distribution using the default strategy.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.TruncatedNormal`
+    The estimated distribution
+
+Notes
+-----
+The default strategy is using the maximum likelihood estimators with scaling."
 

@@ -80,6 +80,42 @@ int main(int, char *[])
     sample = Sample(size, Point(1, 1.0));
     estimatedDistribution = factory.build(sample);
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
+    // buildMethodOfMoments
+    fullprint << "buildMethodOfMoments" << std::endl;
+    TruncatedNormal distribution(2.0, 3.0, -1.0, 4.0);
+    Sample sample2(distribution.getSample(size));
+    TruncatedNormal estimatedTN(factory.buildMethodOfMoments(sample2));
+    fullprint << "Estimated from moments=" << estimatedTN << std::endl;
+    const Scalar sample_mu = sample2.computeMean()[0];
+    const Scalar sample_sigma2 = sample2.computeCovariance()(0,0);
+    const Scalar sample_a = sample2.getMin()[0];
+    const Scalar sample_b = sample2.getMax()[0];
+    Scalar computed_mu = estimatedTN.getMean()[0];
+    Scalar computed_sigma2 = estimatedTN.getCovariance()(0,0);
+    Scalar computed_a = estimatedTN.getA();
+    Scalar computed_b = estimatedTN.getB();
+    assert_almost_equal(sample_mu, computed_mu, 1.e-2, 0.0);
+    assert_almost_equal(sample_sigma2, computed_sigma2, 1.e-3, 0.0);
+    assert_almost_equal(sample_a, computed_a, 0.0, 10.0 / size);
+    assert_almost_equal(sample_b, computed_b, 0.0, 10.0 / size);
+    // buildMethodOfLikelihoodMaximization
+    fullprint << "buildMethodOfLikelihoodMaximization" << std::endl;
+    TruncatedNormal distribution3(2.0, 3.0, -1.0, 4.0);
+    Sample sample3(distribution3.getSample(size));
+    TruncatedNormal estimatedTN3(factory.buildMethodOfLikelihoodMaximization(sample3));
+    fullprint << "Estimated from likelihoodMaximization=" << estimatedTN3 << std::endl;
+    const Scalar exact_mu = distribution3.getMu();
+    const Scalar exact_sigma = distribution3.getSigma();
+    const Scalar exact_a = distribution3.getA();
+    const Scalar exact_b = distribution3.getB();
+    computed_mu = estimatedTN3.getMu();
+    const Scalar computed_sigma = estimatedTN3.getSigma();
+    computed_a = estimatedTN3.getA();
+    computed_b = estimatedTN3.getB();
+    assert_almost_equal(computed_mu, exact_mu, 0.0, 20.0 / sqrt(size));
+    assert_almost_equal(computed_sigma, exact_sigma, 0.0, 20.0 / sqrt(size));
+    assert_almost_equal(computed_a, exact_a, 0.0, 20.0 / size);
+    assert_almost_equal(computed_b, exact_b, 0.0, 20.0 / size);
   }
   catch (TestFailed & ex)
   {
