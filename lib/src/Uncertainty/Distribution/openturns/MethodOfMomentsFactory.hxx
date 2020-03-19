@@ -63,6 +63,10 @@ public:
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
   OptimizationAlgorithm getOptimizationAlgorithm() const;
 
+  /** Accessor to optimization bounds */
+  void setOptimizationBounds(const Interval & optimizationBounds);
+  Interval getOptimizationBounds() const;
+
   /** Accessor to known parameter */
   void setKnownParameter(const Point & values, const Indices & positions);
   Point getKnownParameterValues() const;
@@ -80,6 +84,9 @@ protected:
 
   /* Solver & optimization problem for log-likelihood maximization */
   OptimizationAlgorithm solver_;
+
+  /* Bounds used for parameter optimization */
+  Interval optimizationBounds_;
 
   /* Known parameter */
   Point knownParameterValues_;

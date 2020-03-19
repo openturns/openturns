@@ -58,6 +58,26 @@ solver : :class:`~openturns.OptimizationAlgorithm`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::MethodOfMomentsFactory::setOptimizationBounds
+"Accessor to the optimization bounds.
+
+Parameters
+----------
+bounds : :class:`~openturns.Interval`
+    The bounds used for numerical optimization of the likelihood."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MethodOfMomentsFactory::getOptimizationBounds
+"Accessor to the optimization bounds.
+
+Returns
+-------
+bounds : :class:`~openturns.Interval`
+    The bounds used for numerical optimization of the likelihood."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::MethodOfMomentsFactory::setKnownParameter
 "Accessor to the known parameters.
 

@@ -69,7 +69,7 @@ solver : :class:`~openturns.OptimizationAlgorithm`
 
 Parameters
 ----------
-problem : :class:`~openturns.Interval`
+bounds : :class:`~openturns.Interval`
     The bounds used for numerical optimization of the likelihood."
 
 // ---------------------------------------------------------------------
@@ -79,7 +79,7 @@ problem : :class:`~openturns.Interval`
 
 Returns
 -------
-problem : :class:`~openturns.Interval`
+bounds : :class:`~openturns.Interval`
     The bounds used for numerical optimization of the likelihood."
 
 // ---------------------------------------------------------------------

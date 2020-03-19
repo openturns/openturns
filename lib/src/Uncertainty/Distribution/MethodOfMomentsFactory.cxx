@@ -221,6 +221,7 @@ Point MethodOfMomentsFactory::buildParameter(const Sample & sample) const
 
   // Define optimisation problem
   LeastSquaresProblem problem(momentsObjective);
+  problem.setBounds(optimizationBounds_);
   OptimizationAlgorithm solver(solver_);
   if (solver.getStartingPoint().getDimension() != momentsObjective.getInputDimension())
   {
@@ -278,6 +279,16 @@ OptimizationAlgorithm MethodOfMomentsFactory::getOptimizationAlgorithm() const
   return solver_;
 }
 
+/* Accessor to optimization bounds */
+void MethodOfMomentsFactory::setOptimizationBounds(const Interval & optimizationBounds)
+{
+  optimizationBounds_ = optimizationBounds;
+}
+
+Interval MethodOfMomentsFactory::getOptimizationBounds() const
+{
+  return optimizationBounds_;
+}
 
 void MethodOfMomentsFactory::setKnownParameter(const Point & values,
     const Indices & indices)
@@ -305,6 +316,7 @@ void MethodOfMomentsFactory::save(Advocate & adv) const
   DistributionFactoryImplementation::save(adv);
   adv.saveAttribute("knownParameterValues_", knownParameterValues_);
   adv.saveAttribute("knownParameterIndices_", knownParameterIndices_);
+  adv.saveAttribute("optimizationBounds_", optimizationBounds_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -313,6 +325,7 @@ void MethodOfMomentsFactory::load(Advocate & adv)
   DistributionFactoryImplementation::load(adv);
   adv.loadAttribute("knownParameterValues_", knownParameterValues_);
   adv.loadAttribute("knownParameterIndices_", knownParameterIndices_);
+  adv.loadAttribute("optimizationBounds_", optimizationBounds_);
 }
 
 END_NAMESPACE_OPENTURNS
