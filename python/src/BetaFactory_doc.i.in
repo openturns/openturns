@@ -4,8 +4,16 @@
 Available constructor:
     BetaFactory()
 
+Let :math:`n` be the sample sample size. 
 Let :math:`x_{min}` be the sample minimum and :math:`x_{max}` be the sample maximum. 
-Let :math:`\delta = x_{max} - x_{min}` be the sample range. 
+Let :math:`\delta` be the sample range:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle \delta = x_{max} - x_{min}.
+    \end{eqnarray*}
 
 Then the distribution bounds are computed from the equations:
 
@@ -13,8 +21,8 @@ Then the distribution bounds are computed from the equations:
     :nowrap:
 
     \begin{eqnarray*}
-      \displaystyle\Hat{a}_n = x_{min} - \frac{\delta}{n + 2}\\
-      \displaystyle\Hat{b}_n = x_{max} + \frac{\delta}{n + 2}\\
+      \displaystyle\Hat{a}_n = x_{min} - \frac{\delta}{n + 2}, \\
+      \displaystyle\Hat{b}_n = x_{max} + \frac{\delta}{n + 2}.
     \end{eqnarray*}
 
 Let :math:`\bar{x}_n` be the sample mean and :math:`\hat{\sigma}_n` be the sample 

@@ -6,7 +6,7 @@ Parameters
 mu : float
     The mean of the log-normal random variable.
 sigma : float
-    The standard deviation of the log-normal random variable, with:math:`\sigma > 0`.
+    The standard deviation of the log-normal random variable, with :math:`\sigma > 0`.
 gamma : float, optional
     Location parameter.
 
