@@ -56,7 +56,6 @@ public:
   /** Specific algorithms */
   TruncatedNormal buildMethodOfMoments(const Sample & sample) const;
   TruncatedNormal buildMethodOfLikelihoodMaximization(const Sample & sample) const;
-  TruncatedNormal buildMethodOfScaledLikelihoodMaximization(const Sample & sample) const;
 
 }; /* class TruncatedNormalFactory */
 

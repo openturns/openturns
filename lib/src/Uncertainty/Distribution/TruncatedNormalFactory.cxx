@@ -112,61 +112,6 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfMoments(const Sample & samp
 
 TruncatedNormal TruncatedNormalFactory::buildMethodOfLikelihoodMaximization(const Sample & sample) const
 {
-  if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a TruncatedNormal distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  const Scalar xMin = sample.getMin()[0];
-  const Scalar xMax = sample.getMax()[0];
-  if (!SpecFunc::IsNormal(xMin) || !SpecFunc::IsNormal(xMax)) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution if data contains NaN or Inf";
-  if (xMin == xMax)
-  {
-    const Scalar delta = std::max(std::abs(xMin), 10.0) * SpecFunc::ScalarEpsilon;
-    TruncatedNormal result(xMin, 1.0, xMin - delta, xMax + delta);
-    result.setDescription(sample.getDescription());
-    return result;
-  }
-
-  // Use method of moments as starting point
-  const TruncatedNormal estimatedMomentsDistribution = buildMethodOfMoments(sample);
-  Point parametersFromMoments = estimatedMomentsDistribution.getParameter();
-
-  // Create factory
-  MaximumLikelihoodFactory factory(buildAsTruncatedNormal());
-
-  // Configure starting point
-  OptimizationAlgorithm solver(factory.getOptimizationAlgorithm());
-  solver.setStartingPoint(parametersFromMoments);
-  factory.setOptimizationAlgorithm(solver);
-
-  // Configure the bounds of the optimization problem on (mu, sigma)
-  // with sigma > 0
-  const UnsignedInteger dimensionMuSigma = 2;
-  Point parametersLowerBound(dimensionMuSigma, -SpecFunc::MaxScalar);
-  parametersLowerBound[1] = ResourceMap::GetAsScalar( "TruncatedNormalFactory-SigmaLowerBound");
-  Interval::BoolCollection parametersLowerFlags(dimensionMuSigma, false);
-  parametersLowerFlags[1] = true; // sigma > 0
-  Interval::BoolCollection parametersUpperFlags(dimensionMuSigma, false);
-  const Point parametersUpperBound(dimensionMuSigma, SpecFunc::MaxScalar);
-  Interval bounds(parametersLowerBound, parametersUpperBound, parametersLowerFlags, parametersUpperFlags);
-  factory.setOptimizationBounds(bounds);
-  
-  // Configure known parameters
-  const UnsignedInteger dimensionAB = 2;
-  Point values(dimensionAB, -SpecFunc::MaxScalar);
-  values[0] = parametersFromMoments[2];
-  values[1] = parametersFromMoments[3];
-  Indices indices(dimensionAB);
-  indices[0] = 2;
-  indices[1] = 3;
-  factory.setKnownParameter(values, indices);
-
-  // Build and return
-  const Point parametersFromML(factory.buildParameter(sample));
-  TruncatedNormal result(buildAsTruncatedNormal(parametersFromML));
-  result.setDescription(sample.getDescription());
-  return result;
-}
-
-TruncatedNormal TruncatedNormalFactory::buildMethodOfScaledLikelihoodMaximization(const Sample & sample) const
-{
   const UnsignedInteger size = sample.getSize();
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a TruncatedNormal distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   // In order to avoid numerical stability issues, we normalize the data to [-1, 1]
@@ -234,7 +179,7 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfScaledLikelihoodMaximizatio
 
 TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Sample & sample) const
 {
-  return buildMethodOfScaledLikelihoodMaximization(sample);
+  return buildMethodOfLikelihoodMaximization(sample);
 }
 
 TruncatedNormal TruncatedNormalFactory::buildAsTruncatedNormal(const Point & parameters) const

@@ -96,17 +96,17 @@ data = [0.6852,0.9349,0.5884,1.727,1.581,0.3193,-0.5701,1.623,2.210,
         -0.3440,-0.1646]
 sample = ot.Sample(data, 1)
 factory = ot.TruncatedNormalFactory()
-estimatedTN = factory.buildMethodOfLikelihoodMaximization(sample)
-exact_mu = 0.639863
-exact_sigma = 1.89489
-exact_a = -0.783954
-exact_b = 2.42385
+estimatedTN = factory.buildMethodOfMoments(sample)
+exact_mu = -1.0
+exact_sigma = 2.5
+exact_a = 2.
+exact_b = 3.
 computed_mu = estimatedTN.getMu()
 computed_sigma = estimatedTN.getSigma()
 computed_a = estimatedTN.getA()
 computed_b = estimatedTN.getB()
-ott.assert_almost_equal(exact_mu, computed_mu, 1.e-2, 0.0)
-ott.assert_almost_equal(exact_sigma, computed_sigma, 1.e-2, 0.0)
-ott.assert_almost_equal(exact_a, computed_a, 1.e-2, 0.0)
-ott.assert_almost_equal(exact_b, computed_b, 1.e-2, 0.0)
+ott.assert_almost_equal(exact_mu, computed_mu, 0.0, 2.0)
+ott.assert_almost_equal(exact_sigma, computed_sigma, 0.0, 1.0)
+ott.assert_almost_equal(exact_a, computed_a, 0.0, 3.0)
+ott.assert_almost_equal(exact_b, computed_b, 0.0, 3.0)
 
