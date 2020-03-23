@@ -40,8 +40,8 @@ static const Factory<BoundingVolumeHierarchy> Factory_BoundingVolumeHierarchy;
 BoundingVolumeHierarchy::BoundingVolumeHierarchy()
   : EnclosingSimplexAlgorithmImplementation()
   , p_root_(0)
-  , binNumber_(0)
-  , strategy_()
+  , binNumber_(ResourceMap::GetAsUnsignedInteger("BoundingVolumeHierarchy-BinNumber"))
+  , strategy_(ResourceMap::GetAsString("BoundingVolumeHierarchy-Strategy"))
   , sortedSimplices_(0)
   , centerBoundingBoxSimplices_()
 {
@@ -293,7 +293,7 @@ UnsignedInteger BoundingVolumeHierarchy::query(const Point & point) const
         // Sort simplices according to their distance to point[activeDimension]
         // in order to (hopefully) check less simplices
         if (current->nrSimplices_ > pairDistanceSimplex.size())
-          pairDistanceSimplex.reserve(current->nrSimplices_);
+          pairDistanceSimplex.resize(current->nrSimplices_);
         for(UnsignedInteger i = 0; i < current->nrSimplices_; ++i)
         {
           const UnsignedInteger simplexIndex = sortedSimplices_[(current->offset_ + i)];
