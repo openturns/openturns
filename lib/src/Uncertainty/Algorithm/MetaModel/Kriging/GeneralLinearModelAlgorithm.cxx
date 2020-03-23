@@ -799,46 +799,52 @@ Scalar GeneralLinearModelAlgorithm::computeLogIntegratedLikelihoodPenalization()
     }
     case REFERENCE:
     {
-      SymmetricMatrix iTheta(inputDimension + 1);
+      const SquareMatrix Linv(covarianceCholeskyFactor_.solveLinearSystem(IdentityMatrix(covarianceCholeskyFactor_.getNbRows())).getImplementation());
+      const CovarianceMatrix SigmaInv(Linv.computeGram(true).getImplementation());
+      CovarianceMatrix sigmaTheta;
+      if (F_.getNbColumns() == 0)
+        sigmaTheta = SigmaInv;
+      else
+        {
+          CovarianceMatrix G((Linv*F_).computeGram(true).getImplementation());
+          TriangularMatrix Lg(G.computeCholesky(false)); // false=G is not reused
+          const CovarianceMatrix correction((Lg.solveLinearSystem(F_.transpose()*SigmaInv)).computeGram(true).getImplementation());
+          sigmaTheta = CovarianceMatrix((SigmaInv - correction).getImplementation());
+      }
 
       // discretize gradient wrt scale
-      Collection<SymmetricMatrix> dCds(inputDimension, SymmetricMatrix(size));
+      // Use parallelism here for the double loop?
+      Collection<SquareMatrix> dCds(inputDimension, SquareMatrix(size));
+      // Add parallelism to speed-up the double loop?
       for (UnsignedInteger k1 = 0; k1 < size; ++ k1)
       {
         for (UnsignedInteger k2 = 0; k2 <= k1; ++ k2)
         {
-          Matrix parameterGradient(reducedCovarianceModel_.parameterGradient(normalizedInputSample_[k1], normalizedInputSample_[k2]));
+          const Matrix parameterGradient(reducedCovarianceModel_.parameterGradient(normalizedInputSample_[k1], normalizedInputSample_[k2]));
           for (UnsignedInteger j = 0; j < inputDimension; ++ j)
           {
             // assume scale gradient is at the n first components
-            dCds[j](k1, k2) = parameterGradient(j, 0);
-          }
-        }
-      }
+            const Scalar value = parameterGradient(j, 0);
+            dCds[j](k1, k2) = value;
+            dCds[j](k2, k1) = value;
+          } // j
+        } // k2
+      } // k1
 
-      // TODO: cache sigmaTheta
-      SquareMatrix Linv(covarianceCholeskyFactor_.solveLinearSystem(IdentityMatrix(covarianceCholeskyFactor_.getNbRows())).getImplementation());
-      SquareMatrix LLtinv(covarianceCholeskyFactor_.transpose().solveLinearSystem(Linv).getImplementation());
-      SquareMatrix sigmaTheta(LLtinv);
-      if (F_.getNbColumns() > 0) {
-        SquareMatrix FtLLtinvF((F_.transpose()*LLtinv*F_).getImplementation());
-        Matrix FtLLtinvFiFtLLtinv((FtLLtinvF.solveLinearSystem(F_.transpose()*LLtinv)));
-        SquareMatrix LLtinvFFtLLtinvFiFtLLtinv((LLtinv*F_*FtLLtinvFiFtLLtinv).getImplementation());
-        sigmaTheta = sigmaTheta - LLtinvFFtLLtinvFiFtLLtinv;
-      }
-
+      SymmetricMatrix iTheta(inputDimension + 1);
       // lower triangle
       for (UnsignedInteger i = 0; i < inputDimension; ++ i)
       {
+        dCds[i] = sigmaTheta * dCds[i];
         for (UnsignedInteger j = 0; j <= i; ++ j)
         {
-          iTheta(i, j) = (sigmaTheta * dCds[i] * sigmaTheta * dCds[j]).computeTrace();
+          iTheta(i, j) = (dCds[i] * dCds[j]).computeTrace();
         }
       }
       // bottom line
       for (UnsignedInteger j = 0; j < inputDimension; ++ j)
       {
-        iTheta(inputDimension, j) = (sigmaTheta * dCds[j]).computeTrace();
+        iTheta(inputDimension, j) = dCds[j].computeTrace();
       }
       // bottom right corner
       iTheta(inputDimension, inputDimension) = size - beta_.getSize();
