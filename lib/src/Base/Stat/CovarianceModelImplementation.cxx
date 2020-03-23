@@ -811,6 +811,7 @@ void CovarianceModelImplementation::setActiveParameter(const Indices & active)
 {
   if (!active.isIncreasing()) throw InvalidArgumentException(HERE) << "Error: the active parameter indices must be given in increasing order, here active=" << active;
   activeParameter_ = active;
+  onlyScale_ = (activeParameter_.getSize() == inputDimension_) && (activeParameter_.check(inputDimension_));
 }
 
 Indices CovarianceModelImplementation::getActiveParameter() const
@@ -1053,6 +1054,8 @@ void CovarianceModelImplementation::load(Advocate & adv)
   adv.loadAttribute("isDiagonal_", isDiagonal_);
   adv.loadAttribute("nuggetFactor_", nuggetFactor_);
   adv.loadAttribute("activeParameter_", activeParameter_);
+  // To update onlyScale_
+  setActiveParameter(activeParameter_);
   updateOutputCovariance();
 }
 

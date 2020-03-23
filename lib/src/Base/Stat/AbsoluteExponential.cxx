@@ -65,7 +65,7 @@ Scalar AbsoluteExponential::computeStandardRepresentative(const Point & tau) con
 {
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
 
-  Point theta(scale_);
+  Collection<Scalar> theta(scale_);
   switch (scaleParametrization_)
   {
     case STANDARD:
@@ -77,20 +77,19 @@ Scalar AbsoluteExponential::computeStandardRepresentative(const Point & tau) con
       break;
     case LOGINVERSE:
       for(UnsignedInteger i = 0; i < inputDimension_; ++i)
-        theta[i] = std::exp(- scale_[i]);
+        theta[i] = std::exp(-scale_[i]);
       break;
   }
 
-  Point tauOverTheta(inputDimension_);
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / theta[i];
-  const Scalar tauOverThetaNorm = tauOverTheta.norm1();
+  Scalar tauOverThetaNorm = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverThetaNorm += std::abs(tau[i] / theta[i]);
   return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-tauOverThetaNorm);
 }
 
 Scalar AbsoluteExponential::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
     const Collection<Scalar>::const_iterator & t_begin) const
 {
-  Point theta(scale_);
+  Collection<Scalar> theta(scale_);
   switch (scaleParametrization_)
   {
     case STANDARD:
@@ -126,25 +125,55 @@ Matrix AbsoluteExponential::partialGradient(const Point & s,
   Point tauOverTheta(inputDimension_);
   for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const Scalar norm1 = tauOverTheta.norm1();
+  const Scalar sigma2 = amplitude_[0] * amplitude_[0];
   // For zero norm
   // Norm1 is null if all elements are zero
   // In that case gradient is not defined
   if (norm1 == 0.0)
   {
     Matrix gradient(inputDimension_, 1);
-    for (UnsignedInteger i = 0; i < inputDimension_; ++i) gradient(i, 0) = -amplitude_[0] * amplitude_[0] / scale_[i];
+    for (UnsignedInteger i = 0; i < inputDimension_; ++i) gradient(i, 0) = -sigma2 / scale_[i];
     return gradient;
   }
   // General case
-  const Scalar value = std::exp(-norm1);
+  const Scalar value = std::exp(-norm1) * sigma2;
   // Gradient take as factor sign(tau_i) /theta_i
   Point factor(inputDimension_);
   for (UnsignedInteger i = 0; i < inputDimension_; ++i)
   {
-    factor[i] = amplitude_[0] * amplitude_[0] / scale_[i];
+    factor[i] = value / scale_[i];
     if (tau[i] > 0) factor[i] *= -1.0;
   }
-  return Matrix(inputDimension_, 1, factor * value) ;
+  return Matrix(inputDimension_, 1, factor) ;
+}
+
+/* Gradient wrt parameters */
+Matrix AbsoluteExponential::parameterGradient(const Point & s,
+    const Point & t) const
+{
+  // If the active parameters are *exactly* the scale parameters
+  Matrix gradient(inputDimension_, 1);
+  if (onlyScale_)
+    {
+      if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+      if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+      Point tauOverTheta(inputDimension_);
+      for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = (s[i] - t[i]) / scale_[i];
+      const Scalar norm1 = tauOverTheta.norm1();
+      const Scalar sigma2 = amplitude_[0] * amplitude_[0];
+      // For zero norm
+      // Norm1 is null if all elements are zero
+      // In that case gradient is null
+      if (norm1 == 0.0)
+        return gradient;
+      // General case
+      const Scalar value = std::exp(-norm1) * sigma2;
+      // Gradient take as factor sign(tau_i) /theta_i
+      for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+        gradient(i, 0) = std::abs(tauOverTheta[i]) * value / scale_[i];
+      return gradient;
+    }
+  return CovarianceModelImplementation::parameterGradient(s, t);
 }
 
 /* String converter */

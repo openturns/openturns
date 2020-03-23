@@ -60,6 +60,10 @@ public:
   virtual Matrix partialGradient(const Point & s,
                                  const Point & t) const;
 
+  /** Parameter gradient */
+  virtual Matrix parameterGradient(const Point & s,
+                                   const Point & t) const;
+
   /** String converter */
   String __repr__() const;
 

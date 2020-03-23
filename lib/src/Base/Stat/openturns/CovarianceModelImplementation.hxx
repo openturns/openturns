@@ -248,6 +248,8 @@ protected:
   /** Active parameters */
   Indices activeParameter_;
 
+  /** Flag to tell if the active parameters are limited to the scale parameters */
+  Bool onlyScale_;
 } ; /* class CovarianceModelImplementation */
 
 END_NAMESPACE_OPENTURNS
