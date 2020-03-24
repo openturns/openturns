@@ -66,7 +66,7 @@ public:
    */
   PersistentObject()
     : p_name_(),
-      id_(IdFactory::BuildId()),
+      id_(0),
       shadowedId_(id_),
       studyVisible_(true)
   {}
@@ -74,7 +74,7 @@ public:
   /** Copy constructor */
   PersistentObject(const PersistentObject & other)
     : p_name_(other.p_name_),
-      id_(IdFactory::BuildId()),
+      id_(0),
       shadowedId_(other.shadowedId_),
       studyVisible_(other.studyVisible_)
   {}
@@ -159,6 +159,8 @@ public:
   inline
   Id getId() const
   {
+    if (!id_)
+      id_ = IdFactory::BuildId();
     return id_;
   }
 
@@ -174,6 +176,8 @@ public:
   inline
   Id getShadowedId() const
   {
+    if (!shadowedId_)
+      shadowedId_ = getId();
     return shadowedId_;
   }
 
@@ -282,7 +286,7 @@ private:
    * because it allows the chaining of objects even if they are
    * relocated.
    */
-  const Id id_;
+  mutable Id id_;
 
   /**
    * The shadowed id is used when object is reloaded. The object gets
@@ -294,7 +298,7 @@ private:
    * is never seen except by the object factory.
    * @internal
    */
-  Id shadowedId_;
+  mutable Id shadowedId_;
 
   /**
    * This flag is used by the Study to know if the object should be displayed
