@@ -11,17 +11,11 @@ add_subdirectory (Uncertainty)
 
 set_source_files_properties (Base/Func/SpecFunc/Faddeeva.cc PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 
-# OptPDS and OptGSS cannot both be included as OptDirect is redefined
-set_source_files_properties (Base/Optim/OptGSS.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
-
 # Exclude Ceres sources from unity build (templates take much memory)
 set_source_files_properties (Base/Optim/Ceres.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
 
 # Exclude Dlib sources from unity build (Lapack re-included)
 set_source_files_properties (Base/Optim/Dlib.cxx Base/Optim/DlibFunctions.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
-
-# Exclude Eigen3 sources from unity build
-set_source_files_properties (Base/Type/SparseMatrix.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
 
 # Exclude Bonmin/Ipopt sources
 set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)

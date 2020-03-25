@@ -219,7 +219,7 @@ KarhunenLoeveP1Algorithm * KarhunenLoeveP1Algorithm::clone() const
 
 
 /* Compute P1 gram as a SparseMatrix */
-SparseMatrix computeSparseAugmentedP1Gram(const Mesh & mesh, const UnsignedInteger covarianceDimension)
+static SparseMatrix ComputeSparseAugmentedP1Gram(const Mesh & mesh, const UnsignedInteger covarianceDimension)
 {
   // If no simplex, the P1 gram matrix is null
   if (mesh.getSimplicesNumber() == 0)
@@ -258,7 +258,7 @@ SparseMatrix computeSparseAugmentedP1Gram(const Mesh & mesh, const UnsignedInteg
 
 
 /* Call to spectra routines to compute EV */
-void computeEVWithSpectra(const UnsignedInteger augmentedDimension,
+static void ComputeEVWithSpectra(const UnsignedInteger augmentedDimension,
                           const int nev,
                           const int ncv,
                           Pointer<KLGenMatProd> op,
@@ -347,7 +347,7 @@ void KarhunenLoeveP1Algorithm::run()
 
   // Compute the extended Gram matrix of the mesh
   LOGINFO("Build the Gram matrix");
-  SparseMatrix G(computeSparseAugmentedP1Gram(mesh_, dimension));
+  SparseMatrix G(ComputeSparseAugmentedP1Gram(mesh_, dimension));
   // Add epsilon to the diagonal of extended Gram matrix
   if (epsilon > 0.0)
     for (UnsignedInteger i = 0; i < augmentedDimension; ++i)
@@ -377,7 +377,7 @@ void KarhunenLoeveP1Algorithm::run()
 
     // Solve EV problem
     LOGINFO("Solve the eigenvalue problem");
-    computeEVWithSpectra( augmentedDimension,
+    ComputeEVWithSpectra( augmentedDimension,
                           nev,
                           ncv,
                           op,

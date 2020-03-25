@@ -54,6 +54,8 @@ P1LagrangeEvaluation::P1LagrangeEvaluation(const Field & field)
 /* Parameters constructor */
 P1LagrangeEvaluation::P1LagrangeEvaluation(const ProcessSample & sample)
   : EvaluationImplementation()
+  , nearestNeighbour_(sample.getMesh().getVertices())
+  , enclosingSimplex_(sample.getMesh().getVertices(), sample.getMesh().getSimplices())
 {
   const Mesh mesh(sample.getMesh());
   const UnsignedInteger length = mesh.getVerticesNumber();

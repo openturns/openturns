@@ -714,12 +714,14 @@ OT_Distribution_computeProbability_doc
 
 Parameters
 ----------
-p : float, :math:`0 < p < 1`
+p : float (or sequence of float), :math:`0 < p < 1`
     Quantile function input (a probability).
+tail : bool, optional (default=False)
+    Whether p should be interpreted as the complementary probability.
 
 Returns
 -------
-X : :class:`~openturns.Point`
+X : :class:`~openturns.Point` (or :class:`~openturns.Sample`)
     Quantile at probability level :math:`p`.
 
 Notes

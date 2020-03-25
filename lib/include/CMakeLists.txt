@@ -58,11 +58,12 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/OTconfigure_args.hxx.in
                 @ONLY
              )
 
-install (DIRECTORY openturns DESTINATION ${OPENTURNS_INCLUDE_PATH})
+# with in-source build, installed-OTconfig.h must overwrite the internal openturns/OTconfig.h
 install (FILES ${CMAKE_CURRENT_BINARY_DIR}/openturns/installed-OTconfig.h
           DESTINATION ${OPENTURNS_INCLUDE_PATH}/openturns
           RENAME OTconfig.h
        )
+install (DIRECTORY openturns DESTINATION ${OPENTURNS_INCLUDE_PATH})
 
 if (MSVC OR WINTEL)
     install (FILES pthread_win32/pthread.h

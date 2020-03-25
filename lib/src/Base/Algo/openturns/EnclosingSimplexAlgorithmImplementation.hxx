@@ -62,7 +62,7 @@ public:
   IndicesCollection getSimplices() const;
 
   // Called by constructor
-  void setVerticesAndSimplices(const Sample & vertices, const IndicesCollection & simplices);
+  virtual void setVerticesAndSimplices(const Sample & vertices, const IndicesCollection & simplices);
 
   /** Get the index of the enclosing simlex of the given point */
   virtual UnsignedInteger query(const Point & x) const;

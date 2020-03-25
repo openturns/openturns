@@ -30,8 +30,8 @@ BEGIN_NAMESPACE_OPENTURNS
 /* Id accessor */
 Id IdFactory::BuildId()
 {
-  static AtomicInt IdFactory_NextId;
-  return IdFactory_NextId.fetchAndAdd( 1 );
+  static AtomicInt IdFactory_NextId = 1;
+  return IdFactory_NextId.fetchAndAdd(1);
 }
 
 END_NAMESPACE_OPENTURNS

@@ -56,7 +56,7 @@ with :math:`\mu_l(\vect{x}) = \sum_{j=1}^{n_l} \beta_j^l \varphi_j^l(\vect{x})` 
 
 The estimation of the all parameters (the trend coefficients :math:`\beta_j^l`, the scale :math:`\vect{\theta}` and the amplitude :math:`\vect{\sigma}`) are made by the :class:`~openturns.GeneralLinearModelAlgorithm` class.
 
-The Kriging algorithm makes the general linear model interpolary on the input samples. The Kriging meta model :math:`\tilde{\cM}` is defined by:
+The Kriging algorithm makes the general linear model interpolating on the input samples. The Kriging meta model :math:`\tilde{\cM}` is defined by:
 
 
 .. math::

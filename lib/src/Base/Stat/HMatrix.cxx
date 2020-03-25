@@ -111,6 +111,7 @@ Point HMatrix::getDiagonal() const
 
 void HMatrix::addIdentity(OT::Scalar alpha)
 {
+  copyOnWrite();
   getImplementation()->addIdentity(alpha);
 }
 

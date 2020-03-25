@@ -530,12 +530,12 @@ bool IpoptProblem::eval_grad_gi(int n,
 }
 
 
-void IpoptProblem::finalize_solution(::Ipopt::SolverReturn status, ::Ipopt::Index n,
-                               const ::Ipopt::Number* x, const ::Ipopt::Number* z_L,
-                               const ::Ipopt::Number* z_U, ::Ipopt::Index m, const ::Ipopt::Number* g,
-                               const ::Ipopt::Number* lambda, ::Ipopt::Number obj_value,
-                               const ::Ipopt::IpoptData* ip_data,
-                               ::Ipopt::IpoptCalculatedQuantities* ip_cq)
+void IpoptProblem::finalize_solution(::Ipopt::SolverReturn /*status*/, ::Ipopt::Index n,
+                               const ::Ipopt::Number* x, const ::Ipopt::Number* /*z_L*/,
+                               const ::Ipopt::Number* /*z_U*/, ::Ipopt::Index /*m*/, const ::Ipopt::Number* /*g*/,
+                               const ::Ipopt::Number* /*lambda*/, ::Ipopt::Number obj_value,
+                               const ::Ipopt::IpoptData* /*ip_data*/,
+                               ::Ipopt::IpoptCalculatedQuantities* /*ip_cq*/)
 {
   // Convert x to OT::Point
   std::copy(x, x + n, optimalPoint_.begin());

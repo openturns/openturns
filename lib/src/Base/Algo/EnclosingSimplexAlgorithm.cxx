@@ -119,6 +119,7 @@ IndicesCollection EnclosingSimplexAlgorithm::getSimplices() const
 
 void EnclosingSimplexAlgorithm::setVerticesAndSimplices(const Sample & vertices, const IndicesCollection & simplices)
 {
+  copyOnWrite();
   getImplementation()->setVerticesAndSimplices(vertices, simplices);
 }
 
