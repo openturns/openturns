@@ -35,6 +35,7 @@ set (IPOPT_DEFINITIONS ${PC_IPOPT_CFLAGS_OTHER})
 # Include directories
 find_path (IPOPT_INCLUDE_DIR
   NAMES IpIpoptNLP.hpp
+  PATH_SUFFIXES coin-or coin
   HINTS ${PC_IPOPT_INCLUDEDIR}
 )
 
