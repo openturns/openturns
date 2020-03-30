@@ -105,7 +105,7 @@ Parameters
 ----------
 values : sequence of float
     Values of fixed parameters.
-indices : sequence of int
+positions : sequence of int
     Indices of fixed parameters.
 
 Examples
