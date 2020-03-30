@@ -21,25 +21,25 @@ try:
     distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*2)
     bounds = distribution.getRange()    
     design = distribution.getSample(samplesize)
-    PlotDesign(design);
+    fig = PlotDesign(design);
 
     # Plot 3D - basic
     distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*3)
     bounds = distribution.getRange()    
     design = distribution.getSample(samplesize)
-    PlotDesign(design);
+    fig = PlotDesign(design)
 
     # Plot 2D - set bounds and subdivisions
     distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*2)
     bounds = distribution.getRange()    
     design = distribution.getSample(samplesize)
-    PlotDesign(design, bounds, [10, 10])
+    fig = PlotDesign(design, bounds, [10, 10])
 
     # Plot 3D - set bounds and subdivisions
     distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*3)
     bounds = distribution.getRange()
     design = distribution.getSample(samplesize)
-    PlotDesign(design, bounds, [10, 10, 10])
+    fig = PlotDesign(design, bounds, [10, 10, 10])
 
     # Plot 2D - advanced - enable ticks
     distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*2)
@@ -59,20 +59,20 @@ try:
     distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*2)
     bounds = distribution.getRange()    
     design = distribution.getSample(samplesize)
-    PlotDesign(design, bounds, [10, 5]);
+    fig = PlotDesign(design, bounds, [10, 5]);
 
     # Plot 3D - advanced - unequal number of divisions
     distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*3)
     bounds = distribution.getRange()    
     design = distribution.getSample(samplesize)
-    PlotDesign(design, bounds, [10, 5, 3]);
+    fig = PlotDesign(design, bounds, [10, 5, 3]);
 
     # Plot 2D - set figure prior to calling the plot
     distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*2)
     bounds = distribution.getRange()    
     design = distribution.getSample(samplesize)
     fig = plt.figure()
-    PlotDesign(design, figure = fig);
+    fig = PlotDesign(design, figure = fig);
 
 except:
     traceback.print_exc()

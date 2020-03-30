@@ -853,6 +853,7 @@ def PlotDesign(design, bounds = None, subdivisions = None,
     # set figure
     if figure is None:
         figure = plt.figure()
+        axes = figure.axes
     else:
         # Figure exists: get the axes
         axes = figure.axes
