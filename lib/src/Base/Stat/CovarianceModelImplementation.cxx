@@ -164,6 +164,12 @@ CovarianceMatrix CovarianceModelImplementation::operator() (const Point & s,
     const Point & t) const
 {
   const Scalar rho = computeStandardRepresentative(s, t);
+  if (outputDimension_ == 1)
+    {
+      CovarianceMatrix result(1);
+      result(0, 0) = rho * outputCovariance_(0, 0);
+      return result;
+    }
   return CovarianceMatrix((outputCovariance_ * rho).getImplementation());
 }
 

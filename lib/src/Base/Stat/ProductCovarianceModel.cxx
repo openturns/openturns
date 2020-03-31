@@ -171,9 +171,8 @@ Scalar ProductCovarianceModel::computeStandardRepresentative(const Collection<Sc
   UnsignedInteger start = 0;
   for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
   {
-    const UnsignedInteger localInputDimension = collection_[i].getInputDimension();
     rho *= collection_[i].getImplementation()->computeStandardRepresentative(s_begin + start, t_begin + start);
-    start += localInputDimension;
+    start += collection_[i].getInputDimension();
   }
   return rho;
 }
