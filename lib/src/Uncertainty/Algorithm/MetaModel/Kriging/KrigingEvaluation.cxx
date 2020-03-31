@@ -141,14 +141,58 @@ struct KrigingEvaluationPointFunctor
 
 }; // struct KrigingEvaluationPointFunctor
 
+struct KrigingEvaluationPointFunctor1D
+{
+  const Point & input_;
+  const KrigingEvaluation & evaluation_;
+  Scalar accumulator_;
+
+  KrigingEvaluationPointFunctor1D(const Point & input,
+                                  const KrigingEvaluation & evaluation)
+    : input_(input)
+    , evaluation_(evaluation)
+    , accumulator_(evaluation.getOutputDimension())
+  {}
+
+  KrigingEvaluationPointFunctor1D(const KrigingEvaluationPointFunctor1D & other,
+                                  TBB::Split)
+    : input_(other.input_)
+    , evaluation_(other.evaluation_)
+    , accumulator_(0.0)
+  {}
+
+  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r )
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+      accumulator_ += evaluation_.covarianceModel_.computeAsScalar(input_, evaluation_.inputSample_[i]) * evaluation_.gamma_(i, 0);
+  } // operator()
+
+  inline void join(const KrigingEvaluationPointFunctor1D & other)
+  {
+    accumulator_ += other.accumulator_;
+  }
+
+}; // struct KrigingEvaluationPointFunctor1D
+
 /* Operator () */
 Point KrigingEvaluation::operator()(const Point & inP) const
 {
   const UnsignedInteger trainingSize = inputSample_.getSize();
+  const UnsignedInteger dimension = getOutputDimension();
+  Point value(dimension);
   // Evaluate the kernel part in parallel
-  KrigingEvaluationPointFunctor functor( inP, *this );
-  TBB::ParallelReduce( 0, trainingSize, functor );
-  Point value(functor.accumulator_);
+  if (dimension == 1)
+  {
+    KrigingEvaluationPointFunctor1D functor( inP, *this );
+    TBB::ParallelReduce( 0, trainingSize, functor );
+    value[0] = functor.accumulator_;
+  }
+  else
+  {
+    KrigingEvaluationPointFunctor functor( inP, *this );
+    TBB::ParallelReduce( 0, trainingSize, functor );
+    value = functor.accumulator_;
+  }
   // Evaluate the basis part sequentially
   // Number of basis is 0 or outputDimension
   for (UnsignedInteger i = 0; i < basis_.getSize(); ++i)
@@ -201,6 +245,39 @@ struct KrigingEvaluationSampleFunctor
   } // operator()
 }; // struct KrigingEvaluationSampleFunctor
 
+struct KrigingEvaluationSampleFunctor1D
+{
+  const Sample & input_;
+  Sample & output_;
+  const KrigingEvaluation & evaluation_;
+  UnsignedInteger trainingSize_;
+
+  KrigingEvaluationSampleFunctor1D(const Sample & input,
+                                   Sample & output,
+                                   const KrigingEvaluation & evaluation)
+    : input_(input)
+    , output_(output)
+    , evaluation_(evaluation)
+    , trainingSize_(evaluation.inputSample_.getSize())
+  {
+    // Nothing to do
+  }
+
+  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  {
+    const UnsignedInteger inputDimension = input_.getDimension();
+    const UnsignedInteger start = r.begin();
+    const UnsignedInteger size = r.end() - start;
+    Scalar value = 0.0;
+    for (UnsignedInteger i = 0; i != size; ++i)
+    {
+      for (UnsignedInteger j = 0; j < trainingSize_; ++j)
+        value += evaluation_.covarianceModel_.getImplementation()->computeAsScalar(input_[start + i], evaluation_.inputSample_[j]) * evaluation_.gamma_(j, 0);
+      output_(start + i, 0) = value;
+    }
+  } // operator()
+}; // struct KrigingEvaluationSampleFunctor1D
+
 Sample KrigingEvaluation::operator()(const Sample & inS) const
 {
   // Evaluation on the sample using parallel functors
@@ -208,8 +285,16 @@ Sample KrigingEvaluation::operator()(const Sample & inS) const
   const UnsignedInteger dimension = getOutputDimension();
 
   Sample result(size, dimension);
-  const KrigingEvaluationSampleFunctor functor( inS, result, *this );
-  TBB::ParallelFor( 0, size, functor );
+  if (dimension == 1)
+  {
+    const KrigingEvaluationSampleFunctor1D functor( inS, result, *this);
+    TBB::ParallelFor( 0, size, functor );
+  }
+  else
+  {
+    const KrigingEvaluationSampleFunctor functor( inS, result, *this );
+    TBB::ParallelFor( 0, size, functor );
+  }
 
   // Evaluate the basis part sequentially
   // Number of basis is 0 or outputDimension
