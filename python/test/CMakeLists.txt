@@ -75,9 +75,6 @@ endmacro (ot_pyinstallcheck_test)
 # Common
 if (LIBXML2_FOUND)
   ot_pyinstallcheck_test (Object_pickle)
-  if (MINGW)
-    set_tests_properties (pyinstallcheck_Object_pickle PROPERTIES RUN_SERIAL TRUE)
-  endif ()
 endif ()
 ot_pyinstallcheck_test (ComparisonOperator_std)
 if (LIBXML2_FOUND AND SWIG_VERSION VERSION_GREATER 3) # Study_std/py3k: NameError: Unknown C global variable
