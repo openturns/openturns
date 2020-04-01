@@ -64,9 +64,12 @@ SquaredExponential * SquaredExponential::clone() const
 Scalar SquaredExponential::computeStandardRepresentative(const Point & tau) const
 {
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
-  Point tauOverTheta(inputDimension_);
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const Scalar tauOverTheta2 = tauOverTheta.normSquare();
+  Scalar tauOverTheta2 = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar dx = tau[i] / scale_[i];
+    tauOverTheta2 += dx * dx;
+  }
   return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-0.5 * tauOverTheta2);
 }
 

@@ -196,8 +196,24 @@ Scalar CovarianceModelImplementation::computeAsScalar (const Point & s,
 Scalar CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
     const Collection<Scalar>::const_iterator & t_begin) const
 {
+  // Work on iterators
+  // Major 1D models implement the computeStandardRepresentative method
+  // We rely on this previous method to evaluate the covariance as scalar
+  // Otherwise we build Points & rely on a more global method (exceptions are
+  // local implementations)
   if (outputDimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << outputDimension_ << ", expected dimension=1.";
-  return outputCovariance_(0, 0) * computeStandardRepresentative(s_begin, t_begin);
+  if (definesComputeStandardRepresentative_) return outputCovariance_(0, 0) * computeStandardRepresentative(s_begin, t_begin);
+  // Case we do not define computeStandardRepresentative
+  Collection<Scalar>::const_iterator s_it = s_begin;
+  Collection<Scalar>::const_iterator t_it = t_begin;
+  Point s(inputDimension_, 0.0);
+  Point t(inputDimension_, 0.0);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
+  {
+    s[i] = *s_it;
+    t[i] = *t_it;
+  }
+  return computeAsScalar(s, t);
 }
 
 /* Computation of the covariance function */

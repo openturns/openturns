@@ -22,6 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Cobyla.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/DistFunc.hxx"
 #include "openturns/KrigingAlgorithm.hxx"
 #include "openturns/MultiStart.hxx"
 #include "openturns/ComposedDistribution.hxx"
@@ -92,7 +93,7 @@ public:
     const Scalar sk = sqrt(sk2);
     if (!SpecFunc::IsNormal(sk)) return Point(1, -SpecFunc::MaxScalar);
     const Scalar ratio = fmMk / sk;
-    Scalar ei = fmMk * normal_.computeCDF(ratio) + sk * normal_.computePDF(ratio);
+    Scalar ei = fmMk * DistFunc::pNormal(ratio) + sk * DistFunc::pNormal(ratio);
     if (noiseModel_.getOutputDimension() == 1) // if provided
     {
       const Scalar noiseVariance = noiseModel_(x)[0];
@@ -132,7 +133,6 @@ public:
   }
 
 protected:
-  Normal normal_;
   Scalar optimalValue_;
   KrigingResult metaModelResult_;
   Function noiseModel_;
