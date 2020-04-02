@@ -2982,7 +2982,7 @@ CovarianceMatrix DistributionImplementation::getCovariance() const
 CorrelationMatrix DistributionImplementation::getCorrelation() const
 {
   // To make sure the covariance is up to date
-  covariance_ = getCovariance();
+  (void) getCovariance();
   CorrelationMatrix R(dimension_);
   Point sigma(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
