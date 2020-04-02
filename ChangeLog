@@ -27,6 +27,7 @@
 
 ==== New classes ====
  * Ipopt optimization solver
+ * BlockIndependentDistribution
 
 ==== Documentation ====
 
