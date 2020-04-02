@@ -1,0 +1,110 @@
+Point=  [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3]
+ddf      = [-0.000319153,-0.000319153,-0.000370522,-0.000346163,-0.000389754,-0.000368254,-0.000368254]
+ddf (ref)= [-0.000319153,-0.000319153,-0.000370522,-0.000346163,-0.000389754,-0.000368254,-0.000368254]
+pdf      =0.00160
+pdf (ref)=0.00160
+cdf      =0.05406
+cdf (ref)=0.05406
+Survival      =0.00350
+Survival (ref)=0.00350
+Inverse survival      = [-2.43216,-2.43216,-2.43216,-2.43216,-2.43216,-2.43216,-2.43216]
+Inverse survival (ref)= [-2.43216,-2.43216,-2.43216,-2.43216,-2.43216,-2.43216,-2.43216]
+Survival(inverse survival)=0.95000
+Quantile      = [1.26874,1.26874,1.26874,1.26874,1.26874,1.26874,1.26874]
+Quantile (ref)= [1.26874,1.26874,1.26874,1.26874,1.26874,1.26874,1.26874]
+CDF(quantile) =0.50000
+Distribution  BlockIndependentDistribution(ComposedDistribution(Normal(mu = 0, sigma = 1), Normal(mu = 0, sigma = 1), AliMikhailHaqCopula(theta = 0.5)), Normal(mu = [1,1,1], sigma = [2,2,2], R = [[ 1    0.5  0.25 ]
+ [ 0.5  1    0    ]
+ [ 0.25 0    1    ]]), ComposedDistribution(Exponential(lambda = 1, gamma = 0), Exponential(lambda = 1, gamma = 0), FrankCopula(theta = 0.5)))
+Elliptical distribution=  False
+Continuous =  True
+Elliptical =  False
+Independent =  False
+oneRealization= [0.331526,1.25776,-1.53235,-1.02527,2.80174,0.065292,0.288526]
+oneSample first= [0.566232,-0.12788,0.289986,3.13438,1.95991,1.15383,1.83149]  last= [0.81246,-0.486535,-0.92893,-0.796484,-2.04345,0.0598465,0.191726]
+mean= [0.000343667,-0.000446093,0.993879,1.0073,1.00388,1.00092,1.00104]
+covariance= 7x7
+[[  1.03      0.2051   -0.03965  -0.02592  -0.01009   0.01133   0.00288  ]
+ [  0.2051    1.002    -0.03296  -0.00766   0.0216    0.01271   0.004583 ]
+ [ -0.03965  -0.03296   4.004     2.014     1.019     0.01587  -0.003804 ]
+ [ -0.02592  -0.00766   2.014     3.967    -0.00237  -0.02184  -0.003111 ]
+ [ -0.01009   0.0216    1.019    -0.00237   4.137     0.002132 -0.01288  ]
+ [  0.01133   0.01271   0.01587  -0.02184   0.002132  1.002     0.07562  ]
+ [  0.00288   0.004583 -0.003804 -0.003111 -0.01288   0.07562   1.007    ]]
+Point=  [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3]
+ddf     = [-0.000161544,-0.000161544,4.80573e-05,0.000108129,0.000120143,-0.000877177,-0.000877177]
+pdf     =0.00076
+cdf=0.00284
+Survival      =0.03219
+Survival (ref)=0.03219
+Inverse survival= [-2.4345,-2.4345,-3.869,-3.869,-3.869,0.0074841,0.0074841]
+Survival(inverse survival)=0.95000
+Quantile= [1.28123,1.28123,3.56246,3.56246,3.56246,2.30202,2.30202]
+CDF(quantile)=0.50000
+entropy     =10.96404
+entropy (MC)=10.96560
+mean= [1.52656e-16,1.52656e-16,1,1,1,1,1]
+covariance= 7x7
+[[ 1       0.184   0       0       0       0       0       ]
+ [ 0.184   1       0       0       0       0       0       ]
+ [ 0       0       4       2       1       0       0       ]
+ [ 0       0       2       4       0       0       0       ]
+ [ 0       0       1       0       4       0       0       ]
+ [ 0       0       0       0       0       1       0.06227 ]
+ [ 0       0       0       0       0       0.06227 1       ]]
+correlation= 7x7
+[[ 1       0.184   0       0       0       0       0       ]
+ [ 0.184   1       0       0       0       0       0       ]
+ [ 0       0       1       0.5     0.25    0       0       ]
+ [ 0       0       0.5     1       0       0       0       ]
+ [ 0       0       0.25    0       1       0       0       ]
+ [ 0       0       0       0       0       1       0.06227 ]
+ [ 0       0       0       0       0       0.06227 1       ]]
+spearman= 7x7
+[[ 1       0.1924  0       0       0       0       0       ]
+ [ 0.1924  1       0       0       0       0       0       ]
+ [ 0       0       1       0.4826  0.2394  0       0       ]
+ [ 0       0       0.4826  1       0       0       0       ]
+ [ 0       0       0.2394  0       1       0       0       ]
+ [ 0       0       0       0       0       1       0.08306 ]
+ [ 0       0       0       0       0       0.08306 1       ]]
+kendall= 7x7
+[[ 1      0.493  0      0      0      0      0      ]
+ [ 0.493  1      0      0      0      0      0      ]
+ [ 0      0      1      0.3333 0.1609 0      0      ]
+ [ 0      0      0.3333 1      0      0      0      ]
+ [ 0      0      0.1609 0      1      0      0      ]
+ [ 0      0      0      0      0      1      0.148  ]
+ [ 0      0      0      0      0      0.148  1      ]]
+conditional PDF=0.55675
+conditional CDF=0.49062
+conditional quantile=0.82304
+sequential conditional PDF= [0.398444,0.407104,0.185928,0.227445,0.203657,0.57695,0.525447]
+sequential conditional CDF( [0.05,0.15,0.25,0.35,0.45,0.55,0.65] )= [0.519939,0.545655,0.35383,0.436925,0.415568,0.42305,0.487447]
+sequential conditional quantile( [0.519939,0.545655,0.35383,0.436925,0.415568,0.42305,0.487447] )= [0.05,0.15,0.25,0.35,0.45,0.55,0.65]
+indices= [1, 2, 3, 5, 6]
+margins= BlockIndependentDistribution(ComposedDistribution(Normal(mu = 0, sigma = 1)), Normal(mu = [1,1], sigma = [2,2], R = [[ 1   0.5 ]
+ [ 0.5 1   ]]), ComposedDistribution(Exponential(lambda = 1, gamma = 0), Exponential(lambda = 1, gamma = 0), FrankCopula(theta = 0.5)))
+margins PDF=0.01057
+margins CDF=0.00675
+margins quantile= [2.30912,5.61824,5.61824,4.55939,4.55939]
+margins CDF(quantile)=0.95000
+margins realization= [-0.866905,0.766798,0.522253,0.432364,3.37405]
+isoprobabilistic transformation (general normal)= [((RosenblattEvaluation(AliMikhailHaqCopula(theta = 0.5)->Normal(2))o(| y0 = Normal(mu = 0, sigma = 1) -> y0 : Uniform(a = 0, b = 1)
+| y1 = Normal(mu = 0, sigma = 1) -> y1 : Uniform(a = 0, b = 1)
+))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1]),(RosenblattEvaluation(Normal(mu = [1,1,1], sigma = [2,2,2], R = [[ 1    0.5  0.25 ]
+ [ 0.5  1    0    ]
+ [ 0.25 0    1    ]])->Normal(3))o([x0,x1,x2,x3,x4,x5,x6]->[x2,x3,x4]),((RosenblattEvaluation(FrankCopula(theta = 0.5)->Normal(2))o(| y0 = Exponential(lambda = 1, gamma = 0) -> y0 : Uniform(a = 0, b = 1)
+| y1 = Exponential(lambda = 1, gamma = 0) -> y1 : Uniform(a = 0, b = 1)
+))o([x0,x1,x2,x3,x4,x5,x6]->[x5,x6])]
+isoprobabilistic transformation (general non-normal)= [(RosenblattEvaluation(class=SklarCopula name=SklarCopula dimension=2 distribution=class=Student name=Student dimension=2 nu=3 mean=class=Point name=Unnamed dimension=2 values=[1,1] sigma=class=Point name=Unnamed dimension=2 values=[3,3] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]->Normal(2))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1]),(RosenblattEvaluation(Normal(mu = [1,1,1], sigma = [2,2,2], R = [[ 1    0.5  0.25 ]
+ [ 0.5  1    0    ]
+ [ 0.25 0    1    ]])->Normal(3))o([x0,x1,x2,x3,x4,x5,x6]->[x2,x3,x4]),((RosenblattEvaluation(FrankCopula(theta = 0.5)->Normal(2))o(| y0 = Exponential(lambda = 1, gamma = 0) -> y0 : Uniform(a = 0, b = 1)
+| y1 = Exponential(lambda = 1, gamma = 0) -> y1 : Uniform(a = 0, b = 1)
+))o([x0,x1,x2,x3,x4,x5,x6]->[x5,x6])]
+conditional PDF=0.55675
+conditional CDF=0.49062
+conditional quantile=0.82304
+sequential conditional PDF= [1,1.06099,0.185928,0.227445,0.203657,0.57695,0.525447]
+sequential conditional CDF( [0.05,0.15,0.25,0.35,0.45,0.55,0.65] )= [0.05,0.220267,0.35383,0.436925,0.415568,0.42305,0.487447]
+sequential conditional quantile( [0.05,0.220267,0.35383,0.436925,0.415568,0.42305,0.487447] )= [0.05,0.15,0.25,0.35,0.45,0.55,0.65]
