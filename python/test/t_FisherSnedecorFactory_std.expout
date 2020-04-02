@@ -7,3 +7,8 @@ Distribution from parameters      = FisherSnedecor(d1 = 4.5, d2 = 8.4)
 Typed estimated distribution      = FisherSnedecor(d1 = 4.5705, d2 = 8.2066)
 Default typed distribution        = FisherSnedecor(d1 = 1, d2 = 5)
 Typed distribution from parameters= FisherSnedecor(d1 = 4.5, d2 = 8.4)
+Estimated distribution with default estimator = FisherSnedecor(d1 = 4.5705, d2 = 8.2066)
+Estimated distribution with moments= FisherSnedecor(d1 = 5.082, d2 = 8.2315)
+Estimated distribution with likelihoodMax.= FisherSnedecor(d1 = 4.5705, d2 = 8.2066)
+Build method of moments
+Build method of likelihood maximization

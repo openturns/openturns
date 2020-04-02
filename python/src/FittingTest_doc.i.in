@@ -219,46 +219,92 @@ sample : 2-d sequence of float
     Tested sample.
 model : :class:`~openturns.Distribution` or :class:`~openturns.DistributionFactory`
     Tested distribution.
-level : float, :math:`0 \leq \alpha \leq 1`, optional
+level : float, :math:`0 \leq \alpha \leq 1`, optional (default level = 0.05). 
     This is the risk :math:`\alpha` of committing a Type I error,
     that is an incorrect rejection of a true null hypothesis.
-n_parameters : int, :math:`0 \leq k`, optional
-    The number of parameters in the distribution that have been estimated from
-    the sample.
-    This parameter must not be provided if a :class:`~openturns.DistributionFactory`
-    was provided as the second argument (it will internally be set to the
-    number of parameters estimated by the :class:`~openturns.DistributionFactory`).
-    It can be specified if a :class:`~openturns.Distribution` was provided
-    as the second argument, but if it is not, it will be set equal to 0.
 
 Returns
 -------
 fitted_dist : :class:`~openturns.Distribution`
-    Estilmated distribution (if model is of type :class:`~openturns.DistributionFactory`).
+    Estimated distribution (if model is of type :class:`~openturns.DistributionFactory`).
 test_result : :class:`~openturns.TestResult`
     Test result.
 
 Raises
 ------
-TypeError : If the distribution is not continuous or if the sample is
+TypeError : 
+    If the distribution is not continuous or if the sample is
     multivariate.
 
 Notes
 -----
 The present implementation of the Kolmogorov goodness-of-fit test is
-two-sided. This uses an external C implementation of the Kolmogorov cumulative
-distribution function by [simard2011]_.
-If it is called with a distribution, it is supposed to be fully specified ie no parameter has been estimated from the given sample. Otherwise, the distribution is estimated using the given factory based on the given sample and the distribution of the test statistics is estimated using a Monte Carlo approach (see the *FittingTest-KolmogorovSamplingSize* key in :class:`~openturns.ResourceMap`).
+two-sided. 
+
+This static method can be used in two different ways.
+
+- If it is called with a distribution, it is supposed to be fully specified 
+  ie no parameter has been estimated from the given sample. 
+  This uses an external C implementation of the Kolmogorov cumulative
+  distribution function by [simard2011]_.
+  In this case, there is only one output argument, which is `test_result`.
+
+- Otherwise, the distribution is estimated using the given factory based 
+  on the given sample and the distribution of the test statistics is estimated 
+  using a Monte Carlo approach. 
+  This algorithm is known as Lilliefors's test [Lilliefors1967]_.
+  The sample size can be configured with the *FittingTest-KolmogorovSamplingSize* 
+  key in :class:`~openturns.ResourceMap`. 
+  In this case, there are two output arguments, which are `fitted_dist` 
+  and `test_result`.
 
 Examples
 --------
+
+In the following example, the parameters are estimated from a sample. 
+
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
->>> fitted_dist, test_result = ot.FittingTest.Kolmogorov(sample, ot.NormalFactory(), 0.01)
+>>> factory = ot.NormalFactory()
+>>> ot.ResourceMap.SetAsUnsignedInteger('FittingTest-KolmogorovSamplingSize',10000)
+>>> fitted_dist, test_result = ot.FittingTest.Kolmogorov(sample, factory)
+>>> fitted_dist
+class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[-0.0944924] sigma=class=Point name=Unnamed dimension=1 values=[0.989808] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 >>> test_result
-class=TestResult name=Unnamed type=Kolmogorov Normal binaryQualityMeasure=true p-value threshold=0.01 p-value=0.7 statistic=0.106933 description=[Normal(mu = -0.0944924, sigma = 0.989808) vs sample Normal]"
+class=TestResult name=Unnamed type=Kolmogorov Normal binaryQualityMeasure=true p-value threshold=0.05 p-value=0.5103 statistic=0.106933 description=[Normal(mu = -0.0944924, sigma = 0.989808) vs sample Normal]
+>>> pvalue = test_result.getPValue()
+>>> pvalue
+0.5103...
+>>> D = test_result.getStatistic()
+>>> D
+0.1069...
+>>> quality = test_result.getBinaryQualityMeasure()
+>>> quality
+True
+
+In the following example, the parameters of the distribution are known. 
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> test_result = ot.FittingTest.Kolmogorov(sample, distribution)
+>>> test_result
+class=TestResult name=Unnamed type=Kolmogorov Normal binaryQualityMeasure=true p-value threshold=0.05 p-value=0.970418 statistic=0.0845532 description=[Normal(mu = 0, sigma = 1) vs sample Normal]
+
+In the following example, the parameters are estimated from a sample. 
+We set the level of the Kolmogorov-Smirnov test to 0.01. 
+This parameter value rejects a sample less often than the 
+default value 0.05. 
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> level = 0.01
+>>> test_result = ot.FittingTest.Kolmogorov(sample, distribution, level)"
 
 // ---------------------------------------------------------------------
 

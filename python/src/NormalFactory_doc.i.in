@@ -16,4 +16,34 @@ The parameters are estimated by method of moments.
 
 See also
 --------
-DistributionFactory, Normal"
+DistributionFactory, Normal
+
+Examples
+--------
+
+In the following example, the parameters of a :class:`~openturns.Normal` 
+are estimated from a sample. 
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> size = 10000
+>>> distribution = ot.Normal(1.0, 2.0)
+>>> sample = distribution.getSample(size)
+>>> factory = ot.NormalFactory()
+>>> estimated = factory.build(sample)"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::NormalFactory::buildAsNormal
+"Estimate the distribution as native distribution.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.Normal`
+    The estimated distribution"
+

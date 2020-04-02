@@ -4,11 +4,196 @@
 Available constructor:
     TruncatedNormalFactory()
 
-The parameters are estimated by numerical maximum likelihood estimation.
+Notes
+-----
+Several estimators to build a TruncatedNormal distribution from a scalar sample
+are available.
+
+**Maximum likelihood estimator:**
+
+The parameters are estimated by numerical maximum likelihood estimation with 
+scaling. 
+The starting point of the optimization algorithm is based on the moment based 
+estimator. 
+
+Let :math:`n` be the sample sample size. 
+Let :math:`x_{min}` be the sample minimum and :math:`x_{max}` be the sample maximum. 
+
+We compute the scaling parameters :math:`\alpha` and :math:`\beta` 
+from the equations: 
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle \alpha = \frac{2}{x_{min} - x_{max}}, \\
+      \displaystyle \beta = \frac{1}{2} (x_{min} + x_{max}).
+    \end{eqnarray*}
+
+Then the sample :math:`\{x_i\}_{i=1,...,n}` is scaled into 
+:math:`\{u_i\}_{i=1,...,n}` from the equation:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle u_i = \alpha (x_i - \beta)
+    \end{eqnarray*}
+
+for :math:`i=1,...,n`. 
+Hence, the scaled sample is so that :math:`u_i\in[-1,1]` 
+for :math:`i=1,...,n`. 
+
+The starting point of the likelihood maximization algorithm is based on the 
+scaled sample. 
+Let 
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle \mu_0^u = \bar{u}, \\
+      \displaystyle \sigma_0^u = \sigma_{u, n}
+    \end{eqnarray*}
+
+where :math:`\bar{u}` is the sample mean of the scaled sample and 
+:math:`\sigma_{u, n}` is the sample standard deviation of the scaled sample. 
+
+Then the likelihood maximization optimization algorithm is used to fit the 
+scaled truncated normal distribution. 
+The `TruncatedNormalFactory-SigmaLowerBound` key in the :class:`~openturns.ResourceMap` 
+is used as a lower bound for the scaled standard deviation. 
+
+Let :math:`\epsilon` be computed from the sample size:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle \epsilon = 1 + \frac{1}{n}.
+    \end{eqnarray*}
+
+The lower and upper bounds of the scaled truncated normal distribution are set to 
+:math:`-\epsilon` and :math:`\epsilon` and are not optimized. 
+This leads to a maximum likelihood optimization problem in 2 dimensions only, where the 
+solution is the optimum scaled mean :math:`\mu_u^\star` and the 
+optimum scaled standard deviation :math:`\sigma_u^\star`. 
+
+Finally, the parameters of the truncated normal distribution are computed 
+from the parameters of the scaled truncated normal distribution. 
+The inverse scaling equation is :math:`x = \beta + \frac{u}{\beta}`, which 
+leads to:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle \mu = \beta + \frac{\mu_u^\star}{\alpha}, \\
+      \displaystyle \sigma = \frac{\sigma_u^\star}{\alpha}, \\
+      \displaystyle a = \beta - \frac{\epsilon}{\alpha}, \\
+      \displaystyle b = \beta + \frac{\epsilon}{\alpha}.
+    \end{eqnarray*}
+
+**Moment based estimator:**
+
+Let :math:`x_{min}` be the sample minimum and :math:`x_{max}` be the sample maximum. 
+Let :math:`\delta = x_{max} - x_{min}` be the sample range. 
+
+The distribution bounds are computed from the equations:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{a}_n = x_{min} - \frac{\delta}{n + 2}\\
+      \displaystyle\Hat{b}_n = x_{max} + \frac{\delta}{n + 2}
+    \end{eqnarray*}
+
+Then the :math:`\mu` and :math:`\sigma` parameters are estimated from the 
+methods of moments. 
 
 See also
 --------
-DistributionFactory, TruncatedNormal"
+DistributionFactory, TruncatedNormal
 
-// ---------------------------------------------------------------------
+Examples
+--------
+
+In the following example, the parameters of a :class:`~openturns.TruncatedNormal` 
+are estimated from a sample. 
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> size = 10000
+>>> distribution = ot.TruncatedNormal(2.0, 3.0, -1.0, 4.0)
+>>> sample = distribution.getSample(size)
+>>> factory = ot.TruncatedNormalFactory()
+>>> estimated = factory.build(sample)
+>>> estimated = factory.buildMethodOfMoments(sample)
+>>> estimated = factory.buildMethodOfLikelihoodMaximization(sample)"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedNormalFactory::buildMethodOfMoments
+"Method of moments estimator.
+
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.TruncatedNormal`
+    The estimated distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedNormalFactory::buildMethodOfLikelihoodMaximization
+"Method of likelihood maximization.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.TruncatedNormal`
+    The estimated distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedNormalFactory::buildAsTruncatedNormal
+"Estimate the distribution as native distribution.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.TruncatedNormal`
+    The estimated distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::TruncatedNormalFactory::build
+"Estimate the distribution using the default strategy.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+
+Returns
+-------
+distribution : :class:`~openturns.TruncatedNormal`
+    The estimated distribution
+
+Notes
+-----
+The default strategy is using the maximum likelihood estimators with scaling."
 

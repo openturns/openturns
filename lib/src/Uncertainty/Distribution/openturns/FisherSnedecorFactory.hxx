@@ -50,15 +50,16 @@ public:
   Distribution build(const Point & parameters) const;
   Distribution build() const;
 
-  /** Algorithm associated with the method of moments */
-  FisherSnedecor buildMethodOfMoments(const Sample & sample) const;
-
   using DistributionFactoryImplementation::buildEstimator;
   DistributionFactoryResult buildEstimator(const Sample & sample) const;
 
   FisherSnedecor buildAsFisherSnedecor(const Sample & sample) const;
   FisherSnedecor buildAsFisherSnedecor(const Point & parameters) const;
   FisherSnedecor buildAsFisherSnedecor() const;
+
+  /** Specific algorithms */
+  FisherSnedecor buildMethodOfMoments(const Sample & sample) const;
+  FisherSnedecor buildMethodOfLikelihoodMaximization(const Sample & sample) const;
 
 }; /* class FisherSnedecorFactory */
 

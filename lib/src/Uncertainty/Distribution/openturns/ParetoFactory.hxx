@@ -52,7 +52,7 @@ public:
   Pareto buildAsPareto(const Point & parameters) const;
   Pareto buildAsPareto() const;
 
-  /** Algorithm associated with the method of moments */
+  /** Specific algorithms */
   Pareto buildMethodOfMoments(const Sample & sample) const;
   Pareto buildMethodOfLikelihoodMaximization(const Sample & sample) const;
   Pareto buildMethodOfLeastSquares(const Sample & sample) const;

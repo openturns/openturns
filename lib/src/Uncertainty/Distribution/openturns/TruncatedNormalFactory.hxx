@@ -53,6 +53,10 @@ public:
   TruncatedNormal buildAsTruncatedNormal(const Point & parameters) const;
   TruncatedNormal buildAsTruncatedNormal() const;
 
+  /** Specific algorithms */
+  TruncatedNormal buildMethodOfMoments(const Sample & sample) const;
+  TruncatedNormal buildMethodOfLikelihoodMaximization(const Sample & sample) const;
+
 }; /* class TruncatedNormalFactory */
 
 END_NAMESPACE_OPENTURNS
