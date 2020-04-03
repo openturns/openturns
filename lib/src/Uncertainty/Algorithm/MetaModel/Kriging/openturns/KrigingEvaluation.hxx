@@ -102,7 +102,9 @@ protected:
 
 private:
   friend struct KrigingEvaluationPointFunctor;
+  friend struct KrigingEvaluationPointFunctor1D;
   friend struct KrigingEvaluationSampleFunctor;
+  friend struct KrigingEvaluationSampleFunctor1D;
 }; /* class KrigingEvaluation */
 
 

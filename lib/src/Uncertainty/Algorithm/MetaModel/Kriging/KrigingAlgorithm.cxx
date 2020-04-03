@@ -163,6 +163,7 @@ void KrigingAlgorithm::run()
   // compute residual, relative error
   const Point outputVariance(outputSample_.computeVariance());
   const Sample mY(metaModel(inputSample_));
+  //const Sample mY(outputSample_.getSize(), outputSample_.getDimension());
   const Point squaredResiduals((outputSample_ - mY).computeRawMoment(2));
 
   const UnsignedInteger size = inputSample_.getSize();

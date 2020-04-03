@@ -66,7 +66,7 @@ assert result.getEvaluationNumber(
 # local refinement eventhough the model is noisy (we still want to check
 # we're not too far from optimum)
 problem.setObjective(model.getMarginal(0))
-algo2 = ot.NLopt(problem, 'LD_LBFGS')
+algo2 = ot.TNC(problem)
 algo2.setStartingPoint(result.getOptimalPoint())
 algo2.run()
 result = algo2.getResult()
@@ -149,7 +149,7 @@ assert result.getEvaluationNumber(
 # print(result.getOutputSample())
 
 # local refinement
-algo2 = ot.NLopt(problem, 'LD_LBFGS')
+algo2 = ot.TNC(problem)
 algo2.setStartingPoint(result.getOptimalPoint())
 algo2.run()
 result = algo2.getResult()
