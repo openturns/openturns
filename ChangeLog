@@ -44,6 +44,7 @@
  * #1405 (Most of the simulation algorithms for rare event fail on a coronavirus example)
  * #1416 (MethodOfMomentsFactory has no setOptimizationBounds method)
  * #1419 (BoundingVolumeHierarchy segaults/hangs)
+ * #1432 (Expected improvement-based EfficientGlobalOptimization stopping criterion could be improved)
 
 == 1.14 release (2019-11-13) == #release-1.14
 

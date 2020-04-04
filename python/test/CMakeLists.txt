@@ -309,7 +309,7 @@ ot_pyinstallcheck_test (NearestPointChecker_std)
 if (NLopt_FOUND)
   ot_pyinstallcheck_test (NLopt_std)
 endif ()
-ot_pyinstallcheck_test (EfficientGlobalOptimization_std)
+ot_pyinstallcheck_test (EfficientGlobalOptimization_std IGNOREOUT)
 ot_pyinstallcheck_test (SQP_std)
 ot_pyinstallcheck_test (TNC_std)
 

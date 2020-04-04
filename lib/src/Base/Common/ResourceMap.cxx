@@ -757,7 +757,7 @@ void ResourceMap::loadDefaultConfiguration()
   // EfficientGlobalOptimization parameters //
   addAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff", 1.0);
   addAsScalar("EfficientGlobalOptimization-DefaultCorrelationLengthFactor", 1.0);
-  addAsScalar("EfficientGlobalOptimization-DefaultImprovementFactor", 1.0);
+  addAsScalar("EfficientGlobalOptimization-DefaultImprovementFactor", 0.0);
   addAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartExperimentSize", 100);
   addAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartNumber", 20);
   addAsUnsignedInteger("EfficientGlobalOptimization-DefaultParameterEstimationPeriod", 1);

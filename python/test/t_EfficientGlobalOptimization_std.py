@@ -5,7 +5,7 @@ import openturns as ot
 import math as m
 import openturns.testing
 
-# ot.Log.Show(ot.Log.INFO)
+ot.Log.Show(ot.Log.NONE)
 ot.TBB.Disable()
 
 
@@ -53,11 +53,10 @@ algo.setAEITradeoff(0.66744898)
 algo.run()
 result = algo.getResult()
 # print('1st pass result=', result)
-# print('iteration=', result.getEvaluationNumber())
-assert result.getEvaluationNumber(
-) > 3 and result.getEvaluationNumber() < 15, 'Too few/much iterations'
-# print(result.getInputSample())
-# print(result.getOutputSample())
+print('iteration=', result.getIterationNumber())
+assert result.getIterationNumber() > 3 and result.getIterationNumber() < 15, 'Too few/much iterations'
+print(result.getInputSample())
+print(result.getOutputSample())
 
 # openturns.testing.assert_almost_equal(result.getOptimalPoint(), [0.5, 0.0], 1e-5, 1e-5)
 # openturns.testing.assert_almost_equal(result.getOptimalValue(),
@@ -142,11 +141,10 @@ algo.run()
 result = algo.getResult()
 
 # print('1st pass result=', result)
-assert result.getEvaluationNumber(
-) > 0 and result.getEvaluationNumber() < 16, 'Too few/much iterations'
-# print('iteration=', result.getEvaluationNumber())
-# print(result.getInputSample())
-# print(result.getOutputSample())
+assert result.getIterationNumber() > 0 and result.getIterationNumber() < 16, 'Too few/much iterations'
+print('iteration=', result.getIterationNumber())
+print(result.getInputSample())
+print(result.getOutputSample())
 
 # local refinement
 algo2 = ot.TNC(problem)
@@ -160,7 +158,6 @@ openturns.testing.assert_almost_equal(
     result.getOptimalValue(), [0.0], 1e-15, 1e-5)
 # ei = algo.getExpectedImprovement()
 # print(ei)
-print('OK')
 
 
 # Cobyla out of bound test
@@ -184,3 +181,5 @@ algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
 algo.setMaximumEvaluationNumber(2)
 algo.run()
 result = algo.getResult()
+
+print('OK')
