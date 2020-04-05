@@ -64,6 +64,9 @@ Bibliography
     `pdf <http://doc.openturns.org/papers/dubourg2011.pdf>`__
 .. [fang2006] K-T. Fang, R. Li, and A. Sudjianto. *Design and modeling for
     computer experiments.* Chapman & Hall CRC, 2006.
+.. [freedman1981] David Freedman, Persi Diaconis, *On the histogram as a density 
+    estimator: L2 theory*, December 1981, Probability Theory and Related Fields. 
+    57 (4): 453–476. 
 .. [gamboa2013] Gamboa, F., Janon, A., Klein, T. & Lagnoux, A. *Sensitivity
     analysis for multidimensional and functional outputs.* 2013.
     `pdf <http://doc.openturns.org/papers/gamboa2013.pdf>`__
@@ -197,6 +200,8 @@ Bibliography
     `pdf <http://doc.openturns.org/papers/saltelli2002.pdf>`__
 .. [saporta1990] Saporta, G. (1990). *Probabilités, Analyse de données et
     Statistique*, Technip
+.. [scott1992] David W. Scott (1992). *Multivariate density estimation*,  
+    John Wiley & Sons, Inc. 
 .. [simard2011] Simard, R. & L'Ecuyer, P. *Computing the Two-Sided Kolmogorov-
     Smirnov Distribution.* Journal of Statistical Software, 2011, 39(11), 1-18.
     `pdf <http://doc.openturns.org/papers/simard2011.pdf>`__
