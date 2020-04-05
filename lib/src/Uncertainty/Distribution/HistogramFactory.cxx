@@ -77,7 +77,7 @@ Distribution HistogramFactory::build() const
 
 Histogram HistogramFactory::buildAsHistogram(const Sample & sample) const
 {
-  return buildAsHistogram(sample, computeSilvermanBandwidth(sample));
+  return buildAsHistogram(sample, computeBandwidth(sample));
 }
 
 Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
@@ -204,19 +204,19 @@ Histogram HistogramFactory::buildAsHistogram() const
   return Histogram();
 }
 
-/* Compute the bandwidth according to Silverman's rule */
-Scalar HistogramFactory::computeSilvermanBandwidth(const Sample & sample,
+/* Compute the bandwidth according to Scott or Freedman and Diaconis rule */
+Scalar HistogramFactory::computeBandwidth(const Sample & sample,
     const Bool useQuantile) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot compute the Silverman bandwidth based on an empty sample.";
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot compute the bandwidth based on an empty sample.";
   Scalar hOpt = 0;
   if (useQuantile)
   {
     // We use the robust estimation of dispersion based on inter-quartile
     hOpt = (sample.computeQuantilePerComponent(0.75)[0] - sample.computeQuantilePerComponent(0.25)[0]) * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0) / (2.0 * DistFunc::qNormal(0.75));
     // If the resulting bandwidth is zero it is because a majority of values are repeated in the sample
-    if (hOpt == 0.0) LOGWARN(OSS() << "The first and third quartiles are equal, which means that many values are repeated in the given sample. Switch to the standard deviation-based Silverman bandwidth.");
+    if (hOpt == 0.0) LOGWARN(OSS() << "The first and third quartiles are equal, which means that many values are repeated in the given sample. Switch to the standard deviation-based bandwidth.");
   }
   // Here hOpt == 0.0 either because we asked for the standard deviation based bandwidth or because the quantile based bandwidth is zero
   if (hOpt == 0.0)

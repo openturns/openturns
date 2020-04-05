@@ -52,7 +52,7 @@ int main(int, char *[])
     fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
     estimatedDistribution = factory.build();
     fullprint << "Default distribution=" << estimatedDistribution << std::endl;
-    fullprint << "Silverman bandwidth=" << factory.computeSilvermanBandwidth(sample) << std::endl;
+    fullprint << "Bandwidth=" << factory.computeBandwidth(sample) << std::endl;
     {
       Histogram estimatedHistogram(factory.buildAsHistogram(sample));
       fullprint << "Histogram          =" << distribution << std::endl;

@@ -41,8 +41,8 @@ try:
 
     sample = ot.ChiSquare(0.0120637).getSample(32)
     for useQuantile in [True, False]:
-        print('silverman useQuantile=', useQuantile, ot.Point(
-            1, ot.HistogramFactory().computeSilvermanBandwidth(sample, useQuantile)))
+        print('useQuantile=', useQuantile, ot.Point(
+            1, ot.HistogramFactory().computeBandwidth(sample, useQuantile)))
 except:
     import sys
     print("t_HistogramFactory_std.py", sys.exc_info()[0], sys.exc_info()[1])

@@ -18,6 +18,7 @@
  * Removed deprecated MethodOfMomentsFactory::set,getOptimizationProblem
  * ResourceMap::Set* methods no longer add new keys, the new Add* methods must be used instead
  * Removed OPTpp
+ * Renamed HistogramFactory::computeSilvermanBandwidth into HistogramFactory::computeBandwidth.
 
 === Python module ===
 

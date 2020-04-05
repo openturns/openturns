@@ -9,7 +9,7 @@ Notes
 
 The range is :math:`[min(data), max(data)]`. 
 
-See the `computeSilvermanBandwidth` method for the bandwidth selection. 
+See the `computeBandwidth` method for the bandwidth selection. 
 
 Examples
 --------
@@ -48,7 +48,7 @@ Compute bandwidth with default robust estimator:
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sample = ot.Normal().getSample(50)
 >>> factory = ot.HistogramFactory()
->>> factory.computeSilvermanBandwidth(sample)
+>>> factory.computeBandwidth(sample)
 0.8207...
 
 Compute bandwidth with optimal estimator:
@@ -57,7 +57,7 @@ Compute bandwidth with optimal estimator:
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sample = ot.Normal().getSample(50)
 >>> factory = ot.HistogramFactory()
->>> factory.computeSilvermanBandwidth(sample, False)
+>>> factory.computeBandwidth(sample, False)
 0.9175...
 
 See also
@@ -103,7 +103,7 @@ distribution : :class:`~openturns.Histogram`
 
 // ----------------------------------------------------------------------------
 
-%feature("docstring") OT::HistogramFactory::computeSilvermanBandwidth
+%feature("docstring") OT::HistogramFactory::computeBandwidth
 "Compute the bandwidth.
 
 The bandwidth of the histogram is based on the asymptotic mean integrated squared 
