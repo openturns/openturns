@@ -215,11 +215,11 @@ Point MethodOfMomentsFactory::buildParameter(const Sample & sample) const
     refMoments[j] = sample.computeCenteredMoment(j + 1)[0];
   }
 
-  // Define NumericalMathEvaluation using the MethodOfMomentsEvaluation wrapper
+  // Define evaluation
   MethodOfMomentsEvaluation methodOfMomentsWrapper(refMoments, distribution_, knownParameterValues_, knownParameterIndices_);
   Function momentsObjective(methodOfMomentsWrapper.clone());
 
-  // Define optimisation problem
+  // Define optimization problem
   LeastSquaresProblem problem(momentsObjective);
   problem.setBounds(optimizationBounds_);
   OptimizationAlgorithm solver(solver_);
