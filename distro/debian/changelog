@@ -1,3 +1,15 @@
+openturns (1.14-1) unstable; urgency=medium
+
+  * Team upload.
+  * Drop python2 support; Closes: #937214
+  * New upstream release; Closes: #902513
+  * Import packaging from upstream, inclusing rename to libopenturns0.15 and
+    drop of R bindings
+  * debian/watch
+    - point to github
+
+ -- Sandro Tosi <morph@debian.org>  Thu, 26 Dec 2019 01:40:15 -0500
+
 openturns (1.14-1) experimental; urgency=low
 
   [ Julien Schueller ]
