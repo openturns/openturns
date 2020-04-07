@@ -134,6 +134,7 @@ TBBContext::TBBContext()
 : ompNumThreads_(0)
 , openblasNumThreads_(0)
 {
+#ifdef OPENTURNS_HAVE_TBB
   if (TBB::GetNumberOfThreads() > 1)
   {
     // disable threading
@@ -146,12 +147,14 @@ TBBContext::TBBContext()
     openblas_set_num_threads(1);
 #endif
   }
+#endif
   (void) ompNumThreads_;
   (void) openblasNumThreads_;
 }
 
 TBBContext::~TBBContext()
 {
+#ifdef OPENTURNS_HAVE_TBB
   if (TBB::GetNumberOfThreads() > 1)
   {
     // restore threading
@@ -162,6 +165,7 @@ TBBContext::~TBBContext()
   openblas_set_num_threads(openblasNumThreads_);
 #endif
   }
+#endif
 }
 
 END_NAMESPACE_OPENTURNS

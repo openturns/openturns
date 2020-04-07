@@ -138,7 +138,7 @@
   <!-- OT::EfficientGlobalOptimization parameters -->
   <EfficientGlobalOptimization-DefaultAEITradeoff               value_float="1.0"           />
   <EfficientGlobalOptimization-DefaultCorrelationLengthFactor   value_float="1.0"           />
-  <EfficientGlobalOptimization-DefaultImprovementFactor         value_float="1.0"           />
+  <EfficientGlobalOptimization-DefaultImprovementFactor         value_float="0.0"           />
   <EfficientGlobalOptimization-DefaultMultiStartExperimentSize  value_int="100" />
   <EfficientGlobalOptimization-DefaultMultiStartNumber          value_int="20"  />
   <EfficientGlobalOptimization-DefaultParameterEstimationPeriod value_int="1"   />
@@ -491,9 +491,9 @@
   <RandomMixture-ProjectionDefaultSize          value_int="25"    />
   <RandomMixture-SmallSize                      value_int="100"   />
 
-  <!-- OT::NumericalMathEvaluation parameters -->
-  <NumericalMathEvaluation-ParameterEpsilon   value_float="1.0e-7"        />
-  <NumericalMathEvaluation-DefaultPointNumber value_int="129" />
+  <!-- OT::Evaluation parameters -->
+  <Evaluation-ParameterEpsilon   value_float="1.0e-7"        />
+  <Evaluation-DefaultPointNumber value_int="129" />
 
   <!-- OT::DualLinearCombinationEvaluation parameters -->
   <DualLinearCombinationEvaluation-SmallCoefficient value_float="0.0" />

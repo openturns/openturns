@@ -1,11 +1,11 @@
 #! /usr/bin/env python
 
 from __future__ import print_function
-from openturns import *
+import openturns as ot
+import openturns.testing as ott
+import math as m
 
-from math import *
-
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
 
 def printPoint(point, digits):
@@ -16,86 +16,79 @@ def printPoint(point, digits):
             sep = ""
         else:
             sep = ","
-        if fabs(point[i]) < eps:
-            oss += sep + '%.6f' % fabs(point[i])
+        if m.fabs(point[i]) < eps:
+            oss += sep + '%.6f' % m.fabs(point[i])
         else:
             oss += sep + '%.6f' % point[i]
         sep = ","
     oss += "]"
     return oss
 
+# We create a numerical math function
+myFunction = ot.SymbolicFunction(
+    ["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
 
-try:
+dim = myFunction.getInputDimension()
 
-        # We create a numerical math function
-    myFunction = SymbolicFunction(
-        ["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])
+# We create a normal distribution point of dimension 1
+mean = [0.0] * dim
+# E
+mean[0] = 50.0
+# F
+mean[1] = 1.0
+# L
+mean[2] = 10.0
+# I
+mean[3] = 5.0
+sigma = [1.0] * dim
+R = ot.IdentityMatrix(dim)
+myDistribution = ot.Normal(mean, sigma, R)
 
-    dim = myFunction.getInputDimension()
+# We create a 'usual' RandomVector from the Distribution
+vect = ot.RandomVector(myDistribution)
 
-    # We create a normal distribution point of dimension 1
-    mean = Point(dim, 0.0)
-    # E
-    mean[0] = 50.0
-    # F
-    mean[1] = 1.0
-    # L
-    mean[2] = 10.0
-    # I
-    mean[3] = 5.0
-    sigma = Point(dim, 1.0)
-    R = IdentityMatrix(dim)
-    myDistribution = Normal(mean, sigma, R)
+# We create a composite random vector
+output = ot.CompositeRandomVector(myFunction, vect)
 
-    # We create a 'usual' RandomVector from the Distribution
-    vect = RandomVector(myDistribution)
+# We create an Event from this RandomVector
+myEvent = ot.ThresholdEvent(output, ot.Less(), -3.0)
 
-    # We create a composite random vector
-    output = CompositeRandomVector(myFunction, vect)
+# We create a NearestPoint algorithm
+myCobyla = ot.Cobyla()
+myCobyla.setMaximumEvaluationNumber(400)
+myCobyla.setMaximumAbsoluteError(1.0e-10)
+myCobyla.setMaximumRelativeError(1.0e-10)
+myCobyla.setMaximumResidualError(1.0e-10)
+myCobyla.setMaximumConstraintError(1.0e-10)
+print("myCobyla=", myCobyla)
 
-    # We create an Event from this RandomVector
-    myEvent = ThresholdEvent(output, Less(), -3.0)
+# We create a FORM algorithm
+# The first parameter is an OptimizationAlgorithm
+# The second parameter is an event
+# The third parameter is a starting point for the design point research
+myAlgo = ot.FORM(myCobyla, myEvent, mean)
 
-    # We create a NearestPoint algorithm
-    myCobyla = Cobyla()
-    myCobyla.setMaximumEvaluationNumber(400)
-    myCobyla.setMaximumAbsoluteError(1.0e-10)
-    myCobyla.setMaximumRelativeError(1.0e-10)
-    myCobyla.setMaximumResidualError(1.0e-10)
-    myCobyla.setMaximumConstraintError(1.0e-10)
-    print("myCobyla=", myCobyla)
+print("FORM=", myAlgo)
 
-    # We create a FORM algorithm
-    # The first parameter is an OptimizationAlgorithm
-    # The second parameter is an event
-    # The third parameter is a starting point for the design point research
-    myAlgo = FORM(myCobyla, myEvent, mean)
+# Perform the simulation
+myAlgo.run()
 
-    print("FORM=", myAlgo)
+# Stream out the iresult
+result = myAlgo.getResult()
+digits = 5
+print("event probability=%.6f" % result.getEventProbability())
+print("generalized reliability index=%.6f" %
+      result.getGeneralisedReliabilityIndex())
+print("standard space design point=", printPoint(
+    result.getStandardSpaceDesignPoint(), digits))
+print("physical space design point=", printPoint(
+    result.getPhysicalSpaceDesignPoint(), digits))
 
-    # Perform the simulation
-    myAlgo.run()
+# Is the standard point origin in failure space?
+print("is standard point origin in failure space? %s" %
+      (result.getIsStandardPointOriginInFailureSpace() and "true" or "false"))
 
-    # Stream out the iresult
-    result = myAlgo.getResult()
-    digits = 5
-    print("event probability=%.6f" % result.getEventProbability())
-    print("generalized reliability index=%.6f" %
-          result.getGeneralisedReliabilityIndex())
-    print("standard space design point=", printPoint(
-        result.getStandardSpaceDesignPoint(), digits))
-    print("physical space design point=", printPoint(
-        result.getPhysicalSpaceDesignPoint(), digits))
-
-    # Is the standard point origin in failure space?
-    print("is standard point origin in failure space? %s" %
-          (result.getIsStandardPointOriginInFailureSpace() and "true" or "false"))
-
-    print("importance factors=", printPoint(
-        result.getImportanceFactors(), digits))
-    print("Hasofer reliability index=%.6f" %
-          result.getHasoferReliabilityIndex())
-
-except:
-    import sys
-    print("t_FORM_std.py", sys.exc_info()[0], sys.exc_info()[1])
+print("importance factors=", printPoint(
+    result.getImportanceFactors(), digits))
+print("Hasofer reliability index=%.6f" %
+      result.getHasoferReliabilityIndex())

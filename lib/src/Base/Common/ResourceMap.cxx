@@ -757,7 +757,7 @@ void ResourceMap::loadDefaultConfiguration()
   // EfficientGlobalOptimization parameters //
   addAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff", 1.0);
   addAsScalar("EfficientGlobalOptimization-DefaultCorrelationLengthFactor", 1.0);
-  addAsScalar("EfficientGlobalOptimization-DefaultImprovementFactor", 1.0);
+  addAsScalar("EfficientGlobalOptimization-DefaultImprovementFactor", 0.0);
   addAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartExperimentSize", 100);
   addAsUnsignedInteger("EfficientGlobalOptimization-DefaultMultiStartNumber", 20);
   addAsUnsignedInteger("EfficientGlobalOptimization-DefaultParameterEstimationPeriod", 1);
@@ -1103,9 +1103,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("RandomMixture-ProjectionDefaultSize", 25);
   addAsUnsignedInteger("RandomMixture-SmallSize", 100);
 
-  // NumericalMathEvaluation parameters //
-  addAsScalar("NumericalMathEvaluation-ParameterEpsilon", 1.0e-7);
-  addAsUnsignedInteger("NumericalMathEvaluation-DefaultPointNumber", 129);
+  // Evaluation parameters //
+  addAsScalar("Evaluation-ParameterEpsilon", 1.0e-7);
+  addAsUnsignedInteger("Evaluation-DefaultPointNumber", 129);
 
   // DualLinearCombinationEvaluation //
   addAsScalar("DualLinearCombinationEvaluation-SmallCoefficient", 0.0);

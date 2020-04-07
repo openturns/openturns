@@ -119,6 +119,7 @@ void NLopt::SetSeed(const UnsignedInteger seed)
 #ifdef OPENTURNS_HAVE_NLOPT
   nlopt::srand(seed);
 #else
+  (void)seed;
   throw NotYetImplementedException(HERE) << "No NLopt support";
 #endif
 }

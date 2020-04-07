@@ -88,12 +88,12 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
 
     Examples
     --------
-    >>> import openturns.coupling_tools as otct
+    >>> import openturns.coupling_tools as ct
     >>> # write a template file
     >>> with open('prgm.dat.in', 'w') as f:
     ...     count = f.write('E=@E_VAR F=-PF-')
     >>> # replace tokens from template
-    >>> otct.replace('prgm.dat.in', 'prgm.dat',
+    >>> ct.replace('prgm.dat.in', 'prgm.dat',
     ...     tokens=["@E_VAR", '-PF-'], values=[1.4, '5'])
     >>> # display file
     >>> with open('prgm.dat', 'r') as f:
@@ -196,8 +196,8 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
 
     Examples
     --------
-    >>> import openturns.coupling_tools as otct
-    >>> ret, stdout = otct.execute('echo 42', get_stdout=True, is_shell=True)
+    >>> import openturns.coupling_tools as ct
+    >>> ret, stdout = ct.execute('echo 42', get_stdout=True, is_shell=True)
     >>> ret
     0
     >>> int(stdout)
@@ -287,12 +287,12 @@ def get_regex(filename, patterns, encoding=default_encoding):
 
     Examples
     --------
-    >>> import openturns.coupling_tools as otct
+    >>> import openturns.coupling_tools as ct
     >>> # write an output file
     >>> with open('results.out', 'w') as f:
     ...     count = f.write('@E=-9.5E3')
     >>> # parse file with regex
-    >>> otct.get_regex('results.out', patterns=['@E=(\R)'])
+    >>> ct.get_regex('results.out', patterns=['@E=(\R)'])
     [-9500.0]
     """
     if not isinstance(patterns, list) or len(patterns) == 0:
@@ -436,10 +436,10 @@ def get_line_col(filename, skip_line=0, skip_col=0, col_sep=None, seek=0, encodi
 
     Examples
     --------
-    >>> import openturns.coupling_tools as otct
+    >>> import openturns.coupling_tools as ct
     >>> with open('results.out', 'w') as f:
     ...     count = f.write('1.1 1.2 1.3 1.4')
-    >>> otct.get_line_col(filename='results.out', skip_col=2)
+    >>> ct.get_line_col(filename='results.out', skip_col=2)
     1.3
     """
     check_param(filename, str)
@@ -574,24 +574,24 @@ def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, col_s
     --------
     using a single token
 
-    >>> import openturns.coupling_tools as otct
+    >>> import openturns.coupling_tools as ct
     >>> with open('results.out', 'w') as f:
     ...     count = f.write('Y1=2.0, Y2=-6.6E56')
-    >>> otct.get_value('results.out', token='Y1=')
+    >>> ct.get_value('results.out', token='Y1=')
     2.0
 
     using token and skip_tokens
 
     >>> with open('results.out', 'w') as f:
     ...     count = f.write('Y1=2.6 Y1=6.0 # temperature 2')
-    >>> otct.get_value('results.out', token='Y1=', skip_token=1)
+    >>> ct.get_value('results.out', token='Y1=', skip_token=1)
     6.0
 
     using column & line
 
     >>> with open('results.out', 'w') as f:
     ...     count = f.write('1.1 1.2 1.3 1.4')
-    >>> otct.get_value(filename='results.out', skip_col=2)
+    >>> ct.get_value(filename='results.out', skip_col=2)
     1.3
     """
     if debug:
@@ -729,10 +729,10 @@ def get(filename, tokens=None, skip_tokens=None, skip_lines=None, skip_cols=None
     --------
     using tokens
 
-    >>> import openturns.coupling_tools as otct
+    >>> import openturns.coupling_tools as ct
     >>> with open('results.out', 'w') as f:
     ...     count = f.write('Y1=2.0, Y2=-6.6E2')
-    >>> otct.get(filename='results.out', tokens=['Y1=', 'Y2='])
+    >>> ct.get(filename='results.out', tokens=['Y1=', 'Y2='])
     [2.0, -660.0]
     """
     # test parameters and determine the number of value to return

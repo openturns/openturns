@@ -78,7 +78,11 @@ String Exception::__repr__() const throw()
 /* Point accessor */
 const char * Exception::where() const throw()
 {
-  return point_.str().c_str();
+  const String whereStr(point_.str());
+  const UnsignedInteger size = whereStr.size();
+  char *buffer = new char[size + 1];
+  std::copy(&whereStr[0], &whereStr[0]+ size + 1, buffer);
+  return buffer;
 }
 
 

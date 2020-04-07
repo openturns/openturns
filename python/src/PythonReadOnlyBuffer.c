@@ -180,6 +180,7 @@ Buffer_iter(PyObject *obj)
 static int
 Buffer_getbuffer(PyObject *obj, Py_buffer *view, int flags)
 {
+  (void)flags;
   Buffer* self = (Buffer*)obj;
   if (view == NULL) {
     PyErr_SetString(PyExc_ValueError, "NULL view in getbuffer");

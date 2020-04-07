@@ -12,7 +12,7 @@ Providing us with feedback on your own experience using the software is extremel
 valuable for the other users as well as our developers. There exists many
 channels for you to contact us:
 
-  - We provide an `users <http://openturns.org/mailman/listinfo/users>`_ mailing list.
+  - Join the `chatroom <https://gitter.im/openturns/community>`_ or the `mailing list <http://openturns.org/mailman/listinfo/users>`_.
   - Bugs can be reported on our `bug tracker <https://github.com/openturns/openturns/issues>`_.
   - Once a year, one of the partners hosts the Users day which is a
     unique occasion for users to meet up and share their experience using the

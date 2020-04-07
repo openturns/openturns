@@ -32,13 +32,16 @@ if (OPENTURNS_HAVE_EXPRTK)
 endif()
 
 set_source_files_properties (Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COMPILE_DEFINITIONS "HAVE_STDDEF_H") # required for ipopt 3.11
-if ((OPENTURNS_HAVE_BONMIN OR OPENTURNS_HAVE_IPOPT) AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+if ((OPENTURNS_HAVE_BONMIN OR OPENTURNS_HAVE_IPOPT) AND CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7)
     set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=unused-parameter")
   else ()
     set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=unused-parameter -Wno-error=implicit-fallthrough")
   endif ()
 endif ()
+
+# Exclude spectra sources from unity build (templates take a lot of memory)
+set_source_files_properties (Base/Algo/KarhunenLoeveP1Algorithm.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
 
 # Build main library
 foreach (built_source ${BUILT_SOURCEFILES})

@@ -212,6 +212,8 @@ HMatrixImplementation::HMatrixImplementation(const HMatrixImplementation& other)
     ptr_interface->set_cluster_trees(hmat_copy, ptr_ct, ptr_ct);
     hmat_ = hmat_copy;
   }
+#else
+  (void)hmat_;
 #endif
 }
 
