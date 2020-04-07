@@ -18,6 +18,7 @@
  * Removed deprecated MethodOfMomentsFactory::set,getOptimizationProblem
  * ResourceMap::Set* methods no longer add new keys, the new Add* methods must be used instead
  * Removed OPTpp
+ * Renamed HistogramFactory::computeSilvermanBandwidth into HistogramFactory::computeBandwidth.
 
 === Python module ===
 
@@ -45,6 +46,7 @@
  * #1405 (Most of the simulation algorithms for rare event fail on a coronavirus example)
  * #1416 (MethodOfMomentsFactory has no setOptimizationBounds method)
  * #1419 (BoundingVolumeHierarchy segaults/hangs)
+ * #1423 (The computeSilvermanBandwidth of the HistogramFactory has no help)
  * #1432 (Expected improvement-based EfficientGlobalOptimization stopping criterion could be improved)
 
 == 1.14 release (2019-11-13) == #release-1.14

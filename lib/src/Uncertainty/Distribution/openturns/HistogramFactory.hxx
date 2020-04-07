@@ -65,7 +65,7 @@ public:
   Histogram buildAsHistogram() const;
 
   /** Compute the bandwidth according to Silverman's rule */
-  Scalar computeSilvermanBandwidth(const Sample & sample,
+  Scalar computeBandwidth(const Sample & sample,
                                    const Bool useQuantile = true) const;
 
 }; /* class HistogramFactory */
