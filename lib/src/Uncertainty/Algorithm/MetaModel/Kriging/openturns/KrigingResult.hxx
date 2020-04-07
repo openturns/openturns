@@ -162,8 +162,11 @@ protected:
 
 private:
 
-  // Structure for evaluation of crossCovariance
+  // Structures for evaluation of crossCovariance
   friend struct KrigingResultCrossCovarianceFunctor;
+  friend struct KrigingResultCrossCovarianceFunctor1D;
+  friend struct KrigingResultCrossCovariancePointFunctor;
+  friend struct KrigingResultCrossCovariancePointFunctor1D;
 
   /** inputData should be keeped*/
   Sample inputSample_;

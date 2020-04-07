@@ -229,20 +229,19 @@ struct KrigingEvaluationSampleFunctor
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
-    const UnsignedInteger start = r.begin();
     const UnsignedInteger dimension = evaluation_.getOutputDimension();
-    const UnsignedInteger size = r.end() - start;
     Matrix R(dimension, trainingSize_ * dimension);
-    for (UnsignedInteger i = 0; i != size; ++i)
+    for (UnsignedInteger i = 0; r.begin() != r.end(); ++i)
     {
       for (UnsignedInteger j = 0; j < trainingSize_; ++j)
       {
-        const CovarianceMatrix localCovariance(evaluation_.covarianceModel_(input_[start + i], evaluation_.inputSample_[j]));
+        const CovarianceMatrix localCovariance(evaluation_.covarianceModel_(input_[i], evaluation_.inputSample_[j]));
         for (UnsignedInteger columnIndex = 0; columnIndex < dimension; ++ columnIndex)
           for (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++ rowIndex)
             R(rowIndex, columnIndex + j * dimension) = localCovariance(rowIndex, columnIndex);
       }
-      output_[start + i] = R * evaluation_.gamma_.getImplementation()->getData();
+      const Point RGamma(R * evaluation_.gamma_.getImplementation()->getData());
+      for (UnsignedInteger j = 0; j < dimension; ++j)  output_(i, j) = RGamma[j];
     }
   } // operator()
 }; // struct KrigingEvaluationSampleFunctor
