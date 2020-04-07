@@ -60,7 +60,6 @@ Threading configuration
 
 .. autosummary::
     :toctree: _generated/
-    :template: function.rst_t
+    :template: class.rst_t
 
-    TBB_Enable
-    TBB_Disable
+    TBB

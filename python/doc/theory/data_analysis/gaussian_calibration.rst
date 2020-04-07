@@ -27,7 +27,7 @@ The standard hypothesis of the probabilistic calibration is:
 
 .. math::
 
-    \vect{Y}^i = \vect{z}^i + \vect{\varepsilon}^i,
+    \vect{y}^i = \vect{z}^i + \vect{\varepsilon}^i,
 
 for :math:`i=1,...,n` where :math:`\vect{\varepsilon}^i` is a random measurement error. 
 
@@ -152,7 +152,7 @@ Regularity of solutions of the Gaussian Calibration
 The gaussian calibration is a tradeoff, so that the 
 second expression acts as a *spring* which pulls the parameter 
 :math:`\vect{\theta}` closer to the background :math:`\vect{\mu}` 
-(depending on the "spring constant" :math:`B`, 
+(depending on the "spring constant" :math:`B`)
 meanwhile getting as close a possible to the observations. 
 Depending on the matrix :math:`B`, the computation may have 
 better regularity properties than the plain non linear least squares problem. 
@@ -217,8 +217,8 @@ This leads to a classical non linear least squares problem.
 Linear Gaussian Calibration : bayesian BLUE
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We make the hypothesis that $h$ is linear with respect to :math:`\vect{\theta}`, 
-i.e., for any :math:`\vect{\theta}\in\Rset^{d_h}`, we have :
+We make the hypothesis that :math:`h` is linear with respect to :math:`\vect{\theta}`,
+i.e., for any :math:`\vect{\theta}\in\Rset^{d_h}`, we have:
 
 .. math::
 

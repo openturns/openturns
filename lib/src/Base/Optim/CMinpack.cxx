@@ -86,6 +86,7 @@ void CMinpack::checkProblem(const OptimizationProblem & problem) const
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support non continuous problems";
 
 #else
+  (void)problem;
   throw NotYetImplementedException(HERE) << "No CMinpack support";
 #endif
 }

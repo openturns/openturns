@@ -205,7 +205,7 @@ period : int
 
 Parameters
 ----------
-a : float
+alpha : positive float, default=0.0 (disables the criterion)
     Used to define a stopping criterion on the improvement criterion:
     :math:`I_{max} < \alpha |Y_{min}|`
     with :math:`I_{max}` the current maximum of the improvement
@@ -218,7 +218,7 @@ a : float
 
 Returns
 -------
-a : float
+alpha : positive float, default=0.0 (disables the criterion)
     Used to define a stopping criterion on the improvement criterion:
     :math:`I_{max} < \alpha |Y_{min}|`
     with :math:`I_{max}` the current maximum of the improvement

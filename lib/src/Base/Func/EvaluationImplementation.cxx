@@ -167,7 +167,7 @@ Matrix EvaluationImplementation::parameterGradient(const Point & inP) const
   const UnsignedInteger parameterDimension = parameter.getDimension();
   const UnsignedInteger outputDimension = getOutputDimension();
 
-  const Scalar epsilon = ResourceMap::GetAsScalar("NumericalMathEvaluation-ParameterEpsilon");
+  const Scalar epsilon = ResourceMap::GetAsScalar("Evaluation-ParameterEpsilon");
 
   Sample inS(parameterDimension + 1, parameter);
   for (UnsignedInteger i = 0; i < parameterDimension; ++ i)

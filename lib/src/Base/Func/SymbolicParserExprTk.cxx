@@ -179,14 +179,13 @@ Scalar ExprTk_rint(Scalar v)
 /* Method that instantiate the parsers */
 void SymbolicParserExprTk::initialize() const
 {
-  const UnsignedInteger numberOfParsers(formulas_.getSize());
+  const UnsignedInteger numberOfParsers = formulas_.getSize();
   if (expressions_.getSize() == numberOfParsers) return;
   expressions_ = Collection<Pointer<exprtk::expression<Scalar> > >(numberOfParsers);
-  const UnsignedInteger inputDimension(inputVariablesNames_.getSize());
-  const UnsignedInteger numberOutputVariables(outputVariablesNames_.getSize());
+  const UnsignedInteger inputDimension = inputVariablesNames_.getSize();
+  const UnsignedInteger numberOutputVariables = outputVariablesNames_.getSize();
   inputStack_ = Point(inputDimension + numberOutputVariables);
   exprtk::symbol_table<Scalar> symbol_table;
-  symbol_table.add_constants();
   symbol_table.add_constant("e_", 2.71828182845904523536028747135266249775724709369996);
   symbol_table.add_constant("pi_", 3.14159265358979323846264338327950288419716939937510);
   symbol_table.add_function("sign", ExprTk_sign);

@@ -281,10 +281,10 @@ Point MaximumLikelihoodFactory::buildParameter(const Sample & sample) const
   if (knownParameterValues_.getSize() != knownParameterIndices_.getSize())
     throw InvalidArgumentException(HERE) << "Error: known values size must match indices";
 
-  // Define NumericalMathEvaluation using the LogLikelihoodEvaluation wrapper
+  // Define evaluation
   LogLikelihoodEvaluation logLikelihoodWrapper(sample, distribution_, knownParameterValues_, knownParameterIndices_);
   Function logLikelihood(logLikelihoodWrapper.clone());
-  // Define NumericalMathGradient using the LogLikelihoodEvaluation wrapper
+  // Define gradient
   LogLikelihoodGradient logLikelihoodGradientWrapper(sample, distribution_, knownParameterValues_, knownParameterIndices_);
   logLikelihood.setGradient(logLikelihoodGradientWrapper.clone());
 

@@ -22,7 +22,6 @@ execution is done in a Python context.
 
 Here is an example of how to use it::
 
-    from __future__ import print_function
     import openturns as ot
 
     def compute_point(X):
@@ -47,7 +46,6 @@ Some explanations of the code :
 The evaluation can be done on several points to benefit from vectorization.
 It receives an input sample and must return an output sample. Here is an example::
 
-    from __future__ import print_function
     import openturns as ot
     import numpy as np
 
@@ -78,21 +76,21 @@ Simple example
 Here is a simple example of wrapper where compute is made in an external
 program with the help of openturns.coupling\_tools module::
 
-    from __future__ import print_function
     import openturns as ot
+    import openturns.coupling_tools as ct
 
     external_program = 'python external_program.py'
 
     def exec(X):
         # create input file
         in_file = 'input.py'
-        ot.coupling_tools.replace('input_template.py', in_file, ['@E', '@F'], X)
+        ct.replace('input_template.py', in_file, ['@E', '@F'], X)
 
         # compute
-        ot.coupling_tools.execute(external_program + ' ' + in_file)
+        ct.execute(external_program + ' ' + in_file)
 
         # parse output file
-        Y = ot.coupling_tools.get('output.py', tokens=['Z='])
+        Y = ct.get('output.py', tokens=['Z='])
 
         return Y
 

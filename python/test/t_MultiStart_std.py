@@ -37,3 +37,4 @@ algo.run()
 result = algo.getResult()
 print('-- multistart x*=', result.getOptimalPoint(),
       'f(x*)=', result.getOptimalValue())
+print('n_local_results=', len(algo.getResultCollection()))

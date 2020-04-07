@@ -35,16 +35,19 @@
  * #1351 (Text has a zero size)
  * #1354 (The doc of GeneralizedParetoFactory does not reflect the implementation)
  * #1371 (Memory leak in ot.TruncatedDistribution)
+ * #1372 (wrap MultiStart::OptimizationResultCollection)
  * #1378 (Kriging-related covariance model weirdness)
  * #1384 (The ExprTk engine is not case-sensitive)
  * #1388 (Kolmogorov fails on a PythonDistribution)
  * #1390 (The doc for the `computeQuantile` method does not describe the optional `tail` argument)
+ * #1393 (SobolSimulationAlgorithm should be simpler)
  * #1403 (Python import otagrum throws an error)
  * #1404 (Bug in KrigingAlgorithm+hmat-oss)
  * #1405 (Most of the simulation algorithms for rare event fail on a coronavirus example)
  * #1416 (MethodOfMomentsFactory has no setOptimizationBounds method)
  * #1419 (BoundingVolumeHierarchy segaults/hangs)
  * #1423 (The computeSilvermanBandwidth of the HistogramFactory has no help)
+ * #1432 (Expected improvement-based EfficientGlobalOptimization stopping criterion could be improved)
 
 == 1.14 release (2019-11-13) == #release-1.14
 
