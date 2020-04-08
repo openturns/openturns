@@ -379,6 +379,20 @@ Scalar Normal::computeCDF(const Point & point) const
   return value;
 } // computeCDF
 
+Scalar Normal::computeComplementaryCDF(const Scalar x) const
+{
+  return DistFunc::pNormal((x - mean_[0]) / sigma_[0], true);
+}
+
+Scalar Normal::computeComplementaryCDF(const Point & point) const
+{
+  const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point has a dimension incompatible with the distribution.";
+  // Special case for dimension 1
+  if (dimension == 1) return computeComplementaryCDF(point[0]);
+  return EllipticalDistribution::computeComplementaryCDF(point);
+} // computeComplementaryCDF
+
 /* Compute the entropy of the distribution */
 Scalar Normal::computeEntropy() const
 {
