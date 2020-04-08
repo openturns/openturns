@@ -78,7 +78,7 @@ void OrderStatisticsMarginalChecker::check() const
     if (aIm1 > aI) throw InvalidArgumentException(HERE) << "margins are not compatible: the lower bound of margin " << i - 1 << " is greater than the lower bound of margin " << i;
     // check that b_{i-1} <= b_i
     const Scalar bI = collection_[i].getRange().getUpperBound()[0];
-    if (bIm1 > bI) throw InvalidArgumentException(HERE) << "margins are not compatible: the lower bound of margin " << i - 1 << " is greater than the lower bound of margin " << i;
+    if (bIm1 > bI) throw InvalidArgumentException(HERE) << "margins are not compatible: the upper bound of margin " << i - 1 << " is greater than the upper bound of margin " << i;
     aIm1 = aI;
     bIm1 = bI;
   }
