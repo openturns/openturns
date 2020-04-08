@@ -16,12 +16,14 @@ Optimization
   .. toctree::
     :maxdepth: 1
 
-    ego.ipynb
+    optimization_rosenbrock.ipynb
     optimization_constraints.ipynb
     optimization_nlopt.ipynb
     optimization_dlib.ipynb
     optimization_bonmin.ipynb
+    ego.ipynb
     minmax_optimization.ipynb
     minmax_by_random_design.ipynb
     control_termination.ipynb
+    optimization_rastrigin.ipynb
 
