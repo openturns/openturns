@@ -45,16 +45,12 @@ Create a Gauss-Legendre algorithm:
 Available usages:
     integrate(*f, interval*)
 
-    integrate(*f, interval, xi*)
-
 Parameters
 ----------
 f : :class:`~openturns.Function`, :math:`f: \Rset^d \mapsto \Rset^p`
     The integrand function.
 interval : :class:`~openturns.Interval`, :math:`interval \in \Rset^d` 
     The integration domain. 
-xi : :class:`~openturns.Sample`
-    The integration nodes.
 
 Returns
 -------
@@ -72,6 +68,51 @@ Examples
 >>> value = algoGL.integrate(f, ot.Interval(a, b))[0]
 >>> print(value)
 -0.590...
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::GaussLegendre::integrateWithNodes
+"Evaluation of the integral of :math:`f` on an interval.
+
+Available usages:
+    integrateWithNodes(*f, interval)
+
+Parameters
+----------
+f : :class:`~openturns.Function`, :math:`f: \Rset^d \mapsto \Rset^p`
+    The integrand function.
+interval : :class:`~openturns.Interval`, :math:`interval \in \Rset^d` 
+    The integration domain. 
+
+Returns
+-------
+value : :class:`~openturns.Point`
+    Approximation of the integral.
+nodes : :class:`~openturns.Sample`.
+    The integration nodes.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x'], ['sin(x)'])
+>>> a = -2.5
+>>> b = 4.5
+>>> algoGL = ot.GaussLegendre([10])
+>>> value, nodes = algoGL.integrate(f, ot.Interval(a, b))
+>>> print(value[0])
+-0.590...
+>>> print(nodes)
+0 : [ -2.40867  ]
+1 : [ -2.02772  ]
+2 : [ -1.37793  ]
+3 : [ -0.516884 ]
+4 : [  0.47894  ]
+5 : [  1.52106  ]
+6 : [  2.51688  ]
+7 : [  3.37793  ]
+8 : [  4.02772  ]
+9 : [  4.40867  ]
 "
 
 // ---------------------------------------------------------------------
