@@ -2,15 +2,15 @@
 "Integration strategy for the approximation coefficients.
 
 Available constructors:
-    LeastSquaresStrategy(*measure*)
+    IntegrationStrategy(*measure*)
 
-    LeastSquaresStrategy(*weightedExp*)
+    IntegrationStrategy(*weightedExp*)
 
-    LeastSquaresStrategy(*measure, weightedExp*)
+    IntegrationStrategy(*measure, weightedExp*)
 
-    LeastSquaresStrategy(*inputSample, outputSample*)
+    IntegrationStrategy(*inputSample, outputSample*)
 
-    LeastSquaresStrategy(*inputSample, weights, outputSample*)
+    IntegrationStrategy(*inputSample, weights, outputSample*)
 
 Parameters
 ----------
