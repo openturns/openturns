@@ -29,7 +29,7 @@
 #include "openturns/SparseMatrix.hxx"
 #include "openturns/HMatrix.hxx"
 #include <algorithm>
-#if defined(OPENTURNS_HAVE_SPECTRA)
+#ifdef OPENTURNS_HAVE_SPECTRA
   #include <Spectra/GenEigsSolver.h>
 #endif
 
