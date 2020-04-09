@@ -3,12 +3,12 @@ Section: science
 Priority: optional
 Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>
 Uploaders: Denis Barbier <barbier@debian.org>
-Build-Depends: debhelper (>= 10), dh-python, quilt, gfortran, g++ (>= 4:7),
+Build-Depends: debhelper (>= 9), dh-python, quilt, g++ (>= 4:5),
  bison, flex, cmake,
- libmuparser-dev, libxml2-dev, liblapack-dev, libblas-dev,
- libboost-math-dev, libhmat-oss-dev, libnlopt-cxx-dev, libcminpack-dev,
- libtbb-dev [i386 amd64 ia64],
- python3-dev, swig (>= 2.0.9)
+ libmuparser-dev, libxml2-dev, libtbb-dev [i386 amd64 ia64], libboost-math-dev,
+ liblapack-dev, libblas-dev, libhmat-oss-dev, libspectra-dev,
+ libnlopt-cxx-dev, libcminpack-dev, libceres-dev, coinor-libipopt-dev,
+ python3-dev, swig
 Standards-Version: 4.1.3
 Homepage: http://www.openturns.org/
 Vcs-Browser: https://salsa.debian.org/science-team/openturns
@@ -16,13 +16,11 @@ Vcs-Git: https://salsa.debian.org/science-team/openturns.git
 X-Python-Version: current
 X-Python3-Version: current
 
-Package: libopenturns0.15
+Package: libopenturns0.16
 Section: libs
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Suggests: python3-openturns
-Replaces: openturns-wrapper
-Breaks: openturns-wrapper
+Breaks: python-openturns (<< 1.15)
 Description: dynamic libraries for OpenTURNS
  OpenTURNS is a powerful and generic tool to treat and quantify
  uncertainties in numerical simulations in design, optimization and
@@ -40,8 +38,8 @@ Description: dynamic libraries for OpenTURNS
 Package: libopenturns-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends}, libopenturns0.15 (= ${binary:Version}),
-  libxml2-dev, libtbb-dev [i386 amd64 ia64], libhmat-oss-dev
+Depends: ${misc:Depends}, libopenturns0.16 (= ${binary:Version}),
+  libxml2-dev, libtbb-dev [i386 amd64 ia64], libhmat-oss-dev, libceres-dev
 Replaces: python-openturns-dev (<< 1.5-2)
 Breaks: python-openturns-dev (<< 1.5-2)
 Description: headers and development libraries for OpenTURNS
@@ -61,9 +59,9 @@ Description: headers and development libraries for OpenTURNS
 Package: python3-openturns
 Section: python
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libopenturns0.15 (= ${binary:Version}), ${python3:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, libopenturns0.16 (= ${binary:Version}), ${python3:Depends}
 Provides: ${python3:Provides}
-Suggests: python3-matplotlib, python3-scipy
+Suggests: python3-matplotlib
 Description: Python3 front-end of OpenTURNS (aka TUI)
  OpenTURNS is a powerful and generic tool to treat and quantify
  uncertainties in numerical simulations in design, optimization and
@@ -80,9 +78,7 @@ Description: Python3 front-end of OpenTURNS (aka TUI)
 
 Package: openturns-examples
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, python, python3-openturns (= ${binary:Version}), libopenturns-dev
-Replaces: openturns-wrapper
-Breaks: openturns-wrapper
+Depends: ${shlibs:Depends}, ${misc:Depends}, python3-openturns (= ${binary:Version}), libopenturns-dev
 Description: examples of OpenTURNS functionalities
  OpenTURNS is a powerful and generic tool to treat and quantify
  uncertainties in numerical simulations in design, optimization and
