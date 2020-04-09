@@ -103,6 +103,8 @@ try:
         print("log characteristic function=%.6f+%.6fi" % (LCF.real, LCF.imag))
         CDF = distribution.computeCDF(point)
         print("cdf=%.6f" % CDF)
+        CCDF = distribution.computeComplementaryCDF(point)
+        print("ccdf=%.6f" % CCDF)
         PDFgr = distribution.computePDFGradient(point)
         print("pdf gradient     =", repr(PDFgr))
         # by the finite difference technique

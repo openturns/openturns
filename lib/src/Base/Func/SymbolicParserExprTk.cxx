@@ -181,7 +181,7 @@ void SymbolicParserExprTk::initialize() const
 {
   const UnsignedInteger numberOfParsers = formulas_.getSize();
   if (expressions_.getSize() == numberOfParsers) return;
-  expressions_ = Collection<Pointer<exprtk::expression<Scalar> > >(numberOfParsers);
+  Collection<Pointer<exprtk::expression<Scalar> > > expressions(numberOfParsers);
   const UnsignedInteger inputDimension = inputVariablesNames_.getSize();
   const UnsignedInteger numberOutputVariables = outputVariablesNames_.getSize();
   inputStack_ = Point(inputDimension + numberOutputVariables);
@@ -218,8 +218,9 @@ void SymbolicParserExprTk::initialize() const
     {
       throw InvalidArgumentException(HERE) << "Errors found when parsing expression '" << formulas_[outputIndex] << "': " << parser.error();
     }
-    expressions_[outputIndex] = new exprtk::expression<Scalar>(expression);
+    expressions[outputIndex] = new exprtk::expression<Scalar>(expression);
   }
+  expressions_ = expressions;
 }
 
 /* Method save() stores the object through the StorageManager */

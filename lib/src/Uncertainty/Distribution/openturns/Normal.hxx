@@ -92,6 +92,10 @@ public:
   Scalar computeCDF(const Scalar scalar) const;
   Scalar computeCDF(const Point & point) const;
 
+  using EllipticalDistribution::computeComplementaryCDF;
+  Scalar computeComplementaryCDF(const Scalar scalar) const;
+  Scalar computeComplementaryCDF(const Point & point) const;
+
   /** Compute the entropy of the distribution */
   Scalar computeEntropy() const;
 
