@@ -201,8 +201,8 @@ Matrix SparseMatrix::asDenseMatrix() const
 String SparseMatrix::__repr__() const
 {
   return OSS(true) << "class=" << getClassName()
-                  << " rows=" << getNbRows()
-                  << " columns=" << getNbColumns();
+         << " rows=" << getNbRows()
+         << " columns=" << getNbColumns();
 }
 
 END_NAMESPACE_OPENTURNS

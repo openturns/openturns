@@ -244,8 +244,10 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
     # check return code
     if check_exit_code and ret != 0:
         # append sample of stderr to the exception message if available
-        err_msg = (':\n' + stderr_data[:200].decode()) if stderr_data is not None else ''
-        raise RuntimeError('Command "' + cmd + '" returned exit code ' + str(ret) + err_msg)
+        err_msg = (':\n' + stderr_data[:200].decode()
+                   ) if stderr_data is not None else ''
+        raise RuntimeError('Command "' + cmd +
+                           '" returned exit code ' + str(ret) + err_msg)
 
     if get_stdout and get_stderr:
         return ret, stdout_data, stderr_data
@@ -613,7 +615,8 @@ def get_value(filename, token=None, skip_token=0, skip_line=0, skip_col=0, col_s
 
     result = None
     if not token:
-        result = get_line_col(filename, skip_line, skip_col, col_sep=col_sep, encoding=encoding)
+        result = get_line_col(filename, skip_line, skip_col,
+                              col_sep=col_sep, encoding=encoding)
     else:
         handle = open(filename, 'rb')
 

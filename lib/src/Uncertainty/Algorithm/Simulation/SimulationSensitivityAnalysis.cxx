@@ -43,8 +43,8 @@ SimulationSensitivityAnalysis::SimulationSensitivityAnalysis()
 
 /* Standard constructor */
 SimulationSensitivityAnalysis::SimulationSensitivityAnalysis(const RandomVector & event,
-                                                             const Sample & inputSample,
-                                                             const Sample & outputSample)
+    const Sample & inputSample,
+    const Sample & outputSample)
   : PersistentObject(),
     inputSample_(inputSample),
     outputSample_(outputSample),
@@ -136,7 +136,7 @@ PointWithDescription SimulationSensitivityAnalysis::computeEventProbabilitySensi
     marginals[j] = event_.getImplementation()->getAntecedent().getDistribution().getMarginal(j);
     parameterDimension += marginals[j].getParameter().getSize();
   }
-   // remove copula parameters
+  // remove copula parameters
   description.erase(description.begin() + parameterDimension, description.end());
   Point sumGrad(parameterDimension);
   const ComparisonOperator op(getComparisonOperator());

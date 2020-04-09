@@ -41,7 +41,7 @@ KarhunenLoeveAlgorithmImplementation::KarhunenLoeveAlgorithmImplementation()
 
 /* Default constructor */
 KarhunenLoeveAlgorithmImplementation::KarhunenLoeveAlgorithmImplementation(const CovarianceModel & covariance,
-                                                                           const Scalar threshold)
+    const Scalar threshold)
   : PersistentObject()
   , covariance_(covariance)
   , threshold_(threshold)
@@ -67,7 +67,7 @@ void KarhunenLoeveAlgorithmImplementation::setThreshold(const Scalar threshold)
 {
   if (threshold > 1.0 || threshold < 0.0)
     LOGWARN(OSS() << "threshold must be between 0.0 and 1.0");
-  
+
   threshold_ = threshold;
 }
 

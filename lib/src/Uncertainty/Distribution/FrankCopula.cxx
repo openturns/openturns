@@ -372,10 +372,10 @@ Bool FrankCopula::hasIndependentCopula() const
 void FrankCopula::setTheta(const Scalar theta)
 {
   if (theta != theta_)
-    {
-      theta_ = theta;
-      isAlreadyComputedCovariance_ = false;
-    }
+  {
+    theta_ = theta;
+    isAlreadyComputedCovariance_ = false;
+  }
 }
 
 /* Theta accessor */

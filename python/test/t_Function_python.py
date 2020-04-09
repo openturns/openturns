@@ -97,7 +97,7 @@ outSample = myFunc(a_sample)
 print(outSample)
 
 # multiprocessing spawn method on win (& osx for py>38) duplicates the output
-cpus=-1 if sys.platform.startswith('linux') else None
+cpus = -1 if sys.platform.startswith('linux') else None
 print('distributed exec only on a point')
 myFunc = PythonFunction(
     2, 1, a_exec, n_cpus=cpus)

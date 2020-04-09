@@ -434,9 +434,9 @@ public:
   explicit AdvocateIterator(Advocate & advocate) : advocate_(advocate), index_(0), first_(true) {}
 
   AdvocateIterator(const AdvocateIterator & other)
-  : advocate_(other.advocate_)
-  , index_(other.index_)
-  , first_(other.first_)
+    : advocate_(other.advocate_)
+    , index_(other.index_)
+    , first_(other.first_)
   {
     // Nothing to do
   }

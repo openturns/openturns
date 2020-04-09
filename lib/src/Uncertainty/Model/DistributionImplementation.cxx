@@ -2673,10 +2673,10 @@ void DistributionImplementation::computeRange()
 {
   // Quick return for copulas
   if (isCopula())
-    {
-      range_ = Interval(dimension_);
-      return;
-    }
+  {
+    range_ = Interval(dimension_);
+    return;
+  }
   const Interval::BoolCollection finiteLowerBound(dimension_, false);
   const Interval::BoolCollection finiteUpperBound(dimension_, false);
   // Initialize the range with inverted bounds in order to inform the generic implementation of the

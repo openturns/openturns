@@ -42,9 +42,9 @@
 #ifdef OPENTURNS_HAVE_OPENBLAS
 extern "C" {
 // This function is private
-int goto_get_num_procs(void);
+  int goto_get_num_procs(void);
 // This one is public but redeclare it in case regular cblas headers are used
-void openblas_set_num_threads(int num_threads);
+  void openblas_set_num_threads(int num_threads);
 }
 #endif
 
@@ -131,8 +131,8 @@ TBB_init::~TBB_init()
 
 
 TBBContext::TBBContext()
-: ompNumThreads_(0)
-, openblasNumThreads_(0)
+  : ompNumThreads_(0)
+  , openblasNumThreads_(0)
 {
 #ifdef OPENTURNS_HAVE_TBB
   if (TBB::GetNumberOfThreads() > 1)
@@ -159,10 +159,10 @@ TBBContext::~TBBContext()
   {
     // restore threading
 #ifdef OPENTURNS_HAVE_OPENMP
-  omp_set_num_threads(ompNumThreads_);
+    omp_set_num_threads(ompNumThreads_);
 #endif
 #ifdef OPENTURNS_HAVE_OPENBLAS
-  openblas_set_num_threads(openblasNumThreads_);
+    openblas_set_num_threads(openblasNumThreads_);
 #endif
   }
 #endif

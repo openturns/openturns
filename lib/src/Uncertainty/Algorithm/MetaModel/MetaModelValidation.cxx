@@ -148,7 +148,7 @@ Graph MetaModelValidation::drawValidation() const
   Cloud cloud(outputSample_, yhat);
   // set color
   cloud.setColor("red");
-  Graph graph(OSS() << "Metamodel validation - Q2 = " <<q2_ * 100 << " %" , "model", "metamodel", true);
+  Graph graph(OSS() << "Metamodel validation - Q2 = " << q2_ * 100 << " %", "model", "metamodel", true);
   // Add drawables
   graph.add(curve);
   graph.add(cloud);

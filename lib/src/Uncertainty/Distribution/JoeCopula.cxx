@@ -168,10 +168,10 @@ void JoeCopula::setTheta(const Scalar theta)
   if (!(theta > 0.0))
     throw InvalidArgumentException(HERE) << "Theta must be positive";
   if (theta != theta_)
-    {
-      theta_ = theta;
-      updatePickandFunction();
-    }
+  {
+    theta_ = theta;
+    updatePickandFunction();
+  }
 }
 
 /* theta parameter accessor */
@@ -180,10 +180,10 @@ void JoeCopula::setPsi1(const Scalar psi1)
   if (!(psi1 >= 0.0) || !(psi1 <= 1.0))
     throw InvalidArgumentException(HERE) << "Psi1 must be in [0, 1]";
   if (psi1 != psi1_)
-    {
-      psi1_ = psi1;
-      updatePickandFunction();
-    }
+  {
+    psi1_ = psi1;
+    updatePickandFunction();
+  }
 }
 
 /* theta parameter accessor */

@@ -43,9 +43,9 @@ sample = distribution.getSample(size)
 factory = ot.FisherSnedecorFactory()
 estimatedTN = factory.buildMethodOfMoments(sample)
 exact_mu = sample.computeMean()[0]
-exact_sigma2 = sample.computeCovariance()[0,0]
+exact_sigma2 = sample.computeCovariance()[0, 0]
 computed_mu = estimatedTN.getMean()[0]
-computed_sigma2 = estimatedTN.getCovariance()[0,0]
+computed_sigma2 = estimatedTN.getCovariance()[0, 0]
 ott.assert_almost_equal(exact_mu, computed_mu, 1.e-15, 0.0)
 ott.assert_almost_equal(exact_sigma2, computed_sigma2, 1.e-15, 0.0)
 
@@ -57,7 +57,7 @@ sample = distribution.getSample(size)
 factory = ot.FisherSnedecorFactory()
 estimatedTN = factory.buildMethodOfLikelihoodMaximization(sample)
 exact_d1 = distribution.getD1()
-exact_d2= distribution.getD2()
+exact_d2 = distribution.getD2()
 computed_d1 = estimatedTN.getD1()
 computed_d2 = estimatedTN.getD2()
 ott.assert_almost_equal(exact_d1, computed_d1, 0.0, 100.0 / sqrt(size))

@@ -5,7 +5,7 @@ import openturns as ot
 import openturns.testing as ott
 
 
-mesh = ot.RegularGrid(0.0, 1.0, 4);
+mesh = ot.RegularGrid(0.0, 1.0, 4)
 values = ot.Sample([[0.5], [1.5], [1.0], [-0.5]])
 field = ot.Field(mesh, values)
 evaluation = ot.P1LagrangeEvaluation(field)
@@ -37,4 +37,3 @@ print(y)
 index = lagrange.getEnclosingSimplexAlgorithm().query(point)
 print(index)
 assert index == 12, "wrong index"
-

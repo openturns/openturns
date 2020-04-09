@@ -136,7 +136,8 @@ void Ipopt::run()
 
   // Intialize the IpoptApplication and process the options
   ApplicationReturnStatus status = app->Initialize();
-  if (status != Solve_Succeeded) {
+  if (status != Solve_Succeeded)
+  {
     throw InternalException(HERE) << "ipopt failed with code " << status;
   }
 
@@ -205,10 +206,12 @@ void Ipopt::run()
       statusString = (OSS() << status);
       break;
   }
-  if (status > 0) {
+  if (status > 0)
+  {
     LOGINFO(OSS() << "Ipopt exited with status: " << statusString);
   }
-  else if (status < 0) {
+  else if (status < 0)
+  {
     throw InternalException(HERE) << "Ipopt error: " << statusString;
   }
 

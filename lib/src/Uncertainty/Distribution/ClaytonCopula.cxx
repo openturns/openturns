@@ -495,10 +495,10 @@ void ClaytonCopula::setTheta(const Scalar theta)
 {
   if (theta < -1.0) throw InvalidArgumentException(HERE) << "Theta MUST be greater or equal to -1";
   if (theta != theta_)
-    {
-      theta_ = theta;
-      isAlreadyComputedCovariance_ = false;
-    }
+  {
+    theta_ = theta;
+    isAlreadyComputedCovariance_ = false;
+  }
 }
 
 /* Theta accessor */

@@ -39,9 +39,9 @@ public:
 
   /** Constructor with parameters */
   IpoptProblem( const OptimizationProblem & optimProblem,
-                 const Point & startingPoint,
-                 const UnsignedInteger maximumEvaluationNumber
-               );
+                const Point & startingPoint,
+                const UnsignedInteger maximumEvaluationNumber
+              );
 
   /** Retrieving objective function input.output history */
   Sample getInputHistory() const;
@@ -131,11 +131,11 @@ public:
                     double* values);
 
   virtual void finalize_solution(::Ipopt::SolverReturn status, ::Ipopt::Index n,
-                               const ::Ipopt::Number* x, const ::Ipopt::Number* z_L,
-                               const ::Ipopt::Number* z_U, ::Ipopt::Index m, const ::Ipopt::Number* g,
-                               const ::Ipopt::Number* lambda, ::Ipopt::Number obj_value,
-                               const ::Ipopt::IpoptData* ip_data,
-                               ::Ipopt::IpoptCalculatedQuantities* ip_cq);
+                                 const ::Ipopt::Number* x, const ::Ipopt::Number* z_L,
+                                 const ::Ipopt::Number* z_U, ::Ipopt::Index m, const ::Ipopt::Number* g,
+                                 const ::Ipopt::Number* lambda, ::Ipopt::Number obj_value,
+                                 const ::Ipopt::IpoptData* ip_data,
+                                 ::Ipopt::IpoptCalculatedQuantities* ip_cq);
 
   Point getOptimalPoint() const
   {

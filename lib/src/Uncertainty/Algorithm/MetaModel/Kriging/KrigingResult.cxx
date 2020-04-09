@@ -280,10 +280,10 @@ struct KrigingResultCrossCovarianceFunctor1D
                                         const Sample &input,
                                         Matrix & output,
                                         const CovarianceModel & model)
-      : conditionnedPoints_(conditionnedPoints)
-      , input_(input)
-      , output_(output)
-      , model_(model)
+    : conditionnedPoints_(conditionnedPoints)
+    , input_(input)
+    , output_(output)
+    , model_(model)
   {
   }
 
@@ -295,7 +295,7 @@ struct KrigingResultCrossCovarianceFunctor1D
     {
       for (UnsignedInteger j = 0; j < input_.getSize(); ++j)
         output_(i, j) = model_.getImplementation()->computeAsScalar(conditionnedPoints_.getImplementation()->data_begin() + (i * inputDimension),
-                                                                    input_.getImplementation()->data_begin() + (j * inputDimension));
+                        input_.getImplementation()->data_begin() + (j * inputDimension));
     }
   } // operator()
 };
@@ -340,13 +340,13 @@ struct KrigingResultCrossCovariancePointFunctor
   const CovarianceModel &model_;
 
   KrigingResultCrossCovariancePointFunctor(const Sample &conditionnedPoints,
-                                           const Point &input,
-                                           Matrix &output,
-                                           const CovarianceModel &model)
-      : conditionnedPoints_(conditionnedPoints)
-      , input_(input)
-      , output_(output)
-      , model_(model)
+      const Point &input,
+      Matrix &output,
+      const CovarianceModel &model)
+    : conditionnedPoints_(conditionnedPoints)
+    , input_(input)
+    , output_(output)
+    , model_(model)
   {
   }
 
@@ -373,13 +373,13 @@ struct KrigingResultCrossCovariancePointFunctor1D
   const CovarianceModel & model_;
 
   KrigingResultCrossCovariancePointFunctor1D(const Sample &conditionnedPoints,
-                                             const Point &input,
-                                             Matrix & output,
-                                             const CovarianceModel &model)
-      : conditionnedPoints_(conditionnedPoints)
-      , input_(input)
-      , output_(output)
-      , model_(model)
+      const Point &input,
+      Matrix & output,
+      const CovarianceModel &model)
+    : conditionnedPoints_(conditionnedPoints)
+    , input_(input)
+    , output_(output)
+    , model_(model)
   {
   }
 
@@ -389,7 +389,7 @@ struct KrigingResultCrossCovariancePointFunctor1D
     const UnsignedInteger inputDimension = input_.getDimension();
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
-        output_(i, 0) = model_.getImplementation()->computeAsScalar(conditionnedPoints_.getImplementation()->data_begin() + (i * inputDimension), input_.begin() );
+      output_(i, 0) = model_.getImplementation()->computeAsScalar(conditionnedPoints_.getImplementation()->data_begin() + (i * inputDimension), input_.begin() );
     }
   } // operator()
 };
@@ -406,7 +406,7 @@ Matrix KrigingResult::getCrossMatrix(const Point & point) const
     // The loop is over the lower block-triangular part
     TBB::ParallelFor(0, trainingSize, policy);
     return result;
-  }  
+  }
   const UnsignedInteger trainingFullSize = trainingSize * covarianceModel_.getOutputDimension();
   Matrix result(trainingFullSize, outputDimension);
   const KrigingResultCrossCovariancePointFunctor policy(inputTransformedSample_, point, result, covarianceModel_);
@@ -755,7 +755,7 @@ Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
     const Scalar sigma2 = covarianceModel_(tau)(0, 0);
     Point result(sampleSize, sigma2);
 
-    
+
     // 2) compute \sigma_{y,x}
     // compute r(x), the crossCovariance between the conditionned data & xi
     LOGINFO("Compute cross-interactions sigmaYX");

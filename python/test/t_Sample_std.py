@@ -113,7 +113,8 @@ try:
 
     # getMarginal by identifiers
     sample = Normal(4).getSample(5)
-    assert sample.getMarginal(['X3', 'X1']).getDescription() == ['X3', 'X1'], "wrong marginal"
+    assert sample.getMarginal(['X3', 'X1']).getDescription() == [
+        'X3', 'X1'], "wrong marginal"
 except:
     import sys
     print("t_Sample_std.py", sys.exc_info()[0], sys.exc_info()[1])

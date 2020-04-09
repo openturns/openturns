@@ -58,7 +58,8 @@ print('ok' if ot.HMatrixFactory.IsAvailable() else 'n/a')
 
 # check that spectra library was found
 print(' 7: iterative SVD (Spectra)'.ljust(width), end=' ')
-ot.ResourceMap.SetAsString("KarhunenLoeveP1Algorithm-EigenvaluesSolver", "SPECTRA")
+ot.ResourceMap.SetAsString(
+    "KarhunenLoeveP1Algorithm-EigenvaluesSolver", "SPECTRA")
 mesh = ot.IntervalMesher([9]).build(ot.Interval(-1.0, 1.0))
 cov1D = ot.AbsoluteExponential([1.0])
 algo = ot.KarhunenLoeveP1Algorithm(mesh, cov1D, 1e-3)
@@ -105,4 +106,3 @@ print('ok' if ot.Bonmin.IsAvailable() else 'n/a')
 # check that ipopt was found
 print('15: optimization (Ipopt)'.ljust(width), end=' ')
 print('ok' if ot.Ipopt.IsAvailable() else 'n/a')
-

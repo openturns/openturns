@@ -203,7 +203,7 @@ assert g([5, 4])[0] == 1.0, "case sensitivity"
 
 # ev3/exprtk constants consistency
 try:
-    f = ot.SymbolicFunction(['x','y'], ['pi*x'])
+    f = ot.SymbolicFunction(['x', 'y'], ['pi*x'])
     print(f.gradient([-3]*2))
 except Exception:
     print('OK')

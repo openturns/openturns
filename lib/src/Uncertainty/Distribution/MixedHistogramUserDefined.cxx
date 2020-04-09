@@ -132,7 +132,7 @@ String MixedHistogramUserDefined::__repr__() const
 String MixedHistogramUserDefined::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << offset << getClassName() << "(ticksCollection = " << ticksCollection_<< ", kind = " << kind_ << ", probabilityTable = "<< probabilityTable_ << ")";
+  oss << offset << getClassName() << "(ticksCollection = " << ticksCollection_ << ", kind = " << kind_ << ", probabilityTable = " << probabilityTable_ << ")";
   return oss;
 }
 
@@ -467,13 +467,13 @@ Bool MixedHistogramUserDefined::isIntegral() const
   const UnsignedInteger size = kind_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-      if (kind_[i] == CONTINUOUS) return false;
-      const UnsignedInteger supportSize = ticksCollection_[i].getSize();
-      for (UnsignedInteger j = 0; j < supportSize; ++j)
-	{
-	  const Scalar x = ticksCollection_[i][j];
-	  if (std::abs(x - floor(x + 0.5)) > epsilon) return false;
-	}
+    if (kind_[i] == CONTINUOUS) return false;
+    const UnsignedInteger supportSize = ticksCollection_[i].getSize();
+    for (UnsignedInteger j = 0; j < supportSize; ++j)
+    {
+      const Scalar x = ticksCollection_[i][j];
+      if (std::abs(x - floor(x + 0.5)) > epsilon) return false;
+    }
   } // i
   return true;
 }

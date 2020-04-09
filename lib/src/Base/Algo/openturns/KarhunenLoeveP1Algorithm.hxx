@@ -38,7 +38,7 @@ class OT_API KarhunenLoeveP1Algorithm
   CLASSNAME
 
 public:
-  
+
   /** Default constructor without parameters */
   KarhunenLoeveP1Algorithm();
 
@@ -57,10 +57,10 @@ public:
    * where C is a given covariance model, using P1 approximation
    */
   void run();
-  
+
   /** Mesh accessor */
   Mesh getMesh() const;
-  
+
   /** String converter */
   virtual String __repr__() const;
 
