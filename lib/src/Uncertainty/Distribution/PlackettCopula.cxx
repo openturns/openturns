@@ -28,7 +28,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(PlackettCopula)
 
-  static const Factory<PlackettCopula> Factory_PlackettCopula;
+static const Factory<PlackettCopula> Factory_PlackettCopula;
 
 /* Default constructor */
 PlackettCopula::PlackettCopula()
@@ -101,17 +101,17 @@ Point PlackettCopula::getRealization() const
   realization[0] = u;
   // If this is the Min copula
   if (theta_ == 0.0)
-    {
-      realization[1] = u;
-      return realization;
-    }
+  {
+    realization[1] = u;
+    return realization;
+  }
   const Scalar t = RandomGenerator::Generate();
   // If this is the independent copula
   if (thetaMinus1_ == 0.0)
-    {
-      realization[1] = t;
-      return realization;
-    }
+  {
+    realization[1] = t;
+    return realization;
+  }
   // General case
   const Scalar a = t * (1.0 - t);
   const Scalar thetaMinus1Squared = thetaMinus1_ * thetaMinus1_;
@@ -132,9 +132,9 @@ Scalar PlackettCopula::computePDF(const Point & point) const
   const Scalar v = point[1];
   // A copula has a null PDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
-    {
-      return 0.0;
-    }
+  {
+    return 0.0;
+  }
   // Independent or nearly independent case
   if (std::abs(thetaMinus1_) < 1e-7)
     return 1.0 + thetaMinus1_ * (1.0 - 2.0 * u) * (1.0 - 2.0 * v);
@@ -153,24 +153,24 @@ Scalar PlackettCopula::computeCDF(const Point & point) const
   const Scalar v = point[1];
   // If we are outside of the support, in the lower parts
   if ((u <= 0.0) || (v <= 0.0))
-    {
-      return 0.0;
-    }
+  {
+    return 0.0;
+  }
   // If we are outside of the support, in the upper part
   if ((u >= 1.0) && (v >= 1.0))
-    {
-      return 1.0;
-    }
+  {
+    return 1.0;
+  }
   // If we are outside of the support for u, in the upper part
   if (u >= 1.0)
-    {
-      return v;
-    }
+  {
+    return v;
+  }
   // If we are outside of the support for v, in the upper part
   if (v >= 1.0)
-    {
-      return u;
-    }
+  {
+    return u;
+  }
   // If we are in the support
   // Independent or nearly independent case
   if (std::abs(thetaMinus1_) < 1e-7)
@@ -208,10 +208,10 @@ Point PlackettCopula::computeQuantile(const Scalar prob,
   if (q == 1.0) return getRange().getUpperBound();
   // Independent or nearly independent case
   if (std::abs(thetaMinus1_) < 1e-7)
-    {
-      const Scalar sqrtQ = std::sqrt(q);
-      return Point(2, sqrtQ * (1.0 + thetaMinus1_ * (-0.5 + sqrtQ - 0.5 * q)));
-    }
+  {
+    const Scalar sqrtQ = std::sqrt(q);
+    return Point(2, sqrtQ * (1.0 + thetaMinus1_ * (-0.5 + sqrtQ - 0.5 * q)));
+  }
   // Min copula case
   if (theta_ == 0.0)
     return Point(2, q);
@@ -282,11 +282,11 @@ void PlackettCopula::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != 1) throw InvalidArgumentException(HERE) << "Error: expected 1 value, got " << parameter.getSize();
   if (parameter[0] != theta_)
-    {
-      const Scalar w = getWeight();
-      *this = PlackettCopula(parameter[0]);
-      setWeight(w);
-    }
+  {
+    const Scalar w = getWeight();
+    *this = PlackettCopula(parameter[0]);
+    setWeight(w);
+  }
 }
 
 /* Parameters description accessor */
@@ -320,11 +320,11 @@ void PlackettCopula::setTheta(const Scalar theta)
 {
   if (theta < 0.0) throw InvalidArgumentException(HERE) << "Error: expected theta>=0, got theta=" << theta;
   if (theta != theta_)
-    {
-      theta_ = theta;
-      thetaMinus1_ = theta - 1.0;
-      isAlreadyComputedCovariance_ = false;
-    }
+  {
+    theta_ = theta;
+    thetaMinus1_ = theta - 1.0;
+    isAlreadyComputedCovariance_ = false;
+  }
 }
 
 /* Theta accessor */

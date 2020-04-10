@@ -146,9 +146,10 @@ try:
     distribution = ot.Normal()
     sample = distribution.getSample(30)
     factory = ot.NormalFactory()
-    ot.ResourceMap.SetAsUnsignedInteger('FittingTest-KolmogorovSamplingSize',10000)
+    ot.ResourceMap.SetAsUnsignedInteger(
+        'FittingTest-KolmogorovSamplingSize', 10000)
     fitted_dist, test_result = ot.FittingTest.Kolmogorov(sample, factory)
-    p_exact = 0.934674 # With a sample size equal to 1000000
+    p_exact = 0.934674  # With a sample size equal to 1000000
     pvalue = test_result.getPValue()
     rtol = 0.0
     atol = 1.e-2
@@ -156,12 +157,12 @@ try:
 
     # Kolmogorov test : case with known parameters
     print("Kolmogorov test : case with known parameters")
-    # Data from PlantGrowth$weight in the MASS R package, 
+    # Data from PlantGrowth$weight in the MASS R package,
     # except the first value which generates a tie
     distribution = ot.Normal()
-    data = (5.58, 5.18, 6.11, 4.50, 4.61, 5.17, 4.53, 5.33, 
-            5.14, 4.81, 4.17, 4.41, 3.59, 5.87, 3.83, 6.03, 4.89, 
-            4.32, 4.69, 6.31, 5.12, 5.54, 5.50, 5.37, 5.29, 4.92, 
+    data = (5.58, 5.18, 6.11, 4.50, 4.61, 5.17, 4.53, 5.33,
+            5.14, 4.81, 4.17, 4.41, 3.59, 5.87, 3.83, 6.03, 4.89,
+            4.32, 4.69, 6.31, 5.12, 5.54, 5.50, 5.37, 5.29, 4.92,
             6.15, 5.80, 5.26)
     sample = ot.Sample(data, 1)
     mean = sample.computeMean()
@@ -208,22 +209,24 @@ try:
             try:
                 sample = continuousSampleCollection[i]
                 distribution = continuousDistributionCollection[j]
-                test_result = ot.FittingTest.ChiSquared(sample, distribution, 0.05, 0)
+                test_result = ot.FittingTest.ChiSquared(
+                    sample, distribution, 0.05, 0)
                 pvalue = test_result.getPValue()
                 if (fabs(pvalue) < 1.0e-6):
                     value = 0.0
                 resultChiSquared[i, j] = value
             except:
                 print(
-                    "Sample=", discreteSampleCollection[i], 
-                    " is not compatible with distribution=", 
+                    "Sample=", discreteSampleCollection[i],
+                    " is not compatible with distribution=",
                     discreteDistributionCollection[j])
     print("resultChiSquared=", repr(resultChiSquared))
     # Example taken from the R documentation of chisq.test
     s = [[0.0]]*89 + [[1.0]]*37 + [[2.0]]*30 + [[3.0]]*28 + [[4.0]]*2
     d = ot.UserDefined([[0.0], [1.0], [2.0], [3.0], [4.0]],
-                    [0.4, 0.2, 0.2, 0.15, 0.05])
-    print("R example p-value=%.5g" % ot.FittingTest.ChiSquared(s, d).getPValue())
+                       [0.4, 0.2, 0.2, 0.15, 0.05])
+    print("R example p-value=%.5g" %
+          ot.FittingTest.ChiSquared(s, d).getPValue())
 
 except:
     import sys

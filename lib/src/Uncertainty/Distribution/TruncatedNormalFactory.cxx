@@ -101,7 +101,7 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfMoments(const Sample & samp
   // Configure starting point
   OptimizationAlgorithm solver(factory.getOptimizationAlgorithm());
   solver.setStartingPoint(startingPoint);
-  factory.setOptimizationAlgorithm(solver);  
+  factory.setOptimizationAlgorithm(solver);
 
   // Estimate
   const Point parameters(factory.buildParameter(sample));

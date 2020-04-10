@@ -80,7 +80,7 @@ def check_replace():
     template = create_template()
     template_out = template + ".replaced"
     ct.replace(infile=template, outfile=template_out,
-                           tokens=["@E"], values=[2])
+               tokens=["@E"], values=[2])
     check_outfile(template_out, semi_parsed)
     remove_file(template_out)
     remove_file(template)
@@ -88,8 +88,8 @@ def check_replace():
     print("= check replace more vars")
     template = create_template()
     ct.replace(infile=template, outfile=template_out,
-                           tokens=["@E", "@F", "@Z"],
-                           values=[1.6, 5, 6])
+               tokens=["@E", "@F", "@Z"],
+               values=[1.6, 5, 6])
     check_outfile(template_out, parsed)
     remove_file(template_out)
     remove_file(template)
@@ -97,14 +97,14 @@ def check_replace():
     print("= check replace inplace")
     template = create_template()
     ct.replace(infile=template, outfile=template,
-                           tokens=["@E", "@F", "@Z"], values=[1.6, 5, 6])
+               tokens=["@E", "@F", "@Z"], values=[1.6, 5, 6])
     check_outfile(template, parsed)
     remove_file(template)
 
     print("= check replace inplace with None")
     template = create_template()
     ct.replace(infile=template, outfile=None,
-                           tokens=["@E", "@F", "@Z"], values=[1.6, 5, 6])
+               tokens=["@E", "@F", "@Z"], values=[1.6, 5, 6])
     check_outfile(template, parsed)
     remove_file(template)
 
@@ -117,7 +117,7 @@ def check_replace():
     template_out = template + ".replaced"
     start_time = time.time()
     ct.replace(infile=template, outfile=template_out,
-                           tokens=["@E"], values=[2])
+               tokens=["@E"], values=[2])
     time_to_parse = str(int(time.time() - start_time))
     check_outfile(template_out, semi_parsed)
     remove_file(template_out)
@@ -243,7 +243,7 @@ def check_get_line_col():
     sys.stderr.write('char at pos ' + str(just_before_line_ret) + ':->' +
                      content[just_before_line_ret] + '<-\n')
     result = ct.get_line_col(result_file, skip_line=-1,
-                                         seek=-just_before_line_ret)
+                             seek=-just_before_line_ret)
     if value != result:
         raise Exception("! got " + str(result) + ' instead of ' +
                         str(value))
@@ -253,7 +253,7 @@ def check_get_line_col():
     sys.stderr.write('char at pos ' + str(just_after_line_ret) + ':->' +
                      content[just_after_line_ret] + '<-\n')
     result = ct.get_line_col(result_file, skip_line=-2,
-                                         seek=-just_after_line_ret)
+                             seek=-just_after_line_ret)
     if value != result:
         raise Exception("! got " + str(result) + ' instead of ' +
                         str(value))
@@ -339,10 +339,10 @@ def check_get_regex():
     values = [-9.55555E5, 8, 5.4]
     result_file = create_results(tokens, values)
     results = ct.get_regex(filename=result_file,
-                                       patterns=['@E=(\R)',
-                                                 '02\s*=\s*(\I)\s*',
-                                                 '01 =\s*(\R)']
-                                       )
+                           patterns=['@E=(\R)',
+                                     '02\s*=\s*(\I)\s*',
+                                     '01 =\s*(\R)']
+                           )
     check_results(values, results)
     remove_file(result_file)
 
@@ -357,10 +357,10 @@ def check_get_regex_perf():
         "big file created in : " + str(time.time() - start_time) + "s\n")
     start_time = time.time()
     results = ct.get_regex(filename=result_file,
-                                       patterns=['@E=(\R)',
-                                                 '02\s*=\s*(\I)\s*',
-                                                 '01 =\s*(\R)']
-                                       )
+                           patterns=['@E=(\R)',
+                                     '02\s*=\s*(\I)\s*',
+                                     '01 =\s*(\R)']
+                           )
     time_to_parse = str(int(time.time() - start_time))
     check_results(values, results)
     remove_file(result_file)
@@ -380,7 +380,7 @@ def check_get_tokens():
     values = [-9.55555E6, 56.666, -12345678912.2, 0]
     result_file = create_results(tokens, values)
     results = ct.get(filename=result_file,
-                                 tokens=tokens)
+                     tokens=tokens)
     check_results(values, results)
     remove_file(result_file)
 
@@ -391,10 +391,10 @@ def check_get_tokens_skip():
     values = [-9.55555E6, 56.666, -12345678912.2, 0]
     result_file = create_results(content)
     results = ct.get(filename=result_file,
-                                 tokens=["@E=", "pp", ",virg",
-                                         "normal="],
-                                 skip_tokens=[1, -1, 0, 0]
-                                 )
+                     tokens=["@E=", "pp", ",virg",
+                             "normal="],
+                     skip_tokens=[1, -1, 0, 0]
+                     )
     check_results(values, results)
     remove_file(result_file)
 
@@ -405,10 +405,10 @@ def check_get_tokens_skip():
     values = [99, 56.666E-9, -12345678912.2, 999]
     result_file = create_results(tokens)
     results = ct.get(filename=result_file,
-                                 tokens=["@E=", "pp", ",virg",
-                                         "uu"],
-                                 skip_tokens=[0, 4, -1, 3]
-                                 )
+                     tokens=["@E=", "pp", ",virg",
+                             "uu"],
+                     skip_tokens=[0, 4, -1, 3]
+                     )
     check_results(values, results)
     remove_file(result_file)
 
@@ -421,9 +421,9 @@ def check_get_array():
     values = [11.0E-9, 22.0, 55.0, 11.1, 33.2, 22.2, 33.2]
     result_file = create_results(tokens)
     results = ct.get(filename=result_file,
-                                 skip_lines=[0, 0,  0, 1, 2, 2, -1],
-                                 skip_cols=[0, 1, -1, 0, 2, 1, -2]
-                                 )
+                     skip_lines=[0, 0,  0, 1, 2, 2, -1],
+                     skip_cols=[0, 1, -1, 0, 2, 1, -2]
+                     )
     check_results(values, results)
     remove_file(result_file)
 
@@ -437,11 +437,11 @@ def check_get_tokens_line_col():
     values = [1111.1E11, 22.0, 33.1, 666, 33.2, 44.1, 55.0]
     result_file = create_results(tokens)
     results = ct.get(filename=result_file,
-                                 tokens=['@E=', None, '@E=', '@E=',
-                                         'middle', 'middle', 'middle'],
-                                 skip_lines=[0, 0, -2, 0, 1, 0, -1],
-                                 skip_cols=[0, 1, 2, 1, -2, -1, -1]
-                                 )
+                     tokens=['@E=', None, '@E=', '@E=',
+                             'middle', 'middle', 'middle'],
+                     skip_lines=[0, 0, -2, 0, 1, 0, -1],
+                     skip_cols=[0, 1, 2, 1, -2, -1, -1]
+                     )
     check_results(values, results)
     remove_file(result_file)
 
@@ -456,12 +456,12 @@ def check_get_tokens_skip_line_col():
     values = [1111.1E11, 33.2, 666, 8888, 8888, 666]
     result_file = create_results(tokens)
     results = ct.get(filename=result_file,
-                                 tokens=[
-                                     '@E=', 'middle', 'middle', '@E=', '@E=', '@E='],
-                                 skip_tokens=[0, 1, -1, -2, -1, -2],
-                                 skip_lines=[0, 0, 1, 0, 0, -1],
-                                 skip_cols=[0, 0, 1, 1, -1, -1]
-                                 )
+                     tokens=[
+                         '@E=', 'middle', 'middle', '@E=', '@E=', '@E='],
+                     skip_tokens=[0, 1, -1, -2, -1, -2],
+                     skip_lines=[0, 0, 1, 0, 0, -1],
+                     skip_cols=[0, 0, 1, 1, -1, -1]
+                     )
     check_results(values, results)
     remove_file(result_file)
 
@@ -478,7 +478,7 @@ def check_get_tokens_perf():
         "big file created in : " + str(time.time() - start_time) + "s\n")
     start_time = time.time()
     results = ct.get(filename=result_file,
-                                 tokens=tokens)
+                     tokens=tokens)
     time_to_parse = str(int(time.time() - start_time))
     check_results(values, results)
     remove_file(result_file)
@@ -504,9 +504,9 @@ def check_get_tokens_skip_perf():
         "big file created in : " + str(time.time() - start_time) + "s\n")
     start_time = time.time()
     results = ct.get(filename=result_file,
-                                 tokens=["@E="],
-                                 skip_tokens=[-1]
-                                 )
+                     tokens=["@E="],
+                     skip_tokens=[-1]
+                     )
     time_to_parse = str(int(time.time() - start_time))
     check_results(values, results)
     remove_file(result_file)
@@ -535,9 +535,9 @@ def check_get_line_col_perf():
         'big file created in : ' + str(time.time() - start_time) + 's\n')
     start_time = time.time()
     results = ct.get(filename=result_file,
-                                 skip_lines=[-92],
-                                 skip_cols=[1]
-                                 )
+                     skip_lines=[-92],
+                     skip_cols=[1]
+                     )
     time_to_parse = str(int(time.time() - start_time))
     check_results(values, results)
     remove_file(result_file)
@@ -575,19 +575,23 @@ def check_execute():
         raise Exception("ct.execute error!")
 
     ret, stdout, stderr = ct.execute('echo hello', is_shell=True,
-                                                 get_stdout=True, get_stderr=True)
+                                     get_stdout=True, get_stderr=True)
     if ret != 0 or not stdout.decode().startswith('hello') or len(stderr) > 0:
         raise Exception("ct.execute error!")
 
     print("execute ok")
 
+
 def check_get_value():
     with open('result.txt', 'w') as f:
         f.write('name,X0,X1,X2,X3,X4,X5\n')
         f.write('val,0.125,1.1,2.3,3.5,4.7,5.99\n')
-    ott.assert_almost_equal(ct.get_value('result.txt', skip_line=1, skip_col=3,col_sep=','), 2.3)
-    ott.assert_almost_equal(ct.get_value('result.txt', skip_line=1, skip_col=-1,col_sep=','), 5.99)
+    ott.assert_almost_equal(ct.get_value(
+        'result.txt', skip_line=1, skip_col=3, col_sep=','), 2.3)
+    ott.assert_almost_equal(ct.get_value(
+        'result.txt', skip_line=1, skip_col=-1, col_sep=','), 5.99)
     os.remove('result.txt')
+
 
 check_execute()
 check_replace()

@@ -85,7 +85,7 @@ public:
   /** Get the quantile of the distribution */
   using DistributionImplementation::computeQuantile;
   Point computeQuantile(const Scalar prob,
-                            const Bool tail = false) const;
+                        const Bool tail = false) const;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   Complex computeCharacteristicFunction(const Scalar x) const;

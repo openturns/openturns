@@ -192,7 +192,7 @@ void SubsetSampling::run()
   probabilityEstimatePerStep_.add(probabilityEstimate);
   coefficientOfVariationPerStep_.add(coefficientOfVariationSquare);
 
-  Log::Info(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance="<< varianceEstimate);
+  Log::Info(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance=" << varianceEstimate);
   // as long as the conditional failure domain do not overlap the global one
   while (!stop)
   {
@@ -239,7 +239,7 @@ void SubsetSampling::run()
 
     ++ numberOfSteps_;
 
-    Log::Info(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance="<< varianceEstimate);
+    Log::Info(OSS() << "Subset step #" << numberOfSteps_ << " probability=" << probabilityEstimate << " variance=" << varianceEstimate);
 
     if (stopCallback_.first && stopCallback_.first(stopCallback_.second))
       throw InternalException(HERE) << "User stopped simulation";

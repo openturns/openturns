@@ -15,4 +15,5 @@ assert df.shape == (sample.getSize(), sample.getDimension()), "wrong df shape"
 sample2 = ot.Sample(df.values)
 sample2.setDescription(df.columns)
 print(sample2)
-assert (sample2.getSize(), sample2.getDimension()) == df.shape, "wrong sample shape"
+assert (sample2.getSize(), sample2.getDimension()
+        ) == df.shape, "wrong sample shape"

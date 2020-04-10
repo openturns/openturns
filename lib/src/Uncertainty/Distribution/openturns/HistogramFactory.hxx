@@ -66,7 +66,7 @@ public:
 
   /** Compute the bandwidth according to Silverman's rule */
   Scalar computeBandwidth(const Sample & sample,
-                                   const Bool useQuantile = true) const;
+                          const Bool useQuantile = true) const;
 
 }; /* class HistogramFactory */
 

@@ -15,7 +15,8 @@ f = ot.SymbolicFunction(["x", "y", "z"], ["x-1.5*y+2*z"])
 size = 100
 inputSample = distribution.getSample(size)
 outputSample = f(inputSample)
-comparisonOperators = [ot.Less(), ot.LessOrEqual(), ot.Greater(), ot.GreaterOrEqual()]
+comparisonOperators = [ot.Less(), ot.LessOrEqual(),
+                       ot.Greater(), ot.GreaterOrEqual()]
 threshold = 3.0
 ot.ResourceMap.SetAsUnsignedInteger(
     "SimulationSensitivityAnalysis-DefaultSampleMargin", 10)

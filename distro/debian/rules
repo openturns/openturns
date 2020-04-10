@@ -37,9 +37,13 @@ else
     with_tbb := -DUSE_TBB:BOOL=OFF
 endif
 
-PYVER = $(shell pyversions -d)
+# Disable NLopt_std tests on i386, it raises a roundoff-limited exception with AUGLAG_EQ algorithm
+ifeq ($(shell dpkg --print-architecture),i386)
+    test_discardflags := -E NLopt_std
+endif
+
 PY3VER = $(shell py3versions -d)
-PYALL = $(PYVER) $(PY3VER)
+PYALL = $(PY3VER)
 
 BUILD_DATE = $(shell date --utc --date="@$(SOURCE_DATE_EPOCH)" "+%a, %d %b %Y %H:%M:%S %z")
 
@@ -47,7 +51,7 @@ BUILD_DATE = $(shell date --utc --date="@$(SOURCE_DATE_EPOCH)" "+%a, %d %b %Y %H
 ifneq (,$(findstring $(shell dpkg-architecture -qDEB_HOST_ARCH), mips mipsel))
 	$(error This package requires more than 1GB RAM; do not build on mips/mipsel)
 endif
-	dh $@ --buildsystem=cmake --with python2,python3 --parallel
+	dh $@ --buildsystem=cmake --with python3 --parallel
 
 override_dh_auto_configure: $(PYALL:python%=cmake-configure-%) \
 
@@ -67,9 +71,9 @@ cmake-configure-%:
             -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
             -DCMAKE_INSTALL_LIBDIR:PATH=/usr/lib \
-            -DLIB_SOVERSION=0.15 \
-            -DLIB_VERSION=0.15.0 \
-            -DOPENTURNS_SYSCONFIG_PATH:PATH=/etc/openturns-1.14 \
+            -DLIB_SOVERSION=0.16 \
+            -DLIB_VERSION=0.16.0 \
+            -DOPENTURNS_SYSCONFIG_PATH:PATH=/etc/openturns-1.15 \
             -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp \
             -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES:STRING='-j32' \
             -DSWIG_COMPILE_FLAGS:STRING='-O1' \
@@ -92,17 +96,14 @@ cmake-install-%:
 ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$${LD_LIBRARY_PATH}:}$(CURDIR)/debian/tmp/usr/lib \
 	  CTEST_OUTPUT_ON_FAILURE=1 \
-	  $(MAKE) $(test_makeflags) -C build-python$* test ARGS="$(test_makeflags) -R pyinstallcheck"
+	  $(MAKE) $(test_makeflags) -C build-python$* test ARGS="$(test_makeflags) $(test_discardflags) -R pyinstallcheck"
 endif
 
 override_dh_makeshlibs:
 	dh_makeshlibs -Xpyshared
 
 override_dh_strip:
-	dh_strip -plibopenturns0.15 -ppython-openturns -ppython3-openturns
-
-override_dh_python2:
-	dh_python2 -p python-openturns
+	dh_strip -plibopenturns0.16 -ppython3-openturns
 
 override_dh_python3:
 	dh_python3 -p python3-openturns
@@ -118,7 +119,7 @@ ifeq (,$(findstring nocheck,$(DEB_BUILD_OPTIONS)))
 	$(MAKE) $(test_makeflags) -C build-python$* tests
 	LD_LIBRARY_PATH=$${LD_LIBRARY_PATH:+$${LD_LIBRARY_PATH}:}$(CURDIR)/debian/tmp/usr/lib \
 	  CTEST_OUTPUT_ON_FAILURE=1 \
-	  $(MAKE) -C build-python$* test ARGS="$(test_makeflags) -R cppcheck"
+	  $(MAKE) -C build-python$* test ARGS="$(test_makeflags) $(test_discardflags) -R cppcheck"
 endif
 
 get-orig-source:

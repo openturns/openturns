@@ -30,7 +30,7 @@ int main(int, char *[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
   setRandomGenerator();
-  
+
   ResourceMap::SetAsString("KarhunenLoeveP1Algorithm-EigenvaluesSolver", "SPECTRA");
 
   try

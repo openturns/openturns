@@ -45,10 +45,12 @@ for i in range(4):
     print('Estimated distribution with likelihoodMax.=', estimatedDistribution)
 sample = [[0.0]] * size
 estimatedDistribution = factory.build(sample)
-print("Estimated distribution with default estimator=", repr(estimatedDistribution))
+print("Estimated distribution with default estimator=",
+      repr(estimatedDistribution))
 sample = [[1.0]] * size
 estimatedDistribution = factory.build(sample)
-print("Estimated distribution with default estimator=", repr(estimatedDistribution))
+print("Estimated distribution with default estimator=",
+      repr(estimatedDistribution))
 
 # Build method of moments
 print("Build method of moments")
@@ -58,11 +60,11 @@ sample = distribution.getSample(size)
 factory = ot.TruncatedNormalFactory()
 estimatedTN = factory.buildMethodOfMoments(sample)
 exact_mu = sample.computeMean()[0]
-exact_sigma2 = sample.computeCovariance()[0,0]
+exact_sigma2 = sample.computeCovariance()[0, 0]
 exact_a = sample.getMin()[0]
 exact_b = sample.getMax()[0]
 computed_mu = estimatedTN.getMean()[0]
-computed_sigma2 = estimatedTN.getCovariance()[0,0]
+computed_sigma2 = estimatedTN.getCovariance()[0, 0]
 computed_a = estimatedTN.getA()
 computed_b = estimatedTN.getB()
 ott.assert_almost_equal(exact_mu, computed_mu, 1.e-2, 0.0)
@@ -92,8 +94,8 @@ ott.assert_almost_equal(exact_b, computed_b, 0.0, 20.0 / size)
 
 # A tricky case
 print("A tricky case")
-data = [0.6852,0.9349,0.5884,1.727,1.581,0.3193,-0.5701,1.623,2.210,
-        -0.3440,-0.1646]
+data = [0.6852, 0.9349, 0.5884, 1.727, 1.581, 0.3193, -0.5701, 1.623, 2.210,
+        -0.3440, -0.1646]
 sample = ot.Sample(data, 1)
 factory = ot.TruncatedNormalFactory()
 estimatedTN = factory.buildMethodOfMoments(sample)
@@ -109,4 +111,3 @@ ott.assert_almost_equal(exact_mu, computed_mu, 0.0, 2.0)
 ott.assert_almost_equal(exact_sigma, computed_sigma, 0.0, 1.0)
 ott.assert_almost_equal(exact_a, computed_a, 0.0, 3.0)
 ott.assert_almost_equal(exact_b, computed_b, 0.0, 3.0)
-

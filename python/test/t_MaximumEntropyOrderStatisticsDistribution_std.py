@@ -8,7 +8,8 @@ ot.RandomGenerator.SetSeed(0)
 
 
 # Force the use of the approximation to avoid timeout
-ot.ResourceMap.SetAsBool("MaximumEntropyOrderStatisticsDistribution-UseApproximation", True)
+ot.ResourceMap.SetAsBool(
+    "MaximumEntropyOrderStatisticsDistribution-UseApproximation", True)
 
 # Instanciate one distribution object
 distribution = ot.MaximumEntropyOrderStatisticsDistribution(

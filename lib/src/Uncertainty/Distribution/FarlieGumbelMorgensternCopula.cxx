@@ -271,10 +271,10 @@ void FarlieGumbelMorgensternCopula::setTheta(const Scalar theta)
 {
   if (!(std::abs(theta) <= 1.0)) throw InvalidArgumentException(HERE) << "Theta MUST be in [-1, 1]";
   if (theta != theta_)
-    {
-      theta_ = theta;
-      isAlreadyComputedCovariance_ = false;
-    }
+  {
+    theta_ = theta;
+    isAlreadyComputedCovariance_ = false;
+  }
 }
 
 /* Theta accessor */

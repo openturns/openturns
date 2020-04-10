@@ -148,24 +148,24 @@ UnsignedInteger SolverImplementation::getUsedFunctionEvaluation() const
 
 namespace
 {
-  class UniVariateFunctionFromFunction: public UniVariateFunctionImplementation
+class UniVariateFunctionFromFunction: public UniVariateFunctionImplementation
+{
+public:
+  UniVariateFunctionFromFunction(const Function & function)
+    : UniVariateFunctionImplementation()
+    , function_(function)
   {
-  public:
-    UniVariateFunctionFromFunction(const Function & function)
-      : UniVariateFunctionImplementation()
-      , function_(function)
-    {
-      // Nothing to do
-    }
+    // Nothing to do
+  }
 
-    Scalar operator() (const Scalar x) const
-    {
-      return function_(Point(1, x))[0];
-    }
+  Scalar operator() (const Scalar x) const
+  {
+    return function_(Point(1, x))[0];
+  }
 
-  private:
-    const Function & function_;
-  }; // UniVariateFunctionFromFunction
+private:
+  const Function & function_;
+}; // UniVariateFunctionFromFunction
 } // anonymous namespace
 
 /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] */

@@ -27,8 +27,8 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /** Constructor with parameters */
 IpoptProblem::IpoptProblem( const OptimizationProblem & optimProblem,
-                              const Point & startingPoint,
-                              const UnsignedInteger maximumEvaluationNumber)
+                            const Point & startingPoint,
+                            const UnsignedInteger maximumEvaluationNumber)
   : TNLP()
   , optimProblem_(optimProblem)
   , startingPoint_(startingPoint)
@@ -59,10 +59,10 @@ Sample IpoptProblem::getOutputHistory() const
     for description */
 
 bool IpoptProblem::get_nlp_info(int & n,
-                                 int & m,
-                                 int & nnz_jac_g, // Number of non-zero components in the Jacobian of g
-                                 int & nnz_h_lag, // Number of non-zero components in Hessian of Lagrangean
-                                 Ipopt::TNLP::IndexStyleEnum & index_style)
+                                int & m,
+                                int & nnz_jac_g, // Number of non-zero components in the Jacobian of g
+                                int & nnz_h_lag, // Number of non-zero components in Hessian of Lagrangean
+                                Ipopt::TNLP::IndexStyleEnum & index_style)
 {
   // Number of variables
   n = optimProblem_.getDimension();
@@ -157,11 +157,11 @@ bool IpoptProblem::get_constraints_linearity( int /*m*/,
 }
 
 bool IpoptProblem::get_bounds_info( int n,
-                                     double* x_l,  // Lower bounds
-                                     double* x_u,  // Upper bounds
-                                     int /*m*/,
-                                     double* g_l,  // Lower bounds
-                                     double* g_u)  // Upper bounds
+                                    double* x_l,  // Lower bounds
+                                    double* x_u,  // Upper bounds
+                                    int /*m*/,
+                                    double* g_l,  // Lower bounds
+                                    double* g_u)  // Upper bounds
 {
   // BOUNDS:
   // Conversion from OT::Interval to double array
@@ -213,14 +213,14 @@ bool IpoptProblem::get_bounds_info( int n,
 }
 
 bool IpoptProblem::get_starting_point(int /*n*/,
-                                       bool /*init_x*/,
-                                       double* x,
-                                       bool /*init_z*/,
-                                       double* /*z_L*/,
-                                       double* /*z_U*/,
-                                       int /*m*/,
-                                       bool /*init_lambda*/,
-                                       double* /*lambda*/)
+                                      bool /*init_x*/,
+                                      double* x,
+                                      bool /*init_z*/,
+                                      double* /*z_L*/,
+                                      double* /*z_U*/,
+                                      int /*m*/,
+                                      bool /*init_lambda*/,
+                                      double* /*lambda*/)
 {
   // Retrieve number of constraints
   UnsignedInteger nbConstraints = 0;
@@ -236,9 +236,9 @@ bool IpoptProblem::get_starting_point(int /*n*/,
 }
 
 bool IpoptProblem::eval_f(int n,
-                           const double* x,
-                           bool /*new_x*/,
-                           double& obj_value)
+                          const double* x,
+                          bool /*new_x*/,
+                          double& obj_value)
 {
   // Convert x to OT::Point
   Point xPoint(n);
@@ -267,9 +267,9 @@ bool IpoptProblem::eval_f(int n,
 
 
 bool IpoptProblem::eval_grad_f( int n,
-                                 const double* x,
-                                 bool /*new_x*/,
-                                 double* grad_f)
+                                const double* x,
+                                bool /*new_x*/,
+                                double* grad_f)
 {
   // Convert x to OT::Point
   Point xPoint(n);
@@ -289,10 +289,10 @@ bool IpoptProblem::eval_grad_f( int n,
 }
 
 bool IpoptProblem::eval_g(int n,
-                           const double* x,
-                           bool /*new_x*/,
-                           int /*m*/,
-                           double* g)
+                          const double* x,
+                          bool /*new_x*/,
+                          int /*m*/,
+                          double* g)
 {
   // Convert x to OT::Point
   Point xPoint(n);
@@ -323,13 +323,13 @@ bool IpoptProblem::eval_g(int n,
 }
 
 bool IpoptProblem::eval_jac_g(int n,
-                               const double* x,
-                               bool /*new_x*/,
-                               int m,
-                               int /*nnz_jac*/,
-                               int* iRow,
-                               int *jCol,
-                               double* values)
+                              const double* x,
+                              bool /*new_x*/,
+                              int m,
+                              int /*nnz_jac*/,
+                              int* iRow,
+                              int *jCol,
+                              double* values)
 {
   /* Switch on first call / later calls */
   if (values == NULL)
@@ -385,16 +385,16 @@ bool IpoptProblem::eval_jac_g(int n,
 
 
 bool IpoptProblem::eval_h(int n,
-                           const double* x,
-                           bool /*new_x*/,
-                           double obj_factor,
-                           int /*m*/,
-                           const double* lambda,
-                           bool /*new_lambda*/,
-                           int /*nele_hess*/,
-                           int* iRow,
-                           int* jCol,
-                           double* values)
+                          const double* x,
+                          bool /*new_x*/,
+                          double obj_factor,
+                          int /*m*/,
+                          const double* lambda,
+                          bool /*new_lambda*/,
+                          int /*nele_hess*/,
+                          int* iRow,
+                          int* jCol,
+                          double* values)
 {
   // Retrieve number of constraints
   UnsignedInteger nbEqualityConstraints = 0;
@@ -467,10 +467,10 @@ bool IpoptProblem::eval_h(int n,
 }
 
 bool IpoptProblem::eval_gi(int n,
-                            const double* x,
-                            bool /*new_x*/,
-                            int i,
-                            double& gi)
+                           const double* x,
+                           bool /*new_x*/,
+                           int i,
+                           double& gi)
 {
   // Convert x to OT::Point
   Point xPoint(n);
@@ -491,12 +491,12 @@ bool IpoptProblem::eval_gi(int n,
 }
 
 bool IpoptProblem::eval_grad_gi(int n,
-                                 const double* x,
-                                 bool /*new_x*/,
-                                 int i,
-                                 int& nele_grad_gi,
-                                 int* jCol,
-                                 double* values)
+                                const double* x,
+                                bool /*new_x*/,
+                                int i,
+                                int& nele_grad_gi,
+                                int* jCol,
+                                double* values)
 {
   // Convert x to OT::Point
   Point xPoint(n);
@@ -531,11 +531,11 @@ bool IpoptProblem::eval_grad_gi(int n,
 
 
 void IpoptProblem::finalize_solution(::Ipopt::SolverReturn /*status*/, ::Ipopt::Index n,
-                               const ::Ipopt::Number* x, const ::Ipopt::Number* /*z_L*/,
-                               const ::Ipopt::Number* /*z_U*/, ::Ipopt::Index /*m*/, const ::Ipopt::Number* /*g*/,
-                               const ::Ipopt::Number* /*lambda*/, ::Ipopt::Number obj_value,
-                               const ::Ipopt::IpoptData* /*ip_data*/,
-                               ::Ipopt::IpoptCalculatedQuantities* /*ip_cq*/)
+                                     const ::Ipopt::Number* x, const ::Ipopt::Number* /*z_L*/,
+                                     const ::Ipopt::Number* /*z_U*/, ::Ipopt::Index /*m*/, const ::Ipopt::Number* /*g*/,
+                                     const ::Ipopt::Number* /*lambda*/, ::Ipopt::Number obj_value,
+                                     const ::Ipopt::IpoptData* /*ip_data*/,
+                                     ::Ipopt::IpoptCalculatedQuantities* /*ip_cq*/)
 {
   // Convert x to OT::Point
   std::copy(x, x + n, optimalPoint_.begin());

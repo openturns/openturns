@@ -87,11 +87,11 @@ int main(int, char *[])
     TruncatedNormal estimatedTN(factory.buildMethodOfMoments(sample2));
     fullprint << "Estimated from moments=" << estimatedTN << std::endl;
     const Scalar sample_mu = sample2.computeMean()[0];
-    const Scalar sample_sigma2 = sample2.computeCovariance()(0,0);
+    const Scalar sample_sigma2 = sample2.computeCovariance()(0, 0);
     const Scalar sample_a = sample2.getMin()[0];
     const Scalar sample_b = sample2.getMax()[0];
     Scalar computed_mu = estimatedTN.getMean()[0];
-    Scalar computed_sigma2 = estimatedTN.getCovariance()(0,0);
+    Scalar computed_sigma2 = estimatedTN.getCovariance()(0, 0);
     Scalar computed_a = estimatedTN.getA();
     Scalar computed_b = estimatedTN.getB();
     assert_almost_equal(sample_mu, computed_mu, 1.e-2, 0.0);

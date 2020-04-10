@@ -7,11 +7,15 @@ Installation
 From binary packages
 ====================
 
+.. warning::
+
+    Since v1.15, only Python 3.x binaries are provided.
+
 Pip
 ---
 Install the package from `PyPI <https://pypi.org/project/openturns/>`_::
 
-    pip install openturns
+    pip3 install openturns
 
 For an installation without administrative priviledges the option :code:`--user` can be used.
 
@@ -35,7 +39,7 @@ Then just run installer and follow the instructions.
 
 A command-line installation is also possible::
 
-    openturns-1.13-py37-x86_64.exe /userlevel=1 /S /FORCE /D=%PREFIX%
+    openturns-1.15-py37-x86_64.exe /userlevel=1 /S /FORCE /D=%PREFIX%
 
 Debian/Ubuntu
 -------------
@@ -93,8 +97,6 @@ The following packages should now be available:
     +----------------------+------------------------------------+
     | libopenturns-dev     | development package                |
     +----------------------+------------------------------------+
-    | python-openturns     | Python module                      |
-    +----------------------+------------------------------------+
     | python3-openturns    | Python 3 module                    |
     +----------------------+------------------------------------+
     | openturns-examples   | examples                           |
@@ -112,21 +114,21 @@ RPM-based distributions
 -----------------------
 Add the repository corresponding to your operating system::
 
-    curl http://download.opensuse.org/repositories/science:/openturns/CentOS_7/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_31/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.1/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/Mageia_7/science:openturns.repo -o /etc/yum.repos.d/obs-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/CentOS_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_31/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.1/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/Mageia_7/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/CentOS_7/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/CentOS_8/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_31/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.1/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/Mageia_7/repodata/repomd.xml.key
 
 Install the package::
 
-    yum install python-openturns
+    yum install python3-openturns
 
 Archlinux
 ---------

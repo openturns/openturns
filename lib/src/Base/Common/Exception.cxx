@@ -81,7 +81,7 @@ const char * Exception::where() const throw()
   const String whereStr(point_.str());
   const UnsignedInteger size = whereStr.size();
   char *buffer = new char[size + 1];
-  std::copy(&whereStr[0], &whereStr[0]+ size + 1, buffer);
+  std::copy(&whereStr[0], &whereStr[0] + size + 1, buffer);
   return buffer;
 }
 

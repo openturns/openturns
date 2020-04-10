@@ -87,8 +87,8 @@ int main(int, char *[])
 
   /* Create the point */
   Point pt(5);
-  for(int i = 0;i < 5; ++ i)
-    pt[i] = i+1;
+  for(int i = 0; i < 5; ++ i)
+    pt[i] = i + 1;
   fullprint << "pt = " << pt << std::endl;
 
   /* Check the product method */

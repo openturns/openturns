@@ -54,7 +54,8 @@ algo.run()
 result = algo.getResult()
 # print('1st pass result=', result)
 print('iteration=', result.getIterationNumber())
-assert result.getIterationNumber() > 3 and result.getIterationNumber() < 15, 'Too few/much iterations'
+assert result.getIterationNumber(
+) > 3 and result.getIterationNumber() < 15, 'Too few/much iterations'
 print(result.getInputSample())
 print(result.getOutputSample())
 
@@ -141,7 +142,8 @@ algo.run()
 result = algo.getResult()
 
 # print('1st pass result=', result)
-assert result.getIterationNumber() > 0 and result.getIterationNumber() < 16, 'Too few/much iterations'
+assert result.getIterationNumber(
+) > 0 and result.getIterationNumber() < 16, 'Too few/much iterations'
 print('iteration=', result.getIterationNumber())
 print(result.getInputSample())
 print(result.getOutputSample())

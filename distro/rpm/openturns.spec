@@ -1,6 +1,10 @@
 # norootforbuild
-%{?__python2: %global __python %{__python2}}
+%{?__python3: %global __python %{__python3}}
+%if 0%{?suse_version}
+%global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")
+%else
 %{!?python_sitearch: %global python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib(1))")}
+%endif
 
 %define __cmake %{_bindir}/cmake
 %define _cmake_lib_suffix64 -DLIB_SUFFIX=64
@@ -16,7 +20,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.14
+Version:        1.15rc1
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -26,28 +30,18 @@ Source0:        http://downloads.sourceforge.net/openturns/openturns/openturns-%
 Source1:        %{name}-rpmlintrc
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:  gcc-c++, cmake, bison, flex, swig
-BuildRequires:  muParser-devel
+BuildRequires:  lapack-devel
 BuildRequires:  libxml2-devel
 BuildRequires:  boost-devel
 BuildRequires:  nlopt-devel
+BuildRequires:  tbb-devel
+BuildRequires:  python3-devel
+BuildRequires:  hmat-oss-devel
+BuildRequires:  spectra-devel
 %if 0%{?fedora_version}
 BuildRequires:  cminpack-devel
 BuildRequires:  ceres-solver-devel
-%endif
-BuildRequires:  tbb-devel
-%if 0%{?suse_version}
-BuildRequires:  lapack
-%else
-BuildRequires:  lapack-devel
-%endif
-%if 0%{?suse_version}
-BuildRequires:  gcc-fortran
-%else
-BuildRequires:  gcc-gfortran
-%endif
-BuildRequires:  python-devel
-%if 0%{?fedora_version} >= 31
-BuildRequires:  python2-devel
+BuildRequires:  coin-or-Ipopt-devel
 %endif
 
 %description
@@ -56,13 +50,6 @@ OpenTURNS Uncertainty treatment library
 %package libs
 Summary:        Uncertainty treatment library
 Group:          Development/Libraries/C and C++
-%if ! 0%{?mageia}
-Requires:       muParser
-Requires:       lapack
-%else
-Requires:       lib64muparser2
-Requires:       liblapack
-%endif
 Requires:       libxml2
 %if ! 0%{?suse_version}
 Requires:       nlopt
@@ -70,8 +57,13 @@ Requires:       nlopt
 %if 0%{?fedora_version}
 Requires:       cminpack
 Requires:       ceres-solver
+Requires:       coin-or-Ipopt
 %endif
+%if 0%{?mageia}
+Requires:       lib64tbb2
+%else
 Requires:       tbb
+%endif
 
 %description libs
 Uncertainty treatment library binaries 
@@ -81,10 +73,9 @@ Summary:        OpenTURNS development files
 Group:          Development/Libraries/C and C++
 Requires:       %{name}-libs = %{version}
 Requires:       libxml2-devel
-%if ! 0%{?suse_version}
 Requires:       lapack-devel
-%endif
 Requires:       tbb-devel
+Requires:       hmat-oss-devel
 
 %description devel
 Development files for OpenTURNS uncertainty library
@@ -96,13 +87,13 @@ Group:          Productivity/Scientific/Math
 %description examples
 OpenTURNS python examples
 
-%package -n python-%{name}
+%package -n python3-%{name}
 Summary:        Uncertainty treatment library
 Group:          Productivity/Scientific/Math
-Requires:       python
+Requires:       python3
 Requires:       %{name}-libs = %{version}
 
-%description -n python-%{name}
+%description -n python3-%{name}
 Python textual interface to OpenTURNS uncertainty library
 
 %prep
@@ -140,7 +131,7 @@ rm -rf %{buildroot}
 %config %{_sysconfdir}/%{name}/%{name}.conf
 %{_libdir}/*.so.*
 %dir %{_datadir}/%{name}
-%{_datadir}/gdb/auto-load/
+%{_datadir}/gdb/
 
 %files devel
 %defattr(-,root,root,-)
@@ -154,12 +145,15 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %{_datadir}/%{name}/examples/
 
-%files -n python-%{name}
+%files -n python3-%{name}
 %defattr(-,root,root,-)
 %{python_sitearch}/%{name}/
 %{python_sitearch}/%{name}-*.dist-info/
 
 %changelog
+* Mon Apr 6 2020 Julien Schueller <schueller at phimeca dot com> 1.15-1
+- New upstream release
+
 * Tue Nov 12 2019 Julien Schueller <schueller at phimeca dot com> 1.14-1
 - New upstream release
 

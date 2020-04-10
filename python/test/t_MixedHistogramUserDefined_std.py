@@ -6,9 +6,11 @@ import time
 
 ticksCollection = [[0.0, 1.0, 3.0, 6.0], [1.0, 2.0, 3.0]]
 
-kind = [ot.MixedHistogramUserDefined.CONTINUOUS, ot.MixedHistogramUserDefined.DISCRETE]
-probabilityTable = [0.05,0.1,0.15,0.2,0.25,0.3,0.35,0.4,0.45]
-distribution = ot.MixedHistogramUserDefined(ticksCollection, kind, probabilityTable)
+kind = [ot.MixedHistogramUserDefined.CONTINUOUS,
+        ot.MixedHistogramUserDefined.DISCRETE]
+probabilityTable = [0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45]
+distribution = ot.MixedHistogramUserDefined(
+    ticksCollection, kind, probabilityTable)
 distribution.setDescription(["A", "B"])
 print("Distribution ", repr(distribution))
 print("Distribution ", distribution)
@@ -31,7 +33,7 @@ print("oneSample first=", repr(
     oneSample[0]), " last=", repr(oneSample[size - 1]))
 print("mean=", repr(oneSample.computeMean()))
 print("covariance=", repr(oneSample.computeCovariance()))
-    
+
 # Define a point
 point = ot.Point(distribution.getDimension(), 1.0)
 print("Point= ", repr(point))
@@ -77,7 +79,8 @@ probabilityTable = ot.RandomGenerator.Generate(4**(dim-1)*3)
 x = [3.0]*dim
 x[dim-2] = 5.0
 bench = 0
-distribution = ot.MixedHistogramUserDefined(ticksCollection, kind, probabilityTable)
+distribution = ot.MixedHistogramUserDefined(
+    ticksCollection, kind, probabilityTable)
 t0 = time.time()
 print('pdf=%.6g' % distribution.computePDF(x))
 t1 = time.time()

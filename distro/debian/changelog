@@ -1,3 +1,24 @@
+openturns (1.15~rc1-1) unstable; urgency=low
+
+  [ Julien Schueller ]
+
+  * New upstream pre-release.
+  * Drop openturns-examples python dependency; Closes: #948602
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 06 Apr 2020 18:14:47 +0200
+
+openturns (1.14-1) unstable; urgency=medium
+
+  * Team upload.
+  * Drop python2 support; Closes: #937214
+  * New upstream release; Closes: #902513
+  * Import packaging from upstream, inclusing rename to libopenturns0.15 and
+    drop of R bindings
+  * debian/watch
+    - point to github
+
+ -- Sandro Tosi <morph@debian.org>  Thu, 26 Dec 2019 01:40:15 -0500
+
 openturns (1.14-1) experimental; urgency=low
 
   [ Julien Schueller ]

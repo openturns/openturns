@@ -24,6 +24,7 @@ def printPoint(point, digits):
     oss += "]"
     return oss
 
+
 # We create a numerical math function
 myFunction = ot.SymbolicFunction(
     ["E", "F", "L", "I"], ["-F*L^3/(3*E*I)"])

@@ -157,10 +157,10 @@ void MarshallOlkinCopula::setAlpha(const Scalar alpha)
 {
   if (!(alpha >= 0.0) || !(alpha <= 1.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be in [0, 1], here alpha=" << alpha;
   if (alpha != alpha_)
-    {
-      alpha_ = alpha;
-      isAlreadyComputedCovariance_ = false;
-    }
+  {
+    alpha_ = alpha;
+    isAlreadyComputedCovariance_ = false;
+  }
 }
 
 /* Alpha accessor */

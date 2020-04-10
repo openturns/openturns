@@ -31,7 +31,7 @@ Or, you can pick up a stable version tarball:
 
 ::
 
-    curl -L https://github.com/openturns/openturns/archive/v1.12.tar.gz | tar xz
+    curl -L https://github.com/openturns/openturns/archive/v1.15.tar.gz | tar xz
     cd openturns-1.12
 
 Build openturns
