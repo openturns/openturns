@@ -13,15 +13,12 @@ where :math:`\| \cdot\|_2` is the euclidian norm.
 In other words, this is a minimum norm problem 
 with a general nonlinear constraint. 
 
-Available constructors:
-    NearestPointProblem(*level, value*)
-
 Parameters
 ----------
 level : :class:`~openturns.Function`
-    Level function.
+    The level function :math:`g`.
 value : float
-    Level value.
+    The level value :math:`v`.
 
 Examples
 --------
