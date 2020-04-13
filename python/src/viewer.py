@@ -105,20 +105,8 @@ class View(object):
     """
 
     @staticmethod
-    def CheckDict(arg):
-        """
-        Check that the argument is a Python dictionary.
-        
-        Examples
-        --------
-        >>> import openturns as ot
-        >>> import openturns.viewer as otv
-        >>> plot_kwargs = {'color':'blue'}
-        >>> plot_kwargs = otv.View.CheckDict(plot_kwargs)
-        >>> n = ot.Normal()
-        >>> graph = n.drawPDF()
-        >>> view = otv.View(graph, plot_kwargs = plot_kwargs);
-        """
+    def _CheckDict(arg):
+        """Check that the argument is a Python dictionary."""
         result = arg
         if arg is None:
             result = dict()
@@ -127,21 +115,8 @@ class View(object):
         return result
 
     @staticmethod
-    def ToUnicode(s):
-        """
-        Convert to unicode if necessary.
-        
-        Examples
-        --------
-        >>> import openturns as ot
-        >>> import openturns.viewer as otv
-        >>> n = ot.Normal()
-        >>> graph = n.drawPDF()
-        >>> graph.setTitle("This is my title")
-        >>> view = otv.View(graph)
-        >>> title = graph.getTitle()
-        >>> unicode = view.ToUnicode(title)
-        """
+    def _ToUnicode(s):
+        """Convert to unicode if necessary."""
         if isinstance(s, bytes):
             s = s.decode('utf8')
         return s
@@ -194,19 +169,19 @@ class View(object):
             return
 
         # check that arguments are dictionnaries
-        figure_kwargs = self.CheckDict(figure_kwargs)
-        axes_kwargs = self.CheckDict(axes_kwargs)
-        plot_kwargs_default = self.CheckDict(plot_kwargs)
-        bar_kwargs_default = self.CheckDict(bar_kwargs)
-        pie_kwargs_default = self.CheckDict(pie_kwargs)
-        polygon_kwargs_default = self.CheckDict(polygon_kwargs)
-        polygoncollection_kwargs_default = self.CheckDict(
+        figure_kwargs = self._CheckDict(figure_kwargs)
+        axes_kwargs = self._CheckDict(axes_kwargs)
+        plot_kwargs_default = self._CheckDict(plot_kwargs)
+        bar_kwargs_default = self._CheckDict(bar_kwargs)
+        pie_kwargs_default = self._CheckDict(pie_kwargs)
+        polygon_kwargs_default = self._CheckDict(polygon_kwargs)
+        polygoncollection_kwargs_default = self._CheckDict(
             polygoncollection_kwargs)
-        contour_kwargs_default = self.CheckDict(contour_kwargs)
-        step_kwargs_default = self.CheckDict(step_kwargs)
-        clabel_kwargs_default = self.CheckDict(clabel_kwargs)
-        text_kwargs_default = self.CheckDict(text_kwargs)
-        legend_kwargs = self.CheckDict(legend_kwargs)
+        contour_kwargs_default = self._CheckDict(contour_kwargs)
+        step_kwargs_default = self._CheckDict(step_kwargs)
+        clabel_kwargs_default = self._CheckDict(clabel_kwargs)
+        text_kwargs_default = self._CheckDict(text_kwargs)
+        legend_kwargs = self._CheckDict(legend_kwargs)
 
         # set image size in pixels
         if pixelsize is not None:
@@ -236,7 +211,7 @@ class View(object):
                 axes = self._fig.axes
 
         # set title
-        self._fig.suptitle(self.ToUnicode(graph.getTitle()))
+        self._fig.suptitle(self._ToUnicode(graph.getTitle()))
 
         # set axes
         if len(axes) == 0:
@@ -338,11 +313,11 @@ class View(object):
 
             # add label, title
             if drawableKind != 'Pie':
-                self._ax[0].set_xlabel(self.ToUnicode(graph.getXTitle()))
-                self._ax[0].set_ylabel(self.ToUnicode(graph.getYTitle()))
+                self._ax[0].set_xlabel(self._ToUnicode(graph.getXTitle()))
+                self._ax[0].set_ylabel(self._ToUnicode(graph.getYTitle()))
 
                 if (len(drawable.getLegend()) > 0) and ((drawableKind != 'Cloud') or (drawable.getPointStyle() != 'none')):
-                    label = self.ToUnicode(drawable.getLegend())
+                    label = self._ToUnicode(drawable.getLegend())
                     has_labels = True
                     plot_kwargs.setdefault('label', label)
                     bar_kwargs.setdefault('label', label)
@@ -412,7 +387,7 @@ class View(object):
 
             elif drawableKind == 'Pie':
                 pie_kwargs.setdefault(
-                    'labels', [self.ToUnicode(label) for label in drawable.getLabels()])
+                    'labels', [self._ToUnicode(label) for label in drawable.getLabels()])
                 pie_kwargs.setdefault('colors', drawable.getPalette())
                 self._ax[0].set_aspect('equal')
                 self._ax[0].pie(x, **pie_kwargs)
@@ -804,9 +779,9 @@ def PlotDesign(design, bounds = None, subdivisions = None,
     >>> fig = PlotDesign(sample, bounds, subdivisions)
     """
     # check that arguments are dictionnaries
-    axes_kwargs = View.CheckDict(axes_kwargs)
-    plot_kwargs = View.CheckDict(plot_kwargs)
-    text_kwargs = View.CheckDict(text_kwargs)
+    axes_kwargs = View._CheckDict(axes_kwargs)
+    plot_kwargs = View._CheckDict(plot_kwargs)
+    text_kwargs = View._CheckDict(text_kwargs)
 
     # retrieve data
     data = ot.Sample(design)
