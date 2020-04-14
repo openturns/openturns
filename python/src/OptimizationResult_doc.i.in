@@ -6,6 +6,8 @@ Returned by optimization solvers, see :class:`~openturns.OptimizationAlgorithm`.
 Available constructors:
     OptimizationResult(*optimalPoint, optimalValue, evaluationNumber, absoluteError, relativeError, residualError, constraintError*)
 
+    OptimizationResult(*inputDimension, outputDimension*)
+
 Parameters
 ----------
 optimalPoint : sequence of float
@@ -15,15 +17,17 @@ optimalValue : sequence of float
 evaluationNumber : int
     Number of evaluations.
 absoluteError : float
-    Parameters for this solver.
+    Absolute error of the input :math:`\vect{x}`. See the `getAbsoluteError` method for details. 
 relativeError : float
-    Relative error.
+    Relative error of the input :math:`\vect{x}`. See the `getRelativeError` method for details.
 residualError : float
-    Residual error.
+    Residual error of the output of the objective function :math:`f(\vect{x})`. See the `getResidualError` method for details.
 constraintError : float
     Constraint error.
-problem : :class:`~openturns.OptimizationProblem`
-    Associated problem."
+inputDimension : int
+    Dimension of the input of the objective function.
+outputDimension : int
+    Dimension of the output of the objective function."
 
 // ---------------------------------------------------------------------
 
@@ -33,7 +37,7 @@ problem : :class:`~openturns.OptimizationProblem`
 Returns
 -------
 absoluteError : float
-    Absolute error, defined by :math:`\epsilon^a_n=\|\vect{x}_{n+1}-\vect{x}_n\|_{\infty}` where :math:`\vect{x}_{n+1}` and :math:`\vect{x}_n` are two consecutive approximations of the optimum."
+    Absolute error of the input point :math:`\vect{x}`, defined by :math:`\epsilon^a_n=\|\vect{x}_{n+1}-\vect{x}_n\|_{\infty}` where :math:`\vect{x}_{n+1}` and :math:`\vect{x}_n` are two consecutive approximations of the optimum."
 
 // ---------------------------------------------------------------------
 
@@ -113,7 +117,7 @@ iterationNumber : int
 Returns
 -------
 relativeError : float
-    Relative error, defined by :math:`\epsilon^r_n=\epsilon^a_n/\|\vect{x}_{n+1}\|_{\infty}` if :math:`\|\vect{x}_{n+1}\|_{\infty}\neq 0`, else :math:`\epsilon^r_n=-1`."
+    Relative error of the input point :math:`\vect{x}`. If :math:`\|\vect{x}_{n+1}\|_{\infty}\neq 0`, then the relative error is :math:`\epsilon^r_n=\epsilon^a_n/\|\vect{x}_{n+1}\|_{\infty}` where :math:`\epsilon^a_n=\|\vect{x}_{n+1}-\vect{x}_n\|_{\infty}` is the absolute error. Otherwise, the relative error is :math:`\epsilon^r_n=-1`."
 
 // ---------------------------------------------------------------------
 
