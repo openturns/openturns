@@ -882,6 +882,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Mesh-Shininess", 100.0);
   addAsScalar("Mesh-SpecularFactor", 0.2);
   addAsScalar("Mesh-VertexEpsilon", 1.0e-6);
+  addAsScalar("Mesh-CoordinateEpsilon", 1.0e-14);
   addAsUnsignedInteger("Mesh-LargeSize", 5000);
 
   // BoundingVolumeHierarchy parameters

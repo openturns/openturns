@@ -264,13 +264,14 @@
   <Domain-SmallVolume value_float="1.0e-12" />
 
   <!-- OT::Mesh parameters -->
-  <Mesh-BackfaceCulling value_bool="false"            />
-  <Mesh-AmbientFactor   value_float="0.1"            />
-  <Mesh-DiffuseFactor   value_float="0.7"            />
-  <Mesh-Shininess       value_float="100.0"          />
-  <Mesh-SpecularFactor  value_float="0.2"            />
-  <Mesh-VertexEpsilon   value_float="1.0e-6"         />
-  <Mesh-LargeSize       value_int="5000" />
+  <Mesh-BackfaceCulling   value_bool="false" />
+  <Mesh-AmbientFactor     value_float="0.1" />
+  <Mesh-DiffuseFactor     value_float="0.7" />
+  <Mesh-Shininess         value_float="100.0" />
+  <Mesh-SpecularFactor    value_float="0.2" />
+  <Mesh-VertexEpsilon     value_float="1.0e-6" />
+  <Mesh-CoordinateEpsilon value_float="1.0e-14" />
+  <Mesh-LargeSize         value_int="5000" />
 
   <!-- OT::BoundingVolumeHierarchy parameters -->
   <BoundingVolumeHierarchy-Strategy  value_str="Mean"         />

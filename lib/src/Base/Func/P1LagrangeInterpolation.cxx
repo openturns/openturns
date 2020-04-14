@@ -171,7 +171,7 @@ void P1LagrangeInterpolation::computeProjection()
     {
       if (!inputMesh_.checkPointInSimplexWithCoordinates(outputVertices[i], simplexIndices[i], coordinates))
       {
-        throw InvalidArgumentException(HERE);
+        throw InvalidArgumentException(HERE) << "P1LagrangeInterpolation: point #" << i << " is not inside simplex";
       }
       IndicesCollection::const_iterator cit = simplices.cbegin_at(simplexIndices[i]);
       // Points are sorted to avoid memory gaps during matrix-matrix multiplication

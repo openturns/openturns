@@ -124,8 +124,7 @@ Returns
 isInside : bool
     Flag telling whether *point* is inside the simplex of index *index*.
 coordinates : :class:`~openturns.Point`
-    The barycentric coordinates of the given point wrt the vertices of the simplex
-.
+    The barycentric coordinates of the given point wrt the vertices of the simplex.
 
 Examples
 --------
@@ -140,7 +139,12 @@ Examples
 >>> # Create a point B outside the simplex
 >>> pointB = [1.1, 0.6]
 >>> print(mesh2d.checkPointInSimplexWithCoordinates(pointB, 0))
-[False, class=Point name=Unnamed dimension=3 values=[-0.1,0.5,0.6]]"
+[False, class=Point name=Unnamed dimension=3 values=[-0.1,0.5,0.6]]
+
+Notes
+-----
+The tolerance for the check on the barycentric coordinates can be tweaked
+using the key `Mesh-CoordinateEpsilon`."
 
 // ---------------------------------------------------------------------
 
