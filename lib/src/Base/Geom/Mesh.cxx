@@ -192,12 +192,13 @@ Bool Mesh::checkPointInSimplexWithCoordinates(const Point & point,
     Point & coordinates) const
 {
   if (index >= getSimplicesNumber()) return false;
+  const Scalar epsilon = ResourceMap::GetAsScalar("Mesh-VertexEpsilon");
   if (dimension_ == 1)
   {
     const Scalar x = point[0];
     const Scalar x0 = vertices_(simplices_(index, 0), 0);
     const Scalar x1 = vertices_(simplices_(index, 1), 0);
-    if ((x - x0) * (x - x1) > SpecFunc::ScalarEpsilon)
+    if ((x - x0) * (x - x1) > epsilon)
       return false;
     coordinates = Point(2);
     if (x0 == x1)
@@ -223,24 +224,24 @@ Bool Mesh::checkPointInSimplexWithCoordinates(const Point & point,
     const Scalar x02 = vertices_(simplices_(index, 2), 0) - x0;
     const Scalar y02 = vertices_(simplices_(index, 2), 1) - y0;
     const Scalar det = (x02 * y01 - y02 * x01);
-    const Scalar x = point[0] - x0;
-    const Scalar y = point[1] - y0;
     if (det == 0.0)
     {
       return false;
     }
+    const Scalar x = point[0] - x0;
+    const Scalar y = point[1] - y0;
     coordinates = Point(3);
     coordinates[1] = (x02 * y - y02 * x) / det;
     coordinates[2] = (x * y01 - y * x01) / det;
-    coordinates[0] = 1.0 - coordinates[1] - coordinates[2];
-    return coordinates[0] >= 0.0 && coordinates[0] <= 1.0 && coordinates[1] >= 0.0 && coordinates[1] <= 1.0 && coordinates[2] >= 0.0 && coordinates[2] <= 1.0;
+    coordinates[0] = 0.5 + (0.5 - coordinates[1] - coordinates[2]);
+    return coordinates[0] >= -epsilon && coordinates[0] <= 1.0+epsilon && coordinates[1] >= -epsilon && coordinates[1] <= 1.0+epsilon && coordinates[2] >= -epsilon && coordinates[2] <= 1.0+epsilon;
   }
   SquareMatrix matrix(dimension_ + 1);
   buildSimplexMatrix(index, matrix);
   Point v(point);
   v.add(1.0);
   coordinates = matrix.solveLinearSystem(v, false);
-  for (UnsignedInteger i = 0; i <= dimension_; ++i) if ((coordinates[i] < 0.0) || (coordinates[i] > 1.0)) return false;
+  for (UnsignedInteger i = 0; i <= dimension_; ++i) if ((coordinates[i] < -epsilon) || (coordinates[i] > 1.0+epsilon)) return false;
   return true;
 }
 
