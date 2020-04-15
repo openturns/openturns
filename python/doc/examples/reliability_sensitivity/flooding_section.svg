@@ -16,9 +16,9 @@
    id="svg3822"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
    sodipodi:docname="flooding_section.svg"
-   inkscape:export-filename="/home/osboxes/GIT/openturns-examples/openturns/python/doc/examples/reliability_sensitivity/flooding_section.png"
-   inkscape:export-xdpi="110.52706"
-   inkscape:export-ydpi="110.52706">
+   inkscape:export-filename="flooding_section.png"
+   inkscape:export-xdpi="73.735809"
+   inkscape:export-ydpi="73.735809">
   <defs
      id="defs3816" />
   <sodipodi:namedview
@@ -29,8 +29,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="246.46156"
-     inkscape:cy="310.40634"
+     inkscape:cx="-10.681297"
+     inkscape:cy="304.69205"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -51,7 +51,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>

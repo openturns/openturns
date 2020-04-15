@@ -9,7 +9,7 @@ Examples
 >>> from openturns.viewer import View
 >>> graph = ot.Normal().drawPDF()
 >>> view = View(graph, plot_kwargs={'color':'blue'})
->>> view.save('curve.png', dpi=100)
+>>> view.save('graph.png', dpi=100)
 >>> view.show()
 """
 import openturns as ot
@@ -21,7 +21,6 @@ import os
 import re
 import warnings
 import io
-import sys
 
 __all__ = ["View", "PlotDesign"]
 
@@ -94,11 +93,20 @@ class View(object):
         Adds a legend if True. Default is True.
     square_axes : bool, optional
         Forces the axes to share the same scale if True. Default is False.
+        
+    Examples
+    --------
+    >>> import openturns as ot
+    >>> from openturns.viewer import View
+    >>> graph = ot.Normal().drawPDF()
+    >>> view = View(graph, plot_kwargs={'color':'blue'})
+    >>> view.save('graph.png', dpi=100)
+    >>> view.show()
     """
 
     @staticmethod
-    def CheckDict(arg):
-        """Check that the argument is a python dictionary."""
+    def _CheckDict(arg):
+        """Check that the argument is a Python dictionary."""
         result = arg
         if arg is None:
             result = dict()
@@ -107,7 +115,7 @@ class View(object):
         return result
 
     @staticmethod
-    def ToUnicode(s):
+    def _ToUnicode(s):
         """Convert to unicode if necessary."""
         if isinstance(s, bytes):
             s = s.decode('utf8')
@@ -161,19 +169,19 @@ class View(object):
             return
 
         # check that arguments are dictionnaries
-        figure_kwargs = self.CheckDict(figure_kwargs)
-        axes_kwargs = self.CheckDict(axes_kwargs)
-        plot_kwargs_default = self.CheckDict(plot_kwargs)
-        bar_kwargs_default = self.CheckDict(bar_kwargs)
-        pie_kwargs_default = self.CheckDict(pie_kwargs)
-        polygon_kwargs_default = self.CheckDict(polygon_kwargs)
-        polygoncollection_kwargs_default = self.CheckDict(
+        figure_kwargs = self._CheckDict(figure_kwargs)
+        axes_kwargs = self._CheckDict(axes_kwargs)
+        plot_kwargs_default = self._CheckDict(plot_kwargs)
+        bar_kwargs_default = self._CheckDict(bar_kwargs)
+        pie_kwargs_default = self._CheckDict(pie_kwargs)
+        polygon_kwargs_default = self._CheckDict(polygon_kwargs)
+        polygoncollection_kwargs_default = self._CheckDict(
             polygoncollection_kwargs)
-        contour_kwargs_default = self.CheckDict(contour_kwargs)
-        step_kwargs_default = self.CheckDict(step_kwargs)
-        clabel_kwargs_default = self.CheckDict(clabel_kwargs)
-        text_kwargs_default = self.CheckDict(text_kwargs)
-        legend_kwargs = self.CheckDict(legend_kwargs)
+        contour_kwargs_default = self._CheckDict(contour_kwargs)
+        step_kwargs_default = self._CheckDict(step_kwargs)
+        clabel_kwargs_default = self._CheckDict(clabel_kwargs)
+        text_kwargs_default = self._CheckDict(text_kwargs)
+        legend_kwargs = self._CheckDict(legend_kwargs)
 
         # set image size in pixels
         if pixelsize is not None:
@@ -203,7 +211,7 @@ class View(object):
                 axes = self._fig.axes
 
         # set title
-        self._fig.suptitle(self.ToUnicode(graph.getTitle()))
+        self._fig.suptitle(self._ToUnicode(graph.getTitle()))
 
         # set axes
         if len(axes) == 0:
@@ -305,11 +313,11 @@ class View(object):
 
             # add label, title
             if drawableKind != 'Pie':
-                self._ax[0].set_xlabel(self.ToUnicode(graph.getXTitle()))
-                self._ax[0].set_ylabel(self.ToUnicode(graph.getYTitle()))
+                self._ax[0].set_xlabel(self._ToUnicode(graph.getXTitle()))
+                self._ax[0].set_ylabel(self._ToUnicode(graph.getYTitle()))
 
                 if (len(drawable.getLegend()) > 0) and ((drawableKind != 'Cloud') or (drawable.getPointStyle() != 'none')):
-                    label = self.ToUnicode(drawable.getLegend())
+                    label = self._ToUnicode(drawable.getLegend())
                     has_labels = True
                     plot_kwargs.setdefault('label', label)
                     bar_kwargs.setdefault('label', label)
@@ -379,7 +387,7 @@ class View(object):
 
             elif drawableKind == 'Pie':
                 pie_kwargs.setdefault(
-                    'labels', [self.ToUnicode(label) for label in drawable.getLabels()])
+                    'labels', [self._ToUnicode(label) for label in drawable.getLabels()])
                 pie_kwargs.setdefault('colors', drawable.getPalette())
                 self._ax[0].set_aspect('equal')
                 self._ax[0].pie(x, **pie_kwargs)
@@ -553,7 +561,16 @@ class View(object):
         """
         Display the graph.
 
-        See http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure.show
+        See matplotlib.figure.Figure.show
+
+        Examples
+        --------
+        >>> import openturns as ot
+        >>> import openturns.viewer as otv
+        >>> n = ot.Normal()
+        >>> graph = n.drawPDF()
+        >>> view = otv.View(graph)
+        >>> view.show()
         """
         if hasattr(self._fig, 'show'):
             self._fig.show(**kwargs)
@@ -563,7 +580,21 @@ class View(object):
 
     @staticmethod
     def ShowAll(**kwargs):
-        """Display all graphs."""
+        """
+        Display all graphs.
+
+        Examples
+        --------
+        >>> import openturns as ot
+        >>> import openturns.viewer as otv
+        >>> n = ot.Normal()
+        >>> graph = n.drawPDF()
+        >>> view = otv.View(graph)
+        >>> u = ot.Uniform()
+        >>> graph = u.drawPDF()
+        >>> view = otv.View(graph)
+        >>> otv.View.ShowAll()
+        """
         plt.show(**kwargs)
 
     def save(self, fname, **kwargs):
@@ -576,7 +607,15 @@ class View(object):
             A string containing a path to a filename from which file format is deduced.
 
         kwargs:
-            Refer to matplotlib.figure.Figure.savefig documentation for valid keyword arguments.
+            See matplotlib.figure.Figure.savefig documentation for valid keyword arguments.
+        
+        Examples
+        --------
+        >>> import openturns as ot
+        >>> from openturns.viewer import View
+        >>> graph = ot.Normal().drawPDF()
+        >>> view = View(graph)
+        >>> view.save('graph.png', dpi=100)
         """
         self._fig.savefig(fname, **kwargs)
 
@@ -584,7 +623,16 @@ class View(object):
         """
         Accessor to the underlying figure object.
 
-        Refer to matplotlib.figure.Figure for further information.
+        See matplotlib.figure.Figure for further information.
+        
+        Examples
+        --------
+        >>> import openturns as ot
+        >>> from openturns.viewer import View
+        >>> graph = ot.Normal().drawPDF()
+        >>> view = View(graph)
+        >>> fig = view.getFigure()
+        >>> _ = fig.suptitle("The suptitle");
         """
         return self._fig
 
@@ -592,16 +640,37 @@ class View(object):
         """
         Get the list of Axes objects.
 
-        Refer to matplotlib.axes.Axes for further information.
+        See matplotlib.axes.Axes for further information.
+        
+        Examples
+        --------
+        >>> import openturns as ot
+        >>> import openturns.viewer as otv
+        >>> n = ot.Normal()
+        >>> graph = n.drawPDF()
+        >>> view = otv.View(graph)
+        >>> axes = view.getAxes()
+        >>> _ = axes[0].set_ylim(-0.1, 1.0);
         """
         return self._ax
 
     def close(self):
-        """Close the figure."""
+        """
+        Close the figure.
+        
+        Examples
+        --------
+        >>> import openturns as ot
+        >>> import openturns.viewer as otv
+        >>> n = ot.Normal()
+        >>> graph = n.drawPDF()
+        >>> view = otv.View(graph)
+        >>> view.close()
+        """
         plt.close(self._fig)
 
 
-def ToImageString(graph):
+def _ToImageString(graph):
     """
     Convert as image string.
 
@@ -614,6 +683,14 @@ def ToImageString(graph):
     -------
     image_str : str
        An image representation as string
+    
+    Examples
+    --------
+    >>> import openturns as ot
+    >>> import openturns.viewer as otv
+    >>> n = ot.Normal()
+    >>> graph = n.drawPDF()
+    >>> imageString = otv._ToImageString(graph)
     """
     # save interactive mode state
     ision = plt.isinteractive()
@@ -638,76 +715,99 @@ def ToImageString(graph):
     return image_string
 
 
-def PlotDesign(design, bounds, Nx, Ny, figure=None, axes=[], plot_kwargs={}, axes_kwargs={}, text_kwargs={}):
+def PlotDesign(design, bounds = None, subdivisions = None, 
+               figure = None, axes=[], 
+               plot_kwargs = None, axes_kwargs = None, text_kwargs = None, 
+               enableTicks = True):
     """
-    Plot a design using a scatter plot approach (plots 2D marginals).
+    Plot a design using a scatter plot. 
+    If the dimension is equal to 2, then plots the 2D projection. 
+    If the dimension is greater or equal to 3, then plots all 2D projections.
 
     In addition, the function plots a grid, i.e. horizontal and vertical lines
-    to distinguish LHS character
+    to see the dispersion of the points. 
+    This allows to see how the sample fills the space. 
 
     Parameters
     ----------
     design : 2-d sequence of float
-        Design
+        The sample. 
+    figure : a Matplotlib figure. 
+        If this is not None, then create a new figure. 
+        Otherwise, use the existing figure. 
+    axes : a Matplotlib axis. 
+        If empty, then create new axes. 
     bounds: :class:`openturns.Interval`
-        Bounds of the underlying distribution
-    nxdiv : int
-        Number of subdivisions in the X axis
-    nydiv : int
-        Number of subdivisions in the Y axis
+        Bounds of the plot. By default, compute the bounds from the sample. 
+    subdivisions : a list of integers
+        Number of subdivisions in the each direction. 
+        By default, set the number of subdivisions in each direction 
+        as equal to the sample size. 
+    enableTicks :
+        A boolean. If True, then the ticks are plotted. 
 
     Returns
     -------
     fig : matplotlib figure
-          Figure representing the LHS
+          Figure representing the sample.
 
     Examples
     --------
+    
+    Plot a sample in 2 dimensions.
+    
     >>> import openturns as ot
     >>> from openturns.viewer import PlotDesign
-    >>> # Bounds are [0,1]^5
-    >>> # Size of sample
+    >>> dim = 20
+    >>> X = [ot.Uniform()] * dim
+    >>> distribution = ot.ComposedDistribution(X)
+    >>> sampleSize = 10
+    >>> sample = distribution.getSample(sampleSize)
+    >>> fig = PlotDesign(sample)
+
+    Plot a sample in 5 dimensions.
+
+    >>> import openturns as ot
+    >>> from openturns.viewer import PlotDesign
+    >>> dim = 5
     >>> size = 10
-    >>> # Factory: lhs generates (here centered)
-    >>> distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*5)
+    >>> distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*dim)
     >>> bounds = distribution.getRange()
     >>> lhs = ot.LHSExperiment(distribution, size)
-    >>> lhs.setRandomShift(False) # centered
-    >>> lhs.setAlwaysShuffle(True) # randomized
-    >>> # Generate a design
-    >>> design = lhs.generate()
-    >>> # Plot the design
-    >>> fig = PlotDesign(design, bounds, 10, 10)
+    >>> sample = lhs.generate()
+    >>> subdivisions = [size]*dim
+    >>> fig = PlotDesign(sample, bounds, subdivisions)
     """
     # check that arguments are dictionnaries
-    assert(isinstance(axes_kwargs, dict))
-    assert(isinstance(plot_kwargs, dict))
-    assert(isinstance(text_kwargs, dict))
+    axes_kwargs = View._CheckDict(axes_kwargs)
+    plot_kwargs = View._CheckDict(plot_kwargs)
+    text_kwargs = View._CheckDict(text_kwargs)
 
     # retrieve data
     data = ot.Sample(design)
     dim = data.getDimension()
     if dim < 2:
         raise TypeError('Expected designs of dimension >=2')
+    
+    # Get the bounds
+    if bounds is None:
+        lowerBound = data.getMin()
+        upperBound = data.getMax()
+        bounds = ot.Interval(lowerBound, upperBound)
+    if bounds.getDimension() != dim:
+        raise ValueError('Dimension of bounds %d do not match the dimension of the sample %d' % (
+                bounds.getDimension(), dim))
+
+    # Check the subdivisions
+    if subdivisions is None:
+        size = data.getSize()
+        subdivisions = [size]*dim
+    if len(subdivisions) != dim:
+        raise ValueError('Number of subdivisions %d does not match the dimension of the sample %d' % (
+                len(subdivisions), dim))
+    
+    # Get description
     labels = data.getDescription()
-
-    # set bounding box
-    # set figure
-    if figure is None:
-        figure = plt.figure()
-    else:
-        if len(axes) == 0:
-            axes = figure.axes
-
-    # set axes
-    if len(axes) == 0:
-        axes = [figure.add_subplot(111, **axes_kwargs)]
-
-    # disable axis : grid, ticks, axis?
-    axes[0].axison = False
-
-    axes_kwargs['xticks'] = []
-    axes_kwargs['yticks'] = []
 
     # adjust font
     if (not 'fontsize' in text_kwargs) and (not 'size' in text_kwargs):
@@ -721,8 +821,26 @@ def PlotDesign(design, bounds, Nx, Ny, figure=None, axes=[], plot_kwargs={}, axe
     if not 'marker' in plot_kwargs:
         plot_kwargs['marker'] = pointStyleDict["square"]
 
-    # Particular case of dim=2
+    if not enableTicks:
+        axes_kwargs['xticks'] = []
+        axes_kwargs['yticks'] = []
+
+    # set figure
+    if figure is None:
+        figure = plt.figure()
+        axes = figure.axes
+    else:
+        # Figure exists: get the axes
+        axes = figure.axes
+
+    # Special case of dim=2
     if dim == 2:
+        Nx = subdivisions[0]
+        Ny = subdivisions[1]
+        axes = [figure.add_subplot(111, **axes_kwargs)]
+        if not enableTicks:
+            axes[0].axison = False
+
         x = data.getMarginal(0)
         y = data.getMarginal(1)
         # x axis
@@ -758,19 +876,39 @@ def PlotDesign(design, bounds, Nx, Ny, figure=None, axes=[], plot_kwargs={}, axe
         return figure
 
     # General case
+
+    # For the diagonal of a multidimensional plot, 
+    # disable the ticks, always
+    diagonal_axes_kwargs = axes_kwargs.copy() # An independent copy
+    diagonal_axes_kwargs['xticks'] = []
+    diagonal_axes_kwargs['yticks'] = []
+
     # Graph of type Pairs + horizontal/vertical lines
     # to illustrate the cells
+    index_axis = -1
     for i in range(dim):
+        Ny = subdivisions[i]
         # y axis
         y = data.getMarginal(i)
         y_min = bounds.getLowerBound()[i]
         y_max = bounds.getUpperBound()[i]
         dy = y_max - y_min
         for j in range(dim):
-            if len(axes) <= dim * dim:
+            Nx = subdivisions[j]
+            index_axis += 1
+
+            if i==j:
                 axes.append(
-                    figure.add_subplot(dim, dim, 1 + i * dim + j, **axes_kwargs))
-            if i != j:
+                    figure.add_subplot(dim, dim, index_axis + 1, **diagonal_axes_kwargs))
+                text_kwargs['transform'] = axes[index_axis].transAxes
+                axes[index_axis].text(0.5, 0.5, labels[i], **text_kwargs)
+            else:
+                axes.append(
+                    figure.add_subplot(dim, dim, index_axis + 1, **axes_kwargs))
+                # disable axis : grid, ticks, axis?
+                if not enableTicks:
+                    axes[index_axis].axison = False
+    
                 # x axis
                 x = data.getMarginal(j)
                 x_min = bounds.getLowerBound()[j]
@@ -781,20 +919,17 @@ def PlotDesign(design, bounds, Nx, Ny, figure=None, axes=[], plot_kwargs={}, axe
                 for k in range(Ny):
                     xk = [x_min, x_max]
                     yk = [y_min + k * dy / dydiv, y_min + k * dy / dydiv]
-                    axes[1 + i * dim + j].plot(xk, yk, 'k-')
+                    axes[index_axis].plot(xk, yk, 'k-')
                 # Draw vertical lines
                 dxdiv = float(Nx)
                 for k in range(Nx):
                     xk = [x_min + k * dx / dxdiv, x_min + k * dx / dxdiv]
                     yk = [y_min, y_max]
-                    axes[1 + i * dim + j].plot(xk, yk, 'k-')
+                    axes[index_axis].plot(xk, yk, 'k-')
                 plot_kwargs['linestyle'] = 'None'
-                axes[1 + i * dim + j].plot(x, y, **plot_kwargs)
-                axes[1 + i * dim + j].set_xlim(x_min, x_max)
-                axes[1 + i * dim + j].set_ylim(y_min, y_max)
-            else:
-                text_kwargs['transform'] = axes[1 + i * dim + j].transAxes
-                axes[1 + i * dim + j].text(0.5, 0.5, labels[i], **text_kwargs)
+                axes[index_axis].plot(x, y, **plot_kwargs)
+                axes[index_axis].set_xlim(x_min, x_max)
+                axes[index_axis].set_ylim(y_min, y_max)
 
     # Finally get the figure
     return figure

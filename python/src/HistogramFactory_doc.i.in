@@ -122,12 +122,12 @@ sample:
     Q_3 = q_n(0.75), \qquad Q_1 = q_n(0.25),
     \end{aligned}
 
-and let :math:`IQ` be the inter-quartiles range:
+and let :math:`IQR` be the inter-quartiles range:
 
 .. math::
 
     \begin{aligned}
-    IQ = Q_3 - Q_1.
+    IQR = Q_3 - Q_1.
     \end{aligned}
 
 In this case, the bandwidth is the robust estimator of the AMISE-optimal bandwith, 
@@ -136,15 +136,15 @@ known as Freedman and Diaconis rule [freedman1981]_:
 .. math::
 
     \begin{aligned}
-    h = \frac{IQ}{2\Phi^{-1}(0.75)} \left(\frac{24 \sqrt{\pi}}{n}\right)^{\frac{1}{3}}
+    h = \frac{IQR}{2\Phi^{-1}(0.75)} \left(\frac{24 \sqrt{\pi}}{n}\right)^{\frac{1}{3}}
     \end{aligned}
 
 where :math:`\Phi^{-1}` is the quantile function of the gaussian standard 
 distribution. 
-The expression :math:`\frac{IQ}{2\Phi^{-1}(0.75)}` is the normalized inter-quartile range 
-is equal to the standard deviation of the gaussian distribution. 
+The expression :math:`\frac{IQR}{2\Phi^{-1}(0.75)}` is the normalized inter-quartile range 
+and is equal to the standard deviation of the gaussian distribution. 
 The normalized inter-quartile range is a robust estimator of the scale of the 
-distribution. 
+distribution (see [wand1994]_, page 60). 
 
 When `useQuantile` is `False`, the bandwidth is the AMISE-optimal one, 
 known as Scott's rule: 

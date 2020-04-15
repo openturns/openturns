@@ -35,6 +35,10 @@ DistributionFactory
 
 Examples
 --------
+
+In the following example, we estimate the parameters of a `Normal` distribution 
+with maximum likelihood estimation. 
+
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal(0.9, 1.7)
@@ -101,11 +105,21 @@ Parameters
 ----------
 values : sequence of float
     Values of fixed parameters.
-indices : sequence of int
+positions : sequence of int
     Indices of fixed parameters.
 
 Examples
 --------
+There are situations where a subset of the parameters is known. 
+In this case, only the other parameters must be estimated 
+from data. 
+
+In the following example, we consider a sample and want to fit 
+a :class:`~openturns.Beta` distribution.  
+We assume that the :math:`a` and :math:`b` parameters are known beforehand. 
+In this case, we set the third parameter (at index 2) to -1 
+and the fourth parameter (at index 3) to 1. 
+
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Beta(2.3, 2.2, -1.0, 1.0)
