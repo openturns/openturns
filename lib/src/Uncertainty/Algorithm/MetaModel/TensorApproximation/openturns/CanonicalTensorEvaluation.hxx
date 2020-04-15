@@ -24,6 +24,8 @@
 #include "openturns/OrthogonalUniVariateFunctionFamily.hxx"
 #include "openturns/Basis.hxx"
 #include "openturns/EvaluationImplementation.hxx"
+#include "openturns/UniVariateFunction.hxx"
+#include "openturns/UniVariateFunctionEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -35,7 +37,9 @@ public:
   typedef Collection<OrthogonalUniVariateFunctionFamily>           FunctionFamilyCollection;
   typedef PersistentCollection<OrthogonalUniVariateFunctionFamily> FunctionFamilyPersistentCollection;
   typedef Collection<Function>                                     FunctionCollection;
-  typedef PersistentCollection<Function>                           FunctionPersistentCollection;
+  typedef PersistentCollection<Function> FunctionPersistentCollection;
+  typedef Collection<UniVariateFunction> UniVariateFunctionCollection;
+  typedef PersistentCollection<UniVariateFunction> UniVariateFunctionPersistentCollection;
 
   CanonicalTensorEvaluation();
 
@@ -86,6 +90,9 @@ protected:
 
   PersistentCollection<FunctionPersistentCollection> basis_;
 
+  // Attribute is used internally for the evaluation of operator
+  // It avoids creation of useless Points
+  UniVariateFunctionPersistentCollection univariateBasis_;
 };
 
 

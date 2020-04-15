@@ -317,7 +317,7 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
       Point coefficients(tensor.getCoefficients(i, j));
-      coefficients = tensor.getCoefficients(i, j);
+      //coefficients = tensor.getCoefficients(i, j);
       const Scalar norm = coefficients.norm();
       currentRadius *= norm;
       coefficients /= norm;
