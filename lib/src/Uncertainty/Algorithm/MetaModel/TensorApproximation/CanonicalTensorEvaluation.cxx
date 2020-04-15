@@ -157,9 +157,10 @@ Point CanonicalTensorEvaluation::operator() (const Point & inP) const
   const UnsignedInteger m = getRank();
   Point prodI(m, 1.0);
 
+  Point xj(1);
   for (UnsignedInteger j = 0; j < inputDimension; ++ j)
   {
-    const Point xj(1, inP[j]);
+    xj[0] = inP[j];
     const FunctionCollection basisI(getBasis(j));
     const UnsignedInteger basisSize = degrees_[j];
 
@@ -170,6 +171,7 @@ Point CanonicalTensorEvaluation::operator() (const Point & inP) const
       phiX[k] = basisI[k](xj)[0];
     }
 
+    // Compute V_j^(i)(xj) = \sum_k beta_{j,k} phi_{j,k}(xj)
     for (UnsignedInteger i = 0; i < m; ++ i)
     {
       const Point coeffI(getCoefficients(i, j));
@@ -180,10 +182,10 @@ Point CanonicalTensorEvaluation::operator() (const Point & inP) const
         {
           sumI += coeffI[k] * phiX[k];
         }
-      }
+      }//k
       prodI[i] *= sumI;
     }
-  }
+  }//j
 
   Scalar sumR = 0.0;
   for (UnsignedInteger i = 0; i < m; ++ i)
