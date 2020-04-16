@@ -183,15 +183,16 @@ Point CanonicalTensorEvaluation::operator() (const Point & inP) const
     }
 
     // Compute V_j^(i)(xj) = \sum_k beta_{j,k} phi_{j,k}(xj)
-    for (UnsignedInteger i = 0; i < m; ++ i)
+    const Sample coeffJ( coefficients_[j] );
+    for (UnsignedInteger i = 0; i < m; ++i)
     {
-      const Point coeffI(getCoefficients(i, j));
+      //const Point coeffI(getCoefficients(i, j));
       Scalar sumI = 0.0;
       for (UnsignedInteger k = 0; k < basisSize; ++ k)
       {
-        if (coeffI[k] != 0.0)
+        if (coeffJ(i,k) != 0.0)
         {
-          sumI += coeffI[k] * phiX[k];
+          sumI += coeffJ(i, k) * phiX[k];
         }
       }// for k
       prodI[i] *= sumI;
