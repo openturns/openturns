@@ -76,7 +76,9 @@ Indices CanonicalTensorEvaluation::getDegrees() const
 /* Coefficients accessor along i-th component */
 void CanonicalTensorEvaluation::setCoefficients(const UnsignedInteger i, const UnsignedInteger j, const Point & coefficients)
 {
-  coefficients_[j][i] = coefficients;
+  const UnsignedInteger size = coefficients.getSize();
+  for (UnsignedInteger k = 0; k < size; ++k)
+    coefficients_[j](i , k) = coefficients[k];
 }
 
 
