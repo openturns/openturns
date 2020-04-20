@@ -22,6 +22,7 @@
  * Renamed HistogramFactory::computeSilvermanBandwidth into HistogramFactory::computeBandwidth.
 
 === Python module ===
+ * ProcessSample __getitem__ returns Sample instead of Field
 
 === Miscellaneous ===
  * Add Sample::getMarginal(Description)
