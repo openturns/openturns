@@ -337,7 +337,7 @@ Scalar TruncatedDistribution::computeCDF(const Point & point) const
   }
 
   // distribution_ should optimize computeProbability
-  return normalizationFactor_ * distribution_.computeProbability(Interval(range_.getLowerBound(), point));
+  return normalizationFactor_ * distribution_.computeProbability(Interval(range_.getLowerBound(), point, range_.getFiniteLowerBound(), BoolCollection(dimension, true)));
 }
 
 Scalar TruncatedDistribution::computeSurvivalFunction(const Point & point) const
@@ -356,7 +356,7 @@ Scalar TruncatedDistribution::computeSurvivalFunction(const Point & point) const
   }
 
   // distribution_ should optimize computeProbability
-  return normalizationFactor_ * distribution_.computeProbability(Interval(point, range_.getUpperBound()));
+  return normalizationFactor_ * distribution_.computeProbability(Interval(point, range_.getUpperBound(), BoolCollection(dimension, true), range_.getFiniteUpperBound()));
 }
 
 /* Get the PDFGradient of the distribution */
