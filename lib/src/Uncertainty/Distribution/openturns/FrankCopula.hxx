@@ -72,6 +72,9 @@ public:
   using ArchimedeanCopula::computeCDF;
   Scalar computeCDF(const Point & point) const;
 
+  /** Get the Spearman correlation of the distribution */
+  CorrelationMatrix getSpearmanCorrelation() const;
+
   /** Get the Kendall concordance of the distribution */
   CorrelationMatrix getKendallTau() const;
 

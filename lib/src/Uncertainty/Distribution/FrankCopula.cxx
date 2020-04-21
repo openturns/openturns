@@ -209,6 +209,24 @@ void FrankCopula::computeCovariance() const
   isAlreadyComputedCovariance_ = true;
 }
 
+/* Get the Spearman correlation of the distribution
+We use the formula given here:
+https://stats.stackexchange.com/questions/458372/what-is-the-spearmans-rho-for-frank-clayton-gumbel-and-fgm-copulas
+*/
+CorrelationMatrix FrankCopula::getSpearmanCorrelation() const
+{
+  CorrelationMatrix rho(2);
+  const Scalar t = std::abs(theta_);
+  const Scalar theta2 = theta_ * theta_;
+  if (t < 1.0e-3)
+  {
+    rho(1, 0) = theta_ * (1.0 / 6.0 + theta2 * (-1.0 / 450.0 + theta2 / 23520.0));
+    return rho;
+  }
+  rho(1, 0) = 1.0 - 12.0 / theta_ * (SpecFunc::Debye(theta_, 1) - SpecFunc::Debye(theta_, 2));
+  return rho;
+}
+
 /* Get the Kendall concordance of the distribution */
 CorrelationMatrix FrankCopula::getKendallTau() const
 {
