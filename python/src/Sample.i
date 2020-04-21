@@ -19,7 +19,7 @@
 %typemap(in) const Sample & ($1_basetype temp) {
   if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
     try {
-      temp = OT::convert<OT::_PySequence_,OT::Sample>( $input );
+      temp = OT::convert<OT::_PySequence_, OT::Sample>($input);
       $1 = &temp;
     } catch (OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a Sample");
@@ -28,7 +28,7 @@
 }
 
 %typemap(typecheck,precedence=OT_TYPECHECK_NUMERICALSAMPLE) const Sample & {
-  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) || OT::isAPythonBufferOf<OT::Scalar, 2>($input) || OT::isAPythonSequenceOf<OT::_PySequence_>( $input );
+  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) || OT::isAPythonBufferOf<OT::Scalar, 2>($input) || OT::isAPythonSequenceOf<OT::_PySequence_>($input);
 }
 
 %apply const Sample & { const OT::Sample & };
@@ -36,7 +36,7 @@
 %typemap(in) const UnsignedIntegerCollection & ($1_basetype temp) {
   if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
     try {
-      temp = OT::convert<OT::_PySequence_,OT::Collection<OT::UnsignedInteger> >( $input );
+      temp = OT::convert<OT::_PySequence_, OT::Collection<OT::UnsignedInteger> >($input);
       $1 = &temp;
     } catch (OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of UnsignedInteger");
@@ -120,26 +120,24 @@ Sample._repr_html_ = Sample__repr_html_
 namespace OT {
 %extend Sample {
 
-Point __getitem__(SignedInteger index) const {
+Point __getitem__(SignedInteger index) const
+{
   OT::UnsignedInteger size = self->getSize();
-  if (index < 0) {
+  if (index < 0)
     index += self->getSize();
-  }
-  if (index < 0) {
+  if (index < 0)
     throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
-  }
   return self->at(index);
 }
 
 void __setitem__ (SignedInteger index,
-                  const Point & val) {
+                  const Point & val)
+{
   OT::UnsignedInteger size = self->getSize();
-  if (index < 0) {
+  if (index < 0)
     index += self->getSize();
-  }
-  if (index < 0) {
+  if (index < 0)
     throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
-  }
   // CopyOnWrite only if index is ok
   self->copyOnWrite();
   self->at(index) = val;
@@ -151,281 +149,626 @@ UnsignedInteger __len__() const
 }
 
 
-PyObject * __getitem__(PyObject * args) const {
-
-  Py_ssize_t start1 = 0;
-  Py_ssize_t stop1 = 0;
-  Py_ssize_t step1 = 0;
-  Py_ssize_t slicelength1 = 0;
-
-  // case #0: [slice] => Sample
-  if ( PySlice_Check( args ) )
-  { 
-    PySlice_GetIndicesEx( OT::SliceCast( args ), self->getSize(), &start1, &stop1, &step1, &slicelength1 );
-    OT::Sample result( slicelength1, self->getDimension() );
-    for ( Py_ssize_t i = 0; i < slicelength1; ++ i )
+PyObject * __getitem__(PyObject * args) const
+{
+  if (!PyTuple_Check(args))
+  {
+    if (PySlice_Check(args))
     {
-      result.at(i) = self->at( start1 + i*step1 );
+      // case 0.1: [slice] => Sample
+      Py_ssize_t start = 0;
+      Py_ssize_t stop = 0;
+      Py_ssize_t step = 0;
+      Py_ssize_t size = 0;
+      PySlice_GetIndicesEx(OT::SliceCast(args), self->getSize(), &start, &stop, &step, &size);
+      OT::Sample result(size, self->getDimension());
+      for (Py_ssize_t i = 0; i < size; ++ i)
+        result.at(i) = self->at(start + i * step);
+      result.setDescription(self->getDescription());
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN | 0);
     }
-    result.setDescription(self->getDescription());
-    return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN |  0 );
-  }
-
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
-
-  // argument values
-  OT::UnsignedInteger arg2 = 0;
-  OT::UnsignedInteger arg3 = 0;
-
-  Py_ssize_t start2 = 0;
-  Py_ssize_t stop2 = 0;
-  Py_ssize_t step2 = 0;
-  Py_ssize_t slicelength2 = 0;
-
-  if (!PyArg_ParseTuple(args,(char *)"OO:Sample___getitem__",&obj1,&obj2)) SWIG_fail;  
-
-  // convert first list argument 
-  if ( PySlice_Check( obj1 ) )
-  { 
-    PySlice_GetIndicesEx( OT::SliceCast( obj1 ), self->getSize(), &start1, &stop1, &step1, &slicelength1 );
-  }
-  else
-  {
-    long val2 ;
-    int ecode2 = 0 ;
-    ecode2 = SWIG_AsVal_long(obj1, &val2);
-    if (!SWIG_IsOK(ecode2)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Sample___getitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
-    }
-    if (val2 < 0) {
-      val2 += self->getSize();
-    }
-    arg2 = static_cast< OT::UnsignedInteger >(val2);
-  }
-
-  // convert second list argument
-  if ( PySlice_Check( obj2 ) )
-  {
-    PySlice_GetIndicesEx( OT::SliceCast( obj2 ), self->getDimension(), &start2, &stop2, &step2, &slicelength2 );
-  }
-  else
-  {
-    long val3 ;
-    int ecode3 = 0 ;
-    ecode3 = SWIG_AsVal_long(obj2, &val3);
-    if (!SWIG_IsOK(ecode3)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Sample___getitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
-    }
-    if (val3 < 0) {
-      val3 += self->getDimension();
-    }
-    arg3 = static_cast< OT::UnsignedInteger >(val3);
-  }
-
-  // handle arguments
-  if ( PySlice_Check( obj1 ) )
-  {
-
-    if ( PySlice_Check( obj2 ) )
+    else if (PySequence_Check(args))
     {
-      // case #1: [slice/slice] => Sample
-      OT::Sample result( slicelength1, slicelength2 );
-      for ( Py_ssize_t i = 0; i < slicelength1; ++ i )
+      // case 0.2: [sequence] => Sample
+      OT::ScopedPyObjectPointer seq(PySequence_Fast(args, ""));
+      const Py_ssize_t size = PySequence_Fast_GET_SIZE(seq.get());
+      OT::Sample result(size, self->getDimension());
+      for (Py_ssize_t i = 0; i < size; ++ i)
       {
-        for ( Py_ssize_t j = 0; j < slicelength2; ++ j )
+        PyObject * elt = PySequence_Fast_GET_ITEM(seq.get(), i);
+        if (PyInt_Check(elt))
         {
-          result.at(i, j) = self->at( start1 + i*step1, start2 + j*step2 );
+          long index = PyInt_AsLong(elt);
+          if (index < 0)
+            index += self->getSize();
+          if (index < 0)
+            throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
+          result.at(i) = self->at(index);
+        }
+        else
+        {
+          throw OT::InvalidArgumentException(HERE) << "Indexing list expects int type";
         }
       }
-      OT::Description entireDescription(self->getDescription());
-      OT::Description description(slicelength2);
-      for ( Py_ssize_t j = 0; j < slicelength2; ++ j ) {
-        description[j] = entireDescription[start2 + j*step2];
-      }
-      result.setDescription(description);
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN |  0 );
+      result.setDescription(self->getDescription());
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN | 0);
     }
-    else
+    else if (PyObject_HasAttrString(args, "__int__"))
     {
-      // case #2: [slice/index] => Sample
-      OT::Sample result( slicelength1, 1 );
-      for ( Py_ssize_t i = 0; i < slicelength1; ++ i )
-      {
-        result.at(i, 0) = self->at( start1 + i*step1, arg3 );
+      // case 0.3: [numpy.int64] => Point
+      OT::ScopedPyObjectPointer intValue(PyObject_CallMethod(args, const_cast<char *>("__int__"), const_cast<char *>("()")));
+      if (intValue.isNull())
+        OT::handleException();
+      long index = PyInt_AsLong(intValue.get());
+      if (index < 0)
+        index += self->getSize();
+      if (index < 0)
+        throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
+      OT::Point result(self->at(index));
+      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN | 0);
+    }
+  }
+
+  PyObject * obj1 = 0;
+  PyObject * obj2 = 0;
+  if (!PyArg_ParseTuple(args,(char *)"OO:Sample___getitem__", &obj1, &obj2)) SWIG_fail;
+
+  if (OT::isAPython< OT::_PyInt_ >(obj1))
+  {
+    long index1 = 0;
+    int ecode1 = SWIG_AsVal_long(obj1, &index1);
+    if (!SWIG_IsOK(ecode1))
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "Sample___getitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
+    if (index1 < 0)
+      index1 += self->getSize();
+    if (index1 < 0)
+      throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
+
+    if (OT::isAPython< OT::_PyInt_ >(obj2))
+    {
+      // case 1.1: [int/int] => float
+      long index2 = 0;
+      int ecode2 = SWIG_AsVal_long(obj2, &index2);
+      if (!SWIG_IsOK(ecode2)) {
+        SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Sample___getitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
       }
-      result.setDescription(OT::Description(1, self->getDescription()[arg3]));
-      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN |  0 );
+      if (index2 < 0) {
+        index2 += self->getDimension();
+      }
+      if (index2 < 0) {
+        throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getDimension() << ", " << self->getDimension() - 1 << "]." ;
+      }
+      return OT::convert< OT::Scalar, OT::_PyFloat_>(self->at(index1, index2));
+    }
+    else if (PySlice_Check(obj2))
+    {
+      // case 1.2: [int/slice] => Point
+      Py_ssize_t start2 = 0;
+      Py_ssize_t stop2 = 0;
+      Py_ssize_t step2 = 0;
+      Py_ssize_t size2 = 0;
+      PySlice_GetIndicesEx(OT::SliceCast(obj2), self->getDimension(), &start2, &stop2, &step2, &size2);
+
+      OT::Point result(size2);
+      for (Py_ssize_t j = 0; j < size2; ++ j)
+        result.at(j) = self->at(index1, start2 + j * step2);
+      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN | 0);
+    }
+    else if (PySequence_Check(obj2))
+    {
+      // case 1.3: [int/sequence] => Point
+      OT::ScopedPyObjectPointer seq2(PySequence_Fast(obj2, ""));
+      const Py_ssize_t size2 = PySequence_Fast_GET_SIZE(seq2.get());
+      OT::Point result(size2);
+      for (Py_ssize_t j = 0; j < size2; ++ j)
+      {
+        PyObject * elt = PySequence_Fast_GET_ITEM(seq2.get(), j);
+        if (PyInt_Check(elt))
+        {
+          long index2 = PyInt_AsLong(elt);
+          if (index2 < 0)
+            index2 += self->getDimension();
+          if (index2 < 0)
+            throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getDimension() << ", " << self->getDimension() - 1 << "]." ;
+          result[j] = self->at(index1, index2);
+        }
+        else
+          SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
+      }
+      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN | 0);
+    }
+  }
+  else if (PySlice_Check(obj1))
+  {
+    Py_ssize_t start1 = 0;
+    Py_ssize_t stop1 = 0;
+    Py_ssize_t step1 = 0;
+    Py_ssize_t size1 = 0;
+    PySlice_GetIndicesEx(OT::SliceCast(obj1), self->getSize(), &start1, &stop1, &step1, &size1);
+    if (OT::isAPython< OT::_PyInt_ >(obj2))
+    {
+      // case 2.1: [slice/int] => Sample
+      long index2 = 0;
+      int ecode2 = SWIG_AsVal_long(obj2, &index2);
+      if (!SWIG_IsOK(ecode2))
+        SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Sample___getitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
+      if (index2 < 0)
+        index2 += self->getDimension();
+      if (index2 < 0)
+        throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getDimension() << ", " << self->getDimension() - 1 << "]." ;
+
+      OT::Sample result(size1, 1);
+      for (Py_ssize_t i = 0; i < size1; ++ i)
+        result.at(i, 0) = self->at(start1 + i * step1, index2);
+      result.setDescription(OT::Description(1, self->getDescription()[index2]));
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN | 0);
+    }
+    else if (PySlice_Check(obj2))
+    {
+      // case 2.2: [slice/slice] => Sample
+      Py_ssize_t start2 = 0;
+      Py_ssize_t stop2 = 0;
+      Py_ssize_t step2 = 0;
+      Py_ssize_t size2 = 0;
+      PySlice_GetIndicesEx(OT::SliceCast(obj2), self->getDimension(), &start2, &stop2, &step2, &size2);
+      OT::Sample result(size1, size2);
+      for (Py_ssize_t i = 0; i < size1; ++ i)
+        for (Py_ssize_t j = 0; j < size2; ++ j)
+          result.at(i, j) = self->at(start1 + i * step1, start2 + j * step2);
+      OT::Description entireDescription(self->getDescription());
+      OT::Description description(size2);
+      for (Py_ssize_t j = 0; j < size2; ++ j)
+        description[j] = entireDescription[start2 + j*step2];
+      result.setDescription(description);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN | 0);
+    }
+    else if (PySequence_Check(obj2))
+    {
+      // case 2.3: [slice/sequence] => Sample
+      OT::ScopedPyObjectPointer seq2(PySequence_Fast(obj2, ""));
+      Py_ssize_t size2 = PySequence_Fast_GET_SIZE(seq2.get());
+      OT::Sample result(size1, size2);
+      OT::Indices indices2(size2);
+      for (Py_ssize_t j = 0; j < size2; ++ j)
+      {
+        PyObject * elt = PySequence_Fast_GET_ITEM(seq2.get(), j);
+        if (PyInt_Check(elt))
+        {
+          long index2 = PyInt_AsLong(elt);
+          if (index2 < 0)
+            index2 += self->getDimension();
+          if (index2 < 0)
+            throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getDimension() << ", " << self->getDimension() - 1 << "]." ;
+          indices2[j] = index2;
+        }
+        else
+          SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
+      }
+      for (Py_ssize_t i = 0; i < size1; ++ i)
+        for (Py_ssize_t j = 0; j < size2; ++ j)
+          result.at(i, j) = self->at(start1 + i * step1, indices2[j]);
+      OT::Description description(self->getDescription());
+      OT::Description marginalDescription(size2);
+      for (Py_ssize_t j = 0; j < size2; ++ j)
+        marginalDescription[j] = description[indices2[j]];
+      result.setDescription(marginalDescription);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN | 0);
+    }
+  }
+  else if (PySequence_Check(obj1))
+  {
+    OT::ScopedPyObjectPointer seq1(PySequence_Fast(obj1, ""));
+    const Py_ssize_t size1 = PySequence_Fast_GET_SIZE(seq1.get());
+    OT::Indices indices1(size1);
+    for (Py_ssize_t i = 0; i < size1; ++ i)
+    {
+      PyObject * elt = PySequence_Fast_GET_ITEM(seq1.get(), i);
+      if (PyInt_Check(elt))
+      {
+        long index1 = PyInt_AsLong(elt);
+        if (index1 < 0)
+          index1 += self->getSize();
+        if (index1 < 0)
+          throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
+        indices1[i] = index1;
+      }
+      else
+        SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
     }
 
+    if (OT::isAPython< OT::_PyInt_ >(obj2))
+    {
+      // case 3.1: [sequence/int] => Sample
+      long index2 = 0;
+      int ecode2 = SWIG_AsVal_long(obj2, &index2);
+      if (!SWIG_IsOK(ecode2))
+        SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Sample___getitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
+      if (index2 < 0)
+        index2 += self->getDimension();
+      if (index2 < 0)
+        throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getDimension() << ", " << self->getDimension() - 1 << "]." ;
+      OT::Sample result(size1, 1);
+      for (Py_ssize_t i = 0; i < size1; ++ i)
+        result.at(i, 0) = self->at(indices1[i], index2);
+      result.setDescription(OT::Description(1, self->getDescription()[index2]));
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN | 0);
+    }
+    else if (PySlice_Check(obj2))
+    {
+      // case 3.2: [sequence/slice] => Sample
+      Py_ssize_t start2 = 0;
+      Py_ssize_t stop2 = 0;
+      Py_ssize_t step2 = 0;
+      Py_ssize_t size2 = 0;
+      PySlice_GetIndicesEx(OT::SliceCast(obj2), self->getDimension(), &start2, &stop2, &step2, &size2);
+      OT::Sample result(size1, size2);
+      for (Py_ssize_t i = 0; i < size1; ++ i)
+        for (Py_ssize_t j = 0; j < size2; ++ j)
+          result.at(i, j) = self->at(indices1[i], start2 + j * step2);
+      OT::Description description(self->getDescription());
+      OT::Description marginalDescription(size2);
+      for (Py_ssize_t j = 0; j < size2; ++ j)
+        marginalDescription[j] = description[start2 + j*step2];
+      result.setDescription(marginalDescription);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN | 0);
+    }
+    else if (PySequence_Check(obj2))
+    {
+      // case 3.3: [sequence/sequence] => Sample
+      OT::ScopedPyObjectPointer seq2(PySequence_Fast(obj2, ""));
+      const Py_ssize_t size2 = PySequence_Fast_GET_SIZE(seq2.get());
+      OT::Indices indices2(size2);
+      for (Py_ssize_t j = 0; j < size2; ++ j)
+      {
+        PyObject * elt = PySequence_Fast_GET_ITEM(seq2.get(), j);
+        if (PyInt_Check(elt))
+        {
+          long index2 = PyInt_AsLong(elt);
+          if (index2 < 0)
+            index2 += self->getDimension();
+          if (index2 < 0)
+            throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getDimension() << ", " << self->getDimension() - 1 << "]." ;
+          indices2[j] = index2;
+        }
+        else
+          SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
+      }
+      OT::Sample result(size1, size2);
+      for (Py_ssize_t i = 0; i < size1; ++ i)
+        for (Py_ssize_t j = 0; j < size2; ++ j)
+          result.at(i, j) = self->at(indices1[i], indices2[j]);
+      OT::Description description(self->getDescription());
+      OT::Description marginalDescription(size2);
+      for (Py_ssize_t j = 0; j < size2; ++ j)
+        marginalDescription[j] = description[indices2[j]];
+      result.setDescription(marginalDescription);
+      return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN | 0);
+    }
   }
   else
-  {
-    if ( PySlice_Check( obj2 ) )
-    {
-      // case #3: [index/slice] => Point
-      OT::Point result( slicelength2 );
-      for ( Py_ssize_t j = 0; j < slicelength2; ++ j )
-      {
-        result.at(j) = self->at( arg2, start2 + j*step2 );
-      }
-      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN |  0 );
-    }
-    else
-    {
-      // case #4: [index/index] => float
-      return OT::convert< OT::Scalar, OT::_PyFloat_>( self->at(arg2, arg3) );
-    }
-  }
-
+    SWIG_exception(SWIG_TypeError, "Sample.__getitem__ expects int, slice or sequence arguments");
 fail:
   return NULL;
 }
 
 
 
-PyObject * __setitem__(PyObject * args, PyObject * valObj) {
-
-  Py_ssize_t start1 = 0;
-  Py_ssize_t stop1 = 0;
-  Py_ssize_t step1 = 0;
-  Py_ssize_t slicelength1 = 0;
-
-  // case #0: [slice] <= Sample
-  if ( PySlice_Check( args ) )
+PyObject * __setitem__(PyObject * args, PyObject * valObj)
+{
+  if (!PyTuple_Check(args))
   {
-    PySlice_GetIndicesEx( OT::SliceCast( args ), self->getSize(), &start1, &stop1, &step1, &slicelength1 );
-    OT::Sample temp2 ;
-    OT::Sample *val2 = 0 ;
-    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIGTYPE_p_OT__Sample, 0))) {
-      temp2 = OT::convert< OT::_PySequence_, OT::Sample >( valObj );
-      val2 = &temp2;
-    }
-    assert( val2 );
-    for ( Py_ssize_t i = 0; i < slicelength1; ++ i )
+    if (PySlice_Check(args))
     {
-      self->at( start1 + i*step1 ) = val2->at(i);
+      // case 0.1: [slice] <= Sample
+      Py_ssize_t start = 0;
+      Py_ssize_t stop = 0;
+      Py_ssize_t step = 0;
+      Py_ssize_t size = 0;
+      PySlice_GetIndicesEx(OT::SliceCast(args), self->getSize(), &start, &stop, &step, &size);
+      OT::Sample temp;
+      OT::Sample *val = 0;
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, 0))) {
+        temp = OT::convert< OT::_PySequence_, OT::Sample >(valObj);
+        val = &temp;
+      }
+      assert(val);
+      OT::Sample result(size, self->getDimension());
+      for (Py_ssize_t i = 0; i < size; ++ i)
+        self->at(start + i*step) = val->at(i);
+    }
+    else if (PySequence_Check(args))
+    {
+      // case 0.2: [sequence] <= Sample
+      OT::ScopedPyObjectPointer seq(PySequence_Fast(args, ""));
+      const Py_ssize_t size = PySequence_Fast_GET_SIZE(seq.get());
+      OT::Sample temp;
+      OT::Sample *val = 0;
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, 0))) {
+        temp = OT::convert< OT::_PySequence_, OT::Sample >(valObj);
+        val = &temp;
+      }
+      assert(val);
+      OT::Sample result(size, self->getDimension());
+      for (Py_ssize_t i = 0; i < size; ++ i)
+      {
+        PyObject * elt = PySequence_Fast_GET_ITEM(seq.get(), i);
+        if (PyInt_Check(elt))
+        {
+          long index = PyInt_AsLong(elt);
+          if (index < 0)
+            index += self->getSize();
+          if (index < 0)
+            throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
+          self->at(index) = val->at(i);
+        }
+        else
+        {
+          throw OT::InvalidArgumentException(HERE) << "Indexing list expects int type";
+        }
+      }
+    }
+    else if (PyObject_HasAttrString(args, "__int__"))
+    {
+      // case 0.3: [numpy.int64] <= Point
+      OT::ScopedPyObjectPointer intValue(PyObject_CallMethod(args, const_cast<char *>("__int__"), const_cast<char *>("()")));
+      if (intValue.isNull())
+        OT::handleException();
+      long index = PyInt_AsLong(intValue.get());
+      if (index < 0)
+        index += self->getSize();
+      if (index < 0)
+        throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
+      OT::Point temp;
+      OT::Point *val = 0;
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Point, 0))) {
+        temp = OT::convert<OT::_PySequence_, OT::Point>(valObj);
+        val = &temp;
+      }
+      assert(val);
+      self->at(index) = temp;
     }
     return SWIG_Py_Void();
   }
 
-  PyObject * obj1 = 0 ;
-  PyObject * obj2 = 0 ;
+  PyObject * obj1 = 0;
+  PyObject * obj2 = 0;
+  if (!PyArg_ParseTuple(args,(char *)"OO:Sample___getitem__", &obj1, &obj2)) SWIG_fail;
 
-  // argument values
-  OT::UnsignedInteger arg2 = 0;
-  OT::UnsignedInteger arg3 = 0;
-
-  Py_ssize_t start2 = 0;
-  Py_ssize_t stop2 = 0;
-  Py_ssize_t step2 = 0;
-  Py_ssize_t slicelength2 = 0;
-
-  if (!PyArg_ParseTuple(args,(char *)"OO:Sample___getitem__",&obj1,&obj2)) SWIG_fail;
-
-  // convert first list argument 
-  if ( PySlice_Check( obj1 ) )
+  if (OT::isAPython< OT::_PyInt_ >(obj1))
   {
-    PySlice_GetIndicesEx( OT::SliceCast( obj1 ), self->getSize(), &start1, &stop1, &step1, &slicelength1 );
-  }
-  else
-  {
-    long val2 ;
-    int ecode2 = 0 ;
-    ecode2 = SWIG_AsVal_long(obj1, &val2);
-    if (!SWIG_IsOK(ecode2)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Sample___setitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
-    }
-    if (val2 < 0) {
-      val2 += self->getSize();
-    }
-    arg2 = static_cast< OT::UnsignedInteger >(val2);
-  }
+    long index1 = 0;
+    int ecode1 = SWIG_AsVal_long(obj1, &index1);
+    if (!SWIG_IsOK(ecode1))
+      SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "Sample___getitem__" "', argument " "2"" of type '" "OT::UnsignedInteger""'");
+    if (index1 < 0)
+      index1 += self->getSize();
+    if (index1 < 0)
+      throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
 
-  // convert second list argument
-  if ( PySlice_Check( obj2 ) )
-  {
-    PySlice_GetIndicesEx( OT::SliceCast( obj2 ), self->getDimension(), &start2, &stop2, &step2, &slicelength2 );
-  }
-  else
-  {
-    long val3 ;
-    int ecode3 = 0 ;
-    ecode3 = SWIG_AsVal_long(obj2, &val3);
-    if (!SWIG_IsOK(ecode3)) {
-      SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "Sample___setitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
-    }
-    if (val3 < 0) {
-      val3 += self->getDimension();
-    }
-    arg3 = static_cast< OT::UnsignedInteger >(val3);
-  }
-
-  // handle arguments
-  if ( PySlice_Check( obj1 ) )
-  {
-
-    if ( PySlice_Check( obj2 ) )
+    if (OT::isAPython< OT::_PyInt_ >(obj2))
     {
-      // case #1: [slice/slice] <= Sample
-      OT::Sample temp2 ;
-      OT::Sample *val2 = 0 ;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIGTYPE_p_OT__Sample, 0))) {
-        temp2 = OT::convert<OT::_PySequence_,OT::Sample>( valObj );
-        val2 = &temp2;
-      }
-      for ( Py_ssize_t i = 0; i < slicelength1; ++ i )
-      {
-        for ( Py_ssize_t j = 0; j < slicelength2; ++ j )
-        {
-          self->at( start1 + i*step1, start2 + j*step2 ) = val2->at(i, j);
-        }
-      }
-    }
-    else
-    {
-      // case #2: [slice/index] <= Sample
-      OT::Sample temp2 ;
-      OT::Sample *val2 = 0 ;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIGTYPE_p_OT__Sample, 0))) {
-        temp2 = OT::convert<OT::_PySequence_,OT::Sample>( valObj );
-        val2 = &temp2;
-      }
-      for ( Py_ssize_t i = 0; i < slicelength1; ++ i )
-      {
-        self->at( start1 + i*step1, arg3 ) = val2->at(i, 0);
-      }
-    }
-
-  }
-  else
-  {
-    if ( PySlice_Check( obj2 ) )
-    {
-      // case #3: [index/slice] <= Point
-      OT::Point temp2 ;
-      OT::Point *val2 = 0 ;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIGTYPE_p_OT__Point, 0))) {
-        temp2 = OT::convert<OT::_PySequence_,OT::Point>( valObj );
-        val2 = &temp2;
-      }
-      for ( Py_ssize_t j = 0; j < slicelength2; ++ j )
-      {
-        self->at( arg2, start2 + j*step2 ) = val2->at(j);
-      }
-    }
-    else
-    {  
-      // case #4: [index/index] <= float
-      double val = 0.;
-      int ecode2 = SWIG_AsVal_double(valObj, &val );
+      // case 1.1: [int/int] <= float
+      long index2 = 0;
+      int ecode2 = SWIG_AsVal_long(obj2, &index2);
       if (!SWIG_IsOK(ecode2)) {
-        SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Sample___setitem__" "', argument " "2"" of type '" "OT::Scalar""'");
+        SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Sample___getitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
       }
-      self->at(arg2, arg3) = val;
+      if (index2 < 0) {
+        index2 += self->getDimension();
+      }
+      if (index2 < 0) {
+        throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getDimension() << ", " << self->getDimension() - 1 << "]." ;
+      }
+
+      const OT::Scalar val = OT::checkAndConvert<OT::_PyFloat_, OT::Scalar>(valObj);
+      self->at(index1, index2) = val;
+    }
+    else if (PySlice_Check(obj2))
+    {
+      // case 1.2: [int/slice] <= Point
+      Py_ssize_t start2 = 0;
+      Py_ssize_t stop2 = 0;
+      Py_ssize_t step2 = 0;
+      Py_ssize_t size2 = 0;
+      PySlice_GetIndicesEx(OT::SliceCast(obj2), self->getDimension(), &start2, &stop2, &step2, &size2);
+
+      OT::Point temp;
+      OT::Point *val = 0;
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Point, 0))) {
+        temp = OT::convert<OT::_PySequence_, OT::Point>(valObj);
+        val = &temp;
+      }
+
+      for (Py_ssize_t j = 0; j < size2; ++ j)
+        self->at(index1, start2 + j * step2) = val->at(j);
+    }
+    else if (PySequence_Check(obj2))
+    {
+      // case 1.3: [int/sequence] <= Point
+      OT::ScopedPyObjectPointer seq2(PySequence_Fast(obj2, ""));
+      const Py_ssize_t size2 = PySequence_Fast_GET_SIZE(seq2.get());
+
+      OT::Indices indices2(size2);
+      for (Py_ssize_t j = 0; j < size2; ++ j)
+      {
+        PyObject * elt = PySequence_Fast_GET_ITEM(seq2.get(), j);
+        if (PyInt_Check(elt))
+        {
+          long index2 = PyInt_AsLong(elt);
+          if (index2 < 0)
+            index2 += self->getDimension();
+          if (index2 < 0)
+            throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getDimension() << ", " << self->getDimension() - 1 << "]." ;
+          indices2[j] = index2;
+        }
+        else
+          SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
+      }
+
+      OT::Point temp;
+      OT::Point *val = 0;
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Point, 0))) {
+        temp = OT::convert<OT::_PySequence_, OT::Point>(valObj);
+        val = &temp;
+      }
+
+      for (Py_ssize_t j = 0; j < size2; ++ j)
+        self->at(index1, indices2[j]) = val->at(j);
     }
   }
+  else if (PySlice_Check(obj1))
+  {
+    Py_ssize_t start1 = 0;
+    Py_ssize_t stop1 = 0;
+    Py_ssize_t step1 = 0;
+    Py_ssize_t size1 = 0;
+    PySlice_GetIndicesEx(OT::SliceCast(obj1), self->getSize(), &start1, &stop1, &step1, &size1);
 
+    OT::Sample temp;
+    OT::Sample *val = 0;
+    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, 0))) {
+      temp = OT::convert<OT::_PySequence_, OT::Sample>(valObj);
+      val = &temp;
+    }
+    assert(val);
+
+    if (OT::isAPython< OT::_PyInt_ >(obj2))
+    {
+      // case 2.1: [slice/int] <= Sample
+      long index2 = 0;
+      int ecode2 = SWIG_AsVal_long(obj2, &index2);
+      if (!SWIG_IsOK(ecode2))
+        SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Sample___getitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
+      if (index2 < 0)
+        index2 += self->getDimension();
+      if (index2 < 0)
+        throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getDimension() << ", " << self->getDimension() - 1 << "]." ;
+
+      for (Py_ssize_t i = 0; i < size1; ++ i)
+        self->at(start1 + i * step1, index2) = val->at(i, 0);
+    }
+    else if (PySlice_Check(obj2))
+    {
+      // case 2.2: [slice/slice] <= Sample
+      Py_ssize_t start2 = 0;
+      Py_ssize_t stop2 = 0;
+      Py_ssize_t step2 = 0;
+      Py_ssize_t size2 = 0;
+      PySlice_GetIndicesEx(OT::SliceCast(obj2), self->getDimension(), &start2, &stop2, &step2, &size2);
+      for (Py_ssize_t i = 0; i < size1; ++ i)
+        for (Py_ssize_t j = 0; j < size2; ++ j)
+          self->at(start1 + i * step1, start2 + j * step2) = val->at(i, j);
+    }
+    else if (PySequence_Check(obj2))
+    {
+      // case 2.3: [slice/sequence] <= Sample
+      OT::ScopedPyObjectPointer seq2(PySequence_Fast(obj2, ""));
+      Py_ssize_t size2 = PySequence_Fast_GET_SIZE(seq2.get());
+      OT::Sample result(size1, size2);
+      OT::Indices indices2(size2);
+      for (Py_ssize_t j = 0; j < size2; ++ j)
+      {
+        PyObject * elt = PySequence_Fast_GET_ITEM(seq2.get(), j);
+        if (PyInt_Check(elt))
+        {
+          long index2 = PyInt_AsLong(elt);
+          if (index2 < 0)
+            index2 += self->getDimension();
+          if (index2 < 0)
+            throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getDimension() << ", " << self->getDimension() - 1 << "]." ;
+          indices2[j] = index2;
+        }
+        else
+          SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
+      }
+      for (Py_ssize_t i = 0; i < size1; ++ i)
+        for (Py_ssize_t j = 0; j < size2; ++ j)
+          self->at(start1 + i * step1, indices2[j]) = val->at(i, j);
+    }
+  }
+  else if (PySequence_Check(obj1))
+  {
+    OT::ScopedPyObjectPointer seq1(PySequence_Fast(obj1, ""));
+    const Py_ssize_t size1 = PySequence_Fast_GET_SIZE(seq1.get());
+    OT::Indices indices1(size1);
+    for (Py_ssize_t i = 0; i < size1; ++ i)
+    {
+      PyObject * elt = PySequence_Fast_GET_ITEM(seq1.get(), i);
+      if (PyInt_Check(elt))
+      {
+        long index1 = PyInt_AsLong(elt);
+        if (index1 < 0)
+          index1 += self->getSize();
+        if (index1 < 0)
+          throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
+        indices1[i] = index1;
+      }
+      else
+        SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
+    }
+
+    OT::Sample temp;
+    OT::Sample *val = 0;
+    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, 0))) {
+      temp = OT::convert<OT::_PySequence_, OT::Sample>(valObj);
+      val = &temp;
+    }
+    assert(val);
+
+    if (OT::isAPython< OT::_PyInt_ >(obj2))
+    {
+      // case 3.1: [sequence/int] <= Sample
+      long index2 = 0;
+      int ecode2 = SWIG_AsVal_long(obj2, &index2);
+      if (!SWIG_IsOK(ecode2))
+        SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Sample___getitem__" "', argument " "3"" of type '" "OT::UnsignedInteger""'");
+      if (index2 < 0)
+        index2 += self->getDimension();
+      if (index2 < 0)
+        throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getDimension() << ", " << self->getDimension() - 1 << "]." ;
+      for (Py_ssize_t i = 0; i < size1; ++ i)
+        self->at(indices1[i], index2) = val->at(i, 0);
+    }
+    else if (PySlice_Check(obj2))
+    {
+      // case 3.2: [sequence/slice] <= Sample
+      Py_ssize_t start2 = 0;
+      Py_ssize_t stop2 = 0;
+      Py_ssize_t step2 = 0;
+      Py_ssize_t size2 = 0;
+      PySlice_GetIndicesEx(OT::SliceCast(obj2), self->getDimension(), &start2, &stop2, &step2, &size2);
+      for (Py_ssize_t i = 0; i < size1; ++ i)
+        for (Py_ssize_t j = 0; j < size2; ++ j)
+          self->at(indices1[i], start2 + j * step2) = val->at(i, j);
+    }
+    else if (PySequence_Check(obj2))
+    {
+      // case 3.3: [sequence/sequence] <= Sample
+      OT::ScopedPyObjectPointer seq2(PySequence_Fast(obj2, ""));
+      const Py_ssize_t size2 = PySequence_Fast_GET_SIZE(seq2.get());
+      OT::Indices indices2(size2);
+      for (Py_ssize_t j = 0; j < size2; ++ j)
+      {
+        PyObject * elt = PySequence_Fast_GET_ITEM(seq2.get(), j);
+        if (PyInt_Check(elt))
+        {
+          long index2 = PyInt_AsLong(elt);
+          if (index2 < 0)
+            index2 += self->getDimension();
+          if (index2 < 0)
+            throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getDimension() << ", " << self->getDimension() - 1 << "]." ;
+          indices2[j] = index2;
+        }
+        else
+          SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
+      }
+      for (Py_ssize_t i = 0; i < size1; ++ i)
+        for (Py_ssize_t j = 0; j < size2; ++ j)
+          self->at(indices1[i], indices2[j]) = val->at(i, j);
+    }
+  }
+  else
+    SWIG_exception(SWIG_TypeError, "Sample.__setitem__ expects int, slice or sequence arguments");
   return SWIG_Py_Void();
 fail:
   return NULL;
@@ -449,7 +792,7 @@ Sample(PyObject * pyObj, UnsignedInteger dimension)
   OT::Sample sample(size, dimension);
   OT::UnsignedInteger k = 0;
   for ( OT::UnsignedInteger i = 0; i < size; ++ i ) {
-    for ( OT::UnsignedInteger j = 0; j < dimension; ++ j ) {
+    for ( OT::UnsignedInteger j = 0; j < dimension; ++ j) {
       if ( k < pointSize ) {
         sample(i, j) = point[k];
         ++ k;

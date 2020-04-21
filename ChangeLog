@@ -23,6 +23,7 @@
 
 === Python module ===
  * ProcessSample __getitem__ returns Sample instead of Field
+ * Implement list indexing
 
 === Miscellaneous ===
  * Add Sample::getMarginal(Description)
@@ -44,6 +45,7 @@
  * #1388 (Kolmogorov fails on a PythonDistribution)
  * #1390 (The doc for the `computeQuantile` method does not describe the optional `tail` argument)
  * #1393 (SobolSimulationAlgorithm should be simpler)
+ * #1395 (Indexing Sample improvement)
  * #1403 (Python import otagrum throws an error)
  * #1404 (Bug in KrigingAlgorithm+hmat-oss)
  * #1405 (Most of the simulation algorithms for rare event fail on a coronavirus example)
