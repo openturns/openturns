@@ -651,6 +651,7 @@
   <Distribution-DiscreteDrawPDFScaling            value_float="0.25"              />
   <Distribution-QMax                              value_float="0.85"              />
   <Distribution-QMin                              value_float="0.15"              />
+  <Distribution-EntropySamplingMethod             value_int="MonteCarlo"/>
   <Distribution-CharacteristicFunctionBlockMax    value_int="20"      />
   <Distribution-CharacteristicFunctionNMax        value_int="1000000" />
   <Distribution-DefaultIntegrationNodesNumber     value_int="255"     />
