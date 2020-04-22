@@ -75,7 +75,12 @@ void BernsteinCopulaFactory::BuildCrossValidationSamples(const Sample & sample,
     for (UnsignedInteger j = 0; j < size; ++j)
       if ((j % kFraction) == k) validationSample.add(sample[j]);
       else learningSample.add(sample[j]);
+    // No need to rank the validation sample as it is supposed to
+    // be distributed according to an unknown copula
     validationCollection.add(validationSample);
+    // Rank the learning sample as it is mandatory for the creation of an
+    // EmpiricalBernsteinCopula (hence the name: empirical)
+    learningSample = (learningSample.rank() + 1.0) / learningSample.getSize();
     learningCollection.add(learningSample);
   } // k
 }
@@ -111,12 +116,16 @@ public:
 
   Scalar computeLogLikelihood(const UnsignedInteger m) const
   {
+    LOGINFO(OSS() << "In computeLogLikelihood, m=" << m);
+    if (m == 1) return 0.0;
     Scalar result = 0.0;
     for (UnsignedInteger k = 0; k < kFraction_; ++k)
     {
       const Sample learning(learningSamples_[k]);
       const Sample validation(validationSamples_[k]);
-      const EmpiricalBernsteinCopula copula(learning, m, false);
+      LOGINFO("Build copula");
+      const EmpiricalBernsteinCopula copula(learning, m, true);
+      LOGINFO("Compute log-PDF");
       result -= copula.computeLogPDF(validation).computeMean()[0];
     } // k
     return result / kFraction_;
