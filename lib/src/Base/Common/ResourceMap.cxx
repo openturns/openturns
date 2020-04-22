@@ -737,6 +737,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("AbdoRackwitz-DefaultTau", 0.5);
   addAsUnsignedInteger("AbdoRackwitz-DefaultMaximumEvaluationNumber", 100000);
 
+  // MultiStart parameters //
+  addAsBool("MultiStart-KeepResults", true);
+
   // OptimizationAlgorithm parameters //
   addAsScalar("OptimizationAlgorithm-DefaultLevelValue", 0.0);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-5);

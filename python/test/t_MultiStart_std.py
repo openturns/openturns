@@ -38,3 +38,6 @@ result = algo.getResult()
 print('-- multistart x*=', result.getOptimalPoint(),
       'f(x*)=', result.getOptimalValue())
 print('n_local_results=', len(algo.getResultCollection()))
+algo.setKeepResults(False)
+algo.run()
+print('n_local_results (no keep)=', len(algo.getResultCollection()))

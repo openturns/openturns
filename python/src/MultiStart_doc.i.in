@@ -71,6 +71,27 @@ startingPointNumber : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::MultiStart::setKeepResults
+"Flag to keep intermediate results accessor.
+
+Parameters
+----------
+keepResults : bool
+    If *True* all the intermediate results are stored, otherwise they are ignored.
+    Default value is *MultiStart-KeepResults* in :class:`~openturns.ResourceMap`"
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MultiStart::getKeepResults
+"Flag to keep intermediate results accessor.
+
+Returns
+-------
+keepResults : bool
+    If *True* all the intermediate results are stored, otherwise they are ignored.
+    Default value is *MultiStart-KeepResults* in :class:`~openturns.ResourceMap`"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::MultiStart::getResultCollection
 "Intermediate optimization results accessor.
 
