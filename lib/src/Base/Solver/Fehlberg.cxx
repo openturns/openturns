@@ -214,7 +214,8 @@ Sample Fehlberg::solve(const Point & initialState,
   if (!positiveStep) h = -h;
   Bool done = false;
   Point gradient;
-  Function transitionFunction(transitionFunction_);
+  // Use a pointer to avoid many copies through setParameter
+  Pointer<EvaluationImplementation> transitionFunction = transitionFunction_.getEvaluation().getImplementation()->clone();
   while (!done)
   {
     Scalar newT = t + h;
@@ -231,8 +232,8 @@ Sample Fehlberg::solve(const Point & initialState,
     t = newT;
   }
   // Final evaluation of the gradient
-  transitionFunction.setParameter(Point(1, t));
-  derivatives.add(transitionFunction(state));
+  transitionFunction->setParameter(Point(1, t));
+  derivatives.add(transitionFunction->operator()(state));
   // Now we interpolate the solution on the expected grid
   PiecewiseHermiteEvaluation hermite(times, values, derivatives);
   Sample result(steps, dimension);
@@ -244,7 +245,7 @@ Sample Fehlberg::solve(const Point & initialState,
 /* Perform one step of the Fehlberg method
    See J. Stoer, R. Bulirsch, "Introduction to Numerical Analysis 2nd Edition", pp448-458.
  */
-Point Fehlberg::computeStep(Function & transitionFunction,
+Point Fehlberg::computeStep(Pointer<EvaluationImplementation> & transitionFunction,
                             const Scalar t,
                             const Point & state,
                             Point & gradient,
@@ -253,8 +254,8 @@ Point Fehlberg::computeStep(Function & transitionFunction,
   const UnsignedInteger dimension = state.getDimension();
   Sample f(order_ + 2, dimension);
   Point parameter(1, t);
-  transitionFunction.setParameter(parameter);
-  gradient = transitionFunction(state);
+  transitionFunction->setParameter(parameter);
+  gradient = transitionFunction->operator()(state);
   f[0] = gradient;
   UnsignedInteger index = 0;
   for (UnsignedInteger k = 0; k <= order_; ++k)
@@ -267,8 +268,8 @@ Point Fehlberg::computeStep(Function & transitionFunction,
       ++index;
     }
     parameter[0] = tK;
-    transitionFunction.setParameter(parameter);
-    f[k + 1] = transitionFunction(yK);
+    transitionFunction->setParameter(parameter);
+    f[k + 1] = transitionFunction->operator()(yK);
   }
   Point PhiI(dimension);
   Point PhiII(dimension);
