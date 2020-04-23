@@ -49,11 +49,12 @@ Study::Study()
 /*
  * Parameter constructor
  */
-Study::Study(const FileName & fileName)
+Study::Study(const FileName & fileName,
+             const UnsignedInteger compressionLevel)
   : map_(),
     labelMap_(),
 #if defined OPENTURNS_HAVE_LIBXML2
-    p_storageManager_(new XMLStorageManager(fileName))
+    p_storageManager_(new XMLStorageManager(fileName, compressionLevel))
 #else
     p_storageManager_(new StorageManager)
 #endif /* OPENTURNS_HAVE_LIBXML2 */

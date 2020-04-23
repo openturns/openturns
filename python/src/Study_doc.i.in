@@ -4,13 +4,18 @@
 Available constructors:
     Study()
 
-    Study(*fileName*)
+    Study(*fileName, compressionLevel*)
 
 Parameters
 ----------
 fileName : str
-    Name of the file used by the underlying storage manager, a :class:`~openturns.XMLStorageManager` in this case.
-
+    Name of the file used by the underlying storage manager,
+    a :class:`~openturns.XMLStorageManager` in this case.
+compressionLevel : int
+    Compression level of the resulting XML file, in the range 0,...,9 (0=no compression, 9=best compression).
+    The compression is done only if the XML lib has been compiled with zlib support.
+    The default value is given by 'XMLStorageManager-DefaultCompressionLevel' in :class:`~openturns.ResourceMap`.
+    
 Notes
 -----
 The study allows the user to save all its data to a structure looking like a
@@ -29,6 +34,7 @@ Create a Study object:
 >>> myStudy = ot.Study()
 >>> myStudy.setStorageManager(ot.XMLStorageManager('myStudy.xml'))
 >>> myStudy2 = ot.Study('myStudy2.xml')
+>>> myStudy3 = ot.Study('myStudy2.xml.gz', 5)
 
 Add PersistentObjects to the study:
 
