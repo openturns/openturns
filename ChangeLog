@@ -53,6 +53,7 @@
  * #1432 (Expected improvement-based EfficientGlobalOptimization stopping criterion could be improved)
  * #1437 (OrderStatisticsMarginalChecker bound message)
  * #1438 (Normal distribution: computeComplementaryCDF)
+ * #1448 (Memory consumption leads to crash)
  * #1449 (P1LagrangeInterpolation sometimes fails)
  * #1456 (truncation of distribution)
 
