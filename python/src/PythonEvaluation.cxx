@@ -115,6 +115,9 @@ PythonEvaluation * PythonEvaluation::clone() const
 PythonEvaluation::PythonEvaluation(const PythonEvaluation & other)
   : EvaluationImplementation(other)
   , pyObj_()
+  , pyObj_has_exec_(other.pyObj_has_exec_)
+  , pyObj_has_exec_sample_(other.pyObj_has_exec_sample_)
+  , pyObj_discard_openturns_memoryview_(other.pyObj_discard_openturns_memoryview_)
   , pyBufferClass_()
 {
   ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
@@ -132,8 +135,13 @@ PythonEvaluation& PythonEvaluation::operator=(const PythonEvaluation & rhs)
 {
   if (this != &rhs)
   {
+    EvaluationImplementation::operator=(rhs);
     ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
     pyObj_ = pyObjClone.get();
+
+    pyObj_has_exec_ = rhs.pyObj_has_exec_;
+    pyObj_has_exec_sample_ = rhs.pyObj_has_exec_sample_;
+    pyObj_discard_openturns_memoryview_ = rhs.pyObj_discard_openturns_memoryview_;
 
     ScopedPyObjectPointer pyBufferClone(deepCopy(rhs.pyBufferClass_));
     pyBufferClass_ = pyBufferClone.get();

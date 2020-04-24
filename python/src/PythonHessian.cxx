@@ -79,6 +79,7 @@ PythonHessian & PythonHessian::operator=(const PythonHessian & rhs)
 {
   if (this != &rhs)
   {
+    HessianImplementation::operator=(rhs);
     ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
     pyObj_ = pyObjClone.get();
     Py_XINCREF(pyObj_);
