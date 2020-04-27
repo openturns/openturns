@@ -199,7 +199,7 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+-----------------------------------------------------------+-------------------+
 | Linear algebra (optional)             | `Spectra <https://spectralib.org/>`_                      | 0.8.1             |
 +---------------------------------------+-----------------------------------------------------------+-------------------+
-| Analytical parser (optional)          | `muParser <http://muparser.beltoforion.de/>`_             | 2.2.3             |
+| Legacy analytical parser (optional)   | `muParser <http://muparser.beltoforion.de/>`_             | 2.2.3             |
 +---------------------------------------+-----------------------------------------------------------+-------------------+
 | Special functions (optional)          | `Boost <http://www.boost.org/>`_                          | 1.46              |
 +---------------------------------------+-----------------------------------------------------------+-------------------+
