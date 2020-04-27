@@ -15,7 +15,7 @@
 === Miscellaneous ===
 
 === Bug fixes ===
-
+ * #1465 (The Sample constructor based on a list and an integer should not exist)
 
 == 1.15rc1 release (2020-04-10) == #release-1.15rc1
 
