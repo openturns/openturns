@@ -532,8 +532,7 @@ add_custom_target (check COMMENT "Run pre-installation tests")
 add_custom_target (installcheck COMMENT "Run post-installation tests")
 
 if (BUILD_PYTHON)
-  # we need absolute module imports
-  find_package (SWIG 2.0.9)
+  find_package (SWIG 3)
   if (SWIG_FOUND)
     include (${SWIG_USE_FILE})
     include (TargetLinkLibrariesWithDynamicLookup)
