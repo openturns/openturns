@@ -50,6 +50,10 @@ OT_OptimizationAlgorithm_getVerbose_doc
 OT_OptimizationAlgorithm_setProgressCallback_doc
 %feature("docstring") OT::OptimizationAlgorithm::setStopCallback
 OT_OptimizationAlgorithm_setStopCallback_doc
+%feature("docstring") OT::OptimizationAlgorithm::enableLagrangeMultipliers
+OT_OptimizationAlgorithm_enableLagrangeMultipliers_doc
+%feature("docstring") OT::OptimizationAlgorithm::isLagrangeMultipliersEnabled
+OT_OptimizationAlgorithm_isLagrangeMultipliersEnabled_doc
 
 // ---------------------------------------------------------------------
 

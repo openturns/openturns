@@ -491,7 +491,8 @@ void Ceres::run()
   result.setIterationNumber(iterationNumber);
   result.setOptimalPoint(x);
   result.setOptimalValue(Point(1, optimalValue));
-  result.setLagrangeMultipliers(computeLagrangeMultipliers(x));
+  if (isLagrangeMultipliersEnabled())
+    result.setLagrangeMultipliers(computeLagrangeMultipliers(x));
   setResult(result);
 #else
   throw NotYetImplementedException(HERE) << "No Ceres support";
