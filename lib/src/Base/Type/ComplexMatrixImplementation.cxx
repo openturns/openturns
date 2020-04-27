@@ -985,22 +985,9 @@ void ComplexMatrixImplementation::load(Advocate & adv)
   adv.loadAttribute( "nbColumns_", nbColumns_);
 }
 
-
-const Complex* ComplexMatrixImplementation::__baseaddress__() const
+UnsignedInteger ComplexMatrixImplementation::stride(const UnsignedInteger dim) const
 {
-  return &(*this)[0];
-}
-
-
-UnsignedInteger ComplexMatrixImplementation::__elementsize__() const
-{
-  return sizeof(Complex);
-}
-
-
-UnsignedInteger ComplexMatrixImplementation::__stride__(UnsignedInteger dim) const
-{
-  UnsignedInteger stride = __elementsize__();
+  UnsignedInteger stride = elementSize();
   if (dim > 0)
     stride *= nbRows_;
   return stride;

@@ -17,7 +17,6 @@
 %include TBB.i
 %include Object.i
 %include PersistentObject.i
-%include SharedPointer.i
 %include Pointer.i
 %include InterfaceObject.i
 %include TypedInterfaceObject.i

@@ -584,16 +584,10 @@ public:
   void swap_points(const UnsignedInteger a, const UnsignedInteger b);
   void swap_range_points(const UnsignedInteger fa, const UnsignedInteger ta, const UnsignedInteger fb);
 #endif
-  // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
-  // INTENTIONALY NOT DOCUMENTED
-  const Scalar * __baseaddress__ () const
-  {
-    return (data_.getSize() > 0) ? &data_[0] : 0;
-  }
-  UnsignedInteger __elementsize__ () const
-  {
-    return sizeof(Scalar);
-  }
+
+  /** Low-level data access */
+  const Scalar * data() const;
+  UnsignedInteger elementSize() const;
 
   /** Virtual constructor */
   virtual SampleImplementation * clone() const;

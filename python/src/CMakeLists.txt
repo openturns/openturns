@@ -116,7 +116,6 @@ ot_add_python_module(common common_module.i
                       LessOrEqual.i LessOrEqual_doc.i.in
                       Cache.i
                       PlatformInfo.i PlatformInfo_doc.i.in
-                      SharedPointer.i
                       Pointer.i
                       InterfaceObject.i InterfaceObject_doc.i.in
                       TypedInterfaceObject.i

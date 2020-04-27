@@ -89,7 +89,7 @@ const Log::Severity Log::TRACE   = 1 << 6;
 
 const Log::Severity Log::DEFAULT = Log::USER | Log::WARN | Log::ERROR | Log::TRACE;
 
-static volatile Log::Severity Log_Severity_ = Log::DEFAULT;
+static AtomicInt Log_Severity_ = Log::DEFAULT;
 
 
 /* Constructor */
@@ -225,13 +225,13 @@ void Log::Trace(const String & msg)
 /* Get/Set the severity flags for the messages logged to the file */
 void Log::Show(Severity flags)
 {
-  Atomic::Reset( (int*) & Log_Severity_);
-  Atomic::OrAndFetch(  (int*) & Log_Severity_, flags );
+  Log_Severity_ = 0;
+  Log_Severity_.fetchOr(flags);
 }
 
 Log::Severity Log::Flags()
 {
-  return Atomic::OrAndFetch(  (int*) & Log_Severity_, 0x00 );
+  return Log_Severity_.fetchOr(0x00);
 }
 
 /* Flush pending messages */
@@ -248,12 +248,12 @@ void Log::Flush()
  *  and a message counting how much identical messages were
  *  received after that.
  */
-void Log::Repeat( Bool r )
+void Log::Repeat(Bool r)
 {
-  GetInstance().lock().repeat( r );
+  GetInstance().lock().repeat(r);
 }
 
-void Log::repeat( Bool r )
+void Log::repeat(Bool r)
 {
   repeat_ = r ? 1 : 0;
 }

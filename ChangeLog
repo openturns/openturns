@@ -14,6 +14,7 @@
 === Python module ===
 
 === Miscellaneous ===
+ * Require C99/C++11 support
 
 === Bug fixes ===
  * #1267 (Some CSV files cannot be imported)

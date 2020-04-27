@@ -1550,19 +1550,9 @@ void MatrixImplementation::load(Advocate & adv)
   adv.loadAttribute( "nbColumns_", nbColumns_);
 }
 
-const Scalar* MatrixImplementation::__baseaddress__() const
+UnsignedInteger MatrixImplementation::stride(const UnsignedInteger dim) const
 {
-  return &(*this)[0];
-}
-
-UnsignedInteger MatrixImplementation::__elementsize__() const
-{
-  return sizeof(Scalar);
-}
-
-UnsignedInteger MatrixImplementation::__stride__(UnsignedInteger dim) const
-{
-  UnsignedInteger stride = __elementsize__();
+  UnsignedInteger stride = elementSize();
   if (dim > 0)
     stride *= nbRows_;
   return stride;
