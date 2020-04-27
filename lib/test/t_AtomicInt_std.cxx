@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class AtomicFunctions for standard methods
+ *  @brief The test file of class AtomicInt for standard methods
  *
  *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -67,7 +67,7 @@ int main(int, char *[])
     if (!(converter >> nbThreads))
     {
       OSS errorMessage;
-      errorMessage << "OT::AtomicFunctions wrong nb of thread!";
+      errorMessage << "OT::AtomicInt wrong nb of thread!";
       throw TestFailed(errorMessage);
     }
 #endif
@@ -88,7 +88,7 @@ int main(int, char *[])
           pthread_kill( threadsIds[j], SIGTERM );
 #endif
         OSS errorMessage;
-        errorMessage << "OT::AtomicFunctions Threads creation failed!";
+        errorMessage << "OT::AtomicInt Threads creation failed!";
         throw TestFailed(errorMessage);
       }
     } /* end for */
@@ -99,7 +99,7 @@ int main(int, char *[])
       if (rc != 0)
       {
         OSS errorMessage;
-        errorMessage << "OT::AtomicFunctions Threads join failed!";
+        errorMessage << "OT::AtomicInt Threads join failed!";
         throw TestFailed(errorMessage);
       }
     } /* end for */
@@ -109,7 +109,7 @@ int main(int, char *[])
     if (shaked != (NB_ITER * nbThreads))
     {
       OSS errorMessage;
-      errorMessage << "OT::AtomicFunctions does NOT return the correct value (value="
+      errorMessage << "OT::AtomicInt does NOT return the correct value (value="
                    << shaked << " should be " << NB_ITER * nbThreads << ").";
       throw TestFailed(errorMessage);
     }
