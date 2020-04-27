@@ -190,7 +190,8 @@ void Cobyla::run()
   result_.setOptimalValue(evaluationOutputHistory_[optimalIndex]);
 
   result_.setEvaluationNumber(maxFun);
-  result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
+  if (isLagrangeMultipliersEnabled())
+    result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
 
   // check the convergence criteria
   const Bool convergence = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));

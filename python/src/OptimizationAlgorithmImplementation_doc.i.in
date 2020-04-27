@@ -362,12 +362,38 @@ OT_OptimizationAlgorithm_setVerbose_doc
 "Accessor to the verbosity flag.
 
 Returns
-----------
+-------
 verbose : bool
     Verbosity flag state."
 %enddef
 %feature("docstring") OT::OptimizationAlgorithmImplementation::getVerbose
 OT_OptimizationAlgorithm_getVerbose_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_enableLagrangeMultipliers_doc
+"Accessor to the Lagrange multipliers flag.
+
+Parameters
+----------
+isLagrangeMultipliersEnabled : bool
+    Whether to compute Lagrange multipliers."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::enableLagrangeMultipliers
+OT_OptimizationAlgorithm_enableLagrangeMultipliers_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_isLagrangeMultipliersEnabled_doc
+"Accessor to the Lagrange multipliers flag.
+
+Returns
+-------
+isLagrangeMultipliersEnabled : bool
+    Whether to compute Lagrange multipliers."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::isLagrangeMultipliersEnabled
+OT_OptimizationAlgorithm_isLagrangeMultipliersEnabled_doc
 
 // ---------------------------------------------------------------------
 
