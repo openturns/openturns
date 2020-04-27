@@ -211,14 +211,14 @@ const Scalar & Sample::at (const UnsignedInteger i,
   return (*getImplementation())(i, j);
 }
 
-const Scalar * Sample::__baseaddress__ () const
+const Scalar * Sample::data() const
 {
-  return getImplementation()->__baseaddress__();
+  return getImplementation()->data();
 }
 
-UnsignedInteger Sample::__elementsize__ () const
+UnsignedInteger Sample::elementSize() const
 {
-  return getImplementation()->__elementsize__();
+  return getImplementation()->elementSize();
 }
 
 /* Whether the list contains the value val */
@@ -226,8 +226,6 @@ Bool Sample::contains(const Point & val) const
 {
   return getImplementation()->contains(val);
 }
-
-
 
 /* String converter */
 String Sample::__repr__() const

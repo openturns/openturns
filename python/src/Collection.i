@@ -7,6 +7,9 @@
 %include Collection_doc.i
 
 %rename(__contains__) OT::Collection::contains;
+%rename(__baseaddress__) OT::Collection::data;
+%rename(__elementsize__) OT::Collection::elementSize;
+
 %include openturns/Collection.hxx
 %copyctor Collection;
 

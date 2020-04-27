@@ -744,7 +744,15 @@ SampleImplementation * SampleImplementation::clone() const
   return new SampleImplementation(*this);
 }
 
+const Scalar * SampleImplementation::data() const
+{
+  return data_.data();
+}
 
+UnsignedInteger SampleImplementation::elementSize() const
+{
+  return sizeof(Scalar);
+}
 
 void SampleImplementation::swap_points(const UnsignedInteger a, const UnsignedInteger b)
 {

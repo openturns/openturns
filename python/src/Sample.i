@@ -47,6 +47,8 @@
 %apply const UnsignedIntegerCollection & { const OT::Sample::UnsignedIntegerCollection &, const OT::SampleImplementation::UnsignedIntegerCollection & };
 
 %rename(__contains__) OT::Sample::contains;
+%rename(__baseaddress__) OT::Sample::data;
+%rename(__elementsize__) OT::Sample::elementSize;
 
 %include openturns/SampleImplementation.hxx
 %include openturns/Sample.hxx

@@ -316,10 +316,10 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
     else
     {
       // Wrap inS into a memoryview.Buffer object:
-      //    openturns.memoryview.Buffer((int(inS.__baseaddress__()), False), (inS.getSize(), inS.getDimension()))
+      //    openturns.memoryview.Buffer((int(inS.data()), False), (inS.getSize(), inS.getDimension()))
       // First argument
       ScopedPyObjectPointer ptrTuple(PyTuple_New(2));
-      PyTuple_SetItem(ptrTuple.get(), 0, PyLong_FromVoidPtr(static_cast<void *>(const_cast<Scalar*>(inS.__baseaddress__()))));
+      PyTuple_SetItem(ptrTuple.get(), 0, PyLong_FromVoidPtr(static_cast<void *>(const_cast<Scalar*>(inS.data()))));
       PyTuple_SetItem(ptrTuple.get(), 1, PyBool_FromLong(0));  // We do not own memory
 
       // Second argument

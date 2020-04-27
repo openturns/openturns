@@ -17,6 +17,9 @@
 
 %ignore OT::Matrix::getRow;
 %ignore OT::Matrix::getColumn;
+%rename(__baseaddress__) OT::Matrix::data;
+%rename(__elementsize__) OT::Matrix::elementSize;
+%rename(__stride__) OT::Matrix::stride;
 
 %template(MatrixImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::MatrixImplementation>;
 %apply const ScalarCollection & { const OT::Matrix::ScalarCollection & };

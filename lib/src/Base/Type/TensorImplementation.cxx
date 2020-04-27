@@ -249,22 +249,9 @@ void TensorImplementation::load(Advocate & adv)
   adv.loadAttribute("nbSheets_", nbSheets_);
 }
 
-
-const Scalar* TensorImplementation::__baseaddress__() const
+UnsignedInteger TensorImplementation::stride(const UnsignedInteger dim) const
 {
-  return &(*this)[0];
-}
-
-
-UnsignedInteger TensorImplementation::__elementsize__() const
-{
-  return sizeof(Scalar);
-}
-
-
-UnsignedInteger TensorImplementation::__stride__(UnsignedInteger dim) const
-{
-  UnsignedInteger stride = __elementsize__();
+  UnsignedInteger stride = elementSize();
   if (dim > 0)
     stride *= nbRows_;
   if (dim > 1)

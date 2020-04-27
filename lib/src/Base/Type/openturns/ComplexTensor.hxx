@@ -117,11 +117,10 @@ public:
   /** Empty returns true if there is no element in the tensor */
   Bool isEmpty() const;
 
-  // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
-  // INTENTIONALY NOT DOCUMENTED
-  const Complex * __baseaddress__ () const;
-  UnsignedInteger __elementsize__ () const;
-  UnsignedInteger __stride__ (UnsignedInteger dim) const;
+  /** Low-level data access */
+  const Complex * data() const;
+  UnsignedInteger elementSize() const;
+  UnsignedInteger stride(const UnsignedInteger dim) const;
 
 protected:
 
