@@ -307,9 +307,6 @@ public:
   /** Get the kurtosis of the distribution */
   Point getKurtosis() const;
 
-  /** Get the implementation of the distribution */
-  Implementation getImplementation() const;
-
   /** Check if the distribution is a copula */
   Bool isCopula() const;
 

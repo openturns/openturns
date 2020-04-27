@@ -78,7 +78,7 @@ Examples
 ...      0.0803625289211318, 1.01898069723583, 0.661725805623086,
 ...      -1.57581204592385, -2.95308465670895, -8.8878164296758,
 ...      -13.0812290405651]
->>> y_obs = ot.Sample(y, obsDim)
+>>> y_obs = ot.Sample([[yi] for yi in y])
 >>> # Parameters
 >>> modelParameters = ot.Sample(obsSize, chainDim)
 >>> for i in range(obsSize):

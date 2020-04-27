@@ -56,12 +56,6 @@ String Experiment::__repr__() const
   return oss;
 }
 
-void Experiment::setImplementation(const Implementation & p_implementation)
-{
-  copyOnWrite();
-  getImplementation() = p_implementation;
-}
-
 /* Sample generation */
 Sample Experiment::generate() const
 {

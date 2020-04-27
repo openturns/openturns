@@ -41,6 +41,7 @@ OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation()
   , maximumResidualError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError"))
   , maximumConstraintError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError"))
   , verbose_(false)
+  , isLagrangeMultipliersEnabled_(true)
 {
   // Nothing to do
 }
@@ -60,6 +61,7 @@ OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation(const O
   , maximumResidualError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError"))
   , maximumConstraintError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError"))
   , verbose_(false)
+  , isLagrangeMultipliersEnabled_(true)
 {
   // Nothing to do
 }
@@ -267,6 +269,17 @@ Point OptimizationAlgorithmImplementation::computeLagrangeMultipliers(const Poin
   return Matrix(inputDimension, rhs.getDimension() / inputDimension, rhs).solveLinearSystem(lhs, false);
 }
 
+/* Enable/disable lagrange multipliers */
+void OptimizationAlgorithmImplementation::enableLagrangeMultipliers(const Bool isLagrangeMultipliersEnabled)
+{
+  isLagrangeMultipliersEnabled_ = isLagrangeMultipliersEnabled;
+}
+
+Bool OptimizationAlgorithmImplementation::isLagrangeMultipliersEnabled() const
+{
+  return isLagrangeMultipliersEnabled_;
+}
+
 /* Virtual constructor */
 OptimizationAlgorithmImplementation * OptimizationAlgorithmImplementation::clone() const
 {
@@ -298,6 +311,7 @@ void OptimizationAlgorithmImplementation::save(Advocate & adv) const
   adv.saveAttribute( "maximumResidualError_", maximumResidualError_);
   adv.saveAttribute( "maximumConstraintError_", maximumConstraintError_);
   adv.saveAttribute( "verbose_", verbose_);
+  adv.saveAttribute( "isLagrangeMultipliersEnabled_", isLagrangeMultipliersEnabled_);
 }
 
 
@@ -314,6 +328,7 @@ void OptimizationAlgorithmImplementation::load(Advocate & adv)
   adv.loadAttribute( "maximumResidualError_", maximumResidualError_);
   adv.loadAttribute( "maximumConstraintError_", maximumConstraintError_);
   adv.loadAttribute( "verbose_", verbose_);
+  adv.loadAttribute( "isLagrangeMultipliersEnabled_", isLagrangeMultipliersEnabled_);
 }
 
 

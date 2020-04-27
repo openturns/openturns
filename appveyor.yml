@@ -1,7 +1,9 @@
 environment:
   matrix:
-    - VS_GEN: Visual Studio 10 2010
-    - VS_GEN: Visual Studio 14 2015
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      VS_GEN: Visual Studio 14 2015
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      VS_GEN: Visual Studio 15 2017
 
 install:
   - appveyor-retry appveyor DownloadFile https://downloads.sourceforge.net/openblas/v0.2.15/OpenBLAS-v0.2.15-Win32.zip

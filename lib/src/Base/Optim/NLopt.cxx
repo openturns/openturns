@@ -400,7 +400,8 @@ void NLopt::run()
   result.setEvaluationNumber(size);
   result.setOptimalPoint(optimizer);
   result.setOptimalValue(Point(1, optimalValue));
-  result.setLagrangeMultipliers(computeLagrangeMultipliers(optimizer));
+  if (isLagrangeMultipliersEnabled())
+    result.setLagrangeMultipliers(computeLagrangeMultipliers(optimizer));
   setResult(result);
 #else
   (void) p_opt_;

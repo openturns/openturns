@@ -56,9 +56,6 @@ public:
   /** Sample generation */
   virtual Sample generate() const;
 
-  /** Implementation accessor */
-  void setImplementation(const Implementation & p_implementation);
-
 }; /* class Experiment */
 
 

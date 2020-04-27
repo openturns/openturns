@@ -120,7 +120,7 @@ ot_check_test (Study_saveload )
 endif ()
 ot_check_test (ResourceMap_std IGNOREOUT)
 ot_check_test (Catalog_std IGNOREOUT)
-ot_check_test (AtomicFunctions_std IGNOREOUT)
+ot_check_test (AtomicInt_std IGNOREOUT)
 
 # Type
 ot_check_test (Collection_std)

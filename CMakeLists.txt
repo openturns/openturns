@@ -1,6 +1,6 @@
 #                                               -*- cmake -*-
 
-cmake_minimum_required (VERSION 2.8.8)
+cmake_minimum_required (VERSION 3.2)
 
 # By default, build in Release mode. Must appear before project() command
 if (NOT DEFINED CMAKE_BUILD_TYPE)
@@ -128,18 +128,7 @@ set (OPENTURNS_TEMPDIR
    )
 set (TEMPDIR ${OPENTURNS_TEMPDIR})
 
-
-# CMake 2.x does not define MSVC when using Intel compiler on Windows, see
-# http://public.kitware.com/Bug/view.php?id=14476
-if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
-  set(WINTEL TRUE)
-endif()
-
-if (NOT CMAKE_VERSION VERSION_LESS 3.1)
-  # beware swig<3.0 does not like c++11: https://github.com/swig/swig/issues/73
-  set (CMAKE_CXX_STANDARD 11)
-endif ()
-
+set (CMAKE_CXX_STANDARD 11)
 
 if (NOT DEFINED LAPACK_LIBRARIES)
   find_package (LAPACK REQUIRED)
@@ -185,7 +174,7 @@ if (TBB_FOUND)
 endif ()
 
 if (USE_MUPARSER)
-  find_package (muParser 2.2.3)
+  find_package (muParser 2.2.3 QUIET)
 endif ()
 if (MUPARSER_FOUND)
   set (OPENTURNS_HAVE_MUPARSER TRUE)
@@ -275,31 +264,28 @@ if (USE_NLOPT)
     list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${NLOPT_INCLUDE_DIRS})
     list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${NLOPT_LIBRARIES})
 
-    if (NOT CMAKE_VERSION VERSION_LESS 3.2) # for the LINK_LIBRARIES option
-
-      try_run (_NLOPT_STOGO_RUNS _NLOPT_STOGO_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/nlopt_have_stogo.cxx LINK_LIBRARIES ${NLOPT_LIBRARIES})
-      if (_NLOPT_STOGO_BUILDS)
-        if (_NLOPT_STOGO_RUNS EQUAL 0)
-          set (OPENTURNS_NLOPT_HAVE_STOGO TRUE)
-        else ()
-          message (STATUS "nlopt::GD_STOGO: fails to run")
-        endif ()
+    try_run (_NLOPT_STOGO_RUNS _NLOPT_STOGO_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/nlopt_have_stogo.cxx LINK_LIBRARIES ${NLOPT_LIBRARIES})
+    if (_NLOPT_STOGO_BUILDS)
+      if (_NLOPT_STOGO_RUNS EQUAL 0)
+        set (OPENTURNS_NLOPT_HAVE_STOGO TRUE)
       else ()
-        message (STATUS "nlopt::GD_STOGO: fails to build")
+        message (STATUS "nlopt::GD_STOGO: fails to run")
       endif ()
-
-      try_run (_NLOPT_AGS_RUNS _NLOPT_AGS_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/nlopt_have_ags.cxx LINK_LIBRARIES ${NLOPT_LIBRARIES})
-      if (_NLOPT_AGS_BUILDS)
-        if (_NLOPT_AGS_RUNS EQUAL 0)
-          set (OPENTURNS_NLOPT_HAVE_AGS TRUE)
-        else ()
-          message (STATUS "nlopt::GN_AGS: fails to run")
-        endif ()
-      else ()
-        message (STATUS "nlopt::GN_AGS: fails to build")
-      endif ()
-
+    else ()
+      message (STATUS "nlopt::GD_STOGO: fails to build")
     endif ()
+
+    try_run (_NLOPT_AGS_RUNS _NLOPT_AGS_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/nlopt_have_ags.cxx LINK_LIBRARIES ${NLOPT_LIBRARIES})
+    if (_NLOPT_AGS_BUILDS)
+      if (_NLOPT_AGS_RUNS EQUAL 0)
+        set (OPENTURNS_NLOPT_HAVE_AGS TRUE)
+      else ()
+        message (STATUS "nlopt::GN_AGS: fails to run")
+      endif ()
+    else ()
+      message (STATUS "nlopt::GN_AGS: fails to build")
+    endif ()
+
   endif ()
 endif ()
 
@@ -535,18 +521,7 @@ add_custom_target (check COMMENT "Run pre-installation tests")
 add_custom_target (installcheck COMMENT "Run post-installation tests")
 
 if (BUILD_PYTHON)
-  # workaround for cmake bug #0013449
-  if (CMAKE_VERSION VERSION_LESS 3 AND DEFINED CMAKE_FIND_ROOT_PATH)
-    find_program (SWIG_EXECUTABLE NAMES swig2.0 swig)
-    if (SWIG_EXECUTABLE)
-      set (SWIG_USE_FILE ${CMAKE_ROOT}/Modules/UseSWIG.cmake)
-      set (SWIG_FOUND TRUE)
-      set (SWIG_VERSION 2)
-    endif ()
-  else ()
-    # we need absolute module imports
-    find_package (SWIG 2.0.9)
-  endif ()
+  find_package (SWIG 3)
   if (SWIG_FOUND)
     include (${SWIG_USE_FILE})
     include (TargetLinkLibrariesWithDynamicLookup)

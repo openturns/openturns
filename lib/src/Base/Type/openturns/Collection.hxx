@@ -362,6 +362,17 @@ public:
   {
     return coll__.rend();
   }
+
+  inline
+  const T * data() const
+  {
+    return coll__.data();
+  }
+
+  UnsignedInteger elementSize() const
+  {
+    return sizeof(T);
+  }
 #endif
 
 protected:

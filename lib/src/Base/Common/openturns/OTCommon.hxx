@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_OTCOMMON_HXX
 #define OPENTURNS_OTCOMMON_HXX
 
-#include "openturns/AtomicFunctions.hxx"
+#include "openturns/AtomicInt.hxx"
 //#include "BinaryStorageManager.hxx"
 #include "openturns/Catalog.hxx"
 #include "openturns/ComparisonOperator.hxx"

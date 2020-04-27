@@ -47,6 +47,8 @@
 %apply const UnsignedIntegerCollection & { const OT::Sample::UnsignedIntegerCollection &, const OT::SampleImplementation::UnsignedIntegerCollection & };
 
 %rename(__contains__) OT::Sample::contains;
+%rename(__baseaddress__) OT::Sample::data;
+%rename(__elementsize__) OT::Sample::elementSize;
 
 %include openturns/SampleImplementation.hxx
 %include openturns/Sample.hxx
@@ -439,24 +441,6 @@ Sample(const Sample & other)
 Sample(PyObject * pyObj)
 {
   return new OT::Sample( OT::convert< OT::_PySequence_, OT::Sample>(pyObj) );  
-}
-
-Sample(PyObject * pyObj, UnsignedInteger dimension)
-{
-  OT::Point point( OT::convert< OT::_PySequence_, OT::Point >(pyObj) );
-  OT::UnsignedInteger pointSize = point.getDimension();
-  OT::UnsignedInteger size = (pointSize + dimension - 1) / dimension;
-  OT::Sample sample(size, dimension);
-  OT::UnsignedInteger k = 0;
-  for ( OT::UnsignedInteger i = 0; i < size; ++ i ) {
-    for ( OT::UnsignedInteger j = 0; j < dimension; ++ j ) {
-      if ( k < pointSize ) {
-        sample(i, j) = point[k];
-        ++ k;
-      }
-    }
-  }
-  return new OT::Sample( sample );
 }
 
 Bool __eq__(const Sample & other) { return (*self) == other; }

@@ -132,11 +132,8 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
-  // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
-  // INTENTIONALY NOT DOCUMENTED
-  const Complex * __baseaddress__ () const;
-  UnsignedInteger __elementsize__ () const;
-  UnsignedInteger __stride__ (UnsignedInteger dim) const;
+  /** Low-level data access */
+  UnsignedInteger stride(const UnsignedInteger dim) const;
 
 protected:
 

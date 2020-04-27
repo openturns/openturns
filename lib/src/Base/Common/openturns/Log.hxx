@@ -24,7 +24,7 @@
 #include <fstream>
 #include <map>
 #include "openturns/OTprivate.hxx"
-#include "openturns/AtomicFunctions.hxx"
+#include "openturns/AtomicInt.hxx"
 #include "openturns/TTY.hxx"
 #include "openturns/MutexLock.hxx"
 

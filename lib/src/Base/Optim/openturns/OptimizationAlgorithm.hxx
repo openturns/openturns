@@ -98,6 +98,10 @@ public:
   Bool getVerbose() const;
   void setVerbose(const Bool verbose);
 
+ /** Enable/disable lagrange multipliers */
+  void enableLagrangeMultipliers(const Bool isLagrangeMultipliersEnabled);
+  Bool isLagrangeMultipliersEnabled() const;
+
   /** Progress callback */
   typedef void (*ProgressCallback)(Scalar, void * state);
   void setProgressCallback(ProgressCallback callBack, void * state = 0);

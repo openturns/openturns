@@ -77,7 +77,7 @@ if (LIBXML2_FOUND)
   ot_pyinstallcheck_test (Object_pickle)
 endif ()
 ot_pyinstallcheck_test (ComparisonOperator_std)
-if (LIBXML2_FOUND AND SWIG_VERSION VERSION_GREATER 3) # Study_std/py3k: NameError: Unknown C global variable
+if (LIBXML2_FOUND)
 ot_pyinstallcheck_test (Study_saveload)
 ot_pyinstallcheck_test (Study_std IGNOREOUT)
 endif ()
@@ -774,20 +774,17 @@ ot_pyinstallcheck_test (shims IGNOREOUT)
 
 
 if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND)
-  # on py3k/swig<3.0.0, doctest fails with "NameError: Unknown C global variable"
-  if (PYTHON_VERSION_MAJOR VERSION_EQUAL "2" OR SWIG_VERSION VERSION_GREATER "3")
-    # source modules
-    file (GLOB modules ${PROJECT_SOURCE_DIR}/python/src/*.py)
-    # swig modules
-    foreach (module ${OPENTURNS_PYTHON_MODULES})
-      list (APPEND modules ${PROJECT_BINARY_DIR}/python/src/${module}.py)
-    endforeach ()
-    foreach (module ${modules})
-      get_filename_component (module_name ${module} NAME_WE)
-      add_test (pyinstallcheck_docstring_${module_name} ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/t_docstring.py ${module})
-      set_tests_properties (pyinstallcheck_docstring_${module_name} PROPERTIES ENVIRONMENT "${PYINSTALLCHECK_ENVIRONMENT}")
-    endforeach()
-  endif ()
+  # source modules
+  file (GLOB modules ${PROJECT_SOURCE_DIR}/python/src/*.py)
+  # swig modules
+  foreach (module ${OPENTURNS_PYTHON_MODULES})
+    list (APPEND modules ${PROJECT_BINARY_DIR}/python/src/${module}.py)
+  endforeach ()
+  foreach (module ${modules})
+    get_filename_component (module_name ${module} NAME_WE)
+    add_test (pyinstallcheck_docstring_${module_name} ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/t_docstring.py ${module})
+    set_tests_properties (pyinstallcheck_docstring_${module_name} PROPERTIES ENVIRONMENT "${PYINSTALLCHECK_ENVIRONMENT}")
+  endforeach()
 endif ()
 
 add_custom_target (pyinstallcheck COMMAND ${CMAKE_CTEST_COMMAND} -R "^pyinstallcheck_"

@@ -744,7 +744,15 @@ SampleImplementation * SampleImplementation::clone() const
   return new SampleImplementation(*this);
 }
 
+const Scalar * SampleImplementation::data() const
+{
+  return data_.data();
+}
 
+UnsignedInteger SampleImplementation::elementSize() const
+{
+  return sizeof(Scalar);
+}
 
 void SampleImplementation::swap_points(const UnsignedInteger a, const UnsignedInteger b)
 {
@@ -1337,10 +1345,10 @@ struct Comparison
 
 
 /* Ranked sample */
-SampleImplementation SampleImplementation::rank() const
+Pointer<SampleImplementation> SampleImplementation::rank() const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot rank an empty sample.";
-  SampleImplementation rankedSample(size_, dimension_);
+  Pointer<SampleImplementation> rankedSample = new SampleImplementation(size_, dimension_);
 
   // Sort and rank all the marginal samples
   for (UnsignedInteger i = 0; i < dimension_; ++i)
@@ -1363,7 +1371,7 @@ SampleImplementation SampleImplementation::rank() const
       if (currentValue > lastValue)
       {
         const Scalar rankValue = 0.5 * (lastIndex + j - 1);
-        for (UnsignedInteger k = lastIndex; k < j; ++k) rankedSample(sortedMarginalSamples[k].index_, i) = rankValue;
+        for (UnsignedInteger k = lastIndex; k < j; ++k) rankedSample->operator()(sortedMarginalSamples[k].index_, i) = rankValue;
         lastIndex = j;
         lastValue = currentValue;
       }
@@ -1372,19 +1380,19 @@ SampleImplementation SampleImplementation::rank() const
     if (currentValue == lastValue)
     {
       const Scalar rankValue = 0.5 * (lastIndex + size_ - 1);
-      for (UnsignedInteger k = lastIndex; k < size_; ++k) rankedSample(sortedMarginalSamples[k].index_, i) = rankValue;
+      for (UnsignedInteger k = lastIndex; k < size_; ++k) rankedSample->operator()(sortedMarginalSamples[k].index_, i) = rankValue;
     }
   }
-  if (!p_description_.isNull()) rankedSample.setDescription(getDescription());
+  if (!p_description_.isNull()) rankedSample->setDescription(getDescription());
   return rankedSample;
 }
 
 /* Ranked component */
-SampleImplementation SampleImplementation::rank(const UnsignedInteger index) const
+Pointer<SampleImplementation> SampleImplementation::rank(const UnsignedInteger index) const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot rank an empty sample.";
   if (index >= dimension_) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << dimension_;
-  return getMarginal(index).rank();
+  return getMarginal(index)->rank();
 }
 
 struct NSI_Sortable
@@ -1418,25 +1426,25 @@ struct NSI_Sortable
 };
 
 /* Sorted sample, component by component */
-SampleImplementation SampleImplementation::sort() const
+Pointer<SampleImplementation> SampleImplementation::sort() const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
 
-  SampleImplementation sortedSample(size_, dimension_);
+  Pointer<SampleImplementation> sortedSample = new SampleImplementation(size_, dimension_);
   // Special case for 1D sample
   if (dimension_ == 1)
   {
     Point sortedData(data_);
     TBB::ParallelSort(sortedData.begin(), sortedData.end());
-    sortedSample.setData(sortedData);
+    sortedSample->setData(sortedData);
     return sortedSample;
   }
   // The nD samples
   Collection<NSI_Sortable> sortables(size_);
   for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = NSI_Sortable(this, i);
   TBB::ParallelSort(sortables.begin(), sortables.end());
-  for (UnsignedInteger i = 0; i < size_; ++i) sortedSample[i] = sortables[i];
-  if (!p_description_.isNull()) sortedSample.setDescription(getDescription());
+  for (UnsignedInteger i = 0; i < size_; ++i) sortedSample->operator[](i) = sortables[i];
+  if (!p_description_.isNull()) sortedSample->setDescription(getDescription());
   return sortedSample;
 }
 
@@ -1459,13 +1467,13 @@ void SampleImplementation::sortInPlace()
 }
 
 /* Sorted sample, one component */
-SampleImplementation SampleImplementation::sort(const UnsignedInteger index) const
+Pointer<SampleImplementation> SampleImplementation::sort(const UnsignedInteger index) const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
 
   if (index >= getDimension()) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << getDimension();
 
-  return getMarginal(index).sort();
+  return getMarginal(index)->sort();
 }
 
 
@@ -1482,7 +1490,7 @@ struct Sortable
 };
 
 /* Sorted according a component */
-SampleImplementation SampleImplementation::sortAccordingToAComponent(const UnsignedInteger index) const
+Pointer<SampleImplementation> SampleImplementation::sortAccordingToAComponent(const UnsignedInteger index) const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
   if (index >= getDimension()) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << getDimension();
@@ -1490,14 +1498,14 @@ SampleImplementation SampleImplementation::sortAccordingToAComponent(const Unsig
   Collection<Sortable> sortables(size_);
   for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = Sortable((*this)[i], index);
   TBB::ParallelSort(sortables.begin(), sortables.end());
-  SampleImplementation sortedSample(size_, dimension_);
+  Pointer<SampleImplementation> sortedSample = new SampleImplementation(size_, dimension_);
   UnsignedInteger shift = 0;
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
-    std::copy(sortables[i].values_.begin(), sortables[i].values_.end(), sortedSample.data_.begin() + shift);
+    std::copy(sortables[i].values_.begin(), sortables[i].values_.end(), sortedSample->data_.begin() + shift);
     shift += dimension_;
   }
-  if (!p_description_.isNull()) sortedSample.setDescription(getDescription());
+  if (!p_description_.isNull()) sortedSample->setDescription(getDescription());
   return sortedSample;
 }
 
@@ -1520,22 +1528,22 @@ void SampleImplementation::sortAccordingToAComponentInPlace(const UnsignedIntege
 }
 
 /* Sort and remove duplicated points */
-SampleImplementation SampleImplementation::sortUnique() const
+Pointer<SampleImplementation> SampleImplementation::sortUnique() const
 {
-  SampleImplementation sampleSorted(sort());
-  SampleImplementation sampleUnique(size_, dimension_);
-  sampleUnique[0] = sampleSorted[0];
+  Pointer<SampleImplementation> sampleSorted(sort());
+  Pointer<SampleImplementation> sampleUnique = new SampleImplementation(size_, dimension_);
+  sampleUnique->operator[](0) = sampleSorted->operator[](0);
   UnsignedInteger last = 0;
   for (UnsignedInteger i = 1; i < size_; ++i)
   {
-    if (sampleSorted[i] != sampleUnique[last])
+    if (sampleSorted->operator[](i) != sampleUnique->operator[](last))
     {
       ++last;
-      sampleUnique[last] = sampleSorted[i];
+      sampleUnique->operator[](last) = sampleSorted->operator[](i);
     }
   }
-  if (last + 1 < size_) sampleUnique.erase(last + 1, size_);
-  if (!p_description_.isNull()) sampleUnique.setDescription(getDescription());
+  if (last + 1 < size_) sampleUnique->erase(last + 1, size_);
+  if (!p_description_.isNull()) sampleUnique->setDescription(getDescription());
   return sampleUnique;
 }
 
@@ -1561,7 +1569,7 @@ CorrelationMatrix SampleImplementation::computeSpearmanCorrelation() const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the Spearman correlation of an empty sample.";
 
-  return rank().computePearsonCorrelation();
+  return rank()->computePearsonCorrelation();
 }
 
 
@@ -1830,7 +1838,7 @@ Point SampleImplementation::computeQuantilePerComponent(const Scalar prob) const
 /*
  * Gives the quantile per component of the sample
  */
-SampleImplementation SampleImplementation::computeQuantilePerComponent(const Point & prob) const
+Pointer<SampleImplementation> SampleImplementation::computeQuantilePerComponent(const Point & prob) const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the quantile per component of an empty sample.";
   const UnsignedInteger probSize = prob.getSize();
@@ -1877,8 +1885,8 @@ SampleImplementation SampleImplementation::computeQuantilePerComponent(const Poi
     betas[p] = beta;
   }
 
-  SampleImplementation quantile(probSize, dimension_);
-  quantile.setDescription(Description::BuildDefault(dimension_, "q"));
+  Pointer<SampleImplementation> quantile = new SampleImplementation(probSize, dimension_);
+  quantile->setDescription(Description::BuildDefault(dimension_, "q"));
   Point component(size_);
   for (UnsignedInteger j = 0; j < dimension_; ++j)
   {
@@ -1898,32 +1906,32 @@ SampleImplementation SampleImplementation::computeQuantilePerComponent(const Poi
       {
         // We use a special case here to avoid using an indefinite value if index is the last element
         std::nth_element(component.begin() + lastIndex, component.begin() + index, component.end());
-        quantile(p, j) = component[index];
+        quantile->operator()(p, j) = component[index];
       }
       else if (lastIndex == index && p > 0)
       {
         // Same index, but alpha and beta may have changed
-        quantile(p, j) = alpha * component[index] + beta * component[index + 1];
+        quantile->operator()(p, j) = alpha * component[index] + beta * component[index + 1];
       }
       else if (2 * index > size_ + lastIndex)
       {
         std::nth_element(component.begin() + lastIndex, component.begin() + index, component.end());
         std::nth_element(component.begin() + index, component.begin() + index + 1, component.end());
         // Interpolation between the two adjacent empirical quantiles
-        quantile(p, j) = alpha * component[index] + beta * component[index + 1];
+        quantile->operator()(p, j) = alpha * component[index] + beta * component[index + 1];
       }
       else
       {
         std::nth_element(component.begin() + lastIndex, component.begin() + index + 1, component.end());
         std::nth_element(component.begin() + lastIndex, component.begin() + index, component.begin() + index + 1);
         // Interpolation between the two adjacent empirical quantiles
-        quantile(p, j) = alpha * component[index] + beta * component[index + 1];
+        quantile->operator()(p, j) = alpha * component[index] + beta * component[index + 1];
       }
       lastIndex = index;
     }
   }
 
-  return sorted ? quantile : quantile.select(indices);
+  return sorted ? quantile : quantile->select(indices);
 }
 
 /*
@@ -1937,7 +1945,7 @@ Point SampleImplementation::computeQuantile(const Scalar prob) const
   throw NotYetImplementedException(HERE) << "In SampleImplementation::computeQuantile(const Scalar prob) const";
 }
 
-SampleImplementation SampleImplementation::computeQuantile(const Point & prob) const
+Pointer<SampleImplementation> SampleImplementation::computeQuantile(const Point & prob) const
 {
   if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the quantile of an empty sample.";
 
@@ -2208,36 +2216,36 @@ SampleImplementation SampleImplementation::operator / (const Point & scaling) co
 }
 
 /* Get the i-th marginal sample */
-SampleImplementation SampleImplementation::getMarginal(const UnsignedInteger index) const
+Pointer<SampleImplementation> SampleImplementation::getMarginal(const UnsignedInteger index) const
 {
   if (index >= dimension_) throw InvalidArgumentException(HERE) << "The index of a marginal sample must be in the range [0, dim-1]";
 
   // Special case for dimension 1
-  if (dimension_ == 1) return *this;
+  if (dimension_ == 1) return clone();
 
   // General case
-  SampleImplementation marginalSample(size_, 1);
+  Pointer<SampleImplementation> marginalSample = new SampleImplementation(size_, 1);
 
   // If the sample has a description, extract the marginal description
   if (!p_description_.isNull())
-    marginalSample.setDescription(Description(1, getDescription()[index]));
+    marginalSample->setDescription(Description(1, getDescription()[index]));
   for (UnsignedInteger i = 0; i < size_; ++i)
-    marginalSample(i, 0) = operator()(i, index);
+    marginalSample->operator()(i, 0) = operator()(i, index);
 
   return marginalSample;
 }
 
 /* Get the marginal by indices */
-SampleImplementation SampleImplementation::getMarginal(const Indices & indices) const
+Pointer<SampleImplementation> SampleImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(dimension_)) throw InvalidArgumentException(HERE) << "The indices of a marginal sample must be in the range [0, dim-1] and must be different";
 
   // Special case for dimension 1
-  if (dimension_ == 1) return *this;
+  if (dimension_ == 1) return clone();
 
   // General case
   const UnsignedInteger outputDimension = indices.getSize();
-  SampleImplementation marginalSample(size_, outputDimension);
+  Pointer<SampleImplementation> marginalSample = new SampleImplementation(size_, outputDimension);
 
   // If the sample has a description, extract the marginal description
   if (!p_description_.isNull())
@@ -2246,7 +2254,7 @@ SampleImplementation SampleImplementation::getMarginal(const Indices & indices) 
     Description marginalDescription(outputDimension);
     for (UnsignedInteger i = 0; i < outputDimension; ++ i)
       marginalDescription[i] = description[indices[i]];
-    marginalSample.setDescription(marginalDescription);
+    marginalSample->setDescription(marginalDescription);
   }
 
   for (UnsignedInteger i = 0; i < size_; ++i)
@@ -2254,7 +2262,7 @@ SampleImplementation SampleImplementation::getMarginal(const Indices & indices) 
     for (UnsignedInteger j = 0; j < outputDimension; ++j)
     {
       // We access directly to the component of the Point for performance reason
-      marginalSample(i, j) = operator()(i, indices[j]);
+      marginalSample->operator()(i, j) = operator()(i, indices[j]);
     }
   }
 
@@ -2262,7 +2270,7 @@ SampleImplementation SampleImplementation::getMarginal(const Indices & indices) 
 }
 
 /* Get the marginal by identifiers */
-SampleImplementation SampleImplementation::getMarginal(const Description & description) const
+Pointer<SampleImplementation> SampleImplementation::getMarginal(const Description & description) const
 {
   Indices indices;
   for (UnsignedInteger i = 0; i < description.getSize(); ++ i)
@@ -2276,17 +2284,17 @@ SampleImplementation SampleImplementation::getMarginal(const Description & descr
 }
 
 /* Select points as a sample */
-SampleImplementation SampleImplementation::select(const UnsignedIntegerCollection & indices) const
+Pointer<SampleImplementation> SampleImplementation::select(const UnsignedIntegerCollection & indices) const
 {
   const UnsignedInteger size = indices.getSize();
-  SampleImplementation result(size, dimension_);
+  Pointer<SampleImplementation> result = new SampleImplementation(size, dimension_);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger index = indices[i];
     if (index >= size_) throw InvalidArgumentException(HERE) << "Error: expected indices less than " << size_ << ", here indices[" << i << "]=" << index;
-    std::copy(data_.begin() + index * dimension_, data_.begin() + (index + 1) * dimension_, result.data_.begin() + i * dimension_);
+    std::copy(data_.begin() + index * dimension_, data_.begin() + (index + 1) * dimension_, result->data_.begin() + i * dimension_);
   }
-  result.setDescription(getDescription());
+  result->setDescription(getDescription());
   return result;
 }
 

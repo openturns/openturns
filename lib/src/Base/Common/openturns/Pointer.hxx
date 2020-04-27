@@ -23,18 +23,14 @@
 
 #include "openturns/OTprivate.hxx"
 
-#if __cplusplus > 199711L
 #include <memory> // for std::shared_ptr
-#else
-#include "openturns/SharedPointer.hxx"
-#endif
+
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
  * @class Pointer
  * @brief Implements a shared pointer strategy
- * @see SharedPointer
  * @see InterfaceObject
  * @tparam T The class to point to
  * @tparam IMPL The class used to actually implement the shared pointer
@@ -45,13 +41,8 @@ BEGIN_NAMESPACE_OPENTURNS
  * MUST deep-copy it (copy-on-write strategy).
  */
 
-#if __cplusplus > 199711L
 template < class T,
            template <class> class IMPL = std::shared_ptr >
-#else
-template < class T,
-           template <class> class IMPL = SharedPointer >
-#endif
 class Pointer
 {
 
@@ -133,12 +124,8 @@ public:
   template <class Base>
   Pointer & assign(const Pointer<Base> & ref)
   {
-#if __cplusplus > 199711L
     pointer_type ptr(std::dynamic_pointer_cast<T>(ref.ptr_));
     ptr_.swap(ptr);
-#else
-    ptr_.assign(ref.ptr_);
-#endif
     return *this;
   }
 

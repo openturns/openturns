@@ -30,7 +30,7 @@
 #include "openturns/Tensor.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/StorageManager.hxx"
-#include "openturns/AtomicFunctions.hxx"
+#include "openturns/AtomicInt.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
