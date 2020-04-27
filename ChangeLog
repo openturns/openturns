@@ -19,6 +19,7 @@
  * #1267 (Some CSV files cannot be imported)
  * #1377 (The `setKnownParameter` method is not compatible with `buildEstimator`)
  * #1447 (Highly inaccurate result in reliability model when using subset of RandomVector)
+ * #1465 (The Sample constructor based on a list and an integer should not exist)
  * #1474 (optimization defaults)
  * #1507 (Leak in Collection typemaps)
  * #1510 (ot.Ceres('LEVENBERG_MARQUARDT') and ot.Ceres('DOGLEG') do not handle bound constraints)
