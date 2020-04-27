@@ -54,9 +54,6 @@ public:
   /** Sample generation */
   virtual IndicesCollection generate();
 
-  /** Implementation accessor */
-  void setImplementation(const Implementation & p_implementation);
-
 }; /* class CombinatorialGenerator */
 
 
