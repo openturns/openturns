@@ -76,7 +76,6 @@ MemoizeEvaluation * MemoizeEvaluation::clone() const
 /** Function implementation accessors */
 void MemoizeEvaluation::setEvaluation(const Evaluation & evaluation)
 {
-  evaluation_ = evaluation;
   inputStrategy_.setDimension(evaluation_.getInputDimension());
   outputStrategy_.setDimension(evaluation_.getOutputDimension());
   // If argument is a MemoizeEvaluation, copy history and cache
@@ -89,7 +88,11 @@ void MemoizeEvaluation::setEvaluation(const Evaluation & evaluation)
     outputStrategy_.store(outSample);
     isHistoryEnabled_ = p_MemoizeEvaluation->isHistoryEnabled_;
     p_cache_ = p_MemoizeEvaluation->p_cache_;
+    // To avoid nested MemoizeEvaluation
+    evaluation_ = p_MemoizeEvaluation->evaluation_;
   }
+  else
+    evaluation_ = evaluation;
 }
 
 /* Operator () */

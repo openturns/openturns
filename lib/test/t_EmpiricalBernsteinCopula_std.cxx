@@ -139,6 +139,10 @@ int main(int, char *[])
     fullprint << "margins quantile=" << quantile << std::endl;
     fullprint << "margins CDF(quantile)=" << margins.computeCDF(quantile) << std::endl;
     fullprint << "margins realization=" << margins.getRealization() << std::endl;
+
+    // Test entropy computation in higher dimension
+    EmpiricalBernsteinCopula copula6D(Normal(6).getSample(8), 4);
+    fullprint << "Entropy in higher dimension=" << copula6D.computeEntropy() << std::endl;
   }
   catch (TestFailed & ex)
   {

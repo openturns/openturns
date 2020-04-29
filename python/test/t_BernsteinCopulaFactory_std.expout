@@ -19,8 +19,8 @@ Is marginal 0 a copula ? --> True
 Is marginal 1 a copula ? --> True
 
 Reference copula ClaytonCopula(theta = 3)
-Log-likelihood m= 19
-Max. error=0.02447
+Log-likelihood m= 17
+Max. error=0.03154
 Is estimation a copula ? -->  True
 Maginal checking
 Is marginal 0 a copula ? --> True
@@ -39,8 +39,8 @@ Is marginal 0 a copula ? --> True
 Is marginal 1 a copula ? --> True
 
 Reference copula FrankCopula(theta = 3)
-Log-likelihood m= 10
-Max. error=0.02165
+Log-likelihood m= 12
+Max. error=0.01460
 Is estimation a copula ? -->  True
 Maginal checking
 Is marginal 0 a copula ? --> True

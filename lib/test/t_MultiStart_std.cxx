@@ -64,19 +64,24 @@ int main(int, char *[])
     solver.setStartingPoint(startingPoint);
 
     // run locally
-    OptimizationAlgorithm algo = solver;
-    algo.run();
-    OptimizationResult result(algo.getResult());
+    solver.run();
+    OptimizationResult result(solver.getResult());
     fullprint << "local search x*=" << result.getOptimalPoint() << " f(x*)=" << result.getOptimalValue() << std::endl;
 
     // multistart
     Normal distribution(dim);
     LHSExperiment experiment(distribution, 20);
     Sample startingPoints(experiment.generate());
-    algo = MultiStart(solver, startingPoints);
+    MultiStart algo(solver, startingPoints);
     algo.run();
     result = algo.getResult();
     fullprint << "multistart x*=" << result.getOptimalPoint() << " f(x*)=" << result.getOptimalValue() << std::endl;
+    fullprint << "intermediate results=" << algo.getResultCollection() << std::endl;
+    // Deactivate intermediate results history
+    algo = MultiStart(solver, startingPoints);
+    algo.setKeepResults(false);
+    algo.run();
+    fullprint << "intermediate results=" << algo.getResultCollection() << std::endl;
   }
   catch (TestFailed & ex)
   {
