@@ -47,6 +47,14 @@ Kriging metamodel
     kriging_beam_arbitrary_trend.ipynb
     kriging_hyperparameters_optimization.ipynb
 
+Low-rank tensors metamodel
+--------------------------
+
+.. toctree::
+    :maxdepth: 1
+
+    tensor_cantilever_beam.ipynb
+
 Fields metamodels
 -----------------
 
