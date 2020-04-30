@@ -16,6 +16,8 @@ algo.run()
 ev = algo.getResult().getEigenValues()
 modes = algo.getResult().getScaledModes()
 g = ot.Graph("Quadrature approx. of KL expansion for $C(s,t)=e^{-|s-t|}$")
+g.setAxes(True)
+g.setGrid(True)
 g.setXTitle("$t$")
 g.setYTitle("$\sqrt{\lambda_n}\phi_n$")
 for mode in modes:
