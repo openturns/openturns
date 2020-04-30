@@ -1,15 +1,16 @@
-Less(10,20) =  True
-Less(20,20) =  False
-Less(30,20) =  False
-LessOrEqual(10,20) =  True
-LessOrEqual(20,20) =  True
-LessOrEqual(30,20) =  False
-Equal(10,20) =  False
-Equal(20,20) =  True
-Equal(30,20) =  False
-GreaterOrEqual(10,20) =  False
-GreaterOrEqual(20,20) =  True
-GreaterOrEqual(30,20) =  True
-Greater(10,20) =  False
-Greater(20,20) =  False
-Greater(30,20) =  True
+op= < op(10,20)= True
+op= < op(20,20)= False
+op= < op(30,20)= False
+op= <= op(10,20)= True
+op= <= op(20,20)= True
+op= <= op(30,20)= False
+op= = op(10,20)= False
+op= = op(20,20)= True
+op= = op(30,20)= False
+op= >= op(10,20)= False
+op= >= op(20,20)= True
+op= >= op(30,20)= True
+op= > op(10,20)= False
+op= > op(20,20)= False
+op= > op(30,20)= True
+<
