@@ -96,3 +96,4 @@ margins CDF=0.0767822
 margins quantile=class=Point name=Unnamed dimension=2 values=[0.974525,0.974525]
 margins CDF(quantile)=0.95
 margins realization=class=Point name=Unnamed dimension=2 values=[0.875912,0.449469]
+Entropy in higher dimension=-0.912186

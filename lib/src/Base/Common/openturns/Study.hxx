@@ -26,6 +26,7 @@
 #include "openturns/Object.hxx"
 #include "openturns/Pointer.hxx"
 #include "openturns/StorageManager.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -70,7 +71,8 @@ public:
   /**
    * Parameter constructor
    */
-  Study(const String & fileName);
+  Study(const String & fileName,
+        const UnsignedInteger compressionLevel = ResourceMap::GetAsUnsignedInteger("XMLStorageManager-DefaultCompressionLevel"));
 
   /** @copydoc Object::__repr__() const */
   virtual String __repr__() const;

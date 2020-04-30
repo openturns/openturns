@@ -1283,7 +1283,19 @@ Scalar DistributionImplementation::computeEntropy() const
       return IteratedQuadrature().integrate(entropyKernel, getRange())[0];
     } // Low dimension
   } // isContinuous()
-  return -computeLogPDF(getSampleByQMC(ResourceMap::GetAsUnsignedInteger("Distribution-EntropySamplingSize"))).computeMean()[0];
+  const UnsignedInteger size = ResourceMap::GetAsUnsignedInteger("Distribution-EntropySamplingSize");
+  const String samplingMethod(ResourceMap::GetAsString("Distribution-EntropySamplingMethod"));
+  Sample sample;
+  if (samplingMethod == "MonteCarlo")
+    sample = getSample(size);
+  else if (samplingMethod == "QuasiMonteCarlo")
+    sample = getSampleByQMC(size);
+  else
+    {
+      LOGWARN(OSS() << "Unknown sampling method=" << samplingMethod << " to compute entropy. Resort to MonteCarlo");
+      sample = getSample(size);
+    }
+  return -computeLogPDF(sample).computeMean()[0];
 }
 
 /* Get the DDF of the distribution */

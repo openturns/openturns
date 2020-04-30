@@ -27,7 +27,20 @@ try:
     # Create a Study Object with compression
     myStudy = ot.Study()
     compressionLevel = 5
-    myStudy.setStorageManager(ot.XMLStorageManager(fileName, compressionLevel))
+    myStudy.setStorageManager(ot.XMLStorageManager(fileName + ".gz", compressionLevel))
+    point = ot.Point(2, 1.0)
+    myStudy.add("point", point)
+    myStudy.save()
+    myStudy2 = ot.Study(fileName + ".gz")
+    myStudy2.load()
+    point2 = ot.Point()
+    myStudy2.fillObject("point", point2)
+    # cleanup
+    os.remove(fileName + ".gz")
+
+    # Create a Study Object with compression, direct way
+    compressionLevel = 5
+    myStudy = ot.Study(fileName, compressionLevel)
     point = ot.Point(2, 1.0)
     myStudy.add("point", point)
     myStudy.save()

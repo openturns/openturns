@@ -34,6 +34,9 @@ static const Factory<MultiStart> Factory_MultiStart;
 MultiStart::MultiStart()
   : OptimizationAlgorithmImplementation()
   , solver_(new Cobyla)
+  , startingPoints_()
+  , keepResults_(ResourceMap::GetAsBool("MultiStart-KeepResults"))
+  , resultCollection_(0)
 {
   // Nothing to do here
 }
@@ -45,7 +48,10 @@ MultiStart::MultiStart(const OptimizationAlgorithm & solver,
   : OptimizationAlgorithmImplementation(solver.getProblem())
   , solver_(solver)
   , startingPoints_(startingPoints)
+  , keepResults_(ResourceMap::GetAsBool("MultiStart-KeepResults"))
+  , resultCollection_(0)
 {
+  // Nothing to do here
 }
 
 
@@ -75,6 +81,7 @@ void MultiStart::run()
   const UnsignedInteger size = startingPoints_.getSize();
   const UnsignedInteger initialEvaluationNumber = getProblem().getObjective().getEvaluationCallsNumber();
   UnsignedInteger evaluationNumber = 0;
+  UnsignedInteger successNumber = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     solver.setStartingPoint(startingPoints_[i]);
@@ -88,8 +95,8 @@ void MultiStart::run()
       continue;
     }
 
-    OptimizationResult result(solver.getResult());
-    resultCollection_.add(result);
+    const OptimizationResult result(solver.getResult());
+    if (keepResults_) resultCollection_.add(result);
     Scalar currentValue = result.getOptimalValue()[0];
     if ((getProblem().isMinimization() && (currentValue < bestValue))
         || (!getProblem().isMinimization() && (currentValue > bestValue)))
@@ -97,6 +104,7 @@ void MultiStart::run()
       bestValue = currentValue;
       setResult(result);
       LOGINFO(OSS() << "Best initial point so far=" << result.getOptimalPoint() << " value=" << result.getOptimalValue());
+      ++successNumber;
     }
 
     evaluationNumber += getProblem().getObjective().getEvaluationCallsNumber() - initialEvaluationNumber;
@@ -120,9 +128,9 @@ void MultiStart::run()
       }
     }
   }
-  LOGINFO(OSS() << resultCollection_.getSize() << " out of " << size << " local searches succeeded");
+  LOGINFO(OSS() << successNumber << " out of " << size << " local searches succeeded");
 
-  if (resultCollection_.getSize() == 0)
+  if (successNumber == 0)
   {
     throw InternalException(HERE) << "None of the local searches succeeded.";
   }
@@ -142,7 +150,8 @@ String MultiStart::__repr__() const
   oss << "class=" << getClassName()
       << " " << OptimizationAlgorithmImplementation::__repr__()
       << " solver=" << solver_
-      << " startingPoints=" << startingPoints_;
+      << " startingPoints=" << startingPoints_
+      << " keepResults=" << keepResults_;
   return oss;
 }
 
@@ -169,6 +178,17 @@ Sample MultiStart::getStartingPoints() const
 }
 
 
+/* Flag for results management accessors */
+Bool MultiStart::getKeepResults() const
+{
+  return keepResults_;
+}
+
+void MultiStart::setKeepResults(const Bool keepResults)
+{
+  keepResults_ = keepResults;
+}
+
 MultiStart::OptimizationResultCollection MultiStart::getResultCollection() const
 {
   return resultCollection_;
@@ -181,6 +201,7 @@ void MultiStart::save(Advocate & adv) const
   OptimizationAlgorithmImplementation::save(adv);
   adv.saveAttribute("solver_", solver_);
   adv.saveAttribute("startingPoints_", startingPoints_);
+  adv.saveAttribute("keepResults_", keepResults_);
   adv.saveAttribute("resultCollection_", resultCollection_);
 }
 
@@ -190,6 +211,7 @@ void MultiStart::load(Advocate & adv)
   OptimizationAlgorithmImplementation::load(adv);
   adv.loadAttribute("solver_", solver_);
   adv.loadAttribute("startingPoints_", startingPoints_);
+  adv.loadAttribute("keepResults_", keepResults_);
   adv.loadAttribute("resultCollection_", resultCollection_);
 }
 

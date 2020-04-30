@@ -140,7 +140,6 @@ private:
   Point logBetaFactors_;
   SampleImplementation logBetaMarginalFactors_;
   SampleImplementation logFactors_;
-  MatrixImplementation logFactorsMinus1_;
 
 }; /* class EmpiricalBernsteinCopula */
 

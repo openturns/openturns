@@ -101,3 +101,10 @@ rotation[2, 2] = 1.0
 time_grid = ot.RegularGrid(0.0, 0.2, 40963)
 mesh = ot.Mesh(time_grid)
 print(mesh.isRegular())
+
+# numerical limit testcase
+m1 = ot.IntervalMesher([1]*2).build(ot.Interval([0.0]*2, [1.0]*2))
+simplex = 0
+point = [0.8, 0.2]
+found, coordinates = m1.checkPointInSimplexWithCoordinates(point, simplex)
+assert found, "not inside"

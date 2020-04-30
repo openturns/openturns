@@ -24,6 +24,7 @@
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Experiment.hxx"
+#include "openturns/ResourceMap.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -64,9 +65,14 @@ public:
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
   OptimizationAlgorithm getOptimizationAlgorithm() const;
 
+  /** Starting points accessor */
   void setStartingPoints(const Sample & sample);
   Sample getStartingPoints() const;
 
+  /** Flag for results management accessors */
+  Bool getKeepResults() const;
+  void setKeepResults(const Bool keepResults);
+  
   OptimizationResultCollection getResultCollection() const;
 
   /** Method save() stores the object through the StorageManager */
@@ -84,6 +90,8 @@ private:
   OptimizationAlgorithm solver_;
   Sample startingPoints_;
 
+  /** Flag to tell if the collection of optimization results have to be kept */
+  Bool keepResults_;
   OptimizationResultPersistentCollection resultCollection_;
 
 } ; /* class MultiStart */

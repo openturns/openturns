@@ -737,6 +737,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("AbdoRackwitz-DefaultTau", 0.5);
   addAsUnsignedInteger("AbdoRackwitz-DefaultMaximumEvaluationNumber", 100000);
 
+  // MultiStart parameters //
+  addAsBool("MultiStart-KeepResults", true);
+
   // OptimizationAlgorithm parameters //
   addAsScalar("OptimizationAlgorithm-DefaultLevelValue", 0.0);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumAbsoluteError", 1.0e-5);
@@ -882,6 +885,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Mesh-Shininess", 100.0);
   addAsScalar("Mesh-SpecularFactor", 0.2);
   addAsScalar("Mesh-VertexEpsilon", 1.0e-6);
+  addAsScalar("Mesh-CoordinateEpsilon", 1.0e-14);
   addAsUnsignedInteger("Mesh-LargeSize", 5000);
 
   // BoundingVolumeHierarchy parameters
@@ -1263,6 +1267,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Distribution-DefaultPDFEpsilon", 1.0e-14);
   addAsScalar("Distribution-DefaultCDFEpsilon", 1.0e-14);
   addAsScalar("Distribution-DiscreteDrawPDFScaling", 0.25);
+  addAsString("Distribution-EntropySamplingMethod", "MonteCarlo");
   addAsUnsignedInteger("Distribution-CharacteristicFunctionBlockMax", 20);
   addAsUnsignedInteger("Distribution-CharacteristicFunctionNMax", 1000000);
   addAsUnsignedInteger("Distribution-DefaultIntegrationNodesNumber", 255);

@@ -111,6 +111,9 @@ try:
     print("margins CDF(qantile)=%.6f" % margins.computeCDF(quantile))
     print("margins realization=", repr(margins.getRealization()))
 
+    copula6D = EmpiricalBernsteinCopula(Normal(6).getSample(8), 4)
+    print("Entropy in higher dimension=%.6f" % copula6D.computeEntropy())
+
 except:
     import sys
     print("t_EmpiricalBernsteinCopula_std.py",

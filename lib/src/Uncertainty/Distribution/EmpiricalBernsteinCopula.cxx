@@ -43,7 +43,6 @@ EmpiricalBernsteinCopula::EmpiricalBernsteinCopula()
   , logBetaFactors_(0)
   , logBetaMarginalFactors_(0, 0)
   , logFactors_(0, 0)
-  , logFactorsMinus1_()
 {
   setName("EmpiricalBernsteinCopula");
   setCopulaSample(Sample(2, 1));
@@ -60,7 +59,6 @@ EmpiricalBernsteinCopula::EmpiricalBernsteinCopula(const Sample & copulaSample,
   , logBetaFactors_(0)
   , logBetaMarginalFactors_(0, 0)
   , logFactors_(0, 0)
-  , logFactorsMinus1_()
 {
   setName("EmpiricalBernsteinCopula");
   setCopulaSample(copulaSample, isEmpiricalCopulaSample);
@@ -77,7 +75,6 @@ EmpiricalBernsteinCopula::EmpiricalBernsteinCopula(const Sample & copulaSample,
   , binNumber_(binNumber)
   , logBetaMarginalFactors_(logBetaMarginalFactors)
   , logFactors_(logFactors)
-  , logFactorsMinus1_(logFactors.getSize(), logFactors.getDimension())
 {
   const UnsignedInteger size = logFactors_.getSize();
   const UnsignedInteger dimension = logFactors_.getDimension();
@@ -86,10 +83,7 @@ EmpiricalBernsteinCopula::EmpiricalBernsteinCopula(const Sample & copulaSample,
   {
     Scalar sumLogBeta = 0.0;
     for (UnsignedInteger j = 0; j < dimension; ++j)
-    {
       sumLogBeta += logBetaMarginalFactors_(i, j);
-      logFactorsMinus1_(i, j) = logFactors_(i, j) - 1.0;
-    }
     logBetaFactors_[i] = sumLogBeta;
   } // i
   setName("EmpiricalBernsteinCopula");
@@ -238,6 +232,7 @@ Scalar EmpiricalBernsteinCopula::computePDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+  if (binNumber_ == 1) return 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
     if ((point[i] <= 0.0) || (point[i] >= 1.0)) return 0.0;
   Scalar pdfValue = 0.0;
@@ -266,6 +261,7 @@ Scalar EmpiricalBernsteinCopula::computeLogPDF(const Point & point) const
 {
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+  if (binNumber_ == 1) return 0.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
     if ((point[i] <= 0.0) || (point[i] >= 1.0)) return -SpecFunc::LogMaxScalar;
   Scalar sumPDFValue = 0.0;
@@ -278,8 +274,13 @@ Scalar EmpiricalBernsteinCopula::computeLogPDF(const Point & point) const
     log1mX += log1mXi;
   }
   const UnsignedInteger size = copulaSample_.getSize();
-  // Compute matrix-vector product (logFactors_(i, .) - 1.0) * logX[.] - logBetaFactors_[i]
-  const Point matvec(logFactorsMinus1_.genVectProd(logX) - logBetaFactors_);
+  Point matvec(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      matvec[i] = -logBetaFactors_[i];
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+        matvec[i] += (logFactors_(i, j) - 1.0) * logX[j];
+    }
   // To avoid overflows and improve accuracy, we replace
   //    log(sum(exp(matvec[i])))
   // by maxValue + log(sum(exp(matvec[i] - maxValue)))
@@ -412,7 +413,6 @@ void EmpiricalBernsteinCopula::update()
   logBetaMarginalFactors_ = SampleImplementation(size, dimension);
   logBetaFactors_ = Point(size);
   logFactors_ = SampleImplementation(size, dimension);
-  logFactorsMinus1_ = MatrixImplementation(size, dimension);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     Scalar sumLogBeta = 0.0;
@@ -425,7 +425,6 @@ void EmpiricalBernsteinCopula::update()
       sumLogBeta += logBeta;
       logBetaMarginalFactors_(i, j) = logBeta;
       logFactors_(i, j) = r;
-      logFactorsMinus1_(i, j) = r - 1.0;
     } // j
     logBetaFactors_[i] = sumLogBeta;
   } // i
