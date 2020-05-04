@@ -535,6 +535,10 @@ void GeneralLinearModelAlgorithm::run()
   //   computeReducedLogLikelyhood() which has side effects on covariance
   //   discretization and factorization, and it computes beta_
   Scalar optimalLogLikelihood = maximizeReducedLogLikelihood();
+
+  // restore original active parameters
+  reducedCovarianceModel_.setActiveParameter(covarianceModel_.getActiveParameter());
+
   LOGINFO("Store the estimates");
   // Here we do the work twice:
   // 1) To get a collection of Point for the result class
@@ -669,6 +673,7 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   // Final call to reducedLogLikelihoodFunction() in order to update the amplitude
   // No additional cost since the cache mechanism is activated
   LOGINFO(OSS() << evaluationNumber << " evaluations, optimized parameters=" << optimalParameters << ", log-likelihood=" << optimalLogLikelihood);
+
   return optimalLogLikelihood;
 }
 
