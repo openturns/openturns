@@ -9,7 +9,6 @@ np.set_printoptions(
 TESTPREAMBLE()
 
 try:
-
     # Check tuple / Point conversion
     t0 = (0.5, 1.5)
     p0 = Point(t0)
@@ -421,6 +420,14 @@ try:
     print('empty array => sample', repr(s0))
     a1 = np.array(s0)
     print('sample => array', a1, a1.shape)
+
+    # int64 indexing
+    s0 = Sample(5, 3)
+    idx = np.int64(2)
+    print('sample[int64]:', s0[idx])
+    s0[idx] = [42]*3
+    print('sample[int64]=Point:', s0)
+
 except:
     import sys
     import traceback

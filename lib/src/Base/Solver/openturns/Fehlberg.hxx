@@ -64,7 +64,7 @@ public:
 
 private:
   /** Perform one step of the Fehlberg method */
-  Point computeStep(Function & transitionFunction,
+  Point computeStep(Pointer<EvaluationImplementation> & transitionFunction,
                     const Scalar t,
                     const Point & state,
                     Point & gradient,

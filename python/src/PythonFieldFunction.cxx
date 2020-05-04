@@ -134,6 +134,7 @@ PythonFieldFunction & PythonFieldFunction::operator=(const PythonFieldFunction &
 {
   if (this != &rhs)
   {
+    FieldFunctionImplementation::operator=(rhs);
     ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
     pyObj_ = pyObjClone.get();
     Py_XINCREF(pyObj_);

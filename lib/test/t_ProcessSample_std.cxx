@@ -40,7 +40,7 @@ int main(int, char *[])
     Sample sample(size, dimension);
     for (UnsignedInteger i = 0; i < size; ++i)
       for (UnsignedInteger j = 0; j < dimension; ++j)
-        sample[i][j] = i + j + 1;
+        sample(i, j) = i + j + 1;
 
     // TimeGrid
     RegularGrid timeGrid(0.0, 1.0 / (size - 1.0), size);

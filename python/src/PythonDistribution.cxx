@@ -54,7 +54,7 @@ PythonDistribution::PythonDistribution(PyObject * pyObject)
   // Python memory management is not thread-safe
   setParallel(false);
 
-  Py_XINCREF( pyObj_ );
+  Py_XINCREF(pyObj_);
 
   if ( !PyObject_HasAttrString( pyObj_, const_cast<char *>("computeCDF") ) ) throw InvalidArgumentException(HERE) << "Error: the given object does not have a computeCDF() method.";
 
@@ -92,7 +92,7 @@ PythonDistribution::PythonDistribution(const PythonDistribution & other)
 {
   ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
   pyObj_ = pyObjClone.get();
-  Py_XINCREF( pyObj_ );
+  Py_XINCREF(pyObj_);
 }
 
 /* Copy assignment operator */
@@ -100,9 +100,10 @@ PythonDistribution & PythonDistribution::operator=(const PythonDistribution & rh
 {
   if (this != &rhs)
   {
+    DistributionImplementation::operator=(rhs);
     ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
     pyObj_ = pyObjClone.get();
-    Py_XINCREF( pyObj_ );
+    Py_XINCREF(pyObj_);
   }
   return *this;
 }
@@ -110,7 +111,7 @@ PythonDistribution & PythonDistribution::operator=(const PythonDistribution & rh
 /* Destructor */
 PythonDistribution::~PythonDistribution()
 {
-  Py_XDECREF( pyObj_ );
+  Py_XDECREF(pyObj_);
 }
 
 /* Comparison operator */

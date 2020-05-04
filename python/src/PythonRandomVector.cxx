@@ -89,7 +89,7 @@ PythonRandomVector::PythonRandomVector(const PythonRandomVector & other)
 {
   ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
   pyObj_ = pyObjClone.get();
-  Py_XINCREF( pyObj_ );
+  Py_XINCREF(pyObj_);
 }
 
 /* Copy assignment operator */
@@ -97,9 +97,10 @@ PythonRandomVector & PythonRandomVector::operator=(const PythonRandomVector & rh
 {
   if (this != &rhs)
   {
+    RandomVectorImplementation::operator=(rhs);
     ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
     pyObj_ = pyObjClone.get();
-    Py_XINCREF( pyObj_ );
+    Py_XINCREF(pyObj_);
   }
   return *this;
 }
@@ -107,7 +108,7 @@ PythonRandomVector & PythonRandomVector::operator=(const PythonRandomVector & rh
 /* Destructor */
 PythonRandomVector::~PythonRandomVector()
 {
-  Py_XDECREF( pyObj_ );
+  Py_XDECREF(pyObj_);
 }
 
 /* Comparison operator */

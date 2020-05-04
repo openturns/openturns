@@ -201,3 +201,8 @@ print('after setbounds q@0.9=', truncated.computeQuantile(0.9))
 # Test for issue #1190
 dist = ot.Normal(6.3E-19, 2.1E-19)
 dist = ot.TruncatedDistribution(dist, 4.2E-19, ot.TruncatedDistribution.LOWER)
+
+# non-finite bound bug
+bounds = ot.Interval([-2, -3], [2, 3.0], [True, False], [True, True])
+dist = ot.TruncatedDistribution(ot.Normal(2), bounds)
+print('proba=%.6f' % dist.computeCDF([3.0, -3.0]))

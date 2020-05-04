@@ -187,7 +187,8 @@ HMatrixImplementation::HMatrixImplementation()
 }
 
 HMatrixImplementation::HMatrixImplementation(void* ptr_hmat_interface, void* ptr_hmat_cluster_tree, int cluster_size, void* ptr_hmatrix)
-  : hmatInterface_(ptr_hmat_interface)
+  : PersistentObject()
+  , hmatInterface_(ptr_hmat_interface)
   , hmatClusterTree_(new HMatrixClusterTree(ptr_hmat_cluster_tree, cluster_size))
   , hmat_(ptr_hmatrix)
 {
@@ -223,6 +224,7 @@ HMatrixImplementation & HMatrixImplementation::operator=(const HMatrixImplementa
 #ifdef OPENTURNS_HAVE_HMAT
   if (this != &other)
   {
+    PersistentObject::operator=(other);
     // destroy current
     if (hmatInterface_ != NULL && hmat_ != NULL)
       static_cast<hmat_interface_t*>(hmatInterface_)->destroy(static_cast<hmat_matrix_t*>(hmat_));

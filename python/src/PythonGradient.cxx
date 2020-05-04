@@ -79,6 +79,7 @@ PythonGradient & PythonGradient::operator=(const PythonGradient & rhs)
 {
   if (this != &rhs)
   {
+    GradientImplementation::operator=(rhs);
     ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
     pyObj_ = pyObjClone.get();
     Py_XINCREF(pyObj_);

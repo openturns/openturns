@@ -46,14 +46,22 @@ public:
   TypedInterfaceObject(const Implementation & impl) : p_implementation_(impl) {}
 
   /** Returns a pointer to the underlying implementation object */
+#ifndef SWIG
   inline Implementation & getImplementation()
   {
     return p_implementation_;
   }
+
   inline const Implementation & getImplementation() const
   {
     return p_implementation_;
   }
+#else
+  inline Implementation getImplementation() const
+  {
+    return p_implementation_;
+  }
+#endif
 
 #ifndef SWIG
   /** Copy-on-write checker
