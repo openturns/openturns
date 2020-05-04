@@ -59,6 +59,7 @@
  * #1443 (Not all distributions have a getRoughness() method)
  * #1448 (Memory consumption leads to crash)
  * #1449 (P1LagrangeInterpolation sometimes fails)
+ * #1455 (GLM::setCovarianceModel could lead to unexpected behavior of parameter optimization in KrigingAlgorithm)
  * #1456 (truncation of distribution)
  * #1461 (ComparisonOperator().getImplementation().getClassName() segfault)
  * #1471 (The graphics of KarhunenLoeveQuadratureAlgorithm has no axes)
