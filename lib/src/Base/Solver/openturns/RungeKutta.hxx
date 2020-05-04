@@ -62,7 +62,7 @@ public:
 
 private:
   /** Perform one step of the RungeKutta method */
-  Point computeStep(Function & transitionFunction,
+  Point computeStep(Pointer<EvaluationImplementation> & transitionFunction,
                     const Scalar t,
                     const Point & state,
                     const Scalar h) const;

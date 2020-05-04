@@ -69,6 +69,12 @@ print('desc6[:] = ', desc6[:])
 desc6[1:3] = ('88', '99')
 print('desc6 = ', desc6)
 
+# sequence indexing
+desc = Description.BuildDefault(10, "H")
+print("sequence indexing read:", desc[(4,2,2,-1)])
+desc[(4,2,2,-1)] = ['T']*4
+print("sequence indexing write:", desc)
+
 # unicode support
 desc7 = Description(['forunicode', 'n2', 'n3'])
 desc7[1] = 'r2'

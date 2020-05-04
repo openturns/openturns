@@ -121,6 +121,7 @@ PythonPointToFieldFunction & PythonPointToFieldFunction::operator=(const PythonP
 {
   if (this != & rhs)
   {
+    PointToFieldFunctionImplementation::operator=(rhs);
     ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
     pyObj_ = pyObjClone.get();
     Py_XINCREF(pyObj_);

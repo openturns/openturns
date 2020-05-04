@@ -353,7 +353,6 @@ struct KrigingResultCrossCovariancePointFunctor
   inline void operator()(const TBB::BlockedRange<UnsignedInteger> &r) const
   {
     const UnsignedInteger dimension = model_.getOutputDimension();
-    CovarianceMatrix localCovariance(dimension);
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
       CovarianceMatrix localCovariance(model_(conditionnedPoints_[i], input_));

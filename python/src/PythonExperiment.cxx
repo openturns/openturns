@@ -51,7 +51,7 @@ PythonExperiment::PythonExperiment(PyObject * pyObject)
 {
   if ( !PyObject_HasAttrString( pyObj_, const_cast<char *>("generate") ) ) throw InvalidArgumentException(HERE) << "Error: the given object does not have a generate() method.";
 
-  Py_XINCREF( pyObj_ );
+  Py_XINCREF(pyObj_);
 
   // Set the name of the object as its Python classname
   ScopedPyObjectPointer cls(PyObject_GetAttrString ( pyObj_,
@@ -83,6 +83,7 @@ PythonExperiment & PythonExperiment::operator=(const PythonExperiment & rhs)
 {
   if (this != &rhs)
   {
+    ExperimentImplementation::operator=(rhs);
     ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
     pyObj_ = pyObjClone.get();
     Py_XINCREF(pyObj_);

@@ -19,7 +19,7 @@ ProcessSample(const ProcessSample & other)
   return new OT::ProcessSample(other);
 }
 
-Field __getitem__ (SignedInteger index) const
+Sample __getitem__ (SignedInteger index) const
 {
   OT::UnsignedInteger size = self->getSize();
   if (index < 0) {
@@ -28,11 +28,11 @@ Field __getitem__ (SignedInteger index) const
   if (index < 0) {
     throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
   }
-  return self->getField(index);
+  return self->operator[](index);
 }
 
 void __setitem__(SignedInteger index,
-                 const Field & field)
+                 const Sample & values)
 {
   OT::UnsignedInteger size = self->getSize();
   if (index < 0) {
@@ -41,7 +41,7 @@ void __setitem__(SignedInteger index,
   if (index < 0) {
     throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
   }
-  self->setField(field, index);
+  self->operator[](index) = values;
 }
 
 UnsignedInteger __len__() const
