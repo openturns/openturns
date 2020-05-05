@@ -1003,7 +1003,16 @@ Bool XMLStorageManager::hasAttribute(Pointer<InternalObject> & p_obj, const Stri
   XMLStorageManagerState & state = dynamic_cast<XMLStorageManagerState &>(*p_obj);
   XML::Node node = state.current_;
   assert(node);
-  return XML::ElementHasAttribute( node, name );
+  // check simple attributes
+  if (XML::ElementHasAttribute(node, name)) return true;
+  // check object attributes
+  node = XML::GetFirstChild(node);
+  while (node)
+  {
+    if (XML::GetAttributeByName(node, XML_STMGR::member_attribute::Get()) == name) return true;
+    node = XML::GetNextNode(node);
+  }
+  return false;
 }
 
 
