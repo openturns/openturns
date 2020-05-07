@@ -31,7 +31,6 @@ int main(int, char *[])
 
   try
   {
-    ResourceMap::SetAsUnsignedInteger("WhittleFactory-DefaultMaxFun", 2000);
     /* Reduce the precision output as the estimation is based on a lazy optimizer */
     PlatformInfo::SetNumericalPrecision(4);
 

@@ -1340,12 +1340,12 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("WhittleFactory-DefaultRhoEnd", 1.0e-10);
   addAsScalar("WhittleFactory-DefaultStartingPointScale", 1.0);
   addAsScalar("WhittleFactory-RootEpsilon", 1.0e-6);
-  addAsUnsignedInteger("WhittleFactory-DefaultMaxFun", 2000);
+  addAsUnsignedInteger("WhittleFactory-DefaultMaximumEvaluationNumber", 2000);
 
   // BoxCoxFactory parameters //
   addAsScalar("BoxCoxFactory-DefaultRhoBeg", 0.1);
   addAsScalar("BoxCoxFactory-DefaultRhoEnd", 1.0e-10);
-  addAsUnsignedInteger("BoxCoxFactory-DefaultMaxFun", 2000);
+  addAsUnsignedInteger("BoxCoxFactory-DefaultMaximumEvaluationNumber", 2000);
   addAsUnsignedInteger("BoxCoxFactory-DefaultPointNumber", 201);
 
   // VisualTest parameters //
@@ -1387,7 +1387,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("ARMALikelihoodFactory-MaximalScaling", 1.0e5);
   addAsScalar("ARMALikelihoodFactory-RootEpsilon", 1.0e-6);
   addAsScalar("ARMALikelihoodFactory-StartingScaling", 1.0e-13);
-  addAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaxFun", 10000);
+  addAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaximumEvaluationNumber", 10000);
 
   // FittingTest parameters //
   addAsBool("FittingTest-ChiSquaredCheckSample", true);

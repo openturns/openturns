@@ -13,7 +13,7 @@ Get some keys:
 >>> for key in ot.ResourceMap.GetKeys()[:4]:
 ...     print(key)
 ARMA-MeanEpsilon
-ARMALikelihoodFactory-DefaultMaxFun
+ARMALikelihoodFactory-DefaultMaximumEvaluationNumber
 ARMALikelihoodFactory-DefaultRhoBeg
 ARMALikelihoodFactory-DefaultRhoEnd"
 
