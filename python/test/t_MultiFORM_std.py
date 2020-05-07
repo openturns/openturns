@@ -19,6 +19,7 @@ event = ot.ThresholdEvent(Y, ot.Less(), 0.0)
 # solver
 solver = ot.Cobyla()
 solver.setMaximumIterationNumber(100)
+solver.setMaximumEvaluationNumber(100)
 solver.setMaximumAbsoluteError(1.0e-10)
 solver.setMaximumRelativeError(1.0e-10)
 solver.setMaximumResidualError(1.0e-10)

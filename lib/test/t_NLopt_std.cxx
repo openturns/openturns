@@ -87,6 +87,7 @@ int main(int, char *[])
                 NLopt::SetSeed(0);
                 algo.setProblem(problem);
                 algo.setStartingPoint(startingPoint);
+                algo.setMaximumEvaluationNumber(100);
                 fullprint << "algo=" << algoNames[i] << " minimization=" << minimization << " bounds=" << bound << " inequality=" << inequality << " equality=" << equality << std::endl;
                 algo.run();
                 OptimizationResult result(algo.getResult());

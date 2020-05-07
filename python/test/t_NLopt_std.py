@@ -69,7 +69,7 @@ for algoName in algoNames:
                     except:
                         print('-- Not supported')
                         continue
-                    # algo.setMaximumEvaluationNumber(100)
+                    algo.setMaximumEvaluationNumber(100)
                     algo.setStartingPoint(startingPoint)
                     try:
                         algo.run()

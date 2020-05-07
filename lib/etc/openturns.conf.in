@@ -110,7 +110,6 @@
   <SQP-DefaultOmega                   value_float="1.0e-4"           />
   <SQP-DefaultSmooth                  value_float="1.2"              />
   <SQP-DefaultTau                     value_float="0.5"              />
-  <SQP-DefaultMaximumEvaluationNumber value_int="100000" />
 
   <!-- OT::TNC parameters -->
   <TNC-DefaultAccuracy value_float="1.0e-4"       />
@@ -124,7 +123,6 @@
   <AbdoRackwitz-DefaultOmega                   value_float="1.0e-4" />
   <AbdoRackwitz-DefaultSmooth                  value_float="1.2"    />
   <AbdoRackwitz-DefaultTau                     value_float="0.5"    />
-  <AbdoRackwitz-DefaultMaximumEvaluationNumber value_int="100000"   />
 
   <!-- OT::MultiStart parameters -->
   <MultiStart-KeepResults                      value_bool="true" />

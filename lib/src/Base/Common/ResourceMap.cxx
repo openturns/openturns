@@ -721,7 +721,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("SQP-DefaultOmega", 1.0e-4);
   addAsScalar("SQP-DefaultSmooth", 1.2);
   addAsScalar("SQP-DefaultTau", 0.5);
-  addAsUnsignedInteger ( "SQP-DefaultMaximumEvaluationNumber", 100000);
 
   // TNC parameters //
   addAsScalar("TNC-DefaultAccuracy", 1.0e-4);
@@ -735,7 +734,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("AbdoRackwitz-DefaultOmega", 1.0e-4);
   addAsScalar("AbdoRackwitz-DefaultSmooth", 1.2);
   addAsScalar("AbdoRackwitz-DefaultTau", 0.5);
-  addAsUnsignedInteger("AbdoRackwitz-DefaultMaximumEvaluationNumber", 100000);
 
   // MultiStart parameters //
   addAsBool("MultiStart-KeepResults", true);
@@ -746,7 +744,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-5);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-5);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-5);
-  addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100);
+  addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 1000);
   addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber", 100);
 
   // Dlib optimization parameters //
