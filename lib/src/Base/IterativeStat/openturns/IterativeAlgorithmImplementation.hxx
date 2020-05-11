@@ -6,7 +6,6 @@
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/Sample.hxx"
-// #include <unordered_map>                   // for std::map
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -28,25 +27,12 @@ public:
    * The object has the default name but it does not
    * use storage for it.
    */
-//   IterativeAlgorithmImplementation()
-//     : PersistentObject()
-//   {
-//     // Nothing to do
-//   }
 
-  explicit IterativeAlgorithmImplementation(const UnsignedInteger dimension = 1)
-    : PersistentObject()
-    , iteration_(0)
-    , dimension_(dimension)
-  {
-    // Nothing to do
-  }
+  /** Default constructor */
+  explicit IterativeAlgorithmImplementation(const UnsignedInteger dimension = 1);
 
-  IterativeAlgorithmImplementation(const IterativeAlgorithmImplementation & other)
-    : PersistentObject(other)
-    {
-      // Nothing to do
-    }
+  /** Default constructor */
+  IterativeAlgorithmImplementation(const IterativeAlgorithmImplementation & other);
 
   /**
    * Virtual constructor
@@ -66,30 +52,19 @@ public:
 
   virtual void increment(const Sample & newData) = 0;
 
-//   virtual void finalize()
-//   {
-//     // Nothing to do
-//   }
-
   /**
    * Iteration accessor
    *
    * This method returns the current iteration number of the algorithm.
    */
-  UnsignedInteger getIteration() const
-  {
-    return iteration_;
-  }
+  UnsignedInteger getIteration() const;
 
   /**
    * Dimension accessor
    *
    * This method returns the dimension of the object.
    */
-  UnsignedInteger getDimension() const
-  {
-    return dimension_;
-  }
+  UnsignedInteger getDimension() const;
 
   /**
    * Comparison operator
@@ -115,17 +90,11 @@ public:
 
   /* String converter */
   virtual
-  String __repr__() const
-  {
-    return OSS(true) << "class=" << getClassName();
-  }
+  String __repr__() const;
 
   /* String converter */
   virtual
-  String __str__(const String & offset = "") const
-  {
-    return __repr__();
-  }
+  String __str__(const String & offset = "") const;
 
   /** Method save() stores the object through the StorageManager
    *

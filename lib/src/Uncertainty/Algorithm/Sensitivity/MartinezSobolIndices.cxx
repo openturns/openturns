@@ -147,9 +147,6 @@ void MartinezSobolIndices::incrementIndices(const Sample & inputSample)
 
   const UnsignedInteger size = inputSample.getSize() / (modelInputDimension_ + 2);
 
-//   Sample yA(inputSample, 0, size);
-//   Sample yB(inputSample, size, 2 * size);
-
   for (UnsignedInteger iter = 0; iter < size; ++iter)
   {
     Point yA = inputSample[iter];
