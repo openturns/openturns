@@ -18,9 +18,9 @@ IterativeQuantile::IterativeQuantile(const UnsignedInteger dimension,
                                      const UnsignedInteger nmax
                                     )
   : IterativeAlgorithmImplementation(dimension)
-  , data_(dimension_, 0.0)
   , order_(order)
   , nmax_(nmax)
+  , data_(dimension_, 0.0)
 {
   // Nothing to do
 }
