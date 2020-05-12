@@ -84,13 +84,13 @@ UnsignedInteger SobolIndicesImplementation::GetModelOutputDimensions()
   return modelOutputDimension_;
 }
 
-void SobolIndicesImplementation::computeIndices(const Sample & inputSample)
+void SobolIndicesImplementation::computeIndices(const Sample & /*inputSample*/)
 {
   // Method is defined in Jansen/Saltelli/Martinez/Mauntz classes
   throw new NotYetImplementedException(HERE);
 }
 
-void SobolIndicesImplementation::incrementIndices(const Sample & inputSample)
+void SobolIndicesImplementation::incrementIndices(const Sample & /*inputSample*/)
 {
   // Method is defined in Jansen/Saltelli/Martinez/Mauntz classes
   throw new NotYetImplementedException(HERE);

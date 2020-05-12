@@ -71,22 +71,14 @@ public:
    *
    * This method compares objects based on their content.
    */
-  inline virtual
-  Bool operator ==(const IterativeAlgorithmImplementation & /*other*/) const
-  {
-    return true;
-  }
+  virtual Bool operator ==(const IterativeAlgorithmImplementation & /*other*/) const;
 
   /**
    * Comparison operator
    *
    * This method compares objects based on their content.
    */
-  inline virtual
-  Bool operator !=(const IterativeAlgorithmImplementation & other) const
-  {
-    return !operator==(other);
-  }
+  virtual Bool operator !=(const IterativeAlgorithmImplementation & other) const;
 
   /* String converter */
   virtual
@@ -101,24 +93,14 @@ public:
    * @warning This method MUST be overloaded in derived classes.
    * @internal
    */
-  virtual void save(Advocate & adv) const
-  {
-    PersistentObject::save(adv);
-    adv.saveAttribute( "dimension_", dimension_);
-    adv.saveAttribute( "iteration_", iteration_);
-  }
+  virtual void save(Advocate & adv) const;
 
   /** Method load() reloads the object from the StorageManager
    *
    * @warning This method MUST be overloaded in derived classes.
    * @internal
    */
-  virtual void load(Advocate & adv)
-  {
-    PersistentObject::load(adv);
-    adv.loadAttribute( "dimension_", dimension_);
-    adv.loadAttribute( "iteration_", iteration_);
-  }
+  virtual void load(Advocate & adv);
 
 protected:
   UnsignedInteger              iteration_;

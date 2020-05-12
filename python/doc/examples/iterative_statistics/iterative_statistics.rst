@@ -1,4 +1,4 @@
-Iterative statistics
+Iterative Statistics
 ====================
 
 .. toctree::
