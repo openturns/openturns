@@ -44,7 +44,7 @@ String IterativeExtrema::__repr__() const
   return oss;
 }
 
-String IterativeExtrema::__str__(const String & offset) const
+String IterativeExtrema::__str__() const
 {
   OSS oss(false);
   oss << getClassName() << "(";
