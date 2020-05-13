@@ -34,5 +34,6 @@
 #include "openturns/OTStat.hxx"
 #include "openturns/OTType.hxx"
 #include "openturns/OTAlgo.hxx"
+#include "openturns/OTIterativeStat.hxx"
 
 #endif /* OPENTURNS_OTBASE_HXX */

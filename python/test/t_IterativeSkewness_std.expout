@@ -1,0 +1,6 @@
+Iterative skewness, one point at a time
+result= [0.59517,0.59517]
+Iterative skewness, one single sample
+result= [0.59517,0.59517]
+Iterative skewness, one single sample, then one point at a time
+result= [0.59517,0.59517]

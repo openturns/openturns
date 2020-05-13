@@ -33,7 +33,7 @@ static const Factory<JansenSensitivityAlgorithm> Factory_JansenSensitivityAlgori
 JansenSensitivityAlgorithm::JansenSensitivityAlgorithm()
   : SobolIndicesAlgorithmImplementation()
 {
-  // Nothing to do
+  sobolIndices_ = JansenSobolIndices();
 }
 
 /** Constructor with parameters */
@@ -42,7 +42,7 @@ JansenSensitivityAlgorithm::JansenSensitivityAlgorithm(const Sample & inputDesig
     const UnsignedInteger size)
   : SobolIndicesAlgorithmImplementation(inputDesign, outputDesign, size)
 {
-  // Nothing to do
+  sobolIndices_ = JansenSobolIndices(inputDesign.getDimension(), outputDesign.getDimension());
 }
 
 /** Constructor with distribution / model parameters */
@@ -52,7 +52,7 @@ JansenSensitivityAlgorithm::JansenSensitivityAlgorithm(const Distribution & dist
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(distribution, size, model, computeSecondOrder)
 {
-  // Nothing to do
+  sobolIndices_ = JansenSobolIndices(inputDesign_.getDimension(), outputDesign_.getDimension());
 }
 
 
@@ -62,7 +62,7 @@ JansenSensitivityAlgorithm::JansenSensitivityAlgorithm(const WeightedExperiment 
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(experiment, model, computeSecondOrder)
 {
-  // Nothing to do
+  sobolIndices_ = JansenSobolIndices(inputDesign_.getDimension(), outputDesign_.getDimension());
 }
 
 /* Virtual constructor */
@@ -71,48 +71,9 @@ JansenSensitivityAlgorithm * JansenSensitivityAlgorithm::clone() const
   return new JansenSensitivityAlgorithm(*this);
 }
 
-/** Internal method that compute Vi/VTi using a huge sample */
-Sample JansenSensitivityAlgorithm::computeIndices(const Sample & sample,
-    Sample & VTi) const
+void JansenSensitivityAlgorithm::computeIndices(const Sample & sample) const
 {
-  const UnsignedInteger inputDimension = inputDesign_.getDimension();
-  const UnsignedInteger outputDimension = outputDesign_.getDimension();
-  const UnsignedInteger size = size_;
-  Sample varianceI(outputDimension, inputDimension);
-  VTi = Sample(outputDimension, inputDimension);
-
-  // Use reference samples
-  // Reference sample yA
-  const Sample yA(sample, 0, size);
-  // Reference sample yB
-  const Sample yB(sample, size, 2 * size);
-
-  // main loop
-  for (UnsignedInteger p = 0; p < inputDimension; ++p)
-  {
-
-    // Compute yE - yB / yE - yA
-    // Copy elements of yE
-    Sample yEMinusyB(sample, (2 + p) * size, (3 + p) * size);
-    // Copy in yEMinusyA
-    Sample yEMinusyA(yEMinusyB);
-    // Remove yB from yEMinusyB
-    yEMinusyB -= yB;
-    // Remove yA from yEMinusyA
-    yEMinusyA -= yA;
-    // Sum of squared elements
-    const Point squaredSumyBMinusyE(computeSumDotSamples(yEMinusyB, yEMinusyB));
-    // Sum of squared elements
-    const Point squaredSumyAMinusyE(computeSumDotSamples(yEMinusyA, yEMinusyA));
-
-    for (UnsignedInteger q = 0; q < outputDimension; ++q)
-    {
-      varianceI(q, p) =  -squaredSumyBMinusyE[q] / (2.0 * size - 1.0) +  referenceVariance_[q];
-      // Vti = Var - V_{-i}
-      VTi(q, p) = squaredSumyAMinusyE[q] / (2.0 * size - 1.0);
-    }
-  }
-  return varianceI;
+  sobolIndices_.computeIndices(sample);
 }
 
 void JansenSensitivityAlgorithm::computeAsymptoticDistribution() const

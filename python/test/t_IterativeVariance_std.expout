@@ -1,0 +1,6 @@
+Iterative variance, one point at a time
+result= [1,1]
+Iterative variance, one single sample
+result= [1,1]
+Iterative variance, one single sample, then one point at a time
+result= [0.8,0.8]

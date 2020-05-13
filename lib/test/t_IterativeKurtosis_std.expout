@@ -1,0 +1,42 @@
+sample1=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=4 dimension=2 data=[[10,20],[11,21],[12,22],[15,25]]
+referencemean=class=Point name=Unnamed dimension=2 values=[12,22]
+referencevariance=class=Point name=Unnamed dimension=2 values=[4.66667,4.66667]
+referenceskewness=class=Point name=Unnamed dimension=2 values=[1.19034,1.19034]
+referencekurtosis=class=Point name=Unnamed dimension=2 values=[4.5,4.5]
+referencemixedmean=class=Point name=Unnamed dimension=2 values=[12,22]
+referencemixedvariance=class=Point name=Unnamed dimension=2 values=[4,4]
+referencemixedskewness=class=Point name=Unnamed dimension=2 values=[0.857143,0.857143]
+referencemixedkurtosis=class=Point name=Unnamed dimension=2 values=[2.3,2.3]
+Iterative kurtosis, one point at a time
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=12, value2=12
+Checking Point. index=1, value1=22, value2=22
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=4.66667, value2=4.66667
+Checking Point. index=1, value1=4.66667, value2=4.66667
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=1.19034, value2=1.19034
+Checking Point. index=1, value1=1.19034, value2=1.19034
+Checking int. value1=4, value2=4
+Iterative kurtosis, one single sample
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=12, value2=12
+Checking Point. index=1, value1=22, value2=22
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=4.66667, value2=4.66667
+Checking Point. index=1, value1=4.66667, value2=4.66667
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=1.19034, value2=1.19034
+Checking Point. index=1, value1=1.19034, value2=1.19034
+Checking int. value1=4, value2=4
+Iterative kurtosis, one single sample, then one point at a time
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=12, value2=12
+Checking Point. index=1, value1=22, value2=22
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=4, value2=4
+Checking Point. index=1, value1=4, value2=4
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=0.857143, value2=0.857143
+Checking Point. index=1, value1=0.857143, value2=0.857143
+Checking int. value1=8, value2=8

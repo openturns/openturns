@@ -1,0 +1,114 @@
+
+
+%feature("docstring") OT::IterativeKurtosis
+"Iterative curtosis.
+
+Available constructor:
+    IterativeKurtosis(dimension)
+
+Parameters
+----------
+dimension : UnsignedInteger
+    Dimension of the input data
+
+Notes
+-----
+This class iteratively computes the kurtosis of several :class:`~openturns.Point` or :class:`~openturns.Sample`.
+
+This class don't store the input data in memory.
+
+See also
+--------
+IterativeAlgorithm
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dim = 5
+>>> myKurtosis = ot.IterativeKurtosis(dim)
+>>> n = ot.Normal(dim)
+>>> size = 50
+>>>
+>>> # increment with 50 points
+>>> for i in range(size):
+>>>     point = n.getRealization()
+>>>     myKurtosis.increment(point)
+>>>
+>>> print (myKurtosis.getIteration())
+>>> print (myKurtosis.getMean())
+>>> print (myKurtosis.getVariance())
+>>> print (myKurtosis.getSkewness())
+>>> print (myKurtosis.getKurtosis())
+>>>
+>>> # increment with one sample of size 50
+>>> sample = n.getSample(size)
+>>> myKurtosis.increment(sample)
+>>>
+>>> print (myKurtosis.getIteration())
+>>> print (myKurtosis.getMean())
+>>> print (myKurtosis.getVariance())
+>>> print (myKurtosis.getSkewness())
+>>> print (myKurtosis.getKurtosis())
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeKurtosis::getKurtosis
+"Returns the current value of the iterative curtosis
+
+Returns
+-------
+curtosis : :class:`~openturns.Point`
+    current values of the iterative curtosis."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeKurtosis::getSkewness
+"Returns the current value of the skewness from internal data
+
+Returns
+-------
+skewness : :class:`~openturns.Point`
+    current values of the skewness."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeKurtosis::getVariance
+"Returns the current value of the variance from internal data
+
+Returns
+-------
+variance : :class:`~openturns.Point`
+    current values of the variance."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeKurtosis::getCoeficientOfVariation
+"Returns the coefficient of variation from internal data
+
+Returns
+-------
+coefficientOfvariation : :class:`~openturns.Point`
+    current value of the coefficients of variation."
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeKurtosis::getStandardDeviation
+"Returns the coefficient of variation from internal data
+
+Returns
+-------
+standardDeviation : :class:`~openturns.Point`
+    current value of the standard deviation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeKurtosis::getMean
+"Returns the values of the mean from internal data
+
+Returns
+-------
+mean : :class:`~openturns.Point`
+    current value of the mean."

@@ -1,0 +1,68 @@
+%feature("docstring") OT::IterativeThresholdExceedance
+"Iterative minimum and maximum.
+
+Available constructor:
+    IterativeThresholdExceedance(dimension, thresholdValue)
+
+Parameters
+----------
+dimension : UnsignedInteger
+    Dimension of the input data (default : 1)
+thresholdValue : Scalar
+    Threshold value (default : 0.0)
+
+Notes
+-----
+This class iteratively count the threshold exceedance of the input :class:`~openturns.Point` or :class:`~openturns.Sample`.
+
+This class don't store the input data in memory.
+
+See also
+--------
+IterativeAlgorithm
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dim = 5
+>>> threshold =0.5
+>>> myThresholdExceedance = ot.IterativeThresholdExceedance(dim, threshold)
+>>> n = ot.Normal(dim)
+>>> size = 50
+>>>
+>>> # increment with 50 points
+>>> for i in range(size):
+>>>     point = n.getRealization()
+>>>     myThresholdExceedance.increment(point)
+>>>
+>>> print (myThresholdExceedance.getThresholdExceedance())
+>>> print (myThresholdExceedance.getIteration())
+>>>
+>>> # increment with one sample of size 50
+>>> sample = n.getSample(size)
+>>> myThresholdExceedance.increment(sample)
+>>>
+>>> print (myThresholdExceedance.getIteration())
+>>> print (myThresholdExceedance.getThresholdExceedance())
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeThresholdExceedance::getThresholdExceedance
+"Returns the number of threshold exceedances component per component
+
+Returns
+-------
+thresholdExceedance : :class:`~openturns.Point`
+    current number of threshold exceedances component per component."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeThresholdExceedance::getThresholdValue
+"Returns the value of the threshold
+
+Returns
+-------
+thresholdValue : :class:`~openturns.Scalar`
+    the value of the threshold."

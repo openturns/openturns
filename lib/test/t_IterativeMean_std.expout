@@ -1,0 +1,17 @@
+sample1=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=3 dimension=2 data=[[10,20],[11,21],[12,22]]
+referencemean=class=Point name=Unnamed dimension=2 values=[11,21]
+Iterative mean, one point at a time
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=11, value2=11
+Checking Point. index=1, value1=21, value2=21
+Checking int. value1=3, value2=3
+Iterative mean, one single sample
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=11, value2=11
+Checking Point. index=1, value1=21, value2=21
+Checking int. value1=3, value2=3
+Iterative mean, one single sample, then one point at a time
+Checking int. value1=2, value2=2
+Checking Point. index=0, value1=11, value2=11
+Checking Point. index=1, value1=21, value2=21
+Checking int. value1=6, value2=6

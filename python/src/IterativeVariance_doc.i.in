@@ -1,0 +1,110 @@
+%feature("docstring") OT::IterativeVariance
+"Iterative sample variance.
+
+Available constructor:
+    IterativeVariance(dimension)
+
+Parameters
+----------
+dimension : UnsignedInteger
+    Dimension of the input data
+
+Notes
+-----
+This class iteratively computes the sample variance of several :class:`~openturns.Point` or :class:`~openturns.Sample`.
+
+This variance is defined as:
+
+.. math::
+
+   \begin{array}{cccc}
+   V_{0} & = & 0 & \\
+   V_{1} & = & 0 & \\
+   V_{i} & = & \frac{i-2}{i-1} V_{i-1}  +  \frac{(u(i)-\mu_{i-1}) (u(i)-\mu_{i})}{i-1} & \forall i > 1
+   \end{array}
+
+With :math:`u(i)` the :math:`i^{th}` input point.
+
+This class don't store the input data in memory.
+
+See also
+--------
+IterativeAlgorithm
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dim = 5
+>>> myVariance = ot.IterativeVariance(dim)
+>>> n = ot.Normal(dim)
+>>> size = 50
+>>>
+>>> # increment with 50 points
+>>> for i in range(size):
+>>>     point = n.getRealization()
+>>>     myVariance.increment(point)
+>>>
+>>> print (myVariance.getIteration())
+>>> print (myVariance.getMean())
+>>> print (myVariance.getVariance())
+>>>
+>>> # increment with one sample of size 50
+>>> sample = n.getSample(size)
+>>> myVariance.increment(sample)
+>>>
+>>> print (myVariance.getIteration())
+>>> print (myVariance.getMean())
+>>> print (myVariance.getVariance())
+"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeVariance::getVariance
+"Returns the current value of the iterative variance
+
+Returns
+-------
+variance : :class:`~openturns.Point`
+    current values of the iterative variance."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeVariance::getStandardErrorOfTheMean
+"Returns the value of the standard error of the mean from internal data
+
+Returns
+-------
+standardErrorOfTheMean : :class:`~openturns.Point`
+    current value of standard error of the mean."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeVariance::getCoeficientOfVariation
+"Returns the coefficient of variation from internal data
+
+Returns
+-------
+coefficientOfvariation : :class:`~openturns.Point`
+    current value of the coefficients of variation."
+
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeVariance::getStandardDeviation
+"Returns the coefficient of variation from internal data
+
+Returns
+-------
+standardDeviation : :class:`~openturns.Point`
+    current value of the standard deviation."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::IterativeVariance::getMean
+"Returns the values of the mean from internal data
+
+Returns
+-------
+mean : :class:`~openturns.Point`
+    current value of the mean."

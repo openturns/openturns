@@ -1,0 +1,8 @@
+
+#include "openturns/IterativeAlgorithmImplementation.hxx"
+
+BEGIN_NAMESPACE_OPENTURNS
+
+CLASSNAMEINIT(IterativeAlgorithmImplementation)
+
+END_NAMESPACE_OPENTURNS

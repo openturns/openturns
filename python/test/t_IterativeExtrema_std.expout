@@ -1,0 +1,6 @@
+Iterative extrema, one point at a time
+result= IterativeExtrema((min = 10, max = 12), (min = 20, max = 22)
+Iterative extrema, one single sample
+result= IterativeExtrema((min = 10, max = 12), (min = 20, max = 22)
+Iterative extrema, one single sample, then one point at a time
+result= IterativeExtrema((min = 10, max = 12), (min = 20, max = 22)

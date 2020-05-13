@@ -19,4 +19,5 @@ This is the examples section.
     calibration/calibration.rst
     numerical_methods/numerical_methods.rst
     graphs/graphs.rst
+    iterative_statistics/iterative_statistics.rst
 

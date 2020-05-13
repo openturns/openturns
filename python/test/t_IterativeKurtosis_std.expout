@@ -1,0 +1,6 @@
+Iterative kurtosis, one point at a time
+result= [1.2099,1.2099]
+Iterative kurtosis, one single sample
+result= [1.2099,1.2099]
+Iterative kurtosis, one single sample, then one point at a time
+result= [1.2099,1.2099]

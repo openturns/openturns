@@ -81,6 +81,7 @@ Estimate stochastic processes
     estimate_non_stationary_covariance_model.ipynb
     estimate_spectral_density_function.ipynb
 
+<<<<<<< HEAD
 Graphics
 --------
 
@@ -90,3 +91,5 @@ Graphics
     visualize_clouds.ipynb
     visualize_pairs.ipynb
 
+=======
+>>>>>>> b3620ded2... debug MelissaStudy
