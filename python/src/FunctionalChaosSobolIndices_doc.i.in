@@ -40,7 +40,8 @@ Create the probabilistic model:
 >>> distributionList = [ot.Uniform(-pi, pi)] * 3
 >>> distribution = ot.ComposedDistribution(distributionList)
 
-Create a training sample
+Create a training sample:
+
 >>> N = 100 
 >>> inputTrain = distribution.getSample(N)
 >>> outputTrain = g(inputTrain)
