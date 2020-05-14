@@ -317,7 +317,8 @@ bandwidth : :class:`~openturns.Point`
 
 Notes
 -----
-Warning! It can take a lot of time for large samples, as the cost is  quadratic with the sample size.
+This plug-in method is based on the "solve-the-equation" rule from (Sheather, Jones, 1991). 
+This method can take a lot of time for large samples, as the cost is  quadratic with the sample size. 
 "
 
 // ---------------------------------------------------------------------
