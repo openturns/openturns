@@ -16,10 +16,6 @@ class OT_API IterativeAlgorithm
 
 public:
 
-//   typedef std::unordered_map<std::string, void*> registry_map;
-
-//   typedef Pointer<IterativeAlgorithmImplementation>   IterativeAlgorithmImplementation_p;
-
   /**
    * Default constructor
    *
@@ -74,12 +70,6 @@ public:
     p_implementation_.assign(obj);
   }
 
-//   /** Set the pointer to the underlying implementation object */
-//   inline virtual void setIterativeAlgorithm(const Pointer<IterativeAlgorithm> & obj)
-//   {
-//     p_implementation_.assign(obj);
-//   }
-
   /**
    * Increment methods
    *
@@ -95,11 +85,6 @@ public:
   {
     return getImplementation()->increment(newData);
   }
-
-//   virtual void finalize()
-//   {
-//     return getImplementation()->finalize();
-//   }
 
   /**
    * Iteration accessor
