@@ -66,7 +66,7 @@ then relation writes:
 
   h_{AMISE}(K) = \displaystyle \left[ \frac{R(K)}{\mu_2(K)^2\Phi_4}\right]^{\frac{1}{5}}n^{-\frac{1}{5}}
 
-Several method exist to  evaluate the optimal bandwidth :math:`h_{AMISE}(K)` based on different approximations of :math:`\Phi_4`:
+Several methods exist to  evaluate the optimal bandwidth :math:`h_{AMISE}(K)` based on different approximations of :math:`\Phi_4`:
 
 - Silverman's rule in dimension 1,
 - the plug-in bandwidth selection,
