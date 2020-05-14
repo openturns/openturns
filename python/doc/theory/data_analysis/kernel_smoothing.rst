@@ -66,18 +66,14 @@ then relation writes:
 
   h_{AMISE}(K) = \displaystyle \left[ \frac{R(K)}{\mu_2(K)^2\Phi_4}\right]^{\frac{1}{5}}n^{-\frac{1}{5}}
 
-Several rules exist to  evaluate the optimal bandwidth :math:`h_{AMISE}(K)`:
-all efforts are concentrated on the evaluation of the term :math:`\Phi_4`. We give here the most usual rules:
+Several method exist to  evaluate the optimal bandwidth :math:`h_{AMISE}(K)` based on different approximations of :math:`\Phi_4`:
 
-- the *Silverman rule* in dimension 1,
-- the plug-in bandwidth selection
-- the *Scott rule* in dimension d.
+- Silverman's rule in dimension 1,
+- the plug-in bandwidth selection,
+- Scott's rule in dimension d.
 
-
-
-
-Silverman rule (dimension 1)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Silverman's rule (dimension 1)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In the case where the density *p* is normal with standard deviation :math:`\sigma`,
 then the term :math:`\Phi_4` can be exactly evaluated.
@@ -105,12 +101,13 @@ The Silverman rule consists in considering :math:`\hat{h}^{p = normal}_{AMISE}(K
 
 Relation :eq:`Silverman` is empirical and gives good results when the density is not *far* from a normal one.
 
-
-
-
-
 Plug-in bandwidth selection method (dimension 1)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The plug-in bandwidth selection method improves the estimation of the rugosity of the second 
+derivative of the density. 
+Instead of making the gaussian assumption, the method uses a kernel smoothing method 
+in order to make an approximation of higher derivatives of the density. 
 
 Relation :eq:`AMISE` requires the evaluation of the quantity :math:`\Phi_4`.
 As a general rule, we use the estimator :math:`\hat{\Phi}_r` of :math:`\Phi_r` defined by:
@@ -219,7 +216,9 @@ Then, to summarize, thanks to relations :eq:`rel1`, :eq:`rel2`, :eq:`rel3`, :eq:
 
     \boldsymbol{h_{AMISE}(K) = t \circ \hat{\Phi}_4 \circ l (h_{AMISE}(K))}
 
-
+This method is due to (Sheather, Jones, 1991) who used ideas from (Park, Marron, 1990). 
+The algorithm is presented in (Wand, Jones, 1994), page 74 under the "Solve the equation rule" name. 
+The implementation uses ideas from (Raykar, Duraiswami, 2006), but the fast selection is not implemented. 
 
 Scott rule (dimension d)
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -242,9 +241,7 @@ then the optimal bandwidth vector :math:`\vect{h}` with respect to the AMISE cri
 where :math:`\hat{\sigma}_i^n` is the standard deviation of the *i*-th component of the sample
 :math:`(\vect{X}_1, \cdots, \vect{X}_n)`, and :math:`\sigma_K` the standard deviation of the 1D kernel *K*.
 
-
-
-The Scott proposition is  a simplification of the Silverman rule, based on the fact that the coefficient
+Scott' method is  a simplification of Silverman's rule, based on the fact that the coefficient
 :math:`\left(\frac{4}{d+2}\right)^{1/(d+4)}` remains in :math:`[0.924, 1.059]` when the dimension *d* varies.
 Thus, Scott fixed it to *1*:
 
@@ -259,7 +256,6 @@ which leads to the simplified expression:
   :label: SilvermanNormalKernelSimplif
 
     \vect{h}^{Silver}(N) \simeq \left( \hat{\sigma}_i^n n^{-1/(d+4)}\right)_i
-
 
 Furthermore, in the general case, we have from relation (\ref{AMISE1}) :
 
@@ -297,8 +293,6 @@ applied in each direction *i*, we deduce the Scott rule:
 
     \boldsymbol{\vect{h}^{Scott} = \left(\frac{\hat{\sigma}_i^n}{\sigma_K}n^{-1/(d+4)}\right)_i}
 
-
-
 Boundary treatment
 ~~~~~~~~~~~~~~~~~~
 
@@ -331,5 +325,8 @@ according to the mirroring technique:
 
 .. topic:: References:
 
-     - *Kernel smoothing*, M.P. Wand and M.C. Jones, Chapman & Hall/CRC edition, ISNB 0-412-55270-1.
-     - *Multivariate Density Estimation, practice and Visualization, Theory*, David W. Scott, Wiley edition.
+     - *Kernel smoothing*, M.P. Wand and M.C. Jones, Chapman & Hall/CRC edition, ISNB 0-412-55270-1, 1994.
+     - *Multivariate Density Estimation, practice and Visualization, Theory*, David W. Scott, Wiley edition, 1992.
+     - *A reliable data-based bandwidth selection method for kernel density estimation.*, S. J. Sheather and M. C. Jones, Journal of the Royal Statistical Society. Series B (Methodological), 53(3) :683–690, 1991.
+     - "Comparison of data-driven bandwidth selectors.", Byeong U. Park and J. S. Marron. Journal of the American Statistical Association, 85(409) :66–72, 1990.
+     - "Very Fast optimal bandwidth selection for univariate kernel density estimation", Vikas Chandrakant Raykar, Ramani Duraiswami, CS-TR-4774. University of Maryland, CollegePark, MD 20783, 2006
