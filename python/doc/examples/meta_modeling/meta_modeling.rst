@@ -12,6 +12,7 @@ General purpose metamodels
     expert_mixture.ipynb
     linear_model.ipynb
     general_linear_model.ipynb
+    overfitting_model_selection.ipynb
 
 Polynomial chaos metamodel
 --------------------------
