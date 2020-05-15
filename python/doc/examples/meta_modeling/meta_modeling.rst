@@ -30,6 +30,7 @@ Polynomial chaos metamodel
     chaos_build_distribution.ipynb
     functional_chaos_graphs.ipynb
     chaos_draw_validation.ipynb
+    chaos_distribution_transformation.ipynb
 
 Kriging metamodel
 -----------------
