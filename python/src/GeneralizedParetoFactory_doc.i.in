@@ -152,6 +152,11 @@ sample : 2-d sequence of float, of dimension 1
 param : Collection of :class:`~openturns.PointWithDescription`
     A vector of parameters of the distribution.
 
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The built distribution.
+
 Notes
 -----
 In the first usage, the default :class:`~openturns.GeneralizedPareto` distribution is built.
@@ -182,6 +187,11 @@ sample : 2-d sequence of float, of dimension 1
     The sample from which the distribution parameters are estimated.
 param : sequence of float
     A vector of parameters of the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.GeneralizedPareto`
+    The built distribution.
 "
 
 // ---------------------------------------------------------------------

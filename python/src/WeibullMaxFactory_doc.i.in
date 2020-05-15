@@ -30,7 +30,7 @@ param : Collection of  :class:`~openturns.PointWithDescription`
 
 Returns
 -------
-distribution : :class:`~openturns.WeibullMax`
+distribution : :class:`~openturns.Distribution`
     The estimated distribution
 
 Notes
@@ -52,4 +52,3 @@ Returns
 -------
 distribution : :class:`~openturns.WeibullMax`
     The estimated distribution"
-

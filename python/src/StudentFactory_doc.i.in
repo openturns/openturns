@@ -22,3 +22,30 @@ parameters :math:`(\Hat{\nu}, \Hat{\mu}, \hat{\sigma}(\Hat{\nu}), \Hat{\mat{R}})
 See also
 --------
 DistributionFactory, Student"
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_buildAsStudent_doc
+"Build the Student distribution.
+
+**Available usages**:
+
+    buildAsStudent(*sample*)
+
+    buildAsStudent(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : Collection of :class:`~openturns.PointWithDescription`
+    A vector of parameters of the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.Student`
+    The built distribution."
+%enddef
+%feature("docstring") OT::StudentFactory::buildAsStudent
+OT_DistributionFactory_buildAsStudent_doc
+
