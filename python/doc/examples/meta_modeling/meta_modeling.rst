@@ -31,6 +31,7 @@ Polynomial chaos metamodel
     functional_chaos_graphs.ipynb
     chaos_draw_validation.ipynb
     chaos_distribution_transformation.ipynb
+    chaos_beam_sensitivity_degree.ipynb
 
 Kriging metamodel
 -----------------
