@@ -36,6 +36,7 @@ Distribution fitting
     estimate_normal.ipynb
     maximumlikelihood_estimator.ipynb
     estimate_non_parametric_distribution.ipynb
+    smoothing_mixture.ipynb
     estimate_multivariate_distribution.ipynb
 
 Statistical hypothesis testing
