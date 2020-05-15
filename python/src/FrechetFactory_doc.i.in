@@ -21,5 +21,29 @@ See also
 --------
 DistributionFactory, Frechet"
 
+// ---------------------------------------------------------------------
 
+%define OT_DistributionFactory_buildAsFrechet_doc
+"Build the Frechet distribution.
+
+**Available usages**:
+
+    buildAsFrechet(*sample*)
+
+    buildAsFrechet(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : Collection of :class:`~openturns.PointWithDescription`
+    A vector of parameters of the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.Frechet`
+    The built distribution."
+%enddef
+%feature("docstring") OT::FrechetFactory::buildAsFrechet
+OT_DistributionFactory_buildAsFrechet_doc
 

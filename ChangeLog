@@ -30,6 +30,7 @@
  * Fixed TBB performance when used together with OpenBLAS
 
 === Bug fixes ===
+ * #1124 (DistributionFactory::buildAsXXX methods not documented)
  * #1213 (The legend of the graphics in MetaModelValidation is wrong)
  * #1222 (There is no kriging example based on HMAT)
  * #1331 (FittingTest_BestModelBIC sometimes fail)

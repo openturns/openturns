@@ -126,10 +126,40 @@ sample : :class:`~openturns.Sample`
 
 Returns
 -------
-distribution : :class:`~openturns.FisherSnedecor`
+distribution : :class:`~openturns.Distribution`
     The estimated distribution
 
 Notes
 -----
 The default strategy is using the maximum likelihood estimators."
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_buildAsFisherSnedecor_doc
+"Estimate the distribution using the default strategy.
+
+**Available usages**:
+
+    buildAsFisherSnedecor(*sample*)
+
+    buildAsFisherSnedecor(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : Collection of :class:`~openturns.PointWithDescription`
+    A vector of parameters of the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.FisherSnedecor`
+    The built distribution.
+
+Notes
+-----
+The default strategy is using the maximum likelihood estimators."
+%enddef
+%feature("docstring") OT::FisherSnedecorFactory::buildAsFisherSnedecor
+OT_DistributionFactory_buildAsFisherSnedecor_doc
 

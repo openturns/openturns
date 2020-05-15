@@ -160,7 +160,7 @@ sample : :class:`~openturns.Sample`
 
 Returns
 -------
-distribution : :class:`~openturns.Pareto`
+distribution : :class:`~openturns.Distribution`
     The estimated distribution
 
 Notes

@@ -18,3 +18,30 @@ The parameters are estimated by method of moments:
 See also
 --------
 DistributionFactory, Triangular"
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_buildAsTriangular_doc
+"Build the Triangular distribution.
+
+**Available usages**:
+
+    buildAsTriangular(*sample*)
+
+    buildAsTriangular(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : Collection of :class:`~openturns.PointWithDescription`
+    A vector of parameters of the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.Triangular`
+    The built distribution."
+%enddef
+%feature("docstring") OT::TriangularFactory::buildAsTriangular
+OT_DistributionFactory_buildAsTriangular_doc
+
