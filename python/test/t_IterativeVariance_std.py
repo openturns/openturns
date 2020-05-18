@@ -2,7 +2,6 @@
 
 from __future__ import print_function
 import openturns as ot
-import numpy.testing as nptest
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(5)
@@ -30,9 +29,9 @@ itervariancePoint.increment(point2)
 itervariancePoint.increment(point3)
 print("result=",itervariancePoint)
 computedvariance = itervariancePoint.getVariance()
-nptest.assert_equal(referencevariance, computedvariance)
+assert(referencevariance == computedvariance)
 iteration = itervariancePoint.getIteration()
-nptest.assert_equal(iteration, 3)
+assert(iteration == 3)
 
 # Iterative variance, one single sample
 print("Iterative variance, one single sample")
@@ -40,9 +39,9 @@ itervarianceSample = ot.IterativeVariance(dimension)
 itervarianceSample.increment(sample1)
 print("result=",itervarianceSample)
 computedvariance = itervarianceSample.getVariance()
-nptest.assert_equal(referencevariance, computedvariance)
+assert(referencevariance == computedvariance)
 iteration = itervarianceSample.getIteration()
-nptest.assert_equal(iteration, 3)
+assert(iteration == 3)
 
 # Iterative variance, one single sample, then one point at a time
 print("Iterative variance, one single sample, then one point at a time")
@@ -53,6 +52,6 @@ itervarianceMixed.increment(point2)
 itervarianceMixed.increment(point3)
 print("result=",itervarianceMixed)
 computedvariance = itervarianceMixed.getVariance()
-nptest.assert_equal(referencemixedvariance, computedvariance)
+assert(referencemixedvariance == computedvariance)
 iteration = itervarianceMixed.getIteration()
-nptest.assert_equal(iteration, 6)
+assert(iteration == 6)

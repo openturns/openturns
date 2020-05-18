@@ -2,7 +2,6 @@
 
 from __future__ import print_function
 import openturns as ot
-import numpy.testing as nptest
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(5)
@@ -25,9 +24,9 @@ iterthresholdPoint.increment(point2)
 iterthresholdPoint.increment(point3)
 print("result=",iterthresholdPoint)
 computedthreshold = iterthresholdPoint.getThresholdExceedance()
-nptest.assert_equal(referencethreshold, computedthreshold)
+assert(referencethreshold == computedthreshold)
 iteration = iterthresholdPoint.getIteration()
-nptest.assert_equal(iteration, 3)
+assert(iteration == 3)
 
 # Iterative threshold, one single sample
 print("Iterative threshold, one single sample")
@@ -35,9 +34,9 @@ iterthresholdSample = ot.IterativeThresholdExceedance(dimension, 15.0)
 iterthresholdSample.increment(sample1)
 print("result=",iterthresholdSample)
 computedthreshold = iterthresholdSample.getThresholdExceedance()
-nptest.assert_equal(referencethreshold, computedthreshold)
+assert(referencethreshold == computedthreshold)
 iteration = iterthresholdSample.getIteration()
-nptest.assert_equal(iteration, 3)
+assert(iteration == 3)
 
 # Iterative threshold, one single sample, then one point at a time
 print("Iterative threshold, one single sample, then one point at a time")
@@ -49,6 +48,6 @@ iterthresholdMixed.increment(point3)
 print("result=",iterthresholdMixed)
 computedthreshold = iterthresholdMixed.getThresholdExceedance()
 referencethreshold *= 2
-nptest.assert_equal(referencethreshold, computedthreshold)
+assert(referencethreshold == computedthreshold)
 iteration = iterthresholdMixed.getIteration()
-nptest.assert_equal(iteration, 6)
+assert(iteration == 6)

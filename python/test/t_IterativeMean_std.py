@@ -2,7 +2,6 @@
 
 from __future__ import print_function
 import openturns as ot
-import numpy.testing as nptest
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(5)
@@ -25,9 +24,9 @@ itermeanPoint.increment(point2)
 itermeanPoint.increment(point3)
 print("result=",itermeanPoint)
 computedmean = itermeanPoint.getMean()
-nptest.assert_equal(referencemean, computedmean)
+assert(referencemean == computedmean)
 iteration = itermeanPoint.getIteration()
-nptest.assert_equal(iteration, 3)
+assert(iteration == 3)
 
 # Iterative mean, one single sample
 print("Iterative mean, one single sample")
@@ -35,9 +34,9 @@ itermeanSample = ot.IterativeMean(dimension)
 itermeanSample.increment(sample1)
 print("result=",itermeanSample)
 computedmean = itermeanSample.getMean()
-nptest.assert_equal(referencemean, computedmean)
+assert(referencemean == computedmean)
 iteration = itermeanSample.getIteration()
-nptest.assert_equal(iteration, 3)
+assert(iteration == 3)
 
 # Iterative mean, one single sample, then one point at a time
 print("Iterative mean, one single sample, then one point at a time")
@@ -48,6 +47,6 @@ itermeanMixed.increment(point2)
 itermeanMixed.increment(point3)
 print("result=",itermeanMixed)
 computedmean = itermeanMixed.getMean()
-nptest.assert_equal(referencemean, computedmean)
+assert(referencemean == computedmean)
 iteration = itermeanMixed.getIteration()
-nptest.assert_equal(iteration, 6)
+assert(iteration == 6)

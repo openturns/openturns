@@ -2,7 +2,6 @@
 
 from __future__ import print_function
 import openturns as ot
-import numpy.testing as nptest
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(5)
@@ -27,10 +26,10 @@ iterPoint.increment(point3)
 print("result=",iterPoint)
 computedmin = iterPoint.getMin()
 computedmax = iterPoint.getMax()
-nptest.assert_equal(referencemin, computedmin)
-nptest.assert_equal(referencemax, computedmax)
+assert(referencemin == computedmin)
+assert(referencemax == computedmax)
 iteration = iterPoint.getIteration()
-nptest.assert_equal(iteration, 3)
+assert(iteration == 3)
 
 # Iterative extrema, one single sample
 print("Iterative extrema, one single sample")
@@ -39,10 +38,10 @@ iterSample.increment(sample1)
 print("result=",iterSample)
 computedmin = iterSample.getMin()
 computedmax = iterSample.getMax()
-nptest.assert_equal(referencemin, computedmin)
-nptest.assert_equal(referencemax, computedmax)
+assert(referencemin == computedmin)
+assert(referencemax == computedmax)
 iteration = iterSample.getIteration()
-nptest.assert_equal(iteration, 3)
+assert(iteration == 3)
 
 # Iterative extrema, one single sample, then one point at a time
 print("Iterative extrema, one single sample, then one point at a time")
@@ -54,7 +53,7 @@ iterMixed.increment(point3)
 print("result=",iterMixed)
 computedmin = iterMixed.getMin()
 computedmax = iterMixed.getMax()
-nptest.assert_equal(referencemin, computedmin)
-nptest.assert_equal(referencemax, computedmax)
+assert(referencemin == computedmin)
+assert(referencemax == computedmax)
 iteration = iterMixed.getIteration()
-nptest.assert_equal(iteration, 6)
+assert(iteration == 6)

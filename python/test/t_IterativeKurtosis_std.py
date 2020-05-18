@@ -2,8 +2,8 @@
 
 from __future__ import print_function
 import openturns as ot
-import numpy.testing as nptest
-import numpy as np
+from openturns.testing import assert_almost_equal
+from math import sqrt
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(5)
@@ -36,14 +36,14 @@ iterkurtosisPoint.increment(point3)
 iterkurtosisPoint.increment(point4)
 computedskewness = iterkurtosisPoint.getSkewness()
 size = sample1.getSize()
-factor = np.sqrt(size) * np.sqrt(size - 1.0) / (size - 2.0)
+factor = sqrt(size) * sqrt(size - 1.0) / (size - 2.0)
 computedskewness *= factor
 for i in range(2):
-  nptest.assert_almost_equal(referenceskewness[i], computedskewness[i], decimal=12)
+  assert_almost_equal(referenceskewness[i], computedskewness[i])
 computedkurtosis = iterkurtosisPoint.getKurtosis()
 print("result=",computedkurtosis)
 #for i in range(2):
-  #nptest.assert_almost_equal(referencekurtosis[i], computedkurtosis[i], decimal=12)
+  #assert_almost_equal(referencekurtosis[i], computedkurtosis[i])
 iteration = iterkurtosisPoint.getIteration()
 nptest.assert_equal(iteration, 4)
 
@@ -54,11 +54,11 @@ iterkurtosisSample.increment(sample1)
 computedskewness = iterkurtosisSample.getSkewness()
 computedskewness *= factor
 for i in range(2):
-  nptest.assert_almost_equal(referenceskewness[i], computedskewness[i], decimal=12)
+  nptest.assert_almost_equal(referenceskewness[i], computedskewness[i])
 computedkurtosis = iterkurtosisSample.getKurtosis()
 print("result=",computedkurtosis)
 #for i in range(2):
-  #nptest.assert_almost_equal(referencekurtosis[i], computedkurtosis[i], decimal=12)
+  #assert_almost_equal(referencekurtosis[i], computedkurtosis[i])
 iteration = iterkurtosisSample.getIteration()
 nptest.assert_equal(iteration, 4)
 
@@ -72,13 +72,13 @@ iterkurtosisMixed.increment(point3)
 iterkurtosisMixed.increment(point4)
 computedskewness = iterkurtosisMixed.getSkewness()
 size = sample1.getSize() * 2
-factor = np.sqrt(size) * np.sqrt(size - 1.0) / (size - 2.0)
+factor = sqrt(size) * sqrt(size - 1.0) / (size - 2.0)
 computedskewness *= factor
 for i in range(2):
-  nptest.assert_almost_equal(referencemixedskewness[i], computedskewness[i], decimal=12)
+  assert_almost_equal(referencemixedskewness[i], computedskewness[i])
 computedkurtosis = iterkurtosisMixed.getKurtosis()
 print("result=",computedkurtosis)
 #for i in range(2):
-  #nptest.assert_almost_equal(referencemixedkurtosis[i], computedkurtosis[i], decimal=12)
+  #assert_almost_equal(referencemixedkurtosis[i], computedkurtosis[i])
 iteration = iterkurtosisMixed.getIteration()
 nptest.assert_equal(iteration, 8)
