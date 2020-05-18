@@ -574,6 +574,7 @@ endif ()
 if (CHAOSPY_FOUND)
   ot_pyinstallcheck_test (Distribution_chaospy)
 endif ()
+ot_pyinstallcheck_test (Distribution_roughness)
 
 ## Bayesian
 ot_pyinstallcheck_test (GaussianLinearCalibration_std)
