@@ -37,7 +37,7 @@ computedskewness *= factor
 for i in range(2):
   assert_almost_equal(referenceskewness[i], computedskewness[i])
 iteration = iterskewnessPoint.getIteration()
-nptest.assert_equal(iteration, 3)
+assert(iteration == 3)
 
 # Iterative skewness, one single sample
 print("Iterative skewness, one single sample")
@@ -49,7 +49,7 @@ computedskewness *= factor
 for i in range(2):
   assert_almost_equal(referenceskewness[i], computedskewness[i])
 iteration = iterskewnessSample.getIteration()
-nptest.assert_equal(iteration, 3)
+assert(iteration == 3)
 
 # Iterative skewness, one single sample, then one point at a time
 print("Iterative skewness, one single sample, then one point at a time")
@@ -66,4 +66,4 @@ computedskewness *= factor
 for i in range(2):
   assert_almost_equal(referencemixedskewness[i], computedskewness[i])
 iteration = iterskewnessMixed.getIteration()
-nptest.assert_equal(iteration, 6)
+assert(iteration == 6)

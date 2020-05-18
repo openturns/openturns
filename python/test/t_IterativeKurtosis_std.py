@@ -45,7 +45,7 @@ print("result=",computedkurtosis)
 #for i in range(2):
   #assert_almost_equal(referencekurtosis[i], computedkurtosis[i])
 iteration = iterkurtosisPoint.getIteration()
-nptest.assert_equal(iteration, 4)
+assert(iteration == 4)
 
 # Iterative kurtosis, one single sample
 print("Iterative kurtosis, one single sample")
@@ -54,13 +54,13 @@ iterkurtosisSample.increment(sample1)
 computedskewness = iterkurtosisSample.getSkewness()
 computedskewness *= factor
 for i in range(2):
-  nptest.assert_almost_equal(referenceskewness[i], computedskewness[i])
+  assert_almost_equal(referenceskewness[i], computedskewness[i])
 computedkurtosis = iterkurtosisSample.getKurtosis()
 print("result=",computedkurtosis)
 #for i in range(2):
   #assert_almost_equal(referencekurtosis[i], computedkurtosis[i])
 iteration = iterkurtosisSample.getIteration()
-nptest.assert_equal(iteration, 4)
+assert(iteration == 4)
 
 # Iterative kurtosis, one single sample, then one point at a time
 print("Iterative kurtosis, one single sample, then one point at a time")
@@ -81,4 +81,4 @@ print("result=",computedkurtosis)
 #for i in range(2):
   #assert_almost_equal(referencemixedkurtosis[i], computedkurtosis[i])
 iteration = iterkurtosisMixed.getIteration()
-nptest.assert_equal(iteration, 8)
+assert(iteration == 8)
