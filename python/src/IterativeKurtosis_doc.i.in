@@ -30,27 +30,46 @@ Examples
 >>> n = ot.Normal(dim)
 >>> size = 50
 >>>
->>> # increment with 50 points
+
+Increment with 50 points:
+
 >>> for i in range(size):
->>>     point = n.getRealization()
->>>     myKurtosis.increment(point)
->>>
+...     point = n.getRealization()
+...     myKurtosis.increment(point)
+
 >>> print (myKurtosis.getIteration())
+50
+
 >>> print (myKurtosis.getMean())
+[-0.10648,0.0149604,-0.0470775,-0.0297845,-0.120995]
+
 >>> print (myKurtosis.getVariance())
+[1.13845,1.03833,0.999317,1.18227,0.691024]
+
 >>> print (myKurtosis.getSkewness())
+[0.191203,0.466445,0.0570696,-0.361862,-0.342236]
+
 >>> print (myKurtosis.getKurtosis())
->>>
->>> # increment with one sample of size 50
+[83.3639,17.1904,858.108,20.2681,31.04]
+
+Increment with one sample of size 50
+
 >>> sample = n.getSample(size)
 >>> myKurtosis.increment(sample)
->>>
 >>> print (myKurtosis.getIteration())
+100
+
 >>> print (myKurtosis.getMean())
+[0.091889,0.0441668,0.0379388,-0.162883,0.044894]
+
 >>> print (myKurtosis.getVariance())
+[1.03484,0.798317,1.07118,1.01998,0.921904]
+
 >>> print (myKurtosis.getSkewness())
+[-0.120833,0.175682,-0.18921,-0.00231464,0.0521928]
+
 >>> print (myKurtosis.getKurtosis())
-"
+[201.578,164.407,69.4969,537409,1108.21]"
 
 // ---------------------------------------------------------------------
 

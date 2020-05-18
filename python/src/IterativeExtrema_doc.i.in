@@ -27,24 +27,34 @@ Examples
 >>> myExtrema = ot.IterativeExtrema(dim)
 >>> n = ot.Normal(dim)
 >>> size = 50
->>>
->>> # increment with 50 points
+
+Increment with 50 points:
+
 >>> for i in range(size):
->>>     point = n.getRealization()
->>>     myExtrema.increment(point)
->>>
+...     point = n.getRealization()
+...     myExtrema.increment(point)
+
 >>> print (myExtrema.getIteration())
+50
+
 >>> print (myExtrema.getMin())
+[-2.4067,-2.53986,-2.29006,-3.09737,-2.18139]
+
 >>> print (myExtrema.getMax())
->>>
->>> # increment with one sample of size 50
+[3.01263,3.02799,1.85579,2.11968,1.36783]
+
+Increment with one sample of size 50:
+
 >>> sample = n.getSample(size)
 >>> myExtrema.increment(sample)
->>>
 >>> print (myExtrema.getIteration())
+100
+
 >>> print (myExtrema.getMin())
+[-2.4067,-2.53986,-2.72106,-3.09737,-2.18139]
+
 >>> print (myExtrema.getMax())
-"
+[3.01263,3.02799,2.24097,2.11968,2.55533]"
 
 // ---------------------------------------------------------------------
 

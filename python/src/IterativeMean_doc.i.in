@@ -36,22 +36,27 @@ Examples
 >>> myMean = ot.IterativeMean(dim)
 >>> n = ot.Normal(dim)
 >>> size = 50
->>>
->>> # increment with 50 points
+
+Increment with 50 points:
 >>> for i in range(size):
->>>     point = n.getRealization()
->>>     myMean.increment(point)
->>>
+...     point = n.getRealization()
+...     myMean.increment(point)
+
 >>> print (myMean.getIteration())
+50
+
 >>> print (myMean.getMean())
->>>
->>> # increment with one sample of size 50
+[-0.10648,0.0149604,-0.0470775,-0.0297845,-0.120995]
+
+Increment with one sample of size 50:
 >>> sample = n.getSample(size)
 >>> myMean.increment(sample)
->>>
+
 >>> print (myMean.getIteration())
+100
+
 >>> print (myMean.getMean())
-"
+[0.091889,0.0441668,0.0379388,-0.162883,0.044894]"
 
 // ---------------------------------------------------------------------
 

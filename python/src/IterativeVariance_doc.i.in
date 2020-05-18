@@ -40,23 +40,32 @@ Examples
 >>> n = ot.Normal(dim)
 >>> size = 50
 >>>
->>> # increment with 50 points
+Increment with 50 points:
 >>> for i in range(size):
->>>     point = n.getRealization()
->>>     myVariance.increment(point)
->>>
+...     point = n.getRealization()
+...     myVariance.increment(point)
+
 >>> print (myVariance.getIteration())
+50
+
 >>> print (myVariance.getMean())
+[-0.10648,0.0149604,-0.0470775,-0.0297845,-0.120995]
+
 >>> print (myVariance.getVariance())
->>>
->>> # increment with one sample of size 50
+[1.13845,1.03833,0.999317,1.18227,0.691024]
+
+Increment with one sample of size 50:
 >>> sample = n.getSample(size)
 >>> myVariance.increment(sample)
->>>
+
 >>> print (myVariance.getIteration())
+100
+
 >>> print (myVariance.getMean())
+[0.091889,0.0441668,0.0379388,-0.162883,0.044894]
+
 >>> print (myVariance.getVariance())
-"
+[1.03484,0.798317,1.07118,1.01998,0.921904]"
 
 // ---------------------------------------------------------------------
 
