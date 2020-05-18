@@ -54,6 +54,13 @@ public:
                                const CovarianceMatrix & parameterCovariance,
                                const CovarianceMatrix & errorCovariance);
 
+  /** Parameter constructor */
+  GaussianNonLinearCalibration(const Function & model,
+                               const Sample & outputObservations,
+                               const Point & candidate,
+                               const CovarianceMatrix & parameterCovariance,
+                               const CovarianceMatrix & errorCovariance);
+
   /** String converter */
   virtual String __repr__() const;
 

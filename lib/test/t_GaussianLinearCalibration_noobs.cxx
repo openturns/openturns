@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class LinearLeastSquaresCalibration for standard methods
+ *  @brief The test file of class GaussianLinearCalibration for standard methods
  *
  *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -32,29 +32,57 @@ int main(int, char *[])
   try
   {
     PlatformInfo::SetNumericalPrecision(5);
-    UnsignedInteger m = 1000;
-    Sample x(m, 1);
-    for (UnsignedInteger i = 0; i < m; ++i) x(i, 0) = (0.5 + i) / m;
+    
+    // A use case without observed inputs.
+    UnsignedInteger m = 100;
+    Sample x(m, 0);
 
     Description inVars(0);
     inVars.add("a");
     inVars.add("b");
     inVars.add("c");
-    inVars.add("x");
-    // This is linear in (a, b, c) and identifiable.
-    Description formulas(1, "a + b * x + c * x^2");
-    formulas.add("a + b * cos(x) + c * sin(x)");
+    // This is linear in (a, b, c) and not identifiable.
+    // Only the difference b - c is identifiable. 
+    // Derived from y = a + (b - c) * x at x=[-1.0, -0.6, -0.2, 0.2, 0.6, 1.0]
+    Description formulas(1, "a +  -1.0  * b +  1.0  * c");
+    formulas.add("a +  -0.6  * b +  0.36  * c");
+    formulas.add("a +  -0.2  * b +  0.04  * c");
+    formulas.add("a +  0.2  * b +  0.04  * c");
+    formulas.add("a +  0.6  * b +  0.36  * c");
+    formulas.add("a +  1.0  * b +  1.0  * c");
     SymbolicFunction g(inVars, formulas);
+    UnsignedInteger inputDimension = g.getInputDimension();
+    UnsignedInteger outputDimension = g.getOutputDimension();
     Point trueParameter(0);
     trueParameter.add(2.8);
     trueParameter.add(1.2);
     trueParameter.add(0.5);
-    Indices params(3);
+    Indices params(inputDimension);
     params.fill();
     ParametricFunction model(g, params, trueParameter);
     Sample y = model(x);
-    y += Normal(Point(2), Point(2, 0.05), IdentityMatrix(2)).getSample(y.getSize());
-    Point candidate(3, 1.0);
+    y += Normal(Point(outputDimension), Point(outputDimension, 0.05), IdentityMatrix(outputDimension)).getSample(y.getSize());
+    Point candidate(inputDimension, 1.0);
+    CovarianceMatrix priorCovariance(inputDimension);
+    for (UnsignedInteger i = 0; i < inputDimension; ++i)
+    {
+      priorCovariance(i, i) = 1.0;
+    }
+    fullprint << "priorCovariance =" << priorCovariance << std::endl;
+    CovarianceMatrix errorCovariance(outputDimension);
+    for (UnsignedInteger i = 0; i < outputDimension; ++i)
+    {
+      errorCovariance(i, i) = 2.0 + (1.0 + i) * (1.0 + i);
+      for (UnsignedInteger j = 0; j < i; ++j)
+        errorCovariance(i, j) = 1.0 / (1.0 + i + j);
+    }
+    CovarianceMatrix globalErrorCovariance(outputDimension * m);
+    for (UnsignedInteger i = 0; i < outputDimension * m; ++i)
+    {
+      globalErrorCovariance(i, i) = 2.0 + (1.0 + i) * (1.0 + i);
+      for (UnsignedInteger j = 0; j < i; ++j)
+        globalErrorCovariance(i, j) = 1.0 / (1.0 + i + j);
+    }
     Description methods(0);
     methods.add("SVD");
     methods.add("QR");
@@ -64,11 +92,12 @@ int main(int, char *[])
       fullprint << "method=" << methods[n] << std::endl;
       // 1st constructor
       fullprint << "(const. 1)" << std::endl;
-      LinearLeastSquaresCalibration algo(model, x, y, candidate, methods[n]);
+      GaussianLinearCalibration algo(model, y, candidate, priorCovariance, errorCovariance, methods[n]);
+      fullprint << "run" << std::endl;
       algo.run();
       Point parameterMAP(algo.getResult().getParameterMAP());
       fullprint << "MAP =" << parameterMAP << std::endl;
-      assert_almost_equal(parameterMAP, trueParameter, 1e-2);
+      assert_almost_equal(parameterMAP, trueParameter, 5e-1);
       // 2nd constructor
       fullprint << "(const. 2)" << std::endl;
       model.setParameter(candidate);
@@ -82,11 +111,18 @@ int main(int, char *[])
         std::copy(localGradient.getImplementation()->begin(), localGradient.getImplementation()->end(), transposedGradientObservations.getImplementation()->begin() + shift);
         shift += skip;
       }
-      algo = LinearLeastSquaresCalibration(modelObservations, transposedGradientObservations.transpose(), y, candidate, methods[n]);
+      algo = GaussianLinearCalibration(modelObservations, transposedGradientObservations.transpose(), y, candidate, priorCovariance, errorCovariance, methods[n]);
       algo.run();
       parameterMAP = algo.getResult().getParameterMAP();
       fullprint << "MAP =" << parameterMAP << std::endl;
-      assert_almost_equal(parameterMAP, trueParameter, 1e-2);
+      assert_almost_equal(parameterMAP, trueParameter, 5e-1);
+      // 3d constructor with globalErrorCovariance
+      fullprint << "(const. 3)" << std::endl;
+      algo = GaussianLinearCalibration(model, y, candidate, priorCovariance, globalErrorCovariance, methods[n]);
+      algo.run();
+      parameterMAP = algo.getResult().getParameterMAP();
+      fullprint << "MAP =" << parameterMAP << std::endl;
+      assert_almost_equal(parameterMAP, trueParameter, 50e-1);
     } // n
   }
   catch (TestFailed & ex)

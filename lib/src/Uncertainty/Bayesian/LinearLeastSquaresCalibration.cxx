@@ -97,6 +97,21 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Sample & mode
   if (gradientObservations.getNbColumns() != parameterDimension) throw InvalidArgumentException(HERE) << "Error: expected an observations gradient of column dimension=" << parameterDimension << ", got column dimension=" << gradientObservations.getNbColumns();
 }
 
+/* Parameter constructor */
+LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Function & model,
+    const Sample & outputObservations,
+    const Point & candidate,
+    const String & methodName)
+  : CalibrationAlgorithmImplementation(outputObservations, Dirac(candidate))
+  , modelObservations_(0, 0)
+  , gradientObservations_(0, 0)
+  , methodName_(methodName)
+{
+  const UnsignedInteger observationSampleSize(outputObservations.getSize());
+  const Sample inputObservations(observationSampleSize, 0);
+  *this = LinearLeastSquaresCalibration(model, inputObservations, outputObservations, candidate, methodName);
+}
+
 /* Performs the actual computation. Must be overloaded by the actual calibration algorithm */
 void LinearLeastSquaresCalibration::run()
 {

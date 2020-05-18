@@ -53,6 +53,12 @@ public:
                                 const String & methodName = ResourceMap::GetAsString("LinearLeastSquaresCalibration-Method"));
 
   /** Parameter constructor */
+  LinearLeastSquaresCalibration(const Function & model,
+                                const Sample & outputObservations,
+                                const Point & candidate,
+                                const String & methodName = ResourceMap::GetAsString("LinearLeastSquaresCalibration-Method"));
+
+  /** Parameter constructor */
   LinearLeastSquaresCalibration(const Sample & modelObservations,
                                 const Matrix & gradientObservations,
                                 const Sample & outputObservations,

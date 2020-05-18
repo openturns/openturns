@@ -6,6 +6,8 @@ Available constructors:
 
     LinearLeastSquaresCalibration(*modelObservations, gradientObservations, outputObservations, candidate, methodName*)
 
+    LinearLeastSquaresCalibration(*model, outputObservations, candidate, methodName*)
+
 Parameters
 ----------
 model : :class:`~openturns.Function`

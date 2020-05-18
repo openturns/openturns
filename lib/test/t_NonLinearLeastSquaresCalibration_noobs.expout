@@ -1,0 +1,10 @@
+Bootstrap size =0
+1. Default optim
+MAP =class=Point name=Unnamed dimension=3 values=[2.8,1.2,0.497]
+2. TNC optim
+MAP =class=Point name=Unnamed dimension=3 values=[2.8,1.2,0.497]
+Bootstrap size =100
+1. Default optim
+MAP =class=Point name=Unnamed dimension=3 values=[2.8,1.2,0.497]
+2. TNC optim
+MAP =class=Point name=Unnamed dimension=3 values=[2.8,1.2,0.497]

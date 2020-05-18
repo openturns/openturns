@@ -81,6 +81,26 @@ GaussianNonLinearCalibration::GaussianNonLinearCalibration(const Function & mode
   parameterPrior_.setDescription(model.getParameterDescription());
 }
 
+/* Parameter constructor */
+GaussianNonLinearCalibration::GaussianNonLinearCalibration(const Function & model,
+    const Sample & outputObservations,
+    const Point & candidate,
+    const CovarianceMatrix & parameterCovariance,
+    const CovarianceMatrix & errorCovariance)
+  : CalibrationAlgorithmImplementation(outputObservations, Normal(candidate, parameterCovariance))
+  , model_(model)
+  , inputObservations_()
+  , algorithm_()
+  , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize"))
+  , errorCovariance_(errorCovariance)
+  , globalErrorCovariance_(false)
+{
+  const UnsignedInteger observationSampleSize(outputObservations.getSize());
+  const Sample inputObservations(observationSampleSize, 0);
+  *this = GaussianNonLinearCalibration(model, inputObservations, outputObservations, candidate, parameterCovariance, errorCovariance);
+
+}
+
 namespace GaussianNonLinearFunctions
 {
 class CalibrationModelEvaluation: public EvaluationImplementation

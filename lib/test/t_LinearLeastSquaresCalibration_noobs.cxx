@@ -32,29 +32,35 @@ int main(int, char *[])
   try
   {
     PlatformInfo::SetNumericalPrecision(5);
+    // A case without observed inputs
     UnsignedInteger m = 1000;
-    Sample x(m, 1);
-    for (UnsignedInteger i = 0; i < m; ++i) x(i, 0) = (0.5 + i) / m;
+    Sample x(m, 0);
 
     Description inVars(0);
     inVars.add("a");
     inVars.add("b");
     inVars.add("c");
-    inVars.add("x");
-    // This is linear in (a, b, c) and identifiable.
-    Description formulas(1, "a + b * x + c * x^2");
-    formulas.add("a + b * cos(x) + c * sin(x)");
+    // This g is linear in (a, b, c) and identifiable.
+    // Derived from y = a + b * x + c * x^2 at x=[-1.0, -0.6, -0.2, 0.2, 0.6, 1.0]
+    Description formulas(1, "a +  -1.0  * b +  1.0  * c");
+    formulas.add("a +  -0.6  * b +  0.36  * c");
+    formulas.add("a +  -0.2  * b +  0.04  * c");
+    formulas.add("a +  0.2  * b +  0.04  * c");
+    formulas.add("a +  0.6  * b +  0.36  * c");
+    formulas.add("a +  1.0  * b +  1.0  * c");
     SymbolicFunction g(inVars, formulas);
+    UnsignedInteger inputDimension = g.getInputDimension();
+    UnsignedInteger outputDimension = g.getOutputDimension();
     Point trueParameter(0);
     trueParameter.add(2.8);
     trueParameter.add(1.2);
     trueParameter.add(0.5);
-    Indices params(3);
+    Indices params(inputDimension);
     params.fill();
     ParametricFunction model(g, params, trueParameter);
     Sample y = model(x);
-    y += Normal(Point(2), Point(2, 0.05), IdentityMatrix(2)).getSample(y.getSize());
-    Point candidate(3, 1.0);
+    y += Normal(Point(outputDimension), Point(outputDimension, 0.05), IdentityMatrix(outputDimension)).getSample(y.getSize());
+    Point candidate(inputDimension, 1.0);
     Description methods(0);
     methods.add("SVD");
     methods.add("QR");
@@ -64,7 +70,7 @@ int main(int, char *[])
       fullprint << "method=" << methods[n] << std::endl;
       // 1st constructor
       fullprint << "(const. 1)" << std::endl;
-      LinearLeastSquaresCalibration algo(model, x, y, candidate, methods[n]);
+      LinearLeastSquaresCalibration algo(model, y, candidate, methods[n]);
       algo.run();
       Point parameterMAP(algo.getResult().getParameterMAP());
       fullprint << "MAP =" << parameterMAP << std::endl;

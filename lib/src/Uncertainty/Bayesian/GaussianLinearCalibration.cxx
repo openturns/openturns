@@ -84,6 +84,25 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Function & model,
 }
 
 /* Parameter constructor */
+GaussianLinearCalibration::GaussianLinearCalibration(const Function & model,
+    const Sample & outputObservations,
+    const Point & candidate,
+    const CovarianceMatrix & parameterCovariance,
+    const CovarianceMatrix & errorCovariance,
+    const String & methodName)
+  : CalibrationAlgorithmImplementation(outputObservations, Normal(candidate, parameterCovariance))
+  , modelObservations_(0, 0)
+  , gradientObservations_(0, 0)
+  , errorCovariance_(errorCovariance)
+  , globalErrorCovariance_(false)
+  , methodName_(methodName)
+{  
+  const UnsignedInteger observationSampleSize(outputObservations.getSize());
+  const Sample inputObservations(observationSampleSize, 0);
+  *this = GaussianLinearCalibration(model, inputObservations, outputObservations, candidate, parameterCovariance, errorCovariance, methodName);
+}
+
+/* Parameter constructor */
 GaussianLinearCalibration::GaussianLinearCalibration(const Sample & modelObservations,
     const Matrix & gradientObservations,
     const Sample & outputObservations,

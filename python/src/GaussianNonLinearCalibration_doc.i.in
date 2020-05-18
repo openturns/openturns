@@ -1,6 +1,11 @@
 %feature("docstring") OT::GaussianNonLinearCalibration
 "Gaussian non linear calibration algorithm (3DVAR).
 
+Available constructors:
+    GaussianLinearCalibration(*model, inputObservations, outputObservations, candidate, parameterCovariance, errorCovariance*)
+
+    GaussianLinearCalibration(*model, outputObservations, candidate, parameterCovariance, errorCovariance*)
+
 Parameters
 ----------
 model : :class:`~openturns.Function`

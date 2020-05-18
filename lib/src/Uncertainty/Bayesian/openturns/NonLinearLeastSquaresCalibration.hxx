@@ -51,6 +51,11 @@ public:
                                    const Sample & outputObservations,
                                    const Point & candidate);
 
+  /** Parameter constructor */
+  NonLinearLeastSquaresCalibration(const Function & model,
+                                   const Sample & outputObservations,
+                                   const Point & candidate);
+
   /** String converter */
   virtual String __repr__() const;
 

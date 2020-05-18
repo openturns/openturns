@@ -72,6 +72,21 @@ NonLinearLeastSquaresCalibration::NonLinearLeastSquaresCalibration(const Functio
   parameterPrior_.setDescription(model.getParameterDescription());
 }
 
+/* Parameter constructor */
+NonLinearLeastSquaresCalibration::NonLinearLeastSquaresCalibration(const Function & model,
+    const Sample & outputObservations,
+    const Point & candidate)
+  : CalibrationAlgorithmImplementation(outputObservations, Dirac(candidate))
+  , model_(model)
+  , inputObservations_()
+  , algorithm_()
+  , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-BootstrapSize"))
+{
+  const UnsignedInteger observationSampleSize(outputObservations.getSize());
+  const Sample inputObservations(observationSampleSize, 0);
+  *this = NonLinearLeastSquaresCalibration(model, inputObservations, outputObservations, candidate);
+}
+
 namespace NonLinearLeastSquaresCalibrationFunctions
 {
 class CalibrationModelEvaluation: public EvaluationImplementation

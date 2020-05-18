@@ -1,6 +1,11 @@
 %feature("docstring") OT::NonLinearLeastSquaresCalibration
 "Non-linear least-squares calibration algorithm.
 
+Available constructors:
+    LinearLeastSquaresCalibration(*model, inputObservations, outputObservations, candidate*)
+
+    LinearLeastSquaresCalibration(*model, outputObservations, candidate*)
+
 Parameters
 ----------
 model : :class:`~openturns.Function`

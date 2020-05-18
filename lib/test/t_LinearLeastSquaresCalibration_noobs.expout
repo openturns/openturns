@@ -1,0 +1,15 @@
+method=SVD
+(const. 1)
+MAP =class=Point name=Unnamed dimension=3 values=[2.7984,1.1999,0.50149]
+(const. 2)
+MAP =class=Point name=Unnamed dimension=3 values=[2.7984,1.1999,0.50149]
+method=QR
+(const. 1)
+MAP =class=Point name=Unnamed dimension=3 values=[2.7984,1.1999,0.50149]
+(const. 2)
+MAP =class=Point name=Unnamed dimension=3 values=[2.7984,1.1999,0.50149]
+method=Cholesky
+(const. 1)
+MAP =class=Point name=Unnamed dimension=3 values=[2.7984,1.1999,0.50149]
+(const. 2)
+MAP =class=Point name=Unnamed dimension=3 values=[2.7984,1.1999,0.50149]

@@ -6,6 +6,8 @@ Available constructors:
 
     GaussianLinearCalibration(*modelObservations, gradientObservations, outputObservations, candidate, parameterCovariance, errorCovariance, methodName*)
 
+    GaussianLinearCalibration(*model, outputObservations, candidate, parameterCovariance, errorCovariance, methodName*)
+
 Parameters
 ----------
 model : :class:`~openturns.Function`

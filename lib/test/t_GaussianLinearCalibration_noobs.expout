@@ -1,0 +1,25 @@
+priorCovariance =class=CovarianceMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1]
+method=SVD
+(const. 1)
+run
+MAP =class=Point name=Unnamed dimension=3 values=[2.7052,1.2009,0.60971]
+(const. 2)
+MAP =class=Point name=Unnamed dimension=3 values=[2.7052,1.2009,0.60971]
+(const. 3)
+MAP =class=Point name=Unnamed dimension=3 values=[1.5355,0.91193,1.1887]
+method=QR
+(const. 1)
+run
+MAP =class=Point name=Unnamed dimension=3 values=[2.7052,1.2009,0.60971]
+(const. 2)
+MAP =class=Point name=Unnamed dimension=3 values=[2.7052,1.2009,0.60971]
+(const. 3)
+MAP =class=Point name=Unnamed dimension=3 values=[1.5355,0.91193,1.1887]
+method=Cholesky
+(const. 1)
+run
+MAP =class=Point name=Unnamed dimension=3 values=[2.7052,1.2009,0.60971]
+(const. 2)
+MAP =class=Point name=Unnamed dimension=3 values=[2.7052,1.2009,0.60971]
+(const. 3)
+MAP =class=Point name=Unnamed dimension=3 values=[1.5355,0.91193,1.1887]
