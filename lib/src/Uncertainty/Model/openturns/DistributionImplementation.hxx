@@ -1687,6 +1687,74 @@ protected:
     const DistributionImplementation * p_distribution_;
   };  // class EntropyKernel
 
+  // Class used to wrap the computePDF()**2 method for integration purpose
+  class PDFSquaredWrapper : public EvaluationImplementation
+  {
+  public:
+    PDFSquaredWrapper(const DistributionImplementation *p_distribution)
+        : EvaluationImplementation(), p_distribution_(p_distribution)
+    {
+      // Nothing to do
+    }
+
+    PDFSquaredWrapper *clone() const
+    {
+      return new PDFSquaredWrapper(*this);
+    }
+
+    Point operator()(const Point &point) const
+    {
+      const Scalar pdf = p_distribution_->computePDF(point);
+      return Point(1, pdf * pdf);
+    }
+
+    Sample operator()(const Sample &sample) const
+    {
+      // Keep the parallelism of computePDF
+      Sample pdfSquared(p_distribution_->computePDF(sample));
+      for (UnsignedInteger i = 0; i < pdfSquared.getSize(); ++i)
+        pdfSquared(i, 0) = pdfSquared(i, 0) * pdfSquared(i, 0);
+      return pdfSquared;
+    }
+
+    UnsignedInteger getInputDimension() const
+    {
+      return p_distribution_->getDimension();
+    }
+
+    UnsignedInteger getOutputDimension() const
+    {
+      return 1;
+    }
+
+    Description getInputDescription() const
+    {
+      return p_distribution_->getDescription();
+    }
+
+    Description getOutputDescription() const
+    {
+      return Description(1, "pdfSquared");
+    }
+
+    String __repr__() const
+    {
+      OSS oss;
+      oss << "PDFSquaredWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String &) const
+    {
+      OSS oss;
+      oss << "PDFSquaredWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+  private:
+    const DistributionImplementation *p_distribution_;
+  }; // class PDFSquaredWrapper
+
 #endif
 
   /** The dimension of the distribution */
