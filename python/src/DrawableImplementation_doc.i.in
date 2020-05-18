@@ -128,6 +128,43 @@ listColors : :class:`~openturns.Description`
 
 Notes
 -----
+This function uses the 'Drawable-DefaultPaletteName' key of the 
+:class:`~openturns.ResourceMap`, which can be equal to either 
+'Tableau' or 'Rainbow'.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable().BuildDefaultPalette(4))
+[#1f77b4,#ff7f0e,#2ca02c,#d62728]
+>>> name = ot.ResourceMap.GetAsString('Drawable-DefaultPaletteName')
+>>> ot.ResourceMap.SetAsString('Drawable-DefaultPaletteName', 'Rainbow')
+>>> print(ot.Drawable.BuildDefaultPalette(4))
+[#ff0000,#ccff00,#00ff66,#0066ff]
+>>> ot.ResourceMap.SetAsString('Drawable-DefaultPaletteName', 'Tableau')
+>>> print(ot.Drawable.BuildDefaultPalette(4))
+[#1f77b4,#ff7f0e,#2ca02c,#d62728]"
+%enddef
+%feature("docstring") OT::DrawableImplementation::BuildDefaultPalette
+OT_Drawable_BuildDefaultPalette_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_BuildRainbowPalette_doc
+"Build rainbow palette.
+
+Parameters
+----------
+n : int :math:`n > 0`
+    Number of colors needed.
+
+Returns
+-------
+listColors : :class:`~openturns.Description`
+    List of n color codes defined according to the rainbow palette.
+
+Notes
+-----
 The colors are generated in the HSV space, with H (the hue) varying in a number
 of different values given by 'Drawable-DefaultPalettePhase' in
 :class:`~openturns.ResourceMap` and V (the value) being decreased linearly at each
@@ -136,11 +173,42 @@ cycle of the hue.
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Drawable().BuildDefaultPalette(4))
+>>> print(ot.Drawable().BuildRainbowPalette(4))
 [#ff0000,#ccff00,#00ff66,#0066ff]"
 %enddef
-%feature("docstring") OT::DrawableImplementation::BuildDefaultPalette
-OT_Drawable_BuildDefaultPalette_doc
+%feature("docstring") OT::DrawableImplementation::BuildRainbowPalette
+OT_Drawable_BuildRainbowPalette_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Drawable_BuildTableauPalette_doc
+"Build tableau palette.
+
+Parameters
+----------
+n : int :math:`n > 0` and :math:`n < 10`
+    Number of colors needed.
+
+Returns
+-------
+listColors : :class:`~openturns.Description`
+    List of n color codes defined according to the tableau palette.
+
+Notes
+-----
+The colors are generated in the HSV space. 
+When the number of colors is greater than 10, the value V decreases 
+linearily depending on the 'Drawable-DefaultPalettePhase' key of the 
+:class:`~openturns.ResourceMap` for each block of 10 colors.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable().BuildTableauPalette(4))
+[#1f77b4,#ff7f0e,#2ca02c,#d62728]"
+%enddef
+%feature("docstring") OT::DrawableImplementation::BuildTableauPalette
+OT_Drawable_BuildTableauPalette_doc
 
 // ---------------------------------------------------------------------
 
@@ -884,22 +952,57 @@ OT_Drawable_ConvertFromHSVA_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Drawable_ConvertFromRGBIntoHSV_doc
+"Convert an RGB triplet to HSV triplet.
+
+Parameters
+----------
+red : float
+    Red with 0<=red<=1.
+green : float
+    Green with 0<=green<=1.
+blue : float
+    Blue with 0<=blue<=1.
+
+Returns
+-------
+HSVComponents : :class:`~openturns.Point`
+    HSV (hue, saturation and value) components of the color
+    where 0<=hue<=360, 0<=saturation<=1, 0<=value<=255.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable.ConvertFromRGBIntoHSV(44.0 / 255.0, 160.0 / 255.0, 72.0 / 255.0))
+[134.483,0.725,160]"
+%enddef
+%feature("docstring") OT::DrawableImplementation::ConvertFromRGBIntoHSV
+OT_Drawable_ConvertFromRGBIntoHSV_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Drawable_ConvertFromHSVIntoRGB_doc
 "Convert an HSV triplet into an RGB triplet.
 
 Parameters
 ----------
 hue : float
-    Hue.
+    Hue with 0<=hue<=360.
 saturation : float
-    Saturation.
+    Saturation with 0<=saturation<=1.
 value : float
-    Value.
+    Value with 0<=value<=1.
 
 Returns
 -------
 RGBComponents : :class:`~openturns.Point`
-    RGB (Red, Green and Blue) components of the color."
+    RGB (Red, Green and Blue) components of the color.
+
+Examples
+--------
+>>> import openturns as ot
+>>> print(ot.Drawable.ConvertFromHSVIntoRGB(215.0, 0.2, 0.3))
+[0.24,0.265,0.3]"
 %enddef
 %feature("docstring") OT::DrawableImplementation::ConvertFromHSVIntoRGB
 OT_Drawable_ConvertFromHSVIntoRGB_doc

@@ -123,7 +123,8 @@ listColors : sequence of str
     the number of Drawables, the last colors of the list are ignored.
 
     The *listColors* argument can be the result of the static method
-    :meth:`~openturns.Drawable.BuildDefaultPalette` of the Drawable object."
+    :meth:`~openturns.Drawable.BuildDefaultPalette` 
+    or :meth:`~openturns.Drawable.BuildTableauPalette` of the Drawable object."
 %enddef
 %feature("docstring") OT::GraphImplementation::setColors
 OT_Graph_setColors_doc

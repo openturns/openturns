@@ -32,6 +32,9 @@
  * Added AIC & BestModelAIC static methods in FittingTest
  * Added AICC & BestModelAICC static methods in FittingTest
  * Moved BuildDistribution from FunctionalChaosAlgorithm to MetaModelAlgorithm
+ * Added Drawable::BuildRainbowPalette(size)
+ * Added Drawable::BuildTableauPalette(size), which is now the default palette.
+ * Added Drawable::ConvertFromRGBIntoHSV
 
 === Documentation ===
 ==== API documentation ====
@@ -56,6 +59,7 @@
  * #1407 (GeneralLinearModelAlgorithm mishandles user-specified scale parameter when normalize is True)
  * #1415 (The BuildDistribution static method should not use the KS-test)
  * #1421 (UserDefinedStationaryCovarianceModel doc suggests input dimension can be >1)
+ * #1436 (The style of the curves is unpleasing to my eyes)
  * #1447 (Highly inaccurate result in reliability model when using subset of RandomVector)
  * #1465 (The Sample constructor based on a list and an integer should not exist)
  * #1470 (setNbModes is sometimes ignored)

@@ -40,9 +40,20 @@ int main(int, char *[])
     fullprint << "HSV colors (215.0, 0.2, 0.3)=" << Drawable::ConvertFromHSV(215.0, 0.2, 0.3) << std::endl;
     fullprint << "HSVA colors (215.0, 0.2, 0.3, 0.4)=" << Drawable::ConvertFromHSVA(215.0, 0.2, 0.3, 0.4) << std::endl;
     fullprint << "HSV (215.0, 0.2, 0.3) to RGB=" << Drawable::ConvertFromHSVIntoRGB(215.0, 0.2, 0.3) << std::endl;
+    fullprint << "RGB (44, 160, 72) to HSV=" << Drawable::ConvertFromRGBIntoHSV(44UL, 160UL, 72UL) << std::endl;
+    fullprint << "RGB (44, 72, 160) to HSV=" << Drawable::ConvertFromRGBIntoHSV(44UL, 72UL, 160UL) << std::endl;
+    fullprint << "RGB (160, 44, 72) to HSV=" << Drawable::ConvertFromRGBIntoHSV(160UL, 44UL, 72UL) << std::endl;
+    fullprint << "RGB (44.0/255.0, 160.0/255.0, 72.0/255.0) to HSV=" << Drawable::ConvertFromRGBIntoHSV(44.0/255.0, 160.0/255.0, 72.0/255.0) << std::endl;
+    fullprint << "RGB (44.0/255.0, 72.0/255.0, 160.0/255.0) to HSV=" << Drawable::ConvertFromRGBIntoHSV(44.0/255.0, 72.0/255.0, 160.0/255.0) << std::endl;
+    fullprint << "RGB (160.0/255.0, 44.0/255.0, 72.0/255.0) to HSV=" << Drawable::ConvertFromRGBIntoHSV(160.0/255.0, 44.0/255.0, 72.0/255.0) << std::endl;
     fullprint << "Line styles=" << Drawable::GetValidLineStyles() << std::endl;
     fullprint << "Point styles=" << Drawable::GetValidPointStyles() << std::endl;
     fullprint << "Fill styles=" << Drawable::GetValidFillStyles() << std::endl;
+    fullprint << "BuildDefaultPalette=" << Drawable::BuildDefaultPalette(10) << std::endl;
+    fullprint << "BuildRainbowPalette=" << Drawable::BuildRainbowPalette(10) << std::endl;
+    fullprint << "BuildTableauPalette=" << Drawable::BuildTableauPalette(10) << std::endl;
+    fullprint << "BuildDefaultPalette=" << Drawable::BuildDefaultPalette(20) << std::endl;
+    fullprint << "BuildTableauPalette=" << Drawable::BuildTableauPalette(20) << std::endl;
   }
   catch (TestFailed & ex)
   {

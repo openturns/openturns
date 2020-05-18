@@ -14,6 +14,10 @@ OT_Drawable_setPalette_doc
 OT_Drawable_getPaletteAsNormalizedRGBA_doc
 %feature("docstring") OT::Drawable::BuildDefaultPalette
 OT_Drawable_BuildDefaultPalette_doc
+%feature("docstring") OT::Drawable::BuildRainbowPalette
+OT_Drawable_BuildRainbowPalette_doc
+%feature("docstring") OT::Drawable::BuildTableauPalette
+OT_Drawable_BuildTableauPalette_doc
 %feature("docstring") OT::Drawable::getColor
 OT_Drawable_getColor_doc
 %feature("docstring") OT::Drawable::setColor
@@ -108,6 +112,8 @@ OT_Drawable_clean_doc
 OT_Drawable_ConvertFromHSV_doc
 %feature("docstring") OT::Drawable::ConvertFromHSVA
 OT_Drawable_ConvertFromHSVA_doc
+%feature("docstring") OT::Drawable::ConvertFromRGBIntoHSV
+OT_Drawable_ConvertFromRGBIntoHSV_doc
 %feature("docstring") OT::Drawable::ConvertFromHSVIntoRGB
 OT_Drawable_ConvertFromHSVIntoRGB_doc
 %feature("docstring") OT::Drawable::ConvertFromRGB

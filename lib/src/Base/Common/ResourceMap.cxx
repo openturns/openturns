@@ -700,6 +700,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("Drawable-NoSpecifiedLabel", "");
   addAsUnsignedInteger("Drawable-DataThreshold", 2000);
   addAsUnsignedInteger("Drawable-DefaultPalettePhase", 12);
+  addAsString("Drawable-DefaultPaletteName", "Tableau");
 
   // Text drawable
   addAsScalar("Text-DefaultTextSize", 0.75);

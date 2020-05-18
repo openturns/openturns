@@ -13,6 +13,14 @@ try:
 
     from openturns.viewer import View
     import openturns as ot
+    import numpy as np
+
+    def BuildSampleFromSequence(sequence):
+        n = len(sequence)
+        data = np.array(sequence)
+        data = data.reshape(n, 1)
+        sample = ot.Sample(data)
+        return sample
 
     # Curve
     graph = ot.Normal().drawCDF()
@@ -268,6 +276,23 @@ try:
     # test _repr_png_
     png = graph._repr_png_()
     assert(b'PNG' in png[:10])
+    
+    # BuildDefaultPalette, BuildTableauPalette
+    ncurves = 5
+    graph = ot.Graph("BuildPalette", "X", "Y", True, "topright")
+    n = 20
+    x = BuildSampleFromSequence(range(n))
+    for i in range(ncurves):
+        y = ot.Normal().getSample(n)
+        curve = ot.Curve(x, y)
+        curve.setLegend("Curve #%d" % (i))
+        graph.add(curve)
+    palette = ot.Drawable.BuildDefaultPalette(ncurves)
+    graph.setColors(palette)
+    view = View(graph)
+    palette = ot.Drawable.BuildTableauPalette(ncurves)
+    graph.setColors(palette)
+    view = View(graph)
 
 except:
     traceback.print_exc()

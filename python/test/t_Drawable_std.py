@@ -1,30 +1,69 @@
 #! /usr/bin/env python
 
 from __future__ import print_function
-from openturns import *
+import openturns as ot
+import openturns.testing as ott
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
+ot.RandomGenerator.SetSeed(0)
 
-try:
-    print("Named colors=", Drawable.GetValidColors())
-    print("RGB colors (31, 63, 127)=", Drawable.ConvertFromRGB(31, 63, 127))
-    print("RGB colors (0.1, 0.2, 0.3)=",
-          Drawable.ConvertFromRGB(0.1, 0.2, 0.3))
-    print("RGBA colors (31, 63, 127, 191)=",
-          Drawable.ConvertFromRGBA(31, 63, 127, 191))
-    print("RGBA colors (0.1, 0.2, 0.3, 0.4)=",
-          Drawable.ConvertFromRGBA(0.1, 0.2, 0.3, 0.4))
-    print("HSV colors (215.0, 0.2, 0.3)=",
-          Drawable.ConvertFromHSV(215.0, 0.2, 0.3))
-    print("HSVA colors (215.0, 0.2, 0.3, 0.4)=",
-          Drawable.ConvertFromHSVA(215.0, 0.2, 0.3, 0.4))
-    print("HSV (215.0, 0.2, 0.3) to RGB=",
-          Drawable.ConvertFromHSVIntoRGB(215.0, 0.2, 0.3))
-    print("Line styles=", Drawable.GetValidLineStyles())
-    print("Point styles=", Drawable.GetValidPointStyles())
-    print("Fill styles=", Drawable.GetValidFillStyles())
-
-except:
-    import sys
-    print("t_Drawable_std.py", sys.exc_info()[0], sys.exc_info()[1])
+print("Named colors=", ot.Drawable.GetValidColors())
+hexa = ot.Drawable.ConvertFromRGB(31, 63, 127)
+assert hexa == '#1f3f7f'
+#
+hexa = ot.Drawable.ConvertFromRGB(0.1, 0.2, 0.3)
+assert hexa == '#1a334d'
+#
+hexa = ot.Drawable.ConvertFromRGBA(31, 63, 127, 191)
+assert hexa == '#1f3f7fbf'
+#
+hexa = ot.Drawable.ConvertFromRGBA(0.1, 0.2, 0.3, 0.4)
+assert hexa == '#1a334d66'
+#
+hexa = ot.Drawable.ConvertFromHSV(215.0, 0.2, 0.3)
+assert hexa == '#3d444d'
+#
+hexa = ot.Drawable.ConvertFromHSVA(215.0, 0.2, 0.3, 0.4)
+assert hexa == '#3d444d66'
+#
+rgb = ot.Drawable.ConvertFromHSVIntoRGB(215.0, 0.2, 0.3)
+ott.assert_almost_equal(rgb, [0.24,0.265,0.3])
+#
+hsv = ot.Drawable.ConvertFromRGBIntoHSV(44.0 / 255.0, 160.0 / 255.0, 72.0 / 255.0)
+ott.assert_almost_equal(hsv, (134.48275862068965, 0.725, 0.6274509803921569))
+#
+hsv = ot.Drawable.ConvertFromRGBIntoHSV(44.0 / 255.0, 72.0 / 255.0, 160.0 / 255.0)
+ott.assert_almost_equal(hsv, (225.51724137931038, 0.725, 0.6274509803921569))
+#
+hsv = ot.Drawable.ConvertFromRGBIntoHSV(160.0 / 255.0, 44.0 / 255.0, 72.0 / 255.0)
+ott.assert_almost_equal(hsv, (345.51724137931035, 0.725, 0.6274509803921569))
+#
+print("BuildDefaultPalette=",
+      ot.Drawable.BuildDefaultPalette(10));
+print("BuildRainbowPalette=",
+      ot.Drawable.BuildRainbowPalette(10));
+print("BuildTableauPalette=",
+      ot.Drawable.BuildTableauPalette(10));
+print("BuildDefaultPalette=", 
+      ot.Drawable.BuildDefaultPalette(20));
+print("BuildTableauPalette=", 
+      ot.Drawable.BuildTableauPalette(20));
+#
+print("Line styles=", ot.Drawable.GetValidLineStyles())
+print("Point styles=", ot.Drawable.GetValidPointStyles())
+print("Fill styles=", ot.Drawable.GetValidFillStyles())
+#
+# Get/set the ResourceMap
+name = ot.ResourceMap.GetAsString("Drawable-DefaultPaletteName")
+assert name == "Tableau"
+#
+palette = ot.Drawable.BuildDefaultPalette(4)
+assert palette == ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728"]
+#
+ot.ResourceMap.SetAsString("Drawable-DefaultPaletteName", "Rainbow")
+palette = ot.Drawable.BuildDefaultPalette(4)
+assert palette == ["#ff0000", "#ccff00", "#00ff66", "#0066ff"]
+#
+ot.ResourceMap.SetAsString("Drawable-DefaultPaletteName", "Tableau")
+palette = ot.Drawable.BuildDefaultPalette(4)
+assert palette == ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728"]
