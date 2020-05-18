@@ -14,29 +14,6 @@ CLASSNAMEINIT(IterativeAlgorithmImplementation)
     // Nothing to do
   }
 
-  /** Default constructor */
-  IterativeAlgorithmImplementation::IterativeAlgorithmImplementation(const IterativeAlgorithmImplementation & other)
-    : PersistentObject(other)
-  {
-    // Nothing to do
-  }
-
-
-//   Bool IterativeAlgorithmImplementation::operator ==(const IterativeAlgorithmImplementation & /*other*/) const
-//   {
-//     return true;
-//   }
-//
-//   /**
-//    * Comparison operator
-//    *
-//    * This method compares objects based on their content.
-//    */
-//   Bool IterativeAlgorithmImplementation::operator !=(const IterativeAlgorithmImplementation & other) const
-//   {
-//     return !operator==(other);
-//   }
-
   /* String converter */
   String IterativeAlgorithmImplementation::__repr__() const
   {

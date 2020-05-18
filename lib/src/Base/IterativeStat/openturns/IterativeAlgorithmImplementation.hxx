@@ -31,9 +31,6 @@ public:
   /** Default constructor */
   explicit IterativeAlgorithmImplementation(const UnsignedInteger dimension = 1);
 
-  /** Default constructor */
-  IterativeAlgorithmImplementation(const IterativeAlgorithmImplementation & other);
-
   /**
    * Virtual constructor
    *
@@ -65,20 +62,6 @@ public:
    * This method returns the dimension of the object.
    */
   UnsignedInteger getDimension() const;
-
-//   /**
-//    * Comparison operator
-//    *
-//    * This method compares objects based on their content.
-//    */
-//   virtual Bool operator ==(const IterativeAlgorithmImplementation & /*other*/) const;
-//
-//   /**
-//    * Comparison operator
-//    *
-//    * This method compares objects based on their content.
-//    */
-//   virtual Bool operator !=(const IterativeAlgorithmImplementation & other) const;
 
   /* String converter */
   virtual
