@@ -666,7 +666,10 @@
   <Distribution-EntropySamplingSize               value_int="524288"  />
   <Distribution-MinimumVolumeLevelSetSamplingSize value_int="16384"   />
   <Distribution-SmallDimensionEntropy             value_int="3"       />
-  
+  <Distribution-RoughnessSamplingMethod           value_int="MonteCarlo"/>
+  <Distribution-RoughnessSamplingSize             value_int="524288"  />
+  <Distribution-SmallDimensionRoughness           value_int="3"       />
+
   <!-- OT::ContinuousDistribution parameters -->
   <ContinuousDistribution-DefaultIntegrationNodesNumber value_int="256" />
 
