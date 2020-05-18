@@ -88,3 +88,14 @@ width = distribution.getWidth()
 height = distribution.getHeight()
 roughness = sum([width[i] * height[i]**2 for i in range(len(height))])
 ott.assert_almost_equal(distribution.getRoughness(), roughness)
+
+# Large dimension with independent copula
+# With small rho value, we should have results similar to 
+# independent copula. But here we use the sampling method
+# This allows the validation of this sampling method
+corr = ot.CorrelationMatrix(5)
+corr[1, 0] = 0.001
+distribution = ot.Normal([0]*5, [1]*5, corr)
+
+ott.assert_almost_equal(distribution.getRoughness(),
+                        pow(0.5 / m.sqrt(m.pi), 5))

@@ -1278,6 +1278,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Distribution-EntropySamplingSize", 524288);
   addAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize", 16384);
   addAsUnsignedInteger("Distribution-SmallDimensionEntropy", 3);
+  addAsString("Distribution-RoughnessSamplingMethod", "MonteCarlo");
+  addAsUnsignedInteger("Distribution-RoughnessSamplingSize", 524288);
+  addAsUnsignedInteger("Distribution-SmallDimensionRoughness", 3);
 
   // ContinuousDistribution parameters //
   addAsUnsignedInteger("ContinuousDistribution-DefaultIntegrationNodesNumber", 256);

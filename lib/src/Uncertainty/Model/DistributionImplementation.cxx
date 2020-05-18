@@ -510,7 +510,30 @@ Scalar DistributionImplementation::getRoughness() const
       roughness *= getMarginal(i).getRoughness();
   }
   else
-    roughness = IteratedQuadrature().integrate(pdfSquaredWrapper, interval)[0];
+  {
+    // Small dimension
+    if (dimension_ <= ResourceMap::GetAsUnsignedInteger("Distribution-SmallDimensionRoughness"))
+    {
+      roughness = IteratedQuadrature().integrate(pdfSquaredWrapper, interval)[0];
+    } // Small dimension
+    else
+    {
+      const UnsignedInteger size = ResourceMap::GetAsUnsignedInteger("Distribution-RoughnessSamplingSize");
+      const String samplingMethod(ResourceMap::GetAsString("Distribution-RoughnessSamplingMethod"));
+      Sample sample;
+      if (samplingMethod == "MonteCarlo")
+        sample = getSample(size);
+      else if (samplingMethod == "QuasiMonteCarlo")
+        sample = getSampleByQMC(size);
+      else
+      {
+        LOGWARN(OSS() << "Unknown sampling method=" << samplingMethod << " to compute roughness. Resort to MonteCarlo");
+        sample = getSample(size);
+      }
+       roughness = computePDF(sample).computeMean()[0];
+    }
+
+  }
   // Roughness is a L2-norm, so must be positive
   return std::max(0.0, roughness);
 }
