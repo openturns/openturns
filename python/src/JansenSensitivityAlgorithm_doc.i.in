@@ -62,7 +62,6 @@ The variance of the estimator is computed using:
 See also
 --------
 SobolIndicesAlgorithm
-JansenSobolIndices
 
 Examples
 --------

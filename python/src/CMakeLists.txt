@@ -914,12 +914,6 @@ ot_add_python_module(analytical analytical_module.i
 
 ot_add_python_module(simulation simulation_module.i
 	                    ANCOVA.i ANCOVA_doc.i.in
-                      SobolIndicesImplementation.i SobolIndicesImplementation_doc.i.in
-                      SobolIndices.i SobolIndices_doc.i.in
-                      SaltelliSobolIndices.i SaltelliSobolIndices_doc.i.in
-                      MauntzKucherenkoSobolIndices.i MauntzKucherenkoSobolIndices_doc.i.in
-                      JansenSobolIndices.i JansenSobolIndices_doc.i.in
-                      MartinezSobolIndices.i MartinezSobolIndices_doc.i.in
                       SobolIndicesAlgorithmImplementation.i SobolIndicesAlgorithmImplementation_doc.i.in
                       SobolIndicesAlgorithm.i SobolIndicesAlgorithm_doc.i.in
                       MartinezSensitivityAlgorithm.i MartinezSensitivityAlgorithm_doc.i.in

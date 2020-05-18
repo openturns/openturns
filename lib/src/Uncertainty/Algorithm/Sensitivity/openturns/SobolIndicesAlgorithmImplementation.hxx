@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_SOBOLINDICESALGORITHMIMPLEMENTATION_HXX
 #define OPENTURNS_SOBOLINDICESALGORITHMIMPLEMENTATION_HXX
 
-#include "openturns/SobolIndices.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Indices.hxx"
 #include "openturns/Sample.hxx"
@@ -146,7 +145,8 @@ public:
 protected:
 
   /** Internal method that compute Vi/VTi using a collection of samples */
-  virtual void computeIndices(const Sample & design) const;
+  virtual Sample computeIndices(const Sample & design,
+                                Sample & VTi) const;
 
   /** Internal method that returns a boostrap NS collection of size inputDimension + 2 */
   Sample getBootstrapDesign(const Indices & indices) const;
@@ -202,23 +202,20 @@ protected:
   /** Confidence level for Bootstrap */
   Scalar confidenceLevel_;
 
-  /** Structure containing Sobol indices */
-  mutable SobolIndices sobolIndices_;
+  /** Variance of the reference output sample */
+  Point referenceVariance_;
 
-//   /** Variance of the reference output sample */
-//   Point referenceVariance_;
-//
-//   /** Variance conditionnaly to the i-th variable => Si = Vi/Var*/
-//   mutable Sample varianceI_;
-//
-//   /** Variance totale of the i-th variable => STi = VTi/Var */
-//   mutable Sample varianceTI_;
-//
-//   /** Aggregated first order indices */
-//   mutable Point aggregatedFirstOrderIndices_;
-//
-//   /** Aggregated total order indices */
-//   mutable Point aggregatedTotalOrderIndices_;
+  /** Variance conditionnaly to the i-th variable => Si = Vi/Var*/
+  mutable Sample varianceI_;
+
+  /** Variance totale of the i-th variable => STi = VTi/Var */
+  mutable Sample varianceTI_;
+
+  /** Aggregated first order indices */
+  mutable Point aggregatedFirstOrderIndices_;
+
+  /** Aggregated total order indices */
+  mutable Point aggregatedTotalOrderIndices_;
 
   /** Second order indices */
   mutable SymmetricTensor secondOrderIndices_;

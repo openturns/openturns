@@ -113,9 +113,9 @@ The major methods (`Saltelli`, `Jansen`, `Mauntz-Kucherenko`, `Martinez`) use th
    \right)
 
 The formulas for the evaluation of the indices are given in each class documentation:
-  - :class:`~openturns.MauntzKucherenkoSensitivityAlgorithm` for the `Mauntz-Kucherenko` method,
   - :class:`~openturns.SaltelliSensitivityAlgorithm` for the `Saltelli` method,
   - :class:`~openturns.JansenSensitivityAlgorithm` for the `Jansen` method,
+  - :class:`~openturns.MauntzKucherenkoSensitivityAlgorithm` for the `Mauntz-Kucherenko` method,
   - :class:`~openturns.MartinezSensitivityAlgorithm` for the `Martinez` method
 
 For multivariate outputs (see [gamboa2013]_), aggregate indices can be computed thanks to the `getAggregatedFirstOrderIndices` and `getAggregatedTotalOrderIndices`. Such indices write as follow:

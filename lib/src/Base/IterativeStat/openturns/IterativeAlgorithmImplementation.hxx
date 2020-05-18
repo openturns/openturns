@@ -66,19 +66,19 @@ public:
    */
   UnsignedInteger getDimension() const;
 
-  /**
-   * Comparison operator
-   *
-   * This method compares objects based on their content.
-   */
-  virtual Bool operator ==(const IterativeAlgorithmImplementation & /*other*/) const;
-
-  /**
-   * Comparison operator
-   *
-   * This method compares objects based on their content.
-   */
-  virtual Bool operator !=(const IterativeAlgorithmImplementation & other) const;
+//   /**
+//    * Comparison operator
+//    *
+//    * This method compares objects based on their content.
+//    */
+//   virtual Bool operator ==(const IterativeAlgorithmImplementation & /*other*/) const;
+//
+//   /**
+//    * Comparison operator
+//    *
+//    * This method compares objects based on their content.
+//    */
+//   virtual Bool operator !=(const IterativeAlgorithmImplementation & other) const;
 
   /* String converter */
   virtual
