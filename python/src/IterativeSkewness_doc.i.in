@@ -28,6 +28,7 @@ Examples
 >>> mySkewness = ot.IterativeSkewness(dim)
 >>> n = ot.Normal(dim)
 >>> size = 50
+
 Increment with 50 points:
 >>> for i in range(size):
 ...     point = n.getRealization()
@@ -44,7 +45,6 @@ Increment with 50 points:
 
 >>> print (mySkewness.getSkewness())
 [0.191203,0.466445,0.0570696,-0.361862,-0.342236]
-
 
 Increment with one sample of size 50:
 >>> sample = n.getSample(size)

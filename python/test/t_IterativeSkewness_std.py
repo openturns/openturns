@@ -36,6 +36,7 @@ factor = sqrt(size) * sqrt(size - 1.0) / (size - 2.0)
 computedskewness *= factor
 for i in range(2):
   assert_almost_equal(referenceskewness[i], computedskewness[i])
+
 iteration = iterskewnessPoint.getIteration()
 assert(iteration == 3)
 
@@ -48,6 +49,7 @@ print("result=",computedskewness)
 computedskewness *= factor
 for i in range(2):
   assert_almost_equal(referenceskewness[i], computedskewness[i])
+
 iteration = iterskewnessSample.getIteration()
 assert(iteration == 3)
 
@@ -65,5 +67,6 @@ factor = sqrt(size) * sqrt(size - 1.0) / (size - 2.0)
 computedskewness *= factor
 for i in range(2):
   assert_almost_equal(referencemixedskewness[i], computedskewness[i])
+
 iteration = iterskewnessMixed.getIteration()
 assert(iteration == 6)

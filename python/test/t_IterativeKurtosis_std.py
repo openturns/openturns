@@ -40,10 +40,12 @@ factor = sqrt(size) * sqrt(size - 1.0) / (size - 2.0)
 computedskewness *= factor
 for i in range(2):
   assert_almost_equal(referenceskewness[i], computedskewness[i])
+
 computedkurtosis = iterkurtosisPoint.getKurtosis()
 print("result=",computedkurtosis)
 #for i in range(2):
   #assert_almost_equal(referencekurtosis[i], computedkurtosis[i])
+
 iteration = iterkurtosisPoint.getIteration()
 assert(iteration == 4)
 
@@ -55,10 +57,12 @@ computedskewness = iterkurtosisSample.getSkewness()
 computedskewness *= factor
 for i in range(2):
   assert_almost_equal(referenceskewness[i], computedskewness[i])
+
 computedkurtosis = iterkurtosisSample.getKurtosis()
 print("result=",computedkurtosis)
 #for i in range(2):
   #assert_almost_equal(referencekurtosis[i], computedkurtosis[i])
+
 iteration = iterkurtosisSample.getIteration()
 assert(iteration == 4)
 
@@ -76,9 +80,11 @@ factor = sqrt(size) * sqrt(size - 1.0) / (size - 2.0)
 computedskewness *= factor
 for i in range(2):
   assert_almost_equal(referencemixedskewness[i], computedskewness[i])
+
 computedkurtosis = iterkurtosisMixed.getKurtosis()
 print("result=",computedkurtosis)
 #for i in range(2):
   #assert_almost_equal(referencemixedkurtosis[i], computedkurtosis[i])
+
 iteration = iterkurtosisMixed.getIteration()
 assert(iteration == 8)
