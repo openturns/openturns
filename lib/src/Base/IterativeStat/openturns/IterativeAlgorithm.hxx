@@ -4,10 +4,10 @@
 
 #include "openturns/TypedInterfaceObject.hxx"
 #include "openturns/IterativeAlgorithmImplementation.hxx"
-#include "openturns/IterativeMean.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
+class IterativeAlgorithmImplementation;
 
 class OT_API IterativeAlgorithm
   : public TypedInterfaceObject<IterativeAlgorithmImplementation>
@@ -15,6 +15,8 @@ class OT_API IterativeAlgorithm
   CLASSNAME
 
 public:
+
+  typedef TypedInterfaceObject<IterativeAlgorithmImplementation>::Implementation Implementation;
 
   /**
    * Default constructor
@@ -26,49 +28,23 @@ public:
    * The object has the default name but it does not
    * use storage for it.
    */
-  IterativeAlgorithm()
-    : TypedInterfaceObject<IterativeAlgorithmImplementation>()
-  {
-    // Nothing to do
-  }
+  IterativeAlgorithm();
 
-  IterativeAlgorithm(const UnsignedInteger dimension)
-    : TypedInterfaceObject<IterativeAlgorithmImplementation>(new IterativeMean(dimension))
-  {
-    // Nothing to do
-  }
+  IterativeAlgorithm(const UnsignedInteger dimension);
 
-  IterativeAlgorithm(const IterativeAlgorithmImplementation & implementation)
-    : TypedInterfaceObject<IterativeAlgorithmImplementation>(implementation.clone())
-  {
-    // Nothing to do
-  }
+  IterativeAlgorithm(const IterativeAlgorithmImplementation & implementation);
 
-  IterativeAlgorithm(const Implementation & p_implementation)
-    : TypedInterfaceObject<IterativeAlgorithmImplementation>(p_implementation)
-  {
-    // Nothing to do
-  }
+  IterativeAlgorithm(const Implementation & p_implementation);
 
 #ifndef SWIG
-  IterativeAlgorithm(IterativeAlgorithmImplementation * p_implementation)
-    : TypedInterfaceObject<IterativeAlgorithmImplementation>(p_implementation)
-  {
-    // Nothing to do
-  }
+  IterativeAlgorithm(IterativeAlgorithmImplementation * p_implementation);
 #endif
 
   /** Return a pointer to the underlying implementation object viewed as a PersistentObject */
-  Pointer<IterativeAlgorithmImplementation> getImplementationAsIterativeAlgorithm() const
-  {
-    return p_implementation_;
-  }
+  Pointer<IterativeAlgorithmImplementation> getImplementationAsIterativeAlgorithm() const;
 
   /** Set the pointer to the underlying implementation object */
-  void setImplementationAsIterativeAlgorithm(const Pointer<IterativeAlgorithmImplementation> & obj)
-  {
-    p_implementation_.assign(obj);
-  }
+  void setImplementationAsIterativeAlgorithm(const Pointer<IterativeAlgorithmImplementation> & obj);
 
   /**
    * Increment methods
@@ -76,49 +52,29 @@ public:
    * @warning These methods MUST be overloaded in derived classes.
    */
 
-  virtual void increment(const Point & newData)
-  {
-    return getImplementation()->increment(newData);
-  }
+  virtual void increment(const Point & newData);
 
-  virtual void increment(const Sample & newData)
-  {
-    return getImplementation()->increment(newData);
-  }
+  virtual void increment(const Sample & newData);
 
   /**
    * Iteration accessor
    *
    * This method returns the current iteration number of the algorithm.
    */
-  UnsignedInteger getIteration() const
-  {
-    return getImplementation()->getIteration();
-  }
+  UnsignedInteger getIteration() const;
 
   /**
    * Dimension accessor
    *
    * This method returns the dimension of the object.
    */
-  UnsignedInteger getDimension() const
-  {
-    return getImplementation()->getDimension();
-  }
+  UnsignedInteger getDimension() const;
 
   /* String converter */
-  virtual
-  String __repr__() const
-  {
-    return getImplementation()->__repr__();
-  }
+  virtual String __repr__() const;
 
   /* String converter */
-  virtual
-  String __str__(const String & offset = "") const
-  {
-    return getImplementation()->__str__(offset);
-  }
+  virtual String __str__(const String & offset = "") const;
 
 }; /* class IterativeAlgorithm */
 

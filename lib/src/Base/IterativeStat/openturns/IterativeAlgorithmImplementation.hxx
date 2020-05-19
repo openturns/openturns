@@ -37,7 +37,7 @@ public:
    * @warning This method MUST be overloaded in derived classes.
    * @return A pointer to a newly allocated object similar to this one
    */
-  virtual IterativeAlgorithmImplementation * clone() const = 0;
+  virtual IterativeAlgorithmImplementation * clone() const;
 
   /**
    * Increment methods
@@ -45,9 +45,9 @@ public:
    * @warning These methods MUST be overloaded in derived classes.
    */
 
-  virtual void increment(const Point & newData) = 0;
+  virtual void increment(const Point & /*newData*/);
 
-  virtual void increment(const Sample & newData) = 0;
+  virtual void increment(const Sample & /*newData*/);
 
   /**
    * Iteration accessor

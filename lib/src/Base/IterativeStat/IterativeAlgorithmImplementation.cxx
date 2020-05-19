@@ -14,6 +14,11 @@ CLASSNAMEINIT(IterativeAlgorithmImplementation)
     // Nothing to do
   }
 
+  IterativeAlgorithmImplementation * IterativeAlgorithmImplementation::clone() const
+  {
+    return new IterativeAlgorithmImplementation(*this);
+  }
+
   /* String converter */
   String IterativeAlgorithmImplementation::__repr__() const
   {
@@ -44,6 +49,16 @@ CLASSNAMEINIT(IterativeAlgorithmImplementation)
   UnsignedInteger IterativeAlgorithmImplementation::getDimension() const
   {
     return dimension_;
+  }
+
+  void IterativeAlgorithmImplementation::increment(const Point & /*newData*/)
+  {
+    iteration_ += 1;
+  }
+
+  void IterativeAlgorithmImplementation::increment(const Sample & /*newData*/)
+  {
+    iteration_ += 1;
   }
 
   /** Method save() stores the object through the StorageManager
