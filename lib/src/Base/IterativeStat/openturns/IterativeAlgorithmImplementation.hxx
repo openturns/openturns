@@ -29,7 +29,10 @@ public:
    */
 
   /** Default constructor */
-  explicit IterativeAlgorithmImplementation(const UnsignedInteger dimension = 1);
+  IterativeAlgorithmImplementation();
+
+  /** Default constructor */
+  IterativeAlgorithmImplementation(const UnsignedInteger dimension);
 
   /**
    * Virtual constructor

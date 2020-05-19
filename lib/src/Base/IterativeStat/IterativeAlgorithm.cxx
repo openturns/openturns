@@ -16,7 +16,7 @@ CLASSNAMEINIT(IterativeAlgorithm)
    * use storage for it.
    */
   IterativeAlgorithm::IterativeAlgorithm()
-    : TypedInterfaceObject<IterativeAlgorithmImplementation>()
+    : TypedInterfaceObject<IterativeAlgorithmImplementation>(new IterativeAlgorithmImplementation())
   {
     // Nothing to do
   }

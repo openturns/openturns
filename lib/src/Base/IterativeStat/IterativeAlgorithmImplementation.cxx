@@ -6,6 +6,15 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(IterativeAlgorithmImplementation)
 
   /** Default constructor */
+  IterativeAlgorithmImplementation::IterativeAlgorithmImplementation()
+    : PersistentObject()
+    , iteration_(0)
+    , dimension_(1)
+  {
+    // Nothing to do
+  }
+
+  /** Default constructor */
   IterativeAlgorithmImplementation::IterativeAlgorithmImplementation(const UnsignedInteger dimension)
     : PersistentObject()
     , iteration_(0)
