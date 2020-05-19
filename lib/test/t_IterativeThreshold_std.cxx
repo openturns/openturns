@@ -46,7 +46,7 @@ void assertEqual(Scalar value1, Scalar value2, Scalar epsilon = 0.0)
 }
 
 // Check if two int are equal
-void assertEqual(int value1, int value2)
+void assertEqual(UnsignedInteger value1, UnsignedInteger value2)
 {
   std::cout<<"Checking int. value1="<<value1<<", value2="<<value2<<std::endl;
   if (value1 != value2)
@@ -58,8 +58,8 @@ void assertEqual(int value1, int value2)
 // Check if two Point are equal
 void assertEqual(Point value1, Point value2, Scalar epsilon = 0.0)
 {
-  int dim1 = value1.getDimension();
-  int dim2 = value2.getDimension();
+  UnsignedInteger dim1 = value1.getDimension();
+  UnsignedInteger dim2 = value2.getDimension();
   assertEqual(dim1, dim2);
   for ( UnsignedInteger index = 0; index < dim1; ++ index)
   {
