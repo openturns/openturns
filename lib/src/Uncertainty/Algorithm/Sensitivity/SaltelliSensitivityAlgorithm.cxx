@@ -19,6 +19,7 @@
  *
  */
 
+#include "openturns/SaltelliSobolIndices.hxx"
 #include "openturns/SaltelliSensitivityAlgorithm.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SymbolicFunction.hxx"
@@ -33,7 +34,7 @@ static const Factory<SaltelliSensitivityAlgorithm> Factory_SaltelliSensitivityAl
 SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm()
   : SobolIndicesAlgorithmImplementation()
 {
-  // Nothing to do
+  sobolIndices_ = SaltelliSobolIndices();
 }
 
 /** Constructor with parameters */
@@ -42,7 +43,7 @@ SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const Sample & inputD
     const UnsignedInteger size)
   : SobolIndicesAlgorithmImplementation(inputDesign, outputDesign, size)
 {
-  // Nothing to do
+  sobolIndices_ = SaltelliSobolIndices(inputDesign_.getDimension(), outputDesign_.getDimension());
 }
 
 /** Constructor with distribution / model parameters */
@@ -52,7 +53,7 @@ SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const Distribution & 
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(distribution, size, model, computeSecondOrder)
 {
-  // Nothing to do
+  sobolIndices_ = SaltelliSobolIndices(inputDesign_.getDimension(), outputDesign_.getDimension());
 }
 
 /** Constructor with experiment / model parameters */
@@ -61,43 +62,13 @@ SaltelliSensitivityAlgorithm::SaltelliSensitivityAlgorithm(const WeightedExperim
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(experiment, model, computeSecondOrder)
 {
-  // Nothing to do
+  sobolIndices_ = SaltelliSobolIndices(inputDesign_.getDimension(), outputDesign_.getDimension());
 }
 
 /** Internal method that compute Vi/VTi using a huge sample */
-Sample SaltelliSensitivityAlgorithm::computeIndices(const Sample & sample,
-    Sample & VTi) const
+void SaltelliSensitivityAlgorithm::computeIndices(const Sample & sample) const
 {
-  const UnsignedInteger inputDimension = inputDesign_.getDimension();
-  const UnsignedInteger outputDimension = outputDesign_.getDimension();
-  const UnsignedInteger size = size_;
-  Sample varianceI(outputDimension, inputDimension);
-  VTi = Sample(outputDimension, inputDimension);
-
-  // Compute muA = mean(yA)
-  const Sample yA(sample, 0, size);
-  const Point muA(yA.computeMean());
-
-  // Compute muB
-  const Sample yB(sample, size, 2 * size);
-  const Point muB(yB.computeMean());
-
-  for (UnsignedInteger p = 0; p < inputDimension; ++p)
-  {
-    // yE correspond to the block that start at index (p + 2) * size_
-    // For first order indices, compute yE * yB
-    const Point yEDotyB(computeSumDotSamples(sample, size_, size_, (2 + p) * size_));
-    // For total order indices, compute yE * yA
-    const Point yEDotyA(computeSumDotSamples(sample, size_, 0, (2 + p) * size_));
-
-    for (UnsignedInteger q = 0; q < outputDimension; ++q)
-    {
-      varianceI(q, p) +=  yEDotyB[q]  / (size - 1.0) -  muA[q] * muB[q];
-      // Vti = Var - V_{-i}
-      VTi(q, p) += muA[q] * muA[q] + referenceVariance_[q] - yEDotyA[q]  / (size - 1.0);
-    }
-  }
-  return varianceI;
+  sobolIndices_.computeIndices(sample);
 }
 
 void SaltelliSensitivityAlgorithm::computeAsymptoticDistribution() const

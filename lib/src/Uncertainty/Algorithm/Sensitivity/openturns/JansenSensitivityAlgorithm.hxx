@@ -22,6 +22,7 @@
 #define OPENTURNS_JANSENSENSITIVITYALGORITHM_HXX
 
 #include "openturns/Point.hxx"
+#include "openturns/JansenSobolIndices.hxx"
 #include "openturns/SobolIndicesAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -67,11 +68,12 @@ public:
 protected:
 
   /** Internal method that compute Vi/VTi using a huge sample */
-  Sample computeIndices(const Sample & sample,
-                        Sample & VTi) const;
+  void computeIndices(const Sample & sample) const;
 
   /** void method that computes asymptotic distribution */
   virtual void computeAsymptoticDistribution() const;
+
+//   mutable JansenSobolIndices sobolIndices_;
 
 }; /* class JansenSensitivityAlgorithm */
 

@@ -21,7 +21,6 @@
 #ifndef OPENTURNS_SALTELLISENSITIVITYALGORITHM_HXX
 #define OPENTURNS_SALTELLISENSITIVITYALGORITHM_HXX
 
-#include "openturns/Point.hxx"
 #include "openturns/SobolIndicesAlgorithmImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -72,8 +71,7 @@ public:
 protected:
 
   /** Internal method that compute Vi/VTi using a huge sample */
-  virtual Sample computeIndices(const Sample & sample,
-                                Sample & VTi) const;
+  virtual void computeIndices(const Sample & sample) const;
 
   /** void method that computes asymptotic distribution */
   virtual void computeAsymptoticDistribution() const;

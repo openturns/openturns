@@ -40,12 +40,18 @@
 /* Uncertainty/Algorithm/Sensitivity */
 %include ANCOVA.i
 %include FAST.i
+%include SobolIndicesImplementation.i
+%include SobolIndices.i
+%include SaltelliSobolIndices.i
+%include MauntzKucherenkoSobolIndices.i
+%include JansenSobolIndices.i
+%include MartinezSobolIndices.i
 %include SobolIndicesAlgorithmImplementation.i
 %include SobolIndicesAlgorithm.i
-%include MartinezSensitivityAlgorithm.i
 %include SaltelliSensitivityAlgorithm.i
-%include JansenSensitivityAlgorithm.i
 %include MauntzKucherenkoSensitivityAlgorithm.i
+%include JansenSensitivityAlgorithm.i
+%include MartinezSensitivityAlgorithm.i
 %include SobolIndicesExperiment.i
 
 /* Uncertainty/Algorithm/EventSimulation */

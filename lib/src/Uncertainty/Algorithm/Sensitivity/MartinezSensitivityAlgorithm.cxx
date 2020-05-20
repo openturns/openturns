@@ -19,6 +19,7 @@
  *
  */
 
+#include "openturns/MartinezSobolIndices.hxx"
 #include "openturns/MartinezSensitivityAlgorithm.hxx"
 #include "openturns/SymbolicFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
@@ -33,7 +34,7 @@ static const Factory<MartinezSensitivityAlgorithm> Factory_MartinezSensitivityAl
 MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm()
   : SobolIndicesAlgorithmImplementation()
 {
-  // Nothing to do
+  sobolIndices_ = MartinezSobolIndices();
 }
 
 /** Constructor with parameters */
@@ -42,7 +43,7 @@ MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const Sample & inputD
     const UnsignedInteger size)
   : SobolIndicesAlgorithmImplementation(inputDesign, outputDesign, size)
 {
-  // Nothing to do
+  sobolIndices_ = MartinezSobolIndices(inputDesign.getDimension(), outputDesign.getDimension());
 }
 
 /** Constructor with distribution / model parameters */
@@ -52,7 +53,7 @@ MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const Distribution & 
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(distribution, size, model, computeSecondOrder)
 {
-  // Nothing to do
+  sobolIndices_ = MartinezSobolIndices(inputDesign_.getDimension(), outputDesign_.getDimension());
 }
 
 /** Constructor with experiment / model parameters */
@@ -61,7 +62,7 @@ MartinezSensitivityAlgorithm::MartinezSensitivityAlgorithm(const WeightedExperim
     const Bool computeSecondOrder)
   : SobolIndicesAlgorithmImplementation(experiment, model, computeSecondOrder)
 {
-  // Nothing to do
+  sobolIndices_ = MartinezSobolIndices(inputDesign_.getDimension(), outputDesign_.getDimension());
 }
 
 /* Virtual constructor */
@@ -70,66 +71,10 @@ MartinezSensitivityAlgorithm * MartinezSensitivityAlgorithm::clone() const
   return new MartinezSensitivityAlgorithm(*this);
 }
 
-Sample MartinezSensitivityAlgorithm::computeIndices(const Sample & sample,
-    Sample & VTi) const
+void MartinezSensitivityAlgorithm::computeIndices(const Sample & sample) const
 {
-  const UnsignedInteger inputDimension = inputDesign_.getDimension();
-  const UnsignedInteger outputDimension = outputDesign_.getDimension();
-  const UnsignedInteger size = size_;
-  Sample varianceI(outputDimension, inputDimension);
-  VTi = Sample(outputDimension, inputDimension);
-
-  // Use reference samples
-  // Reference sample yA
-  Sample yA(sample, 0, size);
-  const Point muA(yA.computeMean());
-  const Point sigmaA(yA.computeStandardDeviationPerComponent());
-  for (UnsignedInteger j = 0; j < outputDimension; ++ j)
-    if (!(sigmaA[j] > 0.0))
-      throw InvalidArgumentException(HERE) << "Null output sample variance";
-
-  // center sample yA
-  yA -= muA;
-  // Reference sample yB
-  Sample yB(sample, size, 2 * size);
-  const Point muB(yB.computeMean());
-  const Point sigmaB(yB.computeStandardDeviationPerComponent());
-  for (UnsignedInteger j = 0; j < outputDimension; ++ j)
-    if (!(sigmaB[j] > 0.0))
-      throw InvalidArgumentException(HERE) << "Null output sample variance";
-
-  // center-reduce sample yB
-  yB -= muB;
-  yB /= sigmaB;
-
-  for (UnsignedInteger p = 0; p < inputDimension; ++p)
-  {
-    Sample yE(sample, (2 + p) * size, (3 + p) * size);
-    const Point muE(yE.computeMean());
-    const Point sigmaE(yE.computeStandardDeviationPerComponent());
-    for (UnsignedInteger j = 0; j < outputDimension; ++ j)
-      if (!(sigmaE[j] > 0.0))
-        throw InvalidArgumentException(HERE) << "Null output sample variance";
-
-    // center-reduce sample yB
-    yE -= muE;
-    yE /= sigmaE;
-    // Compute yE * yB
-    const Point yEDotyB(computeSumDotSamples(yE, yB));
-    // Compute yE * yA
-    const Point yEDotyA(computeSumDotSamples(yE, yA));
-    for (UnsignedInteger q = 0; q < outputDimension; ++q)
-    {
-      // Compute rho(yB, yE) with rho : Pearson correlation
-      // Si = rho(yB, yE) thus Vi = Si * V
-      varianceI(q, p) =  yEDotyB[q] / (size - 1.0)  * sigmaA[q] * sigmaA[q];
-      // STi = 1 - rho(yA, yE),  Vti = V -VTi thus VTi = rho(yA, yE) * var(yA)
-      VTi(q, p) = referenceVariance_[q] - yEDotyA[q] / (size - 1.0)  * sigmaA[q];
-    }
-  }
-  return varianceI;
+  sobolIndices_.computeIndices(sample);
 }
-
 
 /* String converter */
 String MartinezSensitivityAlgorithm::__repr__() const
