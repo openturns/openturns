@@ -80,6 +80,7 @@
  * #1456 (truncation of distribution)
  * #1461 (ComparisonOperator().getImplementation().getClassName() segfault)
  * #1471 (The graphics of KarhunenLoeveQuadratureAlgorithm has no axes)
+ * #1495 (Wrong formula for Expected Improvement evaluation)
 
 == 1.14 release (2019-11-13) == #release-1.14
 
