@@ -1444,6 +1444,20 @@ Point DistFunc::rNormal(const UnsignedInteger size)
   return result;
 }
 
+Scalar DistFunc::dNormal(const Scalar x)
+{
+  return std::exp(-0.5 * x * x) * SpecFunc::ISQRT2PI;
+}
+
+Point DistFunc::dNormal(const Point &x)
+{
+  const UnsignedInteger size = x.getSize();
+  Point result(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+    result[i] = dNormal(x[i]);
+  return result;
+}
+
 /**********************************************************************************/
 /* Poisson distribution, i.e. with a PDF equals to exp(-lambda) . lambda ^ k / k! */
 /**********************************************************************************/
