@@ -12,3 +12,30 @@ using the algorithm described in [minka2012]_.
 See also
 --------
 DistributionFactory, Dirichlet"
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_buildAsDirichlet_doc
+"Build the Dirichlet distribution.
+
+**Available usages**:
+
+    buildAsDirichlet(*sample*)
+
+    buildAsDirichlet(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : Collection of :class:`~openturns.PointWithDescription`
+    A vector of parameters of the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.Dirichlet`
+    The built distribution."
+%enddef
+%feature("docstring") OT::DirichletFactory::buildAsDirichlet
+OT_DistributionFactory_buildAsDirichlet_doc
+

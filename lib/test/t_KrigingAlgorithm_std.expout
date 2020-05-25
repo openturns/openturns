@@ -28,7 +28,7 @@ f(X)=    [ y0     ]
 5 : [ -11.3  ]
 6 : [  -6.17 ]
 7 : [ -12.3  ]
-covariance parameter=[0.01,5.02]
+covariance parameter=[0.01,5.02,8.61]
 df(X0)=[[ -4 ]
  [ -1 ]]
 d^f(X0) & d^f(X0) FD similar ?

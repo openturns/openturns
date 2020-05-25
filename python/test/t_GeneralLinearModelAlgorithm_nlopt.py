@@ -39,7 +39,7 @@ try:
     assert_almost_equal(residual.computeCenteredMoment(2),
                         [1.06e-05], 1e-5, 1e-5)
     assert_almost_equal(conditionalCovariance.getParameter(), [
-                        0.702138], 5e-3, 1e-3)
+                        0.702138, 0.00112], 5e-3, 1e-3)
     print("Test Ok")
 
 except:

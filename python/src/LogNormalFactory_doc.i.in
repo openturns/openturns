@@ -155,6 +155,11 @@ method : integer
 param : Collection of :class:`~openturns.PointWithDescription`
     A vector of parameters of the distribution.
 
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The built distribution.
+
 Notes
 -----
 See the *buildAsLogNormal* method.
@@ -167,13 +172,13 @@ See the *buildAsLogNormal* method.
 
 **Available usages**:
 
-    build()
+    buildAsLogNormal()
 
-    build(*sample*)
+    buildAsLogNormal(*sample*)
 
-    build(*sample, method*)
+    buildAsLogNormal(*sample, method*)
 
-    build(*param*)
+    buildAsLogNormal(*param*)
 
 Parameters
 ----------
@@ -189,6 +194,11 @@ method : integer
     The default value is from the :class:`~openturns.ResourceMap` key `LogNormalFactory-EstimationMethod`. 
 param : Collection of :class:`~openturns.PointWithDescription`
     A vector of parameters of the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.LogNormal`
+    The built distribution.
 
 Notes
 -----
@@ -214,7 +224,12 @@ In the fourth usage, a :class:`~openturns.LogNormal` distribution corresponding 
 Parameters
 ----------
 sample : 2-d sequence of float, of dimension 1
-    The sample from which the distribution parameters are estimated."
+    The sample from which the distribution parameters are estimated.
+
+Returns
+-------
+dist : :class:`~openturns.LogNormal`
+    The built distribution."
 
 // ---------------------------------------------------------------------
 
@@ -224,7 +239,12 @@ sample : 2-d sequence of float, of dimension 1
 Parameters
 ----------
 sample : 2-d sequence of float, of dimension 1
-    The sample from which the distribution parameters are estimated."
+    The sample from which the distribution parameters are estimated.
+
+Returns
+-------
+dist : :class:`~openturns.LogNormal`
+    The built distribution."
 
 // ---------------------------------------------------------------------
 
@@ -234,7 +254,12 @@ sample : 2-d sequence of float, of dimension 1
 Parameters
 ----------
 sample : 2-d sequence of float, of dimension 1
-    The sample from which the distribution parameters are estimated."
+    The sample from which the distribution parameters are estimated.
+
+Returns
+-------
+dist : :class:`~openturns.LogNormal`
+    The built distribution."
 
 // ---------------------------------------------------------------------
 
@@ -245,4 +270,8 @@ Parameters
 ----------
 sample : 2-d sequence of float, of dimension 1
     The sample from which the distribution parameters are estimated.
-"
+
+Returns
+-------
+dist : :class:`~openturns.LogNormal`
+    The built distribution."

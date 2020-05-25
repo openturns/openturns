@@ -709,7 +709,22 @@ Distribution Normal::getStandardRepresentative() const
 Scalar Normal::getRoughness() const
 {
   // 0.2820947917738781434740398 = 1 / (2 * sqrt(Pi))
-  return 0.2820947917738781434740398 / getSigma()[0];
+  if (dimension_ == 1)
+    return 0.2820947917738781434740398 / getSigma()[0];
+
+  Scalar roughness = 1.0;
+  if (hasIndependentCopula())
+  {
+    for (UnsignedInteger d = 0; d < dimension_; ++d)
+      roughness *= 0.2820947917738781434740398 / getSigma()[d];
+    return roughness;
+  }
+  else
+  {
+    for (UnsignedInteger d = 0; d < dimension_; ++d)
+      roughness *= 0.2820947917738781434740398 / cholesky_(d, d);
+  }
+  return roughness;
 }
 
 /* Get the kurtosis of the distribution */

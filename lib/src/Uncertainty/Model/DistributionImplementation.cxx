@@ -466,7 +466,76 @@ UnsignedInteger DistributionImplementation::getDimension() const
 /* Get the roughness, i.e. the L2-norm of the PDF */
 Scalar DistributionImplementation::getRoughness() const
 {
-  throw NotYetImplementedException(HERE) << "In DistributionImplementation::getRoughness() const";
+  const Interval interval(getRange());
+
+  // Use adaptive multidimensional integration of the PDF on the reduced interval
+  const PDFSquaredWrapper pdfSquaredWrapper(this);
+  Scalar roughness = 0.0;
+  if (dimension_ == 1)
+  {
+    Scalar error = -1.0;
+    const Point singularities(getSingularities());
+    // If no singularity inside of the given reduced interval
+    const UnsignedInteger singularitiesNumber = singularities.getSize();
+    const Scalar lower = interval.getLowerBound()[0];
+    const Scalar upper = interval.getUpperBound()[0];
+    if (singularitiesNumber == 0 || singularities[0] >= upper || singularities[singularitiesNumber - 1] <= lower)
+      roughness = GaussKronrod().integrate(pdfSquaredWrapper, interval, error)[0];
+    else
+    {
+      Scalar a = lower;
+      for (UnsignedInteger i = 0; i < singularitiesNumber; ++i)
+      {
+        const Scalar b = singularities[i];
+        if (b > lower && b < upper)
+        {
+          roughness += GaussKronrod().integrate(pdfSquaredWrapper, Interval(a, b), error)[0];
+          a = b;
+        }
+        // Exit the loop if no more singularities inside of the reduced interval
+        if (b >= upper)
+          break;
+      } // for
+      // Last contribution
+      roughness += GaussKronrod().integrate(pdfSquaredWrapper, Interval(a, upper), error)[0];
+    } // else
+    return std::max(0.0, roughness);
+  } // dimension_ == 1
+
+  // Dimension > 1
+  if (hasIndependentCopula())
+  {
+    roughness = 1.0;
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      roughness *= getMarginal(i).getRoughness();
+  }
+  else
+  {
+    // Small dimension
+    if (dimension_ <= ResourceMap::GetAsUnsignedInteger("Distribution-SmallDimensionRoughness"))
+    {
+      roughness = IteratedQuadrature().integrate(pdfSquaredWrapper, interval)[0];
+    } // Small dimension
+    else
+    {
+      const UnsignedInteger size = ResourceMap::GetAsUnsignedInteger("Distribution-RoughnessSamplingSize");
+      const String samplingMethod(ResourceMap::GetAsString("Distribution-RoughnessSamplingMethod"));
+      Sample sample;
+      if (samplingMethod == "MonteCarlo")
+        sample = getSample(size);
+      else if (samplingMethod == "QuasiMonteCarlo")
+        sample = getSampleByQMC(size);
+      else
+      {
+        LOGWARN(OSS() << "Unknown sampling method=" << samplingMethod << " to compute roughness. Resort to MonteCarlo");
+        sample = getSample(size);
+      }
+       roughness = computePDF(sample).computeMean()[0];
+    }
+
+  }
+  // Roughness is a L2-norm, so must be positive
+  return std::max(0.0, roughness);
 }
 
 /* Dimension accessor */

@@ -18,5 +18,29 @@ See also
 --------
 DistributionFactory, Exponential"
 
+// ---------------------------------------------------------------------
 
+%define OT_DistributionFactory_buildAsExponential_doc
+"Build the Exponential distribution.
+
+**Available usages**:
+
+    buildAsExponential(*sample*)
+
+    buildAsExponential(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : Collection of :class:`~openturns.PointWithDescription`
+    A vector of parameters of the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.Exponential`
+    The built distribution."
+%enddef
+%feature("docstring") OT::ExponentialFactory::buildAsExponential
+OT_DistributionFactory_buildAsExponential_doc
 
