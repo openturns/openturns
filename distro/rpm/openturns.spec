@@ -20,7 +20,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.15rc1
+Version:        1.15
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -38,8 +38,8 @@ BuildRequires:  tbb-devel
 BuildRequires:  python3-devel
 BuildRequires:  hmat-oss-devel
 BuildRequires:  spectra-devel
-%if 0%{?fedora_version}
 BuildRequires:  cminpack-devel
+%if 0%{?fedora_version}
 BuildRequires:  ceres-solver-devel
 BuildRequires:  coin-or-Ipopt-devel
 %endif
@@ -54,8 +54,8 @@ Requires:       libxml2
 %if ! 0%{?suse_version}
 Requires:       nlopt
 %endif
-%if 0%{?fedora_version}
 Requires:       cminpack
+%if 0%{?fedora_version}
 Requires:       ceres-solver
 Requires:       coin-or-Ipopt
 %endif
