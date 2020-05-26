@@ -39,8 +39,7 @@ LogNormal::LogNormal()
   , muLog_(0.0)
   , sigmaLog_(0.0)
   , gamma_(0.0)
-    // 1 / SQRT(2Pi)
-  , normalizationFactor_(0.39894228040143267794)
+  , normalizationFactor_(SpecFunc::ISQRT2PI) // 1 / SQRT(2Pi)
   , H_(0)
   , hermiteNodes_(0)
   , hermiteWeights_(0)
@@ -68,7 +67,7 @@ LogNormal::LogNormal(const Scalar muLog,
 {
   setName("LogNormal");
   setMuLogSigmaLog(muLog, sigmaLog);
-  normalizationFactor_ = 1.0 / (sigmaLog_ * std::sqrt(2.0 * M_PI));
+  normalizationFactor_ = 1.0 / (sigmaLog_ * SpecFunc::SQRT2PI);
   setDimension(1);
 }
 

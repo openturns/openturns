@@ -26,7 +26,7 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/ChiSquare.hxx"
 #include "openturns/NonCentralChiSquare.hxx"
-#include "openturns/Normal.hxx"
+#include "openturns/DistFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -46,8 +46,8 @@ public:
     , p_(p)
     , x_(1.0)
     , n_(n)
+    , sigma_(1.0 / std::sqrt(n))
     , chiSquare_(nu)
-    , normal_(0.0, 1.0 / std::sqrt(n))
   {
     // Nothing to do
   }
@@ -60,7 +60,7 @@ public:
   Point operator() (const Point & point) const
   {
     const Scalar z = point[0];
-    return Point(1, chiSquare_.computeComplementaryCDF(nu_ * NonCentralChiSquare(1.0, z * z).computeQuantile(p_) / (x_ * x_)) * normal_.computePDF(z));
+    return Point(1, chiSquare_.computeComplementaryCDF(nu_ * NonCentralChiSquare(1.0, z * z).computeQuantile(p_) / (x_ * x_)) * DistFunc::dNormal(z / sigma_) / sigma_);
   }
 
   void setX(const Scalar x)
@@ -87,7 +87,7 @@ public:
         << " x=" << x_
         << " n=" << n_
         << " chiSquare=" << chiSquare_
-        << " normal=" << normal_;
+        << " sigma=" << sigma_;
     return oss;
   }
 
@@ -100,7 +100,7 @@ public:
         << ", x=" << n_
         << ", n=" << n_
         << ", chiSquare=" << chiSquare_
-        << ", normal=" << normal_
+        << ", sigma=" << sigma_
         << ")";
     return oss;
   }
@@ -110,8 +110,8 @@ private:
   Scalar p_;
   Scalar x_;
   Scalar n_;
+  Scalar sigma_;
   ChiSquare chiSquare_;
-  Normal normal_;
 }; // KernelFunction
 
 class ConstraintFunction: public EvaluationImplementation

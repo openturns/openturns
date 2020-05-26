@@ -20,6 +20,7 @@
  */
 #include <cmath>
 #include "openturns/NatafIndependentCopulaGradient.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -85,8 +86,7 @@ Matrix NatafIndependentCopulaGradient::gradient(const Point & inP) const
     if ((x < 0.0) || (x > 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot evaluate the NatafIndependentCopulaGradient if all the components are not in [0, 1], here in=" << inP;
     // q = Normal(0,1).computeQuantile(x)
     const Scalar q = DistFunc::qNormal(x);
-    // 2.506628274631000502415765 = sqrt(2*Pi)
-    result(i, i) = 2.506628274631000502415765 * exp(0.5 * q * q);
+    result(i, i) = SpecFunc::SQRT2PI * exp(0.5 * q * q);
   }
   return result;
 }
