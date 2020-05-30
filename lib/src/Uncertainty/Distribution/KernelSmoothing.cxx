@@ -146,7 +146,7 @@ struct PluginConstraint
         if (std::abs(x) < cutOffPlugin) phi += 2.0 * hermitePolynomial_(x) * std::exp(-0.5 * x * x);
       }
     }
-    const Scalar res = phi / ((N_ * (N_ - 1.0)) * std::pow(h, order_ + 1.0) * std::sqrt(2.0 * M_PI));
+    const Scalar res = phi / ((N_ * N_) * std::pow(h, order_ + 1.0) * std::sqrt(2.0 * M_PI));
     return res;
   }
 
