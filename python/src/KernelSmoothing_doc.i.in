@@ -314,7 +314,15 @@ bandwidth : :class:`~openturns.Point`
 Notes
 -----
 Warning! It can take a lot of time for large samples, as the cost is  quadratic with the sample size.
-"
+The `"KernelSmoothing-CutOffPlugin"` key of the `ResourceMap` controls 
+the accuracy of the approximation used to estimate the rugosity of the 
+second derivative of the distribution. 
+The default value ensures that terms in the sum which weight are lower than 
+4.e-6 are ignored, which can reduce the calculation in some situations. 
+The properties of the standard gaussian density are so that, 
+in order to make the computation exact, the value of the 
+`"KernelSmoothing-CutOffPlugin"` must be set to 39, but this may increase the 
+computation time."
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KernelSmoothing::computeMixedBandwidth
