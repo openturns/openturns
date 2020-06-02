@@ -55,12 +55,13 @@ namespace OT {
 
 %template(RandomVectorCollection) OT::Collection<OT::RandomVector>;
 
-%typemap(in) const RandomVectorCollection & {
+%typemap(in) const RandomVectorCollection & (OT::Pointer<OT::Collection<OT::RandomVector > > temp) {
   if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
     // From interface class, ok
   } else {
     try {
-      $1 = OT::buildCollectionFromPySequence< OT::RandomVector >( $input );
+      temp = OT::buildCollectionFromPySequence< OT::RandomVector >($input);
+      $1 = temp.get();
     } catch (OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of RandomVector");
     }

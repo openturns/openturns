@@ -10,12 +10,13 @@
 
 %template(CollectionType) OT::Collection<Namespace::Interface>;
 
-%typemap(in) const CollectionType & {
+%typemap(in) const CollectionType & (OT::Pointer<OT::Collection<Namespace::Interface> > temp) {
   if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
     // From interface class, ok
   } else {
     try {
-      $1 = OT::buildCollectionFromPySequence< Namespace::Interface >($input);
+      temp = OT::buildCollectionFromPySequence< Namespace::Interface >($input);
+      $1 = temp.get();
     } catch (OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of " # Interface);
     }

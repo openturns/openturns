@@ -43,12 +43,13 @@ namespace OT {
 
 %template(PolygonCollection) OT::Collection<OT::Polygon>;
 
-%typemap(in) const PolygonCollection & {
+%typemap(in) const PolygonCollection & (OT::Pointer<OT::Collection<OT::Polygon> > temp) {
   if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
     // From interface class, ok
   } else {
     try {
-      $1 = OT::buildCollectionFromPySequence< OT::Polygon >( $input );
+      temp = OT::buildCollectionFromPySequence< OT::Polygon >($input);
+      $1 = temp.get();
     } catch (OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of Polygon");
     }

@@ -12,7 +12,7 @@ OTTypedInterfaceObjectHelper(Function)
 
 
 
-%typemap(in) const FunctionCollection & {
+%typemap(in) const FunctionCollection & (OT::Pointer<OT::Collection<OT::Function> > temp) {
   void * ptr = 0;
   if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
     // From interface class, ok
@@ -22,7 +22,8 @@ OTTypedInterfaceObjectHelper(Function)
     $1 = new OT::Collection<OT::Function>(*p_impl);
   } else {
     try {
-      $1 = OT::buildCollectionFromPySequence< OT::Function >( $input );
+      temp = OT::buildCollectionFromPySequence< OT::Function >($input);
+      $1 = temp.get();
     } catch (OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of Function");
     }
