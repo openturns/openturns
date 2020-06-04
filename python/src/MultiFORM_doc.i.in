@@ -32,8 +32,7 @@ Parameters
 solver : :class:`~openturns.OptimizationAlgorithm`
     Optimization algorithm used to research the design point.
 event : :class:`~openturns.RandomVector`
-    Failure system event, in disjunctive normal form
-    (either a union of intersections, or a single intersection)
+    Failure event
 physicalStartingPoint : sequence of float
     Starting point of the optimization algorithm, declared in the physical
     space.
