@@ -247,13 +247,12 @@ void AnalyticalResult::computeMeanPointInStandardEventDomain() const
   }
   while (sum > quantileEpsilon * scaling);
   meanPointInStandardEventDomain_ = standardSpaceDesignPoint_ * (scaling / hasoferReliabilityIndex_);
-  isAlreadyComputedMeanPointInStandardEventDomain_ = true;
 }
 
 /* Mean point conditioned to the event realization accessor */
 Point AnalyticalResult::getMeanPointInStandardEventDomain() const
 {
-  if (!isAlreadyComputedMeanPointInStandardEventDomain_) computeMeanPointInStandardEventDomain();
+  if (!meanPointInStandardEventDomain_.getSize()) computeMeanPointInStandardEventDomain();
   return meanPointInStandardEventDomain_;
 }
 
@@ -502,6 +501,7 @@ void AnalyticalResult::save(Advocate & adv) const
   adv.saveAttribute( "classicalImportanceFactors_", classicalImportanceFactors_ );
   adv.saveAttribute( "physicalImportanceFactors_", physicalImportanceFactors_ );
   adv.saveAttribute( "hasoferReliabilityIndexSensitivity_", sensitivity );
+  adv.saveAttribute( "meanPointInStandardEventDomain_", meanPointInStandardEventDomain_);
   adv.saveAttribute( "isAlreadyComputedImportanceFactors_", isAlreadyComputedImportanceFactors_ );
   adv.saveAttribute( "isAlreadyComputedClassicalImportanceFactors_", isAlreadyComputedClassicalImportanceFactors_ );
   adv.saveAttribute( "isAlreadyComputedPhysicalImportanceFactors_", isAlreadyComputedPhysicalImportanceFactors_ );
@@ -522,6 +522,7 @@ void AnalyticalResult::load(Advocate & adv)
   adv.loadAttribute( "importanceFactors_", importanceFactors_ );
   adv.loadAttribute( "classicalImportanceFactors_", classicalImportanceFactors_ );
   adv.loadAttribute( "hasoferReliabilityIndexSensitivity_", sensitivity );
+  adv.loadAttribute( "meanPointInStandardEventDomain_", meanPointInStandardEventDomain_);
   adv.loadAttribute( "isAlreadyComputedImportanceFactors_", isAlreadyComputedImportanceFactors_ );
   adv.loadAttribute( "isAlreadyComputedClassicalImportanceFactors_", isAlreadyComputedClassicalImportanceFactors_ );
   adv.loadAttribute( "isAlreadyComputedHasoferReliabilityIndexSensitivity_", isAlreadyComputedHasoferReliabilityIndexSensitivity_ );
