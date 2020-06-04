@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -129,11 +130,13 @@ if distribution.getDimension() <= 2:
     interval, beta = distribution.computeUnilateralConfidenceIntervalWithMarginalProbability(0.95, True)
     print("Unilateral confidence interval (upper tail)=", interval)
     print("beta=%.5f" % beta)
-    
+
 print("entropy     =%.5f" % distribution.computeEntropy())
 print("entropy (MC)=%.5f" % -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0])
 mean = distribution.getMean()
-print("mean=", mean)
+# Ensure mean is [0,0,1,1,1,1,1]
+# Following platform, the value slightly differs
+ott.assert_almost_equal(distribution.getMean(), [0,0,1,1,1,1,1])
 ot.PlatformInfo.SetNumericalPrecision(4)
 covariance = distribution.getCovariance()
 print("covariance=", covariance)

@@ -38,7 +38,6 @@ Quantile=class=Point name=Unnamed dimension=7 values=[1.28123,1.28123,3.56246,3.
 CDF(quantile)=0.5
 entropy=10.964
 entropy (MC)=10.9656
-mean=class=Point name=Unnamed dimension=7 values=[1.52656e-16,1.52656e-16,1,1,1,1,1]
 covariance=class=CovarianceMatrix dimension=7 implementation=class=MatrixImplementation name=Unnamed rows=7 columns=7 values=[1,0.184,0,0,0,0,0,0.184,1,0,0,0,0,0,0,0,4,2,1,0,0,0,0,2,4,0,0,0,0,0,1,0,4,0,0,0,0,0,0,0,1,0.06227,0,0,0,0,0,0.06227,1]
 correlation=class=CorrelationMatrix dimension=7 implementation=class=MatrixImplementation name=Unnamed rows=7 columns=7 values=[1,0.184,0,0,0,0,0,0.184,1,0,0,0,0,0,0,0,1,0.5,0.25,0,0,0,0,0.5,1,0,0,0,0,0,0.25,0,1,0,0,0,0,0,0,0,1,0.06227,0,0,0,0,0,0.06227,1]
 spearman=class=CorrelationMatrix dimension=7 implementation=class=MatrixImplementation name=Unnamed rows=7 columns=7 values=[1,0.1924,0,0,0,0,0,0.1924,1,0,0,0,0,0,0,0,1,0.4826,0.2394,0,0,0,0,0.4826,1,0,0,0,0,0,0.2394,0,1,0,0,0,0,0,0,0,1,0.08306,0,0,0,0,0,0.08306,1]
