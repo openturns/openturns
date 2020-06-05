@@ -17,8 +17,8 @@ jobs:
         cd $HOME/work/openturns
            git clone https://github.com/yixuan/spectra.git spectra
            cd spectra/ 
-           git checkout v0.9.0
-           cmake -DBUILD_TESTS=TRUE -DCMAKE_INSTALL_PREFIX=$HOME/ .
+           git checkout v1.0.0
+           cmake -DCMAKE_INSTALL_PREFIX=$HOME/ .
            make install -j$(sysctl -n hw.logicalcpu)
     - run: |
         cd $HOME/work/openturns
