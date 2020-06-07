@@ -30,6 +30,7 @@
 #include "openturns/UniVariatePolynomial.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
+#include "openturns/SobolSequence.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/ComposedDistribution.hxx"
 #include "openturns/BlockIndependentDistribution.hxx"
@@ -148,7 +149,7 @@ struct PluginConstraint
         if (std::abs(x) < cutOffPlugin) phi += 2.0 * hermitePolynomial_(x) * std::exp(-0.5 * x * x);
       }
     }
-    const Scalar res = phi / ((N_ * (N_ - 1.0)) * std::pow(h, order_ + 1.0) * std::sqrt(2.0 * M_PI));
+    const Scalar res = phi / (N_ * N_ * std::pow(h, order_ + 1.0) * std::sqrt(2.0 * M_PI));
     return res;
   }
 
@@ -158,7 +159,7 @@ struct PluginConstraint
     const Scalar h = x[0];
     const Scalar gammaH = K_ * std::pow(h, 5.0 / 7.0);
     const Scalar phiGammaH = computePhi(gammaH);
-    const Scalar res = h - std::pow(2.0 * std::sqrt(M_PI) * phiGammaH * N_, -1.0 / 5.0);
+    const Scalar res = h - SpecFunc::IRoot(2.0 * std::sqrt(M_PI) * std::abs(phiGammaH) * N_, -5);
     return Point(1, res);
   }
 
@@ -178,16 +179,17 @@ Point KernelSmoothing::computePluginBandwidth(const Sample & sample) const
   const UnsignedInteger dimension = sample.getDimension();
   if (dimension != 1) throw InvalidArgumentException(HERE) << "Error: plugin bandwidth is available only for 1D sample";
   const UnsignedInteger size = sample.getSize();
-  if (size < 2) return Point(1, 0.0);
   // Approximate the derivatives by smoothing under the Normal assumption
   const Scalar sd = sample.computeStandardDeviationPerComponent()[0];
+  if (!(sd > 0.0))
+    throw NotDefinedException(HERE) << "Cannot compute the plugin bandwith when the variance is null";
   const Scalar phi6Normal = -15.0 / (16.0 * std::sqrt(M_PI)) * std::pow(sd, -7.0);
   const Scalar phi8Normal = 105.0 / (32.0 * std::sqrt(M_PI)) * std::pow(sd, -9.0);
-  const Scalar g1 = std::pow(-6.0 / (std::sqrt(2.0 * M_PI) * phi6Normal * size), 1.0 / 7.0);
-  const Scalar g2 = std::pow(30.0 / (std::sqrt(2.0 * M_PI) * phi8Normal * size), 1.0 / 9.0);
+  const Scalar g1 = SpecFunc::IRoot(-6.0 / (std::sqrt(2.0 * M_PI) * phi6Normal * size), 7);
+  const Scalar g2 = SpecFunc::IRoot(30.0 / (std::sqrt(2.0 * M_PI) * phi8Normal * size), 9);
   const Scalar phi4 = PluginConstraint(sample, 1.0, 4).computePhi(g1);
   const Scalar phi6 = PluginConstraint(sample, 1.0, 6).computePhi(g2);
-  const Scalar K = std::pow(-6.0 * std::sqrt(2.0) * phi4 / phi6, 1.0 / 7.0);
+  const Scalar K = SpecFunc::IRoot(-6.0 * std::sqrt(2.0) * phi4 / phi6, 7);
   PluginConstraint constraint(sample, K, 4);
   const Function f(bindMethod<PluginConstraint, Point, Point>(constraint, &PluginConstraint::computeBandwidthConstraint, 1, 1));
   // Find a bracketing interval
@@ -206,7 +208,7 @@ Point KernelSmoothing::computePluginBandwidth(const Sample & sample) const
   }
   // Solve loosely the constraint equation
   Brent solver(ResourceMap::GetAsScalar( "KernelSmoothing-AbsolutePrecision" ), ResourceMap::GetAsScalar( "KernelSmoothing-RelativePrecision" ), ResourceMap::GetAsScalar( "KernelSmoothing-ResidualPrecision" ), ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-MaximumIteration" ));
-  return Point(1, solver.solve(f, 0.0, a, b) / kernel_.getStandardDeviation()[0]);
+  return Point(1, solver.solve(f, 0.0, a, b, fA, fB) / kernel_.getStandardDeviation()[0]);
 }
 
 /* Compute the bandwidth according to a mixed rule:
@@ -221,21 +223,41 @@ Point KernelSmoothing::computeMixedBandwidth(const Sample & sample) const
   const UnsignedInteger dimension = sample.getDimension();
   if (dimension != 1) throw InvalidArgumentException(HERE) << "Error: mixed bandwidth is available only for 1D sample";
   const UnsignedInteger size = sample.getSize();
-  if (size < 2) return Point(1, 0.0);
   // Small sample, just return the plugin bandwidth
   if (size <= ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-SmallSize" )) return computePluginBandwidth(sample);
-  Sample smallSample(ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-SmallSize" ), 1);
-  for (UnsignedInteger i = 0; i < ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-SmallSize" ); ++i) smallSample(i, 0) = sample(i, 0);
-  const Scalar h1 = computePluginBandwidth(smallSample)[0];
-  const Scalar h2 = computeSilvermanBandwidth(smallSample)[0];
-  return computeSilvermanBandwidth(sample) * (h1 / h2);
+  const UnsignedInteger smallSize = ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-SmallSize" );
+  Sample smallSample(smallSize, 1);
+  // Generate a shuffled selection of a sub-sample using a low-discrepancy sequence
+  // to be reproducible
+  const SobolSequence sobol(1);
+  Indices buffer(size);
+  buffer.fill();
+  for (UnsignedInteger i = 0; i < smallSize; ++i)
+  {
+    const UnsignedInteger index = i + static_cast<UnsignedInteger>((size - i) * sobol.generate()[0]);
+    smallSample(i, 0) = sample(buffer[index], 0);
+    buffer[index] = buffer[i];
+  }
+  try
+  {
+    const Scalar h1 = computePluginBandwidth(smallSample)[0];
+    const Scalar h2 = computeSilvermanBandwidth(smallSample)[0];
+    return computeSilvermanBandwidth(sample) * (h1 / h2);
+  }
+  catch (NotDefinedException &)
+  {
+    // fallback to silverman
+    return computeSilvermanBandwidth(sample);
+  }
 }
 
 /* Build a Normal kernel mixture based on the given sample. If no bandwith has already been set, Silverman's rule is used */
 Distribution KernelSmoothing::build(const Sample & sample) const
 {
   // For 1D sample, use the rule that give the best tradeoff between speed and precision
-  if (sample.getDimension() == 1) return build(sample, computeMixedBandwidth(sample));
+  if (sample.getDimension() == 1)
+    return build(sample, computeMixedBandwidth(sample));
+
   // For nD sample, use the only available rule
   return build(sample, computeSilvermanBandwidth(sample));
 }
