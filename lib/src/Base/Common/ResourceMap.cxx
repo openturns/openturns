@@ -976,7 +976,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("KernelMixture-SmallSize", 50);
 
   // KernelSmoothing parameters //
-  addAsScalar("KernelSmoothing-AbsolutePrecision", 0.0);
+  addAsScalar("KernelSmoothing-AbsolutePrecision", 1.0e-5);
   addAsScalar("KernelSmoothing-CutOffPlugin", 5.0);
   addAsScalar("KernelSmoothing-RelativePrecision", 1.0e-5);
   addAsScalar("KernelSmoothing-ResidualPrecision", 1.0e-10);
