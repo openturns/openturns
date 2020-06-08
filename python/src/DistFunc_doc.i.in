@@ -251,6 +251,26 @@ Examples
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::DistFunc::dNormal
+"PDF of an unit-variance centered Normal distribution.
+
+Parameters
+----------
+x : float or sequence of floats
+    Location
+
+Returns
+-------
+pdf : float or sequence of floats
+
+Examples
+--------
+>>> import openturns as ot
+>>> pdf = ot.DistFunc.dNormal(3.0)
+>>> pdf = ot.DistFunc.dNormal([-3, -2, 2, 3])"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::DistFunc::pNormal
 "CDF of an unit-variance centered Normal distribution.
 

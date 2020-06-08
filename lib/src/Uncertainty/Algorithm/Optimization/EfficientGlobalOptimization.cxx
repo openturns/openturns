@@ -27,7 +27,6 @@
 #include "openturns/MultiStart.hxx"
 #include "openturns/ComposedDistribution.hxx"
 #include "openturns/Uniform.hxx"
-#include "openturns/Normal.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -93,9 +92,8 @@ public:
     const Scalar sk2 = metaModelResult_.getConditionalMarginalVariance(x);
     const Scalar sk = sqrt(sk2);
     if (!SpecFunc::IsNormal(sk)) return Point(1, -SpecFunc::MaxScalar);
-    const Point ratio (1, fmMk / sk);
-    const Normal gaussian(1);
-    Scalar ei = fmMk * gaussian.computeCDF(ratio) + sk * gaussian.computePDF(ratio);
+    const Scalar ratio = fmMk / sk;
+    Scalar ei = fmMk * DistFunc::pNormal(ratio) + sk * DistFunc::dNormal(ratio);
     if (noiseModel_.getOutputDimension() == 1) // if provided
     {
       const Scalar noiseVariance = noiseModel_(x)[0];

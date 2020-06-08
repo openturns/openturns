@@ -70,7 +70,7 @@ Scalar StudentCDF(const Scalar nu,
     // -> \epsilon/x = x * c4 /nu^4 -> nu=(x^2*c4/\epsilon)^{1/4}
     const Scalar c4 = (21.0 / 2048.0 + (61.0 / 6144.0 + (-71.0 / 30720.0 + (-313.0 / 30720.0 + (-2141.0 / 92160.0 + (445.0 / 18432.0 + (-25.0 / 6144.0 + x2 / 6144.0) * x2) * x2) * x2) * x2) * x2) * x2) * x2;
     const Scalar lastContribution = std::abs(c4 * inu * inu * inu * inu * x);
-    Scalar normalPDF = SpecFunc::ISQRT2PI * std::exp(-0.5 * x2);
+    Scalar normalPDF = DistFunc::dNormal(x);
     Scalar normalCCDF = DistFunc::pNormal(std::abs(x), true);
     if (normalCCDF > SpecFunc::ScalarEpsilon * normalPDF * lastContribution)
     {
@@ -346,21 +346,21 @@ Scalar NonCentralStudentCDF(const Scalar nu,
   {
     // Ith interval at the left of the mode
     const Scalar ci = lowerBound + (i + 0.5) * dLowerBound;
-    Scalar contributionLeft = wg0 * DistFunc::pGamma(halfNu, omega * std::pow(ci + delta, 2), useChiSquareTail) * std::exp(-0.5 * ci * ci) * SpecFunc::ISQRT2PI;
+    Scalar contributionLeft = wg0 * DistFunc::pGamma(halfNu, omega * std::pow(ci + delta, 2), useChiSquareTail) * DistFunc::dNormal(ci);
     // Ith interval at the right of the mode
     const Scalar xii = upperBound + (i + 0.5) * dUpperBound;
-    Scalar contributionRight = wg0 * DistFunc::pGamma(halfNu, omega * std::pow(xii + delta, 2), useChiSquareTail) * std::exp(-0.5 * xii * xii) * SpecFunc::ISQRT2PI;
+    Scalar contributionRight = wg0 * DistFunc::pGamma(halfNu, omega * std::pow(xii + delta, 2), useChiSquareTail) * DistFunc::dNormal(xii);
     for (UnsignedInteger j = 0; j < xg.getSize() / 2; ++j)
     {
       const Scalar zetaj = xg[2 * j + 1];
       // Contribution of the left interval
       const Scalar zj_m = ci - wLowerBound * zetaj;
       const Scalar zj_p = ci + wLowerBound * zetaj;
-      contributionLeft += wg[j] * SpecFunc::ISQRT2PI * (DistFunc::pGamma(halfNu, omega * std::pow(zj_m + delta, 2), useChiSquareTail) * std::exp(-0.5 * zj_m * zj_m) + DistFunc::pGamma(halfNu, omega * std::pow(zj_p + delta, 2), useChiSquareTail) * std::exp(-0.5 * zj_p * zj_p));
+      contributionLeft += wg[j] * (DistFunc::pGamma(halfNu, omega * std::pow(zj_m + delta, 2), useChiSquareTail) * DistFunc::dNormal(zj_m) + DistFunc::pGamma(halfNu, omega * std::pow(zj_p + delta, 2), useChiSquareTail) * DistFunc::dNormal(zj_p));
       // Contribution of the right interval
       const Scalar zetaj_m = xii - wUpperBound * zetaj;
       const Scalar zetaj_p = xii + wUpperBound * zetaj;
-      contributionRight += wg[j] * SpecFunc::ISQRT2PI * (DistFunc::pGamma(halfNu, omega * std::pow(zetaj_m + delta, 2), useChiSquareTail) * std::exp(-0.5 * zetaj_m * zetaj_m) + DistFunc::pGamma(halfNu, omega * std::pow(zetaj_p + delta, 2), useChiSquareTail) * std::exp(-0.5 * zetaj_p * zetaj_p));
+      contributionRight += wg[j] * (DistFunc::pGamma(halfNu, omega * std::pow(zetaj_m + delta, 2), useChiSquareTail) * DistFunc::dNormal(zetaj_m) + DistFunc::pGamma(halfNu, omega * std::pow(zetaj_p + delta, 2), useChiSquareTail) * DistFunc::dNormal(zetaj_p));
     } // Loop over j, the integration points
     value += contributionLeft * wLowerBound - contributionRight * wUpperBound;
   } // Loop over i, the integration subintervals
