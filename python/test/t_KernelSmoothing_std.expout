@@ -164,3 +164,4 @@ with automatic boundaries correction, pdf(left)=0.521446 , pdf(right)=0.50572
 with user defined lower/automatic upper boundaries correction, pdf(left)=0.506611 , pdf(right)=0.50572
 with automatic lower/user defined upper boundaries correction, pdf(left)=0.521446 , pdf(right)=0.504159
 with user defined boundaries correction, pdf(left)=0.506611 , pdf(right)=0.504159
+With reduced cutoff. h=0.769339

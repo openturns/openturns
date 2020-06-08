@@ -155,8 +155,12 @@ struct PluginConstraint
   {
     const Scalar h = x[0];
     const Scalar gammaH = K_ * std::pow(h, 5.0 / 7.0);
-    const Scalar phiGammaH = computePhi(gammaH);
-    const Scalar res = h - std::pow(2.0 * std::sqrt(M_PI) * phiGammaH * N_, -1.0 / 5.0);
+    Scalar phiGammaH = computePhi(gammaH);
+    if (phiGammaH < 0.0)
+    {
+      phiGammaH = - phiGammaH;
+    }
+    Scalar res = h - std::pow(2.0 * std::sqrt(M_PI) * phiGammaH * N_, -1.0 / 5.0);
     return Point(1, res);
   }
 

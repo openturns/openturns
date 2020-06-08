@@ -161,6 +161,16 @@ try:
     ks9 = algo9.build(sample)
     print("with user defined boundaries correction, pdf(left)=%.6g" %
           ks9.computePDF(left), ", pdf(right)=%.6g" % ks9.computePDF(right))
+    
+    # Test with reduced Cutoff - generates non positive phiGammaH
+    distribution = Normal()
+    kernel = Normal()
+    factory = KernelSmoothing(kernel)
+    ResourceMap_SetAsScalar("KernelSmoothing-CutOffPlugin", 3.0)
+    RandomGenerator.SetSeed(8457)
+    sample = distribution.getSample(30)
+    h = factory.computePluginBandwidth(sample)[0]    
+    print("With reduced cutoff. h=%.6g" % (h))
 
 except:
     import sys
