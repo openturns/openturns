@@ -1135,6 +1135,33 @@ UnsignedInteger SpecFunc::NextPowerOfTwo(const UnsignedInteger n)
   return powerOfTwo;
 }
 
+// Integer power
+Scalar SpecFunc::IPow(const Scalar x, const SignedInteger n)
+{
+  if (n == 0) return 1.0;
+  if (x == 0) return 0.0;
+  if (x < 0.0)
+    {
+      if (n % 2) return -std::pow(-x, 1.0 * n);
+      return std::pow(-x, 1.0 * n);
+    }
+  return std::pow(x, 1.0 * n);
+}
+  
+// Integer root
+Scalar SpecFunc::IRoot(const Scalar x, const SignedInteger n)
+{
+  if (n == 0) throw InvalidArgumentException(HERE) << "Cannot take the zeroth root of anything!";
+  if (x == 0) return 0.0;
+  if (x < 0.0)
+    {
+      if (n % 2 == 0) throw InvalidArgumentException(HERE) << "Cannot take an even root of a negative number";
+      return -std::pow(-x, 1.0 / n);
+    }
+  return std::pow(x, 1.0 / n);
+}
+  
+
 // Compute the number of bits sets to 1 in n
 // Best known algorithm for 64 bits n and fast multiply
 UnsignedInteger SpecFunc::BitCount(const Unsigned64BitsInteger n)

@@ -958,6 +958,54 @@ result : float"
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::SpecFunc::IPow
+"Raise the given :math:`x` to the integral power :math:`n`.
+
+.. math::
+
+    IPow(x, n) = x^n
+
+Parameters
+----------
+n : int
+x : float
+
+Returns
+-------
+result : foat
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.SpecFunc.IPow(-2.5, 3)
+-15.625"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::IRoot
+"Extract the :math:`n` integral root of the given :math:`x`.
+
+.. math::
+
+    IRoot(x, n) = \sqrt[n]{x}
+
+Parameters
+----------
+n : int
+x : float
+
+Returns
+-------
+result : foat
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.SpecFunc.IRoot(-15.625, 3)
+-2.5"
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::SpecFunc::NextPowerOfTwo
 "Smallest power of two greater or equal to the given :math:`n`.
 
