@@ -20,6 +20,7 @@
  */
 #include <cmath>
 #include "openturns/InverseNatafIndependentCopulaHessian.hxx"
+#include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
