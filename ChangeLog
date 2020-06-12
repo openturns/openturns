@@ -20,7 +20,7 @@
  * #1377 (The `setKnownParameter` method is not compatible with `buildEstimator`)
  * #1507 (Leak in Collection typemaps)
  * #1510 (ot.Ceres('LEVENBERG_MARQUARDT') and ot.Ceres('DOGLEG') do not handle bound constraints)
-
+ * #1521 (Basis of MonomialFunction)
 
 == 1.15 release (2020-05-25) == #release-1.15
 
