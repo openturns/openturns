@@ -346,7 +346,7 @@ marginalIndex: int
 
 Returns
 -------
-Graph : :class:`~openturns.Graph`
+graph : :class:`~openturns.Graph`
     A graph containing the aggregated first and total order indices.
 
 Notes
@@ -383,7 +383,7 @@ title : str
 
 Returns
 -------
-Graph : :class:`~openturns.Graph`
+graph : :class:`~openturns.Graph`
     A graph containing a :class:`~openturns.Cloud` and a :class:`~openturns.Text` 
     of the correlation coefficients."
 %enddef
@@ -415,7 +415,7 @@ title : str
 
 Returns
 -------
-Graph : :class:`~openturns.Graph`
+graph : :class:`~openturns.Graph`
     A graph containing a :class:`~openturns.Pie` of the importance factors of
     the variables."
 %enddef
@@ -435,10 +435,14 @@ firstOrderIndices : sequence of float
     First order indices values
 totalOrderIndices : sequence of float
     Total order indices values
+fo_ci : :class:`~openturns.Interval`, optional
+    First order indices confidence interval
+to_ci : :class:`~openturns.Interval`, optional
+    Total order indices confidence interval
 
 Returns
 -------
-Graph : :class:`~openturns.Graph`
+graph : :class:`~openturns.Graph`
     For each variable, draws first and total indices"
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::DrawSobolIndices

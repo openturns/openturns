@@ -165,7 +165,10 @@ Refer to :ref:`sensitivity_sobol`.
     :template: class.rst_t
 
     SobolIndicesExperiment
-    SobolSimulationAlgorithm
+
+    :template: classWithPlot.rst_t
+   
+    SobolSimulationAlgorithm 
     SobolSimulationResult
 
 Statistical tests

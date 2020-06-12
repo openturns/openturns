@@ -63,6 +63,9 @@ public:
   /** String converter */
   virtual String __repr__() const;
 
+  /** Draw indices */
+  Graph draw(const Scalar confidenceLevel = 0.95) const;
+
   /** Method save() stores the object through the StorageManager */
   virtual void save(Advocate & adv) const;
 

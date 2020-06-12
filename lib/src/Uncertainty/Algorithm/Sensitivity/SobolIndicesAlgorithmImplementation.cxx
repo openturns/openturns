@@ -616,7 +616,9 @@ Sample SobolIndicesAlgorithmImplementation::computeIndices(const Sample &,
 
 Graph SobolIndicesAlgorithmImplementation::DrawSobolIndices(const Description & inputDescription,
     const Point & firstOrderIndices,
-    const Point & totalOrderIndices)
+    const Point & totalOrderIndices,
+    const Interval & firstOrderConfidenceInterval,
+    const Interval & totalOrderConfidenceInterval)
 {
   Graph graph("Sobol' indices", "inputs", "index value", true, "");
 
@@ -650,6 +652,36 @@ Graph SobolIndicesAlgorithmImplementation::DrawSobolIndices(const Description & 
   Text text(data, inputDescription, "right");
   text.setColor("black");
   graph.add(text);
+
+  // Draw confidence intervals
+  if (firstOrderConfidenceInterval.getDimension())
+  {
+    // transform data
+    Sample data(2, 2);
+    for (UnsignedInteger k = 0; k < dimension; ++k)
+    {
+      // Relative to FirstOrder
+      data(0, 0) = (k + 1);
+      data(0, 1) = firstOrderConfidenceInterval.getLowerBound()[k];
+      data(1, 0) = (k + 1);
+      data(1, 1) = firstOrderConfidenceInterval.getUpperBound()[k];
+      graph.add(Curve(data, "red", "solid", 2, ""));
+    }
+  }
+  if (totalOrderConfidenceInterval.getDimension())
+  {
+    // transform data
+    Sample data(2, 2);
+    for (UnsignedInteger k = 0; k < dimension; ++k)
+    {
+      // Relative to TotalOrder
+      data(0, 0) = (k + 1) + dimension / 40.0;
+      data(0, 1) = totalOrderConfidenceInterval.getLowerBound()[k];
+      data(1, 0) = (k + 1) + dimension / 40.0;
+      data(1, 1) = totalOrderConfidenceInterval.getUpperBound()[k];
+      graph.add(Curve(data, "blue", "solid", 2, ""));
+    }
+  }
 
   // Set bounding box
   Point lowerBound(2, -0.1);
