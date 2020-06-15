@@ -30,6 +30,7 @@
 #include "openturns/OTconfig.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/Pie.hxx"
+#include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -777,6 +778,29 @@ void GraphImplementation::load(Advocate & adv)
   adv.loadAttribute( "drawablesCollection_", drawablesCollection_ );
 }
 
+Bool GraphImplementation::isComposite() const
+{
+  return false;
+}
 
+UnsignedInteger GraphImplementation::getNbRows() const
+{
+  throw NotYetImplementedException(HERE) << "in GraphImplementation::getNbRows";
+}
+
+UnsignedInteger GraphImplementation::getNbColumns() const
+{
+  throw NotYetImplementedException(HERE) << "in GraphImplementation::getNbColumns";
+}
+
+Graph GraphImplementation::getGraph(const UnsignedInteger /*i*/, const UnsignedInteger /*j*/) const
+{
+  throw NotYetImplementedException(HERE) << "in GraphImplementation::getGraph";
+}
+
+void GraphImplementation::setGraph(const UnsignedInteger /*i*/, const UnsignedInteger /*j*/, const Graph & /*elt*/)
+{
+  throw NotYetImplementedException(HERE) << "in GraphImplementation::setGraph";
+}
 
 END_NAMESPACE_OPENTURNS

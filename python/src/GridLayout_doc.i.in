@@ -1,0 +1,18 @@
+%feature("docstring") OT::GridLayout
+"Organize subgraphs in a grid.
+
+Parameters
+----------
+nb_rows : int
+    Number of grid rows
+nb_cols : int
+    Number of grid columns
+
+Examples
+--------
+>>> import openturns as ot
+>>> grid = ot.GridLayout(2, 3)
+>>> for j in range(grid.getNbColumns()):
+...    beta = 1.0 + j
+...    grid.setGraph(0, j, ot.Gumbel(beta, 0.0).drawPDF())
+...    grid.setGraph(1, j, ot.Gumbel(beta, 0.0).drawCDF())"

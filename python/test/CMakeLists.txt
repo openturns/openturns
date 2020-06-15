@@ -275,6 +275,7 @@ ot_pyinstallcheck_test (PolygonArray_std)
 ot_pyinstallcheck_test (Staircase_std)
 ot_pyinstallcheck_test (Text_std)
 endif ()
+ot_pyinstallcheck_test (GridLayout_std IGNOREOUT)
 
 ## Diff
 ot_pyinstallcheck_test (FiniteDifferenceStep_std)

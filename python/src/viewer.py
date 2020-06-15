@@ -91,9 +91,10 @@ class View(object):
 
     add_legend : bool, optional
         Adds a legend if True. Default is True.
+
     square_axes : bool, optional
         Forces the axes to share the same scale if True. Default is False.
-        
+
     Examples
     --------
     >>> import openturns as ot
@@ -152,12 +153,6 @@ class View(object):
                 raise TypeError(
                     'The given object cannot be converted into a Graph nor Drawable.')
 
-        drawables = graph.getDrawables()
-        n_drawables = len(drawables)
-        if n_drawables == 0:
-            warnings.warn('-- Nothing to draw.')
-            return
-
         # check that arguments are dictionnaries
         figure_kwargs = self._CheckDict(figure_kwargs)
         axes_kwargs = self._CheckDict(axes_kwargs)
@@ -172,6 +167,11 @@ class View(object):
         clabel_kwargs_default = self._CheckDict(clabel_kwargs)
         text_kwargs_default = self._CheckDict(text_kwargs)
         legend_kwargs = self._CheckDict(legend_kwargs)
+
+        # scaled grid graphs
+        if graph.isComposite() and graph.getNbRows() * graph.getNbColumns() > 1:
+            figure_kwargs.setdefault(
+                'figsize', (6.0 * graph.getNbColumns(), 6.0 * graph.getNbRows()))
 
         # set image size in pixels
         if pixelsize is not None:
@@ -199,6 +199,33 @@ class View(object):
             self._fig = figure
             if len(axes) == 0:
                 axes = self._fig.axes
+
+        if graph.isComposite():
+            for i in range(graph.getNbRows()):
+                for j in range(graph.getNbColumns()):
+                    graphij = graph.getGraph(i, j)
+                    if len(graphij.getDrawables()) == 0:
+                        continue
+                    axes = [self._fig.add_subplot(graph.getNbRows(), graph.getNbColumns(), 1 + i * graph.getNbColumns() + j, **axes_kwargs)]
+                    axes[0].axison = graphij.getAxes()
+                    # hide inner ticks
+                    if i < graph.getNbRows() - 1:
+                        axes[0].set_xticklabels([])
+                    if j > 0:
+                        axes[0].set_yticklabels([])
+                    # hide frame top/right
+                    if LooseVersion(matplotlib.__version__) > '3.0':
+                        axes[0].spines['right'].set_visible(False)
+                        axes[0].spines['top'].set_visible(False)
+                    View(graphij, figure=self._fig, axes=axes, plot_kwargs=plot_kwargs, contour_kwargs=contour_kwargs, clabel_kwargs=clabel_kwargs)
+                    self._fig.suptitle(self._ToUnicode(graph.getTitle()))
+            return
+
+        drawables = graph.getDrawables()
+        n_drawables = len(drawables)
+        if n_drawables == 0:
+            warnings.warn('-- Nothing to draw.')
+            return
 
         # set title
         self._fig.suptitle(self._ToUnicode(graph.getTitle()))
@@ -232,8 +259,12 @@ class View(object):
                      ot.GraphImplementation.LOGXY: None}
         axis = axis_mask[graph.getLogScale()]
         if axis is not None:
-            self._ax[0].ticklabel_format(
-                axis=axis, style='sci', scilimits=(-3, 5))
+            try:
+                # not all formatters support scientific format, eg FixedFormatter when ticklabels are disabled on subplots
+                # FixedFormatter' object has no attribute 'set_scientific'
+                self._ax[0].ticklabel_format(axis=axis, style='sci', scilimits=(-3, 5))
+            except AttributeError:
+                pass
 
         has_labels = False
 
@@ -663,7 +694,7 @@ def _ToImageString(graph):
     Parameters
     ----------
     graph : object
-        A Graph or Drawable object.
+        A Graph, Drawable or GridLayout object.
 
     Returns
     -------

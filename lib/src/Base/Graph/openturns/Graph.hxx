@@ -184,6 +184,15 @@ public:
   /** Gives all the valid legend positions */
   static Description GetValidLegendPositions();
 
+  /** Composite property accessor */
+  Bool isComposite() const;
+
+  /** Grid accessors */
+  UnsignedInteger getNbRows() const;
+  UnsignedInteger getNbColumns() const;
+  Graph getGraph(const UnsignedInteger i, const UnsignedInteger j) const;
+  void setGraph(const UnsignedInteger i, const UnsignedInteger j, const Graph & elt);
+
 }; /* class Graph */
 
 

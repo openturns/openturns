@@ -244,6 +244,7 @@ ot_add_python_module(graph graph_module.i
                       Cloud.i Cloud_doc.i.in
                       Contour.i Contour_doc.i.in
                       Curve.i Curve_doc.i.in
+		      GridLayout.i GridLayout_doc.i.in
                       Pairs.i Pairs_doc.i.in
                       Pie.i Pie_doc.i.in
                       Polygon.i Polygon_doc.i.in

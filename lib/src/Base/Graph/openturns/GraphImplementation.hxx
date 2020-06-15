@@ -33,6 +33,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * GraphImplementation implements graphic devices for plotting through R,
  * and manages drawables to be plotted on the same window
  */
+class Graph;
 
 class OT_API GraphImplementation :
   public PersistentObject
@@ -64,7 +65,7 @@ public:
   virtual GraphImplementation * clone() const;
 
   /** String converter */
-  String __repr__() const;
+  virtual String __repr__() const;
 
   /** Adds a drawable instance to the collection of drawables contained in GraphImplementation */
   void add(const Drawable & aDrawable);
@@ -97,25 +98,23 @@ public:
   void setLegends(const Description & legends);
 
   /** Hide or show x and y axes */
-  void setAxes(const Bool showAxes);
-
-  /** Accessor for showAxes_ */
+  virtual void setAxes(const Bool showAxes);
   Bool getAxes() const;
 
   /** Set log scale for x, y both or none axes */
-  void setLogScale(const LogScale logScale);
+  virtual void setLogScale(const LogScale logScale);
 
   /** Accessor for logScale_ */
   LogScale getLogScale() const;
 
   /** Hide or show grid */
-  void setGrid(const Bool showGrid);
+  virtual void setGrid(const Bool showGrid);
 
   /** Accessor for showGrid_ */
   Bool getGrid() const;
 
   /** Grid color accessor */
-  void setGridColor(const String & color);
+  virtual void setGridColor(const String & color);
   String getGridColor() const;
 
   /** Accesor for xTitle */
@@ -131,7 +130,7 @@ public:
   void setYTitle(const String & title);
 
   /** Accesor for title */
-  String getTitle() const;
+  virtual String getTitle() const;
 
   /** Accesor for title */
   void setTitle(const String & title);
@@ -149,24 +148,22 @@ public:
   void clean();
 
   /** Margin accessor */
-  void setXMargin(const Scalar xMargin);
-  void setYMargin(const Scalar yMargin);
+  virtual void setXMargin(const Scalar xMargin);
+  virtual void setYMargin(const Scalar yMargin);
 
   /** Get the bounding box of the whole plot */
-  Interval getBoundingBox() const;
+  virtual Interval getBoundingBox() const;
 
   /** Set the bounding box of the whole plot */
-  void setBoundingBox(const Interval & boundingBox);
+  virtual void setBoundingBox(const Interval & boundingBox);
 
   /** Automatic bounding box accessor */
-  Bool getAutomaticBoundingBox() const;
-  void setAutomaticBoundingBox(const Bool automaticBoundingBox);
+  virtual Bool getAutomaticBoundingBox() const;
+  virtual void setAutomaticBoundingBox(const Bool automaticBoundingBox);
 
-  /** Get the legend position */
+  /** Legend position accessor */
+  virtual void setLegendPosition(const String & position);
   String getLegendPosition() const;
-
-  /** Set the legend position */
-  void setLegendPosition(const String & position);
 
   /** Get the legend font size */
   Scalar getLegendFontSize() const;
@@ -185,6 +182,15 @@ public:
 
   /** Gives all the valid legend positions */
   static Description GetValidLegendPositions();
+
+  /** Composite property accessor */
+  virtual Bool isComposite() const;
+
+  /** Grid accessors */
+  virtual UnsignedInteger getNbRows() const;
+  virtual UnsignedInteger getNbColumns() const;
+  virtual Graph getGraph(const UnsignedInteger i, const UnsignedInteger j) const;
+  virtual void setGraph(const UnsignedInteger i, const UnsignedInteger j, const Graph & elt);
 
 private:
   static Description ValidLegendPositions;

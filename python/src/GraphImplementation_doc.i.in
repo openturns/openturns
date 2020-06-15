@@ -751,3 +751,79 @@ index : int
 %enddef
 %feature("docstring") OT::GraphImplementation::erase
 OT_Graph_erase_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_isComposite_doc
+"Composite property accessor.
+
+Returns
+-------
+composite : bool
+    Whether the graph contains other graphs."
+%enddef
+%feature("docstring") OT::GraphImplementation::isComposite
+OT_Graph_isComposite_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getNbRows_doc
+"Row count accessor (grid layout only).
+
+Returns
+-------
+nb_rows : int
+    Number of grid rows."
+%enddef
+%feature("docstring") OT::GraphImplementation::getNbRows
+OT_Graph_getNbRows_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getNbColumns_doc
+"Column count accessor (grid layout only).
+
+Returns
+-------
+nb_rows : int
+    Number of grid columns."
+%enddef
+%feature("docstring") OT::GraphImplementation::getNbColumns
+OT_Graph_getNbColumns_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getGraph_doc
+"Subgraph accessor (grid layout only).
+
+Parameters
+----------
+i : int
+    Row index
+j : int
+    Column index
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    Subgraph at (i, j)."
+%enddef
+%feature("docstring") OT::GraphImplementation::getGraph
+OT_Graph_getGraph_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_setGraph_doc
+"Subgraph accessor (grid layout only).
+
+Parameters
+----------
+i : int
+    Row index
+j : int
+    Column index
+graph : :class:`~openturns.Graph`
+    Subgraph at (i, j)."
+%enddef
+%feature("docstring") OT::GraphImplementation::setGraph
+OT_Graph_setGraph_doc

@@ -260,10 +260,17 @@ try:
     view = View(graph)
     view.ShowAll(block=True)
 
+    # GridLayout
+    grid = ot.GridLayout(2, 3)
+    for j in range(grid.getNbColumns()):
+        beta = 1.0 + j
+        grid.setGraph(0, j, ot.Gumbel(beta, 0.0).drawPDF())
+        grid.setGraph(1, j, ot.Gumbel(beta, 0.0).drawCDF())
+    view = View(grid)
+
     # Square axes
     graph = ot.ClaytonCopula(5.0).drawPDF()
     view = View(graph, square_axes=True)
-    view.ShowAll(block=True)
 
     # Show axes as prescribed by getAxes()
     graph = ot.Normal().drawPDF()
