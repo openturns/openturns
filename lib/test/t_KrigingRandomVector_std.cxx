@@ -58,9 +58,10 @@ int main(int, char *[])
 
     // 2) Definition of exponential model
     Point scale(2);
-    scale[0] = 1.988;
-    scale[1] = 0.924;
-    Point amplitude(1, 3.153);
+    scale[0] = 5.33532;
+    scale[1] = 2.61534;
+    Point amplitude(1, 1.61536);
+
     SquaredExponential covarianceModel(scale, amplitude);
 
     // 3) Basis definition
@@ -68,6 +69,7 @@ int main(int, char *[])
 
     // Kriring algorithm
     KrigingAlgorithm algo(inputSample, outputSample, covarianceModel, basis);
+    algo.setOptimizeParameters(false);
     algo.run();
 
     // Get result
