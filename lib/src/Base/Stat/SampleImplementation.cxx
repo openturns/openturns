@@ -490,7 +490,8 @@ Bool SampleImplementation::ParseComment(const String & line, const String & mark
 
 SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fileName,
     const String & separator,
-    const UnsignedInteger skippedLines)
+    const UnsignedInteger skippedLines,
+    const String & numSeparator)
 {
   if (separator.size() != 1) throw InvalidArgumentException(HERE) << "Expected a separator with one character, got separator=" << separator;
   const char theSeparator = separator[0];
@@ -509,14 +510,31 @@ SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fi
 
   // Manage the locale such that the decimal point IS a point ('.')
 #ifdef OPENTURNS_HAVE_USELOCALE
-  locale_t new_locale = newlocale (LC_NUMERIC_MASK, "C", NULL);
+  //Override setlocale if comma as numerical separator
+  locale_t new_locale;
+  if(numSeparator == ",")
+    new_locale = newlocale (LC_NUMERIC_MASK, "fr_FR.utf-8", NULL);
+  else
+    new_locale = newlocale (LC_NUMERIC_MASK, "C", NULL);
+  if(new_locale == 0)
+    throw InternalException(HERE) << "Locale not available";
   locale_t old_locale = uselocale(new_locale);
 #else
-#ifdef WIN32
+#ifdef _WIN32
   _configthreadlocale(_ENABLE_PER_THREAD_LOCALE);
 #endif
   const char * initialLocale = setlocale(LC_NUMERIC, NULL);
-  setlocale(LC_NUMERIC, "C");
+  if(numSeparator == ",") {
+#if defined(_WIN32)
+    //Windows locale name
+    const char * new_locale = setlocale(LC_NUMERIC, "fra_FRA.1252");
+#else
+    const char * new_locale = setlocale(LC_NUMERIC, "fr_FR.utf-8");
+#endif
+    if(new_locale == 0)
+      throw InternalException(HERE) << "Locale not available";}
+  else
+    setlocale(LC_NUMERIC, "C");
 #endif
 
   String line;
@@ -602,7 +620,7 @@ SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fi
   uselocale(old_locale);
   freelocale(new_locale);
 #else
-#ifdef WIN32
+#ifdef _WIN32
   _configthreadlocale(_DISABLE_PER_THREAD_LOCALE);
 #endif
   setlocale(LC_NUMERIC, initialLocale);

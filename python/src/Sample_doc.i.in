@@ -137,6 +137,9 @@ separator : str
 skipped_lines : int
     Number of lines skipped.
     Default is 0.
+numSeparator : str
+    Decimal separator.
+    Default is dot.
 
 Returns
 -------
@@ -1258,4 +1261,3 @@ Examples
 0 : [ 0 2 2 ]
 1 : [ 1 1 0 ]
 2 : [ 3 0 3 ]"
-
