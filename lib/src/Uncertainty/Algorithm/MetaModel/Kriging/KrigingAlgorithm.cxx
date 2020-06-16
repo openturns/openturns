@@ -41,7 +41,6 @@ KrigingAlgorithm::KrigingAlgorithm()
   : MetaModelAlgorithm()
   , inputSample_(0, 0)
   , outputSample_(0, 0)
-  , normalize_(false)
   , covarianceModel_()
   , glmAlgo_()
   , gamma_(0)
@@ -60,14 +59,12 @@ KrigingAlgorithm::KrigingAlgorithm()
 KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
                                    const Sample & outputSample,
                                    const CovarianceModel & covarianceModel,
-                                   const Basis & basis,
-                                   const Bool normalize)
+                                   const Basis & basis)
   : MetaModelAlgorithm()
   , inputSample_(inputSample)
   , outputSample_(outputSample)
-  , normalize_(normalize)
   , covarianceModel_()
-  , glmAlgo_(inputSample, outputSample, covarianceModel, basis, normalize, true)
+  , glmAlgo_(inputSample, outputSample, covarianceModel, basis, false, true)
   , gamma_(0)
   , rho_(0)
   , result_()
@@ -84,14 +81,12 @@ KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
 KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
                                    const Sample & outputSample,
                                    const CovarianceModel & covarianceModel,
-                                   const BasisCollection & basisCollection,
-                                   const Bool normalize)
+                                   const BasisCollection & basisCollection)
   : MetaModelAlgorithm()
   , inputSample_(inputSample)
   , outputSample_(outputSample)
-  , normalize_(normalize)
   , covarianceModel_(covarianceModel)
-  , glmAlgo_(inputSample, outputSample, covarianceModel, basisCollection, normalize, true)
+  , glmAlgo_(inputSample, outputSample, covarianceModel, basisCollection, false, true)
   , gamma_(0)
   , rho_(0)
   , result_()
@@ -147,19 +142,16 @@ void KrigingAlgorithm::run()
   Function metaModel;
   // We use directly the collection of points
   const BasisCollection basis(glmResult.getBasisCollection());
-  const Sample normalizedInputSample(glmResult.getInputTransformedSample());
   const CovarianceModel conditionalCovarianceModel(glmResult.getCovarianceModel());
   const Collection<Point> trendCoefficients(glmResult.getTrendCoefficients());
   const UnsignedInteger outputDimension = outputSample_.getDimension();
   Sample covarianceCoefficients(inputSample_.getSize(), outputDimension);
   covarianceCoefficients.getImplementation()->setData(gamma_);
   // Meta model definition
-  metaModel.setEvaluation(new KrigingEvaluation(basis, normalizedInputSample, conditionalCovarianceModel, trendCoefficients, covarianceCoefficients));
-  metaModel.setGradient(new KrigingGradient(basis, normalizedInputSample, conditionalCovarianceModel, trendCoefficients, covarianceCoefficients));
+  metaModel.setEvaluation(new KrigingEvaluation(basis, inputSample_, conditionalCovarianceModel, trendCoefficients, covarianceCoefficients));
+  metaModel.setGradient(new KrigingGradient(basis, inputSample_, conditionalCovarianceModel, trendCoefficients, covarianceCoefficients));
   metaModel.setHessian(new CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), metaModel.getEvaluation()));
-  // First build the meta-model on the transformed data
-  // Then add the transformation if needed
-  if (normalize_) metaModel = ComposedFunction(metaModel, glmResult.getTransformation());
+
   // compute residual, relative error
   const Point outputVariance(outputSample_.computeVariance());
   const Sample mY(metaModel(inputSample_));
@@ -175,12 +167,6 @@ void KrigingAlgorithm::run()
     relativeErrors[outputIndex] = squaredResiduals[outputIndex] / outputVariance[outputIndex];
   }
   result_ = KrigingResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basis, trendCoefficients, conditionalCovarianceModel, covarianceCoefficients, covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_);
-  // If normalize, set input transformation
-  if (normalize_)
-  {
-    const Function inputTransformation(glmResult.getTransformation());
-    result_.setTransformation(inputTransformation);
-  }
 }
 
 
@@ -278,7 +264,6 @@ void KrigingAlgorithm::save(Advocate & adv) const
 {
   MetaModelAlgorithm::save(adv);
   adv.saveAttribute( "inputSample_", inputSample_ );
-  adv.saveAttribute( "normalize_", normalize_ );
   adv.saveAttribute( "outputSample_", outputSample_ );
   adv.saveAttribute( "covarianceModel_", covarianceModel_ );
   adv.saveAttribute( "result_", result_ );
@@ -291,7 +276,6 @@ void KrigingAlgorithm::load(Advocate & adv)
 {
   MetaModelAlgorithm::load(adv);
   adv.loadAttribute( "inputSample_", inputSample_ );
-  adv.loadAttribute( "normalize_", normalize_ );
   adv.loadAttribute( "outputSample_", outputSample_ );
   adv.loadAttribute( "covarianceModel_", covarianceModel_ );
   adv.loadAttribute( "result_", result_ );
