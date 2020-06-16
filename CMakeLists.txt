@@ -403,6 +403,17 @@ try_compile (OPENTURNS_HAVE_SYNC_BUILTINS
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/gcc_sync_builtins.cxx)
 
+try_run (_HAVE_FR_LOC_RUNS _HAVE_FR_LOC_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/have_fr_loc.cxx)
+if (_HAVE_FR_LOC_BUILDS)
+  if (NOT _HAVE_FR_LOC_RUNS EQUAL 0)
+    set (OPENTURNS_HAVE_FR_LOC TRUE)
+    message(STATUS "French locale found")
+  else()
+    set (OPENTURNS_HAVE_FR_LOC FALSE)
+    message(STATUS "French locale not found")
+  endif ()
+endif ()
+
 # Find system prerequisites
 include (CheckIncludeFile)
 check_include_file (dirent.h      OPENTURNS_HAVE_DIRENT_H     )

@@ -481,7 +481,8 @@ public:
   /** Factory of SampleImplementation from Text file */
   static SampleImplementation BuildFromTextFile(const FileName & fileName,
       const String & separator = " ",
-      const UnsignedInteger skippedLines = 0);
+      const UnsignedInteger skippedLines = 0,
+      const String & numSeparator = ".");
 
   /** Store a sample in a temporary text file, one realization by line. Returns the file name. */
   String storeToTemporaryFile() const;
