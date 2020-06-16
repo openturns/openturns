@@ -47,6 +47,7 @@ TNC::TNC()
   , fmin_(ResourceMap::GetAsScalar("TNC-DefaultFmin"))
   , rescale_(ResourceMap::GetAsScalar("TNC-DefaultRescale"))
   , p_nfeval_(0)
+  , ignoreFailure_(false)
 {
   // Nothing to do
 }
@@ -61,6 +62,7 @@ TNC::TNC(const OptimizationProblem & problem)
   , fmin_(ResourceMap::GetAsScalar("TNC-DefaultFmin"))
   , rescale_(ResourceMap::GetAsScalar("TNC-DefaultRescale"))
   , p_nfeval_(0)
+  , ignoreFailure_(false)
 {
   checkProblem(problem);
 }
@@ -85,6 +87,7 @@ TNC::TNC (const OptimizationProblem & problem,
   , fmin_(fmin)
   , rescale_(rescale)
   , p_nfeval_(0)
+  , ignoreFailure_(false)
 {
   checkProblem(problem);
 }
@@ -254,16 +257,12 @@ void TNC::run()
   if (isLagrangeMultipliersEnabled())
     result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
 
-  // check the convergence criteria
-  const Bool convergence = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
-
-  if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED))
+  if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED) && (returnCode != TNC_USERABORT))
   {
-    LOGWARN(OSS() << "Warning! TNC algorithm failed to converge. The error message is " << tnc_rc_string[returnCode - TNC_MINRC]);
-  }
-  else if ( ! convergence )
-  {
-    LOGWARN(OSS() << "Warning! The TNC algorithm could not enforce the convergence criteria");
+    if (ignoreFailure_)
+      LOGWARN(OSS() << "Warning! TNC algorithm failed. The error message is " << tnc_rc_string[returnCode - TNC_MINRC]);
+    else
+      throw InternalException(HERE) << "Solving problem by TNC method failed (" << tnc_rc_string[returnCode - TNC_MINRC] << ")";
   }
 }
 
@@ -452,6 +451,16 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
       throw InternalException(HERE) << "Null p_nfeval";
   }
   return 0;
+}
+
+void TNC::setIgnoreFailure(const Bool ignoreFailure)
+{
+  ignoreFailure_ = ignoreFailure;
+}
+
+Bool TNC::getIgnoreFailure() const
+{
+  return ignoreFailure_;
 }
 
 END_NAMESPACE_OPENTURNS

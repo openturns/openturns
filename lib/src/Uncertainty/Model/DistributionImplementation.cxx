@@ -2606,6 +2606,7 @@ Interval DistributionImplementation::computeUnivariateMinimumVolumeIntervalByOpt
   problem.setObjective(objective);
   problem.setBounds(getRange());
   TNC solver(problem);
+  solver.setIgnoreFailure(true);
   solver.setStartingPoint(computeQuantile(prob, true));
   solver.run();
   const Scalar a = solver.getResult().getOptimalPoint()[0];

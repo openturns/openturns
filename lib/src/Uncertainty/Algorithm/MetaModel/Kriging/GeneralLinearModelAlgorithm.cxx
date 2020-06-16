@@ -27,10 +27,8 @@
 #include "openturns/Log.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/LinearFunction.hxx"
-#include "openturns/CenteredFiniteDifferenceHessian.hxx"
 #include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
 #include "openturns/TNC.hxx"
-#include "openturns/NLopt.hxx"
 #ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
 #include "openturns/SymbolicFunction.hxx"
 #else
@@ -434,12 +432,10 @@ void GeneralLinearModelAlgorithm::checkYCentered(const Sample & Y)
 void GeneralLinearModelAlgorithm::initializeDefaultOptimizationAlgorithm()
 {
   String solverName(ResourceMap::GetAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm"));
-  // for backward compatibility
-  if (solverName == "NELDER-MEAD")
-    solverName = "LN_NELDERMEAD";
-  else if (solverName == "LBFGS")
-    solverName = "LD_LBFGS";
   solver_ = OptimizationAlgorithm::Build(solverName);
+  TNC* tnc = dynamic_cast<TNC *>(solver_.getImplementation().get());
+  if (tnc)
+    tnc->setIgnoreFailure(true);
 }
 
 /* Virtual constructor */

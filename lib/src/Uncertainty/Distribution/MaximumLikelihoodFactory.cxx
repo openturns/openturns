@@ -55,6 +55,9 @@ MaximumLikelihoodFactory::MaximumLikelihoodFactory(const Distribution & distribu
   // Initialize optimization solver parameter using the ResourceMap
   String solverName(ResourceMap::GetAsString("MaximumLikelihoodFactory-DefaultOptimizationAlgorithm"));
   solver_ = OptimizationAlgorithm::Build(solverName);
+  TNC* tnc = dynamic_cast<TNC *>(solver_.getImplementation().get());
+  if (tnc)
+    tnc->setIgnoreFailure(true);
   solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("MaximumLikelihoodFactory-MaximumEvaluationNumber"));
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumAbsoluteError"));
   solver_.setMaximumRelativeError(ResourceMap::GetAsScalar("MaximumLikelihoodFactory-MaximumRelativeError"));

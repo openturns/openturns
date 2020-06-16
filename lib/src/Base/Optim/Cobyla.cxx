@@ -35,6 +35,7 @@ static const Factory<Cobyla> Factory_Cobyla;
 Cobyla::Cobyla()
   : OptimizationAlgorithmImplementation()
   , rhoBeg_(ResourceMap::GetAsScalar("Cobyla-DefaultRhoBeg"))
+  , ignoreFailure_(false)
 {
   // Nothing to do
 }
@@ -42,6 +43,7 @@ Cobyla::Cobyla()
 Cobyla::Cobyla(const OptimizationProblem & problem)
   : OptimizationAlgorithmImplementation(problem)
   , rhoBeg_(ResourceMap::GetAsScalar("Cobyla-DefaultRhoBeg"))
+  , ignoreFailure_(false)
 {
   checkProblem(problem);
 }
@@ -50,6 +52,7 @@ Cobyla::Cobyla(const OptimizationProblem & problem,
                const Scalar rhoBeg)
   : OptimizationAlgorithmImplementation(problem)
   , rhoBeg_(rhoBeg)
+  , ignoreFailure_(false)
 {
   checkProblem(problem);
 }
@@ -193,16 +196,12 @@ void Cobyla::run()
   if (isLagrangeMultipliersEnabled())
     result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
 
-  // check the convergence criteria
-  const Bool convergence = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));
-
-  if (returnCode != 0)
+  if ((returnCode != COBYLA_NORMAL) && (returnCode != COBYLA_USERABORT))
   {
-    LOGWARN(OSS() << "Warning! The Cobyla algorithm failed to converge. The error message is " << cobyla_rc_string[returnCode - COBYLA_MINRC]);
-  }
-  else if ( ! convergence )
-  {
-    LOGWARN(OSS() << "Warning! The Cobyla algorithm could not enforce the convergence criteria");
+    if (ignoreFailure_)
+      LOGWARN(OSS() << "Warning! The Cobyla algorithm failed. The error message is " << cobyla_rc_string[returnCode - COBYLA_MINRC]);
+    else
+      throw InternalException(HERE) << "Solving problem by cobyla method failed (" << cobyla_rc_string[returnCode - COBYLA_MINRC] << ")";
   }
 }
 
@@ -324,6 +323,16 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
     }
   }
   return returnValue;
+}
+
+void Cobyla::setIgnoreFailure(const Bool ignoreFailure)
+{
+  ignoreFailure_ = ignoreFailure;
+}
+
+Bool Cobyla::getIgnoreFailure() const
+{
+  return ignoreFailure_;
 }
 
 END_NAMESPACE_OPENTURNS

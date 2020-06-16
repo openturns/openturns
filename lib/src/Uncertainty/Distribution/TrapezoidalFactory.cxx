@@ -96,6 +96,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   solver.setMaximumAbsoluteError(ResourceMap::GetAsScalar("TrapezoidalFactory-RhoEnd"));
   solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("TrapezoidalFactory-MaximumIteration"));
   solver.setStartingPoint(startingPoint);
+  solver.setIgnoreFailure(true);
   factory.setOptimizationAlgorithm(solver);
 
   // override constraint
