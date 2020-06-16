@@ -737,7 +737,7 @@ def PlotDesign(design, bounds = None, subdivisions = None,
         Otherwise, use the existing figure. 
     axes : a Matplotlib axis. 
         If empty, then create new axes. 
-    bounds: :class:`openturns.Interval`
+    bounds: :class:`~openturns.Interval`
         Bounds of the plot. By default, compute the bounds from the sample. 
     subdivisions : a list of integers
         Number of subdivisions in the each direction. 

@@ -102,7 +102,7 @@ Returns
 -------
 index : int
     Index of the nearest neighbour of the given point.
-indices : :class:`openturns.Indices`
+indices : :class:`~openturns.Indices`
     Index of the nearest neighbour of the given points."
 %enddef
 
