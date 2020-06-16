@@ -76,7 +76,7 @@ int main(int, char *[])
       for (UnsignedInteger k2 = 0; k2 < size; ++ k2) hFromH[k2] = H(k2, k2);
       assert_almost_equal(hFromH,  algo.getHDiag(), 1e-15, 1e-15);
       SquareMatrix H2(H * H);
-      assert_almost_equal(*H2.getImplementation(),  *H.getImplementation(), 1e-15, 1e-15);
+      assert_almost_equal(H2, H, 1e-15, 1e-15);
 
     }
     Matrix design(proxy.computeDesign(indices));
@@ -102,7 +102,7 @@ int main(int, char *[])
       for (UnsignedInteger k2 = 0; k2 < size; ++ k2) hFromH[k2] = H(k2, k2);
       assert_almost_equal(hFromH,  algo.getHDiag(), 1e-15, 1e-15);
       SquareMatrix H2(H * H);
-      assert_almost_equal(*H2.getImplementation(),  *H.getImplementation(), 1e-15, 1e-15);
+      assert_almost_equal(H2,  H, 1e-15, 1e-15);
 
     }
 
