@@ -15,7 +15,7 @@ option (USE_BISON                    "Looks for Bison if true and then build par
 option (USE_FLEX                     "Looks for Flex if true and then build lexer"                           ON)
 option (USE_TBB                      "Use Intel Threading Building Blocks library for multithreading"        ON)
 option (USE_HMAT                     "Use HMat library"                                                      ON)
-option (USE_MUPARSER                 "Use muParser library"                                                  ON)
+option (USE_MUPARSER                 "Use muParser library"                                                  OFF)
 option (USE_EXPRTK                   "Use ExprTK library"                                                    ON)
 option (USE_LIBXML2                  "Use LibXml2 for XML support"                                           ON)
 option (USE_R                        "Use R for graph output support"                                        ON)
