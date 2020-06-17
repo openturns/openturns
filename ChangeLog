@@ -22,6 +22,7 @@
  * #1474 (optimization defaults)
  * #1507 (Leak in Collection typemaps)
  * #1510 (ot.Ceres('LEVENBERG_MARQUARDT') and ot.Ceres('DOGLEG') do not handle bound constraints)
+ * #1520 (The NLopt test is dubious)
  * #1521 (Basis of MonomialFunction)
 
 

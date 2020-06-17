@@ -72,6 +72,8 @@ int main(int, char *[])
           for (SignedInteger equality = 1; equality >= 0; -- equality)
             for(SignedInteger bound = 1; bound >= 0; -- bound)
             {
+              if (!minimization && !bound)
+                  continue;
               OptimizationProblem problem(f);
               problem.setMinimization(minimization == 1);
               if (inequality)
