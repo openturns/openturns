@@ -5,6 +5,7 @@
 === Library ===
 
 ==== Major changes ====
+ * Drop normalization in KrigingAlgorithm
 
 ==== New classes ====
  * BlockIndependentDistribution
