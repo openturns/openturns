@@ -39,8 +39,8 @@ The resulting distribution of the output error is :class:`~openturns.Normal` wit
 and a diagonal covariance matrix computed from the residuals. 
 The residuals are computed based on the linearization of the model, 
 where the Jacobian matrix is evaluated at the candidate point. 
-The diagonal of the diagonal covariance matrix of the output error 
-is contant and is estimated with the unbiased variance estimator. 
+The diagonal of the covariance matrix of the output error 
+is constant and is estimated with the unbiased variance estimator. 
 
 See also
 --------
