@@ -41,7 +41,8 @@ is set to a nonzero positive integer, then a bootstrap resampling of the observa
 is performed and the posterior distribution is based on a :class:`~openturns.KernelSmoothing` 
 of the sample of boostrap optimum parameters. 
 
-The resulting error distribution is :class:`~openturns.Normal` and is based on the 
+The resulting error distribution is :class:`~openturns.Normal` 
+with a zero mean and with a covariance matrix equal to the 
 `errorCovariance` input argument. 
 
 See also
