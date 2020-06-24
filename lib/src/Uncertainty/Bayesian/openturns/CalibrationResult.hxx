@@ -50,6 +50,7 @@ public:
                     const Distribution & parameterPosterior,
                     const Point & parameterMAP,
                     const Distribution & observationsError,
+                    const Sample & inputObservations,
                     const Sample & outputObservations,
                     const Function & residualFunction);
 
@@ -72,6 +73,10 @@ public:
   void setParameterMAP(const Point & parameterMAP);
   Point getParameterMAP() const;
 
+  /** Input observations accessors */
+  void setInputObservations(const Sample & inputObservations);
+  Sample getInputObservations() const;
+
   /** Output observations accessors */
   void setOutputObservations(const Sample & outputObservations);
   Sample getOutputObservations() const;
@@ -89,6 +94,17 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv);
 
+  /** Output at prior/posterior accessor */
+  void setOutputAtPriorAndPosteriorMean(const Sample & outputAtPriorMean, const Sample & outputAtPosteriorMean);
+  Sample getOutputAtPriorMean() const;
+  Sample getOutputAtPosteriorMean() const;
+
+  /** Graphic analysis */
+  Graph drawParameterDistributions() const;
+  Graph drawResiduals() const;
+  Graph drawObservationsVsInputs() const;
+  Graph drawObservationsVsPredictions() const;
+
 private:
 
   /* Parameter prior distribution */
@@ -103,11 +119,19 @@ private:
   /* Observations error distribution */
   Distribution observationsError_;
 
+  /* Input observations */
+  Sample inputObservations_;
+
   /* Output observations */
   Sample outputObservations_;
 
   /* Residual function */
   Function residualFunction_;
+
+  /* Output at prior/posterior */
+  Sample outputAtPriorMean_;
+  Sample outputAtPosteriorMean_;
+
 }; // class CalibrationResult
 
 

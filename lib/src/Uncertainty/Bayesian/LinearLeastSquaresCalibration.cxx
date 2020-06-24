@@ -45,7 +45,7 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Function & mo
     const Sample & outputObservations,
     const Point & candidate,
     const String & methodName)
-  : CalibrationAlgorithmImplementation(outputObservations, Dirac(candidate))
+  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Dirac(candidate))
   , modelObservations_(0, 0)
   , gradientObservations_(0, 0)
   , methodName_(methodName)
@@ -83,7 +83,7 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Sample & mode
     const Sample & outputObservations,
     const Point & candidate,
     const String & methodName)
-  : CalibrationAlgorithmImplementation(outputObservations, Dirac(candidate))
+  : CalibrationAlgorithmImplementation(Function(), Sample(), outputObservations, Dirac(candidate))
   , modelObservations_(modelObservations)
   , gradientObservations_(gradientObservations)
   , methodName_(methodName)
@@ -136,7 +136,8 @@ void LinearLeastSquaresCalibration::run()
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const LinearFunction residualFunction(getCandidate(), deltaY, gradientObservations_);
-  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, outputObservations_, residualFunction);
+  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction);
+  computeOutputAtPriorAndPosterior();
 }
 
 /* Model observations accessor */
