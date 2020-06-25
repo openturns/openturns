@@ -142,16 +142,6 @@ class View(object):
                  square_axes=False,
                  **kwargs):
 
-        # prevent Qt from stopping the interpreter, see matplotlib PR #1905
-        if LooseVersion(matplotlib.__version__) < LooseVersion('1.3'):
-            # check for DISPLAY env variable on X11 build of Qt
-            if plt.get_backend().startswith('Qt4'):
-                from matplotlib.backends.qt4_compat import QtGui
-                if hasattr(QtGui, 'QX11Info'):
-                    display = os.environ.get('DISPLAY')
-                    if display is None or not re.search(':\d', display):
-                        raise RuntimeError('Invalid DISPLAY variable')
-
         if not (isinstance(graph, ot.Graph) or isinstance(graph, ot.GraphImplementation)):
             if isinstance(graph, ot.Drawable) or isinstance(graph, ot.DrawableImplementation):
                 # convert Drawable => Graph
@@ -572,11 +562,7 @@ class View(object):
         >>> view = otv.View(graph)
         >>> view.show()
         """
-        if hasattr(self._fig, 'show'):
-            self._fig.show(**kwargs)
-        else:
-            # mpl < 1.3.1, see https://github.com/ipython/ipython/pull/1615
-            plt.show(**kwargs)
+        self._fig.show(**kwargs)
 
     @staticmethod
     def ShowAll(**kwargs):
