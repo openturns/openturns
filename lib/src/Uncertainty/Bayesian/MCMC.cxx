@@ -128,11 +128,13 @@ UnsignedInteger MCMC::getDimension() const
 }
 
 
-/* Compute the likelihood w.r.t. observations */
+/* Compute the product of the prior and of the likelihood w.r.t. observations */
 Scalar MCMC::computeLogLikelihood(const Point & xi) const
 {
   Scalar value = prior_.computeLogPDF(xi);
-  if (value == SpecFunc::LogMinScalar) return SpecFunc::LogMinScalar;
+  /* If the logarithm of the prior density takes the minimal admissible value,
+  then set the  logarithm of the posterior density to - infinity. */
+  if (value == SpecFunc::LogMinScalar) return - SpecFunc::Infinity;
 
   const UnsignedInteger size = observations_.getSize();
   for (UnsignedInteger i = 0; i < size; ++ i)
@@ -144,7 +146,11 @@ Scalar MCMC::computeLogLikelihood(const Point & xi) const
     Distribution pI(conditional_);
     pI.setParameter(zi);
     Scalar logPdf = pI.computeLogPDF(observations_[i]);
-    if (logPdf == SpecFunc::LogMinScalar) return SpecFunc::LogMinScalar;
+
+  /* If the logPDF takes the minimal admissible value,
+  then set the  logarithm of the posterior density to - infinity. */
+    if (logPdf == SpecFunc::LogMinScalar) return - SpecFunc::Infinity;
+
     value += logPdf;
   }
   return value;
