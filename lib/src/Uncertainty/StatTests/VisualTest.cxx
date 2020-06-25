@@ -22,17 +22,11 @@
 #include "openturns/VisualTest.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Cloud.hxx"
-#include "openturns/Staircase.hxx"
-#include "openturns/LinearBasisFactory.hxx"
-#include "openturns/Interval.hxx"
-#include "openturns/Indices.hxx"
-#include "openturns/Description.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/UserDefined.hxx"
-#include "openturns/SpecFunc.hxx"
-#include "openturns/HistogramFactory.hxx"
-#include "openturns/LinearCombinationFunction.hxx"
+#include "openturns/GridLayout.hxx"
 #include "openturns/NormalFactory.hxx"
+#include "openturns/HistogramFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -215,6 +209,59 @@ Graph VisualTest::DrawHenryLine(const Sample & sample, const Distribution & norm
 }
 
 
+/* Draw 2-d projections of a multivariate sample */
+Graph VisualTest::DrawPairs(const Sample & sample)
+{
+  const UnsignedInteger dimension = sample.getDimension();
+  if (dimension < 2)
+    throw InvalidDimensionException(HERE) << "Can only draw clouds from a multivariate sample";
+  GridLayout grid(dimension - 1, dimension - 1);
+  const Description description(sample.getDescription());
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < i; ++ j)
+    {
+      const Indices indices = {j, i};
+      const Cloud cloud(sample.getMarginal(indices), "blue", "fsquare", "");
+      Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
+      graph.add(cloud);
+      grid.setGraph(i - 1, j, graph);
+    }
+  }
+  return grid;
+}
+
+
+/** Draw 2-d projections of a multivariate sample, plus marginals of a distribution */
+Graph VisualTest::DrawPairsMarginals(const Sample & sample, const Distribution & distribution)
+{
+  const UnsignedInteger dimension = sample.getDimension();
+  if (dimension < 2)
+    throw InvalidDimensionException(HERE) << "Can only draw clouds from a multivariate sample";
+  if (distribution.getDimension() != dimension)
+    throw InvalidDimensionException(HERE) << "Distribution dimension does not match the sample dimension";
+  GridLayout grid(dimension, dimension);
+  const Description description(sample.getDescription());
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    Graph pdfGraph(distribution.getMarginal(i).drawPDF());
+    pdfGraph.setLegends(Description(1));
+    pdfGraph.setYTitle(i == 0 ? sample.getDescription()[i] : "");
+    pdfGraph.setXTitle(i == dimension - 1 ? sample.getDescription()[i] : "");
+    grid.setGraph(i, i, pdfGraph);
+    for (UnsignedInteger j = 0; j < i; ++ j)
+    {
+      const Indices indices = {j, i};
+      const Cloud cloud(sample.getMarginal(indices), "blue", "fsquare", "");
+      Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
+      graph.add(cloud);
+      grid.setGraph(i, j, graph);
+    }
+  }
+  return grid;
+}
+
+
 /* Draw the visual test for the LinearModel when its dimension is 1 */
 Graph VisualTest::DrawLinearModel(const Sample & sample1,
                                   const Sample & sample2,
@@ -235,9 +282,7 @@ Graph VisualTest::DrawLinearModel(const Sample & sample1,
   Sample sample2D(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Point point(2);
-    point[0] = sample1(i, 0);
-    point[1] = y(i, 0);
+    const Point point = {sample1(i, 0), y(i, 0)};
     sample2D[i] = point;
   }
   Curve curveLinearModelTest(sample2D.sortAccordingToAComponent(0));
@@ -351,7 +396,6 @@ Graph VisualTest::DrawCobWeb(const Sample & inputSample,
   for (UnsignedInteger i = 0; i < inputDimension + 1; ++i)
   {
     Sample data(2, 2);
-    Point point(2);
     data(0, 0) = i;
     data(1, 0) = i;
     data(1, 1) = size;

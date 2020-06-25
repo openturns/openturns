@@ -26,6 +26,7 @@
 
 === Bug fixes ===
  * #1001 (Add method SobolSimulationResult::draw)
+ * #1259 (The diagonal of a scatter plot matrix should have the histograms)
  * #1267 (Some CSV files cannot be imported)
  * #1377 (The `setKnownParameter` method is not compatible with `buildEstimator`)
  * #1447 (Highly inaccurate result in reliability model when using subset of RandomVector)

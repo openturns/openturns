@@ -245,7 +245,6 @@ ot_add_python_module(graph graph_module.i
                       Contour.i Contour_doc.i.in
                       Curve.i Curve_doc.i.in
 		      GridLayout.i GridLayout_doc.i.in
-                      Pairs.i Pairs_doc.i.in
                       Pie.i Pie_doc.i.in
                       Polygon.i Polygon_doc.i.in
                       PolygonArray.i PolygonArray_doc.i.in
@@ -831,6 +830,8 @@ ot_add_python_module(metamodel metamodel_module.i
                       LinearModelStepwiseAlgorithm.i LinearModelStepwiseAlgorithm_doc.i.in
                       LinearModelAlgorithm.i LinearModelAlgorithm_doc.i.in
                       LinearModelAnalysis.i LinearModelAnalysis_doc.i.in
+                      LinearModelTest.i LinearModelTest_doc.i.in
+                      VisualTest.i VisualTest_doc.i.in
                       RandomVector.i RandomVector_doc.i.in
                       PythonEvaluation.cxx
                       PythonGradient.cxx
@@ -936,10 +937,8 @@ ot_add_python_module(simulation simulation_module.i
                     )
 
 ot_add_python_module(stattests stattests_module.i
-                      VisualTest.i VisualTest_doc.i.in
                       FittingTest.i FittingTest_doc.i.in
                       HypothesisTest.i HypothesisTest_doc.i.in
-                      LinearModelTest.i LinearModelTest_doc.i.in
                       NormalityTest.i NormalityTest_doc.i.in
                       DickeyFullerTest.i DickeyFullerTest_doc.i.in
                       UncertaintyStatTestsTemplateDefs.i

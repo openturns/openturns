@@ -64,6 +64,12 @@ public:
   static Graph DrawHenryLine(const Sample & sample,
                              const Distribution & normal);
 
+  /** Draw 2-d projections of a multivariate sample */
+  static Graph DrawPairs(const Sample & sample);
+
+  /** Draw 2-d projections of a multivariate sample, plus marginals of a distribution */
+  static Graph DrawPairsMarginals(const Sample & sample, const Distribution & distribution);
+
   /** Draw the visual test for the LinearModel when its dimension is 1 */
   static Graph DrawLinearModel(const Sample & sample1,
                                const Sample & sample2,

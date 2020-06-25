@@ -200,6 +200,8 @@ Graphical tests
     :toctree: _generated/
     :template: functionWithPlot.rst_t
 
+    VisualTest_DrawPairs
+    VisualTest_DrawPairsMarginals
     VisualTest_DrawCobWeb
     VisualTest_DrawHenryLine
     VisualTest_DrawKendallPlot
