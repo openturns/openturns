@@ -140,26 +140,6 @@ try:
     # view.save('curve8.png')
     view.show()
 
-    # Pairs
-    dim = 5
-    meanPoint = ot.Point(dim, 0.0)
-    sigma = ot.Point(dim, 1.0)
-    R = ot.CorrelationMatrix(dim)
-    for i in range(dim):
-        meanPoint[i] = (i + 1) * dim
-    distribution = ot.Normal(meanPoint, sigma, R)
-    size = 1000
-    sample = distribution.getSample(size)
-    graph = ot.Graph('Pairs', ' ', ' ', True, 'topright')
-    labels = list(['x' + str(i) for i in range(dim)])
-    myPairs = ot.Pairs(sample, 'Pairs example',
-                       labels, 'green', 'bullet')
-    graph.add(myPairs)
-    # graph.draw('curve9.png')
-    view = View(graph)
-    # view.save('curve9.png')
-    view.show()
-
     # Convergence graph curve
     aCollection = []
     aCollection.append(ot.LogNormalFactory().build(

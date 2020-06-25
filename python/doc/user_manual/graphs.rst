@@ -33,7 +33,6 @@ Drawable objects
     Cloud
     Contour
     Curve
-    Pairs
     Pie
     Polygon
     PolygonArray

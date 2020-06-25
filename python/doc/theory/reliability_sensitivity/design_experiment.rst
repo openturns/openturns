@@ -55,7 +55,7 @@ Different types of design of experiments can be determined:
     g = ot.Graph()
     g.setTitle("Axial experiment")
     g.setGridColor("black")
-    p = ot.Pairs(s)
+    p = ot.VisualTest.DrawPairs(s)
     g.add(p)
     View(g)
 
@@ -72,7 +72,7 @@ Different types of design of experiments can be determined:
     g = ot.Graph()
     g.setTitle("Factorial experiment")
     g.setGridColor("black")
-    p = ot.Pairs(s)
+    p = ot.VisualTest.DrawPairs(s)
     g.add(p)
     View(g)
 
@@ -89,7 +89,7 @@ Different types of design of experiments can be determined:
     g = ot.Graph()
     g.setTitle("Composite experiment")
     g.setGridColor("black")
-    p = ot.Pairs(s)
+    p = ot.VisualTest.DrawPairs(s)
     g.add(p)
     View(g)
 
@@ -106,7 +106,7 @@ Different types of design of experiments can be determined:
     g = ot.Graph()
     g.setTitle("Box experiment")
     g.setGridColor("black")
-    p = ot.Pairs(s)
+    p = ot.VisualTest.DrawPairs(s)
     g.add(p)
     View(g)
 
@@ -138,7 +138,7 @@ Different types of design of experiments can be determined:
     g = ot.Graph()
     g.setTitle("MonteCarlo experiment")
     g.setGridColor("black")
-    p = ot.Pairs(s)
+    p = ot.VisualTest.DrawPairs(s)
     g.add(p)
     View(g)
 
@@ -155,7 +155,7 @@ Different types of design of experiments can be determined:
     g = ot.Graph()
     g.setTitle("LHS experiment")
     g.setGridColor("black")
-    p = ot.Pairs(s)
+    p = ot.VisualTest.DrawPairs(s)
     g.add(p)
     View(g)
 
@@ -172,7 +172,7 @@ Different types of design of experiments can be determined:
     g = ot.Graph()
     g.setTitle("Low discrepancy experiment")
     g.setGridColor("black")
-    p = ot.Pairs(s)
+    p = ot.VisualTest.DrawPairs(s)
     g.add(p)
     View(g)
 
@@ -189,7 +189,7 @@ Different types of design of experiments can be determined:
     g = ot.Graph()
     g.setTitle("Gauss product experiment")
     g.setGridColor("black")
-    p = ot.Pairs(s)
+    p = ot.VisualTest.DrawPairs(s)
     g.add(p)
     View(g)
 
@@ -230,7 +230,7 @@ The following figures illustrates the different patterns obtained.
     g = ot.Graph()
     g.setTitle("Combinations generator")
     g.setGridColor("black")
-    p = ot.Pairs(s)
+    p = ot.VisualTest.DrawPairs(s)
     g.add(p)
     View(g)
 
@@ -247,7 +247,7 @@ The following figures illustrates the different patterns obtained.
     g = ot.Graph()
     g.setTitle("KPermutations generator")
     g.setGridColor("black")
-    p = ot.Pairs(s)
+    p = ot.VisualTest.DrawPairs(s)
     g.add(p)
     View(g)
 
@@ -264,7 +264,7 @@ The following figures illustrates the different patterns obtained.
     g = ot.Graph()
     g.setTitle("Tuples generator")
     g.setGridColor("black")
-    p = ot.Pairs(s)
+    p = ot.VisualTest.DrawPairs(s)
     g.add(p)
     View(g)
 

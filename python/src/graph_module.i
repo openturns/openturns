@@ -34,7 +34,6 @@
 %include Contour.i
 %include Curve.i
 %include GridLayout.i
-%include Pairs.i
 %include Pie.i
 %include Polygon.i
 %include PolygonArray.i

@@ -31,7 +31,6 @@
 #include "openturns/Graph.hxx"
 #include "openturns/GraphImplementation.hxx"
 #include "openturns/GridLayout.hxx"
-#include "openturns/Pairs.hxx"
 #include "openturns/Pie.hxx"
 #include "openturns/Polygon.hxx"
 #include "openturns/PolygonArray.hxx"

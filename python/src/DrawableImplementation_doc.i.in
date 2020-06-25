@@ -18,8 +18,6 @@ The different drawable elements are:
 
 - :class:`~openturns.Curve`
 
-- :class:`~openturns.Pairs`
-
 - :class:`~openturns.Pie`
 
 - :class:`~openturns.Polygon`

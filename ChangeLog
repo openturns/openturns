@@ -18,6 +18,7 @@
  * Removed deprecated Event class
  * Removed deprecated EnumerateFunction constructors
  * Removed various deprecated distribution accessors
+ * Deprecated Pairs class, see VisualTest.DrawPairs
 
 === Python module ===
 

@@ -451,47 +451,6 @@ class View(object):
             elif drawableKind == 'Staircase':
                 self._ax[0].step(x, y, **step_kwargs)
 
-            elif drawableKind == 'Pairs':
-                # disable axis : grid, ticks, axis
-                self._ax[0].axison = False
-
-                axes_kwargs['xticks'] = []
-                axes_kwargs['yticks'] = []
-
-                dim = drawable.getData().getDimension()
-                labels = drawable.getLabels()
-
-                # adjust font
-                if ('fontsize' not in text_kwargs_default) and ('size' not in text_kwargs_default):
-                    text_kwargs['fontsize'] = max(16 - dim, 4)
-                text_kwargs.setdefault('horizontalalignment', 'center')
-                text_kwargs.setdefault('verticalalignment', 'center')
-                for i in range(dim):
-                    for j in range(dim):
-                        if len(self._ax) <= dim * dim:
-                            self._ax.append(self._fig.add_subplot(
-                                dim, dim, 1 + i * dim + j, **axes_kwargs))
-                        if i != j:
-                            x = drawable.getData().getMarginal(i)
-                            y = drawable.getData().getMarginal(j)
-                            x_min = x.getMin()[0]
-                            x_max = x.getMax()[0]
-                            x_margin = 0.1 * (x_max - x_min)
-                            y_min = y.getMin()[0]
-                            y_max = y.getMax()[0]
-                            y_margin = 0.1 * (y_max - y_min)
-                            plot_kwargs['linestyle'] = 'None'
-                            self._ax[1 + i * dim + j].plot(y, x, **plot_kwargs)
-                            self._ax[1 + i * dim + j].set_ylim(
-                                x_min - x_margin, x_max + x_margin)
-                            self._ax[1 + i * dim + j].set_xlim(
-                                y_min - y_margin, y_max + y_margin)
-                        else:
-                            text_kwargs['transform'] = self._ax[
-                                1 + i * dim + j].transAxes
-                            self._ax[1 + i * dim + j].text(
-                                0.5, 0.5, labels[i], **text_kwargs)
-
             elif drawableKind == 'Text':
                 dim = drawable.getData().getDimension()
 
