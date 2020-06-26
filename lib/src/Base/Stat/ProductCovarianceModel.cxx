@@ -387,7 +387,12 @@ String ProductCovarianceModel::__str__(const String & ) const
 CovarianceModel ProductCovarianceModel::getMarginal(const UnsignedInteger index) const
 {
   if (index >= outputDimension_) throw InvalidArgumentException(HERE) << "Error: index=" << index << " must be less than output dimension=" << outputDimension_;
-  return collection_[index];
+  if (getOutputDimension() == 1)
+    return clone();
+  Collection<CovarianceModel> coll(collection_.getSize());
+  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
+    coll[i] = collection_[i].getMarginal(index);
+  return ProductCovarianceModel(coll);
 }
 
 /* Method save() stores the object through the StorageManager */
