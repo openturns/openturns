@@ -117,8 +117,12 @@ test_model(myDefautModel)
 myModel = ot.SphericalModel([2.0] * inputDimension, [3.0], 4.5)
 test_model(myModel)
 
-
 myDefautModel = ot.DiracCovarianceModel()
+print('myDefautModel = ',  myDefautModel)
+test_model(myDefautModel)
+
+rho = ot.SymbolicFunction(['tau'], ['exp(-tau)*cos(2*pi_*tau)'])
+myDefautModel = ot.StationaryFunctionalCovarianceModel([1.0], [1.0], rho)
 print('myDefautModel = ',  myDefautModel)
 test_model(myDefautModel)
 

@@ -1,0 +1,48 @@
+%feature("docstring") OT::StationaryFunctionalCovarianceModel
+"Stationary functional covariance function.
+
+Defines a stationary covariance model with one-dimensional output
+from a custom correlation function.
+
+Parameters
+----------
+scale : sequence of floats
+    Scale coefficient :math:`\vect{\theta}\in \Rset^n`.
+    The size of :math:`\vect{\theta}` is the input dimension.
+amplitude : sequence of positive floats
+    Amplitude  :math:`\vect{\sigma}\in \Rset^d`.
+    Must be of size equal to 1.
+    By default, equal to :math:`[1]`.
+rho : :class:`~openturns.Function`
+    Correlation function :math:`\rho(\tau)`, must have 1-d output
+    No check is made that this is actually a correlation function
+    so the resulting discretized matrix can have negative eigenvalues if you're not careful enough
+
+Notes
+-----
+The functional covariance function is a stationary covariance function with output dimension :math:`d=1`.
+
+We consider the scalar stochastic process :math:`X: \Omega \times\cD \mapsto \Rset`, where :math:`\omega \in \Omega` is an event, :math:`\cD` is a domain of :math:`\Rset^n`.
+
+The functional covariance function is defined by:
+
+.. math::
+
+    C(\vect{s}, \vect{t}) = \sigma^2 \rho(\vect{s} - \vect{t}), \quad \forall (\vect{s}, \vect{t}) \in \cD
+
+where :math:`\rho(\tau)` is the provided correlation function.
+
+See Also
+--------
+CovarianceModel
+
+Examples
+--------
+Create a covariance model defined by a damped cosine correlation function:
+
+>>> import openturns as ot
+>>> rho = ot.SymbolicFunction(['tau'], ['exp(-tau)*cos(2*pi_*tau)'])
+>>> covModel = ot.StationaryFunctionalCovarianceModel([1.0], [1.0], rho)
+>>> tau = [0.1]
+>>> print(covModel(tau))
+[[ 0.732029 ]]"
