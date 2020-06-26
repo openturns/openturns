@@ -12,6 +12,7 @@
  * FejerAlgorithm
  * GridLayout
  * MinimumVolumeClassifier
+ * StationaryFunctionalCovarianceModel
 
 ==== API changes ====
  * Removed deprecated Weibull, WeibullFactory, WeibullMuSigma classes

@@ -190,7 +190,8 @@ ot_add_python_module(statistics statistics_module.i
                       SpectralModel.i SpectralModel_doc.i.in
                       CovarianceModelImplementation.i CovarianceModelImplementation_doc.i.in
                       CovarianceModel.i CovarianceModel_doc.i.in
-                      StationaryCovarianceModel.i 
+                      StationaryCovarianceModel.i
+                      StationaryFunctionalCovarianceModel.i StationaryFunctionalCovarianceModel_doc.i.in 
                       SpectralModelFactoryImplementation.i SpectralModelFactoryImplementation_doc.i.in
                       SpectralModelFactory.i SpectralModelFactory_doc.i.in
                       UserDefinedSpectralModel.i UserDefinedSpectralModel_doc.i.in
