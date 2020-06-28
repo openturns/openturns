@@ -64,6 +64,7 @@ int main(int, char *[])
       LinearLeastSquaresCalibration algo(modelX, x, y, candidate, methods[n]);
       algo.run();
       fullprint << "result (const. 1)=" << algo.getResult() << std::endl;
+      fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
       modelX.setParameter(candidate);
       Sample modelObservations(modelX(x));
       Matrix transposedGradientObservations(modelX.getParameterDimension(), y.getSize() * modelX.getOutputDimension());
@@ -78,6 +79,7 @@ int main(int, char *[])
       algo = LinearLeastSquaresCalibration(modelObservations, transposedGradientObservations.transpose(), y, candidate, methods[n]);
       algo.run();
       fullprint << "result (const. 2)=" << algo.getResult() << std::endl;
+      fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
     } // n
   }
   catch (TestFailed & ex)

@@ -85,6 +85,7 @@ int main(int, char *[])
       GaussianLinearCalibration algo(modelX, x, y, candidate, priorCovariance, errorCovariance, methods[n]);
       algo.run();
       fullprint << "result (const. 1)=" << algo.getResult() << std::endl;
+      fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
       modelX.setParameter(candidate);
       Sample modelObservations(modelX(x));
       Matrix transposedGradientObservations(modelX.getParameterDimension(), y.getSize() * modelX.getOutputDimension());
@@ -99,9 +100,11 @@ int main(int, char *[])
       algo = GaussianLinearCalibration(modelObservations, transposedGradientObservations.transpose(), y, candidate, priorCovariance, errorCovariance, methods[n]);
       algo.run();
       fullprint << "result (const. 2)=" << algo.getResult() << std::endl;
+      fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
       algo = GaussianLinearCalibration(modelX, x, y, candidate, priorCovariance, globalErrorCovariance, methods[n]);
       algo.run();
       fullprint << "result   (global)=" << algo.getResult() << std::endl;
+      fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
     } // n
   }
   catch (TestFailed & ex)

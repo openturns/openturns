@@ -29,8 +29,10 @@ for bootstrapSize in bootstrapSizes:
     algo.run()
     # To avoid discrepance between the plaforms with or without CMinpack
     print("result (Auto)=", algo.getResult().getParameterMAP())
+    print("error=", algo.getResult().getObservationsError())
     algo.setOptimizationAlgorithm(ot.MultiStart(ot.TNC(), ot.LowDiscrepancyExperiment(ot.SobolSequence(), ot.Normal(candidate, ot.CovarianceMatrix(
         ot.Point(candidate).getDimension())), ot.ResourceMap.GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-MultiStartSize")).generate()))
     algo.run()
     # To avoid discrepance between the plaforms with or without CMinpack
     print("result  (TNC)=", algo.getResult().getParameterMAP())
+    print("error=", algo.getResult().getObservationsError())

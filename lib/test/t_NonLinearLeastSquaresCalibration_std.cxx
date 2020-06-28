@@ -67,6 +67,7 @@ int main(int, char *[])
       algo.setOptimizationAlgorithm(MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-MultiStartSize")).generate()));
       algo.run();
       fullprint << "result  (TNC)=" << algo.getResult().getParameterMAP() << std::endl;
+      fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
     } // n
   }
   catch (TestFailed & ex)

@@ -330,10 +330,23 @@ void GaussianNonLinearCalibration::run()
 {
   // Compute the posterior MAP
   // Error distribution
-  const Normal error(Point(errorCovariance_.getDimension()), errorCovariance_);
+  // It is built in two steps to benefit from the Cholsky factorization of the
+  // error covariance in the computation of thetaStar
+  Normal error(Point(errorCovariance_.getDimension()), errorCovariance_);
   const TriangularMatrix parameterInverseCholesky(getParameterPrior().getInverseCholesky());
   const TriangularMatrix errorInverseCholesky(error.getInverseCholesky());
   const Point thetaStar(run(inputObservations_, outputObservations_, getCandidate(), parameterInverseCholesky, errorInverseCholesky));
+  // Build the residual function this way to benefit from the automatic Hessian
+  const MemoizeFunction residualFunction(NonLinearLeastSquaresCalibration::BuildResidualFunction(model_, inputObservations_, outputObservations_));
+  const Point residuals(residualFunction(thetaStar));
+  if (globalErrorCovariance_)
+    error.setMean(residuals);
+  else
+    {
+      SampleImplementation residualsAsSample(outputObservations_.getSize(), outputObservations_.getDimension());
+      residualsAsSample.setData(residuals);
+      error.setMean(residualsAsSample.computeMean());      
+    }
   // Compute the posterior distribution
   Distribution parameterPosterior;
   if (bootstrapSize_ > 0)
@@ -362,8 +375,6 @@ void GaussianNonLinearCalibration::run()
     parameterPosterior = algo.getResult().getParameterPosterior();
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
-  // Build the residual function this way to benefit from the automatic Hessian
-  const MemoizeFunction residualFunction(NonLinearLeastSquaresCalibration::BuildResidualFunction(model_, inputObservations_, outputObservations_));
   result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, outputObservations_, residualFunction);
 }
 

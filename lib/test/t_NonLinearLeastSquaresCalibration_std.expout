@@ -1,4 +1,6 @@
 result (Auto)=class=Point name=Unnamed dimension=3 values=[2.81,1.19,0.501]
 result  (TNC)=class=Point name=Unnamed dimension=3 values=[2.81,1.19,0.501]
+error=class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0.00515,-0.00278] sigma=class=Point name=Unnamed dimension=2 values=[0.0576,0.0439] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.0742,0.0742,1]
 result (Auto)=class=Point name=Unnamed dimension=3 values=[2.81,1.19,0.501]
 result  (TNC)=class=Point name=Unnamed dimension=3 values=[2.81,1.19,0.501]
+error=class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0.00515,-0.00278] sigma=class=Point name=Unnamed dimension=2 values=[0.0576,0.0439] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.0742,0.0742,1]

@@ -49,8 +49,10 @@ for bootstrapSize in bootstrapSizes:
     algo.run()
     # To avoid discrepance between the plaforms with or without CMinpack
     print("result    (TNC)=", algo.getResult().getParameterMAP())
+    print("error=", algo.getResult().getObservationsError())
     algo = ot.GaussianNonLinearCalibration(
         modelX, x, y, candidate, priorCovariance, globalErrorCovariance)
     algo.setBootstrapSize(bootstrapSize)
     algo.run()
     print("result (Global)=", algo.getResult().getParameterMAP())
+    print("error=", algo.getResult().getObservationsError())
