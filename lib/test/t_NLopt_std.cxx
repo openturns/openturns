@@ -41,7 +41,7 @@ int main(int, char *[])
     Description formula(1, "1+100*(x2-x1^2)^2+(1-x1)^2");
 
     SymbolicFunction f(inVars, formula);
-
+    Function g(SymbolicFunction(inVars, Description(1, "-1.0")) * f);
     UnsignedInteger dim = f.getInputDimension();
     Point startingPoint(dim, 1e-3);
 
@@ -63,7 +63,7 @@ int main(int, char *[])
           || (algoNames[i] == "AUGLAG_EQ"))
       {
         fullprint << "-- Skipped: algo=" << algoNames[i] << std::endl;
-        continue;
+        //        continue;
       }
 
       NLopt algo(algoNames[i]);
@@ -75,6 +75,8 @@ int main(int, char *[])
               if (!minimization && !bound)
                   continue;
               OptimizationProblem problem(f);
+              if (!inequality && !bound)
+                problem = OptimizationProblem(g);
               problem.setMinimization(minimization == 1);
               if (inequality)
                 // x1^2+x2^2 <= 1
