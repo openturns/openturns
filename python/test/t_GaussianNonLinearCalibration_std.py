@@ -7,7 +7,7 @@ import math as m
 import sys
 
 ot.TESTPREAMBLE()
-ot.PlatformInfo.SetNumericalPrecision(3)
+ot.PlatformInfo.SetNumericalPrecision(2)
 
 m = 10
 x = [[0.5 + i] for i in range(m)]
@@ -49,6 +49,7 @@ for bootstrapSize in bootstrapSizes:
     algo.run()
     # To avoid discrepance between the plaforms with or without CMinpack
     print("result    (TNC)=", algo.getResult().getParameterMAP())
+    print("error=", algo.getResult().getObservationsError())
     algo = ot.GaussianNonLinearCalibration(
         modelX, x, y, candidate, priorCovariance, globalErrorCovariance)
     algo.setBootstrapSize(bootstrapSize)
@@ -73,3 +74,4 @@ algo.run()
 result = algo.getResult()
 ot.PlatformInfo.SetNumericalPrecision(2)
 print("result (unobs.)=", result.getParameterMAP())
+print("error=", algo.getResult().getObservationsError())

@@ -58,6 +58,7 @@
  * #1515 (KernelSmoothing build failure)
  * #1520 (The NLopt test is dubious)
  * #1521 (Basis of MonomialFunction)
+ * #1529 (The error of the NonLinearLeastSquaresCalibration and GaussianNonLinearCalibration are different)
  * #1540 (SubsetSampling: incorrect event sample)
  * #1549 (Doc of evaluation operator of KrigingResult)
  * #1553 (Optimization algorithms ignore MaxEvaluationNumber parameter in SORM)
