@@ -162,6 +162,16 @@ try:
     print("with user defined boundaries correction, pdf(left)=%.6g" %
           ks9.computePDF(left), ", pdf(right)=%.6g" % ks9.computePDF(right))
 
+    # full degenerate case
+    sample = ComposedDistribution([Dirac(-7.0), Dirac(0.0), Dirac(8.0)]).getSample(50)
+    smoothed = KernelSmoothing().build(sample)
+    print(smoothed.getSample(3))
+
+    # n-d degenerate case
+    sample = ComposedDistribution([Dirac(-7.0), Arcsine(2.0, 3.0), Dirac(8.0)]).getSample(50)
+    sample.setDescription(['d7', 'a23', 'd8'])
+    smoothed = KernelSmoothing().build(sample)
+    print(smoothed.getSample(3))
 except:
     import sys
     print("t_KernelSmoothing_std.py", sys.exc_info()[0], sys.exc_info()[1])

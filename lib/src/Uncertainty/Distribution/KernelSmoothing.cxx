@@ -31,6 +31,8 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/ResourceMap.hxx"
+#include "openturns/ComposedDistribution.hxx"
+#include "openturns/BlockIndependentDistribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -248,16 +250,70 @@ Distribution KernelSmoothing::build(const Sample & sample,
 {
   const UnsignedInteger dimension = sample.getDimension();
   if (bandwidth.getDimension() != dimension) throw InvalidDimensionException(HERE) << "Error: the given bandwidth must have the same dimension as the given sample, here bandwidth dimension=" << bandwidth.getDimension() << " and sample dimension=" << dimension;
+
   const Point xmin(sample.getMin());
   const Point xmax(sample.getMax());
   // Check the degenerate case of constant sample
   if (xmin == xmax)
   {
+     bandwidth_ = bandwidth;
+     KernelSmoothing::Implementation result(new Dirac(xmin));
+     result->setDescription(sample.getDescription());
+     return result;
+  }
+  Indices degenerateIndices;
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
+    if (!(xmax[j] > xmin[j]))
+      degenerateIndices.add(j);
+  const Bool degenerate = (degenerateIndices.getSize() > 0);
+  if (degenerate)
+  {
+    Point marginalBandwith;
+    Point marginalConstant;
+    Description description(sample.getDescription());
+    Description degenerateDescription;
+    Description okDescription;
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
+    if (xmax[j] > xmin[j])
+    {
+      marginalBandwith.add(bandwidth[j]);
+      okDescription.add(description[j]);
+    }
+    else
+    {
+      marginalConstant.add(xmin[j]);
+      degenerateDescription.add(description[j]);
+    }
+    ComposedDistribution::DistributionCollection coll;
+    const Indices okIndices(degenerateIndices.complement(dimension));
+    const Sample marginalSample(sample.getMarginal(okIndices));
+    Distribution okDistribution(build(marginalSample, marginalBandwith));
+    okDistribution.setDescription(okDescription);
+    coll.add(okDistribution);
+    Dirac degenerateDistribution(marginalConstant);
+    degenerateDistribution.setDescription(degenerateDescription);
+    coll.add(degenerateDistribution);
+    Indices marginalIndices(dimension);
+    UnsignedInteger degenerateCount = 0;
+    UnsignedInteger okCount = 0;
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
+    {
+      if (xmax[j] > xmin[j])
+      {
+        marginalIndices[j] = okCount;
+        ++ okCount;
+      }
+      else
+      {
+        marginalIndices[j] = degenerateCount + okIndices.getSize();
+        ++ degenerateCount;
+      }
+    }
+    Distribution result(BlockIndependentDistribution(coll).getMarginal(marginalIndices));
     bandwidth_ = bandwidth;
-    KernelSmoothing::Implementation result(new Dirac(xmin));
-    result->setDescription(sample.getDescription());
     return result;
   }
+
   // Check if we have to perform boundary correction
   // In this case, call buildAsTruncatedDistribution(). It will take
   // care of the other sub-cases

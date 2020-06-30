@@ -7,13 +7,14 @@
 
 %include BaseFuncCollection.i
 
-%typemap(in) const BasisCollection & {
+%typemap(in) const BasisCollection & (OT::Pointer<OT::Collection<OT::Basis> > temp) {
   if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
     // From interface class, ok
   }
   else {
     try {
-      $1 = OT::buildCollectionFromPySequence< OT::Basis >( $input );
+      temp = OT::buildCollectionFromPySequence< OT::Basis >($input);
+      $1 = temp.get();
     } catch (OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of Basis");
     }

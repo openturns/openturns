@@ -21,12 +21,13 @@ namespace OT {
 }
 %}
 
-%typemap(in) const OT::Collection<OT::Indices> & {
+%typemap(in) const OT::Collection<OT::Indices> & (OT::Pointer<OT::Collection<OT::Indices> > temp) {
   if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
     // From interface class, ok
   } else {
     try {
-      $1 = OT::buildCollectionFromPySequence<OT::Indices>($input);
+      temp = OT::buildCollectionFromPySequence<OT::Indices>($input);
+      $1 = temp.get();
     } catch (OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of Indices");
     }

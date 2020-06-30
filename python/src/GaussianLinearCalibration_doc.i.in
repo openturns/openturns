@@ -38,12 +38,13 @@ dimension the output dimension of the model, or *global*, ie the matrix describe
 the full set of observation errors, in which case its dimension is the product of
 the output dimension of the model and the number of observations.
 
-The prior distribution of the parameter is a :class:`~openturns.Normal`.  
+The prior distribution of the parameter is a :class:`~openturns.Normal`.
 
-The posterior distribution of the parameter is :class:`~openturns.Normal`. 
+The posterior distribution of the parameter is :class:`~openturns.Normal`.
 
-The resulting error distribution is :class:`~openturns.Normal` and is based on the 
-`errorCovariance` input argument. 
+The resulting error distribution is :class:`~openturns.Normal`
+with a zero mean and with a covariance matrix equal to the
+`errorCovariance` input argument.
 
 See also
 --------

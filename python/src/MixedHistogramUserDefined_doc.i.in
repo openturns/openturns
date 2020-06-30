@@ -43,7 +43,7 @@ Examples
 
 Returns
 -------
-mixture : :class:`openturns.Mixture`
+mixture : :class:`~openturns.Mixture`
     Mixture distribution"
 
 // ----------------------------------------------------------------------------

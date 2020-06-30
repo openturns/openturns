@@ -43,6 +43,6 @@ index : int
     If *x* is inside RegularGrid bounds, return the index of the interval
     in  which it is contained; otherwise return an int which is at least
     greater than the number of intervals.
-indices : :class:`openturns.Indices`
+indices : :class:`~openturns.Indices`
     Index of the enclosing simplex of the given 1D points."
 

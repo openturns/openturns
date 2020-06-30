@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-echo -n "1. linux\n2. mingw\n\n> "
+echo -e "1. linux\n2. mingw\n\n> "
 read choice
 case $choice in
   1)

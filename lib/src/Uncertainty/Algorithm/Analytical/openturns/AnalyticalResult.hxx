@@ -166,7 +166,6 @@ private:
   mutable Bool isAlreadyComputedClassicalImportanceFactors_;
   mutable Bool isAlreadyComputedPhysicalImportanceFactors_;
   mutable Bool isAlreadyComputedHasoferReliabilityIndexSensitivity_;
-  mutable Bool isAlreadyComputedMeanPointInStandardEventDomain_;
   OptimizationResult optimizationResult_;
 }; // class AnalyticalResult
 END_NAMESPACE_OPENTURNS
