@@ -106,7 +106,7 @@ prob : float
 
 Parameters
 ----------
-prob : bool
+keepEventsample : bool
     Whether to keep the event samples."
 
 // ---------------------------------------------------------------------------
