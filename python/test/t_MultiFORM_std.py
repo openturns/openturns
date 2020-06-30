@@ -18,7 +18,7 @@ event = ot.ThresholdEvent(Y, ot.Less(), 0.0)
 
 # solver
 solver = ot.Cobyla()
-solver.setMaximumIterationNumber(100)
+solver.setMaximumEvaluationNumber(1000)
 solver.setMaximumAbsoluteError(1.0e-10)
 solver.setMaximumRelativeError(1.0e-10)
 solver.setMaximumResidualError(1.0e-10)
@@ -34,7 +34,7 @@ result = algo.getResult()
 print("result=", result)
 
 pf_multi = result.getEventProbability()
-ott.assert_almost_equal(pf_multi, 0.00267684, 1e-4, 1e-4)
+ott.assert_almost_equal(pf_multi, 0.00281872, 1e-4, 1e-4)
 print("event probability=%.6f" % pf_multi)
 
 n_design_pts = len(result.getFORMResultCollection())

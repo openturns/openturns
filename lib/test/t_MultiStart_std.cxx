@@ -73,6 +73,7 @@ int main(int, char *[])
     LHSExperiment experiment(distribution, 20);
     Sample startingPoints(experiment.generate());
     MultiStart algo(solver, startingPoints);
+    algo.setMaximumEvaluationNumber(100);
     algo.run();
     result = algo.getResult();
     fullprint << "multistart x*=" << result.getOptimalPoint() << " f(x*)=" << result.getOptimalValue() << std::endl;

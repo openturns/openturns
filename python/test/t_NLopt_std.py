@@ -45,10 +45,8 @@ for algoName in algoNames:
         for inequality in [True, False]:
             for equality in [True, False]:
                 for bound in [True, False]:
-
-                    if not bound and 'LN_BOBYQA' in algoName:
+                    if not minimization and not bound:
                         continue
-
                     print('algo=', algoName, 'minimization=', minimization, 'bounds=',
                           bound, 'inequality=', inequality, 'equality=', equality)
                     problem = ot.OptimizationProblem(f)
@@ -69,7 +67,7 @@ for algoName in algoNames:
                     except:
                         print('-- Not supported')
                         continue
-                    # algo.setMaximumEvaluationNumber(100)
+                    algo.setMaximumEvaluationNumber(100)
                     algo.setStartingPoint(startingPoint)
                     try:
                         algo.run()

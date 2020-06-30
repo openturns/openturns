@@ -71,7 +71,7 @@ Distribution FittingTest::BestModelBIC(const Sample & sample,
         builtAtLeastOne = true;
       }
     }
-    catch (InvalidArgumentException & ex)
+    catch (const Exception & ex)
     {
       LOGWARN(OSS(false) << "Warning! Impossible to use factory " << factory << ". Reason=" << ex);
     }
@@ -139,7 +139,7 @@ Distribution FittingTest::BestModelKolmogorov(const Sample & sample,
         builtAtLeastOne = true;
       }
     }
-    // The factories can raise many different exceptions (InvalidArgumenException, InternalException, NotDefinedException...). Here we catch everything and echoe the reason of the exception.
+    // The factories can raise many different exceptions (InvalidArgumenException, InternalException, NotDefinedException...). Here we catch everything and echo the reason of the exception.
     catch (const Exception & ex)
     {
       LOGWARN(OSS(false) << "Warning! Impossible to use factory " << factory << ". Reason=" << ex);

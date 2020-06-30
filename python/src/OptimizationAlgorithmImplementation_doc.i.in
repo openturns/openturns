@@ -30,7 +30,7 @@ Define an optimization problem to find the minimum of the Rosenbrock function:
 >>> solver = ot.OptimizationAlgorithm(problem)
 >>> solver.setStartingPoint([0, 0])
 >>> solver.setMaximumResidualError(1.e-3)
->>> solver.setMaximumIterationNumber(100)
+>>> solver.setMaximumEvaluationNumber(10000)
 >>> solver.run()
 >>> result = solver.getResult()
 >>> x_star = result.getOptimalPoint()
@@ -362,12 +362,38 @@ OT_OptimizationAlgorithm_setVerbose_doc
 "Accessor to the verbosity flag.
 
 Returns
-----------
+-------
 verbose : bool
     Verbosity flag state."
 %enddef
 %feature("docstring") OT::OptimizationAlgorithmImplementation::getVerbose
 OT_OptimizationAlgorithm_getVerbose_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_enableLagrangeMultipliers_doc
+"Accessor to the Lagrange multipliers flag.
+
+Parameters
+----------
+isLagrangeMultipliersEnabled : bool
+    Whether to compute Lagrange multipliers."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::enableLagrangeMultipliers
+OT_OptimizationAlgorithm_enableLagrangeMultipliers_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_OptimizationAlgorithm_isLagrangeMultipliersEnabled_doc
+"Accessor to the Lagrange multipliers flag.
+
+Returns
+-------
+isLagrangeMultipliersEnabled : bool
+    Whether to compute Lagrange multipliers."
+%enddef
+%feature("docstring") OT::OptimizationAlgorithmImplementation::isLagrangeMultipliersEnabled
+OT_OptimizationAlgorithm_isLagrangeMultipliersEnabled_doc
 
 // ---------------------------------------------------------------------
 
@@ -390,7 +416,7 @@ Examples
 >>> solver = ot.OptimizationAlgorithm(problem)
 >>> solver.setStartingPoint([0, 0])
 >>> solver.setMaximumResidualError(1.e-3)
->>> solver.setMaximumIterationNumber(100)
+>>> solver.setMaximumEvaluationNumber(10000)
 >>> def report_progress(progress):
 ...     sys.stderr.write('-- progress=' + str(progress) + '%\n')
 >>> solver.setProgressCallback(report_progress)
@@ -419,7 +445,7 @@ Examples
 >>> solver = ot.OptimizationAlgorithm(problem)
 >>> solver.setStartingPoint([0, 0])
 >>> solver.setMaximumResidualError(1.e-3)
->>> solver.setMaximumIterationNumber(100)
+>>> solver.setMaximumEvaluationNumber(10000)
 >>> def ask_stop():
 ...     return True
 >>> solver.setStopCallback(ask_stop)

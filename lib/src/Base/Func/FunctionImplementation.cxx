@@ -267,7 +267,6 @@ Field FunctionImplementation::operator() (const Field & inField) const
 /* Method gradient() returns the Jacobian transposed matrix of the function at point */
 Matrix FunctionImplementation::gradient(const Point & inP) const
 {
-  if (useDefaultGradientImplementation_) LOGWARN(OSS() << "You are using a default implementation for the gradient. Be careful, your computation can be severely wrong!");
   // Here we must catch the exceptions raised by functions with no gradient
   try
   {

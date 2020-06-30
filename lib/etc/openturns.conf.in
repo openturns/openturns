@@ -110,7 +110,6 @@
   <SQP-DefaultOmega                   value_float="1.0e-4"           />
   <SQP-DefaultSmooth                  value_float="1.2"              />
   <SQP-DefaultTau                     value_float="0.5"              />
-  <SQP-DefaultMaximumEvaluationNumber value_int="100000" />
 
   <!-- OT::TNC parameters -->
   <TNC-DefaultAccuracy value_float="1.0e-4"       />
@@ -124,7 +123,6 @@
   <AbdoRackwitz-DefaultOmega                   value_float="1.0e-4" />
   <AbdoRackwitz-DefaultSmooth                  value_float="1.2"    />
   <AbdoRackwitz-DefaultTau                     value_float="0.5"    />
-  <AbdoRackwitz-DefaultMaximumEvaluationNumber value_int="100000"   />
 
   <!-- OT::MultiStart parameters -->
   <MultiStart-KeepResults                      value_bool="true" />
@@ -730,12 +728,12 @@
   <WhittleFactory-DefaultRhoEnd             value_float="1.0e-10"        />
   <WhittleFactory-DefaultStartingPointScale value_float="1.0"            />
   <WhittleFactory-RootEpsilon               value_float="1.0e-6"         />
-  <WhittleFactory-DefaultMaxFun             value_int="2000" />
+  <WhittleFactory-DefaultMaximumEvaluationNumber             value_int="2000" />
 
   <!-- OT::BoxCoxFactory parameters -->
   <BoxCoxFactory-DefaultRhoBeg      value_float="0.1"            />
   <BoxCoxFactory-DefaultRhoEnd      value_float="1.0e-10"        />
-  <BoxCoxFactory-DefaultMaxFun      value_int="2000" />
+  <BoxCoxFactory-DefaultMaximumEvaluationNumber      value_int="2000" />
   <BoxCoxFactory-DefaultPointNumber value_int="201"  />
 
   <!-- OT::VisualTest parameters -->
@@ -777,7 +775,7 @@
   <ARMALikelihoodFactory-MaximalScaling            value_float="1.0e5"           />
   <ARMALikelihoodFactory-RootEpsilon               value_float="1.0e-6"          />
   <ARMALikelihoodFactory-StartingScaling           value_float="1.0e-13"         />
-  <ARMALikelihoodFactory-DefaultMaxFun             value_int="10000" />
+  <ARMALikelihoodFactory-DefaultMaximumEvaluationNumber             value_int="10000" />
 
   <!-- OT::FittingTest parameters -->
   <FittingTest-ChiSquaredCheckSample     value_bool="true" />

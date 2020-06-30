@@ -721,7 +721,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("SQP-DefaultOmega", 1.0e-4);
   addAsScalar("SQP-DefaultSmooth", 1.2);
   addAsScalar("SQP-DefaultTau", 0.5);
-  addAsUnsignedInteger ( "SQP-DefaultMaximumEvaluationNumber", 100000);
 
   // TNC parameters //
   addAsScalar("TNC-DefaultAccuracy", 1.0e-4);
@@ -735,7 +734,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("AbdoRackwitz-DefaultOmega", 1.0e-4);
   addAsScalar("AbdoRackwitz-DefaultSmooth", 1.2);
   addAsScalar("AbdoRackwitz-DefaultTau", 0.5);
-  addAsUnsignedInteger("AbdoRackwitz-DefaultMaximumEvaluationNumber", 100000);
 
   // MultiStart parameters //
   addAsBool("MultiStart-KeepResults", true);
@@ -746,7 +744,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-5);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-5);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-5);
-  addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100);
+  addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 1000);
   addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber", 100);
 
   // Dlib optimization parameters //
@@ -1342,12 +1340,12 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("WhittleFactory-DefaultRhoEnd", 1.0e-10);
   addAsScalar("WhittleFactory-DefaultStartingPointScale", 1.0);
   addAsScalar("WhittleFactory-RootEpsilon", 1.0e-6);
-  addAsUnsignedInteger("WhittleFactory-DefaultMaxFun", 2000);
+  addAsUnsignedInteger("WhittleFactory-DefaultMaximumEvaluationNumber", 2000);
 
   // BoxCoxFactory parameters //
   addAsScalar("BoxCoxFactory-DefaultRhoBeg", 0.1);
   addAsScalar("BoxCoxFactory-DefaultRhoEnd", 1.0e-10);
-  addAsUnsignedInteger("BoxCoxFactory-DefaultMaxFun", 2000);
+  addAsUnsignedInteger("BoxCoxFactory-DefaultMaximumEvaluationNumber", 2000);
   addAsUnsignedInteger("BoxCoxFactory-DefaultPointNumber", 201);
 
   // VisualTest parameters //
@@ -1389,7 +1387,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("ARMALikelihoodFactory-MaximalScaling", 1.0e5);
   addAsScalar("ARMALikelihoodFactory-RootEpsilon", 1.0e-6);
   addAsScalar("ARMALikelihoodFactory-StartingScaling", 1.0e-13);
-  addAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaxFun", 10000);
+  addAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaximumEvaluationNumber", 10000);
 
   // FittingTest parameters //
   addAsBool("FittingTest-ChiSquaredCheckSample", true);

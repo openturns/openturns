@@ -72,6 +72,8 @@ int main(int, char *[])
           for (SignedInteger equality = 1; equality >= 0; -- equality)
             for(SignedInteger bound = 1; bound >= 0; -- bound)
             {
+              if (!minimization && !bound)
+                  continue;
               OptimizationProblem problem(f);
               problem.setMinimization(minimization == 1);
               if (inequality)
@@ -87,6 +89,7 @@ int main(int, char *[])
                 NLopt::SetSeed(0);
                 algo.setProblem(problem);
                 algo.setStartingPoint(startingPoint);
+                algo.setMaximumEvaluationNumber(100);
                 fullprint << "algo=" << algoNames[i] << " minimization=" << minimization << " bounds=" << bound << " inequality=" << inequality << " equality=" << equality << std::endl;
                 algo.run();
                 OptimizationResult result(algo.getResult());

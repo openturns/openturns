@@ -32,7 +32,7 @@ size = 20
 experiment = ot.LHSExperiment(distribution, size)
 startingPoints = experiment.generate()
 algo = ot.MultiStart(solver, startingPoints)
-algo.setMaximumEvaluationNumber(size*algo.getMaximumEvaluationNumber())
+algo.setMaximumEvaluationNumber(2000)
 algo.run()
 result = algo.getResult()
 print('-- multistart x*=', result.getOptimalPoint(),
