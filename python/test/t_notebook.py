@@ -45,6 +45,10 @@ for ipynb in ipynbs:
         elapsed = time.time() - t0
         print('--', b_name, 'OK T=', round(elapsed, 2), 's')
     except:
+        cl, exc, tb = sys.exc_info()
+        line_number = traceback.extract_tb(tb)[-1][1]
+        line = source.split("\n")[line_number - 1]
+        print ('  File "'+ipynb+'"\n   ', line)
         n_fail += 1
         print('--', b_name, '***Failed')
         traceback.print_exc()

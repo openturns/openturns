@@ -712,12 +712,6 @@ Sample Distribution::computeQuantile(const Scalar qMin,
   return getImplementation()->computeQuantile(qMin, qMax, pointNumber, tail);
 }
 
-/* Get the implementation of the distribution */
-Distribution::Implementation Distribution::getImplementation() const
-{
-  return p_implementation_;
-}
-
 /* Check if the distribution is elliptical */
 Bool Distribution::isElliptical() const
 {

@@ -128,10 +128,9 @@ public:
 
   void erase(SampleImplementation::iterator first, SampleImplementation::iterator last);
 #endif
-  // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
-  // INTENTIONALY NOT DOCUMENTED
-  const Scalar * __baseaddress__ () const;
-  UnsignedInteger __elementsize__ () const;
+  /* Returns a pointer to the block of memory */
+  const Scalar * data () const;
+  UnsignedInteger elementSize () const;
 
   /** Whether the list contains the value val */
   Bool contains(const Point & val) const;

@@ -803,7 +803,7 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'C'))
         {
           // 2-d contiguous array in C notation, we can directly copy memory chunk
-          std::copy(data, data + size * dimension, (Scalar *)sample.__baseaddress__());
+          std::copy(data, data + size * dimension, (Scalar *)sample.data());
         }
         else
         {

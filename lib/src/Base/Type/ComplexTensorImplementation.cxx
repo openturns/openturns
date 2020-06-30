@@ -249,22 +249,9 @@ void ComplexTensorImplementation::load(Advocate & adv)
   adv.loadAttribute("nbSheets_", nbSheets_);
 }
 
-
-const Complex* ComplexTensorImplementation::__baseaddress__() const
+UnsignedInteger ComplexTensorImplementation::stride(const UnsignedInteger dim) const
 {
-  return &(*this)[0];
-}
-
-
-UnsignedInteger ComplexTensorImplementation::__elementsize__() const
-{
-  return sizeof(Complex);
-}
-
-
-UnsignedInteger ComplexTensorImplementation::__stride__(UnsignedInteger dim) const
-{
-  UnsignedInteger stride = __elementsize__();
+  UnsignedInteger stride = elementSize();
   if (dim > 0)
     stride *= nbRows_;
   if (dim > 1)

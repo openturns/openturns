@@ -1088,6 +1088,42 @@ Error handling and error messages
 These rules refer to the classes and methods in the Python layer using
 the services of the internal model and the solvers.
 
+C++ 11
+~~~~~~
+
+The library requires the C++ 11 standard.
+Some useful features include:
+
+- std::atomic
+- std::vector::data()
+- std::shared_ptr
+- inherited constructors
+- default member initializers
+
+*Example: inherited constructors*
+
+::
+
+    class Foo
+    {
+      Foo (int a, int b), a_(a), b_(b)
+      Foo (bool z) : Foo(4, 6)
+
+      int a_, b_;
+    };
+
+*Example: default member initializers*
+
+::
+
+    class Foo
+    {
+      Foo();
+
+      int a_ = 0;
+    };
+
+
 Python
 ------
 

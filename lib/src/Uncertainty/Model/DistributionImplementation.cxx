@@ -3672,7 +3672,7 @@ Graph DistributionImplementation::drawPDF(const Point & xMin,
     SampleImplementation fullProba(size, 1);
     fullProba.setData(probabilities);
     fullProba.stack(*support.getImplementation());
-    fullProba = fullProba.sortAccordingToAComponent(0);
+    fullProba.sortAccordingToAComponentInPlace(0);
     const Scalar pMin = fullProba(0, 0);
     const Scalar pMax = fullProba(size - 1, 0);
     const Scalar scaling = ResourceMap::GetAsScalar("Distribution-DiscreteDrawPDFScaling") / std::sqrt(pMax);
@@ -3925,7 +3925,7 @@ Graph DistributionImplementation::drawLogPDF(const Point & xMin,
     SampleImplementation fullProba(size, 1);
     fullProba.setData(probabilities);
     fullProba.stack(*support.getImplementation());
-    fullProba = fullProba.sortAccordingToAComponent(0);
+    fullProba.sortAccordingToAComponentInPlace(0);
     const Scalar absLogPMin = -std::log(fullProba(0, 0));
     const Scalar absLogPMax = -std::log(fullProba(size - 1, 0));
     const Scalar scaling = ResourceMap::GetAsScalar("Distribution-DiscreteDrawPDFScaling") / std::sqrt(absLogPMin);

@@ -371,78 +371,23 @@ static PyTypeObject BufferType = {
     PyVarObject_HEAD_INIT(NULL, 0)
 #else
     PyObject_HEAD_INIT(NULL)
-    0,                            /* ob_size */
 #endif
-    "openturns.memoryview.Buffer",/* tp_name */
-    sizeof(Buffer),               /* tp_basicsize */
-    0,                            /* tp_itemsize */
-    (destructor)Buffer_dealloc,   /* tp_dealloc */
-    0,                            /* tp_print */
-    0,                            /* tp_getattr */
-    0,                            /* tp_setattr */
-    0,                            /* tp_reserved */
-    (reprfunc) Buffer_repr,       /* tp_repr */
-    0,                            /* tp_as_number */
-    &Buffer_as_sequence,          /* tp_as_sequence */
-    0,                            /* tp_as_mapping */
-    0,                            /* tp_hash  */
-    0,                            /* tp_call */
-    (reprfunc) Buffer_repr,       /* tp_str */
-    0,                            /* tp_getattro */
-    0,                            /* tp_setattro */
-    &Buffer_as_buffer,            /* tp_as_buffer */
-/* In Python 2.7, PyBuffer_Check() checks whether Py_TPFLAGS_HAVE_NEWBUFFER is set, so it must be
-   defined; Python 3 direcly checks tp_as_buffer.getbufferproc != NULL and removed most flags */
+    .tp_name = "openturns.memoryview.Buffer",
+    .tp_basicsize = sizeof(Buffer),
+    .tp_dealloc = (destructor)Buffer_dealloc,
+    .tp_repr = (reprfunc) Buffer_repr,
+    .tp_as_sequence = &Buffer_as_sequence,
+    .tp_str = (reprfunc) Buffer_repr,
+    .tp_as_buffer = &Buffer_as_buffer,
 #if PY_VERSION_HEX >= 0x03000000
-    Py_TPFLAGS_DEFAULT,           /* tp_flags */
+    .tp_flags = Py_TPFLAGS_DEFAULT,
 #else
-    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_NEWBUFFER, /* tp_flags */
+    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_HAVE_NEWBUFFER,
 #endif
-    Buffer_doc,                   /* tp_doc */
-    0,                            /* tp_traverse */
-    0,                            /* tp_clear */
-    0,                            /* tp_richcompare */
-    0,                            /* tp_weaklistoffset */
-    (getiterfunc) Buffer_iter,    /* tp_iter */
-    0,                            /* tp_iternext */
-    Buffer_methods,               /* tp_methods */
-    0,                            /* tp_members */
-    0,                            /* tp_getset */
-    0,                            /* tp_base */
-    0,                            /* tp_dict */
-    0,                            /* tp_descr_get */
-    0,                            /* tp_descr_set */
-    0,                            /* tp_dictoffset */
-    (initproc)Buffer_init,         /* tp_init */
-    0,                                    /* tp_alloc */
-      0,                                    /* tp_new */
-      0,                                    /* tp_free */
-      0,                                    /* tp_is_gc */
-      0,                                    /* tp_bases */
-      0,                                    /* tp_mro */
-      0,                                    /* tp_cache */
-      0,                                    /* tp_subclasses */
-      0,                                    /* tp_weaklist */
-      0,                                    /* tp_del */
-      0,                                    /* tp_version_tag */
-#if PY_VERSION_HEX >= 0x03040000
-      0,                                    /* tp_finalize */
-#endif
-#if PY_VERSION_HEX >= 0x03080000
-      0,                                    /* tp_vectorcall */
-#endif
-#if PY_VERSION_HEX < 0x03090000
-#if PY_VERSION_HEX >= 0x03080000
-      0,                                    /* tp_print */
-#endif
-#ifdef COUNT_ALLOCS
-      0,                                    /* tp_allocs */
-      0,                                    /* tp_frees */
-      0,                                    /* tp_maxalloc */
-      0,                                    /* tp_prev */
-      0                                     /* tp_next */
-#endif
-#endif
+    .tp_doc = Buffer_doc,
+    .tp_iter = (getiterfunc) Buffer_iter,
+    .tp_methods = Buffer_methods,
+    .tp_init = (initproc)Buffer_init,
 };
 
 static Py_ssize_t
@@ -534,16 +479,20 @@ Buffer_augment(PyObject *obj)
 }
 
 static PySequenceMethods Buffer_as_sequence = {
-    (lenfunc)Buffer_length,                 /*sq_length*/
-    (binaryfunc)NULL,                       /*sq_concat*/
-    (ssizeargfunc)NULL,                     /*sq_repeat*/
-    (ssizeargfunc)Buffer_item,              /*sq_item*/
-    (ssizessizeargfunc)NULL,                /*sq_slice*/
-    (ssizeobjargproc)NULL,                  /*sq_ass_item*/
-    (ssizessizeobjargproc)NULL,             /*sq_ass_slice*/
-    (objobjproc)NULL,                       /*sq_contains*/
-    (binaryfunc) NULL,                      /*sq_inplace_concat*/
-    (ssizeargfunc)NULL,                     /*sq_inplace_repeat*/
+    .sq_length = (lenfunc)Buffer_length,
+    .sq_concat = (binaryfunc)NULL,
+    .sq_repeat = (ssizeargfunc)NULL,
+    .sq_item = (ssizeargfunc)Buffer_item,
+#if PY_MAJOR_VERSION < 3
+    .sq_slice = (ssizessizeargfunc)NULL,
+#endif
+    .sq_ass_item = (ssizeobjargproc)NULL,
+#if PY_MAJOR_VERSION < 3
+    .sq_ass_slice = (ssizessizeobjargproc)NULL,
+#endif
+    .sq_contains = (objobjproc)NULL,
+    .sq_inplace_concat = (binaryfunc) NULL,
+    .sq_inplace_repeat = (ssizeargfunc)NULL,
 };
 
 
@@ -591,15 +540,15 @@ static int memoryview_clear(PyObject *m) {
 }
 
 static struct PyModuleDef openturns_memoryview_module = {
-  PyModuleDef_HEAD_INIT,
-  openturns_memoryview_module_name,
-  Buffer_doc,
-  sizeof(struct module_state),
-  memoryview_methods,
-  NULL,
-  memoryview_traverse,
-  memoryview_clear,
-  NULL
+    .m_base = PyModuleDef_HEAD_INIT,
+    .m_name = openturns_memoryview_module_name,
+    .m_doc = Buffer_doc,
+    .m_size = sizeof(struct module_state),
+    .m_methods = memoryview_methods,
+    .m_slots = NULL,
+    .m_traverse = memoryview_traverse,
+    .m_clear = memoryview_clear,
+    .m_free = NULL,
 };
 
 #define INITERROR return NULL

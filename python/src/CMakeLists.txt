@@ -71,10 +71,6 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
 
   target_link_libraries_with_dynamic_lookup (${module_target} ${PYTHON_LIBRARIES})
 
-  if (CMAKE_VERSION VERSION_LESS 3.1)
-    set_target_properties (${module_target} PROPERTIES NO_SONAME ON)
-  endif ()
-
   # allows to pass compile flags like -O1 to reduce memory usage
   if (DEFINED SWIG_COMPILE_FLAGS)
     set_target_properties (${module_target} PROPERTIES COMPILE_FLAGS ${SWIG_COMPILE_FLAGS})
@@ -120,7 +116,6 @@ ot_add_python_module(common common_module.i
                       LessOrEqual.i LessOrEqual_doc.i.in
                       Cache.i
                       PlatformInfo.i PlatformInfo_doc.i.in
-                      SharedPointer.i
                       Pointer.i
                       InterfaceObject.i InterfaceObject_doc.i.in
                       TypedInterfaceObject.i

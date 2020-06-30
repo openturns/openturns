@@ -1,7 +1,7 @@
 %feature("docstring") OT::FrankCopulaFactory
 "Frank Copula factory.
 
-The paramters are estimated using the following equations:
+The parameters are estimated using the following equations:
 
 :math:`\Hat{\theta}_n` is solution of
 
