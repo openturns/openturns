@@ -27,6 +27,9 @@
 #ifdef OPENTURNS_HAVE_LIBXML2
 %include XMLStorageManager.i
 #endif
+#ifdef OPENTURNS_HAVE_HDF5
+%include XMLH5StorageManager.i
+#endif
 %include TTY.i
 %include Log.i
 %include Path.i

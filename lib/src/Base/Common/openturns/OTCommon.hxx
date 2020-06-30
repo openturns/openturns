@@ -53,5 +53,8 @@
 #ifdef OPENTURNS_HAVE_LIBXML2
 #include "openturns/XMLStorageManager.hxx"
 #endif
+#ifdef OPENTURNS_HAVE_HDF5
+#include "openturns/XMLH5StorageManager.hxx"
+#endif
 
 #endif /* OPENTURNS_OTCOMMON_HXX */
