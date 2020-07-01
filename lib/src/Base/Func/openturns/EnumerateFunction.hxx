@@ -52,17 +52,6 @@ public:
   /** Constructor with parameters */
   EnumerateFunction(Implementation & p_implementation);
 
-  /** Parameter constructor @deprecated */
-  explicit EnumerateFunction(const UnsignedInteger dimension);
-
-  /** Parameter constructor @deprecated */
-  EnumerateFunction(const UnsignedInteger dimension,
-                    const Scalar q);
-
-  /** Parameter constructor @deprecated */
-  EnumerateFunction(const Point & weight,
-                    const Scalar q);
-
   /** String converter */
   String __repr__() const;
   String __str__(const String & offset = "") const;

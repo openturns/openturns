@@ -59,7 +59,7 @@ Y = sample[:, 0]
 #
 # Build a model BIO~SAL+pH+K+Na+Zn
 dim = X.getDimension()
-enumerateFunction = ot.EnumerateFunction(dim)
+enumerateFunction = ot.LinearEnumerateFunction(dim)
 factory = ot.TensorizedUniVariateFunctionFactory(
     [ot.MonomialFunctionFactory()]*dim, enumerateFunction)
 
