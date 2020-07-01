@@ -2,31 +2,30 @@
 "Importance Sampling experiment.
 
 Available constructors:
-    ImportanceSamplingExperiment(*distribution*)
+    ImportanceSamplingExperiment(*importanceDistribution*)
 
-    ImportanceSamplingExperiment(*distribution, size*)
+    ImportanceSamplingExperiment(*importanceDistribution, size*)
 
-    ImportanceSamplingExperiment(*distribution, importanceDistribution, size*)
+    ImportanceSamplingExperiment(*initialDistribution, importanceDistribution, size*)
 
 Parameters
 ----------
-distribution : :class:`~openturns.Distribution`
-    Distribution :math:`\mu` with an independent copula used to generate the
+initialDistribution : :class:`~openturns.Distribution`
+    Distribution :math:`\mu` which is the initial distribution used to generate the
     set of input data.
 size : positive int
-    Number :math:`cardI` of points that will be generated in the experiment.
+    Number of points that will be generated in the experiment.
 importanceDistribution : :class:`~openturns.Distribution`
-    Distribution :math:`p` according to which the points of the design of
+    Distribution :math:`p` according to which the points of the 
     experiments will be generated with the Importance Sampling technique.
 
 Notes
 -----
-ImportanceSamplingExperiment is a random weighted design of experiments.
-The :meth:`generate` method generates points :math:`(\Xi_i)_{i \in I}`
-independently from the distribution :math:`\mu`. When the :meth:`generate`
-method is recalled, the generated sample changes.
-The weights associated to the points are all equal to:
-:math:`\frac{1}{\Xi_i}\frac{\mu(\Xi_i)}{p(\Xi_i)}`
+ImportanceSamplingExperiment is a random weighted design of experiments to get a sample 
+:math:`(X_i)_{1 \leq i \leq size}`
+independently according to the distribution :math:`\mu`. 
+The sample is generated from the importance distribution :math:`p` and each realization is weighted by   
+:math:`\frac{\mu(X_i)}{p(X_i)}`
 
 See also
 --------
