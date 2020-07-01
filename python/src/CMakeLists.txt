@@ -632,7 +632,6 @@ ot_add_python_module(dist_bundle1 dist_bundle1_module.i
                       GeometricFactory.i GeometricFactory_doc.i.in
                       Gumbel.i Gumbel_doc.i.in
                       GumbelFactory.i GumbelFactory_doc.i.in
-                      GumbelAB.i GumbelAB_doc.i.in
                       GumbelLambdaGamma.i GumbelLambdaGamma_doc.i.in
                       GumbelMuSigma.i GumbelMuSigma_doc.i.in
                    )
