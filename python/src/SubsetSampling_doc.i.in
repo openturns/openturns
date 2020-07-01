@@ -4,7 +4,7 @@
 Parameters
 ----------
 event : :class:`~openturns.RandomVector`
-    Event we are computing the probability of.
+    Event we are computing the probability.
 proposalRange : float, optional
     Proposal range length
 targetProbability : float, optional
@@ -107,7 +107,7 @@ prob : float
 Parameters
 ----------
 keepEventsample : bool
-    Whether to keep the event samples."
+    Whether to keep the samples that relized the event."
 
 // ---------------------------------------------------------------------------
 
@@ -117,7 +117,7 @@ keepEventsample : bool
 Returns
 -------
 inputSample : `~openturns.Sample`
-    Input sample."
+    Input sample that realized the event."
 
 // ---------------------------------------------------------------------------
 
@@ -127,7 +127,7 @@ inputSample : `~openturns.Sample`
 Returns
 -------
 outputSample : `~openturns.Sample`
-    Ouput sample."
+    Ouput sample that realized the event."
 
 // ---------------------------------------------------------------------------
 
@@ -137,7 +137,7 @@ outputSample : `~openturns.Sample`
 Returns
 -------
 threshold : `~openturns.Point`
-    Threshold values."
+    Threshold values at each step."
 
 // ---------------------------------------------------------------------------
 
@@ -157,7 +157,7 @@ prob : `~openturns.Point`
 Returns
 -------
 prob : `~openturns.Point`
-    Probability estimate values."
+    Probability estimate at each step."
 
 // ---------------------------------------------------------------------------
 
