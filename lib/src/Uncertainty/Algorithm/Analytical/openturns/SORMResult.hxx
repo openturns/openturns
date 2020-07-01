@@ -22,7 +22,6 @@
 #define OPENTURNS_SORMResult_HXX
 
 #include "openturns/AnalyticalResult.hxx"
-#include "openturns/Event.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/Distribution.hxx"
 

@@ -26,7 +26,7 @@
 #include "openturns/PointWithDescription.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/Collection.hxx"
-#include "openturns/Event.hxx"
+#include "openturns/RandomVector.hxx"
 #include "openturns/StandardEvent.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"

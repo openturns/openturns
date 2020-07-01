@@ -838,7 +838,6 @@ ot_add_python_module(metamodel metamodel_module.i
                       ThresholdEvent.i ThresholdEvent_doc.i.in
                       DomainEvent.i DomainEvent_doc.i.in
                       ProcessEvent.i ProcessEvent_doc.i.in
-                      Event.i Event_doc.i.in
                       StandardEvent.i StandardEvent_doc.i.in
                       IntersectionEvent.i IntersectionEvent_doc.i.in
                       UnionEvent.i UnionEvent_doc.i.in

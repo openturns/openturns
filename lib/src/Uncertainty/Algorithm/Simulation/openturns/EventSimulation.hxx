@@ -28,7 +28,7 @@
 #include "openturns/Last.hxx"
 #include "openturns/Graph.hxx"
 #include "openturns/ProbabilitySimulationResult.hxx"
-#include "openturns/Event.hxx"
+#include "openturns/RandomVector.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

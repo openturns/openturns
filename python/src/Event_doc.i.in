@@ -1,7 +1,0 @@
-%feature("docstring") OT::Event
-"Event base class.
-
-See also
---------
-ThresholdEvent, ProcessEvent, DomainEvent
-"

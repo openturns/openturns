@@ -23,12 +23,11 @@
 
 #include <cmath>
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Sample.hxx"
 #include "openturns/PointWithDescription.hxx"
 #include "openturns/ComparisonOperator.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Graph.hxx"
-#include "openturns/Event.hxx"
+#include "openturns/RandomVector.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/ProbabilitySimulationResult.hxx"
 
