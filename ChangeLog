@@ -11,6 +11,11 @@
  * BlockIndependentDistribution
 
 ==== API changes ====
+ * Removed deprecated Weibull, WeibullFactory, WeibullMuSigma classes
+ * Removed deprecated GumbelAB class
+ * Removed deprecated Event class
+ * Removed deprecated EnumerateFunction constructors
+ * Removed various deprecated distribution accessors
 
 === Python module ===
 

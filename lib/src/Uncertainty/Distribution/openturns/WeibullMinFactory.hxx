@@ -56,10 +56,6 @@ public:
   WeibullMin buildMethodOfMoments(const Sample & sample) const;
   WeibullMin buildMethodOfLikelihoodMaximization(const Sample & sample) const;
 
-  /** @deprecated */
-  WeibullMin buildAsWeibull(const Sample & sample) const;
-  WeibullMin buildAsWeibull(const Point & parameters) const;
-  WeibullMin buildAsWeibull() const;
 }; /* class WeibullMinFactory */
 
 

@@ -1,6 +1,3 @@
-Remove Weibull alias
-Remove WeibullMuSigma alias
-Remove WeibullFactory alias, +buildAsWeibull deprecated methods
 Remove deprecated GumbelAB
 Remove Event class in 1.16
 Removed deprecated EnumerateFunction constructors
