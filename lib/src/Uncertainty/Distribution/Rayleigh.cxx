@@ -310,18 +310,6 @@ Scalar Rayleigh::getBeta() const
   return beta_;
 }
 
-void Rayleigh::setSigma(const Scalar sigma)
-{
-  LOGWARN("Rayleigh::setSigma is deprecated");
-  setBeta(sigma);
-}
-
-Scalar Rayleigh::getSigma() const
-{
-  LOGWARN("Rayleigh::getSigma is deprecated");
-  return beta_;
-}
-
 /* Gamma accessor */
 void Rayleigh::setGamma(const Scalar gamma)
 {

@@ -299,27 +299,6 @@ Description Gumbel::getParameterDescription() const
   return description;
 }
 
-/* Alpha accessor */
-void Gumbel::setAlpha(const Scalar alpha)
-{
-  LOGWARN("Gumbel::setAlpha is deprecated");
-  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
-  if (alpha != (1.0 / beta_))
-  {
-    beta_ = 1.0 / alpha;
-    isAlreadyComputedMean_ = false;
-    isAlreadyComputedCovariance_ = false;
-    computeRange();
-  }
-}
-
-Scalar Gumbel::getAlpha() const
-{
-  LOGWARN("Gumbel::getAlpha is deprecated");
-  return 1.0 / beta_;
-}
-
-
 /* M accessor */
 void Gumbel::setBeta(const Scalar beta)
 {

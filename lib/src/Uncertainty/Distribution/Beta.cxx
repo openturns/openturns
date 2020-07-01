@@ -379,33 +379,6 @@ Scalar Beta::getBeta() const
   return beta_;
 }
 
-/* R accessor */
-void Beta::setR(const Scalar r)
-{
-  LOGWARN("Beta::setR is deprecated");
-  setAlpha(r);
-}
-
-Scalar Beta::getR() const
-{
-  LOGWARN("Beta::getR is deprecated");
-  return alpha_;
-}
-
-
-/* T accessor */
-void Beta::setT(const Scalar t)
-{
-  LOGWARN("Beta::setT is deprecated");
-  setBeta(t - alpha_);
-}
-
-Scalar Beta::getT() const
-{
-  LOGWARN("Beta::getT is deprecated");
-  return alpha_ + beta_;
-}
-
 /* A accessor */
 void Beta::setA(const Scalar a)
 {

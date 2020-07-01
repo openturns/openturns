@@ -200,19 +200,6 @@ Scalar MeixnerDistribution::getGamma() const
   return gamma_;
 }
 
-void MeixnerDistribution::setMu(const Scalar mu)
-{
-  LOGWARN("MeixnerDistribution::setMu is deprecated");
-  setGamma(mu);
-}
-
-Scalar MeixnerDistribution::getMu() const
-{
-  LOGWARN("MeixnerDistribution::getMu is deprecated");
-  return gamma_;
-}
-
-
 /* Virtual constructor */
 MeixnerDistribution * MeixnerDistribution::clone() const
 {

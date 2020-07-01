@@ -120,10 +120,6 @@ public:
 
   /* Interface specific to Gumbel */
 
-  /** @deprecated Alpha accessor */
-  void setAlpha(const Scalar alpha);
-  Scalar getAlpha() const;
-
   /** Beta accessor */
   void setBeta(const Scalar beta);
   Scalar getBeta() const;

@@ -123,10 +123,6 @@ public:
   void setGamma(const Scalar gamma);
   Scalar getGamma() const;
 
-  /** @deprecated Mu accessor */
-  void setMu(const Scalar mu);
-  Scalar getMu() const;
-
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const;
 
@@ -157,11 +153,6 @@ private:
   /** Set simultaneously the tree scale and shape parameters */
   void setBetaAlphaDelta(const Scalar beta,
                          const Scalar alpha,
-                         const Scalar delta);
-
-  /** @deprecated Set simultaneously the tree scale and shape parameters */
-  void setAlphaBetaDelta(const Scalar alpha,
-                         const Scalar beta,
                          const Scalar delta);
 
   /** Compute the mean of the distribution */

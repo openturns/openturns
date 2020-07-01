@@ -120,10 +120,6 @@ public:
   void setBeta(const Scalar beta);
   Scalar getBeta() const;
 
-  /** @deprecated Sigma accessor */
-  void setSigma(const Scalar sigma);
-  Scalar getSigma() const;
-
   /** Gamma accessor */
   void setGamma(const Scalar gamma);
   Scalar getGamma() const;

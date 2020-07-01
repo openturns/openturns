@@ -134,14 +134,6 @@ public:
   void setBeta(const Scalar beta);
   Scalar getBeta() const;
 
-  /** @deprecated R accessor */
-  void setR(const Scalar r);
-  Scalar getR() const;
-
-  /** @deprecated T accessor */
-  void setT(const Scalar t);
-  Scalar getT() const;
-
   /** A accessor */
   void setA(const Scalar a);
   Scalar getA() const;
