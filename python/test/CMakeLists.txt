@@ -592,6 +592,7 @@ ot_pyinstallcheck_test (GaussianNonLinearCalibration_std)
 
 ## Classification
 ot_pyinstallcheck_test (MixtureClassifier_std)
+ot_pyinstallcheck_test (MinimumVolumeClassifier_std IGNOREOUT)
 
 ## Experiments
 ot_pyinstallcheck_test (Axial_std)

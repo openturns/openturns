@@ -1,0 +1,100 @@
+//                                               -*- C++ -*-
+/**
+ *  @brief K-Fold cross validation
+ *
+ *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+#ifndef OPENTURNS_MINIMUMVOLUMECLASSIFIER_HXX
+#define OPENTURNS_MINIMUMVOLUMECLASSIFIER_HXX
+
+#include "openturns/LevelSet.hxx"
+#include "openturns/ClassifierImplementation.hxx"
+#include "openturns/Distribution.hxx"
+
+BEGIN_NAMESPACE_OPENTURNS
+
+/**
+ * @class MinimumVolumeClassifier
+ *
+ * Associate to a given point its class index
+ */
+class OT_API MinimumVolumeClassifier
+  : public ClassifierImplementation
+{
+  CLASSNAME
+public:
+
+  /** Default constructor */
+  MinimumVolumeClassifier();
+
+  /** Parameters constructor */
+  MinimumVolumeClassifier(const Distribution & distribution,
+                          const Scalar alpha);
+
+  /** Virtual constructor */
+  virtual MinimumVolumeClassifier * clone() const;
+
+  /** String converter */
+  virtual String __repr__() const;
+
+  virtual UnsignedInteger getNumberOfClasses() const;
+
+  /** Associate a point to a class */
+  using ClassifierImplementation::classify;
+  virtual UnsignedInteger classify(const Point & inP) const;
+
+  virtual Indices classify(const Sample & inS) const;
+
+  /** Level set accessor */
+  LevelSet getLevelSet() const;
+
+  /** Grade a point as if it were associated to a class */
+  virtual Scalar grade(const Point & inP,
+                       const UnsignedInteger outC) const;
+
+  /** Distribution accessors */
+  Distribution getDistribution() const;
+  Scalar getThreshold() const;
+
+  /** Dimension accessor */
+  UnsignedInteger getDimension() const;
+
+  /** Method save() stores the object through the StorageManager */
+  virtual void save(Advocate & adv) const;
+
+  /** Method load() reloads the object from the StorageManager */
+  virtual void load(Advocate & adv);
+
+  Graph drawContour(const Point & alpha) const;
+  Graph drawSample(const Sample & sample, const Indices & classes) const;
+  Graph drawContourAndSample(const Point & alpha, const Sample & sample, const Indices & classes) const;
+
+protected:
+  // the distribution and confidence level that defines the minimum volume domain
+  Distribution distribution_;
+  Scalar alpha_ = 0.0;
+
+  mutable Bool isLevelSetComputed_ = false;
+  mutable LevelSet levelSet_;
+  mutable Scalar threshold_ = 0.0;
+
+}; /* class MinimumVolumeClassifier */
+
+
+END_NAMESPACE_OPENTURNS
+
+#endif /* OPENTURNS_MINIMUMVOLUMECLASSIFIER_HXX */

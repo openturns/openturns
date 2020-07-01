@@ -11,6 +11,7 @@
  * BlockIndependentDistribution
  * FejerAlgorithm
  * GridLayout
+ * MinimumVolumeClassifier
 
 ==== API changes ====
  * Removed deprecated Weibull, WeibullFactory, WeibullMuSigma classes

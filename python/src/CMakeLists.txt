@@ -739,6 +739,7 @@ ot_add_python_module(bayesian bayesian_module.i
 
 ot_add_python_module(classification classification_module.i
                       MixtureClassifier.i MixtureClassifier_doc.i.in
+		      MinimumVolumeClassifier.i MinimumVolumeClassifier_doc.i.in
                       UncertaintyClassificationTemplateDefs.i
                    )
 
