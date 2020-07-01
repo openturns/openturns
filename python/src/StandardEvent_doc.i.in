@@ -14,7 +14,7 @@ comparisonOperator : :class:`~openturns.ComparisonOperator`
     Comparison operator used to compare *antecedent* with *threshold*.
 threshold : float
     *threshold* we want to compare to *antecedent*.
-event : :class:`~openturns.RandomVector`
+event : :class:`~openturns.Event`
     Physical event associated with the standard event to be created.
 
 Notes
