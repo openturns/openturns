@@ -9,6 +9,7 @@
 
 ==== New classes ====
  * BlockIndependentDistribution
+ * FejerAlgorithm
 
 ==== API changes ====
  * Removed deprecated Weibull, WeibullFactory, WeibullMuSigma classes
