@@ -51,6 +51,9 @@ public:
   /** Constructor from a collection */
   Description(const Collection<String> & coll);
 
+  /** Initializer list constructor */
+  Description(std::initializer_list<String> initList);
+
   /** Check if the content is blank */
   Bool isBlank() const;
 

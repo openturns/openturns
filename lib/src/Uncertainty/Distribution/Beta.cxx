@@ -313,12 +313,7 @@ Distribution Beta::getStandardRepresentative() const
 /* Parameters value accessor */
 Point Beta::getParameter() const
 {
-  Point point(4);
-  point[0] = alpha_;
-  point[1] = beta_;
-  point[2] = a_;
-  point[3] = b_;
-  return point;
+  return {alpha_, beta_, a_, b_};
 }
 
 void Beta::setParameter(const Point & parameter)
@@ -332,12 +327,7 @@ void Beta::setParameter(const Point & parameter)
 /* Parameters value and description accessor */
 Description Beta::getParameterDescription() const
 {
-  Description description(4);
-  description[0] = "alpha";
-  description[1] = "beta";
-  description[2] = "a";
-  description[3] = "b";
-  return description;
+  return {"alpha", "beta", "a", "b"};
 }
 
 /* Check if the distribution is elliptical */

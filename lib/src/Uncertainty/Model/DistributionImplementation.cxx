@@ -3791,9 +3791,7 @@ Graph DistributionImplementation::drawMarginal2DPDF(const UnsignedInteger firstM
     const Bool logScaleX,
     const Bool logScaleY) const
 {
-  Indices indices(2);
-  indices[0] = firstMarginal;
-  indices[1] = secondMarginal;
+  Indices indices = {firstMarginal, secondMarginal};
   Graph marginalGraph(getMarginal(indices).drawPDF(xMin, xMax, pointNumber, logScaleX, logScaleY));
   marginalGraph.setTitle(OSS() << getDescription() << "->[" << description_[firstMarginal] << ", " << description_[secondMarginal] << "] components iso-PDF");
   return marginalGraph;
@@ -4050,9 +4048,7 @@ Graph DistributionImplementation::drawMarginal2DLogPDF(const UnsignedInteger fir
     const Bool logScaleX,
     const Bool logScaleY) const
 {
-  Indices indices(2);
-  indices[0] = firstMarginal;
-  indices[1] = secondMarginal;
+  Indices indices = {firstMarginal, secondMarginal};
   Graph marginalGraph(getMarginal(indices).drawLogPDF(xMin, xMax, pointNumber, logScaleX, logScaleY));
   marginalGraph.setTitle(OSS() << getDescription() << "->[" << description_[firstMarginal] << ", " << description_[secondMarginal] << "] components iso-log PDF");
   return marginalGraph;
@@ -4227,9 +4223,7 @@ Graph DistributionImplementation::drawMarginal2DCDF(const UnsignedInteger firstM
     const Bool logScaleX,
     const Bool logScaleY) const
 {
-  Indices indices(2);
-  indices[0] = firstMarginal;
-  indices[1] = secondMarginal;
+  Indices indices = {firstMarginal, secondMarginal};
   Graph marginalGraph(getMarginal(indices).drawCDF(xMin, xMax, pointNumber, logScaleX, logScaleY));
   marginalGraph.setTitle(OSS() << getDescription() << "->[" << description_[firstMarginal] << ", " << description_[secondMarginal] << "] components iso-CDF");
   return marginalGraph;
@@ -4404,9 +4398,7 @@ Graph DistributionImplementation::drawMarginal2DSurvivalFunction(const UnsignedI
     const Bool logScaleX,
     const Bool logScaleY) const
 {
-  Indices indices(2);
-  indices[0] = firstMarginal;
-  indices[1] = secondMarginal;
+  Indices indices = {firstMarginal, secondMarginal};
   Graph marginalGraph(getMarginal(indices).drawSurvivalFunction(xMin, xMax, pointNumber, logScaleX, logScaleY));
   marginalGraph.setTitle(OSS() << getDescription() << "->[" << description_[firstMarginal] << ", " << description_[secondMarginal] << "] components iso-SurvivalFunction");
   return marginalGraph;

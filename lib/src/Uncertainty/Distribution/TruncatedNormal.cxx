@@ -445,12 +445,7 @@ void TruncatedNormal::computeCovariance() const
 /* Parameters value accessor */
 Point TruncatedNormal::getParameter() const
 {
-  Point point(4);
-  point[0] = mu_;
-  point[1] = sigma_;
-  point[2] = a_;
-  point[3] = b_;
-  return point;
+  return {mu_, sigma_, a_, b_};
 }
 
 void TruncatedNormal::setParameter(const Point & parameter)
@@ -464,12 +459,7 @@ void TruncatedNormal::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description TruncatedNormal::getParameterDescription() const
 {
-  Description description(4);
-  description[0] = "mu";
-  description[1] = "sigma";
-  description[2] = "a";
-  description[3] = "b";
-  return description;
+  return {"mu", "sigma", "a", "b"};
 }
 
 /* Check if the distribution is elliptical */

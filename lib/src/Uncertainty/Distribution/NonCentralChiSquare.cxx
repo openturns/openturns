@@ -200,10 +200,7 @@ Complex NonCentralChiSquare::computeLogCharacteristicFunction(const Scalar x) co
 
 Point NonCentralChiSquare::getParameter() const
 {
-  Point point(2);
-  point[0] = nu_;
-  point[1] = lambda_;
-  return point;
+  return {nu_, lambda_};
 }
 
 void NonCentralChiSquare::setParameter(const Point & parameter)
@@ -216,10 +213,7 @@ void NonCentralChiSquare::setParameter(const Point & parameter)
 
 Description NonCentralChiSquare::getParameterDescription() const
 {
-  Description description(2);
-  description[0] = "nu";
-  description[1] = "lambda";
-  return description;
+  return {"nu", "lambda"};
 }
 
 /* Nu accessor */

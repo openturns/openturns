@@ -60,6 +60,14 @@ Description::Description(const Collection<String> & coll)
   // Nothing to do
 }
 
+
+Description::Description(std::initializer_list<String> initList)
+: InternalType(initList)
+{
+  // Nothing to do
+}
+
+
 /* Check if the content is blank */
 Bool Description::isBlank() const
 {

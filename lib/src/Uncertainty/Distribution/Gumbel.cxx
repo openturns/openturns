@@ -276,10 +276,7 @@ void Gumbel::computeCovariance() const
 /* Parameters value accessor */
 Point Gumbel::getParameter() const
 {
-  Point point(2);
-  point[0] = beta_;
-  point[1] = gamma_;
-  return point;
+  return {beta_, gamma_};
 }
 
 void Gumbel::setParameter(const Point & parameter)
@@ -293,10 +290,7 @@ void Gumbel::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description Gumbel::getParameterDescription() const
 {
-  Description description(2);
-  description[0] = "beta";
-  description[1] = "gamma";
-  return description;
+  return {"beta", "gamma"};
 }
 
 /* Alpha accessor */

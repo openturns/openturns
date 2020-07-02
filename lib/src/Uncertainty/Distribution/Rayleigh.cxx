@@ -269,10 +269,7 @@ void Rayleigh::computeCovariance() const
 /* Parameters value accessor */
 Point Rayleigh::getParameter() const
 {
-  Point point(2);
-  point[0] = beta_;
-  point[1] = gamma_;
-  return point;
+  return {beta_, gamma_};
 }
 
 void Rayleigh::setParameter(const Point & parameter)
@@ -286,10 +283,7 @@ void Rayleigh::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description Rayleigh::getParameterDescription() const
 {
-  Description description(2);
-  description[0] = "beta";
-  description[1] = "gamma";
-  return description;
+  return {"beta", "gamma"};
 }
 
 /* Sigma accessor */

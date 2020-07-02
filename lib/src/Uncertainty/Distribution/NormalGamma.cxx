@@ -46,11 +46,7 @@ NormalGamma::NormalGamma()
   , beta_(1.0)
   , logNormalization_(0.0)
 {
-  Point parameter(4);
-  parameter[0] = mu_;
-  parameter[1] = kappa_;
-  parameter[2] = alpha_;
-  parameter[3] = beta_;
+  const Point parameter = {mu_, kappa_, alpha_, beta_};
   setParameter(parameter);
 }
 
@@ -74,19 +70,10 @@ NormalGamma::NormalGamma(const Scalar mu,
   // the values (mu, kappa) must be part of the parameter. As they are not parameter of the conditioning
   // distribution they have to be parameter of the link function
   setName("NormalGamma");
-  Description inVars(3);
-  inVars[0] = "y";
-  inVars[1] = "mu";
-  inVars[2] = "kappa";
-  Description formulas(2);
-  formulas[0] = "mu";
-  formulas[1] = "1.0 / sqrt(kappa * y)";
-  Indices indices(2);
-  indices[0] = 1;
-  indices[1] = 2;
-  Point values(2);
-  values[0] = mu_;
-  values[1] = kappa_;
+  const Description inVars = {"y", "mu", "kappa"};
+  Description formulas = {"mu", "1.0 / sqrt(kappa * y)"};
+  Indices indices = {1, 2};
+  Point values = {mu_, kappa_};
   const ParametricFunction link(SymbolicFunction(inVars, formulas), indices, values);
   setConditionedAndConditioningDistributionsAndLinkFunction(Normal(), Gamma(alpha_, beta_), link);
   computeRange();
@@ -131,9 +118,7 @@ void NormalGamma::computeLogNormalization()
 /* Compute the mean of the distribution */
 void NormalGamma::computeMean() const
 {
-  mean_ = Point(2);
-  mean_[0] = mu_;
-  mean_[1] = alpha_ / beta_;
+  mean_ = {mu_, alpha_ / beta_};
   isAlreadyComputedMean_ = true;
 }
 
@@ -345,13 +330,8 @@ Scalar NormalGamma::computeEntropy() const
 /* Parameters value and description accessor */
 Point NormalGamma::getParameter() const
 {
-  Point point(4);
-  point[0] = mu_;
-  point[1] = kappa_;
-  point[2] = alpha_;
-  point[3] = beta_;
-  return point;
-} // getParameter
+  return {mu_, kappa_, alpha_, beta_};
+}
 
 void NormalGamma::setParameter(const Point & parameter)
 {
@@ -359,18 +339,13 @@ void NormalGamma::setParameter(const Point & parameter)
   const Scalar w = getWeight();
   *this = NormalGamma(parameter[0], parameter[1], parameter[2], parameter[3]);
   setWeight(w);
-} // setParameter
+}
 
 /* Parameters value and description accessor */
 Description NormalGamma::getParameterDescription() const
 {
-  Description description(4);
-  description[0] = "mu";
-  description[1] = "kappa";
-  description[2] = "alpha";
-  description[3] = "beta";
-  return description;
-} // getParameterDescription
+  return {"mu", "kappa", "alpha", "beta"};
+}
 
 /* String converter */
 String NormalGamma::__repr__() const

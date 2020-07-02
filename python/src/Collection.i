@@ -9,6 +9,7 @@
 %rename(__contains__) OT::Collection::contains;
 %rename(__baseaddress__) OT::Collection::data;
 %rename(__elementsize__) OT::Collection::elementSize;
+%ignore OT::Collection::Collection(std::initializer_list<T> initList);
 
 %include openturns/Collection.hxx
 %copyctor Collection;
