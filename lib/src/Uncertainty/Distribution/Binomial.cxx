@@ -219,10 +219,7 @@ Sample Binomial::getSupport(const Interval & interval) const
 /* Parameters value accessor */
 Point Binomial::getParameter() const
 {
-  Point point(2);
-  point[0] = n_;
-  point[1] = p_;
-  return point;
+  return {static_cast<Scalar>(n_), p_};
 }
 
 void Binomial::setParameter(const Point & parameter)
@@ -236,10 +233,7 @@ void Binomial::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description Binomial::getParameterDescription() const
 {
-  Description description(2);
-  description[0] = "n";
-  description[1] = "p";
-  return description;
+  return {"n", "p"};
 }
 
 /* Check if the distribution is elliptical */

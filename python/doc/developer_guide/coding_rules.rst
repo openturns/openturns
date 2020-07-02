@@ -1097,17 +1097,18 @@ Some useful features include:
 - std::atomic
 - std::vector::data()
 - std::shared_ptr
-- inherited constructors
+- constructor delegation
 - default member initializers
+- list initialization
 
-*Example: inherited constructors*
+*Example: constructor delegation*
 
 ::
 
     class Foo
     {
       Foo (int a, int b), a_(a), b_(b)
-      Foo (bool z) : Foo(4, 6)
+      Foo () : Foo(4, 6)
 
       int a_, b_;
     };
@@ -1122,6 +1123,13 @@ Some useful features include:
 
       int a_ = 0;
     };
+
+*Example: list initialization*
+
+::
+
+    const Indices indices = {1, 2, 3};
+    const Description desc = {"mu", "sigma"};
 
 
 Python

@@ -211,10 +211,7 @@ void Rice::computeCovariance() const
 /* Parameters value accessor */
 Point Rice::getParameter() const
 {
-  Point point(2);
-  point[0] = beta_;
-  point[1] = nu_;
-  return point;
+  return {beta_, nu_};
 }
 
 void Rice::setParameter(const Point & parameter)
@@ -228,10 +225,7 @@ void Rice::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description Rice::getParameterDescription() const
 {
-  Description description(2);
-  description[0] = "beta";
-  description[1] = "nu";
-  return description;
+  return {"beta", "nu"};
 }
 
 /* Beta accessor */

@@ -576,12 +576,7 @@ void MeixnerDistribution::computeCovariance() const
 /* Parameters value and description accessor */
 Point MeixnerDistribution::getParameter() const
 {
-  Point point(4);
-  point[0] = beta_;
-  point[1] = alpha_;
-  point[2] = delta_;
-  point[3] = gamma_;
-  return point;
+  return {beta_, alpha_, delta_, gamma_};
 }
 
 void MeixnerDistribution::setParameter(const Point & parameter)
@@ -595,12 +590,7 @@ void MeixnerDistribution::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description MeixnerDistribution::getParameterDescription() const
 {
-  Description description(4);
-  description[0] = "beta";
-  description[1] = "alpha";
-  description[2] = "delta";
-  description[2] = "gamma";
-  return description;
+  return {"beta", "alpha", "delta", "gamma"};
 }
 
 /* Check if the distribution is elliptical */

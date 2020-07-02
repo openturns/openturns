@@ -276,9 +276,7 @@ void InverseNormal::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description InverseNormal::getParameterDescription() const
 {
-  Description description(2);
-  description[0] = "mu";
-  description[1] = "lambda";
+  Description description = {"mu", "lambda"};
   return description;
 }
 

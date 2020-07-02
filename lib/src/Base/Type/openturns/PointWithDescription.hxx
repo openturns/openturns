@@ -53,6 +53,9 @@ public:
   /** Constructor from a base class */
   PointWithDescription(const Pointer<Point> & p_base);
 
+  /** Initializer list constructor */
+  PointWithDescription(std::initializer_list<Scalar> initList);
+
   /** Virtual constructor */
   virtual PointWithDescription * clone() const;
 

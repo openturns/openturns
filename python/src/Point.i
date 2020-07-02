@@ -57,6 +57,8 @@
 
 %apply const Point & { const OT::Point & };
 
+%ignore OT::Point::Point(std::initializer_list<Scalar> initList);
+
 %include openturns/Point.hxx
 %copyctor Point;
 

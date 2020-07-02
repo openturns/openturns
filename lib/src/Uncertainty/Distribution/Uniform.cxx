@@ -308,10 +308,7 @@ Distribution Uniform::getStandardRepresentative() const
 /* Parameters value accessor */
 Point Uniform::getParameter() const
 {
-  Point point(2);
-  point[0] = a_;
-  point[1] = b_;
-  return point;
+  return {a_, b_};
 }
 
 void Uniform::setParameter(const Point & parameter)
@@ -325,10 +322,7 @@ void Uniform::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description Uniform::getParameterDescription() const
 {
-  Description description(2);
-  description[0] = "a";
-  description[1] = "b";
-  return description;
+  return {"a", "b"};
 }
 
 /* Check if the distribution is elliptical */

@@ -55,6 +55,9 @@ public:
   /** Constructor from a collection */
   Point(const Collection<Scalar> & coll);
 
+  /** Initializer list constructor */
+  Point(std::initializer_list<Scalar> initList);
+
   /** Virtual constructor */
   virtual Point * clone() const;
 

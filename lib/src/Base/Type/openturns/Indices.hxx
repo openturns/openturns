@@ -59,6 +59,13 @@ public:
     // Nothing to do
   }
 
+  /** Initializer list constructor */
+  Indices(std::initializer_list<UnsignedInteger> initList)
+  : InternalType(initList)
+  {
+    // Nothing to do
+  }
+
   /** Constructor from a range of elements */
   template <typename InputIterator>
   Indices(const InputIterator first,

@@ -663,9 +663,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
     // First face: AB=p0p1, AC=p0p2.
     if (((!backfaceCulling) || Mesh_isVisible(visuVertex0, visuVertex1, visuVertex2)) && (!Mesh_isInnerFace(simplicesVertex0, simplicesVertex1, simplicesVertex2)))
     {
-      triangle[0] = i0;
-      triangle[1] = i1;
-      triangle[2] = i2;
+      triangle = {i0, i1, i2};
       trianglesAndDepth[triangleIndex].first = visuVertices(i0, 2) + visuVertices(i1, 2) + visuVertices(i2, 2);
       trianglesAndDepth[triangleIndex].second = triangle;
       ++triangleIndex;

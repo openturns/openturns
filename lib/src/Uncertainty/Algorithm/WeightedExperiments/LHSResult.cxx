@@ -76,11 +76,7 @@ void LHSResult::add(const Sample & optimalDesign, Scalar criterion,
     optimalIndex_ = criteria_.getSize();
     optimalCriterion_ = criterion;
   }
-  Point criteria(4);
-  criteria[0] = criterion;
-  criteria[1] = C2;
-  criteria[2] = PhiP;
-  criteria[3] = MinDist;
+  Point criteria = {criterion, C2, PhiP, MinDist};
 
   criteria_.add(criteria);
   collDesigns_.add(optimalDesign);
@@ -267,9 +263,7 @@ Graph LHSResult::drawHistoryProbability(UnsignedInteger restart, const String & 
     data(i, 0) = i;
     data(i, 1) = collAlgoHistory_[restart](i, idx - 1);
   }
-  Description description(2);
-  description[0] = "Iterations";
-  description[1] = "Probability";
+  Description description = {"Iterations", "Probability"};
   data.setDescription(description);
 
   String drawTitle(title);

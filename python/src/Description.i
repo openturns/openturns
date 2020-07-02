@@ -25,9 +25,10 @@
        OT::isAPythonSequenceOf<OT::_PyString_>( $input );
 }
 
+%ignore OT::Description::Description(std::initializer_list<String> initList);
 %include openturns/Description.hxx
 
-namespace OT {  
+namespace OT {
 
 %extend Description {
 
