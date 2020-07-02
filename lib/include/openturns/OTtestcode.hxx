@@ -32,6 +32,7 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/OStream.hxx"
 #include "openturns/Sample.hxx"
+#include "openturns/Matrix.hxx"
 #include "openturns/PlatformInfo.hxx"
 
 #define TESTPREAMBLE { OT::PlatformInfo::SetTwoDigitExponent(); }
@@ -331,6 +332,23 @@ inline void assert_almost_equal(const Sample & a, const Sample & b, Scalar rtol 
   }
 }
 
+inline void assert_almost_equal(const Matrix &a, const Matrix &b, Scalar rtol = 1.0e-5, Scalar atol = 1.0e-8)
+{
+  if (a.getNbRows() != b.getNbRows())
+    throw InvalidArgumentException(HERE) << "A and B must have the same row number";
+  if (a.getNbColumns() != b.getNbColumns())
+    throw InvalidArgumentException(HERE) << "A and B must have the same column number";
+  const UnsignedInteger rows = a.getNbRows();
+  const UnsignedInteger columns = a.getNbColumns();
+
+  for (UnsignedInteger j = 0; j < columns; ++j)
+  {
+    for (UnsignedInteger i = 0; i < rows; ++i)
+    {
+      assert_almost_equal(a(i, j), b(i, j), rtol, atol);
+    }
+  }
+}
 
 } /* namespace Test */
 

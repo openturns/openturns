@@ -64,40 +64,34 @@ int main(int, char *[])
       Sample Y2(model(X2));
 
       Basis basis(ConstantBasisFactory(dimension).build());
-      SquaredExponential covarianceModel(Point(1, 1e-05), Point(1, 4.11749));
+      SquaredExponential covarianceModel(Point(1, 1e-02), Point(1, 4.50736));
       KrigingAlgorithm algo(X, Y, covarianceModel, basis);
-
       algo.run();
 
       // perform an evaluation
       KrigingResult result(algo.getResult());
-      std::cout << "X=" << X << std::endl;
-      std::cout << "f(X)=" << Y << std::endl;
-      std::cout << "covariance parameter=" << result.getCovarianceModel().getParameter() << std::endl;
       assert_almost_equal(result.getMetaModel()(X), Y, 1e-3);
 
-      Point residualRef(1, 5.57410e-06);
+      const Point residualRef(1, 5.57410e-06);
       assert_almost_equal(result.getResiduals(), residualRef, 1e-3, 5e-4);
 
-      Point relativeErrorRef(1, 9.17605e-12);
+      const Point relativeErrorRef(1, 9.17605e-12);
       assert_almost_equal(result.getRelativeErrors(), relativeErrorRef, 1e-3, 5e-3);
 
       // Evaluation of the covariance on the X dataset
-      CovarianceMatrix covMatrix(result.getConditionalCovariance(X));
+      const CovarianceMatrix covMatrix(result.getConditionalCovariance(X));
 
       // Validation of the covariance ==> should be null on the learning set
-      assert_almost_equal(Point(*covMatrix.getImplementation()), Point(sampleSize * sampleSize), 5.e-3, 5.e-3);
+      assert_almost_equal(covMatrix, SquareMatrix(sampleSize), 5.e-3, 5.e-3);
 
       // Covariance per marginal & extract variance component
       Collection<CovarianceMatrix> coll(result.getConditionalMarginalCovariance(X));
 
       for(UnsignedInteger k = 0; k < coll.getSize(); ++k)
-        assert_almost_equal(Point(*coll[k].getImplementation()), Point(1, 0.0), 5.e-3, 5.e-3);
+        assert_almost_equal(coll[k](0,0), 0.0, 5.e-3, 5.e-3);
 
       // Validation of marginal variance
       const Point marginalVariance(result.getConditionalMarginalVariance(X));
-      std::cerr << "Assert 0" << std::endl;
-      std::cerr << marginalVariance << std::endl;
       assert_almost_equal(marginalVariance, Point(sampleSize), 5.e-3, 5.e-3);
     }
 
@@ -135,33 +129,21 @@ int main(int, char *[])
       Point scale(2);
       scale[0] = 1e-05;
       scale[1] = 18.9;
-      Point amplitude(1,  8.05);
+      const Point amplitude(1,  8.05);
       SquaredExponential covarianceModel(scale, amplitude);
 
       KrigingAlgorithm algo(X, Y, covarianceModel, basis);
       algo.run();
 
       // perform an evaluation
-      KrigingResult result(algo.getResult());
-      std::cout << "X=" << X << std::endl;
-      std::cout << "f(X)=" << Y << std::endl;
-      std::cout << "covariance parameter=" << result.getCovarianceModel().getParameter() << std::endl;
-
-      std::cerr << "A" << std::endl;
-      std::cerr << result.getMetaModel()(X) << Y << std::endl;
+      const KrigingResult result(algo.getResult());
       assert_almost_equal(result.getMetaModel()(X), Y, 1e-3, 1e-3);
 
-      Point residualRef(1, 1.17e-07);
-      std::cerr << "B" << std::endl;
-      std::cerr << result.getResiduals() << residualRef << std::endl;
+      const Point residualRef(1, 1.17e-07);
       assert_almost_equal(result.getResiduals(), residualRef, 6.e-4, 6.e-4);
 
       Point relativeErrorRef(1, 1.48e-11);
-      std::cerr << "C" << std::endl;
-      std::cerr << result.getRelativeErrors() << relativeErrorRef << std::endl;
       assert_almost_equal(result.getRelativeErrors(), relativeErrorRef, 1e-3, 1e-5);
-
-      std::cout << "df(X0)=" << model.gradient(X[1]) << std::endl;
 
       Function metaModel(result.getMetaModel());
       // Get the gradient computed by metamodel
@@ -174,15 +156,13 @@ int main(int, char *[])
       Matrix gradientKrigingFD(metaModel.gradient(X[1]));
 
       // Validation of the gradient
-      std::cout << "d^f(X0) & d^f(X0) FD similar ?" <<  std::endl;
-      assert_almost_equal(Point(*gradientKriging.getImplementation()), Point(*gradientKrigingFD.getImplementation()), 1e-3, 1e-3);
-      std::cout << "d^f(X0) & d^f(X0) FD are similar." <<  std::endl;
+      assert_almost_equal(gradientKriging, gradientKrigingFD, 1e-3, 1e-3);
 
       // Covariance per marginal & extract variance component
       Collection<CovarianceMatrix> coll(result.getConditionalMarginalCovariance(X));
 
       for(UnsignedInteger k = 0; k < coll.getSize(); ++k)
-        assert_almost_equal(Point(*coll[k].getImplementation()), Point(1, 0.0), 1.5e-2, 1.5e-2);
+        assert_almost_equal(coll[k](0, 0), 0.0, 1.5e-2, 1.5e-2);
 
       // Validation of marginal variance
       const Point marginalVariance(result.getConditionalMarginalVariance(X));

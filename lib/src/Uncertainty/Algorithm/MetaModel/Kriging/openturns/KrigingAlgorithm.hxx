@@ -54,15 +54,13 @@ public:
   KrigingAlgorithm (const Sample & inputSample,
                     const Sample & outputSample,
                     const CovarianceModel & covarianceModel,
-                    const Basis & basis,
-                    const Bool normalize = true);
+                    const Basis & basis);
 
   /** Constructor */
   KrigingAlgorithm (const Sample & inputSample,
                     const Sample & outputSample,
                     const CovarianceModel & covarianceModel,
-                    const BasisCollection & basisCollection,
-                    const Bool normalize = true);
+                    const BasisCollection & basisCollection);
 
   /** Virtual constructor */
   KrigingAlgorithm * clone() const;
@@ -121,7 +119,6 @@ private:
   Sample inputSample_;
   // The associated output data
   Sample outputSample_;
-  Bool normalize_;
   // The covariance model parametric family
   CovarianceModel covarianceModel_;
   // Underlying algo used for the evaluation of parameters

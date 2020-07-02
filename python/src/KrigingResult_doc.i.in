@@ -303,26 +303,6 @@ metaModel : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::KrigingResult::setTransformation
-"Accessor to the normalizing transformation.
-
-Parameters
-----------
-transformation : :class:`~openturns.Function`
-    The transformation *T* that normalizes the input sample."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::KrigingResult::getTransformation
-"Accessor to the normalizing transformation.
-
-Returns
--------
-transformation : :class:`~openturns.Function`
-    The transformation *T* that normalizes the input sample."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::KrigingResult::getInputSample
 "Accessor to the input sample.
 
