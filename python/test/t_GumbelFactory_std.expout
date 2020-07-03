@@ -7,6 +7,6 @@ Distribution from parameters      = Gumbel(beta = 0.5, gamma = 2.5)
 Typed estimated distribution      = Gumbel(beta = 0.503317, gamma = 2.50626)
 Default typed distribution        = Gumbel(beta = 1, gamma = 0)
 Typed distribution from parameters= Gumbel(beta = 0.5, gamma = 2.5)
-Estimated distribution (AB)       = class=ParametrizedDistribution parameters=class=GumbelAB name=Unnamed a=2.50626 b=0.503317 distribution=class=Gumbel name=Gumbel dimension=1 beta=0.503317 gamma=2.50626
-Parameter distribution (AB)       = Normal(mu = [2.50626,0.503317], sigma = [0.00499641,0.00498093], R = [[ 1        0.124969 ]
- [ 0.124969 1        ]])
+Estimated distribution (mu/sigma)       = class=ParametrizedDistribution parameters=class=GumbelMuSigma name=Unnamed mu=2.79678 sigma=0.645529 distribution=class=Gumbel name=Gumbel dimension=1 beta=0.503317 gamma=2.50626
+Parameter distribution (mu/sigma)       = Normal(mu = [2.79678,0.645529], sigma = [0.00499641,0.00423748], R = [[  1        -0.416125 ]
+ [ -0.416125  1        ]])

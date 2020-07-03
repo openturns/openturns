@@ -353,7 +353,6 @@ ot_pyinstallcheck_test (P1LagrangeInterpolation_std)
 ot_pyinstallcheck_test (P1LagrangeEvaluation_std IGNOREOUT)
 
 ## Model
-ot_pyinstallcheck_test (Event_std)
 ot_pyinstallcheck_test (StandardEvent_std)
 ot_pyinstallcheck_test (Event_domain)
 ot_pyinstallcheck_test (RandomVector_constant)

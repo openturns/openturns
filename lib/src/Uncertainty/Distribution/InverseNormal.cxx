@@ -229,13 +229,6 @@ Point InverseNormal::getStandardMoment(const UnsignedInteger n) const
 
 /* Interface specific to InverseNormal */
 
-void InverseNormal::setLambdaMu(const Scalar lambda,
-                                const Scalar mu)
-{
-  LOGWARN("InverseNormal::setLambdaMu is deprecated");
-  setMuLambda(mu, lambda);
-}
-
 void InverseNormal::setMuLambda(const Scalar mu,
                                 const Scalar lambda)
 {

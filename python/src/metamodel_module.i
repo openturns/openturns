@@ -77,7 +77,6 @@
 %include DomainEvent.i
 %include ProcessEvent.i
 %include ConditionalRandomVector.i
-%include Event.i
 %include StandardEvent.i
 %include IntersectionEvent.i
 %include UnionEvent.i

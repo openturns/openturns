@@ -22,11 +22,8 @@
 #define OPENTURNS_SOBOLSIMULATIONRESULT_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Event.hxx"
 #include "openturns/SimulationResult.hxx"
-#include "openturns/Point.hxx"
-#include "openturns/PointWithDescription.hxx"
-#include "openturns/Graph.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

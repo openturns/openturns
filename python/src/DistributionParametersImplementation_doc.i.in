@@ -10,7 +10,7 @@ A *DistributionParameters* object can be used through its derived classes:
 - :class:`~openturns.BetaMuSigma`
 - :class:`~openturns.GammaMuSigma`
 - :class:`~openturns.GumbelMuSigma`
-- :class:`~openturns.GumbelAB`
+- :class:`~openturns.GumbelLambdaGamma`
 - :class:`~openturns.LogNormalMuSigma`
 - :class:`~openturns.LogNormalMuSigmaOverMu`
 - :class:`~openturns.WeibullMinMuSigma`

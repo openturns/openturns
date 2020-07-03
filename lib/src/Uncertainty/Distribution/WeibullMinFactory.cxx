@@ -123,23 +123,4 @@ WeibullMin WeibullMinFactory::buildAsWeibullMin() const
 }
 
 
-WeibullMin WeibullMinFactory::buildAsWeibull(const Sample & sample) const
-{
-  LOGWARN("buildAsWeibull is deprecated");
-  return buildAsWeibullMin(sample);
-}
-
-WeibullMin WeibullMinFactory::buildAsWeibull(const Point & parameters) const
-{
-  LOGWARN("buildAsWeibull is deprecated");
-  return buildAsWeibullMin(parameters);
-}
-
-WeibullMin WeibullMinFactory::buildAsWeibull() const
-{
-  LOGWARN("buildAsWeibull is deprecated");
-  return buildAsWeibullMin();
-}
-
-
 END_NAMESPACE_OPENTURNS

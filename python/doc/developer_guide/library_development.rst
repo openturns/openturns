@@ -193,7 +193,7 @@ Second, add your class to the Python interface
        designPoint : float sequence
            Design point in the standard space resulting from the optimization
            algorithm.
-       limitStateVariable : :class:`~openturns.Event`
+       limitStateVariable : :class:`~openturns.RandomVector`
            Event of which the probability is calculated.
        isInFailureSpace : bool
            Indicates whether the origin of the standard space is in the failure space.

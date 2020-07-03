@@ -49,29 +49,6 @@ EnumerateFunction::EnumerateFunction(Implementation & p_implementation)
   // Nothing to do
 }
 
-/* Parameter constructor */
-EnumerateFunction::EnumerateFunction(const UnsignedInteger dimension)
-  : TypedInterfaceObject<EnumerateFunctionImplementation>(new LinearEnumerateFunction(dimension))
-{
-  LOGWARN("EnumerateFunction(UnsignedInteger) is deprecated, use LinearEnumerateFunction");
-}
-
-/* Parameter constructor */
-EnumerateFunction::EnumerateFunction(const UnsignedInteger dimension,
-                                     const Scalar q)
-  : TypedInterfaceObject<EnumerateFunctionImplementation>(new HyperbolicAnisotropicEnumerateFunction(dimension, q))
-{
-  LOGWARN("EnumerateFunction(UnsignedInteger, Scalar) is deprecated, use HyperbolicAnisotropicEnumerateFunction");
-}
-
-/* Parameter constructor */
-EnumerateFunction::EnumerateFunction(const Point & weight,
-                                     const Scalar q)
-  : TypedInterfaceObject<EnumerateFunctionImplementation>(new HyperbolicAnisotropicEnumerateFunction(weight, q))
-{
-  LOGWARN("EnumerateFunction(Point, Scalar) is deprecated, use HyperbolicAnisotropicEnumerateFunction");
-}
-
 /* String converter */
 String EnumerateFunction::__repr__() const
 {

@@ -93,10 +93,6 @@ public:
   /** Get the raw moments of the standardized distribution */
   Point getStandardMoment(const UnsignedInteger n) const;
 
-  /** @deprecated Interface specific to InverseNormal */
-  void setLambdaMu(const Scalar lambda,
-                   const Scalar mu);
-
   /** Interface specific to InverseNormal */
   void setMuLambda(const Scalar mu,
                    const Scalar lambda);

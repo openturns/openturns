@@ -357,20 +357,6 @@ Scalar Logistic::getMu() const
   return mu_;
 }
 
-/* Alpha accessor */
-void Logistic::setAlpha(const Scalar alpha)
-{
-  LOGWARN("Logistic::setAlpha is deprecated");
-  setMu(alpha);
-}
-
-Scalar Logistic::getAlpha() const
-{
-  LOGWARN("Logistic::getAlpha is deprecated");
-  return mu_;
-}
-
-
 /* Beta accessor */
 void Logistic::setBeta(const Scalar beta)
 {

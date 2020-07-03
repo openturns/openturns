@@ -83,7 +83,6 @@
 #include "openturns/GumbelCopula.hxx"
 #include "openturns/GumbelCopulaFactory.hxx"
 #include "openturns/GumbelFactory.hxx"
-#include "openturns/GumbelAB.hxx"
 #include "openturns/GumbelLambdaGamma.hxx"
 #include "openturns/GumbelMuSigma.hxx"
 #include "openturns/Histogram.hxx"

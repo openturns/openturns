@@ -252,16 +252,6 @@ Scalar Rice::getBeta() const
   return beta_;
 }
 
-void Rice::setSigma(const Scalar sigma)
-{
-  setBeta(sigma);
-}
-
-Scalar Rice::getSigma() const
-{
-  return beta_;
-}
-
 /* Nu accessor */
 void Rice::setNu(const Scalar nu)
 {
