@@ -143,8 +143,7 @@ void XMLH5StorageManager::readIndexedValue(Pointer<StorageManager::InternalObjec
 {
   assert(p_obj);
   //Read values only once
-  XMLH5StorageManagerState state = dynamic_cast<XMLH5StorageManagerState &>(*p_obj);
-  assert(state);
+  XMLH5StorageManagerState & state = dynamic_cast<XMLH5StorageManagerState &>(*p_obj);
 
   if(index == 0) {
     XML::Node node = state.current_->parent;
@@ -168,9 +167,10 @@ void XMLH5StorageManager::readFromH5(const String & dataSetName)
   double *data = new double[size];
   dataset.read(data, PredType::IEEE_F64LE);
   valBuf_.clear();
-  for(int i=0;i<size;++i) {
-    valBuf_.push_back(data[i]);
-  }
+
+  std::vector<double> d_vector(data, data+size);
+  valBuf_ = d_vector;
+
   dataspace.close();
   dataset.close();
   file.close();

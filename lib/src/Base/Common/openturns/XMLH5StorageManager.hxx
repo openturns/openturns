@@ -40,6 +40,7 @@ struct XMLH5StorageManagerState : public XMLStorageManagerState
   }
   void next() override
   {
+    // TODO: find a cleaner pattern for handling StorageManagerStates increment
     if (index_ == (UnsignedInteger)std::stoi(XML::GetAttributeByName(current_->parent, "size"))-1
         || std::stoi(XML::GetAttributeByName(current_->parent, "size")) == 0) {
       current_ = XML::GetNextNode(current_);

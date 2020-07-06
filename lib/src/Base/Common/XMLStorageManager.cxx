@@ -538,14 +538,15 @@ void IndexedValueReader(TAG tag,
                         _Tp & value)
 {
   assert(p_obj);
-  XMLStorageManagerState state = dynamic_cast<XMLStorageManagerState &>(*p_obj);
+  XMLStorageManagerState & state = dynamic_cast<XMLStorageManagerState &>(*p_obj);
 
   XML::Node node;
   while (( node = XML::FindNextElementByName( state.current_, tag.Get() ) ))
   {
     UnsignedInteger idx = 0;
     fromStringConverter( XML::GetAttributeByName(node, XML_STMGR::index_attribute::Get()), idx );
-    state.next();
+    // Necessary, -though counter-intuitive- otherwise the XMLH5StoManSta::next can be called
+    state.XMLStorageManagerState::next();
     if (idx == index)
     {
       fromNodeConverter<TAG, _Tp>( node, value );
