@@ -45,6 +45,7 @@
  * #1520 (The NLopt test is dubious)
  * #1521 (Basis of MonomialFunction)
  * #1540 (SubsetSampling: incorrect event sample)
+ * #1549 (Doc of evaluation operator of KrigingResult)
  * #1556 (WeibullMin::computePDFGradient yields the partial derivatives in the wrong order)
 
 
