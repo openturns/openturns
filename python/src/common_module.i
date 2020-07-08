@@ -29,6 +29,11 @@
 #endif
 #ifdef OPENTURNS_HAVE_HDF5
 %include XMLH5StorageManager.i
+#else
+%pythoncode %{
+class XMLH5StorageManager(object):
+    pass
+%}
 #endif
 %include TTY.i
 %include Log.i

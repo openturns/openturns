@@ -10,7 +10,7 @@ Parameters
 ----------
 fileName : str
     Name of the file containing the study.
-    Will also specify the name of the h5 file.
+    Will also specify the name of the h5 file, which will be created next to the XML file.
 compressionLevel : int
     Compression level of the resulting XML file, in the range 0,...,9 (0=no compression, 9=best compression).
     The compression is done only if the XML lib has been compiled with zlib support.

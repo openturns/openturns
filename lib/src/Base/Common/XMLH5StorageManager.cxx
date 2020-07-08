@@ -31,7 +31,7 @@ CLASSNAMEINIT(XMLH5StorageManager)
 
 using namespace H5;
 
-
+const UnsignedInteger BUF_SIZE = 2048; //Buffer size for writing hdf5 slabs
 
 /* Default constructor */
 XMLH5StorageManager::XMLH5StorageManager(const FileName & filename,
@@ -67,7 +67,7 @@ void XMLH5StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 
 
   //Every nth value write to dataset
-  if(index && index % 1000 == 0) {
+  if(index && index % BUF_SIZE == 0) {
     isChunked_ = true;
     String dataSetName = XML::GetAttributeByName(node, "id");
     writeToH5(dataSetName);
@@ -98,15 +98,17 @@ void XMLH5StorageManager::writeToH5(const String & dataSetName)
     h5File = H5File(h5FileName_.c_str(), H5F_ACC_RDWR);
   }
 
-  hsize_t size = valBuf_.size();
-  hsize_t dims[1] = {size};
+  hsize_t dims[1] = {valBuf_.size()};
 
   if(!H5Lexists(h5File.getId(), dataSetName.c_str(), H5P_DEFAULT)) {
     //Dataset does not exist, need to create it and initialize it with first chunk
     hsize_t maxdims[1] = {H5S_UNLIMITED};
+    //Set dataspace to unlimited
     DataSpace *dsp = new DataSpace (1, dims, maxdims);
+    //Propagate dataspace properties to dataset
     DSetCreatPropList prop;
     prop.setChunk(1, dims);
+    //Create new dataset and write it
     DataSet *dset = new DataSet(h5File.createDataSet(dataSetName, PredType::IEEE_F64LE, *dsp, prop));
     dset->write(valBuf_.data(), PredType::IEEE_F64LE);
     prop.close();

@@ -122,6 +122,7 @@ Serialization
     Study
     StorageManager
     XMLStorageManager
+    XMLH5StorageManager
 
 History strategy
 ================

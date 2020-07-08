@@ -66,12 +66,10 @@ public:
   virtual XMLH5StorageManager * clone() const override;
 
 #ifndef SWIG
-  //using XMLStorageManager::addIndexedValue;
   void addIndexedValue(Pointer<InternalObject> & p_obj,
                        UnsignedInteger index,
                        Scalar value) override;
 
-  //using XMLStorageManager::readIndexedValue;
   void readIndexedValue(Pointer<InternalObject> & p_obj,
                         UnsignedInteger index,
                         Scalar & value) override;
