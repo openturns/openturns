@@ -71,6 +71,7 @@ SymbolicParser::SymbolicParser(const Description & outputVariablesNames)
   if (name == "MuParser")
     throw NotYetImplementedException(HERE) << "MuParser does not support explicit output variables, use ExprTk instead.";
 #endif
+  (void) outputVariablesNames;
   throw InvalidArgumentException(HERE) << "Error: invalid value for symbolic parser: " << name;
 }
 
