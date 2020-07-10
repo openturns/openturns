@@ -13,4 +13,4 @@ for i in range(size):
 graph = ot.Graph('PolygonArray example', 'x1', 'x2', True, '', 1.0)
 graph.add(ot.PolygonArray(array))
 
-View(graph, figure_kwargs={'figsize': (4, 4)})
+View(graph, figure_kw={'figsize': (4, 4)})

@@ -24,4 +24,4 @@ distribution = ot.KernelSmoothing().build(sample)
 algo = ot.MinimumVolumeClassifier(distribution, 0.8)
 graph = algo.drawContourAndSample([0.1, 0.5, 0.8], sample, [0, 1])
 
-View(graph, contour_kwargs={'colors':['black']}, figure_kwargs={'figsize': (6.0, 6.0)})
+View(graph, contour_kw={'colors':['black']}, figure_kw={'figsize': (6.0, 6.0)})

@@ -20,4 +20,4 @@ lmtest = ot.LinearModelAlgorithm(firstSample, secondSample).getResult()
 drawLinearModelResidual = ot.VisualTest.DrawLinearModelResidual(
     firstSample, secondSample, lmtest)
 
-View(drawLinearModelResidual, figure_kwargs={'figsize': (5, 5)})
+View(drawLinearModelResidual, figure_kw={'figsize': (5, 5)})

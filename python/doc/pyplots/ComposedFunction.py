@@ -7,4 +7,4 @@ composed = ot.ComposedFunction(f, g)
 
 graph = composed.draw(0.0, 10.0)
 graph.setTitle('y=abs(sin(x))')
-View(graph, figure_kwargs={'figsize': (8, 4)}, add_legend=True).ShowAll()
+View(graph, figure_kw={'figsize': (8, 4)}, add_legend=True).ShowAll()

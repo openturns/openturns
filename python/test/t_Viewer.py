@@ -17,7 +17,7 @@ try:
     # Curve
     graph = ot.Normal().drawCDF()
     # graph.draw('curve1.png')
-    view = View(graph, pixelsize=(800, 600), plot_kwargs={'color': 'blue'})
+    view = View(graph, pixelsize=(800, 600), plot_kw={'color': 'blue'})
     # view.save('curve1.png')
     view.show()
 
@@ -120,7 +120,7 @@ try:
     graph = ot.VisualTest.DrawCobWeb(
         inputSample, outputSample, 2.5, 3.0, 'red', False)
     # graph.draw('curve6.png')
-    view = View(graph, legend_kwargs={'loc': 'lower center'})
+    view = View(graph, legend_kw={'loc': 'lower center'})
     # view.save('curve6.png')
     view.show()
 

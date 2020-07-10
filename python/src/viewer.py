@@ -8,7 +8,7 @@ Examples
 >>> import openturns as ot
 >>> from openturns.viewer import View
 >>> graph = ot.Normal().drawPDF()
->>> view = View(graph, plot_kwargs={'color':'blue'})
+>>> view = View(graph, plot_kw={'color':'blue'})
 >>> view.save('graph.png', dpi=100)
 >>> view.show()
 """
@@ -41,52 +41,52 @@ class View(object):
     figure : :class:`matplotlib.figure.Figure`
         The figure to draw on.
 
-    figure_kwargs : dict, optional
+    figure_kw : dict, optional
         Passed on to matplotlib.pyplot.figure kwargs
 
     axes : :class:`matplotlib.axes.Axes`
         The axes to draw on.
 
-    plot_kwargs : dict, optional
+    plot_kw : dict, optional
         Used when drawing Cloud, Curve drawables
         Passed on as matplotlib.axes.Axes.plot kwargs
 
-    axes_kwargs : dict, optional
+    axes_kw : dict, optional
         Passed on to matplotlib.figure.Figure.add_subplot kwargs
 
-    bar_kwargs : dict, optional
+    bar_kw : dict, optional
         Used when drawing BarPlot drawables
         Passed on to matplotlib.pyplot.bar kwargs
 
-    pie_kwargs : dict, optional
+    pie_kw : dict, optional
         Used when drawing Pie drawables
         Passed on to matplotlib.pyplot.pie kwargs
 
-    polygon_kwargs : dict, optional
+    polygon_kw : dict, optional
         Used when drawing Polygon drawables
         Passed on to matplotlib.patches.Polygon kwargs
 
-    polygoncollection_kwargs : dict, optional
+    polygoncollection_kw : dict, optional
         Used when drawing PolygonArray drawables
         Passed on to matplotlib.collection.PolygonCollection kwargs
 
-    contour_kwargs : dict, optional
+    contour_kw : dict, optional
         Used when drawing Contour drawables
         Passed on to matplotlib.pyplot.contour kwargs
 
-    clabel_kwargs : dict, optional
+    clabel_kw : dict, optional
         Used when drawing Contour drawables
         Passed on to matplotlib.pyplot.clabel kwargs
 
-    step_kwargs : dict, optional
+    step_kw : dict, optional
         Used when drawing Staircase drawables
         Passed on to matplotlib.pyplot.step kwargs
 
-    text_kwargs : dict, optional
+    text_kw : dict, optional
         Used when drawing Pairs, Text drawables
         Passed on to matplotlib.axes.Axes.text kwargs
 
-    legend_kwargs : dict, optional
+    legend_kw : dict, optional
         Passed on to matplotlib.axes.Axes.legend kwargs
 
     add_legend : bool, optional
@@ -100,7 +100,7 @@ class View(object):
     >>> import openturns as ot
     >>> from openturns.viewer import View
     >>> graph = ot.Normal().drawPDF()
-    >>> view = View(graph, plot_kwargs={'color':'blue'})
+    >>> view = View(graph, plot_kw={'color':'blue'})
     >>> view.save('graph.png', dpi=100)
     >>> view.show()
     """
@@ -126,19 +126,19 @@ class View(object):
                  graph,
                  pixelsize=None,
                  figure=None,
-                 figure_kwargs=None,
+                 figure_kw=None,
                  axes=[],
-                 plot_kwargs=None,
-                 axes_kwargs=None,
-                 bar_kwargs=None,
-                 pie_kwargs=None,
-                 polygon_kwargs=None,
-                 polygoncollection_kwargs=None,
-                 contour_kwargs=None,
-                 step_kwargs=None,
-                 clabel_kwargs=None,
-                 text_kwargs=None,
-                 legend_kwargs=None,
+                 plot_kw=None,
+                 axes_kw=None,
+                 bar_kw=None,
+                 pie_kw=None,
+                 polygon_kw=None,
+                 polygoncollection_kw=None,
+                 contour_kw=None,
+                 step_kw=None,
+                 clabel_kw=None,
+                 text_kw=None,
+                 legend_kw=None,
                  add_legend=True,
                  square_axes=False,
                  **kwargs):
@@ -154,45 +154,45 @@ class View(object):
                     'The given object cannot be converted into a Graph nor Drawable.')
 
         # check that arguments are dictionnaries
-        figure_kwargs = self._CheckDict(figure_kwargs)
-        axes_kwargs = self._CheckDict(axes_kwargs)
-        plot_kwargs_default = self._CheckDict(plot_kwargs)
-        bar_kwargs_default = self._CheckDict(bar_kwargs)
-        pie_kwargs_default = self._CheckDict(pie_kwargs)
-        polygon_kwargs_default = self._CheckDict(polygon_kwargs)
-        polygoncollection_kwargs_default = self._CheckDict(
-            polygoncollection_kwargs)
-        contour_kwargs_default = self._CheckDict(contour_kwargs)
-        step_kwargs_default = self._CheckDict(step_kwargs)
-        clabel_kwargs_default = self._CheckDict(clabel_kwargs)
-        text_kwargs_default = self._CheckDict(text_kwargs)
-        legend_kwargs = self._CheckDict(legend_kwargs)
+        figure_kw = self._CheckDict(figure_kw)
+        axes_kw = self._CheckDict(axes_kw)
+        plot_kw_default = self._CheckDict(plot_kw)
+        bar_kw_default = self._CheckDict(bar_kw)
+        pie_kw_default = self._CheckDict(pie_kw)
+        polygon_kw_default = self._CheckDict(polygon_kw)
+        polygoncollection_kw_default = self._CheckDict(
+            polygoncollection_kw)
+        contour_kw_default = self._CheckDict(contour_kw)
+        step_kw_default = self._CheckDict(step_kw)
+        clabel_kw_default = self._CheckDict(clabel_kw)
+        text_kw_default = self._CheckDict(text_kw)
+        legend_kw = self._CheckDict(legend_kw)
 
         # scaled grid graphs
         if graph.isComposite() and graph.getNbRows() * graph.getNbColumns() > 1:
-            figure_kwargs.setdefault(
+            figure_kw.setdefault(
                 'figsize', (6.0 * graph.getNbColumns(), 6.0 * graph.getNbRows()))
 
         # set image size in pixels
         if pixelsize is not None:
             if len(pixelsize) != 2:
                 raise ValueError('pixelsize must be a 2-tuple.')
-            figure_kwargs.setdefault('dpi', 100)
-            dpi = figure_kwargs['dpi']
+            figure_kw.setdefault('dpi', 100)
+            dpi = figure_kw['dpi']
             border = 10  # guess
             width, height = pixelsize
             width -= border
             height -= border
-            figure_kwargs.setdefault(
+            figure_kw.setdefault(
                 'figsize', (width * 1.0 / dpi, height * 1.0 / dpi))
 
         # set step drawstyle
-        step_kwargs_default.setdefault('where', 'post')
+        step_kw_default.setdefault('where', 'post')
 
         # set figure
         if figure is None:
             if len(axes) == 0:
-                self._fig = plt.figure(**figure_kwargs)
+                self._fig = plt.figure(**figure_kw)
             else:
                 self._fig = axes[0].get_figure()
         else:
@@ -206,7 +206,7 @@ class View(object):
                     graphij = graph.getGraph(i, j)
                     if len(graphij.getDrawables()) == 0:
                         continue
-                    axes = [self._fig.add_subplot(graph.getNbRows(), graph.getNbColumns(), 1 + i * graph.getNbColumns() + j, **axes_kwargs)]
+                    axes = [self._fig.add_subplot(graph.getNbRows(), graph.getNbColumns(), 1 + i * graph.getNbColumns() + j, **axes_kw)]
                     axes[0].axison = graphij.getAxes()
                     # hide inner ticks
                     if i < graph.getNbRows() - 1:
@@ -217,7 +217,7 @@ class View(object):
                     if LooseVersion(matplotlib.__version__) > '3.0':
                         axes[0].spines['right'].set_visible(False)
                         axes[0].spines['top'].set_visible(False)
-                    View(graphij, figure=self._fig, axes=axes, plot_kwargs=plot_kwargs, contour_kwargs=contour_kwargs, clabel_kwargs=clabel_kwargs)
+                    View(graphij, figure=self._fig, axes=axes, plot_kw=plot_kw, contour_kw=contour_kw, clabel_kw=clabel_kw)
                     self._fig.suptitle(self._ToUnicode(graph.getTitle()))
             return
 
@@ -232,7 +232,7 @@ class View(object):
 
         # set axes
         if len(axes) == 0:
-            self._ax = [self._fig.add_subplot(111, **axes_kwargs)]
+            self._ax = [self._fig.add_subplot(111, **axes_kw)]
         else:
             self._ax = axes
 
@@ -272,33 +272,33 @@ class View(object):
             drawableKind = drawable.getImplementation().getClassName()
 
             # reset working dictionaries by explicitely creating copies
-            plot_kwargs = dict(plot_kwargs_default)
-            bar_kwargs = dict(bar_kwargs_default)
-            pie_kwargs = dict(pie_kwargs_default)
-            polygon_kwargs = dict(polygon_kwargs_default)
-            polygoncollection_kwargs = dict(polygoncollection_kwargs_default)
-            contour_kwargs = dict(contour_kwargs_default)
-            step_kwargs = dict(step_kwargs_default)
-            clabel_kwargs = dict(clabel_kwargs_default)
-            text_kwargs = dict(text_kwargs_default)
+            plot_kw = dict(plot_kw_default)
+            bar_kw = dict(bar_kw_default)
+            pie_kw = dict(pie_kw_default)
+            polygon_kw = dict(polygon_kw_default)
+            polygoncollection_kw = dict(polygoncollection_kw_default)
+            contour_kw = dict(contour_kw_default)
+            step_kw = dict(step_kw_default)
+            clabel_kw = dict(clabel_kw_default)
+            text_kw = dict(text_kw_default)
 
             # set color
-            if ('color' not in plot_kwargs_default) and ('c' not in plot_kwargs_default):
-                plot_kwargs['color'] = drawable.getColorCode()
-            if ('color' not in bar_kwargs_default) and ('c' not in bar_kwargs_default):
-                bar_kwargs['color'] = drawable.getColorCode()
-            if ('color' not in step_kwargs_default) and ('c' not in step_kwargs_default):
-                step_kwargs['color'] = drawable.getColorCode()
+            if ('color' not in plot_kw_default) and ('c' not in plot_kw_default):
+                plot_kw['color'] = drawable.getColorCode()
+            if ('color' not in bar_kw_default) and ('c' not in bar_kw_default):
+                bar_kw['color'] = drawable.getColorCode()
+            if ('color' not in step_kw_default) and ('c' not in step_kw_default):
+                step_kw['color'] = drawable.getColorCode()
             if drawableKind != 'Pairs':
-                if ('color' not in text_kwargs_default) and ('c' not in text_kwargs_default):
-                    text_kwargs['color'] = drawable.getColorCode()
+                if ('color' not in text_kw_default) and ('c' not in text_kw_default):
+                    text_kw['color'] = drawable.getColorCode()
 
             # set marker
             pointStyleDict = {'square': 's', 'circle': 'o', 'triangleup': '^', 'plus': '+', 'times': 'x', 'diamond': 'd', 'triangledown':
                               'v', 'star': '*', 'fsquare': 's', 'fcircle': 'o', 'ftriangleup': '^', 'fdiamond': 'd', 'bullet': '.', 'dot': ',', 'none': 'None'}
-            if 'marker' not in plot_kwargs_default:
+            if 'marker' not in plot_kw_default:
                 try:
-                    plot_kwargs['marker'] = pointStyleDict[
+                    plot_kw['marker'] = pointStyleDict[
                         drawable.getPointStyle()]
                 except:
                     warnings.warn(
@@ -307,24 +307,24 @@ class View(object):
             # set line style
             lineStyleDict = {'solid': '-', 'dashed': '--', 'dotted':
                              ':', 'dotdash': '-.', 'longdash': '--', 'twodash': '--'}
-            if ('linestyle' not in plot_kwargs_default) and ('ls' not in plot_kwargs_default):
+            if ('linestyle' not in plot_kw_default) and ('ls' not in plot_kw_default):
                 try:
-                    plot_kwargs['linestyle'] = lineStyleDict[
+                    plot_kw['linestyle'] = lineStyleDict[
                         drawable.getLineStyle()]
                 except:
                     warnings.warn('-- Unknown line style')
-            if ('linestyle' not in step_kwargs_default) and ('ls' not in step_kwargs_default):
+            if ('linestyle' not in step_kw_default) and ('ls' not in step_kw_default):
                 try:
-                    step_kwargs['linestyle'] = lineStyleDict[
+                    step_kw['linestyle'] = lineStyleDict[
                         drawable.getLineStyle()]
                 except:
                     warnings.warn('-- Unknown line style')
 
             # set line width
-            if ('linewidth' not in plot_kwargs_default) and ('lw' not in plot_kwargs_default):
-                plot_kwargs['linewidth'] = drawable.getLineWidth()
-            if ('linewidth' not in step_kwargs_default) and ('lw' not in step_kwargs_default):
-                step_kwargs['linewidth'] = drawable.getLineWidth()
+            if ('linewidth' not in plot_kw_default) and ('lw' not in plot_kw_default):
+                plot_kw['linewidth'] = drawable.getLineWidth()
+            if ('linewidth' not in step_kw_default) and ('lw' not in step_kw_default):
+                step_kw['linewidth'] = drawable.getLineWidth()
 
             # retrieve data
             data = drawable.getData()
@@ -340,21 +340,21 @@ class View(object):
                 if (len(drawable.getLegend()) > 0) and ((drawableKind != 'Cloud') or (drawable.getPointStyle() != 'none')):
                     label = self._ToUnicode(drawable.getLegend())
                     has_labels = True
-                    plot_kwargs.setdefault('label', label)
-                    bar_kwargs.setdefault('label', label)
-                    step_kwargs.setdefault('label', label)
-                    polygon_kwargs.setdefault('label', label)
-                    polygoncollection_kwargs.setdefault('label', label)
+                    plot_kw.setdefault('label', label)
+                    bar_kw.setdefault('label', label)
+                    step_kw.setdefault('label', label)
+                    polygon_kw.setdefault('label', label)
+                    polygoncollection_kw.setdefault('label', label)
 
             if drawableKind == 'BarPlot':
                 # linestyle for bar() is different than the one for plot()
-                if 'linestyle' in bar_kwargs_default:
-                    bar_kwargs.pop('linestyle')
-                if ('linestyle' not in plot_kwargs_default) and ('ls' not in plot_kwargs_default):
+                if 'linestyle' in bar_kw_default:
+                    bar_kw.pop('linestyle')
+                if ('linestyle' not in plot_kw_default) and ('ls' not in plot_kw_default):
                     lineStyleDict = {'solid': '-', 'dashed': '--', 'dotted': ':',
                                      'dotdash': '-.', 'longdash': '--', 'twodash': '--'}
                     if drawable.getLineStyle() in lineStyleDict:
-                        bar_kwargs['linestyle'] = lineStyleDict[
+                        bar_kw['linestyle'] = lineStyleDict[
                             drawable.getLineStyle()]
                     else:
                         warnings.warn(
@@ -362,80 +362,80 @@ class View(object):
 
                 # fillstyle
                 if drawable.getFillStyle() == 'shaded':
-                    bar_kwargs['fill'] = False
-                    bar_kwargs['hatch'] = '////'
-                    bar_kwargs['edgecolor'] = bar_kwargs['color']
+                    bar_kw['fill'] = False
+                    bar_kw['hatch'] = '////'
+                    bar_kw['edgecolor'] = bar_kw['color']
 
                 xi = drawable.getOrigin()
                 for i in range(x.getSize()):
                     # label only the first bar to avoid getting several items
-                    if (i == 1) and ('label' in bar_kwargs):
-                        bar_kwargs.pop('label')
+                    if (i == 1) and ('label' in bar_kw):
+                        bar_kw.pop('label')
                     self._ax[0].bar(
-                        xi, height=y[i], width=x[i], align='edge', **bar_kwargs)
+                        xi, height=y[i], width=x[i], align='edge', **bar_kw)
                     xi += x[i]
 
             elif drawableKind == 'Cloud':
-                plot_kwargs['linestyle'] = 'None'
-                self._ax[0].plot(x, y, **plot_kwargs)
+                plot_kw['linestyle'] = 'None'
+                self._ax[0].plot(x, y, **plot_kw)
 
             elif drawableKind == 'Curve':
-                self._ax[0].plot(x, y, **plot_kwargs)
+                self._ax[0].plot(x, y, **plot_kw)
 
             elif drawableKind == 'Polygon':
 
-                if ('facecolor' not in polygon_kwargs_default) and ('fc' not in polygon_kwargs_default):
-                    polygon_kwargs['facecolor'] = drawable.getColorCode()
+                if ('facecolor' not in polygon_kw_default) and ('fc' not in polygon_kw_default):
+                    polygon_kw['facecolor'] = drawable.getColorCode()
 
-                if ('edgecolor' not in polygon_kwargs_default) and ('ec' not in polygon_kwargs_default):
-                    polygon_kwargs['edgecolor'] = drawable.ConvertFromName(
+                if ('edgecolor' not in polygon_kw_default) and ('ec' not in polygon_kw_default):
+                    polygon_kw['edgecolor'] = drawable.ConvertFromName(
                         drawable.getEdgeColor())
                 self._ax[0].add_patch(
-                    matplotlib.patches.Polygon(data, **polygon_kwargs))
+                    matplotlib.patches.Polygon(data, **polygon_kw))
 
             elif drawableKind == 'PolygonArray':
 
                 polygonsNumber = drawable.getPalette().getSize()
                 verticesNumber = drawable.getData().getSize() // polygonsNumber
                 colorsRGBA = drawable.getPaletteAsNormalizedRGBA()
-                if 'facecolors' not in polygoncollection_kwargs_default:
-                    polygoncollection_kwargs['facecolors'] = colorsRGBA
+                if 'facecolors' not in polygoncollection_kw_default:
+                    polygoncollection_kw['facecolors'] = colorsRGBA
 
-                if 'edgecolors' not in polygoncollection_kwargs_default:
-                    polygoncollection_kwargs['edgecolors'] = colorsRGBA
+                if 'edgecolors' not in polygoncollection_kw_default:
+                    polygoncollection_kw['edgecolors'] = colorsRGBA
                 self._ax[0].add_collection(
-                    matplotlib.collections.PolyCollection(np.array(data).reshape((polygonsNumber, verticesNumber, 2)), **polygoncollection_kwargs))
+                    matplotlib.collections.PolyCollection(np.array(data).reshape((polygonsNumber, verticesNumber, 2)), **polygoncollection_kw))
 
             elif drawableKind == 'Pie':
-                pie_kwargs.setdefault(
+                pie_kw.setdefault(
                     'labels', [self._ToUnicode(label) for label in drawable.getLabels()])
-                pie_kwargs.setdefault('colors', drawable.getPalette())
+                pie_kw.setdefault('colors', drawable.getPalette())
                 self._ax[0].set_aspect('equal')
-                self._ax[0].pie(x, **pie_kwargs)
+                self._ax[0].pie(x, **pie_kw)
 
             elif drawableKind == 'Contour':
                 X, Y = np.meshgrid(drawable.getX(), drawable.getY())
                 Z = np.reshape(drawable.getData(), (
                     drawable.getX().getSize(), drawable.getY().getSize()))
-                contour_kwargs.setdefault('levels', drawable.getLevels())
-                if ('linestyles' not in contour_kwargs_default) and ('ls' not in contour_kwargs_default):
+                contour_kw.setdefault('levels', drawable.getLevels())
+                if ('linestyles' not in contour_kw_default) and ('ls' not in contour_kw_default):
                     try:
-                        contour_kwargs['linestyles'] = lineStyleDict[
+                        contour_kw['linestyles'] = lineStyleDict[
                             drawable.getLineStyle()]
                     except:
                         warnings.warn('-- Unknown line style')
-                if 'colors' not in contour_kwargs_default:
-                    contour_kwargs['colors'] = [drawable.getColorCode()]
-                contourset = self._ax[0].contour(X, Y, Z, **contour_kwargs)
+                if 'colors' not in contour_kw_default:
+                    contour_kw['colors'] = [drawable.getColorCode()]
+                contourset = self._ax[0].contour(X, Y, Z, **contour_kw)
                 if drawable.getDrawLabels():
-                    clabel_kwargs.setdefault('fontsize', 8)
+                    clabel_kw.setdefault('fontsize', 8)
                     # Use labels
                     fmt = {}
                     for l, s in zip(np.array(drawable.getLevels()), drawable.getLabels()):
                         fmt[l] = s
-                    clabel_kwargs.setdefault('fmt', fmt)
+                    clabel_kw.setdefault('fmt', fmt)
                     try:
-                        plt.clabel(contourset, **clabel_kwargs)
+                        plt.clabel(contourset, **clabel_kw)
                     except KeyError:
                         # https://github.com/matplotlib/matplotlib/issues/9742
                         warnings.warn(
@@ -449,26 +449,26 @@ class View(object):
                         '_nolegend_' if i > 0 else drawable.getLegend())
 
             elif drawableKind == 'Staircase':
-                self._ax[0].step(x, y, **step_kwargs)
+                self._ax[0].step(x, y, **step_kw)
 
             elif drawableKind == 'Text':
                 dim = drawable.getData().getDimension()
 
                 # adjust font
-                if ('fontsize' not in text_kwargs_default) and ('size' not in text_kwargs_default):
+                if ('fontsize' not in text_kw_default) and ('size' not in text_kw_default):
                     # R API requiert a character exansion (cex)
                     # considering default scale to be 1
                     # Default fontsize in matplotlib is 10.0
                     # thus we make corresponding the R & matplotlib values
-                    text_kwargs['fontsize'] = drawable.getTextSize() * 10.0
-                if 'horizontalalignment' in text_kwargs_default:
-                    horizontal_default = text_kwargs['horizontalalignment']
-                    del text_kwargs['horizontalalignment']
+                    text_kw['fontsize'] = drawable.getTextSize() * 10.0
+                if 'horizontalalignment' in text_kw_default:
+                    horizontal_default = text_kw['horizontalalignment']
+                    del text_kw['horizontalalignment']
                 else:
                     horizontal_default = 'center'
-                if 'verticalalignment' in text_kwargs_default:
-                    vertical_default = text_kwargs['verticalalignment']
-                    del text_kwargs['verticalalignment']
+                if 'verticalalignment' in text_kw_default:
+                    vertical_default = text_kw['verticalalignment']
+                    del text_kw['verticalalignment']
                 else:
                     vertical_default = 'center'
                 positions = drawable.getTextPositions()
@@ -491,7 +491,7 @@ class View(object):
                     elif positions[i] == 'bottom':
                         vertical = 'top'
                     self._ax[0].text(
-                        x[i], y[i], text, horizontalalignment=horizontal, verticalalignment=vertical, **text_kwargs)
+                        x[i], y[i], text, horizontalalignment=horizontal, verticalalignment=vertical, **text_kw)
 
             else:
                 raise ValueError(
@@ -500,7 +500,7 @@ class View(object):
         # Add legend
         if add_legend and has_labels and (graph.getLegendPosition() != ''):
             # set legend position
-            if 'loc' not in legend_kwargs:
+            if 'loc' not in legend_kw:
                 try:
                     legendPositionDict = {'bottomright': 'lower right',
                                           'bottom': 'lower center',
@@ -510,25 +510,25 @@ class View(object):
                                           'topright': 'upper right',
                                           'right': 'center right',
                                           'center': 'center'}
-                    legend_kwargs['loc'] = legendPositionDict[
+                    legend_kw['loc'] = legendPositionDict[
                         graph.getLegendPosition()]
                 except:
                     warnings.warn(
                         '-- Unknown legend position: ' + graph.getLegendPosition())
 
             # set a single legend point
-            legend_kwargs.setdefault('numpoints', 1)
+            legend_kw.setdefault('numpoints', 1)
 
             # enable round box by default
-            legend_kwargs.setdefault('fancybox', True)
+            legend_kw.setdefault('fancybox', True)
 
             # enable shadow by default
-            legend_kwargs.setdefault('shadow', True)
+            legend_kw.setdefault('shadow', True)
 
             # by default legend is a bit too large
-            legend_kwargs.setdefault('prop', {'size': 10})
+            legend_kw.setdefault('prop', {'size': 10})
 
-            self._ax[0].legend(**legend_kwargs)
+            self._ax[0].legend(**legend_kw)
         # Make squares look like squares
         if square_axes:
             try:
@@ -693,7 +693,7 @@ def _ToImageString(graph):
 
 def PlotDesign(design, bounds = None, subdivisions = None, 
                figure = None, axes=[], 
-               plot_kwargs = None, axes_kwargs = None, text_kwargs = None, 
+               plot_kw = None, axes_kw = None, text_kw = None, 
                enableTicks = True):
     """
     Plot a design using a scatter plot. 
@@ -755,9 +755,9 @@ def PlotDesign(design, bounds = None, subdivisions = None,
     >>> fig = PlotDesign(sample, bounds, subdivisions)
     """
     # check that arguments are dictionnaries
-    axes_kwargs = View._CheckDict(axes_kwargs)
-    plot_kwargs = View._CheckDict(plot_kwargs)
-    text_kwargs = View._CheckDict(text_kwargs)
+    axes_kw = View._CheckDict(axes_kw)
+    plot_kw = View._CheckDict(plot_kw)
+    text_kw = View._CheckDict(text_kw)
 
     # retrieve data
     data = ot.Sample(design)
@@ -786,20 +786,20 @@ def PlotDesign(design, bounds = None, subdivisions = None,
     labels = data.getDescription()
 
     # adjust font
-    if (not 'fontsize' in text_kwargs) and (not 'size' in text_kwargs):
-        text_kwargs['fontsize'] = max(16 - dim, 4)
-    text_kwargs.setdefault('horizontalalignment', 'center')
-    text_kwargs.setdefault('verticalalignment', 'center')
+    if (not 'fontsize' in text_kw) and (not 'size' in text_kw):
+        text_kw['fontsize'] = max(16 - dim, 4)
+    text_kw.setdefault('horizontalalignment', 'center')
+    text_kw.setdefault('verticalalignment', 'center')
 
     # set marker
     pointStyleDict = {'square': 's', 'circle': 'o', 'triangleup': '2', 'plus': '+', 'times': '+', 'diamond': '+', 'triangledown':
                       'v', 'star': '*', 'fsquare': 's', 'fcircle': 'o', 'ftriangleup': '2', 'fdiamond': 'D', 'bullet': '.', 'dot': ',', 'none': 'None'}
-    if not 'marker' in plot_kwargs:
-        plot_kwargs['marker'] = pointStyleDict["square"]
+    if not 'marker' in plot_kw:
+        plot_kw['marker'] = pointStyleDict["square"]
 
     if not enableTicks:
-        axes_kwargs['xticks'] = []
-        axes_kwargs['yticks'] = []
+        axes_kw['xticks'] = []
+        axes_kw['yticks'] = []
 
     # set figure
     if figure is None:
@@ -813,7 +813,7 @@ def PlotDesign(design, bounds = None, subdivisions = None,
     if dim == 2:
         Nx = subdivisions[0]
         Ny = subdivisions[1]
-        axes = [figure.add_subplot(111, **axes_kwargs)]
+        axes = [figure.add_subplot(111, **axes_kw)]
         if not enableTicks:
             axes[0].axison = False
 
@@ -843,8 +843,8 @@ def PlotDesign(design, bounds = None, subdivisions = None,
             axes[0].plot(xk, yk, 'k-')
         xk = [x_max, x_max]
         axes[0].plot(xk, yk, 'k-')
-        plot_kwargs['linestyle'] = 'None'
-        axes[0].plot(x, y, **plot_kwargs)
+        plot_kw['linestyle'] = 'None'
+        axes[0].plot(x, y, **plot_kw)
         axes[0].set_xlabel(labels[0])
         axes[0].set_ylabel(labels[1])
         axes[0].set_xlim(x_min, x_max)
@@ -855,9 +855,9 @@ def PlotDesign(design, bounds = None, subdivisions = None,
 
     # For the diagonal of a multidimensional plot, 
     # disable the ticks, always
-    diagonal_axes_kwargs = axes_kwargs.copy() # An independent copy
-    diagonal_axes_kwargs['xticks'] = []
-    diagonal_axes_kwargs['yticks'] = []
+    diagonal_axes_kw = axes_kw.copy() # An independent copy
+    diagonal_axes_kw['xticks'] = []
+    diagonal_axes_kw['yticks'] = []
 
     # Graph of type Pairs + horizontal/vertical lines
     # to illustrate the cells
@@ -875,12 +875,12 @@ def PlotDesign(design, bounds = None, subdivisions = None,
 
             if i==j:
                 axes.append(
-                    figure.add_subplot(dim, dim, index_axis + 1, **diagonal_axes_kwargs))
-                text_kwargs['transform'] = axes[index_axis].transAxes
-                axes[index_axis].text(0.5, 0.5, labels[i], **text_kwargs)
+                    figure.add_subplot(dim, dim, index_axis + 1, **diagonal_axes_kw))
+                text_kw['transform'] = axes[index_axis].transAxes
+                axes[index_axis].text(0.5, 0.5, labels[i], **text_kw)
             else:
                 axes.append(
-                    figure.add_subplot(dim, dim, index_axis + 1, **axes_kwargs))
+                    figure.add_subplot(dim, dim, index_axis + 1, **axes_kw))
                 # disable axis : grid, ticks, axis?
                 if not enableTicks:
                     axes[index_axis].axison = False
@@ -902,8 +902,8 @@ def PlotDesign(design, bounds = None, subdivisions = None,
                     xk = [x_min + k * dx / dxdiv, x_min + k * dx / dxdiv]
                     yk = [y_min, y_max]
                     axes[index_axis].plot(xk, yk, 'k-')
-                plot_kwargs['linestyle'] = 'None'
-                axes[index_axis].plot(x, y, **plot_kwargs)
+                plot_kw['linestyle'] = 'None'
+                axes[index_axis].plot(x, y, **plot_kw)
                 axes[index_axis].set_xlim(x_min, x_max)
                 axes[index_axis].set_ylim(y_min, y_max)
 

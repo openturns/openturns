@@ -22,6 +22,7 @@
  * Deprecated Pairs class, see VisualTest.DrawPairs
 
 === Python module ===
+ * Renamed Viewer *_kwargs arguments to *_kw (matplotlib convention)
 
 === Miscellaneous ===
  * Require C99/C++11 support
