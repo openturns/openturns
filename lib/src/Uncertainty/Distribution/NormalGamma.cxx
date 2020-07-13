@@ -138,7 +138,7 @@ Scalar NormalGamma::computePDF(const Point & point) const
   if (point.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=2, here dimension=" << point.getDimension();
 
   const Scalar logPDF = computeLogPDF(point);
-  if (logPDF == -SpecFunc::LogMaxScalar) return 0.0;
+  if (logPDF == -SpecFunc::MaxScalar) return 0.0;
   return std::exp(logPDF);
 }
 
@@ -150,7 +150,7 @@ Scalar NormalGamma::computeLogPDF(const Point & point) const
   const Scalar y = point[1];
   const Scalar a = getRange().getLowerBound()[1];
   const Scalar b = getRange().getUpperBound()[1];
-  if ((y <= a) || (y >= b)) return -SpecFunc::LogMaxScalar;
+  if ((y <= a) || (y >= b)) return -SpecFunc::MaxScalar;
   const Scalar x = point[0] - mu_;
   return logNormalization_ + (alpha_ - 0.5) * std::log(y) - 0.5 * y * (kappa_ * x * x + 2.0 * beta_) + 0.5 * std::log(kappa_ / (2.0 * M_PI));
 }

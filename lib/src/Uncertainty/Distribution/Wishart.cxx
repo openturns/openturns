@@ -153,16 +153,14 @@ Scalar Wishart::computePDF(const CovarianceMatrix & m) const
 {
   if (m.getDimension() != cholesky_.getDimension()) throw InvalidArgumentException(HERE) << "Error: the given matrix must have dimension=" << cholesky_.getDimension() << ", here dimension=" << m.getDimension();
   const Scalar logPDF = computeLogPDF(m);
-  const Scalar pdf = (logPDF == -SpecFunc::LogMaxScalar ? 0.0 : std::exp(logPDF));
-  return pdf;
+  return std::exp(logPDF);
 }
 
 Scalar Wishart::computePDF(const Point & point) const
 {
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
   const Scalar logPDF = computeLogPDF(point);
-  const Scalar pdf = (logPDF == -SpecFunc::LogMaxScalar) ? 0.0 : std::exp(logPDF);
-  return pdf;
+  return std::exp(logPDF);
 }
 
 Scalar Wishart::computeLogPDF(const Point & point) const
@@ -204,7 +202,7 @@ Scalar Wishart::computeLogPDF(const CovarianceMatrix & m) const
   }
   catch (...)
   {
-    return -SpecFunc::LogMaxScalar;
+    return -SpecFunc::MaxScalar;
   }
 }
 

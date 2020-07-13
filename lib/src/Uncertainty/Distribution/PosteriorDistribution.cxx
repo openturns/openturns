@@ -165,7 +165,6 @@ void PosteriorDistribution::setConditionalDistribution(const ConditionalDistribu
   const UnsignedInteger size = observations_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
     logNormalizationFactor_ += conditionalDistribution_.computeLogPDF(observations_[i]);
-  if (logNormalizationFactor_ == SpecFunc::LogMinScalar) throw InvalidArgumentException(HERE) << "Error: the normalization factor is null with the given conditional distribution and observations.";
   computeRange();
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;

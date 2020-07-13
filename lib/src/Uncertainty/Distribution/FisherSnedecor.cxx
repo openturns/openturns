@@ -138,7 +138,7 @@ Scalar FisherSnedecor::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (x <= 0.0) return SpecFunc::LogMinScalar;
+  if (x <= 0.0) return -SpecFunc::MaxScalar;
   return normalizationFactor_ + (0.5 * d1_ - 1.0) * std::log(x) - 0.5 * (d1_ + d2_) * log1p(d1_ * x / d2_);
 }
 

@@ -158,7 +158,7 @@ Scalar LogNormal::computeLogPDF(const Point & point) const
 
   const Scalar x = point[0] - gamma_;
   // Here we keep the bound within the special case as the distribution is continuous
-  if (x <= 0.0) return SpecFunc::LogMinScalar;
+  if (x <= 0.0) return -SpecFunc::MaxScalar;
   Scalar logX = (std::log(x) - muLog_) / sigmaLog_;
   return std::log(normalizationFactor_) - 0.5 * logX * logX - std::log(x);
 }
