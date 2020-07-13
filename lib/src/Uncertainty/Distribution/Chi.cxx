@@ -164,7 +164,7 @@ Scalar Chi::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if (x <= 0.0) return SpecFunc::LogMinScalar;
+  if (x <= 0.0) return -SpecFunc::MaxScalar;
   return normalizationFactor_ + (nu_ - 1) * std::log(x) - 0.5 * x * x;
 }
 

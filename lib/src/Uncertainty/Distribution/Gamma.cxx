@@ -241,7 +241,7 @@ Scalar Gamma::computeLogPDF(const Scalar u) const
 {
   // From textbook, we have log(PDF(u)) =  - lambda * (u - gamma) + (k - 1) * log(u - gamma) + k * log(lambda) - log(Gamma(k))
   const Scalar x = lambda_ * (u - gamma_);
-  if (x <= 0.0) return SpecFunc::LogMinScalar;
+  if (x <= 0.0) return -SpecFunc::MaxScalar;
   // Use asymptotic expansion for large k
   // Here log(PDF(u)) = L - lambda * (u - gamma) + (k - 1) * log(lambda * (u - gamma) / k)
   if (k_ >= 6.9707081224932495879) return normalizationFactor_ - x + (k_ - 1.0) * std::log(x / k_);

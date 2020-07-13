@@ -137,7 +137,7 @@ Scalar Arcsine::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if ((x <= a_) || (x >= b_)) return SpecFunc::LogMinScalar;
+  if ((x <= a_) || (x >= b_)) return - SpecFunc::MaxScalar;
   return -std::log(M_PI) - 0.5 * (std::log(b_ - x) + std::log(x - a_));
 }
 

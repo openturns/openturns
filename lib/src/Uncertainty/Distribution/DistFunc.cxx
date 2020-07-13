@@ -337,9 +337,9 @@ Scalar DistFunc::logdBinomial(const UnsignedInteger n,
                               const Scalar p,
                               const UnsignedInteger k)
 {
-  if (k > n) return -SpecFunc::LogMaxScalar;
-  if (p == 0.0) return (k == 0 ? 0.0 : -SpecFunc::LogMaxScalar);
-  if (p == 1.0) return (k == n ? 0.0 : -SpecFunc::LogMaxScalar);
+  if (k > n) return -SpecFunc::MaxScalar;
+  if (p == 0.0) return (k == 0 ? 0.0 : -SpecFunc::MaxScalar);
+  if (p == 1.0) return (k == n ? 0.0 : -SpecFunc::MaxScalar);
   if (k == 0)
   {
     if (n == 0) return 0.0;
@@ -792,13 +792,13 @@ Scalar DistFunc::logdHypergeometric(const UnsignedInteger n,
                                     const UnsignedInteger m,
                                     const UnsignedInteger x)
 {
-  if (x + n < k + m) return -SpecFunc::LogMaxScalar;
-  if (x > k || x > m) return -SpecFunc::LogMaxScalar;
+  if (x + n < k + m) return -SpecFunc::MaxScalar;
+  if (x > k || x > m) return -SpecFunc::MaxScalar;
 #ifdef OPENTURNS_HAVE_BOOST
   return std::log(boost::math::pdf(boost::math::hypergeometric_distribution<Scalar>(k, m, n), x));
 #else
   // Check range
-  if ((x > m) || (x > k) || (x + n < m + k)) return -SpecFunc::LogMaxScalar;
+  if ((x > m) || (x > k) || (x + n < m + k)) return -SpecFunc::MaxScalar;
   if ((m == 0) || (m == n)) return 0.0;
   Scalar p = (1.0 * m) / n;
   Scalar kx = 0.0;
@@ -1473,7 +1473,7 @@ line:   https://lists.gnu.org/archive/html/octave-maintainers/2011-09/pdfK0uKOST
 Scalar DistFunc::logdPoisson(const Scalar lambda,
                              const UnsignedInteger k)
 {
-  if (lambda == 0.0) return (k == 0 ? 0.0 : -SpecFunc::LogMaxScalar);
+  if (lambda == 0.0) return (k == 0 ? 0.0 : -SpecFunc::MaxScalar);
   if (k == 0) return -lambda;
   return -SpecFunc::Stirlerr(k) - DistFunc::bd0(k, lambda) - 0.5 * std::log(2.0 * M_PI * k);
 }

@@ -143,18 +143,18 @@ Scalar ExtremeValueCopula::computeLogPDF(const Point & point) const
   // A copula has a null PDF outside of ]0, 1[^2
   if ((u <= 0.0) || (u >= 1.0) || (v <= 0.0) || (v >= 1.0))
   {
-    return -SpecFunc::LogMaxScalar;
+    return -SpecFunc::MaxScalar;
   }
   const Scalar logU = std::log(u);
   const Scalar logV = std::log(v);
   const Scalar logUV = logU + logV;
   const Point ratio(1, logV / logUV);
   const Scalar A = pickandFunction_(ratio)[0];
-  if (!SpecFunc::IsNormal(A)) return -SpecFunc::LogMaxScalar;
+  if (!SpecFunc::IsNormal(A)) return -SpecFunc::MaxScalar;
   const Scalar dA = pickandFunction_.gradient(ratio)(0, 0);
-  if (!SpecFunc::IsNormal(dA)) return -SpecFunc::LogMaxScalar;
+  if (!SpecFunc::IsNormal(dA)) return -SpecFunc::MaxScalar;
   const Scalar d2A = pickandFunction_.hessian(ratio)(0, 0, 0);
-  if (!SpecFunc::IsNormal(d2A)) return -SpecFunc::LogMaxScalar;
+  if (!SpecFunc::IsNormal(d2A)) return -SpecFunc::MaxScalar;
   return logUV * A - 2.0 * std::log(-logUV) - logUV + std::log((A * logUV - dA * logV) * (logU * dA + logUV * A) - d2A * logU * ratio[0]);
 }
 

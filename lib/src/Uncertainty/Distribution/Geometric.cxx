@@ -167,7 +167,7 @@ Scalar Geometric::computeScalarQuantile(const Scalar prob,
 /* Compute the entropy of the distribution */
 Scalar Geometric::computeEntropy() const
 {
-  if (p_ == 0.0) return SpecFunc::LogMaxScalar;
+  if (p_ == 0.0) return SpecFunc::MaxScalar;
   if (p_ == 1.0) return 0.0;
   return log1p(-p_) * (1.0 - 1.0 / p_) - std::log(p_);
 }

@@ -161,7 +161,7 @@ Scalar Beta::computePDF(const Point & point) const
 Scalar Beta::computeLogPDF(const Scalar x) const
 {
   if ((x == b_) && (beta_ == 1.0)) return 0.0;
-  if ((x <= a_) || (x >= b_)) return SpecFunc::LogMinScalar;
+  if ((x <= a_) || (x >= b_)) return -SpecFunc::MaxScalar;
   return normalizationFactor_ + (alpha_ - 1.0) * std::log(x - a_) + (beta_ - 1.0) * std::log(b_ - x);
 }
 

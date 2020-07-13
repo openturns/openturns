@@ -133,7 +133,6 @@ Scalar WeibullMax::computePDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0] - gamma_;
-  if (x >= 0.0) return 0.0;
   return std::exp(computeLogPDF(point));
 }
 
@@ -142,7 +141,7 @@ Scalar WeibullMax::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0] - gamma_;
-  if (x >= 0.0) return SpecFunc::LogMinScalar;
+  if (x >= 0.0) return -SpecFunc::MaxScalar;
   const Scalar y = -x / beta_;
   return std::log(alpha_) + (alpha_ - 1.0) * std::log(y) - std::log(beta_) - std::pow(y, alpha_);
 }

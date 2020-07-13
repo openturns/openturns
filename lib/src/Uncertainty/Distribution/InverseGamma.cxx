@@ -211,7 +211,7 @@ Scalar InverseGamma::computeLogPDF(const Point & point) const
 
   // From textbook, we have log(PDF(x)) =  log(lambda)-log(Gamma(k))-(k+1)*log(lambda*x)-1/(lambda*x)
   const Scalar u = lambda_ * point[0];
-  if (u <= 0.0) return SpecFunc::LogMinScalar;
+  if (u <= 0.0) return -SpecFunc::MaxScalar;
   // Use asymptotic expansion for large k
   // Here log(PDF(x)) = L - (k-1)*log(k)-(k+1)*log(lambda*x)-1/(lambda*x)
   if (k_ >= 6.9707081224932495879) return normalizationFactor_ - (k_ + 1.0) * std::log(k_ * u) - 1.0 / u;

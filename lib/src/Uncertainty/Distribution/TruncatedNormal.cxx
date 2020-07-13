@@ -194,7 +194,7 @@ Scalar TruncatedNormal::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0];
-  if ((x <= a_) || (x > b_)) return SpecFunc::LogMinScalar;
+  if ((x <= a_) || (x > b_)) return -SpecFunc::MaxScalar;
   const Scalar iSigma = 1.0 / sigma_;
   const Scalar xNorm = (x - mu_) * iSigma;
   return std::log(SpecFunc::ISQRT2PI * iSigma * normalizationFactor_) - 0.5 * xNorm * xNorm;
