@@ -21,7 +21,6 @@
 
 #include "openturns/MinimumVolumeClassifier.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/GridLayout.hxx"
 #include "openturns/Cloud.hxx"
 #include "openturns/Contour.hxx"
 
@@ -142,7 +141,7 @@ void MinimumVolumeClassifier::load(Advocate & adv)
   adv.loadAttribute( "alpha_", alpha_ );
 }
 
-Graph MinimumVolumeClassifier::drawContour(const Point & contourAlpha) const
+GridLayout MinimumVolumeClassifier::drawContour(const Point & contourAlpha) const
 {
   const UnsignedInteger dimension = distribution_.getDimension();
   GridLayout grid(dimension, dimension);
@@ -184,7 +183,7 @@ Graph MinimumVolumeClassifier::drawContour(const Point & contourAlpha) const
   return grid;
 }
 
-Graph MinimumVolumeClassifier::drawSample(const Sample & sample, const Indices & classes) const
+GridLayout MinimumVolumeClassifier::drawSample(const Sample & sample, const Indices & classes) const
 {
   const UnsignedInteger dimension = distribution_.getDimension();
   if (dimension < 2)
@@ -207,10 +206,7 @@ Graph MinimumVolumeClassifier::drawSample(const Sample & sample, const Indices &
         separatedSamples[k].add(sample[i]);
     }
   }
-//   Description colors = {"red", "blue"};
-  Description colors(2);
-  colors[0] = "red";
-  colors[1] = "blue";
+  Description colors = {"red", "blue"};
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     for (UnsignedInteger j = 0; j < i; ++ j)
@@ -235,13 +231,11 @@ Graph MinimumVolumeClassifier::drawSample(const Sample & sample, const Indices &
 }
 
 
-Graph MinimumVolumeClassifier::drawContourAndSample(const Point & alpha, const Sample & sample, const Indices & classes) const
+GridLayout MinimumVolumeClassifier::drawContourAndSample(const Point & alpha, const Sample & sample, const Indices & classes) const
 {
   const UnsignedInteger dimension = distribution_.getDimension();
-  Graph contourGraph(drawContour(alpha));
-  Graph samplesGraph(drawSample(sample, classes));
-  GridLayout grid(*dynamic_cast<GridLayout*>(contourGraph.getImplementation().get()));
-  GridLayout gridSamples(*dynamic_cast<GridLayout*>(samplesGraph.getImplementation().get()));
+  GridLayout grid(drawContour(alpha));
+  GridLayout gridSamples(drawSample(sample, classes));
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     for (UnsignedInteger j = 0; j < i; ++ j)

@@ -26,6 +26,7 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
+#include "openturns/GridLayout.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -100,10 +101,10 @@ public:
   Sample getOutputAtPosteriorMean() const;
 
   /** Graphic analysis */
-  Graph drawParameterDistributions() const;
-  Graph drawResiduals() const;
-  Graph drawObservationsVsInputs() const;
-  Graph drawObservationsVsPredictions() const;
+  GridLayout drawParameterDistributions() const;
+  GridLayout drawResiduals() const;
+  GridLayout drawObservationsVsInputs() const;
+  GridLayout drawObservationsVsPredictions() const;
 
 private:
 

@@ -25,6 +25,7 @@
 #include "openturns/LinearModelResult.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Graph.hxx"
+#include "openturns/GridLayout.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -65,10 +66,10 @@ public:
                              const Distribution & normal);
 
   /** Draw 2-d projections of a multivariate sample */
-  static Graph DrawPairs(const Sample & sample);
+  static GridLayout DrawPairs(const Sample & sample);
 
   /** Draw 2-d projections of a multivariate sample, plus marginals of a distribution */
-  static Graph DrawPairsMarginals(const Sample & sample, const Distribution & distribution);
+  static GridLayout DrawPairsMarginals(const Sample & sample, const Distribution & distribution);
 
   /** Draw the visual test for the LinearModel when its dimension is 1 */
   static Graph DrawLinearModel(const Sample & sample1,

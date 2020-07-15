@@ -143,7 +143,7 @@ class View(object):
                  square_axes=False,
                  **kwargs):
 
-        if not (isinstance(graph, ot.Graph) or isinstance(graph, ot.GraphImplementation)):
+        if not (isinstance(graph, ot.Graph) or isinstance(graph, ot.GraphImplementation) or isinstance(graph, ot.GridLayout)):
             if isinstance(graph, ot.Drawable) or isinstance(graph, ot.DrawableImplementation):
                 # convert Drawable => Graph
                 drawable = graph
@@ -169,7 +169,7 @@ class View(object):
         legend_kw = self._CheckDict(legend_kw)
 
         # scaled grid graphs
-        if graph.isComposite() and graph.getNbRows() * graph.getNbColumns() > 1:
+        if isinstance(graph, ot.GridLayout) and graph.getNbRows() * graph.getNbColumns() > 1:
             figure_kw.setdefault(
                 'figsize', (6.0 * graph.getNbColumns(), 6.0 * graph.getNbRows()))
 
@@ -200,7 +200,7 @@ class View(object):
             if len(axes) == 0:
                 axes = self._fig.axes
 
-        if graph.isComposite():
+        if isinstance(graph, ot.GridLayout):
             for i in range(graph.getNbRows()):
                 for j in range(graph.getNbColumns()):
                     graphij = graph.getGraph(i, j)

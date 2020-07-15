@@ -24,7 +24,6 @@
 #include "openturns/Cloud.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/UserDefined.hxx"
-#include "openturns/GridLayout.hxx"
 #include "openturns/NormalFactory.hxx"
 #include "openturns/HistogramFactory.hxx"
 
@@ -210,7 +209,7 @@ Graph VisualTest::DrawHenryLine(const Sample & sample, const Distribution & norm
 
 
 /* Draw 2-d projections of a multivariate sample */
-Graph VisualTest::DrawPairs(const Sample & sample)
+GridLayout VisualTest::DrawPairs(const Sample & sample)
 {
   const UnsignedInteger dimension = sample.getDimension();
   if (dimension < 2)
@@ -233,7 +232,7 @@ Graph VisualTest::DrawPairs(const Sample & sample)
 
 
 /** Draw 2-d projections of a multivariate sample, plus marginals of a distribution */
-Graph VisualTest::DrawPairsMarginals(const Sample & sample, const Distribution & distribution)
+GridLayout VisualTest::DrawPairsMarginals(const Sample & sample, const Distribution & distribution)
 {
   const UnsignedInteger dimension = sample.getDimension();
   if (dimension < 2)

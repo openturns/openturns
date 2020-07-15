@@ -19,7 +19,6 @@ for j in range(grid.getNbColumns()):
     grid.setGraph(0, j, pdf_curve)
     grid.setGraph(1, j, cdf_curve)
 
-assert(grid.isComposite())
 assert(grid.getNbColumns() == 3)
 assert(grid.getNbRows() == 2)
 assert(grid.getGraph(0, 0).getDrawable(0).getImplementation().getClassName() == "Curve")

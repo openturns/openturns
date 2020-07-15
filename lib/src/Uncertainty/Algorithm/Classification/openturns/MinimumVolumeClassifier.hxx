@@ -24,6 +24,7 @@
 #include "openturns/LevelSet.hxx"
 #include "openturns/ClassifierImplementation.hxx"
 #include "openturns/Distribution.hxx"
+#include "openturns/GridLayout.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -79,9 +80,9 @@ public:
   /** Method load() reloads the object from the StorageManager */
   virtual void load(Advocate & adv);
 
-  Graph drawContour(const Point & alpha) const;
-  Graph drawSample(const Sample & sample, const Indices & classes) const;
-  Graph drawContourAndSample(const Point & alpha, const Sample & sample, const Indices & classes) const;
+  GridLayout drawContour(const Point & alpha) const;
+  GridLayout drawSample(const Sample & sample, const Indices & classes) const;
+  GridLayout drawContourAndSample(const Point & alpha, const Sample & sample, const Indices & classes) const;
 
 protected:
   // the distribution and confidence level that defines the minimum volume domain

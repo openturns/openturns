@@ -33,7 +33,6 @@ BEGIN_NAMESPACE_OPENTURNS
  * GraphImplementation implements graphic devices for plotting through R,
  * and manages drawables to be plotted on the same window
  */
-class Graph;
 
 class OT_API GraphImplementation :
   public PersistentObject
@@ -117,7 +116,7 @@ public:
   virtual void setGridColor(const String & color);
   String getGridColor() const;
 
-  /** Accesor for xTitle */
+  /** Accessor for xTitle */
   String getXTitle() const;
 
   /** Accessor for xTitle */
@@ -129,10 +128,10 @@ public:
   /** Accessor for yTitle */
   void setYTitle(const String & title);
 
-  /** Accesor for title */
+  /** Accessor for title */
   virtual String getTitle() const;
 
-  /** Accesor for title */
+  /** Accessor for title */
   void setTitle(const String & title);
 
   /** The method that generates the graphic files */
@@ -183,15 +182,6 @@ public:
   /** Gives all the valid legend positions */
   static Description GetValidLegendPositions();
 
-  /** Composite property accessor */
-  virtual Bool isComposite() const;
-
-  /** Grid accessors */
-  virtual UnsignedInteger getNbRows() const;
-  virtual UnsignedInteger getNbColumns() const;
-  virtual Graph getGraph(const UnsignedInteger i, const UnsignedInteger j) const;
-  virtual void setGraph(const UnsignedInteger i, const UnsignedInteger j, const Graph & elt);
-
 private:
   static Description ValidLegendPositions;
   static Bool IsFirstInitialization;
@@ -214,7 +204,7 @@ private:
   /** Make R core command */
   String makeRCoreCommand() const;
 
-  /** GraphImplementationic main title */
+  /** main title */
   String title_;
 
   /** Legend position */

@@ -98,13 +98,4 @@ OT_Graph_add_doc
 OT_Graph_clean_doc
 %feature("docstring") OT::Graph::erase
 OT_Graph_erase_doc
-%feature("docstring") OT::Graph::isComposite
-OT_Graph_isComposite_doc
-%feature("docstring") OT::Graph::getNbRows
-OT_Graph_getNbRows_doc
-%feature("docstring") OT::Graph::getNbColumns
-OT_Graph_getNbColumns_doc
-%feature("docstring") OT::Graph::getGraph
-OT_Graph_getGraph_doc
-%feature("docstring") OT::Graph::setGraph
-OT_Graph_setGraph_doc
+

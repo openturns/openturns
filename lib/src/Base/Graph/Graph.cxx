@@ -332,30 +332,4 @@ Description Graph::GetValidLegendPositions()
   return GraphImplementation::GetValidLegendPositions();
 }
 
-Bool Graph::isComposite() const
-{
-  return getImplementation()->isComposite();
-}
-
-UnsignedInteger Graph::getNbRows() const
-{
-  return getImplementation()->getNbRows();
-}
-
-UnsignedInteger Graph::getNbColumns() const
-{
-  return getImplementation()->getNbColumns();
-}
-
-Graph Graph::getGraph(const UnsignedInteger i, const UnsignedInteger j) const
-{
-  return getImplementation()->getGraph(i, j);
-}
-
-void Graph::setGraph(const UnsignedInteger i, const UnsignedInteger j, const Graph & elt)
-{
-  copyOnWrite();
-  getImplementation()->setGraph(i, j, elt);
-}
-
 END_NAMESPACE_OPENTURNS

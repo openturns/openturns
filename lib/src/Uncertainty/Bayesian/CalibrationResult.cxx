@@ -20,7 +20,6 @@
  */
 #include "openturns/CalibrationResult.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/GridLayout.hxx"
 #include "openturns/KernelSmoothing.hxx"
 #include "openturns/Cloud.hxx"
 #include "openturns/Curve.hxx"
@@ -202,7 +201,7 @@ Sample CalibrationResult::getOutputAtPosteriorMean() const
   return outputAtPosteriorMean_;
 }
 
-Graph CalibrationResult::drawParameterDistributions() const
+GridLayout CalibrationResult::drawParameterDistributions() const
 {
   const UnsignedInteger dimension = parameterMAP_.getDimension();
   GridLayout grid(1, dimension);
@@ -236,7 +235,7 @@ Graph CalibrationResult::drawParameterDistributions() const
   return grid;
 }
 
-Graph CalibrationResult::drawResiduals() const
+GridLayout CalibrationResult::drawResiduals() const
 {
   if (!outputAtPriorMean_.getDimension())
     throw NotDefinedException(HERE) << "Output at prior not available";
@@ -273,7 +272,7 @@ Graph CalibrationResult::drawResiduals() const
 }
 
 
-Graph CalibrationResult::drawObservationsVsInputs() const
+GridLayout CalibrationResult::drawObservationsVsInputs() const
 {
   if (!outputAtPriorMean_.getDimension())
     throw NotDefinedException(HERE) << "Output at prior not available";
@@ -315,7 +314,7 @@ Graph CalibrationResult::drawObservationsVsInputs() const
 }
 
 
-Graph CalibrationResult::drawObservationsVsPredictions() const
+GridLayout CalibrationResult::drawObservationsVsPredictions() const
 {
   if (!outputAtPriorMean_.getDimension())
     throw NotDefinedException(HERE) << "Output at prior not available";

@@ -242,10 +242,17 @@ try:
 
     # GridLayout
     grid = ot.GridLayout(2, 3)
+    palette = ot.Drawable.BuildDefaultPalette(10)
     for j in range(grid.getNbColumns()):
-        beta = 1.0 + j
-        grid.setGraph(0, j, ot.Gumbel(beta, 0.0).drawPDF())
-        grid.setGraph(1, j, ot.Gumbel(beta, 0.0).drawCDF())
+        alpha = 1.0 + j
+        pdf_curve = ot.WeibullMin(1.0, alpha, 0.0).drawPDF()
+        cdf_curve = ot.WeibullMin(1.0, alpha, 0.0).drawCDF()
+        pdf_curve.setColors([palette[j]])
+        cdf_curve.setColors([palette[j]])
+        pdf_curve.setLegends(['alpha={}'.format(alpha)])
+        cdf_curve.setLegends(['alpha={}'.format(alpha)])
+        grid.setGraph(0, j, pdf_curve)
+        grid.setGraph(1, j, cdf_curve)
     view = View(grid)
 
     # Square axes

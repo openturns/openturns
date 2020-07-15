@@ -34,7 +34,7 @@ BEGIN_NAMESPACE_OPENTURNS
  *
  * The class GridLayout
  */
-class OT_API GridLayout : public GraphImplementation
+class OT_API GridLayout : public PersistentObject
 {
   CLASSNAME
 
@@ -55,9 +55,6 @@ public:
   /** Method load() stores the object through the StorageManager */
   void load(Advocate & adv);
 
-  /** Composite property accessor */
-  Bool isComposite() const;
-
   /** Grid accessors */
   UnsignedInteger getNbRows() const;
   UnsignedInteger getNbColumns() const;
@@ -70,15 +67,9 @@ public:
   /** Set the legend position */
   virtual void setLegendPosition(const String & position);
 
-  /** Accessor for logScale */
-  virtual void setLogScale(const LogScale logScale);
-
-  /** Hide or show grid */
-  virtual void setGrid(const Bool showGrid);
-
-  /** Grid color accessor */
-  virtual void setGridColor(const String & color);
-
+  /** Accessor for title */
+  void setTitle(const String & title);
+  String getTitle() const;
 private:
 
   /** Number of row/column */
@@ -87,6 +78,8 @@ private:
 
   /** Flat collection of sub-graphs */
   PersistentCollection <Graph> graphCollection_;
+
+  String title_;
 
 }; /* class GridLayout */
 
