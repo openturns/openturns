@@ -682,7 +682,7 @@ Scalar DistributionImplementation::computePDF(const Point & point) const
 Scalar DistributionImplementation::computeLogPDF(const Point & point) const
 {
   const Scalar pdf = computePDF(point);
-  Scalar logPdf = SpecFunc::LogMinScalar;
+  Scalar logPdf = -SpecFunc::MaxScalar;
   if ( pdf > 0.0 ) logPdf = std::log(pdf);
   return logPdf;
 }

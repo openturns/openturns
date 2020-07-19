@@ -312,7 +312,7 @@ Scalar SpecFunc::LogBesselK(const Scalar nu,
   Scalar epsilon = -1.0;
   const Scalar integral = GaussKronrod().integrate(integrand, Interval(ScalarEpsilon, upper), epsilon)[0];
   PlatformInfo::SetNumericalPrecision(precision);
-  if (!IsNormal(integral) || (integral == 0.0)) return -LogMaxScalar;
+  if (!IsNormal(integral) || (integral == 0.0)) return -MaxScalar;
   return logFactor + std::log(integral);
 #endif
 }
@@ -337,7 +337,6 @@ Scalar SpecFunc::BesselK(const Scalar nu,
   if (std::abs(x) < 1e-8) return 0.5 * exp(LogGamma(nu) - nu * std::log(0.5 * x));
   if ((std::abs(x) > 1e4) && (x > nu)) return std::sqrt(M_PI / (2.0 * x)) * exp(-x);
   const Scalar logK = LogBesselK(nu, x);
-  if (logK <= -LogMaxScalar) return 0.0;
   if (logK >= LogMaxScalar) return MaxScalar;
   return std::exp(logK);
 #endif
