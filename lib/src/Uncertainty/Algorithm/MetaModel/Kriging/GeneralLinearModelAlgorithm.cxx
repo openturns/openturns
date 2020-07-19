@@ -69,7 +69,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm()
   , hasRun_(false)
   , optimizeParameters_(true)
   , analyticalAmplitude_(false)
-  , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
+  , lastReducedLogLikelihood_(-SpecFunc::MaxScalar)
 {
   // Set the default covariance to adapt the active parameters of the covariance model
   setCovarianceModel(CovarianceModel());
@@ -104,7 +104,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , hasRun_(false)
   , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
   , analyticalAmplitude_(false)
-  , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
+  , lastReducedLogLikelihood_(-SpecFunc::MaxScalar)
 {
   // Set data
   setData(inputSample, outputSample);
@@ -164,7 +164,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , hasRun_(false)
   , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
   , analyticalAmplitude_(false)
-  , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
+  , lastReducedLogLikelihood_(-SpecFunc::MaxScalar)
 {
   // Set data
   setData(inputSample, outputSample);
@@ -237,7 +237,7 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , hasRun_(false)
   , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
   , analyticalAmplitude_(false)
-  , lastReducedLogLikelihood_(SpecFunc::LogMinScalar)
+  , lastReducedLogLikelihood_(-SpecFunc::MaxScalar)
 {
   // Set data
   setData(inputSample, outputSample);
@@ -714,7 +714,7 @@ Point GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const Point & par
   LOGDEBUG(OSS(false) << "log-determinant=" << logDeterminant << ", rho=" << rho_);
   const Scalar epsilon = rho_.normSquare();
   LOGDEBUG(OSS(false) << "epsilon=||rho||^2=" << epsilon);
-  if (epsilon <= 0) lastReducedLogLikelihood_ = SpecFunc::LogMinScalar;
+  if (epsilon <= 0) lastReducedLogLikelihood_ = -SpecFunc::MaxScalar;
   // For the general multidimensional case, we have to compute the general log-likelihood (ie including marginal variances)
   else lastReducedLogLikelihood_ = constant - 0.5 * (logDeterminant + epsilon);
   LOGINFO(OSS(false) << "Reduced log-likelihood=" << lastReducedLogLikelihood_);
@@ -791,7 +791,7 @@ Scalar GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky() const
   for (UnsignedInteger i = 0; i < covarianceCholeskyFactor_.getDimension(); ++i )
   {
     const Scalar lii = covarianceCholeskyFactor_(i, i);
-    if (lii <= 0.0) return -SpecFunc::LogMaxScalar;
+    if (lii <= 0.0) return -SpecFunc::MaxScalar;
     logDetL += log(lii);
   }
   LOGDEBUG(OSS(false) << "logDetL=" << logDetL);
@@ -843,7 +843,7 @@ Scalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky() const
   for (UnsignedInteger i = 0; i < rho_.getSize(); ++i )
   {
     const Scalar lii = diagonal[i];
-    if (lii <= 0.0) return -SpecFunc::LogMaxScalar;
+    if (lii <= 0.0) return -SpecFunc::MaxScalar;
     logDetL += log(lii);
   }
   return 2.0 * logDetL;
@@ -1004,7 +1004,7 @@ void GeneralLinearModelAlgorithm::reset()
   covarianceCholeskyFactor_ = TriangularMatrix();
   covarianceCholeskyFactorHMatrix_ = HMatrix();
   hasRun_ = false;
-  lastReducedLogLikelihood_ = SpecFunc::LogMinScalar;
+  lastReducedLogLikelihood_ = -SpecFunc::MaxScalar;
 }
 
 /* Method accessor (lapack/hmat) - Protected but friend with GeneralLinearModelAlgorithm class */
