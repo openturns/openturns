@@ -21,7 +21,6 @@
 #include "openturns/UniVariateFunctionFamily.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/FourierSeriesFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
