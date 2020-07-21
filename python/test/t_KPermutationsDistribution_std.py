@@ -33,7 +33,7 @@ try:
 
     # Show PDF and CDF of point
     LPDF = distribution.computeLogPDF(point)
-    print("log pdf=", LPDF)
+    print("log pdf=%.5e" % LPDF)
     PDF = distribution.computePDF(point)
     print("pdf     =", PDF)
     CDF = distribution.computeCDF(point)
