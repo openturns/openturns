@@ -21,7 +21,7 @@
 
 /* This parser is based on RFC 4180 from www.ietf.org */
 
-%pure-parser
+%define api.pure
 %parse-param {OT::CSVParserState & theState}
 %parse-param {yyscan_t yyscanner}
 %parse-param {FILE * theFile}
