@@ -226,8 +226,8 @@ Point WeibullMin::computePDFGradient(const Point & point) const
   if (x <= 0.0) return pdfGradient;
   const Scalar powX = std::pow(x / beta_, alpha_);
   const Scalar factor = powX / x * std::exp(-powX);
-  pdfGradient[0] = factor * (1.0 + (1.0 - powX) * std::log(powX));
-  pdfGradient[1] = factor * (powX - 1.0) * alpha_ * alpha_ / beta_;
+  pdfGradient[0] = factor * (powX - 1.0) * alpha_ * alpha_ / beta_;
+  pdfGradient[1] = factor * (1.0 + (1.0 - powX) * std::log(powX));
   pdfGradient[2] = factor * (1.0 - alpha_ + alpha_ * powX) / x * alpha_;
   return pdfGradient;
 }
@@ -242,8 +242,8 @@ Point WeibullMin::computeCDFGradient(const Point & point) const
   if (x <= 0.0) return cdfGradient;
   const Scalar powX = std::pow(x / beta_, alpha_);
   const Scalar factor = powX * std::exp(-powX);
-  cdfGradient[0] = factor * std::log(x / beta_);
-  cdfGradient[1] = -factor * alpha_ / beta_;
+  cdfGradient[0] = -factor * alpha_ / beta_;
+  cdfGradient[1] = factor * std::log(x / beta_);
   cdfGradient[2] = -factor * alpha_ / x;
   return cdfGradient;
 }
