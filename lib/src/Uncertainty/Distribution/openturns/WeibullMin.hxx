@@ -90,6 +90,10 @@ public:
   using ContinuousDistribution::computePDFGradient;
   Point computePDFGradient(const Point & point) const;
 
+  /** Get the gradient of the LogPDF w.r.t the parameters of the distribution */
+  using ContinuousDistribution::computeLogPDFGradient;
+  Point computeLogPDFGradient(const Point & point) const;
+
   /** Get the gradient of the CDF w.r.t the parameters of the distribution */
   using ContinuousDistribution::computeCDFGradient;
   Point computeCDFGradient(const Point & point) const;

@@ -39,6 +39,7 @@
  * #1510 (ot.Ceres('LEVENBERG_MARQUARDT') and ot.Ceres('DOGLEG') do not handle bound constraints)
  * #1520 (The NLopt test is dubious)
  * #1521 (Basis of MonomialFunction)
+ * #1556 (WeibullMin::computePDFGradient yields the partial derivatives in the wrong order)
 
 
 == 1.15 release (2020-05-25) == #release-1.15
