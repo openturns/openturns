@@ -89,13 +89,6 @@ public:
   virtual void load(Advocate & adv);
 
 private:
-
-  /* Model to calibrate */
-  Function model_;
-
-  /* The input observations */
-  Sample inputObservations_;
-
   /* The optimization algorithm */
   OptimizationAlgorithm algorithm_;
 

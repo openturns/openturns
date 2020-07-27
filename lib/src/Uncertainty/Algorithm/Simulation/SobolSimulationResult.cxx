@@ -20,13 +20,8 @@
  */
 #include "openturns/SobolSimulationResult.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/DistFunc.hxx"
-#include "openturns/SimulationSensitivityAnalysis.hxx"
-#include "openturns/Log.hxx"
-#include "openturns/Exception.hxx"
-#include "openturns/Normal.hxx"
-#include "openturns/ComposedDistribution.hxx"
-#include "openturns/Dirac.hxx"
+#include "openturns/Curve.hxx"
+#include "openturns/SobolIndicesAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -104,6 +99,16 @@ String SobolSimulationResult::__repr__() const
   return oss;
 }
 
+Graph SobolSimulationResult::draw(const Scalar confidenceLevel) const
+{
+  Point fo(getFirstOrderIndicesEstimate());
+  Point to(getTotalOrderIndicesEstimate());
+  const Interval foInterval(getFirstOrderIndicesDistribution().computeBilateralConfidenceInterval(confidenceLevel));
+  const Interval toInterval(getTotalOrderIndicesDistribution().computeBilateralConfidenceInterval(confidenceLevel));
+  Graph graph(SobolIndicesAlgorithm::DrawSobolIndices(getFirstOrderIndicesDistribution().getDescription(), fo, to, foInterval, toInterval));
+  graph.setTitle(OSS() << "Sobol' indices - " << getClassName());
+  return graph;
+}
 
 /* Method save() stores the object through the StorageManager */
 void SobolSimulationResult::save(Advocate & adv) const

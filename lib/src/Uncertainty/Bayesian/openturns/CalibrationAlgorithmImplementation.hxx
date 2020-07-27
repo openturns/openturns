@@ -47,11 +47,19 @@ public:
   CalibrationAlgorithmImplementation();
 
   /** Parameter constructor */
-  CalibrationAlgorithmImplementation(const Sample & outputObservations,
+  CalibrationAlgorithmImplementation(const Function & model,
+                                     const Sample & inputObservations,
+                                     const Sample & outputObservations,
                                      const Distribution & parameterPrior);
 
   /** String converter */
   virtual String __repr__() const;
+
+  /** Model accessor */
+  Function getModel() const;
+
+  /** Input observations accessor */
+  Sample getInputObservations() const;
 
   /** Output observations accessor */
   Sample getOutputObservations() const;
@@ -78,6 +86,15 @@ public:
   virtual void load(Advocate & adv);
 
 protected:
+  /** compute output at prior and posterior */
+  void computeOutputAtPriorAndPosterior();
+
+  /* Model to calibrate */
+  Function model_;
+
+  /* The input observations */
+  Sample inputObservations_;
+
   /* The output observations */
   Sample outputObservations_;
 
@@ -86,6 +103,7 @@ protected:
 
   /* The calibration result */
   CalibrationResult result_;
+
 }; /* class CalibrationAlgorithmImplementation */
 
 

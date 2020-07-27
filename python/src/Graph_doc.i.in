@@ -98,3 +98,4 @@ OT_Graph_add_doc
 OT_Graph_clean_doc
 %feature("docstring") OT::Graph::erase
 OT_Graph_erase_doc
+

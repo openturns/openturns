@@ -13,6 +13,9 @@ Graphical object
 
     Graph
 
+    :template: classWithPlot.rst_t
+    GridLayout
+
 Drawable objects
 ================
 
@@ -30,11 +33,10 @@ Drawable objects
     Cloud
     Contour
     Curve
-    Staircase
-    Pairs
     Pie
     Polygon
     PolygonArray
+    Staircase
     Text
 
 Graphical visualisation object

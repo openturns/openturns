@@ -114,7 +114,9 @@ public:
 
   static Graph DrawSobolIndices(const Description & inputDescription,
                                 const Point & firstOrderIndices,
-                                const Point & secondOrderIndices);
+                                const Point & secondOrderIndices,
+                                const Interval & firstOrderConfidenceInterval = Interval(),
+                                const Interval & totalOrderConfidenceInterval = Interval());
 
   static Graph DrawCorrelationCoefficients(const Point & values,
       const Description & names,

@@ -751,3 +751,4 @@ index : int
 %enddef
 %feature("docstring") OT::GraphImplementation::erase
 OT_Graph_erase_doc
+

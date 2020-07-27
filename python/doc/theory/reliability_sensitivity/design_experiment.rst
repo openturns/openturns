@@ -52,11 +52,8 @@ Different types of design of experiments can be determined:
     d = ot.Axial([1.5, 2.5, 3.5], [1, 2, 3])
     s = d.generate()
     s.setDescription(["X1", "X2", "X3"])
-    g = ot.Graph()
+    g = ot.VisualTest.DrawPairs(s)
     g.setTitle("Axial experiment")
-    g.setGridColor("black")
-    p = ot.Pairs(s)
-    g.add(p)
     View(g)
 
 
@@ -69,11 +66,8 @@ Different types of design of experiments can be determined:
     d = ot.Factorial([1.5, 2.5, 3.5], [1, 2, 3])
     s = d.generate()
     s.setDescription(["X1", "X2", "X3"])
-    g = ot.Graph()
+    g = ot.VisualTest.DrawPairs(s)
     g.setTitle("Factorial experiment")
-    g.setGridColor("black")
-    p = ot.Pairs(s)
-    g.add(p)
     View(g)
 
 
@@ -86,11 +80,8 @@ Different types of design of experiments can be determined:
     d = ot.Composite([1.5, 2.5, 3.5], [1, 2, 3])
     s = d.generate()
     s.setDescription(["X1", "X2", "X3"])
-    g = ot.Graph()
+    g = ot.VisualTest.DrawPairs(s)
     g.setTitle("Composite experiment")
-    g.setGridColor("black")
-    p = ot.Pairs(s)
-    g.add(p)
     View(g)
 
 
@@ -103,11 +94,8 @@ Different types of design of experiments can be determined:
     d = ot.Box([3, 4, 5])
     s = d.generate()
     s.setDescription(["X1", "X2", "X3"])
-    g = ot.Graph()
+    g = ot.VisualTest.DrawPairs(s)
     g.setTitle("Box experiment")
-    g.setGridColor("black")
-    p = ot.Pairs(s)
-    g.add(p)
     View(g)
 
 
@@ -135,11 +123,8 @@ Different types of design of experiments can be determined:
     d = ot.MonteCarloExperiment(ot.ComposedDistribution([ot.Uniform()]*3), 32)
     s = d.generate()
     s.setDescription(["X1", "X2", "X3"])
-    g = ot.Graph()
+    g = ot.VisualTest.DrawPairs(s)
     g.setTitle("MonteCarlo experiment")
-    g.setGridColor("black")
-    p = ot.Pairs(s)
-    g.add(p)
     View(g)
 
 
@@ -152,11 +137,8 @@ Different types of design of experiments can be determined:
     d = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform()]*3), 32)
     s = d.generate()
     s.setDescription(["X1", "X2", "X3"])
-    g = ot.Graph()
+    g = ot.VisualTest.DrawPairs(s)
     g.setTitle("LHS experiment")
-    g.setGridColor("black")
-    p = ot.Pairs(s)
-    g.add(p)
     View(g)
 
 
@@ -169,11 +151,8 @@ Different types of design of experiments can be determined:
     d = ot.LowDiscrepancyExperiment(ot.SobolSequence(), ot.ComposedDistribution([ot.Uniform()]*3), 32)
     s = d.generate()
     s.setDescription(["X1", "X2", "X3"])
-    g = ot.Graph()
+    g = ot.VisualTest.DrawPairs(s)
     g.setTitle("Low discrepancy experiment")
-    g.setGridColor("black")
-    p = ot.Pairs(s)
-    g.add(p)
     View(g)
 
 
@@ -186,11 +165,8 @@ Different types of design of experiments can be determined:
     d = ot.GaussProductExperiment(ot.ComposedDistribution([ot.Uniform()]*3), [4,6,8])
     s = d.generate()
     s.setDescription(["X1", "X2", "X3"])
-    g = ot.Graph()
+    g = ot.VisualTest.DrawPairs(s)
     g.setTitle("Gauss product experiment")
-    g.setGridColor("black")
-    p = ot.Pairs(s)
-    g.add(p)
     View(g)
 
 
@@ -227,11 +203,8 @@ The following figures illustrates the different patterns obtained.
     d = ot.Combinations(3, 12)
     s = ot.Sample(d.generate())
     s.setDescription(["X1", "X2", "X3"])
-    g = ot.Graph()
+    g = ot.VisualTest.DrawPairs(s)
     g.setTitle("Combinations generator")
-    g.setGridColor("black")
-    p = ot.Pairs(s)
-    g.add(p)
     View(g)
 
 
@@ -244,11 +217,8 @@ The following figures illustrates the different patterns obtained.
     d = ot.KPermutations(3, 12)
     s = ot.Sample(d.generate())
     s.setDescription(["X1", "X2", "X3"])
-    g = ot.Graph()
+    g = ot.VisualTest.DrawPairs(s)
     g.setTitle("KPermutations generator")
-    g.setGridColor("black")
-    p = ot.Pairs(s)
-    g.add(p)
     View(g)
 
 
@@ -261,11 +231,8 @@ The following figures illustrates the different patterns obtained.
     d = ot.Tuples([3, 4, 5])
     s = ot.Sample(d.generate())
     s.setDescription(["X1", "X2", "X3"])
-    g = ot.Graph()
+    g = ot.VisualTest.DrawPairs(s)
     g.setTitle("Tuples generator")
-    g.setGridColor("black")
-    p = ot.Pairs(s)
-    g.add(p)
     View(g)
 
 

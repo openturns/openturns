@@ -8,4 +8,4 @@ f = ot.LinearFunction(center, constant, linear)
 
 graph = f.draw(0.0, 10.0)
 graph.setTitle('$y=2x+3$')
-View(graph, figure_kwargs={'figsize': (8, 4)}, add_legend=True)
+View(graph, figure_kw={'figsize': (8, 4)}, add_legend=True)

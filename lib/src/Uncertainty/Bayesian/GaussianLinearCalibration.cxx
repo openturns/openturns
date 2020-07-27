@@ -47,7 +47,7 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Function & model,
     const CovarianceMatrix & parameterCovariance,
     const CovarianceMatrix & errorCovariance,
     const String & methodName)
-  : CalibrationAlgorithmImplementation(outputObservations, Normal(candidate, parameterCovariance))
+  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(candidate, parameterCovariance))
   , modelObservations_(0, 0)
   , gradientObservations_(0, 0)
   , errorCovariance_(errorCovariance)
@@ -91,7 +91,7 @@ GaussianLinearCalibration::GaussianLinearCalibration(const Sample & modelObserva
     const CovarianceMatrix & parameterCovariance,
     const CovarianceMatrix & errorCovariance,
     const String & methodName)
-  : CalibrationAlgorithmImplementation(outputObservations, Normal(candidate, parameterCovariance))
+  : CalibrationAlgorithmImplementation(Function(), Sample(), outputObservations, Normal(candidate, parameterCovariance))
   , modelObservations_(modelObservations)
   , gradientObservations_(gradientObservations)
   , errorCovariance_(errorCovariance)
@@ -165,7 +165,8 @@ void GaussianLinearCalibration::run()
   Normal parameterPosterior(thetaStar, covarianceThetaStar);
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const LinearFunction residualFunction(getCandidate(), deltaY, gradientObservations_);
-  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, Normal(Point(errorCovariance_.getDimension()), errorCovariance_), outputObservations_, residualFunction);
+  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, Normal(Point(errorCovariance_.getDimension()), errorCovariance_), inputObservations_, outputObservations_, residualFunction);
+  computeOutputAtPriorAndPosterior();
 }
 
 /* Model observations accessor */

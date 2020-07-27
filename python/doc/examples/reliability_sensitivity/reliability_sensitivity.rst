@@ -48,6 +48,7 @@ Sensitivity analysis
     :maxdepth: 1
 
     sensitivity_sobol.ipynb
+    sensitivity_sobol_simulation.ipynb
     functional_chaos_sensitivity.ipynb
     sensitivity_ancova.ipynb
     sensitivity_fast.ipynb

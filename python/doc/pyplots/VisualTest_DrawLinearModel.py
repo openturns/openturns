@@ -20,4 +20,4 @@ lmtest = ot.LinearModelAlgorithm(firstSample, secondSample).getResult()
 drawLinearModel = ot.VisualTest.DrawLinearModel(
     firstSample, secondSample, lmtest)
 
-View(drawLinearModel, figure_kwargs={'figsize': (5, 5)})
+View(drawLinearModel, figure_kw={'figsize': (5, 5)})

@@ -10,6 +10,8 @@
 ==== New classes ====
  * BlockIndependentDistribution
  * FejerAlgorithm
+ * GridLayout
+ * MinimumVolumeClassifier
 
 ==== API changes ====
  * Removed deprecated Weibull, WeibullFactory, WeibullMuSigma classes
@@ -17,13 +19,17 @@
  * Removed deprecated Event class
  * Removed deprecated EnumerateFunction constructors
  * Removed various deprecated distribution accessors
+ * Deprecated Pairs class, see VisualTest.DrawPairs
 
 === Python module ===
+ * Renamed Viewer *_kwargs arguments to *_kw (matplotlib convention)
 
 === Miscellaneous ===
  * Require C99/C++11 support
 
 === Bug fixes ===
+ * #1001 (Add method SobolSimulationResult::draw)
+ * #1259 (The diagonal of a scatter plot matrix should have the histograms)
  * #1267 (Some CSV files cannot be imported)
  * #1377 (The `setKnownParameter` method is not compatible with `buildEstimator`)
  * #1447 (Highly inaccurate result in reliability model when using subset of RandomVector)

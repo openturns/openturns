@@ -98,12 +98,6 @@ public:
 
 private:
 
-  /* Model to calibrate */
-  Function model_;
-
-  /* The input observations */
-  Sample inputObservations_;
-
   /* The optimization algorithm */
   OptimizationAlgorithm algorithm_;
 

@@ -26,6 +26,7 @@ Non-parametric
     :template: classWithPlot.rst_t
 
     MixtureClassifier
+    MinimumVolumeClassifier
 
     :template: class.rst_t
 

@@ -413,3 +413,65 @@ Examples
 >>> lmtest = ot.LinearModelAlgorithm(firstSample, secondSample).getResult()
 >>> drawLinearModelVTest = ot.VisualTest.DrawLinearModelResidual(firstSample, secondSample, lmtest)
 >>> View(drawLinearModelVTest).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawPairs
+"Draw 2-d projections of a multivariate sample.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Samples to draw.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dim = 3
+>>> R = ot.CorrelationMatrix(dim)
+>>> R[0, 1] = 0.8
+>>> distribution = ot.Normal([3.0] * dim, [2.0]* dim, R)
+>>> size = 100
+>>> sample = distribution.getSample(size)
+>>> clouds = ot.VisualTest.DrawPairs(sample)
+>>> View(clouds).show()"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VisualTest::DrawPairsMarginals
+"Draw 2-d projections of a multivariate sample plus marginals.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Samples to draw.
+distribution : :class:`~openturns.Distribution`
+    Distribution from which marginals are drawn
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph object
+
+Examples
+--------
+>>> import openturns as ot
+>>> from openturns.viewer import View
+>>> ot.RandomGenerator.SetSeed(0)
+>>> dim = 3
+>>> R = ot.CorrelationMatrix(dim)
+>>> R[0, 1] = 0.8
+>>> distribution = ot.Normal([3.0] * dim, [2.0]* dim, R)
+>>> size = 100
+>>> sample = distribution.getSample(size)
+>>> distribution = ot.ComposedDistribution([ot.HistogramFactory().build(sample.getMarginal(i)) for i in range(dim)])
+>>> clouds = ot.VisualTest.DrawPairsMarginals(sample, distribution)
+>>> View(clouds).show()"
+

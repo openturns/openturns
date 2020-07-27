@@ -32,17 +32,18 @@ static const Factory<CalibrationAlgorithmImplementation> Factory_CalibrationAlgo
 /* Default constructor */
 CalibrationAlgorithmImplementation::CalibrationAlgorithmImplementation()
   : PersistentObject()
-  , outputObservations_()
-  , parameterPrior_()
-  , result_()
 {
   // Nothing to do
 }
 
 /* Parameter constructor */
-CalibrationAlgorithmImplementation::CalibrationAlgorithmImplementation(const Sample & outputObservations,
+CalibrationAlgorithmImplementation::CalibrationAlgorithmImplementation(const Function & model,
+                                                                       const Sample & inputObservations,
+                                                                       const Sample & outputObservations,
     const Distribution & parameterPrior)
   : PersistentObject()
+  , model_(model)
+  , inputObservations_(inputObservations)
   , outputObservations_(outputObservations)
   , parameterPrior_(parameterPrior)
   , result_()
@@ -63,6 +64,18 @@ String CalibrationAlgorithmImplementation::__repr__() const
          << " output observations=" << outputObservations_
          << " parameter prior=" << parameterPrior_
          << " result=" << result_;
+}
+
+/* Model accessor */
+Function CalibrationAlgorithmImplementation::getModel() const
+{
+  return model_;
+}
+
+/* Input observations accessor */
+Sample CalibrationAlgorithmImplementation::getInputObservations() const
+{
+  return inputObservations_;
 }
 
 /* Output observations accessor */
@@ -88,6 +101,19 @@ CalibrationResult CalibrationAlgorithmImplementation::getResult() const
   return result_;
 }
 
+void CalibrationAlgorithmImplementation::computeOutputAtPriorAndPosterior()
+{
+  if (model_.getEvaluation().getImplementation()->isActualImplementation())
+  {
+    Function localModel(model_);
+    localModel.setParameter(result_.getParameterPrior().getMean());
+    Sample outputAtPrior(localModel(inputObservations_));
+    localModel.setParameter(result_.getParameterPosterior().getMean());
+    Sample outputAtPosterior(localModel(inputObservations_));
+    result_.setOutputAtPriorAndPosteriorMean(outputAtPrior, outputAtPosterior);
+  }
+}
+
 /* Virtual copy constructor */
 CalibrationAlgorithmImplementation* CalibrationAlgorithmImplementation::clone() const
 {
@@ -98,6 +124,8 @@ CalibrationAlgorithmImplementation* CalibrationAlgorithmImplementation::clone() 
 void CalibrationAlgorithmImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
+  adv.saveAttribute("model_", model_);
+  adv.saveAttribute("inputObservations_", inputObservations_);
   adv.saveAttribute("outputObservations_", outputObservations_);
   adv.saveAttribute("parameterPrior_", parameterPrior_);
   adv.saveAttribute("result_", result_);
@@ -107,6 +135,8 @@ void CalibrationAlgorithmImplementation::save(Advocate & adv) const
 void CalibrationAlgorithmImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
+  adv.loadAttribute("model_", model_);
+  adv.loadAttribute("inputObservations_", inputObservations_);
   adv.loadAttribute("outputObservations_", outputObservations_);
   adv.loadAttribute("parameterPrior_", parameterPrior_);
   adv.loadAttribute("result_", result_);

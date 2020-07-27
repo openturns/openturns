@@ -11,4 +11,4 @@ sample1.setName('data 1')
 
 kendallPlot = ot.VisualTest_DrawKendallPlot(sample1, copula2)
 
-View(kendallPlot, figure_kwargs={'figsize': (4.5, 4.5)})
+View(kendallPlot, figure_kw={'figsize': (4.5, 4.5)})

@@ -14,6 +14,11 @@ Calibration
     GaussianNonLinearCalibration
     MCMC
     RandomWalkMetropolisHastings
-    CalibrationAlgorithm
-    CalibrationResult
     CalibrationStrategy
+    CalibrationAlgorithm
+
+.. autosummary::
+    :toctree: _generated/
+    :template: classWithPlot.rst_t
+
+    CalibrationResult

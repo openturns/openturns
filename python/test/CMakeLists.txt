@@ -268,13 +268,13 @@ ot_pyinstallcheck_test (Curve_std)
 ot_pyinstallcheck_test (Drawable_std)
 ot_pyinstallcheck_test (Graph_export)
 ot_pyinstallcheck_test (Graph_mix)
-ot_pyinstallcheck_test (Pairs_std)
 ot_pyinstallcheck_test (Pie_std)
 ot_pyinstallcheck_test (Polygon_std)
 ot_pyinstallcheck_test (PolygonArray_std)
 ot_pyinstallcheck_test (Staircase_std)
 ot_pyinstallcheck_test (Text_std)
 endif ()
+ot_pyinstallcheck_test (GridLayout_std IGNOREOUT)
 
 ## Diff
 ot_pyinstallcheck_test (FiniteDifferenceStep_std)
@@ -585,12 +585,14 @@ ot_pyinstallcheck_test (GaussianLinearCalibration_std)
 ot_pyinstallcheck_test (CalibrationStrategy_std)
 ot_pyinstallcheck_test (LinearLeastSquaresCalibration_std)
 ot_pyinstallcheck_test (NonLinearLeastSquaresCalibration_std)
+ot_pyinstallcheck_test (CalibrationResult_std IGNOREOUT)
 ot_pyinstallcheck_test (RandomWalkMetropolisHastings_std)
 ot_pyinstallcheck_test (RandomWalkMetropolisHastings_regression IGNOREOUT)
 ot_pyinstallcheck_test (GaussianNonLinearCalibration_std)
 
 ## Classification
 ot_pyinstallcheck_test (MixtureClassifier_std)
+ot_pyinstallcheck_test (MinimumVolumeClassifier_std IGNOREOUT)
 
 ## Experiments
 ot_pyinstallcheck_test (Axial_std)
