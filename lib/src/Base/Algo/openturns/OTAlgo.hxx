@@ -57,6 +57,7 @@
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/GaussKronrodRule.hxx"
 #include "openturns/GaussLegendre.hxx"
+#include "openturns/FejerAlgorithm.hxx"
 #include "openturns/IteratedQuadrature.hxx"
 #include "openturns/DesignProxy.hxx"
 #include "openturns/LeastSquaresMethodImplementation.hxx"

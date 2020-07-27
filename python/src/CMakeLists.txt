@@ -473,6 +473,7 @@ ot_add_python_module(algo algo_module.i
                       GaussKronrodRule.i GaussKronrodRule_doc.i.in
                       GaussKronrod.i GaussKronrod_doc.i.in
                       GaussLegendre.i GaussLegendre_doc.i.in
+                      FejerAlgorithm.i FejerAlgorithm_doc.i.in
                       IteratedQuadrature.i IteratedQuadrature_doc.i.in
                       ExpertMixture.i ExpertMixture_doc.i.in
 		      KarhunenLoeveResultImplementation.i KarhunenLoeveResultImplementation_doc.i.in

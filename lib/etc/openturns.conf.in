@@ -167,6 +167,9 @@
   <!-- OT::GaussLegendre parameters -->
   <GaussLegendre-DefaultMarginalIntegrationPointsNumber value_int="64" />
 
+  <!-- OT::Fejer parameters -->
+  <FejerAlgorithm-DefaultMarginalIntegrationPointsNumber  value_int="64" />
+
   <!-- OT::IteratedQuadrature parameters -->
   <IteratedQuadrature-MaximumError        value_float="1.0e-7"       />
   <IteratedQuadrature-MaximumSubIntervals value_int="32" />
