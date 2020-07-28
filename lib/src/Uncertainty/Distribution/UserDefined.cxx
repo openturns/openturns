@@ -273,13 +273,14 @@ Point UserDefined::computePDFGradient(const Point & point) const
   if (point.getDimension() != getDimension()) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << getDimension() << ", here dimension=" << point.getDimension();
 
   const UnsignedInteger size = points_.getSize();
-  Point pdfGradient(size, 0.0);
+  const UnsignedInteger dimension = getDimension();
+  Point pdfGradient((dimension + 1) * size, 0.0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     if ((point - points_[i]).norm() < supportEpsilon_)
     {
       pdfGradient[i] = 1.0;
-      return pdfGradient;
+      break;
     }
   }
   return pdfGradient;
@@ -293,7 +294,7 @@ Point UserDefined::computeCDFGradient(const Point & point) const
 
   const UnsignedInteger size = points_.getSize();
   const UnsignedInteger dimension = getDimension();
-  Point cdfGradient(size, 0.0);
+  Point cdfGradient((dimension + 1) * size, 0.0);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Point x(points_[i]);
