@@ -29,6 +29,7 @@ int main(int, char *[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
   setRandomGenerator();
+  PlatformInfo::SetNumericalPrecision(4);
   try
   {
     UnsignedInteger dim = 2;
@@ -61,9 +62,9 @@ int main(int, char *[])
       fullprint << "kernel=" << kernel.getName() << std::endl;
       KernelSmoothing smoother(kernel);
       Distribution smoothed(smoother.build(sample));
-      fullprint << "kernel bandwidth=[" << smoother.getBandwidth()[0] << ", " << smoother.getBandwidth()[1] << "]" << std::endl;
+      fullprint << "kernel bandwidth=[" << std::setprecision(4) << smoother.getBandwidth()[0] << ", " << std::setprecision(4) << smoother.getBandwidth()[1] << "]" << std::endl;
       // Check moments
-      fullprint << "mean(smoothed)=[" << smoothed.getMean()[0] << ", " << smoothed.getMean()[1] << "] mean(exact)=[" << distribution.getMean()[0] << ", " << distribution.getMean()[1] << "]" << std::endl;
+      fullprint << "mean(smoothed)=[" << std::setprecision(4) << smoothed.getMean()[0] << ", " << std::setprecision(4) << smoothed.getMean()[1] << "] mean(exact)=[" << distribution.getMean()[0] << ", " << distribution.getMean()[1] << "]" << std::endl;
       fullprint << "covariance(smoothed)=" << smoothed.getCovariance() << " covariance(exact)=" << distribution.getCovariance() << std::endl;
       // Define a point
       Point point( smoothed.getDimension(), 0.0 );
@@ -72,8 +73,8 @@ int main(int, char *[])
       Scalar pointPDF = smoothed.computePDF( point );
       Scalar pointCDF = smoothed.computeCDF( point );
       fullprint << "Point= " << point << std::endl;
-      fullprint << " pdf(smoothed)= " << pointPDF << " pdf(exact)=" << distribution.computePDF( point ) << std::endl;
-      fullprint << " cdf(smoothed)= " << pointCDF << " cdf(exact)=" << distribution.computeCDF( point ) << std::endl;
+      fullprint << " pdf(smoothed)= " << std::setprecision(4) << pointPDF << " pdf(exact)=" << distribution.computePDF( point ) << std::endl;
+      fullprint << " cdf(smoothed)= " << std::setprecision(4) << pointCDF << " cdf(exact)=" << distribution.computeCDF( point ) << std::endl;
     }
     // Test for boundary correction
     Collection<Distribution> distributionCollection(2);
@@ -92,7 +93,7 @@ int main(int, char *[])
         Scalar hSilverman = smoother.computeSilvermanBandwidth(sampleCollection[j])[0];
         Scalar hPlugin = smoother.computePluginBandwidth(sampleCollection[j])[0];
         Scalar hMixed = smoother.computeMixedBandwidth(sampleCollection[j])[0];
-        fullprint << "Silverman's bandwidth=" << hSilverman << " plugin bandwidth=" << hPlugin << " mixed bandwidth=" << hMixed << std::endl;
+        fullprint << "Silverman's bandwidth=" << std::setprecision(4) << hSilverman << " plugin bandwidth=" << std::setprecision(4) << hPlugin << " mixed bandwidth=" << std::setprecision(4) << hMixed << std::endl;
         for (UnsignedInteger k = 0; k < 2; ++k)
         {
           smoother.setBoundaryCorrection(k == 1);
@@ -104,8 +105,8 @@ int main(int, char *[])
           // Show PDF and CDF of point point
           Scalar pointPDF = smoothed.computePDF( point );
           Scalar pointCDF = smoothed.computeCDF( point );
-          fullprint << " pdf(smoothed)= " << pointPDF << " pdf(exact)=" << distributionCollection[j].computePDF( point ) << std::endl;
-          fullprint << " cdf(smoothed)= " << pointCDF << " cdf(exact)=" << distributionCollection[j].computeCDF( point ) << std::endl;
+          fullprint << " pdf(smoothed)= " << std::setprecision(4) << pointPDF << " pdf(exact)=" << distributionCollection[j].computePDF( point ) << std::endl;
+          fullprint << " cdf(smoothed)= " << std::setprecision(4) << pointCDF << " cdf(exact)=" << distributionCollection[j].computeCDF( point ) << std::endl;
         }
       }
     }
@@ -116,9 +117,9 @@ int main(int, char *[])
       Distribution ks2(KernelSmoothing(Normal(), true, 1024).build(sample));
       Distribution ks3(KernelSmoothing(Normal(), false).build(sample));
       Point point(1, 0.3);
-      fullprint << "with low  bin count, pdf=" << ks1.computePDF(point) << std::endl;
-      fullprint << "with high bin count, pdf=" << ks2.computePDF(point) << std::endl;
-      fullprint << "without   binning,   pdf=" << ks3.computePDF(point) << std::endl;
+      fullprint << "with low  bin count, pdf=" << std::setprecision(4) << ks1.computePDF(point) << std::endl;
+      fullprint << "with high bin count, pdf=" << std::setprecision(4) << ks2.computePDF(point) << std::endl;
+      fullprint << "without   binning,   pdf=" << std::setprecision(4) << ks3.computePDF(point) << std::endl;
     }
     // Test with varying boundary corrections
     {
@@ -128,57 +129,57 @@ int main(int, char *[])
       KernelSmoothing algo1(Normal(), false);
       algo1.setBoundingOption(KernelSmoothing::NONE);
       Distribution ks1 = algo1.build(sample);
-      fullprint << "with no boundary correction, pdf(left)=" << ks1.computePDF(left) << ", pdf(right)=" << ks1.computePDF(right) << std::endl;
+      fullprint << "with no boundary correction, pdf(left)=" << std::setprecision(4) << ks1.computePDF(left) << ", pdf(right)=" << std::setprecision(4) << ks1.computePDF(right) << std::endl;
 
       KernelSmoothing algo2(Normal(), false);
       algo2.setBoundingOption(KernelSmoothing::LOWER);
       algo2.setAutomaticLowerBound(true);
       Distribution ks2 = algo2.build(sample);
-      fullprint << "with automatic lower boundary correction, pdf(left)=" << ks2.computePDF(left) << ", pdf(right)=" << ks2.computePDF(right) << std::endl;
+      fullprint << "with automatic lower boundary correction, pdf(left)=" << std::setprecision(4) << ks2.computePDF(left) << ", pdf(right)=" << std::setprecision(4) << ks2.computePDF(right) << std::endl;
 
       KernelSmoothing algo3(Normal(), false);
       algo3.setBoundingOption(KernelSmoothing::LOWER);
       algo3.setLowerBound(-1.0);
       algo3.setAutomaticLowerBound(false);
       Distribution ks3 = algo3.build(sample);
-      fullprint << "with user defined lower boundary correction, pdf(left)=" << ks3.computePDF(left) << ", pdf(right)=" << ks3.computePDF(right) << std::endl;
+      fullprint << "with user defined lower boundary correction, pdf(left)=" << std::setprecision(4) << ks3.computePDF(left) << ", pdf(right)=" << std::setprecision(4) << ks3.computePDF(right) << std::endl;
 
       KernelSmoothing algo4(Normal(), false);
       algo4.setBoundingOption(KernelSmoothing::UPPER);
       algo4.setAutomaticUpperBound(true);
       Distribution ks4 = algo4.build(sample);
-      fullprint << "with automatic upper boundary correction, pdf(left)=" << ks4.computePDF(left) << ", pdf(right)=" << ks4.computePDF(right) << std::endl;
+      fullprint << "with automatic upper boundary correction, pdf(left)=" << std::setprecision(4) << ks4.computePDF(left) << ", pdf(right)=" << std::setprecision(4) << ks4.computePDF(right) << std::endl;
 
       KernelSmoothing algo5(Normal(), false);
       algo5.setBoundingOption(KernelSmoothing::UPPER);
       algo5.setUpperBound(1.0);
       algo5.setAutomaticLowerBound(false);
       Distribution ks5 = algo5.build(sample);
-      fullprint << "with user defined upper boundary correction, pdf(left)=" << ks5.computePDF(left) << ", pdf(right)=" << ks5.computePDF(right) << std::endl;
+      fullprint << "with user defined upper boundary correction, pdf(left)=" << std::setprecision(4) << ks5.computePDF(left) << ", pdf(right)=" << std::setprecision(4) << ks5.computePDF(right) << std::endl;
 
       KernelSmoothing algo6(Normal(), false);
       algo6.setBoundingOption(KernelSmoothing::BOTH);
       Distribution ks6 = algo6.build(sample);
-      fullprint << "with automatic boundaries correction, pdf(left)=" << ks6.computePDF(left) << ", pdf(right)=" << ks6.computePDF(right) << std::endl;
+      fullprint << "with automatic boundaries correction, pdf(left)=" << std::setprecision(4) << ks6.computePDF(left) << ", pdf(right)=" << std::setprecision(4) << ks6.computePDF(right) << std::endl;
 
       KernelSmoothing algo7(Normal(), false);
       algo7.setBoundingOption(KernelSmoothing::BOTH);
       algo7.setLowerBound(-1.0);
       Distribution ks7 = algo7.build(sample);
-      fullprint << "with user defined lower/automatic upper boundaries correction, pdf(left)=" << ks7.computePDF(left) << ", pdf(right)=" << ks7.computePDF(right) << std::endl;
+      fullprint << "with user defined lower/automatic upper boundaries correction, pdf(left)=" << std::setprecision(4) << ks7.computePDF(left) << ", pdf(right)=" << std::setprecision(4) << ks7.computePDF(right) << std::endl;
 
       KernelSmoothing algo8(Normal(), false);
       algo8.setBoundingOption(KernelSmoothing::BOTH);
       algo8.setUpperBound(1.0);
       Distribution ks8 = algo8.build(sample);
-      fullprint << "with automatic lower/user defined upper boundaries correction, pdf(left)=" << ks8.computePDF(left) << ", pdf(right)=" << ks8.computePDF(right) << std::endl;
+      fullprint << "with automatic lower/user defined upper boundaries correction, pdf(left)=" << std::setprecision(4) << ks8.computePDF(left) << ", pdf(right)=" << std::setprecision(4) << ks8.computePDF(right) << std::endl;
 
       KernelSmoothing algo9(Normal(), false);
       algo9.setBoundingOption(KernelSmoothing::BOTH);
       algo9.setLowerBound(-1.0);
       algo9.setUpperBound(1.0);
       Distribution ks9 = algo9.build(sample);
-      fullprint << "with user defined boundaries correction, pdf(left)=" << ks9.computePDF(left) << ", pdf(right)=" << ks9.computePDF(right) << std::endl;
+      fullprint << "with user defined boundaries correction, pdf(left)=" << std::setprecision(4) << ks9.computePDF(left) << ", pdf(right)=" << std::setprecision(4) << ks9.computePDF(right) << std::endl;
     }
   }
   catch (TestFailed & ex)
