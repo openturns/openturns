@@ -231,7 +231,7 @@ struct KrigingEvaluationSampleFunctor
   {
     const UnsignedInteger dimension = evaluation_.getOutputDimension();
     Matrix R(dimension, trainingSize_ * dimension);
-    for (UnsignedInteger i = 0; r.begin() != r.end(); ++i)
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i)
     {
       for (UnsignedInteger j = 0; j < trainingSize_; ++j)
       {
