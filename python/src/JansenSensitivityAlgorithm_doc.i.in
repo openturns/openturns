@@ -11,8 +11,9 @@ Available constructors:
 Parameters
 ----------
 inputDesign : :class:`~openturns.Sample`
-    Design for the evaluation of sensitivity indices, obtained
-    thanks to the SobolIndicesAlgorithmImplementation.Generate method
+    Design for the evaluation of sensitivity indices, obtained with the
+    :class:`~openturns.SobolIndicesExperiment`:code:`.`:meth:`~openturns.SobolIndicesExperiment.generate`
+    method
 outputDesign : :class:`~openturns.Sample`
     Design for the evaluation of sensitivity indices, obtained as the evaluation
     of a Function (model) on the previous inputDesign
@@ -29,21 +30,29 @@ computeSecondOrder : bool
 
 Notes
 -----
-This class is concerned with analyzing the influence the random vector
-:math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)` has on a random variable
-:math:`Y^k` which is being studied for uncertainty, by using the [jansen1999]_
-method for the evaluation of both first and total order indices.
+This class analyzes the influence of each component of a random vector
+:math:`\vect{X} = \left( X^1, \ldots, X^{n_X} \right)` on a random vector
+:math:`\vect{Y} = \left( Y^1, \ldots, Y^{n_Y} \right)` by computing Sobol' indices (see also [sobol1993]_).
 
-These last ones are respectively given as follows:
+The [jansen1999]_ method is used to estimate both first
+and total order indices.
+
+**The class constructor** ``JansenSensitivityAlgorithm(inputDesign, outputDesign, N)``
+**requires an** ``inputDesign`` **produced by** :class:`~openturns.SobolIndicesExperiment`
+**(see example below). Otherwise, results will be worthless.**
+
+Notations are defined in the documentation page of the :class:`~openturns.SobolIndicesAlgorithm` class.
+
+The estimators of :math:`V_i` and :math:`VT_{i}` used by this class are respectively:
 
 .. math::
 
    \begin{array}{ccc}
-   \hat{V_i} & = & \Var{G(A_k)} - \frac{1}{2n} \sum_{k=1}^{n} \left( G(E_k) - G(B_k) \right)^2 \\
-   \hat{VT_{i}} & = & \frac{1}{2n} \sum_{k=1}^{n} \left( G(A_k) -  G(E_k) \right)^2
+   \hat{V}_i & = & \frac{1}{N-1} \sum_{k=1}^{N} \tilde{G}(\vect{A}_k)^2 - \frac{1}{2N-1} \sum_{k=1}^{N} \left( \tilde{G}(\vect{E}_k) - \tilde{G}(\vect{B}_k) \right)^2 \\
+   \widehat{VT}_{i} & = & \frac{1}{2N-1} \sum_{k=1}^{N} \left( \tilde{G}(\vect{E}_k) -  \tilde{G}(\vect{A}_k) \right)^2
    \end{array}
 
-The variance of the estimator is computed using:
+The variance of the estimators is computed using:
 
 .. math::
 
@@ -65,17 +74,22 @@ SobolIndicesAlgorithm
 
 Examples
 --------
+
+Estimate first and total order Sobol' indices:
+
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> formula = ['sin(pi_*X1)+7*sin(pi_*X2)^2+0.1*(pi_*X3)^4*sin(pi_*X1)']
 >>> model = ot.SymbolicFunction(['X1', 'X2', 'X3'], formula)
 >>> distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3)
 >>> # Define designs to pre-compute
->>> size = 100
+>>> size = 10000
 >>> inputDesign = ot.SobolIndicesExperiment(distribution, size).generate()
 >>> outputDesign = model(inputDesign)
 >>> # sensitivity analysis algorithm
 >>> sensitivityAnalysis = ot.JansenSensitivityAlgorithm(inputDesign, outputDesign, size)
 >>> print(sensitivityAnalysis.getFirstOrderIndices())
-[0.403551,0.487879,0.140996]"
+[0.322419,0.457314,0.0260925]
+>>> print(sensitivityAnalysis.getTotalOrderIndices())
+[0.55841,0.433746,0.240408]"
 

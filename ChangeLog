@@ -26,6 +26,7 @@
 === Documentation ===
 ==== API documentation ====
  * Clarified SobolIndicesExperiment page, notations now consistent with SobolIndicesAlgorithm page
+ * Clarified SobolIndicesAlgorithm and (Saltellli|Martinez|MauntzKucherenko|Jansen)SensitivityAlgorithm pages, corrected formulas
 
 === Python module ===
  * Renamed Viewer *_kwargs arguments to *_kw (matplotlib convention)
