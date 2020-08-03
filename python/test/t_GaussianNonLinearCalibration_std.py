@@ -54,3 +54,22 @@ for bootstrapSize in bootstrapSizes:
     algo.setBootstrapSize(bootstrapSize)
     algo.run()
     print("result (Global)=", algo.getResult().getParameterMAP())
+
+# unobserved inputs
+p_ref = [2.8, 1.2, 0.5, 2.0]
+params = [0, 1, 2, 3]
+modelX = ot.ParametricFunction(model, params, p_ref)
+x = ot.Sample(m, 0)
+y = modelX(x)
+y += ot.Normal([0.0]*2, [0.05]*2, ot.IdentityMatrix(2)).getSample(m)
+priorCovariance = ot.CovarianceMatrix(4)
+for i in range(4):
+    priorCovariance[i, i] = 3.0 + (1.0 + i) * (1.0 + i)
+    for j in range(i):
+        priorCovariance[i, j] = 1.0 / (1.0 + i + j)
+candidate = [1.0]*4
+algo = ot.GaussianNonLinearCalibration(modelX, x, y, candidate, priorCovariance, errorCovariance)
+algo.run()
+result = algo.getResult()
+ot.PlatformInfo.SetNumericalPrecision(2)
+print("result (unobs.)=", result.getParameterMAP())

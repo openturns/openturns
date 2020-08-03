@@ -224,16 +224,14 @@ Complex Histogram::computeCharacteristicFunction(const Scalar x) const
 Point Histogram::computePDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
-  throw NotYetImplementedException(HERE) << "In Histogram::computePDFGradient(const Point & point) const";
+  return ContinuousDistribution::computePDFGradient(point);
 }
 
 /* Get the CDFGradient of the distribution */
 Point Histogram::computeCDFGradient(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
-
-  throw NotYetImplementedException(HERE) << "In Histogram::computeCDFGradient(const Point & point) const";
+  return ContinuousDistribution::computeCDFGradient(point);
 }
 
 /* Get the quantile of the distribution */

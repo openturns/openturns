@@ -256,7 +256,7 @@ void SubsetSampling::run()
     {
       if (getEvent().getOperator()(currentLevelSample_(i, 0), getEvent().getThreshold()))
       {
-        eventInputSample_.add(standardEvent_.getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation()(currentPointSample_[i]));
+        eventInputSample_.add(getEvent().getAntecedent().getDistribution().getInverseIsoProbabilisticTransformation()(currentPointSample_[i]));
         eventOutputSample_.add(currentLevelSample_[i]);
       }
     }

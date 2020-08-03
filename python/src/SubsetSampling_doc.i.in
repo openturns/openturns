@@ -4,7 +4,7 @@
 Parameters
 ----------
 event : :class:`~openturns.RandomVector`
-    Event we are computing the probability of.
+    Event we are computing the probability.
 proposalRange : float, optional
     Proposal range length
 targetProbability : float, optional
@@ -72,7 +72,7 @@ EventSimulation"
 
 Returns
 -------
-coef : `~openturns.Point`
+coef : :class:`~openturns.Point`
     Coefficient of variation at each subset step."
 
 // ---------------------------------------------------------------------------
@@ -107,7 +107,7 @@ prob : float
 Parameters
 ----------
 keepEventsample : bool
-    Whether to keep the event samples."
+    Whether to keep the samples that realized the event."
 
 // ---------------------------------------------------------------------------
 
@@ -116,8 +116,8 @@ keepEventsample : bool
 
 Returns
 -------
-inputSample : `~openturns.Sample`
-    Input sample."
+inputSample : :class:`~openturns.Sample`
+    Input sample that realized the event."
 
 // ---------------------------------------------------------------------------
 
@@ -126,8 +126,8 @@ inputSample : `~openturns.Sample`
 
 Returns
 -------
-outputSample : `~openturns.Sample`
-    Ouput sample."
+outputSample : :class:`~openturns.Sample`
+    Ouput sample that realized the event."
 
 // ---------------------------------------------------------------------------
 
@@ -136,8 +136,8 @@ outputSample : `~openturns.Sample`
 
 Returns
 -------
-threshold : `~openturns.Point`
-    Threshold values."
+threshold : :class:`~openturns.Point`
+    Threshold values at each step."
 
 // ---------------------------------------------------------------------------
 
@@ -146,8 +146,8 @@ threshold : `~openturns.Point`
 
 Returns
 -------
-prob : `~openturns.Point`
-    Autocorrelation values."
+prob : :class:`~openturns.Point`
+    Autocorrelation values at each step."
 
 // ---------------------------------------------------------------------------
 
@@ -156,8 +156,8 @@ prob : `~openturns.Point`
 
 Returns
 -------
-prob : `~openturns.Point`
-    Probability estimate values."
+prob : :class:`~openturns.Point`
+    Probability estimate at each step."
 
 // ---------------------------------------------------------------------------
 

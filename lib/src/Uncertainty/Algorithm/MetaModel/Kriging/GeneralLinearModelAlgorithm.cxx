@@ -901,7 +901,7 @@ void GeneralLinearModelAlgorithm::setOptimizeParameters(const Bool optimizeParam
 /* Accessor to optimization bounds */
 void GeneralLinearModelAlgorithm::setOptimizationBounds(const Interval & optimizationBounds)
 {
-  if (!(optimizationBounds.getDimension() == reducedCovarianceModel_.getParameter().getSize())) throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << reducedCovarianceModel_.getParameter().getSize() << ", got dimension=" << optimizationBounds.getDimension();
+  if (!(optimizationBounds.getDimension() == optimizationBounds_.getDimension())) throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << optimizationBounds_.getDimension() << ", got dimension=" << optimizationBounds.getDimension();
   optimizationBounds_ = optimizationBounds;
 }
 

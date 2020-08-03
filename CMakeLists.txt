@@ -553,7 +553,7 @@ if (BUILD_PYTHON)
       find_program (SPHINX_EXECUTABLE NAMES sphinx-build DOC "Sphinx Documentation Builder (sphinx-doc.org)")
       if (SPHINX_EXECUTABLE)
         find_python_module (sphinx 1.1)
-        find_python_module (numpydoc)
+        find_python_module (numpydoc 0.9) # v0.7 & v0.8 have bugs for citations
         if (USE_NBSPHINX)
           find_program (PANDOC_EXECUTABLE NAMES pandoc DOC "a universal document converter")
           if (PANDOC_EXECUTABLE)

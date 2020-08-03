@@ -235,7 +235,7 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+-----------------------------------------------------------+-------------------+
 | ReSt to HTML (optional for doc)       | `Sphinx <http://sphinx-doc.org/>`_                        | 1.1               |
 +---------------------------------------+-----------------------------------------------------------+-------------------+
-| Sphinx extension (optional for doc)   | `Numpydoc <https://github.com/numpy/numpydoc/>`_          | 0.4               |
+| Sphinx extension (optional for doc)   | `Numpydoc <https://github.com/numpy/numpydoc/>`_          | 0.9.0             |
 +---------------------------------------+-----------------------------------------------------------+-------------------+
 | Sphinx extension (optional for doc)   | `nbsphinx <http://nbsphinx.rtfd.io/>`_                    | N/A               |
 +---------------------------------------+-----------------------------------------------------------+-------------------+

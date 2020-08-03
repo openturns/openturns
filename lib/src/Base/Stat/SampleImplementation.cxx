@@ -2258,6 +2258,9 @@ Pointer<SampleImplementation> SampleImplementation::getMarginal(const Indices & 
 {
   if (!indices.check(dimension_)) throw InvalidArgumentException(HERE) << "The indices of a marginal sample must be in the range [0, dim-1] and must be different";
 
+  // Special case for dimension 0
+  if (!indices.getSize()) return new SampleImplementation(size_, 0);
+
   // Special case for dimension 1
   if (dimension_ == 1) return clone();
 

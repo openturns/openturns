@@ -2,6 +2,7 @@
 
 from __future__ import print_function, division
 import openturns as ot
+import openturns.testing as ott
 
 #
 # Physical model
@@ -50,6 +51,7 @@ myMC.run()
 mySS = ot.SubsetSampling(myEvent)
 mySS.setMaximumOuterSampling(10000 // bs)
 mySS.setBlockSize(bs)
+mySS.setKeepEventSample(True)
 mySS.run()
 
 #
@@ -108,3 +110,10 @@ print('Limit state calls =', N_SS)
 print(
     '************************************************************************************************')
 print('')
+
+# check that the event sample is right
+inputEventSample = mySS.getEventInputSample()
+outputEventSample = mySS.getEventOutputSample()
+ouputG = limitState(inputEventSample)
+diffSample = ouputG - outputEventSample
+ott.assert_almost_equal(diffSample.computeMean(), [0.0])

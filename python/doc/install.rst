@@ -23,12 +23,19 @@ Note that pip does not install pre-releases unless given the option :code:`--pre
 Conda
 -----
 This is relevant to the `Conda <http://conda.pydata.org/>`_ userland Python package manager.
+
 To avoid package conflicts we suggest installing conda from
-`Miniconda <https://docs.conda.io/en/latest/miniconda.html>`_ instead of Anaconda.
-Install the package from `Anaconda.org <https://anaconda.org/conda-forge/openturns>`_::
+`Miniconda <https://docs.conda.io/en/latest/miniconda.html>`_ instead of Anaconda::
+
+    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -P /tmp
+    bash /tmp/Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/miniconda
+    PATH="$HOME/miniconda/bin:$PATH"
+
+Then install from the `conda-forge <https://conda-forge.org>`_ channel::
 
     conda config --add channels conda-forge
     conda config --set channel_priority strict
+    conda update -y conda
     conda install openturns
 
 Alternatively, you can download the `otconda <https://github.com/openturns/otconda>`_ bundle

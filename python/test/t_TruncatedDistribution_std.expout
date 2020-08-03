@@ -294,10 +294,10 @@ pdf (ref)=0.553345
 cdf=0.344184
 ccdf=0.655816
 cdf (ref)=0.344184
-pdf gradient      = class=Point name=Unnamed dimension=4 values=[0.0924181,-0.479854,-0.270908,0]
-pdf gradient (ref)= class=Point name=Unnamed dimension=3 values=[0.0924181,-0.479854,-0.270908]
-cdf gradient      = class=Point name=Unnamed dimension=4 values=[-0.0795937,-0.415009,-0.553345,0]
-cdf gradient (ref)= class=Point name=Unnamed dimension=3 values=[-0.0795937,-0.415009,-0.553345]
+pdf gradient      = class=Point name=Unnamed dimension=4 values=[-0.479854,0.0924181,-0.270908,0]
+pdf gradient (ref)= class=Point name=Unnamed dimension=3 values=[-0.479854,0.0924181,-0.270908]
+cdf gradient      = class=Point name=Unnamed dimension=4 values=[-0.415009,-0.0795937,-0.553345,0]
+cdf gradient (ref)= class=Point name=Unnamed dimension=3 values=[-0.415009,-0.0795937,-0.553345]
 quantile= class=Point name=Unnamed dimension=1 values=[2.88313]
 quantile= class=Point name=Unnamed dimension=1 values=[2.88313]
 cdf(quantile)=0.950000

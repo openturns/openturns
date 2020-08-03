@@ -112,6 +112,21 @@ def test_two_inputs_one_output():
     # Estimation
     ott.assert_almost_equal(outputValidSample,  metaModel(inputValidSample), 1.e-1, 1e-1)
 
+def test_two_outputs():
+    f = ot.SymbolicFunction(['x'], ['x * sin(x)', 'x * cos(x)'])
+    sampleX = [[1.0], [2.0], [3.0], [4.0], [5.0], [6.0], [7.0], [8.0]]
+    sampleY = f(sampleX)
+    basis = ot.Basis([ot.SymbolicFunction(['x'], ['x']), ot.SymbolicFunction(['x'], ['x^2'])])
+    covarianceModel = ot.SquaredExponential([1.0])
+    covarianceModel.setActiveParameter([])
+    algo = ot.KrigingAlgorithm(sampleX, sampleY, covarianceModel, basis)
+    algo.run()
+    result = algo.getResult()
+    mm = result.getMetaModel()
+    assert mm.getOutputDimension() == 2, "wrong output dim"
+    ott.assert_almost_equal(mm(sampleX), sampleY)
+
 if __name__ == "__main__":
     test_one_input_one_output()
     test_two_inputs_one_output()
+    test_two_outputs()

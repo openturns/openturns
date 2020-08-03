@@ -33,14 +33,6 @@ install:
   - cmake --build . --config Release --target install
   - cd %APPVEYOR_BUILD_FOLDER%
 
-  - appveyor-retry appveyor DownloadFile https://github.com/beltoforion/muparser/archive/v2.2.5.zip
-  - 7z x v2.2.5.zip -oC:\Libraries > nul
-  - copy ot-superbuild\muParser.cmake\CMakeLists.txt C:\Libraries\muparser-2.2.5
-  - pushd C:\Libraries\muparser-2.2.5
-  - cmake -G"%VS_GEN%" -DCMAKE_INSTALL_PREFIX=%CD:\=/% -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF .
-  - cmake --build . --config Release --target install
-  - cd %APPVEYOR_BUILD_FOLDER%
-
   - git clone --depth 1 https://github.com/stevengj/nlopt.git
   - pushd nlopt
   - cmake -G"%VS_GEN%" -DCMAKE_INSTALL_PREFIX=C:\Libraries\nlopt -DBUILD_SHARED_LIBS=OFF .
@@ -74,7 +66,6 @@ build_script:
       -DUSE_BISON=OFF \
       -DSWIG_EXECUTABLE="C:/Libraries/swigwin-3.0.12/swig.exe" \
       -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j4" \
-      -DMUPARSER_LIBRARY=C:/Libraries/muparser-2.2.5/lib/muparser.lib -DMUPARSER_INCLUDE_DIR=C:/Libraries/muparser-2.2.5/include \
       -DTBB_LIBRARY=C:/Libraries/tbb/lib/tbb.lib -DTBB_INCLUDE_DIR=C:/Libraries/tbb/include \
       -DNLOPT_LIBRARY=C:/Libraries/nlopt/lib/nlopt.lib -DNLOPT_INCLUDE_DIR=C:/Libraries/nlopt/include \
       -DCMINPACK_LIBRARY=C:/Libraries/cminpack/lib/cminpack_s.lib -DCMINPACK_INCLUDE_DIR=C:/Libraries/cminpack/include/cminpack-1 \
@@ -88,4 +79,4 @@ build_script:
   - copy C:\Libraries\mingw32_dll\libquadmath-0.dll install\Lib\site-packages\openturns
   - copy C:\Libraries\OpenBLAS-v0.2.15-Win32\bin\libopenblas.dll install\Lib\site-packages\openturns
   - copy C:\Libraries\tbb\bin\tbb.dll install\Lib\site-packages\openturns
-  - ctest -C Release --output-on-failure --timeout 100 -E "cppcheck|Sequence|Entropy|Sklar|Sample_computation|InverseBox" -j4
+  - ctest -C Release --output-on-failure --timeout 100 -E "cppcheck|Sequence|Entropy|Sklar|Sample_computation|InverseBox" -j2
