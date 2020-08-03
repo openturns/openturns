@@ -55,8 +55,8 @@ PyObject * __getitem__(PyObject * arg) const
     if (PySlice_GetIndicesEx(OT::SliceCast(arg), self->getSize(), &start, &stop, &step, &size ) < 0)
       throw OT::InternalException(HERE) << "PySlice_GetIndicesEx failed";
     collectionType result(size);
-    if ((step == 1) && (size > 0))
-      std::copy(&self->operator[](start), &self->operator[](start + size - 1) + 1, &result[0]);
+    if (step == 1)
+      std::copy(self->begin() + start, self->begin() + start + size, result.begin());
     else
       for (Py_ssize_t i = 0; i < size; ++ i)
         result.at(i) = self->at(start + i * step);
@@ -126,11 +126,11 @@ PyObject * __setitem__(PyObject * arg, PyObject * valObj)
       val2 = &temp2;
     }
     assert(val2);
-    if ((step == 1) && (size > 0))
-      std::copy(&temp2[0], &temp2[size - 1] + 1, &self->operator[](start));
+    if (step == 1)
+      std::copy(val2->begin(), val2->end(), self->begin() + start);
     else
       for (Py_ssize_t i = 0; i < size; ++ i)
-        self->at(start + i*step) = temp2.at(i);
+        self->at(start + i*step) = val2->at(i);
   }
   else if (PySequence_Check(arg))
   {
@@ -162,7 +162,7 @@ PyObject * __setitem__(PyObject * arg, PyObject * valObj)
     }
     assert(val2);
     for (Py_ssize_t i = 0; i < size; ++ i)
-      self->at(indices[i]) = temp2.at(i);
+      self->at(indices[i]) = val2->at(i);
   }
   else
     SWIG_exception(SWIG_TypeError, "Collection.__setitem__ expects int, slice or sequence argument");
