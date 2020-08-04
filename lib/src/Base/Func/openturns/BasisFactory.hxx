@@ -35,7 +35,7 @@ public:
   BasisFactory();
 
   /* String converter */
-  OT::String __repr__() const override;
+  String __repr__() const override;
 
   /* Here is the interface that all derived class must implement */
 

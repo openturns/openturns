@@ -35,7 +35,7 @@ public:
   explicit QuadraticBasisFactory (const UnsignedInteger inputDimension = 1);
 
   /* String converter */
-  OT::String __repr__() const override;
+  String __repr__() const override;
 
   /* Here is the interface that all derived class must implement */
 
@@ -46,10 +46,10 @@ public:
   Basis build() const override;
 
   /* Method save() stores the object through the StorageManager */
-  void save(OT::Advocate & adv) const override;
+  void save(Advocate & adv) const override;
 
   /* Method load() reloads the object from the StorageManager */
-  void load(OT::Advocate & adv) override;
+  void load(Advocate & adv) override;
 
 private:
   UnsignedInteger inputDimension_;

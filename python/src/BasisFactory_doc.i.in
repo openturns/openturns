@@ -1,10 +1,5 @@
 %feature("docstring") OT::BasisFactory
-"Basis factory to construct the regression basis.
-
-Available constructors:
-   BasisFactory()
-
-   BasisFactory(*orthogUniVarPolFactory*)
+"Basis factory base class.
 
 Parameters
 ----------
