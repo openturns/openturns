@@ -94,10 +94,6 @@ macro (ot_check_test TESTNAME)
   add_test (cppcheck_${TESTNAME} "sh" "-c" "${COMMAND}")
   set_tests_properties (cppcheck_${TESTNAME} PROPERTIES ENVIRONMENT "${CHECK_ENVIRONMENT}")
   list (APPEND CHECK_TO_BE_RUN ${TESTNAME_TGT})
-  install (FILES ${TESTNAME_SRC}
-	  DESTINATION ${OPENTURNS_EXAMPLE_PATH}
-         )
-
 endmacro (ot_check_test)
 
 
