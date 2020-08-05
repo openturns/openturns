@@ -156,8 +156,8 @@ int main(int, char *[])
 
     Scalar PFBreitC2 = resultC2.getEventProbabilityBreitung();
     Scalar BetaBreitC2 = resultC2.getGeneralisedReliabilityIndexBreitung();
-    Scalar PFHBC2 = resultC2.getEventProbabilityHohenBichler();
-    Scalar BetaHBC2 = resultC2.getGeneralisedReliabilityIndexHohenBichler();
+    Scalar PFHBC2 = resultC2.getEventProbabilityHohenbichler();
+    Scalar BetaHBC2 = resultC2.getGeneralisedReliabilityIndexHohenbichler();
     Scalar PFTvedtC2 = resultC2.getEventProbabilityTvedt();
     Scalar BetaTvedtC2 = resultC2.getGeneralisedReliabilityIndexTvedt();
     Point CurvC2 = resultC2.getSortedCurvatures();
@@ -182,8 +182,8 @@ int main(int, char *[])
 
     Scalar PFBreitAR2 = resultAR2.getEventProbabilityBreitung();
     Scalar BetaBreitAR2 = resultAR2.getGeneralisedReliabilityIndexBreitung();
-    Scalar PFHBAR2 = resultAR2.getEventProbabilityHohenBichler();
-    Scalar BetaHBAR2 = resultAR2.getGeneralisedReliabilityIndexHohenBichler();
+    Scalar PFHBAR2 = resultAR2.getEventProbabilityHohenbichler();
+    Scalar BetaHBAR2 = resultAR2.getGeneralisedReliabilityIndexHohenbichler();
     Scalar PFTvedtAR2 = resultAR2.getEventProbabilityTvedt();
     Scalar BetaTvedtAR2 = resultAR2.getGeneralisedReliabilityIndexTvedt();
     Point CurvAR2 = resultAR2.getSortedCurvatures();
@@ -272,8 +272,8 @@ int main(int, char *[])
     fullprint <<  "************************************************************************************************" << std::endl;
     fullprint <<  "Breitung event probability =" << PFBreitC2 << std::endl;
     fullprint <<  "Breitung generalized reliability index =" << BetaBreitC2 << std::endl;
-    fullprint <<  "HohenBichler event probability =" << PFHBC2 << std::endl;
-    fullprint <<  "HohenBichler generalized reliability index =" << BetaHBC2 << std::endl;
+    fullprint <<  "Hohenbichler event probability =" << PFHBC2 << std::endl;
+    fullprint <<  "Hohenbichler generalized reliability index =" << BetaHBC2 << std::endl;
     fullprint <<  "Tvedt event probability =" << PFTvedtC2 << std::endl;
     fullprint <<  "Tvedt generalized reliability index =" << BetaTvedtC2 << std::endl;
     fullprint <<  "************************************************************************************************" << std::endl;
@@ -302,8 +302,8 @@ int main(int, char *[])
     fullprint <<  "************************************************************************************************" << std::endl;
     fullprint <<  "Breitung event probability =" << PFBreitAR2 << std::endl;
     fullprint <<  "Breitung generalized reliability index =" << BetaBreitAR2 << std::endl;
-    fullprint <<  "HohenBichler event probability =" << PFHBAR2 << std::endl;
-    fullprint <<  "HohenBichler generalized reliability index =" << BetaHBAR2 << std::endl;
+    fullprint <<  "Hohenbichler event probability =" << PFHBAR2 << std::endl;
+    fullprint <<  "Hohenbichler generalized reliability index =" << BetaHBAR2 << std::endl;
     fullprint <<  "Tvedt event probability =" << PFTvedtAR2 << std::endl;
     fullprint <<  "Tvedt generalized reliability index =" << BetaTvedtAR2 << std::endl;
     fullprint <<  "************************************************************************************************" << std::endl;

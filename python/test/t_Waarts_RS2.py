@@ -200,8 +200,8 @@ try:
         "************************************************************************************************")
     print("Breitung event probability = %.5e" % PFBreitC2)
     print("Breitung generalized reliability index = %.5f" % BetaBreitC2)
-    print("HohenBichler event probability = %.5e" % PFHBC2)
-    print("HohenBichler generalized reliability index = %.5f" % BetaHBC2)
+    print("Hohenbichler event probability = %.5e" % PFHBC2)
+    print("Hohenbichler generalized reliability index = %.5f" % BetaHBC2)
     print("Tvedt event probability = %.5e" % PFTvedtC2)
     print("Tvedt generalized reliability index = %.5f" % BetaTvedtC2)
     print(
@@ -239,8 +239,8 @@ try:
         "************************************************************************************************")
     print("Breitung event probability = %.5e" % PFBreitAR2)
     print("Breitung generalized reliability index = %.5f" % BetaBreitAR2)
-    print("HohenBichler event probability = %.5e" % PFHBAR2)
-    print("HohenBichler generalized reliability index = %.5f" % BetaHBAR2)
+    print("Hohenbichler event probability = %.5e" % PFHBAR2)
+    print("Hohenbichler generalized reliability index = %.5f" % BetaHBAR2)
     print("Tvedt event probability = %.5e" % PFTvedtAR2)
     print("Tvedt generalized reliability index = %.5f" % BetaTvedtAR2)
     print(

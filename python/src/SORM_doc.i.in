@@ -47,7 +47,7 @@ of the standard space does not belong to the failure domain:
   reliability index, defined as the distance of the design point
   :math:`\vect{u}^*` to the origin of the standard space.
 
-- Hohen Bichler's formula is an approximation of the previous equation:
+- Hohenbichler's formula is an approximation of the previous equation:
 
   .. _Hohenbichler_formula:
 

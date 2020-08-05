@@ -38,14 +38,14 @@ probability : positive float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SORMResult::getEventProbabilityHohenBichler
+%feature("docstring") OT::SORMResult::getEventProbabilityHohenbichler
 "Accessor to the failure probability :math:`P_{Hohenbichler}`.
 
 Returns
 -------
 probability : positive float
     The SORM failure probability :math:`P_{Hohenbichler}` according to the
-    :ref:`Hohen Bichler <Hohenbichler_formula>` approximation."
+    :ref:`Hohenbichler <Hohenbichler_formula>` approximation."
 
 // ---------------------------------------------------------------------
 
@@ -81,13 +81,13 @@ index : float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::SORMResult::getGeneralisedReliabilityIndexHohenBichler
-"Accessor to the Generalised Reliability Index HohenBichler.
+%feature("docstring") OT::SORMResult::getGeneralisedReliabilityIndexHohenbichler
+"Accessor to the Generalised Reliability Index Hohenbichler.
 
 Returns
 -------
 index : float
-    Generalised reliability index evaluated from the Hohen Bichler SORM failure
+    Generalised reliability index evaluated from the Hohenbichler SORM failure
     probability.
 
     .. math::

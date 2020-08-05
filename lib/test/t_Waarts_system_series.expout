@@ -56,8 +56,8 @@ Pf sensitivity =110.00664777
 ************************************************************************************************
 Breitung event probability =0.000910101
 Breitung generalized reliability index =3.1181
-HohenBichler event probability =0.000887546
-HohenBichler generalized reliability index =3.12549
+Hohenbichler event probability =0.000887546
+Hohenbichler generalized reliability index =3.12549
 Tvedt event probability =0.000876979
 Tvedt generalized reliability index =3.12901
 ************************************************************************************************
@@ -84,8 +84,8 @@ Hasofer reliability index =3
 ************************************************************************************************
 Breitung event probability =0.000910101
 Breitung generalized reliability index =3.1181
-HohenBichler event probability =0.000887546
-HohenBichler generalized reliability index =3.12549
+Hohenbichler event probability =0.000887546
+Hohenbichler generalized reliability index =3.12549
 Tvedt event probability =0.000876979
 Tvedt generalized reliability index =3.12901
 ************************************************************************************************

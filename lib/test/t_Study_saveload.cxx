@@ -474,10 +474,10 @@ int main(int, char *[])
       sormResult = SORMResult (Point(2, 1.0), event, false);
       sormResult.setName("sormResult");
       sormResult.getEventProbabilityBreitung();
-      sormResult.getEventProbabilityHohenBichler();
+      sormResult.getEventProbabilityHohenbichler();
       sormResult.getEventProbabilityTvedt();
       sormResult.getGeneralisedReliabilityIndexBreitung();
-      sormResult.getGeneralisedReliabilityIndexHohenBichler();
+      sormResult.getGeneralisedReliabilityIndexHohenbichler();
       sormResult.getGeneralisedReliabilityIndexTvedt();
     }
     study.add("formResult", formResult);

@@ -52,7 +52,10 @@ public:
   /** EventProbabilityBreitung accessor */
   Scalar getEventProbabilityBreitung() const;
 
-  /** EventProbabilityHohenBichler accessor */
+  /** EventProbabilityHohenbichler accessor */
+  Scalar getEventProbabilityHohenbichler() const;
+
+  /** @deprecated EventProbabilityHohenbichler accessor */
   Scalar getEventProbabilityHohenBichler() const;
 
   /** EventProbabilityTvedt accessor */
@@ -61,7 +64,10 @@ public:
   /** GeneralisedReliabilityIndexBreitung accessor */
   Scalar getGeneralisedReliabilityIndexBreitung() const;
 
-  /** GeneralisedReliabilityIndexHohenBichler accessor */
+  /** GeneralisedReliabilityIndexHohenbichler accessor */
+  Scalar getGeneralisedReliabilityIndexHohenbichler() const;
+
+  /** @deprecated GeneralisedReliabilityIndexHohenbichler accessor */
   Scalar getGeneralisedReliabilityIndexHohenBichler() const;
 
   /** GeneralisedReliabilityIndexTvedt accessor */
@@ -94,10 +100,10 @@ private:
   mutable Point sortedCurvatures_;
   mutable Bool isAlreadyComputedSortedCurvatures_;
   mutable Scalar eventProbabilityBreitung_;
-  mutable Scalar eventProbabilityHohenBichler_;
+  mutable Scalar eventProbabilityHohenbichler_;
   mutable Scalar eventProbabilityTvedt_;
   mutable Scalar generalisedReliabilityIndexBreitung_;
-  mutable Scalar generalisedReliabilityIndexHohenBichler_;
+  mutable Scalar generalisedReliabilityIndexHohenbichler_;
   mutable Scalar generalisedReliabilityIndexTvedt_;
   Distribution standardDistribution_;
   Distribution standardMarginal_;

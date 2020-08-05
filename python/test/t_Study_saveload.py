@@ -178,10 +178,10 @@ try:
     sormResult = ot.SORMResult([1.0] * 2, event, False)
     sormResult.setName('sormResult')
     sormResult.getEventProbabilityBreitung()
-    sormResult.getEventProbabilityHohenBichler()
+    sormResult.getEventProbabilityHohenbichler()
     sormResult.getEventProbabilityTvedt()
     sormResult.getGeneralisedReliabilityIndexBreitung()
-    sormResult.getGeneralisedReliabilityIndexHohenBichler()
+    sormResult.getGeneralisedReliabilityIndexHohenbichler()
     sormResult.getGeneralisedReliabilityIndexTvedt()
     myStudy.add('sormResult', sormResult)
 
