@@ -43,6 +43,7 @@ install:
 # use latest hmat-oss
   - git clone https://github.com/jeromerobert/hmat-oss.git
   - pushd hmat-oss
+  - git checkout 1.6.1
   - if test "$TRAVIS_OS_NAME" = "linux"; then
        cmake -DCMAKE_INSTALL_PREFIX=~/.local
              -DHMAT_DISABLE_OPENMP=OFF . ;
