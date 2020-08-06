@@ -47,7 +47,7 @@ public:
   SORMResult();
 
   /** Virtual constructor */
-  virtual SORMResult * clone() const;
+  SORMResult * clone() const override;
 
   /** EventProbabilityBreitung accessor */
   Scalar getEventProbabilityBreitung() const;
@@ -77,16 +77,16 @@ public:
   Point getSortedCurvatures() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

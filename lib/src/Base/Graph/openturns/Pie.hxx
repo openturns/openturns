@@ -57,32 +57,32 @@ public:
       const Description & palette);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Accessor for center */
-  Point getCenter() const;
-  void setCenter(const Point & center);
+  Point getCenter() const override;
+  void setCenter(const Point & center) override;
 
   /** Accessor for radius */
-  Scalar getRadius() const;
-  void setRadius(const Scalar radius);
+  Scalar getRadius() const override;
+  void setRadius(const Scalar radius) override;
 
   /** Accessor for labels */
-  Description getLabels() const;
-  void setLabels(const Description & labels);
+  Description getLabels() const override;
+  void setLabels(const Description & labels) override;
 
   /** Accessor for color palette */
-  Description getPalette() const;
-  void setPalette(const Description & palette);
+  Description getPalette() const override;
+  void setPalette(const Description & palette) override;
 
   /** Accessor for boundingbox */
-  Interval getBoundingBox() const;
+  Interval getBoundingBox() const override;
 
   /** Draw method */
-  String draw() const;
+  String draw() const override;
 
   /** Clone method */
-  virtual Pie * clone() const;
+  Pie * clone() const override;
 
   /** Build default palette */
   void buildDefaultPalette();
@@ -94,14 +94,14 @@ public:
   static Bool IsValidColorPalette(const Description & palette);
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() stores the object through the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Check for data validity */
-  virtual void checkData(const Point & data) const;
+  void checkData(const Point & data) const override;
 
 private:
 

@@ -65,7 +65,7 @@ public:
                                 const CovarianceMatrix & outputCovariance);
 
   /** Virtual copy constructor */
-  virtual CovarianceModelImplementation * clone() const;
+  CovarianceModelImplementation * clone() const override;
 
   /** Dimensions accessors */
   virtual UnsignedInteger getInputDimension() const;
@@ -173,10 +173,10 @@ public:
   virtual Description getFullParameterDescription() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Marginal accessor */
   virtual CovarianceModel getMarginal(const UnsignedInteger index) const;
@@ -194,10 +194,10 @@ public:
                      const Bool correlationFlag = false) const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

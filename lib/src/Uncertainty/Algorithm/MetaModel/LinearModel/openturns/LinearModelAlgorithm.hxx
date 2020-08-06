@@ -53,30 +53,30 @@ public:
                        const Sample & outputSample);
 
   /** Virtual constructor */
-  virtual LinearModelAlgorithm * clone() const;
+  LinearModelAlgorithm * clone() const override;
 
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Sample accessors */
-  Sample getInputSample() const;
-  Sample getOutputSample() const;
+  Sample getInputSample() const override;
+  Sample getOutputSample() const override;
 
   /** Basis accessor */
   Basis getBasis() const;
 
   /** Perform regression */
-  void run();
+  void run() override;
 
   /** result accessor */
   LinearModelResult getResult();
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 private:

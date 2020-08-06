@@ -62,7 +62,7 @@ public:
                                  const UnsignedInteger maximumDimension);
 
   /** Virtual constructor */
-  virtual AdaptiveStrategyImplementation * clone() const;
+  AdaptiveStrategyImplementation * clone() const override;
 
 
   /** Maximum dimension accessor */
@@ -78,7 +78,7 @@ public:
                            const Scalar relativeError);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Basis accessor */
   OrthogonalBasis getBasis() const;
@@ -87,10 +87,10 @@ public:
   FunctionCollection getPsi() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

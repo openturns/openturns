@@ -54,7 +54,7 @@ public:
 
 
   /** Virtual constructor */
-  virtual NearestPointChecker * clone() const;
+  NearestPointChecker * clone() const override;
 
   /** levelFunction  accessor */
   void setLevelFunction(const Function & levelFunction);
@@ -87,10 +87,10 @@ public:
   const Sample & getSample() const;
 
   /** Performs the actual test */
-  void  run();
+  void run();
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 private:
 

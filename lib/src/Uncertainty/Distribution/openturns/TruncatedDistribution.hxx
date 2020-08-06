@@ -66,12 +66,12 @@ public:
   using DistributionImplementation::operator ==;
   Bool operator ==(const TruncatedDistribution & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Get the simplified version (or clone the distribution) */
   Distribution getSimplifiedVersion() const;
@@ -79,42 +79,42 @@ public:
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  virtual TruncatedDistribution * clone() const;
+  TruncatedDistribution * clone() const override;
 
   /** Get one realization of the distribution */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Get the DDF of the distribution */
   using DistributionImplementation::computeDDF;
-  Point computeDDF(const Point & point) const;
+  Point computeDDF(const Point & point) const override;
 
   /** Get the PDF of the distribution */
   using DistributionImplementation::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
   using DistributionImplementation::computeCDF;
-  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const override;
   using DistributionImplementation::computeSurvivalFunction;
-  Scalar computeSurvivalFunction(const Point & point) const;
+  Scalar computeSurvivalFunction(const Point & point) const override;
 
   /** Get the PDFGradient of the distribution */
   using DistributionImplementation::computePDFGradient;
-  Point computePDFGradient(const Point & point) const;
+  Point computePDFGradient(const Point & point) const override;
 
   /** Get the CDFGradient of the distribution */
   using DistributionImplementation::computeCDFGradient;
-  Point computeCDFGradient(const Point & point) const;
+  Point computeCDFGradient(const Point & point) const override;
 
   /** Parameters value accessors */
-  void setParameter(const Point & parameter);
-  Point getParameter() const;
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
 
   /** Parameters description accessor */
-  Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
   /** Check if the distribution is elliptical */
-  Bool isElliptical() const;
+  Bool isElliptical() const override;
 
   /* Interface specific to TruncatedDistribution */
 
@@ -131,32 +131,32 @@ public:
   Interval getBounds() const;
 
   /** Tell if the distribution is continuous */
-  Bool isContinuous() const;
+  Bool isContinuous() const override;
 
   /** Check if the distribution is discrete */
-  Bool isDiscrete() const;
+  Bool isDiscrete() const override;
 
   /** Tell if the distribution is integer valued */
-  Bool isIntegral() const;
+  Bool isIntegral() const override;
 
   /** Get the support of a distribution that intersect a given interval */
   using DistributionImplementation::getSupport;
-  Sample getSupport(const Interval & interval) const;
+  Sample getSupport(const Interval & interval) const override;
 
   /** Get the PDF singularities inside of the range - 1D only */
-  Point getSingularities() const;
+  Point getSingularities() const override;
 
   /** Get the i-th marginal distribution */
-  Distribution getMarginal(const UnsignedInteger i) const;
+  Distribution getMarginal(const UnsignedInteger i) const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  Distribution getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:
@@ -164,11 +164,10 @@ protected:
 private:
 
   /** Get the quantile of the distribution */
-  Scalar computeScalarQuantile(const Scalar prob,
-                               const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Compute the numerical range of the distribution given the parameters values */
-  void computeRange();
+  void computeRange() override;
 
   /** The main parameter set of the distribution */
   Distribution distribution_;

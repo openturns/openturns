@@ -54,24 +54,20 @@ public:
                            const Bool boundaryCorrection = false);
 
   /** Virtual constructor */
-  virtual KernelSmoothing * clone() const;
+  KernelSmoothing * clone() const override;
 
   /** Build a Normal kernel mixture based on the given sample. If no bandwith has already been set, Silverman's rule is used */
   using DistributionFactoryImplementation::build;
-  virtual Distribution build(const Sample & sample) const;
+  Distribution build(const Sample & sample) const override;
 
   /** Build a (possibly truncated) kernel mixture based on the given sample and bandwidth */
-  virtual Distribution build(const Sample & sample,
-                             const Point & bandwidth) const;
+  Distribution build(const Sample & sample, const Point & bandwidth) const;
 
-  virtual KernelMixture buildAsKernelMixture(const Sample & sample,
-      const Point & bandwidth) const;
+  KernelMixture buildAsKernelMixture(const Sample & sample, const Point & bandwidth) const;
 
-  virtual Mixture buildAsMixture(const Sample & sample,
-                                 const Point & bandwidth) const;
+  Mixture buildAsMixture(const Sample & sample, const Point & bandwidth) const;
 
-  virtual TruncatedDistribution buildAsTruncatedDistribution(const Sample & sample,
-      const Point & bandwidth) const;
+  TruncatedDistribution buildAsTruncatedDistribution(const Sample & sample, const Point & bandwidth) const;
 
   /** Bandwidth accessor */
   Point getBandwidth() const;
@@ -112,10 +108,10 @@ public:
   Point computeMixedBandwidth(const Sample & sample) const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

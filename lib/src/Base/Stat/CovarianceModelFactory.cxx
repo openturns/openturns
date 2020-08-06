@@ -53,13 +53,6 @@ CovarianceModelFactory::CovarianceModelFactory(CovarianceModelFactoryImplementat
   // Nothing to do
 }
 
-
-/* Virtual constructor */
-CovarianceModelFactory * CovarianceModelFactory::clone() const
-{
-  return new CovarianceModelFactory(*this);
-}
-
 /* String converter */
 String CovarianceModelFactory::__repr__() const
 {

@@ -46,7 +46,7 @@ public:
                            const UnsignedInteger kind = 0);
 
   /** Virtual copy constructor */
-  virtual FilonQuadrature * clone() const;
+  FilonQuadrature * clone() const override;
 
   /** Compute an approximation of \int_{[a,b]}f(x)w(omega*x)dx, where [a,b]
    * is an 1D interval and:
@@ -56,7 +56,7 @@ public:
    */
   using IntegrationAlgorithmImplementation::integrate;
   Point integrate(const Function & function,
-                  const Interval & interval) const;
+                  const Interval & interval) const override;
 
   Point integrate(const Function & function,
                   const Scalar omega,
@@ -75,10 +75,10 @@ public:
   void setKind(const UnsignedInteger kind);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 private:
 

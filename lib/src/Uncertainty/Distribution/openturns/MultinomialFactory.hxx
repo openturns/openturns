@@ -40,13 +40,13 @@ public:
   MultinomialFactory();
 
   /** Virtual constructor */
-  virtual MultinomialFactory * clone() const;
+  MultinomialFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build() const override;
   Multinomial buildAsMultinomial(const Sample & sample) const;
   Multinomial buildAsMultinomial() const;
 

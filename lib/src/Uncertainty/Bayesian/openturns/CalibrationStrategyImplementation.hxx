@@ -53,7 +53,7 @@ public:
                                     const UnsignedInteger calibrationStep = ResourceMap::GetAsUnsignedInteger("CalibrationStrategy-DefaultCalibrationStep"));
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Range accessor */
   void setRange(const Interval & range);
@@ -74,16 +74,16 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual CalibrationStrategyImplementation * clone() const;
+  CalibrationStrategyImplementation * clone() const override;
 
   /** @copydoc CalibrationStrategy::computeUpdateFactor() const */
   virtual Scalar computeUpdateFactor(const Scalar rho) const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   Interval range_;

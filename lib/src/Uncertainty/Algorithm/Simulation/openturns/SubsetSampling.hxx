@@ -41,7 +41,7 @@ public:
                  const Scalar conditionalProbability = ResourceMap::GetAsScalar("SubsetSampling-DefaultConditionalProbability"));
 
   /** Virtual constructor */
-  virtual SubsetSampling * clone() const;
+  SubsetSampling * clone() const override;
 
   /** The range of the uniform proposal pdf */
   void setProposalRange(Scalar proposalRange);
@@ -76,20 +76,20 @@ public:
   void setBetaMin(Scalar betaMin);
 
   /** Performs the actual computation. */
-  void run();
+  void run() override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   /** Compute the block sample */
-  Sample computeBlockSample();
+  Sample computeBlockSample() override;
 
   /** Compute the new threshold corresponding to the target failure probability */
   Scalar computeThreshold();

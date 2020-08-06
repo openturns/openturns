@@ -48,7 +48,7 @@ public:
                         const UnsignedInteger blockSize);
 
   /** Virtual constructor */
-  virtual SobolSimulationResult * clone() const;
+  SobolSimulationResult * clone() const override;
 
   /** Probability estimate accessor */
   Point getFirstOrderIndicesEstimate() const;
@@ -61,16 +61,16 @@ public:
   Distribution getTotalOrderIndicesDistribution() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Draw indices */
   Graph draw(const Scalar confidenceLevel = 0.95) const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

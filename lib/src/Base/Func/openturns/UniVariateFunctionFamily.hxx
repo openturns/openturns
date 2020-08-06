@@ -47,7 +47,7 @@ public:
   UniVariateFunctionFamily(const UniVariateFunctionFactory & implementation);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** The method to get the function of any order. */
   UniVariateFunction build(const UnsignedInteger order) const;

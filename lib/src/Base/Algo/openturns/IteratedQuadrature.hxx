@@ -50,13 +50,13 @@ public:
   IteratedQuadrature(const IntegrationAlgorithm & algorithm);
 
   /** Virtual copy constructor */
-  virtual IteratedQuadrature * clone() const;
+  IteratedQuadrature * clone() const override;
 
   /** Compute an approximation of \int_a^b\int_{L_1(x_1)}^{U_1(x_1)}\int_{L_1(x_1,x_2)}^{U_2(x_1,x_2)}\dots\int_{L_1(x_1,\dots,x_{n-1})}^{U_2(x_1,\dots,x_{n-1})} f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an 1D interval, L_k and U_k are functions from R^k into R.
    */
   using IntegrationAlgorithmImplementation::integrate;
   Point integrate(const Function & function,
-                  const Interval & interval) const;
+                  const Interval & interval) const override;
 
   // This method allows to get the estimated integration error as a scalar
   Point integrate(const Function & function,
@@ -67,10 +67,10 @@ public:
                   const Bool check = true) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 private:
 
@@ -92,7 +92,7 @@ private:
       // Nothing to do
     }
 
-    Point operator()(const Point & point) const
+    Point operator()(const Point & point) const override
     {
       // Create the arguments of the local integration problem
       const Indices index(1, 0);
@@ -113,7 +113,7 @@ private:
       return value;
     }
 
-    Sample operator()(const Sample & sample) const
+    Sample operator()(const Sample & sample) const override
     {
       const UnsignedInteger sampleSize = sample.getSize();
       const UnsignedInteger outputDimension = function_.getOutputDimension();
@@ -143,27 +143,27 @@ private:
       return result;
     }
 
-    PartialFunctionWrapper * clone() const
+    PartialFunctionWrapper * clone() const override
     {
       return new PartialFunctionWrapper(*this);
     }
 
-    UnsignedInteger getInputDimension() const
+    UnsignedInteger getInputDimension() const override
     {
       return 1;
     }
 
-    UnsignedInteger getOutputDimension() const
+    UnsignedInteger getOutputDimension() const override
     {
       return function_.getOutputDimension();
     }
 
-    Description getInputDescription() const
+    Description getInputDescription() const override
     {
       return Description(1, "t");
     }
 
-    Description getOutputDescription() const
+    Description getOutputDescription() const override
     {
       return function_.getOutputDescription();
     }

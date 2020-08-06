@@ -40,12 +40,12 @@ public:
   HistogramFactory();
 
   /** Virtual constructor */
-  virtual HistogramFactory * clone() const;
+  HistogramFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
+  Distribution build(const Sample & sample) const override;
   Distribution build(const Sample & sample,
                      const Scalar bandwidth) const;
   Distribution build(const Sample & sample,
@@ -53,7 +53,7 @@ public:
   Distribution build(const Sample & sample,
                      const Scalar first,
                      const Point & width) const;
-  Distribution build() const;
+  Distribution build() const override;
   Histogram buildAsHistogram(const Sample & sample) const;
   Histogram buildAsHistogram(const Sample & sample,
                              const Scalar bandwidth) const;

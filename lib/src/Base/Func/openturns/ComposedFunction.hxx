@@ -51,24 +51,24 @@ public:
                    const Function & right);
 
   /** Virtual constructor */
-  virtual ComposedFunction * clone() const;
+  ComposedFunction * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const ComposedFunction & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
 
 
   /** Gradient according to the marginal parameters */
-  virtual Matrix parameterGradient(const Point & inP) const;
+  Matrix parameterGradient(const Point & inP) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

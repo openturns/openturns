@@ -73,7 +73,7 @@ public:
   Scalar getOriginValue() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 } ; /* class RootStrategy */
 

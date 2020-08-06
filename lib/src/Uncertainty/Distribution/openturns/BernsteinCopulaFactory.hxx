@@ -46,13 +46,13 @@ public:
   BernsteinCopulaFactory();
 
   /** Virtual constructor */
-  virtual BernsteinCopulaFactory * clone() const;
+  BernsteinCopulaFactory * clone() const override;
 
   /** Build a Bernstein copula based on the given sample. The bin number is computed according to the inverse power rule */
   using DistributionFactoryImplementation::build;
-  virtual Distribution build() const;
+  Distribution build() const override;
 
-  virtual Distribution build(const Sample & sample) const;
+  Distribution build(const Sample & sample) const override;
 
   virtual Distribution build(const Sample & sample,
                              const String & method,

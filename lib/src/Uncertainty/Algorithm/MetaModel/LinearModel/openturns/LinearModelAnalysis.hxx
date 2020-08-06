@@ -51,13 +51,13 @@ public:
   explicit LinearModelAnalysis(const LinearModelResult & linearModelResult);
 
   /** Virtual constructor */
-  LinearModelAnalysis * clone() const;
+  LinearModelAnalysis * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method that returns the ANOVA table (ANalyse Of VAriance) */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Linear model accessor */
   LinearModelResult getLinearModelResult() const;
@@ -105,10 +105,10 @@ public:
   Graph drawCookVsLeverages() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

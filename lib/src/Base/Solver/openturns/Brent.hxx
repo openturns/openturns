@@ -46,10 +46,10 @@ public:
   /* Copy constructor */
 
   /* Virtual constructor */
-  virtual Brent * clone() const;
+  Brent * clone() const override;
 
   /* String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /* Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] given function(infPoint) and function(supPoint) with the Brent method */
   using SolverImplementation::solve;
@@ -58,7 +58,7 @@ public:
                const Scalar infPoint,
                const Scalar supPoint,
                const Scalar infValue,
-               const Scalar supValue) const;
+               const Scalar supValue) const override;
 
 private:
 

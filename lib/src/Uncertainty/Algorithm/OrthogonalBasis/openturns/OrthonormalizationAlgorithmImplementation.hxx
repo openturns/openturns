@@ -48,24 +48,24 @@ public:
   explicit OrthonormalizationAlgorithmImplementation(const Distribution & measure);
 
   /** Virtual constructor */
-  virtual OrthonormalizationAlgorithmImplementation * clone() const;
+  OrthonormalizationAlgorithmImplementation * clone() const override;
 
   /** Calculate the coefficients of recurrence a0, a1, a2 such that
       Pn+1(x) = (a0 * x + a1) * Pn(x) + a2 * Pn-1(x) */
   virtual Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Measure accessor */
   Distribution getMeasure() const;
   void setMeasure(const Distribution & measure);
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

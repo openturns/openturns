@@ -54,31 +54,31 @@ public:
                const Domain & domain);
 
   /** Virtual constructor */
-  virtual ProcessEvent * clone() const;
+  ProcessEvent * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Dimension accessor */
-  virtual UnsignedInteger getDimension() const;
+  UnsignedInteger getDimension() const override;
 
   /** Domain accessor */
-  Domain getDomain() const;
+  Domain getDomain() const override;
 
   /** Process accessor */
-  Process getProcess() const;
+  Process getProcess() const override;
 
   /** Realization accessor */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Whether it is an event */
-  virtual Bool isEvent() const;
+  Bool isEvent() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 private:

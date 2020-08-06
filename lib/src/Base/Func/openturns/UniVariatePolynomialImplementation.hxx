@@ -54,22 +54,22 @@ public:
   UniVariatePolynomialImplementation(const Coefficients & coefficients);
 
   /** Virtual constructor */
-  virtual UniVariatePolynomialImplementation * clone() const;
+  UniVariatePolynomialImplementation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
   virtual String __str__(const String & variableName,
                          const String & offset) const;
 
   /** UniVariatePolynomialImplementation are evaluated as functors */
-  virtual Scalar operator() (const Scalar x) const;
+  Scalar operator() (const Scalar x) const override;
   Complex operator() (const Complex z) const;
 
   /** UniVariatePolynomialImplementation derivative */
-  virtual Scalar gradient(const Scalar x) const;
+  Scalar gradient(const Scalar x) const override;
 
-  virtual Scalar hessian(const Scalar x) const;
+  Scalar hessian(const Scalar x) const override;
 
   /** Compute the derivative of the polynomial */
   UniVariatePolynomialImplementation derivate() const;
@@ -100,10 +100,10 @@ public:
   ComplexCollection getRoots() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

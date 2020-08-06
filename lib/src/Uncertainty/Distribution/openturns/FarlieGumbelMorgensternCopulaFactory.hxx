@@ -40,14 +40,14 @@ public:
   FarlieGumbelMorgensternCopulaFactory();
 
   /** Virtual constructor */
-  virtual FarlieGumbelMorgensternCopulaFactory * clone() const;
+  FarlieGumbelMorgensternCopulaFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
   FarlieGumbelMorgensternCopula buildAsFarlieGumbelMorgensternCopula(const Sample & sample) const;
   FarlieGumbelMorgensternCopula buildAsFarlieGumbelMorgensternCopula(const Point & parameters) const;
   FarlieGumbelMorgensternCopula buildAsFarlieGumbelMorgensternCopula() const;

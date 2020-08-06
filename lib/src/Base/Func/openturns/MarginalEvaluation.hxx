@@ -54,13 +54,13 @@ public:
 #endif
 
   /** Virtual constructor */
-  virtual MarginalEvaluation * clone() const;
+  MarginalEvaluation * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const MarginalEvaluation & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Indices accessor */
   Indices getIndices() const;
@@ -69,32 +69,32 @@ public:
 
   /** Evaluation operator */
   using EvaluationImplementation::operator();
-  Point operator() (const Point & point) const;
+  Point operator() (const Point & point) const override;
 
-  Sample operator() (const Sample & inS) const;
+  Sample operator() (const Sample & inS) const override;
 
   /** Accessor for input point dimension */
-  virtual UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  virtual UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Gradient according to the marginal parameters */
-  virtual Matrix parameterGradient(const Point & inP) const;
+  Matrix parameterGradient(const Point & inP) const override;
 
   /** Parameters value accessor */
-  virtual Point getParameter() const;
-  virtual void setParameter(const Point & parameters);
+  Point getParameter() const override;
+  void setParameter(const Point & parameters) override;
 
   /** Parameters description accessor */
-  virtual Description getParameterDescription() const;
-  virtual void setParameterDescription(const Description & description);
+  Description getParameterDescription() const override;
+  void setParameterDescription(const Description & description) override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

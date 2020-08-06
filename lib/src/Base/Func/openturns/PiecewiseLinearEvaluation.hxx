@@ -52,16 +52,16 @@ public:
                             const Sample & values);
 
   /** Virtual constructor */
-  virtual PiecewiseLinearEvaluation * clone() const;
+  PiecewiseLinearEvaluation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Evaluation operator */
   using EvaluationImplementation::operator ();
-  Point operator () (const Point & inP) const;
-  Sample operator () (const Sample & inSample) const;
+  Point operator () (const Point & inP) const override;
+  Sample operator () (const Sample & inSample) const override;
 
   /** Locations accessor */
   Point getLocations() const;
@@ -77,16 +77,16 @@ public:
                              const Sample & values);
 
   /** Input dimension accessor */
-  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Output dimension accessor */
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:

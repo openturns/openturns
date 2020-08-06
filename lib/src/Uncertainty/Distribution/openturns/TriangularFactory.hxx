@@ -40,14 +40,14 @@ public:
   TriangularFactory();
 
   /** Virtual constructor */
-  virtual TriangularFactory * clone() const;
+  TriangularFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
   Triangular buildAsTriangular(const Sample & sample) const;
   Triangular buildAsTriangular(const Point & parameters) const;
   Triangular buildAsTriangular() const;

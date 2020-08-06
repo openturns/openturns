@@ -56,25 +56,25 @@ public:
                                          const Scalar q = ResourceMap::GetAsScalar("HyperbolicAnisotropicEnumerateFunction-DefaultQ"));
 
   /** Virtual constrcutor */
-  virtual HyperbolicAnisotropicEnumerateFunction * clone() const;
+  HyperbolicAnisotropicEnumerateFunction * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** The bijective association between an integer and a set of indices */
-  virtual Indices operator() (const UnsignedInteger index) const;
+  Indices operator() (const UnsignedInteger index) const override;
 
   /** The inverse of the association */
-  virtual UnsignedInteger inverse(const Indices & indices) const;
+  UnsignedInteger inverse(const Indices & indices) const override;
 
   /** The cardinal of the given strata */
-  virtual UnsignedInteger getStrataCardinal(const UnsignedInteger strataIndex) const;
+  UnsignedInteger getStrataCardinal(const UnsignedInteger strataIndex) const override;
 
   /** The cardinal of the cumulated strata above or equal to the given strata */
-  virtual UnsignedInteger getStrataCumulatedCardinal(const UnsignedInteger strataIndex) const;
+  UnsignedInteger getStrataCumulatedCardinal(const UnsignedInteger strataIndex) const override;
 
   /** The index of the strata of degree max < degree */
-  virtual UnsignedInteger getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const;
+  UnsignedInteger getMaximumDegreeStrataIndex(const UnsignedInteger maximumDegree) const override;
 
   /** Q accessor */
   void setQ(const Scalar q);
@@ -85,10 +85,10 @@ public:
   Point getWeight() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Initialize the generation of indices */

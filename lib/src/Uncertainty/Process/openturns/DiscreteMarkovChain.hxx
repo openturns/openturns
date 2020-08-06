@@ -63,19 +63,19 @@ public:
                       const RegularGrid & timeGrid);
 
   /** Virtual constructor */
-  virtual DiscreteMarkovChain * clone() const;
+  DiscreteMarkovChain * clone() const override;
 
   /** String converters */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /** Realization accessor */
-  Field getRealization() const;
+  Field getRealization() const override;
 
   /** Continuation of the last realization on a given number of steps  */
   using ProcessImplementation::getFuture;
-  TimeSeries getFuture(const UnsignedInteger stepNumber) const;
+  TimeSeries getFuture(const UnsignedInteger stepNumber) const override;
 
   /** Transition matrix accessors */
   SquareMatrix getTransitionMatrix() const;
@@ -87,16 +87,16 @@ public:
   void setOrigin(const UnsignedInteger origin);
 
   /** Mesh accessors */
-  void setMesh(const Mesh & mesh);
+  void setMesh(const Mesh & mesh) override;
 
   /** DOT export */
   void exportToDOTFile(const FileName & filename) const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

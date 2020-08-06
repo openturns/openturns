@@ -59,19 +59,18 @@ public:
                              const Bool computeSecondOrder = false);
 
   /** Virtual constructor */
-  virtual JansenSensitivityAlgorithm * clone() const;
+  JansenSensitivityAlgorithm * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
 protected:
 
   /** Internal method that compute Vi/VTi using a huge sample */
-  Sample computeIndices(const Sample & sample,
-                        Sample & VTi) const;
+  Sample computeIndices(const Sample & sample, Sample & VTi) const override;
 
   /** void method that computes asymptotic distribution */
-  virtual void computeAsymptoticDistribution() const;
+  void computeAsymptoticDistribution() const override;
 
 }; /* class JansenSensitivityAlgorithm */
 

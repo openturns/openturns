@@ -58,7 +58,7 @@ public:
                           const NearestNeighbourAlgorithm & nearestNeighbour);
 
   /** Virtual constructor */
-  virtual P1LagrangeInterpolation * clone() const;
+  P1LagrangeInterpolation * clone() const override;
 
   /** Field dimension accessor */
   void setDimension(const UnsignedInteger dimension);
@@ -73,17 +73,17 @@ public:
   Bool operator ==(const P1LagrangeInterpolation & other) const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__( const String & offset = "" ) const;
+  String __repr__() const override;
+  String __str__( const String & offset = "") const override;
 
   /** Operator () */
-  virtual Sample operator()(const Sample & field) const;
+  Sample operator()(const Sample & field) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 private:

@@ -54,10 +54,10 @@ public:
   explicit DesignProxy(const Matrix & matrix);
 
   /** Virtual constructor */
-  virtual DesignProxy * clone() const;
+  DesignProxy * clone() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Accessors */
   Sample getInputSample() const;

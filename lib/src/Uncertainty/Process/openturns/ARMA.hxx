@@ -61,26 +61,26 @@ public:
        const ARMAState & state);
 
   /** Virtual constructor */
-  virtual ARMA * clone() const;
+  ARMA * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter  - pretty print */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Is the underlying a stationary process ? */
-  Bool isStationary() const;
+  Bool isStationary() const override;
 
   /** Is the underlying a Gaussian process ? */
-  Bool isNormal() const;
+  Bool isNormal() const override;
 
   /** Realization accessor */
-  Field getRealization() const;
+  Field getRealization() const override;
 
   /** Prediction of the N futur iterations of an ARMA process */
   using ProcessImplementation::getFuture;
-  TimeSeries getFuture(const UnsignedInteger stepNumber) const;
+  TimeSeries getFuture(const UnsignedInteger stepNumber) const override;
 
   /** Coefficients accessor : AR & MA */
   ARMACoefficients getARCoefficients() const;
@@ -104,16 +104,16 @@ public:
   void setNThermalization(const UnsignedInteger n);
 
   /** Get the random vector corresponding to the i-th marginal component */
-  Process getMarginal(const UnsignedInteger i) const;
+  Process getMarginal(const UnsignedInteger i) const override;
 
   /** Get the marginal random vector corresponding to indices components */
-  Process getMarginal(const Indices & indices) const;
+  Process getMarginal(const Indices & indices) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 private:

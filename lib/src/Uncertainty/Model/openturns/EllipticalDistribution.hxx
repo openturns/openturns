@@ -50,54 +50,54 @@ public:
                          const Scalar covarianceNormalizationFactor);
 
   /** Virtual copy constructor */
-  virtual EllipticalDistribution * clone() const;
+  EllipticalDistribution * clone() const override;
 
   /** Comparison operator */
 protected:
-  virtual Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Tell if the distribution is elliptical */
-  Bool isElliptical() const;
+  Bool isElliptical() const override;
 
   /** Tell if the distribution has elliptical copula */
-  Bool hasEllipticalCopula() const;
+  Bool hasEllipticalCopula() const override;
 
   /** Get the DDF of the distribution */
   using ContinuousDistribution::computeDDF;
-  Point computeDDF(const Point & point) const;
+  Point computeDDF(const Point & point) const override;
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
   using ContinuousDistribution::computeLogPDF;
-  Scalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const override;
 
   /** Get the PDF gradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
-  Point computePDFGradient(const Point & point) const;
+  Point computePDFGradient(const Point & point) const override;
 
   /** Compute the density generator of the elliptical distribution, i.e.
    *  the function phi such that the density of the distribution can
    *  be written as p(x) = phi(t(x-mu)R^{-1}(x-mu))                      */
-  virtual Scalar computeDensityGenerator(const Scalar betaSquare) const;
+  Scalar computeDensityGenerator(const Scalar betaSquare) const override;
   virtual Scalar computeLogDensityGenerator(const Scalar betaSquare) const;
 
   /** Compute the derivative of the density generator */
-  virtual Scalar computeDensityGeneratorDerivative(const Scalar betaSquare) const;
+  Scalar computeDensityGeneratorDerivative(const Scalar betaSquare) const override;
 
   /** Compute the second derivative of the density generator */
-  virtual Scalar computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const;
+  Scalar computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const override;
 
   /** Compute the survival function */
   using ContinuousDistribution::computeSurvivalFunction;
-  virtual Scalar computeSurvivalFunction(const Point & point) const;
+  Scalar computeSurvivalFunction(const Point & point) const override;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
-  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & thresholdOut) const;
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & thresholdOut) const override;
 
   /** Mean point accessor */
   void setMean(const Point & mean);
@@ -109,7 +109,7 @@ public:
   Point getSigma() const;
 
   /** Get the standard deviation of the distribution */
-  Point getStandardDeviation() const;
+  Point getStandardDeviation() const override;
 
   /** Correlation matrix accessor */
   void setCorrelation(const CorrelationMatrix & R);
@@ -119,10 +119,10 @@ public:
 
 protected:
   /** Compute the mean of the distribution */
-  void computeMean() const;
+  void computeMean() const override;
 
   /** Compute the covariance of the distribution */
-  void computeCovariance() const;
+  void computeCovariance() const override;
 
 public:
   /** Normalize the given point u_i = (x_i - mu_i) / sigma_i */
@@ -141,32 +141,32 @@ public:
   TriangularMatrix getInverseCholesky() const;
 
   /** Get the isoprobabilist transformation */
-  IsoProbabilisticTransformation getIsoProbabilisticTransformation() const;
+  IsoProbabilisticTransformation getIsoProbabilisticTransformation() const override;
 
   /** Get the inverse isoprobabilist transformation */
-  InverseIsoProbabilisticTransformation getInverseIsoProbabilisticTransformation() const;
+  InverseIsoProbabilisticTransformation getInverseIsoProbabilisticTransformation() const override;
 
   /** Get the standard distribution, i.e. a distribution of the same kind but with zero mean,
    * unit marginal standard distribution and identity correlation */
-  Distribution getStandardDistribution() const;
+  Distribution getStandardDistribution() const override;
 
   /** Parameters value and description accessor */
-  PointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const override;
   using ContinuousDistribution::setParametersCollection;
-  void setParametersCollection(const PointCollection & parametersCollection);
+  void setParametersCollection(const PointCollection & parametersCollection) override;
 
   /** Parameters value accessor */
-  virtual Point getParameter() const;
-  virtual void setParameter(const Point & parameters);
+  Point getParameter() const override;
+  void setParameter(const Point & parameters) override;
 
   /** Parameters description accessor */
-  virtual Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
@@ -206,44 +206,44 @@ private:
       // Nothing to do
     }
 
-    RadialCDFWrapper * clone() const
+    RadialCDFWrapper * clone() const override
     {
       return new RadialCDFWrapper(*this);
     }
 
-    Point operator() (const Point & point) const
+    Point operator() (const Point & point) const override
     {
       return Point(1, p_distribution_->computeRadialDistributionCDF(point[0]));
     }
 
-    UnsignedInteger getInputDimension() const
+    UnsignedInteger getInputDimension() const override
     {
       return 1;
     }
 
-    UnsignedInteger getOutputDimension() const
+    UnsignedInteger getOutputDimension() const override
     {
       return 1;
     }
 
-    Description getInputDescription() const
+    Description getInputDescription() const override
     {
       return Description(1, "R");
     }
 
-    Description getOutputDescription() const
+    Description getOutputDescription() const override
     {
       return Description(1, "radialCDF");
     }
 
-    String __repr__() const
+    String __repr__() const override
     {
       OSS oss;
       oss << "RadialCDFWrapper(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
-    String __str__(const String & ) const
+    String __str__(const String & ) const override
     {
       OSS oss;
       oss << "RadialCDFWrapper(" << p_distribution_->__str__() << ")";

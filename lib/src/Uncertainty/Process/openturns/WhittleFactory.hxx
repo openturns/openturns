@@ -54,21 +54,21 @@ public:
                  const Bool invertible = true);
 
   /** Virtual constructor */
-  virtual WhittleFactory * clone() const;
+  WhittleFactory * clone() const override;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** SpectralModelFactory accessors - Make easy change of periodogram estimate */
   WelchFactory getSpectralModelFactory() const;
   void setSpectralModelFactory(const WelchFactory & factory);
 
   /** Build method ==> estimating the coefficients */
-  virtual ARMA build(const TimeSeries & timeSeries) const;
+  ARMA build(const TimeSeries & timeSeries) const override;
   ARMA buildWithCriteria(const TimeSeries & timeSeries,
                          Point & informationCriteriaOut) const;
-  virtual ARMA build(const ProcessSample & sample) const;
+  ARMA build(const ProcessSample & sample) const override;
   ARMA buildWithCriteria(const ProcessSample & sample,
                          Point & informationCriteriaOut) const;
 
@@ -88,10 +88,10 @@ public:
   Collection< Point > getStartingPoints() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private :
 

@@ -121,10 +121,10 @@ public:
   static Description GetAlgorithmNames(const OptimizationProblem & problem);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 } ; /* class OptimizationAlgorithm */
 

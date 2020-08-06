@@ -40,10 +40,10 @@ public:
   SymbolicParserMuParser();
 
   /** Virtual copy constructor */
-  virtual SymbolicParserMuParser * clone() const;
+  SymbolicParserMuParser * clone() const override;
 
-  Point operator()(const Point & inP) const;
-  Sample operator()(const Sample & inS) const;
+  Point operator()(const Point & inP) const override;
+  Sample operator()(const Sample & inS) const override;
 
 private:
   void initialize() const;

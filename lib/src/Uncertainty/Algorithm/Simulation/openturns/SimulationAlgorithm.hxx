@@ -41,7 +41,7 @@ public:
   SimulationAlgorithm();
 
   /** Virtual constructor */
-  virtual SimulationAlgorithm * clone() const;
+  SimulationAlgorithm * clone() const override;
 
   /** Maximum sample size accessor */
   void setMaximumOuterSampling(const UnsignedInteger maximumOuterSampling);
@@ -64,7 +64,7 @@ public:
   Bool getVerbose() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Performs the actual computation. */
   virtual void run();
@@ -74,10 +74,10 @@ public:
   HistoryStrategy getConvergenceStrategy() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Progress callback */
   typedef void (*ProgressCallback)(Scalar, void * state);

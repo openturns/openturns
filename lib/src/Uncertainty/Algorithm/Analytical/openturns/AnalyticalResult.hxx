@@ -58,7 +58,7 @@ public:
   AnalyticalResult();
 
   /** Virtual constructor */
-  virtual AnalyticalResult * clone() const;
+  AnalyticalResult * clone() const override;
 
   /** StandardSpaceDesignPoint accessor */
   Point getStandardSpaceDesignPoint() const;
@@ -102,13 +102,13 @@ public:
   GraphCollection drawHasoferReliabilityIndexSensitivity(Scalar width = ResourceMap::GetAsScalar( "AnalyticalResult-DefaultWidth" )) const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

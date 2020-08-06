@@ -80,11 +80,11 @@ public:
                            const HMatrix & covarianceHMatrix);
 
   /** Virtual constructor */
-  GeneralLinearModelResult * clone() const;
+  GeneralLinearModelResult * clone() const override;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Trend basis accessor */
   BasisCollection getBasisCollection() const;
@@ -106,10 +106,10 @@ public:
   Scalar getOptimalLogLikelihood() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:

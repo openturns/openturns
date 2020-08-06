@@ -41,19 +41,19 @@ public:
   explicit LinearProfile(const Scalar T0 = 10.0, const UnsignedInteger iMax = 2000);
 
   /** Virtual constructor method */
-  LinearProfile * clone() const;
+  LinearProfile * clone() const override;
 
   /** Compute temperature T(i) */
-  Scalar operator()(UnsignedInteger i) const;
+  Scalar operator()(UnsignedInteger i) const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   mutable Scalar iMaxInv_;

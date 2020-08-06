@@ -53,33 +53,33 @@ public:
               const Domain & domain);
 
   /** Virtual contructor */
-  virtual DomainEvent * clone() const;
+  DomainEvent * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Dimension accessor */
-  virtual UnsignedInteger getDimension() const;
+  UnsignedInteger getDimension() const override;
 
   /** Domain accessor */
-  Domain getDomain() const;
+  Domain getDomain() const override;
 
   /* Here is the interface that all derived class may implement */
 
   /** Realization accessor */
-  virtual Point getRealization() const;
+  Point getRealization() const override;
 
   /** Numerical sample accessor */
-  virtual Sample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const override;
 
   /** Whether it is an event */
-  virtual Bool isEvent() const;
+  Bool isEvent() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

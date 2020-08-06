@@ -56,32 +56,32 @@ public:
 
 
   /** Virtual constructor */
-  virtual PointToFieldConnection * clone() const;
+  PointToFieldConnection * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const PointToFieldConnection & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () */
   using PointToFieldFunctionImplementation::operator();
-  Sample operator() (const Point & inP) const;
+  Sample operator() (const Point & inP) const override;
 
-  ProcessSample operator() (const Sample & inS) const;
+  ProcessSample operator() (const Sample & inS) const override;
 
   /** Get the i-th marginal function */
-  PointToFieldFunction getMarginal(const UnsignedInteger i) const;
+  PointToFieldFunction getMarginal(const UnsignedInteger i) const override;
 
   /** Get the function corresponding to indices components */
-  PointToFieldFunction getMarginal(const Indices & indices) const;
+  PointToFieldFunction getMarginal(const Indices & indices) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Composed implementation accessor */
   Function getFunction() const;

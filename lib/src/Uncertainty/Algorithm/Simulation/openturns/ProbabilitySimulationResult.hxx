@@ -54,7 +54,7 @@ public:
                               const UnsignedInteger blockSize);
 
   /** Virtual constructor */
-  virtual ProbabilitySimulationResult * clone() const;
+  ProbabilitySimulationResult * clone() const override;
 
   /** Event accessor */
   RandomVector getEvent() const;
@@ -90,13 +90,13 @@ public:
   virtual Scalar getConfidenceLength(const Scalar level = ResourceMap::GetAsScalar("ProbabilitySimulationResult-DefaultConfidenceLevel")) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

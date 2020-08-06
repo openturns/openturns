@@ -59,7 +59,7 @@ public:
                        const Point & val);
 
   /** Virtual constructor */
-  virtual FieldImplementation * clone() const;
+  FieldImplementation * clone() const override;
 
   /** Description Accessor */
   void setDescription(const Description & description);
@@ -78,8 +78,8 @@ public:
    * internal state of an FieldImplementation. It is used when streaming
    * the FieldImplementation or for user information.
    */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Size accessor */
   UnsignedInteger getSize() const;
@@ -135,10 +135,10 @@ public:
   Graph draw() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** VTK export */
   void exportToVTKFile(const String & fileName) const;

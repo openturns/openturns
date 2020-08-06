@@ -44,13 +44,13 @@ public:
   explicit PostAnalyticalControlledImportanceSampling(const AnalyticalResult & AnalyticalResult);
 
   /** Virtual constructor */
-  virtual PostAnalyticalControlledImportanceSampling * clone() const;
+  PostAnalyticalControlledImportanceSampling * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Compute the block sample */
-  Sample computeBlockSample();
+  Sample computeBlockSample() override;
 
 } ; /* class PostAnalyticalControlledImportanceSampling */
 

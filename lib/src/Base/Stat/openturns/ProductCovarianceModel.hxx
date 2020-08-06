@@ -50,50 +50,50 @@ public:
   explicit ProductCovarianceModel(const CovarianceModelCollection & collection);
 
   /** Virtual copy constructor */
-  ProductCovarianceModel * clone() const;
+  ProductCovarianceModel * clone() const override;
 
   /** Computation of the covariance function */
   using CovarianceModelImplementation::computeStandardRepresentative;
   Scalar computeStandardRepresentative(const Point & s,
-                                       const Point & t) const;
+                                       const Point & t) const override;
 #ifndef SWIG
   Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-                                       const Collection<Scalar>::const_iterator & t_begin) const;
+                                       const Collection<Scalar>::const_iterator & t_begin) const override;
 #endif
 
   /** Gradient */
-  virtual Matrix partialGradient(const Point & s,
-                                 const Point & t) const;
+  Matrix partialGradient(const Point & s,
+                                 const Point & t) const override;
 
   /** Collection accessor */
   const CovarianceModelCollection & getCollection() const;
 
   /** Marginal accessor */
-  virtual CovarianceModel getMarginal(const UnsignedInteger index) const;
+  CovarianceModel getMarginal(const UnsignedInteger index) const override;
 
   /** Scale accessor */
-  void setScale(const Point & scale);
+  void setScale(const Point & scale) override;
 
   /** Is it a stationary covariance model ? */
-  virtual Bool isStationary() const;
+  Bool isStationary() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Parameter accessor */
-  virtual void setFullParameter(const Point & parameter);
-  virtual Point getFullParameter() const;
-  virtual Description getFullParameterDescription() const;
-  virtual void setActiveParameter(const Indices & active);
+  void setFullParameter(const Point & parameter) override;
+  Point getFullParameter() const override;
+  Description getFullParameterDescription() const override;
+  void setActiveParameter(const Indices & active) override;
 
 protected:
   void setCollection(const CovarianceModelCollection & collection);

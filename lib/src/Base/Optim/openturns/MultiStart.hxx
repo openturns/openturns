@@ -50,16 +50,16 @@ public:
              const Sample & startingPoints);
 
   /** Virtual constructor */
-  virtual MultiStart * clone() const;
+  MultiStart * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Performs the actual computation. */
-  void run();
+  void run() override;
 
   /** Problem accessor */
-  virtual void setProblem(const OptimizationProblem & problem);
+  void setProblem(const OptimizationProblem & problem) override;
 
   /** Solver accessor */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
@@ -72,19 +72,19 @@ public:
   /** Flag for results management accessors */
   Bool getKeepResults() const;
   void setKeepResults(const Bool keepResults);
-  
+
   OptimizationResultCollection getResultCollection() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
   /** Check whether this problem can be solved by this solver. */
-  void checkProblem(const OptimizationProblem & problem) const;
+  void checkProblem(const OptimizationProblem & problem) const override;
 
 private:
   OptimizationAlgorithm solver_;

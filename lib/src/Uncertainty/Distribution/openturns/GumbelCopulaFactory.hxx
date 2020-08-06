@@ -40,14 +40,14 @@ public:
   GumbelCopulaFactory();
 
   /** Virtual constructor */
-  virtual GumbelCopulaFactory * clone() const;
+  GumbelCopulaFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
   GumbelCopula buildAsGumbelCopula(const Sample & sample) const;
   GumbelCopula buildAsGumbelCopula(const Point & parameters) const;
   GumbelCopula buildAsGumbelCopula() const;

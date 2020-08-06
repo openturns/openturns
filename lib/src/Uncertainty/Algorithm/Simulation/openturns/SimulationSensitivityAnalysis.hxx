@@ -60,7 +60,7 @@ public:
   explicit SimulationSensitivityAnalysis(const ProbabilitySimulationResult & result);
 
   /** Virtual constructor */
-  virtual SimulationSensitivityAnalysis * clone() const;
+  SimulationSensitivityAnalysis * clone() const override;
 
   /** Mean point in event domain computation */
   Point computeMeanPointInEventDomain() const;
@@ -95,13 +95,13 @@ public:
   ComparisonOperator getComparisonOperator() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

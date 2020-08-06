@@ -46,61 +46,60 @@ public:
   /** Comparison operator */
   Bool operator ==(const PlackettCopula & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /* Interface inherited from Distribution */
   /** Virtual constructor */
-  virtual PlackettCopula * clone() const;
+  PlackettCopula * clone() const override;
 
   /** Get one realization of the distribution */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Get the PDF of the distribution */
   using CopulaImplementation::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
   using CopulaImplementation::computeCDF;
-  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const override;
 
   /** Get the PDFGradient of the distribution */
-  Point computePDFGradient(const Point & point) const;
+  Point computePDFGradient(const Point & point) const override;
 
   /** Get the CDFGradient of the distribution */
-  Point computeCDFGradient(const Point & point) const;
+  Point computeCDFGradient(const Point & point) const override;
 
   /** Get the quantile of the distribution */
   using DistributionImplementation::computeQuantile;
-  Point computeQuantile(const Scalar prob,
-                        const Bool tail = false) const;
+  Point computeQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalCDF;
-  Scalar computeConditionalCDF(const Scalar x, const Point & y) const;
+  Scalar computeConditionalCDF(const Scalar x, const Point & y) const override;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using CopulaImplementation::computeConditionalQuantile;
-  Scalar computeConditionalQuantile(const Scalar q, const Point & y) const;
+  Scalar computeConditionalQuantile(const Scalar q, const Point & y) const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   using CopulaImplementation::getMarginal;
-  Distribution getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const override;
 
   /** Tell if the distribution has independent copula */
-  Bool hasIndependentCopula() const;
+  Bool hasIndependentCopula() const override;
 
   /** Parameters value accessors */
-  void setParameter(const Point & parameter);
-  Point getParameter() const;
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
 
   /** Parameters description accessor */
-  Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
   /* Interface specific to PlackettCopula */
 
@@ -109,10 +108,10 @@ public:
   Scalar getTheta() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
@@ -120,7 +119,7 @@ protected:
 private:
 
   /** Compute the covariance of the distribution */
-  void computeCovariance() const;
+  void computeCovariance() const override;
 
   /** The parameter of the PlackettCopula distribution */
   Scalar theta_;

@@ -56,7 +56,7 @@ public:
   virtual UnsignedInteger getDimension() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
 }; /* class Domain */
 

@@ -50,7 +50,7 @@ public:
 
 
   /** Virtual constructor */
-  virtual NearestPointCheckerResult * clone() const;
+  NearestPointCheckerResult * clone() const override;
 
   /** Assigment operator */
 
@@ -75,7 +75,7 @@ public:
   void setViolatingConstraintValues(const Sample & violatingConstraintValues);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 private:
 

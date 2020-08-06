@@ -42,13 +42,13 @@ public:
   SpaceFillingMinDist();
 
   /** Virtual constructor method */
-  SpaceFillingMinDist * clone() const;
+  SpaceFillingMinDist * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Evaluate criterion on a sample */
-  Scalar evaluate(const Sample& sample) const;
+  Scalar evaluate(const Sample & sample) const override;
 
 }; /* class SpaceFillingMinDist */
 

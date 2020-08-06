@@ -48,7 +48,7 @@ public:
        const String & algoName);
 
   /** Virtual constructor */
-  virtual Dlib * clone() const;
+  Dlib * clone() const override;
 
   /** Dlib static methods */
   static Bool IsAvailable();  // Check whether Dlib support is available
@@ -80,23 +80,23 @@ public:
   void setInitialTrustRegionRadius(const Scalar radius);
 
   /** Performs the actual computation. Must be overloaded by the actual optimization algorithm */
-  void run();
+  void run() override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
-  void checkProblem(const OptimizationProblem & problem) const;
+  void checkProblem(const OptimizationProblem & problem) const override;
 
 private:
   // Name of the optimization algorithm to use

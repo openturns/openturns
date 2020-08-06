@@ -50,34 +50,34 @@ public:
   ConstantHessian(const SymmetricTensor & constant);
 
   /** Virtual constructor */
-  virtual ConstantHessian * clone() const;
+  ConstantHessian * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const ConstantHessian & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /* Here is the interface that all derived class must implement */
 
   /** Hessian method */
-  virtual SymmetricTensor hessian(const Point & inP) const;
+  SymmetricTensor hessian(const Point & inP) const override;
 
   /** Accessor for input point dimension */
-  virtual UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  virtual UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Accessor for the constant term */
   SymmetricTensor getConstant() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

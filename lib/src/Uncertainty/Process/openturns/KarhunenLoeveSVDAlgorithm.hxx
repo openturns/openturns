@@ -60,14 +60,14 @@ public:
                             const Bool centeredSample = false);
 
   /** Virtual copy constructor */
-  virtual KarhunenLoeveSVDAlgorithm * clone() const;
+  KarhunenLoeveSVDAlgorithm * clone() const override;
 
   /** Solve the Fredholm eigenvalues problem:
    * find (\phi_k, \lambda_k) such that
    * \int_{D} C(s,t)\phi_k(s)ds=\lambda_k\phi_k(t)
    * where C is a given covariance model, using SVD approximation
    */
-  void run();
+  void run() override;
 
   /** Process sample accessor */
   ProcessSample getSample() const;
@@ -85,23 +85,23 @@ private:
 public:
 
   /** Covariance model accessors */
-  CovarianceModel getCovarianceModel() const;
+  CovarianceModel getCovarianceModel() const override;
 private:
   /** Hide the covariance model accessor as it has no meaning in the SVD context */
-  void setCovarianceModel(const CovarianceModel & covariance);
+  void setCovarianceModel(const CovarianceModel & covariance) override;
 public:
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   /** Underlying sample */

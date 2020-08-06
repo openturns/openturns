@@ -45,19 +45,19 @@ public:
   typedef Collection<UniVariateFunction> UniVariateFunctionCollection;
 
   /** Virtual constructor */
-  virtual UniVariateFunctionFactory * clone() const;
+  UniVariateFunctionFactory * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** The method to get the function of any order. */
   virtual UniVariateFunction build(const UnsignedInteger order) const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Default constructor */
   UniVariateFunctionFactory();

@@ -61,23 +61,23 @@ public:
               const CovarianceMatrix & spatialCovariance);
 
   /** Virtual copy constructor */
-  virtual CauchyModel * clone() const;
+  CauchyModel * clone() const override;
 
   /** Computation of the spectral density function */
   using SpectralModelImplementation::computeStandardRepresentative;
-  Complex computeStandardRepresentative(const Scalar frequency) const;
+  Complex computeStandardRepresentative(const Scalar frequency) const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 } ; /* class CauchyModel */
 

@@ -47,38 +47,37 @@ public:
                           const Scalar alpha);
 
   /** Virtual constructor */
-  virtual MinimumVolumeClassifier * clone() const;
+  MinimumVolumeClassifier * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
-  virtual UnsignedInteger getNumberOfClasses() const;
+  UnsignedInteger getNumberOfClasses() const override;
 
   /** Associate a point to a class */
   using ClassifierImplementation::classify;
-  virtual UnsignedInteger classify(const Point & inP) const;
+  UnsignedInteger classify(const Point & inP) const override;
 
-  virtual Indices classify(const Sample & inS) const;
+  Indices classify(const Sample & inS) const override;
 
   /** Level set accessor */
   LevelSet getLevelSet() const;
 
   /** Grade a point as if it were associated to a class */
-  virtual Scalar grade(const Point & inP,
-                       const UnsignedInteger outC) const;
+  Scalar grade(const Point & inP, const UnsignedInteger outC) const override;
 
   /** Distribution accessors */
   Distribution getDistribution() const;
   Scalar getThreshold() const;
 
   /** Dimension accessor */
-  UnsignedInteger getDimension() const;
+  UnsignedInteger getDimension() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   GridLayout drawContour(const Point & alpha) const;
   GridLayout drawSample(const Sample & sample, const Indices & classes) const;

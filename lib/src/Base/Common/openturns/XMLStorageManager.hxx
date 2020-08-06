@@ -92,10 +92,10 @@ public:
   /**
    * Virtual constructor
    */
-  virtual XMLStorageManager * clone() const;
+  XMLStorageManager * clone() const override;
 
   /** @copydoc StorageManager::__repr__() const */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Get the name of the file containing the study */
   String getFileName() const;
@@ -106,36 +106,36 @@ public:
   /**
    * This method saves the PersistentObject onto the medium
    */
-  virtual void save(const PersistentObject & obj, const String & label, bool fromStudy = false);
+  void save(const PersistentObject & obj, const String & label, bool fromStudy = false) override;
 
   /**
    * This method reloads the PersistentObject from the medium
    */
-  virtual void load(Study & study);
+  void load(Study & study) override;
 
 
 
   /** Do some administrative tasks before saving/reloading
    * @internal
    */
-  virtual void initialize(const SaveAction caller);
-  virtual void initialize(const LoadAction caller);
+  void initialize(const SaveAction caller) override;
+  void initialize(const LoadAction caller) override;
 
   /** Do some administrative tasks after saving/reloading
    * @internal
    */
-  virtual void finalize(const SaveAction caller);
-  virtual void finalize(const LoadAction caller);
+  void finalize(const SaveAction caller) override;
+  void finalize(const LoadAction caller) override;
 
   /** Read and create the internal representation
    * @internal
    */
-  virtual void read();
+  void read() override;
 
   /** Write the internal representation
    * @internal
    */
-  virtual void write();
+  void write() override;
 
 
 
@@ -143,92 +143,92 @@ public:
   /* Create a new empty object that will gather all saved information
    * @internal
    */
-  virtual Pointer<InternalObject> createObject(const String & tag) const;
+  Pointer<InternalObject> createObject(const String & tag) const override;
 
   /* Append an internal object to the collection of saved ones
    * @internal
    */
-  virtual void appendObject(Pointer<InternalObject> & p_obj);
+  void appendObject(Pointer<InternalObject> & p_obj) override;
 
   /* Set the visibility attribute of the object
    * @internal
    */
-  virtual void setVisibility(Pointer<InternalObject> & p_obj, Bool visible);
+  void setVisibility(Pointer<InternalObject> & p_obj, Bool visible) override;
 
   /* Set the label associated with the object
    * @internal
    */
-  virtual void setLabel(Pointer<InternalObject> & p_obj, const String & label);
+  void setLabel(Pointer<InternalObject> & p_obj, const String & label) override;
 
   /* Returns true if the internal object has an attribute
    */
-  virtual Bool hasAttribute(Pointer<InternalObject> & p_obj, const String & name);
+  Bool hasAttribute(Pointer<InternalObject> & p_obj, const String & name) override;
 
   /* Add an attribute to an internal object
    * @internal
    */
-  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Bool value);
-  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedInteger value);
+  void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Bool value) override;
+  void addAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedInteger value) override;
 #ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
-  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Unsigned64BitsInteger value);
+  void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Unsigned64BitsInteger value) override;
 #endif
-  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Scalar value);
-  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Complex value);
-  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, const String & value);
-  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, const InterfaceObject & value);
-  virtual void addAttribute(Pointer<InternalObject> & p_obj, const String & name, const PersistentObject & value);
+  void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Scalar value) override;
+  void addAttribute(Pointer<InternalObject> & p_obj, const String & name, Complex value) override;
+  void addAttribute(Pointer<InternalObject> & p_obj, const String & name, const String & value) override;
+  void addAttribute(Pointer<InternalObject> & p_obj, const String & name, const InterfaceObject & value) override;
+  void addAttribute(Pointer<InternalObject> & p_obj, const String & name, const PersistentObject & value) override;
 
   /* Add an indexed value to an internal object
    * @internal
    */
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Bool value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger value);
+  void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Bool value) override;
+  void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger value) override;
 #ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Unsigned64BitsInteger value);
+  void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Unsigned64BitsInteger value) override;
 #endif
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Complex value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const String & value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const InterfaceObject & value);
-  virtual void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const PersistentObject & value);
+  void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar value) override;
+  void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Complex value) override;
+  void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const String & value) override;
+  void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const InterfaceObject & value) override;
+  void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, const PersistentObject & value) override;
 
   /* Read an attribute
    * @internal
    */
-  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Bool & value);
-  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedInteger & value);
+  void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Bool & value) override;
+  void readAttribute(Pointer<InternalObject> & p_obj, const String & name, UnsignedInteger & value) override;
 #ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
-  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Unsigned64BitsInteger & value);
+  void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Unsigned64BitsInteger & value) override;
 #endif
-  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Scalar & value);
-  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Complex & value);
-  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, String & value);
-  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name,  InterfaceObject & value);
-  virtual void readAttribute(Pointer<InternalObject> & p_obj, const String & name, PersistentObject & value);
+  void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Scalar & value) override;
+  void readAttribute(Pointer<InternalObject> & p_obj, const String & name, Complex & value) override;
+  void readAttribute(Pointer<InternalObject> & p_obj, const String & name, String & value) override;
+  void readAttribute(Pointer<InternalObject> & p_obj, const String & name,  InterfaceObject & value) override;
+  void readAttribute(Pointer<InternalObject> & p_obj, const String & name, PersistentObject & value) override;
 
   /* Read an indexed value
    * @internal
    */
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Bool & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger & value);
+  void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Bool & value) override;
+  void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger & value) override;
 #ifndef OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Unsigned64BitsInteger & value);
+  void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Unsigned64BitsInteger & value) override;
 #endif
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Complex & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, String & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, InterfaceObject & value);
-  virtual void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, PersistentObject & value);
+  void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar & value) override;
+  void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Complex & value) override;
+  void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, String & value) override;
+  void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, InterfaceObject & value) override;
+  void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, PersistentObject & value) override;
 #endif
 
 
 protected:
 
   /** Query the manager if the version is correct */
-  virtual Bool canManageVersion(UnsignedInteger version) const;
+  Bool canManageVersion(UnsignedInteger version) const override;
 
   /** Return the current state of the storage manager (for those having one) */
-  virtual const StorageManager::InternalObject & getState() const;
+  const StorageManager::InternalObject & getState() const override;
 
 
 

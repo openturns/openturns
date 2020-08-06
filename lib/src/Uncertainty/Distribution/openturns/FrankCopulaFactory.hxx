@@ -40,14 +40,14 @@ public:
   FrankCopulaFactory();
 
   /** Virtual constructor */
-  virtual FrankCopulaFactory * clone() const;
+  FrankCopulaFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
   FrankCopula buildAsFrankCopula(const Sample & sample) const;
   FrankCopula buildAsFrankCopula(const Point & parameters) const;
   FrankCopula buildAsFrankCopula() const;

@@ -62,10 +62,10 @@ public:
 
 #ifdef SWIG
   /** @copydoc Object::__repr__() const */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** @copydoc Object::__str__() const */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 #endif
 
   void sort();

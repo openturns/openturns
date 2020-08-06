@@ -61,10 +61,10 @@ public:
                       const LogScale logScale = NONE);
 
   /** Virtual constructor */
-  virtual GraphImplementation * clone() const;
+  GraphImplementation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Adds a drawable instance to the collection of drawables contained in GraphImplementation */
   void add(const Drawable & aDrawable);
@@ -174,10 +174,10 @@ public:
   static Bool IsValidLegendPosition(const String & position);
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Gives all the valid legend positions */
   static Description GetValidLegendPositions();

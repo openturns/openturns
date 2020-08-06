@@ -53,13 +53,6 @@ SpectralModelFactory::SpectralModelFactory(SpectralModelFactoryImplementation * 
   // Nothing to do
 }
 
-
-/* Virtual constructor */
-SpectralModelFactory * SpectralModelFactory::clone() const
-{
-  return new SpectralModelFactory(*this);
-}
-
 /* FFT algorithm accessor */
 FFT SpectralModelFactory::getFFTAlgorithm() const
 {

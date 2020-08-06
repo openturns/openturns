@@ -99,12 +99,6 @@ String KrigingEvaluation::__str__(const String & ) const
   return OSS(false) << GetClassName();
 }
 
-/* Test for actual implementation */
-Bool KrigingEvaluation::isActualImplementation() const
-{
-  return true;
-}
-
 // Helper for the parallel version of the point-based evaluation operator
 struct KrigingEvaluationPointFunctor
 {

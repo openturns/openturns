@@ -44,19 +44,19 @@ public:
   FourierSeriesFactory();
 
   /** Virtual constructor */
-  virtual FourierSeriesFactory * clone() const;
+  FourierSeriesFactory * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** The method to get the function of any order. */
-  virtual UniVariateFunction build(const UnsignedInteger order) const;
+  UniVariateFunction build(const UnsignedInteger order) const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

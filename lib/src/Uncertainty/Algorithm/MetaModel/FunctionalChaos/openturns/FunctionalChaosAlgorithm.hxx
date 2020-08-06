@@ -94,10 +94,10 @@ public:
                            const AdaptiveStrategy & adaptiveStrategy);
 
   /** Virtual constructor */
-  virtual FunctionalChaosAlgorithm * clone() const;
+  FunctionalChaosAlgorithm * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Maximum residual accessors */
   void setMaximumResidual(Scalar residual);
@@ -110,20 +110,20 @@ public:
   AdaptiveStrategy getAdaptiveStrategy() const;
 
   /** Computes the functional chaos */
-  void run();
+  void run() override;
 
   /** Get the functional chaos result */
   FunctionalChaosResult getResult() const;
 
   /** Sample accessors */
-  Sample getInputSample() const;
-  Sample getOutputSample() const;
+  Sample getInputSample() const override;
+  Sample getOutputSample() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Recover the distribution */
   static Distribution BuildDistribution(const Sample & inputSample);

@@ -55,12 +55,12 @@ public:
   /** Comparison operator */
   Bool operator ==(const CumulativeDistributionNetwork & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /** Distribution collection accessor */
@@ -74,45 +74,45 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual CumulativeDistributionNetwork * clone() const;
+  CumulativeDistributionNetwork * clone() const override;
 
   /** Get one realization of the CumulativeDistributionNetwork */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Get many realizations of the CumulativeDistributionNetwork */
-  Sample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the PDF of the CumulativeDistributionNetwork */
   using DistributionImplementation::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the CumulativeDistributionNetwork */
   using DistributionImplementation::computeCDF;
-  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const override;
 
   /** Get the i-th marginal distribution */
-  Distribution getMarginal(const UnsignedInteger i) const;
+  Distribution getMarginal(const UnsignedInteger i) const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  Distribution getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const override;
 
   /** Check if the distribution is continuous */
-  Bool isContinuous() const;
+  Bool isContinuous() const override;
 
   /** Check if the distribution is discrete */
-  Bool isDiscrete() const;
+  Bool isDiscrete() const override;
 
   /** Check if the distribution is integral */
-  Bool isIntegral() const;
+  Bool isIntegral() const override;
 
   /** Tell if the distribution has independent copula */
-  Bool hasIndependentCopula() const;
+  Bool hasIndependentCopula() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
@@ -120,7 +120,7 @@ protected:
 private:
 
   /** Compute the numerical range of the distribution given the parameters values */
-  void computeRange();
+  void computeRange() override;
 
   /** Extract the components of a full dimension point to feed the index distribution */
   Point reducePoint(const Point & point,

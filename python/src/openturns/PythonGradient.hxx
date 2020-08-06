@@ -46,7 +46,7 @@ public:
   PythonGradient(const PythonGradient & other);
 
   /** Virtual constructor */
-  virtual PythonGradient * clone() const;
+  PythonGradient * clone() const override;
 
   /** Copy assignment operator */
   PythonGradient & operator=(const PythonGradient & rhs);
@@ -58,30 +58,26 @@ public:
   Bool operator ==(const PythonGradient & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset) const;
-
-
-  /** Test for actual implementation */
-  virtual Bool isActualImplementation() const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /* Here is the interface that all derived class must implement */
 
   /** Gradient method */
-  virtual Matrix gradient(const Point & inP) const;
+  Matrix gradient(const Point & inP) const override;
 
   /** Accessor for input point dimension */
-  virtual UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  virtual UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method save() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

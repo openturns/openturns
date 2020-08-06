@@ -44,11 +44,11 @@ public:
   DistributionParametersImplementation();
 
   /** Virtual constructor */
-  virtual DistributionParametersImplementation * clone() const;
+  DistributionParametersImplementation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Build a distribution based on a set of native parameters */
   virtual Distribution getDistribution() const;
@@ -71,10 +71,10 @@ public:
   virtual Description getDescription() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 }; /* class DistributionParametersImplementation */
 END_NAMESPACE_OPENTURNS

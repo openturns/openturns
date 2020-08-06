@@ -48,30 +48,30 @@ public:
   explicit FiniteBasis(const FunctionCollection & collection);
 
   /** Build the Function of the given index */
-  virtual Function build(const UnsignedInteger index) const;
-  virtual Function & operator[](const UnsignedInteger index);
+  Function build(const UnsignedInteger index) const override;
+  Function & operator[](const UnsignedInteger index) override;
 
   /** Virtual constructor */
-  virtual FiniteBasis * clone() const;
+  FiniteBasis * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Dimension accessor */
-  virtual UnsignedInteger getDimension() const;
-  virtual UnsignedInteger getSize() const;
+  UnsignedInteger getDimension() const override;
+  UnsignedInteger getSize() const override;
 
   /** Tells whether the basis is finite */
-  virtual Bool isFinite() const;
+  Bool isFinite() const override;
 
-  virtual void add(const Function & elt);
+  void add(const Function & elt) override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:

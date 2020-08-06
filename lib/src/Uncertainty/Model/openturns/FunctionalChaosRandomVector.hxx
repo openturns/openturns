@@ -45,27 +45,27 @@ public:
   explicit FunctionalChaosRandomVector(const FunctionalChaosResult & functionalChaosResult);
 
   /** Virtual constructor */
-  virtual FunctionalChaosRandomVector * clone() const;
+  FunctionalChaosRandomVector * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /* Here is the interface that all derived class must implement */
 
   /** Mean accessor */
-  Point getMean() const;
+  Point getMean() const override;
 
   /** Covariance accessor */
-  CovarianceMatrix getCovariance() const;
+  CovarianceMatrix getCovariance() const override;
 
   /** Functional chaos result accessor */
   FunctionalChaosResult getFunctionalChaosResult() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   /** Compute the covariance */

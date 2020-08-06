@@ -48,7 +48,7 @@ public:
   ApproximationAlgorithmImplementationFactory();
 
   /** Virtual constructor */
-  virtual ApproximationAlgorithmImplementationFactory * clone() const;
+  ApproximationAlgorithmImplementationFactory * clone() const override;
 
   /** Method to create new ApproximationAlgorithmImplementation objects */
   virtual ApproximationAlgorithmImplementation * build (const Sample & x,
@@ -64,13 +64,13 @@ public:
       const Indices & indices) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 }; /* class ApproximationAlgorithmImplementationFactory */
 

@@ -68,36 +68,36 @@ public:
       const String & legend = ""); */
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Accessor for first coordinate */
-  Sample getX() const;
-  void setX(const Sample & x);
+  Sample getX() const override;
+  void setX(const Sample & x) override;
 
   /** Accessor for second coordinate */
-  Sample getY() const;
-  void setY(const Sample & y);
+  Sample getY() const override;
+  void setY(const Sample & y) override;
 
   /** Accessor for levels */
-  Point getLevels() const;
-  void setLevels(const Point & levels);
+  Point getLevels() const override;
+  void setLevels(const Point & levels) override;
 
   /** Accessor for labels */
-  Description getLabels() const;
-  void setLabels(const Description & labels);
+  Description getLabels() const override;
+  void setLabels(const Description & labels) override;
 
   /** Accessor for drawLabels */
-  Bool getDrawLabels() const;
-  void setDrawLabels(const Bool & drawLabels);
+  Bool getDrawLabels() const override;
+  void setDrawLabels(const Bool & drawLabels) override;
 
   /** Accessor for boundingbox */
-  Interval getBoundingBox() const;
+  Interval getBoundingBox() const override;
 
   /** Draw method */
-  String draw() const;
+  String draw() const override;
 
   /** Clone method */
-  virtual Contour * clone() const;
+  Contour * clone() const override;
 
   /** Build default levels using quantiles associated with regularly spaced probability levels
    */
@@ -107,17 +107,17 @@ public:
   void buildDefaultLabels();
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() stores the object through the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Clean all the temporary data created by draw() method */
-  virtual void clean() const;
+  void clean() const override;
 
 protected:
   /** Check fo data validity */
-  virtual void checkData(const Sample & data) const;
+  void checkData(const Sample & data) const override;
 
 private:
 

@@ -77,14 +77,14 @@ public:
   virtual FunctionImplementation operator * (const Implementation & p_right) const;
 
   /** Virtual constructor */
-  virtual FunctionImplementation * clone() const;
+  FunctionImplementation * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const FunctionImplementation & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Function implementation accessors */
   virtual void setEvaluation(const Evaluation & evaluation);
@@ -204,10 +204,10 @@ public:
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   /** A pointer on the actual numerical math function implementation */

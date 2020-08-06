@@ -65,10 +65,10 @@ public:
                             const String & methodName = ResourceMap::GetAsString("GaussianLinearCalibration-Method"));
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Performs the actual computation. Must be overloaded by the actual calibration algorithm */
-  virtual void run();
+  void run() override;
 
   /** Model observations accessor */
   Sample getModelObservations() const;
@@ -94,13 +94,13 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual GaussianLinearCalibration * clone() const;
+  GaussianLinearCalibration * clone() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   /* The model observations */

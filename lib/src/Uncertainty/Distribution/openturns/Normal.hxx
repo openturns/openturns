@@ -58,127 +58,126 @@ public:
   Bool operator ==(const Normal & other) const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  virtual Normal * clone() const;
+  Normal * clone() const override;
 
   /** Compute the density generator of the ellipticalal generator, i.e.
    *  the function phi such that the density of the distribution can
    *  be written as p(x) = phi(t(x-mu)R^(-1)(x-mu))                      */
-  Scalar computeDensityGenerator(const Scalar betaSquare) const;
-  Scalar computeLogDensityGenerator(const Scalar betaSquare) const;
+  Scalar computeDensityGenerator(const Scalar betaSquare) const override;
+  Scalar computeLogDensityGenerator(const Scalar betaSquare) const override;
 
   /** Compute the derivative of the density generator */
-  Scalar computeDensityGeneratorDerivative(const Scalar betaSquare) const;
+  Scalar computeDensityGeneratorDerivative(const Scalar betaSquare) const override;
 
   /** Compute the seconde derivative of the density generator */
-  Scalar computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const;
+  Scalar computeDensityGeneratorSecondDerivative(const Scalar betaSquare) const override;
 
   /** Get one realization of the Normal distribution */
-  Point getRealization() const;
-  Sample getSample(const UnsignedInteger size) const;
+  Point getRealization() const override;
+  Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the PDF of the Normal distribution */
   using EllipticalDistribution::computePDF;
-  Scalar computePDF(const Scalar scalar) const;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Scalar scalar) const override;
+  Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the Normal distribution */
   using EllipticalDistribution::computeCDF;
-  Scalar computeCDF(const Scalar scalar) const;
-  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Scalar scalar) const override;
+  Scalar computeCDF(const Point & point) const override;
 
   using EllipticalDistribution::computeComplementaryCDF;
-  Scalar computeComplementaryCDF(const Scalar scalar) const;
-  Scalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Scalar scalar) const override;
+  Scalar computeComplementaryCDF(const Point & point) const override;
 
   /** Compute the entropy of the distribution */
-  Scalar computeEntropy() const;
+  Scalar computeEntropy() const override;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  Complex computeCharacteristicFunction(const Scalar x) const;
-  Complex computeCharacteristicFunction(const Point & x) const;
-  Complex computeLogCharacteristicFunction(const Scalar x) const;
-  Complex computeLogCharacteristicFunction(const Point & x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const override;
+  Complex computeCharacteristicFunction(const Point & x) const override;
+  Complex computeLogCharacteristicFunction(const Scalar x) const override;
+  Complex computeLogCharacteristicFunction(const Point & x) const override;
 
   /** Get the probability content of an interval */
-  Scalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const override;
 
   /** Get the CDF gradient of the distribution */
   using EllipticalDistribution::computeCDFGradient;
-  Point computeCDFGradient(const Point & point) const;
+  Point computeCDFGradient(const Point & point) const override;
 
   /** Compute the radial distribution CDF */
   Scalar computeRadialDistributionCDF(const Scalar radius,
-                                      const Bool tail = false) const;
+                                      const Bool tail = false) const override;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using EllipticalDistribution::computeConditionalPDF;
-  Scalar computeConditionalPDF(const Scalar x, const Point & y) const;
-  Point computeSequentialConditionalPDF(const Point & x) const;
+  Scalar computeConditionalPDF(const Scalar x, const Point & y) const override;
+  Point computeSequentialConditionalPDF(const Point & x) const override;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using EllipticalDistribution::computeConditionalCDF;
-  Scalar computeConditionalCDF(const Scalar x, const Point & y) const;
-  Point computeSequentialConditionalCDF(const Point & x) const;
+  Scalar computeConditionalCDF(const Scalar x, const Point & y) const override;
+  Point computeSequentialConditionalCDF(const Point & x) const override;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
   using EllipticalDistribution::computeConditionalQuantile;
-  Scalar computeConditionalQuantile(const Scalar q, const Point & y) const;
-  Point computeSequentialConditionalQuantile(const Point & q) const;
+  Scalar computeConditionalQuantile(const Scalar q, const Point & y) const override;
+  Point computeSequentialConditionalQuantile(const Point & q) const override;
 
   /** Get the i-th marginal distribution */
-  Distribution getMarginal(const UnsignedInteger i) const;
+  Distribution getMarginal(const UnsignedInteger i) const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  Distribution getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const override;
 
   /** Get the roughness, i.e. the L2-norm of the PDF */
-  Scalar getRoughness() const;
+  Scalar getRoughness() const override;
 
   /** Get the skewness of the distribution */
-  Point getSkewness() const;
+  Point getSkewness() const override;
 
   /** Get the kurtosis of the distribution */
-  Point getKurtosis() const;
+  Point getKurtosis() const override;
 
   /** Get the raw moments of the standardized distribution */
-  Point getStandardMoment(const UnsignedInteger n) const;
+  Point getStandardMoment(const UnsignedInteger n) const override;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
-  Distribution getStandardRepresentative() const;
+  Distribution getStandardRepresentative() const override;
 
   /** Correlation matrix accessor */
   void setCorrelation(const CorrelationMatrix & R);
 
   /** Get the copula of a distribution */
-  Distribution getCopula() const;
+  Distribution getCopula() const override;
 
   /* Interface specific to Implementation */
 
   /** Tell if the distribution has independent copula */
-  Bool hasIndependentCopula() const;
+  Bool hasIndependentCopula() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
 private:
 
   /** Compute the numerical range of the distribution given the parameters values */
-  void computeRange();
+  void computeRange() override;
 
   /** Quantile computation for dimension=1 */
-  Scalar computeScalarQuantile(const Scalar prob,
-                               const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Check if the distribution has independent copula */
   void checkIndependentCopula();

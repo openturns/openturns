@@ -46,10 +46,10 @@ public:
   explicit ODESolverImplementation(const Function & transitionFunction);
 
   /** Virtual constructor */
-  virtual ODESolverImplementation * clone() const;
+  ODESolverImplementation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Solve the ODE */
   virtual Sample solve(const Point & initialState,
@@ -63,10 +63,10 @@ public:
   Function getTransitionFunction() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Transition function */

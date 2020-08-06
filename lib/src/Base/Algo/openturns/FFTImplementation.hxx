@@ -50,7 +50,7 @@ public:
   FFTImplementation();
 
   /** Virtual copy constructor */
-  virtual FFTImplementation * clone() const;
+  FFTImplementation * clone() const override;
 
   /** FFT transformation on real */
   virtual ComplexCollection transform(const ScalarCollection & collection) const;
@@ -139,10 +139,10 @@ public:
   virtual ComplexTensor inverseTransform3D(const Tensor & tensor) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 } ; /* class FFTImplementation */
 

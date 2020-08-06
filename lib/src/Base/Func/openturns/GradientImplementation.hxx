@@ -55,14 +55,14 @@ public:
   /** The Gradient that actually realizes assignment between objects */
 
   /** Virtual constructor */
-  virtual GradientImplementation * clone() const;
+  GradientImplementation * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const GradientImplementation & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /** Get the i-th marginal evaluation */
@@ -95,10 +95,10 @@ public:
   UnsignedInteger getCallsNumber() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

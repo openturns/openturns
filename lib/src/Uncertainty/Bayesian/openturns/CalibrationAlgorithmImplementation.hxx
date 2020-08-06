@@ -53,7 +53,7 @@ public:
                                      const Distribution & parameterPrior);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Model accessor */
   Function getModel() const;
@@ -77,13 +77,13 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual CalibrationAlgorithmImplementation * clone() const;
+  CalibrationAlgorithmImplementation * clone() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** compute output at prior and posterior */

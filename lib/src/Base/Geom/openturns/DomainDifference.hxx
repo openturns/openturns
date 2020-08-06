@@ -48,13 +48,13 @@ public:
   DomainDifference(const Domain & left, const Domain & right);
 
   /** Virtual constructor method */
-  virtual DomainDifference * clone() const;
+  DomainDifference * clone() const override;
 
   /** Check if the given point is inside this domain */
-  Bool contains(const Point & point) const;
+  Bool contains(const Point & point) const override;
 
   /** Check if the given points are inside this domain */
-  BoolCollection contains(const Sample & sample) const;
+  BoolCollection contains(const Sample & sample) const override;
 
   /** Comparison operator */
   Bool operator == (const DomainDifference & other) const;
@@ -63,14 +63,14 @@ public:
   using DomainImplementation::operator !=;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

@@ -42,22 +42,22 @@ public:
   MethodOfMomentsFactory(const Distribution & distribution);
 
   /** Virtual constructor */
-  virtual MethodOfMomentsFactory * clone() const;
+  MethodOfMomentsFactory * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   using DistributionFactoryImplementation::build;
 
   /* Here is the interface that all derived class must implement */
   /** Build a distribution based on a sample */
-  virtual Distribution build(const Sample & sample) const;
+  Distribution build(const Sample & sample) const override;
 
   /** Build a distribution based on a set of parameters */
-  virtual Point buildParameter(const Sample & sample) const;
+  Point buildParameter(const Sample & sample) const;
 
   /** Solver accessor */
   void setOptimizationAlgorithm(const OptimizationAlgorithm & solver);
@@ -73,10 +73,10 @@ public:
   Indices getKnownParameterIndices() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /* The underlying distribution */

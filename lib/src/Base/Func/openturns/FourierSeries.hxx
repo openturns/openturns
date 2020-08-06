@@ -45,26 +45,26 @@ public:
                          const UnsignedInteger k = 0);
 
   /** Virtual constructor */
-  virtual FourierSeries * clone() const;
+  FourierSeries * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** FourierSeries are evaluated as functors */
-  Scalar operator() (const Scalar x) const;
+  Scalar operator() (const Scalar x) const override;
 
   /** FourierSeries gradient */
-  Scalar gradient(const Scalar x) const;
+  Scalar gradient(const Scalar x) const override;
 
   /** FourierSeries hessian */
-  Scalar hessian(const Scalar x) const;
+  Scalar hessian(const Scalar x) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   Bool isCosine_;

@@ -47,7 +47,7 @@ public:
   explicit OptimizationAlgorithmImplementation(const OptimizationProblem & problem);
 
   /** Virtual constructor */
-  virtual OptimizationAlgorithmImplementation * clone() const;
+  OptimizationAlgorithmImplementation * clone() const override;
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
   virtual void run();
@@ -108,13 +108,13 @@ public:
   virtual void setMaximumConstraintError(const Scalar maximumConstraintError);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Verbose accessor */
   virtual Bool getVerbose() const;

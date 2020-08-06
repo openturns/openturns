@@ -47,7 +47,7 @@ public:
   FiniteDifferenceStep(const Implementation & p_implementation);
 #endif
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Epsilon accessor */
   void setEpsilon(const Point & epsilon);

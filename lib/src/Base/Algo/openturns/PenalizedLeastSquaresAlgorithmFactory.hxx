@@ -45,23 +45,23 @@ public:
   PenalizedLeastSquaresAlgorithmFactory(const Bool useNormal = false);
 
   /** Virtual constructor */
-  virtual PenalizedLeastSquaresAlgorithmFactory * clone() const;
+  PenalizedLeastSquaresAlgorithmFactory * clone() const override;
 
   /** Method to create new ApproximationAlgorithmImplementation objects */
-  virtual PenalizedLeastSquaresAlgorithm * build (const Sample & x,
+  PenalizedLeastSquaresAlgorithm * build (const Sample & x,
       const Sample & y,
       const Point & weight,
       const FunctionCollection & psi,
-      const Indices & indices) const;
+      const Indices & indices) const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   Bool useNormal_;

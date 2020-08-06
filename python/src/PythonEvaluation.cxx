@@ -184,13 +184,6 @@ String PythonEvaluation::__str__(const String & ) const
   return oss;
 }
 
-/* Test for actual implementation */
-Bool PythonEvaluation::isActualImplementation() const
-{
-  return true;
-}
-
-
 
 /* Here is the interface that all derived class must implement */
 

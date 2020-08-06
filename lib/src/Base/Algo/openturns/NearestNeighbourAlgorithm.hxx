@@ -74,10 +74,10 @@ public:
   virtual Indices queryK(const Point & x, const UnsignedInteger k, const Bool sorted  = false) const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 } ; /* class NearestNeighbourAlgorithm */
 

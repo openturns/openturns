@@ -93,7 +93,7 @@ public:
   /** Reload configuration */
   static void Reload();
 
-  /** @copydoc Object::__repr__() const */
+  /** String representation */
   String __repr__() const;
 
 protected:

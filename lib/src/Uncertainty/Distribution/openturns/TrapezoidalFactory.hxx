@@ -41,15 +41,15 @@ public:
   TrapezoidalFactory();
 
   /** Virtual constructor */
-  TrapezoidalFactory * clone() const;
+  TrapezoidalFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build( const Sample & sample ) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
-  Trapezoidal buildAsTrapezoidal( const Sample & sample ) const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
+  Trapezoidal buildAsTrapezoidal(const Sample & sample) const;
   Trapezoidal buildAsTrapezoidal(const Point & parameters) const;
   Trapezoidal buildAsTrapezoidal() const;
 

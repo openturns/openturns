@@ -46,36 +46,36 @@ public:
                              const Mesh & mesh);
 
   /** Virtual constructor */
-  virtual ConditionedGaussianProcess * clone() const;
+  ConditionedGaussianProcess * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter  - pretty print */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Realization accessor */
-  Field getRealization() const;
+  Field getRealization() const override;
 
   /** Is the underlying a Gaussian process ? */
-  Bool isNormal() const;
+  Bool isNormal() const override;
 
   /** Is the underlying a stationary process ? */
-  Bool isStationary() const;
+  Bool isStationary() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
   /** Mesh accessor */
   using GaussianProcess::setMesh;
-  void setMesh(const Mesh & mesh);
+  void setMesh(const Mesh & mesh) override;
 
   using GaussianProcess::setTimeGrid;
-  void setTimeGrid(const RegularGrid & timeGrid);
+  void setTimeGrid(const RegularGrid & timeGrid) override;
 
   /** Set sampling method accessor */
   using GaussianProcess::setSamplingMethod;

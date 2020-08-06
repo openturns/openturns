@@ -61,10 +61,10 @@ public:
                                  const FittingAlgorithm & fittingAlgorithm = CorrectedLeaveOneOut());
 
   /** Virtual constructor */
-  virtual LeastSquaresMetaModelSelection * clone() const;
+  LeastSquaresMetaModelSelection * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** BasisSequenceFactory accessor */
   void setBasisSequenceFactory(const BasisSequenceFactory & basisSequenceFactory);
@@ -76,13 +76,13 @@ public:
 
   /** Perform the selection */
   using ApproximationAlgorithmImplementation::run;
-  virtual void run(const DesignProxy & proxy);
+  void run(const DesignProxy & proxy) override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

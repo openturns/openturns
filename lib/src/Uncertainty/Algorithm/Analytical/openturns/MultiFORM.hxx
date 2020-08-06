@@ -47,7 +47,7 @@ public:
             const Point & physicalStartingPoint);
 
   /** Virtual constructor */
-  virtual MultiFORM * clone() const;
+  MultiFORM * clone() const override;
 
   /** Result accessor */
   MultiFORMResult getResult() const;
@@ -57,16 +57,16 @@ public:
   UnsignedInteger getMaximumNumberOfDesignPoints() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Function that computes the design point by re-using the Analytical::run() and creates a MultiFORM::Result */
-  void run();
+  void run() override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

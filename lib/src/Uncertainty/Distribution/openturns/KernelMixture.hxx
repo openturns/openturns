@@ -49,12 +49,12 @@ public:
   /** Comparison operator */
   Bool operator ==(const KernelMixture & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /** Kernel accessor */
@@ -73,95 +73,95 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual KernelMixture * clone() const;
+  KernelMixture * clone() const override;
 
   /** Get one realization of the KernelMixture */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Get the DDF of the KernelMixture */
   using ContinuousDistribution::computeDDF;
-  Point computeDDF(const Point & point) const;
+  Point computeDDF(const Point & point) const override;
 
   /** Get the PDF of the KernelMixture */
   using ContinuousDistribution::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the KernelMixture */
   using ContinuousDistribution::computeCDF;
-  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const override;
   using ContinuousDistribution::computeComplementaryCDF;
-  Scalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const override;
 
   /** Compute the survival function */
   using ContinuousDistribution::computeSurvivalFunction;
-  Scalar computeSurvivalFunction(const Point & point) const;
+  Scalar computeSurvivalFunction(const Point & point) const override;
 
   /** Get the probability content of an interval */
-  Scalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const override;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  Complex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const override;
 
   /** Get the PDF gradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
-  Point computePDFGradient(const Point & point) const;
+  Point computePDFGradient(const Point & point) const override;
 
   /** Get the CDF gradient of the distribution */
   using ContinuousDistribution::computeCDFGradient;
-  Point computeCDFGradient(const Point & point) const;
+  Point computeCDFGradient(const Point & point) const override;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using ContinuousDistribution::computeConditionalPDF;
-  Scalar computeConditionalPDF(const Scalar x, const Point & y) const;
-  Point computeSequentialConditionalPDF(const Point & x) const;
+  Scalar computeConditionalPDF(const Scalar x, const Point & y) const override;
+  Point computeSequentialConditionalPDF(const Point & x) const override;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   using ContinuousDistribution::computeConditionalCDF;
-  Scalar computeConditionalCDF(const Scalar x, const Point & y) const;
-  Point computeSequentialConditionalCDF(const Point & x) const;
+  Scalar computeConditionalCDF(const Scalar x, const Point & y) const override;
+  Point computeSequentialConditionalCDF(const Point & x) const override;
 
   /** Get the i-th marginal distribution */
-  Distribution getMarginal(const UnsignedInteger i) const;
+  Distribution getMarginal(const UnsignedInteger i) const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  Distribution getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const override;
 
   /** Get the standard deviation of the distribution */
-  Point getStandardDeviation() const;
+  Point getStandardDeviation() const override;
 
   /** Get the skewness of the distribution */
-  Point getSkewness() const;
+  Point getSkewness() const override;
 
   /** Get the kurtosis of the distribution */
-  Point getKurtosis() const;
+  Point getKurtosis() const override;
 
   /** Parameters value and description accessor */
-  PointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const override;
 
   /** Parameters value accessors */
-  void setParameter(const Point & parameter);
-  Point getParameter() const;
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
 
   /** Parameters description accessor */
-  Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
   /** Check if the distribution is elliptical */
-  Bool isElliptical() const;
+  Bool isElliptical() const override;
 
   /** Check if the distribution is constinuous */
-  Bool isContinuous() const;
+  Bool isContinuous() const override;
 
   /** Tell if the distribution has elliptical copula */
-  Bool hasEllipticalCopula() const;
+  Bool hasEllipticalCopula() const override;
 
   /** Tell if the distribution has independent copula */
-  Bool hasIndependentCopula() const;
+  Bool hasIndependentCopula() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
@@ -169,17 +169,16 @@ protected:
 private:
 
   /** Get the quantile of the distribution, i.e the value Xp such that P(X <= Xp) = prob */
-  Scalar computeScalarQuantile(const Scalar prob,
-                               const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Compute the numerical range of the distribution given the parameters values */
-  void computeRange();
+  void computeRange() override;
 
   /** Get the mean of a kernelMixture */
-  void computeMean() const;
+  void computeMean() const override;
 
   /** Get the covariance of a kernelMixture */
-  void computeCovariance() const;
+  void computeCovariance() const override;
 
   /** Compute the normalization factor */
   void computeNormalizationFactor();

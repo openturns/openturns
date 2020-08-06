@@ -41,17 +41,17 @@ public:
   SpaceFillingC2();
 
   /** Virtual constructor method */
-  SpaceFillingC2 * clone() const;
+  SpaceFillingC2 * clone() const override;
 
   /** Evaluate criterion on a sample */
-  Scalar evaluate(const Sample& sample) const;
+  Scalar evaluate(const Sample & sample) const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Compute criterion when performing an elementary perturbation */
   Scalar perturbLHS(Sample& oldDesign, Scalar oldCriterion,
-                    UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const;
+                    UnsignedInteger row1, UnsignedInteger row2, UnsignedInteger column) const override;
 
 private:
 

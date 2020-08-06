@@ -48,16 +48,16 @@ public:
   NatafEllipticalDistributionGradient(const TriangularMatrix & inverseCholesky);
 
   /** Virtual constructor */
-  virtual NatafEllipticalDistributionGradient * clone() const;
+  NatafEllipticalDistributionGradient * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

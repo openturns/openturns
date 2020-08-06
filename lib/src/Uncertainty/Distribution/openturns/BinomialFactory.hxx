@@ -40,14 +40,14 @@ public:
   BinomialFactory();
 
   /** Virtual constructor */
-  virtual BinomialFactory * clone() const;
+  BinomialFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
   Binomial buildAsBinomial(const Sample & sample) const;
   Binomial buildAsBinomial(const Point & parameters) const;
   Binomial buildAsBinomial() const;

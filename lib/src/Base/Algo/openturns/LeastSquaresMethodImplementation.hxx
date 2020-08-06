@@ -61,10 +61,10 @@ public:
   explicit LeastSquaresMethodImplementation(const Matrix & matrix);
 
   /** Virtual constructor */
-  virtual LeastSquaresMethodImplementation * clone() const;
+  LeastSquaresMethodImplementation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Input sample accessor */
   virtual Sample getInputSample() const;
@@ -116,10 +116,10 @@ protected:
 public:
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Weight accessor, check for positivness and uniformity, compute the square roots */

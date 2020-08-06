@@ -48,46 +48,45 @@ public:
               const Scalar nu);
 
   /** Virtual copy constructor */
-  MaternModel * clone() const;
+  MaternModel * clone() const override;
 
   /** Computation of the covariance function */
   using StationaryCovarianceModel::computeStandardRepresentative;
-  Scalar computeStandardRepresentative(const Point & tau) const;
+  Scalar computeStandardRepresentative(const Point & tau) const override;
 #ifndef SWIG
   Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-                                       const Collection<Scalar>::const_iterator & t_begin) const;
+                                       const Collection<Scalar>::const_iterator & t_begin) const override;
 #endif
 
   /** Gradient */
-  virtual Matrix partialGradient(const Point & s,
-                                 const Point & t) const;
+  Matrix partialGradient(const Point & s, const Point & t) const override;
 
   // Reimplement the setScale method
   using StationaryCovarianceModel::setScale;
-  void setScale(const Point & scale);
+  void setScale(const Point & scale) override;
 
   /** Nu accessor */
   Scalar getNu() const;
   void setNu(const Scalar nu);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
   /** Parameter accessor */
-  virtual void setFullParameter(const Point & parameter);
-  virtual Point getFullParameter() const;
-  virtual Description getFullParameterDescription() const;
+  void setFullParameter(const Point & parameter) override;
+  Point getFullParameter() const override;
+  Description getFullParameterDescription() const override;
 
 private:
 
