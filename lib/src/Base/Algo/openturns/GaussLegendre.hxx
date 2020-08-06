@@ -47,13 +47,13 @@ public:
   explicit GaussLegendre(const Indices & discretization);
 
   /** Virtual copy constructor */
-  virtual GaussLegendre * clone() const;
+  GaussLegendre * clone() const override;
 
   /** Compute an approximation of \int_a^b f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an nD interval.
    */
   using IntegrationAlgorithmImplementation::integrate;
   Point integrate(const Function & function,
-                  const Interval & interval) const;
+                  const Interval & interval) const override;
   Point integrateWithNodes(const Function & function,
                            const Interval & interval,
                            Sample & adaptedNodesOut) const;
@@ -68,10 +68,10 @@ public:
   Point getWeights() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 private:
 

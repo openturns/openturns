@@ -42,14 +42,14 @@ public:
   AliMikhailHaqCopulaFactory();
 
   /** Virtual constructor */
-  virtual AliMikhailHaqCopulaFactory * clone() const;
+  AliMikhailHaqCopulaFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
   AliMikhailHaqCopula buildAsAliMikhailHaqCopula(const Sample & sample) const;
   AliMikhailHaqCopula buildAsAliMikhailHaqCopula(const Point & parameters) const;
   AliMikhailHaqCopula buildAsAliMikhailHaqCopula() const;

@@ -107,8 +107,8 @@ public:
                                       const Bool keepIntact = true);
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 #ifndef SWIG
   /** Operator () gives access to the elements of the matrix (to modify these elements) */

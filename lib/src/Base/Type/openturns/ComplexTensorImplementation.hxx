@@ -71,14 +71,14 @@ public:
 
 
   /** Virtual constructor */
-  virtual ComplexTensorImplementation * clone() const;
+  ComplexTensorImplementation * clone() const override;
 
   /** Set small elements to zero */
   ComplexTensorImplementation clean(const Scalar threshold) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () gives access to the elements of the tensor (to modify these elements) */
   /** The element of the tensor is designated by its row number i, its column number j and its sheet number k */
@@ -127,10 +127,10 @@ public:
   Bool isEmpty() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Low-level data access */
   UnsignedInteger stride(const UnsignedInteger dim) const;

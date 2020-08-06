@@ -54,11 +54,11 @@ public:
                         const Bool invertible = true);
 
   /** Virtual constructor */
-  virtual ARMALikelihoodFactory * clone() const;
+  ARMALikelihoodFactory * clone() const override;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** set accessor for starting point of the optimization
    *  We also add a global set method
@@ -74,18 +74,18 @@ public:
   CovarianceMatrix getInitialCovarianceMatrix() const;
 
   /** Build method ==> estimating the coefficients */
-  ARMA build(const TimeSeries & timeSeries) const;
-  ARMA build(const ProcessSample & sample) const;
+  ARMA build(const TimeSeries & timeSeries) const override;
+  ARMA build(const ProcessSample & sample) const override;
 
   /** Verbosity accessor */
   Bool getVerbose() const;
   void setVerbose(const Bool verbose);
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private :
 

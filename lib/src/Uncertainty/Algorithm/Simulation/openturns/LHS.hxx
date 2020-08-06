@@ -52,24 +52,24 @@ public:
 
 
   /** Virtual constructor */
-  virtual LHS * clone() const;
+  LHS * clone() const override;
 
   /** Performs the actual computation. */
-  void run();
+  void run() override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
   /** Compute the block sample */
-  Sample computeBlockSample();
+  Sample computeBlockSample() override;
 
   /** Second antecedent dimension */
   UnsignedInteger dimension_;

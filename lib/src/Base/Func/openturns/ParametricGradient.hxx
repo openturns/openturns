@@ -43,7 +43,7 @@ public:
   ParametricGradient();
 
   /** Parameters constructor */
-  ParametricGradient(const ParametricEvaluation & evaluation);
+  explicit ParametricGradient(const ParametricEvaluation & evaluation);
 
 #ifndef SWIG
   /** Parameters constructor */
@@ -51,26 +51,26 @@ public:
 #endif
 
   /** Virtual constructor method */
-  ParametricGradient * clone() const;
+  ParametricGradient * clone() const override;
 
   /** Gradient operator */
   using GradientImplementation::gradient;
-  Matrix gradient(const Point & point) const;
+  Matrix gradient(const Point & point) const override;
 
   /** Dimension accessor */
-  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
   UnsignedInteger getParameterDimension() const;
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

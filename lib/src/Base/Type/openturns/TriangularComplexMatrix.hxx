@@ -64,8 +64,8 @@ public:
                           const Bool isLower = true);
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Get the dimension of the matrix */
   UnsignedInteger getDimension() const;
@@ -126,7 +126,7 @@ public:
   SquareComplexMatrix operator * (const SquareMatrix & m) const;
 
   /** Real Matrix multiplications (must have consistent dimensions) */
-  ComplexMatrix operator * (const Matrix & m) const;
+  ComplexMatrix operator * (const Matrix & m) const override;
 
   /** Real SymmetricMatrix multiplications  */
   SquareComplexMatrix operator * (const SymmetricMatrix & m) const;
@@ -135,13 +135,13 @@ public:
   TriangularComplexMatrix operator * (const IdentityMatrix & m) const;
 
   /** Multiplication with a NumericaComplexCollection (must have consistent dimensions) */
-  ComplexCollection operator * (const ComplexCollection & p) const;
+  ComplexCollection operator * (const ComplexCollection & p) const override;
 
   /** Multiplication with a NumericaScalarCollection (must have consistent dimensions) */
-  ComplexCollection operator * (const ScalarCollection & p) const;
+  ComplexCollection operator * (const ScalarCollection & p) const override;
 
   /** Multiplication with a Point (must have consistent dimensions) */
-  ComplexCollection operator * (const Point & p) const;
+  ComplexCollection operator * (const Point & p) const override;
 
   /** Division by a Complex*/
   TriangularComplexMatrix operator / (const Complex s) const;

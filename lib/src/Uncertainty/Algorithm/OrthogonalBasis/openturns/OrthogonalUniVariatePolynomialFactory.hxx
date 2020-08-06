@@ -55,10 +55,10 @@ public:
   explicit OrthogonalUniVariatePolynomialFactory(const Distribution & measure);
 
   /** Virtual constructor */
-  virtual OrthogonalUniVariatePolynomialFactory * clone() const;
+  OrthogonalUniVariatePolynomialFactory * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** The method to get the polynomial of any degree. */
   OrthogonalUniVariatePolynomial build(const UnsignedInteger degree) const;
@@ -80,10 +80,10 @@ public:
   Distribution getMeasure() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
   /** Calculate the coefficients of recurrence a0, a1, a2 such that

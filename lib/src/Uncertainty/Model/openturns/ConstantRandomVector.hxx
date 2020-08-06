@@ -53,17 +53,17 @@ public:
   explicit ConstantRandomVector(const Point & point);
 
   /** Virtual constructor */
-  virtual ConstantRandomVector * clone() const;
+  ConstantRandomVector * clone() const override;
 
   /** Parameters value accessor */
-  virtual Point getParameter() const;
-  virtual void setParameter(const Point & parameters);
+  Point getParameter() const override;
+  void setParameter(const Point & parameters) override;
 
   /** Parameters description accessor */
-  virtual Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 
 
@@ -71,34 +71,34 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Dimension accessor */
-  UnsignedInteger getDimension() const;
+  UnsignedInteger getDimension() const override;
 
   /** Realization accessor */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Numerical sample accessor */
-  Sample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const override;
 
   /** Mean accessor */
-  Point getMean() const;
+  Point getMean() const override;
 
   /** Covariance accessor */
-  CovarianceMatrix getCovariance() const;
+  CovarianceMatrix getCovariance() const override;
 
   /** Get the random vector corresponding to the i-th marginal component */
-  RandomVector getMarginal(const UnsignedInteger i) const;
+  RandomVector getMarginal(const UnsignedInteger i) const override;
 
   /** Get the marginal random vector corresponding to indices components */
-  RandomVector getMarginal(const Indices & indices) const;
+  RandomVector getMarginal(const Indices & indices) const override;
 
   /** Distribution accessor */
-  Distribution getDistribution() const;
+  Distribution getDistribution() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

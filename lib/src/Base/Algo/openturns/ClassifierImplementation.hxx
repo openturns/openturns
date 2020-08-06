@@ -45,7 +45,7 @@ public:
                            const Indices & outClasses);
 
   /** Virtual constructor */
-  virtual ClassifierImplementation * clone() const;
+  ClassifierImplementation * clone() const override;
 
   virtual UnsignedInteger getNumberOfClasses() const;
 
@@ -72,8 +72,8 @@ protected:
 public:
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Verbosity accessor */
   void setVerbose(const Bool verbose);
@@ -87,10 +87,10 @@ public:
   Bool isParallel() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

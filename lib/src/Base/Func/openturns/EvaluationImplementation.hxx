@@ -57,14 +57,14 @@ public:
   EvaluationImplementation();
 
   /** Virtual constructor */
-  virtual EvaluationImplementation * clone() const;
+  EvaluationImplementation * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const EvaluationImplementation & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /** Description Accessor, i.e. the names of the input and output parameters */
@@ -159,10 +159,10 @@ public:
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:

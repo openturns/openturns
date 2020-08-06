@@ -55,25 +55,25 @@ public:
                 const Bool supervised = true);
 
   /** Virtual constructor */
-  virtual ExpertMixture * clone() const;
+  ExpertMixture * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const ExpertMixture & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () */
   using EvaluationImplementation::operator();
-  Point operator() (const Point & inP) const;
-  Sample operator() (const Sample & inS) const;
+  Point operator() (const Point & inP) const override;
+  Sample operator() (const Sample & inS) const override;
 
   /** Accessor for input point dimension */
-  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Accessor for local experts */
   FunctionCollection getExperts() const;
@@ -84,10 +84,10 @@ public:
   void setClassifier(const Classifier & classifier);
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   Point evaluateSupervised(const Point & inP) const;

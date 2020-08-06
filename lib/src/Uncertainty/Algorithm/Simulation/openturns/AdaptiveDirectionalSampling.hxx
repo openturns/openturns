@@ -50,10 +50,10 @@ public:
                               const SamplingStrategy & samplingStrategy = SamplingStrategy());
 
   /** Virtual constructor */
-  virtual AdaptiveDirectionalSampling * clone() const;
+  AdaptiveDirectionalSampling * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Root strategy accessor */
   void setRootStrategy(const RootStrategy & rootStrategy);
@@ -83,11 +83,11 @@ public:
   Point getTStatistic() const;
 
   /** Performs the actual computation. */
-  virtual void run();
+  void run() override;
 
 private:
   /** Compute the block sample and the points that realized the event */
-  virtual Sample computeBlockSample();
+  Sample computeBlockSample() override;
 
   StandardEvent standardEvent_;
 

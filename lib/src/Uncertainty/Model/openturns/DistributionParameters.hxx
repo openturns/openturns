@@ -72,8 +72,8 @@ public:
   Description getDescription() const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
 }; /* class DistributionParameters */

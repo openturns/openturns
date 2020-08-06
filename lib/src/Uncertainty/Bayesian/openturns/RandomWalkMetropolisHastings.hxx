@@ -65,15 +65,15 @@ public:
                                const DistributionCollection & proposal);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual RandomWalkMetropolisHastings * clone() const;
+  RandomWalkMetropolisHastings * clone() const override;
 
   /** Get a realization */
-  virtual Point getRealization() const;
+  Point getRealization() const override;
 
   /** Calibration strategy accessor */
   void setCalibrationStrategy(const CalibrationStrategy & calibrationStrategy);
@@ -88,10 +88,10 @@ public:
   Point getAcceptanceRate() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   /// proposal densities of the markov chain

@@ -58,25 +58,24 @@ public:
                                        const Bool computeSecondOrder = false);
 
   /** Virtual constructor */
-  virtual MauntzKucherenkoSensitivityAlgorithm * clone() const;
+  MauntzKucherenkoSensitivityAlgorithm * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
   /** Internal method that compute Vi/VTi using a huge sample */
-  Sample computeIndices(const Sample & sample,
-                        Sample & VTi) const;
+  Sample computeIndices(const Sample & sample, Sample & VTi) const override;
 
   /** void method that computes asymptotic distribution */
-  virtual void computeAsymptoticDistribution() const;
+  void computeAsymptoticDistribution() const override;
 
 }; /* class MauntzKucherenkoSensitivityAlgorithm */
 

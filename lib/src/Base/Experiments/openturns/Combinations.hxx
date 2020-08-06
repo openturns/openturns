@@ -44,15 +44,15 @@ public:
                const UnsignedInteger n);
 
   /** Virtual constructor */
-  virtual Combinations * clone() const;
+  Combinations * clone() const override;
 
   /** Experiment plane generation :
    *  all the combinations of k elements amongst {0, ..., n-1}
    */
-  virtual IndicesCollection generate();
+  IndicesCollection generate() override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Subset size accessor */
   void setK(const UnsignedInteger k);

@@ -48,25 +48,25 @@ public:
 
 
   /** Virtual constructor */
-  virtual NatafIndependentCopulaGradient * clone() const;
+  NatafIndependentCopulaGradient * clone() const override;
 
   /** Gradient */
-  Matrix gradient(const Point & inP) const;
+  Matrix gradient(const Point & inP) const override;
 
   /** Accessor for input point dimension */
-  virtual UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  virtual UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

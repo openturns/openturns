@@ -54,24 +54,24 @@ public:
 #endif
 
   /** Virtual constructor */
-  virtual InverseBoxCoxGradient * clone() const;
+  InverseBoxCoxGradient * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const InverseBoxCoxGradient & other) const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Gradient evaluation method */
   using GradientImplementation::gradient;
-  Matrix gradient(const Point & inP) const;
+  Matrix gradient(const Point & inP) const override;
 
   /** Accessor for input point dimension */
-  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Accessor for the lambda point */
   Point getLambda() const;
@@ -80,10 +80,10 @@ public:
   Point getShift() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** The underlying evaluation */

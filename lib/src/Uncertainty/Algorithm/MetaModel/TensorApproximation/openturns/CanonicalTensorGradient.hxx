@@ -45,30 +45,30 @@ public:
   explicit CanonicalTensorGradient(const CanonicalTensorEvaluation & evaluation);
 
   /** Virtual constructor */
-  virtual CanonicalTensorGradient * clone() const;
+  CanonicalTensorGradient * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const CanonicalTensorGradient & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () */
   using GradientImplementation::gradient;
-  Matrix gradient(const Point & inP) const;
+  Matrix gradient(const Point & inP) const override;
 
   /** Accessor for input point dimension */
-  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

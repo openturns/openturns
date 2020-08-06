@@ -49,23 +49,23 @@ public:
                const GaussKronrodRule & rule);
 
   /** Virtual copy constructor */
-  virtual GaussKronrod * clone() const;
+  GaussKronrod * clone() const override;
 
   /** Compute an approximation of \int_{[a,b]}f(x)dx, where [a,b]
    * is an 1D interval
    */
   using IntegrationAlgorithmImplementation::integrate;
 #ifndef SWIG
-  virtual Scalar integrate(const UniVariateFunction & function,
+  Scalar integrate(const UniVariateFunction & function,
                            const Scalar a,
                            const Scalar b) const;
 
-  virtual Point integrate(const Function & function,
+  Point integrate(const Function & function,
                           const Interval & interval,
-                          Scalar & error) const;
+                          Scalar & error) const override;
 
   // This method allows to get the estimated integration error as a scalar
-  virtual Point integrate(const Function & function,
+  Point integrate(const Function & function,
                           const Scalar a,
                           const Scalar b,
                           Scalar & error,
@@ -77,7 +77,7 @@ public:
 #endif
   // This method allows to get the estimated integration error as a Point,
   // needed by Python
-  virtual Point integrate(const Function & function,
+  Point integrate(const Function & function,
                           const Scalar a,
                           const Scalar b,
                           Point & error,
@@ -99,10 +99,10 @@ public:
   void setRule(const GaussKronrodRule & rule);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 private:
 

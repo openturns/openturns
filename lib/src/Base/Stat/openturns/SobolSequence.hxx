@@ -59,23 +59,23 @@ public:
   explicit SobolSequence(const UnsignedInteger dimension = 1);
 
   /** Virtual constructor */
-  virtual SobolSequence * clone() const;
+  SobolSequence * clone() const override;
 
   /** Initialize the sequence */
-  void initialize(const UnsignedInteger dimension);
+  void initialize(const UnsignedInteger dimension) override;
 
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1[ */
   using LowDiscrepancySequenceImplementation::generate;
-  Point generate() const;
+  Point generate() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** The numbers used to generate the sequence */

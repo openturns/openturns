@@ -52,7 +52,7 @@ public:
 
 
   /** Virtual constructor */
-  virtual FORM * clone() const;
+  FORM * clone() const override;
 
   /** Result accessor */
   FORMResult getResult() const;
@@ -61,16 +61,16 @@ public:
   void setResult(const FORMResult & formResult);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Function that computes the design point by re-using the Analytical::run() and creates a FORM::Result */
-  void run();
+  void run() override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

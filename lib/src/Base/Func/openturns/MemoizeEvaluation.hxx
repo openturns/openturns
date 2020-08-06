@@ -54,7 +54,7 @@ public:
   explicit MemoizeEvaluation(const Evaluation & evaluation, const HistoryStrategy & historyStrategy = Full());
 
   /** Virtual constructor */
-  virtual MemoizeEvaluation * clone() const;
+  MemoizeEvaluation * clone() const override;
 
   /** Function implementation accessors */
   void setEvaluation(const Evaluation & evaluation);
@@ -64,19 +64,19 @@ public:
   Bool operator ==(const MemoizeEvaluation & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
-  virtual Point operator() (const Point & inPoint) const;
+  Point operator() (const Point & inPoint) const override;
 
   /** Operator () */
-  virtual Sample operator() (const Sample & inSample) const;
+  Sample operator() (const Sample & inSample) const override;
 
   /** Get the evaluation corresponding to indices components */
-  virtual Evaluation getMarginal(const Indices & indices) const;
+  Evaluation getMarginal(const Indices & indices) const override;
   using EvaluationImplementation::getMarginal;
 
   /** Enable or disable the internal cache */
@@ -125,10 +125,10 @@ public:
   Sample getOutputHistory() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

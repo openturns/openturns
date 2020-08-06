@@ -53,39 +53,39 @@ public:
 
 
   /** Virtual constructor */
-  virtual ConditionalRandomVector * clone() const;
+  ConditionalRandomVector * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 
   /* Here is the interface that all derived class must implement */
 
   /** Dimension accessor */
-  UnsignedInteger getDimension() const;
+  UnsignedInteger getDimension() const override;
 
   /** Realization accessor */
-  Point getRealization() const;
+  Point getRealization() const override;
   Point getRealization(Point & parameters) const;
 
   /** Distribution accessor */
-  Distribution getDistribution() const;
+  Distribution getDistribution() const override;
 
   /** Random parameters accessor */
   RandomVector getRandomParameters() const;
 
   /** Parameters value accessor */
-  virtual Point getParameter() const;
-  virtual void setParameter(const Point & parameters);
+  Point getParameter() const override;
+  void setParameter(const Point & parameters) override;
 
   /** Parameters description accessor */
-  virtual Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

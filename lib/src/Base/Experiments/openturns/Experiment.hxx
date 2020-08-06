@@ -51,7 +51,7 @@ public:
 #endif
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Sample generation */
   virtual Sample generate() const;

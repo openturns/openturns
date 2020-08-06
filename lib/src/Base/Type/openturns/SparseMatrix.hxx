@@ -52,7 +52,7 @@ public:
                const Point & values);
 
   /** Virtual copy constructor */
-  virtual SparseMatrix * clone() const;
+  SparseMatrix * clone() const override;
 
   /** Read-only accessor to values */
   Scalar operator()(const UnsignedInteger i, const UnsignedInteger j) const;
@@ -83,16 +83,16 @@ public:
   void compress() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 //
 //   /** String converter */
-//   virtual String __str__(const String & offset = "") const;
+//   String __str__(const String & offset = "") const override;
 //
 //   /** Method save() stores the object through the StorageManager */
-//   virtual void save(Advocate & adv) const;
+//   void save(Advocate & adv) const override;
 //
 //   /** Method load() reloads the object from the StorageManager */
-//   virtual void load(Advocate & adv);
+//   void load(Advocate & adv) override;
 
 private:
 

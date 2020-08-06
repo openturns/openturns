@@ -49,47 +49,47 @@ public:
   explicit UnionEvent(const RandomVectorCollection & collection);
 
   /** Virtual constructor */
-  virtual UnionEvent * clone() const;
+  UnionEvent * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Dimension accessor */
-  virtual UnsignedInteger getDimension() const;
+  UnsignedInteger getDimension() const override;
 
   /** Collection accessor */
   void setEventCollection(const RandomVectorCollection & collection);
   RandomVectorCollection getEventCollection() const;
 
   /** Realization accessor */
-  virtual Point getRealization() const;
+  Point getRealization() const override;
 
   /** Whether it is an event */
-  virtual Bool isEvent() const;
+  Bool isEvent() const override;
 
   /** Whether it is composite */
-  virtual Bool isComposite() const;
+  Bool isComposite() const override;
 
   /** Antecedent accessor */
-  virtual RandomVector getAntecedent() const;
+  RandomVector getAntecedent() const override;
 
   /** Function accessor */
-  virtual Function getFunction() const;
+  Function getFunction() const override;
 
   /** Domain accessor */
-  virtual Domain getDomain() const;
+  Domain getDomain() const override;
 
   /** Operator accessor */
-  virtual ComparisonOperator getOperator() const;
+  ComparisonOperator getOperator() const override;
 
   /** Threshold accessor */
-  virtual Scalar getThreshold() const;
+  Scalar getThreshold() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   RandomVector getComposedEvent() const;
 

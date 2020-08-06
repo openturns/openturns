@@ -48,7 +48,7 @@ public:
                    const UnsignedInteger blockSize);
 
   /** Virtual constructor */
-  virtual SimulationResult * clone() const;
+  SimulationResult * clone() const override;
 
   /** Sample size accessor */
   UnsignedInteger getOuterSampling() const;
@@ -59,13 +59,13 @@ public:
   void setBlockSize(const UnsignedInteger blockSize);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

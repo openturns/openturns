@@ -48,13 +48,13 @@ public:
 
 
   /** Virtual constructor */
-  virtual RandomDirection * clone() const;
+  RandomDirection * clone() const override;
 
   /** Generate a set of directions */
-  Sample generate() const;
+  Sample generate() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 } ; /* class RandomDirection */
 

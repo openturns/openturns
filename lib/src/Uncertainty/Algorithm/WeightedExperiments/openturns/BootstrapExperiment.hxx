@@ -46,19 +46,19 @@ public:
   explicit BootstrapExperiment(const Sample & sample);
 
   /** Virtual constructor */
-  virtual BootstrapExperiment * clone() const;
+  BootstrapExperiment * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Distribution accessor */
-  virtual void setDistribution(const Distribution & distribution);
-  virtual Distribution getDistribution() const;
+  void setDistribution(const Distribution & distribution) override;
+  Distribution getDistribution() const override;
 
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
-  Sample generateWithWeights(Point & weightsOut) const;
+  Sample generateWithWeights(Point & weightsOut) const override;
 
   /** Selection generation */
   static Indices GenerateSelection(const UnsignedInteger size,

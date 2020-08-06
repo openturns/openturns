@@ -40,17 +40,17 @@ public:
   ArcsineFactory();
 
   /** Virtual constructor */
-  ArcsineFactory * clone() const;
+  ArcsineFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
 
   using DistributionFactoryImplementation::buildEstimator;
-  DistributionFactoryResult buildEstimator(const Sample & sample) const;
+  DistributionFactoryResult buildEstimator(const Sample & sample) const override;
 
   Arcsine buildAsArcsine(const Sample & sample) const;
   Arcsine buildAsArcsine(const Point & parameters) const;

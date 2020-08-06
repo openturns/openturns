@@ -50,23 +50,23 @@ public:
          const Scalar rhoBeg);
 
   /** Virtual constructor */
-  virtual Cobyla * clone() const;
+  Cobyla * clone() const override;
 
   /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
-  void run();
+  void run() override;
 
   /** RhoBeg accessor */
   Scalar getRhoBeg() const;
   void setRhoBeg(const Scalar rhoBeg);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Ignore failure return codes */
   void setIgnoreFailure(const Bool ignoreFailure);
@@ -74,7 +74,7 @@ public:
 
 protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
-  void checkProblem(const OptimizationProblem & problem) const;
+  void checkProblem(const OptimizationProblem & problem) const override;
 
 private:
 

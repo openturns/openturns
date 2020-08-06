@@ -46,25 +46,25 @@ public:
                       Scalar levelValue);
 
   /** Virtual constructor */
-  virtual NearestPointProblem * clone() const;
+  NearestPointProblem * clone() const override;
 
   /** Level function accessor */
-  Function getLevelFunction() const;
-  void setLevelFunction(const Function & levelFunction);
-  Bool hasLevelFunction() const;
+  Function getLevelFunction() const override;
+  void setLevelFunction(const Function & levelFunction) override;
+  Bool hasLevelFunction() const override;
 
   /** Level value accessor */
-  Scalar getLevelValue() const;
-  void setLevelValue(Scalar levelValue);
+  Scalar getLevelValue() const override;
+  void setLevelValue(Scalar levelValue) override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   void clearLevelFunction();

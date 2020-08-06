@@ -75,10 +75,10 @@ public:
         const UnsignedInteger compressionLevel = ResourceMap::GetAsUnsignedInteger("XMLStorageManager-DefaultCompressionLevel"));
 
   /** @copydoc Object::__repr__() const */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** @copydoc Object::__str__() const */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 
   /** This method saves the study through the storage manager */

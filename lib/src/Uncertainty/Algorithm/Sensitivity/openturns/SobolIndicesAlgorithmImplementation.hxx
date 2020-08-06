@@ -63,7 +63,7 @@ public:
                                       const Function & model,
                                       const Bool computeSecondOrder = false);
   /** Virtual constructor */
-  virtual SobolIndicesAlgorithmImplementation * clone() const;
+  SobolIndicesAlgorithmImplementation * clone() const override;
 
   /** First order indices accessor */
   virtual Point getFirstOrderIndices(const UnsignedInteger marginalIndex = 0) const;
@@ -103,16 +103,16 @@ public:
   Distribution getTotalOrderIndicesDistribution() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   static Graph DrawImportanceFactors(const PointWithDescription & importanceFactors,
                                      const String & title);

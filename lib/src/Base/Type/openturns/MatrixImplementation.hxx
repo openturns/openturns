@@ -82,11 +82,11 @@ public:
                        const ScalarCollection & elementsValues);
 
   /** Virtual constructor */
-  virtual MatrixImplementation * clone() const;
+  MatrixImplementation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () gives access to the elements of the MatrixImplementation (to modify these elements) */
   /** The element of the MatrixImplementation is designated by its row number i and its column number j */
@@ -300,10 +300,10 @@ public:
   Bool isTriangular(Bool lower = true) const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Low-level data access */
   UnsignedInteger stride(const UnsignedInteger dim) const;

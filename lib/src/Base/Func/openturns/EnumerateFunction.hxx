@@ -53,8 +53,8 @@ public:
   EnumerateFunction(Implementation & p_implementation);
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** The bijective association between an integer and a set of indices */
   Indices operator() (const UnsignedInteger index) const;

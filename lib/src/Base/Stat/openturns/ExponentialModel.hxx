@@ -63,35 +63,35 @@ public:
                    const CovarianceMatrix & spatialCovariance);
 
   /** Virtual copy constructor */
-  virtual ExponentialModel * clone() const;
+  ExponentialModel * clone() const override;
 
   /** Computation of the covariance function, stationary interface */
   using StationaryCovarianceModel::computeStandardRepresentative;
-  Scalar computeStandardRepresentative(const Point & tau) const;
+  Scalar computeStandardRepresentative(const Point & tau) const override;
 #ifndef SWIG
   Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-                                       const Collection<Scalar>::const_iterator & t_begin) const;
+                                       const Collection<Scalar>::const_iterator & t_begin) const override;
 #endif
 
   /** Gradient */
   using StationaryCovarianceModel::partialGradient;
-  Matrix partialGradient(const Point & s, const Point & t) const;
+  Matrix partialGradient(const Point & s, const Point & t) const override;
 
   /** Discretize the covariance function on a given TimeGrid */
   using StationaryCovarianceModel::discretize;
-  CovarianceMatrix discretize(const RegularGrid & regularGrid) const;
+  CovarianceMatrix discretize(const RegularGrid & regularGrid) const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private :
 

@@ -45,21 +45,21 @@ public:
   explicit LeastSquaresProblem(const Function & residualFunction);
 
   /** Virtual constructor */
-  virtual LeastSquaresProblem * clone() const;
+  LeastSquaresProblem * clone() const override;
 
   /** Residual function accessor */
-  Function getResidualFunction() const;
-  void setResidualFunction(const Function & residualFunction);
-  Bool hasResidualFunction() const;
+  Function getResidualFunction() const override;
+  void setResidualFunction(const Function & residualFunction) override;
+  Bool hasResidualFunction() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

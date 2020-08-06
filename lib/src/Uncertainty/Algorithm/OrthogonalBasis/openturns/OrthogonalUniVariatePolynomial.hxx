@@ -51,10 +51,10 @@ public:
   OrthogonalUniVariatePolynomial(const CoefficientsCollection & recurrenceCoefficients);
 
   /** Virtual constructor */
-  virtual OrthogonalUniVariatePolynomial * clone() const;
+  OrthogonalUniVariatePolynomial * clone() const override;
 
   /** OrthogonalUniVariatePolynomial are evaluated as functors */
-  Scalar operator() (const Scalar x) const;
+  Scalar operator() (const Scalar x) const override;
 
   /** Recurrence coefficients accessor */
   CoefficientsCollection getRecurrenceCoefficients() const;
@@ -63,10 +63,10 @@ public:
   ComplexCollection getRoots() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

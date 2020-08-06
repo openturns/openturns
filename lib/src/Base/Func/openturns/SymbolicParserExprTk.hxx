@@ -47,16 +47,16 @@ public:
   explicit SymbolicParserExprTk(const Description & outputVariablesNames);
 
   /** Virtual copy constructor */
-  virtual SymbolicParserExprTk * clone() const;
+  SymbolicParserExprTk * clone() const override;
 
-  Point operator()(const Point & inP) const;
-  Sample operator()(const Sample & inS) const;
+  Point operator()(const Point & inP) const override;
+  Sample operator()(const Sample & inS) const override;
 
   /* Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /* Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   void initialize() const;

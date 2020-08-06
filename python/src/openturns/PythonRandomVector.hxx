@@ -47,7 +47,7 @@ public:
   PythonRandomVector(const PythonRandomVector & other);
 
   /** Virtual constructor */
-  virtual PythonRandomVector * clone() const;
+  PythonRandomVector * clone() const override;
 
   /** Copy assignment operator */
   PythonRandomVector & operator=(const PythonRandomVector & rhs);
@@ -59,35 +59,35 @@ public:
   Bool operator ==(const PythonRandomVector & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset) const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /* Here is the interface that all derived class must implement */
 
   /** Dimension accessor */
-  virtual UnsignedInteger getDimension() const;
+  UnsignedInteger getDimension() const override;
 
   /** Realization accessor */
-  virtual Point getRealization() const;
+  Point getRealization() const override;
 
   /** Numerical sample accessor */
-  virtual Sample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const override;
 
   /** Mean accessor */
-  virtual Point getMean() const;
+  Point getMean() const override;
 
   /** Covariance accessor */
-  virtual CovarianceMatrix getCovariance() const;
+  CovarianceMatrix getCovariance() const override;
 
   /** Whether it is an event */
-  Bool isEvent() const;
+  Bool isEvent() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method save() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

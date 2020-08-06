@@ -59,31 +59,31 @@ public:
   /** Comparison operator */
   Bool operator ==(const ConditionalDistribution & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  virtual ConditionalDistribution * clone() const;
+  ConditionalDistribution * clone() const override;
 
   /** Get one realization of the distribution */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Parameters value and description accessor */
-  PointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const override;
 
   /** Parameters value accessors */
-  void setParameter(const Point & parameter);
-  Point getParameter() const;
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
 
   /** Parameters description accessor */
-  Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
   /* Interface specific to ConditionalDistribution */
 
@@ -100,16 +100,16 @@ public:
   Function getLinkFunction() const;
 
   /** Get the i-th marginal distribution */
-  Distribution getMarginal(const UnsignedInteger i) const;
+  Distribution getMarginal(const UnsignedInteger i) const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  Distribution getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:

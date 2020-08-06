@@ -66,7 +66,7 @@ public:
   Scalar computeStarDiscrepancy(const Sample & sample) const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 }; /* class LowDiscrepancySequence */
 

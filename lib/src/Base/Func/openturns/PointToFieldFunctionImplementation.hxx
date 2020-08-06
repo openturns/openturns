@@ -54,14 +54,14 @@ public:
                                      const UnsignedInteger outputDimension);
 
   /** Virtual constructor */
-  virtual PointToFieldFunctionImplementation * clone() const;
+  PointToFieldFunctionImplementation * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const PointToFieldFunctionImplementation & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () */
   virtual Sample operator() (const Point & inP) const;
@@ -94,10 +94,10 @@ public:
   virtual UnsignedInteger getCallsNumber() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Output mesh */

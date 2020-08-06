@@ -44,37 +44,36 @@ public:
   MixtureClassifier(const Mixture & mixture);
 
   /** Virtual constructor */
-  virtual MixtureClassifier * clone() const;
+  MixtureClassifier * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
-  virtual UnsignedInteger getNumberOfClasses() const;
+  UnsignedInteger getNumberOfClasses() const override;
 
   /** Associate a point to a class */
   using ClassifierImplementation::classify;
-  virtual UnsignedInteger classify(const Point & inP) const;
+  UnsignedInteger classify(const Point & inP) const override;
 
 private:
-  Indices classifySequential(const Sample & inS) const;
+  Indices classifySequential(const Sample & inS) const override;
 public:
 
   /** Grade a point as if it were associated to a class */
-  virtual Scalar grade(const Point & inP,
-                       const UnsignedInteger outC) const;
+  Scalar grade(const Point & inP, const UnsignedInteger outC) const override;
 
   /** Mixture accessors */
   Mixture getMixture() const;
   void setMixture(const Mixture & mixture);
 
   /** Dimension accessor */
-  UnsignedInteger getDimension() const;
+  UnsignedInteger getDimension() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

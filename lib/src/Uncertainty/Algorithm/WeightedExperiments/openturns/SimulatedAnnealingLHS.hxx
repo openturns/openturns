@@ -58,20 +58,20 @@ public:
                         const SpaceFilling & spaceFilling);
 
   /** Virtual constructor method */
-  SimulatedAnnealingLHS * clone() const;
+  SimulatedAnnealingLHS * clone() const override;
 
   /** Compute design method **/
-  virtual Sample generateWithWeights(Point & weightsOut) const;
+  Sample generateWithWeights(Point & weightsOut) const override;
   Sample generateWithRestart(UnsignedInteger nRestart) const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   TemperatureProfile profile_;

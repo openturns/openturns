@@ -52,12 +52,12 @@ public:
   /** Comparison operator */
   Bool operator ==(const MaximumEntropyOrderStatisticsCopula & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Distribution collection accessor */
   void setDistributionCollection(const DistributionCollection & coll);
@@ -66,27 +66,27 @@ public:
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  virtual MaximumEntropyOrderStatisticsCopula * clone() const;
+  MaximumEntropyOrderStatisticsCopula * clone() const override;
 
   /** Get the kth approximation */
   PiecewiseHermiteEvaluation getApproximation(const UnsignedInteger k = 0) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   using CopulaImplementation::getMarginal;
-  Distribution getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const override;
 
   /** Parameters value and description accessor */
-  PointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const override;
   using CopulaImplementation::setParametersCollection;
-  void setParametersCollection(const PointCollection & parametersCollection);
+  void setParametersCollection(const PointCollection & parametersCollection) override;
 
   /* Interface specific to MaximumEntropyOrderStatisticsCopula */
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
@@ -94,7 +94,7 @@ protected:
 private:
 
   /** Compute the covariance of the copula */
-  void computeCovariance() const;
+  void computeCovariance() const override;
 
   /** The underlying order statistics distribution */
   MaximumEntropyOrderStatisticsDistribution distribution_;

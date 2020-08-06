@@ -43,11 +43,11 @@ public:
   ChebychevFactory();
 
   /** Virtual constructor */
-  virtual ChebychevFactory * clone() const;
+  ChebychevFactory * clone() const override;
 
   /** Calculate the coefficients of recurrence a0n, a1n, a2n such that
       Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */
-  Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const;
+  Coefficients getRecurrenceCoefficients(const UnsignedInteger n) const override;
 
   /** Roots of the polynomial of degree n as the eigenvalues of the associated matrix */
   Point getRoots(const UnsignedInteger n) const;
@@ -57,7 +57,7 @@ public:
                            Point & weightsOut) const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 private:
 

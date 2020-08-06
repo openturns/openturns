@@ -45,7 +45,7 @@ public:
   explicit DomainImplementation(const UnsignedInteger dimension = 1);
 
   /** Virtual constructor method */
-  virtual DomainImplementation * clone() const;
+  DomainImplementation * clone() const override;
 
   /** Check if the closed domain contains a given point */
   virtual Bool contains(const Point & point) const;
@@ -54,17 +54,17 @@ public:
   virtual BoolCollection contains(const Sample & sample) const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Dimension accessors */
   UnsignedInteger getDimension() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** The dimension of the DomainImplementation */

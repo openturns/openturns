@@ -86,12 +86,12 @@ public:
   /** Comparison operator */
   Bool operator ==(const RandomMixture & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /** Distribution collection accessor */
@@ -110,53 +110,52 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual RandomMixture * clone() const;
+  RandomMixture * clone() const override;
 
   /** Get one realization of the RandomMixture */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Get a sample of the RandomMixture */
-  Sample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const override;
 
 protected:
-  virtual Sample getSampleByQMC(const UnsignedInteger size) const;
+  Sample getSampleByQMC(const UnsignedInteger size) const override;
 public:
 
   /** Get the DDF of the RandomMixture */
   using DistributionImplementation::computeDDF;
-  Point computeDDF(const Point & point) const;
+  Point computeDDF(const Point & point) const override;
 
   /** Get the PDF of the RandomMixture */
   using DistributionImplementation::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
 
 #ifndef SWIG
   /** Compute the PDF over a regular grid */
   Sample computePDF(const Scalar xMin,
                     const Scalar xMax,
                     const UnsignedInteger pointNumber,
-                    Sample & grid) const;
+                    Sample & grid) const override;
 
   /* Compute the PDF of over a regular grid */
   Sample computePDF(const Point & xMin,
                     const Point & xMax,
                     const Indices & pointNumber,
-                    Sample & grid) const;
+                    Sample & grid) const override;
 #endif
 
   /** Get the i-th marginal distribution */
-  Distribution getMarginal(const UnsignedInteger i) const;
+  Distribution getMarginal(const UnsignedInteger i) const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  Distribution getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const override;
 
 protected:
 
 private:
 
   /** Quantile computation for dimension=1 */
-  Scalar computeScalarQuantile(const Scalar prob,
-                               const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Compute the characteristic function of 1D distributions by difference to a reference Normal distribution with the same mean and the same standard deviation in a regular pattern with cache */
   Complex computeDeltaCharacteristicFunction(const UnsignedInteger index) const;
@@ -182,56 +181,56 @@ private:
 public:
   /** Get the CDF of the RandomMixture */
   using DistributionImplementation::computeCDF;
-  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const override;
   using DistributionImplementation::computeComplementaryCDF;
-  Scalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const override;
 
 #ifndef SWIG
   /** Compute the CDF over a regular grid */
   Sample computeCDF(const Scalar xMin,
                     const Scalar xMax,
                     const UnsignedInteger pointNumber,
-                    Sample & grid) const;
+                    Sample & grid) const override;
 #endif
 
   /** Get the probability content of an interval */
-  Scalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const override;
 
   /** Compute the quantile over a regular grid */
   using DistributionImplementation::computeQuantile;
   Sample computeQuantile(const Scalar qMin,
                          const Scalar qMax,
                          const UnsignedInteger pointNumber,
-                         const Bool tail = false) const;
+                         const Bool tail = false) const override;
 
   /** Get the minimum volume level set containing a given probability of the distribution */
-  virtual LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & thresholdOut) const;
+  LevelSet computeMinimumVolumeLevelSetWithThreshold(const Scalar prob, Scalar & thresholdOut) const override;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
   using DistributionImplementation::computeCharacteristicFunction;
-  Complex computeCharacteristicFunction(const Scalar x) const;
-  Complex computeCharacteristicFunction(const Point & x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const override;
+  Complex computeCharacteristicFunction(const Point & x) const override;
   using DistributionImplementation::computeLogCharacteristicFunction;
-  Complex computeLogCharacteristicFunction(const Scalar x) const;
-  Complex computeLogCharacteristicFunction(const Point & x) const;
+  Complex computeLogCharacteristicFunction(const Scalar x) const override;
+  Complex computeLogCharacteristicFunction(const Point & x) const override;
 
   /** Get the PDF gradient of the distribution */
   using DistributionImplementation::computePDFGradient;
-  Point computePDFGradient(const Point & point) const;
+  Point computePDFGradient(const Point & point) const override;
 
   /** Get the CDF gradient of the distribution */
   using DistributionImplementation::computeCDFGradient;
-  Point computeCDFGradient(const Point & point) const;
+  Point computeCDFGradient(const Point & point) const override;
 
   /** Parameters value and description accessor */
-  PointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const override;
 
   /** Parameters value accessors */
-  void setParameter(const Point & parameter);
-  Point getParameter() const;
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
 
   /** Parameters description accessor */
-  Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
 protected:
   void setDistributionCollectionAndWeights(const DistributionCollection & coll,
@@ -284,32 +283,32 @@ public:
                                  const UnsignedInteger size = ResourceMap::GetAsUnsignedInteger( "RandomMixture-ProjectionDefaultSize" )) const;
 
   /** Tell if the distribution has independent copula */
-  Bool hasIndependentCopula() const;
+  Bool hasIndependentCopula() const override;
 
   /** Tell if the distribution has elliptical copula */
-  Bool hasEllipticalCopula() const;
+  Bool hasEllipticalCopula() const override;
 
   /** Check if the distribution is elliptical */
-  Bool isElliptical() const;
+  Bool isElliptical() const override;
 
   /** Check if the distribution is continuous */
-  Bool isContinuous() const;
+  Bool isContinuous() const override;
 
   /** Check if the distribution is discrete */
-  Bool isDiscrete() const;
+  Bool isDiscrete() const override;
 
   /** Tell if the distribution is integer valued */
-  Bool isIntegral() const;
+  Bool isIntegral() const override;
 
   /** Get the support of a discrete distribution that intersect a given interval */
   using DistributionImplementation::getSupport;
-  Sample getSupport(const Interval & interval) const;
+  Sample getSupport(const Interval & interval) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 
@@ -354,13 +353,13 @@ private:
 
 protected:
   /** Compute the numerical range of the distribution given the parameters values */
-  void computeRange();
+  void computeRange() override;
 
   /** Get the mean of a randomMixture */
-  void computeMean() const;
+  void computeMean() const override;
 
   /** Get the covariance of a randomMixture */
-  void computeCovariance() const;
+  void computeCovariance() const override;
 
 private:
   /** Compute the left-hand sum in Poisson's summation formula for the equivalent normal */
@@ -372,13 +371,13 @@ private:
                                        UnsignedInteger imax, UnsignedInteger & levelMax) const;
 public:
   /** Get the standard deviation of the distribution */
-  Point getStandardDeviation() const;
+  Point getStandardDeviation() const override;
 
   /** Get the skewness of the distribution */
-  Point getSkewness() const;
+  Point getSkewness() const override;
 
   /** Get the kurtosis of the distribution */
-  Point getKurtosis() const;
+  Point getKurtosis() const override;
 
 private:
   /** Compute the position indicator */

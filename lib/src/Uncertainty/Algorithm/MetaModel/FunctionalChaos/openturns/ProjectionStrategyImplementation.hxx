@@ -74,10 +74,10 @@ public:
                                    const Sample & outputSample);
 
   /** Virtual constructor */
-  virtual ProjectionStrategyImplementation * clone() const;
+  ProjectionStrategyImplementation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Measure accessor */
   virtual void setMeasure(const Distribution & measure);
@@ -118,10 +118,10 @@ public:
                                    const UnsignedInteger marginalIndex = 0);
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** The collection of Alpha_k coefficients */

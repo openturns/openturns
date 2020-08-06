@@ -1100,6 +1100,7 @@ Some useful features include:
 - constructor delegation
 - default member initializers
 - list initialization
+- override keyword
 
 *Example: constructor delegation*
 

@@ -79,7 +79,7 @@ public:
   SquareMatrix(const SymmetricMatrix & symmetric);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Get the dimension of the matrix */
   UnsignedInteger getDimension() const;

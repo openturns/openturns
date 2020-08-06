@@ -50,13 +50,13 @@ public:
                     const Scalar level = 0.0);
 
   /** Virtual constructor method */
-  virtual LevelSet * clone() const;
+  LevelSet * clone() const override;
 
   /** Check if the given point is inside of the closed levelSet */
-  Bool contains(const Point & point) const;
+  Bool contains(const Point & point) const override;
 
   /** Check if the given points are inside of the closed levelSet */
-  BoolCollection contains(const Sample & sample) const;
+  BoolCollection contains(const Sample & sample) const override;
   using DomainImplementation::contains;
 
   /** Returns the levelSet equals to the intersection between the levelSet and another one */
@@ -89,14 +89,14 @@ public:
   Point getUpperBound() const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

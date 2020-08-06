@@ -105,10 +105,10 @@ class OT_API HMatrix :
   void dump(const String & name) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Comparison operators */
   Bool operator == (const HMatrix & rhs) const;

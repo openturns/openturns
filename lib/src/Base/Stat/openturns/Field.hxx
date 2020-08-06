@@ -100,9 +100,9 @@ public:
    * internal state of an Field. It is used when streaming
    * the Field or for user information.
    */
-  String __repr__() const;
+  String __repr__() const override;
 
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Size accessor */
   UnsignedInteger getSize() const;

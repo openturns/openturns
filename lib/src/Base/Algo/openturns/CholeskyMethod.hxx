@@ -52,36 +52,36 @@ public:
   explicit CholeskyMethod(const Matrix & matrix);
 
   /** Virtual constructor */
-  virtual CholeskyMethod * clone() const;
+  CholeskyMethod * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Solve least-squares problem, ie x=\argmin |Mx-b|^2 */
-  Point solve(const Point & rhs);
-  Point solveNormal(const Point & rhs);
+  Point solve(const Point & rhs) override;
+  Point solveNormal(const Point & rhs) override;
 
   /** Update */
   void update(const Indices & addedIndices,
               const Indices & conservedIndices,
               const Indices & removedIndices,
-              const Bool row = false);
+              const Bool row = false) override;
 
-  void trashDecomposition();
+  void trashDecomposition() override;
 
-  CovarianceMatrix getGramInverse() const;
-  SymmetricMatrix getH() const;
+  CovarianceMatrix getGramInverse() const override;
+  SymmetricMatrix getH() const override;
 
-  Point getGramInverseDiag() const;
-  Point getHDiag() const;
+  Point getGramInverseDiag() const override;
+  Point getHDiag() const override;
 
-  Scalar getGramInverseTrace() const;
+  Scalar getGramInverseTrace() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   // cholesky decomposition A=LL^T (lower triangular)

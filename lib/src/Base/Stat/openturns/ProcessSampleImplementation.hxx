@@ -73,11 +73,11 @@ public:
 #endif
 
   /** Virtual constructor */
-  virtual ProcessSampleImplementation * clone() const;
+  ProcessSampleImplementation * clone() const override;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Time grid accessors */
   RegularGrid getTimeGrid() const;
@@ -115,10 +115,10 @@ public:
                      const Bool interpolate = true) const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

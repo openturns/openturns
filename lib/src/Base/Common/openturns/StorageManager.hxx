@@ -109,7 +109,7 @@ public:
   virtual StorageManager * clone() const;
 
   /** @copydoc Object::__repr__() const */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /**
    * This method saves the PersistentObject onto the medium

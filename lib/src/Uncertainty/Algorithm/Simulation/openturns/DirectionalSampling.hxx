@@ -56,7 +56,7 @@ public:
 
 
   /** Virtual constructor */
-  virtual DirectionalSampling * clone() const;
+  DirectionalSampling * clone() const override;
 
   /** Root strategy accessor */
   void setRootStrategy(const RootStrategy & rootStrategy);
@@ -67,18 +67,18 @@ public:
   SamplingStrategy getSamplingStrategy() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 
   /** Compute the block sample and the points that realized the event */
-  Sample computeBlockSample();
+  Sample computeBlockSample() override;
 
   /** Compute the contribution of a direction to the probability given the roots of the performance function along the direction */
   Scalar computeContribution(const ScalarCollection & roots);

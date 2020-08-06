@@ -44,31 +44,30 @@ public:
   explicit LARS(const Bool verbose = false);
 
   /** Virtual constructor */
-  virtual LARS * clone() const;
+  LARS * clone() const override;
 
   /** Method to create new BasisSequence objects */
-  virtual BasisSequence build(const Sample & x,
+  BasisSequence build(const Sample & x,
                               const Sample & y,
                               const FunctionCollection & psi,
-                              const Indices & indices);
+                              const Indices & indices) override;
 #ifndef SWIG
 //   virtual BasisSequence build(const Sample & y,
 //                               const Indices & indices,
 //                               const DesignProxy & proxy);
 
-  virtual void initialize();
-  virtual void updateBasis(LeastSquaresMethod & method,
-                           const Sample & y);
+  void initialize() override;
+  void updateBasis(LeastSquaresMethod & method, const Sample & y) override;
 #endif
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   Scalar relativeConvergence_;

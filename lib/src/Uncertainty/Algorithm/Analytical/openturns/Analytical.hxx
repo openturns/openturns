@@ -60,7 +60,7 @@ public:
 
 
   /** Virtual constructor */
-  virtual Analytical * clone() const;
+  Analytical * clone() const override;
 
   /** Physical starting point accessor */
   Point getPhysicalStartingPoint() const;
@@ -84,16 +84,16 @@ public:
   virtual AnalyticalResult getAnalyticalResult() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Performs the actual computation. */
   virtual void run();
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

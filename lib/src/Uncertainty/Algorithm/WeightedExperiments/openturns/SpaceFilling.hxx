@@ -68,7 +68,7 @@ public:
   Bool isMinimizationProblem() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Compute criterion when performing an elementary perturbation */
   Scalar perturbLHS(Sample& oldDesign, Scalar oldCriterion,

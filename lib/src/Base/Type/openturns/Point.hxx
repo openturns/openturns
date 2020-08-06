@@ -59,11 +59,11 @@ public:
   Point(std::initializer_list<Scalar> initList);
 
   /** Virtual constructor */
-  virtual Point * clone() const;
+  Point * clone() const override;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Set small elements to zero */
   Point clean(const Scalar threshold) const;
@@ -101,10 +101,10 @@ public:
 
 #ifndef SWIG
   /** Erase the elements between first and last */
-  iterator erase(const iterator first, const iterator last);
+  iterator erase(const iterator first, const iterator last) override;
 
   /** Erase the element pointed by position */
-  iterator erase(iterator position);
+  iterator erase(iterator position) override;
 
   /** Erase the element pointed by position */
   iterator erase(UnsignedInteger position);
@@ -144,10 +144,10 @@ public:
   Scalar dot(const Point & rhs) const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

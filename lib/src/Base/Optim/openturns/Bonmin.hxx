@@ -47,7 +47,7 @@ public:
                    const String & algoName = "B-BB");
 
   /** Virtual constructor */
-  virtual Bonmin * clone() const;
+  Bonmin * clone() const override;
 
   /** Bonmin static methods */
   static Bool IsAvailable();  // Check whether Bonmin support is available
@@ -59,15 +59,15 @@ public:
   String getAlgorithmName() const;
 
   /** Performing the actual computation. */
-  void run();
+  void run() override;
 
   /** Description of object */
-  String __str__(const String & offset = "") const;
-  String __repr__() const;
+  String __str__(const String & offset = "") const override;
+  String __repr__() const override;
 
 protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
-  virtual void checkProblem(const OptimizationProblem & problem) const;
+  void checkProblem(const OptimizationProblem & problem) const override;
 
 private:
   String algoName_;

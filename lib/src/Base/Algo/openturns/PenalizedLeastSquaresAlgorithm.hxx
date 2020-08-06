@@ -72,21 +72,21 @@ public:
                                  const Bool useNormal = false);
 
   /** Virtual constructor */
-  virtual PenalizedLeastSquaresAlgorithm * clone() const;
+  PenalizedLeastSquaresAlgorithm * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Perform the optimization */
-  void run();
+  void run() override;
 #ifndef SWIG
-  void run(const DesignProxy & proxy);
+  void run(const DesignProxy & proxy) override;
 #endif
 
 protected:

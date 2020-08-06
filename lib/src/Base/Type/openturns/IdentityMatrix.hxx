@@ -48,7 +48,7 @@ public:
 
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** IdentityMatrix transpose */
   IdentityMatrix transpose () const;
@@ -92,10 +92,10 @@ public:
                   const Bool keepIntact = true);
 
   /** Check if the matrix is SPD */
-  virtual Bool isPositiveDefinite() const;
+  Bool isPositiveDefinite() const override;
 
   /** Build the Cholesky factorization of the matrix */
-  TriangularMatrix computeCholesky(const Bool keepIntact = true);
+  TriangularMatrix computeCholesky(const Bool keepIntact = true) override;
 
   /** Compute singular values */
   Point computeSingularValues(const Bool keepIntact = true);

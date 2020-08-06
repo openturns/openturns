@@ -47,14 +47,14 @@ public:
   Full();
 
   /** Virtual constructor */
-  virtual Full * clone() const;
+  Full * clone() const override;
 
   /** Store the point according to the strategy */
-  void store(const Point & point);
-  void store(const Sample & sample);
+  void store(const Point & point) override;
+  void store(const Sample & sample) override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 protected:
 

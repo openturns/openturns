@@ -46,30 +46,30 @@ public:
   explicit KarhunenLoeveProjection(const KarhunenLoeveResult & result);
 
   /** Virtual constructor */
-  virtual KarhunenLoeveProjection * clone() const;
+  KarhunenLoeveProjection * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const KarhunenLoeveProjection & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () */
-  virtual Point operator() (const Sample & inFld) const;
-  virtual Sample operator() (const ProcessSample & inPS) const;
+  Point operator() (const Sample & inFld) const override;
+  Sample operator() (const ProcessSample & inPS) const override;
 
   /** Get the i-th marginal function */
-  virtual Implementation getMarginal(const UnsignedInteger i) const;
+  Implementation getMarginal(const UnsignedInteger i) const override;
 
   /** Get the function corresponding to indices components */
-  virtual Implementation getMarginal(const Indices & indices) const;
+  Implementation getMarginal(const Indices & indices) const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Underlying KarhunenLoeveResult */

@@ -41,21 +41,21 @@ public:
   StationaryCovarianceModelFactory(const WelchFactory & factory = WelchFactory());
 
   /** Virtual constructor */
-  virtual StationaryCovarianceModelFactory * clone() const;
+  StationaryCovarianceModelFactory * clone() const override;
 
   /** SpectralModelFactory accessors */
   WelchFactory getSpectralModelFactory() const;
   void setSpectralModelFactory(const WelchFactory & factory);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Build a covariance model based on a process sample */
   using CovarianceModelFactoryImplementation::build;
-  CovarianceModel build(const ProcessSample & sample) const;
+  CovarianceModel build(const ProcessSample & sample) const override;
 
   /** Build a user defined covariance model based on a process sample */
   UserDefinedStationaryCovarianceModel buildAsUserDefinedStationaryCovarianceModel(const ProcessSample & sample) const;
@@ -68,16 +68,16 @@ public:
   UserDefinedStationaryCovarianceModel buildAsUserDefinedStationaryCovarianceModel(const UserDefinedSpectralModel & mySpectralModel) const;
 
   /** Build a covariance model based on a Field */
-  CovarianceModel build(const Field & timeSerie) const;
+  CovarianceModel build(const Field & timeSerie) const override;
 
   /** Build a user defined covariance model based on a Field */
   UserDefinedStationaryCovarianceModel buildAsUserDefinedStationaryCovarianceModel(const Field & timeSerie) const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

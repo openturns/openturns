@@ -81,10 +81,10 @@ public:
   /**
    * Virtual constructor
    */
-  virtual BinaryStorageManager * clone() const;
+  BinaryStorageManager * clone() const override;
 
   /** @copydoc StorageManager::__repr__() const */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Get the name of the file containing the study */
   String getFileName() const;

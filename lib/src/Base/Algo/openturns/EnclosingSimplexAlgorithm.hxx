@@ -75,10 +75,10 @@ public:
   virtual Indices query(const Sample & sample) const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 } ; /* class EnclosingSimplexAlgorithm */
 
 END_NAMESPACE_OPENTURNS

@@ -40,19 +40,19 @@ public:
   NormalFactory();
 
   /** Virtual constructor */
-  virtual NormalFactory * clone() const;
+  NormalFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
   Normal buildAsNormal(const Sample & sample) const;
   Normal buildAsNormal(const Point & parameters) const;
   Normal buildAsNormal() const;
 
-  DistributionFactoryResult buildEstimator(const Sample & sample) const;
+  DistributionFactoryResult buildEstimator(const Sample & sample) const override;
 
 }; /* class NormalFactory */
 

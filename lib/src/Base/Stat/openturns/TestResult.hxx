@@ -55,14 +55,14 @@ public:
 
 
   /** Virtual constructor */
-  virtual TestResult * clone() const;
+  TestResult * clone() const override;
 
   /** Description Accessor */
   void setDescription(const Description & description);
   Description getDescription() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Elements accessors */
   Bool getBinaryQualityMeasure() const;
@@ -75,10 +75,10 @@ public:
   Bool operator ==(const TestResult & other) const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

@@ -55,43 +55,42 @@ public:
                             const CovarianceMatrix & spatialCovariance);
 
   /** Virtual copy constructor */
-  virtual StationaryCovarianceModel * clone() const;
+  StationaryCovarianceModel * clone() const override;
 
   /** Computation of the covariance matrix */
   using CovarianceModelImplementation::operator();
-  virtual CovarianceMatrix operator() (const Point & s,
-                                       const Point & t) const;
-  virtual CovarianceMatrix operator() (const Point & tau) const;
+  CovarianceMatrix operator() (const Point & s,
+                                       const Point & t) const override;
+  CovarianceMatrix operator() (const Point & tau) const override;
   using CovarianceModelImplementation::computeAsScalar;
-  virtual Scalar computeAsScalar (const Point & s,
-                                  const Point & t) const;
+  Scalar computeAsScalar (const Point & s,
+                                  const Point & t) const override;
   virtual Scalar computeAsScalar (const Point & tau) const;
 
   /** Computation of the covariance matrix */
   using CovarianceModelImplementation::computeStandardRepresentative;
-  virtual Scalar computeStandardRepresentative(const Point & s,
-      const Point & t) const;
+  Scalar computeStandardRepresentative(const Point & s, const Point & t) const override;
 
   virtual Scalar computeStandardRepresentative(const Point & tau) const;
 
   /** Discretize the covariance function on a given TimeGrid */
   using CovarianceModelImplementation::discretize;
-  CovarianceMatrix discretize(const RegularGrid & timeGrid) const;
+  CovarianceMatrix discretize(const RegularGrid & timeGrid) const override;
 
   /** Is the underlying a stationary covariance model ? */
-  Bool isStationary() const;
+  Bool isStationary() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 } ; /* class StationaryCovarianceModel */
 

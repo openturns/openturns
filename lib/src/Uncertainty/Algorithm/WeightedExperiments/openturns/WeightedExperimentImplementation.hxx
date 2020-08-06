@@ -53,10 +53,10 @@ public:
                                    const UnsignedInteger size);
 
   /** Virtual constructor */
-  virtual WeightedExperimentImplementation * clone() const;
+  WeightedExperimentImplementation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Distribution accessor */
   virtual void setDistribution(const Distribution & distribution);
@@ -72,16 +72,16 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
-  virtual Sample generate() const;
+  Sample generate() const override;
 
   /** Sample generation with weights*/
   virtual Sample generateWithWeights(Point & weights) const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

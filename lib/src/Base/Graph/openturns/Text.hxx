@@ -77,35 +77,35 @@ public:
   static Bool IsValidTextPosition(String textPosition);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Draw method */
-  String draw() const;
+  String draw() const override;
 
   /** Clone method */
-  virtual Text * clone() const;
+  Text * clone() const override;
 
   /** Accessors to text */
-  Description getTextAnnotations() const;
-  void setTextAnnotations(const Description & textAnnotations);
+  Description getTextAnnotations() const override;
+  void setTextAnnotations(const Description & textAnnotations) override;
 
   /** Accessors to text position */
-  Description getTextPositions() const;
-  void setTextPositions(const Description & textPositions);
+  Description getTextPositions() const override;
+  void setTextPositions(const Description & textPositions) override;
 
   /** Accessors to text size */
-  Scalar getTextSize() const;
-  void setTextSize(const Scalar size);
+  Scalar getTextSize() const override;
+  void setTextSize(const Scalar size) override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() stores the object through the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Check for data validity */
-  virtual void checkData(const Sample & data) const;
+  void checkData(const Sample & data) const override;
 
   /** Labels */
   Description textAnnotations_;

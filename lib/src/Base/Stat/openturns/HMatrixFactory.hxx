@@ -48,7 +48,7 @@ public:
   HMatrixFactory();
 
   /** Virtual constructor */
-  virtual HMatrixFactory * clone() const;
+  HMatrixFactory * clone() const override;
 
   /** Method to create an HMatrix object */
   HMatrix build(const Sample & sample, UnsignedInteger outputDimension, Bool symmetric, const HMatrixParameters & parameters = HMatrixParameters());
@@ -57,13 +57,13 @@ public:
   static Bool IsAvailable();
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 }; /* end class HMatrixFactory */
 
 

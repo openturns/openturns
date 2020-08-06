@@ -49,28 +49,28 @@ public:
 
 
   /** Virtual constructor */
-  virtual ComposedGradient * clone() const;
+  ComposedGradient * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const ComposedGradient & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method gradient() returns the Jacobian transposed matrix of the function at point */
-  Matrix gradient(const Point & inP) const;
+  Matrix gradient(const Point & inP) const override;
 
   /** Accessor for input point dimension */
-  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

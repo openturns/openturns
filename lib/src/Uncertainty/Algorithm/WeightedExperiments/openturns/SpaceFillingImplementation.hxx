@@ -47,7 +47,7 @@ public:
   explicit SpaceFillingImplementation(Bool minimization = true);
 
   /** Virtual constructor method */
-  SpaceFillingImplementation * clone() const;
+  SpaceFillingImplementation * clone() const override;
 
   /** Evaluate criterion on a sample */
   virtual Scalar evaluate(const Sample& sample) const;
@@ -59,13 +59,13 @@ public:
   }
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Compute criterion when performing an elementary perturbation */
   virtual Scalar perturbLHS(Sample& oldDesign, Scalar oldCriterion,

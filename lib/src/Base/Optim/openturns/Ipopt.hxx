@@ -46,21 +46,21 @@ public:
   explicit Ipopt( OptimizationProblem & problem);
 
   /** Virtual constructor */
-  virtual Ipopt * clone() const;
+  Ipopt * clone() const override;
 
   /** Ipopt static methods */
   static Bool IsAvailable();  // Check whether Ipopt support is available
 
   /** Performing the actual computation. */
-  void run();
+  void run() override;
 
   /** Description of object */
-  String __str__(const String & offset = "") const;
-  String __repr__() const;
+  String __str__(const String & offset = "") const override;
+  String __repr__() const override;
 
 protected:
   /** Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
-  virtual void checkProblem(const OptimizationProblem & problem) const;
+  void checkProblem(const OptimizationProblem & problem) const override;
 
 private:
 

@@ -56,24 +56,24 @@ public:
   /** Comparison operator */
   Bool operator ==(const BayesDistribution & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  virtual BayesDistribution * clone() const;
+  BayesDistribution * clone() const override;
 
   /** Get one realization of the distribution */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Compute the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
 
   /* Interface specific to BayesDistribution */
 
@@ -90,34 +90,34 @@ public:
   Function getLinkFunction() const;
 
   /** Get the i-th marginal distribution */
-  Distribution getMarginal(const UnsignedInteger i) const;
+  Distribution getMarginal(const UnsignedInteger i) const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  Distribution getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const override;
 
   /** Parameters value accessors */
-  void setParameter(const Point & parameter);
-  Point getParameter() const;
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
 
   /** Parameters description accessor */
-  Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 
   /** Compute the numerical range of the distribution */
-  void computeRange();
+  void computeRange() override;
 
   /** Compute the mean of the distribution */
-  void computeMean() const;
+  void computeMean() const override;
 
   /** compute the covariance of the distribution */
-  void computeCovariance() const;
+  void computeCovariance() const override;
 
   /** Method to set simultaneously the conditioning distribution, the conditioned distribution and the link function */
   void setConditionedAndConditioningDistributionsAndLinkFunction(const Distribution & conditionedDistribution,

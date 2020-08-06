@@ -54,37 +54,37 @@ public:
                               const Bool useCopula);
 
   /** Virtual constructor */
-  SoizeGhanemFactorEvaluation * clone() const;
+  SoizeGhanemFactorEvaluation * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const SoizeGhanemFactorEvaluation & other) const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset) const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () */
   using EvaluationImplementation::operator();
-  Point operator() (const Point & inP) const;
-  Sample operator() (const Sample & inS) const;
+  Point operator() (const Point & inP) const override;
+  Sample operator() (const Sample & inS) const override;
 
   /** Accessor for input point dimension */
-  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Accessor for input point description */
-  Description getInputDescription() const;
+  Description getInputDescription() const override;
 
   /** Accessor for output point description */
-  Description getOutputDescription() const;
+  Description getOutputDescription() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

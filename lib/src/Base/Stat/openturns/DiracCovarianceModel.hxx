@@ -54,20 +54,19 @@ public:
                        const CovarianceMatrix & covariance);
 
   /** Virtual copy constructor */
-  DiracCovarianceModel * clone() const;
+  DiracCovarianceModel * clone() const override;
 
   /** Computation of the covariance function */
   using StationaryCovarianceModel::operator();
-  CovarianceMatrix operator() (const Point & tau) const;
+  CovarianceMatrix operator() (const Point & tau) const override;
 
   /** Discretize the covariance function */
   using StationaryCovarianceModel::discretize;
-  CovarianceMatrix discretize(const Sample & vertices) const;
-  Sample discretizeRow(const Sample & vertices,
-                       const UnsignedInteger p) const;
+  CovarianceMatrix discretize(const Sample & vertices) const override;
+  Sample discretizeRow(const Sample & vertices, const UnsignedInteger p) const override;
 
   using StationaryCovarianceModel::discretizeAndFactorize;
-  TriangularMatrix discretizeAndFactorize(const Sample & vertices) const;
+  TriangularMatrix discretizeAndFactorize(const Sample & vertices) const override;
   // discretize with use of HMatrix
   using StationaryCovarianceModel::discretizeHMatrix;
   HMatrix discretizeHMatrix(const Sample & vertices,
@@ -75,31 +74,30 @@ public:
                             const HMatrixParameters & parameters) const;
 
   /** Gradient */
-  Matrix partialGradient(const Point & s,
-                         const Point & t) const;
+  Matrix partialGradient(const Point & s, const Point & t) const override;
 
   /** Scale/amplitude set accessors */
-  void setScale(const Point & scale);
-  void setAmplitude(const Point & amplitude);
-  void setOutputCorrelation(const CorrelationMatrix & outputCorrelation);
+  void setScale(const Point & scale) override;
+  void setAmplitude(const Point & amplitude) override;
+  void setOutputCorrelation(const CorrelationMatrix & outputCorrelation) override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Parameter accessor */
-  virtual void setFullParameter(const Point & parameter);
-  virtual Point getFullParameter() const;
-  virtual Description getFullParameterDescription() const;
+  void setFullParameter(const Point & parameter) override;
+  Point getFullParameter() const override;
+  Description getFullParameterDescription() const override;
 
 
   friend struct DiracCovarianceModelDiscretizePolicy;

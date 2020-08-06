@@ -40,14 +40,14 @@ public:
   LogUniformFactory();
 
   /** Virtual constructor */
-  LogUniformFactory * clone() const;
+  LogUniformFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
   LogUniform buildAsLogUniform(const Sample & sample) const;
   LogUniform buildAsLogUniform(const Point & parameters) const;
   LogUniform buildAsLogUniform() const;

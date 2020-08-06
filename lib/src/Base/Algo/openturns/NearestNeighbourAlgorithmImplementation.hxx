@@ -43,7 +43,7 @@ public:
   NearestNeighbourAlgorithmImplementation();
 
   /** Virtual copy constructor */
-  virtual NearestNeighbourAlgorithmImplementation * clone() const;
+  NearestNeighbourAlgorithmImplementation * clone() const override;
 
 #ifndef SWIG
   /** Default virtual constructor */
@@ -64,10 +64,10 @@ public:
   virtual Indices queryK(const Point & x, const UnsignedInteger k, const Bool sorted = false) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 } ; /* class NearestNeighbourAlgorithmImplementation */
 

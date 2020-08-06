@@ -56,7 +56,7 @@ public:
                     const Function & residualFunction);
 
   /** Virtual constructor */
-  virtual CalibrationResult * clone() const;
+  CalibrationResult * clone() const override;
 
   /** Parameter prior distribution accessors */
   void setParameterPrior(const Distribution & parameterPrior);
@@ -87,13 +87,13 @@ public:
   Function getResidualFunction() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Output at prior/posterior accessor */
   void setOutputAtPriorAndPosteriorMean(const Sample & outputAtPriorMean, const Sample & outputAtPosteriorMean);

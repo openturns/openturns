@@ -64,7 +64,7 @@ public:
                      const OptimizationProblem & problem);
 
   /** Virtual constructor */
-  virtual OptimizationResult * clone() const;
+  OptimizationResult * clone() const override;
 
   /** OptimalPoint accessors */
   void setOptimalPoint(const Point & optimalPoint);
@@ -111,13 +111,13 @@ public:
   Point getLagrangeMultipliers() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Incremental history storage */
   void store(const Point & inP,

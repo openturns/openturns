@@ -54,71 +54,70 @@ public:
   using DistributionImplementation::operator ==;
   Bool operator ==(const MixedHistogramUserDefined & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
 
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  virtual MixedHistogramUserDefined * clone() const;
+  MixedHistogramUserDefined * clone() const override;
 
   /** Get one realization of the distribution */
-  Point getRealization() const;
-  Sample getSample(const UnsignedInteger size) const;
+  Point getRealization() const override;
+  Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the PDF of the distribution, i.e. P(point < X < point+dx) = PDF(point)dx + o(dx) */
   using DistributionImplementation::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the distribution, i.e. P(X <= point) = CDF(point) */
   using DistributionImplementation::computeCDF;
-  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const override;
   using DistributionImplementation::computeComplementaryCDF;
-  Scalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const override;
 
   /** Get the quantile of the distribution */
   using DistributionImplementation::computeQuantile;
-  Point computeQuantile(const Scalar prob,
-                        const Bool tail = false) const;
+  Point computeQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  Complex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const override;
 
   /** Get the i-th marginal distribution */
-  Distribution getMarginal(const UnsignedInteger i) const;
+  Distribution getMarginal(const UnsignedInteger i) const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  Distribution getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const override;
 
   /** Check if the distribution is continuous */
-  Bool isContinuous() const;
+  Bool isContinuous() const override;
 
   /** Check if the distribution is discrete */
-  Bool isDiscrete() const;
+  Bool isDiscrete() const override;
 
   /** Check if the distribution is integral */
-  Bool isIntegral() const;
+  Bool isIntegral() const override;
 
   /** Get the standard deviation of the distribution */
-  Point getStandardDeviation() const;
+  Point getStandardDeviation() const override;
 
   /** Get the skewness of the distribution */
-  Point getSkewness() const;
+  Point getSkewness() const override;
 
   /** Get the kurtosis of the distribution */
-  Point getKurtosis() const;
+  Point getKurtosis() const override;
 
   /** Get the raw moments of the standardized distribution */
-  Point getStandardMoment(const UnsignedInteger n) const;
+  Point getStandardMoment(const UnsignedInteger n) const override;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
-  Distribution getStandardRepresentative() const;
+  Distribution getStandardRepresentative() const override;
 
   /* Interface specific to MixedHistogramUserDefined */
 
@@ -138,10 +137,10 @@ public:
   Mixture asMixture() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Description accessor */
   void setDescription(const Description & description);
@@ -151,13 +150,13 @@ protected:
 private:
 
   /** Compute the mean of the distribution */
-  void computeMean() const;
+  void computeMean() const override;
 
   /** Compute the covariance of the distribution */
-  void computeCovariance() const;
+  void computeCovariance() const override;
 
   /** Compute the numerical range of the distribution given the parameters values */
-  void computeRange();
+  void computeRange() override;
 
   /** The main parameter set of the distribution */
   /** Ticks per dimension */

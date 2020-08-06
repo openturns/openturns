@@ -63,10 +63,10 @@ public:
        const Point & initialState);
 
   /** Virtual constructor */
-  virtual MCMC * clone() const;
+  MCMC * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Compute the likelihood w.r.t. observartions */
   Scalar computeLogLikelihood(const Point & currentState) const;
@@ -106,17 +106,17 @@ public:
   Indices getNonRejectedComponents() const;
 
   /** Dimension accessor */
-  virtual UnsignedInteger getDimension() const;
+  UnsignedInteger getDimension() const override;
 
   /** Verbosity accessor */
   void setVerbose(const Bool verbose);
   Bool getVerbose() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   Point initialState_;

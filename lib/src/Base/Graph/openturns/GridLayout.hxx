@@ -44,16 +44,16 @@ public:
                       const UnsignedInteger nbColumns = 0);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Clone method */
-  virtual GridLayout * clone() const;
+  GridLayout * clone() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() stores the object through the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Grid accessors */
   UnsignedInteger getNbRows() const;
@@ -62,10 +62,10 @@ public:
   void setGraph(const UnsignedInteger i, const UnsignedInteger j, const Graph & elt);
 
   /** Hide or show x and y axes */
-  virtual void setAxes(const Bool showAxes);
+  void setAxes(const Bool showAxes);
 
   /** Set the legend position */
-  virtual void setLegendPosition(const String & position);
+  void setLegendPosition(const String & position);
 
   /** Accessor for title */
   void setTitle(const String & title);

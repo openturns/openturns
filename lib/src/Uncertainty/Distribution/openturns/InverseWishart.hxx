@@ -49,45 +49,45 @@ public:
   /** Comparison operator */
   Bool operator ==(const InverseWishart & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  virtual InverseWishart * clone() const;
+  InverseWishart * clone() const override;
 
   /** Get one realization of the distribution */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Get one realization of the distribution as a covariance matrix */
   CovarianceMatrix getRealizationAsMatrix() const;
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
   Scalar computePDF(const CovarianceMatrix & m) const;
   using ContinuousDistribution::computeLogPDF;
-  Scalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const override;
   Scalar computeLogPDF(const CovarianceMatrix & m) const;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const override;
 
   /** Get the standard deviation of the distribution */
-  Point getStandardDeviation() const;
+  Point getStandardDeviation() const override;
 
   /** Parameters value accessors */
-  void setParameter(const Point & parameter);
-  Point getParameter() const;
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
 
   /** Parameters description accessor */
-  Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
   /* Interface specific to InverseWishart */
 
@@ -101,10 +101,10 @@ public:
   Scalar getNu() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:
@@ -113,13 +113,13 @@ protected:
 private:
 
   /** Compute the mean of the distribution */
-  void computeMean() const;
+  void computeMean() const override;
 
   /** Compute the covariance of the distribution */
-  void computeCovariance() const;
+  void computeCovariance() const override;
 
   /** Compute the numerical range of the distribution given the parameters values */
-  void computeRange();
+  void computeRange() override;
 
   /** Update the normalization factor on a log scale */
   void update();

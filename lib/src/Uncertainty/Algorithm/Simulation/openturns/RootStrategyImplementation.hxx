@@ -54,7 +54,7 @@ public:
 
 
   /** Virtual constructor */
-  virtual RootStrategyImplementation * clone() const;
+  RootStrategyImplementation * clone() const override;
 
   /** Solve gives all the roots found applying the root strategy */
   virtual ScalarCollection solve(const Function & function,
@@ -77,13 +77,13 @@ public:
   Scalar getOriginValue() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

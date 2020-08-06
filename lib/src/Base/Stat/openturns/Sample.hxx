@@ -148,9 +148,9 @@ public:
    * internal state of an Sample. It is used when streaming
    * the Sample or for user information.
    */
-  String __repr__() const;
+  String __repr__() const override;
 
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Description accessor */
   void setDescription(const Description & description);
@@ -350,10 +350,10 @@ public:
   Sample select(const UnsignedIntegerCollection & indices) const;
 
   /** Returns a pointer to the underlying implementation object */
-  virtual ImplementationAsPersistentObject getImplementationAsPersistentObject() const;
+  ImplementationAsPersistentObject getImplementationAsPersistentObject() const override;
 
   /** Sets the pointer to the underlying implementation object */
-  virtual void setImplementationAsPersistentObject(const ImplementationAsPersistentObject & obj);
+  void setImplementationAsPersistentObject(const ImplementationAsPersistentObject & obj) override;
 
 }; /* class Sample */
 

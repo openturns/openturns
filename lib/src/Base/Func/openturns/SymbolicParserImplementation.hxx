@@ -40,7 +40,7 @@ public:
   SymbolicParserImplementation();
 
   /** Virtual copy constructor */
-  virtual SymbolicParserImplementation * clone() const;
+  SymbolicParserImplementation * clone() const override;
 
   /** Variables accessor */
   virtual Description getVariables() const;
@@ -54,10 +54,10 @@ public:
   virtual Sample operator()(const Sample & inS) const;
 
   /* Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /* Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   Description inputVariablesNames_;
