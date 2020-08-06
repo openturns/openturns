@@ -22,6 +22,7 @@
  * Deprecated Pairs class, see VisualTest.DrawPairs
  * Deprecated SORMResult::getEventProbabilityHohenBichler, use SORMResult::getEventProbabilityHohenbichler instead
  * Deprecated SORMResult::getGeneralisedReliabilityIndexHohenBichler, use SORMResult::getGeneralisedReliabilityIndexHohenbichler instead
+ * Renamed SobolSequence::MaximumNumberOfDimension as SobolSequence::MaximumDimension
 
 === Documentation ===
 ==== API documentation ====

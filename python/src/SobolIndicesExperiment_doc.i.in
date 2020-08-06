@@ -55,11 +55,11 @@ The type of :class:`~openturns.WeightedExperiment` depends on the value of ``'So
 
 ``'MonteCarlo'`` is the default choice because it allows the chosen :class:`~openturns.SobolIndicesAlgorithm` implementation to use the asymptotic distribution of the estimators of the Sobol' indices.
 
-Note that ``'QMC'`` is only possible if :math:`2 n_X \leqslant` :class:`~openturns.SobolSequence`:code:`.`:attr:`~openturns.SobolSequence.MaximumNumberOfDimension`.
-If ``'QMC'`` is specified but :math:`2 n_X >` :class:`~openturns.SobolSequence`:code:`.`:attr:`~openturns.SobolSequence.MaximumNumberOfDimension`, the class falls back to ``'LHS'``.
+Note that ``'QMC'`` is only possible if :math:`2 n_X \leqslant` :class:`~openturns.SobolSequence`:code:`.`:attr:`~openturns.SobolSequence.MaximumDimension`.
+If ``'QMC'`` is specified but :math:`2 n_X >` :class:`~openturns.SobolSequence`:code:`.`:attr:`~openturns.SobolSequence.MaximumDimension`, the class falls back to ``'LHS'``.
 
 >>> from openturns import SobolSequence
->>> print(SobolSequence.MaximumNumberOfDimension)
+>>> print(SobolSequence.MaximumDimension)
 1111
 
 Regardless of the type of :class:`~openturns.WeightedExperiment`,

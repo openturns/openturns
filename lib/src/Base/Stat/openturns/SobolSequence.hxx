@@ -36,7 +36,7 @@ class OT_API SobolSequence :
 
 public:
   // this implementation supports dimensions up to 1111
-  static const UnsignedInteger MaximumNumberOfDimension;
+  static const UnsignedInteger MaximumDimension;
 
   // this implementation has a cycle of 2^62 = ~5e18, thanks to the use of 64 bits integers (Unsigned64BitsInteger)
   static const UnsignedInteger MaximumBase2Logarithm;
