@@ -52,22 +52,6 @@ The estimators of :math:`V_i` and :math:`V_{-i}` used by this class are respecti
    \hat{V}_{-i} & = & \frac{1}{N-1}\sum_{k=1}^{N} \tilde{G}(\vect{A}_k)  \tilde{G}(\vect{E}_k) - (\frac{1}{N} \sum_{k=1}^{N} \tilde{G}(\vect{A}_k)) (\frac{1}{N} \sum_{k=1}^{N} \tilde{G}(\vect{B}_k))
    \end{array}
 
-The variance of the estimators is computed using:
-
-.. math::
-
-    \begin{array}{ccc}
-    U_i = \left(\textsuperscript{c}Y_i^B \textsuperscript{c}Y_i^E, \left(\textsuperscript{c}Y_i^{A}\right)^2 \right)^T \\
-    \Psi_i(x, y) = \frac{x}{y}
-    \end{array}
-
-.. math::
-
-    \begin{array}{ccc}
-    U_{-i} = \left(\textsuperscript{c}Y_i^A \textsuperscript{c}Y_i^E, \left(\textsuperscript{c}Y_i^{A}\right)^2 \right)^T \\
-    \Psi_{-i}(x, y) = 1 - \frac{x}{y}
-    \end{array}
-
 See also
 --------
 SobolIndicesAlgorithm

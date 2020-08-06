@@ -60,23 +60,6 @@ where :math:`\rho_n` is the empirical correlation defined by:
    \frac{\sum_{k=1}^N \vect{Z}_k \vect{Z}_k'}
    {\sqrt{\sum_{k=1}^N \vect{Z}_k^2} \sqrt{\sum_{k=1}^N \left( \vect{Z}_k' \right)^2}}
 
-
-The variance of the estimators is computed using:
-
-.. math::
-
-    \begin{array}{ccc}
-    U_i = \left(\left(\textsuperscript{c}Y_i^B \textsuperscript{c}Y_i^E \right), \left(\textsuperscript{c}Y_i^B\right)^2, \left(\textsuperscript{c}Y_i^E \right)^2 \right)^T \\
-    \Psi_i(x, y, z) = \frac{x}{\sqrt{y\times z}}
-    \end{array}
-
-.. math::
-
-    \begin{array}{ccc}
-    U_{-i} = \left(\textsuperscript{c}Y_i^A \textsuperscript{c}Y_i^E, \left(\textsuperscript{c}Y_i^A\right)^2, \left(\textsuperscript{c}Y_i^E\right)^2 \right)^T \\
-    \Psi_{-i}(x, y, z) = 1 - \frac{x}{\sqrt{y\times z}}
-    \end{array}
-
 See also
 --------
 SobolIndicesAlgorithm
