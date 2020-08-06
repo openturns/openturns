@@ -23,6 +23,10 @@
  * Deprecated SORMResult::getEventProbabilityHohenBichler, use SORMResult::getEventProbabilityHohenbichler instead
  * Deprecated SORMResult::getGeneralisedReliabilityIndexHohenBichler, use SORMResult::getGeneralisedReliabilityIndexHohenbichler instead
 
+=== Documentation ===
+==== API documentation ====
+ * Clarified SobolIndicesExperiment page, notations now consistent with SobolIndicesAlgorithm page
+
 === Python module ===
  * Renamed Viewer *_kwargs arguments to *_kw (matplotlib convention)
 
@@ -44,7 +48,7 @@
  * #1521 (Basis of MonomialFunction)
  * #1540 (SubsetSampling: incorrect event sample)
  * #1556 (WeibullMin::computePDFGradient yields the partial derivatives in the wrong order)
-
+ * #1567 (The API doc of SobolIndicesExperiment has a format issue)
 
 == 1.15 release (2020-05-25) == #release-1.15
 
