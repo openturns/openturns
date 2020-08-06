@@ -1,1 +1,3 @@
 Remove Pairs alias in 1.17
+Remove deprecated SORMResult::getEventProbabilityHohenBichler
+Remove deprecated SORMResult::getGeneralisedReliabilityIndexHohenBichler

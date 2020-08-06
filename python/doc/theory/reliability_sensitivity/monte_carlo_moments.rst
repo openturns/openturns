@@ -4,7 +4,7 @@ Estimating moments with Monte Carlo
 -----------------------------------
 
 Let us denote
-:math:`\underline{Y} = h\left( \vect{X},\vect{d} \right) = \left( Y^1,\ldots,Y^{n_Y} \right)`,
+:math:`\vect{Y} = h\left( \vect{X},\vect{d} \right) = \left( Y^1,\ldots,Y^{n_Y} \right)`,
 where :math:`\vect{X}= \left( X^1,\ldots,X^{n_X} \right)` is a random
 vector, and :math:`\vect{d}` a deterministic vector. We seek here to
 evaluate, the characteristics of the central part (central tendency and
@@ -33,7 +33,7 @@ and independently sampled from the probability distribution
 sample :math:`\left\{ \vect{x}_1,\ldots,\vect{x}_N \right\}` of the
 random vector :math:`\vect{X}` (the distribution of which is known) and
 by computing
-:math:`\vect{y}_j = h \left( \vect{x}_j,\underline{d} \right) \ \forall 1 \leq j \leq N`.
+:math:`\vect{y}_j = h \left( \vect{x}_j,\vect{d} \right) \ \forall 1 \leq j \leq N`.
 Then, the Monte-Carlo estimations for the mean and standard deviation
 are the empirical mean and standard deviations of the sample:
 
@@ -48,10 +48,10 @@ convergence to the real values :math:`m_{Y^i}` and :math:`\sigma_{Y^i}`
 is assured as the sample size :math:`N` tends to infinity. The Central
 Limit Theorem enables the difference between the estimated value and the
 sought value to be controlled by means of a confidence interval
-(especially if N is sufficiently large, typically :math:`N` > a few
+(especially if :math:`N` is sufficiently large, typically :math:`N` > a few
 dozens even if there is now way to say for sure if the asymptotic
 behavior is reached). For a probability :math:`\alpha` strictly between
-0 and 1 chosen by the user, one can, for example, be sure with a
+:math:`0` and :math:`1` chosen by the user, one can, for example, be sure with a
 confidence :math:`\alpha`, that the true value of :math:`m_{Y^i}` is
 between :math:`\widehat{m}_{i,\inf}` and :math:`\widehat{m}_{i,\sup}`
 calculated analytically from simple formulae. To illustrate, for
@@ -66,9 +66,9 @@ calculated analytically from simple formulae. To illustrate, for
 The size of the confidence interval, which represents the uncertainty
 of this mean estimation, decreases as :math:`N` increases but more
 gradually (the rate is proportional to :math:`\sqrt{N}`: multiplying
-:math:`N` by 100 reduces the length of the confidence interval
+:math:`N` by :math:`100` reduces the length of the confidence interval
 :math:`\left| \widehat{m}_{i,\inf}-\widehat{m}_{i,\sup} \right|` by a
-factor 10).
+factor :math:`10`).
 
 This method is also referred to as Direct sampling, crude Monte Carlo method, Classical Monte Carlo
 integration.

@@ -54,10 +54,10 @@ SORMResult::SORMResult(const Point & standardSpaceDesignPoint,
   sortedCurvatures_(),
   isAlreadyComputedSortedCurvatures_(false),
   eventProbabilityBreitung_(-1.0),
-  eventProbabilityHohenBichler_(-1.0),
+  eventProbabilityHohenbichler_(-1.0),
   eventProbabilityTvedt_(-1.0),
   generalisedReliabilityIndexBreitung_(SpecFunc::MaxScalar),
-  generalisedReliabilityIndexHohenBichler_(SpecFunc::MaxScalar),
+  generalisedReliabilityIndexHohenbichler_(SpecFunc::MaxScalar),
   generalisedReliabilityIndexTvedt_(SpecFunc::MaxScalar),
   standardDistribution_(limitStateVariable.getImplementation()->getAntecedent().getImplementation()->getDistribution().getStandardDistribution()),
   standardMarginal_(standardDistribution_.getMarginal(0))
@@ -85,10 +85,10 @@ SORMResult::SORMResult():
   sortedCurvatures_(),
   isAlreadyComputedSortedCurvatures_(false),
   eventProbabilityBreitung_(-1.0),
-  eventProbabilityHohenBichler_(-1.0),
+  eventProbabilityHohenbichler_(-1.0),
   eventProbabilityTvedt_(-1.0),
   generalisedReliabilityIndexBreitung_(SpecFunc::MaxScalar),
-  generalisedReliabilityIndexHohenBichler_(SpecFunc::MaxScalar),
+  generalisedReliabilityIndexHohenbichler_(SpecFunc::MaxScalar),
   generalisedReliabilityIndexTvedt_(SpecFunc::MaxScalar),
   standardDistribution_(Normal(1)),
   standardMarginal_(Normal(1))
@@ -173,17 +173,17 @@ Scalar SORMResult::getEventProbabilityBreitung() const
   return eventProbabilityBreitung_;
 } // end SORMResult::getEventProbabilityBreitung
 
-/* The function that actually evaluates the event probability with SORM HohenBichler approximation */
-Scalar SORMResult::getEventProbabilityHohenBichler() const
+/* The function that actually evaluates the event probability with SORM Hohenbichler approximation */
+Scalar SORMResult::getEventProbabilityHohenbichler() const
 {
   /* Quick return if the probability has already been computed */
-  if ((eventProbabilityHohenBichler_ != -1.0) && (eventProbabilityHohenBichler_ != -2.0)) return eventProbabilityHohenBichler_;
+  if ((eventProbabilityHohenbichler_ != -1.0) && (eventProbabilityHohenbichler_ != -2.0)) return eventProbabilityHohenbichler_;
 
   /* this formula is valid only for standard distribution with independent components */
   if (!standardDistribution_.hasIndependentCopula())
   {
-    eventProbabilityHohenBichler_ = -2.0;
-    throw NotDefinedException(HERE) << "Error: impossible to compute HohenBichler SORM probability for standard distributions with non independent components.";
+    eventProbabilityHohenbichler_ = -2.0;
+    throw NotDefinedException(HERE) << "Error: impossible to compute Hohenbichler SORM probability for standard distributions with non independent components.";
   }
   /* Make sure the curvatures have been computed*/
   getSortedCurvatures();
@@ -198,21 +198,28 @@ Scalar SORMResult::getEventProbabilityHohenBichler() const
   if (1.0 + rho * sortedCurvatures_[0] < 0)
   {
     eventProbabilityBreitung_ = -2.0;
-    throw NotDefinedException(HERE) << "Error: impossible to compute HohenBichler SORM probability, one of the curvatures is < -1/rho. rho=" << rho << ", curvature=" << sortedCurvatures_[0];
+    throw NotDefinedException(HERE) << "Error: impossible to compute Hohenbichler SORM probability, one of the curvatures is < -1/rho. rho=" << rho << ", curvature=" << sortedCurvatures_[0];
   }
   /* P_hohenbichler = Phi(-beta)/Prod(sqrt(1+rho*curvature[i])) */
-  eventProbabilityHohenBichler_ = standardCDFBeta;
-  for (UnsignedInteger index = 0 ; index < sortedCurvatures_.getDimension(); ++index) eventProbabilityHohenBichler_ /= sqrt(1.0 + rho * sortedCurvatures_[index]);
+  eventProbabilityHohenbichler_ = standardCDFBeta;
+  for (UnsignedInteger index = 0 ; index < sortedCurvatures_.getDimension(); ++index) eventProbabilityHohenbichler_ /= sqrt(1.0 + rho * sortedCurvatures_[index]);
 
   /* if the Standard Point Origin is in the failure space, take the complementry probability */
-  if (getIsStandardPointOriginInFailureSpace()) eventProbabilityHohenBichler_ = 1.0 - eventProbabilityHohenBichler_;
-  if ((eventProbabilityHohenBichler_ < 0.0) || (eventProbabilityHohenBichler_ > 1.0))
+  if (getIsStandardPointOriginInFailureSpace()) eventProbabilityHohenbichler_ = 1.0 - eventProbabilityHohenbichler_;
+  if ((eventProbabilityHohenbichler_ < 0.0) || (eventProbabilityHohenbichler_ > 1.0))
   {
-    const Scalar badValue = eventProbabilityHohenBichler_;
-    eventProbabilityHohenBichler_ = -2.0;
-    throw NotDefinedException(HERE) << "Error: the probability computed using HohenBichler SORM approximation gives a value outside of [0, 1]:" << badValue;
+    const Scalar badValue = eventProbabilityHohenbichler_;
+    eventProbabilityHohenbichler_ = -2.0;
+    throw NotDefinedException(HERE) << "Error: the probability computed using Hohenbichler SORM approximation gives a value outside of [0, 1]:" << badValue;
   }
-  return eventProbabilityHohenBichler_;
+  return eventProbabilityHohenbichler_;
+} // SORMResult::getEventProbabilityHohenbichler
+
+/* Deprecated alias for the function that actually evaluates the event probability with SORM Hohenbichler approximation */
+Scalar SORMResult::getEventProbabilityHohenBichler() const
+{
+  LOGWARN("SORMResult::getEventProbabilityHohenBichler is deprecated, use SORMResult::getEventProbabilityHohenbichler instead");
+  return getEventProbabilityHohenbichler();
 } // SORMResult::getEventProbabilityHohenBichler
 
 /* The function that actually evaluates the event probability with SORM Tvedtapproximation */
@@ -298,8 +305,8 @@ Scalar SORMResult::getGeneralisedReliabilityIndexBreitung() const
   return generalisedReliabilityIndexBreitung_;
 } // end SORMResult::getGeneralisedReliabilityIndexBreitung
 
-/* GeneralisedReliabilityIndex accessor */
-Scalar SORMResult::getGeneralisedReliabilityIndexHohenBichler() const
+/* GeneralisedReliabilityIndexHohenbichler accessor */
+Scalar SORMResult::getGeneralisedReliabilityIndexHohenbichler() const
 {
   /* evaluate the GeneralisedReliabilityIndex */
   /* GeneralisedReliabilityIndex is defined by : - Inverse standard marginal CDF (eventProbability) in usual case or : + Inverse standard marginal CDF (eventProbability) in other case */
@@ -307,12 +314,19 @@ Scalar SORMResult::getGeneralisedReliabilityIndexHohenBichler() const
   Scalar sign = 1.0;
   if (!getIsStandardPointOriginInFailureSpace()) sign = -1.0;
 
-  /* Generalised reliability index with SORM HohenBichler approximation */
-  /* Make sure that HohenBichler's approximation has been computed */
-  getEventProbabilityHohenBichler();
-  generalisedReliabilityIndexHohenBichler_ = sign * standardMarginal_.computeQuantile(eventProbabilityHohenBichler_)[0];
-  return generalisedReliabilityIndexHohenBichler_;
-}
+  /* Generalised reliability index with SORM Hohenbichler approximation */
+  /* Make sure that Hohenbichler's approximation has been computed */
+  getEventProbabilityHohenbichler();
+  generalisedReliabilityIndexHohenbichler_ = sign * standardMarginal_.computeQuantile(eventProbabilityHohenbichler_)[0];
+  return generalisedReliabilityIndexHohenbichler_;
+} // end SORMResult::getGeneralisedReliabilityIndexHohenbichler
+
+/* Deprecated alias for GeneralisedReliabilityIndexHohenbichler accessor */
+Scalar SORMResult::getGeneralisedReliabilityIndexHohenBichler() const
+{
+  LOGWARN("SORMResult::getGeneralisedReliabilityIndexHohenBichler is deprecated, use SORMResult::getGeneralisedReliabilityIndexHohenbichler instead");
+  return getGeneralisedReliabilityIndexHohenbichler();
+} // end SORMResult::getGeneralisedReliabilityIndexHohenBichler
 
 /* GeneralisedReliabilityIndex accessor */
 Scalar SORMResult::getGeneralisedReliabilityIndexTvedt() const
@@ -338,10 +352,10 @@ String SORMResult::__repr__() const
       << " " << AnalyticalResult::__repr__()
       << " sortedCurvatures=" << sortedCurvatures_
       << " eventProbabilityBreitung=" << eventProbabilityBreitung_
-      << " eventProbabilityHohenBichler=" << eventProbabilityHohenBichler_
+      << " eventProbabilityHohenbichler=" << eventProbabilityHohenbichler_
       << " eventProbabilityTvedt=" << eventProbabilityTvedt_
       << " generalisedReliabilityIndexBreitung=" << generalisedReliabilityIndexBreitung_
-      << " generalisedReliabilityIndexHohenBichler=" << generalisedReliabilityIndexHohenBichler_
+      << " generalisedReliabilityIndexHohenbichler=" << generalisedReliabilityIndexHohenbichler_
       << " generalisedReliabilityIndexTvedt=" << generalisedReliabilityIndexTvedt_
       << " gradientLimitStateFunction_=" << gradientLimitStateFunction_
       << " hessianLimitStateFunction_=" << hessianLimitStateFunction_;
@@ -363,12 +377,12 @@ String SORMResult::__str__(const String & offset) const
   }
   try
   {
-    oss << "Probability estimate    (HohenBichler)=" << getEventProbabilityHohenBichler() << Os::GetEndOfLine() << offset;
-    oss << "Generalised reliability (HohenBichler)=" << getGeneralisedReliabilityIndexHohenBichler() << Os::GetEndOfLine() << offset;
+    oss << "Probability estimate    (Hohenbichler)=" << getEventProbabilityHohenbichler() << Os::GetEndOfLine() << offset;
+    oss << "Generalised reliability (Hohenbichler)=" << getGeneralisedReliabilityIndexHohenbichler() << Os::GetEndOfLine() << offset;
   }
   catch (...)
   {
-    oss << "Probability estimate and generalised reliability index (HohenBichler) not defined." << Os::GetEndOfLine() << offset;
+    oss << "Probability estimate and generalised reliability index (Hohenbichler) not defined." << Os::GetEndOfLine() << offset;
   }
   try
   {
@@ -391,10 +405,10 @@ void SORMResult::save(Advocate & adv) const
   adv.saveAttribute( "sortedCurvatures_", sortedCurvatures_ );
   adv.saveAttribute( "isAlreadyComputedSortedCurvatures_", isAlreadyComputedSortedCurvatures_ );
   adv.saveAttribute( "eventProbabilityBreitung_", eventProbabilityBreitung_ );
-  adv.saveAttribute( "eventProbabilityHohenBichler_", eventProbabilityHohenBichler_ );
+  adv.saveAttribute( "eventProbabilityHohenbichler_", eventProbabilityHohenbichler_ );
   adv.saveAttribute( "eventProbabilityTvedt_", eventProbabilityTvedt_ );
   adv.saveAttribute( "generalisedReliabilityIndexBreitung_", generalisedReliabilityIndexBreitung_ );
-  adv.saveAttribute( "generalisedReliabilityIndexHohenBichler_", generalisedReliabilityIndexHohenBichler_ );
+  adv.saveAttribute( "generalisedReliabilityIndexHohenbichler_", generalisedReliabilityIndexHohenbichler_ );
   adv.saveAttribute( "generalisedReliabilityIndexTvedt_", generalisedReliabilityIndexTvedt_ );
   adv.saveAttribute( "standardDistribution_", standardDistribution_ );
   adv.saveAttribute( "standardMarginal_", standardMarginal_ );
@@ -409,10 +423,16 @@ void SORMResult::load(Advocate & adv)
   adv.loadAttribute( "sortedCurvatures_", sortedCurvatures_ );
   adv.loadAttribute( "isAlreadyComputedSortedCurvatures_", isAlreadyComputedSortedCurvatures_ );
   adv.loadAttribute( "eventProbabilityBreitung_", eventProbabilityBreitung_ );
-  adv.loadAttribute( "eventProbabilityHohenBichler_", eventProbabilityHohenBichler_ );
+  if (adv.hasAttribute("eventProbabilityHohenBichler_"))
+    adv.loadAttribute("eventProbabilityHohenBichler_", eventProbabilityHohenbichler_ );
+  else
+    adv.loadAttribute("eventProbabilityHohenbichler_", eventProbabilityHohenbichler_ );
   adv.loadAttribute( "eventProbabilityTvedt_", eventProbabilityTvedt_ );
   adv.loadAttribute( "generalisedReliabilityIndexBreitung_", generalisedReliabilityIndexBreitung_ );
-  adv.loadAttribute( "generalisedReliabilityIndexHohenBichler_", generalisedReliabilityIndexHohenBichler_ );
+  if (adv.hasAttribute("generalisedReliabilityIndexHohenBichler_"))
+    adv.loadAttribute("generalisedReliabilityIndexHohenBichler_", generalisedReliabilityIndexHohenbichler_ );
+  else
+    adv.loadAttribute("generalisedReliabilityIndexHohenbichler_", generalisedReliabilityIndexHohenbichler_ );
   adv.loadAttribute( "generalisedReliabilityIndexTvedt_", generalisedReliabilityIndexTvedt_ );
   adv.loadAttribute( "standardDistribution_", standardDistribution_ );
   adv.loadAttribute( "standardMarginal_", standardMarginal_ );

@@ -191,8 +191,8 @@ try:
 
     # PFBreitC2 = resultC2.getEventProbabilityBreitung()
     # BetaBreitC2 = resultC2.getGeneralisedReliabilityIndexBreitung()
-    # PFHBC2=resultC2.getEventProbabilityHohenBichler()
-    # BetaHBC2=resultC2.getGeneralisedReliabilityIndexHohenBichler()
+    # PFHBC2=resultC2.getEventProbabilityHohenbichler()
+    # BetaHBC2=resultC2.getGeneralisedReliabilityIndexHohenbichler()
     # PFTvedtC2 = resultC2.getEventProbabilityTvedt()
     # BetaTvedtC2 = resultC2.getGeneralisedReliabilityIndexTvedt()
     # CurvC2 = resultC2.getSortedCurvatures()
@@ -216,8 +216,8 @@ try:
 
     # PFBreitAR2 = resultAR2.getEventProbabilityBreitung()
     # BetaBreitAR2 = resultAR2.getGeneralisedReliabilityIndexBreitung()
-    # PFHBAR2=resultAR2.getEventProbabilityHohenBichler()
-    # BetaHBAR2=resultAR2.getGeneralisedReliabilityIndexHohenBichler()
+    # PFHBAR2=resultAR2.getEventProbabilityHohenbichler()
+    # BetaHBAR2=resultAR2.getGeneralisedReliabilityIndexHohenbichler()
     # PFTvedtAR2 = resultAR2.getEventProbabilityTvedt()
     # BetaTvedtAR2 = resultAR2.getGeneralisedReliabilityIndexTvedt()
     # CurvAR2 = resultAR2.getSortedCurvatures()
@@ -360,8 +360,8 @@ try:
         "************************************************************************************************")
     print("Breitung event probability = %.5e" % PFBreitC2)
     print("Breitung generalized reliability index = %.5f" % BetaBreitC2)
-    print("HohenBichler event probability = %.5e" % PFHBC2)
-    print("HohenBichler generalized reliability index = %.5f" % BetaHBC2)
+    print("Hohenbichler event probability = %.5e" % PFHBC2)
+    print("Hohenbichler generalized reliability index = %.5f" % BetaHBC2)
     print("Tvedt event probability = %.5e" % PFTvedtC2)
     print("Tvedt generalized reliability index = %.5f" % BetaTvedtC2)
     print(
@@ -399,8 +399,8 @@ try:
         "************************************************************************************************")
     print("Breitung event probability = %.5e" % PFBreitAR2)
     print("Breitung generalized reliability index = %.5f" % BetaBreitAR2)
-    print("HohenBichler event probability = %.5e" % PFHBAR2)
-    print("HohenBichler generalized reliability index = %.5f" % BetaHBAR2)
+    print("Hohenbichler event probability = %.5e" % PFHBAR2)
+    print("Hohenbichler generalized reliability index = %.5f" % BetaHBAR2)
     print("Tvedt event probability = %.5e" % PFTvedtAR2)
     print("Tvedt generalized reliability index = %.5f" % BetaTvedtAR2)
     print(
