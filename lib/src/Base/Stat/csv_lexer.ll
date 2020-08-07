@@ -36,6 +36,7 @@
 %option prefix="csv"
 %option noyywrap
 %option nounput
+%option noinput
 
 digit     [0-9]
 sign      [+-]
