@@ -49,9 +49,6 @@ static const Factory<GeneralLinearModelAlgorithm> Factory_GeneralLinearModelAlgo
 GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm()
   : MetaModelAlgorithm()
   , inputSample_(0, 1) // 1 is to be consistent with the default covariance model
-  , normalizedInputSample_(0, 1) // same
-  , inputTransformation_()
-  , normalize_(false)
   , outputSample_(0, 1) // same
   , covarianceModel_()
   , reducedCovarianceModel_()
@@ -80,13 +77,9 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm()
 GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSample,
     const Sample & outputSample,
     const CovarianceModel & covarianceModel,
-    const Bool normalize,
     const Bool keepCholeskyFactor)
   : MetaModelAlgorithm()
   , inputSample_(0, 0)
-  , normalizedInputSample_(0, 0)
-  , inputTransformation_()
-  , normalize_(normalize)
   , outputSample_(0, 0)
   , covarianceModel_()
   , reducedCovarianceModel_()
@@ -109,23 +102,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   // Set data
   setData(inputSample, outputSample);
   // Build a normalization function if needed
-  if (normalize_)
-  {
-    const UnsignedInteger dimension = inputSample_.getDimension();
-    const Point mean(inputSample_.computeMean());
-    const Point stdev(inputSample_.computeStandardDeviationPerComponent());
-    SquareMatrix linear(dimension);
-    for (UnsignedInteger j = 0; j < dimension; ++ j)
-    {
-      linear(j, j) = 1.0;
-      if (std::abs(stdev[j]) > SpecFunc::MinScalar) linear(j, j) /= stdev[j];
-    }
-    const Point zero(dimension);
-    setInputTransformation(LinearFunction(mean, zero, linear));
-  }
-
-  // Normalize input sample
-  normalizeInputSample();
 
   // If no basis then we suppose output sample centered
   checkYCentered(outputSample);
@@ -140,13 +116,9 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
     const Sample & outputSample,
     const CovarianceModel & covarianceModel,
     const Basis & basis,
-    const Bool normalize,
     const Bool keepCholeskyFactor)
   : MetaModelAlgorithm()
   , inputSample_()
-  , normalizedInputSample_(0, inputSample.getDimension())
-  , inputTransformation_()
-  , normalize_(normalize)
   , outputSample_()
   , covarianceModel_()
   , reducedCovarianceModel_()
@@ -168,24 +140,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
 {
   // Set data
   setData(inputSample, outputSample);
-  // Build a normalization function if needed
-  if (normalize_)
-  {
-    const UnsignedInteger dimension = inputSample_.getDimension();
-    const Point mean(inputSample_.computeMean());
-    const Point stdev(inputSample_.computeStandardDeviationPerComponent());
-    SquareMatrix linear(dimension);
-    for (UnsignedInteger j = 0; j < dimension; ++ j)
-    {
-      linear(j, j) = 1.0;
-      if (std::abs(stdev[j]) > SpecFunc::ScalarEpsilon) linear(j, j) /= stdev[j];
-    }
-    const Point zero(dimension);
-    setInputTransformation(LinearFunction(mean, zero, linear));
-  }
-
-  // Normalize input sample
-  normalizeInputSample();
 
   // Set covariance model
   setCovarianceModel(covarianceModel);
@@ -213,13 +167,9 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
     const Sample & outputSample,
     const CovarianceModel & covarianceModel,
     const BasisCollection & basisCollection,
-    const Bool normalize,
     const Bool keepCholeskyFactor)
   : MetaModelAlgorithm()
   , inputSample_(inputSample)
-  , normalizedInputSample_(0, inputSample.getDimension())
-  , inputTransformation_()
-  , normalize_(normalize)
   , outputSample_(outputSample)
   , covarianceModel_()
   , reducedCovarianceModel_()
@@ -242,24 +192,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   // Set data
   setData(inputSample, outputSample);
   // Build a normalization function if needed
-  if (normalize_)
-  {
-    const UnsignedInteger dimension = inputSample_.getDimension();
-    const Point mean(inputSample_.computeMean());
-    const Point stdev(inputSample_.computeStandardDeviationPerComponent());
-    SquareMatrix linear(dimension);
-    for (UnsignedInteger j = 0; j < dimension; ++ j)
-    {
-      linear(j, j) = 1.0;
-      if (std::abs(stdev[j]) > SpecFunc::MinScalar) linear(j, j) /= stdev[j];
-    }
-    const Point zero(dimension);
-    setInputTransformation(LinearFunction(mean, zero, linear));
-  }
-
-  // Normalize input sample
-  normalizeInputSample();
-
 
   // Set covariance model
   setCovarianceModel(covarianceModel);
@@ -367,7 +299,7 @@ void GeneralLinearModelAlgorithm::setCovarianceModel(const CovarianceModel & cov
     }
     if (isScaleActive)
     {
-      const Point inputSampleRange(normalizedInputSample_.getMax() - normalizedInputSample_.getMin());
+      const Point inputSampleRange(inputSample_.getMax() - inputSample_.getMin());
       for (UnsignedInteger k = 0; k < reducedCovarianceModel_.getScale().getSize(); ++k) upperBound[k] = inputSampleRange[k] * scaleFactor;
     }
     LOGWARN(OSS() <<  "Warning! For coherency we set scale upper bounds = " << upperBound.__str__());
@@ -444,23 +376,6 @@ GeneralLinearModelAlgorithm * GeneralLinearModelAlgorithm::clone() const
   return new GeneralLinearModelAlgorithm(*this);
 }
 
-
-/* Normalize the input sample */
-void GeneralLinearModelAlgorithm::normalizeInputSample()
-{
-  // Nothing to do if the sample has alredy been normalized
-  if (normalizedInputSample_.getSize() != 0) return;
-  // If we don't want to normalize the data
-  if (!normalize_)
-  {
-    LOGINFO("No need to normalize the data");
-    normalizedInputSample_ = inputSample_;
-    return;
-  }
-  LOGINFO("Normalize input data");
-  normalizedInputSample_ = inputTransformation_(inputSample_);
-}
-
 /* Compute the design matrix */
 void GeneralLinearModelAlgorithm::computeF()
 {
@@ -471,7 +386,7 @@ void GeneralLinearModelAlgorithm::computeF()
   // With a multivariate basis of size similar to output dimension, each ith-basis should be applied to elements
   // of corresponding marginal
   const UnsignedInteger outputDimension = outputSample_.getDimension();
-  const UnsignedInteger sampleSize = normalizedInputSample_.getSize();
+  const UnsignedInteger sampleSize = inputSample_.getSize();
   const UnsignedInteger basisCollectionSize = basisCollection_.getSize();
   UnsignedInteger totalSize = 0;
   for (UnsignedInteger i = 0; i < basisCollectionSize; ++ i ) totalSize += basisCollection_[i].getSize();
@@ -488,7 +403,7 @@ void GeneralLinearModelAlgorithm::computeF()
     for (UnsignedInteger j = 0; j < localBasisSize; ++j, ++index )
     {
       // Here we use potential parallelism in the evaluation of the basis functions
-      const Sample basisSample = localBasis[j](normalizedInputSample_);
+      const Sample basisSample = localBasis[j](inputSample_);
       for (UnsignedInteger i = 0; i < sampleSize; ++i) F_(outputMarginal + i * outputDimension, index) = basisSample(i, 0);
     }
   }
@@ -517,7 +432,6 @@ void GeneralLinearModelAlgorithm::run()
 {
   // Do not run again if already computed
   if (hasRun_) return;
-  normalizeInputSample();
   computeF();
   const UnsignedInteger outputDimension = outputSample_.getDimension();
   // optimization of likelihood function if provided
@@ -580,9 +494,6 @@ void GeneralLinearModelAlgorithm::run()
 #endif
   }
 
-  // Add transformation if needed
-  if (normalize_) metaModel = ComposedFunction(metaModel, inputTransformation_);
-
   // compute residual, relative error
   const Point outputVariance(outputSample_.computeVariance());
   const Sample mY(metaModel(inputSample_));
@@ -612,8 +523,6 @@ void GeneralLinearModelAlgorithm::run()
   }
   else
     result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basisCollection_, trendCoefficients, reducedCovarianceModel_, optimalLogLikelihood);
-  // If normalize, set input transformation
-  if (normalize_) result_.setTransformation(inputTransformation_);
   hasRun_ = true;
 }
 
@@ -728,7 +637,7 @@ Scalar GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky() const
   LOGDEBUG(OSS(false) << "Compute the LAPACK log-determinant of the Cholesky factor for covariance=" << reducedCovarianceModel_);
 
   LOGDEBUG("Discretize the covariance model");
-  CovarianceMatrix C(reducedCovarianceModel_.discretize(normalizedInputSample_));
+  CovarianceMatrix C(reducedCovarianceModel_.discretize(inputSample_));
   if (noise_.getDimension() > 0)
   {
     LOGDEBUG("Add noise to the covariance matrix");
@@ -808,15 +717,15 @@ Scalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky() const
   HMatrixFactory hmatrixFactory;
   HMatrixParameters hmatrixParameters;
 
-  covarianceCholeskyFactorHMatrix_ = hmatrixFactory.build(normalizedInputSample_, covarianceDimension, true, hmatrixParameters);
+  covarianceCholeskyFactorHMatrix_ = hmatrixFactory.build(inputSample_, covarianceDimension, true, hmatrixParameters);
   if (covarianceDimension == 1)
   {
-    CovarianceAssemblyFunction simple(reducedCovarianceModel_, normalizedInputSample_);
+    CovarianceAssemblyFunction simple(reducedCovarianceModel_, inputSample_);
     covarianceCholeskyFactorHMatrix_.assemble(simple, 'L');
   }
   else
   {
-    CovarianceBlockAssemblyFunction block(reducedCovarianceModel_, normalizedInputSample_);
+    CovarianceBlockAssemblyFunction block(reducedCovarianceModel_, inputSample_);
     covarianceCholeskyFactorHMatrix_.assemble(block, 'L');
   }
   // Factorize
@@ -859,27 +768,6 @@ void GeneralLinearModelAlgorithm::setOptimizationAlgorithm(const OptimizationAlg
 {
   solver_ = solver;
   hasRun_ = false;
-}
-
-
-void GeneralLinearModelAlgorithm::setInputTransformation(const Function & inputTransformation)
-{
-  if (inputTransformation.getInputDimension() != inputSample_.getDimension()) throw InvalidDimensionException(HERE)
-        << "In GeneralLinearModelAlgorithm::setInputTransformation, input dimension of the transformation=" << inputTransformation.getInputDimension() << " should match input sample dimension=" << inputSample_.getDimension();
-  if (inputTransformation.getOutputDimension() != inputSample_.getDimension()) throw InvalidDimensionException(HERE)
-        << "In GeneralLinearModelAlgorithm::setInputTransformation, output dimension of the transformation=" << inputTransformation.getOutputDimension() << " should match output sample dimension=" << inputSample_.getDimension();
-  inputTransformation_ = inputTransformation;
-  // Set normalize to true
-  normalize_ = true;
-  // Need to reset
-  reset();
-}
-
-Function GeneralLinearModelAlgorithm::getInputTransformation() const
-{
-  // If normlize is false, we return identity function
-  if (!normalize_) return IdentityFunction(inputSample_.getDimension());
-  return inputTransformation_;
 }
 
 /* Optimize parameters flag accessor */
@@ -975,7 +863,6 @@ GeneralLinearModelResult GeneralLinearModelAlgorithm::getResult()
 
 Function GeneralLinearModelAlgorithm::getObjectiveFunction()
 {
-  normalizeInputSample();
   computeF();
   MemoizeFunction logLikelihood(ReducedLogLikelihoodEvaluation(*this));
   // Here we change the finite difference gradient for a non centered one in order to reduce the computational cost
@@ -1027,8 +914,6 @@ void GeneralLinearModelAlgorithm::save(Advocate & adv) const
 {
   MetaModelAlgorithm::save(adv);
   adv.saveAttribute( "inputSample_", inputSample_ );
-  adv.saveAttribute( "inputTransformation_", inputTransformation_ );
-  adv.saveAttribute( "normalize_", normalize_ );
   adv.saveAttribute( "outputSample_", outputSample_ );
   adv.saveAttribute( "covarianceModel_", covarianceModel_ );
   adv.saveAttribute( "reducedCovarianceModel_", reducedCovarianceModel_ );
@@ -1049,8 +934,6 @@ void GeneralLinearModelAlgorithm::load(Advocate & adv)
 {
   MetaModelAlgorithm::load(adv);
   adv.loadAttribute( "inputSample_", inputSample_ );
-  adv.loadAttribute( "inputTransformation_", inputTransformation_ );
-  adv.loadAttribute( "normalize_", normalize_ );
   adv.loadAttribute( "outputSample_", outputSample_ );
   adv.loadAttribute( "covarianceModel_", covarianceModel_ );
   adv.loadAttribute( "reducedCovarianceModel_", reducedCovarianceModel_ );

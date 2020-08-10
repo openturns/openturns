@@ -54,14 +54,12 @@ public:
   GeneralLinearModelAlgorithm (const Sample & inputSample,
                                const Sample & outputSample,
                                const CovarianceModel & covarianceModel,
-                               const Bool normalize = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-NormalizeData"),
                                const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
   GeneralLinearModelAlgorithm (const Sample & inputSample,
                                const Sample & outputSample,
                                const CovarianceModel & covarianceModel,
                                const Basis & basis,
-                               const Bool normalize = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-NormalizeData"),
                                const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
   /** Parameters constructor */
@@ -69,7 +67,6 @@ public:
                                const Sample & outputSample,
                                const CovarianceModel & covarianceModel,
                                const BasisCollection & basisCollection,
-                               const Bool normalize = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-NormalizeData"),
                                const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
   /** Virtual constructor */
@@ -80,10 +77,6 @@ public:
 
   /** Perform regression */
   void run() override;
-
-  /** input transformation accessor */
-  void setInputTransformation(const Function & inputTransformation);
-  Function getInputTransformation() const;
 
   /** Sample accessors */
   Sample getInputSample() const override;
@@ -126,11 +119,8 @@ protected:
   Scalar computeLapackLogDeterminantCholesky() const;
   Scalar computeHMatLogDeterminantCholesky() const;
 
-  // Compute the design matrix on the normalized input sample
+  // Compute the design matrix on the input sample
   void computeF();
-
-  // Normalize the input sample
-  void normalizeInputSample();
 
   /** Method accessor (lapack/hmat) */
   void initializeMethod();
@@ -234,13 +224,6 @@ private:
 
   // The input data
   Sample inputSample_;
-
-  // Standardized version of the input data
-  Sample normalizedInputSample_;
-
-  // Standardization function
-  Function inputTransformation_;
-  mutable Bool normalize_;
 
   // The associated output data
   Sample outputSample_;
