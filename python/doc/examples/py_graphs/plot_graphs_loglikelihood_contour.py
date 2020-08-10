@@ -83,8 +83,8 @@ def logLikelihood(X):
 # %%
 logLikelihoodFunction = ot.PythonFunction(2, 1, logLikelihood)
 graphBasic = logLikelihoodFunction.draw([-3.0, 0.1], [5.0, 7.0], [50]*2)
-graphBasic.setXTitle(r":math:`\mu`")
-graphBasic.setYTitle(r":math:`\sigma`")
+graphBasic.setXTitle(r"$\mu$")
+graphBasic.setYTitle(r"$\sigma$")
 view = viewer.View(graphBasic)
 
 # %%
@@ -98,8 +98,8 @@ view = viewer.View(graphBasic)
 ot.ResourceMap_SetAsUnsignedInteger("Contour-DefaultLevelsNumber",5)
 logLikelihoodFunction = ot.PythonFunction(2, 1, logLikelihood)
 graphBasic = logLikelihoodFunction.draw([-3.0, 0.1], [5.0, 7.0], [50]*2)
-graphBasic.setXTitle(r":math:`\mu`")
-graphBasic.setYTitle(r":math:`\sigma`")
+graphBasic.setXTitle(r"$\mu$")
+graphBasic.setYTitle(r"$\sigma$")
 view = viewer.View(graphBasic)
 
 # %%
@@ -136,7 +136,7 @@ contours.setDrawLabels(True)
 # Then we create a new graph. Finally, we use the `setDrawables` to substitute the collection of drawables by a collection reduced to this unique contour.
 
 # %%
-graphFineTune = ot.Graph("Log-Likelihood", r":math:`\mu`", r":math:`\sigma`", True, '')
+graphFineTune = ot.Graph("Log-Likelihood", r"$\mu$", r"$\sigma$", True, '')
 graphFineTune.setDrawables([contours])
 graphFineTune.setLegendPosition("") # Remove the legend
 view = viewer.View(graphFineTune)
@@ -166,7 +166,7 @@ for i in range(len(levels)):
     drawables.append(ot.Drawable(contour))
 
 # %%
-graphFineTune = ot.Graph("Log-Likelihood", r":math:`\mu`", r":math:`\sigma`", True, '')
+graphFineTune = ot.Graph("Log-Likelihood", r"$\mu$", r"$\sigma$", True, '')
 graphFineTune.setDrawables(drawables) # Replace the drawables
 graphFineTune.setLegendPosition("") # Remove the legend
 graphFineTune.setColors(palette) # Add colors
