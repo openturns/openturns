@@ -1,0 +1,44 @@
+# ---
+# jupyter:
+#   jupytext:
+#     text_representation:
+#       extension: .py
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.5.1
+#   kernelspec:
+#     display_name: Python 3
+#     language: python
+#     name: python3
+# ---
+
+# %%
+"""
+Extract the copula from a distribution
+======================================
+"""
+# %% 
+
+# %%
+# In this example we are going to retrieve the copula from a multidimensional distribution.
+#
+
+# %%
+from __future__ import print_function
+import openturns as ot
+import openturns.viewer as viewer
+from matplotlib import pylab as plt
+
+# %%
+# create a multivariate gaussian distribution
+mu = [0.0] * 2
+sigma = [1.0]*2
+R = ot.CorrelationMatrix(2)
+R[0, 1] = 0.25
+distribution = ot.Normal(mu, sigma, R)
+print(distribution)
+
+# %%
+# extract the copula
+copula = distribution.getCopula()
+print(copula)

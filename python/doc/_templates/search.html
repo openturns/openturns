@@ -1,0 +1,250 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Search &#8212; OpenTURNS 1.16dev documentation</title>
+    <link rel="stylesheet" href="_static/openturns.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script type="text/javascript" src="_static/js/mysearchtools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="#" />
+  <script type="text/javascript">
+    jQuery(function() { Search.loadIndex("searchindex.js"); });
+  </script>
+  
+  <script type="text/javascript" id="searchindexloader"></script>
+  
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css' />
+
+  </head><body>
+<div class="pageheader">
+  <ul>
+    <li><a href="http://www.openturns.org/">Home</a></li>
+    <li><a href="install.html">Get it</a></li>
+    <li><a href="contents.html">Doc</a></li>
+    <li><a href="https://gitter.im/openturns/community">Chat</a></li>
+    <li><a href="https://github.com/openturns">Code</a></li>
+    <li><a href="https://github.com/openturns/openturns/issues">Bugs</a></li>
+  </ul>
+  <a href="index.html">
+    <h1>
+      <img src="_static/logo-openturns-wo-bg.png" alt="" width=100px height=100px />
+      OpenTURNS
+    </h1>
+    <h2> An Open source initiative for the Treatment of Uncertainties, Risks'N Statistics</h2>
+  </a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">OpenTURNS 1.16dev documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1 id="search-documentation">Search</h1>
+  <div id="fallback" class="admonition warning">
+  <script type="text/javascript">$('#fallback').hide();</script>
+  <p>
+    Please activate JavaScript to enable the search
+    functionality.
+  </p>
+  </div>
+  <p>
+    From here you can search these documents. Enter your search
+    words into the box below and click "search". Note that the search
+    function will automatically search for all of the words. Pages
+    containing fewer words won't appear in the result list.
+  </p>
+  <form action="" method="get">
+    <input type="text" name="q" value="" /><br/>
+  Example  <input id="ExampleBox" name="e" type="checkbox" checked onchange="javascript:divHideClass('Example')"/>
+  API      <input id="APIBox" name="a" type="checkbox"  checked onchange="javascript:divHideClass('API')"/>
+  Theory   <input id="TheoryBox" name="t" type="checkbox" checked onchange="javascript:divHideClass('Theory')"/>
+
+    <input type="submit" value="search" />
+    <span id="search-progress" style="padding-left: 10px"></span>
+  </form>
+
+<script>
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        }
+    }
+    return "off";
+};
+//alert($("#ExampleBox").is(":checked"));
+//alert("e:" + getUrlParameter('e'));
+//alert("a:" + getUrlParameter('a'));
+//alert( getUrlParameter('e')===undefined );
+
+if( getUrlParameter('e') == "on" || getUrlParameter('a') == "on" || getUrlParameter('t') == "on" ){
+  $("#ExampleBox").prop( "checked",  getUrlParameter('e') == "on");
+  $("#APIBox").prop( "checked",  getUrlParameter('a') == "on" );
+  $("#TheoryBox").prop( "checked",  getUrlParameter('t') == "on" );
+}
+
+
+
+//alert("Box status"+$("#ExampleBox").is(":checked"));
+
+</script>
+
+  <!-- 
+  <form id="myform">
+    API <input type="checkbox" name="checkfield" id="api"  onchange="apiscore(this)" checked/>
+  </form> 
+  -->
+  <!--
+  Example  <input id="ExampleBox" type="checkbox" checked onchange="javascript:divHideClass('Example')"/>
+  API      <input id="APIBox" type="checkbox" checked onchange="javascript:divHideClass('API')"/>
+  Theory   <input id="TheoryBox" type="checkbox" checked onchange="javascript:divHideClass('Theory')"/>
+  -->
+<script>
+function elementHideShow(div, hideOrShow){
+
+  if (hideOrShow)  {
+    //div.style.display = "list-item";  }
+    div.classList.remove("hide");
+    div.classList.add("show");
+  }
+  else{
+    div.classList.remove("show");
+    div.classList.add("hide");
+  }
+    //div.style.display = "none";  }
+  
+}
+
+function divHideClass(classToHideorShow){ 
+  //alert('Hello');
+  var els = document.getElementsByClassName("search")[0].getElementsByClassName(classToHideorShow);
+
+  var hideOrShow = true;
+  if(classToHideorShow == 'Example'){
+    hideOrShow=$("#ExampleBox").is(":checked"); }
+  if(classToHideorShow == 'API'){
+    hideOrShow=$("#APIBox").is(":checked"); }
+  if(classToHideorShow == 'Theory'){
+    hideOrShow=$("#TheoryBox").is(":checked");} 
+
+  //alert('hideOrShow: '+hideOrShow);
+  for (var i = 0; i < els.length; i++) { 
+    el = els[i];
+    elementHideShow(el, hideOrShow);
+  }
+}                               
+
+</script>
+
+
+<!--
+  Api      <input id="ApBox" type="checkbox" checked onclick="showState(this)"/>
+  <script>
+  var apiSelected = 1;
+  function showState(){
+    class CustomSearch {} // il faut remonter la classe sinon unreferenced
+    //var apiScore = $('#ApBox');
+    //var apiScore = document.getElementById("ApBox").value;
+    var apiScore=$("#ApBox").is(":checked");
+    //alert(apiScore);
+    //if (apiScore){
+    //  alert(1);
+    //  apiSelected = 100;
+    //}else{ alert(0); apiSelected = 0;}
+    //const x = new CustomSearch(apiSelected);
+    //alert(apiSelected);
+  //};
+  //alert(apiSelected);
+  </script>
+-->
+
+  <!--
+  Example <input type="checkbox" name="checkfield" id="ex"  checked/>   	
+  API <input type="checkbox" name="checkfield" id="api" checked/>   
+  Theory <input type="checkbox" name="checkfield" id="th" checked/>   				
+  -->
+
+  <!--
+  <form id="myform">
+  API   <input type="checkbox" name="checkfield" id="api"  onchange="apiscore(this)"/>
+  </form> 
+  -->
+  
+  <!--
+  <script>
+       //var apiScore = 17;
+       //var apiScore = $('#api');
+       //var apiScore = $('#api');
+       //var apiScore = $('#api');
+       //alert(apiScore);
+       //function apiValue(){
+       //  var apiScore=document.getElementById("api").value;
+       //  alert(apiScore);
+       //  return apiScore;
+       //}
+       //const x = new CustomSearch(apiScore);
+  </script>
+  --> 
+   
+  <div id="search-results">
+  
+  </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="index.html">OpenTURNS 1.16dev documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca.
+      Last updated on Jul 10, 2020.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.4.
+    </div>
+  </body>
+</html>

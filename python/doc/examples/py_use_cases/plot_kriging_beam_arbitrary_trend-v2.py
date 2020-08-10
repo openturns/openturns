@@ -1,0 +1,168 @@
+"""
+Configuring an arbitrary trend in Kriging-v2
+============================================
+"""
+# %% 
+#
+
+# %%
+# The goal of this example is to show how to configure an arbitrary trend in a Kriging metamodel. 
+#
+# In general, any collection of multivariate functions can be used as the `basis` argument of a `KrigingAlgorithm`. In practice, it might not be convenient to create a multivariate basis and this is why we sometimes create it by tensorization of univariate functions. In this example, we first use Legendre polynomials as our univariate functions, then we create an orthogonal polynomial basis corresponding to the input marginals.
+#
+# For this purpose, we use the cantilever beam example (see :ref:`use-case-cantilever-beam`).
+
+# %%
+import openturns as ot
+ot.RandomGenerator.SetSeed(0)
+from use_cases import use_case_cantilever_beam
+
+cb = use_case_cantilever_beam.cantilever_beam()
+
+# %%
+# Definition of the model
+# -----------------------
+
+# %%
+dimension = cb.dim # number of inputs
+model = cb.model
+myDistribution = cb.distribution
+
+# %%
+# Create the design of experiments
+# --------------------------------
+
+# %%
+# We consider a simple Monte-Carlo sampling as a design of experiments. This is why we generate an input sample using the `getSample` method of the distribution. Then we evaluate the output using the `model` function.
+
+# %%
+sampleSize_train = 20
+X_train = myDistribution.getSample(sampleSize_train)
+Y_train = model(X_train)
+
+# %%
+# Create the Legendre basis
+# -------------------------
+#
+# We first create a Legendre basis of univariate polynomials. In order to convert then into multivariate polynomials, we use a linear enumerate function.
+#
+# The `LegendreFactory` class creates Legendre polynomials. 
+
+# %%
+univariateFactory = ot.LegendreFactory()
+
+# %%
+# This factory corresponds to the `Uniform` distribution in the [-1,1] interval. 
+
+# %%
+univariateFactory.getMeasure()
+
+# %%
+# This interval does not correspond to the interval on which the input marginals are defined (we will come back to this topic later), but this will, anyway, create a consistent trend for the kriging.
+
+# %%
+polyColl = [univariateFactory]*dimension
+
+# %%
+enumerateFunction = ot.LinearEnumerateFunction(dimension)
+productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
+
+# %%
+functions = []
+numberOfTrendCoefficients = 12
+for i in range(numberOfTrendCoefficients):
+    multivariatepolynomial = productBasis.build(i)
+    print(multivariatepolynomial)
+    functions.append(multivariatepolynomial)
+
+# %%
+basis = ot.Basis(functions)
+
+# %%
+# Create the metamodel
+# --------------------
+
+# %%
+# In order to create the kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class. Then we use a squared exponential covariance model. Finally, we use the `KrigingAlgorithm` class to create the kriging metamodel, taking the training sample, the covariance model and the trend basis as input arguments. 
+
+# %%
+covarianceModel = ot.SquaredExponential([1.]*dimension, [1.0])
+
+# %%
+algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
+algo.run()
+result = algo.getResult()
+krigingWithConstantTrend = result.getMetaModel()
+
+# %%
+# The `getTrendCoefficients` method returns the coefficients of the trend.
+
+# %%
+result.getTrendCoefficients()
+
+# %%
+# We see that the number of coefficients in the trend corresponds to the number of functions in the basis. 
+
+# %%
+result.getCovarianceModel()
+
+# %%
+# The `SquaredExponential` model has one amplitude coefficient and 4 scale coefficients. This is because this covariance model is anisotropic : each of the 4 input variables is associated with its own scale coefficient. 
+
+# %%
+# Create an orthogonal multivariate polynomial factory
+# ----------------------------------------------------
+
+# %%
+# In order to create a Legendre basis which better corresponds to the input marginals, we could consider the orthogonal basis which would be associated to uniform marginals. To compute the bounds of these uniform distributions, we may consider the 1% and 99% quantiles of each marginal.
+#
+# There is, however, a simpler way to proceed. We can simply orthogonalize the input marginals and create the orthogonal polynomial basis corresponding to the inputs. This corresponds to the method we would use in the polynomial chaos. 
+#
+# We first create the polynomial basis which corresponds to the inputs. 
+
+# %%
+multivariateBasis = ot.OrthogonalProductPolynomialFactory([cb.E, cb.F, cb.L, cb.I])
+
+# %%
+# Then we create the multivariate basis which has maximum degree equal to 2.
+
+# %%
+totalDegree = 2
+enumerateFunction = multivariateBasis.getEnumerateFunction()
+numberOfTrendCoefficients = enumerateFunction.getStrataCumulatedCardinal(totalDegree)
+numberOfTrendCoefficients
+
+# %%
+functions = []
+for i in range(numberOfTrendCoefficients):
+    multivariatepolynomial = productBasis.build(i)
+    print(multivariatepolynomial)
+    functions.append(multivariatepolynomial)
+
+# %%
+basis = ot.Basis(functions)
+
+# %%
+algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
+algo.run()
+result = algo.getResult()
+krigingWithConstantTrend = result.getMetaModel()
+
+# %%
+# The `getTrendCoefficients` method returns the coefficients of the trend.
+
+# %%
+result.getTrendCoefficients()
+
+# %%
+# Conclusion
+# ----------
+#
+# The trend that we have configured corresponds to the basis that we would have used in a full polynomial chaos computed with least squares. 
+#
+# Other extensions of this work would be:
+#
+# * to use a Fourier basis with `FourierSeriesFactory`,
+# * wavelets with `HaarWaveletFactory`,
+#
+# or any other univariate factory. 

@@ -17,6 +17,8 @@ import os
 import subprocess
 from distutils.version import LooseVersion
 import sphinx
+import sphinx_gallery
+from sphinx_gallery.sorting import ExplicitOrder
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -84,6 +86,62 @@ except ImportError:
     pngmath_use_preview = True
 
 extensions.append('matplotlib.sphinxext.plot_directive')
+
+     #'examples_dirs': ['py_examples/'], # path to example scripts
+     #'gallery_dirs': 'auto_examples', # path to where to save gallery gen. output
+     #'subsection_order': ExplicitOrder(['py_examples/data_analysis',
+     #                                  'py_examples/probabilistic_modeling',
+     #                                  'py_examples/meta_modeling',
+     #                                  'py_examples/reliability_sensitivity',
+     #                                  'py_examples/functional_modeling',
+     #                                  'py_examples/calibration',
+     #                                  'py_examples/numerical_methods',
+     #                                  'py_examples/graphs',
+     #                                  'py_examples/use_cases']),
+
+extensions.append('sphinx_gallery.gen_gallery')
+sphinx_gallery_conf = {
+
+     'examples_dirs': ['examples/py_data_analysis','examples/py_probabilistic_modeling','examples/py_meta_modeling','examples/py_reliability_sensitivity','examples/py_functional_modeling','examples/py_calibration','examples/py_numerical_methods','examples/py_graphs','examples/py_use_cases',], # path to example scripts
+     'gallery_dirs': ['auto_py_data_analysis','auto_py_probabilistic_modeling','auto_py_meta_modeling','auto_py_reliability_sensitivity','auto_py_functional_modeling','auto_py_calibration','auto_py_numerical_methods','auto_py_graphs','auto_py_use_cases',], # path to where to save gallery gen. output
+
+
+     'filename_pattern': '/plot_',
+     'ignore_pattern': '/(__init__.py)|(use_case_)',
+
+
+     'subsection_order': ExplicitOrder(['examples/py_data_analysis/manage_data_and_samples',
+                                        'examples/py_data_analysis/sample_analysis',
+                                        'examples/py_data_analysis/distribution_fitting',
+                                        'examples/py_data_analysis/statistical_hypothesis_testing',
+                                        'examples/py_data_analysis/estimate_dependency_and_copulas',
+                                        'examples/py_data_analysis/estimate_stochastic_processes',
+                                        'examples/py_data_analysis/graphics',
+                                        'examples/py_probabilistic_modeling/distributions',
+                                        'examples/py_probabilistic_modeling/copulas',
+                                        'examples/py_probabilistic_modeling/stochastic_processes',
+                                        'examples/py_meta_modeling/general_purpose_metamodels',
+                                        'examples/py_meta_modeling/polynomial_chaos_metamodel',
+                                        'examples/py_meta_modeling/kriging_metamodel',
+                                        'examples/py_meta_modeling/low_rank_tensors_metamodel',
+                                        'examples/py_meta_modeling/fields_metamodels',
+                                        'examples/py_reliability_sensitivity/central_dispersion',
+                                        'examples/py_reliability_sensitivity/reliability',
+                                        'examples/py_reliability_sensitivity/reliability_processes',
+                                        'examples/py_reliability_sensitivity/sensitivity_analysis',
+                                        'examples/py_reliability_sensitivity/design_of_experiments',
+                                        'examples/py_functional_modeling/vectorial_functions',
+                                        'examples/py_functional_modeling/field_functions',
+                                        'examples/py_functional_modeling/link_to_an_external_code',
+                                        'examples/py_calibration/least_squares_and_gaussian_calibration',
+                                        'examples/py_calibration/bayesian_calibration',
+                                        'examples/py_numerical_methods/general_methods',
+                                        'examples/py_numerical_methods/optimization',
+                                        'examples/py_graphs',
+                                        'examples/py_use_cases']),
+
+}
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -182,7 +240,16 @@ html_favicon = 'themes/openturns/static/favicon.ico'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ['_static','_static/css','_static/js']
+
+html_css_files = [
+    'css/custom.css',
+]
+
+html_js_files = [
+    'js/mysearchtools.js',
+]
+
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied

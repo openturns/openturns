@@ -1,0 +1,16 @@
+img.kieran {
+    padding-bottom: 5px;
+    cursor: pointer;
+}
+
+li.hide {
+  display: none !important;
+}
+
+li.show {
+  display: list-item !important;
+}
+
+div.sphx-glr-clear {
+    clear: left;
+}
