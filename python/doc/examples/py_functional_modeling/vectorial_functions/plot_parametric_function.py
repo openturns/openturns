@@ -1,32 +1,18 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Create a parametric function
 ============================
 """
-# %% 
-
 # %%
 # In this example we are going to create a parametric function:
 #
-# .. math:: d_{L,I}(E, F):  \mathbb{R}^2  \rightarrow \mathbb{R} :math:``
+# .. math:: 
+#    d_{L,I}(E, F):  \mathbb{R}^2  \rightarrow \mathbb{R}
 #   
 # function from an existing "full" function:
 #
-#  d(E, F, L, I):  \mathbb{R}^4  \rightarrow \mathbb{R} :math:``
+# .. math:: 
+#  d(E, F, L, I):  \mathbb{R}^4  \rightarrow \mathbb{R}
+#
 
 # %%
 from __future__ import print_function

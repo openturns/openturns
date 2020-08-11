@@ -1,30 +1,15 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Create a Python function
 ========================
 """
-# %% 
-
 # %%
 # In this example we are going to create a Function object (ie usable in the OpenTURNS context) from a pure Python function.
 #
 # The pure Python function to wrap must accept a sequence of floats and return a sequence of float.
 #
-# .. math:: f(x) = [x_0+x_1+x_2, (x_1-1)*e^{x_0} * x_2]:math:``
+# .. math:: 
+#    f(x) = [x_0+x_1+x_2, (x_1-1)*e^{x_0} * x_2]
+#
 
 # %%
 from __future__ import print_function

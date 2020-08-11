@@ -1,32 +1,15 @@
-# -*- coding: utf-8 -*-
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Value function
 ==============
 """
-# %% 
-
 # %%
 # A value function
 # :math:`f_{value}: \mathcal{D} \times \mathbb{R}^d \rightarrow \mathcal{D} \times \mathbb{R}^q` is a
 # particular field function that lets invariant the mesh of a field
 # and defined by a function :math:`g : \mathbb{R}^d  \rightarrow \mathbb{R}^q` such that:
 #
-# .. math::\begin{aligned} f_{value}(\underline{t}, \underline{x})=(\underline{t}, g(\underline{x}))\end{aligned}:math:``
+# .. math::
+#    \begin{aligned} f_{value}(\underline{t}, \underline{x})=(\underline{t}, g(\underline{x}))\end{aligned}
 #   
 # Let’s note that the input dimension of :math:`f_{value}` still designs the
 # dimension of :math:`\underline{x}` : :math:`d`. Its output dimension is equal to :math:`q`.
@@ -40,8 +23,12 @@ Value function
 #
 # The use case illustrates the creation of a spatial (field) function
 # from the function :math:`g: \mathbb{R}^2  \rightarrow \mathbb{R}^2` such as :
-# \begin{aligned}
-#   g(\underline{x})=(x_1^2, x_1+x_2)\end{aligned}:math:``
+# 
+# .. math::
+#    \begin{aligned}
+#      g(\underline{x})=(x_1^2, x_1+x_2)
+#    \end{aligned}
+#
 
 # %%
 from __future__ import print_function

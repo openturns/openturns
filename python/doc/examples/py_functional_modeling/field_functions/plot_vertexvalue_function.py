@@ -1,25 +1,7 @@
-# -*- coding: utf-8 -*-
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Vertex value function
 =====================
 """
-# %% 
-
 # %%
 #
 # A vertex value function
@@ -27,7 +9,8 @@ Vertex value function
 # particular field function that lets invariant the mesh of a field
 # and defined by a function :math:`h : \mathbb{R}^n \times \mathbb{R}^d  \rightarrow \mathbb{R}^q` such that:
 #
-# .. math::\begin{aligned} f_{vertexvalue}(\underline{t}, \underline{x})=(\underline{t}, h(\underline{t},\underline{x}))\end{aligned}:math:``
+# .. math::
+#    \begin{aligned} f_{vertexvalue}(\underline{t}, \underline{x})=(\underline{t}, h(\underline{t},\underline{x}))\end{aligned}
 #   
 # Let’s note that the input dimension of :math:`f_{vertexvalue}` still design the
 # dimension of :math:`\underline{x}` : :math:`d`. Its output dimension is equal to :math:`q`.
@@ -39,7 +22,10 @@ Vertex value function
 # This example illustrates the creation of a field from the function
 # :math:`h:\mathbb{R}\times\mathbb{R}^2` such as:
 #
-# \begin{aligned} h(\underline{t}, \underline{x})=(t+x_1^2+x_2^2)\end{aligned}:math:``
+# .. math::
+#    \begin{aligned} 
+#       h(\underline{t}, \underline{x})=(t+x_1^2+x_2^2)
+#    \end{aligned}
 #
 
 # %%

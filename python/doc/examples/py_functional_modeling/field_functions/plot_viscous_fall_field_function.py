@@ -2,8 +2,6 @@
 Define a function with a field output: the viscous free fall example
 ====================================================================
 """
-# %% 
-
 # %%
 # In this example, we define a function which has a vector input and a field output. This is why we use the `PythonPointToFieldFunction` class to create the associated function and propagate the uncertainties through it.
 
@@ -177,8 +175,8 @@ ot.ResourceMap.SetAsUnsignedInteger('Drawable-DefaultPalettePhase', size)
 # %%
 graph = outputSample.drawMarginal(0)
 graph.setTitle('Viscous free fall: %d trajectories' % (size))
-graph.setXTitle(r':math:`t`')
-graph.setYTitle(r':math:`z`')
+graph.setXTitle(r'$t$')
+graph.setYTitle(r'$z$')
 view = viewer.View(graph)
 plt.show()
 # %%

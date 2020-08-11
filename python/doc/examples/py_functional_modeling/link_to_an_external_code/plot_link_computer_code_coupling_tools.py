@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Link to a computer code with coupling tools
 ===========================================
 """
-# %% 
-
 # %%
 # In this example we show how to use the `coupling_tools` module, which allows to create a function from a computer code based on text file exchanges. We show the main features of the module on a simple example and focus on the `replace` and `get` functions.
 
@@ -26,9 +9,9 @@ Link to a computer code with coupling tools
 # Introduction
 # ------------
 #
-# The `coupling_tools` module is useful when the external computer code reads (on input) and write (on output) text files. 
+# The `coupling_tools` module is useful when the external computer code reads (on input) and write (on output) text files.
 #
-# <img src="link_computer_code.svg" width="600px">
+# <img src="_static/link_computer_code.svg" width="600px">
 #
 # The main features of the `coupling_tools` module are:
 #
@@ -216,11 +199,9 @@ print(f.read())
 #
 # ```
 # Get a list of values
-# ====================
 # Y= get ( filename , tokens = None , skip_tokens = None , \
 # skip_lines = None , skip_cols = None )
 # Get a single value
-# ==================
 # Y= get_value ( filename , token = None , skip_token = 0, \
 # skip_line = 0, skip_col = 0)
 # ```

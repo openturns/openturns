@@ -35,15 +35,13 @@ Logistic growth model
 # In [1], the author uses this model to simulate the growth of the U.S. population. To do this, the author uses the U.S. census data from 1790 to 1910. For this time interval, R. Pearl and L. Reed [2] computed the following values of the parameters:
 #
 # .. math::
-#    a = 0.03134, \qquad 
-# b = 1.5887 \times 10^{-10}.
-# 
+#    a = 0.03134, \qquad b = 1.5887 \times 10^{-10}.
+#
 #
 # Our goal is to use the logistic growth model in order to simulate the solution for a larger time interval, from 1790 to 2000:
 #
 # .. math::
-#    t_0 = 1790, \qquad 
-# t_{final} = 2000.
+#    t_0 = 1790, \qquad t_{final} = 2000.
 # 
 #
 # Then we can compare the predictions of this model with the real evolution of the U.S. population.
@@ -100,11 +98,13 @@ Logistic growth model
 #
 # Uncertainty can be accounted for by turning :math:`z_0`, :math:`a` and :math:`c` into independent random variables :math:`Z_0`, :math:`A` and :math:`C` with Gaussian distributions. From this point onward, :math:`z_0`, :math:`a` and :math:`b` respectively denote :math:`\mathbb{E}[Z_0]`, :math:`\mathbb{E}[A]` and :math:`\mathbb{E}[C]`.
 #
-# |Variable|  Distribution|
-# | ------------- |-------------|
-# | :math:`Z_0` | gaussian, mean :math:`z_0`, coefficient of variation 10% |
-# | :math:`A` | gaussian, mean :math:`a`, coefficient of variation 30% |
-# | :math:`C` | gaussian, mean :math:`c`, coefficient of variation 30% |
+# =============  ============================================================
+# Variable       Distribution
+# =============  ============================================================
+#  :math:`Z_0`    gaussian, mean :math:`z_0`, coefficient of variation 10%
+#  :math:`A`      gaussian, mean :math:`a`, coefficient of variation 30%
+#  :math:`C`      gaussian, mean :math:`c`, coefficient of variation 30%
+# =============  ============================================================
 #
 # No particular probabilistic method was used to set these distributions. An improvement would be to use calibration methods to get a better quantification of these distributions. An improvement would be to use calibration methods to get a better quantification of these distributions. 
 

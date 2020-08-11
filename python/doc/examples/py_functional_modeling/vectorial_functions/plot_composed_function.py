@@ -1,26 +1,9 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Create a composed function
 ==========================
 """
-# %% 
-
 # %%
-# In this example we are going to create a composed function :math:``f\circ g:math:``
+# In this example we are going to create a composed function :math:`f\circ g`
 #
 
 # %%

@@ -2,8 +2,6 @@
 Define a connection function with a field output
 ================================================
 """
-# %% 
-
 # %%
 # In this example, we define a function which has a vector input and a field output. The goal of this example is to show how to use the `PointToFieldConnection` to combine two functions. 
 
@@ -102,7 +100,7 @@ outputSample = altitudeWithFourInputs(inputSample)
 # %%
 graph = outputSample.drawMarginal(0)
 graph.setTitle('Viscous free fall: %d trajectories' % (size))
-graph.setXTitle(r':math:`t`')
-graph.setYTitle(r':math:`z`')
+graph.setXTitle(r'$t$')
+graph.setYTitle(r'$z$')
 view = viewer.View(graph)
 plt.show()

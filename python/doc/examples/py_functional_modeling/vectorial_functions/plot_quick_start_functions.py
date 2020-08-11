@@ -1,25 +1,7 @@
-# -*- coding: utf-8 -*-
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Defining Python and symbolic functions: a quick start introduction to functions
 ===============================================================================
 """
-# %% 
-
 # %%
 # Abstract
 # --------
@@ -38,25 +20,27 @@ Defining Python and symbolic functions: a quick start introduction to functions
 # Moreover, we assume that the input distribution has independent Gaussian marginals. 
 #
 # The function is defined by the equations:
+# 
 # .. math::
 #    Y_1 = X_1 + X_2 + X_3
 # 
-#
 # and 
 #
 # .. math::
 #    Y_2 = X_1 - X_2 X_3
 # 
 #
-# for any :math:`X_1,X_2,X_3\mathbb{R}`. 
+# for any :math:`X_1,X_2,X_3 \in \mathbb{R}`. 
 #
 # The exact expectation and standard deviation of the output random variable are presented in the following table.
 #
-# | Variable | Expectation | Standard deviation |
-# |-|-|-|
-# | :math:`Y_1` | 0 | 1.732 |
-# | :math:`Y_2` | 0 | 1.415 |
-#
+# =============     ===========  ==================
+# Variable          Expectation  Standard deviation 
+# =============     ===========  ==================
+#  :math:`Y_1`       0            1.732              
+#  :math:`Y_2`       0            1.415              
+# =============     ===========  ==================
+# 
 
 # %%
 import openturns as ot
@@ -146,12 +130,14 @@ print(empiricalSd)
 #
 # Not all types are possible for the inputs and outputs of the `mySimulator` function. The following table present some of the available types. All in all, any type which can be converted to or from a "vector" can be managed by the `PythonFunction` class.
 #
-# | Type | Input X | Output Y |
-# |---|---|---|
-# | `list` (Python) | - | ✓ |
-# | `tuple` (Python) | - | ✓ |
-# | `array` (NumPy) | - | ✓ |
-# | `Point` (OpenTURNS) | ✓ | ✓ |
+#  ====================  =======  ========
+#  Type                  Input X  Output Y
+#  ====================  =======  ========
+#  `list` (Python)       -        ✓        
+#  `tuple` (Python)      -        ✓        
+#  `array` (NumPy)       -        ✓        
+#  `Point` (OpenTURNS)   ✓        ✓        
+#  ====================  =======  ========
 #
 
 # %%
@@ -223,13 +209,15 @@ print(empiricalSd)
 #
 # The `MemoizeFunction` class defines a history system to store the calls to the function.
 #
-# | Methods | Description |
-# |-|-|
-# | `enableHistory()` | enables the history (it is enabled by default) |
-# | `disableHistory()` | disables the history |
-# | `clearHistory()` | deletes the content of the history |
-# | `getHistoryInput()` | a `Sample`, the history of inputs X |
-# | `getHistoryOutput()` | a `Sample`, the history of outputs Y |
+#  ====================   ===============================================
+#  Methods                Description 
+#  ====================   ===============================================
+#  `enableHistory()`      enables the history (it is enabled by default) 
+#  `disableHistory()`     disables the history 
+#  `clearHistory()`       deletes the content of the history 
+#  `getHistoryInput()`    a `Sample`, the history of inputs X 
+#  `getHistoryOutput()`   a `Sample`, the history of outputs Y 
+#  ====================   ===============================================
 
 # %%
 myfunction = ot.PythonFunction (3 ,2 , mySimulator )
