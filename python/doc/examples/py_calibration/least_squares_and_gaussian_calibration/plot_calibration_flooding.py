@@ -30,38 +30,44 @@ Calibration of the flooding model
 # -------
 #
 # We make the hypothesis that the slope of the river is nonpositive and close to zero, which implies: 
+# 
 # .. math::
 #    \alpha = \frac{Z_m - Z_v}{L},
 # 
 #
 # if :math:`Z_m \geq Z_v`. 
 # The height of the river is:
+# 
 # .. math::
 #    H = \left(\frac{Q}{K_s B \sqrt{\alpha}}\right)^{0.6},
 # 
 #
 # for any :math:`K_s, Q>0`.
 #
-# <img src="river_section_adjusted_light.png" width="400" />
+# <img src="_static/river_section_adjusted_light.png" width="400" />
 #
 # Distribution
 # ------------
 #
 # We assume that the river flowrate has the following truncated Gumbel distribution:
 #
-# |Variable|Distribution|
-# | ------------- |-------------|
-# |Q|Gumbel(scale=558, mode=1013)>0|
+# ========   ===============================
+# Variable   Distribution
+# ========   ===============================
+# Q          Gumbel(scale=558, mode=1013)>0
+# ========   ===============================
 #
 # Parameters to calibrate
 # -----------------------
 #
 # The vector of parameters to calibrate is: 
+# 
 # .. math::
 #    \theta = (K_s,Z_v,Z_m).
 # 
 #
 # The variables to calibrate are :math:`(K_s,Z_v,Z_m)` and are set to the following values:
+# 
 # .. math::
 #    K_s = 30, \qquad Z_v = 50, \qquad Z_m = 55.
 # 
@@ -71,22 +77,26 @@ Calibration of the flooding model
 #
 # In this section, we describe the statistical model associated with the :math:`n` observations.
 # The errors of the water heights are associated with a gaussian distribution with a zero mean and a standard variation equal to:
+# 
 # .. math::
 #    \sigma=0.1.
 # 
 #
 # Therefore, the observed water heights are:
+# 
 # .. math::
 #    H_i = G(Q_i,K_s,Z_v,Z_m) + \epsilon_i
 # 
 #
 # for :math:`i=1,...,n` where
+# 
 # .. math::
 #    \epsilon \sim \mathcal{N}(0,\sigma^2)
 # 
 #
 # and we make the hypothesis that the observation errors are independent.
 # We consider a sample size equal to:
+# 
 # .. math::
 #    n=100.
 # 
@@ -662,13 +672,14 @@ mypcr = CalibrationAnalysis(calibrationResult,mycf, Qobs,Hobs)
 # %%
 graph = mypcr.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
-graph
+view = viewer.View(graph)
 
 # %%
 # We see that there is a good fit after calibration, since the predictions after calibration (i.e. the green crosses) are close to the observations (i.e. the blue crosses).
 
 # %%
-mypcr.drawObservationsVsPredictions()
+graph = mypcr.drawObservationsVsPredictions()
+view = viewer.View(graph)
 
 # %%
 # We see that there is a much better fit after calibration, since the predictions are close to the diagonal of the graphics.
@@ -683,7 +694,7 @@ observationError
 # %%
 graph = mypcr.drawResiduals()
 graph.setLegendPosition("topleft")
-graph
+view = viewer.View(graph)
 
 # %%
 # The analysis of the residuals shows that the distribution is centered on zero and symmetric. This indicates that the calibration performed well. 
@@ -757,13 +768,14 @@ mypcr = CalibrationAnalysis(calibrationResult,mycf, Qobs,Hobs)
 # %%
 graph = mypcr.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
-graph
+view = viewer.View(graph)
 
 # %%
 # We see that the output of the model after calibration is closer to the observations. However, there is still a distance from the outputs of the model to the observations. This indicates that the calibration cannot be performed with this method.
 
 # %%
-mypcr.drawObservationsVsPredictions()
+graph = mypcr.drawObservationsVsPredictions()
+view = viewer.View(graph)
 
 # %%
 # In this case, the fit is better after calibration, but not perfect. Indeed, the cloud of points after calibration is not centered on the diagonal. 
@@ -771,7 +783,7 @@ mypcr.drawObservationsVsPredictions()
 # %%
 graph = mypcr.drawResiduals()
 graph.setLegendPosition("topleft")
-graph
+view = viewer.View(graph)
 
 # %%
 # We see that the distribution of the residual is not centered on zero: the mean residual is approximately -0.5, which implies that the predictions are, on average, smaller than the observations. This is a proof that the calibration cannot be performed with this method in this particular case.
@@ -837,19 +849,21 @@ mypcr = CalibrationAnalysis(calibrationResult,mycf, Qobs,Hobs)
 # %%
 graph = mypcr.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
-graph
+view = viewer.View(graph)
 
 # %%
 # We see that the output of the model after calibration is in the middle of the observations: the calibration seems correct.
 
 # %%
-mypcr.drawObservationsVsPredictions()
+graph = mypcr.drawObservationsVsPredictions()
+view = viewer.View(graph)
 
 # %%
 # The fit is excellent after calibration. Indeed, the cloud of points after calibration is on the diagonal. 
 
 # %%
-mypcr.drawResiduals()
+graph = mypcr.drawResiduals()
+view = viewer.View(graph)
 
 # %%
 # We see that the histogram of the residual is centered on zero. This is a proof that the calibration did perform correctly.
@@ -904,5 +918,6 @@ calibrationResult = algo.getResult()
 # %%
 _ = mypcr.drawParameterDistributions()
 
+plt.show()
 # %%
 # As we can see, this does not change much the posterior distribution, which remains spiky. 

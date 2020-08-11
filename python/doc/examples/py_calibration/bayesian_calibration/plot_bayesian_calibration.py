@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Bayesian calibration of a computer code
 =======================================
 """
-# %% 
-
 # %%
 # In this example we are going to compute the parameters of a computer model thanks to Bayesian estimation.
 #
@@ -35,48 +18,46 @@ Bayesian calibration of a computer code
 #
 # Our model (i.e. the compute code to calibrate) is a standard normal linear regression, where
 #
-# y_i = \theta_1 + x_i \theta_2 + x_i^2 \theta_3 + \varepsilon_i:math:``
+# .. math::
+#    y_i = \theta_1 + x_i \theta_2 + x_i^2 \theta_3 + \varepsilon_i
 #
 # where :math:`\varepsilon_i \stackrel{i.i.d.}{\sim} \mathcal N(0, 1)`. 
 #
 # The "true" value of :math:`\theta` is:
+#
 # .. math::
 #    \theta_{true} = (-4.5,4.8,2.2)^T.
 # 
 #
 # We use a normal prior on :math:`\underline{\theta}`:
 #
-# .. math::\pi(\underline{\theta}) = \mathcal N(\mu_\theta, \Sigma_\theta):math:``
+# .. math::
+#    \pi(\underline{\theta}) = \mathcal N(\mu_\theta, \Sigma_\theta)
 #   
 # where
 #
-# 
-# \mu_\theta = 
-# \begin{pmatrix}
-# -3 \\
-# 4 \\
-# 1
-# \end{pmatrix}
-# .. math::
+# .. math:: 
+#     \mu_\theta = 
+#     \begin{pmatrix}
+#      -3 \\
+#       4 \\
+#       1
+#     \end{pmatrix}
 #   
 # is the mean of the prior and 
 #
-# 
-# \Sigma_\theta = 
-# \begin{pmatrix}
-# \sigma_{\theta_1}^2 & 0 & 0 \\
-# 0 & \sigma_{\theta_2}^2 & 0 \\
-# 0 & 0 & \sigma_{\theta_3}^2
-# \end{pmatrix}
-# .. math::
+# .. math:: 
+#    \Sigma_\theta = 
+#    \begin{pmatrix}
+#      \sigma_{\theta_1}^2 & 0 & 0 \\
+#      0 & \sigma_{\theta_2}^2 & 0 \\
+#      0 & 0 & \sigma_{\theta_3}^2
+#    \end{pmatrix}
 #   
 # is the prior covariance matrix with 
-#
 # 
-# \sigma_{\theta_1} = 2, \qquad 
-# \sigma_{\theta_2} = 1, \qquad 
-# \sigma_{\theta_3} = 1.5.
 # .. math::
+#    \sigma_{\theta_1} = 2, \qquad \sigma_{\theta_2} = 1, \qquad \sigma_{\theta_3} = 1.5.
 #   
 # The following objects need to be defined in order to perform Bayesian calibration:
 #
@@ -98,6 +79,8 @@ Bayesian calibration of a computer code
 
 # %%
 import openturns as ot
+import openturns.viewer as viewer
+from matplotlib import pylab as plt
 
 # %%
 # Dimension of the vector of parameters to calibrate
@@ -163,7 +146,7 @@ observations.setColor("red")
 graphModel.add(observations)
 graphModel.setLegends(["Model","Observations"])
 graphModel.setLegendPosition("topleft")
-graphModel
+view = viewer.View(graphModel)
 
 # %%
 # - Define the distribution of observations :math:`\underline{y} | \underline{z}` conditional on model predictions
@@ -289,3 +272,4 @@ for parameter_index in range(paramDim):
     _ = ot.viewer.View(graph, figure=fig, axes=[ax])
 
 _ = fig.suptitle("Bayesian calibration")
+plt.show()

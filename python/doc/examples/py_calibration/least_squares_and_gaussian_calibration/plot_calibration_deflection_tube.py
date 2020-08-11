@@ -1,31 +1,14 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Calibration of the deflection of a tube
 =======================================
 """
-# %% 
-
 # %%
 # Description
 # -----------
 #
 # We consider the deflection of a tube under a vertical stress.
 #
-# <img src="simply_supported_beam.png" width="300" />
+# <img src="_static/simply_supported_beam.png" width="300" />
 #
 # The parameters of the model are:
 #
@@ -38,7 +21,7 @@ Calibration of the deflection of a tube
 #
 # The following figure presents the internal and external diameter of the tube:
 #
-# <img src="tube-diameters.png" width="200" />
+# <img src="_static/tube-diameters.png" width="200" />
 #
 # The area moment of inertia of the cross section about the neutral axis of a round tube (i.e. perpendicular to the section) with external and internal diameters :math:`D` and :math:`d` are:
 #
@@ -101,6 +84,8 @@ Calibration of the deflection of a tube
 
 # %%
 import openturns as ot
+import openturns.viewer as viewer
+from matplotlib import pylab as plt
 
 # %%
 # We use the variable names `De` for the external diameter and `di` for the internal diameter because the symbolic function engine is not case sensitive, hence the variable names `D` and `d` would not be distiguished.
@@ -561,13 +546,19 @@ for i in range(dim):
 mypcr = CalibrationAnalysis(calibrationResult,calibrationFunction, observedInput, observedOutput)
 
 # %%
-_ = mypcr.drawObservationsVsInputs()
+graph = mypcr.drawObservationsVsInputs()
+view = viewer.View(graph)
 
 # %%
-_ = mypcr.drawObservationsVsPredictions()
+graph = mypcr.drawObservationsVsPredictions()
+view = viewer.View(graph)
 
 # %%
-_ = mypcr.drawResiduals()
+graph = mypcr.drawResiduals()
+view = viewer.View(graph)
 
 # %%
 _ = mypcr.drawParameterDistributions()
+#view = viewer.View(graph)
+
+plt.show()

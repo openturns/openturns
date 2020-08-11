@@ -1,18 +1,3 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Bayesian calibration of the flooding model
 ==========================================
@@ -50,12 +35,14 @@ Bayesian calibration of the flooding model
 # -------
 #
 # We make the hypothesis that the slope of the river is nonpositive and close to zero, which implies:
+# 
 # .. math::
 #    \alpha = \frac{Z_m - Z_v}{L},
 # 
 #
 # if :math:`Z_m \geq Z_v`. 
 # The height of the river is:
+# 
 # .. math::
 #    H = \left(\frac{Q}{K_s B \sqrt{\alpha}}\right)^{0.6},
 # 
@@ -67,19 +54,23 @@ Bayesian calibration of the flooding model
 #
 # We assume that the river flowrate has the following truncated Gumbel distribution:
 #
-# |Variable|Distribution|
-# | ------------- |-------------|
-# |Q|Gumbel(scale=558, mode=1013)>0|
+# =========  ================================
+# Variable   Distribution
+# =========  ================================
+#  Q         Gumbel(scale=558, mode=1013)>0
+# =========  ================================
 #
 # Parameters to calibrate
 # -----------------------
 #
 # The vector of parameters to calibrate is:
+# 
 # .. math::
 #    \theta = (K_s,Z_v,Z_m).
 # 
 #
 # The variables to calibrate are :math:`(K_s,Z_v,Z_m)` and are set to the following values:
+# 
 # .. math::
 #    K_s = 30, \qquad Z_v = 50, \qquad Z_m = 55.
 # 
@@ -89,16 +80,19 @@ Bayesian calibration of the flooding model
 #
 # In this section, we describe the statistical model associated with the :math:`n` observations.
 # The errors of the water heights are associated with a gaussian distribution with a zero mean and a standard variation equal to:
+#
 # .. math::
 #    \sigma=0.1.
 # 
 #
 # Therefore, the observed water heights are:
+#
 # .. math::
 #    H_i = G(Q_i,K_s,Z_v,Z_m) + \epsilon_i
 # 
 #
 # for :math:`i=1,...,n` where
+#
 # .. math::
 #    \epsilon \sim \mathcal{N}(0,\sigma^2)
 # 

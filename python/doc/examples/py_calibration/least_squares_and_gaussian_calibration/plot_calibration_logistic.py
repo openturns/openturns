@@ -1,25 +1,7 @@
-# -*- coding: utf-8 -*-
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Calibration of the logistic model
 =================================
 """
-# %% 
-
 # %%
 # Introduction
 # ------------
@@ -49,15 +31,13 @@ Calibration of the logistic model
 # In [1], the author uses this model to simulate the growth of the U.S. population. To do this, the author uses the U.S. census data from 1790 to 1910. For this time interval, R. Pearl and L. Reed [2] computed the following values of the parameters:
 #
 # .. math::
-#    a = 0.03134, \qquad 
-# b = 1.5887 \times 10^{-10}.
+#    a = 0.03134, \qquad b = 1.5887 \times 10^{-10}.
 # 
 #
 # Our goal is to use the logistic growth model in order to simulate the solution for a larger time interval, from 1790 to 2000:
 #
 # .. math::
-#    t_0 = 1790, \qquad 
-# t_{final} = 2000.
+#    t_0 = 1790, \qquad t_{final} = 2000.
 # 
 #
 # Then we can compare the predictions of this model with the real evolution of the U.S. population.
@@ -126,11 +106,13 @@ Calibration of the logistic model
 #
 # Uncertainty can be accounted for by turning :math:`z_0`, :math:`a` and :math:`c` into independent random variables :math:`Z_0`, :math:`A` and :math:`C` with Gaussian distributions. From this point onward, :math:`z_0`, :math:`a` and :math:`b` respectively denote :math:`\mathbb{E}[Z_0]`, :math:`\mathbb{E}[A]` and :math:`\mathbb{E}[C]`.
 #
-# |Variable|  Distribution|
-# | ------------- |-------------|
-# | :math:`Z_0` | gaussian, mean :math:`z_0`, coefficient of variation 10% |
-# | :math:`A` | gaussian, mean :math:`a`, coefficient of variation 30% |
-# | :math:`C` | gaussian, mean :math:`c`, coefficient of variation 30% |
+# ===========   ===============================================================
+# Variable      Distribution
+# ===========   ===============================================================
+# :math:`Z_0`   gaussian, mean :math:`z_0`, coefficient of variation 10% 
+# :math:`A`     gaussian, mean :math:`a`, coefficient of variation 30% 
+# :math:`C`     gaussian, mean :math:`c`, coefficient of variation 30% 
+# ===========   ===============================================================
 #
 # No particular probabilistic method was used to set these distributions. An improvement would be to use calibration methods to get a better quantification of these distributions. An improvement would be to use calibration methods to get a better quantification of these distributions. 
 
@@ -165,6 +147,8 @@ Calibration of the logistic model
 # %%
 import openturns as ot
 import numpy as np
+import openturns.viewer as viewer
+from matplotlib import pylab as plt
 
 # %%
 # The data is based on 22 dates from 1790 to 2000.
@@ -211,7 +195,7 @@ graph = ot.Graph('', 'Time (years)', 'Population (Millions)', True, 'topleft')
 cloud = ot.Cloud(timeObservations, populationObservations)
 cloud.setLegend("Observations")
 graph.add(cloud)
-graph
+view = viewer.View(graph)
 
 
 # %%
@@ -257,7 +241,7 @@ logisticParametric = ot.ParametricFunction(logisticModelPy,[22,23],thetaPrior)
 
 # %%
 populationPredicted = logisticParametric(timeObservations.asPoint())
-populationPredicted
+populationPredicted[
 
 # %%
 graph = ot.Graph('', 'Time (years)', 'Population (Millions)', True, 'topleft')
@@ -271,7 +255,7 @@ cloud = ot.Cloud(timeObservations.asPoint(), populationPredicted)
 cloud.setLegend("Predictions")
 cloud.setColor("green")
 graph.add(cloud)
-graph
+view = viewer.View(graph)
 
 # %%
 # We see that the fit is not good: the observations continue to grow after 1950, while the growth of the prediction seem to fade.
@@ -598,11 +582,11 @@ class CalibrationAnalysis:
 
 # %%
 timeObservationsVector = ot.Sample(timeObservations.asPoint(),nbobs)
-timeObservationsVector
+timeObservationsVector[0:10]
 
 # %%
 populationObservationsVector = ot.Sample(populationObservations.asPoint(),nbobs)
-populationObservationsVector
+populationObservationsVector[0:10]
 
 # %%
 # The reference values of the parameters. 
@@ -621,7 +605,7 @@ logisticParametric = ot.ParametricFunction(logisticModelPy,[22,23],thetaPrior)
 
 # %%
 populationPredicted = logisticParametric(timeObservationsVector)
-populationPredicted
+populationPredicted[0:10]
 
 # %%
 #  Calibration
@@ -648,13 +632,17 @@ thetaPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(0.95)[0
 mypcr = CalibrationAnalysis(calibrationResult,logisticParametric, timeObservationsVector, populationObservationsVector)
 
 # %%
-mypcr.drawObservationsVsInputs()
+graph = mypcr.drawObservationsVsInputs()
+view = viewer.View(graph)
 
 # %%
-mypcr.drawObservationsVsPredictions()
+graph = mypcr.drawObservationsVsPredictions()
+view = viewer.View(graph)
 
 # %%
-mypcr.drawResiduals()
+graph = mypcr.drawResiduals()
+view = viewer.View(graph)
 
 # %%
 _ = mypcr.drawParameterDistributions()
+plt.show()

@@ -1,18 +1,3 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Calibration of the Chaboche mecanical model
 ===========================================
@@ -23,6 +8,7 @@ Calibration of the Chaboche mecanical model
 # -------------------
 #
 # The Chaboche mecanical law predicts the stress depending on the strain:
+# 
 # .. math::
 #    \sigma = G(\epsilon,R,C,\gamma) = R + \frac{C}{\gamma} (1-\exp(-\gamma\epsilon))
 # 
@@ -35,17 +21,20 @@ Calibration of the Chaboche mecanical model
 #
 # The variables have the following distributions and are supposed to be independent.
 #
-# | Random var. | Distribution | 
-# |--|--|
-# | :math:`R` | Lognormal (:math:`\mu = 750` MPa, :math:`\sigma = 11` MPa) |
-# | :math:`C` | Normal (:math:`\mu = 2750` MPa, :math:`\sigma = 250` MPa) |
-# | :math:`\gamma` | Normal (:math:`\mu = 10`, :math:`\sigma = 2`) |
-# | :math:`\epsilon` | Uniform(a=0, b=0.07). |
+#  ================  ===========================================================
+#  Random var.       Distribution
+#  ================  ===========================================================
+#  :math:`R`         Lognormal (:math:`\mu = 750` MPa, :math:`\sigma = 11` MPa)
+#  :math:`C`         Normal (:math:`\mu = 2750` MPa, :math:`\sigma = 250` MPa)
+#  :math:`\gamma`    Normal (:math:`\mu = 10`, :math:`\sigma = 2`)
+#  :math:`\epsilon`  Uniform(a=0, b=0.07).
+#  ================  ===========================================================
 #
 # Parameters to calibrate
 # -----------------------
 #
 # The vector of parameters to calibrate is: 
+# 
 # .. math::
 #    \theta = (R,C,\gamma).
 # 
@@ -60,17 +49,20 @@ Calibration of the Chaboche mecanical model
 # ------------
 #
 # In order to create a calibration problem, we make the hypothesis that the strain has the following distribution:
+# 
 # .. math::
 #    \epsilon \sim Uniform(0,0.07).
 # 
 #
 # Moreover, we consider a gaussian noise on the observed constraint:
+# 
 # .. math::
 #    \epsilon_\sigma \sim \mathcal{N} \left(0,10\times 10^6\right)
 # 
 #
 # and we make the hypothesis that the observation errors are independent.
 # We set the number of observations to:
+# 
 # .. math::
 #    n = 100.
 # 
@@ -101,7 +93,8 @@ Calibration of the Chaboche mecanical model
 # %%
 import numpy as np
 import openturns as ot
-
+import openturns.viewer as viewer
+from matplotlib import pylab as plt
 
 # %%
 # Define the model.
@@ -159,7 +152,7 @@ histoGraph = ot.HistogramFactory().build(outputStress/1.e6).drawPDF()
 histoGraph.setTitle("Histogram of the sample stress")
 histoGraph.setXTitle("Stress (MPa)")
 histoGraph.setLegends([""])
-histoGraph
+view = viewer.View(histoGraph)
 
 # %%
 # Generate observation noise.
@@ -177,7 +170,7 @@ observedStrain = inputSample[:,0]
 graph = ot.Graph("Observations","Strain","Stress (MPa)",True)
 cloud = ot.Cloud(observedStrain,observedStress/1.e6)
 graph.add(cloud)
-graph
+view = viewer.View(graph)
 
 # %%
 # A calibration analysis class
@@ -565,13 +558,14 @@ mypcr = CalibrationAnalysis(calibrationResult, mycf, observedStrain, observedStr
 # %%
 graph = mypcr.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
-graph
+view = viewer.View(graph)
 
 # %%
 # We see that there is a good fit after calibration, since the predictions after calibration (i.e. the green crosses) are close to the observations (i.e. the blue crosses).
 
 # %%
-mypcr.drawObservationsVsPredictions()
+graph = mypcr.drawObservationsVsPredictions()
+view = viewer.View(graph)
 
 # %%
 # We see that there is a much better fit after calibration, since the predictions are close to the diagonal of the graphics.
@@ -583,7 +577,7 @@ observationError
 # %%
 graph = mypcr.drawResiduals()
 graph.setLegendPosition("topleft")
-graph
+view = viewer.View(graph)
 
 # %%
 # The analysis of the residuals shows that the distribution is centered on zero and symmetric. This indicates that the calibration performed well. 
@@ -639,13 +633,14 @@ mypcr = CalibrationAnalysis(calibrationResult,mycf, observedStrain, observedStre
 # %%
 graph = mypcr.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
-graph
+view = viewer.View(graph)
 
 # %%
 # We see that there is a good fit after calibration, since the predictions after calibration (i.e. the green crosses) are close to the observations (i.e. the blue crosses).
 
 # %%
-mypcr.drawObservationsVsPredictions()
+graph = mypcr.drawObservationsVsPredictions()
+view = viewer.View(graph)
 
 # %%
 # We see that there is a much better fit after calibration, since the predictions are close to the diagonal of the graphics.
@@ -655,12 +650,13 @@ observationError = calibrationResult.getObservationsError()
 observationError
 
 # %%
-observationError.drawPDF()
+graph = observationError.drawPDF()
+view = viewer.View(graph)
 
 # %%
 graph = mypcr.drawResiduals()
 graph.setLegendPosition("topleft")
-graph
+view = viewer.View(graph)
 
 # %%
 # The analysis of the residuals shows that the distribution is centered on zero and symmetric. This indicates that the calibration performed well. 
@@ -748,13 +744,14 @@ mypcr = CalibrationAnalysis(calibrationResult,mycf,observedStrain, observedStres
 # %%
 graph = mypcr.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
-graph
+view = viewer.View(graph)
 
 # %%
 # We see that there is a good fit after calibration, since the predictions after calibration (i.e. the green crosses) are close to the observations (i.e. the blue crosses).
 
 # %%
-mypcr.drawObservationsVsPredictions()
+graph = mypcr.drawObservationsVsPredictions()
+view = viewer.View(graph)
 
 # %%
 # We see that there is a much better fit after calibration, since the predictions are close to the diagonal of the graphics.
@@ -772,7 +769,7 @@ observationError
 # %%
 graph = mypcr.drawResiduals()
 graph.setLegendPosition("topleft")
-graph
+view = viewer.View(graph)
 
 # %%
 # The analysis of the gaussian distribution (the blue line) of the observation errors is close to the posterior distribution of the residuals (the green line). Moreover, the posterior distribution is centered. These informations indicate that the calibration performed well. 
@@ -831,13 +828,14 @@ mypcr = CalibrationAnalysis(calibrationResult,mycf, observedStrain, observedStre
 # %%
 graph = mypcr.drawObservationsVsInputs()
 graph.setLegendPosition("topleft")
-graph
+view = viewer.View(graph)
 
 # %%
 # We see that there is a good fit after calibration, since the predictions after calibration (i.e. the green crosses) are close to the observations (i.e. the blue crosses).
 
 # %%
-mypcr.drawObservationsVsPredictions()
+graph = mypcr.drawObservationsVsPredictions()
+view = viewer.View(graph)
 
 # %%
 # We see that there is a much better fit after calibration, since the predictions are close to the diagonal of the graphics.
@@ -853,7 +851,8 @@ observationError
 # This can be compared to the residuals distribution, which is computed at the posterior.
 
 # %%
-mypcr.drawResiduals()
+graph = mypcr.drawResiduals()
+view = viewer.View(graph)
 
 # %%
 # The analysis is very similar to the linear calibration. 
@@ -861,5 +860,6 @@ mypcr.drawResiduals()
 # %%
 _ = mypcr.drawParameterDistributions()
 
+plt.show()
 # %%
 # We see that the prior and posterior distribution for the :math:`\gamma` parameter are close to each other, but not superimposed: the observations significantly brought information to the variable :math:`\gamma` during the calibration.
