@@ -184,6 +184,7 @@ Karhunen Loeve decomposition
     KarhunenLoeveP1Algorithm
     KarhunenLoeveQuadratureAlgorithm
     KarhunenLoeveSVDAlgorithm
+    KarhunenLoeveReduction
 
     :template: class.rst_t
     KarhunenLoeveResult

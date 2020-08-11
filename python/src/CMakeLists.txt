@@ -486,6 +486,7 @@ ot_add_python_module(algo algo_module.i
                       FejerAlgorithm.i FejerAlgorithm_doc.i.in
                       IteratedQuadrature.i IteratedQuadrature_doc.i.in
                       ExpertMixture.i ExpertMixture_doc.i.in
+                      KarhunenLoeveReduction.i KarhunenLoeveReduction_doc.i.in
 		      KarhunenLoeveResultImplementation.i KarhunenLoeveResultImplementation_doc.i.in
 		      KarhunenLoeveResult.i KarhunenLoeveResult_doc.i.in
 		      KarhunenLoeveAlgorithmImplementation.i KarhunenLoeveAlgorithmImplementation_doc.i.in

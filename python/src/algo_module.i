@@ -78,6 +78,7 @@
 %include ExpertMixture.i
 %include KarhunenLoeveResultImplementation.i
 %include KarhunenLoeveResult.i
+%include KarhunenLoeveReduction.i
 %include KarhunenLoeveAlgorithmImplementation.i
 %include KarhunenLoeveAlgorithm.i
 %include KarhunenLoeveP1Algorithm.i
