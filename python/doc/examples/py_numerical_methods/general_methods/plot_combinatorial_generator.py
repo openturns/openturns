@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Combinatorial generators
 ========================
 """
-# %% 
-
 # %%
 # In this example we are going to expose the various desing of experiments that allow to generate all the integer collections satisfying a given combinatorial constraint:
 #
@@ -44,15 +27,18 @@ import math as m
 
 # %%
 # Tuples
+# ------
 experiment = ot.Tuples([2, 3, 5])
 print(experiment.generate())
 
 # %%
 # K-permutations
+# --------------
 experiment = ot.KPermutations(3, 4)
 print(experiment.generate())
 
 # %%
 # Combinations
+# ------------
 experiment = ot.Combinations(4, 6)
 print(experiment.generate())

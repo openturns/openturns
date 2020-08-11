@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 EfficientGlobalOptimization examples
 ====================================
 """
-# %% 
-
 # %%
 # The EGO algorithm (Jones, 1998) is an adaptative optimization method based on
 # kriging.
@@ -53,6 +36,7 @@ EfficientGlobalOptimization examples
 # We use the dimension :math:`d=2` with the parameters :math:`a=20`, :math:`b=0.2`, :math:`c=2\pi`. 
 #
 # The solution is 
+# 
 # .. math::
 #    \mathbf{x}^\star=(0,0,...,0)
 # 
@@ -105,7 +89,7 @@ fexact
 # %%
 graph = model.draw(lowerbound, upperbound, [100]*dim)
 graph.setTitle("Ackley function")
-graph
+view = viewer.View(graph)
 
 # %%
 # We see that the Ackley function has many local minimas. The global minimum, however, is unique and located at the center of the domain. 
@@ -128,7 +112,7 @@ outputSample = model(inputSample)
 graph = ot.Graph("Initial LHS design of experiment - n=%d" % (sampleSize), ":math:`x_0`", ":math:`x_1`", True)
 cloud = ot.Cloud(inputSample)
 graph.add(cloud)
-graph
+view = viewer.View(graph)
 
 # %%
 # We now create the kriging metamodel. We selected the `SquaredExponential` covariance model with a constant basis (the `MaternModel` may perform better in this case). We use default settings (1.0) for the scale parameters of the covariance model, but configure the amplitude to 0.1, which better corresponds to the properties of the Ackley function. 
@@ -195,7 +179,7 @@ cloud = ot.Cloud(inputHistory)
 cloud.setPointStyle("diamond")
 cloud.setColor("forestgreen")
 graph.add(cloud)
-graph
+view = viewer.View(graph)
 
 # %%
 # We see that the initial (black) points are dispersed in the whole domain, while the solution points are much closer to the solution.
@@ -215,7 +199,8 @@ result.getOptimalPoint()
 # The corrected solution is now extremely accurate. 
 
 # %%
-result.drawOptimalValueHistory()
+graph = result.drawOptimalValueHistory()
+view = viewer.View(graph)
 
 # %%
 # Branin test-case
@@ -321,7 +306,7 @@ fexact
 # %%
 graph = objectiveFunction.draw(lowerbound, upperbound, [100]*dim)
 graph.setTitle("Branin function")
-graph
+view = viewer.View(graph)
 
 # %%
 # The Branin function has three local minimas. 
@@ -342,7 +327,7 @@ outputSample = modelEval.getMarginal(0)
 graph = ot.Graph("Initial LHS design of experiment - n=%d" % (sampleSize), ":math:`x_0`", ":math:`x_1`", True)
 cloud = ot.Cloud(inputSample)
 graph.add(cloud)
-graph
+view = viewer.View(graph)
 
 # %%
 covarianceModel = ot.SquaredExponential([1.0] * dim, [1.0])
@@ -406,12 +391,14 @@ cloud = ot.Cloud(inputHistory)
 cloud.setPointStyle("diamond")
 cloud.setColor("forestgreen")
 graph.add(cloud)
-graph
+view = viewer.View(graph)
 
 # %%
 # We see that the EGO algorithm found the second local minimum. Given the limited number of function evaluations, the other local minimas have not been explored. 
 
 # %%
-result.drawOptimalValueHistory()
+graph = result.drawOptimalValueHistory()
+view = viewer.View(graph)
 
+plt.show()
 # %%

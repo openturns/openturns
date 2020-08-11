@@ -4,7 +4,7 @@ Optimization using NLopt
 """
 
 # %%
-# In this example we are going to explore optimization using OpenTURNS' [NLopt](https://nlopt.readthedocs.io/en/latest/) interface.
+# In this example we are going to explore optimization using OpenTURNS' `NLopt <https://nlopt.readthedocs.io/en/latest/>`_ interface.
 
 # %%
 from __future__ import print_function
@@ -19,7 +19,7 @@ for algo in ot.NLopt.GetAlgorithmNames():
     print(algo)
 
 # %%
-# More details on NLopt algorithms are available [here](https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/).
+# More details on NLopt algorithms are available `here <https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/>`_ .
 
 # %%
 # The optimization algorithm is instanciated from the NLopt name

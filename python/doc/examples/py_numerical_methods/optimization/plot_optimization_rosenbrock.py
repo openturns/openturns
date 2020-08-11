@@ -1,19 +1,3 @@
-# -*- coding: utf-8 -*-
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Quick start guide to optimization
 =================================
@@ -74,7 +58,7 @@ rosenbrock = ot.MemoizeFunction(rosenbrock)
 # %%
 graph = rosenbrock.draw(lowerbound, upperbound, [100]*2)
 graph.setTitle("Rosenbrock function")
-graph
+view = viewer.View(graph)
 
 # %%
 # We see that the minimum is on the top right of the picture and the starting point is on the top left of the picture. Since the function has a long valley following the curve :math:`x_2 - x^2=0`, the algorithm generally have to follow the bottom of the valley. 
@@ -121,13 +105,14 @@ cloud.setColor("black")
 cloud.setPointStyle("bullet")
 graph.add(cloud)
 graph.setTitle("Rosenbrock function")
-graph
+view = viewer.View(graph)
 
 # %%
 # We see that the algorithm had to start from the top left of the banana and go to the top right.
 
 # %%
-result.drawOptimalValueHistory()
+graph = result.drawOptimalValueHistory()
+view = viewer.View(graph)
 
 # %%
 # The function value history make the path of the algorithm clear. In the first step, the algorithm went in the valley, which made the function value decrease rapidly. Once there, the algorithm had to follow the bottom of the valley so that the function decreased but slowly. In the final steps, the algorithm found the neighbourhood of the minimum so that the local convergence could take place. 
@@ -143,7 +128,7 @@ graph = rosenbrock.draw(lowerbound, upperbound, [100]*2)
 graph.setTitle("Rosenbrock function solved with Cobyla")
 cloud = ot.Cloud(inputSample)
 graph.add(cloud)
-graph
+view = viewer.View(graph)
 
 # %%
 # We see that the algorithm made lots of evaluations in the bottom of the valley before getting in the neighbourhood of the minimum. 
@@ -198,4 +183,6 @@ graph = rosenbrock.draw(lowerbound, upperbound, [100]*2)
 graph.setTitle("Rosenbrock function solved with NLopt/LD_LBFGS")
 cloud = ot.Cloud(inputSample)
 graph.add(cloud)
-graph
+view = viewer.View(graph)
+
+plt.show()

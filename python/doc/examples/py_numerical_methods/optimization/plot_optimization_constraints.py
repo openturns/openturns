@@ -2,15 +2,14 @@
 Optimization with constraints
 =============================
 """
-# %% 
-
 # %%
 # In this example we are going to expose methods to solve a generic optimization problem in the form
 #
-# .. math::\min_{x\in B} f(x) \\
+# .. math::
+#     \min_{x\in B} f(x) \\
 #        g(x) = 0 \\
-#     h(x) \ge 0:math:``
-#     
+#        h(x) \ge 0
+#
 
 # %%
 from __future__ import print_function

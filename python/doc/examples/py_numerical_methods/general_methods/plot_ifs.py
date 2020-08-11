@@ -2,10 +2,8 @@
 Iterated Functions System
 =========================
 """
-# %% 
-
 # %%
-# This examples show how to generate fractal sets using iterated functions systems, see [here](https://en.wikipedia.org/wiki/Iterated_function_system) for an introduction.
+# This examples show how to generate fractal sets using iterated functions systems. See https://en.wikipedia.org/wiki/Iterated_function_system for an introduction.
 
 # %%
 from __future__ import print_function

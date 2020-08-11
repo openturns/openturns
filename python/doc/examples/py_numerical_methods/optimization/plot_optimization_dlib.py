@@ -1,26 +1,9 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Optimization using dlib
 =======================
 """
-# %% 
-
 # %%
-# In this example we are going to explore optimization using OpenTURNS' [dlib](http://dlib.net/) interface.
+# In this example we are going to explore optimization using OpenTURNS' `dlib <http://dlib.net/>`_ interface.
 
 # %%
 from __future__ import print_function
@@ -34,13 +17,13 @@ for algo in ot.Dlib.GetAlgorithmNames():
     print(algo)
 
 # %%
-# More details on dlib algorithms are available [here](http://dlib.net/optimization.html).
+# More details on dlib algorithms are available `here <http://dlib.net/optimization.html>`_ .
 
 # %%
 # Solving an unconstrained problem with conjugate gradient algorithm
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# The following example will demonstrate the use of dlib conjugate gradient algorithm to find the minimum of [Rosenbrock function](https://en.wikipedia.org/wiki/Rosenbrock_function). The optimal point can be computed analytically, and its value is [1.0, 1.0].
+# The following example will demonstrate the use of dlib conjugate gradient algorithm to find the minimum of `Rosenbrock function <https://en.wikipedia.org/wiki/Rosenbrock_function>`_. The optimal point can be computed analytically, and its value is [1.0, 1.0].
 
 # %%
 # Define the problem based on Rosebrock function
@@ -132,7 +115,8 @@ print("Constraint error: ", result.getConstraintError())
 
 # %%
 # Draw optimal value history
-result.drawOptimalValueHistory()
+graph = result.drawOptimalValueHistory()
+view = viewer.View(graph)
 
 # %%
 # Solving least squares problem
@@ -187,8 +171,12 @@ print("Constraint error: ", result.getConstraintError())
 
 # %%
 # Draw errors history
-result.drawErrorHistory()
+graph = result.drawErrorHistory()
+view = viewer.View(graph)
 
 # %%
 # Draw optimal value history
-result.drawOptimalValueHistory()
+graph = result.drawOptimalValueHistory()
+view = viewer.View(graph)
+
+plt.show()
