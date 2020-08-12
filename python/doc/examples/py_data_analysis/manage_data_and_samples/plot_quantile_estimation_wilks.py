@@ -17,12 +17,12 @@ Wilks and empirical quantile estimators
 # .. math::
 #     \left\{
 #      \begin{array}{lcl}
-#     q_{\alpha}^{emp} & = & Y^{(E[n\alpha])} \\
-#     P(q_{\alpha} \in [Y^{(i_n)}, Y^{(j_n)}]) & = & \beta \\
-#     i_n & = & E[n\alpha - a_{\alpha}\sqrt{n\alpha(1-\alpha)}] \\
-#     i_n & = & E[n\alpha + a_{\alpha}\sqrt{n\alpha(1-\alpha)}]
-#   \end{array}
-#   \right
+#        q_{\alpha}^{emp} & = & Y^{(E[n\alpha])} \\
+#        P(q_{\alpha} \in [Y^{(i_n)}, Y^{(j_n)}]) & = & \beta \\
+#        i_n & = & E[n\alpha - a_{\alpha}\sqrt{n\alpha(1-\alpha)}] \\
+#        i_n & = & E[n\alpha + a_{\alpha}\sqrt{n\alpha(1-\alpha)}]
+#      \end{array}
+#     \right\}
 #
 # The Wilks estimator, noted :math:`q_{\alpha, \beta}^{Wilks}`, and its confidence interval, is defined by the expressions:
 #
@@ -33,7 +33,7 @@ Wilks and empirical quantile estimators
 #     P(q_{\alpha}  \leq q_{\alpha, \beta}^{Wilks}) & \geq & \beta \\
 #     i\geq 0 \, \, /  \, \, n \geq N_{Wilks}(\alpha, \beta,i)
 #   \end{array}
-#   \right
+#   \right\}
 #
 # Once the order :math:`i` has been chosen, the Wilks number :math:`N_{Wilks}(\alpha, \beta,i)` is evaluated,
 # thanks to the static method :math:`ComputeSampleSize(\alpha, \beta, i)` of the Wilks object.

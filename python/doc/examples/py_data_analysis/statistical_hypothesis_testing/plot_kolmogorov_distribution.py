@@ -9,7 +9,7 @@ The Kolmogorov-Smirnov distribution
 #
 # *Reference* : Hovhannes Keutelian, "The Kolmogorov-Smirnov test when parameters are estimated from data", 30 April 1991, Fermilab
 #
-# There is a bug in the paper; the equation:
+# There is a sign error in the paper; the equation:
 # ```
 # D[i]=max(abs(S+step),D[i]) 
 # ```

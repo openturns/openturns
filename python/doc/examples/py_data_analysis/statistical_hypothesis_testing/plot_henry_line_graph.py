@@ -2,8 +2,6 @@
 Normal fitting test using the Henry line
 ========================================
 """
-# %% 
-
 # %%
 # In this example we are going to perform a visual goodness-of-fit test for an univariate normal distribution using the Henry line test, which is the QQ plot adapted for Gaussian distirbutions.
 

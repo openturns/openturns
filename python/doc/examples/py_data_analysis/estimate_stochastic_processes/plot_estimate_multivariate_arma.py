@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Estimate a multivariate ARMA process
 ====================================
 """
-# %% 
-
 # %%
 # The objective of the Use Case is to estimate a multivariate ARMA model
 # from a stationary time series using the maximum likelihood estimator
@@ -34,12 +17,15 @@ Estimate a multivariate ARMA process
 # is done.
 #
 # The synthetic data is generated from the 2-d ARMA model:
-# .. math::X_{0,t} - 0.5 X_{0,t-1} - 0.1 X_{1,t-1} = E_{0,t} - 0.4 E_{0,t-1}:math:``
-#    X_{1,t} - 0.4 X_{0,t-1} - 0.5 X_{1,t-1} - 0.25 X_{0,t-2} = E_{1,t} - 0.4 E_{1,t-1}:math:``
+#
+# .. math::
+#    X_{0,t} - 0.5 X_{0,t-1} - 0.1 X_{1,t-1} = E_{0,t} - 0.4 E_{0,t-1}
+#    X_{1,t} - 0.4 X_{0,t-1} - 0.5 X_{1,t-1} - 0.25 X_{0,t-2} = E_{1,t} - 0.4 E_{1,t-1}
 #
 # with E the white noise:
-# .. math:: E \sim \mathcal{N} ([0,0], [0.1,0.2]):math:``
 #   
+# .. math:: 
+#     E \sim \mathcal{N} ([0,0], [0.1,0.2])
 #
 
 # %%

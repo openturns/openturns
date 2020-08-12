@@ -1,23 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Visualize empirical CDF
 =======================
 """
-# %% 
 
 # %%
 # In this example we are going to draw the empirical CDF of an unidimensional sample.

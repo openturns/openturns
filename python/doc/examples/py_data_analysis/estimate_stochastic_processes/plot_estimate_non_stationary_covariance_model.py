@@ -12,7 +12,10 @@ Estimate a non stationary covariance function
 #
 # :math:`C : \mathcal{D} \times [-4, 4] \rightarrow \mathbb{R}` defined by:
 #
-# .. math::\begin{aligned} \displaystyle C(s,t) = \exp\left(-\dfrac{4|s-t|}{1+s^2+t^2}\right)\end{aligned}:math:``
+# .. math::
+#    \begin{aligned} 
+#      \displaystyle C(s,t) = \exp\left(-\dfrac{4|s-t|}{1+s^2+t^2}\right)
+#    \end{aligned}
 #   
 # The domain :math:`\mathcal{D}` is discretized on a mesh :math:`\mathcal{M}` which is a time grid with 64 points.
 # We build a normal process :math:`X: \Omega \times [-4, 4]  \rightarrow \mathbb{R}` with zero mean and

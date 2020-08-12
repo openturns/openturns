@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Estimate a scalar ARMA process
 ==============================
 """
-# %% 
-
 # %%
 # The objective here is to estimate an ARMA model from a scalar stationary
 # time series using the Whittle estimator and a centered normal white
@@ -60,11 +43,14 @@ Estimate a scalar ARMA process
 #     
 # The synthetic data is generated using the following 1-d ARMA process:
 #
-# .. math::X_{0,t} + 0.4 X_{0,t-1} + 0.3 X_{0,t-2} + 0.2 X_{0,t-3} + 0.1 X_{0,t-4} = E_{0,t} + 0.4 E_{0,t-1} + 0.3 E_{0,t-2}:math:``
+# .. math::
+#     X_{0,t} + 0.4 X_{0,t-1} + 0.3 X_{0,t-2} + 0.2 X_{0,t-3} + 0.1 X_{0,t-4} = E_{0,t} + 0.4 E_{0,t-1} + 0.3 E_{0,t-2}
 #   
 # with the noise :math:`E` defined as:
 #
-# E \sim Triangular(-1, 0, 1):math:``
+# .. math::
+#     E \sim Triangular(-1, 0, 1)
+#
 
 # %%
 from __future__ import print_function

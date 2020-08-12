@@ -10,7 +10,8 @@ Compare samples using Komogorov-Smirnov test, QQ-plot
 # The Smirnov test relies on the maximum distance between the cumulative distribution function.
 # If :math:`F_{n_1}^{*}` and :math:`F_{n_2}^{*}` are the empirical cumulative density functions of both samples of size :math:`n_1` and :math:`n_2`, the Smirnov test evaluates the decision variable:
 #
-# .. math::D^2 = \displaystyle \sqrt{\frac{n_1n_2}{n_1+n_2}} \sup_{x}|F_{n_1}^{*}(x) - F_{n_2}^{*}(x)|:math:``
+# .. math::
+#    D^2 = \displaystyle \sqrt{\frac{n_1n_2}{n_1+n_2}} \sup_{x}|F_{n_1}^{*}(x) - F_{n_2}^{*}(x)|
 #   
 # which tends towards the Kolmogorov distribution. The hypothesis of same distribution is rejected if :math:`D^2` is too high (depending on the p-value threshold).
 #

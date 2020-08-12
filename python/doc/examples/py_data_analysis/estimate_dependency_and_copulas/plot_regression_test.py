@@ -2,8 +2,6 @@
 Test samples independence using regression
 ==========================================
 """
-# %% 
-
 # %%
 # In this example we are going to estimate whether samples are independent using the regression test.
 #

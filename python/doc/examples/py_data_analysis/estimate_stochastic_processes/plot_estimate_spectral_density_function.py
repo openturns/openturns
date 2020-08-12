@@ -2,8 +2,6 @@
 Estimate a spectral density function
 ====================================
 """
-# %% 
-
 # %%
 # The objective of this example is to estimate the spectral density
 # function :math:`S` from data, which can be a sample of time series or one time

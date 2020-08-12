@@ -2,8 +2,6 @@
 Build and validate a linear model
 =================================
 """
-# %% 
-
 # %%
 # In this example we are going to build a linear regression model and validate it numerically and graphically.
 #

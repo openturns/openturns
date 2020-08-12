@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Compare unconditional and conditional histograms
 ================================================
 """
-# %% 
-
 # %%
 # In this example, we compare unconditional and conditional histograms for a simulation. We consider the flooding model. Let :math:`g` be a function which takes four inputs :math:`Q`, :math:`K_s`, :math:`Z_v` and :math:`Z_m` and returns one output :math:`H`. 
 #
@@ -32,6 +15,8 @@ Compare unconditional and conditional histograms
 
 # %%
 import openturns as ot
+import openturns.viewer as viewer
+from matplotlib import pylab as plt
 
 # %%
 # Create the marginal distributions of the parameters.
@@ -143,8 +128,9 @@ graphConditionnalQ = conditionnedHistogram.drawPDF()
 graphConditionnalQ.setColors(["blue"])
 graphConditionnalQ.setLegends(["Q|H>H_%s" % (alpha)])
 graph.add(graphConditionnalQ)
-graph
+view = viewer.View(graph)
 
+plt.show()
 # %%
 # We see that the two histograms are very different. The high values of the input :math:`Q` seem to often lead to a high value of the output :math:`H`. 
 #
