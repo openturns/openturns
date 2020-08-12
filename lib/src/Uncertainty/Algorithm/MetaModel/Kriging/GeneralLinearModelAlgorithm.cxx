@@ -794,6 +794,7 @@ void GeneralLinearModelAlgorithm::setOptimizationBounds(const Interval & optimiz
 {
   if (!(optimizationBounds.getDimension() == optimizationBounds_.getDimension())) throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << optimizationBounds_.getDimension() << ", got dimension=" << optimizationBounds.getDimension();
   optimizationBounds_ = optimizationBounds;
+  hasRun_ = false;
 }
 
 Interval GeneralLinearModelAlgorithm::getOptimizationBounds() const
