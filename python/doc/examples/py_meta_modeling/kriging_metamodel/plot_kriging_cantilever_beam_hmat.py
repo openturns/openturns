@@ -1,26 +1,7 @@
-# -*- coding: utf-8 -*-
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Kriging the cantilever beam model using HMAT
 ============================================
 """
-# %% 
-#
-
 # %%
 # In this example, we create a kriging metamodel of the cantilever beam. We use a squared exponential covariance model for the kriging. In order to estimate the hyper-parameters, we use a design of experiments which size is 100.
 #
@@ -28,7 +9,7 @@ Kriging the cantilever beam model using HMAT
 # %%
 # We consider a cantilever beam defined by its Young’s modulus :math:`E`, its length :math:`L` and its section modulus :math:`I`. One end is built in a wall and we apply a concentrated bending load :math:`F` at the other end of the beam, resulting in a vertical deviation :math:`Y`.
 #
-# <img src="beam.png" width="200">
+# <img src="_static/beam.png" width="200">
 #
 # **Inputs**
 #
@@ -40,14 +21,14 @@ Kriging the cantilever beam model using HMAT
 # In the previous table :math:`\mu_F=E(F)` and :math:`\sigma_F=\sqrt{V(F)}` are the mean and the standard deviation of :math:`F`.
 #
 # We assume that the random variables E, F, L and I are dependent and associated with a gaussian copula which correlation matrix is :
+# 
 # .. math::
-#    R = 
-# \begin{pmatrix}
-# 1 & 0 & 0 & 0 \\
-# 0 & 1 & 0 & 0 \\
-# 0 & 0 & 1 & -0.2 \\
-# 0 & 0 & -0.2 & 1
-# \end{pmatrix}
+#    R = \begin{pmatrix}
+#          1 & 0 & 0 & 0 \\
+#          0 & 1 & 0 & 0 \\
+#          0 & 0 & 1 & -0.2 \\
+#          0 & 0 & -0.2 & 1
+#        \end{pmatrix}
 # 
 #
 # In other words, we consider that the variables L and I are negatively correlated : when the length L increases, the moment of intertia I decreases.
@@ -55,6 +36,7 @@ Kriging the cantilever beam model using HMAT
 # **Output**
 #
 # The vertical displacement at free end of the cantilever beam is:
+# 
 # .. math::
 #    Y  = \dfrac{F\, L^3}{3 \, E \, I}
 # 
@@ -123,7 +105,7 @@ histo = ot.HistogramFactory().build(Y_train).drawPDF()
 histo.setXTitle("Vertical deviation (cm)")
 histo.setTitle("Distribution of the vertical deviation")
 histo.setLegends([""])
-histo
+view = viewer.View(histo)
 
 # %%
 # Create the metamodel
@@ -201,7 +183,8 @@ Q2
 
 # %%
 r = val.getResidualSample()
-ot.HistogramFactory().build(r).drawPDF()
+graph = ot.HistogramFactory().build(r).drawPDF()
+view = viewer.View(graph)
 
 # %%
 # We observe that the negative residuals occur with nearly the same frequency of the positive residuals: this is a first   sign of good quality. Furthermore, the residuals are most of the times contained in the [-1,1] interval, which is a sign of quality given the amplitude of the output (approximately from 5 to 25 cm).
@@ -213,8 +196,9 @@ ot.HistogramFactory().build(r).drawPDF()
 graph = val.drawValidation()
 graph.setLegends([""])
 graph.setTitle("Q2 = %.2f%%" % (100*Q2))
-graph
+view = viewer.View(graph)
 
+plt.show()
 # %%
 # We observe that the metamodel predictions are close to the model outputs, since most red points are close to the diagonal. However, when we consider extreme deviations (i.e. less than 10 or larger than 20), then the quality is less obvious.
 #

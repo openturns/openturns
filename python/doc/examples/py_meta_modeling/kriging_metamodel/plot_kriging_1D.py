@@ -2,7 +2,6 @@
 Create a kriging metamodel in one dimension
 ===========================================
 """
-
 # %%
 # Abstract
 # --------

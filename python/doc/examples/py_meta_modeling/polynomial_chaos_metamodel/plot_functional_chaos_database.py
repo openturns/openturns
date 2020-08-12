@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Polynomial chaos over database
 ==============================
 """
-# %% 
-
 # %%
 # In this example we are going to create a global approximation of a model response using functional chaos over a design of experiment.
 #

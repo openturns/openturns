@@ -2,8 +2,6 @@
 Create a polynomial chaos metamodel
 ===================================
 """
-# %% 
-
 # %%
 # In this example we are going to create a global approximation of a model response using functional chaos.
 #
@@ -18,9 +16,7 @@ Create a polynomial chaos metamodel
 # We assume that 
 #
 # .. math::
-#    X_1 \sim \mathcal{N}(0,1) \textrm{ and }
-# X_2 \sim \mathcal{N}(0,1)
-# 
+#    X_1 \sim \mathcal{N}(0,1) \textrm{ and } X_2 \sim \mathcal{N}(0,1)
 #
 # and that :math:`X_1` and :math:`X_2` are independent.
 #

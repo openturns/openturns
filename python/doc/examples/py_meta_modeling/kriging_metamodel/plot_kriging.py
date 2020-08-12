@@ -2,17 +2,18 @@
 Create a metamodel using Kriging
 ================================
 """
-
 # %%
 # In this example we are going to create an approximation of a model response using a kriging model. We consider a bidimensional function with gaussian inputs. Then we create a kriging metamodel with a constant basis and a `SquaredExponential` covariance. 
 #
 # We consider the function 
+# 
 # .. math::
 #    g(X) = \cos(X_1 + X_2)
 # 
 #
 # for any :math:`\mathbf{X}\in\mathbb{R}^2`. 
 # We assume that :math:`X_1` and :math:`X_2` have a gaussian distribution :
+# 
 # .. math::
 #    X_1 \sim \mathcal{N}(0,1) \textrm{ and } X_2 \sim \mathcal{N}(0,1).
 # 

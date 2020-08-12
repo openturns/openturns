@@ -2,31 +2,31 @@
 Mixture of experts
 ==================
 """
-# %% 
-
 # %%
 # In this example we are going to approximate a piece wise continuous function using an expert mixture of metamodels.
 #
 # The metamodels will be represented by the family of :math:`f_k \forall \in [1, N]`:
 #
-# .. math::f(\underline{x}) = f_1(\underline{x}) \quad \forall \underline{z} \in Class\, 1:math:``
-#     
-# \dots:math:``
+# .. math::
+#    \begin{align}
+#      f(\underline{x}) = f_1(\underline{x}) \quad \forall \underline{z} \in Class\, 1
+#      \dots
+#      f(\underline{x}) = f_k(\underline{x}) \quad \forall \underline{z} \in Class\, k
+#      \dots
+#      f(\underline{x}) = f_N(\underline{x}) \quad \forall \underline{z} \in Class\, N
+#    \end{align} 
 #
-# .. math::f(\underline{x}) = f_k(\underline{x}) \quad \forall \underline{z} \in Class\, k:math:``
-#   
-# \dots:math:``
-#
-# .. math::f(\underline{x}) = f_N(\underline{x}) \quad \forall \underline{z} \in Class\, N:math:``
-#     
 # where the N classes are defined by the classifier.
 #
 # Using the supervised mode the classifier partitions the input and output space at once:
 #
-#  z =(\underline{x}, f( \underline{x})) :math:``
+# .. math::
+#    z =(\underline{x}, f( \underline{x}))
 #
 # The classifier is MixtureClassifier based on a MixtureDistribution defined as:
-# .. math::  p(\underline{x}) = \sum_{i=1}^N w_ip_i(\underline{x}):math:``
+#
+# .. math::  
+#    p(\underline{x}) = \sum_{i=1}^N w_ip_i(\underline{x})
 #   
 #
 # The rule to assign a point to a class is defined as follows: :math:`\underline{x}` is assigned to the class :math:`j=argmax_j \log w_kp_k(\underline{z})`.

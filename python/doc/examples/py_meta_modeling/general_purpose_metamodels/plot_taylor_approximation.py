@@ -2,21 +2,18 @@
 Taylor approximations
 =====================
 """
-# %% 
-
 # %%
 # In this example we are going to build a local approximation of a model using the taylor decomposition:
 #
 # Here is the decomposition at the first order:
 #
-# .. math::\underline{y} \, \approx \, \widehat{h}(\underline{x}) \,
+# .. math::
+#    \underline{y} \, \approx \, \widehat{h}(\underline{x}) \,
 #          = \, h(\underline{x}_0) \, +
-#         \, \sum_{i=1}^{n_{X}} \; \frac{\partial h}{\partial x_i}(\underline{x}_0).\left(x_i - x_{0,i} \right):math:``
+#         \, \sum_{i=1}^{n_{X}} \; \frac{\partial h}{\partial x_i}(\underline{x}_0).\left(x_i - x_{0,i} \right)
 #         
 #         
-# Here
-#
-# h(x) = [cos(x_1 + x_2), (x2 + 1)* e^{x_1 - 2* x_2}]:math:``
+# Here :math:`h(x) = [cos(x_1 + x_2), (x2 + 1)* e^{x_1 - 2* x_2}]`.
 #
 
 # %%

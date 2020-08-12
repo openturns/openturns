@@ -1,25 +1,7 @@
-# -*- coding: utf-8 -*-
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Sequentially adding new points to a kriging
 ===========================================
 """
-# %% 
-
 # %%
 # In this example, we show how to sequentially add new points to a kriging in order to improve the predictivity of the metamodel. In order to create simple graphics, we consider a 1D function. 
 
@@ -59,7 +41,7 @@ graph = g.draw(xMin, xMax)
 data = ot.Cloud(X,Y)
 data.setColor("red")
 graph.add(data)
-graph
+view = viewer.View(graph)
 
 
 # %%
@@ -179,7 +161,8 @@ def plotMyBasicKriging(krigResult, xMin, xMax, X, Y, level = 0.95):
 
 # %%
 krigResult = createMyBasicKriging(X,Y)
-plotMyBasicKriging(krigResult,xMin,xMax, X, Y)
+graph = plotMyBasicKriging(krigResult,xMin,xMax, X, Y)
+view = viewer.View(graph)
 
 
 # %%
@@ -229,7 +212,8 @@ Y.add(yNew)
 krigResult = createMyBasicKriging(X,Y)
 krigingStep += 1
 myTitle = "Krigeage #%d" % (krigingStep+1)
-plotMyBasicKriging(krigResult,xMin,xMax, X, Y)
+graph = plotMyBasicKriging(krigResult,xMin,xMax, X, Y)
+view = viewer.View(graph)
 
 # %%
 # The algorithm added a point to the right bound of the domain.

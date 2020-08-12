@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Create a polynomial chaos metamodel by integration on the cantilever beam
 =========================================================================
 """
-# %% 
-
 # %%
 # In this example, we create a polynomial chaos metamodel by integration on the cantilever beam example. 
 #
@@ -162,7 +145,7 @@ Q2
 graph = val.drawValidation()
 graph.setTitle("Q2=%.2f%%" % (Q2*100))
 graph.setLegends([""])
-graph
+view = viewer.View(graph)
 
 # %%
 # Sensitivity analysis
@@ -179,8 +162,10 @@ print( chaosSI.summary() )
 first_order = [chaosSI.getSobolIndex(i) for i in range(dim_input)]
 total_order = [chaosSI.getSobolTotalIndex(i) for i in range(dim_input)]
 input_names = g.getInputDescription()
-ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, first_order, total_order)
+graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, first_order, total_order)
+view = viewer.View(graph)
 
+plt.show()
 # %%
 # Conclusion
 # ----------

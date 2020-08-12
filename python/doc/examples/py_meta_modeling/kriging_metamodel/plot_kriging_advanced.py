@@ -60,7 +60,6 @@ view = viewer.View(graph)
 # Create the kriging algorithm
 # ----------------------------
 
-# %%
 # 1. basis
 ot.ResourceMap.SetAsBool('GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate', True)
 basis = ot.ConstantBasisFactory(dim).build()

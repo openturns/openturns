@@ -1,18 +1,3 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Create a polynomial chaos for the Ishigami function: a quick start guide to polynomial chaos
 ============================================================================================
@@ -145,7 +130,8 @@ def plotXvsY(sampleX, sampleY, figsize=(15,3)):
 plotXvsY(inputSample, outputSample)
 
 # %%
-ot.HistogramFactory().build(outputSample).drawPDF()
+graph = ot.HistogramFactory().build(outputSample).drawPDF()
+view = viewer.View(graph)
 
 # %%
 # We see that the distribution of the output has two modes. 
@@ -206,7 +192,7 @@ Q2
 graph = val.drawValidation()
 graph.setLegends([""])
 graph.setTitle("Q2=%.2f%%" % (Q2*100))
-graph
+view = viewer.View(graph)
 
 # %%
 # The metamodel has a good predictivity, since the points are almost on the first diagonal.
@@ -230,7 +216,8 @@ dim_input = distribution.getDimension()
 first_order = [chaosSI.getSobolIndex(i) for i in range(dim_input)]
 total_order = [chaosSI.getSobolTotalIndex(i) for i in range(dim_input)]
 input_names = g.getInputDescription()
-ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, first_order, total_order)
+graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, first_order, total_order)
+view = viewer.View(graph)
 
 
 # %%
@@ -296,5 +283,6 @@ for i in range(inputDimension):
     absoluteErrorST = abs(total_order[i]-ST_exact[i])
     print("X%d, Abs.Err. on S=%.1e, Abs.Err. on ST=%.1e" % (i+1, absoluteErrorS,absoluteErrorST))
 
+plt.show()
 # %%
 # We see that the indices are correctly estimated with a low accuracy even if we have use only 100 function evaluations. This shows the good performance of the polynomial chaos in this case.

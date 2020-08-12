@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Advanced polynomial chaos construction
 ======================================
 """
-# %% 
-
 # %%
 # In this example we are going to expose advanced elements in the construction of a polynomial chaos algorithm:
 #
@@ -38,10 +21,7 @@ Advanced polynomial chaos construction
 # We assume that the inputs have normal, uniform, gamma and beta distributions :
 #
 # .. math::
-#    X_1 \sim \mathcal{N}(0,1), \qquad 
-# X_2 \sim \mathcal{U}(-1,1), \qquad 
-# X_3 \sim \mathcal{G}(2.75,1), \qquad 
-# X_4 \sim \mathcal{B}(2.5,1,-1,2),
+#    X_1 \sim \mathcal{N}(0,1), \qquad X_2 \sim \mathcal{U}(-1,1), \qquad X_3 \sim \mathcal{G}(2.75,1), \qquad X_4 \sim \mathcal{B}(2.5,1,-1,2),
 # 
 #
 # and :math:`X_1`, :math:`X_2`, :math:`X_3` and :math:`X_4` are independent.

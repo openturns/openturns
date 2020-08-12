@@ -1,30 +1,12 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 2
-#     language: python
-#     name: python2
-# ---
-
-# %%
 """
 Create a linear model
 =====================
 """
-# %% 
-
 # %%
 # In this example we are going to create a global approximation of a model response using linear model approximation.
 #
-# Here
+# Here :math:`h(x,y) = [2 x + 0.05 * \sin(x) - y]`.
 #
-# .. math::h(x,y) = [2 x + 0.05 * \sin(x) - y]:math:``
 
 # %%
 from __future__ import print_function
@@ -96,7 +78,8 @@ print(analysis)
 # Let us compare model and fitted values:
 
 # %%
-analysis.drawModelVsFitted()
+graph = analysis.drawModelVsFitted()
+view = viewer.View(graph)
 
 # %%
 # Seems that the linearity hypothesis is accurate.
@@ -129,3 +112,5 @@ _ = v.getFigure().suptitle("Diagnostic graphs", fontsize=18)
 alpha = 0.95
 interval = analysis.getCoefficientsConfidenceInterval(alpha)
 print("confidence intervals with level=%1.2f : %s" % (alpha, interval))
+plt.show()
+

@@ -2,8 +2,6 @@
 Simulate new trajectories from a kriging metamodel
 ==================================================
 """
-# %% 
-
 # %%
 # The main goal of this example is to show how to simulate new trajectories from a kriging metamodel.
 
@@ -29,9 +27,10 @@ Simulate new trajectories from a kriging metamodel
 #
 # We consider the seven following inputs :
 #
-# | :math:`i` | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
-# |---|---|---|---|---|---|---|---|
-# | :math:`x_i` | 1 | 3 | 4 | 6 | 7.9 | 11 | 11.5 |
+# ============ === === === === ===== ==== ======
+#  :math:`i`    1   2   3   4   5     6    7 
+#  :math:`x_i`  1   3   4   6   7.9   11   11.5 
+# ============ === === === === ===== ==== ======
 #
 # We are going to consider a kriging metamodel with a 
 #
