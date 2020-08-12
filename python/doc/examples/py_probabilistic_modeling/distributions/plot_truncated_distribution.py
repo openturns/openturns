@@ -2,8 +2,6 @@
 Create a truncated distribution
 ===============================
 """
-# %% 
-
 # %%
 # In this example we are going to define truncated distributions.
 #
@@ -11,11 +9,12 @@ Create a truncated distribution
 #
 # In 1-d, assuming a and b bounds, its probability density function is defined as:
 #
-# .. math::\forall y \in \mathbb{R}, p_Y(y) =
+# .. math::
+#    \forall y \in \mathbb{R}, p_Y(y) =
 #          \begin{array}{|ll}
-#         0 &  \mbox{for } y \geq b  \mbox{ or }  y \leq a\\
-#         \displaystyle \frac{1}{F_X(b) - F_X(a)}\, p_X(y) & \mbox{for } y\in[a,b]
-#       \end{array}:math:``
+#            0 &  \mbox{for } y \geq b  \mbox{ or }  y \leq a\\
+#            \displaystyle \frac{1}{F_X(b) - F_X(a)}\, p_X(y) & \mbox{for } y\in[a,b]
+#          \end{array}
 #
 # Is is also possible to truncate a multivariate distribution.
 

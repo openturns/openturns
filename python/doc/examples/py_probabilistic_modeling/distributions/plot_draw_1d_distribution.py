@@ -2,8 +2,6 @@
 Draw 1-d distribution graphs
 ============================
 """
-# %% 
-
 # %%
 # In this example we are going to draw PDF and CDF of an unidimensional distribution.
 

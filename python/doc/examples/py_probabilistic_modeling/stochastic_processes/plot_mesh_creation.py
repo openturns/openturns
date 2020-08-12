@@ -2,8 +2,6 @@
 Creation of a mesh
 ==================
 """
-# %% 
-
 # %%
 # In this example we will demonstrate how to create a mesh :math:`\mathcal{M}` associated to a domain :math:`\mathcal{D} \in \mathbb{R}^n`.
 #

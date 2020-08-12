@@ -2,8 +2,6 @@
 Apply a Box-Cox transformation to a Field
 =========================================
 """
-# %% 
-
 # %%
 #
 # The objective of this Use Case is to estimate a Box Cox transformation
@@ -32,22 +30,22 @@ Apply a Box-Cox transformation to a Field
 #    stabilized variance, such that for each vertex :math:`\underline{t}_i` we
 #    have:
 #
-#    :math:``\underline{y}_{i} = h_{\underline{\lambda}}(\underline{x}_{i}):math:``
+#    :math:`\underline{y}_{i} = h_{\underline{\lambda}}(\underline{x}_{i})`
 #
 #     or
 #
-#    :math:``\underline{y}_{i} = h_{\underline{\lambda}}(\underline{x}_{i} + \underline{\alpha}):math:``
+#    :math:`\underline{y}_{i} = h_{\underline{\lambda}}(\underline{x}_{i} + \underline{\alpha})`
 #
 #    thanks to the operand *()*. The field based on the values
 #    :math:`\underline{y}_{i}` shares the same mesh than the initial field.
 #
 # -  create the inverse Box Cox transformation such that :
 #
-#    :math:``\underline{x}_{i}= h^{-1}_{\underline{\lambda}}(\underline{y}_{i}):math:``
+#    :math:`\underline{x}_{i}= h^{-1}_{\underline{\lambda}}(\underline{y}_{i})`
 #
 #     or
 #
-#    :math:``\underline{x}_{i} = h^{-1}_{\underline{\lambda}}(\underline{y}_{i}) - \underline{\alpha}:math:``
+#    :math:`\underline{x}_{i} = h^{-1}_{\underline{\lambda}}(\underline{y}_{i}) - \underline{\alpha}`
 #
 #    thanks to the method *getInverse()* which produces an object of type
 #    *InverseBoxCoxTransform* that can be evaluated on a field.

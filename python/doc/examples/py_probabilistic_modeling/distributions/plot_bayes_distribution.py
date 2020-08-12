@@ -2,16 +2,16 @@
 Create a Bayes distribution
 ===========================
 """
-# %% 
-
 # %%
 # In this example we are going to build the distribution of the random vector
 #
-# .. math::( \underline{X}|\underline{\Theta}, \underline{Y}):math:``
+# .. math::
+#    ( \underline{X}|\underline{\Theta}, \underline{Y})
 #   
 # with X conditioned by the random variable Theta obtained with the random variable Y through a function f
 #
-# \underline{\Theta}=f(\underline{Y}):math:``
+# .. math::
+#    \underline{\Theta}=f(\underline{Y})
 #
 
 # %%

@@ -1,31 +1,14 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Create univariate and multivariate distributions: a quick start guide to distributions
 ======================================================================================
 """
-# %% 
-
 # %%
 # Abstract 
 # ---------
 #
 # In this example, we present classes for univariate and multivariate distributions. We demonstrate the probabilistic programming capabilities of the library. For univariate distributions, we show how to compute the probability density, the cumulated probability density and the quantiles. We also show how to create graphics. The `ComposedDistribution` class, which creates a distribution based on its marginals and its copula, is presented. We show how to truncate any distribution with the `TruncatedDistribution` class.
 
-# %% slideshow={"slide_type": "subslide"}
+# %%
 # Univariate distribution
 # -----------------------
 #
@@ -58,7 +41,8 @@ uniform = ot.Uniform(2,5)
 # The `drawPDF` method plots the probability density function.
 
 # %%
-uniform.drawPDF()
+graph = uniform.drawPDF()
+view = viewer.View(graph)
 
 # %%
 # The `computePDF` method computes the probability distribution at a specific point.
@@ -70,7 +54,8 @@ uniform.computePDF(3.5)
 # The `drawCDF` method plots the cumulated distribution function.
 
 # %%
-uniform.drawCDF()
+graph = uniform.drawCDF()
+view = viewer.View(graph)
 
 # %%
 # The `computeCDF` method computes the value of the cumulated distribution function a given point.
@@ -90,13 +75,14 @@ sample
 
 # %%
 sample = uniform.getSample(1000)
-ot.HistogramFactory().build(sample).drawPDF()
+graph = ot.HistogramFactory().build(sample).drawPDF()
+view = viewer.View(graph)
 
-# %% slideshow={"slide_type": "slide"}
+# %%
 # Multivariate distributions with or without independent copula
 # -------------------------------------------------------------
 
-# %% slideshow={"slide_type": "subslide"}
+# %%
 # We can create multivariate distributions by two different methods:
 #
 # - we can also create a multivariate distribution by combining a list of univariate marginal distribution and a copula,
@@ -144,7 +130,7 @@ showAxes = True
 graph = ot.Graph("X0~N, X1~U", "X0", "X1", showAxes)
 cloud = ot.Cloud(sample, "blue", "fsquare", "") # Create the cloud
 graph.add(cloud) # Then, add it to the graph
-graph
+view = viewer.View(graph)
 
 # %%
 # We see that the marginals are Gaussian and uniform and that the copula is independent. 
@@ -166,7 +152,8 @@ copula
 # We can draw the contours of a copula with the `drawPDF` method.
 
 # %%
-copula.drawPDF()
+graph = copula.drawPDF()
+view = viewer.View(graph)
 
 # %%
 # Multivariate distribution with arbitrary copula
@@ -189,7 +176,7 @@ showAxes = True
 graph = ot.Graph("X0~N, X1~U, Ali-Mikhail-Haq copula", "X0", "X1", showAxes)
 cloud = ot.Cloud(sample, "blue", "fsquare", "") # Create the cloud
 graph.add(cloud) # Then, add it to the graph
-graph
+view = viewer.View(graph)
 
 # %%
 # We see that the sample is quite different from the previous sample with independent copula.
@@ -245,28 +232,33 @@ _ = otv.View(cdfexp, figure=fig, axes=[ax])
 
 # %%
 X = ot.LogNormal()
-X.drawPDF()
+graph = X.drawPDF()
+view = viewer.View(graph)
 
 # %%
 # We can truncate this distribution to the :math:`[1,2]` interval. We see that the PDF of the distribution becomes discontinuous at the truncation points 1 and 2.
 
 # %%
 Y = ot.TruncatedDistribution(X,1.,2.)
-Y.drawPDF()
+graph = Y.drawPDF()
+view = viewer.View(graph)
 
 # %%
 # We can also also truncate it with only a lower bound.
 
 # %%
 Y = ot.TruncatedDistribution(X,1.,ot.TruncatedDistribution.LOWER)
-Y.drawPDF()
+graph = Y.drawPDF()
+view = viewer.View(graph)
 
 # %%
 # We can finally truncate a distribution with an upper bound.
 
 # %%
 Y = ot.TruncatedDistribution(X,2.,ot.TruncatedDistribution.UPPER)
-Y.drawPDF()
+graph = Y.drawPDF()
+view = viewer.View(graph)
 
+plt.show()
 # %%
 # In the specific case of the Gaussian distribution, the specialized `TruncatedNormal` distribution can be used instead of the generic `TruncatedDistribution` class.

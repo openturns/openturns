@@ -2,8 +2,6 @@
 Create a random walk process
 ============================
 """
-# %% 
-
 # %%
 # This example details first how to create and manipulate a random walk.
 #
@@ -11,9 +9,11 @@ Create a random walk process
 # where :math:`\mathcal{D}=\mathbb{R}` discretized on the time grid :math:`(t_i)_{i \geq 0}` such
 # that:
 #
-# .. math::\begin{aligned}
+# .. math::
+#    \begin{aligned}
 #      X_{t_0} & = & \underline{x}_{t_0} \\
-#   \forall n>0,\: X_{t_n} & = & X_{t_{n-1}} + \varepsilon_{t_n}\end{aligned}:math:``
+#      \forall n>0,\: X_{t_n} & = & X_{t_{n-1}} + \varepsilon_{t_n}
+#    \end{aligned}
 #
 # where :math:`\underline{x}_0 \in \mathbb{R}^d` and :math:`\varepsilon` is a white noise of
 # dimension :math:`d`.
@@ -44,7 +44,7 @@ process = ot.RandomWalk(origin, dist, tgrid)
 sample = process.getSample(5)
 graph = sample.drawMarginal(0)
 graph.setTitle('1D Random Walk with discrete steps')
-graph
+view = viewer.View(graph)
 
 # %%
 # 1-d random walk and continuous distribution

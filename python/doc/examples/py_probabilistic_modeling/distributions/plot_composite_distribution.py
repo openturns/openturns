@@ -2,17 +2,14 @@
 Create a composite distribution
 ===============================
 """
-# %% 
-
 # %%
 # In this example we are going to create a distribution defined as the push-forward distribution of a scalar distribution by a transformation.
 #
 #
 # If we note :math:`\mathcal{L}_0` a scalar distribution, :math:`f: \mathbb{R} \rightarrow \mathbb{R}` a mapping, then it is possible to create the push-forward distribution :math:`\mathcal{L}` defined by
 #
-# .. math::\mathcal{L} = f(\mathcal{L}_0):math:``
-#   
-#
+# .. math::
+#    \mathcal{L} = f(\mathcal{L}_0)
 #
 
 # %%

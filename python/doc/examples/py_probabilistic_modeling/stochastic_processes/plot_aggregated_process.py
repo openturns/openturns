@@ -2,8 +2,6 @@
 Aggregate processes
 ===================
 """
-# %% 
-
 # %%
 # In this example we are going to concatenate several processes that share the same mesh.
 

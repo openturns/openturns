@@ -2,9 +2,6 @@
 Overview of univariate distribution management
 ==============================================
 """
-# %% 
-#
-
 # %%
 # Abstract
 # --------
@@ -16,16 +13,16 @@ Overview of univariate distribution management
 # - the `CompositeDistribution` for more general functions,
 # - how to define our customized distibution with `PythonDistribution` if the distribution do not exist.
 
-# %% slideshow={"slide_type": "notes"}
+# %%
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 
-# %% slideshow={"slide_type": "slide"}
+# %%
 # Distributions with several parametrizations
 # -------------------------------------------
 
-# %% slideshow={"slide_type": "subslide"}
+# %%
 # By default, any univariate distribution uses its native parameters. For some few distributions, alternative parameters might be used to define the distribution. 
 #
 # For example, the `Beta` distribution has several parametrizations. 
@@ -54,7 +51,7 @@ from matplotlib import pylab as plt
 # %%
 # The `Beta` class uses the native parametrization.
 
-# %% slideshow={"slide_type": "subslide"}
+# %%
 distribution = ot.Beta(2.5, 2.5, -1, 2)
 graph = distribution.drawPDF()
 view = viewer.View(graph)
@@ -103,7 +100,7 @@ param_dist
 # Functions of distributions
 # --------------------------
 
-# %% slideshow={"slide_type": "subslide"}
+# %%
 # The library provides algebra of univariate distributions:
 #
 #  - +, -
@@ -122,7 +119,7 @@ param_dist
 # %%
 # In the following example, we create a beta and an exponential variable. Then we create the random variable equal to the sum of the two previous variables. 
 
-# %% slideshow={"slide_type": "subslide"}
+# %%
 B = ot.Beta(5, 2, 9, 10)
 
 # %%
@@ -134,7 +131,7 @@ S = B + E
 # %%
 # The `S` variable is equipped with the methods of any distribution: we can for example compute the PDF or the CDF at any point and compute its quantile. For example, we can simply draw the PDF with the `drawPDF` class.
 
-# %% slideshow={"slide_type": "subslide"}
+# %%
 graph = S.drawPDF()
 graph.setTitle("Sum of a beta and an exponential distribution")
 view = viewer.View(graph)
@@ -159,7 +156,7 @@ view = viewer.View(graph)
 # %%
 # First, we create a distribution.
 
-# %% slideshow={"slide_type": "subslide"}
+# %%
 N = ot.Normal(0.0, 1.0)
 N.setDescription(["Normal"])
 
@@ -191,13 +188,13 @@ graph = LN.drawPDF()
 view = viewer.View(graph)
 
 
-# %% slideshow={"slide_type": "subslide"}
+# %%
 # The `PythonDistribution` class
 # ------------------------------
 #
 # Another possibility is to define our own `distribution`. 
 #
-# For example let us implement the `Quartic` kernel (also known as the `Biweight` kernel, see https://en.wikipedia.org/wiki/Kernel_(statistics)#Kernel_functions_in_common_use), which is sometimes used in the context of kernel smoothing. 
+# For example let us implement the `Quartic` kernel (also known as the `Biweight` kernel, see `here <https://en.wikipedia.org/wiki/Kernel_(statistics)#Kernel_functions_in_common_use>`_), which is sometimes used in the context of kernel smoothing. 
 # The PDF of the kernel is defined by:
 #
 # .. math::
@@ -224,7 +221,7 @@ view = viewer.View(graph)
 #
 # The only required method is `computeCDF`. Since the PDF is easy to define in our example, we implement it as well. Here, the distribution is defined on the interval :math:`[-1,1]`, so that we define the `getRange` method.
 
-# %% slideshow={"slide_type": "subslide"}
+# %%
 class Quartic(ot.PythonDistribution):
     """
     Quartic (biweight) kernel
@@ -256,7 +253,7 @@ class Quartic(ot.PythonDistribution):
         return ot.Interval(-1, 1)
 
 
-# %% slideshow={"slide_type": "subslide"}
+# %%
 Q = ot.Distribution(Quartic())
 Q.setDescription(["Quartic Kernel"])
 

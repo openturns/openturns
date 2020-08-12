@@ -1,25 +1,7 @@
-# -*- coding: utf-8 -*-
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Comparison of covariance models for gaussian processes
 ======================================================
 """
-# %% 
-
 # %%
 # The main goal of this example is to briefly review the most important covariance models and compare them in terms of regularity. 
 #
@@ -64,6 +46,7 @@ myModel = ot.SquaredExponential(scale, amplitude)
 # Optionnally, we can define a trend (we will see that later in the example). By default, the trend is zero. 
 #
 # We consider the domain :math:`\mathcal{D}=[0,10]`. We discretize this domain with 100 cells (which corresponds to 101 nodes), with steps equal to 0.1 starting from 0: 
+# 
 # .. math::
 #    (x_0=x_{min}=0,\:x_1=0.1,\:\ldots,\:x_n=x_{max}=10).
 # 
@@ -75,7 +58,7 @@ n = 100
 myTimeGrid = ot.RegularGrid(xmin, step, n+1)
 graph = myTimeGrid.draw()
 graph.setTitle("Regular grid")
-graph
+view = viewer.View(graph)
 
 # %%
 # Then we create the gaussian process (by default the trend is zero). 
@@ -98,7 +81,7 @@ type(sample)
 # %%
 graph = sample.drawMarginal(0)
 graph.setTitle("amplitude=%.3f, scale=%.3f" % (amplitude[0], scale[0]))
-graph
+view = viewer.View(graph)
 
 
 # %%
@@ -123,7 +106,7 @@ scale = [1.5]
 myModel = ot.SquaredExponential(scale, amplitude)
 graph = plotCovarianceModel(myModel,myTimeGrid,10)
 graph.setTitle("amplitude=%.3f, scale=%.3f" % (amplitude[0], scale[0]))
-graph
+view = viewer.View(graph)
 
 # %%
 # Modifying the scale parameter is here equivalent to stretch or contract the "time" :math:`x`. 
@@ -134,7 +117,7 @@ scale = [0.5]
 myModel = ot.SquaredExponential(scale, amplitude)
 graph = plotCovarianceModel(myModel,myTimeGrid,10)
 graph.setTitle("amplitude=%.3f, scale=%.3f" % (amplitude[0], scale[0]))
-graph
+view = viewer.View(graph)
 
 # %%
 # Define the trend
@@ -158,7 +141,7 @@ nbTrajectories = 10
 sample = process.getSample(nbTrajectories)
 graph = sample.drawMarginal(0)
 graph.setTitle("amplitude=%.3f, scale=%.3f" % (amplitude[0], scale[0]))
-graph
+view = viewer.View(graph)
 
 # %%
 # Other covariance models
@@ -210,7 +193,7 @@ myExpModel = ot.ExponentialModel(scale, amplitude)
 # %%
 graph = plotCovarianceModel(myExpModel,myTimeGrid,nbTrajectories)
 graph.setTitle("Exponential")
-graph
+view = viewer.View(graph)
 
 # %%
 # We see that the exponential model produces very irregular trajectories.

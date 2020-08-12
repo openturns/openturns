@@ -2,12 +2,11 @@
 Create a random mixture of distributions
 ========================================
 """
-# %% 
-
 # %%
 # In this example we are going to build an affine combination of input random variables.
 #
-# .. math:: Y = 2 + 5 X_1 + X_2 :math:``
+# .. math:: 
+#    Y = 2 + 5 X_1 + X_2
 #   
 # where:
 #

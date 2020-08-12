@@ -8,7 +8,9 @@ Process sample manipulation
 # The objective here is to create and manipulate a process sample. A process sample is a collection of fields which share the same mesh :math:`\mathcal{M} \in \mathbb{R}^n`.
 #
 # A process sample can be obtained as :math:`K` realizations of a multivariate stochastic process :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^d` of dimension :math:`d` where :math:`\mathcal{D} \in \mathbb{R}^n`, when the realizations are discretized on the same mesh :math:`\mathcal{M}` of :math:`\mathcal{D}`. The  values :math:`(\underline{x}_0^k, \dots, \underline{x}_{N-1}^k)` of the field :math:`k` are defined by:
-# .. math:: \forall i \in [0, N-1],\quad \underline{x}_i= X(\omega_k)(\underline{t}_i):math:``
+#   
+# .. math:: 
+#     \forall i \in [0, N-1],\quad \underline{x}_i= X(\omega_k)(\underline{t}_i)
 #   
 
 # %%
@@ -44,7 +46,7 @@ scale = [0.2]*1
 myCovModel = ot.ExponentialModel(scale, amplitude)
 myProcess = ot.GaussianProcess(myCovModel, mesh)
 processSample = myProcess.getSample(10)
-processSample
+#processSample
 
 # %%
 # draw the sample, without interpolation
@@ -73,4 +75,5 @@ graph = processSample.drawMarginal(0)
 view = viewer.View(graph)
 
 # %%
-processSample
+#processSample
+plt.show()

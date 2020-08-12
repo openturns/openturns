@@ -2,8 +2,6 @@
 Create a composed distribution
 ==============================
 """
-# %% 
-
 # %%
 # In this example we are going to create a multidimensional distribution described by its marginal distributions and optionally its dependence structure (a particular copula).
 

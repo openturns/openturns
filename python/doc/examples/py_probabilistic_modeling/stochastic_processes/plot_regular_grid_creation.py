@@ -2,8 +2,6 @@
 Creation of a regular grid
 ==========================
 """
-# %% 
-
 # %%
 # In this example we will demonstrate how to create a regular grid. Note that a regular grid is a particular mesh of :math:`\mathcal{D}=[0,T] \in \mathbb{R}`.
 #

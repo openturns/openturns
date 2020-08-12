@@ -2,10 +2,9 @@
 Create a 2-d gaussian distribution
 ==================================
 """
-# %% 
-
 # %%
-# In this example we are going to create a bidimensional gaussian distribution with parameters :math:` \mu = [0.0, 2.2], \sigma = [1.0, 0.6]`.
+# In this example we are going to create a bidimensional gaussian distribution with parameters :math:`\mu = [0.0, 2.2], \sigma = [1.0, 0.6]`.
+#
 
 # %%
 from __future__ import print_function

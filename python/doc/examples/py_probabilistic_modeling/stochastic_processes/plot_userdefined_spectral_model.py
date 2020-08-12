@@ -2,8 +2,6 @@
 Create a custom spectral model
 ==============================
 """
-# %% 
-
 # %%
 #
 # This use case illustrates how the User can define his own density

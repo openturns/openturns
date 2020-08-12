@@ -2,12 +2,12 @@
 Create a gaussian distribution
 ==============================
 """
-# %% 
-
 # %%
 # In this example we are going to create a gaussian distribution with parameters
 #
-# .. math::\mu = 2.2, \sigma = 0.6:math:``
+# .. math::
+#     \mu = 2.2, \sigma = 0.6
+#
 
 # %%
 from __future__ import print_function

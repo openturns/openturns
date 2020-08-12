@@ -2,8 +2,6 @@
 Create a maximum distribution
 =============================
 """
-# %% 
-
 # %%
 # In this example we are going to build the distribution of the maximum of independent distributions.
 

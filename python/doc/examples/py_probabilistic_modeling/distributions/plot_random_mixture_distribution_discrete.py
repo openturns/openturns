@@ -2,15 +2,13 @@
 Create a discrete random mixture
 ================================
 """
-# %% 
-
 # %%
 # In this example we are going to build the distribution of the value of the sum of 20 dice rolls.
 #
 # .. math:: 
 #    Y = \sum_{i=1}^{20} X_i
 #   
-# where :math:`X_i \tilde{} U(1,2,3,4,5,6)`
+# where :math:`X_i \sim U(1,2,3,4,5,6)`
 #
 
 # %%

@@ -2,8 +2,6 @@
 Create a discrete Markov chain process
 ======================================
 """
-# %% 
-
 # %%
 # This example details first how to create and manipulate a discrete Markov chain.
 #
@@ -11,16 +9,18 @@ Create a discrete Markov chain process
 # where :math:`\mathcal{D}=\mathbb{R}` discretized on the time grid :math:`(t_k)_{k \geq 0}` such
 # that:
 #
-# .. math::\begin{aligned}
-#          \forall k > 0,\: \mathbb{P} ( X_{t_k} \> | \> X_{t_0},...X_{t_{k-1}} )  =  \mathbb{P} ( X_{t_k} \> | \> X_{t_{k-1}} )
+# .. math::
+#    \begin{aligned}
+#      \forall k > 0,\: \mathbb{P} ( X_{t_k} \> | \> X_{t_0},...X_{t_{k-1}} )  =  \mathbb{P} ( X_{t_k} \> | \> X_{t_{k-1}} )
 #   \end{aligned}
 # 
 #
 # The transition matrix of the process :math:`\mathcal{M} = (m_{i,j})` can be defined such that:
 #
-# .. math::\begin{aligned}
+# .. math::
+#     \begin{aligned}
 #         \forall t_k \in \mathcal{D}, \forall i,j < p , \> m_{i+1,j+1} = \mathbb{P} (X_{t_{k+1}} = j \> | \> X_{t_{k}} = i)
-#   \end{aligned}:math:``
+#     \end{aligned}
 #
 # The library proposes to model it through the object *DiscreteMarkovChain* defined thanks to the origin :math:`X_{t_0}` (which can be either deterministic or uncertain), the transition matrix :math:`\mathcal{M}` and the time grid.
 

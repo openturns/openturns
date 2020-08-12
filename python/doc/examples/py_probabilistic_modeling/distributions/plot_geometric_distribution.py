@@ -1,26 +1,9 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Create a geometric distribution
 ===============================
 """
-# %% 
-
 # %%
-# In this example we are going to create a geometric distribution with parameter :math:``p = 0.7:math:``
+# In this example we are going to create a geometric distribution with parameter :math:`p = 0.7`.
 
 # %%
 from __future__ import print_function

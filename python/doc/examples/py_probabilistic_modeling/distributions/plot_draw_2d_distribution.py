@@ -2,8 +2,6 @@
 Draw 2-d distribution graphs
 ============================
 """
-# %% 
-
 # %%
 # In this example we are going to draw PDF and CDF of a bidimensional distribution.
 

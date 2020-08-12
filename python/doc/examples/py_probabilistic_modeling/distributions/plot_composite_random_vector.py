@@ -1,28 +1,13 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Composite random vector
 =======================
 """
-# %% 
-
 # %%
 # In this example we are going to create a random variable :math:`\underline{Y}` which realizations are the images of the realizations of another random vector :math:`\underline{X}` by a function.
 #
-# .. math::\underline{Y} = f(\underline{X}) :math:``
+# .. math::
+#     \underline{Y} = f(\underline{X})
+#
 
 # %%
 from __future__ import print_function

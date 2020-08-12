@@ -2,8 +2,6 @@
 Process manipulation
 ====================
 """
-# %% 
-
 # %%
 # The objective here is to manipulate a multivariate stochastic process :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^d`, where :math:`\mathcal{D} \in \mathbb{R}^n` is discretized on the mesh :math:`\mathcal{M}` and exhibit some of the services exposed by the *Process* objects:
 #
@@ -67,7 +65,7 @@ process.getTimeGrid()
 # %%
 # Get a realisation of the process
 realization = process.getRealization()
-realization
+#realization
 
 # %%
 # Draw one realization
@@ -95,7 +93,7 @@ view = viewer.View(graph)
 # Get several realizations of the process
 number = 10
 fieldSample = process.getSample(number)
-fieldSample
+#fieldSample
 
 # %%
 # Draw a sample of the process 

@@ -2,8 +2,6 @@
 ARMA process manipulation
 =========================
 """
-# %% 
-
 # %%
 # In this example we will expose some of the services exposed by an :math:`ARMA(p,q)` object, namely:
 #

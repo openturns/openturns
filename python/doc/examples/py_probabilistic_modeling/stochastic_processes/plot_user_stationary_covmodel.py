@@ -2,8 +2,6 @@
 Create a custom stationary covariance model
 ===========================================
 """
-# %% 
-
 # %%
 # This use case illustrates how the user can define his own stationary covariance model thanks to the object *UserDefinedStationaryCovarianceModel* defined from:
 #
@@ -12,7 +10,8 @@ Create a custom stationary covariance model
 #
 # Then we build a stationary covariance function which is a piecewise constant function on :math:`\mathcal{D}` defined by:
 #
-# .. math::\forall \underline{\tau} \in \mathcal{D}, \, C^{stat}(\underline{\tau}) =  \underline{\underline{C}}_k:math:``
+# .. math::
+#    \forall \underline{\tau} \in \mathcal{D}, \, C^{stat}(\underline{\tau}) =  \underline{\underline{C}}_k
 #   
 # where :math:`k`  is such that :math:`\underline{\tau}_k` is the  vertex of :math:`\mathcal{M}` the nearest to :math:`\underline{t}.`
 

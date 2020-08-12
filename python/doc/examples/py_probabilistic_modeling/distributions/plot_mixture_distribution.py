@@ -2,12 +2,11 @@
 Create a mixture of PDFs
 ========================
 """
-# %% 
-
 # %%
 # In this example we are going to build a distribution whose PDF is defined by a linear combination of probability density functions:
 #
-# .. math::f(x) =  \sum_{i=1}^N \alpha_i p_i(x), \quad \alpha_i \geq 0, \quad \sum_i \alpha_i = 1:math:``
+# .. math::
+#    f(x) =  \sum_{i=1}^N \alpha_i p_i(x), \quad \alpha_i \geq 0, \quad \sum_i \alpha_i = 1
 #   
 # The weigths are automatically normalized.
 #

@@ -2,8 +2,6 @@
 Create an ARMA process
 ======================
 """
-# %% 
-
 # %%
 # In this example we are going to build an ARMA process defined by its linear recurrence coefficients.
 #

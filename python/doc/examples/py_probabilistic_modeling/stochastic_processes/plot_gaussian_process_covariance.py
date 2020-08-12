@@ -2,8 +2,6 @@
 Create a gaussian process from a cov. model
 ===========================================
 """
-# %% 
-
 # %%
 # In this example we are going to build a gaussian process from its covariance model.
 

@@ -2,8 +2,6 @@
 Field manipulation
 ==================
 """
-# %% 
-
 # %%
 # The objective here is to create and manipulate a field. A field is the agregation of a mesh :math:`\mathcal{M}` of a domain :math:`\mathcal{D} \in \mathbb{R}^n` and a sample of values in :math:`\mathbb{R}^d` associated to each vertex of the mesh.
 #

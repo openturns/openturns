@@ -2,13 +2,14 @@
 Add a trend to a process
 ========================
 """
-
 # %%
 # In this example we are going to add a trend to a process.
 #
 # The TrendTransform class enables to create a new process Y from a process X (no hypothesis on X needed):
 #
-# .. math::Y(\omega, t) = X(\omega, t) + f(t):math:``
+# .. math::
+#    Y(\omega, t) = X(\omega, t) + f(t)
+#
 
 # %%
 from __future__ import print_function

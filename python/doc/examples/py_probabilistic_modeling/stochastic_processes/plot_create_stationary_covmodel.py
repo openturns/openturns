@@ -1,35 +1,22 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Create a stationary covariance model
 ====================================
 """
-# %% 
-
 # %%
 # This use case illustrates how the User can create a covariance function from parametric models. The library implements the *multivariate Exponential model* as a parametric model for the covariance function where the spatial covariance function :math:`\rho` writes:
 #
-# .. math::\rho(\underline{s}, \underline{t} ) = e^{-\left\| \underline{s}- \underline{t} \right\|_2} \quad \forall (\underline{s}, \underline{t}) \in \mathcal{D}:math:``
+# .. math::
+#    \rho(\underline{s}, \underline{t} ) = e^{-\left\| \underline{s}- \underline{t} \right\|_2} \quad \forall (\underline{s}, \underline{t}) \in \mathcal{D}
 #   
 # It is possible to define the exponential model from the spatial covariance matrix :math:`\underline{\underline{C}}^{spat}` rather than the correlation matrix :math:`\underline{\underline{R}}`:
 #
-# \forall \underline{t} \in \mathcal{D},\quad \underline{\underline{C}}^{spat} = \mathbb{E} \left[ X_{\underline{t}} X^t_{\underline{t}} \right] = \underline{\underline{A}}\,\underline{\underline{R}}\, \underline{\underline{A}}:math:``
+# .. math::
+#     \forall \underline{t} \in \mathcal{D},\quad \underline{\underline{C}}^{spat} = \mathbb{E} \left[ X_{\underline{t}} X^t_{\underline{t}} \right] = \underline{\underline{A}}\,\underline{\underline{R}}\, \underline{\underline{A}}
 #
 # with:
-# .. math::\underline{\underline{A}} = \mbox{Diag}(a_1, \dots, a_d):math:``
+#
+# .. math::
+#    \underline{\underline{A}} = \mbox{Diag}(a_1, \dots, a_d)
 #   
 # We call :math:`\underline{a}` the amplitude vector and :math:`\underline{\lambda}` the scale vector.
 #

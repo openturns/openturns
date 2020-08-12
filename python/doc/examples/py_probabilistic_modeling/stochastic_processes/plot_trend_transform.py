@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Trend computation
 =================
 """
-# %% 
-
 # %%
 # In this example we are going to estimate a trend from a field.
 #
@@ -38,7 +21,8 @@ Trend computation
 #
 # - create the inverse trend transformation in order to remove the trend the intiail field :math:`(\underline{x}_0, \dots, \underline{x}_{N-1})` and  to create the resulting stationary field :math:`(\underline{x}^{stat}_0, \dots, \underline{x}^{stat}_{N-1})` such that:
 #
-# .. math::\underline{x}^{stat}_i = \underline{x}_i - f_{trend}(\underline{t}_i):math:``
+# .. math::
+#    \underline{x}^{stat}_i = \underline{x}_i - f_{trend}(\underline{t}_i)
 #   
 # where :math:`\underline{t}_i` is the simplex associated to the value :math:`\underline{x}_i`.
 # This creation of the inverse trend function :math:`-f_{trend}` is done thanks to the method **getInverse()** which produces an object of type **InverseTrendTransform** that can be evaluated on a a field.
