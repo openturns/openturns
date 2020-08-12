@@ -277,7 +277,7 @@ Matrix FunctionImplementation::gradient(const Point & inP) const
     // Fallback on non-centered finite difference gradient
     try
     {
-      LOGWARN(OSS() << "Switch to finite difference to compute the gradient at point=" << inP);
+      LOGWARN(OSS() << "Switch to finite difference to compute the gradient at point=" << inP.__str__());
       const CenteredFiniteDifferenceGradient gradientFD(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), evaluation_);
       return gradientFD.gradient(inP);
     }
@@ -302,7 +302,7 @@ SymmetricTensor FunctionImplementation::hessian(const Point & inP) const
     // Fallback on non-centered finite difference gradient
     try
     {
-      LOGWARN(OSS() << "Switch to finite difference to compute the hessian at point=" << inP);
+      LOGWARN(OSS() << "Switch to finite difference to compute the hessian at point=" << inP.__str__());
       const CenteredFiniteDifferenceHessian hessianFD(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), evaluation_);
       return hessianFD.hessian(inP);
     }
