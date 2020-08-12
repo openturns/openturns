@@ -42,11 +42,11 @@ If basis is not specified, the underlying model is :
 
     \tilde{Y} = a_0 + \sum_{i=1}^n a_i X_i + \epsilon
 
-The coefficients :math:`a_i` are evaluated using a least squares method. Default
- method is `QR`. User might choose also `SVD` or `Cholesky` (usefull if basis
- is orthogonal) and large dataset.
+The coefficients :math:`a_i` are evaluated using a least squares method.
+Default method is `QR`. User might also choose `SVD` or `Cholesky` (useful
+if basis is orthogonal) and large dataset.
 
-The evaluation of the coefficients is completed by some usefull parameters that could
+The evaluation of the coefficients is completed by some useful parameters that could
 help the diagnostic of the linearity."
 
 // ---------------------------------------------------------------------
