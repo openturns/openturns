@@ -1,18 +1,3 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Estimate Sobol' indices for the Ishigami function by a sampling method: a quick start guide to sensitivity analysis
 ===================================================================================================================
@@ -116,7 +101,8 @@ def plotXvsY(sampleX, sampleY, figsize=(15,3)):
 plotXvsY(sampleX, sampleY, figsize=(10,4));
 
 # %%
-ot.HistogramFactory().build(sampleY).drawPDF()
+graph = ot.HistogramFactory().build(sampleY).drawPDF()
+view = viewer.View(graph)
 
 # %%
 # We see that the distribution of the output has two modes. 
@@ -164,7 +150,7 @@ sensitivityAnalysis.getTotalOrderIndices()
 
 # %%
 graph = sensitivityAnalysis.draw()
-graph
+view = viewer.View(graph)
 
 # %%
 # - We see that the variable :math:`X_1`, with a total Sobol' index close to 0.6, is the most significant variable, taking into account both its direct effect and its interactions with other variables. Its first order index is close to 0.3, which implies that its interactions alone produce almost 30% (0.6 - 0.3) of the total variance.
@@ -220,7 +206,8 @@ sensitivityAnalysis = ot.MartinezSensitivityAlgorithm(inputDesign, outputDesign,
 
 # %%
 graph = sensitivityAnalysis.draw()
-graph
+view = viewer.View(graph)
 
+plt.show()
 # %%
 # We see that the results do not change significantly in this particular situation.

@@ -2,14 +2,13 @@
 Sobol' sensitivity indices from chaos
 =====================================
 """
-# %% 
-
 # %%
 # In this example we are going to compute global sensitivity indices from a functional chaos decomposition.
 #
 # We study the Borehole function that models water flow through a borehole:
 #
-# .. math::\frac{2 \pi T_u (H_u - H_l)}{\ln{r/r_w}(1+\frac{2 L T_u}{\ln(r/r_w) r^2_w K_w}\frac{T_u}{T_l})}:math:``
+# .. math::
+#    \frac{2 \pi T_u (H_u - H_l)}{\ln{r/r_w}(1+\frac{2 L T_u}{\ln(r/r_w) r^2_w K_w}\frac{T_u}{T_l})}
 #   
 # With parameters:
 #  

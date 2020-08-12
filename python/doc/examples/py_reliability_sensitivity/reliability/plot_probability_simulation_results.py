@@ -2,7 +2,6 @@
 Exploitation of simulation algorithm results
 ============================================
 """
-# %% 
 
 # %%
 # In this example we are going to retrieve all the results proposed by probability simulation algorithms:

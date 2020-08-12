@@ -2,8 +2,6 @@
 Create a Gauss product design
 =============================
 """
-# %% 
-
 # %%
 # In this example we are going to create a deterministic weighted design experiment using Gauss product.
 

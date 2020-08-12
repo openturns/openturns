@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Estimate a probability with Monte-Carlo on axial stressed beam: a quick start guide to reliability
 ==================================================================================================
 """
-# %% 
-
 # %%
 # The goal of this example is to show a simple practical example of probability estimation in a reliability study with the `ProbabilitySimulationAlgorithm` class. The `ThresholdEvent` is used to define the event. We use the Monte-Carlo method thanks to the `MonteCarloExperiment` class to estimate this probability and its confidence interval.
 
@@ -72,10 +55,12 @@ Estimate a probability with Monte-Carlo on axial stressed beam: a quick start gu
 #
 # We consider the following distribution functions.
 #
-# | Variable | Distribution |
-# |--|--|
-# | R | LogNormal(:math:`\mu_R=3\times 10^6`, :math:`\sigma_R=3\times 10^5`) [Pa] |
-# | F | Normal(:math:`\mu_F=750`, :math:`\sigma_F=50`) [N] |
+# ========  ===========================================================================
+# Variable  Distribution
+# ========  ===========================================================================
+#  R         LogNormal(:math:`\mu_R=3\times 10^6`, :math:`\sigma_R=3\times 10^5`) [Pa] 
+#  F         Normal(:math:`\mu_F=750`, :math:`\sigma_F=50`) [N] 
+# ========  ===========================================================================
 #
 # where :math:`\mu_R=E(R)` and :math:`\sigma_R^2=V(R)` are the mean and the variance of :math:`R`.
 #
@@ -134,7 +119,8 @@ R.setName('Yield strength')
 R.setDescription('R')
 
 # %%
-R.drawPDF()
+graph = R.drawPDF()
+view = viewer.View(graph)
 
 # %%
 # Our second marginal is a `Normal` univariate distribution.
@@ -145,7 +131,8 @@ F.setName('Traction_load')
 F.setDescription('F')
 
 # %%
-F.drawPDF()
+graph = F.drawPDF()
+view = viewer.View(graph)
 
 # %%
 # In order to create the input distribution, we use the `ComposedDistribution` class which associates the distribution marginals and a copula. If no copula is supplied to the constructor, it selects the independent copula as default:
@@ -195,7 +182,8 @@ G.computeCDF(0.)
 # %%
 sampleSize = 500
 sampleG = outputRandomVector.getSample(sampleSize)
-ot.HistogramFactory().build(sampleG).drawPDF()
+graph = ot.HistogramFactory().build(sampleG).drawPDF()
+view = viewer.View(graph)
 
 # %%
 # Estimate the probability with Monte-Carlo
@@ -273,9 +261,7 @@ print("%.2f%% confidence interval = [%f,%f]" % ((1-alpha)*100,probability-pflen/
 # The failure probability is: 
 #
 # .. math::
-#    P_f 
-# = \text{Prob}(R-S \leq 0)
-# = \int_{r-s \leq 0} f_{R, S}(r, s)drds
+#    P_f = \text{Prob}(R-S \leq 0) = \int_{r-s \leq 0} f_{R, S}(r, s)drds
 # 
 #
 # where :math:`f_{R, S}` is the probability distribution function of the random vector :math:`(R,S)`.
@@ -290,21 +276,17 @@ print("%.2f%% confidence interval = [%f,%f]" % ((1-alpha)*100,probability-pflen/
 # Therefore,
 #
 # .. math::
-#    P_f 
-# = \int_{r-s \leq 0} f_R(r) f_S(s) drds.
+#    P_f = \int_{r-s \leq 0} f_R(r) f_S(s) drds.
 # 
 #
 # This implies:
 # .. math::
-#    P_f 
-# = \int_{-\infty}^{+\infty} \left(\int_{r \leq s} f_R(r) dr \right) f_S(s) ds.
+#    P_f = \int_{-\infty}^{+\infty} \left(\int_{r \leq s} f_R(r) dr \right) f_S(s) ds.
 # 
-#
 # Therefore,
 #
 # .. math::
-#    P_f 
-# = \int_{-\infty}^{+\infty}f_S(s)F_R(s)ds
+#    P_f = \int_{-\infty}^{+\infty}f_S(s)F_R(s)ds
 # 
 #
 # where :math:`F_R` is the cumulative distribution function of the random variable :math:`R`.

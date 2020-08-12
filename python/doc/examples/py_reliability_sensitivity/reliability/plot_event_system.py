@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 System events: unions or intersections of events
 ================================================
 """
-# %% 
-
 # %%
 # This example illustrates system events, which are defined as unions or intersections of other events. We will show how to estimate their probability both with Monte-Carlo sampling (using the class `ProbabilitySimulationAlgorithm`) and with a first order approximation (using the class `SystemFORM`).
 #
@@ -26,13 +9,16 @@ System events: unions or intersections of events
 #
 # The event defined as the intersection of several events is realized when all sub-events occurs:
 #
-# .. math::E_{sys} = \bigcap_{i=1}^N E_i:math:``
+# .. math::
+#    E_{sys} = \bigcap_{i=1}^N E_i
 #   
 # **Union**
 #
 # The event defined as the union of several events is realized when at least one sub-event occurs:
 #
-# E_{sys} = \bigcup_{i=1}^N E_i:math:``
+# .. math::
+#    E_{sys} = \bigcup_{i=1}^N E_i
+#
 
 # %%
 from __future__ import print_function

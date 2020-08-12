@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Central tendency analysis on the cantilever beam example
 ========================================================
 """
-# %% 
-
 # %%
 # In this example we perform a central tendency analysis of a random variable Y using the various methods available. We consider the cantilever beam example and show how to use the `TaylorExpansionMoments` and `ExpectationSimulationAlgorithm` classes. 
 
@@ -64,7 +47,8 @@ print('taylor variance=', taylor_cov)
 print('taylor importance factors=', taylor_if)
 
 # %%
-taylor.drawImportanceFactors()
+graph = taylor.drawImportanceFactors()
+view = viewer.View(graph)
 
 # %%
 # We see that, at first order, the variable :math:`F` explains 88.5% of the variance of the output :math:`Y`. On the other hand, the variable :math:`E` is not significant in the variance of the output: at first order, the random variable :math:`E` could be replaced by a constant with no change to the output variance.
@@ -103,4 +87,6 @@ print('mean=', y_mean, 'stddev=', y_stddev, 'quantile@95%', y_quantile_95p)
 # %%
 graph = ot.KernelSmoothing().build(Y_s).drawPDF()
 graph.setTitle("Kernel smoothing approximation of the output distribution")
-graph
+view = viewer.View(graph)
+
+plt.show()

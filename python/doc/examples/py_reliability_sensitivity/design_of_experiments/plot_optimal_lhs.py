@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Optimal LHS designs
 ===================
 """
-# %% 
-
 # %%
 # This examples show how to generate optimized LHS experiments according to the different criteria.
 
@@ -66,7 +49,9 @@ print(phip, mindist, phip_inf)
 #
 # A comparison of criteria of the two designs is done, and the new LHS is accepted with probability
 #
-# .. math::min\left(exp{\left[-\frac{\Phi(LHS_{new}) - \Phi(LHS)}{T_i}\right]}, 1\right):math:``
+# .. math::
+#    min\left(exp{\left[-\frac{\Phi(LHS_{new}) - \Phi(LHS)}{T_i}\right]}, 1\right)
+#
 
 # %%
 # Considering independent Uniform(0,1) distributions of dimension 3

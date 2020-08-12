@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Axial stressed beam : comparing different methods to estimate a probability
 ===========================================================================
 """
-# %% 
-
 # %%
 # In this example, we compare four methods to estimate the probability in the axial stressed beam example:
 #
@@ -76,10 +59,12 @@ Axial stressed beam : comparing different methods to estimate a probability
 #
 # We consider the following distribution functions.
 #
-# | Variable | Distribution |
-# |--|--|
-# | R | LogNormal(:math:`\mu_R=3\times 10^6`, :math:`\sigma_R=3\times 10^5`) [Pa] |
-# | F | Normal(:math:`\mu_F=750`, :math:`\sigma_F=50`) [N] |
+#  ========   ===========================================================================
+#  Variable    Distribution 
+#  ========   ===========================================================================
+#   R          LogNormal(:math:`\mu_R=3\times 10^6`, :math:`\sigma_R=3\times 10^5`) [Pa]
+#   F          Normal(:math:`\mu_F=750`, :math:`\sigma_F=50`) [N]
+#  ========   ===========================================================================
 #
 # where :math:`\mu_R=E(R)` and :math:`\sigma_R^2=V(R)` are the mean and the variance of :math:`R`.
 #
@@ -128,7 +113,8 @@ print('G(x)=', limitStateFunction(x))
 R_dist = ot.LogNormalMuSigma(300.0, 30.0, 0.0).getDistribution()
 R_dist.setName('Yield strength')
 R_dist.setDescription('R')
-R_dist.drawPDF()
+graph = R_dist.drawPDF()
+view = viewer.View(graph)
 
 # %%
 # Create a second marginal: `Normal` distribution 1D. 
@@ -137,7 +123,8 @@ R_dist.drawPDF()
 F_dist = ot.Normal(75000., 5000.)
 F_dist.setName('Traction_load')
 F_dist.setDescription('F')
-F_dist.drawPDF()
+graph = F_dist.drawPDF()
+view = viewer.View(graph)
 
 # %%
 # Create a `IndependentCopula`. 
@@ -200,7 +187,7 @@ print('CV =', result.getCoefficientOfVariation())
 # %%
 graph = algoMC.drawProbabilityConvergence()
 graph.setLogScale(ot.GraphImplementation.LOGX)
-graph
+view = viewer.View(graph)
 
 # %%
 # Using FORM analysis
@@ -241,7 +228,8 @@ print('Number of calls to the limit state =', numberOfFunctionEvaluationsFORM)
 print('Pf =', probabilityFORM)
 
 # %%
-resultFORM.drawImportanceFactors()
+graph = resultFORM.drawImportanceFactors()
+view = viewer.View(graph)
 
 # %%
 # Using Directional sampling
@@ -278,7 +266,7 @@ print('CV =', result.getCoefficientOfVariation())
 # %%
 graph = algoDS.drawProbabilityConvergence()
 graph.setLogScale(ot.GraphImplementation.LOGX)
-graph
+view = viewer.View(graph)
 
 # %%
 # Using importance sampling with FORM design point: FORM-IS

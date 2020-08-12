@@ -2,8 +2,6 @@
 Deterministic design of experiments
 ===================================
 """
-# %% 
-
 # %%
 # In this example we present the available deterministic design of experiments.
 #

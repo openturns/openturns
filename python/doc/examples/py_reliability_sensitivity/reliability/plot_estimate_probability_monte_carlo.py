@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Estimate a probability with Monte Carlo
 =======================================
 """
-# %% 
-
 # %%
 # In this example we estimate a probability by means of a simulation algorithm, the Monte-Carlo algorithm. To do this, we need the classes `MonteCarloExperiment` and `ProbabilitySimulationAlgorithm`.
 
@@ -72,10 +55,12 @@ Estimate a probability with Monte Carlo
 #
 # We consider the following distribution functions.
 #
-# | Variable | Distribution |
-# |--|--|
-# | R | LogNormal(:math:`\mu_R=3\times 10^6`, :math:`\sigma_R=3\times 10^5`) [Pa] |
-# | F | Normal(:math:`\mu_F=750`, :math:`\sigma_F=50`) [N] |
+#  ========  ===========================================================================
+#  Variable  Distribution 
+#  ========  ===========================================================================
+#   R         LogNormal(:math:`\mu_R=3\times 10^6`, :math:`\sigma_R=3\times 10^5`) [Pa]
+#   F         Normal(:math:`\mu_F=750`, :math:`\sigma_F=50`) [N]
+#  ========  ===========================================================================
 #
 # where :math:`\mu_R=E(R)` and :math:`\sigma_R^2=V(R)` are the mean and the variance of :math:`R`.
 #

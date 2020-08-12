@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Estimate a probability with FORM
 ================================
 """
-# %% 
-
 # %%
 # In this example we estimate a failure probability with the `FORM` algorithm on the cantilever beam example. More precisely, we show how to use the associated results:
 #
@@ -154,16 +137,17 @@ result.getPhysicalSpaceDesignPoint()
 
 # %%
 # Importance factors
-result.drawImportanceFactors()
+graph = result.drawImportanceFactors()
+view = viewer.View(graph)
 
 # %%
 marginalSensitivity, otherSensitivity = result.drawHasoferReliabilityIndexSensitivity()
 marginalSensitivity.setLegendPosition('bottom')
-marginalSensitivity
+view = viewer.View(marginalSensitivity)
 
 # %%
 marginalSensitivity, otherSensitivity = result.drawEventProbabilitySensitivity()
-marginalSensitivity
+view = viewer.View(marginalSensitivity)
 
 # %%
 # Error history
@@ -171,7 +155,7 @@ optimResult = result.getOptimizationResult()
 graphErrors = optimResult.drawErrorHistory()
 graphErrors.setLegendPosition('bottom')
 graphErrors.setYMargin(0.0)
-graphErrors
+view = viewer.View(graphErrors)
 
 # %%
 # Get additional results with SORM
@@ -202,3 +186,5 @@ sorm_result.getEventProbabilityHohenBichler()
 # %%
 # ... with Tvedt approximation
 sorm_result.getEventProbabilityTvedt()
+
+plt.show()

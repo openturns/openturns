@@ -2,8 +2,6 @@
 Estimate a process event probability
 ====================================
 """
-# %% 
-
 # %%
 # The objective of this example is to evaluate the probability of an
 # event based on a stochastic process, using the Monte Carlo estimator.
@@ -14,8 +12,11 @@ Estimate a process event probability
 #
 # We define the event :math:`\mathcal{E}` as:
 #
-# .. math::\begin{aligned} \displaystyle \mathcal{E}(X) = \bigcup_{\underline{t}\in \mathcal{M}}\left\{X_{\underline{t}}  \in \mathcal{A}  \right\}\end{aligned}:math:``
-#   
+# .. math::
+#    \begin{aligned} 
+#      \displaystyle \mathcal{E}(X) = \bigcup_{\underline{t}\in \mathcal{M}}\left\{X_{\underline{t}}  \in \mathcal{A}  \right\}
+#    \end{aligned}
+#
 # where :math:`\mathcal{A}` is a domain of :math:`\mathbb{R}^d`.
 #
 # We estimate the probabilty :math:`p=\mathbb{P}\left(\mathcal{E}(X)\right)` with the Monte Carlo
@@ -32,13 +33,19 @@ Estimate a process event probability
 #
 # We consider the domain :math:`\mathcal{A} =  [1,2] \times [1,2]`. Then the event :math:`\mathcal{E}` writes:
 #
-# \begin{aligned} \displaystyle \mathcal{E}(\varepsilon) = \bigcup_{\underline{t}\in \mathcal{M}}\left\{\varepsilon_{t}  \in \mathcal{A}  \right\}\end{aligned}:math:``
+# .. math::
+#    \begin{aligned} 
+#      \displaystyle \mathcal{E}(\varepsilon) = \bigcup_{\underline{t}\in \mathcal{M}}\left\{\varepsilon_{t}  \in \mathcal{A}  \right\}
+#    \end{aligned}
 #
 # For all time stamps :math:`t \in \mathcal{M}`, the probability :math:`p_1` that the process
 # enters into the domain :math:`\mathcal{A}` at time :math:`t` writes, using the independence
 # property of the marginals:
 #
-# .. math::\begin{aligned} p_1 = \mathbb{P}\left(\varepsilon_t  \in \mathcal{A}\right) = (\Phi(2) - \Phi(1))^2\end{aligned}:math:``
+# .. math::
+#    \begin{aligned} 
+#      p_1 = \mathbb{P}\left(\varepsilon_t  \in \mathcal{A}\right) = (\Phi(2) - \Phi(1))^2
+#    \end{aligned}
 #   
 # with :math:`\Phi` the cumulative distribution function of the scalar standard *Normal* distribution.
 #
@@ -47,7 +54,8 @@ Estimate a process event probability
 # stamps and the fact that the white noise follows the same distribution
 # at each time :math:`t`, the final probability :math:`p` writes:
 #
-# p = \mathbb{P}\left(\mathcal{E}(\varepsilon)\right) = 1 - (1 - p_1)^{N}:math:``
+# .. math::
+#    p = \mathbb{P}\left(\mathcal{E}(\varepsilon)\right) = 1 - (1 - p_1)^{N}
 #
 # With :math:`K=10^4` realizations, using the Monte Carlo estimator, we obtain :math:`p_K = 0.1627`,
 # to be compared to the exact value :math:`p=0.17008` for a time grid of size :math:`N=10`.

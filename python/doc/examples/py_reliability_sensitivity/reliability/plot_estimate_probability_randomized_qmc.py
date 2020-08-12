@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Estimate a probability using randomized QMC
 ===========================================
 """
-# %% 
-
 # %%
 # In this example we are going to estimate a failure probability.
 
@@ -36,7 +19,8 @@ Estimate a probability using randomized QMC
 #
 # Failure occurs when the beam deviation is too large:
 #
-# .. math::d \ge 30 (cm) :math:``
+# .. math::
+#    d \ge 30 (cm)
 #   
 # Four independent random variables are considered:
 #

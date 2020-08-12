@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Create an event based on a process
 ==================================
 """
-# %% 
-
 # %%
 # This example gives elements to create an event based on a multivariate stochastic process.
 # Let :math:`X: \Omega \times \mathcal{D} \rightarrow \mathbb{R}^d` be a stochastic process
@@ -27,13 +10,19 @@ Create an event based on a process
 #
 # We define the event :math:`\mathcal{E}` as:
 #
-# .. math::\begin{aligned} \displaystyle \mathcal{E}(X) = \bigcup_{\underline{t}\in \mathcal{M}}\left\{X_{\underline{t}} \in \mathcal{A} \right\} \end{aligned}:math:``
+# .. math::
+#    \begin{aligned} 
+#      \displaystyle \mathcal{E}(X) = \bigcup_{\underline{t}\in \mathcal{M}}\left\{X_{\underline{t}} \in \mathcal{A} \right\} 
+#    \end{aligned}
 #   
 # where :math:`\mathcal{A}` is a domain of :math:`\mathbb{R}^d`.
 #
 # A particular domain :math:`\mathcal{A}` is the cartesian product of type:
 #
-# \begin{aligned} \mathcal{A} = \prod_{i=1}^d [a_i,b_i]\end{aligned}:math:``
+# .. math::
+#    \begin{aligned} 
+#      \mathcal{A} = \prod_{i=1}^d [a_i,b_i]
+#    \end{aligned}
 #
 # In that case, the library defines :math:`\mathcal{A}` by its both extreme points : :math:`\underline{a}` and :math:`\underline{b}`.
 #

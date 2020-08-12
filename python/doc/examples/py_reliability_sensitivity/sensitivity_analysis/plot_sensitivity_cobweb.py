@@ -2,8 +2,6 @@
 Cobweb graph as sensitivity tool
 ================================
 """
-# %% 
-
 # %%
 # The Cobweb graph enables to visualize all the combinations of the input
 # variables which lead to a specific range of the output variable.

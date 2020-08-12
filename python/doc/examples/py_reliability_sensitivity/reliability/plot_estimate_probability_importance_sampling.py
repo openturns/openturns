@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Probability estimation with importance sampling simulation on cantilever beam example
 =====================================================================================
 """
-# %% 
-
 # %%
 # In this example we estimate a failure probability with the importance sampling simulation algorithm provided by the `ImportanceSamplingExperiment` class. 
 #
@@ -42,7 +25,7 @@ Probability estimation with importance sampling simulation on cantilever beam ex
 #
 # Failure occurs when the beam deviation is too large:
 #
-# .. math::d \ge 30 (cm) :math:``
+# .. math::d \ge 30 (cm)
 #   
 # Four independent random variables are considered:
 #

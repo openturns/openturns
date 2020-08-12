@@ -1,24 +1,7 @@
-# ---
-# jupyter:
-#   jupytext:
-#     text_representation:
-#       extension: .py
-#       format_name: percent
-#       format_version: '1.3'
-#       jupytext_version: 1.5.1
-#   kernelspec:
-#     display_name: Python 3
-#     language: python
-#     name: python3
-# ---
-
-# %%
 """
 Post analytical importance sampling
 ===================================
 """
-# %% 
-
 # %%
 # In this example we want to estimate a threshold exceedance probability by combining approximation and simulation methods.
 #
