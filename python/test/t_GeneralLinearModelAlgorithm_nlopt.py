@@ -40,6 +40,8 @@ try:
                         [1.06e-05], 1e-5, 1e-5)
     assert_almost_equal(conditionalCovariance.getParameter(), [
                         0.619144, 0.000937], 5e-3, 1e-3)
+    likelihood = algo.getObjectiveFunction()
+    assert likelihood.getInputDimension() == 1, "likelihood dim"
     print("Test Ok")
 
 except:

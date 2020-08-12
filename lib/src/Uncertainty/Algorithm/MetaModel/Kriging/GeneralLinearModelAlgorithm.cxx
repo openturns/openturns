@@ -446,9 +446,6 @@ void GeneralLinearModelAlgorithm::run()
   //   discretization and factorization, and it computes beta_
   Scalar optimalLogLikelihood = maximizeReducedLogLikelihood();
 
-  // restore original active parameters
-  reducedCovarianceModel_.setActiveParameter(covarianceModel_.getActiveParameter());
-
   LOGINFO("Store the estimates");
   // Here we do the work twice:
   // 1) To get a collection of Point for the result class
@@ -509,6 +506,10 @@ void GeneralLinearModelAlgorithm::run()
     relativeErrors[outputIndex] = squaredResiduals[outputIndex] / outputVariance[outputIndex];
   }
 
+  // return optimized covmodel with the original active parameters (see analyticalAmplitude_)
+  CovarianceModel reducedCovarianceModelCopy(reducedCovarianceModel_);
+  reducedCovarianceModelCopy.setActiveParameter(covarianceModel_.getActiveParameter());
+
   // The scaling is done there because it has to be done as soon as some optimization has been done, either numerically or through an analytical formula
   if (keepCholeskyFactor_)
   {
@@ -519,10 +520,10 @@ void GeneralLinearModelAlgorithm::run()
       if (method_ == 0) covarianceCholeskyFactor_ = covarianceCholeskyFactor_ * sigma;
       else covarianceCholeskyFactorHMatrix_.scale(sigma);
     }
-    result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basisCollection_, trendCoefficients, reducedCovarianceModel_, optimalLogLikelihood, covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_);
+    result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basisCollection_, trendCoefficients, reducedCovarianceModelCopy, optimalLogLikelihood, covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_);
   }
   else
-    result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basisCollection_, trendCoefficients, reducedCovarianceModel_, optimalLogLikelihood);
+    result_ = GeneralLinearModelResult(inputSample_, outputSample_, metaModel, residuals, relativeErrors, basisCollection_, trendCoefficients, reducedCovarianceModelCopy, optimalLogLikelihood);
   hasRun_ = true;
 }
 
