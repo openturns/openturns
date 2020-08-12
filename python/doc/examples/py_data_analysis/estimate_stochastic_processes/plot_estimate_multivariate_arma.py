@@ -19,8 +19,10 @@ Estimate a multivariate ARMA process
 # The synthetic data is generated from the 2-d ARMA model:
 #
 # .. math::
-#    X_{0,t} - 0.5 X_{0,t-1} - 0.1 X_{1,t-1} = E_{0,t} - 0.4 E_{0,t-1}
+#    \begin{aligned}
+#    X_{0,t} - 0.5 X_{0,t-1} - 0.1 X_{1,t-1} = E_{0,t} - 0.4 E_{0,t-1} \\
 #    X_{1,t} - 0.4 X_{0,t-1} - 0.5 X_{1,t-1} - 0.25 X_{0,t-2} = E_{1,t} - 0.4 E_{1,t-1}
+#    \end{aligned}
 #
 # with E the white noise:
 #   

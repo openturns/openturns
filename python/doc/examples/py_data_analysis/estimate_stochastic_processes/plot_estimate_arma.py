@@ -106,7 +106,6 @@ arma42
 
 # %%
 # CASE 2 : we specify a range of (p,q) orders
-###################################
 
 # Range for p
 pIndices = [1, 2, 4]

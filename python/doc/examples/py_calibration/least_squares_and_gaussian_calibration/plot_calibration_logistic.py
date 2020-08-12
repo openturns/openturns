@@ -241,7 +241,7 @@ logisticParametric = ot.ParametricFunction(logisticModelPy,[22,23],thetaPrior)
 
 # %%
 populationPredicted = logisticParametric(timeObservations.asPoint())
-populationPredicted[
+populationPredicted
 
 # %%
 graph = ot.Graph('', 'Time (years)', 'Population (Millions)', True, 'topleft')

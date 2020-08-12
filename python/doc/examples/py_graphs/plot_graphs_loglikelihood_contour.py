@@ -52,7 +52,7 @@ view = viewer.View(graph)
 # ----------------------------------
 
 # %%
-# The following function evaluates the log-likelihood function given a point X=:math:`(\mu,\sigma`). In order to evaluate the likelihood on the sample, we use a trick: we evaluate the `computeMean` method on the log-PDF sample, then multiply by the sample size. This is much faster than using a `for` loop.
+# The following function evaluates the log-likelihood function given a point :math:`X=(\mu,\sigma`). In order to evaluate the likelihood on the sample, we use a trick: we evaluate the `computeMean` method on the log-PDF sample, then multiply by the sample size. This is much faster than using a `for` loop.
 
 # %%
 def logLikelihood(X):

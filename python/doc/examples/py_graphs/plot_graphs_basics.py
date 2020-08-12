@@ -116,7 +116,7 @@ ot.Drawable.GetValidPointStyles()
 # The following method returns the list of colors.
 
 # %%
-ot.Drawable.GetValidColors()
+ot.Drawable.GetValidColors()[0:10]
 
 # %%
 # In the following graphics, we use the "aquamarine1" color with "fcircle" circles.
