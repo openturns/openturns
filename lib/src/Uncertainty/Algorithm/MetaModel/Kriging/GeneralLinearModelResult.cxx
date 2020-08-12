@@ -66,44 +66,6 @@ GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
 }
 
 
-/* Constructor with parameters & Cholesky factor */
-GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
-    const Sample & outputSample,
-    const Function & metaModel,
-    const Point & residuals,
-    const Point & relativeErrors,
-    const BasisCollection & basis,
-    const PointCollection & trendCoefficients,
-    const CovarianceModel & covarianceModel,
-    const Scalar optimalLogLikelihood,
-    const TriangularMatrix & covarianceCholeskyFactor,
-    const HMatrix & covarianceHMatrix)
-  : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
-  , inputData_(inputSample)
-  , basis_(basis)
-  , beta_(trendCoefficients)
-  , covarianceModel_(covarianceModel)
-  , optimalLogLikelihood_(optimalLogLikelihood)
-  , hasCholeskyFactor_(true)
-  , covarianceCholeskyFactor_(covarianceCholeskyFactor)
-  , covarianceHMatrix_(covarianceHMatrix)
-{
-  const UnsignedInteger size = inputSample.getSize();
-  if (size != outputSample.getSize())
-    throw InvalidArgumentException(HERE) << "In GeneralLinearModelResult::GeneralLinearModelResult, input & output sample have different size. input sample size = " << size << ", output sample size = " << outputSample.getSize();
-  const UnsignedInteger outputDimension = outputSample.getDimension();
-  if (covarianceCholeskyFactor_.getDimension() != 0 && covarianceCholeskyFactor_.getDimension() != size * outputDimension)
-    throw InvalidArgumentException(HERE) << "In GeneralLinearModelResult::GeneralLinearModelResult, Cholesky factor has unexpected dimensions. Its dimension should be " << size * outputDimension << ". Here dimension = " << covarianceCholeskyFactor_.getDimension();
-  if (covarianceHMatrix_.getNbRows() != 0)
-  {
-    if (covarianceHMatrix_.getNbRows() != covarianceHMatrix_.getNbColumns())
-      throw InvalidArgumentException(HERE) << "In GeneralLinearModelResult::GeneralLinearModelResult, HMAT Cholesky factor is not square. Its dimension is " << covarianceHMatrix_.getNbRows() << "x" << covarianceHMatrix_.getNbColumns();
-    if (covarianceHMatrix_.getNbRows() != size * outputDimension)
-      throw InvalidArgumentException(HERE) << "In GeneralLinearModelResult::GeneralLinearModelResult, HMAT Cholesky factor has unexpected dimensions. Its dimension should be " << size * outputDimension << ". Here dimension = " << covarianceHMatrix_.getNbRows();
-  }
-}
-
-
 /* Virtual constructor */
 GeneralLinearModelResult * GeneralLinearModelResult::clone() const
 {
@@ -177,6 +139,24 @@ Process GeneralLinearModelResult::getNoise() const
 TriangularMatrix GeneralLinearModelResult::getCholeskyFactor() const
 {
   return covarianceCholeskyFactor_;
+}
+
+void GeneralLinearModelResult::setCholeskyFactor(const TriangularMatrix & covarianceCholeskyFactor,
+                       const HMatrix & covarianceHMatrix)
+{
+  const UnsignedInteger size = inputData_.getSize();
+  const UnsignedInteger outputDimension = getMetaModel().getOutputDimension();
+  if (covarianceCholeskyFactor_.getDimension() != 0 && covarianceCholeskyFactor_.getDimension() != size * outputDimension)
+    throw InvalidArgumentException(HERE) << "In GeneralLinearModelResult::setCholeskyFactor, Cholesky factor has unexpected dimensions. Its dimension should be " << size * outputDimension << ". Here dimension = " << covarianceCholeskyFactor_.getDimension();
+  if (covarianceHMatrix_.getNbRows() != 0)
+  {
+    if (covarianceHMatrix_.getNbRows() != covarianceHMatrix_.getNbColumns())
+      throw InvalidArgumentException(HERE) << "In GeneralLinearModelResult::setCholeskyFactor, HMAT Cholesky factor is not square. Its dimension is " << covarianceHMatrix_.getNbRows() << "x" << covarianceHMatrix_.getNbColumns();
+    if (covarianceHMatrix_.getNbRows() != size * outputDimension)
+      throw InvalidArgumentException(HERE) << "In GeneralLinearModelResult::setCholeskyFactor, HMAT Cholesky factor has unexpected dimensions. Its dimension should be " << size * outputDimension << ". Here dimension = " << covarianceHMatrix_.getNbRows();
+  }
+  covarianceCholeskyFactor_ = covarianceCholeskyFactor;
+  covarianceHMatrix_ = covarianceHMatrix;
 }
 
 /* Method that returns the covariance factor - hmat */
