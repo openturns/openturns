@@ -85,9 +85,9 @@
   </p>
   <form action="" method="get">
     <input type="text" name="q" value="" /><br/>
-  Example  <input id="ExampleBox" name="e" type="checkbox" checked onchange="javascript:divHideClass('Example')"/>
-  API      <input id="APIBox" name="a" type="checkbox"  checked onchange="javascript:divHideClass('API')"/>
-  Theory   <input id="TheoryBox" name="t" type="checkbox" checked onchange="javascript:divHideClass('Theory')"/>
+    <input id="ExampleBox" name="e" type="checkbox" checked onchange="javascript:divHideClass('Example')"/> Examples
+    <input id="APIBox" name="a" type="checkbox"  checked onchange="javascript:divHideClass('API')"/> API
+    <input id="TheoryBox" name="t" type="checkbox" checked onchange="javascript:divHideClass('Theory')"/> Theory
 
     <input type="submit" value="search" />
     <span id="search-progress" style="padding-left: 10px"></span>
@@ -109,10 +109,6 @@ var getUrlParameter = function getUrlParameter(sParam) {
     }
     return "off";
 };
-//alert($("#ExampleBox").is(":checked"));
-//alert("e:" + getUrlParameter('e'));
-//alert("a:" + getUrlParameter('a'));
-//alert( getUrlParameter('e')===undefined );
 
 if( getUrlParameter('e') == "on" || getUrlParameter('a') == "on" || getUrlParameter('t') == "on" ){
   $("#ExampleBox").prop( "checked",  getUrlParameter('e') == "on");
@@ -120,27 +116,12 @@ if( getUrlParameter('e') == "on" || getUrlParameter('a') == "on" || getUrlParame
   $("#TheoryBox").prop( "checked",  getUrlParameter('t') == "on" );
 }
 
-
-
-//alert("Box status"+$("#ExampleBox").is(":checked"));
-
 </script>
 
-  <!-- 
-  <form id="myform">
-    API <input type="checkbox" name="checkfield" id="api"  onchange="apiscore(this)" checked/>
-  </form> 
-  -->
-  <!--
-  Example  <input id="ExampleBox" type="checkbox" checked onchange="javascript:divHideClass('Example')"/>
-  API      <input id="APIBox" type="checkbox" checked onchange="javascript:divHideClass('API')"/>
-  Theory   <input id="TheoryBox" type="checkbox" checked onchange="javascript:divHideClass('Theory')"/>
-  -->
 <script>
 function elementHideShow(div, hideOrShow){
 
   if (hideOrShow)  {
-    //div.style.display = "list-item";  }
     div.classList.remove("hide");
     div.classList.add("show");
   }
@@ -148,12 +129,10 @@ function elementHideShow(div, hideOrShow){
     div.classList.remove("show");
     div.classList.add("hide");
   }
-    //div.style.display = "none";  }
   
 }
 
 function divHideClass(classToHideorShow){ 
-  //alert('Hello');
   var els = document.getElementsByClassName("search")[0].getElementsByClassName(classToHideorShow);
 
   var hideOrShow = true;
@@ -164,7 +143,6 @@ function divHideClass(classToHideorShow){
   if(classToHideorShow == 'Theory'){
     hideOrShow=$("#TheoryBox").is(":checked");} 
 
-  //alert('hideOrShow: '+hideOrShow);
   for (var i = 0; i < els.length; i++) { 
     el = els[i];
     elementHideShow(el, hideOrShow);
@@ -172,56 +150,6 @@ function divHideClass(classToHideorShow){
 }                               
 
 </script>
-
-
-<!--
-  Api      <input id="ApBox" type="checkbox" checked onclick="showState(this)"/>
-  <script>
-  var apiSelected = 1;
-  function showState(){
-    class CustomSearch {} // il faut remonter la classe sinon unreferenced
-    //var apiScore = $('#ApBox');
-    //var apiScore = document.getElementById("ApBox").value;
-    var apiScore=$("#ApBox").is(":checked");
-    //alert(apiScore);
-    //if (apiScore){
-    //  alert(1);
-    //  apiSelected = 100;
-    //}else{ alert(0); apiSelected = 0;}
-    //const x = new CustomSearch(apiSelected);
-    //alert(apiSelected);
-  //};
-  //alert(apiSelected);
-  </script>
--->
-
-  <!--
-  Example <input type="checkbox" name="checkfield" id="ex"  checked/>   	
-  API <input type="checkbox" name="checkfield" id="api" checked/>   
-  Theory <input type="checkbox" name="checkfield" id="th" checked/>   				
-  -->
-
-  <!--
-  <form id="myform">
-  API   <input type="checkbox" name="checkfield" id="api"  onchange="apiscore(this)"/>
-  </form> 
-  -->
-  
-  <!--
-  <script>
-       //var apiScore = 17;
-       //var apiScore = $('#api');
-       //var apiScore = $('#api');
-       //var apiScore = $('#api');
-       //alert(apiScore);
-       //function apiValue(){
-       //  var apiScore=document.getElementById("api").value;
-       //  alert(apiScore);
-       //  return apiScore;
-       //}
-       //const x = new CustomSearch(apiScore);
-  </script>
-  --> 
    
   <div id="search-results">
   

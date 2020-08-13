@@ -9,26 +9,6 @@
  *
  */
 
-
-class CustomSearch {
-  constructor(api) {
-    this.api  = api;
-  }
-};
-
-/*
-scoreAPI: function apiscore(checkboxElem) {
-           if (checkboxElem.checked) {
-             alert ("with API");
-             var ms = 199;
-           } else {
-             alert ("without API");
-             var ms = 0;
-           }
-           return ms;
-         };                                                     
-*/
-
 if (!Scorer) {
   /**
    * Simple result scoring code.
@@ -39,9 +19,6 @@ if (!Scorer) {
     // and returns the new score.
     
     score: function(result) {
-      //var ExampleScore=$("#ExampleBox").is(":checked");
-      //var APIScore=$("#APIBox").is(":checked");
-      //var TheoryScore=$("#TheoryBox").is(":checked");
 
       if (result[0].includes("theory")){
         var myscore = 100;
@@ -215,10 +192,6 @@ var Search = {
     }
     var highlightstring = '?highlight=' + $.urlencode(hlterms.join(" "));
 
-    // console.debug('SEARCH: searching for:');
-    // console.info('required: ', searchterms);
-    // console.info('excluded: ', excluded);
-
     // prepare search
     var terms = this._index.terms;
     var titleterms = this._index.titleterms;
@@ -277,22 +250,19 @@ var Search = {
     });
 
     // for debugging
-    Search.lastresults = results.slice();  // a copy
-    console.info('search results:', Search.lastresults);
+    //Search.lastresults = results.slice();  // a copy
+    //console.info('search results:', Search.lastresults);
 
     // print the results
     var resultCount = results.length;
     function displayNextItem() {
       var ExampleScore=$("#ExampleBox").is(":checked");
       var APIScore=$("#APIBox").is(":checked");
-      //alert(APIScore);
       var TheoryScore=$("#TheoryBox").is(":checked");
       // results left, load the summary and display it
       if (results.length) {
         var item = results.pop();
-        //alert(item);
         var listItem = $('<li style="display:none"></li>');
-        //listItem.addClass('hide');
 
         var localScore = item[4];
         if( localScore >= 300){
@@ -323,14 +293,7 @@ var Search = {
           }
         }
 
-
-        //listItem.addClass('show');
-        //listItem.css("display","list-item");
-        //alert(item[4]);
-        //listItem.style.display = 'non'(":display").val("none");
-
 	if (DOCUMENTATION_OPTIONS.FILE_SUFFIX === '') {
-          //alert("one");
           // dirhtml builder
           var dirname = item[0] + '/';
           if (dirname.match(/\/index\/$/)) {
@@ -342,16 +305,12 @@ var Search = {
             DOCUMENTATION_OPTIONS.URL_ROOT + dirname +
             highlightstring + item[2]).html(item[1]));
         } else {
-          //alert("deux");
           // normal html builders
           listItem.append($('<a/>').attr('href',
             item[0] + DOCUMENTATION_OPTIONS.FILE_SUFFIX +
             highlightstring + item[2]).html(item[1]));
-          //listItem.hide();
         }
         if (item[3]) {
-          //alert("trois");
-          //alert(item[4]);
           listItem.append($('<span> (' + item[3] + ')</span>'));
           Search.output.append(listItem);
           listItem.slideDown(5, function() {
