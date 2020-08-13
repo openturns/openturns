@@ -654,10 +654,10 @@ Graph SobolIndicesAlgorithmImplementation::DrawSobolIndices(const Description & 
   graph.add(text);
 
   // Draw confidence intervals
+  data = Sample(2, 2);
   if (firstOrderConfidenceInterval.getDimension())
   {
     // transform data
-    Sample data(2, 2);
     for (UnsignedInteger k = 0; k < dimension; ++k)
     {
       // Relative to FirstOrder
@@ -671,7 +671,6 @@ Graph SobolIndicesAlgorithmImplementation::DrawSobolIndices(const Description & 
   if (totalOrderConfidenceInterval.getDimension())
   {
     // transform data
-    Sample data(2, 2);
     for (UnsignedInteger k = 0; k < dimension; ++k)
     {
       // Relative to TotalOrder
