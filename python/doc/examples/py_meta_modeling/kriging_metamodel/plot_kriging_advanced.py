@@ -70,7 +70,7 @@ cov = ot.MaternModel([1.], [2.5], 1.5)
 print(cov)
 
 # 3. kriging algorithm
-algokriging = ot.KrigingAlgorithm(x, y, cov, basis, True)
+algokriging = ot.KrigingAlgorithm(x, y, cov, basis)
 
 ## error measure
 #algokriging.setNoise([5*1e-1]*n_pt)
@@ -133,8 +133,8 @@ graph.add(cloud)
 # Sample for the variance
 sample = ot.Sample(n_pts_plot,2)
 sample[:,0] = x_plot
-variance = [krigingResult.getConditionalCovariance(xx)[0, 0] for xx in x_plot]
-sample[:,1] = ot.Sample(variance,1)
+variance = [[krigingResult.getConditionalCovariance(xx)[0, 0]] for xx in x_plot]
+sample[:,1] = variance
 curve = ot.Curve(sample)
 curve.setColor("green")
 graph.add(curve)
@@ -149,16 +149,17 @@ fig.suptitle("Kriging result");
 # %%
 level = 0.95
 quantile = ot.Normal().computeQuantile((1-level)/2)[0]
-borne_sup = np.hstack(krigingMeta(x_plot)) + quantile * np.sqrt(variance)
-borne_inf = np.hstack(krigingMeta(x_plot)) - quantile * np.sqrt(variance)
+borne_sup = krigingMeta(x_plot) + quantile * np.sqrt(variance)
+borne_inf = krigingMeta(x_plot) - quantile * np.sqrt(variance)
 
 fig, ax = plt.subplots(figsize=(8, 8))
 ax.plot(x, y, ('ro'))
 ax.plot(x_plot, borne_sup, '--', color='orange', label='Confidence interval')
 ax.plot(x_plot, borne_inf, '--', color='orange')
-View(ref_func.draw(xmin, xmax, n_pts_plot), axes=[ax], plot_kwargs={'label':':math:`x sin(x)`'})
-View(krigingMeta.draw(xmin, xmax, n_pts_plot), plot_kwargs={'color':'green', 'label':'prediction'}, axes=[ax])
+View(ref_func.draw(xmin, xmax, n_pts_plot), axes=[ax], plot_kw={'label':'$x sin(x)$'})
+View(krigingMeta.draw(xmin, xmax, n_pts_plot), plot_kw={'color':'green', 'label':'prediction'}, axes=[ax])
 legend = ax.legend()
+ax.autoscale()
 
 # %%
 # Generate conditional trajectories
@@ -186,10 +187,11 @@ for i in range(krv_sample.getSize()):
     else:
         ax.plot(values, krv_sample[i, :], '--', alpha=0.8)
 View(ref_func.draw(xmin, xmax, n_pts_plot), axes=[ax],
-     plot_kwargs={'color':'black', 'label':':math:`x*sin(x)`'})
+     plot_kw={'color':'black', 'label':'$x*sin(x)$'})
 View(krigingMeta.draw(xmin, xmax, n_pts_plot), axes=[ax],
-     plot_kwargs={'color':'green', 'label':'prediction'})
+     plot_kw={'color':'green', 'label':'prediction'})
 legend = ax.legend()
+ax.autoscale()
 
 # %%
 # Validation

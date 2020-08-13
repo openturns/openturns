@@ -112,7 +112,7 @@ def plotMyBasicKriging(krigResult, xMin, xMax, X, Y, level = 0.95):
     # Compute the conditional covariance
     epsilon = ot.Point(nbpoints,1.e-8)
     conditionalVariance = krigResult.getConditionalMarginalVariance(xGrid)+epsilon
-    conditionalVarianceSample = ot.Sample(conditionalVariance,1)
+    conditionalVarianceSample = ot.Sample([[cv] for cv in conditionalVariance])
     conditionalSigma = sqrt(conditionalVarianceSample)
     # Compute the quantile of the Normal distribution
     alpha = 1-(1-level)/2

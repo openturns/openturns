@@ -42,11 +42,8 @@ N = 500
 sample3 = ot.Normal(mean, sigma, R).getSample(N)
 
 # %%
-# Create a Pairs drawable
-pairs = ot.Pairs(sample3, 'My Pairs', ['Var1', 'Var2', 'Var3'], 'red', 'circle')
-
-# Insert it into a graph
-graph3 = ot.Graph('3d clouds')
-graph3.add(pairs)
+# Draw clouds pairs
+graph3 = ot.VisualTest.DrawPairs(sample3)
+graph3.setTitle('3d clouds')
 view = viewer.View(graph3)
 plt.show()

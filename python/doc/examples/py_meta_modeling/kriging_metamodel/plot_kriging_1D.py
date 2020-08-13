@@ -57,7 +57,7 @@ from matplotlib import pylab as plt
 g = ot.SymbolicFunction(['x'], ['sin(x)'])
 
 # %%
-x_train = ot.Sample([1.,3.,4.,6.,7.9,11., 11.5],1)
+x_train = ot.Sample([[x] for x in [1.,3.,4.,6.,7.9,11., 11.5]])
 y_train = g(x_train)
 n_train = x_train.getSize()
 n_train
@@ -184,7 +184,7 @@ print("Quantile alpha=%f" % (quantileAlpha))
 sqrt = ot.SymbolicFunction(["x"],["sqrt(x)"])
 epsilon = ot.Point(n_test,1.e-8)
 conditionalVariance = result.getConditionalMarginalVariance(x_test)+epsilon
-conditionalVarianceSample = ot.Sample(conditionalVariance,1)
+conditionalVarianceSample = ot.Sample([[cv] for cv in conditionalVariance])
 conditionalSigma = sqrt(conditionalVarianceSample)
 
 # %%
@@ -200,10 +200,10 @@ view = viewer.View(graph)
 # Then we compute the bounds of the confidence interval.
 
 # %%
-dataLower = [y_test_MM[i,0] - quantileAlpha * conditionalSigma[i,0] for i in range(n_test)]
-dataUpper = [y_test_MM[i,0] + quantileAlpha * conditionalSigma[i,0] for i in range(n_test)]
-dataLower = ot.Sample(dataLower,1)
-dataUpper = ot.Sample(dataUpper,1)
+dataLower = [[y_test_MM[i,0] - quantileAlpha * conditionalSigma[i,0]] for i in range(n_test)]
+dataUpper = [[y_test_MM[i,0] + quantileAlpha * conditionalSigma[i,0]] for i in range(n_test)]
+dataLower = ot.Sample(dataLower)
+dataUpper = ot.Sample(dataUpper)
 
 # %%
 # In order to create the graphics containing the bounds of the confidence interval, we use the `Polygon`. This will create a colored surface associated to the confidence interval. In order to do this, we create the nodes of the polygons at the lower level `vLow` and at the upper level `vUp`. Then we assemble these nodes to create the polygons.

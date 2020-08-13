@@ -171,7 +171,7 @@ ot.ResourceMap.GetAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree
 # This is why we explore the values from 5 to 15.
 
 # %%
-degrees = ot.Sample(range(5,15),1)
+degrees = ot.Sample([[i] for i in range(5,15)])
 numberOfDegrees = degrees.getSize()
 coefficientOfPredictivity = ot.Sample(numberOfDegrees,2)
 for maximumDegree in range(5,15):

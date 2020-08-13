@@ -53,7 +53,7 @@ from matplotlib import pylab as plt
 g = ot.SymbolicFunction(['x'], ['sin(x)'])
 
 # %%
-x_train = ot.Sample([1.,3.,4.,6.,7.9,11., 11.5],1)
+x_train = ot.Sample([[x] for x in [1.,3.,4.,6.,7.9,11., 11.5]])
 y_train = g(x_train)
 n_train = x_train.getSize()
 n_train
@@ -68,7 +68,7 @@ n_test = 100
 step = (xmax-xmin)/(n_test-1)
 myRegularGrid = ot.RegularGrid(xmin, step, n_test)
 x_test_coord = myRegularGrid.getValues()
-x_test = ot.Sample(x_test_coord,1)
+x_test = ot.Sample([[x] for x in x_test_coord])
 y_test = g(x_test)
 
 
@@ -193,7 +193,7 @@ def deleteCommonValues(x_train,x_test):
 vertices_filtered = deleteCommonValues(np.array(x_train.asPoint()),np.array(vertices.asPoint()))
 
 # %%
-evaluationMesh = ot.Mesh(ot.Sample(vertices_filtered,1))
+evaluationMesh = ot.Mesh(ot.Sample([[vf] for vf in vertices_filtered]))
 
 # %%
 process = ot.ConditionedGaussianProcess(krigingResult, evaluationMesh)

@@ -15,7 +15,7 @@ from matplotlib import pylab as plt
 # To create the first marginal of the distribution, we select a univariate discrete distribution. Some of them, like the `Bernoulli` or `Geometric` distributions, are implemented in the library as classes. In this example however, we pick the `UserDefined` distribution that assigns equal weights to the values -2, -1, 1 and 2.
 
 # %%
-sample = ot.Sample([-2., -1., 1., 2.],1)
+sample = ot.Sample([[-2.], [-1.], [1.], [2.]])
 sample
 
 # %%

@@ -83,7 +83,7 @@ fig = otv.PlotDesign(sample, enableTicks = False);
 # Configure the marker. 
 
 # %%
-fig = otv.PlotDesign(sample, plot_kwargs = 
+fig = otv.PlotDesign(sample, plot_kw = 
                {"marker":'.', "color": "red"});
 
 # %%

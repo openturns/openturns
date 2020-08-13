@@ -231,14 +231,14 @@ u
 # Choice A: we create a `Sample` with size 5 in 1 dimension.
 
 # %%
-sample = ot.Sample (u, 1)
+sample = ot.Sample ([[ui] for ui in u])
 sample
 
 # %%
 # Choice B: we create a `Sample` with size 1 in 5 dimensions.
 
 # %%
-sample = ot.Sample (u, 5)
+sample = ot.Sample ([u[i:i+5] for i in range(len(u)//5)])
 sample
 
 # %%

@@ -21,10 +21,8 @@ distribution = ot.Normal([0.] * 3, [5.] * 3, R)
 sample = distribution.getSample(200)
 
 # %%
-# Create a pairs graphs
-graph = ot.Graph("Pairs graph", " ", " ", True, "")
-pairs = ot.Pairs(sample, "Pairs example",
-                 sample.getDescription(), "blue", "bullet")
-graph.add(pairs)
+# Create cloud pairs graphs
+graph = ot.Graph("Cloud pairs graph", " ", " ", True, "")
+graph = ot.VisualTest.DrawPairs(sample)
 view = viewer.View(graph)
 plt.show()
