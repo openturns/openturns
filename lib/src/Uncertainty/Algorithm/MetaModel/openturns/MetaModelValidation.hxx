@@ -21,11 +21,9 @@
 #ifndef OPENTURNS_METAMODELVALIDATION_HXX
 #define OPENTURNS_METAMODELVALIDATION_HXX
 
-#include "openturns/Point.hxx"
-#include "openturns/Sample.hxx"
 #include "openturns/Function.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/Graph.hxx"
+#include "openturns/GridLayout.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -62,7 +60,7 @@ public:
   virtual Sample getOutputSample() const;
 
   /** Compute predictivity factor */
-  Scalar computePredictivityFactor() const;
+  Point computePredictivityFactor() const;
 
   /** Get residual sample */
   Sample getResidualSample() const;
@@ -71,7 +69,7 @@ public:
   Distribution getResidualDistribution(const Bool smooth = true) const;
 
   /** Draw model vs metamodel validation graph */
-  Graph drawValidation() const;
+  GridLayout drawValidation() const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
@@ -93,13 +91,13 @@ protected:
   Function metaModel_;
 
   /** Boolean argument */
-  mutable Bool isInitialized_;
+  mutable Bool isInitialized_ = false;
 
   /** Residual sample */
   mutable Sample residual_;
 
   /** Q2 arguments  */
-  mutable Scalar q2_;
+  mutable Point q2_;
 
 private:
 

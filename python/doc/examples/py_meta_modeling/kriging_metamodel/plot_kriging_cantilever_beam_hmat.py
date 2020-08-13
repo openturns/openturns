@@ -173,7 +173,7 @@ val = ot.MetaModelValidation(X_test, Y_test, krigingMetamodel)
 # The `computePredictivityFactor` computes the Q2 factor. 
 
 # %%
-Q2 = val.computePredictivityFactor()
+Q2 = val.computePredictivityFactor()[0]
 Q2
 
 # %%
@@ -195,7 +195,6 @@ view = viewer.View(graph)
 
 # %%
 graph = val.drawValidation()
-graph.setLegends([""])
 graph.setTitle("Q2 = %.2f%%" % (100*Q2))
 view = viewer.View(graph)
 

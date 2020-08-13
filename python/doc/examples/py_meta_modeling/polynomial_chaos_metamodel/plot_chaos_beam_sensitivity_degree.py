@@ -132,7 +132,7 @@ def computeQ2Chaos(chaosResult, inputTest, outputTest):
     """Compute the Q2 of a chaos."""
     metamodel = chaosResult.getMetaModel()
     val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
-    Q2 = val.computePredictivityFactor()
+    Q2 = val.computePredictivityFactor()[0]
     Q2 = max(Q2, 0.0)  # We are not lucky every day.
     return Q2
 
@@ -144,7 +144,7 @@ def printChaosStats(multivariateBasis, chaosResult, inputTest, outputTest, total
     Q2 = computeQ2Chaos(chaosResult, inputTest, outputTest)
     metamodel = chaosResult.getMetaModel()
     val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
-    graph = val.drawValidation()
+    graph = val.drawValidation().getGraph(0, 0)
     legend1 = "D=%d, Q2=%.2f%%" % (totalDegree, 100 * Q2)
     graph.setLegends(["", legend1])
     graph.setLegendPosition("topleft")

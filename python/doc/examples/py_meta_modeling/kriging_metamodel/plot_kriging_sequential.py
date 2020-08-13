@@ -130,7 +130,7 @@ def plotMyBasicKriging(krigResult, xMin, xMax, X, Y, level = 0.95):
     boundsPoly.setLegend("95% bounds")
     # Validate the kriging metamodel
     mmv = ot.MetaModelValidation(xGrid, yFunction, meta)
-    Q2 = mmv.computePredictivityFactor()
+    Q2 = mmv.computePredictivityFactor()[0]
     # Plot the function
     graphFonction = ot.Curve(xGrid,yFunction)
     graphFonction.setLineStyle("dashed")

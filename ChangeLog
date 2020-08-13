@@ -38,6 +38,7 @@
  * Added FittingTest::Lilliefors, BestModelLilliefors
  * Deprecated FittingTest::BestModelKolmogorov(Sample, DistributionFactoryCollection, TestResult), use BestModelLilliefors
  * Deprecated FittingTest::Kolmogorov(Sample, DistributionFactory, TestResult, level), use Lilliefors
+ * MetamodelValidation: now computePredictivityFactor returns Point, drawValidation return GridLayout
 
 === Documentation ===
  * Sphinx-gallery used to render examples
