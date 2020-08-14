@@ -1211,7 +1211,6 @@ void ResourceMap::loadDefaultConfiguration()
 
   // GeneralLinearModelAlgorithm parameters //
   addAsBool("GeneralLinearModelAlgorithm-KeepCovariance", true);
-  addAsBool("GeneralLinearModelAlgorithm-NormalizeData", false);
   addAsBool("GeneralLinearModelAlgorithm-OptimizeParameters", true);
   addAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance", true);
   addAsBool("GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", true);

@@ -6,6 +6,7 @@
 
 ==== Major changes ====
  * Drop normalization in KrigingAlgorithm
+ * Drop normalization & transformation handling in GeneralLinearModelAlgorithm
 
 ==== New classes ====
  * BlockIndependentDistribution
@@ -35,6 +36,7 @@
  * #1259 (The diagonal of a scatter plot matrix should have the histograms)
  * #1267 (Some CSV files cannot be imported)
  * #1377 (The `setKnownParameter` method is not compatible with `buildEstimator`)
+ * #1407 (GeneralLinearModelAlgorithm mishandles user-specified scale parameter when normalize is True)
  * #1421 (UserDefinedStationaryCovarianceModel doc suggests input dimension can be >1)
  * #1447 (Highly inaccurate result in reliability model when using subset of RandomVector)
  * #1465 (The Sample constructor based on a list and an integer should not exist)
@@ -44,6 +46,7 @@
  * #1520 (The NLopt test is dubious)
  * #1521 (Basis of MonomialFunction)
  * #1540 (SubsetSampling: incorrect event sample)
+ * #1549 (Doc of evaluation operator of KrigingResult)
  * #1556 (WeibullMin::computePDFGradient yields the partial derivatives in the wrong order)
 
 

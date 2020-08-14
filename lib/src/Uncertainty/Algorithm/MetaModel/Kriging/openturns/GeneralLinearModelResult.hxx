@@ -95,10 +95,6 @@ public:
   /** Conditional covariance models accessor */
   CovarianceModel getCovarianceModel() const;
 
-  /** Transformation accessor */
-  Function getTransformation() const;
-  void setTransformation(const Function & transformation);
-
   /** process accessor */
   Process getNoise() const;
 
@@ -122,22 +118,11 @@ protected:
   /** Method that returns the covariance factor - hmat */
   HMatrix getHMatCholeskyFactor() const;
 
-  // Return input sample transformed
-  Sample getInputTransformedSample() const;
 
 private:
 
   /** inputData should be keeped*/
   Sample inputData_;
-
-  /** input transformed data: store data*/
-  Sample inputTransformedData_;
-
-  /** inputTransformation ==> iso-probabilistic transformation */
-  Function inputTransformation_;
-
-  /** Boolean transformation */
-  Bool hasTransformation_;
 
   /** The trend basis */
   BasisPersistentCollection basis_;

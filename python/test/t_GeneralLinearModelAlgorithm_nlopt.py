@@ -27,7 +27,7 @@ try:
     model = ot.SymbolicFunction(["x"], ["x - 0.6 * cos(x/3)"])
     Y = model(X)
     basis = ot.QuadraticBasisFactory(inputDimension).build()
-    algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis, True)
+    algo = ot.GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis)
     algo.setOptimizationAlgorithm(ot.NLopt('LN_NELDERMEAD'))
     algo.run()
 
@@ -39,7 +39,7 @@ try:
     assert_almost_equal(residual.computeCenteredMoment(2),
                         [1.06e-05], 1e-5, 1e-5)
     assert_almost_equal(conditionalCovariance.getParameter(), [
-                        0.702138, 0.00112], 5e-3, 1e-3)
+                        0.619144, 0.000937], 5e-3, 1e-3)
     print("Test Ok")
 
 except:

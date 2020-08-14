@@ -599,7 +599,6 @@
 
   <!-- OT::GeneralLinearModelAlgorithm parameters -->
   <GeneralLinearModelAlgorithm-KeepCovariance                 value_bool="true"      />
-  <GeneralLinearModelAlgorithm-NormalizeData                  value_bool="false"     />
   <GeneralLinearModelAlgorithm-OptimizeParameters             value_bool="true"      />
   <GeneralLinearModelAlgorithm-UnbiasedVariance               value_bool="true"      />
   <GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate value_bool="true"      />
