@@ -1,4 +1,10 @@
-result (Auto)=class=Point name=Unnamed dimension=3 values=[2.81,1.19,0.501]
-result  (TNC)=class=Point name=Unnamed dimension=3 values=[2.81,1.19,0.501]
-result (Auto)=class=Point name=Unnamed dimension=3 values=[2.81,1.19,0.501]
-result  (TNC)=class=Point name=Unnamed dimension=3 values=[2.81,1.19,0.501]
+Bootstrap size =0
+1. Default optim
+MAP =class=Point name=Unnamed dimension=3 values=[2.78,1.21,0.504]
+2. TNC optim
+MAP =class=Point name=Unnamed dimension=3 values=[2.78,1.21,0.503]
+Bootstrap size =100
+1. Default optim
+MAP =class=Point name=Unnamed dimension=3 values=[2.78,1.21,0.504]
+2. TNC optim
+MAP =class=Point name=Unnamed dimension=3 values=[2.78,1.21,0.503]

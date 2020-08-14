@@ -12,6 +12,7 @@ model : :class:`~openturns.Function`
     The parametric function to be calibrated.
 inputObservations : 2-d sequence of float
     The sample of input observations.
+    Can have dimension 0 to specify no observations. 
 outputObservations : 2-d sequence of float
     The sample of output observations.
 candidate : sequence of float
@@ -21,7 +22,8 @@ parameterCovariance : 2-d sequence of float
 errorCovariance : 2-d sequence of float
     The covariance matrix of the gaussian distribution of the observations error.
 methodName : str
-    The name of the least-squares method to use for the calibration. By default, equal to *QR*. Possible values are *SVD*, *QR*, *Cholesky*.
+    The name of the least-squares method to use for the calibration.
+    By default, equal to *QR*. Possible values are *SVD*, *QR*, *Cholesky*.
 modelObservations : 2-d sequence of float
     The sample of output values of the model.
 gradientObservations : 2-d sequence of float

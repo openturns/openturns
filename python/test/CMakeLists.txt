@@ -577,7 +577,7 @@ if (CHAOSPY_FOUND)
 endif ()
 ot_pyinstallcheck_test (Distribution_roughness)
 
-## Bayesian
+## Calibration
 ot_pyinstallcheck_test (GaussianLinearCalibration_std)
 ot_pyinstallcheck_test (CalibrationStrategy_std)
 ot_pyinstallcheck_test (LinearLeastSquaresCalibration_std)
@@ -586,6 +586,13 @@ ot_pyinstallcheck_test (CalibrationResult_std IGNOREOUT)
 ot_pyinstallcheck_test (RandomWalkMetropolisHastings_std)
 ot_pyinstallcheck_test (RandomWalkMetropolisHastings_regression IGNOREOUT)
 ot_pyinstallcheck_test (GaussianNonLinearCalibration_std)
+ot_pyinstallcheck_test (GaussianLinearCalibration_chaboche)
+ot_pyinstallcheck_test (LinearLeastSquaresCalibration_linear)
+ot_pyinstallcheck_test (LinearLeastSquaresCalibration_noobs)
+ot_pyinstallcheck_test (GaussianLinearCalibration_noobs)
+ot_pyinstallcheck_test (NonLinearLeastSquaresCalibration_noobs)
+ot_pyinstallcheck_test (GaussianNonLinearCalibration_noobs)
+
 
 ## Classification
 ot_pyinstallcheck_test (MixtureClassifier_std)
