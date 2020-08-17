@@ -72,11 +72,17 @@ public:
   static GridLayout DrawPairsMarginals(const Sample & sample, const Distribution & distribution);
 
   /** Draw the visual test for the LinearModel when its dimension is 1 */
+  static Graph DrawLinearModel(const LinearModelResult & linearModelResult);
+
+  /** @deprecated alias for DrawLinearModel(const LinearModelResult &) */
   static Graph DrawLinearModel(const Sample & sample1,
                                const Sample & sample2,
                                const LinearModelResult & linearModelResult);
 
   /** Draw the visual test for the LinearModel residuals when its dimension is 1 */
+  static Graph DrawLinearModelResidual(const LinearModelResult & linearModelResult);
+
+  /** @deprecated alias for DrawLinearModelResidual(const LinearModelResult &) */
   static Graph DrawLinearModelResidual(const Sample & sample1,
                                        const Sample & sample2,
                                        const LinearModelResult & linearModelResult);
