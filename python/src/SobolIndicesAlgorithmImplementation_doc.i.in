@@ -45,8 +45,8 @@ First and second order Sobol' indices are defined as follows:
 .. math::
 
    \begin{array}{ccc}
-    S_i & = & \frac{V_i}{\Var{\vect{Y}}} \\
-    S_{i,j} & = & \frac{V_{i,j}}{\Var{\vect{Y}}}
+    S_i & = & \frac{V_i}{\Var{Y}} \\
+    S_{i,j} & = & \frac{V_{i,j}}{\Var{Y}}
    \end{array}
 
 The first order Sobol' index :math:`S_i` measures the part of the variance of :math:`Y` explained by :math:`X_i` alone.
@@ -65,7 +65,7 @@ Total order Sobol' indices are defined as follows:
 
 .. math::
 
-    ST_i = \frac{VT_i}{\Var{\vect{Y}}} = 1 - \frac{V_{-i}}{\Var{\vect{Y}}}.
+    ST_i = \frac{VT_i}{\Var{Y}} = 1 - \frac{V_{-i}}{\Var{Y}}.
 
 The total order Sobol' index :math:`ST_i` quantifies the part of the variance of :math:`Y` that is due to the effect of :math:`X_i`
 and its interactions with all the other input variables.
