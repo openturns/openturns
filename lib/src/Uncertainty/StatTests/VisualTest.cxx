@@ -270,8 +270,6 @@ Graph VisualTest::DrawLinearModel(const LinearModelResult & linearModelResult)
   if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here output dimension=" << sample2.getDimension();
   if (sample1.getSize() != sample2.getSize()) throw InvalidArgumentException(HERE) << "Error: can draw a LinearModel visual test only if sample 1 and sample 2 have the same size, here sample 1 size=" << sample1.getSize() << " and sample 2 size=" << sample2.getSize();
 
-  if (linearModelResult.getCoefficients().getSize() != 2)
-    throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
   const Function fHat(linearModelResult.getMetaModel());
   const Sample y(fHat(sample1));
 
@@ -311,7 +309,6 @@ Graph VisualTest::DrawLinearModelResidual(const LinearModelResult & linearModelR
   if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here output dimension=" << sample2.getDimension();
   if (sample1.getSize() != sample2.getSize()) throw InvalidArgumentException(HERE) << "Error: can draw a LinearModel residual visual test only if sample 1 and sample 2 have the same size, here sample 1 size=" << sample1.getSize() << " and sample 2 size=" << sample2.getSize();
 
-  if (linearModelResult.getCoefficients().getSize() != 2) throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
   const Function fHat(linearModelResult.getMetaModel());
   const Sample yHat(fHat(sample1));
   const Sample y(sample2 - yHat);
