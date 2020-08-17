@@ -9,7 +9,7 @@ TESTPREAMBLE()
 try:
 
     # Create a Sobol' sequence of maximum dimension
-    sequence = SobolSequence(SobolSequence.MaximumNumberOfDimension)
+    sequence = SobolSequence(SobolSequence.MaximumDimension)
     print(sequence)
 
     # Create a numerical sample of the sequence

@@ -32,7 +32,7 @@ int main(int, char *[])
   try
   {
     // Create a Sobol' sequence of maximum dimension
-    SobolSequence sequence(SobolSequence::MaximumNumberOfDimension);
+    SobolSequence sequence(SobolSequence::MaximumDimension);
     fullprint << sequence << std::endl;
 
     // Create a numerical sample of the sequence

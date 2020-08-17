@@ -81,13 +81,13 @@ SobolIndicesExperiment::SobolIndicesExperiment(const Distribution & distribution
   } // LHS
   else if (ResourceMap::GetAsString("SobolIndicesExperiment-SamplingMethod") == "QMC")
   {
-    if (dimension <= SobolSequence::MaximumNumberOfDimension)
+    if (dimension <= SobolSequence::MaximumDimension)
     {
       method = 2;
     } // QMC
     else
     {
-      LOGWARN(OSS() << "Can use Sobol sequence in SobolIndicesExperiment only for dimension not greater than " << SobolSequence::MaximumNumberOfDimension << ", here dimension=" << dimension << ". Using LHS instead.");
+      LOGWARN(OSS() << "Can use Sobol sequence in SobolIndicesExperiment only for dimension not greater than " << SobolSequence::MaximumDimension << ", here dimension=" << dimension << ". Using LHS instead.");
       method = 1;
     } // QMC->LHS
   } // QMC
