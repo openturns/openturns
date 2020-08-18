@@ -888,6 +888,20 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
   return sample;
 }
 
+
+template <>
+inline
+PyObject *
+convert< Sample, _PySequence_ >(Sample sample)
+{
+  const UnsignedInteger size = sample.getSize();
+  PyObject * pyObj = PyTuple_New(size);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    PyTuple_SetItem(pyObj, i, convert< Point, _PySequence_ >(sample[i]));
+  return pyObj;
+}
+
+
 template <>
 struct traitsPythonType< Collection< UnsignedInteger > >
 {
