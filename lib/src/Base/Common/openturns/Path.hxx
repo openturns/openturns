@@ -94,10 +94,6 @@ public:
    */
   static FileName CreateTemporaryDirectory(const FileName & directoryPrefix);
 
-  /** Delete a temporary directory
-   */
-  static void DeleteTemporaryDirectory(const FileName & directoryName);
-
 #ifdef _WIN32
   /** Convert slash to antislash. */
   static void AntislashFileName(FileName & filename);

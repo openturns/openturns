@@ -445,14 +445,4 @@ String Path::CreateTemporaryDirectory (const FileName & directoryPrefix)
 }
 
 
-/* Delete a temporary directory.
- */
-void Path::DeleteTemporaryDirectory (const FileName & directoryName)
-{
-  if (Os::DeleteDirectory(directoryName))
-    LOGWARN(OSS() << "Can't remove temporary directory  " << directoryName);
-}
-
-
-
 END_NAMESPACE_OPENTURNS
