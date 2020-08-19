@@ -16,17 +16,20 @@ import os
 
 def Object___getstate__(self):
     import tempfile
+    import os
     state = dict()
     study = Study()
 
     # assume xml support
     # should use BinaryStorageManager
-    with tempfile.NamedTemporaryFile() as infile:
-        study.setStorageManager(XMLStorageManager(infile.name))
-        study.add('instance', self)
-        study.save()
-        infile.seek(0)
-        state['xmldata'] = infile.read()
+    infile = tempfile.NamedTemporaryFile(delete=False)
+    study.setStorageManager(XMLStorageManager(infile.name))
+    study.add('instance', self)
+    study.save()
+    infile.seek(0)
+    state['xmldata'] = infile.read()
+    infile.close()
+    os.remove(infile.name)
 
     return state
 
@@ -34,16 +37,20 @@ Object.__getstate__ = Object___getstate__
 
 def Object___setstate__(self, state):
     import tempfile
+    import os
+
     # call ctor to initialize underlying cxx obj
     # as it is instanciated from object.__new__
     self.__init__()
 
     study = Study()
-    with tempfile.NamedTemporaryFile() as outfile:
-        outfile.write(state['xmldata'])
-        outfile.seek(0)
-        study.setStorageManager(XMLStorageManager(outfile.name))
-        study.load()
+    outfile = tempfile.NamedTemporaryFile(delete=False)
+    outfile.write(state['xmldata'])
+    outfile.seek(0)
+    study.setStorageManager(XMLStorageManager(outfile.name))
+    study.load()
+    outfile.close()
+    os.remove(outfile.name)
 
     study.fillObject('instance', self)
 

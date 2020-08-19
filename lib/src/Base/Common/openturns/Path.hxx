@@ -94,13 +94,8 @@ public:
    */
   static FileName CreateTemporaryDirectory(const FileName & directoryPrefix);
 
-#ifdef _WIN32
-  /** Convert slash to antislash. */
-  static void AntislashFileName(FileName & filename);
-
-  /** Add windows backslash to filename for compatibility with R. */
-  static void DoubleslashFileName(FileName & filename);
-#endif
+  /** Escape backslash in file name */
+  static void EscapeBackslash(FileName & filename);
 
   /** Get the location of the OT shared library (at runtime) */
   static FileName GetLibraryDirectory();

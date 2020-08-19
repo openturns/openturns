@@ -303,43 +303,29 @@ FileName Path::FindFileByNameInDirectoryList(const FileName & name,
 } /* end findFileByNameInDirectoryList */
 
 
-#ifdef WIN32
-
 /*
- * Convert slash to antislash.
- * ex: if filename = C:/windows/temp, return C:\windows\temp
- */
-void Path::AntislashFileName(FileName & filename)
-{
-  for (UnsignedInteger i = 0; i < filename.size(); ++ i)
-    if (filename.at(i) == '/')
-      filename.at(i) = '\\';
-}
-
-/*
- * add windows backslash to filename (e.g. for compatibility with R)
+ * escape backslash in filename
  * ex: if filename = C:\windows\temp, return C:\\windows\\temp
  */
-void Path::DoubleslashFileName(FileName & filename)
+void Path::EscapeBackslash(FileName & filename)
 {
-  String::size_type loc = filename.find(Os::GetDirectorySeparator());
+  String backslash("\\");
+  String::size_type loc = filename.find(backslash);
   while(loc != String::npos)
   {
     // "\" at the last pos
     if(loc == filename.size() - 1)
     {
-      filename.insert(loc, Os::GetDirectorySeparator());
+      filename.insert(loc, backslash);
       break;
     }
     // "\" in the middle
-    if(filename.at(loc + 1) != Os::GetDirectorySeparator()[0])
-      filename.insert(loc, Os::GetDirectorySeparator());
+    if(filename.at(loc + 1) != backslash[0])
+      filename.insert(loc, backslash);
     // else: no "\", or "\\" in the middle
-    loc = filename.find(Os::GetDirectorySeparator(), loc + 2);
+    loc = filename.find(backslash, loc + 2);
   }
 }
-
-#endif
 
 
 FileName Path::GetTemporaryDirectory()
@@ -390,7 +376,7 @@ FileName Path::BuildTemporaryFileName(const FileName & prefix)
     LOGERROR(OSS() << "Temporary file name " << temporaryFileName << " does NOT exists. Check your temporary directory.");
   // add "/" to the directory
   String slashedTemporaryFileName(temporaryFileName);
-  DoubleslashFileName(slashedTemporaryFileName);
+  EscapeBackslash(slashedTemporaryFileName);
   return slashedTemporaryFileName;
 #endif
 }
