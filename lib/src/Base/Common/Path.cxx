@@ -307,7 +307,7 @@ FileName Path::FindFileByNameInDirectoryList(const FileName & name,
 
 /*
  * Convert slash to antislash.
- * ex: if filename = C:/windows/temp, return C:/windows/temp
+ * ex: if filename = C:/windows/temp, return C:\windows\temp
  */
 void Path::AntislashFileName(FileName & filename)
 {

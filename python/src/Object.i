@@ -15,41 +15,37 @@ namespace OT{ %extend Object { Object(const Object & other) { return new OT::Obj
 import os
 
 def Object___getstate__(self):
-
+    import tempfile
     state = dict()
     study = Study()
-    filename = Path.BuildTemporaryFileName('xmlfileXXXXXX')
 
     # assume xml support
     # should use BinaryStorageManager
-    with open(filename, 'rb+') as infile:
-        study.setStorageManager(XMLStorageManager(filename)) 
+    with tempfile.NamedTemporaryFile() as infile:
+        study.setStorageManager(XMLStorageManager(infile.name))
         study.add('instance', self)
         study.save()
         infile.seek(0)
         state['xmldata'] = infile.read()
 
-    os.remove(filename)
     return state
 
 Object.__getstate__ = Object___getstate__
 
 def Object___setstate__(self, state):
-
+    import tempfile
     # call ctor to initialize underlying cxx obj
     # as it is instanciated from object.__new__
     self.__init__()
 
     study = Study()
-    filename = Path.BuildTemporaryFileName('xmlfileXXXXXX')
-    with open(filename, 'rb+') as outfile:
+    with tempfile.NamedTemporaryFile() as outfile:
         outfile.write(state['xmldata'])
         outfile.seek(0)
-        study.setStorageManager(XMLStorageManager(filename)) 
+        study.setStorageManager(XMLStorageManager(outfile.name))
         study.load()
 
     study.fillObject('instance', self)
-    os.remove(filename)
 
 Object.__setstate__ = Object___setstate__
 
