@@ -85,11 +85,10 @@ public:
    */
   static FileName GetTemporaryDirectory();
 
-  /** Build a temporary file name given a pattern
-   * @param pattern A filename containing at least the 'XXXXXX' string
-   * @result A new unique filename based on the \em pattern
+  /** Build a temporary file name given a prefix
+   * @result A new unique filename based on the prefix
    */
-  static FileName BuildTemporaryFileName(const FileName & pattern);
+  static FileName BuildTemporaryFileName(const FileName & prefix);
 
   /** Create a temporary directory.
    */

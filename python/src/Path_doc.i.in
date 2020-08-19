@@ -67,14 +67,16 @@ tempDir : str
 
 Parameters
 ----------
-pattern : str
-    Filename pattern, eg 'tmpXXXXXX'.
-    The 'XXXXXXX' part will be replaced by random chars.
+prefix : str
+    File name prefix.
+    On Windows only the first 3 caracters are used.
 
 Returns
 -------
 fileName : str
-    The unique newly created file."
+    The unique newly created file.
+    The file is created in the temporary folder.
+    The name contains the prefix plus some random caracters."
 
 // ---------------------------------------------------------------------
 

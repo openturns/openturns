@@ -367,11 +367,11 @@ FileName Path::GetTemporaryDirectory()
 }
 
 
-/* Build a temporary file name given a pattern */
-FileName Path::BuildTemporaryFileName(const FileName & pattern)
+/* Build a temporary file name given a prefix */
+FileName Path::BuildTemporaryFileName(const FileName & prefix)
 {
 #ifndef _WIN32
-  String fullPattern(GetTemporaryDirectory() + String(Os::GetDirectorySeparator()) + pattern);
+  const String fullPattern(GetTemporaryDirectory() + String(Os::GetDirectorySeparator()) + prefix + String("_XXXXXX"));
   char * temporaryFileName = strdup(fullPattern.c_str());
   int fileDescriptor(mkstemp(temporaryFileName));
   close(fileDescriptor);
@@ -382,7 +382,7 @@ FileName Path::BuildTemporaryFileName(const FileName & pattern)
   // get uniq name
   char temporaryFileName[MAX_PATH];
   GetTempFileName(GetTemporaryDirectory().c_str(), // directory for tmp files
-                  TEXT(pattern.c_str()), // temp file name prefix
+                  TEXT(prefix.c_str()), // temp file name prefix
                   0,                     // create unique name
                   temporaryFileName);    // buffer for name
   // check temporary filename
