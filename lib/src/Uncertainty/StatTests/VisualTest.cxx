@@ -294,7 +294,7 @@ Graph VisualTest::DrawLinearModel(const LinearModelResult & linearModelResult)
 }
 
 /* Deprecated alias for VisualTest::DrawLinearModel(const LinearModelResult &) */
-Graph VisualTest::DrawLinearModel(const Sample & sample1, const Sample & sample2, const LinearModelResult & linearModelResult)
+Graph VisualTest::DrawLinearModel(const Sample & /*sample1*/, const Sample & /*sample2*/, const LinearModelResult & linearModelResult)
 {
   LOGWARN("This way of using VisualTest::DrawLinearModel is deprecated. The two samples passed as arguments are ignored. Use VisualTest::DrawLinearModel(LinearModelResult) from now on.");
   return VisualTest::DrawLinearModel(linearModelResult);
@@ -331,7 +331,7 @@ Graph VisualTest::DrawLinearModelResidual(const LinearModelResult & linearModelR
 }
 
 /* Deprecated alias for VisualTest::DrawLinearModelResidual(const LinearModelResult &) */
-Graph VisualTest::DrawLinearModelResidual(const Sample & sample1, const Sample & sample2, const LinearModelResult & linearModelResult)
+Graph VisualTest::DrawLinearModelResidual(const Sample & /*sample1*/, const Sample & /*sample2*/, const LinearModelResult & linearModelResult)
 {
   LOGWARN("This way of using VisualTest::DrawLinearModelResidual is deprecated. The two samples passed as arguments are ignored. Use VisualTest::DrawLinearModelResidual(LinearModelResult) from now on.");
   return VisualTest::DrawLinearModel(linearModelResult);
