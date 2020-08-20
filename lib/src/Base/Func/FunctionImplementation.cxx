@@ -342,6 +342,9 @@ Function FunctionImplementation::getMarginal(const UnsignedInteger i) const
 Function FunctionImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
+  Indices full(getOutputDimension());
+  full.fill();
+  if (indices == full) return clone();
   return new FunctionImplementation(evaluation_.getMarginal(indices), gradient_.getMarginal(indices), hessian_.getMarginal(indices));
 }
 
