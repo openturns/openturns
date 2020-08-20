@@ -39,12 +39,10 @@ for i in range(size):
     secondSample[i] = ot.Point(1, sample2D[i, 1])
 
 lmtest = ot.LinearModelAlgorithm(firstSample, secondSample).getResult()
-drawLinearModelVTest = ot.VisualTest.DrawLinearModel(
-    firstSample, secondSample, lmtest)
+drawLinearModelVTest = ot.VisualTest.DrawLinearModel(lmtest)
 print("LinearModelV = ", drawLinearModelVTest)
 
-drawLinearModelResidualTest = ot.VisualTest.DrawLinearModelResidual(
-    firstSample, secondSample, lmtest)
+drawLinearModelResidualTest = ot.VisualTest.DrawLinearModelResidual(lmtest)
 print("LinearModelR = ", drawLinearModelResidualTest)
 
 # CobWeb tests

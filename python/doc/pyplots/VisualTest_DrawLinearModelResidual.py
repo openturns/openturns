@@ -17,7 +17,6 @@ for i in range(size):
 
 lmtest = ot.LinearModelAlgorithm(firstSample, secondSample).getResult()
 
-drawLinearModelResidual = ot.VisualTest.DrawLinearModelResidual(
-    firstSample, secondSample, lmtest)
+drawLinearModelResidual = ot.VisualTest.DrawLinearModelResidual(lmtest)
 
 View(drawLinearModelResidual, figure_kw={'figsize': (5, 5)})

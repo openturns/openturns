@@ -262,21 +262,17 @@ GridLayout VisualTest::DrawPairsMarginals(const Sample & sample, const Distribut
 
 
 /* Draw the visual test for the LinearModel when its dimension is 1 */
-Graph VisualTest::DrawLinearModel(const Sample & sample1,
-                                  const Sample & sample2,
-                                  const LinearModelResult & linearModelResult)
+Graph VisualTest::DrawLinearModel(const LinearModelResult & linearModelResult)
 {
-  if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel visual test only if dimension equals 1, here dimension=" << sample1.getDimension();
-  if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel visual test only if dimension equals 1, here dimension=" << sample2.getDimension();
+  const Sample & sample1 = linearModelResult.getInputSample();
+  const Sample & sample2 = linearModelResult.getOutputSample();
+  if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here input dimension=" << sample1.getDimension();
+  if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here output dimension=" << sample2.getDimension();
   if (sample1.getSize() != sample2.getSize()) throw InvalidArgumentException(HERE) << "Error: can draw a LinearModel visual test only if sample 1 and sample 2 have the same size, here sample 1 size=" << sample1.getSize() << " and sample 2 size=" << sample2.getSize();
 
-  if (linearModelResult.getCoefficients().getSize() != 2)
-    throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
   const Function fHat(linearModelResult.getMetaModel());
   const Sample y(fHat(sample1));
 
-  OSS oss;
-  oss << sample1.getName() << " LinearModel visualTest";
   const UnsignedInteger size = sample1.getSize();
   Sample sample2D(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -285,28 +281,34 @@ Graph VisualTest::DrawLinearModel(const Sample & sample1,
     sample2D[i] = point;
   }
   Curve curveLinearModelTest(sample2D.sortAccordingToAComponent(0));
-  curveLinearModelTest.setLegend(oss);
+  curveLinearModelTest.setLegend("regression");
   Cloud cloudLinearModelTest(sample1, sample2);
   cloudLinearModelTest.setColor("red");
   cloudLinearModelTest.setPointStyle("fsquare");
-  cloudLinearModelTest.setLegend("Original Sample");
+  cloudLinearModelTest.setLegend("sample");
 
-  Graph graphLinearModelTest("original sample versus Linear Model one", "x", "y", true, "topright");
+  Graph graphLinearModelTest("Linear model visual test", sample1.getDescription()[0], sample2.getDescription()[0], true, "topright");
   graphLinearModelTest.add(cloudLinearModelTest);
   graphLinearModelTest.add(curveLinearModelTest);
   return graphLinearModelTest;
 }
 
-/* Draw the visual test for the LinearModel residuals */
-Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
-    const Sample & sample2,
-    const LinearModelResult & linearModelResult)
+/* Deprecated alias for VisualTest::DrawLinearModel(const LinearModelResult &) */
+Graph VisualTest::DrawLinearModel(const Sample & /*sample1*/, const Sample & /*sample2*/, const LinearModelResult & linearModelResult)
 {
-  if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if dimension equals 1, here dimension=" << sample1.getDimension();
-  if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if dimension equals 1, here dimension=" << sample2.getDimension();
+  LOGWARN("This way of using VisualTest::DrawLinearModel is deprecated. The two samples passed as arguments are ignored. Use VisualTest::DrawLinearModel(LinearModelResult) from now on.");
+  return VisualTest::DrawLinearModel(linearModelResult);
+}
+
+/* Draw the visual test for the LinearModel residuals */
+Graph VisualTest::DrawLinearModelResidual(const LinearModelResult & linearModelResult)
+{
+  const Sample sample1(linearModelResult.getInputSample());
+  const Sample sample2(linearModelResult.getOutputSample());
+  if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here input dimension=" << sample1.getDimension();
+  if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here output dimension=" << sample2.getDimension();
   if (sample1.getSize() != sample2.getSize()) throw InvalidArgumentException(HERE) << "Error: can draw a LinearModel residual visual test only if sample 1 and sample 2 have the same size, here sample 1 size=" << sample1.getSize() << " and sample 2 size=" << sample2.getSize();
 
-  if (linearModelResult.getCoefficients().getSize() != 2) throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
   const Function fHat(linearModelResult.getMetaModel());
   const Sample yHat(fHat(sample1));
   const Sample y(sample2 - yHat);
@@ -320,12 +322,19 @@ Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
   }
 
   OSS oss;
-  oss << sample1.getName() << " LinearModel residual Test";
+  oss << sample1.getDescription()[0] << " LinearModel residual Test";
   const Cloud cloudLinearModelRTest(data, "red", "fsquare", oss);
 
-  Graph graphLinearModelRTest("residual(i) versus residual(i-1)", "redidual(i-1)", "residual(i)", true, "topright");
+  Graph graphLinearModelRTest("residual(i) versus residual(i-1)", "residual(i-1)", "residual(i)", true, "topright");
   graphLinearModelRTest.add(cloudLinearModelRTest);
   return graphLinearModelRTest;
+}
+
+/* Deprecated alias for VisualTest::DrawLinearModelResidual(const LinearModelResult &) */
+Graph VisualTest::DrawLinearModelResidual(const Sample & /*sample1*/, const Sample & /*sample2*/, const LinearModelResult & linearModelResult)
+{
+  LOGWARN("This way of using VisualTest::DrawLinearModelResidual is deprecated. The two samples passed as arguments are ignored. Use VisualTest::DrawLinearModelResidual(LinearModelResult) from now on.");
+  return VisualTest::DrawLinearModel(linearModelResult);
 }
 
 /* Draw the CobWeb visual test */
