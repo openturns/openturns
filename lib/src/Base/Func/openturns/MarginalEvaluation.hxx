@@ -65,6 +65,9 @@ public:
   /** Indices accessor */
   Indices getIndices() const;
 
+  /** Evaluation accessor */
+  Pointer<EvaluationImplementation> getEvaluation() const;
+
   /* Here is the interface that all derived class must implement */
 
   /** Evaluation operator */

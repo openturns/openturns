@@ -186,5 +186,9 @@ void MarginalEvaluation::setParameterDescription(const Description & description
   p_evaluation_->setParameterDescription(description);
 }
 
+Pointer<EvaluationImplementation> MarginalEvaluation::getEvaluation() const
+{
+  return p_evaluation_;
+}
 
 END_NAMESPACE_OPENTURNS
