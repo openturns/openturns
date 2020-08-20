@@ -282,8 +282,8 @@ Graph VisualTest::DrawLinearModel(const LinearModelResult & linearModelResult)
   }
   Curve curveLinearModelTest(sample2D.sortAccordingToAComponent(0));
   curveLinearModelTest.setLegend("regression");
+  curveLinearModelTest.setColor("red");
   Cloud cloudLinearModelTest(sample1, sample2);
-  cloudLinearModelTest.setColor("red");
   cloudLinearModelTest.setPointStyle("fsquare");
   cloudLinearModelTest.setLegend("sample");
 
