@@ -24,6 +24,7 @@
 #include "openturns/Cloud.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/UserDefined.hxx"
+#include "openturns/DistFunc.hxx"
 #include "openturns/NormalFactory.hxx"
 #include "openturns/HistogramFactory.hxx"
 
@@ -193,13 +194,12 @@ Graph VisualTest::DrawHenryLine(const Sample & sample, const Distribution & norm
   graphHenry.add(henryLine);
 
   // Then, the data
-  const Normal standard_normal(0.0, 1.0);
   Sample data(size, 2);
   const Scalar step = 1.0 / size;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     data(i, 0) = sortedSample(i, 0);
-    data(i, 1) = standard_normal.computeQuantile((i + 0.5) * step)[0];
+    data(i, 1) = DistFunc::qNormal((i + 0.5) * step);
   }
   Cloud dataCloud(data, "Data");
   graphHenry.add(dataCloud);
