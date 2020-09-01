@@ -29,6 +29,7 @@
 #include "openturns/Normal.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/FittingTest.hxx"
+#include "openturns/VisualTest.hxx"
 #include "openturns/FisherSnedecor.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -466,69 +467,48 @@ Graph LinearModelAnalysis::drawScaleLocation() const
 Graph LinearModelAnalysis::drawQQplot() const
 {
   const Sample stdResiduals(linearModelResult_.getStandardizedResiduals());
-  const UnsignedInteger size(stdResiduals.getSize());
-  const Normal distribution(1); // Standard normal distribution
-  const Sample sortedSample(stdResiduals.sort(0));
-  Sample dataFull(size, 2);
-  const Scalar step = 1.0 / size;
-  for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    dataFull(i, 0) = distribution.computeQuantile((i + 0.5) * step)[0];
-    dataFull(i, 1) = sortedSample(i, 0);
-  }
-  Graph graph("Normal Q-Q", "Theoretical Quantiles", "Std. residuals", true, "topright");
-  Cloud cloud(dataFull, "black", "fcircle");
-  graph.add(cloud);
+  Graph graph(VisualTest::DrawQQplot(stdResiduals, Normal(0.0, 1.0)));
+  graph.setTitle("Normal Q-Q");
+  graph.setXTitle("Std. residuals");
+  graph.setYTitle("Theoretical Quantiles");
 
   // Add point identifiers for worst standardized residuals
   UnsignedInteger identifiers(ResourceMap::GetAsUnsignedInteger("LinearModelAnalysis-Identifiers"));
   if (identifiers > 0)
   {
+    const UnsignedInteger size = stdResiduals.getSize();
     if (identifiers > size)
       identifiers = size;
+    const Sample sortedSample(stdResiduals.sort(0));
+
+    const Sample dataFull(graph.getDrawable(1).getData());
     Description annotations(size);
     Sample dataWithIndex1(size, 2);
     Sample dataWithIndex2(size, 2);
-    for(UnsignedInteger i = 0; i < size; ++i)
+    for (UnsignedInteger i = 0; i < size; ++i)
     {
-      dataWithIndex1(i, 0) = std::abs(dataFull(i, 1));
+      dataWithIndex1(i, 0) = std::abs(sortedSample(i, 0));
       dataWithIndex1(i, 1) = i;
       dataWithIndex2(i, 0) = std::abs(stdResiduals(i, 0));
       dataWithIndex2(i, 1) = i;
-
     }
     const Sample sortedData1(dataWithIndex1.sortAccordingToAComponent(0));
     const Sample sortedData2(dataWithIndex2.sortAccordingToAComponent(0));
     Description positions(size, "top");
-    for(UnsignedInteger i = 0; i < identifiers; ++i)
+    for (UnsignedInteger i = 0; i < identifiers; ++i)
     {
       const UnsignedInteger index1 = sortedData1(size - 1 - i, 1);
       const UnsignedInteger index2 = sortedData2(size - 1 - i, 1);
       annotations[index1] = (OSS() << index2 + 1);
-      positions[index1] = dataFull(index1, 1) < 0.0 ? "top" : "bottom";
+      positions[index1] = dataFull(index1, 0) < 0.0 ? "top" : "bottom";
     }
     Text text(dataFull, annotations, "bottom");
     text.setColor("red");
     text.setTextPositions(positions);
     graph.add(text);
   }
-  // add line to a normal QQ plot which passes through the first and third quartiles
-  Sample diagonal(2, 2);
-  Point point(2);
-  const UnsignedInteger id1Q = 0.25 * size - 0.5;
-  const UnsignedInteger id3Q = 0.75 * size - 0.5;
-  Scalar delta = dataFull(id3Q, 0) - dataFull(id1Q, 0);
-  // If quantiles are too close, bisectrice takes into account the min/max values
-  if (!(delta > 0) && !(delta < 0))
-    delta = dataFull(size - 1, 0) - dataFull(0, 0);
-  point[0] = (dataFull(id3Q, 1) - dataFull(id1Q, 1)) / delta;
-  point[1] = dataFull(id3Q, 1) - point[0] * dataFull(id3Q, 0);
-  diagonal(0, 0) = dataFull(0, 0);
-  diagonal(0, 1) = dataFull(0, 0) * point[0] + point[1];
-  diagonal(1, 0) = dataFull(size - 1, 0);
-  diagonal(1, 1) = dataFull(size - 1, 0) * point[0] + point[1];
-  Curve curve(diagonal, "red", "dashed", 2);
-  graph.add(curve);
+  // Disable legend
+  graph.setLegendPosition("");
   return graph;
 }
 
