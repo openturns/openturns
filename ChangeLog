@@ -25,8 +25,8 @@
  * Deprecated SORMResult::getEventProbabilityHohenBichler, use SORMResult::getEventProbabilityHohenbichler instead
  * Deprecated SORMResult::getGeneralisedReliabilityIndexHohenBichler, use SORMResult::getGeneralisedReliabilityIndexHohenbichler instead
  * Renamed SobolSequence::MaximumNumberOfDimension as SobolSequence::MaximumDimension
- * Deprecated VisualTest::DrawLinearModel(inputSample, outputSample, linearModelResult), use VisualTest::DrawLinearModel(linearModelResult) instead
- * Deprecated VisualTest::DrawLinearModelResidual(inputSample, outputSample, linearModelResult), use VisualTest::DrawLinearModelResidual(linearModelResult) instead
+ * Added VisualTest::DrawLinearModel(linearModelResult), useful if the test is performed on the training samples
+ * Added VisualTest::DrawLinearModelResidual(linearModelResult), useful if the test is performed on the training samples
  * Deprecated OptimizationResult::getLagrangeMultipliers
  * Moved OptimizationAlgorithm::computeLagrangeMultipliers to OptimizationResult
  * Added AIC & BestModelAIC static methods in FittingTest
