@@ -51,7 +51,7 @@ bonminAlgorithm.setMaximumEvaluationNumber(10000)
 bonminAlgorithm.setProgressCallback(progress)
 bonminAlgorithm.setStopCallback(stop)
 
-ot.ResourceMap.AddAsScalar('Bonmin-bonmin.time_limit', 60)
+#ot.ResourceMap.AddAsScalar('Bonmin-bonmin.time_limit', 60)
 ot.ResourceMap.AddAsString('Bonmin-mu_oracle', 'loqo')
 
 algos = ot.Bonmin.GetAlgorithmNames()

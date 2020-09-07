@@ -101,7 +101,7 @@ int main()
     bonminAlgorithm.setMaximumEvaluationNumber(10000);
     bonminAlgorithm.setMaximumIterationNumber(1000);
     ResourceMap::AddAsString("Bonmin-mu_oracle", "loqo");
-    ResourceMap::AddAsScalar("Bonmin-bonmin.time_limit", 5);
+    //ResourceMap::AddAsScalar("Bonmin-bonmin.time_limit", 5);
 
     // Test __repr__ method
     std::cout << bonminAlgorithm.__repr__() << std::endl;
