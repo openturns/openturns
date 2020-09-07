@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class NLopt for standard methods
+ *  @brief The test file of class GaussianNonLinearCalibration for standard methods
  *
  *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -32,9 +32,9 @@ int main(int, char *[])
   try
   {
     PlatformInfo::SetNumericalPrecision(3);
-    UnsignedInteger m = 10;
+    UnsignedInteger m = 200;
     Sample x(m, 1);
-    for (UnsignedInteger i = 0; i < m; ++i) x(i, 0) = 0.5 + i;
+    for (UnsignedInteger i = 0; i < m; ++i) x(i, 0) = (0.5 + i) / m;
 
     Description inVars(0);
     inVars.add("a");
@@ -43,15 +43,15 @@ int main(int, char *[])
     inVars.add("x");
     Description formulas(1, "a + b * exp(c * x)");
     formulas.add("(a * x^2 + b) / (c + x^2)");
-    SymbolicFunction model(inVars, formulas);
-    Point p_ref(0);
-    p_ref.add(2.8);
-    p_ref.add(1.2);
-    p_ref.add(0.5);
+    SymbolicFunction g(inVars, formulas);
+    Point trueParameter(0);
+    trueParameter.add(2.8);
+    trueParameter.add(1.2);
+    trueParameter.add(0.5);
     Indices params(3);
     params.fill();
-    ParametricFunction modelX(model, params, p_ref);
-    Sample y = modelX(x);
+    ParametricFunction model(g, params, trueParameter);
+    Sample y = model(x);
     y += Normal(Point(2), Point(2, 0.05), IdentityMatrix(2)).getSample(y.getSize());
     Point candidate(3, 1.0);
     CovarianceMatrix priorCovariance(3);
@@ -71,27 +71,40 @@ int main(int, char *[])
     CovarianceMatrix globalErrorCovariance(2 * m);
     for (UnsignedInteger i = 0; i < 2 * m; ++i)
     {
-      globalErrorCovariance(i, i) = 2.0 + (1.0 + i) * (1.0 + i);
+      globalErrorCovariance(i, i) = 0.01 * (1.0 + (1.0 + i) * (1.0 + i));
       for (UnsignedInteger j = 0; j < i; ++j)
-        globalErrorCovariance(i, j) = 1.0 / (1.0 + i + j);
+        globalErrorCovariance(i, j) = 0.01 / (1.0 + i + j);
     }
     Indices bootstrapSizes(0);
     bootstrapSizes.add(0);
     bootstrapSizes.add(100);
     for (UnsignedInteger n = 0; n < bootstrapSizes.getSize(); ++n)
     {
-      GaussianNonLinearCalibration algo(modelX, x, y, candidate, priorCovariance, errorCovariance);
+      // With default optim
+      fullprint << "Bootstrap size =" << bootstrapSizes[n] << std::endl;
+      fullprint << "1. Default optim" << std::endl;
+      GaussianNonLinearCalibration algo(model, x, y, candidate, priorCovariance, errorCovariance);
       algo.setBootstrapSize(bootstrapSizes[n]);
       algo.run();
       // To avoid discrepance between the plaforms with or without CMinpack
-      fullprint << "result   (Auto)=" << algo.getResult().getParameterMAP() << std::endl;
+      Point parameterMAP(algo.getResult().getParameterMAP());
+      fullprint << "MAP =" << parameterMAP << std::endl;
+      assert_almost_equal(parameterMAP, trueParameter, 5e-1);
+      // With TNC
+      fullprint << "2. TNC optim" << std::endl;
       algo.setOptimizationAlgorithm(MultiStart(TNC(), LowDiscrepancyExperiment(SobolSequence(), Normal(candidate, CovarianceMatrix(candidate.getDimension())), ResourceMap::GetAsUnsignedInteger("GaussianNonLinearCalibration-MultiStartSize")).generate()));
       algo.run();
-      fullprint << "result    (TNC)=" << algo.getResult().getParameterMAP() << std::endl;
-      algo = GaussianNonLinearCalibration(modelX, x, y, candidate, priorCovariance, globalErrorCovariance);
+      parameterMAP = algo.getResult().getParameterMAP();
+      fullprint << "MAP =" << parameterMAP << std::endl;
+      assert_almost_equal(parameterMAP, trueParameter, 5e-1);
+      // With globalErrorCovariance
+      fullprint << "3. globalErrorCovariance" << std::endl;
+      algo = GaussianNonLinearCalibration(model, x, y, candidate, priorCovariance, globalErrorCovariance);
       algo.setBootstrapSize(bootstrapSizes[n]);
       algo.run();
-      fullprint << "result (global)=" << algo.getResult().getParameterMAP() << std::endl;
+      parameterMAP = algo.getResult().getParameterMAP();
+      fullprint << "MAP =" << parameterMAP << std::endl;
+      assert_almost_equal(parameterMAP, trueParameter, 5e-1);
     } // n
   }
   catch (TestFailed & ex)

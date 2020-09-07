@@ -1,4 +1,4 @@
-x= [2,3]
+x= [2.0, 3.0]
 factory= class=ConstantBasisFactory name=Unnamed
 basis= Basis( [class=LinearEvaluation name=Unnamed center=[0,0] constant=[1] linear=[[ 0 ]
  [ 0 ]]] )
@@ -23,7 +23,7 @@ basis= Basis( [class=LinearEvaluation name=Unnamed center=[0,0] constant=[1] lin
    [ 0 ]]
   quadratic :
   sheet #0
-  [[ 1 0 ]
+  [[ 2 0 ]
    [ 0 0 ]]
 ,QuadraticEvaluation
   center :
@@ -35,8 +35,8 @@ basis= Basis( [class=LinearEvaluation name=Unnamed center=[0,0] constant=[1] lin
    [ 0 ]]
   quadratic :
   sheet #0
-  [[ 0 1 ]
-   [ 1 0 ]]
+  [[ 0 2 ]
+   [ 2 0 ]]
 ,QuadraticEvaluation
   center :
     [0,0]
@@ -48,6 +48,6 @@ basis= Basis( [class=LinearEvaluation name=Unnamed center=[0,0] constant=[1] lin
   quadratic :
   sheet #0
   [[ 0 0 ]
-   [ 0 1 ]]
+   [ 0 2 ]]
 ] )
-y= [1,2,3,2,6,4.5]
+y= [1,2,3,4,12,9]

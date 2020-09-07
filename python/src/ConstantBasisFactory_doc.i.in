@@ -1,8 +1,5 @@
 %feature("docstring") OT::ConstantBasisFactory
-"Constant basis factory to construct the regression basis.
-
-Available constructors:
-   ConstantBasisFactory(*dimension*)
+"Constant basis factory.
 
 Parameters
 ----------
@@ -15,13 +12,13 @@ BasisFactory, LinearBasisFactory, QuadraticBasisFactory
 
 Notes
 -----
-A factory for constant basis of input dimension *dimension*."
+A factory for constant basis of input dimension *dimension*.
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::ConstantBasisFactory::build
-"Build the basis.
-
-Returns
--------
-basis : :class:`~openturns.Basis`."
+Examples
+--------
+>>> import openturns as ot
+>>> basis = ConstantBasisFactory(2).build()
+>>> f = ot.AggregatedFunction(basis)
+>>> x = [2, 3]
+>>> print(f(x))
+[1]"

@@ -72,9 +72,8 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
   target_link_libraries_with_dynamic_lookup (${module_target} ${PYTHON_LIBRARIES})
 
   # allows to pass compile flags like -O1 to reduce memory usage
-  if (DEFINED SWIG_COMPILE_FLAGS)
-    set_target_properties (${module_target} PROPERTIES COMPILE_FLAGS ${SWIG_COMPILE_FLAGS})
-  endif ()
+  set (SWIG_COMPILE_FLAGS "" CACHE STRING "Additional flags used when compiling swig generated code")
+  set_target_properties (${module_target} PROPERTIES COMPILE_FLAGS "${SWIG_COMPILE_FLAGS}")
 
   set_target_properties (${module_target} PROPERTIES UNITY_BUILD OFF)
 

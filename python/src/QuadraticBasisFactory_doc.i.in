@@ -1,8 +1,11 @@
 %feature("docstring") OT::QuadraticBasisFactory
-"Quadratic basis factory to construct the regression basis.
+"Quadratic basis factory.
 
-Available constructors:
-   QuadraticBasisFactory(*dimension*)
+The quadratic basis is composed of the quadratic terms of the canonical basis:
+
+.. math::
+
+    \{ \psi_k(x) \} = \{ 1, x_1, \hdots, x_n, x_i x_j \forall i,j \in [1,n] \}
 
 Parameters
 ----------
@@ -13,15 +16,11 @@ See also
 --------
 BasisFactory, ConstantBasisFactory, LinearBasisFactory
 
-Notes
------
-A factory for quadratic basis of input dimension *dimension*."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::QuadraticBasisFactory::build
-"Build the basis.
-
-Returns
--------
-basis : :class:`~openturns.Basis`."
+Examples
+--------
+>>> import openturns as ot
+>>> basis = QuadraticBasisFactory(2).build()
+>>> f = ot.AggregatedFunction(basis)
+>>> x = [2, 3]
+>>> print(f(x))
+[1,2,3,4,12,9]"

@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class NLopt for standard methods
+ *  @brief The test file of class LinearLeastSquaresCalibration for standard methods
  *
  *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -32,26 +32,27 @@ int main(int, char *[])
   try
   {
     PlatformInfo::SetNumericalPrecision(5);
-    UnsignedInteger m = 10;
+    UnsignedInteger m = 1000;
     Sample x(m, 1);
-    for (UnsignedInteger i = 0; i < m; ++i) x(i, 0) = 0.5 + i;
+    for (UnsignedInteger i = 0; i < m; ++i) x(i, 0) = (0.5 + i) / m;
 
     Description inVars(0);
     inVars.add("a");
     inVars.add("b");
     inVars.add("c");
     inVars.add("x");
-    Description formulas(1, "a + b * exp(c * x)");
-    formulas.add("(a * x^2 + b) / (c + x^2)");
-    SymbolicFunction model(inVars, formulas);
-    Point p_ref(0);
-    p_ref.add(2.8);
-    p_ref.add(1.2);
-    p_ref.add(0.5);
+    // This is linear in (a, b, c) and identifiable.
+    Description formulas(1, "a + b * x + c * x^2");
+    formulas.add("a + b * cos(x) + c * sin(x)");
+    SymbolicFunction g(inVars, formulas);
+    Point trueParameter(0);
+    trueParameter.add(2.8);
+    trueParameter.add(1.2);
+    trueParameter.add(0.5);
     Indices params(3);
     params.fill();
-    ParametricFunction modelX(model, params, p_ref);
-    Sample y = modelX(x);
+    ParametricFunction model(g, params, trueParameter);
+    Sample y = model(x);
     y += Normal(Point(2), Point(2, 0.05), IdentityMatrix(2)).getSample(y.getSize());
     Point candidate(3, 1.0);
     Description methods(0);
@@ -61,23 +62,31 @@ int main(int, char *[])
     for (UnsignedInteger n = 0; n < methods.getSize(); ++n)
     {
       fullprint << "method=" << methods[n] << std::endl;
-      LinearLeastSquaresCalibration algo(modelX, x, y, candidate, methods[n]);
+      // 1st constructor
+      fullprint << "(const. 1)" << std::endl;
+      LinearLeastSquaresCalibration algo(model, x, y, candidate, methods[n]);
       algo.run();
-      fullprint << "result (const. 1)=" << algo.getResult() << std::endl;
-      modelX.setParameter(candidate);
-      Sample modelObservations(modelX(x));
-      Matrix transposedGradientObservations(modelX.getParameterDimension(), y.getSize() * modelX.getOutputDimension());
+      Point parameterMAP(algo.getResult().getParameterMAP());
+      fullprint << "MAP =" << parameterMAP << std::endl;
+      assert_almost_equal(parameterMAP, trueParameter, 1e-2);
+      // 2nd constructor
+      fullprint << "(const. 2)" << std::endl;
+      model.setParameter(candidate);
+      Sample modelObservations(model(x));
+      Matrix transposedGradientObservations(model.getParameterDimension(), y.getSize() * model.getOutputDimension());
       UnsignedInteger shift = 0;
-      UnsignedInteger skip = modelX.getOutputDimension() * modelX.getParameterDimension();
+      UnsignedInteger skip = model.getOutputDimension() * model.getParameterDimension();
       for (UnsignedInteger i = 0; i < y.getSize(); ++i)
       {
-        Matrix localGradient(modelX.parameterGradient(x[i]));
+        Matrix localGradient(model.parameterGradient(x[i]));
         std::copy(localGradient.getImplementation()->begin(), localGradient.getImplementation()->end(), transposedGradientObservations.getImplementation()->begin() + shift);
         shift += skip;
       }
       algo = LinearLeastSquaresCalibration(modelObservations, transposedGradientObservations.transpose(), y, candidate, methods[n]);
       algo.run();
-      fullprint << "result (const. 2)=" << algo.getResult() << std::endl;
+      parameterMAP = algo.getResult().getParameterMAP();
+      fullprint << "MAP =" << parameterMAP << std::endl;
+      assert_almost_equal(parameterMAP, trueParameter, 1e-2);
     } // n
   }
   catch (TestFailed & ex)

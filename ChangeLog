@@ -56,7 +56,9 @@
  * #1540 (SubsetSampling: incorrect event sample)
  * #1549 (Doc of evaluation operator of KrigingResult)
  * #1556 (WeibullMin::computePDFGradient yields the partial derivatives in the wrong order)
+ * #1564 (Set a Point makes ot crash)
  * #1567 (The API doc of SobolIndicesExperiment has a format issue)
+
 
 == 1.15 release (2020-05-25) == #release-1.15
 

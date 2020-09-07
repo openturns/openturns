@@ -105,10 +105,6 @@ set (OPENTURNS_DATA_PATH
       share
       CACHE PATH "The directory where the common files are installed"
    )
-set (OPENTURNS_EXAMPLE_PATH
-      share/openturns/examples
-      CACHE PATH "The directory where the example files are installed"
-   )
 set (OPENTURNS_DOC_PATH
       share/openturns/doc
       CACHE PATH "The directory where the license files are installed"
@@ -600,7 +596,7 @@ endif ()
 
 
 # Define variables without OPENTURNS_ prefix with absolute paths
-foreach (_var INSTALL_PATH LIBRARY_PATH INCLUDE_PATH CONFIG_CMAKE_PATH SYSCONFIG_PATH DATA_PATH EXAMPLE_PATH DOC_PATH PYTHON_MODULE_PATH)
+foreach (_var INSTALL_PATH LIBRARY_PATH INCLUDE_PATH CONFIG_CMAKE_PATH SYSCONFIG_PATH DATA_PATH DOC_PATH PYTHON_MODULE_PATH)
   if (IS_ABSOLUTE "${OPENTURNS_${_var}}")
     set (${_var} ${OPENTURNS_${_var}})
   else ()

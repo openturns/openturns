@@ -11,6 +11,7 @@ Least squares and gaussian calibration
     calibration_chaboche.ipynb
     calibration_logistic.ipynb
     calibration_deflection_tube.ipynb
+    calibration_withoutobservedinputs.ipynb
 
 Bayesian Calibration
 --------------------

@@ -61,12 +61,7 @@ macro (ot_pyinstallcheck_test TESTNAME)
   endif (_PRE OR _POST)
 
   add_test (pyinstallcheck_${TESTNAME} "sh" "-c" "${COMMAND}")
-
   set_tests_properties (pyinstallcheck_${TESTNAME} PROPERTIES ENVIRONMENT "${PYINSTALLCHECK_ENVIRONMENT}")
-  install (FILES ${TESTNAME_SRC}
-	  DESTINATION ${OPENTURNS_EXAMPLE_PATH}
-            PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ
-         )
 endmacro (ot_pyinstallcheck_test)
 
 
@@ -582,7 +577,7 @@ if (CHAOSPY_FOUND)
 endif ()
 ot_pyinstallcheck_test (Distribution_roughness)
 
-## Bayesian
+## Calibration
 ot_pyinstallcheck_test (GaussianLinearCalibration_std)
 ot_pyinstallcheck_test (CalibrationStrategy_std)
 ot_pyinstallcheck_test (LinearLeastSquaresCalibration_std)
@@ -591,6 +586,13 @@ ot_pyinstallcheck_test (CalibrationResult_std IGNOREOUT)
 ot_pyinstallcheck_test (RandomWalkMetropolisHastings_std)
 ot_pyinstallcheck_test (RandomWalkMetropolisHastings_regression IGNOREOUT)
 ot_pyinstallcheck_test (GaussianNonLinearCalibration_std)
+ot_pyinstallcheck_test (GaussianLinearCalibration_chaboche)
+ot_pyinstallcheck_test (LinearLeastSquaresCalibration_linear)
+ot_pyinstallcheck_test (LinearLeastSquaresCalibration_noobs)
+ot_pyinstallcheck_test (GaussianLinearCalibration_noobs)
+ot_pyinstallcheck_test (NonLinearLeastSquaresCalibration_noobs)
+ot_pyinstallcheck_test (GaussianNonLinearCalibration_noobs)
+
 
 ## Classification
 ot_pyinstallcheck_test (MixtureClassifier_std)
@@ -682,7 +684,7 @@ if (HMAT_FOUND)
   ot_pyinstallcheck_test (GeneralLinearModelAlgorithm_std_hmat)
 endif ()
 if (NLopt_FOUND)
-  ot_pyinstallcheck_test (GeneralLinearModelAlgorithm_nlopt)
+  ot_pyinstallcheck_test (GeneralLinearModelAlgorithm_nlopt IGNOREOUT)
 endif ()
 ot_pyinstallcheck_test (CanonicalTensorEvaluation_std IGNOREOUT)
 ot_pyinstallcheck_test (CanonicalTensorGradient_std IGNOREOUT)

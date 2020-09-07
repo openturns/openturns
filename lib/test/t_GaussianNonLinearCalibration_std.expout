@@ -1,6 +1,14 @@
-result   (Auto)=class=Point name=Unnamed dimension=3 values=[2.76,1.2,0.5]
-result    (TNC)=class=Point name=Unnamed dimension=3 values=[2.76,1.2,0.5]
-result (global)=class=Point name=Unnamed dimension=3 values=[2,1.44,0.48]
-result   (Auto)=class=Point name=Unnamed dimension=3 values=[2.76,1.2,0.5]
-result    (TNC)=class=Point name=Unnamed dimension=3 values=[2.76,1.2,0.5]
-result (global)=class=Point name=Unnamed dimension=3 values=[2,1.44,0.48]
+Bootstrap size =0
+1. Default optim
+MAP =class=Point name=Unnamed dimension=3 values=[2.79,1.21,0.503]
+2. TNC optim
+MAP =class=Point name=Unnamed dimension=3 values=[2.79,1.21,0.503]
+3. globalErrorCovariance
+MAP =class=Point name=Unnamed dimension=3 values=[2.27,1.73,0.728]
+Bootstrap size =100
+1. Default optim
+MAP =class=Point name=Unnamed dimension=3 values=[2.79,1.21,0.503]
+2. TNC optim
+MAP =class=Point name=Unnamed dimension=3 values=[2.79,1.21,0.503]
+3. globalErrorCovariance
+MAP =class=Point name=Unnamed dimension=3 values=[2.27,1.73,0.728]

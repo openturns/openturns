@@ -66,19 +66,6 @@ public:
                            const CovarianceModel & covarianceModel,
                            const Scalar optimalLogLikelihood);
 
-  /** Parameter constructor with Cholesky factor (Lapack)*/
-  GeneralLinearModelResult(const Sample & inputData,
-                           const Sample & outputData,
-                           const Function & metaModel,
-                           const Point & residuals,
-                           const Point & relativeErrors,
-                           const BasisCollection & basis,
-                           const PointCollection & trendCoefficients,
-                           const CovarianceModel & covarianceModel,
-                           const Scalar optimalLogLikelihood,
-                           const TriangularMatrix & covarianceCholeskyFactor,
-                           const HMatrix & covarianceHMatrix);
-
   /** Virtual constructor */
   GeneralLinearModelResult * clone() const override;
 
@@ -112,6 +99,14 @@ protected:
 
   // KrigingAlgorithm::run could ask for the Cholesky factor
   friend class KrigingAlgorithm;
+
+  // GeneralLinearModelAlgorithm::run could set the Cholesky factor
+  friend class GeneralLinearModelAlgorithm;
+
+  /** Accessor to the Cholesky factor*/
+  void setCholeskyFactor(const TriangularMatrix & covarianceCholeskyFactor,
+                         const HMatrix & covarianceHMatrix);
+
   /** Method that returns the covariance factor - lapack */
   TriangularMatrix getCholeskyFactor() const;
 

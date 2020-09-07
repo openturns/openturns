@@ -119,6 +119,10 @@ Gradient GradientImplementation::getMarginal(const UnsignedInteger i) const
 /* Get the function corresponding to indices components */
 Gradient GradientImplementation::getMarginal(const Indices & indices) const
 {
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal gradient must be in the range [0, outputDimension-1] and must be different";
+  Indices full(getOutputDimension());
+  full.fill();
+  if (indices == full) return clone();
   return new MarginalGradient(clone(), indices);
 }
 
