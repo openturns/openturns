@@ -23,6 +23,7 @@
 #include "openturns/SymbolicParserImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
+#include <regex>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -54,6 +55,10 @@ Description SymbolicParserImplementation::getVariables() const
 
 void SymbolicParserImplementation::setVariables(const Description & inputVariablesNames)
 {
+  const UnsignedInteger size = inputVariablesNames.getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    if (!std::regex_match(inputVariablesNames[i], std::regex("[a-zA-Z][0-9a-zA-Z_]*")))
+      throw InvalidArgumentException(HERE) << "Invalid input variable: " << inputVariablesNames[i];
   inputVariablesNames_ = inputVariablesNames;
 }
 

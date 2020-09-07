@@ -207,3 +207,9 @@ try:
     print(f.gradient([-3]*2))
 except Exception:
     print('OK')
+
+# invalid variable
+try:
+    ot.SymbolicFunction(['x09azAZ_', '(y)'], ['2*x09azAZ_'])
+except Exception:
+    print('OK')

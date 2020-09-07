@@ -59,6 +59,7 @@
  * #1564 (Set a Point makes ot crash)
  * #1567 (The API doc of SobolIndicesExperiment has a format issue)
  * #1573 (LinearModelAnalysis::drawQQPlot line is not the first bisector)
+ * #1581 (LinearModelAlgorithm run() fails to parse Sample description)
  * #1594 (LinearLeastSquaresCalibration and CalibrationResult)
 
 

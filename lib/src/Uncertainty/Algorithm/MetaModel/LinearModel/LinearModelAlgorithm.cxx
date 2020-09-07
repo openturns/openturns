@@ -25,6 +25,7 @@
 #include "openturns/LinearCombinationFunction.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/LinearBasisFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -59,19 +60,29 @@ LinearModelAlgorithm::LinearModelAlgorithm(const Sample & inputSample,
   inputSample_ = inputSample;
   outputSample_ = outputSample;
 
+  const UnsignedInteger inputDimension = inputSample_.getDimension();
 #ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
   Collection<Function> functions;
-  const Description inputDescription(inputSample_.getDescription());
-  functions.add(SymbolicFunction(inputSample_.getDescription(), Description(1, "1")));
-  for(UnsignedInteger i = 0; i < inputSample_.getDimension(); ++i)
+  Description inputDescription(inputSample_.getDescription());
+  try
+  {
+    // the sample description may contain invalid variable names
+    const SymbolicFunction constant(inputDescription, Description(1, "1"));
+  }
+  catch (InvalidArgumentException &)
+  {
+    // fallback to default variable names
+    inputDescription = Description::BuildDefault(inputDimension, "X");
+  }
+  functions.add(SymbolicFunction(inputDescription, Description(1, "1")));
+  for(UnsignedInteger i = 0; i < inputDimension; ++i)
   {
     functions.add(SymbolicFunction(inputDescription, Description(1, inputDescription[i])));
   }
   basis_ = Basis(functions);
 #else
-  basis_ = LinearBasisFactory(inputSample_.getDimension()).build();
+  basis_ = LinearBasisFactory(inputDimension).build();
 #endif
-
 }
 
 
