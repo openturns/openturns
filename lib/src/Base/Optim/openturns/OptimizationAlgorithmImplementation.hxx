@@ -49,15 +49,11 @@ public:
   /** Virtual constructor */
   OptimizationAlgorithmImplementation * clone() const override;
 
-  /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
+  /** Performs the actual computation */
   virtual void run();
 
-  /** Computes the Lagrange multipliers associated with the constraints as a post-processing of the result. Actual algorithms should overload this method. */
-  virtual Point computeLagrangeMultipliers(const Point & x) const;
-
-  /** Enable/disable lagrange multipliers */
-  virtual void enableLagrangeMultipliers(const Bool isLagrangeMultipliersEnabled);
-  virtual Bool isLagrangeMultipliersEnabled() const;
+  /** @deprecated Computes the Lagrange multipliers associated with the constraints */
+  Point computeLagrangeMultipliers(const Point & x) const;
 
   /** Starting point accessor */
   virtual Point getStartingPoint() const;
@@ -153,8 +149,7 @@ private:
   Scalar maximumRelativeError_;    /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
   Scalar maximumResidualError_;    /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */
   Scalar maximumConstraintError_;  /**< Value of ||constraints(x_n)|| for the active constraints */
-  Bool verbose_;
-  Bool isLagrangeMultipliersEnabled_;
+  Bool verbose_ = false;
 
 } ; /* class OptimizationAlgorithmImplementation */
 

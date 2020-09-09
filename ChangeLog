@@ -27,6 +27,8 @@
  * Renamed SobolSequence::MaximumNumberOfDimension as SobolSequence::MaximumDimension
  * Deprecated VisualTest::DrawLinearModel(inputSample, outputSample, linearModelResult), use VisualTest::DrawLinearModel(linearModelResult) instead
  * Deprecated VisualTest::DrawLinearModelResidual(inputSample, outputSample, linearModelResult), use VisualTest::DrawLinearModelResidual(linearModelResult) instead
+ * Deprecated OptimizationResult::getLagrangeMultipliers
+ * Moved OptimizationAlgorithm::computeLagrangeMultipliers to OptimizationResult
 
 === Documentation ===
 ==== API documentation ====
@@ -38,6 +40,7 @@
 
 === Miscellaneous ===
  * Require C99/C++11 support
+ * Do not compute Lagrange multipliers by default during an optimization
 
 === Bug fixes ===
  * #1001 (Add method SobolSimulationResult::draw)
@@ -55,6 +58,7 @@
  * #1521 (Basis of MonomialFunction)
  * #1540 (SubsetSampling: incorrect event sample)
  * #1549 (Doc of evaluation operator of KrigingResult)
+ * #1553 (Optimization algorithms ignore MaxEvaluationNumber parameter in SORM)
  * #1556 (WeibullMin::computePDFGradient yields the partial derivatives in the wrong order)
  * #1564 (Set a Point makes ot crash)
  * #1567 (The API doc of SobolIndicesExperiment has a format issue)

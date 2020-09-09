@@ -2,8 +2,6 @@
 
 %feature("docstring") OT::OptimizationAlgorithm
 OT_OptimizationAlgorithm_doc
-%feature("docstring") OT::OptimizationAlgorithm::computeLagrangeMultipliers
-OT_OptimizationAlgorithm_computeLagrangeMultipliers_doc
 %feature("docstring") OT::OptimizationAlgorithm::getMaximumAbsoluteError
 OT_OptimizationAlgorithm_getMaximumAbsoluteError_doc
 %feature("docstring") OT::OptimizationAlgorithm::getMaximumConstraintError
@@ -50,10 +48,6 @@ OT_OptimizationAlgorithm_getVerbose_doc
 OT_OptimizationAlgorithm_setProgressCallback_doc
 %feature("docstring") OT::OptimizationAlgorithm::setStopCallback
 OT_OptimizationAlgorithm_setStopCallback_doc
-%feature("docstring") OT::OptimizationAlgorithm::enableLagrangeMultipliers
-OT_OptimizationAlgorithm_enableLagrangeMultipliers_doc
-%feature("docstring") OT::OptimizationAlgorithm::isLagrangeMultipliersEnabled
-OT_OptimizationAlgorithm_isLagrangeMultipliersEnabled_doc
 
 // ---------------------------------------------------------------------
 

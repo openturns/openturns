@@ -40,8 +40,6 @@ OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation()
   , maximumRelativeError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError"))
   , maximumResidualError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError"))
   , maximumConstraintError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError"))
-  , verbose_(false)
-  , isLagrangeMultipliersEnabled_(true)
 {
   // Nothing to do
 }
@@ -60,8 +58,6 @@ OptimizationAlgorithmImplementation::OptimizationAlgorithmImplementation(const O
   , maximumRelativeError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError"))
   , maximumResidualError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError"))
   , maximumConstraintError_(ResourceMap::GetAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError"))
-  , verbose_(false)
-  , isLagrangeMultipliersEnabled_(true)
 {
   // Nothing to do
 }
@@ -201,83 +197,10 @@ void OptimizationAlgorithmImplementation::run()
   throw NotYetImplementedException(HERE) << "In OptimizationAlgorithmImplementation::run()";
 }
 
-/* Computes the Lagrange multipliers associated with the constraints as a post-processing of the optimal point. Actual algorithms should overload this method. */
-/* L(x, l_eq, l_lower_bound, l_upper_bound, l_ineq) = J(x) + l_eq * C_eq(x) + l_lower_bound * (x-lb)^+ + l_upper_bound * (ub-x)^+ + l_ineq * C_ineq^+(x)
-   d/dx(L = d/dx(J) + l_eq * d/dx(C_eq) + l_lower_bound * d/dx(x-lb)^+ + l_upper_bound * d/dx(ub - x)^+ + l_ineq * d/dx(C_ineq^+)
-
-   The Lagrange multipliers are stored as [l_eq, l_lower_bounds, l_upper_bounds, l_ineq], where:
-   * l_eq is of dimension 0 if no equality constraint, else of dimension the number of scalar equality constraints
-   * l_lower_bounds and l_upper_bounds are of dimension 0 if no bound constraint, else of dimension dim(x) for both of them
-   * l_ineq is of dimension 0 if no inequality constraint, else of dimension the number of scalar inequality constraints
-
-   so if there is no constraint of any kind, the Lagrange multipliers are of dimension 0.
- */
 Point OptimizationAlgorithmImplementation::computeLagrangeMultipliers(const Point & x) const
 {
-  const UnsignedInteger equalityDimension = problem_.getEqualityConstraint().getOutputDimension();
-  const UnsignedInteger inequalityDimension = problem_.getInequalityConstraint().getOutputDimension();
-  const UnsignedInteger boundDimension = problem_.getBounds().getDimension();
-  // If no constraint
-  if (equalityDimension + inequalityDimension + boundDimension == 0) return Point(0);
-  // Here we have to compute the Lagrange multipliers as the solution of a linear problem with rhs=[d/dx(C_eq) | d/dx(x-lb)^+ | d/dx(ub - x)^+ | d/dx(C_ineq^+)] and lhs=-d/dx(J)
-  const UnsignedInteger inputDimension = x.getDimension();
-  // Get the lhs as a Point
-  const Point lhs(Point(*problem_.getObjective().gradient(x).getImplementation()) * (-1.0));
-  // In order to ease the construction of the rhs matrix, we use its internal storage representation as a Point in column-major storage.
-  Point rhs(0);
-  // First, the equality constraints. Each scalar equality constraint gives a column in the rhs
-  if (equalityDimension > 0)
-    rhs.add(*problem_.getEqualityConstraint().gradient(x).getImplementation());
-  // Second, the bounds
-  if (boundDimension > 0)
-  {
-    // First the lower bounds
-    const Point lowerBounds(problem_.getBounds().getLowerBound());
-    for (UnsignedInteger i = 0; i < boundDimension; ++i)
-    {
-      Point boundGradient(inputDimension);
-      // Check if the current lower bound is active up to the tolerance
-      if (std::abs(x[i] - lowerBounds[i]) <= getMaximumConstraintError())
-        boundGradient[i] = 1.0;
-      rhs.add(boundGradient);
-    } // Lower bounds
-    // Second the upper bounds
-    const Point upperBounds(problem_.getBounds().getUpperBound());
-    for (UnsignedInteger i = 0; i < boundDimension; ++i)
-    {
-      Point boundGradient(inputDimension);
-      // Check if the current lower bound is active up to the tolerance
-      if (std::abs(upperBounds[i] - x[i]) <= getMaximumConstraintError())
-        boundGradient[i] = -1.0;
-      rhs.add(boundGradient);
-    } // Upper bounds
-  } // boundDimension > 0
-  // Third, the inequality constraints
-  if (inequalityDimension > 0)
-  {
-    Point inequality(problem_.getInequalityConstraint()(x));
-    Matrix gradientInequality(problem_.getInequalityConstraint().gradient(x));
-    for (UnsignedInteger i = 0; i < inequalityDimension; ++i)
-    {
-      // Check if the current inequality constraint is active up to the tolerance
-      if (std::abs(inequality[i]) <= getMaximumConstraintError())
-        rhs.add(*gradientInequality.getColumn(i).getImplementation());
-      else
-        rhs.add(Point(inputDimension));
-    }
-  } // Inequality constraints
-  return Matrix(inputDimension, rhs.getDimension() / inputDimension, rhs).solveLinearSystem(lhs, false);
-}
-
-/* Enable/disable lagrange multipliers */
-void OptimizationAlgorithmImplementation::enableLagrangeMultipliers(const Bool isLagrangeMultipliersEnabled)
-{
-  isLagrangeMultipliersEnabled_ = isLagrangeMultipliersEnabled;
-}
-
-Bool OptimizationAlgorithmImplementation::isLagrangeMultipliersEnabled() const
-{
-  return isLagrangeMultipliersEnabled_;
+  LOGWARN(OSS() << "OptimizationAlgorithm::computeLagrangeMultipliers is deprecated, use OptimizationResult::computeLagrangeMultipliers");
+  return result_.computeLagrangeMultipliers(x);
 }
 
 /* Virtual constructor */
@@ -311,7 +234,6 @@ void OptimizationAlgorithmImplementation::save(Advocate & adv) const
   adv.saveAttribute( "maximumResidualError_", maximumResidualError_);
   adv.saveAttribute( "maximumConstraintError_", maximumConstraintError_);
   adv.saveAttribute( "verbose_", verbose_);
-  adv.saveAttribute( "isLagrangeMultipliersEnabled_", isLagrangeMultipliersEnabled_);
 }
 
 
@@ -328,7 +250,6 @@ void OptimizationAlgorithmImplementation::load(Advocate & adv)
   adv.loadAttribute( "maximumResidualError_", maximumResidualError_);
   adv.loadAttribute( "maximumConstraintError_", maximumConstraintError_);
   adv.loadAttribute( "verbose_", verbose_);
-  adv.loadAttribute( "isLagrangeMultipliersEnabled_", isLagrangeMultipliersEnabled_);
 }
 
 
