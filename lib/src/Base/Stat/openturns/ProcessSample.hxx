@@ -70,11 +70,12 @@ public:
 
   void add(const Sample & sample);
 
+  /** Field accessor */
+  void setField (const Field & field, const UnsignedInteger i);
+  Field getField (const UnsignedInteger i) const;
 #ifndef SWIG
 
   /** Operators accessors */
-  void setField (const Field & field, const UnsignedInteger i);
-  Field getField (const UnsignedInteger i) const;
   Sample & operator[] (const UnsignedInteger i);
   const Sample & operator[] (const UnsignedInteger i) const;
 

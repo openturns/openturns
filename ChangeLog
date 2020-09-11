@@ -37,6 +37,7 @@
 
 === Python module ===
  * Renamed Viewer *_kwargs arguments to *_kw (matplotlib convention)
+ * Add ProcessSample Field accessors
 
 === Miscellaneous ===
  * Require C99/C++11 support
