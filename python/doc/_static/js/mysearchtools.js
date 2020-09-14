@@ -213,7 +213,7 @@ var Search = {
     // let the scorer override scores with a custom scoring function
     if (Scorer.score) {
       for (i = 0; i < results.length; i++){
-        results[i][4] = Scorer.score(results[i]);
+        results[i][4] += Scorer.score(results[i]);
         var localScore = results[i][4];
         var CATEGORY_PREFIX = '';
 
