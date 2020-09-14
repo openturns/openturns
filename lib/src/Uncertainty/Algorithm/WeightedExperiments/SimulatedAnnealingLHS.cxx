@@ -51,11 +51,6 @@ SimulatedAnnealingLHS::SimulatedAnnealingLHS(const LHSExperiment & lhs,
   , profile_(profile)
   , standardInitialDesign_()
 {
-  if (spaceFilling.getImplementation()->getClassName() == "SpaceFillingMinDist")
-  {
-    LOGWARN("MinDist criterion replaced by PhiP in SimulatedAnnealingLHS");
-    spaceFilling_ = SpaceFillingPhiP();
-  }
 }
 
 /* SimulatedAnnealingLHS constructor with LHS*/
@@ -67,13 +62,7 @@ SimulatedAnnealingLHS::SimulatedAnnealingLHS (const Sample & initialDesign,
   , profile_(profile)
   , standardInitialDesign_(initialDesign)
 {
-  if (spaceFilling.getImplementation()->getClassName() == "SpaceFillingMinDist")
-  {
-    LOGWARN("MinDist criterion replaced by PhiP in SimulatedAnnealingLHS");
-    spaceFilling_ = SpaceFillingPhiP();
-  }
-  else
-    spaceFilling_ = spaceFilling;
+  spaceFilling_ = spaceFilling;
   if (initialDesign.getSize() == 0) throw InvalidArgumentException(HERE) << "Initial design must not be empty";
   if (initialDesign.getDimension() != distribution.getDimension()) throw InvalidArgumentException(HERE) << "Initial design dimension " << initialDesign.getDimension() << " does not match distribution dimension " << distribution.getDimension();
   // Transform the initial design into a standard design

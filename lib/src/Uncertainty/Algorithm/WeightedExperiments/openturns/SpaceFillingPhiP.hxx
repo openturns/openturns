@@ -39,7 +39,7 @@ class OT_API SpaceFillingPhiP
 
 public:
   /** Default constructor */
-  explicit SpaceFillingPhiP(UnsignedInteger p = 50);
+  explicit SpaceFillingPhiP(const UnsignedInteger p = 50);
 
   /** Virtual constructor method */
   SpaceFillingPhiP * clone() const override;
