@@ -35,7 +35,7 @@ for algoName in algoNames:
     # ESCH not same results with 2.4.1
     # AUGLAG_EQ raises a roundoff-limited exception on i386
     # LD_SLSQP/LD_CCSAQ not same point on i386
-    if 'NEWUOA' in algoName or 'COBYLA' in algoName or 'ESCH' in algoName or 'AUGLAG_EQ' in algoName or 'LD_SLSQP' in algoName or 'LD_CCSAQ' in algoName:
+    if 'NEWUOA' in algoName or 'COBYLA' in algoName or 'ESCH' in algoName or 'AUGLAG_EQ' in algoName or 'LD_SLSQP' in algoName or 'LD_CCSAQ' in algoName or 'LD_MMA' in algoName:
         print('-- Skipped: algo=', algoName)
         continue
 

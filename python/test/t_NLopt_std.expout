@@ -458,30 +458,7 @@ algo= LD_LBFGS minimization= False bounds= True inequality= False equality= True
 -- Not supported
 algo= LD_LBFGS minimization= False bounds= True inequality= False equality= False
 x^= [-1.5,-1.5] y^= [1.41e+03]
-algo= LD_MMA minimization= True bounds= True inequality= True equality= True
--- Not supported
-algo= LD_MMA minimization= True bounds= False inequality= True equality= True
--- Not supported
-algo= LD_MMA minimization= True bounds= True inequality= True equality= False
-x^= [0.734,0.539] y^= [1.07]
-algo= LD_MMA minimization= True bounds= False inequality= True equality= False
-x^= [0.549,0.299] y^= [1.2]
-algo= LD_MMA minimization= True bounds= True inequality= False equality= True
--- Not supported
-algo= LD_MMA minimization= True bounds= False inequality= False equality= True
--- Not supported
-algo= LD_MMA minimization= True bounds= True inequality= False equality= False
-x^= [0.599,0.358] y^= [1.16]
-algo= LD_MMA minimization= True bounds= False inequality= False equality= False
-x^= [0.752,0.569] y^= [1.06]
-algo= LD_MMA minimization= False bounds= True inequality= True equality= True
--- Not supported
-algo= LD_MMA minimization= False bounds= True inequality= True equality= False
-x^= [-0.879,-0.496] y^= [165]
-algo= LD_MMA minimization= False bounds= True inequality= False equality= True
--- Not supported
-algo= LD_MMA minimization= False bounds= True inequality= False equality= False
-x^= [-1.5,-1.5] y^= [1.41e+03]
+-- Skipped: algo= LD_MMA
 -- Skipped: algo= LD_SLSQP
 algo= LD_TNEWTON minimization= True bounds= True inequality= True equality= True
 -- Not supported
