@@ -653,8 +653,5 @@ install (FILES COPYING
           DESTINATION ${OPENTURNS_DOC_PATH}
        )
 
-# TODO: handled by sphinx-doc ?
-install (DIRECTORY python/doc/_static/js DESTINATION ${OPENTURNS_DOC_PATH}/html/_static)
-
 include(FeatureSummary)
 feature_summary(WHAT ALL)
