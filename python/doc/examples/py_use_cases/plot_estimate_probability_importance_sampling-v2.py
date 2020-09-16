@@ -1,6 +1,6 @@
 """
 Probability estimation with importance sampling simulation on cantilever beam example-v2
-=======================================================================================
+========================================================================================
 """
 # %%
 # In this example we estimate a failure probability on the cantilever beam use case
