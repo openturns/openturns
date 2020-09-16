@@ -102,7 +102,7 @@ distributions.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/qqplot_graph`
+    - See :doc:`/auto_py_data_analysis/statistical_hypothesis_testing/plot_qqplot_graph`
 
 .. topic:: References:
 

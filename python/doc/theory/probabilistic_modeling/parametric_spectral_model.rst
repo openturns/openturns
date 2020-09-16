@@ -41,4 +41,4 @@ section [ParamStationaryCovarianceFunction]. The relation
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/probabilistic_modeling/parametric_spectral_density`
+    - See :doc:`/auto_py_probabilistic_modeling/stochastic_processes/plot_parametric_spectral_density`

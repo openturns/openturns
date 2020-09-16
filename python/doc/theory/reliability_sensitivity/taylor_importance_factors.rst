@@ -88,5 +88,5 @@ These are also called importance factors derived from perturbation methods.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/reliability_sensitivity/estimate_moments_taylor`
+    - See :doc:`/auto_py_reliability_sensitivity/central_dispersion/plot_estimate_moments_taylor`
 

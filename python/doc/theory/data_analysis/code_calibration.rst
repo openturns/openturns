@@ -280,10 +280,10 @@ named the *prior*.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/calibration/calibration_flooding`
-    - See :doc:`/examples/calibration/calibration_chaboche`
-    - See :doc:`/examples/calibration/calibration_deflection_tube`
-    - See :doc:`/examples/calibration/calibration_logistic`
+    - See :doc:`/auto_py_calibration/least_squares_and_gaussian_calibration/plot_calibration_flooding`
+    - See :doc:`/auto_py_calibration/least_squares_and_gaussian_calibration/plot_calibration_chaboche`
+    - See :doc:`/auto_py_calibration/least_squares_and_gaussian_calibration/plot_calibration_deflection_tube`
+    - See :doc:`/auto_py_calibration/least_squares_and_gaussian_calibration/plot_calibration_logistic`
 
 .. topic:: References:
 

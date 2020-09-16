@@ -321,7 +321,7 @@ according to the mirroring technique:
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/estimate_non_parametric_distribution`
+    - See :doc:`/auto_py_data_analysis/distribution_fitting/plot_estimate_non_parametric_distribution`
 
 .. topic:: References:
 

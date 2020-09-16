@@ -65,7 +65,7 @@ desired by the user. Note that the higher
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/chi2_fitting_test`
+    - See :doc:`/auto_py_data_analysis/statistical_hypothesis_testing/plot_chi2_fitting_test`
 
 .. topic:: References:
 

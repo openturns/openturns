@@ -146,4 +146,4 @@ It follows that:
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/estimate_stationary_covariance_model`
+    - See :doc:`/auto_py_data_analysis/estimate_stochastic_processes/plot_estimate_stationary_covariance_model`

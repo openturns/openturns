@@ -83,7 +83,7 @@ the variable :math:`X^i` has on the dispersion of :math:`Y^j`.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/independence_test`
+    - See :doc:`/auto_py_data_analysis/estimate_dependency_and_copulas/plot_independence_test`
 
 
 .. topic:: References:

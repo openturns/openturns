@@ -73,7 +73,7 @@ the greater the impact the variable :math:`X^i` has on :math:`Y^j`.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/sample_correlation`
+    - See :doc:`/auto_py_data_analysis/manage_data_and_samples/plot_sample_correlation`
 
 
 .. topic:: References:
