@@ -98,6 +98,7 @@ void SubsetSampling::run()
   const UnsignedInteger maximumOuterSampling = getMaximumOuterSampling();
   const UnsignedInteger blockSize = getBlockSize();
   const UnsignedInteger N = maximumOuterSampling * blockSize;
+  const Scalar epsilon = ResourceMap::GetAsScalar("SpecFunc-Precision");
 
   if (getMaximumCoefficientOfVariation() != ResourceMap::GetAsScalar("SimulationAlgorithm-DefaultMaximumCoefficientOfVariation"))
     Log::Warn(OSS() << "The maximum coefficient of variation was set. It won't be used as termination criteria.");
@@ -168,7 +169,10 @@ void SubsetSampling::run()
   thresholdPerStep_.add(currentThreshold);
 
   // compute monte carlo probability estimate
-  Scalar probabilityEstimate = computeProbability(1.0, currentThreshold);
+  Scalar probabilityEstimate = computeProbabilityVariance(1.0, currentThreshold, varianceEstimate);
+
+  // cannot determine next subset domain if no variance
+  stop = stop || (std::abs(varianceEstimate) < epsilon);
 
   if (iSubset_)
   {
@@ -216,7 +220,11 @@ void SubsetSampling::run()
     thresholdPerStep_.add(currentThreshold);
 
     // compute probability estimate on the current sample and group seeds at the beginning of the work sample
-    Scalar currentProbabilityEstimate = computeProbability(probabilityEstimate, currentThreshold);
+    Scalar currentProbabilityEstimate = computeProbabilityVariance(probabilityEstimate, currentThreshold, varianceEstimate);
+
+    // cannot determine next subset domain if no variance
+    if (std::abs(varianceEstimate) < epsilon)
+      throw NotDefinedException(HERE) << "Null output variance, cannot compute next subset domain";
 
     // update coefficient of variation
     Scalar gamma = computeVarianceGamma(currentProbabilityEstimate, currentThreshold);
@@ -279,20 +287,20 @@ Sample SubsetSampling::computeBlockSample()
 Scalar SubsetSampling::computeThreshold()
 {
   // compute the quantile according to the event operator
-  Scalar ratio = getEvent().getOperator()(1.0, 2.0) ?  conditionalProbability_ : 1.0 - conditionalProbability_;
+  const Scalar ratio = getEvent().getOperator()(1.0, 2.0) ?  conditionalProbability_ : 1.0 - conditionalProbability_;
 
-  Scalar currentThreshold = currentLevelSample_.computeQuantile(ratio)[0];
+  const Scalar currentThreshold = currentLevelSample_.computeQuantile(ratio)[0];
 
   return currentThreshold;
 }
 
 
-Scalar SubsetSampling::computeProbability(Scalar probabilityEstimateFactor, Scalar threshold)
+Scalar SubsetSampling::computeProbabilityVariance(Scalar probabilityEstimateFactor, Scalar threshold, Scalar & varianceEstimate)
 {
   const UnsignedInteger maximumOuterSampling = getMaximumOuterSampling();
   const UnsignedInteger blockSize = getBlockSize();
   Scalar probabilityEstimate = 0.0;
-  Scalar varianceEstimate = 0.0;
+  varianceEstimate = 0.0;
 
   for (UnsignedInteger i = 0; i < maximumOuterSampling; ++ i)
   {
@@ -315,16 +323,10 @@ Scalar SubsetSampling::computeProbability(Scalar probabilityEstimateFactor, Scal
     probabilityEstimate = (meanBlock + (size - 1.0) * probabilityEstimate) / size;
 
     // store convergence at each block
-    Point convergencePoint(2);
-    convergencePoint[0] = probabilityEstimate * probabilityEstimateFactor;
-    convergencePoint[1] = varianceEstimate * probabilityEstimateFactor * probabilityEstimateFactor / size;
-    convergenceStrategy_.store(convergencePoint);
+    const Point convPt = {probabilityEstimate * probabilityEstimateFactor,
+                          varianceEstimate * probabilityEstimateFactor * probabilityEstimateFactor / size};
+    convergenceStrategy_.store(convPt);
   }
-
-  // cannot determine next subset domain if no variance
-  const Scalar epsilon = ResourceMap::GetAsScalar("SpecFunc-Precision");
-  if (std::abs(varianceEstimate) < epsilon)
-    throw NotDefinedException(HERE) << "Null output variance";
 
   return probabilityEstimate;
 }
@@ -419,7 +421,7 @@ void SubsetSampling::generatePoints(Scalar threshold)
       for (UnsignedInteger k = 0; k < dimension_; ++ k)
       {
         // compute ratio
-        Scalar ratio = exp(0.5 * (oldPoint[k] * oldPoint[k] - newPoint[k] * newPoint[k]));
+        const Scalar ratio = exp(0.5 * (oldPoint[k] * oldPoint[k] - newPoint[k] * newPoint[k]));
 
         // accept new point with probability ratio
         if (ratio < uniform[k])

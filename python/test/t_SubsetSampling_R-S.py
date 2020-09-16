@@ -117,3 +117,22 @@ outputEventSample = mySS.getEventOutputSample()
 ouputG = limitState(inputEventSample)
 diffSample = ouputG - outputEventSample
 ott.assert_almost_equal(diffSample.computeMean(), [0.0])
+
+# null variance case
+f = ot.SymbolicFunction(['x'], ['x'])
+X = ot.Normal()
+Y = ot.CompositeRandomVector(f, ot.RandomVector(X))
+event = ot.ThresholdEvent(Y, ot.Less(), 5000)
+mc = ot.ProbabilitySimulationAlgorithm(event)
+mc.run()
+result = mc.getResult()
+print(result)
+subset = ot.SubsetSampling(event)
+subset.run()
+result = subset.getResult()
+print(result)
+assert subset.getNumberOfSteps() == 1, "wrong steps"
+assert result.getProbabilityEstimate() == 1.0, "wrong pf"
+assert result.getVarianceEstimate() == 0.0, "wrong var"
+
+

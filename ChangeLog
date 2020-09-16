@@ -65,6 +65,7 @@
  * #1567 (The API doc of SobolIndicesExperiment has a format issue)
  * #1573 (LinearModelAnalysis::drawQQPlot line is not the first bisector)
  * #1581 (LinearModelAlgorithm run() fails to parse Sample description)
+ * #1592 (SubsetSampling returns an error if Pf=1)
  * #1594 (LinearLeastSquaresCalibration and CalibrationResult)
 
 

@@ -95,7 +95,7 @@ private:
   Scalar computeThreshold();
 
   /** compute probability estimate on the current sample */
-  Scalar computeProbability(Scalar probabilityEstimate, Scalar threshold);
+  Scalar computeProbabilityVariance(Scalar probabilityEstimate, Scalar threshold, Scalar & varianceEstimate);
 
   /** Sort new seeds */
   void initializeSeed(Scalar threshold);
