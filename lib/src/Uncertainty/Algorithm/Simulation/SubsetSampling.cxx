@@ -112,6 +112,7 @@ void SubsetSampling::run()
 
   Scalar currentCoVsquare = 0.0;
   Scalar varianceEstimate = 0.0;
+  Scalar previousVariance = 0.0;
   Scalar coefficientOfVariationSquare = 0.0;
 
   // allocate input/output samples
@@ -217,14 +218,19 @@ void SubsetSampling::run()
     {
       currentThreshold = getEvent().getThreshold();
     }
-    thresholdPerStep_.add(currentThreshold);
 
     // compute probability estimate on the current sample and group seeds at the beginning of the work sample
+    previousVariance = varianceEstimate;
     Scalar currentProbabilityEstimate = computeProbabilityVariance(probabilityEstimate, currentThreshold, varianceEstimate);
 
-    // cannot determine next subset domain if no variance
+    // new points are all in the failure domain because the new threshold is too close to the global threshold, the last step was the previous step
     if (std::abs(varianceEstimate) < epsilon)
-      throw NotDefinedException(HERE) << "Null output variance, cannot compute next subset domain";
+    {
+      varianceEstimate = previousVariance;
+      break;
+    }
+
+    thresholdPerStep_.add(currentThreshold);
 
     // update coefficient of variation
     Scalar gamma = computeVarianceGamma(currentProbabilityEstimate, currentThreshold);
