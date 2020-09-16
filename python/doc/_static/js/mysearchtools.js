@@ -26,7 +26,7 @@ if (!Scorer) {
       else if (result[0].includes("user_manual")){
         var myscore = 200;
       }
-      else if (result[0].includes("examples")){
+      else if (result[0].includes("auto_py")){
         var myscore = 300;
       }
       else{
