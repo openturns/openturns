@@ -31,6 +31,8 @@ Reliability
     post_analytical_importance_sampling.ipynb
     event_system.ipynb
     event_manipulation.ipynb
+    probaSystemEvent.ipynb
+    subsetSampling.ipynb
 
 Reliabiliy: processes
 ---------------------

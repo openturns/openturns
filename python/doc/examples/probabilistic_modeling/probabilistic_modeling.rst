@@ -77,3 +77,4 @@ Stochastic processes
     trend_transform.ipynb
     box_cox_transform.ipynb
     aggregated_process.ipynb
+    mixRVandProcess.ipynb
