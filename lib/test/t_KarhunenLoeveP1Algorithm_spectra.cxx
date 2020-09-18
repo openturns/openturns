@@ -37,6 +37,7 @@ int main(int, char *[])
   {
     Mesh mesh(IntervalMesher(Indices(1, 9)).build(Interval(-1.0, 1.0)));
     {
+      // 1-d
       AbsoluteExponential cov1D(Point(1, 1.0));
       KarhunenLoeveP1Algorithm algo(mesh, cov1D, 1e-3);
       algo.run();
@@ -54,6 +55,26 @@ int main(int, char *[])
       fullprint << "KL lift as field=" << result.liftAsField(coefficients[0]) << std::endl;
     }
     {
+      // 1d + trunk
+      AbsoluteExponential cov1D(Point(1, 1.0));
+      KarhunenLoeveP1Algorithm algo(mesh, cov1D, 1e-3);
+      algo.setNbModes(5);// out of 8
+      algo.run();
+      KarhunenLoeveResult result(algo.getResult());
+      Point lambda(result.getEigenValues());
+      ProcessSample KLModes(result.getModesAsProcessSample());
+      fullprint << "KL modes=" << KLModes << std::endl;
+      fullprint << "KL eigenvalues=" << lambda << std::endl;
+      GaussianProcess process(cov1D, KLModes.getMesh());
+      Sample coefficients(result.project(process.getSample(10)));
+      fullprint << "KL coefficients=" << coefficients << std::endl;
+      Basis KLFunctions(result.getModes());
+      fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
+      fullprint << "KL lift=" << result.lift(coefficients[0]).__str__() << std::endl;
+      fullprint << "KL lift as field=" << result.liftAsField(coefficients[0]) << std::endl;
+    }
+    {
+      // 2d
       CorrelationMatrix R(2);
       R(0, 1) = 0.5;
       Point scale(1, 1.0);

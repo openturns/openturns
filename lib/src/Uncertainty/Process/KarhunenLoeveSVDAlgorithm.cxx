@@ -313,8 +313,10 @@ void KarhunenLoeveSVDAlgorithm::run()
   LOGINFO("Extract the relevant eigenpairs");
   // Start at 0 if the given threshold is large (eg greater than 1)
   UnsignedInteger K = 0;
+  const UnsignedInteger nbModesMax = std::min(eigenValues.getSize(), getNbModes());
   // Find the cut-off in the eigenvalues
-  while ((K < eigenValues.getSize()) && (eigenValues[K] >= threshold_ * cumulatedVariance)) ++K;
+  while ((K < nbModesMax) && (eigenValues[K] >= threshold_ * cumulatedVariance))
+    ++ K;
   LOGINFO(OSS() << "Selected " << K << " eigenvalues");
   LOGINFO("Create eigenmodes values");
   // Stores the eigenmodes values in-place to avoid wasting memory

@@ -199,12 +199,13 @@ OT_KarhunenLoeveAlgorithm_getResult_doc
 // ---------------------------------------------------------------------
 
 %define OT_KarhunenLoeveAlgorithm_setNbModes_doc
-"Accessor to number of modes to compute.
+"Accessor to the maximum number of modes to compute.
 
 Parameters
 ----------
 n : int
-    The number of modes to compute."
+    The maximum number of modes to compute.
+    The actual number of modes also depends on the threshold criterion."
 %enddef
 %feature("docstring") OT::KarhunenLoeveAlgorithmImplementation::setNbModes
 OT_KarhunenLoeveAlgorithm_setNbModes_doc
@@ -217,7 +218,8 @@ OT_KarhunenLoeveAlgorithm_setNbModes_doc
 Returns
 -------
 n : int
-    The number of modes to compute."
+    The maximum number of modes to compute.
+    The actual number of modes also depends on the threshold criterion."
 %enddef
 %feature("docstring") OT::KarhunenLoeveAlgorithmImplementation::getNbModes
 OT_KarhunenLoeveAlgorithm_getNbModes_doc

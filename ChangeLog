@@ -52,6 +52,7 @@
  * #1421 (UserDefinedStationaryCovarianceModel doc suggests input dimension can be >1)
  * #1447 (Highly inaccurate result in reliability model when using subset of RandomVector)
  * #1465 (The Sample constructor based on a list and an integer should not exist)
+ * #1470 (setNbModes is sometimes ignored)
  * #1474 (optimization defaults)
  * #1507 (Leak in Collection typemaps)
  * #1510 (ot.Ceres('LEVENBERG_MARQUARDT') and ot.Ceres('DOGLEG') do not handle bound constraints)
