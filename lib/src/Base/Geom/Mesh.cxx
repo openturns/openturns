@@ -517,7 +517,7 @@ Graph Mesh::draw1D() const
   const UnsignedInteger verticesSize = getVerticesNumber();
   const UnsignedInteger simplicesSize = getSimplicesNumber();
   if (verticesSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex.";
-  Graph graph(String(OSS() << "Mesh " << getName()), "x", "y", true, "topright");
+  Graph graph(String(OSS() << "Mesh " << getName()), "", getDescription()[0], true, "topright");
   // The vertices
   Cloud vertices(vertices_, Sample(verticesSize, Point(1, 0.0)));
   vertices.setColor("red");
@@ -543,7 +543,7 @@ Graph Mesh::draw2D() const
   const UnsignedInteger verticesSize = getVerticesNumber();
   const UnsignedInteger simplicesSize = getSimplicesNumber();
   if (verticesSize == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw a mesh with no vertex.";
-  Graph graph(String(OSS() << "Mesh " << getName()), "x", "y", true, "topright");
+  Graph graph(String(OSS() << "Mesh " << getName()), getDescription()[0], getDescription()[1], true, "topright");
   // The vertices
   Cloud vertices(vertices_);
   vertices.setColor("red");
@@ -705,7 +705,7 @@ Graph Mesh::draw3D(const Bool drawEdge,
   trianglesAndDepth.resize(triangleIndex);
 
   // Fourth, draw the triangles in decreasing depth
-  Graph graph(String(OSS() << "Mesh " << getName()), "x", "y", true, "topright");
+  Graph graph(String(OSS() << "Mesh " << getName()), getDescription()[0], getDescription()[1], true, "topright");
   std::sort(trianglesAndDepth.begin(), trianglesAndDepth.end());
   Scalar clippedRho = std::min(1.0, std::max(0.0, rho));
   if (rho != clippedRho) LOGWARN(OSS() << "The shrinking factor must be in (0,1), here rho=" << rho);
