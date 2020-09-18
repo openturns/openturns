@@ -88,6 +88,11 @@ UnsignedInteger Mesh::getDimension() const
 }
 
 /* Description of the vertices accessor */
+void Mesh::setDescription(const Description & description)
+{
+  vertices_.setDescription(description);
+}
+
 Description Mesh::getDescription() const
 {
   return vertices_.getDescription();

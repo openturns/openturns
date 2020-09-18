@@ -379,11 +379,11 @@ myVTKFile.vtk : str
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Mesh::getDescription
-"Get the description of the vertices.
+"Description accessor.
 
 Returns
 -------
-description : str
+description : :class:`~openturns.Description`
     Description of the vertices.
 
 Examples
@@ -393,6 +393,26 @@ Examples
 >>> vertices = ot.Sample([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]])
 >>> vertices.setDescription(['X', 'Y'])
 >>> mesh.setVertices(vertices)
+>>> print(mesh.getDescription())
+[X,Y]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::setDescription
+"Description accessor.
+
+Parameters
+----------
+description : sequence of str
+    Description of the vertices.
+
+Examples
+--------
+>>> import openturns as ot
+>>> mesh = ot.Mesh()
+>>> vertices = ot.Sample([[0.0, 0.0], [1.0, 0.0], [1.0, 1.0]])
+>>> mesh.setVertices(vertices)
+>>> mesh.setDescription(['X', 'Y'])
 >>> print(mesh.getDescription())
 [X,Y]"
 

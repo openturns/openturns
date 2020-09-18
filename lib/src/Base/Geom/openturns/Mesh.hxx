@@ -67,7 +67,8 @@ public:
   /** Get the dimension */
   UnsignedInteger getDimension() const;
 
-  /** Get the description of the vertices */
+  /** Description accessor */
+  void setDescription(const Description & description);
   Description getDescription() const;
 
   /** Get the number of vertices */
