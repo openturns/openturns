@@ -132,9 +132,11 @@ int main(int, char *[])
   TestResult bestResult;
   Scalar bestBIC = -1.0;
   Scalar bestAIC = -1.0;
+  Scalar bestAICc = -1.0;
   fullprint << "best model BIC=" << FittingTest::BestModelBIC(aSample, factoryCollection, bestBIC) << std::endl;
   fullprint << "best model Kolmogorov=" << FittingTest::BestModelKolmogorov(aSample, factoryCollection, bestResult) << std::endl;
   fullprint << "best model AIC=" << FittingTest::BestModelAIC(aSample, factoryCollection, bestAIC) << std::endl;
+  fullprint << "best model AICC=" << FittingTest::BestModelAICC(aSample, factoryCollection, bestAICc) << std::endl;
 
   SquareMatrix resultBIC(distributionNumber);
   for (UnsignedInteger i = 0; i < distributionNumber; i++)

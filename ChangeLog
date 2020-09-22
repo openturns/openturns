@@ -30,6 +30,7 @@
  * Deprecated OptimizationResult::getLagrangeMultipliers
  * Moved OptimizationAlgorithm::computeLagrangeMultipliers to OptimizationResult
  * Added AIC & BestModelAIC static methods in FittingTest
+ * Added AICC & BestModelAICC static methods in FittingTest
 
 === Documentation ===
 ==== API documentation ====
