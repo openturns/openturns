@@ -42,6 +42,80 @@ FittingTest::FittingTest()
   // Nothing to do
 }
 
+/* Best model for a given numerical sample by AIC */
+Distribution FittingTest::BestModelAIC(const Sample &sample,
+                                       const DistributionFactoryCollection &factoryCollection,
+                                       Scalar &bestAICOut)
+{
+  const UnsignedInteger size = factoryCollection.getSize();
+  if (size == 0)
+    throw InternalException(HERE) << "Error: no model given";
+  Bool builtAtLeastOne = false;
+  Distribution bestDistribution;
+  Scalar bestConcordanceMeasure = SpecFunc::MaxScalar;
+  Bool continuousCase = true;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const DistributionFactory factory(factoryCollection[i]);
+    try
+    {
+      LOGINFO(OSS(false) << "Trying factory " << factory);
+      const Distribution distribution(factory.build(sample));
+      if (i == 0)
+        continuousCase = distribution.isContinuous();
+      else if (distribution.isContinuous() != continuousCase)
+        throw InvalidArgumentException(HERE) << "Error: cannot merge continuous and non-continuous models for AIC selection.";
+      const Scalar concordanceMeasure = AIC(sample, distribution, distribution.getParameterDimension());
+      LOGINFO(OSS(false) << "Resulting distribution=" << distribution << ", AIC=" << concordanceMeasure);
+      if (concordanceMeasure < bestConcordanceMeasure)
+      {
+        bestConcordanceMeasure = concordanceMeasure;
+        bestDistribution = distribution;
+        builtAtLeastOne = true;
+      }
+    }
+    catch (const Exception &ex)
+    {
+      LOGWARN(OSS(false) << "Warning! Impossible to use factory " << factory << ". Reason=" << ex);
+    }
+  }
+  if (!builtAtLeastOne)
+    throw InvalidArgumentException(HERE) << "None of the factories could build a model.";
+  if (bestConcordanceMeasure == SpecFunc::MaxScalar)
+    LOGWARN(OSS(false) << "Be careful, the best model has an infinite concordance measure. The output distribution must be severely wrong.");
+  bestAICOut = bestConcordanceMeasure;
+  return bestDistribution;
+}
+
+/* Best model for a given numerical sample by AIC */
+Distribution FittingTest::BestModelAIC(const Sample &sample,
+                                       const DistributionCollection &distributionCollection,
+                                       Scalar &bestAICOut)
+{
+  const UnsignedInteger size = distributionCollection.getSize();
+  if (size == 0)
+    throw InternalException(HERE) << "Error: no model given";
+  Distribution bestDistribution;
+  Scalar bestConcordanceMeasure = SpecFunc::MaxScalar;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Distribution distribution(distributionCollection[i]);
+    LOGINFO(OSS(false) << "Testing distribution " << distribution);
+    const Scalar concordanceMeasure = AIC(sample, distribution);
+    LOGINFO(OSS(false) << "AIC=" << concordanceMeasure);
+    if (concordanceMeasure < bestConcordanceMeasure)
+    {
+      bestConcordanceMeasure = concordanceMeasure;
+      bestDistribution = distribution;
+    }
+  }
+  if (bestConcordanceMeasure > SpecFunc::MaxScalar)
+    LOGWARN(OSS(false) << "Be careful, the best model has an infinite concordance measure. The output distribution must be severely wrong.");
+  bestAICOut = bestConcordanceMeasure;
+  return bestDistribution;
+}
+
+
 /* Best model for a given numerical sample by BIC */
 Distribution FittingTest::BestModelBIC(const Sample & sample,
                                        const DistributionFactoryCollection & factoryCollection,
@@ -107,8 +181,6 @@ Distribution FittingTest::BestModelBIC(const Sample  & sample,
   bestBICOut = bestConcordanceMeasure;
   return bestDistribution;
 }
-
-
 
 
 /* Best model for a given numerical sample by Kolmogorov */
@@ -254,6 +326,39 @@ Distribution FittingTest::BIC(const Sample & sample,
   return distribution;
 }
 
+/* Akaike Information Criterion computation */
+Scalar FittingTest::AIC(const Sample &sample,
+                        const Distribution &distribution,
+                        const UnsignedInteger estimatedParameters)
+{
+  if (sample.getDimension() != distribution.getDimension())
+    throw InvalidArgumentException(HERE) << "Error: the sample dimension and the distribution dimension must be equal";
+  if (sample.getSize() == 0)
+    throw InvalidArgumentException(HERE) << "Error: the sample is empty";
+  const UnsignedInteger size = sample.getSize();
+  const UnsignedInteger parametersNumber = distribution.getParameterDimension();
+  if (parametersNumber < estimatedParameters)
+    throw InvalidArgumentException(HERE) << "Error: the number of estimated parameters cannot exceed the number of parameters of the distribution";
+  Scalar logLikelihood = 0.0;
+  const Sample logPDF(distribution.computeLogPDF(sample));
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    if (logPDF(i, 0) == -SpecFunc::MaxScalar)
+      return SpecFunc::MaxScalar;
+    logLikelihood += logPDF(i, 0);
+  }
+  return (-2.0 * logLikelihood + 2.0 * estimatedParameters) / size;
+}
+
+/* Akaike Information Criterion computation */
+Distribution FittingTest::AIC(const Sample &sample,
+                              const DistributionFactory &factory,
+                              Scalar &bestAICOut)
+{
+  const Distribution distribution(factory.build(sample));
+  bestAICOut = AIC(sample, distribution, distribution.getParameterDimension());
+  return distribution;
+}
 
 /* Kolmogorov test */
 

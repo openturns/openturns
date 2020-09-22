@@ -187,6 +187,7 @@ Goodness-of-fit metrics & tests
     :toctree: _generated/
     :template: function.rst_t
 
+    FittingTest_AIC
     FittingTest_BIC
     FittingTest_ChiSquared
     FittingTest_Kolmogorov

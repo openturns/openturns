@@ -29,6 +29,7 @@
  * Deprecated VisualTest::DrawLinearModelResidual(inputSample, outputSample, linearModelResult), use VisualTest::DrawLinearModelResidual(linearModelResult) instead
  * Deprecated OptimizationResult::getLagrangeMultipliers
  * Moved OptimizationAlgorithm::computeLagrangeMultipliers to OptimizationResult
+ * Added AIC & BestModelAIC static methods in FittingTest
 
 === Documentation ===
 ==== API documentation ====

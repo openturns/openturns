@@ -43,6 +43,16 @@ public:
   typedef Collection<DistributionFactory> DistributionFactoryCollection;
   typedef Collection<Distribution>        DistributionCollection;
 
+  /** Best model for a given numerical sample by AIC */
+  static Distribution BestModelAIC(const Sample &sample,
+                                   const DistributionFactoryCollection &factoryCollection,
+                                   Scalar &bestAICOut);
+
+  /** Best model for a given numerical sample by AIC */
+  static Distribution BestModelAIC(const Sample &sample,
+                                   const DistributionCollection &distributionCollection,
+                                   Scalar &bestAICOut);
+
   /** Best model for a given numerical sample by BIC */
   static Distribution BestModelBIC(const Sample  & sample,
                                    const DistributionFactoryCollection & factoryCollection,
@@ -72,6 +82,16 @@ public:
   static Distribution BestModelChiSquared(const Sample  & sample,
                                           const DistributionCollection & distributionCollection,
                                           TestResult & bestResultOut);
+
+  /** Akaike Information Criterion computation */
+  static Scalar AIC(const Sample &sample,
+                    const Distribution &distribution,
+                    const UnsignedInteger estimatedParameters = 0);
+
+  /** Akaike Information Criterion computation */
+  static Distribution AIC(const Sample &sample,
+                          const DistributionFactory &factory,
+                          Scalar &bestAICOut);
 
   /** Bayesian Information Criterion computation */
   static Scalar BIC(const Sample & sample,
