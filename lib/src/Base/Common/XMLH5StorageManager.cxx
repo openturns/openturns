@@ -151,9 +151,12 @@ void XMLH5StorageManager::readIndexedValue(Pointer<StorageManager::InternalObjec
     XML::Node node = state.current_->parent;
     String dataSetName = XML::GetAttributeByName(node, "id");
     readFromH5(dataSetName);
+    state.reachedEnd_ = false;
   }
-  state.index_ = index;
-
+  if(index == valBuf_.size()-1) {
+    state.reachedEnd_ = true;
+  }
+  state.next();
   //Get value from index
   value = valBuf_[index];
 }

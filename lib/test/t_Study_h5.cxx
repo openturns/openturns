@@ -55,6 +55,7 @@ int main(int, char *[])
   setRandomGenerator();
 
   const char fileName[] = "myStudy.xml";
+  const char h5fileName[] = "myStudy.h5";
 
   try
   {
@@ -74,6 +75,7 @@ int main(int, char *[])
 
       // cleanup
       Os::Remove(fileName);
+      Os::Remove(h5fileName);
     }
 
     // Create a Study Object by giving its storage manager with a nonzero compression level
@@ -92,6 +94,7 @@ int main(int, char *[])
 
       // cleanup
       Os::Remove(fileName);
+      Os::Remove(h5fileName);
     }
 
     // Create a Study Object by giving its name and compression level
@@ -109,6 +112,7 @@ int main(int, char *[])
 
       // cleanup
       Os::Remove(fileName);
+      Os::Remove(h5fileName);
     }
 
     // Create a Study Object
@@ -1122,10 +1126,12 @@ int main(int, char *[])
 
     // cleanup
     Os::Remove(fileName);
+    Os::Remove(h5fileName);
 
     // Create a Study Object by giving its name
     {
       Study study(fileName);
+      study.setStorageManager(XMLH5StorageManager(fileName));
       Point point(4);
       point[0] = std::numeric_limits<Scalar>::quiet_NaN();
       point[1] = sqrt(-1.0);
@@ -1134,6 +1140,7 @@ int main(int, char *[])
       study.add("point", point);
       study.save();
       Study study2(fileName);
+      study2.setStorageManager(XMLH5StorageManager(fileName));
       study2.load();
       Point point2;
       study2.fillObject("point", point2);
@@ -1146,6 +1153,7 @@ int main(int, char *[])
       }
       // cleanup
       Os::Remove(fileName);
+      Os::Remove(h5fileName);
     }
   }
   catch (TestFailed & ex)

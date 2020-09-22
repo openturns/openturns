@@ -33,7 +33,7 @@ struct XMLH5StorageManagerState : public XMLStorageManagerState
 {
   Bool reachedEnd_;
   XMLH5StorageManagerState() : XMLStorageManagerState(), reachedEnd_(false) {}
-  ~XMLH5StorageManagerState()  {}
+
   virtual XMLH5StorageManagerState * clone() const override
   {
     return new XMLH5StorageManagerState(*this);
@@ -41,10 +41,8 @@ struct XMLH5StorageManagerState : public XMLStorageManagerState
   void next() override
   {
     // TODO: find a cleaner pattern for handling StorageManagerStates increment
-    if (index_ == (UnsignedInteger)std::stoi(XML::GetAttributeByName(current_->parent, "size"))-1
-        || std::stoi(XML::GetAttributeByName(current_->parent, "size")) == 0) {
+    if (reachedEnd_) {
       current_ = XML::GetNextNode(current_);
-      index_ = 0;
     }
   }
   String __repr__() const override

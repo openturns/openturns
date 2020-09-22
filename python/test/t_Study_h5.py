@@ -15,7 +15,7 @@ try:
     myStudy = ot.Study(fileName)
     myStudy.setStorageManager(ot.XMLH5StorageManager(fileName))
 
-    point = ot.Point(3, 123.456)
+    point = ot.Point([123.456, 125.43, 3975.4567])
     point2 = ot.Point(3, 789.123)
     point3 = ot.Point(3, 1673.456)
     point4 = ot.Point(3, 789.654123)
@@ -40,7 +40,9 @@ try:
     print(sample2)
 
     # cleanup
-    # os.remove(fileName)
+    os.remove(fileName)
+    os.remove(fileName.split(".")[0]+".h5")
+
 
 except:
     import os
