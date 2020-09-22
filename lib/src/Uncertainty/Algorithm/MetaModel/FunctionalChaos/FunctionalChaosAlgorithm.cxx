@@ -37,19 +37,13 @@
 #include "openturns/HyperbolicAnisotropicEnumerateFunction.hxx"
 #include "openturns/OrthogonalUniVariatePolynomialFamily.hxx"
 #include "openturns/OrthogonalProductPolynomialFactory.hxx"
-#include "openturns/KernelSmoothing.hxx"
-#include "openturns/NormalCopulaFactory.hxx"
 #include "openturns/UserDefined.hxx"
-#include "openturns/DistributionFactory.hxx"
-#include "openturns/ComposedDistribution.hxx"
 #include "openturns/StandardDistributionPolynomialFactory.hxx"
 #include "openturns/LeastSquaresMetaModelSelectionFactory.hxx"
 #include "openturns/LARS.hxx"
 #include "openturns/KFold.hxx"
 #include "openturns/CorrectedLeaveOneOut.hxx"
-#include "openturns/FittingTest.hxx"
 #include "openturns/DistributionTransformation.hxx"
-#include "openturns/HypothesisTest.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -151,55 +145,6 @@ FunctionalChaosAlgorithm::FunctionalChaosAlgorithm(const Sample & inputSample,
 {
   // Check sample size
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: the input sample and the output sample must have the same size.";
-}
-
-Distribution FunctionalChaosAlgorithm::BuildDistribution(const Sample & inputSample)
-{
-  // Recover the distribution, taking into account that we look for performance
-  // so we avoid to rebuild expensive distributions as much as possible
-  const UnsignedInteger inputDimension = inputSample.getDimension();
-  // For the dependence structure, we use the Spearman independence test to decide between an independent and a Normal copula.
-  Bool isIndependent = true;
-  for (UnsignedInteger j = 0; j < inputDimension && isIndependent; ++ j)
-  {
-    const Sample marginalJ = inputSample.getMarginal(j);
-    for (UnsignedInteger i = j + 1; i < inputDimension && isIndependent; ++ i)
-    {
-      TestResult testResult(HypothesisTest::Spearman(inputSample.getMarginal(i), marginalJ));
-      isIndependent = isIndependent && testResult.getBinaryQualityMeasure();
-    }
-  }
-  Collection< Distribution > marginals(inputDimension);
-  // The strategy for the marginals is to find the best continuous 1-d parametric model else fallback to a kernel smoothing
-  KernelSmoothing ks;
-  Collection< DistributionFactory > factories(DistributionFactory::GetContinuousUniVariateFactories());
-  const Description inputDescription(inputSample.getDescription());
-  for (UnsignedInteger i = 0; i < inputDimension; ++i)
-  {
-    TestResult bestResult;
-    // Here we remove the duplicate entries in the marginal sample as we are suppose to have a continuous distribution. The duplicates are mostly due to truncation in the file export.
-    const Sample marginalSample(inputSample.getMarginal(i).sortUnique());
-    Collection<Distribution> possibleDistributions(0);
-    for (UnsignedInteger j = 0; j < factories.getSize(); ++j)
-      try
-      {
-        possibleDistributions.add(factories[j].build(marginalSample));
-      }
-      catch (...)
-      {
-        // Just skip the factories incompatible with the current marginal sample
-      }
-    const Distribution candidate(FittingTest::BestModelKolmogorov(marginalSample, possibleDistributions, bestResult));
-    // This threshold is somewhat arbitrary. It is here to avoid expensive kernel smoothing.
-    if (bestResult.getPValue() >= ResourceMap::GetAsScalar("FunctionalChaosAlgorithm-PValueThreshold")) marginals[i] = candidate;
-    else marginals[i] = ks.build(marginalSample);
-    marginals[i].setDescription(Description(1, inputDescription[i]));
-  }
-
-  ComposedDistribution distribution(marginals);
-  if (!isIndependent)
-    distribution.setCopula(NormalCopulaFactory().build(inputSample));
-  return distribution;
 }
 
 

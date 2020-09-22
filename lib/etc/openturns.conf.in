@@ -579,9 +579,11 @@
   <CleaningStrategy-DefaultSignificanceFactor value_float="1.0e-4"       />
   <CleaningStrategy-DefaultMaximumSize        value_int="20" />
 
+  <!-- OT::MetaModelAlgorithm parameters -->
+  <MetaModelAlgorithm-PValueThreshold         value_float="1.0e-3" />
+
   <!-- OT::FunctionalChaosAlgorithm parameters -->
   <FunctionalChaosAlgorithm-DefaultMaximumResidual value_float="1.0e-6"          />
-  <FunctionalChaosAlgorithm-PValueThreshold        value_float="1.0e-3"          />
   <FunctionalChaosAlgorithm-QNorm                  value_float="0.5"             />
   <FunctionalChaosAlgorithm-LargeSampleSize        value_int="10000" />
   <FunctionalChaosAlgorithm-MaximumTotalDegree     value_int="10"    />

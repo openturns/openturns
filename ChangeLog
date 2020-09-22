@@ -31,6 +31,7 @@
  * Moved OptimizationAlgorithm::computeLagrangeMultipliers to OptimizationResult
  * Added AIC & BestModelAIC static methods in FittingTest
  * Added AICC & BestModelAICC static methods in FittingTest
+ * Moved BuildDistribution from FunctionalChaosAlgorithm to MetaModelAlgorithm
 
 === Documentation ===
 ==== API documentation ====
