@@ -227,6 +227,11 @@ void ResourceMap::RemoveKey(const String & key)
   GetInstance().lock().removeKey(key);
 }
 
+std::vector<String> ResourceMap::FindKeys(const String & substr)
+{
+  return GetInstance().lock().findKeys(substr);
+}
+
 /* Default constructor */
 ResourceMap::ResourceMap()
   : mapString_()
@@ -1426,6 +1431,19 @@ void ResourceMap::reload()
 {
   loadDefaultConfiguration();
   loadConfigurationFile();
+}
+
+/** Get the list of keys associated to a class */
+std::vector<String> ResourceMap::findKeys(const String & substr)
+{
+  std::vector<String> allKeys(getKeys());
+  std::vector<String> result;
+  for (UnsignedInteger i = 0; i < allKeys.size(); ++ i)
+  {
+    if(allKeys[i].find(substr) != std::string::npos)
+      result.push_back(allKeys[i]);
+  }
+  return result;
 }
 
 /* String converter */

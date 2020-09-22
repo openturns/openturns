@@ -42,6 +42,7 @@
 === Miscellaneous ===
  * Require C99/C++11 support
  * Do not compute Lagrange multipliers by default during an optimization
+ * Add ResourceMap::FindKeys
 
 === Bug fixes ===
  * #1001 (Add method SobolSimulationResult::draw)
