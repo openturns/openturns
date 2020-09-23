@@ -1198,6 +1198,8 @@ void ResourceMap::loadDefaultConfiguration()
 
   // MetaModelAlgorithm parameters //
   addAsScalar("MetaModelAlgorithm-PValueThreshold", 1.0e-3);
+  addAsString("MetaModelAlgorithm-ModelSelectionCriterion", "BIC");
+  addAsString("MetaModelAlgorithm-NonParametricModel", "Histogram");
 
   // FunctionalChaosAlgorithm parameters //
   addAsScalar("FunctionalChaosAlgorithm-DefaultMaximumResidual", 1.0e-6);

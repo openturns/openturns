@@ -86,7 +86,7 @@ protected:
 
 
 private:
-
+  friend struct TestedDistribution;
 
 }; /* class MetaModelAlgorithm */
 

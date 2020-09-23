@@ -581,6 +581,8 @@
 
   <!-- OT::MetaModelAlgorithm parameters -->
   <MetaModelAlgorithm-PValueThreshold         value_float="1.0e-3" />
+  <MetaModelAlgorithm-ModelSelectionCriterion value_string="BIC" />
+  <MetaModelAlgorithm-NonParametricModel      value_string="Histogram" />
 
   <!-- OT::FunctionalChaosAlgorithm parameters -->
   <FunctionalChaosAlgorithm-DefaultMaximumResidual value_float="1.0e-6"          />
