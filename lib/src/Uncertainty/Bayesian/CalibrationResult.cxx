@@ -205,30 +205,69 @@ GridLayout CalibrationResult::drawParameterDistributions() const
 {
   const UnsignedInteger dimension = parameterMAP_.getDimension();
   GridLayout grid(1, dimension);
+  const Point candidate(getParameterPrior().getMean());
   for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
     Graph graph("", getParameterPrior().getDescription()[j], "PDF", true, "topright");
 
-    // prior
-    Graph priorPDF(getParameterPrior().getMarginal(j).drawPDF());
-    priorPDF.setLegends(Description(1, "Prior"));
-    priorPDF.setColors(Description(1, "red"));
-    graph.add(priorPDF);
+    // The graphmust show:
+    // + the full posterior PDF
+    // + the full prior PDF if it does not shrink too much the posterior graph
+    // + the candidate
 
+    // Dry run: draw everything using the natural parameters
     // posterior
     Graph postPDF(getParameterPosterior().getMarginal(j).drawPDF());
+
+    const Scalar xMinPost = postPDF.getDrawable(0).getData().getMin()[0];
+    const Scalar xMaxPost = postPDF.getDrawable(0).getData().getMax()[0];
+    const Scalar deltaPost = xMaxPost - xMinPost;
+
+    // candidate
+    const Scalar xCandidate = candidate[j];
+    Sample data(1, 2);
+    data(0, 0) = xCandidate;
+    Cloud cloudCandidate(data);
+    cloudCandidate.setColor("red");
+    cloudCandidate.setPointStyle("star");
+    cloudCandidate.setLegend("Candidate");
+
+    // prior
+    Graph priorPDF(getParameterPrior().getMarginal(j).drawPDF());
+
+    const Scalar xMinPrior = priorPDF.getDrawable(0).getData().getMin()[0];
+    const Scalar xMaxPrior = priorPDF.getDrawable(0).getData().getMax()[0];
+
+    // Now, build the common range
+    Scalar xMin = std::min(xMinPost, std::max(xMinPrior, xMinPost - 0.5 * deltaPost));
+    Scalar xMax = std::max(xMaxPost, std::min(xMaxPrior, xMaxPost + 0.5 * deltaPost));
+    const Scalar lowXCandidate = xCandidate - 0.1 * deltaPost;
+    if (lowXCandidate < xMin)
+    {
+      xMin = lowXCandidate;
+      xMax = std::max(xMaxPost, xMax - (xMin - lowXCandidate));
+    }
+
+    const Scalar highXCandidate = xCandidate + 0.1 * deltaPost;
+    if (highXCandidate > xMax)
+    {
+      xMax = highXCandidate;
+      xMin = std::min(xMinPost, xMin - (highXCandidate - xMax));
+    }
+
+    // Now draw everything using the common range
+    postPDF = getParameterPosterior().getMarginal(j).drawPDF(xMin, xMax);
     postPDF.setLegends(Description(1, "Posterior"));
     postPDF.setColors(Description(1, "green"));
-    graph.add(postPDF);
 
-    // scale Diracs
-    if (getParameterPrior().getMarginal(j).getImplementation()->getClassName() == "Dirac")
-    {
-      const Scalar postMax = postPDF.getDrawable(0).getData().getMax()[1];
-      for (UnsignedInteger i = 0; i < priorPDF.getDrawable(0).getData().getSize(); ++ i)
-        if (priorPDF.getDrawable(0).getData()(i, 1) == 1.0)
-          priorPDF.getDrawable(0).getData().getImplementation()->operator()(i, 1) = postMax;
-    }
+    priorPDF.setLegends(Description(1, "Prior"));
+    priorPDF.setColors(Description(1, "red"));
+    priorPDF = getParameterPrior().getMarginal(j).drawPDF(xMin, xMax);
+
+    // assemble the graphs in the correct order
+    graph.add(priorPDF);
+    graph.add(postPDF);
+    graph.add(cloudCandidate);
 
     grid.setGraph(0, j, graph);
   }
@@ -242,26 +281,36 @@ GridLayout CalibrationResult::drawResiduals() const
 
   const UnsignedInteger outputDimension = outputObservations_.getDimension();
   GridLayout grid(1, outputDimension);
-  Sample priorResiduals(outputObservations_ - outputAtPriorMean_);
-  Sample postResiduals(outputObservations_ - outputAtPosteriorMean_);
+  const Sample priorResiduals(outputObservations_ - outputAtPriorMean_);
+  const Sample postResiduals(outputObservations_ - outputAtPosteriorMean_);
+  const Point priorMin(priorResiduals.getMin());
+  const Point priorMax(priorResiduals.getMax());
+  const Point postMin(postResiduals.getMin());
+  const Point postMax(postResiduals.getMax());
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
     Graph graph("Residual analysis", outputObservations_.getDescription()[j] + " residuals", "PDF", true, "topright");
 
+    const Distribution errorJ(getObservationsError().getMarginal(j));
+    const Scalar errorMin = errorJ.computeQuantile(ResourceMap::GetAsScalar("Distribution-QMin"))[0];
+    const Scalar errorMax = errorJ.computeQuantile(ResourceMap::GetAsScalar("Distribution-QMax"))[0];
+    const Scalar delta = 2.0 * (errorMax - errorMin) * (1.0 - 0.5 * (ResourceMap::GetAsScalar("Distribution-QMax" ) - ResourceMap::GetAsScalar("Distribution-QMin")));
+    const Scalar xMin = std::min(priorMin[j], std::min(postMin[j], errorMin - delta));
+    const Scalar xMax = std::max(priorMax[j], std::max(postMax[j], errorMax + delta));
     // prior
-    Graph priorPDF(KernelSmoothing().build(priorResiduals.getMarginal(j)).drawPDF());
+    Graph priorPDF(KernelSmoothing().build(priorResiduals.getMarginal(j)).drawPDF(xMin, xMax));
     priorPDF.setLegends(Description(1, "Initial"));
     priorPDF.setColors(Description(1, "red"));
     graph.add(priorPDF);
 
     // posterior
-    Graph postPDF(KernelSmoothing().build(postResiduals.getMarginal(j)).drawPDF());
+    Graph postPDF(KernelSmoothing().build(postResiduals.getMarginal(j)).drawPDF(xMin, xMax));
     postPDF.setLegends(Description(1, "Calibrated"));
     postPDF.setColors(Description(1, "green"));
     graph.add(postPDF);
 
     // observation error
-    Graph obsPDF(getObservationsError().getMarginal(j).drawPDF());
+    Graph obsPDF(errorJ.drawPDF(xMin, xMax));
     obsPDF.setLegends(Description(1, "Observation errors"));
     obsPDF.setColors(Description(1, "blue"));
     graph.add(obsPDF);

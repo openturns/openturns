@@ -20,7 +20,6 @@
  */
 #include "openturns/GaussianLinearCalibration.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Dirac.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/LinearFunction.hxx"
 

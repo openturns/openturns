@@ -20,9 +20,9 @@
  */
 #include "openturns/LinearLeastSquaresCalibration.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Dirac.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/LinearFunction.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -45,7 +45,7 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Function & mo
     const Sample & outputObservations,
     const Point & candidate,
     const String & methodName)
-  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Dirac(candidate))
+  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(candidate, CovarianceMatrix((IdentityMatrix(candidate.getDimension()) * SpecFunc::MaxScalar).getImplementation())))
   , modelObservations_(0, 0)
   , gradientObservations_(0, 0)
   , methodName_(methodName)
@@ -83,7 +83,7 @@ LinearLeastSquaresCalibration::LinearLeastSquaresCalibration(const Sample & mode
     const Sample & outputObservations,
     const Point & candidate,
     const String & methodName)
-  : CalibrationAlgorithmImplementation(Function(), Sample(), outputObservations, Dirac(candidate))
+  : CalibrationAlgorithmImplementation(Function(), Sample(), outputObservations, Normal(candidate, CovarianceMatrix((IdentityMatrix(candidate.getDimension()) * SpecFunc::MaxScalar).getImplementation())))
   , modelObservations_(modelObservations)
   , gradientObservations_(gradientObservations)
   , methodName_(methodName)
@@ -132,7 +132,7 @@ void LinearLeastSquaresCalibration::run()
   }
   catch (...)
   {
-    error = Dirac(dimension);
+    error = Normal(Point(dimension), CovarianceMatrix((IdentityMatrix(dimension) * SpecFunc::MaxScalar).getImplementation()));
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const LinearFunction residualFunction(getCandidate(), deltaY, gradientObservations_);
@@ -156,8 +156,8 @@ Matrix LinearLeastSquaresCalibration::getGradientObservations() const
 /* Candidate accessor */
 Point LinearLeastSquaresCalibration::getCandidate() const
 {
-  // The candidate is stored in the prior distribution, which is a Dirac distribution
-  return getParameterPrior().getSupport()[0];
+  // The candidate is stored in the prior distribution, which is a flat Normal distribution
+  return getParameterPrior().getMean();
 }
 
 /* Least squares method name accessor */

@@ -20,7 +20,6 @@
  */
 #include "openturns/NonLinearLeastSquaresCalibration.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Dirac.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/NormalFactory.hxx"
 #include "openturns/KernelSmoothing.hxx"
@@ -33,6 +32,7 @@
 #include "openturns/MultiStart.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/LeastSquaresProblem.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/LinearLeastSquaresCalibration.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -53,7 +53,7 @@ NonLinearLeastSquaresCalibration::NonLinearLeastSquaresCalibration(const Functio
     const Sample & inputObservations,
     const Sample & outputObservations,
     const Point & candidate)
-  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Dirac(candidate))
+  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(candidate, CovarianceMatrix((IdentityMatrix(candidate.getDimension()) * SpecFunc::MaxScalar).getImplementation())))
   , algorithm_()
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-BootstrapSize"))
 {
@@ -323,8 +323,8 @@ Point NonLinearLeastSquaresCalibration::run(const Sample & inputObservations,
 /* Candidate accessor */
 Point NonLinearLeastSquaresCalibration::getCandidate() const
 {
-  // The candidate is stored in the prior distribution, which is a Dirac distribution
-  return getParameterPrior().getSupport()[0];
+  // The candidate is stored in the prior distribution, which is a Normal distribution
+  return getParameterPrior().getMean();
 }
 
 /* Algorithm accessor */
