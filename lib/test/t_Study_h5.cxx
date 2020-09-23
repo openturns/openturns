@@ -54,8 +54,8 @@ int main(int, char *[])
   OStream fullprint(std::cout);
   setRandomGenerator();
 
-  const char fileName[] = "myStudy.xml";
-  const char h5fileName[] = "myStudy.h5";
+  const char fileName[] = "myStudyH5.xml";
+  const char h5fileName[] = "myStudyH5.h5";
 
   try
   {

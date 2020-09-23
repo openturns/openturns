@@ -10,7 +10,7 @@ import math as m
 ot.TESTPREAMBLE()
 
 try:
-    fileName = 'myStudy.xml'
+    fileName = 'myStudyH5.xml'
     #XMLH5StorageManager
     myStudy = ot.Study(fileName)
     myStudy.setStorageManager(ot.XMLH5StorageManager(fileName))
