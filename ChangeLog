@@ -59,6 +59,7 @@
  * #1564 (Set a Point makes ot crash)
  * #1567 (The API doc of SobolIndicesExperiment has a format issue)
  * #1573 (LinearModelAnalysis::drawQQPlot line is not the first bisector)
+ * #1594 (LinearLeastSquaresCalibration and CalibrationResult)
 
 
 == 1.15 release (2020-05-25) == #release-1.15

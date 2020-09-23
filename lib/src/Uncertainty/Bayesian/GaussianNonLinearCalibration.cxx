@@ -22,7 +22,6 @@
 #include "openturns/GaussianLinearCalibration.hxx"
 #include "openturns/NonLinearLeastSquaresCalibration.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Dirac.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/NormalFactory.hxx"
 #include "openturns/KernelSmoothing.hxx"

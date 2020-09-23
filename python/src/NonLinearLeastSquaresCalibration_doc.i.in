@@ -17,7 +17,8 @@ Notes
 -----
 NonLinearLeastSquaresCalibration is the minimum variance estimator of the parameter of a given model with no assumption on the dependence of the model wrt the parameter.
 
-The prior distribution of the parameter is a :class:`~openturns.Dirac`.  
+The prior distribution of the parameter is a noninformative prior
+emulated using a flat :class:`~openturns.Normal` centered on the candidate and with a variance equal to SpecFunc.MaxScalar.
 
 The posterior distribution of the parameter is :class:`~openturns.Normal` and reflects the 
 variability of the optimum parameter depending on the observation sample. 
