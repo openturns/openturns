@@ -53,6 +53,10 @@ public:
   virtual Point operator()(const Point & inP) const;
   virtual Sample operator()(const Sample & inS) const;
 
+  /** Invalid values check accessor */
+  virtual void setCheckOutput(const Bool checkOutput);
+  virtual Bool getCheckOutput() const;
+
   /* Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
@@ -62,7 +66,7 @@ public:
 protected:
   Description inputVariablesNames_;
   Description formulas_;
-  Bool checkResult_;
+  Bool checkOutput_ = true;
 }; /* class SymbolicParserImplementation */
 
 END_NAMESPACE_OPENTURNS

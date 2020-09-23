@@ -196,6 +196,28 @@ UnsignedInteger EvaluationProxy::getCallsNumber() const
   return evaluation_.getCallsNumber();
 }
 
+/* Linearity accessors */
+Bool EvaluationProxy::isLinear() const
+{
+  return evaluation_.isLinear();
+}
+
+Bool EvaluationProxy::isLinearlyDependent(const UnsignedInteger index) const
+{
+  return evaluation_.isLinearlyDependent(index);
+}
+
+/* Invalid values check accessor */
+void EvaluationProxy::setCheckOutput(const Bool checkOutput)
+{
+  evaluation_.setCheckOutput(checkOutput);
+}
+
+Bool EvaluationProxy::getCheckOutput() const
+{
+  return evaluation_.getCheckOutput();
+}
+
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph EvaluationProxy::draw(const UnsignedInteger inputMarginal,

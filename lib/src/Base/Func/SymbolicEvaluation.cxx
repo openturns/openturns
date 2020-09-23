@@ -268,6 +268,13 @@ Bool SymbolicEvaluation::isLinearlyDependent(const UnsignedInteger index) const
   return true;
 }
 
+/* Invalid values check accessor */
+void SymbolicEvaluation::setCheckOutput(const Bool checkOutput)
+{
+  EvaluationImplementation::setCheckOutput(checkOutput);
+  parser_.setCheckOutput(checkOutput);
+}
+
 /* Method save() stores the object through the StorageManager */
 void SymbolicEvaluation::save(Advocate & adv) const
 {

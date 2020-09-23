@@ -37,7 +37,6 @@
   <SpecFunc-MaximumIteration value_int="1000" />
 
   <!-- OT::SymbolicParser parameters -->
-  <SymbolicParser-CheckResult value_bool="true"                               />
   <SymbolicParser-Backend     value_str="@SYMBOLICPARSER_DEFAULT_BACKEND@" />
 
   <!-- OT::DesignProxy parameters -->

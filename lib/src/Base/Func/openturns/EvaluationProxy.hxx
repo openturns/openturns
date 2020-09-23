@@ -110,7 +110,15 @@ public:
   void setParameterDescription(const Description & description) override;
 
   /** Get the number of calls to operator() */
-  UnsignedInteger getCallsNumber() const;
+  UnsignedInteger getCallsNumber() const override;
+
+  /** Linearity accessors */
+  Bool isLinear() const override;
+  Bool isLinearlyDependent(const UnsignedInteger index) const override;
+
+  /** Invalid values check accessor */
+  void setCheckOutput(const Bool checkOutput) override;
+  Bool getCheckOutput() const override;
 
   /** Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
   Graph draw(const UnsignedInteger inputMarginal,

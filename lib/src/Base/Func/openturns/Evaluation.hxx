@@ -119,6 +119,9 @@ public:
   Bool isLinear() const;
   Bool isLinearlyDependent(const UnsignedInteger index) const;
 
+  /** Invalid values check accessor */
+  void setCheckOutput(const Bool checkOutput);
+  Bool getCheckOutput() const;
 
   /** Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
   virtual Graph draw(const UnsignedInteger inputMarginal,

@@ -62,6 +62,10 @@ public:
 
   Point operator()(const Point & inP) const;
   Sample operator()(const Sample & inS) const;
+
+  /** Invalid values check accessor */
+  void setCheckOutput(const Bool checkOutput);
+  Bool getCheckOutput() const;
 };
 
 END_NAMESPACE_OPENTURNS

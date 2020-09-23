@@ -119,5 +119,16 @@ Sample SymbolicParser::operator() (const Sample & inS) const
   return getImplementation()->operator()(inS);
 }
 
+/* Invalid values check accessor */
+void SymbolicParser::setCheckOutput(const Bool checkOutput)
+{
+  copyOnWrite();
+  getImplementation()->setCheckOutput(checkOutput);
+}
+
+Bool SymbolicParser::getCheckOutput() const
+{
+  return getImplementation()->getCheckOutput();
+}
 
 END_NAMESPACE_OPENTURNS

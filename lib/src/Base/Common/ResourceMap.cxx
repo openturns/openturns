@@ -654,7 +654,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("SpecFunc-MaximumIteration", 1000);
 
   // SymbolicParser parameters
-  addAsBool("SymbolicParser-CheckResult", true);
   addAsString("SymbolicParser-Backend", SYMBOLICPARSER_DEFAULT_BACKEND);
 
   // DesignProxy parameters

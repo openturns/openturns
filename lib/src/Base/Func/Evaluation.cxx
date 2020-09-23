@@ -208,6 +208,18 @@ Bool Evaluation::isLinearlyDependent(const UnsignedInteger index) const
   return getImplementation()->isLinearlyDependent(index);
 }
 
+/* Invalid values check accessor */
+void Evaluation::setCheckOutput(const Bool checkOutput)
+{
+  copyOnWrite();
+  getImplementation()->setCheckOutput(checkOutput);
+}
+
+Bool Evaluation::getCheckOutput() const
+{
+  return getImplementation()->getCheckOutput();
+}
+
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph Evaluation::draw(const UnsignedInteger inputMarginal,
                        const UnsignedInteger outputMarginal,

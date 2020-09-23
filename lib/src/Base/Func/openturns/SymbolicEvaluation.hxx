@@ -93,6 +93,9 @@ public:
   Bool isLinear() const override;
   Bool isLinearlyDependent(const UnsignedInteger index) const override;
 
+  /** Invalid values check accessor */
+  void setCheckOutput(const Bool checkOutput) override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

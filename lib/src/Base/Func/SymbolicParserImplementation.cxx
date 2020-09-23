@@ -34,9 +34,6 @@ static const Factory<SymbolicParserImplementation> Factory_SymbolicParserImpleme
 /* Default constructor */
 SymbolicParserImplementation::SymbolicParserImplementation()
   : PersistentObject()
-  , inputVariablesNames_()
-  , formulas_()
-  , checkResult_(ResourceMap::GetAsBool("SymbolicParser-CheckResult"))
 {
   // Nothing to do
 }
@@ -89,13 +86,24 @@ Sample SymbolicParserImplementation::operator()(const Sample & inS) const
   return result;
 }
 
+/* Invalid values check accessor */
+void SymbolicParserImplementation::setCheckOutput(const Bool checkOutput)
+{
+  checkOutput_ = checkOutput;
+}
+
+Bool SymbolicParserImplementation::getCheckOutput() const
+{
+  return checkOutput_;
+}
+
 /* Method save() stores the object through the StorageManager */
 void SymbolicParserImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute( "inputVariablesNames_", inputVariablesNames_ );
   adv.saveAttribute( "formulas_", formulas_ );
-  adv.saveAttribute( "checkResult_", checkResult_ );
+  adv.saveAttribute( "checkOutput_", checkOutput_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -104,7 +112,10 @@ void SymbolicParserImplementation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "inputVariablesNames_", inputVariablesNames_ );
   adv.loadAttribute( "formulas_", formulas_ );
-  adv.loadAttribute( "checkResult_", checkResult_ );
+  if (adv.hasAttribute("checkResult_"))
+    adv.loadAttribute( "checkResult_", checkOutput_ );
+  else
+    adv.loadAttribute( "checkOutput_", checkOutput_ );
 }
 
 

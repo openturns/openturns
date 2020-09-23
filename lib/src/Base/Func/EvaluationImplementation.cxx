@@ -278,6 +278,17 @@ Bool EvaluationImplementation::isLinearlyDependent(const UnsignedInteger index) 
   return false;
 }
 
+/* Invalid values check accessor */
+void EvaluationImplementation::setCheckOutput(const Bool checkOutput)
+{
+  checkOutput_ = checkOutput;
+}
+
+Bool EvaluationImplementation::getCheckOutput() const
+{
+  return checkOutput_;
+}
+
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
                                      const UnsignedInteger outputMarginal,
@@ -446,6 +457,7 @@ void EvaluationImplementation::save(Advocate & adv) const
   adv.saveAttribute( "outputDescription_", outputDescription_ );
   adv.saveAttribute( "parameter_", parameter_ );
   adv.saveAttribute( "parameterDescription_", parameterDescription_ );
+  adv.saveAttribute( "checkOutput_", checkOutput_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -459,6 +471,7 @@ void EvaluationImplementation::load(Advocate & adv)
   adv.loadAttribute( "outputDescription_", outputDescription_ );
   adv.loadAttribute( "parameter_", parameter_ );
   adv.loadAttribute( "parameterDescription_", parameterDescription_ );
+  adv.loadAttribute( "checkOutput_", checkOutput_ );
 }
 
 END_NAMESPACE_OPENTURNS

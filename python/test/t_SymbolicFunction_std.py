@@ -182,8 +182,8 @@ try:
 except:
     print(f, ", f([-1]) not defined")
 
-ot.ResourceMap.SetAsBool("SymbolicParser-CheckResult", False)
 f = ot.SymbolicFunction("x", "sqrt(x)")
+f.getEvaluation().getImplementation().setCheckOutput(False)
 print(f, ", f([-1]) is normal?", ot.SpecFunc.IsNormal(f([-1.0])[0]))
 
 # joe copula bug
