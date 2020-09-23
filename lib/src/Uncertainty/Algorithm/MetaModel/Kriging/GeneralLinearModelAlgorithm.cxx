@@ -559,8 +559,7 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   }
   // At this point we have an optimization problem to solve
   // Define the optimization problem
-  OptimizationProblem problem;
-  problem.setObjective(reducedLogLikelihoodFunction);
+  OptimizationProblem problem(reducedLogLikelihoodFunction);
   problem.setMinimization(false);
   problem.setBounds(optimizationBounds_);
   solver_.setStartingPoint(initialParameters);

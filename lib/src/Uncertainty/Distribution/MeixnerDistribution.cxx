@@ -421,28 +421,27 @@ void MeixnerDistribution::update()
   MeixnerBoundB fB(clone());
   MeixnerBoundCD fCD(clone());
 
-  // Initialize Optimization problems
-  OptimizationProblem problem;
-
   // Define Optimization problem1 : maximization fB
-  problem.setMinimization(false);
-  problem.setObjective(fB);
-  problem.setBounds(getRange());
+  OptimizationProblem problem1(fB);
+  problem1.setMinimization(false);
+  problem1.setObjective(fB);
+  problem1.setBounds(getRange());
   solver_.setStartingPoint(getMean());
-  solver_.setProblem(problem);
+  solver_.setProblem(problem1);
   solver_.run();
   b_ = std::sqrt(solver_.getResult().getOptimalValue()[0]);
 
   // Define Optimization problem2 : minimization fCD
-  problem.setMinimization(true);
-  problem.setObjective(fCD);
-  solver_.setProblem(problem);
+  OptimizationProblem problem2(fCD);
+  problem2.setMinimization(true);
+  solver_.setProblem(problem2);
   solver_.run();
   c_ = solver_.getResult().getOptimalValue()[0];
 
   // Define Optimization problem3 : maximization fCD
-  problem.setMinimization(false);
-  solver_.setProblem(problem);
+  OptimizationProblem problem3(fCD);
+  problem3.setMinimization(false);
+  solver_.setProblem(problem3);
   solver_.run();
   dc_ = solver_.getResult().getOptimalValue()[0] - c_;
 }

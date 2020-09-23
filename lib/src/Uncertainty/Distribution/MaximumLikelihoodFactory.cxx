@@ -292,9 +292,8 @@ Point MaximumLikelihoodFactory::buildParameter(const Sample & sample) const
   logLikelihood.setGradient(logLikelihoodGradientWrapper.clone());
 
   // Define optimization problem
-  OptimizationProblem problem;
+  OptimizationProblem problem(logLikelihood);
   problem.setMinimization(false);
-  problem.setObjective(logLikelihood);
   problem.setBounds(optimizationBounds_);
   problem.setInequalityConstraint(optimizationInequalityConstraint_);
 
