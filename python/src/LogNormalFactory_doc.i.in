@@ -100,20 +100,26 @@ Thus, :math:`\hat{\gamma}_n` satisfies the relation:
 
 .. math::
     :label: ln_mll_relation
-    
+
     S_0 (\gamma) \left(S_2(\gamma) - S_1(\gamma) \left( 1 + \frac{S_1(\gamma)}{n} \right) \right) + n S_3(\gamma) = 0
 
 under the constraint :math:`\gamma \leq \min x_i`.
 
 **Least squares method estimator:**
 
-The parameter :math:`\gamma` is numerically optimized by non-linear least squares.
+The parameter :math:`\gamma` is numerically optimized by non-linear least-squares:
 
-When :math:`\gamma` is known and the x_i follow a Log-Normal distribution then
+.. math::
+
+    \min{\gamma} \norm{\Phi^{-1}(\hat{F}_n(x_i)) - (a_1 \log(x_i - \gamma) + a_0)}_2^2
+
+where :math:`a_0, a_1` are computed from linear least-squares at each optimization evaluation.
+
+When :math:`\gamma` is known and the :math:`x_i` follow a Log-Normal distribution then
 we use linear least-squares to solve the relation:
 
 .. math::
-  :label: least_squares_estimator
+  :label: least_squares_estimator_lognormal
 
     \Phi^{-1}(\hat{F}_n(x_i)) = a_1 \log(x_i - \gamma) + a_0
 
@@ -123,7 +129,14 @@ And the remaining parameters are estimated with:
 
     \hat{\sigma}_l &= \frac{1}{a_1}\\
     \hat{\mu}_l &= -a_0 \hat{\sigma}_l
-"
+
+Examples
+--------
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> sample = ot.LogNormal(1.5, 2.5, -1.5).getSample(1000)
+>>> estimated = ot.LogNormalFactory().build(sample)"
 
 // ---------------------------------------------------------------------
 
@@ -270,6 +283,8 @@ Parameters
 ----------
 sample : 2-d sequence of float, of dimension 1
     The sample from which the distribution parameters are estimated.
+gamma : float, optional
+    The :math:`\gamma` parameter estimate
 
 Returns
 -------
