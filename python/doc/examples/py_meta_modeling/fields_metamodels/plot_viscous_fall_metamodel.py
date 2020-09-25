@@ -231,7 +231,8 @@ graph.setTitle('Model/metamodel comparison')
 graph.setXTitle(r'$t$')
 graph.setYTitle(r'$z$')
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()
 
 # %%
 # We see that the blue trajectories (i.e. the metamodel) are close to the red trajectories (i.e. the validation sample). This shows that the metamodel is quite accurate. However, we observe that the trajectory singularity that occurs when the object touches the ground (i.e. when :math:`z` is equal to zero), makes the metamodel less accurate.

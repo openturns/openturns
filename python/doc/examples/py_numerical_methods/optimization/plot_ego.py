@@ -400,5 +400,6 @@ view = viewer.View(graph)
 graph = result.drawOptimalValueHistory()
 view = viewer.View(graph)
 
-plt.show()
+if not viewer._noshow:
+    plt.show()
 # %%

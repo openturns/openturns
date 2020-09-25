@@ -260,4 +260,5 @@ Q.setDescription(["Quartic Kernel"])
 # %%
 graph = Q.drawPDF()
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

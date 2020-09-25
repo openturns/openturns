@@ -78,4 +78,5 @@ resultLinearModelResidualMean = ot.LinearModelTest.LinearModelResidualMean(Xsamp
 print("Test Success ? ", resultLinearModelResidualMean.getBinaryQualityMeasure())
 print("p-value of the LinearModelResidualMean Test = ", resultLinearModelResidualMean.getPValue())
 print("p-value threshold = ", resultLinearModelResidualMean.getThreshold())
-plt.show()
+if not viewer._noshow:
+    plt.show()

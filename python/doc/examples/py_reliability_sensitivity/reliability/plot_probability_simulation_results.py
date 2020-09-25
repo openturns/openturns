@@ -177,4 +177,5 @@ inputSampleStored
 estimator_probability_sample = algo.getConvergenceStrategy().getSample()[0]
 estimator_variance_sample = algo.getConvergenceStrategy().getSample()[1]
 print(estimator_probability_sample, estimator_variance_sample)
-plt.show()
+if not viewer._noshow:
+    plt.show()

@@ -184,4 +184,5 @@ qMax = 0.9
 nbrPoints = 101
 quantileGraph = dist_2.drawQuantile(qMin, qMax, nbrPoints)
 view = viewer.View(quantileGraph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

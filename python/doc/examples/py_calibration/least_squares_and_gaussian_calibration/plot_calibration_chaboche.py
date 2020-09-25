@@ -911,6 +911,7 @@ view = viewer.View(graph)
 # %%
 _ = mypcr.drawParameterDistributions()
 
-plt.show()
+if not viewer._noshow:
+    plt.show()
 # %%
 # We see that the prior and posterior distribution for the :math:`\gamma` parameter are close to each other, but not superimposed: the observations significantly brought information to the variable :math:`\gamma` during the calibration.

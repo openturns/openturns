@@ -93,4 +93,5 @@ view = viewer.View(graph)
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(correlatedIndices, distribution.getDescription(), 'ANCOVA correlated indices\n(part of variance due to the correlation)')
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

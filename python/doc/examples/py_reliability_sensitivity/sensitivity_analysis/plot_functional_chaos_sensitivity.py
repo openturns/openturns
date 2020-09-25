@@ -88,4 +88,5 @@ for i in range(dimension):
     for j in range(i):
         print(input_names[i] + ' & '+ input_names[j], ":", sensitivityAnalysis.getSobolIndex([i, j]))
 
-plt.show()
+if not viewer._noshow:
+    plt.show()

@@ -110,5 +110,6 @@ moe = ot.Function(evaluation)
 # Draw the mixture of experts
 graph = moe.draw(-1.0, 1.0)
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()
 

@@ -150,4 +150,5 @@ graph = ot.SobolIndicesAlgorithm.DrawCorrelationCoefficients(spearman_correlatio
                                                      input_names, 
                                                      "Spearman correlation coefficients")
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

@@ -53,4 +53,5 @@ view = viewer.View(graph)
 # draw CDF
 graph = distribution.drawCDF()
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

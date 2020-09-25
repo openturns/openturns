@@ -561,4 +561,5 @@ view = viewer.View(graph)
 _ = mypcr.drawParameterDistributions()
 #view = viewer.View(graph)
 
-plt.show()
+if not viewer._noshow:
+    plt.show()

@@ -308,7 +308,8 @@ printMethodSummary("Monte-Carlo", probabilityMonteCarlo, numberOfFunctionEvaluat
 printMethodSummary("FORM", probabilityFORM, numberOfFunctionEvaluationsFORM)
 printMethodSummary("DirectionalSampling", probabilityDirectionalSampling, numberOfFunctionEvaluationsDirectionalSampling)
 printMethodSummary("FORM-IS", probabilityFORMIS, numberOfFunctionEvaluationsFORMIS)
-plt.show()
+if not viewer._noshow:
+    plt.show()
 
 # %%
 # We see that all three methods produce the correct probability, but not with the same accuracy. In this case, we have found the correct order of magnitude of the probability, i.e. between one and two correct digits. There is, however, a significant difference in computational performance (measured here by the number of function evaluations).

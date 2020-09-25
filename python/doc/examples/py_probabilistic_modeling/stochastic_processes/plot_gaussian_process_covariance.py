@@ -38,4 +38,5 @@ print(process)
 sample = process.getSample(6)
 graph = sample.drawMarginal(0)
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

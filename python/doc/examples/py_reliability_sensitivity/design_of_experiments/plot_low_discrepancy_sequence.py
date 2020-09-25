@@ -71,4 +71,5 @@ graph = ot.Graph("Mersenne Twister", "", "", True, "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

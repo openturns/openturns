@@ -69,4 +69,5 @@ myGraph = ot.Graph('User covariance model', 'Time', 'Covariance function', True)
 myGraph.add(curve)
 myGraph.setLegendPosition('topright')
 view = viewer.View(myGraph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

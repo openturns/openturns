@@ -130,7 +130,8 @@ graphConditionnalQ.setLegends(["Q|H>H_%s" % (alpha)])
 graph.add(graphConditionnalQ)
 view = viewer.View(graph)
 
-plt.show()
+if not viewer._noshow:
+    plt.show()
 # %%
 # We see that the two histograms are very different. The high values of the input :math:`Q` seem to often lead to a high value of the output :math:`H`. 
 #

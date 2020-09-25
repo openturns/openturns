@@ -25,4 +25,5 @@ sample = distribution.getSample(200)
 graph = ot.Graph("Cloud pairs graph", " ", " ", True, "")
 graph = ot.VisualTest.DrawPairs(sample)
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

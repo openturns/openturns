@@ -62,4 +62,5 @@ for k in range(sample.getSize()):
   drawable.setLegend('realization ' + str(k+1))
   graph.setDrawable(drawable, k)
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

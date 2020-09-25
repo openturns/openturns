@@ -169,7 +169,8 @@ total_order = [chaosSI.getSobolTotalIndex(i) for i in range(dim_input)]
 input_names = g.getInputDescription()
 graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, first_order, total_order)
 view = viewer.View(graph)
-plt.show() 
+if not viewer._noshow:
+    plt.show() 
 
 # %%
 # Conclusion

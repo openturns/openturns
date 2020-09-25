@@ -103,4 +103,5 @@ graph.setTitle('Viscous free fall: %d trajectories' % (size))
 graph.setXTitle(r'$t$')
 graph.setYTitle(r'$z$')
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

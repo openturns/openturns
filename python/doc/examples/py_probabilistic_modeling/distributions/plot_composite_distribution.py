@@ -43,4 +43,5 @@ view = viewer.View(graph)
 distribution = antecedent.abs().sqrt()
 graph = distribution.drawPDF()
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

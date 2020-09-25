@@ -259,6 +259,7 @@ Y = ot.TruncatedDistribution(X,2.,ot.TruncatedDistribution.UPPER)
 graph = Y.drawPDF()
 view = viewer.View(graph)
 
-plt.show()
+if not viewer._noshow:
+    plt.show()
 # %%
 # In the specific case of the Gaussian distribution, the specialized `TruncatedNormal` distribution can be used instead of the generic `TruncatedDistribution` class.

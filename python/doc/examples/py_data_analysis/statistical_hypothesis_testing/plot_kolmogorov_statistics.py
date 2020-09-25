@@ -99,7 +99,8 @@ x
 # %%
 graph = drawKSDistance(sample,distribution,x,D,distFactory)
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()
 
 # %%
 # We see that the K.S. statistics is acheived where the distance between the empirical distribution function of the sample and the candidate distribution is largest.

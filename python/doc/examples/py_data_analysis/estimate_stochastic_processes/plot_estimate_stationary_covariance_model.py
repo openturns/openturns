@@ -95,4 +95,5 @@ curveModel.setColor('red')
 graph.add(curveModel)
 graph.setLegendPosition('topright')
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

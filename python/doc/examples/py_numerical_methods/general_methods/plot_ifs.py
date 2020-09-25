@@ -106,6 +106,7 @@ f_i = [f1, f2, f3]
 graph, s = drawIFS(f_i, skip = 100, iterations = 100000, batch_size = 1, name="Sierpinski's triangle", color="magenta")
 print("Box counting dimension=%.3f" % s)
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()
 
 # %%

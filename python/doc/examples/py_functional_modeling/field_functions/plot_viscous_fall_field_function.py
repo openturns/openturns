@@ -178,6 +178,7 @@ graph.setTitle('Viscous free fall: %d trajectories' % (size))
 graph.setXTitle(r'$t$')
 graph.setYTitle(r'$z$')
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()
 # %%
 # We see that the object first moves up and then falls down. Not all objects, however, achieve the same maximum altitude. We see that some trajectories reach a higher maximum altitude than others. Moreover, at the final time :math:`t_{max}`, one trajectory hits the ground: :math:`z(t_{max})=0` for this trajectory.

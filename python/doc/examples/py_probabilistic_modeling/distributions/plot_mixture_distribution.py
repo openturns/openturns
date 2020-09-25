@@ -47,4 +47,5 @@ print(distribution)
 # draw PDF
 graph = distribution.drawPDF()
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

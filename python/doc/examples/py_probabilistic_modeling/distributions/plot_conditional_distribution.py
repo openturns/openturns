@@ -48,4 +48,5 @@ XDist.getSample(5)
 # draw PDF
 graph = XDist.drawPDF()
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

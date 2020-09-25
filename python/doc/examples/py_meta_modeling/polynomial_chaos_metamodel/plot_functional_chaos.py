@@ -199,7 +199,8 @@ cloud.setPointStyle("bullet")
 graph.add(cloud)
 graph.setLegendPosition("topright")
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()
 
 # %%
 # We see that a total degree lower than 9 is not sufficient to describe the first output with good predictivity. However, the coefficient of predictivity drops when the total degree gets greater than 12. 

@@ -58,4 +58,5 @@ graph.add(kernel_plot)
 graph.setLegends(['original', 'KS'])
 graph.setLegendPosition('topright')
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

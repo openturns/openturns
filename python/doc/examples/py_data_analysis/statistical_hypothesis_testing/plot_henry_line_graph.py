@@ -27,4 +27,5 @@ view = viewer.View(graph)
 sample2 = ot.Beta(0.7, 0.9, 0.0, 2.0).getSample(100)
 graph = ot.VisualTest_DrawHenryLine(sample2)
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

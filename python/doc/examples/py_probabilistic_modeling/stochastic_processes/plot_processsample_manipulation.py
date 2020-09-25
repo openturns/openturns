@@ -76,4 +76,5 @@ view = viewer.View(graph)
 
 # %%
 #processSample
-plt.show()
+if not viewer._noshow:
+    plt.show()

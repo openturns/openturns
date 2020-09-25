@@ -86,4 +86,5 @@ view = viewer.View(graph)
 # with no interpolation
 graph = myTimeSeries.drawMarginal(0, False)
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

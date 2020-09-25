@@ -198,7 +198,8 @@ graph.setLegends([""])
 graph.setTitle("Q2 = %.2f%%" % (100*Q2))
 view = viewer.View(graph)
 
-plt.show()
+if not viewer._noshow:
+    plt.show()
 # %%
 # We observe that the metamodel predictions are close to the model outputs, since most red points are close to the diagonal. However, when we consider extreme deviations (i.e. less than 10 or larger than 20), then the quality is less obvious.
 #

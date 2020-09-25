@@ -219,5 +219,6 @@ view = viewer.View(graph)
 graph =validation.getResidualDistribution().drawPDF() 
 graph.setXTitle("Residuals")
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()
 

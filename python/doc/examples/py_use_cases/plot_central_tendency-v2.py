@@ -97,4 +97,5 @@ graph.setTitle("Kernel smoothing approximation of the output distribution")
 graph
 view = viewer.View(graph)
 
-plt.show()
+if not viewer._noshow:
+    plt.show()

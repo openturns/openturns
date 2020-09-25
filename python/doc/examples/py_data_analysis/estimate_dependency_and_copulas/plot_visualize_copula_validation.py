@@ -59,5 +59,6 @@ contour_estCop.setColor('red')
 # Add the iso-curves graph into the cloud one
 myGraph.add(contour_estCop)
 view = viewer.View(myGraph)
-plt.show()
+if not viewer._noshow:
+    plt.show()
 

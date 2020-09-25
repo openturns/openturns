@@ -187,4 +187,5 @@ sorm_result.getEventProbabilityHohenBichler()
 # ... with Tvedt approximation
 sorm_result.getEventProbabilityTvedt()
 
-plt.show()
+if not viewer._noshow:
+    plt.show()

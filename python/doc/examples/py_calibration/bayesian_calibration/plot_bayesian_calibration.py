@@ -272,4 +272,6 @@ for parameter_index in range(paramDim):
     _ = ot.viewer.View(graph, figure=fig, axes=[ax])
 
 _ = fig.suptitle("Bayesian calibration")
-plt.show()
+print(viewer._noshow)
+if not viewer._noshow:
+    plt.show()

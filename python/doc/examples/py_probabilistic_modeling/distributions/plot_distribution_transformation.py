@@ -112,4 +112,5 @@ f = ot.SymbolicFunction(['x'], ['log2(x)'])
 f.setDescription(["X","ln(X)"])
 graph = ot.CompositeDistribution(f, distribution1).drawPDF()
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

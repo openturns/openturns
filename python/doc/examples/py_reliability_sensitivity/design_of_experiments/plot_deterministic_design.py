@@ -93,4 +93,5 @@ sample *= 2.0
 sample += [5.0, 8.0]
 graph = drawBidimensionalSample(sample,"Box")
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

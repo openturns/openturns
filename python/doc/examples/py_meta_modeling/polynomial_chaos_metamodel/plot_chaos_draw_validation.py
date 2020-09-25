@@ -85,7 +85,8 @@ graph = val.drawValidation()
 graph.setLegends([""])
 graph.setTitle("Q2=%.2f%%" % (Q2*100))
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()
 
 # %%
 # The metamodel has a good predictivity, since the points are almost on the first diagonal.

@@ -38,4 +38,5 @@ view =viewer.View(graph)
 # Test whether two samples have the same copula model
 graph = ot.VisualTest.DrawKendallPlot(sample1, sample2)
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

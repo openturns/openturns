@@ -65,4 +65,5 @@ graph = truncatedKS.drawPDF([-2.5] * dimension, [2.5] * dimension, [256] * dimen
 graph.add(ot.Cloud(truncatedKS.getSample(200)))
 graph.setColors(["blue", "red"])
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

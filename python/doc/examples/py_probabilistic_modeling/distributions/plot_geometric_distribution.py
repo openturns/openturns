@@ -21,4 +21,5 @@ print(sample)
 # %%
 graph = distribution.drawCDF()
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

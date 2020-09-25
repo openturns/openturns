@@ -220,5 +220,6 @@ cloud.setLegend('Data')
 graph.add(cloud)
 graph.setLegendPosition('topleft')
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()
 

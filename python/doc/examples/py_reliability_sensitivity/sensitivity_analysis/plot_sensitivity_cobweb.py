@@ -76,4 +76,5 @@ quantileScale = True
 graphCobweb = ot.VisualTest.DrawCobWeb(X, Y, minValue, maxValue, 'red', quantileScale)
 graphCobweb.setLegendPosition('bottomright')
 view = viewer.View(graphCobweb)
-plt.show()
+if not viewer._noshow:
+    plt.show()

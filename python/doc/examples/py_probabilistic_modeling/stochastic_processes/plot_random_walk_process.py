@@ -82,4 +82,5 @@ graph = ot.Graph('2D Random Walk with continuous steps', 'X1', 'X2', True)
 for i in range(5) :
     graph.add(ot.Curve(sample[i], pal[i % len(pal)], 'solid'))
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

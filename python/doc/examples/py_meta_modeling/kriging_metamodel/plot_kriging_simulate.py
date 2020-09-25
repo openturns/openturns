@@ -215,7 +215,8 @@ graph.setYTitle("Y")
 graph.setLegendPosition("topright")
 graph.setTitle("10 simulated trajectories")
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()
 
 # %%
 # References

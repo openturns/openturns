@@ -29,5 +29,6 @@ graph = ot.Graph("MC design", "x1", "x2", True, "")
 cloud = ot.Cloud(sample, "blue", "fsquare", "")
 graph.add(cloud)
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()
 

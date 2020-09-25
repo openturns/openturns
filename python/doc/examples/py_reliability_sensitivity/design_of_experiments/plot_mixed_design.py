@@ -59,5 +59,6 @@ doe.setColor('red')
 doe.setLegend('design')
 graph.add(doe)
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()
 # %%

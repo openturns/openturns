@@ -77,4 +77,5 @@ field.exportToVTKFile('field.vtk')
 with open('field.vtk') as f:
     print(f.read()[:100])
 
-plt.show()
+if not viewer._noshow:
+    plt.show()

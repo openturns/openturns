@@ -193,7 +193,8 @@ graph.add(graphP)
 graph.setTitle("Kolmogorov-Smirnov distribution")
 graph.setXTitle("KS-Statistics")
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()
 
 # %%
 # We see that the distribution of the KS distances when the parameters are estimated is shifted towards the left: smaller distances occur more often. This is a consequence of the fact that the estimated parameters tend to make the estimated distribution closer to the empirical sample. 

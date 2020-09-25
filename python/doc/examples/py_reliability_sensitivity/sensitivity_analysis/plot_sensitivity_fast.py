@@ -58,6 +58,7 @@ view = viewer.View(graph)
 # %%
 graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(totalOrderIndices, distribution.getDescription(), 'FAST total order indices')
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()
 
 # %%

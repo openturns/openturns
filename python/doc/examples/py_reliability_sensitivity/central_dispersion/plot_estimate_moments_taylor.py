@@ -65,4 +65,5 @@ taylor.getGradientAtMean()
 # %%
 # Get the hessian value of the output at the mean point
 taylor.getHessianAtMean()
-plt.show()
+if not viewer._noshow:
+    plt.show()

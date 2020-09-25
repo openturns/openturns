@@ -33,4 +33,5 @@ print(function(x))
 # draw y1 with x1=2.0, x2=1.0, x0 in [0, 2]
 graph = ot.ParametricFunction(function, [1, 2], [2.0, 1.0]).getMarginal(1).draw(0.0, 2.0)
 view = viewer.View(graph)
-plt.show()
+if not viewer._noshow:
+    plt.show()

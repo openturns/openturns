@@ -112,5 +112,6 @@ _ = v.getFigure().suptitle("Diagnostic graphs", fontsize=18)
 alpha = 0.95
 interval = analysis.getCoefficientsConfidenceInterval(alpha)
 print("confidence intervals with level=%1.2f : %s" % (alpha, interval))
-plt.show()
+if not viewer._noshow:
+    plt.show()
 
