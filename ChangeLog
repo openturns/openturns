@@ -71,6 +71,7 @@
  * #1581 (LinearModelAlgorithm run() fails to parse Sample description)
  * #1592 (SubsetSampling returns an error if Pf=1)
  * #1594 (LinearLeastSquaresCalibration and CalibrationResult)
+ * #1599 (FieldToPointConnection-BlockSize is missing)
 
 
 == 1.15 release (2020-05-25) == #release-1.15

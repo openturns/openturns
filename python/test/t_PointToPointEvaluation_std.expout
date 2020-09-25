@@ -6,6 +6,19 @@ myFunc output dimension= 1
 point= [1.0]
 myFunc(point)= [0.514395]
 called  1  times
+sample= [[1.0], [1.0], [1.0], [1.0], [1.0], [1.0], [1.0], [1.0], [1.0], [1.0]]
+myFunc(sample)=     [ y0       ]
+0 : [ 0.514395 ]
+1 : [ 0.514395 ]
+2 : [ 0.514395 ]
+3 : [ 0.514395 ]
+4 : [ 0.514395 ]
+5 : [ 0.514395 ]
+6 : [ 0.514395 ]
+7 : [ 0.514395 ]
+8 : [ 0.514395 ]
+9 : [ 0.514395 ]
+called  11  times
 myFunc= (FieldToPointFunction :
   class=KarhunenLoeveProjection name=Unnamed input description=[v0] output description=[xi0,xi1,xi2,xi3,xi4,xi5,xi6,xi7,xi8,xi9] number of calls=0)o(PointToFieldFunction :
   class=KarhunenLoeveLifting name=Unnamed input description=[xi0,xi1,xi2,xi3,xi4,xi5,xi6,xi7,xi8,xi9] output description=[v0] number of calls=0)

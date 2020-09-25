@@ -105,6 +105,9 @@
   <!-- OT::PointToPointEvaluation parameters -->
   <PointToPointEvaluation-BlockSize value_int="256" />
 
+  <!-- OT:: FieldToPointConnection parameters -->
+  <FieldToPointConnection-BlockSize value_int="256" />
+
   <!-- OT::SQP parameters -->
   <SQP-DefaultOmega                   value_float="1.0e-4"           />
   <SQP-DefaultSmooth                  value_float="1.2"              />
