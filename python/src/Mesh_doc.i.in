@@ -6,7 +6,7 @@ Available constructors:
 
     Mesh(*vertices*)
 
-    Mesh(*vertices, simplices*)
+    Mesh(*vertices, simplices, checkValidity*)
 
 Parameters
 ----------
@@ -21,6 +21,12 @@ simplices : 2-d sequence of int
     :math:`(i_1, \dots, i_{dim+1})` in :math:`\Rset^{dim}`. In dimension 1, a
     simplex is an interval :math:`[i_1, i_2]`; in dimension 2, it is a
     triangle :math:`[i_1, i_2, i_3]`.
+checkMeshValidity : bool
+    Tells if we should check if mesh is valid  i.e. if there is non-overlapping
+    simplices, no unused vertex, no simplices with duplicate vertices and
+    no coincident vertices.
+    Default value is set to false in resource map key `Mesh-CheckValidity`
+
 
 See also
 --------

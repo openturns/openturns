@@ -71,6 +71,7 @@
  * #1521 (Basis of MonomialFunction)
  * #1529 (The error of the NonLinearLeastSquaresCalibration and GaussianNonLinearCalibration are different)
  * #1540 (SubsetSampling: incorrect event sample)
+ * #1547 (Mesh does not check the simplices indices)
  * #1549 (Doc of evaluation operator of KrigingResult)
  * #1553 (Optimization algorithms ignore MaxEvaluationNumber parameter in SORM)
  * #1556 (WeibullMin::computePDFGradient yields the partial derivatives in the wrong order)

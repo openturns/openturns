@@ -896,6 +896,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Mesh-VertexEpsilon", 1.0e-6);
   addAsScalar("Mesh-CoordinateEpsilon", 1.0e-14);
   addAsUnsignedInteger("Mesh-LargeSize", 5000);
+  addAsBool("Mesh-CheckValidity", false);
 
   // BoundingVolumeHierarchy parameters
   addAsString("BoundingVolumeHierarchy-Strategy", "Mean");

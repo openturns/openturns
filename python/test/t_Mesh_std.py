@@ -108,3 +108,10 @@ simplex = 0
 point = [0.8, 0.2]
 found, coordinates = m1.checkPointInSimplexWithCoordinates(point, simplex)
 assert found, "not inside"
+
+# Fix https://github.com/openturns/openturns/issues/1547
+# We force the checking
+vertices = [[2.1], [2.8], [3.5], [4.2], [4.9], [5.6], [6.3], [7.0]]
+simplices = [[3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]]
+mesh = ot.Mesh(vertices, simplices, True)
+weights = mesh.computeWeights()

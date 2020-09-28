@@ -278,6 +278,7 @@
   <Mesh-VertexEpsilon     value_float="1.0e-6" />
   <Mesh-CoordinateEpsilon value_float="1.0e-14" />
   <Mesh-LargeSize         value_int="5000" />
+  <Mesh-CheckValidity     value_bool="false" />
 
   <!-- OT::BoundingVolumeHierarchy parameters -->
   <BoundingVolumeHierarchy-Strategy  value_str="Mean"         />
