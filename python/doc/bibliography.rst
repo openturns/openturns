@@ -86,25 +86,25 @@ Bibliography
     `pdf <https://hal.inria.fr/hal-00665048/document>`__
 .. [jansen1999] Jansen, M.J.W. *Analysis of variance designs for model output*,
     Computer Physics Communication, 1999, 117, 35-43.
-    `pdf <http://doc.openturns.org/papers/jansen1999.pdf>`__
+    `pdf <https://openturns.github.io/openturns/papers/jansen1999.pdf>`__
 .. [jin2005] R. Jin, W. Chen, and A. Sudjianto. *An efficient algorithm for
     constructing optimal design of computer experiments.*
     Journal of Statistical Planning and Inference, 134 :268-287, 2005.
-    `pdf <http://doc.openturns.org/papers/jin2005.pdf>`__
+    `pdf <https://openturns.github.io/openturns/papers/jin2005.pdf>`__
 .. [johnson1990] Johnson M, Moore L and Ylvisaker D (1990).
     *Minimax and maximin distance design.*
     Journal of Statistical Planning and Inference 26(2): 131-148.
 .. [jones1998] Donald R. Jones, Matthias Schonlau and William J Welch.
     *Global optimization of expensive black-box functions*,
     Journal of Global Optimization, 13(4), 455-492, 1998.
-    `pdf <http://doc.openturns.org/papers/jones1998.pdf>`__
+    `pdf <https://openturns.github.io/openturns/papers/jones1998.pdf>`__
 .. [kiureghian1998] Kiureghian A., Dakessian T., *Multiple design points in first and second-order reliability*
     Structural Safety, Volume 20, Issue 1, 1998, Pages 37-49
-    `pdf <http://doc.openturns.org/papers/kiureghian1998.pdf>`__
+    `pdf <https://openturns.github.io/openturns/papers/kiureghian1998.pdf>`__
 .. [knight1966] Knight, W. R. *A Computer Method for Calculating Kendall's Tau
     with Ungrouped Data.* Journal of the American Statistical Association,
     1966, 61(314, Part 1), 436-439.
-    `pdf <http://doc.openturns.org/papers/knight1966.pdf>`__
+    `pdf <https://openturns.github.io/openturns/papers/knight1966.pdf>`__
 .. [koay2006] Koay C.G., Basser P.J.,
     *Analytically exact correction scheme for signal extraction from noisy magnitude MR signals*,
     Journal of magnetics Resonance 179, 317-322, 2006.
@@ -122,7 +122,7 @@ Bibliography
 .. [lebrun2009c] Lebrun, R. & Dutfoy, A. *Do Rosenblatt and Nataf
     isoprobabilistic transformations really differ?* Prob. Eng. Mech., 2009,
     24, 577-584.
-    `pdf <http://doc.openturns.org/papers/lebrun2009c.pdf>`__
+    `pdf <https://openturns.github.io/openturns/papers/lebrun2009c.pdf>`__
 .. [lecuyer2005] L’Ecuyer P., Lemieux C. (2005) Recent Advances in Randomized
     Quasi-Monte Carlo Methods. In: Dror M., L’Ecuyer P., Szidarovszky F. (eds)
     Modeling Uncertainty. International Series in Operations Research &
@@ -147,7 +147,7 @@ Bibliography
 .. [mauricio1995] J. A. Mauricio,
     *Exact Maximum Likelihood Estimation of Stationary Vector ARMA Models*,
     Journal of the American Statistical Association 90, 282-291, 1995.
-    `pdf <http://doc.openturns.org/papers/mauricio1995.pdf>`__
+    `pdf <https://openturns.github.io/openturns/papers/mauricio1995.pdf>`__
 .. [mckay1979] McKay M, Beckman R and Conover W (1979). *A comparison of three
     methods for selecting values of input variables in the analysis of output
     from a computer code.* Technometrics 21(2): 239-245.
@@ -166,7 +166,7 @@ Bibliography
     `pdf <https://josselin-garnier.org/wp-content/uploads/2013/12/munoz_ress.pdf>`__
 .. [nataf1962] Nataf, A. *Determination des distributions dont les marges sont
     donnees.* C. R. Acad. Sci. Paris, 1962, 225, 42-43.
-    `pdf <http://doc.openturns.org/papers/nataf1962.pdf>`__
+    `pdf <https://openturns.github.io/openturns/papers/nataf1962.pdf>`__
 .. [nash1999] Stephen G. Nash, 1999, *A survey of Truncated-Newton methods*,
     Systems Engineering and Operations Research Dept.,
     George Mason University, Fairfax, VA 22030.
@@ -179,7 +179,7 @@ Bibliography
     http://ab-initio.mit.edu/nlopt
 .. [pmfre01116] Dumas A., *Lois asymptotiques des estimateurs des indices de Sobol'*,
     Technical report, Phimeca, 2018.
-    `pdf <http://doc.openturns.org/papers/RT-PMFRE-01116-001C_-_Rapport_loi_estimateur_sobol.pdf>`__
+    `pdf <https://openturns.github.io/openturns/papers/RT-PMFRE-01116-001C_-_Rapport_loi_estimateur_sobol.pdf>`__
 .. [pronzato2012] Pronzato L and Muller W (2012).
     *Design of computer experiments: Space filling and beyond.*
     Statistics and Computing 22(3): 681-701.
@@ -207,12 +207,12 @@ Bibliography
     `pdf <https://www.jstatsoft.org/article/view/v039i11/v39i11.pdf>`__
 .. [sobol1993] Sobol, I. M. *Sensitivity analysis for non-linear mathematical
     model* Math. Modelling Comput. Exp., 1993, 1, 407-414.
-    `pdf <http://doc.openturns.org/papers/sobol1993.pdf>`__
+    `pdf <https://openturns.github.io/openturns/papers/sobol1993.pdf>`__
 .. [sobol2007] Sobol, I.M., Tarantola, S., Gatelli, D., Kucherenko, S.S. and
     Mauntz, W.  *Estimating the approximation errors when fixing unessential
     factors in global sensitivity analysis*, Reliability Engineering and System
     Safety, 2007, 92, 957-960.
-    `pdf <http://doc.openturns.org/papers/sobol2007.pdf>`__
+    `pdf <https://openturns.github.io/openturns/papers/sobol2007.pdf>`__
 .. [soizeghanem2004] Soize, C., Ghanem, R. *Physical systems with random
     uncertainties: Chaos representations with arbitrary probability measure*,
     SIAM Journal on Scientific Computing, Society for Industrial and Applied
@@ -223,7 +223,7 @@ Bibliography
 .. [stadlober1990] Stadlober E., *The ratio of uniforms approach for generating
     discrete random variates*. Journal of Computational and Applied Mathematics,
     vol. 31, no. 1, pp. 181-189, 1990.
-    `pdf <http://doc.openturns.org/papers/stadlober1990.pdf>`__
+    `pdf <https://openturns.github.io/openturns/papers/stadlober1990.pdf>`__
 .. [stoer1993] Stoer, J., Bulirsch, R. *Introduction to Numerical
     Analysis*, Second Edition, Springer-Verlag, 1993.
     `pdf <http://alvand.basu.ac.ir/~dezfoulian/files/Numericals/Springer%20-%20Introduction%20to%20numerical%20analysis,%20Bulirsch,%20Stoer.%20(2ed.,%201993)(400dpi)(ISBN%200387978.pdf>`__
