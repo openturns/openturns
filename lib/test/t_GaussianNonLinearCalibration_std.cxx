@@ -31,7 +31,7 @@ int main(int, char *[])
 
   try
   {
-    PlatformInfo::SetNumericalPrecision(3);
+    PlatformInfo::SetNumericalPrecision(2);
     UnsignedInteger m = 200;
     Sample x(m, 1);
     for (UnsignedInteger i = 0; i < m; ++i) x(i, 0) = (0.5 + i) / m;
@@ -96,6 +96,7 @@ int main(int, char *[])
       algo.run();
       parameterMAP = algo.getResult().getParameterMAP();
       fullprint << "MAP =" << parameterMAP << std::endl;
+      fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
       assert_almost_equal(parameterMAP, trueParameter, 5e-1);
       // With globalErrorCovariance
       fullprint << "3. globalErrorCovariance" << std::endl;
@@ -104,6 +105,7 @@ int main(int, char *[])
       algo.run();
       parameterMAP = algo.getResult().getParameterMAP();
       fullprint << "MAP =" << parameterMAP << std::endl;
+      fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
       assert_almost_equal(parameterMAP, trueParameter, 5e-1);
     } // n
   }

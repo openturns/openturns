@@ -112,8 +112,7 @@ public:
   Point optimizeLogLikelihood() const
   {
     // Define optimization problem
-    OptimizationProblem problem;
-    problem.setObjective(getLogLikelihoodFunction());
+    OptimizationProblem problem(getLogLikelihoodFunction());
     problem.setMinimization(false);
     solver_.setProblem(problem);
     solver_.setStartingPoint(Point(1, 1.0));
@@ -187,11 +186,10 @@ public:
   Point optimizeLogLikelihood() const
   {
     // Define optimization problem
-    OptimizationProblem problem;
     Function objectiveFunction(getLogLikelihoodFunction());
     MemoizeFunction objectiveMemoizeFunction(objectiveFunction, Full());
     objectiveMemoizeFunction.enableCache();
-    problem.setObjective(objectiveMemoizeFunction);
+    OptimizationProblem problem(objectiveMemoizeFunction);
     problem.setMinimization(false);
     solver_.setProblem(problem);
     solver_.setStartingPoint(Point(1, 1.0));

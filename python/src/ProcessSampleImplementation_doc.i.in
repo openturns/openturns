@@ -82,6 +82,41 @@ OT_ProcessSample_add_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_ProcessSample_getField_doc
+"Field accessor.
+
+Parameters
+----------
+i : int
+    Field index
+
+Returns
+--------
+field : :class:`~openturns.Field`
+    i-th field in the sample.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::getField
+OT_ProcessSample_getField_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_setField_doc
+"Field accessor.
+
+Parameters
+----------
+i : int
+    Field index
+field : :class:`~openturns.Field`
+    i-th field in the sample.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::setField
+OT_ProcessSample_setField_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_ProcessSample_computeMean_doc
 "Compute the mean field of the collection of fields.
 

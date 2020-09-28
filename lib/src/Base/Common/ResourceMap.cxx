@@ -227,6 +227,11 @@ void ResourceMap::RemoveKey(const String & key)
   GetInstance().lock().removeKey(key);
 }
 
+std::vector<String> ResourceMap::FindKeys(const String & substr)
+{
+  return GetInstance().lock().findKeys(substr);
+}
+
 /* Default constructor */
 ResourceMap::ResourceMap()
   : mapString_()
@@ -649,7 +654,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("SpecFunc-MaximumIteration", 1000);
 
   // SymbolicParser parameters
-  addAsBool("SymbolicParser-CheckResult", true);
   addAsString("SymbolicParser-Backend", SYMBOLICPARSER_DEFAULT_BACKEND);
 
   // DesignProxy parameters
@@ -716,6 +720,9 @@ void ResourceMap::loadDefaultConfiguration()
 
   // PointToPointEvaluation parameters //
   addAsUnsignedInteger("PointToPointEvaluation-BlockSize", 256);
+
+  // FieldToPointConnection parameters //
+  addAsUnsignedInteger("FieldToPointConnection-BlockSize", 256);
 
   // SQP parameters //
   addAsScalar("SQP-DefaultOmega", 1.0e-4);
@@ -976,7 +983,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("KernelMixture-SmallSize", 50);
 
   // KernelSmoothing parameters //
-  addAsScalar("KernelSmoothing-AbsolutePrecision", 0.0);
+  addAsScalar("KernelSmoothing-AbsolutePrecision", 1.0e-5);
   addAsScalar("KernelSmoothing-CutOffPlugin", 5.0);
   addAsScalar("KernelSmoothing-RelativePrecision", 1.0e-5);
   addAsScalar("KernelSmoothing-ResidualPrecision", 1.0e-10);
@@ -1426,6 +1433,19 @@ void ResourceMap::reload()
 {
   loadDefaultConfiguration();
   loadConfigurationFile();
+}
+
+/** Get the list of keys associated to a class */
+std::vector<String> ResourceMap::findKeys(const String & substr)
+{
+  std::vector<String> allKeys(getKeys());
+  std::vector<String> result;
+  for (UnsignedInteger i = 0; i < allKeys.size(); ++ i)
+  {
+    if(allKeys[i].find(substr) != std::string::npos)
+      result.push_back(allKeys[i]);
+  }
+  return result;
 }
 
 /* String converter */

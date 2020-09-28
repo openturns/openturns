@@ -24,7 +24,7 @@
 #include "openturns/TemperatureProfile.hxx"
 #include "openturns/GeometricProfile.hxx"
 #include "openturns/SpaceFilling.hxx"
-#include "openturns/SpaceFillingMinDist.hxx"
+#include "openturns/SpaceFillingPhiP.hxx"
 #include "openturns/OptimalLHSExperiment.hxx"
 
 namespace OT
@@ -49,7 +49,7 @@ public:
   /** SimulatedAnnealingLHS */
   explicit SimulatedAnnealingLHS (const LHSExperiment & lhs,
                                   const TemperatureProfile & profile = GeometricProfile(),
-                                  const SpaceFilling & spaceFilling = SpaceFillingMinDist());
+                                  const SpaceFilling & spaceFilling = SpaceFillingPhiP());
 
   /** SimulatedAnnealingLHS constructor with LHS*/
   SimulatedAnnealingLHS(const Sample & initialDesign,

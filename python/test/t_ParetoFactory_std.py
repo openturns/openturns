@@ -4,10 +4,10 @@ from __future__ import print_function
 import openturns as ot
 
 ot.TESTPREAMBLE()
-
+ot.PlatformInfo.SetNumericalPrecision(3)
 
 distribution = ot.Pareto(2.0, 3.5, -1.0)
-size = 100000
+size = 10000
 sample = distribution.getSample(size)
 factory = ot.ParetoFactory()
 print("distribution=", repr(distribution))

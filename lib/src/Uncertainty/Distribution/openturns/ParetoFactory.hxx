@@ -56,6 +56,7 @@ public:
   Pareto buildMethodOfMoments(const Sample & sample) const;
   Pareto buildMethodOfLikelihoodMaximization(const Sample & sample) const;
   Pareto buildMethodOfLeastSquares(const Sample & sample) const;
+  Pareto buildMethodOfLeastSquares(const Sample & sample, const Scalar gamma) const;
 
 }; /* class ParetoFactory */
 

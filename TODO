@@ -3,3 +3,4 @@ Remove deprecated SORMResult::getEventProbabilityHohenBichler
 Remove deprecated SORMResult::getGeneralisedReliabilityIndexHohenBichler
 Remove alias VisualTest::DrawLinearModel(sample1, sample2, linearModelResult) in 1.17
 Remove alias VisualTest::DrawLinearModelResidual(sample1, sample2, linearModelResult) in 1.17
+Remove deprecated OptimizationResult::getLagrangeMultipliers, OptimizationAlgorithm::computeLagrangeMultipliers

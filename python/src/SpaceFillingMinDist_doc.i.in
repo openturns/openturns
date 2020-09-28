@@ -3,7 +3,14 @@
 
 Notes
 -----
-Compute the minimal distance of sample points
+Compute the criterion based on the minimal distance of sample points:
+
+.. math::
+    :nowrap:
+
+    \begin{equation*}
+      \phi_min(X) = \min_{i \neq j} ||x^{(i)} - x^{(j)}|| ^{\frac{1}{2}}
+    \end{equation*}
 "
 
 %enddef

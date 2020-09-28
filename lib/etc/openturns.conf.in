@@ -37,7 +37,6 @@
   <SpecFunc-MaximumIteration value_int="1000" />
 
   <!-- OT::SymbolicParser parameters -->
-  <SymbolicParser-CheckResult value_bool="true"                               />
   <SymbolicParser-Backend     value_str="@SYMBOLICPARSER_DEFAULT_BACKEND@" />
 
   <!-- OT::DesignProxy parameters -->
@@ -105,6 +104,9 @@
 
   <!-- OT::PointToPointEvaluation parameters -->
   <PointToPointEvaluation-BlockSize value_int="256" />
+
+  <!-- OT:: FieldToPointConnection parameters -->
+  <FieldToPointConnection-BlockSize value_int="256" />
 
   <!-- OT::SQP parameters -->
   <SQP-DefaultOmega                   value_float="1.0e-4"           />

@@ -24,3 +24,7 @@ OT_ProcessSample_getDimension_doc
 OT_ProcessSample_getMarginal_doc
 %feature("docstring") OT::ProcessSample::drawMarginal
 OT_ProcessSample_drawMarginal_doc
+%feature("docstring") OT::ProcessSample::getField
+OT_ProcessSample_getField_doc
+%feature("docstring") OT::ProcessSample::setField
+OT_ProcessSample_setField_doc

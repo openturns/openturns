@@ -1,23 +1,29 @@
-
-************************************************************************************************
-**************************************** MONTE CARLO *******************************************
-************************************************************************************************
+----------------------------------------------------------------------------------------------------
+MONTE CARLO
 Pf estimation = 2.00000e-04
 Pf Variance estimation = 1.99960e-10
 CoV = 0.07070
 90% Confidence Interval = 4.65188e-05
 CI at 90% =[ 1.76741e-04 ; 2.23259e-04 ]
 Limit state calls = 1000000
-************************************************************************************************
-
-************************************************************************************************
-******************************************* SUBSET SAMPLING **********************************************
-************************************************************************************************
+----------------------------------------------------------------------------------------------------
+SUBSET SAMPLING
 Pf estimation = 2.02700e-04
 Pf Variance estimation = 3.01140e-10
 CoV = 0.08561
 90% Confidence Interval = 5.70876e-05
 CI at 90% =[ 1.74156e-04 ; 2.31244e-04 ]
 Limit state calls = 40000
-************************************************************************************************
-
+----------------------------------------------------------------------------------------------------
+MC:     probabilityEstimate=1.000000e+00 varianceEstimate=0.000000e+00 standard deviation=-1.00e+00 coefficient of variation=-1.00e+00 confidenceLength(0.95)=0.00e+00 outerSampling=1000 blockSize=1
+SUBSET: probabilityEstimate=1.000000e+00 varianceEstimate=0.000000e+00 standard deviation=-1.00e+00 coefficient of variation=-1.00e+00 confidenceLength(0.95)=0.00e+00 outerSampling=10000 blockSize=1
+----------------------------------------------------------------------------------------------------
+MC:     probabilityEstimate=1.000000e-03 varianceEstimate=9.990000e-07 standard deviation=9.99e-04 coefficient of variation=9.99e-01 confidenceLength(0.95)=3.92e-03 outerSampling=1000 blockSize=1
+SUBSET: probabilityEstimate=1.000000e-03 varianceEstimate=1.496000e-07 standard deviation=3.87e-04 coefficient of variation=3.87e-01 confidenceLength(0.95)=1.52e-03 outerSampling=1500 blockSize=1
+steps= 3
+T= [-1.39109,-2.42877,-3.33832]
+----------------------------------------------------------------------------------------------------
+MC:     probabilityEstimate=1.000000e-03 varianceEstimate=9.990000e-07 standard deviation=9.99e-04 coefficient of variation=9.99e-01 confidenceLength(0.95)=3.92e-03 outerSampling=1000 blockSize=1
+SUBSET: probabilityEstimate=1.000000e-03 varianceEstimate=1.496000e-07 standard deviation=3.87e-04 coefficient of variation=3.87e-01 confidenceLength(0.95)=1.52e-03 outerSampling=1500 blockSize=1
+steps= 3
+T= [-1.39109,-2.42877,-3.33832]

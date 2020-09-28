@@ -68,6 +68,7 @@ int main(int, char *[])
       algo.run();
       Point parameterMAP(algo.getResult().getParameterMAP());
       fullprint << "MAP =" << parameterMAP << std::endl;
+      fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
       assert_almost_equal(parameterMAP, trueParameter, 1e-2);
       // 2nd constructor
       fullprint << "(const. 2)" << std::endl;
@@ -86,6 +87,7 @@ int main(int, char *[])
       algo.run();
       parameterMAP = algo.getResult().getParameterMAP();
       fullprint << "MAP =" << parameterMAP << std::endl;
+      fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
       assert_almost_equal(parameterMAP, trueParameter, 1e-2);
     } // n
   }

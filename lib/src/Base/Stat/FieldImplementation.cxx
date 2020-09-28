@@ -477,7 +477,7 @@ Graph FieldImplementation::drawMarginal(const UnsignedInteger index,
   if (meshDimension > 2) throw NotYetImplementedException(HERE) << "In FieldImplementation::drawMarginal(const UnsignedInteger index, const Bool interpolate) const: cannot draw a Field of mesh dimension greater than 2. Try the export to VTK for higher dimension.";
   const Sample marginalValues(values_.getMarginal(index));
   const String title(OSS() << getName() << " - " << index << " marginal" );
-  Graph graph(title, description_[0], "Values", true, "topright");
+  Graph graph(title, description_[0], description_[index + 1], true, "topright");
   if (meshDimension == 1)
   {
     // Discretization of the x axis

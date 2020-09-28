@@ -2,20 +2,26 @@ method=SVD
 (const. 1)
 MAP =class=Point name=Unnamed dimension=3 values=[2.2743,1.7024,0.16509]
 (const. 2)
+error=class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0,0] sigma=class=Point name=Unnamed dimension=2 values=[1.7321,2.4495] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.11785,0.11785,1]
 MAP =class=Point name=Unnamed dimension=3 values=[2.2743,1.7024,0.16509]
 (const. 3)
+error=class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0,0] sigma=class=Point name=Unnamed dimension=2 values=[1.7321,2.4495] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.11785,0.11785,1]
 MAP =class=Point name=Unnamed dimension=3 values=[1.6032,2.1203,0.83356]
 method=QR
 (const. 1)
 MAP =class=Point name=Unnamed dimension=3 values=[2.2743,1.7024,0.16509]
 (const. 2)
+error=class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0,0] sigma=class=Point name=Unnamed dimension=2 values=[1.7321,2.4495] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.11785,0.11785,1]
 MAP =class=Point name=Unnamed dimension=3 values=[2.2743,1.7024,0.16509]
 (const. 3)
+error=class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0,0] sigma=class=Point name=Unnamed dimension=2 values=[1.7321,2.4495] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.11785,0.11785,1]
 MAP =class=Point name=Unnamed dimension=3 values=[1.6032,2.1203,0.83356]
 method=Cholesky
 (const. 1)
 MAP =class=Point name=Unnamed dimension=3 values=[2.2743,1.7024,0.16509]
 (const. 2)
+error=class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0,0] sigma=class=Point name=Unnamed dimension=2 values=[1.7321,2.4495] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.11785,0.11785,1]
 MAP =class=Point name=Unnamed dimension=3 values=[2.2743,1.7024,0.16509]
 (const. 3)
+error=class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0,0] sigma=class=Point name=Unnamed dimension=2 values=[1.7321,2.4495] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.11785,0.11785,1]
 MAP =class=Point name=Unnamed dimension=3 values=[1.6032,2.1203,0.83356]

@@ -134,10 +134,10 @@ protected:
   Interval bounds_;
 
   // Minimization problem
-  Bool minimization_;
+  Bool minimization_ = true;
 
   // The dimension of the search space
-  UnsignedInteger dimension_;
+  UnsignedInteger dimension_ = 0;
 
   // The type of the variables
   Indices variablesType_;

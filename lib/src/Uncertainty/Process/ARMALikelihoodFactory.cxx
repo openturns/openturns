@@ -538,10 +538,6 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
   // Currently the implementation of the factory bases on m estimations of univariate models, m is the dimension of the
   // above time series
 
-  // Define Optimization problem (Maximization)
-  OptimizationProblem problem;
-  problem.setMinimization(false);
-
   // Checking the size of time series
   if (timeSeries.getSize() < currentG_)
     throw InvalidArgumentException(HERE) << "Error : expected time series of size greater than " << currentG_;
@@ -612,7 +608,8 @@ ARMA ARMALikelihoodFactory::build(const TimeSeries & timeSeries) const
   nbInequalityConstraint_ = m;
   inputDimension_ = n;
   // Define Objective and Constraint functions for Optimization problem
-  problem.setObjective(getLogLikelihoodFunction());
+  OptimizationProblem problem(getLogLikelihoodFunction());
+  problem.setMinimization(false);
   problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());
   solver_.setProblem(problem);
   solver_.setStartingPoint(beta);

@@ -67,20 +67,14 @@ Point SymbolicParserExprTk::operator()(const Point & inP) const
   if (outputVariablesNames_.getSize() == 0)
   {
     // One formula by marginal
-    if (checkResult_)
+    for (UnsignedInteger outputIndex = 0; outputIndex < result.getDimension(); ++ outputIndex)
     {
-      for (UnsignedInteger outputIndex = 0; outputIndex < result.getDimension(); ++ outputIndex)
-      {
-        const Scalar value = expressions_[outputIndex]->value();
-        // ExprTk does not throw on domain/division errors
-        if (!SpecFunc::IsNormal(value))
-          throw InternalException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
-        result[outputIndex] = value;
-      } // outputIndex
-    } // checkResult
-    else
-      for (UnsignedInteger outputIndex = 0; outputIndex < result.getDimension(); ++ outputIndex)
-        result[outputIndex] = expressions_[outputIndex]->value();
+      const Scalar value = expressions_[outputIndex]->value();
+      // ExprTk does not throw on domain/division errors
+      if (checkOutput_ && !SpecFunc::IsNormal(value))
+        throw InternalException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << inP.__str__();
+      result[outputIndex] = value;
+    } // outputIndex
   } // outputVariablesNames_.getSize() == 0
   else
   {
@@ -88,7 +82,7 @@ Point SymbolicParserExprTk::operator()(const Point & inP) const
     (void) expressions_[0]->value();
 
     std::copy(inputStack_.begin() + inputDimension, inputStack_.end(), result.begin());
-    if (checkResult_)
+    if (checkOutput_)
     {
       for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++ outputIndex)
       {
@@ -121,7 +115,7 @@ Sample SymbolicParserExprTk::operator() (const Sample & inS) const
       {
         const Scalar value = expressions_[outputIndex]->value();
         // ExprTk does not throw on domain/division errors
-        if (checkResult_ && !SpecFunc::IsNormal(value))
+        if (checkOutput_ && !SpecFunc::IsNormal(value))
           throw InternalException(HERE) << "Cannot evaluate " << formulas_[outputIndex] << " at " << inputVariablesNames_.__str__() << "=" << Point(inS[i]).__str__();
         result(i, outputIndex) = value;
       }
@@ -129,7 +123,7 @@ Sample SymbolicParserExprTk::operator() (const Sample & inS) const
   }
   else
   {
-    if (checkResult_)
+    if (checkOutput_)
     {
       // Single formula
       for (UnsignedInteger i = 0; i < size; ++i)
@@ -145,7 +139,7 @@ Sample SymbolicParserExprTk::operator() (const Sample & inS) const
             throw InternalException(HERE) << "Cannot evaluate " << formulas_[0] << " at " << inputVariablesNames_.__str__() << "=" << Point(inS[i]).__str__();
         }
       } // i
-    } // checkResult_
+    } // checkOutput_
     else
     {
       // Single formula
@@ -157,7 +151,7 @@ Sample SymbolicParserExprTk::operator() (const Sample & inS) const
 
         std::copy(inputStack_.begin() + inputDimension, inputStack_.end(), &result(i, 0));
       } // i
-    } // !checkResult_
+    } // !checkOutput_
   }
   return result;
 }

@@ -204,8 +204,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
   f.setGradient(gradient);
 
   // Define Optimization problem
-  OptimizationProblem problem;
-  problem.setObjective(f);
+  OptimizationProblem problem(f);
 
   const UnsignedInteger dimension = problem.getObjective().getInputDimension();
   Point parametersLowerBound(dimension, -1.0);

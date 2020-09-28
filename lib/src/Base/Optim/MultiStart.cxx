@@ -85,7 +85,6 @@ void MultiStart::run()
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     solver.setStartingPoint(startingPoints_[i]);
-    solver.enableLagrangeMultipliers(isLagrangeMultipliersEnabled());
     solver.setMaximumEvaluationNumber(getMaximumEvaluationNumber() - evaluationNumber);
     try
     {

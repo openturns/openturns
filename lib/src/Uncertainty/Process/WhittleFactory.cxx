@@ -394,11 +394,6 @@ ARMA WhittleFactory::build(const ProcessSample & sample) const
 /* Do the likelihood maximization */
 ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
 {
-
-  // Define Optimization problem
-  OptimizationProblem problem;
-  problem.setMinimization(false);
-
   // First, clean the history
   clearHistory();
   const UnsignedInteger sizeP = p_.getSize();
@@ -438,7 +433,8 @@ ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
       if (n > 0)
       {
         // Define Objective and Constraint functions for Optimization problem
-        problem.setObjective(getLogLikelihoodFunction());
+        OptimizationProblem problem(getLogLikelihoodFunction());
+        problem.setMinimization(false);
         // use attributes to pass the data
         nbInequalityConstraint_ = m;
         problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());

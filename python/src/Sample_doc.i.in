@@ -13,7 +13,7 @@ Parameters
 size : int, :math:`m > 0`, optional
     The sample size.
     Default creates an empty sample with dimension 1.
-dimension : int, :math:`n > 0`, optional
+dimension : int, :math:`n \geq 0`, optional
     The real vectors dimension.
     Default creates an empty sample with dimension 1.
 point : :class:`~openturns.Point` or flat (1d) array, list or tuple of floats, optional

@@ -27,6 +27,8 @@
  * Renamed SobolSequence::MaximumNumberOfDimension as SobolSequence::MaximumDimension
  * Deprecated VisualTest::DrawLinearModel(inputSample, outputSample, linearModelResult), use VisualTest::DrawLinearModel(linearModelResult) instead
  * Deprecated VisualTest::DrawLinearModelResidual(inputSample, outputSample, linearModelResult), use VisualTest::DrawLinearModelResidual(linearModelResult) instead
+ * Deprecated OptimizationResult::getLagrangeMultipliers
+ * Moved OptimizationAlgorithm::computeLagrangeMultipliers to OptimizationResult
 
 === Documentation ===
 ==== API documentation ====
@@ -35,9 +37,12 @@
 
 === Python module ===
  * Renamed Viewer *_kwargs arguments to *_kw (matplotlib convention)
+ * Add ProcessSample Field accessors
 
 === Miscellaneous ===
  * Require C99/C++11 support
+ * Do not compute Lagrange multipliers by default during an optimization
+ * Add ResourceMap::FindKeys
 
 === Bug fixes ===
  * #1001 (Add method SobolSimulationResult::draw)
@@ -48,18 +53,25 @@
  * #1421 (UserDefinedStationaryCovarianceModel doc suggests input dimension can be >1)
  * #1447 (Highly inaccurate result in reliability model when using subset of RandomVector)
  * #1465 (The Sample constructor based on a list and an integer should not exist)
+ * #1470 (setNbModes is sometimes ignored)
  * #1474 (optimization defaults)
  * #1507 (Leak in Collection typemaps)
  * #1510 (ot.Ceres('LEVENBERG_MARQUARDT') and ot.Ceres('DOGLEG') do not handle bound constraints)
+ * #1515 (KernelSmoothing build failure)
  * #1520 (The NLopt test is dubious)
  * #1521 (Basis of MonomialFunction)
+ * #1529 (The error of the NonLinearLeastSquaresCalibration and GaussianNonLinearCalibration are different)
  * #1540 (SubsetSampling: incorrect event sample)
  * #1549 (Doc of evaluation operator of KrigingResult)
+ * #1553 (Optimization algorithms ignore MaxEvaluationNumber parameter in SORM)
  * #1556 (WeibullMin::computePDFGradient yields the partial derivatives in the wrong order)
  * #1564 (Set a Point makes ot crash)
  * #1567 (The API doc of SobolIndicesExperiment has a format issue)
  * #1573 (LinearModelAnalysis::drawQQPlot line is not the first bisector)
+ * #1581 (LinearModelAlgorithm run() fails to parse Sample description)
+ * #1592 (SubsetSampling returns an error if Pf=1)
  * #1594 (LinearLeastSquaresCalibration and CalibrationResult)
+ * #1599 (FieldToPointConnection-BlockSize is missing)
 
 
 == 1.15 release (2020-05-25) == #release-1.15

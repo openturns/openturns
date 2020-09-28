@@ -297,8 +297,7 @@ void EfficientGlobalOptimization::run()
     }
 
     // build improvement criterion optimization problem
-    OptimizationProblem maximizeImprovement;
-    maximizeImprovement.setObjective(improvementObjective);
+    OptimizationProblem maximizeImprovement(improvementObjective);
     maximizeImprovement.setMinimization(false);
     if (problem.hasBounds())
       maximizeImprovement.setBounds(problem.getBounds());

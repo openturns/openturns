@@ -91,6 +91,7 @@ int main(int, char *[])
       assert_almost_equal(parameterMAP, trueParameter, 10e-1);
       // 2nd constructor
       fullprint << "(const. 2)" << std::endl;
+      fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
       model.setParameter(candidate);
       Sample modelObservations(model(x));
       Matrix transposedGradientObservations(model.getParameterDimension(), y.getSize() * model.getOutputDimension());
@@ -109,6 +110,7 @@ int main(int, char *[])
       assert_almost_equal(parameterMAP, trueParameter, 10e-1);
       // 3d constructor with globalErrorCovariance
       fullprint << "(const. 3)" << std::endl;
+      fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
       algo = GaussianLinearCalibration(model, x, y, candidate, priorCovariance, globalErrorCovariance, methods[n]);
       algo.run();
       parameterMAP = algo.getResult().getParameterMAP();

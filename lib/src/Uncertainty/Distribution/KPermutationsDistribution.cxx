@@ -116,7 +116,7 @@ Point KPermutationsDistribution::getRealization() const
   buffer.fill();
   for (UnsignedInteger i = 0; i < k_; ++i)
   {
-    UnsignedInteger index = i + RandomGenerator::IntegerGenerate(n_ - i);
+    const UnsignedInteger index = i + RandomGenerator::IntegerGenerate(n_ - i);
     realization[i] = buffer[index];
     buffer[index] = buffer[i];
   }

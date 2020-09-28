@@ -199,6 +199,8 @@ Sample KarhunenLoeveResultImplementation::project(const ProcessSample & sample) 
 Function KarhunenLoeveResultImplementation::lift(const Point & coefficients) const
 {
   const UnsignedInteger dimension = eigenvalues_.getDimension();
+  if (coefficients.getDimension() != dimension)
+    throw InvalidDimensionException(HERE) << "Expected coefficients of dimension " << dimension << " got " << coefficients.getDimension();
   Point scaledCoefficients(dimension);
   Collection<Function> functions(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -212,6 +214,8 @@ Function KarhunenLoeveResultImplementation::lift(const Point & coefficients) con
 Sample KarhunenLoeveResultImplementation::liftAsSample(const Point & coefficients) const
 {
   const UnsignedInteger dimension = eigenvalues_.getDimension();
+  if (coefficients.getDimension() != dimension)
+    throw InvalidDimensionException(HERE) << "Expected coefficients of dimension " << dimension << " got " << coefficients.getDimension();
   Sample values(modesAsProcessSample_.getMesh().getVerticesNumber(), modesAsProcessSample_.getDimension());
   for (UnsignedInteger i = 0; i < dimension; ++i)
     values += modesAsProcessSample_[i] * (std::sqrt(eigenvalues_[i]) * coefficients[i]);

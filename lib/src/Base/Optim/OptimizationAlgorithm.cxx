@@ -190,18 +190,6 @@ void OptimizationAlgorithm::setVerbose(const Bool verbose)
   getImplementation()->setVerbose(verbose);
 }
 
-/* Enable/disable lagrange multipliers */
-void OptimizationAlgorithm::enableLagrangeMultipliers(const Bool isLagrangeMultipliersEnabled)
-{
-  copyOnWrite();
-  getImplementation()->enableLagrangeMultipliers(isLagrangeMultipliersEnabled);
-}
-
-Bool OptimizationAlgorithm::isLagrangeMultipliersEnabled() const
-{
-  return getImplementation()->isLagrangeMultipliersEnabled();
-}
-
 /* String converter */
 String OptimizationAlgorithm::__repr__() const
 {

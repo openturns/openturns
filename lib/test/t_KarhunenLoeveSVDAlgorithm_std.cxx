@@ -54,6 +54,26 @@ int main(int, char *[])
       fullprint << "KL lift as field=" << result.liftAsField(coefficients[0]) << std::endl;
     }
     {
+      // 1D mesh, 1D covariance, uniform weight, automatic centering, more samples
+      // than vertices + trunk
+      AbsoluteExponential cov1D(Point(1, 1.0));
+      ProcessSample sample(GaussianProcess(cov1D, mesh).getSample(16));
+      KarhunenLoeveSVDAlgorithm algo(sample, 0.0);
+      algo.setNbModes(5);// out of 10
+      algo.run();
+      KarhunenLoeveResult result(algo.getResult());
+      Point lambda(result.getEigenValues());
+      ProcessSample KLModes(result.getModesAsProcessSample());
+      fullprint << "KL modes=" << KLModes << std::endl;
+      fullprint << "KL eigenvalues=" << lambda << std::endl;
+      Sample coefficients(result.project(sample));
+      fullprint << "KL coefficients=" << coefficients << std::endl;
+      Basis KLFunctions(result.getModes());
+      fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
+      fullprint << "KL lift=" << result.lift(coefficients[0]).__str__() << std::endl;
+      fullprint << "KL lift as field=" << result.liftAsField(coefficients[0]) << std::endl;
+    }
+    {
       // 1D mesh, 1D covariance, uniform weight, automatic centering
       AbsoluteExponential cov1D(Point(1, 1.0));
       ProcessSample sample(GaussianProcess(cov1D, mesh).getSample(6));

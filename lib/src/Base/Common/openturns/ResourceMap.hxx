@@ -93,6 +93,9 @@ public:
   /** Reload configuration */
   static void Reload();
 
+  /** Get the list of keys associated to a class */
+  static std::vector<String> FindKeys(const String & substr);
+
   /** String representation */
   String __repr__() const;
 
@@ -257,6 +260,9 @@ protected:
 
   /** Reload configuration */
   void reload();
+
+  /** Get the list of keys associated to a class */
+  std::vector<String> findKeys(const String & substr);
 private:
 
   /** Default constructor */

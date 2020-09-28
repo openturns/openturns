@@ -37,26 +37,17 @@ static const Factory<OptimizationProblemImplementation> Factory_OptimizationProb
 /* Default constructor */
 OptimizationProblemImplementation::OptimizationProblemImplementation()
   : PersistentObject()
-  , objective_()
-  , equalityConstraint_()
-  , inequalityConstraint_()
-  , bounds_()
-  , minimization_(true)
-  , dimension_(0)
-  , variablesType_(Indices(0, CONTINUOUS))
 {
   // Nothing to do
 }
 
 OptimizationProblemImplementation::OptimizationProblemImplementation(const Function & objective)
   : PersistentObject()
-  , objective_()
-  , minimization_(true)
+  , objective_(objective)
   , dimension_(objective.getInputDimension())
   , variablesType_(Indices(dimension_, CONTINUOUS))
 {
-  // Set objective function
-  setObjective(objective);
+  // Nothing to do
 }
 
 /*
@@ -67,14 +58,10 @@ OptimizationProblemImplementation::OptimizationProblemImplementation( const Func
     const Function & inequalityConstraint,
     const Interval & bounds)
   : PersistentObject()
-  , objective_()
-  , minimization_(true)
+  , objective_(objective)
   , dimension_(objective.getInputDimension())
   , variablesType_(Indices(dimension_, CONTINUOUS))
 {
-  // Set objective function and variables types
-  setObjective(objective);
-
   // Set constraints
   setEqualityConstraint(equalityConstraint);
   setInequalityConstraint(inequalityConstraint);
@@ -101,7 +88,6 @@ void OptimizationProblemImplementation::setObjective(const Function & objective)
   if (objective.getInputDimension() != objective_.getInputDimension())
   {
     LOGWARN(OSS() << "Clearing constraints, bounds and variables types");
-
     // Clear constraints
     if (equalityConstraint_.getEvaluation().getImplementation()->isActualImplementation() || inequalityConstraint_.getEvaluation().getImplementation()->isActualImplementation())
     {

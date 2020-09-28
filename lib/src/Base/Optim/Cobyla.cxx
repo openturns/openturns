@@ -193,8 +193,6 @@ void Cobyla::run()
   result_.setOptimalValue(evaluationOutputHistory_[optimalIndex]);
 
   result_.setEvaluationNumber(maxFun);
-  if (isLagrangeMultipliersEnabled())
-    result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
 
   if ((returnCode != COBYLA_NORMAL) && (returnCode != COBYLA_USERABORT))
   {

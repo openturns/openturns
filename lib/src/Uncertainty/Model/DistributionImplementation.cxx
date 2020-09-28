@@ -2602,8 +2602,7 @@ Interval DistributionImplementation::computeUnivariateMinimumVolumeIntervalByOpt
 {
   const MinimumVolumeIntervalWrapper minimumVolumeIntervalWrapper(this, prob);
   const Function objective(bindMethod<MinimumVolumeIntervalWrapper, Point, Point>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::objective, 1, 1));
-  OptimizationProblem problem;
-  problem.setObjective(objective);
+  OptimizationProblem problem(objective);
   problem.setBounds(getRange());
   TNC solver(problem);
   solver.setIgnoreFailure(true);

@@ -254,8 +254,6 @@ void TNC::run()
   result_.setOptimalPoint(x);
   const Scalar sign = getProblem().isMinimization() ? 1.0 : -1.0;
   result_.setOptimalValue(Point(1, sign * f));
-  if (isLagrangeMultipliersEnabled())
-    result_.setLagrangeMultipliers(computeLagrangeMultipliers(x));
 
   if ((returnCode != TNC_LOCALMINIMUM) && (returnCode != TNC_FCONVERGED) && (returnCode != TNC_XCONVERGED) && (returnCode != TNC_USERABORT))
   {

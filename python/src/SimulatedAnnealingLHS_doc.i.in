@@ -27,19 +27,22 @@ distribution : :class:`~openturns.Distribution`
     Distribution of designs
 profile : :class:`~openturns.TemperatureProfile`
     Temperature profile used by the simulated annealing algorithm
-    Default one is GeometricProfile
+    Default is :class:`~GeometricProfile`
 spaceFilling : :class:`~openturns.SpaceFilling`
     Criterion to be optimized
-    Default one is SpaceFillingMinDist
+    Default is :class:`~openturns.SpaceFillingPhiP`
 
 Notes
 -----
 
-With the first constructor, the initial design is generated thanks to lhsDesign. With the second usage, we fix it.
-Starting from this design, a new design is obtained by permuting one random coordinate of two randomly chosen elements; by construction, this design is also an LHS design. 
+With the first constructor, the initial design is generated thanks to lhsDesign.
+With the second usage, we fix it.
+Starting from this design, a new design is obtained by swapping one random
+coordinate of two randomly chosen elements; by construction, this design is also an LHS design.
 If the new design is better than the previous one, it is kept.  
-If it is worse, it may anyway be kept with some probability, which depends on how these designs compare, but also on a temperature profile 
-T which decreases over time.  This means that jumping away from local extrema becomes less probable over time.
+If it is worse, it may anyway be kept with some probability, which depends on
+how these designs compare, but also on a temperature profile T which decreases over time.
+This means that jumping away from local extrema becomes less probable over time.
 
 Examples
 --------
