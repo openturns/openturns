@@ -179,6 +179,7 @@
   <!-- OT::Fehlberg parameters -->
   <Fehlberg-InitialStep    value_float="1.0e-7"                       />
   <Fehlberg-LocalPrecision value_float="1.0e-10"                      />
+  <Fehlberg-MinimalStep    value_float="1.0e-7"                       />
   <Fehlberg-DefaultOrder   value_int="4" />
 
   <!-- OT::KarhunenLoeveQuadratureAlgorithm parameters -->

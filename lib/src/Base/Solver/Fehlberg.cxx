@@ -209,6 +209,7 @@ Sample Fehlberg::solve(const Point & initialState,
   Sample derivatives(0, dimension);
   Point times(1, t);
   Scalar h = ResourceMap::GetAsScalar("Fehlberg-InitialStep");
+  const Scalar hMin = ResourceMap::GetAsScalar("Fehlberg-MinimalStep");
   const Scalar tEnd = timeGrid[steps - 1];
   const Bool positiveStep = tEnd > t;
   if (!positiveStep) h = -h;
@@ -226,6 +227,7 @@ Sample Fehlberg::solve(const Point & initialState,
       newT = tEnd;
     }
     state = computeStep(transitionFunction, t, state, gradient, h);
+    h = std::max(hMin, h);
     values.add(state);
     derivatives.add(gradient);
     times.add(newT);
