@@ -250,6 +250,8 @@ Model selection
     :toctree: _generated/
     :template: function.rst_t
 
+    FittingTest_BestModelAIC
+    FittingTest_BestModelAICC
     FittingTest_BestModelBIC
     FittingTest_BestModelChiSquared
     FittingTest_BestModelKolmogorov
