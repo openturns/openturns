@@ -114,6 +114,11 @@ void SobolSequence::initialize(const UnsignedInteger dimension)
 /* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
 Point SobolSequence::generate() const
 {
+  if (seed_ == 0)
+    {
+      ++seed_;
+      return Point(dimension_);
+    }
   // initialize a point with values 2^-MaximumBase2Logarithm
   Point sequencePoint(dimension_, Epsilon);
 

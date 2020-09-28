@@ -6,7 +6,6 @@ from math import fabs
 import openturns.testing as ott
 
 ot.TESTPREAMBLE()
-ot.RandomGenerator.SetSeed(0)
 
 
 continuousDistributionCollection = ot.DistributionCollection()
@@ -106,6 +105,7 @@ continuousSampleCollection = [ot.Sample(size, 1)
 discreteSampleCollection = [ot.Sample(size, 1)
                             for i in range(discreteDistributionNumber)]
 
+ot.RandomGenerator.SetSeed(0)
 for i in range(continuousDistributionNumber):
     continuousSampleCollection[
         i] = continuousDistributionCollection[i].getSample(size)
@@ -124,16 +124,17 @@ factoryCollection = ot.DistributionFactoryCollection(3)
 factoryCollection[0] = ot.UniformFactory()
 factoryCollection[1] = ot.BetaFactory()
 factoryCollection[2] = ot.NormalFactory()
+ot.RandomGenerator.SetSeed(0)
 aSample = ot.Uniform(-1.5, 2.5).getSample(size)
 model, best_bic = ot.FittingTest.BestModelBIC(aSample, factoryCollection)
 print("best model BIC=", repr(model))
-model, best_result = ot.FittingTest.BestModelKolmogorov(
+model, best_result = ot.FittingTest.BestModelLilliefors(
     aSample, factoryCollection)
-print("best model Kolmogorov=", repr(model))
 model, best_AIC = ot.FittingTest.BestModelAIC(aSample, factoryCollection)
 print("best model AIC=", repr(model))
 model, best_AICc = ot.FittingTest.BestModelAICC(aSample, factoryCollection)
 print("best model AICc=", repr(model))
+print("best model Lilliefors=", repr(model))
 
 # BIC adequation
 resultBIC = ot.SquareMatrix(distributionNumber)
@@ -145,14 +146,16 @@ for i in range(distributionNumber):
 print("resultBIC=", repr(resultBIC))
 
 # Kolmogorov test : case with estimated parameters
-print("Kolmogorov test : case with estimated parameters")
+print("Lilliefors test : case with estimated parameters")
 distribution = ot.Normal()
+ot.RandomGenerator.SetSeed(0)
 sample = distribution.getSample(30)
 factory = ot.NormalFactory()
-ot.ResourceMap.SetAsUnsignedInteger(
-    'FittingTest-KolmogorovSamplingSize', 10000)
-fitted_dist, test_result = ot.FittingTest.Kolmogorov(sample, factory)
-p_exact = 0.934674  # With a sample size equal to 1000000
+#ot.ResourceMap.SetAsUnsignedInteger(
+#    'FittingTest-LillieforsMaximumSamplingSize', 1000000)
+#-ot.ResourceMap.SetAsScalar('FittingTest-LillieforsPrecision', 0.0)
+fitted_dist, test_result = ot.FittingTest.Lilliefors(sample, factory)
+p_exact = 0.50076  # With a sample size equal to 1000000 and a precision equal to 0
 pvalue = test_result.getPValue()
 rtol = 0.0
 atol = 1.e-2
@@ -186,6 +189,7 @@ assert(threshold == defaultLevel)
 # Kolmogorov test : case with known parameters, set the level
 print("Kolmogorov test : case with known parameters, set the level")
 distribution = ot.Normal()
+ot.RandomGenerator.SetSeed(0)
 sample = distribution.getSample(30)
 level = 0.01
 test_result = ot.FittingTest.Kolmogorov(sample, distribution, level)

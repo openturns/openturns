@@ -832,19 +832,19 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Compact-DefaultHalfMaximumSize", 1024);
 
   // FaureSequence parameters //
-  addAsUnsignedInteger("FaureSequence-InitialSeed", 0);
+  addAsUnsignedInteger("FaureSequence-InitialSeed", 1);
 
   // HaltonSequence parameters //
-  addAsUnsignedInteger("HaltonSequence-InitialSeed", 0);
+  addAsUnsignedInteger("HaltonSequence-InitialSeed", 1);
 
   // HaselgroveSequence parameters //
-  addAsUnsignedInteger("HaselgroveSequence-InitialSeed", 0);
+  addAsUnsignedInteger("HaselgroveSequence-InitialSeed", 1);
 
   // ReverseHaltonSequence parameters //
-  addAsUnsignedInteger("ReverseHaltonSequence-InitialSeed", 0);
+  addAsUnsignedInteger("ReverseHaltonSequence-InitialSeed", 1);
 
   // SobolSequence parameters //
-  addAsUnsignedInteger("SobolSequence-InitialSeed", 0);
+  addAsUnsignedInteger("SobolSequence-InitialSeed", 1);
 
   // SobolIndicesExperiment parameters //
   addAsString("SobolIndicesExperiment-SamplingMethod", "MonteCarlo");
@@ -1407,8 +1407,10 @@ void ResourceMap::loadDefaultConfiguration()
 
   // FittingTest parameters //
   addAsBool("FittingTest-ChiSquaredCheckSample", true);
+  addAsScalar("FittingTest-LillieforsPrecision", 0.01);
   addAsUnsignedInteger("FittingTest-ChiSquaredMinimumBinCount", 5);
-  addAsUnsignedInteger("FittingTest-KolmogorovSamplingSize", 10);
+  addAsUnsignedInteger("FittingTest-LillieforsMinimumSamplingSize", 10);
+  addAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize", 100000);
 
   // LeastSquaresMetaModelSelection parameters //
   addAsScalar("LeastSquaresMetaModelSelection-ErrorThreshold", 0.0);

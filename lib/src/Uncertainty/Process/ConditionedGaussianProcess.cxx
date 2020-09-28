@@ -150,7 +150,7 @@ Field ConditionedGaussianProcess::getRealization() const
   // x an iid sequence of standard normal random variables
   const UnsignedInteger fullSize = covarianceCholeskyFactor_.getDimension();
   Sample values(fullSize, getOutputDimension());
-  values.getImplementation()->setData((trendEvaluationMesh_ + covarianceCholeskyFactor_ * DistFunc::rNormal(fullSize)).getImplementation()->getData());
+  values.getImplementation()->setData(trendEvaluationMesh_.getImplementation()->getData() + covarianceCholeskyFactor_ * DistFunc::rNormal(fullSize));
   // Add the description
   values.setDescription(getDescription());
   return Field(mesh_, values);

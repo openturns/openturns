@@ -226,7 +226,7 @@
   <ReverseHaltonSequence-InitialSeed value_int="0" />
 
   <!-- OT::SobolSequence parameters -->
-  <SobolSequence-InitialSeed value_int="0" />
+  <SobolSequence-InitialSeed value_int="1" />
 
   <!-- OT::SobolIndicesExperiment parameters -->
   <SobolIndicesExperiment-SamplingMethod value_str="MonteCarlo" />
@@ -788,14 +788,16 @@
   <ARMALikelihoodFactory-DefaultMaximumEvaluationNumber             value_int="10000" />
 
   <!-- OT::FittingTest parameters -->
-  <FittingTest-ChiSquaredCheckSample     value_bool="true" />
-  <FittingTest-ChiSquaredMinimumBinCount value_int="5"     />
-  <FittingTest-KolmogorovSamplingSize    value_int="10"    />
+  <FittingTest-ChiSquaredCheckSample         value_bool="true"  />
+  <FittingTest-LillieforsPrecision           value_float="0.01" />
+  <FittingTest-ChiSquaredMinimumBinCount     value_int="5"      />
+  <FittingTest-LillieforsMinimumSamplingSize value_int="10"     />
+  <FittingTest-LillieforsMaximumSamplingSize value_int="100000" />
 
   <!-- OT::LeastSquaresMetaModelSelection parameters -->
   <LeastSquaresMetaModelSelection-ErrorThreshold      value_float="0.0" />
   <LeastSquaresMetaModelSelection-MaximumErrorFactor  value_float="2.0" />
-  <LeastSquaresMetaModelSelection-DecompositionMethod value_str="SVD"        />
+  <LeastSquaresMetaModelSelection-DecompositionMethod value_str="SVD"   />
 
   <!-- OT::SparseMethod parameters -->
   <SparseMethod-ErrorThreshold     value_float="1.0e-3" />

@@ -192,6 +192,7 @@ Goodness-of-fit metrics & tests
     FittingTest_BIC
     FittingTest_ChiSquared
     FittingTest_Kolmogorov
+    FittingTest_Lilliefors
     NormalityTest_AndersonDarlingNormal
     NormalityTest_CramerVonMisesNormal
 
@@ -255,5 +256,6 @@ Model selection
     FittingTest_BestModelBIC
     FittingTest_BestModelChiSquared
     FittingTest_BestModelKolmogorov
+    FittingTest_BestModelLilliefors
 
 

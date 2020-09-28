@@ -246,7 +246,7 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Tested sample.
-models : list of :class:`~openturns.Distribution` or :class:`~openturns.DistributionFactory`
+models : list of :class:`~openturns.Distribution`
     Tested distributions.
 
 Returns
@@ -267,10 +267,10 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
->>> tested_distributions = [ot.ExponentialFactory(), ot.NormalFactory()]
+>>> tested_distributions = [ot.Exponential(), ot.Normal()]
 >>> best_model, best_result = ot.FittingTest.BestModelKolmogorov(sample, tested_distributions)
 >>> print(best_model)
-Normal(mu = -0.0944924, sigma = 0.989808)"
+Normal(mu = 0, sigma = 1)"
 
 // ---------------------------------------------------------------------
 
@@ -380,16 +380,13 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Tested sample.
-model : :class:`~openturns.Distribution` or :class:`~openturns.DistributionFactory`
-    Tested distribution.
+model : :class:`~openturns.Distribution`.
 level : float, :math:`0 \leq \alpha \leq 1`, optional (default level = 0.05). 
     This is the risk :math:`\alpha` of committing a Type I error,
     that is an incorrect rejection of a true null hypothesis.
 
 Returns
 -------
-fitted_dist : :class:`~openturns.Distribution`
-    Estimated distribution (if model is of type :class:`~openturns.DistributionFactory`).
 test_result : :class:`~openturns.TestResult`
     Test result.
 
@@ -401,53 +398,13 @@ TypeError :
 
 Notes
 -----
-The present implementation of the Kolmogorov goodness-of-fit test is
-two-sided. 
-
-This static method can be used in two different ways.
-
-- If it is called with a distribution, it is supposed to be fully specified 
-  ie no parameter has been estimated from the given sample. 
-  This uses an external C implementation of the Kolmogorov cumulative
-  distribution function by [simard2011]_.
-  In this case, there is only one output argument, which is `test_result`.
-
-- Otherwise, the distribution is estimated using the given factory based 
-  on the given sample and the distribution of the test statistics is estimated 
-  using a Monte Carlo approach. 
-  This algorithm is known as Lilliefors's test [Lilliefors1967]_.
-  The sample size can be configured with the *FittingTest-KolmogorovSamplingSize* 
-  key in :class:`~openturns.ResourceMap`. 
-  In this case, there are two output arguments, which are `fitted_dist` 
-  and `test_result`.
+The distribution is supposed to be fully specified, i.e. no parameter
+has been estimated from the given sample.  This uses an external C
+implementation of the Kolmogorov cumulative distribution function
+by [simard2011]_.
 
 Examples
 --------
-
-In the following example, the parameters are estimated from a sample. 
-
->>> import openturns as ot
->>> ot.RandomGenerator.SetSeed(0)
->>> distribution = ot.Normal()
->>> sample = distribution.getSample(30)
->>> factory = ot.NormalFactory()
->>> ot.ResourceMap.SetAsUnsignedInteger('FittingTest-KolmogorovSamplingSize',10000)
->>> fitted_dist, test_result = ot.FittingTest.Kolmogorov(sample, factory)
->>> fitted_dist
-class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[-0.0944924] sigma=class=Point name=Unnamed dimension=1 values=[0.989808] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
->>> test_result
-class=TestResult name=Unnamed type=Kolmogorov Normal binaryQualityMeasure=true p-value threshold=0.05 p-value=0.5103 statistic=0.106933 description=[Normal(mu = -0.0944924, sigma = 0.989808) vs sample Normal]
->>> pvalue = test_result.getPValue()
->>> pvalue
-0.5103...
->>> D = test_result.getStatistic()
->>> D
-0.1069...
->>> quality = test_result.getBinaryQualityMeasure()
->>> quality
-True
-
-In the following example, the parameters of the distribution are known. 
 
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
@@ -457,7 +414,6 @@ In the following example, the parameters of the distribution are known.
 >>> test_result
 class=TestResult name=Unnamed type=Kolmogorov Normal binaryQualityMeasure=true p-value threshold=0.05 p-value=0.970418 statistic=0.0845532 description=[Normal(mu = 0, sigma = 1) vs sample Normal]
 
-In the following example, the parameters are estimated from a sample. 
 We set the level of the Kolmogorov-Smirnov test to 0.01. 
 This parameter value rejects a sample less often than the 
 default value 0.05. 
@@ -497,3 +453,114 @@ Examples
 >>> sample = distribution.getSample(20)
 >>> ot.FittingTest.ComputeKolmogorovStatistics(sample, distribution)
 0.14727..."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FittingTest::BestModelLilliefors
+"Select the best model according to the Lilliefors goodness-of-fit test.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Tested sample.
+models : list of :class:`~openturns.DistributionFactory`
+    Tested distribution factories.
+
+Returns
+-------
+best_model : :class:`~openturns.Distribution`
+    The distribution that fits the sample best according to the test.
+    This may raise a warning if the best model does not perform well.
+best_result : :class:`~openturns.TestResult`
+    Best test result.
+
+See Also
+--------
+FittingTest_Lilliefors
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> tested_distributions = [ot.ExponentialFactory(), ot.NormalFactory()]
+>>> best_model, best_result = ot.FittingTest.BestModelLilliefors(sample, tested_distributions)
+>>> print(best_model)
+Normal(mu = -0.0944924, sigma = 0.989808)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FittingTest::Lilliefors
+"Perform a Lilliefors goodness-of-fit test for 1-d continuous distributions.
+
+Refer to :ref:`kolmogorov_smirnov_test`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Tested sample.
+model : :class:`~openturns.DistributionFactory`
+    Tested distribution factory.
+level : float, :math:`0 \leq \alpha \leq 1`, optional (default level = 0.05). 
+    This is the risk :math:`\alpha` of committing a Type I error,
+    that is an incorrect rejection of a true null hypothesis.
+
+Returns
+-------
+fitted_dist : :class:`~openturns.Distribution`
+    Estimated distribution (if model is of type :class:`~openturns.DistributionFactory`).
+test_result : :class:`~openturns.TestResult`
+    Test result.
+
+Raises
+------
+TypeError : 
+    If the distribution is not continuous or if the sample is
+    multivariate.
+
+Notes
+-----
+The distribution is estimated using the given factory based 
+on the given sample and the distribution of the test statistics is estimated 
+using a Monte Carlo approach. This algorithm is known as Lilliefors's test [Lilliefors1967]_.
+The Monte Carlo algorithm can be configured with the following keys in
+:class:`~openturns.ResourceMap`:
+
+- *FittingTest-LillieforsMinimumSamplingSize* defining the minimum
+  number of samples to generate in order to estimate the
+  p-value. Default value is 10.
+
+- *FittingTest-LillieforsMaximumSamplingSize* defining the maximum
+  number of samples to generate in order to estimate the
+  p-value. Default value is 100000.
+
+- *FittingTest-LillieforsPrecision* defining the target standard
+  deviation for the p-value estimate. Default value is 0.01.
+
+Examples
+--------
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> factory = ot.NormalFactory()
+>>> ot.ResourceMap.SetAsScalar('FittingTest-LillieforsPrecision', 0.05)
+>>> ot.ResourceMap.SetAsUnsignedInteger('FittingTest-LillieforsMinimumSamplingSize', 100)
+>>> ot.ResourceMap.SetAsUnsignedInteger('FittingTest-LillieforsMaximumSamplingSize', 1000)
+>>> fitted_dist, test_result = ot.FittingTest.Lilliefors(sample, factory)
+>>> fitted_dist
+class=Normal name=Normal dimension=1 mean=class=Point name=Unnamed dimension=1 values=[-0.0944924] sigma=class=Point name=Unnamed dimension=1 values=[0.989808] correlationMatrix=class=CorrelationMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
+>>> test_result
+class=TestResult name=Unnamed type=Lilliefors Normal binaryQualityMeasure=true p-value threshold=0.05 p-value=0.59 statistic=0.106933 description=[Normal(mu = -0.0944924, sigma = 0.989808) vs sample Normal]
+>>> pvalue = test_result.getPValue()
+>>> pvalue
+0.59
+>>> D = test_result.getStatistic()
+>>> D
+0.1069...
+>>> quality = test_result.getBinaryQualityMeasure()
+>>> quality
+True
+"
