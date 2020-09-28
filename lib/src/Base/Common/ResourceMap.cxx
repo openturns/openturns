@@ -1196,9 +1196,13 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("CleaningStrategy-DefaultSignificanceFactor", 1.0e-4);
   addAsUnsignedInteger("CleaningStrategy-DefaultMaximumSize", 20);
 
+  // MetaModelAlgorithm parameters //
+  addAsScalar("MetaModelAlgorithm-PValueThreshold", 1.0e-3);
+  addAsString("MetaModelAlgorithm-ModelSelectionCriterion", "BIC");
+  addAsString("MetaModelAlgorithm-NonParametricModel", "Histogram");
+
   // FunctionalChaosAlgorithm parameters //
   addAsScalar("FunctionalChaosAlgorithm-DefaultMaximumResidual", 1.0e-6);
-  addAsScalar("FunctionalChaosAlgorithm-PValueThreshold", 1.0e-3);
   addAsScalar("FunctionalChaosAlgorithm-QNorm", 0.5);
   addAsUnsignedInteger("FunctionalChaosAlgorithm-LargeSampleSize", 10000);
   addAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree", 10);

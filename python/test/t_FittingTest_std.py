@@ -130,6 +130,10 @@ print("best model BIC=", repr(model))
 model, best_result = ot.FittingTest.BestModelKolmogorov(
     aSample, factoryCollection)
 print("best model Kolmogorov=", repr(model))
+model, best_AIC = ot.FittingTest.BestModelAIC(aSample, factoryCollection)
+print("best model AIC=", repr(model))
+model, best_AICc = ot.FittingTest.BestModelAICC(aSample, factoryCollection)
+print("best model AICc=", repr(model))
 
 # BIC adequation
 resultBIC = ot.SquareMatrix(distributionNumber)

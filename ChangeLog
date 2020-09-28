@@ -29,6 +29,9 @@
  * Deprecated VisualTest::DrawLinearModelResidual(inputSample, outputSample, linearModelResult), use VisualTest::DrawLinearModelResidual(linearModelResult) instead
  * Deprecated OptimizationResult::getLagrangeMultipliers
  * Moved OptimizationAlgorithm::computeLagrangeMultipliers to OptimizationResult
+ * Added AIC & BestModelAIC static methods in FittingTest
+ * Added AICC & BestModelAICC static methods in FittingTest
+ * Moved BuildDistribution from FunctionalChaosAlgorithm to MetaModelAlgorithm
 
 === Documentation ===
 ==== API documentation ====
@@ -50,6 +53,7 @@
  * #1267 (Some CSV files cannot be imported)
  * #1377 (The `setKnownParameter` method is not compatible with `buildEstimator`)
  * #1407 (GeneralLinearModelAlgorithm mishandles user-specified scale parameter when normalize is True)
+ * #1415 (The BuildDistribution static method should not use the KS-test)
  * #1421 (UserDefinedStationaryCovarianceModel doc suggests input dimension can be >1)
  * #1447 (Highly inaccurate result in reliability model when using subset of RandomVector)
  * #1465 (The Sample constructor based on a list and an integer should not exist)

@@ -73,6 +73,9 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Recover the distribution */
+  static Distribution BuildDistribution(const Sample & inputSample);
+
 protected:
 
   /** The input vector distribution */
@@ -83,7 +86,7 @@ protected:
 
 
 private:
-
+  friend struct TestedDistribution;
 
 }; /* class MetaModelAlgorithm */
 
