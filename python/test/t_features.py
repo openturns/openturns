@@ -43,8 +43,16 @@ try:
 except:
     print('n/a')
 
+# check HDF5 support
+print(' 5: HDF5 compatibility '.ljust(width), end=' ')
+try:
+    storageManager = ot.XMLH5StorageManager('myFile.xml')
+    print('ok')
+except:
+    print('n/a')
+
 # check that math parser is available
-print(' 5: legacy symbolic function (muParser)'.ljust(width), end=' ')
+print(' 6: legacy symbolic function (muParser)'.ljust(width), end=' ')
 try:
     ot.ResourceMap.Set("SymbolicParser-Backend", "MuParser")
     f = ot.SymbolicFunction(['x1', 'x2'], ['x1+x2'])
@@ -53,11 +61,11 @@ except:
     print('n/a')
 
 # check that hmat library was found
-print(' 6: h-matrix (hmat-oss)'.ljust(width), end=' ')
+print(' 7: h-matrix (hmat-oss)'.ljust(width), end=' ')
 print('ok' if ot.HMatrixFactory.IsAvailable() else 'n/a')
 
 # check that spectra library was found
-print(' 7: iterative SVD (Spectra)'.ljust(width), end=' ')
+print(' 8: iterative SVD (Spectra)'.ljust(width), end=' ')
 ot.ResourceMap.SetAsString(
     "KarhunenLoeveP1Algorithm-EigenvaluesSolver", "SPECTRA")
 mesh = ot.IntervalMesher([9]).build(ot.Interval(-1.0, 1.0))
@@ -72,11 +80,11 @@ except:
     print('n/a')
 
 # check that TBB library was found
-print(' 8: multithreading (TBB)'.ljust(width), end=' ')
+print(' 9: multithreading (TBB)'.ljust(width), end=' ')
 print('ok' if ot.TBB.IsAvailable() else 'n/a')
 
 # check that psutil was found
-print(' 9: process control (psutil)'.ljust(width), end=' ')
+print('10: process control (psutil)'.ljust(width), end=' ')
 try:
     import psutil
     print('ok')
@@ -84,25 +92,25 @@ except ImportError:
     print('n/a')
 
 # check that nlopt library was found
-print('10: optimization (NLopt)'.ljust(width), end=' ')
+print('11: optimization (NLopt)'.ljust(width), end=' ')
 print('ok' if ot.NLopt.IsAvailable() else 'n/a')
 
 # check that cminpack was found
-print('11: optimization (CMinpack)'.ljust(width), end=' ')
+print('12: optimization (CMinpack)'.ljust(width), end=' ')
 print('ok' if ot.CMinpack.IsAvailable() else 'n/a')
 
 # check that ceres was found
-print('12: optimization (Ceres Solver)'.ljust(width), end=' ')
+print('13: optimization (Ceres Solver)'.ljust(width), end=' ')
 print('ok' if ot.Ceres.IsAvailable() else 'n/a')
 
 # check that dlib was found
-print('13: optimization (Dlib)'.ljust(width), end=' ')
+print('14: optimization (Dlib)'.ljust(width), end=' ')
 print('ok' if ot.Dlib.IsAvailable() else 'n/a')
 
 # check that dlib was found
-print('14: optimization (Bonmin)'.ljust(width), end=' ')
+print('15: optimization (Bonmin)'.ljust(width), end=' ')
 print('ok' if ot.Bonmin.IsAvailable() else 'n/a')
 
 # check that ipopt was found
-print('15: optimization (Ipopt)'.ljust(width), end=' ')
+print('16: optimization (Ipopt)'.ljust(width), end=' ')
 print('ok' if ot.Ipopt.IsAvailable() else 'n/a')

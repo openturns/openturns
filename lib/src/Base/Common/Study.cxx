@@ -25,6 +25,9 @@
 #if defined OPENTURNS_HAVE_LIBXML2
 #include "openturns/XMLStorageManager.hxx"
 #endif
+#if defined OPENTURNS_HAVE_HDF5
+#include "openturns/XMLH5StorageManager.hxx"
+#endif
 #include "openturns/Exception.hxx"
 #include "openturns/Catalog.hxx"
 #include "openturns/PersistentObjectFactory.hxx"

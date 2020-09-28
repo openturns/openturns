@@ -23,7 +23,7 @@ for name, obj in inspect.getmembers(ot):
             print (obj.__name__, 'FAIL')
 
 # save / load
-fileName = 'myStudy.xml'
+fileName = 'myStudyStd.xml'
 for class_ in instanciables:
     myStudy = ot.Study()
     myStudy.setStorageManager(ot.XMLStorageManager(fileName))

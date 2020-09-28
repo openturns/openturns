@@ -92,6 +92,10 @@ if (LIBXML2_FOUND AND CMAKE_VERSION VERSION_LESS 3.12)
   list (APPEND SWIG_MODULE_common_EXTRA_FLAGS -DOPENTURNS_HAVE_LIBXML2=1)
 endif ()
 
+if (HDF5_FOUND AND CMAKE_VERSION VERSION_LESS 3.12)
+  list (APPEND SWIG_MODULE_common_EXTRA_FLAGS -DOPENTURNS_HAVE_HDF5=1)
+endif ()
+
 ot_add_python_module(common common_module.i
                       OTtypes.i
                       OTexceptions.i
@@ -101,6 +105,7 @@ ot_add_python_module(common common_module.i
                       Study.i Study_doc.i.in
                       StorageManager.i StorageManager_doc.i.in
                       XMLStorageManager.i XMLStorageManager_doc.i.in
+                      XMLH5StorageManager.i XMLH5StorageManager_doc.i.in
                       Log.i Log_doc.i.in
                       TTY.i TTY_doc.i.in
                       Path.i Path_doc.i.in
@@ -123,7 +128,11 @@ ot_add_python_module(common common_module.i
                    )
 
 if (LIBXML2_FOUND AND NOT CMAKE_VERSION VERSION_LESS 3.12)
-  set_property (TARGET ${SWIG_MODULE_common_REAL_NAME} PROPERTY SWIG_COMPILE_DEFINITIONS OPENTURNS_HAVE_LIBXML2=1)
+  set_property (TARGET ${SWIG_MODULE_common_REAL_NAME} APPEND PROPERTY SWIG_COMPILE_DEFINITIONS OPENTURNS_HAVE_LIBXML2=1)
+endif ()
+
+if (HDF5_FOUND AND NOT CMAKE_VERSION VERSION_LESS 3.12)
+  set_property (TARGET ${SWIG_MODULE_common_REAL_NAME} APPEND PROPERTY SWIG_COMPILE_DEFINITIONS OPENTURNS_HAVE_HDF5=1)
 endif ()
 
 ot_add_python_module(typ typ_module.i
@@ -190,7 +199,7 @@ ot_add_python_module(statistics statistics_module.i
                       CovarianceModelImplementation.i CovarianceModelImplementation_doc.i.in
                       CovarianceModel.i CovarianceModel_doc.i.in
                       StationaryCovarianceModel.i
-                      StationaryFunctionalCovarianceModel.i StationaryFunctionalCovarianceModel_doc.i.in 
+                      StationaryFunctionalCovarianceModel.i StationaryFunctionalCovarianceModel_doc.i.in
                       SpectralModelFactoryImplementation.i SpectralModelFactoryImplementation_doc.i.in
                       SpectralModelFactory.i SpectralModelFactory_doc.i.in
                       UserDefinedSpectralModel.i UserDefinedSpectralModel_doc.i.in
@@ -570,7 +579,7 @@ ot_add_python_module(model_process model_process_module.i
                       ARMAFactoryImplementation.i ARMAFactoryImplementation_doc.i.in
                       WhittleFactory.i WhittleFactory_doc.i.in
                       WhittleFactoryState.i WhittleFactoryState_doc.i.in
-                      ARMALikelihoodFactory.i  ARMALikelihoodFactory_doc.i.in  
+                      ARMALikelihoodFactory.i  ARMALikelihoodFactory_doc.i.in
                       ARMAFactory.i ARMAFactory_doc.i.in
 		      ConditionedGaussianProcess.i ConditionedGaussianProcess_doc.i.in
 		      KarhunenLoeveQuadratureAlgorithm.i KarhunenLoeveQuadratureAlgorithm_doc.i.in
@@ -783,7 +792,7 @@ ot_add_python_module(orthogonalbasis orthogonalbasis_module.i
                       MeixnerFactory.i MeixnerFactory_doc.i.in
                       SoizeGhanemFactory.i SoizeGhanemFactory_doc.i.in
                       OrthogonalUniVariatePolynomialFamily.i OrthogonalUniVariatePolynomialFamily_doc.i.in
-                      OrthonormalizationAlgorithmImplementation.i OrthonormalizationAlgorithmImplementation_doc.i.in 
+                      OrthonormalizationAlgorithmImplementation.i OrthonormalizationAlgorithmImplementation_doc.i.in
                       OrthonormalizationAlgorithm.i OrthonormalizationAlgorithm_doc.i.in
                       AdaptiveStieltjesAlgorithm.i AdaptiveStieltjesAlgorithm_doc.i.in
                       StandardDistributionPolynomialFactory.i StandardDistributionPolynomialFactory_doc.i.in

@@ -24,6 +24,7 @@
 #include <iostream>              // for std::ostream
 #include <stack>                 // for std::stack
 #include <algorithm>             // for std::find
+#include "openturns/XMLToolbox.hxx"
 #include "openturns/OTprivate.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/StorageManager.hxx"
@@ -58,6 +59,7 @@ public:
     return std::find(versions_.begin(), versions_.end(), v) != versions_.end();
   }
 };
+
 
 /**
  * @class XMLStorageManager
@@ -230,7 +232,8 @@ protected:
   /** Return the current state of the storage manager (for those having one) */
   const StorageManager::InternalObject & getState() const override;
 
-
+  /** The internal state of the manager */
+  Pointer<XMLStorageManagerState> p_state_;
 
 private:
 
@@ -245,9 +248,6 @@ private:
   /** The file we read from/write to */
   FileName fileName_;
 
-  /** The internal state of the manager */
-  Pointer<XMLStorageManagerState> p_state_;
-
   /** The internal document */
   Pointer<XMLDoc> p_document_;
 
@@ -258,6 +258,103 @@ private:
   UnsignedInteger compressionLevel_;
 
 }; /* class XMLStorageManager */
+
+#ifndef SWIG
+/************ Tags ************/
+
+#define DEFINE_TAG(name,value)                                          \
+  static const char name ## Tag[] = value;                              \
+  struct name ## _tag { static inline const char * Get() { return name ## Tag ; } }
+
+namespace XML_STMGR
+{
+DEFINE_TAG( root,   "openturns-study"   );
+DEFINE_TAG( bool,   "bool"              );
+DEFINE_TAG( unsignedlong,   "unsignedlong"      );
+DEFINE_TAG( numericalscalar,   "numericalscalar"   );
+DEFINE_TAG( numericalcomplex,   "numericalcomplex"  );
+DEFINE_TAG( real,   "real"              );
+DEFINE_TAG( imag,   "imag"              );
+DEFINE_TAG( string,   "string"            );
+DEFINE_TAG( object,   "object"            );
+} // namespace XML_STMGR
+
+/************ Attributes ************/
+
+#define DEFINE_ATTRIBUTE(name,value)                                    \
+  static const char name ## Attribute[] = value;                        \
+  struct name ## _attribute { static inline const char * Get() { return name ## Attribute ; } }
+
+namespace XML_STMGR
+{
+DEFINE_ATTRIBUTE( StudyVisible, "StudyVisible"  );
+DEFINE_ATTRIBUTE( StudyLabel, "StudyLabel"    );
+DEFINE_ATTRIBUTE( version, "version"       );
+DEFINE_ATTRIBUTE( class, "class"         );
+DEFINE_ATTRIBUTE( id, "id"            );
+DEFINE_ATTRIBUTE( name, "name"          );
+DEFINE_ATTRIBUTE( index, "index"         );
+DEFINE_ATTRIBUTE( member, "member"        );
+} // namespace XML_STMGR
+
+struct XMLInternalObject : public StorageManager::InternalObject
+{
+  XML::Node node_;
+  XMLInternalObject() : node_(0) {}
+  XMLInternalObject(XML::Node node) : node_(node) {}
+  virtual ~XMLInternalObject() throw() {}
+  virtual XMLInternalObject * clone() const
+  {
+    return new XMLInternalObject(*this);
+  }
+  virtual void first()
+  {
+    node_ = XML::GetFirstChild( node_ );
+  }
+  virtual void next()
+  {
+    node_ = XML::GetNextNode( node_ );
+  }
+  virtual String __repr__() const
+  {
+    return OSS() << "XMLInternalObject { node = <" << node_ << ">}";
+  }
+  virtual String __str__(const String & ) const
+  {
+    return __repr__();
+  }
+};
+
+struct XMLStorageManagerState : public StorageManager::InternalObject
+{
+  XML::Node root_;
+  XML::Node current_;
+  XMLStorageManagerState() : root_(0), current_(0) {}
+  virtual ~XMLStorageManagerState() throw() {}
+  virtual XMLStorageManagerState * clone() const
+  {
+    return new XMLStorageManagerState(*this);
+  }
+  virtual void first()
+  {
+    current_ = XML::GetFirstChild( current_ );
+  }
+  virtual void next()
+  {
+    current_ = XML::GetNextNode( current_ );
+  }
+  virtual String __repr__() const
+  {
+    return OSS(true) << "XMLStorageManagerState { root = <" << root_
+           << ">, current_ = <" << current_ << ">}";
+  }
+  virtual String __str__(const String & ) const
+  {
+    return __repr__();
+  }
+};
+
+#endif // SWIG
 
 END_NAMESPACE_OPENTURNS
 

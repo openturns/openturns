@@ -15,7 +15,7 @@ compressionLevel : int
     Compression level of the resulting XML file, in the range 0,...,9 (0=no compression, 9=best compression).
     The compression is done only if the XML lib has been compiled with zlib support.
     The default value is given by 'XMLStorageManager-DefaultCompressionLevel' in :class:`~openturns.ResourceMap`.
-    
+
 Notes
 -----
 The study allows the user to save all its data to a structure looking like a
@@ -35,6 +35,11 @@ Create a Study object:
 >>> myStudy.setStorageManager(ot.XMLStorageManager('myStudy.xml'))
 >>> myStudy2 = ot.Study('myStudy2.xml')
 >>> myStudy3 = ot.Study('myStudy2.xml.gz', 5)
+
+If HDF5 format dependencies are satisfied:
+
+>>> myStudy4 = ot.Study()  # doctest: +SKIP
+>>> myStudy4.setStorageManager(ot.XMLH5StorageManager('myStudy.xml'))  # doctest: +SKIP
 
 Add PersistentObjects to the study:
 

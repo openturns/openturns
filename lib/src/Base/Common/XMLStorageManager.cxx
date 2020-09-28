@@ -29,10 +29,10 @@
 #include "openturns/OSS.hxx"
 #include "openturns/PlatformInfo.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/XMLToolbox.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/OTconfig.hxx"
 #include "openturns/SpecFunc.hxx"
+
 
 #ifndef WIN32
 #ifndef SWIG
@@ -49,103 +49,6 @@ BEGIN_NAMESPACE_OPENTURNS
 #if defined OPENTURNS_HAVE_LIBXML2
 
 
-/************ Tags ************/
-
-#define DEFINE_TAG(name,value)                                          \
-  static const char name ## Tag[] = value;                              \
-  struct name ## _tag { static inline const char * Get() { return name ## Tag ; } }
-
-namespace XML_STMGR
-{
-DEFINE_TAG( root,   "openturns-study"   );
-DEFINE_TAG( bool,   "bool"              );
-DEFINE_TAG( unsignedlong,   "unsignedlong"      );
-DEFINE_TAG( numericalscalar,   "numericalscalar"   );
-DEFINE_TAG( numericalcomplex,   "numericalcomplex"  );
-DEFINE_TAG( real,   "real"              );
-DEFINE_TAG( imag,   "imag"              );
-DEFINE_TAG( string,   "string"            );
-DEFINE_TAG( object,   "object"            );
-} // namespace XML_STMGR
-
-/************ Attributes ************/
-
-#define DEFINE_ATTRIBUTE(name,value)                                    \
-  static const char name ## Attribute[] = value;                        \
-  struct name ## _attribute { static inline const char * Get() { return name ## Attribute ; } }
-
-namespace XML_STMGR
-{
-DEFINE_ATTRIBUTE( StudyVisible, "StudyVisible"  );
-DEFINE_ATTRIBUTE( StudyLabel, "StudyLabel"    );
-DEFINE_ATTRIBUTE( version, "version"       );
-DEFINE_ATTRIBUTE( class, "class"         );
-DEFINE_ATTRIBUTE( id, "id"            );
-DEFINE_ATTRIBUTE( name, "name"          );
-DEFINE_ATTRIBUTE( index, "index"         );
-DEFINE_ATTRIBUTE( member, "member"        );
-} // namespace XML_STMGR
-
-
-
-struct XMLInternalObject : public StorageManager::InternalObject
-{
-  XML::Node node_;
-  XMLInternalObject() : node_(0) {}
-  XMLInternalObject(XML::Node node) : node_(node) {}
-  virtual ~XMLInternalObject() throw() {}
-  virtual XMLInternalObject * clone() const
-  {
-    return new XMLInternalObject(*this);
-  }
-  virtual void first()
-  {
-    node_ = XML::GetFirstChild( node_ );
-  }
-  virtual void next()
-  {
-    node_ = XML::GetNextNode( node_ );
-  }
-  virtual String __repr__() const
-  {
-    return OSS() << "XMLInternalObject { node = <" << node_ << ">}";
-  }
-  virtual String __str__(const String & ) const
-  {
-    return __repr__();
-  }
-};
-
-struct XMLStorageManagerState : public StorageManager::InternalObject
-{
-  XML::Node root_;
-  XML::Node current_;
-  XMLStorageManagerState() : root_(0), current_(0) {}
-  virtual ~XMLStorageManagerState() throw() {}
-  virtual XMLStorageManagerState * clone() const
-  {
-    return new XMLStorageManagerState(*this);
-  }
-  virtual void first()
-  {
-    current_ = XML::GetFirstChild( current_ );
-  }
-  virtual void next()
-  {
-    current_ = XML::GetNextNode( current_ );
-  }
-  virtual String __repr__() const
-  {
-    return OSS(true) << "XMLStorageManagerState { root = <" << root_
-           << ">, current_ = <" << current_ << ">}";
-  }
-  virtual String __str__(const String & ) const
-  {
-    return __repr__();
-  }
-};
-
-
 
 
 const int XMLStorageManager::Precision_ = 17;
@@ -157,8 +60,8 @@ const VersionList XMLStorageManager::SupportedVersions;
 XMLStorageManager::XMLStorageManager(const FileName & filename,
                                      const UnsignedInteger compressionLevel)
   : StorageManager(1),
-    fileName_(filename),
     p_state_(new XMLStorageManagerState),
+    fileName_(filename),
     p_document_(),
     compressionLevel_(std::min(compressionLevel, 9UL))
 {
@@ -642,7 +545,8 @@ void IndexedValueReader(TAG tag,
   {
     UnsignedInteger idx = 0;
     fromStringConverter( XML::GetAttributeByName(node, XML_STMGR::index_attribute::Get()), idx );
-    state.next();
+    // Necessary, -though counter-intuitive- otherwise the XMLH5StoManSta::next can be called
+    state.XMLStorageManagerState::next();
     if (idx == index)
     {
       fromNodeConverter<TAG, _Tp>( node, value );

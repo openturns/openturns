@@ -33,6 +33,10 @@ if (LIBXML2_FOUND)
   ot_add_source_file (XMLToolbox.cxx)
 endif (LIBXML2_FOUND)
 
+if(HDF5_FOUND)
+  ot_add_source_file (XMLH5StorageManager.cxx)
+endif(HDF5_FOUND)
+
 ot_install_header_file (Greater.hxx)
 ot_install_header_file (ResourceMap.hxx)
 ot_install_header_file (ComparisonOperatorImplementation.hxx)
@@ -70,3 +74,6 @@ if (LIBXML2_FOUND)
   ot_install_header_file (XMLStorageManager.hxx)
 endif (LIBXML2_FOUND)
 
+if(HDF5_FOUND)
+  ot_install_header_file (XMLH5StorageManager.hxx)
+endif(HDF5_FOUND)

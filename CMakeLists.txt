@@ -18,6 +18,7 @@ option (USE_HMAT                     "Use HMat library"                         
 option (USE_MUPARSER                 "Use muParser library"                                                  ON)
 option (USE_EXPRTK                   "Use ExprTK library"                                                    ON)
 option (USE_LIBXML2                  "Use LibXml2 for XML support"                                           ON)
+option (USE_HDF5                     "Use HDF5 for high volume storage"                                      ON)
 option (USE_R                        "Use R for graph output support"                                        ON)
 option (USE_BOOST                    "Use Boost for distribution computation"                                ON)
 option (USE_SPHINX                   "Use sphinx for documentation"                                          ON)
@@ -209,6 +210,16 @@ if (LIBXML2_FOUND)
   list (APPEND OPENTURNS_LIBRARIES ${LIBXML2_LIBRARIES})
 endif ()
 
+if (USE_HDF5)
+  find_package(HDF5 COMPONENTS CXX)
+endif ()
+if (HDF5_FOUND)
+  set (OPENTURNS_HAVE_HDF5 TRUE)
+  list (APPEND OPENTURNS_DEFINITIONS ${HDF5_DEFINITIONS})
+  list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${HDF5_INCLUDE_DIR})
+  list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${HDF5_LIBRARIES})
+endif ()
+
 if (MSVC OR WINTEL)
   set (CMAKE_REQUIRED_INCLUDES ${CMAKE_REQUIRED_INCLUDES} ${CMAKE_CURRENT_SOURCE_DIR}/lib/include/pthread_win32 ${CMAKE_CURRENT_SOURCE_DIR}/lib/include)
   include_directories (${PROJECT_SOURCE_DIR}/lib/include/pthread_win32 ${CMAKE_CURRENT_SOURCE_DIR}/lib/include)
@@ -353,7 +364,7 @@ if (MSVC)
 endif ()
 
 include (TestBigEndian)
-test_big_endian (__BIG_ENDIAN__) 
+test_big_endian (__BIG_ENDIAN__)
 
 if(POLICY CMP0042)
   # Set MACOSX_RPATH to ON

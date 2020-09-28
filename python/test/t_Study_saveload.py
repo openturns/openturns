@@ -10,7 +10,7 @@ import math as m
 ot.TESTPREAMBLE()
 
 try:
-    fileName = 'myStudy.xml'
+    fileName = 'myStudySaveLoad.xml'
 
     # Create a Study Object by name
     myStudy = ot.Study(fileName)

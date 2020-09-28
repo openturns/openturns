@@ -1,0 +1,26 @@
+%feature("docstring") OT::XMLH5StorageManager
+"Storage manager that drives a XML file for metadata and HDF5 binary file for sample data.
+
+Available constructors:
+    XMLH5StorageManager(*filename*)
+
+    XMLH5StorageManager(*filename, compressionLevel*)
+
+Parameters
+----------
+fileName : str
+    Name of the file containing the study.
+    Will also specify the name of the h5 file, which will be created next to the XML file.
+compressionLevel : int
+    Compression level of the resulting XML file, in the range 0,...,9 (0=no compression, 9=best compression).
+    The compression is done only if the XML lib has been compiled with zlib support.
+    The default value is given by 'XMLStorageManager-DefaultCompressionLevel' in :class:`~openturns.ResourceMap`.
+
+Notes
+-----
+*XMLH5StorageManager* enables to read and write OPENTURNS' objects from a XML
+file and the associated HDF5 file.
+
+See also
+--------
+StorageManager"
