@@ -29,9 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(XMLH5StorageManager)
 
-using namespace H5;
-
-const UnsignedInteger BUF_SIZE = 2048; //Buffer size for writing hdf5 slabs
+const UnsignedInteger BufferSize = 2048; //Buffer size for writing hdf5 slabs
 
 /* Default constructor */
 XMLH5StorageManager::XMLH5StorageManager(const FileName & filename,
@@ -67,7 +65,7 @@ void XMLH5StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 
 
   //Every nth value write to dataset
-  if(index && index % BUF_SIZE == 0) {
+  if(index && index % BufferSize == 0) {
     isChunked_ = true;
     String dataSetName = XML::GetAttributeByName(node, "id");
     writeToH5(dataSetName);
@@ -87,15 +85,15 @@ void XMLH5StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 void XMLH5StorageManager::writeToH5(const String & dataSetName)
 {
   H5::Exception::dontPrint();
-  H5File h5File;
+  H5::H5File h5File;
   if(isFirstDS_) {
     //Create new or overwrite existing
-    h5File = H5File(h5FileName_.c_str(), H5F_ACC_TRUNC);
+    h5File = H5::H5File(h5FileName_.c_str(), H5F_ACC_TRUNC);
     isFirstDS_ = false;
   }
   else {
     //R+W access
-    h5File = H5File(h5FileName_.c_str(), H5F_ACC_RDWR);
+    h5File = H5::H5File(h5FileName_.c_str(), H5F_ACC_RDWR);
   }
 
   hsize_t dims[1] = {valBuf_.size()};
@@ -104,20 +102,20 @@ void XMLH5StorageManager::writeToH5(const String & dataSetName)
     //Dataset does not exist, need to create it and initialize it with first chunk
     hsize_t maxdims[1] = {H5S_UNLIMITED};
     //Set dataspace to unlimited
-    DataSpace *dsp = new DataSpace (1, dims, maxdims);
+    H5::DataSpace *dsp = new H5::DataSpace (1, dims, maxdims);
     //Propagate dataspace properties to dataset
-    DSetCreatPropList prop;
+    H5::DSetCreatPropList prop;
     prop.setChunk(1, dims);
     //Create new dataset and write it
-    DataSet *dset = new DataSet(h5File.createDataSet(dataSetName, PredType::IEEE_F64LE, *dsp, prop));
-    dset->write(valBuf_.data(), PredType::IEEE_F64LE);
+    H5::DataSet *dset = new H5::DataSet(h5File.createDataSet(dataSetName, H5::PredType::IEEE_F64LE, *dsp, prop));
+    dset->write(valBuf_.data(), H5::PredType::IEEE_F64LE);
     prop.close();
     delete dsp;
     delete dset;
   }
   else {
     //Dataset exists, and will be appended with buffer values
-    DataSet * dset = new DataSet(h5File.openDataSet(dataSetName));
+    H5::DataSet * dset = new H5::DataSet(h5File.openDataSet(dataSetName));
     //Get actual dset size
     hsize_t offset[1] = {(hsize_t)dset->getSpace().getSimpleExtentNpoints()};
     hsize_t extent[1];
@@ -125,12 +123,12 @@ void XMLH5StorageManager::writeToH5(const String & dataSetName)
     //Extend dset size by the buffer size
     dset->extend(extent);
     //Get updated dataspace
-    DataSpace *filespace = new DataSpace(dset->getSpace());
+    H5::DataSpace *filespace = new H5::DataSpace(dset->getSpace());
     filespace->selectHyperslab(H5S_SELECT_SET, dims, offset);
     //Create space for new data
-    DataSpace *memspace = new DataSpace(1, dims, NULL);
+    H5::DataSpace *memspace = new H5::DataSpace(1, dims, NULL);
     //Write new data
-    dset->write(valBuf_.data(), PredType::IEEE_F64LE, *memspace, *filespace);
+    dset->write(valBuf_.data(), H5::PredType::IEEE_F64LE, *memspace, *filespace);
     delete dset;
     delete filespace;
     delete memspace;
@@ -164,13 +162,13 @@ void XMLH5StorageManager::readIndexedValue(Pointer<StorageManager::InternalObjec
 void XMLH5StorageManager::readFromH5(const String & dataSetName)
 {
   H5::Exception::dontPrint();
-  H5File file(h5FileName_.c_str(), H5F_ACC_RDONLY);
-  DataSet dataset = file.openDataSet(dataSetName.c_str());
-  DataSpace dataspace = dataset.getSpace();
+  H5::H5File file(h5FileName_.c_str(), H5F_ACC_RDONLY);
+  H5::DataSet dataset = file.openDataSet(dataSetName.c_str());
+  H5::DataSpace dataspace = dataset.getSpace();
   const int size = dataspace.getSimpleExtentNpoints();
 
   double *data = new double[size];
-  dataset.read(data, PredType::IEEE_F64LE);
+  dataset.read(data, H5::PredType::IEEE_F64LE);
   valBuf_.clear();
 
   std::vector<double> d_vector(data, data+size);
