@@ -225,7 +225,7 @@ void FejerAlgorithm::generateNodesAndWeightsFejerType2(Collection<Point> & margi
 
       for (UnsignedInteger k = 0; k < integrationNodesNumber; ++k)
       {
-        const Scalar theta_k = k * M_PI / (integrationNodesNumber - 1);
+        const Scalar theta_k = (k + 1.0) * M_PI / (integrationNodesNumber + 1);
         Scalar sum_sinus = 0.0;
         const UnsignedInteger halfNodesNumber = (integrationNodesNumber - 1) / 2;
         for (UnsignedInteger iter_ = 1; iter_ <= halfNodesNumber; ++iter_)
@@ -233,7 +233,7 @@ void FejerAlgorithm::generateNodesAndWeightsFejerType2(Collection<Point> & margi
         // Nodes
         marginalNodes[i][k] = std::cos(theta_k);
         // Weights
-        marginalWeights[i][k] = 4.0 / (integrationNodesNumber - 1) * std::sin(theta_k) * sum_sinus;
+        marginalWeights[i][k] = 4.0 / (integrationNodesNumber + 1) * std::sin(theta_k) * sum_sinus;
       }
     } // No match found
   }   // For i

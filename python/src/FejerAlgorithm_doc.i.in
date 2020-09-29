@@ -15,6 +15,7 @@ discretization : sequence of int
 method : int, optional
     Integer used to select the method of integration.
     (Amongst ot.FejerAlgorithm.FEJERTYPE1, ot.FejerAlgorithm.FEJERTYPE2 and ot.FejerAlgorithm.CLENSHAWCURTIS).
+
     Default is `ot.FejerAlgorithm.FEJERTYPE1`
 
 Notes
@@ -25,33 +26,37 @@ The FejerAlgorithm algorithm enables to approximate the definite integral:
 
     \int_{\vect{a}}^\vect{b} f(\vect{t})\di{\vect{t}}
 
-The Fejer type 2 writes :
-
-
-with :math:`f: \Rset^d \mapsto \Rset^p`, :math:`\vect{a}, \vect{b}\in\Rset^d` using a the Fejer approximation.
-
-Three algorithms are implemented : Fejer type 1, Fejer type 2 & ClenshawCurtis methods
-
-Fejer type 1 writes:
+with :math:`f: \Rset^d \mapsto \Rset^p`, :math:`\vect{a}, \vect{b}\in\Rset^d` using a the approximation:
 
 .. math::
 
     \int_{\vect{a}}^\vect{b} f(\vect{t})\di{\vect{t}} = \sum_{\vect{n}\in \cN}\left(\prod_{i=1}^d w^{N_i}_{n_i}\right)f(\xi^{N_1}_{n_1},\dots,\xi^{N_d}_{n_d})
 
-whereas Fejer type 2 writes :
+where :math:`\xi^{N_i}_{n_i}` is the :math:`n_i`th node of the :math:`N_i`-points and :math:`w^{N_i}_{n_i}` the associated weight.
+
+Let us note :math:`\theta_k=\dfrac{k\pi}{n}, k=0,1,...,n-1`, :math:`x_k = cos(\theta_k)`. The `Clenshaw-Curtis nodes are :math=`x_k`
+and its associated weights are given as follows:
 
 .. math::
 
-    \int_{\vect{a}}^\vect{b} f(\vect{t})\di{\vect{t}} = \sum_{\vect{n}\in \cN}\left(\prod_{i=1}^d w^{N_i}_{n_i}\right)f(\xi^{N_1}_{n_1},\dots,\xi^{N_d}_{n_d})
+    w_k =\dfrac{c_k}{n}\left(1-\sum_{j=1}^{\lfloor n/2\rfloor}\dfrac{b_j}{4j^2-1}\cos\left(2j\theta_k\right)\right)
 
-And Clenshaw-Curtis writes :
+with :math:`b_j= 2` if :math:`j < n/2` else :math:`b_j=1`. Also, :math:`c_k = 1` if :math:`if k = 0[n]` else :math:`c_k = 2`
+
+The  `Fejer` of type `1` method relies on :math=`x_k = cos(\theta_{k+1/2})` nodes and associated weights are the following:
 
 .. math::
 
-    \int_{\vect{a}}^\vect{b} f(\vect{t})\di{\vect{t}} = \sum_{\vect{n}\in \cN}\left(\prod_{i=1}^d w^{N_i}_{n_i}\right)f(\xi^{N_1}_{n_1},\dots,\xi^{N_d}_{n_d})
+    w_k=\dfrac{2}{n}\left(1-2\sum_{j=1}^{\lfloor n/2\rfloor}\dfrac{1}{4j^2-1}\cos\left(j\theta_{2k+1}\right)\right)
 
-where :math:`\xi^{N_i}_{n_i}` is the :math:`n_i`th node of the :math:`N_i`-points using Chebyshev point as node with :math:`n_i= \frac{1}{2},\frac{3}{2},\ldots,N_i-\frac{1}{2}` 
-(1D integration rule) and :math:`w^{N_i}_{n_i}` the associated weight.
+
+Finally, the `Fejer`of type `2` method is very close to the `Clenshaw-Curtis` one. The two method do share the same
+nodes (except the endpoints that are set to `0` within the `Fejer` method).  Its associated weights are given as follows:
+
+.. math::
+
+    w_k=\dfrac{4}{n+1}\sin\theta_k\sum_{j=1}^{\lfloor n/2\rfloor}\dfrac{\sin\left((2j-1)\theta_k\right)}{2j-1}
+
 
 Examples
 --------

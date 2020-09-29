@@ -79,6 +79,7 @@
  * #1573 (LinearModelAnalysis::drawQQPlot line is not the first bisector)
  * #1581 (LinearModelAlgorithm run() fails to parse Sample description)
  * #1586 (Documentation: description error in the API for the FittingTest_BestModelKolmogorov and FittingTest_BestModelChiSquaredclasses)
+ * #1590 (The equation of the Fejer quadrature rule is triplicated)
  * #1592 (SubsetSampling returns an error if Pf=1)
  * #1594 (LinearLeastSquaresCalibration and CalibrationResult)
  * #1599 (FieldToPointConnection-BlockSize is missing)
