@@ -197,4 +197,17 @@ GridLayout ProcessSample::draw(const Bool interpolate) const
   return getImplementation()->draw(interpolate);
 }
 
+/* Draw correlation between 2 marginals */
+Graph ProcessSample::drawMarginalCorrelation(const UnsignedInteger i,
+                                             const UnsignedInteger j) const
+{
+  return getImplementation()->drawMarginalCorrelation(i, j);
+}
+
+/* Draw correlation between all marginals */
+GridLayout ProcessSample::drawCorrelation() const
+{
+  return getImplementation()->drawCorrelation();
+}
+
 END_NAMESPACE_OPENTURNS

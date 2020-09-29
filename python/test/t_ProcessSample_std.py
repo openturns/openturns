@@ -74,11 +74,16 @@ sampleSize = 250
 processSample = ot.ProcessSample(mesh, sampleSize, outputDimension)
 #processSample.setDescription(['Twater', 'Tair'])
 
-distribution = ot.Normal([15, 20], [5, 10], ot.CorrelationMatrix(2))
+R = ot.CorrelationMatrix(outputDimension)
+R[0, 1] = 0.75
+distribution = ot.Normal([15, 20], [5, 10], R)
 for i in range(sampleSize):
     processSample[i] = distribution.getSample(mesh.getVerticesNumber())
 graph1 = processSample.draw()
+graph2 = processSample.drawMarginalCorrelation(0, 1)
+graph3 = processSample.drawCorrelation()
 if 0:
     from openturns.viewer import View
     View(graph1).save('graph1.png')
-
+    View(graph2).save('graph2.png')
+    View(graph3).save('graph3.png')

@@ -313,3 +313,40 @@ graph : :class:`~openturns.GridLayout`
 %enddef
 %feature("docstring") OT::ProcessSampleImplementation::draw
 OT_ProcessSample_draw_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_drawMarginalCorrelation_doc
+"Draw correlation between 2 marginals.
+
+This is only available on a 1-d mesh.
+
+Parameters
+----------
+i, j : int, :math:`i, j < d`
+    Marginal indices.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The graph of the correlation between 2 marginals.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::drawMarginalCorrelation
+OT_ProcessSample_drawMarginalCorrelation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_drawCorrelation_doc
+"Draw correlation between all marginals.
+
+This is only available on a 1-d mesh.
+
+Returns
+-------
+graph : :class:`~openturns.GridLayout`
+    The graph of the correlation between all marginals.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::drawCorrelation
+OT_ProcessSample_drawCorrelation_doc

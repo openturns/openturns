@@ -21,11 +21,11 @@
 
 #include "openturns/ProcessSampleImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Exception.hxx"
+#include "openturns/PiecewiseLinearEvaluation.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Drawable.hxx"
-#include "openturns/Description.hxx"
-#include "openturns/Log.hxx"
+#include "openturns/InverseTrendTransform.hxx"
+#include "openturns/NonStationaryCovarianceModelFactory.hxx"
 #include "openturns/TBB.hxx"
 #include "openturns/Os.hxx"
 
@@ -400,6 +400,85 @@ GridLayout ProcessSampleImplementation::draw(const Bool interpolate) const
     const Graph graph(drawMarginal(i, interpolate));
     grid.setGraph(i, 0, graph);
   }
+  return grid;
+}
+
+
+class ProcessSampleCorrelationEvaluation : public EvaluationImplementation
+{
+public:
+  ProcessSampleCorrelationEvaluation(const CovarianceModel & covarianceModel, const UnsignedInteger i, const UnsignedInteger j)
+  : covarianceModel_(covarianceModel), i_(i), j_(j) {}
+
+  ProcessSampleCorrelationEvaluation * clone() const override { return new ProcessSampleCorrelationEvaluation(*this); }
+
+  UnsignedInteger getInputDimension() const override { return 2; }
+
+  UnsignedInteger getOutputDimension() const override { return 1; }
+
+  Point operator() (const Point & inP) const override
+  {
+    const Scalar s = inP[0];
+    const Scalar t = inP[1];
+    const Scalar covST = covarianceModel_(s, t).operator()(i_, j_);
+    const Scalar covSS = covarianceModel_(s, s).operator()(i_, j_);
+    const Scalar covTT = covarianceModel_(t, t).operator()(i_, j_);
+    Point result(1);
+    const Scalar den = std::sqrt(std::max(0.0, covSS * covTT));
+    if (den > 0.0)
+      result[0] = covST / den;
+    return result;
+  }
+
+private:
+  CovarianceModel covarianceModel_;
+  UnsignedInteger i_ = 0;
+  UnsignedInteger j_ = 0;
+};
+
+
+/* Draw correlation between 2 marginals */
+Graph ProcessSampleImplementation::drawMarginalCorrelation(const UnsignedInteger i,
+                                                           const UnsignedInteger j) const
+{
+  if (getMesh().getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "drawMarginalCorrelation only supports 1-d domains";
+  const UnsignedInteger dimension = getDimension();
+  if (!(i < dimension) || !(j < dimension))
+    throw InvalidArgumentException(HERE) << "Invalid indices: (" << i << ", " << j << "), dimension is " << dimension;
+  const Sample meanValues(computeMean().getValues());
+  const Point timesValues(getMesh().getVertices().asPoint());
+  const PiecewiseLinearEvaluation meanInterpolation(timesValues, meanValues);
+  const InverseTrendTransform meanInverseTransform(meanInterpolation, getMesh());
+  const ProcessSample processSampleCentered(meanInverseTransform(*this));
+  const CovarianceModel covariance(NonStationaryCovarianceModelFactory().build(processSampleCentered, true));
+  const Function correlationFunction(new ProcessSampleCorrelationEvaluation(covariance, i, j));
+  const Point dateMin(2, getMesh().getLowerBound()[0]);
+  const Point dateMax(2, getMesh().getUpperBound()[0]);
+  Graph graph(correlationFunction.draw(dateMin, dateMax));
+  graph.setLegendPosition("bottomright");
+  graph.setXTitle("s");
+  graph.setYTitle("t");
+  graph.setTitle(OSS() << "Empirical correlation of marginals " << i << ", " << j);
+  return graph;
+}
+
+
+/* Draw correlation between all marginals */
+GridLayout ProcessSampleImplementation::drawCorrelation() const
+{
+  const UnsignedInteger outputDimension = getDimension();
+  GridLayout grid(outputDimension, outputDimension);
+  for (UnsignedInteger i = 0; i < outputDimension; ++ i)
+    for (UnsignedInteger j = 0; j < outputDimension; ++ j)
+    {
+      Graph graph(drawMarginalCorrelation(i, j));
+      graph.setTitle("");
+      graph.setXTitle((i == outputDimension -1 ) ? OSS() << "marginal " << j : OSS() << "");
+      graph.setYTitle((j == 0) ? OSS() << "marginal " << i : OSS() << "");
+      grid.setGraph(i, j, graph);
+    }
+  grid.setTitle("Empirical correlation of marginals");
   return grid;
 }
 

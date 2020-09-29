@@ -26,6 +26,10 @@ OT_ProcessSample_getMarginal_doc
 OT_ProcessSample_drawMarginal_doc
 %feature("docstring") OT::ProcessSample::draw
 OT_ProcessSample_draw_doc
+%feature("docstring") OT::ProcessSample::drawCorrelation
+OT_ProcessSample_drawCorrelation_doc
+%feature("docstring") OT::ProcessSample::drawMarginalCorrelation
+OT_ProcessSample_drawMarginalCorrelation_doc
 %feature("docstring") OT::ProcessSample::getField
 OT_ProcessSample_getField_doc
 %feature("docstring") OT::ProcessSample::setField

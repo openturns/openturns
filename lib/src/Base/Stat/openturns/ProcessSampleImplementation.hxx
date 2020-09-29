@@ -119,6 +119,13 @@ public:
   /** Draw all marginals */
   GridLayout draw(const Bool interpolate = true) const;
 
+  /** Draw correlation between 2 marginals */
+  Graph drawMarginalCorrelation(const UnsignedInteger i,
+                                const UnsignedInteger j) const;
+
+  /** Draw correlation between all marginals */
+  GridLayout drawCorrelation() const;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 
