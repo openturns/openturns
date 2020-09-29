@@ -72,6 +72,10 @@ public:
   /** @deprecated Eigenvalues accessor */
   Point getEigenValues() const;
 
+  /** Draw eigen values */
+  Graph drawEigenvalues() const;
+  Graph drawCumulatedEigenvaluesRemainder() const;
+
   /** Modes accessors */
   FunctionCollection getModes() const;
   ProcessSample getModesAsProcessSample() const;

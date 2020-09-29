@@ -8,6 +8,10 @@ OT_KarhunenLoeveResult_getThreshold_doc
 OT_KarhunenLoeveResult_getCovarianceModel_doc
 %feature("docstring") OT::KarhunenLoeveResult::getEigenvalues
 OT_KarhunenLoeveResult_getEigenvalues_doc
+%feature("docstring") OT::KarhunenLoeveResult::drawEigenvalues
+OT_KarhunenLoeveResult_drawEigenvalues_doc
+%feature("docstring") OT::KarhunenLoeveResult::drawCumulatedEigenvaluesRemainder
+OT_KarhunenLoeveResult_drawCumulatedEigenvaluesRemainder_doc
 %feature("docstring") OT::KarhunenLoeveResult::getModes
 OT_KarhunenLoeveResult_getModes_doc
 %feature("docstring") OT::KarhunenLoeveResult::getScaledModes

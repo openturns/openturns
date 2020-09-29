@@ -22,7 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/KarhunenLoeveResultImplementation.hxx"
 #include "openturns/LinearFunction.hxx"
-#include "openturns/Point.hxx"
+#include "openturns/Cloud.hxx"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/LinearCombinationFunction.hxx"
@@ -93,6 +93,40 @@ Point KarhunenLoeveResultImplementation::getEigenValues() const
 {
   LOGWARN(OSS() << "KarhunenLoeveResult::getEigenValues is deprecated, use getEigenvalues instead");
   return getEigenvalues();
+}
+
+Graph KarhunenLoeveResultImplementation::drawEigenvalues() const
+{
+  Graph graph("Karhunen-Loeve eigenvalues", "Index", "Eigenvalue", true, "topright");
+  const UnsignedInteger K = eigenvalues_.getSize();
+  Point indices(K);
+  for (UnsignedInteger i = 0; i < K; ++ i)
+    indices[i] = i;
+  Cloud cloud(indices, eigenvalues_);
+  graph.add(cloud);
+  graph.setGrid(true);
+  return graph;
+}
+
+Graph KarhunenLoeveResultImplementation::drawCumulatedEigenvaluesRemainder() const
+{
+  Graph graph("Karhunen-Loeve eigenvalues", "Index", "Cumulated eigenvalue normalized remainder", true, "topright");
+  const UnsignedInteger K = eigenvalues_.getSize();
+  Point indices(K);
+  for (UnsignedInteger i = 0; i < K; ++ i)
+    indices[i] = i;
+  Point eigenCumSum(eigenvalues_);
+  for (UnsignedInteger i = 1; i < K; ++ i)
+    eigenCumSum[i] += eigenCumSum[i - 1];
+  if (K > 1)
+  {
+    eigenCumSum /= eigenCumSum[K - 1];
+    eigenCumSum[K - 1] = eigenCumSum[K - 2];// avoids log(0) in log scale
+  }
+  Cloud cloud(indices, Point(K, 1) - eigenCumSum);
+  graph.add(cloud);
+  graph.setGrid(true);
+  return graph;
 }
 
 /* Modes accessors */
