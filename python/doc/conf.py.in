@@ -52,15 +52,6 @@ extensions.append('numpydoc')
 numpydoc_show_class_members = True
 numpydoc_class_members_toctree = False
 
-if '@NBSPHINX_FOUND@' == 'TRUE':
-    extensions.append('nbsphinx')
-    nbsphinx_execute = 'never'
-    # dont add .txt suffix to notebook
-    html_sourcelink_suffix = ''
-    tags.add('nbsphinx')
-
-    extensions.append('IPython.sphinxext.ipython_console_highlighting')
-
 extensions.append('sphinx.ext.doctest')
 
 extensions.append('sphinx.ext.todo')
