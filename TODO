@@ -1,1 +1,2 @@
 Remove Sample::computeStandardDeviationPerComponent
+Remove deprecated KLResult::getEigenValues

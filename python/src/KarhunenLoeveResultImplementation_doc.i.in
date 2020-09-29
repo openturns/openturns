@@ -75,7 +75,7 @@ The inverse of :math:`\pi_{\vect{\lambda}, \vect{\varphi}}` is the lift function
       \end{array}
     \right.
 
-If the function :math:`f(.) = X(\omega_0, .)` where :math:`X` is the centered process which covariance function is associated to the eigenvalues and eigenfunctions :math:`(\vect{\lambda}, \vect{\varphi})`, then the *getEigenValues* method enables to obtain the :math:`K` first eigenvalues of the Karhunen Loeve decomposition of :math:`X` and the method *getModes* enables to get the associated modes.
+If the function :math:`f(.) = X(\omega_0, .)` where :math:`X` is the centered process which covariance function is associated to the eigenvalues and eigenfunctions :math:`(\vect{\lambda}, \vect{\varphi})`, then the *getEigenvalues* method enables to obtain the :math:`K` first eigenvalues of the Karhunen Loeve decomposition of :math:`X` and the method *getModes* enables to get the associated modes.
 
 Examples
 --------
@@ -120,7 +120,7 @@ OT_KarhunenLoeveResult_getCovarianceModel_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_KarhunenLoeveResult_getEigenValues_doc
+%define OT_KarhunenLoeveResult_getEigenvalues_doc
 "Accessor to the eigenvalues of the Karhunen Loeve decomposition.
 
 Returns
@@ -132,8 +132,8 @@ Notes
 -----
 OpenTURNS truncates the sequence :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}`  to the most significant terms, selected by the threshold defined in :class:`~openturns.KarhunenLoeveAlgorithm`."
 %enddef
-%feature("docstring") OT::KarhunenLoeveResultImplementation::getEigenValues
-OT_KarhunenLoeveResult_getEigenValues_doc
+%feature("docstring") OT::KarhunenLoeveResultImplementation::getEigenvalues
+OT_KarhunenLoeveResult_getEigenvalues_doc
 
 // ---------------------------------------------------------------------
 

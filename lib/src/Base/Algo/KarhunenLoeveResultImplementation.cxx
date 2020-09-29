@@ -84,9 +84,15 @@ CovarianceModel KarhunenLoeveResultImplementation::getCovarianceModel() const
 }
 
 /* Eigenvalues accessor */
-Point KarhunenLoeveResultImplementation::getEigenValues() const
+Point KarhunenLoeveResultImplementation::getEigenvalues() const
 {
   return eigenvalues_;
+}
+
+Point KarhunenLoeveResultImplementation::getEigenValues() const
+{
+  LOGWARN(OSS() << "KarhunenLoeveResult::getEigenValues is deprecated, use getEigenvalues instead");
+  return getEigenvalues();
 }
 
 /* Modes accessors */

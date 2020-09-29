@@ -17,7 +17,7 @@ algo = ot.KarhunenLoeveQuadratureAlgorithm(
     domain, domain, model, experiment, functions, mustScale, threshold)
 algo.run()
 result = algo.getResult()
-lambd = result.getEigenValues()
+lambd = result.getEigenvalues()
 KLModes = result.getModesAsProcessSample()
 print("KL modes=", KLModes)
 print("KL eigenvalues=", lambd)
@@ -35,7 +35,7 @@ algo = ot.KarhunenLoeveQuadratureAlgorithm(
     domain, domain, model, marginalDegree, threshold)
 algo.run()
 result = algo.getResult()
-lambd = result.getEigenValues()
+lambd = result.getEigenvalues()
 KLModes = result.getScaledModesAsProcessSample()
 # Due to symmetry many results can have a sign switch depending on the CPU/compiler/BLAS used
 # print("KL modes=", KLModes)

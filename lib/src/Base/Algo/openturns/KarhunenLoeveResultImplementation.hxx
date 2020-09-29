@@ -67,6 +67,9 @@ public:
   CovarianceModel getCovarianceModel() const;
 
   /** Eigenvalues accessor */
+  Point getEigenvalues() const;
+
+  /** @deprecated Eigenvalues accessor */
   Point getEigenValues() const;
 
   /** Modes accessors */

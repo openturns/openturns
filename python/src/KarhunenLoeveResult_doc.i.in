@@ -6,8 +6,8 @@ OT_KarhunenLoeveResult_doc
 OT_KarhunenLoeveResult_getThreshold_doc
 %feature("docstring") OT::KarhunenLoeveResult::getCovarianceModel
 OT_KarhunenLoeveResult_getCovarianceModel_doc
-%feature("docstring") OT::KarhunenLoeveResult::getEigenValues
-OT_KarhunenLoeveResult_getEigenValues_doc
+%feature("docstring") OT::KarhunenLoeveResult::getEigenvalues
+OT_KarhunenLoeveResult_getEigenvalues_doc
 %feature("docstring") OT::KarhunenLoeveResult::getModes
 OT_KarhunenLoeveResult_getModes_doc
 %feature("docstring") OT::KarhunenLoeveResult::getScaledModes

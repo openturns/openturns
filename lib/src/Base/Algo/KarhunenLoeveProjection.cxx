@@ -40,11 +40,11 @@ KarhunenLoeveProjection::KarhunenLoeveProjection()
 
 /* Parameter constructor */
 KarhunenLoeveProjection::KarhunenLoeveProjection(const KarhunenLoeveResult & result)
-  : FieldToPointFunctionImplementation(result.getMesh(), result.getModesAsProcessSample().getDimension(), result.getEigenValues().getSize())
+  : FieldToPointFunctionImplementation(result.getMesh(), result.getModesAsProcessSample().getDimension(), result.getEigenvalues().getSize())
   , result_(result)
 {
   // Set the description
-  const UnsignedInteger size = result_.getEigenValues().getSize();
+  const UnsignedInteger size = result_.getEigenvalues().getSize();
   if (size == 0) setInputDescription(Description::BuildDefault(getInputDimension(), "x"));
   else setInputDescription(result_.getModesAsProcessSample()[0].getDescription());
   setOutputDescription(Description::BuildDefault(getOutputDimension(), "xi"));

@@ -42,7 +42,7 @@ int main(int, char *[])
       KarhunenLoeveP1Algorithm algo(mesh, cov1D, 1e-3);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      Point lambda(result.getEigenValues());
+      Point lambda(result.getEigenvalues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
@@ -61,7 +61,7 @@ int main(int, char *[])
       algo.setNbModes(5);// out of 8
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      Point lambda(result.getEigenValues());
+      Point lambda(result.getEigenvalues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
@@ -85,7 +85,7 @@ int main(int, char *[])
       KarhunenLoeveP1Algorithm algo(mesh, cov2D, 1e-3);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      Point lambda(result.getEigenValues());
+      Point lambda(result.getEigenvalues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
