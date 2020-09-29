@@ -21,14 +21,6 @@ import os
 import re
 import warnings
 import io
-import argparse
-
-# Allows for hiding figures if needed from the command line
-parser = argparse.ArgumentParser(description='Viewer parser.')
-parser.add_argument("--noshow", action="store_true", help="Hide figures if used.", dest="noshow", default=False )
-args = parser.parse_args()
-_noshow = args.noshow
-
 
 __all__ = ["View", "PlotDesign"]
 

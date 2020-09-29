@@ -8,7 +8,7 @@ endif ()
 
 
 set (PYINSTALLCHECK_ENVIRONMENT "OPENTURNS_CONFIG_PATH=${INSTALL_DESTDIR}${SYSCONFIG_PATH}/openturns"
-                                 "PYTHONPATH=${INSTALL_DESTDIR}${PYTHON_MODULE_PATH}${PATH_SEP}$ENV{PYTHONPATH}"
+                                 "PYTHONPATH=${INSTALL_DESTDIR}${PYTHON_MODULE_PATH}${PATH_SEP}$ENV{PYTHONPATH}" "MPLBACKEND=agg"
    )
 
 # This macro compiles on the fly and run the corresponding post-installation test
@@ -747,7 +747,7 @@ if (MATPLOTLIB_FOUND)
   foreach (PYF ${PYFILES})
     if (PYF MATCHES plot)
       get_filename_component (TESTNAME "${PYF}" NAME_WE)
-      add_test (NAME pyinstallcheck_example_${TESTNAME} COMMAND ${PYTHON_EXECUTABLE} ${PYF} --noshow)
+      add_test (NAME pyinstallcheck_example_${TESTNAME} COMMAND ${PYTHON_EXECUTABLE} ${PYF})
       set_tests_properties (pyinstallcheck_example_${TESTNAME} PROPERTIES ENVIRONMENT "${PYINSTALLCHECK_ENVIRONMENT}")
     endif ()
   endforeach ()
