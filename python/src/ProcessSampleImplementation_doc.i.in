@@ -294,3 +294,22 @@ graph : :class:`~openturns.Graph`
 %enddef
 %feature("docstring") OT::ProcessSampleImplementation::drawMarginal
 OT_ProcessSample_drawMarginal_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_draw_doc
+"Draw the whole field.
+
+Parameters
+----------
+interpolate : bool (optional, default=True)
+    Whether to draw interpolated values.
+
+Returns
+-------
+graph : :class:`~openturns.GridLayout`
+    The graph of the whole field using the `interpolate` method.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::draw
+OT_ProcessSample_draw_doc

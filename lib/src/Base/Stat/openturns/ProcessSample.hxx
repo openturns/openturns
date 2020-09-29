@@ -116,10 +116,12 @@ public:
   /** Get the marginal sample corresponding to indices dimensions */
   ProcessSample getMarginal(const Indices & indices) const;
 
-  /** Draw a marginal of the timeSerie */
+  /** Draw a marginal */
   Graph drawMarginal(const UnsignedInteger index = 0,
                      const Bool interpolate = true) const;
 
+  /** Draw all marginals */
+  GridLayout draw(const Bool interpolate = true) const;
 private:
 
 }; /* class ProcessSample */

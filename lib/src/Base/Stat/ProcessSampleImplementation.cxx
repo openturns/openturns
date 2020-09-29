@@ -369,7 +369,7 @@ ProcessSampleImplementation ProcessSampleImplementation::getMarginal(const Indic
   return result;
 }
 
-/* Draw a marginal of the ProcessSampleImplementation, ie the collection of all the Field marginals */
+/* Draw a marginal */
 Graph ProcessSampleImplementation::drawMarginal(const UnsignedInteger index,
     const Bool interpolate) const
 {
@@ -388,6 +388,19 @@ Graph ProcessSampleImplementation::drawMarginal(const UnsignedInteger index,
     graph.add(drawable);
   }
   return graph;
+}
+
+/* Draw all marginals */
+GridLayout ProcessSampleImplementation::draw(const Bool interpolate) const
+{
+  const UnsignedInteger outputDimension = getDimension();
+  GridLayout grid(outputDimension, 1);
+  for (UnsignedInteger i = 0; i < outputDimension; ++ i)
+  {
+    const Graph graph(drawMarginal(i, interpolate));
+    grid.setGraph(i, 0, graph);
+  }
+  return grid;
 }
 
 /* Method save() stores the object through the StorageManager */

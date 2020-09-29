@@ -22,7 +22,7 @@
 #define OPENTURNS_PROCESSSAMPLEIMPLEMENTATION_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/Point.hxx"
+#include "openturns/GridLayout.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/Sample.hxx"
 #include "openturns/Collection.hxx"
@@ -112,9 +112,12 @@ public:
   /** Get the marginal sample corresponding to indices dimensions */
   ProcessSampleImplementation getMarginal(const Indices & indices) const;
 
-  /** Draw a marginal of the timeSerie */
+  /** Draw a marginal */
   Graph drawMarginal(const UnsignedInteger index = 0,
                      const Bool interpolate = true) const;
+
+  /** Draw all marginals */
+  GridLayout draw(const Bool interpolate = true) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
