@@ -32,7 +32,7 @@ Actually, the limited available information (:math:`N` data points) does
 not allow to estimate robustly too many parameters.
 
 The BIC criterion can be used to avoid this problem. The principle is to
-rank :math:`\cM_1,\dots,cM_K` according to the following quantity:
+rank :math:`\cM_1,\dots,\cM_K` according to the following quantity:
 
 .. math::
 
