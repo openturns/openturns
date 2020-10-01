@@ -1,12 +1,9 @@
 %feature("docstring") OT::FunctionalChaosSobolIndices
 "Sensitivity analysis based on functional chaos expansion.
 
-Available constructors:
-    FunctionalChaosSobolIndices(functionalChaosResult)
-
 Parameters
 ----------
-functionalChaosResult : :class:`~openturns.FunctionalChaosResult`
+result : :class:`~openturns.FunctionalChaosResult`
     A functional chaos result resulting from a polynomial chaos decomposition.
 
 See also
