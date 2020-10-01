@@ -69,7 +69,7 @@ Examples based on this use case :
  .. figure:: /auto_py_reliability_sensitivity/central_dispersion/images/thumb/sphx_glr_plot_central_tendency_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_reliability_sensitivity/central_dispersion_plot_central_tendency.py`
+     :ref:`sphx_glr_auto_py_reliability_sensitivity_central_dispersion_plot_central_tendency.py`
 
 .. raw:: html
 
@@ -109,7 +109,7 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_estimate_probability_directional_sampling.png
+ .. figure:: /auto_py_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_estimate_probability_directional_sampling_thumb.png
      :alt:
 
      :ref:`sphx_glr_auto_py_reliability_sensitivity_reliability_plot_estimate_probability_directional_sampling.py`
