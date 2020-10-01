@@ -14,5 +14,11 @@ Contents
    use_case_beam.rst
    use_case_flood_model.rst
    use_case_cantilever_beam.rst
-
+   use_case_ishigami.rst
+   use_case_logistic.rst
+   use_case_ackley.rst
+   use_case_branin.rst
+   use_case_chaboche.rst
+   use_case_deflection_tube.rst
+   use_case_viscous_fall.rst
 

@@ -65,19 +65,19 @@ The failure probability is:
 The exact :math:`P_f` is 
 
 .. math:: P_f = 0.02920.
+
+
+Load the use case
+-----------------
  
 We can load this classical model from the use cases module as follows :
 
 .. code-block:: python
 
-    >>> from use_cases import use_case_stressed_beam_exemple
+    >>> from openturns.usecases import stressed_beam as stressed_beam
     >>> # Load the use case axial stressed beam
-    >>> uc_beam = use_case_stressed_beam_exemple.axial_stressed_beam()
+    >>> sb = stressed_beam.AxialStressedBeam()
 
-which is an instance of the following class :
-
-.. literalinclude:: ./examples/py_use_cases/use_cases/use_case_stressed_beam_exemple.py
-   :language: python
 
 
 Examples based on this use case :
@@ -90,30 +90,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_use_cases/images/thumb/sphx_glr_plot_axial_stressed_beam_quickstart-v2_thumb.png
-     :alt: Create a copula
+ .. figure:: /auto_py_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_axial_stressed_beam_quickstart_thumb.png
+     :alt:
 
-     :ref:`sphx_glr_auto_py_use_cases_plot_axial_stressed_beam_quickstart-v2.py`
-
-.. raw:: html
-
-    </div>
-
-.. toctree::
-   :hidden:
-
-   /auto_py_use_cases/plot_axial_stressed_beam_quickstart-v2
-
-.. raw:: html                                                             
-
-    <div class="sphx-glr-thumbcontainer" tooltip="">
-
-.. only:: html
-
- .. figure:: /auto_py_use_cases/images/thumb/sphx_glr_plot_axial_stressed_beam-v2_thumb.png
-     :alt: Create a copula
-
-     :ref:`sphx_glr_auto_py_use_cases_plot_axial_stressed_beam-v2.py`
+     :ref:`sphx_glr_auto_py_reliability_sensitivity_reliability_plot_axial_stressed_beam_quickstart.py`
 
 .. raw:: html
 
@@ -122,7 +102,8 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_use_cases/plot_axial_stressed_beam-v2
+   /auto_py_reliability_sensitivity/reliability/plot_axial_stressed_beam_quickstart
+
 
 
 .. raw:: html                                                             
@@ -131,10 +112,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_use_cases/images/thumb/sphx_glr_plot_estimate_probability_lhs-v2_thumb.png
-     :alt: Create a copula
+ .. figure:: /auto_py_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_axial_stressed_beam_thumb.png
+     :alt:
 
-     :ref:`sphx_glr_auto_py_use_cases_plot_estimate_probability_lhs-v2.py`
+     :ref:`sphx_glr_auto_py_reliability_sensitivity_reliability_plot_axial_stressed_beam.py`
 
 .. raw:: html
 
@@ -143,7 +124,8 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_use_cases/plot_estimate_probability_lhs-v2
+   /auto_py_reliability_sensitivity/reliability/plot_axial_stressed_beam
+
 
 .. raw:: html                                                             
 
@@ -151,10 +133,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_use_cases/images/thumb/sphx_glr_plot_estimate_probability_monte_carlo-v2_thumb.png
-     :alt: Create a copula
+ .. figure:: /auto_py_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_estimate_probability_lhs_thumb.png
+     :alt:
 
-     :ref:`sphx_glr_auto_py_use_cases_plot_estimate_probability_monte_carlo-v2.py`
+     :ref:`sphx_glr_auto_py_reliability_sensitivity_reliability_plot_estimate_probability_lhs.py`
 
 .. raw:: html
 
@@ -163,5 +145,26 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_use_cases/plot_estimate_probability_monte_carlo-v2
+   /auto_py_reliability_sensitivity/reliability/plot_estimate_probability_lhs
+
+
+.. raw:: html                                                             
+
+    <div class="sphx-glr-thumbcontainer" tooltip="">
+
+.. only:: html
+
+ .. figure:: /auto_py_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_estimate_probability_monte_carlo_thumb.png
+     :alt:
+
+     :ref:`sphx_glr_auto_py_reliability_sensitivity_reliability_plot_estimate_probability_monte_carlo.py`
+
+.. raw:: html
+
+    </div>
+
+.. toctree::
+   :hidden:
+
+   /auto_py_reliability_sensitivity/reliability/plot_estimate_probability_monte_carlo
 
