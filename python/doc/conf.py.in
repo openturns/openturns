@@ -87,14 +87,13 @@ extensions.append('matplotlib.sphinxext.plot_directive')
      #                                  'py_examples/functional_modeling',
      #                                  'py_examples/calibration',
      #                                  'py_examples/numerical_methods',
-     #                                  'py_examples/graphs',
-     #                                  'py_examples/use_cases']),
+     #                                  'py_examples/graphs', ]),
 
 extensions.append('sphinx_gallery.gen_gallery')
 sphinx_gallery_conf = {
 
-     'examples_dirs': ['examples/py_data_analysis','examples/py_probabilistic_modeling','examples/py_meta_modeling','examples/py_reliability_sensitivity','examples/py_functional_modeling','examples/py_calibration','examples/py_numerical_methods','examples/py_graphs','examples/py_use_cases',], # path to example scripts
-     'gallery_dirs': ['auto_py_data_analysis','auto_py_probabilistic_modeling','auto_py_meta_modeling','auto_py_reliability_sensitivity','auto_py_functional_modeling','auto_py_calibration','auto_py_numerical_methods','auto_py_graphs','auto_py_use_cases',], # path to where to save gallery gen. output
+     'examples_dirs': ['examples/py_data_analysis','examples/py_probabilistic_modeling','examples/py_meta_modeling','examples/py_reliability_sensitivity','examples/py_functional_modeling','examples/py_calibration','examples/py_numerical_methods','examples/py_graphs',], # path to example scripts
+     'gallery_dirs': ['auto_py_data_analysis','auto_py_probabilistic_modeling','auto_py_meta_modeling','auto_py_reliability_sensitivity','auto_py_functional_modeling','auto_py_calibration','auto_py_numerical_methods','auto_py_graphs',], # path to where to save gallery gen. output
 
 
      'filename_pattern': '/plot_',
@@ -128,8 +127,7 @@ sphinx_gallery_conf = {
                                         'examples/py_calibration/bayesian_calibration',
                                         'examples/py_numerical_methods/general_methods',
                                         'examples/py_numerical_methods/optimization',
-                                        'examples/py_graphs',
-                                        'examples/py_use_cases']),
+                                        'examples/py_graphs',]),
 
 }
 
