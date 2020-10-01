@@ -15,3 +15,8 @@ print('estimated distribution=', inf_distribution)
 factory.setKnownParameter([-1.0, 1.0], [2, 3])
 inf_distribution = factory.build(sample)
 print('estimated distribution with bounds=', inf_distribution)
+
+factory = ot.MaximumLikelihoodFactory(ot.Exponential())
+factory.setKnownParameter([0.1], [1])
+print(factory.build())
+print(factory.build([3, 0]))
