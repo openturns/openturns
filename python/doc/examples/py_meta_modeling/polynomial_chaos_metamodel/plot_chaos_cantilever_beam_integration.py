@@ -165,8 +165,7 @@ input_names = g.getInputDescription()
 graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, first_order, total_order)
 view = viewer.View(graph)
 
-if not viewer._noshow:
-    plt.show()
+plt.show()
 # %%
 # Conclusion
 # ----------

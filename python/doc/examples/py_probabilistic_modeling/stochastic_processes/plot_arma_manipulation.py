@@ -118,5 +118,4 @@ possibleFuture_N.setName('Possible futures')
 # Draw the future : marginal index 0
 graph = possibleFuture_N.drawMarginal(0)
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()

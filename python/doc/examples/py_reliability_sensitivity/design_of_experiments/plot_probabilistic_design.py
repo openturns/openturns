@@ -30,5 +30,4 @@ experiment = ot.LHSExperiment(distribution, N)
 sample = experiment.generate()
 graph = ot.Cloud(sample)
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()

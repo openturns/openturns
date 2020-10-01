@@ -85,6 +85,5 @@ def drawLevelSetContour2D(distribution, numberOfPointsInXAxis, alpha, threshold,
 numberOfPointsInXAxis = 50
 graph = drawLevelSetContour2D(mixture, numberOfPointsInXAxis, alpha, threshold)
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()
 # %%

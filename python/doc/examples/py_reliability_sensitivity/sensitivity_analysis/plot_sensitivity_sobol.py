@@ -208,7 +208,6 @@ sensitivityAnalysis = ot.MartinezSensitivityAlgorithm(inputDesign, outputDesign,
 graph = sensitivityAnalysis.draw()
 view = viewer.View(graph)
 
-if not viewer._noshow:
-    plt.show()
+plt.show()
 # %%
 # We see that the results do not change significantly in this particular situation.

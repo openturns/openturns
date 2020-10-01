@@ -60,5 +60,4 @@ curve.setLegend('model')
 graph.add(curve)
 graph.setLegendPosition('topright')
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()

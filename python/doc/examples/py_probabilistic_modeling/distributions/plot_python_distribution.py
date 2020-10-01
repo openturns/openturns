@@ -169,7 +169,6 @@ distribution.getMean()
 
 # %%
 distribution.computeProbability(ot.Interval([5.5, 6], [8.5, 9]))
-if not viewer._noshow:
-    plt.show()
+plt.show()
 # %%
 # And do more (see `Distribution` for all methods)

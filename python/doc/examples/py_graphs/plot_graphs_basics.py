@@ -286,5 +286,4 @@ fig
 
 # %%
 view = otv.View(graph, plot_kwargs={'color':'blue'})
-if not viewer._noshow:
-    plt.show()
+plt.show()

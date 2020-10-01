@@ -185,5 +185,4 @@ cloud = ot.Cloud(inputSample)
 graph.add(cloud)
 view = viewer.View(graph)
 
-if not viewer._noshow:
-    plt.show()
+plt.show()

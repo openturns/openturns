@@ -43,5 +43,4 @@ print('start=', start, 'step=', step, 'grid_size=', grid_size, 'end=', end)
 time_grid.setName('time')
 graph = time_grid.draw()
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()

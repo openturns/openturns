@@ -67,8 +67,7 @@ parametricModelGraph.add(graphMetamodel)
 parametricModelGraph.setLegends(["Model","Meta-Model"])
 parametricModelGraph.setLegendPosition("topright")
 view = viewer.View(parametricModelGraph)
-if not viewer._noshow:
-    plt.show()
+plt.show()
 
 # %%
 # We see that the metamodel is equal to the trend because it takes into account the fact that the mean of the gaussian process is zero. 

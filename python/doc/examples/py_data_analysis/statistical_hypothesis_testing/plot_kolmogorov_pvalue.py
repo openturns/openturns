@@ -135,8 +135,7 @@ graph.add(curveStat)
 graph.add(boundsPoly)
 graph.setTitle("Kolmogorov-Smirnov distribution (known parameters)")
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()
 
 # %%
 # We observe that the p-value is the area of the curve which corresponds to the KS distances greater than the observed KS statistics.

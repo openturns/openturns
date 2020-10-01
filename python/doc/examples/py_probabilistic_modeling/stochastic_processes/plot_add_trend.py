@@ -49,5 +49,4 @@ sample = Y.getSample(6)
 sample.setName('Y')
 graph = sample.drawMarginal(0)
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()

@@ -140,5 +140,4 @@ view = viewer.View(graph)
 # New algo starting from this design
 algo = ot.SimulatedAnnealingLHS(design, distribution, temperatureProfile, space_filling)
 design = algo.generate()
-if not viewer._noshow:
-    plt.show()
+plt.show()

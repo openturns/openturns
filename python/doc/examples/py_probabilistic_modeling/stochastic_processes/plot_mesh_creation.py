@@ -119,6 +119,5 @@ graphMesh = mesh4.draw()
 graphMesh.setTitle('Bidimensional mesh')
 graphMesh.setLegendPosition('')
 view = viewer.View(graphMesh)
-if not viewer._noshow:
-    plt.show()
+plt.show()
 # %%

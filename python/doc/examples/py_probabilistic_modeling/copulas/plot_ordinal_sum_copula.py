@@ -28,5 +28,4 @@ graph.setXTitle('x')
 graph.setYTitle('y')
 graph.setLegendPosition('')
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()

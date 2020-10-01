@@ -26,5 +26,4 @@ print(sample)
 # draw PDF
 graph = distribution.drawPDF()
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()

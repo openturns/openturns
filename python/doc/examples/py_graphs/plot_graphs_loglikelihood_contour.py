@@ -171,5 +171,4 @@ graphFineTune.setDrawables(drawables) # Replace the drawables
 graphFineTune.setLegendPosition("") # Remove the legend
 graphFineTune.setColors(palette) # Add colors
 view = viewer.View(graphFineTune)
-if not viewer._noshow:
-    plt.show()
+plt.show()

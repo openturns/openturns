@@ -51,5 +51,4 @@ func.setDescription(['$s$', '$t$', '$cov$'])
 cov_graph = func.draw([-a] * 2, [a] * 2, [512] * 2)
 cov_graph.setLegendPosition('')
 view = viewer.View(cov_graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()

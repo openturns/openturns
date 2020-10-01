@@ -89,5 +89,4 @@ graph = ot.KernelSmoothing().build(Y_s).drawPDF()
 graph.setTitle("Kernel smoothing approximation of the output distribution")
 view = viewer.View(graph)
 
-if not viewer._noshow:
-    plt.show()
+plt.show()

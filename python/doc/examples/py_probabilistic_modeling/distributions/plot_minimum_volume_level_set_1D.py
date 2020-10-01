@@ -158,5 +158,4 @@ interval
 # %%
 graph = drawPDFAndInterval1D(m, interval, alpha)
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()

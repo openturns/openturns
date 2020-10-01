@@ -209,5 +209,4 @@ graph_sample_Y.setTitle(r"Trajectory $Y$")
 graph_sample_Y.setXTitle(r"$t$")
 graph_sample_Y.setYTitle(r"$Y$")
 view = viewer.View(graph_sample_Y)
-if not viewer._noshow:
-    plt.show()
+plt.show()

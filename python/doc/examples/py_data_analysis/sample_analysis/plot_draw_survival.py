@@ -234,5 +234,4 @@ graph.setLegendPosition("topright")
 graph.setTitle("GPD against the sample - n=%d" % (sample.getSize()))
 view = viewer.View(graph)
 #graph
-if not viewer._noshow:
-    plt.show()
+plt.show()

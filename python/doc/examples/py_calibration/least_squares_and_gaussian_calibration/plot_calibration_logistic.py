@@ -340,5 +340,4 @@ view = viewer.View(graph)
 graph = calibrationResult.drawParameterDistributions()
 view = viewer.View(graph)
 
-if not viewer._noshow:
-    plt.show()
+plt.show()

@@ -918,7 +918,6 @@ calibrationResult = algo.getResult()
 # %%
 _ = mypcr.drawParameterDistributions()
 
-if not viewer._noshow:
-    plt.show()
+plt.show()
 # %%
 # As we can see, this does not change much the posterior distribution, which remains spiky. 

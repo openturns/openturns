@@ -65,5 +65,4 @@ graph = ot.Graph("LHSExperiment", "x0", "x1", True, "")
 cloud = ot.Cloud(sample, "blue", "fsquare", "")
 graph.add(cloud)
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()

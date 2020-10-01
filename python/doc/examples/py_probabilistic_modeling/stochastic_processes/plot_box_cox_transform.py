@@ -94,5 +94,4 @@ myStabilizedField = myModelTransform(field)
 marginal = ot.HistogramFactory().build(myStabilizedField.getValues())
 graph = marginal.drawPDF()
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()

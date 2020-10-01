@@ -283,7 +283,6 @@ for i in range(inputDimension):
     absoluteErrorST = abs(total_order[i]-ST_exact[i])
     print("X%d, Abs.Err. on S=%.1e, Abs.Err. on ST=%.1e" % (i+1, absoluteErrorS,absoluteErrorST))
 
-if not viewer._noshow:
-    plt.show()
+plt.show()
 # %%
 # We see that the indices are correctly estimated with a low accuracy even if we have use only 100 function evaluations. This shows the good performance of the polynomial chaos in this case.

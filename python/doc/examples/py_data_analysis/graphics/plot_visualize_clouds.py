@@ -46,5 +46,4 @@ sample3 = ot.Normal(mean, sigma, R).getSample(N)
 graph3 = ot.VisualTest.DrawPairs(sample3)
 graph3.setTitle('3d clouds')
 view = viewer.View(graph3)
-if not viewer._noshow:
-    plt.show()
+plt.show()

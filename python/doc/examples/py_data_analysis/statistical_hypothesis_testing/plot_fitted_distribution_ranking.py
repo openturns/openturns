@@ -79,5 +79,4 @@ test_result
 # %%
 # Rank the discrete models wrt the BIC criteria:
 ot.FittingTest.BestModelBIC(sample, distributions)
-if not viewer._noshow:
-    plt.show()
+plt.show()

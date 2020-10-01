@@ -112,5 +112,4 @@ montecarlo.getResult()
 # %%
 graph = montecarlo.drawProbabilityConvergence(0.95)
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()

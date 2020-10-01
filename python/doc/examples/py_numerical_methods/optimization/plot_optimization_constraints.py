@@ -55,6 +55,5 @@ print('x^=', result.getOptimalPoint())
 # draw optimal value history
 graph = result.drawOptimalValueHistory()
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()
 

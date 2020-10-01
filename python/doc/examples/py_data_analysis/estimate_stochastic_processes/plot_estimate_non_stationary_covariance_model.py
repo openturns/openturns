@@ -94,5 +94,4 @@ graph = estimatedModel.draw(0, 0, t0, tmax, 256, False)
 graph.setTitle('Estimated covariance model')
 graph.setLegendPosition('')
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()

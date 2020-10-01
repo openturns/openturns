@@ -56,8 +56,7 @@ process.setSamplingMethod(1)
 sample = process.getSample(6)
 graph = sample.drawMarginal(0)
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()
 
 # %%
 # We notice here that we are able to sample the covariance model over a mesh of size `10000`, which is usually tricky on laptop. This is mainly due to the compression.

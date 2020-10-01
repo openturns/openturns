@@ -163,8 +163,7 @@ cloud.setPointStyle("bullet")
 cloud.setColor("black")
 graph.add(cloud)
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()
 
 # %%
 # We see that the algorithm explored different regions of the space before finding the global minimum. 

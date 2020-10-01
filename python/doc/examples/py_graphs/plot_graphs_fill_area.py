@@ -74,8 +74,7 @@ graph.add(boundsPoly)
 graph.setTitle("Area = %.3f" % (area))
 graph.setLegends([""])
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()
 
 # %%
 # The CDF difference is equal to the area under the curve.

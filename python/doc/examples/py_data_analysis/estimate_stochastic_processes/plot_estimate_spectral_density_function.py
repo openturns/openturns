@@ -93,5 +93,4 @@ curve2.setLegend('Cauchy model')
 graph.add(curve1)
 graph.add(curve2)
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()

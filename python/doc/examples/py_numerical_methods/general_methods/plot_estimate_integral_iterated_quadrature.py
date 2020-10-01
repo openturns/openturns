@@ -43,5 +43,4 @@ view = viewer.View(g)
 # compute the integral value
 I2 = ot.IteratedQuadrature().integrate(f, a, b, l, u)
 print(I2)
-if not viewer._noshow:
-    plt.show()
+plt.show()

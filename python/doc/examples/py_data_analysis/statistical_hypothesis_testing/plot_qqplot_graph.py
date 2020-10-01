@@ -32,5 +32,4 @@ view = viewer.View(graph)
 # Incorrect proposition
 graph = ot.VisualTest.DrawQQplot(sample, ot.WeibullMin())
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()

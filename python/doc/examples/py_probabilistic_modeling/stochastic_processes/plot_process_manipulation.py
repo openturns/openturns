@@ -124,5 +124,4 @@ process.isNormal()
 # Check wether the process is stationary
 process.isStationary()
 
-if not viewer._noshow:
-    plt.show()
+plt.show()

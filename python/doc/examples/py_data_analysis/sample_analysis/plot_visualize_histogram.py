@@ -22,5 +22,4 @@ sample = normal.getSample(size)
 # Draw histogram
 graph = ot.HistogramFactory().build(sample).drawPDF()
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()

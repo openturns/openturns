@@ -36,5 +36,4 @@ xmin = sample.getMin()[0] - 2.0
 xmax = sample.getMax()[0] + 2.0
 graph = ot.UserDefined(sample).drawCDF(xmin, xmax)
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()

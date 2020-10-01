@@ -77,8 +77,7 @@ graph.setLegendPosition("topright")
 graph.setTitle("Sample size = %d" % (samplesize))
 graph.setXTitle("X2")
 view = viewer.View(graph)
-if not viewer._noshow:
-    plt.show()
+plt.show()
 
 # %%
 # As we can see, the metamodel is quite accurate in this case. The metamodel is very close to the model in the center of the domain, where the density of the input distribution is highest.
