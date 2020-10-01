@@ -109,7 +109,7 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_estimate_probability_directional_sampling-v2.png
+ .. figure:: /auto_py_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_estimate_probability_directional_sampling.png
      :alt:
 
      :ref:`sphx_glr_auto_py_reliability_sensitivity_reliability_plot_estimate_probability_directional_sampling.py`
