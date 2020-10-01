@@ -48,6 +48,7 @@
 %include ClaytonCopulaFactory.i
 %include GumbelCopula.i
 %include GumbelCopulaFactory.i
+%include BlockIndependentDistribution.i
 %include ComposedDistribution.i
 %include CumulativeDistributionNetwork.i
 %include ComposedCopula.i

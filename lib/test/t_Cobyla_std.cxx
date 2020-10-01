@@ -58,7 +58,7 @@ int main(int, char *[])
     fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
     myAlgorithm.run();
     fullprint << "result = " << printPoint(myAlgorithm.getResult().getOptimalPoint(), 4) << std::endl;
-    fullprint << "multipliers = " << printPoint(myAlgorithm.getResult().getLagrangeMultipliers(), 4) << std::endl;
+    fullprint << "multipliers = " << printPoint(myAlgorithm.getResult().computeLagrangeMultipliers(), 4) << std::endl;
   }
   catch (TestFailed & ex)
   {
@@ -86,7 +86,7 @@ int main(int, char *[])
     myAlgorithm.run();
     OptimizationResult result(myAlgorithm.getResult());
     fullprint << "result = " << printPoint(result.getOptimalPoint(), 4) << std::endl;
-    fullprint << "multipliers = " << printPoint(result.getLagrangeMultipliers(), 4) << std::endl;
+    fullprint << "multipliers = " << printPoint(result.computeLagrangeMultipliers(), 4) << std::endl;
     Graph convergence(result.drawErrorHistory());
     //FIXME:fullprint << "evaluation calls number=" << levelFunction.getEvaluationCallsNumber() << std::endl;
     fullprint << "gradient   calls number=" << levelFunction.getGradientCallsNumber() << std::endl;

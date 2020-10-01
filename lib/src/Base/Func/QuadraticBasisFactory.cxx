@@ -71,7 +71,7 @@ Basis QuadraticBasisFactory::build() const
     for ( UnsignedInteger j = i; j < inputDimension_; ++ j )
     {
       SymmetricTensor quadratic(inputDimension_, 1);
-      quadratic(i, j, 0) = 1.0;
+      quadratic(i, j, 0) = 2.0;
       Point center(inputDimension_, 0.0);
       Point constant(1, 0.0);
       Matrix linear(inputDimension_, 1);

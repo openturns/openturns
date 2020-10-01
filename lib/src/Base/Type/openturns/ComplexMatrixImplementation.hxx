@@ -89,7 +89,7 @@ public:
   ComplexMatrixImplementation(const MatrixImplementation & matrix);
 
   /** Virtual constructor */
-  virtual ComplexMatrixImplementation * clone() const;
+  ComplexMatrixImplementation * clone() const override;
 
   /** Resolution of a linear system in case of a rectangular matrix */
   ComplexCollection solveLinearSystemRect(const ComplexCollection & b,
@@ -104,8 +104,8 @@ public:
   virtual ComplexMatrixImplementation cleanHerm(const Scalar threshold) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () gives access to the elements of the ComplexMatrixImplementation (to modify these elements) */
   /** The element of the ComplexMatrixImplementation is designated by its row number i and its column number j */
@@ -223,16 +223,13 @@ public:
   Bool isTriangular(Bool lower = true) const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
-  // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
-  // INTENTIONALY NOT DOCUMENTED
-  const Complex * __baseaddress__ () const;
-  UnsignedInteger __elementsize__ () const;
-  UnsignedInteger __stride__ (UnsignedInteger dim) const;
+  /** Low-level data access */
+  UnsignedInteger stride(const UnsignedInteger dim) const;
 
 protected:
 

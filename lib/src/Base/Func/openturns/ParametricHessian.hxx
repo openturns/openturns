@@ -44,7 +44,7 @@ public:
   ParametricHessian();
 
   /** Parameters constructor */
-  ParametricHessian(const ParametricEvaluation & evaluation);
+  explicit ParametricHessian(const ParametricEvaluation & evaluation);
 
 #ifndef SWIG
   /** Parameters constructor */
@@ -52,29 +52,29 @@ public:
 #endif
 
   /** Virtual constructor method */
-  ParametricHessian * clone() const;
+  ParametricHessian * clone() const override;
 
   /** Hessian operator */
   using HessianImplementation::hessian;
-  SymmetricTensor hessian(const Point & point) const;
+  SymmetricTensor hessian(const Point & point) const override;
 
   /** Evaluation accessor */
   Evaluation getEvaluation() const;
 
   /** Dimension accessor */
-  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
   UnsignedInteger getParameterDimension() const;
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

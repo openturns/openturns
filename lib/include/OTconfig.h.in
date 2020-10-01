@@ -57,6 +57,9 @@
 /* Support for regular expression library */
 #cmakedefine OPENTURNS_HAVE_LIBXML2
 
+/* Support for HDF5 */
+#cmakedefine OPENTURNS_HAVE_HDF5
+
 /* Define to 1 if you have the <memory.h> header file. */
 #cmakedefine OPENTURNS_HAVE_MEMORY_H
 

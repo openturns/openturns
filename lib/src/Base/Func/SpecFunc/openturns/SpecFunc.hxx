@@ -90,6 +90,8 @@ public:
   static const Scalar SQRT3_PI;
   // 1.81379936423421785 = pi / sqrt(3)
   static const Scalar PI_SQRT3;
+  // 6.283185307179586476925286 = 2*pi
+  static const Scalar TWOPI;
   // 1.20205690315959429 = Zeta(3)
   static const Scalar ZETA3;
   // Maximum number of iterations for algorithms
@@ -270,6 +272,12 @@ public:
   // Next power of two
   static UnsignedInteger NextPowerOfTwo(const UnsignedInteger n);
 
+  // Integer power
+  static Scalar IPow(const Scalar x, const SignedInteger n);
+  
+  // Integer root
+  static Scalar IRoot(const Scalar x, const SignedInteger n);
+  
   // Integer log2
   static UnsignedInteger Log2(const Unsigned64BitsInteger n);
 

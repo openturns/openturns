@@ -10,7 +10,7 @@ import math as m
 ot.TESTPREAMBLE()
 
 try:
-    fileName = 'myStudy.xml'
+    fileName = 'myStudySaveLoad.xml'
 
     # Create a Study Object by name
     myStudy = ot.Study(fileName)
@@ -178,10 +178,10 @@ try:
     sormResult = ot.SORMResult([1.0] * 2, event, False)
     sormResult.setName('sormResult')
     sormResult.getEventProbabilityBreitung()
-    sormResult.getEventProbabilityHohenBichler()
+    sormResult.getEventProbabilityHohenbichler()
     sormResult.getEventProbabilityTvedt()
     sormResult.getGeneralisedReliabilityIndexBreitung()
-    sormResult.getGeneralisedReliabilityIndexHohenBichler()
+    sormResult.getGeneralisedReliabilityIndexHohenbichler()
     sormResult.getGeneralisedReliabilityIndexTvedt()
     myStudy.add('sormResult', sormResult)
 

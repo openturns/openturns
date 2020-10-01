@@ -25,7 +25,7 @@
 #include "openturns/Description.hxx"
 #include "openturns/Field.hxx"
 #include "openturns/ProcessSample.hxx"
-#include "openturns/AtomicFunctions.hxx"
+#include "openturns/AtomicInt.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -57,14 +57,14 @@ public:
                               const UnsignedInteger outputDimension);
 
   /** Virtual constructor */
-  virtual FieldFunctionImplementation * clone() const;
+  FieldFunctionImplementation * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const FieldFunctionImplementation & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () */
   virtual Sample operator() (const Sample & inFld) const;
@@ -105,10 +105,10 @@ public:
   virtual UnsignedInteger getCallsNumber() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Input/output meshes */

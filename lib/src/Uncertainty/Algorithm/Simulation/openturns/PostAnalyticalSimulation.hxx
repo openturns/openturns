@@ -49,7 +49,7 @@ public:
   explicit PostAnalyticalSimulation(const AnalyticalResult & analyticalResult);
 
   /** Virtual constructor */
-  virtual PostAnalyticalSimulation * clone() const;
+  PostAnalyticalSimulation * clone() const override;
 
   /** Event accessor */
   AnalyticalResult getAnalyticalResult() const;
@@ -58,13 +58,13 @@ public:
   Scalar getControlProbability() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

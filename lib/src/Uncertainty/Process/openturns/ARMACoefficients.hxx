@@ -53,11 +53,11 @@ public:
   explicit ARMACoefficients(const UniVariatePolynomial & polynomial);
 
   /** Virtual constructor */
-  virtual ARMACoefficients * clone() const;
+  ARMACoefficients * clone() const override;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Dimension accessor */
   UnsignedInteger getDimension() const;
@@ -66,14 +66,14 @@ public:
 #ifndef SWIG
   using SquareMatrixCollection::add;
 #endif
-  void add(const SquareMatrix & matrix);
+  void add(const SquareMatrix & matrix) override;
   void add(const Scalar scalar);
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

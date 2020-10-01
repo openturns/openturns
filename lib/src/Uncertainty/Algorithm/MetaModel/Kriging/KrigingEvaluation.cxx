@@ -99,12 +99,6 @@ String KrigingEvaluation::__str__(const String & ) const
   return OSS(false) << GetClassName();
 }
 
-/* Test for actual implementation */
-Bool KrigingEvaluation::isActualImplementation() const
-{
-  return true;
-}
-
 // Helper for the parallel version of the point-based evaluation operator
 struct KrigingEvaluationPointFunctor
 {
@@ -231,7 +225,7 @@ struct KrigingEvaluationSampleFunctor
   {
     const UnsignedInteger dimension = evaluation_.getOutputDimension();
     Matrix R(dimension, trainingSize_ * dimension);
-    for (UnsignedInteger i = 0; r.begin() != r.end(); ++i)
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++ i)
     {
       for (UnsignedInteger j = 0; j < trainingSize_; ++j)
       {

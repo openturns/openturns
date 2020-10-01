@@ -61,11 +61,11 @@ public:
                                       const Evaluation & evaluation);
 
   /** Virtual constructor */
-  virtual NonCenteredFiniteDifferenceGradient * clone() const;
+  NonCenteredFiniteDifferenceGradient * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
 
@@ -75,7 +75,7 @@ public:
    * @param in The point where the gradient is computed
    * @result A matrix constructed with the dF_i/dx_j values (Jacobian transposed)
    */
-  virtual Matrix gradient(const Point & inP) const;
+  Matrix gradient(const Point & inP) const override;
 
 protected:
 

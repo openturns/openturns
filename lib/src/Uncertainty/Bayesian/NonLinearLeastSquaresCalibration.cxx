@@ -20,7 +20,6 @@
  */
 #include "openturns/NonLinearLeastSquaresCalibration.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Dirac.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/NormalFactory.hxx"
 #include "openturns/KernelSmoothing.hxx"
@@ -33,6 +32,7 @@
 #include "openturns/MultiStart.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/LeastSquaresProblem.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/LinearLeastSquaresCalibration.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -53,9 +53,7 @@ NonLinearLeastSquaresCalibration::NonLinearLeastSquaresCalibration(const Functio
     const Sample & inputObservations,
     const Sample & outputObservations,
     const Point & candidate)
-  : CalibrationAlgorithmImplementation(outputObservations, Dirac(candidate))
-  , model_(model)
-  , inputObservations_(inputObservations)
+  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(candidate, CovarianceMatrix((IdentityMatrix(candidate.getDimension()) * SpecFunc::MaxScalar).getImplementation())))
   , algorithm_()
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-BootstrapSize"))
 {
@@ -296,7 +294,8 @@ void NonLinearLeastSquaresCalibration::run()
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const MemoizeFunction residualFunction(BuildResidualFunction(model_, inputObservations_, outputObservations_));
-  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, outputObservations_, residualFunction);
+  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction);
+  computeOutputAtPriorAndPosterior();
 }
 
 /* Perform a unique estimation */
@@ -324,8 +323,8 @@ Point NonLinearLeastSquaresCalibration::run(const Sample & inputObservations,
 /* Candidate accessor */
 Point NonLinearLeastSquaresCalibration::getCandidate() const
 {
-  // The candidate is stored in the prior distribution, which is a Dirac distribution
-  return getParameterPrior().getSupport()[0];
+  // The candidate is stored in the prior distribution, which is a Normal distribution
+  return getParameterPrior().getMean();
 }
 
 /* Algorithm accessor */
@@ -367,9 +366,7 @@ NonLinearLeastSquaresCalibration * NonLinearLeastSquaresCalibration::clone() con
 /* Method save() stores the object through the StorageManager */
 void NonLinearLeastSquaresCalibration::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
-  adv.saveAttribute("model_", model_);
-  adv.saveAttribute("inputObservations_", inputObservations_);
+  CalibrationAlgorithmImplementation::save(adv);
   adv.saveAttribute("algorithm_", algorithm_);
   adv.saveAttribute("bootstrapSize_", bootstrapSize_);
 }
@@ -377,9 +374,7 @@ void NonLinearLeastSquaresCalibration::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void NonLinearLeastSquaresCalibration::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
-  adv.loadAttribute("model_", model_);
-  adv.loadAttribute("inputObservations_", inputObservations_);
+  CalibrationAlgorithmImplementation::load(adv);
   adv.loadAttribute("algorithm_", algorithm_);
   adv.loadAttribute("bootstrapSize_", bootstrapSize_);
 }

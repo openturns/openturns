@@ -80,6 +80,27 @@ int main(int, char *[])
       Field liftedAsField(result.liftAsField(coefficients[0]));
       // fullprint << "KL lift as field=" << liftedAsField << std::endl;
     }
+    // Now using Legendre/Gauss quadrature + trunk
+    {
+      UnsignedInteger marginalDegree = 5;
+      algo = KarhunenLoeveQuadratureAlgorithm(domain, domain, model, marginalDegree, threshold);
+      algo.setNbModes(3);// out of 5
+      algo.run();
+      result = algo.getResult();
+      lambda = result.getEigenValues();
+      KLModes = result.getModesAsProcessSample();
+      // Due to symmetry many results can have a sign switch depending on the CPU/compiler/BLAS used
+      // fullprint << "KL modes=" << KLModes << std::endl;
+      fullprint << "KL eigenvalues=" << lambda << std::endl;
+      coefficients = result.project(sample);
+      // fullprint << "KL coefficients=" << coefficients << std::endl;
+      KLFunctions = result.getModes();
+      // fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
+      Function lifted(result.lift(coefficients[0]));
+      // fullprint << "KL lift=" << lifted.__str__() << std::endl;
+      Field liftedAsField(result.liftAsField(coefficients[0]));
+      // fullprint << "KL lift as field=" << liftedAsField << std::endl;
+    }
   }
   catch (TestFailed & ex)
   {

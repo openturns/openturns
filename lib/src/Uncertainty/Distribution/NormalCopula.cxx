@@ -160,7 +160,7 @@ Sample NormalCopula::getSampleParallel(const UnsignedInteger size) const
     result.setName(getName());
     result.setDescription(getDescription());
     return result;
-  } // Nonindependente copula
+  } // Non independent copula
 }
 
 Sample NormalCopula::getSample(const UnsignedInteger size) const
@@ -188,8 +188,7 @@ Point NormalCopula::computeDDF(const Point & point) const
   {
     const Scalar xi = DistFunc::qNormal(point[i]);
     x[i] = xi;
-    // .398942280401432677939946059934 = 1 / sqrt(2.pi)
-    const Scalar pdfI = 0.398942280401432677939946059934 * std::exp(-0.5 * xi * xi);
+    const Scalar pdfI = DistFunc::dNormal(xi);
     marginalPDF[i] = pdfI;
     marginalPDFProduct *= pdfI;
   }
@@ -219,15 +218,15 @@ Scalar NormalCopula::computePDF(const Point & point) const
   // and the PDF of the associated generic normal using the specific form of
   // the standard normal PDF
   Point normalPoint(dimension);
-  Scalar value = 0.0;
+  Scalar value = 1.0;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Scalar yi = DistFunc::qNormal(point[i]);
     normalPoint[i] = yi;
-    value += yi * yi;
+    // Prod_i phi(yi), phi being the univariate standard gaussian
+    // density function
+    value *= DistFunc::dNormal(yi);
   }
-  // 0.398942280401432677939946059934 = 1 / sqrt(2.pi)
-  value = std::pow(0.398942280401432677939946059934, static_cast<int>(dimension)) * std::exp(-0.5 * value);
   return normal_.computePDF(normalPoint) / value;
 }
 

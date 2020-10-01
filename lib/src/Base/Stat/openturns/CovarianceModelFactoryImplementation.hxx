@@ -44,13 +44,13 @@ public:
   CovarianceModelFactoryImplementation();
 
   /** Virtual constructor */
-  virtual CovarianceModelFactoryImplementation * clone() const;
+  CovarianceModelFactoryImplementation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /* Here is the interface that all derived class must implement */
   /** Build a spectral model based on a sample */
@@ -60,10 +60,10 @@ public:
   virtual CovarianceModel build(const Field & timeSerie) const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

@@ -62,10 +62,10 @@ public:
   Bool operator ==(const Evaluation & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Description Accessor, i.e. the names of the input and output parameters */
   virtual void setDescription(const Description & description);
@@ -119,6 +119,9 @@ public:
   Bool isLinear() const;
   Bool isLinearlyDependent(const UnsignedInteger index) const;
 
+  /** Invalid values check accessor */
+  void setCheckOutput(const Bool checkOutput);
+  Bool getCheckOutput() const;
 
   /** Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
   virtual Graph draw(const UnsignedInteger inputMarginal,

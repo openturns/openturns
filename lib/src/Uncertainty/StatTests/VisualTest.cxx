@@ -22,17 +22,11 @@
 #include "openturns/VisualTest.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Cloud.hxx"
-#include "openturns/Staircase.hxx"
-#include "openturns/LinearBasisFactory.hxx"
-#include "openturns/Interval.hxx"
-#include "openturns/Indices.hxx"
-#include "openturns/Description.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/UserDefined.hxx"
-#include "openturns/SpecFunc.hxx"
-#include "openturns/HistogramFactory.hxx"
-#include "openturns/LinearCombinationFunction.hxx"
+#include "openturns/DistFunc.hxx"
 #include "openturns/NormalFactory.hxx"
+#include "openturns/HistogramFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -200,13 +194,12 @@ Graph VisualTest::DrawHenryLine(const Sample & sample, const Distribution & norm
   graphHenry.add(henryLine);
 
   // Then, the data
-  const Normal standard_normal(0.0, 1.0);
   Sample data(size, 2);
   const Scalar step = 1.0 / size;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     data(i, 0) = sortedSample(i, 0);
-    data(i, 1) = standard_normal.computeQuantile((i + 0.5) * step)[0];
+    data(i, 1) = DistFunc::qNormal((i + 0.5) * step);
   }
   Cloud dataCloud(data, "Data");
   graphHenry.add(dataCloud);
@@ -215,54 +208,104 @@ Graph VisualTest::DrawHenryLine(const Sample & sample, const Distribution & norm
 }
 
 
-/* Draw the visual test for the LinearModel when its dimension is 1 */
-Graph VisualTest::DrawLinearModel(const Sample & sample1,
-                                  const Sample & sample2,
-                                  const LinearModelResult & linearModelResult)
+/* Draw 2-d projections of a multivariate sample */
+GridLayout VisualTest::DrawPairs(const Sample & sample)
 {
-  if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel visual test only if dimension equals 1, here dimension=" << sample1.getDimension();
-  if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel visual test only if dimension equals 1, here dimension=" << sample2.getDimension();
+  const UnsignedInteger dimension = sample.getDimension();
+  if (dimension < 2)
+    throw InvalidDimensionException(HERE) << "Can only draw clouds from a multivariate sample";
+  GridLayout grid(dimension - 1, dimension - 1);
+  const Description description(sample.getDescription());
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    for (UnsignedInteger j = 0; j < i; ++ j)
+    {
+      const Indices indices = {j, i};
+      const Cloud cloud(sample.getMarginal(indices), "blue", "fsquare", "");
+      Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
+      graph.add(cloud);
+      grid.setGraph(i - 1, j, graph);
+    }
+  }
+  return grid;
+}
+
+
+/* Draw 2-d projections of a multivariate sample, plus marginals of a distribution */
+GridLayout VisualTest::DrawPairsMarginals(const Sample & sample, const Distribution & distribution)
+{
+  const UnsignedInteger dimension = sample.getDimension();
+  if (dimension < 2)
+    throw InvalidDimensionException(HERE) << "Can only draw clouds from a multivariate sample";
+  if (distribution.getDimension() != dimension)
+    throw InvalidDimensionException(HERE) << "Distribution dimension does not match the sample dimension";
+  GridLayout grid(dimension, dimension);
+  const Description description(sample.getDescription());
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  {
+    Graph pdfGraph(distribution.getMarginal(i).drawPDF());
+    pdfGraph.setLegends(Description(1));
+    pdfGraph.setYTitle(i == 0 ? sample.getDescription()[i] : "");
+    pdfGraph.setXTitle(i == dimension - 1 ? sample.getDescription()[i] : "");
+    grid.setGraph(i, i, pdfGraph);
+    for (UnsignedInteger j = 0; j < i; ++ j)
+    {
+      const Indices indices = {j, i};
+      const Cloud cloud(sample.getMarginal(indices), "blue", "fsquare", "");
+      Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
+      graph.add(cloud);
+      grid.setGraph(i, j, graph);
+    }
+  }
+  return grid;
+}
+
+
+/* Draw the visual test for a 1D LinearModel */
+Graph VisualTest::DrawLinearModel(const Sample & sample1, const Sample & sample2, const LinearModelResult & linearModelResult)
+{
+  if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here input dimension=" << sample1.getDimension();
+  if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here output dimension=" << sample2.getDimension();
   if (sample1.getSize() != sample2.getSize()) throw InvalidArgumentException(HERE) << "Error: can draw a LinearModel visual test only if sample 1 and sample 2 have the same size, here sample 1 size=" << sample1.getSize() << " and sample 2 size=" << sample2.getSize();
 
-  if (linearModelResult.getCoefficients().getSize() != 2)
-    throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
   const Function fHat(linearModelResult.getMetaModel());
   const Sample y(fHat(sample1));
 
-  OSS oss;
-  oss << sample1.getName() << " LinearModel visualTest";
   const UnsignedInteger size = sample1.getSize();
   Sample sample2D(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Point point(2);
-    point[0] = sample1(i, 0);
-    point[1] = y(i, 0);
+    const Point point = {sample1(i, 0), y(i, 0)};
     sample2D[i] = point;
   }
   Curve curveLinearModelTest(sample2D.sortAccordingToAComponent(0));
-  curveLinearModelTest.setLegend(oss);
+  curveLinearModelTest.setLegend("regression");
+  curveLinearModelTest.setColor("red");
   Cloud cloudLinearModelTest(sample1, sample2);
-  cloudLinearModelTest.setColor("red");
   cloudLinearModelTest.setPointStyle("fsquare");
-  cloudLinearModelTest.setLegend("Original Sample");
+  cloudLinearModelTest.setLegend("sample");
 
-  Graph graphLinearModelTest("original sample versus Linear Model one", "x", "y", true, "topright");
+  Graph graphLinearModelTest("Linear model visual test", sample1.getDescription()[0], sample2.getDescription()[0], true, "topright");
   graphLinearModelTest.add(cloudLinearModelTest);
   graphLinearModelTest.add(curveLinearModelTest);
   return graphLinearModelTest;
 }
 
-/* Draw the visual test for the LinearModel residuals */
-Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
-    const Sample & sample2,
-    const LinearModelResult & linearModelResult)
+/* Draw the visual test for a 1D LinearModel using the training Samples **/
+Graph VisualTest::DrawLinearModel(const LinearModelResult & linearModelResult)
 {
-  if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if dimension equals 1, here dimension=" << sample1.getDimension();
-  if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if dimension equals 1, here dimension=" << sample2.getDimension();
+  const Sample & sample1 = linearModelResult.getInputSample();
+  const Sample & sample2 = linearModelResult.getOutputSample();
+  return VisualTest::DrawLinearModel(sample1, sample2, linearModelResult);
+}
+
+/* Draw the visual test for a 1D LinearModel's residuals */
+Graph VisualTest::DrawLinearModelResidual(const Sample & sample1, const Sample & sample2, const LinearModelResult & linearModelResult)
+{
+  if (sample1.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here input dimension=" << sample1.getDimension();
+  if (sample2.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: can draw a LinearModel residual visual test only if both input and output dimension equal 1, here output dimension=" << sample2.getDimension();
   if (sample1.getSize() != sample2.getSize()) throw InvalidArgumentException(HERE) << "Error: can draw a LinearModel residual visual test only if sample 1 and sample 2 have the same size, here sample 1 size=" << sample1.getSize() << " and sample 2 size=" << sample2.getSize();
 
-  if (linearModelResult.getCoefficients().getSize() != 2) throw InvalidArgumentException(HERE) << "Not enough trend coefficients";
   const Function fHat(linearModelResult.getMetaModel());
   const Sample yHat(fHat(sample1));
   const Sample y(sample2 - yHat);
@@ -276,12 +319,20 @@ Graph VisualTest::DrawLinearModelResidual(const Sample & sample1,
   }
 
   OSS oss;
-  oss << sample1.getName() << " LinearModel residual Test";
+  oss << sample1.getDescription()[0] << " LinearModel residual Test";
   const Cloud cloudLinearModelRTest(data, "red", "fsquare", oss);
 
-  Graph graphLinearModelRTest("residual(i) versus residual(i-1)", "redidual(i-1)", "residual(i)", true, "topright");
+  Graph graphLinearModelRTest("residual(i) versus residual(i-1)", "residual(i-1)", "residual(i)", true, "topright");
   graphLinearModelRTest.add(cloudLinearModelRTest);
   return graphLinearModelRTest;
+}
+
+/* Draw the visual test for a 1D LinearModel's residuals using the training Samples */
+Graph VisualTest::DrawLinearModelResidual(const LinearModelResult & linearModelResult)
+{
+  const Sample sample1(linearModelResult.getInputSample());
+  const Sample sample2(linearModelResult.getOutputSample());
+  return VisualTest::DrawLinearModelResidual(sample1, sample2, linearModelResult);
 }
 
 /* Draw the CobWeb visual test */
@@ -351,7 +402,6 @@ Graph VisualTest::DrawCobWeb(const Sample & inputSample,
   for (UnsignedInteger i = 0; i < inputDimension + 1; ++i)
   {
     Sample data(2, 2);
-    Point point(2);
     data(0, 0) = i;
     data(1, 0) = i;
     data(1, 1) = size;

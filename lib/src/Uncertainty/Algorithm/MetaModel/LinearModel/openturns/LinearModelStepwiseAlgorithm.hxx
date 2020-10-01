@@ -67,11 +67,11 @@ public:
                                const UnsignedInteger maximumIterationNumber = ResourceMap::GetAsBool("LinearModelStepwiseAlgorithm-MaximumIterations"));
 
   /** Virtual constructor */
-  virtual LinearModelStepwiseAlgorithm * clone() const;
+  LinearModelStepwiseAlgorithm * clone() const override;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Sample accessors */
   Sample getInputSample() const;
@@ -96,10 +96,10 @@ public:
   LinearModelResult getResult();
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

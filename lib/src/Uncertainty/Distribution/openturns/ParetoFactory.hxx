@@ -40,14 +40,14 @@ public:
   ParetoFactory();
 
   /** Virtual constructor */
-  virtual ParetoFactory * clone() const;
+  ParetoFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
   Pareto buildAsPareto(const Sample & sample) const;
   Pareto buildAsPareto(const Point & parameters) const;
   Pareto buildAsPareto() const;
@@ -56,6 +56,7 @@ public:
   Pareto buildMethodOfMoments(const Sample & sample) const;
   Pareto buildMethodOfLikelihoodMaximization(const Sample & sample) const;
   Pareto buildMethodOfLeastSquares(const Sample & sample) const;
+  Pareto buildMethodOfLeastSquares(const Sample & sample, const Scalar gamma) const;
 
 }; /* class ParetoFactory */
 

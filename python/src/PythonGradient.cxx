@@ -118,13 +118,6 @@ String PythonGradient::__str__(const String & ) const
   return oss;
 }
 
-/* Test for actual implementation */
-Bool PythonGradient::isActualImplementation() const
-{
-  return true;
-}
-
-
 
 /* Here is the interface that all derived class must implement */
 

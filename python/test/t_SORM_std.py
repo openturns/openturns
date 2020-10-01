@@ -81,10 +81,10 @@ try:
           result.getEventProbabilityBreitung())
     print("Breitung generalized reliability index=%.6f" %
           result.getGeneralisedReliabilityIndexBreitung())
-    print("HohenBichler event probability=%.6f" %
-          result.getEventProbabilityHohenBichler())
-    print("HohenBichler generalized reliability index=%.6f" %
-          result.getGeneralisedReliabilityIndexHohenBichler())
+    print("Hohenbichler event probability=%.6f" %
+          result.getEventProbabilityHohenbichler())
+    print("Hohenbichler generalized reliability index=%.6f" %
+          result.getGeneralisedReliabilityIndexHohenbichler())
     print("Tvedt event probability=%.6f" % result.getEventProbabilityTvedt())
     print("Tvedt generalized reliability index=%.6f" %
           result.getGeneralisedReliabilityIndexTvedt())

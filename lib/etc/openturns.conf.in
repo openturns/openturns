@@ -37,7 +37,6 @@
   <SpecFunc-MaximumIteration value_int="1000" />
 
   <!-- OT::SymbolicParser parameters -->
-  <SymbolicParser-CheckResult value_bool="true"                               />
   <SymbolicParser-Backend     value_str="@SYMBOLICPARSER_DEFAULT_BACKEND@" />
 
   <!-- OT::DesignProxy parameters -->
@@ -106,11 +105,13 @@
   <!-- OT::PointToPointEvaluation parameters -->
   <PointToPointEvaluation-BlockSize value_int="256" />
 
+  <!-- OT:: FieldToPointConnection parameters -->
+  <FieldToPointConnection-BlockSize value_int="256" />
+
   <!-- OT::SQP parameters -->
   <SQP-DefaultOmega                   value_float="1.0e-4"           />
   <SQP-DefaultSmooth                  value_float="1.2"              />
   <SQP-DefaultTau                     value_float="0.5"              />
-  <SQP-DefaultMaximumEvaluationNumber value_int="100000" />
 
   <!-- OT::TNC parameters -->
   <TNC-DefaultAccuracy value_float="1.0e-4"       />
@@ -124,7 +125,6 @@
   <AbdoRackwitz-DefaultOmega                   value_float="1.0e-4" />
   <AbdoRackwitz-DefaultSmooth                  value_float="1.2"    />
   <AbdoRackwitz-DefaultTau                     value_float="0.5"    />
-  <AbdoRackwitz-DefaultMaximumEvaluationNumber value_int="100000"   />
 
   <!-- OT::MultiStart parameters -->
   <MultiStart-KeepResults                      value_bool="true" />
@@ -168,6 +168,9 @@
 
   <!-- OT::GaussLegendre parameters -->
   <GaussLegendre-DefaultMarginalIntegrationPointsNumber value_int="64" />
+
+  <!-- OT::Fejer parameters -->
+  <FejerAlgorithm-DefaultMarginalIntegrationPointsNumber  value_int="64" />
 
   <!-- OT::IteratedQuadrature parameters -->
   <IteratedQuadrature-MaximumError        value_float="1.0e-7"       />
@@ -576,9 +579,13 @@
   <CleaningStrategy-DefaultSignificanceFactor value_float="1.0e-4"       />
   <CleaningStrategy-DefaultMaximumSize        value_int="20" />
 
+  <!-- OT::MetaModelAlgorithm parameters -->
+  <MetaModelAlgorithm-PValueThreshold         value_float="1.0e-3" />
+  <MetaModelAlgorithm-ModelSelectionCriterion value_string="BIC" />
+  <MetaModelAlgorithm-NonParametricModel      value_string="Histogram" />
+
   <!-- OT::FunctionalChaosAlgorithm parameters -->
   <FunctionalChaosAlgorithm-DefaultMaximumResidual value_float="1.0e-6"          />
-  <FunctionalChaosAlgorithm-PValueThreshold        value_float="1.0e-3"          />
   <FunctionalChaosAlgorithm-QNorm                  value_float="0.5"             />
   <FunctionalChaosAlgorithm-LargeSampleSize        value_int="10000" />
   <FunctionalChaosAlgorithm-MaximumTotalDegree     value_int="10"    />
@@ -598,7 +605,6 @@
 
   <!-- OT::GeneralLinearModelAlgorithm parameters -->
   <GeneralLinearModelAlgorithm-KeepCovariance                 value_bool="true"      />
-  <GeneralLinearModelAlgorithm-NormalizeData                  value_bool="false"     />
   <GeneralLinearModelAlgorithm-OptimizeParameters             value_bool="true"      />
   <GeneralLinearModelAlgorithm-UnbiasedVariance               value_bool="true"      />
   <GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate value_bool="true"      />
@@ -666,7 +672,10 @@
   <Distribution-EntropySamplingSize               value_int="524288"  />
   <Distribution-MinimumVolumeLevelSetSamplingSize value_int="16384"   />
   <Distribution-SmallDimensionEntropy             value_int="3"       />
-  
+  <Distribution-RoughnessSamplingMethod           value_int="MonteCarlo"/>
+  <Distribution-RoughnessSamplingSize             value_int="524288"  />
+  <Distribution-SmallDimensionRoughness           value_int="3"       />
+
   <!-- OT::ContinuousDistribution parameters -->
   <ContinuousDistribution-DefaultIntegrationNodesNumber value_int="256" />
 
@@ -727,12 +736,12 @@
   <WhittleFactory-DefaultRhoEnd             value_float="1.0e-10"        />
   <WhittleFactory-DefaultStartingPointScale value_float="1.0"            />
   <WhittleFactory-RootEpsilon               value_float="1.0e-6"         />
-  <WhittleFactory-DefaultMaxFun             value_int="2000" />
+  <WhittleFactory-DefaultMaximumEvaluationNumber             value_int="2000" />
 
   <!-- OT::BoxCoxFactory parameters -->
   <BoxCoxFactory-DefaultRhoBeg      value_float="0.1"            />
   <BoxCoxFactory-DefaultRhoEnd      value_float="1.0e-10"        />
-  <BoxCoxFactory-DefaultMaxFun      value_int="2000" />
+  <BoxCoxFactory-DefaultMaximumEvaluationNumber      value_int="2000" />
   <BoxCoxFactory-DefaultPointNumber value_int="201"  />
 
   <!-- OT::VisualTest parameters -->
@@ -774,7 +783,7 @@
   <ARMALikelihoodFactory-MaximalScaling            value_float="1.0e5"           />
   <ARMALikelihoodFactory-RootEpsilon               value_float="1.0e-6"          />
   <ARMALikelihoodFactory-StartingScaling           value_float="1.0e-13"         />
-  <ARMALikelihoodFactory-DefaultMaxFun             value_int="10000" />
+  <ARMALikelihoodFactory-DefaultMaximumEvaluationNumber             value_int="10000" />
 
   <!-- OT::FittingTest parameters -->
   <FittingTest-ChiSquaredCheckSample     value_bool="true" />

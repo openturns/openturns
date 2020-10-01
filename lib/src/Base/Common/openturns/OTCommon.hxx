@@ -22,7 +22,7 @@
 #ifndef OPENTURNS_OTCOMMON_HXX
 #define OPENTURNS_OTCOMMON_HXX
 
-#include "openturns/AtomicFunctions.hxx"
+#include "openturns/AtomicInt.hxx"
 //#include "BinaryStorageManager.hxx"
 #include "openturns/Catalog.hxx"
 #include "openturns/ComparisonOperator.hxx"
@@ -52,6 +52,9 @@
 #include "openturns/OTconfig.hxx"
 #ifdef OPENTURNS_HAVE_LIBXML2
 #include "openturns/XMLStorageManager.hxx"
+#endif
+#ifdef OPENTURNS_HAVE_HDF5
+#include "openturns/XMLH5StorageManager.hxx"
 #endif
 
 #endif /* OPENTURNS_OTCOMMON_HXX */

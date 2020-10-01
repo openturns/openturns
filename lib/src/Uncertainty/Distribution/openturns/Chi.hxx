@@ -46,75 +46,74 @@ public:
   /** Comparison operator */
   Bool operator ==(const Chi & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
 
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  virtual Chi * clone() const;
+  Chi * clone() const override;
 
   /** Get one realization of the distribution */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Get the DDF of the distribution */
   using ContinuousDistribution::computeDDF;
-  Point computeDDF(const Point & point) const;
+  Point computeDDF(const Point & point) const override;
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
   using ContinuousDistribution::computeLogPDF;
-  Scalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const override;
   using ContinuousDistribution::computeComplementaryCDF;
-  Scalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const override;
 
   /** Compute the entropy of the distribution */
-  Scalar computeEntropy() const;
+  Scalar computeEntropy() const override;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  Complex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const override;
 
   /** Get the PDFGradient of the distribution */
   using ContinuousDistribution::computePDFGradient;
-  Point computePDFGradient(const Point & point) const;
+  Point computePDFGradient(const Point & point) const override;
 
   /** Get the CDFGradient of the distribution */
   using ContinuousDistribution::computeCDFGradient;
-  Point computeCDFGradient(const Point & point) const;
+  Point computeCDFGradient(const Point & point) const override;
 
   /** Get the quantile of the distribution */
-  Scalar computeScalarQuantile(const Scalar prob,
-                               const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Get the standard deviation of the distribution */
-  Point getStandardDeviation() const;
+  Point getStandardDeviation() const override;
 
   /** Get the skewness of the distribution */
-  Point getSkewness() const;
+  Point getSkewness() const override;
 
   /** Get the kurtosis of the distribution */
-  Point getKurtosis() const;
+  Point getKurtosis() const override;
 
   /** Get the raw moments of the standardized distribution */
-  Point getStandardMoment(const UnsignedInteger n) const;
+  Point getStandardMoment(const UnsignedInteger n) const override;
 
   /** Parameters value accessors */
-  void setParameter(const Point & parameter);
-  Point getParameter() const;
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
 
   /** Parameters description accessor */
-  Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
   /* Interface specific to Chi */
 
@@ -124,10 +123,10 @@ public:
   Scalar getNu() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:
@@ -136,7 +135,7 @@ protected:
 private:
 
   /** Compute the numerical range of the distribution given the parameters values */
-  void computeRange();
+  void computeRange() override;
 
   /** Update the derivative attributes */
   void update();
@@ -146,10 +145,10 @@ private:
   Scalar normalizationFactor_;
 
   /** Get the mean */
-  void computeMean() const;
+  void computeMean() const override;
 
   /** Get the covariance  */
-  void computeCovariance() const;
+  void computeCovariance() const override;
 
 }; /* class Chi */
 

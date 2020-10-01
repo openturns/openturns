@@ -20,6 +20,7 @@
  */
 #include <cmath>
 #include "openturns/InverseNatafIndependentCopulaHessian.hxx"
+#include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -80,7 +81,7 @@ SymmetricTensor InverseNatafIndependentCopulaHessian::hessian(const Point & inP)
   {
     const Scalar x = inP[i];
     // 0.3989422804014326779399462 = 1/sqrt(2*Pi)
-    result(i, i, i) = -0.3989422804014326779399462 * x * exp(-0.5 * x * x);
+    result(i, i, i) = -DistFunc::dNormal(x) * x;
   }
   return result;
 }

@@ -70,10 +70,10 @@ public:
   Bool operator ==(const FieldFunction & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () */
   Sample operator() (const Sample & inFld) const;

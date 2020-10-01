@@ -52,31 +52,31 @@ public:
                                        const CovarianceMatrixCollection & covarianceCollection);
 
   /** Virtual copy constructor */
-  virtual UserDefinedStationaryCovarianceModel * clone() const;
+  UserDefinedStationaryCovarianceModel * clone() const override;
 
   /** Computation of the covariance function */
   using StationaryCovarianceModel::operator();
-  CovarianceMatrix operator() (const Point & tau) const;
+  CovarianceMatrix operator() (const Point & tau) const override;
 
   /** Time grid/mesh accessor */
   RegularGrid getTimeGrid() const;
 
   /** Discretize the covariance function on a given TimeGrid */
   using StationaryCovarianceModel::discretize;
-  CovarianceMatrix discretize(const Mesh & mesh) const;
-  CovarianceMatrix discretize(const Sample & vertices) const;
+  CovarianceMatrix discretize(const Mesh & mesh) const override;
+  CovarianceMatrix discretize(const Sample & vertices) const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

@@ -54,7 +54,9 @@ public:
   /** Factory of Sample from Text file */
   static Sample ImportFromTextFile(const FileName & fileName,
                                    const String & separator = " ",
-                                   const UnsignedInteger skippedLines = 0);
+                                   const UnsignedInteger skippedLines = 0,
+                                   const String & numSeparator = ".");
+
 
   /** Export Sample into CSV file */
   void exportToCSVFile(const FileName & fileName,
@@ -126,10 +128,9 @@ public:
 
   void erase(SampleImplementation::iterator first, SampleImplementation::iterator last);
 #endif
-  // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
-  // INTENTIONALY NOT DOCUMENTED
-  const Scalar * __baseaddress__ () const;
-  UnsignedInteger __elementsize__ () const;
+  /* Returns a pointer to the block of memory */
+  const Scalar * data () const;
+  UnsignedInteger elementSize () const;
 
   /** Whether the list contains the value val */
   Bool contains(const Point & val) const;
@@ -147,9 +148,9 @@ public:
    * internal state of an Sample. It is used when streaming
    * the Sample or for user information.
    */
-  String __repr__() const;
+  String __repr__() const override;
 
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Description accessor */
   void setDescription(const Description & description);
@@ -349,10 +350,10 @@ public:
   Sample select(const UnsignedIntegerCollection & indices) const;
 
   /** Returns a pointer to the underlying implementation object */
-  virtual ImplementationAsPersistentObject getImplementationAsPersistentObject() const;
+  ImplementationAsPersistentObject getImplementationAsPersistentObject() const override;
 
   /** Sets the pointer to the underlying implementation object */
-  virtual void setImplementationAsPersistentObject(const ImplementationAsPersistentObject & obj);
+  void setImplementationAsPersistentObject(const ImplementationAsPersistentObject & obj) override;
 
 }; /* class Sample */
 

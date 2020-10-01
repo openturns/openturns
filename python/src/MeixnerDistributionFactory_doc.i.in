@@ -22,3 +22,30 @@ where :math:`\gamma_2` is defined if :math:`\Hat{\gamma_2}_n \geq 2\Hat{\gamma_1
 See also
 --------
 DistributionFactory, MeixnerDistribution"
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_buildAsMeixnerDistribution_doc
+"Build the MeixnerDistribution distribution.
+
+**Available usages**:
+
+    buildAsMeixnerDistribution(*sample*)
+
+    buildAsMeixnerDistribution(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : Collection of :class:`~openturns.PointWithDescription`
+    A vector of parameters of the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.MeixnerDistribution`
+    The built distribution."
+%enddef
+%feature("docstring") OT::MeixnerDistributionFactory::buildAsMeixnerDistribution
+OT_DistributionFactory_buildAsMeixnerDistribution_doc
+

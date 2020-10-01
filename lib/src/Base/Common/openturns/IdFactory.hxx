@@ -23,7 +23,7 @@
 
 #include <iostream>              // for std::ostream
 #include "openturns/OTprivate.hxx"
-#include "openturns/AtomicFunctions.hxx"
+#include "openturns/AtomicInt.hxx"
 #include "openturns/OStream.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS

@@ -62,14 +62,14 @@ public:
                            const Bool restart = true);
 
   /** Virtual constructor */
-  virtual LowDiscrepancyExperiment * clone() const;
+  LowDiscrepancyExperiment * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Distribution accessor */
-  virtual void setDistribution(const Distribution & distribution);
+  void setDistribution(const Distribution & distribution) override;
 
   /** Sequence accessor */
   LowDiscrepancySequence getSequence() const;
@@ -83,15 +83,15 @@ public:
   void setRandomize(const Bool randomize);
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
-  Sample generateWithWeights(Point & weightsOut) const;
+  Sample generateWithWeights(Point & weightsOut) const override;
 
 protected:
 

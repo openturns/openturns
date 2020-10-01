@@ -40,7 +40,7 @@ public:
   HMatrixParameters();
 
   /** Virtual copy constructor */
-  virtual HMatrixParameters * clone() const;
+  HMatrixParameters * clone() const override;
 
   /** accessor for assembly epsilon */
   void setAssemblyEpsilon(const Scalar assemblyEpsilon);
@@ -64,14 +64,14 @@ public:
   UnsignedInteger getCompressionMethodAsUnsignedInteger() const;
 
   /* String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   Scalar assemblyEpsilon_;

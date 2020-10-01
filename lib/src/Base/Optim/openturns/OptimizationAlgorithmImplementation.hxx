@@ -47,13 +47,13 @@ public:
   explicit OptimizationAlgorithmImplementation(const OptimizationProblem & problem);
 
   /** Virtual constructor */
-  virtual OptimizationAlgorithmImplementation * clone() const;
+  OptimizationAlgorithmImplementation * clone() const override;
 
-  /** Performs the actual computation. Must be overloaded by the actual optimisation algorithm */
+  /** Performs the actual computation */
   virtual void run();
 
-  /** Computes the Lagrange multipliers associated with the constraints as a post-processing of the result. Actual algorithms should overload this method. */
-  virtual Point computeLagrangeMultipliers(const Point & x) const;
+  /** @deprecated Computes the Lagrange multipliers associated with the constraints */
+  Point computeLagrangeMultipliers(const Point & x) const;
 
   /** Starting point accessor */
   virtual Point getStartingPoint() const;
@@ -104,13 +104,13 @@ public:
   virtual void setMaximumConstraintError(const Scalar maximumConstraintError);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Verbose accessor */
   virtual Bool getVerbose() const;
@@ -137,7 +137,7 @@ protected:
 
 private:
   Point startingPoint_;
-  OptimizationProblem  problem_;
+  OptimizationProblem problem_;
 
   /** Number of outermost iterations (in case of nested iterations) */
   UnsignedInteger maximumIterationNumber_;
@@ -149,7 +149,7 @@ private:
   Scalar maximumRelativeError_;    /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
   Scalar maximumResidualError_;    /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */
   Scalar maximumConstraintError_;  /**< Value of ||constraints(x_n)|| for the active constraints */
-  Bool verbose_;
+  Bool verbose_ = false;
 
 } ; /* class OptimizationAlgorithmImplementation */
 

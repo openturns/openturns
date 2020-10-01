@@ -803,7 +803,7 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
         if (PyBuffer_IsContiguous(&view, 'C'))
         {
           // 2-d contiguous array in C notation, we can directly copy memory chunk
-          std::copy(data, data + size * dimension, (Scalar *)sample.__baseaddress__());
+          std::copy(data, data + size * dimension, (Scalar *)sample.data());
         }
         else
         {
@@ -887,6 +887,20 @@ convert< _PySequence_, Sample >(PyObject * pyObj)
   }
   return sample;
 }
+
+
+template <>
+inline
+PyObject *
+convert< Sample, _PySequence_ >(Sample sample)
+{
+  const UnsignedInteger size = sample.getSize();
+  PyObject * pyObj = PyTuple_New(size);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    PyTuple_SetItem(pyObj, i, convert< Point, _PySequence_ >(sample[i]));
+  return pyObj;
+}
+
 
 template <>
 struct traitsPythonType< Collection< UnsignedInteger > >

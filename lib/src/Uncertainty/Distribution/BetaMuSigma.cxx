@@ -67,14 +67,8 @@ Bool BetaMuSigma::operator ==(const BetaMuSigma & other) const
 /* Build a distribution based on a set of native parameters */
 Distribution BetaMuSigma::getDistribution() const
 {
-  Point newParameters(4);
-  newParameters[0] = mu_;
-  newParameters[1] = sigma_;
-  newParameters[2] = a_;
-  newParameters[3] = b_;
-
-  Point nativeParameters(operator()(newParameters));
-
+  const Point newParameters = {mu_, sigma_, a_, b_};
+  const Point nativeParameters(operator()(newParameters));
   return BetaFactory().build(nativeParameters);
 }
 
@@ -82,11 +76,7 @@ Distribution BetaMuSigma::getDistribution() const
 /* Compute jacobian / native parameters */
 Matrix BetaMuSigma::gradient() const
 {
-  Point newParameters(4);
-  newParameters[0] = mu_;
-  newParameters[1] = sigma_;
-  newParameters[2] = a_;
-  newParameters[3] = b_;
+  const Point newParameters = {mu_, sigma_, a_, b_};
 
   const Scalar mu = mu_;
   const Scalar sigma = sigma_;
@@ -174,22 +164,12 @@ void BetaMuSigma::setValues(const Point & inP)
 
 Point BetaMuSigma::getValues() const
 {
-  Point point(4);
-  point[0] = mu_;
-  point[1] = sigma_;
-  point[2] = a_;
-  point[3] = b_;
-  return point;
+  return {mu_, sigma_, a_, b_};
 }
 
 Description BetaMuSigma::getDescription() const
 {
-  Description description(4);
-  description[0] = "mu";
-  description[1] = "sigma";
-  description[2] = "a";
-  description[3] = "b";
-  return description;
+  return {"mu", "sigma", "a", "b"};
 }
 
 /* Check if the distribution is elliptical */

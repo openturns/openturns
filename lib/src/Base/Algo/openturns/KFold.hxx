@@ -46,32 +46,32 @@ public:
                  const Bool useNormal = false);
 
   /** Virtual constructor */
-  virtual KFold * clone() const;
+  KFold * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Perform cross-validation */
-  virtual Scalar run(const Sample & x,
+  Scalar run(const Sample & x,
                      const Sample & y,
                      const Point & weight,
                      const FunctionCollection & basis,
-                     const Indices & indices) const;
+                     const Indices & indices) const override;
 #ifndef SWIG
-  virtual Scalar run(const Sample & y,
+  Scalar run(const Sample & y,
                      const Point & weight,
                      const Indices & indices,
-                     const DesignProxy & proxy) const;
+                     const DesignProxy & proxy) const override;
 
-  virtual Scalar run(LeastSquaresMethod & method,
-                     const Sample & y) const;
+  Scalar run(LeastSquaresMethod & method,
+                     const Sample & y) const override;
 #endif
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** K accessor */
   void setK(const UnsignedInteger p);

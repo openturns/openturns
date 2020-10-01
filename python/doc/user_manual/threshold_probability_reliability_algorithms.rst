@@ -29,14 +29,13 @@ Reliability results
     SORMResult
     MultiFORMResult
 
-Event
-=====
+Events
+======
 
 .. autosummary::
     :toctree: _generated/
     :template: class.rst_t
 
-    Event
     StandardEvent
     ProcessEvent
     DomainEvent

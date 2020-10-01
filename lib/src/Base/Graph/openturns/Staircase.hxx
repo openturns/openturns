@@ -65,27 +65,27 @@ public:
             const String & legend = "");
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Draw method */
-  String draw() const;
+  String draw() const override;
 
   /** Clone method */
-  virtual Staircase * clone() const;
+  Staircase * clone() const override;
 
   /** Accessor for pattern */
-  String getPattern() const;
-  void setPattern(const String style);
+  String getPattern() const override;
+  void setPattern(const String style) override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() stores the object through the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Check fo data validity */
-  virtual void checkData(const Sample & data) const;
+  void checkData(const Sample & data) const override;
 
 private:
   /** Pattern for staircase plotting */

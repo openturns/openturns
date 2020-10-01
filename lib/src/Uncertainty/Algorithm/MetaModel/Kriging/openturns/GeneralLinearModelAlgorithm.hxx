@@ -54,14 +54,12 @@ public:
   GeneralLinearModelAlgorithm (const Sample & inputSample,
                                const Sample & outputSample,
                                const CovarianceModel & covarianceModel,
-                               const Bool normalize = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-NormalizeData"),
                                const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
   GeneralLinearModelAlgorithm (const Sample & inputSample,
                                const Sample & outputSample,
                                const CovarianceModel & covarianceModel,
                                const Basis & basis,
-                               const Bool normalize = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-NormalizeData"),
                                const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
   /** Parameters constructor */
@@ -69,25 +67,20 @@ public:
                                const Sample & outputSample,
                                const CovarianceModel & covarianceModel,
                                const BasisCollection & basisCollection,
-                               const Bool normalize = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-NormalizeData"),
                                const Bool keepCholeskyFactor = ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-KeepCovariance"));
 
   /** Virtual constructor */
-  GeneralLinearModelAlgorithm * clone() const;
+  GeneralLinearModelAlgorithm * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Perform regression */
-  void run();
-
-  /** input transformation accessor */
-  void setInputTransformation(const Function & inputTransformation);
-  Function getInputTransformation() const;
+  void run() override;
 
   /** Sample accessors */
-  Sample getInputSample() const;
-  Sample getOutputSample() const;
+  Sample getInputSample() const override;
+  Sample getOutputSample() const override;
 
   /** result accessor */
   GeneralLinearModelResult getResult();
@@ -112,10 +105,10 @@ public:
   Point getNoise() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   // Maximize the reduced log-likelihood
@@ -126,11 +119,8 @@ protected:
   Scalar computeLapackLogDeterminantCholesky() const;
   Scalar computeHMatLogDeterminantCholesky() const;
 
-  // Compute the design matrix on the normalized input sample
+  // Compute the design matrix on the input sample
   void computeF();
-
-  // Normalize the input sample
-  void normalizeInputSample();
 
   /** Method accessor (lapack/hmat) */
   void initializeMethod();
@@ -160,46 +150,46 @@ private:
       // Nothing to do
     }
 
-    ReducedLogLikelihoodEvaluation * clone() const
+    ReducedLogLikelihoodEvaluation * clone() const override
     {
       return new ReducedLogLikelihoodEvaluation(*this);
     }
 
     // It is a simple call to the computeReducedLogLikelihood() of the algo
-    Point operator() (const Point & point) const
+    Point operator() (const Point & point) const override
     {
       const Point value(algorithm_.computeReducedLogLikelihood(point));
       return value;
     }
 
-    UnsignedInteger getInputDimension() const
+    UnsignedInteger getInputDimension() const override
     {
       return algorithm_.getReducedCovarianceModel().getParameter().getDimension();
     }
 
-    UnsignedInteger getOutputDimension() const
+    UnsignedInteger getOutputDimension() const override
     {
       return 1;
     }
 
-    Description getInputDescription() const
+    Description getInputDescription() const override
     {
       return algorithm_.getReducedCovarianceModel().getParameterDescription();
     }
 
-    Description getOutputDescription() const
+    Description getOutputDescription() const override
     {
       return Description(1, "ReducedLogLikelihood");
     }
 
-    Description getDescription() const
+    Description getDescription() const override
     {
       Description description(getInputDescription());
       description.add(getOutputDescription());
       return description;
     }
 
-    String __repr__() const
+    String __repr__() const override
     {
       OSS oss;
       // Don't print algorithm_ here as it will result in an infinite loop!
@@ -207,7 +197,7 @@ private:
       return oss;
     }
 
-    String __str__(const String & offset) const
+    String __str__(const String & offset = "") const override
     {
       // Don't print algorithm_ here as it will result in an infinite loop!
       return OSS() << offset << __repr__();
@@ -234,13 +224,6 @@ private:
 
   // The input data
   Sample inputSample_;
-
-  // Standardized version of the input data
-  Sample normalizedInputSample_;
-
-  // Standardization function
-  Function inputTransformation_;
-  mutable Bool normalize_;
 
   // The associated output data
   Sample outputSample_;

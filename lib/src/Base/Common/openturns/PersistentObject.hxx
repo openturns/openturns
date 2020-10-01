@@ -138,15 +138,15 @@ public:
   }
 
   /* String converter */
-  inline virtual
-  String __repr__() const
+  inline
+  String __repr__() const override
   {
     return OSS() << "class=" << getClassName() << " name=" << getName();
   }
 
   /* String converter */
-  inline virtual
-  String __str__(const String & offset = "") const
+  inline
+  String __str__(const String & offset = "") const override
   {
     return OSS() << offset << __repr__();
   }

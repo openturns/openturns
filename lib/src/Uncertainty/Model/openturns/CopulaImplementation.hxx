@@ -39,59 +39,59 @@ public:
   CopulaImplementation();
 
   /** Virtual constructor */
-  virtual CopulaImplementation * clone() const;
+  CopulaImplementation * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const CopulaImplementation & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** Compute the survival function */
-  virtual Scalar computeSurvivalFunction(const Point & point) const;
+  Scalar computeSurvivalFunction(const Point & point) const override;
 
   /** Get the mean of the copula */
-  Point getMean() const;
+  Point getMean() const override;
 
   /** Get the Spearman correlation of the copula */
-  CorrelationMatrix getSpearmanCorrelation() const;
+  CorrelationMatrix getSpearmanCorrelation() const override;
 
   /** Get the standard deviation of the copula */
-  Point getStandardDeviation() const;
+  Point getStandardDeviation() const override;
 
   /** Get the skewness of the copula */
-  Point getSkewness() const;
+  Point getSkewness() const override;
 
   /** Get the kurtosis of the copula */
-  Point getKurtosis() const;
+  Point getKurtosis() const override;
 
   /** Get the i-th marginal copula */
   using DistributionImplementation::getMarginal;
-  Distribution getMarginal(const UnsignedInteger i) const;
+  Distribution getMarginal(const UnsignedInteger i) const override;
 
   /** Get the copula */
-  Distribution getCopula() const;
+  Distribution getCopula() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 
   /* Methods inherited from upper classes */
 
   /** Generic implementation of the quantile computation for continuous copulas */
   Point computeQuantile(const Scalar prob,
-                        const Bool tail = false) const;
+                        const Bool tail = false) const override;
 
 protected:
 
   /** Compute the covariance of the copula */
-  void computeCovariance() const;
+  void computeCovariance() const override;
 
   /** Compute the mathematical and numerical range of the copula.
       Its mathematical range is the smallest closed interval outside
       of which the PDF is zero, and the numerical range is the interval
       outside of which the PDF is rounded to zero in double precision */
-  void computeRange();
+  void computeRange() override;
 
 private:
 

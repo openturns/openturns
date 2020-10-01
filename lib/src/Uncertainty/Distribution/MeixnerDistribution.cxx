@@ -200,19 +200,6 @@ Scalar MeixnerDistribution::getGamma() const
   return gamma_;
 }
 
-void MeixnerDistribution::setMu(const Scalar mu)
-{
-  LOGWARN("MeixnerDistribution::setMu is deprecated");
-  setGamma(mu);
-}
-
-Scalar MeixnerDistribution::getMu() const
-{
-  LOGWARN("MeixnerDistribution::getMu is deprecated");
-  return gamma_;
-}
-
-
 /* Virtual constructor */
 MeixnerDistribution * MeixnerDistribution::clone() const
 {
@@ -434,28 +421,27 @@ void MeixnerDistribution::update()
   MeixnerBoundB fB(clone());
   MeixnerBoundCD fCD(clone());
 
-  // Initialize Optimization problems
-  OptimizationProblem problem;
-
   // Define Optimization problem1 : maximization fB
-  problem.setMinimization(false);
-  problem.setObjective(fB);
-  problem.setBounds(getRange());
+  OptimizationProblem problem1(fB);
+  problem1.setMinimization(false);
+  problem1.setObjective(fB);
+  problem1.setBounds(getRange());
   solver_.setStartingPoint(getMean());
-  solver_.setProblem(problem);
+  solver_.setProblem(problem1);
   solver_.run();
   b_ = std::sqrt(solver_.getResult().getOptimalValue()[0]);
 
   // Define Optimization problem2 : minimization fCD
-  problem.setMinimization(true);
-  problem.setObjective(fCD);
-  solver_.setProblem(problem);
+  OptimizationProblem problem2(fCD);
+  problem2.setMinimization(true);
+  solver_.setProblem(problem2);
   solver_.run();
   c_ = solver_.getResult().getOptimalValue()[0];
 
   // Define Optimization problem3 : maximization fCD
-  problem.setMinimization(false);
-  solver_.setProblem(problem);
+  OptimizationProblem problem3(fCD);
+  problem3.setMinimization(false);
+  solver_.setProblem(problem3);
   solver_.run();
   dc_ = solver_.getResult().getOptimalValue()[0] - c_;
 }
@@ -589,12 +575,7 @@ void MeixnerDistribution::computeCovariance() const
 /* Parameters value and description accessor */
 Point MeixnerDistribution::getParameter() const
 {
-  Point point(4);
-  point[0] = beta_;
-  point[1] = alpha_;
-  point[2] = delta_;
-  point[3] = gamma_;
-  return point;
+  return {beta_, alpha_, delta_, gamma_};
 }
 
 void MeixnerDistribution::setParameter(const Point & parameter)
@@ -608,12 +589,7 @@ void MeixnerDistribution::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description MeixnerDistribution::getParameterDescription() const
 {
-  Description description(4);
-  description[0] = "beta";
-  description[1] = "alpha";
-  description[2] = "delta";
-  description[2] = "gamma";
-  return description;
+  return {"beta", "alpha", "delta", "gamma"};
 }
 
 /* Check if the distribution is elliptical */

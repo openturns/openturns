@@ -25,6 +25,7 @@
 #include "openturns/LinearModelResult.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/Graph.hxx"
+#include "openturns/GridLayout.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -64,15 +65,27 @@ public:
   static Graph DrawHenryLine(const Sample & sample,
                              const Distribution & normal);
 
-  /** Draw the visual test for the LinearModel when its dimension is 1 */
+  /** Draw 2-d projections of a multivariate sample */
+  static GridLayout DrawPairs(const Sample & sample);
+
+  /** Draw 2-d projections of a multivariate sample, plus marginals of a distribution */
+  static GridLayout DrawPairsMarginals(const Sample & sample, const Distribution & distribution);
+
+  /** Draw the visual test for a 1D LinearModel */
   static Graph DrawLinearModel(const Sample & sample1,
                                const Sample & sample2,
                                const LinearModelResult & linearModelResult);
 
-  /** Draw the visual test for the LinearModel residuals when its dimension is 1 */
+  /** Draw the visual test for a 1D LinearModel using the training Samples **/
+  static Graph DrawLinearModel(const LinearModelResult & linearModelResult);
+
+  /** Draw the visual test for a 1D LinearModel's residuals */
   static Graph DrawLinearModelResidual(const Sample & sample1,
                                        const Sample & sample2,
                                        const LinearModelResult & linearModelResult);
+
+  /** Draw the visual test for a 1D LinearModel's residuals using the training Samples */
+  static Graph DrawLinearModelResidual(const LinearModelResult & linearModelResult);
 
   /** Draw the CobWeb visual test */
   static Graph DrawCobWeb(const Sample & inputSample,

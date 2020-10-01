@@ -52,14 +52,14 @@ public:
 
 
   /** Virtual constructor */
-  virtual SafeAndSlow * clone() const;
+  SafeAndSlow * clone() const override;
 
   /** Solve gives all the roots found applying the root strategy */
   ScalarCollection solve(const Function & function,
-                         const Scalar value);
+                         const Scalar value) override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 private:
 

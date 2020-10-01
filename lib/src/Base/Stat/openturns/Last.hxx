@@ -49,17 +49,17 @@ public:
   explicit Last(const UnsignedInteger maximumSize);
 
   /** Virtual constructor */
-  virtual Last * clone() const;
+  Last * clone() const override;
 
   /** Store the point according to the strategy */
   using HistoryStrategyImplementation::store;
-  void store(const Point & point);
+  void store(const Point & point) override;
 
   /** Clear the history storage and change dimension of Point stored */
-  void setDimension(const UnsignedInteger dimension);
+  void setDimension(const UnsignedInteger dimension) override;
 
   /** Sample accessor */
-  Sample getSample() const;
+  Sample getSample() const override;
 
   /** MaximumSize accessor */
   UnsignedInteger getMaximumSize() const;
@@ -71,13 +71,13 @@ public:
   Bool getHasWrapped() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

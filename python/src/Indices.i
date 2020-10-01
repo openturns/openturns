@@ -23,6 +23,7 @@
 }
 
 %apply const Indices & { const OT::Indices & };
+%ignore OT::Indices::Indices(std::initializer_list<UnsignedInteger> initList);
 
 %include Indices_doc.i
 

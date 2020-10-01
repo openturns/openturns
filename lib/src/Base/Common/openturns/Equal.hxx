@@ -43,13 +43,13 @@ public:
   Equal();
 
   /* String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /* Here is the interface that all derived class must implement */
 
   /* Virtual constructor */
-  virtual Equal * clone() const;
+  Equal * clone() const override;
 
   /**
    * Return true if a == b
@@ -57,14 +57,13 @@ public:
    * @param b The right hand side of the expression
    * @return True if comparison succeeds
    */
-  virtual Bool operator() (const Scalar a,
-                           const Scalar b) const;
+  Bool operator() (const Scalar a, const Scalar b) const override;
 
   /* Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /* Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 }; /* class Equal */
 

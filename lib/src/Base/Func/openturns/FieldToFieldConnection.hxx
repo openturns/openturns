@@ -55,38 +55,38 @@ public:
 
 
   /** Virtual constructor */
-  virtual FieldToFieldConnection * clone() const;
+  FieldToFieldConnection * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const FieldToFieldConnection & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () */
   using FieldFunctionImplementation::operator();
-  Sample operator() (const Sample & inF) const;
+  Sample operator() (const Sample & inF) const override;
 
-  ProcessSample operator() (const ProcessSample & inS) const;
+  ProcessSample operator() (const ProcessSample & inS) const override;
 
   /** Accessor for input point dimension */
-  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Get the i-th marginal function */
-  Implementation getMarginal(const UnsignedInteger i) const;
+  Implementation getMarginal(const UnsignedInteger i) const override;
 
   /** Get the function corresponding to indices components */
-  Implementation getMarginal(const Indices & indices) const;
+  Implementation getMarginal(const Indices & indices) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Composed implementation accessor */
   FieldFunction getLeftFieldFunction() const;

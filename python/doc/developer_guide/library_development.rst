@@ -5,7 +5,7 @@ This section provides informations on how to develop within the
 perimeter of the library and it’s documentation.
 
 If you are willing to contribute the actual development of the library, please
-consider reading our coding guidelines and contact us on the developer's mailing list.
+consider reading our coding guidelines and contact us through the website.
 
 
 Install a development version
@@ -193,7 +193,7 @@ Second, add your class to the Python interface
        designPoint : float sequence
            Design point in the standard space resulting from the optimization
            algorithm.
-       limitStateVariable : :class:`~openturns.Event`
+       limitStateVariable : :class:`~openturns.RandomVector`
            Event of which the probability is calculated.
        isInFailureSpace : bool
            Indicates whether the origin of the standard space is in the failure space.

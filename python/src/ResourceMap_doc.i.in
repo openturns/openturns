@@ -13,7 +13,7 @@ Get some keys:
 >>> for key in ot.ResourceMap.GetKeys()[:4]:
 ...     print(key)
 ARMA-MeanEpsilon
-ARMALikelihoodFactory-DefaultMaxFun
+ARMALikelihoodFactory-DefaultMaximumEvaluationNumber
 ARMALikelihoodFactory-DefaultRhoBeg
 ARMALikelihoodFactory-DefaultRhoEnd"
 
@@ -432,7 +432,7 @@ has_key : bool
 
 Reverts the values of the default keys.
 Does not erase new keys."
-    
+
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::ResourceMap::RemoveKey
@@ -448,3 +448,24 @@ Examples
 >>> import openturns as ot
 >>> ot.ResourceMap.AddAsString('dummy_key', 'key_to_be_removed')
 >>> ot.ResourceMap.RemoveKey('dummy_key')"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::ResourceMap::FindKeys
+"Find keys matching a pattern.
+
+Parameters
+----------
+substr : str
+    A pattern to search.
+
+Returns
+-------
+value : sequence of str
+    The keys matching the pattern.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.ResourceMap.FindKeys('Multinomial')
+('Multinomial-eta', 'Multinomial-smallA')"

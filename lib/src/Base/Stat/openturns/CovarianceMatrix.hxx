@@ -57,7 +57,7 @@ public:
                    const ScalarCollection & elementsValues);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** CovarianceMatrix transpose */
   CovarianceMatrix transpose () const;

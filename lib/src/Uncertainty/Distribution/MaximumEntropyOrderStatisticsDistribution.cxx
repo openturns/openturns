@@ -934,7 +934,6 @@ void MaximumEntropyOrderStatisticsDistribution::setDistributionCollection(const 
 
   // Check if the collection is not empty
   const UnsignedInteger size = coll.getSize();
-  if ((getDimension() != 0) && (size != getDimension())) throw InvalidArgumentException(HERE) << "The distribution collection must have a size equal to the distribution dimension";
   Description description(size);
   Point lowerBound(size);
   Point upperBound(size);

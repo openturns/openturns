@@ -285,22 +285,3 @@ strategy : :class:`~openturns.ProjectionStrategy`
     Strategy to estimate the coefficients :math:`\alpha_k`."
 
 // ---------------------------------------------------------------------
-
-%feature("docstring") OT::FunctionalChaosAlgorithm::BuildDistribution
-"Recover the distribution, with metamodel performance in mind.
-
-For each marginal, find the best 1-d continuous parametric model,
-else fallback to the use of :class:`~openturns.KernelSmoothing`.
-For the copula, the Spearman independance test is used on each component pair
-to decide whether an independent copula can be used,
-else use a :class:`~openturns.NormalCopula`.
-
-Parameters
-----------
-sample : :class:`~openturns.Sample`
-    Input sample.
-
-Returns
--------
-distribution : :class:`~openturns.Distribution`
-    Input distribution."

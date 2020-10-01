@@ -40,14 +40,14 @@ public:
   ClaytonCopulaFactory();
 
   /** Virtual constructor */
-  virtual ClaytonCopulaFactory * clone() const;
+  ClaytonCopulaFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
   ClaytonCopula buildAsClaytonCopula(const Sample & sample) const;
   ClaytonCopula buildAsClaytonCopula(const Point & parameters) const;
   ClaytonCopula buildAsClaytonCopula() const;

@@ -50,33 +50,33 @@ public:
   explicit KDTree(const Sample & sample);
 
   /** Virtual constructor */
-  virtual KDTree * clone() const;
+  KDTree * clone() const override;
 
 #ifndef SWIG
   /** Virtual default constructor */
-  virtual KDTree * emptyClone() const;
+  KDTree * emptyClone() const override;
 #endif
 
   /** Sample accessor */
-  virtual Sample getSample() const;
-  virtual void setSample(const Sample & sample);
+  Sample getSample() const override;
+  void setSample(const Sample & sample) override;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Get the index of the nearest neighbour of the given point */
-  UnsignedInteger query(const Point & x) const;
+  UnsignedInteger query(const Point & x) const override;
   using NearestNeighbourAlgorithmImplementation::query;
 
   /** Get the indices of the k nearest neighbours of the given point */
-  virtual Indices queryK(const Point & x, const UnsignedInteger k, const Bool sorted  = false) const;
+  Indices queryK(const Point & x, const UnsignedInteger k, const Bool sorted  = false) const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   String printNode(const UnsignedInteger inode) const;

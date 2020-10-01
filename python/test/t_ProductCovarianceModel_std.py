@@ -20,6 +20,9 @@ def test_active_parameter():
     print("Matern d-dimensional covariance as product")
     d = 3
     cov_model = ot.ProductCovarianceModel([cov_model_1d]*d)
+    marginal0 = cov_model.getMarginal(0)
+    assert marginal0.getInputDimension() == d, "wrong marginal input dim"
+    assert marginal0.getOutputDimension() == 1, "wrong marginal output dim"
     print("Full parameter : ", cov_model.getFullParameter())
     print("active cov. param.: ", [cov_model.getFullParameterDescription()[
           i] for i in cov_model.getActiveParameter()])

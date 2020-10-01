@@ -51,13 +51,13 @@ public:
 
 
   /** Virtual constructor */
-  virtual OrthogonalDirection * clone() const;
+  OrthogonalDirection * clone() const override;
 
   /** Generate a set of directions */
-  Sample generate() const;
+  Sample generate() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Generate a random realization of an orientation matrix in SO(dimension) uniformly distributed relatively to the Haar mesure of SO(dimension) */
   Matrix getUniformOrientationRealization() const;

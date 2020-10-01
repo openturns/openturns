@@ -51,7 +51,7 @@ public:
   WeightedExperiment(const Implementation & p_implementation);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Distribution accessor */
   virtual void setDistribution(const Distribution & distribution);

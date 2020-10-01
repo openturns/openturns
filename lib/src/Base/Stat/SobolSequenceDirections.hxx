@@ -22,10 +22,10 @@
  * which is covered by the LGPL license
  */
 
-const UnsignedInteger    SobolSequence::MaximumNumberOfDimension = 1111;
-const UnsignedInteger    SobolSequence::MaximumInitialDegree     = 13;
+const UnsignedInteger    SobolSequence::MaximumDimension     = 1111;
+const UnsignedInteger    SobolSequence::MaximumInitialDegree = 13;
 
-const UnsignedInteger SobolSequence::InitialBase[MaximumNumberOfDimension * MaximumInitialDegree] =
+const UnsignedInteger SobolSequence::InitialBase[MaximumDimension * MaximumInitialDegree] =
 {
   1,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
   1,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
@@ -1140,7 +1140,7 @@ const UnsignedInteger SobolSequence::InitialBase[MaximumNumberOfDimension * Maxi
   1,    1,    3,   15,   17,   15,   15,  187,   15,  155,  183, 3019, 6541
 } ;
 
-const Unsigned64BitsInteger SobolSequence::PrimitivePolynomial[MaximumNumberOfDimension] =
+const Unsigned64BitsInteger SobolSequence::PrimitivePolynomial[MaximumDimension] =
 {
   1,     3,     7,    11,    13,    19,    25,    37,
   59,    47,    61,    55,    41,    67,    97,    91,

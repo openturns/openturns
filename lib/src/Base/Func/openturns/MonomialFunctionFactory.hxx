@@ -44,22 +44,22 @@ public:
 
 
   /** Virtual constructor */
-  MonomialFunctionFactory * clone() const;
+  MonomialFunctionFactory * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** The build method to get the function of any order as MonomialFunction. */
   MonomialFunction buildAsMonomialFunction(const UnsignedInteger order) const;
 
   /** The method to get the function of any order. */
-  UniVariateFunction build(const UnsignedInteger order) const;
+  UniVariateFunction build(const UnsignedInteger order) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 } ; /* class MonomialFunctionFactory */
 

@@ -46,7 +46,7 @@ public:
 
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /* Here is the interface */
 

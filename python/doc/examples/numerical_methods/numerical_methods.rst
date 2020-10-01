@@ -24,6 +24,8 @@ Optimization
     ego.ipynb
     minmax_optimization.ipynb
     minmax_by_random_design.ipynb
+    estimate_integral_iterated_quadrature.ipynb
+    estimate_integral_Fejer.ipynb
     control_termination.ipynb
     optimization_rastrigin.ipynb
 

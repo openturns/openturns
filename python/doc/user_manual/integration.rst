@@ -17,6 +17,7 @@ Integration
 
     GaussKronrod
     GaussLegendre
+    FejerAlgorithm
 
 .. autosummary::
     :toctree: _generated/

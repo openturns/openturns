@@ -92,8 +92,8 @@ public:
   const Matrix getColumn(const UnsignedInteger columnIndex) const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 #ifndef SWIG
   /** Operator () gives access to the elements of the matrix (to modify these elements) */

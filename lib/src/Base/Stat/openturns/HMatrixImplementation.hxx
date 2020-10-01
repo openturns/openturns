@@ -119,7 +119,7 @@ public:
   HMatrixImplementation(const HMatrixImplementation& other);
 
   /** Virtual copy constructor */
-  virtual HMatrixImplementation * clone() const;
+  HMatrixImplementation * clone() const override;
 
   /** Copy assignment operator */
   HMatrixImplementation& operator=(const HMatrixImplementation& rhs);
@@ -187,10 +187,10 @@ public:
   Bool setKey(const String & name, const String & value);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 private:
   // DO NOT USE

@@ -102,7 +102,7 @@ relationships, as in the following simple example where
     # Fit this linear model
     regressionModel = ot.LinearModelAlgorithm(sampleX, sampleY).getResult()
     # Test the linear model fitting
-    graph = ot.VisualTest.DrawLinearModel(sampleX, sampleY, regressionModel)
+    graph = ot.VisualTest.DrawLinearModel(regressionModel)
     cloud = graph.getDrawable(0)
     cloud.setPointStyle('times')
     graph.setDrawable(cloud, 0)
@@ -135,7 +135,7 @@ regression coefficients :math:`a_j`.
     sampleX.setName('X')
     # same as good test
     regressionModel = ot.LinearModelAlgorithm(sampleX, sampleY).getResult()
-    graph = ot.VisualTest.DrawLinearModel(sampleX, sampleY, regressionModel)
+    graph = ot.VisualTest.DrawLinearModel(regressionModel)
     cloud = graph.getDrawable(0)
     cloud.setPointStyle('times')
     graph.setDrawable(cloud, 0)
@@ -184,7 +184,7 @@ nor in he standard deviation.
     sampleX.setName('X')
     #create a linear model
     regressionModel = ot.LinearModelAlgorithm(sampleX, sampleY).getResult()
-    graph = ot.VisualTest.DrawLinearModelResidual(sampleX, sampleY, regressionModel)
+    graph = ot.VisualTest.DrawLinearModelResidual(regressionModel)
     cloud = graph.getDrawable(0)
     cloud.setPointStyle('times')
     graph.setDrawable(cloud, 0)
@@ -215,7 +215,7 @@ be abandoned, or at least used very cautiously.
     sampleX.setName('X')
     # same as good test
     regressionModel = ot.LinearModelAlgorithm(sampleX, sampleY).getResult()
-    graph = ot.VisualTest.DrawLinearModelResidual(sampleX, sampleY, regressionModel)
+    graph = ot.VisualTest.DrawLinearModelResidual(regressionModel)
     cloud = graph.getDrawable(0)
     cloud.setPointStyle('times')
     graph.setDrawable(cloud, 0)

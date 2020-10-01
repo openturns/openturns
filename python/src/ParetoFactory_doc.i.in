@@ -91,14 +91,32 @@ The initial point of the optimisation problem is :math:`\gamma_0 = x_{(1,n)} - |
 
 **Least squares estimator:**
 
-The least squares estimator  :math:`(\hat{\alpha}_n, \hat{\beta}_n, \hat{\gamma}_n)` is defined by:
+The parameter :math:`\gamma` is numerically optimized by non-linear least-squares:
 
 .. math::
 
-  (\hat{\alpha}_n, \hat{\beta}_n, \hat{\gamma}_n) = \argmin_{\alpha, \beta, \gamma} \sum_{i=1}^n (\hat{F}_n(x_i) - F_{\alpha, \beta, \gamma}(x_i))^2
-   
-where :math:`\hat{F}_n` is the empirical cumulative distribution function of the sample.
-"
+    \min{\gamma} \norm{\hat{S}_n(x_i) - (a_1 \log(x_i - \gamma) + a_0)}_2^2
+
+
+where :math:`a_0, a_1` are computed from linear least-squares at each optimization evaluation.
+
+When :math:`\gamma` is known and the :math:`x_i` follow a Pareto distribution then
+we use linear least-squares to solve the relation:
+
+.. math::
+  :label: least_squares_estimator_pareto
+
+   \hat{S}_n(x_i) = a_1 \log(x_i - \gamma) + a_0
+
+And the remaining parameters are estimated with:
+
+.. math::
+
+    \hat{\beta} &= \exp{\frac{-a_0}{a_1}}\\
+    \hat{\alpha} &= -a_1
+
+The default strategy is to use the least squares estimator."
+
 // ----------------------------------------------------------------------------
 
 %feature("docstring") OT::ParetoFactory::buildMethodOfLikelihoodMaximization
@@ -116,7 +134,6 @@ Returns
 distribution : :class:`~openturns.Pareto`
     The estimated distribution"
 
-
 // ----------------------------------------------------------------------------
 
 %feature("docstring") OT::ParetoFactory::buildMethodOfMoments
@@ -127,6 +144,25 @@ Parameters
 ----------
 sample : :class:`~openturns.Sample`
     Data
+
+Returns
+-------
+distribution : :class:`~openturns.Pareto`
+    The estimated distribution"
+
+// ----------------------------------------------------------------------------
+
+%feature("docstring") OT::ParetoFactory::buildMethodOfLeastSquares
+"Method of least-squares.
+
+Refer to :class:`~openturns.LeastSquaresFactory`.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    Data
+gamma : float, optional
+    Gamma parameter.
 
 Returns
 -------
@@ -160,9 +196,5 @@ sample : :class:`~openturns.Sample`
 
 Returns
 -------
-distribution : :class:`~openturns.Pareto`
-    The estimated distribution
-
-Notes
------
-The default strategy is using the least squares estimators."
+distribution : :class:`~openturns.Distribution`
+    The estimated distribution"

@@ -1,8 +1,8 @@
 Distribution          =class=WeibullMin name=WeibullMin dimension=1 beta=1 alpha=2.5 gamma=-1
-Estimated distribution=class=WeibullMin name=WeibullMin dimension=1 beta=0.971272 alpha=2.41399 gamma=-0.978496
+Estimated distribution=class=WeibullMin name=WeibullMin dimension=1 beta=1.00413 alpha=2.49011 gamma=-0.998951
 Default distribution=class=WeibullMin name=WeibullMin dimension=1 beta=1 alpha=1 gamma=0
 Distribution from parameters=class=WeibullMin name=WeibullMin dimension=1 beta=1 alpha=2.5 gamma=-1
-Estimated weibull=class=WeibullMin name=WeibullMin dimension=1 beta=0.971272 alpha=2.41399 gamma=-0.978496
+Estimated weibull=class=WeibullMin name=WeibullMin dimension=1 beta=1.00413 alpha=2.49011 gamma=-0.998951
 Default weibull=class=WeibullMin name=WeibullMin dimension=1 beta=1 alpha=1 gamma=0
 WeibullMin from parameters=class=WeibullMin name=WeibullMin dimension=1 beta=1 alpha=2.5 gamma=-1
 Estimated distribution=class=WeibullMin name=WeibullMin dimension=1 beta=4.93038e-30 alpha=1 gamma=2.22045e-16

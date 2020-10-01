@@ -45,36 +45,36 @@ public:
                const Scalar gamma = 0.);
 
   /** Virtual constructor */
-  virtual GammaMuSigma * clone() const;
+  GammaMuSigma * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const GammaMuSigma & other) const;
 
   /** Build a distribution based on a set of native parameters */
-  Distribution getDistribution() const;
+  Distribution getDistribution() const override;
 
   /** Compute jacobian / native parameters */
-  Matrix gradient() const;
+  Matrix gradient() const override;
 
   /** Conversion operator */
-  Point operator () (const Point & inP) const;
+  Point operator () (const Point & inP) const override;
 
-  Point inverse(const Point & inP) const;
+  Point inverse(const Point & inP) const override;
 
   /** Parameters value and description accessor */
-  virtual void setValues(const Point & values);
-  virtual Point getValues() const;
-  virtual Description getDescription() const;
+  void setValues(const Point & values) override;
+  Point getValues() const override;
+  Description getDescription() const override;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   /** The main parameter set of the distribution */

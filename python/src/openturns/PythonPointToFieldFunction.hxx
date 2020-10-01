@@ -45,7 +45,7 @@ public:
   PythonPointToFieldFunction(const PythonPointToFieldFunction & other);
 
   /** Virtual constructor */
-  virtual PythonPointToFieldFunction * clone() const;
+  PythonPointToFieldFunction * clone() const override;
 
   /** Copy assignment operator */
   PythonPointToFieldFunction & operator=(const PythonPointToFieldFunction & rhs);
@@ -57,27 +57,27 @@ public:
   Bool operator ==(const PythonPointToFieldFunction & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset) const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
   using PointToFieldFunctionImplementation::operator();
-  virtual Sample operator() (const Point & inP) const;
+  Sample operator() (const Point & inP) const override;
 
   /** Accessor for input point dimension */
-  virtual UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  virtual UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method save() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

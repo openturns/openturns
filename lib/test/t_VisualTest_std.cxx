@@ -69,10 +69,10 @@ int main(int, char *[])
     }
 
     LinearModelResult lmtest(LinearModelAlgorithm(firstSample, secondSample).getResult());
-    Graph drawLinearModelVTest(VisualTest::DrawLinearModel(firstSample, secondSample, lmtest));
+    Graph drawLinearModelVTest(VisualTest::DrawLinearModel(lmtest));
     fullprint << "LinearModelV = " << drawLinearModelVTest << std::endl;
 
-    Graph drawLinearModelResidualTest(VisualTest::DrawLinearModelResidual(firstSample, secondSample, lmtest));
+    Graph drawLinearModelResidualTest(VisualTest::DrawLinearModelResidual(lmtest));
     fullprint << "LinearModelR = " << drawLinearModelResidualTest << std::endl;
   }
 

@@ -40,3 +40,7 @@ OT_Evaluation_draw_doc
 OT_Evaluation_isLinear_doc
 %feature("docstring") OT::Evaluation::isLinearlyDependent
 OT_Evaluation_isLinearlyDependent_doc
+%feature("docstring") OT::Evaluation::setCheckOutput
+OT_Evaluation_setCheckOutput_doc
+%feature("docstring") OT::Evaluation::getCheckOutput
+OT_Evaluation_getCheckOutput_doc

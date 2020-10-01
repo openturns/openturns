@@ -466,7 +466,76 @@ UnsignedInteger DistributionImplementation::getDimension() const
 /* Get the roughness, i.e. the L2-norm of the PDF */
 Scalar DistributionImplementation::getRoughness() const
 {
-  throw NotYetImplementedException(HERE) << "In DistributionImplementation::getRoughness() const";
+  const Interval interval(getRange());
+
+  // Use adaptive multidimensional integration of the PDF on the reduced interval
+  const PDFSquaredWrapper pdfSquaredWrapper(this);
+  Scalar roughness = 0.0;
+  if (dimension_ == 1)
+  {
+    Scalar error = -1.0;
+    const Point singularities(getSingularities());
+    // If no singularity inside of the given reduced interval
+    const UnsignedInteger singularitiesNumber = singularities.getSize();
+    const Scalar lower = interval.getLowerBound()[0];
+    const Scalar upper = interval.getUpperBound()[0];
+    if (singularitiesNumber == 0 || singularities[0] >= upper || singularities[singularitiesNumber - 1] <= lower)
+      roughness = GaussKronrod().integrate(pdfSquaredWrapper, interval, error)[0];
+    else
+    {
+      Scalar a = lower;
+      for (UnsignedInteger i = 0; i < singularitiesNumber; ++i)
+      {
+        const Scalar b = singularities[i];
+        if (b > lower && b < upper)
+        {
+          roughness += GaussKronrod().integrate(pdfSquaredWrapper, Interval(a, b), error)[0];
+          a = b;
+        }
+        // Exit the loop if no more singularities inside of the reduced interval
+        if (b >= upper)
+          break;
+      } // for
+      // Last contribution
+      roughness += GaussKronrod().integrate(pdfSquaredWrapper, Interval(a, upper), error)[0];
+    } // else
+    return std::max(0.0, roughness);
+  } // dimension_ == 1
+
+  // Dimension > 1
+  if (hasIndependentCopula())
+  {
+    roughness = 1.0;
+    for (UnsignedInteger i = 0; i < dimension_; ++i)
+      roughness *= getMarginal(i).getRoughness();
+  }
+  else
+  {
+    // Small dimension
+    if (dimension_ <= ResourceMap::GetAsUnsignedInteger("Distribution-SmallDimensionRoughness"))
+    {
+      roughness = IteratedQuadrature().integrate(pdfSquaredWrapper, interval)[0];
+    } // Small dimension
+    else
+    {
+      const UnsignedInteger size = ResourceMap::GetAsUnsignedInteger("Distribution-RoughnessSamplingSize");
+      const String samplingMethod(ResourceMap::GetAsString("Distribution-RoughnessSamplingMethod"));
+      Sample sample;
+      if (samplingMethod == "MonteCarlo")
+        sample = getSample(size);
+      else if (samplingMethod == "QuasiMonteCarlo")
+        sample = getSampleByQMC(size);
+      else
+      {
+        LOGWARN(OSS() << "Unknown sampling method=" << samplingMethod << " to compute roughness. Resort to MonteCarlo");
+        sample = getSample(size);
+      }
+       roughness = computePDF(sample).computeMean()[0];
+    }
+
+  }
+  // Roughness is a L2-norm, so must be positive
+  return std::max(0.0, roughness);
 }
 
 /* Dimension accessor */
@@ -2533,10 +2602,10 @@ Interval DistributionImplementation::computeUnivariateMinimumVolumeIntervalByOpt
 {
   const MinimumVolumeIntervalWrapper minimumVolumeIntervalWrapper(this, prob);
   const Function objective(bindMethod<MinimumVolumeIntervalWrapper, Point, Point>(minimumVolumeIntervalWrapper, &MinimumVolumeIntervalWrapper::objective, 1, 1));
-  OptimizationProblem problem;
-  problem.setObjective(objective);
+  OptimizationProblem problem(objective);
   problem.setBounds(getRange());
   TNC solver(problem);
+  solver.setIgnoreFailure(true);
   solver.setStartingPoint(computeQuantile(prob, true));
   solver.run();
   const Scalar a = solver.getResult().getOptimalPoint()[0];
@@ -2982,7 +3051,7 @@ CovarianceMatrix DistributionImplementation::getCovariance() const
 CorrelationMatrix DistributionImplementation::getCorrelation() const
 {
   // To make sure the covariance is up to date
-  covariance_ = getCovariance();
+  (void) getCovariance();
   CorrelationMatrix R(dimension_);
   Point sigma(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
@@ -3602,7 +3671,7 @@ Graph DistributionImplementation::drawPDF(const Point & xMin,
     SampleImplementation fullProba(size, 1);
     fullProba.setData(probabilities);
     fullProba.stack(*support.getImplementation());
-    fullProba = fullProba.sortAccordingToAComponent(0);
+    fullProba.sortAccordingToAComponentInPlace(0);
     const Scalar pMin = fullProba(0, 0);
     const Scalar pMax = fullProba(size - 1, 0);
     const Scalar scaling = ResourceMap::GetAsScalar("Distribution-DiscreteDrawPDFScaling") / std::sqrt(pMax);
@@ -3721,9 +3790,7 @@ Graph DistributionImplementation::drawMarginal2DPDF(const UnsignedInteger firstM
     const Bool logScaleX,
     const Bool logScaleY) const
 {
-  Indices indices(2);
-  indices[0] = firstMarginal;
-  indices[1] = secondMarginal;
+  Indices indices = {firstMarginal, secondMarginal};
   Graph marginalGraph(getMarginal(indices).drawPDF(xMin, xMax, pointNumber, logScaleX, logScaleY));
   marginalGraph.setTitle(OSS() << getDescription() << "->[" << description_[firstMarginal] << ", " << description_[secondMarginal] << "] components iso-PDF");
   return marginalGraph;
@@ -3855,7 +3922,7 @@ Graph DistributionImplementation::drawLogPDF(const Point & xMin,
     SampleImplementation fullProba(size, 1);
     fullProba.setData(probabilities);
     fullProba.stack(*support.getImplementation());
-    fullProba = fullProba.sortAccordingToAComponent(0);
+    fullProba.sortAccordingToAComponentInPlace(0);
     const Scalar absLogPMin = -std::log(fullProba(0, 0));
     const Scalar absLogPMax = -std::log(fullProba(size - 1, 0));
     const Scalar scaling = ResourceMap::GetAsScalar("Distribution-DiscreteDrawPDFScaling") / std::sqrt(absLogPMin);
@@ -3980,9 +4047,7 @@ Graph DistributionImplementation::drawMarginal2DLogPDF(const UnsignedInteger fir
     const Bool logScaleX,
     const Bool logScaleY) const
 {
-  Indices indices(2);
-  indices[0] = firstMarginal;
-  indices[1] = secondMarginal;
+  Indices indices = {firstMarginal, secondMarginal};
   Graph marginalGraph(getMarginal(indices).drawLogPDF(xMin, xMax, pointNumber, logScaleX, logScaleY));
   marginalGraph.setTitle(OSS() << getDescription() << "->[" << description_[firstMarginal] << ", " << description_[secondMarginal] << "] components iso-log PDF");
   return marginalGraph;
@@ -4157,9 +4222,7 @@ Graph DistributionImplementation::drawMarginal2DCDF(const UnsignedInteger firstM
     const Bool logScaleX,
     const Bool logScaleY) const
 {
-  Indices indices(2);
-  indices[0] = firstMarginal;
-  indices[1] = secondMarginal;
+  Indices indices = {firstMarginal, secondMarginal};
   Graph marginalGraph(getMarginal(indices).drawCDF(xMin, xMax, pointNumber, logScaleX, logScaleY));
   marginalGraph.setTitle(OSS() << getDescription() << "->[" << description_[firstMarginal] << ", " << description_[secondMarginal] << "] components iso-CDF");
   return marginalGraph;
@@ -4334,9 +4397,7 @@ Graph DistributionImplementation::drawMarginal2DSurvivalFunction(const UnsignedI
     const Bool logScaleX,
     const Bool logScaleY) const
 {
-  Indices indices(2);
-  indices[0] = firstMarginal;
-  indices[1] = secondMarginal;
+  Indices indices = {firstMarginal, secondMarginal};
   Graph marginalGraph(getMarginal(indices).drawSurvivalFunction(xMin, xMax, pointNumber, logScaleX, logScaleY));
   marginalGraph.setTitle(OSS() << getDescription() << "->[" << description_[firstMarginal] << ", " << description_[secondMarginal] << "] components iso-SurvivalFunction");
   return marginalGraph;

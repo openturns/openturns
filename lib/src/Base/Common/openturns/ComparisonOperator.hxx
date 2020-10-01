@@ -61,7 +61,7 @@ public:
   Bool compare(const Scalar a,
                const Scalar b) const;
 
-  String __repr__() const;
+  String __repr__() const override;
 }; /* class ComparisonOperator */
 
 

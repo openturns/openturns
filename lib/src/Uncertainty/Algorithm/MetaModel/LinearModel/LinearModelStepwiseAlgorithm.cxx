@@ -242,7 +242,7 @@ struct UpdateForwardFunctor
     Point xiNP(size);
     Point viNP(size);
     Point residualNP(size);
-    std::copy(&residual_(0, 0), &residual_(0, 0) + size, residualNP.begin());
+    std::copy(residual_.data(), residual_.data() + size, residualNP.begin());
 
     for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
     {
@@ -251,8 +251,8 @@ struct UpdateForwardFunctor
       const Matrix Qtxi(Q_.getImplementation()->genProd(*(xi.getImplementation()), true, false));
       const Matrix di(Q_ * Qtxi);
       const Matrix vi(xi - di);
-      std::copy(&vi(0, 0), &vi(0, 0) + size, viNP.begin());
-      std::copy(&xi(0, 0), &xi(0, 0) + size, xiNP.begin());
+      std::copy(vi.data(), vi.data() + size, viNP.begin());
+      std::copy(xi.data(), xi.data() + size, xiNP.begin());
       const Scalar denominator = xiNP.dot(viNP);
       if (denominator == 0.0) continue;
       const Scalar alpha = xiNP.dot(residualNP) / denominator;
@@ -355,7 +355,7 @@ struct UpdateBackwardFunctor
     Point biNP(p);
     Point diNP(size);
     Point yNP(size);
-    std::copy(&Y_(0, 0), &Y_(0, 0) + size, yNP.begin());
+    std::copy(Y_.data(), Y_.data() + size, yNP.begin());
 
     Point residualNP(size);
     std::copy(&residual_(0, 0), &residual_(0, 0) + size, residualNP.begin());

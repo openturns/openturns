@@ -52,9 +52,6 @@ GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
     const Scalar optimalLogLikelihood)
   : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
   , inputData_(inputSample)
-  , inputTransformedData_(inputSample)
-  , inputTransformation_()
-  , hasTransformation_(false)
   , basis_(basis)
   , beta_(trendCoefficients)
   , covarianceModel_(covarianceModel)
@@ -66,47 +63,6 @@ GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
   const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
     throw InvalidArgumentException(HERE) << "In GeneralLinearModelResult::GeneralLinearModelResult, input & output sample have different size. input sample size = " << size << ", output sample size = " << outputSample.getSize();
-}
-
-
-/* Constructor with parameters & Cholesky factor */
-GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
-    const Sample & outputSample,
-    const Function & metaModel,
-    const Point & residuals,
-    const Point & relativeErrors,
-    const BasisCollection & basis,
-    const PointCollection & trendCoefficients,
-    const CovarianceModel & covarianceModel,
-    const Scalar optimalLogLikelihood,
-    const TriangularMatrix & covarianceCholeskyFactor,
-    const HMatrix & covarianceHMatrix)
-  : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
-  , inputData_(inputSample)
-  , inputTransformedData_(inputSample)
-  , inputTransformation_()
-  , hasTransformation_(false)
-  , basis_(basis)
-  , beta_(trendCoefficients)
-  , covarianceModel_(covarianceModel)
-  , optimalLogLikelihood_(optimalLogLikelihood)
-  , hasCholeskyFactor_(true)
-  , covarianceCholeskyFactor_(covarianceCholeskyFactor)
-  , covarianceHMatrix_(covarianceHMatrix)
-{
-  const UnsignedInteger size = inputSample.getSize();
-  if (size != outputSample.getSize())
-    throw InvalidArgumentException(HERE) << "In GeneralLinearModelResult::GeneralLinearModelResult, input & output sample have different size. input sample size = " << size << ", output sample size = " << outputSample.getSize();
-  const UnsignedInteger outputDimension = outputSample.getDimension();
-  if (covarianceCholeskyFactor_.getDimension() != 0 && covarianceCholeskyFactor_.getDimension() != size * outputDimension)
-    throw InvalidArgumentException(HERE) << "In GeneralLinearModelResult::GeneralLinearModelResult, Cholesky factor has unexpected dimensions. Its dimension should be " << size * outputDimension << ". Here dimension = " << covarianceCholeskyFactor_.getDimension();
-  if (covarianceHMatrix_.getNbRows() != 0)
-  {
-    if (covarianceHMatrix_.getNbRows() != covarianceHMatrix_.getNbColumns())
-      throw InvalidArgumentException(HERE) << "In GeneralLinearModelResult::GeneralLinearModelResult, HMAT Cholesky factor is not square. Its dimension is " << covarianceHMatrix_.getNbRows() << "x" << covarianceHMatrix_.getNbColumns();
-    if (covarianceHMatrix_.getNbRows() != size * outputDimension)
-      throw InvalidArgumentException(HERE) << "In GeneralLinearModelResult::GeneralLinearModelResult, HMAT Cholesky factor has unexpected dimensions. Its dimension should be " << size * outputDimension << ". Here dimension = " << covarianceHMatrix_.getNbRows();
-  }
 }
 
 
@@ -154,21 +110,6 @@ CovarianceModel GeneralLinearModelResult::getCovarianceModel() const
   return covarianceModel_;
 }
 
-Function GeneralLinearModelResult::getTransformation() const
-{
-  return inputTransformation_;
-}
-
-void GeneralLinearModelResult::setTransformation(const Function & transformation)
-{
-  if (transformation.getInputDimension() != inputData_.getDimension())
-    throw InvalidArgumentException(HERE) << "In KrigingResult::setTransformation, incompatible function dimension. Function should have input dimension = " << inputData_.getDimension() << ". Here, function's input dimension = " << transformation.getInputDimension();
-  inputTransformation_ = transformation;
-  // Map inputData using the transformation
-  inputTransformedData_ = transformation(inputData_);
-  hasTransformation_ = true;
-}
-
 /* Optimal log-likelihood accessor */
 Scalar GeneralLinearModelResult::getOptimalLogLikelihood() const
 {
@@ -190,7 +131,7 @@ Process GeneralLinearModelResult::getNoise() const
     return noise;
   }
   // Other covariance models
-  const GaussianProcess noise(covarianceModel_, Mesh(inputTransformedData_));
+  const GaussianProcess noise(covarianceModel_, Mesh(inputData_));
   return noise;
 }
 
@@ -200,26 +141,36 @@ TriangularMatrix GeneralLinearModelResult::getCholeskyFactor() const
   return covarianceCholeskyFactor_;
 }
 
+void GeneralLinearModelResult::setCholeskyFactor(const TriangularMatrix & covarianceCholeskyFactor,
+                       const HMatrix & covarianceHMatrix)
+{
+  const UnsignedInteger size = inputData_.getSize();
+  const UnsignedInteger outputDimension = getMetaModel().getOutputDimension();
+  if (covarianceCholeskyFactor_.getDimension() != 0 && covarianceCholeskyFactor_.getDimension() != size * outputDimension)
+    throw InvalidArgumentException(HERE) << "In GeneralLinearModelResult::setCholeskyFactor, Cholesky factor has unexpected dimensions. Its dimension should be " << size * outputDimension << ". Here dimension = " << covarianceCholeskyFactor_.getDimension();
+  if (covarianceHMatrix_.getNbRows() != 0)
+  {
+    if (covarianceHMatrix_.getNbRows() != covarianceHMatrix_.getNbColumns())
+      throw InvalidArgumentException(HERE) << "In GeneralLinearModelResult::setCholeskyFactor, HMAT Cholesky factor is not square. Its dimension is " << covarianceHMatrix_.getNbRows() << "x" << covarianceHMatrix_.getNbColumns();
+    if (covarianceHMatrix_.getNbRows() != size * outputDimension)
+      throw InvalidArgumentException(HERE) << "In GeneralLinearModelResult::setCholeskyFactor, HMAT Cholesky factor has unexpected dimensions. Its dimension should be " << size * outputDimension << ". Here dimension = " << covarianceHMatrix_.getNbRows();
+  }
+  covarianceCholeskyFactor_ = covarianceCholeskyFactor;
+  covarianceHMatrix_ = covarianceHMatrix;
+}
+
 /* Method that returns the covariance factor - hmat */
 HMatrix GeneralLinearModelResult::getHMatCholeskyFactor() const
 {
   return covarianceHMatrix_;
 }
 
-// Return input sample transformed
-Sample GeneralLinearModelResult::getInputTransformedSample() const
-{
-  return inputTransformedData_;
-}
 
 /* Method save() stores the object through the StorageManager */
 void GeneralLinearModelResult::save(Advocate & adv) const
 {
   MetaModelResult::save(adv);
   adv.saveAttribute( "inputData_", inputData_ );
-  adv.saveAttribute( "inputTransformedData_", inputTransformedData_ );
-  adv.saveAttribute( "inputTransformation_", inputTransformation_ );
-  adv.saveAttribute( "hasTransformation_", hasTransformation_ );
   adv.saveAttribute( "basis_", basis_ );
   adv.saveAttribute( "beta_", beta_ );
   adv.saveAttribute( "covarianceModel_", covarianceModel_ );
@@ -234,9 +185,6 @@ void GeneralLinearModelResult::load(Advocate & adv)
 {
   MetaModelResult::load(adv);
   adv.loadAttribute( "inputData_", inputData_ );
-  adv.loadAttribute( "inputTransformedData_", inputTransformedData_ );
-  adv.loadAttribute( "inputTransformation_", inputTransformation_ );
-  adv.loadAttribute( "hasTransformation_", hasTransformation_ );
   adv.loadAttribute( "basis_", basis_ );
   adv.loadAttribute( "beta_", beta_ );
   adv.loadAttribute( "covarianceModel_", covarianceModel_ );

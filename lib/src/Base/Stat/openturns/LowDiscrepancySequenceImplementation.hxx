@@ -48,7 +48,7 @@ public:
   explicit LowDiscrepancySequenceImplementation(const UnsignedInteger dimension = 1);
 
   /** Virtual constructor */
-  virtual LowDiscrepancySequenceImplementation * clone() const;
+  LowDiscrepancySequenceImplementation * clone() const override;
 
   /** initialize the sequence */
   virtual void initialize(const UnsignedInteger dimension);
@@ -66,13 +66,13 @@ public:
   static Scalar ComputeStarDiscrepancy(const Sample & sample);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   /** Compute the local discrepancy of a sample, given a multidimensionnal interval */

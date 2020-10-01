@@ -51,13 +51,13 @@ public:
             const Point & levels);
 
   /** Virtual constructor */
-  virtual Composite * clone() const;
+  Composite * clone() const override;
 
   /** Experiment plane generation */
-  virtual Sample generate() const;
+  Sample generate() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
 }; /* class Composite */
 

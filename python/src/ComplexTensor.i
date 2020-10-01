@@ -9,6 +9,10 @@
 %template(ComplexTensorImplementationTypedInterfaceObject) OT::TypedInterfaceObject<OT::ComplexTensorImplementation>;
 %apply const ComplexCollection & { const OT::ComplexTensor::ComplexCollection & };
 
+%rename(__baseaddress__) OT::ComplexTensor::data;
+%rename(__elementsize__) OT::ComplexTensor::elementSize;
+%rename(__stride__) OT::ComplexTensor::stride;
+
 %include openturns/ComplexTensor.hxx
 
 %pythoncode %{
@@ -31,7 +35,7 @@ def ComplexTensor___getattribute__(self, name):
 ComplexTensor.__getattribute__ = ComplexTensor___getattribute__
 %}
 
-namespace OT {  
+namespace OT {
 
 %extend ComplexTensor {
 

@@ -1,0 +1,142 @@
+%feature("docstring") OT::MinimumVolumeClassifier
+"Classifier define by a minimum volume level set.
+
+Parameters
+----------
+mixtDist : :class:`~openturns.Distribution`
+    A distribution.
+alpha : float
+    Confidence level
+
+See also
+--------
+Classifier
+
+Notes
+-----
+This implements a mixture classifier which is a particular classifier based on
+a minimum volume confidence domain.
+
+The minimum volume confidence domain :math:`A^*_{\alpha}` is the set of minimum volume and which measure is at least :math:`\alpha`. It is defined by:
+
+.. math::
+
+    A^*_{\alpha} = \argmin_{A \in \Rset^d\, | \, \mu(A) \geq \alpha} \lambda(A)
+
+
+where :math:`\lambda` is the Lebesgue measure on :math:`\Rset^d`. Under some general conditions on :math:`\mu` (for example, no flat regions), the set  :math:`A^*_{\alpha}` is unique and realises the minimum: :math:`\mu(A^*_{\alpha}) = \alpha`. We show that :math:`A^*_{\alpha}` writes:
+
+.. math::
+
+    A^*_{\alpha} = \{ \vect{x} \in \Rset^d \, | \, p(\vect{x}) \geq p_{\alpha} \}
+
+The classifier proposes 2 classes. The rule to assign a point 
+:math:`\vect{x}` to a class is defined as follows: 
+
+.. math::
+
+      \begin{array}{cl}
+            0 & \vect{x} \not\in A^*_{\alpha} \\
+            1 & \vect{x} \in A^*_{\alpha} \\
+       \end{array}
+
+The grade of :math:`\vect{x}` with respect to the class *k* is
+:math:`(2 k - 1) log p(\vect{x})`.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> R2 = ot.CorrelationMatrix(2)
+>>> dists = [ot.Normal([-1.0, 2.0], [1.0]*2, R2), ot.Normal([1.0, -2.0], [1.5]*2, R2)]
+>>> mixture = ot.Mixture(dists)
+>>> sample = mixture.getSample(1000)
+>>> distribution = ot.KernelSmoothing().build(sample)
+>>> algo = ot.MinimumVolumeClassifier(distribution, 0.8)
+>>> algo.classify(distribution.getMean())
+1
+>>> algo.classify([100.0]*2)
+0
+>>> sample = distribution.getSample(100)
+>>> graph = algo.drawSample(sample, [0, 1])"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MinimumVolumeClassifier::getDistribution
+"Accessor to the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.Distribution`
+    The distribution."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MinimumVolumeClassifier::getThreshold
+"Accessor to the threshold.
+
+Returns
+-------
+threshold : float
+    The value :math:`p_{\alpha}` of the density function defining the frontier of the domain."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MinimumVolumeClassifier::drawContour
+"Draw distribution contours.
+
+Parameters
+----------
+alpha : sequence of float
+    Confidence levels
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The value of the density function defining the frontier of the domain."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MinimumVolumeClassifier::drawSample
+"Draw classified sample.
+
+Parameters
+----------
+sample : :class:`~openturns.Sample`
+    A sample to classifiy.
+classes : sequence of int
+    Classes to select
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The value of the density function defining the frontier of the domain."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MinimumVolumeClassifier::drawContourAndSample
+"Draw distribution contour and classified sample.
+
+Parameters
+----------
+alpha : sequence of float
+    Confidence levels
+sample : :class:`~openturns.Sample`
+    A sample to classifiy.
+classes : sequence of int
+    Classes to select
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The value of the density function defining the frontier of the domain."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MinimumVolumeClassifier::getLevelSet
+"LevelSet accessor.
+
+Returns
+-------
+levelset : :class:`~openturns.LevelSet`
+    The levelset defining the domain."

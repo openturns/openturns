@@ -19,5 +19,5 @@ outputSample = model(inputSample)
 cobweb = ot.VisualTest.DrawCobWeb(
     inputSample, outputSample, 2.5, 3.0, 'red', False)
 
-View(cobweb, figure_kwargs={'figsize': (10, 6)},
-     legend_kwargs={'loc': 'lower right'})
+View(cobweb, figure_kw={'figsize': (10, 6)},
+     legend_kw={'loc': 'lower right'})

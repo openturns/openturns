@@ -43,7 +43,6 @@ SQP::SQP()
   , omega_(ResourceMap::GetAsScalar("SQP-DefaultOmega"))
   , smooth_(ResourceMap::GetAsScalar("SQP-DefaultSmooth"))
 {
-  setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("SQP-DefaultMaximumEvaluationNumber"));
   initialize();
 }
 
@@ -53,7 +52,6 @@ SQP::SQP(const OptimizationProblem & problem)
   , omega_(ResourceMap::GetAsScalar("SQP-DefaultOmega"))
   , smooth_(ResourceMap::GetAsScalar("SQP-DefaultSmooth"))
 {
-  setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("SQP-DefaultMaximumEvaluationNumber"));
   initialize();
   checkProblem(problem);
 }
@@ -67,7 +65,6 @@ SQP::SQP (const OptimizationProblem & problem,
   , omega_(omega)
   , smooth_(smooth)
 {
-  setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("SQP-DefaultMaximumEvaluationNumber"));
   initialize();
   checkProblem(problem);
 }
@@ -254,7 +251,6 @@ void SQP::run()
     result_.setEvaluationNumber(evaluationNumber);
     result_.setIterationNumber(iterationNumber);
     result_.store(currentPoint_, Point(1, currentLevelValue_), absoluteError, relativeError, residualError, constraintError);
-    result_.setLagrangeMultipliers(Point(1, currentLambda_));
 
     LOGINFO(getResult().__repr__());
 

@@ -57,10 +57,11 @@ int main(int, char *[])
       // COBYLA crashes on squeeze
       // ESCH not same results with 2.4.1
       // AUGLAG_EQ raises a roundoff-limited on i386
-      if ((algoNames[i] == "LN_NEWUOA")
+      if ((algoNames[i].find("NEWUOA") != std::string::npos)
+          || (algoNames[i].find("MLSL") != std::string::npos)
           || (algoNames[i] == "LN_COBYLA")
           || (algoNames[i] == "GN_ESCH")
-          || (algoNames[i] == "AUGLAG_EQ"))
+          || (algoNames[i].find("AUGLAG_EQ") != std::string::npos))
       {
         fullprint << "-- Skipped: algo=" << algoNames[i] << std::endl;
         continue;
@@ -72,6 +73,8 @@ int main(int, char *[])
           for (SignedInteger equality = 1; equality >= 0; -- equality)
             for(SignedInteger bound = 1; bound >= 0; -- bound)
             {
+              if (!minimization && !bound)
+                  continue;
               OptimizationProblem problem(f);
               problem.setMinimization(minimization == 1);
               if (inequality)
@@ -87,6 +90,7 @@ int main(int, char *[])
                 NLopt::SetSeed(0);
                 algo.setProblem(problem);
                 algo.setStartingPoint(startingPoint);
+                algo.setMaximumEvaluationNumber(100);
                 fullprint << "algo=" << algoNames[i] << " minimization=" << minimization << " bounds=" << bound << " inequality=" << inequality << " equality=" << equality << std::endl;
                 algo.run();
                 OptimizationResult result(algo.getResult());

@@ -67,30 +67,30 @@ public:
           const String & legend = "");
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Draw method */
-  String draw() const;
+  String draw() const override;
 
   /** Clone method */
-  virtual Polygon * clone() const;
+  Polygon * clone() const override;
 
 
   /** Color of the edge
    */
   void setEdgeColor(const String & edgeColor);
-  String getEdgeColor() const;
+  String getEdgeColor() const override;
 
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() stores the object through the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Check fo data validity */
-  virtual void checkData(const Sample & data) const;
+  void checkData(const Sample & data) const override;
 
 private:
 

@@ -40,14 +40,14 @@ public:
   BurrFactory();
 
   /** Virtual constructor */
-  virtual BurrFactory * clone() const;
+  BurrFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
   Burr buildAsBurr(const Sample & sample) const;
   Burr buildAsBurr(const Point & parameters) const;
   Burr buildAsBurr() const;

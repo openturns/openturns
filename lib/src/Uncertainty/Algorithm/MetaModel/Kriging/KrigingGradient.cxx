@@ -99,12 +99,6 @@ String KrigingGradient::__str__(const String & ) const
   return OSS(false) << GetClassName();
 }
 
-/* Test for actual implementation */
-Bool KrigingGradient::isActualImplementation() const
-{
-  return true;
-}
-
 Matrix KrigingGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger p = inP.getSize();

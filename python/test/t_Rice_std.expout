@@ -12,8 +12,10 @@ Point=  class=Point name=Unnamed dimension=1 values=[1]
 pdf     = 0.0286533178617
 pdf (FD)= 0.028653318
 cdf= 0.0144246216851
+pdf gradient     = class=Point name=Unnamed dimension=2 values=[-0.00771071,-0.00449313]
 pdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.00771071,-0.00449313]
-cdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.00390269,-0.00470084]
+cdf gradient     = class=Point name=Unnamed dimension=2 values=[-0.00390269,-0.00228496]
+cdf gradient (FD)= class=Point name=Unnamed dimension=2 values=[-0.00390269,-0.00228496]
 quantile= class=Point name=Unnamed dimension=1 values=[13.9273]
 cdf(quantile)= 0.95
 InverseSurvival= class=Point name=Unnamed dimension=1 values=[1.87781]
@@ -44,4 +46,3 @@ nu= 4.0
 standard deviation= class=Point name=Unnamed dimension=1 values=[3.70276]
 skewness= class=Point name=Unnamed dimension=1 values=[0.569607]
 kurtosis= class=Point name=Unnamed dimension=1 values=[3.10633]
-sigma= 5.0

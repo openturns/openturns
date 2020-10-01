@@ -48,12 +48,12 @@ public:
   /** Comparison operator */
   Bool operator ==(const EmpiricalBernsteinCopula & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /** Copula sample accessor */
@@ -68,52 +68,52 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual EmpiricalBernsteinCopula * clone() const;
+  EmpiricalBernsteinCopula * clone() const override;
 
   /** Get one realization of the EmpiricalBernsteinCopula */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Get a sample of the distribution */
-  Sample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the PDF of the EmpiricalBernsteinCopula */
   using ContinuousDistribution::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
 
   /** Get the log-PDF of the EmpiricalBernsteinCopula */
   using ContinuousDistribution::computeLogPDF;
-  Scalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const override;
 
   /** Get the CDF of the EmpiricalBernsteinCopula */
   using ContinuousDistribution::computeCDF;
-  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const override;
 
   /** Get the probability content of an interval */
-  Scalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   using ContinuousDistribution::getMarginal;
-  Distribution getMarginal(const UnsignedInteger i) const;
-  Distribution getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const UnsignedInteger i) const override;
+  Distribution getMarginal(const Indices & indices) const override;
 
   /** Get the Spearman correlation of the distribution */
-  CorrelationMatrix getSpearmanCorrelation() const;
+  CorrelationMatrix getSpearmanCorrelation() const override;
 
   /** Tell if the distribution has elliptical copula */
-  Bool hasEllipticalCopula() const;
+  Bool hasEllipticalCopula() const override;
 
   /** Tell if the distribution has independent copula */
-  Bool hasIndependentCopula() const;
+  Bool hasIndependentCopula() const override;
 
   /** Parameter accessor */
-  void setParameter(const Point & parameter);
-  Point getParameter() const;
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 private:
@@ -128,7 +128,7 @@ private:
   void update();
 
   /** Compute the numerical range of the distribution given the parameters values */
-  void computeRange();
+  void computeRange() override;
 
   /** The underlying sample */
   Sample copulaSample_;

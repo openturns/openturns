@@ -189,6 +189,10 @@ public:
                        const Bool tail = false);
   static Scalar rNormal();
   static Point rNormal(const UnsignedInteger size);
+
+  static Scalar dNormal(const Scalar x);
+  static Point dNormal(const Point &x);
+
   // For Poisson distribution
   static Scalar logdPoisson(const Scalar lambda,
                             const UnsignedInteger k );

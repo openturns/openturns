@@ -34,10 +34,9 @@ static const Factory<GaussKronrodRule> Factory_GaussKronrodRule;
 
 /* Constructor without parameters */
 GaussKronrodRule::GaussKronrodRule()
-  : PersistentObject()
+  : GaussKronrodRule(G11K23)
 {
-  // Select the high order rule
-  *this = GaussKronrodRule(G11K23);
+  // Nothing to do
 }
 
 /* Parameters constructor */

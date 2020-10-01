@@ -63,10 +63,10 @@ public:
                     const Scalar sigma2);
 
   /** Virtual constructor */
-  virtual LinearModelResult * clone() const;
+  LinearModelResult * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Sample accessors */
   virtual Basis getBasis() const;
@@ -112,10 +112,10 @@ public:
   Scalar getAdjustedRSquared() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

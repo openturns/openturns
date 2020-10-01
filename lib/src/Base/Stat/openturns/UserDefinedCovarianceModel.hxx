@@ -54,12 +54,12 @@ public:
                              const CovarianceMatrix & covariance);
 
   /** Virtual copy constructor */
-  virtual UserDefinedCovarianceModel * clone() const;
+  UserDefinedCovarianceModel * clone() const override;
 
   /** Computation of the covariance function */
   using CovarianceModelImplementation::operator();
   CovarianceMatrix operator() (const Point & s,
-                               const Point & t) const;
+                               const Point & t) const override;
 private:
   CovarianceMatrix operator() (const UnsignedInteger i,
                                const UnsignedInteger j) const;
@@ -67,10 +67,10 @@ public:
 
   /** Discretize the covariance function on a given TimeGrid/Mesh */
   using CovarianceModelImplementation::discretize;
-  virtual CovarianceMatrix discretize(const Sample & vertices) const;
-  virtual Sample discretizeRow(const Sample & vertices,
-                               const UnsignedInteger p) const;
-  virtual TriangularMatrix discretizeAndFactorize(const Sample & vertices) const;
+  CovarianceMatrix discretize(const Sample & vertices) const override;
+  Sample discretizeRow(const Sample & vertices,
+                               const UnsignedInteger p) const override;
+  TriangularMatrix discretizeAndFactorize(const Sample & vertices) const override;
 
   /** Mesh accessor */
   Mesh getMesh() const;
@@ -79,16 +79,16 @@ public:
   RegularGrid getTimeGrid() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

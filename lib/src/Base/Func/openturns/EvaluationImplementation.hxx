@@ -34,7 +34,7 @@
 #include "openturns/Pointer.hxx"
 #include "openturns/StorageManager.hxx"
 #include "openturns/Graph.hxx"
-#include "openturns/AtomicFunctions.hxx"
+#include "openturns/AtomicInt.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -57,14 +57,14 @@ public:
   EvaluationImplementation();
 
   /** Virtual constructor */
-  virtual EvaluationImplementation * clone() const;
+  EvaluationImplementation * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const EvaluationImplementation & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /** Description Accessor, i.e. the names of the input and output parameters */
@@ -120,12 +120,15 @@ public:
   virtual void setParameterDescription(const Description & description);
 
   /** Get the number of calls to operator() */
-  UnsignedInteger getCallsNumber() const;
+  virtual UnsignedInteger getCallsNumber() const;
 
   /** Linearity accessors */
   virtual Bool isLinear() const;
   virtual Bool isLinearlyDependent(const UnsignedInteger index) const;
 
+  /** Invalid values check accessor */
+  virtual void setCheckOutput(const Bool checkOutput);
+  virtual Bool getCheckOutput() const;
 
   /** Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
   virtual Graph draw(const UnsignedInteger inputMarginal,
@@ -159,10 +162,10 @@ public:
                      const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:
@@ -175,6 +178,9 @@ protected:
 
   /** The description of the parameters */
   Description parameterDescription_;
+
+  /** Whether to check the output for invalid values */
+  Bool checkOutput_ = false;
 
 private:
 

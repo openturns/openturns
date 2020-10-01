@@ -3,6 +3,7 @@
 from __future__ import print_function
 import openturns as ot
 
+ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(3)
 
 size = 10000
@@ -51,3 +52,11 @@ bounds = ot.Interval(lowerBound, upperBound,
 factory.setOptimizationBounds(bounds)
 inf_distribution = factory.build(sample)
 print('estimated distribution=', inf_distribution)
+
+# setKnownParameter+buildEstimator
+sample = ot.Normal(2.0, 1.0).getSample(10)
+factory = ot.MethodOfMomentsFactory(ot.WeibullMin())
+factory.setBootstrapSize(5)
+factory.setKnownParameter([1.0], [1]) # set the sigma parameter to 1.0
+result = factory.buildEstimator(sample)
+print('ok')

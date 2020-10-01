@@ -40,7 +40,8 @@ Create the probabilistic model:
 >>> distributionList = [ot.Uniform(-pi, pi)] * 3
 >>> distribution = ot.ComposedDistribution(distributionList)
 
-Create a training sample
+Create a training sample:
+
 >>> N = 100 
 >>> inputTrain = distribution.getSample(N)
 >>> outputTrain = g(inputTrain)
@@ -59,22 +60,22 @@ Print Sobol' indices :
 Get first order Sobol' indices for X0:
 
 >>> chaosSI.getSobolIndex(0)
-0.3400236...
+0.322659...
 
 Get total order Sobol' indices for X0:
 
 >>> chaosSI.getSobolTotalIndex(0)
-0.4940954...
+0.4744650...
 
 Get first order Sobol' indices for group [X0,X1]:
 
 >>> chaosSI.getSobolGroupedIndex([0,1])
-0.7882764...
+0.78412698...
 
 Get total order Sobol' indices for group [X1,X2]:
 
 >>> chaosSI.getSobolGroupedTotalIndex([1,2])
-0.6599763..."
+0.6773409..."
 
 // ---------------------------------------------------------------------
 

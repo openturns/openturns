@@ -7,6 +7,7 @@ model : :class:`~openturns.Function`
     The parametric function to be calibrated.
 inputObservations : 2-d sequence of float
     The sample of input observations.
+    Can have dimension 0 to specify no observations.
 outputObservations : 2-d sequence of float
     The sample of output observations.
 candidate : sequence of float
@@ -16,7 +17,8 @@ Notes
 -----
 NonLinearLeastSquaresCalibration is the minimum variance estimator of the parameter of a given model with no assumption on the dependence of the model wrt the parameter.
 
-The prior distribution of the parameter is a :class:`~openturns.Dirac`.  
+The prior distribution of the parameter is a noninformative prior
+emulated using a flat :class:`~openturns.Normal` centered on the candidate and with a variance equal to SpecFunc.MaxScalar.
 
 The posterior distribution of the parameter is :class:`~openturns.Normal` and reflects the 
 variability of the optimum parameter depending on the observation sample. 

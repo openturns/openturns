@@ -50,12 +50,12 @@ public:
   /** Comparison operator */
   Bool operator ==(const MarginalDistribution & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /** Distribution accessor */
@@ -75,87 +75,87 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual MarginalDistribution * clone() const;
+  MarginalDistribution * clone() const override;
 
   /** Get one realization of the MarginalDistribution */
-  Point getRealization() const;
-  Sample getSample(const UnsignedInteger size) const;
+  Point getRealization() const override;
+  Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the CDF of the MarginalDistribution */
   using DistributionImplementation::computeCDF;
-  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const override;
 
   /** Get the survival function of the MarginalDistribution */
   using DistributionImplementation::computeSurvivalFunction;
-  Scalar computeSurvivalFunction(const Point & point) const;
+  Scalar computeSurvivalFunction(const Point & point) const override;
 
   /** Get the probability content of an interval */
-  Scalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const override;
 
   /** Get the standard deviation of the distribution */
-  Point getStandardDeviation() const;
+  Point getStandardDeviation() const override;
 
   /** Get the skewness of the distribution */
-  Point getSkewness() const;
+  Point getSkewness() const override;
 
   /** Get the kurtosis of the distribution */
-  Point getKurtosis() const;
+  Point getKurtosis() const override;
 
   /** Get the Spearman correlation of the distribution */
-  CorrelationMatrix getSpearmanCorrelation() const;
+  CorrelationMatrix getSpearmanCorrelation() const override;
 
   /** Get the Kendall concordance of the distribution */
-  CorrelationMatrix getKendallTau() const;
+  CorrelationMatrix getKendallTau() const override;
 
   /** Get the i-th marginal distribution */
-  Distribution getMarginal(const UnsignedInteger i) const;
+  Distribution getMarginal(const UnsignedInteger i) const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  Distribution getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const override;
 
   /** Get the isoprobabilist transformation */
-  IsoProbabilisticTransformation getIsoProbabilisticTransformation() const;
+  IsoProbabilisticTransformation getIsoProbabilisticTransformation() const override;
 
   /** Get the inverse isoprobabilist transformation */
-  InverseIsoProbabilisticTransformation getInverseIsoProbabilisticTransformation() const;
+  InverseIsoProbabilisticTransformation getInverseIsoProbabilisticTransformation() const override;
 
   /** Get the standard distribution */
-  Distribution getStandardDistribution() const;
+  Distribution getStandardDistribution() const override;
 
   /** Tell if the distribution has independent copula */
-  Bool hasIndependentCopula() const;
+  Bool hasIndependentCopula() const override;
 
   /** Parameters value and description accessor */
-  PointWithDescriptionCollection getParametersCollection() const;
+  PointWithDescriptionCollection getParametersCollection() const override;
 
   /** Tell if the distribution has elliptical copula */
-  Bool hasEllipticalCopula() const;
+  Bool hasEllipticalCopula() const override;
 
   /** Check if the distribution is elliptical */
-  Bool isElliptical() const;
+  Bool isElliptical() const override;
 
   /** Check if the distribution is continuous */
-  Bool isContinuous() const;
+  Bool isContinuous() const override;
 
   /** Check if the distribution is discrete */
-  Bool isDiscrete() const;
+  Bool isDiscrete() const override;
 
   /** Tell if the distribution is integer valued */
-  Bool isIntegral() const;
+  Bool isIntegral() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 private:
   /** Compute the mean of the distribution */
-  void computeMean() const;
+  void computeMean() const override;
 
   /** Compute the covariance of the distribution */
-  void computeCovariance() const;
+  void computeCovariance() const override;
 
   /** Expand the given marginal point to the underlying distribution argument point */
   Point expandPoint(const Point & point,

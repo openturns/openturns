@@ -1,7 +1,7 @@
 %feature("docstring") OT::PlackettCopulaFactory
 "Plackett Copula factory.
 
-The parameter is estimated using the follwing equation:
+The parameter is estimated using the following equation:
 
 :math:`\Hat{\theta}_n` is solution of
 

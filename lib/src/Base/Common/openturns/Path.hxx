@@ -85,27 +85,17 @@ public:
    */
   static FileName GetTemporaryDirectory();
 
-  /** Build a temporary file name given a pattern
-   * @param pattern A filename containing at least the 'XXXXXX' string
-   * @result A new unique filename based on the \em pattern
+  /** Build a temporary file name given a prefix
+   * @result A new unique filename based on the prefix
    */
-  static FileName BuildTemporaryFileName(const FileName & pattern);
+  static FileName BuildTemporaryFileName(const FileName & prefix);
 
   /** Create a temporary directory.
    */
   static FileName CreateTemporaryDirectory(const FileName & directoryPrefix);
 
-  /** Delete a temporary directory
-   */
-  static void DeleteTemporaryDirectory(const FileName & directoryName);
-
-#ifdef _WIN32
-  /** Convert slash to antislash. */
-  static void AntislashFileName(FileName & filename);
-
-  /** Add windows backslash to filename for compatibility with R. */
-  static void DoubleslashFileName(FileName & filename);
-#endif
+  /** Escape backslash in file name */
+  static void EscapeBackslash(FileName & filename);
 
   /** Get the location of the OT shared library (at runtime) */
   static FileName GetLibraryDirectory();

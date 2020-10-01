@@ -40,13 +40,13 @@ public:
   DiracFactory();
 
   /** Virtual constructor */
-  virtual DiracFactory * clone() const;
+  DiracFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
   Dirac buildAsDirac(const Sample & sample) const;
   Dirac buildAsDirac(const Point & parameters) const;
   Dirac buildAsDirac() const;

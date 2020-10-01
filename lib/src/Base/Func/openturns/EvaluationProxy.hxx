@@ -47,107 +47,115 @@ public:
   explicit EvaluationProxy(const Evaluation & evaluation);
 
   /** Virtual constructor */
-  virtual EvaluationProxy * clone() const;
+  EvaluationProxy * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const EvaluationProxy & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /** Description Accessor, i.e. the names of the input and output parameters */
-  virtual void setDescription(const Description & description);
-  Description getDescription() const;
+  void setDescription(const Description & description) override;
+  Description getDescription() const override;
 
   /** Input description Accessor, i.e. the names of the input parameters */
-  Description getInputDescription() const;
-  void setInputDescription(const Description & inputDescription);
+  Description getInputDescription() const override;
+  void setInputDescription(const Description & inputDescription) override;
 
   /** Output description Accessor, i.e. the names of the Output parameters */
-  Description getOutputDescription() const;
-  void setOutputDescription(const Description & outputDescription);
+  Description getOutputDescription() const override;
+  void setOutputDescription(const Description & outputDescription) override;
 
   /* Here is the interface that all derived class must implement */
 
   /** Test for actual implementation */
-  virtual Bool isActualImplementation() const;
+  Bool isActualImplementation() const override;
 
   /** Operator () */
-  virtual Point operator() (const Point & inP) const;
+  Point operator() (const Point & inP) const override;
 
   /** Operator () on a sample, not pure virtual because a generic implementation is given */
-  virtual Sample operator() (const Sample & inSample) const;
+  Sample operator() (const Sample & inSample) const override;
 
   /** Operator () on a time series, not pure virtual because a generic implementation is given */
-  virtual Field operator() (const Field & inField) const;
+  Field operator() (const Field & inField) const override;
 
   /** Accessor for input point dimension */
-  virtual UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  virtual UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Accessor for parameters dimension */
-  virtual UnsignedInteger getParameterDimension() const;
+  UnsignedInteger getParameterDimension() const override;
 
   /** Get the i-th marginal evaluation */
-  virtual Evaluation getMarginal(const UnsignedInteger i) const;
+  Evaluation getMarginal(const UnsignedInteger i) const override;
 
   /** Get the evaluation corresponding to indices components */
-  virtual Evaluation getMarginal(const Indices & indices) const;
+  Evaluation getMarginal(const Indices & indices) const override;
 
   /** Gradient according to the marginal parameters */
-  virtual Matrix parameterGradient(const Point & inP) const;
+  Matrix parameterGradient(const Point & inP) const override;
 
   /** Parameters value accessor */
-  virtual Point getParameter() const;
-  virtual void setParameter(const Point & parameters);
+  Point getParameter() const override;
+  void setParameter(const Point & parameters) override;
 
   /** Parameters description accessor */
-  virtual Description getParameterDescription() const;
-  virtual void setParameterDescription(const Description & description);
+  Description getParameterDescription() const override;
+  void setParameterDescription(const Description & description) override;
 
   /** Get the number of calls to operator() */
-  UnsignedInteger getCallsNumber() const;
+  UnsignedInteger getCallsNumber() const override;
+
+  /** Linearity accessors */
+  Bool isLinear() const override;
+  Bool isLinearlyDependent(const UnsignedInteger index) const override;
+
+  /** Invalid values check accessor */
+  void setCheckOutput(const Bool checkOutput) override;
+  Bool getCheckOutput() const override;
 
   /** Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
-  virtual Graph draw(const UnsignedInteger inputMarginal,
+  Graph draw(const UnsignedInteger inputMarginal,
                      const UnsignedInteger outputMarginal,
                      const Point & centralPoint,
                      const Scalar xMin,
                      const Scalar xMax,
                      const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber"),
-                     const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
+                     const GraphImplementation::LogScale scale = GraphImplementation::NONE) const override;
 
   /** Draw the given 1D marginal output as a function of the given 2D marginal input around the given central point */
-  virtual Graph draw(const UnsignedInteger firstInputMarginal,
+  Graph draw(const UnsignedInteger firstInputMarginal,
                      const UnsignedInteger secondInputMarginal,
                      const UnsignedInteger outputMarginal,
                      const Point & centralPoint,
                      const Point & xMin,
                      const Point & xMax,
                      const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber")),
-                     const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
+                     const GraphImplementation::LogScale scale = GraphImplementation::NONE) const override;
 
   /** Draw the output of the function with respect to its input when the input and output dimensions are 1 */
-  virtual Graph draw(const Scalar xMin,
+  Graph draw(const Scalar xMin,
                      const Scalar xMax,
                      const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber"),
-                     const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
+                     const GraphImplementation::LogScale scale = GraphImplementation::NONE) const override;
 
   /** Draw the output of the function with respect to its input when the input dimension is 2 and the output dimension is 1 */
-  virtual Graph draw(const Point & xMin,
+  Graph draw(const Point & xMin,
                      const Point & xMax,
                      const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber")),
-                     const GraphImplementation::LogScale scale = GraphImplementation::NONE) const;
+                     const GraphImplementation::LogScale scale = GraphImplementation::NONE) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:

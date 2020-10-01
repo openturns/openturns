@@ -1,5 +1,105 @@
-%feature("docstring") OT::FittingTest::BestModelBIC
-"Select the best model according to the Bayesian information criterion.
+%feature("docstring") OT::FittingTest::AIC
+"Compute the Akaike information criterion.
+
+Refer to :ref:`aic`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Tested sample.
+model : :class:`~openturns.Distribution` or :class:`~openturns.DistributionFactory`
+    Tested distribution.
+n_parameters : int, :math:`0 \leq k`, optional
+    The number of parameters in the distribution that have been estimated from
+    the sample.
+    This parameter must not be provided if a :class:`~openturns.DistributionFactory`
+    was provided as the second argument (it will internally be set to the
+    number of parameters estimated by the :class:`~openturns.DistributionFactory`).
+    It can be specified if  a :class:`~openturns.Distribution` was provided
+    as the second argument, but if it is not, it will be set equal to 0.
+
+Returns
+-------
+estimatedDist : :class:`~openturns.Distribution`
+    Estimated distribution (case factory as argument)
+AIC : float
+    The Akaike information criterion.
+
+
+Notes
+-----
+This is used for model selection.
+In case we set a factory argument, the method returns both the estimated distribution and AIC value.
+Otherwise it returns only the AIC value.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> ot.FittingTest.AIC(sample, distribution)
+2.793869...
+>>> ot.FittingTest.AIC(sample, distribution, 2)
+2.92720...
+>>> fitted_dist, aic = ot.FittingTest.AIC(sample, ot.NormalFactory())
+>>> aic
+2.917389..."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FittingTest::AICC
+"Compute the Akaike information criterion (with correction for small data).
+
+Refer to :ref:`aic`.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Tested sample.
+model : :class:`~openturns.Distribution` or :class:`~openturns.DistributionFactory`
+    Tested distribution.
+n_parameters : int, :math:`0 \leq k`, optional
+    The number of parameters in the distribution that have been estimated from
+    the sample.
+    This parameter must not be provided if a :class:`~openturns.DistributionFactory`
+    was provided as the second argument (it will internally be set to the
+    number of parameters estimated by the :class:`~openturns.DistributionFactory`).
+    It can be specified if  a :class:`~openturns.Distribution` was provided
+    as the second argument, but if it is not, it will be set equal to 0.
+
+Returns
+-------
+estimatedDist : :class:`~openturns.Distribution`
+    Estimated distribution (case factory as argument)
+AICC : float
+    The Akaike information criterion (corrected).
+
+
+Notes
+-----
+This is used for model selection, especially with small data samples.
+In case we set a factory argument, the method returns both the estimated distribution and AICc value.
+Otherwise it returns only the AICc value.
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> ot.FittingTest.AICC(sample, distribution)
+2.793869...
+>>> ot.FittingTest.AICC(sample, distribution, 2)
+2.942017...
+>>> fitted_dist, aicc = ot.FittingTest.AICC(sample, ot.NormalFactory())
+>>> aicc
+2.932204..."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FittingTest::BestModelAIC
+"Select the best model according to the Akaike information criterion.
 
 Parameters
 ----------
@@ -13,6 +113,76 @@ Returns
 best_model : :class:`~openturns.Distribution`
     The best distribution for the sample according to Bayesian information
     criterion.
+    This may raise a warning if the best model does not perform well.
+best_aic : float
+    The Akaike information criterion with the best model.
+
+See Also
+--------
+FittingTest_AIC
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> tested_distributions = [ot.ExponentialFactory(), ot.NormalFactory()]
+>>> best_model, best_aic = ot.FittingTest.BestModelAIC(sample, tested_distributions)
+>>> print(best_model)
+Normal(mu = -0.0944924, sigma = 0.989808)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::FittingTest::BestModelAICC
+"Select the best model according to the Akaike information criterion with correction.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Tested sample.
+models : list of :class:`~openturns.Distribution` or :class:`~openturns.DistributionFactory`
+    Tested distributions.
+
+Returns
+-------
+best_model : :class:`~openturns.Distribution`
+    The best distribution for the sample according to Bayesian information
+    criterion.
+    This may raise a warning if the best model does not perform well.
+best_aicc : float
+    The Akaike information criterion (corrected) with the best model.
+
+See Also
+--------
+FittingTest_AICC
+
+Examples
+--------
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> sample = distribution.getSample(30)
+>>> tested_distributions = [ot.ExponentialFactory(), ot.NormalFactory()]
+>>> best_model, best_aicc = ot.FittingTest.BestModelAICC(sample, tested_distributions)
+>>> print(best_model)
+Normal(mu = -0.0944924, sigma = 0.989808)"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::FittingTest::BestModelBIC
+"Select the best model according to the Bayesian information criterion.
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Tested sample.
+models : list of :class:`~openturns.Distribution` or :class:`~openturns.DistributionFactory`
+    Tested distributions.
+
+Returns
+-------
+best_model : :class:`~openturns.Distribution`
+    The distribution that fits the sample best according to the criterion.
     This may raise a warning if the best model does not perform well.
 best_bic : float
     The Bayesian information criterion with the best model.
@@ -47,8 +217,7 @@ models : list of :class:`~openturns.Distribution` or :class:`~openturns.Distribu
 Returns
 -------
 best_model : :class:`~openturns.Distribution`
-    The best distribution for the sample according to Bayesian information
-    criterion.
+    The distribution that fits the sample best according to the test.
     This may raise a warning if the best model does not perform well.
 best_result : :class:`~openturns.TestResult`
     Best test result.
@@ -83,8 +252,7 @@ models : list of :class:`~openturns.Distribution` or :class:`~openturns.Distribu
 Returns
 -------
 best_model : :class:`~openturns.Distribution`
-    The best distribution for the sample according to Bayesian information
-    criterion.
+    The distribution that fits the sample best according to the test.
     This may raise a warning if the best model does not perform well.
 best_result : :class:`~openturns.TestResult`
     Best test result.
@@ -190,11 +358,6 @@ Raises
 ------
 TypeError : If the distribution is not discrete or if the sample is
     multivariate.
-
-Notes
------
-This is an interface to the `chisq.test function from the
-'stats' R package <http://stat.ethz.ch/R-manual/R-patched/library/stats/html/chisq.test.html>`_.
 
 Examples
 --------

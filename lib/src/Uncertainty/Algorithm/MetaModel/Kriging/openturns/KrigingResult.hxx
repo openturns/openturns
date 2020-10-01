@@ -81,11 +81,11 @@ public:
                 const HMatrix & covarianceHMatrix);
 
   /** Virtual constructor */
-  virtual KrigingResult * clone() const;
+  KrigingResult * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Design accessors */
   virtual Sample getInputSample() const;
@@ -102,10 +102,6 @@ public:
 
   /** Process coefficients accessor */
   virtual Sample getCovarianceCoefficients() const;
-
-  /** Transformation accessor */
-  virtual Function getTransformation() const;
-  virtual void setTransformation(const Function & transformation);
 
   /** Compute mean of new points conditionnaly to observations */
   virtual Point getConditionalMean(const Sample & xi) const;
@@ -146,10 +142,10 @@ public:
   virtual Normal operator()(const Point & xi) const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:
@@ -175,12 +171,6 @@ private:
   Sample inputTransformedSample_;
 
   Sample outputSample_;
-
-  /** inputTransformation ==> iso-probabilistic transformation */
-  Function inputTransformation_;
-
-  /** Boolean transformation */
-  Bool hasTransformation_;
 
   /** The trend basis */
   BasisPersistentCollection basis_;

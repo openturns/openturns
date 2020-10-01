@@ -47,7 +47,7 @@ public:
   HistoryStrategyImplementation();
 
   /** Virtual constructor */
-  virtual HistoryStrategyImplementation * clone() const;
+  HistoryStrategyImplementation * clone() const override;
 
   /** Store the point according to the strategy */
   virtual void store(const Point & point);
@@ -63,13 +63,13 @@ public:
   virtual Sample getSample() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Data container */

@@ -65,7 +65,7 @@ public:
   UnsignedInteger getIMax() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 private:
 

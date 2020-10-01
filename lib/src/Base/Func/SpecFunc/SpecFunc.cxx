@@ -57,9 +57,9 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 // 0.39894228040143267 = 1 / sqrt(2.pi)
-const Scalar SpecFunc::ISQRT2PI              = 0.39894228040143267;
-// 2.5066282746310005024 = sqrt(2.pi)
-const Scalar SpecFunc::SQRT2PI               = 2.5066282746310005024;
+const Scalar SpecFunc::ISQRT2PI              = 0.3989422804014326779399462;
+    // 2.5066282746310005024 = sqrt(2.pi)
+const Scalar SpecFunc::SQRT2PI = 2.506628274631000502415765;
 // 0.91893853320467274177 = log(sqrt(2.pi))
 const Scalar SpecFunc::LOGSQRT2PI            = 0.91893853320467274178;
 // 0.57721566490153286 = Euler constant gamma
@@ -76,8 +76,10 @@ const Scalar SpecFunc::PI2_3                 = 3.28986813369645287;
 const Scalar SpecFunc::SQRT3_PI              = 0.55132889542179204;
 // 1.81379936423421785 = pi / sqrt(3)
 const Scalar SpecFunc::PI_SQRT3              = 1.81379936423421785;
-// 1.81379936423421785 = pi / sqrt(3)
-const Scalar SpecFunc::ZETA3                 = 1.20205690315959429;
+// 6.283185307179586476925286 = 2*pi
+const Scalar SpecFunc::TWOPI = 6.283185307179586476925286;
+// 1.20205690315959429 = Zeta(3)
+const Scalar SpecFunc::ZETA3 = 1.20205690315959429;
 // Scalar limits
 const Scalar SpecFunc::MinScalar    = std::numeric_limits<Scalar>::min();
 const Scalar SpecFunc::LogMinScalar = log(MinScalar);
@@ -1132,6 +1134,33 @@ UnsignedInteger SpecFunc::NextPowerOfTwo(const UnsignedInteger n)
   while (powerOfTwo < n) powerOfTwo <<= 1;
   return powerOfTwo;
 }
+
+// Integer power
+Scalar SpecFunc::IPow(const Scalar x, const SignedInteger n)
+{
+  if (n == 0) return 1.0;
+  if (x == 0) return 0.0;
+  if (x < 0.0)
+    {
+      if (n % 2) return -std::pow(-x, 1.0 * n);
+      return std::pow(-x, 1.0 * n);
+    }
+  return std::pow(x, 1.0 * n);
+}
+  
+// Integer root
+Scalar SpecFunc::IRoot(const Scalar x, const SignedInteger n)
+{
+  if (n == 0) throw InvalidArgumentException(HERE) << "Cannot take the zeroth root of anything!";
+  if (x == 0) return 0.0;
+  if (x < 0.0)
+    {
+      if (n % 2 == 0) throw InvalidArgumentException(HERE) << "Cannot take an even root of a negative number";
+      return -std::pow(-x, 1.0 / n);
+    }
+  return std::pow(x, 1.0 / n);
+}
+  
 
 // Compute the number of bits sets to 1 in n
 // Best known algorithm for 64 bits n and fast multiply

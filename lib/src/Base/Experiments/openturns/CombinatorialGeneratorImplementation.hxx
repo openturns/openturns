@@ -47,10 +47,10 @@ public:
   CombinatorialGeneratorImplementation();
 
   /** Virtual constructor */
-  virtual CombinatorialGeneratorImplementation * clone() const;
+  CombinatorialGeneratorImplementation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /* Here is the interface that all derived class must implement */
 

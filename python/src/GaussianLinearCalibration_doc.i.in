@@ -12,6 +12,7 @@ model : :class:`~openturns.Function`
     The parametric function to be calibrated.
 inputObservations : 2-d sequence of float
     The sample of input observations.
+    Can have dimension 0 to specify no observations. 
 outputObservations : 2-d sequence of float
     The sample of output observations.
 candidate : sequence of float
@@ -21,7 +22,8 @@ parameterCovariance : 2-d sequence of float
 errorCovariance : 2-d sequence of float
     The covariance matrix of the gaussian distribution of the observations error.
 methodName : str
-    The name of the least-squares method to use for the calibration. By default, equal to *QR*. Possible values are *SVD*, *QR*, *Cholesky*.
+    The name of the least-squares method to use for the calibration.
+    By default, equal to *QR*. Possible values are *SVD*, *QR*, *Cholesky*.
 modelObservations : 2-d sequence of float
     The sample of output values of the model.
 gradientObservations : 2-d sequence of float
@@ -38,12 +40,13 @@ dimension the output dimension of the model, or *global*, ie the matrix describe
 the full set of observation errors, in which case its dimension is the product of
 the output dimension of the model and the number of observations.
 
-The prior distribution of the parameter is a :class:`~openturns.Normal`.  
+The prior distribution of the parameter is a :class:`~openturns.Normal`.
 
-The posterior distribution of the parameter is :class:`~openturns.Normal`. 
+The posterior distribution of the parameter is :class:`~openturns.Normal`.
 
-The resulting error distribution is :class:`~openturns.Normal` and is based on the 
-`errorCovariance` input argument. 
+The resulting error distribution is :class:`~openturns.Normal`
+with a zero mean and with a covariance matrix equal to the
+`errorCovariance` input argument.
 
 See also
 --------

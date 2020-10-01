@@ -17,7 +17,7 @@ try:
     # Curve
     graph = ot.Normal().drawCDF()
     # graph.draw('curve1.png')
-    view = View(graph, pixelsize=(800, 600), plot_kwargs={'color': 'blue'})
+    view = View(graph, pixelsize=(800, 600), plot_kw={'color': 'blue'})
     # view.save('curve1.png')
     view.show()
 
@@ -120,7 +120,7 @@ try:
     graph = ot.VisualTest.DrawCobWeb(
         inputSample, outputSample, 2.5, 3.0, 'red', False)
     # graph.draw('curve6.png')
-    view = View(graph, legend_kwargs={'loc': 'lower center'})
+    view = View(graph, legend_kw={'loc': 'lower center'})
     # view.save('curve6.png')
     view.show()
 
@@ -138,26 +138,6 @@ try:
     # graph.draw('curve8.png')
     view = View(graph)
     # view.save('curve8.png')
-    view.show()
-
-    # Pairs
-    dim = 5
-    meanPoint = ot.Point(dim, 0.0)
-    sigma = ot.Point(dim, 1.0)
-    R = ot.CorrelationMatrix(dim)
-    for i in range(dim):
-        meanPoint[i] = (i + 1) * dim
-    distribution = ot.Normal(meanPoint, sigma, R)
-    size = 1000
-    sample = distribution.getSample(size)
-    graph = ot.Graph('Pairs', ' ', ' ', True, 'topright')
-    labels = list(['x' + str(i) for i in range(dim)])
-    myPairs = ot.Pairs(sample, 'Pairs example',
-                       labels, 'green', 'bullet')
-    graph.add(myPairs)
-    # graph.draw('curve9.png')
-    view = View(graph)
-    # view.save('curve9.png')
     view.show()
 
     # Convergence graph curve
@@ -260,10 +240,24 @@ try:
     view = View(graph)
     view.ShowAll(block=True)
 
+    # GridLayout
+    grid = ot.GridLayout(2, 3)
+    palette = ot.Drawable.BuildDefaultPalette(10)
+    for j in range(grid.getNbColumns()):
+        alpha = 1.0 + j
+        pdf_curve = ot.WeibullMin(1.0, alpha, 0.0).drawPDF()
+        cdf_curve = ot.WeibullMin(1.0, alpha, 0.0).drawCDF()
+        pdf_curve.setColors([palette[j]])
+        cdf_curve.setColors([palette[j]])
+        pdf_curve.setLegends(['alpha={}'.format(alpha)])
+        cdf_curve.setLegends(['alpha={}'.format(alpha)])
+        grid.setGraph(0, j, pdf_curve)
+        grid.setGraph(1, j, cdf_curve)
+    view = View(grid)
+
     # Square axes
     graph = ot.ClaytonCopula(5.0).drawPDF()
     view = View(graph, square_axes=True)
-    view.ShowAll(block=True)
 
     # Show axes as prescribed by getAxes()
     graph = ot.Normal().drawPDF()

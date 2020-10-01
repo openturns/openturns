@@ -16,57 +16,15 @@ algo=AUGLAG minimization=1 bounds=0 inequality=0 equality=0
 x^=[0.752,0.569] y^=[1.06]
 algo=AUGLAG minimization=0 bounds=1 inequality=1 equality=1
 x^=[0.001,0.001] y^=[2]
-algo=AUGLAG minimization=0 bounds=0 inequality=1 equality=1
-x^=[0.001,0.001] y^=[2]
 algo=AUGLAG minimization=0 bounds=1 inequality=1 equality=0
 x^=[-0.00348,1] y^=[102]
-algo=AUGLAG minimization=0 bounds=0 inequality=1 equality=0
-x^=[0.001,0.001] y^=[2]
 algo=AUGLAG minimization=0 bounds=1 inequality=0 equality=1
 x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=AUGLAG minimization=0 bounds=0 inequality=0 equality=1
-x^=[0.001,0.001] y^=[2]
 algo=AUGLAG minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=AUGLAG minimization=0 bounds=0 inequality=0 equality=0
-x^=[-2.59e+08,-1.51e+08] y^=[4.49e+35]
 -- Skipped: algo=AUGLAG_EQ
--- Not supported: algo=GD_MLSL inequality=true equality=true
--- Not supported: algo=GD_MLSL inequality=true equality=true
--- Not supported: algo=GD_MLSL inequality=true equality=false
--- Not supported: algo=GD_MLSL inequality=true equality=false
--- Not supported: algo=GD_MLSL inequality=false equality=true
--- Not supported: algo=GD_MLSL inequality=false equality=true
-algo=GD_MLSL minimization=1 bounds=1 inequality=0 equality=0
-x^=[0.61,0.371] y^=[1.15]
--- Not supported: algo=GD_MLSL inequality=false equality=false
--- Not supported: algo=GD_MLSL inequality=true equality=true
--- Not supported: algo=GD_MLSL inequality=true equality=true
--- Not supported: algo=GD_MLSL inequality=true equality=false
--- Not supported: algo=GD_MLSL inequality=true equality=false
--- Not supported: algo=GD_MLSL inequality=false equality=true
--- Not supported: algo=GD_MLSL inequality=false equality=true
-algo=GD_MLSL minimization=0 bounds=1 inequality=0 equality=0
-x^=[-1.5,-1.5] y^=[1.41e+03]
--- Not supported: algo=GD_MLSL inequality=false equality=false
--- Not supported: algo=GD_MLSL_LDS inequality=true equality=true
--- Not supported: algo=GD_MLSL_LDS inequality=true equality=true
--- Not supported: algo=GD_MLSL_LDS inequality=true equality=false
--- Not supported: algo=GD_MLSL_LDS inequality=true equality=false
--- Not supported: algo=GD_MLSL_LDS inequality=false equality=true
--- Not supported: algo=GD_MLSL_LDS inequality=false equality=true
-algo=GD_MLSL_LDS minimization=1 bounds=1 inequality=0 equality=0
-x^=[0.6,0.353] y^=[1.17]
--- Not supported: algo=GD_MLSL_LDS inequality=false equality=false
--- Not supported: algo=GD_MLSL_LDS inequality=true equality=true
--- Not supported: algo=GD_MLSL_LDS inequality=true equality=true
--- Not supported: algo=GD_MLSL_LDS inequality=true equality=false
--- Not supported: algo=GD_MLSL_LDS inequality=true equality=false
--- Not supported: algo=GD_MLSL_LDS inequality=false equality=true
--- Not supported: algo=GD_MLSL_LDS inequality=false equality=true
-algo=GD_MLSL_LDS minimization=0 bounds=1 inequality=0 equality=0
-x^=[-1.5,-1.5] y^=[1.41e+03]
--- Not supported: algo=GD_MLSL_LDS inequality=false equality=false
+-- Skipped: algo=GD_MLSL
+-- Skipped: algo=GD_MLSL_LDS
 -- Not supported: algo=GN_CRS2_LM inequality=true equality=true
 -- Not supported: algo=GN_CRS2_LM inequality=true equality=true
 -- Not supported: algo=GN_CRS2_LM inequality=true equality=false
@@ -77,14 +35,10 @@ algo=GN_CRS2_LM minimization=1 bounds=1 inequality=0 equality=0
 x^=[0.263,0.0748] y^=[1.55]
 -- Not supported: algo=GN_CRS2_LM inequality=false equality=false
 -- Not supported: algo=GN_CRS2_LM inequality=true equality=true
--- Not supported: algo=GN_CRS2_LM inequality=true equality=true
 -- Not supported: algo=GN_CRS2_LM inequality=true equality=false
--- Not supported: algo=GN_CRS2_LM inequality=true equality=false
--- Not supported: algo=GN_CRS2_LM inequality=false equality=true
 -- Not supported: algo=GN_CRS2_LM inequality=false equality=true
 algo=GN_CRS2_LM minimization=0 bounds=1 inequality=0 equality=0
 x^=[1.5,-1.5] y^=[1.41e+03]
--- Not supported: algo=GN_CRS2_LM inequality=false equality=false
 -- Not supported: algo=GN_DIRECT inequality=true equality=true
 -- Not supported: algo=GN_DIRECT inequality=true equality=true
 -- Not supported: algo=GN_DIRECT inequality=true equality=false
@@ -95,14 +49,10 @@ algo=GN_DIRECT minimization=1 bounds=1 inequality=0 equality=0
 x^=[1,1] y^=[1]
 -- Not supported: algo=GN_DIRECT inequality=false equality=false
 -- Not supported: algo=GN_DIRECT inequality=true equality=true
--- Not supported: algo=GN_DIRECT inequality=true equality=true
 -- Not supported: algo=GN_DIRECT inequality=true equality=false
--- Not supported: algo=GN_DIRECT inequality=true equality=false
--- Not supported: algo=GN_DIRECT inequality=false equality=true
 -- Not supported: algo=GN_DIRECT inequality=false equality=true
 algo=GN_DIRECT minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
--- Not supported: algo=GN_DIRECT inequality=false equality=false
 -- Not supported: algo=GN_DIRECT_L inequality=true equality=true
 -- Not supported: algo=GN_DIRECT_L inequality=true equality=true
 -- Not supported: algo=GN_DIRECT_L inequality=true equality=false
@@ -113,14 +63,10 @@ algo=GN_DIRECT_L minimization=1 bounds=1 inequality=0 equality=0
 x^=[1,1] y^=[1]
 -- Not supported: algo=GN_DIRECT_L inequality=false equality=false
 -- Not supported: algo=GN_DIRECT_L inequality=true equality=true
--- Not supported: algo=GN_DIRECT_L inequality=true equality=true
 -- Not supported: algo=GN_DIRECT_L inequality=true equality=false
--- Not supported: algo=GN_DIRECT_L inequality=true equality=false
--- Not supported: algo=GN_DIRECT_L inequality=false equality=true
 -- Not supported: algo=GN_DIRECT_L inequality=false equality=true
 algo=GN_DIRECT_L minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
--- Not supported: algo=GN_DIRECT_L inequality=false equality=false
 -- Not supported: algo=GN_DIRECT_L_NOSCAL inequality=true equality=true
 -- Not supported: algo=GN_DIRECT_L_NOSCAL inequality=true equality=true
 -- Not supported: algo=GN_DIRECT_L_NOSCAL inequality=true equality=false
@@ -131,14 +77,10 @@ algo=GN_DIRECT_L_NOSCAL minimization=1 bounds=1 inequality=0 equality=0
 x^=[1,1] y^=[1]
 -- Not supported: algo=GN_DIRECT_L_NOSCAL inequality=false equality=false
 -- Not supported: algo=GN_DIRECT_L_NOSCAL inequality=true equality=true
--- Not supported: algo=GN_DIRECT_L_NOSCAL inequality=true equality=true
 -- Not supported: algo=GN_DIRECT_L_NOSCAL inequality=true equality=false
--- Not supported: algo=GN_DIRECT_L_NOSCAL inequality=true equality=false
--- Not supported: algo=GN_DIRECT_L_NOSCAL inequality=false equality=true
 -- Not supported: algo=GN_DIRECT_L_NOSCAL inequality=false equality=true
 algo=GN_DIRECT_L_NOSCAL minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
--- Not supported: algo=GN_DIRECT_L_NOSCAL inequality=false equality=false
 -- Not supported: algo=GN_DIRECT_L_RAND inequality=true equality=true
 -- Not supported: algo=GN_DIRECT_L_RAND inequality=true equality=true
 -- Not supported: algo=GN_DIRECT_L_RAND inequality=true equality=false
@@ -149,14 +91,10 @@ algo=GN_DIRECT_L_RAND minimization=1 bounds=1 inequality=0 equality=0
 x^=[1,1] y^=[1]
 -- Not supported: algo=GN_DIRECT_L_RAND inequality=false equality=false
 -- Not supported: algo=GN_DIRECT_L_RAND inequality=true equality=true
--- Not supported: algo=GN_DIRECT_L_RAND inequality=true equality=true
 -- Not supported: algo=GN_DIRECT_L_RAND inequality=true equality=false
--- Not supported: algo=GN_DIRECT_L_RAND inequality=true equality=false
--- Not supported: algo=GN_DIRECT_L_RAND inequality=false equality=true
 -- Not supported: algo=GN_DIRECT_L_RAND inequality=false equality=true
 algo=GN_DIRECT_L_RAND minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
--- Not supported: algo=GN_DIRECT_L_RAND inequality=false equality=false
 -- Not supported: algo=GN_DIRECT_L_RAND_NOSCAL inequality=true equality=true
 -- Not supported: algo=GN_DIRECT_L_RAND_NOSCAL inequality=true equality=true
 -- Not supported: algo=GN_DIRECT_L_RAND_NOSCAL inequality=true equality=false
@@ -167,14 +105,10 @@ algo=GN_DIRECT_L_RAND_NOSCAL minimization=1 bounds=1 inequality=0 equality=0
 x^=[1,1] y^=[1]
 -- Not supported: algo=GN_DIRECT_L_RAND_NOSCAL inequality=false equality=false
 -- Not supported: algo=GN_DIRECT_L_RAND_NOSCAL inequality=true equality=true
--- Not supported: algo=GN_DIRECT_L_RAND_NOSCAL inequality=true equality=true
 -- Not supported: algo=GN_DIRECT_L_RAND_NOSCAL inequality=true equality=false
--- Not supported: algo=GN_DIRECT_L_RAND_NOSCAL inequality=true equality=false
--- Not supported: algo=GN_DIRECT_L_RAND_NOSCAL inequality=false equality=true
 -- Not supported: algo=GN_DIRECT_L_RAND_NOSCAL inequality=false equality=true
 algo=GN_DIRECT_L_RAND_NOSCAL minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
--- Not supported: algo=GN_DIRECT_L_RAND_NOSCAL inequality=false equality=false
 -- Not supported: algo=GN_DIRECT_NOSCAL inequality=true equality=true
 -- Not supported: algo=GN_DIRECT_NOSCAL inequality=true equality=true
 -- Not supported: algo=GN_DIRECT_NOSCAL inequality=true equality=false
@@ -185,14 +119,10 @@ algo=GN_DIRECT_NOSCAL minimization=1 bounds=1 inequality=0 equality=0
 x^=[1,1] y^=[1]
 -- Not supported: algo=GN_DIRECT_NOSCAL inequality=false equality=false
 -- Not supported: algo=GN_DIRECT_NOSCAL inequality=true equality=true
--- Not supported: algo=GN_DIRECT_NOSCAL inequality=true equality=true
 -- Not supported: algo=GN_DIRECT_NOSCAL inequality=true equality=false
--- Not supported: algo=GN_DIRECT_NOSCAL inequality=true equality=false
--- Not supported: algo=GN_DIRECT_NOSCAL inequality=false equality=true
 -- Not supported: algo=GN_DIRECT_NOSCAL inequality=false equality=true
 algo=GN_DIRECT_NOSCAL minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
--- Not supported: algo=GN_DIRECT_NOSCAL inequality=false equality=false
 -- Skipped: algo=GN_ESCH
 algo=GN_ISRES minimization=1 bounds=1 inequality=1 equality=1
 x^=[0.001,0.001] y^=[2]
@@ -208,52 +138,14 @@ x^=[0.308,0.135] y^=[1.64]
 -- Not supported: algo=GN_ISRES inequality=false equality=false
 algo=GN_ISRES minimization=0 bounds=1 inequality=1 equality=1
 x^=[0.001,0.001] y^=[2]
--- Not supported: algo=GN_ISRES inequality=true equality=true
 algo=GN_ISRES minimization=0 bounds=1 inequality=1 equality=0
 x^=[-0.91,-0.394] y^=[154]
--- Not supported: algo=GN_ISRES inequality=true equality=false
 algo=GN_ISRES minimization=0 bounds=1 inequality=0 equality=1
 x^=[0.001,0.001] y^=[2]
--- Not supported: algo=GN_ISRES inequality=false equality=true
 algo=GN_ISRES minimization=0 bounds=1 inequality=0 equality=0
 x^=[1.47,-1.19] y^=[1.12e+03]
--- Not supported: algo=GN_ISRES inequality=false equality=false
--- Not supported: algo=GN_MLSL inequality=true equality=true
--- Not supported: algo=GN_MLSL inequality=true equality=true
--- Not supported: algo=GN_MLSL inequality=true equality=false
--- Not supported: algo=GN_MLSL inequality=true equality=false
--- Not supported: algo=GN_MLSL inequality=false equality=true
--- Not supported: algo=GN_MLSL inequality=false equality=true
-algo=GN_MLSL minimization=1 bounds=1 inequality=0 equality=0
-x^=[0.61,0.371] y^=[1.15]
--- Not supported: algo=GN_MLSL inequality=false equality=false
--- Not supported: algo=GN_MLSL inequality=true equality=true
--- Not supported: algo=GN_MLSL inequality=true equality=true
--- Not supported: algo=GN_MLSL inequality=true equality=false
--- Not supported: algo=GN_MLSL inequality=true equality=false
--- Not supported: algo=GN_MLSL inequality=false equality=true
--- Not supported: algo=GN_MLSL inequality=false equality=true
-algo=GN_MLSL minimization=0 bounds=1 inequality=0 equality=0
-x^=[-1.5,-1.5] y^=[1.41e+03]
--- Not supported: algo=GN_MLSL inequality=false equality=false
--- Not supported: algo=GN_MLSL_LDS inequality=true equality=true
--- Not supported: algo=GN_MLSL_LDS inequality=true equality=true
--- Not supported: algo=GN_MLSL_LDS inequality=true equality=false
--- Not supported: algo=GN_MLSL_LDS inequality=true equality=false
--- Not supported: algo=GN_MLSL_LDS inequality=false equality=true
--- Not supported: algo=GN_MLSL_LDS inequality=false equality=true
-algo=GN_MLSL_LDS minimization=1 bounds=1 inequality=0 equality=0
-x^=[0.6,0.353] y^=[1.17]
--- Not supported: algo=GN_MLSL_LDS inequality=false equality=false
--- Not supported: algo=GN_MLSL_LDS inequality=true equality=true
--- Not supported: algo=GN_MLSL_LDS inequality=true equality=true
--- Not supported: algo=GN_MLSL_LDS inequality=true equality=false
--- Not supported: algo=GN_MLSL_LDS inequality=true equality=false
--- Not supported: algo=GN_MLSL_LDS inequality=false equality=true
--- Not supported: algo=GN_MLSL_LDS inequality=false equality=true
-algo=GN_MLSL_LDS minimization=0 bounds=1 inequality=0 equality=0
-x^=[-1.5,-1.5] y^=[1.41e+03]
--- Not supported: algo=GN_MLSL_LDS inequality=false equality=false
+-- Skipped: algo=GN_MLSL
+-- Skipped: algo=GN_MLSL_LDS
 -- Not supported: algo=GN_ORIG_DIRECT inequality=true equality=true
 -- Not supported: algo=GN_ORIG_DIRECT inequality=true equality=true
 algo=GN_ORIG_DIRECT minimization=1 bounds=1 inequality=1 equality=0
@@ -265,15 +157,11 @@ algo=GN_ORIG_DIRECT minimization=1 bounds=1 inequality=0 equality=0
 x^=[1,1] y^=[1]
 -- Not supported: algo=GN_ORIG_DIRECT inequality=false equality=false
 -- Not supported: algo=GN_ORIG_DIRECT inequality=true equality=true
--- Not supported: algo=GN_ORIG_DIRECT inequality=true equality=true
 algo=GN_ORIG_DIRECT minimization=0 bounds=1 inequality=1 equality=0
 x^=[-0.889,-0.444] y^=[157]
--- Not supported: algo=GN_ORIG_DIRECT inequality=true equality=false
--- Not supported: algo=GN_ORIG_DIRECT inequality=false equality=true
 -- Not supported: algo=GN_ORIG_DIRECT inequality=false equality=true
 algo=GN_ORIG_DIRECT minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
--- Not supported: algo=GN_ORIG_DIRECT inequality=false equality=false
 -- Not supported: algo=GN_ORIG_DIRECT_L inequality=true equality=true
 -- Not supported: algo=GN_ORIG_DIRECT_L inequality=true equality=true
 algo=GN_ORIG_DIRECT_L minimization=1 bounds=1 inequality=1 equality=0
@@ -285,51 +173,13 @@ algo=GN_ORIG_DIRECT_L minimization=1 bounds=1 inequality=0 equality=0
 x^=[1,1] y^=[1]
 -- Not supported: algo=GN_ORIG_DIRECT_L inequality=false equality=false
 -- Not supported: algo=GN_ORIG_DIRECT_L inequality=true equality=true
--- Not supported: algo=GN_ORIG_DIRECT_L inequality=true equality=true
 algo=GN_ORIG_DIRECT_L minimization=0 bounds=1 inequality=1 equality=0
 x^=[-0.889,-0.457] y^=[160]
--- Not supported: algo=GN_ORIG_DIRECT_L inequality=true equality=false
--- Not supported: algo=GN_ORIG_DIRECT_L inequality=false equality=true
 -- Not supported: algo=GN_ORIG_DIRECT_L inequality=false equality=true
 algo=GN_ORIG_DIRECT_L minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
--- Not supported: algo=GN_ORIG_DIRECT_L inequality=false equality=false
--- Not supported: algo=G_MLSL inequality=true equality=true
--- Not supported: algo=G_MLSL inequality=true equality=true
--- Not supported: algo=G_MLSL inequality=true equality=false
--- Not supported: algo=G_MLSL inequality=true equality=false
--- Not supported: algo=G_MLSL inequality=false equality=true
--- Not supported: algo=G_MLSL inequality=false equality=true
-algo=G_MLSL minimization=1 bounds=1 inequality=0 equality=0
-x^=[0.61,0.371] y^=[1.15]
--- Not supported: algo=G_MLSL inequality=false equality=false
--- Not supported: algo=G_MLSL inequality=true equality=true
--- Not supported: algo=G_MLSL inequality=true equality=true
--- Not supported: algo=G_MLSL inequality=true equality=false
--- Not supported: algo=G_MLSL inequality=true equality=false
--- Not supported: algo=G_MLSL inequality=false equality=true
--- Not supported: algo=G_MLSL inequality=false equality=true
-algo=G_MLSL minimization=0 bounds=1 inequality=0 equality=0
-x^=[-1.5,-1.5] y^=[1.41e+03]
--- Not supported: algo=G_MLSL inequality=false equality=false
--- Not supported: algo=G_MLSL_LDS inequality=true equality=true
--- Not supported: algo=G_MLSL_LDS inequality=true equality=true
--- Not supported: algo=G_MLSL_LDS inequality=true equality=false
--- Not supported: algo=G_MLSL_LDS inequality=true equality=false
--- Not supported: algo=G_MLSL_LDS inequality=false equality=true
--- Not supported: algo=G_MLSL_LDS inequality=false equality=true
-algo=G_MLSL_LDS minimization=1 bounds=1 inequality=0 equality=0
-x^=[0.6,0.353] y^=[1.17]
--- Not supported: algo=G_MLSL_LDS inequality=false equality=false
--- Not supported: algo=G_MLSL_LDS inequality=true equality=true
--- Not supported: algo=G_MLSL_LDS inequality=true equality=true
--- Not supported: algo=G_MLSL_LDS inequality=true equality=false
--- Not supported: algo=G_MLSL_LDS inequality=true equality=false
--- Not supported: algo=G_MLSL_LDS inequality=false equality=true
--- Not supported: algo=G_MLSL_LDS inequality=false equality=true
-algo=G_MLSL_LDS minimization=0 bounds=1 inequality=0 equality=0
-x^=[-1.5,-1.5] y^=[1.41e+03]
--- Not supported: algo=G_MLSL_LDS inequality=false equality=false
+-- Skipped: algo=G_MLSL
+-- Skipped: algo=G_MLSL_LDS
 algo=LD_AUGLAG minimization=1 bounds=1 inequality=1 equality=1
 x^=[0.001,0.001] y^=[2]
 algo=LD_AUGLAG minimization=1 bounds=0 inequality=1 equality=1
@@ -348,52 +198,13 @@ algo=LD_AUGLAG minimization=1 bounds=0 inequality=0 equality=0
 x^=[0.752,0.569] y^=[1.06]
 algo=LD_AUGLAG minimization=0 bounds=1 inequality=1 equality=1
 x^=[0.001,0.001] y^=[2]
-algo=LD_AUGLAG minimization=0 bounds=0 inequality=1 equality=1
-x^=[0.001,0.001] y^=[2]
 algo=LD_AUGLAG minimization=0 bounds=1 inequality=1 equality=0
 x^=[-0.00348,1] y^=[102]
-algo=LD_AUGLAG minimization=0 bounds=0 inequality=1 equality=0
-x^=[0.001,0.001] y^=[2]
 algo=LD_AUGLAG minimization=0 bounds=1 inequality=0 equality=1
 x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=LD_AUGLAG minimization=0 bounds=0 inequality=0 equality=1
-x^=[0.001,0.001] y^=[2]
 algo=LD_AUGLAG minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=LD_AUGLAG minimization=0 bounds=0 inequality=0 equality=0
-x^=[-2.59e+08,-1.51e+08] y^=[4.49e+35]
-algo=LD_AUGLAG_EQ minimization=1 bounds=1 inequality=1 equality=1
-x^=[0.001,0.001] y^=[2]
-algo=LD_AUGLAG_EQ minimization=1 bounds=0 inequality=1 equality=1
-x^=[0.001,0.001] y^=[2]
-algo=LD_AUGLAG_EQ minimization=1 bounds=1 inequality=1 equality=0
-x^=[0.734,0.539] y^=[1.07]
-algo=LD_AUGLAG_EQ minimization=1 bounds=0 inequality=1 equality=0
-x^=[0.549,0.299] y^=[1.2]
-algo=LD_AUGLAG_EQ minimization=1 bounds=1 inequality=0 equality=1
-x^=[0.001,0.001] y^=[2]
-algo=LD_AUGLAG_EQ minimization=1 bounds=0 inequality=0 equality=1
-x^=[0.001,0.001] y^=[2]
-algo=LD_AUGLAG_EQ minimization=1 bounds=1 inequality=0 equality=0
-x^=[0.599,0.358] y^=[1.16]
-algo=LD_AUGLAG_EQ minimization=1 bounds=0 inequality=0 equality=0
-x^=[0.752,0.569] y^=[1.06]
-algo=LD_AUGLAG_EQ minimization=0 bounds=1 inequality=1 equality=1
-x^=[0.001,0.001] y^=[2]
-algo=LD_AUGLAG_EQ minimization=0 bounds=0 inequality=1 equality=1
-x^=[-0.707,-0.707] y^=[150]
-algo=LD_AUGLAG_EQ minimization=0 bounds=1 inequality=1 equality=0
-x^=[-0.868,-0.496] y^=[161]
-algo=LD_AUGLAG_EQ minimization=0 bounds=0 inequality=1 equality=0
-x^=[-0.868,-0.496] y^=[161]
-algo=LD_AUGLAG_EQ minimization=0 bounds=1 inequality=0 equality=1
-x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=LD_AUGLAG_EQ minimization=0 bounds=0 inequality=0 equality=1
-x^=[0.001,0.001] y^=[2]
-algo=LD_AUGLAG_EQ minimization=0 bounds=1 inequality=0 equality=0
-x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=LD_AUGLAG_EQ minimization=0 bounds=0 inequality=0 equality=0
-x^=[-2.59e+08,-1.51e+08] y^=[4.49e+35]
+-- Skipped: algo=LD_AUGLAG_EQ
 -- Not supported: algo=LD_CCSAQ inequality=true equality=true
 -- Not supported: algo=LD_CCSAQ inequality=true equality=true
 algo=LD_CCSAQ minimization=1 bounds=1 inequality=1 equality=0
@@ -407,17 +218,11 @@ x^=[0.623,0.384] y^=[1.14]
 algo=LD_CCSAQ minimization=1 bounds=0 inequality=0 equality=0
 x^=[0.582,0.341] y^=[1.18]
 -- Not supported: algo=LD_CCSAQ inequality=true equality=true
--- Not supported: algo=LD_CCSAQ inequality=true equality=true
 algo=LD_CCSAQ minimization=0 bounds=1 inequality=1 equality=0
 x^=[-0.871,-0.496] y^=[162]
-algo=LD_CCSAQ minimization=0 bounds=0 inequality=1 equality=0
-x^=[-0.871,-0.496] y^=[162]
--- Not supported: algo=LD_CCSAQ inequality=false equality=true
 -- Not supported: algo=LD_CCSAQ inequality=false equality=true
 algo=LD_CCSAQ minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=LD_CCSAQ minimization=0 bounds=0 inequality=0 equality=0
-x^=[-2.88e+08,-1.68e+08] y^=[6.84e+35]
 -- Not supported: algo=LD_LBFGS inequality=true equality=true
 -- Not supported: algo=LD_LBFGS inequality=true equality=true
 -- Not supported: algo=LD_LBFGS inequality=true equality=false
@@ -429,15 +234,10 @@ x^=[1,1] y^=[1]
 algo=LD_LBFGS minimization=1 bounds=0 inequality=0 equality=0
 x^=[1,1] y^=[1]
 -- Not supported: algo=LD_LBFGS inequality=true equality=true
--- Not supported: algo=LD_LBFGS inequality=true equality=true
 -- Not supported: algo=LD_LBFGS inequality=true equality=false
--- Not supported: algo=LD_LBFGS inequality=true equality=false
--- Not supported: algo=LD_LBFGS inequality=false equality=true
 -- Not supported: algo=LD_LBFGS inequality=false equality=true
 algo=LD_LBFGS minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=LD_LBFGS minimization=0 bounds=0 inequality=0 equality=0
--- Not supported: algo=LD_LBFGS inequality=false equality=false
 -- Not supported: algo=LD_MMA inequality=true equality=true
 -- Not supported: algo=LD_MMA inequality=true equality=true
 algo=LD_MMA minimization=1 bounds=1 inequality=1 equality=0
@@ -451,17 +251,11 @@ x^=[0.599,0.358] y^=[1.16]
 algo=LD_MMA minimization=1 bounds=0 inequality=0 equality=0
 x^=[0.752,0.569] y^=[1.06]
 -- Not supported: algo=LD_MMA inequality=true equality=true
--- Not supported: algo=LD_MMA inequality=true equality=true
 algo=LD_MMA minimization=0 bounds=1 inequality=1 equality=0
 x^=[-0.879,-0.496] y^=[165]
-algo=LD_MMA minimization=0 bounds=0 inequality=1 equality=0
-x^=[-0.875,-0.502] y^=[165]
--- Not supported: algo=LD_MMA inequality=false equality=true
 -- Not supported: algo=LD_MMA inequality=false equality=true
 algo=LD_MMA minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=LD_MMA minimization=0 bounds=0 inequality=0 equality=0
-x^=[-2.59e+08,-1.51e+08] y^=[4.49e+35]
 algo=LD_SLSQP minimization=1 bounds=1 inequality=1 equality=1
 x^=[0.001,0.001] y^=[2]
 algo=LD_SLSQP minimization=1 bounds=0 inequality=1 equality=1
@@ -480,20 +274,12 @@ algo=LD_SLSQP minimization=1 bounds=0 inequality=0 equality=0
 x^=[1,1] y^=[1]
 algo=LD_SLSQP minimization=0 bounds=1 inequality=1 equality=1
 x^=[0.001,0.001] y^=[2]
-algo=LD_SLSQP minimization=0 bounds=0 inequality=1 equality=1
-x^=[0.001,0.001] y^=[2]
 algo=LD_SLSQP minimization=0 bounds=1 inequality=1 equality=0
 x^=[-0.874,-0.486] y^=[161]
-algo=LD_SLSQP minimization=0 bounds=0 inequality=1 equality=0
--- Not supported: algo=LD_SLSQP inequality=true equality=false
 algo=LD_SLSQP minimization=0 bounds=1 inequality=0 equality=1
 x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=LD_SLSQP minimization=0 bounds=0 inequality=0 equality=1
--- Not supported: algo=LD_SLSQP inequality=false equality=true
 algo=LD_SLSQP minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=LD_SLSQP minimization=0 bounds=0 inequality=0 equality=0
--- Not supported: algo=LD_SLSQP inequality=false equality=false
 -- Not supported: algo=LD_TNEWTON inequality=true equality=true
 -- Not supported: algo=LD_TNEWTON inequality=true equality=true
 -- Not supported: algo=LD_TNEWTON inequality=true equality=false
@@ -505,15 +291,10 @@ x^=[1,1] y^=[1]
 algo=LD_TNEWTON minimization=1 bounds=0 inequality=0 equality=0
 x^=[1,1] y^=[1]
 -- Not supported: algo=LD_TNEWTON inequality=true equality=true
--- Not supported: algo=LD_TNEWTON inequality=true equality=true
 -- Not supported: algo=LD_TNEWTON inequality=true equality=false
--- Not supported: algo=LD_TNEWTON inequality=true equality=false
--- Not supported: algo=LD_TNEWTON inequality=false equality=true
 -- Not supported: algo=LD_TNEWTON inequality=false equality=true
 algo=LD_TNEWTON minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=LD_TNEWTON minimization=0 bounds=0 inequality=0 equality=0
--- Not supported: algo=LD_TNEWTON inequality=false equality=false
 -- Not supported: algo=LD_TNEWTON_PRECOND inequality=true equality=true
 -- Not supported: algo=LD_TNEWTON_PRECOND inequality=true equality=true
 -- Not supported: algo=LD_TNEWTON_PRECOND inequality=true equality=false
@@ -525,15 +306,10 @@ x^=[1,1] y^=[1]
 algo=LD_TNEWTON_PRECOND minimization=1 bounds=0 inequality=0 equality=0
 x^=[1,1] y^=[1]
 -- Not supported: algo=LD_TNEWTON_PRECOND inequality=true equality=true
--- Not supported: algo=LD_TNEWTON_PRECOND inequality=true equality=true
 -- Not supported: algo=LD_TNEWTON_PRECOND inequality=true equality=false
--- Not supported: algo=LD_TNEWTON_PRECOND inequality=true equality=false
--- Not supported: algo=LD_TNEWTON_PRECOND inequality=false equality=true
 -- Not supported: algo=LD_TNEWTON_PRECOND inequality=false equality=true
 algo=LD_TNEWTON_PRECOND minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=LD_TNEWTON_PRECOND minimization=0 bounds=0 inequality=0 equality=0
--- Not supported: algo=LD_TNEWTON_PRECOND inequality=false equality=false
 -- Not supported: algo=LD_TNEWTON_PRECOND_RESTART inequality=true equality=true
 -- Not supported: algo=LD_TNEWTON_PRECOND_RESTART inequality=true equality=true
 -- Not supported: algo=LD_TNEWTON_PRECOND_RESTART inequality=true equality=false
@@ -545,15 +321,10 @@ x^=[1,1] y^=[1]
 algo=LD_TNEWTON_PRECOND_RESTART minimization=1 bounds=0 inequality=0 equality=0
 x^=[1,1] y^=[1]
 -- Not supported: algo=LD_TNEWTON_PRECOND_RESTART inequality=true equality=true
--- Not supported: algo=LD_TNEWTON_PRECOND_RESTART inequality=true equality=true
 -- Not supported: algo=LD_TNEWTON_PRECOND_RESTART inequality=true equality=false
--- Not supported: algo=LD_TNEWTON_PRECOND_RESTART inequality=true equality=false
--- Not supported: algo=LD_TNEWTON_PRECOND_RESTART inequality=false equality=true
 -- Not supported: algo=LD_TNEWTON_PRECOND_RESTART inequality=false equality=true
 algo=LD_TNEWTON_PRECOND_RESTART minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=LD_TNEWTON_PRECOND_RESTART minimization=0 bounds=0 inequality=0 equality=0
--- Not supported: algo=LD_TNEWTON_PRECOND_RESTART inequality=false equality=false
 -- Not supported: algo=LD_TNEWTON_RESTART inequality=true equality=true
 -- Not supported: algo=LD_TNEWTON_RESTART inequality=true equality=true
 -- Not supported: algo=LD_TNEWTON_RESTART inequality=true equality=false
@@ -565,15 +336,10 @@ x^=[1,1] y^=[1]
 algo=LD_TNEWTON_RESTART minimization=1 bounds=0 inequality=0 equality=0
 x^=[1,1] y^=[1]
 -- Not supported: algo=LD_TNEWTON_RESTART inequality=true equality=true
--- Not supported: algo=LD_TNEWTON_RESTART inequality=true equality=true
 -- Not supported: algo=LD_TNEWTON_RESTART inequality=true equality=false
--- Not supported: algo=LD_TNEWTON_RESTART inequality=true equality=false
--- Not supported: algo=LD_TNEWTON_RESTART inequality=false equality=true
 -- Not supported: algo=LD_TNEWTON_RESTART inequality=false equality=true
 algo=LD_TNEWTON_RESTART minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=LD_TNEWTON_RESTART minimization=0 bounds=0 inequality=0 equality=0
--- Not supported: algo=LD_TNEWTON_RESTART inequality=false equality=false
 -- Not supported: algo=LD_VAR1 inequality=true equality=true
 -- Not supported: algo=LD_VAR1 inequality=true equality=true
 -- Not supported: algo=LD_VAR1 inequality=true equality=false
@@ -585,15 +351,10 @@ x^=[0.999,0.999] y^=[1]
 algo=LD_VAR1 minimization=1 bounds=0 inequality=0 equality=0
 x^=[1,1] y^=[1]
 -- Not supported: algo=LD_VAR1 inequality=true equality=true
--- Not supported: algo=LD_VAR1 inequality=true equality=true
 -- Not supported: algo=LD_VAR1 inequality=true equality=false
--- Not supported: algo=LD_VAR1 inequality=true equality=false
--- Not supported: algo=LD_VAR1 inequality=false equality=true
 -- Not supported: algo=LD_VAR1 inequality=false equality=true
 algo=LD_VAR1 minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=LD_VAR1 minimization=0 bounds=0 inequality=0 equality=0
--- Not supported: algo=LD_VAR1 inequality=false equality=false
 -- Not supported: algo=LD_VAR2 inequality=true equality=true
 -- Not supported: algo=LD_VAR2 inequality=true equality=true
 -- Not supported: algo=LD_VAR2 inequality=true equality=false
@@ -605,15 +366,10 @@ x^=[0.999,0.999] y^=[1]
 algo=LD_VAR2 minimization=1 bounds=0 inequality=0 equality=0
 x^=[1,1] y^=[1]
 -- Not supported: algo=LD_VAR2 inequality=true equality=true
--- Not supported: algo=LD_VAR2 inequality=true equality=true
 -- Not supported: algo=LD_VAR2 inequality=true equality=false
--- Not supported: algo=LD_VAR2 inequality=true equality=false
--- Not supported: algo=LD_VAR2 inequality=false equality=true
 -- Not supported: algo=LD_VAR2 inequality=false equality=true
 algo=LD_VAR2 minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=LD_VAR2 minimization=0 bounds=0 inequality=0 equality=0
--- Not supported: algo=LD_VAR2 inequality=false equality=false
 algo=LN_AUGLAG minimization=1 bounds=1 inequality=1 equality=1
 x^=[0.001,0.001] y^=[2]
 algo=LN_AUGLAG minimization=1 bounds=0 inequality=1 equality=1
@@ -632,52 +388,13 @@ algo=LN_AUGLAG minimization=1 bounds=0 inequality=0 equality=0
 x^=[0.752,0.569] y^=[1.06]
 algo=LN_AUGLAG minimization=0 bounds=1 inequality=1 equality=1
 x^=[0.001,0.001] y^=[2]
-algo=LN_AUGLAG minimization=0 bounds=0 inequality=1 equality=1
-x^=[0.001,0.001] y^=[2]
 algo=LN_AUGLAG minimization=0 bounds=1 inequality=1 equality=0
 x^=[-0.00348,1] y^=[102]
-algo=LN_AUGLAG minimization=0 bounds=0 inequality=1 equality=0
-x^=[0.001,0.001] y^=[2]
 algo=LN_AUGLAG minimization=0 bounds=1 inequality=0 equality=1
 x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=LN_AUGLAG minimization=0 bounds=0 inequality=0 equality=1
-x^=[0.001,0.001] y^=[2]
 algo=LN_AUGLAG minimization=0 bounds=1 inequality=0 equality=0
 x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=LN_AUGLAG minimization=0 bounds=0 inequality=0 equality=0
-x^=[-2.59e+08,-1.51e+08] y^=[4.49e+35]
-algo=LN_AUGLAG_EQ minimization=1 bounds=1 inequality=1 equality=1
-x^=[0.001,0.001] y^=[2]
-algo=LN_AUGLAG_EQ minimization=1 bounds=0 inequality=1 equality=1
-x^=[0.001,0.001] y^=[2]
-algo=LN_AUGLAG_EQ minimization=1 bounds=1 inequality=1 equality=0
-x^=[0.734,0.539] y^=[1.07]
-algo=LN_AUGLAG_EQ minimization=1 bounds=0 inequality=1 equality=0
-x^=[0.549,0.299] y^=[1.2]
-algo=LN_AUGLAG_EQ minimization=1 bounds=1 inequality=0 equality=1
-x^=[0.001,0.001] y^=[2]
-algo=LN_AUGLAG_EQ minimization=1 bounds=0 inequality=0 equality=1
-x^=[0.001,0.001] y^=[2]
-algo=LN_AUGLAG_EQ minimization=1 bounds=1 inequality=0 equality=0
-x^=[0.599,0.358] y^=[1.16]
-algo=LN_AUGLAG_EQ minimization=1 bounds=0 inequality=0 equality=0
-x^=[0.752,0.569] y^=[1.06]
-algo=LN_AUGLAG_EQ minimization=0 bounds=1 inequality=1 equality=1
-x^=[0.001,0.001] y^=[2]
-algo=LN_AUGLAG_EQ minimization=0 bounds=0 inequality=1 equality=1
-x^=[-0.707,-0.707] y^=[150]
-algo=LN_AUGLAG_EQ minimization=0 bounds=1 inequality=1 equality=0
-x^=[-0.868,-0.496] y^=[161]
-algo=LN_AUGLAG_EQ minimization=0 bounds=0 inequality=1 equality=0
-x^=[-0.868,-0.496] y^=[161]
-algo=LN_AUGLAG_EQ minimization=0 bounds=1 inequality=0 equality=1
-x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=LN_AUGLAG_EQ minimization=0 bounds=0 inequality=0 equality=1
-x^=[0.001,0.001] y^=[2]
-algo=LN_AUGLAG_EQ minimization=0 bounds=1 inequality=0 equality=0
-x^=[-1.5,-1.5] y^=[1.41e+03]
-algo=LN_AUGLAG_EQ minimization=0 bounds=0 inequality=0 equality=0
-x^=[-2.59e+08,-1.51e+08] y^=[4.49e+35]
+-- Skipped: algo=LN_AUGLAG_EQ
 -- Not supported: algo=LN_BOBYQA inequality=true equality=true
 -- Not supported: algo=LN_BOBYQA inequality=true equality=true
 -- Not supported: algo=LN_BOBYQA inequality=true equality=false
@@ -689,15 +406,10 @@ x^=[0.982,0.965] y^=[1]
 algo=LN_BOBYQA minimization=1 bounds=0 inequality=0 equality=0
 x^=[1,1] y^=[1]
 -- Not supported: algo=LN_BOBYQA inequality=true equality=true
--- Not supported: algo=LN_BOBYQA inequality=true equality=true
 -- Not supported: algo=LN_BOBYQA inequality=true equality=false
--- Not supported: algo=LN_BOBYQA inequality=true equality=false
--- Not supported: algo=LN_BOBYQA inequality=false equality=true
 -- Not supported: algo=LN_BOBYQA inequality=false equality=true
 algo=LN_BOBYQA minimization=0 bounds=1 inequality=0 equality=0
 x^=[-0.00334,1.5] y^=[227]
-algo=LN_BOBYQA minimization=0 bounds=0 inequality=0 equality=0
-x^=[-1.6e+16,-7.26e+15] y^=[6.56e+66]
 -- Skipped: algo=LN_COBYLA
 -- Not supported: algo=LN_NELDERMEAD inequality=true equality=true
 -- Not supported: algo=LN_NELDERMEAD inequality=true equality=true
@@ -710,36 +422,12 @@ x^=[1,0.999] y^=[1]
 algo=LN_NELDERMEAD minimization=1 bounds=0 inequality=0 equality=0
 x^=[0.915,0.834] y^=[1.01]
 -- Not supported: algo=LN_NELDERMEAD inequality=true equality=true
--- Not supported: algo=LN_NELDERMEAD inequality=true equality=true
 -- Not supported: algo=LN_NELDERMEAD inequality=true equality=false
--- Not supported: algo=LN_NELDERMEAD inequality=true equality=false
--- Not supported: algo=LN_NELDERMEAD inequality=false equality=true
 -- Not supported: algo=LN_NELDERMEAD inequality=false equality=true
 algo=LN_NELDERMEAD minimization=0 bounds=1 inequality=0 equality=0
 x^=[1.5,-1.5] y^=[1.41e+03]
-algo=LN_NELDERMEAD minimization=0 bounds=0 inequality=0 equality=0
-x^=[113,4.6e+04] y^=[1.1e+11]
 -- Skipped: algo=LN_NEWUOA
--- Not supported: algo=LN_NEWUOA_BOUND inequality=true equality=true
--- Not supported: algo=LN_NEWUOA_BOUND inequality=true equality=true
--- Not supported: algo=LN_NEWUOA_BOUND inequality=true equality=false
--- Not supported: algo=LN_NEWUOA_BOUND inequality=true equality=false
--- Not supported: algo=LN_NEWUOA_BOUND inequality=false equality=true
--- Not supported: algo=LN_NEWUOA_BOUND inequality=false equality=true
-algo=LN_NEWUOA_BOUND minimization=1 bounds=1 inequality=0 equality=0
-x^=[0.999,0.998] y^=[1]
-algo=LN_NEWUOA_BOUND minimization=1 bounds=0 inequality=0 equality=0
-x^=[0.994,0.989] y^=[1]
--- Not supported: algo=LN_NEWUOA_BOUND inequality=true equality=true
--- Not supported: algo=LN_NEWUOA_BOUND inequality=true equality=true
--- Not supported: algo=LN_NEWUOA_BOUND inequality=true equality=false
--- Not supported: algo=LN_NEWUOA_BOUND inequality=true equality=false
--- Not supported: algo=LN_NEWUOA_BOUND inequality=false equality=true
--- Not supported: algo=LN_NEWUOA_BOUND inequality=false equality=true
-algo=LN_NEWUOA_BOUND minimization=0 bounds=1 inequality=0 equality=0
-x^=[-0.0208,1.5] y^=[227]
-algo=LN_NEWUOA_BOUND minimization=0 bounds=0 inequality=0 equality=0
-x^=[5.9e+17,-5.16e+17] y^=[1.21e+73]
+-- Skipped: algo=LN_NEWUOA_BOUND
 -- Not supported: algo=LN_PRAXIS inequality=true equality=true
 -- Not supported: algo=LN_PRAXIS inequality=true equality=true
 -- Not supported: algo=LN_PRAXIS inequality=true equality=false
@@ -751,15 +439,10 @@ x^=[1,1] y^=[1]
 algo=LN_PRAXIS minimization=1 bounds=0 inequality=0 equality=0
 x^=[0.0624,-0.00595] y^=[1.89]
 -- Not supported: algo=LN_PRAXIS inequality=true equality=true
--- Not supported: algo=LN_PRAXIS inequality=true equality=true
 -- Not supported: algo=LN_PRAXIS inequality=true equality=false
--- Not supported: algo=LN_PRAXIS inequality=true equality=false
--- Not supported: algo=LN_PRAXIS inequality=false equality=true
 -- Not supported: algo=LN_PRAXIS inequality=false equality=true
 algo=LN_PRAXIS minimization=0 bounds=1 inequality=0 equality=0
 -- Not supported: algo=LN_PRAXIS inequality=false equality=false
-algo=LN_PRAXIS minimization=0 bounds=0 inequality=0 equality=0
-x^=[0.0729,0.116] y^=[3.09]
 -- Not supported: algo=LN_SBPLX inequality=true equality=true
 -- Not supported: algo=LN_SBPLX inequality=true equality=true
 -- Not supported: algo=LN_SBPLX inequality=true equality=false
@@ -771,12 +454,7 @@ x^=[0.993,0.984] y^=[1]
 algo=LN_SBPLX minimization=1 bounds=0 inequality=0 equality=0
 x^=[0.915,0.834] y^=[1.01]
 -- Not supported: algo=LN_SBPLX inequality=true equality=true
--- Not supported: algo=LN_SBPLX inequality=true equality=true
 -- Not supported: algo=LN_SBPLX inequality=true equality=false
--- Not supported: algo=LN_SBPLX inequality=true equality=false
--- Not supported: algo=LN_SBPLX inequality=false equality=true
 -- Not supported: algo=LN_SBPLX inequality=false equality=true
 algo=LN_SBPLX minimization=0 bounds=1 inequality=0 equality=0
 x^=[1.5,-1.5] y^=[1.41e+03]
-algo=LN_SBPLX minimization=0 bounds=0 inequality=0 equality=0
-x^=[113,4.6e+04] y^=[1.1e+11]

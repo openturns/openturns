@@ -1,8 +1,11 @@
 %feature("docstring") OT::LinearBasisFactory
-"Linear basis factory to construct the regression basis.
+"Linear basis factory.
 
-Available constructors:
-   LinearBasisFactory(*dimension*)
+The linear basis is composed of the linear terms of the canonical basis:
+
+.. math::
+
+    \{ \psi_k(x) \} = \{ 1, x_1, \hdots, x_n \}
 
 Parameters
 ----------
@@ -13,15 +16,11 @@ See also
 --------
 BasisFactory, ConstantBasisFactory, QuadraticBasisFactory
 
-Notes
------
-A factory for linear basis of input dimension *dimension*."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::LinearBasisFactory::build
-"Build the basis.
-
-Returns
--------
-basis : :class:`~openturns.Basis`."
+Examples
+--------
+>>> import openturns as ot
+>>> basis = LinearBasisFactory(2).build()
+>>> f = ot.AggregatedFunction(basis)
+>>> x = [2, 3]
+>>> print(f(x))
+[1,2,3]"

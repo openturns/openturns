@@ -35,12 +35,12 @@ public:
   BasisFactory();
 
   /* String converter */
-  OT::String __repr__() const;
+  String __repr__() const override;
 
   /* Here is the interface that all derived class must implement */
 
   /* Virtual constructor */
-  virtual BasisFactory * clone() const;
+  BasisFactory * clone() const override;
 
   /** @copydoc BasisFactory::build() const */
   virtual Basis build() const;

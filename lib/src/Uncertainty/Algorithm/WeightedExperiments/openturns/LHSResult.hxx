@@ -54,7 +54,7 @@ public:
   explicit LHSResult(const SpaceFilling & spaceFilling, UnsignedInteger restart = 0);
 
   /** Virtual constructor */
-  virtual LHSResult * clone() const;
+  LHSResult * clone() const override;
 
   /** Accessors */
   UnsignedInteger getNumberOfRestarts() const;
@@ -87,13 +87,13 @@ public:
            const Sample & algoHistory);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   /** Method that draw data */

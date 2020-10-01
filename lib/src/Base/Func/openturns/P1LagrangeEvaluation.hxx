@@ -54,14 +54,14 @@ public:
   explicit P1LagrangeEvaluation(const ProcessSample & sample);
 
   /** Virtual constructor */
-  virtual P1LagrangeEvaluation * clone() const;
+  P1LagrangeEvaluation * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const P1LagrangeEvaluation & other) const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__( const String & offset = "" ) const;
+  String __repr__() const override;
+  String __str__(const String & offset = "" ) const override;
 
   /** Field accessor */
   void setField(const Field & field);
@@ -86,8 +86,9 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
-  virtual Point operator()(const Point & inP) const;
-  virtual Sample operator()(const Sample & inS) const;
+  using EvaluationImplementation::operator ();
+  Point operator()(const Point & inP) const override;
+  Sample operator()(const Sample & inS) const override;
 
 protected:
   Point evaluate(const Point & inP) const;
@@ -95,16 +96,16 @@ protected:
 public:
 
   /** Accessor for input point dimension */
-  virtual UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  virtual UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:

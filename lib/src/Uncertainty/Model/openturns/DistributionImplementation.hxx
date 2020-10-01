@@ -129,8 +129,8 @@ public:
   Distribution abs() const;
 
   /** String converter */
-  virtual String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Weight accessor */
   void setWeight(Scalar w);
@@ -142,7 +142,7 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual DistributionImplementation * clone() const;
+  DistributionImplementation * clone() const override;
 
   /** Get one realization of the distribution */
   virtual Point getRealization() const;
@@ -742,10 +742,10 @@ public:
   Description getDescription() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Accessor to PDF computation precision */
   Scalar getPDFEpsilon() const;
@@ -872,49 +872,49 @@ protected:
       // Nothing to do
     }
 
-    PDFWrapper * clone() const
+    PDFWrapper * clone() const override
     {
       return new PDFWrapper(*this);
     }
 
-    Point operator() (const Point & point) const
+    Point operator() (const Point & point) const override
     {
       return Point(1, p_distribution_->computePDF(point));
     }
 
-    Sample operator() (const Sample & sample) const
+    Sample operator() (const Sample & sample) const override
     {
       return p_distribution_->computePDF(sample);
     };
 
-    UnsignedInteger getInputDimension() const
+    UnsignedInteger getInputDimension() const override
     {
       return p_distribution_->getDimension();
     }
 
-    UnsignedInteger getOutputDimension() const
+    UnsignedInteger getOutputDimension() const override
     {
       return 1;
     }
 
-    Description getInputDescription() const
+    Description getInputDescription() const override
     {
       return p_distribution_->getDescription();
     }
 
-    Description getOutputDescription() const
+    Description getOutputDescription() const override
     {
       return Description(1, "pdf");
     }
 
-    String __repr__() const
+    String __repr__() const override
     {
       OSS oss;
       oss << "PDFWrapper(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
-    String __str__(const String & ) const
+    String __str__(const String & ) const override
     {
       OSS oss;
       oss << "PDFWrapper(" << p_distribution_->__str__() << ")";
@@ -936,49 +936,49 @@ protected:
       // Nothing to do
     }
 
-    LogPDFWrapper * clone() const
+    LogPDFWrapper * clone() const override
     {
       return new LogPDFWrapper(*this);
     }
 
-    Point operator() (const Point & point) const
+    Point operator() (const Point & point) const override
     {
       return Point(1, p_distribution_->computeLogPDF(point));
     }
 
-    Sample operator() (const Sample & sample) const
+    Sample operator() (const Sample & sample) const override
     {
       return p_distribution_->computeLogPDF(sample);
     };
 
-    UnsignedInteger getInputDimension() const
+    UnsignedInteger getInputDimension() const override
     {
       return p_distribution_->getDimension();
     }
 
-    UnsignedInteger getOutputDimension() const
+    UnsignedInteger getOutputDimension() const override
     {
       return 1;
     }
 
-    Description getInputDescription() const
+    Description getInputDescription() const override
     {
       return p_distribution_->getDescription();
     }
 
-    Description getOutputDescription() const
+    Description getOutputDescription() const override
     {
       return Description(1, "logpdf");
     }
 
-    String __repr__() const
+    String __repr__() const override
     {
       OSS oss;
       oss << "LogPDFWrapper(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
-    String __str__(const String & ) const
+    String __str__(const String & ) const override
     {
       OSS oss;
       oss << "LogPDFWrapper(" << p_distribution_->__str__() << ")";
@@ -1000,17 +1000,17 @@ protected:
       // Nothing to do
     }
 
-    CDFWrapper * clone() const
+    CDFWrapper * clone() const override
     {
       return new CDFWrapper(*this);
     }
 
-    Point operator() (const Point & point) const
+    Point operator() (const Point & point) const override
     {
       return computeCDF(point);
     }
 
-    Sample operator() (const Sample & sample) const
+    Sample operator() (const Sample & sample) const override
     {
       return computeCDF(sample);
     }
@@ -1025,34 +1025,34 @@ protected:
       return p_distribution_->computeCDF(sample);
     };
 
-    UnsignedInteger getInputDimension() const
+    UnsignedInteger getInputDimension() const override
     {
       return p_distribution_->getDimension();
     }
 
-    UnsignedInteger getOutputDimension() const
+    UnsignedInteger getOutputDimension() const override
     {
       return 1;
     }
 
-    Description getInputDescription() const
+    Description getInputDescription() const override
     {
       return p_distribution_->getDescription();
     }
 
-    Description getOutputDescription() const
+    Description getOutputDescription() const override
     {
       return Description(1, "cdf");
     }
 
-    String __repr__() const
+    String __repr__() const override
     {
       OSS oss;
       oss << "CDFWrapper(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
-    String __str__(const String & ) const
+    String __str__(const String & ) const override
     {
       OSS oss;
       oss << "CDFWrapper(" << p_distribution_->__str__() << ")";
@@ -1077,17 +1077,17 @@ protected:
       // Nothing to do
     }
 
-    QuantileWrapper * clone() const
+    QuantileWrapper * clone() const override
     {
       return new QuantileWrapper(*this);
     }
 
-    Point operator() (const Point & point) const
+    Point operator() (const Point & point) const override
     {
       return p_distribution_->computeQuantile(point[0]);
     }
 
-    Sample operator() (const Sample & sample) const
+    Sample operator() (const Sample & sample) const override
     {
       return p_distribution_->computeQuantile(sample.asPoint());
     }
@@ -1107,34 +1107,34 @@ protected:
       return x;
     }
 
-    UnsignedInteger getInputDimension() const
+    UnsignedInteger getInputDimension() const override
     {
       return 1;
     }
 
-    UnsignedInteger getOutputDimension() const
+    UnsignedInteger getOutputDimension() const override
     {
       return p_distribution_->getDimension();
     }
 
-    Description getInputDescription() const
+    Description getInputDescription() const override
     {
       return Description(1, "quantile");
     }
 
-    Description getOutputDescription() const
+    Description getOutputDescription() const override
     {
       return p_distribution_->getDescription();
     }
 
-    String __repr__() const
+    String __repr__() const override
     {
       OSS oss;
       oss << "QuantileWrapper(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
-    String __str__(const String & ) const
+    String __str__(const String & ) const override
     {
       OSS oss;
       oss << "QuantileWrapper(" << p_distribution_->__str__() << ")";
@@ -1161,17 +1161,17 @@ protected:
       // Nothing to do
     }
 
-    SurvivalFunctionWrapper * clone() const
+    SurvivalFunctionWrapper * clone() const override
     {
       return new SurvivalFunctionWrapper(*this);
     }
 
-    Point operator() (const Point & point) const
+    Point operator() (const Point & point) const override
     {
       return Point(1, p_distribution_->computeSurvivalFunction(point));
     }
 
-    Sample operator() (const Sample & sample) const
+    Sample operator() (const Sample & sample) const override
     {
       return p_distribution_->computeSurvivalFunction(sample);
     }
@@ -1191,34 +1191,34 @@ protected:
       return x;
     }
 
-    UnsignedInteger getInputDimension() const
+    UnsignedInteger getInputDimension() const override
     {
       return p_distribution_->getDimension();
     }
 
-    UnsignedInteger getOutputDimension() const
+    UnsignedInteger getOutputDimension() const override
     {
       return 1;
     }
 
-    Description getInputDescription() const
+    Description getInputDescription() const override
     {
       return p_distribution_->getDescription();
     }
 
-    Description getOutputDescription() const
+    Description getOutputDescription() const override
     {
       return Description(1, "survival function");
     }
 
-    String __repr__() const
+    String __repr__() const override
     {
       OSS oss;
       oss << "SurvivalFunctionWrapper(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
-    String __str__(const String & ) const
+    String __str__(const String & ) const override
     {
       OSS oss;
       oss << "SurvivalFunctionWrapper(" << p_distribution_->__str__() << ")";
@@ -1243,59 +1243,59 @@ protected:
       // Nothing to do
     }
 
-    MinimumVolumeLevelSetEvaluation * clone() const
+    MinimumVolumeLevelSetEvaluation * clone() const override
     {
       return new MinimumVolumeLevelSetEvaluation(*this);
     }
 
     // The minimum volume level A(p) set is such that A(p)={x\in R^n | y(x) <= y_p}
     // where y(x)=-\log X and y_p is the p-quantile of Y=pdf(X)
-    Point operator() (const Point & point) const
+    Point operator() (const Point & point) const override
     {
       const Scalar value = -p_distribution_->computeLogPDF(point);
       return Point(1, value);
     }
 
-    Sample operator() (const Sample & sample) const
+    Sample operator() (const Sample & sample) const override
     {
       return p_distribution_->computeLogPDF(sample) * (-1.0);
     }
 
-    UnsignedInteger getInputDimension() const
+    UnsignedInteger getInputDimension() const override
     {
       return p_distribution_->getDimension();
     }
 
-    UnsignedInteger getOutputDimension() const
+    UnsignedInteger getOutputDimension() const override
     {
       return 1;
     }
 
-    Description getInputDescription() const
+    Description getInputDescription() const override
     {
       return p_distribution_->getDescription();
     }
 
-    Description getOutputDescription() const
+    Description getOutputDescription() const override
     {
       return Description(1, "-logPDF");
     }
 
-    Description getDescription() const
+    Description getDescription() const override
     {
       Description description(getInputDescription());
       description.add(getOutputDescription());
       return description;
     }
 
-    String __repr__() const
+    String __repr__() const override
     {
       OSS oss;
       oss << "MinimumVolumeLevelSetEvaluation(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
-    String __str__(const String & ) const
+    String __str__(const String & ) const override
     {
       OSS oss;
       oss << "MinimumVolumeLevelSetEvaluation(" << p_distribution_->__str__() << ")";
@@ -1318,12 +1318,12 @@ protected:
       // Nothing to do
     }
 
-    MinimumVolumeLevelSetGradient * clone() const
+    MinimumVolumeLevelSetGradient * clone() const override
     {
       return new MinimumVolumeLevelSetGradient(*this);
     }
 
-    Matrix gradient(const Point & point) const
+    Matrix gradient(const Point & point) const override
     {
       const Scalar pdf = p_distribution_->computePDF(point);
       if (pdf == 0) return Matrix(getInputDimension(), getOutputDimension());
@@ -1331,12 +1331,12 @@ protected:
       return MatrixImplementation(getInputDimension(), getOutputDimension(), value);
     }
 
-    UnsignedInteger getInputDimension() const
+    UnsignedInteger getInputDimension() const override
     {
       return p_distribution_->getDimension();
     }
 
-    UnsignedInteger getOutputDimension() const
+    UnsignedInteger getOutputDimension() const override
     {
       return 1;
     }
@@ -1358,14 +1358,14 @@ protected:
       return description;
     }
 
-    String __repr__() const
+    String __repr__() const override
     {
       OSS oss;
       oss << "MinimumVolumeLevelSetGradient(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
-    String __str__(const String & ) const
+    String __str__(const String & ) const override
     {
       OSS oss;
       oss << "MinimumVolumeLevelSetGradient(" << p_distribution_->__str__() << ")";
@@ -1390,17 +1390,17 @@ protected:
       // Nothing to do
     }
 
-    CovarianceWrapper * clone() const
+    CovarianceWrapper * clone() const override
     {
       return new CovarianceWrapper(*this);
     }
 
-    Point operator() (const Point & point) const
+    Point operator() (const Point & point) const override
     {
       return Point(1, (point[0] - muI_) * (point[1] - muJ_) * p_distribution_->computePDF(point));
     }
 
-    Sample operator() (const Sample & sample) const
+    Sample operator() (const Sample & sample) const override
     {
       const UnsignedInteger size = sample.getSize();
       Sample result(p_distribution_->computePDF(sample));
@@ -1408,34 +1408,34 @@ protected:
       return result;
     }
 
-    UnsignedInteger getInputDimension() const
+    UnsignedInteger getInputDimension() const override
     {
       return 2;
     }
 
-    UnsignedInteger getOutputDimension() const
+    UnsignedInteger getOutputDimension() const override
     {
       return 1;
     }
 
-    Description getInputDescription() const
+    Description getInputDescription() const override
     {
       return Description::BuildDefault(2, "x");
     }
 
-    Description getOutputDescription() const
+    Description getOutputDescription() const override
     {
       return Description(1, "c");
     }
 
-    String __repr__() const
+    String __repr__() const override
     {
       OSS oss;
       oss << "CovarianceWrapper(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
-    String __str__(const String & ) const
+    String __str__(const String & ) const override
     {
       OSS oss;
       oss << "CovarianceWrapper(" << p_distribution_->__str__() << ")";
@@ -1463,19 +1463,19 @@ protected:
       // Nothing to do
     };
 
-    ShiftedMomentWrapper * clone() const
+    ShiftedMomentWrapper * clone() const override
     {
       return new ShiftedMomentWrapper(*this);
     }
 
-    Point operator() (const Point & point) const
+    Point operator() (const Point & point) const override
     {
       const Scalar power = std::pow(point[0] - shift_, n_);
       const Scalar pdf = p_distribution_->computePDF(point);
       return Point(1, power * pdf);
     };
 
-    Sample operator() (const Sample & sample) const
+    Sample operator() (const Sample & sample) const override
     {
       const UnsignedInteger size = sample.getSize();
       Sample result(size, 1);
@@ -1485,24 +1485,24 @@ protected:
       return result;
     };
 
-    UnsignedInteger getInputDimension() const
+    UnsignedInteger getInputDimension() const override
     {
       return 1;
     }
 
-    UnsignedInteger getOutputDimension() const
+    UnsignedInteger getOutputDimension() const override
     {
       return 1;
     }
 
-    String __repr__() const
+    String __repr__() const override
     {
       OSS oss;
       oss << "ShiftedMomentWrapper(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
-    String __str__(const String & ) const
+    String __str__(const String & ) const override
     {
       OSS oss;
       oss << "ShiftedMomentWrapper(" << p_distribution_->__str__() << ")";
@@ -1527,7 +1527,7 @@ protected:
       // Nothing to do
     };
 
-    Scalar operator() (const Scalar x) const
+    Scalar operator() (const Scalar x) const override
     {
       Collection<Scalar> z(y_);
       z.add(x);
@@ -1544,14 +1544,14 @@ protected:
       return y_;
     }
 
-    String __repr__() const
+    String __repr__() const override
     {
       OSS oss;
       oss << "ConditionalPDFWrapper(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
-    String __str__(const String & ) const
+    String __str__(const String & ) const override
     {
       OSS oss;
       oss << "ConditionalPDFWrapper(" << p_distribution_->__str__() << ")";
@@ -1575,12 +1575,12 @@ protected:
       // Nothing to do
     };
 
-    ConditionalCDFWrapper * clone() const
+    ConditionalCDFWrapper * clone() const override
     {
       return new ConditionalCDFWrapper(*this);
     }
 
-    Scalar operator() (const Scalar x) const
+    Scalar operator() (const Scalar x) const override
     {
       return p_distribution_->computeConditionalCDF(x, y_);
     };
@@ -1595,14 +1595,14 @@ protected:
       return y_;
     }
 
-    String __repr__() const
+    String __repr__() const override
     {
       OSS oss;
       oss << "ConditionalCDFWrapper(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
-    String __str__(const String & ) const
+    String __str__(const String & ) const override
     {
       OSS oss;
       oss << "ConditionalCDFWrapper(" << p_distribution_->__str__() << ")";
@@ -1625,18 +1625,18 @@ protected:
       // Nothing to do
     }
 
-    EntropyKernel * clone() const
+    EntropyKernel * clone() const override
     {
       return new EntropyKernel(*this);
     }
 
-    Point operator() (const Point & point) const
+    Point operator() (const Point & point) const override
     {
       const Scalar logPDF = p_distribution_->computeLogPDF(point);
       return Point(1, -std::exp(logPDF) * logPDF);
     }
 
-    Sample operator() (const Sample & sample) const
+    Sample operator() (const Sample & sample) const override
     {
       const UnsignedInteger size = sample.getSize();
       const Point logPDF(p_distribution_->computeLogPDF(sample).asPoint());
@@ -1649,34 +1649,34 @@ protected:
       return result;
     };
 
-    UnsignedInteger getInputDimension() const
+    UnsignedInteger getInputDimension() const override
     {
       return p_distribution_->getDimension();
     }
 
-    UnsignedInteger getOutputDimension() const
+    UnsignedInteger getOutputDimension() const override
     {
       return 1;
     }
 
-    Description getInputDescription() const
+    Description getInputDescription() const override
     {
       return p_distribution_->getDescription();
     }
 
-    Description getOutputDescription() const
+    Description getOutputDescription() const override
     {
       return Description(1, "entropyKernel");
     }
 
-    String __repr__() const
+    String __repr__() const override
     {
       OSS oss;
       oss << "EntropyKernel(" << p_distribution_->__str__() << ")";
       return oss;
     }
 
-    String __str__(const String & ) const
+    String __str__(const String & ) const override
     {
       OSS oss;
       oss << "EntropyKernel(" << p_distribution_->__str__() << ")";
@@ -1686,6 +1686,74 @@ protected:
   private:
     const DistributionImplementation * p_distribution_;
   };  // class EntropyKernel
+
+  // Class used to wrap the computePDF()**2 method for integration purpose
+  class PDFSquaredWrapper : public EvaluationImplementation
+  {
+  public:
+    PDFSquaredWrapper(const DistributionImplementation *p_distribution)
+        : EvaluationImplementation(), p_distribution_(p_distribution)
+    {
+      // Nothing to do
+    }
+
+    PDFSquaredWrapper *clone() const override
+    {
+      return new PDFSquaredWrapper(*this);
+    }
+
+    Point operator()(const Point &point) const override
+    {
+      const Scalar pdf = p_distribution_->computePDF(point);
+      return Point(1, pdf * pdf);
+    }
+
+    Sample operator()(const Sample &sample) const override
+    {
+      // Keep the parallelism of computePDF
+      Sample pdfSquared(p_distribution_->computePDF(sample));
+      for (UnsignedInteger i = 0; i < pdfSquared.getSize(); ++i)
+        pdfSquared(i, 0) = pdfSquared(i, 0) * pdfSquared(i, 0);
+      return pdfSquared;
+    }
+
+    UnsignedInteger getInputDimension() const override
+    {
+      return p_distribution_->getDimension();
+    }
+
+    UnsignedInteger getOutputDimension() const override
+    {
+      return 1;
+    }
+
+    Description getInputDescription() const override
+    {
+      return p_distribution_->getDescription();
+    }
+
+    Description getOutputDescription() const override
+    {
+      return Description(1, "pdfSquared");
+    }
+
+    String __repr__() const override
+    {
+      OSS oss;
+      oss << "PDFSquaredWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+    String __str__(const String &) const override
+    {
+      OSS oss;
+      oss << "PDFSquaredWrapper(" << p_distribution_->__str__() << ")";
+      return oss;
+    }
+
+  private:
+    const DistributionImplementation *p_distribution_;
+  }; // class PDFSquaredWrapper
 
 #endif
 

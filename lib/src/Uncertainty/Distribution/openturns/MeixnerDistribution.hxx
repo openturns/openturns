@@ -52,58 +52,58 @@ public:
   /** Comparison operator */
   Bool operator ==(const MeixnerDistribution & other) const;
 protected:
-  Bool equals(const DistributionImplementation & other) const;
+  Bool equals(const DistributionImplementation & other) const override;
 public:
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /* Interface inherited from Distribution */
 
   /** Virtual constructor */
-  virtual MeixnerDistribution * clone() const;
+  MeixnerDistribution * clone() const override;
 
   /** Get one realization of the distribution */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Get the PDF of the distribution */
   using ContinuousDistribution::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
   using ContinuousDistribution::computeLogPDF;
-  Scalar computeLogPDF(const Point & point) const;
+  Scalar computeLogPDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
   using ContinuousDistribution::computeCDF;
-  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const override;
   using ContinuousDistribution::computeComplementaryCDF;
-  Scalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const override;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  Complex computeCharacteristicFunction(const Scalar x) const;
-  Complex computeLogCharacteristicFunction(const Scalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const override;
+  Complex computeLogCharacteristicFunction(const Scalar x) const override;
 
   /** Get the standard deviation of the distribution */
-  Point getStandardDeviation() const;
+  Point getStandardDeviation() const override;
 
   /** Get the skewness of the distribution */
-  Point getSkewness() const;
+  Point getSkewness() const override;
 
   /** Get the kurtosis of the distribution */
-  Point getKurtosis() const;
+  Point getKurtosis() const override;
 
   /** Get the standard representative in the parametric family, associated with the standard moments */
-  Distribution getStandardRepresentative() const;
+  Distribution getStandardRepresentative() const override;
 
   /** Parameters value accessors */
-  void setParameter(const Point & parameter);
-  Point getParameter() const;
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
 
   /** Parameters description accessor */
-  Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
   /** Check if the distribution is elliptical */
-  Bool isElliptical() const;
+  Bool isElliptical() const override;
 
   /* Interface specific to MeixnerDistribution */
 
@@ -123,15 +123,11 @@ public:
   void setGamma(const Scalar gamma);
   Scalar getGamma() const;
 
-  /** @deprecated Mu accessor */
-  void setMu(const Scalar mu);
-  Scalar getMu() const;
-
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Initialize optimization solver parameter using the ResourceMap */
   void initializeOptimizationAlgorithmParameter();
@@ -148,27 +144,21 @@ protected:
 private:
 
   /** Get the quantile of the distribution, i.e the value Xp such that P(X <= Xp) = prob */
-  Scalar computeScalarQuantile(const Scalar prob,
-                               const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Compute the numerical range of the distribution given the parameters values */
-  void computeRange();
+  void computeRange() override;
 
   /** Set simultaneously the tree scale and shape parameters */
   void setBetaAlphaDelta(const Scalar beta,
                          const Scalar alpha,
                          const Scalar delta);
 
-  /** @deprecated Set simultaneously the tree scale and shape parameters */
-  void setAlphaBetaDelta(const Scalar alpha,
-                         const Scalar beta,
-                         const Scalar delta);
-
   /** Compute the mean of the distribution */
-  void computeMean() const;
+  void computeMean() const override;
 
   /** Compute the covariance of the distribution */
-  void computeCovariance() const;
+  void computeCovariance() const override;
 
   /** Update the derivative attributes */
   void update();

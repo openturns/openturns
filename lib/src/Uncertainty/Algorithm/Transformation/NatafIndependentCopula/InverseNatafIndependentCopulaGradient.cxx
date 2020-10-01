@@ -20,6 +20,7 @@
  */
 #include <cmath>
 #include "openturns/InverseNatafIndependentCopulaGradient.hxx"
+#include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -79,8 +80,7 @@ Matrix InverseNatafIndependentCopulaGradient::gradient(const Point & inP) const
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
     const Scalar x = inP[i];
-    // 0.3989422804014326779399462 = 1/sqrt(2*Pi)
-    result(i, i) = 0.3989422804014326779399462 * exp(-0.5 * x * x);
+    result(i, i) = DistFunc::dNormal(x);
   }
   return result;
 }

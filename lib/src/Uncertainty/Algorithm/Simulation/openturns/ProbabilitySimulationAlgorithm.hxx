@@ -52,28 +52,28 @@ public:
                                  const HistoryStrategy & convergenceStrategy = Compact());
 
   /** Virtual constructor */
-  virtual ProbabilitySimulationAlgorithm * clone() const;
+  ProbabilitySimulationAlgorithm * clone() const override;
 
   /** Experiment accessor */
   WeightedExperiment getExperiment() const;
   void setExperiment(const WeightedExperiment & experiment);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Block size accessor */
-  virtual void setBlockSize(const UnsignedInteger blockSize);
+  void setBlockSize(const UnsignedInteger blockSize) override;
 
 protected:
 
   /** Compute the block sample and the points that realized the event */
-  virtual Sample computeBlockSample();
+  Sample computeBlockSample() override;
   Sample computeBlockSampleComposite();
 
   // The experiment type

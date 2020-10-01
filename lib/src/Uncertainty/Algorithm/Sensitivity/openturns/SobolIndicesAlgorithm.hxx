@@ -114,7 +114,9 @@ public:
 
   static Graph DrawSobolIndices(const Description & inputDescription,
                                 const Point & firstOrderIndices,
-                                const Point & secondOrderIndices);
+                                const Point & secondOrderIndices,
+                                const Interval & firstOrderConfidenceInterval = Interval(),
+                                const Interval & totalOrderConfidenceInterval = Interval());
 
   static Graph DrawCorrelationCoefficients(const Point & values,
       const Description & names,
@@ -135,10 +137,10 @@ public:
                  const UnsignedInteger size);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 } ; /* class SobolIndicesAlgorithm */
 

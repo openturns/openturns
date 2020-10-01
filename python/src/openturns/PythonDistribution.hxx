@@ -48,7 +48,7 @@ public:
   PythonDistribution(const PythonDistribution & other);
 
   /** Virtual constructor */
-  virtual PythonDistribution * clone() const;
+  PythonDistribution * clone() const override;
 
   /** Copy assignment operator */
   PythonDistribution & operator=(const PythonDistribution & rhs);
@@ -60,109 +60,107 @@ public:
   Bool operator ==(const PythonDistribution & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset) const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
   /* Here is the interface that all derived class must implement */
 
   /** Get one realization of the distribution */
-  Point getRealization() const;
+  Point getRealization() const override;
 
   /** Get a numerical sample whose elements follow the distributionImplementation */
-  Sample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the DDF of the distribution */
-  Point computeDDF(const Point & point) const;
+  Point computeDDF(const Point & point) const override;
 
   /** Get the PDF of the distribution */
-  Scalar computePDF(const Point & point) const;
-  Scalar computeLogPDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
+  Scalar computeLogPDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
-  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const override;
 
   /** Get the complementary CDF of the distribution */
-  Scalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const override;
 
   /** Get the quantile of the distributionImplementation */
-  virtual Point computeQuantile(const Scalar prob,
-                                const Bool tail = false) const;
+  virtual Point computeQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
-  Complex computeCharacteristicFunction(const Scalar x) const;
+  Complex computeCharacteristicFunction(const Scalar x) const override;
 
   /** Get the PDFGradient of the distribution */
-  Point computePDFGradient(const Point & point) const;
+  Point computePDFGradient(const Point & point) const override;
 
   /** Get the CDFGradient of the distribution */
-  Point computeCDFGradient(const Point & point) const;
+  Point computeCDFGradient(const Point & point) const override;
 
   /** Get the quantile of the distribution */
-  Scalar computeScalarQuantile(const Scalar prob,
-                               const Bool tail = false) const;
+  Scalar computeScalarQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Get the roughness, i.e. the L2-norm of the PDF */
-  Scalar getRoughness() const;
+  Scalar getRoughness() const override;
 
   /** Get the mean of the distribution */
-  Point getMean() const;
+  Point getMean() const override;
 
   /** Get the standard deviation of the distribution */
-  Point getStandardDeviation() const;
+  Point getStandardDeviation() const override;
 
   /** Get the skewness of the distribution */
-  Point getSkewness() const;
+  Point getSkewness() const override;
 
   /** Get the kurtosis of the distribution */
-  Point getKurtosis() const;
+  Point getKurtosis() const override;
 
   /** Get the raw moments of the standardized distribution */
-  Point getStandardMoment(const UnsignedInteger n) const;
+  Point getStandardMoment(const UnsignedInteger n) const override;
 
   /** Get the raw moments of the distribution */
-  Point getMoment(const UnsignedInteger n) const;
+  Point getMoment(const UnsignedInteger n) const override;
 
   /** Get the centered moments of the distribution */
-  Point getCenteredMoment(const UnsignedInteger n) const;
+  Point getCenteredMoment(const UnsignedInteger n) const override;
 
   /** Parameters value accessors */
-  void setParameter(const Point & parameter);
-  Point getParameter() const;
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
 
   /** Parameters description accessor */
-  Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
   /** Check if the distribution is a copula */
-  Bool isCopula() const;
+  Bool isCopula() const override;
 
   /** Check if the distribution is elliptical */
-  Bool isElliptical() const;
+  Bool isElliptical() const override;
 
   /** Check if the distribution is continuous */
-  Bool isContinuous() const;
+  Bool isContinuous() const override;
 
   /** Check if the distribution is integral */
-  Bool isIntegral() const;
+  Bool isIntegral() const override;
 
   /** Tell if the distribution has elliptical copula */
-  Bool hasEllipticalCopula() const;
+  Bool hasEllipticalCopula() const override;
 
   /** Tell if the distribution has independent copula */
-  Bool hasIndependentCopula() const;
+  Bool hasIndependentCopula() const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  virtual Distribution getMarginal(const Indices & indices) const;
-  virtual Distribution getMarginal(const UnsignedInteger i) const;
+  Distribution getMarginal(const Indices & indices) const override;
+  Distribution getMarginal(const UnsignedInteger i) const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method save() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Compute the numerical range of the distribution given the parameters values */
-  virtual void computeRange();
+  void computeRange() override;
 
 
 protected:

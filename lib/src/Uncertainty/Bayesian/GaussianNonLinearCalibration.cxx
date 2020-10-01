@@ -22,7 +22,6 @@
 #include "openturns/GaussianLinearCalibration.hxx"
 #include "openturns/NonLinearLeastSquaresCalibration.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Dirac.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/NormalFactory.hxx"
 #include "openturns/KernelSmoothing.hxx"
@@ -56,9 +55,7 @@ GaussianNonLinearCalibration::GaussianNonLinearCalibration(const Function & mode
     const Point & candidate,
     const CovarianceMatrix & parameterCovariance,
     const CovarianceMatrix & errorCovariance)
-  : CalibrationAlgorithmImplementation(outputObservations, Normal(candidate, parameterCovariance))
-  , model_(model)
-  , inputObservations_(inputObservations)
+  : CalibrationAlgorithmImplementation(model, inputObservations, outputObservations, Normal(candidate, parameterCovariance))
   , algorithm_()
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("GaussianNonLinearCalibration-BootstrapSize"))
   , errorCovariance_(errorCovariance)
@@ -330,10 +327,23 @@ void GaussianNonLinearCalibration::run()
 {
   // Compute the posterior MAP
   // Error distribution
-  const Normal error(Point(errorCovariance_.getDimension()), errorCovariance_);
+  // It is built in two steps to benefit from the Cholesky factorization of the
+  // error covariance in the computation of thetaStar
+  Normal error(Point(errorCovariance_.getDimension()), errorCovariance_);
   const TriangularMatrix parameterInverseCholesky(getParameterPrior().getInverseCholesky());
   const TriangularMatrix errorInverseCholesky(error.getInverseCholesky());
   const Point thetaStar(run(inputObservations_, outputObservations_, getCandidate(), parameterInverseCholesky, errorInverseCholesky));
+  // Build the residual function this way to benefit from the automatic Hessian
+  const MemoizeFunction residualFunction(NonLinearLeastSquaresCalibration::BuildResidualFunction(model_, inputObservations_, outputObservations_));
+  const Point residuals(residualFunction(thetaStar));
+  if (globalErrorCovariance_)
+    error.setMean(residuals);
+  else
+    {
+      SampleImplementation residualsAsSample(outputObservations_.getSize(), outputObservations_.getDimension());
+      residualsAsSample.setData(residuals);
+      error.setMean(residualsAsSample.computeMean());      
+    }
   // Compute the posterior distribution
   Distribution parameterPosterior;
   if (bootstrapSize_ > 0)
@@ -362,9 +372,8 @@ void GaussianNonLinearCalibration::run()
     parameterPosterior = algo.getResult().getParameterPosterior();
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
-  // Build the residual function this way to benefit from the automatic Hessian
-  const MemoizeFunction residualFunction(NonLinearLeastSquaresCalibration::BuildResidualFunction(model_, inputObservations_, outputObservations_));
-  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, outputObservations_, residualFunction);
+  result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction);
+  computeOutputAtPriorAndPosterior();
 }
 
 /* Perform a unique estimation */
@@ -451,9 +460,7 @@ GaussianNonLinearCalibration * GaussianNonLinearCalibration::clone() const
 /* Method save() stores the object through the StorageManager */
 void GaussianNonLinearCalibration::save(Advocate & adv) const
 {
-  PersistentObject::save(adv);
-  adv.saveAttribute("model_", model_);
-  adv.saveAttribute("inputObservations_", inputObservations_);
+  CalibrationAlgorithmImplementation::save(adv);
   adv.saveAttribute("algorithm_", algorithm_);
   adv.saveAttribute("bootstrapSize_", bootstrapSize_);
 }
@@ -461,9 +468,7 @@ void GaussianNonLinearCalibration::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void GaussianNonLinearCalibration::load(Advocate & adv)
 {
-  PersistentObject::load(adv);
-  adv.loadAttribute("model_", model_);
-  adv.loadAttribute("inputObservations_", inputObservations_);
+  CalibrationAlgorithmImplementation::load(adv);
   adv.loadAttribute("algorithm_", algorithm_);
   adv.loadAttribute("bootstrapSize_", bootstrapSize_);
 }

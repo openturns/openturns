@@ -58,7 +58,7 @@ public:
                                     const Matrix & projection);
 
   /** Virtual constructor */
-  virtual KarhunenLoeveResultImplementation * clone() const;
+  KarhunenLoeveResultImplementation * clone() const override;
 
   /** Threshold accessor */
   Scalar getThreshold() const;
@@ -95,14 +95,14 @@ public:
   Field liftAsField(const Point & coefficients) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Covariance model */

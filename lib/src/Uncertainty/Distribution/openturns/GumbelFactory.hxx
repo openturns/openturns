@@ -40,16 +40,16 @@ public:
   GumbelFactory();
 
   /** Virtual constructor */
-  virtual GumbelFactory * clone() const;
+  GumbelFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
   using DistributionFactoryImplementation::buildEstimator;
-  DistributionFactoryResult buildEstimator(const Sample & sample) const;
+  DistributionFactoryResult buildEstimator(const Sample & sample) const override;
   Gumbel buildAsGumbel(const Sample & sample) const;
   Gumbel buildAsGumbel(const Point & parameters) const;
   Gumbel buildAsGumbel() const;

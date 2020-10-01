@@ -33,7 +33,7 @@ static const Factory<SpaceFillingPhiP> Factory_SpaceFillingPhiP;
 
 
 /* Default constructor */
-SpaceFillingPhiP::SpaceFillingPhiP(UnsignedInteger p)
+SpaceFillingPhiP::SpaceFillingPhiP(const UnsignedInteger p)
   : SpaceFillingImplementation(true),
     p_(p)
 {

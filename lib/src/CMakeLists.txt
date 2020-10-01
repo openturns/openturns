@@ -48,7 +48,6 @@ foreach (built_source ${BUILT_SOURCEFILES})
   set_source_files_properties (${built_source} PROPERTIES GENERATED TRUE)
 endforeach (built_source)
 include_directories (BEFORE ${INTERNAL_INCLUDE_DIRS})
-link_directories (${CMAKE_Fortran_IMPLICIT_LINK_DIRECTORIES})
 ot_add_library (OT ${SOURCEFILES} ${BUILT_SOURCEFILES})
 set_target_properties (OT PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
@@ -71,21 +70,11 @@ if (BISON_FOUND AND FLEX_FOUND)
   add_dependencies (OT generate_csv_parser)
 endif ()
 
-if (CMAKE_VERSION VERSION_LESS 3)
-  target_link_libraries (OT ${OPENTURNS_LIBRARIES})
-  target_link_libraries (OT ${OPENTURNS_PRIVATE_LIBRARIES})
-  set_target_properties (OT PROPERTIES INTERFACE_LINK_LIBRARIES "${OPENTURNS_LIBRARIES}")
-else ()
-  target_link_libraries (OT PUBLIC ${OPENTURNS_LIBRARIES})
-  target_link_libraries (OT PRIVATE ${OPENTURNS_PRIVATE_LIBRARIES})
-endif ()
+target_link_libraries (OT PUBLIC ${OPENTURNS_LIBRARIES})
+target_link_libraries (OT PRIVATE ${OPENTURNS_PRIVATE_LIBRARIES})
 
-if (NOT CMAKE_VERSION VERSION_LESS 3.2)
-  # Else Debian packages of modules fail to build as destination is absolute
-  # https://gitlab.kitware.com/cmake/cmake/commit/dd089e08b578f20b7dc7d2ce658e3df05e346e35
-  target_include_directories (OT INTERFACE $<INSTALL_INTERFACE:include>)
-  target_include_directories (OT PUBLIC ${OPENTURNS_INCLUDE_DIRS})
-endif ()
+target_include_directories (OT INTERFACE $<INSTALL_INTERFACE:include>)
+target_include_directories (OT PUBLIC ${OPENTURNS_INCLUDE_DIRS})
 
 # Build an empty executable to check link dependencies and completeness
 add_executable (linktest main.cxx)

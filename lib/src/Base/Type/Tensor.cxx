@@ -190,19 +190,19 @@ Bool Tensor::operator == (const Tensor & rhs) const
   return (*(lhs.getImplementation()) == *(rhs.getImplementation()) );
 }
 
-const Scalar* Tensor::__baseaddress__() const
+const Scalar* Tensor::data() const
 {
-  return getImplementation()->__baseaddress__();
+  return getImplementation()->data();
 }
 
-UnsignedInteger Tensor::__elementsize__() const
+UnsignedInteger Tensor::elementSize() const
 {
-  return getImplementation()->__elementsize__();
+  return getImplementation()->elementSize();
 }
 
-UnsignedInteger Tensor::__stride__(UnsignedInteger dim) const
+UnsignedInteger Tensor::stride(UnsignedInteger dim) const
 {
-  return getImplementation()->__stride__(dim);
+  return getImplementation()->stride(dim);
 }
 
 

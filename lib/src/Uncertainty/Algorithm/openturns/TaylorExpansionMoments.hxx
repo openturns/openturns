@@ -57,10 +57,10 @@ public:
 
 
   /** Virtual constructor */
-  virtual TaylorExpansionMoments * clone() const;
+  TaylorExpansionMoments * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** limitStateVariable accessor */
   RandomVector getLimitStateVariable() const;
@@ -90,10 +90,10 @@ public:
   Graph drawImportanceFactors() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

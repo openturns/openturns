@@ -1,0 +1,126 @@
+%feature("docstring") OT::FejerAlgorithm
+"Fejer Integration algorithm
+
+Available constructors:
+    FejerAlgorithm(*dimension=1, method=FejerAlgorithm.FEJERTYPE1*)
+
+    FejerAlgorithm(*discretization, method=FejerAlgorithmFEJERTYPE1*)
+
+Parameters
+----------
+dimension : int, :math:`dimension>0`
+    The dimension of the functions to integrate. The default discretization is *FejerAlgorithm-DefaultMarginalIntegrationPointsNumber* in each dimension, see :class:`~openturns.ResourceMap`.
+discretization : sequence of int
+    The number of nodes in each dimension. The sequence must be non-empty and must contain only positive values.
+method : int, optional
+    Integer used to select the method of integration.
+    (Amongst ot.FejerAlgorithm.FEJERTYPE1, ot.FejerAlgorithm.FEJERTYPE2 and ot.FejerAlgorithm.CLENSHAWCURTIS).
+    Default is `ot.FejerAlgorithm.FEJERTYPE1`
+
+Notes
+-----
+The FejerAlgorithm algorithm enables to approximate the definite integral:
+
+.. math::
+
+    \int_{\vect{a}}^\vect{b} f(\vect{t})\di{\vect{t}}
+
+The Fejer type 2 writes :
+
+
+with :math:`f: \Rset^d \mapsto \Rset^p`, :math:`\vect{a}, \vect{b}\in\Rset^d` using a the Fejer approximation.
+
+Three algorithms are implemented : Fejer type 1, Fejer type 2 & ClenshawCurtis methods
+
+Fejer type 1 writes:
+
+.. math::
+
+    \int_{\vect{a}}^\vect{b} f(\vect{t})\di{\vect{t}} = \sum_{\vect{n}\in \cN}\left(\prod_{i=1}^d w^{N_i}_{n_i}\right)f(\xi^{N_1}_{n_1},\dots,\xi^{N_d}_{n_d})
+
+whereas Fejer type 2 writes :
+
+.. math::
+
+    \int_{\vect{a}}^\vect{b} f(\vect{t})\di{\vect{t}} = \sum_{\vect{n}\in \cN}\left(\prod_{i=1}^d w^{N_i}_{n_i}\right)f(\xi^{N_1}_{n_1},\dots,\xi^{N_d}_{n_d})
+
+And Clenshaw-Curtis writes :
+
+.. math::
+
+    \int_{\vect{a}}^\vect{b} f(\vect{t})\di{\vect{t}} = \sum_{\vect{n}\in \cN}\left(\prod_{i=1}^d w^{N_i}_{n_i}\right)f(\xi^{N_1}_{n_1},\dots,\xi^{N_d}_{n_d})
+
+where :math:`\xi^{N_i}_{n_i}` is the :math:`n_i`th node of the :math:`N_i`-points using Chebyshev point as node with :math:`n_i= \frac{1}{2},\frac{3}{2},\ldots,N_i-\frac{1}{2}` 
+(1D integration rule) and :math:`w^{N_i}_{n_i}` the associated weight.
+
+Examples
+--------
+Create a FejerAlgorithm algorithm:
+
+>>> import openturns as ot
+>>> algo = ot.FejerAlgorithm(2)
+>>> algo = ot.FejerAlgorithm([2, 4, 5])"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::FejerAlgorithm::integrate
+"Evaluation of the integral of :math:`f` on an interval.
+
+Available usages:
+    integrate(*f, interval*)
+
+    integrate(*f, interval, xi*)
+
+Parameters
+----------
+f : :class:`~openturns.Function`, :math:`f: \Rset^d \mapsto \Rset^p`
+    The integrand function.
+interval : :class:`~openturns.Interval`, :math:`interval \in \Rset^d` 
+    The integration domain. 
+xi : :class:`~openturns.Sample`
+    The integration nodes.
+
+Returns
+-------
+value : :class:`~openturns.Point`
+    Approximation of the integral.
+
+
+Examples
+--------
+>>> import openturns as ot
+>>> f = ot.SymbolicFunction(['x'], ['sin(x)'])
+>>> a = -2.5
+>>> b = 4.5
+>>> algoF1 = ot.FejerAlgorithm([10])
+>>> value = algoF1.integrate(f, ot.Interval(a, b))[0]
+>>> print(value)
+-0.590...
+"
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::FejerAlgorithm::getDiscretization
+"Accessor to the discretization of the tensorized rule.
+
+Returns
+-------
+discretization : :class:`~openturns.Indices`
+    The number of integration point in each dimension."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::FejerAlgorithm::getNodes
+"Accessor to the integration nodes.
+
+Returns
+-------
+nodes : :class:`~openturns.Sample`
+    The tensorized FejerAlgorithm integration nodes on :math:`[0,1]^d` where :math:`d>0` is the dimension of the integration algorithm."
+
+// ---------------------------------------------------------------------
+%feature("docstring") OT::FejerAlgorithm::getWeights
+"Accessor to the integration weights.
+
+Returns
+-------
+weights : :class:`~openturns.Point`
+    The tensorized FejerAlgorithm integration weights on :math:`[0,1]^d` where :math:`d>0` is the dimension of the integration algorithm."
+

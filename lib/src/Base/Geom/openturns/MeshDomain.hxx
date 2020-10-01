@@ -55,15 +55,15 @@ public:
   virtual void setEnclosingSimplexAlgorithm(const EnclosingSimplexAlgorithm enclosingSimplex);
 
   /** Virtual constructor method */
-  virtual MeshDomain * clone() const;
+  MeshDomain * clone() const override;
 
   /** Check if the mesh contains a given point */
-  virtual Bool contains(const Point & point) const;
+  Bool contains(const Point & point) const override;
   using DomainImplementation::contains;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Lower bound of the bounding box */
   virtual Point getLowerBound() const;
@@ -72,10 +72,10 @@ public:
   virtual Point getUpperBound() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

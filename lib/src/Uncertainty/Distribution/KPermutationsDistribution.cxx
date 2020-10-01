@@ -116,7 +116,7 @@ Point KPermutationsDistribution::getRealization() const
   buffer.fill();
   for (UnsignedInteger i = 0; i < k_; ++i)
   {
-    UnsignedInteger index = i + RandomGenerator::IntegerGenerate(n_ - i);
+    const UnsignedInteger index = i + RandomGenerator::IntegerGenerate(n_ - i);
     realization[i] = buffer[index];
     buffer[index] = buffer[i];
   }
@@ -285,11 +285,9 @@ KPermutationsDistribution::PointWithDescriptionCollection KPermutationsDistribut
   if (dimension > 1)
   {
     PointWithDescription point(2);
-    Description description(2);
+    Description description = {"k", "n"};
     point[0] = k_;
-    description[0] = "k";
     point[1] = n_;
-    description[1] = "n";
     point.setDescription(description);
     point.setName("dependence");
     parameters[dimension] = point;

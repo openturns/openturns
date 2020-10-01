@@ -64,7 +64,7 @@ public:
                      const OptimizationProblem & problem);
 
   /** Virtual constructor */
-  virtual OptimizationResult * clone() const;
+  OptimizationResult * clone() const override;
 
   /** OptimalPoint accessors */
   void setOptimalPoint(const Point & optimalPoint);
@@ -106,18 +106,22 @@ public:
   void setProblem(const OptimizationProblem & problem);
   OptimizationProblem getProblem() const;
 
-  /** Lagrange multipliers accessor */
+  /** @deprecated Lagrange multipliers accessor */
   void setLagrangeMultipliers(const Point & lagrangeMultipliers);
   Point getLagrangeMultipliers() const;
 
+  /** @deprecated Computes the Lagrange multipliers associated with the constraints */
+  Point computeLagrangeMultipliers() const;
+  Point computeLagrangeMultipliers(const Point & x) const;
+
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
   /** Incremental history storage */
   void store(const Point & inP,
@@ -151,16 +155,14 @@ protected:
   void setConstraintErrorHistory(const Sample & constraintError);
 
 private:
-
-  Point  optimalPoint_;
-  Point  optimalValue_;
-  UnsignedInteger evaluationNumber_; // Number of function evaluations
-  UnsignedInteger    iterationNumber_;       /**< Number of outermost iterations (in case of nested iterations) */
-  Scalar absoluteError_;   /**< Value of ||x_n - x_{n-1}|| */
-  Scalar relativeError_;   /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
-  Scalar residualError_;   /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */
-  Scalar constraintError_; /**< Value of ||constraints(x_n)|| for the active constraints */
-  Point lagrangeMultipliers_;
+  Point optimalPoint_;
+  Point optimalValue_;
+  UnsignedInteger evaluationNumber_ = 0; // Number of function evaluations
+  UnsignedInteger iterationNumber_ = 0; // Number of outermost iterations (in case of nested iterations)
+  Scalar absoluteError_ = -1.0; /**< Value of ||x_n - x_{n-1}|| */
+  Scalar relativeError_ = -1.0; /**< Value of ||x_n - x_{n-1}|| / ||x_n|| */
+  Scalar residualError_ = -1.0; /**< Value of ||objectiveFunction(x_n) - objectiveFunction(x_{n-1})|| */
+  Scalar constraintError_ = -1.0; /**< Value of ||constraints(x_n)|| for the active constraints */
   Compact absoluteErrorHistory_;
   Compact relativeErrorHistory_;
   Compact residualErrorHistory_;

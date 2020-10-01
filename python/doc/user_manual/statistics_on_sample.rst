@@ -165,7 +165,10 @@ Refer to :ref:`sensitivity_sobol`.
     :template: class.rst_t
 
     SobolIndicesExperiment
-    SobolSimulationAlgorithm
+
+    :template: classWithPlot.rst_t
+   
+    SobolSimulationAlgorithm 
     SobolSimulationResult
 
 Statistical tests
@@ -184,6 +187,8 @@ Goodness-of-fit metrics & tests
     :toctree: _generated/
     :template: function.rst_t
 
+    FittingTest_AIC
+    FittingTest_AICC
     FittingTest_BIC
     FittingTest_ChiSquared
     FittingTest_Kolmogorov
@@ -197,6 +202,8 @@ Graphical tests
     :toctree: _generated/
     :template: functionWithPlot.rst_t
 
+    VisualTest_DrawPairs
+    VisualTest_DrawPairsMarginals
     VisualTest_DrawCobWeb
     VisualTest_DrawHenryLine
     VisualTest_DrawKendallPlot
@@ -243,6 +250,8 @@ Model selection
     :toctree: _generated/
     :template: function.rst_t
 
+    FittingTest_BestModelAIC
+    FittingTest_BestModelAICC
     FittingTest_BestModelBIC
     FittingTest_BestModelChiSquared
     FittingTest_BestModelKolmogorov

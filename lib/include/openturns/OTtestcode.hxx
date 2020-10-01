@@ -32,6 +32,7 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/OStream.hxx"
 #include "openturns/Sample.hxx"
+#include "openturns/Matrix.hxx"
 #include "openturns/PlatformInfo.hxx"
 
 #define TESTPREAMBLE { OT::PlatformInfo::SetTwoDigitExponent(); }
@@ -293,28 +294,28 @@ void checkClassWithClassName()
 }
 
 
-inline void assert_almost_equal(Scalar a, Scalar b, Scalar rtol = 1.0e-5, Scalar atol = 1.0e-8)
+inline void assert_almost_equal(const Scalar a, const Scalar b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
-  if (std::abs(a - b) > atol + rtol * std::abs(b) )
+  if (std::abs(a - b) > atol + rtol * std::abs(b))
   {
-    throw TestFailed(OSS() << "Value " << a << " is not close enough to " << b);
+    throw TestFailed(OSS() << "Value " << a << " is not close enough to " << b << " " << errMsg);
   }
 }
 
 
-inline void assert_almost_equal(const Point & a, const Point & b, Scalar rtol = 1.0e-5, Scalar atol = 1.0e-8)
+inline void assert_almost_equal(const Point & a, const Point & b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
   if (a.getDimension() != b.getDimension())
     throw InvalidArgumentException(HERE) << "A and B must have the same dimension";
   const UnsignedInteger dimension = a.getDimension();
-  for (UnsignedInteger j = 0; j < dimension; ++ j )
+  for (UnsignedInteger j = 0; j < dimension; ++ j)
   {
-    assert_almost_equal(a[j], b[j], rtol, atol);
+    assert_almost_equal(a[j], b[j], rtol, atol, errMsg);
   }
 }
 
 
-inline void assert_almost_equal(const Sample & a, const Sample & b, Scalar rtol = 1.0e-5, Scalar atol = 1.0e-8)
+inline void assert_almost_equal(const Sample & a, const Sample & b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
   if (a.getSize() != b.getSize())
     throw InvalidArgumentException(HERE) << "A and B must have the same size";
@@ -322,15 +323,32 @@ inline void assert_almost_equal(const Sample & a, const Sample & b, Scalar rtol 
     throw InvalidArgumentException(HERE) << "A and B must have the same dimension";
   const UnsignedInteger size = a.getSize();
   const UnsignedInteger dimension = a.getDimension();
-  for ( UnsignedInteger i = 0; i < size; ++ i )
+  for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    for (UnsignedInteger j = 0; j < dimension; ++ j )
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
-      assert_almost_equal(a(i, j), b(i, j), rtol, atol);
+      assert_almost_equal(a(i, j), b(i, j), rtol, atol, errMsg);
     }
   }
 }
 
+inline void assert_almost_equal(const Matrix &a, const Matrix &b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
+{
+  if (a.getNbRows() != b.getNbRows())
+    throw InvalidArgumentException(HERE) << "A and B must have the same row number";
+  if (a.getNbColumns() != b.getNbColumns())
+    throw InvalidArgumentException(HERE) << "A and B must have the same column number";
+  const UnsignedInteger rows = a.getNbRows();
+  const UnsignedInteger columns = a.getNbColumns();
+
+  for (UnsignedInteger j = 0; j < columns; ++ j)
+  {
+    for (UnsignedInteger i = 0; i < rows; ++ i)
+    {
+      assert_almost_equal(a(i, j), b(i, j), rtol, atol, errMsg);
+    }
+  }
+}
 
 } /* namespace Test */
 

@@ -1,3 +1,11 @@
+openturns (1.15-1) unstable; urgency=low
+
+  [ Julien Schueller ]
+
+  * New upstream release.
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 25 May 2020 18:14:47 +0200
+
 openturns (1.15~rc1-1) unstable; urgency=low
 
   [ Julien Schueller ]

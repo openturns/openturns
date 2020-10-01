@@ -28,6 +28,7 @@
 
 /* Uncertainty/Algorithm/Classification */
 %include MixtureClassifier.i
+%include MinimumVolumeClassifier.i 
 
 /* At last we include template definitions */
 %include UncertaintyClassificationTemplateDefs.i

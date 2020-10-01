@@ -12,18 +12,25 @@ model : :class:`~openturns.Function`
     The parametric function to be calibrated.
 inputObservations : 2-d sequence of float
     The sample of input observations.
+    Can have dimension 0 to specify no observations.
 outputObservations : 2-d sequence of float
     The sample of output observations.
 candidate : sequence of float
     The reference value of the parameter.
 methodName : str
-    The name of the least-squares method to use for the calibration. By default, equal to *QR*. Possible values are *SVD*, *QR*, *Cholesky*.
+    The name of the least-squares method to use for the calibration.
+    By default, equal to *QR*. Possible values are *SVD*, *QR*, *Cholesky*.
+modelObservations : 2-d sequence of float
+    The sample of output values of the model.
+gradientObservations : 2-d sequence of float
+    The Jacobian matrix of the model with respect to the parameter.
 
 Notes
 -----
 LinearLeastSquaresCalibration is the minimum variance estimator of the parameter of a given model under the assumption that this parameter acts linearly in the model.
 
-The prior distribution of the parameter is a :class:`~openturns.Dirac`. 
+The prior distribution of the parameter is a noninformative prior
+emulated using a flat :class:`~openturns.Normal` centered on the candidate and with a variance equal to SpecFunc.MaxScalar.
 
 The posterior distribution of the parameter is :class:`~openturns.Normal` and reflects the 
 variability of the optimum parameter depending on the observation sample. 
@@ -35,12 +42,12 @@ ensures that the singular values of the covariance matrix are left unmodified.
 If this parameter is set to a nonzero, relatively small, value denoted by :math:`\epsilon`, 
 then all singular values of the covariance matrix are increased by :math:`\epsilon s_1`. 
 
-The resulting distribution of the output error is :class:`~openturns.Normal` with a zero mean 
-and a diagonal covariance matrix computed from the residuals. 
-The residuals are computed based on the linearization of the model, 
-where the Jacobian matrix is evaluated at the candidate point. 
-The diagonal of the diagonal covariance matrix of the output error 
-is contant and is estimated with the unbiased variance estimator. 
+The resulting distribution of the output error is :class:`~openturns.Normal` with a zero mean
+and a diagonal covariance matrix computed from the residuals.
+The residuals are computed based on the linearization of the model,
+where the Jacobian matrix is evaluated at the candidate point.
+The diagonal of the covariance matrix of the output error
+is constant and is estimated with the unbiased variance estimator.
 
 See also
 --------

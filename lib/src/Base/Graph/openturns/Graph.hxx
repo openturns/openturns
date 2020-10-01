@@ -65,10 +65,10 @@ public:
 
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Adds a drawable instance to the collection of drawables contained in Graph */
   void add(const Drawable & aDrawable);

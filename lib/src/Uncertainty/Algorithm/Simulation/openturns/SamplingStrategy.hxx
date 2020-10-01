@@ -62,7 +62,7 @@ public:
   UnsignedInteger getDimension() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 } ; /* class SamplingStrategy */
 

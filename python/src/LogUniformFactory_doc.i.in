@@ -17,3 +17,30 @@ The parameters are estimated by method of moments:
 See also
 --------
 DistributionFactory, LogUniform"
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_buildAsLogUniform_doc
+"Build the LogUniform distribution.
+
+**Available usages**:
+
+    buildAsLogUniform(*sample*)
+
+    buildAsLogUniform(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : Collection of :class:`~openturns.PointWithDescription`
+    A vector of parameters of the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.LogUniform`
+    The built distribution."
+%enddef
+%feature("docstring") OT::LogUniformFactory::buildAsLogUniform
+OT_DistributionFactory_buildAsLogUniform_doc
+

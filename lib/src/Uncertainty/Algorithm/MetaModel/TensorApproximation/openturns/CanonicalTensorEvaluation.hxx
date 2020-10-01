@@ -48,14 +48,14 @@ public:
                             const UnsignedInteger rank = 1);
 
   /** Virtual constructor */
-  virtual CanonicalTensorEvaluation * clone() const;
+  CanonicalTensorEvaluation * clone() const override;
 
   /** Evaluation operator */
-  virtual Point operator() (const Point & point) const;
+  Point operator() (const Point & point) const override;
 
   /** Dimension accessor */
-  virtual UnsignedInteger getInputDimension() const;
-  virtual UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getInputDimension() const override;
+  UnsignedInteger getOutputDimension() const override;
 
   Indices getDegrees() const;
 
@@ -72,14 +72,14 @@ public:
   CanonicalTensorEvaluation getMarginalRank(const UnsignedInteger i) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   // subbasis sizes

@@ -45,25 +45,25 @@ public:
              const Point & physicalStartingPoint);
 
   /** Virtual constructor */
-  virtual SystemFORM * clone() const;
+  SystemFORM * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Event accessor */
-  virtual void setEvent(const RandomVector & systemEvent);
+  void setEvent(const RandomVector & systemEvent) override;
 
   /** Function that computes the design point by re-using the Analytical::run() and creates a SystemFORM::Result */
-  void run();
+  void run() override;
 
   /** Result accessor */
   MultiFORMResult getResult() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   MultiFORMResult multiFORMResult_;

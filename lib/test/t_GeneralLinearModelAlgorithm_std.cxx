@@ -42,7 +42,7 @@ int main(int, char *[])
 
     Sample X(sampleSize, inputDimension);
     for (UnsignedInteger i = 0; i < sampleSize; ++ i)
-      X[i][0] = 3.0 + (8.0 * i) / sampleSize;
+      X(i, 0) = 3.0 + (8.0 * i) / sampleSize;
     Sample Y = model(X);
 
     // Add a small noise to data
@@ -62,7 +62,7 @@ int main(int, char *[])
     // Now without estimating covariance parameters
     basis = LinearBasisFactory(inputDimension).build();
     covarianceModel = DiracCovarianceModel(inputDimension);
-    algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis, true, true);
+    algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel, basis, true);
     algo.setOptimizeParameters(false);
     algo.run();
     result = algo.getResult();

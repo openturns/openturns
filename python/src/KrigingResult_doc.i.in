@@ -149,7 +149,7 @@ If the trend is not estimated, the collection is empty.
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::KrigingResult::getConditionalMean
-"Compute the expected mean of the Gaussian process on a point or a sample of points.
+"Compute the conditional mean of the Gaussian process on a point or a sample of points.
 
 Available usages:
     getConditionalMean(x)
@@ -185,7 +185,7 @@ condMean : :class:`~openturns.Point`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::KrigingResult::getConditionalCovariance
-"Compute the expected covariance of the Gaussian process on a point (or several points).
+"Compute the conditional covariance of the Gaussian process on a point (or several points).
 
 Available usages:
     getConditionalCovariance(x)
@@ -220,7 +220,7 @@ condCov : :class:`~openturns.CovarianceMatrix`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::KrigingResult::getConditionalMarginalCovariance
-"Compute the expected covariance of the Gaussian process on a point (or several points).
+"Compute the conditional covariance of the Gaussian process on a point (or several points).
 
 
 Available usages:
@@ -251,7 +251,7 @@ covariance with respect to the input learning set (pointwise evaluation of the g
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::KrigingResult::getConditionalMarginalVariance
-"Compute the expected variance of the Gaussian process on a point (or several points).
+"Compute the conditional variance of the Gaussian process on a point (or several points).
 
 
 Available usages:
@@ -292,6 +292,33 @@ for each point in sampleX."
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::KrigingResult::operator()
+"Compute the conditional Gaussian distribution on a new point / sample conditionally to the observed paths.
+
+Available usages:
+    KrigingResult(pt)
+
+    KrigingResult(sampleX)
+
+Parameters
+----------
+pt : sequence of float
+    The point :math:`\vect{x}` where the conditional distribution of the output has to be evaluated.
+sampleX : 2-d sequence of float
+     The sample :math:`(\vect{\xi}_1, \dots, \vect{\xi}_M)` where the conditional distribution of the output has to be evaluated (*M* can be equal to 1).
+
+Returns
+-------
+condDist : :class:`~openturns.Normal`
+    The conditional Gaussian distribution.
+
+Notes
+-----
+The conditional distribution :math:`\cN(\Expect{\vect{Y}}, \Cov{\vect{Y}})` has respectively conditional mean and covariance functions 
+implemented in :meth:`getConditionalMean` (respectively :meth:`getConditionalCovariance`)."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::KrigingResult::getMetaModel
 "Accessor to the metamodel.
 
@@ -300,26 +327,6 @@ Returns
 metaModel : :class:`~openturns.Function`
     The meta model :math:`\tilde{\cM}: \Rset^d \rightarrow \Rset^p`, defined in :eq:`metaModelKrigFinal`.
 "
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::KrigingResult::setTransformation
-"Accessor to the normalizing transformation.
-
-Parameters
-----------
-transformation : :class:`~openturns.Function`
-    The transformation *T* that normalizes the input sample."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::KrigingResult::getTransformation
-"Accessor to the normalizing transformation.
-
-Returns
--------
-transformation : :class:`~openturns.Function`
-    The transformation *T* that normalizes the input sample."
 
 // ---------------------------------------------------------------------
 

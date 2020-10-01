@@ -51,10 +51,10 @@ public:
                      const Function & model);
 
   /** Virtual constructor */
-  virtual MetaModelAlgorithm * clone() const;
+  MetaModelAlgorithm * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Distribution accessor */
   void setDistribution(const Distribution & distribution);
@@ -68,10 +68,13 @@ public:
   virtual Sample getOutputSample() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
+
+  /** Recover the distribution */
+  static Distribution BuildDistribution(const Sample & inputSample);
 
 protected:
 
@@ -83,7 +86,7 @@ protected:
 
 
 private:
-
+  friend struct TestedDistribution;
 
 }; /* class MetaModelAlgorithm */
 

@@ -68,7 +68,7 @@ void Indices::fill(const UnsignedInteger initialValue,
 Indices Indices::complement(const UnsignedInteger n) const
 {
   // Check if the values are in the given bound
-  const UnsignedInteger maxIndex = *max_element(begin(), end());
+  const UnsignedInteger maxIndex = isEmpty() ? 0 : *max_element(begin(), end());
   if (maxIndex >= n) throw InvalidArgumentException(HERE) << "Error: the given bound=" << n << " must be greater than the maximum index=" << maxIndex;
   Indices flags(n, 1);
   for (UnsignedInteger i = 0; i < getSize(); ++i)

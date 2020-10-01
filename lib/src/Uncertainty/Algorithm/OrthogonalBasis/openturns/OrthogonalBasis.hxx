@@ -60,7 +60,7 @@ public:
   EnumerateFunction getEnumerateFunction() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
 protected:
 

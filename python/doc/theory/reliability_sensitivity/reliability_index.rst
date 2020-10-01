@@ -32,7 +32,7 @@ These indices are available:
    design point from the origin of the standard space,
 
 -  :math:`\beta_{SORM}` the SORM reliability index, where :math:`P_f` is
-   obtained with a SORM approximation : Breitung, Hohen-Bichler or Tvedt
+   obtained with a SORM approximation : Breitung, Hohenbichler or Tvedt
    (refer to ),
 
 -  :math:`\beta_g` the generalized reliability index, where :math:`P_f`

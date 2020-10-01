@@ -47,6 +47,7 @@ Analysis of the goodness of fit of a parametric model
     kolmogorov_test
     cramer_vonmises_test
     anderson_darling_test
+    aic
     bic
 
 Detection and quantification of dependencies

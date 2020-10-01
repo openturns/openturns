@@ -52,20 +52,9 @@ public:
   /** Constructor with parameters */
   EnumerateFunction(Implementation & p_implementation);
 
-  /** Parameter constructor @deprecated */
-  explicit EnumerateFunction(const UnsignedInteger dimension);
-
-  /** Parameter constructor @deprecated */
-  EnumerateFunction(const UnsignedInteger dimension,
-                    const Scalar q);
-
-  /** Parameter constructor @deprecated */
-  EnumerateFunction(const Point & weight,
-                    const Scalar q);
-
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** The bijective association between an integer and a set of indices */
   Indices operator() (const UnsignedInteger index) const;

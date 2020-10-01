@@ -54,31 +54,31 @@ public:
                      const String & formula);
 
   /** Virtual constructor */
-  virtual SymbolicEvaluation * clone() const;
+  SymbolicEvaluation * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const SymbolicEvaluation & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Operator () */
   using EvaluationImplementation::operator();
-  Point operator() (const Point & inP) const;
-  Sample operator() (const Sample & inS) const;
+  Point operator() (const Point & inP) const override;
+  Sample operator() (const Sample & inS) const override;
 
   /** Accessor for input point dimension */
-  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Accessor for output point dimension */
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Get the i-th marginal function */
-  Evaluation getMarginal(const UnsignedInteger i) const;
+  Evaluation getMarginal(const UnsignedInteger i) const override;
 
   /** Get the function corresponding to indices components */
-  Evaluation getMarginal(const Indices & indices) const;
+  Evaluation getMarginal(const Indices & indices) const override;
 
   /** Accessor to the input variables names */
   Description getInputVariablesNames() const;
@@ -90,14 +90,17 @@ public:
   Description getFormulas() const;
 
   /** Linearity accessors */
-  Bool isLinear() const;
-  Bool isLinearlyDependent(const UnsignedInteger index) const;
+  Bool isLinear() const override;
+  Bool isLinearlyDependent(const UnsignedInteger index) const override;
+
+  /** Invalid values check accessor */
+  void setCheckOutput(const Bool checkOutput) override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

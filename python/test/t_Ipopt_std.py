@@ -40,7 +40,7 @@ algo.setMaximumEvaluationNumber(10000)
 algo.setProgressCallback(progress)
 algo.setStopCallback(stop)
 
-ot.ResourceMap.AddAsScalar('Ipopt-max_cpu_time', 15.0)
+#ot.ResourceMap.AddAsScalar('Ipopt-max_cpu_time', 15.0)
 
 algo.run()
 result = algo.getResult()

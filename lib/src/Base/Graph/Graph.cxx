@@ -332,6 +332,4 @@ Description Graph::GetValidLegendPositions()
   return GraphImplementation::GetValidLegendPositions();
 }
 
-
-
 END_NAMESPACE_OPENTURNS

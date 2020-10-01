@@ -52,15 +52,15 @@ public:
                               const Point & coefficients);
 
   /** Virtual constructor */
-  virtual LinearCombinationEvaluation * clone() const;
+  LinearCombinationEvaluation * clone() const override;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Evaluation operator */
-  Point operator () (const Point & inP) const;
-  Sample operator () (const Sample & inS) const;
+  Point operator () (const Point & inP) const override;
+  Sample operator () (const Sample & inS) const override;
 
   /** Coefficients accessor */
   Point getCoefficients() const;
@@ -71,36 +71,36 @@ public:
       const Point & coefficients);
 
   /** Input dimension accessor */
-  UnsignedInteger getInputDimension() const;
+  UnsignedInteger getInputDimension() const override;
 
   /** Output dimension accessor */
-  UnsignedInteger getOutputDimension() const;
+  UnsignedInteger getOutputDimension() const override;
 
   /** Gradient according to the marginal parameters */
-  Matrix parameterGradient(const Point & inP) const;
+  Matrix parameterGradient(const Point & inP) const override;
 
   /** Parameters value accessor */
-  void setParameter(const Point & parameter);
-  Point getParameter() const;
+  void setParameter(const Point & parameter) override;
+  Point getParameter() const override;
 
   /** Parameters description accessor */
-  virtual Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
   /** Get the i-th marginal function */
-  Evaluation getMarginal(const UnsignedInteger i) const;
+  Evaluation getMarginal(const UnsignedInteger i) const override;
 
   /** Get the function corresponding to indices components */
-  Evaluation getMarginal(const Indices & indices) const;
+  Evaluation getMarginal(const Indices & indices) const override;
 
   /** Linearity accessors */
-  Bool isLinear() const;
-  Bool isLinearlyDependent(const UnsignedInteger index) const;
+  Bool isLinear() const override;
+  Bool isLinearlyDependent(const UnsignedInteger index) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 
 protected:

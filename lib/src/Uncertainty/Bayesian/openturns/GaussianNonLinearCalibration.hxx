@@ -55,10 +55,10 @@ public:
                                const CovarianceMatrix & errorCovariance);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Performs the actual computation. Must be overloaded by the actual calibration algorithm */
-  virtual void run();
+  void run() override;
   Point run(const Sample & inputObservations,
             const Sample & outputObservations,
             const Point & candidate,
@@ -88,21 +88,15 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual GaussianNonLinearCalibration * clone() const;
+  GaussianNonLinearCalibration * clone() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
-
-  /* Model to calibrate */
-  Function model_;
-
-  /* The input observations */
-  Sample inputObservations_;
 
   /* The optimization algorithm */
   OptimizationAlgorithm algorithm_;

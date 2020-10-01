@@ -87,7 +87,10 @@ void Ceres::checkProblem(const OptimizationProblem & problem) const
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support nearest-point problems";
 
   if (problem.hasBounds() && (algoName_ != "LEVENBERG_MARQUARDT" && algoName_ != "DOGLEG"))
-    throw InvalidArgumentException(HERE) << "Error: Ceres line search algorithms do not support bound constraints";
+    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " line search algorithms do not support bound constraints";
+
+  if (!problem.hasResidualFunction() && (algoName_ == "LEVENBERG_MARQUARDT" || algoName_ == "DOGLEG"))
+    throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " trust-region algorithms do not support general optimization";
 
   if (problem.hasInequalityConstraint())
     throw InvalidArgumentException(HERE) << "Error: " << getClassName() << " does not support inequality constraints";
@@ -385,7 +388,7 @@ void Ceres::run()
     ceres::GradientProblemSolver::Options options;
     // check that algoName is a line search method
     if (!ceres::StringToLineSearchDirectionType(algoName_, &options.line_search_direction_type))
-      LOGWARN("Unconstrained optimization only allows line search methods, using default line search");
+      throw InvalidArgumentException(HERE) << "Unconstrained optimization only allows line search methods";
 
     options.max_num_iterations = getMaximumIterationNumber();
     options.function_tolerance = getMaximumResidualError();
@@ -488,7 +491,6 @@ void Ceres::run()
   result.setIterationNumber(iterationNumber);
   result.setOptimalPoint(x);
   result.setOptimalValue(Point(1, optimalValue));
-  result.setLagrangeMultipliers(computeLagrangeMultipliers(x));
   setResult(result);
 #else
   throw NotYetImplementedException(HERE) << "No Ceres support";

@@ -43,7 +43,7 @@ public:
   IntegrationAlgorithmImplementation();
 
   /** Virtual copy constructor */
-  virtual IntegrationAlgorithmImplementation * clone() const;
+  IntegrationAlgorithmImplementation * clone() const override;
 
   /** Compute an approximation of \int_{[a,b]}f(x)dx, where [a,b]
    * is an n-D interval
@@ -61,10 +61,10 @@ public:
                           const Interval & interval,
                           Point & error) const;
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 } ; /* class IntegrationAlgorithmImplementation */
 

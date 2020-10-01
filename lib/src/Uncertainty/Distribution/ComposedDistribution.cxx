@@ -167,7 +167,7 @@ void ComposedDistribution::setDistributionCollection(const DistributionCollectio
 {
   // Check if the collection is not empty
   const UnsignedInteger size = coll.getSize();
-  if ((getDimension() != 0) && (size != getDimension())) throw InvalidArgumentException(HERE) << "The distribution collection must have a size equal to the distribution dimension";
+  if ((getDimension() != 0) && (size != getDimension())) throw InvalidArgumentException(HERE) << "The distribution collection must have a size equal to the copula dimension";
   Description description(size);
   Point lowerBound(size);
   Point upperBound(size);

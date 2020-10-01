@@ -50,8 +50,6 @@ KrigingResult::KrigingResult(const Sample & inputSample,
   , inputSample_(inputSample)
   , inputTransformedSample_(inputSample)
   , outputSample_(outputSample)
-  , inputTransformation_()
-  , hasTransformation_(false)
   , basis_(basis)
   , trendCoefficients_(trendCoefficients)
   , covarianceModel_(covarianceModel)
@@ -84,8 +82,6 @@ KrigingResult::KrigingResult(const Sample & inputSample,
   , inputSample_(inputSample)
   , inputTransformedSample_(inputSample)
   , outputSample_(outputSample)
-  , inputTransformation_()
-  , hasTransformation_(false)
   , basis_(basis)
   , trendCoefficients_(trendCoefficients)
   , covarianceModel_(covarianceModel)
@@ -177,20 +173,6 @@ Sample KrigingResult::getCovarianceCoefficients() const
   return covarianceCoefficients_;
 }
 
-Function KrigingResult::getTransformation() const
-{
-  return inputTransformation_;
-}
-
-void KrigingResult::setTransformation(const Function & transformation)
-{
-  if (transformation.getInputDimension() != inputSample_.getDimension())
-    throw InvalidArgumentException(HERE) << "In KrigingResult::setTransformation, incompatible function dimension. Function should have input dimension = " << inputSample_.getDimension() << ". Here, function's input dimension = " << transformation.getInputDimension();
-  inputTransformation_ = transformation;
-  // Map inputData using the transformation
-  inputTransformedSample_ = transformation(inputSample_);
-  hasTransformation_ = true;
-}
 
 /* Compute mean of new points conditionally to observations */
 Point KrigingResult::getConditionalMean(const Sample & xi) const
@@ -473,13 +455,8 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Sample & xi) cons
   const UnsignedInteger sampleSize = xi.getSize();
   if (sampleSize == 0)
     throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalCovariance, expected a non empty sample";
-  // 0) Take into account transformation
-  Sample sample;
-  // Transform data if necessary
-  if (hasTransformation_)
-    sample = inputTransformation_(xi);
-  else
-    sample = xi;
+
+  const Sample sample(xi);
   // 1) compute \sigma_{x,x}
   LOGINFO("Compute interactions Sigma_xx");
   const CovarianceMatrix sigmaXX(covarianceModel_.discretize(sample));
@@ -570,13 +547,8 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Point & point) co
   const UnsignedInteger inputDimension = point.getDimension();
   if (inputDimension != covarianceModel_.getInputDimension())
     throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalCovariance, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
-  // 0) Take into account transformation
-  Point data;
-  // Transform data if necessary
-  if (hasTransformation_)
-    data = inputTransformation_(point);
-  else
-    data = point;
+
+  const Point data(point);
   // 1) compute \sigma_{x,x}
   LOGINFO("Compute interactions Sigma_xx");
   const CovarianceMatrix sigmaXX(covarianceModel_(Point(inputDimension, 0.0)));
@@ -738,13 +710,7 @@ Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
 
   if  (outputDimension == 1)
   {
-    // 0) Take into account transformation
-    Sample sample;
-    // Transform data if necessary
-    if (hasTransformation_)
-      sample = inputTransformation_(xi);
-    else
-      sample = xi;
+    const Sample sample(xi);
     // 1) compute \sigma_{x,x}
     LOGINFO("Compute interactions Sigma_xx");
     // Only diagonal of the discretization Matrix
@@ -905,8 +871,6 @@ void KrigingResult::save(Advocate & adv) const
   adv.saveAttribute( "inputSample_", inputSample_ );
   adv.saveAttribute( "inputTransformedSample_", inputTransformedSample_ );
   adv.saveAttribute( "outputSample_", outputSample_ );
-  adv.saveAttribute( "inputTransformation_", inputTransformation_ );
-  adv.saveAttribute( "hasTransformation_", hasTransformation_ );
   adv.saveAttribute( "basis_", basis_ );
   adv.saveAttribute( "trendCoefficients_", trendCoefficients_ );
   adv.saveAttribute( "covarianceModel_", covarianceModel_ );
@@ -925,8 +889,6 @@ void KrigingResult::load(Advocate & adv)
   adv.loadAttribute( "inputSample_", inputSample_ );
   adv.loadAttribute( "inputTransformedSample_", inputTransformedSample_ );
   adv.loadAttribute( "outputSample_", outputSample_ );
-  adv.loadAttribute( "inputTransformation_", inputTransformation_ );
-  adv.loadAttribute( "hasTransformation_", hasTransformation_ );
   adv.loadAttribute( "basis_", basis_ );
   adv.loadAttribute( "trendCoefficients_", trendCoefficients_ );
   adv.loadAttribute( "covarianceModel_", covarianceModel_ );

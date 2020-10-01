@@ -1,6 +1,6 @@
 #                                               -*- cmake -*-
 
-cmake_minimum_required (VERSION 2.8.8)
+cmake_minimum_required (VERSION 3.2)
 
 # By default, build in Release mode. Must appear before project() command
 if (NOT DEFINED CMAKE_BUILD_TYPE)
@@ -18,6 +18,7 @@ option (USE_HMAT                     "Use HMat library"                         
 option (USE_MUPARSER                 "Use muParser library"                                                  ON)
 option (USE_EXPRTK                   "Use ExprTK library"                                                    ON)
 option (USE_LIBXML2                  "Use LibXml2 for XML support"                                           ON)
+option (USE_HDF5                     "Use HDF5 for high volume storage"                                      ON)
 option (USE_R                        "Use R for graph output support"                                        ON)
 option (USE_BOOST                    "Use Boost for distribution computation"                                ON)
 option (USE_SPHINX                   "Use sphinx for documentation"                                          ON)
@@ -105,10 +106,6 @@ set (OPENTURNS_DATA_PATH
       share
       CACHE PATH "The directory where the common files are installed"
    )
-set (OPENTURNS_EXAMPLE_PATH
-      share/openturns/examples
-      CACHE PATH "The directory where the example files are installed"
-   )
 set (OPENTURNS_DOC_PATH
       share/openturns/doc
       CACHE PATH "The directory where the license files are installed"
@@ -128,18 +125,7 @@ set (OPENTURNS_TEMPDIR
    )
 set (TEMPDIR ${OPENTURNS_TEMPDIR})
 
-
-# CMake 2.x does not define MSVC when using Intel compiler on Windows, see
-# http://public.kitware.com/Bug/view.php?id=14476
-if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
-  set(WINTEL TRUE)
-endif()
-
-if (NOT CMAKE_VERSION VERSION_LESS 3.1)
-  # beware swig<3.0 does not like c++11: https://github.com/swig/swig/issues/73
-  set (CMAKE_CXX_STANDARD 11)
-endif ()
-
+set (CMAKE_CXX_STANDARD 11)
 
 if (NOT DEFINED LAPACK_LIBRARIES)
   find_package (LAPACK REQUIRED)
@@ -185,7 +171,7 @@ if (TBB_FOUND)
 endif ()
 
 if (USE_MUPARSER)
-  find_package (muParser 2.2.3)
+  find_package (muParser 2.2.3 QUIET)
 endif ()
 if (MUPARSER_FOUND)
   set (OPENTURNS_HAVE_MUPARSER TRUE)
@@ -201,7 +187,7 @@ if (USE_EXPRTK)
 endif ()
 
 if (USE_HMAT)
-  find_package (HMAT 1.6 NO_MODULE)
+  find_package (HMAT 1.6 CONFIG)
 endif ()
 if (HMAT_FOUND)
   message(STATUS "Found HMAT: ${HMAT_DIR}")
@@ -222,6 +208,16 @@ if (LIBXML2_FOUND)
   list (APPEND OPENTURNS_DEFINITIONS ${LIBXML2_DEFINITIONS})
   list (APPEND OPENTURNS_INCLUDE_DIRS ${LIBXML2_INCLUDE_DIR})
   list (APPEND OPENTURNS_LIBRARIES ${LIBXML2_LIBRARIES})
+endif ()
+
+if (USE_HDF5)
+  find_package(HDF5 COMPONENTS CXX)
+endif ()
+if (HDF5_FOUND)
+  set (OPENTURNS_HAVE_HDF5 TRUE)
+  list (APPEND OPENTURNS_DEFINITIONS ${HDF5_DEFINITIONS})
+  list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${HDF5_INCLUDE_DIR})
+  list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${HDF5_LIBRARIES})
 endif ()
 
 if (MSVC OR WINTEL)
@@ -262,7 +258,7 @@ if (NOT R_EXECUTABLE)
 endif ()
 
 if (USE_NLOPT)
-  find_package (NLopt NO_MODULE QUIET)
+  find_package (NLopt CONFIG QUIET)
   if (NLopt_FOUND)
     message(STATUS "Found NLopt: ${NLopt_DIR}")
   else ()
@@ -275,36 +271,33 @@ if (USE_NLOPT)
     list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${NLOPT_INCLUDE_DIRS})
     list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${NLOPT_LIBRARIES})
 
-    if (NOT CMAKE_VERSION VERSION_LESS 3.2) # for the LINK_LIBRARIES option
-
-      try_run (_NLOPT_STOGO_RUNS _NLOPT_STOGO_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/nlopt_have_stogo.cxx LINK_LIBRARIES ${NLOPT_LIBRARIES})
-      if (_NLOPT_STOGO_BUILDS)
-        if (_NLOPT_STOGO_RUNS EQUAL 0)
-          set (OPENTURNS_NLOPT_HAVE_STOGO TRUE)
-        else ()
-          message (STATUS "nlopt::GD_STOGO: fails to run")
-        endif ()
+    try_run (_NLOPT_STOGO_RUNS _NLOPT_STOGO_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/nlopt_have_stogo.cxx LINK_LIBRARIES ${NLOPT_LIBRARIES})
+    if (_NLOPT_STOGO_BUILDS)
+      if (_NLOPT_STOGO_RUNS EQUAL 0)
+        set (OPENTURNS_NLOPT_HAVE_STOGO TRUE)
       else ()
-        message (STATUS "nlopt::GD_STOGO: fails to build")
+        message (STATUS "nlopt::GD_STOGO: fails to run")
       endif ()
-
-      try_run (_NLOPT_AGS_RUNS _NLOPT_AGS_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/nlopt_have_ags.cxx LINK_LIBRARIES ${NLOPT_LIBRARIES})
-      if (_NLOPT_AGS_BUILDS)
-        if (_NLOPT_AGS_RUNS EQUAL 0)
-          set (OPENTURNS_NLOPT_HAVE_AGS TRUE)
-        else ()
-          message (STATUS "nlopt::GN_AGS: fails to run")
-        endif ()
-      else ()
-        message (STATUS "nlopt::GN_AGS: fails to build")
-      endif ()
-
+    else ()
+      message (STATUS "nlopt::GD_STOGO: fails to build")
     endif ()
+
+    try_run (_NLOPT_AGS_RUNS _NLOPT_AGS_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/nlopt_have_ags.cxx LINK_LIBRARIES ${NLOPT_LIBRARIES})
+    if (_NLOPT_AGS_BUILDS)
+      if (_NLOPT_AGS_RUNS EQUAL 0)
+        set (OPENTURNS_NLOPT_HAVE_AGS TRUE)
+      else ()
+        message (STATUS "nlopt::GN_AGS: fails to run")
+      endif ()
+    else ()
+      message (STATUS "nlopt::GN_AGS: fails to build")
+    endif ()
+
   endif ()
 endif ()
 
 if (USE_DLIB)
-  find_package (dlib NO_MODULE)
+  find_package (dlib CONFIG)
   if (dlib_FOUND)
     set (OPENTURNS_HAVE_DLIB TRUE)
     message (STATUS "Found dlib: ${dlib_DIR} (found version ${dlib_VERSION})")
@@ -316,7 +309,7 @@ if (USE_DLIB)
 endif ()
 
 if (USE_CERES)
-  find_package (Ceres NO_MODULE)
+  find_package (Ceres CONFIG)
   if (Ceres_FOUND)
     set (OPENTURNS_HAVE_CERES TRUE)
     list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${CERES_INCLUDE_DIRS})
@@ -325,7 +318,7 @@ if (USE_CERES)
 endif ()
 
 if (USE_CMINPACK)
-  find_package (CMinpack NO_MODULE QUIET)
+  find_package (CMinpack CONFIG QUIET)
   if (NOT CMinpack_FOUND)
     # fallback to our macro if CMinpackConfig is not provided
     find_package (CMinpack)
@@ -371,7 +364,7 @@ if (MSVC)
 endif ()
 
 include (TestBigEndian)
-test_big_endian (__BIG_ENDIAN__) 
+test_big_endian (__BIG_ENDIAN__)
 
 if(POLICY CMP0042)
   # Set MACOSX_RPATH to ON
@@ -402,6 +395,17 @@ try_compile(OPENTURNS_UNSIGNEDLONG_SAME_AS_UINT64
 try_compile (OPENTURNS_HAVE_SYNC_BUILTINS
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/gcc_sync_builtins.cxx)
+
+try_run (_HAVE_FR_LOC_RUNS _HAVE_FR_LOC_BUILDS ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_SOURCE_DIR}/cmake/have_fr_loc.cxx)
+if (_HAVE_FR_LOC_BUILDS)
+  if (NOT _HAVE_FR_LOC_RUNS EQUAL 0)
+    set (OPENTURNS_HAVE_FR_LOC TRUE)
+    message(STATUS "French locale found")
+  else()
+    set (OPENTURNS_HAVE_FR_LOC FALSE)
+    message(STATUS "French locale not found")
+  endif ()
+endif ()
 
 # Find system prerequisites
 include (CheckIncludeFile)
@@ -535,18 +539,7 @@ add_custom_target (check COMMENT "Run pre-installation tests")
 add_custom_target (installcheck COMMENT "Run post-installation tests")
 
 if (BUILD_PYTHON)
-  # workaround for cmake bug #0013449
-  if (CMAKE_VERSION VERSION_LESS 3 AND DEFINED CMAKE_FIND_ROOT_PATH)
-    find_program (SWIG_EXECUTABLE NAMES swig2.0 swig)
-    if (SWIG_EXECUTABLE)
-      set (SWIG_USE_FILE ${CMAKE_ROOT}/Modules/UseSWIG.cmake)
-      set (SWIG_FOUND TRUE)
-      set (SWIG_VERSION 2)
-    endif ()
-  else ()
-    # we need absolute module imports
-    find_package (SWIG 2.0.9)
-  endif ()
+  find_package (SWIG 3)
   if (SWIG_FOUND)
     include (${SWIG_USE_FILE})
     include (TargetLinkLibrariesWithDynamicLookup)
@@ -559,7 +552,7 @@ if (BUILD_PYTHON)
     find_python_module (numpy)
     find_python_module (scipy)
     find_python_module (pandas)
-    find_python_module (matplotlib 1.1)
+    find_python_module (matplotlib 1.3.1)
     find_python_module (nbconvert)
     find_python_module (chaospy)
 
@@ -567,7 +560,7 @@ if (BUILD_PYTHON)
       find_program (SPHINX_EXECUTABLE NAMES sphinx-build DOC "Sphinx Documentation Builder (sphinx-doc.org)")
       if (SPHINX_EXECUTABLE)
         find_python_module (sphinx 1.1)
-        find_python_module (numpydoc)
+        find_python_module (numpydoc 0.9) # v0.7 & v0.8 have bugs for citations
         if (USE_NBSPHINX)
           find_program (PANDOC_EXECUTABLE NAMES pandoc DOC "a universal document converter")
           if (PANDOC_EXECUTABLE)
@@ -614,7 +607,7 @@ endif ()
 
 
 # Define variables without OPENTURNS_ prefix with absolute paths
-foreach (_var INSTALL_PATH LIBRARY_PATH INCLUDE_PATH CONFIG_CMAKE_PATH SYSCONFIG_PATH DATA_PATH EXAMPLE_PATH DOC_PATH PYTHON_MODULE_PATH)
+foreach (_var INSTALL_PATH LIBRARY_PATH INCLUDE_PATH CONFIG_CMAKE_PATH SYSCONFIG_PATH DATA_PATH DOC_PATH PYTHON_MODULE_PATH)
   if (IS_ABSOLUTE "${OPENTURNS_${_var}}")
     set (${_var} ${OPENTURNS_${_var}})
   else ()

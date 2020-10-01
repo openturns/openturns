@@ -285,21 +285,21 @@ Bool Matrix::operator == (const Matrix & rhs) const
 }
 
 
-const Scalar* Matrix::__baseaddress__() const
+const Scalar* Matrix::data() const
 {
-  return getImplementation()->__baseaddress__();
+  return getImplementation()->data();
 }
 
 
-UnsignedInteger Matrix::__elementsize__() const
+UnsignedInteger Matrix::elementSize() const
 {
-  return getImplementation()->__elementsize__();
+  return getImplementation()->elementSize();
 }
 
 
-UnsignedInteger Matrix::__stride__(UnsignedInteger dim) const
+UnsignedInteger Matrix::stride(const UnsignedInteger dim) const
 {
-  return getImplementation()->__stride__(dim);
+  return getImplementation()->stride(dim);
 }
 
 END_NAMESPACE_OPENTURNS

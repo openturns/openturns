@@ -23,6 +23,7 @@
 
 #include <vector>
 #include <algorithm>         // for std::copy
+#include <initializer_list>
 #include "openturns/OTprivate.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/OSS.hxx"
@@ -130,6 +131,11 @@ public:
     : coll__(size, value)
   {
     // Nothing to do
+  }
+
+  Collection(std::initializer_list<T> initList)
+    : coll__(initList)
+  {
   }
 
   /* Virtual destructor to allow dynamic polymorphism*/
@@ -361,6 +367,17 @@ public:
   const_reverse_iterator rend() const
   {
     return coll__.rend();
+  }
+
+  inline
+  const T * data() const
+  {
+    return coll__.data();
+  }
+
+  UnsignedInteger elementSize() const
+  {
+    return sizeof(T);
   }
 #endif
 

@@ -51,50 +51,50 @@ public:
                const FittingAlgorithm & fittingAlgorithm = CorrectedLeaveOneOut());
 
   /** Virtual constructor */
-  virtual SparseMethod * clone() const;
+  SparseMethod * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Input sample accessor */
-  virtual Sample getInputSample() const;
+  Sample getInputSample() const override;
 
   /** Weight accessor */
-  virtual Point getWeight() const;
+  Point getWeight() const override;
 
   /** Basis accessor */
-  virtual FunctionCollection getBasis() const;
+  FunctionCollection getBasis() const override;
 
   /** Current indices accessor */
-  virtual Indices getCurrentIndices() const;
+  Indices getCurrentIndices() const override;
 
   /** Initial indices accessor */
-  virtual Indices getInitialIndices() const;
+  Indices getInitialIndices() const override;
 
   /** Solve least-squares problem, ie x=\argmin |D(Mx-b)|^2 */
-  Point solve(const Point & rhs);
+  Point solve(const Point & rhs) override;
 
-  virtual CovarianceMatrix getGramInverse() const;
+  CovarianceMatrix getGramInverse() const override;
 
   /** Update */
-  virtual void update(const Indices & addedIndices,
+  void update(const Indices & addedIndices,
                       const Indices & conservedIndices,
                       const Indices & removedIndices,
-                      const Bool row = false);
+                      const Bool row = false) override;
 
-  virtual void trashDecomposition();
+  void trashDecomposition() override;
 
   /** Build the weighted design matrix */
-  virtual MatrixImplementation computeWeightedDesign(const Bool whole = false) const;
+  MatrixImplementation computeWeightedDesign(const Bool whole = false) const override;
 
 public:
 
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

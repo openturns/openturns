@@ -12,7 +12,7 @@ Notes
 -----
 The covariance model is built as follows.
 
-We consider a process :math:`X: \Omega \times\cD \mapsto \Rset^d` with :math:`\cD \in \Rset^n`. 
+We consider a process :math:`X: \Omega \times\cD \mapsto \Rset^d` with :math:`\cD \in \Rset`. 
 
 We note :math:`(\vect{t}_0,\dots, \vect{t}_{N-1})` the vertices of :math:`\cM \in \cD` and :math:`(\mat{C}_{k})_{0 \leq  k \leq N-1}` where :math:`\mat{C}_{k} \in \cS_d^+(\Rset)` the collection of covariance matrices fixed by the User.
 

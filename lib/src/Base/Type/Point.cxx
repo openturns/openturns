@@ -36,7 +36,7 @@ static const Factory<Point> Factory_Point;
 
 /* Default constructor */
 Point::Point()
-  : PersistentCollection<Scalar>() //,
+  : InternalType() //,
     // p_description_()
 {
   // Nothing to do
@@ -45,7 +45,7 @@ Point::Point()
 /* Constructor with size */
 Point::Point(const UnsignedInteger size,
              const Scalar value)
-  : PersistentCollection<Scalar>(size, value)
+  : InternalType(size, value)
 {
   // Nothing to do
 }
@@ -53,11 +53,16 @@ Point::Point(const UnsignedInteger size,
 
 /* Constructor from a collection */
 Point::Point(const Collection<Scalar> & coll)
-  : PersistentCollection<Scalar>(coll)
+  : InternalType(coll)
 {
   // Nothing to do
 }
 
+Point::Point(std::initializer_list<Scalar> initList)
+: InternalType(initList)
+{
+  // Nothing to do
+}
 
 /* Virtual constructor */
 Point * Point::clone() const
@@ -407,14 +412,14 @@ Point Point::normalizeSquare() const
 /* Method save() stores the object through the StorageManager */
 void Point::save(Advocate & adv) const
 {
-  PersistentCollection<Scalar>::save(adv);
+  InternalType::save(adv);
 }
 
 
 /* Method load() reloads the object from the StorageManager */
 void Point::load(Advocate & adv)
 {
-  PersistentCollection<Scalar>::load(adv);
+  InternalType::load(adv);
 }
 
 

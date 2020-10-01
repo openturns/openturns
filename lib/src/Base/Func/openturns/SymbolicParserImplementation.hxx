@@ -40,7 +40,7 @@ public:
   SymbolicParserImplementation();
 
   /** Virtual copy constructor */
-  virtual SymbolicParserImplementation * clone() const;
+  SymbolicParserImplementation * clone() const override;
 
   /** Variables accessor */
   virtual Description getVariables() const;
@@ -53,16 +53,20 @@ public:
   virtual Point operator()(const Point & inP) const;
   virtual Sample operator()(const Sample & inS) const;
 
+  /** Invalid values check accessor */
+  virtual void setCheckOutput(const Bool checkOutput);
+  virtual Bool getCheckOutput() const;
+
   /* Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /* Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   Description inputVariablesNames_;
   Description formulas_;
-  Bool checkResult_;
+  Bool checkOutput_ = true;
 }; /* class SymbolicParserImplementation */
 
 END_NAMESPACE_OPENTURNS

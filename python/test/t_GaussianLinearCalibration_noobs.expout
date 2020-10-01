@@ -1,0 +1,15 @@
+method= SVD
+Local error covariance
+MAP= class=Point name=Unnamed dimension=3 values=[11.944,7.0304,-7.9103]
+Global error covariance
+MAP= class=Point name=Unnamed dimension=3 values=[11.594,7.1815,-7.3896]
+method= QR
+Local error covariance
+MAP= class=Point name=Unnamed dimension=3 values=[11.944,7.0304,-7.9103]
+Global error covariance
+MAP= class=Point name=Unnamed dimension=3 values=[11.594,7.1815,-7.3896]
+method= Cholesky
+Local error covariance
+MAP= class=Point name=Unnamed dimension=3 values=[11.944,7.0304,-7.9103]
+Global error covariance
+MAP= class=Point name=Unnamed dimension=3 values=[11.594,7.1815,-7.3896]

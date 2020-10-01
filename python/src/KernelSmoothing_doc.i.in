@@ -157,9 +157,13 @@ According to the dimension of the data and the specified treatments, the resulti
 - If dimension = 1 and a boundary treatment has been asked for, a :class:`~openturns.TruncatedDistribution` is built by calling *buildAsTruncatedDistribution*
 - If dimension = 1 or 2 and no boundary treatment has been asked for, but a binning treatment has been asked for,
 
-    - If the sample size is greater than the bin number, then a :class:`~openturns.Mixture` is built by calling *buildAsMixture*
-    - Otherwise a :class:`~openturns.KernelMixture` is built by calling *buildAsKernelMixture*
+    - If the sample size is greater than the bin number, then a :class:`~openturns.Mixture` is built by calling `buildAsMixture`
+    - Otherwise a :class:`~openturns.KernelMixture` is built by calling `buildAsKernelMixture`
     
+The bandwidth selection depends on the dimension.
+
+- If dimension = 1, then `computeMixedBandwidth` is used.
+- Otherwise, then the only multivariate rule `computeSilvermanBandwidth` is used.
 
 Examples
 --------
@@ -299,7 +303,7 @@ automaticUpperBound : bool
 Returns
 -------
 bandwidth : :class:`~openturns.Point`
-    Bandwith wich components are evaluated according to the Silverman rule supposing a normal distribution. The bandwith is based on the evaluation of the interquartiles rather than the standard deviation of the distribution and the sample.
+    Bandwith which components are evaluated according to the Silverman rule assuming a normal distribution. The bandwith uses a robust estimate of the sample standard deviation, based on the interquartile range (rather than the standard deviation of the distribution and the sample). This method can manage a multivariate sample and produces a multivariate bandwidth.
 "
 
 // ---------------------------------------------------------------------
@@ -313,8 +317,18 @@ bandwidth : :class:`~openturns.Point`
 
 Notes
 -----
-Warning! It can take a lot of time for large samples, as the cost is  quadratic with the sample size.
-"
+This plug-in method is based on the solve-the-equation rule from (Sheather, Jones, 1991).
+This method can take a lot of time for large samples, as the cost is  quadratic with the sample size.
+
+The `KernelSmoothing-CutOffPlugin` key of the :class:`~openturns.ResourceMap` controls
+the accuracy of the approximation used to estimate the rugosity of the
+second derivative of the distribution.
+The default value ensures that terms in the sum which weight are lower than
+4.e-6 are ignored, which can reduce the calculation in some situations.
+The properties of the standard gaussian density are so that,
+in order to make the computation exact, the value of the
+`KernelSmoothing-CutOffPlugin` must be set to 39, but this may increase the
+computation time."
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KernelSmoothing::computeMixedBandwidth
@@ -327,5 +341,5 @@ bandwidth : :class:`~openturns.Point`
 
 Notes
 ----- 
-Simply use the plugin rule for small sample, and estimate the ratio between the plugin rule and the Silverman rule on a small sample, then scale the Silverman bandwidth computed on the full sample with this ratio.
+Use the plugin rule for small sample, estimate the ratio between the plugin rule and the Silverman rule on this small sample, and finally scale the Silverman bandwidth computed on the full sample with this ratio. The size of the small sample is based on the `KernelSmoothing-SmallSize` key of the `ResourceMap`.
 "

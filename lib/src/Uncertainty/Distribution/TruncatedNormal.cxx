@@ -90,8 +90,8 @@ TruncatedNormal::TruncatedNormal(const Scalar mu,
   if (aNorm_ > 0.0) denominator = DistFunc::pNormal(aNorm_, true) - DistFunc::pNormal(bNorm_, true);
   if (!(denominator > 0.0)) throw InvalidArgumentException(HERE) << "Error: the truncation interval has a too small measure. Here, measure=" << denominator;
   normalizationFactor_ = 1.0 / denominator;
-  phiANorm_ = SpecFunc::ISQRT2PI * std::exp(-0.5 * aNorm_ * aNorm_);
-  phiBNorm_ = SpecFunc::ISQRT2PI * std::exp(-0.5 * bNorm_ * bNorm_);
+  phiANorm_ = DistFunc::dNormal(aNorm_);
+  phiBNorm_ = DistFunc::dNormal(bNorm_);
   computeRange();
 }
 
@@ -171,7 +171,7 @@ Point TruncatedNormal::computeDDF(const Point & point) const
   if ((x <= a_) || (x > b_)) return Point(1, 0.0);
   const Scalar iSigma = 1.0 / sigma_;
   const Scalar xNorm = (x - mu_) * iSigma;
-  return Point(1, -normalizationFactor_ * xNorm * SpecFunc::ISQRT2PI * std::exp(-0.5 * xNorm * xNorm) * iSigma * iSigma);
+  return Point(1, -normalizationFactor_ * xNorm * DistFunc::dNormal(xNorm) * iSigma * iSigma);
 }
 
 
@@ -184,7 +184,7 @@ Scalar TruncatedNormal::computePDF(const Point & point) const
   if ((x <= a_) || (x > b_)) return 0.0;
   const Scalar iSigma = 1.0 / sigma_;
   const Scalar xNorm = (x - mu_) * iSigma;
-  return normalizationFactor_ * std::exp(-0.5 * xNorm * xNorm) * SpecFunc::ISQRT2PI * iSigma;
+  return normalizationFactor_ * DistFunc::dNormal(xNorm) * iSigma;
 }
 
 
@@ -335,7 +335,7 @@ Point TruncatedNormal::computePDFGradient(const Point & point) const
   const Scalar xNorm = (x - mu_) * iSigma;
   const Scalar iDenom = normalizationFactor_ * iSigma;
   const Scalar iDenom2 = iDenom * iDenom;
-  const Scalar factPhiXNorm = std::exp(-0.5 * xNorm * xNorm) * SpecFunc::ISQRT2PI * iDenom2;
+  const Scalar factPhiXNorm = DistFunc::dNormal(xNorm) * iDenom2;
   pdfGradient[0] = factPhiXNorm * (xNorm * (PhiBNorm_ - PhiANorm_) + phiBNorm_ - phiANorm_);
   pdfGradient[1] = factPhiXNorm * ((xNorm * xNorm - 1.0) * (PhiBNorm_ - PhiANorm_) + bNorm_ * phiBNorm_ - aNorm_ * phiANorm_);
   pdfGradient[2] = factPhiXNorm * phiANorm_;
@@ -375,7 +375,7 @@ Point TruncatedNormal::computeCDFGradient(const Point & point) const
   const Scalar iSigma = 1.0 / sigma_;
   const Scalar xNorm = (x - mu_) * iSigma;
   const Scalar iDenom = normalizationFactor_ * normalizationFactor_ * iSigma;
-  const Scalar phiXNorm = std::exp(-0.5 * xNorm * xNorm) * SpecFunc::ISQRT2PI;
+  const Scalar phiXNorm = DistFunc::dNormal(xNorm);
   const Scalar PhiXNorm = DistFunc::pNormal(xNorm);
   cdfGradient[0] = (phiANorm_ * PhiBNorm_ - PhiANorm_ * phiBNorm_ + phiXNorm * PhiANorm_ - PhiXNorm * phiANorm_ + phiBNorm_ * PhiXNorm - PhiBNorm_ * phiXNorm) * iDenom;
   cdfGradient[1] = (phiANorm_ * aNorm_ * PhiBNorm_ - PhiANorm_ * phiBNorm_ * bNorm_ + phiXNorm * xNorm * PhiANorm_ - PhiXNorm * phiANorm_ * aNorm_ + phiBNorm_ * bNorm_ * PhiXNorm - PhiBNorm_ * phiXNorm * xNorm) * iDenom;
@@ -445,12 +445,7 @@ void TruncatedNormal::computeCovariance() const
 /* Parameters value accessor */
 Point TruncatedNormal::getParameter() const
 {
-  Point point(4);
-  point[0] = mu_;
-  point[1] = sigma_;
-  point[2] = a_;
-  point[3] = b_;
-  return point;
+  return {mu_, sigma_, a_, b_};
 }
 
 void TruncatedNormal::setParameter(const Point & parameter)
@@ -464,12 +459,7 @@ void TruncatedNormal::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description TruncatedNormal::getParameterDescription() const
 {
-  Description description(4);
-  description[0] = "mu";
-  description[1] = "sigma";
-  description[2] = "a";
-  description[3] = "b";
-  return description;
+  return {"mu", "sigma", "a", "b"};
 }
 
 /* Check if the distribution is elliptical */
@@ -527,7 +517,7 @@ void TruncatedNormal::setA(const Scalar a)
     if (aNorm_ > 0.0) denominator = DistFunc::pNormal(aNorm_, true) - DistFunc::pNormal(bNorm_, true);
     if (!(denominator > 0.0)) throw InvalidArgumentException(HERE) << "Error: the truncation interval has a too small measure. Here, measure=" << denominator;
     normalizationFactor_ = 1.0 / denominator;
-    phiANorm_ = SpecFunc::ISQRT2PI * std::exp(-0.5 * aNorm_ * aNorm_);
+    phiANorm_ = DistFunc::dNormal(aNorm_);
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     computeRange();
@@ -552,7 +542,7 @@ void TruncatedNormal::setB(const Scalar b)
     Scalar denominator = PhiBNorm_ - PhiANorm_;
     if (!(denominator > 0.0)) throw InvalidArgumentException(HERE) << "Error: the truncation interval has a too small measure. Here, measure=" << denominator;
     normalizationFactor_ = 1.0 / denominator;
-    phiBNorm_ = SpecFunc::ISQRT2PI * std::exp(-0.5 * bNorm_ * bNorm_);
+    phiBNorm_ = DistFunc::dNormal(bNorm_);
     isAlreadyComputedMean_ = false;
     isAlreadyComputedCovariance_ = false;
     computeRange();

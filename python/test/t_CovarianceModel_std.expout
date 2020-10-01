@@ -147,6 +147,16 @@ myModel( [-1] ,  [3] )= class=CovarianceMatrix dimension=1 implementation=class=
 dCov = class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0]
 dCov (FD)= class=Point name=Unnamed dimension=1 values=[0]
 dCov/dP= [[ 0 ]]
+myDefautModel =  StationaryFunctionalCovarianceModel(scale=[1], amplitude=[1], rho=[tau]->[exp(-tau)*cos(2*pi_*tau)])
+myModel =  StationaryFunctionalCovarianceModel(scale=[1], amplitude=[1], rho=[tau]->[exp(-tau)*cos(2*pi_*tau)])
+active= [0,1]
+parameter= [1,1]
+parameterDescription= [scale_0,amplitude_0]
+myModel( [-1] ,  [3] )= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.0183156]
+dCov = class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.0183178]
+dCov (FD)= class=Point name=Unnamed dimension=1 values=[0.0183121]
+dCov/dP= [[ 0.07326 ]
+ [ 0.03663 ]]
 myModel =  DiracCovarianceModel(t)=[[  2.25   2.625 ]
  [  2.625 12.25  ]] * t==[0,0]
 active= [0,1]

@@ -63,7 +63,7 @@ int main(int, char *[])
     fullprint << "myAlgorithm = " << myAlgorithm << std::endl;
     myAlgorithm.run();
     fullprint << "result = " << printPoint(myAlgorithm.getResult().getOptimalPoint(), 4) << std::endl;
-    fullprint << "multipliers = " << printPoint(myAlgorithm.getResult().getLagrangeMultipliers(), 4) << std::endl;
+    fullprint << "multipliers = " << printPoint(myAlgorithm.getResult().computeLagrangeMultipliers(), 4) << std::endl;
 
   }
   catch (TestFailed & ex)

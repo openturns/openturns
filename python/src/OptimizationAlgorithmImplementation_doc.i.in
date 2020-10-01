@@ -30,7 +30,7 @@ Define an optimization problem to find the minimum of the Rosenbrock function:
 >>> solver = ot.OptimizationAlgorithm(problem)
 >>> solver.setStartingPoint([0, 0])
 >>> solver.setMaximumResidualError(1.e-3)
->>> solver.setMaximumIterationNumber(100)
+>>> solver.setMaximumEvaluationNumber(10000)
 >>> solver.run()
 >>> result = solver.getResult()
 >>> x_star = result.getOptimalPoint()
@@ -38,51 +38,6 @@ Define an optimization problem to find the minimum of the Rosenbrock function:
 %enddef
 %feature("docstring") OT::OptimizationAlgorithmImplementation
 OT_OptimizationAlgorithm_doc
-
-// ---------------------------------------------------------------------
-
-%define OT_OptimizationAlgorithm_computeLagrangeMultipliers_doc
-"Compute the Lagrange multipliers of a problem at a given point.
-
-Parameters
-----------
-x : sequence of float
-    Point at which the Lagrange multipliers are computed.
-
-Returns
--------
-lagrangeMultiplier : sequence of float
-    Lagrange multipliers of the problem at the given point.
-
-Notes
------
-The Lagrange multipliers :math:`\vect{\lambda}` are associated with the following Lagrangian formulation of the optimization problem:
-
-.. math::
-
-    \cL(\vect{x}, \vect{\lambda}_{eq}, \vect{\lambda}_{\ell}, \vect{\lambda}_{u}, \vect{\lambda}_{ineq}) = J(\vect{x}) + \Tr{\vect{\lambda}}_{eq} g(\vect{x}) + \Tr{\vect{\lambda}}_{\ell} (\vect{x}-\vect{\ell})^{+} + \Tr{\vect{\lambda}}_{u} (\vect{u}-\vect{x})^{+} + \Tr{\vect{\lambda}}_{ineq}  h^{+}(\vect{x})
-
-where :math:`\vect{\alpha}^{+}=(\max(0,\alpha_1),\hdots,\max(0,\alpha_n))`.
-
-The Lagrange multipliers are stored as :math:`(\vect{\lambda}_{eq}, \vect{\lambda}_{\ell}, \vect{\lambda}_{u}, \vect{\lambda}_{ineq})`, where:
-    - :math:`\vect{\lambda}_{eq}` is of dimension 0 if there is no equality
-      constraint, else of dimension the dimension of :math:`g(\vect{x})` ie the number of scalar equality constraints
-    - :math:`\vect{\lambda}_{\ell}` and :math:`\vect{\lambda}_{u}` are of dimension 0 if there is no bound constraint, else of dimension of :math:`\vect{x}`
-    - :math:`\vect{\lambda}_{eq}` is of dimension 0 if there is no inequality constraint, else of dimension the dimension of :math:`h(\vect{x})` ie the number of scalar inequality constraints
-
-The vector :math:`\vect{\lambda}` is solution of the following linear system:
-
-.. math::
-
-    \Tr{\vect{\lambda}}_{eq}\left[\dfrac{\partial g}{\partial\vect{x}}(\vect{x})\right]+
-    \Tr{\vect{\lambda}}_{\ell}\left[\dfrac{\partial (\vect{x}-\vect{\ell})^{+}}{\partial\vect{x}}(\vect{x})\right]+
-    \Tr{\vect{\lambda}}_{u}\left[\dfrac{\partial (\vect{u}-\vect{x})^{+}}{\partial\vect{x}}(\vect{x})\right]+
-    \Tr{\vect{\lambda}}_{ineq}\left[\dfrac{\partial h}{\partial\vect{x}}(\vect{x})\right]=-\dfrac{\partial J}{\partial\vect{x}}(\vect{x})
-
-If there is no constraint of any kind, :math:`\vect{\lambda}` is of dimension 0, as well as if no constraint is active."
-%enddef
-%feature("docstring") OT::OptimizationAlgorithmImplementation::computeLagrangeMultipliers
-OT_OptimizationAlgorithm_computeLagrangeMultipliers_doc
 
 // ---------------------------------------------------------------------
 
@@ -362,7 +317,7 @@ OT_OptimizationAlgorithm_setVerbose_doc
 "Accessor to the verbosity flag.
 
 Returns
-----------
+-------
 verbose : bool
     Verbosity flag state."
 %enddef
@@ -390,7 +345,7 @@ Examples
 >>> solver = ot.OptimizationAlgorithm(problem)
 >>> solver.setStartingPoint([0, 0])
 >>> solver.setMaximumResidualError(1.e-3)
->>> solver.setMaximumIterationNumber(100)
+>>> solver.setMaximumEvaluationNumber(10000)
 >>> def report_progress(progress):
 ...     sys.stderr.write('-- progress=' + str(progress) + '%\n')
 >>> solver.setProgressCallback(report_progress)
@@ -419,7 +374,7 @@ Examples
 >>> solver = ot.OptimizationAlgorithm(problem)
 >>> solver.setStartingPoint([0, 0])
 >>> solver.setMaximumResidualError(1.e-3)
->>> solver.setMaximumIterationNumber(100)
+>>> solver.setMaximumEvaluationNumber(10000)
 >>> def ask_stop():
 ...     return True
 >>> solver.setStopCallback(ask_stop)

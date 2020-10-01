@@ -59,6 +59,13 @@ public:
     // Nothing to do
   }
 
+  /** Initializer list constructor */
+  Indices(std::initializer_list<UnsignedInteger> initList)
+  : InternalType(initList)
+  {
+    // Nothing to do
+  }
+
   /** Constructor from a range of elements */
   template <typename InputIterator>
   Indices(const InputIterator first,
@@ -86,10 +93,10 @@ public:
 
 #ifdef SWIG
   /** @copydoc Object::__repr__() const */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** @copydoc Object::__str__() const */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 #endif
 
 }; /* class Indices */

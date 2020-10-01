@@ -333,11 +333,7 @@ Distribution Triangular::getStandardRepresentative() const
 /* Parameters value accessor */
 Point Triangular::getParameter() const
 {
-  Point point(3);
-  point[0] = a_;
-  point[1] = m_;
-  point[2] = b_;
-  return point;
+  return {a_, m_, b_};
 }
 
 void Triangular::setParameter(const Point & parameter)
@@ -352,11 +348,7 @@ void Triangular::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description Triangular::getParameterDescription() const
 {
-  Description description(3);
-  description[0] = "a";
-  description[1] = "m";
-  description[2] = "b";
-  return description;
+  return {"a", "m", "b"};
 }
 
 /* Check if the distribution is elliptical */

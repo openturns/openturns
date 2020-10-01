@@ -267,7 +267,6 @@ Field FunctionImplementation::operator() (const Field & inField) const
 /* Method gradient() returns the Jacobian transposed matrix of the function at point */
 Matrix FunctionImplementation::gradient(const Point & inP) const
 {
-  if (useDefaultGradientImplementation_) LOGWARN(OSS() << "You are using a default implementation for the gradient. Be careful, your computation can be severely wrong!");
   // Here we must catch the exceptions raised by functions with no gradient
   try
   {
@@ -278,7 +277,7 @@ Matrix FunctionImplementation::gradient(const Point & inP) const
     // Fallback on non-centered finite difference gradient
     try
     {
-      LOGWARN(OSS() << "Switch to finite difference to compute the gradient at point=" << inP);
+      LOGWARN(OSS() << "Switch to finite difference to compute the gradient at point=" << inP.__str__());
       const CenteredFiniteDifferenceGradient gradientFD(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceGradient-DefaultEpsilon" ), evaluation_);
       return gradientFD.gradient(inP);
     }
@@ -303,7 +302,7 @@ SymmetricTensor FunctionImplementation::hessian(const Point & inP) const
     // Fallback on non-centered finite difference gradient
     try
     {
-      LOGWARN(OSS() << "Switch to finite difference to compute the hessian at point=" << inP);
+      LOGWARN(OSS() << "Switch to finite difference to compute the hessian at point=" << inP.__str__());
       const CenteredFiniteDifferenceHessian hessianFD(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), evaluation_);
       return hessianFD.hessian(inP);
     }
@@ -343,6 +342,9 @@ Function FunctionImplementation::getMarginal(const UnsignedInteger i) const
 Function FunctionImplementation::getMarginal(const Indices & indices) const
 {
   if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal function must be in the range [0, outputDimension-1] and must be different";
+  Indices full(getOutputDimension());
+  full.fill();
+  if (indices == full) return clone();
   return new FunctionImplementation(evaluation_.getMarginal(indices), gradient_.getMarginal(indices), hessian_.getMarginal(indices));
 }
 

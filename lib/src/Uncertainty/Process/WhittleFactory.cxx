@@ -256,9 +256,10 @@ void WhittleFactory::initializeCobylaSolverParameter()
   Cobyla* cobyla = dynamic_cast<Cobyla *>(solver_.getImplementation().get());
   if (cobyla == NULL) throw InternalException(HERE);
   cobyla->setRhoBeg(ResourceMap::GetAsScalar("WhittleFactory-DefaultRhoBeg"));
+  cobyla->setIgnoreFailure(true);
 
   solver_.setMaximumAbsoluteError(ResourceMap::GetAsScalar("WhittleFactory-DefaultRhoEnd"));
-  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("WhittleFactory-DefaultMaxFun"));
+  solver_.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("WhittleFactory-DefaultMaximumEvaluationNumber"));
 }
 
 /* Optimization solver accessor */
@@ -393,11 +394,6 @@ ARMA WhittleFactory::build(const ProcessSample & sample) const
 /* Do the likelihood maximization */
 ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
 {
-
-  // Define Optimization problem
-  OptimizationProblem problem;
-  problem.setMinimization(false);
-
   // First, clean the history
   clearHistory();
   const UnsignedInteger sizeP = p_.getSize();
@@ -437,7 +433,8 @@ ARMA WhittleFactory::maximizeLogLikelihood(Point & informationCriteria) const
       if (n > 0)
       {
         // Define Objective and Constraint functions for Optimization problem
-        problem.setObjective(getLogLikelihoodFunction());
+        OptimizationProblem problem(getLogLikelihoodFunction());
+        problem.setMinimization(false);
         // use attributes to pass the data
         nbInequalityConstraint_ = m;
         problem.setInequalityConstraint(getLogLikelihoodInequalityConstraint());

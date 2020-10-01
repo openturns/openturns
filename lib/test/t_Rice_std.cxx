@@ -95,19 +95,19 @@ int main(int, char *[])
     //    Complex CF = distribution.computeCharacteristicFunction( point[0] );
     //    fullprint << "characteristic function=" << CF << std::endl;
     Point PDFgrFD(2);
-    PDFgrFD[0] = (Rice(distribution.getSigma() + eps, distribution.getNu()).computePDF(point) -
-                  Rice(distribution.getSigma() - eps, distribution.getNu()).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[0] = (Rice(distribution.getBeta() + eps, distribution.getNu()).computePDF(point) -
+                  Rice(distribution.getBeta() - eps, distribution.getNu()).computePDF(point)) / (2.0 * eps);
 
-    PDFgrFD[1] = (Rice(distribution.getSigma(), distribution.getNu() + eps).computePDF(point) -
-                  Rice(distribution.getSigma(), distribution.getNu() - eps).computePDF(point)) / (2.0 * eps);
+    PDFgrFD[1] = (Rice(distribution.getBeta(), distribution.getNu() + eps).computePDF(point) -
+                  Rice(distribution.getBeta(), distribution.getNu() - eps).computePDF(point)) / (2.0 * eps);
 
     fullprint << "pdf gradient (FD)=" << PDFgrFD << std::endl;
     Point CDFgrFD(2);
-    CDFgrFD[0] = (Rice(distribution.getSigma() + eps, distribution.getNu()).computeCDF(point) -
-                  Rice(distribution.getSigma() - eps, distribution.getNu()).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[0] = (Rice(distribution.getBeta() + eps, distribution.getNu()).computeCDF(point) -
+                  Rice(distribution.getBeta() - eps, distribution.getNu()).computeCDF(point)) / (2.0 * eps);
 
-    CDFgrFD[1] = (Rice(distribution.getSigma(), distribution.getNu() + eps).computeCDF(point) -
-                  Rice(distribution.getSigma(), distribution.getNu() - eps).computeCDF(point)) / (2.0 * eps);
+    CDFgrFD[1] = (Rice(distribution.getBeta(), distribution.getNu() + eps).computeCDF(point) -
+                  Rice(distribution.getBeta(), distribution.getNu() - eps).computeCDF(point)) / (2.0 * eps);
 
     fullprint << "cdf gradient (FD)=" << CDFgrFD << std::endl;
     Point quantile = distribution.computeQuantile( 0.95 );

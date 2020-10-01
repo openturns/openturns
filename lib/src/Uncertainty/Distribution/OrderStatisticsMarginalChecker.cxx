@@ -99,9 +99,6 @@ void OrderStatisticsMarginalChecker::check() const
   }
   // Third test, find the minimum of F_i - F_{i+1}
 
-  // Initilalyse Optimization problem
-  OptimizationProblem problem;
-
   const FiniteDifferenceStep step(BlendedStep(Point(1, std::pow(SpecFunc::ScalarEpsilon, 1.0 / 3.0)), std::sqrt(SpecFunc::ScalarEpsilon)));
   for (UnsignedInteger i = 1; i < size; ++ i)
   {
@@ -116,7 +113,7 @@ void OrderStatisticsMarginalChecker::check() const
       const Scalar xMiddle = 0.5 * (xMin + xMax);
 
       // Define Optimization problem
-      problem.setObjective(f);
+      OptimizationProblem problem(f);
       problem.setBounds(Interval(xMin, xMax));
       solver_.setStartingPoint(Point(1, xMiddle));
       solver_.setProblem(problem);

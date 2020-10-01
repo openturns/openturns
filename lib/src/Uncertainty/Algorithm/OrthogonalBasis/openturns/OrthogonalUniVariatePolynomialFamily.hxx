@@ -49,7 +49,7 @@ public:
   OrthogonalUniVariatePolynomialFamily(const OrthogonalUniVariatePolynomialFactory & implementation);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** The method to get the polynomial of any degree. */
   OrthogonalUniVariatePolynomial build(const UnsignedInteger degree) const;

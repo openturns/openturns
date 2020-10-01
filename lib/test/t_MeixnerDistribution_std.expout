@@ -38,7 +38,7 @@ covariance=class=CovarianceMatrix dimension=1 implementation=class=MatrixImpleme
 correlation=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 spearman=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
 kendall=class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[1]
-parameters=[[beta : 1.5, alpha : 0.5, gamma : 2.5,  : -0.5]]
+parameters=[[beta : 1.5, alpha : 0.5, delta : 2.5, gamma : -0.5]]
 standard moment n=0, value=class=Point name=Unnamed dimension=1 values=[1]
 standard moment n=1, value=class=Point name=Unnamed dimension=1 values=[0.638355]
 standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[1.739]

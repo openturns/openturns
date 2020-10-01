@@ -55,19 +55,24 @@ try:
     print("cdf= %.12g" % CDF)
     # CF = distribution.computeCharacteristicFunction( point[0] )
     # print "characteristic function=", CF
+    PDFgr = distribution.computePDFGradient(point)
+    print("pdf gradient     =", repr(PDFgr))
+
     PDFgrFD = Point(2)
-    PDFgrFD[0] = (Rice(distribution.getSigma() + eps, distribution.getNu()).computePDF(point) -
-                  Rice(distribution.getSigma() - eps, distribution.getNu()).computePDF(point)) / (2.0 * eps)
+    PDFgrFD[0] = (Rice(distribution.getBeta() + eps, distribution.getNu()).computePDF(point) -
+                  Rice(distribution.getBeta() - eps, distribution.getNu()).computePDF(point)) / (2.0 * eps)
 
-    PDFgrFD[1] = (Rice(distribution.getSigma(), distribution.getNu() + eps).computePDF(point) -
-                  Rice(distribution.getSigma(), distribution.getNu() - eps).computePDF(point)) / (2.0 * eps)
+    PDFgrFD[1] = (Rice(distribution.getBeta(), distribution.getNu() + eps).computePDF(point) -
+                  Rice(distribution.getBeta(), distribution.getNu() - eps).computePDF(point)) / (2.0 * eps)
     print("pdf gradient (FD)=", repr(PDFgrFD))
+    CDFgr = distribution.computeCDFGradient(point)
+    print("cdf gradient     =", repr(CDFgr))
     CDFgrFD = Point(2)
-    CDFgrFD[0] = (Rice(distribution.getSigma() + eps, distribution.getNu()).computeCDF(point) -
-                  Rice(distribution.getSigma() - eps, distribution.getNu()).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[0] = (Rice(distribution.getBeta() + eps, distribution.getNu()).computeCDF(point) -
+                  Rice(distribution.getBeta() - eps, distribution.getNu()).computeCDF(point)) / (2.0 * eps)
 
-    CDFgrFD[1] = (Rice(distribution.getNu() + eps, distribution.getNu()).computeCDF(point) -
-                  Rice(distribution.getNu() - eps, distribution.getNu()).computeCDF(point)) / (2.0 * eps)
+    CDFgrFD[1] = (Rice(distribution.getBeta(), distribution.getNu() + eps).computeCDF(point) -
+                  Rice(distribution.getBeta(), distribution.getNu() - eps).computeCDF(point)) / (2.0 * eps)
     print("cdf gradient (FD)=", repr(CDFgrFD))
     quantile = distribution.computeQuantile(0.95)
     print("quantile=", repr(quantile))
@@ -121,8 +126,6 @@ try:
     print("skewness=", repr(skewness))
     kurtosis = distribution.getKurtosis()
     print("kurtosis=", repr(kurtosis))
-    sigma = distribution.getSigma()
-    print("sigma=", sigma)
 
 except:
     import sys

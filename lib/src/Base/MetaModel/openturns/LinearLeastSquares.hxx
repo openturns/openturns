@@ -54,10 +54,10 @@ public:
 
 
   /** Virtual constructor */
-  virtual LinearLeastSquares * clone() const;
+  LinearLeastSquares * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Response surface computation */
   void run();
@@ -82,10 +82,10 @@ public:
   Sample getDataOut() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 protected:
 
 private:

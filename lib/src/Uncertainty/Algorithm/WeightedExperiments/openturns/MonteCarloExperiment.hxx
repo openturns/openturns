@@ -50,15 +50,15 @@ public:
                        const UnsignedInteger size);
 
   /** Virtual constructor */
-  virtual MonteCarloExperiment * clone() const;
+  MonteCarloExperiment * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /* Here is the interface that all derived class must implement */
 
   /** Sample generation */
-  Sample generateWithWeights(Point & weightsOut) const;
+  Sample generateWithWeights(Point & weightsOut) const override;
 
 protected:
 

@@ -61,7 +61,7 @@ public:
   Bool operator ==(const Solver & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Solve attempt to find one root to the equation function(x) = value in [infPoint, supPoint] */
   virtual Scalar solve(const Function & function,

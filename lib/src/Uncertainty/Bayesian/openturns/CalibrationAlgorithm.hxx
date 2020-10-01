@@ -44,10 +44,6 @@ public:
   /** Default constructor */
   CalibrationAlgorithm();
 
-  /** Constructor with parameters*/
-  CalibrationAlgorithm(const Sample & outputObservations,
-                       const Distribution & parameterPrior);
-
   /** Constructor from implementation */
   CalibrationAlgorithm(const CalibrationAlgorithmImplementation & op);
 

@@ -2,6 +2,10 @@
 
 %feature("docstring") OT::CalibrationAlgorithm
 OT_CalibrationAlgorithm_doc
+%feature("docstring") OT::CalibrationAlgorithm::getModel
+OT_CalibrationAlgorithm_getModel_doc
+%feature("docstring") OT::CalibrationAlgorithm::getInputObservations
+OT_CalibrationAlgorithm_getInputObservations_doc
 %feature("docstring") OT::CalibrationAlgorithm::getOutputObservations
 OT_CalibrationAlgorithm_getOutputObservations_doc
 %feature("docstring") OT::CalibrationAlgorithm::getParameterPrior

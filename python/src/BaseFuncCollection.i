@@ -27,7 +27,8 @@ namespace OT {
       OT::FunctionImplementation * p_impl = reinterpret_cast< OT::FunctionImplementation * >(ptr);
       return p_impl != NULL;
     } else {
-      return PyCallable_Check(pyObj);
+      // pure callable
+      return PyCallable_Check(pyObj) && !SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__Object, 0));
     }
     return false;
   }
@@ -44,8 +45,8 @@ namespace OT {
     } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FunctionImplementation, 0))) {
       OT::FunctionImplementation * p_impl = reinterpret_cast< OT::FunctionImplementation * >(ptr);
       return *p_impl;
-    } else if (!PyCallable_Check(pyObj)) {
-      throw OT::InvalidArgumentException(HERE) << "Argument is not a callable object (function or class) - can not be convertible to a Function";
+    } else if (!PyCallable_Check(pyObj) || SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__Object, 0))) {
+      throw OT::InvalidArgumentException(HERE) << "Argument is not a pure callable object (function or class) - can not be convertible to a Function";
     }
     OT::Function pythonFunction(new OT::FunctionImplementation(new OT::PythonEvaluation(pyObj)));
     if (PyObject_HasAttrString( pyObj, const_cast<char *>("_gradient")))

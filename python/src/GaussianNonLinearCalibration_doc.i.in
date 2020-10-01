@@ -7,6 +7,7 @@ model : :class:`~openturns.Function`
     The parametric function to be calibrated.
 inputObservations : 2-d sequence of float
     The sample of input observations.
+    Can have dimension 0 to specify no observations.
 outputObservations : 2-d sequence of float
     The sample of output observations.
 candidate : sequence of float
@@ -35,14 +36,15 @@ The posterior distribution of the parameter is :class:`~openturns.Normal`.
 By default, the posterior distribution is evaluated based on a linear approximation 
 of the model at the optimum. 
 This corresponds to using the :class:`~openturns.GaussianLinearCalibration` at the optimum,
-and is named *Laplace approximation* in the bayesian context. 
-However, if the key `GaussianNonLinearCalibration-BootstrapSize` in the :class:`~openturns.ResourceMap` 
-is set to a nonzero positive integer, then a bootstrap resampling of the observations 
-is performed and the posterior distribution is based on a :class:`~openturns.KernelSmoothing` 
-of the sample of boostrap optimum parameters. 
+and is named *Laplace approximation* in the bayesian context.
+However, if the key `GaussianNonLinearCalibration-BootstrapSize` in the :class:`~openturns.ResourceMap`
+is set to a nonzero positive integer, then a bootstrap resampling of the observations
+is performed and the posterior distribution is based on a :class:`~openturns.KernelSmoothing`
+of the sample of boostrap optimum parameters.
 
-The resulting error distribution is :class:`~openturns.Normal` and is based on the 
-`errorCovariance` input argument. 
+The resulting error distribution is :class:`~openturns.Normal`
+with a zero mean and with a covariance matrix equal to the
+`errorCovariance` input argument.
 
 See also
 --------

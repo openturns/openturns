@@ -49,29 +49,29 @@ public:
                           );
 
   /** Virtual copy constructor */
-  virtual KarhunenLoeveP1Algorithm * clone() const;
+  KarhunenLoeveP1Algorithm * clone() const override;
 
   /** Solve the Fredholm eigenvalues problem:
    * find (\phi_k, \lambda_k) such that
    * \int_{D} C(s,t)\phi_k(s)ds=\lambda_k\phi_k(t)
    * where C is a given covariance model, using P1 approximation
    */
-  void run();
+  void run() override;
 
   /** Mesh accessor */
   Mesh getMesh() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   /** Underlying mesh */

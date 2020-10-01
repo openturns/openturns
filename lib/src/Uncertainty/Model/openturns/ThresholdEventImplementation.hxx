@@ -59,46 +59,46 @@ public:
                                const Interval & interval);
 
   /** Virtual constructor */
-  virtual ThresholdEventImplementation * clone() const;
+  ThresholdEventImplementation * clone() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Dimension accessor */
-  virtual UnsignedInteger getDimension() const;
+  UnsignedInteger getDimension() const override;
 
   /** Operator accessor */
-  ComparisonOperator getOperator() const;
+  ComparisonOperator getOperator() const override;
 
   /** Threshold accessor */
-  Scalar getThreshold() const;
+  Scalar getThreshold() const override;
 
   /* Here is the interface that all derived class may implement */
 
   /** Domain accessor */
-  Domain getDomain() const;
+  Domain getDomain() const override;
 
   /** Realization accessor */
-  virtual Point getRealization() const;
+  Point getRealization() const override;
 
   /** Numerical sample accessor */
-  virtual Sample getSample(const UnsignedInteger size) const;
+  Sample getSample(const UnsignedInteger size) const override;
 
   /** Parameters value accessor */
-  virtual Point getParameter() const;
-  virtual void setParameter(const Point & parameters);
+  Point getParameter() const override;
+  void setParameter(const Point & parameters) override;
 
   /** Parameters description accessor */
-  virtual Description getParameterDescription() const;
+  Description getParameterDescription() const override;
 
   /** Whether it is an event */
-  virtual Bool isEvent() const;
+  Bool isEvent() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

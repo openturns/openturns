@@ -182,8 +182,8 @@ try:
 except:
     print(f, ", f([-1]) not defined")
 
-ot.ResourceMap.SetAsBool("SymbolicParser-CheckResult", False)
 f = ot.SymbolicFunction("x", "sqrt(x)")
+f.getEvaluation().getImplementation().setCheckOutput(False)
 print(f, ", f([-1]) is normal?", ot.SpecFunc.IsNormal(f([-1.0])[0]))
 
 # joe copula bug
@@ -205,5 +205,11 @@ assert g([5, 4])[0] == 1.0, "case sensitivity"
 try:
     f = ot.SymbolicFunction(['x', 'y'], ['pi*x'])
     print(f.gradient([-3]*2))
+except Exception:
+    print('OK')
+
+# invalid variable
+try:
+    ot.SymbolicFunction(['x09azAZ_', '(y)'], ['2*x09azAZ_'])
 except Exception:
     print('OK')

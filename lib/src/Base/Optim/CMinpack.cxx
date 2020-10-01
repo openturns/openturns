@@ -454,7 +454,6 @@ void CMinpack::run()
   result.setEvaluationNumber(size);
   result.setOptimalPoint(optimizer);
   result.setOptimalValue(Point(1, optimalValue));
-  result.setLagrangeMultipliers(computeLagrangeMultipliers(optimizer));
   setResult(result);
 #else
   throw NotYetImplementedException(HERE) << "No CMinpack support";

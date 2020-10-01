@@ -50,8 +50,8 @@ public:
   Bool operator ==(const IndicatorFunction & other) const;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 }; /* class QuadraticFunction */
 

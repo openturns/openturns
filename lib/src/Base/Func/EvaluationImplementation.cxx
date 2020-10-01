@@ -250,6 +250,10 @@ Evaluation EvaluationImplementation::getMarginal(const UnsignedInteger i) const
 /* Get the function corresponding to indices components */
 Evaluation EvaluationImplementation::getMarginal(const Indices & indices) const
 {
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal evaluation must be in the range [0, outputDimension-1] and must be different";
+  Indices full(getOutputDimension());
+  full.fill();
+  if (indices == full) return clone();
   return new MarginalEvaluation(clone(), indices);
 }
 
@@ -272,6 +276,17 @@ Bool EvaluationImplementation::isLinearlyDependent(const UnsignedInteger index) 
     throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
 
   return false;
+}
+
+/* Invalid values check accessor */
+void EvaluationImplementation::setCheckOutput(const Bool checkOutput)
+{
+  checkOutput_ = checkOutput;
+}
+
+Bool EvaluationImplementation::getCheckOutput() const
+{
+  return checkOutput_;
 }
 
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
@@ -442,6 +457,7 @@ void EvaluationImplementation::save(Advocate & adv) const
   adv.saveAttribute( "outputDescription_", outputDescription_ );
   adv.saveAttribute( "parameter_", parameter_ );
   adv.saveAttribute( "parameterDescription_", parameterDescription_ );
+  adv.saveAttribute( "checkOutput_", checkOutput_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -455,6 +471,7 @@ void EvaluationImplementation::load(Advocate & adv)
   adv.loadAttribute( "outputDescription_", outputDescription_ );
   adv.loadAttribute( "parameter_", parameter_ );
   adv.loadAttribute( "parameterDescription_", parameterDescription_ );
+  adv.loadAttribute( "checkOutput_", checkOutput_ );
 }
 
 END_NAMESPACE_OPENTURNS

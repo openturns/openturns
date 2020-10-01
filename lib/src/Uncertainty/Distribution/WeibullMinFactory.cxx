@@ -23,6 +23,7 @@
 #include "openturns/WeibullMinMuSigma.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/MaximumLikelihoodFactory.hxx"
+#include "openturns/TNC.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -119,25 +120,6 @@ WeibullMin WeibullMinFactory::buildAsWeibullMin(const Point & parameters) const
 WeibullMin WeibullMinFactory::buildAsWeibullMin() const
 {
   return WeibullMin();
-}
-
-
-WeibullMin WeibullMinFactory::buildAsWeibull(const Sample & sample) const
-{
-  LOGWARN("buildAsWeibull is deprecated");
-  return buildAsWeibullMin(sample);
-}
-
-WeibullMin WeibullMinFactory::buildAsWeibull(const Point & parameters) const
-{
-  LOGWARN("buildAsWeibull is deprecated");
-  return buildAsWeibullMin(parameters);
-}
-
-WeibullMin WeibullMinFactory::buildAsWeibull() const
-{
-  LOGWARN("buildAsWeibull is deprecated");
-  return buildAsWeibullMin();
 }
 
 

@@ -44,10 +44,10 @@ public:
                             const Point & quadrantOrientation = Point());
 
   /** Virtual constructor */
-  virtual QuadrantSampling * clone() const;
+  QuadrantSampling * clone() const override;
 
   /** Generate a set of directions */
-  virtual Sample generate() const;
+  Sample generate() const override;
 
   /** Quadrant index accessor */
   void setQuadrantIndex(const UnsignedInteger quadrantIndex);
@@ -62,7 +62,7 @@ public:
   Indices getStrataIndices() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 protected:
   /** Update rotation parameters */

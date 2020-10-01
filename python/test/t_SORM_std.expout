@@ -1,8 +1,8 @@
-myAbdoRackwitz= class=AbdoRackwitz class=OptimizationAlgorithmImplementation problem=class=OptimizationProblem implementation=class=OptimizationProblemImplementation objective=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[] evaluationImplementation=class=NoEvaluation name=Unnamed gradientImplementation=class=NoGradient name=Unnamed hessianImplementation=class=NoHessian name=Unnamed equality constraint=none inequality constraint=none bounds=none minimization=true dimension=0 startingPoint=class=Point name=Unnamed dimension=0 values=[] maximumIterationNumber=100 maximumEvaluationNumber=100000 maximumAbsoluteError=1e-10 maximumRelativeError=1e-10 maximumResidualError=1e-10 maximumConstraintError=1e-10 verbose=false tau=0.5 omega=0.0001 smooth=1.2
+myAbdoRackwitz= class=AbdoRackwitz class=OptimizationAlgorithmImplementation problem=class=OptimizationProblem implementation=class=OptimizationProblemImplementation objective=class=Function name=Unnamed implementation=class=FunctionImplementation name=Unnamed description=[] evaluationImplementation=class=NoEvaluation name=Unnamed gradientImplementation=class=NoGradient name=Unnamed hessianImplementation=class=NoHessian name=Unnamed equality constraint=none inequality constraint=none bounds=none minimization=true dimension=0 startingPoint=class=Point name=Unnamed dimension=0 values=[] maximumIterationNumber=100 maximumEvaluationNumber=1000 maximumAbsoluteError=1e-10 maximumRelativeError=1e-10 maximumResidualError=1e-10 maximumConstraintError=1e-10 verbose=false tau=0.5 omega=0.0001 smooth=1.2
 Breitung event probability=0.451173
 Breitung generalized reliability index=0.122699
-HohenBichler event probability=0.435230
-HohenBichler generalized reliability index=0.163074
+Hohenbichler event probability=0.435230
+Hohenbichler generalized reliability index=0.163074
 Tvedt event probability=0.433548
 Tvedt generalized reliability index=0.167348
 sorted curvatures= [-0.025678,-0.000273,0.000000,0.128951]

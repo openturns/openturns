@@ -41,22 +41,22 @@ public:
   ContinuousDistribution();
 
   /** Virtual constructor */
-  virtual ContinuousDistribution * clone() const;
+  ContinuousDistribution * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const ContinuousDistribution & other) const;
 
   /** Get the PDF of the distribution */
   using DistributionImplementation::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
   using DistributionImplementation::computeCDF;
-  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const override;
 
   /** Get the survival function of the distribution */
   using DistributionImplementation::computeSurvivalFunction;
-  Scalar computeSurvivalFunction(const Point & point) const;
+  Scalar computeSurvivalFunction(const Point & point) const override;
 
 protected:
   /** Interpolate the CDF for smooth continuous distributions */
@@ -64,13 +64,13 @@ protected:
 
 public:
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
 
   /* Methods inherited from upper classes */
 
   /** Tell if the distribution is continuous */
-  Bool isContinuous() const;
+  Bool isContinuous() const override;
 
 protected:
 

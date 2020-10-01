@@ -203,9 +203,11 @@ void SobolIndicesAlgorithm::setDesign(const Sample & inputDesign,
 
 Graph SobolIndicesAlgorithm::DrawSobolIndices(const Description & inputDescription,
     const Point & firstOrderIndices,
-    const Point & totalOrderIndices)
+    const Point & totalOrderIndices,
+    const Interval & firstOrderConfidenceInterval,
+    const Interval & totalOrderConfidenceInterval)
 {
-  return SobolIndicesAlgorithmImplementation::DrawSobolIndices(inputDescription, firstOrderIndices, totalOrderIndices);
+  return SobolIndicesAlgorithmImplementation::DrawSobolIndices(inputDescription, firstOrderIndices, totalOrderIndices, firstOrderConfidenceInterval, totalOrderConfidenceInterval);
 }
 
 Graph SobolIndicesAlgorithm::DrawImportanceFactors(const PointWithDescription & importanceFactors,

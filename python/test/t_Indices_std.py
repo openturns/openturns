@@ -17,6 +17,7 @@ indices[0] = indices[size - 1]
 print("indices after transformation=", repr(indices))
 print("are indices valid with bound=", size, "? ", indices.check(size))
 print("complement wrt 7=", indices.complement(7))
+print("empty complement=", ot.Indices().complement(7))
 
 # slicing
 indices2 = ot.Indices((1, 2, 3, 4, 5))

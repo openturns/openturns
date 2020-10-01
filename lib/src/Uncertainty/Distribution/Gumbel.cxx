@@ -276,10 +276,7 @@ void Gumbel::computeCovariance() const
 /* Parameters value accessor */
 Point Gumbel::getParameter() const
 {
-  Point point(2);
-  point[0] = beta_;
-  point[1] = gamma_;
-  return point;
+  return {beta_, gamma_};
 }
 
 void Gumbel::setParameter(const Point & parameter)
@@ -293,32 +290,8 @@ void Gumbel::setParameter(const Point & parameter)
 /* Parameters description accessor */
 Description Gumbel::getParameterDescription() const
 {
-  Description description(2);
-  description[0] = "beta";
-  description[1] = "gamma";
-  return description;
+  return {"beta", "gamma"};
 }
-
-/* Alpha accessor */
-void Gumbel::setAlpha(const Scalar alpha)
-{
-  LOGWARN("Gumbel::setAlpha is deprecated");
-  if (!(alpha > 0.0)) throw InvalidArgumentException(HERE) << "Alpha MUST be positive";
-  if (alpha != (1.0 / beta_))
-  {
-    beta_ = 1.0 / alpha;
-    isAlreadyComputedMean_ = false;
-    isAlreadyComputedCovariance_ = false;
-    computeRange();
-  }
-}
-
-Scalar Gumbel::getAlpha() const
-{
-  LOGWARN("Gumbel::getAlpha is deprecated");
-  return 1.0 / beta_;
-}
-
 
 /* M accessor */
 void Gumbel::setBeta(const Scalar beta)

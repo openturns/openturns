@@ -32,8 +32,8 @@
 #define CLASSNAME                               \
   public:                                       \
   /** Class name accessor */                    \
-  static  OT::String GetClassName();            \
-  virtual OT::String getClassName() const;      \
+  static OT::String GetClassName();            \
+  OT::String getClassName() const override;      \
 
 /** Define GetClassName() and getClassName() for Object-like classes */
 
@@ -62,7 +62,8 @@ BEGIN_NAMESPACE_OPENTURNS
 
 class OT_API Object
 {
-  CLASSNAME
+  static OT::String GetClassName();
+  virtual OT::String getClassName() const;
 public:
 
   /** Destructor */

@@ -30,6 +30,7 @@
 #include "openturns/OTconfig.hxx"
 #include "openturns/Os.hxx"
 #include "openturns/Pie.hxx"
+#include "openturns/Graph.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -776,7 +777,5 @@ void GraphImplementation::load(Advocate & adv)
   adv.loadAttribute( "boundingBox_", boundingBox_ );
   adv.loadAttribute( "drawablesCollection_", drawablesCollection_ );
 }
-
-
 
 END_NAMESPACE_OPENTURNS

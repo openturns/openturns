@@ -47,11 +47,19 @@ public:
   CalibrationAlgorithmImplementation();
 
   /** Parameter constructor */
-  CalibrationAlgorithmImplementation(const Sample & outputObservations,
+  CalibrationAlgorithmImplementation(const Function & model,
+                                     const Sample & inputObservations,
+                                     const Sample & outputObservations,
                                      const Distribution & parameterPrior);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
+
+  /** Model accessor */
+  Function getModel() const;
+
+  /** Input observations accessor */
+  Sample getInputObservations() const;
 
   /** Output observations accessor */
   Sample getOutputObservations() const;
@@ -69,15 +77,24 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual CalibrationAlgorithmImplementation * clone() const;
+  CalibrationAlgorithmImplementation * clone() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
+  /** compute output at prior and posterior */
+  void computeOutputAtPriorAndPosterior();
+
+  /* Model to calibrate */
+  Function model_;
+
+  /* The input observations */
+  Sample inputObservations_;
+
   /* The output observations */
   Sample outputObservations_;
 
@@ -86,6 +103,7 @@ protected:
 
   /* The calibration result */
   CalibrationResult result_;
+
 }; /* class CalibrationAlgorithmImplementation */
 
 

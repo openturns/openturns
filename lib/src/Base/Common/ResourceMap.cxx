@@ -227,6 +227,11 @@ void ResourceMap::RemoveKey(const String & key)
   GetInstance().lock().removeKey(key);
 }
 
+std::vector<String> ResourceMap::FindKeys(const String & substr)
+{
+  return GetInstance().lock().findKeys(substr);
+}
+
 /* Default constructor */
 ResourceMap::ResourceMap()
   : mapString_()
@@ -649,7 +654,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("SpecFunc-MaximumIteration", 1000);
 
   // SymbolicParser parameters
-  addAsBool("SymbolicParser-CheckResult", true);
   addAsString("SymbolicParser-Backend", SYMBOLICPARSER_DEFAULT_BACKEND);
 
   // DesignProxy parameters
@@ -717,11 +721,13 @@ void ResourceMap::loadDefaultConfiguration()
   // PointToPointEvaluation parameters //
   addAsUnsignedInteger("PointToPointEvaluation-BlockSize", 256);
 
+  // FieldToPointConnection parameters //
+  addAsUnsignedInteger("FieldToPointConnection-BlockSize", 256);
+
   // SQP parameters //
   addAsScalar("SQP-DefaultOmega", 1.0e-4);
   addAsScalar("SQP-DefaultSmooth", 1.2);
   addAsScalar("SQP-DefaultTau", 0.5);
-  addAsUnsignedInteger ( "SQP-DefaultMaximumEvaluationNumber", 100000);
 
   // TNC parameters //
   addAsScalar("TNC-DefaultAccuracy", 1.0e-4);
@@ -735,7 +741,6 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("AbdoRackwitz-DefaultOmega", 1.0e-4);
   addAsScalar("AbdoRackwitz-DefaultSmooth", 1.2);
   addAsScalar("AbdoRackwitz-DefaultTau", 0.5);
-  addAsUnsignedInteger("AbdoRackwitz-DefaultMaximumEvaluationNumber", 100000);
 
   // MultiStart parameters //
   addAsBool("MultiStart-KeepResults", true);
@@ -746,7 +751,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("OptimizationAlgorithm-DefaultMaximumConstraintError", 1.0e-5);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumRelativeError", 1.0e-5);
   addAsScalar("OptimizationAlgorithm-DefaultMaximumResidualError", 1.0e-5);
-  addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 100);
+  addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 1000);
   addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber", 100);
 
   // Dlib optimization parameters //
@@ -780,6 +785,9 @@ void ResourceMap::loadDefaultConfiguration()
 
   // GaussLegendre parameters //
   addAsUnsignedInteger("GaussLegendre-DefaultMarginalIntegrationPointsNumber", 64);
+
+  // FejerAlgorithm parameters //
+  addAsUnsignedInteger("FejerAlgorithm-DefaultMarginalIntegrationPointsNumber", 64);
 
   // IteratedQuadrature parameters //
   addAsScalar("IteratedQuadrature-MaximumError",    1.0e-7);
@@ -975,7 +983,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("KernelMixture-SmallSize", 50);
 
   // KernelSmoothing parameters //
-  addAsScalar("KernelSmoothing-AbsolutePrecision", 0.0);
+  addAsScalar("KernelSmoothing-AbsolutePrecision", 1.0e-5);
   addAsScalar("KernelSmoothing-CutOffPlugin", 5.0);
   addAsScalar("KernelSmoothing-RelativePrecision", 1.0e-5);
   addAsScalar("KernelSmoothing-ResidualPrecision", 1.0e-10);
@@ -1188,9 +1196,13 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("CleaningStrategy-DefaultSignificanceFactor", 1.0e-4);
   addAsUnsignedInteger("CleaningStrategy-DefaultMaximumSize", 20);
 
+  // MetaModelAlgorithm parameters //
+  addAsScalar("MetaModelAlgorithm-PValueThreshold", 1.0e-3);
+  addAsString("MetaModelAlgorithm-ModelSelectionCriterion", "BIC");
+  addAsString("MetaModelAlgorithm-NonParametricModel", "Histogram");
+
   // FunctionalChaosAlgorithm parameters //
   addAsScalar("FunctionalChaosAlgorithm-DefaultMaximumResidual", 1.0e-6);
-  addAsScalar("FunctionalChaosAlgorithm-PValueThreshold", 1.0e-3);
   addAsScalar("FunctionalChaosAlgorithm-QNorm", 0.5);
   addAsUnsignedInteger("FunctionalChaosAlgorithm-LargeSampleSize", 10000);
   addAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree", 10);
@@ -1210,7 +1222,6 @@ void ResourceMap::loadDefaultConfiguration()
 
   // GeneralLinearModelAlgorithm parameters //
   addAsBool("GeneralLinearModelAlgorithm-KeepCovariance", true);
-  addAsBool("GeneralLinearModelAlgorithm-NormalizeData", false);
   addAsBool("GeneralLinearModelAlgorithm-OptimizeParameters", true);
   addAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance", true);
   addAsBool("GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", true);
@@ -1278,6 +1289,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Distribution-EntropySamplingSize", 524288);
   addAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize", 16384);
   addAsUnsignedInteger("Distribution-SmallDimensionEntropy", 3);
+  addAsString("Distribution-RoughnessSamplingMethod", "MonteCarlo");
+  addAsUnsignedInteger("Distribution-RoughnessSamplingSize", 524288);
+  addAsUnsignedInteger("Distribution-SmallDimensionRoughness", 3);
 
   // ContinuousDistribution parameters //
   addAsUnsignedInteger("ContinuousDistribution-DefaultIntegrationNodesNumber", 256);
@@ -1339,12 +1353,12 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("WhittleFactory-DefaultRhoEnd", 1.0e-10);
   addAsScalar("WhittleFactory-DefaultStartingPointScale", 1.0);
   addAsScalar("WhittleFactory-RootEpsilon", 1.0e-6);
-  addAsUnsignedInteger("WhittleFactory-DefaultMaxFun", 2000);
+  addAsUnsignedInteger("WhittleFactory-DefaultMaximumEvaluationNumber", 2000);
 
   // BoxCoxFactory parameters //
   addAsScalar("BoxCoxFactory-DefaultRhoBeg", 0.1);
   addAsScalar("BoxCoxFactory-DefaultRhoEnd", 1.0e-10);
-  addAsUnsignedInteger("BoxCoxFactory-DefaultMaxFun", 2000);
+  addAsUnsignedInteger("BoxCoxFactory-DefaultMaximumEvaluationNumber", 2000);
   addAsUnsignedInteger("BoxCoxFactory-DefaultPointNumber", 201);
 
   // VisualTest parameters //
@@ -1386,7 +1400,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("ARMALikelihoodFactory-MaximalScaling", 1.0e5);
   addAsScalar("ARMALikelihoodFactory-RootEpsilon", 1.0e-6);
   addAsScalar("ARMALikelihoodFactory-StartingScaling", 1.0e-13);
-  addAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaxFun", 10000);
+  addAsUnsignedInteger("ARMALikelihoodFactory-DefaultMaximumEvaluationNumber", 10000);
 
   // FittingTest parameters //
   addAsBool("FittingTest-ChiSquaredCheckSample", true);
@@ -1423,6 +1437,19 @@ void ResourceMap::reload()
 {
   loadDefaultConfiguration();
   loadConfigurationFile();
+}
+
+/** Get the list of keys associated to a class */
+std::vector<String> ResourceMap::findKeys(const String & substr)
+{
+  std::vector<String> allKeys(getKeys());
+  std::vector<String> result;
+  for (UnsignedInteger i = 0; i < allKeys.size(); ++ i)
+  {
+    if(allKeys[i].find(substr) != std::string::npos)
+      result.push_back(allKeys[i]);
+  }
+  return result;
 }
 
 /* String converter */

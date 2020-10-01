@@ -70,7 +70,6 @@
 %include GeneralizedExtremeValue.i
 %include GeneralizedExtremeValueFactory.i
 %include GumbelFactory.i
-%include GumbelAB.i
 %include GumbelLambdaGamma.i
 %include GumbelMuSigma.i
 

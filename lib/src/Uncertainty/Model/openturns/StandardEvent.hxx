@@ -23,7 +23,6 @@
 
 #include "openturns/OTprivate.hxx"
 #include "openturns/RandomVector.hxx"
-#include "openturns/Event.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

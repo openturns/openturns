@@ -49,22 +49,22 @@ public:
   explicit MemoizeFunction(const Function & function, const HistoryStrategy & historyStrategy = Full());
 
   /** Virtual copy constructor */
-  virtual MemoizeFunction * clone() const;
+  MemoizeFunction * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Function implementation accessors */
-  void setEvaluation(const Evaluation & evaluation);
+  void setEvaluation(const Evaluation & evaluation) override;
 
   /** Comparison operator */
   Bool operator ==(const MemoizeFunction & other) const;
 
   /** Operator () */
-  virtual Point operator() (const Point & inPoint) const;
+  Point operator() (const Point & inPoint) const override;
 
   /** Operator () */
-  virtual Sample operator() (const Sample & inSample) const;
+  Sample operator() (const Sample & inSample) const override;
 
   /** @brief Enable the internal cache
    *

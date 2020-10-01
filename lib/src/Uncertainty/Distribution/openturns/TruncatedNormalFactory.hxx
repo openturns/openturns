@@ -41,14 +41,14 @@ public:
   TruncatedNormalFactory();
 
   /** Virtual constructor */
-  TruncatedNormalFactory * clone() const;
+  TruncatedNormalFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
   TruncatedNormal buildAsTruncatedNormal(const Sample & sample) const;
   TruncatedNormal buildAsTruncatedNormal(const Point & parameters) const;
   TruncatedNormal buildAsTruncatedNormal() const;

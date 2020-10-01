@@ -42,21 +42,21 @@ public:
   explicit ConstantStep(const Point & eps);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /* Here is the interface that all derived class must implement */
 
   /** Virtual constructor */
-  virtual ConstantStep * clone() const;
+  ConstantStep * clone() const override;
 
   /** Compute step */
-  Point operator()(const Point & inP) const;
+  Point operator()(const Point & inP) const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 };
 
 END_NAMESPACE_OPENTURNS

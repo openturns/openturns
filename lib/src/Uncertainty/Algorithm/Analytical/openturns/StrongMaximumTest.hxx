@@ -60,7 +60,7 @@ public:
 
 
   /** Virtual constructor */
-  virtual StrongMaximumTest * clone() const;
+  StrongMaximumTest * clone() const override;
 
   /** standardSpaceDesignPoint accessor */
   Point getStandardSpaceDesignPoint() const;
@@ -114,13 +114,13 @@ public:
   Sample getFarDesignPointViolatingEventValues() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

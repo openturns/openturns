@@ -52,9 +52,6 @@ public:
   SpectralModelFactory(SpectralModelFactoryImplementation * p_implementation);
 #endif
 
-  /** Virtual constructor */
-  virtual  SpectralModelFactory * clone() const;
-
   /** FFT algorithm accessor */
   FFT getFFTAlgorithm() const;
 
@@ -62,11 +59,11 @@ public:
   void setFFTAlgorithm(FFT & fft);
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
 
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /* Here is the interface that all derived class must implement */
   /** Build a a spectral model based on a sample */

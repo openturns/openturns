@@ -55,8 +55,8 @@ public:
                                   const String & legend = "");
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Comparison operator */
   Bool operator == (const DrawableImplementation & other) const;
@@ -156,7 +156,7 @@ public:
   virtual void clean() const;
 
   /** Clone method */
-  virtual DrawableImplementation * clone() const;
+  DrawableImplementation * clone() const override;
 
   /** Give the colors name */
   static Description GetValidColors();
@@ -221,10 +221,10 @@ public:
   static Description BuildDefaultPalette(const UnsignedInteger size);
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() stores the object through the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   static Bool IsFirstInitialization;

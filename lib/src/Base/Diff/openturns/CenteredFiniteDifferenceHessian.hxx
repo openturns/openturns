@@ -64,14 +64,14 @@ public:
                                   const Evaluation & evaluation);
 
   /* Virtual constructor */
-  virtual CenteredFiniteDifferenceHessian * clone() const;
+  CenteredFiniteDifferenceHessian * clone() const override;
 
   /* Comparison operator */
   Bool operator ==(const CenteredFiniteDifferenceHessian & other) const;
 
   /* String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
 
 
@@ -81,7 +81,7 @@ public:
    * @param in The point where the hessian is computed
    * @result A tensor
    */
-  virtual SymmetricTensor hessian(const Point & inP) const;
+  SymmetricTensor hessian(const Point & inP) const override;
 
 protected:
 

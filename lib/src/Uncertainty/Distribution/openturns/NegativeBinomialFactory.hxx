@@ -40,14 +40,14 @@ public:
   NegativeBinomialFactory();
 
   /** Virtual constructor */
-  virtual NegativeBinomialFactory * clone() const;
+  NegativeBinomialFactory * clone() const override;
 
   /* Here is the interface that all derived class must implement */
   using DistributionFactoryImplementation::build;
 
-  Distribution build(const Sample & sample) const;
-  Distribution build(const Point & parameters) const;
-  Distribution build() const;
+  Distribution build(const Sample & sample) const override;
+  Distribution build(const Point & parameters) const override;
+  Distribution build() const override;
   NegativeBinomial buildAsNegativeBinomial(const Sample & sample) const;
   NegativeBinomial buildAsNegativeBinomial(const Point & parameters) const;
   NegativeBinomial buildAsNegativeBinomial() const;

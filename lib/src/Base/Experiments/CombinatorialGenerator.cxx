@@ -56,12 +56,6 @@ String CombinatorialGenerator::__repr__() const
   return oss;
 }
 
-void CombinatorialGenerator::setImplementation(const Implementation & p_implementation)
-{
-  copyOnWrite();
-  getImplementation() = p_implementation;
-}
-
 /* Sample generation */
 IndicesCollection CombinatorialGenerator::generate()
 {

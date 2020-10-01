@@ -51,7 +51,7 @@ public:
   OptimalLHSExperiment(const LHSExperiment & lhs, const SpaceFilling & spaceFilling);
 
   /** Virtual constructor method */
-  OptimalLHSExperiment * clone() const;
+  OptimalLHSExperiment * clone() const override;
 
   /** Attributes for LHSExperiment */
   LHSExperiment getLHS() const;
@@ -63,13 +63,13 @@ public:
   virtual LHSResult getResult() const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   void setLHS(const LHSExperiment & lhs);

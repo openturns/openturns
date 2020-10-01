@@ -67,23 +67,7 @@ If another set of parameters is specified, the native parameters distribution is
 
     - if the native parameters distribution is normal and the transformation regular at the estimated parameters values: the asymptotic parameters distribution is normal and its covariance matrix determined from the inverse Fisher information matrix of the native parameters and the transformation;
     - in the other cases, the asymptotic parameters distribution is estimated by Bootstrap on the initial data and kernel fitting.
-
-
-Examples
---------
-Create a sample from a Beta distribution:
-
->>> import openturns as ot
->>> sample = ot.Beta().getSample(10)
->>> ot.ResourceMap.SetAsUnsignedInteger('DistributionFactory-DefaultBootstrapSize', 100)
-
-Fit a Beta distribution in the native parameters and create a :class:`~openturns.DistributionFactory`:
-
->>> fittedRes = ot.BetaFactory().buildEstimator(sample)
-
-Fit a Beta distribution  in the alternative parametrization :math:`(\mu, \sigma, a, b)`:
-
->>> fittedRes2 = ot.BetaFactory().buildEstimator(sample, ot.BetaMuSigma())"
+"
 %enddef
 %feature("docstring") OT::DistributionFactoryImplementation::buildEstimator
 OT_DistributionFactory_buildEstimator_doc

@@ -22,7 +22,6 @@
 #define OPENTURNS_SORM_HXX
 
 #include "openturns/Analytical.hxx"
-#include "openturns/Event.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/SORMResult.hxx"
@@ -55,7 +54,7 @@ public:
 
 
   /** Virtual constructor */
-  virtual SORM * clone() const;
+  SORM * clone() const override;
 
   /** Result accessor */
   SORMResult getResult() const;
@@ -64,16 +63,16 @@ public:
   void setResult(const SORMResult & sormResult);
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Function that computes the design point by re-using the Analytical::run() and creates a SORM::Result */
-  void run();
+  void run() override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 

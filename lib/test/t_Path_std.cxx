@@ -51,8 +51,8 @@ int main(int, char *[])
     fullprint << "Find file=" << findName << std::endl;
     FileName fileName(Path::BuildTemporaryFileName("testFile"));
     fullprint << "Temporary file name=" << fileName << std::endl;
-    Path::DeleteTemporaryDirectory(directory1);
-    Path::DeleteTemporaryDirectory(directory2);
+    Os::DeleteDirectory(directory1);
+    Os::DeleteDirectory(directory2);
   }
   catch (FileOpenException & ex)
   {

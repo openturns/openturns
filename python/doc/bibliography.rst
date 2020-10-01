@@ -5,33 +5,33 @@ Bibliography
 ============
 .. [aas2004] Aas K., *Modelling the dependence structure of financial assets: a survey of four copulas*,
     Norwegian Computing Center report nr. SAMBA/22/04, December 2004.
-    `pdf <http://doc.openturns.org/papers/aas2004.pdf>`__
+    `pdf <https://www.nr.no/files/samba/bff/SAMBA2204b.pdf>`__
 .. [abate1992] Abate, J. and Whitt, W. (1992). *The Fourier-series method for
     inverting transforms of probability distributions*.
     Queueing Systems 10, 5--88., 1992, formula 5.5.
-    `pdf <http://doc.openturns.org/papers/abate1992.pdf>`__
+    `pdf <http://www.columbia.edu/~ww2040/Fourier-series.pdf>`__
 .. [amblard2012] Pierre-Olivier Amblard, Jean-François Coeurjolly,
     Frédéric Lavancier, Anne Philippe, *Basic properties of the Multivariate
     Fractional Brownian Motion*,
     `pdf <https://arxiv.org/pdf/1007.0828.pdf>`__
 .. [au2001] Au, S. K. *Estimation of small failure probabilities in high
     dimensions by subset simulation*. Prob. Eng. Mech., 2001, 16(4), 263-277.
-    `pdf <http://doc.openturns.org/papers/au2001.pdf>`__
+    `pdf <http://jimbeck.caltech.edu/papers_pdf/estimation_of_small_failure_probabilities.pdf>`__
 .. [bhattacharyya1997] Bhattacharyya G.K., and R.A. Johnson, *Statistical
     Concepts and Methods*, John Wiley and Sons, New York, 1997.
 .. [blatman2009] Blatman, G. *Adaptive sparse polynomial chaos expansions for
     uncertainty propagation and sensitivity analysis.*, PhD thesis.
     Blaise Pascal University-Clermont II, France, 2009.
-    `pdf <http://doc.openturns.org/papers/blatman2009.pdf>`__
+    `pdf <https://tel.archives-ouvertes.fr/tel-00440197/document>`__
 .. [burnham2002] Burnham, K.P., and Anderson, D.R. *Model Selection and
     Multimodel Inference: A Practical Information Theoretic Approach*, Springer,
     2002.
 .. [cambou2017] Mathieu Cambou, Marius Hofert, Christiane Lemieux, *Quasi-Random numbers for copula models*, Stat. Comp., 2017, 27(5), 1307-1329.
-    `pdf <http://doc.openturns.org/papers/cambou2017.pdf>`__
+    `pdf <https://arxiv.org/pdf/1508.03483.pdf>`__
 .. [caniou2012] Caniou, Y. *Global sensitivity analysis for nested and
     multiscale modelling.* PhD thesis. Blaise Pascal University-Clermont II,
     France, 2012.
-    `pdf <http://doc.openturns.org/papers/caniou2012.pdf>`__
+    `pdf <https://tel.archives-ouvertes.fr/tel-00864175/document>`__
 .. [ceres2012] Sameer Agarwal and Keir Mierle and Others, *Ceres Solver*,
     http://ceres-solver.org
 .. [cminpack2007] Devernay, F. *C/C++ Minpack*, 2007.
@@ -41,10 +41,10 @@ Bibliography
 .. [damblin2013] G. Damblin, M. Couplet and B. Iooss. *Numerical studies
     of space filling designs: optimization of Latin hypercube samples and
     subprojection properties.* Journal of Simulation, 7:276-289, 2013.
-    `pdf <http://doc.openturns.org/papers/damblin2013.pdf>`__
+    `pdf <https://arxiv.org/pdf/1307.6835.pdf>`__
 .. [devroye1986] Devroye L, *Non-Uniform RandomVariate Generation*,
     Springer-Verlag, New York, 1986
-    `pdf <http://doc.openturns.org/papers/devroye1986.pdf>`__
+    `pdf <http://www.nrbook.com/devroye/Devroye_files/>`__
 .. [devroye1986b] Devroye L, *Non-Uniform RandomVariate Generation - Errata*,
     `pdf <http://www.nrbook.com/devroye/Devroye_files/errors.pdf>`__
 .. [dimitriadis2016] Dimitriadis J., *On the Accuracy of Loader's Algorithm for
@@ -58,10 +58,10 @@ Bibliography
     Journal of Machine Learning Research, 10:1755-1758, 2009.
 .. [doornik2005] Doornik, J.A. *An Improved Ziggurat Method to Generate Normal Random Samples*,
     mimeo, Nuffield College, University of Oxford, 2005.
-    `pdf <http://doc.openturns.org/papers/doornik2005.pdf>`__
+    `pdf <https://www.doornik.com/research/ziggurat.pdf>`__
 .. [dubourg2011] Dubourg, V. *Adaptative surrogate models for reliability and reliability-based design optimization*,
     University Blaise Pascal - Clermont II, 2011.
-    `pdf <http://doc.openturns.org/papers/dubourg2011.pdf>`__
+    `pdf <https://tel.archives-ouvertes.fr/tel-00697026v2/document>`__
 .. [fang2006] K-T. Fang, R. Li, and A. Sudjianto. *Design and modeling for
     computer experiments.* Chapman & Hall CRC, 2006.
 .. [freedman1981] David Freedman, Persi Diaconis, *On the histogram as a density 
@@ -69,10 +69,10 @@ Bibliography
     57 (4): 453–476. 
 .. [gamboa2013] Gamboa, F., Janon, A., Klein, T. & Lagnoux, A. *Sensitivity
     analysis for multidimensional and functional outputs.* 2013.
-    `pdf <http://doc.openturns.org/papers/gamboa2013.pdf>`__
+    `pdf <https://arxiv.org/pdf/1311.1797.pdf>`__
 .. [hormann1993] Hormann W., *The generation of Binomial Random Variates* Journal
     of Statistical Computation and Simulation 46, pp. 101-110, 1993.
-    `pdf <http://doc.openturns.org/papers/hormann1992.pdf>`__
+    `pdf <https://epub.wu.ac.at/1242/1/document.pdf>`__
 .. [halko2010] Nathan Halko, Per-Gunnar Martinsson, Joel A. Tropp, *Finding
     structure with randomness: Probabilistic algorithms for constructing
     approximate matrix decompositions*,
@@ -114,11 +114,11 @@ Bibliography
 .. [lebrun2009a] Lebrun, R. & Dutfoy, A. *An innovating analysis of the Nataf
     transformation from the copula viewpoint.* Prob. Eng. Mech., 2009, 24,
     312-320.
-    `pdf <http://doc.openturns.org/papers/lebrun2009a.pdf>`__
+    `pdf <https://www.researchgate.net/profile/Regis_Lebrun/publication/245186106_An_innovating_analysis_of_the_Nataf_transformation_from_the_copula_viewpoint/links/5ab4ac1faca272171004264f/An-innovating-analysis-of-the-Nataf-transformation-from-the-copula-viewpoint.pdf>`__
 .. [lebrun2009b] Lebrun, R. & Dutfoy, A. *A generalization of the Nataf
     transformation to distributions with elliptical copula.* Prob. Eng. Mech.,
     2009, 24, 172-178.
-    `pdf <http://doc.openturns.org/papers/lebrun2009b.pdf>`__
+    `pdf <https://www.researchgate.net/profile/Regis_Lebrun/publication/229410827_A_generalization_of_the_Nataf_transformation_to_distribution_with_copula/links/59e47955458515393d60e7f1/A-generalization-of-the-Nataf-transformation-to-distribution-with-copula.pdf>`__
 .. [lebrun2009c] Lebrun, R. & Dutfoy, A. *Do Rosenblatt and Nataf
     isoprobabilistic transformations really differ?* Prob. Eng. Mech., 2009,
     24, 577-584.
@@ -127,7 +127,7 @@ Bibliography
     Quasi-Monte Carlo Methods. In: Dror M., L’Ecuyer P., Szidarovszky F. (eds)
     Modeling Uncertainty. International Series in Operations Research &
     Management Science, vol 46. Springer, Boston, MA
-    `pdf <http://doc.openturns.org/papers/lecuyer2005.pdf>`__
+    `pdf <https://www.researchgate.net/profile/Pierre_LEcuyer/publication/226670289_Recent_Advances_in_Randomized_Quasi-Monte_Carlo_Methods/links/0deec52dd9d449512b000000/Recent-Advances-in-Randomized-Quasi-Monte-Carlo-Methods.pdf>`__
 .. [lemaire2009] Lemaire M., *Structural reliability*, John Wiley & Sons, 2009.
 .. [Lilliefors1967] *On the Kolmogorov-Smirnov Test for Normality with Mean and Variance Unknown*
     Hubert W. Lilliefors
@@ -143,7 +143,7 @@ Bibliography
 .. [matthys2003] G. Matthys & J. Beirlant,
     *Estimating the extreme value index and high quantiles with exponential regression models*,
     Statistica Sinica, 13, 850-880, 2003.
-    `pdf <http://doc.openturns.org/papers/matthys2003.pdf>`__
+    `pdf <http://www3.stat.sinica.edu.tw/statistica/oldpdf/A13n316.pdf>`__
 .. [mauricio1995] J. A. Mauricio,
     *Exact Maximum Likelihood Estimation of Stationary Vector ARMA Models*,
     Journal of the American Statistical Association 90, 282-291, 1995.
@@ -151,26 +151,26 @@ Bibliography
 .. [mckay1979] McKay M, Beckman R and Conover W (1979). *A comparison of three
     methods for selecting values of input variables in the analysis of output
     from a computer code.* Technometrics 21(2): 239-245.
-    `pdf <http://doc.openturns.org/papers/mckay1979.pdf>`__
+    `pdf <https://www.asc.ohio-state.edu/statistics/comp_exp/jour.club/McKayConoverBeckman.pdf>`__
 .. [minka2012] Thomas P. Minka,
     *Estimating a Dirichlet distribution*, Microsoft Research report, 2000 (revised 2003, 2009, 2012).
     `pdf <http://research.microsoft.com/en-us/um/people/minka/papers/dirichlet/minka-dirichlet.pdf>`__
 .. [morris1995] D. Morris and J. Mitchell. *Exploratory designs for
     computational experiments.*
     Journal of Statistical Planning and Inference, 43 :381-402, 1995.
-    `pdf <http://doc.openturns.org/papers/morris1995.pdf>`__
+    `pdf <https://www.osti.gov/servlets/purl/10184343>`__
 .. [munoz2011] M. Munoz Zuniga, J. Garnier, E. Remy and E. de Rocquigny,
     *Adaptative Directional Stratification for controlled estimation of the
     probability of a rare event*, Reliability Engineering and System Safety,
     2011.
-    `pdf <http://doc.openturns.org/papers/munoz2011.pdf>`__
+    `pdf <https://josselin-garnier.org/wp-content/uploads/2013/12/munoz_ress.pdf>`__
 .. [nataf1962] Nataf, A. *Determination des distributions dont les marges sont
     donnees.* C. R. Acad. Sci. Paris, 1962, 225, 42-43.
     `pdf <http://doc.openturns.org/papers/nataf1962.pdf>`__
 .. [nash1999] Stephen G. Nash, 1999, *A survey of Truncated-Newton methods*,
     Systems Engineering and Operations Research Dept.,
     George Mason University, Fairfax, VA 22030.
-    `pdf <http://doc.openturns.org/papers/nash1999.pdf>`__
+    `pdf <https://core.ac.uk/download/pdf/82362441.pdf>`__
 .. [nelsen2006] Roger B. Nelsen, *An Introduction to Copulas 2nd Edition*,
     Springer, 2006.
 .. [nisthandbook] NIST/SEMATECH e-Handbook of Statistical Methods,
@@ -183,28 +183,28 @@ Bibliography
 .. [pronzato2012] Pronzato L and Muller W (2012).
     *Design of computer experiments: Space filling and beyond.*
     Statistics and Computing 22(3): 681-701.
-    `pdf <http://doc.openturns.org/papers/prontazo2012.pdf>`__
+    `pdf <https://hal.archives-ouvertes.fr/hal-00685876/document>`__
 .. [rai2015] Rai, P. *Sparse Low Rank Approximation of Multivariate Functions -
     Applications in Uncertainty Quantification.*, PhD thesis.
     Ecole Centrale de Nantes, France, 2015.
-    `pdf <http://doc.openturns.org/papers/rai2015.pdf>`__
+    `pdf <https://tel.archives-ouvertes.fr/tel-01143694/document>`__
 .. [rosenblatt1952] Rosenblatt, M. *Remarks on a multivariate transformation.*
     Ann. Math. Stat., 1952, 23, 470-472.
-    `pdf <http://doc.openturns.org/papers/rosenblatt1952.pdf>`__
+    `pdf <https://projecteuclid.org/download/pdf_1/euclid.aoms/1177729394>`__
 .. [saltelli1999] Saltelli, A., Tarantola, S. & Chan, K. *A quantitative, model
     independent method for global sensitivity analysis of model output.*
     Technometrics, 1999, 41(1), 39-56.
-    `pdf <http://doc.openturns.org/papers/saltelli1999.pdf>`__
+    `pdf <http://www.andreasaltelli.eu/file/repository/Saltelli_Technom.pdf>`__
 .. [saltelli2002] Saltelli, A. *Making best use of model evaluations to compute
     sensitivity indices.* Computer Physics Communication, 2002, 145, 580-297.
-    `pdf <http://doc.openturns.org/papers/saltelli2002.pdf>`__
+    `pdf <http://www.andreasaltelli.eu/file/repository/Making_best_use.pdf>`__
 .. [saporta1990] Saporta, G. (1990). *Probabilités, Analyse de données et
     Statistique*, Technip
 .. [scott1992] David W. Scott (1992). *Multivariate density estimation*,  
     John Wiley & Sons, Inc. 
 .. [simard2011] Simard, R. & L'Ecuyer, P. *Computing the Two-Sided Kolmogorov-
     Smirnov Distribution.* Journal of Statistical Software, 2011, 39(11), 1-18.
-    `pdf <http://doc.openturns.org/papers/simard2011.pdf>`__
+    `pdf <https://www.jstatsoft.org/article/view/v039i11/v39i11.pdf>`__
 .. [sobol1993] Sobol, I. M. *Sensitivity analysis for non-linear mathematical
     model* Math. Modelling Comput. Exp., 1993, 1, 407-414.
     `pdf <http://doc.openturns.org/papers/sobol1993.pdf>`__

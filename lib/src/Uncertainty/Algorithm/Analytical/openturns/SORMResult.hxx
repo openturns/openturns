@@ -22,7 +22,6 @@
 #define OPENTURNS_SORMResult_HXX
 
 #include "openturns/AnalyticalResult.hxx"
-#include "openturns/Event.hxx"
 #include "openturns/SquareMatrix.hxx"
 #include "openturns/Distribution.hxx"
 
@@ -48,12 +47,15 @@ public:
   SORMResult();
 
   /** Virtual constructor */
-  virtual SORMResult * clone() const;
+  SORMResult * clone() const override;
 
   /** EventProbabilityBreitung accessor */
   Scalar getEventProbabilityBreitung() const;
 
-  /** EventProbabilityHohenBichler accessor */
+  /** EventProbabilityHohenbichler accessor */
+  Scalar getEventProbabilityHohenbichler() const;
+
+  /** @deprecated EventProbabilityHohenbichler accessor */
   Scalar getEventProbabilityHohenBichler() const;
 
   /** EventProbabilityTvedt accessor */
@@ -62,7 +64,10 @@ public:
   /** GeneralisedReliabilityIndexBreitung accessor */
   Scalar getGeneralisedReliabilityIndexBreitung() const;
 
-  /** GeneralisedReliabilityIndexHohenBichler accessor */
+  /** GeneralisedReliabilityIndexHohenbichler accessor */
+  Scalar getGeneralisedReliabilityIndexHohenbichler() const;
+
+  /** @deprecated GeneralisedReliabilityIndexHohenbichler accessor */
   Scalar getGeneralisedReliabilityIndexHohenBichler() const;
 
   /** GeneralisedReliabilityIndexTvedt accessor */
@@ -72,16 +77,16 @@ public:
   Point getSortedCurvatures() const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
 
@@ -95,10 +100,10 @@ private:
   mutable Point sortedCurvatures_;
   mutable Bool isAlreadyComputedSortedCurvatures_;
   mutable Scalar eventProbabilityBreitung_;
-  mutable Scalar eventProbabilityHohenBichler_;
+  mutable Scalar eventProbabilityHohenbichler_;
   mutable Scalar eventProbabilityTvedt_;
   mutable Scalar generalisedReliabilityIndexBreitung_;
-  mutable Scalar generalisedReliabilityIndexHohenBichler_;
+  mutable Scalar generalisedReliabilityIndexHohenbichler_;
   mutable Scalar generalisedReliabilityIndexTvedt_;
   Distribution standardDistribution_;
   Distribution standardMarginal_;

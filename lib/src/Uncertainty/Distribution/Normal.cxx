@@ -215,7 +215,7 @@ Scalar Normal::computeDensityGeneratorSecondDerivative(const Scalar betaSquare) 
 Scalar Normal::computePDF(const Scalar x) const
 {
   const Scalar y = (x - mean_[0]) / sigma_[0];
-  return std::exp(-0.5 * y * y) * SpecFunc::ISQRT2PI / sigma_[0];
+  return DistFunc::dNormal(y) / sigma_[0];
 }
 
 Scalar Normal::computePDF(const Point & point) const
@@ -537,7 +537,9 @@ Scalar Normal::computeConditionalPDF(const Scalar x,
   if ((conditioningDimension == 0) || (hasIndependentCopula()))
   {
     const Scalar z = (x - mean_[conditioningDimension]) / sigma_[conditioningDimension];
-    return SpecFunc::ISQRT2PI * std::exp(-z * z) / sigma_[conditioningDimension];
+    // Interest is to compute \sqrt{\frac{1}{2 \pi}} exp(-z*z)
+    // With x = \sqrt{2} z, we use the Gaussian density function
+    return DistFunc::dNormal(z * std::sqrt(2.0)) / sigma_[conditioningDimension];
   }
   // General case
   Scalar meanRos = 0.0;
@@ -548,7 +550,7 @@ Scalar Normal::computeConditionalPDF(const Scalar x,
   }
   meanRos = mean_[conditioningDimension] - sigmaRos * std::sqrt(sigma_[conditioningDimension]) * meanRos;
   const Scalar z = (x - meanRos) / sigmaRos;
-  return SpecFunc::ISQRT2PI * std::exp(-0.5 * z * z) / sigmaRos;
+  return DistFunc::dNormal(z) / sigmaRos;
 }
 
 Point Normal::computeSequentialConditionalPDF(const Point & x) const
@@ -559,13 +561,13 @@ Point Normal::computeSequentialConditionalPDF(const Point & x) const
     for (UnsignedInteger i = 0; i < dimension_; ++i)
     {
       const Scalar u = (x[i] - mean_[i]) / sigma_[i];
-      result[i] = std::exp(-0.5 * u * u) * SpecFunc::ISQRT2PI / sigma_[i];
+      result[i] = DistFunc::dNormal(u) / sigma_[i];
     }
   else
   {
     const Point u(inverseCholesky_ * (x - mean_));
     for (UnsignedInteger i = 0; i < dimension_; ++i)
-      result[i] = std::exp(-0.5 * u[i] * u[i]) * SpecFunc::ISQRT2PI * inverseCholesky_(i, i);
+      result[i] = DistFunc::dNormal(u[i]) * inverseCholesky_(i, i);
   }
   return result;
 }
@@ -709,7 +711,22 @@ Distribution Normal::getStandardRepresentative() const
 Scalar Normal::getRoughness() const
 {
   // 0.2820947917738781434740398 = 1 / (2 * sqrt(Pi))
-  return 0.2820947917738781434740398 / getSigma()[0];
+  if (dimension_ == 1)
+    return 0.2820947917738781434740398 / getSigma()[0];
+
+  Scalar roughness = 1.0;
+  if (hasIndependentCopula())
+  {
+    for (UnsignedInteger d = 0; d < dimension_; ++d)
+      roughness *= 0.2820947917738781434740398 / getSigma()[d];
+    return roughness;
+  }
+  else
+  {
+    for (UnsignedInteger d = 0; d < dimension_; ++d)
+      roughness *= 0.2820947917738781434740398 / cholesky_(d, d);
+  }
+  return roughness;
 }
 
 /* Get the kurtosis of the distribution */

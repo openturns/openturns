@@ -65,6 +65,14 @@ PointWithDescription::PointWithDescription(const Pointer<Point> & p_base)
 }
 
 
+/* Constructor from a collection */
+PointWithDescription::PointWithDescription(std::initializer_list<Scalar> initList)
+  : Point(initList)
+  , description_(initList.size())
+{
+  // Nothing to do
+}
+
 
 /* Virtual constructor */
 PointWithDescription * PointWithDescription::clone() const

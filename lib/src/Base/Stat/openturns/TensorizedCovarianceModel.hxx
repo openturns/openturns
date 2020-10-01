@@ -53,52 +53,51 @@ public:
                             const Point & scale);
 
   /** Virtual copy constructor */
-  TensorizedCovarianceModel * clone() const;
+  TensorizedCovarianceModel * clone() const override;
 
   /** Computation of the covariance function */
   using CovarianceModelImplementation::operator();
   CovarianceMatrix operator() (const Point & s,
-                               const Point & t) const;
+                               const Point & t) const override;
 
   /** Gradient */
-  virtual Matrix partialGradient(const Point & s,
-                                 const Point & t) const;
+  Matrix partialGradient(const Point & s, const Point & t) const override;
 
   /** Collection accessor */
   const CovarianceModelCollection & getCollection() const;
 
   /** Marginal accessor */
-  virtual CovarianceModel getMarginal(const UnsignedInteger index) const;
+  CovarianceModel getMarginal(const UnsignedInteger index) const override;
 
   /** Scale accessor */
-  void setScale(const Point & scale);
+  void setScale(const Point & scale) override;
 
   /** Amplitude accessor */
-  void setAmplitude(const Point & amplitude);
+  void setAmplitude(const Point & amplitude) override;
 
   /** Is it a stationary covariance model ? */
-  virtual Bool isStationary() const;
+  Bool isStationary() const override;
 
   /** Is it a diagonal covariance model ? */
-  virtual Bool isDiagonal() const;
+  Bool isDiagonal() const override;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
   /** Parameter accessor */
-  virtual void setFullParameter(const Point & parameter);
-  virtual Point getFullParameter() const;
-  virtual Description getFullParameterDescription() const;
+  void setFullParameter(const Point & parameter) override;
+  Point getFullParameter() const override;
+  Description getFullParameterDescription() const override;
 
   void setCollection(const CovarianceModelCollection & collection);
 

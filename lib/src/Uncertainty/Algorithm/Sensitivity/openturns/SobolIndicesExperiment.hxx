@@ -53,34 +53,34 @@ public:
                          const Bool computeSecondOrder = false);
 
   /** Virtual constructor */
-  virtual SobolIndicesExperiment * clone() const;
+  SobolIndicesExperiment * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /* Here is the interface that all derived class must implement */
 
   /** Size accessor */
-  virtual void setSize(const UnsignedInteger size);
+  void setSize(const UnsignedInteger size) override;
 
   /** Distribution accessor */
-  virtual void setDistribution(const Distribution & distribution);
-  virtual Distribution getDistribution() const;
+  void setDistribution(const Distribution & distribution) override;
+  Distribution getDistribution() const override;
 
   /** Uniform weights ? */
-  virtual Bool hasUniformWeights() const;
+  Bool hasUniformWeights() const override;
 
   /** Sample generation */
-  Sample generateWithWeights(Point & weights) const;
+  Sample generateWithWeights(Point & weights) const override;
 
   /** WeightedExperiment accessor */
   WeightedExperiment getWeightedExperiment() const;
 
   /** Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 protected:
 

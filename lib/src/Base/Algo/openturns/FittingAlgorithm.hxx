@@ -51,8 +51,8 @@ public:
   FittingAlgorithm(const FittingAlgorithmImplementation & implementation);
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Perform cross-validation */
   Scalar run(const Sample & x,

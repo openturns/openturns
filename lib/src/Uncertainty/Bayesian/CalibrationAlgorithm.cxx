@@ -33,15 +33,6 @@ CalibrationAlgorithm::CalibrationAlgorithm()
   // Nothing to do
 }
 
-
-/* Constructor with parameters */
-CalibrationAlgorithm::CalibrationAlgorithm(const Sample & outputObservations,
-    const Distribution & parameterPrior)
-  : TypedInterfaceObject<CalibrationAlgorithmImplementation>(new CalibrationAlgorithmImplementation(outputObservations, parameterPrior))
-{
-  // Nothing to do
-}
-
 /* Constructor from implementation */
 CalibrationAlgorithm::CalibrationAlgorithm(const CalibrationAlgorithmImplementation & op)
   : TypedInterfaceObject<CalibrationAlgorithmImplementation>(op.clone())

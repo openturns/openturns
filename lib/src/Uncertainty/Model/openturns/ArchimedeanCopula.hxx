@@ -46,32 +46,31 @@ public:
   /** Default constructor */
   ArchimedeanCopula();
 
-
   /** Virtual constructor */
-  virtual ArchimedeanCopula * clone() const;
+  ArchimedeanCopula * clone() const override;
 
   /** Comparison operator */
   Bool operator ==(const ArchimedeanCopula & other) const;
 
   /** String converter */
-  String __repr__() const;
+  String __repr__() const override;
 
   /** Get the PDF of the archimedean copula */
   using CopulaImplementation::computePDF;
-  Scalar computePDF(const Point & point) const;
+  Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the archimedean copula */
   using CopulaImplementation::computeCDF;
-  Scalar computeCDF(const Point & point) const;
+  Scalar computeCDF(const Point & point) const override;
   using CopulaImplementation::computeComplementaryCDF;
-  Scalar computeComplementaryCDF(const Point & point) const;
+  Scalar computeComplementaryCDF(const Point & point) const override;
 
   /** Get the probability content of an interval */
-  Scalar computeProbability(const Interval & interval) const;
+  Scalar computeProbability(const Interval & interval) const override;
 
   /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
   Scalar computeConditionalPDF(const Scalar x,
-                               const Point & y) const;
+                               const Point & y) const override;
 
   /** Compute the archimedean generator of the archimedean copula, i.e.
    *  the function phi such that the CDF of the copula can
@@ -90,13 +89,13 @@ public:
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   using CopulaImplementation::getMarginal;
-  Distribution getMarginal(const Indices & indices) const;
+  Distribution getMarginal(const Indices & indices) const override;
 
   /** Tell if the distribution has elliptical copula */
-  Bool hasEllipticalCopula() const;
+  Bool hasEllipticalCopula() const override;
 
   /** Tell if the distribution has independent copula */
-  Bool hasIndependentCopula() const;
+  Bool hasIndependentCopula() const override;
 
 protected:
 

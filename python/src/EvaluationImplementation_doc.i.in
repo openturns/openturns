@@ -404,3 +404,29 @@ linear : bool
 %enddef
 %feature("docstring") OT::EvaluationImplementation::isLinearlyDependent
 OT_Evaluation_isLinearlyDependent_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Evaluation_setCheckOutput_doc
+"Accessor to the output verification flag.
+
+Parameters
+----------
+check_output : bool
+    Whether to check return values for nan or inf."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::setCheckOutput
+OT_Evaluation_setCheckOutput_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Evaluation_getCheckOutput_doc
+"Accessor to the output verification flag.
+
+Returns
+-------
+check_output : bool
+    Whether to check return values for nan or inf."
+%enddef
+%feature("docstring") OT::EvaluationImplementation::getCheckOutput
+OT_Evaluation_getCheckOutput_doc

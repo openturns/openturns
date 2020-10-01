@@ -77,10 +77,10 @@ public:
   ComplexTensor clean(const Scalar & threshold) const;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const;
+  String __str__(const String & offset = "") const override;
 
 #ifndef SWIG
   /** Operator () gives access to the elements of the tensor (to modify these elements) */
@@ -117,11 +117,10 @@ public:
   /** Empty returns true if there is no element in the tensor */
   Bool isEmpty() const;
 
-  // These functions are only intended to be used by SWIG, DO NOT use them for your own purpose !
-  // INTENTIONALY NOT DOCUMENTED
-  const Complex * __baseaddress__ () const;
-  UnsignedInteger __elementsize__ () const;
-  UnsignedInteger __stride__ (UnsignedInteger dim) const;
+  /** Low-level data access */
+  const Complex * data() const;
+  UnsignedInteger elementSize() const;
+  UnsignedInteger stride(const UnsignedInteger dim) const;
 
 protected:
 

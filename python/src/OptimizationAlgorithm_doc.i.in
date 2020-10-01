@@ -2,8 +2,6 @@
 
 %feature("docstring") OT::OptimizationAlgorithm
 OT_OptimizationAlgorithm_doc
-%feature("docstring") OT::OptimizationAlgorithm::computeLagrangeMultipliers
-OT_OptimizationAlgorithm_computeLagrangeMultipliers_doc
 %feature("docstring") OT::OptimizationAlgorithm::getMaximumAbsoluteError
 OT_OptimizationAlgorithm_getMaximumAbsoluteError_doc
 %feature("docstring") OT::OptimizationAlgorithm::getMaximumConstraintError

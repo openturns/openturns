@@ -52,24 +52,24 @@ public:
       const Interval & bounds);
 
   /** Virtual constructor */
-  virtual Box * clone() const;
+  Box * clone() const override;
 
   /** Experiment plane generation :
    *  The box [0, 1]^n is uniformly sampled in each dimension
    */
-  virtual Sample generate() const;
+  Sample generate() const override;
 
   /** String converter */
-  virtual String __repr__() const;
+  String __repr__() const override;
 
   /** Specific levels accessor */
-  void setLevels(const Point & levels);
+  void setLevels(const Point & levels) override;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 private:
   Interval bounds_;

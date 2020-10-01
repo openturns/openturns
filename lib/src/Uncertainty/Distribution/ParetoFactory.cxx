@@ -25,7 +25,8 @@
 #include "openturns/MethodOfMomentsFactory.hxx"
 #include "openturns/Brent.hxx"
 #include "openturns/SymbolicFunction.hxx"
-#include "openturns/LeastSquaresDistributionFactory.hxx"
+#include "openturns/LinearLeastSquares.hxx"
+#include "openturns/LeastSquaresProblem.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -87,11 +88,117 @@ Pareto ParetoFactory::buildMethodOfLikelihoodMaximization(const Sample & sample)
   return buildAsPareto(factory.build(sample).getParameter());
 }
 
+Pareto ParetoFactory::buildMethodOfLeastSquares(const Sample & sample, const Scalar gamma) const
+{
+  const UnsignedInteger size = sample.getSize();
+  Sample y(size, 1);
+  Sample z(size, 1);
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    y(i, 0) = std::log(sample(i, 0) - gamma);
+    const Scalar survival = sample.computeEmpiricalCDF(sample[i], true);
+    if (survival > 0.0)
+      z(i, 0) = std::log(survival);
+  }
+  LinearLeastSquares lls(y, z);
+  lls.run();
+  const Scalar a0 = lls.getConstant()[0];
+  const Scalar a1 = lls.getLinear()(0, 0);
+  const Scalar beta = std::exp(-a0/a1);
+  const Scalar alpha = -a1;
+  return Pareto(beta, alpha, gamma);
+}
+
+
+class ParetoFactoryResidualEvaluation : public EvaluationImplementation
+{
+public:
+  ParetoFactoryResidualEvaluation(const Sample & sample)
+    : EvaluationImplementation()
+    , sample_(sample)
+  {
+    const UnsignedInteger size = sample.getSize();
+    dataOut_ = Sample(size, 1);
+    for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      const Scalar survival = sample.computeEmpiricalCDF(sample[i], true);
+      if (survival > 0.0)
+        dataOut_(i, 0) = std::log(survival);
+    }
+  }
+
+  ParetoFactoryResidualEvaluation * clone() const
+  {
+    return new ParetoFactoryResidualEvaluation(*this);
+  }
+
+  UnsignedInteger getInputDimension() const
+  {
+    return 1;
+  }
+
+  UnsignedInteger getOutputDimension() const
+  {
+    return sample_.getSize();
+  }
+
+  Description getInputDescription() const
+  {
+    return Description(1, "gamma");
+  }
+
+  Description getOutputDescription() const
+  {
+    return Description(sample_.getSize(), "r");
+  }
+
+  Description getDescription() const
+  {
+    Description description(getInputDescription());
+    description.add(getOutputDescription());
+    return description;
+  }
+
+  Point operator() (const Point & parameter) const
+  {
+    const Scalar gamma = parameter[0];
+    const UnsignedInteger size = sample_.getSize();
+    Sample dataIn(size, 1);
+    for (UnsignedInteger i = 0; i < size; ++ i)
+      dataIn(i, 0) = std::log(sample_(i, 0) - gamma);
+    LinearLeastSquares leastSquares(dataIn, dataOut_);
+    leastSquares.run();
+    const Scalar a0 = leastSquares.getConstant()[0];
+    const Scalar a1 = leastSquares.getLinear()(0, 0);
+    Point result(size);
+    for (UnsignedInteger i = 0; i < size; ++ i)
+      result[i] = dataOut_(i, 0) - (a1 * dataIn(i, 0) + a0);
+    return result;
+  }
+
+private:
+  Sample sample_;
+  Sample dataOut_;
+};
+
+
 Pareto ParetoFactory::buildMethodOfLeastSquares(const Sample & sample) const
 {
-  const LeastSquaresDistributionFactory factory(buildMethodOfMoments(sample));
-  return buildAsPareto(factory.build(sample).getParameter());
+  if (sample.getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "Error: can only build a LogNormal distribution from a sample of dimension 1, here dimension=" << sample.getDimension();
+  const UnsignedInteger size = sample.getSize();
+  const Scalar xMin = sample.getMin()[0];
+  Scalar gamma = xMin - std::abs(xMin) / (2 + size);
+  ParetoFactoryResidualEvaluation residualEvaluation(sample);
+  const Function residualFunction(residualEvaluation.clone());
+  LeastSquaresProblem problem(residualFunction);
+  OptimizationAlgorithm solver(OptimizationAlgorithm::Build(problem));
+  solver.setStartingPoint(Point(1, gamma));
+  solver.run();
+  gamma = solver.getResult().getOptimalPoint()[0];
+  return buildMethodOfLeastSquares(sample, gamma);
 }
+
 
 Pareto ParetoFactory::buildAsPareto(const Sample & sample) const
 {

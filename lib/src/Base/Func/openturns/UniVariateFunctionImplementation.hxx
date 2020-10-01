@@ -45,11 +45,11 @@ public:
   UniVariateFunctionImplementation();
 
   /** Virtual constructor */
-  virtual UniVariateFunctionImplementation * clone() const;
+  UniVariateFunctionImplementation * clone() const override;
 
   /** String converter */
-  virtual String __repr__() const;
-  virtual String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** UniVariateFunctionImplementation are evaluated as functors */
   virtual Scalar operator() (const Scalar x) const;
@@ -66,10 +66,10 @@ public:
                       const UnsignedInteger pointNumber) const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv);
+  void load(Advocate & adv) override;
 
 } ; /* Class UniVariateFunctionImplementation */
 

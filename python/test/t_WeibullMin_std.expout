@@ -15,9 +15,9 @@ log pdf=-1.081042
 pdf     =0.339242
 pdf (FD)=0.339242
 cdf=0.477703
-pdf gradient     = class=Point name=Unnamed dimension=3 values=[0.191956,-0.0891733,0.107263]
+pdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.0891733,0.191956,0.107263]
 pdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.0891733,0.191956,0.107263]
-cdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.0975938,-0.254431,-0.339242]
+cdf gradient     = class=Point name=Unnamed dimension=3 values=[-0.254431,-0.0975938,-0.339242]
 cdf gradient (FD)= class=Point name=Unnamed dimension=3 values=[-0.254431,-0.0975938,-0.339242]
 quantile= class=Point name=Unnamed dimension=1 values=[3.65622]
 cdf(quantile)=0.950000

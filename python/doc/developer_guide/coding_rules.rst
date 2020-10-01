@@ -1088,6 +1088,51 @@ Error handling and error messages
 These rules refer to the classes and methods in the Python layer using
 the services of the internal model and the solvers.
 
+C++ 11
+~~~~~~
+
+The library requires the C++ 11 standard.
+Some useful features include:
+
+- std::atomic
+- std::vector::data()
+- std::shared_ptr
+- constructor delegation
+- default member initializers
+- list initialization
+- override keyword
+
+*Example: constructor delegation*
+
+::
+
+    class Foo
+    {
+      Foo (int a, int b), a_(a), b_(b)
+      Foo () : Foo(4, 6)
+
+      int a_, b_;
+    };
+
+*Example: default member initializers*
+
+::
+
+    class Foo
+    {
+      Foo();
+
+      int a_ = 0;
+    };
+
+*Example: list initialization*
+
+::
+
+    const Indices indices = {1, 2, 3};
+    const Description desc = {"mu", "sigma"};
+
+
 Python
 ------
 

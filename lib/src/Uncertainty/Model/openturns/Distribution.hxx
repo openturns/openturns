@@ -117,8 +117,8 @@ public:
   Distribution abs() const;
 
   /** String converter */
-  String __repr__() const;
-  String __str__(const String & offset = "") const;
+  String __repr__() const override;
+  String __str__(const String & offset = "") const override;
 
   /** Weight accessor */
   void setWeight(const Scalar w);
@@ -306,9 +306,6 @@ public:
 
   /** Get the kurtosis of the distribution */
   Point getKurtosis() const;
-
-  /** Get the implementation of the distribution */
-  Implementation getImplementation() const;
 
   /** Check if the distribution is a copula */
   Bool isCopula() const;

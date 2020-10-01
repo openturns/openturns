@@ -327,23 +327,15 @@ void KarhunenLoeveP1Algorithm::run()
   const Scalar epsilon = ResourceMap::GetAsScalar("KarhunenLoeveP1Algorithm-RegularizationFactor");
 
   // Define maximum number of modes and the number of modes to compute
-  UnsignedInteger nbModesMax = augmentedDimension;
-  UnsignedInteger nev = nbModesMax;
-
-  if (eigenValuesSolver == "SPECTRA")
-  {
-    nbModesMax = augmentedDimension - 2;
-    nev = std::min(getNbModes(), nbModesMax);
-  }
+  UnsignedInteger nbModesMax = (eigenValuesSolver == "SPECTRA") ? augmentedDimension - 2 : augmentedDimension;
+  nbModesMax = std::min(getNbModes(), nbModesMax);
+  const UnsignedInteger nev = (eigenValuesSolver == "SPECTRA") ? nbModesMax : augmentedDimension;
 
   // Declare some useful variables
   Matrix eigenVectors(augmentedDimension, nev);
   Point eigenValues(nev);
   Scalar computedVariance = 0.0;    // i.e. sum of /computed/ eigenvalues
   Scalar cumulatedVariance = 0.0;   // i.e. sum of /all/ eigenvalues
-  UnsignedInteger K = 0;
-  Scalar selectedVariance = 0.0;    // i.e. sum of eigenvalues selected after cut-off is applied
-  Point selectedEV;
 
   // Compute the extended Gram matrix of the mesh
   LOGINFO("Build the Gram matrix");
@@ -444,8 +436,11 @@ void KarhunenLoeveP1Algorithm::run()
   }
 
   // Applying cut-off on spectrum
+  UnsignedInteger K = 0;
+  Scalar selectedVariance = 0.0;    // i.e. sum of eigenvalues selected after cut-off is applied
+  Point selectedEV;
   LOGINFO("Extract the relevant eigenvalues");
-  while (K < getNbModes() && K < nbModesMax && (selectedVariance < (1.0 - threshold_) * cumulatedVariance))
+  while ((K < nbModesMax) && (selectedVariance < (1.0 - threshold_) * cumulatedVariance))
   {
     selectedEV.add(eigenValues[K]);
     selectedVariance += eigenValues[K];
