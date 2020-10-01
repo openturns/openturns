@@ -68,7 +68,7 @@ FieldToPointConnection::FieldToPointConnection(const FieldToPointFunction & fiel
   , fieldToPointFunction_(fieldToPointFunction)
 {
   // Check if the dimensions of the point to field and field to point functions are compatible
-  if (fieldToPointFunction_.getInputMesh().getDimension() != fieldFunction_.getOutputDimension()) throw InvalidArgumentException(HERE) << "The input dimension=" << fieldToPointFunction_.getInputDimension() << " of the field to point function must be equal to the output dimension=" << fieldFunction_.getOutputDimension() << " of the field function to compose them";
+  if (fieldToPointFunction_.getInputDimension() != fieldFunction_.getOutputDimension()) throw InvalidArgumentException(HERE) << "The input dimension=" << fieldToPointFunction_.getInputDimension() << " of the field to point function must be equal to the output dimension=" << fieldFunction_.getOutputDimension() << " of the field function to compose them";
   setInputDescription(fieldFunction_.getInputDescription());
   setOutputDescription(fieldToPointFunction_.getOutputDescription());
 }

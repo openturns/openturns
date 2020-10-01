@@ -147,3 +147,12 @@ field= 0 : [ -1           1.19752    ]
 9 : [  1          -0.0247796  ]
 myFunc(field)= [0.0932294,0.160971,0.257988,0.371718,0.499584,0.641678,0.79533,0.948199,1.07082,1.1121]#10
 called  1  times
+myFunc= (FieldToPointFunction :
+  class=PythonFieldToPointFunction name=OpenTURNSPythonFieldToPointFunction)o(FieldFunction :
+  [x,y]->[3x])
+myFunc input description= [x,y]
+myFunc output description= [y0]
+myFunc input dimension= 2
+myFunc output dimension= 1
+myFunc(field)= [-0.0391711]
+called  1  times

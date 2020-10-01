@@ -56,3 +56,26 @@ print("field=", field)
 print("myFunc(field)=", myFunc(field.getValues()))
 # Get the number of calls
 print("called ", myFunc.getCallsNumber(), " times")
+
+# 2-d mesh
+n = 5
+indices = [n, n]
+intervalMesher = ot.IntervalMesher(indices)
+interval = ot.Interval([0.0] * 2, [1.0] * 2)
+mesh2D = intervalMesher.build(interval)
+def f2Pfunc(X):
+    Y = ot.Sample(X).computeMean()
+    return Y
+field2PFunction = ot.PythonFieldToPointFunction(mesh2D, 1, 1, f2Pfunc)
+fieldFunction = ot.ValueFunction(ot.SymbolicFunction(["x", "y"], ["3x"]), mesh2D)
+myFunc = ot.FieldToPointConnection(field2PFunction, fieldFunction)
+print("myFunc=", myFunc)
+# Get the input and output description
+print("myFunc input description=", myFunc.getInputDescription())
+print("myFunc output description=", myFunc.getOutputDescription())
+# Get the input and output dimension
+print("myFunc input dimension=", myFunc.getInputDimension())
+print("myFunc output dimension=", myFunc.getOutputDimension())
+field = ot.Field(mesh2D, ot.Normal(2).getSample(mesh2D.getVerticesNumber()))
+print("myFunc(field)=", myFunc(field))
+print("called ", myFunc.getCallsNumber(), " times")
