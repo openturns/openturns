@@ -23,8 +23,6 @@
 #include "openturns/SymbolicParserImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
-#include <regex>
-
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(SymbolicParserImplementation);
@@ -54,8 +52,20 @@ void SymbolicParserImplementation::setVariables(const Description & inputVariabl
 {
   const UnsignedInteger size = inputVariablesNames.getSize();
   for (UnsignedInteger i = 0; i < size; ++ i)
-    if (!std::regex_match(inputVariablesNames[i], std::regex("[a-zA-Z][0-9a-zA-Z_]*")))
-      throw InvalidArgumentException(HERE) << "Invalid input variable: " << inputVariablesNames[i];
+  {
+    // turns out gcc 4.8 doesnt implement std::regex
+    // if (!std::regex_match(inputVariablesNames[i], std::regex("[a-zA-Z][0-9a-zA-Z_]*")))
+    const String varName(inputVariablesNames[i]);
+    Bool isValid = (varName.size() >= 1) && isalpha(varName[0]);
+    for (UnsignedInteger j = 1; j < varName.size(); ++ j)
+      if (!(isalnum(varName[j]) || (varName[j] == '_')))
+      {
+        isValid = false;
+        break;
+      }
+    if (!isValid)
+      throw InvalidArgumentException(HERE) << "Invalid input variable: " << varName;
+  }
   inputVariablesNames_ = inputVariablesNames;
 }
 
