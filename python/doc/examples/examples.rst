@@ -6,7 +6,6 @@ Examples
 
 This is the examples section.
 
-.. only:: nbsphinx
 
 .. table::
    :widths: auto
