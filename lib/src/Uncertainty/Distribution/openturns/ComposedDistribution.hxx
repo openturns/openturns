@@ -96,6 +96,10 @@ public:
   using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
+  /** Get the logarithm of the PDF of the ComposedDistribution */
+  using DistributionImplementation::computeLogPDF;
+  Scalar computeLogPDF(const Point & point) const override;
+
   /** Get the CDF of the ComposedDistribution */
   using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;

@@ -404,6 +404,34 @@ Scalar ComposedDistribution::computePDF(const Point & point) const
   return copula_.computePDF(uPoint) * productPDF;
 }
 
+/* Get the logarithm of the PDF of the ComposedDistribution */
+Scalar ComposedDistribution::computeLogPDF(const Point & point) const
+{
+  /* PDF = PDF_copula(CDF_dist1(p1), ..., CDF_distn(pn))xPDF_dist1(p1)x...xPDF_distn(pn) */
+  const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
+
+  // Special case for dimension 1, to boost performances
+  if (dimension == 1) return distributionCollection_[0].computeLogPDF(point);
+  Scalar sumLogPDF = 0.0;
+  // Special case for the independent case, to boost performances
+  if (hasIndependentCopula())
+  {
+    for (UnsignedInteger i = 0; i < dimension; ++i) sumLogPDF += distributionCollection_[i].computeLogPDF(point[i]);
+    return sumLogPDF;
+  }
+  // General case
+  Point uPoint(dimension);
+  Point component(1);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    component[0] = point[i];
+    uPoint[i] = distributionCollection_[i].computeCDF(component);
+    sumLogPDF += distributionCollection_[i].computeLogPDF(component);
+  }
+  return copula_.computeLogPDF(uPoint) + sumLogPDF;
+}
+
 /* Get the CDF of the ComposedDistribution */
 Scalar ComposedDistribution::computeCDF(const Point & point) const
 {
