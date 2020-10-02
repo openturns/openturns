@@ -13,7 +13,6 @@ jobs:
           command: |
             cd /tmp && git clone --depth 1 https://github.com/swig/swig.git && cd swig && ./autogen.sh && ./configure --without-alllang && make && sudo make install
             sudo pip install git+https://github.com/sphinx-doc/sphinx.git
-            sudo pip install sphinx-gallery
       - run:
           name: Build and test
           command: ./.circleci/run_docker_linux.sh
