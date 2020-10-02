@@ -103,8 +103,8 @@ param_dist
 # %%
 # The library provides algebra of univariate distributions:
 #
-#  - +, -
-#  - *, /
+#  - `+, -`
+#  - `*, /`
 #
 # It also provides methods to get the full distributions of `f(x)` where `f` can be equal to :
 #

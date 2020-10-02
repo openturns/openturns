@@ -125,6 +125,7 @@ Calibration of the logistic model
 # The logistic growth model was first suggested by Pierre François Verhulst near 1840. 
 # The data are from [1] for the time interval from 1790 to 1950, then from [2] for the time interval from 1960 to 2000.
 # * Calibrating this model may require to take into account for the time dependency of the measures.
+#
 
 # %%
 # References

@@ -25,6 +25,7 @@ Trend computation
 #    \underline{x}^{stat}_i = \underline{x}_i - f_{trend}(\underline{t}_i)
 #   
 # where :math:`\underline{t}_i` is the simplex associated to the value :math:`\underline{x}_i`.
+#
 # This creation of the inverse trend function :math:`-f_{trend}` is done thanks to the method **getInverse()** which produces an object of type **InverseTrendTransform** that can be evaluated on a a field.
 # For example, it may be useful in order to get the stationary field :math:`(\underline{x}^{stat}_0, \dots, \underline{x}^{stat}_{N-1})` and then analyze it with methods adapted to stationary processes (ARMA decomposition for example).
 #

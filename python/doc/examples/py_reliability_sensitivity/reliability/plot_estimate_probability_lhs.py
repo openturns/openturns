@@ -122,15 +122,3 @@ result = algo.getResult()
 probability = result.getProbabilityEstimate()
 print('Pf=', probability)
 
-# %%
-# 
-# Test :
-#
-
-# %%
-#
-# .. literalinclude:: usecase_beam.py
-#   :language: python
-#   :start-after: # start
-#   :end-before: # end
-#

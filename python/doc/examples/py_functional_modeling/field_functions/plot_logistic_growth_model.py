@@ -117,6 +117,7 @@ Logistic growth model
 # The logistic growth model was first suggested by Pierre François Verhulst near 1840. 
 # The data are from [1] for the time interval from 1790 to 1950, then from [2] for the time interval from 1960 to 2000.
 # * Calibrating this model may require to take into account for the time dependency of the measures.
+#
 
 # %%
 # References
@@ -131,6 +132,7 @@ Logistic growth model
 # [3] Raymond Pearl and Lowell Reed. On the rate of growth of the population of the united states
 # since 1790 and its mathematical representation. Proceedings of the National Academy of Sciences,
 # 1920.
+#
 
 # %%
 # Define the model

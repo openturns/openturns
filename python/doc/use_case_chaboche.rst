@@ -1,7 +1,7 @@
 .. _use-case-chaboche:
 
 The Chaboche mechanical model
-============================
+=============================
 
 Deterministic model
 -------------------

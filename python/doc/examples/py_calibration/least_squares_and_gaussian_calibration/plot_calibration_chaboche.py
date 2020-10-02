@@ -1,6 +1,6 @@
 """
-Calibration of the Chaboche mecanical model
-===========================================
+Calibration of the Chaboche mechanical model
+============================================
 """
 # %%
 #
@@ -80,11 +80,13 @@ Calibration of the Chaboche mecanical model
 #
 # - Antoine Dumas, Phimeca
 #
-#
+
+# %%
 # References
 # ----------
 #
 # - J. Lemaitre and J. L. Chaboche (2002) "Mechanics of solid materials" Cambridge University Press.
+#
 
 # %%
 # Generate the observations

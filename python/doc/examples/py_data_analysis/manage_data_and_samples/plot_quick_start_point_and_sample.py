@@ -16,6 +16,7 @@ A quick start guide to the `Point` and `Sample` classes
 #
 # * `Point`: a multidimensional point in :math:`D` dimensions (:math:`\in \mathbb{R}^D`) ;
 # * `Sample`: a multivariate sample made of :math:`N` points in :math:`D` dimensions.
+#
 
 # %%
 import openturns as ot
@@ -29,6 +30,7 @@ import openturns as ot
 # * create a point in :math:`\mathbb{R}^3`, 
 # * access its components, 
 # * update its components.
+#
 
 # %%
 # By default, points are filled with zeros. 
@@ -61,6 +63,7 @@ p.getDimension ()
 #
 # * :math:`D` is the *dimension* of the sample, 
 # * :math:`N` is the *size* of the sample. 
+#
 #
 # A `Sample` can be seen as an array of with :math:`N` rows and :math:`D` columns.
 #
