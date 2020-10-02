@@ -81,8 +81,6 @@ False"
 
 // ---------------------------------------------------------------------
 
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Mesh::checkPointInSimplex
 "Check if a point is inside a simplex.
 
@@ -720,3 +718,23 @@ Returns
 -------
 dimension : int
     Dimension of the vertices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::getLowerBound
+"Lower bound accessor.
+
+Returns
+-------
+lower_bound : :class:`~openturns.Point`
+    Min of the vertices."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Mesh::getUpperBound
+"Upper bound accessor.
+
+Returns
+-------
+upper_bound : :class:`~openturns.Point`
+    Max of the vertices."
