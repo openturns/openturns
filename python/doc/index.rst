@@ -18,7 +18,7 @@ risks'n statistics in a structured industrial approach.
 .. toctree::
    :maxdepth: 1
 
-   use_cases
+   usecases/use_cases
    install
    user_manual/user_manual
    theory/theory
