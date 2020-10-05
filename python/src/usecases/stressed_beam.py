@@ -34,3 +34,6 @@ class AxialStressedBeam() :
     G : Any = ot.CompositeRandomVector(model, vect)
     event : Any = ot.ThresholdEvent(G, ot.Less(), 0.0)
 
+if __name__ == "__main__" :
+    sb = AxialStressedBeam()
+    print(sb)

@@ -49,3 +49,6 @@ class CantileverBeam() :
     event : Any = ot.ThresholdEvent(Y, ot.Greater(), 30.0)
     
 
+if __name__ == "__main__" :
+    cm = CantileverBeam()
+    print(cm)

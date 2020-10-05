@@ -44,3 +44,6 @@ class AckleyModel() :
         self.x0 = [0.0] * self.dim
 
 
+if __name__ == "__main__" :
+    am = AckleyModel()
+    print(am)

@@ -39,3 +39,6 @@ class DeflectionTube() :
 
     inputDistribution : Any = ot.ComposedDistribution([XF,XL,Xa,XD,Xd,XE])
 
+if __name__ == "__main__" :
+    dt = DeflectionTube()
+    print(dt)

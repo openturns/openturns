@@ -51,3 +51,6 @@ class IshigamiModel() :
     ST3 : float = S3 + S13
 
 
+if __name__ == "__main__" :
+    im = IshigamiModel()
+    print(im)

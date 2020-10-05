@@ -48,3 +48,6 @@ class FloodModel() :
     event : Any = ot.ThresholdEvent(Y, ot.Greater(), 0.0)
     event.setName('overflow')
 
+if __name__ == "__main__" :
+    fm = FloodModel()
+    print(fm)

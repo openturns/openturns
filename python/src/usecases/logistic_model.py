@@ -50,3 +50,6 @@ class LogisticModel() :
     popu : Any = ot.PointToFieldFunction(F)
 
 
+if __name__ == "__main__" :
+    lm = LogisticModel()
+    print(lm)

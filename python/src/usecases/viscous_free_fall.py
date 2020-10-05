@@ -44,3 +44,6 @@ class ViscousFreeFall() :
     alti : Any = ot.PythonPointToFieldFunction(dim, mesh, outputDimension, AltiFunc)
 
 
+if __name__ == "__main__" :
+    vff = ViscousFreeFall()
+    print(vff)
