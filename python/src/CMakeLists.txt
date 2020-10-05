@@ -1054,10 +1054,6 @@ if (SPHINX_FOUND)
   endforeach ()
 
   set (SPHINX_FLAGS "-W -T" CACHE STRING "sphinx flags")
-  #if (NOT NBSPHINX_FOUND)
-  #  # without notebook examples there are invalid links
-  #  string (REPLACE "-W" "" SPHINX_FLAGS "${SPHINX_FLAGS}")
-  #endif ()
   separate_arguments (SPHINX_FLAGS)
 
   # generate sphinx rule for each format
