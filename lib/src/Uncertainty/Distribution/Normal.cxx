@@ -508,7 +508,8 @@ Point Normal::computeCDFGradient(const Point & point) const
     gradientCDF[1] = -pdf * (point[0] - mean_[0]) / sigma_[0];
     return gradientCDF;
   }
-  // To be implemented
+  else
+    gradientCDF = EllipticalDistribution::computeCDFGradient(point);
   return gradientCDF;
 }
 

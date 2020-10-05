@@ -98,7 +98,7 @@ characteristic function=0.416877+0.000000i
 log characteristic function=-0.874965+0.000000i
 cdf=0.486767
 ccdf=0.513233
-pdf gradient     = class=Point name=Unnamed dimension=4 values=[0.040545,0,-0.060819,-0.040546]
+pdf gradient     = class=Point name=Unnamed dimension=5 values=[0.040545,0,-0.060819,-0.040546,0.054061]
 pdf gradient (FD)= class=Point name=Unnamed dimension=4 values=[0.040545,0,-0.060819,-0.040546]
 quantile= class=Point name=Unnamed dimension=2 values=[1.9163,3.8327]
 cdf(quantile)=0.950000
@@ -189,7 +189,7 @@ characteristic function=0.063935+0.000000i
 log characteristic function=-2.749890+0.000000i
 cdf=0.329809
 ccdf=0.670191
-pdf gradient     = class=Point name=Unnamed dimension=6 values=[0.0075452,-0.0010779,0.0010779,-0.0091623,-0.0067369,-0.004132]
+pdf gradient     = class=Point name=Unnamed dimension=9 values=[0.0075452,-0.0010779,0.0010779,-0.0091623,-0.0067369,-0.004132,0.011677,-0.0045812,0.012396]
 pdf gradient (FD)= class=Point name=Unnamed dimension=6 values=[0.0075452,-0.0010779,0.0010779,-0.0091623,-0.0067369,-0.004132]
 quantile= class=Point name=Unnamed dimension=3 values=[2.0798,4.1596,6.2395]
 cdf(quantile)=0.950000
@@ -270,7 +270,7 @@ characteristic function=0.001931+0.000000i
 log characteristic function=-6.249750+0.000000i
 cdf=0.221452
 ccdf=0.778548
-pdf gradient     = class=Point name=Unnamed dimension=8 values=[0.00095188,-0.00013598,0.00013598,0,-0.0011559,-0.0008499,-0.00052128,-0.00040795]
+pdf gradient     = class=Point name=Unnamed dimension=14 values=[0.00095188,-0.00013598,0.00013598,0,-0.0011559,-0.0008499,-0.00052128,-0.00040795,0.0017995,-0.0010675,0.0025429,0.00065273,-0.0013055,0.0019582]
 pdf gradient (FD)= class=Point name=Unnamed dimension=8 values=[0.00095188,-0.00013598,0.00013598,0,-0.0011559,-0.0008499,-0.00052128,-0.00040795]
 quantile= class=Point name=Unnamed dimension=4 values=[2.1934,4.3868,6.5802,8.7736]
 cdf(quantile)=0.950000
