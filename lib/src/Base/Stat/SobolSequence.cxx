@@ -157,6 +157,7 @@ Unsigned64BitsInteger SobolSequence::power2(const UnsignedInteger n)
 /* returns the position of the lowest '0' in the binary representation of an integer */
 UnsignedInteger SobolSequence::computePositionOfLowest0Bit(const Unsigned64BitsInteger number)
 {
+  if (number == 0) return 0;
   UnsignedInteger base2Logarithm = 0;
   while((number & power2(base2Logarithm)) && (base2Logarithm <= MaximumBase2Logarithm))
   {

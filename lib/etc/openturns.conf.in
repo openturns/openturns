@@ -214,19 +214,19 @@
   <Compact-DefaultHalfMaximumSize value_int="1024" />
 
   <!-- OT::FaureSequence parameters -->
-  <FaureSequence-InitialSeed value_int="1" />
+  <FaureSequence-InitialSeed value_int="0" />
 
   <!-- OT::HaltonSequence parameters -->
-  <HaltonSequence-InitialSeed value_int="1" />
+  <HaltonSequence-InitialSeed value_int="0" />
 
   <!-- OT::HaselgroveSequence parameters -->
-  <HaselgroveSequence-InitialSeed value_int="1" />
+  <HaselgroveSequence-InitialSeed value_int="0" />
 
   <!-- OT::ReverseHaltonSequence parameters -->
-  <ReverseHaltonSequence-InitialSeed value_int="1" />
+  <ReverseHaltonSequence-InitialSeed value_int="0" />
 
   <!-- OT::SobolSequence parameters -->
-  <SobolSequence-InitialSeed value_int="1" />
+  <SobolSequence-InitialSeed value_int="0" />
 
   <!-- OT::SobolIndicesExperiment parameters -->
   <SobolIndicesExperiment-SamplingMethod value_str="MonteCarlo" />
