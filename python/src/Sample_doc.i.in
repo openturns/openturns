@@ -81,6 +81,28 @@ experiments
 1 : [ 2 3 ]
 2 : [ 4 5 ]"
 
+
+%feature("docstring") OT::Sample::BuildFromPoint
+"Static method for building a sample from a sequence of float.
+
+Parameters
+----------
+data : 1d array-like
+    Data.
+
+Returns
+-------
+sample : :class:`~openturns.Sample`
+    Sample generated from sequence
+
+Examples
+--------
+>>> import openturns as ot
+>>> n = 20
+>>> x = ot.Sample_BuildFromPoint(range(n))
+>>> data = [2.0, 2.0, 1.0, 1.0, 2.0, 3.0, 1.0, 2.0, 2.0, 1.0]
+>>> sample = ot.Sample.BuildFromPoint(data)"
+
 %feature("docstring") OT::Sample::ImportFromCSVFile
 "Static method for building a sample from a CSV file.
 
