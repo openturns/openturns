@@ -37,6 +37,3 @@ class BraninModel() :
     xexact : Any = ot.Sample([xexact1, xexact2, xexact3])
 
 
-if __name__ == "__main__" :
-    bm = BraninModel()
-    print( bm )

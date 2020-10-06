@@ -42,6 +42,3 @@ class ChabocheModel() :
 
     model : Any = ot.PythonFunction(4, 1, g)
 
-if __name__ == "__main__" :
-    cm = ChabocheModel()
-    print(cm)

@@ -38,12 +38,7 @@ class ViscousFreeFall() :
     distM : Any = ot.Normal(80.0, 8.0)
     distC : Any = ot.Uniform(0.0, 30.0)
     distribution : Any= ot.ComposedDistribution([distZ0, distV0, distM, distC])
-    dimension = distribution.getDimension()
 
     outputDimension : int = 1
     alti : Any = ot.PythonPointToFieldFunction(dim, mesh, outputDimension, AltiFunc)
 
-
-if __name__ == "__main__" :
-    vff = ViscousFreeFall()
-    print(vff)

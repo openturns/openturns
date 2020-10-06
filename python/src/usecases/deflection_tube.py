@@ -11,7 +11,7 @@ from dataclasses import field
 
 @dataclass
 class DeflectionTube() :
-    """Custom class for the cantilever beam example
+    """Custom class for the deflection of a tube
     """
     dim : int = 6
 
@@ -39,6 +39,3 @@ class DeflectionTube() :
 
     inputDistribution : Any = ot.ComposedDistribution([XF,XL,Xa,XD,Xd,XE])
 
-if __name__ == "__main__" :
-    dt = DeflectionTube()
-    print(dt)

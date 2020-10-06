@@ -16,9 +16,9 @@ def g(X) :
     c = 2.0 * np.pi
     d = len(X)
     sumOfSquared = sum(x**2 for x in X) / d
-    sumOfCos = sum(m.cos(c * x) for x in X) / d
-    f = - a * m.exp(- b * m.sqrt(sumOfSquared)) \
-        - m.exp(sumOfCos) + a + m.exp(1.0)
+    sumOfCos = sum(np.cos(c * x) for x in X) / d
+    f = - a * np.exp(- b * np.sqrt(sumOfSquared)) \
+        - np.exp(sumOfCos) + a + np.exp(1.0)
     return [f]
 
 @dataclass
@@ -44,6 +44,3 @@ class AckleyModel() :
         self.x0 = [0.0] * self.dim
 
 
-if __name__ == "__main__" :
-    am = AckleyModel()
-    print(am)

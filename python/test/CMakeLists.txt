@@ -67,6 +67,18 @@ endmacro (ot_pyinstallcheck_test)
 
 ## Python post-installation tests
 
+# Use cases
+ot_pyinstallcheck_test (ackley_function IGNOREOUT)
+ot_pyinstallcheck_test (branin_function IGNOREOUT)
+ot_pyinstallcheck_test (cantilever_beam IGNOREOUT)
+ot_pyinstallcheck_test (chaboche_model IGNOREOUT)
+ot_pyinstallcheck_test (deflection_tube IGNOREOUT)
+ot_pyinstallcheck_test (flood_model IGNOREOUT)
+ot_pyinstallcheck_test (ishigami_function IGNOREOUT)
+ot_pyinstallcheck_test (logistic_model IGNOREOUT)
+ot_pyinstallcheck_test (stressed_beam IGNOREOUT)
+ot_pyinstallcheck_test (viscous_free_fall IGNOREOUT)
+
 # Common
 if (LIBXML2_FOUND)
   ot_pyinstallcheck_test (Object_pickle)
@@ -776,13 +788,6 @@ if (MATPLOTLIB_FOUND)
     set_tests_properties (pyinstallcheck_example_plot_sample_pandas PROPERTIES WILL_FAIL TRUE)
   endif ()
 endif ()
-
-file (GLOB_RECURSE PYFILES "${CMAKE_SOURCE_DIR}/python/src/usecases/*.py")
-foreach (PYF ${PYFILES})
-  get_filename_component (TESTNAME "${PYF}" NAME_WE)
-  add_test (NAME pyinstallcheck_example_${TESTNAME} COMMAND ${PYTHON_EXECUTABLE} ${PYF})
-  set_tests_properties (pyinstallcheck_example_${TESTNAME} PROPERTIES ENVIRONMENT "${PYINSTALLCHECK_ENVIRONMENT}")
-endforeach ()
 
 if (MATPLOTLIB_FOUND)
   ot_pyinstallcheck_test (Viewer IGNOREOUT)
