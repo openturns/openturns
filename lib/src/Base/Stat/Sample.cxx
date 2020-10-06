@@ -45,13 +45,20 @@ Sample Sample::ImportFromTextFile(const FileName & fileName,
   return sample;
 }
 
+Sample Sample::BuildFromPoint(const Point &point)
+{
+    const UnsignedInteger size = point.getDimension();
+    Sample sample(size, 1);
+    sample.getImplementation()->setData(point);
+    return sample;
+}
+
 /* Save to CSV file */
 void Sample::exportToCSVFile(const FileName & filename,
                              const String & csvSeparator) const
 {
   getImplementation()->exportToCSVFile(filename, csvSeparator);
 }
-
 
 /* Store a sample in a temporary text file, one realization by line. Returns the file name. */
 String Sample::storeToTemporaryFile() const

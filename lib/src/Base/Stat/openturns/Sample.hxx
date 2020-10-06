@@ -57,6 +57,7 @@ public:
                                    const UnsignedInteger skippedLines = 0,
                                    const String & numSeparator = ".");
 
+  static Sample BuildFromPoint(const Point & point);
 
   /** Export Sample into CSV file */
   void exportToCSVFile(const FileName & fileName,

@@ -95,6 +95,7 @@
 === Python module ===
  * Renamed Viewer *_kwargs arguments to *_kw (matplotlib convention)
  * Add ProcessSample Field accessors
+ * Added Sample::BuildFromPoint
 
 === Miscellaneous ===
  * Do not compute Lagrange multipliers by default during an optimization
