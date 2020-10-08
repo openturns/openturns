@@ -15,13 +15,6 @@ try:
     import openturns as ot
     import numpy as np
 
-    def BuildSampleFromSequence(sequence):
-        n = len(sequence)
-        data = np.array(sequence)
-        data = data.reshape(n, 1)
-        sample = ot.Sample(data)
-        return sample
-
     # Curve
     graph = ot.Normal().drawCDF()
     # graph.draw('curve1.png')
@@ -281,7 +274,7 @@ try:
     ncurves = 5
     graph = ot.Graph("BuildPalette", "X", "Y", True, "topright")
     n = 20
-    x = BuildSampleFromSequence(range(n))
+    x = ot.Sample([[i] for i in range(n)])
     for i in range(ncurves):
         y = ot.Normal().getSample(n)
         curve = ot.Curve(x, y)

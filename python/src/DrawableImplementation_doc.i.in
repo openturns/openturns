@@ -973,8 +973,8 @@ HSVComponents : :class:`~openturns.Point`
 Examples
 --------
 >>> import openturns as ot
->>> print(ot.Drawable.ConvertFromRGBIntoHSV(44.0 / 255.0, 160.0 / 255.0, 72.0 / 255.0))
-[134.483,0.725,160]"
+>>> print(ot.Drawable.ConvertFromRGBIntoHSV(0.8, 0.6, 0.4))
+[30,0.5,0.8]"
 %enddef
 %feature("docstring") OT::DrawableImplementation::ConvertFromRGBIntoHSV
 OT_Drawable_ConvertFromRGBIntoHSV_doc

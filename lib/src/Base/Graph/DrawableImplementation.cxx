@@ -978,10 +978,7 @@ Point DrawableImplementation::ConvertFromRGBIntoHSV(const UnsignedInteger red,
   if(hue < 0.0) {
     hue += 360.0;
   }
-  Point hsv(3);
-  hsv[0] = hue;
-  hsv[1] = saturation;
-  hsv[2] = value;
+  const Point hsv = {hue, saturation, value};
   return hsv;
 }
 
