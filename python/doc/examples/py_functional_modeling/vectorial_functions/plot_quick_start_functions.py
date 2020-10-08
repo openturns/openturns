@@ -134,10 +134,10 @@ print(empiricalSd)
 #  ====================  =======  ========
 #  Type                  Input X  Output Y
 #  ====================  =======  ========
-#  `list` (Python)       -        ✓        
-#  `tuple` (Python)      -        ✓        
-#  `array` (NumPy)       -        ✓        
-#  `Point` (OpenTURNS)   ✓        ✓        
+#  `list` (Python)       NO       YES     
+#  `tuple` (Python)      NO       YES     
+#  `array` (NumPy)       NO       YES     
+#  `Point` (OpenTURNS)   YES      YES     
 #  ====================  =======  ========
 #
 

@@ -12,7 +12,7 @@ Vertex value function
 # .. math::
 #    \begin{aligned} f_{vertexvalue}(\underline{t}, \underline{x})=(\underline{t}, h(\underline{t},\underline{x}))\end{aligned}
 #   
-# Let’s note that the input dimension of :math:`f_{vertexvalue}` still design the
+# Let's note that the input dimension of :math:`f_{vertexvalue}` still design the
 # dimension of :math:`\underline{x}` : :math:`d`. Its output dimension is equal to :math:`q`.
 #
 # The creation of the *VertexValueFunction* object requires the

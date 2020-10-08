@@ -11,7 +11,7 @@ Value function
 # .. math::
 #    \begin{aligned} f_{value}(\underline{t}, \underline{x})=(\underline{t}, g(\underline{x}))\end{aligned}
 #   
-# Let’s note that the input dimension of :math:`f_{value}` still designs the
+# Let's note that the input dimension of :math:`f_{value}` still designs the
 # dimension of :math:`\underline{x}` : :math:`d`. Its output dimension is equal to :math:`q`.
 #
 # The creation of the *ValueFunction* object requires the
