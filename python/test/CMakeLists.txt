@@ -68,16 +68,18 @@ endmacro (ot_pyinstallcheck_test)
 ## Python post-installation tests
 
 # Use cases
-ot_pyinstallcheck_test (ackley_function IGNOREOUT)
-ot_pyinstallcheck_test (branin_function IGNOREOUT)
-ot_pyinstallcheck_test (cantilever_beam IGNOREOUT)
-ot_pyinstallcheck_test (chaboche_model IGNOREOUT)
-ot_pyinstallcheck_test (deflection_tube IGNOREOUT)
-ot_pyinstallcheck_test (flood_model IGNOREOUT)
-ot_pyinstallcheck_test (ishigami_function IGNOREOUT)
-ot_pyinstallcheck_test (logistic_model IGNOREOUT)
-ot_pyinstallcheck_test (stressed_beam IGNOREOUT)
-ot_pyinstallcheck_test (viscous_free_fall IGNOREOUT)
+if (NUMPY_FOUND AND PYTHON_VERSION_STRING VERSION_GREATER 3.7)
+  ot_pyinstallcheck_test (ackley_function IGNOREOUT)
+  ot_pyinstallcheck_test (branin_function IGNOREOUT)
+  ot_pyinstallcheck_test (cantilever_beam IGNOREOUT)
+  ot_pyinstallcheck_test (chaboche_model IGNOREOUT)
+  ot_pyinstallcheck_test (deflection_tube IGNOREOUT)
+  ot_pyinstallcheck_test (flood_model IGNOREOUT)
+  ot_pyinstallcheck_test (ishigami_function IGNOREOUT)
+  ot_pyinstallcheck_test (logistic_model IGNOREOUT)
+  ot_pyinstallcheck_test (stressed_beam IGNOREOUT)
+  ot_pyinstallcheck_test (viscous_free_fall IGNOREOUT)
+endif()
 
 # Common
 if (LIBXML2_FOUND)
