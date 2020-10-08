@@ -13,7 +13,6 @@ try:
 
     from openturns.viewer import View
     import openturns as ot
-    import numpy as np
 
     # Curve
     graph = ot.Normal().drawCDF()
