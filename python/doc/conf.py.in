@@ -78,17 +78,6 @@ except ImportError:
 
 extensions.append('matplotlib.sphinxext.plot_directive')
 
-     #'examples_dirs': ['py_examples/'], # path to example scripts
-     #'gallery_dirs': 'auto_examples', # path to where to save gallery gen. output
-     #'subsection_order': ExplicitOrder(['py_examples/data_analysis',
-     #                                  'py_examples/probabilistic_modeling',
-     #                                  'py_examples/meta_modeling',
-     #                                  'py_examples/reliability_sensitivity',
-     #                                  'py_examples/functional_modeling',
-     #                                  'py_examples/calibration',
-     #                                  'py_examples/numerical_methods',
-     #                                  'py_examples/graphs', ]),
-
 extensions.append('sphinx_gallery.gen_gallery')
 sphinx_gallery_conf = {
 
