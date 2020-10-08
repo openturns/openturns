@@ -15,6 +15,7 @@ The Kolmogorov-Smirnov statistics
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # The computeKSStatisticsIndex function computes the Kolmogorov-Smirnov distance between the sample and the distribution. Furthermore, it returns the index which achieves the maximum distance in the sorted sample. The following function is for teaching purposes only: use `FittingTest` for real applications.

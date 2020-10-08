@@ -9,6 +9,7 @@ Optimization using bonmin
 # %%
 from __future__ import print_function
 import openturns as ot
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # List available algorithms

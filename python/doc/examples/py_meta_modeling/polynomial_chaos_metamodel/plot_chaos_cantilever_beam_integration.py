@@ -11,6 +11,7 @@ Create a polynomial chaos metamodel by integration on the cantilever beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 dist_E = ot.Beta(0.9, 2.27, 2.8e7, 4.8e7)

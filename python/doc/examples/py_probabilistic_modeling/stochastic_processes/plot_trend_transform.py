@@ -14,8 +14,7 @@ Trend computation
 #
 # Then, the trend transformation is estimated from the initial field :math:`(\underline{x}_0, \dots, \underline{x}_{N-1})` and a function basis :math:`\mathcal{B}` thanks to the method **build** of the object **TrendFactory**, which produces an object of type **TrendTransform**. This last object allows to:
 #
-# - add the trend to a given field :math:`\underline{w}_0, \dots, \underline{w}_{N-1}` defined on the same mesh :math:`\mathcal{M}`: the resulting field  shares the same mesh than the initial field.
-# For example, it may be useful to add the trend to a realization of the stationary process :math:`X_{stat}` in order to get a realization of the process :math:`X`
+# - add the trend to a given field :math:`\underline{w}_0, \dots, \underline{w}_{N-1}` defined on the same mesh :math:`\mathcal{M}`: the resulting field  shares the same mesh than the initial field. For example, it may be useful to add the trend to a realization of the stationary process :math:`X_{stat}` in order to get a realization of the process :math:`X`
 #
 # - get the function :math:`f_{trend}` defined in that evaluates the trend thanks to the method **getEvaluation()**;
 #
@@ -36,6 +35,7 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import math as m
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define a bi dimensional mesh

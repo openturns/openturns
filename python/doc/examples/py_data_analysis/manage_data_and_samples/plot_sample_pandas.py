@@ -11,6 +11,7 @@ Interaction with Pandas
 from __future__ import print_function
 import openturns as ot
 import pandas as pd
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # create a sample from a 3-d gaussian distribution

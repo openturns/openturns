@@ -33,6 +33,7 @@ Estimate a multivariate ARMA process
 # %%
 from __future__ import print_function
 import openturns as ot
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create a 2-d ARMA process

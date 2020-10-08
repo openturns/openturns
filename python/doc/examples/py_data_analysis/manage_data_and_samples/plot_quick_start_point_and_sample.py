@@ -20,6 +20,7 @@ A quick start guide to the `Point` and `Sample` classes
 
 # %%
 import openturns as ot
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # The `Point` class
@@ -156,7 +157,7 @@ p4 = [5] * 3
 p4
 
 # %%
-# We can also create a `Sample` from a list of `Point`s.
+# We can also create a `Sample` from a list of `Point`.
 
 # %%
 sample = ot.Sample ([p1 , p2 , p3 ])
@@ -245,18 +246,10 @@ sample = ot.Sample ([u[i:i+5] for i in range(len(u)//5)])
 sample
 
 # %%
-# If we do not set the optional `size` parameter, the library cannot solve the case and an exception is generated:
+# If we do not set the optional `size` parameter, the library cannot solve the case and an InvalidArgumentException is generated.
 #
-# ```
-# ---------------------------------------------------------------------------
-# TypeError                                 Traceback (most recent call last)
-# <ipython-input-48-8c4ed687c6a9> in <module>()
-#       1 # Generates an expected exception
-# ----> 2 sample = ot.Sample (u)
-# [...]
-# TypeError: InvalidArgumentException : Invalid array dimension: 1
-# ```
 
 # %%
 # Generates an expected exception
+# TypeError: InvalidArgumentException : Invalid array dimension: 1
 # sample = ot.Sample (u)

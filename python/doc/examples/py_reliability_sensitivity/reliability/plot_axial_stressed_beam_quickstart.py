@@ -85,6 +85,7 @@ import openturns as ot
 import numpy as np
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # The dimension of the problem.
@@ -280,6 +281,7 @@ print("%.2f%% confidence interval = [%f,%f]" % ((1-alpha)*100,probability-pflen/
 # 
 #
 # This implies:
+#
 # .. math::
 #    P_f = \int_{-\infty}^{+\infty} \left(\int_{r \leq s} f_R(r) dr \right) f_S(s) ds.
 # 

@@ -12,6 +12,7 @@ from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Generate a sample of dimension 3 with component 0 correlated to component 2

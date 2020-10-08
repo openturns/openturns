@@ -22,6 +22,7 @@ The Kolmogorov-Smirnov distribution
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 x=[0.9374, 0.7629, 0.4771, 0.5111, 0.8701, 0.0684, 0.7375, 0.5615, 0.2835, 0.2508]

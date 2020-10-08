@@ -97,6 +97,7 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import numpy as np
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We first define the time grid associated with the model. 

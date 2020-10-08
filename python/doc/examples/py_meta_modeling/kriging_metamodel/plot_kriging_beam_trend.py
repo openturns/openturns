@@ -20,6 +20,7 @@ import openturns as ot
 ot.RandomGenerator.SetSeed(0)
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We define the symbolic function which evaluates the output Y depending on the inputs E, F, L and I.

@@ -118,6 +118,7 @@ import openturns as ot
 ot.ResourceMap.SetAsUnsignedInteger('Normal-SmallDimension', 1)
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We define the model :math:`g` which has 4 inputs and one output H.

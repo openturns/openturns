@@ -118,6 +118,7 @@ Bayesian calibration of the flooding model
 # %%
 import numpy as np
 import openturns as ot
+ot.Log.Show(ot.Log.NONE)
 
 
 # %%

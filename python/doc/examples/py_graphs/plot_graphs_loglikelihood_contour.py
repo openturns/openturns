@@ -13,6 +13,7 @@ import openturns as ot
 ot.RandomGenerator.SetSeed(0)
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Generate a sample

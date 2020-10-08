@@ -67,7 +67,8 @@ Calibration of the Chaboche mechanical model
 #    n = 100.
 #
 #
-# We generate a Monte-Carlo samplg with size :math:`n`:
+# We generate a Monte-Carlo sampling with size :math:`n`:
+#
 # .. math::
 #    \sigma_i = G(\epsilon_i,R,C,\gamma) + (\epsilon_\sigma)_i,
 #
@@ -97,6 +98,7 @@ import numpy as np
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define the model.

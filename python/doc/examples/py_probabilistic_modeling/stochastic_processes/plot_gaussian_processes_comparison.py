@@ -26,6 +26,7 @@ Comparison of covariance models for gaussian processes
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Amplitude values

@@ -43,6 +43,7 @@ import openturns.viewer as viewer
 from matplotlib import pylab as plt
 from openturns.viewer import View
 import numpy as np
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 dimension = 1

@@ -19,6 +19,7 @@ import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import os
 import time
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Example 0: using a fixed seed

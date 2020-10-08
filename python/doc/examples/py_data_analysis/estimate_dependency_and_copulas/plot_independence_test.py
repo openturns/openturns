@@ -38,6 +38,7 @@ Sample independence test
 # %%
 from __future__ import print_function
 import openturns as ot
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # **continuous samples**

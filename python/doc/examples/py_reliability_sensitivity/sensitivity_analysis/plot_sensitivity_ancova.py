@@ -32,6 +32,7 @@ from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create the model (x1,x2) --> (y) = (4.*x1+5.*x2)

@@ -8,6 +8,7 @@ Import / export a sample via a CSV file
 # %%
 from __future__ import print_function
 import openturns as ot
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # create a sample from a 2-d gaussian distribution

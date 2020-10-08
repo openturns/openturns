@@ -8,6 +8,7 @@ Test distribution fitting using Kolmogorov
 # %%
 from __future__ import print_function
 import openturns as ot
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create the data.

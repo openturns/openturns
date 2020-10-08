@@ -15,6 +15,7 @@ Estimate a multivariate distribution
 from __future__ import print_function
 import openturns as ot
 import math as m
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # generate some multivariate data to estimate, with correlation
@@ -90,13 +91,12 @@ print(C)
 # %%
 # Note that we can apply the `HypothesisTest.Spearman` test. As the null hypothesis of the test is the `independence`, we must take the complementary of the binary measure as follow:
 #
-# ```
-#    M = ot.SymmetricMatrix(dimension)
-#    for i in range(dimension):
-#        M[i,i] = 1
-#        for j in range(i):
-#            M[i, j] = 1 - ot.HypothesisTest.Spearman(sample[:,i], sample[:,j]).getBinaryQualityMeasure()
-# ```
+# >>>   M = ot.SymmetricMatrix(dimension)
+# >>>   for i in range(dimension):
+# >>>       M[i,i] = 1
+# >>>       for j in range(i):
+# >>>           M[i, j] = 1 - ot.HypothesisTest.Spearman(sample[:,i], sample[:,j]).getBinaryQualityMeasure()
+#
 
 # %%
 # Now we find the independent blocs:

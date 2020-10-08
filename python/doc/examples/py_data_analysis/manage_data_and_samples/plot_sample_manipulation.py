@@ -8,6 +8,7 @@ Sample manipulation
 # %%
 from __future__ import print_function
 import openturns as ot
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Generate a sample of dimension 3

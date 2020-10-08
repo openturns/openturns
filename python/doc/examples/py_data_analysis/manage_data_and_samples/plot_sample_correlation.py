@@ -18,6 +18,7 @@ from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # To illustrate the usage of the method mentionned above, we define a set of X/Y data using the ususal `Ishigami` use-case.

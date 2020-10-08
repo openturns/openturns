@@ -34,6 +34,7 @@ import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import os
 import pickle
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # create objects to save

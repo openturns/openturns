@@ -24,6 +24,7 @@ from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Generate 3 samples, sample1 and sample2 arise from the same distribution

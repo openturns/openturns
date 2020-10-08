@@ -21,6 +21,7 @@ from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+ot.Log.Show(ot.Log.NONE)
 
 # prepare some data
 formulas = ['cos(x1 + x2)', '(x2 + 1) * exp(x1 - 2 * x2)']

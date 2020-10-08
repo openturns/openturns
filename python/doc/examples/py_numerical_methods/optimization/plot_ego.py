@@ -57,6 +57,7 @@ import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import math as m
 ot.ResourceMap.SetAsString("KrigingAlgorithm-LinearAlgebra",  "LAPACK")
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 dim = 2

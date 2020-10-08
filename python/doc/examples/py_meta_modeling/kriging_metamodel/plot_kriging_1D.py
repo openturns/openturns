@@ -52,6 +52,7 @@ import numpy as np
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 g = ot.SymbolicFunction(['x'], ['sin(x)'])

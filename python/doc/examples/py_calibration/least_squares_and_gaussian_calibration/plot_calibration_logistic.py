@@ -120,10 +120,7 @@ Calibration of the logistic model
 # Notes
 # -----
 #
-# * This example is based on [1], chapter "First order differential equations", page 28. 
-# The data used in [1] are from [3]. 
-# The logistic growth model was first suggested by Pierre François Verhulst near 1840. 
-# The data are from [1] for the time interval from 1790 to 1950, then from [2] for the time interval from 1960 to 2000.
+# * This example is based on [1], chapter "First order differential equations", page 28. The data used in [1] are from [3]. The logistic growth model was first suggested by Pierre François Verhulst near 1840. The data are from [1] for the time interval from 1790 to 1950, then from [2] for the time interval from 1960 to 2000.
 # * Calibrating this model may require to take into account for the time dependency of the measures.
 #
 
@@ -150,6 +147,7 @@ import openturns as ot
 import numpy as np
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # The data is based on 22 dates from 1790 to 2000.

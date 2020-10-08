@@ -10,6 +10,7 @@ from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+ot.Log.Show(ot.Log.NONE)
 
 # assume a 2-d distribution
 distribution = ot.Normal([0.0, 2.0], [1.0, 0.6], ot.CorrelationMatrix(2))

@@ -46,6 +46,7 @@ Defining Python and symbolic functions: a quick start introduction to functions
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We first define the input random vector of the function.
@@ -150,13 +151,11 @@ print(empiricalSd)
 # %%
 # The calling sequence of a vectorized Python function is:
 #
-# ```
 # def mySimulator (x):
 #     [...]
 #     return y
 #
 # myfunction = PythonFunction(nbInputs, nbOutputs, func_sample = mySimulator)
-# ```
 #
 # where 
 #
