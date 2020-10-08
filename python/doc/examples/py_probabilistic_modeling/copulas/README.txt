@@ -1,4 +1,4 @@
-.. _Copulas:
+.. _CopulasExamples:
 
 Copulas
 -------
