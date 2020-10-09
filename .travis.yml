@@ -33,7 +33,7 @@ before_install:
   - if test "$TRAVIS_OS_NAME" = "osx"; then
         brew update &&
         brew unlink python@2 &&
-        brew install swig openblas bison flex cminpack ceres-solver dlib nlopt tbb &&
+        brew install swig openblas bison flex cminpack ceres-solver dlib nlopt tbb cmake &&
         export HOMEBREW_PREFIX=`brew --prefix`;
         pip3 install matplotlib scipy;
     fi
