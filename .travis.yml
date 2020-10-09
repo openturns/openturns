@@ -35,7 +35,7 @@ before_install:
         brew unlink python@2 &&
         brew install swig openblas bison flex cminpack ceres-solver dlib nlopt tbb &&
         export HOMEBREW_PREFIX=`brew --prefix`;
-        pip3 install matplotlib scipy
+        pip3 install matplotlib scipy;
     fi
 
 install:
