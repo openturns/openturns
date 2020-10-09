@@ -192,11 +192,11 @@ protected:
                                   const UnsignedInteger indexY);
 
   /** Designs : input & output designs */
-  Sample inputDesign_;
+  Description inputDescription_;
   Sample outputDesign_;
 
   /** Simulation size */
-  UnsignedInteger size_;
+  UnsignedInteger size_ = 0;
 
   /** Number of Bootstrap sampling size */
   UnsignedInteger bootstrapSize_;
@@ -229,7 +229,7 @@ protected:
   mutable Distribution totalOrderIndiceDistribution_;
 
   /** Whether the indices distribution is computed already */
-  mutable Bool alreadyComputedIndicesDistribution_;
+  mutable Bool alreadyComputedIndicesDistribution_ = false;
 
   /** Whether to use bootstrap or asymptotic distribution */
   Bool useAsymptoticDistribution_;

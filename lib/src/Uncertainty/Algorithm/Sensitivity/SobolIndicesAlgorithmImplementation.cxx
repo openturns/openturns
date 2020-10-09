@@ -43,20 +43,8 @@ static const Factory<SobolIndicesAlgorithmImplementation> Factory_SobolIndicesAl
 /* Default constructor */
 SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation()
   : PersistentObject()
-  , inputDesign_()
-  , outputDesign_()
-  , size_(0)
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize"))
   , confidenceLevel_(ResourceMap::GetAsScalar("SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel"))
-  , referenceVariance_()
-  , varianceI_()
-  , varianceTI_()
-  , aggregatedFirstOrderIndices_()
-  , aggregatedTotalOrderIndices_()
-  , secondOrderIndices_()
-  , firstOrderIndiceDistribution_()
-  , totalOrderIndiceDistribution_()
-  , alreadyComputedIndicesDistribution_(false)
   , useAsymptoticDistribution_(ResourceMap::GetAsBool("SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution"))
 {
   // Nothing to do
@@ -67,20 +55,8 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const S
     const Sample & outputDesign,
     const UnsignedInteger size)
   : PersistentObject()
-  , inputDesign_()
-  , outputDesign_()
-  , size_(0)
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize"))
   , confidenceLevel_(ResourceMap::GetAsScalar("SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel"))
-  , referenceVariance_()
-  , varianceI_()
-  , varianceTI_()
-  , aggregatedFirstOrderIndices_()
-  , aggregatedTotalOrderIndices_()
-  , secondOrderIndices_()
-  , firstOrderIndiceDistribution_()
-  , totalOrderIndiceDistribution_()
-  , alreadyComputedIndicesDistribution_(false)
   , useAsymptoticDistribution_(ResourceMap::GetAsBool("SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution"))
 {
   setDesign(inputDesign, outputDesign, size);
@@ -98,20 +74,8 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const D
     const Function & model,
     const Bool computeSecondOrder)
   : PersistentObject()
-  , inputDesign_()
-  , outputDesign_()
-  , size_(0)
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize"))
   , confidenceLevel_(ResourceMap::GetAsScalar("SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel"))
-  , referenceVariance_()
-  , varianceI_()
-  , varianceTI_()
-  , aggregatedFirstOrderIndices_()
-  , aggregatedTotalOrderIndices_()
-  , secondOrderIndices_()
-  , firstOrderIndiceDistribution_()
-  , totalOrderIndiceDistribution_()
-  , alreadyComputedIndicesDistribution_(false)
   , useAsymptoticDistribution_(ResourceMap::GetAsBool("SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution"))
 {
   const UnsignedInteger inputDimension = model.getInputDimension();
@@ -137,20 +101,9 @@ SobolIndicesAlgorithmImplementation::SobolIndicesAlgorithmImplementation(const W
     const Function & model,
     const Bool computeSecondOrder)
   : PersistentObject()
-  , inputDesign_()
-  , outputDesign_()
   , size_(experiment.getSize())
   , bootstrapSize_(ResourceMap::GetAsUnsignedInteger("SobolIndicesAlgorithm-DefaultBootstrapSize"))
   , confidenceLevel_(ResourceMap::GetAsScalar("SobolIndicesAlgorithm-DefaultBootstrapConfidenceLevel"))
-  , referenceVariance_()
-  , varianceI_()
-  , varianceTI_()
-  , aggregatedFirstOrderIndices_()
-  , aggregatedTotalOrderIndices_()
-  , secondOrderIndices_()
-  , firstOrderIndiceDistribution_()
-  , totalOrderIndiceDistribution_()
-  , alreadyComputedIndicesDistribution_(false)
   , useAsymptoticDistribution_(ResourceMap::GetAsBool("SobolIndicesAlgorithm-DefaultUseAsymptoticDistribution"))
 {
   const UnsignedInteger inputDimension = model.getInputDimension();
@@ -186,7 +139,7 @@ Point SobolIndicesAlgorithmImplementation::getFirstOrderIndices(const UnsignedIn
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalOrderIndices, marginalIndex should be in [0," << outputDimension - 1;
   // return value
   const Point firstOrderSensitivity(varianceI_[marginalIndex] / referenceVariance_[marginalIndex]);
-  for (UnsignedInteger p = 0; p < inputDesign_.getDimension(); ++p)
+  for (UnsignedInteger p = 0; p < inputDescription_.getSize(); ++p)
   {
     if ((firstOrderSensitivity[p] > 1.0) || firstOrderSensitivity[p] < 0.0)
       LOGWARN(OSS() << "The estimated first order Sobol index (" << p << ") is not in the range [0, 1]. You may increase the sampling size. HERE we have: S_"
@@ -255,7 +208,7 @@ void SobolIndicesAlgorithmImplementation::computeBootstrapDistribution() const
   if (bootstrapSize_ > 0)
   {
     // Temporary samples that stores the first/total indices
-    const UnsignedInteger inputDimension = inputDesign_.getDimension();
+    const UnsignedInteger inputDimension = inputDescription_.getSize();
     Sample bsFO(0, inputDimension);
     Sample bsTO(0, inputDimension);
     const UnsignedInteger size = size_;
@@ -306,7 +259,7 @@ Scalar SobolIndicesAlgorithmImplementation::computeVariance(const Sample & u, co
 void SobolIndicesAlgorithmImplementation::setConfidenceInterval(const Point & varianceFO,
     const Point & varianceTO) const
 {
-  const UnsignedInteger inputDimension = inputDesign_.getDimension();
+  const UnsignedInteger inputDimension = inputDescription_.getSize();
   Point standardDeviationFO(inputDimension);
   Point standardDeviationTO(inputDimension);
   ComposedDistribution::DistributionCollection marginalsFO(inputDimension);
@@ -370,9 +323,9 @@ SymmetricMatrix SobolIndicesAlgorithmImplementation::getSecondOrderIndices(const
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   if (0 == secondOrderIndices_.getNbSheets())
   {
-    const UnsignedInteger inputDimension = inputDesign_.getDimension();
+    const UnsignedInteger inputDimension = inputDescription_.getSize();
     // Check if is possible
-    if (outputDesign_.getSize() < 2 * (inputDesign_.getDimension() + 1) * size_ )
+    if (outputDesign_.getSize() < 2 * (inputDescription_.getSize() + 1) * size_ )
       throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getSecondOrderIndices, second order indices designs not computed";
     // Compute second order indices
     secondOrderIndices_ = SymmetricTensor(inputDimension, outputDimension);
@@ -413,7 +366,7 @@ Point SobolIndicesAlgorithmImplementation::getTotalOrderIndices(const UnsignedIn
     varianceI_ = computeIndices(outputDesign_, varianceTI_);
   }
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
-  const UnsignedInteger inputDimension = inputDesign_.getDimension();
+  const UnsignedInteger inputDimension = inputDescription_.getSize();
   if (marginalIndex >= outputDimension)
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalOrderIndices, marginalIndex should be in [0," << outputDimension - 1;
   for (UnsignedInteger p = 0; p < inputDimension; ++p)
@@ -697,7 +650,7 @@ Graph SobolIndicesAlgorithmImplementation::DrawSobolIndices(const Description & 
 /** Method that draw (plot) the sensitivity graph */
 Graph SobolIndicesAlgorithmImplementation::draw() const
 {
-  Graph graph(DrawSobolIndices(inputDesign_.getDescription(), getAggregatedFirstOrderIndices(), getAggregatedTotalOrderIndices()));
+  Graph graph(DrawSobolIndices(inputDescription_, getAggregatedFirstOrderIndices(), getAggregatedTotalOrderIndices()));
   if (outputDesign_.getDimension() > 1)
     graph.setTitle(OSS() << "Aggregated Sobol' indices - " << getClassName());
   else
@@ -734,7 +687,7 @@ Graph SobolIndicesAlgorithmImplementation::draw() const
 /** Method that draw the sensitivity graph of a fixed marginal */
 Graph SobolIndicesAlgorithmImplementation::draw(UnsignedInteger marginalIndex) const
 {
-  Graph graph(DrawSobolIndices(inputDesign_.getDescription(), getFirstOrderIndices(marginalIndex), getTotalOrderIndices(marginalIndex)));
+  Graph graph(DrawSobolIndices(inputDescription_, getFirstOrderIndices(marginalIndex), getTotalOrderIndices(marginalIndex)));
   if (outputDesign_.getDimension() > 1)
     graph.setTitle(OSS() << "Marginal #" << marginalIndex << " Sobol' indices - " << getClassName());
   else
@@ -746,7 +699,7 @@ Graph SobolIndicesAlgorithmImplementation::draw(UnsignedInteger marginalIndex) c
 Sample SobolIndicesAlgorithmImplementation::getBootstrapDesign(const Indices & indices) const
 {
   // Bootstrap with huge sample that contains several samples
-  const UnsignedInteger inputDimension = inputDesign_.getDimension();
+  const UnsignedInteger inputDimension = inputDescription_.getSize();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   Sample bootstrapDesign(0, outputDimension);
   for (UnsignedInteger p = 0; p < 2 + inputDimension; ++p)
@@ -935,7 +888,7 @@ void SobolIndicesAlgorithmImplementation::setDesign(const Sample & inputDesign,
     throw InvalidArgumentException(HERE) << "Input and output samples have different size (" << inputDesign.getSize()
                                          << " vs " << outputDesign.getSize() << ")";
 
-  inputDesign_ = inputDesign;
+  inputDescription_ = inputDesign.getDescription();
   size_ = size;
 
   Sample fullOutputDesign(outputDesign);
@@ -966,7 +919,7 @@ void SobolIndicesAlgorithmImplementation::setDesign(const Sample & inputDesign,
 void SobolIndicesAlgorithmImplementation::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "inputDesign_", inputDesign_ );
+  adv.saveAttribute( "inputDescription_", inputDescription_ );
   adv.saveAttribute( "outputDesign_", outputDesign_ );
   adv.saveAttribute( "size_", size_ );
   adv.saveAttribute( "bootstrapSize_", bootstrapSize_ );
@@ -987,7 +940,7 @@ void SobolIndicesAlgorithmImplementation::save(Advocate & adv) const
 void SobolIndicesAlgorithmImplementation::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "inputDesign_", inputDesign_ );
+  adv.loadAttribute( "inputDescription_", inputDescription_ );
   adv.loadAttribute( "outputDesign_", outputDesign_ );
   adv.loadAttribute( "size_", size_ );
   adv.loadAttribute( "bootstrapSize_", bootstrapSize_ );
