@@ -13,6 +13,9 @@ set_source_files_properties (Base/Func/SpecFunc/Faddeeva.cc PROPERTIES SKIP_UNIT
 
 # Exclude Ceres sources from unity build (templates take much memory)
 set_source_files_properties (Base/Optim/Ceres.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+if (CERES_USES_MINIGLOG)
+  set_source_files_properties (Base/Optim/Ceres.cxx PROPERTIES COMPILE_DEFINITIONS OPENTURNS_HAVE_CERES_MINIGLOG)
+endif ()
 
 # Exclude Dlib sources from unity build (Lapack re-included)
 set_source_files_properties (Base/Optim/Dlib.cxx Base/Optim/DlibFunctions.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
