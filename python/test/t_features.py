@@ -27,8 +27,8 @@ except ImportError:
 # It should produce a file named testDraw.png
 print(' 3: legacy plotting (R)'.ljust(width), end=' ')
 try:
-    graph = ot.Normal().drawPDF()
     fname = 'testDraw.png'
+    ot.Normal().drawPDF().draw(fname)
     graph.draw(fname)
     os.remove(fname)
     print('ok')
@@ -38,7 +38,7 @@ except:
 # check XML support
 print(' 4: serialization (LibXML2)'.ljust(width), end=' ')
 try:
-    storageManager = ot.XMLStorageManager('myFile.xml')
+    ot.XMLStorageManager('myFile.xml')
     print('ok')
 except:
     print('n/a')
@@ -46,7 +46,7 @@ except:
 # check HDF5 support
 print(' 5: HDF5 compatibility '.ljust(width), end=' ')
 try:
-    storageManager = ot.XMLH5StorageManager('myFile.xml')
+    ot.XMLH5StorageManager('myFile.xml')
     print('ok')
 except:
     print('n/a')
