@@ -947,15 +947,16 @@ Point DrawableImplementation::ConvertFromRGBIntoHSV(const UnsignedInteger red,
   if (red > 255) throw InvalidArgumentException(HERE) << "Invalid red="<<red;
   if (green > 255) throw InvalidArgumentException(HERE) << "Invalid green="<<green;
   if (blue > 255) throw InvalidArgumentException(HERE) << "Invalid blue="<<blue;
-  const Scalar redScalar(red);
-  const Scalar greenScalar(green);
-  const Scalar blueScalar(blue);
+  const Scalar redScalar = red;
+  const Scalar greenScalar = green;
+  const Scalar blueScalar = blue;
   const Scalar maxColor = std::max(std::max(redScalar, greenScalar), blueScalar);
   const Scalar minColor = std::min(std::min(redScalar, greenScalar), blueScalar);
   const Scalar chroma = maxColor - minColor;
   Scalar hue, saturation, value;
   
-  if(chroma > 0) {
+  if(chroma > 0)
+  {
     if(maxColor == redScalar) {
       hue = 60.0 * ((greenScalar - blueScalar) / chroma);
     } else if(maxColor == greenScalar) {
@@ -1583,9 +1584,9 @@ Description DrawableImplementation::BuildTableauPalette(const UnsignedInteger si
     hsv[2] = std::max(0.0, hsv[2] * (1.0 - delta));
     // Convert back to RGB, then to hexa
     const Point rgbUpdated(ConvertFromHSVIntoRGB(hsv[0], hsv[1], hsv[2]));
-    const UnsignedInteger red = round(255 * rgbUpdated[0]);
-    const UnsignedInteger green = round(255 * rgbUpdated[1]);
-    const UnsignedInteger blue = round(255 * rgbUpdated[2]);
+    const UnsignedInteger red = static_cast<UnsignedInteger>(round(255 * rgbUpdated[0]));
+    const UnsignedInteger green = static_cast<UnsignedInteger>(round(255 * rgbUpdated[1]));
+    const UnsignedInteger blue = static_cast<UnsignedInteger>(round(255 * rgbUpdated[2]));
     const String hexa(ConvertFromRGB(red, green, blue));
     // Store result
     palette[paletteIndex] = hexa;

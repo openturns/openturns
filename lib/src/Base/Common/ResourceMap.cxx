@@ -694,13 +694,13 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("Drawable-DefaultColor", "blue");
   addAsString("Drawable-DefaultFillStyle", "solid");
   addAsString("Drawable-DefaultLineStyle", "solid");
+  addAsString("Drawable-DefaultPaletteName", "Tableau");
   addAsString("Drawable-DefaultPattern", "s");
   addAsString("Drawable-DefaultPointStyle", "plus");
   addAsString("Drawable-DefaultSurfaceColor", "white");
   addAsString("Drawable-NoSpecifiedLabel", "");
   addAsUnsignedInteger("Drawable-DataThreshold", 2000);
   addAsUnsignedInteger("Drawable-DefaultPalettePhase", 12);
-  addAsString("Drawable-DefaultPaletteName", "Tableau");
 
   // Text drawable
   addAsScalar("Text-DefaultTextSize", 0.75);
