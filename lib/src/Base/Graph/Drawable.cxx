@@ -414,6 +414,22 @@ Point Drawable::ConvertFromHSVIntoRGB(const Scalar hue,
   return DrawableImplementation::ConvertFromHSVIntoRGB(hue, saturation, value);
 }
 
+/* Convert an RGB triplet into an HSV triplet */
+Point Drawable::ConvertFromRGBIntoHSV(const UnsignedInteger red,
+                                      const UnsignedInteger green,
+                                      const UnsignedInteger blue)
+{
+  return DrawableImplementation::ConvertFromRGBIntoHSV(red, green, blue);
+}
+
+/* Convert an RGB triplet into an HSV triplet */
+Point Drawable::ConvertFromRGBIntoHSV(const Scalar red,
+                                      const Scalar green,
+                                      const Scalar blue)
+{
+  return DrawableImplementation::ConvertFromRGBIntoHSV(red, green, blue);
+}
+
 /* Convert an HSV triplet to a valid hexadecimal code */
 String Drawable::ConvertFromHSV(const Scalar hue,
                                 const Scalar saturation,
@@ -431,11 +447,24 @@ String Drawable::ConvertFromHSVA(const Scalar hue,
   return DrawableImplementation::ConvertFromHSVA(hue, saturation, value, alpha);
 }
 
-/* Build default palette
-   Cycle through the hue wheel with 10 nuances and increasing darkness */
+/* Build default palette */
 Description Drawable::BuildDefaultPalette(const UnsignedInteger size)
 {
   return DrawableImplementation::BuildDefaultPalette(size);
+}
+
+/* Build rainbow palette
+   Cycle through the hue wheel with 10 nuances and increasing darkness */
+Description Drawable::BuildRainbowPalette(const UnsignedInteger size)
+{
+  return DrawableImplementation::BuildRainbowPalette(size);
+}
+
+/* Build tableau palette
+   Use 10 colors from Tableau palette. */
+Description Drawable::BuildTableauPalette(const UnsignedInteger size)
+{
+  return DrawableImplementation::BuildTableauPalette(size);
 }
 
 END_NAMESPACE_OPENTURNS

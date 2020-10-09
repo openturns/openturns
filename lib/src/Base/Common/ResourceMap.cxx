@@ -694,6 +694,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("Drawable-DefaultColor", "blue");
   addAsString("Drawable-DefaultFillStyle", "solid");
   addAsString("Drawable-DefaultLineStyle", "solid");
+  addAsString("Drawable-DefaultPaletteName", "Tableau");
   addAsString("Drawable-DefaultPattern", "s");
   addAsString("Drawable-DefaultPointStyle", "plus");
   addAsString("Drawable-DefaultSurfaceColor", "white");

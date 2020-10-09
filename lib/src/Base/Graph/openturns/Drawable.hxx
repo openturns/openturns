@@ -187,10 +187,23 @@ public:
                                 const Scalar blue,
                                 const Scalar alpha);
 
-  /** Convert an HSV triplet into an RGB triplet */
+  /** Convert an HSV triplet into an RGB triplet where
+  0.0<=hue<=360.0, 0.0<=saturation<=1.0, 0.0<=value<=1.0 */
   static Point ConvertFromHSVIntoRGB(const Scalar hue,
                                      const Scalar saturation,
                                      const Scalar value);
+
+  /* Convert a RGB triplet to HSV where
+  0<=red<=255, 0<=green<=255, 0<=blue<=255 */
+  static Point ConvertFromRGBIntoHSV(const UnsignedInteger red,
+                                     const UnsignedInteger green,
+                                     const UnsignedInteger blue);
+
+  /* Convert a RGB triplet to HSV where
+  0.0<=red<=1.0, 0.0<=green<=1.0, 0.0<=blue<=1.0 */
+  static Point ConvertFromRGBIntoHSV(const Scalar red,
+                                     const Scalar green,
+                                     const Scalar blue);
 
   /** Convert an HSV triplet to a valid hexadecimal code */
   static String ConvertFromHSV(const Scalar hue,
@@ -205,6 +218,12 @@ public:
 
   /** Build default palette */
   static Description BuildDefaultPalette(const UnsignedInteger size);
+
+  /** Build rainbow palette */
+  static Description BuildRainbowPalette(const UnsignedInteger size);
+
+  /** Build tableu palette */
+  static Description BuildTableauPalette(const UnsignedInteger size);
 
 }; /* class Drawable */
 

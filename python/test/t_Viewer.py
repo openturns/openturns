@@ -268,6 +268,23 @@ try:
     # test _repr_png_
     png = graph._repr_png_()
     assert(b'PNG' in png[:10])
+    
+    # BuildDefaultPalette, BuildTableauPalette
+    ncurves = 5
+    graph = ot.Graph("BuildPalette", "X", "Y", True, "topright")
+    n = 20
+    x = ot.Sample([[i] for i in range(n)])
+    for i in range(ncurves):
+        y = ot.Normal().getSample(n)
+        curve = ot.Curve(x, y)
+        curve.setLegend("Curve #%d" % (i))
+        graph.add(curve)
+    palette = ot.Drawable.BuildDefaultPalette(ncurves)
+    graph.setColors(palette)
+    view = View(graph)
+    palette = ot.Drawable.BuildTableauPalette(ncurves)
+    graph.setColors(palette)
+    view = View(graph)
 
 except:
     traceback.print_exc()

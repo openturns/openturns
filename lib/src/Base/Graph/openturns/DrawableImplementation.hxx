@@ -206,6 +206,16 @@ public:
                                      const Scalar saturation,
                                      const Scalar value);
 
+  /* Convert a RGB triplet to HSV */
+  static Point ConvertFromRGBIntoHSV(const UnsignedInteger red,
+                                     const UnsignedInteger green,
+                                     const UnsignedInteger blue);
+
+  /* Convert a RGB triplet to HSV */
+  static Point ConvertFromRGBIntoHSV(const Scalar red,
+                                     const Scalar green,
+                                     const Scalar blue);
+
   /** Convert an HSV triplet to a valid hexadecimal code */
   static String ConvertFromHSV(const Scalar hue,
                                const Scalar saturation,
@@ -219,6 +229,12 @@ public:
 
   /** Build default palette */
   static Description BuildDefaultPalette(const UnsignedInteger size);
+
+  /** Build rainbow palette */
+  static Description BuildRainbowPalette(const UnsignedInteger size);
+
+  /** Build tableau palette */
+  static Description BuildTableauPalette(const UnsignedInteger size);
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

@@ -72,18 +72,18 @@
   <Pie-VerticalMargin   value_float="0.1"  />
 
   <!-- OT::DrawableImplementation parameters -->
-  <Drawable-DefaultLineWidth    value_float="1.0"            />
+  <Drawable-DefaultLineWidth    value_float="1.0"          />
   <Drawable-AlternativePattern  value_str="S"              />
   <Drawable-DefaultColor        value_str="blue"           />
   <Drawable-DefaultFillStyle    value_str="solid"          />
   <Drawable-DefaultLineStyle    value_str="solid"          />
+  <Drawable-DefaultPaletteName  value_str="Tableau"        />
   <Drawable-DefaultPattern      value_str="s"              />
   <Drawable-DefaultPointStyle   value_str="plus"           />
   <Drawable-DefaultSurfaceColor value_str="white"          />
   <Drawable-NoSpecifiedLabel    value_str=""               />
-  <Drawable-DataThreshold       value_int="2000" />
-  <Drawable-DefaultPalettePhase value_int="12"   />
-
+  <Drawable-DataThreshold       value_int="2000"           />
+  <Drawable-DefaultPalettePhase value_int="12"             />
 
   <!-- OT::Text parameters -->
   <Text-DefaultTextSize    value_float="0.75"            />
