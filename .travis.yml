@@ -39,6 +39,8 @@ before_install:
     fi
 
 install:
+  # use system python
+  - export PATH=/usr/bin:$PATH
   # use latest hmat-oss
   - git clone https://github.com/jeromerobert/hmat-oss.git
   - pushd hmat-oss
