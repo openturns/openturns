@@ -7,11 +7,6 @@ from matplotlib import pyplot as plt
 
 try:
 
-    # use non-interactive backend
-    import matplotlib
-    if len(sys.argv) == 1:
-        matplotlib.use('Agg')
-
     from openturns.viewer import PlotDesign
     import openturns as ot
     

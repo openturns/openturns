@@ -35,12 +35,11 @@ before_install:
         brew unlink python@2 &&
         brew install swig openblas bison flex cminpack ceres-solver dlib nlopt tbb &&
         export HOMEBREW_PREFIX=`brew --prefix`;
+        pip3 install matplotlib scipy
     fi
 
 install:
-# use system python
-  - export PATH=/usr/bin:$PATH
-# use latest hmat-oss
+  # use latest hmat-oss
   - git clone https://github.com/jeromerobert/hmat-oss.git
   - pushd hmat-oss
   - git checkout 1.6.1
@@ -79,9 +78,7 @@ script:
               -DBISON_EXECUTABLE=/usr/local/opt/bison/bin/bison
               -DFLEX_EXECUTABLE=/usr/local/opt/flex/bin/flex
               -DFLEX_INCLUDE_DIR=/usr/local/opt/flex/include
-              -DPYTHON_EXECUTABLE=/usr/bin/python
-              -DPYTHON_INCLUDE_DIR=/usr/include/python2.7
-              -DPYTHON_LIBRARY=/usr/lib/libpython2.7.dylib
+              -DPYTHON_EXECUTABLE=/usr/local/bin/python3
               -DUSE_COTIRE=ON
               -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES="-j4"
               . &&
