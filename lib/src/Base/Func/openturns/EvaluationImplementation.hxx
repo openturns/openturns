@@ -180,7 +180,7 @@ protected:
   Description parameterDescription_;
 
   /** Whether to check the output for invalid values */
-  Bool checkOutput_ = false;
+  Bool checkOutput_ = true;
 
 private:
 
