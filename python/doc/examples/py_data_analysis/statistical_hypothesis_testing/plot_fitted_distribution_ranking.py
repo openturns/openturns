@@ -43,6 +43,14 @@ test_result
 ot.FittingTest.BestModelBIC(sample, factories)
 
 # %%
+# Rank the continuous models wrt the AIC criteria (no test result)
+ot.FittingTest.BestModelAIC(sample, factories)
+
+# %%
+# Rank the continuous models wrt the AICc criteria (no test result):
+ot.FittingTest.BestModelAICC(sample, factories)
+
+# %%
 # **2. Specify the model and its parameters**
 
 # %%
@@ -57,6 +65,14 @@ test_result
 # %%
 # Rank the continuous models wrt the BIC criteria:
 ot.FittingTest.BestModelBIC(sample, distributions)
+
+# %%
+# Rank the continuous models wrt the AIC criteria:
+ot.FittingTest.BestModelAIC(sample, distributions)
+
+# %%
+# Rank the continuous models wrt the AICc criteria:
+ot.FittingTest.BestModelAICC(sample, distributions)
 
 # %%
 # **Discrete distributions**
