@@ -146,10 +146,10 @@ Scalar Dirichlet::computeLogPDF(const Point & point) const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Scalar xI = point[i];
-    if (xI <= 0.0) return -SpecFunc::MaxScalar;
+    if (xI <= 0.0) return SpecFunc::LowestScalar;
     sum += xI;
   }
-  if (sum >= 1.0) return -SpecFunc::MaxScalar;
+  if (sum >= 1.0) return SpecFunc::LowestScalar;
   Scalar logPDF = normalizationFactor_ + (theta_[dimension] - 1.0) * log1p(-sum);
   for (UnsignedInteger i = 0; i < dimension; ++i) logPDF += (theta_[i] - 1.0) * std::log(point[i]);
   return logPDF;

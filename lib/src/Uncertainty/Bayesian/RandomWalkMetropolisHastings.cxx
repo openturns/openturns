@@ -117,7 +117,7 @@ Point RandomWalkMetropolisHastings::getRealization() const
   if (samplesNumber_ == 0)
   {
     currentLogLikelihood_ = computeLogLikelihood(currentState_);
-    if (currentLogLikelihood_ <= -SpecFunc::MaxScalar)
+    if (currentLogLikelihood_ <= SpecFunc::LowestScalar)
       throw InvalidArgumentException(HERE) << "The initial state should have non-zero posterior proability density";
   }
 

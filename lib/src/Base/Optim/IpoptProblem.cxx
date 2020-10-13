@@ -172,7 +172,7 @@ bool IpoptProblem::get_bounds_info( int n,
     for (int i = 0; i < n; ++i)
     {
       if (!bounds.getFiniteLowerBound()[i])
-        x_l[i] = -SpecFunc::MaxScalar;
+        x_l[i] = SpecFunc::LowestScalar;
       else
         x_l[i] = bounds.getLowerBound()[i];
 
@@ -186,7 +186,7 @@ bool IpoptProblem::get_bounds_info( int n,
   {
     for (int i = 0; i < n; ++i)
     {
-      x_l[i] = -SpecFunc::MaxScalar;
+      x_l[i] = SpecFunc::LowestScalar;
       x_u[i] =  SpecFunc::MaxScalar;
     }
   }

@@ -463,8 +463,8 @@ Scalar MaximumEntropyOrderStatisticsDistribution::computeLogPDF(const Point & po
 
   // Early exit if the point is not in the support
   for (UnsignedInteger k = 1; k < dimension; ++ k)
-    if (point[k - 1] > point[k]) return -SpecFunc::MaxScalar;
-  if (!getRange().numericallyContains(point)) return -SpecFunc::MaxScalar;
+    if (point[k - 1] > point[k]) return SpecFunc::LowestScalar;
+  if (!getRange().numericallyContains(point)) return SpecFunc::LowestScalar;
 
   // Early exit for the independent case
   if (hasIndependentCopula())

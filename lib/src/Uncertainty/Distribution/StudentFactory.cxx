@@ -86,7 +86,7 @@ struct StudentFactoryReducedLogLikelihood
   {
     const Scalar nu = parameter[0];
     const Scalar factor = 1.0 - 2.0 / nu;
-    if (factor <= 0.0) return Point(1, -SpecFunc::MaxScalar);
+    if (factor <= 0.0) return Point(1, SpecFunc::LowestScalar);
     const Point sigma(stdev_ * std::sqrt(factor));
     return Student(nu, mu_, sigma, R_).computeLogPDF(sample_).computeMean();
   }

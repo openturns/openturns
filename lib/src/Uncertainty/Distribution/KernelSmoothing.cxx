@@ -75,7 +75,7 @@ KernelSmoothing::KernelSmoothing(const Distribution & kernel,
   , bined_(bined)
   , binNumber_(binNumber)
   , boundingOption_(boundaryCorrection ? BOTH : NONE)
-  , lowerBound_(-SpecFunc::MaxScalar)
+  , lowerBound_(SpecFunc::LowestScalar)
   , automaticLowerBound_(true)
   , upperBound_(SpecFunc::MaxScalar)
   , automaticUpperBound_(true)

@@ -202,7 +202,7 @@ Scalar Wishart::computeLogPDF(const CovarianceMatrix & m) const
   }
   catch (...)
   {
-    return -SpecFunc::MaxScalar;
+    return SpecFunc::LowestScalar;
   }
 }
 

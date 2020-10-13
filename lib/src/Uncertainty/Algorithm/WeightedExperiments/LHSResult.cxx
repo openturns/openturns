@@ -41,7 +41,7 @@ LHSResult::LHSResult()
   , optimalIndex_(0)
   , criteria_(Sample(0, 4))
 {
-  optimalCriterion_ = spaceFilling_.isMinimizationProblem() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+  optimalCriterion_ = spaceFilling_.isMinimizationProblem() ? SpecFunc::MaxScalar : SpecFunc::LowestScalar;
 }
 
 /* Default constructor */
@@ -52,7 +52,7 @@ LHSResult::LHSResult(const SpaceFilling & spaceFilling, UnsignedInteger restart)
   , optimalIndex_(0)
   , criteria_(Sample(0, 4))
 {
-  optimalCriterion_ = spaceFilling_.isMinimizationProblem() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+  optimalCriterion_ = spaceFilling_.isMinimizationProblem() ? SpecFunc::MaxScalar : SpecFunc::LowestScalar;
 }
 
 LHSResult * LHSResult::clone() const

@@ -133,7 +133,7 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfLikelihoodMaximization(cons
   normalizedSample *= Point(1, alpha);
 
   const UnsignedInteger dimension = 2;// optimize (mu, sigma)
-  Point parametersLowerBound(dimension, -SpecFunc::MaxScalar);
+  Point parametersLowerBound(dimension, SpecFunc::LowestScalar);
   parametersLowerBound[1] = ResourceMap::GetAsScalar( "TruncatedNormalFactory-SigmaLowerBound");
   Interval::BoolCollection parametersLowerFlags(dimension, false);
   parametersLowerFlags[1] = true;

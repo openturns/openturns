@@ -416,7 +416,7 @@ Scalar FittingTest::AIC(const Sample &sample,
   const Sample logPDF(distribution.computeLogPDF(sample));
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    if (logPDF(i, 0) == -SpecFunc::MaxScalar)
+    if (logPDF(i, 0) == SpecFunc::LowestScalar)
       return SpecFunc::MaxScalar;
     logLikelihood += logPDF(i, 0);
   }

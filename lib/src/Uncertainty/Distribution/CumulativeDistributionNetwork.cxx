@@ -99,7 +99,7 @@ void CumulativeDistributionNetwork::computeRange()
   const UnsignedInteger size = distributionCollection_.getSize();
   if (size == 0) return;
   const UnsignedInteger dim = getDimension();
-  const Point infiniteLowerBounds(dim, -SpecFunc::MaxScalar);
+  const Point infiniteLowerBounds(dim, SpecFunc::LowestScalar);
   const Point infiniteUpperBounds(dim,  SpecFunc::MaxScalar);
   const Interval::BoolCollection infiniteLowerBoundsFlags(dim, false);
   const Interval::BoolCollection infiniteUpperBoundsFlags(dim, false);

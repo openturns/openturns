@@ -104,6 +104,8 @@ public:
   // Maximum positive real number
   static const Scalar MaxScalar;
   static const Scalar LogMaxScalar;
+  // Minimum negative real number;
+  static const Scalar LowestScalar;
   // Real number accuracy
   static const Scalar ScalarEpsilon;
 

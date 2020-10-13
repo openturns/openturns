@@ -140,7 +140,7 @@ Scalar Rayleigh::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0] - gamma_;
-  if (x <= 0.0) return -SpecFunc::MaxScalar;
+  if (x <= 0.0) return SpecFunc::LowestScalar;
   const Scalar y = x / (beta_ * beta_);
   return std::log(y) - 0.5 * x * y;
 }

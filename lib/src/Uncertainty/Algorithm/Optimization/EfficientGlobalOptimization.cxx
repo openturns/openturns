@@ -91,7 +91,7 @@ public:
     const Scalar fmMk = optimalValue_ - mx;
     const Scalar sk2 = metaModelResult_.getConditionalMarginalVariance(x);
     const Scalar sk = sqrt(sk2);
-    if (!SpecFunc::IsNormal(sk)) return Point(1, -SpecFunc::MaxScalar);
+    if (!SpecFunc::IsNormal(sk)) return Point(1, SpecFunc::LowestScalar);
     const Scalar ratio = fmMk / sk;
     Scalar ei = fmMk * DistFunc::pNormal(ratio) + sk * DistFunc::dNormal(ratio);
     if (noiseModel_.getOutputDimension() == 1) // if provided
@@ -170,7 +170,7 @@ void EfficientGlobalOptimization::run()
 
   // select the best feasible point
   Point optimizer;
-  Scalar optimalValue = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+  Scalar optimalValue = problem.isMinimization() ? SpecFunc::MaxScalar : SpecFunc::LowestScalar;
   Point optimizerPrev; // previous optimizer
   Scalar optimalValuePrev = optimalValue;// previous optimal value
   for (UnsignedInteger index = 0; index < size; ++ index)
@@ -250,7 +250,7 @@ void EfficientGlobalOptimization::run()
     {
       // with noisy objective we dont have access to the real current optimal value
       // so consider a quantile of the kriging prediction: argmin_xi mk(xi) + c * sk(xi)
-      optimalValueSubstitute = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+      optimalValueSubstitute = problem.isMinimization() ? SpecFunc::MaxScalar : SpecFunc::LowestScalar;
       const Point mx(metaModelResult.getConditionalMean(inputSample));
       for (UnsignedInteger i = 0; i < size; ++ i)
       {

@@ -132,19 +132,19 @@ Scalar KPermutationsDistribution::computeLogPDF(const Point & point) const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const Scalar k = point[i];
-    if ((k < -supportEpsilon_) || (k > n_ + supportEpsilon_)) return -SpecFunc::MaxScalar;
+    if ((k < -supportEpsilon_) || (k > n_ + supportEpsilon_)) return SpecFunc::LowestScalar;
     const UnsignedInteger ik = static_cast< UnsignedInteger > (round(k));
-    if (std::abs(k - ik) > supportEpsilon_) return -SpecFunc::MaxScalar;
+    if (std::abs(k - ik) > supportEpsilon_) return SpecFunc::LowestScalar;
     x[i] = ik;
   }
-  if (!x.check(n_)) return -SpecFunc::MaxScalar;
+  if (!x.check(n_)) return SpecFunc::LowestScalar;
   return logPDFValue_;
 }
 
 Scalar KPermutationsDistribution::computePDF(const Point & point) const
 {
   const Scalar logPDF = computeLogPDF(point);
-  if (logPDF == -SpecFunc::MaxScalar) return 0.0;
+  if (logPDF == SpecFunc::LowestScalar) return 0.0;
   return std::exp(logPDF);
 }
 

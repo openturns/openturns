@@ -587,7 +587,7 @@ void Dlib::run()
     std::copy(upperBound.begin(), upperBound.end(), ub.begin());
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
-      if (!finiteLowerBound[i]) lb(i) = -SpecFunc::MaxScalar;
+      if (!finiteLowerBound[i]) lb(i) = SpecFunc::LowestScalar;
       if (!finiteUpperBound[i]) ub(i) =  SpecFunc::MaxScalar;
     }
   }
@@ -595,7 +595,7 @@ void Dlib::run()
   {
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
-      lb(i) = -SpecFunc::MaxScalar;
+      lb(i) = SpecFunc::LowestScalar;
       ub(i) =  SpecFunc::MaxScalar;
     }
   }
@@ -652,7 +652,7 @@ void Dlib::run()
                          objectiveDlibFunction,
                          objectiveDlibGradient,
                          optimPoint,
-                         -SpecFunc::MaxScalar );
+                         SpecFunc::LowestScalar );
     }
     else
     {

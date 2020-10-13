@@ -142,7 +142,7 @@ Scalar Pareto::computeLogPDF(const Point & point) const
 {
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const Scalar x = point[0] - gamma_;
-  if (x < beta_) return -SpecFunc::MaxScalar;
+  if (x < beta_) return SpecFunc::LowestScalar;
   return std::log(alpha_) * alpha_ * std::log(beta_) * (-alpha_ - 1.0) * std::log(x);
 }
 
