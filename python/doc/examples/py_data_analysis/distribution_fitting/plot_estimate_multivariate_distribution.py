@@ -10,6 +10,7 @@ Estimate a multivariate distribution
 # - find the dependent components
 # - estimate a copula on each dependent bloc
 # - assemble the estimated copulas
+#
 
 # %%
 from __future__ import print_function
@@ -106,7 +107,15 @@ blocs = connected_components(C)
 blocs
 
 # %%
-# For each dependent block, we estimate the most accurate non parameteric copula
+# For each dependent block, we estimate the most accurate non parameteric copula.
+#
+# To do this, we first need to transform the sample in such a way as to keep the copula intact but make all marginal samples follow the uniform distribution on [0,1].
+
+# %%
+copula_sample = ot.Sample(sample.getSize(), sample.getDimension())
+copula_sample.setDescription(sample.getDescription())
+for index in range(sample.getDimension()):
+    copula_sample[:, index] = estimated_marginals[index].computeCDF(sample[:, index])
 
 # %%
 copulaFactories = []
@@ -116,7 +125,7 @@ for factory in ot.DistributionFactory.GetContinuousMultiVariateFactories():
     if factory.getImplementation().getClassName()=='BernsteinCopulaFactory':
         continue
     copulaFactories.append(factory)
-estimated_copulas = [ot.FittingTest.BestModelBIC(sample.getMarginal(bloc), copulaFactories)[0] for bloc in blocs]
+estimated_copulas = [ot.FittingTest.BestModelBIC(copula_sample.getMarginal(bloc), copulaFactories)[0] for bloc in blocs]
 estimated_copulas
 
 # %%
