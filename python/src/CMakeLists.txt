@@ -978,9 +978,12 @@ install (TARGETS memoryview LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/
 
 
 set (EXTRA_PYTHON_FILES __init__.py dist.py viewer.py coupling_tools.py shims.py)
+
 install (FILES ${EXTRA_PYTHON_FILES}
           DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns
        )
+set (EXTRA_DIR usecases)
+install (DIRECTORY ${EXTRA_DIR} DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
 
 install (FILES ${SWIGFILES} DESTINATION ${OPENTURNS_SWIG_INCLUDE_DIRS})
 
@@ -1031,7 +1034,7 @@ if (SPHINX_FOUND)
     ${SPHINX_SOURCE_DIR}/*.sty
     ${SPHINX_SOURCE_DIR}/*.txt
     ${SPHINX_SOURCE_DIR}/*.in
-    ${SPHINX_SOURCE_DIR}/*.ipynb
+    ${SPHINX_SOURCE_DIR}/*.js
   )
 
   # copy sphinx sources
@@ -1051,10 +1054,6 @@ if (SPHINX_FOUND)
   endforeach ()
 
   set (SPHINX_FLAGS "-W -T" CACHE STRING "sphinx flags")
-  if (NOT NBSPHINX_FOUND)
-    # without notebook examples there are invalid links
-    string (REPLACE "-W" "" SPHINX_FLAGS "${SPHINX_FLAGS}")
-  endif ()
   separate_arguments (SPHINX_FLAGS)
 
   # generate sphinx rule for each format

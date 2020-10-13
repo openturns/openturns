@@ -349,8 +349,8 @@ Anisotropic hyperbolic enumeration strategy
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/meta_modeling/functional_chaos`
-    - See :doc:`/examples/meta_modeling/fieldfunction_metamodel`
+    - See :doc:`/auto_py_meta_modeling/polynomial_chaos_metamodel/plot_functional_chaos`
+    - See :doc:`/auto_py_meta_modeling/fields_metamodels/plot_fieldfunction_metamodel`
 
 
 .. topic:: References:

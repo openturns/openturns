@@ -6,17 +6,90 @@ Examples
 
 This is the examples section.
 
-.. only:: nbsphinx
 
-.. toctree::
-    :maxdepth: 2
+.. table::
+   :widths: auto
+   :class: field-list
 
-    data_analysis/data_analysis.rst
-    probabilistic_modeling/probabilistic_modeling.rst
-    meta_modeling/meta_modeling.rst
-    reliability_sensitivity/reliability_sensitivity.rst
-    functional_modeling/functional_modeling.rst
-    calibration/calibration.rst
-    numerical_methods/numerical_methods.rst
-    graphs/graphs.rst
+   +---------------------------------------------------------+-------------------------------------------------+
+   | .. toctree::                                            |                                                 |
+   |    :maxdepth: 2                                         |                                                 |
+   |                                                         |                                                 |
+   |    ../auto_py_data_analysis/index.rst                   |  .. image:: _static/data_analysis.png           |
+   |                                                         |     :align: right                               |
+   |                                                         |     :class: padimg                              |
+   +---------------------------------------------------------+-------------------------------------------------+
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   | .. toctree::                                            |                                                 |
+   |    :maxdepth: 2                                         |                                                 |
+   |                                                         |                                                 |
+   |    ../auto_py_probabilistic_modeling/index.rst          |  .. image:: _static/probabilistic_modeling.png  |
+   |                                                         |     :align: right                               |
+   |                                                         |     :class: padimg                              |
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   | .. toctree::                                            |                                                 |
+   |    :maxdepth: 2                                         |                                                 |
+   |                                                         |                                                 |
+   |    ../auto_py_meta_modeling/index.rst                   |  .. image:: _static/meta_modeling.png           |
+   |                                                         |     :align: right                               |
+   |                                                         |     :class: padimg                              |
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   | .. toctree::                                            |                                                 |
+   |    :maxdepth: 2                                         |                                                 |
+   |                                                         |                                                 |
+   |    ../auto_py_reliability_sensitivity/index.rst         |  .. image:: _static/reliability_sensitivity.png |
+   |                                                         |     :align: right                               |
+   |                                                         |     :class: padimg                              |
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   | .. toctree::                                            |                                                 |
+   |    :maxdepth: 2                                         |                                                 |
+   |                                                         |                                                 |
+   |    ../auto_py_functional_modeling/index.rst             |  .. image:: _static/functional_modeling.png     |
+   |                                                         |     :align: right                               |
+   |                                                         |     :class: padimg                              |
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   | .. toctree::                                            |                                                 |
+   |    :maxdepth: 2                                         |                                                 |
+   |                                                         |                                                 |
+   |    ../auto_py_calibration/index.rst                     |  .. image:: _static/calibration.png             |
+   |                                                         |     :align: right                               |
+   |                                                         |     :class: padimg                              |
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   | .. toctree::                                            |                                                 |
+   |    :maxdepth: 2                                         |                                                 |
+   |                                                         |                                                 |
+   |    ../auto_py_numerical_methods/index.rst               |  .. image:: _static/numerical_methods.png       |
+   |                                                         |     :align: right                               |
+   |                                                         |     :class: padimg                              |
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   | .. toctree::                                            |                                                 |
+   |    :maxdepth: 2                                         |                                                 |
+   |                                                         |                                                 |
+   |    ../auto_py_graphs/index.rst                          |  .. image:: _static/graphs.png                  |
+   |                                                         |     :align: right                               |
+   |                                                         |     :class: padimg                              |
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+   |                                                         |                                                 |
+   +---------------------------------------------------------+-------------------------------------------------+
+
 

@@ -64,7 +64,7 @@ distribution’s logarithm for the model :math:`\cM_i`.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/fitted_distribution_ranking`
+    - See :doc:`/auto_py_data_analysis/statistical_hypothesis_testing/plot_fitted_distribution_ranking`
 
 .. topic:: References:
 

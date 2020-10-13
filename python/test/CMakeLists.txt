@@ -8,7 +8,7 @@ endif ()
 
 
 set (PYINSTALLCHECK_ENVIRONMENT "OPENTURNS_CONFIG_PATH=${INSTALL_DESTDIR}${SYSCONFIG_PATH}/openturns"
-                                 "PYTHONPATH=${INSTALL_DESTDIR}${PYTHON_MODULE_PATH}${PATH_SEP}$ENV{PYTHONPATH}"
+                                 "PYTHONPATH=${INSTALL_DESTDIR}${PYTHON_MODULE_PATH}${PATH_SEP}$ENV{PYTHONPATH}" "MPLBACKEND=agg"
    )
 
 # This macro compiles on the fly and run the corresponding post-installation test
@@ -66,6 +66,20 @@ endmacro (ot_pyinstallcheck_test)
 
 
 ## Python post-installation tests
+
+# Use cases
+if (NUMPY_FOUND AND PYTHON_VERSION_STRING VERSION_GREATER 3.7)
+  ot_pyinstallcheck_test (ackley_function IGNOREOUT)
+  ot_pyinstallcheck_test (branin_function IGNOREOUT)
+  ot_pyinstallcheck_test (cantilever_beam IGNOREOUT)
+  ot_pyinstallcheck_test (chaboche_model IGNOREOUT)
+  ot_pyinstallcheck_test (deflection_tube IGNOREOUT)
+  ot_pyinstallcheck_test (flood_model IGNOREOUT)
+  ot_pyinstallcheck_test (ishigami_function IGNOREOUT)
+  ot_pyinstallcheck_test (logistic_model IGNOREOUT)
+  ot_pyinstallcheck_test (stressed_beam IGNOREOUT)
+  ot_pyinstallcheck_test (viscous_free_fall IGNOREOUT)
+endif()
 
 # Common
 if (LIBXML2_FOUND)
@@ -742,40 +756,41 @@ ot_pyinstallcheck_test (Waarts_system_series)
 ot_pyinstallcheck_test (Waarts_saddle)
 
 ## Misc
-if (NBCONVERT_FOUND AND MATPLOTLIB_FOUND)
-  file (GLOB_RECURSE IPYNBS "${CMAKE_SOURCE_DIR}/python/doc/examples/*.ipynb")
-  foreach (IPYNB ${IPYNBS})
-    if (NOT IPYNB MATCHES checkpoint)
-      get_filename_component (TESTNAME "${IPYNB}" NAME_WE)
-      add_test (NAME pyinstallcheck_notebook_${TESTNAME} COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/t_notebook.py ${IPYNB})
-      set_tests_properties (pyinstallcheck_notebook_${TESTNAME} PROPERTIES ENVIRONMENT "${PYINSTALLCHECK_ENVIRONMENT}")
+if (MATPLOTLIB_FOUND)
+  file (GLOB_RECURSE PYFILES "${CMAKE_SOURCE_DIR}/python/doc/examples/*/*.py")
+  foreach (PYF ${PYFILES})
+    if (PYF MATCHES plot)
+      get_filename_component (TESTNAME "${PYF}" NAME_WE)
+      add_test (NAME pyinstallcheck_example_${TESTNAME} COMMAND ${PYTHON_EXECUTABLE} ${PYF})
+      set_tests_properties (pyinstallcheck_example_${TESTNAME} PROPERTIES ENVIRONMENT "${PYINSTALLCHECK_ENVIRONMENT}")
     endif ()
   endforeach ()
   if (NOT Bonmin_FOUND)
-    set_tests_properties (pyinstallcheck_notebook_optimization_bonmin PROPERTIES WILL_FAIL TRUE)
+    set_tests_properties (pyinstallcheck_example_plot_optimization_bonmin PROPERTIES WILL_FAIL TRUE)
   endif()
   if (NOT CMinpack_FOUND)
-    set_tests_properties (pyinstallcheck_notebook_calibration_flooding PROPERTIES WILL_FAIL TRUE)
+    set_tests_properties (pyinstallcheck_example_plot_calibration_flooding PROPERTIES WILL_FAIL TRUE)
   endif ()
   if (NOT dlib_FOUND)
-    set_tests_properties (pyinstallcheck_notebook_optimization_dlib PROPERTIES WILL_FAIL TRUE)
+    set_tests_properties (pyinstallcheck_example_plot_optimization_dlib PROPERTIES WILL_FAIL TRUE)
   endif ()
   if (NOT HMAT_FOUND)
-    set_tests_properties (pyinstallcheck_notebook_kriging_cantilever_beam_hmat PROPERTIES WILL_FAIL TRUE)
-    set_tests_properties (pyinstallcheck_notebook_gaussian_process_covariance_hmat PROPERTIES WILL_FAIL TRUE)
+    set_tests_properties (pyinstallcheck_example_plot_kriging_cantilever_beam_hmat PROPERTIES WILL_FAIL TRUE)
+    set_tests_properties (pyinstallcheck_example_plot_gaussian_process_covariance_hmat PROPERTIES WILL_FAIL TRUE)
   endif ()
   if (NOT LIBXML2_FOUND)
-    set_tests_properties (pyinstallcheck_notebook_study_save_load PROPERTIES WILL_FAIL TRUE)
+    set_tests_properties (pyinstallcheck_example_plot_study_save_load PROPERTIES WILL_FAIL TRUE)
   endif ()
   if (NOT NLopt_FOUND)
-    set_tests_properties (pyinstallcheck_notebook_ego PROPERTIES WILL_FAIL TRUE)
-    set_tests_properties (pyinstallcheck_notebook_optimization_nlopt PROPERTIES WILL_FAIL TRUE)
-    set_tests_properties (pyinstallcheck_notebook_optimization_rosenbrock PROPERTIES WILL_FAIL TRUE)
+    set_tests_properties (pyinstallcheck_example_plot_ego PROPERTIES WILL_FAIL TRUE)
+    set_tests_properties (pyinstallcheck_example_plot_optimization_nlopt PROPERTIES WILL_FAIL TRUE)
+    set_tests_properties (pyinstallcheck_example_plot_optimization_rosenbrock PROPERTIES WILL_FAIL TRUE)
   endif ()
   if (NOT PANDAS_FOUND)
-    set_tests_properties (pyinstallcheck_notebook_sample_pandas PROPERTIES WILL_FAIL TRUE)
+    set_tests_properties (pyinstallcheck_example_plot_sample_pandas PROPERTIES WILL_FAIL TRUE)
   endif ()
 endif ()
+
 if (MATPLOTLIB_FOUND)
   ot_pyinstallcheck_test (Viewer IGNOREOUT)
   ot_pyinstallcheck_test (PlotDesign IGNOREOUT)

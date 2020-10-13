@@ -68,7 +68,7 @@ One might notice that the extra term penalty vanishes for
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/fitted_distribution_ranking`
+    - See :doc:`/auto_py_data_analysis/statistical_hypothesis_testing/plot_fitted_distribution_ranking`
 
 .. topic:: References:
 

@@ -91,7 +91,7 @@ Sampling’.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/reliability_sensitivity/estimate_probability_lhs`
+    - See :doc:`/auto_py_reliability_sensitivity/reliability/plot_estimate_probability_lhs`
 
 
 .. topic:: References:

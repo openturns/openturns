@@ -74,7 +74,7 @@ a particular threshold rather than to its variance.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/reliability_sensitivity/estimate_probability_form`
+    - See :doc:`/auto_py_reliability_sensitivity/reliability/plot_estimate_probability_form`
 
 
 .. topic:: References:

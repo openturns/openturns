@@ -68,7 +68,7 @@ desired by the user. Note that the higher
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/cramer_vonmises_test`
+    - See :doc:`/auto_py_data_analysis/statistical_hypothesis_testing/plot_cramer_vonmises_test`
 
 .. topic:: References:
 

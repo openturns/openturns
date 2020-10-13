@@ -69,7 +69,7 @@ variance quadratic which uses the term importance factor.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/sample_correlation`
+    - See :doc:`/auto_py_data_analysis/manage_data_and_samples/plot_sample_correlation`
 
 
 .. topic:: References:

@@ -199,7 +199,7 @@ of the sample. The following tabular presents the whole results for
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/quantile_estimation_wilks`
+    - See :doc:`/auto_py_data_analysis/manage_data_and_samples/plot_quantile_estimation_wilks`
 
 .. topic:: References:
 

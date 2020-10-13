@@ -151,7 +151,7 @@ vector of :math:`n_X` independent components.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/reliability_sensitivity/sensitivity_fast`
+    - See :doc:`/auto_py_reliability_sensitivity/sensitivity_analysis/plot_sensitivity_fast`
 
 
 .. topic:: References:

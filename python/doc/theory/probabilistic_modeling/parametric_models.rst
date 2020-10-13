@@ -19,11 +19,11 @@ described in the form :math:`\Prob{\vect{X} = \vect{x};\vect{\theta}}`.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/probabilistic_modeling/draw_1d_distribution`
-    - See :doc:`/examples/probabilistic_modeling/draw_2d_distribution`
-    - See :doc:`/examples/probabilistic_modeling/gaussian_distribution`
-    - See :doc:`/examples/probabilistic_modeling/2d_gaussian_distribution`
-    - See :doc:`/examples/probabilistic_modeling/geometric_distribution`
+    - See :doc:`/auto_py_probabilistic_modeling/distributions/plot_draw_1d_distribution`
+    - See :doc:`/auto_py_probabilistic_modeling/distributions/plot_draw_2d_distribution`
+    - See :doc:`/auto_py_probabilistic_modeling/distributions/plot_gaussian_distribution`
+    - See :doc:`/auto_py_probabilistic_modeling/distributions/plot_2d_gaussian_distribution`
+    - See :doc:`/auto_py_probabilistic_modeling/distributions/plot_geometric_distribution`
 
 .. topic:: References:
 

@@ -61,5 +61,5 @@ is the transposed Hessian matrix.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/meta_modeling/taylor_approximation`
+    - See :doc:`/auto_py_meta_modeling/general_purpose_metamodels/plot_taylor_approximation`
 

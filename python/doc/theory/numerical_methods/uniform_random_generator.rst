@@ -49,5 +49,5 @@ Each character is detailed of the acronym is detailed :
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/numerical_methods/random_generator`
+    - See :doc:`/auto_py_numerical_methods/general_methods/plot_random_generator`
 

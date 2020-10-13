@@ -104,7 +104,7 @@ The method is also referred to as Direct sampling, Crude Monte Carlo method, Cla
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/reliability_sensitivity/estimate_probability_monte_carlo`
+    - See :doc:`/auto_py_reliability_sensitivity/reliability/plot_estimate_probability_monte_carlo`
 
 .. topic:: References:
 

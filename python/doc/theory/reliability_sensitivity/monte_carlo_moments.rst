@@ -93,7 +93,7 @@ integration.
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/data_analysis/estimate_moments`
+    - See :doc:`/auto_py_data_analysis/manage_data_and_samples/plot_estimate_moments`
 
 
 .. topic:: References:

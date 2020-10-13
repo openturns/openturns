@@ -156,7 +156,7 @@ Optimization is performed in :math:`[0,1]^d` and the inverse transformation maps
 
 .. topic:: Examples:
 
-    - See :doc:`/examples/reliability_sensitivity/optimal_lhs`
+    - See :doc:`/auto_py_reliability_sensitivity/design_of_experiments/plot_optimal_lhs`
 
 
 .. topic:: References:
