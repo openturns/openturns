@@ -384,7 +384,9 @@ Scalar FittingTest::BIC(const Sample & sample,
   {
     logLikelihood += logPDF(i, 0);
   }
-  return (-2.0 * logLikelihood + estimatedParameters * log(1.0 * size)) / size;
+const Scalar bic = (-2.0 * logLikelihood + estimatedParameters * log(1.0 * size)) / size;
+if (!SpecFunc::IsNormal(bic)) return SpecFunc::MaxScalar; // catch infinity and NaN
+return bic;
 }
 
 /* Bayesian Information Criterion computation */
