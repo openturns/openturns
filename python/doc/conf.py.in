@@ -86,7 +86,7 @@ sphinx_gallery_conf = {
 
 
      'filename_pattern': '/plot_',
-     'ignore_pattern': '/(__init__.py)|(use_case_)@SPHINX_GALLERY_IGNORE_PATTERN@',
+     'ignore_pattern': '/(external_program)|(__init__.py)|(use_case_)@SPHINX_GALLERY_IGNORE_PATTERN@',
 
 
      'subsection_order': ExplicitOrder(['examples/py_data_analysis/manage_data_and_samples',
