@@ -45,6 +45,7 @@ static const Factory<Mesh> Factory_Mesh;
 Mesh::Mesh(const UnsignedInteger dimension)
   : PersistentObject()
   , dimension_(dimension)
+  , hasBeenChecked_(false)
   , vertices_(1, dimension) // At least one point
   , simplices_()
 {
@@ -56,6 +57,7 @@ Mesh::Mesh(const UnsignedInteger dimension)
 Mesh::Mesh(const Sample & vertices)
   : PersistentObject()
   , dimension_(vertices.getDimension())
+  , hasBeenChecked_(false)
   , vertices_(0, vertices.getDimension())
   , simplices_()
 {
@@ -65,14 +67,18 @@ Mesh::Mesh(const Sample & vertices)
 
 /* Parameters constructor, simplified interface for 1D case */
 Mesh::Mesh(const Sample & vertices,
-           const IndicesCollection & simplices)
+           const IndicesCollection & simplices,
+           const Bool checkMeshValidity)
   : PersistentObject()
   , dimension_(vertices.getDimension())
+  , hasBeenChecked_(false)
   , vertices_(0, vertices.getDimension())
   , simplices_(simplices)
 {
   // Use the vertices accessor to initialize the kd-tree
   setVertices(vertices);
+  if (checkMeshValidity)
+    checkValidity();
 }
 
 /* Clone method */
@@ -108,6 +114,7 @@ void Mesh::setVertices(const Sample & vertices)
 {
   vertices_ = vertices;
   if (vertices_.getDescription().isBlank()) vertices_.setDescription(Description::BuildDefault(vertices_.getDimension(), "t"));
+  hasBeenChecked_ = false;
 }
 
 /* Vertex accessor */
@@ -121,6 +128,7 @@ void Mesh::setVertex(const UnsignedInteger index,
                      const Point & vertex)
 {
   vertices_[index] = vertex;
+  hasBeenChecked_ = false;
 }
 
 /* Simplices accessor */
@@ -135,6 +143,7 @@ void Mesh::setSimplices(const IndicesCollection & simplices)
   {
     simplices_ = simplices;
   }
+  hasBeenChecked_ = false;
 }
 
 /* Simplex accessor */
@@ -147,6 +156,8 @@ Indices Mesh::getSimplex(const UnsignedInteger index) const
 /* Check the mesh validity */
 void Mesh::checkValidity() const
 {
+ 
+  if (hasBeenChecked_) return;
   // Check the vertices: no duplicate, no unused vertex
   // Check the simplices: no simplex with duplicate vertices, no simplex with unknown vertex, no simplex with a number of vertices different from dimension+1
   for (UnsignedInteger i = 0; i < getSimplicesNumber(); ++ i)
@@ -159,6 +170,8 @@ void Mesh::checkValidity() const
       throw InvalidArgumentException(HERE) << "Error: mesh has " << getVerticesNumber() << " vertices but simplex #" << i << " refers to an unknown vertex";
   }
   // Check that no ball can be included into the intersection of two simplices
+  // One it has been checked everything is ok
+  hasBeenChecked_ = true;
 }
 
 Bool Mesh::isValid() const
@@ -465,6 +478,7 @@ void Mesh::fixOrientation(const UnsignedInteger & index,
 Point Mesh::computeWeights() const
 {
   // Compute the weights of the vertices by distributing the volume of each simplex among its vertices
+  checkValidity();
   const UnsignedInteger numVertices = getVerticesNumber();
   const UnsignedInteger numSimplices = getSimplicesNumber();
   Point weights(numVertices, 0.0);
@@ -989,6 +1003,7 @@ void Mesh::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
   adv.saveAttribute("dimension_", dimension_);
+  adv.saveAttribute("hasBeenChecked_", hasBeenChecked_);
   adv.saveAttribute("vertices_", vertices_);
   adv.saveAttribute("simplices_", simplices_);
 }
@@ -998,6 +1013,7 @@ void Mesh::load(Advocate & adv)
 {
   PersistentObject::load(adv);
   adv.loadAttribute("dimension_", dimension_);
+  adv.loadAttribute("hasBeenChecked_", hasBeenChecked_);
   adv.loadAttribute("vertices_", vertices_);
   adv.loadAttribute("simplices_", simplices_);
 }

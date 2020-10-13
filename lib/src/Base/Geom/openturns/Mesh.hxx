@@ -52,7 +52,8 @@ public:
 
   /** Parameters constructor */
   Mesh(const Sample & vertices,
-       const IndicesCollection & simplices);
+       const IndicesCollection & simplices,
+       const Bool checkMeshValidity = ResourceMap::GetAsBool("Mesh-CheckValidity"));
 
   /** Virtual constructor method */
   Mesh * clone() const override;
@@ -180,6 +181,10 @@ protected:
   // An n-D mesh is a set of vertices with a topology described by a set of simplices
   // Spatial dimension
   UnsignedInteger dimension_;
+
+  // Mesh might be already checked (user provide the information)
+  // or we might need to check it for drawing for example.
+  mutable Bool hasBeenChecked_;
 
   // The vertices
   Sample vertices_;
