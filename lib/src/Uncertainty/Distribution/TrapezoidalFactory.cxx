@@ -93,7 +93,8 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   // override solver
   Cobyla solver;
   solver.setRhoBeg(ResourceMap::GetAsScalar("TrapezoidalFactory-RhoBeg"));
-  solver.setMaximumAbsoluteError(ResourceMap::GetAsScalar("TrapezoidalFactory-RhoEnd"));
+  const Scalar rhoEnd = ResourceMap::GetAsScalar("TrapezoidalFactory-RhoEnd");
+  solver.setMaximumAbsoluteError(rhoEnd);
   solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("TrapezoidalFactory-MaximumIteration"));
   solver.setStartingPoint(startingPoint);
   solver.setIgnoreFailure(true);
@@ -101,7 +102,6 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
 
   // override constraint
   Point center(4);
-  Point constant(3);
   Matrix linear(3, 4);
   for (UnsignedInteger i = 0; i < 3; ++ i)
   {
@@ -109,7 +109,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
     linear(i, i) = -1.0;
     linear(i, i + 1) = 1.0;
   }
-  constant[1] = -SpecFunc::ScalarEpsilon;// b < c
+  const Point constant(3, -rhoEnd);
   LinearFunction constraint(center, constant, linear);
   factory.setOptimizationInequalityConstraint(constraint);
 
