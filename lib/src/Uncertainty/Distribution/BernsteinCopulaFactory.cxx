@@ -358,14 +358,21 @@ EmpiricalBernsteinCopula BernsteinCopulaFactory::buildAsEmpiricalBernsteinCopula
     const String & method,
     const Function & objective) const
 {
+  const UnsignedInteger minM = ResourceMap::GetAsUnsignedInteger("BernsteinCopulaFactory-MinM");
+  const UnsignedInteger maxM = ResourceMap::GetAsUnsignedInteger("BernsteinCopulaFactory-MaxM");
   UnsignedInteger m = 0;
-  if (method == "AMISE")
-    m = ComputeAMISEBinNumber(sample);
-  else if (method == "LogLikelihood")
-    m = ComputeLogLikelihoodBinNumber(sample, ResourceMap::GetAsUnsignedInteger("BernsteinCopulaFactory-kFraction"));
-  else if (method == "PenalizedCsiszarDivergence")
-    m = ComputePenalizedCsiszarDivergenceBinNumber(sample, objective, ResourceMap::GetAsScalar("BernsteinCopulaFactory-alpha"));
-  else throw InvalidArgumentException(HERE) << "Error: the given method=" << method << " is not valid.";
+  if (minM == maxM)
+    m = minM;
+  else
+    {
+      if (method == "AMISE")
+        m = ComputeAMISEBinNumber(sample);
+      else if (method == "LogLikelihood")
+        m = ComputeLogLikelihoodBinNumber(sample, ResourceMap::GetAsUnsignedInteger("BernsteinCopulaFactory-kFraction"));
+      else if (method == "PenalizedCsiszarDivergence")
+        m = ComputePenalizedCsiszarDivergenceBinNumber(sample, objective, ResourceMap::GetAsScalar("BernsteinCopulaFactory-alpha"));
+      else throw InvalidArgumentException(HERE) << "Error: the given method=" << method << " is not valid.";
+    }
   LOGINFO(OSS() << "m=" << m);
   return EmpiricalBernsteinCopula(sample, m);
 }
