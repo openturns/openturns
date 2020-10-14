@@ -7,7 +7,7 @@ We consider a simple beam stressed by a traction load F at both sides.
 
 
 
-.. figure:: _static/axial-stressed-beam.png
+.. figure:: ../_static/axial-stressed-beam.png
     :align: center 
     :alt: use case geometry
     :width: 100%
