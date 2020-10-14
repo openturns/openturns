@@ -9,7 +9,7 @@ Introduction
 
 The following figure presents a dyke protecting industrial facilities. When the river level exceeds the dyke height, flooding occurs. The model is based on a crude simplification of the 1D hydrodynamical equations of Saint-Venant under the assumptions of uniform and constant flow rate and large rectangular sections.
 
-.. figure:: _static/flooding_section.png
+.. figure:: ../_static/flooding_section.png
     :align: center 
     :alt: flooding section
     :width: 100%
@@ -69,7 +69,7 @@ is greater than zero.
 
 The following figure presents the model with more details. 
 
-.. figure:: _static/flooding_section_detail.png
+.. figure:: ../_static/flooding_section_detail.png
     :align: center 
     :alt: flooding section details
     :width: 100%

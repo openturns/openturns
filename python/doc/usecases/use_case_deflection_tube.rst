@@ -9,7 +9,7 @@ Description
 
 We consider the deflection of a tube under a vertical stress.
 
-.. figure:: _static/simply_supported_beam.png
+.. figure:: ../_static/simply_supported_beam.png
     :align: center
     :alt: simply supported beam
     :width: 50%
@@ -27,7 +27,7 @@ The parameters of the model are:
 
 The following figure presents the internal and external diameter of the tube:
 
-.. figure:: _static/tube-diameters.png
+.. figure:: ../_static/tube-diameters.png
     :align: center
     :alt: tube diameters
     :width: 50%
