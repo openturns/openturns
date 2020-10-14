@@ -14,3 +14,9 @@ li.show {
 div.sphx-glr-clear {
     clear: left;
 }
+
+/* hide the top link */
+div.sphx-glr-download-link-note {
+  height: 0px;
+  visibility: hidden;
+}
