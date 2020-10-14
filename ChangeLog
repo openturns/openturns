@@ -7,6 +7,7 @@
 ==== Major changes ====
  * Drop normalization in KrigingAlgorithm
  * Drop normalization & transformation handling in GeneralLinearModelAlgorithm
+ * Allow computeLogPDF methods to output values lower than SpecFunc::LogMinScalar
 
 ==== New classes ====
  * BlockIndependentDistribution
@@ -37,6 +38,8 @@
  * Added Drawable::ConvertFromRGBIntoHSV
 
 === Documentation ===
+ * Sphinx-gallery used to render examples
+
 ==== API documentation ====
  * Clarified SobolIndicesExperiment page, notations now consistent with SobolIndicesAlgorithm page
  * Clarified SobolIndicesAlgorithm and (Saltellli|Martinez|MauntzKucherenko|Jansen)SensitivityAlgorithm pages, corrected formulas
@@ -75,6 +78,7 @@
  * #1549 (Doc of evaluation operator of KrigingResult)
  * #1553 (Optimization algorithms ignore MaxEvaluationNumber parameter in SORM)
  * #1556 (WeibullMin::computePDFGradient yields the partial derivatives in the wrong order)
+ * #1558 (Example estimate_multivariate_normal: FittingTest::BestModelBIC fails to compute the BIC)
  * #1564 (Set a Point makes ot crash)
  * #1567 (The API doc of SobolIndicesExperiment has a format issue)
  * #1573 (LinearModelAnalysis::drawQQPlot line is not the first bisector)
