@@ -7,7 +7,7 @@ Installation
 From binary packages
 ====================
 
-.. warning::
+.. note::
 
     Since v1.15, only Python 3.x binaries are provided.
 

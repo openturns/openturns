@@ -53,8 +53,6 @@ included in :file:`Arcsine.i` using a `%include Arcsine_doc.i`.
     preprocessed by CMake in order to escape LaTeX backslashes for SWIG and
     Python.
 
-.. warning::
-
     Note also that the use of double quotes (`"`) in docstrings is forbidden.
     This is because SWIG uses them to delimit the docstrings.
 
