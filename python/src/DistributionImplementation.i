@@ -49,8 +49,6 @@ Distribution __rdiv__(const Scalar s) { return s / (*self); }
 
 Distribution __pow__(const Scalar s) { return self->pow(s); }
 
-Distribution __pow__(const SignedInteger s) { return self->pow(s); }
-
 Distribution __sub__(const Scalar s)
 {
  return *self - s;

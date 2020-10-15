@@ -137,6 +137,13 @@ result = dist1 / dist2
 print('dist1/dist2:', result)
 # graph = result.drawPDF()
 
+result = 3/dist1**2
+print('3/dist1^2:', result)
+graph = result.drawPDF()
+
+result = (3/dist1)**2
+print('(3/dist1)^2:', result)
+graph = result.drawPDF()
 
 result = ot.LogNormal() * ot.LogNormal()
 print('logn*logn:', result)
