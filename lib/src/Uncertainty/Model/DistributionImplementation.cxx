@@ -682,7 +682,7 @@ Scalar DistributionImplementation::computePDF(const Point & point) const
 Scalar DistributionImplementation::computeLogPDF(const Point & point) const
 {
   const Scalar pdf = computePDF(point);
-  Scalar logPdf = SpecFunc::LogMinScalar;
+  Scalar logPdf = SpecFunc::LowestScalar;
   if ( pdf > 0.0 ) logPdf = std::log(pdf);
   return logPdf;
 }
@@ -2433,7 +2433,7 @@ struct MinimumVolumeIntervalWrapper
                                const Scalar prob)
     : p_distribution_(p_distribution)
     , marginals_(marginals)
-    , lastB_(-SpecFunc::MaxScalar)
+    , lastB_(SpecFunc::LowestScalar)
     , prob_(prob)
   {
     // Nothing to do
@@ -2443,7 +2443,7 @@ struct MinimumVolumeIntervalWrapper
                                const Scalar prob)
     : p_distribution_(p_distribution)
     , marginals_(0)
-    , lastB_(-SpecFunc::MaxScalar)
+    , lastB_(SpecFunc::LowestScalar)
     , prob_(prob)
   {
     // Nothing to do
@@ -4952,7 +4952,7 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
     }
     // A singularity at 0 for negative exponent
     bounds.add(0.0);
-    values.add(-SpecFunc::MaxScalar);
+    values.add(SpecFunc::LowestScalar);
     bounds.add(0.0);
     values.add(SpecFunc::MaxScalar);
     bounds.add(b);

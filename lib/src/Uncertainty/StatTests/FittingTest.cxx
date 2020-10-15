@@ -382,10 +382,11 @@ Scalar FittingTest::BIC(const Sample & sample,
   const Sample logPDF(distribution.computeLogPDF(sample));
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    if (logPDF(i, 0) == -SpecFunc::MaxScalar) return SpecFunc::MaxScalar;
     logLikelihood += logPDF(i, 0);
   }
-  return (-2.0 * logLikelihood + estimatedParameters * log(1.0 * size)) / size;
+const Scalar bic = (-2.0 * logLikelihood + estimatedParameters * log(1.0 * size)) / size;
+if (!SpecFunc::IsNormal(bic)) return SpecFunc::MaxScalar; // catch infinity and NaN
+return bic;
 }
 
 /* Bayesian Information Criterion computation */
@@ -415,7 +416,7 @@ Scalar FittingTest::AIC(const Sample &sample,
   const Sample logPDF(distribution.computeLogPDF(sample));
   for (UnsignedInteger i = 0; i < size; ++i)
   {
-    if (logPDF(i, 0) == -SpecFunc::MaxScalar)
+    if (logPDF(i, 0) == SpecFunc::LowestScalar)
       return SpecFunc::MaxScalar;
     logLikelihood += logPDF(i, 0);
   }

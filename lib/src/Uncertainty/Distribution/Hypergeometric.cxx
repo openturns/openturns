@@ -130,7 +130,7 @@ Scalar Hypergeometric::computeLogPDF(const Point & point) const
 
   const Scalar k = point[0];
   // Check if the given point can be converted into an UnsignedInteger in a reasonable way
-  if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return -SpecFunc::LogMaxScalar;
+  if ((k < -supportEpsilon_) || (std::abs(k - round(k)) > supportEpsilon_)) return SpecFunc::LowestScalar;
   return DistFunc::logdHypergeometric(n_, k_, m_, static_cast<UnsignedInteger>(round(k)));
 }
 

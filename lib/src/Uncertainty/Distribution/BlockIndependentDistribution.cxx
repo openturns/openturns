@@ -228,9 +228,7 @@ Scalar BlockIndependentDistribution::computeLogPDF(const Point & point) const
     Point pointMarg(distributionDimension);
     // Copy the relevant part of the input point to compute the DDF of the block
     std::copy(point.begin() + shift, point.begin() + shift + distributionDimension, pointMarg.begin());
-    // If one component is outside of the support, the PDF is null
     const Scalar blockLogPDF = distributionCollection_[i].computeLogPDF(pointMarg);
-    if (blockLogPDF == -SpecFunc::LogMaxScalar) return -SpecFunc::LogMaxScalar;
     sumLogPDF += blockLogPDF;
     shift += distributionDimension;
   }

@@ -968,7 +968,7 @@ Scalar MatrixImplementation::computeLogAbsoluteDeterminant (Scalar & sign,
     if (value == 0.0)
     {
       sign = 0.0;
-      logAbsoluteDeterminant = SpecFunc::LogMinScalar;
+      logAbsoluteDeterminant = SpecFunc::LowestScalar;
     }
     else
     {
@@ -987,17 +987,20 @@ Scalar MatrixImplementation::computeLogAbsoluteDeterminant (Scalar & sign,
 
     // LU Factorization with LAPACK
     dgetrf_(&n, &n, &A[0], &n, &ipiv[0], &info);
-    if (info > 0) return SpecFunc::LogMinScalar;
+    if (info > 0) return SpecFunc::LowestScalar;
     // Determinant computation
     for (UnsignedInteger i = 0; i < ipiv.size(); ++i)
     {
       const Scalar pivot = A[i * (ipiv.size() + 1)];
       if (std::abs(pivot) == 0.0)
       {
-        logAbsoluteDeterminant = SpecFunc::LogMinScalar;
+        logAbsoluteDeterminant = SpecFunc::LowestScalar;
         sign = 0.0;
       }
-      if (logAbsoluteDeterminant > SpecFunc::LogMinScalar) logAbsoluteDeterminant += log(std::abs(pivot));
+      else
+      {
+        logAbsoluteDeterminant += log(std::abs(pivot));
+      }
       if (pivot < 0.0) sign = -sign;
       if (ipiv[i] != int(i + 1)) sign = -sign;
     }
@@ -1012,7 +1015,7 @@ Scalar MatrixImplementation::computeDeterminant (const Bool keepIntact)
   if (nbRows_ == 2) return (*this)(0, 0) * (*this)(1, 1) - (*this)(0, 1) * (*this)(1, 0);
   Scalar sign = 0.0;
   const Scalar logAbsoluteDeterminant = computeLogAbsoluteDeterminant(sign, keepIntact);
-  if (logAbsoluteDeterminant == SpecFunc::LogMinScalar) return 0.0;
+  if (logAbsoluteDeterminant <= SpecFunc::LowestScalar) return 0.0;
   return sign * exp(logAbsoluteDeterminant);
 }
 
@@ -1072,7 +1075,7 @@ Scalar MatrixImplementation::computeDeterminantSym (const Bool keepIntact)
   if (nbRows_ == 2) return (*this)(0, 0) * (*this)(1, 1) - (*this)(1, 0) * (*this)(1, 0);
   Scalar sign = 0.0;
   const Scalar logAbsoluteDeterminant = computeLogAbsoluteDeterminant(sign, keepIntact);
-  if (logAbsoluteDeterminant == SpecFunc::LogMinScalar) return 0.0;
+  if (logAbsoluteDeterminant <= SpecFunc::LowestScalar) return 0.0;
   return sign * exp(logAbsoluteDeterminant);
 }
 

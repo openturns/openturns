@@ -152,7 +152,7 @@ Scalar EllipticalDistribution::computeDensityGenerator(const Scalar ) const
 Scalar EllipticalDistribution::computeLogDensityGenerator(const Scalar betaSquare) const
 {
   const Scalar densityGenerator = computeDensityGenerator(betaSquare);
-  if (densityGenerator == 0.0) return SpecFunc::LogMinScalar;
+  if (densityGenerator == 0.0) return SpecFunc::LowestScalar;
   return std::log(densityGenerator);
 }
 
@@ -327,7 +327,7 @@ Scalar EllipticalDistribution::computeLogPDF(const Point & point) const
       const Scalar iLx = (point[0] - mean_[0]) / sigma_[0];
       const Scalar betaSquare = iLx * iLx;
       const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
-      if (!SpecFunc::IsNormal(logDensityGenerator)) return -SpecFunc::LogMaxScalar;
+      if (!SpecFunc::IsNormal(logDensityGenerator)) return SpecFunc::LowestScalar;
       return std::log(normalizationFactor_) + logDensityGenerator;
     }
     break;
@@ -348,7 +348,7 @@ Scalar EllipticalDistribution::computeLogPDF(const Point & point) const
       }
       const Scalar betaSquare = iLx * iLx + iLy * iLy;
       const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
-      if (!SpecFunc::IsNormal(logDensityGenerator)) return -SpecFunc::LogMaxScalar;
+      if (!SpecFunc::IsNormal(logDensityGenerator)) return SpecFunc::LowestScalar;
       return std::log(normalizationFactor_) + logDensityGenerator;
     }
     break;
@@ -372,7 +372,7 @@ Scalar EllipticalDistribution::computeLogPDF(const Point & point) const
       }
       const Scalar betaSquare = iLx * iLx + iLy * iLy + iLz * iLz;
       const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
-      if (!SpecFunc::IsNormal(logDensityGenerator)) return -SpecFunc::LogMaxScalar;
+      if (!SpecFunc::IsNormal(logDensityGenerator)) return SpecFunc::LowestScalar;
       return std::log(normalizationFactor_) + logDensityGenerator;
     }
     break;
@@ -380,7 +380,7 @@ Scalar EllipticalDistribution::computeLogPDF(const Point & point) const
       const Point iLx(inverseCholesky_ * (point - mean_));
       const Scalar betaSquare = iLx.normSquare();
       const Scalar logDensityGenerator = computeLogDensityGenerator(betaSquare);
-      if (!SpecFunc::IsNormal(logDensityGenerator)) return -SpecFunc::LogMaxScalar;
+      if (!SpecFunc::IsNormal(logDensityGenerator)) return SpecFunc::LowestScalar;
       return std::log(normalizationFactor_) + logDensityGenerator;
   }
 }

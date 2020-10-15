@@ -85,6 +85,7 @@ const Scalar SpecFunc::MinScalar    = std::numeric_limits<Scalar>::min();
 const Scalar SpecFunc::LogMinScalar = log(MinScalar);
 const Scalar SpecFunc::MaxScalar    = std::numeric_limits<Scalar>::max();
 const Scalar SpecFunc::LogMaxScalar = log(MaxScalar);
+const Scalar SpecFunc::LowestScalar = -MaxScalar;
 const Scalar SpecFunc::ScalarEpsilon = std::numeric_limits<Scalar>::epsilon();
 // Maximum number of iterations for the algorithms
 const UnsignedInteger SpecFunc::MaximumIteration = ResourceMap::GetAsUnsignedInteger("SpecFunc-MaximumIteration");
@@ -222,7 +223,7 @@ Scalar SpecFunc::BesselI1(const Scalar x)
 
 Scalar SpecFunc::LogBesselI1(const Scalar x)
 {
-  if (x <= 0.0) return -MaxScalar;
+  if (x <= 0.0) return LowestScalar;
   // Small argument
   if (std::abs(x) <= 22.0) return log(SmallCaseBesselI1(x));
   else return LargeCaseLogBesselI1(x);
@@ -265,7 +266,7 @@ Scalar SpecFunc::LargeCaseDeltaLogBesselI10(const Scalar x)
 
 Scalar SpecFunc::DeltaLogBesselI10(const Scalar x)
 {
-  if (x <= 0.0) return -MaxScalar;
+  if (x <= 0.0) return LowestScalar;
   // Small argument
   if (std::abs(x) <= 22.0) return log(SmallCaseBesselI1(x) / SmallCaseBesselI0(x));
   else return LargeCaseDeltaLogBesselI10(x);
@@ -312,7 +313,7 @@ Scalar SpecFunc::LogBesselK(const Scalar nu,
   Scalar epsilon = -1.0;
   const Scalar integral = GaussKronrod().integrate(integrand, Interval(ScalarEpsilon, upper), epsilon)[0];
   PlatformInfo::SetNumericalPrecision(precision);
-  if (!IsNormal(integral) || (integral == 0.0)) return -LogMaxScalar;
+  if (!IsNormal(integral) || (integral == 0.0)) return LowestScalar;
   return logFactor + std::log(integral);
 #endif
 }
@@ -337,7 +338,6 @@ Scalar SpecFunc::BesselK(const Scalar nu,
   if (std::abs(x) < 1e-8) return 0.5 * exp(LogGamma(nu) - nu * std::log(0.5 * x));
   if ((std::abs(x) > 1e4) && (x > nu)) return std::sqrt(M_PI / (2.0 * x)) * exp(-x);
   const Scalar logK = LogBesselK(nu, x);
-  if (logK <= -LogMaxScalar) return 0.0;
   if (logK >= LogMaxScalar) return MaxScalar;
   return std::exp(logK);
 #endif
@@ -350,7 +350,7 @@ Scalar SpecFunc::BesselKDerivative(const Scalar nu,
 #if defined(OPENTURNS_HAVE_BOOST) && (BOOST_VERSION >= 105600)
   return boost::math::cyl_bessel_k_prime(nu, x);
 #else
-  if (x == 0.0) return -MaxScalar;
+  if (x == 0.0) return LowestScalar;
   return -0.5 * (BesselK(nu - 1, x) + BesselK(nu + 1.0, x));
 #endif
 }

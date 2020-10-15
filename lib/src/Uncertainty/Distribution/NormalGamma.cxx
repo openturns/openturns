@@ -138,7 +138,7 @@ Scalar NormalGamma::computePDF(const Point & point) const
   if (point.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=2, here dimension=" << point.getDimension();
 
   const Scalar logPDF = computeLogPDF(point);
-  if (logPDF == -SpecFunc::LogMaxScalar) return 0.0;
+  if (logPDF == SpecFunc::LowestScalar) return 0.0;
   return std::exp(logPDF);
 }
 
@@ -150,7 +150,7 @@ Scalar NormalGamma::computeLogPDF(const Point & point) const
   const Scalar y = point[1];
   const Scalar a = getRange().getLowerBound()[1];
   const Scalar b = getRange().getUpperBound()[1];
-  if ((y <= a) || (y >= b)) return -SpecFunc::LogMaxScalar;
+  if ((y <= a) || (y >= b)) return SpecFunc::LowestScalar;
   const Scalar x = point[0] - mu_;
   return logNormalization_ + (alpha_ - 0.5) * std::log(y) - 0.5 * y * (kappa_ * x * x + 2.0 * beta_) + 0.5 * std::log(kappa_ / (2.0 * M_PI));
 }
@@ -267,7 +267,7 @@ Scalar NormalGamma::computeCDF(const Point & point) const
     return DistFunc::pGamma(alpha_, beta_ * y);
   }
   // Here the integration wrt x is given in closed form
-  const Function integrand(NormalGammaFunctions::KernelProbability(-SpecFunc::MaxScalar, x, kappa_, alpha_, beta_, logNormalization_, 0));
+  const Function integrand(NormalGammaFunctions::KernelProbability(SpecFunc::LowestScalar, x, kappa_, alpha_, beta_, logNormalization_, 0));
   // Integrate over the interval (-inf, y] of the conditioning Gamma distribution
   const Scalar cdf = GaussKronrod().integrate(integrand, Interval(a, std::min(y, b)))[0];
   return cdf;

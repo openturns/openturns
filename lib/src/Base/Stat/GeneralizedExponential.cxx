@@ -106,7 +106,7 @@ Matrix GeneralizedExponential::partialGradient(const Point & s,
   if (norm2 == 0.0)
   {
     // Negative infinite gradient for p < 1
-    if (p_ < 1.0) return Matrix(inputDimension_, 1, Point(inputDimension_, -SpecFunc::MaxScalar));
+    if (p_ < 1.0) return Matrix(inputDimension_, 1, Point(inputDimension_, SpecFunc::LowestScalar));
     // Non-zero gradient for p == 1
     if (p_ == 1.0)
     {

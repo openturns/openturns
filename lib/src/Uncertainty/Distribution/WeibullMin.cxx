@@ -142,7 +142,7 @@ Scalar WeibullMin::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
   const Scalar x = point[0] - gamma_;
-  if (x <= 0.0) return SpecFunc::LogMinScalar;
+  if (x <= 0.0) return SpecFunc::LowestScalar;
   const Scalar y = x / beta_;
   return std::log(alpha_) + (alpha_ - 1.0) * std::log(y) - std::log(beta_) - std::pow(y, alpha_);
 }
@@ -219,17 +219,26 @@ Scalar WeibullMin::computeEntropy() const
 /* Get the PDFGradient of the distribution */
 Point WeibullMin::computePDFGradient(const Point & point) const
 {
+  const Scalar pdf(computePDF(point));
+  return pdf * computeLogPDFGradient(point);
+}
+
+/* Get the LogPDFGradient of the distribution */
+Point WeibullMin::computeLogPDFGradient(const Point & point) const
+{
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
 
-  const Scalar x = point[0] - gamma_;
-  Point pdfGradient(3, 0.0);
-  if (x <= 0.0) return pdfGradient;
-  const Scalar powX = std::pow(x / beta_, alpha_);
-  const Scalar factor = powX / x * std::exp(-powX);
-  pdfGradient[0] = factor * (powX - 1.0) * alpha_ * alpha_ / beta_;
-  pdfGradient[1] = factor * (1.0 + (1.0 - powX) * std::log(powX));
-  pdfGradient[2] = factor * (1.0 - alpha_ + alpha_ * powX) / x * alpha_;
-  return pdfGradient;
+  // If the observation is <= gamma_, the LogPDF is mathematically infinite and constant in a neighborhood.
+  // Its gradient is then conventionally set to 0.
+  Point pdfLogGradient(3, 0.0);
+  if (point[0] <= gamma_) return pdfLogGradient;
+
+  const Scalar y = (point[0] - gamma_) / beta_;
+  const Scalar powY = std::pow(y, alpha_);
+  pdfLogGradient[0] = alpha_ / beta_ * (powY - 1.0);
+  pdfLogGradient[1] = 1.0 / alpha_ + (1.0 - powY) * std::log(y);
+  pdfLogGradient[2] = (1.0 + alpha_ * (powY - 1.0)) / y / beta_;
+  return pdfLogGradient;
 }
 
 /* Get the CDFGradient of the distribution */

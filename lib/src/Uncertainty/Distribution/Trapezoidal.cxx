@@ -121,7 +121,8 @@ Point Trapezoidal::computeDDF(const Point & point) const
   const Scalar x = point[0];
 
   if ((a_ < x) && (x < b_)) return Point(1, h_ / (b_ - a_));
-  return Point(1, -h_ / (d_ - c_));
+  if ((c_ < x) && (x < d_)) return Point(1, -h_ / (d_ - c_));
+  return Point(1, 0.0);
 }
 
 

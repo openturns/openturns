@@ -257,7 +257,7 @@ Scalar ComposedCopula::computeLogPDF(const Point & point) const
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // If one component is outside of the support, the PDF is null
-    if ((point[i] <= 0.0) || (point[i] >= 1.0)) return -SpecFunc::LogMaxScalar;
+    if ((point[i] <= 0.0) || (point[i] >= 1.0)) return SpecFunc::LowestScalar;
     const UnsignedInteger copulaDimension = copulaCollection_[i].getDimension();
     Point component(copulaDimension);
     for (UnsignedInteger j = 0; j < copulaDimension; ++j)

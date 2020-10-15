@@ -132,7 +132,7 @@ Matrix MaternModel::partialGradient(const Point & s,
   if (norm2 == 0.0)
   {
     // Infinite gradient for nu < 1/2
-    if (nu_ < 0.5) return Matrix(inputDimension_, 1, Point(inputDimension_, -SpecFunc::MaxScalar));
+    if (nu_ < 0.5) return Matrix(inputDimension_, 1, Point(inputDimension_, SpecFunc::LowestScalar));
     // Non-zero gradient for nu = 1/2
     if (nu_ == 0.5)
     {

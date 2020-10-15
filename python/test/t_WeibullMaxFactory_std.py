@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 from openturns import *
+import openturns.testing as ott
 
 TESTPREAMBLE()
 RandomGenerator.SetSeed(0)
@@ -30,8 +31,10 @@ try:
     estimatedDistribution = factory.build(sample)
     print("Estimated distribution=", repr(estimatedDistribution))
     sample = [[1.0]] * size
-    estimatedDistribution = factory.build(sample)
-    print("Estimated distribution=", repr(estimatedDistribution))
+    estimatedDistribution = factory.buildAsWeibullMax(sample)
+    ott.assert_almost_equal(estimatedDistribution.getBeta(), 0.0, 0.0, 1e-4)
+    ott.assert_almost_equal(estimatedDistribution.getAlpha(), 1.0, 0.0, 1e-6)
+    ott.assert_almost_equal(estimatedDistribution.getGamma(), 1.0, 0.0, 1e-6)
 
 except:
     import sys

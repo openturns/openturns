@@ -138,7 +138,7 @@ Point ExpertMixture::evaluateSupervised(const Point & inP) const
   Point mixedPoint(inP);
   Point bestValue(getOutputDimension());
   mixedPoint.add(bestValue);// z=(x, f(x))
-  Scalar bestGrade = -SpecFunc::MaxScalar;
+  Scalar bestGrade = SpecFunc::LowestScalar;
   for (UnsignedInteger classIndex = 0; classIndex < size; ++ classIndex)
   {
     // Build the point z for each other class and grade it according to the classifier
@@ -165,7 +165,7 @@ Point ExpertMixture::evaluateNonSupervised(const Point & inP) const
   const UnsignedInteger size = experts_.getSize();
   UnsignedInteger bestClass = 0;
   // Build the point z for the first class and grade it according to the classifier
-  Scalar bestGrade = -SpecFunc::MaxScalar;
+  Scalar bestGrade = SpecFunc::LowestScalar;
   for (UnsignedInteger classIndex = 0; classIndex < size; ++ classIndex)
   {
     // Build the point z for each other class and grade it according to the classifier
@@ -199,7 +199,7 @@ Sample ExpertMixture::evaluateSupervised(const Sample & inS) const
   const UnsignedInteger outputDimension = getOutputDimension();
   Sample bestValues(size, outputDimension);
   const UnsignedInteger expertSize = experts_.getSize();
-  Point bestGrades(size, -SpecFunc::MaxScalar);
+  Point bestGrades(size, SpecFunc::LowestScalar);
   for (UnsignedInteger classIndex = 0; classIndex < expertSize; ++ classIndex)
   {
     // Build the point z for each other class and grade it according to the classifier
@@ -227,7 +227,7 @@ Sample ExpertMixture::evaluateNonSupervised(const Sample & inS) const
   const UnsignedInteger size = inS.getSize();
   const UnsignedInteger outputDimension = getOutputDimension();
   const UnsignedInteger expertSize = experts_.getSize();
-  Point bestGrades(size, -SpecFunc::MaxScalar);
+  Point bestGrades(size, SpecFunc::LowestScalar);
   Indices bestClasses(size);
   for (UnsignedInteger classIndex = 0; classIndex < expertSize; ++ classIndex)
   {

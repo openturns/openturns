@@ -390,7 +390,7 @@ void Interval::setLowerBound(const Point & lowerBound)
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
     if (SpecFunc::IsInf(lowerBound[i]))
     {
-      lowerBound_[i] = (lowerBound[i] > 0.0 ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar);
+      lowerBound_[i] = (lowerBound[i] > 0.0 ? SpecFunc::MaxScalar : SpecFunc::LowestScalar);
       finiteLowerBound_[i] = false;
     }
 }
@@ -408,7 +408,7 @@ void Interval::setUpperBound(const Point & upperBound)
   for (UnsignedInteger i = 0; i < getDimension(); ++i)
     if (SpecFunc::IsInf(upperBound[i]))
     {
-      upperBound_[i] = (upperBound[i] > 0.0 ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar);
+      upperBound_[i] = (upperBound[i] > 0.0 ? SpecFunc::MaxScalar : SpecFunc::LowestScalar);
       finiteUpperBound_[i] = false;
     }
 }

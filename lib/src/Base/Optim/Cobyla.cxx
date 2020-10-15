@@ -257,8 +257,10 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   std::copy(x, x + n, inP.begin());
 
   Point outP(problem.getObjective().operator()(inP));
-  // cobyla freezes when dealing with MaxScalar
-  if (std::abs(outP[0]) == SpecFunc::MaxScalar) outP[0] /= 1.0e3;
+  // cobyla freezes when dealing with SpecFunc::MaxScalar
+  static const Scalar cobylaMaxScalar(1.0e-6 * SpecFunc::MaxScalar);
+  if (outP[0] > cobylaMaxScalar) outP[0] = cobylaMaxScalar;
+  if (outP[0] < -cobylaMaxScalar) outP[0] = -cobylaMaxScalar;
   *f = problem.isMinimization() ? outP[0] : -outP[0];
 
   UnsignedInteger shift = 0;
