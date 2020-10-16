@@ -132,6 +132,10 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Translate realizations in-place */
+  ProcessSampleImplementation & operator += (const Sample & translation);
+  ProcessSampleImplementation & operator -= (const Sample & translation);
+
 private:
 
   /** Mesh on which the ProcessSampleImplementation focuses */

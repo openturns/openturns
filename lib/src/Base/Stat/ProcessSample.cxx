@@ -210,4 +210,18 @@ GridLayout ProcessSample::drawCorrelation() const
   return getImplementation()->drawCorrelation();
 }
 
+ProcessSample & ProcessSample::operator += (const Sample & translation)
+{
+  copyOnWrite();
+  getImplementation()->operator +=(translation);
+  return *this;
+}
+
+ProcessSample & ProcessSample::operator -= (const Sample & translation)
+{
+  copyOnWrite();
+  getImplementation()->operator -=(translation);
+  return *this;
+}
+
 END_NAMESPACE_OPENTURNS

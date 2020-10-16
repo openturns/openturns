@@ -130,6 +130,10 @@ public:
   /** Draw correlation between all marginals */
   GridLayout drawCorrelation() const;
 
+  /** Translate realizations in-place */
+  ProcessSample & operator += (const Sample & translation);
+  ProcessSample & operator -= (const Sample & translation);
+
 private:
 
 }; /* class ProcessSample */

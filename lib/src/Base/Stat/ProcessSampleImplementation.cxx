@@ -21,10 +21,9 @@
 
 #include "openturns/ProcessSampleImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/PiecewiseLinearEvaluation.hxx"
-#include "openturns/ResourceMap.hxx"
+#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Drawable.hxx"
-#include "openturns/InverseTrendTransform.hxx"
 #include "openturns/NonStationaryCovarianceModelFactory.hxx"
 #include "openturns/TBB.hxx"
 #include "openturns/Os.hxx"
@@ -170,7 +169,7 @@ UnsignedInteger ProcessSampleImplementation::getSize() const
 Field ProcessSampleImplementation::computeMean() const
 {
   const UnsignedInteger size = getSize();
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the mean of an empty sample.";
+  if (size == 0) throw InternalException(HERE) << "Error: cannot compute the mean of an empty sample.";
   if (size == 1) return Field(mesh_, data_[0]);
   Sample meanValues(data_[0]);
   for (UnsignedInteger i = 1; i < size; ++i) meanValues += data_[i];
@@ -446,11 +445,8 @@ Graph ProcessSampleImplementation::drawMarginalCorrelation(const UnsignedInteger
   const UnsignedInteger dimension = getDimension();
   if (!(i < dimension) || !(j < dimension))
     throw InvalidArgumentException(HERE) << "Invalid indices: (" << i << ", " << j << "), dimension is " << dimension;
-  const Sample meanValues(computeMean().getValues());
-  const Point timesValues(getMesh().getVertices().asPoint());
-  const PiecewiseLinearEvaluation meanInterpolation(timesValues, meanValues);
-  const InverseTrendTransform meanInverseTransform(meanInterpolation, getMesh());
-  const ProcessSample processSampleCentered(meanInverseTransform(*this));
+  ProcessSample processSampleCentered(*this);
+  processSampleCentered -= computeMean().getValues();
   const CovarianceModel covariance(NonStationaryCovarianceModelFactory().build(processSampleCentered, true));
   const Function correlationFunction(new ProcessSampleCorrelationEvaluation(covariance, i, j));
   const Point dateMin(2, getMesh().getLowerBound()[0]);
@@ -496,6 +492,23 @@ void ProcessSampleImplementation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "mesh_", mesh_);
   adv.loadAttribute( "data_", data_ );
+}
+
+
+ProcessSampleImplementation & ProcessSampleImplementation::operator += (const Sample & translation)
+{
+  const UnsignedInteger size = getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    data_[i] += translation;
+  return *this;
+}
+
+ProcessSampleImplementation & ProcessSampleImplementation::operator -= (const Sample & translation)
+{
+  const UnsignedInteger size = getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    data_[i] -= translation;
+  return *this;
 }
 
 END_NAMESPACE_OPENTURNS

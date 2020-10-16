@@ -82,6 +82,8 @@ for i in range(sampleSize):
 graph1 = processSample.draw()
 graph2 = processSample.drawMarginalCorrelation(0, 1)
 graph3 = processSample.drawCorrelation()
+# center
+processSample -= processSample.computeMean().getValues()
 if 0:
     from openturns.viewer import View
     View(graph1).save('graph1.png')
