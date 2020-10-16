@@ -118,8 +118,6 @@ for more details.
 +------------------------------------------------------------+-------+
 | Ceres-sparse_linear_algebra_library_type                   | str   |
 +------------------------------------------------------------+-------+
-| Ceres-num_linear_solver_threads                            | int   |
-+------------------------------------------------------------+-------+
 | Ceres-use_explicit_schur_complement                        | bool  |
 +------------------------------------------------------------+-------+
 | Ceres-use_postordering                                     | bool  |

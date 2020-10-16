@@ -73,7 +73,7 @@ MartinezSensitivityAlgorithm * MartinezSensitivityAlgorithm::clone() const
 Sample MartinezSensitivityAlgorithm::computeIndices(const Sample & sample,
     Sample & VTi) const
 {
-  const UnsignedInteger inputDimension = inputDesign_.getDimension();
+  const UnsignedInteger inputDimension = inputDescription_.getSize();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   const UnsignedInteger size = size_;
   Sample varianceI(outputDimension, inputDimension);
@@ -142,7 +142,7 @@ String MartinezSensitivityAlgorithm::__repr__() const
 
 void MartinezSensitivityAlgorithm::computeAsymptoticDistribution() const
 {
-  const UnsignedInteger inputDimension = inputDesign_.getDimension();
+  const UnsignedInteger inputDimension = inputDescription_.getSize();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
 
   // psi

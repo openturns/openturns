@@ -157,11 +157,15 @@ Point KarhunenLoeveResultImplementation::project(const Function & function) cons
 
 Point KarhunenLoeveResultImplementation::project(const Sample & values) const
 {
+  if (values.getDimension() != modesAsProcessSample_.getDimension())
+    throw InvalidDimensionException(HERE) << "Expected values of dimension " << modesAsProcessSample_.getDimension() << " got " << values.getDimension();
   return projection_ * values.getImplementation()->getData();
 }
 
 Sample KarhunenLoeveResultImplementation::project(const ProcessSample & sample) const
 {
+  if (sample.getDimension() != modesAsProcessSample_.getDimension())
+    throw InvalidDimensionException(HERE) << "Expected values of dimension " << modesAsProcessSample_.getDimension() << " got " << sample.getDimension();
   const UnsignedInteger size = sample.getSize();
   if (!(size != 0)) return Sample();
   const Mesh mesh(modesAsProcessSample_.getMesh());

@@ -99,3 +99,12 @@ Parameters
 position : str
     Legend's position used for the subgraphs contained inside the Graph."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GridLayout::setAxes
+"Accessor to the indication of axes' presence on the Graph.
+
+Parameters
+----------
+axes : bool
+    *True* to draw the axes, *False* to hide the axes."

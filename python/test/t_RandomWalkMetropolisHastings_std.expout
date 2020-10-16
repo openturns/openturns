@@ -10,3 +10,7 @@ prior variance= 1
   expected posterior ~N( 29.0771171389 ,  0.577350269189 )
   obtained posterior ~N( 29.4172027776 ,  0.468900115002 )
   acceptance rate= [0.420266,0]
+Penalized log-likelihood of thetaTrue = -708.2968891987429
+With 503 observations, getRealization() produces 2.0
+Penalized log-likelihood of thetaTrue = -709.26477360595
+With 504 observations, getRealization() produces 2.0

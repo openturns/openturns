@@ -191,4 +191,15 @@ Pointer<EvaluationImplementation> MarginalEvaluation::getEvaluation() const
   return p_evaluation_;
 }
 
+/* Invalid values check accessor */
+void MarginalEvaluation::setCheckOutput(const Bool checkOutput)
+{
+  p_evaluation_->setCheckOutput(checkOutput);
+}
+
+Bool MarginalEvaluation::getCheckOutput() const
+{
+  return p_evaluation_->getCheckOutput();
+}
+
 END_NAMESPACE_OPENTURNS

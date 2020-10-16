@@ -93,6 +93,10 @@ public:
   Description getParameterDescription() const override;
   void setParameterDescription(const Description & description) override;
 
+  /** Invalid values check accessor */
+  void setCheckOutput(const Bool checkOutput) override;
+  Bool getCheckOutput() const override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

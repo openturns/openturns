@@ -30,6 +30,8 @@ dist1+dist2: Normal(mu = -1, sigma = 1.11803)
 dist1-dist2: Normal(mu = 3, sigma = 1.11803)
 dist1*dist2: ProductDistribution(Normal(mu = 1, sigma = 0.5) * Normal(mu = -2, sigma = 1))
 dist1/dist2: ProductDistribution(Normal(mu = 1, sigma = 0.5) * CompositeDistribution=f(Normal(mu = -2, sigma = 1)) with f=[x]->[1.0 / x])
+3/dist1^2: RandomMixture(3 * CompositeDistribution=f(CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[x^2]) with f=[x]->[1.0 / x])
+(3/dist1)^2: CompositeDistribution=f(RandomMixture(3 * CompositeDistribution=f(Normal(mu = 1, sigma = 0.5)) with f=[x]->[1.0 / x])) with f=[x]->[x^2]
 logn*logn: LogNormal(muLog = 0, sigmaLog = 1.41421, gamma = 0)
 logu*logu: CompositeDistribution=f(Triangular(a = -2, m = 0, b = 2)) with f=[x]->[exp(x)]
 logu*logn: CompositeDistribution=f(SmoothedUniform(a = -1, b = 1, sigma = 1)) with f=[x]->[exp(x)]

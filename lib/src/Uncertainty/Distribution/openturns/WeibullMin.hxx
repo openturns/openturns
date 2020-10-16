@@ -92,7 +92,7 @@ public:
 
   /** Get the gradient of the LogPDF w.r.t the parameters of the distribution */
   using ContinuousDistribution::computeLogPDFGradient;
-  Point computeLogPDFGradient(const Point & point) const;
+  Point computeLogPDFGradient(const Point & point) const override;
 
   /** Get the gradient of the CDF w.r.t the parameters of the distribution */
   using ContinuousDistribution::computeCDFGradient;

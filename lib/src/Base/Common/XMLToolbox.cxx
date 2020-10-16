@@ -23,6 +23,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/XMLToolbox.hxx"
+#include <algorithm>
 #include <cstdio>
 #include <cstdlib>
 #include <cassert>

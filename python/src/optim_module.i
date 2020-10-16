@@ -16,6 +16,10 @@
 #include "openturns/OTOptim.hxx"
 %}
 
+%init %{
+OT::Ceres::Initialize();
+%}
+
 %include typemaps.i
 %include OTtypes.i
 %include OTexceptions.i

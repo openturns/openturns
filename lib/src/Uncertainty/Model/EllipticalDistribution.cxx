@@ -397,7 +397,7 @@ Point EllipticalDistribution::computePDFGradient(const Point & point) const
   const Scalar betaSquare = u.dot(iRu);
   const Scalar phi = computeDensityGenerator(betaSquare);
   const Scalar phiDerivative = computeDensityGeneratorDerivative(betaSquare);
-  Point pdfGradient(2 * dimension);
+  Point pdfGradient(2 * dimension + (dimension > 1 ? ((dimension - 1)*dimension) / 2 : 0));
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     Scalar iSigma = 1.0 / sigma_[i];
@@ -405,6 +405,21 @@ Point EllipticalDistribution::computePDFGradient(const Point & point) const
     pdfGradient[i] = -2.0 * normalizationFactor_ * phiDerivative * iRu[i] * iSigma;
     // dPDF / dsigma_i
     pdfGradient[dimension + i] = pdfGradient[i] * u[i] - normalizationFactor_ * phi * iSigma;
+  }
+  if (getDimension() > 1)
+  {
+    // use non-centered finite difference for correlation parameters
+    const Scalar eps = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 0.5);
+    const Scalar centerPDF = computePDF(point);
+    Implementation cloneDistribution(clone());
+    for (UnsignedInteger i = 2 * dimension; i < pdfGradient.getSize(); ++i)
+    {
+      Point newParameters(getParameter());
+      newParameters[i] += eps;
+      cloneDistribution->setParameter(newParameters);
+      const Scalar rightPDF = cloneDistribution->computePDF(point);
+      pdfGradient[i] = (rightPDF - centerPDF) / eps;
+    }
   }
   return pdfGradient;
 }

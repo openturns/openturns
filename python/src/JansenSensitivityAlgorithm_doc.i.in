@@ -38,7 +38,7 @@ The [jansen1999]_ method is used to estimate both first
 and total order indices.
 
 **The class constructor** ``JansenSensitivityAlgorithm(inputDesign, outputDesign, N)``
-**requires an** ``inputDesign`` **produced by** :class:`~openturns.SobolIndicesExperiment`
+**requires an** ``outputDesign`` **produced by** :class:`~openturns.SobolIndicesExperiment`
 **(see example below). Otherwise, results will be worthless.**
 
 Notations are defined in the documentation page of the :class:`~openturns.SobolIndicesAlgorithm` class.

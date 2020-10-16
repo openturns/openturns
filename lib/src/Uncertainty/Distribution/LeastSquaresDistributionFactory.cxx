@@ -329,12 +329,33 @@ Point LeastSquaresDistributionFactory::buildParameter(const Sample & sample) con
 }
 
 
+Distribution LeastSquaresDistributionFactory::build(const Point & parameter) const
+{
+  Distribution result(distribution_);
+  Point parameter2(parameter);
+  // set known values
+  UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
+  for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
+  {
+    parameter2[knownParameterIndices_[j]] = knownParameterValues_[j];
+  }
+  result.setParameter(parameter2);
+  return result;
+}
+
+
+Distribution LeastSquaresDistributionFactory::build() const
+{
+  return build(distribution_.getParameter());
+}
+
+
 Distribution LeastSquaresDistributionFactory::build(const Sample & sample) const
 {
   Distribution result(distribution_);
   result.setParameter(buildParameter(sample));
   result.setDescription(sample.getDescription());
-  return result.getImplementation();
+  return result;
 }
 
 

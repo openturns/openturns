@@ -248,9 +248,9 @@ cdf=0.872574
 ccdf=0.127426
 cdf (ref)=0.870849
 pdf gradient      = class=Point name=Unnamed dimension=9 values=[0.039548,0.0628233,0.039548,0.0628233,0.0844037,0.0197498,0.0197498,-0.00302873,-0.00302873]
-pdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[0.0251622,0.0251622,0.0209685,0.0209685]
+pdf gradient (ref)= class=Point name=Unnamed dimension=5 values=[0.0251622,0.0251622,0.0209685,0.0209685,0.0377433]
 cdf gradient      = class=Point name=Unnamed dimension=9 values=[-0.07807,-0.146682,-0.07807,-0.146682,0,-0.0324012,-0.0324012,-0.0704505,-0.0704505]
-cdf gradient (ref)= class=Point name=Unnamed dimension=4 values=[0,0,0,0]
+cdf gradient (ref)= class=Point name=Unnamed dimension=5 values=[-0.120865,-0.181297,-0.120865,-0.181297,0]
 quantile= class=Point name=Unnamed dimension=2 values=[1.75438,1.75438]
 quantile= class=Point name=Unnamed dimension=2 values=[1.95451,1.95451]
 cdf(quantile)=0.950000

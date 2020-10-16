@@ -32,7 +32,8 @@
 #include "openturns/Exception.hxx"
 
 #ifdef OPENTURNS_HAVE_TBB
-#include <tbb/task_scheduler_init.h>
+#define TBB_PREVIEW_GLOBAL_CONTROL 1
+#include <tbb/global_control.h>
 #endif
 
 #ifdef OPENTURNS_HAVE_OPENMP
@@ -56,7 +57,7 @@ static const TBB_init initializer_TBB;
 static UnsignedInteger TBB_NumberOfThreads_ = 1;
 
 #ifdef OPENTURNS_HAVE_TBB
-tbb::task_scheduler_init * TBB_P_scheduler_ = 0;
+tbb::global_control * TBB_P_global_control_ = 0;
 #endif /* OPENTURNS_HAVE_TBB */
 
 
@@ -74,8 +75,8 @@ void TBB::SetNumberOfThreads(const UnsignedInteger numberOfThreads)
   if (!numberOfThreads)
     throw InvalidArgumentException(HERE) << "Number of threads must be positive";
 #ifdef OPENTURNS_HAVE_TBB
-  delete TBB_P_scheduler_;
-  TBB_P_scheduler_ = new tbb::task_scheduler_init(numberOfThreads);
+  delete TBB_P_global_control_;
+  TBB_P_global_control_ = new tbb::global_control(tbb::global_control::max_allowed_parallelism, numberOfThreads);
 #endif
   TBB_NumberOfThreads_ = numberOfThreads;
 }
@@ -124,8 +125,8 @@ TBB_init::~TBB_init()
   delete TBB_P_instance_;
   TBB_P_instance_ = 0;
 #ifdef OPENTURNS_HAVE_TBB
-  delete TBB_P_scheduler_;
-  TBB_P_scheduler_ = 0;
+  delete TBB_P_global_control_;
+  TBB_P_global_control_ = 0;
 #endif /* OPENTURNS_HAVE_TBB */
 }
 

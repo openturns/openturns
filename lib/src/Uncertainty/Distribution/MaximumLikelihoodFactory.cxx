@@ -337,12 +337,32 @@ Point MaximumLikelihoodFactory::buildParameter(const Sample & sample) const
 }
 
 
+Distribution MaximumLikelihoodFactory::build(const Point & parameter) const
+{
+  Distribution result(distribution_);
+  // set known values
+  Point parameter2(parameter);
+  UnsignedInteger knownParametersSize = knownParameterIndices_.getSize();
+  for (UnsignedInteger j = 0; j < knownParametersSize; ++ j)
+  {
+    parameter2[knownParameterIndices_[j]] = knownParameterValues_[j];
+  }
+  result.setParameter(parameter2);
+  return result;
+}
+
+
+Distribution MaximumLikelihoodFactory::build() const
+{
+  return build(distribution_.getParameter());
+}
+
 Distribution MaximumLikelihoodFactory::build(const Sample & sample) const
 {
   Distribution result(distribution_);
   result.setParameter(buildParameter(sample));
   result.setDescription(sample.getDescription());
-  return result.getImplementation();
+  return result;
 }
 
 

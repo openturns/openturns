@@ -21,11 +21,10 @@
 
 #include "openturns/ProcessSampleImplementation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Exception.hxx"
-#include "openturns/ResourceMap.hxx"
+#include "openturns/EvaluationImplementation.hxx"
+#include "openturns/Function.hxx"
 #include "openturns/Drawable.hxx"
-#include "openturns/Description.hxx"
-#include "openturns/Log.hxx"
+#include "openturns/NonStationaryCovarianceModelFactory.hxx"
 #include "openturns/TBB.hxx"
 #include "openturns/Os.hxx"
 
@@ -170,7 +169,7 @@ UnsignedInteger ProcessSampleImplementation::getSize() const
 Field ProcessSampleImplementation::computeMean() const
 {
   const UnsignedInteger size = getSize();
-  if (size == 0) return Field();
+  if (size == 0) throw InternalException(HERE) << "Error: cannot compute the mean of an empty sample.";
   if (size == 1) return Field(mesh_, data_[0]);
   Sample meanValues(data_[0]);
   for (UnsignedInteger i = 1; i < size; ++i) meanValues += data_[i];
@@ -369,7 +368,7 @@ ProcessSampleImplementation ProcessSampleImplementation::getMarginal(const Indic
   return result;
 }
 
-/* Draw a marginal of the ProcessSampleImplementation, ie the collection of all the Field marginals */
+/* Draw a marginal */
 Graph ProcessSampleImplementation::drawMarginal(const UnsignedInteger index,
     const Bool interpolate) const
 {
@@ -390,6 +389,95 @@ Graph ProcessSampleImplementation::drawMarginal(const UnsignedInteger index,
   return graph;
 }
 
+/* Draw all marginals */
+GridLayout ProcessSampleImplementation::draw(const Bool interpolate) const
+{
+  const UnsignedInteger outputDimension = getDimension();
+  GridLayout grid(outputDimension, 1);
+  for (UnsignedInteger i = 0; i < outputDimension; ++ i)
+  {
+    const Graph graph(drawMarginal(i, interpolate));
+    grid.setGraph(i, 0, graph);
+  }
+  return grid;
+}
+
+
+class ProcessSampleCorrelationEvaluation : public EvaluationImplementation
+{
+public:
+  ProcessSampleCorrelationEvaluation(const CovarianceModel & covarianceModel, const UnsignedInteger i, const UnsignedInteger j)
+  : covarianceModel_(covarianceModel), i_(i), j_(j) {}
+
+  ProcessSampleCorrelationEvaluation * clone() const override { return new ProcessSampleCorrelationEvaluation(*this); }
+
+  UnsignedInteger getInputDimension() const override { return 2; }
+
+  UnsignedInteger getOutputDimension() const override { return 1; }
+
+  Point operator() (const Point & inP) const override
+  {
+    const Scalar s = inP[0];
+    const Scalar t = inP[1];
+    const Scalar covST = covarianceModel_(s, t).operator()(i_, j_);
+    const Scalar covSS = covarianceModel_(s, s).operator()(i_, j_);
+    const Scalar covTT = covarianceModel_(t, t).operator()(i_, j_);
+    Point result(1);
+    const Scalar den = std::sqrt(std::max(0.0, covSS * covTT));
+    if (den > 0.0)
+      result[0] = covST / den;
+    return result;
+  }
+
+private:
+  CovarianceModel covarianceModel_;
+  UnsignedInteger i_ = 0;
+  UnsignedInteger j_ = 0;
+};
+
+
+/* Draw correlation between 2 marginals */
+Graph ProcessSampleImplementation::drawMarginalCorrelation(const UnsignedInteger i,
+                                                           const UnsignedInteger j) const
+{
+  if (getMesh().getDimension() != 1)
+    throw InvalidArgumentException(HERE) << "drawMarginalCorrelation only supports 1-d domains";
+  const UnsignedInteger dimension = getDimension();
+  if (!(i < dimension) || !(j < dimension))
+    throw InvalidArgumentException(HERE) << "Invalid indices: (" << i << ", " << j << "), dimension is " << dimension;
+  ProcessSample processSampleCentered(*this);
+  processSampleCentered -= computeMean().getValues();
+  const CovarianceModel covariance(NonStationaryCovarianceModelFactory().build(processSampleCentered, true));
+  const Function correlationFunction(new ProcessSampleCorrelationEvaluation(covariance, i, j));
+  const Point dateMin(2, getMesh().getLowerBound()[0]);
+  const Point dateMax(2, getMesh().getUpperBound()[0]);
+  Graph graph(correlationFunction.draw(dateMin, dateMax));
+  graph.setLegendPosition("bottomright");
+  graph.setXTitle("s");
+  graph.setYTitle("t");
+  graph.setTitle(OSS() << "Empirical correlation of marginals " << i << ", " << j);
+  return graph;
+}
+
+
+/* Draw correlation between all marginals */
+GridLayout ProcessSampleImplementation::drawCorrelation() const
+{
+  const UnsignedInteger outputDimension = getDimension();
+  GridLayout grid(outputDimension, outputDimension);
+  for (UnsignedInteger i = 0; i < outputDimension; ++ i)
+    for (UnsignedInteger j = 0; j < outputDimension; ++ j)
+    {
+      Graph graph(drawMarginalCorrelation(i, j));
+      graph.setTitle("");
+      graph.setXTitle((i == outputDimension -1 ) ? OSS() << "marginal " << j : OSS() << "");
+      graph.setYTitle((j == 0) ? OSS() << "marginal " << i : OSS() << "");
+      grid.setGraph(i, j, graph);
+    }
+  grid.setTitle("Empirical correlation of marginals");
+  return grid;
+}
+
 /* Method save() stores the object through the StorageManager */
 void ProcessSampleImplementation::save(Advocate & adv) const
 {
@@ -404,6 +492,23 @@ void ProcessSampleImplementation::load(Advocate & adv)
   PersistentObject::load(adv);
   adv.loadAttribute( "mesh_", mesh_);
   adv.loadAttribute( "data_", data_ );
+}
+
+
+ProcessSampleImplementation & ProcessSampleImplementation::operator += (const Sample & translation)
+{
+  const UnsignedInteger size = getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    data_[i] += translation;
+  return *this;
+}
+
+ProcessSampleImplementation & ProcessSampleImplementation::operator -= (const Sample & translation)
+{
+  const UnsignedInteger size = getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    data_[i] -= translation;
+  return *this;
 }
 
 END_NAMESPACE_OPENTURNS

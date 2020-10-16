@@ -552,7 +552,6 @@ if (BUILD_PYTHON)
     find_python_module (scipy)
     find_python_module (pandas)
     find_python_module (matplotlib 1.3.1)
-    find_python_module (nbconvert)
     find_python_module (chaospy)
 
     if (USE_SPHINX)

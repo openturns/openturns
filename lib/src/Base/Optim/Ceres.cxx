@@ -111,7 +111,7 @@ public:
     , algorithm_(algorithm)
   {
     const OptimizationProblem problem(algorithm_.getProblem());
-    *mutable_parameter_block_sizes() = std::vector<ceres::int32>(1, problem.getDimension());
+    *mutable_parameter_block_sizes() = std::vector<int32_t>(1, problem.getDimension());
     set_num_residuals(problem.getResidualFunction().getOutputDimension());
   }
 
@@ -334,8 +334,6 @@ void Ceres::run()
       throw InvalidArgumentException(HERE) << "Invalid value for dense_linear_algebra_library_type";
     if (ResourceMap::HasKey("Ceres-sparse_linear_algebra_library_type") && !ceres::StringToSparseLinearAlgebraLibraryType(ResourceMap::Get("Ceres-sparse_linear_algebra_library_type"), &options.sparse_linear_algebra_library_type))
       throw InvalidArgumentException(HERE) << "Invalid value for sparse_linear_algebra_library_type";
-    if (ResourceMap::HasKey("Ceres-num_linear_solver_threads"))
-      options.num_linear_solver_threads = ResourceMap::GetAsUnsignedInteger("Ceres-num_linear_solver_threads");
     if (ResourceMap::HasKey("Ceres-use_explicit_schur_complement"))
       options.use_explicit_schur_complement = ResourceMap::GetAsBool("Ceres-use_explicit_schur_complement");
     if (ResourceMap::HasKey("Ceres-use_postordering"))
@@ -544,6 +542,17 @@ Bool Ceres::IsAvailable()
   return true;
 #else
   return false;
+#endif
+}
+
+void Ceres::Initialize()
+{
+#ifdef OPENTURNS_HAVE_CERES
+#ifdef OPENTURNS_HAVE_CERES_MINIGLOG
+  google::InitGoogleLogging((char*)"openturns");
+#else
+  google::InitGoogleLogging("openturns");
+#endif
 #endif
 }
 

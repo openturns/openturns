@@ -90,7 +90,7 @@ When the constructor from a :class:`~openturns.Frechet`:math:`(\beta, \alpha, \g
     :nowrap:
 
     \begin{eqnarray*}
-       \mu & = & \gamma - \beta \\
+       \mu & = & \gamma + \beta \\
        \sigma & = & \dfrac{\beta}{\alpha} \\
        \xi & = & \dfrac{1}{\alpha}
     \end{eqnarray*}

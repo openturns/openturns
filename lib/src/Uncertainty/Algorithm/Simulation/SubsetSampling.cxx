@@ -326,14 +326,13 @@ Scalar SubsetSampling::computeProbabilityVariance(Scalar probabilityEstimateFact
 
     // update global mean and variance
     varianceEstimate = (varianceBlock + (size - 1.0) * varianceEstimate) / size + (1.0 - 1.0 / size) * (probabilityEstimate - meanBlock) * (probabilityEstimate - meanBlock) / size;
-    probabilityEstimate = (meanBlock + (size - 1.0) * probabilityEstimate) / size;
+    probabilityEstimate = std::min(1.0, (meanBlock + (size - 1.0) * probabilityEstimate) / size);
 
     // store convergence at each block
     const Point convPt = {probabilityEstimate * probabilityEstimateFactor,
                           varianceEstimate * probabilityEstimateFactor * probabilityEstimateFactor / size};
     convergenceStrategy_.store(convPt);
   }
-
   return probabilityEstimate;
 }
 

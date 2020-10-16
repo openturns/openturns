@@ -57,6 +57,12 @@ public:
   Distribution build(const Sample & sample) const override;
 
   /** Build a distribution based on a set of parameters */
+  Distribution build(const Point & parameter) const override;
+
+  /** Build a distribution using its default constructor */
+  Distribution build() const override;
+
+  /** Build a distribution based on a set of parameters */
   Point buildParameter(const Sample & sample) const;
 
   /** Solver accessor */

@@ -296,6 +296,12 @@ Distribution __div__(Scalar s)
  return (*self) / s;
 }
 
+Distribution __pow__(const Scalar s) { return self->pow(s); }
+
+Distribution __rdiv__(Scalar s) { return self->inverse() * s; }
+
+Distribution __rtruediv__(Scalar s) { return self->inverse() * s; }
+
 #if SWIG_VERSION < 0x030011
   Distribution __truediv__(Scalar s) { return (*self) / s; }
 #endif

@@ -13,12 +13,25 @@ set_source_files_properties (Base/Func/SpecFunc/Faddeeva.cc PROPERTIES SKIP_UNIT
 
 # Exclude Ceres sources from unity build (templates take much memory)
 set_source_files_properties (Base/Optim/Ceres.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+if (CERES_USES_MINIGLOG)
+  set_source_files_properties (Base/Optim/Ceres.cxx PROPERTIES COMPILE_DEFINITIONS OPENTURNS_HAVE_CERES_MINIGLOG)
+endif ()
 
 # Exclude Dlib sources from unity build (Lapack re-included)
 set_source_files_properties (Base/Optim/Dlib.cxx Base/Optim/DlibFunctions.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
 
 # Exclude Bonmin/Ipopt sources
 set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+
+# Exclude LibXML sources
+if (LIBXML2_FOUND)
+  set_source_files_properties (Base/Common/XMLStorageManager.cxx Base/Common/XMLToolbox.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
+
+# Exclude HDF5 sources
+if (LIBXML2_FOUND AND HDF5_FOUND)
+  set_source_files_properties (Base/Common/XMLH5StorageManager.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
 
 # SymbolicParserExprTk.cxx includes exprtk.hpp which is huge, exclude it from cotire builds
 # It also causes problems on Windows

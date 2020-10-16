@@ -379,7 +379,8 @@ Point Mixture::computePDFGradient(const Point & point) const
 
   Point pdfGradientValue;
   const UnsignedInteger size = distributionCollection_.getSize();
-  for(UnsignedInteger i = 0; i < size; ++i) pdfGradientValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computePDFGradient(point);
+  for(UnsignedInteger i = 0; i < size; ++i)
+    pdfGradientValue.add(distributionCollection_[i].getWeight() * distributionCollection_[i].computePDFGradient(point));
   return pdfGradientValue;
 }
 
@@ -389,9 +390,10 @@ Point Mixture::computeCDFGradient(const Point & point) const
   const UnsignedInteger dimension = getDimension();
   if (point.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=" << dimension << ", here dimension=" << point.getDimension();
 
-  Point cdfGradientValue(getDimension(), 0.0);
+  Point cdfGradientValue;
   const UnsignedInteger size = distributionCollection_.getSize();
-  for(UnsignedInteger i = 0; i < size; ++i) cdfGradientValue += distributionCollection_[i].getWeight() * distributionCollection_[i].computeCDFGradient(point);
+  for(UnsignedInteger i = 0; i < size; ++i)
+    cdfGradientValue.add(distributionCollection_[i].getWeight() * distributionCollection_[i].computeCDFGradient(point));
   return cdfGradientValue;
 }
 

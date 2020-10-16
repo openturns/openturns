@@ -75,7 +75,7 @@ JansenSensitivityAlgorithm * JansenSensitivityAlgorithm::clone() const
 Sample JansenSensitivityAlgorithm::computeIndices(const Sample & sample,
     Sample & VTi) const
 {
-  const UnsignedInteger inputDimension = inputDesign_.getDimension();
+  const UnsignedInteger inputDimension = inputDescription_.getSize();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
   const UnsignedInteger size = size_;
   Sample varianceI(outputDimension, inputDimension);
@@ -117,7 +117,7 @@ Sample JansenSensitivityAlgorithm::computeIndices(const Sample & sample,
 
 void JansenSensitivityAlgorithm::computeAsymptoticDistribution() const
 {
-  const UnsignedInteger inputDimension = inputDesign_.getDimension();
+  const UnsignedInteger inputDimension = inputDescription_.getSize();
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
 
   // psi
