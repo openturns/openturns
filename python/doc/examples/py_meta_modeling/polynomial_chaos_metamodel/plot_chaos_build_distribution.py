@@ -34,10 +34,11 @@ inputSample  = distribution.getSample(samplesize)
 outputSample = model(inputSample)
 
 # %%
-# Create a functional chaos model. We reduce the sampling size for the automatic selection of distribution based on Kolmogorov test.
+# Create a functional chaos model. 
+# First, we need to fit a distribution on the input sample. We can do this automatically with the Lilliefors test.
 
 # %%
-ot.ResourceMap.SetAsUnsignedInteger("FittingTest-KolmogorovSamplingSize", 100)
+ot.ResourceMap.SetAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize", 100)
 
 # %%
 distribution = ot.FunctionalChaosAlgorithm.BuildDistribution(inputSample)

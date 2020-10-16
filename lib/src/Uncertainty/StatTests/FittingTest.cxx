@@ -260,6 +260,15 @@ Distribution FittingTest::BestModelKolmogorov(const Sample & sample,
     const DistributionFactoryCollection & factoryCollection,
     TestResult & bestResult)
 {
+  LOGWARN("FittingTest::BestModelKolmogorov(Sample, DistributionFactoryCollection, TestResult) is deprecated, use BestModelLilliefors");
+  return BestModelLilliefors(sample, factoryCollection, bestResult);
+}
+
+/* Best model for a given numerical sample by Lilliefors */
+Distribution FittingTest::BestModelLilliefors(const Sample & sample,
+    const DistributionFactoryCollection & factoryCollection,
+    TestResult & bestResult)
+{
   const UnsignedInteger size = factoryCollection.getSize();
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
   const Scalar fakeLevel = 0.5;
@@ -273,7 +282,7 @@ Distribution FittingTest::BestModelKolmogorov(const Sample & sample,
     try
     {
       LOGINFO(OSS(false) << "Trying factory " << factory);
-      const TestResult result(Kolmogorov(sample, factory, distribution, fakeLevel));
+      const TestResult result(Lilliefors(sample, factory, distribution, fakeLevel));
       LOGINFO(OSS(false) << "Resulting distribution=" << distribution << ", test result=" << result);
       if (result.getPValue() > bestPValue)
       {
@@ -293,6 +302,7 @@ Distribution FittingTest::BestModelKolmogorov(const Sample & sample,
   if ( bestPValue == 0.0) LOGWARN(OSS(false) << "Be careful, the best model has a p-value of zero. The output distribution must be severely wrong.");
   return bestDistribution;
 }
+
 
 /* Best model for a given numerical sample by Kolmogorov */
 Distribution FittingTest::BestModelKolmogorov(const Sample & sample,
@@ -463,7 +473,7 @@ Distribution FittingTest::AICC(const Sample &sample,
   return distribution;
 }
 
-/* Kolmogorov test */
+/* Kolmogorov and Lilliefors test */
 
 Scalar FittingTest::ComputeKolmogorovStatistics(const Sample & sample,
     const Distribution & distribution)
@@ -485,26 +495,61 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
                                    const Scalar level)
 
 {
+  LOGWARN("FittingTest::Kolmogorov(Sample, DistributionFactory, TestResult, level) is deprecated, use BestModelLilliefors");
+  return Lilliefors(sample, factory, estimatedDistribution, level);
+}
+
+TestResult FittingTest::Lilliefors(const Sample & sample,
+                                   const DistributionFactory & factory,
+                                   Distribution & estimatedDistribution,
+                                   const Scalar level)
+
+{
   if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Error: level must be in ]0, 1[, here level=" << level;
-  if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test works only with 1D samples";
-  if (!factory.build().isContinuous()) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test can be applied only to a continuous distribution";
+  if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Lilliefors test works only with 1D samples";
+  const UnsignedInteger size = sample.getSize();
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: Lilliefors test works only with nonempty samples";  
+  if (!factory.build().isContinuous()) throw InvalidArgumentException(HERE) << "Error: Lilliefors test can be applied only to a continuous distribution";
   const Distribution distribution(factory.build(sample));
-  if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test works only with 1D distribution";
+  if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Lilliefors test works only with 1D distribution";
+  const Scalar statistics = ComputeKolmogorovStatistics(sample, distribution);
   // The Kolmogorov test p-value is overestimated if parameters have been estimated
   // We fix it by computing a Monte Carlo estimate of the p-value
-  const UnsignedInteger samplingSize = ResourceMap::GetAsUnsignedInteger("FittingTest-KolmogorovSamplingSize");
-  Sample kolmogorovStatistics(samplingSize, 1);
-  const UnsignedInteger size = sample.getSize();
-  for (UnsignedInteger i = 0; i < samplingSize; ++i)
-  {
-    const Sample newSample(distribution.getSample(size));
-    kolmogorovStatistics(i, 0) = ComputeKolmogorovStatistics(newSample, factory.build(newSample));
-  }
-  // The p-value is estimated using the empirical CDF of the K-statistics at the
-  // actual sample K-statistics
-  const Scalar statistic = ComputeKolmogorovStatistics(sample, distribution);
-  const Scalar pValue = kolmogorovStatistics.computeEmpiricalCDF(Point(1, statistic), true);
-  TestResult result(OSS(false) << "Kolmogorov " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level, statistic);
+  const UnsignedInteger minimumSamplingSize = ResourceMap::GetAsUnsignedInteger("FittingTest-LillieforsMinimumSamplingSize");
+  const UnsignedInteger maximumSamplingSize = ResourceMap::GetAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize");
+  const Scalar precision = ResourceMap::GetAsScalar("FittingTest-LillieforsPrecision");
+  const Scalar varianceThreshold = precision * precision;
+  Scalar pValue = 0.0;
+  UnsignedInteger totalIterations = 0;
+  UnsignedInteger minimumIterations = (varianceThreshold > 0.0 ? std::min(minimumSamplingSize, maximumSamplingSize) : maximumSamplingSize);
+  Bool go = true;
+  // Incremental Monte Carlo loop
+  while (go)
+    {
+      const UnsignedInteger previousIterations = totalIterations;
+      const UnsignedInteger iterations = minimumIterations - previousIterations;
+      Sample kolmogorovStatistics(iterations, 1);
+      // Monte Carlo block
+      for (UnsignedInteger i = 0; i < iterations; ++i)
+        {
+          const Sample newSample(distribution.getSample(size));
+          const Distribution distributionI(factory.build(newSample));
+          kolmogorovStatistics(i, 0) = ComputeKolmogorovStatistics(newSample, distributionI);
+        }
+      // The p-value is estimated using the empirical CDF of the KS-statistics at the
+      // actual sample KS-statistics
+      const Scalar pValueMonteCarlo = kolmogorovStatistics.computeEmpiricalCDF(Point(1, statistics), true);
+      totalIterations = previousIterations + iterations;
+      // Update the p-value estimation
+      pValue = (pValue * previousIterations + pValueMonteCarlo * iterations) / totalIterations;
+      // Compute the variance of the estimation, or a geometric lower bound if the estimation is zero
+      const Scalar varianceMonteCarlo = std::max(pValue * (1.0 - pValue) / totalIterations, 1.0 / (totalIterations * totalIterations));
+      // Adjust the total number of iterations needed to achieve the requested precision, taking into account the upper bound
+      go = (varianceMonteCarlo > varianceThreshold) && (totalIterations < maximumSamplingSize);
+      if (go)
+        minimumIterations = std::min(maximumSamplingSize, static_cast<UnsignedInteger>(totalIterations * varianceMonteCarlo / varianceThreshold) + 1);
+    } // while (go)
+  TestResult result(OSS(false) << "Lilliefors " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level, statistics);
   result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
   LOGDEBUG(OSS() << result);
   estimatedDistribution = distribution;
@@ -520,9 +565,9 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: the sample is empty";
   if (!distribution.getImplementation()->isContinuous()) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test can be applied only to a continuous distribution";
   if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Kolmogorov test works only with 1D distribution";
-  const Scalar statistic = ComputeKolmogorovStatistics(sample, distribution);
-  const Scalar pValue = DistFunc::pKolmogorov(sample.getSize(), statistic, true);
-  TestResult result(OSS(false) << "Kolmogorov " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level, statistic);
+  const Scalar statistics = ComputeKolmogorovStatistics(sample, distribution);
+  const Scalar pValue = DistFunc::pKolmogorov(sample.getSize(), statistics, true);
+  TestResult result(OSS(false) << "Kolmogorov " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level, statistics);
   result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
   LOGDEBUG(OSS() << result);
   return result;
@@ -630,7 +675,7 @@ TestResult FittingTest::ChiSquared(const Sample & sample,
       ++index;
     }
     testStatistics += std::pow(frequency - probability, 2.0) / probability;
-    LOGDEBUG(OSS() << "Bin number=" << i << ", bound=" << bound << ", probability=" << probability << ", frequency=" << frequency << ", test statistic=" << testStatistics);
+    LOGDEBUG(OSS() << "Bin number=" << i << ", bound=" << bound << ", probability=" << probability << ", frequency=" << frequency << ", test statistics=" << testStatistics);
   } // i
   testStatistics *= size;
   // Use the asymptotic statistics corrected from the number of estimated parameters

@@ -191,10 +191,10 @@ karhunenLoeveLiftingFunction = ot.KarhunenLoeveLifting(KLResult)
 outputSampleChaos = KLResult.project(outputSample)
 
 # %%
-# We limit the sampling size of the Kolmogorov selection in order to reduce the computational burden.
+# We limit the sampling size of the Lilliefors selection in order to reduce the computational burden.
 
 # %%
-ot.ResourceMap.SetAsUnsignedInteger("FittingTest-KolmogorovSamplingSize", 1)
+ot.ResourceMap.SetAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize", 1)
 
 # %%
 # We create a polynomial chaos metamodel which takes the input sample and returns the K.-L. modes. 

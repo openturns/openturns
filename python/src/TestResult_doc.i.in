@@ -21,9 +21,9 @@ Examples
 >>> ot.RandomGenerator.SetSeed(0)
 >>> distribution = ot.Normal()
 >>> sample = distribution.getSample(30)
->>> dist, test_result = ot.FittingTest.Kolmogorov(sample, ot.NormalFactory(), 0.01)
+>>> dist, test_result = ot.FittingTest.Lilliefors(sample, ot.NormalFactory(), 0.01)
 >>> print(test_result.getPValue())
-0.7...
+0.4956...
 >>> print(test_result.getThreshold())
 0.01...
 >>> print(test_result.getBinaryQualityMeasure())

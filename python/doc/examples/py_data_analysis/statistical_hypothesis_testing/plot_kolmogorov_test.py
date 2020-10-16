@@ -1,9 +1,9 @@
 """
-Test distribution fitting using Kolmogorov
-==========================================
+Test distribution fitting using Kolmogorov/Lilliefors
+=====================================================
 """
 # %%
-# In this example we are going to perform a Kolmogorov goodness-of-fit test for an 1-d continuous distribution.
+# In this example we are going to perform a Kolmogorov or a Lilliefors goodness-of-fit test for a 1-d continuous distribution.
 
 # %%
 from __future__ import print_function
@@ -21,7 +21,7 @@ sample = distribution.getSample(50)
 # Case 1 : the distribution parameters are known.
 # -----------------------------------------------
 #
-# In the case where the parameters of the distribution are known, the second parameter of the `Kolmogorov` static method is the distribution to be tested.
+# In the case where the parameters of the distribution are known, we must use the `Kolmogorov` static method and the distribution to be tested.
 
 # %%
 result = ot.FittingTest.Kolmogorov(sample, distribution, 0.01)
@@ -55,16 +55,16 @@ result.getStatistic()
 # Case 2 : the distribution parameters are estimated from the sample.
 # -------------------------------------------------------------------
 #
-# In the case where the parameters of the distribution are estimated from the sample, the second parameter of the `Kolmogorov` static method is the associated distribution factory to be tested.
+# In the case where the parameters of the distribution are estimated from the sample, we must use the `Lilliefors` static method and the distribution factory to be tested.
 
 # %%
-ot.ResourceMap.SetAsUnsignedInteger("FittingTest-KolmogorovSamplingSize",1000)
+ot.ResourceMap.SetAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize",1000)
 
 # %%
 distributionFactory = ot.NormalFactory()
 
 # %%
-dist, result = ot.FittingTest.Kolmogorov(sample, distributionFactory, 0.01)
+dist, result = ot.FittingTest.Lilliefors(sample, distributionFactory, 0.01)
 print('Conclusion=', result.getBinaryQualityMeasure(), 'P-value=', result.getPValue())
 
 # %%

@@ -93,7 +93,7 @@ void ConditionedGaussianProcess::initialize()
 {
   if (isInitialized_) return;
   // Build the covariance factor
-  Sample vertices(mesh_.getVertices());
+  const Sample vertices(mesh_.getVertices());
   // Build the covariance matrix
   CovarianceMatrix covarianceMatrix(krigingResult_.getConditionalCovariance(vertices));
   // Get the Cholesky factor
@@ -102,8 +102,8 @@ void ConditionedGaussianProcess::initialize()
   // Build the trend function
   LOGINFO(OSS(false) << "Build of the trend function");
   const Function krigingEvaluation(krigingResult_.getMetaModel());
-  // Evaluation of the trend part (evaluation once)
-  trendEvaluationMesh_ = krigingEvaluation(mesh_.getVertices());
+  // Evaluation of the trend over the mesh
+  trendEvaluationMesh_ = krigingEvaluation(vertices);
   // Set the trend function
   trend_ = TrendTransform(krigingEvaluation, mesh_);
   // Set descriptions
@@ -144,23 +144,14 @@ void ConditionedGaussianProcess::setSamplingMethod(const UnsignedInteger )
 /* Realization generator */
 Field ConditionedGaussianProcess::getRealization() const
 {
-  // 1) L.X product with L: cholesky factor, X the gaussian vector
-  // Constantes values
+  // Sample the corresponding Gaussian vector mu+L.x
+  // where mu is the value of the trend function over the mesh
+  // L the Cholesky factor of the covariance discretized over the mesh
+  // x an iid sequence of standard normal random variables
   const UnsignedInteger fullSize = covarianceCholeskyFactor_.getDimension();
-  Point gaussianPoint(fullSize);
-  // N independent gaussian realizations
-  for (UnsignedInteger index = 0; index < fullSize; ++index) gaussianPoint[index] = DistFunc::rNormal();
-
-  // 2) X <- LX
-  gaussianPoint = covarianceCholeskyFactor_ * gaussianPoint;
-  const UnsignedInteger size = getMesh().getVerticesNumber();
-  Sample values(size, getOutputDimension());
-  values.getImplementation()->setData(gaussianPoint);
-
-  // 3) Add the trend part
-  // This last one is evaluated thanks to the trend function
-  // It is similar to trend_(Field(mesh_, values))
-  values += trendEvaluationMesh_;
+  Sample values(fullSize, getOutputDimension());
+  values.getImplementation()->setData(trendEvaluationMesh_.getImplementation()->getData() + covarianceCholeskyFactor_ * DistFunc::rNormal(fullSize));
+  // Add the description
   values.setDescription(getDescription());
   return Field(mesh_, values);
 }

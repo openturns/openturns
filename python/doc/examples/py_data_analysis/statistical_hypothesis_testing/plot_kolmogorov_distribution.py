@@ -101,7 +101,7 @@ sampleD = generateKSSampleKnownParameters(nrepeat,samplesize)
 
 
 # %%
-# Compute exact Kolmogorov PDF.
+# Compute exact Kolmogorov CDF.
 
 # %%
 def pKolmogorovPy(x):

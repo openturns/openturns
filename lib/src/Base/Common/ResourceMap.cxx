@@ -797,6 +797,7 @@ void ResourceMap::loadDefaultConfiguration()
   // Fehlberg parameters //
   addAsScalar("Fehlberg-InitialStep", 1.0e-7);
   addAsScalar("Fehlberg-LocalPrecision", 1.0e-10);
+  addAsScalar("Fehlberg-MinimalStep", 1.0e-7);
   addAsUnsignedInteger("Fehlberg-DefaultOrder", 4);
 
   // KarhunenLoeveQuadratureAlgorithm parameters //
@@ -985,7 +986,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("KernelMixture-SmallSize", 50);
 
   // KernelSmoothing parameters //
-  addAsScalar("KernelSmoothing-AbsolutePrecision", 1.0e-5);
+  addAsScalar("KernelSmoothing-AbsolutePrecision", 0.0);
   addAsScalar("KernelSmoothing-CutOffPlugin", 5.0);
   addAsScalar("KernelSmoothing-RelativePrecision", 1.0e-5);
   addAsScalar("KernelSmoothing-ResidualPrecision", 1.0e-10);
@@ -1406,8 +1407,10 @@ void ResourceMap::loadDefaultConfiguration()
 
   // FittingTest parameters //
   addAsBool("FittingTest-ChiSquaredCheckSample", true);
+  addAsScalar("FittingTest-LillieforsPrecision", 0.01);
   addAsUnsignedInteger("FittingTest-ChiSquaredMinimumBinCount", 5);
-  addAsUnsignedInteger("FittingTest-KolmogorovSamplingSize", 10);
+  addAsUnsignedInteger("FittingTest-LillieforsMinimumSamplingSize", 10);
+  addAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize", 100000);
 
   // LeastSquaresMetaModelSelection parameters //
   addAsScalar("LeastSquaresMetaModelSelection-ErrorThreshold", 0.0);
