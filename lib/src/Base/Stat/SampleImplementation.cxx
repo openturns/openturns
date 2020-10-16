@@ -2093,10 +2093,10 @@ SampleImplementation & SampleImplementation::operator += (const SampleImplementa
 {
   if (translation.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the dimension of the given translation=" << translation.getDimension() << " does not match the dimension of the sample=" << dimension_;
   if (translation.getSize() != size_) throw InvalidArgumentException(HERE) << "Error: the size of the given translation=" << translation.getSize() << " does not match the size of the sample=" << size_;
-  int size(size_ * dimension_);
-  double alpha(1.0);
-  int one(1);
-  daxpy_(&size, &alpha, const_cast<double*>(&((translation)(0, 0))), &one, &((*this)(0, 0)), &one);
+  int size = size_ * dimension_;
+  double alpha = 1.0;
+  int one = 1;
+  daxpy_(&size, &alpha, const_cast<double*>(translation.data()), &one, const_cast<double*>(data()), &one);
   return *this;
 }
 
@@ -2114,9 +2114,10 @@ SampleImplementation & SampleImplementation::operator -= (const SampleImplementa
 {
   if (translation.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: the dimension of the given translation=" << translation.getDimension() << " does not match the dimension of the sample=" << dimension_;
   if (translation.getSize() != size_) throw InvalidArgumentException(HERE) << "Error: the size of the given translation=" << translation.getSize() << " does not match the size of the sample=" << size_;
-  for(UnsignedInteger i = 0; i < size_; ++i)
-    for (UnsignedInteger j = 0; j < dimension_; ++j)
-      operator()(i, j) -= translation(i, j);
+  int size = size_ * dimension_;
+  double alpha = -1.0;
+  int one = 1;
+  daxpy_(&size, &alpha, const_cast<double*>(translation.data()), &one, const_cast<double*>(data()), &one);
   return *this;
 }
 
