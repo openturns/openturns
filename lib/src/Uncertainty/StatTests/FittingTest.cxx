@@ -495,7 +495,7 @@ TestResult FittingTest::Kolmogorov(const Sample & sample,
                                    const Scalar level)
 
 {
-  LOGWARN("FittingTest::Kolmogorov(Sample, DistributionFactory, TestResult, level) is deprecated, use BestModelLilliefors");
+  LOGWARN("FittingTest::Kolmogorov(Sample, DistributionFactory, TestResult, level) is deprecated, use Lilliefors");
   return Lilliefors(sample, factory, estimatedDistribution, level);
 }
 

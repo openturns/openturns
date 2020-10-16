@@ -7,7 +7,6 @@
 ==== Major changes ====
  * Drop normalization in KrigingAlgorithm
  * Drop normalization & transformation handling in GeneralLinearModelAlgorithm
- * Allow computeLogPDF methods to output values lower than SpecFunc::LogMinScalar
 
 ==== New classes ====
  * BlockIndependentDistribution
@@ -36,6 +35,9 @@
  * Added Drawable::BuildRainbowPalette(size)
  * Added Drawable::BuildTableauPalette(size), which is now the default palette.
  * Added Drawable::ConvertFromRGBIntoHSV
+ * Added FittingTest::Lilliefors, BestModelLilliefors
+ * Deprecated FittingTest::BestModelKolmogorov(Sample, DistributionFactoryCollection, TestResult), use BestModelLilliefors
+ * Deprecated FittingTest::Kolmogorov(Sample, DistributionFactory, TestResult, level), use Lilliefors
 
 === Documentation ===
  * Sphinx-gallery used to render examples
@@ -53,6 +55,7 @@
  * Require C99/C++11 support
  * Do not compute Lagrange multipliers by default during an optimization
  * Add ResourceMap::FindKeys
+ * Allow computeLogPDF methods to output values lower than SpecFunc::LogMinScalar
 
 === Bug fixes ===
  * #1001 (Add method SobolSimulationResult::draw)
