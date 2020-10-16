@@ -25,7 +25,7 @@ Up-to-date information can be found at http://www.openturns.org
 License
 =======
 OpenTURNS is distributed under the Lesser General Public License.
-Please see the LICENSE and the COPYING* files for details of the license of each components.
+Please see the LICENSE and the COPYING* files for details of the license of each component.
 
 Release Notes
 =============
@@ -47,7 +47,17 @@ for instructions on installing OpenTURNS on various platforms from binaries or s
 Documentation
 =============
 The http://openturns.github.io/openturns/latest/contents.html page contains
-the most recent set of updated documentation for this release. 
+the most recent set of updated documentation for this release.
+
+Acknowledgement
+===============
+The OpenTURNS team would like to thank Leo Liberti for his library Ev3:
+a modified version powers symbolic differentiation in OpenTURNS.
+
+The original version of Ev3, released under the LGPL,
+can be found at http://www.lix.polytechnique.fr/~liberti/Ev3-1.0.zip
+
+The OpenTURNS version of Ev3 can be found as a standalone library at https://github.com/openturns/ev3
 
 Contributing
 ============
