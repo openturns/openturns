@@ -170,7 +170,7 @@ UnsignedInteger ProcessSampleImplementation::getSize() const
 Field ProcessSampleImplementation::computeMean() const
 {
   const UnsignedInteger size = getSize();
-  if (size == 0) return Field();
+  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the mean of an empty sample.";
   if (size == 1) return Field(mesh_, data_[0]);
   Sample meanValues(data_[0]);
   for (UnsignedInteger i = 1; i < size; ++i) meanValues += data_[i];
