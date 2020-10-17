@@ -29,12 +29,6 @@
 
 #include "openturns/TBB.hxx"
 #include "openturns/ResourceMap.hxx"
-#include "openturns/Exception.hxx"
-
-#ifdef OPENTURNS_HAVE_TBB
-#define TBB_PREVIEW_GLOBAL_CONTROL 1
-#include <tbb/global_control.h>
-#endif
 
 #ifdef OPENTURNS_HAVE_OPENMP
 #include <omp.h>
@@ -54,12 +48,8 @@ BEGIN_NAMESPACE_OPENTURNS
 static pthread_mutex_t TBB_InstanceMutex_;
 static TBB * TBB_P_instance_ = 0;
 static const TBB_init initializer_TBB;
-static UnsignedInteger TBB_NumberOfThreads_ = 1;
-
-#ifdef OPENTURNS_HAVE_TBB
-tbb::global_control * TBB_P_global_control_ = 0;
-#endif /* OPENTURNS_HAVE_TBB */
-
+UnsignedInteger TBB::NumberOfThreads_ = 1;
+tbb::task_arena * TBB::P_task_arena_ = 0;
 
 Bool TBB::IsAvailable()
 {
@@ -74,16 +64,14 @@ void TBB::SetNumberOfThreads(const UnsignedInteger numberOfThreads)
 {
   if (!numberOfThreads)
     throw InvalidArgumentException(HERE) << "Number of threads must be positive";
-#ifdef OPENTURNS_HAVE_TBB
-  delete TBB_P_global_control_;
-  TBB_P_global_control_ = new tbb::global_control(tbb::global_control::max_allowed_parallelism, numberOfThreads);
-#endif
-  TBB_NumberOfThreads_ = numberOfThreads;
+  NumberOfThreads_ = numberOfThreads;
+  delete P_task_arena_;
+  P_task_arena_ = new tbb::task_arena(NumberOfThreads_);
 }
 
 UnsignedInteger TBB::GetNumberOfThreads()
 {
-  return TBB_NumberOfThreads_;
+  return NumberOfThreads_;
 }
 
 void TBB::Enable()
@@ -124,10 +112,8 @@ TBB_init::~TBB_init()
     pthread_mutex_destroy(&TBB_InstanceMutex_);
   delete TBB_P_instance_;
   TBB_P_instance_ = 0;
-#ifdef OPENTURNS_HAVE_TBB
-  delete TBB_P_global_control_;
-  TBB_P_global_control_ = 0;
-#endif /* OPENTURNS_HAVE_TBB */
+  delete TBB::P_task_arena_;
+  TBB::P_task_arena_ = 0;
 }
 
 
