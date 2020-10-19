@@ -1,3 +1,13 @@
+openturns (1.16~rc1-1) unstable; urgency=low
+
+  [ Julien Schueller ]
+
+  * New upstream pre-release.
+  * debian/control: Add hdf5 dependency
+  * Drop openturns-examples package.
+
+ -- Denis Barbier <barbier@debian.org>  Tue, 20 Oct 2020 13:14:47 +0200
+
 openturns (1.15-1) unstable; urgency=low
 
   [ Julien Schueller ]

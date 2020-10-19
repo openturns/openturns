@@ -25,5 +25,5 @@ Last-Update: 2017-11-20
 -ot_pyinstallcheck_test (LevelSetMesher_std)
 +#DEB#ot_pyinstallcheck_test (LevelSetMesher_std)
  ot_pyinstallcheck_test (Mesh_std)
+ ot_pyinstallcheck_test (Mesh_draw IGNOREOUT)
  ot_pyinstallcheck_test (DomainComplement_std)
- ot_pyinstallcheck_test (DomainDifference_std)
