@@ -264,6 +264,17 @@ Distribution FittingTest::BestModelKolmogorov(const Sample & sample,
   return BestModelLilliefors(sample, factoryCollection, bestResult);
 }
 
+namespace
+{
+// This function returns true if the first pair is greater
+// than the second one according to the negative p-value
+Bool pairCompare(const std::pair<Scalar, DistributionFactory>& firstElem,
+                 const std::pair<Scalar, DistributionFactory>& secondElem)
+{
+  return firstElem.first > secondElem.first;
+}
+} // anonymous namespace
+
 /* Best model for a given numerical sample by Lilliefors */
 Distribution FittingTest::BestModelLilliefors(const Sample & sample,
     const DistributionFactoryCollection & factoryCollection,
@@ -271,14 +282,50 @@ Distribution FittingTest::BestModelLilliefors(const Sample & sample,
 {
   const UnsignedInteger size = factoryCollection.getSize();
   if (size == 0) throw InternalException(HERE) << "Error: no model given";
+  // First rank the factories according to the biased Kolmogorov test,
+  // which is optimistic wrt the p-value
   const Scalar fakeLevel = 0.5;
+  DistributionCollection bestEstimates(size);
+  // The value -1.0 means that the model has not been built
+  Point pValues(size, -1.0);
   Bool builtAtLeastOne = false;
-  Distribution bestDistribution;
   Distribution distribution;
-  Scalar bestPValue = -1.0;
+  // There is no need to store the best estimates as the relevant ones will be recomputed during the Lilliefors loop
+  Collection< std::pair<Scalar, DistributionFactory> > factoryPairs(size);
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const DistributionFactory factory(factoryCollection[i]);
+    try
+    {
+      LOGINFO(OSS(false) << "Trying factory " << factory);
+      distribution = factory.build(sample);
+      LOGINFO(OSS(false) << "Resulting distribution=" << distribution);
+      const Scalar pValue(Kolmogorov(sample, distribution).getPValue());
+      factoryPairs[i] = std::pair< Scalar, DistributionFactory >(pValue, factory);
+      builtAtLeastOne = true;
+    } // try
+    // The factories can raise many different exceptions (InvalidArgumenException, InternalException, NotDefinedException...). Here we catch everything and echo the reason of the exception.
+    catch (const Exception & ex)
+    {
+      LOGWARN(OSS(false) << "Warning! Impossible to use factory " << factory << ". Reason=" << ex);
+    } // catch
+  } // i
+  if(!builtAtLeastOne) throw InvalidArgumentException(HERE) << "None of the factories could build a model.";
+  // Here we sort the factories by decreasing Kolmogorov p-values, i.e. increasing minus p-value
+  std::sort(factoryPairs.begin(), factoryPairs.end(), pairCompare);
+  // Now, we compute the unbiased p-value using Liliefors, but with the following pruning of the list:
+  // + only the factories able to produce a best estimate are taken into account
+  // + if a factory gives an unbiased p-value P greater or equal to the biased p-value Q* of another factory, the computation can stop because for all the other factories we will have P>=Q*>=Q where Q is the unbiased p-value associated to Q*
+  // We must take into account the fact that a factory can have succeeded to produce a best estimate but can fail during the Monte Carlo phase of the Lilliefors test
+  Distribution bestDistribution;
+  Scalar bestPValue = -1.0;
+  builtAtLeastOne = false;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Scalar biasedPValue = factoryPairs[i].first;
+    const DistributionFactory factory(factoryPairs[i].second);
+    // Cannot occur if no Lilliefors test succeeded
+    if (biasedPValue <= bestPValue) break;
     try
     {
       LOGINFO(OSS(false) << "Trying factory " << factory);
@@ -291,14 +338,14 @@ Distribution FittingTest::BestModelLilliefors(const Sample & sample,
         bestDistribution = distribution;
         builtAtLeastOne = true;
       }
-    }
+    } // try
     // The factories can raise many different exceptions (InvalidArgumenException, InternalException, NotDefinedException...). Here we catch everything and echo the reason of the exception.
     catch (const Exception & ex)
     {
       LOGWARN(OSS(false) << "Warning! Impossible to use factory " << factory << ". Reason=" << ex);
-    }
-  }
-  if(!builtAtLeastOne) throw InvalidArgumentException(HERE) << "None of the factories could build a model.";
+    } // catch
+  } // i
+  if(!builtAtLeastOne) throw InvalidArgumentException(HERE) << "None of the factories could be used for a Lilliefors test.";
   if ( bestPValue == 0.0) LOGWARN(OSS(false) << "Be careful, the best model has a p-value of zero. The output distribution must be severely wrong.");
   return bestDistribution;
 }
@@ -394,9 +441,9 @@ Scalar FittingTest::BIC(const Sample & sample,
   {
     logLikelihood += logPDF(i, 0);
   }
-const Scalar bic = (-2.0 * logLikelihood + estimatedParameters * log(1.0 * size)) / size;
-if (!SpecFunc::IsNormal(bic)) return SpecFunc::MaxScalar; // catch infinity and NaN
-return bic;
+  const Scalar bic = (-2.0 * logLikelihood + estimatedParameters * log(1.0 * size)) / size;
+  if (!SpecFunc::IsNormal(bic)) return SpecFunc::MaxScalar; // catch infinity and NaN
+  return bic;
 }
 
 /* Bayesian Information Criterion computation */
@@ -508,7 +555,7 @@ TestResult FittingTest::Lilliefors(const Sample & sample,
   if ((level <= 0.0) || (level >= 1.0)) throw InvalidArgumentException(HERE) << "Error: level must be in ]0, 1[, here level=" << level;
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Lilliefors test works only with 1D samples";
   const UnsignedInteger size = sample.getSize();
-  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: Lilliefors test works only with nonempty samples";  
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: Lilliefors test works only with nonempty samples";
   if (!factory.build().isContinuous()) throw InvalidArgumentException(HERE) << "Error: Lilliefors test can be applied only to a continuous distribution";
   const Distribution distribution(factory.build(sample));
   if (distribution.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: Lilliefors test works only with 1D distribution";
@@ -525,30 +572,30 @@ TestResult FittingTest::Lilliefors(const Sample & sample,
   Bool go = true;
   // Incremental Monte Carlo loop
   while (go)
+  {
+    const UnsignedInteger previousIterations = totalIterations;
+    const UnsignedInteger iterations = minimumIterations - previousIterations;
+    Sample kolmogorovStatistics(iterations, 1);
+    // Monte Carlo block
+    for (UnsignedInteger i = 0; i < iterations; ++i)
     {
-      const UnsignedInteger previousIterations = totalIterations;
-      const UnsignedInteger iterations = minimumIterations - previousIterations;
-      Sample kolmogorovStatistics(iterations, 1);
-      // Monte Carlo block
-      for (UnsignedInteger i = 0; i < iterations; ++i)
-        {
-          const Sample newSample(distribution.getSample(size));
-          const Distribution distributionI(factory.build(newSample));
-          kolmogorovStatistics(i, 0) = ComputeKolmogorovStatistics(newSample, distributionI);
-        }
-      // The p-value is estimated using the empirical CDF of the KS-statistics at the
-      // actual sample KS-statistics
-      const Scalar pValueMonteCarlo = kolmogorovStatistics.computeEmpiricalCDF(Point(1, statistics), true);
-      totalIterations = previousIterations + iterations;
-      // Update the p-value estimation
-      pValue = (pValue * previousIterations + pValueMonteCarlo * iterations) / totalIterations;
-      // Compute the variance of the estimation, or a geometric lower bound if the estimation is zero
-      const Scalar varianceMonteCarlo = std::max(pValue * (1.0 - pValue) / totalIterations, 1.0 / (totalIterations * totalIterations));
-      // Adjust the total number of iterations needed to achieve the requested precision, taking into account the upper bound
-      go = (varianceMonteCarlo > varianceThreshold) && (totalIterations < maximumSamplingSize);
-      if (go)
-        minimumIterations = std::min(maximumSamplingSize, static_cast<UnsignedInteger>(totalIterations * varianceMonteCarlo / varianceThreshold) + 1);
-    } // while (go)
+      const Sample newSample(distribution.getSample(size));
+      const Distribution distributionI(factory.build(newSample));
+      kolmogorovStatistics(i, 0) = ComputeKolmogorovStatistics(newSample, distributionI);
+    }
+    // The p-value is estimated using the empirical CDF of the KS-statistics at the
+    // actual sample KS-statistics
+    const Scalar pValueMonteCarlo = kolmogorovStatistics.computeEmpiricalCDF(Point(1, statistics), true);
+    totalIterations = previousIterations + iterations;
+    // Update the p-value estimation
+    pValue = (pValue * previousIterations + pValueMonteCarlo * iterations) / totalIterations;
+    // Compute the variance of the estimation, or a geometric lower bound if the estimation is zero
+    const Scalar varianceMonteCarlo = std::max(pValue * (1.0 - pValue) / totalIterations, 1.0 / (totalIterations * totalIterations));
+    // Adjust the total number of iterations needed to achieve the requested precision, taking into account the upper bound
+    go = (varianceMonteCarlo > varianceThreshold) && (totalIterations < maximumSamplingSize);
+    if (go)
+      minimumIterations = std::min(maximumSamplingSize, static_cast<UnsignedInteger>(totalIterations * varianceMonteCarlo / varianceThreshold) + 1);
+  } // while (go)
   TestResult result(OSS(false) << "Lilliefors " << distribution.getImplementation()->getClassName(), (pValue > level), pValue, level, statistics);
   result.setDescription(Description(1, String(OSS() << distribution.__str__() << " vs sample " << sample.getName())));
   LOGDEBUG(OSS() << result);

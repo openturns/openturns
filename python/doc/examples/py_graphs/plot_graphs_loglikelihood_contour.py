@@ -24,10 +24,10 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 a = -1
-b=2.5
-mu = 2.
-sigma = 3.
-distribution = ot.TruncatedNormal(mu,sigma,a,b)
+b = 2.5
+mu = 2.0
+sigma = 3.0
+distribution = ot.TruncatedNormal(mu, sigma, a, b)
 sample = distribution.getSample(11)
 
 # %%
@@ -37,7 +37,7 @@ sample = distribution.getSample(11)
 graph = distribution.drawPDF()
 graph.setLegends(["TruncatedNormal"])
 graph.setColors(["red"])
-zeros = ot.Sample(sample.getSize(),1)
+zeros = ot.Sample(sample.getSize(), 1)
 cloud = ot.Cloud(sample,zeros)
 cloud.setLegend("Sample")
 graph.add(cloud)
@@ -60,14 +60,17 @@ def logLikelihood(X):
     '''
     Evaluate the log-likelihood of a TruncatedNormal on a sample. 
     '''
+    samplesize = sample.getSize()
     mu = X[0]
     sigma = X[1]
     a = sample.getMin()[0]
     b = sample.getMax()[0]
-    distribution = ot.TruncatedNormal(mu,sigma,a,b)
-    samplesize = sample.getSize()
+    delta = (b - a) / samplesize
+    a -= delta
+    b += delta
+    distribution = ot.TruncatedNormal(mu, sigma, a, b)
     samplelogpdf = distribution.computeLogPDF(sample)
-    loglikelihood = -samplelogpdf.computeMean()* samplesize
+    loglikelihood = samplelogpdf.computeMean() * samplesize
     return loglikelihood
 
 
@@ -96,7 +99,7 @@ view = viewer.View(graphBasic)
 # The level values are computed from the quantiles of the data, so that the contours are equally spaced. We can configure the number of levels by setting the `Contour-DefaultLevelsNumber` key in the `ResourceMap`. 
 
 # %%
-ot.ResourceMap_SetAsUnsignedInteger("Contour-DefaultLevelsNumber",5)
+ot.ResourceMap_SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 5)
 logLikelihoodFunction = ot.PythonFunction(2, 1, logLikelihood)
 graphBasic = logLikelihoodFunction.draw([-3.0, 0.1], [5.0, 7.0], [50]*2)
 graphBasic.setXTitle(r"$\mu$")
