@@ -60,11 +60,11 @@ public:
   /** Computation of the covariance matrix */
   using CovarianceModelImplementation::operator();
   CovarianceMatrix operator() (const Point & s,
-                                       const Point & t) const override;
+                               const Point & t) const override;
   CovarianceMatrix operator() (const Point & tau) const override;
   using CovarianceModelImplementation::computeAsScalar;
   Scalar computeAsScalar (const Point & s,
-                                  const Point & t) const override;
+                          const Point & t) const override;
   virtual Scalar computeAsScalar (const Point & tau) const;
 
   /** Computation of the covariance matrix */

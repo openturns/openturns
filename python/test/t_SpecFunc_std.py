@@ -26,6 +26,6 @@ for x in [-2.0, -1.0, 0.0, 1.0, 2.0]:
 
 for x in [-4.0, 4.0, 9.0]:
     for n in [1, 2]:
-        if x<0.0 and n%2==0:
+        if x < 0.0 and n % 2 == 0:
             continue
         print('x=', x, 'n=', n, 'iroot=',  ot.SpecFunc.IRoot(x, n))

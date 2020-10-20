@@ -77,7 +77,7 @@ int main(int, char *[])
       fullprint << "Inverse survival      =" << InverseSurvival << std::endl;
       fullprint << "Inverse survival (ref)=" << ref.computeInverseSurvivalFunction(0.95) << std::endl;
       fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
-    // Get 50% quantile
+      // Get 50% quantile
       Point quantile = distribution.computeQuantile( 0.5 );
       fullprint << "Quantile      =" << quantile << std::endl;
       fullprint << "Quantile (ref)=" << ref.computeQuantile( 0.5 ) << std::endl;

@@ -276,11 +276,11 @@ Scalar EmpiricalBernsteinCopula::computeLogPDF(const Point & point) const
   const UnsignedInteger size = copulaSample_.getSize();
   Point matvec(size);
   for (UnsignedInteger i = 0; i < size; ++i)
-    {
-      matvec[i] = -logBetaFactors_[i];
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-        matvec[i] += (logFactors_(i, j) - 1.0) * logX[j];
-    }
+  {
+    matvec[i] = -logBetaFactors_[i];
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      matvec[i] += (logFactors_(i, j) - 1.0) * logX[j];
+  }
   // To avoid overflows and improve accuracy, we replace
   //    log(sum(exp(matvec[i])))
   // by maxValue + log(sum(exp(matvec[i] - maxValue)))

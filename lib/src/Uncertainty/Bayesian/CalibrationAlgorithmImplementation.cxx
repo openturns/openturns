@@ -38,8 +38,8 @@ CalibrationAlgorithmImplementation::CalibrationAlgorithmImplementation()
 
 /* Parameter constructor */
 CalibrationAlgorithmImplementation::CalibrationAlgorithmImplementation(const Function & model,
-                                                                       const Sample & inputObservations,
-                                                                       const Sample & outputObservations,
+    const Sample & inputObservations,
+    const Sample & outputObservations,
     const Distribution & parameterPrior)
   : PersistentObject()
   , model_(model)

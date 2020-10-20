@@ -29,7 +29,7 @@ print('rslice[2:4]=', sample[2:4])
 print('rslice[1:8:2]=', sample[1:8:2])
 
 # case 0.2 [sequence]
-print('rslice[[4,2,2,-1]]=', sample[[4,2,2,-1]])
+print('rslice[[4,2,2,-1]]=', sample[[4, 2, 2, -1]])
 
 # case 1.1 [int/int]
 print('rslice[3,4]=', sample[3, 4])
@@ -39,7 +39,7 @@ print('rslice[3,:]=', sample[3, :])
 print('rslice[3,1:4:2]=', sample[3, 1:4:2])
 
 # case 1.3 [int/sequence]
-print('rslice[3, (4,2,2,-1)]=', sample[3, (4,2,2,-1)])
+print('rslice[3, (4,2,2,-1)]=', sample[3, (4, 2, 2, -1)])
 
 # case 2.1 [slice/int]
 print('rslice[:,3]=', sample[:, 3])
@@ -51,16 +51,16 @@ print('rslice[2:4,2:4]=', sample[2:4, 2:4])
 print('rslice[1:8:2,1:5:3]=', sample[1:8:2, 1:5:3])
 
 # case 2.3 [slice/sequence]
-print('rslice[:, (4,2,2,-1)]=', sample[:, (4,2,2,-1)])
+print('rslice[:, (4,2,2,-1)]=', sample[:, (4, 2, 2, -1)])
 
 # case 3.1 [sequence/int]
-print('rslice[(4,2,2,-1), 3]=', sample[(4,2,2,-1), 3])
+print('rslice[(4,2,2,-1), 3]=', sample[(4, 2, 2, -1), 3])
 
 # case 3.2 [sequence/slice]
-print('rslice[(4,2,2,-1), :]=', sample[(4,2,2,-1), :])
+print('rslice[(4,2,2,-1), :]=', sample[(4, 2, 2, -1), :])
 
 # case 3.3 [sequence/sequence]
-print('rslice[(4,2,2,-1), (3,1,-1)]=', sample[(4,2,2,-1), (3,1,-1)])
+print('rslice[(4,2,2,-1), (3,1,-1)]=', sample[(4, 2, 2, -1), (3, 1, -1)])
 
 # Writing slice
 sample2 = ot.Sample(sample)
@@ -79,7 +79,7 @@ print('wslice[1:8:2]=', sample3)
 
 # case 0.2 [sequence]
 sample3 = ot.Sample(sample)
-sample3[[4,2,2,-1]] = sample2[[4,2,2,-1]]
+sample3[[4, 2, 2, -1]] = sample2[[4, 2, 2, -1]]
 print('wslice[[4,2,2,-1]]=', sample3)
 
 # case 1.1 [int/int]
@@ -97,7 +97,7 @@ print('wslice[3,1:4:2]=', sample3)
 
 # case 1.3 [int/sequence]
 sample3 = ot.Sample(sample)
-sample3[3, [4,2,2,-1]] = sample2[3, [4,2,2,-1]]
+sample3[3, [4, 2, 2, -1]] = sample2[3, [4, 2, 2, -1]]
 print('wslice[3, [4,2,2,-1]]=', sample3)
 
 # case 2.1 [slice/int]
@@ -121,5 +121,5 @@ print('wslice[1:8:2,1:5:3]=', sample3)
 
 # case 3.1 [sequence/int]
 sample3 = ot.Sample(sample)
-sample3[[4,2,2,-1], 3] = sample2[[4,2,2,-1], 3]
+sample3[[4, 2, 2, -1], 3] = sample2[[4, 2, 2, -1], 3]
 print('wslice[[4,2,2,-1], 3]=', sample3)

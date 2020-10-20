@@ -278,10 +278,10 @@ Distribution KernelSmoothing::build(const Sample & sample,
   // Check the degenerate case of constant sample
   if (xmin == xmax)
   {
-     bandwidth_ = bandwidth;
-     KernelSmoothing::Implementation result(new Dirac(xmin));
-     result->setDescription(sample.getDescription());
-     return result;
+    bandwidth_ = bandwidth;
+    KernelSmoothing::Implementation result(new Dirac(xmin));
+    result->setDescription(sample.getDescription());
+    return result;
   }
   Indices degenerateIndices;
   for (UnsignedInteger j = 0; j < dimension; ++ j)
@@ -296,16 +296,16 @@ Distribution KernelSmoothing::build(const Sample & sample,
     Description degenerateDescription;
     Description okDescription;
     for (UnsignedInteger j = 0; j < dimension; ++ j)
-    if (xmax[j] > xmin[j])
-    {
-      marginalBandwith.add(bandwidth[j]);
-      okDescription.add(description[j]);
-    }
-    else
-    {
-      marginalConstant.add(xmin[j]);
-      degenerateDescription.add(description[j]);
-    }
+      if (xmax[j] > xmin[j])
+      {
+        marginalBandwith.add(bandwidth[j]);
+        okDescription.add(description[j]);
+      }
+      else
+      {
+        marginalConstant.add(xmin[j]);
+        degenerateDescription.add(description[j]);
+      }
     ComposedDistribution::DistributionCollection coll;
     const Indices okIndices(degenerateIndices.complement(dimension));
     const Sample marginalSample(sample.getMarginal(okIndices));

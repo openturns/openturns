@@ -78,9 +78,9 @@ public:
 
   /** Update */
   void update(const Indices & addedIndices,
-                      const Indices & conservedIndices,
-                      const Indices & removedIndices,
-                      const Bool row = false) override;
+              const Indices & conservedIndices,
+              const Indices & removedIndices,
+              const Bool row = false) override;
 
   void trashDecomposition() override;
 

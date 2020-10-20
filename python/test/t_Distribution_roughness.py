@@ -8,15 +8,18 @@ ot.PlatformInfo.SetNumericalPrecision(5)
 ot.TESTPREAMBLE()
 ot.RandomGenerator.SetSeed(0)
 
+
 def compute_roughness_sampling(distribution, size=500000):
     """
     Sampling method for computing Roughness
     This allows comparing sampling & integrating methods
     """
     dimension = distribution.getDimension()
-    uniformNd = ot.ComposedDistribution([ot.Uniform(0, 1) for i in range(dimension)])
+    uniformNd = ot.ComposedDistribution(
+        [ot.Uniform(0, 1) for i in range(dimension)])
     sequence = ot.SobolSequence(dimension)
-    experiment = ot.LowDiscrepancyExperiment(sequence, distribution, size, False)
+    experiment = ot.LowDiscrepancyExperiment(
+        sequence, distribution, size, False)
     sample = experiment.generate()
     pdf = distribution.computePDF(sample)
     return pdf.computeMean()[0]
@@ -50,12 +53,13 @@ class Quartic(ot.PythonDistribution):
     def getRange(self):
         return ot.Interval(-1.0, 1.0)
 
+
 # Using some reference values
 # See https://en.wikipedia.org/wiki/Kernel_(statistics)#Kernel_functions_in_common_use
 # First Normal dist with default ctor
 distribution = ot.Normal()
 ott.assert_almost_equal(distribution.getRoughness(),
-                        0.5 /m.sqrt(m.pi))
+                        0.5 / m.sqrt(m.pi))
 
 # Dimension 2 (Fix https://github.com/openturns/openturns/issues/1485)
 # Indep copula : product of integrales
@@ -81,7 +85,8 @@ distribution = ot.Distribution(Quartic())
 ott.assert_almost_equal(distribution.getRoughness(), 5/7)
 
 # Testing Histogram ==> getSingularities
-distribution = ot.HistogramFactory().buildAsHistogram(ot.Uniform(0, 1).getSample(100000))
+distribution = ot.HistogramFactory().buildAsHistogram(
+    ot.Uniform(0, 1).getSample(100000))
 ott.assert_almost_equal(distribution.getRoughness(), 1.0, 5e-4, 1e-5)
 # Compute the roughness using width and height
 width = distribution.getWidth()
@@ -90,7 +95,7 @@ roughness = sum([width[i] * height[i]**2 for i in range(len(height))])
 ott.assert_almost_equal(distribution.getRoughness(), roughness)
 
 # Large dimension with independent copula
-# With small rho value, we should have results similar to 
+# With small rho value, we should have results similar to
 # independent copula. But here we use the sampling method
 # This allows the validation of this sampling method
 corr = ot.CorrelationMatrix(5)

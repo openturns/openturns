@@ -21,7 +21,8 @@ for j in range(grid.getNbColumns()):
 
 assert(grid.getNbColumns() == 3)
 assert(grid.getNbRows() == 2)
-assert(grid.getGraph(0, 0).getDrawable(0).getImplementation().getClassName() == "Curve")
+assert(grid.getGraph(0, 0).getDrawable(
+    0).getImplementation().getClassName() == "Curve")
 
 if len(sys.argv) > 1:
     from openturns.viewer import View

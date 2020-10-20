@@ -42,8 +42,8 @@ public:
 
   /** Parameters constructor */
   StationaryFunctionalCovarianceModel(const Point & scale,
-                            const Point & amplitude,
-                            const Function & rho);
+                                      const Point & amplitude,
+                                      const Function & rho);
 
   /** Virtual copy constructor */
   StationaryFunctionalCovarianceModel * clone() const override;

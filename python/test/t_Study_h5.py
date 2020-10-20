@@ -11,7 +11,7 @@ ot.TESTPREAMBLE()
 
 try:
     fileName = 'myStudyH5.xml'
-    #XMLH5StorageManager
+    # XMLH5StorageManager
     myStudy = ot.Study(fileName)
     myStudy.setStorageManager(ot.XMLH5StorageManager(fileName))
 

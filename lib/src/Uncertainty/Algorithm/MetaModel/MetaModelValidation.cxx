@@ -53,10 +53,10 @@ MetaModelValidation::MetaModelValidation(const Sample & inputSample,
     throw InvalidArgumentException(HERE) << "Input sample size (" << inputSample_.getSize() << ")"
                                          << " should match output sample size (" << outputSample_.getSize() << ")";
   if (inputSample_.getDimension() != metaModel_.getInputDimension())
-    throw InvalidArgumentException(HERE) << "Metamodel input dimension ("<< metaModel_.getInputDimension() << ")"
+    throw InvalidArgumentException(HERE) << "Metamodel input dimension (" << metaModel_.getInputDimension() << ")"
                                          <<  " should match input sample dimension (" << inputSample_.getDimension() << ")";
   if (outputSample_.getDimension() != metaModel_.getOutputDimension())
-    throw InvalidArgumentException(HERE) << "Metamodel output dimension ("<< metaModel_.getOutputDimension() << ")"
+    throw InvalidArgumentException(HERE) << "Metamodel output dimension (" << metaModel_.getOutputDimension() << ")"
                                          <<  " should match output sample dimension (" << outputSample_.getDimension() << ")";
 }
 

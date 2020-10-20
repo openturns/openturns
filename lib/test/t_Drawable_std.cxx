@@ -43,9 +43,9 @@ int main(int, char *[])
     fullprint << "RGB (44, 160, 72) to HSV=" << Drawable::ConvertFromRGBIntoHSV(44UL, 160UL, 72UL) << std::endl;
     fullprint << "RGB (44, 72, 160) to HSV=" << Drawable::ConvertFromRGBIntoHSV(44UL, 72UL, 160UL) << std::endl;
     fullprint << "RGB (160, 44, 72) to HSV=" << Drawable::ConvertFromRGBIntoHSV(160UL, 44UL, 72UL) << std::endl;
-    fullprint << "RGB (44.0/255.0, 160.0/255.0, 72.0/255.0) to HSV=" << Drawable::ConvertFromRGBIntoHSV(44.0/255.0, 160.0/255.0, 72.0/255.0) << std::endl;
-    fullprint << "RGB (44.0/255.0, 72.0/255.0, 160.0/255.0) to HSV=" << Drawable::ConvertFromRGBIntoHSV(44.0/255.0, 72.0/255.0, 160.0/255.0) << std::endl;
-    fullprint << "RGB (160.0/255.0, 44.0/255.0, 72.0/255.0) to HSV=" << Drawable::ConvertFromRGBIntoHSV(160.0/255.0, 44.0/255.0, 72.0/255.0) << std::endl;
+    fullprint << "RGB (44.0/255.0, 160.0/255.0, 72.0/255.0) to HSV=" << Drawable::ConvertFromRGBIntoHSV(44.0 / 255.0, 160.0 / 255.0, 72.0 / 255.0) << std::endl;
+    fullprint << "RGB (44.0/255.0, 72.0/255.0, 160.0/255.0) to HSV=" << Drawable::ConvertFromRGBIntoHSV(44.0 / 255.0, 72.0 / 255.0, 160.0 / 255.0) << std::endl;
+    fullprint << "RGB (160.0/255.0, 44.0/255.0, 72.0/255.0) to HSV=" << Drawable::ConvertFromRGBIntoHSV(160.0 / 255.0, 44.0 / 255.0, 72.0 / 255.0) << std::endl;
     fullprint << "Line styles=" << Drawable::GetValidLineStyles() << std::endl;
     fullprint << "Point styles=" << Drawable::GetValidPointStyles() << std::endl;
     fullprint << "Fill styles=" << Drawable::GetValidFillStyles() << std::endl;

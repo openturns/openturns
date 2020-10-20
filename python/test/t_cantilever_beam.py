@@ -17,7 +17,7 @@ cb = cantilever_beam.CantileverBeam()
 
 # test parameters
 assert_almost_equal(cb.dim, 4, 1e-12)
-assert_almost_equal(cb.R[2,3], -0.2, 1e-12)
+assert_almost_equal(cb.R[2, 3], -0.2, 1e-12)
 
 # test marginals means
 assert_almost_equal(cb.E.getMean()[0], 32097791.798107255, 1e-12)

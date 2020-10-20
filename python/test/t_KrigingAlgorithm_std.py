@@ -7,6 +7,8 @@ import openturns.testing as ott
 ot.TESTPREAMBLE()
 
 # Test 1
+
+
 def test_one_input_one_output():
     sampleSize = 6
     dimension = 1
@@ -43,8 +45,8 @@ def test_one_input_one_output():
     covariance = result.getConditionalCovariance(X)
     covariancePoint = ot.Point(covariance.getImplementation())
     theoricalVariance = ot.Point(sampleSize * sampleSize)
-    ott.assert_almost_equal(covariance, 
-                            ot.Matrix(sampleSize, sampleSize), 
+    ott.assert_almost_equal(covariance,
+                            ot.Matrix(sampleSize, sampleSize),
                             8.95e-7, 8.95e-7)
 
     # Covariance per marginal & extract variance component
@@ -57,6 +59,8 @@ def test_one_input_one_output():
     ott.assert_almost_equal(var, ot.Point(sampleSize), 1e-14, 1e-14)
 
 # Test 2
+
+
 def test_two_inputs_one_output():
     # Kriging use case
     inputDimension = 2
@@ -95,11 +99,13 @@ def test_two_inputs_one_output():
 
     # 4) Errors
     # Interpolation
-    ott.assert_almost_equal(outputSample,  metaModel(inputSample), 3.0e-5, 3.0e-5)
+    ott.assert_almost_equal(
+        outputSample,  metaModel(inputSample), 3.0e-5, 3.0e-5)
 
     # 5) Kriging variance is 0 on learning points
     covariance = result.getConditionalCovariance(inputSample)
-    ott.assert_almost_equal(covariance, ot.SquareMatrix(len(inputSample)), 7e-7, 7e-7)
+    ott.assert_almost_equal(
+        covariance, ot.SquareMatrix(len(inputSample)), 7e-7, 7e-7)
 
     # Covariance per marginal & extract variance component
     coll = result.getConditionalMarginalCovariance(inputSample)
@@ -110,13 +116,16 @@ def test_two_inputs_one_output():
     var = result.getConditionalMarginalVariance(inputSample)
     ott.assert_almost_equal(var, ot.Point(len(inputSample)), 1e-14, 1e-14)
     # Estimation
-    ott.assert_almost_equal(outputValidSample,  metaModel(inputValidSample), 1.e-1, 1e-1)
+    ott.assert_almost_equal(outputValidSample,  metaModel(
+        inputValidSample), 1.e-1, 1e-1)
+
 
 def test_two_outputs():
     f = ot.SymbolicFunction(['x'], ['x * sin(x)', 'x * cos(x)'])
     sampleX = [[1.0], [2.0], [3.0], [4.0], [5.0], [6.0], [7.0], [8.0]]
     sampleY = f(sampleX)
-    basis = ot.Basis([ot.SymbolicFunction(['x'], ['x']), ot.SymbolicFunction(['x'], ['x^2'])])
+    basis = ot.Basis([ot.SymbolicFunction(['x'], ['x']),
+                      ot.SymbolicFunction(['x'], ['x^2'])])
     covarianceModel = ot.SquaredExponential([1.0])
     covarianceModel.setActiveParameter([])
     algo = ot.KrigingAlgorithm(sampleX, sampleY, covarianceModel, basis)
@@ -125,6 +134,7 @@ def test_two_outputs():
     mm = result.getMetaModel()
     assert mm.getOutputDimension() == 2, "wrong output dim"
     ott.assert_almost_equal(mm(sampleX), sampleY)
+
 
 if __name__ == "__main__":
     test_one_input_one_output()

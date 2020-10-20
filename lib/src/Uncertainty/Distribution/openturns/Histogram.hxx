@@ -125,13 +125,13 @@ public:
   /** Draw the PDF of the Histogram using a specific presentation */
   //        using ContinuousDistribution::drawPDF;
   Graph drawPDF(const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
-                        const Bool logScale = false) const override;
+                const Bool logScale = false) const override;
 
   /** Draw the PDF of the Histogram using a specific presentation */
   Graph drawPDF(const Scalar xMin,
-                        const Scalar xMax,
-                        const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
-                        const Bool logScale = false) const override;
+                const Scalar xMax,
+                const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Distribution-DefaultPointNumber"),
+                const Bool logScale = false) const override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

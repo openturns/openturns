@@ -115,10 +115,10 @@ void SobolSequence::initialize(const UnsignedInteger dimension)
 Point SobolSequence::generate() const
 {
   if (seed_ == 0)
-    {
-      ++seed_;
-      return Point(dimension_);
-    }
+  {
+    ++seed_;
+    return Point(dimension_);
+  }
   // initialize a point with values 2^-MaximumBase2Logarithm
   Point sequencePoint(dimension_, Epsilon);
 

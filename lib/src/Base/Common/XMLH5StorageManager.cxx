@@ -33,9 +33,9 @@ const UnsignedInteger BufferSize = 2048; //Buffer size for writing hdf5 slabs
 
 /* Default constructor */
 XMLH5StorageManager::XMLH5StorageManager(const FileName & filename,
-                                         const UnsignedInteger compressionLevel)
+    const UnsignedInteger compressionLevel)
   : XMLStorageManager(filename, compressionLevel)
-  , h5FileName_(filename.substr(0,filename.find_last_of('.'))+".h5")
+  , h5FileName_(filename.substr(0, filename.find_last_of('.')) + ".h5")
 {
   p_state_ = new XMLH5StorageManagerState;
   isFirstDS_ = true;
@@ -51,8 +51,8 @@ XMLH5StorageManager * XMLH5StorageManager::clone() const
 }
 
 void XMLH5StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
-                                          UnsignedInteger index,
-                                          Scalar value)
+    UnsignedInteger index,
+    Scalar value)
 {
   // Get XML node associated to the Collection
   assert(p_obj);
@@ -65,17 +65,19 @@ void XMLH5StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj,
 
 
   //Every nth value write to dataset
-  if(index && index % BufferSize == 0) {
+  if(index && index % BufferSize == 0)
+  {
     isChunked_ = true;
     String dataSetName = XML::GetAttributeByName(node, "id");
     writeToH5(dataSetName);
   }
 
   // if last value, write to dataset and add corresponding XML node
-  if(index == dsetSize - 1) {
+  if(index == dsetSize - 1)
+  {
     String dataSetName = XML::GetAttributeByName(node, "id");
     writeToH5(dataSetName);
-    XML::Node child = XML::NewNode(XML_STMGR::string_tag::Get(), h5FileName_+":/"+dataSetName);
+    XML::Node child = XML::NewNode(XML_STMGR::string_tag::Get(), h5FileName_ + ":/" + dataSetName);
     assert(child);
     XML::AddChild( node, child );
     isChunked_ = false;
@@ -86,19 +88,22 @@ void XMLH5StorageManager::writeToH5(const String & dataSetName)
 {
   H5::Exception::dontPrint();
   H5::H5File h5File;
-  if(isFirstDS_) {
+  if(isFirstDS_)
+  {
     //Create new or overwrite existing
     h5File = H5::H5File(h5FileName_.c_str(), H5F_ACC_TRUNC);
     isFirstDS_ = false;
   }
-  else {
+  else
+  {
     //R+W access
     h5File = H5::H5File(h5FileName_.c_str(), H5F_ACC_RDWR);
   }
 
   hsize_t dims[1] = {valBuf_.size()};
 
-  if(!H5Lexists(h5File.getId(), dataSetName.c_str(), H5P_DEFAULT)) {
+  if(!H5Lexists(h5File.getId(), dataSetName.c_str(), H5P_DEFAULT))
+  {
     //Dataset does not exist, need to create it and initialize it with first chunk
     hsize_t maxdims[1] = {H5S_UNLIMITED};
     //Set dataspace to unlimited
@@ -113,7 +118,8 @@ void XMLH5StorageManager::writeToH5(const String & dataSetName)
     delete dsp;
     delete dset;
   }
-  else {
+  else
+  {
     //Dataset exists, and will be appended with buffer values
     H5::DataSet * dset = new H5::DataSet(h5File.openDataSet(dataSetName));
     //Get actual dset size
@@ -138,20 +144,22 @@ void XMLH5StorageManager::writeToH5(const String & dataSetName)
 }
 
 void XMLH5StorageManager::readIndexedValue(Pointer<StorageManager::InternalObject> & p_obj,
-                                           UnsignedInteger index,
-                                           Scalar & value)
+    UnsignedInteger index,
+    Scalar & value)
 {
   assert(p_obj);
   //Read values only once
   XMLH5StorageManagerState & state = dynamic_cast<XMLH5StorageManagerState &>(*p_obj);
 
-  if(index == 0) {
+  if(index == 0)
+  {
     XML::Node node = state.current_->parent;
     String dataSetName = XML::GetAttributeByName(node, "id");
     readFromH5(dataSetName);
     state.reachedEnd_ = false;
   }
-  if(index == valBuf_.size()-1) {
+  if(index == valBuf_.size() - 1)
+  {
     state.reachedEnd_ = true;
   }
   state.next();
@@ -171,7 +179,7 @@ void XMLH5StorageManager::readFromH5(const String & dataSetName)
   dataset.read(data, H5::PredType::IEEE_F64LE);
   valBuf_.clear();
 
-  std::vector<double> d_vector(data, data+size);
+  std::vector<double> d_vector(data, data + size);
   valBuf_ = d_vector;
 
   dataspace.close();

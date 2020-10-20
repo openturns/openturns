@@ -59,7 +59,7 @@ public:
 
   /** Gradient */
   Matrix partialGradient(const Point & s,
-                                 const Point & t) const override;
+                         const Point & t) const override;
 
   /** String converter */
   String __repr__() const override;

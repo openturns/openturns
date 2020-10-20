@@ -37,4 +37,3 @@ print("basis=", basis)
 f = ot.AggregatedFunction(basis)
 y = f(x)
 print("y=", y)
-

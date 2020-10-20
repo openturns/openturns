@@ -7,8 +7,8 @@ ot.TESTPREAMBLE()
 
 # Instanciate one distribution object
 dimension = 3
-meanPoint = ot.Point([0.5,-0.5,1])
-sigma = [2,3,1]
+meanPoint = ot.Point([0.5, -0.5, 1])
+sigma = [2, 3, 1]
 
 sample = ot.Sample(0, dimension)
 # Create a collection of distribution

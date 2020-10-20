@@ -32,7 +32,7 @@ int main(int, char *[])
   try
   {
     PlatformInfo::SetNumericalPrecision(3);
-    
+
     // A use case without observed inputs
     UnsignedInteger m = 100;
     Sample x(m, 0);

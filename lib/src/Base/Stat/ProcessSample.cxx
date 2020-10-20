@@ -199,7 +199,7 @@ GridLayout ProcessSample::draw(const Bool interpolate) const
 
 /* Draw correlation between 2 marginals */
 Graph ProcessSample::drawMarginalCorrelation(const UnsignedInteger i,
-                                             const UnsignedInteger j) const
+    const UnsignedInteger j) const
 {
   return getImplementation()->drawMarginalCorrelation(i, j);
 }

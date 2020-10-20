@@ -1692,7 +1692,7 @@ protected:
   {
   public:
     PDFSquaredWrapper(const DistributionImplementation *p_distribution)
-        : EvaluationImplementation(), p_distribution_(p_distribution)
+      : EvaluationImplementation(), p_distribution_(p_distribution)
     {
       // Nothing to do
     }

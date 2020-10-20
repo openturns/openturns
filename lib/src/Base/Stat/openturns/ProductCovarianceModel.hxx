@@ -63,7 +63,7 @@ public:
 
   /** Gradient */
   Matrix partialGradient(const Point & s,
-                                 const Point & t) const override;
+                         const Point & t) const override;
 
   /** Collection accessor */
   const CovarianceModelCollection & getCollection() const;

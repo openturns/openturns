@@ -94,21 +94,27 @@ proposal = [ot.Normal(0.0, 1.0)]
 thetaTrue = [2.0]
 # We choose the most favorable initial state: the true parameter value.
 initialState = thetaTrue
-conditional = ot.Normal() # the log-likelihood is Gaussian
+conditional = ot.Normal()  # the log-likelihood is Gaussian
 # 503 observations: OK
 obsSize = 503
 ot.RandomGenerator.SetSeed(0)
 y_obs = ot.Normal(thetaTrue[0], 1.0).getSample(obsSize)
-RWMHsampler = ot.RandomWalkMetropolisHastings(prior, conditional, model, y_obs, y_obs, initialState, proposal)
-print("Penalized log-likelihood of thetaTrue = {!r}".format(RWMHsampler.computeLogLikelihood(thetaTrue)))
+RWMHsampler = ot.RandomWalkMetropolisHastings(
+    prior, conditional, model, y_obs, y_obs, initialState, proposal)
+print("Penalized log-likelihood of thetaTrue = {!r}".format(
+    RWMHsampler.computeLogLikelihood(thetaTrue)))
 real_503 = RWMHsampler.getRealization()
-print("With 503 observations, getRealization() produces {!r}".format(real_503[0]))
-#504 observations: not OK
+print("With 503 observations, getRealization() produces {!r}".format(
+    real_503[0]))
+# 504 observations: not OK
 obsSize = 504
 ot.RandomGenerator.SetSeed(0)
 y_obs = ot.Normal(thetaTrue[0], 1.0).getSample(obsSize)
-RWMHsampler = ot.RandomWalkMetropolisHastings(prior, conditional, model, y_obs, y_obs, initialState, proposal)
-print("Penalized log-likelihood of thetaTrue = {!r}".format(RWMHsampler.computeLogLikelihood(thetaTrue)))
-real_504 = RWMHsampler.getRealization() #produces an error with current master branch
-print("With 504 observations, getRealization() produces {!r}".format(real_504[0]))
-
+RWMHsampler = ot.RandomWalkMetropolisHastings(
+    prior, conditional, model, y_obs, y_obs, initialState, proposal)
+print("Penalized log-likelihood of thetaTrue = {!r}".format(
+    RWMHsampler.computeLogLikelihood(thetaTrue)))
+# produces an error with current master branch
+real_504 = RWMHsampler.getRealization()
+print("With 504 observations, getRealization() produces {!r}".format(
+    real_504[0]))

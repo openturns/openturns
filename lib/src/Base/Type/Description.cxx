@@ -62,7 +62,7 @@ Description::Description(const Collection<String> & coll)
 
 
 Description::Description(std::initializer_list<String> initList)
-: InternalType(initList)
+  : InternalType(initList)
 {
   // Nothing to do
 }

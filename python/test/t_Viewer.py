@@ -263,7 +263,7 @@ try:
     # test _repr_png_
     png = graph._repr_png_()
     assert(b'PNG' in png[:10])
-    
+
     # BuildDefaultPalette, BuildTableauPalette
     ncurves = 5
     graph = ot.Graph("BuildPalette", "X", "Y", True, "topright")

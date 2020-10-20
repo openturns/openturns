@@ -879,9 +879,9 @@ Point DrawableImplementation::ConvertFromHSVIntoRGB(const Scalar hue,
     const Scalar saturation,
     const Scalar value)
 {
-  if (hue < 0.0 || hue > 360.0) throw InvalidArgumentException(HERE) << "Invalid hue="<<hue;
-  if (saturation < 0.0 || saturation > 1.0) throw InvalidArgumentException(HERE) << "Invalid saturation="<<saturation;
-  if (value < 0.0 || value > 1.0) throw InvalidArgumentException(HERE) << "Invalid value="<<value;
+  if (hue < 0.0 || hue > 360.0) throw InvalidArgumentException(HERE) << "Invalid hue=" << hue;
+  if (saturation < 0.0 || saturation > 1.0) throw InvalidArgumentException(HERE) << "Invalid saturation=" << saturation;
+  if (value < 0.0 || value > 1.0) throw InvalidArgumentException(HERE) << "Invalid value=" << value;
   const UnsignedInteger h = static_cast<UnsignedInteger>(hue);
   const UnsignedInteger i = static_cast<UnsignedInteger>((h % 360 + hue - h) / 60.0) % 6;
   const Scalar f = hue / 60.0 - i;
@@ -932,9 +932,9 @@ Point DrawableImplementation::ConvertFromRGBIntoHSV(const Scalar red,
     const Scalar green,
     const Scalar blue)
 {
-  if (red < 0.0 || red > 1.0) throw InvalidArgumentException(HERE) << "Invalid red="<<red;
-  if (green < 0.0 || green > 1.0) throw InvalidArgumentException(HERE) << "Invalid green="<<green;
-  if (blue < 0.0 || blue > 1.0) throw InvalidArgumentException(HERE) << "Invalid blue="<<blue;
+  if (red < 0.0 || red > 1.0) throw InvalidArgumentException(HERE) << "Invalid red=" << red;
+  if (green < 0.0 || green > 1.0) throw InvalidArgumentException(HERE) << "Invalid green=" << green;
+  if (blue < 0.0 || blue > 1.0) throw InvalidArgumentException(HERE) << "Invalid blue=" << blue;
   return ConvertFromRGBIntoHSV(static_cast<UnsignedInteger>(round(255 * red)),
                                static_cast<UnsignedInteger>(round(255 * green)),
                                static_cast<UnsignedInteger>(round(255 * blue)));
@@ -944,9 +944,9 @@ Point DrawableImplementation::ConvertFromRGBIntoHSV(const UnsignedInteger red,
     const UnsignedInteger green,
     const UnsignedInteger blue)
 {
-  if (red > 255) throw InvalidArgumentException(HERE) << "Invalid red="<<red;
-  if (green > 255) throw InvalidArgumentException(HERE) << "Invalid green="<<green;
-  if (blue > 255) throw InvalidArgumentException(HERE) << "Invalid blue="<<blue;
+  if (red > 255) throw InvalidArgumentException(HERE) << "Invalid red=" << red;
+  if (green > 255) throw InvalidArgumentException(HERE) << "Invalid green=" << green;
+  if (blue > 255) throw InvalidArgumentException(HERE) << "Invalid blue=" << blue;
   const Scalar redScalar = red;
   const Scalar greenScalar = green;
   const Scalar blueScalar = blue;
@@ -954,29 +954,40 @@ Point DrawableImplementation::ConvertFromRGBIntoHSV(const UnsignedInteger red,
   const Scalar minColor = std::min(std::min(redScalar, greenScalar), blueScalar);
   const Scalar chroma = maxColor - minColor;
   Scalar hue, saturation, value;
-  
+
   if(chroma > 0)
   {
-    if(maxColor == redScalar) {
+    if(maxColor == redScalar)
+    {
       hue = 60.0 * ((greenScalar - blueScalar) / chroma);
-    } else if(maxColor == greenScalar) {
+    }
+    else if(maxColor == greenScalar)
+    {
       hue = 60.0 * ((blueScalar - redScalar) / chroma + 2.0);
-    } else {
+    }
+    else
+    {
       // maxColor == blue
       hue = 60.0 * ((redScalar - greenScalar) / chroma + 4.0);
     }
-    if(maxColor > 0.0) {
+    if(maxColor > 0.0)
+    {
       saturation = chroma / maxColor;
-    } else {
+    }
+    else
+    {
       saturation = 0.0;
     }
     value = maxColor / 255.0;
-  } else {
+  }
+  else
+  {
     hue = 0.0;
     saturation = 0.0;
     value = maxColor / 255.0;
   }
-  if(hue < 0.0) {
+  if(hue < 0.0)
+  {
     hue += 360.0;
   }
   const Point hsv = {hue, saturation, value};

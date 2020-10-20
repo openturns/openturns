@@ -276,10 +276,10 @@ public:
 
   // Integer power
   static Scalar IPow(const Scalar x, const SignedInteger n);
-  
+
   // Integer root
   static Scalar IRoot(const Scalar x, const SignedInteger n);
-  
+
   // Integer log2
   static UnsignedInteger Log2(const Unsigned64BitsInteger n);
 

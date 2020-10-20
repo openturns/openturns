@@ -39,7 +39,7 @@ MinimumVolumeClassifier::MinimumVolumeClassifier()
 
 /* Default constructor */
 MinimumVolumeClassifier::MinimumVolumeClassifier(const Distribution & distribution,
-                                                         const Scalar alpha)
+    const Scalar alpha)
   : ClassifierImplementation()
   , distribution_(distribution)
   , alpha_(alpha)
@@ -98,7 +98,7 @@ LevelSet MinimumVolumeClassifier::getLevelSet() const
 }
 
 Scalar MinimumVolumeClassifier::grade(const Point& inP,
-                                const UnsignedInteger outC) const
+                                      const UnsignedInteger outC) const
 {
   if (outC >= 2)
     throw InvalidDimensionException(HERE) << "Class number (=" << outC << ") must be lower than number of classes (" << getNumberOfClasses() << ")";

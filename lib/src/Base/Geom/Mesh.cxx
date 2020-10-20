@@ -156,7 +156,7 @@ Indices Mesh::getSimplex(const UnsignedInteger index) const
 /* Check the mesh validity */
 void Mesh::checkValidity() const
 {
- 
+
   if (hasBeenChecked_) return;
   // Check the vertices: no duplicate, no unused vertex
   // Check the simplices: no simplex with duplicate vertices, no simplex with unknown vertex, no simplex with a number of vertices different from dimension+1
@@ -252,14 +252,14 @@ Bool Mesh::checkPointInSimplexWithCoordinates(const Point & point,
     coordinates[1] = (x02 * y - y02 * x) / det;
     coordinates[2] = (x * y01 - y * x01) / det;
     coordinates[0] = 0.5 + (0.5 - coordinates[1] - coordinates[2]);
-    return coordinates[0] >= -epsilon && coordinates[0] <= 1.0+epsilon && coordinates[1] >= -epsilon && coordinates[1] <= 1.0+epsilon && coordinates[2] >= -epsilon && coordinates[2] <= 1.0+epsilon;
+    return coordinates[0] >= -epsilon && coordinates[0] <= 1.0 + epsilon && coordinates[1] >= -epsilon && coordinates[1] <= 1.0 + epsilon && coordinates[2] >= -epsilon && coordinates[2] <= 1.0 + epsilon;
   }
   SquareMatrix matrix(dimension_ + 1);
   buildSimplexMatrix(index, matrix);
   Point v(point);
   v.add(1.0);
   coordinates = matrix.solveLinearSystem(v, false);
-  for (UnsignedInteger i = 0; i <= dimension_; ++i) if ((coordinates[i] < -epsilon) || (coordinates[i] > 1.0+epsilon)) return false;
+  for (UnsignedInteger i = 0; i <= dimension_; ++i) if ((coordinates[i] < -epsilon) || (coordinates[i] > 1.0 + epsilon)) return false;
   return true;
 }
 

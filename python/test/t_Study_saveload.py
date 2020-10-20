@@ -27,7 +27,8 @@ try:
     # Create a Study Object with compression
     myStudy = ot.Study()
     compressionLevel = 5
-    myStudy.setStorageManager(ot.XMLStorageManager(fileName + ".gz", compressionLevel))
+    myStudy.setStorageManager(ot.XMLStorageManager(
+        fileName + ".gz", compressionLevel))
     point = ot.Point(2, 1.0)
     myStudy.add("point", point)
     myStudy.save()

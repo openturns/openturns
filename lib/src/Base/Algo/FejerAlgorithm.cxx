@@ -36,10 +36,10 @@ static const Factory<FejerAlgorithm> Factory_FejerAlgorithm;
 
 FejerAlgorithm::FejerAlgorithm(const UnsignedInteger dimension,
                                const IntegrationMethod method)
-    : IntegrationAlgorithmImplementation()
-    , discretization_(Indices(dimension, ResourceMap::GetAsUnsignedInteger("FejerAlgorithm-DefaultMarginalIntegrationPointsNumber")))
-    , nodes_(0, 0)
-    , weights_(0)
+  : IntegrationAlgorithmImplementation()
+  , discretization_(Indices(dimension, ResourceMap::GetAsUnsignedInteger("FejerAlgorithm-DefaultMarginalIntegrationPointsNumber")))
+  , nodes_(0, 0)
+  , weights_(0)
 {
   // Generate nodes and weights
   generateNodesAndWeights(method);
@@ -73,8 +73,8 @@ Point FejerAlgorithm::integrate(const Function & function,
 }
 
 Point FejerAlgorithm::integrateWithNodes(const Function & function,
-                                         const Interval & interval,
-                                         Sample & adaptedNodes) const
+    const Interval & interval,
+    Sample & adaptedNodes) const
 {
   const UnsignedInteger inputDimension = discretization_.getSize();
   if (interval.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: expected an interval of dimension=" << inputDimension << ", got dimension=" << interval.getDimension();
@@ -96,7 +96,7 @@ Point FejerAlgorithm::integrateWithNodes(const Function & function,
 }
 
 void FejerAlgorithm::generateNodesAndWeightsCleanshawCurtis(Collection<Point> & marginalNodes,
-                                                            Collection<Point> & marginalWeights)
+    Collection<Point> & marginalWeights)
 {
   const UnsignedInteger dimension = discretization_.getSize();
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -148,7 +148,7 @@ void FejerAlgorithm::generateNodesAndWeightsCleanshawCurtis(Collection<Point> & 
 }
 
 void FejerAlgorithm::generateNodesAndWeightsFejerType1(Collection<Point> & marginalNodes,
-                                                       Collection<Point> & marginalWeights)
+    Collection<Point> & marginalWeights)
 {
   const UnsignedInteger dimension = discretization_.getSize();
   for (UnsignedInteger i = 0; i < dimension; ++i)
@@ -194,7 +194,7 @@ void FejerAlgorithm::generateNodesAndWeightsFejerType1(Collection<Point> & margi
 }
 
 void FejerAlgorithm::generateNodesAndWeightsFejerType2(Collection<Point> & marginalNodes,
-                                                       Collection<Point> & marginalWeights)
+    Collection<Point> & marginalWeights)
 {
   // First, generate the 1D marginal rules over [0, 1]
   const UnsignedInteger dimension = discretization_.getSize();
@@ -229,7 +229,7 @@ void FejerAlgorithm::generateNodesAndWeightsFejerType2(Collection<Point> & margi
         Scalar sum_sinus = 0.0;
         const UnsignedInteger halfNodesNumber = (integrationNodesNumber - 1) / 2;
         for (UnsignedInteger iter_ = 1; iter_ <= halfNodesNumber; ++iter_)
-            sum_sinus += std::sin((2 * iter_ - 1) * theta_k) / (2 * iter_ - 1);
+          sum_sinus += std::sin((2 * iter_ - 1) * theta_k) / (2 * iter_ - 1);
         // Nodes
         marginalNodes[i][k] = std::cos(theta_k);
         // Weights
@@ -246,12 +246,12 @@ void FejerAlgorithm::generateNodesAndWeights(const IntegrationMethod method)
   const UnsignedInteger dimension = discretization_.getSize();
   if (dimension == 0)
     throw InvalidArgumentException(HERE) << "Error: expected a positive dimension";
-   for (UnsignedInteger i = 0; i < dimension; ++i)
+  for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const UnsignedInteger integrationNodesNumber = discretization_[i];
     if (integrationNodesNumber == 0)
       throw InvalidArgumentException(HERE) << "Error: the discretization must be positive, here discretization[" << i << "] is null.";
-  } 
+  }
   Collection<Point> marginalNodes(dimension);
   Collection<Point> marginalWeights(dimension);
   switch (method)

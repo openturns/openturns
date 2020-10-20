@@ -69,7 +69,7 @@ public:
   using CovarianceModelImplementation::discretize;
   CovarianceMatrix discretize(const Sample & vertices) const override;
   Sample discretizeRow(const Sample & vertices,
-                               const UnsignedInteger p) const override;
+                       const UnsignedInteger p) const override;
   TriangularMatrix discretizeAndFactorize(const Sample & vertices) const override;
 
   /** Mesh accessor */

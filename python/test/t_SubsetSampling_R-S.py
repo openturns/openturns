@@ -150,4 +150,3 @@ subset.run()
 print('SUBSET:', subset.getResult())
 print('steps=', subset.getNumberOfSteps())
 print('T=', subset.getThresholdPerStep())
-

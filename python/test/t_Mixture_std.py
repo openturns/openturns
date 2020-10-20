@@ -106,7 +106,7 @@ print("cdf=%.6f" % CDF)
 CCDF = distribution.computeComplementaryCDF(point)
 print("ccdf=%.6f" % CCDF)
 PDFgr = distribution.computePDFGradient(point)
-print("pdf gradient=" , PDFgr)
+print("pdf gradient=", PDFgr)
 # by the finite difference technique
 # PDFgrFD = Point(4)
 # PDFgrFD[0] = (Mixture(distribution.getR() + eps, distribution.getT(), distribution.getA(), distribution.getB()).computePDF(point) -
@@ -121,7 +121,7 @@ print("pdf gradient=" , PDFgr)
 
 # derivative of the PDF with regards the parameters of the distribution
 CDFgr = distribution.computeCDFGradient(point)
-print("cdf gradient=" , CDFgr)
+print("cdf gradient=", CDFgr)
 # CDFgrFD = Point(4)
 # CDFgrFD[0] = (Mixture(distribution.getR() + eps, distribution.getT(), distribution.getA(), distribution.getB()).computeCDF(point) -
 #                   Mixture(distribution.getR() - eps, distribution.getT(), distribution.getA(), distribution.getB()).computeCDF(point)) / (2.0 * eps)
@@ -189,4 +189,3 @@ newMixture = ot.Mixture(atoms, weights)
 print("newMixture pdf= %.12g" % newMixture.computePDF(2.5))
 print("atoms kept in mixture=", newMixture.getDistributionCollection())
 print("newMixture=", newMixture)
-

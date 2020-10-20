@@ -142,7 +142,7 @@ TriangularMatrix GeneralLinearModelResult::getCholeskyFactor() const
 }
 
 void GeneralLinearModelResult::setCholeskyFactor(const TriangularMatrix & covarianceCholeskyFactor,
-                       const HMatrix & covarianceHMatrix)
+    const HMatrix & covarianceHMatrix)
 {
   const UnsignedInteger size = inputData_.getSize();
   const UnsignedInteger outputDimension = getMetaModel().getOutputDimension();

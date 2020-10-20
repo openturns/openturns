@@ -22,6 +22,6 @@ assert_almost_equal(bm.lowerbound, ot.Point([0.0] * bm.dim), 1e-12)
 assert_almost_equal(bm.upperbound, ot.Point([1.0] * bm.dim), 1e-12)
 
 # test minima
-assert_almost_equal(bm.xexact1, ot.Point([0.123895,0.818329]), 1e-12)
-assert_almost_equal(bm.xexact2, ot.Point([0.542773,0.151666]), 1e-12)
-assert_almost_equal(bm.xexact3, ot.Point([0.961652,0.165000]), 1e-12)
+assert_almost_equal(bm.xexact1, ot.Point([0.123895, 0.818329]), 1e-12)
+assert_almost_equal(bm.xexact2, ot.Point([0.542773, 0.151666]), 1e-12)
+assert_almost_equal(bm.xexact3, ot.Point([0.961652, 0.165000]), 1e-12)

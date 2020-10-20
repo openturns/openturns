@@ -56,10 +56,10 @@ public:
 
   /** Method to create new LeastSquaresMetaModelSelection objects */
   LeastSquaresMetaModelSelection * build (const Sample & x,
-      const Sample & y,
-      const Point & weight,
-      const FunctionCollection & psi,
-      const Indices & indices) const override;
+                                          const Sample & y,
+                                          const Point & weight,
+                                          const FunctionCollection & psi,
+                                          const Indices & indices) const override;
 
   /** String converter */
   String __repr__() const override;

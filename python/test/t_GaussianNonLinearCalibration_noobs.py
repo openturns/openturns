@@ -77,7 +77,8 @@ for bootstrapSize in [0, 100]:
             ot.LowDiscrepancyExperiment(
                 ot.SobolSequence(),
                 ot.Normal(
-                    candidate, ot.CovarianceMatrix(ot.Point(candidate).getDimension())
+                    candidate, ot.CovarianceMatrix(
+                        ot.Point(candidate).getDimension())
                 ),
                 ot.ResourceMap.GetAsUnsignedInteger(
                     "GaussianNonLinearCalibration-MultiStartSize"
