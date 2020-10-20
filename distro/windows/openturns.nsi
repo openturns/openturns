@@ -243,17 +243,6 @@ Section "!OpenTURNS" SEC01
 SectionEnd
 
 
-Section "OT python examples" SEC02
-  SetOverwrite on
-!ifndef DEBUG
-
-  !insertmacro PRINT "Install Python examples in $OT_INSTALL_PATH\examples."
-  SetOutPath "$OT_INSTALL_PATH\examples"
-  File "${OPENTURNS_PREFIX}\share\openturns\examples\*.py"
-!endif
-SectionEnd
-
-
 Section -AdditionalIcons
   !insertmacro PRINT "Create OpenTURNS menu."
   ; install shortcuts on every accounts
@@ -279,7 +268,6 @@ SectionEnd
 ; Section descriptions
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SEC01} "OpenTURNS python libraries. Mandatory."
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC02} "OpenTURNS python examples."
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 
