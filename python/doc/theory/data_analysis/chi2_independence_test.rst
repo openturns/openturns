@@ -74,7 +74,7 @@ test of contingency.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_data_analysis/estimate_dependency_and_copulas/plot_independence_test`
+    - See :doc:`/auto_data_analysis/estimate_dependency_and_copulas/plot_independence_test`
 
 
 .. topic:: References:

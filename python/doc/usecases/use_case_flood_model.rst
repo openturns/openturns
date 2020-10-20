@@ -127,10 +127,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_data_analysis/sample_analysis/images/thumb/sphx_glr_plot_compare_unconditional_conditional_histograms_thumb.png
+ .. figure:: /auto_data_analysis/sample_analysis/images/thumb/sphx_glr_plot_compare_unconditional_conditional_histograms_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_data_analysis_sample_analysis_plot_compare_unconditional_conditional_histograms.py`
+     :ref:`sphx_glr_auto_data_analysis_sample_analysis_plot_compare_unconditional_conditional_histograms.py`
 
 .. raw:: html
 
@@ -139,7 +139,7 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_data_analysis/sample_analysis/plot_compare_unconditional_conditional_histograms
+   /auto_data_analysis/sample_analysis/plot_compare_unconditional_conditional_histograms
 
 
 .. raw:: html                                                             
@@ -148,10 +148,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_calibration/bayesian_calibration/images/thumb/sphx_glr_plot_bayesian_calibration_flooding_thumb.png
+ .. figure:: /auto_calibration/bayesian_calibration/images/thumb/sphx_glr_plot_bayesian_calibration_flooding_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_calibration_bayesian_calibration_plot_bayesian_calibration_flooding.py`
+     :ref:`sphx_glr_auto_calibration_bayesian_calibration_plot_bayesian_calibration_flooding.py`
 
 .. raw:: html
 
@@ -160,7 +160,7 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_calibration/bayesian_calibration/plot_bayesian_calibration_flooding
+   /auto_calibration/bayesian_calibration/plot_bayesian_calibration_flooding
 
 
 .. raw:: html                                                             
@@ -169,10 +169,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_flood_model_thumb.png
+ .. figure:: /auto_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_flood_model_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_reliability_sensitivity_reliability_plot_flood_model.py`
+     :ref:`sphx_glr_auto_reliability_sensitivity_reliability_plot_flood_model.py`
 
 .. raw:: html
 
@@ -181,7 +181,7 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_reliability_sensitivity/reliability/plot_flood_model
+   /auto_reliability_sensitivity/reliability/plot_flood_model
 
 
 
@@ -191,10 +191,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_calibration/least_squares_and_gaussian_calibration/images/thumb/sphx_glr_plot_calibration_flooding_thumb.png
+ .. figure:: /auto_calibration/least_squares_and_gaussian_calibration/images/thumb/sphx_glr_plot_calibration_flooding_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_calibration_least_squares_and_gaussian_calibration_plot_calibration_flooding.py`
+     :ref:`sphx_glr_auto_calibration_least_squares_and_gaussian_calibration_plot_calibration_flooding.py`
 
 .. raw:: html
 
@@ -203,7 +203,7 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_calibration/least_squares_and_gaussian_calibration/plot_calibration_flooding
+   /auto_calibration/least_squares_and_gaussian_calibration/plot_calibration_flooding
 
   
   

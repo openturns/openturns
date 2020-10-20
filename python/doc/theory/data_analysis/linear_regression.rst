@@ -237,7 +237,7 @@ be abandoned, or at least used very cautiously.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_data_analysis/manage_data_and_samples/plot_linear_regression`
+    - See :doc:`/auto_data_analysis/manage_data_and_samples/plot_linear_regression`
 
 .. topic:: References:
 

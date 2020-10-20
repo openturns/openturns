@@ -70,8 +70,7 @@ metaModelValidationSPC = ot.MetaModelValidation(
     inputValidation, outputValidation, result.getMetaModel())
 print("")
 print("Sparse chaos scoring")
-print(
-    "Q2 = ", round(metaModelValidationSPC.computePredictivityFactor(), 5))
+print("Q2 = ", metaModelValidationSPC.computePredictivityFactor())
 print("Residual sample = ", repr(
     metaModelValidationSPC.getResidualSample()))
 
@@ -92,7 +91,7 @@ metaModelValidationKG = ot.MetaModelValidation(
     inputValidation, outputValidation, result2.getMetaModel())
 print("")
 print("Kriging scoring")
-print("Q2 = ", round(metaModelValidationKG.computePredictivityFactor(), 3))
+print("Q2 = ", metaModelValidationKG.computePredictivityFactor())
 ot.PlatformInfo.SetNumericalPrecision(2)
 print("Residual sample = ", repr(
     metaModelValidationKG.getResidualSample()))

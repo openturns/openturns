@@ -207,7 +207,7 @@ The techniques implemented in each distribution are:
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_probabilistic_modeling/distributions/plot_distribution_manipulation`
+    - See :doc:`/auto_probabilistic_modeling/distributions/plot_distribution_manipulation`
 
 .. topic:: References:
 

@@ -136,7 +136,7 @@ val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
 # Compute the :math:`Q^2` predictivity coefficient
 
 # %%
-Q2 = val.computePredictivityFactor()
+Q2 = val.computePredictivityFactor()[0]
 Q2
 
 # %%
@@ -145,7 +145,6 @@ Q2
 # %%
 graph = val.drawValidation()
 graph.setTitle("Q2=%.2f%%" % (Q2*100))
-graph.setLegends([""])
 view = viewer.View(graph)
 
 # %%

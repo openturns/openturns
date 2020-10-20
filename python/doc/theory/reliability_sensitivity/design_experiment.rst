@@ -242,6 +242,6 @@ The following figures illustrates the different patterns obtained.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_reliability_sensitivity/design_of_experiments/plot_deterministic_design`
-    - See :doc:`/auto_py_reliability_sensitivity/design_of_experiments/plot_probabilistic_design`
+    - See :doc:`/auto_reliability_sensitivity/design_of_experiments/plot_deterministic_design`
+    - See :doc:`/auto_reliability_sensitivity/design_of_experiments/plot_probabilistic_design`
 

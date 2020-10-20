@@ -107,10 +107,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_calibration/least_squares_and_gaussian_calibration/images/thumb/sphx_glr_plot_calibration_chaboche_thumb.png
+ .. figure:: /auto_calibration/least_squares_and_gaussian_calibration/images/thumb/sphx_glr_plot_calibration_chaboche_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_calibration_least_squares_and_gaussian_calibration_plot_calibration_chaboche.py`
+     :ref:`sphx_glr_auto_calibration_least_squares_and_gaussian_calibration_plot_calibration_chaboche.py`
 
 .. raw:: html
 
@@ -119,7 +119,7 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_calibration/least_squares_and_gaussian_calibration/plot_calibration_chaboche
+   /auto_calibration/least_squares_and_gaussian_calibration/plot_calibration_chaboche
 
 
 

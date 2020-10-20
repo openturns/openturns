@@ -141,5 +141,5 @@ fixing the number of segments, the *overlap* size parameter and a
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_data_analysis/estimate_stochastic_processes/plot_estimate_spectral_density_function`
+    - See :doc:`/auto_data_analysis/estimate_stochastic_processes/plot_estimate_spectral_density_function`
 

@@ -20,4 +20,4 @@ Each estimator is detailed its corresponding :ref:`factory <parametric_distibuti
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_data_analysis/distribution_fitting/plot_estimate_normal`
+    - See :doc:`/auto_data_analysis/distribution_fitting/plot_estimate_normal`

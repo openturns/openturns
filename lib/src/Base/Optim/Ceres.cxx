@@ -548,11 +548,7 @@ Bool Ceres::IsAvailable()
 void Ceres::Initialize()
 {
 #ifdef OPENTURNS_HAVE_CERES
-#ifdef OPENTURNS_HAVE_CERES_MINIGLOG
-  google::InitGoogleLogging((char*)"openturns");
-#else
   google::InitGoogleLogging("openturns");
-#endif
 #endif
 }
 

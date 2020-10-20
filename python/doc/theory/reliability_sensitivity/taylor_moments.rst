@@ -147,5 +147,5 @@ order strictly greater than 2 of the pdf.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_reliability_sensitivity/central_dispersion/plot_estimate_moments_taylor`
+    - See :doc:`/auto_reliability_sensitivity/central_dispersion/plot_estimate_moments_taylor`
 

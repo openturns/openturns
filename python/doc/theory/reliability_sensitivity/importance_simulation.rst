@@ -84,7 +84,7 @@ not biased as it gives exactly the same result).
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_reliability_sensitivity/reliability/plot_estimate_probability_importance_sampling`
+    - See :doc:`/auto_reliability_sensitivity/reliability/plot_estimate_probability_importance_sampling`
 
 
 .. topic:: References:

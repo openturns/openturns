@@ -59,10 +59,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_numerical_methods/optimization/images/thumb/sphx_glr_plot_ego_thumb.png
+ .. figure:: /auto_numerical_methods/optimization/images/thumb/sphx_glr_plot_ego_thumb.png
      :alt: 
 
-     :ref:`sphx_glr_auto_py_numerical_methods_optimization_plot_ego.py`
+     :ref:`sphx_glr_auto_numerical_methods_optimization_plot_ego.py`
 
 .. raw:: html
 
@@ -71,4 +71,4 @@ Examples based on this use case :
 .. toctree::
    :hidden:
  
-   /auto_py_numerical_methods/optimization/plot_ego
+   /auto_numerical_methods/optimization/plot_ego

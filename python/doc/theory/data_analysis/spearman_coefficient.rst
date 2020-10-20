@@ -168,7 +168,7 @@ coefficient.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_data_analysis/manage_data_and_samples/plot_sample_correlation`
+    - See :doc:`/auto_data_analysis/manage_data_and_samples/plot_sample_correlation`
 
 .. topic:: References:
 

@@ -71,7 +71,7 @@ desired by the user. Note that the higher
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_data_analysis/statistical_hypothesis_testing/plot_andersondarling_test`
+    - See :doc:`/auto_data_analysis/statistical_hypothesis_testing/plot_andersondarling_test`
 
 .. topic:: References:
 

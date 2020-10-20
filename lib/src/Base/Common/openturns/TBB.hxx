@@ -24,6 +24,7 @@
 #include <algorithm>
 #include "openturns/OTprivate.hxx"
 #include "openturns/OTconfig.hxx"
+#include "openturns/Exception.hxx"
 
 #ifdef OPENTURNS_HAVE_TBB
 #ifdef OPENTURNS_TBB_NO_IMPLICIT_LINKAGE
@@ -34,11 +35,11 @@
 #  define __TBBMALLOC_NO_IMPLICIT_LINKAGE 1
 # endif
 #endif
+#include <tbb/task_arena.h>
 #include <tbb/parallel_sort.h>
 #include <tbb/parallel_reduce.h>
-#include "openturns/OTwindows.h"
 #else /* OPENTURNS_HAVE_TBB */
-#include "openturns/Exception.hxx"
+
 // We redefine some TBB elements to simulate TBB availability through the code
 // Those redefinitions are single threaded
 namespace tbb
@@ -84,22 +85,29 @@ private:
 }; // end class blocked_range
 
 template <typename RANGE, typename BODY>
-void parallel_for( const RANGE & range, const BODY & body )
+void parallel_for(const RANGE & range, const BODY & body)
 {
   body( range );
 }
 
 template <typename RANGE, typename BODY>
-void parallel_reduce( const RANGE & range, BODY & body )
+void parallel_reduce(const RANGE & range, BODY & body)
 {
   body( range );
 }
 
 template <typename ITERATOR>
-void parallel_sort( ITERATOR first, ITERATOR last )
+void parallel_sort(ITERATOR first, ITERATOR last)
 {
-  std::stable_sort( first, last );
+  std::stable_sort(first, last);
 }
+
+class task_arena
+{
+public:
+  task_arena(int) {}
+  template<typename F> void execute(const F& f) { f(); }
+};
 
 } // namespace tbb
 #endif /* OPENTURNS_HAVE_TBB */
@@ -143,7 +151,7 @@ public:
   void ParallelFor( UnsignedInteger from, UnsignedInteger to, const BODY & body, std::size_t gs = 1 )
   {
     TBBContext context;
-    tbb::parallel_for( tbb::blocked_range<UnsignedInteger>( from, to, gs ), body );
+    P_task_arena_->execute([&]() { tbb::parallel_for(tbb::blocked_range<UnsignedInteger>(from, to, gs), body); });
   }
 
   template <typename BODY>
@@ -151,7 +159,7 @@ public:
   void ParallelReduce( UnsignedInteger from, UnsignedInteger to, BODY & body, std::size_t gs = 1)
   {
     TBBContext context;
-    tbb::parallel_reduce( tbb::blocked_range<UnsignedInteger>( from, to, gs ), body );
+    P_task_arena_->execute([&]() { tbb::parallel_reduce(tbb::blocked_range<UnsignedInteger>(from, to, gs), body); });
   }
 
   template <typename ITERATOR>
@@ -159,7 +167,8 @@ public:
   void ParallelSort( ITERATOR first, ITERATOR last )
   {
     TBBContext context;
-    tbb::parallel_sort( first, last );
+    tbb::task_arena arena(NumberOfThreads_);
+    P_task_arena_->execute([&]() { tbb::parallel_sort(first, last); });
   }
 
   /* Whether TBB is available */
@@ -175,6 +184,9 @@ public:
 
 private:
   friend struct TBB_init;
+
+  static UnsignedInteger NumberOfThreads_;
+  static tbb::task_arena * P_task_arena_;
 
 }; /* end class TBB */
 

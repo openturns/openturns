@@ -106,10 +106,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_functional_modeling/field_functions/images/thumb/sphx_glr_plot_viscous_fall_field_function_thumb.png
+ .. figure:: /auto_functional_modeling/field_functions/images/thumb/sphx_glr_plot_viscous_fall_field_function_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_functional_modeling_field_functions_plot_viscous_fall_field_function.py`
+     :ref:`sphx_glr_auto_functional_modeling_field_functions_plot_viscous_fall_field_function.py`
 
 .. raw:: html
 
@@ -118,7 +118,7 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_functional_modeling/field_functions/plot_viscous_fall_field_function
+   /auto_functional_modeling/field_functions/plot_viscous_fall_field_function
 
 
 .. raw:: html                                                             
@@ -127,10 +127,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_meta_modeling/fields_metamodels/images/thumb/sphx_glr_plot_viscous_fall_metamodel_thumb.png
+ .. figure:: /auto_meta_modeling/fields_metamodels/images/thumb/sphx_glr_plot_viscous_fall_metamodel_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_meta_modeling_fields_metamodels_plot_viscous_fall_metamodel.py`
+     :ref:`sphx_glr_auto_meta_modeling_fields_metamodels_plot_viscous_fall_metamodel.py`
 
 .. raw:: html
 
@@ -139,5 +139,5 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_meta_modeling/fields_metamodels/plot_viscous_fall_metamodel
+   /auto_meta_modeling/fields_metamodels/plot_viscous_fall_metamodel
 

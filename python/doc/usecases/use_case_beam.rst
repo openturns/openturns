@@ -90,10 +90,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_axial_stressed_beam_quickstart_thumb.png
+ .. figure:: /auto_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_axial_stressed_beam_quickstart_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_reliability_sensitivity_reliability_plot_axial_stressed_beam_quickstart.py`
+     :ref:`sphx_glr_auto_reliability_sensitivity_reliability_plot_axial_stressed_beam_quickstart.py`
 
 .. raw:: html
 
@@ -102,7 +102,7 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_reliability_sensitivity/reliability/plot_axial_stressed_beam_quickstart
+   /auto_reliability_sensitivity/reliability/plot_axial_stressed_beam_quickstart
 
 
 
@@ -112,10 +112,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_axial_stressed_beam_thumb.png
+ .. figure:: /auto_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_axial_stressed_beam_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_reliability_sensitivity_reliability_plot_axial_stressed_beam.py`
+     :ref:`sphx_glr_auto_reliability_sensitivity_reliability_plot_axial_stressed_beam.py`
 
 .. raw:: html
 
@@ -124,7 +124,7 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_reliability_sensitivity/reliability/plot_axial_stressed_beam
+   /auto_reliability_sensitivity/reliability/plot_axial_stressed_beam
 
 
 .. raw:: html                                                             
@@ -133,10 +133,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_estimate_probability_lhs_thumb.png
+ .. figure:: /auto_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_estimate_probability_lhs_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_reliability_sensitivity_reliability_plot_estimate_probability_lhs.py`
+     :ref:`sphx_glr_auto_reliability_sensitivity_reliability_plot_estimate_probability_lhs.py`
 
 .. raw:: html
 
@@ -145,7 +145,7 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_reliability_sensitivity/reliability/plot_estimate_probability_lhs
+   /auto_reliability_sensitivity/reliability/plot_estimate_probability_lhs
 
 
 .. raw:: html                                                             
@@ -154,10 +154,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_estimate_probability_monte_carlo_thumb.png
+ .. figure:: /auto_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_estimate_probability_monte_carlo_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_reliability_sensitivity_reliability_plot_estimate_probability_monte_carlo.py`
+     :ref:`sphx_glr_auto_reliability_sensitivity_reliability_plot_estimate_probability_monte_carlo.py`
 
 .. raw:: html
 
@@ -166,5 +166,5 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_reliability_sensitivity/reliability/plot_estimate_probability_monte_carlo
+   /auto_reliability_sensitivity/reliability/plot_estimate_probability_monte_carlo
 

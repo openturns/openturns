@@ -95,7 +95,7 @@ the :math:`\cM'`.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_functional_modeling/field_functions/plot_value_function`
-    - See :doc:`/auto_py_functional_modeling/field_functions/plot_vertexvalue_function`
-    - See :doc:`/auto_py_meta_modeling/fields_metamodels/plot_fieldfunction_metamodel`
+    - See :doc:`/auto_functional_modeling/field_functions/plot_value_function`
+    - See :doc:`/auto_functional_modeling/field_functions/plot_vertexvalue_function`
+    - See :doc:`/auto_meta_modeling/fields_metamodels/plot_fieldfunction_metamodel`
 

@@ -57,9 +57,9 @@ The joined cumulative density function is therefore defined by:
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_probabilistic_modeling/copulas/plot_create_copula`
-    - See :doc:`/auto_py_probabilistic_modeling/copulas/plot_composed_copula`
-    - See :doc:`/auto_py_probabilistic_modeling/copulas/plot_extract_copula`
+    - See :doc:`/auto_probabilistic_modeling/copulas/plot_create_copula`
+    - See :doc:`/auto_probabilistic_modeling/copulas/plot_composed_copula`
+    - See :doc:`/auto_probabilistic_modeling/copulas/plot_extract_copula`
 
 .. topic:: References:
 

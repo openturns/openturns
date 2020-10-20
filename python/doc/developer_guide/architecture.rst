@@ -44,15 +44,15 @@ Overview
 This chapter will describe the general design of and a few design models
 that are widely used within the platform.
 
-The core of the platform is a C++ library made of about 500
+The core of the platform is a C++ library made of about 800
 classes of various size.
 
 The main user interface is a python module, automatically generated from
 the C++ library using the wrapping software SWIG.
 It allows for a usage through python scripts of any level of complexity.
 
-The library relies on relatively few dependencies, (Lapack, R, TBB,
-LibXml2), and most of them are optional.
+The library relies on few mandatory dependencies (LAPACK),
+the other being optional.
 
 Several GUIs have already been built on top of the C++ library or the
 Python module.
@@ -223,7 +223,7 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | HDF5 support (optional)               | `hdf5 <https://github.com/HDFGroup/hdf5>`_                                      | 1.10              |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| Multithreading (optional)             | `TBB <http://www.threadingbuildingblocks.org/>`_                                | 2                 |
+| Multithreading (optional)             | `TBB <http://www.threadingbuildingblocks.org/>`_                                | 4.3               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Python support                        | `Python <http://www.python.org/>`_                                              | 2.6               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+

@@ -81,7 +81,7 @@ wavelet expansion, polynomial chaos expansion, etc.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_meta_modeling/polynomial_chaos_metamodel/plot_functional_chaos`
+    - See :doc:`/auto_meta_modeling/polynomial_chaos_metamodel/plot_functional_chaos`
 
 
 .. topic:: References:

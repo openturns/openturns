@@ -93,35 +93,17 @@ outputTest = model(inputTest)
 
 
 # %%
-# The following function takes the `outputIndex` as input argument and plots the corresponding validation graphics. 
+# Plot the corresponding validation graphics.
 
 # %%
-def drawValidation(inputTest,outputTest,metamodel,outputIndex):
-    val = ot.MetaModelValidation(inputTest, outputTest[:,outputIndex], metamodel.getMarginal(outputIndex))
-    Q2 = val.computePredictivityFactor()
-    graph = val.drawValidation()
-    graph.setTitle("Validation of output #%d, Q2 = %.2f%%" % (outputIndex,Q2*100))
-    graph.setLegends([""])
-    return graph
-
-
-# %%
-# Let us first validate the first output. 
-
-# %%
-outputIndex = 0
-graph = drawValidation(inputTest,outputTest,metamodel,outputIndex)
+val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
+Q2 = val.computePredictivityFactor()
+graph = val.drawValidation()
+graph.setTitle("Metamodel validation Q2="+str(Q2))
 view = viewer.View(graph)
 
 # %%
-# The coefficient of predictivity is not extremely satisfactory for this output, but is would be sufficient for a central dispersion study. 
-
-# %%
-outputIndex = 1
-graph = drawValidation(inputTest,outputTest,metamodel,outputIndex)
-view = viewer.View(graph)
-
-# %%
+# The coefficient of predictivity is not extremely satisfactory for the first output, but is would be sufficient for a central dispersion study.
 # The second output has a much more satisfactory Q2: only one single extreme point is far from the diagonal of the graphics.
 
 # %%
@@ -185,7 +167,7 @@ for maximumDegree in range(5,15):
     metamodel = result.getMetaModel()
     for outputIndex in range(2):
         val = ot.MetaModelValidation(inputTest, outputTest[:,outputIndex], metamodel.getMarginal(outputIndex))
-        Q2 = val.computePredictivityFactor()
+        Q2 = val.computePredictivityFactor()[0]
         coefficientOfPredictivity[maximumDegree-5,outputIndex] = Q2
 
 # %%

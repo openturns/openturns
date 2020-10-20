@@ -75,7 +75,7 @@ n_valid = 1000
 inputTest = distribution.getSample(n_valid)
 outputTest = g(inputTest)
 val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
-Q2 = val.computePredictivityFactor()
+Q2 = val.computePredictivityFactor()[0]
 Q2
 
 # %%
@@ -83,7 +83,7 @@ Q2
 
 # %%
 graph = val.drawValidation()
-graph.setLegends([""])
+#graph.setLegends([""])
 graph.setTitle("Q2=%.2f%%" % (Q2*100))
 view = viewer.View(graph)
 plt.show()
