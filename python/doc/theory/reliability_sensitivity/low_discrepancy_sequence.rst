@@ -202,7 +202,7 @@ pseudo-random sequences.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_reliability_sensitivity/design_of_experiments/plot_low_discrepancy_sequence`
+    - See :doc:`/auto_reliability_sensitivity/design_of_experiments/plot_low_discrepancy_sequence`
 
 .. topic:: References:
 

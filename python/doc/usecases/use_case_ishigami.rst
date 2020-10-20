@@ -91,10 +91,10 @@ Examples base on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_meta_modeling/polynomial_chaos_metamodel/images/thumb/sphx_glr_plot_chaos_ishigami_thumb.png
+ .. figure:: /auto_meta_modeling/polynomial_chaos_metamodel/images/thumb/sphx_glr_plot_chaos_ishigami_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_meta_modeling_polynomial_chaos_metamodel_plot_chaos_ishigami.py`
+     :ref:`sphx_glr_auto_meta_modeling_polynomial_chaos_metamodel_plot_chaos_ishigami.py`
 
 .. raw:: html
 
@@ -103,7 +103,7 @@ Examples base on this use case :
 .. toctree::
    :hidden:
  
-   /auto_py_meta_modeling/polynomial_chaos_metamodel/plot_chaos_ishigami
+   /auto_meta_modeling/polynomial_chaos_metamodel/plot_chaos_ishigami
 
 .. raw:: html                                                             
 
@@ -111,10 +111,10 @@ Examples base on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_reliability_sensitivity/sensitivity_analysis/images/thumb/sphx_glr_plot_sensitivity_fast_thumb.png
+ .. figure:: /auto_reliability_sensitivity/sensitivity_analysis/images/thumb/sphx_glr_plot_sensitivity_fast_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_reliability_sensitivity_sensitivity_analysis_plot_sensitivity_fast.py`
+     :ref:`sphx_glr_auto_reliability_sensitivity_sensitivity_analysis_plot_sensitivity_fast.py`
 
 .. raw:: html
 
@@ -123,7 +123,7 @@ Examples base on this use case :
 .. toctree::
    :hidden:
  
-   /auto_py_reliability_sensitivity/sensitivity_analysis/plot_sensitivity_fast
+   /auto_reliability_sensitivity/sensitivity_analysis/plot_sensitivity_fast
 
 .. raw:: html                                                             
 
@@ -131,10 +131,10 @@ Examples base on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_data_analysis/manage_data_and_samples/images/thumb/sphx_glr_plot_sample_correlation_thumb.png
+ .. figure:: /auto_data_analysis/manage_data_and_samples/images/thumb/sphx_glr_plot_sample_correlation_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_data_analysis_manage_data_and_samples_plot_sample_correlation.py`
+     :ref:`sphx_glr_auto_data_analysis_manage_data_and_samples_plot_sample_correlation.py`
 
 .. raw:: html
 
@@ -143,7 +143,7 @@ Examples base on this use case :
 .. toctree::
    :hidden:
  
-   /auto_py_data_analysis/manage_data_and_samples/plot_sample_correlation
+   /auto_data_analysis/manage_data_and_samples/plot_sample_correlation
 
 .. raw:: html                                                             
 
@@ -151,10 +151,10 @@ Examples base on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_meta_modeling/polynomial_chaos_metamodel/images/thumb/sphx_glr_plot_chaos_draw_validation_thumb.png
+ .. figure:: /auto_meta_modeling/polynomial_chaos_metamodel/images/thumb/sphx_glr_plot_chaos_draw_validation_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_meta_modeling_polynomial_chaos_metamodel_plot_chaos_draw_validation.py`
+     :ref:`sphx_glr_auto_meta_modeling_polynomial_chaos_metamodel_plot_chaos_draw_validation.py`
 
 .. raw:: html
 
@@ -163,7 +163,7 @@ Examples base on this use case :
 .. toctree::
    :hidden:
  
-   /auto_py_meta_modeling/polynomial_chaos_metamodel/plot_chaos_draw_validation
+   /auto_meta_modeling/polynomial_chaos_metamodel/plot_chaos_draw_validation
 
 .. raw:: html                                                             
 
@@ -171,10 +171,10 @@ Examples base on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_meta_modeling/polynomial_chaos_metamodel/images/thumb/sphx_glr_plot_chaos_ishigami_grouped_indices_thumb.png
+ .. figure:: /auto_meta_modeling/polynomial_chaos_metamodel/images/thumb/sphx_glr_plot_chaos_ishigami_grouped_indices_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_meta_modeling_polynomial_chaos_metamodel_plot_chaos_ishigami_grouped_indices.py`
+     :ref:`sphx_glr_auto_meta_modeling_polynomial_chaos_metamodel_plot_chaos_ishigami_grouped_indices.py`
 
 .. raw:: html
 
@@ -183,7 +183,7 @@ Examples base on this use case :
 .. toctree::
    :hidden:
  
-   /auto_py_meta_modeling/polynomial_chaos_metamodel/plot_chaos_ishigami_grouped_indices
+   /auto_meta_modeling/polynomial_chaos_metamodel/plot_chaos_ishigami_grouped_indices
 
 .. raw:: html                                                             
 
@@ -191,10 +191,10 @@ Examples base on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_reliability_sensitivity/sensitivity_analysis/images/thumb/sphx_glr_plot_sensitivity_sobol_thumb.png
+ .. figure:: /auto_reliability_sensitivity/sensitivity_analysis/images/thumb/sphx_glr_plot_sensitivity_sobol_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_reliability_sensitivity_sensitivity_analysis_plot_sensitivity_sobol.py`
+     :ref:`sphx_glr_auto_reliability_sensitivity_sensitivity_analysis_plot_sensitivity_sobol.py`
 
 .. raw:: html
 
@@ -203,4 +203,4 @@ Examples base on this use case :
 .. toctree::
    :hidden:
  
-   /auto_py_reliability_sensitivity/sensitivity_analysis/plot_sensitivity_sobol
+   /auto_reliability_sensitivity/sensitivity_analysis/plot_sensitivity_sobol

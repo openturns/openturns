@@ -66,10 +66,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_reliability_sensitivity/central_dispersion/images/thumb/sphx_glr_plot_central_tendency_thumb.png
+ .. figure:: /auto_reliability_sensitivity/central_dispersion/images/thumb/sphx_glr_plot_central_tendency_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_reliability_sensitivity_central_dispersion_plot_central_tendency.py`
+     :ref:`sphx_glr_auto_reliability_sensitivity_central_dispersion_plot_central_tendency.py`
 
 .. raw:: html
 
@@ -78,7 +78,7 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_reliability_sensitivity/central_dispersion/plot_central_tendency
+   /auto_reliability_sensitivity/central_dispersion/plot_central_tendency
 
 
 .. raw:: html                                                             
@@ -87,10 +87,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_meta_modeling/polynomial_chaos_metamodel/images/thumb/sphx_glr_plot_chaos_cantilever_beam_integration_thumb.png
+ .. figure:: /auto_meta_modeling/polynomial_chaos_metamodel/images/thumb/sphx_glr_plot_chaos_cantilever_beam_integration_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_meta_modeling_polynomial_chaos_metamodel_plot_chaos_cantilever_beam_integration.py`
+     :ref:`sphx_glr_auto_meta_modeling_polynomial_chaos_metamodel_plot_chaos_cantilever_beam_integration.py`
 
 .. raw:: html
 
@@ -99,29 +99,7 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_meta_modeling/polynomial_chaos_metamodel/plot_chaos_cantilever_beam_integration
-
-
-
-.. raw:: html                                                             
-
-    <div class="sphx-glr-thumbcontainer" tooltip="">
-
-.. only:: html
-
- .. figure:: /auto_py_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_estimate_probability_directional_sampling_thumb.png
-     :alt:
-
-     :ref:`sphx_glr_auto_py_reliability_sensitivity_reliability_plot_estimate_probability_directional_sampling.py`
-
-.. raw:: html
-
-    </div>
-
-.. toctree::
-   :hidden:
-
-   /auto_py_reliability_sensitivity/reliability/plot_estimate_probability_directional_sampling
+   /auto_meta_modeling/polynomial_chaos_metamodel/plot_chaos_cantilever_beam_integration
 
 
 
@@ -131,10 +109,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_estimate_probability_form_thumb.png
+ .. figure:: /auto_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_estimate_probability_directional_sampling_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_reliability_sensitivity_reliability_plot_estimate_probability_form.py`
+     :ref:`sphx_glr_auto_reliability_sensitivity_reliability_plot_estimate_probability_directional_sampling.py`
 
 .. raw:: html
 
@@ -143,7 +121,8 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_reliability_sensitivity/reliability/plot_estimate_probability_form
+   /auto_reliability_sensitivity/reliability/plot_estimate_probability_directional_sampling
+
 
 
 .. raw:: html                                                             
@@ -152,10 +131,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_estimate_probability_importance_sampling_thumb.png
+ .. figure:: /auto_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_estimate_probability_form_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_reliability_sensitivity_reliability_plot_estimate_probability_importance_sampling.py`
+     :ref:`sphx_glr_auto_reliability_sensitivity_reliability_plot_estimate_probability_form.py`
 
 .. raw:: html
 
@@ -164,7 +143,7 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_reliability_sensitivity/reliability/plot_estimate_probability_importance_sampling
+   /auto_reliability_sensitivity/reliability/plot_estimate_probability_form
 
 
 .. raw:: html                                                             
@@ -173,10 +152,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_estimate_probability_randomized_qmc_thumb.png
+ .. figure:: /auto_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_estimate_probability_importance_sampling_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_reliability_sensitivity_reliability_plot_estimate_probability_randomized_qmc.py`
+     :ref:`sphx_glr_auto_reliability_sensitivity_reliability_plot_estimate_probability_importance_sampling.py`
 
 .. raw:: html
 
@@ -185,7 +164,7 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_reliability_sensitivity/reliability/plot_estimate_probability_randomized_qmc
+   /auto_reliability_sensitivity/reliability/plot_estimate_probability_importance_sampling
 
 
 .. raw:: html                                                             
@@ -194,10 +173,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_meta_modeling/kriging_metamodel/images/thumb/sphx_glr_plot_kriging_beam_arbitrary_trend_thumb.png
+ .. figure:: /auto_reliability_sensitivity/reliability/images/thumb/sphx_glr_plot_estimate_probability_randomized_qmc_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_meta_modeling_kriging_metamodel_plot_kriging_beam_arbitrary_trend.py`
+     :ref:`sphx_glr_auto_reliability_sensitivity_reliability_plot_estimate_probability_randomized_qmc.py`
 
 .. raw:: html
 
@@ -206,7 +185,7 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_meta_modeling/kriging_metamodel/plot_kriging_beam_arbitrary_trend
+   /auto_reliability_sensitivity/reliability/plot_estimate_probability_randomized_qmc
 
 
 .. raw:: html                                                             
@@ -215,10 +194,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_meta_modeling/kriging_metamodel/images/thumb/sphx_glr_plot_kriging_beam_trend_thumb.png
+ .. figure:: /auto_meta_modeling/kriging_metamodel/images/thumb/sphx_glr_plot_kriging_beam_arbitrary_trend_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_meta_modeling_kriging_metamodel_plot_kriging_beam_trend.py`
+     :ref:`sphx_glr_auto_meta_modeling_kriging_metamodel_plot_kriging_beam_arbitrary_trend.py`
 
 .. raw:: html
 
@@ -227,7 +206,7 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_meta_modeling/kriging_metamodel/plot_kriging_beam_trend
+   /auto_meta_modeling/kriging_metamodel/plot_kriging_beam_arbitrary_trend
 
 
 .. raw:: html                                                             
@@ -236,10 +215,31 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_meta_modeling/kriging_metamodel/images/thumb/sphx_glr_plot_kriging_cantilever_beam_hmat_thumb.png
+ .. figure:: /auto_meta_modeling/kriging_metamodel/images/thumb/sphx_glr_plot_kriging_beam_trend_thumb.png
+     :alt:
+
+     :ref:`sphx_glr_auto_meta_modeling_kriging_metamodel_plot_kriging_beam_trend.py`
+
+.. raw:: html
+
+    </div>
+
+.. toctree::
+   :hidden:
+
+   /auto_meta_modeling/kriging_metamodel/plot_kriging_beam_trend
+
+
+.. raw:: html                                                             
+
+    <div class="sphx-glr-thumbcontainer" tooltip="">
+
+.. only:: html
+
+ .. figure:: /auto_meta_modeling/kriging_metamodel/images/thumb/sphx_glr_plot_kriging_cantilever_beam_hmat_thumb.png
      :alt: Create a copula
 
-     :ref:`sphx_glr_auto_py_meta_modeling_kriging_metamodel_plot_kriging_cantilever_beam_hmat.py`
+     :ref:`sphx_glr_auto_meta_modeling_kriging_metamodel_plot_kriging_cantilever_beam_hmat.py`
 
 .. raw:: html
 
@@ -248,7 +248,7 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_meta_modeling/kriging_metamodel/plot_kriging_cantilever_beam_hmat
+   /auto_meta_modeling/kriging_metamodel/plot_kriging_cantilever_beam_hmat
 
 
 .. raw:: html                                                             
@@ -257,10 +257,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_meta_modeling/kriging_metamodel/images/thumb/sphx_glr_plot_kriging_cantilever_beam_thumb.png
+ .. figure:: /auto_meta_modeling/kriging_metamodel/images/thumb/sphx_glr_plot_kriging_cantilever_beam_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_meta_modeling_kriging_metamodel_plot_kriging_cantilever_beam.py`
+     :ref:`sphx_glr_auto_meta_modeling_kriging_metamodel_plot_kriging_cantilever_beam.py`
 
 .. raw:: html
 
@@ -269,4 +269,4 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_meta_modeling/kriging_metamodel/plot_kriging_cantilever_beam
+   /auto_meta_modeling/kriging_metamodel/plot_kriging_cantilever_beam

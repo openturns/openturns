@@ -267,10 +267,10 @@ This implies:
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_calibration/least_squares_and_gaussian_calibration/plot_calibration_flooding`
-    - See :doc:`/auto_py_calibration/least_squares_and_gaussian_calibration/plot_calibration_chaboche`
-    - See :doc:`/auto_py_calibration/least_squares_and_gaussian_calibration/plot_calibration_deflection_tube`
-    - See :doc:`/auto_py_calibration/least_squares_and_gaussian_calibration/plot_calibration_logistic`
+    - See :doc:`/auto_calibration/least_squares_and_gaussian_calibration/plot_calibration_flooding`
+    - See :doc:`/auto_calibration/least_squares_and_gaussian_calibration/plot_calibration_chaboche`
+    - See :doc:`/auto_calibration/least_squares_and_gaussian_calibration/plot_calibration_deflection_tube`
+    - See :doc:`/auto_calibration/least_squares_and_gaussian_calibration/plot_calibration_logistic`
 
 .. topic:: References:
 

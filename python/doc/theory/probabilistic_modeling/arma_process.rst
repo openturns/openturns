@@ -183,6 +183,6 @@ realizations at a time of the process.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_probabilistic_modeling/stochastic_processes/plot_arma_creation`
-    - See :doc:`/auto_py_probabilistic_modeling/stochastic_processes/plot_arma_manipulation`
-    - See :doc:`/auto_py_data_analysis/estimate_stochastic_processes/plot_estimate_arma`
+    - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_arma_creation`
+    - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_arma_manipulation`
+    - See :doc:`/auto_data_analysis/estimate_stochastic_processes/plot_estimate_arma`

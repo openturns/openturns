@@ -161,5 +161,5 @@ The multivariate Whittle estimation requires that:
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_data_analysis/estimate_stochastic_processes/plot_estimate_arma`
-    - See :doc:`/auto_py_data_analysis/estimate_stochastic_processes/plot_estimate_multivariate_arma`
+    - See :doc:`/auto_data_analysis/estimate_stochastic_processes/plot_estimate_arma`
+    - See :doc:`/auto_data_analysis/estimate_stochastic_processes/plot_estimate_multivariate_arma`

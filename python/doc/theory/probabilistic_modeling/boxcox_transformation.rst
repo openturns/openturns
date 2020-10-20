@@ -201,5 +201,5 @@ The parameter :math:`\hat{\lambda}` is the one maximizing :math:`\ell(\lambda)` 
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_probabilistic_modeling/stochastic_processes/plot_box_cox_transform`
+    - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_box_cox_transform`
 

@@ -110,7 +110,7 @@ distribution function.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_data_analysis/sample_analysis/plot_visualize_empirical_cdf`
+    - See :doc:`/auto_data_analysis/sample_analysis/plot_visualize_empirical_cdf`
 
 
 .. topic:: References:

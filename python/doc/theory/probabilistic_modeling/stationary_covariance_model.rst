@@ -109,5 +109,5 @@ matrix :math:`\mat{R}` :
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_probabilistic_modeling/stochastic_processes/plot_create_stationary_covmodel`
-    - See :doc:`/auto_py_probabilistic_modeling/stochastic_processes/plot_user_stationary_covmodel`
+    - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_create_stationary_covmodel`
+    - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_user_stationary_covmodel`

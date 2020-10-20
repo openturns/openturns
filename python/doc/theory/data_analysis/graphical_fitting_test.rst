@@ -271,9 +271,9 @@ This way of doing is more efficient.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_data_analysis/statistical_hypothesis_testing/plot_qqplot_graph`
-    - See :doc:`/auto_py_data_analysis/statistical_hypothesis_testing/plot_henry_line_graph`
-    - See :doc:`/auto_py_data_analysis/estimate_dependency_and_copulas/plot_kendallplot_test`
+    - See :doc:`/auto_data_analysis/statistical_hypothesis_testing/plot_qqplot_graph`
+    - See :doc:`/auto_data_analysis/statistical_hypothesis_testing/plot_henry_line_graph`
+    - See :doc:`/auto_data_analysis/estimate_dependency_and_copulas/plot_kendallplot_test`
 
 .. topic:: References:
 

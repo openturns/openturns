@@ -150,10 +150,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_calibration/least_squares_and_gaussian_calibration/images/thumb/sphx_glr_plot_calibration_logistic_thumb.png
+ .. figure:: /auto_calibration/least_squares_and_gaussian_calibration/images/thumb/sphx_glr_plot_calibration_logistic_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_calibration_least_squares_and_gaussian_calibration_plot_calibration_logistic.py`
+     :ref:`sphx_glr_auto_calibration_least_squares_and_gaussian_calibration_plot_calibration_logistic.py`
 
 .. raw:: html
 
@@ -162,7 +162,7 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_calibration/least_squares_and_gaussian_calibration/plot_calibration_logistic
+   /auto_calibration/least_squares_and_gaussian_calibration/plot_calibration_logistic
 
 
 .. raw:: html                                                             
@@ -171,10 +171,10 @@ Examples based on this use case :
 
 .. only:: html
 
- .. figure:: /auto_py_functional_modeling/field_functions/images/thumb/sphx_glr_plot_logistic_growth_model_thumb.png
+ .. figure:: /auto_functional_modeling/field_functions/images/thumb/sphx_glr_plot_logistic_growth_model_thumb.png
      :alt:
 
-     :ref:`sphx_glr_auto_py_functional_modeling_field_functions_plot_logistic_growth_model.py`
+     :ref:`sphx_glr_auto_functional_modeling_field_functions_plot_logistic_growth_model.py`
 
 .. raw:: html
 
@@ -183,4 +183,4 @@ Examples based on this use case :
 .. toctree::
    :hidden:
 
-   /auto_py_functional_modeling/field_functions/plot_logistic_growth_model
+   /auto_functional_modeling/field_functions/plot_logistic_growth_model

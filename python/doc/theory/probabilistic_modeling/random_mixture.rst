@@ -293,8 +293,8 @@ To summarize:
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_probabilistic_modeling/distributions/plot_random_mixture_distribution`
-    - See :doc:`/auto_py_probabilistic_modeling/distributions/plot_random_mixture_distribution_discrete`
+    - See :doc:`/auto_probabilistic_modeling/distributions/plot_random_mixture_distribution`
+    - See :doc:`/auto_probabilistic_modeling/distributions/plot_random_mixture_distribution_discrete`
 
 .. topic:: References:
 

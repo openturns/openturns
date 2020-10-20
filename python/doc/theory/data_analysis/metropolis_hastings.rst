@@ -169,7 +169,7 @@ independent sampling.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_calibration/bayesian_calibration/plot_bayesian_calibration`
+    - See :doc:`/auto_calibration/bayesian_calibration/plot_bayesian_calibration`
 
 .. topic:: References:
 

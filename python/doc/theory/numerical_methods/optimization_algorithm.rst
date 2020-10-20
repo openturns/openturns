@@ -77,9 +77,9 @@ where :math:`\alpha_k` is the parameter *stepmx*.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_numerical_methods/optimization/plot_optimization_constraints`
-    - See :doc:`/auto_py_numerical_methods/optimization/plot_optimization_nlopt`
-    - See :doc:`/auto_py_numerical_methods/optimization/plot_optimization_dlib`
+    - See :doc:`/auto_numerical_methods/optimization/plot_optimization_constraints`
+    - See :doc:`/auto_numerical_methods/optimization/plot_optimization_nlopt`
+    - See :doc:`/auto_numerical_methods/optimization/plot_optimization_dlib`
 
 .. topic:: References:
 

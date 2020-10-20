@@ -32,6 +32,6 @@ get the resulting centered field.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_probabilistic_modeling/stochastic_processes/plot_add_trend`
-    - See :doc:`/auto_py_probabilistic_modeling/stochastic_processes/plot_trend_transform`
-    - See :doc:`/auto_py_probabilistic_modeling/stochastic_processes/plot_process_manipulation`
+    - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_add_trend`
+    - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_trend_transform`
+    - See :doc:`/auto_probabilistic_modeling/stochastic_processes/plot_process_manipulation`

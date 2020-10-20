@@ -111,7 +111,7 @@ and the limit state function is :
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_reliability_sensitivity/reliability/plot_estimate_probability_form`
+    - See :doc:`/auto_reliability_sensitivity/reliability/plot_estimate_probability_form`
 
 
 .. topic:: References:

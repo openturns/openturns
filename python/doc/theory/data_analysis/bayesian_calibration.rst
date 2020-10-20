@@ -146,8 +146,8 @@ Monte-Carlo Markov-Chain (MCMC) methods. See :ref:`metropolis_hastings`.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_py_calibration/bayesian_calibration/plot_bayesian_calibration`
-    - See :doc:`/auto_py_calibration/bayesian_calibration/plot_bayesian_calibration_flooding`
+    - See :doc:`/auto_calibration/bayesian_calibration/plot_bayesian_calibration`
+    - See :doc:`/auto_calibration/bayesian_calibration/plot_bayesian_calibration_flooding`
 
 .. topic:: References:
 
