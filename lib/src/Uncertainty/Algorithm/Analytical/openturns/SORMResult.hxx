@@ -55,9 +55,6 @@ public:
   /** EventProbabilityHohenbichler accessor */
   Scalar getEventProbabilityHohenbichler() const;
 
-  /** @deprecated EventProbabilityHohenbichler accessor */
-  Scalar getEventProbabilityHohenBichler() const;
-
   /** EventProbabilityTvedt accessor */
   Scalar getEventProbabilityTvedt() const;
 
@@ -66,9 +63,6 @@ public:
 
   /** GeneralisedReliabilityIndexHohenbichler accessor */
   Scalar getGeneralisedReliabilityIndexHohenbichler() const;
-
-  /** @deprecated GeneralisedReliabilityIndexHohenbichler accessor */
-  Scalar getGeneralisedReliabilityIndexHohenBichler() const;
 
   /** GeneralisedReliabilityIndexTvedt accessor */
   Scalar getGeneralisedReliabilityIndexTvedt() const;

@@ -197,12 +197,6 @@ void OptimizationAlgorithmImplementation::run()
   throw NotYetImplementedException(HERE) << "In OptimizationAlgorithmImplementation::run()";
 }
 
-Point OptimizationAlgorithmImplementation::computeLagrangeMultipliers(const Point & x) const
-{
-  LOGWARN(OSS() << "OptimizationAlgorithm::computeLagrangeMultipliers is deprecated, use OptimizationResult::computeLagrangeMultipliers");
-  return result_.computeLagrangeMultipliers(x);
-}
-
 /* Virtual constructor */
 OptimizationAlgorithmImplementation * OptimizationAlgorithmImplementation::clone() const
 {

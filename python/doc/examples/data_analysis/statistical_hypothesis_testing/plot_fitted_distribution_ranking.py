@@ -34,8 +34,8 @@ view = viewer.View(graph)
 factories = [ot.BetaFactory(), ot.TriangularFactory()]
 
 # %%
-# Rank the continuous models by the Kolmogorov p-values:
-estimated_distribution, test_result = ot.FittingTest.BestModelKolmogorov(sample, factories)
+# Rank the continuous models by the Lilliefors p-values:
+estimated_distribution, test_result = ot.FittingTest.BestModelLilliefors(sample, factories)
 test_result
 
 # %%

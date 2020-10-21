@@ -216,18 +216,6 @@ OptimizationProblem OptimizationResult::getProblem() const
   return problem_;
 }
 
-/* Lagrange multipliers accessor */
-void OptimizationResult::setLagrangeMultipliers(const Point & /*lagrangeMultipliers*/)
-{
-  LOGWARN(OSS() << "OptimizationResult::setLagrangeMultipliers is deprecated");
-}
-
-Point OptimizationResult::getLagrangeMultipliers() const
-{
-  LOGWARN(OSS() << "OptimizationResult::getLagrangeMultipliers is deprecated, use computeLagrangeMultipliers");
-  return computeLagrangeMultipliers();
-}
-
 /* String converter */
 String OptimizationResult::__repr__() const
 {

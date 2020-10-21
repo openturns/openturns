@@ -1,5 +1,0 @@
-Remove Pairs alias in 1.17
-Remove deprecated SORMResult::getEventProbabilityHohenBichler
-Remove deprecated SORMResult::getGeneralisedReliabilityIndexHohenBichler
-Remove deprecated OptimizationResult::getLagrangeMultipliers, OptimizationAlgorithm::computeLagrangeMultipliers
-Remove deprecated FittingTest::Kolmogorov, FittingTestx::BestModelKolmogorov

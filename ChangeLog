@@ -1,5 +1,28 @@
 = New Features =
 
+== 1.17 release (in-progress) == #release-1.17
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+
+==== API changes ====
+ * Removed deprecated Pairs alias
+ * Removed deprecated SORMResult::getEventProbabilityHohenBichler/getGeneralisedReliabilityIndexHohenBichler
+ * Removed deprecated OptimizationResult::getLagrangeMultipliers, OptimizationAlgorithm::computeLagrangeMultipliers
+ * Removed deprecated FittingTest::Kolmogorov, FittingTest::BestModelKolmogorov (DistributionFactory argument only)
+
+=== Documentation ===
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+=== Bug fixes ===
+
+
 == 1.16 release (2020-10-20) == #release-1.16
 
 === Library ===

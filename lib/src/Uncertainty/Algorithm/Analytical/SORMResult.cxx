@@ -215,12 +215,6 @@ Scalar SORMResult::getEventProbabilityHohenbichler() const
   return eventProbabilityHohenbichler_;
 } // SORMResult::getEventProbabilityHohenbichler
 
-/* Deprecated alias for the function that actually evaluates the event probability with SORM Hohenbichler approximation */
-Scalar SORMResult::getEventProbabilityHohenBichler() const
-{
-  LOGWARN("SORMResult::getEventProbabilityHohenBichler is deprecated, use SORMResult::getEventProbabilityHohenbichler instead");
-  return getEventProbabilityHohenbichler();
-} // SORMResult::getEventProbabilityHohenBichler
 
 /* The function that actually evaluates the event probability with SORM Tvedtapproximation */
 Scalar SORMResult::getEventProbabilityTvedt() const
@@ -321,12 +315,6 @@ Scalar SORMResult::getGeneralisedReliabilityIndexHohenbichler() const
   return generalisedReliabilityIndexHohenbichler_;
 } // end SORMResult::getGeneralisedReliabilityIndexHohenbichler
 
-/* Deprecated alias for GeneralisedReliabilityIndexHohenbichler accessor */
-Scalar SORMResult::getGeneralisedReliabilityIndexHohenBichler() const
-{
-  LOGWARN("SORMResult::getGeneralisedReliabilityIndexHohenBichler is deprecated, use SORMResult::getGeneralisedReliabilityIndexHohenbichler instead");
-  return getGeneralisedReliabilityIndexHohenbichler();
-} // end SORMResult::getGeneralisedReliabilityIndexHohenBichler
 
 /* GeneralisedReliabilityIndex accessor */
 Scalar SORMResult::getGeneralisedReliabilityIndexTvedt() const

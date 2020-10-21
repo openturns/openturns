@@ -134,7 +134,7 @@ int main(int, char *[])
   Scalar bestAIC = -1.0;
   Scalar bestAICc = -1.0;
   fullprint << "best model BIC=" << FittingTest::BestModelBIC(aSample, factoryCollection, bestBIC) << std::endl;
-  fullprint << "best model Kolmogorov=" << FittingTest::BestModelKolmogorov(aSample, factoryCollection, bestResult) << std::endl;
+  fullprint << "best model Kolmogorov=" << FittingTest::BestModelLilliefors(aSample, factoryCollection, bestResult) << std::endl;
   fullprint << "best model AIC=" << FittingTest::BestModelAIC(aSample, factoryCollection, bestAIC) << std::endl;
   fullprint << "best model AICC=" << FittingTest::BestModelAICC(aSample, factoryCollection, bestAICc) << std::endl;
 

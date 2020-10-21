@@ -52,9 +52,6 @@ public:
   /** Performs the actual computation */
   virtual void run();
 
-  /** @deprecated Computes the Lagrange multipliers associated with the constraints */
-  Point computeLagrangeMultipliers(const Point & x) const;
-
   /** Starting point accessor */
   virtual Point getStartingPoint() const;
 
