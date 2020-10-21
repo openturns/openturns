@@ -41,7 +41,8 @@ struct XMLH5StorageManagerState : public XMLStorageManagerState
   void next() override
   {
     // TODO: find a cleaner pattern for handling StorageManagerStates increment
-    if (reachedEnd_) {
+    if (reachedEnd_)
+    {
       current_ = XML::GetNextNode(current_);
     }
   }

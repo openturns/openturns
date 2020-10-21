@@ -206,7 +206,8 @@ class View(object):
                     graphij = graph.getGraph(i, j)
                     if len(graphij.getDrawables()) == 0:
                         continue
-                    axes = [self._fig.add_subplot(graph.getNbRows(), graph.getNbColumns(), 1 + i * graph.getNbColumns() + j, **axes_kw)]
+                    axes = [self._fig.add_subplot(graph.getNbRows(), graph.getNbColumns(
+                    ), 1 + i * graph.getNbColumns() + j, **axes_kw)]
                     axes[0].axison = graphij.getAxes()
                     # hide inner ticks
                     if i < graph.getNbRows() - 1:
@@ -217,7 +218,8 @@ class View(object):
                     if LooseVersion(matplotlib.__version__) > '3.0':
                         axes[0].spines['right'].set_visible(False)
                         axes[0].spines['top'].set_visible(False)
-                    View(graphij, figure=self._fig, axes=axes, plot_kw=plot_kw, contour_kw=contour_kw, clabel_kw=clabel_kw)
+                    View(graphij, figure=self._fig, axes=axes, plot_kw=plot_kw,
+                         contour_kw=contour_kw, clabel_kw=clabel_kw)
                     self._fig.suptitle(self._ToUnicode(graph.getTitle()))
             return
 
@@ -262,7 +264,8 @@ class View(object):
             try:
                 # not all formatters support scientific format, eg FixedFormatter when ticklabels are disabled on subplots
                 # FixedFormatter' object has no attribute 'set_scientific'
-                self._ax[0].ticklabel_format(axis=axis, style='sci', scilimits=(-3, 5))
+                self._ax[0].ticklabel_format(
+                    axis=axis, style='sci', scilimits=(-3, 5))
             except AttributeError:
                 pass
 
@@ -584,7 +587,7 @@ class View(object):
 
         kwargs:
             See matplotlib.figure.Figure.savefig documentation for valid keyword arguments.
-        
+
         Examples
         --------
         >>> import openturns as ot
@@ -600,7 +603,7 @@ class View(object):
         Accessor to the underlying figure object.
 
         See matplotlib.figure.Figure for further information.
-        
+
         Examples
         --------
         >>> import openturns as ot
@@ -617,7 +620,7 @@ class View(object):
         Get the list of Axes objects.
 
         See matplotlib.axes.Axes for further information.
-        
+
         Examples
         --------
         >>> import openturns as ot
@@ -633,7 +636,7 @@ class View(object):
     def close(self):
         """
         Close the figure.
-        
+
         Examples
         --------
         >>> import openturns as ot
@@ -659,7 +662,7 @@ def _ToImageString(graph):
     -------
     image_str : str
        An image representation as string
-    
+
     Examples
     --------
     >>> import openturns as ot
@@ -691,36 +694,36 @@ def _ToImageString(graph):
     return image_string
 
 
-def PlotDesign(design, bounds = None, subdivisions = None, 
-               figure = None, axes=[], 
-               plot_kw = None, axes_kw = None, text_kw = None, 
-               enableTicks = True):
+def PlotDesign(design, bounds=None, subdivisions=None,
+               figure=None, axes=[],
+               plot_kw=None, axes_kw=None, text_kw=None,
+               enableTicks=True):
     """
-    Plot a design using a scatter plot. 
-    If the dimension is equal to 2, then plots the 2D projection. 
+    Plot a design using a scatter plot.
+    If the dimension is equal to 2, then plots the 2D projection.
     If the dimension is greater or equal to 3, then plots all 2D projections.
 
     In addition, the function plots a grid, i.e. horizontal and vertical lines
-    to see the dispersion of the points. 
-    This allows to see how the sample fills the space. 
+    to see the dispersion of the points.
+    This allows to see how the sample fills the space.
 
     Parameters
     ----------
     design : 2-d sequence of float
-        The sample. 
-    figure : a Matplotlib figure. 
-        If this is not None, then create a new figure. 
-        Otherwise, use the existing figure. 
-    axes : a Matplotlib axis. 
-        If empty, then create new axes. 
+        The sample.
+    figure : a Matplotlib figure.
+        If this is not None, then create a new figure.
+        Otherwise, use the existing figure.
+    axes : a Matplotlib axis.
+        If empty, then create new axes.
     bounds: :class:`~openturns.Interval`
-        Bounds of the plot. By default, compute the bounds from the sample. 
+        Bounds of the plot. By default, compute the bounds from the sample.
     subdivisions : a list of integers
-        Number of subdivisions in the each direction. 
-        By default, set the number of subdivisions in each direction 
-        as equal to the sample size. 
+        Number of subdivisions in the each direction.
+        By default, set the number of subdivisions in each direction
+        as equal to the sample size.
     enableTicks :
-        A boolean. If True, then the ticks are plotted. 
+        A boolean. If True, then the ticks are plotted.
 
     Returns
     -------
@@ -729,9 +732,9 @@ def PlotDesign(design, bounds = None, subdivisions = None,
 
     Examples
     --------
-    
+
     Plot a sample in 2 dimensions.
-    
+
     >>> import openturns as ot
     >>> from openturns.viewer import PlotDesign
     >>> dim = 20
@@ -764,7 +767,7 @@ def PlotDesign(design, bounds = None, subdivisions = None,
     dim = data.getDimension()
     if dim < 2:
         raise TypeError('Expected designs of dimension >=2')
-    
+
     # Get the bounds
     if bounds is None:
         lowerBound = data.getMin()
@@ -772,7 +775,7 @@ def PlotDesign(design, bounds = None, subdivisions = None,
         bounds = ot.Interval(lowerBound, upperBound)
     if bounds.getDimension() != dim:
         raise ValueError('Dimension of bounds %d do not match the dimension of the sample %d' % (
-                bounds.getDimension(), dim))
+            bounds.getDimension(), dim))
 
     # Check the subdivisions
     if subdivisions is None:
@@ -780,8 +783,8 @@ def PlotDesign(design, bounds = None, subdivisions = None,
         subdivisions = [size]*dim
     if len(subdivisions) != dim:
         raise ValueError('Number of subdivisions %d does not match the dimension of the sample %d' % (
-                len(subdivisions), dim))
-    
+            len(subdivisions), dim))
+
     # Get description
     labels = data.getDescription()
 
@@ -853,9 +856,9 @@ def PlotDesign(design, bounds = None, subdivisions = None,
 
     # General case
 
-    # For the diagonal of a multidimensional plot, 
+    # For the diagonal of a multidimensional plot,
     # disable the ticks, always
-    diagonal_axes_kw = axes_kw.copy() # An independent copy
+    diagonal_axes_kw = axes_kw.copy()  # An independent copy
     diagonal_axes_kw['xticks'] = []
     diagonal_axes_kw['yticks'] = []
 
@@ -873,7 +876,7 @@ def PlotDesign(design, bounds = None, subdivisions = None,
             Nx = subdivisions[j]
             index_axis += 1
 
-            if i==j:
+            if i == j:
                 axes.append(
                     figure.add_subplot(dim, dim, index_axis + 1, **diagonal_axes_kw))
                 text_kw['transform'] = axes[index_axis].transAxes
@@ -884,7 +887,7 @@ def PlotDesign(design, bounds = None, subdivisions = None,
                 # disable axis : grid, ticks, axis?
                 if not enableTicks:
                     axes[index_axis].axison = False
-    
+
                 # x axis
                 x = data.getMarginal(j)
                 x_min = bounds.getLowerBound()[j]

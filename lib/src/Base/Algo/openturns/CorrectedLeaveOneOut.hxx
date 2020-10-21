@@ -50,19 +50,19 @@ public:
 
   /** Perform cross-validation */
   Scalar run(const Sample & x,
-                     const Sample & y,
-                     const Point & weight,
-                     const FunctionCollection & psi,
-                     const Indices & indices) const override;
+             const Sample & y,
+             const Point & weight,
+             const FunctionCollection & psi,
+             const Indices & indices) const override;
 
 #ifndef SWIG
   Scalar run(const Sample & y,
-                     const Point & weight,
-                     const Indices & indices,
-                     const DesignProxy & proxy) const override;
+             const Point & weight,
+             const Indices & indices,
+             const DesignProxy & proxy) const override;
 
   Scalar run(LeastSquaresMethod & method,
-                     const Sample & y) const override;
+             const Sample & y) const override;
 #endif
 
   /** Method save() stores the object through the StorageManager */

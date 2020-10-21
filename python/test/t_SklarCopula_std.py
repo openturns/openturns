@@ -129,6 +129,6 @@ print("margin realization=", repr(margin.getRealization()))
 
 # tbb nested parallelism issue
 student = ot.Student(3.0, [1.0]*2, [3.0]*2, ot.CorrelationMatrix(2))
-copula =  ot.SklarCopula(student)
+copula = ot.SklarCopula(student)
 pdf_graph = copula.drawPDF()
 cdf_graph = copula.drawCDF()

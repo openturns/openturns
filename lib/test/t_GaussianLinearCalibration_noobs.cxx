@@ -32,7 +32,7 @@ int main(int, char *[])
   try
   {
     PlatformInfo::SetNumericalPrecision(5);
-    
+
     // A use case without observed inputs.
     UnsignedInteger m = 100;
     Sample x(m, 0);
@@ -42,7 +42,7 @@ int main(int, char *[])
     inVars.add("b");
     inVars.add("c");
     // This is linear in (a, b, c) and not identifiable.
-    // Only the difference b - c is identifiable. 
+    // Only the difference b - c is identifiable.
     // Derived from y = a + (b - c) * x at x=[-1.0, -0.6, -0.2, 0.2, 0.6, 1.0]
     Description formulas(1, "a +  -1.0  * b +  1.0  * c");
     formulas.add("a +  -0.6  * b +  0.36  * c");

@@ -52,16 +52,16 @@ assert_almost_equal(im.S12, 0.0, 1e-12)
 S13 = b**2*pi**8/2.0*(1.0/9.0-1.0/25.0)/variance
 assert_almost_equal(im.S13, S13, 1e-12)
 
-S23  = 0.0
+S23 = 0.0
 assert_almost_equal(im.S23, 0.0, 1e-12)
 
-S123  = 0.0
+S123 = 0.0
 assert_almost_equal(im.S123, 0.0, 1e-12)
 
-ST1  = S1 + S13
+ST1 = S1 + S13
 assert_almost_equal(im.ST1, ST1, 1e-12)
 
-ST2  = S2
+ST2 = S2
 assert_almost_equal(im.ST2, ST2, 1e-12)
 
 ST3 = S13

@@ -18,9 +18,9 @@ channels for you to contact us:
     unique occasion for users to meet up and share their experience using the
     library.
 
-.. warning::
+.. note::
 
-    Please consider using the mailing list first if you have any doubt whether
+    Please consider using the forum or chat first if you have any doubt whether
     you have bumped into a real bug or not.
 
 .. toctree::

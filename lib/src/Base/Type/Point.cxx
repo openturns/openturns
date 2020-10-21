@@ -59,7 +59,7 @@ Point::Point(const Collection<Scalar> & coll)
 }
 
 Point::Point(std::initializer_list<Scalar> initList)
-: InternalType(initList)
+  : InternalType(initList)
 {
   // Nothing to do
 }

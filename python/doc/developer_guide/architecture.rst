@@ -179,8 +179,8 @@ The Windows version is obtained by cross-compilation using MinGW-w64.
 
 .. _dependencies:
 
-Dependencies
-~~~~~~~~~~~~
+External dependencies
+~~~~~~~~~~~~~~~~~~~~~
 
 The tools chosen for the development of the platform are:
 
@@ -247,6 +247,33 @@ The tools chosen for the development of the platform are:
 The versions given here are only meant as indications of minimum version and newer ones
 may be used.
 
+
+Internal dependencies
+~~~~~~~~~~~~~~~~~~~~~
+
+We would like to acknowledge the following codes that are included into the library:
+
++---------------------------------------+---------------------------------------------------------------------------------+
+| Optimization                          | `COBYLA <https://www.zhangzk.net/software.html>`_                               |
++---------------------------------------+---------------------------------------------------------------------------------+
+| Mersenne twister RNG                  | `DSFMT <http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/SFMT/>`_                |
++---------------------------------------+---------------------------------------------------------------------------------+
+| Differenciation                       | `Ev3 <http://www.lix.polytechnique.fr/~liberti/academic.html>`_                 |
++---------------------------------------+---------------------------------------------------------------------------------+
+| Symbolic parser                       | `ExprTk <https://www.partow.net/programming/exprtk/index.html>`_                |
++---------------------------------------+---------------------------------------------------------------------------------+
+| Faddeeva function                     | `Fadeeva <http://ab-initio.mit.edu/Faddeeva>`_                                  |
++---------------------------------------+---------------------------------------------------------------------------------+
+| Kendall Tau                           | `Kendall <https://afni.nimh.nih.gov/pub/dist/src/ktaub.c>`_                     |
++---------------------------------------+---------------------------------------------------------------------------------+
+| FFT                                   | `KissFFT <https://github.com/mborgerding/kissfft>`_                             |
++---------------------------------------+---------------------------------------------------------------------------------+
+| KS distribution                       | `KolmogorovSmirnovDist <https://www.jstatsoft.org/article/view/v039i11>`_       |
++---------------------------------------+---------------------------------------------------------------------------------+
+| Poisson inverse CDF                   | `poissinv <http://people.maths.ox.ac.uk/gilesm/codes/poissinv/>`_               |
++---------------------------------------+---------------------------------------------------------------------------------+
+| Optimization                          | `TNC <http://js2007.free.fr/code/index.html#TNC>`_                              |
++---------------------------------------+---------------------------------------------------------------------------------+
 
 Compilation infrastructure
 ~~~~~~~~~~~~~~~~~~~~~~~~~~

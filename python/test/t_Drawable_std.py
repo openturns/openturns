@@ -27,27 +27,30 @@ hexa = ot.Drawable.ConvertFromHSVA(215.0, 0.2, 0.3, 0.4)
 assert hexa == '#3d444d66'
 #
 rgb = ot.Drawable.ConvertFromHSVIntoRGB(215.0, 0.2, 0.3)
-ott.assert_almost_equal(rgb, [0.24,0.265,0.3])
+ott.assert_almost_equal(rgb, [0.24, 0.265, 0.3])
 #
-hsv = ot.Drawable.ConvertFromRGBIntoHSV(44.0 / 255.0, 160.0 / 255.0, 72.0 / 255.0)
+hsv = ot.Drawable.ConvertFromRGBIntoHSV(
+    44.0 / 255.0, 160.0 / 255.0, 72.0 / 255.0)
 ott.assert_almost_equal(hsv, (134.48275862068965, 0.725, 0.6274509803921569))
 #
-hsv = ot.Drawable.ConvertFromRGBIntoHSV(44.0 / 255.0, 72.0 / 255.0, 160.0 / 255.0)
+hsv = ot.Drawable.ConvertFromRGBIntoHSV(
+    44.0 / 255.0, 72.0 / 255.0, 160.0 / 255.0)
 ott.assert_almost_equal(hsv, (225.51724137931038, 0.725, 0.6274509803921569))
 #
-hsv = ot.Drawable.ConvertFromRGBIntoHSV(160.0 / 255.0, 44.0 / 255.0, 72.0 / 255.0)
+hsv = ot.Drawable.ConvertFromRGBIntoHSV(
+    160.0 / 255.0, 44.0 / 255.0, 72.0 / 255.0)
 ott.assert_almost_equal(hsv, (345.51724137931035, 0.725, 0.6274509803921569))
 #
 print("BuildDefaultPalette=",
-      ot.Drawable.BuildDefaultPalette(10));
+      ot.Drawable.BuildDefaultPalette(10))
 print("BuildRainbowPalette=",
-      ot.Drawable.BuildRainbowPalette(10));
+      ot.Drawable.BuildRainbowPalette(10))
 print("BuildTableauPalette=",
-      ot.Drawable.BuildTableauPalette(10));
-print("BuildDefaultPalette=", 
-      ot.Drawable.BuildDefaultPalette(20));
-print("BuildTableauPalette=", 
-      ot.Drawable.BuildTableauPalette(20));
+      ot.Drawable.BuildTableauPalette(10))
+print("BuildDefaultPalette=",
+      ot.Drawable.BuildDefaultPalette(20))
+print("BuildTableauPalette=",
+      ot.Drawable.BuildTableauPalette(20))
 #
 print("Line styles=", ot.Drawable.GetValidLineStyles())
 print("Point styles=", ot.Drawable.GetValidPointStyles())

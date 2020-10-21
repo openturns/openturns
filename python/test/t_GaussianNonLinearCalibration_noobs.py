@@ -28,15 +28,8 @@ trueParameter = [2.8, 1.2, 0.5]
 params = [0, 1, 2]
 model = ot.ParametricFunction(g, params, trueParameter)
 
-Theta1 = ot.Dirac(trueParameter[0])
-Theta2 = ot.Dirac(trueParameter[1])
-Theta3 = ot.Dirac(trueParameter[2])
-
-inputRandomVector = ot.ComposedDistribution([Theta1, Theta2, Theta3])
-
-inputSample = inputRandomVector.getSample(size)
-y = g(inputSample)
-
+x = ot.Sample(size, 0)
+y = model(x)
 outputObservationNoiseSigma = 0.05
 meanNoise = ot.Point(outputDimension)
 covarianceNoise = ot.Point(outputDimension, outputObservationNoiseSigma)
@@ -63,8 +56,7 @@ for i in range(outputDimension * size):
     globalErrorCovariance[i, i] = 0.1 * (2.0 + (1.0 + i) * (1.0 + i))
     for j in range(i):
         globalErrorCovariance[i, j] = 0.1 / (1.0 + i + j)
-bootstrapSizes = [0, 100]
-for bootstrapSize in bootstrapSizes:
+for bootstrapSize in [0, 100]:
     # 1. Constructor 1
     algo = ot.GaussianNonLinearCalibration(
         model, x, y, candidate, priorCovariance, errorCovariance
@@ -85,7 +77,8 @@ for bootstrapSize in bootstrapSizes:
             ot.LowDiscrepancyExperiment(
                 ot.SobolSequence(),
                 ot.Normal(
-                    candidate, ot.CovarianceMatrix(ot.Point(candidate).getDimension())
+                    candidate, ot.CovarianceMatrix(
+                        ot.Point(candidate).getDimension())
                 ),
                 ot.ResourceMap.GetAsUnsignedInteger(
                     "GaussianNonLinearCalibration-MultiStartSize"
@@ -108,7 +101,10 @@ for bootstrapSize in bootstrapSizes:
     )
     algo.setBootstrapSize(bootstrapSize)
     algo.run()
-    print("(Global) MAP=", repr(parameterMAP))
+    calibrationResult = algo.getResult()
+    parameterMAP = calibrationResult.getParameterMAP()
+    #print("(Global) MAP=", repr(parameterMAP))
     rtol = 0.0
     atol = 0.5
-    ott.assert_almost_equal(parameterMAP, trueParameter, rtol, atol)
+    ref = [2.61, 1.2, 0.731]
+    ott.assert_almost_equal(parameterMAP, ref, rtol, atol)

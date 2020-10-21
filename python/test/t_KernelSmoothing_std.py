@@ -158,12 +158,14 @@ print("with user defined boundaries correction, pdf(left)=%.6g" %
       ks9.computePDF(left), ", pdf(right)=%.6g" % ks9.computePDF(right))
 
 # full degenerate case
-sample = ot.ComposedDistribution([ot.Dirac(-7.0), ot.Dirac(0.0), ot.Dirac(8.0)]).getSample(50)
+sample = ot.ComposedDistribution(
+    [ot.Dirac(-7.0), ot.Dirac(0.0), ot.Dirac(8.0)]).getSample(50)
 smoothed = ot.KernelSmoothing().build(sample)
 print(smoothed.getSample(3))
 
 # n-d degenerate case
-sample = ot.ComposedDistribution([ot.Dirac(-7.0), ot.Arcsine(2.0, 3.0), ot.Dirac(8.0)]).getSample(50)
+sample = ot.ComposedDistribution(
+    [ot.Dirac(-7.0), ot.Arcsine(2.0, 3.0), ot.Dirac(8.0)]).getSample(50)
 sample.setDescription(['d7', 'a23', 'd8'])
 smoothed = ot.KernelSmoothing().build(sample)
 print(smoothed.getSample(3))

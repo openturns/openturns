@@ -122,34 +122,34 @@ public:
 
   /** Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
   Graph draw(const UnsignedInteger inputMarginal,
-                     const UnsignedInteger outputMarginal,
-                     const Point & centralPoint,
-                     const Scalar xMin,
-                     const Scalar xMax,
-                     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber"),
-                     const GraphImplementation::LogScale scale = GraphImplementation::NONE) const override;
+             const UnsignedInteger outputMarginal,
+             const Point & centralPoint,
+             const Scalar xMin,
+             const Scalar xMax,
+             const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber"),
+             const GraphImplementation::LogScale scale = GraphImplementation::NONE) const override;
 
   /** Draw the given 1D marginal output as a function of the given 2D marginal input around the given central point */
   Graph draw(const UnsignedInteger firstInputMarginal,
-                     const UnsignedInteger secondInputMarginal,
-                     const UnsignedInteger outputMarginal,
-                     const Point & centralPoint,
-                     const Point & xMin,
-                     const Point & xMax,
-                     const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber")),
-                     const GraphImplementation::LogScale scale = GraphImplementation::NONE) const override;
+             const UnsignedInteger secondInputMarginal,
+             const UnsignedInteger outputMarginal,
+             const Point & centralPoint,
+             const Point & xMin,
+             const Point & xMax,
+             const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber")),
+             const GraphImplementation::LogScale scale = GraphImplementation::NONE) const override;
 
   /** Draw the output of the function with respect to its input when the input and output dimensions are 1 */
   Graph draw(const Scalar xMin,
-                     const Scalar xMax,
-                     const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber"),
-                     const GraphImplementation::LogScale scale = GraphImplementation::NONE) const override;
+             const Scalar xMax,
+             const UnsignedInteger pointNumber = ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber"),
+             const GraphImplementation::LogScale scale = GraphImplementation::NONE) const override;
 
   /** Draw the output of the function with respect to its input when the input dimension is 2 and the output dimension is 1 */
   Graph draw(const Point & xMin,
-                     const Point & xMax,
-                     const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber")),
-                     const GraphImplementation::LogScale scale = GraphImplementation::NONE) const override;
+             const Point & xMax,
+             const Indices & pointNumber = Indices(2, ResourceMap::GetAsUnsignedInteger("Evaluation-DefaultPointNumber")),
+             const GraphImplementation::LogScale scale = GraphImplementation::NONE) const override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

@@ -27,4 +27,3 @@ assert_almost_equal(vff.distZ0.getMean()[0], 125.0, 1e-12)
 assert_almost_equal(vff.distV0.getMean()[0], 55.0, 1e-12)
 assert_almost_equal(vff.distM.getMean()[0], 80.0, 1e-12)
 assert_almost_equal(vff.distC.getMean()[0], 15.0, 1e-12)
-

@@ -61,7 +61,7 @@ public:
 
   /** Initializer list constructor */
   Indices(std::initializer_list<UnsignedInteger> initList)
-  : InternalType(initList)
+    : InternalType(initList)
   {
     // Nothing to do
   }

@@ -69,7 +69,8 @@ for i in range(4):
     for j in range(i):
         priorCovariance[i, j] = 1.0 / (1.0 + i + j)
 candidate = [1.0]*4
-algo = ot.GaussianNonLinearCalibration(modelX, x, y, candidate, priorCovariance, errorCovariance)
+algo = ot.GaussianNonLinearCalibration(
+    modelX, x, y, candidate, priorCovariance, errorCovariance)
 algo.run()
 result = algo.getResult()
 ot.PlatformInfo.SetNumericalPrecision(2)

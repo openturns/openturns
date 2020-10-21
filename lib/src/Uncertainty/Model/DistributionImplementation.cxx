@@ -530,7 +530,7 @@ Scalar DistributionImplementation::getRoughness() const
         LOGWARN(OSS() << "Unknown sampling method=" << samplingMethod << " to compute roughness. Resort to MonteCarlo");
         sample = getSample(size);
       }
-       roughness = computePDF(sample).computeMean()[0];
+      roughness = computePDF(sample).computeMean()[0];
     }
 
   }
@@ -1360,10 +1360,10 @@ Scalar DistributionImplementation::computeEntropy() const
   else if (samplingMethod == "QuasiMonteCarlo")
     sample = getSampleByQMC(size);
   else
-    {
-      LOGWARN(OSS() << "Unknown sampling method=" << samplingMethod << " to compute entropy. Resort to MonteCarlo");
-      sample = getSample(size);
-    }
+  {
+    LOGWARN(OSS() << "Unknown sampling method=" << samplingMethod << " to compute entropy. Resort to MonteCarlo");
+    sample = getSample(size);
+  }
   return -computeLogPDF(sample).computeMean()[0];
 }
 

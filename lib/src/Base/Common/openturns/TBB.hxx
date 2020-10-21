@@ -106,7 +106,10 @@ class task_arena
 {
 public:
   task_arena(int) {}
-  template<typename F> void execute(const F& f) { f(); }
+  template<typename F> void execute(const F& f)
+  {
+    f();
+  }
 };
 
 } // namespace tbb
@@ -151,7 +154,10 @@ public:
   void ParallelFor( UnsignedInteger from, UnsignedInteger to, const BODY & body, std::size_t gs = 1 )
   {
     TBBContext context;
-    P_task_arena_->execute([&]() { tbb::parallel_for(tbb::blocked_range<UnsignedInteger>(from, to, gs), body); });
+    P_task_arena_->execute([&]()
+    {
+      tbb::parallel_for(tbb::blocked_range<UnsignedInteger>(from, to, gs), body);
+    });
   }
 
   template <typename BODY>
@@ -159,7 +165,10 @@ public:
   void ParallelReduce( UnsignedInteger from, UnsignedInteger to, BODY & body, std::size_t gs = 1)
   {
     TBBContext context;
-    P_task_arena_->execute([&]() { tbb::parallel_reduce(tbb::blocked_range<UnsignedInteger>(from, to, gs), body); });
+    P_task_arena_->execute([&]()
+    {
+      tbb::parallel_reduce(tbb::blocked_range<UnsignedInteger>(from, to, gs), body);
+    });
   }
 
   template <typename ITERATOR>
@@ -168,7 +177,10 @@ public:
   {
     TBBContext context;
     tbb::task_arena arena(NumberOfThreads_);
-    P_task_arena_->execute([&]() { tbb::parallel_sort(first, last); });
+    P_task_arena_->execute([&]()
+    {
+      tbb::parallel_sort(first, last);
+    });
   }
 
   /* Whether TBB is available */

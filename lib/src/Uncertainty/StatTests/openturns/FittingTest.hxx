@@ -60,8 +60,8 @@ public:
 
   /** Best model for a given numerical sample by AICc */
   static Distribution BestModelAICC(const Sample &sample,
-                                   const DistributionCollection &distributionCollection,
-                                   Scalar &bestAICOut);
+                                    const DistributionCollection &distributionCollection,
+                                    Scalar &bestAICOut);
 
   /** Best model for a given numerical sample by BIC */
   static Distribution BestModelBIC(const Sample  & sample,
@@ -110,13 +110,13 @@ public:
 
   /** Akaike Information Criterion corrected (AICc) computation */
   static Scalar AICC(const Sample &sample,
-                    const Distribution &distribution,
-                    const UnsignedInteger estimatedParameters = 0);
+                     const Distribution &distribution,
+                     const UnsignedInteger estimatedParameters = 0);
 
   /** Akaike Information Criterion corrected (AICc) computation */
   static Distribution AICC(const Sample &sample,
-                          const DistributionFactory &factory,
-                          Scalar &bestAICOut);
+                           const DistributionFactory &factory,
+                           Scalar &bestAICOut);
 
   /** Bayesian Information Criterion computation */
   static Scalar BIC(const Sample & sample,

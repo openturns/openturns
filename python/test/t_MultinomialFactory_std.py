@@ -19,4 +19,3 @@ print("Multinomial          =", distribution)
 print("Estimated multinomial=", estimatedMultinomial)
 estimatedMultinomial = factory.buildAsMultinomial()
 print("Default multinomial=", estimatedMultinomial)
-

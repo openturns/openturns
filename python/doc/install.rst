@@ -7,7 +7,7 @@ Installation
 From binary packages
 ====================
 
-.. warning::
+.. note::
 
     Since v1.15, only Python 3.x binaries are provided.
 
@@ -24,7 +24,7 @@ Conda
 -----
 This is relevant to the `Conda <http://conda.pydata.org/>`_ userland Python package manager.
 
-To avoid package conflicts we suggest installing conda from
+On Linux/Mac, to avoid package conflicts we suggest installing conda from
 `Miniconda <https://docs.conda.io/en/latest/miniconda.html>`_ instead of Anaconda::
 
     wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -P /tmp
@@ -42,7 +42,7 @@ Alternatively, you can download the `otconda <https://github.com/openturns/otcon
 containing the library and its modules that allows for an offline installation.
 Note that pre-releases are published on conda-forge like regular releases, so
 if you want to stick to the stable version you will have to explicitely specify
-the required version, eg :code:`conda install openturns=1.15`.
+the required version, eg :code:`conda install openturns=1.16`.
 
 Windows
 -------
@@ -51,7 +51,7 @@ Then just run installer and follow the instructions.
 
 A command-line installation is also possible::
 
-    openturns-1.15-py37-x86_64.exe /userlevel=1 /S /FORCE /D=%PREFIX%
+    openturns-1.16-py38-x86_64.exe /userlevel=1 /S /FORCE /D=%PREFIX%
 
 Debian/Ubuntu
 -------------
@@ -60,45 +60,49 @@ We support the following Debian-based distributions:
 
 .. table::
 
-    +-------------------------------------+----------------------------------------------+
-    | Distribution name                   | Repository address                           |
-    +=====================================+==============================================+
-    | Ubuntu 16.04 LTS 'Xenial Xerus'     | deb http://ubuntu.openturns.org xenial main  |
-    +-------------------------------------+----------------------------------------------+
-    | Ubuntu 18.04 LTS 'Bionic Beaver'    | deb http://ubuntu.openturns.org bionic main  |
-    +-------------------------------------+----------------------------------------------+
-    | Ubuntu 20.04 LTS 'Focal Fossa'      | deb http://ubuntu.openturns.org focal main   |
-    +-------------------------------------+----------------------------------------------+
-    | Debian 9.0 'Stretch'                | deb http://debian.openturns.org stretch main |
-    +-------------------------------------+----------------------------------------------+
-    | Debian 10.0 'Buster'                | deb http://debian.openturns.org buster main  |
-    +-------------------------------------+----------------------------------------------+
+    +-------------------------------------+---------------------------------------------------------+
+    | Distribution name                   | Repository address                                      |
+    +=====================================+=========================================================+
+    | Ubuntu 16.04 LTS 'Xenial Xerus'     | deb https://openturns.github.io/apt/ubuntu xenial main  |
+    +-------------------------------------+---------------------------------------------------------+
+    | Ubuntu 18.04 LTS 'Bionic Beaver'    | deb https://openturns.github.io/apt/ubuntu bionic main  |
+    +-------------------------------------+---------------------------------------------------------+
+    | Ubuntu 20.04 LTS 'Focal Fossa'      | deb https://openturns.github.io/apt/ubuntu focal main   |
+    +-------------------------------------+---------------------------------------------------------+
+    | Debian 9.0 'Stretch'                | deb https://openturns.github.io/apt/debian stretch main |
+    +-------------------------------------+---------------------------------------------------------+
+    | Debian 10.0 'Buster'                | deb https://openturns.github.io/apt/debian buster main  |
+    +-------------------------------------+---------------------------------------------------------+
 
 Add the mirror signature::
 
-    curl http://debian.openturns.org/openturns.org-repo.key | sudo apt-key add -
+    curl openturns.github.io/apt/public.key | sudo apt-key add -
 
 To be able to retrieve packages, you must add the appropriate
 repository address to your sources list. To do so, you may either use the
 graphical user interface of aptitude or you can edit the sources-list file
 (`/etc/apt/sources.list`).
 
-For instance, assuming you are running Ubuntu 18.04,
+For instance, assuming you are running Ubuntu 20.04,
 add the following source to your sources list::
 
-    echo deb http://ubuntu.openturns.org bionic main | sudo tee /etc/apt/sources.list.d/openturns.list
+    echo deb https://openturns.github.io/apt/ubuntu focal main | sudo tee /etc/apt/sources.list.d/openturns.list
 
 .. note::
 
     Use the bash command `lsb_release -c` in order to determine the codename of
     your distribution.
 
+You may want to enable apt https support to be able to fetch from github.io::
+
+    sudo apt install apt-transport-https
+
 After editing aptitude's sources-list, you must update your packages database
 using either the graphical interface or by issuing the following command::
 
     sudo apt update
 
-The following packages should now be available:
+The following packages are available:
 
 .. table::
 
@@ -109,16 +113,10 @@ The following packages should now be available:
     +----------------------+------------------------------------+
     | libopenturns-dev     | development package                |
     +----------------------+------------------------------------+
-    | python3-openturns    | Python 3 module                    |
-    +----------------------+------------------------------------+
-    | openturns-examples   | examples                           |
+    | python3-openturns    | Python module                      |
     +----------------------+------------------------------------+
 
-Use the following command to check::
-
-    apt search openturns
-
-For example, to install the Python 3 module::
+To install the Python module::
 
     sudo apt install python3-openturns
 
@@ -128,17 +126,31 @@ Add the repository corresponding to your operating system::
 
     curl http://download.opensuse.org/repositories/science:/openturns/CentOS_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl http://download.opensuse.org/repositories/science:/openturns/Fedora_32/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.1/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.2/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl http://download.opensuse.org/repositories/science:/openturns/Mageia_7/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
     rpm --import http://download.opensuse.org/repositories/science:/openturns/CentOS_8/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_32/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.1/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.2/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/Mageia_7/repodata/repomd.xml.key
 
-Install the package::
+The following packages are available:
+
+.. table::
+
+    +----------------------+------------------------------------+
+    | Package name         | Description                        |
+    +======================+====================================+
+    | openturns-libs       | library                            |
+    +----------------------+------------------------------------+
+    | openturns-devel      | development package                |
+    +----------------------+------------------------------------+
+    | python3-openturns    | Python module                      |
+    +----------------------+------------------------------------+
+
+To install the Python module::
 
     yum install python3-openturns
 
@@ -169,5 +181,5 @@ You can checkout the development trunk::
 
 .. note::
 
-    When installing into `~/.local` you will not need to set PYTHONPATH
+    When installing into `~/.local` you dont need to set PYTHONPATH
     environment variable for Python to be able to import openturns

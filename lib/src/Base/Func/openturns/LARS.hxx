@@ -48,9 +48,9 @@ public:
 
   /** Method to create new BasisSequence objects */
   BasisSequence build(const Sample & x,
-                              const Sample & y,
-                              const FunctionCollection & psi,
-                              const Indices & indices) override;
+                      const Sample & y,
+                      const FunctionCollection & psi,
+                      const Indices & indices) override;
 #ifndef SWIG
 //   virtual BasisSequence build(const Sample & y,
 //                               const Indices & indices,

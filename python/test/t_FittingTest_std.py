@@ -151,7 +151,7 @@ distribution = ot.Normal()
 ot.RandomGenerator.SetSeed(0)
 sample = distribution.getSample(30)
 factory = ot.NormalFactory()
-#ot.ResourceMap.SetAsUnsignedInteger(
+# ot.ResourceMap.SetAsUnsignedInteger(
 #    'FittingTest-LillieforsMaximumSamplingSize', 1000000)
 #-ot.ResourceMap.SetAsScalar('FittingTest-LillieforsPrecision', 0.0)
 fitted_dist, test_result = ot.FittingTest.Lilliefors(sample, factory)
@@ -231,6 +231,6 @@ print("resultChiSquared=", repr(resultChiSquared))
 # Example taken from the R documentation of chisq.test
 s = [[0.0]]*89 + [[1.0]]*37 + [[2.0]]*30 + [[3.0]]*28 + [[4.0]]*2
 d = ot.UserDefined([[0.0], [1.0], [2.0], [3.0], [4.0]],
-                    [0.4, 0.2, 0.2, 0.15, 0.05])
+                   [0.4, 0.2, 0.2, 0.15, 0.05])
 print("R example p-value=%.5g" %
       ot.FittingTest.ChiSquared(s, d).getPValue())

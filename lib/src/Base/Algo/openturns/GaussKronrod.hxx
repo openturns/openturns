@@ -57,34 +57,34 @@ public:
   using IntegrationAlgorithmImplementation::integrate;
 #ifndef SWIG
   Scalar integrate(const UniVariateFunction & function,
-                           const Scalar a,
-                           const Scalar b) const;
+                   const Scalar a,
+                   const Scalar b) const;
 
   Point integrate(const Function & function,
-                          const Interval & interval,
-                          Scalar & error) const override;
+                  const Interval & interval,
+                  Scalar & error) const override;
 
   // This method allows to get the estimated integration error as a scalar
   Point integrate(const Function & function,
-                          const Scalar a,
-                          const Scalar b,
-                          Scalar & error,
-                          Point & ai,
-                          Point & bi,
-                          Sample & fi,
-                          Point & ei) const;
+                  const Scalar a,
+                  const Scalar b,
+                  Scalar & error,
+                  Point & ai,
+                  Point & bi,
+                  Sample & fi,
+                  Point & ei) const;
 
 #endif
   // This method allows to get the estimated integration error as a Point,
   // needed by Python
   Point integrate(const Function & function,
-                          const Scalar a,
-                          const Scalar b,
-                          Point & error,
-                          Point & ai,
-                          Point & bi,
-                          Sample & fi,
-                          Point & ei) const;
+                  const Scalar a,
+                  const Scalar b,
+                  Point & error,
+                  Point & ai,
+                  Point & bi,
+                  Sample & fi,
+                  Point & ei) const;
 
   /** Maximum sub-intervals accessor */
   UnsignedInteger getMaximumSubIntervals() const;

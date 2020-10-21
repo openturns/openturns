@@ -339,11 +339,11 @@ void GaussianNonLinearCalibration::run()
   if (globalErrorCovariance_)
     error.setMean(residuals);
   else
-    {
-      SampleImplementation residualsAsSample(outputObservations_.getSize(), outputObservations_.getDimension());
-      residualsAsSample.setData(residuals);
-      error.setMean(residualsAsSample.computeMean());      
-    }
+  {
+    SampleImplementation residualsAsSample(outputObservations_.getSize(), outputObservations_.getDimension());
+    residualsAsSample.setData(residuals);
+    error.setMean(residualsAsSample.computeMean());
+  }
   // Compute the posterior distribution
   Distribution parameterPosterior;
   if (bootstrapSize_ > 0)

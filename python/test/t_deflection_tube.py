@@ -24,4 +24,3 @@ assert_almost_equal(dt.XL.getMean()[0], 1.5, 1e-12)
 assert_almost_equal(dt.Xa.getMean()[0], 1.0, 1e-12)
 assert_almost_equal(dt.XD.getMean()[0], 0.8, 1e-12)
 assert_almost_equal(dt.Xd.getMean()[0], 0.1, 1e-12)
-

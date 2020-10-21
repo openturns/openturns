@@ -88,7 +88,7 @@ int main(int, char *[])
       Collection<CovarianceMatrix> coll(result.getConditionalMarginalCovariance(X));
 
       for(UnsignedInteger k = 0; k < coll.getSize(); ++k)
-        assert_almost_equal(coll[k](0,0), 0.0, 5.e-3, 5.e-3);
+        assert_almost_equal(coll[k](0, 0), 0.0, 5.e-3, 5.e-3);
 
       // Validation of marginal variance
       const Point marginalVariance(result.getConditionalMarginalVariance(X));

@@ -407,13 +407,22 @@ class ProcessSampleCorrelationEvaluation : public EvaluationImplementation
 {
 public:
   ProcessSampleCorrelationEvaluation(const CovarianceModel & covarianceModel, const UnsignedInteger i, const UnsignedInteger j)
-  : covarianceModel_(covarianceModel), i_(i), j_(j) {}
+    : covarianceModel_(covarianceModel), i_(i), j_(j) {}
 
-  ProcessSampleCorrelationEvaluation * clone() const override { return new ProcessSampleCorrelationEvaluation(*this); }
+  ProcessSampleCorrelationEvaluation * clone() const override
+  {
+    return new ProcessSampleCorrelationEvaluation(*this);
+  }
 
-  UnsignedInteger getInputDimension() const override { return 2; }
+  UnsignedInteger getInputDimension() const override
+  {
+    return 2;
+  }
 
-  UnsignedInteger getOutputDimension() const override { return 1; }
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
 
   Point operator() (const Point & inP) const override
   {
@@ -438,7 +447,7 @@ private:
 
 /* Draw correlation between 2 marginals */
 Graph ProcessSampleImplementation::drawMarginalCorrelation(const UnsignedInteger i,
-                                                           const UnsignedInteger j) const
+    const UnsignedInteger j) const
 {
   if (getMesh().getDimension() != 1)
     throw InvalidArgumentException(HERE) << "drawMarginalCorrelation only supports 1-d domains";
@@ -470,7 +479,7 @@ GridLayout ProcessSampleImplementation::drawCorrelation() const
     {
       Graph graph(drawMarginalCorrelation(i, j));
       graph.setTitle("");
-      graph.setXTitle((i == outputDimension -1 ) ? OSS() << "marginal " << j : OSS() << "");
+      graph.setXTitle((i == outputDimension - 1 ) ? OSS() << "marginal " << j : OSS() << "");
       graph.setYTitle((j == 0) ? OSS() << "marginal " << i : OSS() << "");
       grid.setGraph(i, j, graph);
     }

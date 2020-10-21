@@ -36,20 +36,12 @@ int main(int, char *[])
     Sample x(m, 1);
     for (UnsignedInteger i = 0; i < m; ++i) x(i, 0) = (0.5 + i) / m;
 
-    Description inVars(0);
-    inVars.add("a");
-    inVars.add("b");
-    inVars.add("c");
-    inVars.add("x");
+    const Description inVars = {"a", "b", "c", "x"};
     Description formulas(1, "a + b * exp(c * x)");
     formulas.add("(a * x^2 + b) / (c + x^2)");
     SymbolicFunction g(inVars, formulas);
-    Point trueParameter(0);
-    trueParameter.add(2.8);
-    trueParameter.add(1.2);
-    trueParameter.add(0.5);
-    Indices params(3);
-    params.fill();
+    const Point trueParameter = {2.8, 1.2, 0.5 };
+    const Indices params = {0, 1, 2};
     ParametricFunction model(g, params, trueParameter);
     Sample y = model(x);
     y += Normal(Point(2), Point(2, 0.05), IdentityMatrix(2)).getSample(y.getSize());
@@ -104,8 +96,9 @@ int main(int, char *[])
       algo.setBootstrapSize(bootstrapSizes[n]);
       algo.run();
       parameterMAP = algo.getResult().getParameterMAP();
-      fullprint << "MAP =" << parameterMAP << std::endl;
-      fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
+      //fullprint << "MAP =" << parameterMAP << std::endl;
+
+      //fullprint << "error=" << algo.getResult().getObservationsError() << std::endl;
       assert_almost_equal(parameterMAP, trueParameter, 5e-1);
     } // n
   }

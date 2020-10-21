@@ -104,7 +104,7 @@ Pareto ParetoFactory::buildMethodOfLeastSquares(const Sample & sample, const Sca
   lls.run();
   const Scalar a0 = lls.getConstant()[0];
   const Scalar a1 = lls.getLinear()(0, 0);
-  const Scalar beta = std::exp(-a0/a1);
+  const Scalar beta = std::exp(-a0 / a1);
   const Scalar alpha = -a1;
   return Pareto(beta, alpha, gamma);
 }

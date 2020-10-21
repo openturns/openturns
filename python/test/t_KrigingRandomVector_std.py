@@ -37,8 +37,8 @@ basis = ot.ConstantBasisFactory(inputDimension).build()
 
 # Kriging algorithm
 algo = ot.KrigingAlgorithm(inputSample, outputSample,
-                        covarianceModel, basis)
-algo.setOptimizeParameters(False) # do not optimize hyper-parameters
+                           covarianceModel, basis)
+algo.setOptimizeParameters(False)  # do not optimize hyper-parameters
 algo.run()
 result = algo.getResult()
 # Get meta model

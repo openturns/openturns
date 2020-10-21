@@ -524,7 +524,8 @@ SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fi
   _configthreadlocale(_ENABLE_PER_THREAD_LOCALE);
 #endif
   const char * initialLocale = setlocale(LC_NUMERIC, NULL);
-  if(numSeparator == ",") {
+  if(numSeparator == ",")
+  {
 #if defined(_WIN32)
     //Windows locale name
     const char * new_locale = setlocale(LC_NUMERIC, "fra_FRA.1252");
@@ -532,7 +533,8 @@ SampleImplementation SampleImplementation::BuildFromTextFile(const FileName & fi
     const char * new_locale = setlocale(LC_NUMERIC, "fr_FR.utf-8");
 #endif
     if(new_locale == 0)
-      throw InternalException(HERE) << "Locale not available";}
+      throw InternalException(HERE) << "Locale not available";
+  }
   else
     setlocale(LC_NUMERIC, "C");
 #endif

@@ -86,7 +86,7 @@ void CanonicalTensorEvaluation::setCoefficients(const UnsignedInteger i, const U
 {
   const UnsignedInteger size = coefficients.getSize();
   for (UnsignedInteger k = 0; k < size; ++k)
-    coefficients_[j](i , k) = coefficients[k];
+    coefficients_[j](i, k) = coefficients[k];
 }
 
 
@@ -190,7 +190,7 @@ Point CanonicalTensorEvaluation::operator() (const Point & inP) const
       Scalar sumI = 0.0;
       for (UnsignedInteger k = 0; k < basisSize; ++ k)
       {
-        if (coeffJ(i,k) != 0.0)
+        if (coeffJ(i, k) != 0.0)
         {
           sumI += coeffJ(i, k) * phiX[k];
         }

@@ -17,28 +17,27 @@ def g(X):
 
 
 @dataclass
-class ChabocheModel() :
+class ChabocheModel():
     """Custom class for the Chaboche model
     """
 
-    dim : int = 4 # number of inputs
+    dim: int = 4  # number of inputs
 
-    Strain : Any = ot.Uniform(0.0, 0.07)
+    Strain: Any = ot.Uniform(0.0, 0.07)
     Strain.setDescription(["Strain"])
 
-    unknownR : float = 750.0e6
-    R : Any = ot.Dirac(unknownR)
+    unknownR: float = 750.0e6
+    R: Any = ot.Dirac(unknownR)
     R.setDescription(["R"])
 
-    unknownC : float = 2750.0e6
-    C : Any = ot.Dirac(unknownC)
+    unknownC: float = 2750.0e6
+    C: Any = ot.Dirac(unknownC)
     C.setDescription(["C"])
 
-    unknownGamma : float = 10.0
-    Gamma : Any = ot.Dirac(unknownGamma)
+    unknownGamma: float = 10.0
+    Gamma: Any = ot.Dirac(unknownGamma)
     Gamma.setDescription(["Gamma"])
 
-    inputDistribution : Any = ot.ComposedDistribution([Strain, R, C, Gamma])
+    inputDistribution: Any = ot.ComposedDistribution([Strain, R, C, Gamma])
 
-    model : Any = ot.PythonFunction(4, 1, g)
-
+    model: Any = ot.PythonFunction(4, 1, g)

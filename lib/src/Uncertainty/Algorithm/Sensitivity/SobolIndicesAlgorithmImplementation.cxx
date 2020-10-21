@@ -887,6 +887,8 @@ void SobolIndicesAlgorithmImplementation::setDesign(const Sample & inputDesign,
   if (inputDesign.getSize() != outputDesign.getSize())
     throw InvalidArgumentException(HERE) << "Input and output samples have different size (" << inputDesign.getSize()
                                          << " vs " << outputDesign.getSize() << ")";
+  if (!outputDesign.getDimension())
+    throw InvalidArgumentException(HERE) << "Output sample dimension is null";
 
   inputDescription_ = inputDesign.getDescription();
   size_ = size;

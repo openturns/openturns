@@ -1,14 +1,23 @@
-/*
-** Name:      parser.h
-** Author:    Leo Liberti
-** Purpose:   C++ class that builds an Expression v3
-**            n-ary tree from a string containing a
-**            mathematical expression in n variables
-** Source:    GNU C++
-** History:   010624 derived from project Eval (class/EvalClass.cc)
-** License:    (C) Leo Liberti, all rights reserved. Code published under the
-Common Public License.
-*/
+//                                               -*- C++ -*-
+/**
+ *  @brief C++ class that builds an Expression v3 n-ary tree from a string containing a mathematical expression in n variables
+ *
+ *  Copyright (C) 2008-2010 Leo Liberti
+ *
+ *  This library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 
 #ifndef __EV3PARSERH__
 #define __EV3PARSERH__

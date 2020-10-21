@@ -63,11 +63,16 @@ indices = [n, n]
 intervalMesher = ot.IntervalMesher(indices)
 interval = ot.Interval([0.0] * 2, [1.0] * 2)
 mesh2D = intervalMesher.build(interval)
+
+
 def f2Pfunc(X):
     Y = ot.Sample(X).computeMean()
     return Y
+
+
 field2PFunction = ot.PythonFieldToPointFunction(mesh2D, 1, 1, f2Pfunc)
-fieldFunction = ot.ValueFunction(ot.SymbolicFunction(["x", "y"], ["3x"]), mesh2D)
+fieldFunction = ot.ValueFunction(
+    ot.SymbolicFunction(["x", "y"], ["3x"]), mesh2D)
 myFunc = ot.FieldToPointConnection(field2PFunction, fieldFunction)
 print("myFunc=", myFunc)
 # Get the input and output description

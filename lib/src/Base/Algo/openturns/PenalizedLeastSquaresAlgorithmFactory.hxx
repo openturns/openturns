@@ -49,10 +49,10 @@ public:
 
   /** Method to create new ApproximationAlgorithmImplementation objects */
   PenalizedLeastSquaresAlgorithm * build (const Sample & x,
-      const Sample & y,
-      const Point & weight,
-      const FunctionCollection & psi,
-      const Indices & indices) const override;
+                                          const Sample & y,
+                                          const Point & weight,
+                                          const FunctionCollection & psi,
+                                          const Indices & indices) const override;
 
   /** String converter */
   String __repr__() const override;

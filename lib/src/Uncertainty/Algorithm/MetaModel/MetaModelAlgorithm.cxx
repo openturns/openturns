@@ -83,12 +83,12 @@ struct TestedDistribution
                      const Scalar aic,
                      const Scalar aicc,
                      const String & criterion)
-  : distribution_(distribution)
-  , score_(score)
-  , bic_(bic)
-  , aic_(aic)
-  , aicc_(aicc)
-  , criterion_(criterion)
+    : distribution_(distribution)
+    , score_(score)
+    , bic_(bic)
+    , aic_(aic)
+    , aicc_(aicc)
+    , criterion_(criterion)
   {
     // Nothing to do
   }
@@ -139,7 +139,7 @@ Distribution MetaModelAlgorithm::BuildDistribution(const Sample & inputSample)
   const Description inputDescription(inputSample.getDescription());
   for (UnsignedInteger i = 0; i < inputDimension; ++i)
   {
-    // Here we remove the duplicate entries in the marginal sample as we are suppose to have a continuous distribution. 
+    // Here we remove the duplicate entries in the marginal sample as we are suppose to have a continuous distribution.
     // The duplicates are mostly due to truncation in the file export.
     const Sample marginalSample(inputSample.getMarginal(i).sortUnique());
     // First we estimate distribution using its factory
@@ -154,16 +154,16 @@ Distribution MetaModelAlgorithm::BuildDistribution(const Sample & inputSample)
         const Scalar pValue = FittingTest::Kolmogorov(marginalSample, candidateDistribution, level).getPValue();
         const Bool isKSAccepted = (pValue >= level);
         if (isKSAccepted)
-          {
-            const Scalar BIC = FittingTest::BIC(marginalSample, candidateDistribution, candidateDistribution.getParameterDimension());
-            const Scalar AIC = FittingTest::AIC(marginalSample, candidateDistribution, candidateDistribution.getParameterDimension());
-            const Scalar AICC = FittingTest::AICC(marginalSample, candidateDistribution, candidateDistribution.getParameterDimension());
-            TestedDistribution test(candidateDistribution, pValue, BIC, AIC, AICC, criterion);
-            LOGINFO(OSS() << "Candidate distribution = " << candidateDistribution.getImplementation()->getClassName() << ", pValue=" << pValue << ", BIC=" << BIC << ", AIC=" << AIC<< ", AICC=" << AICC);
-            possibleDistributions.push_back(test);
-          }
-          else
-            LOGINFO(OSS() << "Tested distribution & not selected = " << candidateDistribution.getImplementation()->getClassName() << ", pValue=" << pValue);
+        {
+          const Scalar BIC = FittingTest::BIC(marginalSample, candidateDistribution, candidateDistribution.getParameterDimension());
+          const Scalar AIC = FittingTest::AIC(marginalSample, candidateDistribution, candidateDistribution.getParameterDimension());
+          const Scalar AICC = FittingTest::AICC(marginalSample, candidateDistribution, candidateDistribution.getParameterDimension());
+          TestedDistribution test(candidateDistribution, pValue, BIC, AIC, AICC, criterion);
+          LOGINFO(OSS() << "Candidate distribution = " << candidateDistribution.getImplementation()->getClassName() << ", pValue=" << pValue << ", BIC=" << BIC << ", AIC=" << AIC << ", AICC=" << AICC);
+          possibleDistributions.push_back(test);
+        }
+        else
+          LOGINFO(OSS() << "Tested distribution & not selected = " << candidateDistribution.getImplementation()->getClassName() << ", pValue=" << pValue);
       }
       catch (...)
       {
@@ -181,7 +181,7 @@ Distribution MetaModelAlgorithm::BuildDistribution(const Sample & inputSample)
       // This last one might be : BIC, AIC, AICC
       std::sort(possibleDistributions.begin(), possibleDistributions.end());
       marginals[i] = possibleDistributions[0].distribution_;
-    }// else  
+    }// else
     marginals[i].setDescription(Description(1, inputDescription[i]));
     LOGINFO(OSS() << "Selected distribution = " << marginals[i].getImplementation()->getClassName());
   }// for i

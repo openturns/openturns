@@ -6,6 +6,7 @@ from math import fabs
 
 ot.TESTPREAMBLE()
 
+
 def cleanScalar(inScalar):
     if (fabs(inScalar) < 1.e-10):
         inScalar = 0.0

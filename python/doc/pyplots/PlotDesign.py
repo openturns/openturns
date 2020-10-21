@@ -13,4 +13,4 @@ design = lhs.generate()
 subdivisions = [size]*dim
 
 fig = plt.figure(figsize=(8, 8))
-PlotDesign(design, bounds, subdivisions, figure = fig)
+PlotDesign(design, bounds, subdivisions, figure=fig)

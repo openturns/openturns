@@ -39,62 +39,62 @@ class OT_API FejerAlgorithm
   CLASSNAME
 
 public:
-    enum IntegrationMethod {FEJERTYPE1 = 0, FEJERTYPE2 = 1, CLENSHAWCURTIS};
+  enum IntegrationMethod {FEJERTYPE1 = 0, FEJERTYPE2 = 1, CLENSHAWCURTIS};
 
   /** Default constructor */
 
-    explicit FejerAlgorithm(const UnsignedInteger dimension = 1,
-                            const IntegrationMethod method = CLENSHAWCURTIS);
+  explicit FejerAlgorithm(const UnsignedInteger dimension = 1,
+                          const IntegrationMethod method = CLENSHAWCURTIS);
 
-    /** Parameter constructor */
-    explicit FejerAlgorithm(const Indices & discretization,
-                            const IntegrationMethod method = CLENSHAWCURTIS);
+  /** Parameter constructor */
+  explicit FejerAlgorithm(const Indices & discretization,
+                          const IntegrationMethod method = CLENSHAWCURTIS);
 
-    /** Virtual copy constructor */
-    FejerAlgorithm *clone() const override;
+  /** Virtual copy constructor */
+  FejerAlgorithm *clone() const override;
 
-    /** Compute an approximation of \int_a^b f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an nD interval.*/
-    using IntegrationAlgorithmImplementation::integrate;
-    Point integrate(const Function &function,
-                    const Interval &interval) const override;
-    Point integrateWithNodes(const Function &function,
-                             const Interval &interval,
-                             Sample &adaptedNodesOut) const;
+  /** Compute an approximation of \int_a^b f(x_1,\dots,x_n)dx_1\dotsdx_n, where [a,b] is an nD interval.*/
+  using IntegrationAlgorithmImplementation::integrate;
+  Point integrate(const Function &function,
+                  const Interval &interval) const override;
+  Point integrateWithNodes(const Function &function,
+                           const Interval &interval,
+                           Sample &adaptedNodesOut) const;
 
-    /** Discretization accessor */
-    Indices getDiscretization() const;
+  /** Discretization accessor */
+  Indices getDiscretization() const;
 
-    /** Nodes accessor */
-    Sample getNodes() const;
+  /** Nodes accessor */
+  Sample getNodes() const;
 
-    /** Weights accessor */
-    Point getWeights() const;
+  /** Weights accessor */
+  Point getWeights() const;
 
-    /** String converter */
-    String __repr__() const override;
+  /** String converter */
+  String __repr__() const override;
 
-    /** String converter */
-    String __str__(const String & offset = "") const override;
+  /** String converter */
+  String __str__(const String & offset = "") const override;
 
-  private:
-    /* Generate nodes and weights */
-    void generateNodesAndWeights(const IntegrationMethod method);
+private:
+  /* Generate nodes and weights */
+  void generateNodesAndWeights(const IntegrationMethod method);
 
-    // Generate nodes and weights for ClenshawCurtis
-    void generateNodesAndWeightsCleanshawCurtis(Collection<Point> & marginalNodes, Collection<Point> & marginalWeights);
-    // Generate nodes and weights for Fejer Type 1
-    void generateNodesAndWeightsFejerType1(Collection<Point> & marginalNodes, Collection<Point> & marginalWeights);
-    // Generate nodes and weights for Fejer Type 2
-    void generateNodesAndWeightsFejerType2(Collection<Point> & marginalNodes, Collection<Point> & marginalWeights);
+  // Generate nodes and weights for ClenshawCurtis
+  void generateNodesAndWeightsCleanshawCurtis(Collection<Point> & marginalNodes, Collection<Point> & marginalWeights);
+  // Generate nodes and weights for Fejer Type 1
+  void generateNodesAndWeightsFejerType1(Collection<Point> & marginalNodes, Collection<Point> & marginalWeights);
+  // Generate nodes and weights for Fejer Type 2
+  void generateNodesAndWeightsFejerType2(Collection<Point> & marginalNodes, Collection<Point> & marginalWeights);
 
-    /* Discretization of the tensorized rule */
-    Indices discretization_;
+  /* Discretization of the tensorized rule */
+  Indices discretization_;
 
-    /* Integration nodes */
-    Sample nodes_;
+  /* Integration nodes */
+  Sample nodes_;
 
-    /* Integration weights */
-    Point weights_;
+  /* Integration weights */
+  Point weights_;
 } ; /* class FejerAlgorithm */
 
 END_NAMESPACE_OPENTURNS

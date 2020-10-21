@@ -1,12 +1,14 @@
 = New Features =
 
-== 1.16 release (in progress) == #release-1.16
+== 1.16 release (2020-10-20) == #release-1.16
 
 === Library ===
 
 ==== Major changes ====
  * Drop normalization in KrigingAlgorithm
  * Drop normalization & transformation handling in GeneralLinearModelAlgorithm
+ * XML/H5 storage (hdf5 library)
+ * C++11 requirement
 
 ==== New classes ====
  * BlockIndependentDistribution
@@ -14,6 +16,7 @@
  * GridLayout
  * MinimumVolumeClassifier
  * StationaryFunctionalCovarianceModel
+ * XMLH5StorageManager
 
 ==== API changes ====
  * Removed deprecated Weibull, WeibullFactory, WeibullMuSigma classes
@@ -53,7 +56,6 @@
  * Add ProcessSample Field accessors
 
 === Miscellaneous ===
- * Require C99/C++11 support
  * Do not compute Lagrange multipliers by default during an optimization
  * Add ResourceMap::FindKeys
  * Allow computeLogPDF methods to output values lower than SpecFunc::LogMinScalar
@@ -86,6 +88,7 @@
  * #1564 (Set a Point makes ot crash)
  * #1567 (The API doc of SobolIndicesExperiment has a format issue)
  * #1573 (LinearModelAnalysis::drawQQPlot line is not the first bisector)
+ * #1578 (Option to suppressing and/or save warnings?)
  * #1581 (LinearModelAlgorithm run() fails to parse Sample description)
  * #1586 (Documentation: description error in the API for the FittingTest_BestModelKolmogorov and FittingTest_BestModelChiSquaredclasses)
  * #1590 (The equation of the Fejer quadrature rule is triplicated)

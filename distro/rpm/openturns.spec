@@ -20,7 +20,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.15
+Version:        1.16rc1
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -32,6 +32,9 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires:  gcc-c++, cmake, bison, flex, swig
 BuildRequires:  lapack-devel
 BuildRequires:  libxml2-devel
+%if ! 0%{?centos_version}
+BuildRequires:  hdf5-devel
+%endif
 BuildRequires:  boost-devel
 BuildRequires:  nlopt-devel
 BuildRequires:  tbb-devel
@@ -51,6 +54,9 @@ OpenTURNS Uncertainty treatment library
 Summary:        Uncertainty treatment library
 Group:          Development/Libraries/C and C++
 Requires:       libxml2
+%if ! 0%{?centos_version}
+Requires:       hdf5
+%endif
 %if ! 0%{?suse_version}
 Requires:       nlopt
 %endif
@@ -79,13 +85,6 @@ Requires:       hmat-oss-devel
 
 %description devel
 Development files for OpenTURNS uncertainty library
-
-%package examples
-Summary:        OpenTURNS examples
-Group:          Productivity/Scientific/Math
-
-%description examples
-OpenTURNS python examples
 
 %package -n python3-%{name}
 Summary:        Uncertainty treatment library
@@ -141,16 +140,15 @@ rm -rf %{buildroot}
 %{_libdir}/*.so
 %{_libdir}/cmake/
 
-%files examples
-%defattr(-,root,root,-)
-%{_datadir}/%{name}/examples/
-
 %files -n python3-%{name}
 %defattr(-,root,root,-)
 %{python_sitearch}/%{name}/
 %{python_sitearch}/%{name}-*.dist-info/
 
 %changelog
+* Mon Oct 19 2020 Julien Schueller <schueller at phimeca dot com> 1.16-1
+- New upstream release
+
 * Mon Apr 6 2020 Julien Schueller <schueller at phimeca dot com> 1.15-1
 - New upstream release
 
