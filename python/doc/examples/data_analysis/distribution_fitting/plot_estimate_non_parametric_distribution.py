@@ -25,11 +25,17 @@ estimated = kernel.build(sample)
 
 # %%
 # Plot original distribution vs kernel smoothing
-graph = ot.Graph()
+#graph = ot.Graph()
+graph = distribution.drawPDF()
 graph.setTitle('Kernel smoothing vs original')
-graph.add(distribution.drawPDF())
+graph.setGrid(True)
+
+
+
 kernel_plot = estimated.drawPDF().getDrawable(0)
 kernel_plot.setColor('blue')
+#kernel_plot.setGrid(True)
+#view = viewer.View(kernel_plot)
 graph.add(kernel_plot)
 graph.setLegends(['original', 'KS'])
 graph.setLegendPosition('topright')
@@ -50,9 +56,8 @@ estimated = kernel.build(sample, bandwidth)
 
 # %%
 # Plot original distribution vs kernel smoothing
-graph = ot.Graph()
+graph = distribution.drawPDF()
 graph.setTitle('Kernel smoothing vs original')
-graph.add(distribution.drawPDF())
 kernel_plot = estimated.drawPDF().getDrawable(0)
 kernel_plot.setColor('blue')
 graph.add(kernel_plot)
