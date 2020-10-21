@@ -255,15 +255,6 @@ Distribution FittingTest::BestModelBIC(const Sample  & sample,
 }
 
 
-/* Best model for a given numerical sample by Kolmogorov */
-Distribution FittingTest::BestModelKolmogorov(const Sample & sample,
-    const DistributionFactoryCollection & factoryCollection,
-    TestResult & bestResult)
-{
-  LOGWARN("FittingTest::BestModelKolmogorov(Sample, DistributionFactoryCollection, TestResult) is deprecated, use BestModelLilliefors");
-  return BestModelLilliefors(sample, factoryCollection, bestResult);
-}
-
 namespace
 {
 // This function returns true if the first pair is greater
@@ -536,15 +527,6 @@ Scalar FittingTest::ComputeKolmogorovStatistics(const Sample & sample,
   return value;
 }
 
-TestResult FittingTest::Kolmogorov(const Sample & sample,
-                                   const DistributionFactory & factory,
-                                   Distribution & estimatedDistribution,
-                                   const Scalar level)
-
-{
-  LOGWARN("FittingTest::Kolmogorov(Sample, DistributionFactory, TestResult, level) is deprecated, use Lilliefors");
-  return Lilliefors(sample, factory, estimatedDistribution, level);
-}
 
 TestResult FittingTest::Lilliefors(const Sample & sample,
                                    const DistributionFactory & factory,

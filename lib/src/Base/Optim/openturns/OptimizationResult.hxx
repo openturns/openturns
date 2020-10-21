@@ -106,11 +106,7 @@ public:
   void setProblem(const OptimizationProblem & problem);
   OptimizationProblem getProblem() const;
 
-  /** @deprecated Lagrange multipliers accessor */
-  void setLagrangeMultipliers(const Point & lagrangeMultipliers);
-  Point getLagrangeMultipliers() const;
-
-  /** @deprecated Computes the Lagrange multipliers associated with the constraints */
+  /** Computes the Lagrange multipliers associated with the constraints */
   Point computeLagrangeMultipliers() const;
   Point computeLagrangeMultipliers(const Point & x) const;
 

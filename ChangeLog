@@ -9,6 +9,10 @@
 ==== New classes ====
 
 ==== API changes ====
+ * Removed deprecated Pairs alias
+ * Removed deprecated SORMResult::getEventProbabilityHohenBichler/getGeneralisedReliabilityIndexHohenBichler
+ * Removed deprecated OptimizationResult::getLagrangeMultipliers, OptimizationAlgorithm::computeLagrangeMultipliers
+ * Removed deprecated FittingTest::Kolmogorov, FittingTest::BestModelKolmogorov (DistributionFactory argument only)
 
 === Documentation ===
 

@@ -152,7 +152,8 @@ fullSample.setDescription(["Force","Young","Deflection","Left Angle","Right Angl
 fullSample[0:5]
 
 # %%
-ot.Pairs(fullSample)
+graph = ot.VisualTest.DrawPairs(fullSample)
+view = viewer.View(graph)
 
 # %%
 # Setting up the calibration

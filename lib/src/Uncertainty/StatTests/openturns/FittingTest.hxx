@@ -73,11 +73,6 @@ public:
                                    const DistributionCollection & distributionCollection,
                                    Scalar & bestBICOut);
 
-  /** @deprecated Best model for a given numerical sample by Kolmogorov */
-  static Distribution BestModelKolmogorov(const Sample  & sample,
-                                          const DistributionFactoryCollection & factoryCollection,
-                                          TestResult & bestResultOut);
-
   /** Best model for a given numerical sample by Lilliefors */
   static Distribution BestModelLilliefors(const Sample  & sample,
                                           const DistributionFactoryCollection & factoryCollection,
@@ -131,12 +126,6 @@ public:
   /** Kolmogorov fitting test for continuous distributions */
   static TestResult Kolmogorov(const Sample & sample,
                                const Distribution & distribution,
-                               const Scalar level = 0.05);
-
-  /** @deprecated Kolmogorov fitting test for continuous distributions */
-  static TestResult Kolmogorov(const Sample & sample,
-                               const DistributionFactory & factory,
-                               Distribution & estimatedDistribution,
                                const Scalar level = 0.05);
 
   /** Lilliefors fitting test for continuous distributions */
