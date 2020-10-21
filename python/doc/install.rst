@@ -76,7 +76,7 @@ We support the following Debian-based distributions:
 
 Add the mirror signature::
 
-    curl openturns.github.io/apt/public.key | sudo apt-key add -
+    curl -s https://openturns.github.io/apt/public.key | sudo apt-key add -
 
 To be able to retrieve packages, you must add the appropriate
 repository address to your sources list. To do so, you may either use the
