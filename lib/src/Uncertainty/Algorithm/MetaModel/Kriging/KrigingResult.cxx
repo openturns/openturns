@@ -48,17 +48,11 @@ KrigingResult::KrigingResult(const Sample & inputSample,
                              const Sample & covarianceCoefficients)
   : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
   , inputSample_(inputSample)
-  , inputTransformedSample_(inputSample)
   , outputSample_(outputSample)
   , basis_(basis)
   , trendCoefficients_(trendCoefficients)
   , covarianceModel_(covarianceModel)
   , covarianceCoefficients_(covarianceCoefficients)
-  , covarianceCholeskyFactor_()
-  , covarianceHMatrix_()
-  , F_()
-  , phiT_()
-  , Gt_()
 {
   const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
@@ -80,7 +74,6 @@ KrigingResult::KrigingResult(const Sample & inputSample,
                              const HMatrix & covarianceHMatrix)
   : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
   , inputSample_(inputSample)
-  , inputTransformedSample_(inputSample)
   , outputSample_(outputSample)
   , basis_(basis)
   , trendCoefficients_(trendCoefficients)
@@ -88,9 +81,6 @@ KrigingResult::KrigingResult(const Sample & inputSample,
   , covarianceCoefficients_(covarianceCoefficients)
   , covarianceCholeskyFactor_(covarianceCholeskyFactor)
   , covarianceHMatrix_(covarianceHMatrix)
-  , F_()
-  , phiT_()
-  , Gt_()
 {
   const UnsignedInteger outputDimension = outputSample.getDimension();
   const UnsignedInteger size = inputSample.getSize();
@@ -298,7 +288,7 @@ Matrix KrigingResult::getCrossMatrix(const Sample & x) const
     const UnsignedInteger trainingSize = inputSample_.getSize();
     const UnsignedInteger sampleSize = x.getSize();
     Matrix result(trainingSize, sampleSize);
-    const KrigingResultCrossCovarianceFunctor1D policy(inputTransformedSample_, x, result, covarianceModel_);
+    const KrigingResultCrossCovarianceFunctor1D policy(inputSample_, x, result, covarianceModel_);
     // The loop is over the lower block-triangular part
     TBB::ParallelFor(0, trainingSize, policy);
     return result;
@@ -308,7 +298,7 @@ Matrix KrigingResult::getCrossMatrix(const Sample & x) const
   const UnsignedInteger sampleSize = x.getSize();
   const UnsignedInteger sampleFullSize = sampleSize * dimension;
   Matrix result(trainingFullSize, sampleFullSize);
-  const KrigingResultCrossCovarianceFunctor policy( inputTransformedSample_, x, result, covarianceModel_);
+  const KrigingResultCrossCovarianceFunctor policy(inputSample_, x, result, covarianceModel_);
   // The loop is over the lower block-triangular part
   TBB::ParallelFor( 0, trainingSize * sampleSize, policy );
   return result;
@@ -383,14 +373,14 @@ Matrix KrigingResult::getCrossMatrix(const Point & point) const
   if (outputDimension == 1)
   {
     Matrix result(trainingSize, 1);
-    const KrigingResultCrossCovariancePointFunctor1D policy(inputTransformedSample_, point, result, covarianceModel_);
+    const KrigingResultCrossCovariancePointFunctor1D policy(inputSample_, point, result, covarianceModel_);
     // The loop is over the lower block-triangular part
     TBB::ParallelFor(0, trainingSize, policy);
     return result;
   }
   const UnsignedInteger trainingFullSize = trainingSize * covarianceModel_.getOutputDimension();
   Matrix result(trainingFullSize, outputDimension);
-  const KrigingResultCrossCovariancePointFunctor policy(inputTransformedSample_, point, result, covarianceModel_);
+  const KrigingResultCrossCovariancePointFunctor policy(inputSample_, point, result, covarianceModel_);
   TBB::ParallelFor(0, trainingSize, policy);
   return result;
 }
@@ -417,7 +407,7 @@ void KrigingResult::computeF() const
     for (UnsignedInteger j = 0; j < localBasisSize; ++j, ++index )
     {
       // Here we use potential parallelism in the evaluation of the basis functions
-      const Sample basisSample(localBasis[j](inputTransformedSample_));
+      const Sample basisSample(localBasis[j](inputSample_));
       for (UnsignedInteger i = 0; i < sampleSize; ++i) F_(outputMarginal + i * outputDimension, index) = basisSample(i, 0);
     }
   }
@@ -869,7 +859,6 @@ void KrigingResult::save(Advocate & adv) const
 {
   MetaModelResult::save(adv);
   adv.saveAttribute( "inputSample_", inputSample_ );
-  adv.saveAttribute( "inputTransformedSample_", inputTransformedSample_ );
   adv.saveAttribute( "outputSample_", outputSample_ );
   adv.saveAttribute( "basis_", basis_ );
   adv.saveAttribute( "trendCoefficients_", trendCoefficients_ );
@@ -887,7 +876,6 @@ void KrigingResult::load(Advocate & adv)
 {
   MetaModelResult::load(adv);
   adv.loadAttribute( "inputSample_", inputSample_ );
-  adv.loadAttribute( "inputTransformedSample_", inputTransformedSample_ );
   adv.loadAttribute( "outputSample_", outputSample_ );
   adv.loadAttribute( "basis_", basis_ );
   adv.loadAttribute( "trendCoefficients_", trendCoefficients_ );
