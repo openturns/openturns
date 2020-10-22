@@ -549,6 +549,8 @@ Distribution BlockIndependentDistribution::getMarginal(const Indices & indices) 
     }
     marginalDistributions.add(distributionCollection_[distributionIndex].getMarginal(distributionIndices));
   }
+  if (indicesSize == 1)
+    return marginalDistributions[0];
   return new BlockIndependentDistribution(marginalDistributions);
 }
 
