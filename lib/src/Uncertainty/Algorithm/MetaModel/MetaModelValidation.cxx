@@ -26,6 +26,8 @@
 #include "openturns/Curve.hxx"
 #include "openturns/Cloud.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/ComposedDistribution.hxx"
+#include "openturns/BernsteinCopulaFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -128,7 +130,12 @@ Distribution MetaModelValidation::getResidualDistribution(const Bool smooth) con
   if (!isInitialized_) initialize();
   if (!smooth)
   {
-    return HistogramFactory().build(residual_);
+    const UnsignedInteger dimension = residual_.getDimension();
+    ComposedDistribution::DistributionCollection coll(dimension);
+    for (UnsignedInteger j = 0; j < dimension; ++ j)
+      coll[j] = HistogramFactory().build(residual_.getMarginal(j));
+    const Distribution copula(BernsteinCopulaFactory().build(residual_));
+    return ComposedDistribution(coll, copula);
   }
   return KernelSmoothing().build(residual_);
 }

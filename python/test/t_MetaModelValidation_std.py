@@ -95,3 +95,17 @@ print("Q2 = ", metaModelValidationKG.computePredictivityFactor())
 ot.PlatformInfo.SetNumericalPrecision(2)
 print("Residual sample = ", repr(
     metaModelValidationKG.getResidualSample()))
+
+# 2-d
+dist = ot.Uniform(-pi/2, pi/2)
+model = ot.SymbolicFunction(['x'], ['sin(x)', 'cos(x)'])
+metaModel = ot.SymbolicFunction(['x'], ['x - x^3/6.0 + x^5/120.0', 'cos(1.2*x)'])
+x = dist.getSample(1000)
+y = model(x)
+val = ot.MetaModelValidation(x, y, metaModel)
+q2 = val.computePredictivityFactor()
+residual = val.getResidualSample()
+residual_dist_smooth = val.getResidualDistribution()
+residual_dist = val.getResidualDistribution(False)
+graph = val.drawValidation()
+print(q2)
