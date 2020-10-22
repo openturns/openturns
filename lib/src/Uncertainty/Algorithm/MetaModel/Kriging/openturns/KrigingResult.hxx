@@ -164,12 +164,8 @@ private:
   friend struct KrigingResultCrossCovariancePointFunctor;
   friend struct KrigingResultCrossCovariancePointFunctor1D;
 
-  /** inputData should be keeped*/
+  /** input/output samples */
   Sample inputSample_;
-
-  /** input transformed data: store data*/
-  Sample inputTransformedSample_;
-
   Sample outputSample_;
 
   /** The trend basis */
