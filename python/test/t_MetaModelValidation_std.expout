@@ -6,3 +6,4 @@ Residual sample =  class=Sample name=Unnamed implementation=class=SampleImplemen
 Kriging scoring
 Q2 =  [0.955]
 Residual sample =  class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=10 dimension=1 description=[y0] data=[[0.82],[-0.066],[-2.1],[0.31],[-0.064],[0.29],[0.64],[-1],[0.36],[0.31]]
+[1,0.7]
