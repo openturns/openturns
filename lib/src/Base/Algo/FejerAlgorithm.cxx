@@ -95,7 +95,7 @@ Point FejerAlgorithm::integrateWithNodes(const Function & function,
   return std::pow(0.5, 1.0 * inputDimension) * integral * volume;
 }
 
-void FejerAlgorithm::generateNodesAndWeightsCleanshawCurtis(Collection<Point> & marginalNodes,
+void FejerAlgorithm::generateNodesAndWeightsClenshawCurtis(Collection<Point> & marginalNodes,
     Collection<Point> & marginalWeights)
 {
   const UnsignedInteger dimension = discretization_.getSize();
@@ -263,10 +263,10 @@ void FejerAlgorithm::generateNodesAndWeights(const IntegrationMethod method)
       generateNodesAndWeightsFejerType2(marginalNodes, marginalWeights);
       break;
     case CLENSHAWCURTIS:
-      generateNodesAndWeightsCleanshawCurtis(marginalNodes, marginalWeights);
+      generateNodesAndWeightsClenshawCurtis(marginalNodes, marginalWeights);
       break;
     default:
-      throw InvalidArgumentException(HERE) << "Error: invalid side argument for method, must be FEJERTYPE1, FEJERTYPE2 or  CLEANSHAWCURTIS, here method=" << method;
+      throw InvalidArgumentException(HERE) << "Error: invalid side argument for method, must be FEJERTYPE1, FEJERTYPE2 or  CLENSHAWCURTIS, here method=" << method;
   } /* end switch */
   // Now we have marginal nodes & weights,
   // we generate the nD rule over [0, 1]^n
