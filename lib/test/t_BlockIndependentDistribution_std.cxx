@@ -166,12 +166,9 @@ int main(int, char *[])
 
     fullprint << "entropy=" << distribution.computeEntropy() << std::endl;
     fullprint << "entropy (MC)=" << -distribution.computeLogPDF(distribution.getSample(1000000)).computeMean()[0] << std::endl;
-    Point mean = distribution.getMean();
-    // refMean = [0,0,1,1,1,1,1]
-    Point refMean(7, 1.0);
-    refMean[0] = 0;
-    refMean[1] = 0;
-    assert_almost_equal(mean, refMean, 1e-15, 1e-15);
+    const Point mean = distribution.getMean();
+    const Point refMean = {0, 0, 1, 1, 1, 1, 1};
+    assert_almost_equal(mean, refMean);
 
     //BlockIndependentDistribution::PointWithDescriptionCollection parameters = distribution.getParametersCollection();
     //fullprint << "parameters=" << parameters << std::endl;

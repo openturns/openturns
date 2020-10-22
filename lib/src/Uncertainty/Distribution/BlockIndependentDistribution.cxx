@@ -721,6 +721,25 @@ void BlockIndependentDistribution::setParameter(const Point & parameter)
   }
 }
 
+void BlockIndependentDistribution::computeRange()
+{
+  // aggregate ranges
+  Interval::BoolCollection finiteLowerBound;
+  Interval::BoolCollection finiteUpperBound;
+  Point lowerBound;
+  Point upperBound;
+  const UnsignedInteger size = distributionCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    const Interval range(distributionCollection_[i].getRange());
+    lowerBound.add(range.getLowerBound());
+    upperBound.add(range.getUpperBound());
+    finiteLowerBound.add(range.getFiniteLowerBound());
+    finiteUpperBound.add(range.getFiniteUpperBound());
+  }
+  setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
+}
+
 /* Method save() stores the object through the StorageManager */
 void BlockIndependentDistribution::save(Advocate & adv) const
 {
