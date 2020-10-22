@@ -7,7 +7,7 @@ Create your own distribution given its quantile function
 # %%
 # We want to create a distribution which cumulated distribution (cdf) is denoted by :math:`F` when the quantile function :math:`F^{-1}` is known. In order to implement this, we use the `CompositeDistribution <http://openturns.github.io/openturns/latest/user_manual/_generated/openturns.CompositeDistribution.html#openturns.CompositeDistribution>`_ class.
 
-#
+# %%
 # We know that the random variable :math:`X` is distributed according to :math:`F` if and only if :math:`U=F(X)` is distributed according to the uniform distribution in the :math:`[0,1]` interval, i.e. :math:`U=F(X) \sim \mathcal{U}(0,1)`. Hence, if :math:`U \sim  \mathcal{U}(0,1)` then :math:`X=F^{-1}(U)` is distributed according to :math:`F`.
 #
 # In this example, we want to create a distribution which cdf :math:`F: \mathbb{R} \rightarrow [0,1] ` writes, with :math:`\rho > 1`:
