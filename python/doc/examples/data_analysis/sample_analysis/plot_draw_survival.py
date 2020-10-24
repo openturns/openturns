@@ -1,6 +1,6 @@
 """
-Draw the survival of a sample or a distribution
-===============================================
+Draw a survival function
+========================
 """
 # sphinx_gallery_thumbnail_number = 9
 # %% 

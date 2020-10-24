@@ -1,6 +1,6 @@
 """
-Wilks and empirical quantile estimators
-=======================================
+Estimate Wilks and empirical quantile
+=====================================
 """
 
 # %%

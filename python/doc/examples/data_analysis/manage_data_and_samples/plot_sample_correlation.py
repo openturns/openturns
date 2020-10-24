@@ -1,6 +1,6 @@
 """
-Correlation analysis on samples
-===============================
+Estimate correlation coefficients
+=================================
 """
 
 # %%

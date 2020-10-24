@@ -1,6 +1,6 @@
 """
-Interaction with Pandas
-=======================
+Link Pandas and OpenTURNS
+=========================
 """
 # sphinx_gallery_thumbnail_path = '_static/pandas.png'
 

@@ -1,6 +1,6 @@
 """
-Visualize empirical CDF
-=======================
+Draw the empirical CDF
+======================
 """
 
 # %%
