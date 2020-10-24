@@ -54,6 +54,7 @@ def drawKL(scaledKL, KLev, mesh, title="Scaled KL modes"):
     graph_ev.setTitle(title + " KL eigenvalues")
     graph_ev.setXTitle('$k$')
     graph_ev.setYTitle('$\lambda_i$')
+    graph_ev.setAxes(True)
     graph_ev.setGrid(True)
     graph_ev.setLogScale(2)
     bb = graph_ev.getBoundingBox()
@@ -137,14 +138,13 @@ view = viewer.View(graph_modes_Y)
 
 # %%
 # Compare eigenvalues of X and Y
-graph = ot.Graph(graph_ev_X)
-graph.add(graph_ev_Y)
-graph.setTitle("Input/ouput eigenvalues comparison")
-graph.setYTitle(r"$\lambda_X, \lambda_Y$")
-graph.setColors(["blue", "blue", "red", "red"])
-graph.setLegends([r"$\lambda_X$", "", r"$\lambda_Y$", ""])
-graph.setLegendPosition("topright")
-view = viewer.View(graph)
+graph_ev_X.add(graph_ev_Y)
+graph_ev_X.setTitle("Input/ouput eigenvalues comparison")
+graph_ev_X.setYTitle(r"$\lambda_X, \lambda_Y$")
+graph_ev_X.setColors(["blue", "blue", "red", "red"])
+graph_ev_X.setLegends([r"$\lambda_X$", "", r"$\lambda_Y$", ""])
+graph_ev_X.setLegendPosition("topright")
+view = viewer.View(graph_ev_X)
 
 # %%
 # Polynomial chaos between KL coefficients
