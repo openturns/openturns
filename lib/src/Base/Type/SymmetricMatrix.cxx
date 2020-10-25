@@ -285,6 +285,16 @@ Point SymmetricMatrix::computeEV(SquareMatrix & v,
   return getImplementation()->computeEVSym(*(v.getImplementation()), keepIntact);
 }
 
+/* Compute the largest eigenvalue module using power iterations, symmetric matrix */
+Scalar SymmetricMatrix::computeLargestEigenValueModule(const UnsignedInteger maximumIterations,
+    const Scalar epsilon) const
+{
+  Scalar maximumModule = 0.0;
+  const Bool found = getImplementation()->computeLargestEigenValueModuleSym(maximumModule, maximumIterations, epsilon);
+  if (!found) throw InternalException(HERE) << "Could not reached a precision=" << epsilon << " using " << maximumIterations << " iterations. The approximation obtained is " << maximumModule;
+  return maximumModule;
+}
+
 /* Comparison operator */
 Bool SymmetricMatrix::operator == (const Matrix & rhs) const
 {

@@ -119,6 +119,37 @@ Examples
 >>> np.testing.assert_array_almost_equal(Phi * Lambda * Phi.transpose(), M)"
 
 // ---------------------------------------------------------------------
+%feature("docstring") OT::SymmetricMatrix::computeLargestEigenValueModule
+"Compute the largest eigenvalue module.
+
+Parameters
+----------
+maximumIterations : int, optional
+    The maximum number of power iterations to perform to get the approximation.
+    Default is given by the 'Matrix-LargestEigenValueIterations' key in
+    the :class:`~openturns.ResourceMap`.
+epsilon : float, optional
+    The target relative error. Default is given by the
+    'Matrix-LargestEigenValueRelativeError' key in the
+    :class:`~openturns.ResourceMap`.
+
+Returns
+-------
+largestEigenvalueModule : float
+    The largest eigenvalue module.
+
+See Also
+--------
+computeEV, computeEigenValues
+
+Examples
+--------
+>>> import openturns as ot
+>>> M = ot.SymmetricMatrix([[1.0, 3.0], [3.0, 4.0]])
+>>> M.computeLargestEigenValueModule()
+5.8541..."
+
+// ---------------------------------------------------------------------
 
 %feature("docstring") OT::SymmetricMatrix::checkSymmetry
 "Check if the internal representation is really symmetric."

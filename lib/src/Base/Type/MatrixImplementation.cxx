@@ -1236,6 +1236,58 @@ Point MatrixImplementation::computeEVSym (MatrixImplementation & v,
   return w;
 }
 
+/* Compute the largest eigenvalue module using power iterations, square matrix */
+Bool MatrixImplementation::computeLargestEigenValueModuleSquare(Scalar & maximumModule,
+    const UnsignedInteger maximumIterations,
+    const Scalar epsilon) const
+{
+  const UnsignedInteger dimension = getNbRows();
+  Point currentEigenVector(dimension, 1.0);
+  Point nextEigenVector(genVectProd(currentEigenVector));
+  Scalar nextEigenValue = nextEigenVector.norm();
+  maximumModule = nextEigenValue / std::sqrt(1.0 * dimension);
+  Bool found = false;
+  Scalar precision = 0.0;
+  for (UnsignedInteger iteration = 0; iteration < maximumIterations && !found; ++iteration)
+  {
+    LOGDEBUG(OSS() << "(" << iteration << ") maximum module=" << maximumModule);
+    currentEigenVector = nextEigenVector / nextEigenValue;
+    nextEigenVector = genVectProd(currentEigenVector);
+    nextEigenValue = nextEigenVector.norm();
+    precision = std::abs(nextEigenValue - maximumModule);
+    found = precision <= epsilon * nextEigenValue;
+    LOGDEBUG(OSS() << "(" << iteration << ") precison=" << precision << ", relative precision=" << precision / nextEigenValue << ", found=" << found);
+    maximumModule = nextEigenValue;
+  }
+  return found;
+}
+
+/* Compute the largest eigenvalue module using power iterations, symmetric matrix */
+Bool MatrixImplementation::computeLargestEigenValueModuleSym(Scalar & maximumModule,
+    const UnsignedInteger maximumIterations,
+    const Scalar epsilon) const
+{
+  const UnsignedInteger dimension = getNbRows();
+  Point currentEigenVector(dimension, 1.0);
+  Point nextEigenVector(symVectProd(currentEigenVector));
+  Scalar nextEigenValue = nextEigenVector.norm();
+  maximumModule = nextEigenValue / std::sqrt(1.0 * dimension);
+  Bool found = false;
+  Scalar precision = 0.0;
+  for (UnsignedInteger iteration = 0; iteration < maximumIterations && !found; ++iteration)
+  {
+    LOGDEBUG(OSS() << "(" << iteration << ") maximum module=" << maximumModule);
+    currentEigenVector = nextEigenVector / nextEigenValue;
+    nextEigenVector = symVectProd(currentEigenVector);
+    nextEigenValue = nextEigenVector.norm();
+    precision = std::abs(nextEigenValue - maximumModule);
+    found = precision <= epsilon * nextEigenValue;
+    LOGDEBUG(OSS() << "(" << iteration << ") precison=" << precision << ", relative precision=" << precision / nextEigenValue << ", found=" << found);
+    maximumModule = nextEigenValue;
+  }
+  return found;
+}
+
 /* Compute the singular values of a matrix */
 Point MatrixImplementation::computeSingularValues(const Bool keepIntact)
 {

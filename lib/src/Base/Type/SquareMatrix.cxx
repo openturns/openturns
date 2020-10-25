@@ -208,6 +208,16 @@ SquareMatrix::ComplexCollection SquareMatrix::computeEV(SquareComplexMatrix & v,
   return getImplementation()->computeEVSquare(*(v.getImplementation()), keepIntact);
 }
 
+/* Compute the largest eigenvalue module using power iterations */
+Scalar SquareMatrix::computeLargestEigenValueModule(const UnsignedInteger maximumIterations,
+    const Scalar epsilon) const
+{
+  Scalar maximumModule = 0.0;
+  const Bool found = getImplementation()->computeLargestEigenValueModuleSquare(maximumModule, maximumIterations, epsilon);
+  if (!found) throw InternalException(HERE) << "Could not reached a precision=" << epsilon << " using " << maximumIterations << " iterations. The approximation obtained is " << maximumModule;
+  return maximumModule;
+}
+
 /* Check if the matrix is diagonal */
 Bool SquareMatrix::isDiagonal() const
 {

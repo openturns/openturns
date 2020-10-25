@@ -74,6 +74,8 @@ int main(int, char *[])
     fullprint << "ev=" << ev << std::endl;
     fullprint << "evect=" << evect << std::endl;
     fullprint << "evect=\n" << evect.__str__() << std::endl;
+    Scalar maxModule = matrix1.computeLargestEigenValueModule(10, 1e-2);
+    fullprint << "max |ev|=" << maxModule << std::endl;
 
     // Check the high dimension determinant computation
     SymmetricMatrix matrix3(3);
