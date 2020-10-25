@@ -917,7 +917,9 @@ void ResourceMap::loadDefaultConfiguration()
 
   // MatrixImplementation parameters //
   addAsScalar("Matrix-DefaultSmallPivot", 1.0e-7 );
+  addAsScalar("Matrix-LargestEigenValueRelativeError", 1.0e-4);
   addAsScalar("Matrix-SymmetryThreshold", 1.0e-12);
+  addAsUnsignedInteger("Matrix-LargestEigenValueIterations", 50);
 
   // BernsteinCopulaFactory parameters //
   addAsScalar("BernsteinCopulaFactory-alpha", 1.0);
@@ -1336,7 +1338,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("HMatrix-ClusteringAlgorithm", "median");
   addAsString("HMatrix-CompressionMethod", "AcaRandom");
   addAsUnsignedInteger("HMatrix-FactorizationIterations", 10);
-  addAsUnsignedInteger("HMatrix-LargestEigenValueRelativeIterations", 10);
+  addAsUnsignedInteger("HMatrix-LargestEigenValueIterations", 10);
   addAsUnsignedInteger("HMatrix-MaxLeafSize", 250);
   addAsUnsignedInteger("HMatrix-ValidationDump", 0);
   addAsUnsignedInteger("HMatrix-ValidationRerun", 0);

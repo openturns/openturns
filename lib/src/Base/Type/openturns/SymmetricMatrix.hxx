@@ -154,6 +154,9 @@ public:
   Point computeEigenValues(const Bool keepIntact = true);
   Point computeEV(SquareMatrix & vOut,
                   const Bool keepIntact = true);
+  /** Compute the largest eigenvalue module using power iterations */
+  Scalar computeLargestEigenValueModule(const UnsignedInteger maximumIterations = ResourceMap::GetAsUnsignedInteger("Matrix-LargestEigenValueIterations"),
+                                        const Scalar epsilon = ResourceMap::GetAsScalar("Matrix-LargestEigenValueRelativeError")) const override;
 
   /** Comparison operators */
   Bool operator == (const Matrix & rhs) const;

@@ -346,7 +346,7 @@ Scalar HMatrixImplementation::computeApproximateLargestEigenValue(const Scalar e
   gemv('N', 1.0, currentEigenVector, 0.0, nextEigenVector);
   Scalar nextEigenValue = nextEigenVector.norm();
   Scalar currentEigenValue = nextEigenValue / std::sqrt(1.0 * dimension);
-  const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("HMatrix-LargestEigenValueRelativeIterations");
+  const UnsignedInteger maximumIteration = ResourceMap::GetAsUnsignedInteger("HMatrix-LargestEigenValueIterations");
   Bool found = false;
   Scalar precision = 0.0;
   for (UnsignedInteger iteration = 0; iteration < maximumIteration; ++iteration)

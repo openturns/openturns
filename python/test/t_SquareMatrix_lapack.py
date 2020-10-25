@@ -32,6 +32,8 @@ try:
     print("evect=", evect)
     print("evect=")
     print(evect.__str__())
+    maxModule = matrix1.computeLargestEigenValueModule(10, 1e-2)
+    print("max |ev|=%.6g" % maxModule)
 
     # Check the high dimension determinant computation
     matrix2 = SquareMatrix(3)

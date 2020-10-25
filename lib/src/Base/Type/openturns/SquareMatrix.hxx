@@ -139,6 +139,9 @@ public:
   ComplexCollection computeEigenValues(const Bool keepIntact = true);
   ComplexCollection computeEV(SquareComplexMatrix & vOut,
                               const Bool keepIntact = true);
+  /** Compute the largest eigenvalue module using power iterations */
+  virtual Scalar computeLargestEigenValueModule(const UnsignedInteger maximumIterations = ResourceMap::GetAsUnsignedInteger("Matrix-LargestEigenValueIterations"),
+      const Scalar epsilon = ResourceMap::GetAsScalar("Matrix-LargestEigenValueRelativeError")) const;
 
   /** Check if it is diagonal */
   Bool isDiagonal() const;

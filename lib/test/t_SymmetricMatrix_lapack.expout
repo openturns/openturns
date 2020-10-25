@@ -15,6 +15,7 @@ evect=class=SquareMatrix dimension=2 implementation=class=MatrixImplementation n
 evect=
 [[ -0.932722  0.360597 ]
  [  0.360597  0.932722 ]]
+max |ev|=13.933
 matrix3=
 [[  1    2    3   ]
  [  2    2.5 -3.5 ]

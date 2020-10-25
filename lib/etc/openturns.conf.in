@@ -299,7 +299,9 @@
 
   <!-- OT::MatrixImplementation parameters -->
   <Matrix-DefaultSmallPivot value_float="1.0e-7"  />
+  <Matrix-LargestEigenValueRelativeError value_float="1.0e-4" />
   <Matrix-SymmetryThreshold value_float="1.0e-12" />
+  <Matrix-LargestEigenValueIterations value_int="50"  />
 
   <!-- OT::BernsteinCopulaFactory parameters -->
   <BernsteinCopulaFactory-alpha                    value_float="1.0"             />
@@ -712,13 +714,12 @@
   <HMatrix-ForceSequential      value_bool="false"            />
   <HMatrix-AdmissibilityFactor  value_float="100.0"            />
   <HMatrix-AssemblyEpsilon      value_float="1.0e-4"         />
-  <HMatrix-LargestEigenValueRelativeError value_float="1.0e-1" />
   <HMatrix-RecompressionEpsilon value_float="1.0e-4"         />
   <HMatrix-ValidationError      value_float="0.0"            />
   <HMatrix-ClusteringAlgorithm  value_str="median"         />
   <HMatrix-CompressionMethod    value_str="AcaRandom"    />
   <HMatrix-FactorizationIterations value_int="10"  />
-  <HMatrix-LargestEigenValueRelativeIterations value_int="10"  />
+  <HMatrix-LargestEigenValueIterations value_int="10"  />
   <HMatrix-MaxLeafSize          value_int="250"  />
   <HMatrix-ValidationDump       value_int="0"    />
   <HMatrix-ValidationRerun      value_int="0"    />

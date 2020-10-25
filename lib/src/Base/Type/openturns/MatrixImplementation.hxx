@@ -241,6 +241,13 @@ public:
   Point computeEigenValuesSym(const Bool keepIntact = true);
   Point computeEVSym(MatrixImplementation & vOut,
                      const Bool keepIntact = true);
+  /** Compute the largest eigenvalue module using power iterations */
+  Bool computeLargestEigenValueModuleSquare(Scalar & maximumModule,
+      const UnsignedInteger maximumIterations = ResourceMap::GetAsUnsignedInteger("Matrix-LargestEigenValueIterations"),
+      const Scalar epsilon = ResourceMap::GetAsScalar("Matrix-LargestEigenValueRelativeError")) const;
+  Bool computeLargestEigenValueModuleSym(Scalar & maximumModule,
+                                         const UnsignedInteger maximumIterations = ResourceMap::GetAsUnsignedInteger("Matrix-LargestEigenValueIterations"),
+                                         const Scalar epsilon = ResourceMap::GetAsScalar("Matrix-LargestEigenValueRelativeError")) const;
 
   /** Compute singular values */
   Point computeSingularValues(const Bool keepIntact = true);
