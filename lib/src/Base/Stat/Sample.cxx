@@ -423,7 +423,7 @@ CovarianceMatrix Sample::computeCovariance() const
 /*
  * Method computeStandardDeviation() gives the standard deviation of the sample
  */
-TriangularMatrix Sample::computeStandardDeviation() const
+Point Sample::computeStandardDeviation() const
 {
   return getImplementation()->computeStandardDeviation();
 }

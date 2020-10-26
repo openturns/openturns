@@ -52,7 +52,6 @@ int main(int, char *[])
     fullprint << "mean=" << sample.computeMean() << std::endl;
     fullprint << "covariance=" << sample.computeCovariance() << std::endl;
     fullprint << "standard deviation=" << sample.computeStandardDeviation() << std::endl;
-    fullprint << "standard deviation per component=" << sample.computeStandardDeviationPerComponent() << std::endl;
     fullprint << "Pearson correlation=" << sample.computePearsonCorrelation() << std::endl;
     fullprint << "Spearman correlation=" << sample.computeSpearmanCorrelation() << std::endl;
     fullprint << "Kendall tau=" << sample.computeKendallTau() << std::endl;

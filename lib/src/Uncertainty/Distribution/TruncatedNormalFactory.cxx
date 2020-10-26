@@ -93,7 +93,7 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfMoments(const Sample & samp
 
   // Compute the mean and std and set it as initial values
   const Scalar sampleMean = sample.computeMean()[0];
-  const Scalar sampleSigma = sample.computeStandardDeviationPerComponent()[0];
+  const Scalar sampleSigma = sample.computeStandardDeviation()[0];
   Point startingPoint(2);
   startingPoint[0] = sampleMean;
   startingPoint[1] = sampleSigma;
@@ -140,7 +140,7 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfLikelihoodMaximization(cons
   parametersLowerFlags[1] = true;
   Point startingPoint(dimension);
   startingPoint[0] = normalizedSample.computeMean()[0];
-  startingPoint[1] = normalizedSample.computeStandardDeviationPerComponent()[0];
+  startingPoint[1] = normalizedSample.computeStandardDeviation()[0];
 
   const Scalar oneEps = 1.0 + 1.0 / size;
 

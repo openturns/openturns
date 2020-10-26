@@ -13,6 +13,8 @@
  * Removed deprecated SORMResult::getEventProbabilityHohenBichler/getGeneralisedReliabilityIndexHohenBichler
  * Removed deprecated OptimizationResult::getLagrangeMultipliers, OptimizationAlgorithm::computeLagrangeMultipliers
  * Removed deprecated FittingTest::Kolmogorov, FittingTest::BestModelKolmogorov (DistributionFactory argument only)
+ * Deprecated Sample::computeStandardDeviationPerComponent, moved to computeStandardDeviation
+ * Sample::computeStandardDeviation now returns a Point instead of a Matrix
 
 === Documentation ===
 
@@ -21,6 +23,7 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #1635 (computeStandardDeviation exception)
 
 
 == 1.16 release (2020-11-16) == #release-1.16

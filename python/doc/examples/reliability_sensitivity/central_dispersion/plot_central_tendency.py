@@ -96,7 +96,7 @@ print('monte carlo mean=', expectation_mean, 'var=', expectation_result.getVaria
 # %%
 Y_s = Y.getSample(1000)
 y_mean = Y_s.computeMean()
-y_stddev = Y_s.computeStandardDeviationPerComponent()
+y_stddev = Y_s.computeStandardDeviation()
 y_quantile_95p = Y_s.computeQuantilePerComponent(0.95)
 print('mean=', y_mean, 'stddev=', y_stddev, 'quantile@95%', y_quantile_95p)
 

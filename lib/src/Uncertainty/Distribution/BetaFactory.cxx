@@ -79,7 +79,7 @@ Beta BetaFactory::buildAsBeta(const Sample & sample) const
     return result;
   }
   const Scalar mu = sample.computeMean()[0];
-  const Scalar sigma = sample.computeStandardDeviationPerComponent()[0];
+  const Scalar sigma = sample.computeStandardDeviation()[0];
   return buildAsBeta(BetaMuSigma(mu, sigma, a, b).evaluate());
 }
 

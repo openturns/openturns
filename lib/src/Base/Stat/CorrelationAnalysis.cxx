@@ -109,12 +109,12 @@ Point CorrelationAnalysis::SignedSRC(const Sample & inputSample,
   // Linear coefficients
   const Point linear(*regressionAlgorithm.getLinear().getImplementation());
 
-  const Scalar stdOutput = outputSample.computeStandardDeviationPerComponent()[0];
+  const Scalar stdOutput = outputSample.computeStandardDeviation()[0];
   if (!(stdOutput > 0.0))
     throw InvalidArgumentException(HERE) << "No output variance";
 
   // Compute the output variance from the regression coefficients
-  Point src(inputSample.computeStandardDeviationPerComponent());
+  Point src(inputSample.computeStandardDeviation());
   for (UnsignedInteger i = 0; i < dimension; ++ i) src[i] *= linear[i] / stdOutput;
   return src;
 }

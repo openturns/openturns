@@ -40,7 +40,7 @@ TestResult NormalityTest::AndersonDarlingNormal(const Sample & sample,
   if (sample.getSize() < 8) throw InvalidArgumentException(HERE) << "Error: cannot perform an Anderson Darling normality test with sample of size < 8.";
   Sample sortedSample(sample.sort(0));
   Scalar mean = sortedSample.computeMean()[0];
-  Scalar sd = sortedSample.computeStandardDeviationPerComponent()[0];
+  Scalar sd = sortedSample.computeStandardDeviation()[0];
   const UnsignedInteger size = sample.getSize();
   Scalar testStatistic = 0.0;
   UnsignedInteger effectiveIndex = 0;
@@ -91,7 +91,7 @@ TestResult NormalityTest::CramerVonMisesNormal(const Sample & sample,
   if (sample.getSize() < 8) throw InvalidArgumentException(HERE) << "Error: cannot perform a Cramer Von-Mises normality test with sample of size < 8.";
   Sample sortedSample(sample.sort(0));
   Scalar mean = sortedSample.computeMean()[0];
-  Scalar sd = sortedSample.computeStandardDeviationPerComponent()[0];
+  Scalar sd = sortedSample.computeStandardDeviation()[0];
   const UnsignedInteger size = sample.getSize();
   Scalar testStatistic = 1.0 / (12.0 * size);
   for (UnsignedInteger i = 0; i < size; ++i)

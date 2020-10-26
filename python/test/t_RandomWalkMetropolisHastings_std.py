@@ -81,7 +81,7 @@ for i in range(len(sigma0s)):
     sample = sampler.getSample(50)
 
     print("  obtained posterior ~N( %.12g" % sample.computeMean()[
-          0], ",  %.12g" % sample.computeStandardDeviationPerComponent()[0], ")")
+          0], ",  %.12g" % sample.computeStandardDeviation()[0], ")")
 
     print("  acceptance rate=", sampler.getAcceptanceRate())
 

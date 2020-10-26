@@ -98,7 +98,7 @@ Rice RiceFactory::buildAsRice(const Sample & sample) const
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Rice distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Rice distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar mu = sample.computeMean()[0];
-  const Scalar std = sample.computeStandardDeviationPerComponent()[0];
+  const Scalar std = sample.computeStandardDeviation()[0];
   // Koay inversion method
   RiceFactoryParameterConstraint constraint(mu / std);
   const Function f(bindMethod<RiceFactoryParameterConstraint, Point, Point>(constraint, &RiceFactoryParameterConstraint::computeConstraint, 1, 1));

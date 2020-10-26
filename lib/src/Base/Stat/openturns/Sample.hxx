@@ -199,9 +199,9 @@ public:
   CovarianceMatrix computeCovariance() const;
 
   /**
-   * Method computeStandardDeviation() gives the standard deviation of the sample
+   * Method computeStandardDeviationPerComponent() gives the standard deviation of each component of the sample
    */
-  TriangularMatrix computeStandardDeviation() const;
+  Point computeStandardDeviation() const;
 
   /**
    * Method computeVariance() gives the variance of the sample (by component)
@@ -209,7 +209,7 @@ public:
   Point computeVariance() const;
 
   /**
-   * Method computeStandardDeviationPerComponent() gives the standard deviation of each component of the sample
+   * @deprecated Method computeStandardDeviationPerComponent() gives the standard deviation of each component of the sample
    */
   Point computeStandardDeviationPerComponent() const;
 

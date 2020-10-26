@@ -82,7 +82,7 @@ try:
     sample = sampler.getSample(sampleSize)
 
     x_mu = sample.computeMean()
-    x_sigma = sample.computeStandardDeviationPerComponent()
+    x_sigma = sample.computeStandardDeviation()
 
     # print acceptance rate
     print('acceptance rate=', sampler.getAcceptanceRate())

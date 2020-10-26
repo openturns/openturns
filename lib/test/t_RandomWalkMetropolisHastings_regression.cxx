@@ -135,7 +135,7 @@ int main(int, char *[])
     Sample sample(sampler.getSample(sampleSize));
 
     Point x_mu(sample.computeMean());
-    Point x_sigma(sample.computeStandardDeviationPerComponent());
+    Point x_sigma(sample.computeStandardDeviation());
 
     // print acceptance rate
     std::cout << "acceptance rate=" << sampler.getAcceptanceRate() << std::endl;

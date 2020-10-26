@@ -102,7 +102,7 @@ Student StudentFactory::buildAsStudent(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Student distribution from an empty sample";
   const Point mu(sample.computeMean());
-  const Point stdev(sample.computeStandardDeviationPerComponent());
+  const Point stdev(sample.computeStandardDeviation());
   // The relation between Kendall's tau and shape matrix is universal among the elliptical copulas. Use the method in NormalCopula.
   const CorrelationMatrix R(NormalCopula::GetCorrelationFromKendallCorrelation(sample.computeKendallTau()));
 

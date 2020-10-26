@@ -297,7 +297,7 @@ TestResult LinearModelAnalysis::getNormalityTestResultChiSquared() const
 {
   // Using OT::FittingTest::ChiSquared
   const Sample residuals(linearModelResult_.getSampleResiduals());
-  const Normal normalDistribution(residuals.computeMean()[0], residuals.computeStandardDeviation()(0, 0));
+  const Normal normalDistribution(residuals.computeMean()[0], residuals.computeStandardDeviation()[0]);
   return FittingTest::ChiSquared(residuals, normalDistribution);
 }
 
