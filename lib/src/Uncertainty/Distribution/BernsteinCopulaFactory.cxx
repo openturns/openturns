@@ -296,7 +296,7 @@ UnsignedInteger BernsteinCopulaFactory::ComputeLogLikelihoodBinNumber(const Samp
     BuildCrossValidationSamples(sample, kFraction, learningCollection, validationCollection);
   else
   {
-    learningCollection.add(sample);
+    learningCollection.add((sample.rank() + 1.0) / sample.getSize());
     validationCollection.add(sample);
   }
   UnsignedInteger mMin = ResourceMap::GetAsUnsignedInteger("BernsteinCopulaFactory-MinM");
