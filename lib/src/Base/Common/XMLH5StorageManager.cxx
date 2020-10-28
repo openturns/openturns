@@ -141,6 +141,7 @@ void XMLH5StorageManager::writeToH5(const String & dataSetName)
   }
   isChunked_ = true;
   valBuf_.clear();
+  h5File.close();
 }
 
 void XMLH5StorageManager::readIndexedValue(Pointer<StorageManager::InternalObject> & p_obj,
@@ -175,12 +176,8 @@ void XMLH5StorageManager::readFromH5(const String & dataSetName)
   H5::DataSpace dataspace = dataset.getSpace();
   const int size = dataspace.getSimpleExtentNpoints();
 
-  double *data = new double[size];
-  dataset.read(data, H5::PredType::IEEE_F64LE);
-  valBuf_.clear();
-
-  std::vector<double> d_vector(data, data + size);
-  valBuf_ = d_vector;
+  valBuf_.resize(size);
+  dataset.read(valBuf_.data(), H5::PredType::IEEE_F64LE);
 
   dataspace.close();
   dataset.close();
