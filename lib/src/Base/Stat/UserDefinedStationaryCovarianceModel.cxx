@@ -53,8 +53,8 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const
 {
   const UnsignedInteger size = mesh.getVerticesNumber();
   if (size != covarianceFunction.getSize())
-    throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherents"
-                                         << " mesh size = " << size << "covariance function size = " << covarianceFunction.getSize();
+    throw InvalidArgumentException(HERE) << "Error: a covariance matrix should correspond to each distance specified in the regular grid. "
+                                         << "Regular grid size = " << size << " vs number of covariance matrices in the collection = " << covarianceFunction.getSize();
   inputDimension_ = mesh.getDimension();
   covarianceCollection_ = CovarianceMatrixCollection(size);
   // put the first element
@@ -66,6 +66,27 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const
     if (covarianceFunction[k].getDimension() != outputDimension_)
       throw InvalidArgumentException(HERE) << " Error with dimension; the covariance matrices should be of same dimension";
     covarianceCollection_[k] = covarianceFunction[k];
+  }
+}
+
+/* Easy constructor for 1D outputs*/
+UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const RegularGrid & mesh,
+    const Collection<Scalar> & covarianceValues)
+  : StationaryCovarianceModel()
+  , covarianceCollection_(0)
+  , mesh_(mesh)
+  , nearestNeighbour_(mesh)
+{
+  const UnsignedInteger size = mesh.getVerticesNumber();
+  if (size != covarianceValues.getSize())
+    throw InvalidArgumentException(HERE) << "Error: a covariance value should correspond to each distance specified in the regular grid. "
+                                         << "Regular grid size = " << size << " vs number of covariance values in the collection = " << covarianceValues.getSize();
+  covarianceCollection_ = CovarianceMatrixCollection(size, CovarianceMatrix(1));
+  for (UnsignedInteger k = 0; k < size; ++k)
+  {
+    if (covarianceValues[k] < 0)
+      throw InvalidArgumentException(HERE) << k << "-th covariance value is " << covarianceValues[k] << ", should be nonnegative.";
+    covarianceCollection_[k](0, 0) = covarianceValues[k];
   }
 }
 

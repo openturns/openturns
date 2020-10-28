@@ -44,12 +44,16 @@ public:
   typedef PersistentCollection<CovarianceMatrix>          CovarianceMatrixPersistentCollection;
   typedef Collection<CovarianceMatrix>                    CovarianceMatrixCollection;
 
-  /** Default onstructor */
+  /** Default constructor */
   UserDefinedStationaryCovarianceModel();
 
-  /** Standard onstructor */
+  /** Standard constructor */
   UserDefinedStationaryCovarianceModel(const RegularGrid & mesh,
                                        const CovarianceMatrixCollection & covarianceCollection);
+
+  /** Easy constructor for 1D outputs*/
+  UserDefinedStationaryCovarianceModel(const RegularGrid & mesh,
+                                       const Collection<Scalar> & covarianceValues);
 
   /** Virtual copy constructor */
   UserDefinedStationaryCovarianceModel * clone() const override;

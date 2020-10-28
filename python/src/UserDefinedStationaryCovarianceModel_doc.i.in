@@ -5,8 +5,8 @@ Parameters
 ----------
 mesh : :class:`~openturns.RegularGrid`
     Time grid of size :math:`N` associated with the process.
-sample : :class:`~openturns.CovarianceMatrixCollection`
-    A collection of *N* covariance matrices.
+sample : :class:`~openturns.CovarianceMatrixCollection` or :class:`~openturns.ScalarCollection`
+    A collection of :math:`N` covariance matrices (any :math:`d`) or :math:`N` nonnegative scalars (:math:`d=1`).
 
 Notes
 -----
@@ -27,34 +27,30 @@ where *k* is such that :math:`\vect{t}_k` is the  vertex of :math:`\cM` the near
 
 Examples
 --------
-Create a mesh:
+Create a time grid:
 
 >>> import openturns as ot
->>> # Create the time grid
+>>> from numpy import array
 >>> t0 = 0.0
 >>> dt = 0.5
 >>> N = int((20.0 - t0)/ dt)
 >>> myShiftMesh =  ot.RegularGrid(t0, dt, N)
 
-Create the stationary covariance function:
+Create a stationary covariance function:
 
 >>> def gamma(tau):
 ...     return 1.0 / (1.0 + tau * tau)
 
-Create the collection of N covariance matrices:
+Create a collection of :math:`N` covariance values:
 
->>> myCovarianceCollection = ot.CovarianceMatrixCollection()
->>> for k in range(N):
-...     t = myShiftMesh.getValue(k)
-...     matrix = ot.CovarianceMatrix(1)
-...     matrix[0, 0] = gamma(t)
-...     myCovarianceCollection.add(matrix)
+>>> gridVertices = array(myShiftMesh.getVertices())
+>>> myCovarianceCollection = ot.Sample(gamma(gridVertices)).asPoint()
 
-Create the User defined stationary covariance model:
+Create the user defined stationary covariance model:
 
->>> myCovarianceModel = ot.UserDefinedStationaryCovarianceModel(myShiftMesh,myCovarianceCollection)
+>>> myCovarianceModel = ot.UserDefinedStationaryCovarianceModel(myShiftMesh, myCovarianceCollection)
 
-Compute the covariance function at the vertex tau:
+Compute the covariance function at a specific vertex tau:
 
 >>> tau = 1.5
 >>> myCovModelMatrix = myCovarianceModel(tau)
