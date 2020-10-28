@@ -114,6 +114,25 @@ try:
     copula6D = EmpiricalBernsteinCopula(Normal(6).getSample(8), 4)
     print("Entropy in higher dimension=%.6f" % copula6D.computeEntropy())
 
+    dim = 6
+    x = 0.6
+    y = [0.2]*(dim-1)
+    print("conditional PDF=%.6f" %
+          copula6D.computeConditionalPDF(x, y))
+    print("conditional PDF ref=%.6f" %
+          (copula6D.computePDF(y + [x]) / copula6D.getMarginal([0,1,2,3,4,]).computePDF(y)))
+    print("conditional CDF=%.6f" %
+          copula6D.computeConditionalCDF(x, y))
+    print("conditional quantile=%.6f" %
+          copula6D.computeConditionalQuantile(x, y))
+    pt = Point([0.05*(1+i) for i in range(dim)])
+    print("sequential conditional PDF=",
+          copula6D.computeSequentialConditionalPDF(pt))
+    resCDF = copula6D.computeSequentialConditionalCDF(pt)
+    print("sequential conditional CDF(", pt, ")=", resCDF)
+    print("sequential conditional quantile(", resCDF, ")=",
+          copula6D.computeSequentialConditionalQuantile(resCDF))
+
 except:
     import sys
     print("t_EmpiricalBernsteinCopula_std.py",
