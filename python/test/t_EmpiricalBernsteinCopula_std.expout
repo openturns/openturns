@@ -74,3 +74,10 @@ margins quantile= class=Point name=Unnamed dimension=2 values=[0.974525,0.974525
 margins CDF(qantile)=0.950000
 margins realization= class=Point name=Unnamed dimension=2 values=[0.986902,0.756785]
 Entropy in higher dimension=-0.967882
+conditional PDF=1.016572
+conditional PDF ref=1.016572
+conditional CDF=0.842653
+conditional quantile=0.415183
+sequential conditional PDF= [1,0.540001,0.614665,0.675066,1.53183,1.74932]
+sequential conditional CDF( [0.05,0.1,0.15,0.2,0.25,0.3] )= [0.05,0.0288132,0.0793203,0.178608,0.234026,0.361947]
+sequential conditional quantile( [0.05,0.0288132,0.0793203,0.178608,0.234026,0.361947] )= [0.05,0.1,0.15,0.2,0.25,0.3]
