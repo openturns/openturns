@@ -98,6 +98,7 @@
  * #1603 (FieldToPointConnection generates an invalid exception)
  * #1605 (MaximumLikelihoodFactory cannot be used with FittingTest.Kolmogorov)
  * #1624 (The graphs_loglikelihood_contour example has a bug)
+ * #1643 (Problem in MaximumDistribution PDF)
  * #1654 (StationaryFunctionalCovarianceModel::discretize segfaults)
 
 
