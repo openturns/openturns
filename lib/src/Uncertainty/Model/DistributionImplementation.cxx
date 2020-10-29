@@ -2079,6 +2079,7 @@ Scalar DistributionImplementation::computeConditionalPDF(const Scalar x,
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Point DistributionImplementation::computeSequentialConditionalPDF(const Point & x) const
 {
+  if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension_ << ", got dimension=" << x.getDimension();
   Point result(dimension_);
   Indices conditioning(1, 0);
   Implementation conditioningDistribution(getMarginal(conditioning).getImplementation());
@@ -2161,6 +2162,7 @@ Scalar DistributionImplementation::computeConditionalCDF(const Scalar x,
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Point DistributionImplementation::computeSequentialConditionalCDF(const Point & x) const
 {
+  if (x.getDimension() != dimension_) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << dimension_ << ", got dimension=" << x.getDimension();
   Point result(dimension_);
   Indices conditioning(1, 0);
   Implementation conditioningDistribution(getMarginal(conditioning).getImplementation());
