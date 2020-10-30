@@ -68,7 +68,7 @@ public:
   /** String converter */
   String __repr__() const override;
 
-  /** Compute the likelihood w.r.t. observartions */
+  /** Compute the log-likelihood */
   Scalar computeLogLikelihood(const Point & currentState) const;
 
   /** Prior accessor */

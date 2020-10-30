@@ -106,7 +106,8 @@ private:
   /// number of samples accepted
   mutable Indices acceptedNumber_;
 
-  mutable Scalar currentLogLikelihood_;
+  /// unnormalized log-posterior density of the current state
+  mutable Scalar currentPenalizedLogLikelihood_;
 }; /* class RandomWalkMetropolisHastings */
 
 

@@ -101,7 +101,7 @@ ot.RandomGenerator.SetSeed(0)
 y_obs = ot.Normal(thetaTrue[0], 1.0).getSample(obsSize)
 RWMHsampler = ot.RandomWalkMetropolisHastings(
     prior, conditional, model, y_obs, y_obs, initialState, proposal)
-print("Penalized log-likelihood of thetaTrue = {!r}".format(
+print("Log-likelihood of thetaTrue = {!r}".format(
     RWMHsampler.computeLogLikelihood(thetaTrue)))
 real_503 = RWMHsampler.getRealization()
 print("With 503 observations, getRealization() produces {!r}".format(
@@ -112,7 +112,7 @@ ot.RandomGenerator.SetSeed(0)
 y_obs = ot.Normal(thetaTrue[0], 1.0).getSample(obsSize)
 RWMHsampler = ot.RandomWalkMetropolisHastings(
     prior, conditional, model, y_obs, y_obs, initialState, proposal)
-print("Penalized log-likelihood of thetaTrue = {!r}".format(
+print("Log-likelihood of thetaTrue = {!r}".format(
     RWMHsampler.computeLogLikelihood(thetaTrue)))
 # produces an error with current master branch
 real_504 = RWMHsampler.getRealization()
