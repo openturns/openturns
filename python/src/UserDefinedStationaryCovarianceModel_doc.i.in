@@ -4,7 +4,7 @@
 Parameters
 ----------
 mesh : :class:`~openturns.RegularGrid`
-    Time grid of size :math:`N` associated with the process.
+    Time grid of size :math:`N` associated with the process. Negative vertices are ignored.
 sample : :class:`~openturns.CovarianceMatrixCollection` or :class:`~openturns.ScalarCollection`
     A collection of :math:`N` covariance matrices (any :math:`d`) or :math:`N` nonnegative scalars (:math:`d=1`).
 
@@ -12,18 +12,18 @@ Notes
 -----
 The covariance model is built as follows.
 
-We consider a process :math:`X: \Omega \times\cD \mapsto \Rset^d` with :math:`\cD \in \Rset`. 
+We consider a process :math:`X: \Omega \times \Rset \mapsto \Rset^d`.
 
-We note :math:`(\vect{t}_0,\dots, \vect{t}_{N-1})` the vertices of :math:`\cM \in \cD` and :math:`(\mat{C}_{k})_{0 \leq  k \leq N-1}` where :math:`\mat{C}_{k} \in \cS_d^+(\Rset)` the collection of covariance matrices fixed by the User.
+We note :math:`(t_0,\dots, t_{N-1})` the vertices of :math:`\cM \subset \Rset` and :math:`(\mat{C}_{k})_{0 \leq  k \leq N-1}` where :math:`\mat{C}_{k} \in \cS_d^+(\Rset)` the collection of covariance matrices provided by the user.
 
-Then we build a stationary covariance function :math:`C^{stat}` which is a  piecewise constant function defined on :math:`\cD \times \cD` by:
+Then we build a stationary covariance function :math:`C^{stat}` which is a piecewise constant function defined on :math:`\Rset` by:
 
 .. math::
 
-    \forall \vect{\tau} \in \cD, \, \quad C^{stat}(\vect{\tau}) =  \mat{C}_k
+    \forall \tau \in \Rset, \, \quad C^{stat}(\tau) =  \mat{C}_k
 
 
-where *k* is such that :math:`\vect{t}_k` is the  vertex of :math:`\cM` the nearest to :math:`\vect{\tau}`.
+where :math:`k` is such that :math:`t_k` is the vertex of :math:`\cM` closest to :math:`|\tau|`.
 
 Examples
 --------
