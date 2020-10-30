@@ -63,7 +63,7 @@ int main(int, char *[])
 
     UnsignedInteger size = 20;
     RegularGrid timeGrid(0.0, 0.1, size);
-    UserDefinedStationaryCovarianceModel::CovarianceMatrixCollection covarianceCollection(size);
+    UserDefinedStationaryCovarianceModel::SquareMatrixCollection covarianceCollection(size);
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       const Scalar t = timeGrid.getValue(i);

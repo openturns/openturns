@@ -40,7 +40,7 @@ public:
 
   void compute(UnsignedInteger i, UnsignedInteger j, Matrix* result) const
   {
-    CovarianceMatrix localResult(covarianceModel_( vertices_[i] - vertices_[j] ));
+    SquareMatrix localResult(covarianceModel_( vertices_[i] - vertices_[j] ));
     std::copy(&localResult.getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0) + dimension_ * dimension_, &result->getImplementation()->operator[](0));
   }
 };

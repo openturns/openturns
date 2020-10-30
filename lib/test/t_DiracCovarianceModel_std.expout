@@ -6,11 +6,11 @@ myModel2 = class=DiracCovarianceModel, amplitude=class=Point name=Unnamed dimens
 Pretty print of myModel2 = DiracCovarianceModel(t)=[[  2.25   2.625 ]
  [  2.625 12.25  ]] * t==[0,0]
 Evaluation of the models on the pointclass=Point name=Unnamed dimension=2 values=[0,0]
-myModel1([0,0]) = class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[2.25,0,0,12.25]
-myModel2([0.5,0]) = class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[2.25,2.625,2.625,12.25]
+myModel1([0,0]) = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[2.25,0,0,12.25]
+myModel2([0.5,0]) = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[2.25,2.625,2.625,12.25]
 Evaluation of the models on the pointclass=Point name=Unnamed dimension=2 values=[0.5,0]
-myModel1([0,0]) = class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0,0,0,0]
-myModel2([0.5,0]) = class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0,0,0,0]
+myModel1([0,0]) = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0,0,0,0]
+myModel2([0.5,0]) = class=SquareMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0,0,0,0]
 Discretization on a grid of vertices
 Discretization of myModel1 = 18x18
 [[  2.25  0     0     0     0     0     0     0     0     0     0     0     0     0     0     0     0     0    ]
