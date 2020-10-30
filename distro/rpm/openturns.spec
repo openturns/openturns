@@ -10,7 +10,7 @@
 %define _cmake_lib_suffix64 -DLIB_SUFFIX=64
 %define cmake \
 CFLAGS="${CFLAGS:-%optflags}" ; export CFLAGS ; \
-CXXFLAGS="${CXXFLAGS:-%optflags}" ; export CXXFLAGS ; \
+CXXFLAGS="${CXXFLAGS:-%optflags} -fno-lto" ; export CXXFLAGS ; \
 FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 %__cmake \\\
 -DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \\\
