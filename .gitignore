@@ -1,4 +1,2 @@
 build*/
 *~
-*.ipynb_checkpoints
-*.kdev4
