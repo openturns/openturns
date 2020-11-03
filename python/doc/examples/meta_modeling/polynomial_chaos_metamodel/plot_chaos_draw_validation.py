@@ -4,7 +4,7 @@ Validate a polynomial chaos
 """
 # %% 
 #
-# In this example, we show how to perform the draw validation of a polynomial chaos for the Ishigami function.
+# In this example, we show how to perform the draw validation of a polynomial chaos for the :ref:`Ishigami function <use-case-ishigami>`.
 
 # %%
 import openturns as ot
@@ -14,42 +14,39 @@ from math import pi
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Create the Ishigami test function.
+# Model description
+# -----------------
 
 # %%
-ot.RandomGenerator.SetSeed(0)
-formula = ['sin(X1) + 7. * sin(X2)^2 + 0.1 * X3^4 * sin(X1)']
-input_names = ['X1', 'X2', 'X3']
-g = ot.SymbolicFunction(input_names, formula)
+# We load the Ishigami test function from the usecases module :
+from openturns.usecases import ishigami_function as ishigami_function
+im = ishigami_function.IshigamiModel()
 
 # %%
-# Create the probabilistic model
-
-# %%
-distributionList = [ot.Uniform(-pi, pi)] * 3
-distribution = ot.ComposedDistribution(distributionList)
-
-# %%
-# Create a training sample
+# The `IshigamiModel` data class contains the input distribution :math:`X=(X_1, X_2, X_3)` in `im.distributionX` and the Ishigami function in `im.model`.
+# We also have access to the input variable names with
+input_names = im.distributionX.getDescription()
 
 # %%
 N = 100 
-inputTrain = distribution.getSample(N)
-outputTrain = g(inputTrain)
+inputTrain = im.distributionX.getSample(N)
+outputTrain = im.model(inputTrain)
 
 # %%
-# Create the chaos.
-#
+# Create the chaos
+# ----------------
+
+# %%
 # We could use only the input and output training samples: in this case, the distribution of the input sample is computed by selecting the best distribution that fits the data. 
 
 # %%
 chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain)
 
 # %%
-# Since the input distribution is known in our particular case, we instead create the multivariate basis from the distribution.
+# Since the input distribution is known in our particular case, we instead create the multivariate basis from the distribution, that is three independent variables X1, X2 and X3.
 
 # %%
-multivariateBasis = ot.OrthogonalProductPolynomialFactory(distributionList)
+multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
 totalDegree = 8
 enumfunc = multivariateBasis.getEnumerateFunction()
 P = enumfunc.getStrataCumulatedCardinal(totalDegree)
@@ -60,7 +57,7 @@ selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
 projectionStrategy = ot.LeastSquaresStrategy(inputTrain, outputTrain, selectionAlgorithm)
 
 # %%
-chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain, distribution, adaptiveStrategy, projectionStrategy)
+chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy)
 
 # %%
 chaosalgo.run()
@@ -68,12 +65,16 @@ result = chaosalgo.getResult()
 metamodel = result.getMetaModel()
 
 # %%
+# Validation of the metamodel
+# ---------------------------
+
+# %%
 # In order to validate the metamodel, we generate a test sample.
 
 # %%
 n_valid = 1000
-inputTest = distribution.getSample(n_valid)
-outputTest = g(inputTest)
+inputTest = im.distributionX.getSample(n_valid)
+outputTest = im.model(inputTest)
 val = ot.MetaModelValidation(inputTest, outputTest, metamodel)
 Q2 = val.computePredictivityFactor()[0]
 Q2
@@ -83,7 +84,6 @@ Q2
 
 # %%
 graph = val.drawValidation()
-#graph.setLegends([""])
 graph.setTitle("Q2=%.2f%%" % (Q2*100))
 view = viewer.View(graph)
 plt.show()

@@ -9,7 +9,6 @@ import numpy as np
 from dataclasses import dataclass
 from dataclasses import field
 
-# model
 
 
 def g(X):
@@ -26,8 +25,43 @@ def g(X):
 
 @dataclass
 class AckleyModel():
-    """Custom class for the Ackley test function.
     """
+    Data class for the Ackley test function.
+
+
+    Attributes
+    ----------
+
+    dim : The dimension of the problem
+          dim=2.
+
+    a : Constant
+        :math:`a=20.0`.
+
+    b : Constant
+        :math:`b=0.2`.
+
+    c : Constant
+        :math:`c=2\pi`.
+
+    model : `PythonFunction`, the Ackley function.
+
+    lowerbound : `Point` in dimension dim.
+                 Default is -15.0 for each dimension.
+
+    upperbound : `Point` in dimension dim.
+                 Default is +15.0 for each dimension.
+
+    x0 : `Point` 
+         The global minimum :math:`x_0 = 0 \in \mathbb{R}^{dim}`.
+
+    Examples
+    --------
+    >>> from openturns.usecases import ackley_function as ackley_function
+    >>> # Load the Ackley model
+    >>> am = ackley_function.AckleyModel()
+    """
+
     dim: int = 2
     a = 20.0
     b = 0.2

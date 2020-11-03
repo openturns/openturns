@@ -81,8 +81,8 @@ We can load this classical model from the use cases module as follows :
     >>> im = ishigami_function.IshigamiModel()
 
 
-Examples base on this use case :
---------------------------------
+Examples based on this use case
+-------------------------------
 
 
 .. raw:: html                                                             

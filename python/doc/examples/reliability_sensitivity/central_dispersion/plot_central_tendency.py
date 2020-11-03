@@ -3,7 +3,7 @@ Central tendency analysis on the cantilever beam example
 ========================================================
 """
 # %%
-# In this example we perform a central tendency analysis of a random variable Y using the various methods available. We consider the cantilever beam example and show how to use the `TaylorExpansionMoments` and `ExpectationSimulationAlgorithm` classes. 
+# In this example we perform a central tendency analysis of a random variable Y using the various methods available. We consider the :ref:`cantilever beam <use-case-cantilever-beam>` example and show how to use the `TaylorExpansionMoments` and `ExpectationSimulationAlgorithm` classes. 
 
 # %%
 from __future__ import print_function
@@ -13,17 +13,32 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Create the random variable of interest Y=g(X).
+# We first load the data class from the usecases module : 
+from openturns.usecases import cantilever_beam as cantilever_beam
+cb = cantilever_beam.CantileverBeam()
 
 # %%
+# We want to create the random variable of interest Y=g(X) where :math:`g(.)` is the physical model and :math:`X` is the input vectors. For this example we consider independent marginals.
+
+# %%
+# We set a `mean` vector and a unitary standard deviation : 
+dim = cb.dim
 mean = [50.0, 1.0, 10.0, 5.0]
-dim = len(mean)
 sigma = ot.Point(dim, 1.0)
 R = ot.IdentityMatrix(dim)
+
+# %%
+# We create the input parameters distribution and make a random vector :
 distribution = ot.Normal(mean, sigma, R)
 X = ot.RandomVector(distribution)
 X.setDescription(['E', 'F', 'L', 'I'])
-f = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['F*L^3/(3*E*I)'])
+
+# %%
+# `f` is the cantilever beam model :
+f = cb.model
+
+# %%
+# The random variable of interest Y is then
 Y = ot.CompositeRandomVector(f, X)
 Y.setDescription('Y')
 

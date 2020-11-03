@@ -50,8 +50,8 @@ We can load this classical model from the use cases module as follows :
     >>> am = ackley_function.AckleyModel()
 
 
-Examples based on this use case :
----------------------------------
+Examples based on this use case
+-------------------------------
 
 .. raw:: html                                                             
 

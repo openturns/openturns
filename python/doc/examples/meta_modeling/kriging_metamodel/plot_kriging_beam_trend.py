@@ -9,7 +9,7 @@ Configuring the trend in Kriging
 # * `LinearBasisFactory`,
 # * `QuadraticBasisFactory`.
 #
-# For this purpose, we use the cantilever beam example.
+# For this purpose, we use the :ref:`cantilever beam <use-case-cantilever-beam>` example.
 
 # %%
 # Definition of the model
@@ -23,38 +23,18 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# We define the symbolic function which evaluates the output Y depending on the inputs E, F, L and I.
+# We load the use case :
+from openturns.usecases import cantilever_beam as cantilever_beam
+cb = cantilever_beam.CantileverBeam()
 
 # %%
-model = ot.SymbolicFunction(["E", "F", "L", "I"], ["F*L^3/(3*E*I)"])
+# We define the function which evaluates the output depending on the inputs.
+model = cb.model
 
 # %%
 # Then we define the distribution of the input random vector. 
-
-# %%
-# Young's modulus E
-E = ot.Beta(0.9, 2.27, 2.5e7, 5.0e7) # in N/m^2
-E.setDescription("E")
-# Load F
-F = ot.LogNormal() # in N
-F.setParameter(ot.LogNormalMuSigma()([30.e3, 9e3, 15.e3]))
-F.setDescription("F")
-# Length L
-L = ot.Uniform(250., 260.) # in cm
-L.setDescription("L")
-# Moment of inertia I
-I = ot.Beta(2.5, 1.5, 310, 450) # in cm^4
-I.setDescription("I")
-
-# %%
-# Finally, we define the dependency using a `NormalCopula`.
-
-# %%
-dimension = 4 # number of inputs
-R = ot.CorrelationMatrix(dimension)
-R[2, 3] = -0.2 
-myCopula = ot.NormalCopula(ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(R))
-myDistribution = ot.ComposedDistribution([E, F, L, I], myCopula)
+dimension = cb.dim # number of inputs
+myDistribution = cb.distribution
 
 # %%
 # Create the design of experiments

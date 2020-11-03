@@ -20,33 +20,7 @@ Probability estimation: directional simulation
 #    - `RandomDirection`
 #    - `OrthogonalDirection`
 #
-# Let us consider the analytical example of a cantilever beam with Young modulus E, length L and section modulus I.
-#
-# One end is built in a wall and we apply a concentrated bending load F at the other end of the beam, resulting in a deviation:
-#
-# .. math::
-#    d = \frac{F L^3}{3 E I}
-# 
-#
-# Failure occurs when the beam deviation is too large:
-#
-# .. math::
-#    d \ge 30 (cm)
-# 
-#
-# Four independent random variables are considered:
-#
-#  - E: Young's modulus [Pa]
-#  - F: load [N]
-#  - L: length [m]
-#  - I: section [m^4]
-#
-# Stochastic model (simplified model, no units):
-#
-#  - E ~ Beta(0.93, 2.27, 2.8e7, 4.8e7)
-#  - F ~ LogNormal(30000, 9000, 15000)
-#  - L ~ Uniform(250, 260)
-#  - I ~ Beta(2.5, 1.5, 3.1e2, 4.5e2)
+# Let us consider the analytical example of the cantilever beam described :ref:`here <use-case-cantilever-beam>`.
 #
 
 # %%
@@ -57,40 +31,20 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Create the marginal distributions of the parameters.
+# We load the model from the usecases module :
+from openturns.usecases import cantilever_beam as cantilever_beam
+cb = cantilever_beam.CantileverBeam()
 
 # %%
-dist_E = ot.Beta(0.93, 2.27, 2.8e7, 4.8e7)
-dist_F = ot.LogNormalMuSigma(30000, 9000, 15000).getDistribution()
-dist_L = ot.Uniform(250, 260)
-dist_I = ot.Beta(2.5, 1.5, 3.1e2, 4.5e2)
-marginals = [dist_E, dist_F, dist_L, dist_I]
+# We load the joint probability distribution of the input parameters :
+distribution = cb.distribution
 
 # %%
-# Create the copula.
+# We load the model giving the displacement at the end of the beam :
+model = cb.model
 
 # %%
-RS = ot.CorrelationMatrix(4)
-RS[2, 3] = -0.2
-# Evaluate the correlation matrix of the Normal copula from RS
-R = ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(RS)
-# Create the Normal copula parametrized by R
-copula = ot.NormalCopula(R) 
-
-# %%
-# Create the joint probability distribution.
-
-# %%
-distribution = ot.ComposedDistribution(marginals, copula)
-
-# %%
-# Create the model.
-
-# %%
-model = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['F*L^3/(3*E*I)'])
-
-# %%
-# Create the event whose probability we want to estimate.
+# We create the event whose probability we want to estimate.
 
 # %%
 vect = ot.RandomVector(distribution)

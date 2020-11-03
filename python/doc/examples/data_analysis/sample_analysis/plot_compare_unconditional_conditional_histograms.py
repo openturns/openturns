@@ -3,7 +3,8 @@ Compare unconditional and conditional histograms
 ================================================
 """
 # %%
-# In this example, we compare unconditional and conditional histograms for a simulation. We consider the flooding model. Let :math:`g` be a function which takes four inputs :math:`Q`, :math:`K_s`, :math:`Z_v` and :math:`Z_m` and returns one output :math:`H`. 
+# In this example, we compare unconditional and conditional histograms for a simulation. We consider the :ref:`flooding model<use-case-flood-model>`.
+# Let :math:`g` be a function which takes four inputs :math:`Q`, :math:`K_s`, :math:`Z_v` and :math:`Z_m` and returns one output :math:`H`. 
 #
 # We first consider the (unconditional) distribution of the input :math:`Q`. 
 #
@@ -20,36 +21,19 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Create the marginal distributions of the parameters.
+# We use the `FloodModel` data class that contains all the case parameters.
+from openturns.usecases import flood_model as flood_model
+fm = flood_model.FloodModel()
+
 
 # %%
-dist_Q = ot.TruncatedDistribution(ot.Gumbel(558., 1013.), 0, ot.TruncatedDistribution.LOWER)
-dist_Ks = ot.TruncatedDistribution(ot.Normal(30.0, 7.5), 0, ot.TruncatedDistribution.LOWER)
-dist_Zv = ot.Uniform(49.0, 51.0)
-dist_Zm = ot.Uniform(54.0, 56.0)
-marginals = [dist_Q, dist_Ks, dist_Zv, dist_Zm]
-
-# %%
-# Create the joint probability distribution.
-
-# %%
-distribution = ot.ComposedDistribution(marginals)
-distribution.setDescription(['Q', 'Ks', 'Zv', 'Zm'])
-
-# %%
-# Create the model.
-
-# %%
-model = ot.SymbolicFunction(['Q', 'Ks', 'Zv', 'Zm'],
-                            ['(Q/(Ks*300.*sqrt((Zm-Zv)/5000)))^(3.0/5.0)'])
-
-# %%
-# Create a sample.
+# Create an input sample from the joint `distribution` defined in the data class. 
+# We build an output sample by taking the image by the `model`.
 
 # %%
 size = 500
-inputSample = distribution.getSample(size)
-outputSample = model(inputSample)
+inputSample = fm.distribution.getSample(size)
+outputSample = fm.model(inputSample)
 
 # %%
 # Merge the input and output samples into a single sample.
@@ -127,7 +111,7 @@ graph.setLegends(["Q"])
 #
 graphConditionnalQ = conditionnedHistogram.drawPDF()
 graphConditionnalQ.setColors(["blue"])
-graphConditionnalQ.setLegends(["Q|H>H_%s" % (alpha)])
+graphConditionnalQ.setLegends([r"$Q|H>H_{%s}$" % (alpha)])
 graph.add(graphConditionnalQ)
 view = viewer.View(graph)
 

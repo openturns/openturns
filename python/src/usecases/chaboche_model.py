@@ -18,7 +18,40 @@ def g(X):
 
 @dataclass
 class ChabocheModel():
-    """Custom class for the Chaboche model
+    """
+    Data class for the Chaboche mechanical model.
+
+
+    Attributes
+    ----------
+
+    dim : The dimension of the problem
+          dim=4.
+
+    Strain : `Uniform` distribution
+              ot.Uniform(0.0, 0.07)
+
+    R : `Dirac` distribution 
+        ot.Dirac(750.0e6)
+
+    C : `Dirac` distribution
+        ot.Dirac(2750.0e6)
+
+    Gamma : `Dirac` distribution
+            ot.Dirac(10.0)
+
+    inputDistribution : `ComposedDistribution`
+                        The joint distribution of the input parameters.
+
+    model : `PythonFunction`
+            The Chaboche mechanical law.
+
+
+    Examples
+    --------
+    >>> from openturns.usecases import chaboche_model as chaboche_model
+    >>> # Load the Chaboche model
+    >>> cm = chaboche_model.ChabocheModel()
     """
 
     dim: int = 4  # number of inputs

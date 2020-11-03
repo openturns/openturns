@@ -11,35 +11,7 @@ Probability estimation with importance sampling simulation on cantilever beam ex
 # * create an importance distribution based on the results of the FORM results,
 # * run a sampling-based probability estimate algorithm. 
 #
-#
-# Description of the problem
-# --------------------------
-#
-# Let us consider the analytical example of a cantilever beam, with Young's modulus E, length L and section modulus I.
-#
-# One end of the cantilever beam is built in a wall and we apply a concentrated bending load F at the other end of the beam, resulting in a deviation:
-#
-# .. math::
-#    d = \frac{FL^3}{3EI}
-# 
-#
-# Failure occurs when the beam deviation is too large:
-#
-# .. math::d \ge 30 (cm)
-#   
-# Four independent random variables are considered:
-#
-#  - E: Young's modulus [Pa]
-#  - F: load [N]
-#  - L: length [m]
-#  - I: section [m^4]
-#
-# Stochastic model (simplified model, no units):
-#
-#  - E ~ Beta(0.93, 2.27, 2.8e7, 4.8e7)
-#  - F ~ LogNormal(30000, 9000, 15000)
-#  - L ~ Uniform(250, 260)
-#  - I ~ Beta(2.5, 1.5, 3.1e2, 4.5e2)
+# We shall consider the analytical example of a :ref:`cantilever beam <use-case-cantilever-beam>`.
 #
 
 # %%
@@ -54,29 +26,17 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Create the marginal distributions of the parameters
-dist_E = ot.Beta(0.93, 2.27, 2.8e7, 4.8e7)
-dist_F = ot.LogNormalMuSigma(30000, 9000, 15000).getDistribution()
-dist_L = ot.Uniform(250, 260)
-dist_I = ot.Beta(2.5, 1.5, 3.1e2, 4.5e2)
-marginals = [dist_E, dist_F, dist_L, dist_I]
+# The cantilever beam example can be accessed in the usecases module :
+from openturns.usecases import cantilever_beam as cantilever_beam
+cb = cantilever_beam.CantileverBeam()
 
 # %%
-# Create the Copula
-RS = ot.CorrelationMatrix(4)
-RS[2, 3] = -0.2
-# Evaluate the correlation matrix of the Normal copula from RS
-R = ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(RS)
-# Create the Normal copula parametrized by R
-copula = ot.NormalCopula(R) 
+# The joint probability distribution of the input parameters is stored in the object `cb` :
+distribution = cb.distribution
 
 # %%
-# Create the joint probability distribution
-distribution = ot.ComposedDistribution(marginals, copula)
-
-# %%
-# create the model
-model = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['F*L^3/(3*E*I)'])
+# We create the model.
+model = cb.model
 
 # %%
 # Define the event
@@ -88,7 +48,7 @@ model = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['F*L^3/(3*E*I)'])
 # %%
 vect = ot.RandomVector(distribution)
 G = ot.CompositeRandomVector(model, vect)
-event = ot.ThresholdEvent(G, ot.Greater(), 30.0)
+event = ot.ThresholdEvent(G, ot.Greater(), 0.30)
 
 # %%
 # Run a FORM analysis

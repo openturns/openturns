@@ -12,7 +12,45 @@ from dataclasses import field
 
 @dataclass
 class DeflectionTube():
-    """Custom class for the deflection of a tube
+    """
+    Data class for the deflection of a tube model.
+
+
+    Attributes
+    ----------
+
+    dim : Constant, the dimension of the problem.
+          dim=6
+
+    model : `SymbolicFunction`
+            Model of the deflection.
+
+    XF : `Normal` distribution
+         ot.Normal(1, 0.1)
+
+    XE : `Normal` distribution
+         ot.Normal(200000, 2000)
+
+    XL : `Dirac` distribution
+         ot.Dirac(1.5)
+
+    Xa : `Dirac` distribution
+         ot.Dirac(1.0)
+
+    XD : `Dirac` distribution
+         ot.Dirac(0.8)
+
+    Xd : `Dirac` distribution
+         ot.Dirac(0.1)
+
+    inputDistribution : `ComposedDistribution`
+                        The joint distribution of the input parameters.
+
+    Examples
+    --------
+    >>> from openturns.usecases import deflection_tube as deflection_tube
+    >>> # Load the deflection tube model
+    >>> dt = deflection_tube.DeflectionTube()
     """
     dim: int = 6
 

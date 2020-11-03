@@ -3,7 +3,8 @@ Define a connection function with a field output
 ================================================
 """
 # %%
-# In this example, we define a function which has a vector input and a field output. The goal of this example is to show how to use the `PointToFieldConnection` to combine two functions. 
+# In this example, we define a function which has a vector input and a field output. The goal of this example is to show how to use the `PointToFieldConnection` to combine two functions.
+# A detailed explanation of the model is presented :ref:`here <use-case-viscous-fall>`.
 
 # %%
 # Define the model

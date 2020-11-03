@@ -97,8 +97,8 @@ We can load this classical model from the use cases module as follows :
     >>> # Load the Chaboche use case
     >>> cm = chaboche_model.ChabocheModel()
 
-Examples based on this use case :
----------------------------------
+Examples based on this use case
+-------------------------------
 
 
 .. raw:: html                                                             

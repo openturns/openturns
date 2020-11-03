@@ -3,78 +3,10 @@ Estimate a probability with Monte-Carlo on axial stressed beam: a quick start gu
 ==================================================================================================
 """
 # %%
+#
 # The goal of this example is to show a simple practical example of probability estimation in a reliability study with the `ProbabilitySimulationAlgorithm` class. The `ThresholdEvent` is used to define the event. We use the Monte-Carlo method thanks to the `MonteCarloExperiment` class to estimate this probability and its confidence interval.
+# We use the :ref:`axial stressed beam <use-case-stressed-beam>` model as an illustrative example.
 
-# %%
-# Introduction
-# ------------
-#
-# We consider a simple beam stressed by a traction load F at both sides.
-#
-# ![Axial stressed beam](axial-stressed-beam.png)
-#
-# The geometry is supposed to be deterministic; the diameter D is equal to:
-#
-# .. math::
-#    D=0.02 \textrm{ (m)}.
-# 
-#
-# By definition, the yield stress is the load divided by the surface. Since the surface is :math:`\pi D^2/4`, the stress is:
-#
-# .. math::
-#    S = \frac{F}{\pi D^2/4}.
-# 
-#
-# Failure occurs when the beam plastifies, i.e. when the axial stress gets larger than the yield stress:
-#
-# .. math::
-#    R - \frac{F}{\pi D^2/4} \leq 0
-# 
-#
-# where :math:`R` is the strength.
-#  
-# Therefore, the limit state function :math:`G` is: 
-#
-# .. math::
-#    G(R,F) = R - \frac{F}{\pi D^2/4},
-# 
-#
-# for any :math:`R,F\in\mathbb{R}`.
-#
-# The value of the parameter :math:`D` is such that:
-#
-# .. math::
-#    D^2/4 = 10^{-4},
-# 
-#
-# which leads to the equation:
-#
-# .. math::
-#    G(R,F) = R - \frac{F}{10^{-4} \pi}.
-# 
-#
-# We consider the following distribution functions.
-#
-# ========  ===========================================================================
-# Variable  Distribution
-# ========  ===========================================================================
-#  R         LogNormal(:math:`\mu_R=3\times 10^6`, :math:`\sigma_R=3\times 10^5`) [Pa] 
-#  F         Normal(:math:`\mu_F=750`, :math:`\sigma_F=50`) [N] 
-# ========  ===========================================================================
-#
-# where :math:`\mu_R=E(R)` and :math:`\sigma_R^2=V(R)` are the mean and the variance of :math:`R`.
-#
-# The failure probability is: 
-#
-# .. math::
-#    P_f = \text{Prob}(G(R,F) \leq 0).
-# 
-#
-# The exact :math:`P_f` is 
-#
-# .. math::
-#    P_f = 0.02920.
-# 
 
 # %%
 # Definition of the model
@@ -88,16 +20,13 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# The dimension of the problem.
+# We load the model from the usecases module :
+from openturns.usecases import stressed_beam as stressed_beam
+sm = stressed_beam.AxialStressedBeam()
 
 # %%
-dim = 2
-
-# %%
-# We define the limit state function as a symbolic function. 
-
-# %%
-limitStateFunction = ot.SymbolicFunction(['R', 'F'], ['R-F/(1.e-4 * pi_)'])
+# The limit state function is defined as a symbolic function in the `model` parameter of the `AxialStressedBeam` data class : 
+limitStateFunction = sm.model
 
 # %%
 # Before using the function within an algorithm, we check that the limit state function is correctly evaluated.
@@ -112,35 +41,28 @@ print('G(x)=', limitStateFunction(x))
 # -------------------
 
 # %%
-# We then create a first marginal, a univariate `LogNormal` distribution, parameterized by its mean and standard deviation.
+# We load the first marginal, a univariate `LogNormal` distribution, parameterized by its mean and standard deviation :
+R = sm.distribution_R
 
 # %%
-R = ot.LogNormalMuSigma(3.e6, 3.e5, 0.0).getDistribution()
-R.setName('Yield strength')
-R.setDescription('R')
-
-# %%
+# We draw the PDF of the first marginal.
 graph = R.drawPDF()
 view = viewer.View(graph)
 
 # %%
-# Our second marginal is a `Normal` univariate distribution.
+# Our second marginal is a `Normal` univariate distribution :
+F = sm.distribution_F
 
 # %%
-F = ot.Normal(750., 50.)
-F.setName('Traction_load')
-F.setDescription('F')
-
-# %%
+# We draw the PDF of the second marginal.
 graph = F.drawPDF()
 view = viewer.View(graph)
 
 # %%
-# In order to create the input distribution, we use the `ComposedDistribution` class which associates the distribution marginals and a copula. If no copula is supplied to the constructor, it selects the independent copula as default:
+# In order to create the input distribution, we use the `ComposedDistribution` class which associates the distribution marginals and a copula. If no copula is supplied to the constructor, it selects the independent copula as default. That is implemented in the data class :
 
 # %%
-myDistribution = ot.ComposedDistribution([R, F])
-myDistribution.setName('myDist')
+myDistribution = sm.distribution
 
 # %%
 # We create a `RandomVector` from the `Distribution`, which will then be fed to the limit state function.
@@ -238,7 +160,7 @@ print('CV =', result.getCoefficientOfVariation())
 # %%
 graph = algoMC.drawProbabilityConvergence()
 graph.setLogScale(ot.GraphImplementation.LOGX)
-graph
+view = viewer.View(graph)
 
 # %%
 # We see that the 95% confidence interval becomes smaller and smaller and stabilizes at the end of the simulation.

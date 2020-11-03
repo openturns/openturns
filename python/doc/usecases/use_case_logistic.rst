@@ -140,8 +140,8 @@ We can load this classical model from the use cases module as follows :
     >>> # Load the logistic model
     >>> lm = logistic_model.LogisticModel()
 
-Examples based on this use case :
----------------------------------
+Examples based on this use case
+-------------------------------
 
 
 .. raw:: html                                                             

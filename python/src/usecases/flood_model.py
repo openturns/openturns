@@ -14,12 +14,56 @@ from dataclasses import field
 
 @dataclass
 class FloodModel():
-    """Custom class for the flood model.
     """
+    Data class for the flood model.
+
+
+    Attributes
+    ----------
+
+    dim : The dimension of the problem
+          dim=4
+
+    L : Constant
+        Length of the river, L = 5000.0
+
+    B : Constant
+        Width of the river, B = 300.0
+
+    Q : `TruncatedDistribution` of a `Gumbel` distribution
+        ot.TruncatedDistribution(ot.Gumbel(558., 1013.), 0, ot.TruncatedDistribution.LOWER)
+
+    Ks : `TruncatedDistribution` of a `Normal` distribution
+         ot.TruncatedDistribution(ot.Normal(30.0, 7.5), 0, ot.TruncatedDistribution.LOWER)
+
+    Zv : `Uniform` distribution
+         ot.Uniform(49.0, 51.0)
+
+    Zm : `Uniform` distribution
+         ot.Uniform(54.0, 56.0)
+
+    model : `SymbolicFunction`
+            The flood model.
+
+    distribution : `ComposedDistribution`
+                   The joint distribution of the input parameters.
+
+
+    Examples
+    --------
+    >>> from openturns.usecases import flood_model as flood_model
+    >>> # Load the flood model
+    >>> fm = flood_model.FloodModel()
+    """
+
+    # Length of the river in meters
+    L: float = 5000.0
+    # Width of the river in meters
+    B: float = 300.0
     dim: int = 4  # number of inputs
     # Q
     Q: Any = ot.TruncatedDistribution(ot.Gumbel(558., 1013.), 0, ot.TruncatedDistribution.LOWER)
-    Q.setDescription("Q")
+    Q.setDescription(["Q (m3/s)"])
     Q.setName("Q")
 
     # Ks
@@ -41,10 +85,3 @@ class FloodModel():
     distribution: Any = ot.ComposedDistribution([Q, Ks, Zv, Zm])
     distribution.setDescription(['Q', 'Ks', 'Zv', 'Zm'])
 
-    X: Any = ot.RandomVector(distribution)
-    X.setDescription(['Q', 'Ks', 'Zv', 'Zm'])
-
-    Y: Any = ot.CompositeRandomVector(model, X)
-    Y.setDescription('Y')
-    event: Any = ot.ThresholdEvent(Y, ot.Greater(), 0.0)
-    event.setName('overflow')

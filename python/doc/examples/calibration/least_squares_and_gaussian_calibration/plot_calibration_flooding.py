@@ -3,59 +3,7 @@ Calibration of the flooding model
 =================================
 """
 # %% 
-#
-# Model
-# -----
-#
-# The simulator predicts the water height :math:`H` depending on the flowrate :math:`Q`.
-#
-# We consider the following four variable:
-#
-# * :math:`Q` : the river flowrate (:math:`m^3/s`)
-# * :math:`Ks` : the Strickler coefficient (:math:`m^{1/3}/s`)
-# * :math:`Z_v` : the downstream riverbed level (m)
-# * :math:`Z_m` : the upstream riverbed level (m)
-#
-# When the Strickler coefficient increases, the riverbed generates less friction to the water flow.
-#
-# Parameters
-# ----------
-#
-# We consider the following parameters:
-#
-# * the length of the river :math:`L` = 5000 (m),
-# * the width of the river :math:`B` = 300 (m).
-#
-# Outputs
-# -------
-#
-# We make the hypothesis that the slope of the river is nonpositive and close to zero, which implies: 
-# 
-# .. math::
-#    \alpha = \frac{Z_m - Z_v}{L},
-# 
-#
-# if :math:`Z_m \geq Z_v`. 
-# The height of the river is:
-# 
-# .. math::
-#    H = \left(\frac{Q}{K_s B \sqrt{\alpha}}\right)^{0.6},
-# 
-#
-# for any :math:`K_s, Q>0`.
-#
-# <img src="_static/river_section_adjusted_light.png" width="400" />
-#
-# Distribution
-# ------------
-#
-# We assume that the river flowrate has the following truncated Gumbel distribution:
-#
-# ========   ===============================
-# Variable   Distribution
-# ========   ===============================
-# Q          Gumbel(scale=558, mode=1013)>0
-# ========   ===============================
+# In this example we are interested in the calibration of the :ref:`flooding model <use-case-flood-model>`.
 #
 # Parameters to calibrate
 # -----------------------
@@ -121,6 +69,11 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
+# We load the flooding use case :
+from openturns.usecases import flood_model as flood_model
+fm = flood_model.FloodModel()
+
+# %%
 # We define the model :math:`g` which has 4 inputs and one output H.
 #
 # The nonlinear least squares does not take into account for bounds in the parameters. Therefore, we ensure that the output is computed whatever the inputs. The model fails into two situations:
@@ -149,12 +102,10 @@ g = ot.MemoizeFunction(g)
 g.setOutputDescription(["H (m)"])
 
 # %%
-# Create the input distribution for :math:`Q`.
+# We load the input distribution for :math:`Q` :
 
 # %%
-Q = ot.Gumbel(558.0, 1013.0)
-Q = ot.TruncatedDistribution(Q,ot.TruncatedDistribution.LOWER)
-Q.setDescription(["Q (m3/s)"])
+Q = fm.Q
 Q
 
 # %%

@@ -3,22 +3,24 @@
 The cantilever beam model
 =========================
 
+We are interested in the the vertical deviation of a diving board created by a child diver. We consider a child whose weight generates a force approximately equal to 300N (i.e. almost 30 kg). Because of the uncertainties in the weight of the person, we consider that the force is a random variable. The length of the diving board is between 2.5 m and 2.6 m. The Young modulus is uncertain and between 65 and 75 GPa, which corresponds to the fiberglass material, a material often used for diving boards. Uncertainties in the production of the material are taken into account in the Young modulus and the section modulus of the board. 
+
 We consider a cantilever beam defined by its Young’s modulus :math:`E`, its length :math:`L` and its section modulus :math:`I`. One end of the cantilever beam is built in a wall and we apply a concentrated bending load :math:`F` at the other end of the beam, resulting in a deviation :math:`Y`. 
 
 .. figure:: ../_static/beam.png
-    :align: center 
+    :align: center
     :alt: beam geometry
-    :width: 100%
+    :width: 25%
 
-    caption: The beam geometry
+    The beam geometry
 
 
 **Inputs**
 
- * :math:`E` : Young modulus (Pa), Beta(:math:`\alpha = 0.9`, :math:`\beta = 2.27`, a = :math:`2.5\times 10^7`, :math:`b = 5\times 10^7`)
- * :math:`F` : Loading (N), Lognormal(:math:`\mu_F=30 \times 10^3`, :math:`\sigma_F=9\times 10^3`, shift=:math:`15\times 10^3`)
- * :math:`L` : Length of beam (cm), Uniform(min=250.0, max= 260.0)
- * :math:`I` : Moment of inertia (cm^4), Beta(:math:`\alpha = 2.5`, :math:`\beta = 1.5`, a = 310, b = 450).
+ * :math:`E` : Young modulus (Pa), Beta(:math:`\alpha = 0.9`, :math:`\beta = 3.5`, a = :math:`65.0 \times 10^9`, :math:`b = 75.0 \times 10^9`)
+ * :math:`F` : Loading (N), Lognormal(:math:`\mu_F=300.0`, :math:`\sigma_F=30.0`, shift=0.0)
+ * :math:`L` : Length of beam (m), Uniform(min=2.5, max= 2.6)
+ * :math:`I` : Moment of inertia (:math:`m^4`), Beta(:math:`\alpha = 2.5`, :math:`\beta = 4.0`, :math:`a = 1.3 \times 10^{-7}`, :math:`b = 1.7 \times 10^{-7}`).
 
 In the previous table :math:`\mu_F=E(F)` and :math:`\sigma_F=\sqrt{V(F)}` are the mean and the standard deviation of :math:`F`.
 
@@ -43,7 +45,7 @@ The vertical displacement at free end of the cantilever beam is:
 
 A typical event of interest is when the beam deviation is too large which is a failure :
  .. math::
-    Y \ge 30 (cm) 
+    Y \ge 0.30 (m) 
 
 Load the use case
 -----------------
@@ -57,8 +59,8 @@ We can load this classical model from the use cases module as follows :
     >>> cb = cantilever_beam.CantileverBeam()
 
 
-Examples based on this use case :
----------------------------------
+Examples based on this use case
+-------------------------------
 
 .. raw:: html                                                             
 

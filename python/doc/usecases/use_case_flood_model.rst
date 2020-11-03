@@ -12,9 +12,9 @@ The following figure presents a dyke protecting industrial facilities. When the 
 .. figure:: ../_static/flooding_section.png
     :align: center 
     :alt: flooding section
-    :width: 100%
+    :width: 50%
 
-    caption: Flooding section
+    Flooding section
 
 
 Four independent random variables are considered:
@@ -72,9 +72,9 @@ The following figure presents the model with more details.
 .. figure:: ../_static/flooding_section_detail.png
     :align: center 
     :alt: flooding section details
-    :width: 100%
+    :width: 50%
 
-    caption: Flooding section detail
+    Flooding section detail
 
 If we substitute the parameters into the equation, we get:
 
@@ -117,8 +117,8 @@ We can load this classical model from the use cases module as follows :
 
 
 
-Examples based on this use case :
----------------------------------
+Examples based on this use case
+-------------------------------
 
 
 .. raw:: html                                                             

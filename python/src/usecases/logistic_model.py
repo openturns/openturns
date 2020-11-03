@@ -10,35 +10,51 @@ from dataclasses import dataclass
 from dataclasses import field
 
 
-class Popu(ot.OpenTURNSPythonPointToFieldFunction):
-    """
-    """
-
-    def __init__(self, t0=1790.0, tfinal=2000.0, nt=1000):
-        grid = ot.RegularGrid(t0, (tfinal - t0) / (nt - 1), nt)
-        super(Popu, self).__init__(3, grid, 1)
-        self.setInputDescription(['y0', 'a', 'b'])
-        self.setOutputDescription(['N'])
-        self.ticks_ = [t[0] for t in grid.getVertices()]
-        self.phi_ = ot.SymbolicFunction(['t', 'y', 'a', 'b'], ['a*y - b*y^2'])
-
-    def _exec(self, X):
-        y0 = X[0]
-        a = X[1]
-        b = X[2]
-        phi_ab = ot.ParametricFunction(self.phi_, [2, 3], [a, b])
-        phi_t = ot.ParametricFunction(phi_ab, [0], [0.0])
-        solver = ot.RungeKutta(phi_t)
-        initialState = [y0]
-        values = solver.solve(initialState, self.ticks_)
-        return values * [1.0e-6]
-
-
 @dataclass
 class LogisticModel():
-    """Custom class for the logistic model
+    """
+    Data class for the logistic model.
+
+
+    Attributes
+    ----------
+
+    y0 : Constant
+         Initial population (in 1790) y0=3.9e6
+
+    a : Constant
+        Parameter of the model a=0.03134
+
+    b : Constant
+        Parameter of the model b=1.5887e-10
+
+    distY0 : `Normal` distribution
+             ot.Normal(y0, 0.1 * y0)
+
+    distA : `Normal` distribution
+            ot.Normal(a, 0.3 * a)
+
+    distB : `Normal` distribution
+            ot.Normal(b, 0.3 * b)
+
+    distX : `ComposedDistribution`
+            The joint distribution of the input parameters.
+
+    model : `SymbolicFunction`
+            The logistic model of growth.
+
+    data : `Sample`
+           22 dates from 1790 to 2000.
+           First marginal represents dates and second marginal the population in millions.
+
+    Examples
+    --------
+    >>> from openturns.usecases import logistic_model as logistic_model
+    >>> # Load the logistic model
+    >>> lm = logistic_model.LogisticModel()
     """
 
+    # Initial value of the population
     y0: float = 3.9e6
     a: float = 0.03134
     b: float = 1.5887e-10
@@ -46,6 +62,30 @@ class LogisticModel():
     distA: Any = ot.Normal(a, 0.3 * a)
     distB: Any = ot.Normal(b, 0.3 * b)
     distX: Any = ot.ComposedDistribution([distY0, distA, distB])
+    model: Any = ot.SymbolicFunction(['t', 'y', 'a', 'b'], ['a*y - b*y^2'])
 
-    F: Any = Popu(1790.0, 2000.0, 1000)
-    popu: Any = ot.PointToFieldFunction(F)
+    # Observation points
+    data: Any=ot.Sample([\
+          [1790,3.9], \
+          [1800,5.3], \
+          [1810,7.2], \
+          [1820,9.6], \
+          [1830,13], \
+          [1840,17], \
+          [1850,23], \
+          [1860,31], \
+          [1870,39], \
+          [1880,50], \
+          [1890,62], \
+          [1900,76], \
+          [1910,92], \
+          [1920,106], \
+          [1930,123], \
+          [1940,132], \
+          [1950,151], \
+          [1960,179], \
+          [1970,203], \
+          [1980,221], \
+          [1990,250], \
+          [2000,281]])
+

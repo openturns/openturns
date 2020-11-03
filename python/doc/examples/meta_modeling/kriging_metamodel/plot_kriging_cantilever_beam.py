@@ -3,43 +3,8 @@ Kriging the cantilever beam model
 =================================
 """
 # %%
-# In this example, we create a kriging metamodel of the cantilever beam. We use a squared exponential covariance model for the kriging. In order to estimate the hyper-parameters, we use a design of experiments which size is 20. 
+# In this example, we create a kriging metamodel of the :ref:`cantilever beam <use-case-cantilever-beam>`. We use a squared exponential covariance model for the kriging. In order to estimate the hyper-parameters, we use a design of experiments which size is 20.
 
-# %%
-# We consider a cantilever beam defined by its Young’s modulus :math:`E`, its length :math:`L` and its section modulus :math:`I`. One end of the cantilever beam is built in a wall and we apply a concentrated bending load :math:`F` at the other end of the beam, resulting in a deviation :math:`Y`. 
-#
-# <img src="_static/beam.png" width="200">
-#
-# **Inputs**
-#
-# * :math:`E` : Young modulus (Pa), Beta(:math:`\alpha = 0.9`, :math:`\beta = 2.27`, a = :math:`2.5\times 10^7`, :math:`b = 5\times 10^7`)
-# * :math:`F` : Loading (N), Lognormal(:math:`\mu_F=30 \times 10^3`, :math:`\sigma_F=9\times 10^3`, shift=:math:`15\times 10^3`)
-# * :math:`L` : Length of beam (cm), Uniform(min=250.0, max= 260.0)
-# * :math:`I` : Moment of inertia (cm^4), Beta(:math:`\alpha = 2.5`, :math:`\beta = 1.5`, a = 310, b = 450).
-#
-# In the previous table :math:`\mu_F=E(F)` and :math:`\sigma_F=\sqrt{V(F)}` are the mean and the standard deviation of :math:`F`.
-#
-# We assume that the random variables E, F, L and I are dependent and associated with a gaussian copula which correlation matrix is :
-# 
-# .. math::
-#    R = \begin{pmatrix}
-#          1 & 0 & 0 & 0 \\
-#          0 & 1 & 0 & 0 \\
-#          0 & 0 & 1 & -0.2 \\
-#          0 & 0 & -0.2 & 1
-#        \end{pmatrix}
-# 
-#
-# In other words, we consider that the variables L and I are negatively correlated : when the length L increases, the moment of intertia I decreases.
-#
-# **Output**
-#
-# The vertical displacement at free end of the cantilever beam is:
-#
-# .. math::
-#    Y  = \dfrac{F\, L^3}{3 \, E \, I}
-# 
-#
 
 # %%
 # Definition of the model
@@ -52,38 +17,18 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# We define the symbolic function which evaluates the output Y depending on the inputs E, F, L and I.
+# We load the cantilever beam use case :
+from openturns.usecases import cantilever_beam as cantilever_beam
+cb = cantilever_beam.CantileverBeam()
 
 # %%
-model = ot.SymbolicFunction(["E", "F", "L", "I"], ["F*L^3/(3*E*I)"])
+# We define the function which evaluates the output depending on the inputs.
+model = cb.model
 
 # %%
 # Then we define the distribution of the input random vector. 
-
-# %%
-# Young's modulus E
-E = ot.Beta(0.9, 2.27, 2.5e7, 5.0e7) # in N/m^2
-E.setDescription("E")
-# Load F
-F = ot.LogNormal() # in N
-F.setParameter(ot.LogNormalMuSigma()([30.e3, 9e3, 15.e3]))
-F.setDescription("F")
-# Length L
-L = ot.Uniform(250., 260.) # in cm
-L.setDescription("L")
-# Moment of inertia I
-I = ot.Beta(2.5, 1.5, 310, 450) # in cm^4
-I.setDescription("I")
-
-# %%
-# Finally, we define the dependency using a `NormalCopula`.
-
-# %%
-dim = 4 # number of inputs
-R = ot.CorrelationMatrix(dim)
-R[2, 3] = -0.2 
-myCopula = ot.NormalCopula(ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(R))
-myDistribution = ot.ComposedDistribution([E, F, L, I], myCopula)
+dim = cb.dim # number of inputs
+myDistribution = cb.distribution
 
 # %%
 # Create the design of experiments
