@@ -35,3 +35,8 @@ assert len(cov.getParameter()) == 3, "wrong parameter"
 c = cov([tau])[0, 0]
 print("c=", c)
 assert c != c_ref, "inactive parameter"
+
+# test discretization
+X = ot.Uniform(1, 2).getSample(10)
+C = cov.discretize(X)
+assert C.getNbRows() == 10, "wrong size"

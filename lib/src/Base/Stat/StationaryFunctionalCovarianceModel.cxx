@@ -58,16 +58,22 @@ StationaryFunctionalCovarianceModel * StationaryFunctionalCovarianceModel::clone
 /* Computation of the covariance function */
 Scalar StationaryFunctionalCovarianceModel::computeStandardRepresentative(const Point & tau) const
 {
-  if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
-
-  return computeStandardRepresentative(tau.begin(), tau.end());
+  if (tau.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
+  Point tauOverTheta(tau);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++ i)
+    tauOverTheta[i] /= scale_[i];
+  return rho_(tauOverTheta)[0];
 }
 
 Scalar StationaryFunctionalCovarianceModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
     const Collection<Scalar>::const_iterator & t_begin) const
 {
-  Point tauOverTheta(Collection<Scalar>(s_begin, t_begin));
-  for (UnsignedInteger i = 0; i < inputDimension_; ++ i) tauOverTheta[i] /= scale_[i];
+  Point tauOverTheta(inputDimension_);
+  Collection<Scalar>::const_iterator s_it = s_begin;
+  Collection<Scalar>::const_iterator t_it = t_begin;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++ i, ++ s_it, ++ t_it)
+    tauOverTheta[i] = (*s_it - *t_it) / scale_[i];
   return rho_(tauOverTheta)[0];
 }
 
