@@ -101,6 +101,7 @@
  * #1642 (Big white space at the beginning of examples)
  * #1643 (Problem in MaximumDistribution PDF)
  * #1647 (MCMC::computeLogLikelihood does not compute the log-likelihood)
+ * #1651 (Cobyla freezes in 0T1.16rc1)
  * #1654 (StationaryFunctionalCovarianceModel::discretize segfaults)
  * #1660 (Cannot extract continuous modes from KLResult when dimension>1)
 

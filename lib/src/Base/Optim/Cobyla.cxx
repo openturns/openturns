@@ -255,18 +255,27 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   /* Convert the input vector to Point */
   Point inP(n);
   std::copy(x, x + n, inP.begin());
-
+  
+  const UnsignedInteger nbIneqConst = problem.getInequalityConstraint().getOutputDimension();
+  const UnsignedInteger nbEqConst = problem.getEqualityConstraint().getOutputDimension();
+  Point constraintValue(nbIneqConst + 2 * nbEqConst, -1.0);
+  static const Scalar cobylaMaxScalar(1.0e-6 * SpecFunc::MaxScalar);
+  for (UnsignedInteger i = 0; i < inP.getDimension(); ++i)
+    if (!SpecFunc::IsNormal(inP[i]))
+      {
+        *f = problem.isMinimization() ? cobylaMaxScalar : -cobylaMaxScalar;
+        /* Convert the constraint vector in double format */
+        std::copy(constraintValue.begin(), constraintValue.end(), con);
+        LOGWARN(OSS() << "Cobyla went to an abnormal point=" << inP.__str__());
+        return 1;
+      }
   Point outP(problem.getObjective().operator()(inP));
   // cobyla freezes when dealing with SpecFunc::MaxScalar
-  static const Scalar cobylaMaxScalar(1.0e-6 * SpecFunc::MaxScalar);
   if (outP[0] > cobylaMaxScalar) outP[0] = cobylaMaxScalar;
   if (outP[0] < -cobylaMaxScalar) outP[0] = -cobylaMaxScalar;
   *f = problem.isMinimization() ? outP[0] : -outP[0];
 
   UnsignedInteger shift = 0;
-  UnsignedInteger nbIneqConst = problem.getInequalityConstraint().getOutputDimension();
-  UnsignedInteger nbEqConst = problem.getEqualityConstraint().getOutputDimension();
-  Point constraintValue(nbIneqConst + 2 * nbEqConst);
 
   /* Compute the inequality constraints at inP */
   if (problem.hasInequalityConstraint())
