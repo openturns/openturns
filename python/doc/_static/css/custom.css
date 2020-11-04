@@ -20,3 +20,8 @@ div.sphx-glr-download-link-note {
   height: 0px;
   visibility: hidden;
 }
+
+/* Remove big whitespace to solve #1642 */
+pre, div[class*="highlight-"] {
+  clear: left;
+}
