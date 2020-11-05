@@ -24,8 +24,6 @@
 #define OPENTURNS_USERDEFINEDCOVARIANCEMODEL_HXX
 
 #include "openturns/CovarianceModel.hxx"
-#include "openturns/PersistentCollection.hxx"
-#include "openturns/Collection.hxx"
 #include "openturns/RegularGrid.hxx"
 #include "openturns/Mesh.hxx"
 #include "openturns/NearestNeighbourAlgorithm.hxx"
@@ -44,8 +42,6 @@ class OT_API UserDefinedCovarianceModel
 
 public:
 
-  typedef Collection<CovarianceMatrix> CovarianceMatrixCollection;
-
   /** Default constructor */
   UserDefinedCovarianceModel();
 
@@ -58,11 +54,11 @@ public:
 
   /** Computation of the covariance function */
   using CovarianceModelImplementation::operator();
-  CovarianceMatrix operator() (const Point & s,
-                               const Point & t) const override;
+  SquareMatrix operator() (const Point & s, const Point & t) const override;
+
 private:
-  CovarianceMatrix operator() (const UnsignedInteger i,
-                               const UnsignedInteger j) const;
+  SquareMatrix operator() (const UnsignedInteger i, const UnsignedInteger j) const;
+
 public:
 
   /** Discretize the covariance function on a given TimeGrid/Mesh */
@@ -92,7 +88,7 @@ public:
 
 private:
 
-  /** Collection of covariance functions */
+  /** Covariance matrix of the native discretization */
   CovarianceMatrix covariance_;
 
   /** Mesh of the native discretization */

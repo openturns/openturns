@@ -71,7 +71,7 @@ FractionalBrownianMotionModel * FractionalBrownianMotionModel::clone() const
 
 /* Computation of the covariance function
  */
-CovarianceMatrix FractionalBrownianMotionModel::operator() (const Point & s,
+SquareMatrix FractionalBrownianMotionModel::operator() (const Point & s,
     const Point & t) const
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;

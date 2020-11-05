@@ -60,7 +60,7 @@ SphericalModel * SphericalModel::clone() const
   return new SphericalModel(*this);
 }
 
-CovarianceMatrix SphericalModel::operator() (const Point & tau) const
+SquareMatrix SphericalModel::operator() (const Point & tau) const
 {
   CovarianceMatrix covarianceMatrix(outputDimension_);
   covarianceMatrix(0, 0) = computeAsScalar(tau);

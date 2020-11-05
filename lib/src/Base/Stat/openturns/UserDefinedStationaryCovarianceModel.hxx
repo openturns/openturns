@@ -41,22 +41,22 @@ class OT_API UserDefinedStationaryCovarianceModel
 
 public:
 
-  typedef PersistentCollection<CovarianceMatrix>          CovarianceMatrixPersistentCollection;
-  typedef Collection<CovarianceMatrix>                    CovarianceMatrixCollection;
+  typedef PersistentCollection<SquareMatrix>      SquareMatrixPersistentCollection;
+  typedef Collection<SquareMatrix>                SquareMatrixCollection;
 
-  /** Default onstructor */
+  /** Default constructor */
   UserDefinedStationaryCovarianceModel();
 
-  /** Standard onstructor */
+  /** Standard constructor */
   UserDefinedStationaryCovarianceModel(const RegularGrid & mesh,
-                                       const CovarianceMatrixCollection & covarianceCollection);
+                                       const SquareMatrixCollection & covarianceCollection);
 
   /** Virtual copy constructor */
   UserDefinedStationaryCovarianceModel * clone() const override;
 
   /** Computation of the covariance function */
   using StationaryCovarianceModel::operator();
-  CovarianceMatrix operator() (const Point & tau) const override;
+  SquareMatrix operator() (const Point & tau) const override;
 
   /** Time grid/mesh accessor */
   RegularGrid getTimeGrid() const;
@@ -81,7 +81,7 @@ public:
 private:
 
   /** Collection of covariance functions */
-  CovarianceMatrixPersistentCollection covarianceCollection_;
+  SquareMatrixPersistentCollection covarianceCollection_;
 
   /** Mesh of evaluation */
   RegularGrid mesh_;

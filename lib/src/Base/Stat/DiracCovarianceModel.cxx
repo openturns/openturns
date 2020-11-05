@@ -34,7 +34,7 @@ static const Factory<DiracCovarianceModel> Factory_DiracCovarianceModel;
 class DiracAssemblyFunction : public HMatrixTensorRealAssemblyFunction
 {
 private:
-  const CovarianceMatrix covarianceMatrix_;
+  const SquareMatrix covarianceMatrix_;
 
 public:
   DiracAssemblyFunction(const DiracCovarianceModel & covarianceModel)
@@ -142,7 +142,7 @@ DiracCovarianceModel * DiracCovarianceModel::clone() const
 }
 
 /* Computation of the covariance density function */
-CovarianceMatrix DiracCovarianceModel::operator() (const Point & tau) const
+SquareMatrix DiracCovarianceModel::operator() (const Point & tau) const
 {
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::operator(), the point tau has dimension=" << tau.getDimension() << ", expected dimension=" << inputDimension_;
   // If tau.norm1 is zero we compute the covariance matrix
@@ -150,7 +150,7 @@ CovarianceMatrix DiracCovarianceModel::operator() (const Point & tau) const
   if (tau.norm() == 0)
     return outputCovariance_;
   else
-    return CovarianceMatrix(SquareMatrix(outputDimension_).getImplementation());
+    return SquareMatrix(outputDimension_).getImplementation();
 }
 
 // The following structure helps to compute the full covariance matrix

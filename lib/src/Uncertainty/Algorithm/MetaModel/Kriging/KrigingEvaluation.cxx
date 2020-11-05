@@ -229,7 +229,7 @@ struct KrigingEvaluationSampleFunctor
     {
       for (UnsignedInteger j = 0; j < trainingSize_; ++j)
       {
-        const CovarianceMatrix localCovariance(evaluation_.covarianceModel_(input_[i], evaluation_.inputSample_[j]));
+        const SquareMatrix localCovariance(evaluation_.covarianceModel_(input_[i], evaluation_.inputSample_[j]));
         for (UnsignedInteger columnIndex = 0; columnIndex < dimension; ++ columnIndex)
           for (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++ rowIndex)
             R(rowIndex, columnIndex + j * dimension) = localCovariance(rowIndex, columnIndex);

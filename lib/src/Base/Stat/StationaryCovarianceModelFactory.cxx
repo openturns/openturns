@@ -32,7 +32,7 @@ static const Factory<StationaryCovarianceModelFactory> Factory_StationaryCovaria
 
 static const Factory<PersistentCollection<Complex> > Factory_PersistentCollection_Complex;
 
-typedef Collection<CovarianceMatrix>  CovarianceMatrixCollection;
+typedef Collection<SquareMatrix>  SquareMatrixCollection;
 
 /* Default constructor */
 StationaryCovarianceModelFactory::StationaryCovarianceModelFactory(const WelchFactory & factory)
@@ -146,7 +146,7 @@ UserDefinedStationaryCovarianceModel StationaryCovarianceModelFactory::buildAsUs
 
   // We rewrite the elements in the adequate structure
   RegularGrid timeGrid(0.5 * dt, dt, N);
-  CovarianceMatrixCollection collection(N);
+  SquareMatrixCollection collection(N);
   for (UnsignedInteger currentIndex = 0; currentIndex < N; ++currentIndex)
   {
     const UnsignedInteger index = currentIndex + N;

@@ -59,9 +59,8 @@ public:
 
   /** Computation of the covariance matrix */
   using CovarianceModelImplementation::operator();
-  CovarianceMatrix operator() (const Point & s,
-                               const Point & t) const override;
-  CovarianceMatrix operator() (const Point & tau) const override;
+  SquareMatrix operator() (const Point & s, const Point & t) const override;
+  SquareMatrix operator() (const Point & tau) const override;
   using CovarianceModelImplementation::computeAsScalar;
   Scalar computeAsScalar (const Point & s,
                           const Point & t) const override;

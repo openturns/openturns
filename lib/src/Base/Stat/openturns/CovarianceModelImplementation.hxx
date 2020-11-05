@@ -72,10 +72,8 @@ public:
   virtual UnsignedInteger getOutputDimension() const;
 
   /** Compute the covariance function */
-  virtual CovarianceMatrix operator() (const Scalar s,
-                                       const Scalar t) const;
-  virtual CovarianceMatrix operator() (const Point & s,
-                                       const Point & t) const;
+  virtual SquareMatrix operator() (const Scalar s, const Scalar t) const;
+  virtual SquareMatrix operator() (const Point & s, const Point & t) const;
 
   // compute standard representative computes the term \rho(s, t)
   virtual Scalar computeStandardRepresentative(const Point & s,
@@ -96,8 +94,8 @@ public:
                                  const Collection<Scalar>::const_iterator & t_begin) const;
 #endif
 
-  virtual CovarianceMatrix operator() (const Scalar tau) const;
-  virtual CovarianceMatrix operator() (const Point & tau) const;
+  virtual SquareMatrix operator() (const Scalar tau) const;
+  virtual SquareMatrix operator() (const Point & tau) const;
 
   /** Gradient */
   virtual Matrix partialGradient(const Point & s,

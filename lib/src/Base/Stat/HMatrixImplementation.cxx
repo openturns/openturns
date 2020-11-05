@@ -652,7 +652,7 @@ Scalar CovarianceAssemblyFunction::operator()(UnsignedInteger i, UnsignedInteger
 
   const UnsignedInteger rowIndex = i / covarianceDimension_;
   const UnsignedInteger columnIndex = j / covarianceDimension_;
-  const CovarianceMatrix localCovarianceMatrix(covarianceModel_( vertices_[rowIndex],  vertices_[columnIndex] ));
+  const SquareMatrix localCovarianceMatrix(covarianceModel_( vertices_[rowIndex],  vertices_[columnIndex] ));
   const UnsignedInteger rowIndexLocal = i % covarianceDimension_;
   const UnsignedInteger columnIndexLocal = j % covarianceDimension_;
   return localCovarianceMatrix(rowIndexLocal, columnIndexLocal);
@@ -686,7 +686,7 @@ void CovarianceBlockAssemblyFunction::compute(UnsignedInteger i, UnsignedInteger
   }
   else
   {
-    CovarianceMatrix localResult(covarianceModel_( vertices_[i],  vertices_[j] ));
+    SquareMatrix localResult(covarianceModel_( vertices_[i],  vertices_[j] ));
     std::copy(&localResult.getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0) + dimension_ * dimension_, &localValues->getImplementation()->operator[](0));
   }
 }
