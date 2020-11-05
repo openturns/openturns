@@ -4,13 +4,9 @@ Use case : Ishigami test function
 """
 from __future__ import print_function
 import openturns as ot
-from typing import Any, List
 import numpy as np
-from dataclasses import dataclass
-from dataclasses import field
 
 
-@dataclass
 class IshigamiModel():
     """
     Data class for the Ishigami model.
@@ -90,41 +86,42 @@ class IshigamiModel():
     >>> im = ishigami_function.IshigamiModel()
     """
 
-    # dimension
-    dim: int = 3
-    # Fixed parameters for the Ishigami function
-    a: float = 7.0
-    b: float = 0.1
+    def __init__(self):
+        # dimension
+        self.dim = 3
+        # Fixed parameters for the Ishigami function
+        self.a = 7.0
+        self.b = 0.1
 
-    # First marginal : X1
-    X1: Any = ot.Uniform(-np.pi, np.pi)
-    X1.setName("X1")
+        # First marginal : X1
+        self.X1 = ot.Uniform(-np.pi, np.pi)
+        self.X1.setName("X1")
 
-    # Second marginal : X2
-    X2: Any = ot.Uniform(-np.pi, np.pi)
-    X2.setName("X2")
+        # Second marginal : X2
+        self.X2 = ot.Uniform(-np.pi, np.pi)
+        self.X2.setName("X2")
 
-    # Third marginal : X3
-    X3: Any = ot.Uniform(-np.pi, np.pi)
-    X3.setName("X1")
+        # Third marginal : X3
+        self.X3 = ot.Uniform(-np.pi, np.pi)
+        self.X3.setName("X1")
 
-    # Input distribution
-    distributionX = ot.ComposedDistribution([X1, X2, X3])
-    distributionX.setDescription(['X1', 'X2', 'X3'])
+        # Input distribution
+        self.distributionX = ot.ComposedDistribution([self.X1, self.X2, self.X3])
+        self.distributionX.setDescription(['X1', 'X2', 'X3'])
 
-    ishigami: Any = ot.SymbolicFunction(['X1', 'X2', 'X3', 'a', 'b'], ['sin(X1) + a * sin(X2)^2 + b * X3^4 * sin(X1)'])
-    # The Ishigami model
-    model: Any = ot.ParametricFunction(ishigami, [3, 4], [a, b])
+        self.ishigami = ot.SymbolicFunction(['X1', 'X2', 'X3', 'a', 'b'], ['sin(X1) + a * sin(X2)^2 + b * X3^4 * sin(X1)'])
+        # The Ishigami model
+        self.model = ot.ParametricFunction(self.ishigami, [3, 4], [self.a, self.b])
 
-    expectation: float = a / 2.0
-    variance: float = 1.0/2 + a**2/8.0 + b*np.pi**4/5.0 + b**2*np.pi**8/18.0
-    S1: float = (1.0/2.0 + b*np.pi**4/5.0+b**2*np.pi**8/50.0)/variance
-    S2: float = (a**2/8.0)/variance
-    S3: float = 0.0
-    S12: float = 0.0
-    S13: float = b**2*np.pi**8/2.0*(1.0/9.0-1.0/25.0)/variance
-    S23: float = 0.0
-    S123: float = 0.0
-    ST1: float = S1 + S13
-    ST2: float = S2
-    ST3: float = S3 + S13
+        self.expectation = self.a / 2.0
+        self.variance = 1.0/2 + self.a**2/8.0 + self.b*np.pi**4/5.0 + self.b**2*np.pi**8/18.0
+        self.S1 = (1.0/2.0 + self.b*np.pi**4/5.0+self.b**2*np.pi**8/50.0)/self.variance
+        self.S2 = (self.a**2/8.0)/self.variance
+        self.S3 = 0.0
+        self.S12 = 0.0
+        self.S13 = self.b**2*np.pi**8/2.0*(1.0/9.0-1.0/25.0)/self.variance
+        self.S23 = 0.0
+        self.S123 = 0.0
+        self.ST1 = self.S1 + self.S13
+        self.ST2 = self.S2
+        self.ST3 = self.S3 + self.S13

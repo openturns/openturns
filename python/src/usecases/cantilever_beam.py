@@ -4,13 +4,9 @@ Use case : cantilever beam
 """
 from __future__ import print_function
 import openturns as ot
-from typing import Any, List
 import numpy as np
-from dataclasses import dataclass
-from dataclasses import field
 
 
-@dataclass
 class CantileverBeam():
     """
     Data class for the cantilever beam example.
@@ -56,37 +52,38 @@ class CantileverBeam():
     >>> cb = cantilever_beam.CantileverBeam()
     """                                                                                       
 
-    dim: int = 4  # number of inputs
-    # Young's modulus E
-    E: Any = ot.Beta(0.9, 3.5, 65.0e9, 75.0e9)  # in N/m^2
-    E.setDescription("E")
-    E.setName("Young modulus")
+    def __init__(self):
+        self.dim = 4  # number of inputs
+        # Young's modulus E
+        self.E = ot.Beta(0.9, 3.5, 65.0e9, 75.0e9)  # in N/m^2
+        self.E.setDescription("E")
+        self.E.setName("Young modulus")
 
-    # Load F
-    F: Any = ot.LogNormal()  # in N
-    F.setParameter(ot.LogNormalMuSigma()([300.0, 30.0, 0.0]))
-    F.setDescription("F")
-    F.setName("Load")
+        # Load F
+        self.F = ot.LogNormal()  # in N
+        self.F.setParameter(ot.LogNormalMuSigma()([300.0, 30.0, 0.0]))
+        self.F.setDescription("F")
+        self.F.setName("Load")
 
-    # Length L
-    L: Any = ot.Uniform(2.5, 2.6)  # in m
-    L.setDescription("L")
-    L.setName("Length")
+        # Length L
+        self.L = ot.Uniform(2.5, 2.6)  # in m
+        self.L.setDescription("L")
+        self.L.setName("Length")
 
-    # Moment of inertia I
-    I: Any = ot.Beta(2.5, 4.0, 1.3e-7, 1.7e-7)  # in m^4
-    I.setDescription("I")
-    I.setName("Inertia")
+        # Moment of inertia I
+        self.I = ot.Beta(2.5, 4.0, 1.3e-7, 1.7e-7)  # in m^4
+        self.I.setDescription("I")
+        self.I.setName("Inertia")
 
-    # physical model
-    model: Any = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['F*L^3/(3*E*I)'])
+        # physical model
+        self.model = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['F*L^3/(3*E*I)'])
 
-    # correlation matrix
-    R: Any = ot.CorrelationMatrix(dim)
-    R[2, 3] = -0.2
-    copula: Any = ot.NormalCopula(ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(R))
-    distribution: Any = ot.ComposedDistribution([E, F, L, I], copula)
+        # correlation matrix
+        self.R = ot.CorrelationMatrix(self.dim)
+        self.R[2, 3] = -0.2
+        self.copula = ot.NormalCopula(ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(self.R))
+        self.distribution = ot.ComposedDistribution([self.E, self.F, self.L, self.I], self.copula)
 
-    # special case of an independent copula
-    independentDistribution: Any = ot.ComposedDistribution([E, F, L, I])
+        # special case of an independent copula
+        self.independentDistribution = ot.ComposedDistribution([self.E, self.F, self.L, self.I])
 

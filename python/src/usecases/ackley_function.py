@@ -4,10 +4,7 @@ Use case : Ackley test function
 """
 from __future__ import print_function
 import openturns as ot
-from typing import Any, List
 import numpy as np
-from dataclasses import dataclass
-from dataclasses import field
 
 
 
@@ -23,7 +20,6 @@ def g(X):
     return [f]
 
 
-@dataclass
 class AckleyModel():
     """
     Data class for the Ackley test function.
@@ -62,20 +58,18 @@ class AckleyModel():
     >>> am = ackley_function.AckleyModel()
     """
 
-    dim: int = 2
-    a = 20.0
-    b = 0.2
-    c = 2.0 * np.pi
+    def __init__(self):
+        self.dim = 2
+        self.a = 20.0
+        self.b = 0.2
+        self.c = 2.0 * np.pi
 
-    model: Any = ot.PythonFunction(dim, 1, g)
+        self.model = ot.PythonFunction(self.dim, 1, g)
 
-    # Bounds
-    lowerbound: Any = ot.Point([-15.0] * dim)
-    upperbound: Any = ot.Point([15.0] * dim)
+        # Bounds
+        self.lowerbound = ot.Point([-15.0] * self.dim)
+        self.upperbound = ot.Point([15.0] * self.dim)
 
-    # The Ackley function has many local minimas
-    # The global minimum is unique and located at the center of the domain
-    x0: List[float] = field(default_factory=list)
-
-    def __post_init__(self):
+        # The Ackley function has many local minimas
+        # The global minimum is unique and located at the center of the domain
         self.x0 = [0.0] * self.dim

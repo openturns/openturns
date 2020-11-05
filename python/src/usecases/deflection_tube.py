@@ -4,13 +4,9 @@ Use case : vertical deflection of a tube
 """
 from __future__ import print_function
 import openturns as ot
-from typing import Any, List
 import numpy as np
-from dataclasses import dataclass
-from dataclasses import field
 
 
-@dataclass
 class DeflectionTube():
     """
     Data class for the deflection of a tube model.
@@ -52,27 +48,29 @@ class DeflectionTube():
     >>> # Load the deflection tube model
     >>> dt = deflection_tube.DeflectionTube()
     """
-    dim: int = 6
 
-    model: Any = ot.SymbolicFunction(["F", "L", "a", "De", "di", "E"], ["g1", "g2", "g3"], "var I:=pi_*(De^4-di^4)/32; var b:=L-a; g1:=-F*a^2*(L-a)^2/(3*E*L*I); g2:=-F*b*(L^2-b^2)/(6*E*L*I); g3:=F*a*(L^2-a^2)/(6*E*L*I)")
-    model.setOutputDescription(["Deflection", "Left angle", "Right angle"])
+    def __init__(self):
+        self.dim = 6
 
-    XF: Any = ot.Normal(1, 0.1)
-    XF.setDescription(["Force"])
+        self.model = ot.SymbolicFunction(["F", "L", "a", "De", "di", "E"], ["g1", "g2", "g3"], "var I:=pi_*(De^4-di^4)/32; var b:=L-a; g1:=-F*a^2*(L-a)^2/(3*E*L*I); g2:=-F*b*(L^2-b^2)/(6*E*L*I); g3:=F*a*(L^2-a^2)/(6*E*L*I)")
+        self.model.setOutputDescription(["Deflection", "Left angle", "Right angle"])
 
-    XE: Any = ot.Normal(200000, 2000)
-    XE.setDescription(["Young Modulus"])
+        self.XF = ot.Normal(1, 0.1)
+        self.XF.setDescription(["Force"])
 
-    XL: Any = ot.Dirac(1.5)
-    XL.setDescription(["Length"])
+        self.XE = ot.Normal(200000, 2000)
+        self.XE.setDescription(["Young Modulus"])
 
-    Xa: Any = ot.Dirac(1.0)
-    Xa.setDescription(["Location"])
+        self.XL = ot.Dirac(1.5)
+        self.XL.setDescription(["Length"])
 
-    XD: Any = ot.Dirac(0.8)
-    XD.setDescription(["External diameter"])
+        self.Xa = ot.Dirac(1.0)
+        self.Xa.setDescription(["Location"])
 
-    Xd: Any = ot.Dirac(0.1)
-    Xd.setDescription(["Internal diameter"])
+        self.XD = ot.Dirac(0.8)
+        self.XD.setDescription(["External diameter"])
 
-    inputDistribution: Any = ot.ComposedDistribution([XF, XL, Xa, XD, Xd, XE])
+        self.Xd = ot.Dirac(0.1)
+        self.Xd.setDescription(["Internal diameter"])
+
+        self.inputDistribution = ot.ComposedDistribution([self.XF, self.XL, self.Xa, self.XD, self.Xd, self.XE])

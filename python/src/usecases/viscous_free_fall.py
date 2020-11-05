@@ -4,10 +4,7 @@ Use case : viscous free fall
 """
 from __future__ import print_function
 import openturns as ot
-from typing import Any, List
 import numpy as np
-from dataclasses import dataclass
-from dataclasses import field
 
 
 def AltiFunc(X):
@@ -24,7 +21,6 @@ def AltiFunc(X):
     return [[zeta[0]] for zeta in z]
 
 
-@dataclass
 class ViscousFreeFall():
     """
     Data class for the viscous free fall.
@@ -78,23 +74,25 @@ class ViscousFreeFall():
     >>> # Load the viscous free fall example
     >>> vff = viscous_free_fall.ViscousFreeFall()
     """
-    dim: int = 4  # number of inputs
-    outputDimension: int = 1 # dimension of the output
 
-    tmin: float = 0.0  # Minimum time
-    tmax: float = 12.0  # Maximum time
-    gridsize: int = 100  # Number of time steps
-    mesh: Any = ot.IntervalMesher([gridsize-1]).build(ot.Interval(tmin, tmax))
-    vertices: Any = mesh.getVertices()
+    def __init__(self):
+        self.dim = 4  # number of inputs
+        self.outputDimension = 1 # dimension of the output
 
-    # Marginals
-    distZ0: Any = ot.Uniform(100.0, 150.0)
-    distV0: Any = ot.Normal(55.0, 10.0)
-    distM: Any = ot.Normal(80.0, 8.0)
-    distC: Any = ot.Uniform(0.0, 30.0)
+        self.tmin = 0.0  # Minimum time
+        self.tmax = 12.0  # Maximum time
+        self.gridsize = 100  # Number of time steps
+        self.mesh = ot.IntervalMesher([self.gridsize-1]).build(ot.Interval(self.tmin, self.tmax))
+        self.vertices = self.mesh.getVertices()
 
-    # Joint distribution
-    distribution: Any = ot.ComposedDistribution([distZ0, distV0, distM, distC])
+        # Marginals
+        self.distZ0 = ot.Uniform(100.0, 150.0)
+        self.distV0 = ot.Normal(55.0, 10.0)
+        self.distM = ot.Normal(80.0, 8.0)
+        self.distC = ot.Uniform(0.0, 30.0)
 
-    # Exact solution
-    alti: Any = ot.PythonPointToFieldFunction(dim, mesh, outputDimension, AltiFunc)
+        # Joint distribution
+        self.distribution = ot.ComposedDistribution([self.distZ0, self.distV0, self.distM, self.distC])
+
+        # Exact solution
+        self.alti = ot.PythonPointToFieldFunction(self.dim, self.mesh, self.outputDimension, AltiFunc)
