@@ -49,6 +49,11 @@ We can load this classical model from the use cases module as follows :
     >>> # Load the Ackley model
     >>> am = ackley_function.AckleyModel()
 
+API documentation
+-----------------
+
+See :class:`~openturns.usecases.ackley_function.AckleyModel`.
+
 
 Examples based on this use case
 -------------------------------

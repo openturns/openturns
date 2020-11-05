@@ -78,6 +78,10 @@ We can load this classical model from the use cases module as follows :
     >>> # Load the use case axial stressed beam
     >>> sb = stressed_beam.AxialStressedBeam()
 
+API documentation
+-----------------
+
+See :class:`~openturns.usecases.stressed_beam.AxialStressedBeam`.
 
 
 Examples based on this use case

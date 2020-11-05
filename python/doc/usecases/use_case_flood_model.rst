@@ -115,6 +115,10 @@ We can load this classical model from the use cases module as follows :
     >>> # Load the use case flood model
     >>> fm = flood_model.FloodModel()
 
+API documentation
+-----------------
+
+See :class:`~openturns.usecases.flood_model.FloodModel`.
 
 
 Examples based on this use case

@@ -58,6 +58,10 @@ We can load this classical model from the use cases module as follows :
     >>> # Load the cantilever beam example
     >>> cb = cantilever_beam.CantileverBeam()
 
+API documentation
+-----------------
+
+See :class:`~openturns.usecases.cantilever_beam.CantileverBeam`.
 
 Examples based on this use case
 -------------------------------

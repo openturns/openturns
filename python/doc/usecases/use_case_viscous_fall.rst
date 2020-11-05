@@ -95,6 +95,11 @@ We can load this classical model from the use cases module as follows :
     >>> # Load the viscous free fall model
     >>> fm = viscous_free_fall.ViscousFreeFall()
 
+API documentation
+-----------------
+
+See :class:`~openturns.usecases.viscous_free_fall.ViscousFreeFall`.
+
 Examples based on this use case
 -------------------------------
 

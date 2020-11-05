@@ -80,6 +80,10 @@ We can load this classical model from the use cases module as follows :
     >>> # Load the Ishigami use case
     >>> im = ishigami_function.IshigamiModel()
 
+API documentation
+-----------------
+
+See :class:`~openturns.usecases.ishigami_function.IshigamiModel`.
 
 Examples based on this use case
 -------------------------------
