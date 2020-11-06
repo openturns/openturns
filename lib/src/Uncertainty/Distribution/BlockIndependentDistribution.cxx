@@ -549,6 +549,8 @@ Distribution BlockIndependentDistribution::getMarginal(const Indices & indices) 
     }
     marginalDistributions.add(distributionCollection_[distributionIndex].getMarginal(distributionIndices));
   }
+  if (indicesSize == 1)
+    return marginalDistributions[0];
   return new BlockIndependentDistribution(marginalDistributions);
 }
 
@@ -719,6 +721,25 @@ void BlockIndependentDistribution::setParameter(const Point & parameter)
     distributionCollection_[i].setParameter(newParameters);
     globalIndex += parametersSize;
   }
+}
+
+void BlockIndependentDistribution::computeRange()
+{
+  // aggregate ranges
+  Interval::BoolCollection finiteLowerBound;
+  Interval::BoolCollection finiteUpperBound;
+  Point lowerBound;
+  Point upperBound;
+  const UnsignedInteger size = distributionCollection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++ i)
+  {
+    const Interval range(distributionCollection_[i].getRange());
+    lowerBound.add(range.getLowerBound());
+    upperBound.add(range.getUpperBound());
+    finiteLowerBound.add(range.getFiniteLowerBound());
+    finiteUpperBound.add(range.getFiniteUpperBound());
+  }
+  setRange(Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound));
 }
 
 /* Method save() stores the object through the StorageManager */

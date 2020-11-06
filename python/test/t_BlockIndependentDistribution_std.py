@@ -192,6 +192,7 @@ print("isoprobabilistic transformation (general normal)=",
 # General case with non-normal standard distribution
 collection[0] = ot.SklarCopula(ot.Student(
     3.0, [1.0]*2, [3.0]*2, ot.CorrelationMatrix(2)))
+collection.append(ot.Triangular(2.0, 3.0, 4.0))
 distribution = ot.BlockIndependentDistribution(collection)
 print("isoprobabilistic transformation (general non-normal)=",
       distribution.getIsoProbabilisticTransformation())
@@ -211,3 +212,4 @@ resCDF = distribution.computeSequentialConditionalCDF(pt)
 print("sequential conditional CDF(", pt, ")=", resCDF)
 print("sequential conditional quantile(", resCDF, ")=",
       distribution.computeSequentialConditionalQuantile(resCDF))
+print('range=', distribution.getRange())

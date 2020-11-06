@@ -81,7 +81,7 @@ private:
   void generateNodesAndWeights(const IntegrationMethod method);
 
   // Generate nodes and weights for ClenshawCurtis
-  void generateNodesAndWeightsCleanshawCurtis(Collection<Point> & marginalNodes, Collection<Point> & marginalWeights);
+  void generateNodesAndWeightsClenshawCurtis(Collection<Point> & marginalNodes, Collection<Point> & marginalWeights);
   // Generate nodes and weights for Fejer Type 1
   void generateNodesAndWeightsFejerType1(Collection<Point> & marginalNodes, Collection<Point> & marginalWeights);
   // Generate nodes and weights for Fejer Type 2

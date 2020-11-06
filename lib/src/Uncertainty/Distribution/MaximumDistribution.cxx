@@ -164,16 +164,13 @@ Scalar MaximumDistribution::computePDF(const Point & point) const
   {
     marginals[i] = distribution_.getMarginal(i);
     const Scalar cdf = marginals[i].computeCDF(point);
-    if ((cdf == 0) || (cdf == 1.0)) return 0.0;
+    if (cdf == 0) return 0.0;
     marginalCDF[i] = cdf;
     product *= cdf;
   }
   Scalar sum = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
-  {
-    const Scalar pdfI = marginals[i].computePDF(point);
-    if (pdfI > 0.0) sum += pdfI / marginalCDF[i];
-  }
+    sum += marginals[i].computePDF(point) / marginalCDF[i];
   return sum * product;
 }
 

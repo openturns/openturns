@@ -211,6 +211,21 @@ Point Frechet::computePDFGradient(const Point & point) const
   return pdfGradient;
 }
 
+/* Get the LogPDFGradient of the distribution */
+Point Frechet::computeLogPDFGradient(const Point & point) const
+{
+  if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
+
+  const Scalar x = point[0] - gamma_;
+  Point logPdfGradient(3);
+  if (x <= 0.0) return logPdfGradient;
+  const Scalar logCdfplus1 = -std::expm1(-alpha_ * std::log(x / beta_));
+  logPdfGradient[0] = alpha_ / beta_ * logCdfplus1;
+  logPdfGradient[1] = 1.0 / alpha_ - std::log(x / beta_) * logCdfplus1;
+  logPdfGradient[2] = 1.0 / x * (1.0 + alpha_ * logCdfplus1);
+  return logPdfGradient;
+}
+
 /* Get the CDFGradient of the distribution */
 Point Frechet::computeCDFGradient(const Point & point) const
 {

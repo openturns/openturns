@@ -25,7 +25,7 @@ lower.setColor("red")
 lower.setPointStyle('square')
 g.add(lower)
 
-# Cleanshaw-Curtis
+# Clenshaw-Curtis
 algo = ot.FejerAlgorithm([20], ot.FejerAlgorithm.CLENSHAWCURTIS)
 value, nodes = algo.integrateWithNodes(f, ot.Interval(a, b))
 lower = ot.Cloud(nodes, ot.Sample(nodes.getSize(), [1.0/8]))
@@ -36,7 +36,7 @@ g.add(lower)
 g.setTitle(
     r"Fejer algorithms example: $\int_{-5/2}^{9/2}\sin(t)\,dt=$" + str(value[0]))
 
-g.setLegends(["f", "Fejer_1", "Fejer_2", "Clenshw-Curtis"])
+g.setLegends(["f", "Fejer_1", "Fejer_2", "Clenshaw-Curtis"])
 g.setLegendPosition("topright")
 
 fig = plt.figure(figsize=(8, 4))

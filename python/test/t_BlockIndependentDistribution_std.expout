@@ -82,7 +82,7 @@ sequential conditional PDF= [0.398444,0.407104,0.185928,0.227445,0.203657,0.5769
 sequential conditional CDF( [0.05,0.15,0.25,0.35,0.45,0.55,0.65] )= [0.519939,0.545655,0.35383,0.436925,0.415568,0.42305,0.487447]
 sequential conditional quantile( [0.519939,0.545655,0.35383,0.436925,0.415568,0.42305,0.487447] )= [0.05,0.15,0.25,0.35,0.45,0.55,0.65]
 indices= [1, 2, 3, 5, 6]
-margins= BlockIndependentDistribution(ComposedDistribution(Normal(mu = 0, sigma = 1)), Normal(mu = [1,1], sigma = [2,2], R = [[ 1   0.5 ]
+margins= BlockIndependentDistribution(Normal(mu = 0, sigma = 1), Normal(mu = [1,1], sigma = [2,2], R = [[ 1   0.5 ]
  [ 0.5 1   ]]), ComposedDistribution(Exponential(lambda = 1, gamma = 0), Exponential(lambda = 1, gamma = 0), FrankCopula(theta = 0.5)))
 margins PDF=0.01057
 margins CDF=0.00675
@@ -96,14 +96,23 @@ isoprobabilistic transformation (general normal)= [((RosenblattEvaluation(AliMik
  [ 0.25 0    1    ]])->Normal(3))o([x0,x1,x2,x3,x4,x5,x6]->[x2,x3,x4]),((RosenblattEvaluation(FrankCopula(theta = 0.5)->Normal(2))o(| y0 = Exponential(lambda = 1, gamma = 0) -> y0 : Uniform(a = 0, b = 1)
 | y1 = Exponential(lambda = 1, gamma = 0) -> y1 : Uniform(a = 0, b = 1)
 ))o([x0,x1,x2,x3,x4,x5,x6]->[x5,x6])]
-isoprobabilistic transformation (general non-normal)= [(RosenblattEvaluation(class=SklarCopula name=SklarCopula dimension=2 distribution=class=Student name=Student dimension=2 nu=3 mean=class=Point name=Unnamed dimension=2 values=[1,1] sigma=class=Point name=Unnamed dimension=2 values=[3,3] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]->Normal(2))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1]),(RosenblattEvaluation(Normal(mu = [1,1,1], sigma = [2,2,2], R = [[ 1    0.5  0.25 ]
+isoprobabilistic transformation (general non-normal)= [(RosenblattEvaluation(class=SklarCopula name=SklarCopula dimension=2 distribution=class=Student name=Student dimension=2 nu=3 mean=class=Point name=Unnamed dimension=2 values=[1,1] sigma=class=Point name=Unnamed dimension=2 values=[3,3] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1]->Normal(2))o([x0,x1,x2,x3,x4,x5,x6,x7]->[x0,x1]),(RosenblattEvaluation(Normal(mu = [1,1,1], sigma = [2,2,2], R = [[ 1    0.5  0.25 ]
  [ 0.5  1    0    ]
- [ 0.25 0    1    ]])->Normal(3))o([x0,x1,x2,x3,x4,x5,x6]->[x2,x3,x4]),((RosenblattEvaluation(FrankCopula(theta = 0.5)->Normal(2))o(| y0 = Exponential(lambda = 1, gamma = 0) -> y0 : Uniform(a = 0, b = 1)
+ [ 0.25 0    1    ]])->Normal(3))o([x0,x1,x2,x3,x4,x5,x6,x7]->[x2,x3,x4]),((RosenblattEvaluation(FrankCopula(theta = 0.5)->Normal(2))o(| y0 = Exponential(lambda = 1, gamma = 0) -> y0 : Uniform(a = 0, b = 1)
 | y1 = Exponential(lambda = 1, gamma = 0) -> y1 : Uniform(a = 0, b = 1)
-))o([x0,x1,x2,x3,x4,x5,x6]->[x5,x6])]
-conditional PDF=0.55675
-conditional CDF=0.49062
-conditional quantile=0.82304
-sequential conditional PDF= [1,1.06099,0.185928,0.227445,0.203657,0.57695,0.525447]
-sequential conditional CDF( [0.05,0.15,0.25,0.35,0.45,0.55,0.65] )= [0.05,0.220267,0.35383,0.436925,0.415568,0.42305,0.487447]
-sequential conditional quantile( [0.05,0.220267,0.35383,0.436925,0.415568,0.42305,0.487447] )= [0.05,0.15,0.25,0.35,0.45,0.55,0.65]
+))o([x0,x1,x2,x3,x4,x5,x6,x7]->[x5,x6]),(Triangular(a = 2, m = 3, b = 4) -> y0 : Normal(mu = 0, sigma = 1)
+)o([x0,x1,x2,x3,x4,x5,x6,x7]->[x7])]
+conditional PDF=0.54881
+conditional CDF=0.45119
+conditional quantile=0.91629
+sequential conditional PDF= [1,1.06099,0.185928,0.227445,0.203657,0.57695,0.525447,0]
+sequential conditional CDF( [0.05,0.15,0.25,0.35,0.45,0.55,0.65,0.75] )= [0.05,0.220267,0.35383,0.436925,0.415568,0.42305,0.487447,0]
+sequential conditional quantile( [0.05,0.220267,0.35383,0.436925,0.415568,0.42305,0.487447,0] )= [0.05,0.15,0.25,0.35,0.45,0.55,0.65,2]
+range= [0, 1]
+[0, 1]
+]-inf (-14.3013), (16.3013) +inf[
+]-inf (-14.3013), (16.3013) +inf[
+]-inf (-14.3013), (16.3013) +inf[
+[0, (32.2362) +inf[
+[0, (32.2362) +inf[
+[2, 4]

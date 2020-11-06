@@ -846,18 +846,26 @@ Point ComposedDistribution::getKurtosis() const
 Distribution ComposedDistribution::getMarginal(const UnsignedInteger i) const
 {
   if (i >= getDimension()) throw InvalidArgumentException(HERE) << "The index of a marginal distribution must be in the range [0, dim-1]";
-  ComposedDistribution::Implementation marginal(distributionCollection_[i].getImplementation()->clone());
-  marginal->setDescription(Description(1, getDescription()[i]));
+  Distribution marginal(distributionCollection_[i]);
+  marginal.setDescription(Description(1, getDescription()[i]));
   return marginal;
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 Distribution ComposedDistribution::getMarginal(const Indices & indices) const
 {
-  // This call will check that indices are correct
+  const UnsignedInteger dimension = getDimension();
+  if (!indices.check(dimension)) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal distribution must be in the range [0, dim-1] and must be different";
+  const UnsignedInteger size = indices.getSize();
+  if (size == 1)
+  {
+    const UnsignedInteger i = indices[0];
+    Distribution marginal(distributionCollection_[i]);
+    marginal.setDescription(Description(1, getDescription()[i]));
+    return marginal;
+  }
   const Distribution marginalCopula(copula_.getMarginal(indices));
   DistributionCollection marginalDistributions(0);
-  const UnsignedInteger size = indices.getSize();
   const Description description(getDescription());
   Description marginalDescription(size);
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -866,8 +874,8 @@ Distribution ComposedDistribution::getMarginal(const Indices & indices) const
     marginalDistributions.add(distributionCollection_[j]);
     marginalDescription[i] = description[j];
   }
-  ComposedDistribution::Implementation marginal(new ComposedDistribution(marginalDistributions, marginalCopula));
-  marginal->setDescription(marginalDescription);
+  ComposedDistribution marginal(marginalDistributions, marginalCopula);
+  marginal.setDescription(marginalDescription);
   return marginal;
 }
 

@@ -91,6 +91,16 @@ public:
   /** Get the probability content of an interval */
   Scalar computeProbability(const Interval & interval) const override;
 
+  /** Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
+  using DistributionImplementation::computeConditionalPDF;
+  Scalar computeConditionalPDF(const Scalar x, const Point & y) const override;
+  Point computeSequentialConditionalPDF(const Point & x) const override;
+
+  /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
+  using DistributionImplementation::computeConditionalCDF;
+  Scalar computeConditionalCDF(const Scalar x, const Point & y) const override;
+  Point computeSequentialConditionalCDF(const Point & x) const override;
+
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
   using ContinuousDistribution::getMarginal;
   Distribution getMarginal(const UnsignedInteger i) const override;
