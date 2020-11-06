@@ -16,7 +16,7 @@ class CantileverBeam():
     ----------
 
     dim : The dimension of the problem
-          dim=2.
+          dim=4.
 
     E : `Beta` distribution
         ot.Beta(0.9, 3.5, 65.0e9, 75.0e9)
