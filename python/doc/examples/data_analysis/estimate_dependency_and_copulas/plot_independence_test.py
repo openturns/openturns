@@ -29,7 +29,7 @@ Sample independence test
 # .. math::
 #      D = 1-\frac{6\sum_{i=1}^n (r_i - s_i)^2}{n(n^2-1)}
 #
-# where :math:`r_i = rank(x_i)` and  :math:`s_i = rank(y_i)`. :math:`D` is such that :math:`\sqrt{n-1}D` tends towards the gaussian (0,1) distribution.
+# where :math:`r_i = rank(x_i)` and  :math:`s_i = rank(y_i)`. :math:`D` is such that :math:`\sqrt{n-1}D` tends towards the standard normal distribution.
 #
 
 # %%
