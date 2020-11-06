@@ -89,3 +89,8 @@ if 0:
     View(graph1).save('graph1.png')
     View(graph2).save('graph2.png')
     View(graph3).save('graph3.png')
+
+# ctor from collection of Samples
+coll=[ot.Normal(outputDimension).getSample(mesh.getVerticesNumber()) for i in range(sampleSize)]
+processSample2 = ot.ProcessSample(mesh, coll)
+assert len(processSample2) == sampleSize, "wrong size"

@@ -55,6 +55,25 @@
 %include openturns/SampleImplementation.hxx
 %include openturns/Sample.hxx
 
+
+%typemap(in) const SampleCollection & ($1_basetype temp) {
+  if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
+    try {
+      temp = OT::convert<OT::_PySequence_, OT::Collection<OT::Sample> >($input);
+      $1 = &temp;
+    } catch (OT::InvalidArgumentException &) {
+      SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to a collection of Sample");
+    }
+  }
+}
+
+%typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const SampleCollection & {
+  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
+    || OT::canConvertCollectionObjectFromPySequence< OT::Sample >( $input );
+}
+
+%apply const SampleCollection & { const OT::ProcessSample::SampleCollection &};
+
 %pythoncode %{
 # This code has been added to conform to Numpy ndarray interface
 # that tries to reuse the data stored in the Sample (zero copy)

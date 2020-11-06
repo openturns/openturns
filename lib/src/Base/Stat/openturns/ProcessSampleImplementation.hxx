@@ -57,6 +57,9 @@ public:
                               const UnsignedInteger size,
                               const UnsignedInteger dimension);
 
+  ProcessSampleImplementation(const Mesh & mesh,
+                              const SampleCollection & collection);
+
   /** Partial copy constructor */
   void add(const Field & field);
 

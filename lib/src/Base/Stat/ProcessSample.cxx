@@ -47,6 +47,12 @@ ProcessSample::ProcessSample(const Mesh & mesh,
   // Nothing to do
 }
 
+ProcessSample::ProcessSample(const Mesh & mesh,
+                             const SampleCollection & collection)
+  : TypedInterfaceObject<ProcessSampleImplementation>(new ProcessSampleImplementation(mesh, collection))
+{
+  // Nothing to do
+}
 
 /* Parameters constructor */
 ProcessSample::ProcessSample(const ProcessSampleImplementation & implementation)

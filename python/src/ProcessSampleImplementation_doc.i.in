@@ -4,6 +4,8 @@
 Available constructors:
     ProcessSample(*mesh, K, d*)
 
+    ProcessSample(*mesh, coll*)
+
     ProcessSample(*K, field*)
 
 Parameters
@@ -16,6 +18,8 @@ d : int
     Dimension  of the values of the field.
 field : :class:`~openturns.Field`
     One field.
+coll : sequence of :class:`~openturns.Sample`
+    List of field values.
 
 Notes
 -----

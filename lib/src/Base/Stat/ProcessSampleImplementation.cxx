@@ -68,6 +68,15 @@ ProcessSampleImplementation::ProcessSampleImplementation(const Mesh & mesh,
   // Nothing to do
 }
 
+ProcessSampleImplementation::ProcessSampleImplementation(const Mesh & mesh,
+                                                         const SampleCollection & collection)
+  : PersistentObject()
+  , mesh_(mesh)
+  , data_(collection)
+{
+  // Nothing to do
+}
+
 /* Virtual constructor */
 ProcessSampleImplementation * ProcessSampleImplementation::clone() const
 {
