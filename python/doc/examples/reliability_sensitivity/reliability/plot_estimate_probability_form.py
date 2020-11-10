@@ -51,7 +51,7 @@ model = cb.model
 # %%
 vect = ot.RandomVector(distribution)
 G = ot.CompositeRandomVector(model, vect)
-event = ot.ThresholdEvent(G, ot.Greater(), 0.22)
+event = ot.ThresholdEvent(G, ot.Greater(), 0.3)
 event.setName("deviation")
 
 # %%

@@ -31,7 +31,7 @@ model = cb.model
 # %%
 vect = ot.RandomVector(distribution)
 G = ot.CompositeRandomVector(model, vect)
-event = ot.ThresholdEvent(G, ot.Greater(), 30.0)
+event = ot.ThresholdEvent(G, ot.Greater(), 0.3)
 
 # %%
 # Define the low discrepancy sequence.

@@ -31,6 +31,10 @@ dim = cb.dim # number of inputs
 myDistribution = cb.distribution
 
 # %%
+# We use a transformation because data contain very large values.
+transformation = myDistribution.getIsoProbabilisticTransformation()
+
+# %%
 # Create the design of experiments
 # --------------------------------
 
@@ -63,7 +67,7 @@ view = viewer.View(histo)
 dimension = myDistribution.getDimension()
 basis = ot.ConstantBasisFactory(dimension).build()
 covarianceModel = ot.SquaredExponential([1.]*dimension, [1.0])
-algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
+algo = ot.KrigingAlgorithm(transformation(X_train), Y_train, covarianceModel, basis)
 algo.run()
 result = algo.getResult()
 krigingMetamodel = result.getMetaModel()
@@ -98,7 +102,7 @@ Y_test = model(X_test)
 # The `MetaModelValidation` classe makes the validation easy. To create it, we use the validation samples and the metamodel. 
 
 # %%
-val = ot.MetaModelValidation(X_test, Y_test, krigingMetamodel)
+val = ot.MetaModelValidation(transformation(X_test), Y_test, krigingMetamodel)
 
 # %%
 # The `computePredictivityFactor` computes the Q2 factor. 
