@@ -4,10 +4,7 @@ Use case : viscous free fall
 """
 from __future__ import print_function
 import openturns as ot
-from typing import Any, List
 import numpy as np
-from dataclasses import dataclass
-from dataclasses import field
 
 
 def AltiFunc(X):
@@ -24,22 +21,78 @@ def AltiFunc(X):
     return [[zeta[0]] for zeta in z]
 
 
-@dataclass
 class ViscousFreeFall():
-    """Custom class for the viscous free fall
     """
-    dim: int = 4  # number of inputs
+    Data class for the viscous free fall.
 
-    tmin: float = 0.0  # Minimum time
-    tmax: float = 12.0  # Maximum time
-    gridsize: int = 100  # Number of time steps
-    mesh: Any = ot.IntervalMesher([gridsize-1]).build(ot.Interval(tmin, tmax))
-    vertices: Any = mesh.getVertices()
-    distZ0: Any = ot.Uniform(100.0, 150.0)
-    distV0: Any = ot.Normal(55.0, 10.0)
-    distM: Any = ot.Normal(80.0, 8.0)
-    distC: Any = ot.Uniform(0.0, 30.0)
-    distribution: Any = ot.ComposedDistribution([distZ0, distV0, distM, distC])
 
-    outputDimension: int = 1
-    alti: Any = ot.PythonPointToFieldFunction(dim, mesh, outputDimension, AltiFunc)
+    Attributes
+    ----------
+
+
+    dim : The dimension of the problem
+          dim=4.
+
+    outputDimension : The output dimension of the problem
+                      outputDimension=1.
+
+    tmin : Constant
+           Minimum time, tmin = 0.0
+
+    tmax : Constant
+           Maximum time, tmax = 12.0
+
+    gridsize : Constant
+               Number of time steps, gridsize = 100.
+
+    mesh : `IntervalMesher`
+
+    vertices : Vertices of the mesh
+
+    distZ0 : `Uniform` distribution of the initial altitude
+             ot.Uniform(100.0, 150.0)
+
+    distV0 : `Normal` distribution of the initial speed
+             ot.Normal(55.0, 10.0)
+
+    distM : `Normal` distribution of the mass
+            ot.Normal(80.0, 8.0)
+
+    distC : `Uniform` distribution of the drag
+            ot.Uniform(0.0, 30.0)
+
+    distribution : `ComposedDistribution`
+                   The joint distribution of the input parameters.
+
+    alti : `PythonPointToFieldFunction`, the exact solution of the fall
+           ot.PythonPointToFieldFunction(dim, mesh, outputDimension, AltiFunc)          
+
+
+    Examples
+    --------
+    >>> from openturns.usecases import viscous_free_fall as viscous_free_fall
+    >>> # Load the viscous free fall example
+    >>> vff = viscous_free_fall.ViscousFreeFall()
+    """
+
+    def __init__(self):
+        self.dim = 4  # number of inputs
+        self.outputDimension = 1 # dimension of the output
+
+        self.tmin = 0.0  # Minimum time
+        self.tmax = 12.0  # Maximum time
+        self.gridsize = 100  # Number of time steps
+        self.mesh = ot.IntervalMesher([self.gridsize-1]).build(ot.Interval(self.tmin, self.tmax))
+        self.vertices = self.mesh.getVertices()
+
+        # Marginals
+        self.distZ0 = ot.Uniform(100.0, 150.0)
+        self.distV0 = ot.Normal(55.0, 10.0)
+        self.distM = ot.Normal(80.0, 8.0)
+        self.distC = ot.Uniform(0.0, 30.0)
+
+        # Joint distribution
+        self.distribution = ot.ComposedDistribution([self.distZ0, self.distV0, self.distM, self.distC])
+
+        # Exact solution
+        self.alti = ot.PythonPointToFieldFunction(self.dim, self.mesh, self.outputDimension, AltiFunc)

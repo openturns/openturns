@@ -2,9 +2,9 @@
 Compute grouped indices for the Ishigami function
 =================================================
 """
-# %% 
+# %%
 #
-# In this example, we compute grouped Sobol' indices for the Ishigami function.
+# In this example, we compute grouped Sobol' indices for the :ref:`Ishigami function <use-case-ishigami>`.
 
 # %%
 import openturns as ot
@@ -15,41 +15,36 @@ import openturns.viewer as otv
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Create the Ishigami test function.
+# We load the Ishigami test function from usecases module :
+from openturns.usecases import ishigami_function as ishigami_function
+im = ishigami_function.IshigamiModel()
 
 # %%
-ot.RandomGenerator.SetSeed(0)
-formula = ['sin(X1) + 7. * sin(X2)^2 + 0.1 * X3^4 * sin(X1)']
-input_names = ['X1', 'X2', 'X3']
-g = ot.SymbolicFunction(input_names, formula)
+# The `IshigamiModel` data class contains the input distribution :math:`X=(X_1, X_2, X_3)` in `im.distributionX` and the Ishigami function in `im.model`.
+# We also have access to the input variable names with
+input_names = im.distributionX.getDescription()
 
-# %%
-# Create the probabilistic model
-
-# %%
-distributionList = [ot.Uniform(-pi, pi)] * 3
-distribution = ot.ComposedDistribution(distributionList)
 
 # %%
 # Create a training sample
 
 # %%
 N = 100 
-inputTrain = distribution.getSample(N)
-outputTrain = g(inputTrain)
+inputTrain = im.distributionX.getSample(N)
+outputTrain = im.model(inputTrain)
 
 # %%
 # Create the chaos.
 
 # %%
-multivariateBasis = ot.OrthogonalProductPolynomialFactory(distributionList)
+multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
 selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
 projectionStrategy = ot.LeastSquaresStrategy(inputTrain, outputTrain, selectionAlgorithm)
 totalDegree = 8
 enumfunc = multivariateBasis.getEnumerateFunction()
 P = enumfunc.getStrataCumulatedCardinal(totalDegree)
 adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
-chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain, distribution, adaptiveStrategy, projectionStrategy)
+chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy)
 
 # %%
 chaosalgo.run()

@@ -16,40 +16,6 @@ EfficientGlobalOptimization examples
 # Then the new point is evaluated using the original model and the metamodel is
 # relearnt on the extended design of experiment.
 
-# %%
-# Ackley test-case
-# ----------------
-#
-# Introduction
-# ^^^^^^^^^^^^
-#
-# The Ackley test case is a real function defined in dimension :math:`d` where :math:`d` is an integer. 
-#
-# The Ackley function is defined by the equation:
-#
-# .. math::
-#    f(\mathbf{x}) = -a \exp\left(-b\sqrt{\frac{1}{d}\sum_{i=1}^d}x_i^2\right)-\exp\left(\frac{1}{d}\sum_{i=1}^d \cos(c x_i)\right)+a+\exp(1)
-# 
-#
-# for any :math:`\mathbf{x} \in [-15,15]^d`. However, we consider the smaller interval :math:`[-4,4]^d` in this example, for visual purposes.
-#
-# We use the dimension :math:`d=2` with the parameters :math:`a=20`, :math:`b=0.2`, :math:`c=2\pi`. 
-#
-# The solution is 
-# 
-# .. math::
-#    \mathbf{x}^\star=(0,0,...,0)
-# 
-#
-# where 
-#
-# .. math::
-#    f_{min} = f(\mathbf{x}^\star) = 0.
-# 
-
-# %%
-# Define the problem
-# ^^^^^^^^^^^^^^^^^^
 
 # %%
 import openturns as ot
@@ -59,31 +25,38 @@ import math as m
 ot.ResourceMap.SetAsString("KrigingAlgorithm-LinearAlgebra",  "LAPACK")
 ot.Log.Show(ot.Log.NONE)
 
-# %%
-dim = 2
-
-# model
-def ackley(X):
-    a = 20.0
-    b = 0.2
-    c = 2.0 * m.pi
-    d = len(X)
-    sumOfSquared = sum(x**2 for x in X) / d
-    sumOfCos = sum(m.cos(c * x) for x in X) / d
-    f = - a * m.exp(- b * m.sqrt(sumOfSquared)) \
-        - m.exp(sumOfCos) + a + m.exp(1.0)
-    return [f]
-
-model = ot.PythonFunction(dim, 1, ackley)
 
 # %%
+# Ackley test-case
+# ----------------
+#
+# We first apply the EGO algorithm on the :ref:`Ackley function<use-case-ackley>`.
+
+# %%
+# Define the problem
+# ^^^^^^^^^^^^^^^^^^
+
+# %%
+# The Ackley model is defined in the usecases module in a data class `AckleyModel` :
+from openturns.usecases import ackley_function as ackley_function
+am = ackley_function.AckleyModel()
+
+# %%
+# We get the Ackley function :
+model = am.model
+
+# %%
+# We specify the domain of the model :
+dim = am.dim
 lowerbound = ot.Point([-4.0] * dim)
 upperbound = ot.Point([4.0] * dim)
 
 # %%
-xexact = [0.0] * dim
+# We know that the global minimum is at the center of the domain. It is stored in the `AckleyModel` data class. 
+xexact = am.x0
 
 # %%
+# The minimum value attained `fexact` is :
 fexact = model(xexact)
 fexact
 
@@ -110,7 +83,7 @@ inputSample = experiment.generate()
 outputSample = model(inputSample)
 
 # %%
-graph = ot.Graph("Initial LHS design of experiment - n=%d" % (sampleSize), ":math:`x_0`", ":math:`x_1`", True)
+graph = ot.Graph("Initial LHS design of experiment - n=%d" % (sampleSize), "$x_0$", "$x_1$", True)
 cloud = ot.Cloud(inputSample)
 graph.add(cloud)
 view = viewer.View(graph)
@@ -163,7 +136,8 @@ fexact
 # Compared to the minimum function value, we see that the EGO algorithm provides solution which is not very accurate. However, the optimal point is in the neighbourhood of the exact solution, and this is quite an impressive success given the limited amount of function evaluations: only 60 evaluations for the initial DOE and 10 iterations of the EGO algorithm, for a total equal to 70 function evaluations. 
 
 # %%
-result.drawOptimalValueHistory()
+graph = result.drawOptimalValueHistory()
+view = viewer.View(graph)
 
 # %%
 inputHistory = result.getInputSample()
@@ -207,100 +181,37 @@ view = viewer.View(graph)
 # Branin test-case
 # ----------------
 #
-# Introduction
-# ^^^^^^^^^^^^
-#
-# The Branin function is defined in 2 dimensions based on the functions :math:`g`:
-#
-# .. math:: 
-#    g(u_1, u_2) = \frac{\left(u_2-5.1\frac{u_1^2}{4\pi^2}+5\frac{u_1}{\pi}-6\right)^2+10\left(1-\frac{1}{8 \pi}\right)  \cos(u_1)+10-54.8104}{51.9496}
-# 
-#
-# and :math:`t`:
-#
-# .. math:: 
-#    t(x_1, x2) = (15 x_1 - 5, 15 x_2)^T.
-# 
-#
-# Finally, the Branin function is the composition of the two previous functions:
-#
-# .. math::
-#    f_{Branin}(x_1, x_2) = g \circ  t(x_1, x_2)
-# 
-#
-# for any :math:`\mathbf{x} \in [0, 1]^2`. 
-#
-# There are three global minimas:
-#
-# .. math::
-#    \mathbf{x}^\star=(0.123895, 0.818329),
-# 
-#
-# .. math::
-#    \mathbf{x}^\star=(0.542773, 0.151666),
-# 
-#
-# and :
-#
-# .. math::
-#    \mathbf{x}^\star=(0.961652, 0.165000)
-# 
-#
-# where the function value is:
-#
-# .. math::
-#    f_{min} = f_{Branin}(\mathbf{x}^\star) = -0.97947643837.
-# 
-#
-
-# %%
-# We assume that the output of the Branin function is noisy, with a gaussian noise. 
-# In other words, the objective function is:
-#
-# .. math::
-#    f(x_1, x_2) = f_{Branin}(x_1, x_2) + \epsilon
-# 
-#
-# where :math:`\epsilon` is a random variable with gaussian distribution. 
-#
-# This time the AEI formulation is used, meaning that the objective has two outputs: the first one is the objective function value and the second one is the noise variance.
-#
-# Here we assume a constant noise variance: 
-#
-# .. math::
-#    \sigma_{\epsilon} = 0.1.
-# 
+# We now take a look at the :ref:`Branin-Hoo<use-case-branin>` function.
 
 # %%
 # Define the problem
 # ^^^^^^^^^^^^^^^^^^
 
 # %%
-dim = 2
-
-trueNoiseFunction = 0.1
-# model
-branin = ot.SymbolicFunction(['x1', 'x2'], 
-                             ['((x2-(5.1/(4*pi_^2))*x1^2+5*x1/pi_-6)^2+10*(1-1/8*pi_)*cos(x1)+10-54.8104)/51.9496', 
-                              str(trueNoiseFunction)])
-transfo = ot.SymbolicFunction(['u1', 'u2'], 
-                              ['15*u1-5', '15*u2'])
-model = ot.ComposedFunction(branin, transfo)
+# The Branin model is defined in the usecases module in a data class `BraninModel` :
+from openturns.usecases import branin_function as branin_function
+bm = branin_function.BraninModel()
 
 # %%
-lowerbound = ot.Point([0.0] * dim)
-upperbound = ot.Point([1.0] * dim)
+# We load the dimension,
+dim = bm.dim
 
 # %%
+# the domain boundaries,
+lowerbound = bm.lowerbound
+upperbound = bm.upperbound
+
+# %%
+# and we load the model function :
+model = bm.model
 objectiveFunction = model.getMarginal(0)
 
 # %%
-xexact1 = ot.Point([0.123895,0.818329])
-xexact2 = ot.Point([0.542773,0.151666])
-xexact3 = ot.Point([0.961652,0.165000])
-xexact = ot.Sample([xexact1, xexact2, xexact3])
+# We build a sample out of the three minima :
+xexact = ot.Sample([bm.xexact1, bm.xexact2, bm.xexact3])
 
 # %%
+# The minimum value attained `fexact` is :
 fexact = objectiveFunction(xexact)
 fexact
 
@@ -325,7 +236,7 @@ modelEval = model(inputSample)
 outputSample = modelEval.getMarginal(0)
 
 # %%
-graph = ot.Graph("Initial LHS design of experiment - n=%d" % (sampleSize), ":math:`x_0`", ":math:`x_1`", True)
+graph = ot.Graph("Initial LHS design of experiment - n=%d" % (sampleSize), "$x_0$", "$x_1$", True)
 cloud = ot.Cloud(inputSample)
 graph.add(cloud)
 view = viewer.View(graph)
@@ -345,7 +256,7 @@ kriging.run()
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 # %%
-# problem
+# We define the problem :
 problem = ot.OptimizationProblem()
 problem.setObjective(model)
 bounds = ot.Interval(lowerbound, upperbound)
@@ -355,7 +266,7 @@ problem.setBounds(bounds)
 # We configure the maximum number of function evaluations to 20. We assume that the function is noisy, with a constant variance. 
 
 # %%
-# algo
+# We configure the algorithm :
 algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
 # assume constant noise var
 guessedNoiseFunction = 0.1

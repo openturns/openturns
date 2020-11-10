@@ -7,59 +7,9 @@ Bayesian calibration of the flooding model
 # Abstract
 # --------
 #
-# The goal of this example is to present the statistical hypotheses of the bayesian calibration of the flooding model.
-#
-# Model
-# -----
-#
-# The simulator predicts the water height H depending on the flowrate Q.
-#
-# We consider the following four variable:
-#
-# * Q : the river flowrate (:math:`m^3/s`)
-# * Ks : the Strickler coefficient (:math:`m^{1/3}/s`)
-# * Zv : the downstream riverbed level (m)
-# * Zm : the upstream riverbed level (m)
-#
-# When the Strickler coefficient increases, the riverbed generates less friction to the water flow.
-#
-# Parameters
-# ----------
-#
-# We consider the following parameters:
-#
-# * the length of the river L = 5000 (m),
-# * the width of the river B = 300 (m).
-#
-# Outputs
-# -------
-#
-# We make the hypothesis that the slope of the river is nonpositive and close to zero, which implies:
-# 
-# .. math::
-#    \alpha = \frac{Z_m - Z_v}{L},
-# 
-#
-# if :math:`Z_m \geq Z_v`. 
-# The height of the river is:
-# 
-# .. math::
-#    H = \left(\frac{Q}{K_s B \sqrt{\alpha}}\right)^{0.6},
-# 
-#
-# for any :math:`K_s, Q>0`.
-#
-# Distribution
-# ------------
-#
-# We assume that the river flowrate has the following truncated Gumbel distribution:
-#
-# =========  ================================
-# Variable   Distribution
-# =========  ================================
-#  Q         Gumbel(scale=558, mode=1013)>0
-# =========  ================================
-#
+# The goal of this example is to present the statistical hypotheses of the bayesian calibration of the :ref:`flooding model<use-case-flood-model>`.
+
+# %%
 # Parameters to calibrate
 # -----------------------
 #
@@ -119,7 +69,12 @@ Bayesian calibration of the flooding model
 import numpy as np
 import openturns as ot
 ot.Log.Show(ot.Log.NONE)
+import openturns.viewer as viewer
 
+# %%
+# A basic implementation of the probabilistic model is available in the usecases module :
+from openturns.usecases import flood_model as flood_model
+fm = flood_model.FloodModel()
 
 # %%
 # We define the model :math:`g` which has 4 inputs and one output H.
@@ -150,13 +105,8 @@ g = ot.MemoizeFunction(g)
 g.setOutputDescription(["H (m)"])
 
 # %%
-# Create the input distribution for :math:`Q`.
-
-# %%
-Q = ot.Gumbel(558.0, 1013.0)
-Q = ot.TruncatedDistribution(Q,ot.TruncatedDistribution.LOWER)
-Q.setDescription(["Q (m3/s)"])
-Q
+# We load the input distribution for :math:`Q`.
+Q = fm.Q
 
 # %%
 # Set the parameters to be calibrated.
@@ -170,7 +120,7 @@ Z_v.setDescription(["Zv (m)"])
 Z_m.setDescription(["Zm (m)"])
 
 # %%
-# Create the joint input distribution.
+# We create the joint input distribution.
 
 # %%
 inputRandomVector = ot.ComposedDistribution([Q, K_s, Z_v, Z_m])
@@ -203,7 +153,7 @@ Qobs = inputSample[:,0]
 graph = ot.Graph("Observations","Q (m3/s)","H (m)",True)
 cloud = ot.Cloud(Qobs,Hobs)
 graph.add(cloud)
-graph
+view = viewer.View(graph)
 
 
 # %%

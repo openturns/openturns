@@ -30,13 +30,19 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Create the model (ishigami)
-model = ot.SymbolicFunction(['x1', 'x2', 'x3'], ['sin(pi_*x1)+7*sin(pi_*x2)*sin(pi_*x2)+0.1*((pi_*x3)*(pi_*x3)*(pi_*x3)*(pi_*x3))*sin(pi_*x1)'])
+# We load the :ref:`Ishigami model <use-case-ishigami>` from the usecases module :
+from openturns.usecases import ishigami_function as ishigami_function
+im = ishigami_function.IshigamiModel()
 
 # %%
-# Create the input independent joint distribution
-distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3)
-distribution.setDescription(['x1', 'x2', 'x3'])
+# The `IshigamiModel` data class contains the input independent joint distribution :
+distribution = im.distributionX
+
+# %%
+# and the Ishigami function :
+model = im.model
+
+
 
 # %%
 size = 400

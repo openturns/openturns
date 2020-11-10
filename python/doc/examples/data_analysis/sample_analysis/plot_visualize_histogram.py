@@ -1,6 +1,6 @@
 """
-Visualize an histogram from data
-================================
+Draw an histogram
+=================
 """
 
 # %%

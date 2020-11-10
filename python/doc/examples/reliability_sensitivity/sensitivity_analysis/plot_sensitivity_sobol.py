@@ -4,21 +4,8 @@ Estimate Sobol' indices for the Ishigami function by a sampling method: a quick 
 """
 # %% 
 #
-# In this example, we estimate the Sobol' indices for the Ishigami function by sampling methods. 
+# In this example, we estimate the Sobol' indices for the :ref:`Ishigami function <use-case-ishigami>` by sampling methods. 
 #
-# Let :math:`a=7` and :math:`b=0.1`. We consider the function 
-#
-# .. math::
-#    g(X_1,X_2,X_3) = \sin(X_1)+a \sin (X_2)^2 + b X_3^4 \sin(X_1)
-# 
-#
-# for any :math:`X_1,X_2,X_3\in[-\pi,\pi]` 
-#
-# We assume that the random variables :math:`X_1,X_2,X_3` are independent and identically distributed according to the uniform distribution on the interval :math:`[-\pi, \pi]`:
-#
-# .. math::
-#    X_1,X_2,X_3\sim \mathcal{U}(-\pi,\pi).
-# 
 
 # %%
 # Introduction
@@ -60,21 +47,14 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Create the Ishigami test function.
+# We load the Ishigami model from the usecases model :
+from openturns.usecases import ishigami_function
+im = ishigami_function.IshigamiModel()
 
 # %%
-ot.RandomGenerator.SetSeed(0)
-formula = ['sin(X1) + 7. * sin(X2)^2 + 0.1 * X3^4 * sin(X1)']
-input_names = ['X1', 'X2', 'X3']
-g = ot.SymbolicFunction(input_names, formula)
-
-# %%
-# Create the probabilistic model
-
-# %%
-inputDimension = 3
-distributionList = [ot.Uniform(-np.pi, np.pi)] * inputDimension
-distribution = ot.ComposedDistribution(distributionList)
+# The `IshigamiModel` data class contains the input distribution :math:`X=(X_1, X_2, X_3)` in `im.distributionX` and the Ishigami function in `im.model`.
+# We also have access to the input variable names with
+input_names = im.distributionX.getDescription()
 
 # %%
 # Draw the function
@@ -82,8 +62,8 @@ distribution = ot.ComposedDistribution(distributionList)
 
 # %%
 n = 10000
-sampleX = distribution.getSample(n)
-sampleY = g(sampleX)
+sampleX = im.distributionX.getSample(n)
+sampleY = im.model(sampleX)
 
 
 # %%
@@ -117,8 +97,9 @@ view = viewer.View(graph)
 
 # %%
 size = 1000
-sie = ot.SobolIndicesExperiment(distribution, size)
+sie = ot.SobolIndicesExperiment(im.distributionX, size)
 inputDesign = sie.generate()
+input_names = im.distributionX.getDescription()
 inputDesign.setDescription(input_names)
 inputDesign.getSize()
 
@@ -129,7 +110,7 @@ inputDesign.getSize()
 # Then we evaluate the outputs corresponding to this design of experiments.
 
 # %%
-outputDesign = g(inputDesign)
+outputDesign = im.model(inputDesign)
 
 # %%
 # Then we estimate the Sobol' indices with the `SaltelliSensitivityAlgorithm`. 
@@ -166,11 +147,11 @@ view = viewer.View(graph)
 # %%
 size = 1000
 computeSecondOrder = True
-sie = ot.SobolIndicesExperiment(distribution, size, computeSecondOrder)
+sie = ot.SobolIndicesExperiment(im.distributionX, size, computeSecondOrder)
 inputDesign = sie.generate()
 print(inputDesign.getSize())
 inputDesign.setDescription(input_names)
-outputDesign = g(inputDesign)
+outputDesign = im.model(inputDesign)
 
 # %%
 # We see that 8000 function evaluations are now required; that is 3000 more evaluations than in the previous situation.
@@ -180,7 +161,7 @@ sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(inputDesign, outputDesign,
 
 # %%
 second_order = sensitivityAnalysis.getSecondOrderIndices()
-for i in range(inputDimension):
+for i in range(im.dim):
     for j in range(i):
         print('2nd order indice (%d,%d)=%g' % (i,j,second_order[i,j]))
 

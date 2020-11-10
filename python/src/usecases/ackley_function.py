@@ -4,12 +4,8 @@ Use case : Ackley test function
 """
 from __future__ import print_function
 import openturns as ot
-from typing import Any, List
 import numpy as np
-from dataclasses import dataclass
-from dataclasses import field
 
-# model
 
 
 def g(X):
@@ -24,24 +20,56 @@ def g(X):
     return [f]
 
 
-@dataclass
 class AckleyModel():
-    """Custom class for the Ackley test function.
     """
-    dim: int = 2
-    a = 20.0
-    b = 0.2
-    c = 2.0 * np.pi
+    Data class for the Ackley test function.
 
-    model: Any = ot.PythonFunction(dim, 1, g)
 
-    # Bounds
-    lowerbound: Any = ot.Point([-15.0] * dim)
-    upperbound: Any = ot.Point([15.0] * dim)
+    Attributes
+    ----------
 
-    # The Ackley function has many local minimas
-    # The global minimum is unique and located at the center of the domain
-    x0: List[float] = field(default_factory=list)
+    dim : The dimension of the problem
+          dim=2.
 
-    def __post_init__(self):
+    a : Constant
+        :math:`a=20.0`.
+
+    b : Constant
+        :math:`b=0.2`.
+
+    c : Constant
+        :math:`c=2\pi`.
+
+    model : `PythonFunction`, the Ackley function.
+
+    lowerbound : `Point` in dimension dim.
+                 Default is -15.0 for each dimension.
+
+    upperbound : `Point` in dimension dim.
+                 Default is +15.0 for each dimension.
+
+    x0 : `Point` 
+         The global minimum :math:`x_0 = 0 \in \mathbb{R}^{dim}`.
+
+    Examples
+    --------
+    >>> from openturns.usecases import ackley_function as ackley_function
+    >>> # Load the Ackley model
+    >>> am = ackley_function.AckleyModel()
+    """
+
+    def __init__(self):
+        self.dim = 2
+        self.a = 20.0
+        self.b = 0.2
+        self.c = 2.0 * np.pi
+
+        self.model = ot.PythonFunction(self.dim, 1, g)
+
+        # Bounds
+        self.lowerbound = ot.Point([-15.0] * self.dim)
+        self.upperbound = ot.Point([15.0] * self.dim)
+
+        # The Ackley function has many local minimas
+        # The global minimum is unique and located at the center of the domain
         self.x0 = [0.0] * self.dim

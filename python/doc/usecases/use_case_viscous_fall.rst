@@ -3,8 +3,6 @@
 A viscous free fall example
 ===========================
 
-In this example, we define a function which has a vector input and a field output. This is why we use the `PythonPointToFieldFunction` class to create the associated function and propagate the uncertainties through it.
-
 
 Introduction 
 -------------
@@ -97,8 +95,13 @@ We can load this classical model from the use cases module as follows :
     >>> # Load the viscous free fall model
     >>> fm = viscous_free_fall.ViscousFreeFall()
 
-Examples based on this use case :
----------------------------------
+API documentation
+-----------------
+
+See :class:`~openturns.usecases.viscous_free_fall.ViscousFreeFall`.
+
+Examples based on this use case
+-------------------------------
 
 .. raw:: html
 
@@ -119,6 +122,32 @@ Examples based on this use case :
    :hidden:
 
    /auto_functional_modeling/field_functions/plot_viscous_fall_field_function
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="">
+
+.. only:: html
+
+ .. figure:: /auto_functional_modeling/field_functions/images/thumb/sphx_glr_plot_viscous_fall_field_function_connection_thumb.png
+     :alt:
+
+     :ref:`sphx_glr_auto_functional_modeling_field_functions_plot_viscous_fall_field_function_connection.py`
+
+.. raw:: html
+
+    </div>
+
+.. toctree::
+   :hidden:
+
+   /auto_functional_modeling/field_functions/plot_viscous_fall_field_function_connection
+
+
+
+
+
 
 
 .. raw:: html                                                             
