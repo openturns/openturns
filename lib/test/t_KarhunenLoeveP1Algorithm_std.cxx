@@ -37,25 +37,31 @@ int main(int, char *[])
     {
       // 1d
       AbsoluteExponential cov1D(Point(1, 1.0));
-      KarhunenLoeveP1Algorithm algo(mesh, cov1D, 1e-3);
+      KarhunenLoeveP1Algorithm algo(mesh, cov1D, 1e-6);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
       Point lambda(result.getEigenValues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
+      // Check the accuracy of the projection->lifting chain
       GaussianProcess process(cov1D, KLModes.getMesh());
-      Sample coefficients(result.project(process.getSample(10)));
-      fullprint << "KL coefficients=" << coefficients << std::endl;
-      Basis KLFunctions(result.getModes());
-      fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
-      fullprint << "KL lift=" << result.lift(coefficients[0]).__str__() << std::endl;
-      fullprint << "KL lift as field=" << result.liftAsField(coefficients[0]) << std::endl;
+      ProcessSample processSample(process.getSample(10));
+      Sample coefficients(result.project(processSample));
+      Scalar error = 0.0;
+      for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
+        error += (result.liftAsSample(coefficients[i]) - processSample[i]).computeRawMoment(2)[0];
+      assert_almost_equal(error, 0.0, 0.0, 1.0e-12);
+      error = 0.0;
+      Point x(1, 0.25);
+      for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
+        error += std::abs((result.lift(coefficients[i]) - P1LagrangeEvaluation(Field(mesh, processSample[i])))(x)[0]);
+      assert_almost_equal(error, 0.0, 0.0, 1.0e-12);
     }
     {
-      // 1d + trunk
+      // 1d + truncation
       AbsoluteExponential cov1D(Point(1, 1.0));
-      KarhunenLoeveP1Algorithm algo(mesh, cov1D, 1e-3);
+      KarhunenLoeveP1Algorithm algo(mesh, cov1D, 1e-6);
       algo.setNbModes(5);// out of 10
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
@@ -64,15 +70,21 @@ int main(int, char *[])
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
       GaussianProcess process(cov1D, KLModes.getMesh());
-      Sample coefficients(result.project(process.getSample(10)));
-      fullprint << "KL coefficients=" << coefficients << std::endl;
-      Basis KLFunctions(result.getModes());
-      fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
-      fullprint << "KL lift=" << result.lift(coefficients[0]).__str__() << std::endl;
-      fullprint << "KL lift as field=" << result.liftAsField(coefficients[0]) << std::endl;
+      ProcessSample processSample(process.getSample(10));
+      Sample coefficients(result.project(processSample));
+      Scalar error = 0.0;
+      for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
+        error += (result.liftAsSample(coefficients[i]) - processSample[i]).computeRawMoment(2)[0];
+      assert_almost_equal(error, 0.784901, 1e-6, 1.0e-6);
+      fullprint << "Reconstruction error (as field/sample)=" << error << std::endl;
+      error = 0.0;
+      Point x(1, 0.25);
+      for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
+        error += std::abs((result.lift(coefficients[i]) - P1LagrangeEvaluation(Field(mesh, processSample[i])))(x)[0]);
+      assert_almost_equal(error, 0.965275 , 1.0e-6, 1.0e-6);
     }
     {
-      // 2d
+      // 2d output
       CorrelationMatrix R(2);
       R(0, 1) = 0.5;
       Point scale(1, 1.0);
@@ -80,7 +92,7 @@ int main(int, char *[])
       amplitude[0] = 1.0;
       amplitude[1] = 2.0;
       ExponentialModel cov2D(scale, amplitude, R);
-      KarhunenLoeveP1Algorithm algo(mesh, cov2D, 1e-3);
+      KarhunenLoeveP1Algorithm algo(mesh, cov2D, 1e-6);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
       Point lambda(result.getEigenValues());
@@ -88,12 +100,51 @@ int main(int, char *[])
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
       GaussianProcess process(cov2D, KLModes.getMesh());
-      Sample coefficients(result.project(process.getSample(10)));
-      fullprint << "KL coefficients=" << coefficients << std::endl;
-      Basis KLFunctions(result.getModes());
-      fullprint << "KL functions=" << KLFunctions.__str__() << std::endl;
-      fullprint << "KL lift=" << result.lift(coefficients[0]).__str__() << std::endl;
-      fullprint << "KL lift as field=" << result.liftAsField(coefficients[0]) << std::endl;
+      ProcessSample processSample(process.getSample(10));
+      Sample coefficients(result.project(processSample));
+      Scalar error = 0.0;
+      for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
+        error += (result.liftAsSample(coefficients[i]) - processSample[i]).computeRawMoment(2).norm();
+      assert_almost_equal(error, 0.0, 0.0, 1.0e-12);
+      error = 0.0;
+      Point x(1, 0.25);
+      for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
+        error += ((result.lift(coefficients[i]) - P1LagrangeEvaluation(Field(mesh, processSample[i])))(x)).norm();
+      assert_almost_equal(error, 0.0, 0.0, 1.0e-12);
+    }
+    {
+      // 2d input, to check that issue #1660 is solved
+      Mesh mesh(IntervalMesher(Indices(2, 4)).build(Interval(Point(2, -1.2), Point(2, 1.0))));
+      AbsoluteExponential cov2D(Point(2, 1.0));
+      KarhunenLoeveP1Algorithm algo(mesh, cov2D, 1e-6);
+      algo.run();
+      KarhunenLoeveResult result(algo.getResult());
+      Point lambda(result.getEigenValues());
+      ProcessSample KLModesPS(result.getModesAsProcessSample());
+      // The output is hidden due to near-zero nonreproducible values
+      //fullprint << "KL modes (process sample)=" << KLModesPS << std::endl;
+      ProcessSample KLScaledModesPS(result.getScaledModesAsProcessSample());
+      // The output is hidden due to near-zero nonreproducible values
+      //fullprint << "KL scaled modes (process sample)=" << KLScaledModesPS << std::endl;
+      Basis KLModes(result.getModes());
+      // The output is hidden due to near-zero nonreproducible values
+      //fullprint << "KL modes (functions)=" << KLModes << std::endl;
+      Basis KLScaledModes(result.getScaledModes());
+      // The output is hidden due to near-zero nonreproducible values
+      //fullprint << "KL scaled modes (functions)=" << KLScaledModes << std::endl;
+      fullprint << "KL eigenvalues=" << lambda << std::endl;
+      GaussianProcess process(cov2D, mesh);
+      ProcessSample processSample(process.getSample(10));
+      Sample coefficients(result.project(processSample));
+      Scalar error = 0.0;
+      for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
+        error += (result.liftAsSample(coefficients[i]) - processSample[i]).computeRawMoment(2).norm();
+      assert_almost_equal(error, 0.0, 0.0, 1.0e-12);
+      error = 0.0;
+      Point x(2, 0.25);
+      for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
+        error += ((result.lift(coefficients[i]) - P1LagrangeEvaluation(Field(mesh, processSample[i])))(x)).norm();
+      assert_almost_equal(error, 0.0, 0.0, 1.0e-12);
     }
   }
   catch (TestFailed & ex)

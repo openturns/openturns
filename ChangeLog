@@ -100,6 +100,7 @@
  * #1624 (The graphs_loglikelihood_contour example has a bug)
  * #1643 (Problem in MaximumDistribution PDF)
  * #1654 (StationaryFunctionalCovarianceModel::discretize segfaults)
+ * #1660 (Cannot extract continuous modes from KLResult when dimension>1)
 
 
 == 1.15 release (2020-05-25) == #release-1.15
