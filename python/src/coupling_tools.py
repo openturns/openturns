@@ -223,7 +223,12 @@ def execute(cmd, cwd=None, workdir=None, shell=False, is_shell=False,
         check = check_exit_code
 
     # split cmd if not in a shell before passing it to os.execvp()
-    process_args = cmd if shell else shlex.split(cmd)
+    try:
+        import posix
+        posix = True
+    except ImportError:
+        posix = False
+    process_args = cmd if shell else shlex.split(cmd, posix=posix)
 
     # override startupinfo to hide windows console
     startupinfo = None
