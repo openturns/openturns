@@ -102,6 +102,7 @@
  * #1643 (Problem in MaximumDistribution PDF)
  * #1647 (MCMC::computeLogLikelihood does not compute the log-likelihood)
  * #1651 (Cobyla freezes in 0T1.16rc1)
+ * #1658 (TimeSeries accessor)
  * #1660 (Cannot extract continuous modes from KLResult when dimension>1)
  * #1668 (LevelSetMesher does not take into account the comparison operator)
 
