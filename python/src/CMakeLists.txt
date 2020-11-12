@@ -84,7 +84,7 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
 
   add_dependencies (pylib ${module_target})
   list (APPEND OPENTURNS_PYTHON_MODULES ${MODULENAME})
-endmacro (ot_add_python_module)
+endmacro ()
 
 install (DIRECTORY openturns DESTINATION ${OPENTURNS_INCLUDE_PATH})
 
