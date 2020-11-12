@@ -42,6 +42,7 @@
  * Deprecated FittingTest::BestModelKolmogorov(Sample, DistributionFactoryCollection, TestResult), use BestModelLilliefors
  * Deprecated FittingTest::Kolmogorov(Sample, DistributionFactory, TestResult, level), use Lilliefors
  * MetamodelValidation: now computePredictivityFactor returns Point, drawValidation return GridLayout
+ * Deprecated coupling_tools.execute is_shell/workdir/shell_exe/check_exit_code arguments
 
 === Documentation ===
  * Sphinx-gallery used to render examples
