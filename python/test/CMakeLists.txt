@@ -530,7 +530,7 @@ ot_pyinstallcheck_test (SquaredNormal_std)
 ot_pyinstallcheck_test (Student_std)
 ot_pyinstallcheck_test (StudentFactory_std)
 ot_pyinstallcheck_test (Trapezoidal_std)
-if (NOT MINGW)# FIXME: Cobyla doesn't generate NaNs on Mingw
+if (CMAKE_SIZEOF_VOID_P EQUAL 8)
 ot_pyinstallcheck_test (TrapezoidalFactory_std)
 endif ()
 ot_pyinstallcheck_test (Triangular_std)
