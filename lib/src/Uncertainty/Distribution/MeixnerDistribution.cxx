@@ -428,6 +428,7 @@ void MeixnerDistribution::update()
   problem1.setBounds(getRange());
   solver_.setStartingPoint(getMean());
   solver_.setProblem(problem1);
+  solver_.setVerbose(Log::HasInfo());
   solver_.run();
   b_ = std::sqrt(solver_.getResult().getOptimalValue()[0]);
 
@@ -435,6 +436,7 @@ void MeixnerDistribution::update()
   OptimizationProblem problem2(fCD);
   problem2.setMinimization(true);
   solver_.setProblem(problem2);
+  solver_.setVerbose(Log::HasInfo());
   solver_.run();
   c_ = solver_.getResult().getOptimalValue()[0];
 
@@ -442,6 +444,7 @@ void MeixnerDistribution::update()
   OptimizationProblem problem3(fCD);
   problem3.setMinimization(false);
   solver_.setProblem(problem3);
+  solver_.setVerbose(Log::HasInfo());
   solver_.run();
   dc_ = solver_.getResult().getOptimalValue()[0] - c_;
 }

@@ -27,6 +27,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -410,6 +411,16 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   Point inP(dimension);
   std::copy(x, x + dimension, inP.begin());
   const OptimizationProblem problem(algorithm->getProblem());
+  for (UnsignedInteger i = 0; i < inP.getDimension(); ++i)
+    if (!SpecFunc::IsNormal(inP[i]))
+      {
+        *f = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+        /* Convert the gradient into the output format */
+        const Matrix gradient(1, problem.getDimension());
+        std::copy(&gradient(0, 0), &gradient(0, 0) + dimension, g);
+        LOGWARN(OSS() << "TNC went to an abnormal point=" << inP.__str__());
+        return 1;
+      }
 
   /* Evaluate the objective function at inP */
   const Point outP(problem.getObjective().operator()(inP));

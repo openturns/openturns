@@ -148,6 +148,7 @@ Distribution MetaModelAlgorithm::BuildDistribution(const Sample & inputSample)
     LOGINFO(OSS() << "In MetaModelAlgorithm::BuildDistribution, estimate distribution for marginal " << i);
     for (UnsignedInteger j = 0; j < factories.getSize(); ++j)
     {
+      LOGINFO(OSS() << "BuildDistribution: trying " << factories[j]);
       try
       {
         const Distribution candidateDistribution(factories[j].build(marginalSample));

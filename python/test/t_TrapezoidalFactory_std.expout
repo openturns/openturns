@@ -1,9 +1,9 @@
 distribution= class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=2.3 c=4.5 d=5 h=0.322581
-Estimated distribution= class=Trapezoidal name=Trapezoidal dimension=1 a=1.006 b=2.275 c=4.545 d=4.99 h=0.3198
+Estimated distribution= class=Trapezoidal name=Trapezoidal dimension=1 a=1.037 b=2.421 c=3.992 d=4.982 h=0.3626
 Default distribution= Trapezoidal(a = -2, b = -1, c = 1, d = 2)
 Distribution from parameters= Trapezoidal(a = 1, b = 2.3, c = 4.5, d = 5)
 Trapezoidal          = Trapezoidal(a = 1, b = 2.3, c = 4.5, d = 5)
-Estimated trapezoidal= Trapezoidal(a = 1.006, b = 2.275, c = 4.545, d = 4.99)
+Estimated trapezoidal= Trapezoidal(a = 1.037, b = 2.421, c = 3.992, d = 4.982)
 Default trapezoidal= Trapezoidal(a = -2, b = -1, c = 1, d = 2)
 Trapezoidal from parameters= Trapezoidal(a = 1, b = 2.3, c = 4.5, d = 5)
 Estimated distribution= class=Trapezoidal name=Trapezoidal dimension=1 a=-2.22045e-15 b=0 c=0 d=2.22045e-15 h=4.5036e+14

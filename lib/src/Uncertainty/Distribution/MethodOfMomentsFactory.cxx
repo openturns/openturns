@@ -238,6 +238,7 @@ Point MethodOfMomentsFactory::buildParameter(const Sample & sample) const
     solver.setStartingPoint(parameter);
   }
   solver.setProblem(problem);
+  solver.setVerbose(Log::HasInfo());
   solver.run();
   Point effectiveParameter(effectiveParameterSize);
   // set unknown values
