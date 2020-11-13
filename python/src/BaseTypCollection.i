@@ -35,7 +35,7 @@ namespace OT {
 }
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_INT64_ARRAY) const OT::Collection<OT::Indices> & {
-  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
-    || OT::canConvertCollectionObjectFromPySequence<OT::Indices>($input);
+  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
+    || OT::canConvertCollectionObjectFromPySequence<OT::Indices>($input));
 }
 

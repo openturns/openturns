@@ -24,9 +24,9 @@
 }
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const OT::SklarCopula & {
-  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
+  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
     || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIGTYPE_p_OT__Distribution, 0))
-    || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIGTYPE_p_OT__DistributionImplementation, 0));
+    || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIGTYPE_p_OT__DistributionImplementation, 0)));
 }
 
 %include openturns/SklarCopula.hxx

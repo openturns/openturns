@@ -27,9 +27,9 @@
 }
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const Domain & {
-  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
+  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
     || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIGTYPE_p_OT__DomainImplementation, 0))
-    || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIGTYPE_p_OT__Mesh, 0));
+    || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIGTYPE_p_OT__Mesh, 0)));
 }
 
 %apply const Domain & { const OT::Domain & };

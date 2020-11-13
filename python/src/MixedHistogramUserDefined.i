@@ -7,7 +7,7 @@
 %include MixedHistogramUserDefined_doc.i
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const OT::DistributionImplementation::PointCollection & {
-  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) || OT::isAPythonSequenceOf<OT::_PySequence_>($input);
+  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) || OT::isAPythonSequenceOf<OT::_PySequence_>($input));
 }
 
 %typemap(in) const OT::DistributionImplementation::PointCollection & {
