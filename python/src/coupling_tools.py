@@ -318,9 +318,10 @@ def get_regex(filename, patterns, encoding=default_encoding):
     >>> with open('results.out', 'w') as f:
     ...     count = f.write('@E=-9.5E3')
     >>> # parse file with regex
-    >>> ct.get_regex('results.out', patterns=['@E=(\R)'])
+    >>> ct.get_regex('results.out', patterns=[r'@E=(\R)'])
     [-9500.0]
     """
+
     if not isinstance(patterns, list) or len(patterns) == 0:
         raise AssertionError("error: patterns parameter badly set!")
 
@@ -329,10 +330,10 @@ def get_regex(filename, patterns, encoding=default_encoding):
     re_patterns = []
     for pattern in patterns:
         # OT-like shortcuts
-        pattern = pattern.replace('\R',
-                                  '[+-]? *(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?')
-        pattern = pattern.replace('\I',
-                                  '[+-]? *\d+')
+        pattern = pattern.replace(r'\R',
+                                  r'[+-]? *(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?')
+        pattern = pattern.replace(r'\I',
+                                  r'[+-]? *\d+')
 
         re_patterns.append(re.compile(pattern))
 
