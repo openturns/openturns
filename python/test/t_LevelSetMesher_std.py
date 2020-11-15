@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -56,6 +57,16 @@ try:
     mesh3D = mesher3D.build(levelSet3D, ot.Interval([-10.0] * 3, [10.0] * 3))
     print("mesh3D=", mesh3D)
 
+    # Issue #1668
+    f = ot.SymbolicFunction(["x", "y"], ["x^2+y^2"])
+    levelset = ot.LevelSet(f, ot.Less(), 1.0)
+    mesh = ot.LevelSetMesher([16]*2).build(levelset, ot.Interval([-1.5]*2, [1.5]*2))
+    gLess = mesh.draw()
+    f = ot.SymbolicFunction(["x", "y"], ["-(x^2+y^2)"])    
+    levelset = ot.LevelSet(f, ot.Greater(), -1.0)
+    mesh = ot.LevelSetMesher([16]*2).build(levelset, ot.Interval([-1.5]*2, [1.5]*2))
+    gGreater = mesh.draw()
+    ott.assert_almost_equal(gLess.getDrawable(0).getData(), gGreater.getDrawable(0).getData(), 1e-4, 1e-4)
 except:
     import sys
-    print("t_IntervalMesher_std.py", sys.exc_info()[0], sys.exc_info()[1])
+    print("t_LevelSetMesher_std.py", sys.exc_info()[0], sys.exc_info()[1])

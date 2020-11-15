@@ -134,6 +134,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
   const Function function(levelSet.getFunction());
   const Point values(function(boundingVertices).asPoint());
   const Scalar level = levelSet.getLevel();
+  const ComparisonOperator comparison(levelSet.getOperator());
   Indices goodSimplices(0);
   Sample goodVertices(0, dimension);
   // Flags for the vertices to keep
@@ -158,7 +159,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
     for (UnsignedInteger j = 0; j <= dimension; ++j)
     {
       const UnsignedInteger globalVertexIndex = boundingSimplices(i, j);
-      if (values[globalVertexIndex] <= level)
+      if (comparison(values[globalVertexIndex], level))
       {
         ++numGood;
         ++flagGoodVertices[globalVertexIndex];
@@ -184,7 +185,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
         Scalar centerValue = 0.0;
         // First pass: compute the center of the good points
         for (UnsignedInteger j = 0; j <= dimension; ++j)
-          if (localValues[j] <= level)
+          if (comparison(localValues[j], level))
           {
             center += localVertices[j];
             centerValue += localValues[j];
@@ -197,7 +198,7 @@ Mesh LevelSetMesher::build(const LevelSet & levelSet,
         {
           const UnsignedInteger globalVertexIndex = boundingSimplices(i, j);
           // If the vertex has to be moved
-          if ((flagGoodVertices[globalVertexIndex] == 0) && (localValues[j] > level))
+          if ((flagGoodVertices[globalVertexIndex] == 0) && (!comparison(localValues[j], level)))
           {
             // C(v*) [inside], M(level) [on], B(v) [outside]
             // (M-C)/(B-C) = (level-v*)/(v-v*) = a
