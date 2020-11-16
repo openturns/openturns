@@ -31,9 +31,9 @@ OTTypedInterfaceObjectHelper(Function)
 }
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const FunctionCollection & {
-  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
+  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
     || OT::canConvertCollectionObjectFromPySequence< OT::Function >( $input )
-    || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIG_TypeQuery("OT::Basis *"), 0));
+    || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIG_TypeQuery("OT::Basis *"), 0)));
 }
 
 %apply const FunctionCollection & { const OT::Collection<OT::Function> & };

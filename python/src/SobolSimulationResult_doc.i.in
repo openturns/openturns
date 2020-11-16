@@ -92,3 +92,18 @@ Parameters
 distribution : :class:`~openturns.Distribution`
     Distribution of the total order indices."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SobolSimulationResult::draw
+"Draw sensitivity indices.
+
+Parameters
+----------
+confidence_level : float, default=0.95
+    Confidence level for intervals
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    A graph containing the aggregated first and total order indices."
+

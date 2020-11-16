@@ -35,6 +35,7 @@ import os
 import shlex
 import subprocess
 import sys
+import warnings
 
 debug = False
 default_encoding = sys.getdefaultencoding()
@@ -151,8 +152,9 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
         shutil.move(outfile, infile)
 
 
-def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
-            check_exit_code=True, get_stdout=False, get_stderr=False,
+def execute(cmd, cwd=None, workdir=None, shell=False, is_shell=False,
+            executable=None, shell_exe=None, hide_win=True,
+            check=True, check_exit_code=True, get_stdout=False, get_stderr=False,
             timeout=None):
     """
     Launch an external process.
@@ -161,15 +163,15 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
     ----------
     cmd : str
         Command line to execute, e.g.: "echo 42"
-    workdir : str
+    cwd : str
         Current directory of the executed command.
-    is_shell : bool, default=False
+    shell : bool, default=False
         If set to True, the command is started in a shell (bash).
-    shell_exe : str, default=False
+    executable : str, default=False
         path to the shell. e.g. /bin/zsh.
     hide_win : str, default=True
         Hide cmd.exe popup on windows platform.
-    check_exit_code : bool, default=True
+    check : bool, default=True
         If set to True: raise RuntimeError if return code of process != 0
     get_stdout : bool, default=False
         Whether the standard output of the command is returned
@@ -197,14 +199,36 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
     Examples
     --------
     >>> import openturns.coupling_tools as ct
-    >>> ret, stdout = ct.execute('echo 42', get_stdout=True, is_shell=True)
+    >>> ret, stdout = ct.execute('echo 42', get_stdout=True, shell=True)
     >>> ret
     0
     >>> int(stdout)
     42
     """
+
+    if workdir is not None:
+        warnings.warn('workdir is deprecated in favor of cwd', DeprecationWarning)
+        cwd = workdir
+
+    if is_shell:
+        warnings.warn('is_shell is deprecated in favor of shell', DeprecationWarning)
+        shell = is_shell
+
+    if shell_exe is not None:
+        warnings.warn('shell_exe is deprecated in favor of executable', DeprecationWarning)
+        executable = shell_exe
+
+    if not check_exit_code:
+        warnings.warn('check_exit_code is deprecated in favor of check', DeprecationWarning)
+        check = check_exit_code
+
     # split cmd if not in a shell before passing it to os.execvp()
-    process_args = cmd if is_shell else shlex.split(cmd)
+    try:
+        import posix
+        posix = True
+    except ImportError:
+        posix = False
+    process_args = cmd if shell else shlex.split(cmd, posix=posix)
 
     # override startupinfo to hide windows console
     startupinfo = None
@@ -217,8 +241,8 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
 
     stdout = subprocess.PIPE if get_stdout else None
     stderr = subprocess.PIPE if get_stderr else None
-    proc = subprocess.Popen(process_args, shell=is_shell, cwd=workdir,
-                            executable=shell_exe, stdout=stdout, stderr=stderr,
+    proc = subprocess.Popen(process_args, shell=shell, cwd=cwd,
+                            executable=executable, stdout=stdout, stderr=stderr,
                             startupinfo=startupinfo)
     if sys.version_info >= (3, 3,):
         try:
@@ -242,7 +266,7 @@ def execute(cmd, workdir=None, is_shell=False, shell_exe=None, hide_win=True,
     ret = proc.poll()
 
     # check return code
-    if check_exit_code and ret != 0:
+    if check and ret != 0:
         # append sample of stderr to the exception message if available
         err_msg = (':\n' + stderr_data[:200].decode()
                    ) if stderr_data is not None else ''
@@ -294,9 +318,10 @@ def get_regex(filename, patterns, encoding=default_encoding):
     >>> with open('results.out', 'w') as f:
     ...     count = f.write('@E=-9.5E3')
     >>> # parse file with regex
-    >>> ct.get_regex('results.out', patterns=['@E=(\R)'])
+    >>> ct.get_regex('results.out', patterns=[r'@E=(\R)'])
     [-9500.0]
     """
+
     if not isinstance(patterns, list) or len(patterns) == 0:
         raise AssertionError("error: patterns parameter badly set!")
 
@@ -305,10 +330,10 @@ def get_regex(filename, patterns, encoding=default_encoding):
     re_patterns = []
     for pattern in patterns:
         # OT-like shortcuts
-        pattern = pattern.replace('\R',
-                                  '[+-]? *(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?')
-        pattern = pattern.replace('\I',
-                                  '[+-]? *\d+')
+        pattern = pattern.replace(r'\R',
+                                  r'[+-]? *(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?')
+        pattern = pattern.replace(r'\I',
+                                  r'[+-]? *\d+')
 
         re_patterns.append(re.compile(pattern))
 

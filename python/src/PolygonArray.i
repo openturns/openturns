@@ -57,8 +57,8 @@ namespace OT {
 }
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const PolygonCollection & {
-  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
-    || OT::canConvertCollectionObjectFromPySequence< OT::Polygon >( $input );
+  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
+    || OT::canConvertCollectionObjectFromPySequence< OT::Polygon >($input));
 }
 
 %apply const PolygonCollection & { const OT::PolygonArray::PolygonCollection & };

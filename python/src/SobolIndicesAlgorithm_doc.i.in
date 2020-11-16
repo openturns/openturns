@@ -34,7 +34,11 @@ OT_SobolIndicesAlgorithm_setUseAsymptoticDistribution_doc
 OT_SobolIndicesAlgorithm_getFirstOrderIndicesDistribution_doc
 %feature("docstring") OT::SobolIndicesAlgorithm::getTotalOrderIndicesDistribution
 OT_SobolIndicesAlgorithm_getTotalOrderIndicesDistribution_doc
+%feature("docstring") OT::SobolIndicesAlgorithm::setDesign
+OT_SobolIndicesAlgorithm_setDesign_doc
 %feature("docstring") OT::SobolIndicesAlgorithm::DrawImportanceFactors
 OT_SobolIndicesAlgorithm_DrawImportanceFactors_doc
 %feature("docstring") OT::SobolIndicesAlgorithm::DrawSobolIndices
 OT_SobolIndicesAlgorithm_DrawSobolIndices_doc
+%feature("docstring") OT::SobolIndicesAlgorithm::DrawCorrelationCoefficients
+OT_SobolIndicesAlgorithm_DrawCorrelationCoefficients_doc

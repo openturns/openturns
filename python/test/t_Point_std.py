@@ -143,8 +143,13 @@ print(0 + pt1)
 try:
     1 + pt1
 except:
-    print('ok')
+    print('1+Point -> ok')
 
 # unary minus
 x = ot.Point([1, 2, 3])
 print(-x)
+
+try:
+    ot.Point(None)
+except Exception:
+    print('Point(None) -> ok')

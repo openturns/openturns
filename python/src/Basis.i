@@ -22,8 +22,8 @@
 }
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const BasisCollection & {
-  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
-    || OT::canConvertCollectionObjectFromPySequence< OT::Basis >( $input );
+  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
+    || OT::canConvertCollectionObjectFromPySequence< OT::Basis >($input));
 }
 
 

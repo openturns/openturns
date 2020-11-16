@@ -20,8 +20,8 @@ OTTypedInterfaceObjectHelper(IndicesCollection)
 }
 
 %typemap(typecheck,precedence=5) const IndicesCollection & {
-  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) ||
-       OT::isAPythonBufferOf<OT::UnsignedInteger, 2>($input) || OT::isAPythonSequenceOf<OT::_PySequence_>( $input );
+  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) ||
+       OT::isAPythonBufferOf<OT::UnsignedInteger, 2>($input) || OT::isAPythonSequenceOf<OT::_PySequence_>($input));
 }
 
 %apply const IndicesCollection & { const OT::IndicesCollection & };

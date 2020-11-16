@@ -23,8 +23,8 @@
 }
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const ComplexCollection & {
-  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) ||
-       OT::isAPythonBufferOf<OT::Complex, 2>( $input ) || OT::isAPythonSequenceOf<OT::_PyComplex_>( $input );
+  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) ||
+       OT::isAPythonBufferOf<OT::Complex, 2>( $input ) || OT::isAPythonSequenceOf<OT::_PyComplex_>($input));
 }
 
 %include openturns/ComplexMatrixImplementation.hxx

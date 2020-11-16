@@ -21,8 +21,8 @@
 }
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const OT::Description & {
-  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) ||
-       OT::isAPythonSequenceOf<OT::_PyString_>( $input );
+  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) ||
+       OT::isAPythonSequenceOf<OT::_PyString_>($input));
 }
 
 %ignore OT::Description::Description(std::initializer_list<String> initList);

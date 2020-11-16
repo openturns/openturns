@@ -1,7 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief H5StorageManager provides an interface for different
- *  HDF5-base storage classes
+ *  @brief XMLH5StorageManager implements xml/h5 storage
  *
  *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -81,8 +80,8 @@ protected:
 private:
   FileName h5FileName_;
   std::vector<OT::Scalar> valBuf_;
-  OT::Bool isFirstDS_;
-  OT::Bool isChunked_;
+  OT::Bool isFirstDS_ = true;
+  OT::Bool isChunked_ = false;
 
 }; /* class H5StorageManager */
 

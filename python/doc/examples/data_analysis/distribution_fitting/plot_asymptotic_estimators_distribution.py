@@ -40,9 +40,9 @@ paramDist = fittedRes.getParameterDistribution()
 # %%
 # We draw the 2D-PDF of the parameters
 graph = paramDist.drawPDF()
-graph.setXTitle("$\mu$")
-graph.setYTitle("$\sigma$")
-graph.setTitle("Normal fitting : $(\mu, \sigma)$ iso-PDF")
+graph.setXTitle(r"$\mu$")
+graph.setYTitle(r"$\sigma$")
+graph.setTitle(r"Normal fitting : $(\mu, \sigma)$ iso-PDF")
 view = viewer.View(graph)
 
 

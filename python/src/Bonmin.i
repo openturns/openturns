@@ -26,7 +26,7 @@ template <>
 %template(VariableTypeCollection) OT::Collection<OT::OptimizationProblemImplementation::VariableType>;
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const VariableTypeCollection & {
-  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) || OT::isAPythonSequenceOf<OT::_PyInt_>( $input );
+  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) || OT::isAPythonSequenceOf<OT::_PyInt_>($input));
 }
 
 %typemap(in) const VariableTypeCollection & ($1_basetype temp) {
