@@ -83,21 +83,24 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
     result.setDescription(sample.getDescription());
     return result;
   }
-  startingPoint[0] = min - std::abs(min) / (2.0 + size);// a
-  startingPoint[1] = sample.computeQuantilePerComponent(0.25)[0];// b
-  startingPoint[2] = sample.computeQuantilePerComponent(0.75)[0];// c
-  startingPoint[3] = max + std::abs(max) / (2.0 + size);// d
 
   MaximumLikelihoodFactory factory(buildAsTrapezoidal());
 
   // override solver
   Cobyla solver;
-  solver.setRhoBeg(ResourceMap::GetAsScalar("TrapezoidalFactory-RhoBeg"));
+  const Scalar rhoBeg = ResourceMap::GetAsScalar("TrapezoidalFactory-RhoBeg");
+  solver.setRhoBeg(rhoBeg);
   const Scalar rhoEnd = ResourceMap::GetAsScalar("TrapezoidalFactory-RhoEnd");
   solver.setMaximumAbsoluteError(rhoEnd);
   solver.setMaximumEvaluationNumber(ResourceMap::GetAsUnsignedInteger("TrapezoidalFactory-MaximumIteration"));
+  const Scalar delta = (max - min) / (2.0 + size);
+  startingPoint[0] = min + delta;// a
+  startingPoint[1] = sample.computeQuantilePerComponent(0.25)[0];// b
+  startingPoint[2] = sample.computeQuantilePerComponent(0.75)[0];// c
+  startingPoint[3] = max - delta;// d
   solver.setStartingPoint(startingPoint);
   solver.setIgnoreFailure(true);
+  solver.setVerbose(Log::HasInfo());
   factory.setOptimizationAlgorithm(solver);
 
   // override constraint
@@ -112,7 +115,9 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   const Point constant(3, -rhoEnd);
   LinearFunction constraint(center, constant, linear);
   factory.setOptimizationInequalityConstraint(constraint);
-
+  const Point lowerBound(4, min + rhoEnd);
+  const Point upperBound(4, max - rhoEnd);
+  factory.setOptimizationBounds(Interval(lowerBound, upperBound));
   Trapezoidal result(buildAsTrapezoidal(factory.buildParameter(sample)));
   result.setDescription(sample.getDescription());
   return result;

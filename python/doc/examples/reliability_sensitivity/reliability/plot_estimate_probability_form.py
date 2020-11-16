@@ -3,7 +3,7 @@ Estimate a probability with FORM
 ================================
 """
 # %%
-# In this example we estimate a failure probability with the `FORM` algorithm on the cantilever beam example. More precisely, we show how to use the associated results:
+# In this example we estimate a failure probability with the `FORM` algorithm on the :ref:`cantilever beam <use-case-cantilever-beam>` example. More precisely, we show how to use the associated results:
 #
 # - the design point in both physical and standard space,
 # - the probability estimation according to the FORM approximation, and the following SORM ones: Tvedt, Hohen-Bichler and Breitung,
@@ -21,37 +21,8 @@ Estimate a probability with FORM
 # where :math:`E_1` is the spheric univariate distribution of the standard space and :math:`\beta` is the reliability index.
 
 # %%
-# Introduction 
-# -------------
-#
-# Let us consider the analytical example of a cantilever beam with Young modulus E, length L and section modulus I.
-#
-# One end of the cantilever beam is built in a wall and we apply a concentrated bending load F at the other end of the beam, resulting in a deviation:
-#
-# .. math::
-#    d = \frac{FL^3}{3EI}
-# 
-#
-# Failure occurs when the beam deviation is too large:
-#
-# .. math::
-#    d \ge 30 (cm)
-# 
-#
-# Four independent random variables are considered:
-#
-#  - E: Young's modulus [Pa]
-#  - F: load [N]
-#  - L: length [m]
-#  - I: section [m^4]
-#
-# Stochastic model (simplified model, no units):
-#
-#  - E ~ Beta(0.93, 2.27, 2.8e7, 4.8e7)
-#  - F ~ LogNormal(30000, 9000, 15000)
-#  - L ~ Uniform(250, 260)
-#  - I ~ Beta(2.5, 1.5, 3.1e2, 4.5e2)
-#
+# Model definition
+# ----------------
 
 # %%
 from __future__ import print_function
@@ -61,36 +32,18 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Create the marginal distributions of the parameters.
+# We load the model from the usecases module :
+from openturns.usecases import cantilever_beam as cantilever_beam
+cb = cantilever_beam.CantileverBeam()
 
 # %%
-dist_E = ot.Beta(0.93, 2.27, 2.8e7, 4.8e7)
-dist_F = ot.LogNormalMuSigma(30000, 9000, 15000).getDistribution()
-dist_L = ot.Uniform(250, 260)
-dist_I = ot.Beta(2.5, 1.5, 3.1e2, 4.5e2)
-marginals = [dist_E, dist_F, dist_L, dist_I]
-
-# %%
-# Create the Copula.
-
-# %%
-RS = ot.CorrelationMatrix(4)
-RS[2, 3] = -0.2
-# Evaluate the correlation matrix of the Normal copula from RS
-R = ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(RS)
-# Create the Normal copula parametrized by R
-copula = ot.NormalCopula(R) 
-
-# %%
-# Create the joint probability distribution.
-
-# %%
-distribution = ot.ComposedDistribution(marginals, copula)
+# We use the input parameters distribution from the data class :
+distribution = cb.distribution
 distribution.setDescription(['E', 'F', 'L', 'I'])
 
 # %%
-# create the model
-model = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['F*L^3/(3*E*I)'])
+# We define the model
+model = cb.model
 
 # %%
 # Create the event whose probability we want to estimate.
@@ -98,7 +51,7 @@ model = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['F*L^3/(3*E*I)'])
 # %%
 vect = ot.RandomVector(distribution)
 G = ot.CompositeRandomVector(model, vect)
-event = ot.ThresholdEvent(G, ot.Greater(), 30.0)
+event = ot.ThresholdEvent(G, ot.Greater(), 0.3)
 event.setName("deviation")
 
 # %%
@@ -143,11 +96,14 @@ view = viewer.View(graph)
 
 # %%
 marginalSensitivity, otherSensitivity = result.drawHasoferReliabilityIndexSensitivity()
+marginalSensitivity.setLegends(["E","F","L","I"])
 marginalSensitivity.setLegendPosition('bottom')
 view = viewer.View(marginalSensitivity)
 
 # %%
 marginalSensitivity, otherSensitivity = result.drawEventProbabilitySensitivity()
+marginalSensitivity.setLegends(["E","F","L","I"])
+marginalSensitivity.setLegendPosition('bottom')
 view = viewer.View(marginalSensitivity)
 
 # %%

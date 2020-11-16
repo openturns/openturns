@@ -12,10 +12,10 @@ from a scalar sample (see [matthys2003]_ for the theory).
 The chosen algorithm depends on the size of the sample compared to the
 :class:`~openturns.ResourceMap` key `GeneralizedParetoFactory-SmallSize`:
 
-- When the size of the sample is small the method of moments is used,
+- When the size of the sample is small the probability weighted method of moments is used,
   with a fallback on the exponential regression method
 - When the size of the sample is large the exponential regression method is used,
-  with a fallback on the moments estimator
+  with a fallback on the probability weighted moment method
 
 **Moments based estimator:**
 

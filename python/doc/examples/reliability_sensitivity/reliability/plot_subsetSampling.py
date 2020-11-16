@@ -8,21 +8,21 @@ Subset Sampling
 #
 # We consider the function :math:`g : \mathbb{R}^2 \rightarrow \mathbb{R}` defined by:
 #
-# ..math::
+# .. math::
 #   \begin{align*}
 #   g(X)= 20-(x_1-x_2)^2-8(x_1+x_2-4)^3
 #   \end{align*}
 #
 # and the input random vector :math:`X = (X_1, X_2)` which follows a Normal distribution with independent components, and identical marginals with 0.25 mean and unit variance: 
 #
-# ..math::
+# .. math::
 #   \begin{align*}
 #   X \sim  \mathcal{N}(\mu = [0.25, 0.25], \sigma = [1,1], cov = I_2)
 #   \end{align*}
 #
 # We want to evaluate the probability:
 #
-# ..math::
+# .. math::
 #   \begin{align*}
 #   p = \mathbb{P} \{ g(X) \leq 0 \}
 #   \end{align*}

@@ -57,17 +57,17 @@ i = 37
 print('Xi = ', myTimeSeries.getValueAtIndex(i))
 
 # %%
-# Get the time series at index i : (ti, Xi)
+# Get the time series at index i : Xi
 i = 37
-print('(ti, Xi) = ', myTimeSeries[i])
+print('Xi = ', myTimeSeries[i])
 
 # %%
 # Get a the marginal value at index i of the time series
 i = 37
 # get the time stamp:
-print('ti = ', myTimeSeries[i, 0])
+print('ti = ', myTimeSeries.getTimeGrid().getValue(i))
 # get the first component of the corresponding value :
-print('Xi1 = ', myTimeSeries[i, 1])
+print('Xi1 = ', myTimeSeries[i, 0])
 
 # %%
 # Get all the values (X1, .., Xn) of the time series

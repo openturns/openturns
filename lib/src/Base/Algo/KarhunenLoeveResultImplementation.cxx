@@ -111,7 +111,7 @@ KarhunenLoeveResultImplementation::FunctionCollection KarhunenLoeveResultImpleme
 {
   Collection<Function> scaledModes(modes_.getSize());
   if (modes_.getSize() == 0) return scaledModes;
-  const UnsignedInteger dimension = modes_[0].getInputDimension();
+  const UnsignedInteger dimension = modes_[0].getOutputDimension();
   const Point zero(dimension);
   const IdentityMatrix id(dimension);
   for (UnsignedInteger i = 0; i < scaledModes.getSize(); ++i)

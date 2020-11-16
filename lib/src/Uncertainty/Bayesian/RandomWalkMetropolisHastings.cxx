@@ -42,7 +42,7 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings()
   , calibrationStrategy_(0)
   , samplesNumber_(0)
   , acceptedNumber_(0)
-  , currentLogLikelihood_(0.)
+  , currentPenalizedLogLikelihood_(0.)
 {
   // Nthing to do
 }
@@ -58,7 +58,7 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings( const Distribution &
   , calibrationStrategy_(proposal.getSize())
   , samplesNumber_(0)
   , acceptedNumber_(initialState.getDimension())
-  , currentLogLikelihood_(0.)
+  , currentPenalizedLogLikelihood_(0.)
 {
   setProposal(proposal);
 }
@@ -76,7 +76,7 @@ RandomWalkMetropolisHastings::RandomWalkMetropolisHastings( const Distribution &
   , calibrationStrategy_(proposal.getSize())
   , samplesNumber_(0)
   , acceptedNumber_(initialState.getDimension())
-  , currentLogLikelihood_(0.)
+  , currentPenalizedLogLikelihood_(0.)
 {
   setProposal(proposal);
 }
@@ -116,20 +116,20 @@ Point RandomWalkMetropolisHastings::getRealization() const
   // check the first likelihood
   if (samplesNumber_ == 0)
   {
-    currentLogLikelihood_ = computeLogLikelihood(currentState_);
-    if (currentLogLikelihood_ <= SpecFunc::LowestScalar)
+    currentPenalizedLogLikelihood_ = computeLogLikelihood(currentState_) + getPrior().computeLogPDF(currentState_);
+    if (currentPenalizedLogLikelihood_ <= SpecFunc::LowestScalar)
       throw InvalidArgumentException(HERE) << "The initial state should have non-zero posterior proability density";
   }
 
   // for each new sample
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    // accumulates the updates over each components
+    // accumulates the updates over each component
     Point newState(currentState_);
 
     history_.store(currentState_);
 
-    Scalar logLikelihoodCandidate = currentLogLikelihood_;
+    Scalar logLikelihoodCandidate = currentPenalizedLogLikelihood_;
 
     // update each chain component
     for (UnsignedInteger j = 0; j < dimension; ++ j)
@@ -149,16 +149,16 @@ Point RandomWalkMetropolisHastings::getRealization() const
         nextState[j] = getPrior().getMarginal(j).getRealization()[0];
       }
 
-      const Scalar nextLogLikelihood = computeLogLikelihood(nextState);
+      const Scalar nextPenalizedLogLikelihood = computeLogLikelihood(nextState) + getPrior().computeLogPDF(nextState);
 
-      // alpha = likehood(newstate)/likehood(oldstate)
-      const Scalar alphaLog = nextLogLikelihood  - currentLogLikelihood_;
+      // alpha = posterior(newstate)/posterior(oldstate)
+      const Scalar alphaLog = nextPenalizedLogLikelihood  - currentPenalizedLogLikelihood_;
 
       // acceptance test
       const Scalar uLog = log(RandomGenerator::Generate());
       if (nonRejectedComponent || (uLog < alphaLog))
       {
-        logLikelihoodCandidate = nextLogLikelihood;
+        logLikelihoodCandidate = nextPenalizedLogLikelihood;
         ++ acceptedNumber_[j];
         ++ accepted[j];
 
@@ -166,13 +166,13 @@ Point RandomWalkMetropolisHastings::getRealization() const
       }
     }
 
-    // reuse the likelihood of the last accepted update
-    currentLogLikelihood_ = logLikelihoodCandidate;
+    // reuse the penalized log-likelihood of the last accepted update
+    currentPenalizedLogLikelihood_ = logLikelihoodCandidate;
 
     // update state
     currentState_ = newState;
 
-    // recalibrate for each component if necessary
+    // recalibrate each component if necessary
     if (samplesNumber_ < getBurnIn())
     {
       for (UnsignedInteger j = 0; j < dimension; ++ j)
@@ -239,7 +239,7 @@ RandomWalkMetropolisHastings::CalibrationStrategyCollection RandomWalkMetropolis
 void RandomWalkMetropolisHastings::setCalibrationStrategyPerComponent(const CalibrationStrategyCollection& calibrationStrategy)
 {
   const UnsignedInteger dimension = proposal_.getSize();
-  if(dimension != calibrationStrategy.getSize()) throw InvalidDimensionException(HERE) << "The proposal dimension (" << dimension << ") does not match the size of calibration strategy (" << calibrationStrategy.getSize() << ").";
+  if(dimension != calibrationStrategy.getSize()) throw InvalidDimensionException(HERE) << "The proposal dimension (" << dimension << ") does not match the calibration strategy size (" << calibrationStrategy.getSize() << ").";
   calibrationStrategy_ = calibrationStrategy;
 }
 
@@ -273,7 +273,7 @@ void RandomWalkMetropolisHastings::save(Advocate & adv) const
   adv.saveAttribute("calibrationStrategy_", calibrationStrategy_);
   adv.saveAttribute("samplesNumber_", samplesNumber_);
   adv.saveAttribute("acceptedNumber_", acceptedNumber_);
-  adv.saveAttribute("currentLogLikelihood_", currentLogLikelihood_);
+  adv.saveAttribute("currentPenalizedLogLikelihood_", currentPenalizedLogLikelihood_);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -284,7 +284,12 @@ void RandomWalkMetropolisHastings::load(Advocate & adv)
   adv.loadAttribute("calibrationStrategy_", calibrationStrategy_);
   adv.loadAttribute("samplesNumber_", samplesNumber_);
   adv.loadAttribute("acceptedNumber_", acceptedNumber_);
-  adv.loadAttribute("currentLogLikelihood_", currentLogLikelihood_);
+  if (adv.hasAttribute("currentLogLikelihood_"))
+  {
+    adv.loadAttribute("currentLogLikelihood_", currentPenalizedLogLikelihood_);
+  }
+  else
+    adv.loadAttribute("currentPenalizedLogLikelihood_", currentPenalizedLogLikelihood_);
 }
 
 

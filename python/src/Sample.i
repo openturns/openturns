@@ -28,7 +28,9 @@
 }
 
 %typemap(typecheck,precedence=OT_TYPECHECK_NUMERICALSAMPLE) const Sample & {
-  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) || OT::isAPythonBufferOf<OT::Scalar, 2>($input) || OT::isAPythonSequenceOf<OT::_PySequence_>($input);
+  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
+    || OT::isAPythonBufferOf<OT::Scalar, 2>($input)
+    || OT::isAPythonSequenceOf<OT::_PySequence_>($input));
 }
 
 %apply const Sample & { const OT::Sample & };

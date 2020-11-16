@@ -23,7 +23,7 @@
 === Bug fixes ===
 
 
-== 1.16 release (2020-10-20) == #release-1.16
+== 1.16 release (2020-11-16) == #release-1.16
 
 === Library ===
 
@@ -65,6 +65,7 @@
  * Deprecated FittingTest::BestModelKolmogorov(Sample, DistributionFactoryCollection, TestResult), use BestModelLilliefors
  * Deprecated FittingTest::Kolmogorov(Sample, DistributionFactory, TestResult, level), use Lilliefors
  * MetamodelValidation: now computePredictivityFactor returns Point, drawValidation return GridLayout
+ * Deprecated coupling_tools.execute is_shell/workdir/shell_exe/check_exit_code arguments
 
 === Documentation ===
  * Sphinx-gallery used to render examples
@@ -121,8 +122,13 @@
  * #1603 (FieldToPointConnection generates an invalid exception)
  * #1605 (MaximumLikelihoodFactory cannot be used with FittingTest.Kolmogorov)
  * #1624 (The graphs_loglikelihood_contour example has a bug)
+ * #1642 (Big white space at the beginning of examples)
  * #1643 (Problem in MaximumDistribution PDF)
- * #1654 (StationaryFunctionalCovarianceModel::discretize segfaults)
+ * #1647 (MCMC::computeLogLikelihood does not compute the log-likelihood)
+ * #1651 (Cobyla freezes in 0T1.16rc1)
+ * #1658 (TimeSeries accessor)
+ * #1660 (Cannot extract continuous modes from KLResult when dimension>1)
+ * #1668 (LevelSetMesher does not take into account the comparison operator)
 
 
 == 1.15 release (2020-05-25) == #release-1.15

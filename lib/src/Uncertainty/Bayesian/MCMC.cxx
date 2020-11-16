@@ -128,10 +128,10 @@ UnsignedInteger MCMC::getDimension() const
 }
 
 
-/* Compute the likelihood w.r.t. observations */
+/* Compute the log-likelihood */
 Scalar MCMC::computeLogLikelihood(const Point & xi) const
 {
-  Scalar value = prior_.computeLogPDF(xi);
+  Scalar value = 0.0;
 
   const UnsignedInteger size = observations_.getSize();
   for (UnsignedInteger i = 0; i < size; ++ i)

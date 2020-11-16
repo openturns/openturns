@@ -328,7 +328,7 @@ def check_get_token_escaped():
     handle.write(b'2.0 2.1 2.2 2.3\n')
     handle.close()
     results = ct.get(
-        filename=result_file, tokens=['FOO \(BAR'], skip_lines=[1], skip_cols=[1])
+        filename=result_file, tokens=[r'FOO \(BAR'], skip_lines=[1], skip_cols=[1])
     check_results([1.1], results)
     os.remove(result_file)
 
@@ -339,9 +339,9 @@ def check_get_regex():
     values = [-9.55555E5, 8, 5.4]
     result_file = create_results(tokens, values)
     results = ct.get_regex(filename=result_file,
-                           patterns=['@E=(\R)',
-                                     '02\s*=\s*(\I)\s*',
-                                     '01 =\s*(\R)']
+                           patterns=[r'@E=(\R)',
+                                     r'02\s*=\s*(\I)\s*',
+                                     r'01 =\s*(\R)']
                            )
     check_results(values, results)
     remove_file(result_file)
@@ -357,9 +357,9 @@ def check_get_regex_perf():
         "big file created in : " + str(time.time() - start_time) + "s\n")
     start_time = time.time()
     results = ct.get_regex(filename=result_file,
-                           patterns=['@E=(\R)',
-                                     '02\s*=\s*(\I)\s*',
-                                     '01 =\s*(\R)']
+                           patterns=[r'@E=(\R)',
+                                     r'02\s*=\s*(\I)\s*',
+                                     r'01 =\s*(\R)']
                            )
     time_to_parse = str(int(time.time() - start_time))
     check_results(values, results)
@@ -562,19 +562,19 @@ def check_execute():
     else:
         ct.execute('/bin/echo hello')
 
-    ct.execute('echo hi', is_shell=True)
+    ct.execute('echo hi', shell=True)
 
     if sys.platform.startswith('win'):
-        ct.execute('echo hi', is_shell=True, hide_win=False)
+        ct.execute('echo hi', shell=True, hide_win=False)
     else:
-        ct.execute('echo hi', is_shell=True, shell_exe='/bin/bash')
+        ct.execute('echo hi', shell=True, executable='/bin/bash')
 
     ret, stdout = ct.execute(
-        'echo hello', is_shell=True, get_stdout=True)
+        'echo hello', shell=True, get_stdout=True)
     if ret != 0 or not stdout.decode().startswith('hello'):
         raise Exception("ct.execute error!")
 
-    ret, stdout, stderr = ct.execute('echo hello', is_shell=True,
+    ret, stdout, stderr = ct.execute('echo hello', shell=True,
                                      get_stdout=True, get_stderr=True)
     if ret != 0 or not stdout.decode().startswith('hello') or len(stderr) > 0:
         raise Exception("ct.execute error!")

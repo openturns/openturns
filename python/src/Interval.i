@@ -9,7 +9,7 @@
 
 // we check for boolean type but they are stored as integers
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const BoolCollection & {
-  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) || OT::isAPythonSequenceOf<OT::_PyBool_>( $input );
+  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) || OT::isAPythonSequenceOf<OT::_PyBool_>($input));
 }
 
 %typemap(in) const BoolCollection & ($1_basetype temp) {

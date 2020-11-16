@@ -3,84 +3,8 @@ Calibration of the deflection of a tube
 =======================================
 """
 # %%
-# Description
-# -----------
-#
-# We consider the deflection of a tube under a vertical stress.
-#
-# <img src="_static/simply_supported_beam.png" width="300" />
-#
-# The parameters of the model are:
-#
-# * F : the strength,
-# * L : the length of the tube,
-# * a : position of the force,
-# * D : external diameter of the tube,
-# * d : internal diameter of the tube,
-# * E : Young modulus.
-#
-# The following figure presents the internal and external diameter of the tube:
-#
-# <img src="_static/tube-diameters.png" width="200" />
-#
-# The area moment of inertia of the cross section about the neutral axis of a round tube (i.e. perpendicular to the section) with external and internal diameters :math:`D` and :math:`d` are:
-#
-# .. math::
-#
-#    I = \frac{\pi (D^4-d^4)}{32}.
+# We consider a calibration of the deflection of a tube as described :ref:`here <use-case-deflection-tube>`.
 # 
-#
-# The vertical deflection at point :math:`x=a` is:
-#
-# .. math::
-#    g_1(X) = - F \frac{a^2 (L-a)^2}{3 E L I},
-# 
-#
-# where :math:`X=(F,L,a,D,d,E)`. 
-# The angle of the tube at the left end is:
-#
-# .. math::
-#    g_2(X) = 
-#    - F \frac{b (L^2-b^2)}{6 E L I},
-# 
-#
-# and the angle of the tube at the right end is:
-#
-# .. math::
-#    g_3(X) = 
-#    F \frac{a (L^2-a^2)}{6 E L I}.
-# 
-#
-# The following table presents the distributions of the random variables. These variables are assumed to be independent.
-#
-# ======== ==========================
-# Variable Distribution
-# ======== ==========================
-# F        Normal(1,0.1)
-# L        Normal(1.5,0.01)
-# a        Uniform(0.7,1.2)
-# D        Triangular(0.75,0.8,0.85)
-# d        Triangular(0.09,0.1,0.11)
-# E        Normal(200000,2000)
-# ======== ==========================
-#
-
-# %%
-# References
-# ----------
-#
-# * Deflection of beams by Russ Elliott. http://www.clag.org.uk/beam.html
-# * https://upload.wikimedia.org/wikipedia/commons/f/ff/Simple_beam_with_offset_load.svg
-# * https://en.wikipedia.org/wiki/Deflection_(engineering)
-# * https://mechanicalc.com/reference/beam-deflection-tables
-# * https://en.wikipedia.org/wiki/Second_moment_of_area
-# * Shigley's Mechanical Engineering Design (9th Edition), Richard G. Budynas, J. Keith Nisbettn, McGraw Hill (2011)
-# * Mechanics of Materials (7th Edition), James M. Gere, Barry J. Goodno, Cengage Learning (2009)
-# * Statics and Mechanics of Materials (5th Edition), Ferdinand Beer, E. Russell Johnston, Jr., John DeWolf, David Mazurek. Mc Graw Hill (2011) Chapter 15: deflection of beams.
-
-# %%
-# Create a calibration problem
-# ----------------------------
 
 # %%
 import openturns as ot
@@ -88,41 +12,25 @@ import openturns.viewer as viewer
 from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
-# %%
-# We use the variable names `De` for the external diameter and `di` for the internal diameter because the symbolic function engine is not case sensitive, hence the variable names `D` and `d` would not be distiguished.
 
 # %%
-inputsvars=["F","L","a","De","di","E"]
-formula = "var I:=pi_*(De^4-di^4)/32; var b:=L-a; g1:=-F*a^2*(L-a)^2/(3*E*L*I); g2:=-F*b*(L^2-b^2)/(6*E*L*I); g3:=F*a*(L^2-a^2)/(6*E*L*I)"
-g = ot.SymbolicFunction(inputsvars,["g1","g2","g3"],formula)
-g.setOutputDescription(["Deflection","Left angle","Right angle"])
+# Create a calibration problem
+# ----------------------------
 
 # %%
-XF=ot.Normal(1,0.1)
-XE=ot.Normal(200000,2000)
-XF.setDescription(["Force"])
-XE.setDescription(["Young Modulus"])
+# We load the model from the use case module :
+from openturns.usecases import deflection_tube as deflection_tube
+dt = deflection_tube.DeflectionTube()
 
 # %%
-XL = ot.Dirac(1.5)
-Xa = ot.Dirac(1.0)
-XD = ot.Dirac(0.8)
-Xd = ot.Dirac(0.1)
-XL.setDescription(["Longueur"])
-Xa.setDescription(["Location"])
-XD.setDescription(["External diameter"])
-Xd.setDescription(["Internal diameter"])
-
-# %%
-inputDistribution = ot.ComposedDistribution([XF,XL,Xa,XD,Xd,XE])
-
-# %%
+# We create a sample out of our input distribution :
 sampleSize = 100
-inputSample = inputDistribution.getSample(sampleSize)
+inputSample = dt.inputDistribution.getSample(sampleSize)
 inputSample[0:5]
 
 # %%
-outputDeflection = g(inputSample)
+# We take the image of our input sample by the model :
+outputDeflection = dt.model(inputSample)
 outputDeflection[0:5]
 
 # %%
@@ -181,7 +89,7 @@ parameterCovariance
 
 # %%
 calibratedIndices = [1,2,3,4]
-calibrationFunction = ot.ParametricFunction(g, calibratedIndices, thetaPrior)
+calibrationFunction = ot.ParametricFunction(dt.model, calibratedIndices, thetaPrior)
 
 # %%
 sigmaObservation = [0.2e-6,0.03e-5,0.03e-5] # Exact : 0.1e-6

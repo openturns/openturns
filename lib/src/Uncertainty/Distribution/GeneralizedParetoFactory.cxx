@@ -212,6 +212,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
   problem.setBounds(Interval(parametersLowerBound, parametersUpperBound, Interval::BoolCollection(dimension, 0), Interval::BoolCollection(dimension, 0)));
 
   solver_.setProblem(problem);
+  solver_.setVerbose(Log::HasInfo());
   solver_.setStartingPoint(Point(dimension, 0.0));
 
   // run Optimization problem

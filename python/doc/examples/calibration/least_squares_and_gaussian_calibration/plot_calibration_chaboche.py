@@ -4,140 +4,25 @@ Calibration of the Chaboche mechanical model
 """
 # %%
 #
-# Deterministic model
-# -------------------
-#
-# The Chaboche mecanical law predicts the stress depending on the strain:
-#
-# .. math::
-#    \sigma = G(\epsilon,R,C,\gamma) = R + \frac{C}{\gamma} (1-\exp(-\gamma\epsilon))
-#
-#
-# where:
-#
-# - :math:`\epsilon` is the strain,
-# - :math:`\sigma` is the stress (Pa),
-# - :math:`R`, :math:`C`, :math:`\gamma` are the parameters.
-#
-# The variables have the following distributions and are supposed to be independent.
-#
-#  ================  ===========================================================
-#  Random var.       Distribution
-#  ================  ===========================================================
-#  :math:`R`         Lognormal (:math:`\mu = 750` MPa, :math:`\sigma = 11` MPa)
-#  :math:`C`         Normal (:math:`\mu = 2750` MPa, :math:`\sigma = 250` MPa)
-#  :math:`\gamma`    Normal (:math:`\mu = 10`, :math:`\sigma = 2`)
-#  :math:`\epsilon`  Uniform(a=0, b=0.07).
-#  ================  ===========================================================
-#
-# Parameters to calibrate
-# -----------------------
-#
-# The vector of parameters to calibrate is:
-#
-# .. math::
-#    \theta = (R,C,\gamma).
-#
-#
-# We set:
-#
-# - :math:`R = 750\times 10^6`,
-# - :math:`C = 2750\times 10^6`,
-# - :math:`\gamma = 10`.
-#
-# Observations
-# ------------
-#
-# In order to create a calibration problem, we make the hypothesis that the strain has the following distribution:
-#
-# .. math::
-#    \epsilon \sim Uniform(0,0.07).
-#
-#
-# Moreover, we consider a gaussian noise on the observed constraint:
-#
-# .. math::
-#    \epsilon_\sigma \sim \mathcal{N} \left(0,10\times 10^6\right)
-#
-#
-# and we make the hypothesis that the observation errors are independent.
-# We set the number of observations to:
-#
-# .. math::
-#    n = 100.
-#
-#
-# We generate a Monte-Carlo sampling with size :math:`n`:
-#
-# .. math::
-#    \sigma_i = G(\epsilon_i,R,C,\gamma) + (\epsilon_\sigma)_i,
-#
-#
-# for :math:`i = 1,..., n`.
-# The observations are the pairs :math:`\{(\epsilon_i,\sigma_i)\}_{i=1,...,n}`, i.e. each observation is a couple made of the strain and the corresponding stress.
-#
-# Thanks to
-# ---------
-#
-# - Antoine Dumas, Phimeca
-#
-
-# %%
-# References
-# ----------
-#
-# - J. Lemaitre and J. L. Chaboche (2002) "Mechanics of solid materials" Cambridge University Press.
-#
-
-# %%
-# Generate the observations
-# -------------------------
+# In this example we present calibration methods on the Chaboche model. A detailed explanation of this mechanical law is presented :ref:`here <use-case-chaboche>`.
 
 # %%
 import numpy as np
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
+from openturns.usecases import chaboche_model as chaboche_model
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Define the model.
+# Load the Chaboche data structure
+cm = chaboche_model.ChabocheModel()
 
 # %%
-def modelChaboche(X):
-    strain, R, C, gamma = X
-    stress = R + C * (1 - np.exp(-gamma * strain)) / gamma
-    return [stress]
-
-
-# %%
-# Create the Python function.
-
-# %%
-g = ot.PythonFunction(4, 1, modelChaboche)
-
-# %%
-# Define the random vector.
-
-# %%
-Strain = ot.Uniform(0, 0.07)
-unknownR = 750e6
-unknownC = 2750e6
-unknownGamma = 10
-R = ot.Dirac(unknownR)
-C = ot.Dirac(unknownC)
-Gamma = ot.Dirac(unknownGamma)
-
-Strain.setDescription(["Strain"])
-R.setDescription(["R"])
-C.setDescription(["C"])
-Gamma.setDescription(["Gamma"])
-
-# %%
-# Create the joint input distribution function.
-
-# %%
-inputDistribution = ot.ComposedDistribution([Strain, R, C, Gamma])
+# We get the Chaboche model and the joint input distribution :
+g = cm.model
+inputDistribution = cm.inputDistribution
 
 # %%
 # Create the Monte-Carlo sample.
@@ -283,7 +168,9 @@ view = viewer.View(graph)
 # The `NonLinearLeastSquaresCalibration` class performs the non linear least squares calibration by minimizing the squared euclidian norm between the predictions and the observations.
 
 # %%
-algo = ot.NonLinearLeastSquaresCalibration(mycf, observedStrain, observedStress, thetaPrior)
+algo = ot.NonLinearLeastSquaresCalibration(
+    mycf, observedStrain, observedStress, thetaPrior
+)
 
 
 # %%
@@ -393,7 +280,9 @@ sigma
 # The `GaussianLinearCalibration` class performs the gaussian linear calibration by linearizing the model in the neighbourhood of the prior.
 
 # %%
-algo = ot.GaussianLinearCalibration(mycf, observedStrain, observedStress, thetaPrior, sigma, errorCovariance)
+algo = ot.GaussianLinearCalibration(
+    mycf, observedStrain, observedStress, thetaPrior, sigma, errorCovariance
+)
 
 # %%
 # The `run` method computes the solution of the problem.
@@ -475,7 +364,9 @@ view = viewer.View(graph)
 # The `GaussianNonLinearCalibration` class performs the gaussian nonlinear calibration.
 
 # %%
-algo = ot.GaussianNonLinearCalibration(mycf, observedStrain, observedStress, thetaPrior, sigma, errorCovariance)
+algo = ot.GaussianNonLinearCalibration(
+    mycf, observedStrain, observedStress, thetaPrior, sigma, errorCovariance
+)
 
 # %%
 # The `run` method computes the solution of the problem.

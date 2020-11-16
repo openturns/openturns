@@ -96,8 +96,13 @@ We can load this classical model from the use cases module as follows :
     >>> # Load the tube deflection model
     >>> dt = deflection_tube.DeflectionTube()
 
-Examples based on this use case :
----------------------------------
+API documentation
+-----------------
+
+See :class:`~openturns.usecases.deflection_tube.DeflectionTube`.
+
+Examples based on this use case
+-------------------------------
 
 
 .. raw:: html                                                             

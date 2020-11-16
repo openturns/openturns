@@ -84,7 +84,7 @@ macro (ot_add_python_module MODULENAME SOURCEFILE)
 
   add_dependencies (pylib ${module_target})
   list (APPEND OPENTURNS_PYTHON_MODULES ${MODULENAME})
-endmacro (ot_add_python_module)
+endmacro ()
 
 install (DIRECTORY openturns DESTINATION ${OPENTURNS_INCLUDE_PATH})
 
@@ -992,6 +992,7 @@ if (SPHINX_FOUND)
   # create a build site-package from which sphinx can import
   set (OPENTURNS_PYTHON_BUILD_MODULE_PATH ${CMAKE_CURRENT_BINARY_DIR}/site-packages)
   execute_process (COMMAND ${CMAKE_COMMAND} -E make_directory ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns)
+  execute_process (COMMAND ${CMAKE_COMMAND} -E make_directory ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/usecases)
   foreach (module ${OPENTURNS_PYTHON_MODULES})
     execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_BINARY_DIR}/${module}.py ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/${module}.py)
     # FIXME: get_target_property (suffix ${SWIG_MODULE_${module}_REAL_NAME} SUFFIX)
@@ -1001,6 +1002,13 @@ if (SPHINX_FOUND)
   execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_BINARY_DIR}/memoryview.so ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/memoryview.so)
   foreach (file ${EXTRA_PYTHON_FILES})
     execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/${file} ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/${file})
+  endforeach ()
+
+  # copy usecases python files
+  file(GLOB usecases "${CMAKE_CURRENT_SOURCE_DIR}/usecases/*.py")
+  foreach(file ${usecases})
+    get_filename_component(fname ${file} NAME)
+    execute_process (COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/usecases/${fname} ${OPENTURNS_PYTHON_BUILD_MODULE_PATH}/openturns/usecases/${fname})
   endforeach ()
 
   # sphinx configuration

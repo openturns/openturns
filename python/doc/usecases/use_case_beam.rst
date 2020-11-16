@@ -10,9 +10,9 @@ We consider a simple beam stressed by a traction load F at both sides.
 .. figure:: ../_static/axial-stressed-beam.png
     :align: center 
     :alt: use case geometry
-    :width: 100%
+    :width: 50%
 
-    caption: Beam geometry
+    Beam geometry
 
 
 The geometry is supposed to be deterministic; the diameter D is equal to:
@@ -78,10 +78,14 @@ We can load this classical model from the use cases module as follows :
     >>> # Load the use case axial stressed beam
     >>> sb = stressed_beam.AxialStressedBeam()
 
+API documentation
+-----------------
+
+See :class:`~openturns.usecases.stressed_beam.AxialStressedBeam`.
 
 
-Examples based on this use case :
----------------------------------
+Examples based on this use case
+-------------------------------
 
 
 .. raw:: html                                                             

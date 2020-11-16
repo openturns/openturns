@@ -3,7 +3,7 @@ Create a polynomial chaos metamodel by integration on the cantilever beam
 =========================================================================
 """
 # %%
-# In this example, we create a polynomial chaos metamodel by integration on the cantilever beam example. 
+# In this example, we create a polynomial chaos metamodel by integration on the :ref:`cantilever beam <use-case-cantilever-beam>` example. 
 #
 # In order to do this, we use the `GaussProductExperiment` class. 
 
@@ -13,30 +13,27 @@ import openturns.viewer as viewer
 from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
-# %%
-dist_E = ot.Beta(0.9, 2.27, 2.8e7, 4.8e7)
-dist_E.setDescription(["E"])
-F_para = ot.LogNormalMuSigma(3.0e4, 9.0e3, 15.0e3) # in N
-dist_F = ot.ParametrizedDistribution(F_para)
-dist_F.setDescription(["F"])
-dist_L = ot.Uniform(250., 260.) # in cm
-dist_L.setDescription(["L"])
-dist_I = ot.Beta(2.5, 1.5, 310., 450.) # in cm^4
-dist_I.setDescription(["I"])
-
-myDistribution = ot.ComposedDistribution([dist_E, dist_F, dist_L, dist_I])
 
 # %%
-dim_input = 4 # dimension of the input
+# We first load the model from the usecases module :
+from openturns.usecases import cantilever_beam as cantilever_beam
+cb = cantilever_beam.CantileverBeam()
+
+# %%
+# In this example we consider all marginals independent. They are defined in the `CantileverBeam` data class as well as an independent distribution :
+dist_E = cb.E
+dist_F = cb.F
+dist_L = cb.L
+dist_I = cb.I
+myDistribution = cb.independentDistribution
+
+# %%
+dim_input = cb.dim # dimension of the input
 dim_output = 1 # dimension of the output
 
-def function_beam(X):
-    E, F, L, I = X
-    Y = F* (L**3) /  (3 * E * I)
-    return [Y]
-
-g = ot.PythonFunction( dim_input, dim_output, function_beam)
-g.setInputDescription(myDistribution.getDescription())
+# %% 
+# We load the model :
+g = cb.model
 
 # %%
 # Create a polynomial chaos decomposition

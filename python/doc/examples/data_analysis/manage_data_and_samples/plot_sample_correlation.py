@@ -1,6 +1,6 @@
 """
-Correlation analysis on samples
-===============================
+Estimate correlation coefficients
+=================================
 """
 
 # %%
@@ -21,20 +21,18 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# To illustrate the usage of the method mentionned above, we define a set of X/Y data using the ususal `Ishigami` use-case.
+# To illustrate the usage of the method mentionned above, we define a set of X/Y data using the :ref:`Ishigami model <use-case-ishigami>`. This classical model is defined in a data class :
+from openturns.usecases import ishigami_function as ishigami_function
+im = ishigami_function.IshigamiModel()
 
 # %%
 # Create X/Y data
-ot.RandomGenerator.SetSeed(0)
-formula = ['X3+sin(pi_*X1)+7*sin(X2)*sin(pi_*X2)+' + \
-           '1.2*((pi_*X3)*(pi_*X2))*sin(pi_*X1)']
-input_names = ['X1', 'X2', 'X3']
-model = ot.SymbolicFunction(input_names, formula)
-distribution = ot.ComposedDistribution([ot.Uniform(-1.0, 1.0)] * 3, \
-                                        ot.IndependentCopula(3))
+# We get the input variables description :
+input_names = im.distributionX.getDescription()
+
 size = 100
-inputDesign = ot.SobolIndicesExperiment(distribution, size, True).generate()
-outputDesign = model(inputDesign)
+inputDesign = ot.SobolIndicesExperiment(im.distributionX, size, True).generate()
+outputDesign = im.model(inputDesign)
 
 # %%
 # PCC coefficients

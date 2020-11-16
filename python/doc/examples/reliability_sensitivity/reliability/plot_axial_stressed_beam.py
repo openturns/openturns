@@ -3,82 +3,13 @@ Axial stressed beam : comparing different methods to estimate a probability
 ===========================================================================
 """
 # %%
-# In this example, we compare four methods to estimate the probability in the axial stressed beam example:
+# In this example, we compare four methods to estimate the probability in the :ref:`axial stressed beam <use-case-stressed-beam>` example :
 #
 # * Monte-Carlo simulation,
 # * FORM,
 # * directional sampling,
 # * importance sampling with FORM design point: FORM-IS.
 #
-#
-# Introduction
-# ------------
-# We consider a simple beam stressed by a traction load F at both sides.
-#
-# ![Axial stressed beam](axial-stressed-beam.png)
-#
-# The geometry is supposed to be deterministic: the diameter D is equal to:
-#
-# .. math::
-#    D=0.02 \textrm{ (m)}.
-# 
-#
-# By definition, the yield stress is the load divided by the surface. Since the surface is :math:`\pi D^2/4`, the stress is:
-#
-# .. math::
-#    S = \frac{F}{\pi D^2/4}.
-# 
-#
-# Failure occurs when the beam plastifies, i.e. when the axial stress gets larger than the yield stress:
-#
-# .. math::
-#    R - \frac{F}{\pi D^2/4} \leq 0
-# 
-#
-# where :math:`R` is the strength.
-#  
-# Therefore, the limit state function :math:`G` is: 
-#
-# .. math::
-#    G(R,F) = R - \frac{F}{\pi D^2/4},
-# 
-#
-# for any :math:`R,F\in\mathbb{R}`.
-#
-# The value of the parameter :math:`D` is such that:
-#
-# .. math::
-#    D^2/4 = 10^{-4},
-# 
-#
-# which leads to the equation:
-#
-# .. math::
-#    G(R,F) = R - \frac{F}{10^{-4} \pi}.
-# 
-#
-# We consider the following distribution functions.
-#
-#  ========   ===========================================================================
-#  Variable    Distribution 
-#  ========   ===========================================================================
-#   R          LogNormal(:math:`\mu_R=3\times 10^6`, :math:`\sigma_R=3\times 10^5`) [Pa]
-#   F          Normal(:math:`\mu_F=750`, :math:`\sigma_F=50`) [N]
-#  ========   ===========================================================================
-#
-# where :math:`\mu_R=E(R)` and :math:`\sigma_R^2=V(R)` are the mean and the variance of :math:`R`.
-#
-# The failure probability is: 
-#
-# .. math::
-#    P_f = \text{Prob}(G(R,F) \leq 0).
-# 
-#
-# The exact :math:`P_f` is 
-#
-# .. math::
-#    P_f = 0.02920.
-# 
 
 # %%
 # Define the model
@@ -93,57 +24,33 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Define the dimension of the problem and the model. 
+# We load the model from the usecases module :
+from openturns.usecases import stressed_beam as stressed_beam
+sm = stressed_beam.AxialStressedBeam()
 
 # %%
-dim = 2
-limitStateFunction = ot.SymbolicFunction(['R', 'F'], ['R-F/(pi_*100.0)'])
+# The limit state function is defined in the `model` field of the data class :
+limitStateFunction = sm.model
 
 # %%
-# Test of the limit state function.
-
-# %%
-x = [300., 75000.]
-print('x=', x)
-print('G(x)=', limitStateFunction(x))
-
-# %%
-# Then we define the probabilistic model. Create a first marginal: `LogNormal` distribution 1D, parameterized by its mean and standard deviation.
-
-# %%
-R_dist = ot.LogNormalMuSigma(300.0, 30.0, 0.0).getDistribution()
-R_dist.setName('Yield strength')
-R_dist.setDescription('R')
+# The probabilistic model of the axial stressed beam is defined in the data class.
+# We get the first marginal and draw it :
+R_dist = sm.distribution_R
 graph = R_dist.drawPDF()
 view = viewer.View(graph)
 
 # %%
-# Create a second marginal: `Normal` distribution 1D. 
+# We get the second marginal and draw it :
 
 # %%
-F_dist = ot.Normal(75000., 5000.)
-F_dist.setName('Traction_load')
-F_dist.setDescription('F')
+F_dist = sm.distribution_F
 graph = F_dist.drawPDF()
 view = viewer.View(graph)
 
 # %%
-# Create a `IndependentCopula`. 
+# These independent marginals define the joint distribution of the input parameters :
+myDistribution = sm.distribution
 
-# %%
-aCopula = ot.IndependentCopula(dim)
-aCopula.setName('Independent copula')
-
-# Instanciate one distribution object
-myDistribution = ot.ComposedDistribution([R_dist, F_dist], aCopula)
-myDistribution.setName('myDist')
-
-# %%
-# Given that the copula is independent by default, we can as well use only the first argument of the `ComposedDistribution` class.
-
-# %%
-myDistribution = ot.ComposedDistribution([R_dist, F_dist])
-myDistribution.setName('myDist')
 
 # %%
 # We create a `RandomVector` from the `Distribution`, then a composite random vector. Finally, we create a `ThresholdEvent` from this `RandomVector`.

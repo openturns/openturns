@@ -9,7 +9,7 @@ Configuring the trend in Kriging
 # * `LinearBasisFactory`,
 # * `QuadraticBasisFactory`.
 #
-# For this purpose, we use the cantilever beam example.
+# For this purpose, we use the :ref:`cantilever beam <use-case-cantilever-beam>` example.
 
 # %%
 # Definition of the model
@@ -23,38 +23,22 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# We define the symbolic function which evaluates the output Y depending on the inputs E, F, L and I.
+# We load the use case :
+from openturns.usecases import cantilever_beam as cantilever_beam
+cb = cantilever_beam.CantileverBeam()
 
 # %%
-model = ot.SymbolicFunction(["E", "F", "L", "I"], ["F*L^3/(3*E*I)"])
+# We define the function which evaluates the output depending on the inputs.
+model = cb.model
 
 # %%
 # Then we define the distribution of the input random vector. 
+dimension = cb.dim # number of inputs
+myDistribution = cb.distribution
 
 # %%
-# Young's modulus E
-E = ot.Beta(0.9, 2.27, 2.5e7, 5.0e7) # in N/m^2
-E.setDescription("E")
-# Load F
-F = ot.LogNormal() # in N
-F.setParameter(ot.LogNormalMuSigma()([30.e3, 9e3, 15.e3]))
-F.setDescription("F")
-# Length L
-L = ot.Uniform(250., 260.) # in cm
-L.setDescription("L")
-# Moment of inertia I
-I = ot.Beta(2.5, 1.5, 310, 450) # in cm^4
-I.setDescription("I")
-
-# %%
-# Finally, we define the dependency using a `NormalCopula`.
-
-# %%
-dimension = 4 # number of inputs
-R = ot.CorrelationMatrix(dimension)
-R[2, 3] = -0.2 
-myCopula = ot.NormalCopula(ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(R))
-myDistribution = ot.ComposedDistribution([E, F, L, I], myCopula)
+# We use a transformation because data contain very large values.
+transformation = myDistribution.getIsoProbabilisticTransformation()
 
 # %%
 # Create the design of experiments
@@ -80,7 +64,7 @@ covarianceModel = ot.SquaredExponential([1.]*dimension, [1.0])
 
 # %%
 basis = ot.ConstantBasisFactory(dimension).build()
-algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
+algo = ot.KrigingAlgorithm(transformation(X_train), Y_train, covarianceModel, basis)
 algo.run()
 result = algo.getResult()
 krigingWithConstantTrend = result.getMetaModel()
@@ -106,7 +90,7 @@ result.getCovarianceModel()
 
 # %%
 basis = ot.LinearBasisFactory(dimension).build()
-algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
+algo = ot.KrigingAlgorithm(transformation(X_train), Y_train, covarianceModel, basis)
 algo.run()
 result = algo.getResult()
 krigingWithLinearTrend = result.getMetaModel()
@@ -129,7 +113,7 @@ result.getTrendCoefficients()
 
 # %%
 basis = ot.QuadraticBasisFactory(dimension).build()
-algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
+algo = ot.KrigingAlgorithm(transformation(X_train), Y_train, covarianceModel, basis)
 algo.run()
 result = algo.getResult()
 krigingWithQuadraticTrend = result.getMetaModel()
@@ -181,18 +165,19 @@ from openturns.viewer import View
 # %%
 fig = pl.figure(figsize=(12, 4))
 ax1 = fig.add_subplot(1, 3, 1)
-graphConstant = drawMetaModelValidation(X_test, Y_test, krigingWithConstantTrend, "Constant")
+graphConstant = drawMetaModelValidation(transformation(X_test), Y_test, krigingWithConstantTrend, "Constant")
 _ = View(graphConstant, figure=fig, axes=[ax1])
 ax2 = fig.add_subplot(1, 3, 2)
-graphLinear = drawMetaModelValidation(X_test, Y_test, krigingWithLinearTrend, "Linear")
+graphLinear = drawMetaModelValidation(transformation(X_test), Y_test, krigingWithLinearTrend, "Linear")
 _ = View(graphLinear, figure=fig, axes=[ax2])
 ax3 = fig.add_subplot(1, 3, 3)
-graphQuadratic = drawMetaModelValidation(X_test, Y_test, krigingWithQuadraticTrend, "Quadratic")
+graphQuadratic = drawMetaModelValidation(transformation(X_test), Y_test, krigingWithQuadraticTrend, "Quadratic")
 _ = View(graphQuadratic, figure=fig, axes=[ax3])
 _ = fig.suptitle("Different trends")
+plt.show()
 
 # %%
-# We observe that the three trends perform very well in this case. More precisely, the quadratic trend has better Q2 than the linear trend, which has a better Q2 than the constant trend. Indeed, the more the trend has coefficients, the more the kriging metamodel has flexibility to adjust to the training sample. This does not mean, however, that the trend coefficients will provide a good fit for the validation sample. 
+# We observe that the three trends perform very well in this case. The more the trend has coefficients, the more the kriging metamodel has flexibility to adjust to the training sample. This does not mean, however, that the trend coefficients will provide a good fit for the validation sample. 
 #
 # The number of parameters in each kriging metamodel is the following:
 #
@@ -200,4 +185,4 @@ _ = fig.suptitle("Different trends")
 # * the linear trend kriging has 10 coefficients to estimate: 5 coefficients for the covariance matrix and 5 coefficients for the trend,
 # * the quadratic trend kriging has 20 coefficients to estimate: 5 coefficients for the covariance matrix and 15 coefficients for the trend.
 #
-# In the cantilever beam example, fitting the metamodel with a training sample which size is only equal to 20 is made much easier because the function to approximate is almost linear. 
+# In the cantilever beam example, fitting the metamodel with a training sample which size is only equal to 20 is made much easier because the function to approximate is almost linear.
