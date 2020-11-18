@@ -9,7 +9,7 @@ width = 40
 print(' 1: import openturns'.ljust(width), end=' ')
 try:
     import openturns as ot
-    print('ok')
+    print(ot.__version__)
 except ImportError:
     print('n/a')
     raise
