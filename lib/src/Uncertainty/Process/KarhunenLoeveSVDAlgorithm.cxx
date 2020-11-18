@@ -416,6 +416,7 @@ void KarhunenLoeveSVDAlgorithm::setVerticesWeights(const Point & verticesWeights
   const UnsignedInteger verticesNumber = sample_.getMesh().getVerticesNumber();
   if (!(verticesWeights.getSize() == verticesNumber)) throw InvalidArgumentException(HERE) << "Error: expected vertices weights of dimension=" << verticesNumber << ", got dimension=" << verticesWeights.getSize();
   const Scalar weight0 = verticesWeights[0];
+  uniformVerticesWeights_ = true;
   for (UnsignedInteger i = 0; i < verticesNumber; ++i)
   {
     if (!(verticesWeights[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive vertices weights, here weights[" << i << "]=" << verticesWeights[i];
@@ -436,6 +437,7 @@ void KarhunenLoeveSVDAlgorithm::setSampleWeights(const Point & sampleWeights)
   if (!(sampleWeights.getSize() == sampleSize)) throw InvalidArgumentException(HERE) << "Error: expected sample weights of dimension=" << sampleSize << ", got dimension=" << sampleWeights.getSize();
   const Scalar weight0 = sampleWeights[0];
   Scalar weightSum = 0.0;
+  uniformSampleWeights_ = true;
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
   {
     if (!(sampleWeights[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected positive sample weights, here weights[" << i << "]=" << sampleWeights[i];
