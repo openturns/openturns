@@ -30,7 +30,7 @@ Its first moments are:
 
     \begin{eqnarray*}
         \Expect{X} & = & \frac{k}{\lambda} + \gamma \\
-        \Var{X} & = & \frac{\sqrt{k}}{\lambda}
+        \Var{X} & = & \frac{k}{\lambda^2}
     \end{eqnarray*}
 
 
