@@ -4,7 +4,5 @@ This library depends on different third-party codes, some of which being distrib
 + the optional hmat library
 + the mandatory poissoninv set of functions for the efficient computation of the
   Poisson quantile function.
-+ the mandatory KolmogorovSmirnovDist set of functions for the efficient computation
-  of the exact Kolmogorov-Smirnov distribution.
 
 If you use OpenTURNS as a dependency of your own project, you are not contaminated by the GPL license of these codes as long as you use only their OpenTURNS interfaces and not their native interfaces.

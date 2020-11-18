@@ -1,7 +1,5 @@
-Extracted form the source files:
-** Author:    Leo Liberti
-...
-** Source:    GNU C++
-...
-** License:    (C) Leo Liberti, all rights reserved. Code published under the
-Common Public License.
+Ev3 is a library for symbolic computation created by Leo Liberti and published under the GNU LGPL version 3 or any later version.
+
+Copyright (C) 2008-2010 Leo Liberti for the original version.
+
+Various modifications have been introduced by the OpenTURNS team between 2015 and 2019.
