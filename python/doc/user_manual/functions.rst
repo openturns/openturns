@@ -70,6 +70,7 @@ Refer to :ref:`field_function`.
     FieldToPointFunction
     PointToFieldFunction
     ParametricPointToFieldFunction
+    VertexValuePointToFieldFunction
     PythonFieldFunction
     ValueFunction
     VertexValueFunction

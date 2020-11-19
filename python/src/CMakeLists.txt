@@ -320,14 +320,15 @@ ot_add_python_module(func func_module.i
                       FieldToPointFunction.i FieldToPointFunction_doc.i.in
                       PointToFieldFunctionImplementation.i PointToFieldFunctionImplementation_doc.i.in
                       PointToFieldFunction.i PointToFieldFunction_doc.i.in
-		      ParametricPointToFieldFunction.i ParametricPointToFieldFunction_doc.i.in
-		      PointToPointEvaluation.i PointToPointEvaluation_doc.i.in
-		      PointToPointConnection.i PointToPointConnection_doc.i.in
-		      FieldToPointConnection.i FieldToPointConnection_doc.i.in
-		      PointToFieldConnection.i PointToFieldConnection_doc.i.in
-		      FieldToFieldConnection.i FieldToFieldConnection_doc.i.in
-		      KarhunenLoeveProjection.i KarhunenLoeveProjection_doc.i.in
-		      KarhunenLoeveLifting.i KarhunenLoeveLifting_doc.i.in
+                      ParametricPointToFieldFunction.i ParametricPointToFieldFunction_doc.i.in
+                      VertexValuePointToFieldFunction.i VertexValuePointToFieldFunction_doc.i.in
+                      PointToPointEvaluation.i PointToPointEvaluation_doc.i.in
+                      PointToPointConnection.i PointToPointConnection_doc.i.in
+                      FieldToPointConnection.i FieldToPointConnection_doc.i.in
+                      PointToFieldConnection.i PointToFieldConnection_doc.i.in
+                      FieldToFieldConnection.i FieldToFieldConnection_doc.i.in
+                      KarhunenLoeveProjection.i KarhunenLoeveProjection_doc.i.in
+                      KarhunenLoeveLifting.i KarhunenLoeveLifting_doc.i.in
                       IndicatorFunction.i IndicatorFunction_doc.i.in
                       ValueFunction.i ValueFunction_doc.i.in
                       VertexValueFunction.i VertexValueFunction_doc.i.in

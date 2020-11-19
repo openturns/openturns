@@ -7,6 +7,7 @@
 ==== Major changes ====
 
 ==== New classes ====
+ * VertexValuePointToFieldFunction
 
 ==== API changes ====
  * Removed deprecated Pairs alias

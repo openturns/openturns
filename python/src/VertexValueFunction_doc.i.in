@@ -1,17 +1,12 @@
 %feature("docstring") OT::VertexValueFunction
 "Function mapping a field to a field.
 
-Available constructors:
-    VertexValueFunction(*spatialDim=1*)
-
-    VertexValueFunction(*h, spatialDim=1*)
-
 Parameters
 ----------
-l : :class:`~openturns.Function`
-    Function :math:`\ell: \Rset^n \times \Rset^d \rightarrow \Rset^{d'}`.
-spatialDim : int, :math:`\geq 1`
-    Dimension :math:`n` of the domain :math:`\cD`
+g : :class:`~openturns.Function`
+    Function :math:`g: \Rset^n \times \Rset^d \rightarrow \Rset^{d'}`.
+mesh : :class:`~openturns.Mesh`
+    Mesh on which the function is defined.
 
 Notes
 -----
@@ -28,14 +23,13 @@ with :math:`F = (\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}`, :math:`F' = (\vect{
 
 A vertex value function keeps the mesh unchanged: the input mesh is equal to the output mesh.
 
-The  field :math:`F'` is defined by the function :math:`\ell: \Rset^n \times \Rset^d \rightarrow \Rset^{d'}`:
+The field :math:`F'` is defined by the function :math:`g: \Rset^n \times \Rset^d \rightarrow \Rset^{d'}`:
 
 .. math::
 
-    \forall \vect{t}_i \in \cM_N, \quad \vect{v}'_i = \ell(\vect{t}_i, \vect{v}_i)
- 
-When :math:`\ell` is not specified, the constructor builds an object which evaluation operator is not defined (it throws a *NotYetImplementedException*). The instanciation of such an object is used to extract an actual :class:`~openturns.VertexValueFunction` from a  :class:`~openturns.Study`.
+    \forall \vect{t}_i \in \cM_N, \quad \vect{v}'_i = g(\vect{t}_i, \vect{v}_i)
 
+When :math:`g` is not specified, the constructor builds an object which evaluation operator is not defined (it throws a *NotYetImplementedException*). The instanciation of such an object is used to extract an actual :class:`~openturns.VertexValueFunction` from a :class:`~openturns.Study`.
 
 See also
 --------
@@ -45,28 +39,28 @@ Examples
 --------
 >>> import openturns as ot
 
-Create a function :math:`\ell : \Rset \times \Rset \rightarrow \Rset` such as:
+Create a function :math:`g : \Rset \times \Rset \rightarrow \Rset` such as:
 
 .. math::
 
-    h: \left|\begin{array}{rcl}
+    g: \left|\begin{array}{rcl}
                 \Rset \times \Rset & \rightarrow & \Rset \\
                 (t, x) & \mapsto & (x + t^2)
             \end{array}\right.
 
->>> h = ot.SymbolicFunction(['t', 'x'], ['x + t^2'])
+>>> g = ot.SymbolicFunction(['t', 'x'], ['x + t^2'])
 
-Convert :math:`h` into a vertex value function with :math:`n=1`:
+Convert :math:`g` into a vertex value function with :math:`n=1`:
 
 >>> n = 1
->>> tg = ot.RegularGrid(0.0, 0.2, 6)
->>> myVertexValueFunction = ot.VertexValueFunction(h, tg)
+>>> grid = ot.RegularGrid(0.0, 0.2, 6)
+>>> myVertexValueFunction = ot.VertexValueFunction(g, grid)
 >>> # Create a TimeSeries
->>> data = ot.Sample(tg.getN(), h.getInputDimension()-1)
+>>> data = ot.Sample(grid.getN(), g.getInputDimension()-1)
 >>> for i in range(data.getSize()):
 ...     for j in range(data.getDimension()):
 ...         data[i, j] = i * data.getDimension() + j
->>> ts = ot.TimeSeries(tg, data)
+>>> ts = ot.TimeSeries(grid, data)
 >>> print(ts)
     [ t   v0  ]
 0 : [ 0   0   ]
