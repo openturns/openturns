@@ -89,6 +89,7 @@
 %include PointToFieldFunctionImplementation.i
 %include PointToFieldFunction.i
 %include ParametricPointToFieldFunction.i
+%include VertexValuePointToFieldFunction.i
 %include FieldToFieldConnection.i
 %include FieldToPointConnection.i
 %include PointToFieldConnection.i

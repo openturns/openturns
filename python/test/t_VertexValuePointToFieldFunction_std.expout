@@ -1,0 +1,42 @@
+f= VertexValuePointToFieldFunction([t,x]->[x + t^2,5*x + 3*t])
+f input description= [x0]
+f output description= [y0,y1]
+f input dimension= 1
+f output dimension= 2
+input= [4.0]
+output time series=     [ y0    y1    ]
+0 : [  4    20    ]
+1 : [  4.04 20.6  ]
+2 : [  4.16 21.2  ]
+3 : [  4.36 21.8  ]
+4 : [  4.64 22.4  ]
+5 : [  5    23    ]
+called  1  times
+input= [[3.0], [4.0], [5.0]]
+output time series= [field 0:
+    [ t     y0    y1    ]
+0 : [  0     3    15    ]
+1 : [  0.2   3.04 15.6  ]
+2 : [  0.4   3.16 16.2  ]
+3 : [  0.6   3.36 16.8  ]
+4 : [  0.8   3.64 17.4  ]
+5 : [  1     4    18    ]
+field 1:
+    [ t     y0    y1    ]
+0 : [  0     4    20    ]
+1 : [  0.2   4.04 20.6  ]
+2 : [  0.4   4.16 21.2  ]
+3 : [  0.6   4.36 21.8  ]
+4 : [  0.8   4.64 22.4  ]
+5 : [  1     5    23    ]
+field 2:
+    [ t     y0    y1    ]
+0 : [  0     5    25    ]
+1 : [  0.2   5.04 25.6  ]
+2 : [  0.4   5.16 26.2  ]
+3 : [  0.6   5.36 26.8  ]
+4 : [  0.8   5.64 27.4  ]
+5 : [  1     6    28    ]]
+called  4  times
+f1= PointToFieldFunction :
+    VertexValuePointToFieldFunction([t,x]->[5*x + 3*t])

@@ -40,7 +40,7 @@ VertexValueFunction::VertexValueFunction()
 /* Parameter constructor */
 VertexValueFunction::VertexValueFunction(const Function & function,
     const Mesh & mesh)
-  : FieldFunctionImplementation(mesh, function.getInputDimension() - mesh.getDimension(), mesh, function.getOutputDimension())
+  : FieldFunctionImplementation(mesh, std::max(static_cast<SignedInteger>(function.getInputDimension()) - static_cast<SignedInteger>(mesh.getDimension()), static_cast<SignedInteger>(0)), mesh, function.getOutputDimension())
   , function_(function)
 {
   // Check that the given function has an input dimension large enough to be compatible with the mesh dimension
@@ -55,7 +55,7 @@ VertexValueFunction::VertexValueFunction(const Function & function,
 /* Parameter constructor */
 VertexValueFunction::VertexValueFunction(const Evaluation & evaluation,
     const Mesh & mesh)
-  : FieldFunctionImplementation(mesh, evaluation.getInputDimension() - mesh.getDimension(), mesh, evaluation.getOutputDimension())
+  : FieldFunctionImplementation(mesh, std::max(static_cast<SignedInteger>(evaluation.getInputDimension()) - static_cast<SignedInteger>(mesh.getDimension()), static_cast<SignedInteger>(0)), mesh, evaluation.getOutputDimension())
   , function_(evaluation)
 {
   // Check that the given function has an input dimension large enough to be compatible with the mesh dimension
@@ -70,7 +70,7 @@ VertexValueFunction::VertexValueFunction(const Evaluation & evaluation,
 /* Parameter constructor */
 VertexValueFunction::VertexValueFunction(const EvaluationImplementation & evaluation,
     const Mesh & mesh)
-  : FieldFunctionImplementation(mesh, evaluation.getInputDimension() - mesh.getDimension(), mesh, evaluation.getOutputDimension())
+  : FieldFunctionImplementation(mesh, std::max(static_cast<SignedInteger>(evaluation.getInputDimension()) - static_cast<SignedInteger>(mesh.getDimension()), static_cast<SignedInteger>(0)), mesh, evaluation.getOutputDimension())
   , function_(evaluation)
 {
   // Check that the given function has an input dimension large enough to be compatible with the mesh dimension

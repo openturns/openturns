@@ -1,0 +1,91 @@
+%feature("docstring") OT::VertexValuePointToFieldFunction
+"Function mapping a (vertex, value) point to a field.
+
+Parameters
+----------
+g : :class:`~openturns.Function`
+    Function :math:`g: \Rset^n \times \Rset^d \rightarrow \Rset^{d'}`.
+mesh : :class:`~openturns.Mesh`
+    Mesh on which the function is defined.
+
+Notes
+-----
+Let us note :math:`g : \Rset^{d} \rightarrow \Rset^{d'}` a function, :math:`\cM_N` a mesh of :math:`\cD \subset \Rset^{p}`. Vertex value (point to field) functions are particular functions that map the field :math:`F = (\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}` onto  :math:`F'` relying on the `g` function such as: 
+
+.. math:
+
+     \forall \vect{t}_i \in \cM_N, \quad \vect{v} \in \Rset^{d-p},\quad `F' = (\vect{t}_i, g(\vect{t}_i, \vect{v}_i))_{1 \leq i \leq N}`  
+
+.. math::
+
+    f: \left| \begin{array}{rcl}
+               \Rset^d & \rightarrow & \cM_N \times (\Rset^{d'})^{N} \\
+                F & \mapsto & F'
+              \end{array} \right.
+
+with :math:`F = (\vect{t}_i, \vect{v}_i)_{1 \leq i \leq N}`, :math:`F' = (\vect{t}_i, \vect{v}'_i)_{1 \leq i \leq N}` and :math:`\cM_{N}` a mesh of :math:`\cD \subset \Rset^{n}`.
+
+A vertex value function keeps the mesh unchanged: the input mesh is equal to the output mesh.
+
+The field :math:`F'` is defined by the function :math:`g: \Rset^n \times \Rset^d \rightarrow \Rset^{d'}`:
+
+.. math::
+
+    \forall \vect{t}_i \in \cM_N, \quad \vect{v}'_i = g(\vect{t}_i, \vect{v}_i)
+
+When :math:`g` is not specified, the constructor builds an object which evaluation operator is not defined (it throws a *NotYetImplementedException*).
+The instanciation of such an object is used to extract an actual :class:`~openturns.VertexValuePointToFieldFunction` from a :class:`~openturns.Study`.
+
+See also
+--------
+ParametricPointToFieldFunction
+
+Examples
+--------
+>>> import openturns as ot
+
+Create a function :math:`g : \Rset \times \Rset \rightarrow \Rset` such as:
+
+.. math::
+
+    g: \left|\begin{array}{rcl}
+                \Rset \times \Rset & \rightarrow & \Rset \\
+                (t, x) & \mapsto & (x + t^2)
+            \end{array}\right.
+
+>>> g = ot.SymbolicFunction(['t', 'x'], ['x + t^2'])
+
+Convert :math:`g` into a vertex value function with :math:`n=1`:
+
+>>> n = 1
+>>> grid = ot.RegularGrid(0.0, 0.2, 6)
+>>> f = ot.VertexValuePointToFieldFunction(g, grid)
+>>> x = [4.0]
+>>> print(f(x))
+    [ y0   ]
+0 : [ 4    ]
+1 : [ 4.04 ]
+2 : [ 4.16 ]
+3 : [ 4.36 ]
+4 : [ 4.64 ]
+5 : [ 5    ]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::VertexValuePointToFieldFunction::getFunction
+"Get the function of :math:`\ell`.
+
+Returns
+-------
+l : :class:`~openturns.Function`
+   Function :math:`\ell: \Rset^n \times \Rset^d \rightarrow \Rset^{d'}`.
+
+Examples
+--------
+>>> import openturns as ot
+>>> h = ot.SymbolicFunction(['t', 'x'], ['x + t^2'])
+>>> n = 1
+>>> mesh = ot.Mesh(n)
+>>> myVertexValuePointToFieldFunction = ot.ValueFunction(h, mesh)
+>>> print(myVertexValuePointToFieldFunction.getFunction())
+[t,x]->[x + t^2]"

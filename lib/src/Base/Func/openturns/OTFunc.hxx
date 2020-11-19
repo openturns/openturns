@@ -57,6 +57,7 @@
 #include "openturns/PointToFieldFunction.hxx"
 #include "openturns/PointToFieldFunctionImplementation.hxx"
 #include "openturns/ParametricPointToFieldFunction.hxx"
+#include "openturns/VertexValuePointToFieldFunction.hxx"
 #include "openturns/PointToPointEvaluation.hxx"
 #include "openturns/FieldToFieldConnection.hxx"
 #include "openturns/FieldToPointConnection.hxx"
