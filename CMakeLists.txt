@@ -564,6 +564,7 @@ if (BUILD_PYTHON)
     find_python_module (pandas)
     find_python_module (matplotlib 1.3.1)
     find_python_module (chaospy)
+    find_python_module (dill)
 
     if (USE_SPHINX)
       find_program (SPHINX_EXECUTABLE NAMES sphinx-build DOC "Sphinx Documentation Builder (sphinx-doc.org)")

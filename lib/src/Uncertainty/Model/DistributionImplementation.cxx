@@ -4638,6 +4638,7 @@ void DistributionImplementation::save(Advocate & adv) const
   adv.saveAttribute( "range_", range_ );
   adv.saveAttribute( "description_", description_ );
   adv.saveAttribute( "isCopula_", isCopula_ );
+  adv.saveAttribute( "isParallel_", isParallel_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -4657,6 +4658,8 @@ void DistributionImplementation::load(Advocate & adv)
   adv.loadAttribute( "range_", range_ );
   adv.loadAttribute( "description_", description_ );
   adv.loadAttribute( "isCopula_", isCopula_ );
+  if (adv.hasAttribute("isParallel_"))
+    adv.loadAttribute( "isParallel_", isParallel_ );
 }
 
 /* Transformation of distributions by usual functions */

@@ -14,12 +14,12 @@ obj_list.append(ot.SymbolicFunction(['x1', 'x2'], ['y1=x1+x2']))
 
 src = BytesIO()
 
-for i in range(len(obj_list)):
-    pickle.dump(obj_list[i], src)
+for obj in obj_list:
+    pickle.dump(obj, src)
 
 src.seek(0)
 
-for i in range(len(obj_list)):
-    obj = pickle.load(src)
+for obj in obj_list:
+    obj2 = pickle.load(src)
     print(('object: ' + str(obj)))
-    print(('same: ' + str(obj_list[i] == obj) + '\n'))
+    print(('same: ' + str(obj2 == obj) + '\n'))

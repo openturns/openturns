@@ -17,6 +17,7 @@
 === Documentation ===
 
 === Python module ===
+ * Serialize Python wrapper objects using dill (PythonDistribution, PythonFunction ...)
 
 === Miscellaneous ===
 
