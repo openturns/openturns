@@ -3,8 +3,6 @@
 
 Parameters
 ----------
-implementation : :class:`~openturns.KarhunenLoeveResultImplementation`
-    A specific implementation.
 covModel : :class:`~openturns.CovarianceModel`
     The covariance model.
 s : float, :math:`\geq0`
