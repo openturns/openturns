@@ -35,3 +35,8 @@ print("Estimated distribution=", repr(estimatedDistribution))
 sample = [[1.0]] * size
 estimatedDistribution = factory.build(sample)
 print("Estimated distribution=", repr(estimatedDistribution))
+
+# cobyla freeze bug
+ot.RandomGenerator.SetSeed(10)
+dist = factory.build(ot.Uniform().getSample(100))
+print('ok')
