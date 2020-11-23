@@ -1,6 +1,6 @@
 """
-Estimate a process event probability
-====================================
+Estimate a process-based event probability
+==========================================
 """
 # %%
 # The objective of this example is to evaluate the probability of an

@@ -1,6 +1,6 @@
 """
-Configuring the trend in Kriging
-================================
+Choose the trend basis of a kriging metamodel
+=============================================
 """
 # %%
 # The goal of this example is to show how to configure the trend in a Kriging metamodel. This is why this example focuses on the three available trends:

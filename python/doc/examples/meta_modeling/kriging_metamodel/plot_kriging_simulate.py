@@ -1,6 +1,6 @@
 """
-Simulate new trajectories from a kriging metamodel
-==================================================
+Kriging : generate trajectories from a metamodel
+================================================
 """
 # %%
 # The main goal of this example is to show how to simulate new trajectories from a kriging metamodel.

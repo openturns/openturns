@@ -66,3 +66,4 @@ Sampling methods
     directional_simulation
     lhs_simulation
     qmc_simulation
+    subset_sampling

@@ -1,5 +1,5 @@
 """
-Optimal LHS designs
+Optimize an LHS design of experiments.
 ===================
 """
 # %%

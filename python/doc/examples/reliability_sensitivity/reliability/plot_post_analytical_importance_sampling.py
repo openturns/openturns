@@ -1,9 +1,9 @@
 """
-Post analytical importance sampling
-===================================
+Use the post-analytical importance sampling algorithm
+=====================================================
 """
 # %%
-# In this example we want to estimate a threshold exceedance probability by combining approximation and simulation methods.
+# In this example we want to estimate the probability to exceed a threshold through the combination of approximation and simulation methods.
 #
 #   - perform an FORM or SORM study in order to find the design point,
 #

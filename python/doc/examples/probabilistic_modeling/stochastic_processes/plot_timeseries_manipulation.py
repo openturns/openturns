@@ -1,5 +1,5 @@
 """
-Time series manipulation
+Manipulate a time series
 ========================
 """
 # %%

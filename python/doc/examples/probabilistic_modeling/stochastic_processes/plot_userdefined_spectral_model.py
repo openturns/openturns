@@ -1,6 +1,6 @@
 """
-Create a custom spectral model
-==============================
+Create a spectral model
+=======================
 """
 # %%
 #

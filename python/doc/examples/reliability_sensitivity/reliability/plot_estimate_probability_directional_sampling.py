@@ -1,9 +1,9 @@
 """
-Probability estimation: directional simulation
-==============================================
+Use the Directional Sampling Algorithm
+======================================
 """
 # %%
-# In this example we estimate a failure probability with the directional simulation algorithm provided by the `DirectionalSampling` class.
+# In this example we estimate a failure probability with the directional simulation algorithm provided by the :class:`~openturns.DirectionalSampling` class.
 
 # %%
 # Introduction
@@ -81,3 +81,10 @@ algo.run()
 result = algo.getResult()
 probability = result.getProbabilityEstimate()
 print('Pf=', probability)
+
+# %%
+# We can observe the convergence history with the `drawProbabilityConvergence`
+# method.
+graph = algo.drawProbabilityConvergence()
+graph.setLogScale(ot.GraphImplementation.LOGX)
+view = viewer.View(graph)
