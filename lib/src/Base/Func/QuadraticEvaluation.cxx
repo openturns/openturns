@@ -138,17 +138,17 @@ Point QuadraticEvaluation::operator() (const Point & inP) const
   const UnsignedInteger nbRows = quadratic_.getNbRows();
   if (nbSheets == 0 || nbRows == 0)
     return result;
-  char uplo('L');
-  int n(nbRows);
-  int one(1);
-  double alpha(1.0);
-  double beta(0.0);
-  int luplo(1);
+  char uplo = 'L';
+  int n = nbRows;
+  int one = 1;
+  double alpha = 1.0;
+  double beta = 0.0;
+  int luplo = 1;
   Point temp(nbRows);
   for(UnsignedInteger index = 0; index < nbSheets; ++index)
   {
-    dsymv_(&uplo, &n, &alpha, const_cast<double*>(&(quadratic_(0, 0, index))), &n, const_cast<double*>(&(delta[0])), &one, &beta, &temp[0], &one, &luplo);
-    result[index] += 0.5 * ddot_(&n, const_cast<double*>(&delta[0]), &one, &temp[0], &one);
+    dsymv_(&uplo, &n, &alpha, const_cast<double*>(&(quadratic_(0, 0, index))), &n, const_cast<double*>(delta.data()), &one, &beta, const_cast<double*>(temp.data()), &one, &luplo);
+    result[index] += 0.5 * ddot_(&n, const_cast<double*>(delta.data()), &one, const_cast<double*>(temp.data()), &one);
   }
   callsNumber_.increment();
   return result;
@@ -169,19 +169,19 @@ Sample QuadraticEvaluation::operator() (const Sample & inS) const
   const UnsignedInteger nbRows = quadratic_.getNbRows();
   if (nbSheets == 0 || nbRows == 0)
     return result;
-  char side('L');
-  char uplo('L');
-  int m(nbRows);
-  int n(size);
-  int one(1);
-  double alpha(1.0);
-  double beta(0.0);
-  int lside(1);
-  int luplo(1);
+  char side = 'L';
+  char uplo = 'L';
+  int m = nbRows;
+  int n = size;
+  int one = 1;
+  double alpha = 1.0;
+  double beta = 0.0;
+  int lside = 1;
+  int luplo = 1;
   MatrixImplementation temp(nbRows, size);
   for(UnsignedInteger index = 0; index < nbSheets; ++index)
   {
-    dsymm_(&side, &uplo, &m, &n, &alpha, const_cast<double*>(&(quadratic_(0, 0, index))), &m, const_cast<double*>(&(delta(0, 0))), &m, &beta, &temp(0, 0), &m, &lside, &luplo);
+    dsymm_(&side, &uplo, &m, &n, &alpha, const_cast<double*>(&(quadratic_(0, 0, index))), &m, const_cast<double*>(delta.data()), &m, &beta, const_cast<double*>(temp.data()), &m, &lside, &luplo);
     for(UnsignedInteger i = 0; i < size; ++i)
       result(i, index) += 0.5 * ddot_(&m, const_cast<double*>(&delta(i, 0)), &one, &temp(0, i), &one);
   }
