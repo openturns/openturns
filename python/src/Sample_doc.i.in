@@ -656,34 +656,6 @@ Examples
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Sample::computeStandardDeviation
-"Compute the Cholesky factor of the covariance matrix.
-
-Estimated from the sample.
-
-Returns
--------
-L : :class:`~openturns.TriangularMatrix`
-    Lower (left) Cholesky factor of the covariance matrix estimated from the
-    sample.
-
-Raises
-------
-RuntimeError : If the estimated covariance matrix is not positive definite. In
-    this case, you might want to estimate the covariance and manually shrink
-    negative eigenvalues.
-
-Examples
---------
->>> import openturns as ot
->>> ot.RandomGenerator.SetSeed(0)
->>> sample = ot.Normal(2).getSample(30)
->>> print(sample.computeStandardDeviation())
-[[ 0.972976  0         ]
- [ 0.0187161 0.950198  ]]"
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Sample::computeStandardDeviationPerComponent
 "Estimate the componentwise standard deviations.
 
 Returns
@@ -705,7 +677,7 @@ Examples
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> sample = ot.Normal(2).getSample(30)
->>> print(sample.computeStandardDeviationPerComponent())
+>>> print(sample.computeStandardDeviation())
 [0.972976,0.950382]"
 
 // ---------------------------------------------------------------------

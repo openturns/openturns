@@ -106,7 +106,7 @@ Point KernelSmoothing::computeSilvermanBandwidth(const Sample & sample) const
     if (scaleQuartile[i] > 0.0) scale[i] = scaleQuartile[i];
     else
     {
-      if (scaleStd.getSize() == 0) scaleStd = sample.computeStandardDeviationPerComponent();
+      if (scaleStd.getSize() == 0) scaleStd = sample.computeStandardDeviation();
       scale[i] = scaleStd[i];
     }
   }
@@ -180,7 +180,7 @@ Point KernelSmoothing::computePluginBandwidth(const Sample & sample) const
   if (dimension != 1) throw InvalidArgumentException(HERE) << "Error: plugin bandwidth is available only for 1D sample";
   const UnsignedInteger size = sample.getSize();
   // Approximate the derivatives by smoothing under the Normal assumption
-  const Scalar sd = sample.computeStandardDeviationPerComponent()[0];
+  const Scalar sd = sample.computeStandardDeviation()[0];
   if (!(sd > 0.0))
     throw NotDefinedException(HERE) << "Cannot compute the plugin bandwith when the variance is null";
   const Scalar phi6Normal = -15.0 / (16.0 * std::sqrt(M_PI)) * std::pow(sd, -7.0);

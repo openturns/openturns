@@ -122,7 +122,7 @@ outputSample = outputVect.getSample(montecarlosize)
 # %%
 empiricalMean = outputSample.computeMean()
 print(empiricalMean)
-empiricalSd = outputSample.computeStandardDeviationPerComponent()
+empiricalSd = outputSample.computeStandardDeviation()
 print(empiricalSd)
 
 # %%
@@ -199,7 +199,7 @@ outputSample = outputVect.getSample(montecarlosize)
 
 empiricalMean = outputSample.computeMean()
 print(empiricalMean)
-empiricalSd = outputSample.computeStandardDeviationPerComponent()
+empiricalSd = outputSample.computeStandardDeviation()
 print(empiricalSd)
 
 # %%

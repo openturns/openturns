@@ -127,7 +127,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfMoments(const Sample & 
   const Scalar xMin = sample.getMin()[0];
   const Scalar u = xMin - std::abs(xMin) / (2.0 + size);
   const Scalar mean = sample.computeMean()[0] - u;
-  const Scalar std = sample.computeStandardDeviationPerComponent()[0];
+  const Scalar std = sample.computeStandardDeviation()[0];
   const Scalar xi = 0.5 * (std::pow(mean / std, 2) - 1.0);
   // The moment estimator is valid only if the estimated xi parameter is greater than -1/4
   if (xi <= -0.25) throw InvalidArgumentException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution with the method of moments when the estimated xi parameter=" << xi << " is less than -0.25";

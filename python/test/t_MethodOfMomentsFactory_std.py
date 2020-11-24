@@ -39,7 +39,7 @@ factory = ot.MethodOfMomentsFactory(distribution)
 factory.setKnownParameter([a, b], [2, 3])
 solver = factory.getOptimizationAlgorithm()
 sampleMean = sample.computeMean()[0]
-sampleSigma = sample.computeStandardDeviationPerComponent()[0]
+sampleSigma = sample.computeStandardDeviation()[0]
 startingPoint = [sampleMean, sampleSigma]
 solver.setStartingPoint(startingPoint)
 factory.setOptimizationAlgorithm(solver)

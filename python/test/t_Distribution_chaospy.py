@@ -27,7 +27,7 @@ for chaospy_dist in [d0, d1, d2]:
     print('mean=', distribution.getMean())
     print('mean(sampling)=', sample.computeMean())
     print('std=', distribution.getStandardDeviation())
-    print('std(sampling)=', sample.computeStandardDeviationPerComponent())
+    print('std(sampling)=', sample.computeStandardDeviation())
     print('skewness=', distribution.getSkewness())
     print('skewness(sampling)=', sample.computeSkewness())
     print('kurtosis=', distribution.getKurtosis())

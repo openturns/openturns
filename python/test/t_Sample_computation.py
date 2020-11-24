@@ -20,8 +20,6 @@ try:
     print("mean=", repr(sample.computeMean()))
     print("covariance=", repr(sample.computeCovariance()))
     print("standard deviation=", repr(sample.computeStandardDeviation()))
-    print("standard deviation per component=", repr(
-        sample.computeStandardDeviationPerComponent()))
     print("Pearson correlation=", repr(sample.computePearsonCorrelation()))
     print("Spearman correlation=", repr(sample.computeSpearmanCorrelation()))
     print("Kendall tau=", repr(sample.computeKendallTau()))

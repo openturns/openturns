@@ -114,7 +114,7 @@ int main(int, char *[])
       // try to generate a sample
       Sample sample(sampler.getSample(50));
 
-      std::cout << "  obtained posterior ~N(" << sample.computeMean()[0] << ", " << sample.computeStandardDeviationPerComponent()[0] << ")" << std::endl;
+      std::cout << "  obtained posterior ~N(" << sample.computeMean()[0] << ", " << sample.computeStandardDeviation()[0] << ")" << std::endl;
 
       std::cout << "  acceptance rate=" << sampler.getAcceptanceRate() << std::endl;
     }

@@ -122,7 +122,7 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
   const Sample residualSample(linearModelResult.getSampleResiduals());
   // Compute mean & standard deviation
   const Scalar mean = residualSample.computeMean()[0];
-  const Scalar std = residualSample.computeStandardDeviationPerComponent()[0];
+  const Scalar std = residualSample.computeStandardDeviation()[0];
   // The statistical test checks whether the mean is 0 or not
   // H0 : mu = 0
   // H1 : mu < 0 or mu > 0
@@ -187,7 +187,7 @@ TestResult LinearModelTest::LinearModelHarrisonMcCabe(const Sample & firstSample
   for(UnsignedInteger i = 0; i < simulationSize; ++i)
   {
     const Sample sample(Normal().getSample(residualSize));
-    const Sample standardSample((sample - sample.computeMean()) / sample.computeStandardDeviationPerComponent());
+    const Sample standardSample((sample - sample.computeMean()) / sample.computeStandardDeviation());
     Scalar sumSelectResidualsSimulation = 0;
     for (UnsignedInteger j = 0; j < breakIndex; ++ j)
     {
