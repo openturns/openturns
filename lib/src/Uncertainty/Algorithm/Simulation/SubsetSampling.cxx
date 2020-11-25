@@ -85,7 +85,7 @@ SubsetSampling * SubsetSampling::clone() const
 void SubsetSampling::run()
 {
   // First, initialize some parameters
-  convergenceStrategy_.clear();
+  convergenceStrategy_.setDimension(2);
   numberOfSteps_ = 0;
   thresholdPerStep_.clear();
   gammaPerStep_.clear();
