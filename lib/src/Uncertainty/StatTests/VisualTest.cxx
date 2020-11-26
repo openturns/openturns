@@ -54,17 +54,17 @@ Graph VisualTest::DrawQQplot(const Sample & sample1,
   else if (pointNumber < 1000) cloudQQplot.setPointStyle("bullet");
   else cloudQQplot.setPointStyle("dot");
   Graph graphQQplot("Two sample QQ-plot", sample1.getDescription()[0], sample2.getDescription()[0], true, "topleft");
-  // First, the bisectrice
+  // First, the bisector
   Sample diagonal(2, 2);
   Point point(2);
   diagonal(0, 0) = data(0, 0);
   diagonal(0, 1) = data(0, 0);
   diagonal(1, 0) = data(pointNumber - 1, 0);
   diagonal(1, 1) = data(pointNumber - 1, 0);
-  Curve bisectrice(diagonal, "Test line");
-  bisectrice.setColor("red");
-  bisectrice.setLineStyle("dashed");
-  graphQQplot.add(bisectrice);
+  Curve bisector(diagonal, "Test line");
+  bisector.setColor("red");
+  bisector.setLineStyle("dashed");
+  graphQQplot.add(bisector);
   // Then the QQ plot
   graphQQplot.add(cloudQQplot);
   return graphQQplot;
@@ -90,17 +90,17 @@ Graph VisualTest::DrawQQplot(const Sample & sample,
   else if (size < 1000) cloudQQplot.setPointStyle("bullet");
   else cloudQQplot.setPointStyle("dot");
   Graph graphQQplot("Sample versus model QQ-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
-  // First, the bisectrice
+  // First, the bisector
   Sample diagonal(2, 2);
   Point point(2);
   diagonal(0, 0) = data(0, 0);
   diagonal(0, 1) = data(0, 0);
   diagonal(1, 0) = data(size - 1, 0);
   diagonal(1, 1) = data(size - 1, 0);
-  Curve bisectrice(diagonal, "Test line");
-  bisectrice.setColor("red");
-  bisectrice.setLineStyle("dashed");
-  graphQQplot.add(bisectrice);
+  Curve bisector(diagonal, "Test line");
+  bisector.setColor("red");
+  bisector.setLineStyle("dashed");
+  graphQQplot.add(bisector);
   // Then the QQ plot
   graphQQplot.add(cloudQQplot);
   return graphQQplot;
@@ -121,14 +121,14 @@ Graph VisualTest::DrawCDFplot(const Sample & sample1,
   else if (pointNumber < 1000) cloudCDFplot.setPointStyle("bullet");
   else cloudCDFplot.setPointStyle("dot");
   Graph graphCDFplot("Two sample CDF-plot", sample1.getDescription()[0], sample2.getDescription()[0], true, "topleft");
-  // First, the bisectrice
+  // First, the bisector
   Sample diagonal(2, 2);
   diagonal(1, 0) = 1.0;
   diagonal(1, 1) = 1.0;
-  Curve bisectrice(diagonal, "Test line");
-  bisectrice.setColor("red");
-  bisectrice.setLineStyle("dashed");
-  graphCDFplot.add(bisectrice);
+  Curve bisector(diagonal, "Test line");
+  bisector.setColor("red");
+  bisector.setLineStyle("dashed");
+  graphCDFplot.add(bisector);
   // Then the CDF plot
   graphCDFplot.add(cloudCDFplot);
   return graphCDFplot;
@@ -149,14 +149,14 @@ Graph VisualTest::DrawCDFplot(const Sample & sample,
   else if (pointNumber < 1000) cloudCDFplot.setPointStyle("bullet");
   else cloudCDFplot.setPointStyle("dot");
   Graph graphCDFplot("Sample versus model CDF-plot", sample.getDescription()[0], dist.__str__(), true, "topleft");
-  // First, the bisectrice
+  // First, the bisector
   Sample diagonal(2, 2);
   diagonal(1, 0) = 1.0;
   diagonal(1, 1) = 1.0;
-  Curve bisectrice(diagonal, "Test line");
-  bisectrice.setColor("red");
-  bisectrice.setLineStyle("dashed");
-  graphCDFplot.add(bisectrice);
+  Curve bisector(diagonal, "Test line");
+  bisector.setColor("red");
+  bisector.setLineStyle("dashed");
+  graphCDFplot.add(bisector);
   // Then the CDF plot
   graphCDFplot.add(cloudCDFplot);
   return graphCDFplot;
