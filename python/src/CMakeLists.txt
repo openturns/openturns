@@ -779,6 +779,9 @@ TemperatureProfile.i TemperatureProfile_doc.i.in
 TemperatureProfileImplementation.i TemperatureProfileImplementation_doc.i.in
                       LowDiscrepancyExperiment.i LowDiscrepancyExperiment_doc.i.in
                       MonteCarloExperiment.i MonteCarloExperiment_doc.i.in
+                      SplitterImplementation.i SplitterImplementation_doc.i.in
+                      KFoldSplitter.i KFoldSplitter_doc.i.in
+                      LeaveOneOutSplitter.i LeaveOneOutSplitter_doc.i.in
                       UncertaintyWeightedExperimentTemplateDefs.i
                    )
 

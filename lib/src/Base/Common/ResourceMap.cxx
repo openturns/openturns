@@ -662,6 +662,9 @@ void ResourceMap::loadDefaultConfiguration()
   // KFold parameters
   addAsUnsignedInteger("KFold-DefaultK", 10);
 
+  // KFold parameters
+  addAsBool("KFoldSplitter-Randomize", false);
+
   // BlendedStep parameters //
   addAsScalar("BlendedStep-DefaultEta", 1.0);
 

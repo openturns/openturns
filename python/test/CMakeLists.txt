@@ -659,6 +659,7 @@ ot_pyinstallcheck_test (LowDiscrepancyExperiment_std)
 ot_pyinstallcheck_test (MonteCarloExperiment_std)
 ot_pyinstallcheck_test (CombinatorialGenerator_std)
 ot_pyinstallcheck_test (Experiment_python)
+ot_pyinstallcheck_test (Splitter_std IGNOREOUT)
 
 ## OrthogonalBasis
 ot_pyinstallcheck_test (LinearEnumerateFunction_std)

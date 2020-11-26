@@ -1,0 +1,22 @@
+%define OT_LeaveOneOutSplitter_doc
+"Leave-one-out splitter.
+
+Generates train/test indices to split samples in train/test sets.
+Each sample is used once as a test set while the remaining samples form the training set.
+
+Parameters
+----------
+N : int
+    Size of the set of indices in which the indices are chosen
+
+Examples
+--------
+>>> import openturns as ot
+>>> X = ot.Normal().getSample(10)
+>>> splitter = ot.LeaveOneOutSplitter(X.getSize())
+>>> for indices1, indices2 in splitter:
+...     X_train, X_test = X[indices1], X[indices2]
+"
+%enddef
+%feature("docstring") OT::LeaveOneOutSplitter
+OT_LeaveOneOutSplitter_doc
