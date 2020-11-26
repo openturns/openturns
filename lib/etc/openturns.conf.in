@@ -44,7 +44,10 @@
 
   <!-- OT::KFold parameters -->
   <KFold-DefaultK value_int="10" />
-  
+
+  <!-- OT::KFoldSplitter parameters -->
+  <KFoldSplitter-Randomize value_bool="false" />
+
   <!-- OT::BlendedStep parameters -->
   <BlendedStep-DefaultEta value_float="1.0" />
 
