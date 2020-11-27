@@ -3,8 +3,8 @@ Kriging the cantilever beam model using HMAT
 ============================================
 """
 # %%
-# In this example, we create a kriging metamodel of the :ref:`cantilever beam <use-case-cantilever-beam>`. We use a squared exponential covariance model for the kriging. In order to estimate the hyper-parameters, we use a design of experiments which size is 100.
-#
+# In this example, we create a Kriging metamodel of the :ref:`cantilever beam <use-case-cantilever-beam>`. We use a squared exponential covariance kernel for the Gaussian process. In order to estimate the hyper-parameters, we use a design of experiments of size is 20.
+
 
 # %%
 # Definition of the model
@@ -17,32 +17,28 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# We first load the model from the usecases module :
+# We load the cantilever beam use case :
 from openturns.usecases import cantilever_beam as cantilever_beam
 cb = cantilever_beam.CantileverBeam()
 
 # %%
-# We define the model which evaluates the output Y depending on the inputs.
+# We define the function which evaluates the output depending on the inputs.
 model = cb.model
 
 # %%
-# Then we load the distribution of the input random vector. 
-dimension = cb.dim # number of inputs
+# Then we define the distribution of the input random vector. 
+dim = cb.dim # number of inputs
 myDistribution = cb.distribution
-
-# %%
-# We use a transformation because data contain very large values.
-transformation = myDistribution.getIsoProbabilisticTransformation()
 
 # %%
 # Create the design of experiments
 # --------------------------------
 
 # %%
-# We consider a simple Monte-Carlo sampling as a design of experiments. This is why we generate an input sample using the `getSample` method of the distribution. Then we evaluate the output using the `model` function.
+# We consider a simple Monte-Carlo sample as a design of experiments. This is why we generate an input sample using the `getSample` method of the distribution. Then we evaluate the output using the `model` function.
 
 # %%
-sampleSize_train = 100
+sampleSize_train = 20
 X_train = myDistribution.getSample(sampleSize_train)
 Y_train = model(X_train)
 
@@ -61,13 +57,6 @@ view = viewer.View(histo)
 # --------------------
 
 # %%
-# In order to create the kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class. Then we use a squared exponential covariance model. 
-
-# %%
-basis = ot.ConstantBasisFactory(dimension).build()
-covarianceModel = ot.SquaredExponential([1.]*dimension, [1.0])
-
-# %%
 # We rely on `H-Matrix` approximation for accelerating the evaluation.
 # We change default parameters (compression, recompression) to higher values. The model is less accurate but very fast to build & evaluate.  
 
@@ -77,13 +66,39 @@ ot.ResourceMap.SetAsScalar("HMatrix-AssemblyEpsilon",  1e-3)
 ot.ResourceMap.SetAsScalar( "HMatrix-RecompressionEpsilon",  1e-4)
 
 # %%
-# Finally, we use the `KrigingAlgorithm` class to create the kriging metamodel, taking the training sample, the covariance model and the trend basis as input arguments. 
+# In order to create the Kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class. Then we use a squared exponential covariance kernel.
+# The `SquaredExponential` kernel has one amplitude coefficient and 4 scale coefficients. This is because this covariance kernel is anisotropic : each of the 4 input variables is associated with its own scale coefficient. 
 
 # %%
-algo = ot.KrigingAlgorithm(transformation(X_train), Y_train, covarianceModel, basis)
-algo.run()
-result = algo.getResult()
-krigingMetamodel = result.getMetaModel()
+basis = ot.ConstantBasisFactory(dim).build()
+covarianceModel = ot.SquaredExponential(dim)
+
+# %%
+# Typically, the optimization algorithm is quite good at setting sensible optimization bounds.
+# In this case, however, the range of the input domain is extreme.
+
+# %%
+print("Lower and upper bounds of X_train:")
+print(X_train.getMin(), X_train.getMax())
+
+# %%
+# We need to manually define sensible optimization bounds.
+# Note that since the amplitude parameter is computed analytically (this is possible when the output dimension is 1), we only need to set bounds on the scale parameter.
+
+# %%
+scaleOptimizationBounds = ot.Interval([1.0, 1.0, 1.0, 1.0e-10], [1.0e11, 1.0e3, 1.0e1, 1.0e-5])
+
+# %%
+# Finally, we use the `KrigingAlgorithm` class to create the Kriging metamodel.
+# It requires a training sample, a covariance kernel and a trend basis as input arguments. 
+# We need to set the initial scale parameter for the optimization. The upper bound of the input domain is a sensible choice here.
+# We must not forget to actually set the optimization bounds defined above.
+
+# %%
+covarianceModel.setScale(X_train.getMax())
+algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
+algo.setOptimizationBounds(scaleOptimizationBounds)
+
 
 # %%
 # The `run` method has optimized the hyperparameters of the metamodel. 
@@ -91,7 +106,15 @@ krigingMetamodel = result.getMetaModel()
 # We can then print the constant trend of the metamodel, which have been estimated using the least squares method.
 
 # %%
-result.getTrendCoefficients()
+algo.run()
+result = algo.getResult()
+krigingMetamodel = result.getMetaModel()
+
+# %%
+# The `getTrendCoefficients` method returns the coefficients of the trend.
+
+# %%
+print(result.getTrendCoefficients())
 
 # %%
 # We can also print the hyperparameters of the covariance model, which have been estimated by maximizing the likelihood. 
@@ -104,7 +127,7 @@ result.getCovarianceModel()
 # ----------------------
 
 # %%
-# We finally want to validate the kriging metamodel. This is why we generate a validation sample which size is equal to 100 and we evaluate the output of the model on this sample.
+# We finally want to validate the Kriging metamodel. This is why we generate a validation sample with size 100 and we evaluate the output of the model on this sample.
 
 # %%
 sampleSize_test = 100
@@ -115,17 +138,14 @@ Y_test = model(X_test)
 # The `MetaModelValidation` classe makes the validation easy. To create it, we use the validation samples and the metamodel. 
 
 # %%
-val = ot.MetaModelValidation(transformation(X_test), Y_test, krigingMetamodel)
+val = ot.MetaModelValidation(X_test, Y_test, krigingMetamodel)
 
 # %%
 # The `computePredictivityFactor` computes the Q2 factor. 
 
 # %%
 Q2 = val.computePredictivityFactor()[0]
-Q2
-
-# %%
-# Since the Q2 is larger than 95%, we can say that the quality is acceptable. 
+print(Q2)
 
 # %%
 # The residuals are the difference between the model and the metamodel. 
@@ -133,10 +153,13 @@ Q2
 # %%
 r = val.getResidualSample()
 graph = ot.HistogramFactory().build(r).drawPDF()
+graph.setXTitle("Residuals (cm)")
+graph.setTitle("Distribution of the residuals")
+graph.setLegends([""])
 view = viewer.View(graph)
 
 # %%
-# We observe that the negative residuals occur with nearly the same frequency of the positive residuals: this is a first   sign of good quality. Furthermore, the residuals are most of the times contained in the [-1,1] interval, which is a sign of quality given the amplitude of the output (approximately from 5 to 25 cm).
+# We observe that the negative residuals occur with nearly the same frequency of the positive residuals: this is a first sign of good quality.
 
 # %%
 # The `drawValidation` method allows to compare the observed outputs and the metamodel outputs.
@@ -147,7 +170,3 @@ graph.setTitle("Q2 = %.2f%%" % (100*Q2))
 view = viewer.View(graph)
 
 plt.show()
-# %%
-# We observe that the metamodel predictions are close to the model outputs, since most red points are close to the diagonal. However, when we consider extreme deviations (i.e. less than 10 or larger than 20), then the quality is less obvious.
-#
-# Given that the kriging metamodel quality is sensitive to the design of experiments, it might be interesting to consider a Latin Hypercube Sampling (LHS) design to further improve the predictions quality.
