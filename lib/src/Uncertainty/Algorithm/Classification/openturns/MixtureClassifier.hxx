@@ -54,9 +54,7 @@ public:
   /** Associate a point to a class */
   using ClassifierImplementation::classify;
   UnsignedInteger classify(const Point & inP) const override;
-
-private:
-  Indices classifySequential(const Sample & inS) const override;
+  Indices classify(const Sample & inS) const override;
 public:
 
   /** Grade a point as if it were associated to a class */

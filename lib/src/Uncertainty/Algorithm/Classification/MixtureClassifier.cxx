@@ -84,7 +84,7 @@ UnsignedInteger MixtureClassifier::classify(const Point& inP) const
   return bestClass;
 }
 
-Indices MixtureClassifier::classifySequential(const Sample & inS) const
+Indices MixtureClassifier::classify(const Sample & inS) const
 {
   const UnsignedInteger mixtureSize = mixture_.getDistributionCollection().getSize();
   const UnsignedInteger size = inS.getSize();

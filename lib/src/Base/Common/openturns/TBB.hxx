@@ -162,6 +162,16 @@ public:
 
   template <typename BODY>
   static inline
+  void ParallelForCondition(const Bool condition, UnsignedInteger from, UnsignedInteger to, const BODY & body, std::size_t gs = 1)
+  {
+    if (condition)
+      ParallelFor(from, to, body, gs);
+    else
+      body(tbb::blocked_range<UnsignedInteger>(from, to, gs));
+  }
+
+  template <typename BODY>
+  static inline
   void ParallelReduce( UnsignedInteger from, UnsignedInteger to, BODY & body, std::size_t gs = 1)
   {
     TBBContext context;
