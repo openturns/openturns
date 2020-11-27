@@ -24,7 +24,6 @@
 
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/FunctionImplementation.hxx"
-#include "openturns/Point.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -127,7 +126,7 @@ public:
 
 
   /** Virtual constructor */
-  virtual MethodBoundEvaluation * clone() const
+  MethodBoundEvaluation * clone() const override
   {
     return new MethodBoundEvaluation(*this);
   }
@@ -141,7 +140,7 @@ public:
 
 
   /** String converter */
-  virtual String __repr__() const
+  String __repr__() const override
   {
     OSS oss;
     oss << "class=MethodBoundEvaluation name=" << getName();
@@ -152,23 +151,28 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /** Operator () */
-  virtual Point operator() (const Point & inP) const
+  Point operator() (const Point & inP) const override
   {
-    Point result(ReturnTypeAdapter<ReturnType_>::toPoint( ( obj_.*method_ ) ( ArgumentTypeAdapter<ArgumentType_>::fromPoint( inP ) ) ));
+    Point result(ReturnTypeAdapter<ReturnType_>::toPoint( ( obj_.*method_ ) (ArgumentTypeAdapter<ArgumentType_>::fromPoint(inP))));
     callsNumber_.increment();
     return result;
   }
 
   /** Accessor for input point dimension */
-  virtual UnsignedInteger getInputDimension() const
+  UnsignedInteger getInputDimension() const override
   {
     return inputDimension_;
   }
 
   /** Accessor for output point dimension */
-  virtual UnsignedInteger getOutputDimension() const
+  UnsignedInteger getOutputDimension() const override
   {
     return outputDimension_;
+  }
+
+  Bool isParallel() const override
+  {
+    return false;
   }
 
 
@@ -203,9 +207,9 @@ FunctionImplementation
 bindMethod (const EvaluableObject & obj,
             typename MethodBoundEvaluation<EvaluableObject, ReturnType_, ArgumentType_>::EvaluationMethod method,
             const UnsignedInteger inputDimension,
-            const UnsignedInteger outputDimension )
+            const UnsignedInteger outputDimension)
 {
-  return FunctionImplementation( new MethodBoundEvaluation<EvaluableObject, ReturnType_, ArgumentType_>( obj, method, inputDimension, outputDimension ) );
+  return FunctionImplementation(new MethodBoundEvaluation<EvaluableObject, ReturnType_, ArgumentType_>(obj, method, inputDimension, outputDimension));
 }
 
 

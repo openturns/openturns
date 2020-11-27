@@ -394,6 +394,16 @@ Bool DualLinearCombinationEvaluation::isLinearlyDependent(const UnsignedInteger 
   return true;
 }
 
+/* Is it safe to call in parallel? */
+Bool DualLinearCombinationEvaluation::isParallel() const
+{
+  for (UnsignedInteger i = 0; i < functionsCollection_.getSize(); ++i)
+    if (!functionsCollection_[i].getImplementation()->isParallel())
+      return false;
+
+  return true;
+}
+
 /* Method save() stores the object through the StorageManager */
 void DualLinearCombinationEvaluation::save(Advocate & adv) const
 {

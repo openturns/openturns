@@ -204,4 +204,11 @@ Bool ComposedEvaluation::isLinearlyDependent(const UnsignedInteger index) const
   return leftFunction_.isLinearlyDependent(index) && rightFunction_.isLinearlyDependent(index);
 }
 
+/* Is it safe to call in parallel? */
+Bool ComposedEvaluation::isParallel() const
+{
+  return leftFunction_.getImplementation()->isParallel() && rightFunction_.getImplementation()->isParallel();
+}
+
+
 END_NAMESPACE_OPENTURNS

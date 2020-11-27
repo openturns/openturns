@@ -467,6 +467,12 @@ Bool PythonEvaluation::isLinearlyDependent(const UnsignedInteger index) const
     return false;
 }
 
+/* Is it safe to call in parallel? */
+Bool PythonEvaluation::isParallel() const
+{
+  return false;
+}
+
 /* Method save() stores the object through the StorageManager */
 void PythonEvaluation::save(Advocate & adv) const
 {

@@ -78,6 +78,8 @@ public:
   Bool isLinear() const override;
   Bool isLinearlyDependent(const UnsignedInteger index) const override;
 
+  /** Is it safe to call in parallel? */
+  Bool isParallel() const override;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

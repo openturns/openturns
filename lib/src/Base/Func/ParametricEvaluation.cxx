@@ -209,6 +209,10 @@ Bool ParametricEvaluation::isLinearlyDependent(const UnsignedInteger index) cons
   return function_.isLinearlyDependent(inputPositions_[index]);
 }
 
+Bool ParametricEvaluation::isParallel() const
+{
+  return function_.getImplementation()->isParallel();
+}
 
 /* String converter */
 String ParametricEvaluation::__repr__() const

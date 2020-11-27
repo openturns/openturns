@@ -124,6 +124,9 @@ public:
   /** Retrieve the history of the output values */
   Sample getOutputHistory() const;
 
+  /** Is it safe to call in parallel? */
+  Bool isParallel() const override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

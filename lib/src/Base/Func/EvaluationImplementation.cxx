@@ -278,6 +278,12 @@ Bool EvaluationImplementation::isLinearlyDependent(const UnsignedInteger index) 
   return false;
 }
 
+/* Is it safe to call in parallel? */
+Bool EvaluationImplementation::isParallel() const
+{
+  return true;
+}
+
 /* Invalid values check accessor */
 void EvaluationImplementation::setCheckOutput(const Bool checkOutput)
 {

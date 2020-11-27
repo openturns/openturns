@@ -207,6 +207,12 @@ Bool EvaluationProxy::isLinearlyDependent(const UnsignedInteger index) const
   return evaluation_.isLinearlyDependent(index);
 }
 
+/* Is it safe to call in parallel? */
+Bool EvaluationProxy::isParallel() const
+{
+  return evaluation_.getImplementation()->isParallel();
+}
+
 /* Invalid values check accessor */
 void EvaluationProxy::setCheckOutput(const Bool checkOutput)
 {
