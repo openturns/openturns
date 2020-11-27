@@ -32,7 +32,8 @@ Subset Sampling
 # First, import the python modules: 
 
 # %%
-from  openturns import *
+import openturns as ot
+from openturns.viewer import View
 
 # %%
 # Create the probabilistic model :math:`Y = g(X)`
@@ -42,40 +43,40 @@ from  openturns import *
 # Create the input random vector :math:`X`:
 
 # %%
-X = RandomVector(Normal([0.25]*2, [1]*2, IdentityMatrix(2)))
+X = ot.RandomVector(ot.Normal([0.25]*2, [1]*2, ot.IdentityMatrix(2)))
 
 # %%
 # Create the function :math:`g`:
 
 # %%
-g=SymbolicFunction(['x1', 'x2'], ['20-(x1-x2)^2-8*(x1+x2-4)^3'])
+g=ot.SymbolicFunction(['x1', 'x2'], ['20-(x1-x2)^2-8*(x1+x2-4)^3'])
 print('function g: ', g)
 
 # %%
 # In order to be able to get the subset samples used in the algorithm, it is necessary to transform the *SymbolicFunction* into a *MemoizeFunction*:
 
 # %%
-g = MemoizeFunction(g)
+g = ot.MemoizeFunction(g)
 
 # %%
 # Create the output random vector :math:`Y = g(X)`:
 
 # %%
-Y = CompositeRandomVector(g,X)
+Y = ot.CompositeRandomVector(g,X)
 
 # %%
 # Create the event :math:`\{ Y = g(X) \leq 0 \}`
 # ----------------------------------------------
 
 # %%
-myEvent = ThresholdEvent(Y, LessOrEqual(), 0.0) 
+myEvent = ot.ThresholdEvent(Y, ot.LessOrEqual(), 0.0) 
 
 # %%
 # Evaluate the probability with the subset sampling technique
 # -----------------------------------------------------------
 
 # %%
-algo = SubsetSampling(myEvent)
+algo = ot.SubsetSampling(myEvent)
 
 # %%
 # In order to get all the inputs and outputs that realize the event, you have to mention it now:
@@ -160,7 +161,7 @@ for i in range(Ns):
 # The following graph draws each subset sample and the frontier :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
 
 # %%
-graph = Graph()
+graph = ot.Graph()
 graph.setAxes(True)
 graph.setGrid(True)
 graph.setTitle('Subset sampling: samples')
@@ -173,10 +174,10 @@ graph.setLegendPosition('bottomleft')
 
 # %%
 for i in range(Ns):
-    cloud = Cloud(list_subSamples[i])
+    cloud = ot.Cloud(list_subSamples[i])
     #cloud.setPointStyle("dot")
     graph.add(cloud)
-col = Drawable().BuildDefaultPalette(Ns)
+col = ot.Drawable().BuildDefaultPalette(Ns)
 graph.setColors(col)
 
 # %%
@@ -194,7 +195,7 @@ for i in range(levels.getSize()):
     graph.add(dr)
 
 # %%
-Show(graph)
+View(graph)
 
 # %%
 # Draw the frontiers only
@@ -203,7 +204,7 @@ Show(graph)
 # The following graph enables to understand the progresison of the algorithm:
 
 # %%
-graph=Graph()
+graph=ot.Graph()
 graph.setAxes(True)
 graph.setGrid(True)
 dr = gIsoLines.getDrawable(0)
@@ -220,7 +221,7 @@ graph.setTitle('Subset sampling: thresholds')
 graph.setXTitle(r'$x_1$')
 graph.setYTitle(r'$x_2$')
 
-Show(graph)
+View(graph)
 
 # %%
 # Get all the input and output points that realized the event
@@ -236,7 +237,7 @@ print('Number of event realizations = ', inputEventSample.getSize())
 # Here we have to avoid a bug of the version 1.15 because *getEventInputSample()* gives the sample in the stadrad space: we have to push it backward to the physical space.
 
 # %%
-dist = Normal([0.25]*2, [1]*2, IdentityMatrix(2))
+dist = ot.Normal([0.25]*2, [1]*2, ot.IdentityMatrix(2))
 transformFunc = dist.getInverseIsoProbabilisticTransformation()
 inputEventSample = transformFunc(inputEventSample)
 
@@ -244,10 +245,10 @@ inputEventSample = transformFunc(inputEventSample)
 # Draw them! They are all in the event space.
 
 # %%
-graph=Graph()
+graph=ot.Graph()
 graph.setAxes(True)
 graph.setGrid(True)
-cloud = Cloud(inputEventSample)
+cloud = ot.Cloud(inputEventSample)
 cloud.setPointStyle('dot')
 graph.add(cloud)
 gIsoLines =  g.draw([-3]*2, [5]*2, [1000]*2)
@@ -255,4 +256,4 @@ dr = gIsoLines.getDrawable(0)
 dr.setLevels([0.0])
 dr.setColor('red')
 graph.add(dr)
-Show(graph)
+View(graph)
