@@ -62,6 +62,9 @@ public:
   Function getRho() const;
   void setRho(const Function & rho);
 
+  /** Is it safe to compute discretize etc in parallel? */
+  Bool isParallel() const override;
+
   /** String converter */
   String __repr__() const override;
 
