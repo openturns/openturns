@@ -24,9 +24,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-// TEMPLATE_CLASSNAMEINIT(PersistentCollection< CovarianceMatrix >)
-// static const Factory<PersistentCollection<CovarianceMatrix> > Factory_PersistentCollection_CovarianceMatrix;
-
 CLASSNAMEINIT(UserDefinedStationaryCovarianceModel)
 
 static const Factory<UserDefinedStationaryCovarianceModel> Factory_UserDefinedStationaryCovarianceModel;
@@ -45,7 +42,7 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel()
 // Classical constructor
 // For a stationary model, we need N covariance matrices with N the number of time stamps in the time grid
 UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const RegularGrid & mesh,
-    const CovarianceMatrixCollection & covarianceFunction)
+    const SquareMatrixCollection & covarianceFunction)
   : StationaryCovarianceModel()
   , covarianceCollection_(0)
   , mesh_(mesh)
@@ -56,7 +53,7 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const
     throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherents"
                                          << " mesh size = " << size << "covariance function size = " << covarianceFunction.getSize();
   inputDimension_ = mesh.getDimension();
-  covarianceCollection_ = CovarianceMatrixCollection(size);
+  covarianceCollection_ = SquareMatrixCollection(size);
   // put the first element
   covarianceCollection_[0] = covarianceFunction[0];
   outputDimension_ = covarianceCollection_[0].getDimension();
@@ -76,7 +73,7 @@ UserDefinedStationaryCovarianceModel * UserDefinedStationaryCovarianceModel::clo
 }
 
 /* Computation of the covariance function */
-CovarianceMatrix UserDefinedStationaryCovarianceModel::operator()(const Point & tau) const
+SquareMatrix UserDefinedStationaryCovarianceModel::operator()(const Point & tau) const
 {
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
   // If the grid size is one, return the covariance function

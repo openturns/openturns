@@ -65,7 +65,7 @@ public:
 #endif
 
   using StationaryCovarianceModel::operator();
-  CovarianceMatrix operator() (const Point & tau) const override;
+  SquareMatrix operator() (const Point & tau) const override;
   Scalar computeAsScalar(const Point & tau) const override;
 
   /** Discretize the covariance function on a given TimeGrid */

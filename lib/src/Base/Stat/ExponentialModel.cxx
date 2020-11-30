@@ -125,7 +125,7 @@ Matrix ExponentialModel::partialGradient(const Point & s,
     throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the points t and s are equal. Covariance model has no derivate for that case.";
   // Covariance matrix write S * rho(tau), so gradient writes Sigma * grad(rho) where * is a 'dot',
   // i.e. dC/dk= Sigma_{i,j} * drho/dk
-  CovarianceMatrix covariance(operator()(tau));
+  SquareMatrix covariance(operator()(tau));
   // symmetrize if not diagonal
   if (!isDiagonal_) covariance.getImplementation()->symmetrize();
   Point covariancePoint(*covariance.getImplementation());
@@ -160,7 +160,7 @@ CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) cons
   // Fill the matrix by block-diagonal
   // The main diagonal has a specific treatment as only its lower triangular part
   // has to be copied
-  const CovarianceMatrix covTau0( operator()( 0.0 ) );
+  const SquareMatrix covTau0( operator()( 0.0 ) );
 
   // Loop over the main diagonal block
   for (UnsignedInteger block = 0; block < size; ++block)
@@ -182,7 +182,7 @@ CovarianceMatrix ExponentialModel::discretize(const RegularGrid & timeGrid) cons
   // Loop over the remaining diagonal blocks
   for (UnsignedInteger diag = 1; diag < size; ++diag)
   {
-    const CovarianceMatrix covTau( operator()( diag * timeStep ) );
+    const SquareMatrix covTau( operator()( diag * timeStep ) );
 
     // Loop over the main block diagonal
     for (UnsignedInteger block = 0; block < size - diag; ++block)

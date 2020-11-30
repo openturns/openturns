@@ -40,7 +40,7 @@ public:
 
   void compute(UnsignedInteger i, UnsignedInteger j, Matrix* result) const
   {
-    CovarianceMatrix localResult(covarianceModel_( vertices_[i] - vertices_[j] ));
+    SquareMatrix localResult(covarianceModel_( vertices_[i] - vertices_[j] ));
     std::copy(&localResult.getImplementation()->operator[](0), &localResult.getImplementation()->operator[](0) + dimension_ * dimension_, &result->getImplementation()->operator[](0));
   }
 };
@@ -89,7 +89,7 @@ int main(int, char *[])
     hmat.factorize("LU");
 
     Point rhs(covarianceModel.getOutputDimension() * vertices.getSize());
-    CovarianceMatrix local(covarianceModel.getOutputDimension());
+    SquareMatrix local(covarianceModel.getOutputDimension());
     for (UnsignedInteger i = 0; i < vertices.getSize(); ++i)
     {
       blockAssembly.compute(i, 0, &local);

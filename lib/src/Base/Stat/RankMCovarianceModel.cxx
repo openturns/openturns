@@ -90,7 +90,7 @@ RankMCovarianceModel * RankMCovarianceModel::clone() const
  * and when the components of (\xi_1,\dots,\xi_M) are decorrelated with unit variance, it reduces to:
  * C(s,t)=\sum_{i=1}^M\alpha_i^2\phi_i(s)\phi_i(t)^t
  */
-CovarianceMatrix RankMCovarianceModel::operator() (const Point & s,
+SquareMatrix RankMCovarianceModel::operator() (const Point & s,
     const Point & t) const
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;

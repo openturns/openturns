@@ -72,14 +72,12 @@ UnsignedInteger CovarianceModel::getOutputDimension() const
 }
 
 /* Computation of the covariance function */
-CovarianceMatrix CovarianceModel::operator() (const Scalar s,
-    const Scalar t) const
+SquareMatrix CovarianceModel::operator() (const Scalar s, const Scalar t) const
 {
   return getImplementation()->operator() (s, t);
 }
 
-CovarianceMatrix CovarianceModel::operator() (const Point & s,
-    const Point & t) const
+SquareMatrix CovarianceModel::operator() (const Point & s, const Point & t) const
 {
   return getImplementation()->operator() (s, t);
 }
@@ -96,12 +94,12 @@ Scalar CovarianceModel::computeAsScalar (const Point & s,
   return getImplementation()->computeAsScalar(s, t);
 }
 
-CovarianceMatrix CovarianceModel::operator() (const Scalar tau) const
+SquareMatrix CovarianceModel::operator() (const Scalar tau) const
 {
   return getImplementation()->operator() (tau);
 }
 
-CovarianceMatrix CovarianceModel::operator() (const Point & tau) const
+SquareMatrix CovarianceModel::operator() (const Point & tau) const
 {
   return getImplementation()->operator() (tau);
 }

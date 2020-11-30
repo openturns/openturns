@@ -959,7 +959,7 @@ int main(int, char *[])
       RegularGrid timeGrid(0.0, 0.1, size);
       {
         const UnsignedInteger collectionSize = size * (size + 1) / 2;
-        UserDefinedCovarianceModel::CovarianceMatrixCollection covarianceCollection(collectionSize);
+        UserDefinedStationaryCovarianceModel::SquareMatrixCollection covarianceCollection(collectionSize);
         CovarianceMatrix covariance(size);
         UnsignedInteger k = 0;
         for (UnsignedInteger i = 0; i < timeGrid.getN(); ++i)
@@ -976,7 +976,7 @@ int main(int, char *[])
         userDefinedCovarianceModel = UserDefinedCovarianceModel(timeGrid, covariance);
       }
       {
-        UserDefinedStationaryCovarianceModel::CovarianceMatrixCollection covarianceCollection(size);
+        UserDefinedStationaryCovarianceModel::SquareMatrixCollection covarianceCollection(size);
         for (UnsignedInteger i = 0; i < size; ++i)
         {
           const Scalar t = timeGrid.getValue(i);

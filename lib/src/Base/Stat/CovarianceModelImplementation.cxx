@@ -154,23 +154,27 @@ UnsignedInteger CovarianceModelImplementation::getInputDimension() const
   return inputDimension_;
 }
 
-CovarianceMatrix CovarianceModelImplementation::operator() (const Scalar s,
+SquareMatrix CovarianceModelImplementation::operator() (const Scalar s,
     const Scalar t) const
 {
   return operator() (Point(1, s), Point(1, t));
 }
 
-CovarianceMatrix CovarianceModelImplementation::operator() (const Point & s,
+SquareMatrix CovarianceModelImplementation::operator() (const Point & s,
     const Point & t) const
 {
   const Scalar rho = computeStandardRepresentative(s, t);
   if (outputDimension_ == 1)
   {
-    CovarianceMatrix result(1);
+    SquareMatrix result(1);
     result(0, 0) = rho * outputCovariance_(0, 0);
     return result;
   }
-  return CovarianceMatrix((outputCovariance_ * rho).getImplementation());
+  // outputCovariance_ * rho is a SymmetricMatrix.
+  // Its implementation only contains terms in the lower half.
+  // outputCovariance_ needs to be symmetrized.
+  outputCovariance_.checkSymmetry();
+  return outputCovariance_ * rho;
 }
 
 // compute standard representative computes the term \rho(s, t)
@@ -217,12 +221,12 @@ Scalar CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::
 }
 
 /* Computation of the covariance function */
-CovarianceMatrix CovarianceModelImplementation::operator() (const Scalar tau) const
+SquareMatrix CovarianceModelImplementation::operator() (const Scalar tau) const
 {
   return operator() (Point(1, tau));
 }
 
-CovarianceMatrix CovarianceModelImplementation::operator() (const Point & tau) const
+SquareMatrix CovarianceModelImplementation::operator() (const Point & tau) const
 {
   return operator() (Point(tau.getDimension()), tau);
 }
@@ -234,7 +238,7 @@ Matrix CovarianceModelImplementation::partialGradient (const Point & s,
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
   Matrix gradient(inputDimension_, outputDimension_ * outputDimension_);
-  CovarianceMatrix covarianceST(operator()(s, t));
+  SquareMatrix covarianceST(operator()(s, t));
   // Convert result into MatrixImplementation to symmetrize & get the collection
   MatrixImplementation covarianceSTImplementation(*covarianceST.getImplementation());
   covarianceSTImplementation.symmetrize();
@@ -245,7 +249,7 @@ Matrix CovarianceModelImplementation::partialGradient (const Point & s,
   {
     Point currentPoint(s);
     currentPoint[i] += epsilon;
-    CovarianceMatrix localCovariance(operator()(currentPoint, t));
+    SquareMatrix localCovariance(operator()(currentPoint, t));
     MatrixImplementation localCovarianceImplementation(*localCovariance.getImplementation());
     localCovarianceImplementation.symmetrize();
     const Point currentValue(localCovarianceImplementation);
@@ -263,14 +267,14 @@ Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
   const UnsignedInteger size = parameter.getSize();
   const Scalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
   Matrix gradient(size, (outputDimension_ * (outputDimension_ + 1)) / 2);
-  CovarianceMatrix covRef = operator()(s, t);
+  SquareMatrix covRef = operator()(s, t);
   Pointer<CovarianceModelImplementation> p_implementation(clone());
   for (UnsignedInteger k = 0; k < size; ++ k)
   {
     Point parameterP(parameter);
     parameterP[k] += epsilon;
     p_implementation->setParameter(parameterP);
-    CovarianceMatrix covP = p_implementation->operator()(s, t);
+    SquareMatrix covP = p_implementation->operator()(s, t);
     UnsignedInteger index = 0;
     for (UnsignedInteger j = 0; j < outputDimension_; ++ j)
     {
@@ -314,7 +318,7 @@ struct CovarianceModelDiscretizePolicy
       const UnsignedInteger jBase = jLocal * outputDimension_;
       const UnsignedInteger iLocal = i - (jLocal * (jLocal + 1)) / 2;
       const UnsignedInteger iBase = iLocal * outputDimension_;
-      const CovarianceMatrix localCovariance(model_(input_[iLocal], input_[jLocal]));
+      const SquareMatrix localCovariance(model_(input_[iLocal], input_[jLocal]));
       for (UnsignedInteger jj = 0; jj < outputDimension_; ++jj)
         for (UnsignedInteger ii = 0; ii < outputDimension_; ++ii)
           output_(iBase + ii, jBase + jj) = localCovariance(ii, jj);

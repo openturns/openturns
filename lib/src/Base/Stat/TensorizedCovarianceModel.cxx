@@ -103,23 +103,23 @@ TensorizedCovarianceModel * TensorizedCovarianceModel::clone() const
 }
 
 /* Computation of the covariance density function */
-CovarianceMatrix TensorizedCovarianceModel::operator() (const Point & s,
+SquareMatrix TensorizedCovarianceModel::operator() (const Point & s,
     const Point & t) const
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
-  CovarianceMatrix covariance(getOutputDimension());
+  SquareMatrix covariance(getOutputDimension());
   // Fill by block ==> block index
   UnsignedInteger blockIndex = 0;
   const UnsignedInteger size = collection_.getSize();
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     // Compute the ith block
-    const CovarianceMatrix localCovariance = collection_[i](s, t);
+    const SquareMatrix localCovariance = collection_[i](s, t);
     const UnsignedInteger localDimension = collection_[i].getOutputDimension();
-    // Fill lower part of the covariance matrix
+    // This is only a block in a covariance matrix matrix: it is not necessarily symmetric.
     for (UnsignedInteger localColumn = 0; localColumn < localDimension; ++localColumn)
-      for (UnsignedInteger localRow = localColumn; localRow < localDimension; ++localRow)
+      for (UnsignedInteger localRow = 0; localRow < localDimension; ++localRow)
         covariance(blockIndex + localRow, blockIndex + localColumn) = localCovariance(localRow, localColumn);
     // update blockIndex
     blockIndex += localDimension;

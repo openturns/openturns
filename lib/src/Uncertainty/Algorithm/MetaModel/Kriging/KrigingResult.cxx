@@ -228,7 +228,7 @@ struct KrigingResultCrossCovarianceFunctor
       const UnsignedInteger iLocal = i - jLocal * conditionnedPoints_.getSize();
       const UnsignedInteger iBase = iLocal * dimension_;
       // Local covariance matrix
-      const CovarianceMatrix localCovariance(model_(conditionnedPoints_[iLocal], input_[jLocal]));
+      const SquareMatrix localCovariance(model_(conditionnedPoints_[iLocal], input_[jLocal]));
       for (UnsignedInteger ii = 0; ii < dimension_; ++ii)
       {
         for (UnsignedInteger jj = 0; jj < dimension_; ++jj)
@@ -327,7 +327,7 @@ struct KrigingResultCrossCovariancePointFunctor
     const UnsignedInteger dimension = model_.getOutputDimension();
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
-      CovarianceMatrix localCovariance(model_(conditionnedPoints_[i], input_));
+      SquareMatrix localCovariance(model_(conditionnedPoints_[i], input_));
       for (UnsignedInteger columnIndex = 0; columnIndex < dimension; ++columnIndex)
         for (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
           output_(i * dimension + rowIndex, columnIndex) = localCovariance(rowIndex, columnIndex);
@@ -541,7 +541,7 @@ CovarianceMatrix KrigingResult::getConditionalCovariance(const Point & point) co
   const Point data(point);
   // 1) compute \sigma_{x,x}
   LOGINFO("Compute interactions Sigma_xx");
-  const CovarianceMatrix sigmaXX(covarianceModel_(Point(inputDimension, 0.0)));
+  const SquareMatrix sigmaXX(covarianceModel_(Point(inputDimension, 0.0)));
 
   // 2) compute \sigma_{y,x}
   // compute r(x), the crossCovariance between the conditionned data & xi

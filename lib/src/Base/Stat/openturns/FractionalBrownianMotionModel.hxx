@@ -56,8 +56,7 @@ public:
 
   /** Computation of the covariance function */
   using CovarianceModelImplementation::operator();
-  CovarianceMatrix operator() (const Point & s,
-                               const Point & t) const override;
+  SquareMatrix operator() (const Point & s, const Point & t) const override;
 
   /** Gradient */
   virtual Matrix partialGradient(const Point & s,

@@ -21,6 +21,7 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #1662 (Operator() of a CovarianceModel with multidimensional output should yield object of type SquareMatrix)
 
 
 == 1.16 release (2020-11-16) == #release-1.16

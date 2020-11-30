@@ -65,19 +65,17 @@ static void test_model(const CovarianceModel & myModel)
   else
   {
     Matrix gradfd(inputDimension, dimension * dimension);
-    CovarianceMatrix covarianceX1X2 = myModel(x1, x2);
-    // Convert result into MatrixImplementation to symmetrize & get the collection
+    SquareMatrix covarianceX1X2 = myModel(x1, x2);
+    // Convert result into MatrixImplementation to get the collection
     MatrixImplementation covarianceX1X2Implementation(*covarianceX1X2.getImplementation());
-    covarianceX1X2Implementation.symmetrize();
     const Point centralValue(covarianceX1X2Implementation);
     // Loop over the shifted points
     for (UnsignedInteger i = 0; i < inputDimension; ++i)
     {
       Point currentPoint(x1);
       currentPoint[i] += eps;
-      CovarianceMatrix localCovariance = myModel(currentPoint, x2);
+      SquareMatrix localCovariance = myModel(currentPoint, x2);
       MatrixImplementation localCovarianceImplementation(*localCovariance.getImplementation());
-      localCovarianceImplementation.symmetrize();
       const Point currentValue(localCovarianceImplementation);
       for (UnsignedInteger j = 0; j < centralValue.getDimension(); ++j)
         gradfd(i, j) = (currentValue[j] - centralValue[j]) / eps;

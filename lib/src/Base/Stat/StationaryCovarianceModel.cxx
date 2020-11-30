@@ -72,16 +72,19 @@ StationaryCovarianceModel * StationaryCovarianceModel::clone() const
 }
 
 /* Computation of the covariance function */
-CovarianceMatrix StationaryCovarianceModel::operator() (const Point & s,
+SquareMatrix StationaryCovarianceModel::operator() (const Point & s,
     const Point & t) const
 {
   return (*this)(t - s);
 }
 
-CovarianceMatrix StationaryCovarianceModel::operator() (const Point & tau) const
+SquareMatrix StationaryCovarianceModel::operator() (const Point & tau) const
 {
   const Scalar rho = computeStandardRepresentative(tau);
-  return CovarianceMatrix((outputCovariance_ * rho).getImplementation());
+  // outputCovariance_ * rho is a SymmetricMatrix.
+  // Its implementation only contains terms in the lower half.
+  // Conversion to a SquareMatrix is required.
+  return SquareMatrix(outputCovariance_ * rho);
 }
 
 Scalar StationaryCovarianceModel::computeAsScalar(const Point & s,
@@ -119,7 +122,7 @@ CovarianceMatrix StationaryCovarianceModel::discretize(const RegularGrid & timeG
   // Fill-in the matrix by blocks
   for (UnsignedInteger diagonalOffset = 0; diagonalOffset < size; ++diagonalOffset)
   {
-    const CovarianceMatrix localCovarianceMatrix(operator()( diagonalOffset * timeStep) );
+    const SquareMatrix localCovarianceMatrix(operator()( diagonalOffset * timeStep) );
     // Only the lower part has to be filled-in
     for (UnsignedInteger rowIndex = diagonalOffset; rowIndex < size; ++rowIndex)
     {

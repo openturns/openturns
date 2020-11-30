@@ -26,10 +26,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection< CovarianceMatrix >)
-
-static const Factory<PersistentCollection<CovarianceMatrix> > Factory_PersistentCollection_CovarianceMatrix;
-
 CLASSNAMEINIT(UserDefinedCovarianceModel)
 
 static const Factory<UserDefinedCovarianceModel> Factory_UserDefinedCovarianceModel;
@@ -70,7 +66,7 @@ UserDefinedCovarianceModel * UserDefinedCovarianceModel::clone() const
 
 
 /* Computation of the covariance density function */
-CovarianceMatrix UserDefinedCovarianceModel::operator() (const Point & s,
+SquareMatrix UserDefinedCovarianceModel::operator() (const Point & s,
     const Point & t) const
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
@@ -84,12 +80,12 @@ CovarianceMatrix UserDefinedCovarianceModel::operator() (const Point & s,
   return operator()(nearestNeighbour_.query(s), nearestNeighbour_.query(t));
 }
 
-CovarianceMatrix UserDefinedCovarianceModel::operator() (const UnsignedInteger i,
+SquareMatrix UserDefinedCovarianceModel::operator() (const UnsignedInteger i,
     const UnsignedInteger j) const
 {
   const UnsignedInteger sShift = i * outputDimension_;
   const UnsignedInteger tShift = j * outputDimension_;
-  CovarianceMatrix result(outputDimension_);
+  SquareMatrix result(outputDimension_);
   for (UnsignedInteger k = 0; k < outputDimension_; ++k)
     for (UnsignedInteger l = 0; l < outputDimension_; ++l)
       result(l, k) = covariance_(sShift + l, tShift + k);
@@ -120,7 +116,7 @@ CovarianceMatrix UserDefinedCovarianceModel::discretize(const Sample & vertices)
     for (UnsignedInteger columnIndex = 0; columnIndex <= rowIndex; ++columnIndex)
     {
       const UnsignedInteger columnBase = columnIndex * outputDimension_;
-      const CovarianceMatrix localCovarianceMatrix(operator()(nearestIndex[rowIndex], nearestIndex[columnIndex]));
+      const SquareMatrix localCovarianceMatrix(operator()(nearestIndex[rowIndex], nearestIndex[columnIndex]));
       // We fill the covariance matrix using the previous local one
       // The full local covariance matrix has to be copied as it is
       // not copied on a symmetric position

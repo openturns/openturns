@@ -34,7 +34,7 @@ try:
     print("reference model=", referenceModel)
     size = 100
     timeGrid = RegularGrid(0.0, 0.1, size)
-    covarianceCollection = CovarianceMatrixCollection(size)
+    covarianceCollection = SquareMatrixCollection(size)
 
     for i in range(timeGrid.getN()):
         t = timeGrid.getValue(i)

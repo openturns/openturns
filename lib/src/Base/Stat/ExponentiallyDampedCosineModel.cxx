@@ -62,9 +62,9 @@ ExponentiallyDampedCosineModel * ExponentiallyDampedCosineModel::clone() const
 /* Computation of the covariance function, stationary interface
  * C_{0,0}(tau) = amplitude_ * exp(-|tau / scale_|) * cos(2 * pi * frequency_ * |tau / scale|)
  */
-CovarianceMatrix ExponentiallyDampedCosineModel::operator() (const Point & tau) const
+SquareMatrix ExponentiallyDampedCosineModel::operator() (const Point & tau) const
 {
-  CovarianceMatrix covarianceMatrix(outputDimension_);
+  SquareMatrix covarianceMatrix(outputDimension_, outputDimension_);
 
   covarianceMatrix(0, 0) = computeAsScalar(tau);
   return covarianceMatrix;
