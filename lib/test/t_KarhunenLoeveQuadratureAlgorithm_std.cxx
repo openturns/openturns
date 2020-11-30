@@ -43,7 +43,7 @@ int main(int, char *[])
       functions[index] = basis.build(index);
     LHSExperiment experiment(basis.getMeasure(), 100);
     Bool mustScale = false;
-    Scalar threshold = 0.0001;
+    Scalar threshold = 1e-4;
     AbsoluteExponential model(Point(dim, 1.0));
     KarhunenLoeveQuadratureAlgorithm algo(domain, domain, model, experiment, functions, mustScale, threshold);
     algo.run();
@@ -83,8 +83,9 @@ int main(int, char *[])
     // Now using Legendre/Gauss quadrature + trunk
     {
       UnsignedInteger marginalDegree = 5;
+      threshold = 0.0;
       algo = KarhunenLoeveQuadratureAlgorithm(domain, domain, model, marginalDegree, threshold);
-      algo.setNbModes(3);// out of 5
+      algo.setNbModes(3);
       algo.run();
       result = algo.getResult();
       lambda = result.getEigenValues();
