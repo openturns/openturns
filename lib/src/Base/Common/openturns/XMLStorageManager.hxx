@@ -45,22 +45,6 @@ class PersistentObject;
 /* Forward declaration of XMLStorageManagerState */
 struct XMLStorageManagerState;
 
-class OT_API VersionList
-{
-  std::vector<UnsignedInteger> versions_;
-public:
-  VersionList() : versions_()
-  {
-    versions_.push_back(1);
-  }
-
-  Bool contains(UnsignedInteger v) const
-  {
-    return std::find(versions_.begin(), versions_.end(), v) != versions_.end();
-  }
-};
-
-
 /**
  * @class XMLStorageManager
  * @brief Implements a storage manager that drives a XML file
@@ -73,9 +57,6 @@ class OT_API XMLStorageManager
 {
   CLASSNAME
 
-
-
-  static const VersionList SupportedVersions;
 
 public:
 

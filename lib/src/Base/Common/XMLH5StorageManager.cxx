@@ -231,7 +231,11 @@ void XMLH5StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, Unsig
 
 void XMLH5StorageManager::readIndexedValue(Pointer<StorageManager::InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger & value)
 {
-  p_implementation_->readIndexedValue(p_obj, index, value);
+  // we started to store integers into h5 in 1.17
+  if (getStudyVersion() >= 101700)
+    p_implementation_->readIndexedValue(p_obj, index, value);
+  else
+    XMLStorageManager::readIndexedValue(p_obj, index, value);
 }
 
 void XMLH5StorageManager::readIndexedValue(Pointer<StorageManager::InternalObject> & p_obj, UnsignedInteger index, Scalar & value)

@@ -179,6 +179,8 @@
 /* Version number of package */
 #define VERSION "@PACKAGE_VERSION@"
 
+#define OPENTURNS_VERSION @OPENTURNS_VERSION_NR@
+
 /* Define to 1 if `lex' declares `yytext' as a `char *' by default, not a
    `char[]'. */
 #cmakedefine YYTEXT_POINTER
