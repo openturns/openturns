@@ -40,16 +40,16 @@ public:
   /* Here is the interface that all derived class must implement */
 
   /* Virtual constructor */
-  LinearBasisFactory * clone() const override;;
+  LinearBasisFactory * clone() const override;
 
   /** @copydoc BasisFactory::build() const */
   Basis build() const override;
 
   /* Method save() stores the object through the StorageManager */
-  void save(Advocate & adv) const override;;
+  void save(Advocate & adv) const override;
 
   /* Method load() reloads the object from the StorageManager */
-  void load(Advocate & adv) override;;
+  void load(Advocate & adv) override;
 
 private:
   UnsignedInteger inputDimension_;
