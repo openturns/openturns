@@ -163,18 +163,13 @@ SquareMatrix CovarianceModelImplementation::operator() (const Scalar s,
 SquareMatrix CovarianceModelImplementation::operator() (const Point & s,
     const Point & t) const
 {
-  const Scalar rho = computeStandardRepresentative(s, t);
   if (outputDimension_ == 1)
   {
     SquareMatrix result(1);
-    result(0, 0) = rho * outputCovariance_(0, 0);
+    result(0, 0) = computeAsScalar(s, t);
     return result;
   }
-  // outputCovariance_ * rho is a SymmetricMatrix.
-  // Its implementation only contains terms in the lower half.
-  // outputCovariance_ needs to be symmetrized.
-  outputCovariance_.checkSymmetry();
-  return outputCovariance_ * rho;
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::operator()(const Point & s, const Point & t) const";
 }
 
 // compute standard representative computes the term \rho(s, t)
@@ -194,30 +189,18 @@ Scalar CovarianceModelImplementation::computeAsScalar (const Point & s,
     const Point & t) const
 {
   if (outputDimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << outputDimension_ << ", expected dimension=1.";
-  return outputCovariance_(0, 0) * computeStandardRepresentative(s, t);
+  if (s.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  // Return the scalar value
+  return computeAsScalar(s.begin(), t.begin());
 }
 
-Scalar CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
-    const Collection<Scalar>::const_iterator & t_begin) const
+Scalar CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator & ,
+    const Collection<Scalar>::const_iterator & ) const
 {
-  // Work on iterators
-  // Major 1D models implement the computeStandardRepresentative method
-  // We rely on this previous method to evaluate the covariance as scalar
-  // Otherwise we build Points & rely on a more global method (exceptions are
-  // local implementations)
-  if (outputDimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << outputDimension_ << ", expected dimension=1.";
-  if (definesComputeStandardRepresentative_) return outputCovariance_(0, 0) * computeStandardRepresentative(s_begin, t_begin);
-  // Case we do not define computeStandardRepresentative
-  Collection<Scalar>::const_iterator s_it = s_begin;
-  Collection<Scalar>::const_iterator t_it = t_begin;
-  Point s(inputDimension_, 0.0);
-  Point t(inputDimension_, 0.0);
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
-  {
-    s[i] = *s_it;
-    t[i] = *t_it;
-  }
-  return computeAsScalar(s, t);
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin, const Collection<Scalar>::const_iterator & t_begin) const";
 }
 
 /* Computation of the covariance function */
