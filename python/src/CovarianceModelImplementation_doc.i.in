@@ -43,38 +43,6 @@ OT_CovarianceModel_computeAsScalar_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_CovarianceModel_computeStandardRepresentative_doc
-"Compute the standard representative function of the covariance model.
-
-Available usages:
-    computeStandardRepresentative(s, t)
-
-    computeStandardRepresentative(tau)
-
-Parameters
-----------
-s, t : sequences of float
-    Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`
-tau : float or sequence of float
-    Multivariate index :math:`\vect{\tau} \in \cD`
-
-Returns
--------
-rho : float
-    Correlation model :math:`\rho`
-
-
-Notes
------
-It evaluates the scalar function 
-:math:`\rho\left(\dfrac{\vect{s}}{\theta}, \dfrac{\vect{t}}{\theta}\right)` or 
-:math:`\rho\left(\dfrac{\vect{\tau}}{\theta}\right)` if the model is stationary."
-%enddef
-%feature("docstring") OT::CovarianceModelImplementation::computeStandardRepresentative
-OT_CovarianceModel_computeStandardRepresentative_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_CovarianceModel_discretize_doc
 "Discretize the covariance function on a given mesh.
 

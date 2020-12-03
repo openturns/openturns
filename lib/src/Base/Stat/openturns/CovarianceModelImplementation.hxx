@@ -75,11 +75,11 @@ public:
   virtual SquareMatrix operator() (const Scalar s, const Scalar t) const;
   virtual SquareMatrix operator() (const Point & s, const Point & t) const;
 
+#ifndef SWIG
   // compute standard representative computes the term \rho(s, t)
   virtual Scalar computeStandardRepresentative(const Point & s,
       const Point & t) const;
 
-#ifndef SWIG
   virtual Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
       const Collection<Scalar>::const_iterator & t_begin) const;
 #endif

@@ -82,12 +82,6 @@ SquareMatrix CovarianceModel::operator() (const Point & s, const Point & t) cons
   return getImplementation()->operator() (s, t);
 }
 
-Scalar CovarianceModel::computeStandardRepresentative(const Point & s,
-    const Point & t) const
-{
-  return getImplementation()->computeStandardRepresentative(s, t);
-}
-
 Scalar CovarianceModel::computeAsScalar (const Point & s,
     const Point & t) const
 {

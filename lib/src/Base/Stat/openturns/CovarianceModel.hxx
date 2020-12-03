@@ -65,10 +65,6 @@ public:
   virtual SquareMatrix operator() (const Point & s,
                              const Point & t) const;
 
-  // compute standard representative computes the term \rho(s, t)
-  virtual Scalar computeStandardRepresentative(const Point & s,
-      const Point & t) const;
-
   virtual Scalar computeAsScalar (const Point & s,
                                   const Point & t) const;
 

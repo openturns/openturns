@@ -636,7 +636,7 @@ CovarianceAssemblyFunction::CovarianceAssemblyFunction(const CovarianceModel & c
   if (vertices_.getSize() == 0) return;
   try
   {
-    (void) covarianceModel_.computeStandardRepresentative(vertices_[0], vertices_[0]);
+    (void) covarianceModel_.getImplementation()->computeStandardRepresentative(vertices_[0], vertices_[0]);
     definesComputeStandardRepresentative_ = true;
   }
   catch (NotYetImplementedException &)
@@ -669,7 +669,7 @@ CovarianceBlockAssemblyFunction::CovarianceBlockAssemblyFunction(const Covarianc
   if (vertices.getSize() == 0) return;
   try
   {
-    (void) covarianceModel_.computeStandardRepresentative(vertices_[0], vertices_[0]);
+    (void) covarianceModel_.getImplementation()->computeStandardRepresentative(vertices_[0], vertices_[0]);
     definesComputeStandardRepresentative_ = true;
   }
   catch (NotYetImplementedException &)
