@@ -6,11 +6,9 @@ environment:
       VS_GEN: Visual Studio 15 2017
 
 install:
-  - appveyor-retry appveyor DownloadFile https://downloads.sourceforge.net/openblas/v0.2.15/OpenBLAS-v0.2.15-Win32.zip
-  - 7z x OpenBLAS-v0.2.15-Win32.zip -oC:\Libraries > nil
-
-  - appveyor-retry appveyor DownloadFile http://sourceforge.net/projects/openblas/files/v0.2.15/mingw32_dll.zip
-  - 7z x mingw32_dll.zip -oC:\Libraries > nil
+  - appveyor-retry appveyor DownloadFile https://github.com/xianyi/OpenBLAS/files/725155/libs.zip
+  - mkdir C:\Libraries\openblas
+  - 7z x libs.zip -oC:\Libraries\openblas > nul
 
   - appveyor-retry appveyor DownloadFile https://sourceforge.net/projects/swig/files/swigwin/swigwin-3.0.12/swigwin-3.0.12.zip
   - 7z x swigwin-3.0.12.zip -oC:\Libraries > nul
@@ -60,7 +58,7 @@ build_script:
   - cmake -G"%VS_GEN%" \
       -DCMAKE_INSTALL_PREFIX=%CD:\=/%/install \
       -DBOOST_ROOT="C:/Libraries/boost_1_69_0" \
-      -DLAPACK_LIBRARIES="C:/Libraries/OpenBLAS-v0.2.15-Win32/lib/libopenblas.dll.a" \
+      -DLAPACK_LIBRARIES="C:/Libraries/openblas/libopenblas.dll.a" \
       -DCMAKE_SHARED_LINKER_FLAGS_RELEASE="/OPT:NOREF /INCREMENTAL:NO" \
       -DUSE_HMAT=OFF \
       -DUSE_BISON=OFF \
@@ -74,9 +72,6 @@ build_script:
   - cmake --build . --config Release --target install
   - set PYTHONPATH=%cd%\install\Lib\site-packages
   - copy install\bin\OT.dll install\Lib\site-packages\openturns
-  - copy C:\Libraries\mingw32_dll\libgcc_s_sjlj-1.dll install\Lib\site-packages\openturns
-  - copy C:\Libraries\mingw32_dll\libgfortran-3.dll install\Lib\site-packages\openturns
-  - copy C:\Libraries\mingw32_dll\libquadmath-0.dll install\Lib\site-packages\openturns
-  - copy C:\Libraries\OpenBLAS-v0.2.15-Win32\bin\libopenblas.dll install\Lib\site-packages\openturns
+  - copy C:\Libraries\openblas\libopenblas.dll install\Lib\site-packages\openturns
   - copy C:\Libraries\tbb\bin\tbb.dll install\Lib\site-packages\openturns
   - ctest -C Release --output-on-failure --timeout 100 -E "cppcheck|Sequence|Entropy|Sklar|Sample_computation|InverseBox" -j2
