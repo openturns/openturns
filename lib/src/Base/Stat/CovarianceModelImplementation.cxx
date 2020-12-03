@@ -274,6 +274,33 @@ Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
 /* Discretize the covariance function on a given TimeGrid/Mesh */
 CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & timeGrid) const
 {
+  if (isStationary())
+  {
+    const UnsignedInteger size = timeGrid.getN();
+    const Scalar timeStep = timeGrid.getStep();
+    const UnsignedInteger fullSize = size * outputDimension_;
+    CovarianceMatrix covarianceMatrix(fullSize);
+
+    // Fill-in the matrix by blocks
+    for (UnsignedInteger diagonalOffset = 0; diagonalOffset < size; ++diagonalOffset)
+    {
+      const SquareMatrix localCovarianceMatrix(operator()( diagonalOffset * timeStep) );
+      // Only the lower part has to be filled-in
+      for (UnsignedInteger rowIndex = diagonalOffset; rowIndex < size; ++rowIndex)
+      {
+        const UnsignedInteger rowBase = rowIndex * outputDimension_;
+        const UnsignedInteger columnIndex = rowIndex - diagonalOffset;
+        const UnsignedInteger columnBase = columnIndex * outputDimension_;
+        // We fill the covariance matrix using the previous local one
+        // The full local covariance matrix has to be copied as it is
+        // not copied on a symmetric position
+        for (UnsignedInteger columnIndexLocal = 0; columnIndexLocal < outputDimension_; ++columnIndexLocal)
+          for (UnsignedInteger rowIndexLocal = 0; rowIndexLocal < outputDimension_; ++rowIndexLocal)
+            covarianceMatrix(rowBase + rowIndexLocal, columnBase + columnIndexLocal) = localCovarianceMatrix(rowIndexLocal, columnIndexLocal) ;
+      } // column index of the block
+    } // row index of the block
+    return covarianceMatrix;
+  }
   return discretize(timeGrid.getVertices());
 }
 

@@ -72,10 +72,6 @@ public:
 
   virtual Scalar computeStandardRepresentative(const Point & tau) const;
 
-  /** Discretize the covariance function on a given TimeGrid */
-  using CovarianceModelImplementation::discretize;
-  CovarianceMatrix discretize(const RegularGrid & timeGrid) const override;
-
   /** Is the underlying a stationary covariance model ? */
   Bool isStationary() const override;
 
