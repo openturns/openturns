@@ -57,16 +57,15 @@ public:
   ExponentiallyDampedCosineModel * clone() const override;
 
   /** Computation of the covariance function, stationary interface */
-  using StationaryCovarianceModel::computeStandardRepresentative;
-  Scalar computeStandardRepresentative(const Point & tau) const override;
+  using StationaryCovarianceModel::computeAsScalar;
+  Scalar computeAsScalar(const Point &tau) const override;
 #ifndef SWIG
-  Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-                                       const Collection<Scalar>::const_iterator & t_begin) const override;
+  Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
+                         const Collection<Scalar>::const_iterator & t_begin) const override;
 #endif
 
   using StationaryCovarianceModel::operator();
   SquareMatrix operator() (const Point & tau) const override;
-  Scalar computeAsScalar(const Point & tau) const override;
 
   /** Discretize the covariance function on a given TimeGrid */
   using StationaryCovarianceModel::discretize;

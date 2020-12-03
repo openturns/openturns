@@ -20,7 +20,6 @@
 #ifndef OPENTURNS_TENSORIZEDCOVARIANCEMODEL_HXX
 #define OPENTURNS_TENSORIZEDCOVARIANCEMODEL_HXX
 
-#include "openturns/StationaryCovarianceModel.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Collection.hxx"

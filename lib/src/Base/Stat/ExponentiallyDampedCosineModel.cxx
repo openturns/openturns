@@ -38,7 +38,7 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInt
   : StationaryCovarianceModel(inputDimension)
   , frequency_(1.0)
 {
-  definesComputeStandardRepresentative_ = true;
+  // Nothing to do
 }
 
 /** Standard constructor with amplitude and scale parameters */
@@ -50,7 +50,6 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const Point & sca
 {
   if (outputDimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << outputDimension_;
   setFrequency(frequency);
-  definesComputeStandardRepresentative_ = true;
 }
 
 /* Virtual constructor */
@@ -72,23 +71,20 @@ SquareMatrix ExponentiallyDampedCosineModel::operator() (const Point & tau) cons
 
 Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Point & tau) const
 {
-  return amplitude_[0] * computeStandardRepresentative(tau);
-}
-
-Scalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const Point & tau) const
-{
   if (tau.getDimension() != inputDimension_)
-    throw InvalidArgumentException(HERE) << "In ExponentiallyDampedCosineModel::computeStandardRepresentative: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
+    throw InvalidArgumentException(HERE) << "In ExponentiallyDampedCosineModel::computeAsScalar: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
   Point tauOverTheta(inputDimension_);
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+    tauOverTheta[i] = tau[i] / scale_[i];
 
   const Scalar absTau = tauOverTheta.norm();
-  if (absTau <= SpecFunc::ScalarEpsilon) return 1.0 + nuggetFactor_;
-  return exp(-absTau) * cos(2.0 * M_PI * absTau);
+  if (absTau <= SpecFunc::ScalarEpsilon)
+    return 1.0 + nuggetFactor_;
+  return amplitude_[0] * exp(-absTau) * cos(2.0 * M_PI * absTau);
 }
 
-Scalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-    const Collection<Scalar>::const_iterator & t_begin) const
+Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+                                                                     const Collection<Scalar>::const_iterator &t_begin) const
 {
   Scalar absTau = 0;
   Collection<Scalar>::const_iterator s_it = s_begin;
@@ -99,8 +95,9 @@ Scalar ExponentiallyDampedCosineModel::computeStandardRepresentative(const Colle
     absTau += dx * dx;
   }
   absTau = sqrt(absTau);
-  if (absTau <= SpecFunc::ScalarEpsilon) return 1.0 + nuggetFactor_;
-  return exp(-absTau) * cos(2.0 * M_PI * absTau);
+  if (absTau <= SpecFunc::ScalarEpsilon)
+    return 1.0 + nuggetFactor_;
+  return  amplitude_[0] * exp(-absTau) * cos(2.0 * M_PI * absTau);
 }
 
 /* Discretize the covariance function on a given TimeGrid */

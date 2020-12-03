@@ -34,7 +34,7 @@ GeneralizedExponential::GeneralizedExponential(const UnsignedInteger inputDimens
   : StationaryCovarianceModel(Point(inputDimension, ResourceMap::GetAsScalar("GeneralizedExponential-DefaultTheta")), Point(1, 1.0))
   , p_(1.0)
 {
-  definesComputeStandardRepresentative_ = true;
+  // Nothing to do
 }
 
 /** Parameters constructor */
@@ -44,7 +44,6 @@ GeneralizedExponential::GeneralizedExponential(const Point & scale,
   , p_(0.0) // To pass the test !(p_ == p)
 {
   setP(p);
-  definesComputeStandardRepresentative_ = true;
 }
 
 /** Parameters constructor */
@@ -58,7 +57,6 @@ GeneralizedExponential::GeneralizedExponential(const Point & scale,
     throw InvalidArgumentException(HERE) << "In GeneralizedExponential::GeneralizedExponential, only unidimensional models should be defined."
                                          << " Here, (got dimension=" << getOutputDimension() << ")";
   setP(p);
-  definesComputeStandardRepresentative_ = true;
 }
 
 /* Virtual constructor */
@@ -68,16 +66,16 @@ GeneralizedExponential * GeneralizedExponential::clone() const
 }
 
 /* Computation of the covariance density function */
-Scalar GeneralizedExponential::computeStandardRepresentative(const Point & tau) const
+Scalar GeneralizedExponential::computeAsScalar(const Point & tau) const
 {
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
   Point tauOverTheta(inputDimension_);
   for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
   const Scalar tauOverThetaNorm = tauOverTheta.norm();
-  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-pow(tauOverThetaNorm, p_));
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance_(0, 0) * (1.0 + nuggetFactor_) : outputCovariance_(0, 0) * exp(-pow(tauOverThetaNorm, p_));
 }
 
-Scalar GeneralizedExponential::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
+Scalar GeneralizedExponential::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
     const Collection<Scalar>::const_iterator & t_begin) const
 {
   Scalar tauOverThetaNorm = 0;
@@ -89,7 +87,7 @@ Scalar GeneralizedExponential::computeStandardRepresentative(const Collection<Sc
     tauOverThetaNorm += dx * dx;
   }
   tauOverThetaNorm = sqrt(tauOverThetaNorm);
-  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-pow(tauOverThetaNorm, p_));
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance_(0, 0) * (1.0 + nuggetFactor_) : outputCovariance_(0, 0) * exp(-pow(tauOverThetaNorm, p_));
 }
 
 /* Gradient wrt s */

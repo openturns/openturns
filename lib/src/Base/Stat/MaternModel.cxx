@@ -35,7 +35,6 @@ MaternModel::MaternModel(const UnsignedInteger inputDimension)
   , nu_(ResourceMap::GetAsScalar("MaternModel-DefaultNu"))
   , sqrt2nuOverTheta_(Point(inputDimension, sqrt(2.0 * nu_) / ResourceMap::GetAsScalar("MaternModel-DefaultTheta") ))
 {
-  definesComputeStandardRepresentative_ = true;
   // Compute the normalization factor
   computeLogNormalizationFactor();
   // Compute useful scaling factor
@@ -49,7 +48,6 @@ MaternModel::MaternModel(const Point & scale,
   , nu_(0.0)
   , sqrt2nuOverTheta_(Point(scale.getDimension(), 0.0))
 {
-  definesComputeStandardRepresentative_ = true;
   setNu(nu);
 }
 
@@ -64,7 +62,6 @@ MaternModel::MaternModel(const Point & scale,
   if (getOutputDimension() != 1)
     throw InvalidArgumentException(HERE) << "In MaternModel::MaternModel, only unidimensional models should be defined."
                                          << " Here, (got dimension=" << getOutputDimension() << ")";
-  definesComputeStandardRepresentative_ = true;
   setNu(nu);
 }
 
@@ -87,19 +84,19 @@ MaternModel * MaternModel::clone() const
 }
 
 /* Computation of the covariance  function */
-Scalar MaternModel::computeStandardRepresentative(const Point & tau) const
+Scalar MaternModel::computeAsScalar(const Point & tau) const
 {
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
   Point scaledTau(inputDimension_);
   for(UnsignedInteger i = 0; i < inputDimension_; ++i) scaledTau[i] = tau[i] * sqrt2nuOverTheta_[i];
   const Scalar scaledPoint = scaledTau.norm();
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
-    return 1.0 + nuggetFactor_;
+    return outputCovariance_(0, 0) * (1.0 + nuggetFactor_);
   else
-    return exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
+    return outputCovariance_(0, 0) * exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
 }
 
-Scalar MaternModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
+Scalar MaternModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
     const Collection<Scalar>::const_iterator & t_begin) const
 {
   Scalar scaledPoint = 0;
@@ -112,9 +109,9 @@ Scalar MaternModel::computeStandardRepresentative(const Collection<Scalar>::cons
   }
   scaledPoint = sqrt(scaledPoint);
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
-    return 1.0 + nuggetFactor_;
+    return outputCovariance_(0, 0) * (1.0 + nuggetFactor_);
   else
-    return exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
+    return outputCovariance_(0, 0) * exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
 }
 
 /* Gradient */

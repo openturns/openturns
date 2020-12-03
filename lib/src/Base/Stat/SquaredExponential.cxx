@@ -33,14 +33,14 @@ static const Factory<SquaredExponential> Factory_SquaredExponential;
 SquaredExponential::SquaredExponential(const UnsignedInteger inputDimension)
   : StationaryCovarianceModel(Point(inputDimension, ResourceMap::GetAsScalar("SquaredExponential-DefaultTheta")), Point(1, 1.0))
 {
-  definesComputeStandardRepresentative_ = true;
+  // Nothing to do;
 }
 
 /** Parameters constructor */
 SquaredExponential::SquaredExponential(const Point & scale)
   : StationaryCovarianceModel(scale, Point(1, 1.0))
 {
-  definesComputeStandardRepresentative_ = true;
+  // Nothing to do;
 }
 
 /** Parameters constructor */
@@ -51,7 +51,6 @@ SquaredExponential::SquaredExponential(const Point & scale,
   if (getOutputDimension() != 1)
     throw InvalidArgumentException(HERE) << "In SquaredExponential::SquaredExponential, only unidimensional models should be defined."
                                          << " Here, (got dimension=" << getOutputDimension() << ")";
-  definesComputeStandardRepresentative_ = true;
 }
 
 /* Virtual constructor */
@@ -61,7 +60,7 @@ SquaredExponential * SquaredExponential::clone() const
 }
 
 /* Computation of the covariance function */
-Scalar SquaredExponential::computeStandardRepresentative(const Point & tau) const
+Scalar SquaredExponential::computeAsScalar(const Point & tau) const
 {
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
   Scalar tauOverTheta2 = 0.0;
@@ -70,10 +69,10 @@ Scalar SquaredExponential::computeStandardRepresentative(const Point & tau) cons
     const Scalar dx = tau[i] / scale_[i];
     tauOverTheta2 += dx * dx;
   }
-  return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-0.5 * tauOverTheta2);
+  return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? outputCovariance_(0, 0) * (1.0 + nuggetFactor_) : outputCovariance_(0, 0) * exp(-0.5 * tauOverTheta2);
 }
 
-Scalar SquaredExponential::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
+Scalar SquaredExponential::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
     const Collection<Scalar>::const_iterator & t_begin) const
 {
   Scalar tauOverTheta2 = 0;
@@ -84,7 +83,7 @@ Scalar SquaredExponential::computeStandardRepresentative(const Collection<Scalar
     const Scalar dx = (*s_it - *t_it) / scale_[i];
     tauOverTheta2 += dx * dx;
   }
-  return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-0.5 * tauOverTheta2);
+  return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? outputCovariance_(0, 0) * (1.0 + nuggetFactor_) : outputCovariance_(0, 0) * exp(-0.5 * tauOverTheta2);
 }
 
 /* Gradient */
