@@ -34,7 +34,7 @@ GeneralizedExponential::GeneralizedExponential(const UnsignedInteger inputDimens
   : StationaryCovarianceModel(Point(inputDimension, ResourceMap::GetAsScalar("GeneralizedExponential-DefaultTheta")), Point(1, 1.0))
   , p_(1.0)
 {
-  // Nothing to do
+  isStationary_ = true;
 }
 
 /** Parameters constructor */
@@ -43,6 +43,7 @@ GeneralizedExponential::GeneralizedExponential(const Point & scale,
   : StationaryCovarianceModel(scale, Point(1, 1.0))
   , p_(0.0) // To pass the test !(p_ == p)
 {
+  isStationary_ = true;
   setP(p);
 }
 
@@ -53,6 +54,7 @@ GeneralizedExponential::GeneralizedExponential(const Point & scale,
   : StationaryCovarianceModel(scale, amplitude)
   , p_(0.0) // To pass the test !(p_ == p)
 {
+  isStationary_ = true;
   if (getOutputDimension() != 1)
     throw InvalidArgumentException(HERE) << "In GeneralizedExponential::GeneralizedExponential, only unidimensional models should be defined."
                                          << " Here, (got dimension=" << getOutputDimension() << ")";

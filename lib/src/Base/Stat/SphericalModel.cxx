@@ -38,6 +38,7 @@ SphericalModel::SphericalModel(const UnsignedInteger inputDimension)
   : StationaryCovarianceModel(inputDimension)
   , radius_(1.0)
 {
+  isStationary_ = true;
   if (outputDimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << outputDimension_;
 }
 
@@ -48,6 +49,7 @@ SphericalModel::SphericalModel(const Point & scale,
   : StationaryCovarianceModel(scale, amplitude)
   , radius_(-1.0)
 {
+  isStationary_ = true;
   if (outputDimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << outputDimension_;
   setRadius(radius);
 }

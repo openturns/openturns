@@ -37,6 +37,7 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel()
 {
   inputDimension_ = 1;
   outputDimension_ = 0;
+  isStationary_ = true;
 }
 
 // Classical constructor
@@ -48,6 +49,7 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const
   , mesh_(mesh)
   , nearestNeighbour_(mesh)
 {
+  isStationary_ = true;
   const UnsignedInteger size = mesh.getVerticesNumber();
   if (size != covarianceFunction.getSize())
     throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherents"

@@ -53,6 +53,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   , outputCovarianceCholeskyFactor_(0)
   , definesComputeStandardRepresentative_(false)
   , isDiagonal_(true)
+  , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(inputDimension_ + outputDimension_)
 {
@@ -73,6 +74,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , outputCovarianceCholeskyFactor_(0)
   , definesComputeStandardRepresentative_(false)
   , isDiagonal_(true)
+  , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(inputDimension_ + outputDimension_)
 {
@@ -96,6 +98,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , outputCovarianceCholeskyFactor_(0)
   , definesComputeStandardRepresentative_(false)
   , isDiagonal_(true)
+  , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(inputDimension_ + outputDimension_)
 {
@@ -118,6 +121,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , outputCovarianceCholeskyFactor_(0)
   , definesComputeStandardRepresentative_(false)
   , isDiagonal_(true)
+  , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(inputDimension_ + outputDimension_)
 {
@@ -818,7 +822,7 @@ Description CovarianceModelImplementation::getParameterDescription() const
 /* Is it a stationary model ? */
 Bool CovarianceModelImplementation::isStationary() const
 {
-  return false;
+  return isStationary_;
 }
 
 /* Is it a diagonal model ? */
@@ -985,6 +989,7 @@ void CovarianceModelImplementation::save(Advocate & adv) const
   adv.saveAttribute("outputCorrelation_", outputCorrelation_);
   adv.saveAttribute("definesComputeStandardRepresentative_", definesComputeStandardRepresentative_);
   adv.saveAttribute("isDiagonal_", isDiagonal_);
+  adv.saveAttribute("isStationary_", isStationary_);
   adv.saveAttribute("nuggetFactor_", nuggetFactor_);
   adv.saveAttribute("activeParameter_", activeParameter_);
 }
@@ -1000,6 +1005,7 @@ void CovarianceModelImplementation::load(Advocate & adv)
   adv.loadAttribute("outputCorrelation_", outputCorrelation_);
   adv.loadAttribute("definesComputeStandardRepresentative_", definesComputeStandardRepresentative_);
   adv.loadAttribute("isDiagonal_", isDiagonal_);
+  adv.loadAttribute("isStationary_", isStationary_);
   adv.loadAttribute("nuggetFactor_", nuggetFactor_);
   adv.loadAttribute("activeParameter_", activeParameter_);
   updateOutputCovariance();

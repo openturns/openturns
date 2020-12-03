@@ -232,6 +232,9 @@ protected:
   /** Flag to tell if the model is diagonal */
   Bool isDiagonal_;
 
+  /** Flag to tell if the model is stationary */
+  Bool isStationary_;
+
   /** Nugget factor */
   Scalar nuggetFactor_;
 

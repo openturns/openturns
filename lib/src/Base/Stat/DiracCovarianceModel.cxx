@@ -61,6 +61,7 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension)
   // Remove the scale from the active parameter
   activeParameter_ = Indices(outputDimension_);
   activeParameter_.fill();
+  isStationary_ = true;
 }
 
 /* Parameters constructor */
@@ -75,6 +76,7 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
   // Remove the scale from the active parameter
   activeParameter_ = Indices(outputDimension_);
   activeParameter_.fill();
+  isStationary_ = true;
 }
 
 /** Parameters constructor */
@@ -93,6 +95,7 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
   // Remove the scale from the active parameter
   activeParameter_ = Indices(outputDimension_);
   activeParameter_.fill();
+  isStationary_ = true;
 }
 
 /** Parameters constructor */
@@ -117,6 +120,7 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
   // Remove the scale from the active parameter
   activeParameter_ = Indices(outputDimension_);
   activeParameter_.fill();
+  isStationary_ = true;
 }
 
 void DiracCovarianceModel::computeCovariance()

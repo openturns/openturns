@@ -39,6 +39,7 @@ TensorizedCovarianceModel::TensorizedCovarianceModel(const UnsignedInteger dimen
 
   activeParameter_ = Indices(getScale().getSize() + getAmplitude().getSize());
   activeParameter_.fill();
+  isStationary_ = true;
 }
 
 /* Parameters constructor */
@@ -73,6 +74,7 @@ void TensorizedCovarianceModel::setCollection(const CovarianceModelCollection & 
   inputDimension_ = collection[0].getInputDimension();
   // Get dimension: should be the same for all elements
   outputDimension_ = 0;
+  isStationary_ = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger localSpatialDimension = collection[i].getInputDimension();
@@ -84,6 +86,8 @@ void TensorizedCovarianceModel::setCollection(const CovarianceModelCollection & 
     outputDimension_ += localDimension;
     const Point localAmplitude(collection[i].getAmplitude());
     amplitude.add(localAmplitude);
+    if (!collection[i].isStationary())
+      isStationary_ = false;
   }
   // Set collection
   collection_ = collection;

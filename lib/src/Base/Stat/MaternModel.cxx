@@ -35,6 +35,7 @@ MaternModel::MaternModel(const UnsignedInteger inputDimension)
   , nu_(ResourceMap::GetAsScalar("MaternModel-DefaultNu"))
   , sqrt2nuOverTheta_(Point(inputDimension, sqrt(2.0 * nu_) / ResourceMap::GetAsScalar("MaternModel-DefaultTheta") ))
 {
+  isStationary_ = true;
   // Compute the normalization factor
   computeLogNormalizationFactor();
   // Compute useful scaling factor
@@ -59,6 +60,7 @@ MaternModel::MaternModel(const Point & scale,
   , nu_(0.0)
   , sqrt2nuOverTheta_(Point(scale.getDimension(), 0.0))
 {
+  isStationary_ = true;
   if (getOutputDimension() != 1)
     throw InvalidArgumentException(HERE) << "In MaternModel::MaternModel, only unidimensional models should be defined."
                                          << " Here, (got dimension=" << getOutputDimension() << ")";

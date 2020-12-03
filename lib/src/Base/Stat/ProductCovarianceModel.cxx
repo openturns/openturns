@@ -48,6 +48,7 @@ ProductCovarianceModel::ProductCovarianceModel(const UnsignedInteger inputDimens
   // Active parameters : scale + amplitude
   activeParameter_ = Indices(inputDimension + 1);
   activeParameter_.fill();
+  isStationary_ = true;
 }
 
 /* Parameters constructor */
@@ -81,6 +82,7 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
 
   // Filling the active parameters
   activeParameter_ = Indices(0);
+  isStationary_ = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger localOutputDimension = collection[i].getOutputDimension();
@@ -110,6 +112,10 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
 
     // Number of specific parameter
     extraParameterNumber_[i] = collection[i].getFullParameter().getSize() - (localInputDimension + 1);
+
+    // Check if model is stationary
+    if (!collection[i].isStationary())
+        isStationary_ = false;
   }
 
   // Amplitude active

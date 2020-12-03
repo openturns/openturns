@@ -38,7 +38,7 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInt
   : StationaryCovarianceModel(inputDimension)
   , frequency_(1.0)
 {
-  // Nothing to do
+  isStationary_ = true;
 }
 
 /** Standard constructor with amplitude and scale parameters */
@@ -48,6 +48,7 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const Point & sca
   : StationaryCovarianceModel(scale, amplitude)
   , frequency_(0.0)
 {
+  isStationary_ = true;
   if (outputDimension_ != 1) throw InvalidArgumentException(HERE) << "Error: the output dimension must be 1, here dimension=" << outputDimension_;
   setFrequency(frequency);
 }

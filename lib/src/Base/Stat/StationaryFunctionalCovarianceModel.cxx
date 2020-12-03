@@ -33,7 +33,7 @@ static const Factory<StationaryFunctionalCovarianceModel> Factory_StationaryFunc
 StationaryFunctionalCovarianceModel::StationaryFunctionalCovarianceModel()
   : StationaryCovarianceModel(Point(1, 1.0), Point(1, 1.0))
 {
-  // Nothing to do
+  isStationary_ = true;
 }
 
 /** Parameters constructor */
@@ -42,6 +42,7 @@ StationaryFunctionalCovarianceModel::StationaryFunctionalCovarianceModel(const P
     const Function & rho)
   : StationaryCovarianceModel(scale, amplitude)
 {
+  isStationary_ = true;
   if (getOutputDimension() != 1)
     throw InvalidArgumentException(HERE) << "Only models with one-dimensional output should be defined"
                                          << " (got output dimension=" << getOutputDimension() << ")";
