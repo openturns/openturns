@@ -479,8 +479,8 @@ GridLayout ProcessSampleImplementation::drawCorrelation() const
     {
       Graph graph(drawMarginalCorrelation(i, j));
       graph.setTitle("");
-      graph.setXTitle((i == outputDimension - 1 ) ? OSS() << "marginal " << j : OSS() << "");
-      graph.setYTitle((j == 0) ? OSS() << "marginal " << i : OSS() << "");
+      graph.setXTitle((i == outputDimension - 1 ) ? OSS() << "marginal " << j << ", s": OSS() << "");
+      graph.setYTitle((j == 0) ? OSS() << "marginal " << i << ", t": OSS() << "");
       grid.setGraph(i, j, graph);
     }
   grid.setTitle("Empirical correlation of marginals");

@@ -7,6 +7,79 @@
 
 %include Distribution_doc.i
 
+%include UncertaintyModelCopulaCollection.i
+
+OTTypedInterfaceObjectHelper(Distribution)
+OTTypedCollectionInterfaceObjectHelper(Distribution)
+
+%ignore OT::Distribution::pow;
+%ignore OT::Distribution::setWeight;
+%ignore OT::Distribution::getWeight;
+
+%include openturns/Distribution.hxx
+
+namespace OT {
+
+%extend Distribution {
+
+Distribution(const Distribution & other)
+{
+  return new OT::Distribution(other);
+}
+
+Distribution(PyObject * pyObj)
+{
+  return new OT::Distribution( new OT::PythonDistribution( pyObj ) );
+}
+
+Distribution __add__ (Scalar s)
+{
+ return *self + s;
+}
+
+Distribution __radd__ (Scalar s)
+{
+ return *self + s;
+}
+
+Distribution __sub__(Scalar s)
+{
+ return *self - s;
+}
+
+Distribution __rsub__(Scalar s)
+{
+  return (*self * (-1.0)) + s;
+}
+
+Distribution __mul__(Scalar s)
+{
+ return (*self) * s;
+}
+
+Distribution __rmul__(Scalar s)
+{
+ return (*self) * s;
+}
+
+Distribution __div__(Scalar s)
+{
+ return (*self) / s;
+}
+
+Distribution __pow__(const Scalar s) { return self->pow(s); }
+
+Distribution __rdiv__(Scalar s) { return self->inverse() * s; }
+
+Distribution __rtruediv__(Scalar s) { return self->inverse() * s; }
+
+#if SWIG_VERSION < 0x030011
+  Distribution __truediv__(Scalar s) { return (*self) / s; }
+#endif
+
+} // class Distribution
+} // namespace OT
+
 %pythoncode %{
 from openturns.typ import Interval
 
@@ -235,76 +308,3 @@ class ChaospyDistribution(PythonDistribution):
         q = self._dist.inv(p).flatten()
         return q
 %}
-
-%include UncertaintyModelCopulaCollection.i
-
-OTTypedInterfaceObjectHelper(Distribution)
-OTTypedCollectionInterfaceObjectHelper(Distribution)
-
-%ignore OT::Distribution::pow;
-%ignore OT::Distribution::setWeight;
-%ignore OT::Distribution::getWeight;
-
-%include openturns/Distribution.hxx
-
-namespace OT {
-
-%extend Distribution {
-
-Distribution(const Distribution & other)
-{
-  return new OT::Distribution(other);
-}
-
-Distribution(PyObject * pyObj)
-{
-  return new OT::Distribution( new OT::PythonDistribution( pyObj ) );
-}
-
-Distribution __add__ (Scalar s)
-{
- return *self + s;
-}
-
-Distribution __radd__ (Scalar s)
-{
- return *self + s;
-}
-
-Distribution __sub__(Scalar s)
-{
- return *self - s;
-}
-
-Distribution __rsub__(Scalar s)
-{
-  return (*self * (-1.0)) + s;
-}
-
-Distribution __mul__(Scalar s)
-{
- return (*self) * s;
-}
-
-Distribution __rmul__(Scalar s)
-{
- return (*self) * s;
-}
-
-Distribution __div__(Scalar s)
-{
- return (*self) / s;
-}
-
-Distribution __pow__(const Scalar s) { return self->pow(s); }
-
-Distribution __rdiv__(Scalar s) { return self->inverse() * s; }
-
-Distribution __rtruediv__(Scalar s) { return self->inverse() * s; }
-
-#if SWIG_VERSION < 0x030011
-  Distribution __truediv__(Scalar s) { return (*self) / s; }
-#endif
-
-} // class Distribution
-} // namespace OT

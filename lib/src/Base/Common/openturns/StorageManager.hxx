@@ -93,13 +93,6 @@ public:
 
   /**
    * Default constructor
-   *
-   * The default constructor allows the object to be
-   * stored in STL containers like vector or map.
-   * It takes an optional argument interpreted as the
-   * name of the object in a user point of view. This
-   * name is never used in another way than for user
-   * information. This name has no meaning to the platform.
    */
   explicit StorageManager(UnsignedInteger defaultVersion = 1);
 

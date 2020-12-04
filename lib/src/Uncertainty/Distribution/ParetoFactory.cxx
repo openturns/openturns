@@ -74,7 +74,7 @@ Pareto ParetoFactory::buildMethodOfMoments(const Sample & sample) const
   const Brent solver;
   // alpha> 3.0 so as the skewness to be defined
   const Scalar alpha = solver.solve(constraint, skewness, 3.0 + std::sqrt(SpecFunc::Precision), ResourceMap::GetAsScalar("ParetoFactory-AlphaUpperBound"));
-  const Scalar beta = (alpha - 1.0) * std::sqrt((alpha - 2.0) / alpha) * sample.computeStandardDeviationPerComponent()[0];
+  const Scalar beta = (alpha - 1.0) * std::sqrt((alpha - 2.0) / alpha) * sample.computeStandardDeviation()[0];
   const Scalar gamma = sample.computeMean()[0] - alpha * beta / (alpha - 1.0);
 
   Pareto result(beta, alpha, gamma);

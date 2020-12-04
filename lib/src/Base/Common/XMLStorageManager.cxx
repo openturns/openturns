@@ -54,12 +54,11 @@ BEGIN_NAMESPACE_OPENTURNS
 const int XMLStorageManager::Precision_ = 17;
 
 CLASSNAMEINIT(XMLStorageManager)
-const VersionList XMLStorageManager::SupportedVersions;
 
 /* Default constructor */
 XMLStorageManager::XMLStorageManager(const FileName & filename,
                                      const UnsignedInteger compressionLevel)
-  : StorageManager(1),
+  : StorageManager(OPENTURNS_VERSION),
     p_state_(new XMLStorageManagerState),
     fileName_(filename),
     p_document_(),
@@ -109,7 +108,8 @@ const StorageManager::InternalObject & XMLStorageManager::getState() const
 /* Query the manager if the version is correct */
 Bool XMLStorageManager::canManageVersion(UnsignedInteger version) const
 {
-  return XMLStorageManager::SupportedVersions.contains(version);
+  // backward compatibility
+  return (version <= getDefaultStudyVersion());
 }
 
 

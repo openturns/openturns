@@ -807,7 +807,7 @@ Distribution PythonDistribution::getMarginal(const UnsignedInteger i) const
 /* Method save() stores the object through the StorageManager */
 void PythonDistribution::save(Advocate & adv) const
 {
-  DistributionImplementation::save( adv );
+  DistributionImplementation::save(adv);
 
   pickleSave(adv, pyObj_);
 }
@@ -816,7 +816,7 @@ void PythonDistribution::save(Advocate & adv) const
 /* Method save() reloads the object from the StorageManager */
 void PythonDistribution::load(Advocate & adv)
 {
-  DistributionImplementation::load( adv );
+  DistributionImplementation::load(adv);
 
   pickleLoad(adv, pyObj_);
 }

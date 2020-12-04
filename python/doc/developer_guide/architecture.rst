@@ -241,7 +241,9 @@ The tools chosen for the development of the platform are:
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Sphinx extension (optional for doc)   | `Sphinx-Gallery <https://sphinx-gallery.github.io/stable/index.html>`_          | 0.7               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
-| psutil  (optional for coupling)       | `psutil <https://github.com/giampaolo/psutil/>`_                                | N/A               |
+| dill (optional for serialization)     | `dill <https://github.com/uqfoundation/dill/>`_                                 | N/A               |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| psutil (optional for coupling)        | `psutil <https://github.com/giampaolo/psutil/>`_                                | N/A               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 
 The versions given here are only meant as indications of minimum version and newer ones

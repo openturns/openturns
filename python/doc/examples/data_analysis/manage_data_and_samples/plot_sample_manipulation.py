@@ -113,14 +113,9 @@ sample.computeEmpiricalCDF(point)
 sample.computeMean()
 
 # %%
-# - estimate the standard deviation (returns the Cholesky factor)
-#
-sample.computeStandardDeviation()
-
-# %%
 # - estimate the standard deviation for each component
 #
-sample.computeStandardDeviationPerComponent()
+sample.computeStandardDeviation()
 
 # %%
 # - estimate the moment of order 2 : variance

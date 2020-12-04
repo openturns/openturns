@@ -594,7 +594,7 @@ Point KernelMixture::computeSequentialConditionalCDF(const Point & x) const
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar kI = p_kernel_->computePDF((currentX - sample_(i, 0)) / currentH) / currentH;
-    cdfConditioned += p_kernel_->computeCDF((currentX - sample_(i, 0)) / currentH);;
+    cdfConditioned += p_kernel_->computeCDF((currentX - sample_(i, 0)) / currentH);
     atomsValues[i] = kI;
     pdfConditioning += kI;
   }

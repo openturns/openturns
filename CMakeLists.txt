@@ -363,7 +363,7 @@ endif ()
 
 if (MSVC)
   # Disable some warnings
-  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4197 /wd4244 /wd4251 /wd4267 /wd4996")
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4197 /wd4244 /wd4251 /wd4267 /wd4275 /wd4996")
 endif ()
 
 include (TestBigEndian)
@@ -564,6 +564,7 @@ if (BUILD_PYTHON)
     find_python_module (pandas)
     find_python_module (matplotlib 1.3.1)
     find_python_module (chaospy)
+    find_python_module (dill)
 
     if (USE_SPHINX)
       find_program (SPHINX_EXECUTABLE NAMES sphinx-build DOC "Sphinx Documentation Builder (sphinx-doc.org)")

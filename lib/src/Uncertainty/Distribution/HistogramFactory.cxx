@@ -222,7 +222,7 @@ Scalar HistogramFactory::computeBandwidth(const Sample & sample,
   if (hOpt == 0.0)
   {
     // We use the standard deviation
-    hOpt = sample.computeStandardDeviationPerComponent()[0] * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0);
+    hOpt = sample.computeStandardDeviation()[0] * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0);
     // If we get zero it is due to a constant sample
     if (hOpt == 0.0)
     {

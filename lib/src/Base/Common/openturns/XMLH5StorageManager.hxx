@@ -33,7 +33,7 @@ struct XMLH5StorageManagerState : public XMLStorageManagerState
   Bool reachedEnd_;
   XMLH5StorageManagerState() : XMLStorageManagerState(), reachedEnd_(false) {}
 
-  virtual XMLH5StorageManagerState * clone() const override
+  XMLH5StorageManagerState * clone() const override
   {
     return new XMLH5StorageManagerState(*this);
   }
@@ -52,6 +52,8 @@ struct XMLH5StorageManagerState : public XMLStorageManagerState
   }
 };
 
+class XMLH5StorageManagerImplementation;
+
 #endif /* SWIG */
 
 class OT_API XMLH5StorageManager : public XMLStorageManager
@@ -61,27 +63,18 @@ public:
   explicit XMLH5StorageManager(const FileName & filename,
                                const UnsignedInteger compressionLevel = ResourceMap::GetAsUnsignedInteger("XMLStorageManager-DefaultCompressionLevel"));
 
-  virtual XMLH5StorageManager * clone() const override;
+  XMLH5StorageManager * clone() const override;
 
 #ifndef SWIG
-  void addIndexedValue(Pointer<InternalObject> & p_obj,
-                       UnsignedInteger index,
-                       Scalar value) override;
+  void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger value) override;
+  void addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar value) override;
 
-  void readIndexedValue(Pointer<InternalObject> & p_obj,
-                        UnsignedInteger index,
-                        Scalar & value) override;
+  void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, UnsignedInteger & value) override;
+  void readIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar & value) override;
 #endif /* SWIG */
 
-protected:
-  void writeToH5(const OT::String & dataSetName);
-  void readFromH5(const String & dataSetName);
-
 private:
-  FileName h5FileName_;
-  std::vector<OT::Scalar> valBuf_;
-  OT::Bool isFirstDS_ = true;
-  OT::Bool isChunked_ = false;
+  Pointer<XMLH5StorageManagerImplementation> p_implementation_;
 
 }; /* class H5StorageManager */
 

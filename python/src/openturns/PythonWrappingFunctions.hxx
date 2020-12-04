@@ -1774,7 +1774,14 @@ inline PySliceObject* SliceCast(PyObject* pyObj)
 inline
 void pickleSave(Advocate & adv, PyObject * pyObj, const String attributName = "pyInstance_")
 {
-  ScopedPyObjectPointer pickleModule(PyImport_ImportModule("pickle")); // new reference
+  // try to use dill
+  ScopedPyObjectPointer pickleModule(PyImport_ImportModule("dill")); // new reference
+  if (pickleModule.get() == NULL)
+  {
+    // fallback to pickle
+    PyErr_Clear();
+    pickleModule = PyImport_ImportModule("pickle"); // new reference
+  }
   assert(pickleModule.get());
 
   PyObject * pickleDict = PyModule_GetDict(pickleModule.get());
@@ -1835,7 +1842,14 @@ void pickleLoad(Advocate & adv, PyObject * & pyObj, const String attributName = 
   handleException();
   assert(rawDump.get());
 
-  ScopedPyObjectPointer pickleModule(PyImport_ImportModule("pickle")); // new reference
+  // try to use dill
+  ScopedPyObjectPointer pickleModule(PyImport_ImportModule("dill")); // new reference
+  if (pickleModule.get() == NULL)
+  {
+    // fallback to pickle
+    PyErr_Clear();
+    pickleModule = PyImport_ImportModule("pickle"); // new reference
+  }
   assert(pickleModule.get());
 
   PyObject * pickleDict = PyModule_GetDict(pickleModule.get());

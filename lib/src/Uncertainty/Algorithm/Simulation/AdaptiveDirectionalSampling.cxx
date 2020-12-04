@@ -63,7 +63,7 @@ void AdaptiveDirectionalSampling::run()
 {
 
   // First, reset the convergence history
-  convergenceStrategy_.clear();
+  convergenceStrategy_.setDimension(2);
 
   // input dimension
   const UnsignedInteger dimension = standardEvent_.getImplementation()->getFunction().getInputDimension();
@@ -143,6 +143,10 @@ void AdaptiveDirectionalSampling::run()
 
     // update result
     setResult(ProbabilitySimulationResult(getEvent(), probabilityEstimate, varianceEstimate, n, blockSize));
+
+    // update the convergence history
+    const Point convPt = {probabilityEstimate, varianceEstimate};
+    convergenceStrategy_.store(convPt);
 
     // update weights
     for (UnsignedInteger i = 0; i < m; ++ i)

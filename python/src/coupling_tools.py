@@ -155,7 +155,7 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
 def execute(cmd, cwd=None, workdir=None, shell=False, is_shell=False,
             executable=None, shell_exe=None, hide_win=True,
             check=True, check_exit_code=True, get_stdout=False, get_stderr=False,
-            timeout=None):
+            timeout=None, env=None):
     """
     Launch an external process.
 
@@ -181,6 +181,8 @@ def execute(cmd, cwd=None, workdir=None, shell=False, is_shell=False,
         Process timeout (Python >=3.3 only)
         On timeout and if psutil is available the children of the process
         are killed before the process itself
+    env : dict, default=None
+        Environment variables mapping for the new process
 
     Returns
     -------
@@ -243,7 +245,7 @@ def execute(cmd, cwd=None, workdir=None, shell=False, is_shell=False,
     stderr = subprocess.PIPE if get_stderr else None
     proc = subprocess.Popen(process_args, shell=shell, cwd=cwd,
                             executable=executable, stdout=stdout, stderr=stderr,
-                            startupinfo=startupinfo)
+                            startupinfo=startupinfo, env=env)
     if sys.version_info >= (3, 3,):
         try:
             stdout_data, stderr_data = proc.communicate(timeout=timeout)

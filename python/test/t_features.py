@@ -9,7 +9,7 @@ width = 40
 print(' 1: import openturns'.ljust(width), end=' ')
 try:
     import openturns as ot
-    print('ok')
+    print(ot.__version__)
 except ImportError:
     print('n/a')
     raise
@@ -91,26 +91,34 @@ try:
 except ImportError:
     print('n/a')
 
+# check that dill was found
+print('11: serialization (dill)'.ljust(width), end=' ')
+try:
+    import dill
+    print('ok')
+except ImportError:
+    print('n/a')
+
 # check that nlopt library was found
-print('11: optimization (NLopt)'.ljust(width), end=' ')
+print('12: optimization (NLopt)'.ljust(width), end=' ')
 print('ok' if ot.NLopt.IsAvailable() else 'n/a')
 
 # check that cminpack was found
-print('12: optimization (CMinpack)'.ljust(width), end=' ')
+print('13: optimization (CMinpack)'.ljust(width), end=' ')
 print('ok' if ot.CMinpack.IsAvailable() else 'n/a')
 
 # check that ceres was found
-print('13: optimization (Ceres Solver)'.ljust(width), end=' ')
+print('14: optimization (Ceres Solver)'.ljust(width), end=' ')
 print('ok' if ot.Ceres.IsAvailable() else 'n/a')
 
 # check that dlib was found
-print('14: optimization (Dlib)'.ljust(width), end=' ')
+print('15: optimization (Dlib)'.ljust(width), end=' ')
 print('ok' if ot.Dlib.IsAvailable() else 'n/a')
 
 # check that dlib was found
-print('15: optimization (Bonmin)'.ljust(width), end=' ')
+print('16: optimization (Bonmin)'.ljust(width), end=' ')
 print('ok' if ot.Bonmin.IsAvailable() else 'n/a')
 
 # check that ipopt was found
-print('16: optimization (Ipopt)'.ljust(width), end=' ')
+print('17: optimization (Ipopt)'.ljust(width), end=' ')
 print('ok' if ot.Ipopt.IsAvailable() else 'n/a')

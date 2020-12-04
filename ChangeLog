@@ -13,15 +13,19 @@
  * Removed deprecated SORMResult::getEventProbabilityHohenBichler/getGeneralisedReliabilityIndexHohenBichler
  * Removed deprecated OptimizationResult::getLagrangeMultipliers, OptimizationAlgorithm::computeLagrangeMultipliers
  * Removed deprecated FittingTest::Kolmogorov, FittingTest::BestModelKolmogorov (DistributionFactory argument only)
+ * Moved Sample::computeStandardDeviationPerComponent, to computeStandardDeviation
 
 === Documentation ===
 
 === Python module ===
+ * Serialize Python wrapper objects using dill (PythonDistribution, PythonFunction ...)
 
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #1661 (XMLH5StorageManager does not store IndicesCollection into HDF5 files)
  * #1662 (Operator() of a CovarianceModel with multidimensional output should yield object of type SquareMatrix)
+ * #1680 (QuadraticBasisFactory multiplies cross products by 2)
 
 
 == 1.16 release (2020-11-16) == #release-1.16

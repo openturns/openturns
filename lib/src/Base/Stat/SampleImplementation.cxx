@@ -1230,12 +1230,14 @@ CovarianceMatrix SampleImplementation::computeCovariance() const
 }
 
 /*
- * Gives the standard deviation of the sample, i.e. the square-root of the covariance matrix.
+ * Gives the standard deviation of each component of the sample.
  */
-TriangularMatrix SampleImplementation::computeStandardDeviation() const
+Point SampleImplementation::computeStandardDeviation() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the standard deviation of an empty sample.";
-  return computeCovariance().computeCholesky();
+  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the standard deviation per component of an empty sample.";
+  Point sd(computeVariance());
+  for (UnsignedInteger i = 0; i < dimension_; ++i) sd[i] = sqrt(sd[i]);
+  return sd;
 }
 
 
@@ -1276,10 +1278,8 @@ Point SampleImplementation::computeVariance() const
  */
 Point SampleImplementation::computeStandardDeviationPerComponent() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the standard deviation per component of an empty sample.";
-  Point sd(computeVariance());
-  for (UnsignedInteger i = 0; i < dimension_; ++i) sd[i] = sqrt(sd[i]);
-  return sd;
+  LOGWARN(OSS() << "Sample.computeStandardDeviationPerComponent is deprecated, use computeStandardDeviation");
+  return computeStandardDeviation();
 }
 
 

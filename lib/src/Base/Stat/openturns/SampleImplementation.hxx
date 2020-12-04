@@ -646,12 +646,12 @@ public:
   virtual CovarianceMatrix computeCovariance() const;
 
   /**
-   * Gives the standard deviation of the sample, i.e. the square-root of the covariance matrix.
+   * Gives the standard deviation of each component of the sample
    */
-  TriangularMatrix computeStandardDeviation() const;
+  virtual Point computeStandardDeviation() const;
 
   /**
-   * Gives the standard deviation of each component of the sample
+   * @deprecated Gives the standard deviation of each component of the sample
    */
   virtual Point computeStandardDeviationPerComponent() const;
 
