@@ -51,7 +51,8 @@ MultiStart::MultiStart(const OptimizationAlgorithm & solver,
   , keepResults_(ResourceMap::GetAsBool("MultiStart-KeepResults"))
   , resultCollection_(0)
 {
-  // Nothing to do here
+  // no global limit unless the maximum eval number is set
+  setMaximumEvaluationNumber(solver.getMaximumEvaluationNumber() * startingPoints.getSize());
 }
 
 
@@ -85,7 +86,12 @@ void MultiStart::run()
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     solver.setStartingPoint(startingPoints_[i]);
-    solver.setMaximumEvaluationNumber(getMaximumEvaluationNumber() - evaluationNumber);
+
+    // ensure we do not exceed the global budget if the maximum eval number is set
+    const UnsignedInteger remainingEval = std::max(static_cast<SignedInteger>(getMaximumEvaluationNumber() - evaluationNumber), 0L);
+    if (remainingEval < solver.getMaximumEvaluationNumber())
+      solver.setMaximumEvaluationNumber(remainingEval);
+
     try
     {
       solver.run();
