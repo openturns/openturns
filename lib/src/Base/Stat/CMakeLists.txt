@@ -67,6 +67,7 @@ ot_add_source_file (NonStationaryCovarianceModelFactory.cxx)
 ot_add_source_file (UserDefinedStationaryCovarianceModel.cxx)
 ot_add_source_file (StationaryCovarianceModelFactory.cxx)
 ot_add_source_file (kendall.c)
+ot_add_source_file (IsotropicCovarianceModel.cxx)
 
 ot_install_header_file (HistoryStrategyImplementation.hxx)
 ot_install_header_file (SobolSequence.hxx)
@@ -132,6 +133,7 @@ ot_install_header_file (HMatrixParameters.hxx)
 ot_install_header_file (ProductCovarianceModel.hxx)
 ot_install_header_file (RankMCovarianceModel.hxx)
 ot_install_header_file (TensorizedCovarianceModel.hxx)
+ot_install_header_file (IsotropicCovarianceModel.hxx)
 
 # Build on the fly source files
 if (BISON_FOUND AND FLEX_FOUND)

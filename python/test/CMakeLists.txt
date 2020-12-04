@@ -730,6 +730,7 @@ ot_pyinstallcheck_test (LinearModelAlgorithm_std)
 ot_pyinstallcheck_test (LinearModelAnalysis_std)
 ot_pyinstallcheck_test (LinearModelStepwiseAlgorithm_std)
 ot_pyinstallcheck_test (MetaModelValidation_std)
+ot_pyinstallcheck_test (KrigingAlgorithm_isotropic_std IGNOREOUT)
 
 ## Sensitivity
 ot_pyinstallcheck_test (ANCOVA_std)

@@ -10,6 +10,7 @@
  * VertexValuePointToFieldFunction
  * KarhunenLoeveReduction
  * KarhunenLoeveValidation
+ * IsotropicCovarianceModel
 
 ==== API changes ====
  * Removed deprecated Pairs alias

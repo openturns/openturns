@@ -226,6 +226,7 @@ ot_add_python_module(statistics statistics_module.i
                       HMatrix.i HMatrix_doc.i.in
                       HMatrixImplementation.i HMatrixImplementation_doc.i.in
                       BaseStatisticsTemplateDefs.i
+                      IsotropicCovarianceModel.i IsotropicCovarianceModel_doc.i.in
                    )
 
 ot_add_python_module(geom geom_module.i

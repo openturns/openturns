@@ -85,5 +85,6 @@
 #include "openturns/HMatrixImplementation.hxx"
 #include "openturns/HMatrix.hxx"
 #include "openturns/HMatrixFactory.hxx"
+#include "openturns/IsotropicCovarianceModel.hxx"
 
 #endif /* OPENTURNS_OTSTAT_HXX */

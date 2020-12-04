@@ -86,6 +86,7 @@
 %include HMatrixFactory.i
 %include HMatrixImplementation.i
 %include HMatrix.i
+%include IsotropicCovarianceModel.i
 
 /* At last we include template definitions */
 %include BaseStatisticsTemplateDefs.i
