@@ -214,6 +214,46 @@ int main(int, char *[])
       }
     }
 
+    {
+      Scalar scale = 3.5;
+      Scalar amplitude = 1.5;
+      Point scalePoint(1);
+      scalePoint[0] = scale;
+      Point amplitudePoint(1);
+      amplitudePoint[0] = amplitude;
+      SquaredExponential myOneDimensionalKernel(scalePoint, amplitudePoint);
+      IsotropicCovarianceModel myIsotropicKernel(myOneDimensionalKernel, 2);
+
+      // Test consistency of isotropic model with underlying 1D kernel
+      assert_almost_equal(myIsotropicKernel.getAmplitude()[0], amplitude, 1e-12, 0.0);
+      assert_almost_equal(myIsotropicKernel.getScale()[0], scale, 1e-12, 0.0);
+      assert_almost_equal(myIsotropicKernel.getKernel().getAmplitude()[0], amplitude, 1e-12, 0.0);
+      assert_almost_equal(myIsotropicKernel.getKernel().getScale()[0], scale, 1e-12, 0.0);
+
+      // Standard tests applied
+      test_model(myIsotropicKernel);
+
+      // Test consistency of isotropic kernel's discretization
+      Point inputVector(2);
+      inputVector[0] = 0.3;
+      inputVector[1] = 1.7;
+      Point inputVectorNorm(1, inputVector.norm());
+      assert_almost_equal(myOneDimensionalKernel(inputVectorNorm)(0,0), 1.992315565746, 1e-12, 0.0);
+      assert_almost_equal(myIsotropicKernel(inputVector)(0,0), 1.992315565746, 1e-12, 0.0);
+      Sample inputSample(2, 2);
+      inputSample[1] = inputVector;
+      Sample inputSampleNorm(2, 1);
+      inputSampleNorm[1] = inputVectorNorm;
+      CovarianceMatrix oneDimensionalCovMatrix(myOneDimensionalKernel.discretize(inputSampleNorm));
+      CovarianceMatrix isotropicCovMatrix(myIsotropicKernel.discretize(inputSample));
+      assert_almost_equal(oneDimensionalCovMatrix(0,0), 2.250000000002, 1e-12, 0.0);
+      assert_almost_equal(oneDimensionalCovMatrix(1,1), 2.250000000002, 1e-12, 0.0);
+      assert_almost_equal(isotropicCovMatrix(0,0), 2.250000000002, 1e-12, 0.0);
+      assert_almost_equal(isotropicCovMatrix(1,1), 2.250000000002, 1e-12, 0.0);
+      assert_almost_equal(oneDimensionalCovMatrix(0,1), 1.992315565746, 1e-12, 0.0);
+      assert_almost_equal(isotropicCovMatrix(0,1), 1.992315565746, 1e-12, 0.0);
+    }
+
   }
   catch (TestFailed & ex)
   {

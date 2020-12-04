@@ -60,7 +60,7 @@ def test_model(myModel, test_grad=True, x1=None, x2=None):
         ot.PlatformInfo.SetNumericalPrecision(precision)
 
 
-def test_scalar_model(myModel, test_grad=True):
+def test_scalar_model(myModel):
 
     inputDimension = 1
     dimension = 1
@@ -182,3 +182,34 @@ coll = [ot.AbsoluteExponential(), ot.SquaredExponential(), ot.GeneralizedExponen
 coll += [ot.MaternModel(), ot.SphericalModel(), ot.ExponentiallyDampedCosineModel()]
 for model in coll:
     test_scalar_model(model)
+
+## Isotropic covariance model
+scale = 3.5
+amplitude = 1.5
+myOneDimensionalKernel = ot.SquaredExponential([scale], [amplitude])
+myIsotropicKernel = ot.IsotropicCovarianceModel(myOneDimensionalKernel, inputDimension)
+
+# Test consistency of isotropic model with underlying 1D kernel
+ott.assert_almost_equal(myIsotropicKernel.getAmplitude()[0], amplitude, 1e-12, 0.0)
+ott.assert_almost_equal(myIsotropicKernel.getScale()[0], scale, 1e-12, 0.0)
+ott.assert_almost_equal(myIsotropicKernel.getKernel().getAmplitude()[0], amplitude, 1e-12, 0.0)
+ott.assert_almost_equal(myIsotropicKernel.getKernel().getScale()[0], scale, 1e-12, 0.0)
+
+# Standard tests applied
+test_model(myIsotropicKernel)
+
+# Test consistency of isotropic kernel's discretization
+inputVector = ot.Point([0.3, 1.7])
+inputVectorNorm = ot.Point([inputVector.norm()])
+ott.assert_almost_equal(myOneDimensionalKernel(inputVectorNorm)[0,0], 1.992315565746, 1e-12, 0.0)
+ott.assert_almost_equal(myIsotropicKernel(inputVector)[0,0], 1.992315565746, 1e-12, 0.0)
+inputSample = ot.Sample([ot.Point(2), inputVector])
+inputSampleNorm = ot.Sample([ot.Point(1), inputVectorNorm])
+oneDimensionalCovMatrix = myOneDimensionalKernel.discretize(inputSampleNorm)
+isotropicCovMatrix = myIsotropicKernel.discretize(inputSample)
+ott.assert_almost_equal(oneDimensionalCovMatrix[0,0], 2.250000000002, 1e-12, 0.0)
+ott.assert_almost_equal(oneDimensionalCovMatrix[1,1], 2.250000000002, 1e-12, 0.0)
+ott.assert_almost_equal(isotropicCovMatrix[0,0], 2.250000000002, 1e-12, 0.0)
+ott.assert_almost_equal(isotropicCovMatrix[1,1], 2.250000000002, 1e-12, 0.0)
+ott.assert_almost_equal(oneDimensionalCovMatrix[0,1], 1.992315565746, 1e-12, 0.0)
+ott.assert_almost_equal(isotropicCovMatrix[0,1], 1.992315565746, 1e-12, 0.0)

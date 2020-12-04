@@ -32,3 +32,7 @@ myModel = class=TensorizedCovarianceModel input dimension=2, dimension = 3, mode
 myModel(class=Point name=Unnamed dimension=2 values=[4,-4], class=Point name=Unnamed dimension=2 values=[-3,-1])=class=SquareMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[0.00823,0,0,0,1.64e-06,0,0,0,0.35]
 dCov =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=9 values=[-0.00329,0.00549,0,0,0,0,0,0,-4.14e-06,4.92e-06,0,0,0,0,0,0,-0.0521,0.0621]
 dCov (FD)=class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=9 values=[-0.00329,0.00549,0,0,0,0,0,0,-4.13e-06,4.93e-06,0,0,0,0,0,0,-0.0521,0.0621]
+myModel = class=IsotropicCovarianceModel input dimension=2, dimension = 1, kernel =class=SquaredExponential scale=class=Point name=Unnamed dimension=1 values=[3.5] amplitude=class=Point name=Unnamed dimension=1 values=[1.5]
+myModel(class=Point name=Unnamed dimension=2 values=[4,-4], class=Point name=Unnamed dimension=2 values=[-3,-1])=class=SquareMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0.211]
+dCov =class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=2 columns=1 values=[0.121,-0.0516]
+dCov (FD)=class=Point name=Unnamed dimension=2 values=[-0.121,0.0516]
