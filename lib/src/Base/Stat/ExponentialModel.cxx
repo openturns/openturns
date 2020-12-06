@@ -71,26 +71,60 @@ ExponentialModel * ExponentialModel::clone() const
   return new ExponentialModel(*this);
 }
 
+SquareMatrix ExponentialModel::operator()(const Point &tau) const
+{
+  // L2 norm of tau / scale
+  Scalar tauOverThetaNorm = 0.0;
+  for (UnsignedInteger i = 0; i < getInputDimension(); ++i)
+  {
+    const Scalar dx = tau[i] / scale_[i];
+    tauOverThetaNorm += dx * dx;
+  }
+  tauOverThetaNorm = sqrt(tauOverThetaNorm);
+  // Return value
+  Scalar factor = 1.0;
+  if (tauOverThetaNorm == 0.0)
+   factor = 1.0 + nuggetFactor_;
+  else
+    factor = exp(-tauOverThetaNorm);
+  SquareMatrix output(outputCovariance_);
+  output.getImplementation()->symmetrize();
+  return output * factor;
+}
 
 /* Computation of the covariance function, stationary interface
  * C_{i,j}(tau) = amplitude_i * R_{i,j} * amplitude_j  * exp(-|tau / scale|)
  * C_{i,i}(tau) = amplitude_i^2  * exp(-|tau / scale|)
  */
-Scalar ExponentialModel::computeStandardRepresentative(const Point & tau) const
+Scalar ExponentialModel::computeAsScalar(const Point &tau) const
 {
+  if (outputDimension_ > 1)
+    throw InvalidArgumentException(HERE) << "Error : ExponentialModel::computeAsScalar(tau) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
   if (tau.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In ExponentialModel::computeStandardRepresentative: expected a shift of dimension=" << getInputDimension() << ", got dimension=" << tau.getDimension();
-  // Absolute value of tau / scale
-  Point tauOverTheta(getInputDimension());
-  for (UnsignedInteger i = 0; i < getInputDimension(); ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const Scalar tauOverThetaNorm = tauOverTheta.norm();
+
+  // L2 norm of tau / scale
+  Scalar tauOverThetaNorm = 0.0;
+  for (UnsignedInteger i = 0; i < getInputDimension(); ++i)
+  {
+    const Scalar dx = tau[i] / scale_[i];
+    tauOverThetaNorm += dx * dx;
+  }
+  tauOverThetaNorm = sqrt(tauOverThetaNorm);
   // Return value
-  return (tauOverThetaNorm == 0.0 ? 1.0 + nuggetFactor_ : exp(- tauOverThetaNorm ));
+  return (tauOverThetaNorm == 0.0 ? amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_) : amplitude_[0] * amplitude_[0] * exp(-tauOverThetaNorm));
 }
 
-Scalar ExponentialModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-    const Collection<Scalar>::const_iterator & t_begin) const
+/* Computation of the covariance function, stationary interface
+ * C_{i,j}(tau) = amplitude_i * R_{i,j} * amplitude_j  * exp(-|tau / scale|)
+ * C_{i,i}(tau) = amplitude_i^2  * exp(-|tau / scale|)
+ */
+Scalar ExponentialModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+                                         const Collection<Scalar>::const_iterator &t_begin) const
 {
+  if (outputDimension_ != 1)
+    throw InvalidArgumentException(HERE) << "Error : ExponentialModel::computeAsScalar(it, it) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
+
   Scalar tauOverThetaNorm = 0;
   Collection<Scalar>::const_iterator s_it = s_begin;
   Collection<Scalar>::const_iterator t_it = t_begin;
@@ -100,9 +134,8 @@ Scalar ExponentialModel::computeStandardRepresentative(const Collection<Scalar>:
     tauOverThetaNorm += dx * dx;
   }
   tauOverThetaNorm = sqrt(tauOverThetaNorm);
-  return (tauOverThetaNorm == 0.0 ? 1.0 + nuggetFactor_ : exp(- tauOverThetaNorm ));
+  return (tauOverThetaNorm == 0.0 ? amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_) : amplitude_[0] * amplitude_[0] * exp(-tauOverThetaNorm));
 }
-
 
 /** Gradient */
 Matrix ExponentialModel::partialGradient(const Point & s,
@@ -114,29 +147,36 @@ Matrix ExponentialModel::partialGradient(const Point & s,
    */
   if (s.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point s has dimension=" << s.getDimension() << ", expected dimension=" << getInputDimension();
   if (t.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point t has dimension=" << t.getDimension() << ", expected dimension=" << getInputDimension();
-  const Point tau(s - t);
-  const Scalar absTau = tau.norm();
-  Point tauOverTheta(getInputDimension());
-  for (UnsignedInteger i = 0; i < getInputDimension(); ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const Scalar absTauOverTheta = tauOverTheta.norm();
-
-  // TODO check
+  // Compute tau.norm() & (tau/scale_).norm()
+  Scalar absTau = 0.0;
+  Scalar absTauOverTheta = 0.0;
+  Scalar dx = 1.0;
+  for (UnsignedInteger i = 0; i < getInputDimension(); ++i)
+  {
+    dx = (s[i] - t[i]);
+    absTau += dx*dx;
+    dx /= scale_[i];
+    absTauOverTheta += dx * dx;
+  }
+  absTau = sqrt(absTau);
   if (absTau == 0)
     throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the points t and s are equal. Covariance model has no derivate for that case.";
+  absTauOverTheta = sqrt(absTau);
+  // TODO check & implement specific 1d output case (after inheritance from KronekerCovarianceModel)
   // Covariance matrix write S * rho(tau), so gradient writes Sigma * grad(rho) where * is a 'dot',
   // i.e. dC/dk= Sigma_{i,j} * drho/dk
-  SquareMatrix covariance(operator()(tau));
-  // symmetrize if not diagonal
-  if (!isDiagonal_) covariance.getImplementation()->symmetrize();
+  // TODO Remove explicit call to operator()
+  SquareMatrix covariance(operator()(s, t));
   Point covariancePoint(*covariance.getImplementation());
   // Compute the gradient part (gradient of rho)
   Point factor(getInputDimension());
   for (UnsignedInteger i = 0; i < getInputDimension(); ++i)
   {
-    if ((getInputDimension() == 1.0) && (tau[i] < 0))  factor[i] = 1.0 / scale_[i] ;
-    else if ((getInputDimension() == 1.0) && (tau[i] > 0))  factor[i] = -1.0 / scale_[i];
+    const Scalar tauI = s[i] - t[i];
+    if ((getInputDimension() == 1.0) && (tauI < 0))  factor[i] = 1.0 / scale_[i] ;
+    else if ((getInputDimension() == 1.0) && (tauI > 0))  factor[i] = -1.0 / scale_[i];
     // General case
-    else factor[i] = -1.0 * tau[i] / (absTauOverTheta * scale_[i] * scale_[i]);
+    else factor[i] = -1.0 * tauI / (absTauOverTheta * scale_[i] * scale_[i]);
   }
   // Finally assemble the final matrix
   Matrix gradient(getInputDimension(), covariancePoint.getDimension());

@@ -74,6 +74,42 @@ UserDefinedStationaryCovarianceModel * UserDefinedStationaryCovarianceModel::clo
   return new UserDefinedStationaryCovarianceModel(*this);
 }
 
+Scalar UserDefinedStationaryCovarianceModel::computeAsScalar(const Point &tau) const
+{
+  if (outputDimension_ > 1)
+    throw InvalidArgumentException(HERE) << "Error : UserDefinedStationaryCovarianceModel::computeAsScalar(tau) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
+  if (tau.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "In UserDefinedStationaryCovarianceModel::computeStandardRepresentative: expected a shift of dimension=" << getInputDimension() << ", got dimension=" << tau.getDimension();
+  // We filter the collection & return corresponding values
+  if (mesh_.getN() == 1)
+    return covarianceCollection_[0](0,0);
+  UnsignedInteger index;
+  if (tau[0] < 0.0)
+     index = nearestNeighbour_.query(tau * (-1.0));
+    else
+      index = nearestNeighbour_.query(tau);
+  // index
+  return covarianceCollection_[index](0,0);
+}
+
+Scalar UserDefinedStationaryCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+                                                             const Collection<Scalar>::const_iterator &t_begin) const
+{
+  if (outputDimension_ != 1)
+    throw InvalidArgumentException(HERE) << "Error : UserDefinedStationaryCovarianceModel::computeAsScalar(it, it) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
+
+  // Work on iterators
+  // Unfortunately there is no other solution then generating the tau point
+  Collection<Scalar>::const_iterator s_it = s_begin;
+  Collection<Scalar>::const_iterator t_it = t_begin;
+  Point tau(inputDimension_, 0.0);
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
+  {
+    tau[i] = *s_it - *t_it;
+  }
+  return computeAsScalar(tau);
+}
+
 /* Computation of the covariance function */
 SquareMatrix UserDefinedStationaryCovarianceModel::operator()(const Point & tau) const
 {

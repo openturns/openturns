@@ -157,6 +157,39 @@ SquareMatrix DiracCovarianceModel::operator() (const Point & tau) const
     return SquareMatrix(outputDimension_).getImplementation();
 }
 
+Scalar DiracCovarianceModel::computeAsScalar(const Point &tau) const
+{
+  if (outputDimension_ > 1)
+    throw InvalidArgumentException(HERE) << "Error : DiracCovarianceModel::computeAsScalar(tau) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
+  if (tau.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::computeStandardRepresentative: expected a shift of dimension=" << getInputDimension() << ", got dimension=" << tau.getDimension();
+  if (tau.norm() == 0)
+    return outputCovariance_(0, 0);
+  else
+    return 0.0;
+}
+
+Scalar DiracCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+                                             const Collection<Scalar>::const_iterator &t_begin) const
+{
+  if (outputDimension_ > 1)
+    throw InvalidArgumentException(HERE) << "Error : DiracCovarianceModel::computeAsScalar(tau) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
+
+  Scalar tauNorm = 0;
+  Collection<Scalar>::const_iterator s_it = s_begin;
+  Collection<Scalar>::const_iterator t_it = t_begin;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
+  {
+    const Scalar dx = (*s_it - *t_it) / scale_[i];
+    tauNorm += dx * dx;
+  }
+  tauNorm = sqrt(tauNorm);
+  if (tauNorm == 0)
+    return outputCovariance_(0, 0);
+  else
+    return 0.0;
+}
+
 // The following structure helps to compute the full covariance matrix
 struct DiracCovarianceModelDiscretizePolicy
 {
@@ -273,6 +306,13 @@ Sample DiracCovarianceModel::discretizeRow(const Sample & vertices,
     for(UnsignedInteger i = j; i < outputDimension_; ++i)
       result(p * outputDimension_ + i, j) = outputCovariance_(i, j);
   return result;
+}
+
+// discretize with use of HMatrix
+HMatrix DiracCovarianceModel::discretizeHMatrix(const Sample & vertices,
+    const HMatrixParameters & parameters) const
+{
+  return discretizeHMatrix(vertices, nuggetFactor_, parameters);
 }
 
 // discretize with use of HMatrix

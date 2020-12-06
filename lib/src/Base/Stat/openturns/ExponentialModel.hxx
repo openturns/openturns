@@ -65,11 +65,16 @@ public:
   /** Virtual copy constructor */
   ExponentialModel * clone() const override;
 
-  /** Computation of the covariance function, stationary interface */
+  /** Computation of the covariance function */
+  using CovarianceModelImplementation::operator();
+  SquareMatrix operator()(const Point &tau) const override;
+
+  /** Computation of the covariance function */
+  using CovarianceModelImplementation::computeAsScalar;
+  Scalar computeAsScalar(const Point &tau) const override;
 #ifndef SWIG
-  Scalar computeStandardRepresentative(const Point &tau) const;
-  Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-                                       const Collection<Scalar>::const_iterator & t_begin) const;
+  Scalar computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+                         const Collection<Scalar>::const_iterator &t_begin) const override;
 #endif
 
   /** Gradient */

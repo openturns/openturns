@@ -158,6 +158,28 @@ ProductCovarianceModel * ProductCovarianceModel::clone() const
   return new ProductCovarianceModel(*this);
 }
 
+Scalar ProductCovarianceModel::computeAsScalar(const Point & tau) const
+{
+  if (!isStationary())
+    return CovarianceModelImplementation::computeAsScalar(tau);
+  if (tau.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "ProductCovarianceModel::computeAsScalar(tau): the point s has dimension=" << tau.getDimension() << ", expected dimension=" << inputDimension_;
+  Scalar rho = amplitude_[0] * amplitude_[0];
+  UnsignedInteger start = 0;
+  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
+  {
+    // Compute as scalar returns the correlation function
+    const UnsignedInteger localInputDimension = collection_[i].getInputDimension();
+    const UnsignedInteger stop = start + localInputDimension;
+    Point localTau(localInputDimension);
+    std::copy(tau.begin() + start, tau.begin() + stop, localTau.begin());
+    // Compute as scalar returns the correlation function
+    rho *= collection_[i].getImplementation()->computeAsScalar(localTau);
+    start += collection_[i].getInputDimension();
+  }
+  return rho;
+}
+
 Scalar ProductCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
     const Collection<Scalar>::const_iterator & t_begin) const
 {

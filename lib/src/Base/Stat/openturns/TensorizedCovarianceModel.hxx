@@ -57,6 +57,16 @@ public:
   /** Computation of the covariance function */
   using CovarianceModelImplementation::operator();
   SquareMatrix operator() (const Point & s, const Point & t) const override;
+  SquareMatrix operator() (const Point & tau) const override;
+
+  /** Computation of the covariance function */
+  using CovarianceModelImplementation::computeAsScalar;
+  Scalar computeAsScalar(const Point &s, const Point &t) const override;
+  Scalar computeAsScalar(const Point &tau) const override;
+#ifndef SWIG
+  Scalar computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+                         const Collection<Scalar>::const_iterator &t_begin) const override;
+#endif
 
   /** Gradient */
   Matrix partialGradient(const Point & s, const Point & t) const override;

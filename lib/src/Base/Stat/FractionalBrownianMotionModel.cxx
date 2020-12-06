@@ -69,6 +69,50 @@ FractionalBrownianMotionModel * FractionalBrownianMotionModel::clone() const
   return new FractionalBrownianMotionModel(*this);
 }
 
+Scalar FractionalBrownianMotionModel::computeAsScalar(const Point &s,
+                                                      const Point &t) const
+{
+  if (s.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  if(outputDimension_ != 1)
+    throw InvalidArgumentException(HERE) << "FractionalBrownianMotionModel::computeAsScalar(s,t) should be used only if output dimension is 1. Here, output dimension = " << outputDimension_;
+
+  const Scalar sOverTheta = s[0] / scale_[0];
+  const Scalar tOverTheta = t[0] / scale_[0];
+  const Scalar stOverTheta = tOverTheta - sOverTheta;
+  const Scalar absSOverTheta = std::abs(sOverTheta);
+  const Scalar absTOverTheta = std::abs(tOverTheta);
+  const Scalar absSTOverTheta = std::abs(stOverTheta);
+  const Scalar Hi = exponent_[0];
+  const Scalar sigmaI = amplitude_[0];
+  Scalar result = 0.5 * sigmaI * sigmaI * (std::pow(absSOverTheta, 2.0 * Hi) + std::pow(absTOverTheta, 2.0 * Hi) - std::pow(absSTOverTheta, 2.0 * Hi));
+  if (absSTOverTheta <= SpecFunc::ScalarEpsilon)
+    result *= 1.0 + nuggetFactor_;
+  return result;
+}
+
+Scalar FractionalBrownianMotionModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+                                                      const Collection<Scalar>::const_iterator &t_begin) const
+{
+  if (outputDimension_ != 1)
+    throw InvalidArgumentException(HERE) << "Error : FractionalBrownianMotionModel::computeAsScalar(it, it) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
+
+  const Scalar sOverTheta = *s_begin / scale_[0];
+  const Scalar tOverTheta = *t_begin / scale_[0];
+  const Scalar stOverTheta = tOverTheta - sOverTheta;
+  const Scalar absSOverTheta = std::abs(sOverTheta);
+  const Scalar absTOverTheta = std::abs(tOverTheta);
+  const Scalar absSTOverTheta = std::abs(stOverTheta);
+  const Scalar Hi = exponent_[0];
+  const Scalar sigmaI = amplitude_[0];
+  Scalar result = 0.5 * sigmaI * sigmaI * (std::pow(absSOverTheta, 2.0 * Hi) + std::pow(absTOverTheta, 2.0 * Hi) - std::pow(absSTOverTheta, 2.0 * Hi));
+  if (absSTOverTheta <= SpecFunc::ScalarEpsilon)
+    result *= 1.0 + nuggetFactor_;
+  return result;
+}
+
 /* Computation of the covariance function
  */
 SquareMatrix FractionalBrownianMotionModel::operator() (const Point & s,
@@ -142,7 +186,7 @@ void FractionalBrownianMotionModel::setExponentEtaRho(const Point & exponent,
   // First check the Hurst exponents
   for (UnsignedInteger i = 0; i < outputDimension_; ++i)
     if (!((exponent[i] > 0.0) && (exponent[i] < 1.0))) throw InvalidArgumentException(HERE) << "Error: the components of the exponent must be in (0,1), here exponent[" << i << "]=" << exponent[i];
-  // Second check the admissibility of the exponent, the dissymetry and the correlation if outputDimension > 1
+  // Second check the admissibility of the exponent, the dissymmetry and the correlation if outputDimension > 1
   if (outputDimension_ > 1)
   {
     HermitianMatrix A(outputDimension_);
@@ -162,7 +206,7 @@ void FractionalBrownianMotionModel::setExponentEtaRho(const Point & exponent,
     }
     catch (InvalidArgumentException &)
     {
-      throw InvalidArgumentException(HERE) << "Error: the given Hurst exponents, dissymetry matrix and correlation matrix are not compatible.";
+      throw InvalidArgumentException(HERE) << "Error: the given Hurst exponents, dissymmetry matrix and correlation matrix are not compatible.";
     }
   } // outputDimension > 1
   exponent_ = exponent;

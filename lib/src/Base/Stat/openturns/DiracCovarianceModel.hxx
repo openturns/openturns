@@ -60,6 +60,14 @@ public:
   using CovarianceModelImplementation::operator();
   SquareMatrix operator() (const Point & tau) const override;
 
+  /** Computation of the covariance function */
+  using CovarianceModelImplementation::computeAsScalar;
+  Scalar computeAsScalar(const Point &tau) const override;
+#ifndef SWIG
+  Scalar computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+                         const Collection<Scalar>::const_iterator &t_begin) const override;
+#endif
+
   /** Discretize the covariance function */
   using CovarianceModelImplementation::discretize;
   CovarianceMatrix discretize(const Sample & vertices) const override;
@@ -69,6 +77,8 @@ public:
   TriangularMatrix discretizeAndFactorize(const Sample & vertices) const override;
   // discretize with use of HMatrix
   using CovarianceModelImplementation::discretizeHMatrix;
+  HMatrix discretizeHMatrix(const Sample & vertices,
+                            const HMatrixParameters & parameters) const override;
   HMatrix discretizeHMatrix(const Sample & vertices,
                             const Scalar nuggetFactor,
                             const HMatrixParameters & parameters) const;

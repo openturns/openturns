@@ -106,6 +106,32 @@ TensorizedCovarianceModel * TensorizedCovarianceModel::clone() const
   return new TensorizedCovarianceModel(*this);
 }
 
+Scalar TensorizedCovarianceModel::computeAsScalar(const Point &s,
+                                                  const Point &t) const
+{
+  if (outputDimension_ != 1)
+    throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::computeAsScalar(s,t) should be used only if output dimension is 1."
+                                         << "Here, output dimension = " << outputDimension_;
+  return collection_[0].computeAsScalar(s, t);
+}
+
+Scalar TensorizedCovarianceModel::computeAsScalar(const Point &tau) const
+{
+  if (outputDimension_ != 1)
+    throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::computeAsScalar(s,t) should be used only if output dimension is 1." 
+                                         << "Here, output dimension = " << outputDimension_;
+  return collection_[0].computeAsScalar(tau);
+}
+
+Scalar TensorizedCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+                                                  const Collection<Scalar>::const_iterator &t_begin) const
+{
+  if (outputDimension_ != 1)
+    throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::computeAsScalar(s,t) should be used only if output dimension is 1."
+                                         << "Here, output dimension = " << outputDimension_;
+  return collection_[0].getImplementation()->computeAsScalar(s_begin, t_begin);
+}
+
 /* Computation of the covariance density function */
 SquareMatrix TensorizedCovarianceModel::operator() (const Point & s,
     const Point & t) const
@@ -120,6 +146,32 @@ SquareMatrix TensorizedCovarianceModel::operator() (const Point & s,
   {
     // Compute the ith block
     const SquareMatrix localCovariance = collection_[i](s, t);
+    const UnsignedInteger localDimension = collection_[i].getOutputDimension();
+    // This is only a block in a covariance matrix matrix: it is not necessarily symmetric.
+    for (UnsignedInteger localColumn = 0; localColumn < localDimension; ++localColumn)
+      for (UnsignedInteger localRow = 0; localRow < localDimension; ++localRow)
+        covariance(blockIndex + localRow, blockIndex + localColumn) = localCovariance(localRow, localColumn);
+    // update blockIndex
+    blockIndex += localDimension;
+  }
+  return covariance;
+}
+
+/* Computation of the covariance density function */
+SquareMatrix TensorizedCovarianceModel::operator()(const Point &tau) const
+{
+  if (!isStationary())
+    return CovarianceModelImplementation::operator()(tau);
+  if (tau.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "Error: the point tau has dimension=" << tau.getDimension() << ", expected dimension=" << inputDimension_;
+  SquareMatrix covariance(getOutputDimension());
+  // Fill by block ==> block index
+  UnsignedInteger blockIndex = 0;
+  const UnsignedInteger size = collection_.getSize();
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    // Compute the ith block
+    const SquareMatrix localCovariance = collection_[i](tau);
     const UnsignedInteger localDimension = collection_[i].getOutputDimension();
     // This is only a block in a covariance matrix matrix: it is not necessarily symmetric.
     for (UnsignedInteger localColumn = 0; localColumn < localDimension; ++localColumn)
@@ -250,9 +302,7 @@ void TensorizedCovarianceModel::setAmplitude(const Point & amplitude)
 /* Is it a stationary model ? */
 Bool TensorizedCovarianceModel::isStationary() const
 {
-  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
-    if (!collection_[i].isStationary()) return false;
-  return true;
+  return isStationary_;
 }
 
 /** Is it a diagonal covariance model ? */
