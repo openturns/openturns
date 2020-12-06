@@ -66,11 +66,10 @@ public:
   ExponentialModel * clone() const override;
 
   /** Computation of the covariance function, stationary interface */
-  using CovarianceModelImplementation::computeStandardRepresentative;
-  Scalar computeStandardRepresentative(const Point & tau) const;
 #ifndef SWIG
+  Scalar computeStandardRepresentative(const Point &tau) const;
   Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-                                       const Collection<Scalar>::const_iterator & t_begin) const override;
+                                       const Collection<Scalar>::const_iterator & t_begin) const;
 #endif
 
   /** Gradient */
