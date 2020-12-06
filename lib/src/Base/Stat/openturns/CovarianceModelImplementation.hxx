@@ -87,6 +87,7 @@ public:
   // Special case for 1D model
   virtual Scalar computeAsScalar (const Point & s,
                                   const Point & t) const;
+  virtual Scalar computeAsScalar(const Point &tau) const;
 
 #ifndef SWIG
   // Special case for 1D model

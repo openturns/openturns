@@ -173,6 +173,8 @@ SquareMatrix CovarianceModelImplementation::operator() (const Point & s,
     result(0, 0) = computeAsScalar(s, t);
     return result;
   }
+  if (isStationary())
+    return operator()(s - t);
   throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::operator()(const Point & s, const Point & t) const";
 }
 
@@ -206,6 +208,12 @@ Scalar CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::
 {
   throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin, const Collection<Scalar>::const_iterator & t_begin) const";
 }
+Scalar CovarianceModelImplementation::computeAsScalar(const Point &) const
+{
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << outputDimension_ << ", expected dimension=1.";
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar (const Point & tau) const";
+}
 
 /* Computation of the covariance function */
 SquareMatrix CovarianceModelImplementation::operator() (const Scalar tau) const
@@ -215,6 +223,16 @@ SquareMatrix CovarianceModelImplementation::operator() (const Scalar tau) const
 
 SquareMatrix CovarianceModelImplementation::operator() (const Point & tau) const
 {
+  if (isStationary() && (getOutputDimension()==1))
+  {
+     SquareMatrix result(1);
+     result(0, 0) = computeAsScalar(tau);
+     return result;
+    }
+
+  if (isStationary())
+    throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::operator()(const Point & tau) const";
+  // Case not stationary ==> operator(tau, 0)
   return operator() (Point(tau.getDimension()), tau);
 }
 

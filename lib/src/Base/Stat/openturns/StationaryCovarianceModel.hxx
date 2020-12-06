@@ -64,7 +64,7 @@ public:
   using CovarianceModelImplementation::computeAsScalar;
   Scalar computeAsScalar (const Point & s,
                           const Point & t) const override;
-  virtual Scalar computeAsScalar (const Point & tau) const;
+  virtual Scalar computeAsScalar (const Point & tau) const override;
 
   /** Computation of the covariance matrix */
   using CovarianceModelImplementation::computeStandardRepresentative;
