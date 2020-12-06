@@ -31,7 +31,7 @@ static const Factory<GeneralizedExponential> Factory_GeneralizedExponential;
 
 /* Default constructor */
 GeneralizedExponential::GeneralizedExponential(const UnsignedInteger inputDimension)
-  : StationaryCovarianceModel(Point(inputDimension, ResourceMap::GetAsScalar("GeneralizedExponential-DefaultTheta")), Point(1, 1.0))
+  : CovarianceModelImplementation(Point(inputDimension, ResourceMap::GetAsScalar("GeneralizedExponential-DefaultTheta")), Point(1, 1.0))
   , p_(1.0)
 {
   isStationary_ = true;
@@ -40,7 +40,7 @@ GeneralizedExponential::GeneralizedExponential(const UnsignedInteger inputDimens
 /** Parameters constructor */
 GeneralizedExponential::GeneralizedExponential(const Point & scale,
     const Scalar p)
-  : StationaryCovarianceModel(scale, Point(1, 1.0))
+  : CovarianceModelImplementation(scale, Point(1, 1.0))
   , p_(0.0) // To pass the test !(p_ == p)
 {
   isStationary_ = true;
@@ -51,7 +51,7 @@ GeneralizedExponential::GeneralizedExponential(const Point & scale,
 GeneralizedExponential::GeneralizedExponential(const Point & scale,
     const Point & amplitude,
     const Scalar p)
-  : StationaryCovarianceModel(scale, amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
   , p_(0.0) // To pass the test !(p_ == p)
 {
   isStationary_ = true;
@@ -189,14 +189,14 @@ void GeneralizedExponential::setP(const Scalar p)
 /* Method save() stores the object through the StorageManager */
 void GeneralizedExponential::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
   adv.saveAttribute("p_", p_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void GeneralizedExponential::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
   adv.loadAttribute("p_", p_);
 }
 

@@ -35,7 +35,7 @@ static const Factory<SphericalModel> Factory_SphericalModel;
 
 /* Constructor from input dimension */
 SphericalModel::SphericalModel(const UnsignedInteger inputDimension)
-  : StationaryCovarianceModel(inputDimension)
+  : CovarianceModelImplementation(inputDimension)
   , radius_(1.0)
 {
   isStationary_ = true;
@@ -46,7 +46,7 @@ SphericalModel::SphericalModel(const UnsignedInteger inputDimension)
 SphericalModel::SphericalModel(const Point & scale,
                                const Point & amplitude,
                                const Scalar radius)
-  : StationaryCovarianceModel(scale, amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
   , radius_(-1.0)
 {
   isStationary_ = true;
@@ -176,14 +176,14 @@ void SphericalModel::setRadius(const Scalar radius)
 /* Method save() stores the object through the StorageManager */
 void SphericalModel::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
   adv.saveAttribute("radius_", radius_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void SphericalModel::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
   adv.loadAttribute("radius_", radius_);
 }
 

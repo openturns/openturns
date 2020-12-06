@@ -20,7 +20,7 @@
 #ifndef OPENTURNS_MATERNMODEL_HXX
 #define OPENTURNS_MATERNMODEL_HXX
 
-#include "openturns/StationaryCovarianceModel.hxx"
+#include "openturns/CovarianceModelImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API MaternModel
-  : public StationaryCovarianceModel
+  : public CovarianceModelImplementation
 {
 
   CLASSNAME
@@ -51,7 +51,7 @@ public:
   MaternModel * clone() const override;
 
   /** Computation of the covariance function */
-  using StationaryCovarianceModel::computeAsScalar;
+  using CovarianceModelImplementation::computeAsScalar;
   Scalar computeAsScalar(const Point & tau) const override;
 #ifndef SWIG
   Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
@@ -62,7 +62,7 @@ public:
   Matrix partialGradient(const Point & s, const Point & t) const override;
 
   // Reimplement the setScale method
-  using StationaryCovarianceModel::setScale;
+  using CovarianceModelImplementation::setScale;
   void setScale(const Point & scale) override;
 
   /** Nu accessor */

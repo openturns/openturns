@@ -31,7 +31,7 @@ static const Factory<MaternModel> Factory_MaternModel;
 
 /* Default constructor */
 MaternModel::MaternModel(const UnsignedInteger inputDimension)
-  : StationaryCovarianceModel(Point(inputDimension, ResourceMap::GetAsScalar("MaternModel-DefaultTheta")), Point(1, 1.0))
+  : CovarianceModelImplementation(Point(inputDimension, ResourceMap::GetAsScalar("MaternModel-DefaultTheta")), Point(1, 1.0))
   , nu_(ResourceMap::GetAsScalar("MaternModel-DefaultNu"))
   , sqrt2nuOverTheta_(Point(inputDimension, sqrt(2.0 * nu_) / ResourceMap::GetAsScalar("MaternModel-DefaultTheta") ))
 {
@@ -45,7 +45,7 @@ MaternModel::MaternModel(const UnsignedInteger inputDimension)
 /** Parameters constructor */
 MaternModel::MaternModel(const Point & scale,
                          const Scalar nu)
-  : StationaryCovarianceModel(scale, Point(1, 1.0))
+  : CovarianceModelImplementation(scale, Point(1, 1.0))
   , nu_(0.0)
   , sqrt2nuOverTheta_(Point(scale.getDimension(), 0.0))
 {
@@ -56,7 +56,7 @@ MaternModel::MaternModel(const Point & scale,
 MaternModel::MaternModel(const Point & scale,
                          const Point & amplitude,
                          const Scalar nu)
-  : StationaryCovarianceModel(scale, amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
   , nu_(0.0)
   , sqrt2nuOverTheta_(Point(scale.getDimension(), 0.0))
 {
@@ -152,7 +152,7 @@ Matrix MaternModel::partialGradient(const Point & s,
 void MaternModel::setScale(const Point & scale)
 {
   // First set scale
-  StationaryCovarianceModel::setScale(scale);
+  CovarianceModelImplementation::setScale(scale);
   // Update scaling factor
   computeSqrt2nuOverTheta();
 }
@@ -247,7 +247,7 @@ void MaternModel::setNu(const Scalar nu)
 /* Method save() stores the object through the StorageManager */
 void MaternModel::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
   adv.saveAttribute("nu_", nu_);
   adv.saveAttribute("logNormalizationFactor_", logNormalizationFactor_);
   adv.saveAttribute("sqrt2nuOverTheta_", sqrt2nuOverTheta_);
@@ -256,7 +256,7 @@ void MaternModel::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void MaternModel::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
   adv.loadAttribute("nu_", nu_);
   adv.loadAttribute("logNormalizationFactor_", logNormalizationFactor_);
   adv.loadAttribute("sqrt2nuOverTheta_", sqrt2nuOverTheta_);

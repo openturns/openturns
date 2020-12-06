@@ -31,14 +31,14 @@ static const Factory<AbsoluteExponential> Factory_AbsoluteExponential;
 
 /* Constructor based on input dimension */
 AbsoluteExponential::AbsoluteExponential(const UnsignedInteger inputDimension)
-  : StationaryCovarianceModel(Point(inputDimension, ResourceMap::GetAsScalar("AbsoluteExponential-DefaultTheta")), Point(1, 1.0))
+  : CovarianceModelImplementation(Point(inputDimension, ResourceMap::GetAsScalar("AbsoluteExponential-DefaultTheta")), Point(1, 1.0))
 {
   isStationary_ = true;
 }
 
 /** Parameters constructor */
 AbsoluteExponential::AbsoluteExponential(const Point & scale)
-  : StationaryCovarianceModel(scale, Point(1, 1.0))
+  : CovarianceModelImplementation(scale, Point(1, 1.0))
 {
   isStationary_ = true;
 }
@@ -46,7 +46,7 @@ AbsoluteExponential::AbsoluteExponential(const Point & scale)
 /** Parameters constructor */
 AbsoluteExponential::AbsoluteExponential(const Point & scale,
     const Point & amplitude)
-  : StationaryCovarianceModel(scale, amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
 {
   isStationary_ = true;
   if (getOutputDimension() != 1)
@@ -137,13 +137,13 @@ String AbsoluteExponential::__str__(const String & ) const
 /* Method save() stores the object through the StorageManager */
 void AbsoluteExponential::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void AbsoluteExponential::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
 }
 
 END_NAMESPACE_OPENTURNS

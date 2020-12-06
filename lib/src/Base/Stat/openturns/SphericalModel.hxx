@@ -23,7 +23,7 @@
 #define OPENTURNS_SPHERICALMODEL_HXX
 
 #include "openturns/PersistentObject.hxx"
-#include "openturns/StationaryCovarianceModel.hxx"
+#include "openturns/CovarianceModelImplementation.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/CorrelationMatrix.hxx"
 #include "openturns/Mesh.hxx"
@@ -37,7 +37,7 @@ class RegularGrid;
  */
 
 class OT_API SphericalModel
-  : public StationaryCovarianceModel
+  : public CovarianceModelImplementation
 {
 
   CLASSNAME
@@ -57,7 +57,7 @@ public:
   SphericalModel * clone() const override;
 
   /** Computation of the covariance function, stationary interface */
-  using StationaryCovarianceModel::computeAsScalar;
+  using CovarianceModelImplementation::computeAsScalar;
   Scalar computeAsScalar(const Point & tau) const override;
 #ifndef SWIG
   Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
@@ -65,7 +65,7 @@ public:
 #endif
 
   /** Discretize the covariance function on a given TimeGrid */
-  using StationaryCovarianceModel::discretize;
+  using CovarianceModelImplementation::discretize;
   CovarianceMatrix discretize(const RegularGrid & regularGrid) const override;
 
   /** String converter */

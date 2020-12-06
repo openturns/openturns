@@ -35,7 +35,7 @@ static const Factory<ExponentialModel> Factory_ExponentialModel;
 
 /* Constructor from input dimension */
 ExponentialModel::ExponentialModel(const UnsignedInteger inputDimension)
-  : StationaryCovarianceModel(inputDimension)
+  : CovarianceModelImplementation(inputDimension)
 {
   isStationary_ = true;
 }
@@ -43,7 +43,7 @@ ExponentialModel::ExponentialModel(const UnsignedInteger inputDimension)
 /** Standard constructor with scale and amplitude parameters parameters */
 ExponentialModel::ExponentialModel(const Point & scale,
                                    const Point & amplitude)
-  : StationaryCovarianceModel(scale, amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
 {
   isStationary_ = true;
 }
@@ -52,7 +52,7 @@ ExponentialModel::ExponentialModel(const Point & scale,
 ExponentialModel::ExponentialModel(const Point & scale,
                                    const Point & amplitude,
                                    const CorrelationMatrix & spatialCorrelation)
-  : StationaryCovarianceModel(scale, amplitude, spatialCorrelation)
+  : CovarianceModelImplementation(scale, amplitude, spatialCorrelation)
 {
   isStationary_ = true;
 }
@@ -60,7 +60,7 @@ ExponentialModel::ExponentialModel(const Point & scale,
 /** Standard constructor with scale and spatial covariance parameters parameters */
 ExponentialModel::ExponentialModel(const Point & scale,
                                    const CovarianceMatrix & spatialCovariance)
-  : StationaryCovarianceModel(scale, spatialCovariance)
+  : CovarianceModelImplementation(scale, spatialCovariance)
 {
   isStationary_ = true;
 }
@@ -238,13 +238,13 @@ String ExponentialModel::__str__(const String & offset) const
 
 void ExponentialModel::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ExponentialModel::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
 }
 
 END_NAMESPACE_OPENTURNS

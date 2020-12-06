@@ -31,7 +31,7 @@ static const Factory<StationaryFunctionalCovarianceModel> Factory_StationaryFunc
 
 /* Constructor based on input dimension */
 StationaryFunctionalCovarianceModel::StationaryFunctionalCovarianceModel()
-  : StationaryCovarianceModel(Point(1, 1.0), Point(1, 1.0))
+  : CovarianceModelImplementation(Point(1, 1.0), Point(1, 1.0))
 {
   isStationary_ = true;
 }
@@ -40,7 +40,7 @@ StationaryFunctionalCovarianceModel::StationaryFunctionalCovarianceModel()
 StationaryFunctionalCovarianceModel::StationaryFunctionalCovarianceModel(const Point & scale,
     const Point & amplitude,
     const Function & rho)
-  : StationaryCovarianceModel(scale, amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
 {
   isStationary_ = true;
   if (getOutputDimension() != 1)
@@ -178,14 +178,14 @@ String StationaryFunctionalCovarianceModel::__str__(const String & ) const
 /* Method save() stores the object through the StorageManager */
 void StationaryFunctionalCovarianceModel::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
   adv.saveAttribute( "rho_", rho_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void StationaryFunctionalCovarianceModel::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
   adv.loadAttribute( "rho_", rho_);
 }
 

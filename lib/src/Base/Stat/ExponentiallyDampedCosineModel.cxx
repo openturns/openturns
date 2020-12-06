@@ -35,7 +35,7 @@ static const Factory<ExponentiallyDampedCosineModel> Factory_ExponentiallyDamped
 
 /* Constructor from input dimension */
 ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInteger inputDimension)
-  : StationaryCovarianceModel(inputDimension)
+  : CovarianceModelImplementation(inputDimension)
   , frequency_(1.0)
 {
   isStationary_ = true;
@@ -45,7 +45,7 @@ ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const UnsignedInt
 ExponentiallyDampedCosineModel::ExponentiallyDampedCosineModel(const Point & scale,
     const Point & amplitude,
     const Scalar frequency)
-  : StationaryCovarianceModel(scale, amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
   , frequency_(0.0)
 {
   isStationary_ = true;
@@ -186,14 +186,14 @@ Description ExponentiallyDampedCosineModel::getFullParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void ExponentiallyDampedCosineModel::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
   adv.saveAttribute( "frequency_", frequency_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ExponentiallyDampedCosineModel::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
   adv.loadAttribute( "frequency_", frequency_);
 }
 

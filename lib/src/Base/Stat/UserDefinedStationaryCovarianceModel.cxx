@@ -30,7 +30,7 @@ static const Factory<UserDefinedStationaryCovarianceModel> Factory_UserDefinedSt
 
 /* Constructor with parameters */
 UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel()
-  : StationaryCovarianceModel()
+  : CovarianceModelImplementation()
   , covarianceCollection_(0)
   , mesh_()
   , nearestNeighbour_()
@@ -44,7 +44,7 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel()
 // For a stationary model, we need N covariance matrices with N the number of time stamps in the time grid
 UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const RegularGrid & mesh,
     const SquareMatrixCollection & covarianceFunction)
-  : StationaryCovarianceModel()
+  : CovarianceModelImplementation()
   , covarianceCollection_(0)
   , mesh_(mesh)
   , nearestNeighbour_(mesh)
@@ -52,7 +52,7 @@ UserDefinedStationaryCovarianceModel::UserDefinedStationaryCovarianceModel(const
   isStationary_ = true;
   const UnsignedInteger size = mesh.getVerticesNumber();
   if (size != covarianceFunction.getSize())
-    throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherents"
+    throw InvalidArgumentException(HERE) << "Error: for a non stationary covariance model, sizes are incoherent"
                                          << " mesh size = " << size << "covariance function size = " << covarianceFunction.getSize();
   inputDimension_ = mesh.getDimension();
   covarianceCollection_ = SquareMatrixCollection(size);
@@ -121,7 +121,7 @@ String UserDefinedStationaryCovarianceModel::__str__(const String & ) const
 /* Method save() stores the object through the StorageManager */
 void UserDefinedStationaryCovarianceModel::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
   adv.saveAttribute( "covarianceCollection_", covarianceCollection_);
   adv.saveAttribute( "mesh_", mesh_);
 }
@@ -129,7 +129,7 @@ void UserDefinedStationaryCovarianceModel::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void UserDefinedStationaryCovarianceModel::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
   adv.loadAttribute( "covarianceCollection_", covarianceCollection_);
   adv.loadAttribute( "mesh_", mesh_);
 }

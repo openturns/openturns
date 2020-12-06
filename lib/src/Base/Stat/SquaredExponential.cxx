@@ -31,14 +31,14 @@ static const Factory<SquaredExponential> Factory_SquaredExponential;
 
 /* Default constructor */
 SquaredExponential::SquaredExponential(const UnsignedInteger inputDimension)
-  : StationaryCovarianceModel(Point(inputDimension, ResourceMap::GetAsScalar("SquaredExponential-DefaultTheta")), Point(1, 1.0))
+  : CovarianceModelImplementation(Point(inputDimension, ResourceMap::GetAsScalar("SquaredExponential-DefaultTheta")), Point(1, 1.0))
 {
   isStationary_ = true;
 }
 
 /** Parameters constructor */
 SquaredExponential::SquaredExponential(const Point & scale)
-  : StationaryCovarianceModel(scale, Point(1, 1.0))
+  : CovarianceModelImplementation(scale, Point(1, 1.0))
 {
   isStationary_ = true;
 }
@@ -46,7 +46,7 @@ SquaredExponential::SquaredExponential(const Point & scale)
 /** Parameters constructor */
 SquaredExponential::SquaredExponential(const Point & scale,
                                        const Point & amplitude)
-  : StationaryCovarianceModel(scale, amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
 {
   isStationary_ = true;
   if (getOutputDimension() != 1)
@@ -130,13 +130,13 @@ String SquaredExponential::__str__(const String & ) const
 /* Method save() stores the object through the StorageManager */
 void SquaredExponential::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void SquaredExponential::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
 }
 
 END_NAMESPACE_OPENTURNS

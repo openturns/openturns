@@ -55,7 +55,7 @@ public:
 
 /* Default constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension)
-  : StationaryCovarianceModel(inputDimension)
+  : CovarianceModelImplementation(inputDimension)
   , covarianceFactor_()
 {
   // Remove the scale from the active parameter
@@ -67,7 +67,7 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension)
 /* Parameters constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
     const Point & amplitude)
-  : StationaryCovarianceModel(inputDimension)
+  : CovarianceModelImplementation(inputDimension)
   , covarianceFactor_()
 {
   outputDimension_ = amplitude.getDimension();
@@ -83,7 +83,7 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
     const Point & amplitude,
     const CorrelationMatrix & correlation)
-  : StationaryCovarianceModel(Point(inputDimension, 1.0), Point(amplitude.getDimension(), 1.0))
+  : CovarianceModelImplementation(Point(inputDimension, 1.0), Point(amplitude.getDimension(), 1.0))
   , covarianceFactor_()
 {
   outputDimension_ = amplitude.getDimension();
@@ -101,7 +101,7 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
 /** Parameters constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
     const CovarianceMatrix & covariance)
-  : StationaryCovarianceModel(inputDimension)
+  : CovarianceModelImplementation(inputDimension)
 {
   outputDimension_ = covariance.getDimension();
   amplitude_ = Point(outputDimension_);
@@ -389,14 +389,14 @@ String DiracCovarianceModel::__str__(const String & ) const
 /* Method save() stores the object through the StorageManager */
 void DiracCovarianceModel::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
   adv.saveAttribute("covarianceFactor_", covarianceFactor_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void DiracCovarianceModel::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
   adv.loadAttribute("covarianceFactor_", covarianceFactor_);
 }
 
