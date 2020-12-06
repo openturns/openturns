@@ -48,9 +48,6 @@ Refer to :ref:`covariance_model`, :ref:`stationary_covariance_model`.
     :template: classWithPlot.rst_t
     UserDefinedCovarianceModel
 
-    :template: class.rst_t
-    StationaryCovarianceModel
-
     :template: classWithPlot.rst_t
     UserDefinedStationaryCovarianceModel
     NonStationaryCovarianceModelFactory

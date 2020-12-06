@@ -59,7 +59,6 @@
 %include SpectralModel.i
 %include CovarianceModelImplementation.i
 %include CovarianceModel.i
-%include StationaryCovarianceModel.i
 %include StationaryFunctionalCovarianceModel.i
 %include SpectralModelFactoryImplementation.i
 %include SpectralModelFactory.i 

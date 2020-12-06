@@ -57,7 +57,6 @@
 #include "openturns/CovarianceModelImplementation.hxx"
 #include "openturns/SpectralModelImplementation.hxx"
 #include "openturns/CovarianceModel.hxx"
-#include "openturns/StationaryCovarianceModel.hxx"
 #include "openturns/StationaryFunctionalCovarianceModel.hxx"
 #include "openturns/SpectralModelFactoryImplementation.hxx"
 #include "openturns/SpectralModelFactory.hxx"
