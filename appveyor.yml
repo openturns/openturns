@@ -13,6 +13,11 @@ install:
   - appveyor-retry appveyor DownloadFile https://sourceforge.net/projects/swig/files/swigwin/swigwin-3.0.12/swigwin-3.0.12.zip
   - 7z x swigwin-3.0.12.zip -oC:\Libraries > nul
 
+  - appveyor-retry appveyor DownloadFile https://github.com/Kitware/CMake/releases/download/v3.19.1/cmake-3.19.1-win32-x86.zip
+  - 7z x cmake-3.19.1-win32-x86.zip -oC:\Libraries > nul
+  - set PATH=C:\Libraries\cmake-3.19.1-win32-x86\bin;%PATH%
+  - cmake --version
+
   - appveyor-retry appveyor DownloadFile https://github.com/devernay/cminpack/archive/v1.3.6.zip
   - 7z x v1.3.6.zip -oC:\Libraries > nil
   - pushd C:\Libraries\cminpack-1.3.6
@@ -74,4 +79,4 @@ build_script:
   - copy install\bin\OT.dll install\Lib\site-packages\openturns
   - copy C:\Libraries\openblas\libopenblas.dll install\Lib\site-packages\openturns
   - copy C:\Libraries\tbb\bin\tbb.dll install\Lib\site-packages\openturns
-  - ctest -C Release --output-on-failure --timeout 100 -E "cppcheck|Sequence|Entropy|Sklar|Sample_computation|InverseBox" -j2
+  - ctest -C Release --output-on-failure --timeout 100 -E "cppcheck|Sequence|Entropy|Sklar|Sample_computation|InverseBox" -j2 --repeat after-timeout:2
