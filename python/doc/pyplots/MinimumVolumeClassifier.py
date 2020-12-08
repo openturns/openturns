@@ -22,7 +22,7 @@ mixture = ot.Mixture(dists)
 
 sample = mixture.getSample(100)
 distribution = ot.KernelSmoothing().build(sample)
-algo = ot.MinimumVolumeClassifier(distribution, 0.8)
+algo = ot.MinimumVolumeClassifier(distribution, [0.8])
 graph = algo.drawContourAndSample([0.1, 0.5, 0.8], sample, [0, 1])
 
 View(graph, contour_kw={'colors': ['black']},
