@@ -241,6 +241,12 @@ Point Field::getInputMean() const
   return getImplementation()->getInputMean();
 }
 
+/* l2 norm */
+Scalar Field::norm() const
+{
+  return getImplementation()->norm();
+}
+
 /* Draw a marginal of the field */
 Graph Field::drawMarginal(const UnsignedInteger index,
                           const Bool interpolate) const

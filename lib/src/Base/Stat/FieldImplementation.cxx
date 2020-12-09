@@ -314,6 +314,17 @@ Point FieldImplementation::getOutputMean() const
   return values_.computeMean();
 }
 
+/* l2 norm */
+Scalar FieldImplementation::norm() const
+{
+  const UnsignedInteger size = values_.getSize();
+  const Point w(mesh_.computeWeights());
+  Scalar normSquare = 0.0;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    normSquare += w[i] * Point(values_[i]).normSquare();
+  return std::sqrt(normSquare);
+}
+
 Sample FieldImplementation::getValues() const
 {
   return values_;

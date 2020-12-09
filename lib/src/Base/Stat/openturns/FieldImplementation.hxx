@@ -128,6 +128,9 @@ public:
       is regular and of dimension 1 */
   Point getOutputMean() const;
 
+  /** l2 norm */
+  Scalar norm() const;
+
   /** Draw a marginal of the timeSerie */
   Graph drawMarginal(const UnsignedInteger index = 0,
                      const Bool interpolate = true) const;

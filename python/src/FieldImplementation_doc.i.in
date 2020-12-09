@@ -271,6 +271,19 @@ OT_Field_getOutputMean_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Field_norm_doc
+"Compute the (:math:`L^2`) norm.
+
+Returns
+-------
+norm : float
+    The field's norm computed using the mesh weights."
+%enddef
+%feature("docstring") OT::FieldImplementation::norm
+OT_Field_norm_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Field_getTimeGrid_doc
 "Get the mesh as a time grid if it is 1D and regular.
 

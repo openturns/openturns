@@ -13,6 +13,7 @@ value[4, 0]=-2.29006
 nearest[2]= [0.793156,-0.470526,0.261018]
 mesh= class=Mesh name=Unnamed dimension=3 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=8 dimension=3 data=[[0,0,0],[0,0,1],[0,1,0],[0,1,1],[1,0,0],[1,0,1],[1,1,0],[1,1,1]] simplices=[[0,1,2,4],[3,5,6,7],[1,2,3,6],[1,2,4,6],[1,3,5,6],[1,4,5,6]]
 input mean= [-0.0859856,-0.496935,0.0517341]
+norm=1.8157
 deformed= class=Mesh name=Unnamed dimension=3 vertices=class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=8 dimension=3 data=[[0.608202,-1.26617,-0.438266],[1.20548,-2.18139,1.35004],[-0.355007,2.43725,0.810668],[0.793156,0.529474,1.26102],[-1.29006,-1.28289,-1.31178],[0.909216,0.995793,0.860547],[0.439794,1.44549,0.322925],[1.44579,-0.0380766,0.143288]] simplices=[[0,1,2,4],[3,5,6,7],[1,2,3,6],[1,2,4,6],[1,3,5,6],[1,4,5,6]]
 description= [v0,v1,v2,X0,X1,X2]
 # vtk DataFile Version 3.0
