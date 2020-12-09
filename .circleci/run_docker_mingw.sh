@@ -14,7 +14,7 @@ mkdir build && cd build
 
 ARCH=i686
 MINGW_PREFIX=/usr/${ARCH}-w64-mingw32
-PYMAJMIN=38
+PYMAJMIN=39
 PREFIX=${PWD}/install
 CXXFLAGS="-Wall -Wextra -Werror -D_GLIBCXX_ASSERTIONS" ${ARCH}-w64-mingw32-cmake \
   -DSWIG_COMPILE_FLAGS="-O0 -Wno-unused-parameter -Wno-missing-field-initializers" \
