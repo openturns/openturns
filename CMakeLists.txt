@@ -322,7 +322,12 @@ endif ()
 
 if (USE_CMINPACK)
   find_package (CMinpack CONFIG QUIET)
-  if (NOT CMinpack_FOUND)
+  if (CMinpack_FOUND)
+    if (TARGET cminpack::cminpack)
+      message (STATUS "Found CMinpack: ${CMinpack_DIR}")
+      set (CMINPACK_LIBRARIES cminpack::cminpack)
+    endif ()
+  else ()
     # fallback to our macro if CMinpackConfig is not provided
     find_package (CMinpack)
     set (CMinpack_FOUND ${CMINPACK_FOUND})
