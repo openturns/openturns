@@ -38,7 +38,8 @@ The [saltelli2002]_ method is used to estimate both first
 and total order indices.
 
 **The class constructor** ``SaltelliSensitivityAlgorithm(inputDesign, outputDesign, N)``
-**requires an** ``outputDesign`` **produced by** :class:`~openturns.SobolIndicesExperiment`
+**requires a specific structure for the ** ``outputDesign`` **, and therefore for the ** ``inputDesign`` **.**
+**The latter should be generated using** :class:`~openturns.SobolIndicesExperiment`
 **(see example below). Otherwise, results will be worthless.**
 
 Notations are defined in the documentation page of the :class:`~openturns.SobolIndicesAlgorithm` class.
