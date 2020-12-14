@@ -121,7 +121,7 @@ myDefautModel = ot.DiracCovarianceModel()
 print('myDefautModel = ',  myDefautModel)
 test_model(myDefautModel)
 
-rho = ot.SymbolicFunction(['tau'], ['exp(-tau)*cos(2*pi_*tau)'])
+rho = ot.SymbolicFunction(['tau'], ['exp(-abs(tau))*cos(2*pi_*abs(tau))'])
 myDefautModel = ot.StationaryFunctionalCovarianceModel([1.0], [1.0], rho)
 print('myDefautModel = ',  myDefautModel)
 test_model(myDefautModel)

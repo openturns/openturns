@@ -147,8 +147,8 @@ myModel( [-1] ,  [3] )= class=SquareMatrix dimension=1 implementation=class=Matr
 dCov = class=Matrix implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[0]
 dCov (FD)= class=Point name=Unnamed dimension=1 values=[0]
 dCov/dP= [[ 0 ]]
-myDefautModel =  StationaryFunctionalCovarianceModel(scale=[1], amplitude=[1], rho=[tau]->[exp(-tau)*cos(2*pi_*tau)])
-myModel =  StationaryFunctionalCovarianceModel(scale=[1], amplitude=[1], rho=[tau]->[exp(-tau)*cos(2*pi_*tau)])
+myDefautModel =  StationaryFunctionalCovarianceModel(scale=[1], amplitude=[1], rho=[tau]->[exp(-abs(tau))*cos(2*pi_*abs(tau))])
+myModel =  StationaryFunctionalCovarianceModel(scale=[1], amplitude=[1], rho=[tau]->[exp(-abs(tau))*cos(2*pi_*abs(tau))])
 active= [0,1]
 parameter= [1,1]
 parameterDescription= [scale_0,amplitude_0]
