@@ -183,6 +183,26 @@ OT_ProcessSample_computeTemporalMean_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_ProcessSample_computeStandardDeviation_doc
+"Compute the standard deviation field of the collection of fields.
+
+Returns
+-------
+stddev : :class:`~openturns.Field`
+    The standard deviation field has the same dimension `d` and the same mesh
+    as the fields contained in the collection.
+    At each vertex of the mesh, we calculate the standard deviation of the
+    values at this vertex of the `K` fields contained in the process sample:
+
+    .. math::
+
+        \forall i \in [0,N-1], \quad \dfrac{1}{K-1} \sum_{k=1}^K (\vect{x}_i^k - \hat{\mu}_i)^2"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::computeStandardDeviation
+OT_ProcessSample_computeStandardDeviation_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_ProcessSample_computeQuantilePerComponent_doc
 "Compute the temporal mean of the values of the fields.
 

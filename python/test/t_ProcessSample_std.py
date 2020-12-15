@@ -79,6 +79,10 @@ R[0, 1] = 0.75
 distribution = ot.Normal([15, 20], [5, 10], R)
 for i in range(sampleSize):
     processSample[i] = distribution.getSample(mesh.getVerticesNumber())
+mean = processSample.computeMean()
+stddev = processSample.computeStandardDeviation()
+print('mean=', mean.getValues())
+print('sttdev=', stddev.getValues())
 graph1 = processSample.draw()
 graph2 = processSample.drawMarginalCorrelation(0, 1)
 graph3 = processSample.drawCorrelation()
