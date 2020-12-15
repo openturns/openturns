@@ -10,6 +10,8 @@ OT_ProcessSample_computeMean_doc
 OT_ProcessSample_computeSpatialMean_doc
 %feature("docstring") OT::ProcessSample::computeTemporalMean
 OT_ProcessSample_computeTemporalMean_doc
+%feature("docstring") OT::ProcessSample::computeStandardDeviation
+OT_ProcessSample_computeStandardDeviation_doc
 %feature("docstring") OT::ProcessSample::computeQuantilePerComponent
 OT_ProcessSample_computeQuantilePerComponent_doc
 %feature("docstring") OT::ProcessSample::getSize

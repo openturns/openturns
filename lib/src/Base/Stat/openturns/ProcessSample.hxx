@@ -39,7 +39,6 @@ class OT_API ProcessSample
 public:
 
   /** Some typedefs to ease reading */
-//   typedef Pointer<ProcessSampleImplementation> Implementation;
   typedef Collection<Sample>           SampleCollection;
   typedef PersistentCollection<Sample> SamplePersistentCollection;
 
@@ -53,6 +52,9 @@ public:
   ProcessSample(const Mesh & mesh,
                 const UnsignedInteger size,
                 const UnsignedInteger dimension);
+
+  ProcessSample(const Mesh & mesh,
+                const SampleCollection & collection);
 
   /** Copy constructors */
   ProcessSample(const ProcessSampleImplementation & implementation);
@@ -105,6 +107,9 @@ public:
 
   /** Spatial mean accessor */
   Sample computeSpatialMean() const;
+
+  /** Standard deviation accessor */
+  Field computeStandardDeviation() const;
 
   /**  Method computeQuantilePerComponent() gives the quantile per component of the sample */
   Field computeQuantilePerComponent(const Scalar prob) const;

@@ -48,7 +48,7 @@ int main(int, char *[])
     KarhunenLoeveQuadratureAlgorithm algo(domain, domain, model, experiment, functions, mustScale, threshold);
     algo.run();
     KarhunenLoeveResult result(algo.getResult());
-    Point lambda(result.getEigenValues());
+    Point lambda(result.getEigenvalues());
     ProcessSample KLModes(result.getModesAsProcessSample());
     fullprint << "KL modes=" << KLModes << std::endl;
     fullprint << "KL eigenvalues=" << lambda << std::endl;
@@ -66,7 +66,7 @@ int main(int, char *[])
       algo = KarhunenLoeveQuadratureAlgorithm(domain, domain, model, marginalDegree, threshold);
       algo.run();
       result = algo.getResult();
-      lambda = result.getEigenValues();
+      lambda = result.getEigenvalues();
       KLModes = result.getModesAsProcessSample();
       // Due to symmetry many results can have a sign switch depending on the CPU/compiler/BLAS used
       // fullprint << "KL modes=" << KLModes << std::endl;
@@ -88,7 +88,7 @@ int main(int, char *[])
       algo.setNbModes(3);
       algo.run();
       result = algo.getResult();
-      lambda = result.getEigenValues();
+      lambda = result.getEigenvalues();
       KLModes = result.getModesAsProcessSample();
       // Due to symmetry many results can have a sign switch depending on the CPU/compiler/BLAS used
       // fullprint << "KL modes=" << KLModes << std::endl;

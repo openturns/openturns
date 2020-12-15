@@ -79,6 +79,10 @@ R[0, 1] = 0.75
 distribution = ot.Normal([15, 20], [5, 10], R)
 for i in range(sampleSize):
     processSample[i] = distribution.getSample(mesh.getVerticesNumber())
+mean = processSample.computeMean()
+stddev = processSample.computeStandardDeviation()
+print('mean=', mean.getValues())
+print('sttdev=', stddev.getValues())
 graph1 = processSample.draw()
 graph2 = processSample.drawMarginalCorrelation(0, 1)
 graph3 = processSample.drawCorrelation()
@@ -89,3 +93,8 @@ if 0:
     View(graph1).save('graph1.png')
     View(graph2).save('graph2.png')
     View(graph3).save('graph3.png')
+
+# ctor from collection of Samples
+coll=[ot.Normal(outputDimension).getSample(mesh.getVerticesNumber()) for i in range(sampleSize)]
+processSample2 = ot.ProcessSample(mesh, coll)
+assert len(processSample2) == sampleSize, "wrong size"

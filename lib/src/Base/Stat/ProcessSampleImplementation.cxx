@@ -68,6 +68,15 @@ ProcessSampleImplementation::ProcessSampleImplementation(const Mesh & mesh,
   // Nothing to do
 }
 
+ProcessSampleImplementation::ProcessSampleImplementation(const Mesh & mesh,
+                                                         const SampleCollection & collection)
+  : PersistentObject()
+  , mesh_(mesh)
+  , data_(collection)
+{
+  // Nothing to do
+}
+
 /* Virtual constructor */
 ProcessSampleImplementation * ProcessSampleImplementation::clone() const
 {
@@ -166,6 +175,7 @@ UnsignedInteger ProcessSampleImplementation::getSize() const
   return data_.getSize();
 }
 
+/* Mean accessor */
 Field ProcessSampleImplementation::computeMean() const
 {
   const UnsignedInteger size = getSize();
@@ -193,6 +203,32 @@ Sample ProcessSampleImplementation::computeSpatialMean() const
   for (UnsignedInteger i = 0; i < size; ++i) result[i] = data_[i].computeMean();
   return result;
 }
+
+/* Standard deviation accessor */
+Field ProcessSampleImplementation::computeStandardDeviation() const
+{
+  const UnsignedInteger size = getSize();
+  if (size == 0) return Field();
+  if (size == 1) return Field(mesh_, getDimension());
+  Sample meanValues(computeMean().getValues());
+  const UnsignedInteger verticesNumber = getMesh().getVerticesNumber();
+  const UnsignedInteger dimension = getDimension();
+  Sample stdValues(verticesNumber, getDimension());
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    Sample slack(data_[i] - meanValues);
+    for (UnsignedInteger j = 0; j < verticesNumber; ++ j)
+      for (UnsignedInteger k = 0; k < dimension; ++ k)
+        slack(j, k) = slack(j, k) * slack(j, k);
+    stdValues += slack;
+  }
+  stdValues *= Point(getDimension(), 1.0 / (size - 1.0));
+  for (UnsignedInteger j = 0; j < verticesNumber; ++ j)
+    for (UnsignedInteger k = 0; k < dimension; ++ k)
+      stdValues(j, k) = std::sqrt(stdValues(j, k));
+  return Field(mesh_, stdValues);
+}
+
 
 struct ComputeQuantilePerComponentPolicy
 {

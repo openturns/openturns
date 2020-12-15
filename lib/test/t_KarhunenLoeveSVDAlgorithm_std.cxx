@@ -42,7 +42,7 @@ int main(int, char *[])
       KarhunenLoeveSVDAlgorithm algo(sample, 0.0);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      Point lambda(result.getEigenValues());
+      Point lambda(result.getEigenvalues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
@@ -62,7 +62,7 @@ int main(int, char *[])
       algo.setNbModes(5);// out of 10
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      Point lambda(result.getEigenValues());
+      Point lambda(result.getEigenvalues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
@@ -80,7 +80,7 @@ int main(int, char *[])
       KarhunenLoeveSVDAlgorithm algo(sample, 0.0);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      Point lambda(result.getEigenValues());
+      Point lambda(result.getEigenvalues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
@@ -98,7 +98,7 @@ int main(int, char *[])
       KarhunenLoeveSVDAlgorithm algo(sample, 0.0, true);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      Point lambda(result.getEigenValues());
+      Point lambda(result.getEigenvalues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
@@ -117,7 +117,7 @@ int main(int, char *[])
       KarhunenLoeveSVDAlgorithm algo(sample, weights, 0.0, true);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      Point lambda(result.getEigenValues());
+      Point lambda(result.getEigenvalues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;
@@ -141,7 +141,7 @@ int main(int, char *[])
       KarhunenLoeveSVDAlgorithm algo(sample, 0.0);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      Point lambda(result.getEigenValues());
+      Point lambda(result.getEigenvalues());
       ProcessSample KLModes(result.getModesAsProcessSample());
       fullprint << "KL modes=" << KLModes << std::endl;
       fullprint << "KL eigenvalues=" << lambda << std::endl;

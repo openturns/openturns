@@ -4,6 +4,8 @@
 Available constructors:
     ProcessSample(*mesh, K, d*)
 
+    ProcessSample(*mesh, coll*)
+
     ProcessSample(*K, field*)
 
 Parameters
@@ -16,6 +18,8 @@ d : int
     Dimension  of the values of the field.
 field : :class:`~openturns.Field`
     One field.
+coll : sequence of :class:`~openturns.Sample`
+    List of field values.
 
 Notes
 -----
@@ -176,6 +180,26 @@ This method can be used only when the mesh can be interpreted as a regular grid.
 %enddef
 %feature("docstring") OT::ProcessSampleImplementation::computeTemporalMean
 OT_ProcessSample_computeTemporalMean_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_computeStandardDeviation_doc
+"Compute the standard deviation field of the collection of fields.
+
+Returns
+-------
+stddev : :class:`~openturns.Field`
+    The standard deviation field has the same dimension `d` and the same mesh
+    as the fields contained in the collection.
+    At each vertex of the mesh, we calculate the standard deviation of the
+    values at this vertex of the `K` fields contained in the process sample:
+
+    .. math::
+
+        \forall i \in [0,N-1], \quad \dfrac{1}{K-1} \sum_{k=1}^K (\vect{x}_i^k - \hat{\mu}_i)^2"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::computeStandardDeviation
+OT_ProcessSample_computeStandardDeviation_doc
 
 // ---------------------------------------------------------------------
 

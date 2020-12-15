@@ -1,15 +1,8 @@
 %define OT_KarhunenLoeveResult_doc
-"Result structure of a Karhunen Loeve algorithm.
-
-Available constructors:
-    KarhunenLoeveResult(*implementation*)
-
-    KarhunenLoeveResult(*covModel, s, lambda, modes, modesAsProcessSample, projection*)
+"Result structure of a Karhunen-Loeve algorithm.
 
 Parameters
 ----------
-implementation : :class:`~openturns.KarhunenLoeveResultImplementation`
-    A specific implementation.
 covModel : :class:`~openturns.CovarianceModel`
     The covariance model.
 s : float, :math:`\geq0`
@@ -75,7 +68,7 @@ The inverse of :math:`\pi_{\vect{\lambda}, \vect{\varphi}}` is the lift function
       \end{array}
     \right.
 
-If the function :math:`f(.) = X(\omega_0, .)` where :math:`X` is the centered process which covariance function is associated to the eigenvalues and eigenfunctions :math:`(\vect{\lambda}, \vect{\varphi})`, then the *getEigenValues* method enables to obtain the :math:`K` first eigenvalues of the Karhunen Loeve decomposition of :math:`X` and the method *getModes* enables to get the associated modes.
+If the function :math:`f(.) = X(\omega_0, .)` where :math:`X` is the centered process which covariance function is associated to the eigenvalues and eigenfunctions :math:`(\vect{\lambda}, \vect{\varphi})`, then the *getEigenvalues* method enables to obtain the :math:`K` first eigenvalues of the Karhunen Loeve decomposition of :math:`X` and the method *getModes* enables to get the associated modes.
 
 Examples
 --------
@@ -120,7 +113,7 @@ OT_KarhunenLoeveResult_getCovarianceModel_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_KarhunenLoeveResult_getEigenValues_doc
+%define OT_KarhunenLoeveResult_getEigenvalues_doc
 "Accessor to the eigenvalues of the Karhunen Loeve decomposition.
 
 Returns
@@ -132,8 +125,40 @@ Notes
 -----
 OpenTURNS truncates the sequence :math:`(\lambda_k,  \vect{\varphi}_k)_{k \geq 1}`  to the most significant terms, selected by the threshold defined in :class:`~openturns.KarhunenLoeveAlgorithm`."
 %enddef
-%feature("docstring") OT::KarhunenLoeveResultImplementation::getEigenValues
-OT_KarhunenLoeveResult_getEigenValues_doc
+%feature("docstring") OT::KarhunenLoeveResultImplementation::getEigenvalues
+OT_KarhunenLoeveResult_getEigenvalues_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_KarhunenLoeveResult_drawEigenvalues_doc
+"Accessor to the eigen values graph.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The eigen values graph."
+%enddef
+%feature("docstring") OT::KarhunenLoeveResultImplementation::drawEigenvalues
+OT_KarhunenLoeveResult_drawEigenvalues_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_KarhunenLoeveResult_drawCumulatedEigenvaluesRemainder_doc
+"Accessor to the cumulated eigen values normalized remainder graph.
+
+Draw the values of cumulated eigen values normalized remainder:
+
+.. math::
+
+    cevr_i = 1 - \frac{\sum_{j=1}^i \lambda_j}{\sum_{j=1}^K \lambda_j}
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The cumulated and normalized eigen values graph."
+%enddef
+%feature("docstring") OT::KarhunenLoeveResultImplementation::drawCumulatedEigenvaluesRemainder
+OT_KarhunenLoeveResult_drawCumulatedEigenvaluesRemainder_doc
 
 // ---------------------------------------------------------------------
 

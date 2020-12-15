@@ -74,9 +74,25 @@ CovarianceModel KarhunenLoeveResult::getCovarianceModel() const
 }
 
 /* Eigenvalues accessor */
+Point KarhunenLoeveResult::getEigenvalues() const
+{
+  return getImplementation()->getEigenvalues();
+}
+
 Point KarhunenLoeveResult::getEigenValues() const
 {
   return getImplementation()->getEigenValues();
+}
+
+/* Draw eigen values */
+Graph KarhunenLoeveResult::drawEigenvalues() const
+{
+  return getImplementation()->drawEigenvalues();
+}
+
+Graph KarhunenLoeveResult::drawCumulatedEigenvaluesRemainder() const
+{
+  return getImplementation()->drawCumulatedEigenvaluesRemainder();
 }
 
 /* Modes accessors */

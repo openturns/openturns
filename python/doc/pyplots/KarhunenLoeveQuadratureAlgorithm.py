@@ -13,7 +13,7 @@ model = ot.AbsoluteExponential([1.0])
 algo = ot.KarhunenLoeveQuadratureAlgorithm(
     domain, domain, model, experiment, coll, mustScale, threshold)
 algo.run()
-ev = algo.getResult().getEigenValues()
+ev = algo.getResult().getEigenvalues()
 modes = algo.getResult().getScaledModes()
 g = ot.Graph("Quadrature approx. of KL expansion for $C(s,t)=e^{-|s-t|}$")
 g.setAxes(True)

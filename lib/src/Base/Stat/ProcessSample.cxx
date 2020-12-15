@@ -47,6 +47,12 @@ ProcessSample::ProcessSample(const Mesh & mesh,
   // Nothing to do
 }
 
+ProcessSample::ProcessSample(const Mesh & mesh,
+                             const SampleCollection & collection)
+  : TypedInterfaceObject<ProcessSampleImplementation>(new ProcessSampleImplementation(mesh, collection))
+{
+  // Nothing to do
+}
 
 /* Parameters constructor */
 ProcessSample::ProcessSample(const ProcessSampleImplementation & implementation)
@@ -142,6 +148,7 @@ UnsignedInteger ProcessSample::getSize() const
   return getImplementation()->getSize();
 }
 
+/* Mean accessor */
 Field ProcessSample::computeMean() const
 {
   return getImplementation()->computeMean();
@@ -157,6 +164,12 @@ Sample ProcessSample::computeTemporalMean() const
 Sample ProcessSample::computeSpatialMean() const
 {
   return getImplementation()->computeSpatialMean();
+}
+
+/* Standard deviation accessor */
+Field ProcessSample::computeStandardDeviation() const
+{
+  return getImplementation()->computeStandardDeviation();
 }
 
 /*

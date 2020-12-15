@@ -5,15 +5,13 @@ from math import sqrt
 
 mesh = ot.IntervalMesher([128]).build(ot.Interval(-1.0, 1.0))
 threshold = 0.001
-model = ot.AbsoluteExponential([1.0])
-algo = ot.KarhunenLoeveP1Algorithm(mesh, model, threshold)
+covariance = ot.AbsoluteExponential([1.0])
+algo = ot.KarhunenLoeveP1Algorithm(mesh, covariance, threshold)
 algo.run()
-ev = algo.getResult().getEigenvalues()
-modes = algo.getResult().getScaledModesAsProcessSample()
-g = modes.drawMarginal(0)
-g.setXTitle("$t$")
-g.setYTitle("$\sqrt{\lambda_n}\phi_n$")
-g.setTitle("P1 approx. of KL expansion for $C(s,t)=e^{-|s-t|}$")
+process = ot.GaussianProcess(covariance, mesh)
+sample = process.getSample(100)
+validation = ot.KarhunenLoeveValidation(sample, algo.getResult())
+g = validation.drawValidation()
 
 fig = plt.figure(figsize=(6, 4))
 axis = fig.add_subplot(111)

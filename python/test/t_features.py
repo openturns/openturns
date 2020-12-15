@@ -74,7 +74,7 @@ algo = ot.KarhunenLoeveP1Algorithm(mesh, cov1D, 1e-3)
 try:
     algo.run()
     result = algo.getResult()
-    lambd = result.getEigenValues()
+    lambd = result.getEigenvalues()
     print('ok')
 except:
     print('n/a')

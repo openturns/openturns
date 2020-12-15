@@ -57,6 +57,9 @@ public:
                               const UnsignedInteger size,
                               const UnsignedInteger dimension);
 
+  ProcessSampleImplementation(const Mesh & mesh,
+                              const SampleCollection & collection);
+
   /** Partial copy constructor */
   void add(const Field & field);
 
@@ -101,6 +104,9 @@ public:
 
   /** Spatial mean accessor */
   Sample computeSpatialMean() const;
+
+  /** Standard deviation accessor */
+  Field computeStandardDeviation() const;
 
   /**  Method computeQuantilePerComponent() gives the quantile per component of the sample */
   Field computeQuantilePerComponent(const Scalar prob) const;

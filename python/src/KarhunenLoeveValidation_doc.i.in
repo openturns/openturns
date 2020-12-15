@@ -1,0 +1,109 @@
+%feature("docstring") OT::KarhunenLoeveValidation
+"Karhunen-Loeve decomposition validation services.
+
+Parameters
+----------
+sample : :class:`~openturns.ProcessSample`
+    Observed (or learning) sample
+result : :class:`~openturns.KarhunenLoeveResult`
+    Decomposition result
+trend : :class:`~openturns.TrendTransform`, optional
+    Process trend, useful when the basis built using the covariance function
+    from the space of trajectories is not well suited to approximate the mean
+    function of the underlying process.
+
+Examples
+--------
+>>> import openturns as ot
+>>> N = 20
+>>> interval = ot.Interval(-1.0, 1.0)
+>>> mesh = ot.IntervalMesher([N - 1]).build(interval)
+>>> covariance = ot.SquaredExponential()
+>>> process = ot.GaussianProcess(covariance, mesh)
+>>> sampleSize = 100
+>>> processSample = process.getSample(sampleSize)
+>>> threshold = 1.0e-7
+>>> algo = ot.KarhunenLoeveSVDAlgorithm(processSample, threshold)
+>>> algo.run()
+>>> klresult = algo.getResult()
+>>> validation = ot.KarhunenLoeveValidation(processSample, klresult)"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KarhunenLoeveValidation::drawValidation
+"Plot a model vs metamodel graph for visual validation.
+
+Returns
+-------
+graph : :class:`~openturns.GridLayout`
+    The visual validation graph."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KarhunenLoeveValidation::computeResidual
+"Compute residual field.
+
+Returns
+-------
+graph : :class:`~openturns.ProcessSample`
+    The visual validation graph."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KarhunenLoeveValidation::computeResidualMean
+"Compute residual mean field.
+
+Returns
+-------
+mean : :class:`~openturns.Field`
+    The residual mean Field."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KarhunenLoeveValidation::computeResidualStandardDeviation
+"Compute residual standard deviation field.
+
+Returns
+-------
+stddev : :class:`~openturns.Field`
+    The residual standard deviation field."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KarhunenLoeveValidation::drawObservationWeight
+"Plot the weight of representation of each observation.
+
+For each observation we plot the weight according to the k-th mode
+using the projection of the observed sample:
+
+.. math::
+
+    v^i_k = \frac{(\xi^{(i)}_k)^2}{\sum_{i=1}^N (\xi^{(i)}_k)^2}
+
+Parameters
+----------
+k : int, :math:`\in [0, K-1]`, default=0
+    Mode index
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The visual validation graph."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::KarhunenLoeveValidation::drawObservationQuality
+"Plot the quality of representation of each observation.
+
+For each observation N we plot the quality of representation:
+
+.. math::
+
+    q^i = \frac{\norm{\overset{\sim}{X}^i (t)}^2}{\norm{X^i (t)}^2}
+
+with :math:`i \in [1,N]`
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+    The visual validation graph."

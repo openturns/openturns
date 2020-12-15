@@ -40,11 +40,11 @@ KarhunenLoeveLifting::KarhunenLoeveLifting()
 
 /* Parameter constructor */
 KarhunenLoeveLifting::KarhunenLoeveLifting(const KarhunenLoeveResult & result)
-  : PointToFieldFunctionImplementation(result.getEigenValues().getSize(), result.getMesh(), result.getModesAsProcessSample().getDimension())
+  : PointToFieldFunctionImplementation(result.getEigenvalues().getSize(), result.getMesh(), result.getModesAsProcessSample().getDimension())
   , result_(result)
 {
   // Set the description
-  const UnsignedInteger size = result_.getEigenValues().getSize();
+  const UnsignedInteger size = result_.getEigenvalues().getSize();
   if (size == 0) setOutputDescription(Description::BuildDefault(getOutputDimension(), "x"));
   else setOutputDescription(result_.getModesAsProcessSample()[0].getDescription());
   setInputDescription(Description::BuildDefault(getInputDimension(), "xi"));

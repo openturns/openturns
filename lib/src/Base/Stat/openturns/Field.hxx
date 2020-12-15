@@ -122,6 +122,9 @@ public:
   /** Compute the spatial mean of the field */
   Point getInputMean() const;
 
+  /** l2 norm */
+  Scalar norm() const;
+
   /** Draw a marginal of the field */
   Graph drawMarginal(const UnsignedInteger index = 0,
                      const Bool interpolate = true) const;

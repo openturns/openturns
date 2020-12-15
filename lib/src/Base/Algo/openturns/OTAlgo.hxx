@@ -66,6 +66,7 @@
 #include "openturns/QRMethod.hxx"
 #include "openturns/SVDMethod.hxx"
 #include "openturns/SparseMethod.hxx"
+#include "openturns/KarhunenLoeveReduction.hxx"
 #include "openturns/KarhunenLoeveResultImplementation.hxx"
 #include "openturns/KarhunenLoeveResult.hxx"
 #include "openturns/KarhunenLoeveAlgorithmImplementation.hxx"
@@ -73,6 +74,7 @@
 #include "openturns/KarhunenLoeveP1Algorithm.hxx"
 #include "openturns/KarhunenLoeveProjection.hxx"
 #include "openturns/KarhunenLoeveLifting.hxx"
+#include "openturns/KarhunenLoeveValidation.hxx"
 #include "openturns/P1LagrangeInterpolation.hxx"
 
 #endif /* OPENTURNS_OTALGO_HXX */
