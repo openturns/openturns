@@ -219,7 +219,8 @@ class View(object):
                         axes[0].spines['right'].set_visible(False)
                         axes[0].spines['top'].set_visible(False)
                     View(graphij, figure=self._fig, axes=axes, plot_kw=plot_kw,
-                         contour_kw=contour_kw, clabel_kw=clabel_kw)
+                         contour_kw=contour_kw, clabel_kw=clabel_kw,
+                         legend_kw=legend_kw)
                     self._fig.suptitle(self._ToUnicode(graph.getTitle()))
             return
 

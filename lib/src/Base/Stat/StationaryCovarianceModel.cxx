@@ -83,8 +83,9 @@ SquareMatrix StationaryCovarianceModel::operator() (const Point & tau) const
   const Scalar rho = computeStandardRepresentative(tau);
   // outputCovariance_ * rho is a SymmetricMatrix.
   // Its implementation only contains terms in the lower half.
-  // Conversion to a SquareMatrix is required.
-  return SquareMatrix(outputCovariance_ * rho);
+  // outputCovariance_ needs to be symmetrized.
+  outputCovariance_.checkSymmetry();
+  return outputCovariance_ * rho;
 }
 
 Scalar StationaryCovarianceModel::computeAsScalar(const Point & s,
