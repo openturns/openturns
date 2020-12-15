@@ -9,6 +9,7 @@
 ==== New classes ====
  * VertexValuePointToFieldFunction
  * KarhunenLoeveReduction
+ * KarhunenLoeveValidation
 
 ==== API changes ====
  * Removed deprecated Pairs alias

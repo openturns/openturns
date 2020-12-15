@@ -492,6 +492,7 @@ ot_add_python_module(algo algo_module.i
 		      KarhunenLoeveAlgorithmImplementation.i KarhunenLoeveAlgorithmImplementation_doc.i.in
 		      KarhunenLoeveP1Algorithm.i KarhunenLoeveP1Algorithm_doc.i.in
 		      KarhunenLoeveAlgorithm.i KarhunenLoeveAlgorithm_doc.i.in
+                      KarhunenLoeveValidation.i KarhunenLoeveValidation_doc.i.in
                       BaseAlgoTemplateDefs.i
                    )
 

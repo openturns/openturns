@@ -74,6 +74,7 @@
 #include "openturns/KarhunenLoeveP1Algorithm.hxx"
 #include "openturns/KarhunenLoeveProjection.hxx"
 #include "openturns/KarhunenLoeveLifting.hxx"
+#include "openturns/KarhunenLoeveValidation.hxx"
 #include "openturns/P1LagrangeInterpolation.hxx"
 
 #endif /* OPENTURNS_OTALGO_HXX */

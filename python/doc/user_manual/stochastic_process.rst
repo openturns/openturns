@@ -185,8 +185,10 @@ Karhunen Loeve decomposition
     KarhunenLoeveQuadratureAlgorithm
     KarhunenLoeveSVDAlgorithm
     KarhunenLoeveReduction
+    KarhunenLoeveValidation
 
     :template: class.rst_t
     KarhunenLoeveResult
     KarhunenLoeveProjection
     KarhunenLoeveLifting
+
