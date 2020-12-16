@@ -97,8 +97,8 @@ Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Collection<Scalar>:
   }
   absTau = sqrt(absTau);
   if (absTau <= SpecFunc::ScalarEpsilon)
-    return 1.0 + nuggetFactor_;
-  return  amplitude_[0] * exp(-absTau) * cos(2.0 * M_PI * absTau);
+    return amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_);
+  return amplitude_[0] * amplitude_[0] * exp(-absTau) * cos(2.0 * M_PI * absTau);
 }
 
 /* Discretize the covariance function on a given TimeGrid */

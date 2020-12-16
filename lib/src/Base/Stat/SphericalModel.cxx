@@ -72,10 +72,10 @@ Scalar SphericalModel::computeAsScalar(const Point &tau) const
     tauOverTheta[i] = tau[i] / scale_[i];
   const Scalar normTauOverScaleA = tauOverTheta.norm() / radius_;
   if (normTauOverScaleA <= SpecFunc::ScalarEpsilon)
-    return 1.0 + nuggetFactor_;
+    return amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_);
   if (normTauOverScaleA >= 1.0)
     return 0.0;
-  return amplitude_[0] * (1.0 - 0.5 * normTauOverScaleA * (3.0 - normTauOverScaleA * normTauOverScaleA));
+  return amplitude_[0] * amplitude_[0] * (1.0 - 0.5 * normTauOverScaleA * (3.0 - normTauOverScaleA * normTauOverScaleA));
 }
 
 Scalar SphericalModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
