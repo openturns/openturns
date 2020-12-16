@@ -21,6 +21,7 @@
  * Removed StationaryCovarianceModel
 
 === Documentation ===
+ * Fixed example and plot of Kolmogorov statistics.
 
 === Python module ===
  * Serialize Python wrapper objects using dill (PythonDistribution, PythonFunction ...)
