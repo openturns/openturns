@@ -18,6 +18,7 @@
  * Removed deprecated FittingTest::Kolmogorov, FittingTest::BestModelKolmogorov (DistributionFactory argument only)
  * Moved Sample::computeStandardDeviationPerComponent, to computeStandardDeviation
  * Deprecated KarhunenLoeveResult::getEigenValues, use getEigenvalues
+ * Removed StationaryCovarianceModel
 
 === Documentation ===
 
