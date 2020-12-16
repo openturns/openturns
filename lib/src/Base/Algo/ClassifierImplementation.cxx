@@ -92,29 +92,13 @@ struct ClassifyPolicy
 }; /* end struct ClassifyPolicy */
 
 
-Indices ClassifierImplementation::classifyParallel(const Sample & inS) const
+Indices ClassifierImplementation::classify(const Sample & inS) const
 {
   const UnsignedInteger size = inS.getSize();
   Indices result(size);
   const ClassifyPolicy policy(inS, result, this);
-  TBB::ParallelFor(0, size, policy);
+  TBB::ParallelForCondition(isParallel_, 0, size, policy);
   return result;
-}
-
-Indices ClassifierImplementation::classifySequential(const Sample & inS) const
-{
-  const UnsignedInteger size = inS.getSize();
-  Indices prediction(size);
-  for (UnsignedInteger i = 0; i < size; ++ i)
-    prediction[i] = classify(inS[i]);
-  return prediction;
-}
-
-Indices ClassifierImplementation::classify(const Sample & inS) const
-{
-  if (isParallel_)
-    return classifyParallel(inS);
-  return classifySequential(inS);
 }
 
 /* Grade a point */

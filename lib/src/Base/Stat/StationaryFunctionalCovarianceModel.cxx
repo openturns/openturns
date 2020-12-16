@@ -136,6 +136,12 @@ Description StationaryFunctionalCovarianceModel::getFullParameterDescription() c
   return description;
 }
 
+/* Is it safe to compute discretize etc in parallel? */
+Bool StationaryFunctionalCovarianceModel::isParallel() const
+{
+  return rho_.getImplementation()->isParallel();
+}
+
 /* String converter */
 String StationaryFunctionalCovarianceModel::__repr__() const
 {

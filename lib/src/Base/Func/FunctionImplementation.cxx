@@ -382,6 +382,12 @@ Bool FunctionImplementation::isLinearlyDependent(const UnsignedInteger index) co
   return evaluation_.isLinearlyDependent(index);
 }
 
+/* Is it safe to call in parallel? */
+Bool FunctionImplementation::isParallel() const
+{
+  return evaluation_.getImplementation()->isParallel();
+}
+
 /* Draw the given 1D marginal output as a function of the given 1D marginal input around the given central point */
 Graph FunctionImplementation::draw(const UnsignedInteger inputMarginal,
                                    const UnsignedInteger outputMarginal,

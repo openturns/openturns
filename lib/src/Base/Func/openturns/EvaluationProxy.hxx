@@ -116,6 +116,9 @@ public:
   Bool isLinear() const override;
   Bool isLinearlyDependent(const UnsignedInteger index) const override;
 
+  /** Is it safe to call in parallel? */
+  Bool isParallel() const override;
+
   /** Invalid values check accessor */
   void setCheckOutput(const Bool checkOutput) override;
   Bool getCheckOutput() const override;

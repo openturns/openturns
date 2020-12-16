@@ -126,6 +126,9 @@ public:
   virtual Bool isLinear() const;
   virtual Bool isLinearlyDependent(const UnsignedInteger index) const;
 
+  /** Is it safe to call in parallel? */
+  virtual Bool isParallel() const;
+
   /** Invalid values check accessor */
   virtual void setCheckOutput(const Bool checkOutput);
   virtual Bool getCheckOutput() const;

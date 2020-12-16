@@ -77,6 +77,9 @@ public:
   /** Is it a stationary covariance model ? */
   Bool isStationary() const override;
 
+  /** Is it safe to compute discretize etc in parallel? */
+  Bool isParallel() const override;
+
   /** String converter */
   String __repr__() const override;
 

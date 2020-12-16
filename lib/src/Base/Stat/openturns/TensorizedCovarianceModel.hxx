@@ -80,6 +80,9 @@ public:
   /** Is it a diagonal covariance model ? */
   Bool isDiagonal() const override;
 
+  /** Is it safe to compute discretize etc in parallel? */
+  Bool isParallel() const override;
+
   /** String converter */
   String __repr__() const override;
 

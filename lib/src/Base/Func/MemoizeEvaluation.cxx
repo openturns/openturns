@@ -329,6 +329,12 @@ String MemoizeEvaluation::__str__(const String & offset) const
   return OSS(false) << evaluation_.getImplementation()->__str__(offset);
 }
 
+/* Is it safe to call in parallel? */
+Bool MemoizeEvaluation::isParallel() const
+{
+  return false;
+}
+
 /* Method save() stores the object through the StorageManager */
 void MemoizeEvaluation::save(Advocate & adv) const
 {

@@ -53,11 +53,6 @@ public:
   virtual UnsignedInteger classify(const Point & inP) const;
   virtual Indices classify(const Sample & inS) const;
 
-protected:
-  virtual Indices classifyParallel(const Sample & inS) const;
-  virtual Indices classifySequential(const Sample & inS) const;
-public:
-
   /** Grade a point as if it were associated to a class */
   virtual Scalar grade(const Point & inP,
                        const UnsignedInteger outC) const;

@@ -140,6 +140,9 @@ public:
   /** Is it a diagonal covariance model ? */
   virtual Bool isDiagonal() const;
 
+  /** Is it safe to compute discretize etc in parallel? */
+  virtual Bool isParallel() const;
+
   /** Amplitude accessors */
   virtual Point getAmplitude() const;
   virtual void setAmplitude(const Point & amplitude);

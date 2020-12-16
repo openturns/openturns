@@ -402,7 +402,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
     CovarianceMatrix rhoMatrix(size);
     const CovarianceModelDiscretizeKroneckerPolicy policy( vertices, rhoMatrix, *this );
     // The loop is over the lower block-triangular part
-    TBB::ParallelFor( 0, size * (size + 1) / 2, policy );
+    TBB::ParallelForCondition(isParallel(), 0, size * (size + 1) / 2, policy);
     rhoMatrix.checkSymmetry();
     outputCovariance_.checkSymmetry();
     // Compute the Kronecker product of rhoMatrix by outputCovariance_
@@ -414,7 +414,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
     CovarianceMatrix covarianceMatrix(fullSize);
     const CovarianceModelDiscretizePolicy policy( vertices, covarianceMatrix, *this );
     // The loop is over the lower block-triangular part
-    TBB::ParallelFor( 0, size * (size + 1) / 2, policy );
+    TBB::ParallelForCondition(isParallel(), 0, size * (size + 1) / 2, policy);
     return covarianceMatrix;
   }
 }
@@ -444,7 +444,7 @@ TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Sam
     CovarianceMatrix rhoMatrix(size);
     const CovarianceModelDiscretizeKroneckerPolicy policy( vertices, rhoMatrix, *this );
     // The loop is over the lower block-triangular part
-    TBB::ParallelFor( 0, size * (size + 1) / 2, policy );
+    TBB::ParallelForCondition(isParallel(), 0, size * (size + 1) / 2, policy);
     // Compute the Cholesky factor of outputCovariance_
     if (outputCovarianceCholeskyFactor_.getDimension() == 0)
       outputCovarianceCholeskyFactor_ = outputCovariance_.computeCholesky();
@@ -526,12 +526,12 @@ Sample CovarianceModelImplementation::discretizeRow(const Sample & vertices,
   if (outputDimension_ == 1)
   {
     const CovarianceModelScalarDiscretizeRowPolicy policy( vertices, p, result, *this );
-    TBB::ParallelFor( 0, size, policy );
+    TBB::ParallelForCondition(isParallel(), 0, size, policy);
   }
   else
   {
     const CovarianceModelDiscretizeRowPolicy policy( vertices, p, result, *this );
-    TBB::ParallelFor( 0, size, policy );
+    TBB::ParallelForCondition(isParallel(), 0, size, policy);
   }
   return result;
 }
@@ -815,6 +815,12 @@ Bool CovarianceModelImplementation::isStationary() const
 Bool CovarianceModelImplementation::isDiagonal() const
 {
   return isDiagonal_;
+}
+
+/* Is it safe to compute discretize etc in parallel? */
+Bool CovarianceModelImplementation::isParallel() const
+{
+  return true;
 }
 
 /* Marginal accessor */

@@ -261,6 +261,14 @@ Bool TensorizedCovarianceModel::isDiagonal() const
   return true;
 }
 
+/* Is it safe to compute discretize etc in parallel? */
+Bool TensorizedCovarianceModel::isParallel() const
+{
+  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
+    if (!collection_[i].getImplementation()->isParallel()) return false;
+  return true;
+}
+
 /* String converter */
 String TensorizedCovarianceModel::__repr__() const
 {

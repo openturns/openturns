@@ -268,6 +268,13 @@ Bool SymbolicEvaluation::isLinearlyDependent(const UnsignedInteger index) const
   return true;
 }
 
+/* Is it safe to call in parallel? */
+Bool SymbolicEvaluation::isParallel() const
+{
+  // neither Exprtk nor muParser are thread-safe
+  return false;
+}
+
 /* Invalid values check accessor */
 void SymbolicEvaluation::setCheckOutput(const Bool checkOutput)
 {
