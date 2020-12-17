@@ -187,6 +187,124 @@ Field ProcessSampleImplementation::computeMean() const
   return Field(mesh_, meanValues);
 }
 
+
+/*
+ * Gives the range of the sample (by component)
+ */
+Field ProcessSampleImplementation::computeRange() const
+{
+  const UnsignedInteger verticesNumber = mesh_.getVerticesNumber();
+  Sample values(verticesNumber, getDimension());
+  for (UnsignedInteger i = 0; i < verticesNumber; ++i)
+    values[i] = getSampleAtVertex(i).computeRange();
+  return Field(mesh_, values);
+}
+
+/*
+ * Gives the median of the sample (by component)
+ */
+Field ProcessSampleImplementation::computeMedian() const
+{
+  const UnsignedInteger verticesNumber = mesh_.getVerticesNumber();
+  Sample values(verticesNumber, getDimension());
+  for (UnsignedInteger i = 0; i < verticesNumber; ++i)
+    values[i] = getSampleAtVertex(i).computeMedian();
+  return Field(mesh_, values);
+}
+
+/*
+ * Gives the variance of the sample (by component)
+ */
+Field ProcessSampleImplementation::computeVariance() const
+{
+  const UnsignedInteger verticesNumber = mesh_.getVerticesNumber();
+  Sample values(verticesNumber, getDimension());
+  for (UnsignedInteger i = 0; i < verticesNumber; ++i)
+    values[i] = getSampleAtVertex(i).computeVariance();
+  return Field(mesh_, values);
+}
+
+/*
+ * Gives the skewness of the sample (by component)
+ */
+Field ProcessSampleImplementation::computeSkewness() const
+{
+  const UnsignedInteger verticesNumber = mesh_.getVerticesNumber();
+  Sample values(verticesNumber, getDimension());
+  for (UnsignedInteger i = 0; i < verticesNumber; ++i)
+    values[i] = getSampleAtVertex(i).computeSkewness();
+  return Field(mesh_, values);
+}
+
+/*
+ * Gives the kurtosis of the sample (by component)
+ */
+Field ProcessSampleImplementation::computeKurtosis() const
+{
+  const UnsignedInteger verticesNumber = mesh_.getVerticesNumber();
+  Sample values(verticesNumber, getDimension());
+  for (UnsignedInteger i = 0; i < verticesNumber; ++i)
+    values[i] = getSampleAtVertex(i).computeKurtosis();
+  return Field(mesh_, values);
+}
+
+/*
+ * Gives the centered moment of order k of the sample (by component)
+ */
+Field ProcessSampleImplementation::computeCenteredMoment(const UnsignedInteger k) const
+{
+  const UnsignedInteger verticesNumber = mesh_.getVerticesNumber();
+  Sample values(verticesNumber, getDimension());
+  for (UnsignedInteger i = 0; i < verticesNumber; ++i)
+    values[i] = getSampleAtVertex(i).computeCenteredMoment(k);
+  return Field(mesh_, values);
+}
+
+/*
+ * Gives the raw moment of order k of the sample (by component)
+ */
+Field ProcessSampleImplementation::computeRawMoment(const UnsignedInteger k) const
+{
+  const UnsignedInteger verticesNumber = mesh_.getVerticesNumber();
+  Sample values(verticesNumber, getDimension());
+  for (UnsignedInteger i = 0; i < verticesNumber; ++i)
+    values[i] = getSampleAtVertex(i).computeRawMoment(k);
+  return Field(mesh_, values);
+}
+
+/*
+ * Get the empirical CDF of the sample
+ */
+Field ProcessSampleImplementation::computeEmpiricalCDF(const Point & point,
+                            const Bool tail) const
+{
+  const UnsignedInteger verticesNumber = mesh_.getVerticesNumber();
+  Sample values(verticesNumber, 1);
+  for (UnsignedInteger i = 0; i < verticesNumber; ++i)
+    values(i, 0) = getSampleAtVertex(i).computeEmpiricalCDF(point, tail);
+  return Field(mesh_, values);
+}
+
+/* Maximum accessor */
+Field ProcessSampleImplementation::getMax() const
+{
+  const UnsignedInteger verticesNumber = mesh_.getVerticesNumber();
+  Sample values(verticesNumber, getDimension());
+  for (UnsignedInteger i = 0; i < verticesNumber; ++i)
+    values[i] = getSampleAtVertex(i).getMax();
+  return Field(mesh_, values);
+}
+
+/* Minimum accessor */
+Field ProcessSampleImplementation::getMin() const
+{
+  const UnsignedInteger verticesNumber = mesh_.getVerticesNumber();
+  Sample values(verticesNumber, getDimension());
+  for (UnsignedInteger i = 0; i < verticesNumber; ++i)
+    values[i] = getSampleAtVertex(i).getMin();
+  return Field(mesh_, values);
+}
+
 /* Compute the sample of spatial means of each field */
 Sample ProcessSampleImplementation::computeTemporalMean() const
 {
@@ -383,6 +501,20 @@ ProcessSampleImplementation ProcessSampleImplementation::computeQuantilePerCompo
     TBB::ParallelFor( 0, sampleSize, policy );
     result.add(output);
   }
+  return result;
+}
+
+/* Extract the sample of values at the given vertex index */
+Sample ProcessSampleImplementation::getSampleAtVertex(const UnsignedInteger index) const
+{
+  const UnsignedInteger size = getSize();
+  const UnsignedInteger dimension = getDimension();
+  Sample result(size, dimension);
+  const UnsignedInteger offsetBegin = index * dimension;
+  const UnsignedInteger offsetEnd = offsetBegin + dimension;
+  UnsignedInteger offsetResult = 0;
+  for (UnsignedInteger i = 0; i < size; ++i, offsetResult += dimension)
+    std::copy(data_[i].getImplementation()->data_begin() + offsetBegin, data_[i].getImplementation()->data_begin() + offsetEnd, result.getImplementation()->data_begin() + offsetResult);
   return result;
 }
 

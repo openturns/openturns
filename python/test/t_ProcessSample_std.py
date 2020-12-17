@@ -98,3 +98,20 @@ if 0:
 coll=[ot.Normal(outputDimension).getSample(mesh.getVerticesNumber()) for i in range(sampleSize)]
 processSample2 = ot.ProcessSample(mesh, coll)
 assert len(processSample2) == sampleSize, "wrong size"
+
+# More statistical methods
+# processSample = ot.GaussianProcess(ot.MaternModel([10.0], [0.1], 1.5),  ot.RegularGrid(0.0, 0.1, 1000)).getSample(10000)
+print('min=', processSample.getMin().getValues())
+print('max=', processSample.getMax().getValues())
+print('range=', processSample.computeRange().getValues())
+print('variance=', processSample.computeVariance().getValues())
+print('skewness=', processSample.computeSkewness().getValues())
+print('kurtosis=', processSample.computeKurtosis().getValues())
+print('centered moment (3)=', processSample.computeCenteredMoment(3).getValues())
+print('raw moment (3)=', processSample.computeRawMoment(3).getValues())
+x = [0.2]*processSample.getDimension()
+print('median=', processSample.computeMedian().getValues())
+q = 0.3
+print('quantile at level', q, '=', processSample.computeQuantilePerComponent(q).getValues())
+print('empirical CDF at', x, '=', processSample.computeEmpiricalCDF(x).getValues())
+print('complementary empirical CDF at', x, '=', processSample.computeEmpiricalCDF(x, True).getValues())
