@@ -35,19 +35,22 @@ define :math:`V_i = V_{\{i\}}` and :math:`V_{i,j} = V_{\{i,j\}}`. We have:
 
 .. math::
 
-   \begin{array}{cccc}
-    V_i & = & \Var{ \Expect{Y \vert X_i} } & \\
-    V_{i,j} & = & \Var{ \Expect{ Y \vert X_i, X_j}  - \Expect{Y \vert X_i} - \Expect{Y \vert X_j} } & = \Var{ \Expect{ Y \vert X_i, X_j} } - V_i - V_j.
-   \end{array}
+   \begin{align*}
+    V_i & = \Var{ \Expect{Y \vert X_i} } \\
+    V_{i,j} & = \Var{ \Expect{ Y \vert X_i, X_j}  - \Expect{Y \vert X_i} - \Expect{Y \vert X_j} } \\
+            & = \Var{ \Expect{ Y \vert X_i, X_j} } - V_i - V_j.
+   \end{align*}
+
+for :math:`i=1,\ldots,n_X`.
 
 First and second order Sobol' indices are defined as follows:
 
 .. math::
 
-   \begin{array}{ccc}
-    S_i & = & \frac{V_i}{\Var{Y}} \\
-    S_{i,j} & = & \frac{V_{i,j}}{\Var{Y}}
-   \end{array}
+   \begin{align*}
+    S_i & = \frac{V_i}{\Var{Y}} \\
+    S_{i,j} & = \frac{V_{i,j}}{\Var{Y}}
+   \end{align*}
 
 The first order Sobol' index :math:`S_i` measures the part of the variance of :math:`Y` explained by :math:`X_i` alone.
 The second order Sobol' index :math:`S_{i,j}`  measures the part of the variance of :math:`Y` explained by the interaction of :math:`X_i` and :math:`X_j`.
@@ -56,10 +59,12 @@ Let us define
 
 .. math::
 
-   \begin{array}{ccc}
-    VT_i & = & \sum_{I \ni i} V_I \\
-    V_{-i} & = & \Var{ \Expect{Y \vert X_1, \ldots, X_{i-1}, X_{i+1}, \ldots X_{n_X}} }.
-   \end{array}
+   \begin{align*}
+    VT_i & = \sum_{I \ni i} V_I \\
+    V_{-i} & = \Var{ \Expect{Y \vert X_1, \ldots, X_{i-1}, X_{i+1}, \ldots X_{n_X}} }.
+   \end{align*}
+
+for :math:`i=1,\ldots,n_X`.
 
 Total order Sobol' indices are defined as follows:
 
@@ -143,17 +148,27 @@ but since it depends on the estimators :math:`\hat{V}_i` and :math:`\hat{V}_j`, 
     \hat{V}_{i,j} = \frac{1}{N-1} \sum_{k=1}^{N} \tilde{G}(\vect{E}_k^i) \tilde{G}(\vect{C}_k^j) - \frac{1}{N} \sum_{k=1}^{N} \tilde{G}(\vect{A}_k) \tilde{G}(\vect{B}_k) - \hat{V}_i - \hat{V}_j.
 
 For multivariate outputs (:math:`n_Y>1`, see [gamboa2013]_), we must compute the Sobol' indices with respect to each output variable.
-They can be aggregated using the following formulas:
+Let :math:`V_i^{(k)}` be the (first order) variance of the conditional expectation of :math:`Y^{(k)}`
 
 .. math::
 
-   \begin{array}{ccc}
-    S_i & = & \frac{ \sum_{k=1}^{q} V_{i}^{(k)} }{ \sum_{k=1}^{q} \Var{Y_k} }  \\
-    S_{i,j} & = & \frac{ \sum_{k=1}^{q} V_{i,j}^{(k)} }{ \sum_{k=1}^{q} \Var{Y_k} }  \\
-    ST_i & = & \frac{ \sum_{k=1}^{q} VT_{i}^{(k)} }{ \sum_{k=1}^{q} \Var{Y_k} }
-   \end{array}
+   \begin{align*}
+    V_i^{(k)} & = \Var{ \Expect{Y^{(k)} \vert X_i} }
+   \end{align*}
 
-Aggregated second order indices have not been implemented.
+for :math:`i=1,\ldots,n_X` and :math:`k=1,\ldots,n_Y`.
+Similarily, let :math:`VT_i^{(k)}` be the total variance of the conditional expectation of :math:`Y^{(k)}`. 
+
+The indices can be aggregated using the following formulas:
+
+.. math::
+
+   \begin{align*}
+    S_i & =  \frac{ \sum_{k=1}^{n_Y} V_{i}^{(k)} }{ \sum_{k=1}^{n_Y} \Var{Y_k} }  \\
+    ST_i & =  \frac{ \sum_{k=1}^{n_Y} VT_{i}^{(k)} }{ \sum_{k=1}^{n_Y} \Var{Y_k} }
+   \end{align*}
+
+for :math:`i=1,\ldots,n_X`.
 
 |
 
