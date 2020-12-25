@@ -37,10 +37,10 @@ This class analyzes the influence of each component of a random vector
 The [saltelli2002]_ method is used to estimate both first
 and total order indices.
 
-**The class constructor** ``SaltelliSensitivityAlgorithm(inputDesign, outputDesign, N)``
-**requires a specific structure for the ** ``outputDesign`` **, and therefore for the ** ``inputDesign`` **.**
-**The latter should be generated using** :class:`~openturns.SobolIndicesExperiment`
-**(see example below). Otherwise, results will be worthless.**
+The class constructor ``SaltelliSensitivityAlgorithm(inputDesign, outputDesign, N)``
+requires a specific structure for the  ``outputDesign``, and therefore for the  ``inputDesign`` .
+The latter should be generated using :class:`~openturns.SobolIndicesExperiment`
+(see example below). Otherwise, results will be **worthless**.
 
 Notations are defined in the documentation page of the :class:`~openturns.SobolIndicesAlgorithm` class.
 
@@ -49,9 +49,11 @@ The estimators of :math:`V_i` and :math:`V_{-i}` used by this class are respecti
 .. math::
 
    \begin{array}{ccc}
-   \hat{V}_i & = & \frac{1}{N-1}\sum_{k=1}^{N} \tilde{G}(\vect{B}_k)  \tilde{G}(\vect{E}_k) - (\frac{1}{N} \sum_{k=1}^{N} \tilde{G}(\vect{A}_k)) (\frac{1}{N} \sum_{k=1}^{N} \tilde{G}(\vect{B}_k)) \\
-   \hat{V}_{-i} & = & \frac{1}{N-1}\sum_{k=1}^{N} \tilde{G}(\vect{A}_k)  \tilde{G}(\vect{E}_k) - (\frac{1}{N} \sum_{k=1}^{N} \tilde{G}(\vect{A}_k)) (\frac{1}{N} \sum_{k=1}^{N} \tilde{G}(\vect{B}_k))
+   \hat{V}_i & = & \frac{1}{N-1}\sum_{k=1}^{N} \tilde{\vect{g}}(\vect{B}_k)  \tilde{\vect{g}}(\vect{E}_k) - (\frac{1}{N} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{A}_k)) (\frac{1}{N} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{B}_k)) \\
+   \hat{V}_{-i} & = & \frac{1}{N-1}\sum_{k=1}^{N} \tilde{\vect{g}}(\vect{A}_k)  \tilde{\vect{g}}(\vect{E}_k) - (\frac{1}{N} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{A}_k)) (\frac{1}{N} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{B}_k))
    \end{array}
+
+and :math:`\tilde{\vect{g}}` is the centered model based on the sample. 
 
 See also
 --------
