@@ -35,19 +35,16 @@ def test_model(myModel, test_grad=True, x1=None, x2=None):
         for j in range(inputDimension):
             x1_d = ot.Point(x1)
             x1_d[j] = x1_d[j] + eps
-            gradfd[j] = (myModel(x1_d, x2)[0, 0] - myModel(x1, x2)[0, 0]) / eps
+            gradfd[j] = (myModel.computeAsScalar(x1_d, x2) - myModel.computeAsScalar(x1, x2)) / eps
     else:
         gradfd = ot.Matrix(inputDimension, dimension * dimension)
         covarianceX1X2 = myModel(x1, x2)
-        # Symmetrize matrix
-        covarianceX1X2.getImplementation().symmetrize()
         centralValue = ot.Point(covarianceX1X2.getImplementation())
         # Loop over the shifted points
         for i in range(inputDimension):
             currentPoint = ot.Point(x1)
             currentPoint[i] += eps
             localCovariance = myModel(currentPoint, x2)
-            localCovariance.getImplementation().symmetrize()
             currentValue = ot.Point(
                 localCovariance.getImplementation())
             for j in range(currentValue.getSize()):

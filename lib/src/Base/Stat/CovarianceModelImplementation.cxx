@@ -225,6 +225,21 @@ Matrix CovarianceModelImplementation::partialGradient (const Point & s,
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  if (outputDimension_ == 1)
+  {
+    Matrix gradient(inputDimension_, 1);
+    Scalar centralValue = computeAsScalar(s, t);
+    const Scalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
+    // Loop over the shifted points
+    for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+    {
+      Point currentPoint(s);
+      currentPoint[i] += epsilon;
+      Scalar currentValue = computeAsScalar(currentPoint, t);
+      gradient(i, 0) = (currentValue - centralValue) / epsilon;
+    }
+    return gradient;
+  }
   Matrix gradient(inputDimension_, outputDimension_ * outputDimension_);
   SquareMatrix covarianceST(operator()(s, t));
   // Convert result into MatrixImplementation to symmetrize & get the collection
@@ -254,19 +269,38 @@ Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
   const Point parameter(getParameter());
   const UnsignedInteger size = parameter.getSize();
   const Scalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
-  Matrix gradient(size, (outputDimension_ * (outputDimension_ + 1)) / 2);
-  SquareMatrix covRef = operator()(s, t);
+  if (outputDimension_ == 1)
+  {
+    Matrix gradient(size, 1);
+    const Scalar covRef = computeAsScalar(s, t);
+    const Scalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
+    Pointer<CovarianceModelImplementation> p_implementation(clone());
+    for (UnsignedInteger k = 0; k < size; ++ k)
+    {
+      Point parameterP(parameter);
+      parameterP[k] += epsilon;
+      p_implementation->setParameter(parameterP);
+      const Scalar covP = p_implementation->computeAsScalar(s, t);
+      gradient(k, 0) = (covP - covRef) / epsilon;
+    }
+    return gradient;
+  }
+  // Finite difference estimate
+  // Care operator() yields SquareMatrix, which are not necessarly symmetric
+  // Thus we should account for all elements of operator()(s,t)
+  Matrix gradient(size, outputDimension_ * outputDimension_);
+  const SquareMatrix covRef(operator()(s, t));
   Pointer<CovarianceModelImplementation> p_implementation(clone());
   for (UnsignedInteger k = 0; k < size; ++ k)
   {
     Point parameterP(parameter);
     parameterP[k] += epsilon;
     p_implementation->setParameter(parameterP);
-    SquareMatrix covP = p_implementation->operator()(s, t);
+    const SquareMatrix covP (p_implementation->operator()(s, t));
     UnsignedInteger index = 0;
     for (UnsignedInteger j = 0; j < outputDimension_; ++ j)
     {
-      for (UnsignedInteger i = 0; i <= j; ++ i)
+      for (UnsignedInteger i = 0; i < outputDimension_; ++ i)
       {
         gradient(k, index) = (covP(i, j) - covRef(i, j)) / epsilon;
         ++ index;
