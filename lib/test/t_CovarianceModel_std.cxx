@@ -166,21 +166,13 @@ int main(int, char *[])
       // Add SquaredExponentialModel to the collection
       SquaredExponential mySquaredExponential(Point(inputDimension, 2.0));
       collection.add(mySquaredExponential);
-      // Add exponentialModel to the collection
-      Point amplitude(2);
-      amplitude[0] = 4.0;
-      amplitude[1] = 2.0;
-      // Define scale
-      Point scale(2, 1.0);
-      // Define a spatial correlation
-      CorrelationMatrix spatialCorrelation(inputDimension);
-      spatialCorrelation(1, 0) = 0.3;
-      ExponentialModel myExponentialModel(scale, amplitude, spatialCorrelation);
-      collection.add(myExponentialModel);
+      GeneralizedExponential myGeneralizedExponential(Point(dimension, 10.0), 1.5);
+      collection.add(myGeneralizedExponential);
       // Build TensorizedCovarianceModel with scale = [1,..,1]
       TensorizedCovarianceModel myModel(collection);
       test_model(myModel);
       // Define new scale
+      Point scale(2, 1.0);
       scale[0] = 2.5;
       scale[1] = 1.5;
       myModel.setScale(scale);

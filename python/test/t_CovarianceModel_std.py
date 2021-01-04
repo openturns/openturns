@@ -147,16 +147,10 @@ test_model(myModel)
 # Add AbsoluteExponentialModel to the collection
 myAbsoluteExponential = ot.AbsoluteExponential([2.0] * inputDimension, [3.0])
 mySquaredExponential = ot.SquaredExponential([2.0] * inputDimension, [3.0])
-# Add exponentialModel to the collection
-amplitude = [4.0, 2.0]
-scale = [1.0] * inputDimension
-# Define a spatial correlation
-spatialCorrelation = ot.CorrelationMatrix(inputDimension)
-spatialCorrelation[1, 0] = 0.3
-myExponentialModel = ot.ExponentialModel(scale, amplitude, spatialCorrelation)
+myGeneralizedExponential = ot.GeneralizedExponential([2.0] * inputDimension, [3.0], 1.5)
 # Build TensorizedCovarianceModel with scale = [1,..,1]
 myModel = ot.TensorizedCovarianceModel(
-    [myAbsoluteExponential, mySquaredExponential, myExponentialModel])
+    [myAbsoluteExponential, mySquaredExponential, myGeneralizedExponential])
 test_model(myModel, test_grad=False)
 # Define new scale
 scale = [2.5, 1.5]
