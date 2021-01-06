@@ -40,6 +40,7 @@ Refer to :ref:`covariance_model`, :ref:`stationary_covariance_model`.
 
     :template: class.rst_t
     IsotropicCovarianceModel
+    KroneckerCovarianceModel
 
     :template: CovarianceModel.rst_t
     MaternModel
@@ -193,4 +194,3 @@ Karhunen Loeve decomposition
     KarhunenLoeveResult
     KarhunenLoeveProjection
     KarhunenLoeveLifting
-

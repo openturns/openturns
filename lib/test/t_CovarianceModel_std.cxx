@@ -406,6 +406,66 @@ int main(int, char *[])
       const Scalar rho = spatialCovariance(1, 0) / std::sqrt(spatialCovariance(0, 0) * spatialCovariance(1, 1));
       assert_almost_equal(myModel.getOutputCorrelation()(0,1), rho, 0, 0, "in ExponentialModel correlation");
     }
+
+    // Kronecker cov model
+    {
+      // rho correlation
+      Point scale = {4, 5};
+      GeneralizedExponential rho(scale, 1);
+
+      // Amplitude values
+      Point amplitude = {1, 2};
+      KroneckerCovarianceModel myModel(rho, amplitude);
+      test_model(myModel);
+
+      CorrelationMatrix spatialCorrelation(2);
+      spatialCorrelation(0, 1) = 0.8;
+      myModel = KroneckerCovarianceModel(rho, amplitude, spatialCorrelation);
+      test_model(myModel);
+
+      CovarianceMatrix spatialCovariance(2);
+      spatialCovariance(0, 0) = 4.0;
+      spatialCovariance(1, 1) = 5.0;
+      spatialCovariance(1, 0) = 1.2;
+
+      myModel = KroneckerCovarianceModel(rho, spatialCovariance);
+      test_model(myModel);
+    }
+
+    // Kronecker cov using isotropic model
+    {
+      IsotropicCovarianceModel rho(MaternModel(1), 3);
+      CorrelationMatrix outputCorrelation(2);
+      outputCorrelation(0, 1) = 0.8;
+      // Amplitude values
+      Point amplitude = {1, 2};
+      Point scale = {1};
+      KroneckerCovarianceModel myModel(rho, amplitude, outputCorrelation);
+      test_model(myModel);
+      assert_almost_equal(myModel.getInputDimension(), 3, 0, 0, "in kronecker dimension check");
+      assert_almost_equal(myModel.getScale(), scale, 0, 0, "in kronecker scale check");
+      // full param size = 5 (scale(1), amplitude(2), spatialCorrelation(1), Matern nu(1))
+      Point fullParameter = {1, 1, 2, 0.8, 1.5};
+      assert_almost_equal(myModel.getFullParameter(), fullParameter , 0, 0, "in kronecker full param check");
+      assert_almost_equal(myModel.getFullParameter().getSize(), 5, 0, 0, "in kronecker param size check");
+      assert_almost_equal(myModel.getFullParameterDescription().getSize(), 5, 0, 0, "in kronecker param description size check");
+      Indices active(3);
+      active.fill();
+      assert_almost_equal(myModel.getActiveParameter(), active, "in kronecker active param check");
+      fullParameter = {2, 1, 2, .5, 2.5};
+      myModel.setFullParameter(fullParameter);
+      assert_almost_equal(myModel.getFullParameter(), fullParameter, 0, 0, "in kronecker param check");
+      active.add(4);
+      myModel.setActiveParameter(active);
+      assert_almost_equal(myModel.getActiveParameter(), active, "in kronecker active param check");
+      // Now we should get all values except correlation
+      Point parameter = {2, 1, 2, 2.5};
+      assert_almost_equal(myModel.getParameter(), parameter, 0, 0, "in kronecker param check");
+      Description description = {"scale_0", "amplitude_0", "amplitude_1", "R_1_0", "nu"};
+      Bool checkDesc = myModel.getFullParameterDescription() == description;
+      if (!checkDesc)
+        throw TestFailed(OSS() << "descriptions differ");
+      }
   }
   catch (TestFailed & ex)
   {

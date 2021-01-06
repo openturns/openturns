@@ -35,6 +35,7 @@
 #include "openturns/HistoryStrategy.hxx"
 #include "openturns/HistoryStrategyImplementation.hxx"
 #include "openturns/Last.hxx"
+#include "openturns/KroneckerCovarianceModel.hxx"
 #include "openturns/LowDiscrepancySequence.hxx"
 #include "openturns/LowDiscrepancySequenceImplementation.hxx"
 #include "openturns/Null.hxx"

@@ -11,6 +11,7 @@
  * KarhunenLoeveReduction
  * KarhunenLoeveValidation
  * IsotropicCovarianceModel
+ * KroneckerCovarianceModel
 
 ==== API changes ====
  * Removed deprecated Pairs alias
