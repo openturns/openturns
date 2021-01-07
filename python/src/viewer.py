@@ -209,11 +209,6 @@ class View(object):
                     axes = [self._fig.add_subplot(graph.getNbRows(), graph.getNbColumns(
                     ), 1 + i * graph.getNbColumns() + j, **axes_kw)]
                     axes[0].axison = graphij.getAxes()
-                    # hide inner ticks
-                    if i < graph.getNbRows() - 1:
-                        axes[0].set_xticklabels([])
-                    if j > 0:
-                        axes[0].set_yticklabels([])
                     # hide frame top/right
                     if LooseVersion(matplotlib.__version__) > '3.0':
                         axes[0].spines['right'].set_visible(False)
@@ -241,6 +236,12 @@ class View(object):
 
         # activate axes only if wanted
         self._ax[0].axison = graph.getAxes()
+
+        # ticks
+        if not graph.getTickLocation() & ot.GraphImplementation.TICKX:
+            self._ax[0].set_xticklabels([])
+        if not graph.getTickLocation() & ot.GraphImplementation.TICKY:
+            self._ax[0].set_yticklabels([])
 
         # set bounding box
         bb = graph.getBoundingBox()

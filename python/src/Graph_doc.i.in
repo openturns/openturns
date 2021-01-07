@@ -36,6 +36,10 @@ OT_Graph_IsValidLegendPosition_doc
 OT_Graph_getAxes_doc
 %feature("docstring") OT::Graph::setAxes
 OT_Graph_setAxes_doc
+%feature("docstring") OT::Graph::setTickLocation
+OT_Graph_setTickLocation_doc
+%feature("docstring") OT::Graph::getTickLocation
+OT_Graph_getTickLocation_doc
 %feature("docstring") OT::Graph::getLogScale
 OT_Graph_getLogScale_doc
 %feature("docstring") OT::Graph::setLogScale

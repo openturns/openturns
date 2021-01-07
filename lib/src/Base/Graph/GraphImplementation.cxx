@@ -251,6 +251,17 @@ Bool GraphImplementation::getAxes() const
   return showAxes_;
 }
 
+/* Ticks location flag accessor */
+void GraphImplementation::setTickLocation(const TickLocation tickLocation)
+{
+  tickLocation_ = tickLocation;
+}
+
+GraphImplementation::TickLocation GraphImplementation::getTickLocation() const
+{
+  return tickLocation_;
+}
+
 /* Set log scale for x, y both or none axes */
 void GraphImplementation::setLogScale(const LogScale logScale)
 {
@@ -746,6 +757,7 @@ void GraphImplementation::save(Advocate & adv) const
   adv.saveAttribute( "xTitle_", xTitle_ );
   adv.saveAttribute( "yTitle_", yTitle_ );
   adv.saveAttribute( "showAxes_", showAxes_ );
+  adv.saveAttribute( "tickLocation_", static_cast<UnsignedInteger>(tickLocation_) );
   adv.saveAttribute( "logScale_", static_cast<UnsignedInteger>(logScale_) );
   adv.saveAttribute( "showGrid_", showGrid_ );
   adv.saveAttribute( "gridColor_", gridColor_ );
@@ -766,6 +778,9 @@ void GraphImplementation::load(Advocate & adv)
   adv.loadAttribute( "xTitle_", xTitle_ );
   adv.loadAttribute( "yTitle_", yTitle_ );
   adv.loadAttribute( "showAxes_", showAxes_ );
+  UnsignedInteger tickLocation = 0;
+  adv.loadAttribute( "tickLocation_", tickLocation );
+  tickLocation_ = static_cast<TickLocation>(tickLocation);
   UnsignedInteger logScale = 0;
   adv.loadAttribute( "logScale_", logScale );
   logScale_ = static_cast<LogScale>(logScale);

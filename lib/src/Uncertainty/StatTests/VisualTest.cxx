@@ -224,6 +224,12 @@ GridLayout VisualTest::DrawPairs(const Sample & sample)
       const Cloud cloud(sample.getMarginal(indices), "blue", "fsquare", "");
       Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
       graph.add(cloud);
+      int location = GraphImplementation::TICKNONE;
+      if (i == dimension - 1)
+        location |= GraphImplementation::TICKX;
+      if (j == 0)
+        location |= GraphImplementation::TICKY;
+      graph.setTickLocation(static_cast<GraphImplementation::TickLocation>(location));
       grid.setGraph(i - 1, j, graph);
     }
   }

@@ -31,6 +31,7 @@
  * #1661 (XMLH5StorageManager does not store IndicesCollection into HDF5 files)
  * #1662 (Operator() of a CovarianceModel with multidimensional output should yield object of type SquareMatrix)
  * #1680 (QuadraticBasisFactory multiplies cross products by 2)
+ * #1710 (Misleading y labels in VisualTest.DrawPairsMarginals())
  * #1714 (The log-PDF of the Pareto is wrong)
 
 
