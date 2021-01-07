@@ -41,8 +41,9 @@ static const Factory<IndependentCopula> Factory_IndependentCopula;
 
 /* Default constructor */
 IndependentCopula::IndependentCopula(const UnsignedInteger dimension)
-  : CopulaImplementation()
+  : DistributionImplementation()
 {
+  isCopula_ = true;
   setName( "IndependentCopula" );
   setDimension(dimension);
   computeRange();
@@ -339,13 +340,13 @@ Description IndependentCopula::getParameterDescription() const
 /* Method save() stores the object through the StorageManager */
 void IndependentCopula::save(Advocate & adv) const
 {
-  CopulaImplementation::save(adv);
+  DistributionImplementation::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void IndependentCopula::load(Advocate & adv)
 {
-  CopulaImplementation::load(adv);
+  DistributionImplementation::load(adv);
   computeRange();
 }
 

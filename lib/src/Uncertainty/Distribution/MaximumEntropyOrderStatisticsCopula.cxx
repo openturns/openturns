@@ -171,12 +171,6 @@ MaximumEntropyOrderStatisticsCopula::DistributionCollection MaximumEntropyOrderS
   return distribution_.distributionCollection_;
 }
 
-/* Compute the covariance of the copula */
-void MaximumEntropyOrderStatisticsCopula::computeCovariance() const
-{
-  DistributionImplementation::computeCovariance();
-}
-
 /* Method save() stores the object through the StorageManager */
 void MaximumEntropyOrderStatisticsCopula::save(Advocate & adv) const
 {

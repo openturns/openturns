@@ -22,7 +22,7 @@
 #define OPENTURNS_MINCOPULA_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/CopulaImplementation.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +32,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The class implements a min copula
  */
 class OT_API MinCopula
-  : public CopulaImplementation
+  : public DistributionImplementation
 {
   CLASSNAME
 
@@ -60,15 +60,15 @@ public:
   Point getRealization() const override;
 
   /** Get the DDF of the MinCopula distribution */
-  using CopulaImplementation::computeDDF;
+  using DistributionImplementation::computeDDF;
   Point computeDDF(const Point & point) const override;
 
   /** Get the PDF of the MinCopula distribution */
-  using CopulaImplementation::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the MinCopula distribution */
-  using CopulaImplementation::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Get the quantile of the distribution */
@@ -76,7 +76,7 @@ public:
   Point computeQuantile(const Scalar prob, const Bool tail = false) const override;
 
   /** Compute the survival function */
-  using CopulaImplementation::computeSurvivalFunction;
+  using DistributionImplementation::computeSurvivalFunction;
   Scalar computeSurvivalFunction(const Point & point) const override;
 
   /** Compute the entropy of the distribution */
@@ -86,7 +86,7 @@ public:
   CorrelationMatrix getKendallTau() const override;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  using CopulaImplementation::getMarginal;
+  using DistributionImplementation::getMarginal;
   Distribution getMarginal(const Indices & indices) const override;
 
   /** Get the isoprobabilist transformation */

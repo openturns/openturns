@@ -21,7 +21,7 @@
 #ifndef OPENTURNS_MARSHALLOLKINCOPULA_HXX
 #define OPENTURNS_MARSHALLOLKINCOPULA_HXX
 
-#include "openturns/CopulaImplementation.hxx"
+#include "openturns/DistributionImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The MarshallOlkinCopula distribution.
  */
 class OT_API MarshallOlkinCopula
-  : public CopulaImplementation
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
@@ -59,7 +59,7 @@ public:
   MarshallOlkinCopula * clone() const override;
 
   /** Get the CDF of the distribution */
-  using CopulaImplementation::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Tell if the distribution has independent copula */

@@ -35,9 +35,10 @@ static const Factory<ExtremeValueCopula> Factory_ExtremeValueCopula;
 
 /* Default constructor */
 ExtremeValueCopula::ExtremeValueCopula()
-  : CopulaImplementation()
+  : DistributionImplementation()
   , pickandFunction_(SymbolicFunction("t", "1.0"))
 {
+  isCopula_ = true;
   setName( "ExtremeValueCopula" );
   // We set the dimension of the ExtremeValueCopula distribution
   setDimension( 2 );
@@ -48,9 +49,10 @@ ExtremeValueCopula::ExtremeValueCopula()
 
 /* Parameters constructor */
 ExtremeValueCopula::ExtremeValueCopula(const Function & pickandFunction)
-  : CopulaImplementation()
+  : DistributionImplementation()
   , pickandFunction_(pickandFunction)
 {
+  isCopula_ = true;
   setName( "ExtremeValueCopula" );
   // We set the dimension of the ExtremeValueCopula distribution
   setDimension( 2 );
@@ -329,14 +331,14 @@ Function ExtremeValueCopula::getPickandFunction() const
 /* Method save() stores the object through the StorageManager */
 void ExtremeValueCopula::save(Advocate & adv) const
 {
-  CopulaImplementation::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "pickandFunction_", pickandFunction_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void ExtremeValueCopula::load(Advocate & adv)
 {
-  CopulaImplementation::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "pickandFunction_", pickandFunction_ );
   computeRange();
 }

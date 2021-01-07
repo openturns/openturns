@@ -32,9 +32,10 @@ static const Factory<PlackettCopula> Factory_PlackettCopula;
 
 /* Default constructor */
 PlackettCopula::PlackettCopula()
-  : CopulaImplementation()
+  : DistributionImplementation()
   , theta_(-1.0) // To force the update in the accessor
 {
+  isCopula_ = true;
   setName( "PlackettCopula" );
   setTheta(2.0);
   // We set the dimension of the PlackettCopula distribution
@@ -44,9 +45,10 @@ PlackettCopula::PlackettCopula()
 
 /* Parameters constructor */
 PlackettCopula::PlackettCopula(const Scalar theta)
-  : CopulaImplementation()
+  : DistributionImplementation()
   , theta_(-1.0) // To force the update in the accessor
 {
+  isCopula_ = true;
   setName( "PlackettCopula" );
   setTheta(theta);
   // We set the dimension of the PlackettCopula distribution
@@ -307,6 +309,7 @@ void PlackettCopula::computeCovariance() const
     covariance_(1, 0) = thetaMinus1_ * (1.0 - 0.5 * thetaMinus1_) / 3.0;
   else
     covariance_(1, 0) = ((theta_ + 1) - 2.0 * theta_ * std::log(theta_) / thetaMinus1_) / thetaMinus1_;
+  isAlreadyComputedCovariance_ = true;
 }
 
 /* Tell if the distribution has independent copula */
@@ -359,14 +362,14 @@ Distribution PlackettCopula::getMarginal(const Indices & indices) const
 /* Method save() stores the object through the StorageManager */
 void PlackettCopula::save(Advocate & adv) const
 {
-  CopulaImplementation::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "theta_", theta_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
 void PlackettCopula::load(Advocate & adv)
 {
-  CopulaImplementation::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "theta_", theta_ );
   thetaMinus1_ = theta_ - 1.0;
   computeRange();
