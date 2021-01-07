@@ -43,10 +43,11 @@ static const Factory<NormalCopula> Factory_NormalCopula;
 
 /* Default constructor */
 NormalCopula::NormalCopula(const UnsignedInteger dim)
-  : CopulaImplementation()
+  : DistributionImplementation()
   , correlation_(dim)
   , normal_(dim)
 {
+  isCopula_ = true;
   setName("NormalCopula");
   // The range is generic for all the copulas
   setDimension(dim);
@@ -55,10 +56,11 @@ NormalCopula::NormalCopula(const UnsignedInteger dim)
 
 /* Default constructor */
 NormalCopula::NormalCopula(const CorrelationMatrix & correlation)
-  : CopulaImplementation()
+  : DistributionImplementation()
   , correlation_(correlation)
   , normal_(Point(correlation.getNbRows(), 0.0), Point(correlation.getNbRows(), 1.0), correlation)
 {
+  isCopula_ = true;
   setName("NormalCopula");
   // The range is generic for all the copulas
   setDimension(correlation.getNbRows());
@@ -684,7 +686,7 @@ CorrelationMatrix NormalCopula::GetCorrelationFromKendallCorrelation(const Corre
 /* Method save() stores the object through the StorageManager */
 void NormalCopula::save(Advocate & adv) const
 {
-  CopulaImplementation::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "correlation_", correlation_ );
   adv.saveAttribute( "covariance_duplicate", covariance_ );
   adv.saveAttribute( "normal_", normal_ );
@@ -696,7 +698,7 @@ void NormalCopula::save(Advocate & adv) const
 void NormalCopula::load(Advocate & adv)
 {
   // The range is generic for all the copulas
-  CopulaImplementation::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "correlation_", correlation_ );
   adv.loadAttribute( "covariance_duplicate", covariance_ );
   adv.loadAttribute( "normal_", normal_ );

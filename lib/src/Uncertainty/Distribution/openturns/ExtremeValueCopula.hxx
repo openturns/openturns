@@ -31,7 +31,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * The ExtremeValueCopula distribution.
  */
 class OT_API ExtremeValueCopula
-  : public CopulaImplementation
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
@@ -61,23 +61,23 @@ public:
   Point getRealization() const override;
 
   /** Get the PDF of the distribution */
-  using CopulaImplementation::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the log PDF of the distribution */
-  using CopulaImplementation::computeLogPDF;
+  using DistributionImplementation::computeLogPDF;
   Scalar computeLogPDF(const Point & point) const override;
 
   /** Get the CDF of the distribution */
-  using CopulaImplementation::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
 
   /** Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-  using CopulaImplementation::computeConditionalCDF;
+  using DistributionImplementation::computeConditionalCDF;
   Scalar computeConditionalCDF(const Scalar x, const Point & y) const override;
 
   /** Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
-  using CopulaImplementation::computeConditionalQuantile;
+  using DistributionImplementation::computeConditionalQuantile;
   Scalar computeConditionalQuantile(const Scalar q, const Point & y) const override;
 
   /** Tell if the distribution has independent copula */

@@ -316,6 +316,7 @@ protected:
       const Bool tail = false) const;
   virtual Sample computeQuantileParallel(const Point & prob,
                                          const Bool tail = false) const;
+  Point computeQuantileCopula(const Scalar prob, const Bool tail = false) const;
 public:
   virtual Sample computeQuantile(const Point & prob,
                                  const Bool tail = false) const;
@@ -800,6 +801,7 @@ protected:
 
   /** Compute the covariance of the distribution */
   virtual void computeCovariance() const;
+  virtual void computeCovarianceCopula() const;
   virtual void computeCovarianceContinuous() const;
   virtual void computeCovarianceDiscrete() const;
   virtual void computeCovarianceGeneral() const;

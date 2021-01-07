@@ -31,8 +31,9 @@ CLASSNAMEINIT(ArchimedeanCopula)
 
 /* Default constructor */
 ArchimedeanCopula::ArchimedeanCopula()
-  : CopulaImplementation()
+  : DistributionImplementation()
 {
+  isCopula_ = true;
   setDimension(2);
 }
 
@@ -45,15 +46,7 @@ ArchimedeanCopula * ArchimedeanCopula::clone() const
 /* Comparison operator */
 Bool ArchimedeanCopula::operator ==(const ArchimedeanCopula & other) const
 {
-  Bool sameObject = false;
-
-  if (this != &other)   // Other is NOT me, so I have to realize the comparison
-  {
-    // sameObject = ...
-  }
-  else sameObject = true;
-
-  return sameObject;
+  return (this == &other);
 }
 
 /* String converter */

@@ -2356,10 +2356,62 @@ Scalar DistributionImplementation::computeScalarQuantile(const Scalar prob,
   return root;
 } // computeScalarQuantile
 
+
+// Structure used to implement the computeQuantile() method efficiently
+struct CopulaQuantileWrapper
+{
+  CopulaQuantileWrapper(const DistributionImplementation * p_distribution)
+    : p_distribution_(p_distribution)
+    , dimension_(p_distribution->getDimension())
+  {
+    // Nothing to do
+  }
+
+  Point computeDiagonal(const Point & u) const
+  {
+    const Point point(dimension_, u[0]);
+    const Scalar cdf = p_distribution_->computeCDF(point);
+    const Point value(1, cdf);
+    return value;
+  }
+
+  const DistributionImplementation * p_distribution_;
+  const UnsignedInteger dimension_;
+}; // struct CopulaQuantileWrapper
+
+/* Generic implementation of the quantile computation for copulas */
+Point DistributionImplementation::computeQuantileCopula(const Scalar prob,
+                                                        const Bool tail) const
+{
+  const UnsignedInteger dimension = getDimension();
+  // Special case for bording values
+  const Scalar q = tail ? 1.0 - prob : prob;
+  if (q <= 0.0) return Point(dimension, 0.0);
+  if (q >= 1.0) return Point(dimension, 1.0);
+  // Special case for dimension 1
+  if (dimension == 1) return Point(1, q);
+  CopulaQuantileWrapper wrapper(this);
+  const Function f(bindMethod<CopulaQuantileWrapper, Point, Point>(wrapper, &CopulaQuantileWrapper::computeDiagonal, 1, 1));
+  Scalar leftTau = q;
+  const Point leftPoint(1, leftTau);
+  const Point leftValue(f(leftPoint));
+  Scalar leftCDF = leftValue[0];
+  // Upper bound of the bracketing interval
+  Scalar rightTau = 1.0 - (1.0 - q) / dimension;
+  Point rightPoint(1, rightTau);
+  const Point rightValue(f(rightPoint));
+  Scalar rightCDF = rightValue[0];
+  // Use Brent's method to compute the quantile efficiently
+  Brent solver(cdfEpsilon_, cdfEpsilon_, cdfEpsilon_, quantileIterations_);
+  return Point(dimension, solver.solve(f, q, leftTau, rightTau, leftCDF, rightCDF));
+}
+
 /* Generic implementation of the quantile computation */
 Point DistributionImplementation::computeQuantile(const Scalar prob,
     const Bool tail) const
 {
+  if (isCopula())
+    return computeQuantileCopula(prob, tail);
   Scalar marginalProb = 0.0;
   return computeQuantile(prob, tail, marginalProb);
 }
@@ -2800,6 +2852,8 @@ void DistributionImplementation::computeMean() const
 /* Get the mean of the distribution */
 Point DistributionImplementation::getMean() const
 {
+  if (isCopula())
+    return Point(getDimension(), 0.5);
   if (!isAlreadyComputedMean_) computeMean();
   return mean_;
 }
@@ -2812,6 +2866,11 @@ Point DistributionImplementation::getStandardDeviation() const
   if (dimension_ == 1) return Point(1, std::sqrt(getCovariance()(0, 0)));
   // In higher dimension, either use the covariance if it has already been
   // computed...
+
+  if (isCopula())
+    // 0.2886751345948128822545744 = 1 / sqrt(12)
+    return Point(getDimension(), 0.2886751345948128822545744);
+
   if (isAlreadyComputedCovariance_)
   {
     Point result(dimension_);
@@ -2828,6 +2887,8 @@ Point DistributionImplementation::getStandardDeviation() const
 /* Get the skewness of the distribution */
 Point DistributionImplementation::getSkewness() const
 {
+  if (isCopula())
+    return Point(getDimension(), 0.0);
   const Point variance(getCenteredMoment(2));
   const Point thirdMoment(getCenteredMoment(3));
   Point result(dimension_);
@@ -2838,6 +2899,10 @@ Point DistributionImplementation::getSkewness() const
 /* Get the kurtosis of the distribution */
 Point DistributionImplementation::getKurtosis() const
 {
+  if (isCopula())
+    // 1.8 = 9/5
+    return Point(getDimension(), 1.8);
+
   const Point variance(getCenteredMoment(2));
   const Point fourthMoment(getCenteredMoment(4));
   Point result(dimension_);
@@ -2863,10 +2928,76 @@ Point DistributionImplementation::getCenteredMoment(const UnsignedInteger n) con
 /* Compute the covariance of the distribution */
 void DistributionImplementation::computeCovariance() const
 {
-  if (isContinuous()) computeCovarianceContinuous();
+  if (isCopula()) computeCovarianceCopula();
+  else if (isContinuous()) computeCovarianceContinuous();
   else if (isDiscrete()) computeCovarianceDiscrete();
   else computeCovarianceGeneral();
 }
+
+
+
+struct CopulaCovarianceWrapper
+{
+  CopulaCovarianceWrapper(const Distribution & distribution)
+    : distribution_(distribution)
+  {
+    // Nothing to do
+  }
+
+  Point kernel(const Point & point) const
+  {
+    return Point(1, distribution_.computeCDF(point) - point[0] * point[1]);
+  }
+
+  const Distribution & distribution_;
+};
+
+/* Compute the covariance of the copula */
+void DistributionImplementation::computeCovarianceCopula() const
+{
+  const UnsignedInteger dimension = getDimension();
+  // We need this to initialize the covariance matrix in two cases:
+  // + this is the first call to this routine (which could be checked by testing the dimension of the copula and the dimension of the matrix
+  // + the copula has changed from a non-independent one to the independent copula
+  covariance_ = CovarianceMatrix(dimension);
+  // First the diagonal terms, which are the marginal covariances
+  // Uniform marginals, the diagonal is 1/12
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    // 0.08333333333333333333333333 = 1 / 12
+    covariance_(i, i) = 0.08333333333333333333333333;
+  }
+  // Off-diagonal terms if the copula is not the independent copula
+  if (!hasIndependentCopula())
+  {
+    const IteratedQuadrature integrator;
+    const Interval unitSquare(Point(2, 0.0), Point(2, 1.0));
+    // Performs the integration for each covariance in the strictly lower triangle of the covariance matrix
+    // We start with the loop over the coefficients because the most expensive task is to get the 2D marginal copulas
+    Indices indices(2);
+    for(UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
+    {
+      indices[0] = rowIndex;
+      for(UnsignedInteger columnIndex = rowIndex + 1; columnIndex < dimension; ++columnIndex)
+      {
+        indices[1] = columnIndex;
+        // For the usual case of a bidimensional copula, no need to extract marginal distributions
+        Distribution marginalDistribution(*this);
+        if (dimension > 2) marginalDistribution = getMarginal(indices);
+        if (!marginalDistribution.getImplementation()->hasIndependentCopula())
+        {
+          // Build the integrand
+          CopulaCovarianceWrapper functionWrapper(marginalDistribution);
+          Function function(bindMethod<CopulaCovarianceWrapper, Point, Point>(functionWrapper, &CopulaCovarianceWrapper::kernel, 2, 1));
+          // Compute the covariance element
+          covariance_(rowIndex, columnIndex) = integrator.integrate(function, unitSquare)[0];
+        }
+      } // loop over column indices
+    } // loop over row indices
+  } // if !hasIndependentCopula
+  isAlreadyComputedCovariance_ = true;
+} // computeCovariance
+
 
 void DistributionImplementation::computeCovarianceContinuous() const
 {
@@ -3441,7 +3572,7 @@ Scalar DistributionImplementation::computeDensityGeneratorSecondDerivative(const
 Distribution DistributionImplementation::getMarginal(const UnsignedInteger i) const
 {
   if (isCopula())
-    return Uniform(0.0, 1.0);
+    return new IndependentCopula(1);
   return getMarginal(Indices(1, i));
 }
 

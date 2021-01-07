@@ -22,7 +22,7 @@
 #define OPENTURNS_ARCHIMEDEANCOPULA_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/CopulaImplementation.hxx"
+#include "openturns/DistributionImplementation.hxx"
 #include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -38,7 +38,7 @@ BEGIN_NAMESPACE_OPENTURNS
  * without being reconstructed or built in any way.
  */
 class OT_API ArchimedeanCopula
-  : public CopulaImplementation
+  : public DistributionImplementation
 {
   CLASSNAME
 public:
@@ -56,13 +56,13 @@ public:
   String __repr__() const override;
 
   /** Get the PDF of the archimedean copula */
-  using CopulaImplementation::computePDF;
+  using DistributionImplementation::computePDF;
   Scalar computePDF(const Point & point) const override;
 
   /** Get the CDF of the archimedean copula */
-  using CopulaImplementation::computeCDF;
+  using DistributionImplementation::computeCDF;
   Scalar computeCDF(const Point & point) const override;
-  using CopulaImplementation::computeComplementaryCDF;
+  using DistributionImplementation::computeComplementaryCDF;
   Scalar computeComplementaryCDF(const Point & point) const override;
 
   /** Get the probability content of an interval */
@@ -88,7 +88,7 @@ public:
   virtual Scalar computeArchimedeanGeneratorSecondDerivative(const Scalar t) const;
 
   /** Get the distribution of the marginal distribution corresponding to indices dimensions */
-  using CopulaImplementation::getMarginal;
+  using DistributionImplementation::getMarginal;
   Distribution getMarginal(const Indices & indices) const override;
 
   /** Tell if the distribution has elliptical copula */

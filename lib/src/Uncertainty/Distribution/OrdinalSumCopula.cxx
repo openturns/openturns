@@ -34,12 +34,13 @@ static const Factory<OrdinalSumCopula> Factory_OrdinalSumCopula;
 
 /* Default constructor */
 OrdinalSumCopula::OrdinalSumCopula()
-  : CopulaImplementation()
+  : DistributionImplementation()
   , copulaCollection_(2, IndependentCopula(2))
   , bounds_(1, 0.5)
   , blockLengths_(2, 0.5)
   , blockDistribution_()
 {
+  isCopula_ = true;
   setName("OrdinalSumCopula");
   setDimension(2);
   Sample support(2, 1);
@@ -52,12 +53,13 @@ OrdinalSumCopula::OrdinalSumCopula()
 /* Default constructor */
 OrdinalSumCopula::OrdinalSumCopula(const DistributionCollection & coll,
                                    const Point & bounds)
-  : CopulaImplementation()
+  : DistributionImplementation()
   , copulaCollection_(0)
   , bounds_(0)
   , blockLengths_(0)
   , blockDistribution_()
 {
+  isCopula_ = true;
   setName("OrdinalSumCopula");
   // We assign the copula collection through the accessor in order to compute the ordinalSum copula dimension
   setCopulaCollection(coll);
@@ -414,19 +416,19 @@ Point OrdinalSumCopula::computeCDFGradient(const Point & point) const
 /* Compute the PDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Scalar OrdinalSumCopula::computeConditionalPDF(const Scalar x, const Point & y) const
 {
-  return CopulaImplementation::computeConditionalPDF(x, y);
+  return DistributionImplementation::computeConditionalPDF(x, y);
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
 Scalar OrdinalSumCopula::computeConditionalCDF(const Scalar x, const Point & y) const
 {
-  return CopulaImplementation::computeConditionalCDF(x, y);
+  return DistributionImplementation::computeConditionalCDF(x, y);
 }
 
 /* Compute the quantile of Xi | X1, ..., Xi-1, i.e. x such that CDF(x|y) = q with x = Xi, y = (X1,...,Xi-1) */
 Scalar OrdinalSumCopula::computeConditionalQuantile(const Scalar q, const Point & y) const
 {
-  return CopulaImplementation::computeConditionalQuantile(q, y);
+  return DistributionImplementation::computeConditionalQuantile(q, y);
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -556,19 +558,19 @@ Bool OrdinalSumCopula::hasIndependentCopula() const
 /* Get the isoprobabilist transformation */
 OrdinalSumCopula::IsoProbabilisticTransformation OrdinalSumCopula::getIsoProbabilisticTransformation() const
 {
-  return CopulaImplementation::getIsoProbabilisticTransformation();
+  return DistributionImplementation::getIsoProbabilisticTransformation();
 }
 
 /* Get the inverse isoprobabilist transformation */
 OrdinalSumCopula::InverseIsoProbabilisticTransformation OrdinalSumCopula::getInverseIsoProbabilisticTransformation() const
 {
-  return CopulaImplementation::getInverseIsoProbabilisticTransformation();
+  return DistributionImplementation::getInverseIsoProbabilisticTransformation();
 }
 
 /* Method save() stores the object through the StorageManager */
 void OrdinalSumCopula::save(Advocate & adv) const
 {
-  CopulaImplementation::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "copulaCollection_", copulaCollection_ );
   adv.saveAttribute( "bounds_", bounds_ );
   adv.saveAttribute( "blockLengths_", blockLengths_ );
@@ -578,7 +580,7 @@ void OrdinalSumCopula::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void OrdinalSumCopula::load(Advocate & adv)
 {
-  CopulaImplementation::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "copulaCollection_", copulaCollection_ );
   adv.loadAttribute( "bounds_", bounds_ );
   adv.loadAttribute( "blockLengths_", blockLengths_ );

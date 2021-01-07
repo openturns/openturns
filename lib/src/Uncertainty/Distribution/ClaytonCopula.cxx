@@ -312,12 +312,6 @@ Scalar ClaytonCopula::computeCDF(const Point & point) const
   return u * std::exp(-(log1p(factor)) / theta_);
 }
 
-/* Compute the covariance of the distribution */
-void ClaytonCopula::computeCovariance() const
-{
-  CopulaImplementation::computeCovariance();
-}
-
 /* Get the Kendall concordance of the distribution */
 CorrelationMatrix ClaytonCopula::getKendallTau() const
 {

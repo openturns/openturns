@@ -27,7 +27,6 @@
 #include "openturns/ConditionalRandomVector.hxx"
 #include "openturns/ConstantRandomVector.hxx"
 #include "openturns/ContinuousDistribution.hxx"
-#include "openturns/CopulaImplementation.hxx"
 #include "openturns/DiscreteDistribution.hxx"
 #include "openturns/Distribution.hxx"
 #include "openturns/DistributionFactory.hxx"

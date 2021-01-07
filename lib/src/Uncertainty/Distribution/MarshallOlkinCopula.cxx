@@ -33,10 +33,11 @@ static const Factory<MarshallOlkinCopula> Factory_MarshallOlkinCopula;
 
 /* Default constructor */
 MarshallOlkinCopula::MarshallOlkinCopula()
-  : CopulaImplementation()
+  : DistributionImplementation()
   , alpha_(0.5)
   , beta_(0.5)
 {
+  isCopula_ = true;
   setName( "MarshallOlkinCopula" );
   setDimension( 2 );
   computeRange();
@@ -45,10 +46,11 @@ MarshallOlkinCopula::MarshallOlkinCopula()
 /* Parameters constructor */
 MarshallOlkinCopula::MarshallOlkinCopula(const Scalar alpha,
     const Scalar beta)
-  : CopulaImplementation()
+  : DistributionImplementation()
   , alpha_(-2.0) // To force the update using accessors
   , beta_(-2.0) // To force the update using accessors
 {
+  isCopula_ = true;
   setName( "MarshallOlkinCopula" );
   // We set the dimension of the MarshallOlkinCopula distribution
   setDimension( 2 );
@@ -281,7 +283,7 @@ Point MarshallOlkinCopula::getRealization() const
 /* Method save() stores the object through the StorageManager */
 void MarshallOlkinCopula::save(Advocate & adv) const
 {
-  CopulaImplementation::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "alpha_", alpha_ );
   adv.saveAttribute( "beta_", beta_ );
 }
@@ -289,7 +291,7 @@ void MarshallOlkinCopula::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void MarshallOlkinCopula::load(Advocate & adv)
 {
-  CopulaImplementation::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "alpha_", alpha_ );
   adv.loadAttribute( "beta_", beta_ );
   computeRange();

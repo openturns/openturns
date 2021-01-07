@@ -41,10 +41,11 @@ static const Factory<SklarCopula> Factory_SklarCopula;
 
 /* Default constructor */
 SklarCopula::SklarCopula()
-  : CopulaImplementation()
+  : DistributionImplementation()
   , distribution_()
   , marginalCollection_()
 {
+  isCopula_ = true;
   setName( "SklarCopula" );
   setDimension( 1 );
   computeRange();
@@ -52,10 +53,11 @@ SklarCopula::SklarCopula()
 
 /* Parameters constructor */
 SklarCopula::SklarCopula(const Distribution & distribution)
-  : CopulaImplementation()
+  : DistributionImplementation()
   , distribution_(distribution)
   , marginalCollection_(distribution.getDimension())
 {
+  isCopula_ = true;
   setName( "SklarCopula" );
   // Manage parallelism
   setParallel(distribution.getImplementation()->isParallel());
@@ -429,13 +431,13 @@ CorrelationMatrix SklarCopula::getKendallTau() const
 /* Compute the covariance of the copula */
 void SklarCopula::computeCovariance() const
 {
-  DistributionImplementation::computeCovariance();
+  DistributionImplementation::computeCovarianceContinuous();
 }
 
 /* Method save() stores the object through the StorageManager */
 void SklarCopula::save(Advocate & adv) const
 {
-  CopulaImplementation::save(adv);
+  DistributionImplementation::save(adv);
   adv.saveAttribute( "distribution_", distribution_ );
   adv.saveAttribute( "marginalCollection_", marginalCollection_ );
 }
@@ -443,7 +445,7 @@ void SklarCopula::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void SklarCopula::load(Advocate & adv)
 {
-  CopulaImplementation::load(adv);
+  DistributionImplementation::load(adv);
   adv.loadAttribute( "distribution_", distribution_ );
   adv.loadAttribute( "marginalCollection_", marginalCollection_ );
   computeRange();
