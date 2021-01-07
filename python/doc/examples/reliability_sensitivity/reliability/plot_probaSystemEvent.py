@@ -230,4 +230,6 @@ g.setColors(["red", "blue", 'black'])
 g.setLegendPosition("topleft")
 g.setXTitle("t")
 g.setYTitle("Outcrossing rate")
-Show(g)
+view = View(g)
+view.ShowAll()
+

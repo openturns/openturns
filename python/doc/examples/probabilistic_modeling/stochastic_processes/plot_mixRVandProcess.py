@@ -141,8 +141,7 @@ N=10
 sampleZ_proc = Z_proc.getSample(N)
 graph = sampleZ_proc.drawMarginal(0)
 graph.setTitle(r'Some realizations of $Z(\omega, t)$')
-
-Show(graph)
+view = View(graph)
 
 # %%
 # 5. Evaluate the probability that :math:`Z(\omega, t) \in \mathcal{D}`
@@ -175,3 +174,4 @@ print('Variance Estimate = ', variance)
 IC90_low = proba- result.getConfidenceLength(0.90)/2
 IC90_upp = proba + result.getConfidenceLength(0.90)/2
 print('IC (90%) = [', IC90_low, ', ', IC90_upp, ']')
+view.ShowAll()
