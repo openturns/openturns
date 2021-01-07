@@ -3,7 +3,7 @@
  * @brief The class that implements an event based on the evaluation of the
  *  domain appartenance of a stochastic process using a boolean function
  *
- *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
