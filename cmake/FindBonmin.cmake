@@ -7,7 +7,7 @@
 #  COIN_<COMPONENT>_LIBRARIES  - Libraries to link for each component.
 #
 #=============================================================================
-# Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
+# Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
 #
 # Distributed under the OSI-approved BSD License (the "License");
 # see accompanying file Copyright.txt for details.

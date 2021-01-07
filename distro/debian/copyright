@@ -8,7 +8,7 @@ Comment: hmat-oss authors gave written permission to link their library
  (GPLv3) with OpenTURNS, see COPYING.hmat.
 
 Files: *
-Copyright: Copyright (C) 2005-2017 Airbus-EDF-IMACS-Phimeca
+Copyright: Copyright (C) 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
 License: LGPL-3+
 
 Files: debian/*

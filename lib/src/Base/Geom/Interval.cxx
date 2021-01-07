@@ -2,7 +2,7 @@
 /**
  *  @brief Interval is defined as the cartesian product of n 1D intervalls ]low_1, up_1]x...x]low_n,up_n]
  *
- *  Copyright 2005-2020 Airbus-EDF-IMACS-ONERA-Phimeca
+ *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *
  *  This library is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as published by
