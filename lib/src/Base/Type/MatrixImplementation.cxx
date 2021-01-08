@@ -1291,8 +1291,8 @@ Bool MatrixImplementation::computeLargestEigenValueModuleSym(Scalar & maximumMod
 /* Compute the singular values of a matrix */
 Point MatrixImplementation::computeSingularValues(const Bool keepIntact)
 {
-  int m(nbRows_);
-  int n(nbColumns_);
+  int m = nbRows_;
+  int n = nbColumns_;
   if ((m == 0) || (n == 0)) throw InvalidDimensionException(HERE) << "Cannot compute the singular values of an empty matrix";
 
   // check for nans, cf https://github.com/Reference-LAPACK/lapack/issues/469
@@ -1305,13 +1305,13 @@ Point MatrixImplementation::computeSingularValues(const Bool keepIntact)
   Point S(std::min(m, n), 0.0);
   Point work(1, 0.0);
   MatrixImplementation u(1, 1);
-  int ldu(1);
-  int ldvt(1);
+  int ldu = 1;
+  int ldvt = 1;
   MatrixImplementation vT(1, 1);
-  int lwork(-1);
+  int lwork = -1;
   std::vector<int> iwork(8 * std::min(m, n));
-  int info(0);
-  int ljobz(1);
+  int info = 0;
+  int ljobz = 1;
 
   MatrixImplementation Q;
   if (keepIntact) Q = MatrixImplementation(*this);
