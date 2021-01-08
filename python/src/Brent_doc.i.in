@@ -27,7 +27,17 @@ Solver, Bisection, Secant
 Notes
 -----
 The Brent solver is a mix of Bisection, Secant and inverse quadratic
-interpolation."
+interpolation.
+
+Examples
+--------
+
+>>> import openturns as ot
+>>> xMin = 0.0
+>>> xMax= 3.0
+>>> f = ot.MemoizeFunction(ot.SymbolicFunction('x', 'x^3-2*x^2-1'))
+>>> solver = ot.Brent()
+>>> root = solver.solve(f, 0.0, xMin, xMax)"
 
 // ---------------------------------------------------------------------
 
