@@ -1294,7 +1294,14 @@ Point MatrixImplementation::computeSingularValues(const Bool keepIntact)
   int m(nbRows_);
   int n(nbColumns_);
   if ((m == 0) || (n == 0)) throw InvalidDimensionException(HERE) << "Cannot compute the singular values of an empty matrix";
-  char jobz('N');
+
+  // check for nans, cf https://github.com/Reference-LAPACK/lapack/issues/469
+  for (UnsignedInteger j = 0; j < getNbColumns(); ++ j)
+    for (UnsignedInteger i = 0; i < getNbRows(); ++ i)
+      if (!SpecFunc::IsNormal(operator()(i, j)))
+        throw InvalidArgumentException(HERE) << "Cannot compute singular values due to nan/inf values";
+
+  char jobz = 'N';
   Point S(std::min(m, n), 0.0);
   Point work(1, 0.0);
   MatrixImplementation u(1, 1);
