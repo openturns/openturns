@@ -54,6 +54,9 @@ class execforresourcemap_directive(Directive):
             row = nodes.row()
             tbody += row
 
+            # reload in case altered by examples
+            ot.ResourceMap.Reload()
+
             for key in ot.ResourceMap.GetKeys():
                 row = nodes.row()
                 tbody += row

@@ -32,6 +32,7 @@
  * #1662 (Operator() of a CovarianceModel with multidimensional output should yield object of type SquareMatrix)
  * #1680 (QuadraticBasisFactory multiplies cross products by 2)
  * #1710 (Misleading y labels in VisualTest.DrawPairsMarginals())
+ * #1713 (The doc of the ResourceMap does not match the content of the ResourceMap)
  * #1714 (The log-PDF of the Pareto is wrong)
 
 
