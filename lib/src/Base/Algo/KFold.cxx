@@ -82,7 +82,7 @@ Scalar KFold::run(LeastSquaresMethod & method,
 
   if (y.getDimension() != 1) throw InvalidArgumentException( HERE ) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException( HERE ) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
-  if (k_ >= sampleSize) throw InvalidArgumentException( HERE ) << "K (" << k_ << ") should be < size (" << sampleSize << ").";
+  if (!(k_ < sampleSize)) throw InvalidArgumentException( HERE ) << "K (" << k_ << ") should be < size (" << sampleSize << ").";
 
   // the size of a subsample
   const UnsignedInteger testSize = sampleSize / k_;
@@ -173,8 +173,8 @@ void KFold::load(Advocate & adv)
 /* K accessor */
 void KFold::setK(const UnsignedInteger k)
 {
-  if ( k < 1 )
-    throw InvalidArgumentException(HERE) << "KFold k parameter should be > 0";
+  if (! (k > 0) )
+    throw InvalidArgumentException(HERE) << "KFold k parameter should be > 0, but is " << k;
   k_ = k;
 }
 

@@ -143,7 +143,7 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
     }
     else
     {
-      if (error > alpha * minimumError)
+      if (!(error <= alpha * minimumError))
       {
         LOGINFO(OSS() << "Error=" << error << " larger than " << alpha << "*" << minimumError << "=" << alpha * minimumError);
         break;
@@ -154,7 +154,7 @@ void LeastSquaresMetaModelSelection::run(const DesignProxy & proxy)
         break;
       }
     }
-    if (minimumError < errorThreshold)
+    if (!(minimumError >= errorThreshold))
     {
       LOGINFO(OSS() << "Minimum error=" << minimumError << " smaller than threshold=" << errorThreshold);
       break;
