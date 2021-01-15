@@ -2,6 +2,8 @@
 
 set -xe
 
+env
+
 # build with frozen date unless on release for reproducible builds
 if test "${CIRCLE_BRANCH}" = "master"
 then
