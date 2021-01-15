@@ -1,6 +1,6 @@
 """
-Create a draw multivariate distributions
-========================================
+Create and draw multivariate distributions
+==========================================
 """
 # %%
 # In this example we create and draw multidimensional distributions.

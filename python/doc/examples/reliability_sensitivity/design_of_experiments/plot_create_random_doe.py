@@ -1,6 +1,6 @@
 """
 Create a random design of experiments
-===================
+=====================================
 """
 # %%
 # Abstract
@@ -25,7 +25,7 @@ size = 50
 
 # %%
 # The Monte Carlo design of experiments
-# -------------------
+# -------------------------------------
 #
 # We build the experiment  with the :class:`~openturns.MonteCarloExperiment` class :
 experiment = ot.MonteCarloExperiment(distribution, size)
@@ -40,7 +40,7 @@ view = viewer.View(graph)
 
 # %%
 # Latin Hypercube Sampling
-# -----------
+# ------------------------
 #
 # We build the LHS design of experiments with the :class:`~openturns.LHSExperiment` class :
 experiment = ot.LHSExperiment(distribution, size)

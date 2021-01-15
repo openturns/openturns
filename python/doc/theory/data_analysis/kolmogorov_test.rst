@@ -126,7 +126,7 @@ This method is also referred to in the literature as Kolmogorov's Test.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_data_analysis/statistical_hypothesis_testing/plot_kolmogorov_test`
+    - See :doc:`/auto_data_analysis/statistical_tests/plot_kolmogorov_test`
 
 .. topic:: References:
 

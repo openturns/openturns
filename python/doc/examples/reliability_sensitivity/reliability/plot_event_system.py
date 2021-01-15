@@ -56,16 +56,16 @@ f2 = ot.SymbolicFunction(['x0', 'x1'], ['x1'])
 f3 = ot.SymbolicFunction(['x0', 'x1'], ['x0+x1'])
 
 # %%
-# We build :class:`~openturns.CompositeVector`s from these functions and the initial distribution.
+# We build :class:`~openturns.CompositeRandomVector` from these functions and the initial distribution.
 Y1 = ot.CompositeRandomVector(f1, X)
 Y2 = ot.CompositeRandomVector(f2, X)
 Y3 = ot.CompositeRandomVector(f3, X)
 
 # %%
-# We define three basic events :math:`E_1`, :math:`E2` and :math:`E3`. 
-e1 = ot.ThresholdEvent(Y1, ot.Less(), 0.0)  # E1 <=> x0<0
-e2 = ot.ThresholdEvent(Y2, ot.Greater(), 0.0) # E2 <=> x1>0
-e3 = ot.ThresholdEvent(Y3, ot.Greater(), 0.0) # E3 <=> x0+x1>0
+# We define three basic events :math:`E_1=\{(x_0,x_1)~:~x_0 < 0 \}`, :math:`E_2=\{(x_0,x_1)~:~x_1 > 0 \}` and :math:`E_3=\{(x_0,x_1)~:~x_0+x_1>0 \}`.
+e1 = ot.ThresholdEvent(Y1, ot.Less(), 0.0)
+e2 = ot.ThresholdEvent(Y2, ot.Greater(), 0.0)
+e3 = ot.ThresholdEvent(Y3, ot.Greater(), 0.0)
 
 # %%
 # The restriction of the domain :math:`E_1` to :math:`[-4,4] \times [-4, 4]` is the grey area.
@@ -175,7 +175,7 @@ print("Probability of e6 : %.4f"%e6.getSample(10000).computeMean()[0] )
 
 # %%
 # Usage with a Monte-Carlo algorithm
-# --------------------------------
+# ----------------------------------
 #
 # Of course, we can use simulation algorithms with this kind of events.
 

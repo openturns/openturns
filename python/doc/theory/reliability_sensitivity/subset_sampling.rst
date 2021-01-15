@@ -5,7 +5,7 @@ Subset sampling method
 Acknowledgement
 ^^^^^^^^^^^^^^^
 
-The text and the figures thereafter come from Vincent Chabridon's PhD thesis, **Reliability-oriented sensitivity analysis under probabilistic model uncertainty, Application to aerospace systems** (2018) in the chapter 3 : *Rare event probability estimation*.
+The text and the figures thereafter come from Vincent Chabridon's PhD thesis, **Reliability-oriented sensitivity analysis under probabilistic model uncertainty, Application to aerospace systems** (2018) in the chapter 3: *Rare event probability estimation*.
 This paragraph has been edited with the kind permission of its author.
 
 
@@ -24,7 +24,7 @@ the theoretical studies from the Markov processes point of view by Cérou and Gu
 (called *adaptive multilevel splitting*) and Cérou et al. (2012) from the sequential Monte Carlo point
 of view.
 
-All in all, these splitting techniques rely on the same idea : a rare event should be “split” into
+All in all, these splitting techniques rely on the same idea: a rare event should be “split” into
 several less rare events, these events corresponding to some “subsets” containing the true failure
 set. Thus, the probability associated to each subset should be stronger, and consequently, easier
 to estimate. As an example, on can illustrate this by considering that a failure probability :math:`p_f` of the order of :math:`10^{-m}` can be split into a product of :math:`m` terms of probability :math:`1/10`. In the following, for the sake of conciseness, only the formulation proposed by Au and Beck (2001) is discussed.
@@ -41,7 +41,7 @@ derived in the :math:`\mathbf{u}` -space (standard space) and is the one present
 Let :math:`E = \{ \overset{\circ}{g}(u) \leq 0 \}` denote a failure event sufficiently rare, where :math:`\overset{\circ}{g}` is the *limit state function* (LSF) in the standard space.
 
 
-One can consider a set of *intermediate nested events* :math:`E_s` with :math:`s = 1, \hdots, m` such that :math:`E = E_m \subset E_{m-1} \subset \hdots \subset E_2 \subset E_1`. Applying chain rule for conditional probabilities, one gets :
+One can consider a set of *intermediate nested events* :math:`E_s` with :math:`s = 1, \hdots, m` such that :math:`E = E_m \subset E_{m-1} \subset \hdots \subset E_2 \subset E_1`. Applying chain rule for conditional probabilities, one gets:
 
 .. math::
    \begin{aligned}
@@ -51,7 +51,7 @@ One can consider a set of *intermediate nested events* :math:`E_s` with :math:`s
 	  {} & =   \prod_{s=1}^m p_s
    \end{aligned}
    
-where :math:`p_1 = \mathbb{P}(E_1)` and :math:`p_s = \mathbb{P}(E_s | E_{s-1})` for :math:`s = 2, \hdots, m`. From this collection of nested failure events, one can define a set of *intermediate nested failure domains* (which are the so-called “subsets”) such that :
+where :math:`p_1 = \mathbb{P}(E_1)` and :math:`p_s = \mathbb{P}(E_s | E_{s-1})` for :math:`s = 2, \hdots, m`. From this collection of nested failure events, one can define a set of *intermediate nested failure domains* (which are the so-called “subsets”) such that:
 
 .. math::
    \mathcal{F}_{u,s} = \{ u \in \mathbb{R}^d | \overset{\circ}{g}(u) \leq y_s   \}, s=1,\hdots,m
@@ -93,12 +93,12 @@ and for :math:`s=2,\hdots,m` :
 
 where :math:`\Phi_d` is the usual standard unit Gaussian PDF in dimension :math:`d`.
 
-The associated estimators are given, respectively for :math:`\{ U_1^{(j)} \}_{j=1}^N \overset{i.i.d.}{\sim} \Phi_d` by :
+The associated estimators are given, respectively for :math:`\{ U_1^{(j)} \}_{j=1}^N \overset{i.i.d.}{\sim} \Phi_d` by:
 
 .. math::
    \hat{p_1} = \frac{1}{N} \sum_{j=1}^N \mathbf{1}_{ \mathcal{F}_{u,1} }(U_1^{(j)})
 
-and, for :math:`\{ U_s^{(j)} \}_{j=1}^N \overset{i.i.d.}{\sim} \Phi_d(.|E_{s-1})`, :math:`s \geq 2`, by :
+and, for :math:`\{ U_s^{(j)} \}_{j=1}^N \overset{i.i.d.}{\sim} \Phi_d(.|E_{s-1})`, :math:`s \geq 2`, by:
 
 .. math::
    \hat{p_s} = \frac{1}{N} \sum_{j=1}^N \mathbf{1}_{ \mathcal{F}_{u,s} }(U_s^{(j)})
@@ -107,12 +107,12 @@ and, for :math:`\{ U_s^{(j)} \}_{j=1}^N \overset{i.i.d.}{\sim} \Phi_d(.|E_{s-1})
 where :math:`N` denotes the number of samples, supposed to be a constant for each level :math:`y_s`, and the indicator function satisfies :math:`\mathbf{1}_{\mathcal{F}_{u,s-1}}(u) = 1` if :math:`\overset{\circ}{g}(u) \leq y_{s-1}` and :math:`\mathbf{1}_{\mathcal{F}_{u,s-1}}(u) = 0` otherwise.
 
 
-Basically, the SS estimator for :math:`p_f` is given by :
+Basically, the SS estimator for :math:`p_f` is given by:
 
 .. math::
    \hat{p}_f^{SS} = \hat{p_1} \prod_{s=2}^m \hat{p_s} \qquad \text{ (estimator) }.
 
-Moreover, it appears that the conditional sampling PDF :math:`\Phi_d(.|E_{s-1})` takes the form :
+Moreover, it appears that the conditional sampling PDF :math:`\Phi_d(.|E_{s-1})` takes the form:
 
 .. math::
    \begin{aligned}
@@ -133,7 +133,7 @@ For instance, dedicated algorithms such as the standard *Metropolis-Hastings* (M
 Metropolis-Hastings* (m-MH) sampler originally proposed by Au and Beck (2001) has been proposed to deal with possible higher-dimensional reliability problems than the ones standard MH algorithm traditionally used. 
 
 Concerning the statistical properties of the estimator of :math:`p_f^{SS}`, Au and Beck (2001) point out the fact that this estimator is biased due to the correlation between the intermediate
-probability estimators :math:`\hat{p}_s` for :math:`s=1,\hdots,m`. Such a correlation comes from the way the m-MH sampler is seeded at each step (see, e.g., Bourinet (2018) or Dubourg (2011) for more details). It is also proved that the estimator :math:`p_f^{SS}` is asymptotically unbiased (Au and Beck, 2001). As for the c.v. :math:`\delta_{\hat{p}_f^{SS}}`, Au and Beck (2001) show that it is bounded such that :
+probability estimators :math:`\hat{p}_s` for :math:`s=1,\hdots,m`. Such a correlation comes from the way the m-MH sampler is seeded at each step (see, e.g., Bourinet (2018) or Dubourg (2011) for more details). It is also proved that the estimator :math:`p_f^{SS}` is asymptotically unbiased (Au and Beck, 2001). As for the c.v. :math:`\delta_{\hat{p}_f^{SS}}`, Au and Beck (2001) show that it is bounded such that:
 
 .. math::
    \sum_{s=1}^m \delta_{s} \leq  \delta^2_{\hat{p}_f^{SS}}  \leq  \sum_{s_1=1}^m \sum_{s_2=1}^m \delta_{s_1} \delta_{s_2} \qquad \text {(3)}

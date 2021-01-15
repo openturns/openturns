@@ -74,7 +74,7 @@ only if :math:`\alpha_\textrm{lim}` is greater than the value
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_data_analysis/estimate_dependency_and_copulas/plot_independence_test`
+    - See :doc:`/auto_data_analysis/statistical_tests/plot_test_independence`
 
 .. topic:: References:
 

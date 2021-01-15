@@ -1,6 +1,6 @@
 """
 Create a design of experiments with discrete and continuous variables
-===================================================
+=====================================================================
 """
 # %%
 # In this example we present how to create a design of experiments when one (or several) of the marginals are discrete.

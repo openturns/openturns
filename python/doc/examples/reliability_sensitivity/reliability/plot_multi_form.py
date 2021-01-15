@@ -86,7 +86,7 @@ algo.run()
 result = algo.getResult()
 
 # %%
-# We have access to the results with the getFORMResultCollection method which produces a collection of :class:`~openturns.FORMResult`s: 
+# We have access to the results with the getFORMResultCollection method which produces a collection of :class:`~openturns.FORMResult` :
 coll = result.getFORMResultCollection()
 
 # %%
@@ -98,20 +98,24 @@ print("Number of design points :", n_design_pts)
 # %%
 # We have access to the design points with the getPhysicalSpaceDesignPoint method for each element of
 # the collection `coll`.
-designPointStandardSpace1 = coll[0].getPhysicalSpaceDesignPoint()
-designPointStandardSpace2 = coll[1].getPhysicalSpaceDesignPoint()
+designPointPhysicalSpace1 = coll[0].getPhysicalSpaceDesignPoint()
+designPointPhysicalSpace2 = coll[1].getPhysicalSpaceDesignPoint()
 print(coll[0].getPhysicalSpaceDesignPoint())
 print(coll[1].getPhysicalSpaceDesignPoint())
 
 # %%
 # We visualize them on the previous graph with red circle dots.
-cloud = ot.Cloud(ot.Point([designPointStandardSpace1[0]]), ot.Point([designPointStandardSpace1[1]]))
+cloud = ot.Cloud(
+    ot.Point([designPointPhysicalSpace1[0]]), ot.Point([designPointPhysicalSpace1[1]])
+)
 cloud.setColor("red")
 cloud.setPointStyle("fcircle")
 cloud.setLegend("design point no. 1")
 graphModel.add(cloud)
 
-cloud = ot.Cloud(ot.Point([designPointStandardSpace2[0]]), ot.Point([designPointStandardSpace2[1]]))
+cloud = ot.Cloud(
+    ot.Point([designPointPhysicalSpace2[0]]), ot.Point([designPointPhysicalSpace2[1]])
+)
 cloud.setColor("red")
 cloud.setPointStyle("fcircle")
 cloud.setLegend("design point no. 2")

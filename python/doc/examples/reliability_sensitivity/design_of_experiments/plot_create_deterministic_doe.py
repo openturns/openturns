@@ -49,7 +49,7 @@ graph = drawBidimensionalSample(sample,"Axial")
 view = viewer.View(graph)
 
 # %%
-# Use *= to rescale and += to move a design.
+# Use \*= to rescale and += to move a design.
 # Pay attention to the grid in the next graph.
 
 # %%
@@ -75,7 +75,7 @@ view = viewer.View(graph)
 # Composite design
 # ----------------
 #
-# A composite design is a stratified design of experiments enabling to create a pattern as the union of an Axial pattern and a Factorial one. The number of points generated is 1 + n_{level}(2n+2^n).
+# A composite design is a stratified design of experiments enabling to create a pattern as the union of an Axial pattern and a Factorial one. The number of points generated is :math:`1 + n_{\mathrm{level}}(2n+2^n)`.
 #
 
 # %%

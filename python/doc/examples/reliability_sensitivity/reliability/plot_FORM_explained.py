@@ -90,14 +90,13 @@ xx = ot.Box([nx], ot.Interval([0.0], [10.0])).generate()
 yy = ot.Box([ny], ot.Interval([-10.0], [10.0])).generate()
 inputData = ot.Box([nx,ny], ot.Interval([0.0, -10.0], [10.0, 10.0])).generate()
 outputData = f(inputData)
-mycontour = ot.Contour(xx, yy, outputData, ot.Point([10.0]), ot.Description(["10.0"]))
-myGraph = ot.Graph('Representation of the failure domain', r'$X_1$', r'$X_2$', True, '')
+mycontour = ot.Contour(xx, yy, outputData, [10.0], ["10.0"])
+myGraph = ot.Graph("Representation of the failure domain", r"$X_1$", r"$X_2$", True, "")
 myGraph.add(mycontour)
 
 # %%
-texts = ot.Description(1)
-texts[0] = r' Event : $\mathcal{D} = \{Y \geq 10.0\}$'
-myText = ot.Text(ot.Point([4.0]), ot.Point([4.0]), texts)
+texts = [r" Event : $\mathcal{D} = \{Y \geq 10.0\}$"]
+myText = ot.Text([[4.0,4.0]], texts)
 myText.setTextSize(1)
 myGraph.add(myText)
 view = otv.View(myGraph)
@@ -233,9 +232,8 @@ graphStandardSpace.setGrid(True)
 graphStandardSpace.setLegendPosition("bottomright")
 
 # Some annotation
-texts = ot.Description(1)
-texts[0] = r'Event : $\mathcal{D} = \{Y \geq 10.0\}$'
-myText = ot.Text(ot.Point([3.0]), ot.Point([4.0]), texts)
+texts = [r"Event : $\mathcal{D} = \{Y \geq 10.0\}$"]
+myText = ot.Text([[3.0,4.0]], texts)
 myText.setTextSize(1)
 graphStandardSpace.add(myText)
 view = otv.View(graphStandardSpace)

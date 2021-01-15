@@ -96,9 +96,9 @@ view = otv.View(graph)
 # 
 # We first compute the mean and standard deviation of the input data :
 mean = Xtrain.computeMean()[0]
-stdDev = Xtrain.computeStandardDeviation()[0,0]
-print("Xtrain, mean : %.3f"%mean)
-print("Xtrain, standard deviation : %.3f"%stdDev)
+stdDev = Xtrain.computeStandardDeviation()[0]
+print("Xtrain, mean : %.3f" % mean)
+print("Xtrain, standard deviation : %.3f" % stdDev)
 
 # %%
 tf = ot.SymbolicFunction(['mu','sigma','x'], ['(x-mu)/sigma'])
