@@ -1,6 +1,6 @@
 """
 Estimate Sobol' indices for a function with multivariate output
-===================================================================================================================
+===============================================================
 """
 # %% 
 #
@@ -83,10 +83,14 @@ print("Agg. total order indices: ", agg_total_order)
 
 # %%
 # We see that:
-# - x1 has a rather large first order indice on the first output, but a small indice on the second output, 
-# - x2 has a rather large first order indice on the first output on both outputs,
-# - the largest aggregated Sobol' indice is x2, 
-# - x0 and x5 have Sobol' indices which are close to zero, whatever the indice, be it aggregated or not.
+#
+# * `x1` has a rather large first order indice on the first output, but a small indice on the second output, 
+#
+# * `x2` has a rather large first order indice on the first output on both outputs,
+#
+# * the largest aggregated Sobol' indice is `x2`, 
+#
+# * `x0` and `x5` have Sobol' indices which are close to zero, whatever the indice, be it aggregated or not.
 
 # %%
 # The `draw` method produces the following graph. The vertical bars represent the 95% confidence intervals of the estimates. 
@@ -97,4 +101,4 @@ view = viewer.View(graph)
 
 # %%
 # Since there are several outputs, the graph presents the aggregated Sobol' indices. 
-# The aggregated Sobol' indices indicate that the input variable which has the largest impact on the variability of the several outputs is x2.
+# The aggregated Sobol' indices indicate that the input variable which has the largest impact on the variability of the several outputs is `x2`.
