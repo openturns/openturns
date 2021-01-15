@@ -53,7 +53,7 @@ The estimators of :math:`V_i` and :math:`VT_{i}` used by this class are respecti
    \widehat{VT}_{i} & = & \frac{1}{2N-1} \sum_{k=1}^{N} \left( \tilde{\vect{g}}(\vect{E}_k) -  \tilde{\vect{g}}(\vect{A}_k) \right)^2
    \end{array}
 
-and :math:`\tilde{\vect{g}}` is the centered model based on the sample. 
+where :math:`\tilde{\vect{g}}` is the centered model based on the sample. 
 
 See also
 --------
