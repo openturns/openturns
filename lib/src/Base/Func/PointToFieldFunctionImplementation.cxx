@@ -91,7 +91,7 @@ String PointToFieldFunctionImplementation::__str__(const String & ) const
 /* Get the i-th marginal function */
 PointToFieldFunction PointToFieldFunctionImplementation::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
   return getMarginal(Indices(1, i));
 }
 
@@ -144,7 +144,7 @@ ProcessSample PointToFieldFunctionImplementation::operator() (const Sample & inS
 {
   if (inS.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given sample has an invalid dimension. Expect a dimension " << getInputDimension() << ", got " << inS.getDimension();
   const UnsignedInteger size = inS.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: the given sample has a size of 0.";
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: the given sample has null size.";
   ProcessSample outSample(getOutputMesh(), size, getOutputDimension());
   // Simple loop over the evaluation operator based on time series
   // The calls number is updated by these calls

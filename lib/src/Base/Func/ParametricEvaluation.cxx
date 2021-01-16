@@ -51,7 +51,7 @@ ParametricEvaluation::ParametricEvaluation(const Function & function,
   const UnsignedInteger inputDimension = function.getInputDimension();
   const UnsignedInteger setDimension = set.getSize();
   // Check if the given parameters positions are compatible with the input dimension of the function
-  if (inputDimension < setDimension) throw InvalidArgumentException(HERE) << "Error: the size of the " << (parametersSet ? "parameters" : "input") << " positions=" << setDimension << " is greater than the input dimension=" << inputDimension << " of the function.";
+  if (!(inputDimension >= setDimension)) throw InvalidArgumentException(HERE) << "Error: the size of the " << (parametersSet ? "parameters" : "input") << " positions=" << setDimension << " is greater than the input dimension=" << inputDimension << " of the function.";
   // Check if the given indices are valid
   if (!set.check(inputDimension)) throw InvalidArgumentException(HERE) << "Error: the given set of positions contain either duplicate positions or positions greater than the input dimension of the function.";
   // Deduce the input position from the input dimension of the function and the parameters positions

@@ -163,7 +163,7 @@ Point InverseBoxCoxEvaluation::operator() (const Point & inP) const
     else
     {
       const Scalar evaluation = lambda_i * x + 1.0;
-      if (evaluation <= 0) throw InvalidArgumentException(HERE) << "Can not apply the inverse Box Cox function " ;
+      if (!(evaluation > 0)) throw InvalidArgumentException(HERE) << "Can not apply the inverse Box Cox function " ;
       result[index] = pow(evaluation, 1.0 / lambda_i);
     }
   }

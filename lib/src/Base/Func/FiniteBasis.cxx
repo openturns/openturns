@@ -56,7 +56,7 @@ FiniteBasis * FiniteBasis::clone() const
 /* Build the Function of the given index */
 Function FiniteBasis::build(const UnsignedInteger index) const
 {
-  if (index >= collection_.getSize()) throw InvalidArgumentException(HERE) << "Cannot build " << index << "-th term";
+  if (!(index < collection_.getSize())) throw InvalidArgumentException(HERE) << "Cannot build " << index << "-th term";
   return collection_[index];
 }
 

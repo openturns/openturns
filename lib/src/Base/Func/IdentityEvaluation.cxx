@@ -34,7 +34,7 @@ IdentityEvaluation::IdentityEvaluation(const UnsignedInteger dimension)
   , dimension_(dimension)
 {
   /* Check if the dimension of the constant term is compatible with the linear term */
-  if (dimension_ == 0) throw InvalidDimensionException(HERE) << "Error: cannot build an identity evaluation of dimension 0";
+  if (!(dimension_ > 0)) throw InvalidDimensionException(HERE) << "Error: cannot build an identity evaluation of dimension 0";
   setInputDescription(Description::BuildDefault(dimension, "x"));
   setOutputDescription(Description::BuildDefault(dimension, "y"));
 }
@@ -107,7 +107,7 @@ Bool IdentityEvaluation::isLinear() const
 
 Bool IdentityEvaluation::isLinearlyDependent(const UnsignedInteger index) const
 {
-  if (index > getInputDimension())
+  if (!(index <= getInputDimension()))
     throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
 
   return true;
