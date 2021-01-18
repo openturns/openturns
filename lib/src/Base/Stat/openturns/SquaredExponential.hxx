@@ -20,7 +20,7 @@
 #ifndef OPENTURNS_SQUAREDEXPONENTIAL_HXX
 #define OPENTURNS_SQUAREDEXPONENTIAL_HXX
 
-#include "openturns/StationaryCovarianceModel.hxx"
+#include "openturns/CovarianceModelImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API SquaredExponential
-  : public StationaryCovarianceModel
+  : public CovarianceModelImplementation
 {
 
   CLASSNAME
@@ -50,10 +50,10 @@ public:
   SquaredExponential * clone() const override;
 
   /** Computation of the covariance function */
-  using StationaryCovarianceModel::computeStandardRepresentative;
-  Scalar computeStandardRepresentative(const Point & tau) const override;
+  using CovarianceModelImplementation::computeAsScalar;
+  Scalar computeAsScalar(const Point & tau) const override;
 #ifndef SWIG
-  Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
+  Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
                                        const Collection<Scalar>::const_iterator & t_begin) const override;
 #endif
 

@@ -627,27 +627,17 @@ String HMatrixImplementation::__str__(const String & ) const
 CovarianceAssemblyFunction::CovarianceAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices)
   : HMatrixRealAssemblyFunction()
   , covarianceModel_(covarianceModel)
-  , definesComputeStandardRepresentative_(false)
   , vertices_(vertices)
   , verticesBegin_(vertices.getImplementation()->data_begin())
   , inputDimension_(vertices.getDimension())
   , covarianceDimension_(covarianceModel.getOutputDimension())
 {
   if (vertices_.getSize() == 0) return;
-  try
-  {
-    (void) covarianceModel_.computeStandardRepresentative(vertices_[0], vertices_[0]);
-    definesComputeStandardRepresentative_ = true;
-  }
-  catch (NotYetImplementedException &)
-  {
-    // Do nothing
-  }
 }
 
 Scalar CovarianceAssemblyFunction::operator()(UnsignedInteger i, UnsignedInteger j) const
 {
-  if (definesComputeStandardRepresentative_)
+  if (covarianceDimension_ == 1)
     return covarianceModel_.getImplementation()->computeAsScalar(verticesBegin_ + i * inputDimension_, verticesBegin_ + j * inputDimension_);
 
   const UnsignedInteger rowIndex = i / covarianceDimension_;
@@ -661,26 +651,16 @@ Scalar CovarianceAssemblyFunction::operator()(UnsignedInteger i, UnsignedInteger
 CovarianceBlockAssemblyFunction::CovarianceBlockAssemblyFunction(const CovarianceModel & covarianceModel, const Sample & vertices)
   : HMatrixTensorRealAssemblyFunction(covarianceModel.getOutputDimension())
   , covarianceModel_(covarianceModel)
-  , definesComputeStandardRepresentative_(false)
   , vertices_(vertices)
   , verticesBegin_(vertices.getImplementation()->data_begin())
   , inputDimension_(vertices.getDimension())
 {
   if (vertices.getSize() == 0) return;
-  try
-  {
-    (void) covarianceModel_.computeStandardRepresentative(vertices_[0], vertices_[0]);
-    definesComputeStandardRepresentative_ = true;
-  }
-  catch (NotYetImplementedException &)
-  {
-    // Do nothing
-  }
 }
 
 void CovarianceBlockAssemblyFunction::compute(UnsignedInteger i, UnsignedInteger j, Matrix* localValues) const
 {
-  if (definesComputeStandardRepresentative_ && (covarianceModel_.getOutputDimension() == 1))
+  if (covarianceModel_.getOutputDimension() == 1)
   {
     localValues->getImplementation()->operator[](0) = covarianceModel_.getImplementation()->computeAsScalar(verticesBegin_ + i * inputDimension_, verticesBegin_ + j * inputDimension_);
   }

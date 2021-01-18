@@ -75,18 +75,10 @@ public:
   virtual SquareMatrix operator() (const Scalar s, const Scalar t) const;
   virtual SquareMatrix operator() (const Point & s, const Point & t) const;
 
-  // compute standard representative computes the term \rho(s, t)
-  virtual Scalar computeStandardRepresentative(const Point & s,
-      const Point & t) const;
-
-#ifndef SWIG
-  virtual Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-      const Collection<Scalar>::const_iterator & t_begin) const;
-#endif
-
   // Special case for 1D model
   virtual Scalar computeAsScalar (const Point & s,
                                   const Point & t) const;
+  virtual Scalar computeAsScalar(const Point &tau) const;
 
 #ifndef SWIG
   // Special case for 1D model
@@ -226,11 +218,11 @@ protected:
   /** Cholesky factor of covariance matrix of the output dependence structure */
   mutable TriangularMatrix outputCovarianceCholeskyFactor_;
 
-  /** Flag to tell if computeStandardRepresentative() method is defined */
-  Bool definesComputeStandardRepresentative_;
-
   /** Flag to tell if the model is diagonal */
   Bool isDiagonal_;
+
+  /** Flag to tell if the model is stationary */
+  Bool isStationary_;
 
   /** Nugget factor */
   Scalar nuggetFactor_;

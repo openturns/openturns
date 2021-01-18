@@ -51,8 +51,8 @@ CovarianceModelImplementation::CovarianceModelImplementation(const UnsignedInteg
   , outputCorrelation_(0)
   , outputCovariance_(0)
   , outputCovarianceCholeskyFactor_(0)
-  , definesComputeStandardRepresentative_(false)
   , isDiagonal_(true)
+  , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(inputDimension_ + outputDimension_)
 {
@@ -71,8 +71,8 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , outputCorrelation_(0)
   , outputCovariance_(0)
   , outputCovarianceCholeskyFactor_(0)
-  , definesComputeStandardRepresentative_(false)
   , isDiagonal_(true)
+  , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(inputDimension_ + outputDimension_)
 {
@@ -94,8 +94,8 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , outputCorrelation_(0)
   , outputCovariance_(0)
   , outputCovarianceCholeskyFactor_(0)
-  , definesComputeStandardRepresentative_(false)
   , isDiagonal_(true)
+  , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(inputDimension_ + outputDimension_)
 {
@@ -116,8 +116,8 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , outputCorrelation_(0)
   , outputCovariance_(spatialCovariance)
   , outputCovarianceCholeskyFactor_(0)
-  , definesComputeStandardRepresentative_(false)
   , isDiagonal_(true)
+  , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(inputDimension_ + outputDimension_)
 {
@@ -163,61 +163,39 @@ SquareMatrix CovarianceModelImplementation::operator() (const Scalar s,
 SquareMatrix CovarianceModelImplementation::operator() (const Point & s,
     const Point & t) const
 {
-  const Scalar rho = computeStandardRepresentative(s, t);
   if (outputDimension_ == 1)
   {
     SquareMatrix result(1);
-    result(0, 0) = rho * outputCovariance_(0, 0);
+    result(0, 0) = computeAsScalar(s, t);
     return result;
   }
-  // outputCovariance_ * rho is a SymmetricMatrix.
-  // Its implementation only contains terms in the lower half.
-  // outputCovariance_ needs to be symmetrized.
-  outputCovariance_.checkSymmetry();
-  return outputCovariance_ * rho;
-}
-
-// compute standard representative computes the term \rho(s, t)
-Scalar CovarianceModelImplementation::computeStandardRepresentative(const Point &,
-    const Point & ) const
-{
-  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeStandardRepresentative(const Point & s, const Point & t) const";
-}
-
-Scalar CovarianceModelImplementation::computeStandardRepresentative(const Collection<Scalar>::const_iterator &,
-    const Collection<Scalar>::const_iterator & ) const
-{
-  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin, const Collection<Scalar>::const_iterator & t_begin) const";
+  if (isStationary())
+    return operator()(s - t);
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::operator()(const Point & s, const Point & t) const";
 }
 
 Scalar CovarianceModelImplementation::computeAsScalar (const Point & s,
     const Point & t) const
 {
   if (outputDimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << outputDimension_ << ", expected dimension=1.";
-  return outputCovariance_(0, 0) * computeStandardRepresentative(s, t);
+  if (s.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
+  if (t.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  // Return the scalar value
+  return computeAsScalar(s.begin(), t.begin());
 }
 
-Scalar CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
-    const Collection<Scalar>::const_iterator & t_begin) const
+Scalar CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator & ,
+    const Collection<Scalar>::const_iterator & ) const
 {
-  // Work on iterators
-  // Major 1D models implement the computeStandardRepresentative method
-  // We rely on this previous method to evaluate the covariance as scalar
-  // Otherwise we build Points & rely on a more global method (exceptions are
-  // local implementations)
-  if (outputDimension_ != 1) throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << outputDimension_ << ", expected dimension=1.";
-  if (definesComputeStandardRepresentative_) return outputCovariance_(0, 0) * computeStandardRepresentative(s_begin, t_begin);
-  // Case we do not define computeStandardRepresentative
-  Collection<Scalar>::const_iterator s_it = s_begin;
-  Collection<Scalar>::const_iterator t_it = t_begin;
-  Point s(inputDimension_, 0.0);
-  Point t(inputDimension_, 0.0);
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
-  {
-    s[i] = *s_it;
-    t[i] = *t_it;
-  }
-  return computeAsScalar(s, t);
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin, const Collection<Scalar>::const_iterator & t_begin) const";
+}
+Scalar CovarianceModelImplementation::computeAsScalar(const Point &) const
+{
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << outputDimension_ << ", expected dimension=1.";
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar (const Point & tau) const";
 }
 
 /* Computation of the covariance function */
@@ -228,6 +206,16 @@ SquareMatrix CovarianceModelImplementation::operator() (const Scalar tau) const
 
 SquareMatrix CovarianceModelImplementation::operator() (const Point & tau) const
 {
+  if (isStationary() && (getOutputDimension()==1))
+  {
+     SquareMatrix result(1);
+     result(0, 0) = computeAsScalar(tau);
+     return result;
+    }
+
+  if (isStationary())
+    throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::operator()(const Point & tau) const";
+  // Case not stationary ==> operator(tau, 0)
   return operator() (Point(tau.getDimension()), tau);
 }
 
@@ -237,6 +225,21 @@ Matrix CovarianceModelImplementation::partialGradient (const Point & s,
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
+  if (outputDimension_ == 1)
+  {
+    Matrix gradient(inputDimension_, 1);
+    Scalar centralValue = computeAsScalar(s, t);
+    const Scalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
+    // Loop over the shifted points
+    for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+    {
+      Point currentPoint(s);
+      currentPoint[i] += epsilon;
+      Scalar currentValue = computeAsScalar(currentPoint, t);
+      gradient(i, 0) = (currentValue - centralValue) / epsilon;
+    }
+    return gradient;
+  }
   Matrix gradient(inputDimension_, outputDimension_ * outputDimension_);
   SquareMatrix covarianceST(operator()(s, t));
   // Convert result into MatrixImplementation to symmetrize & get the collection
@@ -266,19 +269,38 @@ Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
   const Point parameter(getParameter());
   const UnsignedInteger size = parameter.getSize();
   const Scalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
-  Matrix gradient(size, (outputDimension_ * (outputDimension_ + 1)) / 2);
-  SquareMatrix covRef = operator()(s, t);
+  if (outputDimension_ == 1)
+  {
+    Matrix gradient(size, 1);
+    const Scalar covRef = computeAsScalar(s, t);
+    const Scalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
+    Pointer<CovarianceModelImplementation> p_implementation(clone());
+    for (UnsignedInteger k = 0; k < size; ++ k)
+    {
+      Point parameterP(parameter);
+      parameterP[k] += epsilon;
+      p_implementation->setParameter(parameterP);
+      const Scalar covP = p_implementation->computeAsScalar(s, t);
+      gradient(k, 0) = (covP - covRef) / epsilon;
+    }
+    return gradient;
+  }
+  // Finite difference estimate
+  // Care operator() yields SquareMatrix, which are not necessarly symmetric
+  // Thus we should account for all elements of operator()(s,t)
+  Matrix gradient(size, outputDimension_ * outputDimension_);
+  const SquareMatrix covRef(operator()(s, t));
   Pointer<CovarianceModelImplementation> p_implementation(clone());
   for (UnsignedInteger k = 0; k < size; ++ k)
   {
     Point parameterP(parameter);
     parameterP[k] += epsilon;
     p_implementation->setParameter(parameterP);
-    SquareMatrix covP = p_implementation->operator()(s, t);
+    const SquareMatrix covP (p_implementation->operator()(s, t));
     UnsignedInteger index = 0;
     for (UnsignedInteger j = 0; j < outputDimension_; ++ j)
     {
-      for (UnsignedInteger i = 0; i <= j; ++ i)
+      for (UnsignedInteger i = 0; i < outputDimension_; ++ i)
       {
         gradient(k, index) = (covP(i, j) - covRef(i, j)) / epsilon;
         ++ index;
@@ -291,6 +313,33 @@ Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
 /* Discretize the covariance function on a given TimeGrid/Mesh */
 CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & timeGrid) const
 {
+  if (isStationary())
+  {
+    const UnsignedInteger size = timeGrid.getN();
+    const Scalar timeStep = timeGrid.getStep();
+    const UnsignedInteger fullSize = size * outputDimension_;
+    CovarianceMatrix covarianceMatrix(fullSize);
+
+    // Fill-in the matrix by blocks
+    for (UnsignedInteger diagonalOffset = 0; diagonalOffset < size; ++diagonalOffset)
+    {
+      const SquareMatrix localCovarianceMatrix(operator()( diagonalOffset * timeStep) );
+      // Only the lower part has to be filled-in
+      for (UnsignedInteger rowIndex = diagonalOffset; rowIndex < size; ++rowIndex)
+      {
+        const UnsignedInteger rowBase = rowIndex * outputDimension_;
+        const UnsignedInteger columnIndex = rowIndex - diagonalOffset;
+        const UnsignedInteger columnBase = columnIndex * outputDimension_;
+        // We fill the covariance matrix using the previous local one
+        // The full local covariance matrix has to be copied as it is
+        // not copied on a symmetric position
+        for (UnsignedInteger columnIndexLocal = 0; columnIndexLocal < outputDimension_; ++columnIndexLocal)
+          for (UnsignedInteger rowIndexLocal = 0; rowIndexLocal < outputDimension_; ++rowIndexLocal)
+            covarianceMatrix(rowBase + rowIndexLocal, columnBase + columnIndexLocal) = localCovarianceMatrix(rowIndexLocal, columnIndexLocal) ;
+      } // column index of the block
+    } // row index of the block
+    return covarianceMatrix;
+  }
   return discretize(timeGrid.getVertices());
 }
 
@@ -327,7 +376,7 @@ struct CovarianceModelDiscretizePolicy
 
 }; /* end struct CovarianceModelDiscretizePolicy */
 
-struct CovarianceModelDiscretizeKroneckerPolicy
+struct CovarianceModelDiscretizeScalarPolicy
 {
   const SampleImplementation & input_;
   // output_ is a CovarianceMatrix, but since we fill only its half part,
@@ -337,7 +386,7 @@ struct CovarianceModelDiscretizeKroneckerPolicy
   const CovarianceModelImplementation & model_;
   const UnsignedInteger inputDimension_;
 
-  CovarianceModelDiscretizeKroneckerPolicy(const Sample & input,
+  CovarianceModelDiscretizeScalarPolicy(const Sample & input,
       CovarianceMatrix & output,
       const CovarianceModelImplementation & model)
     : input_(*input.getImplementation())
@@ -353,60 +402,22 @@ struct CovarianceModelDiscretizeKroneckerPolicy
       const UnsignedInteger jLocal = static_cast< UnsignedInteger >(sqrt(2.0 * i + 0.25) - 0.5);
       const UnsignedInteger iLocal = i - (jLocal * (jLocal + 1)) / 2;
       // By construction, iLocal <= jLocal
-      output_(jLocal, iLocal) = model_.computeStandardRepresentative(input_.data_begin() + iLocal * inputDimension_, input_.data_begin() + jLocal * inputDimension_);
+      output_(jLocal, iLocal) = model_.computeAsScalar(input_.data_begin() + iLocal * inputDimension_, input_.data_begin() + jLocal * inputDimension_);
     }
   }
-  static void genericKroneckerProduct(const SquareMatrix & leftMatrix, const SquareMatrix & rightMatrix, SquareMatrix & productMatrix)
-  {
-    const MatrixImplementation & left(*leftMatrix.getImplementation());
-    const MatrixImplementation & right(*rightMatrix.getImplementation());
-    MatrixImplementation & product(*productMatrix.getImplementation());
-    const UnsignedInteger dimension = right.getDimension();
-    for(UnsignedInteger i = 0; i < left.getDimension(); ++i)
-    {
-      for(UnsignedInteger j = 0; j <= i; ++j)
-      {
-        const Scalar left_ij = left(i, j);
-        for(UnsignedInteger k = 0; k < dimension; ++k)
-        {
-          for(UnsignedInteger l = 0; l < dimension; ++l)
-          {
-            product(i * dimension + k, j * dimension + l) = left_ij * right(k, l);
-          }
-        }
-      }
-    }
-  }
-  CovarianceMatrix kroneckerProduct(const CovarianceMatrix & spatialCovariance) const
-  {
-    CovarianceMatrix covarianceMatrix(input_.getSize() * spatialCovariance.getDimension());
-    genericKroneckerProduct(output_, spatialCovariance, covarianceMatrix);
-    return covarianceMatrix;
-  }
-  TriangularMatrix kroneckerProductCholeskyFactor(const TriangularMatrix & spatialCovarianceCholeskyFactor) const
-  {
-    TriangularMatrix rhoCholeskyFactor(output_.computeCholesky());
-    TriangularMatrix outputMatrix(rhoCholeskyFactor.getDimension() * spatialCovarianceCholeskyFactor.getDimension(), true);
-    genericKroneckerProduct(rhoCholeskyFactor, spatialCovarianceCholeskyFactor, outputMatrix);
-    return outputMatrix;
-  }
-
-}; /* end struct CovarianceModelDiscretizeKroneckerPolicy */
+}; /* end struct CovarianceModelDiscretizeScalarPolicy */
 
 CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertices) const
 {
   if (vertices.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the given sample has a dimension=" << vertices.getDimension() << " different from the input dimension=" << inputDimension_;
   const UnsignedInteger size = vertices.getSize();
-  if (definesComputeStandardRepresentative_)
+  if (getOutputDimension() == 1)
   {
-    CovarianceMatrix rhoMatrix(size);
-    const CovarianceModelDiscretizeKroneckerPolicy policy( vertices, rhoMatrix, *this );
+    CovarianceMatrix covarianceMatrix(size);
+    const CovarianceModelDiscretizeScalarPolicy policy(vertices, covarianceMatrix, *this);
     // The loop is over the lower block-triangular part
     TBB::ParallelForCondition(isParallel(), 0, size * (size + 1) / 2, policy);
-    rhoMatrix.checkSymmetry();
-    outputCovariance_.checkSymmetry();
-    // Compute the Kronecker product of rhoMatrix by outputCovariance_
-    return policy.kroneckerProduct(outputCovariance_);
+    return covarianceMatrix;
   }
   else
   {
@@ -438,18 +449,15 @@ TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Mes
 TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Sample & vertices) const
 {
   // We suppose that covariance matrix is symmetric positive definite
-  if (definesComputeStandardRepresentative_)
+  if (getOutputDimension() == 1)
   {
     const UnsignedInteger size = vertices.getSize();
-    CovarianceMatrix rhoMatrix(size);
-    const CovarianceModelDiscretizeKroneckerPolicy policy( vertices, rhoMatrix, *this );
+    CovarianceMatrix covarianceMatrix(size);
+    const CovarianceModelDiscretizeScalarPolicy policy( vertices, covarianceMatrix, *this );
     // The loop is over the lower block-triangular part
     TBB::ParallelForCondition(isParallel(), 0, size * (size + 1) / 2, policy);
-    // Compute the Cholesky factor of outputCovariance_
-    if (outputCovarianceCholeskyFactor_.getDimension() == 0)
-      outputCovarianceCholeskyFactor_ = outputCovariance_.computeCholesky();
-    // Compute the Kronecker product of rhoCholeskyFactor by outputCovarianceCholeskyFactor_
-    return policy.kroneckerProductCholeskyFactor(outputCovarianceCholeskyFactor_);
+    // Compute the Cholesky
+    return covarianceMatrix.computeCholesky(false);
   }
   else
   {
@@ -808,7 +816,7 @@ Description CovarianceModelImplementation::getParameterDescription() const
 /* Is it a stationary model ? */
 Bool CovarianceModelImplementation::isStationary() const
 {
-  return false;
+  return isStationary_;
 }
 
 /* Is it a diagonal model ? */
@@ -973,8 +981,8 @@ void CovarianceModelImplementation::save(Advocate & adv) const
   adv.saveAttribute("amplitude_", amplitude_);
   adv.saveAttribute("outputDimension_", outputDimension_);
   adv.saveAttribute("outputCorrelation_", outputCorrelation_);
-  adv.saveAttribute("definesComputeStandardRepresentative_", definesComputeStandardRepresentative_);
   adv.saveAttribute("isDiagonal_", isDiagonal_);
+  adv.saveAttribute("isStationary_", isStationary_);
   adv.saveAttribute("nuggetFactor_", nuggetFactor_);
   adv.saveAttribute("activeParameter_", activeParameter_);
 }
@@ -988,8 +996,8 @@ void CovarianceModelImplementation::load(Advocate & adv)
   adv.loadAttribute("amplitude_", amplitude_);
   adv.loadAttribute("outputDimension_", outputDimension_);
   adv.loadAttribute("outputCorrelation_", outputCorrelation_);
-  adv.loadAttribute("definesComputeStandardRepresentative_", definesComputeStandardRepresentative_);
   adv.loadAttribute("isDiagonal_", isDiagonal_);
+  adv.loadAttribute("isStationary_", isStationary_);
   adv.loadAttribute("nuggetFactor_", nuggetFactor_);
   adv.loadAttribute("activeParameter_", activeParameter_);
   updateOutputCovariance();

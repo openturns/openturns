@@ -55,18 +55,19 @@ public:
 
 /* Default constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension)
-  : StationaryCovarianceModel(inputDimension)
+  : CovarianceModelImplementation(inputDimension)
   , covarianceFactor_()
 {
   // Remove the scale from the active parameter
   activeParameter_ = Indices(outputDimension_);
   activeParameter_.fill();
+  isStationary_ = true;
 }
 
 /* Parameters constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
     const Point & amplitude)
-  : StationaryCovarianceModel(inputDimension)
+  : CovarianceModelImplementation(inputDimension)
   , covarianceFactor_()
 {
   outputDimension_ = amplitude.getDimension();
@@ -75,13 +76,14 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
   // Remove the scale from the active parameter
   activeParameter_ = Indices(outputDimension_);
   activeParameter_.fill();
+  isStationary_ = true;
 }
 
 /** Parameters constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
     const Point & amplitude,
     const CorrelationMatrix & correlation)
-  : StationaryCovarianceModel(Point(inputDimension, 1.0), Point(amplitude.getDimension(), 1.0))
+  : CovarianceModelImplementation(Point(inputDimension, 1.0), Point(amplitude.getDimension(), 1.0))
   , covarianceFactor_()
 {
   outputDimension_ = amplitude.getDimension();
@@ -93,12 +95,13 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
   // Remove the scale from the active parameter
   activeParameter_ = Indices(outputDimension_);
   activeParameter_.fill();
+  isStationary_ = true;
 }
 
 /** Parameters constructor */
 DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
     const CovarianceMatrix & covariance)
-  : StationaryCovarianceModel(inputDimension)
+  : CovarianceModelImplementation(inputDimension)
 {
   outputDimension_ = covariance.getDimension();
   amplitude_ = Point(outputDimension_);
@@ -117,6 +120,7 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
   // Remove the scale from the active parameter
   activeParameter_ = Indices(outputDimension_);
   activeParameter_.fill();
+  isStationary_ = true;
 }
 
 void DiracCovarianceModel::computeCovariance()
@@ -151,6 +155,39 @@ SquareMatrix DiracCovarianceModel::operator() (const Point & tau) const
     return outputCovariance_;
   else
     return SquareMatrix(outputDimension_).getImplementation();
+}
+
+Scalar DiracCovarianceModel::computeAsScalar(const Point &tau) const
+{
+  if (outputDimension_ > 1)
+    throw InvalidArgumentException(HERE) << "Error : DiracCovarianceModel::computeAsScalar(tau) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
+  if (tau.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::computeStandardRepresentative: expected a shift of dimension=" << getInputDimension() << ", got dimension=" << tau.getDimension();
+  if (tau.norm() == 0)
+    return outputCovariance_(0, 0);
+  else
+    return 0.0;
+}
+
+Scalar DiracCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+                                             const Collection<Scalar>::const_iterator &t_begin) const
+{
+  if (outputDimension_ > 1)
+    throw InvalidArgumentException(HERE) << "Error : DiracCovarianceModel::computeAsScalar(tau) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
+
+  Scalar tauNorm = 0;
+  Collection<Scalar>::const_iterator s_it = s_begin;
+  Collection<Scalar>::const_iterator t_it = t_begin;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
+  {
+    const Scalar dx = (*s_it - *t_it) / scale_[i];
+    tauNorm += dx * dx;
+  }
+  tauNorm = sqrt(tauNorm);
+  if (tauNorm == 0)
+    return outputCovariance_(0, 0);
+  else
+    return 0.0;
 }
 
 // The following structure helps to compute the full covariance matrix
@@ -273,6 +310,13 @@ Sample DiracCovarianceModel::discretizeRow(const Sample & vertices,
 
 // discretize with use of HMatrix
 HMatrix DiracCovarianceModel::discretizeHMatrix(const Sample & vertices,
+    const HMatrixParameters & parameters) const
+{
+  return discretizeHMatrix(vertices, nuggetFactor_, parameters);
+}
+
+// discretize with use of HMatrix
+HMatrix DiracCovarianceModel::discretizeHMatrix(const Sample & vertices,
     const Scalar nuggetFactor,
     const HMatrixParameters & parameters) const
 {
@@ -385,14 +429,14 @@ String DiracCovarianceModel::__str__(const String & ) const
 /* Method save() stores the object through the StorageManager */
 void DiracCovarianceModel::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
   adv.saveAttribute("covarianceFactor_", covarianceFactor_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void DiracCovarianceModel::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
   adv.loadAttribute("covarianceFactor_", covarianceFactor_);
 }
 

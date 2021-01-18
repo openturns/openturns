@@ -41,14 +41,14 @@ ProductCovarianceModel::ProductCovarianceModel(const UnsignedInteger inputDimens
 {
   if (!(inputDimension > 0))
     throw InvalidArgumentException(HERE) << "Error: input dimension must be positive, here inputDimension=0";
-  definesComputeStandardRepresentative_ = true;
-  // scale attribut
+  // scale parameter
   scale_ = Point(inputDimension, collection_[0].getScale()[0]);
   // Update the default values for the amplitude
   setAmplitude(Point(1, collection_[0].getAmplitude()[0]));
   // Active parameters : scale + amplitude
   activeParameter_ = Indices(inputDimension + 1);
   activeParameter_.fill();
+  isStationary_ = true;
 }
 
 /* Parameters constructor */
@@ -57,7 +57,6 @@ ProductCovarianceModel::ProductCovarianceModel(const CovarianceModelCollection &
   , collection_(0)
   , extraParameterNumber_(0)
 {
-  definesComputeStandardRepresentative_ = true;
   setCollection(collection);
 }
 
@@ -83,6 +82,7 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
 
   // Filling the active parameters
   activeParameter_ = Indices(0);
+  isStationary_ = true;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger localOutputDimension = collection[i].getOutputDimension();
@@ -112,6 +112,10 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
 
     // Number of specific parameter
     extraParameterNumber_[i] = collection[i].getFullParameter().getSize() - (localInputDimension + 1);
+
+    // Check if model is stationary
+    if (!collection[i].isStationary())
+        isStationary_ = false;
   }
 
   // Amplitude active
@@ -154,24 +158,37 @@ ProductCovarianceModel * ProductCovarianceModel::clone() const
   return new ProductCovarianceModel(*this);
 }
 
-/* Computation of the covariance density function */
-Scalar ProductCovarianceModel::computeStandardRepresentative(const Point & s,
-    const Point & t) const
+Scalar ProductCovarianceModel::computeAsScalar(const Point & tau) const
 {
-  if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
-  if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
-
-  return computeStandardRepresentative(s.begin(), t.begin());
-}
-
-Scalar ProductCovarianceModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-    const Collection<Scalar>::const_iterator & t_begin) const
-{
-  Scalar rho = 1.0;
+  if (!isStationary())
+    return CovarianceModelImplementation::computeAsScalar(tau);
+  if (tau.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "ProductCovarianceModel::computeAsScalar(tau): the point s has dimension=" << tau.getDimension() << ", expected dimension=" << inputDimension_;
+  Scalar rho = amplitude_[0] * amplitude_[0];
   UnsignedInteger start = 0;
   for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
   {
-    rho *= collection_[i].getImplementation()->computeStandardRepresentative(s_begin + start, t_begin + start);
+    // Compute as scalar returns the correlation function
+    const UnsignedInteger localInputDimension = collection_[i].getInputDimension();
+    const UnsignedInteger stop = start + localInputDimension;
+    Point localTau(localInputDimension);
+    std::copy(tau.begin() + start, tau.begin() + stop, localTau.begin());
+    // Compute as scalar returns the correlation function
+    rho *= collection_[i].getImplementation()->computeAsScalar(localTau);
+    start += collection_[i].getInputDimension();
+  }
+  return rho;
+}
+
+Scalar ProductCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
+    const Collection<Scalar>::const_iterator & t_begin) const
+{
+  Scalar rho = amplitude_[0] * amplitude_[0];
+  UnsignedInteger start = 0;
+  for (UnsignedInteger i = 0; i < collection_.getSize(); ++i)
+  {
+    // Compute as scalar returns the correlation function
+    rho *= collection_[i].getImplementation()->computeAsScalar(s_begin + start, t_begin + start);
     start += collection_[i].getInputDimension();
   }
   return rho;

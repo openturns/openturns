@@ -4,8 +4,6 @@
 OT_CovarianceModel_doc
 %feature("docstring") OT::CovarianceModel::computeAsScalar
 OT_CovarianceModel_computeAsScalar_doc
-%feature("docstring") OT::CovarianceModel::computeStandardRepresentative
-OT_CovarianceModel_computeStandardRepresentative_doc
 %feature("docstring") OT::CovarianceModel::discretize
 OT_CovarianceModel_discretize_doc
 %feature("docstring") OT::CovarianceModel::discretizeAndFactorize

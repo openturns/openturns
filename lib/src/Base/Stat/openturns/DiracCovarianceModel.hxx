@@ -20,7 +20,7 @@
 #ifndef OPENTURNS_DIRACCOVARIANCEMODEL_HXX
 #define OPENTURNS_DIRACCOVARIANCEMODEL_HXX
 
-#include "openturns/StationaryCovarianceModel.hxx"
+#include "openturns/CovarianceModelImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -29,7 +29,7 @@ BEGIN_NAMESPACE_OPENTURNS
  */
 
 class OT_API DiracCovarianceModel
-  : public StationaryCovarianceModel
+  : public CovarianceModelImplementation
 {
 
   CLASSNAME
@@ -57,18 +57,28 @@ public:
   DiracCovarianceModel * clone() const override;
 
   /** Computation of the covariance function */
-  using StationaryCovarianceModel::operator();
+  using CovarianceModelImplementation::operator();
   SquareMatrix operator() (const Point & tau) const override;
 
+  /** Computation of the covariance function */
+  using CovarianceModelImplementation::computeAsScalar;
+  Scalar computeAsScalar(const Point &tau) const override;
+#ifndef SWIG
+  Scalar computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
+                         const Collection<Scalar>::const_iterator &t_begin) const override;
+#endif
+
   /** Discretize the covariance function */
-  using StationaryCovarianceModel::discretize;
+  using CovarianceModelImplementation::discretize;
   CovarianceMatrix discretize(const Sample & vertices) const override;
   Sample discretizeRow(const Sample & vertices, const UnsignedInteger p) const override;
 
-  using StationaryCovarianceModel::discretizeAndFactorize;
+  using CovarianceModelImplementation::discretizeAndFactorize;
   TriangularMatrix discretizeAndFactorize(const Sample & vertices) const override;
   // discretize with use of HMatrix
-  using StationaryCovarianceModel::discretizeHMatrix;
+  using CovarianceModelImplementation::discretizeHMatrix;
+  HMatrix discretizeHMatrix(const Sample & vertices,
+                            const HMatrixParameters & parameters) const override;
   HMatrix discretizeHMatrix(const Sample & vertices,
                             const Scalar nuggetFactor,
                             const HMatrixParameters & parameters) const;

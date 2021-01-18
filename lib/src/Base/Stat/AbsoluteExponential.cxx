@@ -31,27 +31,27 @@ static const Factory<AbsoluteExponential> Factory_AbsoluteExponential;
 
 /* Constructor based on input dimension */
 AbsoluteExponential::AbsoluteExponential(const UnsignedInteger inputDimension)
-  : StationaryCovarianceModel(Point(inputDimension, ResourceMap::GetAsScalar("AbsoluteExponential-DefaultTheta")), Point(1, 1.0))
+  : CovarianceModelImplementation(Point(inputDimension, ResourceMap::GetAsScalar("AbsoluteExponential-DefaultTheta")), Point(1, 1.0))
 {
-  definesComputeStandardRepresentative_ = true;
+  isStationary_ = true;
 }
 
 /** Parameters constructor */
 AbsoluteExponential::AbsoluteExponential(const Point & scale)
-  : StationaryCovarianceModel(scale, Point(1, 1.0))
+  : CovarianceModelImplementation(scale, Point(1, 1.0))
 {
-  definesComputeStandardRepresentative_ = true;
+  isStationary_ = true;
 }
 
 /** Parameters constructor */
 AbsoluteExponential::AbsoluteExponential(const Point & scale,
     const Point & amplitude)
-  : StationaryCovarianceModel(scale, amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
 {
+  isStationary_ = true;
   if (getOutputDimension() != 1)
     throw InvalidArgumentException(HERE) << "In AbsoluteExponential::AbsoluteExponential, only unidimensional models should be defined."
                                          << " Here, (got dimension=" << getOutputDimension() << ")";
-  definesComputeStandardRepresentative_ = true;
 }
 
 /* Virtual constructor */
@@ -61,15 +61,15 @@ AbsoluteExponential * AbsoluteExponential::clone() const
 }
 
 /* Computation of the covariance function */
-Scalar AbsoluteExponential::computeStandardRepresentative(const Point & tau) const
+Scalar AbsoluteExponential::computeAsScalar(const Point & tau) const
 {
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
   Scalar tauOverThetaNorm = 0.0;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverThetaNorm += std::abs(tau[i] / scale_[i]);
-  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-tauOverThetaNorm);
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance_(0, 0) * (1.0 + nuggetFactor_) : outputCovariance_(0, 0) * exp(-tauOverThetaNorm);
 }
 
-Scalar AbsoluteExponential::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
+Scalar AbsoluteExponential::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
     const Collection<Scalar>::const_iterator & t_begin) const
 {
   Scalar tauOverThetaNorm = 0;
@@ -79,7 +79,7 @@ Scalar AbsoluteExponential::computeStandardRepresentative(const Collection<Scala
   {
     tauOverThetaNorm += std::abs(*s_it - *t_it) / scale_[i];
   }
-  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? 1.0 + nuggetFactor_ : exp(-tauOverThetaNorm);
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance_(0, 0) * (1.0 + nuggetFactor_) : outputCovariance_(0, 0) * exp(-tauOverThetaNorm);
 }
 
 /* Gradient */
@@ -137,13 +137,13 @@ String AbsoluteExponential::__str__(const String & ) const
 /* Method save() stores the object through the StorageManager */
 void AbsoluteExponential::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void AbsoluteExponential::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
 }
 
 END_NAMESPACE_OPENTURNS

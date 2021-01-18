@@ -31,11 +31,11 @@ static const Factory<MaternModel> Factory_MaternModel;
 
 /* Default constructor */
 MaternModel::MaternModel(const UnsignedInteger inputDimension)
-  : StationaryCovarianceModel(Point(inputDimension, ResourceMap::GetAsScalar("MaternModel-DefaultTheta")), Point(1, 1.0))
+  : CovarianceModelImplementation(Point(inputDimension, ResourceMap::GetAsScalar("MaternModel-DefaultTheta")), Point(1, 1.0))
   , nu_(ResourceMap::GetAsScalar("MaternModel-DefaultNu"))
   , sqrt2nuOverTheta_(Point(inputDimension, sqrt(2.0 * nu_) / ResourceMap::GetAsScalar("MaternModel-DefaultTheta") ))
 {
-  definesComputeStandardRepresentative_ = true;
+  isStationary_ = true;
   // Compute the normalization factor
   computeLogNormalizationFactor();
   // Compute useful scaling factor
@@ -45,11 +45,10 @@ MaternModel::MaternModel(const UnsignedInteger inputDimension)
 /** Parameters constructor */
 MaternModel::MaternModel(const Point & scale,
                          const Scalar nu)
-  : StationaryCovarianceModel(scale, Point(1, 1.0))
+  : CovarianceModelImplementation(scale, Point(1, 1.0))
   , nu_(0.0)
   , sqrt2nuOverTheta_(Point(scale.getDimension(), 0.0))
 {
-  definesComputeStandardRepresentative_ = true;
   setNu(nu);
 }
 
@@ -57,14 +56,14 @@ MaternModel::MaternModel(const Point & scale,
 MaternModel::MaternModel(const Point & scale,
                          const Point & amplitude,
                          const Scalar nu)
-  : StationaryCovarianceModel(scale, amplitude)
+  : CovarianceModelImplementation(scale, amplitude)
   , nu_(0.0)
   , sqrt2nuOverTheta_(Point(scale.getDimension(), 0.0))
 {
+  isStationary_ = true;
   if (getOutputDimension() != 1)
     throw InvalidArgumentException(HERE) << "In MaternModel::MaternModel, only unidimensional models should be defined."
                                          << " Here, (got dimension=" << getOutputDimension() << ")";
-  definesComputeStandardRepresentative_ = true;
   setNu(nu);
 }
 
@@ -87,19 +86,19 @@ MaternModel * MaternModel::clone() const
 }
 
 /* Computation of the covariance  function */
-Scalar MaternModel::computeStandardRepresentative(const Point & tau) const
+Scalar MaternModel::computeAsScalar(const Point & tau) const
 {
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
   Point scaledTau(inputDimension_);
   for(UnsignedInteger i = 0; i < inputDimension_; ++i) scaledTau[i] = tau[i] * sqrt2nuOverTheta_[i];
   const Scalar scaledPoint = scaledTau.norm();
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
-    return 1.0 + nuggetFactor_;
+    return outputCovariance_(0, 0) * (1.0 + nuggetFactor_);
   else
-    return exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
+    return outputCovariance_(0, 0) * exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
 }
 
-Scalar MaternModel::computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
+Scalar MaternModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
     const Collection<Scalar>::const_iterator & t_begin) const
 {
   Scalar scaledPoint = 0;
@@ -112,9 +111,9 @@ Scalar MaternModel::computeStandardRepresentative(const Collection<Scalar>::cons
   }
   scaledPoint = sqrt(scaledPoint);
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
-    return 1.0 + nuggetFactor_;
+    return outputCovariance_(0, 0) * (1.0 + nuggetFactor_);
   else
-    return exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
+    return outputCovariance_(0, 0) * exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
 }
 
 /* Gradient */
@@ -153,7 +152,7 @@ Matrix MaternModel::partialGradient(const Point & s,
 void MaternModel::setScale(const Point & scale)
 {
   // First set scale
-  StationaryCovarianceModel::setScale(scale);
+  CovarianceModelImplementation::setScale(scale);
   // Update scaling factor
   computeSqrt2nuOverTheta();
 }
@@ -248,7 +247,7 @@ void MaternModel::setNu(const Scalar nu)
 /* Method save() stores the object through the StorageManager */
 void MaternModel::save(Advocate & adv) const
 {
-  StationaryCovarianceModel::save(adv);
+  CovarianceModelImplementation::save(adv);
   adv.saveAttribute("nu_", nu_);
   adv.saveAttribute("logNormalizationFactor_", logNormalizationFactor_);
   adv.saveAttribute("sqrt2nuOverTheta_", sqrt2nuOverTheta_);
@@ -257,7 +256,7 @@ void MaternModel::save(Advocate & adv) const
 /* Method load() reloads the object from the StorageManager */
 void MaternModel::load(Advocate & adv)
 {
-  StationaryCovarianceModel::load(adv);
+  CovarianceModelImplementation::load(adv);
   adv.loadAttribute("nu_", nu_);
   adv.loadAttribute("logNormalizationFactor_", logNormalizationFactor_);
   adv.loadAttribute("sqrt2nuOverTheta_", sqrt2nuOverTheta_);

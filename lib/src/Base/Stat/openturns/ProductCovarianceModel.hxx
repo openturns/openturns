@@ -20,7 +20,6 @@
 #ifndef OPENTURNS_PRODUCTCOVARIANCEMODEL_HXX
 #define OPENTURNS_PRODUCTCOVARIANCEMODEL_HXX
 
-#include "openturns/StationaryCovarianceModel.hxx"
 #include "openturns/CovarianceModel.hxx"
 #include "openturns/PersistentCollection.hxx"
 #include "openturns/Collection.hxx"
@@ -53,12 +52,11 @@ public:
   ProductCovarianceModel * clone() const override;
 
   /** Computation of the covariance function */
-  using CovarianceModelImplementation::computeStandardRepresentative;
-  Scalar computeStandardRepresentative(const Point & s,
-                                       const Point & t) const override;
+  using CovarianceModelImplementation::computeAsScalar;
+  Scalar computeAsScalar(const Point &tau) const override;
 #ifndef SWIG
-  Scalar computeStandardRepresentative(const Collection<Scalar>::const_iterator & s_begin,
-                                       const Collection<Scalar>::const_iterator & t_begin) const override;
+  Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
+                         const Collection<Scalar>::const_iterator & t_begin) const override;
 #endif
 
   /** Gradient */

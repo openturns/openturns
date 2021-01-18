@@ -52,11 +52,6 @@ try:
         if index > 0:
             spatialCorrelation[index, index - 1] = 1.0 / (index * index)
 
-    # check the cast
-    mySecondOrderModel = StationaryCovarianceModel(
-        ExponentialModel(scale, amplitude, spatialCorrelation))
-    print("mySecondOrderModel = ", mySecondOrderModel)
-
     # Second order model  - dimension 10
     myHighModel = ExponentialModel(
         scale, amplitude, spatialCorrelation)

@@ -213,7 +213,6 @@ public:
 
 private:
   const CovarianceModel covarianceModel_;
-  Bool definesComputeStandardRepresentative_;
   const Sample vertices_;
   const Collection<Scalar>::const_iterator verticesBegin_;
   const UnsignedInteger inputDimension_;
@@ -232,7 +231,6 @@ public:
 
 private:
   const CovarianceModel covarianceModel_;
-  Bool definesComputeStandardRepresentative_;
   const Sample vertices_;
   const Collection<Scalar>::const_iterator verticesBegin_;
   const UnsignedInteger inputDimension_;
