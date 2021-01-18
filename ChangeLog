@@ -34,6 +34,7 @@
  * #1710 (Misleading y labels in VisualTest.DrawPairsMarginals())
  * #1713 (The doc of the ResourceMap does not match the content of the ResourceMap)
  * #1714 (The log-PDF of the Pareto is wrong)
+ * #1721 (The `draw` method of `SobolSimulationAlgorithm` does not reuse the descriptions)
 
 
 == 1.16 release (2020-11-16) == #release-1.16

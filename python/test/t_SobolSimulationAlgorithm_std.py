@@ -69,6 +69,9 @@ toDist = result.getTotalOrderIndicesDistribution()
 print(toDist)
 convergenceGraph = algo.drawFirstOrderIndexConvergence()
 convergenceGraph = algo.drawTotalOrderIndexConvergence()
+graph = result.draw()
+print(graph)
+
 
 #from openturns.viewer import View
 # View(convergenceGraph).ShowAll()
