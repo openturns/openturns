@@ -124,7 +124,7 @@ Point Pareto::computeDDF(const Point & point) const
   const Scalar x = point[0] - gamma_;
   Point result(1);
   if (x < beta_) return result;
-  result[0] = -alpha_ * std::pow(beta_, alpha_) * std::pow(x, -alpha_ - 2.0) * (alpha_ + 1.0);
+  result[0] = -alpha_ * (1.0 + alpha_) / (beta_ * beta_) * std::pow(beta_ / x, 2.0 + alpha_);
   return result;
 }
 
@@ -135,7 +135,7 @@ Scalar Pareto::computePDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const Scalar x = point[0] - gamma_;
   if (x < beta_) return 0.0;
-  return alpha_ * std::pow(beta_, alpha_) / std::pow(x, alpha_ + 1.0);
+  return alpha_ / beta_ * std::pow(beta_ / x, 1.0 + alpha_);
 }
 
 Scalar Pareto::computeLogPDF(const Point & point) const
@@ -143,7 +143,7 @@ Scalar Pareto::computeLogPDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   const Scalar x = point[0] - gamma_;
   if (x < beta_) return SpecFunc::LowestScalar;
-  return std::log(alpha_) * alpha_ * std::log(beta_) * (-alpha_ - 1.0) * std::log(x);
+  return std::log(alpha_ / beta_) + (1.0 + alpha_) * std::log(beta_ / x);
 }
 
 /* Get the CDF of the distribution */
