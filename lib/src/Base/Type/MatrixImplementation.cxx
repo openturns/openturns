@@ -136,8 +136,8 @@ String MatrixImplementation::__str__(const String & offset) const
 Scalar & MatrixImplementation::operator() (const UnsignedInteger i,
     const UnsignedInteger j)
 {
-  if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
-  if (j >= nbColumns_) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
+  if (!(i < nbRows_)) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
+  if (!(j < nbColumns_)) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
   return operator[](convertPosition(i, j));
 }
 
@@ -146,8 +146,8 @@ Scalar & MatrixImplementation::operator() (const UnsignedInteger i,
 const Scalar & MatrixImplementation::operator() (const UnsignedInteger i,
     const UnsignedInteger j)  const
 {
-  if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
-  if (j >= nbColumns_) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
+  if (!(i < nbRows_)) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
+  if (!(j < nbColumns_)) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
   return operator[](convertPosition(i, j));
 }
 
@@ -200,7 +200,7 @@ void MatrixImplementation::reshapeInPlace(const UnsignedInteger newRowDim,
 /* Row extraction */
 const MatrixImplementation MatrixImplementation::getRow(const UnsignedInteger rowIndex) const
 {
-  if (rowIndex >= nbRows_) throw OutOfBoundException(HERE) << "Error: the row index=" << rowIndex << " must be less than the row number=" << nbRows_;
+  if (!(rowIndex < nbRows_)) throw OutOfBoundException(HERE) << "Error: the row index=" << rowIndex << " must be less than the row number=" << nbRows_;
   MatrixImplementation row(1, nbColumns_);
   for (UnsignedInteger i = 0; i < nbColumns_; ++i) row(0, i) = (*this)(rowIndex, i);
   return row;
@@ -208,7 +208,7 @@ const MatrixImplementation MatrixImplementation::getRow(const UnsignedInteger ro
 
 const MatrixImplementation MatrixImplementation::getRowSym(const UnsignedInteger rowIndex) const
 {
-  if (rowIndex >= nbRows_) throw OutOfBoundException(HERE) << "Error: the row index=" << rowIndex << " must be less than the row number=" << nbRows_;
+  if (!(rowIndex < nbRows_)) throw OutOfBoundException(HERE) << "Error: the row index=" << rowIndex << " must be less than the row number=" << nbRows_;
   MatrixImplementation row(1, nbColumns_);
   for (UnsignedInteger i = 0; i < rowIndex; ++i) row(0, i) = (*this)(rowIndex, i);
   for (UnsignedInteger i = rowIndex; i < nbColumns_; ++i) row(0, i) = (*this)(i, rowIndex);
@@ -218,7 +218,7 @@ const MatrixImplementation MatrixImplementation::getRowSym(const UnsignedInteger
 /* Column extration */
 const MatrixImplementation MatrixImplementation::getColumn(const UnsignedInteger columnIndex) const
 {
-  if (columnIndex >= nbColumns_) throw OutOfBoundException(HERE) << "Error: the column index=" << columnIndex << " must be less than the column number=" << nbColumns_;
+  if (!(columnIndex < nbColumns_)) throw OutOfBoundException(HERE) << "Error: the column index=" << columnIndex << " must be less than the column number=" << nbColumns_;
   MatrixImplementation column(nbRows_, 1);
   for (UnsignedInteger i = 0; i < nbRows_; ++i) column(i, 0) = (*this)(i, columnIndex);
   return column;
@@ -226,7 +226,7 @@ const MatrixImplementation MatrixImplementation::getColumn(const UnsignedInteger
 
 const MatrixImplementation MatrixImplementation::getColumnSym(const UnsignedInteger columnIndex) const
 {
-  if (columnIndex >= nbColumns_) throw OutOfBoundException(HERE) << "Error: the column index=" << columnIndex << " must be less than the column number=" << nbColumns_;
+  if (!(columnIndex < nbColumns_)) throw OutOfBoundException(HERE) << "Error: the column index=" << columnIndex << " must be less than the column number=" << nbColumns_;
   MatrixImplementation column(nbRows_, 1);
   for (UnsignedInteger i = 0; i < columnIndex; ++i) column(i, 0) = (*this)(columnIndex, i);
   for (UnsignedInteger i = columnIndex; i < nbRows_; ++i) column(i, 0) = (*this)(i, columnIndex);
@@ -484,7 +484,7 @@ MatrixImplementation & MatrixImplementation::operator*= (const Scalar s)
 /* Division by a Scalar*/
 MatrixImplementation MatrixImplementation::operator/ (const Scalar s) const
 {
-  if (s == 0.0) throw InvalidArgumentException(HERE);
+  if (!(s < 0.0 || s > 0.0)) throw InvalidArgumentException(HERE);
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return *this;
   MatrixImplementation scalprod(*this);
   double alpha(1.0 / s);
@@ -498,7 +498,7 @@ MatrixImplementation MatrixImplementation::operator/ (const Scalar s) const
 /* In-place division by a Scalar */
 MatrixImplementation & MatrixImplementation::operator/= (const Scalar s)
 {
-  if (s == 0.0) throw InvalidArgumentException(HERE);
+  if (!(s < 0.0 || s > 0.0)) throw InvalidArgumentException(HERE);
   if ((nbRows_ == 0) || (nbColumns_ == 0)) return *this;
   double alpha(1.0 / s);
   int one(1);
@@ -730,7 +730,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemRect (const MatrixIm
     const Bool keepIntact)
 {
   if (nbRows_ != b.nbRows_) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
-  if ((nbRows_ == 0) || (nbColumns_ == 0) || (b.nbColumns_ == 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
+  if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
   int m(nbRows_);
   int n(nbColumns_);
   // B is an extended copy of b, it must be large enough to store the solution, see LAPACK documentation
@@ -786,7 +786,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemTri (const MatrixImp
     const Bool transposed)
 {
   if (nbRows_ != b.nbRows_ ) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
-  if ((nbRows_ == 0) || (nbColumns_ == 0) || (b.nbColumns_ == 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
+  if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
 
   // We must copy the right-hand side because it will be overwritten by the operation
   MatrixImplementation B(b);
@@ -841,7 +841,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSquare (const Matrix
     const Bool keepIntact)
 {
   if (nbColumns_ != b.nbRows_ ) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
-  if ((nbRows_ == 0) || (nbColumns_ == 0) || (b.nbColumns_ == 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
+  if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
 
   // We must copy the right-hand side because it will be overwritten by the operation
   MatrixImplementation B(b);
@@ -875,7 +875,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemSym (const MatrixImp
     const Bool keepIntact)
 {
   if (nbColumns_ != b.nbRows_ ) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
-  if ((nbColumns_ == 0) || (b.nbColumns_ == 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
+  if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
 
   char uplo('L');
   // We must copy the right-hand side as it will be overwritten by the operation
@@ -918,7 +918,7 @@ MatrixImplementation MatrixImplementation::solveLinearSystemCov (const MatrixImp
     const Bool keepIntact)
 {
   if (nbRows_ != b.nbRows_ ) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
-  if ((nbColumns_ == 0) || (b.nbColumns_ == 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
+  if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
 
   char uplo('L');
   // We must copy the right-hand side as it will be overwritten by the operation
@@ -957,7 +957,7 @@ Scalar MatrixImplementation::computeLogAbsoluteDeterminant (Scalar & sign,
     const Bool keepIntact)
 {
   int n(nbRows_);
-  if (n == 0) throw InvalidDimensionException(HERE) << "Cannot compute the determinant of an empty matrix";
+  if (!(n > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the determinant of an empty matrix";
   Scalar logAbsoluteDeterminant = 0.0;
   sign = 1.0;
   if (n <= 2)
@@ -1091,7 +1091,7 @@ Scalar MatrixImplementation::computeTrace() const
 MatrixImplementation::ComplexCollection MatrixImplementation::computeEigenValuesSquare (const Bool keepIntact)
 {
   int n(nbRows_);
-  if (n == 0) throw InvalidDimensionException(HERE) << "Cannot compute the eigenvalues of an empty matrix";
+  if (!(n > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the eigenvalues of an empty matrix";
   char jobvl('N');
   char jobvr('N');
   Point wr(n, 0.0);
@@ -1125,7 +1125,7 @@ MatrixImplementation::ComplexCollection MatrixImplementation::computeEVSquare (C
     const Bool keepIntact)
 {
   int n(nbRows_);
-  if (n == 0) throw InvalidDimensionException(HERE) << "Cannot compute the eigenvalues of an empty matrix";
+  if (!(n > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the eigenvalues of an empty matrix";
   char jobvl('N');
   char jobvr('V');
   Point wr(n, 0.0);
@@ -1185,7 +1185,7 @@ MatrixImplementation::ComplexCollection MatrixImplementation::computeEVSquare (C
 Point MatrixImplementation::computeEigenValuesSym (const Bool keepIntact)
 {
   int n(nbRows_);
-  if (n == 0) throw InvalidDimensionException(HERE) << "Cannot compute the eigenvalues of an empty matrix";
+  if (!(n > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the eigenvalues of an empty matrix";
   char jobz('N');
   char uplo('L');
   Point w(n, 0.0);
@@ -1212,7 +1212,7 @@ Point MatrixImplementation::computeEVSym (MatrixImplementation & v,
     const Bool keepIntact)
 {
   int n(nbRows_);
-  if (n == 0) throw InvalidDimensionException(HERE) << "Cannot compute the eigenvalues of an empty matrix";
+  if (!(n > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the eigenvalues of an empty matrix";
   char jobz('V');
   char uplo('L');
   Point w(n, 0.0);
@@ -1293,7 +1293,7 @@ Point MatrixImplementation::computeSingularValues(const Bool keepIntact)
 {
   int m = nbRows_;
   int n = nbColumns_;
-  if ((m == 0) || (n == 0)) throw InvalidDimensionException(HERE) << "Cannot compute the singular values of an empty matrix";
+  if (!(m > 0 && n > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the singular values of an empty matrix";
 
   // check for nans, cf https://github.com/Reference-LAPACK/lapack/issues/469
   for (UnsignedInteger j = 0; j < getNbColumns(); ++ j)
@@ -1336,7 +1336,7 @@ Point MatrixImplementation::computeSVD(MatrixImplementation & u,
 {
   int m(nbRows_);
   int n(nbColumns_);
-  if ((m == 0) || (n == 0)) throw InvalidDimensionException(HERE) << "Cannot compute the singular values decomposition of an empty matrix";
+  if (!(m > 0 && n > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the singular values decomposition of an empty matrix";
   char jobz( fullSVD ? 'A' : 'S');
   int ldu(m);
   u = MatrixImplementation(m, ( fullSVD ? m : std::min(m, n)));
@@ -1370,7 +1370,7 @@ Bool MatrixImplementation::isPositiveDefinite() const
 {
   int info;
   int n(nbRows_);
-  if (n == 0) throw InvalidDimensionException(HERE) << "Cannot check the definite positiveness of an empty matrix";
+  if (!(n > 0)) throw InvalidDimensionException(HERE) << "Cannot check the definite positiveness of an empty matrix";
   char uplo('L');
   int luplo(1);
   MatrixImplementation A(*this);
@@ -1418,7 +1418,7 @@ MatrixImplementation::ScalarCollection MatrixImplementation::triangularVectProd(
 MatrixImplementation MatrixImplementation::computeCholesky(const Bool keepIntact)
 {
   int n = nbRows_;
-  if (n == 0) throw InvalidDimensionException(HERE) << "Cannot compute the Cholesky decomposition of an empty matrix";
+  if (!(n > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the Cholesky decomposition of an empty matrix";
   int info = 0;
   char uplo = 'L';
   int luplo = 1;
@@ -1538,7 +1538,7 @@ MatrixImplementation MatrixImplementation::computeQR(MatrixImplementation & R,
   int n = nbColumns_;
   int lda = nbRows_;
 
-  if ((m == 0) || (n == 0)) throw InvalidDimensionException(HERE) << "Cannot compute the QR decomposition of an empty matrix";
+  if (!(m > 0 && n > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the QR decomposition of an empty matrix";
   int k = std::min(m, n);
   Point tau(k);
   int lwork = -1;

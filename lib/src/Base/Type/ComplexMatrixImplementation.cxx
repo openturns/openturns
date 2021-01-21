@@ -105,7 +105,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::solveLinearSystemRect (
     const Bool keepIntact)
 {
   if (nbRows_ != b.nbRows_) throw InvalidDimensionException(HERE) << "The right-hand side has row dimension=" << b.nbRows_ << ", expected " << nbRows_;
-  if ((nbRows_ == 0) || (nbColumns_ == 0) || (b.nbColumns_ == 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
+  if (!(nbRows_ > 0 && nbColumns_ > 0 && b.nbColumns_ > 0)) throw InvalidDimensionException(HERE) << "Cannot solve a linear system with empty matrix or empty right-hand side";
   int m(nbRows_);
   int n(nbColumns_);
   // B is an extended copy of b, it must be large enought to store the solution, see LAPACK documentation
@@ -236,8 +236,8 @@ String ComplexMatrixImplementation::__str__(const String & offset) const
 Complex & ComplexMatrixImplementation::operator () (const UnsignedInteger i,
     const UnsignedInteger j)
 {
-  if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
-  if (j >= nbColumns_) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
+  if (!(i < nbRows_)) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
+  if (!(j < nbColumns_)) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
   return operator[](convertPosition(i, j));
 }
 
@@ -246,8 +246,8 @@ Complex & ComplexMatrixImplementation::operator () (const UnsignedInteger i,
 const Complex & ComplexMatrixImplementation::operator () (const UnsignedInteger i,
     const UnsignedInteger j)  const
 {
-  if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
-  if (j >= nbColumns_) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
+  if (!(i < nbRows_)) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
+  if (!(j < nbColumns_)) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
   return operator[](convertPosition(i, j));
 }
 
@@ -468,7 +468,7 @@ ComplexMatrixImplementation ComplexMatrixImplementation::operator * (const Compl
 /* Division by a Scalar*/
 ComplexMatrixImplementation ComplexMatrixImplementation::operator / (const Complex s) const
 {
-  if (std::abs(s) == 0) throw InvalidArgumentException(HERE) ;
+  if (!(std::abs(s) > 0)) throw InvalidArgumentException(HERE) ;
 
   return operator * (1.0 / s);
 }
@@ -929,7 +929,7 @@ Bool ComplexMatrixImplementation::isHermitianPositiveDefinite(const Bool keepInt
 ComplexMatrixImplementation ComplexMatrixImplementation::computeCholesky(const Bool keepIntact)
 {
   // Exception for null dimension
-  if (getDimension() == 0) throw InvalidDimensionException(HERE) << "Cannot compute the Cholesky decomposition of an empty matrix";
+  if (!(getDimension() > 0)) throw InvalidDimensionException(HERE) << "Cannot compute the Cholesky decomposition of an empty matrix";
   int info;
   int n(nbRows_);
   char uplo('L');
