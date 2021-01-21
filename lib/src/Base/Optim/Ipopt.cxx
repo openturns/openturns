@@ -220,7 +220,7 @@ void Ipopt::run()
   Sample outputHistory(ipoptProblem->getOutputHistory());
 
   // Create OptimizationResult, initialize error values
-  OptimizationResult optimResult(getProblem().getDimension());
+  OptimizationResult optimResult(getProblem());
   Scalar absoluteError = -1.0;
   Scalar relativeError = -1.0;
   Scalar residualError = -1.0;

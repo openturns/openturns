@@ -601,7 +601,7 @@ void Dlib::run()
   }
 
   // initialize result
-  result_ = OptimizationResult(dimension, objectiveDlibFunction.getOutputDimension());
+  result_ = OptimizationResult(getProblem());
 
   /** SWITCH BETWEEN ALGORITHMS **/
   if (   algoName_ == "CG"

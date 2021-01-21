@@ -448,8 +448,7 @@ void Ceres::run()
     iterationNumber = summary.iterations.size();
   }
 
-  OptimizationResult result(dimension, 1);
-  result.setProblem(getProblem());
+  OptimizationResult result(getProblem());
 
   const UnsignedInteger size = evaluationInputHistory_.getSize();
 

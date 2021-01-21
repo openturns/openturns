@@ -133,8 +133,7 @@ void Cobyla::run()
    */
   int returnCode = ot_cobyla(n, m, &x[0], rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
 
-  result_ = OptimizationResult(dimension);
-  result_.setProblem(getProblem());
+  result_ = OptimizationResult(getProblem());
 
   // Update the result
   UnsignedInteger size = evaluationInputHistory_.getSize();

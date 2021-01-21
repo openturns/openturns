@@ -225,8 +225,7 @@ void EfficientGlobalOptimization::run()
     }
   }
 
-  OptimizationResult result(dimension);
-  result.setProblem(getProblem());
+  OptimizationResult result(getProblem());
 
   UnsignedInteger iterationNumber = 0;
   while ((!exitLoop) && (evaluationNumber < getMaximumEvaluationNumber()))
