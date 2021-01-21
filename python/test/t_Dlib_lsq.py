@@ -53,7 +53,7 @@ startingPoint = [0.0, 0.0, 0.0]
 
 # LSQ SOLVER
 # Definition of Dlib solver, setting starting point
-lsqAlgo = ot.Dlib(lsqProblem, "LSQ")
+lsqAlgo = ot.Dlib(lsqProblem, "least_squares")
 lsqAlgo.setStartingPoint(startingPoint)
 lsqAlgo.run()
 
@@ -62,7 +62,7 @@ lsqResult = lsqAlgo.getResult()
 printResults(lsqResult, "LSQ (without noise)")
 
 # Same with noise
-lsqNoiseAlgo = ot.Dlib(lsqNoiseProblem, "LSQ")
+lsqNoiseAlgo = ot.Dlib(lsqNoiseProblem, "least_squares")
 lsqNoiseAlgo.setStartingPoint(startingPoint)
 lsqNoiseAlgo.run()
 lsqNoiseResult = lsqNoiseAlgo.getResult()
@@ -71,7 +71,7 @@ printResults(lsqNoiseResult, "LSQ (with noise)")
 
 # LSQLM SOLVER
 # Definition of Dlib solver, setting starting point
-lsqlmAlgo = ot.Dlib(lsqProblem, "LSQLM")
+lsqlmAlgo = ot.Dlib(lsqProblem, "least_squares_lm")
 lsqlmAlgo.setStartingPoint(startingPoint)
 lsqlmAlgo.run()
 
@@ -81,7 +81,7 @@ printResults(lsqlmResult, "LSQLM (without noise)")
 
 
 # Same with noise
-lsqlmNoiseAlgo = ot.Dlib(lsqNoiseProblem, "LSQLM")
+lsqlmNoiseAlgo = ot.Dlib(lsqNoiseProblem, "least_squares_lm")
 lsqlmNoiseAlgo.setStartingPoint(startingPoint)
 lsqlmNoiseAlgo.run()
 lsqlmNoiseResult = lsqlmNoiseAlgo.getResult()
