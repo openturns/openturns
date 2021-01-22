@@ -1,6 +1,6 @@
 """
-Probability estimation with importance sampling simulation on cantilever beam example
-=====================================================================================
+Use the Importance Sampling algorithm
+=====================================
 """
 # %%
 # In this example we estimate a failure probability with the importance sampling simulation algorithm provided by the `ImportanceSamplingExperiment` class. 
@@ -119,10 +119,10 @@ algo.setMaximumOuterSampling(40000)
 algo.run()
 
 # %%
-# retrieve results
+# We can retrieve results of this estimate :
 result = algo.getResult()
 probability = result.getProbabilityEstimate()
-probability
+print("Probability = ", probability)
 
 # %%
 # In order to compute the confidence interval, we use the `getConfidenceLength` method, which returns the length of the interval. In order to compute the bounds of the interval, we divide this length by 2.
@@ -132,4 +132,11 @@ alpha = 0.05
 
 # %%
 pflen = result.getConfidenceLength(1-alpha)
-print("%.2f%% confidence interval = [%f,%f]" % ((1-alpha)*100,probability-pflen/2,probability+pflen/2))
+print("%.2f%% confidence interval = [%.10f,%.10f]" % ((1-alpha)*100,probability-pflen/2,probability+pflen/2))
+
+# %%
+# We can observe the convergence history of the estimate with the `drawProbabilityConvergence`
+# method which displays the estimate and confidence interval evolution.
+graph = algo.drawProbabilityConvergence()
+graph.setLogScale(ot.GraphImplementation.LOGX)
+view = viewer.View(graph)

@@ -1,6 +1,6 @@
 """
-Create a metamodel using Kriging
-================================
+Kriging : multiple input dimensions
+===================================
 """
 # %%
 # In this example we are going to create an approximation of a model response using a kriging model. We consider a bidimensional function with gaussian inputs. Then we create a kriging metamodel with a constant basis and a `SquaredExponential` covariance. 

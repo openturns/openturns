@@ -1,6 +1,6 @@
 """
-Create univariate and multivariate distributions: a quick start guide to distributions
-======================================================================================
+Quick start guide
+=================
 """
 # %%
 # Abstract 

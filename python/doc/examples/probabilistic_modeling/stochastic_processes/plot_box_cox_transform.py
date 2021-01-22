@@ -1,6 +1,6 @@
 """
-Apply a Box-Cox transformation to a Field
-=========================================
+Use the Box-Cox transformation
+==============================
 """
 # %%
 #

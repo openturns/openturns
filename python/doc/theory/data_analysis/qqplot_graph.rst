@@ -102,7 +102,7 @@ distributions.
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_data_analysis/statistical_hypothesis_testing/plot_qqplot_graph`
+    - See :doc:`/auto_data_analysis/statistical_tests/plot_qqplot_graph`
 
 .. topic:: References:
 

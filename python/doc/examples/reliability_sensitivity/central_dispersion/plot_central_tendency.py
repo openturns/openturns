@@ -1,6 +1,6 @@
 """
-Central tendency analysis on the cantilever beam example
-========================================================
+Analyse the central tendency of a cantilever beam
+=================================================
 """
 # %%
 # In this example we perform a central tendency analysis of a random variable Y using the various methods available. We consider the :ref:`cantilever beam <use-case-cantilever-beam>` example and show how to use the `TaylorExpansionMoments` and `ExpectationSimulationAlgorithm` classes. 

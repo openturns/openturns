@@ -1,6 +1,6 @@
 """
-Create a custom stationary covariance model
-===========================================
+Create a stationary covariance model
+====================================
 """
 # %%
 # This use case illustrates how the user can define his own stationary covariance model thanks to the object *UserDefinedStationaryCovarianceModel* defined from:

@@ -1,6 +1,6 @@
 """
-Mixed deterministic and probabilistic design of experiments
-===========================================================
+Create mixed deterministic and probabilistic designs of experiments
+===================================================================
 """
 # %% 
 #
