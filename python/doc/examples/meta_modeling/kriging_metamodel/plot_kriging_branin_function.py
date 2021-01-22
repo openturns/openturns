@@ -24,7 +24,7 @@ model = bm.objectiveFunction
 # %%
 # We shall represent this 2D function with isolines. We set the number of isolines to a maximum of 10
 # thanks to the following `ResourceMap` key :
-ot.ResourceMap_SetAsUnsignedInteger("Contour-DefaultLevelsNumber",10)
+ot.ResourceMap.SetAsUnsignedInteger("Contour-DefaultLevelsNumber",10)
 graphBasic = model.draw([0.0, 0.0], [1.0, 1.0], [100]*2)
 
 
@@ -32,8 +32,7 @@ graphBasic = model.draw([0.0, 0.0], [1.0, 1.0], [100]*2)
 # We get the values of all isolines :
 drawables = graphBasic.getDrawables()
 levels = []
-for i in range(len(drawables)):
-    contours = drawables[i]
+for contours in drawables:
     levels.append(contours.getLevels()[0])
 
 # %%

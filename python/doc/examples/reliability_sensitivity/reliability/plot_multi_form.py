@@ -113,9 +113,7 @@ cloud.setPointStyle("fcircle")
 cloud.setLegend("design point no. 1")
 graphModel.add(cloud)
 
-cloud = ot.Cloud(
-    ot.Point([designPointPhysicalSpace2[0]]), ot.Point([designPointPhysicalSpace2[1]])
-)
+cloud = ot.Cloud([designPointPhysicalSpace2[0]], [designPointPhysicalSpace2[1]])
 cloud.setColor("red")
 cloud.setPointStyle("fcircle")
 cloud.setLegend("design point no. 2")

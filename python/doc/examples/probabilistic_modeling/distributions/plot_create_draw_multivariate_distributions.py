@@ -73,7 +73,7 @@ view = otv.View(graph)
 # %%
 # Multivariate models
 # -------------------
-# Some models in OpenTURNS are natively multivariate. We present examples of three of them :
+# Some models in the library are natively multivariate. We present examples of three of them :
 #
 #  - the Normal distribution ;
 #  - the Student distribution ;

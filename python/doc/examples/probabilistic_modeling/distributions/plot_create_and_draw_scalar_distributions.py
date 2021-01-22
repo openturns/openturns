@@ -72,7 +72,7 @@ view = viewer.View(graphCDF)
 # ----------
 #
 # The two previous examples look very similar despite their continuous and discrete nature.
-# In the OpenTURNS library there is no distinction between continuous and discrete distributions.
+# In the library there is no distinction between continuous and discrete distributions.
 
 # %%
 # Display all figures
