@@ -187,6 +187,12 @@ best_model : :class:`~openturns.Distribution`
 best_bic : float
     The Bayesian information criterion with the best model.
 
+Notes
+-----
+
+The best model is the one which achieves the smallest BIC value. 
+In case of ties, the order in the list matters: the first one which minimizes the BIC in the list is selected. 
+
 See Also
 --------
 FittingTest_BIC
@@ -305,6 +311,10 @@ BIC : float
 Notes
 -----
 This is used for model selection.
+
+If a :class:`~openturns.Distribution` is used, the likelihood is evaluated on the sample. 
+If a :class:`~openturns.DistributionFactory` is used, the `build` method is used to create the distribution, and the likelihood is then evaluated.
+
 In case we set a factory argument, the method returns both the estimated distribution and BIC value.
 Otherwise it returns only the BIC value.
 
@@ -316,7 +326,7 @@ Examples
 >>> sample = distribution.getSample(30)
 >>> ot.FittingTest.BIC(sample, distribution)
 2.793869...
->>> ot.FittingTest.BIC(sample, distribution, 2)
+>>> ot.FittingTest.BIC(sample, distribution, 2) #  Assume that 2 parameters are estimated
 3.020615...
 >>> fitted_dist, bic = ot.FittingTest.BIC(sample, ot.NormalFactory())
 >>> bic
