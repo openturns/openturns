@@ -40,6 +40,7 @@
  * #1714 (The log-PDF of the Pareto is wrong)
  * #1721 (The `draw` method of `SobolSimulationAlgorithm` does not reuse the descriptions)
  * #1729 (LinearModelAnalysis sometimes fail)
+ * #1731 (The Extreme value example may be improved)
  * #1737 (Low rank tensor doc issues)
  * #1742 (The example which shows how to set the figure size is wrong.)
 
@@ -99,7 +100,6 @@
 === Python module ===
  * Renamed Viewer *_kwargs arguments to *_kw (matplotlib convention)
  * Add ProcessSample Field accessors
- * Added Sample::BuildFromPoint
 
 === Miscellaneous ===
  * Do not compute Lagrange multipliers by default during an optimization
