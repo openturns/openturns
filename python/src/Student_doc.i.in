@@ -68,11 +68,42 @@ Examples
 Create a distribution:
 
 >>> import openturns as ot
->>> distribution = ot.Student(5.0, -0.5, 2.0)
+>>> distribution = ot.Student(3.0, -0.5, 2.0)
 
 Draw a sample:
 
->>> sample = distribution.getSample(5)"
+>>> sample = distribution.getSample(5)
+
+Create a multivariate Student distribution with constant :math:`\sigma` and identity correlation matrix:
+
+>>> dimension = 5
+>>> nu = 3.0
+>>> mu = ot.Point(dimension)
+>>> sigma = ot.Point(dimension, 0.1)
+>>> R = ot.CorrelationMatrix(dimension)
+>>> distribution = ot.Student(nu, mu, sigma, R)
+>>> print('distribution=', distribution)
+distribution= Student(nu = 3, mu = [0,0,0,0,0], sigma = [0.1,0.1,0.1,0.1,0.1], R = 5x5
+[[ 1 0 0 0 0 ]
+ [ 0 1 0 0 0 ]
+ [ 0 0 1 0 0 ]
+ [ 0 0 0 1 0 ]
+ [ 0 0 0 0 1 ]])
+
+Create a multivariate Student distribution with a different :math:`\sigma` parameter and a different correlation matrix:
+
+>>> sigma = [1.5, 0.4, 1.0, 2.5, 1.0]
+>>> R = ot.CorrelationMatrix(dimension)
+>>> R[0, 2] = -0.5
+>>> R[3, 4] = -0.2
+>>> distribution = ot.Student(nu, mu, sigma, R)
+>>> print('distribution=', distribution)
+distribution= Student(nu = 3, mu = [0,0,0,0,0], sigma = [1.5,0.4,1,2.5,1], R = 5x5
+[[  1    0   -0.5  0    0   ]
+ [  0    1    0    0    0   ]
+ [ -0.5  0    1    0    0   ]
+ [  0    0    0    1   -0.2 ]
+ [  0    0    0   -0.2  1   ]])"
 
 // ---------------------------------------------------------------------
 

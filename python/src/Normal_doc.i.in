@@ -37,15 +37,15 @@ Its probability density function is defined as:
 
 .. math::
 
-    f_X(x) = \frac{1}
+    f_{\vect{X}}(\vect{x}) = \frac{1}
              {\displaystyle (2\pi)^{\frac{n}{2}}
-                            (\mathrm{det}\mathbf{\Sigma})^{\frac{1}{2}}}
-             \displaystyle exp \left(-\frac{1}{2}\Tr{(x - \mu)}
-                                     \mathbf{\Sigma}^{-1}(x - \mu)\right)
+                            (\mathrm{det}\mat{\Sigma})^{\frac{1}{2}}}
+             \displaystyle exp \left(-\frac{1}{2}\Tr{(\vect{x} - \vect{\mu})}
+                                     \mat{\Sigma}^{-1}(\vect{x} - \vect{\mu})\right)
 
-with :math:`\Sigma = \Lambda(\sigma) R \Lambda(\sigma)`,
-:math:`\Lambda(\sigma) = diag(\sigma)`,
-:math:`R` symmetric, definite and positive, :math:`\sigma_i > 0`.
+with :math:`\mat{\Sigma} = \mat{\Lambda}(\vect{\sigma}) \mat{R} \mat{\Lambda}(\vect{\sigma})`,
+:math:`\mat{\Lambda}(\vect{\sigma}) = \diag(\vect{\sigma})` and
+:math:`\mat{R}` symmetric positive definite.
 
 Its first moments are:
 
@@ -53,8 +53,8 @@ Its first moments are:
     :nowrap:
 
     \begin{eqnarray*}
-        \Expect{X} & = & \vect{\mu} \\
-        \Var{X} & = & \mat{\Sigma}
+        \Expect{\vect{X}} & = & \vect{\mu} \\
+        \Var{\vect{X}} & = & \mat{\Sigma}
     \end{eqnarray*}
 
 Examples
@@ -66,5 +66,34 @@ Create a distribution:
 
 Draw a sample:
 
->>> sample = distribution.getSample(5)"
+>>> sample = distribution.getSample(5)
 
+Create a multivariate normal distribution with constant :math:`\sigma` and identity correlation matrix:
+
+>>> dimension = 5
+>>> mu = ot.Point(dimension)
+>>> sigma = ot.Point(dimension, 0.1)
+>>> R = ot.CorrelationMatrix(dimension)
+>>> distribution = ot.Normal(mu, sigma, R)
+>>> print('distribution=', distribution)
+distribution= Normal(mu = [0,0,0,0,0], sigma = [0.1,0.1,0.1,0.1,0.1], R = 5x5
+[[ 1 0 0 0 0 ]
+ [ 0 1 0 0 0 ]
+ [ 0 0 1 0 0 ]
+ [ 0 0 0 1 0 ]
+ [ 0 0 0 0 1 ]])
+
+Create a multivariate normal distribution from a covariance matrix:
+
+>>> Sigma = ot.CovarianceMatrix(dimension)
+>>> Sigma[1, 1] = 3.0
+>>> Sigma[0, 2] = -0.5
+>>> Sigma[3, 4] = -0.2
+>>> distribution = ot.Normal(mu, Sigma)
+>>> print('distribution=', distribution)
+distribution= Normal(mu = [0,0,0,0,0], sigma = [1,1.73205,1,1,1], R = 5x5
+[[  1    0   -0.5  0    0   ]
+ [  0    1    0    0    0   ]
+ [ -0.5  0    1    0    0   ]
+ [  0    0    0    1   -0.2 ]
+ [  0    0    0   -0.2  1   ]])"
