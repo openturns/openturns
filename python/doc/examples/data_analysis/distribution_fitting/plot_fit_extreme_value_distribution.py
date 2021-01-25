@@ -29,12 +29,12 @@ ot.RandomGenerator.SetSeed(0)
 
 
 # %%
-# For experiment purpose we draw a sample from a Gumbel of parameters :math:`\beta = 1.0` and :math:`\gamma = 3.0` and another one from a Frechet with parameters :math:`\beta=1.0, \alpha = 1.0` and :math:`\gamma = 0.0` .
+# We draw a sample from a Gumbel of parameters :math:`\beta = 1.0` and :math:`\gamma = 3.0` and another one from a Frechet with parameters :math:`\beta=1.0, \alpha = 1.0` and :math:`\gamma = 0.0` .
 # We consider both samples as a unique sample from an unknown extreme distribution to be fitted.
 #
 
 # %%
-# The distributions used :
+# The distributions used:
 myGumbel = ot.Gumbel(1.0, 3.0)
 myFrechet = ot.Frechet(1.0, 1.0, 0.0)
 
@@ -49,21 +49,21 @@ sample.add(sampleGumbel)
 
 
 # %%
-# We fit the sample thanks to the `GeneralizedExtremeValueFactory` :
+# We fit the sample thanks to the `GeneralizedExtremeValueFactory`:
 myDistribution = ot.GeneralizedExtremeValueFactory().buildAsGeneralizedExtremeValue(
     sample
 )
 
 # %%
-# We can display the parameters of the fitted distribution `myDistribution` :
+# We can display the parameters of the fitted distribution `myDistribution`:
 print(myDistribution)
 
 # %%
-# We can also get the actual distribution (Weibull, Frechet or Gumbel) with the `getActualDistribution` method :
+# We can also get the actual distribution (Weibull, Frechet or Gumbel) with the `getActualDistribution` method:
 print(myDistribution.getActualDistribution())
 
 # %%
-# The given sample is then best described by a WeibullMax distribution.
+# The given sample is then best described by a Frechet distribution.
 
 # %%
 # We draw the fitted distribution and an histogram of the data.
@@ -79,7 +79,7 @@ _ = axes[0].set_xlim(-20.0, 20.0)
 
 
 # %%
-# For educational purpose we compare different fitting strategies for this sample :
+# We compare different fitting strategies for this sample:
 #
 # - we use the histogram from the data (in red)
 # - the GEV fitted distribution (in black)
@@ -96,8 +96,7 @@ graph.add(distFrechet.drawPDF())
 distGumbel = ot.GumbelFactory().buildAsGumbel(sample)
 graph.add(distGumbel.drawPDF())
 
-# We change the line style of the WeibullMax because it is expected to be the same 
-# as the GEV one.
+# We change the line style of the WeibullMax.
 distWeibullMax = ot.WeibullMaxFactory().buildAsWeibullMax(sample)
 curveWeibullMax = distWeibullMax.drawPDF().getDrawable(0)
 curveWeibullMax.setLineStyle("dashed")
@@ -120,7 +119,7 @@ _ = axes[0].set_xlim(-20.0, 20.0)
 
 
 # %%
-# As returned by the `getActualDistribution` method the GEV distribution is a WeibullMax.
+# As returned by the `getActualDistribution` method the GEV distribution is a Frechet.
 # The :class:`~openturns.GeneralizedExtremeValueFactory` class is a convenient class to fit extreme valued samples without an a priori knowledge of the underlying (at least the closest) extreme distribution.
 
 
@@ -130,7 +129,7 @@ _ = axes[0].set_xlim(-20.0, 20.0)
 #
 # In this paragraph we turn to the fitting of a :class:`~openturns.GeneralizedPareto` distribution.
 # Various estimators are defined in OpenTurns for the GPD factory. Please refer to the :class:`~openturns.GeneralizedParetoFactory` class documentation for more information.
-# The selection is based on the sample size and compared to the `GeneralizedParetoFactory-SmallSize` key of the :class:`~openturns.ResourceMap` :
+# The selection is based on the sample size and compared to the `GeneralizedParetoFactory-SmallSize` key of the :class:`~openturns.ResourceMap`:
 #
 
 # %%
@@ -154,7 +153,7 @@ myFittedDist = ot.GeneralizedParetoFactory().buildAsGeneralizedPareto(sample)
 print(myFittedDist)
 
 # %%
-# We draw the fitted distribution as well as an histogram to visualize the fitting :
+# We draw the fitted distribution as well as an histogram to visualize the fitting:
 graph = myFittedDist.drawPDF()
 graph.add(ot.HistogramFactory().build(sample).drawPDF())
 graph.setTitle("Generalized Pareto distribution fitting on a sample")
@@ -185,7 +184,7 @@ myFittedDist = ot.GeneralizedParetoFactory().buildAsGeneralizedPareto(sample)
 print(myFittedDist)
 
 # %%
-# We draw the fitted distribution as well as an histogram to visualize the fitting :
+# We draw the fitted distribution as well as an histogram to visualize the fitting:
 graph = myFittedDist.drawPDF()
 graph.add(ot.HistogramFactory().build(sample).drawPDF())
 graph.setTitle("Generalized Pareto distribution fitting on a sample")
