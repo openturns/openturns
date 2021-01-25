@@ -101,14 +101,14 @@ row = data [3, :]
 row
 
 # %%
-type ( row )
+print(type(row))
 
 # %%
 column = data [:, 2]
 column
 
 # %%
-type ( column )
+print(type(column))
 
 # %%
 # We see that:
@@ -123,6 +123,27 @@ type ( column )
 
 # %%
 data.getMarginal([0 , 2])
+
+# %%
+# Slicing can also be used to set a `Sample` row or column.
+
+# %%
+sample = ot.Sample([[1.0, 2.0],
+                    [3.0, 4.0],
+                    [5.0, 6.0]])
+p = [8.0, 10.0]
+sample[2, :] = p
+sample
+
+# %%
+sample = ot.Sample([[1.0, 2.0],
+                    [3.0, 4.0],
+                    [5.0, 6.0]])
+s = ot.Sample([[3.0],
+               [5.0],
+               [7.0]])
+sample[:, 1] = s
+sample
 
 # %%
 # Create a `Point` or a `Sample` from a Python list

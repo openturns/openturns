@@ -28,6 +28,7 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #1459 (There is no example which shows how to set a column of a Sample)
  * #1497 (There is no example to create a multivariate Normal distribution)
  * #1506 (The Brent class has no example)
  * #1650 (There is no example of a parametric StationaryFunctionalCovarianceModel)
