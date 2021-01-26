@@ -1,14 +1,11 @@
 import openturns as ot
-from matplotlib import pyplot as plt
-import openturns.viewer as otv
+from openturns.viewer import PlotDesign
 ot.RandomGenerator.SetSeed(0)
-
-distribution = ot.ComposedDistribution([ot.Uniform()]*3)
-samplesize = 5
-experiment = ot.LHSExperiment(distribution, samplesize, False, False)
-sample = experiment.generate()
-
+dim = 3
+size = 10
+distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*dim)
 bounds = distribution.getRange()
-
-otv.PlotDesign(sample, bounds)
-
+lhs = ot.LHSExperiment(distribution, size)
+sample = lhs.generate()
+subdivisions = [size]*dim
+fig = PlotDesign(sample, bounds, subdivisions)
