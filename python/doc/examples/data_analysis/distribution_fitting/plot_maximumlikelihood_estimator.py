@@ -36,7 +36,6 @@ bounds = ot.Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound)
 mu0 = sample[0][0]
 sigma0 = m.sqrt((sample[1][0] - sample[0][0]) * (sample[1][0] - sample[0][0]))
 startingPoint = [mu0, sigma0]
-ot.Point(startingPoint)
 
 # %%
 # Create the estimator from a parametric pdf

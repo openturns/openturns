@@ -48,8 +48,8 @@ model = am.model
 # %%
 # We specify the domain of the model :
 dim = am.dim
-lowerbound = ot.Point([-4.0] * dim)
-upperbound = ot.Point([4.0] * dim)
+lowerbound = [-4.0] * dim
+upperbound = [4.0] * dim
 
 # %%
 # We know that the global minimum is at the center of the domain. It is stored in the `AckleyModel` data class. 

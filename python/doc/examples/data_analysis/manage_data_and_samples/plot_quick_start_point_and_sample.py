@@ -54,7 +54,7 @@ p[1] = 2
 p
 
 # %%
-p.getDimension ()
+p.getDimension()
 
 # %%
 # The `Sample` class
@@ -122,7 +122,7 @@ type ( column )
 # The following statement extracts several columns (with indices 0 and 2) and creates a new `Sample`. 
 
 # %%
-data.getMarginal ([0 , 2])
+data.getMarginal([0 , 2])
 
 # %%
 # Create a `Point` or a `Sample` from a Python list
@@ -131,7 +131,7 @@ data.getMarginal ([0 , 2])
 # The following statement creates a `Point` from a Python list.
 
 # %%
-p1 = ot.Point ([2 , 3])
+p1 = ot.Point([2 , 3])
 p1
 
 # %%
@@ -144,7 +144,7 @@ p2
 # In the following statement, we create a point by iterating over the components of a `Point`. 
 
 # %%
-p3 = ot.Point ([i*i for i in p1])
+p3 = ot.Point([i*i for i in p1])
 p3
 
 # %%

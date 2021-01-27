@@ -40,7 +40,7 @@ rosenbrock = ot.SymbolicFunction(['x1', 'x2'],
                                  ['(1-x1)^2+100*(x2-x1^2)^2'])
 
 # %%
-x0 = ot.Point([-1.0, 1.0])
+x0 = [-1.0, 1.0]
 
 # %%
 xexact = ot.Point([1.0, 1.0])

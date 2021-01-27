@@ -60,7 +60,7 @@ xx = ot.Box([nx], ot.Interval([-8.0], [8.0])).generate()
 yy = ot.Box([ny], ot.Interval([-8.0], [8.0])).generate()
 inputData = ot.Box([nx,ny], ot.Interval([-8.0, -8.0], [8.0, 8.0])).generate()
 outputData = f(inputData)
-mycontour = ot.Contour(xx, yy, outputData, ot.Point([0.0]), ot.Description(["0.0"]))
+mycontour = ot.Contour(xx, yy, outputData, [0.0], ["0.0"])
 mycontour.setColor("black")
 mycontour.setLineStyle("dashed")
 graphModel.add(mycontour)
@@ -105,9 +105,7 @@ print(coll[1].getPhysicalSpaceDesignPoint())
 
 # %%
 # We visualize them on the previous graph with red circle dots.
-cloud = ot.Cloud(
-    ot.Point([designPointPhysicalSpace1[0]]), ot.Point([designPointPhysicalSpace1[1]])
-)
+cloud = ot.Cloud([designPointPhysicalSpace1[0]], [designPointPhysicalSpace1[1]])
 cloud.setColor("red")
 cloud.setPointStyle("fcircle")
 cloud.setLegend("design point no. 1")

@@ -72,7 +72,7 @@ XL = 1.4 # Exact : 1.5
 Xa = 1.2 # Exact : 1.0
 XD = 0.7 # Exact : 0.8
 Xd = 0.2 # Exact : 0.1
-thetaPrior = ot.Point([XL,Xa,XD,Xd])
+thetaPrior = [XL, Xa, XD, Xd]
 
 
 # %%

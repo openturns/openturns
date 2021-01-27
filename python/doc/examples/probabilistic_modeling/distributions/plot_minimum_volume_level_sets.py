@@ -229,7 +229,7 @@ def drawLevelSetContour2D(distribution, numberOfPointsInXAxis, alpha, threshold,
     data = distribution.computePDF(xy)
     graph = ot.Graph('', 'X1', 'X2', True, 'topright')
     labels = ["%.2f%%" % (100*alpha)]
-    contour = ot.Contour(xx, yy, data, ot.Point([threshold]), ot.Description(labels))
+    contour = ot.Contour(xx, yy, data, [threshold], labels)
     contour.setColor('black')
     graph.setTitle("%.2f%% of the distribution, sample size = %d" % (100*alpha,sampleSize))
     graph.add(contour)

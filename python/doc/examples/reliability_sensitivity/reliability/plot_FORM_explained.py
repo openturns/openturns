@@ -223,7 +223,7 @@ graphStandardSpace.add(curveCX)
 
 # %%
 # We add the origin to the previous graph.
-cloud = ot.Cloud(ot.Point([0.0]), ot.Point([0.0]))
+cloud = ot.Cloud([0.0], [0.0])
 cloud.setColor("black")
 cloud.setPointStyle("fcircle")
 cloud.setLegend("origin")
@@ -284,7 +284,7 @@ print("Hasofer index : ", betaHL)
 
 # %%
 # We visualize it on the previous graph.
-cloud = ot.Cloud(ot.Point([designPointStandardSpace[0]]), ot.Point([designPointStandardSpace[1]]))
+cloud = ot.Cloud([designPointStandardSpace[0]], [designPointStandardSpace[1]])
 cloud.setColor("red")
 cloud.setPointStyle("fcircle")
 cloud.setLegend("design point")
@@ -311,7 +311,7 @@ view = otv.View(graphStandardSpace)
 # getGradient method :
 
 # %%
-u0 = ot.Point([designPointStandardSpace[0]])
+u0 = [designPointStandardSpace[0]]
 du0 = failureBoundaryStandardSpace.getGradient().gradient(u0)
 print("abscissa of the design point u0  = ", u0[0])
 print("value of the failure boundary at u0 = ", failureBoundaryStandardSpace(u0)[0])
@@ -365,7 +365,7 @@ print("Probability of failure (FORM) Pf = ", pf)
 # %%
 # We need the value of the second derivative of the failure boundary function at the design point in
 # the standard space :
-u0 = ot.Point([designPointStandardSpace[0]])
+u0 = [designPointStandardSpace[0]]
 d2u0 = failureBoundaryStandardSpace.getHessian().hessian(u0)
 print("abscissa of the design point u0  = ", u0[0])
 print("value of the hessian of the failure boundary at u0 = ", d2u0[0,0,0])

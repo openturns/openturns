@@ -24,7 +24,7 @@ cb = cantilever_beam.CantileverBeam()
 # We set a `mean` vector and a unitary standard deviation : 
 dim = cb.dim
 mean = [50.0, 1.0, 10.0, 5.0]
-sigma = ot.Point(dim, 1.0)
+sigma = [1.0] * dim
 R = ot.IdentityMatrix(dim)
 
 # %%

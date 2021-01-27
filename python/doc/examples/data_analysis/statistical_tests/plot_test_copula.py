@@ -91,7 +91,7 @@ contour_estCop = graphCop.getDrawable(0)
 contour_estCop.setDrawLabels(False)
 # Change the levels of the iso-curves
 nlev = 21
-levels = ot.Point(nlev)
+levels = [0.0] * nlev
 for i in range(nlev):
     levels[i] = 0.25 * nlev / (nlev - i)
 contour_estCop.setLevels(levels)
