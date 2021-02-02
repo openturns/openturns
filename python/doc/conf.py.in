@@ -118,6 +118,7 @@ sphinx_gallery_conf = {
                                         'examples/numerical_methods/general_methods',
                                         'examples/numerical_methods/optimization',
                                         'examples/graphs',]),
+     'show_signature': False,
 
 }
 

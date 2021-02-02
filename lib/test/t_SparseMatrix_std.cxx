@@ -82,18 +82,26 @@ int main(int, char *[])
   fullprint << "matrix1 transposed = " << matrix4.asDenseMatrix().__str__() << std::endl;
 
 
-  /** TEST NUMBER FIVE : MULTIPLICATION WITH A POINT METHOD */
-  fullprint << "test number ten : multiplication with a point method" << std::endl;
-
   /* Create the point */
   Point pt(5);
-  for(int i = 0; i < 5; ++ i)
+  for(UnsignedInteger i = 0; i < 5; ++ i)
     pt[i] = i + 1;
   fullprint << "pt = " << pt << std::endl;
 
-  /* Check the product method */
+  // mul with Point
   Point ptResult = matrix1.operator * ( pt ) ;
   fullprint << "ptResult = " << ptResult << std::endl;
+
+  // multiply with Matrix
+  Matrix dense1(5, 6);
+  for(UnsignedInteger i = 0; i < dense1.getNbRows(); ++ i)
+    for(UnsignedInteger j = 0; j < dense1.getNbColumns(); ++ j)
+      dense1(i, j) = i + j * 10;
+
+  fullprint << "dense1=" << dense1.__str__() << std::endl;
+  Matrix res2(matrix1 * dense1);
+  fullprint << "sparse*dense=" << res2.__str__() << std::endl;
+  fullprint << "same=" << (res2 == matrix1.asDenseMatrix() * dense1) << std::endl;
 
   /** triplet ctor */
   Indices rowIndices;

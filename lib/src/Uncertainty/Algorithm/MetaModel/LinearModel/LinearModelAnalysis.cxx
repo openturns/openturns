@@ -156,7 +156,7 @@ String LinearModelAnalysis::__str__(const String & offset) const
   oss << "\n" << offset << String( awidth, '-' ) << "\n";
 
   // normality tests
-  lwidth = 0;
+  lwidth = 7; // width of "p-value"
   twidth = 20;
   const Scalar normalitytest1(getNormalityTestResultAndersonDarling().getPValue());
   const Scalar normalitytest2(getNormalityTestResultChiSquared().getPValue());

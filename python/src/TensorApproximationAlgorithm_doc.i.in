@@ -70,8 +70,8 @@ Examples
 
 Get the resulting meta model:
 
-result = algo.getResult()
-metamodel = result.getMetaModel()"
+>>> result = algo.getResult()
+>>> metamodel = result.getMetaModel()"
 
 
 //The default method used is `GreedyRankOne` from the :class:`~openturns.ResourceMap`

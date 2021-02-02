@@ -14,7 +14,7 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Create processes to aggregate
-myMesher = ot.IntervalMesher(ot.Indices([100,10]))
+myMesher = ot.IntervalMesher([100, 10])
 lowerbound = [0.0, 0.0]
 upperBound = [2.0, 4.0]
 myInterval = ot.Interval(lowerbound, upperBound)

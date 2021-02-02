@@ -63,7 +63,6 @@ public:
   /** Multiplication by a vector */
   Point operator *(const Point & rhs) const;
 
-  /** Get the dimensions of the matrix */
   /** Number of rows */
   UnsignedInteger getNbRows() const;
 
@@ -76,22 +75,22 @@ public:
   /** Matrix transpose */
   SparseMatrix transpose() const;
 
-  /** Sparse <> dense conversions */
+  /** Sparse -> dense conversion */
   Matrix asDenseMatrix() const;
 
-  /** Compress to column storage */
-  void compress() const;
+  /** Multiplication with dense matrix */
+  Matrix operator * (const Matrix & m) const;
 
   /** String converter */
   String __repr__() const override;
-//
-//   /** String converter */
-//   String __str__(const String & offset = "") const override;
-//
-//   /** Method save() stores the object through the StorageManager */
+
+  /** String converter */
+  String __str__(const String & offset = "") const override;
+
+  /** Method save() stores the object through the StorageManager */
 //   void save(Advocate & adv) const override;
-//
-//   /** Method load() reloads the object from the StorageManager */
+
+  /** Method load() reloads the object from the StorageManager */
 //   void load(Advocate & adv) override;
 
 private:
@@ -99,9 +98,11 @@ private:
   std::vector<Scalar> values_;
   std::vector<UnsignedInteger> columnPointer_;
   std::vector<UnsignedInteger> rowIndex_;
-  UnsignedInteger size_;
-  UnsignedInteger nbRows_;
-  UnsignedInteger nbColumns_;
+
+  UnsignedInteger size_ = 0;
+  UnsignedInteger nbRows_ = 0;
+  UnsignedInteger nbColumns_ = 0;
+
 } ; /* class SparseMatrix */
 
 END_NAMESPACE_OPENTURNS

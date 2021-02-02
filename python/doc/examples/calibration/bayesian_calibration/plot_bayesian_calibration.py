@@ -165,7 +165,7 @@ conditional
 thetaPriorMean = [-3.,4.,1.]
 
 # %%
-sigma0 = ot.Point([2.,1.,1.5])  # standard deviations
+sigma0 = [2.,1.,1.5]  # standard deviations
 thetaPriorCovarianceMatrix = ot.CovarianceMatrix(paramDim)
 for i in range(paramDim):
     thetaPriorCovarianceMatrix[i, i] = sigma0[i]**2

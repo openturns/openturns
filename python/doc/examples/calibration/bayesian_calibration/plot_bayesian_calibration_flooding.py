@@ -181,8 +181,8 @@ model
 KsInitial = 20.
 ZvInitial = 49.
 ZmInitial = 51.
-parameterPriorMean = ot.Point([KsInitial,ZvInitial,ZmInitial])
-paramDim = parameterPriorMean.getDimension()
+parameterPriorMean = [KsInitial, ZvInitial, ZmInitial]
+paramDim = len(parameterPriorMean)
 
 # %%
 # Define the covariance matrix of the parameters :math:`\theta` to calibrate.

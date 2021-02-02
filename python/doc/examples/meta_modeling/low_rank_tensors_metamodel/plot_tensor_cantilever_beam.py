@@ -10,7 +10,7 @@ Tensor approximation of the cantilever beam model
 # %%
 # We consider a cantilever beam defined by its Young’s modulus :math:`E`, its length :math:`L` and its section modulus :math:`I`. One end of the cantilever beam is built in a wall and we apply a concentrated bending load :math:`F` at the other end of the beam, resulting in a deviation :math:`Y`. 
 #
-# <img src="beam.png" width="200">
+# <img src="_static/beam.png" width="200">
 #
 # **Inputs**
 #
@@ -110,12 +110,15 @@ view = viewer.View(histo)
 # --------------------
 
 # %%
-# We recall that the metamodel write as :
+# We recall that the metamodel writes as:
 #
-# .. math:: f(X_1, \dots, X_d) = \sum_{i=1}^m \prod_{j=1}^d v_j^{(i)} (x_j), \forall x \in \mathbb{R}^d :math:``
+# .. math::
+#    f(X_1, \dots, X_d) = \sum_{i=1}^m \prod_{j=1}^d v_j^{(i)} (x_j), \forall x \in \mathbb{R}^d
 #   
-# with :
-#     v_j^{(i)} (x_j) = \sum_{k=1}^{n_j} \beta_{j,k}^{(i)} \phi_{j,k} (x_j) :math:``
+# with:
+#
+# .. math::
+#     v_j^{(i)} (x_j) = \sum_{k=1}^{n_j} \beta_{j,k}^{(i)} \phi_{j,k} (x_j)
 #
 # We should define :
 #
@@ -143,15 +146,14 @@ metamodel = result.getMetaModel()
 # The `run` method has optimized the hyperparameters of the metamodel (:math:`\beta` coefficients). 
 #
 # We can then print the coefficients which have been estimated using a double loop.
-#
-# >>> for j in range(myDistribution.getDimension()):
-# >>>    print("j =", j)
-# >>>    for i in range(nk[j]):
-# >>>        print(tensor.getCoefficients(i,j))
-#
 
 # %%
 tensor = result.getTensor()
+for j in range(myDistribution.getDimension()):
+    print("j =", j)
+    for i in range(maxRank):
+        for k in range(nk[j]):
+            print(tensor.getCoefficients(i, j)[k])
 
 # %%
 # Validate the metamodel

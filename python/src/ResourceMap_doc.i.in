@@ -430,8 +430,7 @@ has_key : bool
 %feature("docstring") OT::ResourceMap::Reload
 "Reload the configuration.
 
-Reverts the values of the default keys.
-Does not erase new keys."
+Reverts the values of the default keys and erases new keys."
 
 // ---------------------------------------------------------------------
 

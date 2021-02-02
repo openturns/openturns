@@ -39,15 +39,23 @@ MinimumVolumeClassifier::MinimumVolumeClassifier()
 
 /* Default constructor */
 MinimumVolumeClassifier::MinimumVolumeClassifier(const Distribution & distribution,
-    const Scalar alpha)
+    const Point & alpha)
   : ClassifierImplementation()
   , distribution_(distribution)
   , alpha_(alpha)
 {
   if (!distribution.isContinuous())
     throw InvalidArgumentException(HERE) << "Distribution must be continuous";
-  if (!(alpha >= 0.0) || !(alpha <= 1.0))
-    throw InvalidArgumentException(HERE) << "Confidence level must be in [0,1]";
+  std::sort(alpha_.begin(), alpha_.end());
+  std::unique(alpha_.begin(), alpha_.end());
+  if (alpha != alpha_)
+    throw InvalidArgumentException(HERE) << "Alpha must be sorted and unique";
+  const UnsignedInteger size = alpha_.getSize();
+  if (!size)
+    throw InvalidArgumentException(HERE) << "Alpha must be non empty";
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    if (!(alpha_[i] >= 0.0) || !(alpha_[i] <= 1.0))
+      throw InvalidArgumentException(HERE) << "Confidence level must be in [0, 1]";
 }
 
 /* Virtual constructor */
@@ -66,7 +74,7 @@ String MinimumVolumeClassifier::__repr__() const
 
 UnsignedInteger MinimumVolumeClassifier::getNumberOfClasses() const
 {
-  return 2;
+  return alpha_.getSize() + 1;
 }
 
 
@@ -75,8 +83,13 @@ UnsignedInteger MinimumVolumeClassifier::classify(const Point& inP) const
 {
   if (inP.getDimension() != distribution_.getDimension())
     throw InvalidArgumentException(HERE) << "Error: the point to classify has dimension=" << inP.getDimension() << " but the classifier expects dimension=" << distribution_.getDimension();
-
-  return getLevelSet().contains(inP) ? 1 : 0;
+  (void) getLevelSet();
+  const Scalar pdf = distribution_.computeLogPDF(inP);
+  UnsignedInteger k = 0;
+  for (; k < threshold_.getSize(); ++ k)
+    if (pdf > std::log(threshold_[k]))
+      break;
+  return k;
 }
 
 Indices MinimumVolumeClassifier::classify(const Sample & inS) const
@@ -87,24 +100,34 @@ Indices MinimumVolumeClassifier::classify(const Sample & inS) const
   return ClassifierImplementation::classify(inS);
 }
 
-LevelSet MinimumVolumeClassifier::getLevelSet() const
+LevelSet MinimumVolumeClassifier::getLevelSet(const UnsignedInteger j) const
 {
   if (!isLevelSetComputed_)
   {
-    levelSet_ = distribution_.computeMinimumVolumeLevelSetWithThreshold(alpha_, threshold_);
+    levelSetCollection_.resize(alpha_.getSize());
+    threshold_.resize(alpha_.getSize());
+    for (UnsignedInteger i = 0; i < alpha_.getSize(); ++ i)
+      levelSetCollection_[i] = distribution_.computeMinimumVolumeLevelSetWithThreshold(alpha_[i], threshold_[i]);
     isLevelSetComputed_ = true;
   }
-  return levelSet_;
+  if (j >= alpha_.getSize())
+    throw InvalidDimensionException(HERE) << "j";
+  return levelSetCollection_[j];
 }
 
 Scalar MinimumVolumeClassifier::grade(const Point& inP,
                                       const UnsignedInteger outC) const
 {
-  if (outC >= 2)
+  if (outC >= getNumberOfClasses())
     throw InvalidDimensionException(HERE) << "Class number (=" << outC << ") must be lower than number of classes (" << getNumberOfClasses() << ")";
   (void) getLevelSet();
-  const Scalar sign = 2.0 * outC - 1.0;
-  return sign * distribution_.computeLogPDF(inP);
+  const Scalar pdf = distribution_.computeLogPDF(inP);
+  UnsignedInteger k = 0;
+  for (; k < threshold_.getSize(); ++ k)
+    if (pdf > std::log(threshold_[k]))
+      break;
+  const Scalar sign = ((k == outC) ? 1.0 : -1.0);
+  return pdf * sign;
 }
 
 /* Dimension accessor */
@@ -119,7 +142,7 @@ Distribution MinimumVolumeClassifier::getDistribution() const
   return distribution_;
 }
 
-Scalar MinimumVolumeClassifier::getThreshold() const
+Point MinimumVolumeClassifier::getThreshold() const
 {
   (void) getLevelSet();
   return threshold_;
@@ -190,8 +213,8 @@ GridLayout MinimumVolumeClassifier::drawSample(const Sample & sample, const Indi
     throw InvalidArgumentException(HERE) << "Cannot draw 1-d sample";
   if (sample.getDimension() != distribution_.getDimension())
     throw InvalidArgumentException(HERE) << "Error: the sample has dimension=" << sample.getDimension() << " but the classifier expects dimension=" << dimension;
-  if (classes.isEmpty() || !classes.check(2))
-    throw InvalidArgumentException(HERE) << "Classes must be in [0,1]";
+  if (classes.isEmpty() || !classes.check(getNumberOfClasses()))
+    throw InvalidArgumentException(HERE) << "Classes must be in [0,"<<getNumberOfClasses()<<"[";
   GridLayout grid(dimension - 1, dimension - 1);
   const Description description(distribution_.getDescription());
 
@@ -206,24 +229,19 @@ GridLayout MinimumVolumeClassifier::drawSample(const Sample & sample, const Indi
         separatedSamples[k].add(sample[i]);
     }
   }
-  Description colors = {"red", "blue"};
+  Description colors = DrawableImplementation::BuildDefaultPalette(getNumberOfClasses());
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     for (UnsignedInteger j = 0; j < i; ++ j)
     {
       const Indices indices = {j, i};
       Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
-      if (classes.getSize() > 0)
-      {
-        const Cloud cloud(separatedSamples[0].getMarginal(indices), colors[classes[0]], "fsquare", "");
-        graph.add(cloud);
-      }
-
-      if (classes.getSize() > 1)
-      {
-        const Cloud cloud(separatedSamples[1].getMarginal(indices), colors[classes[1]], "fsquare", "");
-        graph.add(cloud);
-      }
+      for (UnsignedInteger k = 0; k < classes.getSize(); ++ k)
+        if (classes.getSize() > k)
+        {
+          const Cloud cloud(separatedSamples[k].getMarginal(indices), colors[classes[k]], "fsquare", "");
+          graph.add(cloud);
+        }
       grid.setGraph(i - 1, j, graph);
     }
   }

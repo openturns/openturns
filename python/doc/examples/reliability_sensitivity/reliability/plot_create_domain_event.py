@@ -89,14 +89,14 @@ outputData = f(inputData)
 
 # %%
 # The contour line associated with the 0.0 value for the first marginal.
-mycontour0 = ot.Contour(xx, yy, outputData.getMarginal(0), ot.Point([0.0]), ot.Description(["0.0"]))
+mycontour0 = ot.Contour(xx, yy, outputData.getMarginal(0), [0.0], ["0.0"])
 mycontour0.setColor("black")
 mycontour0.setLineStyle("dashed")
 graphModel0.add(mycontour0)
 
 # %%
 # The contour line associated with the 1.0 value for the first marginal.
-mycontour1 = ot.Contour(xx, yy, outputData.getMarginal(0), ot.Point([1.0]), ot.Description(["1.0"]))
+mycontour1 = ot.Contour(xx, yy, outputData.getMarginal(0), [1.0], ["1.0"])
 mycontour1.setColor("black")
 mycontour1.setLineStyle("dashed")
 graphModel0.add(mycontour1)
@@ -104,14 +104,14 @@ view = otv.View(graphModel0)
 
 # %%
 # The contour line associated with the 0.0 value for the second marginal.
-mycontour2 = ot.Contour(xx, yy, outputData.getMarginal(1), ot.Point([0.0]), ot.Description(["0.0"]))
+mycontour2 = ot.Contour(xx, yy, outputData.getMarginal(1), [0.0], ["0.0"])
 mycontour2.setColor("black")
 mycontour2.setLineStyle("dashed")
 graphModel1.add(mycontour2)
 
 # %%
 # The contour line associated with the 1.0 value for the second marginal.
-mycontour3 = ot.Contour(xx, yy, outputData.getMarginal(1), ot.Point([1.0]), ot.Description(["1.0"]))
+mycontour3 = ot.Contour(xx, yy, outputData.getMarginal(1), [1.0], ["1.0"])
 mycontour3.setColor("black")
 mycontour3.setLineStyle("dashed")
 graphModel1.add(mycontour3)
@@ -135,11 +135,9 @@ myPolygon.setEdgeColor('darkgray')
 myGraph.add(myPolygon)
 
 # Some annotation                                                                             
-texts = ot.Description(1)
-texts[0] = r'$\mathcal{D} = \{ x=(x_1, x_2) \in \mathbb{R}^2 / x_1+x_2 \in [0,1] \mathrm{~and~} 2x_1 \in [0,1] \}$'
+texts = [r'$\mathcal{D} = \{ x=(x_1, x_2) \in \mathbb{R}^2 / x_1+x_2 \in [0,1] \mathrm{~and~} 2x_1 \in [0,1] \}$']
 
-
-myText = ot.Text(ot.Point([0.25]), ot.Point([0.0]), texts)
+myText = ot.Text([0.25], [0.0], texts)
 myText.setTextSize(1)
 myGraph.add(myText)
 #view = otv.View(graphStandardSpace)

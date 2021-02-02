@@ -283,8 +283,8 @@ fig.suptitle("The suptitle")
 fig
 
 # %%
-# The `plot_kwargs` optional argument sets the arguments of the plot. In the following example, we set the color of the plot in blue. 
+# The `plot_kw` optional argument sets the arguments of the plot. In the following example, we set the color of the plot in blue.
 
 # %%
-view = otv.View(graph, plot_kwargs={'color':'blue'})
+view = otv.View(graph, plot_kw={'color':'blue'})
 plt.show()

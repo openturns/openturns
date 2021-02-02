@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file for the Lapack based methods of the CovarianceMatrix class
+ *  @brief The test file for methods of the CovarianceMatrix class
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -71,5 +71,16 @@ int main(int, char *[])
   TriangularMatrix matrix2 = matrix1.computeCholesky();
   fullprint << "matrix2=" << matrix2 << std::endl;
 
+  CovarianceMatrix matrix3(3);
+  matrix3(1, 0) = std::nan("");
+  try
+  {
+    ev = matrix3.computeSingularValues().getCollection();
+    fullprint << "ev=" << ev << std::endl;
+  }
+  catch(InvalidArgumentException &)
+  {
+    fullprint << "ok" << std::endl;
+  }
   return ExitCode::Success;
 }

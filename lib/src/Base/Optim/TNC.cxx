@@ -212,8 +212,7 @@ void TNC::run()
   int returnCode = tnc((int)dimension, &x[0], &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &low[0], &up[0], refScale, refOffset, message, getMaxCGit(), getMaximumEvaluationNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
   p_nfeval_ = 0;
 
-  result_ = OptimizationResult(dimension);
-  result_.setProblem(getProblem());
+  result_ = OptimizationResult(getProblem());
 
   // Update the result
   const UnsignedInteger size = evaluationInputHistory_.getSize();

@@ -325,6 +325,40 @@ OT_Graph_setAxes_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_Graph_setTickLocation_doc
+"Accessor to the ticks location flag.
+
+Parameters
+----------
+loc : int
+    Indicates the ticks location:
+
+    - ot.GraphImplementation.TICKNONE: no ticks,
+
+    - ot.GraphImplementation.TICKX: horizontal ticks,
+
+    - ot.GraphImplementation.TICKY: vertical ticks,
+
+    - ot.GraphImplementation.TICKXY: horizontal and vertical ticks."
+%enddef
+%feature("docstring") OT::GraphImplementation::setTickLocation
+OT_Graph_setTickLocation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Graph_getTickLocation_doc
+"Accessor to the ticks location flag.
+
+Parameters
+----------
+loc : int
+    Indicates the ticks location."
+%enddef
+%feature("docstring") OT::GraphImplementation::getTickLocation
+OT_Graph_getTickLocation_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_Graph_getLogScale_doc
 "Accessor to the indication of axes' scale of the Graph.
 

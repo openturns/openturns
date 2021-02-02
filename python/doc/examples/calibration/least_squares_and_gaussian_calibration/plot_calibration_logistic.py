@@ -57,10 +57,10 @@ def logisticModel(X):
     t0 = 1790.
     y0 = 3.9e6
     b = np.exp(c)
-    y = ot.Point(nbdates)
+    y = [0.0] * nbdates
     for i in range(nbdates):
         y[i] = a*y0/(b*y0+(a-b*y0)*np.exp(-a*(t[i]-t0)))
-    z = y/1.e6 # Convert into millions
+    z = [yi/1.e6 for yi in y] # Convert into millions
     return z
 
 
@@ -125,7 +125,7 @@ populationObservationsVector[0:10]
 # %%
 a=0.03134
 c=-22.58
-thetaPrior = ot.Point([a,c])
+thetaPrior = [a,c]
 
 
 # %%

@@ -44,7 +44,7 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Define a 2-d mesh
-indices = ot.Indices([40, 20])
+indices = [40, 20]
 mesher = ot.IntervalMesher(indices)
 lowerBound = [0., 0.]
 upperBound = [2., 1.]

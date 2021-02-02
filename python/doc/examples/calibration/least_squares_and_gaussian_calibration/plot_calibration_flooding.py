@@ -172,7 +172,7 @@ view = viewer.View(graph)
 KsInitial = 20.
 ZvInitial = 49.
 ZmInitial = 51.
-thetaPrior = ot.Point([KsInitial,ZvInitial,ZmInitial])
+thetaPrior = [KsInitial, ZvInitial, ZmInitial]
 
 # %%
 # The following statement create the calibrated function from the model. The calibrated parameters Ks, Zv, Zm are at indices 1, 2, 3 in the inputs arguments of the model.
@@ -236,7 +236,7 @@ distributionPosterior.computeBilateralConfidenceIntervalWithMarginalProbability(
 
 # %%
 mycf.setParameter(thetaPrior)
-thetaDim = thetaPrior.getDimension()
+thetaDim = len(thetaPrior)
 jacobianMatrix = ot.Matrix(nbobs,thetaDim)
 for i in range(nbobs):
     jacobianMatrix[i,:] = mycf.parameterGradient(Qobs[i]).transpose()

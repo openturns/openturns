@@ -22,6 +22,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/LinearFunction.hxx"
+#include "openturns/SpecFunc.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -158,6 +159,9 @@ void GaussianLinearCalibration::run()
   // Solve the linear least squares problem
   LeastSquaresMethod method(LeastSquaresMethod::Build(methodName_, Abar));
   const Point deltaTheta(method.solve(ybar));
+  for (UnsignedInteger i = 0; i < deltaTheta.getDimension(); ++ i)
+    if (!SpecFunc::IsNormal(deltaTheta[i])) throw InvalidArgumentException(HERE) << "The calibration problem is not identifiable";
+
   const Point thetaStar(getCandidate() + deltaTheta);
   const CovarianceMatrix covarianceThetaStar(method.getGramInverse().getImplementation());
   // Create the result object

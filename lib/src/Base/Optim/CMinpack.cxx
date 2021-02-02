@@ -401,8 +401,7 @@ void CMinpack::run()
 
   Point optimizer(dimension);
   std::copy(x.begin(), x.end(), optimizer.begin());
-  OptimizationResult result(dimension, 1);
-  result.setProblem(getProblem());
+  OptimizationResult result(getProblem());
 
   const UnsignedInteger size = evaluationInputHistory_.getSize();
 

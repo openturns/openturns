@@ -72,7 +72,7 @@ view = viewer.View(graph)
 R = 700e6  # Exact : 750e6
 C = 2500e6  # Exact : 2750e6
 Gamma = 8.0  # Exact : 10
-thetaPrior = ot.Point([R, C, Gamma])
+thetaPrior = [R, C, Gamma]
 
 
 # %%

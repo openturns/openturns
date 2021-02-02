@@ -1,13 +1,9 @@
 %feature("docstring") OT::MultiStart
-"Multi start optimization algorithm.
+"Multi-start optimization algorithm.
 
 The algorithm runs an optimization solver for N starting points and returns the
 best result of each local search.
 The algorithm succeeds when at least one local search succeeds.
-
-Available constructors:
-
-    MultiStart(*solver, startingPoints*)
 
 Parameters
 ----------
@@ -15,6 +11,12 @@ solver : :class:`~openturns.OptimizationAlgorithm`
     The internal solver
 startingPoints : 2-d sequence of float
     Starting point candidates
+
+Notes
+-----
+A global number of evaluations can be explicitely set,
+in that case all starting points might not be used depending on the number
+of evaluations allocated to the internal solver.
 
 Examples
 --------

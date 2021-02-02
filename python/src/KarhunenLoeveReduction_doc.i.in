@@ -21,6 +21,7 @@ KarhunenLoeveProjection, KarhunenLoeveLifting
 Examples
 --------
 Create a KL decomposition of a Gaussian process:
+
 >>> import openturns as ot
 >>> numberOfVertices = 10
 >>> interval = ot.Interval(-1.0, 1.0)
@@ -35,11 +36,13 @@ Create a KL decomposition of a Gaussian process:
 >>> klresult = algo.getResult()
 
 Generate some trajectories and reduce them:
+
 >>> sample2 = process.getSample(5)
 >>> reduction = ot.KarhunenLoeveReduction(klresult)
 >>> reduced = reduction(sample2)
 
 Same, but into account the trend:
+
 >>> trend = ot.TrendTransform(ot.P1LagrangeEvaluation(sample.computeMean()), mesh)
 >>> reduction = ot.KarhunenLoeveReduction(klresult, trend)
 >>> reduced = reduction(sample2)"

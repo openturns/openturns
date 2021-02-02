@@ -33,7 +33,7 @@ problem = ot.OptimizationProblem(rosenbrock)
 
 # %%
 # The optimization algorithm is instanciated from the problem to solve and the name of the algorithm
-algo = ot.Dlib(problem,'CG')
+algo = ot.Dlib(problem, 'cg')
 print("Dlib algorithm, type ", algo.getAlgorithmName())
 print("Maximum iteration number: ", algo.getMaximumIterationNumber())
 print("Maximum evaluation number: ", algo.getMaximumEvaluationNumber())
@@ -90,7 +90,7 @@ boundedProblem = ot.OptimizationProblem(rosenbrock,ot.Function(),ot.Function(),b
 
 # %%
 # Define the Dlib algorithm
-boundedAlgo = ot.Dlib(boundedProblem,"LBFGS")
+boundedAlgo = ot.Dlib(boundedProblem, "lbfgs")
 boundedAlgo.setMaxSize(15) # Default value for LBFGS' maxSize parameter is 10
 
 startingPoint = [0.5, 1.5]
@@ -153,7 +153,7 @@ lsqProblem = ot.LeastSquaresProblem(residual)
 
 # %%
 # Definition of Dlib solver, setting starting point
-lsqAlgo = ot.Dlib(lsqProblem, "LSQ")
+lsqAlgo = ot.Dlib(lsqProblem, "least_squares")
 lsqAlgo.setStartingPoint([0.0,0.0,0.0])
 
 lsqAlgo.run()

@@ -81,7 +81,7 @@ int main()
     fullprint << std::endl << "TESTS WITH GLOBAL ALGORITHM: " << std::endl << std::endl;
 
     // With not constraining bounds
-    Dlib notConstrainingBoundsGlobal(notConstrainingBoundsProblem, "Global");
+    Dlib notConstrainingBoundsGlobal(notConstrainingBoundsProblem, "global");
     notConstrainingBoundsGlobal.setMaximumEvaluationNumber(300);
     notConstrainingBoundsGlobal.setStartingPoint(Point(2));
     notConstrainingBoundsGlobal.run();
@@ -92,7 +92,7 @@ int main()
     fullprint << "      -- optimalValue = " << notConstrainingBoundsGlobal.getResult().getOptimalValue().__str__() << std::endl << std::endl;
 
     // With constraining bounds
-    Dlib constrainingBoundsGlobal(constrainingBoundsProblem, "Global");
+    Dlib constrainingBoundsGlobal(constrainingBoundsProblem, "global");
     constrainingBoundsGlobal.setMaximumEvaluationNumber(300);
     constrainingBoundsGlobal.setStartingPoint(Point(2));
     constrainingBoundsGlobal.run();

@@ -1442,6 +1442,9 @@ void ResourceMap::loadDefaultConfiguration()
 
 void ResourceMap::reload()
 {
+  std::vector<String> allKeys(getKeys());
+  for (UnsignedInteger i = 0; i < allKeys.size(); ++ i)
+    removeKey(allKeys[i]);
   loadDefaultConfiguration();
   loadConfigurationFile();
 }
