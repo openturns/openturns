@@ -269,10 +269,10 @@ n = ot.Normal()
 graph = n.drawPDF()
 
 # %%
-# The `figure_kwargs` keyword argument sets the optional arguments of the figure. In the following statement, we set the figure size in inches
+# The `figure_kw` keyword argument sets the optional arguments of the figure. In the following statement, we set the figure size in inches
 
 # %%
-view = otv.View(graph, figure_kwargs = {"figsize": (12, 8)})
+view = otv.View(graph, figure_kw = {"figsize": (12, 8)})
 
 # %%
 # The `getFigure` method returns the current figure. This allows to configure it as any other Matplotlib figure. In the following example, we configure the `suptitle`.
