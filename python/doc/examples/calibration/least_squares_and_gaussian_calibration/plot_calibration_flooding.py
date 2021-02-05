@@ -54,17 +54,19 @@ Calibration of the flooding model
 # Analysis
 # --------
 #
-# Firstly, the slope :math:`\alpha` only depends on the difference :math:`Z_m - Z_v`. 
+# First, the slope :math:`\alpha` only depends on the difference :math:`Z_m - Z_v`. 
 # This is why :math:`Z_v` and :math:`Z_m` cannot be identified at the same time. 
 # In algebraic terms, there is an infinite number of couples :math:`(Z_v, Z_m)` which 
 # generate the same difference :math:`Z_m - Z_v`. 
-# Secondly, the denominator of the expression of :math:`H` involves the product 
+#
+# Second, the denominator of the expression of :math:`H` involves the product 
 # :math:`K_s B \sqrt{\alpha}`. 
 # In algebraic terms, there is an infinite number of couples :math:`(K_s, \alpha)` which 
 # generate the same product :math:`K_s \sqrt{\alpha}`. 
 # This is why either :math:`K_s` or :math:`\alpha` can be identified separately, 
 # but not at the same time. 
 # This shows that only one parameter can be identified. 
+#
 # Hence, calibrating this model requires some regularization.
 # We return to this topic when analyzing the singular values of 
 # the Jacobian matrix.
@@ -266,12 +268,12 @@ jacobianMatrix.computeSingularValues()
 #
 # This explains why the Jacobian matrix is close to being rank-degenerate.
 #
-# Moreover, this allows to compute the actual dimensionnality of the problem. 
+# Moreover, this allows to compute the actual dimensionality of the problem. 
 # The algorithm we use makes so that the singular values are sorted in decreasing order. 
 # Moreover, by definition, the singular values are nonnegative. 
-# We see that the first singular value is close to 10, and the remaining 
-# singular values are very close to zero, relatively to the first one. 
-# This implies that the (numerical) rank of the Jacobian matrix is equal to 1, 
+# We see that the first singular value is close to :math:`10`
+# and the others are very close to :math:`0` in comparison. 
+# This implies that the (numerical) rank of the Jacobian matrix is 1, 
 # even if there are 3 parameters. 
 #
 # Hence, only one parameter can be identified, be it :math:`K_s`, :math:`Z_v` or :math:`Z_m`. 
@@ -287,7 +289,7 @@ jacobianMatrix.computeSingularValues()
 # There are several methods to solve the problem.
 #
 # * Given that the problem is not identifiable, we can use some regularization method. Two methods are provided in the library: the gaussian linear least squares `GaussianLinearCalibration` and the gaussian non linear least squares `GaussianNonlinearCalibration`.
-# * We can change the problem, replacing it with a problem which is identifiable. In the flooding model, we can consider :math:`Z_v` and :math:`Z_m` as constants and calibrate :math:`K_s` only.
+# * We can change the problem, replacing it with a problem which is identifiable. In the flooding model, we can view :math:`Z_v` and :math:`Z_m` as constants and calibrate :math:`K_s` only.
 
 # %%
 # Calibration with non linear least squares
