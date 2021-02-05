@@ -9,7 +9,7 @@ Kolmogorov-Smirnov : understand the statistics
 #
 # * We generate a sample from a gaussian distribution.
 # * We create a Uniform distribution which parameters are estimated from the sample.
-# * The Kolmogorov-Smirnov statistics is computed and plot on the empirical cumulated distribution function.
+# * Compute the Kolmogorov-Smirnov statistic and plot it on top of the empirical cumulated distribution function.
 
 # %%
 import openturns as ot
@@ -19,7 +19,12 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# The computeKSStatisticsIndex function computes the Kolmogorov-Smirnov distance between the sample and the distribution. Furthermore, it returns the index which achieves the maximum distance in the sorted sample. The following function is for teaching purposes only: use `FittingTest` for real applications.
+# The computeKSStatisticsIndex function computes the Kolmogorov-Smirnov 
+# distance between the sample and the distribution. 
+# Furthermore, it returns the index which achieves the maximum distance 
+# in the sorted sample. 
+# The following function is for teaching purposes only: use 
+# `FittingTest` for real applications.
 
 # %%
 def computeKSStatisticsIndex(sample, distribution):
@@ -48,7 +53,15 @@ def computeKSStatisticsIndex(sample, distribution):
 
 
 # %%
-# The drawKSDistance function plots the empirical distribution function of the sample and the Kolmogorov-Smirnov distance at point x. The empirical CDF is a staircase function and is discontinuous at each observation. The computeEmpiricalCDF() method computes the probability P(X <= x), but this only takes into account for half the extreme values of the CDF. The other half is P(X < x) which is approximated by P(X <= x - delta) where delta is close to zero.
+# The `drawKSDistance()` function plots the empirical distribution 
+# function of the sample and the Kolmogorov-Smirnov distance at point x. 
+# The empirical CDF is a staircase function and is discontinuous at  
+# each observation. The computeEmpiricalCDF() method computes  
+# the probability :math:`\mathbb{P}(X \leq x)`, but this only  
+# takes into account for half the extreme values of the CDF.  
+# The other half is :math:`\mathbb{P}(X < x)` which is approximated  
+# by :math:`\mathbb{P}(X \leq x - \delta)` where :math:`\delta`  
+# is close to zero.
 
 # %%
 def drawKSDistance(
@@ -82,7 +95,7 @@ def drawKSDistance(
 
 
 # %%
-# We generate a sample from a standard gaussian distribution.
+# We generate a sample from a standard normal distribution.
 
 # %%
 N = ot.Normal()
@@ -93,7 +106,9 @@ sample = N.getSample(n)
 # Compute the index which achieves the maximum Kolmogorov-Smirnov distance.
 
 # %%
-# We then create a Uniform distribution which parameters are estimated from the sample. This way, the K.S. distance is large enough to being graphically significant.
+# We then create a uiform distribution whose parameters are estimated  
+# from the sample.  
+# This way, the K.S. distance is large enough to being graphically significant.
 
 # %%
 distFactory = ot.UniformFactory()
@@ -113,4 +128,6 @@ view = viewer.View(graph)
 plt.show()
 
 # %%
-# We see that the K.S. statistics is acheived where the distance between the empirical distribution function of the sample and the candidate distribution is largest.
+# We see that the K.S. statistics is acheived where the distance  
+# between the empirical distribution function of the sample and the  
+# candidate distribution is largest.
