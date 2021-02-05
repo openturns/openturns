@@ -95,9 +95,9 @@ sample = N.getSample(n)
 # Compute the index which achieves the maximum Kolmogorov-Smirnov distance.
 
 # %%
-# We then create a uiform distribution whose parameters are estimated  
+# We then create a uniform distribution whose parameters are estimated  
 # from the sample.  
-# This way, the K.S. distance is large enough to being graphically significant.
+# This way, the K.S. distance is large enough to be graphically significant.
 
 # %%
 distFactory = ot.UniformFactory()
@@ -117,6 +117,6 @@ view = viewer.View(graph)
 plt.show()
 
 # %%
-# We see that the K.S. statistics is acheived where the distance  
+# We see that the K.S. statistics is achieved at the observation where the distance  
 # between the empirical distribution function of the sample and the  
 # candidate distribution is largest.
