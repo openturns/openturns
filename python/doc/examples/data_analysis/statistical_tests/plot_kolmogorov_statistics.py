@@ -53,36 +53,24 @@ def computeKSStatisticsIndex(sample, distribution):
 
 
 # %%
-# The `drawKSDistance()` function plots the empirical distribution 
-# function of the sample and the Kolmogorov-Smirnov distance at point x. 
-# The empirical CDF is a staircase function and is discontinuous at  
-# each observation. The computeEmpiricalCDF() method computes  
-# the probability :math:`\mathbb{P}(X \leq x)`, but this only  
-# takes into account for half the extreme values of the CDF.  
-# The other half is :math:`\mathbb{P}(X < x)` which is approximated  
-# by :math:`\mathbb{P}(X \leq x - \delta)` where :math:`\delta`  
-# is close to zero.
+# The `drawKSDistance()` function plots the empirical distribution function of the sample and the Kolmogorov-Smirnov distance at point x. The empirical CDF is a staircase function and is discontinuous at each observation. Denote by :math:`\hat{F}` the empirical CDF. For a given observation :math:`x` which achieves the maximum distance to the candidate distribution CDF, let us denote :math:`\hat{F}^- = \lim_{x \rightarrow x^-} \hat{F}(x)` and :math:`\hat{F}^+ = \lim_{x\rightarrow x^+} \hat{F}(x)`. The maximum distance can be achieved either by :math:`\hat{F}^-` or :math:`\hat{F}^+`. The `computeEmpiricalCDF(x)` method computes :math:`\hat{F}^+=\mathbb{P}(X \leq x)`. We compute :math:`\hat{F}^-` with the equation :math:`\hat{F}^- = \hat{F}^+ - 1/n` where :math:`n` is the sample size.
 
 # %%
-def drawKSDistance(
-    sample, distribution, observation, D, distFactory, delta_x=ot.Point([1.0e-6])
-):
+def drawKSDistance(sample, distribution, observation, D, distFactory):
     graph = ot.Graph("KS Distance = %.4f" % (D), "X", "CDF", True, "topleft")
-    # Vertical line at point x
-    ECDF_index = sample.computeEmpiricalCDF(observation)
-    ECDF_index_shifted = sample.computeEmpiricalCDF(observation - delta_x)
+    # Thick vertical line at point x
+    ECDF_x_plus = sample.computeEmpiricalCDF(observation)
+    ECDF_x_minus = ECDF_x_plus - 1.0 / sample.getSize()
     CDF_index = distribution.computeCDF(observation)
     curve = ot.Curve(
         [observation[0], observation[0], observation[0]],
-        [ECDF_index, ECDF_index_shifted, CDF_index],
+        [ECDF_x_plus, ECDF_x_minus, CDF_index],
     )
-    curve.setColor("green")
     curve.setLegend("KS Statistics")
     curve.setLineWidth(4.0 * curve.getLineWidth())
     graph.add(curve)
     # Empirical CDF
     empiricalCDF = ot.UserDefined(sample).drawCDF()
-    empiricalCDF.setColors(["blue"])
     empiricalCDF.setLegends(["Empirical DF"])
     graph.add(empiricalCDF)
     #
@@ -91,6 +79,7 @@ def drawKSDistance(
     cdf = distribution.drawCDF()
     cdf.setLegends([distname])
     graph.add(cdf)
+    graph.setColors(ot.Drawable_BuildDefaultPalette(3))
     return graph
 
 
