@@ -269,7 +269,7 @@ jacobianMatrix.computeSingularValues()
 # This explains why the Jacobian matrix is close to being rank-degenerate.
 #
 # Moreover, this allows to compute the actual dimensionality of the problem. 
-# The algorithm we use makes so that the singular values are sorted in decreasing order. 
+# The algorithm we use computes the singular values in descending order. 
 # Moreover, by definition, the singular values are nonnegative. 
 # We see that the first singular value is close to :math:`10`
 # and the others are very close to :math:`0` in comparison. 
@@ -278,8 +278,8 @@ jacobianMatrix.computeSingularValues()
 #
 # Hence, only one parameter can be identified, be it :math:`K_s`, :math:`Z_v` or :math:`Z_m`. 
 # The choice of the particular parameter to identify is free. 
-# However, in hydraulic studies, it is classical to calibrate Ks. 
-# In this case, the parameters Zv and Zm would be left constant. 
+# However, in hydraulic studies, the parameter :math:`K_s` is classically
+# calibrated while :math:`Z_v` and :math:`Z_m` are left constant. 
 
 # %%
 # Conclusion of the linear least squares calibration
@@ -288,7 +288,7 @@ jacobianMatrix.computeSingularValues()
 # %%
 # There are several methods to solve the problem.
 #
-# * Given that the problem is not identifiable, we can use some regularization method. Two methods are provided in the library: the gaussian linear least squares `GaussianLinearCalibration` and the gaussian non linear least squares `GaussianNonlinearCalibration`.
+# * Given that the problem is not identifiable, we can use some regularization method. Two methods are provided in the library: the Gaussian linear least squares `GaussianLinearCalibration` and the gaussian non linear least squares `GaussianNonlinearCalibration`.
 # * We can change the problem, replacing it with a problem which is identifiable. In the flooding model, we can view :math:`Z_v` and :math:`Z_m` as constants and calibrate :math:`K_s` only.
 
 # %%
