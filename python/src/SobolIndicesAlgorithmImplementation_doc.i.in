@@ -113,7 +113,7 @@ We are now going to mix these two samples to get an estimate of the sensitivity 
    \right)
 
 For the sake of stability, computations will be performed with centered output.
-Let :math:`\overline{\vect{g}}` be the sample mean of samples 
+Let :math:`\overline{\vect{g}}` be the mean of the combined samples 
 :math:`\vect{g}(\mat{A})` and :math:`\vect{g}(\mat{B})`.
 Let :math:`\tilde{\vect{g}}` be the empirically centered function defined by:
 
@@ -145,7 +145,7 @@ Notice that the value of the second order conditional variance depends on the es
 
 For multivariate outputs i.e. when :math:`n_Y>1`, we compute the Sobol' indices with respect to each output variable. 
 In this case, the methods :meth:`getFirstOrderIndices` and 
-:meth:`getTotalOrderIndices` returns the Sobol' indices of the first output, 
+:meth:`getTotalOrderIndices` return the Sobol' indices of the first output, 
 but the index of the output can be specified as input argument.
 Moreover, the indices can be aggregated [gamboa2013]_. 
 Let :math:`V_i^{(k)}` be the (first order) variance of the conditional expectation of the k-th output :math:`Y^{(k)}`:
@@ -157,7 +157,7 @@ Let :math:`V_i^{(k)}` be the (first order) variance of the conditional expectati
 for :math:`i=1,\ldots,n_X` and :math:`k=1,\ldots,n_Y`.
 Similarily, let :math:`VT_i^{(k)}` be the total variance of the conditional expectation of :math:`Y^{(k)}` for :math:`i=1,\ldots,n_X` and :math:`k=1,\ldots,n_Y`. 
 
-The indices can be aggregated using the following formulas:
+The indices can be aggregated with the following formulas:
 
 .. math::
 
@@ -202,7 +202,7 @@ OT_SobolIndicesAlgorithm_doc
 Parameters
 ----------
 i : int, optional
-    Index of the output marginal of the function, equals to :math:`0` by default.
+    Index of the output marginal of the function, equal to :math:`0` by default.
 
 Returns
 -------
@@ -279,7 +279,7 @@ OT_SobolIndicesAlgorithm_getSecondOrderIndices_doc
 Parameters
 ----------
 i : int, optional
-    Index of the output marginal of the function, equals to :math:`0` by default.
+    Index of the output marginal of the function, equal to :math:`0` by default.
 
 Returns
 -------
@@ -551,4 +551,3 @@ N : int
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::setDesign
 OT_SobolIndicesAlgorithm_setDesign_doc
-

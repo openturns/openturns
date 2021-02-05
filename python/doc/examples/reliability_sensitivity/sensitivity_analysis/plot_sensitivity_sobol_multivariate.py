@@ -12,9 +12,9 @@ Estimate Sobol' indices for a function with multivariate output
 # Introduction
 # ------------
 #
-# In this example we are quantify the sensitivity of inputs to outputs of a function based on Sobol' indices.
+# In this example we quantify the sensitivity of a function's outputs to its inputs with Sobol' indices.
 #
-# The function we consider has 5 outputs. In this case, it may be convenient to consider each output separately. It may also be interesting to aggregate the sensitivity indices to that we get a global understanding of the sensitivity of the inputs to the average output. 
+# The function we consider has 5 outputs. In this case, it may be convenient to consider each output separately. It may also be interesting to aggregate the sensitivity indices to get a global understanding of the sensitivity of the inputs to the average output. 
 
 # %%
 # Define the model
@@ -39,7 +39,7 @@ function = ot.SymbolicFunction(['x0', 'x1', 'x2', 'x3', 'x4'],
 # ---------------------------
 
 # %%
-# We first create a design of experiments with the `SobolIndicesExperiment`.
+# We first create a design of experiments with `SobolIndicesExperiment`.
 
 # %%
 size = 1000
@@ -65,7 +65,7 @@ sensitivityAnalysis = ot.SaltelliSensitivityAlgorithm(inputDesign, outputDesign,
 # %%
 # The `getFirstOrderIndices` and `getTotalOrderIndices` method respectively return estimates of first order and total Sobol' indices with a given output.
 # Since these depend on the output marginal, the index of the output must 
-# be specified (the default is to return the indice for the first output).
+# be specified (the default is to return the index for the first output).
 
 # %%
 output_dimension = function.getOutputDimension()
@@ -84,13 +84,13 @@ print("Agg. total order indices: ", agg_total_order)
 # %%
 # We see that:
 #
-# * `x1` has a rather large first order indice on the first output, but a small indice on the second output, 
+# * `x1` has a rather large first order index on the first output, but a small index on the second output, 
 #
-# * `x2` has a rather large first order indice on the first output on both outputs,
+# * `x2` has a rather large first order index on the first output on both outputs,
 #
-# * the largest aggregated Sobol' indice is `x2`, 
+# * the largest aggregated Sobol' index is `x2`, 
 #
-# * `x0` and `x5` have Sobol' indices which are close to zero, whatever the indice, be it aggregated or not.
+# * `x0` and `x5` have Sobol' indices which are close to zero regardless of whether the indices are aggregated or not.
 
 # %%
 # The `draw` method produces the following graph. The vertical bars represent the 95% confidence intervals of the estimates. 
