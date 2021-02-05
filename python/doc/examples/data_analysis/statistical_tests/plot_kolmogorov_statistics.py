@@ -19,7 +19,7 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# The computeKSStatisticsIndex function computes the Kolmogorov-Smirnov 
+# The `computeKSStatisticsIndex()` function computes the Kolmogorov-Smirnov 
 # distance between the sample and the distribution. 
 # Furthermore, it returns the index which achieves the maximum distance 
 # in the sorted sample. 
