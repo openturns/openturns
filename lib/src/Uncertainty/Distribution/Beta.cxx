@@ -25,6 +25,8 @@
 #include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Distribution.hxx"
+#include "openturns/Arcsine.hxx"
+#include "openturns/Uniform.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -242,10 +244,17 @@ Scalar Beta::computeScalarQuantile(const Scalar prob,
 Complex Beta::computeCharacteristicFunction(const Scalar x) const
 {
   if (x == 0.0) return 1.0;
-  const Scalar r1 = std::abs(x * alpha_ / (alpha_ + beta_));
-  // We have numerical stability issues for large values of r1
-  if (r1 <= 1.0) return std::exp(Complex(0.0, a_)) * SpecFunc::HyperGeom_1_1(alpha_, (alpha_ + beta_), Complex(0.0, (b_ - a_) * x));
-  return DistributionImplementation::computeCharacteristicFunction(x);
+#ifdef OPENTURNS_HAVE_MPC
+  LOGDEBUG("Use SpecFunc::HyperGeom_1_1");
+  const Complex res = std::exp(Complex(0.0, a_)) * SpecFunc::HyperGeom_1_1(alpha_, (alpha_ + beta_), Complex(0.0, (b_ - a_) * x));
+  LOGDEBUG(OSS(true) << "alpha=" << alpha_ << ", beta=" << beta_ << ", x=" << x << ", rs=" << res);  
+  return res;
+#else
+  LOGDEBUG("Use generic implementation");
+  const Complex res = DistributionImplementation::computeCharacteristicFunction(x);
+  LOGDEBUG(OSS(true) << "alpha=" << alpha_ << ", beta=" << beta_ << ", x=" << x << ", rs=" << res);  
+  return res;
+#endif
 }
 
 /* Get the roughness, i.e. the L2-norm of the PDF */
@@ -299,6 +308,7 @@ void Beta::computeCovariance() const
 Point Beta::getStandardMoment(const UnsignedInteger n) const
 {
   if (n == 0) return Point(1, 1.0);
+  if ((n % 2 == 1) && (alpha_ == beta_)) return Point(1, 0.0);
   // Here we have to convert n to a signed type else -n will produce an overflow
   const Scalar value = (n % 2 == 0 ? 1.0 : -1.0) * SpecFunc::HyperGeom_2_1(alpha_, -static_cast<Scalar>(n), (alpha_ + beta_), 2.0);
   return Point(1, value);
@@ -307,6 +317,10 @@ Point Beta::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Beta::getStandardRepresentative() const
 {
+  // Two special cases
+  if (alpha_ == 1.0 && beta_ == 1.0) return Uniform(-1.0, 1.0);
+  if (alpha_ == -0.5 && beta_ == -0.5) return Arcsine(-1.0, 1.0);
+  // General case
   return new Beta(alpha_, beta_, -1.0, 1.0);
 }
 

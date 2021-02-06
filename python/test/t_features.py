@@ -132,3 +132,15 @@ try:
 except RuntimeError:
     print('n/a')
 os.remove('feat.csv')
+
+# check that boost library was found
+print('19: special functions (Boost)'.ljust(width), end=' ')
+print('ok' if ot.SpecFunc.IsBoostAvailable() else 'n/a')
+
+# check that mpfr library was found
+print('20: special functions (MPFR)'.ljust(width), end=' ')
+print('ok' if ot.SpecFunc.IsMPFRAvailable() else 'n/a')
+
+# check that mpc library was found
+print('21: special functions (MPC)'.ljust(width), end=' ')
+print('ok' if ot.SpecFunc.IsMPCAvailable() else 'n/a')

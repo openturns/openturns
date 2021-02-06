@@ -13,10 +13,10 @@ Distribution CumulativeDistributionNetwork([Normal(mu = [0,0], sigma = [1,1], R 
  [ 0 1 ]]))][[0,1],[0,1]])
 Elliptical = false
 Continuous = true
-oneRealization=class=Point name=Unnamed dimension=2 values=[0.819143,1.55123]
-oneSample first=class=Point name=Unnamed dimension=2 values=[-0.337688,0.500922] last=class=Point name=Unnamed dimension=2 values=[-0.31133,-0.29406]
-mean=class=Point name=Unnamed dimension=2 values=[0.57312,0.562745]
-covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.693077,-0.0044764,-0.0044764,0.685993]
+oneRealization=class=Point name=Unnamed dimension=2 values=[0.819143,-7.65063]
+oneSample first=class=Point name=Unnamed dimension=2 values=[1.55123,-0.337688] last=class=Point name=Unnamed dimension=2 values=[0.0899724,0.618391]
+mean=class=Point name=Unnamed dimension=2 values=[0.564008,0.562158]
+covariance=class=CovarianceMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[0.665968,-0.00264878,-0.00264878,0.674866]
 Point= class=Point name=Unnamed dimension=2 values=[1,1]
 log pdf=-1.7971
 pdf     =0.16578
@@ -35,8 +35,8 @@ Minimum volume level set=class=LevelSet name=Unnamed dimension=2 function=class=
  [ 0 1 ]])), Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
  [ 0 1 ]]))][[0,1],[0,1]])) hessianImplementation=class=CenteredFiniteDifferenceHessian name=Unnamed epsilon=class=Point name=Unnamed dimension=2 values=[0.0001,0.0001] evaluation=MinimumVolumeLevelSetEvaluation(CumulativeDistributionNetwork([Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
  [ 0 1 ]])), Normal(mu = [0,0], sigma = [1,1], R = [[ 1 0 ]
- [ 0 1 ]]))][[0,1],[0,1]])) level=4.473
-beta=0.011413
+ [ 0 1 ]]))][[0,1],[0,1]])) level=4.547
+beta=0.010599
 Bilateral confidence interval=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-7.6506,-7.6506] upper bound=class=Point name=Unnamed dimension=2 values=[7.6506,7.6506] finite lower bound=[1,1] finite upper bound=[1,1]
 beta=1
 Unilateral confidence interval (lower tail)=class=Interval name=Unnamed dimension=2 lower bound=class=Point name=Unnamed dimension=2 values=[-7.6506,-7.6506] upper bound=class=Point name=Unnamed dimension=2 values=[2.234,2.234] finite lower bound=[1,1] finite upper bound=[1,1]
