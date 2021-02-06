@@ -87,6 +87,7 @@ StandardDistributionPolynomialFactory * StandardDistributionPolynomialFactory::c
    Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */
 StandardDistributionPolynomialFactory::Coefficients StandardDistributionPolynomialFactory::getRecurrenceCoefficients(const UnsignedInteger n) const
 {
+  LOGDEBUG(OSS() << "StandardDistributionPolynomialFactory::getRecurrenceCoefficients hasSpecificFamily=" << hasSpecificFamily_);
   if (hasSpecificFamily_) return specificFamily_.getRecurrenceCoefficients(n);
   else return orthonormalizationAlgorithm_.getRecurrenceCoefficients(n);
 }
@@ -94,126 +95,169 @@ StandardDistributionPolynomialFactory::Coefficients StandardDistributionPolynomi
 /* Check the existence of a specific family more efficient for the given measure */
 void StandardDistributionPolynomialFactory::checkSpecificFamily()
 {
-  // Check for special cases. Need a more elegant conception and implementation.
+  // Try to narrow to a specific factory more efficient than the use of a generic orthonormalization algorithm.
+  // To this end, the given measure is tested for equality with each of the measures behind the different factories
+  // The factories are tested from the simplest to the most complex. For example, a Uniform() distribution
+  // matches both the LegendreFactory and the JacobiFactory but the LegendreFactory is simpler.
   hasSpecificFamily_ = false;
-  OrthogonalUniVariatePolynomialFamily referenceFamily;
   const String measureType(measure_.getImplementation()->getClassName());
-  Bool hasClassMatch = false;
-  // Legendre factory
-  if (measureType == "Uniform")
+  const Point parameter(measure_.getParameter());
+  LOGDEBUG(OSS() << "StandardDistributionPolynomialFactory::checkSpecificFamily measure=" << measure_ << ", measureType=" << measureType << ", parameter=" << parameter);
+  // First, deal with integral valued distributions
+  if (measure_.isIntegral())
   {
-    referenceFamily = LegendreFactory();
-    hasClassMatch = true;
-  }
-  // Hermite factory
-  if (measureType == "Normal")
-  {
-    referenceFamily = HermiteFactory();
-    hasClassMatch = true;
-  }
-  // HistogramPolynomial factory
-  if (measureType == "Histogram")
-  {
-    const Point parameter(measure_.getParameter());
-    const UnsignedInteger size = (parameter.getSize() - 1) / 2;
-    const Scalar first = parameter[0];
-    Point width(size);
-    Point height(size);
-    for (UnsignedInteger i = 0; i < size; ++i)
+    if (measureType == "Bernoulli")
     {
-      width[i] = parameter[2 * i + 1];
-      height[i] = parameter[2 * i + 2];
+      specificFamily_ = KrawtchoukFactory(1, parameter[0]);
+      LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
+      hasSpecificFamily_ = true;
+      return;
     }
-
-    referenceFamily = HistogramPolynomialFactory(first, width, height);
-    hasClassMatch = true;
-  }
-  // Chebychev factory
-  if (measureType == "Arcsine")
+    if (measureType == "Binomial")
+    {
+      specificFamily_ = KrawtchoukFactory(static_cast<UnsignedInteger>(parameter[0]), parameter[1]);
+      LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
+      hasSpecificFamily_ = true;
+      return;
+    }
+    if ((measureType == "Multinomial") && (measure_.getDimension() == 1))
+    {
+      specificFamily_ = KrawtchoukFactory(static_cast<UnsignedInteger>(parameter[0]), parameter[1]);
+      LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
+      hasSpecificFamily_ = true;
+      return;
+    }
+    if (measureType == "NegativeBinomial")
+    {
+      specificFamily_ = MeixnerFactory(parameter[0], parameter[1]);
+      LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
+      hasSpecificFamily_ = true;
+      return;
+    }
+    if (measureType == "Poisson")
+    {
+      specificFamily_ = CharlierFactory(parameter[0]);
+      LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
+      hasSpecificFamily_ = true;
+      return;
+    }
+  } // isIntegral
+  if (measure_.isContinuous())
   {
-    referenceFamily = ChebychevFactory();
-    hasClassMatch = true;
-  }
-  // Jacobi (or Chebychev as a special case) factory
-  if (measureType == "Beta")
-  {
-    const Point parameter(measure_.getParameter());
-    const Scalar alpha = parameter[1] - 1.0;
-    const Scalar beta = parameter[0] - 1.0;
-    // Here we set directly the specific family as the reference distribution
-    // of the family has a different type (Arcsine) than the given distribution
-    if (alpha == -0.5 && beta == -0.5 && parameter[2] == -1.0 && parameter[3] == 1.0)
+    if (measureType == "Arcsine" && parameter[0] == -1.0 && parameter[1] == 1.0)
     {
       specificFamily_ = ChebychevFactory();
+      LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
       hasSpecificFamily_ = true;
-      // To avoid distribution comparison at the end of the method
-      hasClassMatch = false;
-    }
-    // Here we set directly the specific family as the reference distribution
-    // of the family has a different type (Uniform) than the given distribution
-    else if (alpha == 0.0 && beta == 0.0 && parameter[2] == -1.0 && parameter[3] == 1.0)
+      return;
+    } // Arcsine
+    if (measureType == "Beta")
     {
-      specificFamily_ = LegendreFactory();
+      const Scalar alpha = parameter[0] - 1.0;
+      const Scalar beta = parameter[1] - 1.0;
+      // Here we set directly the specific family as the reference distribution
+      // of the family has a different type (Arcsine) than the given distribution
+      // First, check if the range is standard
+      if (!(parameter[2] == -1.0 && parameter[3] == 1.0))
+        {
+          // If the distribution is not uniform, no specific family
+          if (!(alpha == 0.0 && beta == 0.0))
+            return;
+          // Here we are in the general uniform case
+          const Scalar first = parameter[2];
+          const Point width(1, parameter[3] - first);
+          const Point height(1, 1.0 / width[0]);
+          specificFamily_ = HistogramPolynomialFactory(first, width, height);
+          LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
+          hasSpecificFamily_ = true;
+          return;
+        }
+      // From here we know the range is [-1.0, 1.0]
+      // The return of the uniform case, standard this time...
+      if (alpha == 0.0 && beta == 0.0)
+        {
+          specificFamily_ = LegendreFactory();
+          LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
+          hasSpecificFamily_ = true;
+          return;
+        } // Uniform
+      // The arcsine case
+      if (alpha == -0.5 && beta == -0.5)
+        {
+          specificFamily_ = ChebychevFactory();
+          LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
+          hasSpecificFamily_ = true;
+          return;
+        }
+      // The general case
+      specificFamily_ = JacobiFactory(beta, alpha);
+      LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
       hasSpecificFamily_ = true;
-      // To avoid distribution comparison at the end of the method
-      hasClassMatch = false;
-    }
-    else
+      return;
+    } // Beta
+    if (measureType == "Uniform")
     {
-      referenceFamily = JacobiFactory(alpha, beta);
-      hasClassMatch = true;
+      if (parameter[0] == -1.0 && parameter[1] == 1.0)
+        specificFamily_ = LegendreFactory();
+      // See the general uniform distribution as a special histogram
+      else
+        {
+          const Scalar first = parameter[0];
+          const Point width(1, parameter[1] - first);
+          const Point height(1, 1.0 / width[0]);
+          specificFamily_ = HistogramPolynomialFactory(first, width, height);
+        }
+      hasSpecificFamily_ = true;
+      LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
+      return;
     }
-  }
-  // Laguerre factory
-  if (measureType == "Gamma")
-  {
-    const Point parameter(measure_.getParameter());
-    referenceFamily = LaguerreFactory(parameter[0] - 1.0);
-    hasClassMatch = true;
-  }
-  if (measureType == "Exponential")
-  {
-    const Point parameter(measure_.getParameter());
-    if (parameter[0] == 1.0)
+    if (measureType == "Histogram")
+    {
+      const Scalar first = parameter[0];
+      const UnsignedInteger size = (parameter.getSize() - 1) / 2;
+      Point width(size);
+      Point height(size);
+      for (UnsignedInteger i = 0; i < size; ++i)
+      {
+        width[i] = parameter[2 * i + 1];
+        height[i] = parameter[2 * i + 2];
+      }
+      if (size == 1 && first == -1.0 && width[0] == 2.0)
+      {
+        specificFamily_ = LegendreFactory();
+        LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
+        hasSpecificFamily_ = true;
+        return;
+      }
+      specificFamily_ = HistogramPolynomialFactory(first, width, height);
+      LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
+      hasSpecificFamily_ = true;
+      return;
+    } // Histogram
+    // Hermite factory
+    if (measureType == "Normal" && parameter[0] == 0.0 && parameter[1] == 1.0)
+    {
+      specificFamily_ = HermiteFactory();
+      LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
+      hasSpecificFamily_ = true;
+      return;
+    }
+    // Laguerre factory
+    if (measureType == "Gamma" && parameter[1] == 1.0 && parameter[2] == 0.0)
+    {
+      specificFamily_ = LaguerreFactory(parameter[0] - 1.0);
+      LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
+      hasSpecificFamily_ = true;
+      return;
+    }
+    if (measureType == "Exponential" && parameter[0] == 1.0 && parameter[1] == 0.0)
     {
       specificFamily_ = LaguerreFactory(0.0);
+      LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
       hasSpecificFamily_ = true;
-      // To avoid distribution comparison at the end of the method
-      hasClassMatch = false;
+      return;
     }
-  }
-  // Charlier factory
-  if (measureType == "Poisson")
-  {
-    const Point parameter(measure_.getParameter());
-    referenceFamily = CharlierFactory(parameter[0]);
-    hasClassMatch = true;
-  }
-  // Krawtchouk factory
-  if (measureType == "Binomial")
-  {
-    const Point parameter(measure_.getParameter());
-    referenceFamily = KrawtchoukFactory(static_cast<UnsignedInteger>(parameter[0]), parameter[1]);
-    hasClassMatch = true;
-  }
-  if (measureType == "Bernoulli")
-  {
-    const Point parameter(measure_.getParameter());
-    referenceFamily = KrawtchoukFactory(1, parameter[0]);
-    hasClassMatch = true;
-  }
-  // Meixner factory
-  if (measureType == "NegativeBinomial")
-  {
-    const Point parameter(measure_.getParameter());
-    referenceFamily = MeixnerFactory(parameter[0], parameter[1]);
-    hasClassMatch = true;
-  }
-  if (hasClassMatch && (referenceFamily.getMeasure() == measure_))
-  {
-    specificFamily_ = referenceFamily;
-    hasSpecificFamily_ = true;
-  }
+  } // isContinuous
 }
 
 /* String converter */

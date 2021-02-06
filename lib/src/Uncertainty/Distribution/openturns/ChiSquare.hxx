@@ -22,6 +22,7 @@
 #define OPENTURNS_CHISQUARE_HXX
 
 #include "openturns/ContinuousDistribution.hxx"
+#include "openturns/Distribution.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -107,6 +108,9 @@ public:
 
   /** Get the raw moments of the standardized distribution */
   Point getStandardMoment(const UnsignedInteger n) const override;
+
+  /** Get the standard representative in the parametric family, associated with the standard moments */
+  Distribution getStandardRepresentative() const override;
 
   /** Parameters value accessors */
   void setParameter(const Point & parameter) override;

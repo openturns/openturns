@@ -58,4 +58,4 @@ standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[0.2]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[0]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[0.0857143]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[0]
-Standard representative=Epanechnikov()
+Standard representative=Beta(alpha = 2, beta = 2, a = -1, b = 1)

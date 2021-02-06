@@ -33,43 +33,43 @@ static const Factory<GaussProductExperiment> Factory_GaussProductExperiment;
 typedef Collection< Point > PointCollection;
 
 /* Default constructor */
-GaussProductExperiment::GaussProductExperiment():
-  WeightedExperimentImplementation(),
-  collection_(0),
-  marginalDegrees_(0),
-  nodes_(0, 0)
+GaussProductExperiment::GaussProductExperiment()
+  : WeightedExperimentImplementation()
+  , collection_(0)
+  , marginalDegrees_(0)
+  , nodes_(0, 0)
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
-GaussProductExperiment::GaussProductExperiment(const Indices & marginalDegrees):
-  WeightedExperimentImplementation(),
-  collection_(0),
-  marginalDegrees_(0),
-  nodes_(0, 0)
+GaussProductExperiment::GaussProductExperiment(const Indices & marginalDegrees)
+  : WeightedExperimentImplementation()
+  , collection_(0)
+  , marginalDegrees_(0)
+  , nodes_(0, 0)
 {
   // Here we have to set a distribution of dimension compatible with the marginal degrees
   setDistributionAndMarginalDegrees(ComposedDistribution(ComposedDistribution::DistributionCollection(marginalDegrees.getSize())), marginalDegrees);
 }
 
 /* Constructor with parameters */
-GaussProductExperiment::GaussProductExperiment(const Distribution & distribution):
-  WeightedExperimentImplementation(),
-  collection_(0),
-  marginalDegrees_(0),
-  nodes_(0, 0)
+GaussProductExperiment::GaussProductExperiment(const Distribution & distribution)
+  : WeightedExperimentImplementation()
+  , collection_(0)
+  , marginalDegrees_(0)
+  , nodes_(0, 0)
 {
   setDistributionAndMarginalDegrees(distribution, Indices(distribution.getDimension(), ResourceMap::GetAsUnsignedInteger( "GaussProductExperiment-DefaultMarginalDegree" )));
 }
 
 /* Constructor with parameters */
 GaussProductExperiment::GaussProductExperiment(const Distribution & distribution,
-    const Indices & marginalDegrees):
-  WeightedExperimentImplementation(),
-  collection_(0),
-  marginalDegrees_(0),
-  nodes_(0, 0)
+    const Indices & marginalDegrees)
+  : WeightedExperimentImplementation()
+  , collection_(0)
+  , marginalDegrees_(0)
+  , nodes_(0, 0)
 {
   setDistributionAndMarginalDegrees(distribution, marginalDegrees);
 }
@@ -98,7 +98,9 @@ void GaussProductExperiment::setDistribution(const Distribution & distribution)
   const UnsignedInteger dimension = distribution.getDimension();
   if (dimension != marginalDegrees_.getSize()) throw InvalidArgumentException(HERE) << "Error: the given distribution has a dimension=" << dimension << "different from the number of marginal degrees=" << marginalDegrees_.getSize() << ".";
   collection_ = OrthogonalUniVariatePolynomialFamilyCollection(0);
-  for (UnsignedInteger i = 0; i < dimension; ++i) collection_.add(StandardDistributionPolynomialFactory(AdaptiveStieltjesAlgorithm(distribution.getMarginal(i))));
+  // Here we use the StandardDistributionPolynomialFactory class directly in order to benefit from the possible mapping to dedicated factories
+  // The affine transform between the marginals and their standard representatives will be applied in computeNodesAndWeights()
+  for (UnsignedInteger i = 0; i < dimension; ++i) collection_.add(StandardDistributionPolynomialFactory(distribution.getMarginal(i)));
   WeightedExperimentImplementation::setDistribution(distribution);
   isAlreadyComputedNodesAndWeights_ = false;
 }
@@ -161,7 +163,24 @@ void GaussProductExperiment::computeNodesAndWeights() const
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const UnsignedInteger dI = marginalDegrees_[i];
+    const Distribution marginalI(distribution_.getMarginal(i));
+    const Distribution standardMarginalI(marginalI.getStandardRepresentative());
+    // Here we compute the affine transform mapping the standard marginal into the marginal
+    // alpha -> a
+    // beta  -> b
+    // x     -> y
+    // (y - a) / (b - a) = (x - alpha) / (beta - alpha)
+    // y = a + (x - alpha) * (b - a) / (beta - alpha)
+    const Scalar alpha = standardMarginalI.getRange().getLowerBound()[0];
+    const Scalar beta  = standardMarginalI.getRange().getUpperBound()[0];
+    const Scalar a     = marginalI.getRange().getLowerBound()[0];
+    const Scalar b     = marginalI.getRange().getUpperBound()[0];
+    const Scalar m = (b - a) / (beta - alpha);
     marginalNodes[i] = collection_[i].getNodesAndWeights(dI, marginalWeights[i]);
+    // Transform the nodes if needed
+    if (!(a == 0.0 && m == 1.0))
+      for (UnsignedInteger j = 0; j < marginalNodes[i].getSize(); ++j)
+        marginalNodes[i][j] = a + m * (marginalNodes[i][j] - alpha);
   }
   // Second, multiplex everything
   nodes_ = Sample(size_, dimension);

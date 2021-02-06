@@ -55,7 +55,8 @@ OrthogonalUniVariatePolynomialFactory::OrthogonalUniVariatePolynomialFactory(con
   , recurrenceCoefficientsCache_(0)
   , polynomialsCache_(0)
 {
-  // Nothing to do. The derived class will have to call initializeCaches().
+  // The derived class will have to call initializeCaches().
+  if (measure.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error, expected a distribution of dimension 1, got dimension=" << measure.getDimension();
 }
 
 
