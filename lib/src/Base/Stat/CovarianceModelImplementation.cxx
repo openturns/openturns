@@ -662,7 +662,7 @@ void CovarianceModelImplementation::setAmplitude(const Point & amplitude)
   if (amplitude.getDimension() != outputDimension_) throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setAmplitude: the given amplitude has a dimension=" << amplitude.getDimension() << " different from the dimension=" << outputDimension_;
   for (UnsignedInteger index = 0; index < outputDimension_; ++index)
     if (!(amplitude[index] > 0.0))
-      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setAmplitude, the component " << index << " of amplitude is non positive" ;
+      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setAmplitude, the component " << index << " of amplitude=" << amplitude << " is non positive" ;
   amplitude_ = amplitude;
   updateOutputCovariance();
 }

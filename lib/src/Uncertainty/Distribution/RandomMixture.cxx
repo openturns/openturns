@@ -989,9 +989,10 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
     constant_[0] = 0.0;
   }
 
-  // We cannot use parallelism if we have more than one atom due to the characteristic function cache
-  if (distributionCollection_.getSize() > 1) setParallel(false);
-  else setParallel(distributionCollection_[0].getImplementation()->isParallel());
+  // We cannot use parallelism if we have more than two atoms due to the characteristic function cache
+  if (distributionCollection_.getSize() == 1) setParallel(distributionCollection_[0].getImplementation()->isParallel());
+  else if (distributionCollection_.getSize() == 2) setParallel(distributionCollection_[0].getImplementation()->isParallel() && distributionCollection_[1].getImplementation()->isParallel());
+  else setParallel(false);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   // Need to precompute Mean, Covariance, PositionIndicator, DispersionIndicator, ReferenceBandwidth, EquivalentNormal only if at least two atoms

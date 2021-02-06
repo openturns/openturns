@@ -365,7 +365,7 @@ void KarhunenLoeveP1Algorithm::run()
       throw InternalException(HERE) << "unknown covariance matrix storage format: " << covarianceMatrixStorage;
 
     // Define convergence index
-    const UnsignedInteger ncv = std::min(3 * nev, augmentedDimension);
+    const UnsignedInteger ncv = std::min(2 * nev + 1, augmentedDimension);
 
     // Solve EV problem
     LOGINFO("Solve the eigenvalue problem");

@@ -30,17 +30,11 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  setRandomGenerator();
 
   try
   {
-    // Set Numerical precision to 3
-    PlatformInfo::SetNumericalPrecision(3);
-
     // Learning data
-    Point levels(2);
-    levels[0] = 8;
-    levels[1] = 6;
+    Point levels = {8, 6};
     // Define the Box
     Box box(levels);
     // Get the input sample
@@ -49,22 +43,28 @@ int main(int, char *[])
     inputSample *= 10;
 
     // Define model
-    Description inputDescription(2);
-    inputDescription[0] = "x";
-    inputDescription[1] = "y";
+    Description inputDescription = {"x", "y"};
 
-    Description formula(1);
-    formula[0] = "cos(0.5*x) + sin(y)" ;
+    Description formula = {"cos(0.5*x) + sin(y)"};
     const SymbolicFunction model(inputDescription, formula);
 
     // Build the output sample
     const Sample  outputSample( model(inputSample) );
 
+    // Validation
+    Collection<Distribution> coll(2);
+    coll[0] = Uniform(1.0, 9.0);
+    coll[1] = Uniform(1.0, 9.0);
+    ComposedDistribution dist(coll);
+
+    const Sample inputValidation(dist.getSample(10));
+    const Sample outputValidation(model(inputValidation));
+
     // 2) Reimplement the squared exponential covariance model
     formula[0] = "exp(-0.5* (x * x + y * y))" ;
     const SymbolicFunction rho(inputDescription, formula);
-    const Point scale = {6.72648, 3.49326};
-    const Point amplitude = {4.90341};
+    const Point scale = {6.0, 2.0};
+    const Point amplitude = {1.5};
 
     StationaryFunctionalCovarianceModel covarianceModel(scale, amplitude, rho);
 
@@ -87,23 +87,14 @@ int main(int, char *[])
     SE.setAmplitude(amplitude);
     KrigingAlgorithm algoSE(inputSample, outputSample, SE, basis);
     Point loglikelihoodSE(algoSE.getReducedLogLikelihoodFunction()(start));
-    assert_almost_equal(loglikelihood, loglikelihoodSE, 0.0, 0.0);
-
-
-    Collection<Distribution> coll(2);
-    coll[0] = Uniform(0, 1);
-    coll[1] = Uniform(0, 1);
-    ComposedDistribution dist(coll);
-
-    const Sample inputValidation(dist.getSample(10));
-    const Sample outputValidation(metaModel(inputValidation));
+    assert_almost_equal(loglikelihood, loglikelihoodSE, 1e-8, 1e-8);
 
     // High level consistency check: does the prediction fit too?
     algoSE.setOptimizeParameters(false);
     algoSE.run();
     KrigingResult resultSE(algoSE.getResult());
     Function metaModelSE(resultSE.getMetaModel());
-    assert_almost_equal(metaModel(inputValidation), metaModelSE(inputValidation), 0.0, 0.0);
+    assert_almost_equal(metaModel(inputValidation), metaModelSE(inputValidation), 1e-8, 1e-8);
 
     // Approximation error
     assert_almost_equal(outputValidation,  metaModel(inputValidation), 5.0e-3, 5.0e-3);
