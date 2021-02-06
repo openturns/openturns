@@ -801,6 +801,9 @@
   <FittingTest-LillieforsMinimumSamplingSize value_int="10"     />
   <FittingTest-LillieforsMaximumSamplingSize value_int="100000" />
 
+  <!-- OT::PenalizedLeastSquaresAlgorithm parameters -->
+  <PenalizedLeastSquaresAlgorithm-UseNormal  value_bool="false" />
+
   <!-- OT::LeastSquaresMetaModelSelection parameters -->
   <LeastSquaresMetaModelSelection-ErrorThreshold      value_float="0.0" />
   <LeastSquaresMetaModelSelection-MaximumErrorFactor  value_float="2.0" />

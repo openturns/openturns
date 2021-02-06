@@ -42,7 +42,7 @@ public:
   typedef ApproximationAlgorithmImplementation::FunctionCollection FunctionCollection;
 
   /** Default constructor */
-  explicit PenalizedLeastSquaresAlgorithm(const Bool useNormal = true);
+  explicit PenalizedLeastSquaresAlgorithm(const Bool useNormal = ResourceMap::GetAsBool("PenalizedLeastSquaresAlgorithm-UseNormal"));
 
   /** Parameters constructor, simple least squares problem with default parameters, spherically penalized for general parameters */
   PenalizedLeastSquaresAlgorithm(const Sample & x,

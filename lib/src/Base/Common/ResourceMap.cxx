@@ -1420,6 +1420,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FittingTest-LillieforsMinimumSamplingSize", 10);
   addAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize", 100000);
 
+  // PenalizedLeastSquaresAlgorithm parameters //
+  addAsBool("PenalizedLeastSquaresAlgorithm-UseNormal", false);
+
   // LeastSquaresMetaModelSelection parameters //
   addAsScalar("LeastSquaresMetaModelSelection-ErrorThreshold", 0.0);
   addAsScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor", 2.0);
