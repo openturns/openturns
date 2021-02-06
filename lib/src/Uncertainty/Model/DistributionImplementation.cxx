@@ -562,9 +562,14 @@ Point DistributionImplementation::getRealization() const
 /* Get a numerical sample whose elements follow the distributionImplementation */
 Sample DistributionImplementation::getSample(const UnsignedInteger size) const
 {
-  Sample returnSample(size, dimension_);
+  SampleImplementation returnSample(size, dimension_);
+  UnsignedInteger shift = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
-    returnSample[i] = getRealization();
+    {
+      const Point point(getRealization());
+      std::copy(point.begin(), point.end(), returnSample.data_begin() + shift);
+      shift += dimension_;
+    }
   returnSample.setName(getName());
   returnSample.setDescription(getDescription());
   return returnSample;
@@ -573,52 +578,39 @@ Sample DistributionImplementation::getSample(const UnsignedInteger size) const
 /* Get one realization of the distribution */
 Point DistributionImplementation::getRealizationByInversion() const
 {
-  // Use CDF inversion in the 1D case
-  if (dimension_ == 1) return computeQuantile(RandomGenerator::Generate());
-  // Use conditional CDF inversion in the 1D case
-  Point point(0);
-  for (UnsignedInteger i = 0; i < dimension_; ++ i)
-  {
-    const Scalar u = RandomGenerator::Generate();
-    LOGINFO(OSS(false) << "i=" << i << ", u=" << u);
-    point.add(computeConditionalQuantile(u, point));
-    LOGINFO(OSS(false) << "i=" << i << ", u=" << u << ", point=" << point);
-  }
-  return point;
+  return getSampleByInversion(1)[0];
 }
 
 /* Get a numerical sample whose elements follow the distributionImplementation */
 Sample DistributionImplementation::getSampleByInversion(const UnsignedInteger size) const
 {
-  // Use CDF inversion in the 1D case
-  if (dimension_ == 1) return computeQuantile(RandomGenerator::Generate(size));
-  // Use conditional CDF inversion in the 1D case
-  Sample result(size, 0);
-  for (UnsignedInteger i = 0; i < dimension_; ++ i)
-  {
-    const Point u(RandomGenerator::Generate(size));
-    SampleImplementation q(size, 1);
-    q.setData(computeConditionalQuantile(u, result));
-    result.stack(q);
-  }
-  return result;
+  SampleImplementation returnSample(size, dimension_);
+  UnsignedInteger shift = 0;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      const Point point(computeSequentialConditionalQuantile(RandomGenerator::Generate(dimension_)));
+      std::copy(point.begin(), point.end(), returnSample.data_begin() + shift);
+      shift += dimension_;
+    }
+  returnSample.setName(getName());
+  returnSample.setDescription(getDescription());
+  return returnSample;
 }
 
 Sample DistributionImplementation::getSampleByQMC(const UnsignedInteger size) const
 {
-  const SobolSequence sequence(1);
-  // Use CDF inversion in the 1D case
-  if (dimension_ == 1) return computeQuantile(sequence.generate(size).getImplementation()->getData());
-  // Use conditional CDF inversion in the 1D case
-  Sample result(size, 0);
-  for (UnsignedInteger i = 0; i < dimension_; ++ i)
-  {
-    const Point u(sequence.generate(size).getImplementation()->getData());
-    SampleImplementation q(size, 1);
-    q.setData(computeConditionalQuantile(u, result));
-    result.stack(q);
-  }
-  return result;
+  static SobolSequence sequence(dimension_);
+  SampleImplementation returnSample(size, dimension_);
+  UnsignedInteger shift = 0;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      const Point point(computeSequentialConditionalQuantile(sequence.generate()));
+      std::copy(point.begin(), point.end(), returnSample.data_begin() + shift);
+      shift += dimension_;
+    }
+  returnSample.setName(getName());
+  returnSample.setDescription(getDescription());
+  return returnSample;
 }
 
 /* Get the DDF of the distribution */
@@ -1371,8 +1363,14 @@ Scalar DistributionImplementation::computeEntropy() const
 Sample DistributionImplementation::computeDDFSequential(const Sample & inSample) const
 {
   const UnsignedInteger size = inSample.getSize();
-  Sample outSample(size, 1);
-  for (UnsignedInteger i = 0; i < size; ++i) outSample[i] = computeDDF(inSample[i]);
+  SampleImplementation outSample(size, dimension_);
+  UnsignedInteger shift = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Point point(computeDDF(inSample[i]));
+      std::copy(point.begin(), point.end(), outSample.data_begin() + shift);
+      shift += dimension_;
+    }
   return outSample;
 }
 
@@ -1393,9 +1391,15 @@ struct ComputeDDFPolicy
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i] = distribution_.computeDDF(input_[i]);
+    const UnsignedInteger dimension = input_.getDimension();
+    UnsignedInteger shift = dimension * r.begin();
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+      {
+        const Point point(distribution_.computeDDF(input_[i]));
+        std::copy(point.begin(), point.end(), output_.getImplementation()->data_begin() + shift);
+        shift += dimension;
+      }
   }
-
 }; /* end struct ComputeDDFPolicy */
 
 Sample DistributionImplementation::computeDDFParallel(const Sample & inSample) const
@@ -1681,8 +1685,14 @@ Sample DistributionImplementation::computeQuantileSequential(const Point & prob,
     const Bool tail) const
 {
   const UnsignedInteger size = prob.getSize();
-  Sample result(size, dimension_);
-  for ( UnsignedInteger i = 0; i < size; ++ i ) result[i] = computeQuantile(prob[i], tail);
+  SampleImplementation result(size, dimension_);
+  UnsignedInteger shift = 0;
+  for ( UnsignedInteger i = 0; i < size; ++ i )
+    {
+      const Point point(computeQuantile(prob[i], tail));
+      std::copy(point.begin(), point.end(), result.data_begin() + shift);
+      shift += dimension_;
+    }
   return result;
 }
 
@@ -1705,7 +1715,14 @@ struct ComputeQuantilePolicy
 
   inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
   {
-    for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_[i] = distribution_.computeQuantile(prob_[i], tail_);
+    const UnsignedInteger dimension = distribution_.getDimension();
+    UnsignedInteger shift = dimension * r.begin();
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+      {
+        const Point point(distribution_.computeQuantile(prob_[i], tail_));
+        std::copy(point.begin(), point.end(), output_.getImplementation()->data_begin() + shift);
+        shift += dimension;
+      }
   }
 
 }; /* end struct ComputeQuantilePolicy */
@@ -1932,8 +1949,14 @@ Sample DistributionImplementation::computeLogPDFGradient(const Sample & inSample
 Sample DistributionImplementation::computeCDFGradient(const Sample & inSample) const
 {
   const UnsignedInteger size = inSample.getSize();
-  Sample outSample(size, getParameterDimension());
-  for (UnsignedInteger i = 0; i < size; ++i) outSample[i] = computeCDFGradient(inSample[i]);
+  SampleImplementation outSample(size, getParameterDimension());
+  UnsignedInteger shift = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+    {
+      const Point point(computeCDFGradient(inSample[i]));
+      std::copy(point.begin(), point.end(), outSample.data_begin() + shift);
+      shift += dimension_;
+    }
   return outSample;
 }
 
