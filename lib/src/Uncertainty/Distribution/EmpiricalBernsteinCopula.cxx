@@ -651,6 +651,7 @@ Point EmpiricalBernsteinCopula::getParameter() const
   {
     parameter.add(copulaSample_[i]);
   }
+  parameter.add(binNumber_);
   return parameter;
 }
 
@@ -658,7 +659,7 @@ void EmpiricalBernsteinCopula::setParameter(const Point & parameter)
 {
   const UnsignedInteger dimension = getDimension();
   const UnsignedInteger size = copulaSample_.getSize();
-  if (parameter.getDimension() != (dimension * size)) throw InvalidArgumentException(HERE) << "Expected " << (dimension * size) << " parameters";
+  if (parameter.getDimension() != (dimension * size + 1)) throw InvalidArgumentException(HERE) << "Expected " << (dimension * size) << " parameters";
   UnsignedInteger index = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
@@ -668,6 +669,21 @@ void EmpiricalBernsteinCopula::setParameter(const Point & parameter)
       ++ index;
     }
   }
+  binNumber_ = static_cast<UnsignedInteger>(parameter[index]);
+}
+
+Description EmpiricalBernsteinCopula::getParameterDescription() const
+{
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger size = copulaSample_.getSize();
+  Description parameter;
+  for (UnsignedInteger i = 0; i < size; ++ i)
+    {
+      for (UnsignedInteger j = 0; j < dimension; ++j)
+        parameter.add(String(OSS() << "s_" << i << "_" << j));
+  }
+  parameter.add("binNumber");
+  return parameter;
 }
 
 
