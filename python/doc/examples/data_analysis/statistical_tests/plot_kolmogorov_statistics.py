@@ -7,8 +7,8 @@ Kolmogorov-Smirnov : understand the statistics
 # %%
 # In this example, we illustrate how the Kolmogorov-Smirnov statistics is computed.
 #
-# * We generate a sample from a gaussian distribution.
-# * We create a Uniform distribution which parameters are estimated from the sample.
+# * We generate a sample from a normal distribution.
+# * We create a uniform distribution and estimate its parameters from the sample.
 # * Compute the Kolmogorov-Smirnov statistic and plot it on top of the empirical cumulated distribution function.
 
 # %%

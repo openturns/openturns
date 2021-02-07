@@ -8,9 +8,9 @@ Kolmogorov-Smirnov : get the statistics distribution
 # In this example, we draw the Kolmogorov-Smirnov distribution for a sample size 10. 
 # We want to test the hypothesis that this sample has the `Uniform(0, 1)` 
 # distribution. 
-# The K.S. distribution is first plot in the case where the 
-# parameters of the Uniform distribution are known. 
-# Then we plot the distribution when the parameters of the `Uniform` 
+# The K.S. distribution is first plotted in the case where the 
+# parameters of the uniform distribution are known.
+# Then we plot the distribution when the parameters of the uniform
 # distribution are estimated from the sample.
 #
 # *Reference* : Hovhannes Keutelian, "The Kolmogorov-Smirnov test when parameters are estimated from data", 30 April 1991, Fermilab
