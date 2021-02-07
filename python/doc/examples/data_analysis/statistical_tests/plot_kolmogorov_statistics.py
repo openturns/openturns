@@ -5,7 +5,7 @@ Kolmogorov-Smirnov : understand the statistics
 # %%
 
 # %%
-# In this example, we illustrate how the Kolmogorov-Smirnov statistics is computed.
+# In this example, we illustrate how the Kolmogorov-Smirnov statistic is computed.
 #
 # * We generate a sample from a normal distribution.
 # * We create a uniform distribution and estimate its parameters from the sample.
