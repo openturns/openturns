@@ -93,6 +93,17 @@ Scalar CovarianceModel::computeAsScalar(const Point &tau) const
   return getImplementation()->computeAsScalar(tau);
 }
 
+Scalar CovarianceModel::computeAsScalar(const Scalar s,
+                                        const Scalar t) const
+{
+  return getImplementation()->computeAsScalar(s, t);
+}
+
+Scalar CovarianceModel::computeAsScalar(const Scalar tau) const
+{
+  return getImplementation()->computeAsScalar(tau);
+}
+
 SquareMatrix CovarianceModel::operator() (const Scalar tau) const
 {
   return getImplementation()->operator() (tau);

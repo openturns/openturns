@@ -95,6 +95,21 @@ Scalar SphericalModel::computeAsScalar(const Collection<Scalar>::const_iterator 
   return amplitude_[0] * (1.0 - 0.5 * normTauOverScaleA * (3.0 - normTauOverScaleA * normTauOverScaleA));
 }
 
+Scalar SphericalModel::computeAsScalar(const Scalar tau) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+
+  const Scalar normTauOverScaleA = std::abs(tau / scale_[0]) / radius_;
+  if (normTauOverScaleA <= SpecFunc::ScalarEpsilon)
+    return amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_);
+  if (normTauOverScaleA >= 1.0)
+    return 0.0;
+  return amplitude_[0] * amplitude_[0] * (1.0 - 0.5 * normTauOverScaleA * (3.0 - normTauOverScaleA * normTauOverScaleA));
+}
+
 /* Discretize the covariance function on a given TimeGrid */
 CovarianceMatrix SphericalModel::discretize(const RegularGrid & timeGrid) const
 {

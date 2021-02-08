@@ -116,6 +116,19 @@ Scalar MaternModel::computeAsScalar(const Collection<Scalar>::const_iterator & s
     return outputCovariance_(0, 0) * exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
 }
 
+Scalar MaternModel::computeAsScalar(const Scalar tau) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+  const Scalar scaledPoint = std::abs(tau * sqrt2nuOverTheta_[0]);
+  if (scaledPoint <= SpecFunc::ScalarEpsilon)
+    return outputCovariance_(0, 0) * (1.0 + nuggetFactor_);
+  else
+    return outputCovariance_(0, 0) * exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
+}
+
 /* Gradient */
 Matrix MaternModel::partialGradient(const Point & s,
                                     const Point & t) const

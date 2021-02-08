@@ -21,6 +21,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Log.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/HMatrix.hxx"
 #include "openturns/HMatrixFactory.hxx"
 #include "openturns/TBB.hxx"
@@ -125,7 +126,7 @@ DiracCovarianceModel::DiracCovarianceModel(const UnsignedInteger inputDimension,
 
 void DiracCovarianceModel::computeCovariance()
 {
-  // Method that helps to compute outputCovariance_ attribut (for tau=0)
+  // Method that helps to compute outputCovariance_ (for tau=0)
   // after setAmplitude, setOutputCorrelation
   outputCovariance_ = CovarianceMatrix(outputDimension_);
   for(UnsignedInteger j = 0; j < outputDimension_; ++j) outputCovariance_(j, j) = amplitude_[j] * amplitude_[j] * (1.0 + nuggetFactor_);
@@ -185,6 +186,18 @@ Scalar DiracCovarianceModel::computeAsScalar(const Collection<Scalar>::const_ite
   }
   tauNorm = sqrt(tauNorm);
   if (tauNorm == 0)
+    return outputCovariance_(0, 0);
+  else
+    return 0.0;
+}
+
+Scalar DiracCovarianceModel::computeAsScalar(const Scalar tau) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+  if (std::abs(tau) <= SpecFunc::ScalarEpsilon)
     return outputCovariance_(0, 0);
   else
     return 0.0;

@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -58,6 +59,25 @@ def test_model(myModel, test_grad=True, x1=None, x2=None):
         print('dCov/dP=', pGrad)
         ot.PlatformInfo.SetNumericalPrecision(precision)
 
+
+def test_scalar_model(myModel, test_grad=True):
+
+    inputDimension = 1
+    dimension = 1
+    active = myModel.getActiveParameter()
+    
+    x1 = 2.0
+    x2 = -3.0
+    ott.assert_almost_equal(myModel.computeAsScalar([x1], [x2]), myModel.computeAsScalar(x1, x2), 1.0e-14, 1.0e-14)
+
+    eps = 1e-5
+ 
+    grad = myModel.partialGradient([x1], [x2])[0, 0]
+
+    x1_g = x1 + eps
+    x1_d = x1 - eps
+    gradfd = (myModel.computeAsScalar(x1_g, x2) - myModel.computeAsScalar(x1_d, x2)) / (2.0 * eps)
+    ott.assert_almost_equal(gradfd, grad, 1e-5, 1e-5)
 
 inputDimension = 2
 
@@ -156,3 +176,9 @@ test_model(myModel, test_grad=False)
 scale = [2.5, 1.5]
 myModel.setScale(scale)
 test_model(myModel, test_grad=False)
+
+# Test scalar input models
+coll = [ot.AbsoluteExponential(), ot.SquaredExponential(), ot.GeneralizedExponential()]
+coll += [ot.MaternModel(), ot.SphericalModel(), ot.ExponentiallyDampedCosineModel()]
+for model in coll:
+    test_scalar_model(model)
