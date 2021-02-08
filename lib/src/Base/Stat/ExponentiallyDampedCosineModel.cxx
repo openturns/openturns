@@ -101,6 +101,19 @@ Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Collection<Scalar>:
   return amplitude_[0] * amplitude_[0] * exp(-absTau) * cos(2.0 * M_PI * absTau);
 }
 
+Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Scalar tau) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+
+  const Scalar absTau = std::abs(tau / scale_[0]);
+  if (absTau <= SpecFunc::ScalarEpsilon)
+    return amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_);
+  return amplitude_[0] * amplitude_[0] * exp(-absTau) * cos(2.0 * M_PI * frequency_ * absTau);
+}
+
 /* Discretize the covariance function on a given TimeGrid */
 CovarianceMatrix ExponentiallyDampedCosineModel::discretize(const RegularGrid & timeGrid) const
 {
@@ -120,7 +133,6 @@ CovarianceMatrix ExponentiallyDampedCosineModel::discretize(const RegularGrid & 
     const Scalar covTau = computeAsScalar(Point(1, diag * timeStep));
     for (UnsignedInteger i = 0; i < size - diag; ++i) cov(i, i + diag) = covTau;
   }
-
   return cov;
 }
 

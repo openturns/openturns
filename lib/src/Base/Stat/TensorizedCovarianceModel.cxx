@@ -134,6 +134,14 @@ Scalar TensorizedCovarianceModel::computeAsScalar(const Collection<Scalar>::cons
                                          << "Here, output dimension = " << outputDimension_;
   return collection_[0].getImplementation()->computeAsScalar(s_begin, t_begin);
 }
+Scalar TensorizedCovarianceModel::computeAsScalar(const Scalar tau) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+  return collection_[0].getImplementation()->computeAsScalar(tau);
+}
 
 /* Computation of the covariance density function */
 SquareMatrix TensorizedCovarianceModel::operator() (const Point & s,

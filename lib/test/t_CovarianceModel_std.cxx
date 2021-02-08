@@ -84,6 +84,32 @@ static void test_model(const CovarianceModel & myModel)
   }
 }
 
+static void test_scalar_model(const CovarianceModel &myModel)
+{
+  OStream fullprint(std::cout);
+
+
+  const UnsignedInteger inputDimension = 1;
+  const UnsignedInteger dimension = 1;
+
+  const Point x1(inputDimension,  2.0);
+  const Point x2(inputDimension, -3.0);
+  assert_almost_equal(myModel.computeAsScalar(x1[0], x2[0]), myModel.computeAsScalar(x1, x2), 1.0e-14, 1.0e-14);
+
+  const  Matrix grad(myModel.partialGradient(x1, x2));
+
+  Scalar eps = 1e-3;
+  Point gradfd(inputDimension);
+  for (UnsignedInteger j = 0; j < inputDimension; ++j)
+  {
+    Point x1_g(x1);
+    Point x1_d(x1);
+    x1_g[j] += eps;
+    x1_d[j] -= eps;
+    gradfd[j] = (myModel(x1_g, x2)(0, 0) - myModel(x1_d, x2)(0, 0)) / (2.0 * eps);
+  }
+  assert_almost_equal(gradfd[0], grad(0, 0), 1.0e-5, 1.0e-5);
+}
 
 int main(int, char *[])
 {
@@ -97,12 +123,10 @@ int main(int, char *[])
     // Default input dimension parameter to evaluate the model
     const UnsignedInteger dimension = 2;
 
-
     {
       /* Default constructor */
       SquaredExponential myDefautModel;
       fullprint << "myDefautModel = " << myDefautModel << std::endl;
-
 
       SquaredExponential myModel(dimension);
       test_model(myModel);
@@ -152,7 +176,6 @@ int main(int, char *[])
       fullprint << "Validation of myModel(x_1, x_2) - myAbsoluteExponential(x_1) * mySquaredExponential(x_2) = " << myModel(point) - myAbsoluteExponential(x) * mySquaredExponential(y)  << std::endl;
       // Gradient test in comparison with FD
       test_model(myModel);
-
     }
 
     {
@@ -177,6 +200,19 @@ int main(int, char *[])
       scale[1] = 1.5;
       myModel.setScale(scale);
       test_model(myModel);
+    }
+    {
+      Collection<CovarianceModel> collection(0);
+      collection.add(AbsoluteExponential(1));
+      collection.add(SquaredExponential(1));
+      collection.add(GeneralizedExponential(1));
+      collection.add(MaternModel(1));
+      collection.add(SphericalModel(1));
+      collection.add(ExponentiallyDampedCosineModel(1));
+      for (UnsignedInteger i = 0; i < collection.getSize(); ++i)
+      {
+        test_scalar_model(collection[i]);
+      }
     }
 
   }

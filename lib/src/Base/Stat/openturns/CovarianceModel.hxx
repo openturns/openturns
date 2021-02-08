@@ -70,6 +70,11 @@ public:
 
   virtual Scalar computeAsScalar(const Point &tau) const;
 
+  virtual Scalar computeAsScalar(const Scalar s,
+                                 const Scalar t) const;
+
+  virtual Scalar computeAsScalar(const Scalar tau) const;
+
   virtual SquareMatrix operator()(const Scalar tau) const;
 
   virtual SquareMatrix operator() (const Point & tau) const;

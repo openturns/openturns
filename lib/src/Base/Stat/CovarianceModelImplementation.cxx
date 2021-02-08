@@ -183,6 +183,8 @@ Scalar CovarianceModelImplementation::computeAsScalar (const Point & s,
   if (t.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
   // Return the scalar value
+  // Even if model is stationary we do not create a new Point tau
+  // We prefer relying on the iterator method
   return computeAsScalar(s.begin(), t.begin());
 }
 
@@ -191,11 +193,33 @@ Scalar CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::
 {
   throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin, const Collection<Scalar>::const_iterator & t_begin) const";
 }
+
 Scalar CovarianceModelImplementation::computeAsScalar(const Point &) const
 {
   if (outputDimension_ != 1)
     throw NotDefinedException(HERE) << "Error: the covariance model is of dimension=" << outputDimension_ << ", expected dimension=1.";
   throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar (const Point & tau) const";
+}
+
+Scalar CovarianceModelImplementation::computeAsScalar(const Scalar s,
+                                                      const Scalar t) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+  if (isStationary())
+    return computeAsScalar(s - t);
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const Scalar s, const Scalar t) const";
+}
+
+Scalar CovarianceModelImplementation::computeAsScalar(const Scalar) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+  throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const Scalar tau) const";
 }
 
 /* Computation of the covariance function */

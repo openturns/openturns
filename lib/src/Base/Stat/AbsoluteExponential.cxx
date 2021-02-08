@@ -82,6 +82,17 @@ Scalar AbsoluteExponential::computeAsScalar(const Collection<Scalar>::const_iter
   return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance_(0, 0) * (1.0 + nuggetFactor_) : outputCovariance_(0, 0) * exp(-tauOverThetaNorm);
 }
 
+Scalar AbsoluteExponential::computeAsScalar(const Scalar tau) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+
+  const Scalar tauOverThetaNorm = std::abs(tau / scale_[0]);
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance_(0, 0) * (1.0 + nuggetFactor_) : outputCovariance_(0, 0) * exp(-tauOverThetaNorm);
+}
+
 /* Gradient */
 Matrix AbsoluteExponential::partialGradient(const Point & s,
     const Point & t) const

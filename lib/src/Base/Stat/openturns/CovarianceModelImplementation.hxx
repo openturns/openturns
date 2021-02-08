@@ -80,6 +80,11 @@ public:
                                   const Point & t) const;
   virtual Scalar computeAsScalar(const Point &tau) const;
 
+  // Special case for 1D input /output  model
+  virtual Scalar computeAsScalar(const Scalar s,
+                                 const Scalar t) const;
+  virtual Scalar computeAsScalar(const Scalar tau) const;
+
 #ifndef SWIG
   // Special case for 1D model
   virtual Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,

@@ -92,6 +92,17 @@ Scalar GeneralizedExponential::computeAsScalar(const Collection<Scalar>::const_i
   return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance_(0, 0) * (1.0 + nuggetFactor_) : outputCovariance_(0, 0) * exp(-pow(tauOverThetaNorm, p_));
 }
 
+Scalar GeneralizedExponential::computeAsScalar(const Scalar tau) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+
+  const Scalar tauOverThetaNorm = std::abs(tau / scale_[0]);
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance_(0, 0) * (1.0 + nuggetFactor_) : outputCovariance_(0, 0) * exp(-pow(tauOverThetaNorm, p_));
+}
+
 /* Gradient wrt s */
 Matrix GeneralizedExponential::partialGradient(const Point & s,
     const Point & t) const

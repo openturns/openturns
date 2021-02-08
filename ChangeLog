@@ -19,6 +19,7 @@
  * Moved Sample::computeStandardDeviationPerComponent, to computeStandardDeviation
  * Deprecated KarhunenLoeveResult::getEigenValues, use getEigenvalues
  * Removed StationaryCovarianceModel
+ * CovarianceModel.computeAsScalar allows scalars
 
 === Documentation ===
 

@@ -87,6 +87,17 @@ Scalar SquaredExponential::computeAsScalar(const Collection<Scalar>::const_itera
   return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? outputCovariance_(0, 0) * (1.0 + nuggetFactor_) : outputCovariance_(0, 0) * exp(-0.5 * tauOverTheta2);
 }
 
+Scalar SquaredExponential::computeAsScalar(const Scalar tau) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+
+  const Scalar tauOverTheta2 = tau * tau / (scale_[0]  * scale_[0]);
+  return tauOverTheta2 <= SpecFunc::ScalarEpsilon ? outputCovariance_(0, 0) * (1.0 + nuggetFactor_) : outputCovariance_(0, 0) * exp(-0.5 * tauOverTheta2);
+}
+
 /* Gradient */
 Matrix SquaredExponential::partialGradient(const Point & s,
     const Point & t) const

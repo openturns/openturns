@@ -19,9 +19,9 @@ Available usages:
 
 Parameters
 ----------
-s, t : sequences of float
+s, t : floats (if :math:`n=1`) or sequences of floats (any :math:`n`)
     Multivariate index :math:`(\vect{s}, \vect{t}) \in \cD \times \cD`
-tau : sequence of float
+tau : float (if :math:`n=1`) or sequence of floats (any :math:`n`)
     Multivariate index :math:`\vect{\tau} \in \cD`
 
 Returns
@@ -67,9 +67,9 @@ covariance matrix:
 
     \mat{C}_{1,\dots,k} = \left(
         \begin{array}{cccc}
-        C(\vect{t}_1, \vect{t}_1) &C(\vect{t}_1, \vect{t}_2) & \dots & 
+        C(\vect{t}_1, \vect{t}_1) &C(\vect{t}_1, \vect{t}_2) & \dots &
         C(\vect{t}_1, \vect{t}_{k}) \\
-        \dots & C(\vect{t}_2, \vect{t}_2)  & \dots & 
+        \dots & C(\vect{t}_2, \vect{t}_2)  & \dots &
         C(\vect{t}_2, \vect{t}_{k}) \\
         \dots & \dots & \dots & \dots \\
         \dots & \dots & \dots & C(\vect{t}_{k}, \vect{t}_{k})
@@ -123,10 +123,10 @@ HMatrix : :class:`~openturns.HMatrix`
 
 Notes
 -----
-This method si similar to the *discretize* method. This method requires that 
+This method is similar to the :meth:`discretize` method. This method requires that
 OpenTURNS has been compiled with the hmat library.
-The method is helpfull for very large parameters (Mesh, grid, Sample) 
-as its compress data.
+The method is helpful for very large parameters (Mesh, grid, Sample)
+because it compresses data.
 "
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::discretizeHMatrix
@@ -154,10 +154,10 @@ HMatrix : :class:`~openturns.HMatrix`
 
 Notes
 -----
-This method si similar to the *discretizeAndFactorize* method. This method 
+This method is similar to the :meth:`discretizeAndFactorize` method. This method requires that
 requires that OpenTURNS has been compiled with the hmat library.
-The method is helpfull for very large parameters (Mesh, grid, Sample) 
-as its compress data.
+The method is helpful for very large parameters (Mesh, grid, Sample)
+because it compresses data.
 "
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::discretizeAndFactorizeHMatrix
@@ -180,7 +180,7 @@ OT_CovarianceModel_discretizeRow_doc
 Returns
 -------
 amplitude : :class:`~openturns.Point`
-    The amplitude parameter :math:`\vect{\sigma} \in \Rset^d` of the covariance 
+    The amplitude parameter :math:`\vect{\sigma} \in \Rset^d` of the covariance
     function."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getAmplitude
@@ -269,7 +269,7 @@ OT_CovarianceModel_getParameterDescription_doc
 Returns
 -------
 scale : :class:`~openturns.Point`
-    The scale parameter :math:`\vect{\theta} \in \Rset^n` used in the 
+    The scale parameter :math:`\vect{\theta} \in \Rset^n` used in the
     covariance function."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getScale
@@ -386,7 +386,7 @@ Parameters
 ----------
 amplitude : :class:`~openturns.Point`
     The amplitude parameter :math:`\vect{\sigma} \in \Rset^d` to be used in the
-    covariance function. 
+    covariance function.
     Its size must be equal to the dimension of the covariance function."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::setAmplitude
@@ -585,4 +585,3 @@ description : :class:`~openturns.Description`
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::getFullParameterDescription
 OT_CovarianceModel_getFullParameterDescription_doc
-

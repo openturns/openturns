@@ -87,6 +87,20 @@ Scalar StationaryFunctionalCovarianceModel::computeAsScalar(const Collection<Sca
   return outputCovariance_(0, 0) * rho_(tauOverTheta)[0];
 }
 
+Scalar StationaryFunctionalCovarianceModel::computeAsScalar(const Scalar tau) const
+{
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
+
+  const Scalar tauOverThetaNorm = std::abs(tau / scale_[0]);
+  if (tauOverThetaNorm <= SpecFunc::ScalarEpsilon)
+    return outputCovariance_(0, 0) * (1.0 + nuggetFactor_);
+  const Point tauOverTheta(1, tau / scale_[0]); 
+  return outputCovariance_(0, 0) * rho_(tauOverTheta)[0];
+}
+
 /* Gradient */
 Matrix StationaryFunctionalCovarianceModel::partialGradient(const Point & s,
     const Point & t) const
