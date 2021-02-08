@@ -39,6 +39,7 @@
  * #1737 (Low rank tensor doc issues)
  * #1742 (The example which shows how to set the figure size is wrong.)
  * #1759 (Kriging model with StationaryFunctionalCovarianceModel might provide bad results)
+ * #1768 (Bug in ExponentiallyDampedCosineModel & SphericalModel)
 
 
 == 1.16 release (2020-11-16) == #release-1.16

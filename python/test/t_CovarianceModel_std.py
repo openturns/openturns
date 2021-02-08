@@ -92,12 +92,12 @@ myModel = ot.MaternModel([2.0] * inputDimension, [3.0], 1.5)
 test_model(myModel)
 
 
-myDefautModel = ot.ExponentiallyDampedCosineModel([2.0], [3.0], 1.5)
+myDefautModel = ot.ExponentiallyDampedCosineModel([2.0], [3.0], 1)
 print('myDefautModel = ',  myDefautModel)
 test_model(myDefautModel)
 
 myModel = ot.ExponentiallyDampedCosineModel(
-    [2.0] * inputDimension, [3.0], 1.5)
+    [2.0] * inputDimension, [3.0], 1)
 test_model(myModel)
 
 myDefautModel = ot.SphericalModel([2.0], [3.0], 4.5)

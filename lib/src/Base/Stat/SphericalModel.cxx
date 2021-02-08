@@ -67,10 +67,14 @@ Scalar SphericalModel::computeAsScalar(const Point &tau) const
 {
   if (tau.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In SphericalModel::computeStandardRepresentative: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
-  Point tauOverTheta(inputDimension_);
+  Scalar normTauOverScaleA = 0;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i)
-    tauOverTheta[i] = tau[i] / scale_[i];
-  const Scalar normTauOverScaleA = tauOverTheta.norm() / radius_;
+  {
+    const Scalar dx = tau[i] / scale_[i];
+    normTauOverScaleA += dx * dx;
+  }
+  normTauOverScaleA = sqrt(normTauOverScaleA);
+  normTauOverScaleA /= radius_;
   if (normTauOverScaleA <= SpecFunc::ScalarEpsilon)
     return amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_);
   if (normTauOverScaleA >= 1.0)
@@ -79,7 +83,7 @@ Scalar SphericalModel::computeAsScalar(const Point &tau) const
 }
 
 Scalar SphericalModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
-    const Collection<Scalar>::const_iterator & t_begin) const
+                                       const Collection<Scalar>::const_iterator & t_begin) const
 {
   Scalar normTauOverScaleA = 0;
   Collection<Scalar>::const_iterator s_it = s_begin;
@@ -90,9 +94,10 @@ Scalar SphericalModel::computeAsScalar(const Collection<Scalar>::const_iterator 
     normTauOverScaleA += dx * dx;
   }
   normTauOverScaleA = sqrt(normTauOverScaleA) / radius_;
-  if (normTauOverScaleA <= SpecFunc::ScalarEpsilon) return 1.0 + nuggetFactor_;
+  if (normTauOverScaleA <= SpecFunc::ScalarEpsilon)
+    return amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_);
   if (normTauOverScaleA >= 1.0) return 0.0;
-  return amplitude_[0] * (1.0 - 0.5 * normTauOverScaleA * (3.0 - normTauOverScaleA * normTauOverScaleA));
+  return amplitude_[0] * amplitude_[0] * (1.0 - 0.5 * normTauOverScaleA * (3.0 - normTauOverScaleA * normTauOverScaleA));
 }
 
 /* Discretize the covariance function on a given TimeGrid */
