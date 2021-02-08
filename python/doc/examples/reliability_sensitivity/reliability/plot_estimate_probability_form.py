@@ -6,8 +6,8 @@ Use the FORM - SORM algorithms
 # In this example we estimate a failure probability with the `FORM` algorithm on the :ref:`cantilever beam <use-case-cantilever-beam>` example. More precisely, we show how to use the associated results:
 #
 # - the design point in both physical and standard space,
-# - the probability estimation according to the FORM approximation, and the following SORM ones: Tvedt, Hohen-Bichler and Breitung,
-# - the Hasofer reliability index and the generalized ones evaluated from the Breitung, Tvedt and Hohen-Bichler approximations,
+# - the probability estimation according to the FORM approximation, and the following SORM ones: Tvedt, Hohenbichler and Breitung,
+# - the Hasofer reliability index and the generalized ones evaluated from the Breitung, Tvedt and Hohenbichler approximations,
 # - the importance factors defined as the normalized director factors of the design point in the :math:`U`-space
 # - the sensitivity factors of the Hasofer reliability index and the FORM probability.
 # - the coordinates of the mean point in the standard event space.

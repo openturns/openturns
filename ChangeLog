@@ -28,6 +28,7 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #1431 (The figure for LHSExperiment is not accurate)
  * #1459 (There is no example which shows how to set a column of a Sample)
  * #1497 (There is no example to create a multivariate Normal distribution)
  * #1506 (The Brent class has no example)
