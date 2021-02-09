@@ -180,13 +180,13 @@ Point KrigingEvaluation::operator()(const Point & inP) const
   if (dimension == 1)
   {
     KrigingEvaluationPointFunctor1D functor( inP, *this );
-    TBB::ParallelReduce( 0, trainingSize, functor );
+    TBB::ParallelReduceIf(covarianceModel_.getImplementation()->isParallel(), 0, trainingSize, functor );
     value[0] = functor.accumulator_;
   }
   else
   {
     KrigingEvaluationPointFunctor functor( inP, *this );
-    TBB::ParallelReduce( 0, trainingSize, functor );
+    TBB::ParallelReduceIf(covarianceModel_.getImplementation()->isParallel(), 0, trainingSize, functor );
     value = functor.accumulator_;
   }
   // Evaluate the basis part sequentially
@@ -279,12 +279,12 @@ Sample KrigingEvaluation::operator()(const Sample & inS) const
   if (dimension == 1)
   {
     const KrigingEvaluationSampleFunctor1D functor( inS, result, *this);
-    TBB::ParallelFor( 0, size, functor );
+    TBB::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor );
   }
   else
   {
     const KrigingEvaluationSampleFunctor functor( inS, result, *this );
-    TBB::ParallelFor( 0, size, functor );
+    TBB::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor );
   }
 
   // Evaluate the basis part sequentially
