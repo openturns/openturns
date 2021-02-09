@@ -35,14 +35,16 @@ effects, i.e. with a reasonably small number of nonzero components, prior to
 selecting those associated with higher-order interactions.
 
 For any real number :math:`q \in ]0, 1]`, one defines the anisotropic hyperbolic
-norm of a multi-index :math:`a` by:
+norm of a multi-index :math:`\vect{\alpha}` by:
 
 .. math::
     
-    \| \vect{a} \|_{\vect{w}, q} = \left( \sum_{i=1}^{n_X} w_i a^q \right)^{1/q}
+    \| \vect{\alpha} \|_{\vect{w}, q} = \left( \sum_{i=1}^{n_X} w_i \alpha_i^q \right)^{1/q}
 
-where the :math:`w_i`'s are real positive numbers. This would lead to first
-select the basis polynomials depending on a specific subset of input variables.
+where :math:`n_X` is the number of input variables and :math:`w_i > 0` are 
+real positive numbers called the weights. 
+This lead to select first the basis polynomials depending on a specific subset 
+of input variables.
 
 Examples
 --------
