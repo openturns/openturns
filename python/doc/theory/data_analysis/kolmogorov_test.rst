@@ -136,3 +136,10 @@ This method is also referred to in the literature as Kolmogorov's Test.
     - [dagostino1986]_
     - [sprent2001]_
     - [bhattacharyya1997]_
+    - "On the Kolmogorov-Smirnov test for normality with mean and variance unknown", Lilliefors, H. W., Jour. Amer. Stat Assoc., 62, 399-402, 1967.
+    - "The Kolmogorov-Smirnov test when parameters are estimated from data", Hovhannes Keutelian, 30 April 1991, Fermilab
+    - "Lilliefors/Van Soest’s test of normality." Hervé Abdi, Paul Molin. Neil Salkind (Ed.) (2007). Encyclopedia of Measurement and Statistics.
+    - "New table and numerical approximations for approximations for Kolmogorov-Smirnov / Lillifors / Van Soest normality test." Hervé Abdi, Paul Molin. 1998
+    - "Tables for the Lilliefors and Modified Cramer–von Mises Tests of Normality.", W. F. Scott & B. Stewart. Communications in Statistics - Theory and Methods. Volume 40, 2011 - Issue 4. Pages 726-730.
+    - "Lilliefors Test for Exponentiality: Large Deviations,Asymptotic Efficiency, and Conditions of Local Optimality." Ya. Yu. Nikitin and A.V.Tchirina.
+
