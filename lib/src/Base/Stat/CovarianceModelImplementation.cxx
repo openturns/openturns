@@ -416,7 +416,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
     CovarianceMatrix covarianceMatrix(size);
     const CovarianceModelDiscretizeScalarPolicy policy(vertices, covarianceMatrix, *this);
     // The loop is over the lower block-triangular part
-    TBB::ParallelForCondition(isParallel(), 0, size * (size + 1) / 2, policy);
+    TBB::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
     return covarianceMatrix;
   }
   else
@@ -425,7 +425,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
     CovarianceMatrix covarianceMatrix(fullSize);
     const CovarianceModelDiscretizePolicy policy( vertices, covarianceMatrix, *this );
     // The loop is over the lower block-triangular part
-    TBB::ParallelForCondition(isParallel(), 0, size * (size + 1) / 2, policy);
+    TBB::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
     return covarianceMatrix;
   }
 }
@@ -455,7 +455,7 @@ TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Sam
     CovarianceMatrix covarianceMatrix(size);
     const CovarianceModelDiscretizeScalarPolicy policy( vertices, covarianceMatrix, *this );
     // The loop is over the lower block-triangular part
-    TBB::ParallelForCondition(isParallel(), 0, size * (size + 1) / 2, policy);
+    TBB::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
     // Compute the Cholesky
     return covarianceMatrix.computeCholesky(false);
   }
@@ -534,12 +534,12 @@ Sample CovarianceModelImplementation::discretizeRow(const Sample & vertices,
   if (outputDimension_ == 1)
   {
     const CovarianceModelScalarDiscretizeRowPolicy policy( vertices, p, result, *this );
-    TBB::ParallelForCondition(isParallel(), 0, size, policy);
+    TBB::ParallelForIf(isParallel(), 0, size, policy);
   }
   else
   {
     const CovarianceModelDiscretizeRowPolicy policy( vertices, p, result, *this );
-    TBB::ParallelForCondition(isParallel(), 0, size, policy);
+    TBB::ParallelForIf(isParallel(), 0, size, policy);
   }
   return result;
 }

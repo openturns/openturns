@@ -97,7 +97,7 @@ Indices ClassifierImplementation::classify(const Sample & inS) const
   const UnsignedInteger size = inS.getSize();
   Indices result(size);
   const ClassifyPolicy policy(inS, result, this);
-  TBB::ParallelForCondition(isParallel_, 0, size, policy);
+  TBB::ParallelForIf(isParallel_, 0, size, policy);
   return result;
 }
 
