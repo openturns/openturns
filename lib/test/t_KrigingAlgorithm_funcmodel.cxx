@@ -60,7 +60,7 @@ int main(int, char *[])
     // Build the output sample
     const Sample  outputSample( model(inputSample) );
 
-    // 2) Definition of covariance model
+    // 2) Reimplement the squared exponential covariance model
     formula[0] = "exp(-0.5* (x * x + y * y))" ;
     const SymbolicFunction rho(inputDescription, formula);
     const Point scale = {6.72648, 3.49326};
@@ -71,17 +71,25 @@ int main(int, char *[])
     // 3) Basis definition
     Basis basis(LinearBasisFactory(2).build());
 
-    // 4) Kriring algorithm
+    // 4) Kriging algorithm
     KrigingAlgorithm algo(inputSample, outputSample, covarianceModel, basis);
+    Point start(inputSample.getDimension(), 50.0);
+    Point loglikelihood(algo.getReducedLogLikelihoodFunction()(start));
     algo.setOptimizeParameters(false);
     algo.run();
-
-    // Get result
     KrigingResult result(algo.getResult());
-
-    // Get meta model
     Function metaModel(result.getMetaModel());
- 
+
+
+    // Consistency check: does the reimplementation fit the SquaredExponential class?
+    SquaredExponential SE(inputSample.getDimension());
+    SE.setScale(scale);
+    SE.setAmplitude(amplitude);
+    KrigingAlgorithm algoSE(inputSample, outputSample, SE, basis);
+    Point loglikelihoodSE(algoSE.getReducedLogLikelihoodFunction()(start));
+    assert_almost_equal(loglikelihood, loglikelihoodSE, 0.0, 0.0);
+
+
     Collection<Distribution> coll(2);
     coll[0] = Uniform(0, 1);
     coll[1] = Uniform(0, 1);
@@ -89,6 +97,13 @@ int main(int, char *[])
 
     const Sample inputValidation(dist.getSample(10));
     const Sample outputValidation(metaModel(inputValidation));
+
+    // High level consistency check: does the prediction fit too?
+    algoSE.setOptimizeParameters(false);
+    algoSE.run();
+    KrigingResult resultSE(algoSE.getResult());
+    Function metaModelSE(resultSE.getMetaModel());
+    assert_almost_equal(metaModel(inputValidation), metaModelSE(inputValidation), 0.0, 0.0);
 
     // Approximation error
     assert_almost_equal(outputValidation,  metaModel(inputValidation), 5.0e-3, 5.0e-3);

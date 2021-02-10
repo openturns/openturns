@@ -38,6 +38,7 @@
  * #1729 (LinearModelAnalysis sometimes fail)
  * #1737 (Low rank tensor doc issues)
  * #1742 (The example which shows how to set the figure size is wrong.)
+ * #1752 (Error while estimating the reduced log-likelihood when using a StationaryFunctionalCovarianceModel)
  * #1759 (Kriging model with StationaryFunctionalCovarianceModel might provide bad results)
 
 
