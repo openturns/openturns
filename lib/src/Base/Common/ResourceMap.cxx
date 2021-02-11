@@ -1422,9 +1422,10 @@ void ResourceMap::loadDefaultConfiguration()
 
   // PenalizedLeastSquaresAlgorithm parameters //
   addAsBool("PenalizedLeastSquaresAlgorithm-UseNormal", false);
-
+  
   // LeastSquaresMetaModelSelection parameters //
   addAsScalar("LeastSquaresMetaModelSelection-ErrorThreshold", 0.0);
+  addAsScalar("LeastSquaresMetaModelSelection-MaximumError", 0.5);
   addAsScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor", 2.0);
   addAsString("LeastSquaresMetaModelSelection-DecompositionMethod", "SVD");
 
