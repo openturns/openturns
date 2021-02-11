@@ -71,9 +71,13 @@ GeneralizedExponential * GeneralizedExponential::clone() const
 Scalar GeneralizedExponential::computeAsScalar(const Point & tau) const
 {
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
-  Point tauOverTheta(inputDimension_);
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const Scalar tauOverThetaNorm = tauOverTheta.norm();
+  Scalar tauOverThetaNorm = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar dx = tau[i] / scale_[i];
+    tauOverThetaNorm += dx * dx;
+  }
+  tauOverThetaNorm = sqrt(tauOverThetaNorm);
   return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance_(0, 0) * (1.0 + nuggetFactor_) : outputCovariance_(0, 0) * exp(-pow(tauOverThetaNorm, p_));
 }
 
