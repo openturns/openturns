@@ -201,6 +201,7 @@ class View(object):
                 axes = self._fig.axes
 
         if isinstance(graph, ot.GridLayout):
+            self._ax = []
             for i in range(graph.getNbRows()):
                 for j in range(graph.getNbColumns()):
                     graphij = graph.getGraph(i, j)
@@ -209,6 +210,7 @@ class View(object):
                     axes = [self._fig.add_subplot(graph.getNbRows(), graph.getNbColumns(
                     ), 1 + i * graph.getNbColumns() + j, **axes_kw)]
                     axes[0].axison = graphij.getAxes()
+                    axes[0].set_title( self._ToUnicode(graphij.getTitle()))
                     # hide frame top/right
                     if LooseVersion(matplotlib.__version__) > '3.0':
                         axes[0].spines['right'].set_visible(False)
@@ -216,7 +218,8 @@ class View(object):
                     View(graphij, figure=self._fig, axes=axes, plot_kw=plot_kw,
                          contour_kw=contour_kw, clabel_kw=clabel_kw,
                          legend_kw=legend_kw)
-                    self._fig.suptitle(self._ToUnicode(graph.getTitle()))
+                    self._ax += axes
+            self._fig.suptitle(self._ToUnicode(graph.getTitle()))
             return
 
         drawables = graph.getDrawables()
@@ -276,7 +279,7 @@ class View(object):
         for drawable in drawables:
             drawableKind = drawable.getImplementation().getClassName()
 
-            # reset working dictionaries by explicitely creating copies
+            # reset working dictionaries by explicitly creating copies
             plot_kw = dict(plot_kw_default)
             bar_kw = dict(bar_kw_default)
             pie_kw = dict(pie_kw_default)
