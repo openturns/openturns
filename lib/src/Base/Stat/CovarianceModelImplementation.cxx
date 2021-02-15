@@ -740,7 +740,7 @@ void CovarianceModelImplementation::setFullParameter(const Point & parameter)
   for (UnsignedInteger i = 0; i < inputDimension_; ++ i)
   {
     if (!(parameter[index] > 0.0))
-      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setParameter, the component " << index << " of scale is non positive" ;
+      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setFullParameter, the component " << index << " of scale is non positive";
     scale_[i] = parameter[index];
     ++ index;
   }
@@ -748,7 +748,7 @@ void CovarianceModelImplementation::setFullParameter(const Point & parameter)
   for (UnsignedInteger i = 0; i < outputDimension_; ++ i)
   {
     if (!(parameter[index] > 0.0))
-      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setParameter, the component " << index << " of amplitude is non positive" ;
+      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setFullParameter, the component " << index << " of amplitude is non positive";
     amplitude_[i] = parameter[index];
     ++ index;
   }
