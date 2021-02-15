@@ -94,7 +94,7 @@ protected:
 private:
 
   /** The underlying order statistics distribution */
-  MaximumEntropyOrderStatisticsDistribution distribution_;
+  MaximumEntropyOrderStatisticsDistribution maxEntropyDistribution_;
 
 }; /* class MaximumEntropyOrderStatisticsCopula */
 
