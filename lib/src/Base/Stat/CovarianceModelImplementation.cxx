@@ -337,6 +337,9 @@ Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
 /* Discretize the covariance function on a given TimeGrid/Mesh */
 CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & timeGrid) const
 {
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+
   if (isStationary())
   {
     const UnsignedInteger size = timeGrid.getN();
@@ -344,6 +347,22 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & t
     const UnsignedInteger fullSize = size * outputDimension_;
     CovarianceMatrix covarianceMatrix(fullSize);
 
+    if (outputDimension_ == 1)
+    {
+      // The stationary property of this model allows to optimize the discretize operation
+      // over a regular time grid: the large covariance matrix is block-diagonal
+      // Fill the matrix by block-diagonal
+      // The main diagonal has a specific treatment as only its lower triangular part
+      // has to be copied
+      for (UnsignedInteger diag = 0; diag < size; ++diag)
+      {
+        const Scalar covTau = computeAsScalar(diag * timeStep);
+        for (UnsignedInteger i = 0; i < size - diag; ++i)
+          covarianceMatrix(i, i + diag) = covTau;
+      }
+      return covarianceMatrix;
+    }
+    // General multivariate (stationary) case
     // Fill-in the matrix by blocks
     for (UnsignedInteger diagonalOffset = 0; diagonalOffset < size; ++diagonalOffset)
     {
@@ -364,6 +383,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & t
     } // row index of the block
     return covarianceMatrix;
   }
+  // Non stationary case
   return discretize(timeGrid.getVertices());
 }
 
