@@ -29,6 +29,11 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #1431 (The figure for LHSExperiment is not accurate)
+ * #1459 (There is no example which shows how to set a column of a Sample)
+ * #1497 (There is no example to create a multivariate Normal distribution)
+ * #1506 (The Brent class has no example)
+ * #1650 (There is no example of a parametric StationaryFunctionalCovarianceModel)
  * #1661 (XMLH5StorageManager does not store IndicesCollection into HDF5 files)
  * #1662 (Operator() of a CovarianceModel with multidimensional output should yield object of type SquareMatrix)
  * #1680 (QuadraticBasisFactory multiplies cross products by 2)
@@ -37,6 +42,7 @@
  * #1714 (The log-PDF of the Pareto is wrong)
  * #1721 (The `draw` method of `SobolSimulationAlgorithm` does not reuse the descriptions)
  * #1729 (LinearModelAnalysis sometimes fail)
+ * #1731 (The Extreme value example may be improved)
  * #1737 (Low rank tensor doc issues)
  * #1742 (The example which shows how to set the figure size is wrong.)
  * #1752 (Error while estimating the reduced log-likelihood when using a StationaryFunctionalCovarianceModel)
@@ -100,7 +106,6 @@
 === Python module ===
  * Renamed Viewer *_kwargs arguments to *_kw (matplotlib convention)
  * Add ProcessSample Field accessors
- * Added Sample::BuildFromPoint
 
 === Miscellaneous ===
  * Do not compute Lagrange multipliers by default during an optimization

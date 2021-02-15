@@ -4,7 +4,7 @@ Draw an histogram
 """
 
 # %%
-# In this example we are going to a plot an histogram from an unidimensional sample.
+# In this example we are going to a plot a histogram from a unidimensional sample.
 
 # %%
 from __future__ import print_function

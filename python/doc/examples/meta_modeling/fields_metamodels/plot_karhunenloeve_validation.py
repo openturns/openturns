@@ -23,7 +23,7 @@ covariance = ot.SquaredExponential()
 process = ot.GaussianProcess(covariance, mesh)
 
 # %%
-# decompose it using KL-SVD
+# Decompose it using KL-SVD
 sampleSize = 100
 processSample = process.getSample(sampleSize)
 threshold = 1.0e-7
