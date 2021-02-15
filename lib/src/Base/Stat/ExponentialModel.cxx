@@ -19,7 +19,7 @@
  *
  */
 #include "openturns/ExponentialModel.hxx"
-#include "openturns/Exception.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Os.hxx"
 
