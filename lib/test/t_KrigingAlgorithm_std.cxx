@@ -64,6 +64,9 @@ int main(int, char *[])
       Basis basis(ConstantBasisFactory(dimension).build());
       SquaredExponential covarianceModel(Point(1, 1e-02), Point(1, 4.50736));
       KrigingAlgorithm algo(X, Y, covarianceModel, basis);
+
+      // set sensible optimization bounds and estimate hyperparameters
+      algo.setOptimizationBounds(Interval(X.getMin(), X.getMax()));
       algo.run();
 
       // perform an evaluation
@@ -81,7 +84,7 @@ int main(int, char *[])
       CovarianceMatrix covMatrix(result.getConditionalCovariance(X));
 
       // Validation of the covariance ==> should be null on the learning set
-      assert_almost_equal(covMatrix, SquareMatrix(sampleSize), 8.95e-7, 8.95e-7);
+      assert_almost_equal(covMatrix, SquareMatrix(sampleSize), 0.0, 1e-14);
 
       // Covariance per marginal & extract variance component
       Collection<CovarianceMatrix> coll(result.getConditionalMarginalCovariance(X));
@@ -92,6 +95,9 @@ int main(int, char *[])
       // Validation of marginal variance
       const Point marginalVariance(result.getConditionalMarginalVariance(X));
       assert_almost_equal(marginalVariance, Point(sampleSize), 1e-14, 1e-14);
+
+      // Prediction accuracy
+      assert_almost_equal(Y2, result.getMetaModel()(X2), 0.3, 0.0);
     }
 
     {

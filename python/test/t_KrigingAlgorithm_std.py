@@ -27,11 +27,15 @@ def test_one_input_one_output():
     Y = f(X)
     Y2 = f(X2)
 
-    # create algorithm
+    # create covariance model
     basis = ot.ConstantBasisFactory(dimension).build()
-    covarianceModel = ot.SquaredExponential([1e-02], [4.50736])
+    covarianceModel = ot.SquaredExponential()
 
+    # create algorithm
     algo = ot.KrigingAlgorithm(X, Y, covarianceModel, basis)
+
+    # set sensible optimization bounds and estimate hyperparameters
+    algo.setOptimizationBounds(ot.Interval(X.getMin(), X.getMax()))
     algo.run()
 
     # perform an evaluation
@@ -43,11 +47,19 @@ def test_one_input_one_output():
 
     # Kriging variance is 0 on learning points
     covariance = result.getConditionalCovariance(X)
-    covariancePoint = ot.Point(covariance.getImplementation())
-    theoricalVariance = ot.Point(sampleSize * sampleSize)
-    ott.assert_almost_equal(covariance,
-                            ot.Matrix(sampleSize, sampleSize),
-                            8.95e-7, 8.95e-7)
+    nullMatrix = ot.Matrix(sampleSize, sampleSize)
+    ott.assert_almost_equal(covariance, nullMatrix, 0.0, 1e-14)
+
+    # Kriging variance is non-null on validation points
+    validCovariance = result.getConditionalCovariance(X2)
+    values = ot.Matrix([[0.81942182, -0.35599947,-0.17488593, 0.04622401, -0.03143555, 0.04054783],
+                        [-0.35599947, 0.20874735, 0.10943841, -0.03236419, 0.02397483, -0.03269184],
+                        [-0.17488593, 0.10943841, 0.05832917, -0.01779918, 0.01355719, -0.01891618],
+                        [0.04622401, -0.03236419, -0.01779918, 0.00578327, -0.00467674, 0.00688697],
+                        [-0.03143555, 0.02397483, 0.01355719, -0.00467674, 0.0040267, -0.00631173],
+                        [0.04054783, -0.03269184, -0.01891618, 0.00688697, -0.00631173, 0.01059488]])
+    ott.assert_almost_equal(validCovariance - values, nullMatrix, 0.0, 1e-7)
+
 
     # Covariance per marginal & extract variance component
     coll = result.getConditionalMarginalCovariance(X)
@@ -57,6 +69,9 @@ def test_one_input_one_output():
     # Variance per marginal
     var = result.getConditionalMarginalVariance(X)
     ott.assert_almost_equal(var, ot.Point(sampleSize), 1e-14, 1e-14)
+
+    # Prediction accuracy
+    ott.assert_almost_equal(Y2, result.getMetaModel()(X2), 0.3, 0.0)
 
 # Test 2
 
