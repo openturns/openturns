@@ -299,7 +299,6 @@ Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
   {
     Matrix gradient(size, 1);
     const Scalar covRef = computeAsScalar(s, t);
-    const Scalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
     Pointer<CovarianceModelImplementation> p_implementation(clone());
     for (UnsignedInteger k = 0; k < size; ++ k)
     {
