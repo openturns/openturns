@@ -90,7 +90,6 @@ static void test_scalar_model(const CovarianceModel &myModel)
 
 
   const UnsignedInteger inputDimension = 1;
-  const UnsignedInteger dimension = 1;
 
   const Point x1(inputDimension,  2.0);
   const Point x2(inputDimension, -3.0);
