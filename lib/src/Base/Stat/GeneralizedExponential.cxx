@@ -113,31 +113,38 @@ Matrix GeneralizedExponential::partialGradient(const Point & s,
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
-  const Point tau(s - t);
-  Point tauOverTheta(inputDimension_);
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const Scalar norm2 = tauOverTheta.normSquare();
-  // For zero norm
-  if (norm2 == 0.0)
+  Scalar norm = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+  {
+    const Scalar dx = (s[i] - t[i]) / scale_[i];
+    norm += dx * dx;
+  }
+  norm = std::sqrt(norm);
+  Matrix gradient(inputDimension_, 1);
+  if (norm == 0.0)
   {
     // Negative infinite gradient for p < 1
-    if (p_ < 1.0) return Matrix(inputDimension_, 1, Point(inputDimension_, SpecFunc::LowestScalar));
-    // Non-zero gradient for p == 1
-    if (p_ == 1.0)
+    if (p_ < 1.0)
     {
-      Matrix gradient(inputDimension_, 1);
-      for (UnsignedInteger i = 0; i < inputDimension_; ++i) gradient(i, 0) = - amplitude_[0] * amplitude_[0] / scale_[i];
-      return gradient;
+      for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+        gradient(i, 0) = SpecFunc::LowestScalar;
+    }
+    // Non-zero gradient for p == 1
+    else if (p_ == 1.0)
+    {
+      for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+        gradient(i, 0) = -amplitude_[0] * amplitude_[0] / scale_[i];
     }
     // Zero gradient for p > 1
-    return Matrix(inputDimension_, 1);
+    return gradient;
   }
   // General case
-  const Scalar exponent = -std::pow(sqrt(norm2), p_);
-  const Scalar value = p_ * exponent * std::exp(exponent) / norm2;
+  const Scalar exponent = -std::pow(norm, p_);
+  const Scalar value = p_ * exponent * std::exp(exponent) / (norm * norm);
   // Needs tau/theta ==> reuse same NP
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] /= scale_[i];
-  return Matrix(inputDimension_, 1, tauOverTheta * value) * amplitude_[0] * amplitude_[0];
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
+    gradient(i, 0) = (s[i] - t[i]) / (scale_[i] * scale_[i]) * value * amplitude_[0] * amplitude_[0];
+  return gradient;
 }
 
 
