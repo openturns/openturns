@@ -128,7 +128,7 @@ static void test_model(const CovarianceModel & myModel, const Bool test_grad = t
         for (UnsignedInteger j = 0; j < centralValue.getDimension(); ++j)
           gradfd(i, j) = (currentValue[j] - centralValue[j]) / eps;
       }
-      assert_almost_equal(grad, gradfd, 1e-5, 1e-5, OSS() << "in " << myModel.__str__() << " grad");
+      assert_almost_equal(grad, gradfd, 2e5, 2e-5, OSS() << "in " << myModel.__str__() << " grad");
     }
   }
 }
@@ -389,6 +389,18 @@ int main(int, char *[])
       assert_almost_equal(isotropicCovMatrix(0,1), 1.992315565746, 1e-12, 0.0);
     }
 
+    // Exponential cov model
+    {
+      // Exponential covariance model
+      const UnsignedInteger inputDimension = 2;
+      const Point scale = {4, 5};
+      CovarianceMatrix spatialCovariance(2);
+      spatialCovariance(0, 0) = 4;
+      spatialCovariance(1, 1) = 5;
+      spatialCovariance(1, 0) = 1.2;
+      ExponentialModel myModel(scale, spatialCovariance);
+      test_model(myModel);
+    }
   }
   catch (TestFailed & ex)
   {

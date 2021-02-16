@@ -280,3 +280,13 @@ ott.assert_almost_equal(isotropicCovMatrix[0,0], 2.250000000002, 1e-12, 0.0)
 ott.assert_almost_equal(isotropicCovMatrix[1,1], 2.250000000002, 1e-12, 0.0)
 ott.assert_almost_equal(oneDimensionalCovMatrix[0,1], 1.992315565746, 1e-12, 0.0)
 ott.assert_almost_equal(isotropicCovMatrix[0,1], 1.992315565746, 1e-12, 0.0)
+
+# Exponential covariance model
+inputDimension = 2
+scale = [4, 5]
+spatialCovariance = ot.CovarianceMatrix(inputDimension)
+spatialCovariance[0, 0] = 4
+spatialCovariance[1, 1] = 5
+spatialCovariance[1, 0] = 1.2
+myModel = ot.ExponentialModel(scale, spatialCovariance)
+test_model(myModel)
