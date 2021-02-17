@@ -4,12 +4,12 @@ Use case : the Chaboche mechanical model
 """
 from __future__ import print_function
 import openturns as ot
-import numpy as np
+import math as m
 
 
 def g(X):
     strain, R, C, gamma = X
-    stress = R + C * (1 - np.exp(-gamma * strain)) / gamma
+    stress = R + C * (1 - m.exp(-gamma * strain)) / gamma
     return [stress]
 
 

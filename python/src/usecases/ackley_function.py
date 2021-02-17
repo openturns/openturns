@@ -4,19 +4,19 @@ Use case : Ackley test function
 """
 from __future__ import print_function
 import openturns as ot
-import numpy as np
+import math as m
 
 
 
 def g(X):
     a = 20.0
     b = 0.2
-    c = 2.0 * np.pi
+    c = 2.0 * m.pi
     d = len(X)
     sumOfSquared = sum(x**2 for x in X) / d
-    sumOfCos = sum(np.cos(c * x) for x in X) / d
-    f = - a * np.exp(- b * np.sqrt(sumOfSquared)) \
-        - np.exp(sumOfCos) + a + np.exp(1.0)
+    sumOfCos = sum(m.cos(c * x) for x in X) / d
+    f = - a * m.exp(- b * m.sqrt(sumOfSquared)) \
+        - m.exp(sumOfCos) + a + m.exp(1.0)
     return [f]
 
 
@@ -62,7 +62,7 @@ class AckleyModel():
         self.dim = 2
         self.a = 20.0
         self.b = 0.2
-        self.c = 2.0 * np.pi
+        self.c = 2.0 * m.pi
 
         self.model = ot.PythonFunction(self.dim, 1, g)
 

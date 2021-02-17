@@ -4,7 +4,6 @@ Use case : flood model
 """
 from __future__ import print_function
 import openturns as ot
-import numpy as np
 
 
 class FloodModel():

@@ -4,7 +4,6 @@ Use case : axial stressed beam
 """
 from __future__ import print_function
 import openturns as ot
-import numpy as np
 
 
 class AxialStressedBeam():
