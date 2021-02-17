@@ -27,6 +27,7 @@
 #include "openturns/Distribution.hxx"
 #include "openturns/Point.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/UserDefined.hxx"
 
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -89,6 +90,9 @@ public:
   /** Mesh accessors */
   void setMesh(const Mesh & mesh) override;
 
+  /** Stationary distribution computation */
+  UserDefined computeStationaryDistribution() const;
+ 
   /** DOT export */
   void exportToDOTFile(const FileName & filename) const;
 
