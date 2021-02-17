@@ -9,7 +9,7 @@ import numpy as np
 
 def g(X):
     strain, R, C, gamma = X
-    stress = R + C * (1 - np.exp(-gamma * strain)) / gamma
+    stress = R + C * (1.0 - np.exp(-gamma * strain)) / gamma
     return [stress]
 
 
@@ -71,3 +71,4 @@ class ChabocheModel():
         self.inputDistribution = ot.ComposedDistribution([self.Strain, self.R, self.C, self.Gamma])
 
         self.model = ot.PythonFunction(4, 1, g)
+        self.model.setInputDescription(["Strain", "R", "C", "Gamma"])
