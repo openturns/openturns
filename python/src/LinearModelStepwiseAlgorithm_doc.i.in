@@ -1,12 +1,6 @@
 %feature("docstring") OT::LinearModelStepwiseAlgorithm
 "Stepwise linear model algorithm.
 
-**Available usages**:
-
-    LinearModelStepwiseAlgorithm(*inputSample, basis, outputSample, minimalIndices, isForward, penalty, maximumIterationNumber*)
-
-    LinearModelStepwiseAlgorithm(*inputSample, basis, outputSample, minimalIndices, startIndices, penalty, maximumIterationNumber*)
-
 Parameters
 ----------
 inputSample, outputSample : 2-d sequence of float
@@ -15,18 +9,11 @@ basis : :class:`~openturns.Basis`
     Functional basis to estimate the trend.
 minimalIndices : sequence of int
     The indices of minimal model
-isForward : bool
-      the boolean value used for the stepwise regression method direction FORWARD and BACKWARD.
-startIndices : sequence of int
-     The indices of start model used for the stepwise regression method direction BOTH.
-penalty : float
-     The multiple of the degrees of freedom used for the penalty of the stepwise regression method:
-
-     - 2      Akaike   information criterion (AIC)
-     - log(n) Bayesian information criterion (BIC)
-maximumIterationNumber : int
-     The maximum number of iterations of the stepwise regression method.
-
+direction : int, default=FORWARD
+    BACKWARD, FORWARD or BOTH.
+startIndices : sequence of int, default=[]
+     The indices of start model used for the stepwise regression method.
+     Can only be specified in BOTH mode.
 
 See Also
 --------
@@ -84,6 +71,16 @@ input_sample : :class:`~openturns.Sample`
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::LinearModelStepwiseAlgorithm::setMaximumIterationNumber
+"Accessor to the maximum iteration number.
+
+Parameters
+----------
+maximum_iteration : int
+     The maximum number of iterations of the stepwise regression method."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::LinearModelStepwiseAlgorithm::getMaximumIterationNumber
 "Accessor to the maximum iteration number.
 
@@ -101,6 +98,19 @@ Returns
 -------
 output_sample : :class:`~openturns.Sample`
     Output sample."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelStepwiseAlgorithm::setPenalty
+"Accessor to the penalty.
+
+Parameters
+----------
+penalty : positive float
+     The multiple of the degrees of freedom used for the penalty of the stepwise regression method:
+
+     - 2      Akaike   information criterion (AIC)
+     - log(n) Bayesian information criterion (BIC)"
 
 // ---------------------------------------------------------------------
 

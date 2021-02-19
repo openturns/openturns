@@ -603,9 +603,8 @@
   <LinearModelAlgorithm-DecompositionMethod        value_str="QR"      />
 
   <!-- OT::LinearModelStepwiseAlgorithm parameters -->
-  <LinearModelStepwiseAlgorithm-IsForward                value_bool="true"       />
   <LinearModelStepwiseAlgorithm-Penalty                  value_float="-1.0"      />
-  <LinearModelStepwiseAlgorithm-MaximumIterations        value_int="1000"        />
+  <LinearModelStepwiseAlgorithm-MaximumIterationNumber   value_int="1000"        />
 
   <!-- OT::GeneralLinearModelAlgorithm parameters -->
   <GeneralLinearModelAlgorithm-KeepCovariance                 value_bool="true"      />

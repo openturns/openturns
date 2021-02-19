@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Factory for linear model
+ *  @brief Stepwise algorithms for linear model
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTEURNS_LINEARMODELSTEPWISEFACTORY_HXX
-#define OPENTEURNS_LINEARMODELSTEPWISEFACTORY_HXX
+#ifndef OPENTURNS_LINEARMODELSTEPWISEALGORITHM_HXX
+#define OPENTURNS_LINEARMODELSTEPWISEALGORITHM_HXX
 
 #include "openturns/PersistentObject.hxx"
 #include "openturns/Sample.hxx"
@@ -43,28 +43,18 @@ class OT_API LinearModelStepwiseAlgorithm :
 
 public:
 
-  enum Direction { BACKWARD = -1, BOTH = 0, FORWARD = 1 };
+  enum Direction { BACKWARD = 1, FORWARD = 2, BOTH = 3 };
 
   /** Default constructor */
   LinearModelStepwiseAlgorithm();
 
-  /** Parameters constructor FORWARD and BACKWARD */
+  /** Parameters constructor */
   LinearModelStepwiseAlgorithm(const Sample & inputSample,
                                const Basis & basis,
                                const Sample & outputSample,
                                const Indices & minimalIndices,
-                               const Bool isForward = ResourceMap::GetAsBool("LinearModelStepwiseAlgorithm-IsForward"),
-                               const Scalar penalty = ResourceMap::GetAsScalar("LinearModelStepwiseAlgorithm-Penalty"), /* < 0 means BIC, by convention */
-                               const UnsignedInteger maximumIterationNumber = ResourceMap::GetAsBool("LinearModelStepwiseAlgorithm-MaximumIterations"));
-
-  /** Parameters constructor BOTH */
-  LinearModelStepwiseAlgorithm(const Sample & inputSample,
-                               const Basis & basis,
-                               const Sample & outputSample,
-                               const Indices & minimalIndices,
-                               const Indices & startIndices,
-                               const Scalar penalty = ResourceMap::GetAsScalar("LinearModelStepwiseAlgorithm-Penalty"), /* < 0 means BIC, by convention */
-                               const UnsignedInteger maximumIterationNumber = ResourceMap::GetAsBool("LinearModelStepwiseAlgorithm-MaximumIterations"));
+                               const Direction direction = FORWARD,
+                               const Indices & startIndices = Indices());
 
   /** Virtual constructor */
   LinearModelStepwiseAlgorithm * clone() const override;
@@ -81,9 +71,11 @@ public:
   Direction getDirection() const;
 
   /** Penalty accessors */
+  void setPenalty(const Scalar penalty);
   Scalar getPenalty() const;
 
   /** Maximum number of iterations accessors */
+  void setMaximumIterationNumber(const UnsignedInteger maximumIteration);
   UnsignedInteger getMaximumIterationNumber() const;
 
   /** Condensed formula accessor */
@@ -167,4 +159,4 @@ private:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTEURNS_LINEARMODELSTEPWISEFACTORY_HXX */
+#endif /* OPENTURNS_LINEARMODELSTEPWISEALGORITHM_HXX */
