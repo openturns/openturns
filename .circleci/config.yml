@@ -9,8 +9,14 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Build and test
+          name: Build
           command: ./.circleci/run_docker_linux.sh
+      - store_artifacts:
+          path: ~/.local/share/openturns/doc/html
+          destination: html
+      - run:
+          name: Test
+          command: ./.circleci/run_docker_linux_test.sh
       - run:
           name: Publish documentation
           command: ./.circleci/upload_github_io.sh
