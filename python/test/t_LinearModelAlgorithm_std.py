@@ -48,4 +48,4 @@ print ("trend coefficients = ", result.getCoefficients())
 # with invalid sample description
 X.setDescription(['X0', 'price (euros)'])
 result = ot.LinearModelAlgorithm(X, Y).getResult()
-print(result.getFormula())
+print(result)
