@@ -148,6 +148,7 @@ fig.suptitle("Kriging result");
 # -------------------------------
 
 # %%
+# sphinx_gallery_thumbnail_number = 3
 level = 0.95
 quantile = ot.Normal().computeQuantile((1-level)/2)[0]
 borne_sup = krigingMeta(x_plot) + quantile * np.sqrt(variance)
