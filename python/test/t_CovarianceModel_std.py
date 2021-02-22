@@ -3,6 +3,7 @@
 from __future__ import print_function
 import openturns as ot
 import openturns.testing as ott
+from math import sqrt
 
 ot.TESTPREAMBLE()
 
@@ -290,3 +291,9 @@ spatialCovariance[1, 1] = 5
 spatialCovariance[1, 0] = 1.2
 myModel = ot.ExponentialModel(scale, spatialCovariance)
 test_model(myModel)
+# assert that spatialCovariance is taken into account
+checkDiag = spatialCovariance.isDiagonal() == myModel.isDiagonal()
+if (not checkDiag):
+    raise Exception("isDiagonal differ between spatial covariance & covariance model")
+rho = spatialCovariance[1, 0] / sqrt(spatialCovariance[0, 0] * spatialCovariance[1, 1])
+ott.assert_almost_equal(myModel.getOutputCorrelation()[0,1], rho, 1e-15, 1e-15, "in ExponentialModel correlation")

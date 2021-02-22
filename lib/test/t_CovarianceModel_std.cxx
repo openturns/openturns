@@ -400,6 +400,12 @@ int main(int, char *[])
       spatialCovariance(1, 0) = 1.2;
       ExponentialModel myModel(scale, spatialCovariance);
       test_model(myModel);
+      // assert that spatialCovariance is taken into account
+      Bool checkDiag = spatialCovariance.isDiagonal() == myModel.isDiagonal();
+      if (!checkDiag)
+        throw TestFailed(OSS() << "isDiagonal differ between spatial covariance & covariance model");
+      const Scalar rho = spatialCovariance(1, 0) / std::sqrt(spatialCovariance(0, 0) * spatialCovariance(1, 1));
+      assert_almost_equal(myModel.getOutputCorrelation()(0,1), rho, 1e-15, 1e-15, "in ExponentialModel correlation");
     }
   }
   catch (TestFailed & ex)

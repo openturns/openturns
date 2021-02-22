@@ -79,7 +79,6 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   setAmplitude(amplitude);
   setScale(scale);
   activeParameter_.fill();
-  updateOutputCovariance();
 }
 
 /* Standard constructor with scale, amplitude and spatial correlation parameter parameter */
@@ -111,29 +110,32 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   : PersistentObject()
   , scale_(0)
   , inputDimension_(scale.getDimension())
-  , amplitude_(0)
+  , amplitude_(spatialCovariance.getDimension())
   , outputDimension_(spatialCovariance.getDimension())
   , outputCorrelation_(0)
   , outputCovariance_(spatialCovariance)
   , outputCovarianceCholeskyFactor_(0)
-  , isDiagonal_(true)
+  , isDiagonal_(spatialCovariance.isDiagonal())
   , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(inputDimension_ + outputDimension_)
 {
-  Point amplitude(outputDimension_);
-  for (UnsignedInteger i = 0; i < outputDimension_; ++i) amplitude[i] = sqrt(spatialCovariance(i, i));
-  // Check that the amplitudes are valid
-  setAmplitude(amplitude);
+  setScale(scale);
+  for (UnsignedInteger i = 0; i < outputDimension_; ++i) 
+  {
+    const Scalar amplitudeI = sqrt(spatialCovariance(i, i));
+    if (!(amplitudeI > 0.0))
+      throw InvalidArgumentException(HERE) << "The " << i << "-th diagonal component of the spatial covariance is non positive";
+    amplitude_[i] = amplitudeI;
+  }
   // Convert the spatial covariance into a spatial correlation
   if (!spatialCovariance.isDiagonal())
   {
     outputCorrelation_ = CorrelationMatrix(outputDimension_);
-    for (UnsignedInteger i = 0; i < outputDimension_; ++i)
-      for (UnsignedInteger j = 0; j < i; ++j)
-        outputCorrelation_(i, j) = spatialCovariance(i, j) / (amplitude[i] * amplitude[j]);
+    for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+      for (UnsignedInteger i = j + 1; i < outputDimension_; ++i)
+        outputCorrelation_(i, j) = spatialCovariance(i, j) / (amplitude_[i] * amplitude_[j]);
   } // !isDiagonal
-  setScale(scale);
   activeParameter_.fill();
 }
 
