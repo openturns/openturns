@@ -100,82 +100,82 @@ inputDimension = 2
 
 # 1) SquaredExponential
 myModel = ot.SquaredExponential([2.0], [3.0])
-ott.assert_almost_equal(myModel.getScale(), [2], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getAmplitude(), [3], 1e-15, 1e-15)
+ott.assert_almost_equal(myModel.getScale(), [2], 0, 0)
+ott.assert_almost_equal(myModel.getAmplitude(), [3], 0, 0)
 test_model(myModel)
 
 myModel = ot.SquaredExponential([2.0] * inputDimension, [3.0])
-ott.assert_almost_equal(myModel.getScale(), [2, 2], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getAmplitude(), [3], 1e-15, 1e-15)
+ott.assert_almost_equal(myModel.getScale(), [2, 2], 0, 0)
+ott.assert_almost_equal(myModel.getAmplitude(), [3], 0, 0)
 test_model(myModel)
 
 
 # 2) GeneralizedExponential
 myModel = ot.GeneralizedExponential([2.0], [3.0], 1.5)
-ott.assert_almost_equal(myModel.getScale(), [2], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getAmplitude(), [3], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getP(), 1.5, 1e-15, 1e-15)
+ott.assert_almost_equal(myModel.getScale(), [2], 0, 0)
+ott.assert_almost_equal(myModel.getAmplitude(), [3], 0, 0)
+ott.assert_almost_equal(myModel.getP(), 1.5, 0, 0)
 test_model(myModel)
 
 myModel = ot.GeneralizedExponential([2.0] * inputDimension, [3.0], 1.5)
-ott.assert_almost_equal(myModel.getScale(), [2, 2], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getAmplitude(), [3], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getP(), 1.5, 1e-15, 1e-15)
+ott.assert_almost_equal(myModel.getScale(), [2, 2], 0, 0)
+ott.assert_almost_equal(myModel.getAmplitude(), [3], 0, 0)
+ott.assert_almost_equal(myModel.getP(), 1.5, 0, 0)
 test_model(myModel)
 
 # 3) AbsoluteExponential
 myModel = ot.AbsoluteExponential([2.0], [3.0])
-ott.assert_almost_equal(myModel.getScale(), [2], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getAmplitude(), [3], 1e-15, 1e-15)
+ott.assert_almost_equal(myModel.getScale(), [2], 0, 0)
+ott.assert_almost_equal(myModel.getAmplitude(), [3], 0, 0)
 test_model(myModel)
 
 myModel = ot.AbsoluteExponential([2.0] * inputDimension, [3.0])
-ott.assert_almost_equal(myModel.getScale(), [2, 2], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getAmplitude(), [3], 1e-15, 1e-15)
+ott.assert_almost_equal(myModel.getScale(), [2, 2], 0, 0)
+ott.assert_almost_equal(myModel.getAmplitude(), [3], 0, 0)
 test_model(myModel)
 
 # 4) MaternModel
 myModel = ot.MaternModel([2.0], [3.0], 1.5)
-ott.assert_almost_equal(myModel.getScale(), [2], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getAmplitude(), [3], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getNu(), 1.5, 1e-15, 1e-15)
+ott.assert_almost_equal(myModel.getScale(), [2], 0, 0)
+ott.assert_almost_equal(myModel.getAmplitude(), [3], 0, 0)
+ott.assert_almost_equal(myModel.getNu(), 1.5, 0, 0)
 test_model(myModel)
 
 myModel = ot.MaternModel([2.0] * inputDimension, [3.0], 1.5)
-ott.assert_almost_equal(myModel.getScale(), [2, 2], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getAmplitude(), [3], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getNu(), 1.5, 1e-15, 1e-15)
+ott.assert_almost_equal(myModel.getScale(), [2, 2], 0, 0)
+ott.assert_almost_equal(myModel.getAmplitude(), [3], 0, 0)
+ott.assert_almost_equal(myModel.getNu(), 1.5, 0, 0)
 test_model(myModel)
 
 # 5) ExponentiallyDampedCosineModel
 myModel = ot.ExponentiallyDampedCosineModel([2.0], [3.0], 1)
-ott.assert_almost_equal(myModel.getScale(), [2], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getAmplitude(), [3], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getFrequency(), 1, 1e-15, 1e-15)
+ott.assert_almost_equal(myModel.getScale(), [2], 0, 0)
+ott.assert_almost_equal(myModel.getAmplitude(), [3], 0, 0)
+ott.assert_almost_equal(myModel.getFrequency(), 1, 0, 0)
 test_model(myModel)
 myModel.setFrequency(3)
-ott.assert_almost_equal(myModel.getFrequency(), 3, 1e-15, 1e-15)
+ott.assert_almost_equal(myModel.getFrequency(), 3, 0, 0)
 
 myModel = ot.ExponentiallyDampedCosineModel([2.0] * inputDimension, [3.0], 1)
-ott.assert_almost_equal(myModel.getScale(), [2, 2], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getAmplitude(), [3], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getFrequency(), 1, 1e-15, 1e-15)
+ott.assert_almost_equal(myModel.getScale(), [2, 2], 0, 0)
+ott.assert_almost_equal(myModel.getAmplitude(), [3], 0, 0)
+ott.assert_almost_equal(myModel.getFrequency(), 1, 0, 0)
 test_model(myModel)
 
 # 6) SphericalModel
 myModel = ot.SphericalModel([2.0], [3.0], 4.5)
-ott.assert_almost_equal(myModel.getScale(), [2], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getAmplitude(), [3], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getRadius(), 4.5, 1e-15, 1e-15)
+ott.assert_almost_equal(myModel.getScale(), [2], 0, 0)
+ott.assert_almost_equal(myModel.getAmplitude(), [3], 0, 0)
+ott.assert_almost_equal(myModel.getRadius(), 4.5, 0, 0)
 test_model(myModel)
 
 myModel = ot.SphericalModel([2.0] * inputDimension, [3.0], 4.5)
-ott.assert_almost_equal(myModel.getScale(), [2, 2], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getAmplitude(), [3], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getRadius(), 4.5, 1e-15, 1e-15)
+ott.assert_almost_equal(myModel.getScale(), [2, 2], 0, 0)
+ott.assert_almost_equal(myModel.getAmplitude(), [3], 0, 0)
+ott.assert_almost_equal(myModel.getRadius(), 4.5, 0, 0)
 test_model(myModel)
 myModel.setRadius(1.5)
-ott.assert_almost_equal(myModel.getRadius(), 1.5, 1e-15, 1e-15)
+ott.assert_almost_equal(myModel.getRadius(), 1.5, 0, 0)
 
 # 7) FractionalBrownianMotionModel
 myModel = ot.FractionalBrownianMotionModel(2.0, 3.0, 0.25)
@@ -195,15 +195,15 @@ for j in range(dimension):
             i + 1.0) / dimension - (j + 1.0) / dimension
 myModel = ot.DiracCovarianceModel(
     inputDimension, amplitude, spatialCorrelation)
-ott.assert_almost_equal(myModel.getScale(), [1, 1], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getAmplitude(), amplitude, 1e-15, 1e-15)
+ott.assert_almost_equal(myModel.getScale(), [1, 1], 0, 0)
+ott.assert_almost_equal(myModel.getAmplitude(), amplitude, 0, 0)
 test_model(myModel, test_partial_grad=False, x1=[0.5, 0.0], x2=[0.5, 0.0])
 
 # 9) StationaryFunctionalCovarianceModel
 rho = ot.SymbolicFunction(['tau'], ['exp(-abs(tau))*cos(2*pi_*abs(tau))'])
 myModel = ot.StationaryFunctionalCovarianceModel([1.0], [1.0], rho)
-ott.assert_almost_equal(myModel.getScale(), [1], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getAmplitude(), [1], 1e-15, 1e-15)
+ott.assert_almost_equal(myModel.getScale(), [1], 0, 0)
+ott.assert_almost_equal(myModel.getAmplitude(), [1], 0, 0)
 test_model(myModel)
 
 # 10) ProductCovarianceModel
@@ -214,8 +214,8 @@ cov1 = ot.AbsoluteExponential([2.0], [3.0])
 cov2 = ot.SquaredExponential([2.0], [3.0])
 myModel = ot.ProductCovarianceModel([cov1, cov2])
 test_model(myModel)
-ott.assert_almost_equal(myModel.getScale(), [2, 2], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getAmplitude(), [9], 1e-15, 1e-15)
+ott.assert_almost_equal(myModel.getScale(), [2, 2], 0, 0)
+ott.assert_almost_equal(myModel.getAmplitude(), [9], 0, 0)
 point = [0.50, -6]
 x = [point[0]]
 y = [point[1]]
@@ -231,15 +231,15 @@ myGeneralizedExponential = ot.GeneralizedExponential([2.0] * inputDimension, [3.
 # Tensorized ignore scales
 myModel = ot.TensorizedCovarianceModel(
     [myAbsoluteExponential, mySquaredExponential, myGeneralizedExponential])
-ott.assert_almost_equal(myModel.getScale(), [1,1], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getAmplitude(), [3, 3, 3], 1e-15, 1e-15)
+ott.assert_almost_equal(myModel.getScale(), [1,1], 0, 0)
+ott.assert_almost_equal(myModel.getAmplitude(), [3, 3, 3], 0, 0)
 test_model(myModel)
 
 # Define new scale
 scale = [2.5, 1.5]
 myModel.setScale(scale)
-ott.assert_almost_equal(myModel.getScale(), [2.5, 1.5], 1e-15, 1e-15)
-ott.assert_almost_equal(myModel.getAmplitude(), [3, 3, 3], 1e-15, 1e-15)
+ott.assert_almost_equal(myModel.getScale(), [2.5, 1.5], 0, 0)
+ott.assert_almost_equal(myModel.getAmplitude(), [3, 3, 3], 0, 0)
 test_model(myModel)
 
 # 12) Testing 1d in/out dimension & stationary
@@ -296,4 +296,4 @@ checkDiag = spatialCovariance.isDiagonal() == myModel.isDiagonal()
 if (not checkDiag):
     raise Exception("isDiagonal differ between spatial covariance & covariance model")
 rho = spatialCovariance[1, 0] / sqrt(spatialCovariance[0, 0] * spatialCovariance[1, 1])
-ott.assert_almost_equal(myModel.getOutputCorrelation()[0,1], rho, 1e-15, 1e-15, "in ExponentialModel correlation")
+ott.assert_almost_equal(myModel.getOutputCorrelation()[0,1], rho, 0, 0, "in ExponentialModel correlation")

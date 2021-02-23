@@ -156,8 +156,7 @@ Matrix ExponentialModel::partialGradient(const Point & s,
   // Computation of the gradient
   if (s.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point s has dimension=" << s.getDimension() << ", expected dimension=" << getInputDimension();
   if (t.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point t has dimension=" << t.getDimension() << ", expected dimension=" << getInputDimension();
-  // Compute tau.norm() & (tau/scale_).norm()
-  //Scalar absTau = 0.0;
+
   Scalar norm = 0.0;
   Scalar dx = 0.0;
   for (UnsignedInteger i = 0; i < getInputDimension(); ++i)

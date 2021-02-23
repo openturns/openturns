@@ -43,8 +43,8 @@ static void test_model(const CovarianceModel & myModel, const Bool test_grad = t
 
   if (myModel.isStationary())
   {
-    assert_almost_equal(myModel(x1 - x2), myModel(x1, x2), 1e-15, 1e-15);
-    assert_almost_equal(myModel(x2 - x1), myModel(x1, x2), 1e-15, 1e-15);
+    assert_almost_equal(myModel(x1 - x2), myModel(x1, x2), 0, 0);
+    assert_almost_equal(myModel(x2 - x1), myModel(x1, x2), 0, 0);
   }
 
   // interval mesher
@@ -221,13 +221,13 @@ int main(int, char *[])
       const Point amplitude = {3};
 
       ExponentiallyDampedCosineModel myModel(scale, amplitude, 1);
-      assert_almost_equal(myModel.getScale(), scale, 1e-15, 1e-15);
-      assert_almost_equal(myModel.getAmplitude(), amplitude, 1e-15, 1e-15);
-      assert_almost_equal(myModel.getFrequency(), 1, 1e-15, 1e-15);
+      assert_almost_equal(myModel.getScale(), scale, 0, 0);
+      assert_almost_equal(myModel.getAmplitude(), amplitude, 0, 0);
+      assert_almost_equal(myModel.getFrequency(), 1, 0, 0);
       test_model(myModel);
       // set new freq
       myModel.setFrequency(3);
-      assert_almost_equal(myModel.getFrequency(), 3, 1e-15, 1e-15);
+      assert_almost_equal(myModel.getFrequency(), 3, 0, 0);
     }
 
     // 6) Spherical model
@@ -238,12 +238,12 @@ int main(int, char *[])
 
       const UnsignedInteger dimension = 2;
       SphericalModel myModel(Point(dimension, 2), Point(1, 3), 4.5);
-      assert_almost_equal(myModel.getScale(), Point(dimension, 2), 1e-15, 1e-15);
-      assert_almost_equal(myModel.getAmplitude(), Point(1, 3), 1e-15, 1e-15);
-      assert_almost_equal(myModel.getRadius(), 4.5, 1e-15, 1e-15);
+      assert_almost_equal(myModel.getScale(), Point(dimension, 2), 0, 0);
+      assert_almost_equal(myModel.getAmplitude(), Point(1, 3), 0, 0);
+      assert_almost_equal(myModel.getRadius(), 4.5, 0, 0);
       test_model(myModel);
       myModel.setRadius(1.5);
-      assert_almost_equal(myModel.getRadius(), 1.5, 1e-15, 1e-15);
+      assert_almost_equal(myModel.getRadius(), 1.5, 0, 0);
     }
 
     // 7) FractionalBrownianMotionModel
@@ -268,8 +268,8 @@ int main(int, char *[])
         for (UnsignedInteger i = j + 1; j < dimension; ++j)
           spatialCorrelation(i, j) = (i + 1.0) / dimension - (j + 1.0) / dimension;
       DiracCovarianceModel myModel(2, amplitude, spatialCorrelation);
-      assert_almost_equal(myModel.getScale(), Point(2, 1), 1e-15, 1e-15);
-      assert_almost_equal(myModel.getAmplitude(), amplitude, 1e-15, 1e-15);
+      assert_almost_equal(myModel.getScale(), Point(2, 1), 0, 0);
+      assert_almost_equal(myModel.getAmplitude(), amplitude, 0, 0);
       test_model(myModel, false);
     }
 
@@ -284,8 +284,8 @@ int main(int, char *[])
       const Point amplitude = {1};
 
       StationaryFunctionalCovarianceModel myModel(scale, amplitude, rho);
-      assert_almost_equal(myModel.getScale(), scale, 1e-15, 1e-15);
-      assert_almost_equal(myModel.getAmplitude(), amplitude, 1e-15, 1e-15);
+      assert_almost_equal(myModel.getScale(), scale, 0, 0);
+      assert_almost_equal(myModel.getAmplitude(), amplitude, 0, 0);
       test_model(myModel);
     }
 
@@ -392,7 +392,6 @@ int main(int, char *[])
     // Exponential cov model
     {
       // Exponential covariance model
-      const UnsignedInteger inputDimension = 2;
       const Point scale = {4, 5};
       CovarianceMatrix spatialCovariance(2);
       spatialCovariance(0, 0) = 4;
@@ -405,7 +404,7 @@ int main(int, char *[])
       if (!checkDiag)
         throw TestFailed(OSS() << "isDiagonal differ between spatial covariance & covariance model");
       const Scalar rho = spatialCovariance(1, 0) / std::sqrt(spatialCovariance(0, 0) * spatialCovariance(1, 1));
-      assert_almost_equal(myModel.getOutputCorrelation()(0,1), rho, 1e-15, 1e-15, "in ExponentialModel correlation");
+      assert_almost_equal(myModel.getOutputCorrelation()(0,1), rho, 0, 0, "in ExponentialModel correlation");
     }
   }
   catch (TestFailed & ex)
