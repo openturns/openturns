@@ -192,6 +192,10 @@ Mesh IntervalMesher::build(const Interval & interval,
   } // dimension == 2
   if (dimension == 3)
   {
+    // FIXME: https://github.com/openturns/openturns/issues/1670
+    if (diamond)
+      throw NotYetImplementedException(HERE) << "In IntervalMesher::build with 3-d/diamond=true";
+
     const UnsignedInteger m = discretization_[0];
     const UnsignedInteger n = discretization_[1];
     const UnsignedInteger p = discretization_[2];
