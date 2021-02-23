@@ -50,6 +50,8 @@
  * #1759 (Kriging model with StationaryFunctionalCovarianceModel might provide bad results)
  * #1768 (Bug in ExponentiallyDampedCosineModel & SphericalModel)
  * #1771 (GridLayout hides the titles in the graph)
+ * #1774 (ExponentialModel::partialGradient is wrong)
+ * #1775 (ExponentialModel does not account correlation with Covariance ctor)
 
 
 == 1.16 release (2020-11-16) == #release-1.16

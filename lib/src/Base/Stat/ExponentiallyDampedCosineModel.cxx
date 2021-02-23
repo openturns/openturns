@@ -116,28 +116,6 @@ Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Scalar tau) const
   return amplitude_[0] * amplitude_[0] * exp(-absTau) * cos(2.0 * M_PI * frequency_ * absTau);
 }
 
-/* Discretize the covariance function on a given TimeGrid */
-CovarianceMatrix ExponentiallyDampedCosineModel::discretize(const RegularGrid & timeGrid) const
-{
-  const UnsignedInteger size = timeGrid.getN();
-  const UnsignedInteger fullSize = size * outputDimension_;
-  const Scalar timeStep = timeGrid.getStep();
-
-  CovarianceMatrix cov(fullSize);
-
-  // The stationary property of this model allows to optimize the discretization
-  // over a regular time grid: the large covariance matrix is block-diagonal
-  // Fill the matrix by block-diagonal
-  // The main diagonal has a specific treatment as only its lower triangular part
-  // has to be copied
-  for (UnsignedInteger diag = 0; diag < size; ++diag)
-  {
-    const Scalar covTau = computeAsScalar(Point(1, diag * timeStep));
-    for (UnsignedInteger i = 0; i < size - diag; ++i) cov(i, i + diag) = covTau;
-  }
-  return cov;
-}
-
 /* String converter */
 String ExponentiallyDampedCosineModel::__repr__() const
 {

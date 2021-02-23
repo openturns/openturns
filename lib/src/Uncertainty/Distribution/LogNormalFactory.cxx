@@ -31,6 +31,7 @@
 #include "openturns/LeastSquaresProblem.hxx"
 #include "openturns/OptimizationAlgorithm.hxx"
 #include "openturns/LeastSquaresDistributionFactory.hxx"
+#include "openturns/MemoizeFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -76,50 +77,6 @@ LogNormal LogNormalFactory::buildMethodOfMoments(const Sample & sample) const
   return result;
 }
 
-struct LogNormalFactoryLMLEParameterConstraint
-{
-  /** Constructor from a sample and a derivative factor estimate */
-  LogNormalFactoryLMLEParameterConstraint(const Sample & sample)
-    : sample_(sample)
-    , size_(sample.getSize())
-  {
-    // Nothing to do
-  };
-
-  Point computeConstraint(const Point & parameter) const
-  {
-    const Point sums(computeMaximumLikelihoodSums(parameter[0]));
-    return Point(1, sums[0] * (sums[2] - sums[1] * (1.0 + sums[1] / size_)) + size_ * sums[3]);
-  }
-
-  /*
-    S_0 = \sum_i (X_i - \gamma)^{-1}
-    S_1 = \sum_i \log(X_i - \gamma)
-    S_2 = \sum_i \log^2(X_i - \gamma)
-    S_3 = \sum_i \log(X_i - \gamma) / (X_i - \gamma)
-  */
-  Point computeMaximumLikelihoodSums(const Scalar gamma) const
-  {
-    Point sums(4, 0.0);
-    for (UnsignedInteger i = 0; i < size_; ++i)
-    {
-      const Scalar delta = sample_(i, 0) - gamma;
-      if (!(delta > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on the given sample using the method of local maximum likelihood, probably because the sample is constant.";
-      const Scalar logDelta = std::log(delta);
-      const Scalar inverseDelta = 1.0 / delta;
-      sums[0] += inverseDelta;
-      sums[1] += logDelta;
-      sums[2] += logDelta * logDelta;
-      sums[3] += logDelta * inverseDelta;
-    }
-    return sums;
-  }
-
-  // The data
-  Sample sample_;
-  UnsignedInteger size_;
-};
-
 /* Algoritm associated with the method of local likelihood maximization */
 LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Sample & sample) const
 {
@@ -130,7 +87,9 @@ LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Sampl
   const Scalar xMin = sample.getMin()[0];
   Scalar right = xMin - quantileEpsilon;
   const LogNormalFactoryLMLEParameterConstraint constraint(sample);
-  const Function f(bindMethod<LogNormalFactoryLMLEParameterConstraint, Point, Point>(constraint, &LogNormalFactoryLMLEParameterConstraint::computeConstraint, 1, 1));
+  MemoizeFunction f(constraint);
+  f.enableCache();
+
   Scalar constraintRight = f(Point(1, right))[0];
   Scalar left = right - step;
   Scalar constraintLeft = f(Point(1, left))[0];

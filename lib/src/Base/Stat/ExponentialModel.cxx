@@ -153,48 +153,30 @@ Scalar ExponentialModel::computeAsScalar(const Scalar tau) const
 Matrix ExponentialModel::partialGradient(const Point & s,
     const Point & t) const
 {
-  /* Computation of the gradient
-   * dC_{i,j}(tau)/dtau_k = C_{i,j} * (-\frac{1}{2 * scale_i} -\frac{1}{2 * scale_j}) * factor, with factor = tau_k / absTau
-    Note that if spatial dimension is 1, factor = sgn(tau_k)
-   */
+  // Computation of the gradient
   if (s.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point s has dimension=" << s.getDimension() << ", expected dimension=" << getInputDimension();
   if (t.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the point t has dimension=" << t.getDimension() << ", expected dimension=" << getInputDimension();
-  // Compute tau.norm() & (tau/scale_).norm()
-  Scalar absTau = 0.0;
-  Scalar absTauOverTheta = 0.0;
-  Scalar dx = 1.0;
+
+  Scalar norm = 0.0;
+  Scalar dx = 0.0;
   for (UnsignedInteger i = 0; i < getInputDimension(); ++i)
   {
-    dx = (s[i] - t[i]);
-    absTau += dx*dx;
-    dx /= scale_[i];
-    absTauOverTheta += dx * dx;
+    dx = (s[i] - t[i]) / scale_[i];
+    norm += dx * dx;
   }
-  absTau = sqrt(absTau);
-  if (absTau == 0)
+  if (norm == 0)
     throw InvalidArgumentException(HERE) << "ExponentialModel::partialGradient, the points t and s are equal. Covariance model has no derivate for that case.";
-  absTauOverTheta = sqrt(absTau);
-  // TODO check & implement specific 1d output case (after inheritance from KronekerCovarianceModel)
-  // Covariance matrix write S * rho(tau), so gradient writes Sigma * grad(rho) where * is a 'dot',
-  // i.e. dC/dk= Sigma_{i,j} * drho/dk
-  // TODO Remove explicit call to operator()
-  SquareMatrix covariance(operator()(s, t));
+  norm = std::sqrt(norm);
+  // Covariance matrix write S * rho(tau), so gradient writes Sigma * grad(rho) where * is a 'kroneker',
+  SquareMatrix covariance(outputCovariance_);
+  covariance.getImplementation()->symmetrize();
   Point covariancePoint(*covariance.getImplementation());
-  // Compute the gradient part (gradient of rho)
-  Point factor(getInputDimension());
-  for (UnsignedInteger i = 0; i < getInputDimension(); ++i)
-  {
-    const Scalar tauI = s[i] - t[i];
-    if ((getInputDimension() == 1.0) && (tauI < 0))  factor[i] = 1.0 / scale_[i] ;
-    else if ((getInputDimension() == 1.0) && (tauI > 0))  factor[i] = -1.0 / scale_[i];
-    // General case
-    else factor[i] = -1.0 * tauI / (absTauOverTheta * scale_[i] * scale_[i]);
-  }
   // Finally assemble the final matrix
+  const Scalar value = -std::exp(-norm) / norm;
   Matrix gradient(getInputDimension(), covariancePoint.getDimension());
   for (UnsignedInteger j = 0; j < covariancePoint.getDimension(); ++ j)
     for (UnsignedInteger i = 0; i < getInputDimension(); ++i)
-      gradient(i, j) = covariancePoint[j] * factor[i];
+      gradient(i, j) = covariancePoint[j] * (s[i] - t[i]) / (scale_[i] * scale_[i]) * value;
   return gradient;
 }
 

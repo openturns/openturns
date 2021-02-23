@@ -99,29 +99,31 @@ Matrix AbsoluteExponential::partialGradient(const Point & s,
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
-  const Point tau(s - t);
-  Point tauOverTheta(inputDimension_);
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverTheta[i] = tau[i] / scale_[i];
-  const Scalar norm1 = tauOverTheta.norm1();
+  Scalar norm1 = 0.0;
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i) 
+    norm1 += std::abs(s[i] - t[i]) / scale_[i];
   // For zero norm
   // Norm1 is null if all elements are zero
   // In that case gradient is not defined
+  Matrix gradient(inputDimension_, 1);
   if (norm1 == 0.0)
   {
-    Matrix gradient(inputDimension_, 1);
     for (UnsignedInteger i = 0; i < inputDimension_; ++i) gradient(i, 0) = -amplitude_[0] * amplitude_[0] / scale_[i];
     return gradient;
   }
   // General case
   const Scalar value = std::exp(-norm1);
+
   // Gradient take as factor sign(tau_i) /theta_i
-  Point factor(inputDimension_);
+  Scalar gradientI = 0;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i)
   {
-    factor[i] = amplitude_[0] * amplitude_[0] / scale_[i];
-    if (tau[i] > 0) factor[i] *= -1.0;
+    gradientI = (amplitude_[0] * amplitude_[0]) * value / scale_[i];
+    if ((s[i] - t[i]) > 0)
+      gradientI *= -1.0;
+    gradient(i, 0) = gradientI;
   }
-  return Matrix(inputDimension_, 1, factor * value) ;
+  return gradient;
 }
 
 /* String converter */
