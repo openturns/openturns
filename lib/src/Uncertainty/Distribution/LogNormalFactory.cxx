@@ -61,6 +61,7 @@ LogNormal LogNormalFactory::buildMethodOfMoments(const Sample & sample) const
   if (sample.getSize() < 3) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution using the method of moments with a sample of size less than 3.";
   // ME
   const Scalar std = sample.computeStandardDeviation()[0];
+  if (!SpecFunc::IsNormal(std)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution if data contains NaN or Inf";
   if (std == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on a constant sample using the method of moments.";
   const Scalar skew = sample.computeSkewness()[0];
   const Scalar a3 = skew;
@@ -81,6 +82,7 @@ LogNormal LogNormalFactory::buildMethodOfMoments(const Sample & sample) const
 LogNormal LogNormalFactory::buildMethodOfLocalLikelihoodMaximization(const Sample & sample) const
 {
   const Scalar std = sample.computeStandardDeviation()[0];
+  if (!SpecFunc::IsNormal(std)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution if data contains NaN or Inf";
   if (std == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on a constant sample using the method of local maximum likelihood.";
   const Scalar quantileEpsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
   Scalar step = std * std::sqrt(quantileEpsilon);
@@ -152,6 +154,7 @@ struct LogNormalFactoryMMEParameterConstraint
 LogNormal LogNormalFactory::buildMethodOfModifiedMoments(const Sample & sample) const
 {
   const Scalar std = sample.computeStandardDeviation()[0];
+  if (!SpecFunc::IsNormal(std)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution if data contains NaN or Inf";
   if (std == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogNormal distribution based on a constant sample using the method of modified moments.";
   const Scalar mean = sample.computeMean()[0];
   const Scalar xMin = sample.getMin()[0];
@@ -235,10 +238,10 @@ LogNormal LogNormalFactory::buildAsLogNormal(const Sample & sample,
       {
         return buildMethodOfLocalLikelihoodMaximization(sample);
       }
-      catch (InvalidArgumentException &)
+      catch (InvalidArgumentException & ex)
       {
         // We switch to the moment estimate
-        LOGWARN(OSS() << "Warning! Unable to bracket the location parameter gamma. Using the modified moment estimator.");
+        LOGWARN(OSS() << ex.what());
         return buildAsLogNormal(sample, 1);
       }
       break;
@@ -247,10 +250,10 @@ LogNormal LogNormalFactory::buildAsLogNormal(const Sample & sample,
       {
         return buildMethodOfModifiedMoments(sample);
       }
-      catch (InvalidArgumentException &)
+      catch (InvalidArgumentException & ex)
       {
         // We switch to the moment estimate
-        LOGWARN(OSS() << "Warning! Unable to bracket the shape parameter sigma. Using the classical moment estimator.");
+        LOGWARN(OSS() << ex.what());
         return buildAsLogNormal(sample, 2);
       }
       break;

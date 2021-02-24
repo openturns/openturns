@@ -6,5 +6,3 @@ Trapezoidal          =class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=2.3 c
 Estimated trapezoidal=class=Trapezoidal name=Trapezoidal dimension=1 a=1.037 b=2.421 c=3.992 d=4.982 h=0.3626
 Default trapezoidal=class=Trapezoidal name=Trapezoidal dimension=1 a=-2 b=-1 c=1 d=2 h=0.333333
 Trapezoidal from parameters=class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=2.3 c=4.5 d=5 h=0.322581
-Estimated distribution=class=Trapezoidal name=Trapezoidal dimension=1 a=-2.22045e-15 b=0 c=0 d=2.22045e-15 h=4.5036e+14
-Estimated distribution=class=Trapezoidal name=Trapezoidal dimension=1 a=1 b=1 c=1 d=1 h=4.5036e+14

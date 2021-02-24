@@ -36,31 +36,31 @@ Dirac::Dirac()
   : DiscreteDistribution()
   , point_(1, 0.0)
 {
-  setName( "Dirac" );
+  setName("Dirac");
   // We set the dimension of the Dirac distribution
-  setDimension( 1 );
+  setDimension(1);
   computeRange();
 }
 
 /* Parameters constructor */
 Dirac::Dirac(const Scalar p)
   : DiscreteDistribution()
-  , point_(1, p)
 {
-  setName( "Dirac" );
+  setName("Dirac");
   // We set the dimension of the Dirac distribution
-  setDimension( 1 );
+  setDimension(1);
+  setPoint(Point(1, p));
   computeRange();
 }
 
 /* Parameters constructor */
 Dirac::Dirac(const Point & point)
   : DiscreteDistribution()
-  , point_(point)
 {
   setName( "Dirac" );
   // We set the dimension of the Dirac distribution
-  setDimension( point.getDimension() );
+  setDimension(point.getDimension());
+  setPoint(point);
   computeRange();
 }
 
@@ -306,6 +306,11 @@ Description Dirac::getParameterDescription() const
 /* Point accessor */
 void Dirac::setPoint(const Point & point)
 {
+  const UnsignedInteger dimension = getDimension();
+  if (point.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Expected a point of dimension " << dimension;
+  for (UnsignedInteger i = 0; i < dimension; ++ i)
+    if (!SpecFunc::IsNormal(point[i])) throw InvalidArgumentException(HERE) << "Cannot build a Dirac from nan/inf values";
   point_ = point;
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;

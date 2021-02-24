@@ -64,16 +64,12 @@ Exponential ExponentialFactory::buildAsExponential(const Sample & sample) const
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Exponential distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build an Exponential distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar xMin = sample.getMin()[0];
-  if (!SpecFunc::IsNormal(xMin) || !SpecFunc::IsNormal(xMin)) throw InvalidArgumentException(HERE) << "Error: cannot build an Exponential distribution if data contains NaN or Inf";
   const Scalar gamma = xMin - std::abs(xMin) / (2.0 + size);
   const Scalar mean = sample.computeMean()[0];
+  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an Exponential distribution if data contains NaN or Inf";
+  const Scalar sigma = sample.computeStandardDeviation()[0];
   // If sample with constant null data, build an approximation of Dirac(0) by hand
-  if (mean == gamma)
-  {
-    Exponential result(SpecFunc::MaxScalar / SpecFunc::LogMaxScalar, 0.0);
-    result.setDescription(sample.getDescription());
-    return result;
-  }
+  if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate an Exponential distribution from a constant sample.";
   const Scalar lambda = 1.0 / (mean - gamma);
   Exponential result(lambda, gamma);
   result.setDescription(sample.getDescription());

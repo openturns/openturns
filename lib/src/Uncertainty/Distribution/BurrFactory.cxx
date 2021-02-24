@@ -112,6 +112,9 @@ Burr BurrFactory::buildAsBurr(const Sample & sample) const
 
   if (!(sample.getMin()[0] > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a Burr distribution based on a sample with nonpositive values.";
   BurrFactoryParameterConstraint constraint(sample);
+  const Scalar sigma = sample.computeStandardDeviation()[0];
+  if (!SpecFunc::IsNormal(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Burr distribution if data contains NaN or Inf";
+  if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Burr distribution from a constant sample.";
   const Function f(bindMethod<BurrFactoryParameterConstraint, Point, Point>(constraint, &BurrFactoryParameterConstraint::computeConstraint, 1, 1));
   // Find a bracketing interval
   Scalar a = 1.0;

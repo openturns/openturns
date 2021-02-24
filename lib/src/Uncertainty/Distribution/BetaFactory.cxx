@@ -71,13 +71,8 @@ Beta BetaFactory::buildAsBeta(const Sample & sample) const
   const Scalar a = xMin - delta / (size + 2);
   const Scalar b = xMax + delta / (size + 2);
   if (!SpecFunc::IsNormal(a) || !SpecFunc::IsNormal(b)) throw InvalidArgumentException(HERE) << "Error: cannot build a Beta distribution if data contains NaN or Inf";
-  if (xMin == xMax)
-  {
-    delta = std::max(std::abs(xMin), 100.0) * SpecFunc::ScalarEpsilon;
-    Beta result(1.0, 1.0, xMin - delta, xMax + delta);
-    result.setDescription(sample.getDescription());
-    return result;
-  }
+  if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Beta distribution from a constant sample.";
+
   const Scalar mu = sample.computeMean()[0];
   const Scalar sigma = sample.computeStandardDeviation()[0];
   return buildAsBeta(BetaMuSigma(mu, sigma, a, b).evaluate());

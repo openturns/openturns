@@ -56,13 +56,6 @@ int main(int, char *[])
     fullprint << "Default trapezoidal=" << estimatedTrapezoidal << std::endl;
     estimatedTrapezoidal = factory.buildAsTrapezoidal(distribution.getParameter());
     fullprint << "Trapezoidal from parameters=" << estimatedTrapezoidal << std::endl;
-    // Test for constant sample
-    sample = Sample(size, Point(1, 0.0));
-    estimatedDistribution = factory.build(sample);
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    sample = Sample(size, Point(1, 1.0));
-    estimatedDistribution = factory.build(sample);
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
   }
   catch (TestFailed & ex)
   {

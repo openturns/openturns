@@ -68,11 +68,9 @@ Gumbel GumbelFactory::buildAsGumbel(const Sample & sample) const
 {
   if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Gumbel distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Gumbel distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
-  Scalar mu = sample.computeMean()[0];
-  Scalar sigma = sample.computeStandardDeviation()[0];
-  Point parameters(2);
-  parameters[0] = mu;
-  parameters[1] = sigma;
+  const Scalar mu = sample.computeMean()[0];
+  const Scalar sigma = sample.computeStandardDeviation()[0];
+  const Point parameters = {mu, sigma};
   Gumbel result(buildAsGumbel(GumbelMuSigma()(parameters)));
   result.setDescription(sample.getDescription());
   return result;

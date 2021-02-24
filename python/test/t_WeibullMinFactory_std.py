@@ -27,14 +27,6 @@ try:
     estimatedWeibull = factory.buildAsWeibullMin(
         distribution.getParameter())
     print("WeibullMin from parameters=", estimatedWeibull)
-    sample = [[0.0]] * size
-    estimatedDistribution = factory.build(sample)
-    print("Estimated distribution=", repr(estimatedDistribution))
-    sample = [[1.0]] * size
-    estimatedDistribution = factory.buildAsWeibullMin(sample)
-    ott.assert_almost_equal(estimatedDistribution.getBeta(), 0.0, 0.0, 1e-4)
-    ott.assert_almost_equal(estimatedDistribution.getAlpha(), 1.0, 0.0, 1e-6)
-    ott.assert_almost_equal(estimatedDistribution.getGamma(), 1.0, 0.0, 1e-6)
 
 except:
     import sys

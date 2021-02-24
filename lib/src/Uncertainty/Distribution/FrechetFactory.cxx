@@ -66,9 +66,11 @@ Frechet FrechetFactory::buildAsFrechet(const Sample & sample) const
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Frechet distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Frechet distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar xMin = sample.getMin()[0];
+  const Scalar xMax = sample.getMax()[0];
   Scalar gamma = xMin - std::abs(xMin) / (2.0 + size);
   if (!SpecFunc::IsNormal(gamma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Frechet distribution if data contains NaN or Inf";
   // If the minimum value is zero then one of the shifted values will be zero, leading to an undefined logarithm. The small perturbation is harmless as it is just a matter of getting a reasonable starting point for a further MLE.
+  if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a LogUniform distribution from a constant sample.";
   // In any case, if the given sample is pathological (lots of zeros, a few positive values) a Frechet distribution is not a plausible candidate.
   if (gamma == 0.0) gamma -= ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
   // Convert the translated sample in logarithmic scale, in order for the new sample to be distributed according to the Gumbel distribution
@@ -86,24 +88,15 @@ Frechet FrechetFactory::buildAsFrechet(const Sample & sample) const
   Frechet model;
   MaximumLikelihoodFactory mleFactory(model);
   OptimizationAlgorithm algo(mleFactory.getOptimizationAlgorithm());
-  Point startingPoint(3);
-  startingPoint[0] = betaFrechet;
-  startingPoint[1] = alphaFrechet;
-  startingPoint[2] = gamma;
+  const Point startingPoint = {betaFrechet, alphaFrechet, gamma};
   algo.setStartingPoint(startingPoint);
   mleFactory.setOptimizationAlgorithm(algo);
   const Scalar margin(std::max(1.0, ResourceMap::GetAsScalar("FrechetFactory-BoundMargin")));
-  Point lower(3);
-  lower[0] = betaFrechet / margin;
-  lower[1] = alphaFrechet / margin;
-  lower[2] = gamma - margin * std::abs(gamma);
-  Point upper(3);
-  upper[0] = margin * betaFrechet;
-  upper[1] = margin * alphaFrechet;
-  upper[2] = gamma + margin * std::abs(gamma);
+  const Point lower = {betaFrechet / margin, alphaFrechet / margin, gamma - margin * std::abs(gamma)};
+  const Point upper = {margin * betaFrechet,  margin * alphaFrechet, gamma + margin * std::abs(gamma)};
   mleFactory.setOptimizationBounds(Interval(lower, upper));
   const Point parameters(mleFactory.buildParameter(sample));
-  return Frechet(parameters[0], parameters[1], parameters[2]);
+  return buildAsFrechet(parameters);
 }
 
 Frechet FrechetFactory::buildAsFrechet(const Point & parameters) const

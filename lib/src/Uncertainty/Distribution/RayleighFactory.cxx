@@ -65,6 +65,8 @@ Rayleigh RayleighFactory::buildAsRayleigh(const Sample & sample) const
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Rayleigh distribution from an empty sample";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Rayleigh distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar xMin = sample.getMin()[0];
+  const Scalar xMax = sample.getMax()[0];
+  if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Rayleigh distribution from a constant sample.";
   const Scalar gamma = xMin - std::abs(xMin) / (2.0 + size);
   Scalar sumSquares = 0.0;
   for (UnsignedInteger i = 0; i < size; ++i)
@@ -74,12 +76,6 @@ Rayleigh RayleighFactory::buildAsRayleigh(const Sample & sample) const
   }
   // Here we test on sumSquares in order to detect also overflows
   if (!SpecFunc::IsNormal(sumSquares)) throw InvalidArgumentException(HERE) << "Error: cannot build a Rayleigh distribution if data contains NaN or Inf";
-  if (sumSquares == 0.0)
-  {
-    Rayleigh result(100.0 * (std::max(std::abs(gamma), SpecFunc::ScalarEpsilon) * SpecFunc::ScalarEpsilon), gamma);
-    result.setDescription(sample.getDescription());
-    return result;
-  }
   try
   {
     Rayleigh result(std::sqrt(0.5 * sumSquares / size), gamma);

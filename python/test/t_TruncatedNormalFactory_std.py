@@ -43,14 +43,7 @@ for i in range(4):
     print('Estimated distribution with moments=', estimatedDistribution)
     estimatedDistribution = factory.buildMethodOfLikelihoodMaximization(sample)
     print('Estimated distribution with likelihoodMax.=', estimatedDistribution)
-sample = [[0.0]] * size
-estimatedDistribution = factory.build(sample)
-print("Estimated distribution with default estimator=",
-      repr(estimatedDistribution))
-sample = [[1.0]] * size
-estimatedDistribution = factory.build(sample)
-print("Estimated distribution with default estimator=",
-      repr(estimatedDistribution))
+
 
 # Build method of moments
 print("Build method of moments")
