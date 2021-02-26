@@ -53,3 +53,12 @@ try:
     print("ev=", matrix3.computeSingularValues())
 except:
     print("ok")
+
+# from SymmetricMatrix
+sym = ot.SymmetricMatrix(3)
+sym[0, 0] = 1.0e-02
+sym[1, 1] = 1.0e-02
+sym[2, 2] = 1.0e-02
+sym[0, 1] = 7.0e-04
+ot.CovarianceMatrix(sym)
+print("ok")

@@ -56,6 +56,7 @@
  * #1775 (ExponentialModel does not account correlation with Covariance ctor)
  * #1776 (Typo in the Branin use case implementation)
  * #1784 (The drawPDF method of Histogram sometimes fail)
+ * #1787 (CovarianceMatrix from SymmetricMatrix raises InvalidArgumentException)
 
 
 == 1.16 release (2020-11-16) == #release-1.16
