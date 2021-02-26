@@ -4887,10 +4887,8 @@ Distribution DistributionImplementation::acos() const
   if (a < -1.0) throw InvalidArgumentException(HERE) << "Error: cannot take the arc cos of a random variable that takes values less than -1 with positive probability.";
   const Scalar b = getRange().getUpperBound()[0];
   if (!(b <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot take the arc cos of a random variable that takes values greater than 1 with positive probability.";
-  Point bounds(1, a);
-  Point values(1, std::acos(a));
-  bounds.add(b);
-  values.add(std::acos(b));
+  const Point bounds = {a, b};
+  const Point values = {std::acos(a), std::acos(b)};
   return new CompositeDistribution(SymbolicFunction("x", "acos(x)"), clone(), bounds, values);
 }
 
@@ -4901,10 +4899,8 @@ Distribution DistributionImplementation::asin() const
   if (a < -1.0) throw InvalidArgumentException(HERE) << "Error: cannot take the arc sin of a random variable that takes values less than -1 with positive probability.";
   const Scalar b = getRange().getUpperBound()[0];
   if (!(b <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot take the arc sin of a random variable that takes values greater than 1 with positive probability.";
-  Point bounds(1, a);
-  Point values(1, std::asin(a));
-  bounds.add(b);
-  values.add(std::asin(b));
+  const Point bounds = {a, b};
+  const Point values = {std::asin(a), std::asin(b)};
   return new CompositeDistribution(SymbolicFunction("x", "asin(x)"), clone(), bounds, values);
 }
 
@@ -4912,11 +4908,9 @@ Distribution DistributionImplementation::atan() const
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   const Scalar a = getRange().getLowerBound()[0];
-  Point bounds(1, a);
-  Point values(1, std::atan(a));
   const Scalar b = getRange().getUpperBound()[0];
-  bounds.add(b);
-  values.add(std::atan(b));
+  const Point bounds = {a, b};
+  const Point values = {std::atan(a), std::atan(b)};
   return new CompositeDistribution(SymbolicFunction("x", "atan(x)"), clone(), bounds, values);
 }
 
@@ -4942,10 +4936,8 @@ Distribution DistributionImplementation::sinh() const
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   const Scalar a = getRange().getLowerBound()[0];
   const Scalar b = getRange().getUpperBound()[0];
-  Point bounds(1, a);
-  Point values(1, std::sinh(a));
-  bounds.add(b);
-  values.add(std::sinh(b));
+  const Point bounds = {a, b};
+  const Point values = {std::sinh(a), std::sinh(b)};
   return new CompositeDistribution(SymbolicFunction("x", "sinh(x)"), clone(), bounds, values);
 }
 
@@ -4954,10 +4946,8 @@ Distribution DistributionImplementation::tanh() const
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   const Scalar a = getRange().getLowerBound()[0];
   const Scalar b = getRange().getUpperBound()[0];
-  Point bounds(1, a);
-  Point values(1, std::tanh(a));
-  bounds.add(b);
-  values.add(std::tanh(b));
+  const Point bounds = {a, b};
+  const Point values = {std::tanh(a), std::tanh(b)};
   return new CompositeDistribution(SymbolicFunction("x", "tanh(x)"), clone(), bounds, values);
 }
 
@@ -4967,10 +4957,8 @@ Distribution DistributionImplementation::acosh() const
   const Scalar a = getRange().getLowerBound()[0];
   if (!(a >= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot take the arc cosh of a random variable that takes values less than 1 with positive probability.";
   const Scalar b = getRange().getUpperBound()[0];
-  Point bounds(1, a);
-  Point values(1, SpecFunc::Acosh(a));
-  bounds.add(b);
-  values.add(SpecFunc::Acosh(b));
+  const Point bounds = {a, b};
+  const Point values = {SpecFunc::Acosh(a), SpecFunc::Acosh(b)};
   return new CompositeDistribution(SymbolicFunction("x", "acosh(x)"), clone(), bounds, values);
 }
 
@@ -4979,10 +4967,8 @@ Distribution DistributionImplementation::asinh() const
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   const Scalar a = getRange().getLowerBound()[0];
   const Scalar b = getRange().getUpperBound()[0];
-  Point bounds(1, a);
-  Point values(1, SpecFunc::Asinh(a));
-  bounds.add(b);
-  values.add(SpecFunc::Asinh(b));
+  const Point bounds = {a, b};
+  const Point values = {SpecFunc::Asinh(a), SpecFunc::Asinh(b)};
   return new CompositeDistribution(SymbolicFunction("x", "asinh(x)"), clone(), bounds, values);
 }
 
@@ -5019,10 +5005,8 @@ Distribution DistributionImplementation::exp() const
   }
   const Scalar a = getRange().getLowerBound()[0];
   const Scalar b = getRange().getUpperBound()[0];
-  Point bounds(1, a);
-  Point values(1, std::exp(a));
-  bounds.add(b);
-  values.add(std::exp(b));
+  const Point bounds = {a, b};
+  const Point values = {std::exp(a), std::exp(b)};
   return new CompositeDistribution(SymbolicFunction("x", "exp(x)"), clone(), bounds, values);
 }
 
@@ -5043,9 +5027,8 @@ Distribution DistributionImplementation::log() const
   const Scalar a = getRange().getLowerBound()[0];
   if (!(a >= 0.0)) throw NotDefinedException(HERE) << "Error: cannot take the logarithm of a random variable that takes negative values with positive probability.";
   const Scalar b = getRange().getUpperBound()[0];
-  Point bounds(1, a);
+  const Point bounds = {a, b};
   Point values(1, (a == 0.0 ? std::log(computeQuantile(quantileEpsilon_)[0]) : std::log(a)));
-  bounds.add(b);
   values.add(std::log(b));
   return new CompositeDistribution(SymbolicFunction("x", "log(x)"), clone(), bounds, values);
 }
@@ -5057,9 +5040,12 @@ Distribution DistributionImplementation::ln() const
 
 Distribution DistributionImplementation::pow(const Scalar exponent) const
 {
+  LOGDEBUG(OSS() << "Scalar exponent=" << exponent);
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   // First, the case where the exponent is integer
   if (trunc(exponent) == exponent) return pow(static_cast< SignedInteger >(trunc(exponent)));
+  if (exponent == 0.5) return (*this).sqrt();
+  if (exponent == 1.0 / 3.0) return (*this).cbrt();
   const Scalar a = getRange().getLowerBound()[0];
   if (!(a >= 0.0)) throw NotDefinedException(HERE) << "Error: cannot take a fractional power of a random variable that takes negative values with positive probability.";
 
@@ -5074,8 +5060,12 @@ Distribution DistributionImplementation::pow(const Scalar exponent) const
 
 Distribution DistributionImplementation::pow(const SignedInteger exponent) const
 {
+  LOGDEBUG(OSS() << "Signed integer exponent=" << exponent);
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
-  if (exponent == 0.0) return new Dirac(Point(1, 1.0));
+  if (exponent == 0) return new Dirac(Point(1, 1.0));
+  if (exponent == 1) return *this;
+  if (exponent == 2) return (*this).sqr();
+  if (exponent == -1) return (*this).inverse();
   const Scalar a = getRange().getLowerBound()[0];
   SymbolicFunction toPower("x", String(OSS() << (exponent < 0.0 ? "x^(" : "x^") << exponent << (exponent < 0.0 ? ")" : "")));
   // Easy case: a >= 0
@@ -5086,6 +5076,7 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
     const Scalar b = getRange().getUpperBound()[0];
     bounds.add(b);
     values.add(std::pow(b, 1.0 * exponent));
+    LOGDEBUG(OSS() << "a=" << a << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
     return new CompositeDistribution(toPower, clone(), bounds, values);
   }
   // Easy case: b <= 0
@@ -5096,6 +5087,7 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
   {
     bounds.add(b);
     values.add(b == 0.0 ? (exponent < 0.0 ? std::pow(computeQuantile(quantileEpsilon_, true)[0], 1.0 * exponent) : 0.0) : std::pow(b, 1.0 * exponent));
+    LOGDEBUG(OSS() << "b=" << b << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
     return new CompositeDistribution(toPower, clone(), bounds, values);
   }
   // Difficult case: a < 0 < b
@@ -5107,6 +5099,7 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
     {
       bounds.add(b);
       values.add(std::pow(b, 1.0 * exponent));
+      LOGDEBUG(OSS() << "odd exponent=" << exponent << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
       return new CompositeDistribution(toPower, clone(), bounds, values);
     }
     // A singularity at 0 for negative exponent
@@ -5116,13 +5109,15 @@ Distribution DistributionImplementation::pow(const SignedInteger exponent) const
     values.add(SpecFunc::MaxScalar);
     bounds.add(b);
     values.add(std::pow(b, 1.0 * exponent));
-    return new CompositeDistribution(SymbolicFunction("x", String(OSS() << "x^(" << exponent << ")")), clone(), bounds, values);
+    LOGDEBUG(OSS() << "odd exponent=" << exponent << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
+    return new CompositeDistribution(toPower, clone(), bounds, values);
   }
   // For even exponent, the behaviour changes at 0
   bounds.add(0.0);
   values.add(exponent > 0 ? 0.0 : SpecFunc::MaxScalar);
   bounds.add(b);
   values.add(std::pow(b, 1.0 * exponent));
+  LOGDEBUG(OSS() << "even exponent=" << exponent << ", toPower=" << toPower << ", bounds=" << bounds << ", values=" << values);
   return new CompositeDistribution(toPower, clone(), bounds, values);
 }
 
@@ -5139,7 +5134,7 @@ Distribution DistributionImplementation::sqr() const
     const Point parameters(getParameter());
     return new SquaredNormal(parameters[0], parameters[1]);
   }
-  return pow(static_cast< SignedInteger >(2));
+  return new CompositeDistribution(SymbolicFunction("x", "x^2"), clone());
 }
 
 Distribution DistributionImplementation::inverse() const
@@ -5147,6 +5142,7 @@ Distribution DistributionImplementation::inverse() const
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   const Scalar a = getRange().getLowerBound()[0];
   Point bounds(1, a);
+  const SymbolicFunction inverseFunction("x", "1.0 / x");
   // Easy case: a >= 0
   if (a >= 0.0)
   {
@@ -5157,7 +5153,7 @@ Distribution DistributionImplementation::inverse() const
       values.add(1.0 / b);
     else
       values.add(0.0);
-    return new CompositeDistribution(SymbolicFunction("x", "1.0 / x"), clone(), bounds, values);
+    return new CompositeDistribution(inverseFunction, clone(), bounds, values);
   }
   // Here, a < 0
   Point values(1);
@@ -5171,7 +5167,7 @@ Distribution DistributionImplementation::inverse() const
   {
     bounds.add(b);
     values.add(b == 0.0 ? 1.0 / computeQuantile(quantileEpsilon_, true)[0] : 1.0 / b);
-    return new CompositeDistribution(SymbolicFunction("x", "1.0 / x"), clone(), bounds, values);
+    return new CompositeDistribution(inverseFunction, clone(), bounds, values);
   }
   // Difficult case: a < 0 < b
   // A singularity at 0
@@ -5189,7 +5185,7 @@ Distribution DistributionImplementation::inverse() const
     values.add(1.0 / b);
   else
     values.add(0.0);
-  return new CompositeDistribution(SymbolicFunction("x", "1.0 / x"), clone(), bounds, values);
+  return new CompositeDistribution(inverseFunction, clone(), bounds, values);
 }
 
 Distribution DistributionImplementation::sqrt() const
@@ -5203,11 +5199,9 @@ Distribution DistributionImplementation::sqrt() const
   }
   const Scalar a = getRange().getLowerBound()[0];
   if (!(a >= 0.0)) throw NotDefinedException(HERE) << "Error: cannot take the square root of a random variable that takes negative values with positive probability.";
-  Point bounds(1, a);
-  Point values(1, std::sqrt(a));
   const Scalar b = getRange().getUpperBound()[0];
-  bounds.add(b);
-  values.add(std::sqrt(b));
+  const Point bounds = {a, b};
+  const Point values = {std::sqrt(a), std::sqrt(b)};
   return new CompositeDistribution(SymbolicFunction("x", "sqrt(x)"), clone(), bounds, values);
 }
 
@@ -5215,28 +5209,23 @@ Distribution DistributionImplementation::cbrt() const
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
   const Scalar a = getRange().getLowerBound()[0];
-  Point bounds(1, a);
-  Point values(1, SpecFunc::Cbrt(a));
   const Scalar b = getRange().getUpperBound()[0];
-  bounds.add(b);
-  values.add(SpecFunc::Cbrt(b));
+  const Point bounds = {a, b};
+  const Point values = {SpecFunc::Cbrt(a), SpecFunc::Cbrt(b)};
   return new CompositeDistribution(SymbolicFunction("x", "cbrt(x)"), clone(), bounds, values);
 }
 
 Distribution DistributionImplementation::abs() const
 {
   if (getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the distribution must be univariate.";
+  // First the easy cases
   const Scalar a = getRange().getLowerBound()[0];
-  Point bounds(1, a);
-  Point values(1, std::abs(a));
+  if (a >= 0.0) return *this;
   const Scalar b = getRange().getUpperBound()[0];
-  if ((a < 0.0) && (b > 0.0))
-  {
-    bounds.add(0.0);
-    values.add(0.0);
-  }
-  bounds.add(b);
-  values.add(std::abs(b));
+  if (b <= 0.0) return (*this) * (-1.0);
+  // Now the difficult case
+  const Point bounds = {a, 0.0, b};
+  const Point values = {std::abs(a), 0.0, b};
   return new CompositeDistribution(SymbolicFunction("x", "abs(x)"), clone(), bounds, values);
 }
 

@@ -325,7 +325,7 @@
   <ComposedDistribution-UseGenericCovarianceAlgorithm value_bool="false" />
 
   <!-- OT::CompositeDistribution parameters -->
-  <CompositeDistribution-SolverEpsilon value_float="1.0e-10"       />
+  <CompositeDistribution-SolverEpsilon value_float="1.0e-14"       />
   <CompositeDistribution-StepNumber    value_int="256" />
 
   <!-- OT::Dirichlet parameters -->

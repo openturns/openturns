@@ -943,7 +943,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsBool("ComposedDistribution-UseGenericCovarianceAlgorithm", false);
 
   // CompositeDistribution parameters //
-  addAsScalar("CompositeDistribution-SolverEpsilon", 1.0e-10);
+  addAsScalar("CompositeDistribution-SolverEpsilon", 1.0e-14);
   addAsUnsignedInteger("CompositeDistribution-StepNumber", 256);
 
   // Dirichlet parameters //
