@@ -229,7 +229,7 @@ LogNormal LogNormalFactory::buildAsLogNormal(const Sample & sample,
     const UnsignedInteger method) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution from an empty sample";
+  if (size < 3) throw InvalidArgumentException(HERE) << "Error: cannot build a LogNormal distribution from a sample of size < 3";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a LogNormal distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   switch (method)
   {

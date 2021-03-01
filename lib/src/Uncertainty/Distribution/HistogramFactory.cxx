@@ -84,7 +84,7 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
     const Scalar bandwidth) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram based on an empty sample.";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build an Histogram only if dimension equals 1, here dimension=" << sample.getDimension();
   if (!(bandwidth > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected a positive bandwidth, got bandwidth=" << bandwidth;
   // Construct the histogram
@@ -102,7 +102,7 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
     const UnsignedInteger binNumber) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram based on an empty sample.";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build an Histogram only if dimension equals 1, here dimension=" << sample.getDimension();
   if (binNumber == 0) throw InvalidArgumentException(HERE) << "Error: expected a positive number of bin, got 0.";
   // Construct the histogram
@@ -135,7 +135,7 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
     const Point & width) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram based on an empty sample.";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build an Histogram only if dimension equals 1, here dimension=" << sample.getDimension();
   const UnsignedInteger binNumber = width.getSize();
   if (binNumber == 0) throw InvalidArgumentException(HERE) << "Error: expected a positive number of bin, got 0.";
@@ -193,7 +193,7 @@ Scalar HistogramFactory::computeBandwidth(const Sample & sample,
     const Bool useQuantile) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot compute the bandwidth based on an empty sample.";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution from a sample of size < 2";
   Scalar hOpt = 0;
   if (useQuantile)
   {

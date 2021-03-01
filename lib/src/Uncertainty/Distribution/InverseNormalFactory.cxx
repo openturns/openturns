@@ -63,7 +63,7 @@ Distribution InverseNormalFactory::build() const
 InverseNormal InverseNormalFactory::buildAsInverseNormal(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from an empty sample";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution from a sample of dimension different from 1";
   const Scalar mu = sample.computeMean()[0];
   if (!SpecFunc::IsNormal(mu)) throw InvalidArgumentException(HERE) << "Error: cannot build an InverseNormal distribution if data contains NaN or Inf";

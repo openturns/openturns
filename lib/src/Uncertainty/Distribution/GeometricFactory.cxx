@@ -62,7 +62,7 @@ Distribution GeometricFactory::build() const
 
 Geometric GeometricFactory::buildAsGeometric(const Sample & sample) const
 {
-  if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Geometric distribution from an empty sample";
+  if (sample.getSize() < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Geometric distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Geometric distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   // Check if all the components of the sample are integers > 0
   UnsignedInteger size = sample.getSize();

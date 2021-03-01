@@ -94,7 +94,7 @@ Distribution NegativeBinomialFactory::build() const
 NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a NegativeBinomial distribution from an empty sample";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a NegativeBinomial distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a NegativeBinomial distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   Scalar mean = 0.0;
   Scalar var = 0.0;

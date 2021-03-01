@@ -66,7 +66,7 @@ DistributionFactoryResult GumbelFactory::buildEstimator(const Sample & sample) c
 
 Gumbel GumbelFactory::buildAsGumbel(const Sample & sample) const
 {
-  if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Gumbel distribution from an empty sample";
+  if (sample.getSize() < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Gumbel distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Gumbel distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar mu = sample.computeMean()[0];
   const Scalar sigma = sample.computeStandardDeviation()[0];

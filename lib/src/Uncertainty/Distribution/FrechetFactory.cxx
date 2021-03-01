@@ -63,7 +63,7 @@ Distribution FrechetFactory::build() const
 Frechet FrechetFactory::buildAsFrechet(const Sample & sample) const
 {
   const Scalar size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Frechet distribution from an empty sample";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Frechet distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Frechet distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];
@@ -91,7 +91,7 @@ Frechet FrechetFactory::buildAsFrechet(const Sample & sample) const
   const Point startingPoint = {betaFrechet, alphaFrechet, gamma};
   algo.setStartingPoint(startingPoint);
   mleFactory.setOptimizationAlgorithm(algo);
-  const Scalar margin(std::max(1.0, ResourceMap::GetAsScalar("FrechetFactory-BoundMargin")));
+  const Scalar margin = std::max(1.0, ResourceMap::GetAsScalar("FrechetFactory-BoundMargin"));
   const Point lower = {betaFrechet / margin, alphaFrechet / margin, gamma - margin * std::abs(gamma)};
   const Point upper = {margin * betaFrechet,  margin * alphaFrechet, gamma + margin * std::abs(gamma)};
   mleFactory.setOptimizationBounds(Interval(lower, upper));
