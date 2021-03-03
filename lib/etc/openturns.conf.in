@@ -318,9 +318,10 @@
   <BurrFactory-MaximumIteration  value_int="10" />
   
   <!-- OT::ConditionalDistribution parameters -->
-  <ConditionalDistribution-MarginalIntegrationNodesNumber value_int="256"    />
-  <ConditionalDistribution-MaximumIntegrationNodesNumber  value_int="100000" />
-  
+  <ConditionalDistribution-MarginalIntegrationNodesNumber value_int="256"          />
+  <ConditionalDistribution-MaximumIntegrationNodesNumber  value_int="100000"       />
+  <ConditionalDistribution-ContinuousDiscretizationMethod value_str="GaussProduct" />
+
   <!-- OT::ComposedDistribution parameters -->
   <ComposedDistribution-UseGenericCovarianceAlgorithm value_bool="false" />
 
