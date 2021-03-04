@@ -285,6 +285,7 @@ Low-level distribution functions
     DistFunc_logdPoisson
     DistFunc_pHypergeometric
     DistFunc_pPearsonCorrelation
+    DistFunc_dNormal
     DistFunc_pNormal
     DistFunc_qNormal
     DistFunc_rBinomial
