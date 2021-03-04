@@ -200,7 +200,7 @@ void MatrixImplementation::reshapeInPlace(const UnsignedInteger newRowDim,
 /* Row extraction */
 const MatrixImplementation MatrixImplementation::getRow(const UnsignedInteger rowIndex) const
 {
-  if (rowIndex >= nbRows_) throw InvalidArgumentException(HERE) << "Error: the row index=" << rowIndex << " must be less than the row number=" << nbRows_;
+  if (rowIndex >= nbRows_) throw OutOfBoundException(HERE) << "Error: the row index=" << rowIndex << " must be less than the row number=" << nbRows_;
   MatrixImplementation row(1, nbColumns_);
   for (UnsignedInteger i = 0; i < nbColumns_; ++i) row(0, i) = (*this)(rowIndex, i);
   return row;
@@ -208,7 +208,7 @@ const MatrixImplementation MatrixImplementation::getRow(const UnsignedInteger ro
 
 const MatrixImplementation MatrixImplementation::getRowSym(const UnsignedInteger rowIndex) const
 {
-  if (rowIndex >= nbRows_) throw InvalidArgumentException(HERE) << "Error: the row index=" << rowIndex << " must be less than the row number=" << nbRows_;
+  if (rowIndex >= nbRows_) throw OutOfBoundException(HERE) << "Error: the row index=" << rowIndex << " must be less than the row number=" << nbRows_;
   MatrixImplementation row(1, nbColumns_);
   for (UnsignedInteger i = 0; i < rowIndex; ++i) row(0, i) = (*this)(rowIndex, i);
   for (UnsignedInteger i = rowIndex; i < nbColumns_; ++i) row(0, i) = (*this)(i, rowIndex);
@@ -218,7 +218,7 @@ const MatrixImplementation MatrixImplementation::getRowSym(const UnsignedInteger
 /* Column extration */
 const MatrixImplementation MatrixImplementation::getColumn(const UnsignedInteger columnIndex) const
 {
-  if (columnIndex >= nbColumns_) throw InvalidArgumentException(HERE) << "Error: the column index=" << columnIndex << " must be less than the column number=" << nbColumns_;
+  if (columnIndex >= nbColumns_) throw OutOfBoundException(HERE) << "Error: the column index=" << columnIndex << " must be less than the column number=" << nbColumns_;
   MatrixImplementation column(nbRows_, 1);
   for (UnsignedInteger i = 0; i < nbRows_; ++i) column(i, 0) = (*this)(i, columnIndex);
   return column;
@@ -226,7 +226,7 @@ const MatrixImplementation MatrixImplementation::getColumn(const UnsignedInteger
 
 const MatrixImplementation MatrixImplementation::getColumnSym(const UnsignedInteger columnIndex) const
 {
-  if (columnIndex >= nbColumns_) throw InvalidArgumentException(HERE) << "Error: the column index=" << columnIndex << " must be less than the column number=" << nbColumns_;
+  if (columnIndex >= nbColumns_) throw OutOfBoundException(HERE) << "Error: the column index=" << columnIndex << " must be less than the column number=" << nbColumns_;
   MatrixImplementation column(nbRows_, 1);
   for (UnsignedInteger i = 0; i < columnIndex; ++i) column(i, 0) = (*this)(columnIndex, i);
   for (UnsignedInteger i = columnIndex; i < nbRows_; ++i) column(i, 0) = (*this)(i, columnIndex);
@@ -1428,7 +1428,7 @@ MatrixImplementation MatrixImplementation::computeCholesky(const Bool keepIntact
   MatrixImplementation & A = keepIntact ? L : *this;
 
   dpotrf_(&uplo, &n, &A[0], &n, &info, &luplo);
-  if (info != 0) throw InternalException(HERE) << "Error: the matrix is not definite positive.";
+  if (info != 0) throw NotSymmetricDefinitePositiveException(HERE) << "Error: the matrix is not definite positive.";
   for (UnsignedInteger j = 0; j < (UnsignedInteger)(n); ++ j)
     for (UnsignedInteger i = 0; i < j; ++ i)
       A(i, j) = 0.0;

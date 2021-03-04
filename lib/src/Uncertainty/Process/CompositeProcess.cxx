@@ -121,7 +121,7 @@ TimeSeries CompositeProcess::getFuture(const UnsignedInteger stepNumber) const
   {
     timeGrid = getTimeGrid();
   }
-  catch (...)
+  catch (const InvalidArgumentException & ex)
   {
     throw InternalException(HERE) << "Error: can extend the realization of a process only if defined on a regular grid.";
   }
