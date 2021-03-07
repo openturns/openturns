@@ -4,7 +4,7 @@ Coding rules
 Packages
 --------
 
-In order to structure the code of the  project, the various elements
+In order to structure the code of the project, the various elements
 (classes, functions, libraries, data) are logically organized in
 packages. This chapter describes the rules to be followed for the
 definition, management and use of these packages.
@@ -1071,8 +1071,90 @@ Incorrect example:
     }
     // phase 4
 
-Error handling and error messages
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Exception handling
+~~~~~~~~~~~~~~~~~~
+
+An exception should be thrown when the library encounters conditions
+under which it cannot operate.
+
+When coding a new functionality, define a **sufficient** condition
+under which the functionality will work correctly,
+and have it throw an Exception if this condition is not met.
+
+Correct example:
+
+.. code:: cpp
+
+    // Throw if a probability does not belong to [0,1]
+    if (!( (proba >= 0.0) && (proba <= 1.0) ))
+        throw InvalidArgumentException(HERE) << "Error: a probability should belong to [0,1]"
+                                             << " but is " << proba;
+
+Typically, it is easier to think about conditions that are sufficient
+to make the functionality **not** work correctly,
+but this way of thinking has two drawbacks:
+
+- It can lead the programmer to forget situations in which the functionality does not work.
+- If the test is performed on a floating point number (Scalar), a possible NaN value will not be caught.
+
+NaN (*Not a Number*) is a value that can be taken by floating point numbers to represent
+a missing value or the result of an illicit arithmetical operation (:code:`0/0` for example).
+It has the following properties:
+
+- When standard functions like :code:`sqrt` and :code:`max` are passed NaN as one of their arguments, they return NaN.
+- All comparison operators except :code:`!=` return :code:`False` if either operand is NaN. The boolean :code:`a!=b` is :code:`True` if either :code:`a` or :code:`b` (or even both) is NaN.
+
+Because of this second property, the following example fails to catch a possible NaN value.
+
+Incorrect example:
+
+.. code:: cpp
+
+    // Throw if a probability is lower than 0 or larger than 1
+    if ( (proba < 0.0) || (proba > 1.0) )
+        throw InvalidArgumentException(HERE) << "Error: a probability should belong to [0,1]"
+                                             << " but is " << proba;
+
+Because only floating point numbers can be NaN, this rule is only imperative
+for Exception checks involving floating point numbers.
+You are free to disregard the rule for Exception checks that only involve integers.
+
+When the sufficient condition under which the functionality works is an equality,
+use :code:`a!=b` as a shorthand for :code:`!(a==b)`.
+
+Example:
+
+.. code:: cpp
+
+    // The covariance must be null
+    if (covariance(i, j) != 0.0)
+        throw InvalidArgumentException(HERE) << "Error: covariance(" << i << ", " << j << ") should be null.";
+
+When the sufficient condition under which the functionality works is that
+some number must be *different* from some value, find a way to express this
+that does not involve the :code:`!=` operator, because :code:`!(a!=b)`
+is equivalent to :code:`a==b`. Both are :code:`False` if either :code:`a`
+or :code:`b` is NaN.
+
+For example, if you want to write that some nonnegative scalar should not be zero,
+then write that is must be positive instead.
+
+Incorrect example:
+
+.. code:: cpp
+
+    // Generalized number of degrees of freedom must not be zero.
+    if (nu == 0.0) throw InvalidArgumentException(HERE) << "Nu MUST be positive";
+
+Correct example:
+
+.. code:: cpp
+
+    // Generalized number of degrees of freedom must be positive.
+    if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Nu MUST be positive";
+
+Error messages
+~~~~~~~~~~~~~~
 
 Example:
 
