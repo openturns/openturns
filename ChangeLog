@@ -57,6 +57,7 @@
  * #1776 (Typo in the Branin use case implementation)
  * #1784 (The drawPDF method of Histogram sometimes fail)
  * #1787 (CovarianceMatrix from SymmetricMatrix raises InvalidArgumentException)
+ * #1790 (LinearModelResult.getFormula() method is not updated by Stepwise regression)
 
 
 == 1.16 release (2020-11-16) == #release-1.16

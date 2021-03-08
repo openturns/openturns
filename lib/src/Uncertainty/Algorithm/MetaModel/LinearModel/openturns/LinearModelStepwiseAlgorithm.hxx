@@ -78,9 +78,6 @@ public:
   void setMaximumIterationNumber(const UnsignedInteger maximumIteration);
   UnsignedInteger getMaximumIterationNumber() const;
 
-  /** Condensed formula accessor */
-  String getFormula() const;
-
   /** Perform regression */
   void run();
 
@@ -126,9 +123,6 @@ private:
 
   /** The indices of start model */
   Indices startIndices_;
-
-  /** The formula description */
-  String condensedFormula_;
 
   /** The output data, stored as a matrix  */
   Matrix Y_;

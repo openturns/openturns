@@ -51,16 +51,6 @@ direction : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::LinearModelStepwiseAlgorithm::getFormula
-"Accessor to the formula.
-
-Returns
--------
-formula : str
-    Formula."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::LinearModelStepwiseAlgorithm::getInputSample
 "Accessor to the input sample.
 

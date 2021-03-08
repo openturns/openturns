@@ -49,7 +49,6 @@ LinearModelStepwiseAlgorithm::LinearModelStepwiseAlgorithm()
   const ConstantBasisFactory factory(inputSample_.getDimension());
   const Function one(factory.build()[0]);
   basis_.add(one);
-  condensedFormula_ =  one.__str__();
 }
 
 /* Parameters constructor */
@@ -68,7 +67,6 @@ LinearModelStepwiseAlgorithm::LinearModelStepwiseAlgorithm(const Sample & inputS
   , maximumIterationNumber_(ResourceMap::GetAsUnsignedInteger("LinearModelStepwiseAlgorithm-MaximumIterationNumber"))
   , minimalIndices_(minimalIndices)
   , startIndices_(startIndices)
-  , condensedFormula_(basis.__str__())
   , hasRun_(false)
 {
   if (outputSample.getDimension() != 1)
@@ -96,7 +94,6 @@ String LinearModelStepwiseAlgorithm::__repr__() const
       << " direction=" << direction_
       << " penalty=" << penalty_
       << " maximumIterationNumber=" << maximumIterationNumber_
-      << " condensedFormula=" << condensedFormula_
       << " basis=" << basis_;
   return oss;
 }
@@ -109,7 +106,6 @@ String LinearModelStepwiseAlgorithm::__str__(const String & /*offset*/) const
       << " direction=" << direction_
       << " penalty=" << penalty_
       << " maximumIterationNumber=" << maximumIterationNumber_
-      << " condensedFormula=" << condensedFormula_
       << " basis=" << basis_;
   return oss;
 }
@@ -153,12 +149,6 @@ void LinearModelStepwiseAlgorithm::setMaximumIterationNumber(const UnsignedInteg
 UnsignedInteger LinearModelStepwiseAlgorithm::getMaximumIterationNumber() const
 {
   return maximumIterationNumber_;
-}
-
-/* Formula accessor */
-String LinearModelStepwiseAlgorithm::getFormula() const
-{
-  return condensedFormula_;
 }
 
 /*
@@ -573,7 +563,7 @@ void LinearModelStepwiseAlgorithm::run()
   LinearCombinationFunction metaModel(currentFunctions, regression);
 
   result_ = LinearModelResult(inputSample_, Basis(currentFunctions), currentX_, outputSample_, metaModel,
-                              regression, condensedFormula_, coefficientsNames, residualSample, standardizedResiduals,
+                              regression, currentFunctions.__str__(), coefficientsNames, residualSample, standardizedResiduals,
                               diagonalGramInverse, leverages, cookDistances, sigma2[0]);
   hasRun_ = true;
 }
@@ -632,7 +622,6 @@ void LinearModelStepwiseAlgorithm::save(Advocate & adv) const
   adv.saveAttribute( "maximumIterationNumber_", maximumIterationNumber_ );
   adv.saveAttribute( "minimalIndices_", minimalIndices_ );
   adv.saveAttribute( "startIndices_", startIndices_ );
-  adv.saveAttribute( "condensedFormula_", condensedFormula_ );
   adv.saveAttribute( "Y_", Y_ );
   adv.saveAttribute( "maxX_", maxX_ );
   adv.saveAttribute( "currentX_", currentX_ );
@@ -658,7 +647,6 @@ void LinearModelStepwiseAlgorithm::load(Advocate & adv)
   adv.loadAttribute( "maximumIterationNumber_", maximumIterationNumber_ );
   adv.loadAttribute( "minimalIndices_", minimalIndices_ );
   adv.loadAttribute( "startIndices_", startIndices_ );
-  adv.loadAttribute( "condensedFormula_", condensedFormula_ );
   adv.loadAttribute( "Y_", Y_ );
   adv.loadAttribute( "maxX_", maxX_ );
   adv.loadAttribute( "currentX_", currentX_ );
