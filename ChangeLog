@@ -35,6 +35,7 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #1052 (The Dirichlet and Normal distributions only have 1D graphics in the doc)
  * #1229 (Better encapsulation of optional 3rd-party headers)
  * #1257 (Cannot create a SimulatedAnnealingLHS without specifying the temperature profile)
  * #1425 (There is no method to create a train / test pair)
