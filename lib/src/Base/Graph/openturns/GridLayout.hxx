@@ -58,8 +58,15 @@ public:
   /** Grid accessors */
   UnsignedInteger getNbRows() const;
   UnsignedInteger getNbColumns() const;
-  Graph getGraph(const UnsignedInteger i, const UnsignedInteger j) const;
-  void setGraph(const UnsignedInteger i, const UnsignedInteger j, const Graph & elt);
+  Graph getGraph(const UnsignedInteger i,
+                 const UnsignedInteger j) const;
+  void setGraph(const UnsignedInteger i,
+                const UnsignedInteger j,
+                const Graph & elt);
+  Graph::GraphCollection getGraphCollection() const;
+  void setGraphCollection(const Graph::GraphCollection & coll);
+  void setLayout(const UnsignedInteger nbRows,
+                 const UnsignedInteger nbColumns);
 
   /** Hide or show x and y axes */
   void setAxes(const Bool showAxes);
