@@ -290,7 +290,15 @@ void EfficientGlobalOptimization::run()
     if (problem.hasBounds())
       maximizeImprovement.setBounds(problem.getBounds());
     solver_.setProblem(maximizeImprovement);
-    solver_.setStartingPoint(optimizer);
+    try
+    {
+      // If the solver is single start, we can use its setStartingPoint method
+      solver_.setStartingPoint(optimizer);
+    }
+    catch (NotDefinedException &) // setStartingPoint is not defined for the solver
+    {
+      // Nothing to do if setStartingPoint is not defined
+    }
     solver_.run();
     const OptimizationResult improvementResult(solver_.getResult());
 
@@ -399,7 +407,8 @@ void EfficientGlobalOptimization::run()
       LOGINFO(OSS() << "Rebuilding kriging - done");
       metaModelResult = algo.getResult();
     }
-  }
+  } // while
+
   krigingResult_ = metaModelResult; // update krigingResult_ to take new points into account
   result.setOptimalPoint(optimizer);
   result.setOptimalValue(Point(1, optimalValue));

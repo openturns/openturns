@@ -1,7 +1,7 @@
 %feature("docstring") OT::MultiStart
 "Multi-start optimization algorithm.
 
-The algorithm runs an optimization solver for N starting points and returns the
+The algorithm runs an optimization solver for multiple starting points and returns the
 best result of each local search.
 The algorithm succeeds when at least one local search succeeds.
 
@@ -9,8 +9,8 @@ Parameters
 ----------
 solver : :class:`~openturns.OptimizationAlgorithm`
     The internal solver
-startingPoints : 2-d sequence of float
-    Starting point candidates
+startingSample : 2-d sequence of float
+    Starting points set
 
 Notes
 -----
@@ -18,34 +18,56 @@ A global number of evaluations can be explicitely set,
 in that case all starting points might not be used depending on the number
 of evaluations allocated to the internal solver.
 
+The starting point of *solver* is ignored.
+If you want to use it, add it to *startingSample*.
+
+Starting points provided through the *startingSample* parameter
+should be within the bounds of the
+:class:`~openturns.OptimizationProblem`, but this is not checked.
 Examples
 --------
+First define the :class:`~openturns.OptimizationAlgorithm` to be run from multiple starting points.
+
 >>> import openturns as ot
->>> ot.RandomGenerator.SetSeed(0)
 >>> dim = 2
 >>> model = ot.SymbolicFunction(['x', 'y'], ['x^2+y^2*(1-x)^3'])
->>> bounds = ot.Interval([-3.0] * dim, [3.0] * dim)
+>>> bounds = ot.Interval([-2.0] * dim, [3.0] * dim)
 >>> problem = ot.OptimizationProblem(model)
 >>> problem.setBounds(bounds)
 >>> solver = ot.TNC(problem)
->>> startingPoints = ot.Normal(dim).getSample(3)
->>> algo = ot.MultiStart(solver, startingPoints)
+
+Starting points must be manually specified.
+
+>>> uniform = ot.ComposedDistribution([ot.Uniform(-2.0, 3.0)] * dim)
+>>> ot.RandomGenerator.SetSeed(0)
+>>> startingSample = uniform.getSample(5)
+>>> print(startingSample)
+    [ X0        X1        ]
+0 : [  1.14938   2.84712  ]
+1 : [  2.41403   2.6034   ]
+2 : [ -1.32362   0.515201 ]
+3 : [ -1.83749  -1.68397  ]
+4 : [ -0.264715 -0.536216 ]
+>>> algo = ot.MultiStart(solver, startingSample)
 >>> algo.run()
->>> result = algo.getResult()"
+>>> result = algo.getResult()
+>>> print(result.getOptimalPoint())
+[3,3]"
 
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::MultiStart::getOptimizationAlgorithm
-"Solver accessor.
+"Internal solver accessor.
 
 Returns
 -------
 solver : :class:`~openturns.OptimizationAlgorithm`
     The internal solver"
+
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::MultiStart::setOptimizationAlgorithm
-"Solver accessor.
+"Internal solver accessor.
 
 Parameters
 ----------
@@ -54,22 +76,38 @@ solver : :class:`~openturns.OptimizationAlgorithm`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MultiStart::setStartingPoints
-"Starting points accessor.
+%feature("docstring") OT::MultiStart::setStartingPoint
+"Inherited but raises an Exception.
+
+Notes
+-----
+This method is inherited from :class:`OptimizationAlgorithm` but makes
+no sense in a multi-start context."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MultiStart::getStartingPoint
+"Inherited but raises an Exception.
+
+Notes
+-----
+This method is inherited from :class:`OptimizationAlgorithm` but makes
+no sense in a multi-start context."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MultiStart::getStartingSample
+"Accessor to the sample of starting points."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MultiStart::setStartingSample
+"Accessor to the sample of starting points.
 
 Parameters
 ----------
-startingPointNumber : :class:`~openturns.Sample`
-    Starting points"
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::MultiStart::getStartingPoints
-"Starting points accessor.
-
-Returns
--------
-startingPointNumber : :class:`~openturns.Sample`
-    Starting points"
+startingSample : 2-d sequence of float
+    A new sample of starting points to overwrite the existing sample"
 
 // ---------------------------------------------------------------------
 
@@ -81,6 +119,7 @@ Parameters
 keepResults : bool
     If *True* all the intermediate results are stored, otherwise they are ignored.
     Default value is *MultiStart-KeepResults* in :class:`~openturns.ResourceMap`"
+
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::MultiStart::getKeepResults
@@ -101,3 +140,13 @@ Returns
 -------
 results : :class:`~openturns.OptimizationResultCollection`
     Intermediate optimization results"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::MultiStart::setProblem
+"Sets the optimization problem.
+
+Parameters
+----------
+problem : :class:`~openturns.OptimizationProblem`
+    Optimization problem."

@@ -1,2 +1,3 @@
 Remove Sample::computeStandardDeviationPerComponent
 Remove deprecated KLResult::getEigenValues
+Remove deprecated MultiStart::setStartingPoints and getStartingPoints

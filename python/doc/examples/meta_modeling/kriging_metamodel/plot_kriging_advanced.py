@@ -78,8 +78,8 @@ algokriging = ot.KrigingAlgorithm(x, y, cov, basis)
 
 # 4. Optimization
 # algokriging.setOptimizationAlgorithm(ot.NLopt('GN_DIRECT'))
-startingPoint = ot.LHSExperiment(ot.Uniform(1e-1, 1e2), 50).generate()
-algokriging.setOptimizationAlgorithm(ot.MultiStart(ot.TNC(), startingPoint))
+lhsExperiment = ot.LHSExperiment(ot.Uniform(1e-1, 1e2), 50)
+algokriging.setOptimizationAlgorithm(ot.MultiStart(ot.TNC(), lhsExperiment.generate()))
 algokriging.setOptimizationBounds(ot.Interval([0.1], [1e2]))
 
 # if we choose not to optimize parameters
@@ -222,4 +222,3 @@ graph =validation.getResidualDistribution().drawPDF()
 graph.setXTitle("Residuals")
 view = viewer.View(graph)
 plt.show()
-
