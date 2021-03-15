@@ -96,6 +96,8 @@ Examples
 >>> experiment = ot.Composite([0.0] * dim, [1.0, 2.0, 4.0])
 >>> inputSample = experiment.generate()
 >>> outputSample = model(inputSample)
+>>> print('Initial minimum output value: ', outputSample.getMin())
+Initial minimum output value:  [-248]
 >>> covarianceModel = ot.SquaredExponential([2.0] * dim, [0.1])
 >>> basis = ot.ConstantBasisFactory(dim).build()
 >>> kriging = ot.KrigingAlgorithm(inputSample, outputSample, covarianceModel, basis)
@@ -103,7 +105,11 @@ Examples
 >>> algo = ot.EfficientGlobalOptimization(problem, kriging.getResult())
 >>> algo.setMaximumEvaluationNumber(2)
 >>> algo.run()
->>> result = algo.getResult()"
+>>> result = algo.getResult()
+>>> updatedKrigingResult = algo.getKrigingResult()
+>>> updatedOutputSample = updatedKrigingResult.getOutputSample()
+>>> print('Updated minimum output value: ', updatedOutputSample.getMin())
+Updated minimum output value:  [-610]"
 
 // ---------------------------------------------------------------------
 
@@ -311,3 +317,20 @@ noiseVariance : :class:`~openturns.Function`
     The noise variance :math:`\sigma^2_{\epsilon}(x)` used for the AEI
     criterion optimization only.
     Of same input dimension than the objective and 1-d output."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::EfficientGlobalOptimization::getKrigingResult
+"Retrieve the Kriging result.
+
+Notes
+-----
+Before :meth:`run` is called, this method returns the
+:class:`~openturns.KrigingResult` passed to the constructor.
+Once :meth:`run` has been called, it returns an updated
+:class:`~openturns.KrigingResult` that takes new observations into account.
+
+Returns
+-------
+krigingResult : :class:`~openturns.KrigingResult`
+    Kriging result that takes all observations into account."
