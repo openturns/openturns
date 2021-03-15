@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 
@@ -62,5 +63,63 @@ def test_active_amplitude_parameter():
           i] for i in cov_model.getActiveParameter()])
 
 
+def test_parameters_iso():
+
+    scale  = []
+    amplitude = 1.0
+    extraParameter = []
+
+    # model 1
+    atom_ex = ot.IsotropicCovarianceModel(ot.MaternModel(), 2)
+    atom_ex.setScale([5])
+    atom_ex.setAmplitude([1.5]) 
+    scale.append(5)
+    amplitude *= 1.5
+    extraParameter.append(atom_ex.getKernel().getFullParameter()[-1])
+
+    # model2
+    m = ot.MaternModel()
+    m.setNu(2.5)
+    m.setScale([3])
+    m.setAmplitude([3])
+    scale.append(3)
+    amplitude *=3
+    extraParameter.append(m.getNu())
+
+    # model 3
+    atom = ot.IsotropicCovarianceModel(ot.AbsoluteExponential(), 2)
+    atom.setScale([2])
+    atom.setAmplitude([2.5])
+    scale.append(2)
+    amplitude *= 2.5
+
+
+    model = ot.ProductCovarianceModel([atom_ex, m, atom])
+
+    ott.assert_almost_equal(model.getScale(), scale, 1e-16, 1e-16)
+    ott.assert_almost_equal(model.getAmplitude(), [amplitude], 1e-16, 1e-16)
+    ott.assert_almost_equal(model.getFullParameter(), scale + [amplitude] + extraParameter, 1e-16, 1e-16)
+
+    # active parameter should be scale + amplitude
+    ott.assert_almost_equal(model.getActiveParameter(), [0, 1, 2, 3], 1e-16, 1e-16)
+
+
+    # setting new parameters
+    extraParameter = [2.5, 0.5]
+    model.setFullParameter([6,7,8,2] + extraParameter)
+
+    ott.assert_almost_equal(model.getCollection()[0].getScale()[0], 6, 1e-16, 1e-16)
+    ott.assert_almost_equal(model.getCollection()[1].getScale()[0], 7, 1e-16, 1e-16)
+    ott.assert_almost_equal(model.getCollection()[2].getScale()[0], 8, 1e-16, 1e-16)
+    ott.assert_almost_equal(model.getAmplitude()[0], 2, 1e-16, 1e-16)
+    ott.assert_almost_equal(model.getCollection()[0].getFullParameter()[-1], extraParameter[0], 1e-16, 1e-16)
+    ott.assert_almost_equal(model.getCollection()[1].getFullParameter()[-1], extraParameter[1], 1e-16, 1e-16)
+
+    # checking active par setting
+    model.setActiveParameter([0,1,2,3,5])
+    ott.assert_almost_equal(model.getParameter(), [6,7,8,2, extraParameter[-1]], 1e-16, 1e-16)
+
+
 test_active_parameter()
 test_active_amplitude_parameter()
+test_parameters_iso()
