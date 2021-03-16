@@ -58,6 +58,7 @@ assert result.getIterationNumber(
 ) > 3 and result.getIterationNumber() < 15, 'Too few/much iterations'
 print(result.getInputSample())
 print(result.getOutputSample())
+assert result.getOutputSample()[0, 1] > 0.0, "no noise"
 
 # openturns.testing.assert_almost_equal(result.getOptimalPoint(), [0.5, 0.0], 1e-5, 1e-5)
 # openturns.testing.assert_almost_equal(result.getOptimalValue(),
