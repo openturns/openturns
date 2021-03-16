@@ -1095,6 +1095,12 @@ void ResourceMap::loadDefaultConfiguration()
   // UserDefined parameters //
   addAsUnsignedInteger("UserDefined-SmallSize", 10000);
 
+  // VonMisesFactory parameters //
+  addAsScalar("VonMisesFactory-AbsolutePrecision", 1.0e-12);
+  addAsScalar("VonMisesFactory-RelativePrecision", 1.0e-12);
+  addAsScalar("VonMisesFactory-ResidualPrecision", 1.0e-12);
+  addAsUnsignedInteger("VonMisesFactory-MaximumIteration", 10);
+
   // AliMikhailHaqCopulaFactory parameters //
   addAsScalar("AliMikhailHaqCopulaFactory-ThetaEpsilon", 1.0e-14);
 

@@ -1,0 +1,68 @@
+%feature("docstring") OT::VonMisesFactory
+"VonMises factory.
+
+Parameters
+----------
+circular : bool, optional
+    Flag to tell if the data are in :math:`\Rset` (*circular=False*) or in :math:`\Rset/(2\pi\Zset)` (*circular=True*). Default is True. 
+
+Notes
+-----
+If *circular=True*, we introduce :math:`z_n=\frac{1}{n}\sum_{k=1}^ne^{iX_k}`. Then, the estimators read:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{\mu}_n^{\strut} &=& \mathrm{Arg}(z_n)\\
+      \displaystyle\Hat{\kappa}_n&\mbox{s.t.}&\frac{I_1(\Hat{\kappa}_n)}{I_0(\Hat{\kappa}_n)}=\sqrt{\frac{n}{n-1}\left(|z_n|^2-\frac{1}{n}\right)}
+    \end{eqnarray*}
+
+where :math:`I_0` and :math:`I_1` are the modified Bessel functions of the first kind of order 0 and 1.
+
+If *circular=False*, the estimators read:
+
+.. math::
+    :nowrap:
+
+    \begin{eqnarray*}
+      \displaystyle\Hat{\mu}_n^{\strut}&=&\frac{1}{n}\sum_{k=1}^n X_k\\
+      \displaystyle\Hat{\kappa}_n&\mbox{s.t.}&\frac{I_1(\Hat{\kappa}_n)}{I_0(\Hat{\kappa}_n)}=\frac{1}{n}\sum_{k=1}^n\cos(X_k-\Hat{\mu}_n)
+    \end{eqnarray*}
+
+Note that the last equation has no solution if the right-hand side is not positive.
+
+In both cases, the resolution of this equation defininig :math:`\Hat{\kappa}_n` can be tuned through
+`VonMisesFactory-RelativePrecision`, `VonMisesFactory-ResidualPrecision`,
+`VonMisesFactory-MaximumIteration` in :class:`~openturns.ResourceMap`
+
+See also
+--------
+DistributionFactory, VonMises"
+
+// ---------------------------------------------------------------------
+
+%define OT_DistributionFactory_buildAsVonMises_doc
+"Build the VonMises distribution.
+
+**Available usages**:
+
+    buildAsVonMises(*sample*)
+
+    buildAsVonMises(*param*)
+
+Parameters
+----------
+sample : 2-d sequence of float
+    Sample from which the distribution parameters are estimated.
+param : Collection of :class:`~openturns.PointWithDescription`
+    A vector of parameters of the distribution.
+
+Returns
+-------
+dist : :class:`~openturns.VonMises`
+    The built distribution."
+%enddef
+%feature("docstring") OT::VonMisesFactory::buildAsVonMises
+OT_DistributionFactory_buildAsVonMises_doc
+

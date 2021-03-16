@@ -725,6 +725,7 @@ ot_add_python_module(dist_bundle3 dist_bundle3_module.i
                       UserDefined.i UserDefined_doc.i.in
                       UserDefinedFactory.i UserDefinedFactory_doc.i.in
                       VonMises.i VonMises_doc.i.in
+                      VonMisesFactory.i VonMisesFactory_doc.i.in
                       WeibullMin.i WeibullMin_doc.i.in
                       WeibullMinFactory.i WeibullMinFactory_doc.i.in
                       WeibullMinMuSigma.i WeibullMinMuSigma_doc.i.in

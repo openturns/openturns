@@ -477,6 +477,12 @@
   <!-- OT::UserDefined parameters -->
   <UserDefined-SmallSize value_int="10000" />
   
+  <!-- OT::VonMisesFactory parameters -->
+  <VonMisesFactory-AbsolutePrecision value_float="1e-12"        />
+  <VonMisesFactory-RelativePrecision value_float="1e-12"        />
+  <VonMisesFactory-ResidualPrecision value_float="1e-12"        />
+  <VonMisesFactory-MaximumIteration  value_int="10" />
+  
   <!-- OT::AliMikhailHaqCopulaFactory parameters -->
   <AliMikhailHaqCopulaFactory-ThetaEpsilon value_float="1.0e-14" />
 
