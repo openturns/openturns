@@ -313,8 +313,8 @@ CLASSNAMEINIT(SampleImplementation)
 SampleImplementation SampleImplementation::BuildFromCSVFile(const FileName & fileName,
     const String & csvSeparator)
 {
-  if (csvSeparator == " ")
-    throw InvalidArgumentException(HERE) << "Error: the space separator is not compatible for CSV file.";
+  if ((csvSeparator == " ") || (csvSeparator == "\t"))
+    throw InvalidArgumentException(HERE) << "Error: the space/tab separator is not allowed for CSV file.";
 
   SampleImplementation impl(0, 0);
 
