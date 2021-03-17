@@ -335,7 +335,7 @@ Graph OptimizationResult::drawOptimalValueHistory() const
   Graph result("Optimal value history", "Iteration number", "Optimal value", true, "topright", 1.0);
   result.setGrid(true);
   result.setGridColor("black");
-  Sample data(getOutputSample());
+  Sample data(getOutputSample().getMarginal(0));
   const UnsignedInteger size = data.getSize();
   const Bool minimization = problem_.isMinimization();
   for (UnsignedInteger i = 1; i < size; ++ i)
