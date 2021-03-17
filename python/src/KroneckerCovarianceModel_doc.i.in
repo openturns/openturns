@@ -1,0 +1,73 @@
+%feature("docstring") OT::KroneckerCovarianceModel
+"Multivariate stationary Kronecker covariance function.
+
+Available constructors:
+    KroneckerCovarianceModel(*inputDimension=1*)
+
+    KroneckerCovarianceModel(*rho, amplitude*)
+
+    KroneckerCovarianceModel(*rho, amplitude, outputCorrelation*)
+
+    KroneckerCovarianceModel(*rho, outputCovariance*)
+
+Parameters
+----------
+inputDimension : int
+    Input dimension :math:`n`.
+    By default, the input dimension is deduced from the :math:`\vect{\theta}` parameter. If this one is not specified, then :math:`n=1`.
+rho : :class:`~openturns.CovarianceModel`
+    Covariance model
+amplitude : sequence of positive floats
+    Amplitude of the process :math:`\vect{\sigma}\in \Rset^d`.    
+outputCorrelation : :class:`~openturns.CorrelationMatrix`
+    Correlation matrix :math:`\mat{R} \in \cS_d^+([-1, 1])`
+    By default, :math:`\mat{R}= \mat{I}_d` where the dimension :math:`d` is deduced from the amplitude :math:`\vect{\sigma}`.
+outputCovariance : :class:`~openturns.CovarianceMatrix`
+    Covariance matrix :math:`C^{stat} \in \cS_d^+(\Rset)`.
+
+Notes
+-----
+We consider the stochastic process :math:`X: \Omega \times\cD \rightarrow \Rset^d`, where :math:`\Omega` is a sample space and :math:`\cD` is a subdomain of :math:`\Rset^n`.
+
+The :class:`KroneckerCovarianceModel` class builds a covariance function with output dimension :math:`d\geq1` from a correlation function :math:`\rho` with output dimension :math:`1` and a :math:`d \times d` covariance matrix. The latter is to be, for any :math:`\vect{s} \in \cD`, the covariance matrix of the random vector :math:`X(\cdot, \vect{s})`.
+
+This covariance function is defined by
+
+.. math::
+
+    C(\vect{s}, \vect{t}) = \rho\left(\dfrac{\vect{s}}{\theta}, \dfrac{\vect{t}}{\theta}\right) C^{stat},
+
+where the output covariance matrix :math:`C^{stat}(\vect{s}, \vect{t})` is given by
+
+.. math::
+    C^{stat}= \mbox{Diag}(\vect{\sigma}) \, \mat{R} \,  \mbox{Diag}(\vect{\sigma}).
+
+
+Examples
+--------
+Create a Kronecker covariance model with identity output correlation matrix.
+
+>>> import openturns as ot
+>>> scale = [4.0, 5.0]
+>>> rho = ot.GeneralizedExponential(scale, 1.0)
+>>> amplitude = [1.0, 2.0]
+>>> myCovarianceModel = ot.KroneckerCovarianceModel(rho, amplitude)
+
+Create a Kronecker covariance model and specify the output correlation matrix.
+
+>>> scale = [4.0, 5.0]
+>>> rho = ot.GeneralizedExponential(scale,  1.0)
+>>> amplitude = [1.0, 2.0]
+>>> outputCorrelation = ot.CorrelationMatrix(2)
+>>> outputCorrelation[1,0] = 0.8
+>>> myCovarianceModel = ot.KroneckerCovarianceModel(rho, amplitude, outputCorrelation)
+
+Create a Kronecker covariance model and specify the output covariance matrix.
+
+>>> scale = [4.0, 5.0]
+>>> rho = ot.GeneralizedExponential(scale, 1.0)
+>>> outputCovariance = ot.CovarianceMatrix(2)
+>>> outputCovariance[0,0] = 4.0
+>>> outputCovariance[1,1] = 5.0
+>>> outputCovariance[1,0] = 1.2
+>>> myCovarianceModel = ot.KroneckerCovarianceModel(rho, outputCovariance)"

@@ -64,6 +64,7 @@
 %include SpectralModelFactory.i 
 %include UserDefinedSpectralModel.i
 %include WelchFactory.i
+%include KroneckerCovarianceModel.i
 %include ExponentialModel.i
 %include ExponentiallyDampedCosineModel.i
 %include SphericalModel.i

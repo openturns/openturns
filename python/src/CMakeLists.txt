@@ -203,6 +203,7 @@ ot_add_python_module(statistics statistics_module.i
                       SpectralModelFactory.i SpectralModelFactory_doc.i.in
                       UserDefinedSpectralModel.i UserDefinedSpectralModel_doc.i.in
                       WelchFactory.i WelchFactory_doc.i.in
+                      KroneckerCovarianceModel.i KroneckerCovarianceModel_doc.i.in
                       ExponentialModel.i ExponentialModel_doc.i.in
                       ExponentiallyDampedCosineModel.i ExponentiallyDampedCosineModel_doc.i.in
                       CauchyModel.i CauchyModel_doc.i.in

@@ -297,3 +297,49 @@ if (not checkDiag):
     raise Exception("isDiagonal differ between spatial covariance & covariance model")
 rho = spatialCovariance[1, 0] / sqrt(spatialCovariance[0, 0] * spatialCovariance[1, 1])
 ott.assert_almost_equal(myModel.getOutputCorrelation()[0,1], rho, 0, 0, "in ExponentialModel correlation")
+
+# Kronecker covariance model
+
+# rho correlation
+scale = [4, 5]
+rho = ot.GeneralizedExponential(scale, 1)
+
+# Amplitude values
+amplitude = [1, 2]
+myModel = ot.KroneckerCovarianceModel(rho, amplitude)
+test_model(myModel)
+
+outputCorrelation = ot.CorrelationMatrix(2)
+outputCorrelation[0, 1] = 0.8
+myModel = ot.KroneckerCovarianceModel(rho, amplitude, outputCorrelation)
+test_model(myModel)
+
+outputCovariance = ot.CovarianceMatrix(2)
+outputCovariance[0, 0] = 4.0
+outputCovariance[1, 1] = 5.0
+outputCovariance[1, 0] = 1.2
+
+myModel = ot.KroneckerCovarianceModel(rho, outputCovariance)
+test_model(myModel)
+
+# New kronecker model involving isotropic cov model
+rho = ot.IsotropicCovarianceModel(ot.MaternModel(), 3)
+outputCorrelation = ot.CorrelationMatrix(2)
+outputCorrelation[0, 1] = 0.8
+amplitude = [1, 2]
+myModel = ot.KroneckerCovarianceModel(rho, amplitude, outputCorrelation)
+test_model(myModel)
+ott.assert_almost_equal(myModel.getInputDimension(), 3, 0, 0, "in kronecker dimension check")
+ott.assert_almost_equal(myModel.getScale(), [1], 0, 0, "in kronecker scale check")
+# full param size = 5 (scale(1), amplitude(2), spatialCorrelation(1), Matern nu(1))
+ott.assert_almost_equal(myModel.getFullParameter(), [1, 1, 2, 0.8, 1.5], 0, 0, "in kronecker full param check")
+ott.assert_almost_equal(myModel.getFullParameter().getSize(), 5, 0, 0, "in kronecker param size check")
+ott.assert_almost_equal(myModel.getFullParameterDescription().getSize(), 5, 0, 0, "in kronecker param description size check")
+ott.assert_almost_equal(myModel.getActiveParameter(), [0,1,2], "in kronecker active param check")
+myModel.setFullParameter([2, 1, 2, .5, 2.5])
+ott.assert_almost_equal(myModel.getFullParameter(), [2, 1, 2, .5, 2.5], 0, 0, "in kronecker param check")
+myModel.setActiveParameter([0, 1, 2, 4])
+ott.assert_almost_equal(myModel.getActiveParameter(), [0,1,2,4], "in kronecker active param check")
+# Now we should get all values except correlation
+ott.assert_almost_equal(myModel.getParameter(), [2, 1, 2, 2.5], 0, 0, "in kronecker param check")
+assert myModel.getFullParameterDescription() == ["scale_0", "amplitude_0", "amplitude_1", "R_1_0", "nu"]
