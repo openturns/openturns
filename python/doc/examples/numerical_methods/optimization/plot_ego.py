@@ -311,7 +311,7 @@ view = viewer.View(graph)
 
 # %%
 graph = result.drawOptimalValueHistory()
-view = viewer.View(graph)
+view = viewer.View(graph, axes_kw={"xticks": range(0, result.getIterationNumber(), 5)})
 
 plt.show()
 # %%
