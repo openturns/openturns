@@ -100,7 +100,7 @@ struct StudentFactoryReducedLogLikelihood
 
 Student StudentFactory::buildAsStudent(const Sample & sample) const
 {
-  if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Student distribution from an empty sample";
+  if (sample.getSize() < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Student distribution from a sample of size < 2";
   const Point mu(sample.computeMean());
   const Point stdev(sample.computeStandardDeviation());
   // The relation between Kendall's tau and shape matrix is universal among the elliptical copulas. Use the method in NormalCopula.

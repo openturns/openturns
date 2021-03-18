@@ -696,7 +696,9 @@ ot_check_test (Function_std)
 ot_check_test (ComposedFunction_std)
 
 # Stat
+if (BISON_FOUND AND FLEX_FOUND)
 ot_check_test (Sample_csv)
+endif ()
 
 # Diff
 ot_check_test (NonCenteredFiniteDifferenceGradient_std)

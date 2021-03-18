@@ -176,6 +176,8 @@ used for setting the sample description using :py:meth:`setDescription`.
 It can also contain some comments, if a line starts with one of the
 characters contained in `Sample-CommentsMarker` from the :class:`~openturns.ResourceMap`.
 
+The implementation follows the RFC 4180: https://tools.ietf.org/html/rfc4180
+
 See Also
 --------
 exportToCSVFile

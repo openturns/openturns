@@ -285,7 +285,7 @@ void OptimizationResult::store(const Point & x,
 
 Graph OptimizationResult::drawErrorHistory() const
 {
-  Graph result("Error history", "Iteration number", "Error value", true, "topright", 1.0, GraphImplementation::LOGY);
+  Graph result("Error history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Error value", true, "topright", 1.0, GraphImplementation::LOGY);
   result.setGrid(true);
   result.setGridColor("black");
 // create a sample with the iteration number to be plotted as x data
@@ -332,10 +332,10 @@ Graph OptimizationResult::drawErrorHistory() const
 /* Draw optimal value graph */
 Graph OptimizationResult::drawOptimalValueHistory() const
 {
-  Graph result("Optimal value history", "Iteration number", "Optimal value", true, "topright", 1.0);
+  Graph result("Optimal value history", iterationNumber_ > 0 ? "Iteration number" : "Evaluation number", "Optimal value", true, "topright", 1.0);
   result.setGrid(true);
   result.setGridColor("black");
-  Sample data(getOutputSample());
+  Sample data(getOutputSample().getMarginal(0));
   const UnsignedInteger size = data.getSize();
   const Bool minimization = problem_.isMinimization();
   for (UnsignedInteger i = 1; i < size; ++ i)

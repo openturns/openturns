@@ -95,12 +95,14 @@ Distribution RiceFactory::build() const
 Rice RiceFactory::buildAsRice(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Rice distribution from an empty sample";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Rice distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Rice distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar mu = sample.computeMean()[0];
-  const Scalar std = sample.computeStandardDeviation()[0];
+  const Scalar sigma = sample.computeStandardDeviation()[0];
+  if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Rice distribution from a constant sample.";
+
   // Koay inversion method
-  RiceFactoryParameterConstraint constraint(mu / std);
+  RiceFactoryParameterConstraint constraint(mu / sigma);
   const Function f(bindMethod<RiceFactoryParameterConstraint, Point, Point>(constraint, &RiceFactoryParameterConstraint::computeConstraint, 1, 1));
   // Find a bracketing interval
   Scalar a = 1.0;
@@ -128,7 +130,7 @@ Rice RiceFactory::buildAsRice(const Sample & sample) const
   const Scalar u = solver.solve(f, 0.0, a, b, fA, fB);
   const Scalar xiU = constraint.computeXi(u);
   // Corresponding beta estimate
-  const Scalar beta = std / std::sqrt(xiU);
+  const Scalar beta = sigma / std::sqrt(xiU);
   // Corresponding nu estimate
   const Scalar nu = std::sqrt(mu * mu + beta * beta * (xiU - 2.0));
   try

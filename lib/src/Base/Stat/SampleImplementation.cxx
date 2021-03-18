@@ -313,9 +313,8 @@ CLASSNAMEINIT(SampleImplementation)
 SampleImplementation SampleImplementation::BuildFromCSVFile(const FileName & fileName,
     const String & csvSeparator)
 {
-  if (csvSeparator == " ") throw InvalidArgumentException(HERE) << "Error: the space separator is not compatible for CSV file.";
-
-
+  if ((csvSeparator == " ") || (csvSeparator == "\t"))
+    throw InvalidArgumentException(HERE) << "Error: the space/tab separator is not allowed for CSV file.";
 
   SampleImplementation impl(0, 0);
 
@@ -367,7 +366,7 @@ SampleImplementation SampleImplementation::BuildFromCSVFile(const FileName & fil
   if (impl.getDimension() == 0) LOGWARN(OSS() << "Warning: No data from the file has been stored.");
 
 #else
-  impl = SampleImplementation::BuildFromTextFile(fileName, csvSeparator);
+  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without bison/flex support";
 #endif
   return impl;
 }

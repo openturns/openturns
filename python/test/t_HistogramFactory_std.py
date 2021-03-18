@@ -32,12 +32,6 @@ try:
     print("Estimated histogram=", estimatedHistogram)
     estimatedHistogram = factory.buildAsHistogram()
     print("Default histogram=", estimatedHistogram)
-    sample = [[0.0]] * size
-    estimatedDistribution = factory.build(sample)
-    print("Estimated distribution=", repr(estimatedDistribution))
-    sample = [[1.0]] * size
-    estimatedDistribution = factory.build(sample)
-    print("Estimated distribution=", repr(estimatedDistribution))
 
     sample = ot.ChiSquare(0.0120637).getSample(32)
     for useQuantile in [True, False]:

@@ -29,12 +29,6 @@ estimatedTrapezoidal = factory.buildAsTrapezoidal()
 print("Default trapezoidal=", estimatedTrapezoidal)
 estimatedTrapezoidal = factory.buildAsTrapezoidal(distribution.getParameter())
 print("Trapezoidal from parameters=", estimatedTrapezoidal)
-sample = [[0.0]] * size
-estimatedDistribution = factory.build(sample)
-print("Estimated distribution=", repr(estimatedDistribution))
-sample = [[1.0]] * size
-estimatedDistribution = factory.build(sample)
-print("Estimated distribution=", repr(estimatedDistribution))
 
 # cobyla freeze bug
 ot.RandomGenerator.SetSeed(10)

@@ -73,13 +73,6 @@ int main(int, char *[])
     TruncatedNormalFactory factory;
     UnsignedInteger size = 10000;
     Sample sample(size, Point(1, 0.0));
-    // Test for constant sample
-    sample = Sample(size, Point(1, 0.0));
-    Distribution estimatedDistribution(factory.build(sample));
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    sample = Sample(size, Point(1, 1.0));
-    estimatedDistribution = factory.build(sample);
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
     // buildMethodOfMoments
     fullprint << "buildMethodOfMoments" << std::endl;
     TruncatedNormal distribution(2.0, 3.0, -1.0, 4.0);

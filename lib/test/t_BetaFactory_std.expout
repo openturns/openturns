@@ -12,5 +12,3 @@ Beta          =class=Beta name=Beta dimension=1 alpha=1.5 beta=2.8 a=-1 b=2
 Estimated Beta=class=Beta name=Beta dimension=1 alpha=1.4323 beta=2.51954 a=-0.99573 b=1.87415
 Default Beta=class=Beta name=Beta dimension=1 alpha=2 beta=2 a=-1 b=1
 Beta from parameters=class=Beta name=Beta dimension=1 alpha=1.5 beta=2.8 a=-1 b=2
-Estimated distribution=class=Beta name=Beta dimension=1 alpha=1 beta=1 a=-2.22045e-14 b=2.22045e-14
-Estimated distribution=class=Beta name=Beta dimension=1 alpha=1 beta=1 a=1 b=1

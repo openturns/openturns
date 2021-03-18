@@ -51,8 +51,14 @@
  * #1759 (Kriging model with StationaryFunctionalCovarianceModel might provide bad results)
  * #1768 (Bug in ExponentiallyDampedCosineModel & SphericalModel)
  * #1771 (GridLayout hides the titles in the graph)
+ * #1772 (MinimumVolumeClassifier cannot draw 1D samples)
  * #1774 (ExponentialModel::partialGradient is wrong)
  * #1775 (ExponentialModel does not account correlation with Covariance ctor)
+ * #1776 (Typo in the Branin use case implementation)
+ * #1784 (The drawPDF method of Histogram sometimes fail)
+ * #1787 (CovarianceMatrix from SymmetricMatrix raises InvalidArgumentException)
+ * #1790 (LinearModelResult.getFormula() method is not updated by Stepwise regression)
+ * #1794 (Some doc examples seem to behave with new infrastructure)
 
 
 == 1.16 release (2020-11-16) == #release-1.16

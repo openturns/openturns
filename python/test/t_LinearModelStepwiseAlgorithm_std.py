@@ -88,24 +88,6 @@ basis = ot.Basis(funcs)
 i_min = [interactions.index([0, 0, 0, 0, 0])]
 i_0 = i_min[:]
 
-#---------------- Forward / Backward-------------------
-#   X: input sample
-#   basis : Basis
-#   Y: output sample
-#   i_min:  indices of minimal model
-#   direction: Boolean (True FORWARD, False BACKWARD)
-#   penalty: multiplier of number of degrees of freedom
-#   maxiteration: maximum number of iterations
-
-#---------------- Both-------------------
-#   X: input sample
-#   basis : Basis
-#   Y: output sample
-#   i_min : indices of minimal model
-#   i_0   : indices of start model
-#   penalty: multiplier of number of degrees of freedom
-#   maxiteration: maximum number of iterations
-
 penalty_BIC = log(X.getSize())
 penalty_AIC = 2.
 maxiteration = 1000
@@ -116,22 +98,18 @@ for k in [penalty_AIC, penalty_BIC]:
         IC = " AIC "
     if k == penalty_BIC:
         IC = " BIC "
-    for forward in [True, False]:
-        algo = ot.LinearModelStepwiseAlgorithm(
-            X, basis, Y, i_min, forward, k, maxiteration)
+    for direction in [ot.LinearModelStepwiseAlgorithm.FORWARD, ot.LinearModelStepwiseAlgorithm.BACKWARD, ot.LinearModelStepwiseAlgorithm.BOTH]:
+        algo = ot.LinearModelStepwiseAlgorithm(X, basis, Y, i_min, direction,
+          i_0 if direction == ot.LinearModelStepwiseAlgorithm.BOTH else [])
+        algo.setPenalty(k)
+        algo.setMaximumIterationNumber(maxiteration)
         algo_result = ot.LinearModelAnalysis(algo.getResult())
         print("{0:~^60s}".format(""))
-        if forward == True:
+        if direction == ot.LinearModelStepwiseAlgorithm.FORWARD:
             print(" Forward " + IC)
-        else:
+        elif direction == ot.LinearModelStepwiseAlgorithm.BACKWARD:
             print(" Backward " + IC)
+        else:
+            print(" Both " + IC)
         print("{0:~^60s}".format(""))
         print(algo_result)
-    # Both
-    algo = ot.LinearModelStepwiseAlgorithm(
-        X, basis, Y, i_min, i_0, k, maxiteration)
-    algo_result = ot.LinearModelAnalysis(algo.getResult())
-    print("{0:~^60s}".format(""))
-    print(" Both " + IC)
-    print("{0:~^60s}".format(""))
-    print(algo_result)

@@ -11,7 +11,11 @@ Link to a computer code with coupling tools
 #
 # The `coupling_tools` module is useful when the external computer code reads (on input) and write (on output) text files.
 #
-# <img src="_static/link_computer_code.svg" width="600px">
+# .. figure:: ../../_static/link_computer_code.svg
+#    :align: center
+#    :width: 50%
+#
+#    File exchange coupling
 #
 # The main features of the `coupling_tools` module are:
 #

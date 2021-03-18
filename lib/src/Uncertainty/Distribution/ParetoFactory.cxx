@@ -67,8 +67,11 @@ Distribution ParetoFactory::build() const
 Pareto ParetoFactory::buildMethodOfMoments(const Sample & sample) const
 {
   // numerically inverse the skewness
-  SymbolicFunction constraint("alpha", OSS() << "2*(1+alpha)/(alpha-3)*sqrt((alpha-2)/alpha)");
+  const Scalar sigma = sample.computeStandardDeviation()[0];
+  if (!SpecFunc::IsNormal(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Pareto distribution if data contains NaN or Inf";
+  if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Pareto distribution from a constant sample.";
   const Scalar skewness = sample.computeSkewness()[0];
+  const SymbolicFunction constraint("alpha", OSS() << "2*(1+alpha)/(alpha-3)*sqrt((alpha-2)/alpha)");
   if (skewness < constraint(Point(1, ResourceMap::GetAsScalar("ParetoFactory-AlphaUpperBound")))[0])
     throw InvalidArgumentException(HERE) << "alpha is not defined";
   const Brent solver;
@@ -188,6 +191,9 @@ Pareto ParetoFactory::buildMethodOfLeastSquares(const Sample & sample) const
     throw InvalidArgumentException(HERE) << "Error: can only build a LogNormal distribution from a sample of dimension 1, here dimension=" << sample.getDimension();
   const UnsignedInteger size = sample.getSize();
   const Scalar xMin = sample.getMin()[0];
+  const Scalar sigma = sample.computeStandardDeviation()[0];
+  if (!SpecFunc::IsNormal(sigma)) throw InvalidArgumentException(HERE) << "Error: cannot build a Pareto distribution if data contains NaN or Inf";
+  if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Pareto distribution from a constant sample.";
   Scalar gamma = xMin - std::abs(xMin) / (2 + size);
   ParetoFactoryResidualEvaluation residualEvaluation(sample);
   const Function residualFunction(residualEvaluation.clone());

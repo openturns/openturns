@@ -34,6 +34,7 @@
 #include "openturns/Sample.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/PlatformInfo.hxx"
+#include "openturns/SpecFunc.hxx"
 
 #define TESTPREAMBLE { OT::PlatformInfo::SetTwoDigitExponent(); }
 
@@ -296,6 +297,8 @@ void checkClassWithClassName()
 
 inline void assert_almost_equal(const Scalar a, const Scalar b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
+  if (!SpecFunc::IsNormal(a) || !SpecFunc::IsNormal(b))
+    throw TestFailed(OSS() << "Value a: " << a << " or b: " << b << " are invalid " << errMsg);
   if (std::abs(a - b) > atol + rtol * std::abs(b))
   {
     throw TestFailed(OSS() << "Value " << a << " is not close enough to " << b << " " << errMsg);

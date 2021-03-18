@@ -70,7 +70,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildAsGeneralizedPareto(const Sampl
 {
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a GeneralizedPareto distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution from an empty sample";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution from a sample of size < 2";
   Scalar xMin = sample.getMin()[0];
   if (!(xMin > 0.0)) throw InvalidArgumentException(HERE) << "Error: cannot build a GeneralizedPareto distribution based on a sample with nonpositive values.";
   Scalar smallSize = ResourceMap::GetAsUnsignedInteger( "GeneralizedParetoFactory-SmallSize" );
@@ -127,11 +127,13 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfMoments(const Sample & 
   const Scalar xMin = sample.getMin()[0];
   const Scalar u = xMin - std::abs(xMin) / (2.0 + size);
   const Scalar mean = sample.computeMean()[0] - u;
-  const Scalar std = sample.computeStandardDeviation()[0];
-  const Scalar xi = 0.5 * (std::pow(mean / std, 2) - 1.0);
+  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an GeneralizedPareto distribution if data contains NaN or Inf";
+  const Scalar stddev = sample.computeStandardDeviation()[0];
+  if (stddev == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution from a constant sample.";
+  const Scalar xi = 0.5 * (std::pow(mean / stddev, 2.0) - 1.0);
   // The moment estimator is valid only if the estimated xi parameter is greater than -1/4
   if (xi <= -0.25) throw InvalidArgumentException(HERE) << "Error: cannot estimate a GeneralizedPareto distribution with the method of moments when the estimated xi parameter=" << xi << " is less than -0.25";
-  const Scalar sigma = 0.5 * mean * (std::pow(mean / std, 2) + 1.0);
+  const Scalar sigma = 0.5 * mean * (std::pow(mean / stddev, 2) + 1.0);
   GeneralizedPareto result(sigma, xi, u);
   result.setDescription(sample.getDescription());
   return result;
@@ -194,6 +196,8 @@ struct GeneralizedParetoFactoryParameterConstraint
 GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(const Sample & sample) const
 {
   LOGINFO("Using method of exponential regression");
+  const Scalar mu = sample.computeMean()[0];
+  if (!SpecFunc::IsNormal(mu)) throw InvalidArgumentException(HERE) << "Error: cannot build an GeneralizedPareto distribution if data contains NaN or Inf";
   const UnsignedInteger size = sample.getSize();
   const Scalar xMin = sample.getMin()[0];
   const Scalar u = xMin - std::abs(xMin) / (2.0 + size);
@@ -240,6 +244,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfProbabilityWeightedMome
   const Scalar xMin = sample.getMin()[0];
   const Scalar u = xMin - std::abs(xMin) / (2.0 + size);
   const Scalar mean = sample.computeMean()[0] - u;
+  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an GeneralizedPareto distribution if data contains NaN or Inf";
   const Sample sortedSample(sample.sort(0) - Point(1, u));
   // Compute the first probability weighted moment
   Scalar m = 0.0;
