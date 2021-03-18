@@ -607,7 +607,7 @@ if (BUILD_PYTHON)
      if (WIN32)
        set (OPENTURNS_PYTHON_MODULE_PATH Lib/site-packages)
      else ()
-       set (OPENTURNS_PYTHON_MODULE_PATH lib/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages)
+       set (OPENTURNS_PYTHON_MODULE_PATH ${CMAKE_INSTALL_LIBDIR}/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages)
       endif ()
     endif ()
 
