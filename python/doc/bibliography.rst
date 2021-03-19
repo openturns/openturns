@@ -230,4 +230,17 @@ Bibliography
     `pdf <http://alvand.basu.ac.ir/~dezfoulian/files/Numericals/Springer%20-%20Introduction%20to%20numerical%20analysis,%20Bulirsch,%20Stoer.%20(2ed.,%201993)(400dpi)(ISBN%200387978.pdf>`__
 .. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*
     First Edition, Chapman & Hall, 1994.
+.. [Keutelian1991] Hovhannes Keutelian.
+    *The Kolmogorov-Smirnov test when parameters are estimated from data*, 
+    30 April 1991, Fermilab.
+.. [AbdiMolinSalkind2007] Hervé Abdi, Paul Molin. Neil Salkind (Ed.) 
+    *Lilliefors/Van Soest’s test of normality.*. Encyclopedia of Measurement and Statistics, 2007.
+.. [AbdiMolin1998] Hervé Abdi, Paul Molin.
+    *New table and numerical approximations for approximations for Kolmogorov-Smirnov / Lillifors / Van Soest normality test.*, 1998.
+.. [ScottStewart2011] W. F. Scott & B. Stewart. 
+    *Tables for the Lilliefors and Modified Cramer–von Mises Tests of Normality.*, 
+    Communications in Statistics - Theory and Methods. Volume 40, 2011 - Issue 4. Pages 726-730.
+.. [NikitinTchirina2007]  Ya. Yu. Nikitin and A.V.Tchirina.
+    *Lilliefors Test for Exponentiality: Large Deviations,Asymptotic Efficiency, and Conditions of Local Optimality.*
+    Mathematical Methods of Statistics 16.1 (2007): 16-24.
 
