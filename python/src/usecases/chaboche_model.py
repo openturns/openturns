@@ -9,7 +9,7 @@ import numpy as np
 
 def g(X):
     strain, R, C, gamma = X
-    stress = R + C * (1.0 - np.exp(-gamma * strain)) / gamma
+    stress = R - C * np.expm1(-gamma * strain) / gamma
     return [stress]
 
 
