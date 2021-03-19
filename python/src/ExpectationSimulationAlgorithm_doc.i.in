@@ -11,8 +11,19 @@ X : :class:`~openturns.RandomVector`
 
 Notes
 -----
-This algorithm estimates :math:`\Expect{\vect{X}}` using the smallest possible sample 
-size which satisfies pre-defined stopping rules. 
+The goal of this algorithm is to estimate the mean of the output 
+:math:`\Expect{\vect{X}}`. 
+It uses the variance :math:`\Var{\vect{Y}}` to stop the 
+algorithm as soon as possible. 
+Hence, both the mean and the variance must be finite. 
+For example, consider the Student distribution with :math:`\nu` degrees of freedom. 
+If :math:`\nu=1` (where the expectation is undefined) 
+or :math:`\nu=2` (where the variance is undefined), 
+then the algorithm cannot succeed. 
+
+This algorithm estimates :math:`\Expect{\vect{X}}` based on a trade-off between 
+performance and accuracy, using the smallest possible sample 
+(blockwise) size which satisfies pre-defined stopping rules. 
 It increases the sample size :math:`n` incrementally until a stopping criteria is met. 
 
 The algorithm is based on two nested loops:
@@ -91,7 +102,9 @@ We can estimate it with
 
 for :math:`i = 1, \ldots, n_X`.
 
-When the sample size :math:`n` increases, the sample standard deviation and the sample coefficient of variation decrease to zero. 
+When the sample size :math:`n` increases, the expected value of the 
+sample standard deviation and the expected value of the sample coefficient 
+of variation decrease to zero. 
 The speed of convergence is governed by the Monte-Carlo rate :math:`1/\sqrt{n}`. 
 
 There are 3 mathematical stopping criteria available:
