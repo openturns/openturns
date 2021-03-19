@@ -13,7 +13,7 @@ Notes
 -----
 The goal of this algorithm is to estimate the mean of the output 
 :math:`\Expect{\vect{X}}`. 
-It uses the variance :math:`\Var{\vect{Y}}` to stop the 
+It uses the variance :math:`\Var{\vect{X}}` to stop the 
 algorithm as soon as possible. 
 Hence, both the mean and the variance must be finite. 
 For example, consider the Student distribution with :math:`\nu` degrees of freedom. 
@@ -206,7 +206,7 @@ ExpectationSimulationResult, SimulationAlgorithm
 Examples
 --------
 
-In the following example, we perform at most :math:`8 \times 1000 = 8000` evaluations 
+In the following example, we perform at most :math:`8 \times 10000 = 80000` evaluations 
 of the model. 
 However, the algorithm may stop earlier if the coefficient of variation 
 of the sample mean falls below the threshold. 
@@ -227,6 +227,11 @@ of the sample mean falls below the threshold.
 >>> expectation = result.getExpectationEstimate()
 >>> print(expectation)
 [-1.41067]
+
+The following statement retrieves the asymptotically Gaussian distribution 
+of the sample mean. 
+This may be useful for users who want to compute a confidence interval of 
+the sample mean. 
 >>> expectationDistribution = result.getExpectationDistribution()
 
 The following code prints the outer sample (i.e. the number of outer iterations 
@@ -256,7 +261,7 @@ outer_sampling= 1000
 
 In the following example, we compute the mean of a dimension 4 random vector. 
 We configure the stopping criterion in order to stop when the componentwise 
-standard deviation is low than a threshold. 
+standard deviation is lower than a threshold. 
 We must disable the coefficient of variation stopping criterion, otherwise 
 the algorithm stops on this criterion first, in this example. 
 The comparison with the exact mean is satisfactory, given the relatively 
