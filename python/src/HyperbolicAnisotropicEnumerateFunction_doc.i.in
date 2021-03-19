@@ -41,10 +41,10 @@ norm of a multi-index :math:`\vect{\alpha}` by:
     
     \| \vect{\alpha} \|_{\vect{w}, q} = \left( \sum_{i=1}^{n_X} w_i \alpha_i^q \right)^{1/q}
 
-where :math:`n_X` is the number of input variables and :math:`w_i > 0` are 
-real positive numbers called the weights. 
-This lead to select first the basis polynomials depending on a specific subset 
-of input variables.
+where :math:`n_X` is the number of input variables and :math:`(w_1, \dots , w_{n_X})` is a sequence of
+real positive numbers called weights. 
+Functions of input variables with smaller weights are selected first
+for the functional basis.
 
 Examples
 --------
