@@ -90,13 +90,39 @@ Y_train = model(X_train)
 # --------------------
 
 # %%
-# In order to create the kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class. Then we use a squared exponential covariance model. Finally, we use the `KrigingAlgorithm` class to create the kriging metamodel, taking the training sample, the covariance model and the trend basis as input arguments. 
+# In order to create the kriging metamodel, we first select a constant 
+# trend with the `ConstantBasisFactory` class. 
+# Then we use a squared exponential covariance model. 
+# Finally, we use the `KrigingAlgorithm` class to create the kriging metamodel, 
+# taking the training sample, the covariance model and the trend basis 
+# as input arguments. 
+#
+# We use two tricks to make the optimization of the scale parameters of the 
+# covariance model easier.
+# This is mandatory for our model, because input parameters have very 
+# different orders of magnitude, especially the Young modulus, which 
+# is much larger than the other parameters. 
+#
+# * Trick A: We initialize the scale parameters of the covariance model with the 
+# maximum of the input training sample. 
+# * Trick B: We set the bounds of the optimization algorithm so that the bounds 
+# correspond to the minimum and the maximum of the input training sample.
+#
+# Both tricks may fail to improve the convergence of the maximum likelihood 
+# estimation used when the kriging algorithm estimates the parameters 
+# of the covariance model. 
+# This is especially true if the initial sample size is very low.
+# In this particular case, however, this proves to be necessary, 
+# as we are going to see.
 
 # %%
 dimension = myDistribution.getDimension()
 basis = ot.ConstantBasisFactory(dimension).build()
-covarianceModel = ot.SquaredExponential([1.]*dimension, [1.0])
+covarianceModel = ot.SquaredExponential([1.0]*dimension, [1.0])
+covarianceModel.setScale(X_train.getMax())  # Trick A
 algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
+scaleOptimizationBounds = ot.Interval(X_train.getMin(), X_train.getMax())
+algo.setOptimizationBounds(scaleOptimizationBounds)  # Trick B
 algo.run()
 result = algo.getResult()
 krigingMetamodel = result.getMetaModel()
@@ -114,7 +140,7 @@ result.getTrendCoefficients()
 
 # %%
 basic_covariance_model = result.getCovarianceModel()
-basic_covariance_model
+print(basic_covariance_model)
 
 # %%
 # Get the optimizer algorithm
@@ -170,13 +196,13 @@ algo.run()
 
 # %%
 result = algo.getResult()
-result.getCovarianceModel()
+print(result.getCovarianceModel())
 
 # %%
 # In order to see the difference with the default optimization, we print the previous optimized covariance model.
 
 # %%
-basic_covariance_model
+print(basic_covariance_model)
 
 # %%
 # We observe that this does not change much the values of the parameters in this case. 
@@ -230,6 +256,7 @@ result.getTrendCoefficients()
 dimension = myDistribution.getDimension()
 basis = ot.ConstantBasisFactory(dimension).build()
 covarianceModel = ot.SquaredExponential([1.]*dimension, [1.0])
+covarianceModel.setScale(X_train.getMax())  # Trick A
 algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
 algo.run()
 result = algo.getResult()
@@ -269,7 +296,7 @@ def printCovarianceParameterChange(covarianceModel1,covarianceModel2):
     parameters2 = covarianceModel2.getFullParameter()
     for i in range(parameters1.getDimension()):
         deltai = abs(parameters1[i] - parameters2[i])
-        print("Change in the parameter #%d = %s" % (i,deltai))
+        print("Change in the parameter #%d = %.4e" % (i,deltai))
     return
 
 
@@ -336,14 +363,15 @@ multiStartSolver = ot.MultiStart(solver, starting_points)
 # %%
 algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
 algo.setOptimizationAlgorithm(multiStartSolver)
+algo.setOptimizationBounds(scaleOptimizationBounds)  # Trick B
 algo.run()
 
 # %%
 finetune_covariance_model = result.getCovarianceModel()
-finetune_covariance_model
+print(finetune_covariance_model)
 
 # %%
 printCovarianceParameterChange(finetune_covariance_model,basic_covariance_model)
 
 # %%
-# We see that there are no changes in the estimated parameters. This shows that the first optimization of the parameters worked fine.
+# We see that there are significant changes in all parameters. 
