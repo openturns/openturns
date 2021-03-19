@@ -57,7 +57,7 @@ Distribution MultinomialFactory::build() const
 
 Multinomial MultinomialFactory::buildAsMultinomial(const Sample & sample) const
 {
-  if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Multinomial distribution from an empty sample";
+  if (sample.getSize() < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Multinomial distribution from a sample of size < 2";
   // Check if each component of the sample is an integer, compute the mean and extract the maximum value
   UnsignedInteger size = sample.getSize();
   UnsignedInteger dimension = sample.getDimension();
@@ -69,6 +69,7 @@ Multinomial MultinomialFactory::buildAsMultinomial(const Sample & sample) const
     for (UnsignedInteger j = 0; j < dimension; j++)
     {
       Scalar x = sample(i, j);
+      if (!SpecFunc::IsNormal(x)) throw InvalidArgumentException(HERE) << "Error: cannot build a Multinomial distribution if data contains NaN or Inf";
       if ((x != trunc(x)) || (x < 0.0)) throw InvalidArgumentException(HERE) << "Error: can build a Multinomial distribution only from a sample with positive integer components, here sample[" << i << "][" << j << "]=" << x;
       sumI += static_cast<UnsignedInteger>(x);
       p[j] += x;

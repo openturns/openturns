@@ -260,7 +260,7 @@ ot_check_test (TimeSeries_std)
 ot_check_test (FilteringWindows_std)
 ot_check_test (WelchFactory_std)
 ot_check_test (ExponentialModel_std)
-ot_check_test (CovarianceModel_std)
+ot_check_test (CovarianceModel_std IGNOREOUT)
 ot_check_test (DiracCovarianceModel_std)
 ot_check_test (ExponentiallyDampedCosineModel_std)
 ot_check_test (CauchyModel_std)
@@ -696,7 +696,9 @@ ot_check_test (Function_std)
 ot_check_test (ComposedFunction_std)
 
 # Stat
+if (BISON_FOUND AND FLEX_FOUND)
 ot_check_test (Sample_csv)
+endif ()
 
 # Diff
 ot_check_test (NonCenteredFiniteDifferenceGradient_std)

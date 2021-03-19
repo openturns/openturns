@@ -10,7 +10,11 @@ Tensor approximation of the cantilever beam model
 # %%
 # We consider a cantilever beam defined by its Young’s modulus :math:`E`, its length :math:`L` and its section modulus :math:`I`. One end of the cantilever beam is built in a wall and we apply a concentrated bending load :math:`F` at the other end of the beam, resulting in a deviation :math:`Y`. 
 #
-# <img src="_static/beam.png" width="200">
+# .. figure:: ../../_static/beam.png
+#    :align: center
+#    :width: 25%
+#
+#    The beam geometry
 #
 # **Inputs**
 #

@@ -1221,9 +1221,8 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("LinearModelAnalysis-Identifiers", 3);
 
   // LinearModelStepwiseAlgorithm parameters //
-  addAsBool("LinearModelStepwiseAlgorithm-IsForward", true);
   addAsScalar("LinearModelStepwiseAlgorithm-Penalty", -1.0);
-  addAsUnsignedInteger("LinearModelStepwiseAlgorithm-MaximumIterations", 1000);
+  addAsUnsignedInteger("LinearModelStepwiseAlgorithm-MaximumIterationNumber", 1000);
 
   // GeneralLinearModelAlgorithm parameters //
   addAsBool("GeneralLinearModelAlgorithm-KeepCovariance", true);

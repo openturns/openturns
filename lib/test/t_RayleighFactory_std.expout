@@ -6,5 +6,3 @@ Rayleigh          =class=Rayleigh name=Rayleigh dimension=1 beta=2.5 gamma=-1
 Estimated rayleigh=class=Rayleigh name=Rayleigh dimension=1 beta=2.47251 gamma=-0.964078
 Default rayleigh=class=Rayleigh name=Rayleigh dimension=1 beta=1 gamma=0
 Rayleigh from parameters=class=Rayleigh name=Rayleigh dimension=1 beta=2.5 gamma=-1
-Estimated distribution=class=Rayleigh name=Rayleigh dimension=1 beta=4.93038e-30 gamma=0
-Estimated distribution=class=Rayleigh name=Rayleigh dimension=1 beta=7.06965e-05 gamma=0.9999

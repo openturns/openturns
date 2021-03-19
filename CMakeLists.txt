@@ -442,15 +442,17 @@ check_symbol_exists(uselocale "locale.h"  OPENTURNS_HAVE_USELOCALE )
 endif()
 
 include (CheckFunctionExists)
-if (OPENTURNS_HAVE_DLFCN_H)
+if (OPENTURNS_HAVE_DLFCN_H AND UNIX)
   find_library (LIBDL_LIBRARIES NAMES dl)
   mark_as_advanced (LIBDL_LIBRARIES)
   if (LIBDL_LIBRARIES)
     set (CMAKE_REQUIRED_LIBRARIES ${LIBDL_LIBRARIES})
-    list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${LIBDL_LIBRARIES})
+    check_function_exists (dladdr OPENTURNS_HAVE_DLADDR)
+    set (CMAKE_REQUIRED_LIBRARIES)
+    if (OPENTURNS_HAVE_DLADDR)
+      list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${LIBDL_LIBRARIES})
+    endif ()
   endif ()
-  check_function_exists (dladdr OPENTURNS_HAVE_DLADDR)
-  set (CMAKE_REQUIRED_LIBRARIES)
 endif ()
 
 if (USE_OPENBLAS)
@@ -600,23 +602,16 @@ if (BUILD_PYTHON)
     endif ()
 
     if (DEFINED PYTHON_SITE_PACKAGES)
-      set (OPENTURNS_PYTHON_MODULE_PATH ${PYTHON_SITE_PACKAGES})
-
+      set (OPENTURNS_PYTHON_MODULE_PATH "${PYTHON_SITE_PACKAGES}")
     else ()
-      execute_process (COMMAND ${PYTHON_EXECUTABLE} -c "from distutils import sysconfig; print(sysconfig.get_python_lib(plat_specific=True, prefix='${CMAKE_INSTALL_PREFIX}'))"
-                        OUTPUT_VARIABLE _ABS_PYTHON_MODULE_PATH
-                        RESULT_VARIABLE _PYTHON_pythonlib_result
-                        OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-      if (_PYTHON_pythonlib_result)
-        message (SEND_ERROR "Could not run ${PYTHON_EXECUTABLE}")
+     if (WIN32)
+       set (OPENTURNS_PYTHON_MODULE_PATH Lib/site-packages)
+     else ()
+       set (OPENTURNS_PYTHON_MODULE_PATH ${CMAKE_INSTALL_LIBDIR}/python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR}/site-packages)
       endif ()
-
-      get_filename_component (_ABS_PYTHON_MODULE_PATH ${_ABS_PYTHON_MODULE_PATH} ABSOLUTE)
-      file (RELATIVE_PATH OPENTURNS_PYTHON_MODULE_PATH ${CMAKE_INSTALL_PREFIX} ${_ABS_PYTHON_MODULE_PATH})
     endif ()
 
-    set (OPENTURNS_PYTHON${PYTHON_VERSION_MAJOR}_MODULE_PATH ${OPENTURNS_PYTHON_MODULE_PATH})
+    set (OPENTURNS_PYTHON${PYTHON_VERSION_MAJOR}_MODULE_PATH "${OPENTURNS_PYTHON_MODULE_PATH}")
   endif ()
 endif ()
 

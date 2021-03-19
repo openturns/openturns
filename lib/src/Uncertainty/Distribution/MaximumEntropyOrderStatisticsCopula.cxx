@@ -30,41 +30,38 @@ static const Factory<MaximumEntropyOrderStatisticsCopula> Factory_MaximumEntropy
 
 /* Default constructor */
 MaximumEntropyOrderStatisticsCopula::MaximumEntropyOrderStatisticsCopula()
-  : SklarCopula(MaximumEntropyOrderStatisticsDistribution())
-  , distribution_()
+  : MaximumEntropyOrderStatisticsCopula(MaximumEntropyOrderStatisticsDistribution())
 {
-  setName("MaximumEntropyOrderStatisticsCopula");
-  setDimension(distribution_.getDimension());
-  isParallel_ = distribution_.isParallel();
+  // Nothing to do
 }
 
 /* Parameters constructor */
 MaximumEntropyOrderStatisticsCopula::MaximumEntropyOrderStatisticsCopula(const DistributionCollection & coll)
   : SklarCopula(MaximumEntropyOrderStatisticsDistribution(coll))
-  , distribution_(coll)
+  , maxEntropyDistribution_(coll)
 {
   setName("MaximumEntropyOrderStatisticsCopula");
-  setDimension(distribution_.getDimension());
+  setDimension(maxEntropyDistribution_.getDimension());
   computeRange();
-  isParallel_ = distribution_.isParallel();
+  isParallel_ = maxEntropyDistribution_.isParallel();
 }
 
 /* Constructor with no check of the parameters, to speed-up margina creations */
 MaximumEntropyOrderStatisticsCopula::MaximumEntropyOrderStatisticsCopula(const MaximumEntropyOrderStatisticsDistribution & distribution)
   : SklarCopula(distribution)
-  , distribution_(distribution)
+  , maxEntropyDistribution_(distribution)
 {
   setName("MaximumEntropyOrderStatisticsCopula");
-  setDimension(distribution_.getDimension());
+  setDimension(maxEntropyDistribution_.getDimension());
   computeRange();
-  isParallel_ = distribution_.isParallel();
+  isParallel_ = maxEntropyDistribution_.isParallel();
 }
 
 /* Comparison operator */
 Bool MaximumEntropyOrderStatisticsCopula::operator ==(const MaximumEntropyOrderStatisticsCopula & other) const
 {
   if (this == &other) return true;
-  return (distribution_ == other.distribution_);
+  return (maxEntropyDistribution_ == other.maxEntropyDistribution_);
 }
 
 Bool MaximumEntropyOrderStatisticsCopula::equals(const DistributionImplementation & other) const
@@ -80,14 +77,14 @@ String MaximumEntropyOrderStatisticsCopula::__repr__() const
   oss << "class=" << MaximumEntropyOrderStatisticsCopula::GetClassName()
       << " name=" << getName()
       << " dimension=" << getDimension()
-      << " distribution=" << distribution_;
+      << " distribution=" << maxEntropyDistribution_;
   return oss;
 }
 
 String MaximumEntropyOrderStatisticsCopula::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << getClassName() << "(collection = " << distribution_.distributionCollection_ << ")";
+  oss << getClassName() << "(collection = " << maxEntropyDistribution_.distributionCollection_ << ")";
   return oss;
 }
 
@@ -100,7 +97,7 @@ MaximumEntropyOrderStatisticsCopula * MaximumEntropyOrderStatisticsCopula::clone
 /* Get the kth approximation */
 PiecewiseHermiteEvaluation MaximumEntropyOrderStatisticsCopula::getApproximation(const UnsignedInteger k) const
 {
-  return distribution_.getApproximation(k);
+  return maxEntropyDistribution_.getApproximation(k);
 }
 
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
@@ -119,7 +116,7 @@ Distribution MaximumEntropyOrderStatisticsCopula::getMarginal(const Indices & in
   }
   Description marginalDescription(0);
   const Description description(getDescription());
-  MaximumEntropyOrderStatisticsCopula::Implementation marginal(new MaximumEntropyOrderStatisticsCopula(distribution_.getMarginalAsMaximumEntropyOrderStatisticsDistribution(indices)));
+  MaximumEntropyOrderStatisticsCopula::Implementation marginal(new MaximumEntropyOrderStatisticsCopula(maxEntropyDistribution_.getMarginalAsMaximumEntropyOrderStatisticsDistribution(indices)));
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger j = indices[i];
@@ -133,7 +130,7 @@ Distribution MaximumEntropyOrderStatisticsCopula::getMarginal(const Indices & in
 /* Distribution collection accessor */
 void MaximumEntropyOrderStatisticsCopula::setDistributionCollection(const DistributionCollection & coll)
 {
-  distribution_.setDistributionCollection(coll);
+  maxEntropyDistribution_.setDistributionCollection(coll);
 }
 
 
@@ -147,7 +144,7 @@ MaximumEntropyOrderStatisticsCopula::PointWithDescriptionCollection MaximumEntro
   for (UnsignedInteger marginalIndex = 0; marginalIndex < dimension; ++marginalIndex)
   {
     // Each marginal distribution must output a collection of parameters of size 1, even if it contains an empty Point
-    const PointWithDescriptionCollection marginalParameters(distribution_.distributionCollection_[marginalIndex].getParametersCollection());
+    const PointWithDescriptionCollection marginalParameters(maxEntropyDistribution_.distributionCollection_[marginalIndex].getParametersCollection());
     PointWithDescription point(marginalParameters[0]);
     Description marginalParametersDescription(point.getDescription());
     // Here we must add a unique prefix to the marginal parameters description in order to deambiguate the parameters of different marginals sharing the same description
@@ -162,27 +159,27 @@ MaximumEntropyOrderStatisticsCopula::PointWithDescriptionCollection MaximumEntro
 
 void MaximumEntropyOrderStatisticsCopula::setParametersCollection(const PointCollection& parametersCollection)
 {
-  distribution_.setParametersCollection(parametersCollection);
+  maxEntropyDistribution_.setParametersCollection(parametersCollection);
 }
 
 
 MaximumEntropyOrderStatisticsCopula::DistributionCollection MaximumEntropyOrderStatisticsCopula::getDistributionCollection() const
 {
-  return distribution_.distributionCollection_;
+  return maxEntropyDistribution_.distributionCollection_;
 }
 
 /* Method save() stores the object through the StorageManager */
 void MaximumEntropyOrderStatisticsCopula::save(Advocate & adv) const
 {
   SklarCopula::save(adv);
-  adv.saveAttribute("distribution_", distribution_);
+  adv.saveAttribute("maxEntropyDistribution_", maxEntropyDistribution_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void MaximumEntropyOrderStatisticsCopula::load(Advocate & adv)
 {
   SklarCopula::load(adv);
-  adv.loadAttribute("distribution_", distribution_);
+  adv.loadAttribute("maxEntropyDistribution_", maxEntropyDistribution_);
 }
 
 

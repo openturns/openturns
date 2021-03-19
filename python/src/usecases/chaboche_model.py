@@ -4,7 +4,7 @@ Use case : the Chaboche mechanical model
 """
 from __future__ import print_function
 import openturns as ot
-import numpy as np
+import math as m
 
 
 def g(X):

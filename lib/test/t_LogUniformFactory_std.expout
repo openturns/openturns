@@ -6,4 +6,3 @@ LogUniform          =class=LogUniform name=LogUniform dimension=1 aLog=1 bLog=2.
 Estimated logUniform=class=LogUniform name=LogUniform dimension=1 aLog=1.00014 bLog=2.49994 a=2.71868 b=12.1818
 Default logUniform=class=LogUniform name=LogUniform dimension=1 aLog=-1 bLog=1 a=0.367879 b=2.71828
 LogUniform from parameters=class=LogUniform name=LogUniform dimension=1 aLog=1 bLog=2.5 a=2.71828 b=12.1825
-Estimated distribution=class=LogUniform name=LogUniform dimension=1 aLog=-9.9985e-05 bLog=9.9975e-05 a=0.9999 b=1.0001

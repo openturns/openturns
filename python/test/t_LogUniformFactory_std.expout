@@ -6,4 +6,3 @@ LogUniform          = LogUniform(aLog = 1, bLog = 2.5)
 Estimated logUniform= LogUniform(aLog = 1.00014, bLog = 2.49994)
 Default logUniform= LogUniform(aLog = -1, bLog = 1)
 LogUniform from parameters= LogUniform(aLog = 1, bLog = 2.5)
-Estimated distribution= class=LogUniform name=LogUniform dimension=1 aLog=-9.9985e-05 bLog=9.9975e-05 a=0.9999 b=1.0001

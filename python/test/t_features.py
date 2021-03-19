@@ -122,3 +122,13 @@ print('ok' if ot.Bonmin.IsAvailable() else 'n/a')
 # check that ipopt was found
 print('17: optimization (Ipopt)'.ljust(width), end=' ')
 print('ok' if ot.Ipopt.IsAvailable() else 'n/a')
+
+# check that bison/flex were found
+print('18: CSV parser (bison/flex)'.ljust(width), end=' ')
+ot.Normal(2).getSample(30).exportToCSVFile('feat.csv')
+try:
+    sample = ot.Sample.ImportFromCSVFile('feat.csv')
+    print('ok')
+except RuntimeError:
+    print('n/a')
+os.remove('feat.csv')

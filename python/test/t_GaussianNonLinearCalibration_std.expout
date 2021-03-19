@@ -8,6 +8,6 @@ result    (TNC)= [2.6,1.2,0.5]
 error= Normal(mu = [-0.054,-0.17], sigma = [1.7,2.4], R = [[ 1    0.12 ]
  [ 0.12 1    ]])
 result (Global)= [2,1.4,0.48]
-result (unobs.)= [1.6,2.5,0.64,0.87]
-error= Normal(mu = [-0.025,-0.088], sigma = [1.7,2.4], R = [[ 1    0.12 ]
+result (unobs.)= [1.6,2.5,0.65,0.88]
+error= Normal(mu = [-0.025,-0.089], sigma = [1.7,2.4], R = [[ 1    0.12 ]
  [ 0.12 1    ]])

@@ -79,7 +79,6 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   setAmplitude(amplitude);
   setScale(scale);
   activeParameter_.fill();
-  updateOutputCovariance();
 }
 
 /* Standard constructor with scale, amplitude and spatial correlation parameter parameter */
@@ -111,29 +110,32 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   : PersistentObject()
   , scale_(0)
   , inputDimension_(scale.getDimension())
-  , amplitude_(0)
+  , amplitude_(spatialCovariance.getDimension())
   , outputDimension_(spatialCovariance.getDimension())
   , outputCorrelation_(0)
   , outputCovariance_(spatialCovariance)
   , outputCovarianceCholeskyFactor_(0)
-  , isDiagonal_(true)
+  , isDiagonal_(spatialCovariance.isDiagonal())
   , isStationary_(false)
   , nuggetFactor_(ResourceMap::GetAsScalar("CovarianceModel-DefaultNuggetFactor"))
   , activeParameter_(inputDimension_ + outputDimension_)
 {
-  Point amplitude(outputDimension_);
-  for (UnsignedInteger i = 0; i < outputDimension_; ++i) amplitude[i] = sqrt(spatialCovariance(i, i));
-  // Check that the amplitudes are valid
-  setAmplitude(amplitude);
+  setScale(scale);
+  for (UnsignedInteger i = 0; i < outputDimension_; ++i) 
+  {
+    const Scalar amplitudeI = sqrt(spatialCovariance(i, i));
+    if (!(amplitudeI > 0.0))
+      throw InvalidArgumentException(HERE) << "The " << i << "-th diagonal component of the spatial covariance is non positive";
+    amplitude_[i] = amplitudeI;
+  }
   // Convert the spatial covariance into a spatial correlation
   if (!spatialCovariance.isDiagonal())
   {
     outputCorrelation_ = CorrelationMatrix(outputDimension_);
-    for (UnsignedInteger i = 0; i < outputDimension_; ++i)
-      for (UnsignedInteger j = 0; j < i; ++j)
-        outputCorrelation_(i, j) = spatialCovariance(i, j) / (amplitude[i] * amplitude[j]);
+    for (UnsignedInteger j = 0; j < outputDimension_; ++j)
+      for (UnsignedInteger i = j + 1; i < outputDimension_; ++i)
+        outputCorrelation_(i, j) = spatialCovariance(i, j) / (amplitude_[i] * amplitude_[j]);
   } // !isDiagonal
-  setScale(scale);
   activeParameter_.fill();
 }
 
@@ -297,7 +299,6 @@ Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
   {
     Matrix gradient(size, 1);
     const Scalar covRef = computeAsScalar(s, t);
-    const Scalar epsilon = std::sqrt(SpecFunc::ScalarEpsilon);
     Pointer<CovarianceModelImplementation> p_implementation(clone());
     for (UnsignedInteger k = 0; k < size; ++ k)
     {
@@ -337,6 +338,9 @@ Matrix CovarianceModelImplementation::parameterGradient(const Point & s,
 /* Discretize the covariance function on a given TimeGrid/Mesh */
 CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & timeGrid) const
 {
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+
   if (isStationary())
   {
     const UnsignedInteger size = timeGrid.getN();
@@ -344,6 +348,22 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & t
     const UnsignedInteger fullSize = size * outputDimension_;
     CovarianceMatrix covarianceMatrix(fullSize);
 
+    if (outputDimension_ == 1)
+    {
+      // The stationary property of this model allows to optimize the discretize operation
+      // over a regular time grid: the large covariance matrix is block-diagonal
+      // Fill the matrix by block-diagonal
+      // The main diagonal has a specific treatment as only its lower triangular part
+      // has to be copied
+      for (UnsignedInteger diag = 0; diag < size; ++diag)
+      {
+        const Scalar covTau = computeAsScalar(diag * timeStep);
+        for (UnsignedInteger i = 0; i < size - diag; ++i)
+          covarianceMatrix(i, i + diag) = covTau;
+      }
+      return covarianceMatrix;
+    }
+    // General multivariate (stationary) case
     // Fill-in the matrix by blocks
     for (UnsignedInteger diagonalOffset = 0; diagonalOffset < size; ++diagonalOffset)
     {
@@ -364,6 +384,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const RegularGrid & t
     } // row index of the block
     return covarianceMatrix;
   }
+  // Non stationary case
   return discretize(timeGrid.getVertices());
 }
 
@@ -718,7 +739,7 @@ void CovarianceModelImplementation::setFullParameter(const Point & parameter)
   for (UnsignedInteger i = 0; i < inputDimension_; ++ i)
   {
     if (!(parameter[index] > 0.0))
-      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setParameter, the component " << index << " of scale is non positive" ;
+      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setFullParameter, the component " << index << " of scale is non positive";
     scale_[i] = parameter[index];
     ++ index;
   }
@@ -726,7 +747,7 @@ void CovarianceModelImplementation::setFullParameter(const Point & parameter)
   for (UnsignedInteger i = 0; i < outputDimension_; ++ i)
   {
     if (!(parameter[index] > 0.0))
-      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setParameter, the component " << index << " of amplitude is non positive" ;
+      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setFullParameter, the component " << index << " of amplitude is non positive";
     amplitude_[i] = parameter[index];
     ++ index;
   }

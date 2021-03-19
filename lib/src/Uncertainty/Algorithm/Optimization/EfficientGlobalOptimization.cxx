@@ -334,7 +334,7 @@ void EfficientGlobalOptimization::run()
     const Scalar residualError = std::abs(optimalValue - optimalValuePrev);
     const Scalar constraintError = -1.0;
 
-    result.store(newPoint, newValue, absoluteError, relativeError, residualError, constraintError);
+    result.store(newPoint, newOutput, absoluteError, relativeError, residualError, constraintError);
 
     // general convergence criteria
     exitLoop = ((absoluteError < getMaximumAbsoluteError()) && (relativeError < getMaximumRelativeError())) || ((residualError < getMaximumResidualError()) && (constraintError < getMaximumConstraintError()));

@@ -22,6 +22,7 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 import math as m
+ot.RandomGenerator.SetSeed(0)
 ot.ResourceMap.SetAsString("KrigingAlgorithm-LinearAlgebra",  "LAPACK")
 ot.Log.Show(ot.Log.NONE)
 
@@ -310,7 +311,7 @@ view = viewer.View(graph)
 
 # %%
 graph = result.drawOptimalValueHistory()
-view = viewer.View(graph)
+view = viewer.View(graph, axes_kw={"xticks": range(0, result.getIterationNumber(), 5)})
 
 plt.show()
 # %%

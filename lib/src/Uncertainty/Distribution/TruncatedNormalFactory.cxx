@@ -68,14 +68,9 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfMoments(const Sample & samp
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a TruncatedNormal distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];
-  if (!SpecFunc::IsNormal(xMin) || !SpecFunc::IsNormal(xMax)) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution if data contains NaN or Inf";
-  if (xMin == xMax)
-  {
-    const Scalar delta = std::max(std::abs(xMin), 10.0) * SpecFunc::ScalarEpsilon;
-    TruncatedNormal result(xMin, 1.0, xMin - delta, xMax + delta);
-    result.setDescription(sample.getDescription());
-    return result;
-  }
+  const Scalar mean = sample.computeMean()[0];
+  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution if data contains NaN or Inf";
+  if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a TruncatedNormal distribution from a constant sample.";
   Scalar delta = xMax - xMin;
   const Scalar a = xMin - delta / (size + 2);
   const Scalar b = xMax + delta / (size + 2);
@@ -94,9 +89,7 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfMoments(const Sample & samp
   // Compute the mean and std and set it as initial values
   const Scalar sampleMean = sample.computeMean()[0];
   const Scalar sampleSigma = sample.computeStandardDeviation()[0];
-  Point startingPoint(2);
-  startingPoint[0] = sampleMean;
-  startingPoint[1] = sampleSigma;
+  const Point startingPoint = {sampleMean, sampleSigma};
 
   // Configure starting point
   OptimizationAlgorithm solver(factory.getOptimizationAlgorithm());
@@ -118,14 +111,10 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfLikelihoodMaximization(cons
   // In order to avoid numerical stability issues, we normalize the data to [-1, 1]
   const Scalar xMin = sample.getMin()[0];
   const Scalar xMax = sample.getMax()[0];
-  if (!SpecFunc::IsNormal(xMin) || !SpecFunc::IsNormal(xMax)) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution if data contains NaN or Inf";
-  if (xMin == xMax)
-  {
-    const Scalar delta = std::max(std::abs(xMin), 10.0) * SpecFunc::ScalarEpsilon;
-    TruncatedNormal result(xMin, 1.0, xMin - delta, xMax + delta);
-    result.setDescription(sample.getDescription());
-    return result;
-  }
+  const Scalar mean = sample.computeMean()[0];
+  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a TruncatedNormal distribution if data contains NaN or Inf";
+  if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate a TruncatedNormal distribution from a constant sample.";
+
   // X_norm = alpha * (X - beta)
   const Scalar alpha = 2.0 / (xMax - xMin);
   const Scalar beta = 0.5 * (xMin + xMax);
@@ -138,10 +127,7 @@ TruncatedNormal TruncatedNormalFactory::buildMethodOfLikelihoodMaximization(cons
   parametersLowerBound[1] = ResourceMap::GetAsScalar( "TruncatedNormalFactory-SigmaLowerBound");
   Interval::BoolCollection parametersLowerFlags(dimension, false);
   parametersLowerFlags[1] = true;
-  Point startingPoint(dimension);
-  startingPoint[0] = normalizedSample.computeMean()[0];
-  startingPoint[1] = normalizedSample.computeStandardDeviation()[0];
-
+  const Point startingPoint = {normalizedSample.computeMean()[0], normalizedSample.computeStandardDeviation()[0]};
   const Scalar oneEps = 1.0 + 1.0 / size;
 
   MaximumLikelihoodFactory factory(buildAsTruncatedNormal());

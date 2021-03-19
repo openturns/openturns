@@ -115,25 +115,6 @@ Scalar SphericalModel::computeAsScalar(const Scalar tau) const
   return amplitude_[0] * amplitude_[0] * (1.0 - 0.5 * normTauOverScaleA * (3.0 - normTauOverScaleA * normTauOverScaleA));
 }
 
-/* Discretize the covariance function on a given TimeGrid */
-CovarianceMatrix SphericalModel::discretize(const RegularGrid & timeGrid) const
-{
-  const UnsignedInteger size = timeGrid.getN();
-  const UnsignedInteger fullSize = size;
-  const Scalar timeStep = timeGrid.getStep();
-
-  CovarianceMatrix cov(fullSize);
-
-  for (UnsignedInteger diag = 0; diag < size; ++diag)
-  {
-    const Scalar covTau = computeAsScalar(Point(1, diag * timeStep));
-    for (UnsignedInteger i = 0; i < size - diag; ++i)
-      cov(i, i + diag) = covTau;
-  }
-
-  return cov;
-}
-
 void SphericalModel::setFullParameter(const Point & parameter)
 {
   CovarianceModelImplementation::setFullParameter(parameter);

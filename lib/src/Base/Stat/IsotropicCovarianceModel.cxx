@@ -106,7 +106,7 @@ Matrix IsotropicCovarianceModel::partialGradient(const Point & s,
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
-  const Point tau(t - s);
+  const Point tau(s - t);
   const Scalar tauNorm = tau.norm();
   const Point normGradient(tau / tauNorm);
   const Matrix kernelPartialGradient(kernel_.partialGradient(Point(1, tauNorm), Point(1)));

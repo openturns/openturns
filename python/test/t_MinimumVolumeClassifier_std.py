@@ -12,6 +12,10 @@ ot.ResourceMap.SetAsBool('Distribution-MinimumVolumeLevelSetBySampling', True)
 ot.ResourceMap.SetAsUnsignedInteger(
     'Distribution-MinimumVolumeLevelSetSamplingSize', 500)
 
+# 1-d test
+dists = [ot.Normal(-1.0, 1.0), ot.Normal(2.0, 1.5)]
+mixture = ot.Mixture(dists)
+
 # 2-d test
 dists = [ot.Normal([-1.0, 2.0], [1.0]*2, ot.CorrelationMatrix(2)),
          ot.Normal([1.0, -2.0], [1.5]*2, ot.CorrelationMatrix(2))]

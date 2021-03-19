@@ -4,7 +4,7 @@ MAP =class=Point name=Unnamed dimension=3 values=[2.8,1.2,0.499]
 2. TNC optim
 MAP =class=Point name=Unnamed dimension=3 values=[2.8,1.2,0.499]
 3. globalErrorCovariance
-Bootstrap size =100
+Bootstrap size =30
 1. Default optim
 MAP =class=Point name=Unnamed dimension=3 values=[2.8,1.2,0.499]
 2. TNC optim

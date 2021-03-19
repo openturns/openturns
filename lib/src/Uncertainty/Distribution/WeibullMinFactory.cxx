@@ -64,31 +64,19 @@ Distribution WeibullMinFactory::build() const
 WeibullMin WeibullMinFactory::buildMethodOfMoments(const Sample & sample) const
 {
   const Scalar size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a WeibullMin distribution from an empty sample";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a WeibullMin distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a WeibullMin distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   const Scalar xMin = sample.getMin()[0];
   Scalar gamma = xMin - std::abs(xMin) / (2.0 + size);
   const Scalar mean = sample.computeMean()[0];
   const Scalar sigma = sample.computeStandardDeviation()[0];
-  if (!SpecFunc::IsNormal(gamma)) throw InvalidArgumentException(HERE) << "Error: cannot build a WeibullMin distribution if data contains NaN or Inf";
-  try
-  {
-    Point parameters(3);
-    parameters[0] = mean;
-    parameters[1] = sigma;
-    parameters[2] = gamma;
-    WeibullMin result(buildAsWeibullMin(WeibullMinMuSigma()(parameters)));
-    result.setDescription(sample.getDescription());
-    return result;
-  }
-  // Here we are in the case of a (nearly) Dirac distribution
-  catch (InvalidArgumentException &)
-  {
-    if (gamma == 0.0) gamma = SpecFunc::ScalarEpsilon;
-    WeibullMin result(100.0 * std::abs(gamma) * SpecFunc::ScalarEpsilon, 1.0, gamma);
-    result.setDescription(sample.getDescription());
-    return result;
-  }
+  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a WeibullMin distribution if data contains NaN or Inf";
+  if (sigma == 0.0) throw InvalidArgumentException(HERE) << "Error: cannot estimate a WeibullMin distribution from a constant sample.";
+
+  const Point parameters = {mean, sigma, gamma};
+  WeibullMin result(buildAsWeibullMin(WeibullMinMuSigma()(parameters)));
+  result.setDescription(sample.getDescription());
+  return result;
 }
 
 WeibullMin WeibullMinFactory::buildMethodOfLikelihoodMaximization(const Sample & sample) const

@@ -203,6 +203,7 @@ ot_add_python_module(statistics statistics_module.i
                       SpectralModelFactory.i SpectralModelFactory_doc.i.in
                       UserDefinedSpectralModel.i UserDefinedSpectralModel_doc.i.in
                       WelchFactory.i WelchFactory_doc.i.in
+                      KroneckerCovarianceModel.i KroneckerCovarianceModel_doc.i.in
                       ExponentialModel.i ExponentialModel_doc.i.in
                       ExponentiallyDampedCosineModel.i ExponentiallyDampedCosineModel_doc.i.in
                       CauchyModel.i CauchyModel_doc.i.in
@@ -1051,7 +1052,7 @@ if (SPHINX_FOUND)
   set (sphinx_clones)
   foreach (file ${sphinx_sources})
     if (EXISTS ${file})
-      file (RELATIVE_PATH rel_file ${SPHINX_SOURCE_DIR} ${file})
+      file (RELATIVE_PATH rel_file "${SPHINX_SOURCE_DIR}" "${file}")
       get_filename_component (rel_path ${rel_file} PATH)
       file (MAKE_DIRECTORY ${SPHINX_BINARY_DIR}/${rel_path})
       set (sphinx_clone ${SPHINX_BINARY_DIR}/${rel_file})

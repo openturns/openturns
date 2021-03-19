@@ -74,15 +74,10 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
   Point startingPoint(4);
   const Scalar min = sample.getMin()[0];
   const Scalar max = sample.getMax()[0];
-  if (!SpecFunc::IsNormal(min) || !SpecFunc::IsNormal(max)) throw InvalidArgumentException(HERE) << "Error: cannot build a Trapezoidal distribution if data contains NaN or Inf";
+  const Scalar mean = sample.computeMean()[0];
+  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build a LogUniform distribution if data contains NaN or Inf";
   //  if (max <= min - std::sqrt(SpecFunc::ScalarEpsilon))
-  if (min == max)
-  {
-    const Scalar delta = std::max(std::abs(min), 10.0) * SpecFunc::ScalarEpsilon;
-    Trapezoidal result(min - delta, min, max, max + delta);
-    result.setDescription(sample.getDescription());
-    return result;
-  }
+  if (min == max) throw InvalidArgumentException(HERE) << "Error: cannot estimate a Trapezoidal distribution from a constant sample.";
 
   MaximumLikelihoodFactory factory(buildAsTrapezoidal());
 
