@@ -10,6 +10,10 @@ Bibliography
     inverting transforms of probability distributions*.
     Queueing Systems 10, 5--88., 1992, formula 5.5.
     `pdf <http://www.columbia.edu/~ww2040/Fourier-series.pdf>`__
+.. [AbdiMolinSalkind2007] Hervé Abdi, Paul Molin. Neil Salkind (Ed.) 
+    *Lilliefors/Van Soest’s test of normality.*. Encyclopedia of Measurement and Statistics, 2007.
+.. [AbdiMolin1998] Hervé Abdi, Paul Molin.
+    *New table and numerical approximations for approximations for Kolmogorov-Smirnov / Lillifors / Van Soest normality test.*, 1998.
 .. [amblard2012] Pierre-Olivier Amblard, Jean-François Coeurjolly,
     Frédéric Lavancier, Anne Philippe, *Basic properties of the Multivariate
     Fractional Brownian Motion*,
@@ -98,6 +102,9 @@ Bibliography
     *Global optimization of expensive black-box functions*,
     Journal of Global Optimization, 13(4), 455-492, 1998.
     `pdf <https://openturns.github.io/openturns/papers/jones1998.pdf>`__
+.. [Keutelian1991] Hovhannes Keutelian.
+    *The Kolmogorov-Smirnov test when parameters are estimated from data*, 
+    30 April 1991, Fermilab.
 .. [kiureghian1998] Kiureghian A., Dakessian T., *Multiple design points in first and second-order reliability*
     Structural Safety, Volume 20, Issue 1, 1998, Pages 37-49
     `pdf <https://openturns.github.io/openturns/papers/kiureghian1998.pdf>`__
@@ -174,6 +181,9 @@ Bibliography
     `pdf <https://core.ac.uk/download/pdf/82362441.pdf>`__
 .. [nelsen2006] Roger B. Nelsen, *An Introduction to Copulas 2nd Edition*,
     Springer, 2006.
+.. [NikitinTchirina2007]  Ya. Yu. Nikitin and A.V.Tchirina.
+    *Lilliefors Test for Exponentiality: Large Deviations,Asymptotic Efficiency, and Conditions of Local Optimality.*
+    Mathematical Methods of Statistics 16.1 (2007): 16-24.
 .. [nisthandbook] NIST/SEMATECH e-Handbook of Statistical Methods,
     http://www.itl.nist.gov/div898/handbook/
 .. [nlopt2009] Steven G. Johnson, The NLopt nonlinear-optimization package,
@@ -203,6 +213,9 @@ Bibliography
     Statistique*, Technip
 .. [scott1992] David W. Scott (1992). *Multivariate density estimation*,  
     John Wiley & Sons, Inc. 
+.. [ScottStewart2011] W. F. Scott & B. Stewart. 
+    *Tables for the Lilliefors and Modified Cramer–von Mises Tests of Normality.*, 
+    Communications in Statistics - Theory and Methods. Volume 40, 2011 - Issue 4. Pages 726-730.
 .. [simard2011] Simard, R. & L'Ecuyer, P. *Computing the Two-Sided Kolmogorov-
     Smirnov Distribution.* Journal of Statistical Software, 2011, 39(11), 1-18.
     `pdf <https://www.jstatsoft.org/article/view/v039i11/v39i11.pdf>`__
@@ -230,17 +243,4 @@ Bibliography
     `pdf <http://alvand.basu.ac.ir/~dezfoulian/files/Numericals/Springer%20-%20Introduction%20to%20numerical%20analysis,%20Bulirsch,%20Stoer.%20(2ed.,%201993)(400dpi)(ISBN%200387978.pdf>`__
 .. [wand1994] Wand M.P, Jones M.C. *Kernel Smoothing*
     First Edition, Chapman & Hall, 1994.
-.. [Keutelian1991] Hovhannes Keutelian.
-    *The Kolmogorov-Smirnov test when parameters are estimated from data*, 
-    30 April 1991, Fermilab.
-.. [AbdiMolinSalkind2007] Hervé Abdi, Paul Molin. Neil Salkind (Ed.) 
-    *Lilliefors/Van Soest’s test of normality.*. Encyclopedia of Measurement and Statistics, 2007.
-.. [AbdiMolin1998] Hervé Abdi, Paul Molin.
-    *New table and numerical approximations for approximations for Kolmogorov-Smirnov / Lillifors / Van Soest normality test.*, 1998.
-.. [ScottStewart2011] W. F. Scott & B. Stewart. 
-    *Tables for the Lilliefors and Modified Cramer–von Mises Tests of Normality.*, 
-    Communications in Statistics - Theory and Methods. Volume 40, 2011 - Issue 4. Pages 726-730.
-.. [NikitinTchirina2007]  Ya. Yu. Nikitin and A.V.Tchirina.
-    *Lilliefors Test for Exponentiality: Large Deviations,Asymptotic Efficiency, and Conditions of Local Optimality.*
-    Mathematical Methods of Statistics 16.1 (2007): 16-24.
 
