@@ -287,7 +287,7 @@ Normal(mu = 0, sigma = 1)"
 If a :class:`~openturns.Distribution` is used, the likelihood is 
 evaluated on the sample. 
 If a :class:`~openturns.DistributionFactory` is used, the 
-`:meth:`~openturns.DistributionFactory.build` method 
+:meth:`~openturns.DistributionFactory.build` method 
 is used to create the distribution, and the likelihood is then evaluated.
 
 Refer to :ref:`bic`.
