@@ -11,9 +11,7 @@ Let :math:`\delta` be the sample range:
 .. math::
     :nowrap:
 
-    \begin{eqnarray*}
-      \delta = x_{(n)} - x_{(1)}.
-    \end{eqnarray*}
+    \delta = x_{(n)} - x_{(1)}.
 
 Then the distribution bounds are computed from the equations:
 
@@ -21,13 +19,13 @@ Then the distribution bounds are computed from the equations:
     :nowrap:
 
     \begin{eqnarray*}
-      \hat{a} = x_{(1)} - \frac{\delta}{n + 2}, \\
-      \hat{b} = x_{(n)} + \frac{\delta}{n + 2}.
+      \hat{a} &=& x_{(1)} - \frac{\delta}{n + 2}, \\
+      \hat{b} &=& x_{(n)} + \frac{\delta}{n + 2}.
     \end{eqnarray*}
 
 Let :math:`\bar{x}` be the sample mean and :math:`\hat{\sigma}^2` be the sample 
 unbiased variance. 
-The remaining parameters are estimated from the method of moments:
+The remaining parameters are estimated using the method of moments:
 
 .. math::
     :nowrap:
