@@ -4,28 +4,24 @@
 Available constructor:
     ExponentialFactory()
 
-Let :math:`\bar{x}` be the minimum mean. 
-Let :math:`x_{(1)}` be the minimum sample value.
-The parameter :math:`\hat{\gamma}` is estimated by method of maximum 
+Let :math:`\bar{x}` be the sample mean. 
+Let :math:`x_{(1)}` be the sample minimum. 
+The parameter :math:`\gamma` is estimated by method of maximum 
 likelihood, with asymptotic correction for bias:
 
 .. math::
     :nowrap:
 
-    \begin{eqnarray*}
       \hat{\gamma} = x_{(1)} - \frac{|x_{(1)}|}{2 + n}
-    \end{eqnarray*}
 
-The parameters :math:`\hat{\lambda}` is estimated by method of moments:
+The parameter :math:`\lambda` is estimated by method of moments:
 
 .. math::
     :nowrap:
 
-    \begin{eqnarray*}
       \hat{\lambda}= \frac{1}{\bar{x} - \hat{\gamma}}
-    \end{eqnarray*}
 
-When :math:`\hat{\gamma}` is known, the estimator for :math:`\hat{\lambda}` is equivalent 
+When :math:`\gamma` is known, the estimator for :math:`\lambda` is equivalent 
 to the method of maximum likelihood. 
 
 See also
