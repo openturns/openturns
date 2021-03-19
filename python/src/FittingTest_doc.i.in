@@ -283,6 +283,13 @@ Normal(mu = 0, sigma = 1)"
 %feature("docstring") OT::FittingTest::BIC
 "Compute the Bayesian information criterion.
 
+
+If a :class:`~openturns.Distribution` is used, the likelihood is 
+evaluated on the sample. 
+If a :class:`~openturns.DistributionFactory` is used, the 
+`:meth:`~openturns.DistributionFactory.build` method 
+is used to create the distribution, and the likelihood is then evaluated.
+
 Refer to :ref:`bic`.
 
 Parameters
@@ -311,9 +318,6 @@ BIC : float
 Notes
 -----
 This is used for model selection.
-
-If a :class:`~openturns.Distribution` is used, the likelihood is evaluated on the sample. 
-If a :class:`~openturns.DistributionFactory` is used, the `build` method is used to create the distribution, and the likelihood is then evaluated.
 
 In case we set a factory argument, the method returns both the estimated distribution and BIC value.
 Otherwise it returns only the BIC value.
