@@ -48,8 +48,14 @@ for the functional basis.
 
 Examples
 --------
+
+In the following example, we create an hyperbolic enumerate function 
+in 2 dimension with a quasi-norm equal to 0.5.
+Notice, for example, that the function with multi-index [3,0] 
+come before [1,1], although the sum of marginal indices is lower: this 
+is the result of the hyperbolic quasi-norm. 
+
 >>> import openturns as ot
->>> # 4-dimensional case
 >>> enumerateFunction = ot.HyperbolicAnisotropicEnumerateFunction(2, 0.5)
 >>> for i in range(10):
 ...     print(enumerateFunction(i))
@@ -63,6 +69,36 @@ Examples
 [1,1]
 [4,0]
 [0,4]
+
+In the following example, we create an hyperbolic enumerate function 
+in 3 dimensions based on the weights [1,2,4].
+Notice that the first marginal indices, with weight equal to 1, come 
+first in the enumeration.
+
+>>> import openturns as ot
+>>> enumerateFunction = ot.HyperbolicAnisotropicEnumerateFunction([1, 2, 4])
+>>> for i in range(20):
+>>>     print("i=", i, "enum=", enumerateFunction(i))
+i= 0 enum= [0,0,0]
+i= 1 enum= [1,0,0]
+i= 2 enum= [0,1,0]
+i= 3 enum= [2,0,0]
+i= 4 enum= [3,0,0]
+i= 5 enum= [0,0,1]
+i= 6 enum= [0,2,0]
+i= 7 enum= [4,0,0]
+i= 8 enum= [5,0,0]
+i= 9 enum= [0,3,0]
+i= 10 enum= [6,0,0]
+i= 11 enum= [7,0,0]
+i= 12 enum= [0,0,2]
+i= 13 enum= [0,4,0]
+i= 14 enum= [8,0,0]
+i= 15 enum= [1,1,0]
+i= 16 enum= [9,0,0]
+i= 17 enum= [0,5,0]
+i= 18 enum= [10,0,0]
+i= 19 enum= [11,0,0]
 "
 
 // ---------------------------------------------------------------------
