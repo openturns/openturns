@@ -79,4 +79,4 @@ build_script:
   - copy install\bin\OT.dll install\Lib\site-packages\openturns
   - copy C:\Libraries\openblas\libopenblas.dll install\Lib\site-packages\openturns
   - copy C:\Libraries\tbb\bin\tbb.dll install\Lib\site-packages\openturns
-  - ctest -C Release --output-on-failure --timeout 100 -E "cppcheck|Sequence|Entropy|Sklar|Sample_computation|InverseBox" -j2 --repeat after-timeout:2
+  - ctest -C Release --output-on-failure --timeout 100 -E "cppcheck|Sequence|Entropy|Sklar|Sample_computation|InverseBox" -j2 --repeat after-timeout:2 --schedule-random

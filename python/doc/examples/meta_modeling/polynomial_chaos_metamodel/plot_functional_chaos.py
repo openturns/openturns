@@ -44,7 +44,7 @@ model = ot.SymbolicFunction(input_names, formulas)
 
 # %%
 distribution = ot.Normal(dimension)
-samplesize = 100
+samplesize = 80
 inputSample  = distribution.getSample(samplesize)
 outputSample = model(inputSample)
 
@@ -155,10 +155,9 @@ ot.ResourceMap.GetAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree
 # This is why we explore the values from 5 to 15.
 
 # %%
-degrees = ot.Sample([[i] for i in range(5, 12)])
-numberOfDegrees = degrees.getSize()
-coefficientOfPredictivity = ot.Sample(numberOfDegrees,2)
-for maximumDegree in range(5, 12):
+degrees = range(5, 12)
+q2 = ot.Sample(len(degrees), 2)
+for maximumDegree in degrees:
     ot.ResourceMap.SetAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree",maximumDegree)
     print("Maximum total degree =", maximumDegree)
     algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample)
@@ -167,16 +166,15 @@ for maximumDegree in range(5, 12):
     metamodel = result.getMetaModel()
     for outputIndex in range(2):
         val = ot.MetaModelValidation(inputTest, outputTest[:,outputIndex], metamodel.getMarginal(outputIndex))
-        Q2 = val.computePredictivityFactor()[0]
-        coefficientOfPredictivity[maximumDegree-5,outputIndex] = Q2
+        q2[maximumDegree - degrees[0], outputIndex] = val.computePredictivityFactor()[0]
 
 # %%
 graph = ot.Graph("Predictivity","Total degree","Q2",True)
-cloud = ot.Cloud(degrees,coefficientOfPredictivity[:,0])
+cloud = ot.Cloud([[d] for d in degrees], q2[:,0])
 cloud.setLegend("Output #0")
 cloud.setPointStyle("bullet")
 graph.add(cloud)
-cloud = ot.Cloud(degrees,coefficientOfPredictivity[:,1])
+cloud = ot.Cloud([[d] for d in degrees], q2[:,1])
 cloud.setLegend("Output #1")
 cloud.setColor("red")
 cloud.setPointStyle("bullet")
