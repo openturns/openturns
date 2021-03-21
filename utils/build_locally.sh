@@ -6,6 +6,7 @@ case $choice in
   1)
     docker pull openturns/archlinux-python
     docker run -e MAKEFLAGS='-j8' -v `pwd`:/io openturns/archlinux-python /io/.circleci/run_docker_linux.sh `id -u` `id -g`
+    docker run -e MAKEFLAGS='-j8' -v `pwd`:/io openturns/archlinux-python /io/.circleci/run_docker_linux_test.sh `id -u` `id -g`
     ;;
   2)
     docker pull openturns/archlinux-mingw
