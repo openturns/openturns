@@ -72,7 +72,7 @@ is the result of the hyperbolic quasi-norm.
 
 In the following example, we create an hyperbolic enumerate function 
 in 3 dimensions based on the weights [1,2,4].
-Notice that the first marginal indices, with weight equal to 1, come 
+Notice that the first marginal index, with weight equal to 1, comes 
 first in the enumeration.
 
 >>> import openturns as ot
