@@ -164,7 +164,7 @@ void GaussianProcess::initialize() const
         covarianceCholeskyFactor_ = covarianceMatrix.computeCholesky();
         continuationCondition = false;
       }
-      catch (const NotSymmetricDefinitePositiveException & ex)
+      catch (const NotSymmetricDefinitePositiveException &)
       {
         cumulatedScaling += scaling ;
         scaling *= 2.0;

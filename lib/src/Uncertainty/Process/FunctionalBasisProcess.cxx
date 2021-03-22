@@ -167,7 +167,7 @@ TimeSeries FunctionalBasisProcess::getFuture(const UnsignedInteger stepNumber) c
   {
     timeGrid = getTimeGrid();
   }
-  catch (const InvalidArgumentException & ex)
+  catch (const InvalidArgumentException &)
   {
     throw InternalException(HERE) << "Error: can extend the realization of a process only if defined on a regular grid.";
   }
