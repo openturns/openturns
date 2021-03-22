@@ -70,7 +70,7 @@ n = sample.getSize()
 # and we wish to identify the predictive variables which result in the most simple and precise linear regression model.
 # 
 # We start by creating a linear model which takes into account all of the physicochemical variables present within the Linthrust data set.
-
+#
 # Let us consider the following linear model :math:`\tilde{Y} = a_0 + \sum_{i = 1}^{d} a_i X_i + \epsilon`. If all of the predictive variables
 # are considered, the regression can be performed with the help of the `LinearModelAlgorithm` class.
 
@@ -85,7 +85,7 @@ print('Adjusted R-squared = ', result_full.getAdjustedRSquared())
 
 # %%
 # We now wish to perform the selection of the most important predictive variables through a stepwise algorithm. 
-
+#
 # It is first necessary to define a suitable function basis for the regression. Each variable is associated to a univariate basis
 # and an additional basis is used in order to represent the constant term :math:`a_0`.
 
@@ -194,3 +194,45 @@ for k,analysis in enumerate([analysis_full, analysis_forward, analysis_backward]
     graph.setTitle('')
     v = View(graph, figure=fig, axes=[ax])
 plt.tight_layout()
+
+
+# %%
+# For illustrative purposes, we show the Bayesian Information Criterion (BIC) and Akaike Information Criterion (AIC) values 
+# which are computed during the iterations of the forward step-wise regression. Please note that in order to do
+# so, we set the penalty parameter to 0 (meaning that the basis selection only takes into account the model likelihood,
+# and not the number of parameters characterizing the linear model).
+
+# %%
+minimalIndices = [0]
+isForward = True
+penalty = 0
+
+
+BIC = []
+AIC = []
+for iterations in range(1,6):
+    algo_forward = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, isForward, penalty, iterations)
+    algo_forward.run()
+    result_forward = algo_forward.getResult()
+    
+    RSS = np.sum(np.array(result_forward.getSampleResiduals())**2) #Residual sum of squares
+    LL = n*np.log(RSS/n) #Log-likelihood
+    BIC.append(LL + iterations*np.log(n)) #Bayesian Information Criterion
+    AIC.append(LL + iterations*2) #Akaike Information Criterion
+    print('Selected basis: ', result_forward.getCoefficientsNames())
+
+
+plt.figure()
+plt.plot(np.arange(1,6), BIC, label = 'BIC')
+plt.plot(np.arange(1,6), AIC, label = 'AIC')
+plt.xticks(np.arange(1,6))
+plt.xlabel('Basis size', fontsize = 14)
+plt.ylabel('Information criterion', fontsize = 14)
+plt.legend(fontsize = 14)
+plt.tight_layout()
+
+# %%
+# The graphic above shows that the optimal linear model in terms of compromise between prediction likelihood and model complexity 
+# should take into account the influence of 2 regession variables as well as the constant term. This is coherent with the results previously
+# obtained
+
