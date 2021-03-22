@@ -312,6 +312,30 @@ Scalar SpecFunc::DeltaLogBesselI10(const Scalar x)
   else return LargeCaseDeltaLogBesselI10(x);
 }
 
+class LogBesselKIntegrandEvaluation : public EvaluationImplementation
+{
+public:
+  LogBesselKIntegrandEvaluation(const Scalar nu, const Scalar x) : EvaluationImplementation(), nu_(nu), x_(x) {}
+  LogBesselKIntegrandEvaluation * clone() const override { return new LogBesselKIntegrandEvaluation(*this); }
+  UnsignedInteger getInputDimension() const override { return 1; }
+  UnsignedInteger getOutputDimension() const override { return 1; }
+
+  Point operator()(const Point & inP) const override
+  {
+    const Scalar t = inP[0];
+    Point outP(1);
+    if (nu_ == 0)
+      outP[0] = exp(-x_ * cosh(t));
+    else
+      outP[0] = exp(-x_ * cosh(t)) * std::pow(sinh(t), 2.0 * nu_);
+    return outP;
+  }
+
+private:
+  Scalar nu_ = 0.0;
+  Scalar x_ = 0.0;
+};
+
 // Logarithm of the modified second kind Bessel function of order nu: LogBesselK(nu, x)=log(\frac{\pi}{2}\frac{I_{-\nu}(x)-I_[\nu}(x)}{\sin{\nu\pi}})
 Scalar SpecFunc::LogBesselK(const Scalar nu,
                             const Scalar x)
@@ -335,19 +359,17 @@ Scalar SpecFunc::LogBesselK(const Scalar nu,
   return std::log(boost::math::cyl_bessel_k(nu, x));
 #else
   Scalar logFactor = 0.0;
-  Function integrand;
+  const Function integrand(LogBesselKIntegrandEvaluation(nu, x));
   UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
   PlatformInfo::SetNumericalPrecision(16);
   Scalar upper = -1.0;
   if (nu == 0.0)
   {
-    integrand = SymbolicFunction("t", String(OSS() << "exp(-" << x << "*cosh(t))"));
     upper = std::log(-2.0 * std::log(ScalarEpsilon) / x);
   }
   else
   {
     logFactor = nu * std::log(0.5 * x) - LogGamma(0.5 + nu) + 0.5 * std::log(M_PI);
-    integrand = SymbolicFunction("t", String(OSS() << "exp(-" << x << "*cosh(t))*(sinh(t))^" << 2.0 * nu));
     upper = std::log(ScalarEpsilon) / (2.0 * nu) - LambertW(-0.25 * x * std::exp(0.5 * std::log(ScalarEpsilon) / nu) / nu, false);
   }
   Scalar epsilon = -1.0;
