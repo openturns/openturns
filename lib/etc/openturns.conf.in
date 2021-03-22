@@ -318,14 +318,15 @@
   <BurrFactory-MaximumIteration  value_int="10" />
   
   <!-- OT::ConditionalDistribution parameters -->
-  <ConditionalDistribution-MarginalIntegrationNodesNumber value_int="256"    />
-  <ConditionalDistribution-MaximumIntegrationNodesNumber  value_int="100000" />
-  
+  <ConditionalDistribution-MarginalIntegrationNodesNumber value_int="256"          />
+  <ConditionalDistribution-MaximumIntegrationNodesNumber  value_int="100000"       />
+  <ConditionalDistribution-ContinuousDiscretizationMethod value_str="GaussProduct" />
+
   <!-- OT::ComposedDistribution parameters -->
   <ComposedDistribution-UseGenericCovarianceAlgorithm value_bool="false" />
 
   <!-- OT::CompositeDistribution parameters -->
-  <CompositeDistribution-SolverEpsilon value_float="1.0e-10"       />
+  <CompositeDistribution-SolverEpsilon value_float="1.0e-14"       />
   <CompositeDistribution-StepNumber    value_int="256" />
 
   <!-- OT::Dirichlet parameters -->
@@ -475,6 +476,12 @@
   
   <!-- OT::UserDefined parameters -->
   <UserDefined-SmallSize value_int="10000" />
+  
+  <!-- OT::VonMisesFactory parameters -->
+  <VonMisesFactory-AbsolutePrecision value_float="1e-12"        />
+  <VonMisesFactory-RelativePrecision value_float="1e-12"        />
+  <VonMisesFactory-ResidualPrecision value_float="1e-12"        />
+  <VonMisesFactory-MaximumIteration  value_int="10" />
   
   <!-- OT::AliMikhailHaqCopulaFactory parameters -->
   <AliMikhailHaqCopulaFactory-ThetaEpsilon value_float="1.0e-14" />
@@ -794,8 +801,12 @@
   <FittingTest-LillieforsMinimumSamplingSize value_int="10"     />
   <FittingTest-LillieforsMaximumSamplingSize value_int="100000" />
 
+  <!-- OT::PenalizedLeastSquaresAlgorithm parameters -->
+  <PenalizedLeastSquaresAlgorithm-UseNormal  value_bool="false" />
+
   <!-- OT::LeastSquaresMetaModelSelection parameters -->
   <LeastSquaresMetaModelSelection-ErrorThreshold      value_float="0.0" />
+  <LeastSquaresMetaModelSelection-MaximumError        value_float="0.5" />
   <LeastSquaresMetaModelSelection-MaximumErrorFactor  value_float="2.0" />
   <LeastSquaresMetaModelSelection-DecompositionMethod value_str="SVD"   />
 

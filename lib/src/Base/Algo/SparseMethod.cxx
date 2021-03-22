@@ -25,7 +25,6 @@
 #include "openturns/SparseMethod.hxx"
 #include "openturns/TriangularMatrix.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/PenalizedLeastSquaresAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

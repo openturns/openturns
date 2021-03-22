@@ -235,7 +235,7 @@ void DualLinearCombinationEvaluation::setFunctionsCollectionAndCoefficients(cons
 {
   const UnsignedInteger size = functionsCollection.getSize();
   // Check for empty functions collection
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a linear combination from an empty collection of functions.";
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a dual linear combination from an empty collection of functions.";
   // Check for incompatible number of functions and coefficients
   if (size != coefficients.getSize()) throw InvalidArgumentException(HERE) << "Error: cannot build a linear combination with a different number of functions and coefficients.";
   // Check for coherent input and output dimensions of the functions

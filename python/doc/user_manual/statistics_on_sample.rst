@@ -99,6 +99,7 @@ Building distributions from samples
     TruncatedNormalFactory
     UniformFactory
     UserDefinedFactory
+    VonMisesFactory
     WeibullMinFactory
     WeibullMaxFactory
 

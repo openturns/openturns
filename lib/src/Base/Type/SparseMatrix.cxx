@@ -27,6 +27,9 @@ CLASSNAMEINIT(SparseMatrix)
 /* Default constructor */
 SparseMatrix::SparseMatrix()
   : PersistentObject()
+  , size_(0)
+  , nbRows_(0)
+  , nbColumns_(0)
 {
   // Nothing to do
 }
@@ -35,6 +38,7 @@ SparseMatrix::SparseMatrix()
 SparseMatrix::SparseMatrix( const UnsignedInteger nbRows,
                             const UnsignedInteger nbColumns)
   : PersistentObject()
+  , size_(0)
   , nbRows_(nbRows)
   , nbColumns_(nbColumns)
 {
@@ -48,6 +52,7 @@ SparseMatrix::SparseMatrix(const UnsignedInteger nbRows,
                            const Indices & columnIndices,
                            const Point & values)
   : PersistentObject()
+  , size_(0)
   , nbRows_(nbRows)
   , nbColumns_(nbColumns)
 {
@@ -148,8 +153,11 @@ Point SparseMatrix::operator *(const Point & rhs) const
   if (rhs.getDimension() != nbColumns_) throw InvalidDimensionException(HERE) << "Invalid rhs size";
   Point output(nbRows_);
   for (UnsignedInteger j = 0; j < nbColumns_; ++ j)
-    for (UnsignedInteger k = columnPointer_[j]; k < columnPointer_[j + 1]; ++ k)
-      output[rowIndex_[k]] += values_[k] * rhs[j];
+    {
+      const Scalar yJ(rhs[j]);
+      for (UnsignedInteger k = columnPointer_[j]; k < columnPointer_[j + 1]; ++ k)
+        output[rowIndex_[k]] += values_[k] * yJ;
+    }
   return output;
 }
 
@@ -209,7 +217,7 @@ String SparseMatrix::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << getClassName()
-      << " rows=" << getNbRows()
+         << " rows=" << getNbRows()
       << " columns=" << getNbColumns()
       << " triplets=[";
   for (UnsignedInteger j = 0; j < nbColumns_; ++ j)
@@ -217,7 +225,7 @@ String SparseMatrix::__repr__() const
     {
       oss << "[" << rowIndex_[k] << "," << j << "," << values_[k] << "]";
       oss << ((j == nbColumns_-1) && (k == columnPointer_[j + 1] - 1) ? "" : ",");
-    }
+}
   oss << "]";
   return oss;
 }

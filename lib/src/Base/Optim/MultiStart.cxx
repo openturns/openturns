@@ -83,21 +83,24 @@ void MultiStart::run()
   const UnsignedInteger initialEvaluationNumber = getProblem().getObjective().getEvaluationCallsNumber();
   UnsignedInteger evaluationNumber = 0;
   UnsignedInteger successNumber = 0;
+  UnsignedInteger improvementNumber = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
     solver.setStartingPoint(startingPoints_[i]);
-
     // ensure we do not exceed the global budget if the maximum eval number is set
     const UnsignedInteger remainingEval = std::max(static_cast<SignedInteger>(getMaximumEvaluationNumber() - evaluationNumber), 0L);
+    LOGDEBUG(OSS() << "Working with starting point[" << i << "]=" << startingPoints_[i] << ", " << remainingEval << " remaining evaluations");
     if (remainingEval < solver.getMaximumEvaluationNumber())
       solver.setMaximumEvaluationNumber(remainingEval);
 
     try
     {
       solver.run();
+      ++successNumber;
     }
-    catch (Exception &)
+    catch (Exception & ex)
     {
+      LOGDEBUG(OSS() << "StartingPoint " << i << " failed. Reason=" << ex);
       continue;
     }
 
@@ -110,10 +113,11 @@ void MultiStart::run()
       bestValue = currentValue;
       setResult(result);
       LOGINFO(OSS() << "Best initial point so far=" << result.getOptimalPoint() << " value=" << result.getOptimalValue());
-      ++successNumber;
+      ++improvementNumber;
     }
 
     evaluationNumber += getProblem().getObjective().getEvaluationCallsNumber() - initialEvaluationNumber;
+    LOGDEBUG(OSS() << "Number of evaluations so far=" << evaluationNumber);
     if (evaluationNumber > getMaximumEvaluationNumber())
     {
       break;
@@ -134,7 +138,7 @@ void MultiStart::run()
       }
     }
   }
-  LOGINFO(OSS() << successNumber << " out of " << size << " local searches succeeded");
+  LOGINFO(OSS() << successNumber << " out of " << size << " local searches succeeded, " << improvementNumber << " improvements");
 
   if (successNumber == 0)
   {

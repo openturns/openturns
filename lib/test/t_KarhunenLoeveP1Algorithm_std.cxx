@@ -119,7 +119,7 @@ int main(int, char *[])
       KarhunenLoeveP1Algorithm algo(mesh, cov2D, 1e-6);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      Point lambda(result.getEigenValues());
+      Point lambda(result.getEigenvalues());
       ProcessSample KLModesPS(result.getModesAsProcessSample());
       // The output is hidden due to near-zero nonreproducible values
       //fullprint << "KL modes (process sample)=" << KLModesPS << std::endl;

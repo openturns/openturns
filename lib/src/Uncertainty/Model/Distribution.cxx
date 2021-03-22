@@ -379,6 +379,16 @@ Sample Distribution::getSample(const UnsignedInteger size) const
   return getImplementation()->getSample(size);
 }
 
+Sample Distribution::getSampleByInversion(const UnsignedInteger size) const
+{
+  return getImplementation()->getSampleByInversion(size);
+}
+
+Sample Distribution::getSampleByQMC(const UnsignedInteger size) const
+{
+  return getImplementation()->getSampleByQMC(size);
+}
+
 /* Get the DDF of the distribution */
 Point Distribution::computeDDF(const Point & point) const
 {

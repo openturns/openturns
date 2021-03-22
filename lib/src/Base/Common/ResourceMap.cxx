@@ -938,12 +938,13 @@ void ResourceMap::loadDefaultConfiguration()
   // ConditionalDistribution parameters //
   addAsUnsignedInteger("ConditionalDistribution-MarginalIntegrationNodesNumber", 256);
   addAsUnsignedInteger("ConditionalDistribution-MaximumIntegrationNodesNumber", 100000);
+  addAsString("ConditionalDistribution-ContinuousDiscretizationMethod", "GaussProduct");
 
   // ComposedDistribution parameters //
   addAsBool("ComposedDistribution-UseGenericCovarianceAlgorithm", false);
 
   // CompositeDistribution parameters //
-  addAsScalar("CompositeDistribution-SolverEpsilon", 1.0e-10);
+  addAsScalar("CompositeDistribution-SolverEpsilon", 1.0e-14);
   addAsUnsignedInteger("CompositeDistribution-StepNumber", 256);
 
   // Dirichlet parameters //
@@ -1093,6 +1094,12 @@ void ResourceMap::loadDefaultConfiguration()
 
   // UserDefined parameters //
   addAsUnsignedInteger("UserDefined-SmallSize", 10000);
+
+  // VonMisesFactory parameters //
+  addAsScalar("VonMisesFactory-AbsolutePrecision", 1.0e-12);
+  addAsScalar("VonMisesFactory-RelativePrecision", 1.0e-12);
+  addAsScalar("VonMisesFactory-ResidualPrecision", 1.0e-12);
+  addAsUnsignedInteger("VonMisesFactory-MaximumIteration", 10);
 
   // AliMikhailHaqCopulaFactory parameters //
   addAsScalar("AliMikhailHaqCopulaFactory-ThetaEpsilon", 1.0e-14);
@@ -1413,8 +1420,12 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FittingTest-LillieforsMinimumSamplingSize", 10);
   addAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize", 100000);
 
+  // PenalizedLeastSquaresAlgorithm parameters //
+  addAsBool("PenalizedLeastSquaresAlgorithm-UseNormal", false);
+  
   // LeastSquaresMetaModelSelection parameters //
   addAsScalar("LeastSquaresMetaModelSelection-ErrorThreshold", 0.0);
+  addAsScalar("LeastSquaresMetaModelSelection-MaximumError", 0.5);
   addAsScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor", 2.0);
   addAsString("LeastSquaresMetaModelSelection-DecompositionMethod", "SVD");
 

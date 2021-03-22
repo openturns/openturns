@@ -68,8 +68,6 @@ EllipticalDistribution::EllipticalDistribution(const Point & mean,
         << "Arguments have incompatible dimensions: R dimension=" << dimension
         << " sigma dimension=" << sigma.getDimension()
         << " mean dimension=" << mean.getDimension();
-  // We check that the given correlation matrix is definite positive
-  if ( !R_.isPositiveDefinite()) throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R;
   // We check that the marginal standard deviations are > 0
   for(UnsignedInteger i = 0; i < dimension; ++i)
     if (!(sigma[i] > 0.0)) throw InvalidArgumentException(HERE) << "The marginal standard deviations must be > 0 sigma=" << sigma[i];
@@ -467,26 +465,52 @@ void EllipticalDistribution::update()
   const UnsignedInteger dimension = getDimension();
   if (dimension > 1)
   {
-    // Build the shape matrix
+    // Compute the shape matrix
     shape_ = R_;
     for (UnsignedInteger i = 0; i < dimension; ++i)
       for (UnsignedInteger j = 0; j <= i; ++j)
         shape_(i, j) *= sigma_[i] * sigma_[j];
-    // Compute its Cholesky factor
-    cholesky_ = shape_.computeCholesky();
-
+    // Try to compute the Cholesky factor of the shape matrix
+    try
+    {
+      cholesky_ = shape_.computeCholesky();
+    }
+    // In the case where the matrix is not numerically SPD, try a unique regularization loop
+    // as it should succeed (otherwise the covariance matrix is truly non SPD)
+    catch(const NotSymmetricDefinitePositiveException & ex)
+    {
+      Scalar largestEV = 0.0;
+      (void) shape_.getImplementation()->computeLargestEigenValueModuleSym(largestEV, 10, 1e-2);
+      for (UnsignedInteger i = 0; i < dimension; ++i)
+        R_(i, i) += largestEV * SpecFunc::Precision;
+      // This time throw if the decomposition fails
+      try
+        {
+          cholesky_ = R_.computeCholesky();
+        }
+      catch (const NotSymmetricDefinitePositiveException & ex)
+        {
+          throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R_;
+        } // Second decomposition
+    } // First decomposition
     inverseCholesky_ = cholesky_.solveLinearSystem(IdentityMatrix(dimension)).getImplementation();
-
     // Inverse the correlation matrix R = D^(-1).L.L'.D^(-1)
     // R^(-1) = D.L^(-1).L^(-1)'.D
     inverseR_ = SymmetricMatrix(dimension);
     const SquareMatrix inverseShape(inverseCholesky_.transpose() * inverseCholesky_);
     for (UnsignedInteger i = 0; i < dimension; ++i)
+    {
+      const Scalar sigmaI = std::max(SpecFunc::Precision, sigma_[i]);
       for (UnsignedInteger j = 0; j <= i; ++j)
-        inverseR_(i, j) = sigma_[i] * inverseShape(i, j) * sigma_[j];
+      {
+        const Scalar sigmaJ = std::max(SpecFunc::Precision, sigma_[j]);
+        const Scalar sigmaIJ = sigmaI * sigmaJ;
+        inverseR_(i, j) = inverseShape(i, j) * sigmaIJ;
+      } // j
+    } // i
     normalizationFactor_ = 1.0;
     for (UnsignedInteger i = 0; i < dimension; ++i) normalizationFactor_ /= cholesky_(i, i);
-  }
+  } // dimension > 1
   else  // dimension 1
   {
     if (shape_.getDimension() == 0)  // First time we enter here, set matrix sizes
@@ -500,7 +524,7 @@ void EllipticalDistribution::update()
     cholesky_(0, 0) = sigma_[0];
     inverseCholesky_(0, 0) = 1.0 / sigma_[0];
     normalizationFactor_ = 1.0 / sigma_[0];
-  }
+  } // dimension == 1
   isAlreadyComputedMean_ = true;
 }
 

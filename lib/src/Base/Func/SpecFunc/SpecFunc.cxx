@@ -40,6 +40,14 @@
 #include <boost/math/special_functions/bessel.hpp>
 #include <boost/version.hpp>
 
+#ifdef OPENTURNS_HAVE_MPC
+#include <boost/multiprecision/mpc.hpp>
+#endif
+
+#ifdef OPENTURNS_HAVE_MPFR
+#include <boost/multiprecision/mpfr.hpp>
+#endif
+
 #if (BOOST_VERSION >= 105600)
 
 #include <boost/math/special_functions/bessel_prime.hpp>
@@ -59,7 +67,7 @@ BEGIN_NAMESPACE_OPENTURNS
 // 0.39894228040143267 = 1 / sqrt(2.pi)
 const Scalar SpecFunc::ISQRT2PI              = 0.3989422804014326779399462;
 // 2.5066282746310005024 = sqrt(2.pi)
-const Scalar SpecFunc::SQRT2PI = 2.506628274631000502415765;
+const Scalar SpecFunc::SQRT2PI               = 2.506628274631000502415765;
 // 0.91893853320467274177 = log(sqrt(2.pi))
 const Scalar SpecFunc::LOGSQRT2PI            = 0.91893853320467274178;
 // 0.57721566490153286 = Euler constant gamma
@@ -77,19 +85,47 @@ const Scalar SpecFunc::SQRT3_PI              = 0.55132889542179204;
 // 1.81379936423421785 = pi / sqrt(3)
 const Scalar SpecFunc::PI_SQRT3              = 1.81379936423421785;
 // 6.283185307179586476925286 = 2*pi
-const Scalar SpecFunc::TWOPI = 6.283185307179586476925286;
+const Scalar SpecFunc::TWOPI                 = 6.283185307179586476925286;
 // 1.20205690315959429 = Zeta(3)
-const Scalar SpecFunc::ZETA3 = 1.20205690315959429;
+const Scalar SpecFunc::ZETA3                 = 1.20205690315959429;
 // Scalar limits
-const Scalar SpecFunc::MinScalar    = std::numeric_limits<Scalar>::min();
-const Scalar SpecFunc::LogMinScalar = log(MinScalar);
-const Scalar SpecFunc::MaxScalar    = std::numeric_limits<Scalar>::max();
-const Scalar SpecFunc::LogMaxScalar = log(MaxScalar);
-const Scalar SpecFunc::LowestScalar = -MaxScalar;
+const Scalar SpecFunc::MinScalar     = std::numeric_limits<Scalar>::min();
+const Scalar SpecFunc::LogMinScalar  = std::log(MinScalar);
+const Scalar SpecFunc::MaxScalar     = std::numeric_limits<Scalar>::max();
+const Scalar SpecFunc::LogMaxScalar  = std::log(MaxScalar);
+const Scalar SpecFunc::LowestScalar  = -MaxScalar;
 const Scalar SpecFunc::ScalarEpsilon = std::numeric_limits<Scalar>::epsilon();
 // Maximum number of iterations for the algorithms
 const UnsignedInteger SpecFunc::MaximumIteration = ResourceMap::GetAsUnsignedInteger("SpecFunc-MaximumIteration");
 const Scalar SpecFunc::Precision = ResourceMap::GetAsScalar("SpecFunc-Precision");
+
+// Information about capabilities
+Bool SpecFunc::IsBoostAvailable()
+{
+#ifdef OPENTURNS_HAVE_BOOST
+  return true;
+#else
+  return false;
+#endif
+}
+
+Bool SpecFunc::IsMPFRAvailable()
+{
+#ifdef OPENTURNS_HAVE_MPFR
+  return true;
+#else
+  return false;
+#endif
+}
+
+Bool SpecFunc::IsMPCAvailable()
+{
+#ifdef OPENTURNS_HAVE_MPC
+  return true;
+#else
+  return false;
+#endif
+}
 
 // Some facilities for NaN and inf
 Bool SpecFunc::IsNaN(const Scalar value)
@@ -144,7 +180,7 @@ Scalar SpecFunc::LargeCaseLogBesselI0(const Scalar x)
     value += A[k] * xRPow;
     xRPow *= xR;
   }
-  value = log(value) + ax - 0.5 * log(2.0 * M_PI * ax);
+  value = std::log(value) + ax - 0.5 * std::log(2.0 * M_PI * ax);
   return value;
 }
 
@@ -154,14 +190,14 @@ Scalar SpecFunc::BesselI0(const Scalar x)
   // Small argument
   if (std::abs(x) <= 23.5) return SmallCaseBesselI0(x);
   // Large argument
-  else return exp(LargeCaseLogBesselI0(x));
+  else return std::exp(LargeCaseLogBesselI0(x));
 }
 
 Scalar SpecFunc::LogBesselI0(const Scalar x)
 {
   if (x == 0.0) return 0.0;
   // Small argument
-  if (std::abs(x) <= 23.5) return log(SmallCaseBesselI0(x));
+  if (std::abs(x) <= 23.5) return std::log(SmallCaseBesselI0(x));
   // Large argument
   else return LargeCaseLogBesselI0(x);
 }
@@ -204,7 +240,7 @@ Scalar SpecFunc::LargeCaseLogBesselI1(const Scalar x)
     value += B[k] * xRPow;
     xRPow *= xR;
   }
-  value = log(value) + ax - 0.5 * log(2.0 * M_PI * ax);
+  value = std::log(value) + ax - 0.5 * std::log(2.0 * M_PI * ax);
   return value;
 }
 
@@ -216,7 +252,7 @@ Scalar SpecFunc::BesselI1(const Scalar x)
   else
   {
     const Scalar signX = x <= 0.0 ? -1.0 : 1.0;
-    const Scalar value = signX * exp(LargeCaseLogBesselI1(x));
+    const Scalar value = signX * std::exp(LargeCaseLogBesselI1(x));
     return value;
   }
 }
@@ -225,7 +261,7 @@ Scalar SpecFunc::LogBesselI1(const Scalar x)
 {
   if (x <= 0.0) return LowestScalar;
   // Small argument
-  if (std::abs(x) <= 22.0) return log(SmallCaseBesselI1(x));
+  if (std::abs(x) <= 22.0) return std::log(SmallCaseBesselI1(x));
   else return LargeCaseLogBesselI1(x);
 }
 
@@ -261,14 +297,18 @@ Scalar SpecFunc::LargeCaseDeltaLogBesselI10(const Scalar x)
     valueI1 += B[k] * xRPow;
     xRPow *= xR;
   }
-  return log(valueI1) - log(valueI0);
+  return std::log(valueI1) - std::log(valueI0);
 }
 
 Scalar SpecFunc::DeltaLogBesselI10(const Scalar x)
 {
-  if (x <= 0.0) return LowestScalar;
-  // Small argument
-  if (std::abs(x) <= 22.0) return log(SmallCaseBesselI1(x) / SmallCaseBesselI0(x));
+  if (!(x > 0.0)) return LowestScalar;
+  // Small argument. The threshold is such that the relative error is less than
+  // epsilon machine in double precision (Maple)
+  if (!(x > 0.848296173838189821792665527416e-2)) return std::log(0.5 * x) + x * x * (-0.125 + 5.0 * x * x / 384.0);
+  // Medium argument
+  if (!(x > 22.0)) return std::log(SmallCaseBesselI1(x) / SmallCaseBesselI0(x));  
+  // Large argument
   else return LargeCaseDeltaLogBesselI10(x);
 }
 
@@ -331,12 +371,12 @@ Scalar SpecFunc::BesselK(const Scalar nu,
   // First the limit cases
   if ((std::abs(x) < 0.0056) && (nu == 0.0))
   {
-    const Scalar logX = log(x);
+    const Scalar logX = std::log(x);
     const Scalar x2 = 0.25 * x * x;
     return M_LN2 - logX - EulerConstant + x2 * (M_LN2 - logX + 1.0 - EulerConstant + 0.25 * x2 * (M_LN2 - logX + 1.5 - EulerConstant));
   }
-  if (std::abs(x) < 1e-8) return 0.5 * exp(LogGamma(nu) - nu * std::log(0.5 * x));
-  if ((std::abs(x) > 1e4) && (x > nu)) return std::sqrt(M_PI / (2.0 * x)) * exp(-x);
+  if (std::abs(x) < 1e-8) return 0.5 * std::exp(LogGamma(nu) - nu * std::log(0.5 * x));
+  if ((std::abs(x) > 1e4) && (x > nu)) return std::sqrt(M_PI / (2.0 * x)) * std::exp(-x);
   const Scalar logK = LogBesselK(nu, x);
   if (logK >= LogMaxScalar) return MaxScalar;
   return std::exp(logK);
@@ -371,11 +411,11 @@ Scalar SpecFunc::LnBeta(const Scalar a,
   if (first >= 7.75)
   {
     // b not very large wrt a
-    if (second < 103.25 * first) return correctionSecond - correctionSum + GammaCorrection(first) - 0.5 * log(second) + second * log(second / first) + (sum - 0.5) * log1p(-second / sum) + LOGSQRT2PI;
+    if (second < 103.25 * first) return correctionSecond - correctionSum + GammaCorrection(first) - 0.5 * std::log(second) + second * std::log(second / first) + (sum - 0.5) * log1p(-second / sum) + LOGSQRT2PI;
     else
     {
       const Scalar epsilon = 1.0 / second;
-      Scalar value = log(epsilon);
+      Scalar value = std::log(epsilon);
       // Here we use an expansion of (log(Gamma(b)) - log(Gamma(a+b))) / a - log(b) pour a << b
       // The expansion is in double Padé form wrt a and b
       const Scalar c1 = -1.0 + first;
@@ -390,7 +430,7 @@ Scalar SpecFunc::LnBeta(const Scalar a,
     }
   }
   // Case one of a,b large, the other small
-  return LogGamma(first) + correctionSecond - correctionSum + first * (1.0 - log(sum)) + (second - 0.5) * log1p(-first / sum);
+  return LogGamma(first) + correctionSecond - correctionSum + first * (1.0 - std::log(sum)) + (second - 0.5) * log1p(-first / sum);
 }
 
 // LogBeta = LnBeta
@@ -404,7 +444,7 @@ Scalar SpecFunc::LogBeta(const Scalar a,
 Scalar SpecFunc::Beta(const Scalar a,
                       const Scalar b)
 {
-  return exp(LnBeta(a, b));
+  return std::exp(LnBeta(a, b));
 }
 
 // Incomplete Beta function: BetaInc(a, b, x) = \int_0^x t^{a-1}(1-t)^{b-1} dt
@@ -489,7 +529,7 @@ Scalar SpecFunc::DiLog(const Scalar x)
   if (x < 0.0) return 0.5 * DiLog(x * x) - DiLog(-x);
   // Use DiLog(x) = \pi^2 / 6 - DiLog(1 - x) - \log(x)\log(1-x)
   // to map (1/2, 1] into [0, 1/2)
-  if (x > 0.5) return PI2_6 - DiLog(1.0 - x) - log(x) * log1p(-x);
+  if (x > 0.5) return PI2_6 - DiLog(1.0 - x) - std::log(x) * log1p(-x);
   // Use the definition of DiLog in terms of series
   // DiLog(x)=\sum_{k=1}^{\infty} x^k/k^2
   // for (0, 1/2)
@@ -587,7 +627,7 @@ Scalar SpecFunc::GammaCorrection(const Scalar a)
                                                  (0.64102564102564102564e-2 + (-0.29550653594771241830e-1 +
                                                      (0.17964437236883057316e0 - 0.13924322169059011164e1 * ia2) * ia2) * ia2) * ia2) * ia2) * ia2) * ia2) * ia2) * ia2) / a;
   }
-  return LogGamma(a) + a - (a - 0.5) * log(a) - LOGSQRT2PI;
+  return LogGamma(a) + a - (a - 0.5) * std::log(a) - LOGSQRT2PI;
 }
 
 // Complex gamma function: Gamma(a) = \int_0^{\infty} t^{a-1}\exp(-t) dt,
@@ -597,7 +637,7 @@ Scalar SpecFunc::GammaCorrection(const Scalar a)
 Complex SpecFunc::Gamma(const Complex & a)
 {
   if (a.imag() == 0.0) return Gamma(a.real());
-  return exp(LogGamma(a));
+  return std::exp(LogGamma(a));
 }
 
 Complex SpecFunc::LogGamma(const Complex & a)
@@ -631,9 +671,9 @@ Complex SpecFunc::LogGamma(const Complex & a)
     t -= 1.0;
   }
   s += coefficients[0];
-  s = log(s * sqrt2Pi) + (z - 0.5) * log(ss) - ss;
+  s = std::log(s * sqrt2Pi) + (z - 0.5) * std::log(ss) - ss;
   Complex f(s);
-  if (flip) f = f + Log1p(-M_PI * exp(-f) / (a * f * sin(M_PI * a)));
+  if (flip) f = f + Log1p(-M_PI * std::exp(-f) / (a * f * sin(M_PI * a)));
   return f;
 }
 
@@ -723,7 +763,7 @@ Scalar SpecFunc::DiGamma(const Scalar x)
   }
   // Use the asymptotic expansion in Horner form
   const Scalar y = 1.0 / (z * z);
-  return value + log(z) - 0.5 / z + (-0.83333333333333333e-1 + (0.83333333333333333e-2 + (-0.39682539682539683e-2 + (0.41666666666666667e-2 + (-0.75757575757575758e-2 + (0.21092796092796093e-1 + (-0.83333333333333333e-1 + (.44325980392156863 - 3.0539543302701197 * y) * y) * y) * y) * y) * y) * y) * y) * y;
+  return value + std::log(z) - 0.5 / z + (-0.83333333333333333e-1 + (0.83333333333333333e-2 + (-0.39682539682539683e-2 + (0.41666666666666667e-2 + (-0.75757575757575758e-2 + (0.21092796092796093e-1 + (-0.83333333333333333e-1 + (.44325980392156863 - 3.0539543302701197 * y) * y) * y) * y) * y) * y) * y) * y) * y;
 }
 
 Scalar SpecFunc::Psi(const Scalar x)
@@ -735,7 +775,7 @@ Scalar SpecFunc::Psi(const Scalar x)
 Scalar SpecFunc::DiGammaInv(const Scalar a)
 {
   // Initialization using an asymptotic approximation of the DiGamma function
-  Scalar x = a < -2.22 ? -1.0 / (a - EulerConstant) : exp(a) + 0.5;
+  Scalar x = a < -2.22 ? -1.0 / (a - EulerConstant) : std::exp(a) + 0.5;
   // Use a Newton scheme
   Scalar d = 0.0;
   for (UnsignedInteger k = 0; k < 6; ++k)
@@ -806,8 +846,33 @@ Scalar SpecFunc::HyperGeom_1_1(const Scalar p1,
                                const Scalar q1,
                                const Scalar x)
 {
-  if (q1 == p1) return exp(x);
+  if (q1 == p1) return std::exp(x);
   if (x == 0) return 1.0;
+#ifdef OPENTURNS_HAVE_MPFR
+  boost::multiprecision::mpfr_float_500 pochhammerP1(p1);
+  boost::multiprecision::mpfr_float_500 pochhammerQ1(q1);
+  boost::multiprecision::mpfr_float_500 factorial(1.0);
+  boost::multiprecision::mpfr_float_500 term(1.0);
+  boost::multiprecision::mpfr_float_500 sum(term);
+  boost::multiprecision::mpfr_float_500 eps(1.0);
+  boost::multiprecision::mpfr_float_500 z(x);
+  Bool absEps = abs(eps) > Precision;
+  Bool absEpsPrec = absEps;
+  do
+    {
+      absEpsPrec = absEps;
+      term *= pochhammerP1 * z / (pochhammerQ1 * factorial);
+      pochhammerP1 += 1.0;
+      pochhammerQ1 += 1.0;
+      factorial += 1.0;
+      sum += term;
+      eps = term / sum;
+      absEps = abs(eps) > Precision;
+    }
+  while (absEps || absEpsPrec);
+  return sum.convert_to<Scalar>();
+
+#else
   Scalar term = 1.0;
   Scalar t = x;
   Scalar pochhammerP1 = p1;
@@ -815,25 +880,28 @@ Scalar SpecFunc::HyperGeom_1_1(const Scalar p1,
   {
     pochhammerP1 = q1 - p1;
     t = -x;
-    term = exp(x);
+    term = std::exp(x);
   }
   Scalar pochhammerQ1 = q1;
   Scalar factorial = 1.0;
   Scalar sum = term;
-  Scalar eps = -1.0;
-  UnsignedInteger k = 0;
+  Scalar eps = 1.0;
+  Bool absEps = abs(eps) > Precision;
+  Bool absEpsPrec = absEps;
   do
   {
+    absEpsPrec = absEps;
     term *= pochhammerP1 * t / (pochhammerQ1 * factorial);
     ++pochhammerP1;
     ++pochhammerQ1;
     ++factorial;
     sum += term;
-    eps = std::abs(term / sum);
-    ++k;
+    eps = term / sum;
+    absEps = abs(eps) > Precision;
   }
-  while ((eps > 0.0) && (k < SpecFunc::MaximumIteration));
+  while (absEps || absEpsPrec);
   return sum;
+#endif
 }
 
 // Complex hypergeometric function of type (1,1): HyperGeom_1_1(p1, q1, x) = \sum_{n=0}^{\infty} [\prod_{k=0}^{n-1} (p1 + k) / (q1 + k)] * x^n / n!
@@ -841,27 +909,53 @@ Complex SpecFunc::HyperGeom_1_1(const Scalar p1,
                                 const Scalar q1,
                                 const Complex & x)
 {
+#ifdef OPENTURNS_HAVE_MPC
+  LOGDEBUG("Use MPC implementation");
+  boost::multiprecision::mpc_complex_500 pochhammerP1(p1);
+  boost::multiprecision::mpc_complex_500 pochhammerQ1(q1);
+  boost::multiprecision::mpc_complex_500 factorial{1.0, 0.0};
+  boost::multiprecision::mpc_complex_500 term{1.0, 0.0};
+  boost::multiprecision::mpc_complex_500 sum(term);
+  boost::multiprecision::mpc_complex_500 eps{1.0, 0.0};
+  boost::multiprecision::mpc_complex_500 z(x);
+  Bool absEps = abs(eps) > Precision;
+  Bool absEpsPrec = absEps;
+  do
+    {
+      absEpsPrec = absEps;
+      term *= pochhammerP1 * z / (pochhammerQ1 * factorial);
+      pochhammerP1 += 1.0;
+      pochhammerQ1 += 1.0;
+      factorial += 1.0;
+      sum += term;
+      eps = term / sum;
+      absEps = abs(eps) > Precision;
+    }
+  while (absEps || absEpsPrec);
+  return sum.convert_to<Complex>();
+#else
   Complex pochhammerP1(p1);
   Complex pochhammerQ1(q1);
   Scalar factorial = 1.0;
   Complex term(1.0);
   Complex sum(term);
-  Complex eps(0.0);
-  UnsignedInteger k = 0;
+  Complex eps(1.0);
+  Bool absEps = abs(eps) > Precision;
+  Bool absEpsPrec = absEps;
   do
   {
+    absEpsPrec = absEps;
     term *= pochhammerP1 * x / (pochhammerQ1 * factorial);
     pochhammerP1 += 1.0;
     pochhammerQ1 += 1.0;
     ++factorial;
     sum += term;
     eps = term / sum;
-    ++k;
+    absEps = abs(eps) > Precision;
   }
-  // std::abs() for complex argument
-  while ((std::abs(eps) > 0.0) && (k < SpecFunc::MaximumIteration));
-
+  while (absEps || absEpsPrec);
   return sum;
+#endif
 }
 
 // Hypergeometric function of type (2,1): HyperGeom_2_1(p1, p2, q1, x) = sum_{n=0}^{\infty} [prod_{k=0}^{n-1} (p1 + k) . (p2 + k) / (q1 + k)] * x^n / n!
@@ -870,16 +964,44 @@ Scalar SpecFunc::HyperGeom_2_1(const Scalar p1,
                                const Scalar q1,
                                const Scalar x)
 {
+#ifdef OPENTURNS_HAVE_MPFR
+  boost::multiprecision::mpfr_float_500 pochhammerP1(p1);
+  boost::multiprecision::mpfr_float_500 pochhammerP2(p2);
+  boost::multiprecision::mpfr_float_500 pochhammerQ1(q1);
+  boost::multiprecision::mpfr_float_500 factorial(1.0);
+  boost::multiprecision::mpfr_float_500 z(x);
+  boost::multiprecision::mpfr_float_500 term(1.0);
+  boost::multiprecision::mpfr_float_500 sum(term);
+  boost::multiprecision::mpfr_float_500 eps(1.0);
+  Bool absEps = abs(eps) > Precision;
+  Bool absEpsPrec = absEps;
+  do
+  {
+    absEpsPrec = absEps;
+    term *= pochhammerP1 * pochhammerP2 * z / (pochhammerQ1 * factorial);
+    ++pochhammerP1;
+    ++pochhammerP2;
+    ++pochhammerQ1;
+    ++factorial;
+    sum += term;
+    eps = abs(term / sum);
+    absEps = abs(eps) > Precision;
+  }
+  while (absEps || absEpsPrec);
+  return sum.convert_to<Scalar>();
+#else
   Scalar pochhammerP1 = p1;
   Scalar pochhammerP2 = p2;
   Scalar pochhammerQ1 = q1;
   Scalar factorial = 1.0;
   Scalar term = 1.0;
   Scalar sum = term;
-  Scalar eps = 0.0;
-  UnsignedInteger k = 0;
+  Scalar eps = 1.0;
+  Bool absEps = abs(eps) > Precision;
+  Bool absEpsPrec = absEps;
   do
   {
+    absEpsPrec = absEps;
     term *= pochhammerP1 * pochhammerP2 * x / (pochhammerQ1 * factorial);
     ++pochhammerP1;
     ++pochhammerP2;
@@ -887,10 +1009,11 @@ Scalar SpecFunc::HyperGeom_2_1(const Scalar p1,
     ++factorial;
     sum += term;
     eps = std::abs(term / sum);
-    ++k;
+    absEps = abs(eps) > Precision;
   }
-  while ((eps > 0.0) && (k < SpecFunc::MaximumIteration));
+  while (absEps || absEpsPrec);
   return sum;
+#endif
 }
 
 // Hypergeometric function of type (2,2): HyperGeom_2_1(p1, p2, q1, q2, x) = sum_{n=0}^{\infty} [prod_{k=0}^{n-1} (p1 + k) . (p2 + k) / (q1 + k) / (q2 + k)] * x^n / n!
@@ -901,6 +1024,34 @@ Scalar SpecFunc::HyperGeom_2_2(const Scalar p1,
                                const Scalar x)
 {
   if (x == 0.0) return 1.0;
+#ifdef OPENTURNS_HAVE_MPFR
+  boost::multiprecision::mpfr_float_500 pochhammerP1(p1);
+  boost::multiprecision::mpfr_float_500 pochhammerP2(p2);
+  boost::multiprecision::mpfr_float_500 pochhammerQ1(q1);
+  boost::multiprecision::mpfr_float_500 pochhammerQ2(q2);
+  boost::multiprecision::mpfr_float_500 factorial(1.0);
+  boost::multiprecision::mpfr_float_500 z(x);
+  boost::multiprecision::mpfr_float_500 term(0.0);
+  boost::multiprecision::mpfr_float_500 sum(term);
+  boost::multiprecision::mpfr_float_500 eps(1.0);
+  Bool absEps = abs(eps) > Precision;
+  Bool absEpsPrec = absEps;
+  do
+  {
+    absEpsPrec = absEps;
+    term += pochhammerP1 * pochhammerP2 * z / (pochhammerQ1 * pochhammerQ2 * factorial);
+    ++pochhammerP1;
+    ++pochhammerP2;
+    ++pochhammerQ1;
+    ++pochhammerQ2;
+    ++factorial;
+    sum += term;
+    eps = abs(term / sum);
+    absEps = abs(eps) > Precision;
+  }
+  while (absEps || absEpsPrec);
+  return sum.convert_to<Scalar>();
+#else
   Scalar pochhammerP1 = p1;
   Scalar pochhammerP2 = p2;
   Scalar pochhammerQ1 = q1;
@@ -908,26 +1059,29 @@ Scalar SpecFunc::HyperGeom_2_2(const Scalar p1,
   Scalar factorial = 1.0;
   Scalar term = 0.0;
   Scalar sum = term;
-  Scalar eps = 0.0;
-  const Scalar logX = log(std::abs(x));
+  Scalar eps = 1.0;
+  Bool absEps = abs(eps) > Precision;
+  Bool absEpsPrec = absEps;
+  const Scalar logX = std::log(std::abs(x));
   Scalar signX = x > 0.0 ? 1.0 : -1.0;
   Scalar signTerm = 1.0;
-  UnsignedInteger k = 0;
   do
   {
-    term += log(pochhammerP1) + log(pochhammerP2) + logX - log(pochhammerQ1) - log(pochhammerQ2) - log(factorial);
+    absEpsPrec = absEps;
+    term += std::log(pochhammerP1) + std::log(pochhammerP2) + logX - std::log(pochhammerQ1) - std::log(pochhammerQ2) - std::log(factorial);
     ++pochhammerP1;
     ++pochhammerP2;
     ++pochhammerQ1;
     ++pochhammerQ2;
     ++factorial;
-    sum += signTerm * exp(term);
+    sum += signTerm * std::exp(term);
     signTerm *= signX;
     eps = std::abs(term / sum);
-    ++k;
+    absEps = abs(eps) > Precision;
   }
-  while ((eps > 0.0) && (k < SpecFunc::MaximumIteration));
+  while (absEps || absEpsPrec);
   return sum;
+#endif
 }
 
 // Erf function Erf(x) = 2 / sqrt(Pi) . \int_0^x \exp(-t^2) dt
@@ -1017,7 +1171,7 @@ Scalar SpecFunc::ErfInverse(const Scalar x)
   else
   {
     /* Rational approximation for tail region. */
-    t = sqrt(-2.0 * log(q));
+    t = sqrt(-2.0 * std::log(q));
     u = (((((c[0] * t + c[1]) * t + c[2]) * t + c[3]) * t + c[4]) * t + c[5])
         / ((((d[0] * t + d[1]) * t + d[2]) * t + d[3]) * t + 1.0);
   }
@@ -1026,7 +1180,7 @@ Scalar SpecFunc::ErfInverse(const Scalar x)
      order) gives full machine precision... */
   t = 0.5 + 0.5 * Erf(u * M_SQRT1_2) - q;    /* f(u) = error */
   // 2.50662827463100050241576528481 = sqrt(2.pi)
-  t = t * 2.50662827463100050241576528481 * exp(0.5 * u * u);   /* f(u)/df(u) */
+  t = t * 2.50662827463100050241576528481 * std::exp(0.5 * u * u);   /* f(u)/df(u) */
   u = u - t / (1.0 + 0.5 * u * t);     /* Halley's method */
   return (p > 0.5 ? -M_SQRT1_2 * u : M_SQRT1_2 * u);
 }
@@ -1049,8 +1203,8 @@ Scalar SpecFunc::LambertW(const Scalar x,
     // Large argument, use asymptotic expansion, formula 4.18
     else
     {
-      const Scalar t1 = log(x);
-      w = t1 - log(t1);
+      const Scalar t1 = std::log(x);
+      w = t1 - std::log(t1);
     }
   }
   // Second real branch, defined over [-1/e, 0[, LambertW <= -1
@@ -1060,14 +1214,14 @@ Scalar SpecFunc::LambertW(const Scalar x,
     if (x < -0.1) w = -2.0;
     else
     {
-      const Scalar t1 = log(-x);
-      w = t1 - log(-t1);
+      const Scalar t1 = std::log(-x);
+      w = t1 - std::log(-t1);
     }
   }
   // Halley's iteration
   for (UnsignedInteger i = 0; i < 3; ++i)
   {
-    const Scalar expW = exp(w);
+    const Scalar expW = std::exp(w);
     const Scalar numerator = w * expW - x;
     const Scalar dw = numerator / (expW * (w + 1.0) - 0.5 * (w + 2.0) * numerator / (w + 1.0));
     w -= dw;
@@ -1079,22 +1233,22 @@ Scalar SpecFunc::LambertW(const Scalar x,
 Complex SpecFunc::Log1p(const Complex & z)
 {
   if (std::norm(z) < 1e-5) return z * (1.0 + z * (-0.5 + z / 3.0));
-  return log(1.0 + z);
+  return std::log(1.0 + z);
 }
 
 // Accurate evaluation of exp(z)-1 for |z|<<1
 Complex SpecFunc::Expm1(const Complex & z)
 {
   if (std::norm(z) < 1e-5) return z * (1.0 + 0.5 * z * (1.0 + z / 3.0));
-  return exp(z) - 1.0;
+  return std::exp(z) - 1.0;
 }
 
 // Accurate evaluation of log(1-exp(-x)) for all x > 0
 Complex SpecFunc::Log1MExp(const Scalar x)
 {
   if (!(x > 0.0)) throw InvalidArgumentException(HERE) << "Error: x must be positive";
-  if (x <= M_LN2) return log(-expm1(-x));
-  return log1p(-exp(-x));
+  if (x <= M_LN2) return std::log(-expm1(-x));
+  return log1p(-std::exp(-x));
 }
 
 // Integer log2
@@ -1187,13 +1341,13 @@ UnsignedInteger SpecFunc::BitCount(const Unsigned64BitsInteger n)
 Scalar SpecFunc::Acosh(const Scalar x)
 {
   if (!(x >= 1.0)) throw InvalidArgumentException(HERE) << "Error: acosh is not defined for x<1, here x=" << x;
-  return 2.0 * log(sqrt(0.5 * (x + 1.0)) + sqrt(0.5 * (x - 1.0)));
+  return 2.0 * std::log(sqrt(0.5 * (x + 1.0)) + sqrt(0.5 * (x - 1.0)));
 }
 
 Scalar SpecFunc::Asinh(const Scalar x)
 {
   if (std::abs(x) < 0.0081972522783123062436) return x * (1.0 + x * x * (-1.0 / 6.0 + 3.0 * x * x / 40.0));
-  return log(x + sqrt(1.0 + x * x));
+  return std::log(x + sqrt(1.0 + x * x));
 }
 
 Scalar SpecFunc::Atanh(const Scalar x)
@@ -1206,7 +1360,7 @@ Scalar SpecFunc::Atanh(const Scalar x)
 Scalar SpecFunc::Cbrt(const Scalar x)
 {
   if (x == 0.0) return 0.0;
-  return (x < 0.0 ? -exp(log(-x) / 3.0) : exp(log(x) / 3.0));
+  return (x < 0.0 ? -std::exp(std::log(-x) / 3.0) : std::exp(std::log(x) / 3.0));
 }
 
 UnsignedInteger SpecFunc::BinomialCoefficient(const UnsignedInteger n,

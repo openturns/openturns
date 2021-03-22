@@ -662,7 +662,7 @@ void CovarianceModelImplementation::setAmplitude(const Point & amplitude)
   if (amplitude.getDimension() != outputDimension_) throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setAmplitude: the given amplitude has a dimension=" << amplitude.getDimension() << " different from the dimension=" << outputDimension_;
   for (UnsignedInteger index = 0; index < outputDimension_; ++index)
     if (!(amplitude[index] > 0.0))
-      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setAmplitude, the component " << index << " of amplitude is non positive" ;
+      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setAmplitude, the component " << index << " of amplitude=" << amplitude << " is non positive" ;
   amplitude_ = amplitude;
   updateOutputCovariance();
 }
@@ -955,9 +955,9 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
     curve.setColor("red");
     graph.add(curve);
     return graph;
-  }
+  } // asStationary && isStationary()
   // Here we draw a non-stationary model
-  const Sample gridT = RegularGrid(tMin, (tMax - tMin) / (pointNumber - 1.0), pointNumber).getVertices();
+  const Sample gridT(RegularGrid(tMin, (tMax - tMin) / (pointNumber - 1.0), pointNumber).getVertices());
   CovarianceMatrix matrix(discretize(gridT));
   const UnsignedInteger dimension = matrix.getDimension();
   // Normalize the data if needed
@@ -979,7 +979,25 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
   } // correlationFlag
   matrix.checkSymmetry();
   Sample data(pointNumber * pointNumber, 1);
-  data.getImplementation()->setData(*matrix.getImplementation());
+  // Here we extract the relevant data for multidimensional output models
+  if (outputDimension_ == 1)
+    data.getImplementation()->setData(*matrix.getImplementation());
+  else
+    {
+      UnsignedInteger sampleIndex = 0;
+      UnsignedInteger rowShift = 0;
+      for (UnsignedInteger i = 0; i < pointNumber; ++i)
+        {
+          UnsignedInteger columnShift = 0;
+          for (UnsignedInteger j = 0; j < pointNumber; ++j)
+            {
+              data(sampleIndex, 0) = matrix(rowShift + rowIndex,columnShift + columnIndex);
+              ++sampleIndex;
+              columnShift += outputDimension_;
+            } // j
+          rowShift += outputDimension_;
+        } // i
+    } // outputDimension_ > 1
   Graph graph(getName() + (correlationFlag ? String(" correlation") : String (" covariance")), "s", "t", true, "bottomright");
   graph.setGrid(true);
   Contour contour(pointNumber, pointNumber, data);
