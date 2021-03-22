@@ -198,7 +198,7 @@ if (HMAT_FOUND)
 endif ()
 
 if (USE_DOXYGEN)
-  find_package (Doxygen)
+  find_package (Doxygen QUIET)
 endif ()
 
 if (USE_LIBXML2)
