@@ -63,6 +63,7 @@
  * #1790 (LinearModelResult.getFormula() method is not updated by Stepwise regression)
  * #1794 (Some doc examples seem to behave with new infrastructure)
  * #1796 (VonMisesFactory is missing)
+ * #1803 (The API example of Experiment has a format issue)
 
 
 == 1.16 release (2020-11-16) == #release-1.16
