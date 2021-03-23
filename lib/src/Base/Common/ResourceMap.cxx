@@ -27,6 +27,9 @@
 #include "openturns/Path.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/XMLToolbox.hxx"
+#ifdef OPENTURNS_HAVE_LIBXML2
+#include <libxml/tree.h>
+#endif
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -592,6 +595,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
     } // for xmlNodePtr
   } // if root
 #else
+  (void)configurationFile;
   LOGWARN(OSS() << "Cannot parse configuration file due to lacking xml support");
 #endif
 }

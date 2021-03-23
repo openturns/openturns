@@ -837,7 +837,7 @@ ot_pyinstallcheck_test (shims IGNOREOUT)
 
 
 
-if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND)
+if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND AND LIBXML2_FOUND)
   # source modules
   file (GLOB modules ${PROJECT_SOURCE_DIR}/python/src/*.py)
   # swig modules

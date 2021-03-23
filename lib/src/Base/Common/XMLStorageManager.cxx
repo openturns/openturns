@@ -33,15 +33,6 @@
 #include "openturns/OTconfig.hxx"
 #include "openturns/SpecFunc.hxx"
 
-
-#ifndef WIN32
-#ifndef SWIG
-#ifndef XML_SUPPORTED
-#error "XML support is mandatory. Check configuration."
-#endif
-#endif
-#endif
-
 BEGIN_NAMESPACE_OPENTURNS
 
 
