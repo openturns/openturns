@@ -143,7 +143,8 @@ if (BISON_FOUND AND FLEX_FOUND)
   add_custom_command(OUTPUT  ${CMAKE_CURRENT_BINARY_DIR}/csv_parser.cc ${CMAKE_CURRENT_BINARY_DIR}/csv_parser.hh
                       MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/csv_parser.yy
                       COMMAND ${BISON_EXECUTABLE}
-                      ARGS    -o ${CMAKE_CURRENT_BINARY_DIR}/csv_parser.cc
+                      ARGS    -Wno-deprecated
+                              -o ${CMAKE_CURRENT_BINARY_DIR}/csv_parser.cc
                                  ${CMAKE_CURRENT_SOURCE_DIR}/csv_parser.yy
                       COMMENT "CSV parser generation"
                    )
