@@ -313,7 +313,7 @@ jobs for the different target platforms to be run on several free
 continuous integration services:
 
 - CircleCI (https://circleci.com/) for Linux
-- Travis (https://travis-ci.org/) for macOS
+- Github Actions (https://github.com/actions) for macOS
 - AppVeyor (https://www.appveyor.com/) for Windows
 
 Each of these jobs checks that the library can be successfully compiled and

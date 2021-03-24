@@ -1,0 +1,36 @@
+on:
+  pull_request:
+jobs:
+  build:
+    runs-on: macos-latest
+    env:
+      LDFLAGS: -L/usr/local/opt/openblas/lib
+      CPPFLAGS: -I/usr/local/opt/openblas/include
+    steps:
+    - uses: actions/checkout@v2
+    - run: brew upgrade
+    - run: brew install openblas swig boost python3 tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt r
+    - run: pip3 install matplotlib scipy chaospy pandas dill
+    - run: |
+        cd $HOME/work/openturns
+           git clone https://github.com/yixuan/spectra.git spectra
+           cd spectra/ 
+           git checkout v0.9.0
+           cmake -DBUILD_TESTS=TRUE -DCMAKE_INSTALL_PREFIX=$HOME/ .
+           make install -j$(sysctl -n hw.logicalcpu)
+    - run: |
+        cd $HOME/work/openturns
+           git clone https://github.com/jeromerobert/hmat-oss.git hmat-oss
+           cd hmat-oss/ 
+           git checkout 1.6.1
+           cmake -DBUILD_EXAMPLES=OFF -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCMAKE_MACOSX_RPATH=ON .
+           make install -j$(sysctl -n hw.logicalcpu)
+    - run:  |
+        cmake -DR_EXECUTABLE="dummyR" -DPYTHON_EXECUTABLE=/usr/local/bin/python3 \
+        -DFLEX_EXECUTABLE=/usr/local/opt/flex/bin/flex \
+        -DBISON_EXECUTABLE=/usr/local/opt/bison/bin/bison \
+        -DSPECTRA_INCLUDE_DIR=/Users/runner/include \
+        -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
+    - run: make install -j$(sysctl -n hw.logicalcpu)
+    - run: make tests -j$(sysctl -n hw.logicalcpu)
+    - run: ctest --output-on-failure --timeout 100
