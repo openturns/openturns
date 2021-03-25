@@ -246,7 +246,7 @@ Complex Beta::computeCharacteristicFunction(const Scalar x) const
   if (x == 0.0) return 1.0;
 #ifdef OPENTURNS_HAVE_MPC
   LOGDEBUG("Use SpecFunc::HyperGeom_1_1");
-  const Complex res = std::exp(Complex(0.0, a_)) * SpecFunc::HyperGeom_1_1(alpha_, (alpha_ + beta_), Complex(0.0, (b_ - a_) * x));
+  const Complex res = std::exp(Complex(0.0, a_ * x)) * SpecFunc::HyperGeom_1_1(alpha_, (alpha_ + beta_), Complex(0.0, (b_ - a_) * x));
   LOGDEBUG(OSS(true) << "alpha=" << alpha_ << ", beta=" << beta_ << ", x=" << x << ", rs=" << res);  
   return res;
 #else
