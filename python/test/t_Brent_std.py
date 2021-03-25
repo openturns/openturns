@@ -11,7 +11,7 @@ try:
     input = Description(1)
     input[0] = "x"
     formulas = Description(1)
-    formulas[0] = "x-cos(x)"
+    formulas[0] = "x-cos(2*x)"
     analytical = SymbolicFunction(input, formulas)
     myAlgo = Brent()
     print("myAlgo=", myAlgo)
