@@ -243,10 +243,14 @@ class ChaospyDistribution(PythonDistribution):
     """
     def __init__(self, dist):
         super(ChaospyDistribution, self).__init__(len(dist))
-        from chaospy import Iid, J, get_dependencies
+        from chaospy import Iid, J, __version__
         independent = len(dist) == 1
         independent |= isinstance(dist, Iid)
-        independent |= isinstance(dist, J) and not get_dependencies(*dist)
+        if __version__ < '4.0.0':
+            from chaospy import get_dependencies
+            independent |= isinstance(dist, J) and not get_dependencies(*dist)
+        else:
+            independent |= not dist.stochastic_dependent
         if not independent:
             raise Exception(
                 "Dependent chaospy distributions doesn't implement CDF computation")
