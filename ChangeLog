@@ -47,6 +47,7 @@
  * #1713 (The doc of the ResourceMap does not match the content of the ResourceMap)
  * #1714 (The log-PDF of the Pareto is wrong)
  * #1721 (The `draw` method of `SobolSimulationAlgorithm` does not reuse the descriptions)
+ * #1725 (The BetaFactory help page has wrong equations)
  * #1729 (LinearModelAnalysis sometimes fail)
  * #1731 (The Extreme value example may be improved)
  * #1737 (Low rank tensor doc issues)
