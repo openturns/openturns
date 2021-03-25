@@ -309,10 +309,13 @@ class PythonFunction(Function):
     hessian : a callable python object, optional
         Returns the hessian as a 3-d sequence of float.
         Default is None (uses finite-difference).
-    n_cpus : integer
+    n_cpus : int, default=None
         Number of cpus on which func should be distributed using multiprocessing.
         If -1, it uses all the cpus available. If 1, it does nothing.
-        Default is None.
+        Note that you should enforce the multiprocessing guidelines to enable this option, see
+        https://docs.python.org/3/library/multiprocessing.html#multiprocessing-programming
+        For example on Windows, the entry point of your program should be
+        protected using the `if __name__== '__main__'` idiom.
     copy : bool, optional
         If True, input sample is converted into a Python 2-d sequence before calling
         func_sample.  Otherwise, it is passed directy to func_sample.
