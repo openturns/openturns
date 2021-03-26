@@ -57,11 +57,13 @@
  * #1774 (ExponentialModel::partialGradient is wrong)
  * #1775 (ExponentialModel does not account correlation with Covariance ctor)
  * #1776 (Typo in the Branin use case implementation)
+ * #1781 (The link_to_an_external_code example has small bugs)
  * #1784 (The drawPDF method of Histogram sometimes fail)
  * #1787 (CovarianceMatrix from SymmetricMatrix raises InvalidArgumentException)
  * #1790 (LinearModelResult.getFormula() method is not updated by Stepwise regression)
  * #1794 (Some doc examples seem to behave with new infrastructure)
  * #1796 (VonMisesFactory is missing)
+ * #1803 (The API example of Experiment has a format issue)
 
 
 == 1.16 release (2020-11-16) == #release-1.16

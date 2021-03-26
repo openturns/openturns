@@ -200,15 +200,17 @@ And load it back
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::Sample::add
-"Append a vector (in-place).
+"Append a sample (in-place).
 
 Parameters
 ----------
-point : sequence of float
-    The point to append.
+point or sample : sequence or 2-d sequence of float
+    The point(s) to append.
 
 Examples
 --------
+Append an existing sample with a single point.
+
 >>> import openturns as ot
 >>> sample = ot.Sample(3, 2)
 >>> sample.add([1.0, 2.0])
@@ -216,7 +218,18 @@ Examples
 0 : [ 0 0 ]
 1 : [ 0 0 ]
 2 : [ 0 0 ]
-3 : [ 1 2 ]"
+3 : [ 1 2 ]
+
+Append an existing sample with an other sample.
+
+>>> sample.add(ot.Sample(2, [2.0, 1.0]))
+>>> print(sample)
+0 : [ 0 0 ]
+1 : [ 0 0 ]
+2 : [ 0 0 ]
+3 : [ 1 2 ]
+4 : [ 2 1 ]
+5 : [ 2 1 ]"
 
 // ---------------------------------------------------------------------
 

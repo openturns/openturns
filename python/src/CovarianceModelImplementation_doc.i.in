@@ -48,18 +48,19 @@ OT_CovarianceModel_computeAsScalar_doc
 
 Parameters
 ----------
-meshOrGrid : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid`
-    Mesh or time grid of size :math:`N` associated with the process.
+where : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid` or :class:`~openturns.Sample`
+    Container of the discretization vertices
 
 Returns
 -------
 covarianceMatrix : :class:`~openturns.CovarianceMatrix`
     Covariance matrix :math:`\in \cS_{nd}^+(\Rset)` (if the process is of
-    dimension :math:`d`
+    dimension :math:`d`)
 
 Notes
 -----
-This method makes a discretization of the model on *meshOrGrid* composed of
+This method makes a discretization of the model on the given :class:`~openturns.Mesh`,
+:class:`~openturns.RegularGrid` or :class:`~openturns.Sample` composed of
 the vertices :math:`(\vect{t}_1, \dots, \vect{t}_{N-1})` and returns the
 covariance matrix:
 
@@ -85,20 +86,21 @@ OT_CovarianceModel_discretize_doc
 
 Parameters
 ----------
-meshOrGrid : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid`
-    Mesh or time grid of size :math:`N` associated with the process.
+where : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid` or :class:`~openturns.Sample`
+    Container of the discretization vertices
 
 Returns
 -------
 CholeskyMatrix : :class:`~openturns.TriangularMatrix`
     Cholesky factor of the covariance matrix :math:`\in \cM_{nd\times nd}(\Rset)`
-    (if the process is of dimension :math:`d`).
+    (if the process is of dimension :math:`d`)
 
 Notes
 -----
-This method makes a discretization of the model on *meshOrGrid* composed of
+This method makes a discretization of the model on the given :class:`~openturns.Mesh`,
+:class:`~openturns.RegularGrid` or :class:`~openturns.Sample` composed of
 the vertices :math:`(\vect{t}_1, \dots, \vect{t}_{N-1})` thanks to the
-`discretize` method and returns its Cholesky factor."
+:meth:`discretize` method and returns its Cholesky factor."
 %enddef
 %feature("docstring") OT::CovarianceModelImplementation::discretizeAndFactorize
 OT_CovarianceModel_discretizeAndFactorize_doc
@@ -110,8 +112,8 @@ OT_CovarianceModel_discretizeAndFactorize_doc
 
 Parameters
 ----------
-meshOrGrid : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid`
-    Mesh or time grid of size :math:`N` associated with the process.
+where : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid` or :class:`~openturns.Sample`
+    Container of the discretization vertices
 hmatParam : :class:`~openturns.HMatrixParameters`
     Parameter values for the HMatrix
 
@@ -141,8 +143,8 @@ This uses HMatrix.
 
 Parameters
 ----------
-meshOrGrid : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid`
-    Mesh or time grid of size :math:`N` associated with the process.
+where : :class:`~openturns.Mesh` or :class:`~openturns.RegularGrid` or :class:`~openturns.Sample`
+    Container of the discretization vertices
 hmatParam : :class:`~openturns.HMatrixParameters`
     Parameter values for the HMatrix
 

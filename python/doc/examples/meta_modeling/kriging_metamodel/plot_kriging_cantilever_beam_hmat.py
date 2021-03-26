@@ -165,6 +165,7 @@ view = viewer.View(graph)
 # The `drawValidation` method allows to compare the observed outputs and the metamodel outputs.
 
 # %%
+# sphinx_gallery_thumbnail_number = 3
 graph = val.drawValidation()
 graph.setTitle("Q2 = %.2f%%" % (100*Q2))
 view = viewer.View(graph)
