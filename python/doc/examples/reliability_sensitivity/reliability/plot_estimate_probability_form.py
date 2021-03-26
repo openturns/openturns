@@ -75,19 +75,19 @@ result.getEventProbability()
 
 # %%
 # Hasofer reliability index
-result.getHasoferReliabilityIndex()
+print(result.getHasoferReliabilityIndex())
 
 # %%
 # Design point in the standard U* space.
 
 # %%
-result.getStandardSpaceDesignPoint()
+print(result.getStandardSpaceDesignPoint())
 
 # %%
 # Design point in the physical X space.
 
 # %%
-result.getPhysicalSpaceDesignPoint()
+print(result.getPhysicalSpaceDesignPoint())
 
 # %%
 # Importance factors
@@ -122,26 +122,26 @@ sorm_result = algo.getResult()
 
 # %%
 # Reliability index with Breitung approximation
-sorm_result.getGeneralisedReliabilityIndexBreitung()
+print(sorm_result.getGeneralisedReliabilityIndexBreitung())
 
 # %%
 # ... with Hohenbichler approximation
-sorm_result.getGeneralisedReliabilityIndexHohenbichler()
+print(sorm_result.getGeneralisedReliabilityIndexHohenbichler())
 
 # %%
 # .. with Tvedt approximation
-sorm_result.getGeneralisedReliabilityIndexTvedt()
+print(sorm_result.getGeneralisedReliabilityIndexTvedt())
 
 # %%
 # SORM probability of the event with Breitung approximation
-sorm_result.getEventProbabilityBreitung()
+print(sorm_result.getEventProbabilityBreitung())
 
 # %%
 # ... with Hohenbichler approximation
-sorm_result.getEventProbabilityHohenbichler()
+print(sorm_result.getEventProbabilityHohenbichler())
 
 # %%
 # ... with Tvedt approximation
-sorm_result.getEventProbabilityTvedt()
+print(sorm_result.getEventProbabilityTvedt())
 
 plt.show()
