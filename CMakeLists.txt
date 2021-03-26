@@ -377,8 +377,14 @@ if (MSVC)
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4197 /wd4244 /wd4251 /wd4267 /wd4275 /wd4996")
 endif ()
 
-include (TestBigEndian)
-test_big_endian (__BIG_ENDIAN__)
+if (CMAKE_VERSION VERSION_LESS 3.20)
+  include (TestBigEndian)
+  test_big_endian (__BIG_ENDIAN__)
+else ()
+  if ("${CMAKE_CXX_BYTE_ORDER}" STREQUAL "BIG_ENDIAN")
+    set (__BIG_ENDIAN__ 1)
+  endif ()
+endif ()
 
 if(POLICY CMP0042)
   # Set MACOSX_RPATH to ON
