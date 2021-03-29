@@ -159,7 +159,7 @@
   <!-- OT::SolverImplementation parameters -->
   <Solver-DefaultAbsoluteError             value_float="1.0e-5"        />
   <Solver-DefaultRelativeError             value_float="1.0e-5"        />
-  <Solver-DefaultResidualError             value_float="1.0e-8"        />
+  <Solver-DefaultResidualError             value_float="0.0   "        />
   <Solver-DefaultMaximumFunctionEvaluation value_int="100" />
 
   <!-- OT::GaussKronrod parameters -->

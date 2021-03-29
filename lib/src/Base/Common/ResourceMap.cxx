@@ -777,7 +777,7 @@ void ResourceMap::loadDefaultConfiguration()
   // SolverImplementation parameters //
   addAsScalar("Solver-DefaultAbsoluteError",  1.0e-5);
   addAsScalar("Solver-DefaultRelativeError",  1.0e-5);
-  addAsScalar("Solver-DefaultResidualError",  1.0e-8);
+  addAsScalar("Solver-DefaultResidualError",  0.0   );
   addAsUnsignedInteger("Solver-DefaultMaximumFunctionEvaluation", 100);
 
   // GaussKronrod parameters //

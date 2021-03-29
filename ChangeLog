@@ -64,6 +64,8 @@
  * #1794 (Some doc examples seem to behave with new infrastructure)
  * #1796 (VonMisesFactory is missing)
  * #1803 (The API example of Experiment has a format issue)
+ * #1805 (Brent's implementation has a stability issue)
+ * #1807 (Beta::computeCharacteristicFunction is wrong if the lower bound is not zero)
 
 
 == 1.16 release (2020-11-16) == #release-1.16

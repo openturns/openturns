@@ -333,6 +333,7 @@ ot_pyinstallcheck_test (TNC_std)
 ot_pyinstallcheck_test (Brent_std)
 ot_pyinstallcheck_test (Bisection_std)
 ot_pyinstallcheck_test (Secant_std)
+ot_pyinstallcheck_test (Solver_hard)
 ot_pyinstallcheck_test (RungeKutta_std)
 ot_pyinstallcheck_test (Fehlberg_std)
 
