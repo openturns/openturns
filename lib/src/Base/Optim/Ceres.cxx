@@ -117,7 +117,7 @@ public:
 
   virtual bool Evaluate(double const* const* parameters,
                         double* residuals,
-                        double** jacobians) const
+                        double** jacobians) const override
   {
     const OptimizationProblem problem(algorithm_.getProblem());
     const UnsignedInteger n = problem.getDimension();
@@ -153,14 +153,14 @@ public:
     : ceres::FirstOrderFunction()
     , algorithm_(algorithm) {}
 
-  virtual int NumParameters() const
+  virtual int NumParameters() const override
   {
     return algorithm_.getProblem().getDimension();
   }
 
   virtual bool Evaluate(const double * const x,
                         double * cost,
-                        double * jacobian) const
+                        double * jacobian) const override
   {
     const OptimizationProblem problem(algorithm_.getProblem());
     const UnsignedInteger n = problem.getDimension();
@@ -205,7 +205,7 @@ public:
   }
 
 protected:
-  Ceres & algorithm_;
+  const Ceres & algorithm_;
 };
 
 #endif
@@ -245,8 +245,8 @@ void Ceres::run()
       Point upperBound(bounds.getUpperBound());
       for (UnsignedInteger i = 0; i < dimension; ++ i)
       {
-        if (finiteLowerBound[i]) problem.SetParameterLowerBound(&x[0], i, lowerBound[i]);
-        if (finiteUpperBound[i]) problem.SetParameterUpperBound(&x[0], i, upperBound[i]);
+        if (finiteLowerBound[i]) problem.SetParameterLowerBound(&(*x.begin()), i, lowerBound[i]);
+        if (finiteUpperBound[i]) problem.SetParameterUpperBound(&(*x.begin()), i, upperBound[i]);
       }
     }
 
@@ -366,7 +366,8 @@ void Ceres::run()
     if (ResourceMap::HasKey("Ceres-update_state_every_iteration"))
       options.update_state_every_iteration = ResourceMap::GetAsBool("Ceres-update_state_every_iteration");
 
-    options.callbacks.push_back(new IterationCallbackInterface(*this));
+    Pointer<IterationCallbackInterface> p_iterationCallbackInterface = new IterationCallbackInterface(*this);
+    options.callbacks.push_back(p_iterationCallbackInterface.get());
     ceres::Solver::Summary summary;
     ceres::Solve(options, &problem, &summary);
     LOGINFO(OSS() << summary.BriefReport());
@@ -435,7 +436,8 @@ void Ceres::run()
     if (ResourceMap::HasKey("Ceres-minimizer_progress_to_stdout"))
       options.minimizer_progress_to_stdout = ResourceMap::GetAsBool("Ceres-minimizer_progress_to_stdout");
 
-    options.callbacks.push_back(new IterationCallbackInterface(*this));
+    Pointer<IterationCallbackInterface> p_iterationCallbackInterface = new IterationCallbackInterface(*this);
+    options.callbacks.push_back(p_iterationCallbackInterface.get());
     ceres::GradientProblemSolver::Summary summary;
     ceres::GradientProblem problem(new FirstOrderFunctionInterface(*this));
     ceres::Solve(options, problem, &x[0], &summary);

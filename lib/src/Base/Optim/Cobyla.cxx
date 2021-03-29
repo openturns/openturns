@@ -131,7 +131,7 @@ void Cobyla::run()
    * extern int cobyla(int n, int m, double *x, double rhobeg, double rhoend,
    *  int message, int *maxfun, cobyla_function *calcfc, void *state);
    */
-  int returnCode = ot_cobyla(n, m, &x[0], rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
+  int returnCode = ot_cobyla(n, m, &(*x.begin()), rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
 
   result_ = OptimizationResult(getProblem());
 
