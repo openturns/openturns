@@ -24,6 +24,7 @@
  * Deprecated KarhunenLoeveResult::getEigenValues, use getEigenvalues
  * Removed StationaryCovarianceModel
  * CovarianceModel.computeAsScalar allows scalars
+ * Swapped SimulatedAnnealingLHS constructor SpaceFilling/TemperatureProfile arguments
 
 === Documentation ===
  * Fixed example and plot of Kolmogorov statistics.
@@ -34,6 +35,7 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #1257 (Cannot create a SimulatedAnnealingLHS without specifying the temperature profile)
  * #1425 (There is no method to create a train / test pair)
  * #1431 (The figure for LHSExperiment is not accurate)
  * #1459 (There is no example which shows how to set a column of a Sample)

@@ -95,7 +95,7 @@ lhs = ot.LHSExperiment(distribution, samplesize)
 lhs.setAlwaysShuffle(True) # randomized
 space_filling = ot.SpaceFillingC2()
 temperatureProfile = ot.GeometricProfile(10.0, 0.95, 1000)
-algo = ot.SimulatedAnnealingLHS(lhs, temperatureProfile, space_filling)
+algo = ot.SimulatedAnnealingLHS(lhs, space_filling, temperatureProfile)
 # optimal design
 sample = algo.generate()
 
