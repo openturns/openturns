@@ -824,6 +824,9 @@ if (MATPLOTLIB_FOUND)
   if (NOT PANDAS_FOUND)
     set_tests_properties (pyinstallcheck_example_plot_sample_pandas PROPERTIES WILL_FAIL TRUE)
   endif ()
+  if (NOT BISON_FOUND OR NOT FLEX_FOUND)
+    set_tests_properties (pyinstallcheck_example_plot_import_export_sample_csv PROPERTIES WILL_FAIL TRUE)
+  endif ()
 endif ()
 
 if (MATPLOTLIB_FOUND)
@@ -837,7 +840,7 @@ ot_pyinstallcheck_test (shims IGNOREOUT)
 
 
 
-if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND AND LIBXML2_FOUND)
+if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND)
   # source modules
   file (GLOB modules ${PROJECT_SOURCE_DIR}/python/src/*.py)
   # swig modules
@@ -849,6 +852,12 @@ if (OPENTURNS_HAVE_ANALYTICAL_PARSER AND MATPLOTLIB_FOUND AND LIBXML2_FOUND)
     add_test (pyinstallcheck_docstring_${module_name} ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/t_docstring.py ${module})
     set_tests_properties (pyinstallcheck_docstring_${module_name} PROPERTIES ENVIRONMENT "${PYINSTALLCHECK_ENVIRONMENT}")
   endforeach()
+  if (NOT BISON_FOUND OR NOT FLEX_FOUND)
+    set_tests_properties (pyinstallcheck_docstring_typ PROPERTIES WILL_FAIL TRUE)
+  endif ()
+  if (NOT LIBXML2_FOUND)
+    set_tests_properties (pyinstallcheck_docstring_common PROPERTIES WILL_FAIL TRUE)
+  endif ()
 endif ()
 
 add_custom_target (pyinstallcheck COMMAND ${CMAKE_CTEST_COMMAND} -R "^pyinstallcheck_"

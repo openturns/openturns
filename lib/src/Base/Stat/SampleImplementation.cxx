@@ -366,6 +366,7 @@ SampleImplementation SampleImplementation::BuildFromCSVFile(const FileName & fil
   if (impl.getDimension() == 0) LOGWARN(OSS() << "Warning: No data from the file has been stored.");
 
 #else
+  (void)fileName;
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without bison/flex support";
 #endif
   return impl;
