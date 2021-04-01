@@ -5,11 +5,11 @@ read choice
 case $choice in
   1)
     docker pull openturns/archlinux-python
-    docker run -e MAKEFLAGS='-j8' -v `pwd`:/io openturns/archlinux-python /io/.circleci/run_docker_linux.sh `id -u` `id -g`
+    docker run --rm -e MAKEFLAGS='-j8' -v `pwd`:/io openturns/archlinux-python /io/.circleci/run_docker_linux.sh `id -u` `id -g`
     ;;
   2)
     docker pull openturns/archlinux-mingw
-    docker run -e MAKEFLAGS='-j8' -v `pwd`:/io openturns/archlinux-mingw /io/.circleci/run_docker_mingw.sh
+    docker run --rm -e MAKEFLAGS='-j8' -v `pwd`:/io openturns/archlinux-mingw /io/.circleci/run_docker_mingw.sh
     ;;
   *)
     echo "sorry?"
