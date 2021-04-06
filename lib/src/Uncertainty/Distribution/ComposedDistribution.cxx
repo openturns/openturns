@@ -292,7 +292,7 @@ struct ComposedDistributionComputeSamplePolicy
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
       for (UnsignedInteger j = 0; j < dimension_; ++j)
-        output_(i, j) = distributionCollection_[j].computeQuantile(input_(i, j))[0];
+        output_(i, j) = distributionCollection_[j].computeScalarQuantile(input_(i, j));
   }
 
 }; /* end struct ComposedDistributionComputeSamplePolicy */
