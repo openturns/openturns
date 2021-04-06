@@ -176,6 +176,30 @@ Point ComposedCopula::getRealization() const
   return result;
 }
 
+Sample ComposedCopula::getSample(const UnsignedInteger size) const
+{
+  const UnsignedInteger dimension = getDimension();
+  const UnsignedInteger collectionSize = copulaCollection_.getSize();
+  Sample result(size, dimension);
+  UnsignedInteger shift = 0;
+  for (UnsignedInteger i = 0; i < collectionSize; ++i)
+  {
+    const UnsignedInteger copulaDimension = copulaCollection_[i].getDimension();
+    // Using parallel getSample
+    const Sample sample(copulaCollection_[i].getSample(size));
+    for (UnsignedInteger k = 0; k < size; ++k)
+    {
+      for (UnsignedInteger j = 0; j < copulaDimension; ++j)
+      {
+        result(k, j + shift) = sample(k, j);
+      }
+    }
+    shift += copulaDimension;
+  }
+  result.setDescription(getDescription());
+  return result;
+}
+
 /* Get the DDF of the ComposedCopula */
 Point ComposedCopula::computeDDF(const Point & point) const
 {
