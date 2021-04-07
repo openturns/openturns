@@ -1,14 +1,13 @@
 """
 Perfom stepwise regression
-=====================
-"""
-# %%
-# In this example we perform the selection of the most suitable function basis for a linear regression model with the help of the stepwise algorithm. 
-#
-# We consider te so-called Linthurst data set, which contains measures of aerial biomass (BIO) as well as 5 five physicochemical properties of the soil: salinity (SAL), pH, K, Na, and Zn. 
-# The data set is taken from the book 'Applied Regression Analysis, A Research Tool' by John O. Rawlings, Sastry G. Pantula and David A. Dickey and is provided below:
+==========================
 
-# %%
+In this example we perform the selection of the most suitable function basis for a linear regression model with the help of the stepwise algorithm. 
+
+We consider te so-called Linthurst data set, which contains measures of aerial biomass (BIO) as well as 5 five physicochemical properties of the soil: salinity (SAL), pH, K, Na, and Zn.
+ 
+The data set is taken from the book 'Applied Regression Analysis, A Research Tool' by John O. Rawlings, Sastry G. Pantula and David A. Dickey and is provided below:
+"""
 import openturns as ot
 from openturns.viewer import View
 import numpy as np
@@ -66,6 +65,9 @@ dimension = sample.getDimension()-1
 n = sample.getSize()
 
 # %%
+# Complete linear model
+# ---------------------
+#
 # We consider a linear model with the purpose of predicting the aerial biomass as a function of the soil physicochemical properties, 
 # and we wish to identify the predictive variables which result in the most simple and precise linear regression model.
 # 
