@@ -58,7 +58,9 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
   if (size < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
   // As we rely on a linear model result, we should be very generic
   // Instead of using input dimension, one should use parameter size
-  const UnsignedInteger df = linearModelResult.getDegreesOfFreedom();
+  const SignedInteger dof = linearModelResult.getDegreesOfFreedom();
+  if (dof <= 0)
+    throw InvalidArgumentException(HERE) << "Cannot perform linear model test when DOF is null";
 
   // Regression coefficient
   const Function fHat(linearModelResult.getMetaModel());
@@ -76,12 +78,12 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
   // H0 : Beta_i = 0
   // H1 : Beta_i < 0 or Beta_i > 0
   // The statistics follows a Fisher distribution
-  const Scalar numerator = sumSquaredExplained / (size - df - 1);
-  const Scalar denomerator = sumSquaredResiduals / df;
+  const Scalar numerator = sumSquaredExplained / (size - dof - 1);
+  const Scalar denomerator = sumSquaredResiduals / dof;
 
   const Scalar statistic = numerator / denomerator;
   Log::Debug(OSS() << "F-statistic = " << statistic);
-  const Scalar pValue =  FisherSnedecor(size - df - 1, df).computeComplementaryCDF(statistic);
+  const Scalar pValue =  FisherSnedecor(size - dof - 1, dof).computeComplementaryCDF(statistic);
   return TestResult("Fisher", pValue > level, pValue, level, statistic);
 }
 
@@ -117,7 +119,9 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
   if (size < 3) throw InvalidArgumentException(HERE) << "Error: sample too small. Sample should contains at least 3 elements";
   // As we rely on a linear model result, we should be very generic
   // Instead of using input dimension, one should use parameter size
-  const UnsignedInteger df = linearModelResult.getDegreesOfFreedom();
+  const SignedInteger dof = linearModelResult.getDegreesOfFreedom();
+  if (dof <= 0)
+    throw InvalidArgumentException(HERE) << "Cannot perform linear model test when DOF is null";
   // Residuals
   const Sample residualSample(linearModelResult.getSampleResiduals());
   // Compute mean & standard deviation
@@ -130,7 +134,7 @@ TestResult LinearModelTest::LinearModelResidualMean(const Sample & firstSample,
   // The statistics follows a Student distribution
   const Scalar statistic = std::abs(mean) * std::sqrt(size * 1.0) / std;
   Log::Debug(OSS() << "t-statistic = " << statistic);
-  const Scalar pValue =  2.0 * DistFunc::pStudent(df, statistic, true);
+  const Scalar pValue = 2.0 * DistFunc::pStudent(dof, statistic, true);
   return TestResult("ResidualMean", pValue > level, pValue, level, statistic);
 }
 

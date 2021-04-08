@@ -68,10 +68,10 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
   const UnsignedInteger size = inputSample.getSize();
   if (size != outputSample.getSize())
     throw InvalidArgumentException(HERE) << "In LinearModelResult::LinearModelResult, input & output sample have different size. input sample size = " << size << ", output sample size = " << outputSample.getSize();
-  // Check DoF > 0
-  UnsignedInteger degreesOfFreedom = getDegreesOfFreedom();
-  if(!(degreesOfFreedom > 0))
-    throw InvalidArgumentException(HERE) << "Degrees of freedom is less or equal than 0. Data size = " << outputSample.getSize()
+  // Check DoF >= 0
+  const SignedInteger degreesOfFreedom = getDegreesOfFreedom();
+  if (degreesOfFreedom < 0)
+    throw InvalidArgumentException(HERE) << "Degrees of freedom is less than 0. Data size = " << outputSample.getSize()
                                          << ", basis size = " << beta_.getSize()
                                          << ", degrees of freedom = " << degreesOfFreedom;
 }
@@ -138,7 +138,7 @@ Sample LinearModelResult::getSampleResiduals() const
 }
 
 /* Number of degrees of freedom */
-UnsignedInteger LinearModelResult::getDegreesOfFreedom() const
+SignedInteger LinearModelResult::getDegreesOfFreedom() const
 {
   const UnsignedInteger size = inputSample_.getSize();
   const UnsignedInteger basisSize = beta_.getSize();
@@ -149,6 +149,9 @@ UnsignedInteger LinearModelResult::getDegreesOfFreedom() const
 Normal LinearModelResult::getNoiseDistribution() const
 {
   // Gaussian output
+  const SignedInteger dof = getDegreesOfFreedom();
+  if (dof <= 0)
+    throw NotDefinedException(HERE) << "The noise variance is undefined when DOF is null";
   return Normal(0, std::sqrt(sigma2_));
 }
 
@@ -188,7 +191,9 @@ Scalar LinearModelResult::getRSquared() const
 /* Adjusted R-squared test */
 Scalar LinearModelResult::getAdjustedRSquared() const
 {
-  const UnsignedInteger dof = getDegreesOfFreedom();
+  const SignedInteger dof = getDegreesOfFreedom();
+  if (dof <= 0)
+    throw NotDefinedException(HERE) << "The adjusted R2 is undefined with a null DOF";
   const UnsignedInteger size = getSampleResiduals().getSize();
   const Scalar R2  = getRSquared();
   return 1.0 - (1.0 - R2) * (size - 1) / dof;

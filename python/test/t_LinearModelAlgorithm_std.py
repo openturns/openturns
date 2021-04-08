@@ -59,3 +59,12 @@ ott.assert_almost_equal(leverages[0:6], leverages_reference, 1e-6, 0.0)
 X.setDescription(['X0', 'price (euros)'])
 result = ot.LinearModelAlgorithm(X, Y).getResult()
 print(result)
+
+# dof=0
+input_sample = ot.Sample([[1], [2]])
+output_sample = ot.Sample([[2], [6]])
+basis = ot.LinearBasisFactory(1).build()
+algo = ot.LinearModelAlgorithm(input_sample, basis, output_sample)
+algo.run()
+result = algo.getResult()
+print(result.getCoefficients(), result.getDegreesOfFreedom(), result.getResiduals())

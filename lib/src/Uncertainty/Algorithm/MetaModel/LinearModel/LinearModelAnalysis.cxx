@@ -50,7 +50,9 @@ LinearModelAnalysis::LinearModelAnalysis(const LinearModelResult & linearModelRe
   : PersistentObject()
   , linearModelResult_(linearModelResult)
 {
-  // Nothing to do
+  const SignedInteger dof = linearModelResult_.getDegreesOfFreedom();
+  if (dof <= 0)
+    throw InvalidArgumentException(HERE) << "Cannot perform linear model analysis when DOF is null";
 }
 
 /* Virtual constructor */
@@ -78,7 +80,7 @@ String LinearModelAnalysis::__str__(const String & offset) const
   const Point pValues(getCoefficientsPValues());
   const Description names(linearModelResult_.getCoefficientsNames());
   const Scalar sigma2 = linearModelResult_.getSampleResiduals().computeRawMoment(2)[0];
-  const UnsignedInteger dof = linearModelResult_.getDegreesOfFreedom();
+  const SignedInteger dof = linearModelResult_.getDegreesOfFreedom();
   const UnsignedInteger n = linearModelResult_.getSampleResiduals().getSize();
   const String separator(" | ");
   const String separatorEndLine(" |");

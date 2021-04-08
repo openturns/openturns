@@ -94,7 +94,7 @@ public:
   virtual Sample getStandardizedResiduals() const;
 
   /** Number of degrees of freedom */
-  virtual UnsignedInteger getDegreesOfFreedom() const;
+  virtual SignedInteger getDegreesOfFreedom() const;
 
   /** Leverages accessor */
   virtual Point getLeverages() const;
