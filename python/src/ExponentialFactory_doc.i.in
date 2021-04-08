@@ -12,14 +12,18 @@ likelihood, with asymptotic correction for bias:
 .. math::
     :nowrap:
 
+    \begin{eqnarray*}
       \hat{\gamma} = x_{(1)} - \frac{|x_{(1)}|}{2 + n}
+    \end{eqnarray*}
 
 The parameter :math:`\lambda` is estimated by method of moments:
 
 .. math::
     :nowrap:
 
-      \hat{\lambda}= \frac{1}{\bar{x} - \hat{\gamma}}
+    \begin{eqnarray*}
+      \hat{\lambda} = \frac{1}{\bar{x} - \hat{\gamma}}
+    \end{eqnarray*}
 
 When :math:`\gamma` is known, the estimator for :math:`\lambda` is equivalent 
 to the method of maximum likelihood. 
