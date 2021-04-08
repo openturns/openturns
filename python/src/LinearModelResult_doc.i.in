@@ -137,6 +137,7 @@ sampleResiduals : :class:`~openturns.Sample`
 Returns
 -------
 dof : int
+    Sample size minus basis size, a null value is allowed.
 "
 
 // ---------------------------------------------------------------------
@@ -147,6 +148,7 @@ dof : int
 Returns
 -------
 noiseDistribution : :class:`~openturns.Distribution`
+    Not defined when degrees of freedom is null.
 "
 
 // ---------------------------------------------------------------------
@@ -207,5 +209,6 @@ rSquared : float
 Returns
 -------
 adjustedRSquared : float
+    Not defined when degrees of freedom is null.
 "
 
