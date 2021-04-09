@@ -613,7 +613,7 @@
   <LinearModelAlgorithm-DecompositionMethod        value_str="QR"      />
 
   <!-- OT::LinearModelStepwiseAlgorithm parameters -->
-  <LinearModelStepwiseAlgorithm-Penalty                  value_float="-1.0"      />
+  <LinearModelStepwiseAlgorithm-Penalty                  value_float="2.0"      />
   <LinearModelStepwiseAlgorithm-MaximumIterationNumber   value_int="1000"        />
 
   <!-- OT::GeneralLinearModelAlgorithm parameters -->

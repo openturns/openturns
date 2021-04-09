@@ -1235,7 +1235,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("LinearModelAnalysis-Identifiers", 3);
 
   // LinearModelStepwiseAlgorithm parameters //
-  addAsScalar("LinearModelStepwiseAlgorithm-Penalty", -1.0);
+  addAsScalar("LinearModelStepwiseAlgorithm-Penalty", 2.0);
   addAsUnsignedInteger("LinearModelStepwiseAlgorithm-MaximumIterationNumber", 1000);
 
   // GeneralLinearModelAlgorithm parameters //
