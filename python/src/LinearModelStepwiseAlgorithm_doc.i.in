@@ -59,10 +59,10 @@ Examples
 >>> basis = ot.Basis(functions)
 >>> '''Stepwise regression'''
 >>> minimalIndices = [0]
->>> isForward = True
->>> penalty = 2.0 #Akaike information criterion 
->>> maximumIterationNumber = 10
->>> algo_forward = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, isForward, penalty, maximumIterationNumber)
+>>> direction = 1 #Forward selection
+>>> penalty = 2.0 #Akaike Information Criterion, log(n) can be used for a Bayesian Information Criterion
+>>> algo_forward = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, direction)
+>>> algo_forward.setPenalty(penalty)
 >>> algo_forward.run()
 >>> result_forward = algo_forward.getResult()
 "

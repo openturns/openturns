@@ -1,17 +1,20 @@
 """
 Perfom stepwise regression
 ==========================
-
 In this example we perform the selection of the most suitable function basis for a linear regression model with the help of the stepwise algorithm. 
 
 We consider te so-called Linthurst data set, which contains measures of aerial biomass (BIO) as well as 5 five physicochemical properties of the soil: salinity (SAL), pH, K, Na, and Zn.
  
 The data set is taken from the book 'Applied Regression Analysis, A Research Tool' by John O. Rawlings, Sastry G. Pantula and David A. Dickey and is provided below:
 """
+
+# %%
 import openturns as ot
 from openturns.viewer import View
 import numpy as np
 import matplotlib.pyplot as plt
+
+
 description = ["BIO", "SAL", "pH", "K", "Na", "Zn"]
 data = [[676, 33, 5, 1441.67, 35185.5, 16.4524],
         [516, 35, 4.75, 1299.19, 28170.4, 13.9852],
@@ -86,6 +89,9 @@ print('R-squared = ', result_full.getRSquared())
 print('Adjusted R-squared = ', result_full.getAdjustedRSquared())
 
 # %%
+# Forward stepwise regression
+# ---------------------------
+#
 # We now wish to perform the selection of the most important predictive variables through a stepwise algorithm. 
 #
 # It is first necessary to define a suitable function basis for the regression. Each variable is associated to a univariate basis
@@ -106,10 +112,10 @@ basis = ot.Basis(functions)
 
 # %%
 minimalIndices = [0]
-isForward = True
+direction = 2 # Forward
 penalty = 2.0
-maximumIterationNumber = 10
-algo_forward = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, isForward, penalty, maximumIterationNumber)
+algo_forward = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, direction)
+algo_forward.setPenalty(penalty)
 algo_forward.run()
 result_forward = algo_forward.getResult()
 print('Selected basis: ', result_forward.getCoefficientsNames())
@@ -122,16 +128,19 @@ print('Adjusted R-squared = ', result_forward.getAdjustedRSquared())
 # between the amount of training data and the number of explanatory variables is improved if compared to the complete model. 
 
 # %%
+# Backward stepwise regression
+# ----------------------------
+#
 # We now perform a backward stepwise regression, meaning that rather than iteratively adding predictive variables, we will be removing them,
 # starting from the complete model. 
 # This regression is performed by relying on the Bayesian Information Criterion (BIC), which translates into a penalty term equal to :math:`log(n)`.
 
 # %%
 minimalIndices = [0]
-isForward = False
+direction = 1 # Backward
 penalty = np.log(n)
-maximumIterationNumber = 10
-algo_backward = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, isForward, penalty, maximumIterationNumber)
+algo_backward = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, direction)
+algo_backward.setPenalty(penalty)
 algo_backward.run()
 result_backward = algo_backward.getResult()
 print('Selected basis: ', result_backward.getCoefficientsNames())
@@ -143,6 +152,9 @@ print('Adjusted R-squared = ', result_backward.getAdjustedRSquared())
 # the selected variables do not coincide.
 
 # %%
+# Both directions stepwise regression
+# -----------------------------------
+#
 # A third available option consists in performing a stepwise regression in both directions, meaning that at each iteration the predictive variables
 # can be either added or removed. In this case, a set of starting indices must be provided to the algorithm.
 
@@ -150,8 +162,9 @@ print('Adjusted R-squared = ', result_backward.getAdjustedRSquared())
 minimalIndices = [0]
 startIndices = [0,2,3]
 penalty = np.log(n)
-maximumIterationNumber = 10
-algo_both = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, startIndices, penalty, maximumIterationNumber)
+direction = 3 # Both directions
+algo_both = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, direction, startIndices)
+algo_both.setPenalty(penalty)
 algo_both.run()
 result_both = algo_both.getResult()
 print('Selected basis: ', result_both.getCoefficientsNames())
@@ -166,8 +179,9 @@ print('Adjusted R-squared = ', result_both.getAdjustedRSquared())
 minimalIndices = [0]
 startIndices = [0,1]
 penalty = np.log(n)
-maximumIterationNumber = 10
-algo_both = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, startIndices, penalty, maximumIterationNumber)
+direction = 3 # Both directions
+algo_both = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, direction, startIndices)
+algo_both.setPenalty(penalty)
 algo_both.run()
 result_both = algo_both.getResult()
 print('Selected basis: ', result_both.getCoefficientsNames())
@@ -175,6 +189,9 @@ print('R-squared = ', result_both.getRSquared())
 print('Adjusted R-squared = ', result_both.getAdjustedRSquared())
 
 # %%
+# Graphical analyses
+# -----------------------------------
+#
 # Finally, we can rely on the LinearModelAnalysis class in order to analyse 
 # the predictive differences between the obtained models. 
 
@@ -201,19 +218,20 @@ plt.tight_layout()
 # %%
 # For illustrative purposes, we show the Bayesian Information Criterion (BIC) and Akaike Information Criterion (AIC) values 
 # which are computed during the iterations of the forward step-wise regression. Please note that in order to do
-# so, we set the penalty parameter to 0 (meaning that the basis selection only takes into account the model likelihood,
+# so, we set the penalty parameter to a negligible value (meaning that the basis selection only takes into account the model likelihood,
 # and not the number of parameters characterizing the linear model).
 
 # %%
 minimalIndices = [0]
-isForward = True
-penalty = 0
-
+penalty = 1e-10
+direction = 2
 
 BIC = []
 AIC = []
 for iterations in range(1,6):
-    algo_forward = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, isForward, penalty, iterations)
+    algo_forward = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, direction)
+    algo_forward.setPenalty(penalty)
+    algo_forward.setMaximumIterationNumber(iterations)
     algo_forward.run()
     result_forward = algo_forward.getResult()
     
@@ -237,4 +255,3 @@ plt.tight_layout()
 # The graphic above shows that the optimal linear model in terms of compromise between prediction likelihood and model complexity 
 # should take into account the influence of 2 regession variables as well as the constant term. This is coherent with the results previously
 # obtained
-
