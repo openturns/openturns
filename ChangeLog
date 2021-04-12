@@ -37,6 +37,7 @@
 
 === Bug fixes ===
  * #1052 (The Dirichlet and Normal distributions only have 1D graphics in the doc)
+ * #1224 (The examples in the doc of the DomainEvent class are unclear)
  * #1229 (Better encapsulation of optional 3rd-party headers)
  * #1257 (Cannot create a SimulatedAnnealingLHS without specifying the temperature profile)
  * #1287 (The constructors of KernelSmoothing have no doc)
