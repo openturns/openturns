@@ -112,7 +112,7 @@ basis = ot.Basis(functions)
 
 # %%
 minimalIndices = [0]
-direction = 2 # Forward
+direction = ot.LinearModelStepwiseAlgorithm.FORWARD 
 penalty = 2.0
 algo_forward = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, direction)
 algo_forward.setPenalty(penalty)
@@ -137,7 +137,7 @@ print('Adjusted R-squared = ', result_forward.getAdjustedRSquared())
 
 # %%
 minimalIndices = [0]
-direction = 1 # Backward
+direction = ot.LinearModelStepwiseAlgorithm.BACKWARD
 penalty = np.log(n)
 algo_backward = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, direction)
 algo_backward.setPenalty(penalty)
@@ -162,7 +162,7 @@ print('Adjusted R-squared = ', result_backward.getAdjustedRSquared())
 minimalIndices = [0]
 startIndices = [0,2,3]
 penalty = np.log(n)
-direction = 3 # Both directions
+direction = ot.LinearModelStepwiseAlgorithm.BOTH
 algo_both = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, direction, startIndices)
 algo_both.setPenalty(penalty)
 algo_both.run()
@@ -179,7 +179,7 @@ print('Adjusted R-squared = ', result_both.getAdjustedRSquared())
 minimalIndices = [0]
 startIndices = [0,1]
 penalty = np.log(n)
-direction = 3 # Both directions
+direction = ot.LinearModelStepwiseAlgorithm.BOTH
 algo_both = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, direction, startIndices)
 algo_both.setPenalty(penalty)
 algo_both.run()
@@ -190,7 +190,7 @@ print('Adjusted R-squared = ', result_both.getAdjustedRSquared())
 
 # %%
 # Graphical analyses
-# -----------------------------------
+# ------------------
 #
 # Finally, we can rely on the LinearModelAnalysis class in order to analyse 
 # the predictive differences between the obtained models. 
@@ -224,7 +224,7 @@ plt.tight_layout()
 # %%
 minimalIndices = [0]
 penalty = 1e-10
-direction = 2
+direction = ot.LinearModelStepwiseAlgorithm.FORWARD
 
 BIC = []
 AIC = []
