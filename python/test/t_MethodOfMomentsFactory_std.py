@@ -56,7 +56,7 @@ print('estimated distribution=', inf_distribution)
 # setKnownParameter+buildEstimator
 sample = ot.Normal(2.0, 1.0).getSample(10)
 factory = ot.MethodOfMomentsFactory(ot.WeibullMin())
-factory.setBootstrapSize(5)
+factory.setBootstrapSize(4)
 factory.setKnownParameter([1.0], [1])  # set the sigma parameter to 1.0
 result = factory.buildEstimator(sample)
 print('ok')
