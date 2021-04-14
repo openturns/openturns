@@ -9,11 +9,7 @@ In this example we create a surrogate model using linear model approximation.
 #
 
 # %%
-from __future__ import print_function
 import openturns as ot
-from openturns.viewer import View
-import numpy as np
-import matplotlib.pyplot as plt
 import openturns.viewer as viewer
 
 # %%
@@ -46,7 +42,7 @@ result = algo.getResult()
 # ------------------
 #
 # We can now analyse the residuals of the regression on the training data.
-# For clarity purposes, only the first 5 residual values are printed
+# For clarity purposes, only the first 5 residual values are printed.
 
 # %%
 residuals = result.getSampleResiduals()
@@ -95,7 +91,7 @@ view = viewer.View(graph)
 # Seems that the linearity hypothesis is accurate.
 
 # %%
-# We complete this analysis using some usefull graphs :
+# Residuals can be plotted against the fitted values.
 
 # %%
 graph = analysis.drawResidualsVsFitted()
@@ -110,26 +106,30 @@ graph = analysis.drawQQplot()
 view = viewer.View(graph)
 
 # %%
+# In this case, the two distributions are very close: there is no obvious outlier.
+#
+# Cook's distance measures the impact of every invidual data point on the linear regression.
+
+# %%
 graph = analysis.drawCookDistance()
 view = viewer.View(graph)
+
+# %%
+# This graph shows us the index of the points with disproportionate influence.
+#
+# One of the components of the computation of Cook's distance at a given point is that point's *leverage*.
+# High-leverage points are far from their closest neighbors, so the fitted linear regression model must pass close to them.
 
 # %%
 graph = analysis.drawResidualsVsLeverages()
 view = viewer.View(graph)
 
 # %%
-graph = analysis.drawCookVsLeverages()
-view = viewer.View(graph)
-
+# In this case, leverage does not seem to be statistically linked to standardized residuals.
 
 # %%
-# These graphics help asserting the linear model hypothesis. Indeed :
-#  
-#  - Quantile-to-quantile plot seems accurate
-#  
-#  - We notice homoscedasticity within the noise
-#  
-#  - No obvious outlier can be identified in the training data
+graph = analysis.drawCookVsLeverages()
+view = viewer.View(graph)
 
 # %%
 # Finally, we give the intervals for each estimated coefficient (95% confidence interval):
@@ -139,5 +139,4 @@ alpha = 0.95
 interval = analysis.getCoefficientsConfidenceInterval(alpha)
 print("confidence intervals with level=%1.2f : " % (alpha))
 print("%s" % (interval))
-
 
