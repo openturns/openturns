@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 import openturns as ot
+import openturns.testing as ott
 from math import sin
 
 ot.TESTPREAMBLE()
@@ -44,6 +45,15 @@ for i in range(size):
 test = ot.LinearModelAlgorithm(X, Y)
 result = test.getResult()
 print ("trend coefficients = ", result.getCoefficients())
+
+# Test various attributes
+cook = result.getCookDistances()
+cook_reference = [0.0233296,0.0360369,0.00178903,0.0502183,0.0966701,0.00562596]
+ott.assert_almost_equal(cook[0:6], cook_reference, 1e-5, 0.0)
+
+leverages = result.getLeverages()
+leverages_reference = [0.0864939,0.0797831,0.0735447,0.0677578,0.0624023,0.0574582]
+ott.assert_almost_equal(leverages[0:6], leverages_reference, 1e-6, 0.0)
 
 # with invalid sample description
 X.setDescription(['X0', 'price (euros)'])

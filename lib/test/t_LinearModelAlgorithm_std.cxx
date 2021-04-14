@@ -70,6 +70,15 @@ int main(int, char *[])
     LinearModelAlgorithm test(X, Y);
     LinearModelResult result(test.getResult());
     fullprint << "trend coefficients = " << result.getCoefficients() << std::endl;
+
+    // Test various attributes
+    const Point cook(result.getCookDistances());
+    const Point cook_reference = {0.0233296,0.0360369,0.00178903,0.0502183,0.0966701,0.00562596};
+    assert_almost_equal(cook, cook_reference, 1e-5, 0.0);
+
+    const Point leverages(result.getLeverages());
+    const Point leverages_reference = {0.0864939,0.0797831,0.0735447,0.0677578,0.0624023,0.0574582};
+    assert_almost_equal(leverages, leverages_reference, 1e-6, 0.0);
   }
 
   return ExitCode::Success;
