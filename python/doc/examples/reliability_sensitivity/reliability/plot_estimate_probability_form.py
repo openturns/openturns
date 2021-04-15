@@ -126,7 +126,7 @@ print(sorm_result.getGeneralisedReliabilityIndexBreitung())
 
 # %%
 # ... with Hohenbichler approximation
-print(sorm_result.getGeneralisedReliabilityIndexHohenbichler())
+sorm_result.getGeneralisedReliabilityIndexHohenbichler()
 
 # %%
 # .. with Tvedt approximation
