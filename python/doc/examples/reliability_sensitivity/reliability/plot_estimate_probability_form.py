@@ -138,7 +138,7 @@ sorm_result.getGeneralisedReliabilityIndexTvedt()
 
 # %%
 # ... with Hohenbichler approximation
-print(sorm_result.getEventProbabilityHohenbichler())
+sorm_result.getGeneralisedReliabilityIndexTvedt()
 
 # %%
 # ... with Tvedt approximation
