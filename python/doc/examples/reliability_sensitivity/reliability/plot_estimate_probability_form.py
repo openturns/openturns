@@ -75,7 +75,7 @@ result.getEventProbability()
 
 # %%
 # Hasofer reliability index
-print(result.getHasoferReliabilityIndex())
+result.getHasoferReliabilityIndex()
 
 # %%
 # Design point in the standard U* space.
