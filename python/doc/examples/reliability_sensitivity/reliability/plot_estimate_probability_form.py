@@ -134,7 +134,7 @@ print(sorm_result.getGeneralisedReliabilityIndexTvedt())
 
 # %%
 # SORM probability of the event with Breitung approximation
-print(sorm_result.getEventProbabilityBreitung())
+sorm_result.getGeneralisedReliabilityIndexTvedt()
 
 # %%
 # ... with Hohenbichler approximation
