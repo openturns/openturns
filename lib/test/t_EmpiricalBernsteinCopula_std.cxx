@@ -29,7 +29,6 @@ int main(int, char *[])
   TESTPREAMBLE;
   OStream fullprint(std::cout);
   setRandomGenerator();
-
   try
   {
     // Instanciate one distribution object
@@ -105,7 +104,7 @@ int main(int, char *[])
 
     // Covariance and correlation
     UnsignedInteger precision = PlatformInfo::GetNumericalPrecision();
-    PlatformInfo::SetNumericalPrecision(4);
+    PlatformInfo::SetNumericalPrecision(3);
     CovarianceMatrix covariance = copula.getCovariance();
     fullprint << "covariance=" << covariance << std::endl;
     CorrelationMatrix correlation = copula.getCorrelation();
