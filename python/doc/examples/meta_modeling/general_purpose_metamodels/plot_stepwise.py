@@ -5,7 +5,7 @@ In this example we perform the selection of the most suitable function basis for
 
 We consider te so-called Linthurst data set, which contains measures of aerial biomass (BIO) as well as 5 five physicochemical properties of the soil: salinity (SAL), pH, K, Na, and Zn.
  
-The data set is taken from the book 'Applied Regression Analysis, A Research Tool' by John O. Rawlings, Sastry G. Pantula and David A. Dickey and is provided below:
+The data set is taken from the book '*Applied Regression Analysis, A Research Tool*' by John O. Rawlings, Sastry G. Pantula and David A. Dickey and is provided below:
 """
 
 # %%
@@ -103,12 +103,19 @@ functions.append(ot.SymbolicFunction(input_description, ['1.0']))
 for i in range(dimension):
     functions.append(ot.SymbolicFunction(input_description, [input_description[i]]))
 basis = ot.Basis(functions)
+# %%
+# Plese note that this example uses a linear basis with respect to the various predictors for the sake of clarity. 
+# However, this is not a necessity, and more complex and non linear relations between predictors may be considered 
+# (e.g., polynomial bases).
+
 
 # %%
 # We now perform a forward stepwise regression. We suppose having no information regarding the given data set, and therefore the set of minimal
 # indices only contains the constant term (indexed by 0).
 #
-# This first regression is performed by relying on the Akaike Information Criterion (AIC), which translates into a penalty term equal to 2.
+# The first regression is performed by relying on the Akaike Information Criterion (AIC), which translates into a penalty term equal to 2.
+# In practice, the algorithm selects the functional basis subset that minimizes the AIC by iteratively adding the single function which provides
+# the largest improvement until convergence is reached.
 
 # %%
 minimalIndices = [0]
@@ -123,9 +130,13 @@ print('R-squared = ', result_forward.getRSquared())
 print('Adjusted R-squared = ', result_forward.getAdjustedRSquared())
 
 # %%
-# As can be expected, the R-squared value diminishes, as the stepwise regression results in a lower number of predictive variables. 
-# However, it can also be seen that the adjusted R-squared, which is a metric that also takes into account the ratio 
-# between the amount of training data and the number of explanatory variables is improved if compared to the complete model. 
+# With this first forward stepwise regression, the results show that the selected optimal basis contains a constant term, 
+# plus two linear terms depending respectively on the pH value (pH) and on the sodium concentration (Na).
+#
+# As can be expected, the R-squared value diminishes if compared to the regression on the entire basis, as the stepwise 
+# regression results in a lower number of predictive variables.  However, it can also be seen that the adjusted R-squared, 
+# which is a metric that also takes into account the ratio  between the amount of training data and the number of explanatory 
+# variables, is improved if compared to the complete model. 
 
 # %%
 # Backward stepwise regression

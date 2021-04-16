@@ -88,7 +88,7 @@ graph = analysis.drawModelVsFitted()
 view = viewer.View(graph)
 
 # %%
-# Seems that the linearity hypothesis is accurate.
+# The previous figure seems to indicate that the linearity hypothesis is accurate.
 
 # %%
 # Residuals can be plotted against the fitted values.
@@ -108,7 +108,7 @@ view = viewer.View(graph)
 # %%
 # In this case, the two distributions are very close: there is no obvious outlier.
 #
-# Cook's distance measures the impact of every invidual data point on the linear regression.
+# Cook's distance measures the impact of every invidual data point on the linear regression, and can be plotted as follows:
 
 # %%
 graph = analysis.drawCookDistance()
@@ -125,7 +125,9 @@ graph = analysis.drawResidualsVsLeverages()
 view = viewer.View(graph)
 
 # %%
-# In this case, leverage does not seem to be statistically linked to standardized residuals.
+# In this case, there seem to be no obvious influential outlier characterized by large leverage and residual values, as is also shown in the figure below:
+#
+# Similarly, we can also plot Cook's distances as a function of the sample leverages:
 
 # %%
 graph = analysis.drawCookVsLeverages()
