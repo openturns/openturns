@@ -24,6 +24,7 @@
  * Deprecated KarhunenLoeveResult::getEigenValues, use getEigenvalues
  * Removed StationaryCovarianceModel
  * CovarianceModel.computeAsScalar allows scalars
+ * Swapped SimulatedAnnealingLHS constructor SpaceFilling/TemperatureProfile arguments
 
 === Documentation ===
  * Fixed example and plot of Kolmogorov statistics.
@@ -34,6 +35,8 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #1229 (Better encapsulation of optional 3rd-party headers)
+ * #1257 (Cannot create a SimulatedAnnealingLHS without specifying the temperature profile)
  * #1425 (There is no method to create a train / test pair)
  * #1431 (The figure for LHSExperiment is not accurate)
  * #1459 (There is no example which shows how to set a column of a Sample)
@@ -47,10 +50,12 @@
  * #1713 (The doc of the ResourceMap does not match the content of the ResourceMap)
  * #1714 (The log-PDF of the Pareto is wrong)
  * #1721 (The `draw` method of `SobolSimulationAlgorithm` does not reuse the descriptions)
+ * #1725 (The BetaFactory help page has wrong equations)
  * #1729 (LinearModelAnalysis sometimes fail)
  * #1731 (The Extreme value example may be improved)
  * #1737 (Low rank tensor doc issues)
  * #1742 (The example which shows how to set the figure size is wrong.)
+ * #1751 (DrawCorrelationCoefficients has a wrong Text height)
  * #1752 (Error while estimating the reduced log-likelihood when using a StationaryFunctionalCovarianceModel)
  * #1759 (Kriging model with StationaryFunctionalCovarianceModel might provide bad results)
  * #1768 (Bug in ExponentiallyDampedCosineModel & SphericalModel)
@@ -68,6 +73,7 @@
  * #1803 (The API example of Experiment has a format issue)
  * #1805 (Brent's implementation has a stability issue)
  * #1807 (Beta::computeCharacteristicFunction is wrong if the lower bound is not zero)
+ * #1815 (1.16 fails with dlib-cpp-19.22)
 
 
 == 1.16 release (2020-11-16) == #release-1.16

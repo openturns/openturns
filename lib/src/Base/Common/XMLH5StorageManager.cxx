@@ -23,6 +23,7 @@
 #include "openturns/PersistentObject.hxx"
 
 #include <H5Cpp.h>
+#include <libxml/tree.h>
 
 BEGIN_NAMESPACE_OPENTURNS
 

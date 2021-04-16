@@ -21,12 +21,12 @@ LinearModelAlgorithm, LinearModelResult
 
 Notes
 -----
-The objective is to select the best linear regression model by using the 
-stepwise method. Starting from the `basis` and `minimalIndices`, the stepwise 
-strategy consists in adding basis elements (if `isForward` is True), dropping 
-some (if `isForward` is False) or adding and dropping (`both` strategy) some 
-elements. At each step, we get a model. We compute the corresponding penalty 
-(BIC or AIC) and we continue repeatedly this process until the penalty could 
+The objective is to select the best linear regression model by using the
+stepwise method. Starting from the `basis` and `minimalIndices`, the stepwise
+strategy consists in adding basis elements (`FORWARD`), dropping
+some (`BACKWARD`) or adding and dropping (`BOTH` strategy) some
+elements. At each step, we get a model. We compute the corresponding penalty
+(BIC or AIC) and we continue repeatedly this process until the penalty could
 not be improved or the maximum iterations number is reached.
 Finally we get a regression model between the scalar variable :math:`Y`
 and the :math:`n`-dimensional one :math:`\vect{X} = (X_i)_{i \leq n}` writes as follows:
@@ -99,7 +99,7 @@ Parameters
 penalty : positive float
      The multiple of the degrees of freedom used for the penalty of the stepwise regression method:
 
-     - 2      Akaike   information criterion (AIC)
+     - 2      Akaike   information criterion (AIC) (default)
      - log(n) Bayesian information criterion (BIC)"
 
 // ---------------------------------------------------------------------

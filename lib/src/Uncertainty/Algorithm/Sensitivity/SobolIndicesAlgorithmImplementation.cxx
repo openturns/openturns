@@ -827,8 +827,8 @@ Graph SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients(const Poi
   // Add text description
   for (UnsignedInteger k = 0; k < dimension; ++k)
   {
-    data(k, 0) = (k + 1.0) + dimension / 20.0;
-    data(k, 1) = 0.5 * values[k];
+    data(k, 0) = (k + 1.0) + 0.08;
+    data(k, 1) = values[k] - 0.04;
   }
 
   Text text(data, names, "right");

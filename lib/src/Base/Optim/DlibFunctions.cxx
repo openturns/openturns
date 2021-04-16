@@ -22,10 +22,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-/** Define DlibMatrix type for better readability **/
-typedef dlib::matrix<double> DlibMatrix;
-
-
 /** Class DlibGradient to ensure interface between OT::Gradient and dlib functions **/
 
 DlibGradient::DlibGradient(const Gradient & gradient)

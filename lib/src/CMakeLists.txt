@@ -86,6 +86,10 @@ target_link_libraries (OT PRIVATE ${OPENTURNS_PRIVATE_LIBRARIES})
 target_include_directories (OT INTERFACE $<INSTALL_INTERFACE:include>)
 target_include_directories (OT PUBLIC ${OPENTURNS_INCLUDE_DIRS})
 
+if (NOT CMAKE_VERSION VERSION_LESS 3.8)
+  target_compile_features(OT PUBLIC cxx_std_11)
+endif ()
+
 # Build an empty executable to check link dependencies and completeness
 add_executable (linktest main.cxx)
 target_link_libraries (linktest OT)

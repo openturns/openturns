@@ -27,7 +27,7 @@
 #ifdef OPENTURNS_HAVE_LIBXML2
 %include XMLStorageManager.i
 #endif
-#ifdef OPENTURNS_HAVE_HDF5
+#if defined(OPENTURNS_HAVE_HDF5) && defined(OPENTURNS_HAVE_LIBXML2)
 %include XMLH5StorageManager.i
 #else
 %pythoncode %{

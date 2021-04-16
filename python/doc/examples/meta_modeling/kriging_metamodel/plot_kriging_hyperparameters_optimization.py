@@ -308,7 +308,7 @@ K = 25 # design size
 LHS = ot.LHSExperiment(boundedDistribution, K)
 LHS.setAlwaysShuffle(True)
 SA_profile = ot.GeometricProfile(10., 0.95, 20000)
-LHS_optimization_algo = ot.SimulatedAnnealingLHS(LHS, SA_profile, ot.SpaceFillingC2())
+LHS_optimization_algo = ot.SimulatedAnnealingLHS(LHS, ot.SpaceFillingC2(), SA_profile)
 LHS_optimization_algo.generate()
 LHS_design = LHS_optimization_algo.getResult()
 starting_points = LHS_design.getOptimalDesign()

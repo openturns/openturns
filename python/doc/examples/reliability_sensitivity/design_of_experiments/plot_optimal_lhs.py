@@ -78,7 +78,7 @@ space_filling = ot.SpaceFillingC2()
 # A geometric profile seems accurate with default parameters
 # e.g. T0=10, c=0.95, iMax=2000
 temperatureProfile = ot.GeometricProfile()
-algo = ot.SimulatedAnnealingLHS(lhs, temperatureProfile, space_filling)
+algo = ot.SimulatedAnnealingLHS(lhs, space_filling, temperatureProfile)
 # optimal design
 design = algo.generate()
 result = algo.getResult()
@@ -108,7 +108,7 @@ space_filling = ot.SpaceFillingPhiP()
 # Defining a temperature profile
 # T0=10, iMax=3000
 temperatureProfile = ot.LinearProfile(10.0, 3000)
-algo = ot.SimulatedAnnealingLHS(lhs, temperatureProfile, space_filling)
+algo = ot.SimulatedAnnealingLHS(lhs, space_filling, temperatureProfile)
 restart = 50
 design = algo.generateWithRestart(restart)
 # Retrieve all optimal designs
@@ -129,7 +129,7 @@ space_filling = ot.SpaceFillingC2()
 # Defining a temperature profile
 # T0=10, iMax=3000
 temperatureProfile = ot.LinearProfile(10.0, 3000)
-algo = ot.SimulatedAnnealingLHS(lhs, temperatureProfile, space_filling)
+algo = ot.SimulatedAnnealingLHS(lhs, space_filling, temperatureProfile)
 design = algo.generate()
 result = algo.getResult()
 # check history ==> draw criterion
@@ -139,6 +139,6 @@ view = viewer.View(graph)
 # %%
 # Convergence needs to be performed
 # New algo starting from this design
-algo = ot.SimulatedAnnealingLHS(design, distribution, temperatureProfile, space_filling)
+algo = ot.SimulatedAnnealingLHS(design, distribution, space_filling, temperatureProfile)
 design = algo.generate()
 plt.show()

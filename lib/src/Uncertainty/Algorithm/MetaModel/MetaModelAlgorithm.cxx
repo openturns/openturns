@@ -166,17 +166,17 @@ Distribution MetaModelAlgorithm::BuildDistribution(const Sample & inputSample)
         else
           LOGINFO(OSS() << "Tested distribution & not selected = " << candidateDistribution.getImplementation()->getClassName() << ", pValue=" << pValue);
       }
-      catch (const InvalidArgumentException & ex)
+      catch (const InvalidArgumentException &)
       {
         // Just skip the factories incompatible with the current marginal sample
         // or distribution that are not valid according to the KS test
       }
-      catch (const NotDefinedException & ex)
+      catch (const NotDefinedException &)
       {
         // Just skip the factories incompatible with the current marginal sample
         // or distribution that are not valid according to the KS test
       }
-      catch (const InternalException & ex)
+      catch (const InternalException &)
       {
         // Just skip the factories incompatible with the current marginal sample
         // or distribution that are not valid according to the KS test

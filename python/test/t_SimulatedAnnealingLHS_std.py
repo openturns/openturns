@@ -43,7 +43,7 @@ geomProfile = ot.GeometricProfile(T0, c, iMax)
 # 1) Simulated Annealing LHS with geometric temperature profile, C2
 # optimization
 optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(
-    lhs, geomProfile, spaceFillingC2)
+    lhs, spaceFillingC2, geomProfile)
 print("lhs=", optimalLHSAlgorithm)
 design = optimalLHSAlgorithm.generate()
 print(
@@ -57,7 +57,7 @@ linearProfile = ot.LinearProfile(T0, iMax)
 
 # 2) Simulated Annealing LHS with linear temperature profile, PhiP optimization
 optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(
-    lhs, linearProfile, spaceFillingPhiP)
+    lhs, spaceFillingPhiP, linearProfile)
 print("lhs=", optimalLHSAlgorithm)
 design = optimalLHSAlgorithm.generate()
 print(
@@ -70,7 +70,7 @@ print("Final criteria: C2=%f, PhiP=%f, MinDist=%f" %
 # optimization & initial design
 initialDesign = ot.Sample(design)
 optimalLHSAlgorithm = ot.SimulatedAnnealingLHS(
-    initialDesign, distribution, geomProfile, spaceFillingPhiP)
+    initialDesign, distribution, spaceFillingPhiP, geomProfile)
 print("lhs=", optimalLHSAlgorithm)
 print("initial design=", initialDesign)
 print("PhiP=%f, C2=%f" %

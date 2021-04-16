@@ -45,8 +45,8 @@ SimulatedAnnealingLHS::SimulatedAnnealingLHS()
 
 /* Geometric temperature profil */
 SimulatedAnnealingLHS::SimulatedAnnealingLHS(const LHSExperiment & lhs,
-    const TemperatureProfile & profile,
-    const SpaceFilling & spaceFilling)
+    const SpaceFilling & spaceFilling,
+    const TemperatureProfile & profile)
   : OptimalLHSExperiment(lhs, spaceFilling)
   , profile_(profile)
   , standardInitialDesign_()
@@ -56,8 +56,8 @@ SimulatedAnnealingLHS::SimulatedAnnealingLHS(const LHSExperiment & lhs,
 /* SimulatedAnnealingLHS constructor with LHS*/
 SimulatedAnnealingLHS::SimulatedAnnealingLHS (const Sample & initialDesign,
     const Distribution & distribution,
-    const TemperatureProfile & profile,
-    const SpaceFilling & spaceFilling)
+    const SpaceFilling & spaceFilling,
+    const TemperatureProfile & profile)
   : OptimalLHSExperiment()
   , profile_(profile)
   , standardInitialDesign_(initialDesign)
