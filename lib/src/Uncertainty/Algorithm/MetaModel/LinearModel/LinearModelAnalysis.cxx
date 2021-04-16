@@ -260,21 +260,31 @@ Scalar LinearModelAnalysis::getFisherScore() const
   const UnsignedInteger size = residuals.getSize();
   // Get the number of parameter p
   const UnsignedInteger p = linearModelResult_.getCoefficients().getSize();
-  // Define RSS and SYY
-  const Scalar RSS = residuals.computeRawMoment(2)[0] * size;
-  const Scalar SYY = outputSample.computeCenteredMoment(2)[0] * size;
-  const Scalar fStatistic = ((SYY - RSS) / (p - 1)) / (RSS / (size - p));
+  // Degrees of freedom
+  const SignedInteger dof = linearModelResult_.getDegreesOfFreedom();
+  // Sum of Squared Errors (SSE) or Sum of Squared Residuals (SSR/RSS)
+  const Scalar SSR = residuals.computeRawMoment(2)[0] * size;
+  // Sum of Squared Total (SST) = n * var(Y)
+  const Scalar SST = outputSample.computeCenteredMoment(2)[0] * size;
+  // Sum of Squared Model (SSM) = SST - SSE
+  const Scalar SSM = SST - SSR;
+  // Define the statistic
+  // numerator = MSM := SSM/DFM (DFM = p-1)
+  const Scalar numerator = SSM / (p - 1);
+  // denominator =  MSE = SSE/DO
+  const Scalar denominator = SSR / dof;
+  const Scalar fStatistic = numerator / denominator;
   return fStatistic;
 }
 
 Scalar LinearModelAnalysis::getFisherPValue() const
 {
-  // size and number of parameters
-  const UnsignedInteger size = linearModelResult_.getSampleResiduals().getSize();
   // Get the number of parameter p
   const UnsignedInteger p = linearModelResult_.getCoefficients().getSize();
+  // Degrees of freedom
+  const SignedInteger dof = linearModelResult_.getDegreesOfFreedom();
   const Scalar FStatistic = getFisherScore();
-  return FisherSnedecor(p - 1, size - 1).computeComplementaryCDF(FStatistic);
+  return FisherSnedecor(p - 1, dof).computeComplementaryCDF(FStatistic);
 }
 
 /* Kolmogorov-Smirnov normality test */
