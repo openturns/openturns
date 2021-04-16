@@ -53,6 +53,7 @@
  * #1459 (There is no example which shows how to set a column of a Sample)
  * #1497 (There is no example to create a multivariate Normal distribution)
  * #1506 (The Brent class has no example)
+ * #1570 (Wrong formula for MauntzKucherenkoSensitivityAlgorithm)
  * #1650 (There is no example of a parametric StationaryFunctionalCovarianceModel)
  * #1661 (XMLH5StorageManager does not store IndicesCollection into HDF5 files)
  * #1662 (Operator() of a CovarianceModel with multidimensional output should yield object of type SquareMatrix)

@@ -50,7 +50,7 @@ The estimators of :math:`V_i` and :math:`V_{-i}` used by this class are respecti
 
    \begin{array}{ccc}
    \hat{V}_i & = & \frac{1}{N-1} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{B}_k) \left( \tilde{\vect{g}}(\vect{E}_k) - \tilde{\vect{g}}(\vect{A}_k) \right) \\
-   \hat{V}_{-i} & = & \frac{1}{N-1} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{A}_k) \left( \tilde{\vect{g}}(\vect{E}_k) -  \tilde{\vect{g}}(\vect{A}_k) \right)
+   \hat{VT}_{i} & = & \frac{1}{N-1} \sum_{k=1}^{N} \tilde{\vect{g}}(\vect{A}_k) \left( \tilde{\vect{g}}(\vect{A}_k) -  \tilde{\vect{g}}(\vect{E}_k) \right)
    \end{array}
 
 where :math:`\tilde{\vect{g}}` is the centered model based on the sample. 
