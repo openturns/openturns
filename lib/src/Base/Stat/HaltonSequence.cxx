@@ -46,7 +46,7 @@ HaltonSequence * HaltonSequence::clone() const
 /* Initialize the sequence */
 void HaltonSequence::initialize(const UnsignedInteger dimension)
 {
-  if (dimension == 0) throw InvalidArgumentException(HERE) << "Dimension must be > 0.";
+  if (!(dimension > 0)) throw InvalidArgumentException(HERE) << "Dimension must be > 0.";
   dimension_ = dimension;
   base_ = ComputeFirstPrimeNumbers(dimension);
   seed_ = ResourceMap::GetAsUnsignedInteger( "HaltonSequence-InitialSeed" );

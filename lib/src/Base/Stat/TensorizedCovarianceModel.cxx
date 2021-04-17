@@ -69,7 +69,7 @@ void TensorizedCovarianceModel::setCollection(const CovarianceModelCollection & 
 {
   // Check if the given models have the same input dimension
   const UnsignedInteger size = collection.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::setCollection: the collection must have a positive size, here size=0";
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::setCollection: the collection must have a positive size, here size=0";
   Point amplitude(0);
   inputDimension_ = collection[0].getInputDimension();
   // Get dimension: should be the same for all elements
@@ -315,7 +315,7 @@ String TensorizedCovarianceModel::__str__(const String & ) const
 /* Marginal accessor */
 CovarianceModel TensorizedCovarianceModel::getMarginal(const UnsignedInteger index) const
 {
-  if (index >= outputDimension_)
+  if (!(index < outputDimension_))
     throw InvalidArgumentException(HERE) << "Error: index=" << index << " must be less than output dimension=" << outputDimension_;
   UnsignedInteger size = collection_.getSize();
   UnsignedInteger start = 0;

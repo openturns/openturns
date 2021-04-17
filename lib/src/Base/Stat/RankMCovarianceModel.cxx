@@ -51,7 +51,7 @@ RankMCovarianceModel::RankMCovarianceModel(const Point & variance,
   , basis_()
   , functions_(0)
 {
-  if (variance.getDimension() == 0) throw InvalidArgumentException(HERE) << "Error: expected a vector of marginal variances of positive dimension, got dimension=0.";
+  if (!(variance.getDimension() > 0)) throw InvalidArgumentException(HERE) << "Error: expected a vector of marginal variances of positive dimension, got dimension=0.";
   setBasis(basis);
 }
 
@@ -64,7 +64,7 @@ RankMCovarianceModel::RankMCovarianceModel(const CovarianceMatrix & covariance,
   , basis_()
   , functions_(0)
 {
-  if (covariance.getDimension() == 0) throw InvalidArgumentException(HERE) << "Error: expected a covariance of positive dimension, got dimension=0.";
+  if (!(covariance.getDimension() > 0)) throw InvalidArgumentException(HERE) << "Error: expected a covariance of positive dimension, got dimension=0.";
   // Check if the covariance is diagonal
   if (covariance.isDiagonal())
   {
@@ -207,7 +207,7 @@ Basis::FunctionCollection RankMCovarianceModel::getFunctions() const
 void RankMCovarianceModel::setBasis(const Basis & basis)
 {
   const UnsignedInteger size = std::max(variance_.getSize(), covariance_.getDimension());
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: there must be at least one coefficient";
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: there must be at least one coefficient";
   functions_ = Basis::FunctionCollection(size);
   for (UnsignedInteger i = 0; i < size; ++i)
     functions_[i] = basis.build(i);

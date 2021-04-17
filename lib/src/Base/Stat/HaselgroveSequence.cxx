@@ -53,7 +53,7 @@ HaselgroveSequence * HaselgroveSequence::clone() const
 /* Initialize the sequence */
 void HaselgroveSequence::initialize(const UnsignedInteger dimension)
 {
-  if (dimension == 0) throw InvalidArgumentException(HERE) << "Dimension must be > 0.";
+  if (!(dimension > 0)) throw InvalidArgumentException(HERE) << "Dimension must be > 0.";
   dimension_ = dimension;
   const Unsigned64BitsIntegerCollection directions(ComputeFirstPrimeNumbers(dimension));
   base_ = Point(dimension);
