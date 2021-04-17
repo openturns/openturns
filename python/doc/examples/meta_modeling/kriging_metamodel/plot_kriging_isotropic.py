@@ -58,14 +58,17 @@ upper = 1000.0
 
 def fitKriging(coordinates, observations, covarianceModel, basis):
     '''
-    Fit the parameters of a Kriging metamodel. 
+    Fit the parameters of a Kriging metamodel.
     '''
+    # Define sensible initial scale parameters
+    scale_dimension = covarianceModel.getScale().getDimension()
+    covarianceModel.setScale([(lower + upper) / 2] * scale_dimension)
+
     # Define the Kriging algorithm.
     algo = ot.KrigingAlgorithm(coordinates, observations, covarianceModel, basis)
 
-    # Set the optimization bounds for the scale parameter to sensible values
-    # given the data set.
-    scale_dimension = covarianceModel.getScale().getDimension()
+    # Set the optimization bounds for the scale parameter
+    # to sensible values given the data set.
     algo.setOptimizationBounds(ot.Interval([lower] * scale_dimension,
                                            [upper] * scale_dimension))
 
@@ -80,7 +83,7 @@ def fitKriging(coordinates, observations, covarianceModel, basis):
 
 def plotKrigingPredictions(krigingMetamodel):
     '''
-    Plot the predictions of a Kriging metamodel. 
+    Plot the predictions of a Kriging metamodel.
     '''
     # Create the mesh of the box [0., 1000.] * [0., 700.]
     myInterval = ot.Interval([0., 0.], [1000., 700.])

@@ -240,8 +240,6 @@ mycolors = [[120, 1.0, 1.0], [120, 1.0, 0.75], [120, 1.0, 0.5]]
 # %%
 # We are ready to display all the previous information and the three confidence intervals we want.
 
-# %%
-# sphinx_gallery_thumbnail_number = 4
 graph = ot.Graph('','','',True,'')
 graph.add(plot_data_test(x_test,y_test))
 graph.add(plot_data_train(x_train,y_train))
@@ -259,6 +257,7 @@ graph.setAxes(True)
 graph.setXTitle("X")
 graph.setYTitle("Y")
 graph.setLegendPosition("topright")
+# sphinx_gallery_thumbnail_number = 4
 view = viewer.View(graph)
 
 # %%

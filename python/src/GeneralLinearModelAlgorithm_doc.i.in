@@ -148,8 +148,13 @@ showing that :math:`\vect{\beta}^*` is a function of :math:`\vect{q}^*` only, an
 
 which leads to a further reduction of the log-likelihood function where both :math:`\vect{\beta}` and :math:`\sigma` are replaced by their expression in terms of :math:`\vect{q}`.
 
-The default optimizer is :class:`~openturns.TNC` and can be changed thanks to the *setOptimizationAlgorithm* method.
-User could also change the default optimization solver by setting the `GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm` resource map key to one of the :class:`~openturns.NLopt` solver names.
+The default optimizer is a :class:`~openturns.MultiStart` :class:`~openturns.TNC` with 20 starting points and can be changed with the :meth:`setOptimizationAlgorithm` method.
+User could also change the default optimization solver by setting:
+
+- the `GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm` resource map key to one of the :class:`~openturns.NLopt` solver names;
+- the key `GeneralLinearModelAlgorithm-DefaultUseMultiStart` to control whether or not :class:`~openturns.MultiStart` should be applied by default; if it is *True*, then `GeneralLinearModelAlgorithm-DefaultMultiStartPopulationSize` controls the default number of starting points.
+
+Note that the default optimization solver determines one of its starting points from the parameter values of *covarianceModel*.
 
 It is also possible to proceed as follows:
 
@@ -294,7 +299,17 @@ algorithm : :class:`~openturns.OptimizationAlgorithm`
 Parameters
 ----------
 algorithm : :class:`~openturns.OptimizationAlgorithm`
-    Solver used to optimize the covariance model parameters."
+    Solver used to optimize the covariance model parameters.
+
+Notes
+-----
+If the specified algorithm is :class:`~openturns.MultiStart`,
+then the parameter values of the :class:`~openturns.CovarianceModel`
+provided to the constructor are ignored. The user is expected
+to have already chosen all starting points when building the :class:`~openturns.MultiStart`.
+
+Otherwise, the parameter values of the :class:`~openturns.CovarianceModel`
+are used to determine the single starting point."
 
 // ---------------------------------------------------------------------
 
@@ -334,6 +349,8 @@ Parameters involved by this method are:
  - Amplitude parameters if output dimension is greater than one or
    analytical sigma disabled,
  - Additional parameters.
+
+If this method is not called, here is how the optimization bounds are determined.
 
 Lower & upper bounds are defined in resource map.
 Default lower upper bounds value for all parameters is

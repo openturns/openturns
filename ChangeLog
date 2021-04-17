@@ -28,6 +28,7 @@
  * Added EfficientGlobalOptimization::getKrigingResult, gets the updated version of the KrigingResult passed to the constructor
  * Deprecated MultiStart::setStartingPoints/getStartingPoints, use MultiStart::setStartingSample/getStartingSample instead
  * MultiStart::setStartingPoint/getStartingPoint throws (previously did nothing)
+ * GeneralLinearModelAlgorithm and KrigingAlgorithm by default optimize covariance model parameters with a 20-point MultiStart strategy
 
 === Documentation ===
  * Fixed example and plot of Kolmogorov statistics.

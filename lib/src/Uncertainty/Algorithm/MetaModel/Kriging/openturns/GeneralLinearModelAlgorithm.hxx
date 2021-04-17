@@ -111,6 +111,9 @@ public:
   void load(Advocate & adv) override;
 
 protected:
+  // Select initial parameters for the optimization
+  void selectSolverInitialParameters(const Point & initialParameters);
+
   // Maximize the reduced log-likelihood
   Scalar maximizeReducedLogLikelihood();
 

@@ -617,6 +617,7 @@
   <LinearModelStepwiseAlgorithm-MaximumIterationNumber   value_int="1000"        />
 
   <!-- OT::GeneralLinearModelAlgorithm parameters -->
+  <GeneralLinearModelAlgorithm-DefaultUseMultiStart             value_bool="true"      />
   <GeneralLinearModelAlgorithm-KeepCovariance                   value_bool="true"      />
   <GeneralLinearModelAlgorithm-OptimizeParameters               value_bool="true"      />
   <GeneralLinearModelAlgorithm-UnbiasedVariance                 value_bool="true"      />
@@ -629,6 +630,7 @@
   <GeneralLinearModelAlgorithm-StartingScaling                  value_float="1.0e-13" />
   <GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm     value_str="TNC"     />
   <GeneralLinearModelAlgorithm-LinearAlgebra                    value_str="LAPACK"  />
+  <GeneralLinearModelAlgorithm-DefaultMultiStartPopulationSize  value_int="20"        />
 
   <!-- OT::KrigingAlgorithm parameters -->
   <KrigingAlgorithm-MaximalScaling  value_float="1.0e5"   />

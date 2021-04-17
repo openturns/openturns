@@ -7,7 +7,7 @@ import openturns.testing
 
 ot.Log.Show(ot.Log.NONE)
 ot.TBB.Disable()
-
+ot.ResourceMap.SetAsBool("GeneralLinearModelAlgorithm-DefaultUseMultiStart", False)
 
 #
 # branin

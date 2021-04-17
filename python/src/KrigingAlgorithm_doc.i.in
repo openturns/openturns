@@ -115,24 +115,10 @@ Parameters
 algorithm : :class:`~openturns.OptimizationAlgorithm`
     Solver used to optimize the covariance model parameters.
 
-Examples
---------
-Create the model :math:`\cM: \Rset \mapsto \Rset` and the samples:
-
->>> import openturns as ot
->>> input_data = ot.Uniform(-1.0, 2.0).getSample(10)
->>> model = ot.SymbolicFunction(['x'], ['x-1+sin(pi_*x/(1+0.25*x^2))'])
->>> output_data = model(input_data)
-
-Create the Kriging algorithm with the optimizer option:
-
->>> basis = ot.Basis([ot.SymbolicFunction(['x'], ['0.0'])])
->>> thetaInit = 1.0
->>> covariance = ot.GeneralizedExponential([thetaInit], 2.0)
->>> bounds = ot.Interval(1e-2,1e2)
->>> algo = ot.KrigingAlgorithm(input_data, output_data, covariance, basis)
->>> algo.setOptimizationBounds(bounds)
-"
+Notes
+-----
+See the :class:`~openturns.GeneralLinearModelAlgorithm` class for more details,
+particularly :meth:`~openturns.GeneralLinearModelAlgorithm.setOptimizationAlgorithm`."
 
 // ---------------------------------------------------------------------
 
@@ -146,8 +132,27 @@ bounds : :class:`~openturns.Interval`
 
 Notes
 -----
-See :class:`~openturns.GeneralLinearModelAlgorithm` class for more details,
-particularly :meth:`~openturns.GeneralLinearModelAlgorithm.setOptimizationBounds`."
+See the :class:`~openturns.GeneralLinearModelAlgorithm` class for more details,
+particularly :meth:`~openturns.GeneralLinearModelAlgorithm.setOptimizationBounds`.
+
+Examples
+--------
+Create a model :math:`\cM: \Rset \mapsto \Rset` and sample input and output data:
+
+>>> import openturns as ot
+>>> input_data = ot.Uniform(-1.0, 2.0).getSample(10)
+>>> model = ot.SymbolicFunction(['x'], ['x-1+sin(pi_*x/(1+0.25*x^2))'])
+>>> output_data = model(input_data)
+
+Create the Kriging algorithm and set the optimization bounds:
+
+>>> basis = ot.Basis([ot.SymbolicFunction(['x'], ['0.0'])])
+>>> thetaInit = 1.0
+>>> covariance = ot.GeneralizedExponential([thetaInit], 2.0)
+>>> bounds = ot.Interval(1e-2,1e2)
+>>> algo = ot.KrigingAlgorithm(input_data, output_data, covariance, basis)
+>>> algo.setOptimizationBounds(bounds)
+"
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::KrigingAlgorithm::getOptimizationBounds

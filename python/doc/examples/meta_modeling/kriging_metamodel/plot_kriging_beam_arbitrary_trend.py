@@ -92,10 +92,18 @@ basis = ot.Basis(functions)
 # In order to create the kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class. Then we use a squared exponential covariance model. Finally, we use the `KrigingAlgorithm` class to create the kriging metamodel, taking the training sample, the covariance model and the trend basis as input arguments. 
 
 # %%
-covarianceModel = ot.SquaredExponential([1.]*dimension, [1.0])
+covarianceModel = ot.SquaredExponential(X_train.getMax(), [1.0])
+
+# %%
+# We need to manually define sensible optimization bounds.
+# Note that since the amplitude parameter is computed analytically (this is possible when the output dimension is 1), we only need to set bounds on the scale parameter.
+
+# %%
+scaleOptimizationBounds = ot.Interval([1.0, 1.0, 1.0, 1.0e-10], [1.0e11, 1.0e3, 1.0e1, 1.0e-5])
 
 # %%
 algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
+algo.setOptimizationBounds(scaleOptimizationBounds)
 algo.run()
 result = algo.getResult()
 krigingWithConstantTrend = result.getMetaModel()
@@ -150,6 +158,7 @@ basis = ot.Basis(functions)
 
 # %%
 algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
+algo.setOptimizationBounds(scaleOptimizationBounds)
 algo.run()
 result = algo.getResult()
 krigingWithConstantTrend = result.getMetaModel()
