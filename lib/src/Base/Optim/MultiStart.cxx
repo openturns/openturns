@@ -140,7 +140,7 @@ void MultiStart::run()
   }
   LOGINFO(OSS() << successNumber << " out of " << size << " local searches succeeded, " << improvementNumber << " improvements");
 
-  if (successNumber == 0)
+  if (!(successNumber > 0))
   {
     throw InternalException(HERE) << "None of the local searches succeeded.";
   }
