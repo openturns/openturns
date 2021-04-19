@@ -33,4 +33,4 @@ jobs:
         -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
     - run: make install -j$(sysctl -n hw.logicalcpu)
     - run: make tests -j$(sysctl -n hw.logicalcpu)
-    - run: ctest -E GeneralizedParetoFactory_std --output-on-failure --timeout 100
+    - run: ctest -E GeneralizedParetoFactory_std -j$(sysctl -n hw.logicalcpu) --output-on-failure --timeout 100
