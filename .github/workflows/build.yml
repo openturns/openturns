@@ -28,10 +28,13 @@ jobs:
            cmake -DBUILD_EXAMPLES=OFF -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCMAKE_MACOSX_RPATH=ON .
            make install -j$(sysctl -n hw.logicalcpu)
     - run:  |
-        cmake -DR_EXECUTABLE="dummyR" -DPYTHON_EXECUTABLE=/usr/local/bin/python3 \
+        cmake -DR_EXECUTABLE="dummyR" \
+        -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror -D_GLIBCXX_ASSERTIONS" \
+        -DPYTHON_EXECUTABLE=/usr/local/bin/python3 \
         -DFLEX_EXECUTABLE=/usr/local/opt/flex/bin/flex \
         -DBISON_EXECUTABLE=/usr/local/opt/bison/bin/bison \
         -DSPECTRA_INCLUDE_DIR=/Users/runner/include \
+        -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-missing-field-initializers" \
         -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
     - run: make install -j$(sysctl -n hw.logicalcpu)
     - run: make tests -j$(sysctl -n hw.logicalcpu)
