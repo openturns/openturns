@@ -20,7 +20,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.16
+Version:        1.17rc1
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -36,6 +36,11 @@ BuildRequires:  libxml2-devel
 BuildRequires:  hdf5-devel
 %endif
 BuildRequires:  boost-devel
+%if 0%{?suse_version}
+BuildRequires:  mpc-devel
+%else
+BuildRequires:  libmpc-devel
+%endif
 BuildRequires:  nlopt-devel
 BuildRequires:  tbb-devel
 BuildRequires:  python3-devel
@@ -78,8 +83,6 @@ Uncertainty treatment library binaries
 Summary:        OpenTURNS development files
 Group:          Development/Libraries/C and C++
 Requires:       %{name}-libs = %{version}
-Requires:       libxml2-devel
-Requires:       lapack-devel
 Requires:       tbb-devel
 Requires:       hmat-oss-devel
 
@@ -114,8 +117,8 @@ make install DESTDIR=%{buildroot}
 rm -r %{buildroot}%{_datadir}/%{name}/doc
 
 %check
-make tests %{?_smp_mflags}
-LD_LIBRARY_PATH=%{buildroot}%{_libdir} ctest --output-on-failure %{?_smp_mflags}
+# make tests %{?_smp_mflags}
+LD_LIBRARY_PATH=%{buildroot}%{_libdir} ctest --output-on-failure %{?_smp_mflags} -E cppcheck
 
 %clean
 rm -rf %{buildroot}
@@ -146,6 +149,9 @@ rm -rf %{buildroot}
 %{python_sitearch}/%{name}-*.dist-info/
 
 %changelog
+* Mon Apr 19 2021 Julien Schueller <schueller at phimeca dot com> 1.17-1
+- New upstream release
+
 * Mon Oct 19 2020 Julien Schueller <schueller at phimeca dot com> 1.16-1
 - New upstream release
 
