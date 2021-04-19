@@ -21,7 +21,6 @@ def Object___getstate__(self):
     study = Study()
 
     # assume xml support
-    # should use BinaryStorageManager
     infile = tempfile.NamedTemporaryFile(delete=False)
     study.setStorageManager(XMLStorageManager(infile.name))
     study.add('instance', self)
