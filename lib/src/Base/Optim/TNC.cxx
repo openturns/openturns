@@ -408,6 +408,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   /* Convert the input vector in OpenTURNS format */
   const UnsignedInteger dimension = algorithm->getStartingPoint().getDimension();
   Point inP(dimension);
+//   std::cout << "TNC::ComputeObjectiveAndGradient x=" << inP[0]<< std::endl;
   std::copy(x, x + dimension, inP.begin());
   const OptimizationProblem problem(algorithm->getProblem());
   for (UnsignedInteger i = 0; i < inP.getDimension(); ++i)
@@ -425,6 +426,8 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   const Point outP(problem.getObjective().operator()(inP));
   *f = problem.isMinimization() ? outP[0] : -outP[0];
 
+//   std::cout << "TNC::ComputeObjectiveAndGradient y="<<*f<<std::endl;
+
   Point objectiveGradient;
   try
   {
@@ -432,9 +435,13 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
     const Matrix gradient(problem.isMinimization() ? problem.getObjective().gradient(inP) : -1.0 * problem.getObjective().gradient(inP));
     /* Convert the gradient into the output format */
     std::copy(&gradient(0, 0), &gradient(0, 0) + dimension, g);
+    
+//         std::cout << "TNC::ComputeObjectiveAndGradient grad=" << gradient(0,0) <<std::endl;
+
   }
   catch (...)
   {
+// 	  std::cout << "TNC::ComputeObjectiveAndGradient grad !?" <<std::endl;
     return 1;
   }
 

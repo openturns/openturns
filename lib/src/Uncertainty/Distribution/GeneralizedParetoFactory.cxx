@@ -139,11 +139,14 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfMoments(const Sample & 
   return result;
 }
 
-struct GeneralizedParetoFactoryParameterConstraint
+class GeneralizedParetoFactoryParameterConstraint : public EvaluationImplementation
 {
+public:
   /** Constructor from a sample and a derivative factor estimate */
-  GeneralizedParetoFactoryParameterConstraint(const Sample & sortedSample)
-    : sampleY_(0, 1)
+  GeneralizedParetoFactoryParameterConstraint() : EvaluationImplementation() {}
+  explicit GeneralizedParetoFactoryParameterConstraint(const Sample & sortedSample)
+    : EvaluationImplementation()
+    , sampleY_(0, 1)
     , size_(sortedSample.getSize())
   {
     sampleY_ = Sample(size_ - 2, 1);
@@ -162,9 +165,14 @@ struct GeneralizedParetoFactoryParameterConstraint
     }
   };
 
-  Point computeConstraint(const Point & parameter) const
+  GeneralizedParetoFactoryParameterConstraint * clone() const override { return new GeneralizedParetoFactoryParameterConstraint(*this); }
+  UnsignedInteger getInputDimension() const override { return 1; }
+  UnsignedInteger getOutputDimension() const override { return 1; }
+
+  Point operator()(const Point & parameter) const override
   {
     const Scalar gamma = parameter[0];
+//     std::cout << "GeneralizedParetoFactoryParameterConstraint::gamma=" << gamma << std::endl;
     // Separate the small gamma case for stability purpose
     if (std::abs(gamma) < 1.0e-4)
     {
@@ -176,6 +184,7 @@ struct GeneralizedParetoFactoryParameterConstraint
         const Scalar yLogAlphaJ = sampleY_(j, 0) * logAlphaJ;
         exponentialRegressionLogLikelihood += std::log(-logAlphaJ) + yLogAlphaJ + 0.5 * gammaLogAlphaJ * (1.0 + yLogAlphaJ + gammaLogAlphaJ * (1.0 / 12.0 + yLogAlphaJ / 3.0 + gammaLogAlphaJ * yLogAlphaJ / 12.0));
       }
+//       std::cout << "GeneralizedParetoFactoryParameterConstraint::computeConstraint small=" << -exponentialRegressionLogLikelihood << std::endl;
       return Point(1, -exponentialRegressionLogLikelihood);
     }
     // Large gamma case
@@ -185,9 +194,11 @@ struct GeneralizedParetoFactoryParameterConstraint
       const Scalar alphaJ = (1.0 - std::pow((j + 1.0) / size_, gamma)) / gamma;
       exponentialRegressionLogLikelihood += std::log(alphaJ) - alphaJ * sampleY_(j, 0);
     }
+//     std::cout << "GeneralizedParetoFactoryParameterConstraint::computeConstraint large=" << -exponentialRegressionLogLikelihood << std::endl;
     return Point(1, -exponentialRegressionLogLikelihood);
   }
 
+private:
   Sample sampleY_;
   UnsignedInteger size_;
 };
@@ -195,17 +206,14 @@ struct GeneralizedParetoFactoryParameterConstraint
 /* Algorithm associated with the method of exponential regression */
 GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(const Sample & sample) const
 {
-  LOGINFO("Using method of exponential regression");
+// 	std::cout <<"Using method of exponential regression"<<std::endl;
   const Scalar mu = sample.computeMean()[0];
   if (!SpecFunc::IsNormal(mu)) throw InvalidArgumentException(HERE) << "Error: cannot build an GeneralizedPareto distribution if data contains NaN or Inf";
   const UnsignedInteger size = sample.getSize();
   const Scalar xMin = sample.getMin()[0];
   const Scalar u = xMin - std::abs(xMin) / (2.0 + size);
   const Sample sortedSample(sample.sort(0) - Point(1, u));
-  GeneralizedParetoFactoryParameterConstraint constraint(sortedSample);
-  Function f(bindMethod<GeneralizedParetoFactoryParameterConstraint, Point, Point>(constraint, &GeneralizedParetoFactoryParameterConstraint::computeConstraint, 1, 1));
-  CenteredFiniteDifferenceGradient gradient(1.0e-5, f.getEvaluation());
-  f.setGradient(gradient);
+  const Function f(new GeneralizedParetoFactoryParameterConstraint(sortedSample));
 
   // Define Optimization problem
   OptimizationProblem problem(f);
@@ -239,7 +247,7 @@ GeneralizedPareto GeneralizedParetoFactory::buildMethodOfExponentialRegression(c
 /* Algorithm associated with the method of modified moments */
 GeneralizedPareto GeneralizedParetoFactory::buildMethodOfProbabilityWeightedMoments(const Sample & sample) const
 {
-  LOGINFO("Using method of probability weighted moment");
+// 	std::cout << "Using method of probability weighted moment"<<std::endl;
   const UnsignedInteger size = sample.getSize();
   const Scalar xMin = sample.getMin()[0];
   const Scalar u = xMin - std::abs(xMin) / (2.0 + size);
