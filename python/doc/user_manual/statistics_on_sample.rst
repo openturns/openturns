@@ -47,7 +47,7 @@ Building distributions from samples
     HistogramFactory
     InverseNormalFactory
 
-    :template: class.rst_t
+    :template: classWithPlot.rst_t
 
     KernelSmoothing
 

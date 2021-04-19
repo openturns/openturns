@@ -9,7 +9,7 @@ The correlation matrix :math:`\mat{R}_n` is first estimated using Kendall's tau 
 
     R_{n,ij} = \sin\left(\frac{\pi}{2}\Hat{\tau}_{n,ij}\right)_{\strut}
 
-and if it fails, it uses Spearman's correlation:
+and if it fails, using Spearman's correlation:
 
 .. math::
 

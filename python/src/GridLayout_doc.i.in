@@ -143,4 +143,4 @@ nbColumns : int
 
 Notes
 -----
-If the new layout contains less graphs than the old layout, the remaing graphs are removed from the layout."
+If the new layout contains fewer graphs than the old layout, the remaining graphs are removed from the layout."

@@ -32,6 +32,9 @@ legend : str
 
 Examples
 --------
+
+Using the first constructor:
+
 >>> import openturns as ot
 >>> f = ot.SymbolicFunction(['x', 'y'], ['exp(-sin(cos(y)^2*x^2+sin(x)^2*y^2))'])
 >>> # Generate the data for the curves to be drawn
@@ -47,7 +50,35 @@ Examples
 >>> # Create the contour
 >>> myContour = ot.Contour(nX + 2, nY + 2, data)
 >>> myContour.setLevels(levels)
+>>> myGraph.add(myContour)
+
+Using the second constructor:
+
+>>> import openturns as ot
+>>> g = ot.SymbolicFunction(['R','S'],['(R * S)^0.75'])
+>>> # Generate the data for the curves to be drawn
+>>> nX = 10
+>>> nY = 10
+>>> lowerBound = [1.6, 0.0]
+>>> upperBound = [6.3, 4.3]
+>>> bounds = ot.Interval(lowerBound, upperBound)
+>>> boxExperiment = ot.Box([nX, nY], bounds)
+>>> inputSample = boxExperiment.generate()
+>>> outputSample = g(inputSample)
+>>> #Generate the grid for the contour plot
+>>> xstep = (upperBound[0] - lowerBound[0])/(nX + 1)
+>>> x = ot.RegularGrid(lowerBound[0], xstep, nX + 2).getVertices()
+>>> ystep = (upperBound[1] - lowerBound[1])/(nY + 1)
+>>> y = ot.RegularGrid(lowerBound[1], ystep, nY + 2).getVertices()
+>>> #Create an empty graph
+>>> myGraph = ot.Graph('Complex iso lines', 'u1', 'u2', True, '')
+>>> levels = ot.Point([-1.0, 1.0, 3.0, 5.0, 7.0, 9.0])
+>>> labels = ['Level 0', 'Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5']
+>>> drawLabels = True
+>>> # Create the contour and plot it
+>>> myContour = ot.Contour(x, y, outputSample, levels, labels, drawLabels)
 >>> myGraph.add(myContour)"
+
 
 // ---------------------------------------------------------------------
 
