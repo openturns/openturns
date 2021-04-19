@@ -52,6 +52,10 @@ private:
   // Buffer size for writing hdf5 slabs
   const UnsignedInteger BufferSize = 1048576;
 
+  // 30kB (max recommended dataset header size)
+  // https://support.hdfgroup.org/HDF5/doc/UG/HDF5_Users_Guide.pdf
+  const UnsignedInteger MaxHeaderSize = 30720;
+
   template <class CPP_Type> inline std::vector<CPP_Type> & getBuffer();
 
   FileName h5FileName_;
@@ -125,10 +129,22 @@ void XMLH5StorageManagerImplementation::writeToH5(const String & dataSetName)
   {
     //Dataset does not exist, need to create it and initialize it with first chunk
     const hsize_t maxdims[1] = { H5S_UNLIMITED };
-    //Set dataspace to unlimited
-    H5::DataSpace dsp(1, dims, maxdims);
-    //Propagate dataspace properties to dataset
+    H5::DataSpace dsp;
     H5::DSetCreatPropList prop;
+    if (getBuffer<CPP_Type>().size() < BufferSize)
+    {
+      dsp = H5::DataSpace(1, dims, dims);
+      // Set dataspace compact if dataset can fit into dataset header
+      // Set it contiguous otherwise
+      if (getBuffer<CPP_Type>().size()*sizeof(CPP_Type) < MaxHeaderSize)
+        prop.setLayout(H5D_COMPACT);
+      else
+        prop.setLayout(H5D_CONTIGUOUS);
+    }
+    //Set dataspace to unlimited if full buffer
+    else
+      dsp = H5::DataSpace(1, dims, maxdims);
+    //Propagate dataspace properties to dataset
     prop.setChunk(1, dims);
     //Create new dataset and write it
     H5::DataSet dset(h5File.createDataSet(dataSetName, getDataType<CPP_Type>(), dsp, prop));
