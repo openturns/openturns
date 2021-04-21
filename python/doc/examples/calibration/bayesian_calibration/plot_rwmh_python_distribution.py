@@ -72,13 +72,13 @@ class CensoredWeibull(ot.PythonDistribution):
     Each data point x is assumed 2D, with:
         x[0]: observed functioning time
         x[1]: nature of x[0]:
-            if x[1]=0: x[0] is a time-to failure
-            if x[1]=1: x[0] is a censoring time
+            if x[1]=0: x[0] is a censoring time
+            if x[1]=1: x[0] is a time-to failure
     """
-    def __init__(self, alpha=2.0, beta=5000.0):
+    def __init__(self, beta=5000.0, alpha=2.0):
         super(CensoredWeibull, self).__init__(2)
-        self.alpha = alpha
         self.beta = beta
+        self.alpha = alpha
 
     def getRange(self):
         return ot.Interval([0, 0], [1, 1], [True]*2, [False, True])
@@ -92,11 +92,11 @@ class CensoredWeibull(ot.PythonDistribution):
         return log_pdf
 
     def setParameter( self, parameter ):
-        self.alpha = parameter[0]
-        self.beta = parameter[1]
+        self.beta = parameter[0]
+        self.alpha = parameter[1]
 
     def getParameter( self ):
-        return [self.alpha, self.beta]
+        return [self.beta, self.alpha]
 
 # %%
 # Convert to :class:`~openturns.Distribution`
@@ -130,11 +130,11 @@ alpha_min, alpha_max = 0.5, 3.8
 a_beta, b_beta = 2, 2e-4
 
 priorCopula = ot.IndependentCopula(2)# prior independence
-priorMarginals = []# prior marginals
-priorMarginals.append(ot.Uniform(alpha_min, alpha_max))# uniform prior for alpha
-priorMarginals.append(ot.Gamma(a_beta, b_beta))# Gamma prior pour beta
+priorMarginals = [] # prior marginals
+priorMarginals.append(ot.Gamma(a_beta, b_beta)) # Gamma prior for beta
+priorMarginals.append(ot.Uniform(alpha_min, alpha_max)) # uniform prior for alpha
 prior=ot.ComposedDistribution( priorMarginals, priorCopula )
-prior.setDescription(['alpha','beta'])
+prior.setDescription(['beta','alpha'])
 
 
 
@@ -144,7 +144,7 @@ prior.setDescription(['alpha','beta'])
 
 # %%
 
-initialState = ot.Point([ 0.5*(alpha_max - alpha_min), a_beta / b_beta ])
+initialState = ot.Point([a_beta / b_beta, 0.5*(alpha_max - alpha_min)])
 
 # %%
 # For our random walk proposal distributions, we choose normal steps, with standard deviation equal to roughly :math:`10\%` of the prior range (for the uniform prior) or standard deviation (for the normal prior).
@@ -153,8 +153,8 @@ initialState = ot.Point([ 0.5*(alpha_max - alpha_min), a_beta / b_beta ])
 # %%
 
 proposal=[]
-proposal.append( ot.Normal(0., 0.1 * ( alpha_max - alpha_min ) ) )
 proposal.append( ot.Normal(0., 0.1 * np.sqrt( a_beta / b_beta**2 ) ) )
+proposal.append( ot.Normal(0., 0.1 * ( alpha_max - alpha_min ) ) )
 
 # %%
 # Sample from the posterior distribution
