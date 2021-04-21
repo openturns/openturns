@@ -1,3 +1,4 @@
+Expected: XMLH5StorageManager is used in study file. XMLStorageManager is expected
 Save the study...
 saved  Point = class=Point name=point dimension=2 values=[1000,1000]
 loaded Point = class=Point name=point dimension=3 values=[10,11,12]

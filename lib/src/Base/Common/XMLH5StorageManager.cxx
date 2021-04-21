@@ -236,6 +236,22 @@ XMLH5StorageManager * XMLH5StorageManager::clone() const
   return new XMLH5StorageManager(*this);
 }
 
+
+void XMLH5StorageManager::checkStorageManager()
+{
+  if (XML::GetAttributeByName( p_state_->root_, XML_STMGR::manager_attribute::Get()) !=
+     "XMLH5StorageManager")
+    throw StudyFileParsingException(HERE) << XML::GetAttributeByName( p_state_->root_, XML_STMGR::manager_attribute::Get())
+                                          << " is used in study file. XMLH5StorageManager is expected";
+}
+
+
+void XMLH5StorageManager::setStorageManager()
+{
+  XML::SetAttribute(p_state_->root_, XML_STMGR::manager_attribute::Get(), "XMLH5StorageManager");
+}
+
+
 void XMLH5StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar value)
 {
   p_implementation_->addIndexedValue(p_obj, index, value);
