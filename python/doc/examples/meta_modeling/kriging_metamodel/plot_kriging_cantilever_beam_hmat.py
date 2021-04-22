@@ -90,7 +90,7 @@ scaleOptimizationBounds = ot.Interval([1.0, 1.0, 1.0, 1.0e-10], [1.0e11, 1.0e3, 
 
 # %%
 # Finally, we use the `KrigingAlgorithm` class to create the Kriging metamodel.
-# It requires a training sample, a covariance kernel and a trend basis as input arguments. 
+# It requires a training sample, a covariance kernel and a trend basis as input arguments.
 # We need to set the initial scale parameter for the optimization. The upper bound of the input domain is a sensible choice here.
 # We must not forget to actually set the optimization bounds defined above.
 

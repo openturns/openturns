@@ -25,6 +25,12 @@
  * Removed StationaryCovarianceModel
  * CovarianceModel.computeAsScalar allows scalars
  * Swapped SimulatedAnnealingLHS constructor SpaceFilling/TemperatureProfile arguments
+ * Added EfficientGlobalOptimization::getKrigingResult, gets the updated version of the KrigingResult passed to the constructor
+ * Deprecated MultiStart::setStartingPoints, use MultiStart::setStartingSample instead
+ * Deprecated MultiStart::getStartingPoints, use MultiStart::getStartingSample instead
+ * MultiStart::setStartingPoint throws (previously did nothing)
+ * MultiStart::getStartingPoint throws (previously did nothing)
+
 
 === Documentation ===
  * Fixed example and plot of Kolmogorov statistics.

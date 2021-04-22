@@ -17,8 +17,8 @@ Choose the trend basis of a kriging metamodel
 
 # %%
 import openturns as ot
+from openturns.viewer import View
 ot.RandomGenerator.SetSeed(0)
-from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -76,7 +76,7 @@ scaleOptimizationBounds = ot.Interval([1.0, 1.0, 1.0, 1.0e-10], [1.0e11, 1.0e3, 
 
 # %%
 # Finally, we use the `KrigingAlgorithm` class to create the Kriging metamodel.
-# It requires a training sample, a covariance kernel and a trend basis as input arguments. 
+# It requires a training sample, a covariance kernel and a trend basis as input arguments.
 # We need to set the initial scale parameter for the optimization. The upper bound of the input domain is a sensible choice here.
 # We must not forget to actually set the optimization bounds defined above.
 
@@ -186,22 +186,15 @@ def drawMetaModelValidation(X_test, Y_test, krigingMetamodel, title):
 
 
 # %%
-import pylab as pl
-from openturns.viewer import View
-
-# %%
-fig = pl.figure(figsize=(12, 4))
-ax1 = fig.add_subplot(1, 3, 1)
+grid = ot.GridLayout(1, 3)
+grid.setTitle("Different trends")
 graphConstant = drawMetaModelValidation(X_test, Y_test, krigingWithConstantTrend, "Constant")
-_ = View(graphConstant, figure=fig, axes=[ax1])
-ax2 = fig.add_subplot(1, 3, 2)
 graphLinear = drawMetaModelValidation(X_test, Y_test, krigingWithLinearTrend, "Linear")
-_ = View(graphLinear, figure=fig, axes=[ax2])
-ax3 = fig.add_subplot(1, 3, 3)
 graphQuadratic = drawMetaModelValidation(X_test, Y_test, krigingWithQuadraticTrend, "Quadratic")
-_ = View(graphQuadratic, figure=fig, axes=[ax3])
-_ = fig.suptitle("Different trends")
-plt.show()
+grid.setGraph(0, 0, graphConstant)
+grid.setGraph(0, 1, graphLinear)
+grid.setGraph(0, 2, graphQuadratic)
+_ = View(grid, figure_kw={'figsize':(13, 4)})
 
 # %%
 # We observe that the three trends perform very well in this case. With more coefficients, the Kriging metamodel is more flexibile and can adjust better to the training sample. This does not mean, however, that the trend coefficients will provide a good fit for the validation sample. 

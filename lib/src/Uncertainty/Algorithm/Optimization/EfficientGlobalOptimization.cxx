@@ -228,22 +228,11 @@ void EfficientGlobalOptimization::run()
   OptimizationResult result(getProblem());
 
   UnsignedInteger iterationNumber = 0;
+  // use the provided kriging result at first iteration
+  KrigingResult metaModelResult(krigingResult_);
+
   while ((!exitLoop) && (evaluationNumber < getMaximumEvaluationNumber()))
   {
-    // use the provided kriging result at first iteration
-    KrigingResult metaModelResult(krigingResult_);
-    if (evaluationNumber > 0)
-    {
-      KrigingAlgorithm algo(inputSample, outputSample, metaModelResult.getCovarianceModel(), krigingResult_.getBasisCollection());
-      LOGINFO(OSS() << "Rebuilding kriging ...");
-      algo.setOptimizeParameters((parameterEstimationPeriod_ > 0) && ((evaluationNumber % parameterEstimationPeriod_) == 0));
-      if (hasNoise)
-        algo.setNoise(noise);
-      algo.run();
-      LOGINFO(OSS() << "Rebuilding kriging - done");
-      metaModelResult = algo.getResult();
-    }
-
     Scalar optimalValueSubstitute = optimalValue;
     if (hasNoise)
     {
@@ -301,7 +290,15 @@ void EfficientGlobalOptimization::run()
     if (problem.hasBounds())
       maximizeImprovement.setBounds(problem.getBounds());
     solver_.setProblem(maximizeImprovement);
-    solver_.setStartingPoint(optimizer);
+    try
+    {
+      // If the solver is single start, we can use its setStartingPoint method
+      solver_.setStartingPoint(optimizer);
+    }
+    catch (NotDefinedException &) // setStartingPoint is not defined for the solver
+    {
+      // Nothing to do if setStartingPoint is not defined
+    }
     solver_.run();
     const OptimizationResult improvementResult(solver_.getResult());
 
@@ -398,7 +395,21 @@ void EfficientGlobalOptimization::run()
         LOGWARN(OSS() << "EGO was stopped by user");
       }
     }
-  }
+
+  if (evaluationNumber > 0)
+    {
+      KrigingAlgorithm algo(inputSample, outputSample, metaModelResult.getCovarianceModel(), metaModelResult.getBasisCollection());
+      LOGINFO(OSS() << "Rebuilding kriging ...");
+      algo.setOptimizeParameters((parameterEstimationPeriod_ > 0) && ((evaluationNumber % parameterEstimationPeriod_) == 0));
+      if (hasNoise)
+        algo.setNoise(noise);
+      algo.run();
+      LOGINFO(OSS() << "Rebuilding kriging - done");
+      metaModelResult = algo.getResult();
+    }
+  } // while
+
+  krigingResult_ = metaModelResult; // update krigingResult_ to take new points into account
   result.setOptimalPoint(optimizer);
   result.setOptimalValue(Point(1, optimalValue));
   result.setEvaluationNumber(evaluationNumber);
@@ -531,6 +542,14 @@ Function EfficientGlobalOptimization::getNoiseModel() const
 {
   return noiseModel_;
 }
+
+
+/* Kriging result accessor (especially useful after run() has been called) */
+KrigingResult EfficientGlobalOptimization::getKrigingResult() const
+{
+  return krigingResult_;
+}
+
 
 /* Method save() stores the object through the StorageManager */
 void EfficientGlobalOptimization::save(Advocate & adv) const

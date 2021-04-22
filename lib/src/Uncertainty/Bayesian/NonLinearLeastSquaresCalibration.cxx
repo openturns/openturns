@@ -307,7 +307,16 @@ Point NonLinearLeastSquaresCalibration::run(const Sample & inputObservations,
   LeastSquaresProblem problem(residualFunction);
   algorithm_.setVerbose(true);
   algorithm_.setProblem(problem);
-  algorithm_.setStartingPoint(candidate);
+  try
+  {
+    // If the solver is single start, we can use its setStartingPoint method
+    algorithm_.setStartingPoint(candidate);
+  }
+  catch (NotDefinedException &) // setStartingPoint is not defined for the solver
+  {
+    LOGWARN(OSS() << "Candidate=" << candidate << " is ignored because algorithm "
+                  << algorithm_.getImplementation()->getClassName() << " has no setStartingPoint method.");
+  }
   algorithm_.run();
   Point optimalPoint(algorithm_.getResult().getOptimalPoint());
   // If asked for the residual values

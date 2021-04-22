@@ -388,7 +388,16 @@ Point GaussianNonLinearCalibration::run(const Sample & inputObservations,
   LeastSquaresProblem problem(residualFunction);
   algorithm_.setVerbose(true);
   algorithm_.setProblem(problem);
-  algorithm_.setStartingPoint(getCandidate());
+  try
+  {
+    // If the solver is single start, we can use its setStartingPoint method
+    algorithm_.setStartingPoint(getCandidate());
+  }
+  catch (NotDefinedException &) // setStartingPoint is not defined for the solver
+  {
+    LOGWARN(OSS() << "Candidate=" << getCandidate() << " is ignored because algorithm "
+                  << algorithm_.getImplementation()->getClassName() << " has no setStartingPoint method.");
+  }
   algorithm_.run();
   const Point thetaStar(algorithm_.getResult().getOptimalPoint());
   return thetaStar;

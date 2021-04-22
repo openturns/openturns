@@ -29,6 +29,7 @@
 #include "openturns/LinearFunction.hxx"
 #include "openturns/NonCenteredFiniteDifferenceGradient.hxx"
 #include "openturns/TNC.hxx"
+#include "openturns/Cobyla.hxx"
 #ifdef OPENTURNS_HAVE_ANALYTICAL_PARSER
 #include "openturns/SymbolicFunction.hxx"
 #else
@@ -38,6 +39,7 @@
 #include "openturns/ComposedFunction.hxx"
 #include "openturns/DualLinearCombinationFunction.hxx"
 #include "openturns/MemoizeFunction.hxx"
+#include "openturns/MultiStart.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -363,8 +365,11 @@ void GeneralLinearModelAlgorithm::checkYCentered(const Sample & Y)
 
 void GeneralLinearModelAlgorithm::initializeDefaultOptimizationAlgorithm()
 {
-  String solverName(ResourceMap::GetAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm"));
+  const String solverName(ResourceMap::GetAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm"));
   solver_ = OptimizationAlgorithm::Build(solverName);
+  Cobyla* cobyla = dynamic_cast<Cobyla *>(solver_.getImplementation().get());
+  if (cobyla)
+    cobyla->setIgnoreFailure(true);
   TNC* tnc = dynamic_cast<TNC *>(solver_.getImplementation().get());
   if (tnc)
     tnc->setIgnoreFailure(true);
@@ -562,8 +567,16 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   OptimizationProblem problem(reducedLogLikelihoodFunction);
   problem.setMinimization(false);
   problem.setBounds(optimizationBounds_);
-  solver_.setStartingPoint(initialParameters);
   solver_.setProblem(problem);
+  try
+  {
+    // If the solver is single start, we can use its setStartingPoint method
+    solver_.setStartingPoint(initialParameters);
+  }
+  catch (NotDefinedException &) // setStartingPoint is not defined for the solver
+  {
+    // Nothing to do if setStartingPoint is not defined
+  }
   LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver_);
   solver_.run();
   const OptimizationAlgorithm::Result result(solver_.getResult());

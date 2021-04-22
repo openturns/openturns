@@ -35,8 +35,6 @@ Kriging :configure the optimization solver
 
 # %%
 import openturns as ot
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -127,7 +125,7 @@ basic_covariance_model
 solver = algo.getOptimizationAlgorithm()
 
 # %%
-# By default, the optimizer is the TNC algorithm with bound constraints. 
+# Get the default optimizer.
 
 # %%
 solverImplementation = solver.getImplementation()
@@ -335,6 +333,7 @@ multiStartSolver = ot.MultiStart(solver, starting_points)
 
 # %%
 algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
+algo.setOptimizationBounds(bounds)
 algo.setOptimizationAlgorithm(multiStartSolver)
 algo.run()
 
