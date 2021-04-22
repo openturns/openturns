@@ -23,7 +23,6 @@
 %include TypedCollectionInterfaceObject.i
 %include Study.i
 %include StorageManager.i
-//%include BinaryStorageManager.i
 #ifdef OPENTURNS_HAVE_LIBXML2
 %include XMLStorageManager.i
 #endif

@@ -57,6 +57,25 @@ int main(int, char *[])
   const char fileName[] = "myStudyH5.xml";
   const char h5fileName[] = "myStudyH5.h5";
 
+  try {
+
+    // Using wrong type of StorageManager when loading study
+    Study study(fileName);
+    study.setStorageManager(XMLH5StorageManager(fileName));
+    Point point(2, 1.0);
+    study.add("point", point);
+    study.save();
+    Study study2(fileName);
+    study2.setStorageManager(XMLStorageManager(fileName));
+    study2.load();
+
+    // cleanup
+    Os::Remove(fileName);
+    Os::Remove(h5fileName);
+  } catch (std::exception& exc) {
+    std::cout << "Expected: " << exc.what() << std::endl;
+  }
+
   try
   {
 

@@ -115,6 +115,12 @@ public:
    */
   void read() override;
 
+  /** Set/Check which storage manager is being used
+   * @internal
+   */
+  virtual void setStorageManager();
+  virtual void checkStorageManager();
+
   /** Write the internal representation
    * @internal
    */
@@ -216,6 +222,10 @@ protected:
   /** The internal state of the manager */
   Pointer<XMLStorageManagerState> p_state_;
 
+  /** The internal document */
+  Pointer<XMLDoc> p_document_;
+
+
 private:
 
   struct XMLReadObject
@@ -228,9 +238,6 @@ private:
 
   /** The file we read from/write to */
   FileName fileName_;
-
-  /** The internal document */
-  Pointer<XMLDoc> p_document_;
 
   /** Methods to read DOM elements */
   XMLReadObject readDOMElement();
@@ -249,15 +256,15 @@ private:
 
 namespace XML_STMGR
 {
-DEFINE_TAG( root,   "openturns-study"   );
-DEFINE_TAG( bool,   "bool"              );
-DEFINE_TAG( unsignedlong,   "unsignedlong"      );
-DEFINE_TAG( numericalscalar,   "numericalscalar"   );
-DEFINE_TAG( numericalcomplex,   "numericalcomplex"  );
-DEFINE_TAG( real,   "real"              );
-DEFINE_TAG( imag,   "imag"              );
-DEFINE_TAG( string,   "string"            );
-DEFINE_TAG( object,   "object"            );
+DEFINE_TAG( root,             "openturns-study"   );
+DEFINE_TAG( bool,             "bool"              );
+DEFINE_TAG( unsignedlong,     "unsignedlong"      );
+DEFINE_TAG( numericalscalar,  "numericalscalar"   );
+DEFINE_TAG( numericalcomplex, "numericalcomplex"  );
+DEFINE_TAG( real,             "real"              );
+DEFINE_TAG( imag,             "imag"              );
+DEFINE_TAG( string,           "string"            );
+DEFINE_TAG( object,           "object"            );
 } // namespace XML_STMGR
 
 /************ Attributes ************/
@@ -269,13 +276,14 @@ DEFINE_TAG( object,   "object"            );
 namespace XML_STMGR
 {
 DEFINE_ATTRIBUTE( StudyVisible, "StudyVisible"  );
-DEFINE_ATTRIBUTE( StudyLabel, "StudyLabel"    );
-DEFINE_ATTRIBUTE( version, "version"       );
-DEFINE_ATTRIBUTE( class, "class"         );
-DEFINE_ATTRIBUTE( id, "id"            );
-DEFINE_ATTRIBUTE( name, "name"          );
-DEFINE_ATTRIBUTE( index, "index"         );
-DEFINE_ATTRIBUTE( member, "member"        );
+DEFINE_ATTRIBUTE( StudyLabel,   "StudyLabel"    );
+DEFINE_ATTRIBUTE( version,      "version"       );
+DEFINE_ATTRIBUTE( class,        "class"         );
+DEFINE_ATTRIBUTE( id,           "id"            );
+DEFINE_ATTRIBUTE( name,         "name"          );
+DEFINE_ATTRIBUTE( index,        "index"         );
+DEFINE_ATTRIBUTE( member,       "member"        );
+DEFINE_ATTRIBUTE( manager,      "manager"       );
 } // namespace XML_STMGR
 
 struct XMLInternalObject : public StorageManager::InternalObject
