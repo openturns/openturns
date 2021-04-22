@@ -37,6 +37,39 @@ and the :math:`n`-dimensional one :math:`\vect{X} = (X_i)_{i \leq n}` writes as 
 
 where :math:`\epsilon` is the residual, supposed to follow the standard Normal
 distribution, :math:`\phi_i` the i-th element of the basis.
+
+
+Examples
+--------
+Definition of the data set
+
+>>> import openturns as ot
+>>> ot.RandomGenerator.SetSeed(0)
+>>> distribution = ot.Normal()
+>>> func = ot.SymbolicFunction(['x1','x2', 'x3'], ['x1 + x2 + sin(x2 * 2 * pi_)/5 + 1e-3 * x3'])
+>>> dimension = 3
+>>> distribution = ot.ComposedDistribution([ot.Normal()]*dimension)
+>>> input_sample = distribution.getSample(20)
+>>> output_sample = func(input_sample)
+
+Creation of a basis
+
+>>> functions = []
+>>> input_description = ['x1','x2', 'x3']
+>>> functions.append(ot.SymbolicFunction(input_description, ['1.0'])) #Constant term
+>>> for i in range(dimension): #Linear terms
+...     functions.append(ot.SymbolicFunction(input_description, [input_description[i]])) 
+>>> basis = ot.Basis(functions)
+
+Stepwise regression
+
+>>> minimalIndices = [0]
+>>> direction = 1 #Forward selection
+>>> penalty = 2.0 #Akaike Information Criterion, log(n) can be used for a BIC
+>>> algo_forward = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, direction)
+>>> algo_forward.setPenalty(penalty)
+>>> algo_forward.run()
+>>> result_forward = algo_forward.getResult()
 "
 
 // ---------------------------------------------------------------------

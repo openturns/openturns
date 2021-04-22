@@ -63,6 +63,7 @@
  * #1742 (The example which shows how to set the figure size is wrong.)
  * #1751 (DrawCorrelationCoefficients has a wrong Text height)
  * #1752 (Error while estimating the reduced log-likelihood when using a StationaryFunctionalCovarianceModel)
+ * #1758 (The LinearModelStepwiseAlgorithm has no example)
  * #1759 (Kriging model with StationaryFunctionalCovarianceModel might provide bad results)
  * #1768 (Bug in ExponentiallyDampedCosineModel & SphericalModel)
  * #1771 (GridLayout hides the titles in the graph)
