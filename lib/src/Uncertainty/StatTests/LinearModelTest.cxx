@@ -70,20 +70,41 @@ TestResult LinearModelTest::LinearModelFisher(const Sample & firstSample,
   // For the Fisher test, we need both Sum of Squared Explained (SSE)
   // and the Sum of Squared Residuals
 
-  const Scalar sumSquaredExplained = (yHat - secondSample.computeMean()).computeRawMoment(2)[0] * firstSample.getSize() ;
-  const Scalar sumSquaredResiduals = residualSample.computeRawMoment(2)[0] * firstSample.getSize() ;
-
-
+  // Get the number of parameter p
+  const UnsignedInteger p = linearModelResult.getCoefficients().getSize();
+  // Check if there is an intercept
+  const Bool hasIntercept = linearModelResult.hasIntercept();
+  // Degrees of freedom (model)
+  UnsignedInteger dofModel = p;
+  // Correction of dofModel if intercept
+  if ((hasIntercept) && (p == 1))
+    throw NotDefinedException(HERE) << "Only intercept in the basis. Fisher Test is not defined is such a case.";
+  // Correction of dofModel if intercept
+  if (hasIntercept)
+    dofModel -= 1;
   // The statistical test checks the nullity of the regression linear model coefficients
   // H0 : Beta_i = 0
   // H1 : Beta_i < 0 or Beta_i > 0
+  // Degrees of freedom (noise)
+  // Sum of Squared Errors (SSE) or Sum of Squared Residuals (SSR/RSS)
+  const Scalar SSR = residualSample.computeRawMoment(2)[0] * size;
+  // Sum of Squared Total (SST) = n * var(Y) or n * E(Y^2) depending on intercept
+  Scalar SST = 1.0;
+  if (hasIntercept)
+    SST = secondSample.computeCenteredMoment(2)[0] * size;
+  else
+    SST = secondSample.computeRawMoment(2)[0] * size;
+  // Sum of Squared Model (SSM) = SST - SSE
+  const Scalar SSM = SST - SSR;
+  // Define the statistic
+  // numerator = MSM := SSM/DFM
+  const Scalar numerator = SSM / dofModel;
+  // denominator =  MSE = SSE/DO
+  const Scalar denominator = SSR / dof;
   // The statistics follows a Fisher distribution
-  const Scalar numerator = sumSquaredExplained / (size - dof - 1);
-  const Scalar denomerator = sumSquaredResiduals / dof;
-
-  const Scalar statistic = numerator / denomerator;
+  const Scalar statistic = numerator / denominator;
   Log::Debug(OSS() << "F-statistic = " << statistic);
-  const Scalar pValue =  FisherSnedecor(size - dof - 1, dof).computeComplementaryCDF(statistic);
+  const Scalar pValue = FisherSnedecor(dofModel, dof).computeComplementaryCDF(statistic);
   return TestResult("Fisher", pValue > level, pValue, level, statistic);
 }
 
