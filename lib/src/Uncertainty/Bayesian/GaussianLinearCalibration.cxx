@@ -169,7 +169,6 @@ void GaussianLinearCalibration::run()
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const LinearFunction residualFunction(getCandidate(), deltaY, gradientObservations_);
   result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, Normal(Point(errorCovariance_.getDimension()), errorCovariance_), inputObservations_, outputObservations_, residualFunction);
-  computeOutputAtPriorAndPosterior();
 }
 
 /* Model observations accessor */

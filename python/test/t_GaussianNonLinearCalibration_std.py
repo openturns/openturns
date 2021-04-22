@@ -76,3 +76,12 @@ result = algo.getResult()
 ot.PlatformInfo.SetNumericalPrecision(2)
 print("result (unobs.)=", result.getParameterMAP())
 print("error=", algo.getResult().getObservationsError())
+
+# test output at mean
+modelX.setParameter(algo.getResult().getParameterPrior().getMean())
+outputAtPriorMean = modelX(x)
+ott.assert_almost_equal(algo.getResult().getOutputAtPriorMean(), outputAtPriorMean)
+
+modelX.setParameter(algo.getResult().getParameterPosterior().getMean())
+outputAtPosteriorMean = modelX(x)
+ott.assert_almost_equal(algo.getResult().getOutputAtPosteriorMean(), outputAtPosteriorMean)

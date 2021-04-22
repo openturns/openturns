@@ -95,7 +95,7 @@ public:
 
 
   /** Distribution collection accessor */
-  const DistributionCollection & getDistributionCollection() const;
+  DistributionCollection getDistributionCollection() const;
 
   /** FFT algorithm accessor */
   FFT getFFTAlgorithm() const;

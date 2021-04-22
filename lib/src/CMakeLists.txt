@@ -12,13 +12,23 @@ add_subdirectory (Uncertainty)
 set_source_files_properties (Base/Func/SpecFunc/Faddeeva.cc PROPERTIES SKIP_UNITY_BUILD_INCLUSION ON)
 
 # Exclude Ceres sources from unity build (templates take much memory)
-set_source_files_properties (Base/Optim/Ceres.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+if (Ceres_FOUND)
+  set_source_files_properties (Base/Optim/Ceres.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
 
 # Exclude Dlib sources from unity build (Lapack re-included)
-set_source_files_properties (Base/Optim/Dlib.cxx Base/Optim/DlibFunctions.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+if (dlib_FOUND)
+  set_source_files_properties (Base/Optim/Dlib.cxx Base/Optim/DlibFunctions.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
+
+if (IPOPT_FOUND)
+  set_source_files_properties (Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
 
 # Exclude Bonmin/Ipopt sources
-set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+if (BONMIN_FOUND)
+  set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
 
 # Exclude LibXML sources
 if (LIBXML2_FOUND)
@@ -41,7 +51,6 @@ if (OPENTURNS_HAVE_EXPRTK)
   endif ()
 endif()
 
-set_source_files_properties (Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COMPILE_DEFINITIONS "HAVE_STDDEF_H") # required for ipopt 3.11
 if ((OPENTURNS_HAVE_BONMIN OR OPENTURNS_HAVE_IPOPT) AND CMAKE_CXX_COMPILER_ID MATCHES "GNU")
   if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7)
     set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=unused-parameter")

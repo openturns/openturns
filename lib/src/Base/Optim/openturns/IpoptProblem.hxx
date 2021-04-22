@@ -25,6 +25,7 @@
 #include "openturns/MemoizeFunction.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 
+#define HAVE_CSTDDEF // for 3.11 in debian
 #include <IpTNLP.hpp>
 
 BEGIN_NAMESPACE_OPENTURNS

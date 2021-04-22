@@ -241,28 +241,27 @@ void MemoizeEvaluation::addCacheContent(const Sample& inSample, const Sample& ou
 
 Sample MemoizeEvaluation::getCacheInput() const
 {
-  Bool cacheEnabled = isCacheEnabled();
+  const Bool cacheEnabled = isCacheEnabled();
   enableCache();
-  PersistentCollection<CacheKeyType> keyColl(p_cache_->getKeys());
+  const PersistentCollection<CacheKeyType> keyColl(p_cache_->getKeys());
   if (!cacheEnabled)
     disableCache();
   Sample inSample(0, getInputDimension());
-  for (UnsignedInteger i = 0; i < keyColl.getSize(); ++ i) inSample.add(keyColl[i]);
+  for (UnsignedInteger i = 0; i < keyColl.getSize(); ++ i)
+    inSample.add(keyColl[i]);
   return inSample;
 }
 
 Sample MemoizeEvaluation::getCacheOutput() const
 {
-  Bool cacheEnabled = isCacheEnabled();
+  const Bool cacheEnabled = isCacheEnabled();
   enableCache();
-  PersistentCollection<CacheValueType> valuesColl(p_cache_->getValues());
-  if (! cacheEnabled)
+  const PersistentCollection<CacheValueType> valuesColl(p_cache_->getValues());
+  if (!cacheEnabled)
     disableCache();
   Sample outSample(0, getOutputDimension());
   for (UnsignedInteger i = 0; i < valuesColl.getSize(); ++ i)
-  {
     outSample.add(valuesColl[i]);
-  }
   return outSample;
 }
 
@@ -342,7 +341,12 @@ void MemoizeEvaluation::save(Advocate & adv) const
   adv.saveAttribute("inputStrategy_", inputStrategy_);
   adv.saveAttribute("outputStrategy_", outputStrategy_);
   adv.saveAttribute("isHistoryEnabled_", isHistoryEnabled_);
-  adv.saveAttribute("cache_", *p_cache_);
+  const Bool cacheEnabled = isCacheEnabled();
+  adv.saveAttribute("cacheEnabled", cacheEnabled);
+  const Sample cacheInput(getCacheInput());
+  const Sample cacheOutput(getCacheOutput());
+  adv.saveAttribute("cacheInput", cacheInput);
+  adv.saveAttribute("cacheOutput", cacheOutput);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -352,7 +356,20 @@ void MemoizeEvaluation::load(Advocate & adv)
   adv.loadAttribute("inputStrategy_", inputStrategy_);
   adv.loadAttribute("outputStrategy_", outputStrategy_);
   adv.loadAttribute("isHistoryEnabled_", isHistoryEnabled_);
-  adv.loadAttribute("cache_", *p_cache_);
+  if (adv.hasAttribute("cacheEnabled"))
+  {
+    Bool cacheEnabled = true;
+    adv.loadAttribute("cacheEnabled", cacheEnabled);
+    Sample cacheInput;
+    Sample cacheOutput;
+    adv.loadAttribute("cacheInput", cacheInput);
+    adv.loadAttribute("cacheOutput", cacheOutput);
+    addCacheContent(cacheInput, cacheOutput); // enables the cache
+    if (!cacheEnabled)
+      disableCache();
+  }
+  else // old approach
+    adv.loadAttribute("cache_", *p_cache_);
 }
 
 END_NAMESPACE_OPENTURNS

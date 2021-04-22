@@ -295,7 +295,6 @@ void NonLinearLeastSquaresCalibration::run()
   parameterPosterior.setDescription(parameterPrior_.getDescription());
   const MemoizeFunction residualFunction(BuildResidualFunction(model_, inputObservations_, outputObservations_));
   result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction);
-  computeOutputAtPriorAndPosterior();
 }
 
 /* Perform a unique estimation */
