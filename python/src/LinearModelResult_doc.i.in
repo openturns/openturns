@@ -212,3 +212,12 @@ adjustedRSquared : float
     Not defined when degrees of freedom is null.
 "
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::LinearModelResult::hasIntercept
+"Returns if intercept is provided in the basis or not.
+
+Returns
+-------
+intercept : Bool
+"
