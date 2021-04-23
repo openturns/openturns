@@ -144,7 +144,7 @@ int main(int, char *[])
       Point x(2, 0.25);
       for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
         error += ((result.lift(coefficients[i]) - P1LagrangeEvaluation(Field(mesh, processSample[i])))(x)).norm();
-      assert_almost_equal(error, 0.0, 0.0, 1.0e-12);
+      assert_almost_equal(error, 0.0, 0.0, 2.0e-12);
     }
   }
   catch (TestFailed & ex)

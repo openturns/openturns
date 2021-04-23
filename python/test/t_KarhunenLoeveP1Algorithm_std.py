@@ -46,7 +46,7 @@ cov2D = ot.AbsoluteExponential([1.0]*2)
 algo = ot.KarhunenLoeveP1Algorithm(mesh, cov2D, 1e-3)
 algo.run()
 result = algo.getResult()
-lambd = result.getEigenValues()
+lambd = result.getEigenvalues()
 KLModesPS = result.getModesAsProcessSample()
 # The output is hidden due to near-zero nonreproducible values
 #print("KL modes (process sample)=", KLModesPS)

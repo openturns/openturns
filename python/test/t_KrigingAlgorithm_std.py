@@ -48,7 +48,7 @@ def test_one_input_one_output():
     # Kriging variance is 0 on learning points
     covariance = result.getConditionalCovariance(X)
     nullMatrix = ot.Matrix(sampleSize, sampleSize)
-    ott.assert_almost_equal(covariance, nullMatrix, 0.0, 1e-14)
+    ott.assert_almost_equal(covariance, nullMatrix, 0.0, 1e-13)
 
     # Kriging variance is non-null on validation points
     validCovariance = result.getConditionalCovariance(X2)
@@ -64,11 +64,11 @@ def test_one_input_one_output():
     # Covariance per marginal & extract variance component
     coll = result.getConditionalMarginalCovariance(X)
     var = [mat[0, 0] for mat in coll]
-    ott.assert_almost_equal(var, [0]*sampleSize, 1e-14, 1e-14)
+    ott.assert_almost_equal(var, [0]*sampleSize, 1e-14, 1e-13)
 
     # Variance per marginal
     var = result.getConditionalMarginalVariance(X)
-    ott.assert_almost_equal(var, ot.Point(sampleSize), 1e-14, 1e-14)
+    ott.assert_almost_equal(var, ot.Point(sampleSize), 1e-14, 1e-13)
 
     # Prediction accuracy
     ott.assert_almost_equal(Y2, result.getMetaModel()(X2), 0.3, 0.0)

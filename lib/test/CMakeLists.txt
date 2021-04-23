@@ -19,7 +19,6 @@
 #
 #
 
-set (REPLACE_EOL " | cat ")
 if (WIN32)
   # replace dos eols
   set (REPLACE_EOL " | tr -d '\\\\015' ")

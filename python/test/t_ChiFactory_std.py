@@ -39,4 +39,7 @@ print("Chi from parameters=", estimatedChi)
 true_dist = ot.Beta(0.9, 2., 3e7, 5e7)
 ot.RandomGenerator.SetSeed(0)
 data = true_dist.getSample(229)
-ot.ChiFactory().build(data)
+try:
+    ot.ChiFactory().build(data)
+except Exception:
+    pass
