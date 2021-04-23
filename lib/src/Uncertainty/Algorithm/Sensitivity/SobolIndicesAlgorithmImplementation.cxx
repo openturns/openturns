@@ -498,7 +498,6 @@ String SobolIndicesAlgorithmImplementation::__repr__() const
 }
 
 // Multiplication and sum of two Samples
-// TODO Write method in Sample ?
 Point SobolIndicesAlgorithmImplementation::computeSumDotSamples(const Sample & x,
     const Sample & y) const
 {

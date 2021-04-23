@@ -124,9 +124,14 @@ Sample SimulatedAnnealingLHS::generateWithRestart(UnsignedInteger nRestart) cons
       //          RandomGenerator::Generate() is called here.
       const Scalar bernoulliTrial = RandomGenerator::Generate();
       const Scalar newCriterion = spaceFilling_.perturbLHS(standardOptimalDesign, optimalValue, row1, row2, columnIndex);
-      const Scalar criteriaDifference = std::min(std::exp((optimalValue - newCriterion) / T), 1.0);
+      Scalar criteriaDifference = 1.0;
+      // In case of minimization, we hope newCiterion to be less or equal than current optimalValue
+      if (spaceFilling_.isMinimizationProblem())
+        criteriaDifference = std::min(std::exp((optimalValue - newCriterion) / T), 1.0);
+      else
+        criteriaDifference = std::min(std::exp((newCriterion - optimalValue) / T), 1.0);
       // Decision with respect to criteriaDifference
-      if (optimalValue >= newCriterion)
+      if ((optimalValue >= newCriterion && spaceFilling_.isMinimizationProblem()) || (optimalValue < newCriterion && !spaceFilling_.isMinimizationProblem()))
       {
         std::swap(standardOptimalDesign(row1, columnIndex), standardOptimalDesign(row2, columnIndex));
         optimalValue = newCriterion;
