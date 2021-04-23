@@ -80,7 +80,7 @@ Scalar CorrectedLeaveOneOut::run(LeastSquaresMethod & method,
   const Scalar variance = y.computeVariance()[0];
 
   const UnsignedInteger basisSize = method.getImplementation()->currentIndices_.getSize();
-  if (sampleSize < basisSize) throw InvalidArgumentException(HERE) << "Not enough samples (" << sampleSize << ") required (" << basisSize << ")";
+  if (!(sampleSize >= basisSize)) throw InvalidArgumentException(HERE) << "Not enough samples (" << sampleSize << ") required (" << basisSize << ")";
 
   // Build the design of experiments
   LOGINFO("Build the design matrix");

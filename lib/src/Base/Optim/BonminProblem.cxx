@@ -575,7 +575,7 @@ void BonminProblem::finalize_solution( TMINLP::SolverReturn status,
   bonminExitStatus[3] = "LIMIT_EXCEEDED";
   bonminExitStatus[4] = "USER_INTERRUPT";
   bonminExitStatus[5] = "MINLP_ERROR";
-  if (status >= bonminExitStatus.getSize())
+  if (!(status < bonminExitStatus.getSize()))
     throw InternalException(HERE) << "Bonmin solver exited with status UNKNOWN ERROR";
 
   if (status != SUCCESS)

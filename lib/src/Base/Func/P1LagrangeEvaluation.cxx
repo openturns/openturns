@@ -143,7 +143,7 @@ void P1LagrangeEvaluation::setMesh(const Mesh & mesh)
     for(IndicesCollection::const_iterator vertexIt = simplices.cbegin_at(i), vertexGuard = simplices.cend_at(i); vertexIt != vertexGuard; ++vertexIt)
     {
       const UnsignedInteger vertexIndex = (*vertexIt);
-      if (vertexIndex >= nrVertices) throw InvalidArgumentException(HERE) << "Error: found a vertex index of " << vertexIndex;
+      if (!(vertexIndex < nrVertices)) throw InvalidArgumentException(HERE) << "Error: found a vertex index of " << vertexIndex << " for a total vertex number of " << nrVertices;
       seenVertices[vertexIndex] = 1;
     }
   }
@@ -151,7 +151,7 @@ void P1LagrangeEvaluation::setMesh(const Mesh & mesh)
   for (UnsignedInteger i = 0; i < nrVertices; ++i)
     if (seenVertices[i] == 0)
       pendingVertices.add(i);
-  if (pendingVertices.getSize() > 0)
+  if (pendingVertices.getSize() != 0)
   {
     LOGWARN(OSS() << "There are " << pendingVertices.getSize() << " pending vertices. Check the simplices of the mesh");
     LOGDEBUG(OSS() << "The pending vertices indices are " << pendingVertices);

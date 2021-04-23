@@ -4,7 +4,7 @@ Coding rules
 Packages
 --------
 
-In order to structure the code of the  project, the various elements
+In order to structure the code of the project, the various elements
 (classes, functions, libraries, data) are logically organized in
 packages. This chapter describes the rules to be followed for the
 definition, management and use of these packages.
@@ -18,8 +18,8 @@ definition, management and use of these packages.
 For the moment, the entire set of classes is located in **libOT.so** for
 the dynamic part and in **libOT.a** for the static part.
 
-*Example showing the import of modules via the **openturns** Python
-package*
+Example showing the import of modules via the **openturns** Python
+package:
 
 ::
 
@@ -27,8 +27,8 @@ package*
     import openturns.base
     import openturns.uncertainty
 
-*Example showing the direct import of module operators or classes via
-the **openturns** Python package*
+Example showing the direct import of module operators or classes via
+the **openturns** Python package:
 
 ::
 
@@ -96,8 +96,8 @@ the second is called the *suffix* (or *extension*).
 | **.yy**             | Yacc parser file                                                                                          |
 +---------------------+-----------------------------------------------------------------------------------------------------------+
 
-*For example, it is not recommended to give the following names to two
-files in the same directory:*
+For example, it is not recommended to give the following names to two
+files in the same directory:
 
 ::
 
@@ -107,7 +107,7 @@ files in the same directory:*
 C++ Files
 ~~~~~~~~~
 
-*Example: one file per class:*
+Example: one file per class:
 
 ::
 
@@ -115,7 +115,7 @@ C++ Files
     Matrix.hxx declares class Matrix
     ...
 
-*Incorrect example: one file for all classes of a model:*
+Incorrect example: one file for all classes of a model:
 
 ::
 
@@ -126,7 +126,7 @@ several related classes, the header files belonging to the same module
 are grouped in a single header file, which bears the same name as the
 module and is prefixed by **OT**.
 
-*Example: using all the classes of the Base module:*
+Example: using all the classes of the Base module:
 
 ::
 
@@ -138,7 +138,7 @@ Header files
 The header files are used to declare functions and classes (they are
 sometimes called *interface definition* or *interface specification*).
 
-*Example for a file named **Sample.hxx***
+Example for a file named **Sample.hxx**:
 
 ::
 
@@ -147,22 +147,22 @@ sometimes called *interface definition* or *interface specification*).
     ...
     #endif /* OPENTURNS_SAMPLE_HXX */
 
-*Example of header file inclusion*
+Example of header file inclusion:
 
 ::
 
     #include "openturns/OSS.hxx"
     #include "openturns/Point.hxx"
 
-*Example for the inclusion of system function or external library header
-files*
+Example for the inclusion of system function or external library header
+files:
 
 ::
 
     #include <cstring>
     #include <boost/python.hpp>
 
-*Example for the inclusion of non standard system function header files*
+Example for the inclusion of non standard system function header files:
 
 ::
 
@@ -173,7 +173,7 @@ files*
 Test files
 ~~~~~~~~~~
 
-*Example of names for test files*
+Example of names for test files:
 
 ::
 
@@ -193,7 +193,7 @@ Compilation flags
 It is helpful to enable some compilation warnings to avoid questionable constructions.
 You may also want to enable debug symbols for further use with a debugger.
 
-*GCC compilation:*
+GCC compilation:
 
 ::
 
@@ -204,7 +204,7 @@ You may also want to enable debug symbols for further use with a debugger.
 Namespaces
 ~~~~~~~~~~
 
-*Example of **OpenTURNS** namespace definition for simple types:*
+Example of **OpenTURNS** namespace definition for simple types:
 
 ::
 
@@ -222,8 +222,8 @@ Namespaces
     // Alias for the direct use of XXX
     namespace OpenTURNS = OT;
 
-*Example of use by making all the definitions contained in the namespace
-available:*
+Example of use by making all the definitions contained in the namespace
+available:
 
 ::
 
@@ -240,7 +240,7 @@ The first word begins with a lowercase except for class names and static methods
 No abbreviations are allowed, except if it is found in the literature, for example FORM.
 
 
-*Example:*
+Example:
 
 ::
 
@@ -248,7 +248,7 @@ No abbreviations are allowed, except if it is found in the literature, for examp
     ...
     }; /* end class Sample */
 
-*Example:*
+Example:
 
 ::
 
@@ -257,7 +257,7 @@ No abbreviations are allowed, except if it is found in the literature, for examp
     ...
     }
 
-*Example:*
+Example:
 
 ::
 
@@ -273,7 +273,7 @@ attribute names. However, this method may trigger conflicts with
 internal variables or definitions used by the compilers. For this
 reason, the underscore is used as a suffix.
 
-*Example:*
+Example:
 
 ::
 
@@ -284,7 +284,7 @@ reason, the underscore is used as a suffix.
     ...
     }; /* end class Object */
 
-*Example:*
+Example:
 
 ::
 
@@ -295,7 +295,7 @@ reason, the underscore is used as a suffix.
       static  String GetClassName(); ...
     }; /* end class Object */
 
-*Example:*
+Example:
 
 ::
 
@@ -309,13 +309,13 @@ reason, the underscore is used as a suffix.
       }
     };
 
-*Example:*
+Example:
 
 ::
 
     const UnsignedInteger MaximumOfRetries = 5;
 
-*Example:*
+Example:
 
 ::
 
@@ -325,7 +325,7 @@ reason, the underscore is used as a suffix.
       ...
     }
 
-*Example:*
+Example:
 
 ::
 
@@ -335,7 +335,7 @@ reason, the underscore is used as a suffix.
       ...
     }; /* end class Sample */
 
-*Example:*
+Example:
 
 ::
 
@@ -346,7 +346,7 @@ reason, the underscore is used as a suffix.
 
     Point meanValue;
 
-*Example of tolerated notations:*
+Example of tolerated notations:
 
 ::
 
@@ -361,7 +361,7 @@ reason, the underscore is used as a suffix.
       add(pt);
     }
 
-*Incorrect examples:*
+Incorrect examples:
 
 ::
 
@@ -376,7 +376,7 @@ reason, the underscore is used as a suffix.
 Class declaration
 ~~~~~~~~~~~~~~~~~
 
-*Example:*
+Example:
 
 ::
 
@@ -395,7 +395,7 @@ Class declaration
       /* ... */
     }; /* end class Buffer */
 
-*Example:*
+Example:
 
 ::
 
@@ -424,7 +424,7 @@ Class declaration
       /* other private methods ... */
     }; /* end class AnyClass */
 
-*Example:*
+Example:
 
 ::
 
@@ -436,7 +436,7 @@ Class declaration
       DataType * data_;
     }; /* end class AnyClass */
 
-*Example:*
+Example:
 
 ::
 
@@ -448,7 +448,7 @@ Class declaration
       Collection<Scalar> data_;
     };
 
-*Example of a correct definition:*
+Example of a correct definition:
 
 ::
 
@@ -457,7 +457,7 @@ Class declaration
     , data_(size, elt)
     { }
 
-*Examples of incorrect definitions:*
+Examples of incorrect definitions:
 
 ::
 
@@ -474,8 +474,8 @@ Class declaration
       // processing is longer for complex objects!
     }
 
-*Example: declaration of a pure virtual class A and of class B, derived
-from A:*
+Example: declaration of a pure virtual class A and of class B, derived
+from A:
 
 ::
 
@@ -491,7 +491,7 @@ from A:*
       const char * getClassName() { return "B"; }
     };
 
-*Incorrect definitions leading to an execution error:*
+Incorrect definitions leading to an execution error:
 
 ::
 
@@ -506,21 +506,21 @@ from A:*
     B::B() : A()
     { }
 
-*Write method for the **name** attribute:*
+Write method for the **name** attribute:
 
 ::
 
     void            setName (SimpleType);
     void setName    (const ComposedType &);
 
-*Read method for the **name** attribute:*
+Read method for the **name** attribute:
 
 ::
 
     SimpleType              getName() const;
     const ComposedType &    getName() const;
 
-*Example:*
+Example:
 
 ::
 
@@ -534,7 +534,7 @@ from A:*
       const Point & operator[] (UnsignedInteger i) const;
     };
 
-*Example:*
+Example:
 
 ::
 
@@ -563,7 +563,7 @@ allows to avoid unwanted conversions.
 It is relevant for constructors that have a single-argument, and also for
 constructors that have a single mandatory argument plus optional arguments.
 
-*Single argument:*
+Single argument:
 
 ::
 
@@ -572,7 +572,7 @@ constructors that have a single mandatory argument plus optional arguments.
       explicit A(const Point value);
     };
 
-*Optional argument:*
+Optional argument:
 
 ::
 
@@ -581,7 +581,7 @@ constructors that have a single mandatory argument plus optional arguments.
       explicit A(UnsignedInteger max = 6);
     };
 
-*Mandatory argument and optional argument:*
+Mandatory argument and optional argument:
 
 ::
 
@@ -593,7 +593,7 @@ constructors that have a single mandatory argument plus optional arguments.
 Inheritance
 ~~~~~~~~~~~
 
-*Example: the Point class derives from the Vector class*
+Example: the Point class derives from the Vector class:
 
 ::
 
@@ -613,7 +613,7 @@ Inheritance
       (*this)[2] = z;
     }
 
-*Example:*
+Example:
 
 ::
 
@@ -642,19 +642,19 @@ Function and method declaration
     TypeArgument_2   argument_2
    );
 
-*Correct example:*
+Correct example:Correct
 
 ::
 
     void send(const String & message);
 
-*Incorrect Example:*
+Incorrect example:
 
 ::
 
     void send(String message);
 
-*Correct example:*
+Correct example:
 
 ::
 
@@ -662,7 +662,7 @@ Function and method declaration
     Buffer & append(const String &);
     Buffer & append(Scalar);
 
-*Incorrect Example:*
+Incorrect example:
 
 ::
 
@@ -676,7 +676,7 @@ initialized to a value to avoid undefined behavior.
 This includes initialization of class attributes.
 
 
-*Correct example:*
+Correct example:
 
 ::
 
@@ -685,13 +685,13 @@ This includes initialization of class attributes.
     UnsignedInteger i = 0;
     Scalar f = 0.0;
 
-*Accepted example:*
+Accepted example:
 
 ::
 
     UnsignedInteger i = 0, j = 0, k = 0;     // indices
 
-*Incorrect Example:*
+Incorrect example:
 
 ::
 
@@ -705,7 +705,7 @@ The const keyword must be used as much as possible.
 Float constants must include the decimal separator and a at least a digit to
 explicitely distinguish them from integers.
 
-*Example:*
+Example:
 
 ::
 
@@ -713,7 +713,7 @@ explicitely distinguish them from integers.
     const UnsignedInteger maximumIterations = 32;
     const char printFormat[] = "%s:line %d, %s";
 
-*Incorrect Example:*
+Incorrect example:
 
 ::
 
@@ -746,7 +746,7 @@ This section discusses general rules for allocating and freeing memory.
 It will later be supplemented by rules regarding the use of basic
 classes in order to manage the lifecycle of objects in memory.
 
-*Example to favor:*
+Example to favor:
 
 ::
 
@@ -758,7 +758,7 @@ classes in order to manage the lifecycle of objects in memory.
       /* ... */
     }
 
-*Example to avoid:*
+Example to avoid:
 
 ::
 
@@ -772,7 +772,7 @@ classes in order to manage the lifecycle of objects in memory.
       delete volumes;
     }
 
-*Correct example:*
+Correct example:
 
 ::
 
@@ -784,7 +784,7 @@ classes in order to manage the lifecycle of objects in memory.
       volume = 0;                    // memory deallocation
     }
 
-*Incorrect example:*
+Incorrect example:
 
 ::
 
@@ -797,7 +797,7 @@ classes in order to manage the lifecycle of objects in memory.
       volume = 0;                    // memory deallocation
     }
 
-*Example:*
+Example:
 
 ::
 
@@ -814,7 +814,7 @@ classes in order to manage the lifecycle of objects in memory.
     delete [] a;           // correct: the table is freed,
     // the ~A destructor is called 40 times
 
-*List of declaration files for the smart pointer:*
+List of declaration files for the smart pointer:
 
 ::
 
@@ -826,14 +826,14 @@ Complex types (class types) must use copy constructors if available instead of
 using the default constructor and then the copy operator for performance.
 Atomic types (integer, bool, ...) can use the copy operator for readability.
 
-*Example:*
+Example:
 
 ::
 
     Point p2(p1);
     Bool a = b;
 
-*Example to avoid:*
+Example to avoid:
 
 ::
 
@@ -845,7 +845,7 @@ Atomic types (integer, bool, ...) can use the copy operator for readability.
 Instructions
 ~~~~~~~~~~~~
 
-*Example:*
+Example:
 
 ::
 
@@ -855,7 +855,7 @@ Instructions
       f(i);
     }
 
-*Examples to avoid if possible:*
+Examples to avoid if possible:
 
 ::
 
@@ -871,7 +871,7 @@ Instructions
     for(i = 1, j = 2, k = 3; i < N; j++, i++);
     // understandability and readability
 
-*Incorrect examples:*
+Incorrect examples:
 
 ::
 
@@ -882,7 +882,7 @@ Instructions
     while(f(++i), i < MAX);
     // processing carried out before the test
 
-*Prohibited example:*
+Prohibited example:
 
 ::
 
@@ -900,11 +900,11 @@ Instructions
       /* error handling */
     }
 
-*Note: error handling can be easily replaced with an exception handling,
+Note: error handling can be easily replaced with exception handling,
 and the use of **goto** for the needs of algorithms can always be
-replaced with a conditional structure or a loop.*
+replaced with a conditional structure or a loop.
 
-*Example:*
+Example: error handling
 
 ::
 
@@ -923,7 +923,7 @@ replaced with a conditional structure or a loop.*
       return result;
     }
 
-*Examples to avoid:*
+Examples to avoid:
 
 ::
 
@@ -936,7 +936,7 @@ replaced with a conditional structure or a loop.*
       ...
     }
 
-*Correct example:*
+Correct example:
 
 ::
 
@@ -955,7 +955,7 @@ replaced with a conditional structure or a loop.*
     break;
     }
 
-*Accepted example - processing multiple targets with the same block:*
+Accepted example - processing multiple targets with the same block:
 
 ::
 
@@ -969,7 +969,7 @@ replaced with a conditional structure or a loop.*
     break;
     }
 
-*Incorrect example:*
+Incorrect example:
 
 ::
 
@@ -986,7 +986,7 @@ replaced with a conditional structure or a loop.*
     msg = "unknown error";
     }
 
-*Incorrect example - use of the switch as a goto:*
+Incorrect example - use of the switch as a goto:
 
 ::
 
@@ -1000,7 +1000,7 @@ replaced with a conditional structure or a loop.*
     /* ... */
     }
 
-*Example:*
+Example:
 
 ::
 
@@ -1022,7 +1022,7 @@ programming.
 This chapter describes how to define and use exceptions in the source
 code.
 
-*Example of **Exception** use*
+Example of **Exception** use:
 
 ::
 
@@ -1034,8 +1034,8 @@ code.
       friend ostream & operator<< (ostream &, const Exception & e);
     };
 
-*Example of specialization of **Exception** in order to report an
-off-range error*
+Example of specialization of **Exception** in order to report an
+off-range error:
 
 ::
 
@@ -1045,14 +1045,14 @@ off-range error*
       : Exception(/* ... */) { }
     };
 
-*Example of specialization of **Exception** in order to report an
-off-range error with a macro-instruction*
+Example of specialization of **Exception** in order to report an
+off-range error with a macro-instruction:
 
 ::
 
     NEW_EXCEPTION(OutOfBoundException);
 
-*Incorrect Example:*
+Incorrect example:
 
 ::
 
@@ -1071,10 +1071,92 @@ off-range error with a macro-instruction*
     }
     // phase 4
 
-Error handling and error messages
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Exception handling
+~~~~~~~~~~~~~~~~~~
 
-*Example:*
+An exception should be thrown when the library encounters conditions
+under which it cannot operate.
+
+When coding a new functionality, define a **sufficient** condition
+under which the functionality will work correctly,
+and have it throw an Exception if this condition is not met.
+
+Correct example:
+
+.. code:: cpp
+
+    // Throw if a probability does not belong to [0,1]
+    if (!( (proba >= 0.0) && (proba <= 1.0) ))
+        throw InvalidArgumentException(HERE) << "Error: a probability should belong to [0,1]"
+                                             << " but is " << proba;
+
+Typically, it is easier to think about conditions that are sufficient
+to make the functionality **not** work correctly,
+but this way of thinking has two drawbacks:
+
+- It can lead the programmer to forget situations in which the functionality does not work.
+- If the test is performed on a floating point number (Scalar), a possible NaN value will not be caught.
+
+NaN (*Not a Number*) is a value that can be taken by floating point numbers to represent
+a missing value or the result of an illicit arithmetical operation (:code:`0/0` for example).
+It has the following properties:
+
+- When standard functions like :code:`sqrt` and :code:`max` are passed NaN as one of their arguments, they return NaN.
+- All comparison operators except :code:`!=` return :code:`False` if either operand is NaN. The boolean :code:`a!=b` is :code:`True` if either :code:`a` or :code:`b` (or even both) is NaN.
+
+Because of this second property, the following example fails to catch a possible NaN value.
+
+Incorrect example:
+
+.. code:: cpp
+
+    // Throw if a probability is lower than 0 or larger than 1
+    if ( (proba < 0.0) || (proba > 1.0) )
+        throw InvalidArgumentException(HERE) << "Error: a probability should belong to [0,1]"
+                                             << " but is " << proba;
+
+Because only floating point numbers can be NaN, this rule is only imperative
+for Exception checks involving floating point numbers.
+You are free to disregard the rule for Exception checks that only involve integers.
+
+When the sufficient condition under which the functionality works is an equality,
+use :code:`a!=b` as a shorthand for :code:`!(a==b)`.
+
+Example:
+
+.. code:: cpp
+
+    // The covariance must be null
+    if (covariance(i, j) != 0.0)
+        throw InvalidArgumentException(HERE) << "Error: covariance(" << i << ", " << j << ") should be null.";
+
+When the sufficient condition under which the functionality works is that
+some number must be *different* from some value, find a way to express this
+that does not involve the :code:`!=` operator, because :code:`!(a!=b)`
+is equivalent to :code:`a==b`. Both are :code:`False` if either :code:`a`
+or :code:`b` is NaN.
+
+For example, if you want to write that some nonnegative scalar should not be zero,
+then write that is must be positive instead.
+
+Incorrect example:
+
+.. code:: cpp
+
+    // Generalized number of degrees of freedom must not be zero.
+    if (nu == 0.0) throw InvalidArgumentException(HERE) << "Nu MUST be positive";
+
+Correct example:
+
+.. code:: cpp
+
+    // Generalized number of degrees of freedom must be positive.
+    if (!(nu > 0.0)) throw InvalidArgumentException(HERE) << "Nu MUST be positive";
+
+Error messages
+~~~~~~~~~~~~~~
+
+Example:
 
 ::
 
@@ -1102,7 +1184,7 @@ Some useful features include:
 - list initialization
 - override keyword
 
-*Example: constructor delegation*
+Example: constructor delegation:
 
 ::
 
@@ -1114,7 +1196,7 @@ Some useful features include:
       int a_, b_;
     };
 
-*Example: default member initializers*
+Example: default member initializers:
 
 ::
 
@@ -1125,7 +1207,7 @@ Some useful features include:
       int a_ = 0;
     };
 
-*Example: list initialization*
+Example: list initialization:
 
 ::
 
@@ -1139,7 +1221,7 @@ Python
 Modules and packages
 ~~~~~~~~~~~~~~~~~~~~
 
-*Example of tolerated notations:*
+Example of tolerated notations:
 
 ::
 
@@ -1147,7 +1229,7 @@ Modules and packages
     from matplotlib import pylab
     import numpy as np
 
-*Incorrect examples:*
+Incorrect examples:
 
 ::
 
@@ -1156,9 +1238,9 @@ Modules and packages
 Names
 ~~~~~
 
-*Examples: RandomVector, Sample.*
+Examples: RandomVector, Sample.
 
-*Examples:*
+Examples:
 
 ::
 
@@ -1168,8 +1250,8 @@ Names
 Comments and internal documentation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-*Example of documentation string for the class
-**AnotherSample**:*
+Example of documentation string for the class
+**AnotherSample**:
 
 ::
 

@@ -111,8 +111,8 @@ SparseMatrix * SparseMatrix::clone() const
 /* Read-only accessor to values */
 Scalar SparseMatrix::operator()(const UnsignedInteger i, const UnsignedInteger j) const
 {
-  if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
-  if (j >= nbColumns_) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
+  if (!(i < nbRows_)) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
+  if (!(j < nbColumns_)) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
   for (UnsignedInteger k = columnPointer_[j]; k < columnPointer_[j + 1]; ++ k)
   {
     // TODO: sum duplicate coordinate values
@@ -125,8 +125,8 @@ Scalar SparseMatrix::operator()(const UnsignedInteger i, const UnsignedInteger j
 /* Filling matrix from coordinates and value */
 Scalar & SparseMatrix::operator()(const UnsignedInteger i, const UnsignedInteger j)
 {
-  if (i >= nbRows_) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
-  if (j >= nbColumns_) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
+  if (!(i < nbRows_)) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than row dim (" << nbRows_ << ")";
+  if (!(j < nbColumns_)) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than column dim (" << nbColumns_ << ")";
   UnsignedInteger index = columnPointer_[j + 1];
   for (UnsignedInteger k = columnPointer_[j]; k < columnPointer_[j + 1]; ++ k)
   {

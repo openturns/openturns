@@ -106,22 +106,22 @@ const Scalar & Field::operator () (const UnsignedInteger i,
 
 NSI_point Field::at (const UnsignedInteger index)
 {
-  if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
+  if (!(index < getSize())) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
   copyOnWrite();
   return (*getImplementation())[index];
 }
 
 NSI_const_point Field::at (const UnsignedInteger index) const
 {
-  if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
+  if (!(index < getSize())) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
   return (*getImplementation())[index];
 }
 
 Scalar & Field::at (const UnsignedInteger i,
                     const UnsignedInteger j)
 {
-  if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
-  if (j > getOutputDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getOutputDimension() << ")";
+  if (!(i < getSize())) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
+  if (!(j <= getOutputDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getOutputDimension() << ")";
   copyOnWrite();
   return (*getImplementation())(i, j);
 }
@@ -129,8 +129,8 @@ Scalar & Field::at (const UnsignedInteger i,
 const Scalar & Field::at (const UnsignedInteger i,
                           const UnsignedInteger j) const
 {
-  if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
-  if (j > getOutputDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getOutputDimension() << ")";
+  if (!(i < getSize())) throw OutOfBoundException(HERE) << "i (" << i << ") is not less than size (" << getSize() << ")";
+  if (!(j <= getOutputDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") is greater than dimension (" << getOutputDimension() << ")";
   return (*getImplementation())(i, j);
 }
 

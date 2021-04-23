@@ -49,7 +49,7 @@ KarhunenLoeveValidation::KarhunenLoeveValidation(const ProcessSample & sample,
   , result_(result)
 {
   if (sample.getDimension() != result.getModesAsProcessSample().getDimension())
-    throw InvalidArgumentException(HERE) << "Sample dimension does not match result dimension";
+    throw InvalidArgumentException(HERE) << "Sample dimension = " << sample.getDimension() << " does not match result dimension = " << result.getModesAsProcessSample().getDimension();
 }
 
 /* Constructor with parameters */
@@ -146,7 +146,7 @@ GridLayout KarhunenLoeveValidation::drawValidation() const
 Graph KarhunenLoeveValidation::drawObservationWeight(const UnsignedInteger k) const
 {
   const UnsignedInteger K = result_.getEigenvalues().getSize();
-  if (k >= K)
+  if (!(k < K))
     throw InvalidArgumentException(HERE) << "k (" << k << ") should be in [0; " << K-1 << "]";
   const Sample xi(result_.project(sample_));
   const UnsignedInteger size = xi.getSize();

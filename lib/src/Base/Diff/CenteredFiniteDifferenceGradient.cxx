@@ -92,7 +92,7 @@ Matrix CenteredFiniteDifferenceGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = inP.getDimension();
   const Point step(finiteDifferenceStep_.operator()(inP));
-  if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
+  if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension " << inputDimension << ", should be " << step.getDimension();
   /* At which points do we have to compute the evaluation for the centered finite difference. We need 2*dim points. */
   Sample gridPoints(2 * inputDimension, inP);
   for(UnsignedInteger i = 0; i < inputDimension; ++i)

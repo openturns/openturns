@@ -363,7 +363,7 @@ SampleImplementation SampleImplementation::BuildFromCSVFile(const FileName & fil
   // Check the description
   if (impl.p_description_.isNull() || (impl.p_description_->getSize() != impl.getDimension()))
     impl.setDescription(Description::BuildDefault(impl.getDimension(), "data_"));
-  if (impl.getDimension() == 0) LOGWARN(OSS() << "Warning: No data from the file has been stored.");
+  if (!(impl.getDimension() > 0)) LOGWARN(OSS() << "Warning: No data from the file has been stored.");
 
 #else
   (void)fileName;
@@ -1170,7 +1170,7 @@ public:
  */
 Point SampleImplementation::computeMean() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the mean of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the mean of an empty sample.";
   Point accumulated(dimension_);
 
   data_const_iterator it(data_begin());
@@ -1195,7 +1195,7 @@ Point SampleImplementation::computeMean() const
  */
 CovarianceMatrix SampleImplementation::computeCovariance() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the covariance of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the covariance of an empty sample.";
   // Special case for a sample of size 1
   if (size_ == 1) return CovarianceMatrix(dimension_, Point(dimension_ * dimension_));
 
@@ -1234,7 +1234,7 @@ CovarianceMatrix SampleImplementation::computeCovariance() const
  */
 Point SampleImplementation::computeStandardDeviation() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the standard deviation per component of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the standard deviation per component of an empty sample.";
   Point sd(computeVariance());
   for (UnsignedInteger i = 0; i < dimension_; ++i) sd[i] = sqrt(sd[i]);
   return sd;
@@ -1246,7 +1246,7 @@ Point SampleImplementation::computeStandardDeviation() const
  */
 Point SampleImplementation::computeVariance() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the variance per component of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the variance per component of an empty sample.";
 
   // Special case for a sample of size 1
   if (size_ == 1) return Point(dimension_, 0.0);
@@ -1294,7 +1294,7 @@ CorrelationMatrix SampleImplementation::computePearsonCorrelation() const
 
 CorrelationMatrix SampleImplementation::computeLinearCorrelation() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the Pearson correlation of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the Pearson correlation of an empty sample.";
   CorrelationMatrix correlation(dimension_);
   if (dimension_ == 1) return correlation;
 
@@ -1367,7 +1367,7 @@ struct Comparison
 /* Ranked sample */
 Pointer<SampleImplementation> SampleImplementation::rank() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot rank an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot rank an empty sample.";
   Pointer<SampleImplementation> rankedSample = new SampleImplementation(size_, dimension_);
 
   // Sort and rank all the marginal samples
@@ -1410,8 +1410,8 @@ Pointer<SampleImplementation> SampleImplementation::rank() const
 /* Ranked component */
 Pointer<SampleImplementation> SampleImplementation::rank(const UnsignedInteger index) const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot rank an empty sample.";
-  if (index >= dimension_) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << dimension_;
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot rank an empty sample.";
+  if (!(index < dimension_)) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << dimension_;
   return getMarginal(index)->rank();
 }
 
@@ -1448,7 +1448,7 @@ struct NSI_Sortable
 /* Sorted sample, component by component */
 Pointer<SampleImplementation> SampleImplementation::sort() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
 
   Pointer<SampleImplementation> sortedSample = new SampleImplementation(size_, dimension_);
   // Special case for 1D sample
@@ -1470,7 +1470,7 @@ Pointer<SampleImplementation> SampleImplementation::sort() const
 
 void SampleImplementation::sortInPlace()
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
 
   // Special case for 1D sample
   if (dimension_ == 1)
@@ -1489,9 +1489,9 @@ void SampleImplementation::sortInPlace()
 /* Sorted sample, one component */
 Pointer<SampleImplementation> SampleImplementation::sort(const UnsignedInteger index) const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
 
-  if (index >= getDimension()) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << getDimension();
+  if (!(index < getDimension())) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << getDimension();
 
   return getMarginal(index)->sort();
 }
@@ -1512,8 +1512,8 @@ struct Sortable
 /* Sorted according a component */
 Pointer<SampleImplementation> SampleImplementation::sortAccordingToAComponent(const UnsignedInteger index) const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
-  if (index >= getDimension()) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << getDimension();
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
+  if (!(index < getDimension())) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << getDimension();
 
   Collection<Sortable> sortables(size_);
   for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = Sortable((*this)[i], index);
@@ -1532,8 +1532,8 @@ Pointer<SampleImplementation> SampleImplementation::sortAccordingToAComponent(co
 /* Sorted according a component */
 void SampleImplementation::sortAccordingToAComponentInPlace(const UnsignedInteger index)
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
-  if (index >= getDimension()) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << getDimension();
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot sort an empty sample.";
+  if (!(index < getDimension())) throw OutOfBoundException(HERE) << "The requested index is too large, index=" << index << ", dimension=" << getDimension();
 
   Collection<Sortable> sortables(size_);
   SampleImplementation work(*this);
@@ -1587,7 +1587,7 @@ void SampleImplementation::sortUniqueInPlace()
  */
 CorrelationMatrix SampleImplementation::computeSpearmanCorrelation() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the Spearman correlation of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the Spearman correlation of an empty sample.";
 
   return rank()->computePearsonCorrelation();
 }
@@ -1640,7 +1640,7 @@ struct ComputeKendallPolicy
 
 CorrelationMatrix SampleImplementation::computeKendallTau() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the Kendall tau of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the Kendall tau of an empty sample.";
 
   // Use external efficient C implementation of the O(Nlog(N)) or O(N^2) Kendall tau computation depending on the sample size
   const Bool smallCase = size_ < ResourceMap::GetAsUnsignedInteger("Sample-SmallKendallTau");
@@ -1682,7 +1682,7 @@ CorrelationMatrix SampleImplementation::computeKendallTau() const
  */
 Point SampleImplementation::computeRange() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the range per component of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the range per component of an empty sample.";
   return getMax() - getMin();
 }
 
@@ -1691,7 +1691,7 @@ Point SampleImplementation::computeRange() const
  */
 Point SampleImplementation::computeMedian() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the median per component of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the median per component of an empty sample.";
   return computeQuantilePerComponent(0.5);
 }
 
@@ -1700,7 +1700,7 @@ Point SampleImplementation::computeMedian() const
  */
 Point SampleImplementation::computeSkewness() const
 {
-  if (size_ < 2) throw InternalException(HERE) << "Error: cannot compute the skewness per component of a sample of size less than 2.";
+  if (!(size_ >= 2)) throw InternalException(HERE) << "Error: cannot compute the skewness per component of a sample of size less than 2.";
 
   if (size_ == 2) return Point(dimension_, 0.0);
 
@@ -1720,7 +1720,7 @@ Point SampleImplementation::computeSkewness() const
   const Scalar factor = size_ * sqrt(size_ - 1.0) / (size_ - 2);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    if (centeredMoments[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The skewness is not defined.";
+    if (!(centeredMoments[i] < 0.0 || centeredMoments[i] > 0.0)) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The skewness is not defined.";
     skewness[i] = factor * centeredMoments[i + dimension_] / pow(centeredMoments[i], 1.5);
   }
   return skewness;
@@ -1731,7 +1731,7 @@ Point SampleImplementation::computeSkewness() const
  */
 Point SampleImplementation::computeKurtosis() const
 {
-  if (size_ < 3) throw InternalException(HERE) << "Error: cannot compute the kurtosis per component of a sample of size less than 3.";
+  if (!(size_ >= 3)) throw InternalException(HERE) << "Error: cannot compute the kurtosis per component of a sample of size less than 3.";
 
   if (size_ == 3) return Point(dimension_, 0.0);
 
@@ -1752,7 +1752,7 @@ Point SampleImplementation::computeKurtosis() const
   const Scalar factor2 = -3.0 * (3.0 * size_ - 5.0) / ((size_ - 2.0) * (size_ - 3.0));
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    if (centeredMoments[i] == 0.0) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The kurtosis is not defined.";
+    if (!(centeredMoments[i] < 0.0 || centeredMoments[i] > 0.0)) throw NotDefinedException(HERE) << "Error: the sample has component " << i << " constant. The kurtosis is not defined.";
     kurtosis[i] = factor1 * centeredMoments[i + dimension_] / (centeredMoments[i] * centeredMoments[i]) + factor2;
   }
   return kurtosis;
@@ -1763,7 +1763,7 @@ Point SampleImplementation::computeKurtosis() const
  */
 Point SampleImplementation::computeCenteredMoment(const UnsignedInteger k) const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the centered moments per component of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the centered moments per component of an empty sample.";
 
   // Special case: order 0, return (1,...,1)
   if (k == 0) return Point(dimension_, 1.0);
@@ -1792,7 +1792,7 @@ Point SampleImplementation::computeCenteredMoment(const UnsignedInteger k) const
  */
 Point SampleImplementation::computeRawMoment(const UnsignedInteger k) const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the centered moments per component of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the centered moments per component of an empty sample.";
 
   if (size_ == 0) throw InvalidArgumentException(HERE) << "Cannot compute centered moments on an empty sample";
 
@@ -1816,7 +1816,7 @@ Point SampleImplementation::computeRawMoment(const UnsignedInteger k) const
  */
 Point SampleImplementation::computeQuantilePerComponent(const Scalar prob) const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the quantile per component of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the quantile per component of an empty sample.";
   if (!(prob >= 0.0) || !(prob <= 1.0)) throw InvalidArgumentException(HERE) << "Error: cannot compute a quantile for a probability level outside of [0, 1]";
 
   // Special case for extremum cases
@@ -1860,9 +1860,9 @@ Point SampleImplementation::computeQuantilePerComponent(const Scalar prob) const
  */
 Pointer<SampleImplementation> SampleImplementation::computeQuantilePerComponent(const Point & prob) const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the quantile per component of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the quantile per component of an empty sample.";
   const UnsignedInteger probSize = prob.getSize();
-  if (probSize == 0) throw InternalException(HERE) << "Error: cannot compute the quantile per component with an empty argument.";
+  if (!(probSize > 0)) throw InternalException(HERE) << "Error: cannot compute the quantile per component with an empty argument.";
 
   // Check that prob is inside bounds
   for (UnsignedInteger p = 0; p < probSize; ++p)
@@ -1959,7 +1959,7 @@ Pointer<SampleImplementation> SampleImplementation::computeQuantilePerComponent(
  */
 Point SampleImplementation::computeQuantile(const Scalar prob) const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the quantile of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the quantile of an empty sample.";
 
   if (getDimension() == 1) return computeQuantilePerComponent(prob);
   throw NotYetImplementedException(HERE) << "In SampleImplementation::computeQuantile(const Scalar prob) const";
@@ -1967,7 +1967,7 @@ Point SampleImplementation::computeQuantile(const Scalar prob) const
 
 Pointer<SampleImplementation> SampleImplementation::computeQuantile(const Point & prob) const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Error: cannot compute the quantile of an empty sample.";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Error: cannot compute the quantile of an empty sample.";
 
   if (getDimension() == 1) return computeQuantilePerComponent(prob);
   throw NotYetImplementedException(HERE) << "In SampleImplementation::computeQuantile(const Point & prob) const";
@@ -2015,7 +2015,7 @@ struct CDFPolicy
 Scalar SampleImplementation::computeEmpiricalCDF(const Point & point,
     const Bool tail) const
 {
-  if (size_ == 0) throw InvalidArgumentException(HERE) << "Cannot compute the empirical CDF of an empty sample.";
+  if (!(size_ > 0)) throw InvalidArgumentException(HERE) << "Cannot compute the empirical CDF of an empty sample.";
   if (getDimension() != point.getDimension()) throw InvalidArgumentException(HERE) << "Point has incorrect dimension. Got "
         << point.getDimension() << ". Expected " << getDimension();
 
@@ -2029,7 +2029,7 @@ Scalar SampleImplementation::computeEmpiricalCDF(const Point & point,
 /* Maximum accessor */
 Point SampleImplementation::getMax() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Impossible to get the maximum of an empty Sample";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Impossible to get the maximum of an empty Sample";
 
   Point maxPoint(dimension_, - SpecFunc::MaxScalar);
   for(UnsignedInteger i = 0; i < size_; ++i)
@@ -2047,7 +2047,7 @@ Point SampleImplementation::getMax() const
 /* Minimum accessor */
 Point SampleImplementation::getMin() const
 {
-  if (size_ == 0) throw InternalException(HERE) << "Impossible to get the minimum of an empty Sample";
+  if (!(size_ > 0)) throw InternalException(HERE) << "Impossible to get the minimum of an empty Sample";
 
   Point minPoint(dimension_, SpecFunc::MaxScalar);
   for(UnsignedInteger i = 0; i < size_; ++i)
@@ -2203,7 +2203,7 @@ SampleImplementation & SampleImplementation::operator /= (const Point & scaling)
   Point inverseScaling(getDimension());
   for (UnsignedInteger i = 0; i < getDimension(); ++ i)
   {
-    if (scaling[i] == 0.0) throw InvalidArgumentException(HERE) << "Error: the scaling must have nonzero components, here scaling=" << scaling;
+    if (!(scaling[i] < 0.0 || scaling[i] > 0.0)) throw InvalidArgumentException(HERE) << "Error: the scaling must have nonzero components, here scaling=" << scaling;
     inverseScaling[i] = 1.0 / scaling[i];
   }
   scale(inverseScaling);
@@ -2239,7 +2239,7 @@ SampleImplementation SampleImplementation::operator / (const Point & scaling) co
 /* Get the i-th marginal sample */
 Pointer<SampleImplementation> SampleImplementation::getMarginal(const UnsignedInteger index) const
 {
-  if (index >= dimension_) throw InvalidArgumentException(HERE) << "The index of a marginal sample must be in the range [0, dim-1]";
+  if (!(index < dimension_)) throw InvalidArgumentException(HERE) << "The index of a marginal sample must be in the range [0, dim-1]";
 
   // Special case for dimension 1
   if (dimension_ == 1) return clone();
@@ -2300,7 +2300,7 @@ Pointer<SampleImplementation> SampleImplementation::getMarginal(const Descriptio
   for (UnsignedInteger i = 0; i < description.getSize(); ++ i)
   {
     const UnsignedInteger index = getDescription().find(description[i]);
-    if (index >= getDimension())
+    if (!(index < getDimension()))
       throw InvalidArgumentException(HERE) << "Marginal " << description[i] << " not found";
     indices.add(index);
   }
@@ -2315,7 +2315,7 @@ Pointer<SampleImplementation> SampleImplementation::select(const UnsignedInteger
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger index = indices[i];
-    if (index >= size_) throw InvalidArgumentException(HERE) << "Error: expected indices less than " << size_ << ", here indices[" << i << "]=" << index;
+    if (!(index < size_)) throw InvalidArgumentException(HERE) << "Error: expected indices less than " << size_ << ", here indices[" << i << "]=" << index;
     std::copy(data_.begin() + index * dimension_, data_.begin() + (index + 1) * dimension_, result->data_.begin() + i * dimension_);
   }
   result->setDescription(getDescription());

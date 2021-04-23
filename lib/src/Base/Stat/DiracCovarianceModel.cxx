@@ -238,7 +238,7 @@ CovarianceMatrix DiracCovarianceModel::discretize(const Sample & vertices) const
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a dimension=" << vertices.getDimension()
                                          << " different from the input dimension=" << inputDimension_;
 
-  if (vertices.getSize() == 0)
+  if (!(vertices.getSize() > 0))
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a size 0";
 
   const UnsignedInteger size = vertices.getSize();
@@ -287,7 +287,7 @@ TriangularMatrix DiracCovarianceModel::discretizeAndFactorize(const Sample & ver
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a dimension=" << vertices.getDimension()
                                          << " different from the input dimension=" << inputDimension_;
 
-  if (vertices.getSize() == 0)
+  if (!(vertices.getSize() > 0))
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretize, the given sample has a size 0";
 
   const UnsignedInteger size = vertices.getSize();
@@ -307,9 +307,9 @@ Sample DiracCovarianceModel::discretizeRow(const Sample & vertices,
   if (vertices.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretizeRow, the given sample has a dimension=" << vertices.getDimension()
                                          << " different from the input dimension=" << inputDimension_;
-  if (vertices.getSize() == 0)
+  if (!(vertices.getSize() > 0))
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretizeRow, the given sample has a size 0";
-  if (p >= vertices.getSize())
+  if (!(p < vertices.getSize()))
     throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::discretizeRow, the index p should be lower or equal to " << vertices.getSize() - 1
                                          << ", here, p=" << p;
 
@@ -403,7 +403,7 @@ void DiracCovarianceModel::setAmplitude(const Point & amplitude)
   // Check positivity of amplitude
   for (UnsignedInteger i = 0; i < outputDimension_; ++i)
   {
-    if (amplitude[i] <= 0)
+    if (!(amplitude[i] > 0))
       throw InvalidArgumentException(HERE) << "In DiracCovarianceModel::setAmplitude, amplitude should be stricly positive but the #" << i << " component equals " << amplitude[i];
   }
   amplitude_ = amplitude;

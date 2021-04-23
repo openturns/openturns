@@ -65,7 +65,7 @@ void ProductCovarianceModel::setCollection(const CovarianceModelCollection & col
 {
   // Check if the given models have an input dimension=1
   const UnsignedInteger size = collection.getSize();
-  if (size == 0)
+  if (!(size > 0))
     throw InvalidArgumentException(HERE) << "Error: the collection must have a positive size, here size=0";
   // Scale & amplitude
   Point scale(0);
@@ -416,7 +416,7 @@ String ProductCovarianceModel::__str__(const String & ) const
 /* Marginal accessor */
 CovarianceModel ProductCovarianceModel::getMarginal(const UnsignedInteger index) const
 {
-  if (index >= outputDimension_) throw InvalidArgumentException(HERE) << "Error: index=" << index << " must be less than output dimension=" << outputDimension_;
+  if (!(index < outputDimension_)) throw InvalidArgumentException(HERE) << "Error: index=" << index << " must be less than output dimension=" << outputDimension_;
   if (getOutputDimension() == 1)
     return clone();
   Collection<CovarianceModel> coll(collection_.getSize());

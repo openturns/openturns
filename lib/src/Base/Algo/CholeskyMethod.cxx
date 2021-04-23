@@ -176,7 +176,7 @@ void CholeskyMethod::update(const Indices & addedIndices,
   {
     Indices newBasis(conservedIndices);
     newBasis.add(addedIndices);
-    if (removedIndices.getSize() > 0) throw NotYetImplementedException(HERE) << " in CholeskyMethod::update removedIndices.getSize() > 0";
+    if (!(removedIndices.getSize() == 0)) throw NotYetImplementedException(HERE) << " in CholeskyMethod::update removedIndices.getSize() is not 0";
 
     // Update decomposition
     if (addedIndices.getSize() > 0)

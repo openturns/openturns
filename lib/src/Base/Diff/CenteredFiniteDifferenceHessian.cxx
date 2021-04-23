@@ -98,7 +98,7 @@ SymmetricTensor CenteredFiniteDifferenceHessian::hessian(const Point & inP) cons
 {
   const UnsignedInteger inputDimension = inP.getDimension();
   const Point step(finiteDifferenceStep_.operator()(inP));
-  if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
+  if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension " << inputDimension << ", should be " << step.getDimension();
   /* At which points do we have to compute the evaluation for the centered finite difference. We need 2*dim^2+1 points. */
   Sample gridPoints(2 * inputDimension * inputDimension + 1, inP);
   UnsignedInteger index = 1;

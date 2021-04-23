@@ -98,7 +98,7 @@ SquareMatrix ExponentialModel::operator()(const Point &tau) const
  */
 Scalar ExponentialModel::computeAsScalar(const Point &tau) const
 {
-  if (outputDimension_ > 1)
+  if (outputDimension_ != 1)
     throw InvalidArgumentException(HERE) << "Error : ExponentialModel::computeAsScalar(tau) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
   if (tau.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In ExponentialModel::computeStandardRepresentative: expected a shift of dimension=" << getInputDimension() << ", got dimension=" << tau.getDimension();

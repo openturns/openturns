@@ -191,22 +191,22 @@ const Scalar & Sample::operator () (const UnsignedInteger i,
 
 NSI_point Sample::at (const UnsignedInteger index)
 {
-  if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
+  if (!(index < getSize())) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
   copyOnWrite();
   return (*getImplementation())[index];
 }
 
 NSI_const_point Sample::at (const UnsignedInteger index) const
 {
-  if (index >= getSize()) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
+  if (!(index < getSize())) throw OutOfBoundException(HERE) << "Index (" << index << ") is not less than size (" << getSize() << ")";
   return (*getImplementation())[index];
 }
 
 Scalar & Sample::at (const UnsignedInteger i,
                      const UnsignedInteger j)
 {
-  if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than size (" << getSize() << ")";
-  if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than dimension (" << getDimension() << ")";
+  if (!(i < getSize())) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than size (" << getSize() << ")";
+  if (!(j < getDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than dimension (" << getDimension() << ")";
   copyOnWrite();
   return (*getImplementation())(i, j);
 }
@@ -214,8 +214,8 @@ Scalar & Sample::at (const UnsignedInteger i,
 const Scalar & Sample::at (const UnsignedInteger i,
                            const UnsignedInteger j) const
 {
-  if (i >= getSize()) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than size (" << getSize() << ")";
-  if (j >= getDimension()) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than dimension (" << getDimension() << ")";
+  if (!(i < getSize())) throw OutOfBoundException(HERE) << "i (" << i << ") must be less than size (" << getSize() << ")";
+  if (!(j < getDimension())) throw OutOfBoundException(HERE) << "j (" << j << ") must be less than dimension (" << getDimension() << ")";
   return (*getImplementation())(i, j);
 }
 
@@ -294,7 +294,7 @@ Point Sample::getMin() const
 /* Method add() appends an element to the collection */
 void Sample::add(const Point & point)
 {
-  if ( (getSize() > 0) && (getDimension() != point.getDimension()) )
+  if (!(getSize() == 0 || getDimension() == point.getDimension()))
     throw InvalidArgumentException(HERE)
         << "Point has invalid dimension (dim=" << point.getDimension()
         << ") for sample (dim=" << getDimension() << ")";
@@ -306,7 +306,7 @@ void Sample::add(const Point & point)
 /* Method add() appends another sample to the collection */
 void Sample::add(const Sample & sample)
 {
-  if ( (getSize() > 0) && (getDimension() != sample.getDimension()) )
+  if (!(getSize() == 0 || getDimension() == sample.getDimension()))
     throw InvalidArgumentException(HERE)
         << "Sample has invalid dimension (dim=" << sample.getDimension()
         << ") for sample (dim=" << getDimension() << ")";
@@ -367,7 +367,7 @@ Sample Sample::split(const UnsignedInteger index)
   UnsignedInteger theSize = getSize();
 
   // We first check that the index is in the sample's range
-  if (index > theSize) throw OutOfBoundException(HERE) << "Index over size. Index=" << index << " size=" << theSize;
+  if (!(index <= theSize)) throw OutOfBoundException(HERE) << "Index over size. Index=" << index << " size=" << theSize;
   // Quick check for easy cases
   if (index == theSize) return Sample(0, getDimension());
   if (index >= theSize / 2)   // Strategy 1.

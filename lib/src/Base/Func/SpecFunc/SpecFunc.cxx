@@ -520,7 +520,7 @@ Complex SpecFunc::Dawson(const Complex & z)
 Scalar SpecFunc::Debye(const Scalar x,
                        const UnsignedInteger n)
 {
-  if ((n == 0) || (n > 20)) throw InvalidArgumentException(HERE) << "Error: cannot compute Debye function of order outside of {1,...,20}";
+  if (!(n > 0 && n <= 20)) throw InvalidArgumentException(HERE) << "Error: cannot compute Debye function of order outside of {1,...,20}, here order=" << n;
   if (x < 0.0) return Debye(-x, n) - n * x / (n + 1.0);
   // The threshold is such that the overall error is less than 1.0e-16
   if (x < 1.0e-8) return 1.0 - n * x / (2.0 * (n + 1.0));
@@ -535,7 +535,7 @@ Scalar SpecFunc::DiLog(const Scalar x)
   // Special case for 1
   if (x == 1.0) return PI2_6;
   // No real value on (1, \infty)
-  if (!(x <= 1.0)) throw InvalidArgumentException(HERE) << "Error: the DiLog function does not take real values for arguments greater than 1.";
+  if (!(x <= 1.0)) throw InvalidArgumentException(HERE) << "Error: the DiLog function does not take real values for arguments greater than 1, here argument=" << x;
   // Special case for x close to 1
   if (x >= 0.999997)
   {
@@ -1276,7 +1276,7 @@ Complex SpecFunc::Log1MExp(const Scalar x)
 // Integer log2
 UnsignedInteger SpecFunc::Log2(const Unsigned64BitsInteger n)
 {
-  if (n == 0) throw InvalidArgumentException(HERE) << "Error: n must be positive";
+  if (!(n > 0)) throw InvalidArgumentException(HERE) << "Error: n must be positive";
 
   // De Bruijn sequence
   const UnsignedInteger tab64[64] =
@@ -1362,7 +1362,7 @@ UnsignedInteger SpecFunc::BitCount(const Unsigned64BitsInteger n)
 // Missing functions in cmath wrt math.h as of C++98
 Scalar SpecFunc::Acosh(const Scalar x)
 {
-  if (!(x >= 1.0)) throw InvalidArgumentException(HERE) << "Error: acosh is not defined for x<1, here x=" << x;
+  if (!(x >= 1.0)) throw InvalidArgumentException(HERE) << "Error: acosh is only defined for x>=1, here x=" << x;
   return 2.0 * std::log(sqrt(0.5 * (x + 1.0)) + sqrt(0.5 * (x - 1.0)));
 }
 

@@ -244,7 +244,7 @@ Interval Interval::getMarginal(const Indices & indices) const
 
 Interval Interval::getMarginal(const UnsignedInteger index) const
 {
-  if (index >= getDimension()) throw InvalidArgumentException(HERE) << "Marginal index cannot exceed dimension";
+  if (!(index < getDimension())) throw InvalidArgumentException(HERE) << "Marginal index cannot exceed dimension, here index=" << index << " and dimension=" << getDimension();
   return Interval(Point(1, lowerBound_[index]),
                   Point(1, upperBound_[index]),
                   Interval::BoolCollection(1, finiteLowerBound_[index]),
