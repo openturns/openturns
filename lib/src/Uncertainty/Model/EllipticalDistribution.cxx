@@ -485,13 +485,13 @@ void EllipticalDistribution::update()
         R_(i, i) += largestEV * SpecFunc::Precision;
       // This time throw if the decomposition fails
       try
-        {
-          cholesky_ = R_.computeCholesky();
-        }
+      {
+        cholesky_ = R_.computeCholesky();
+      }
       catch (const NotSymmetricDefinitePositiveException &)
-        {
-          throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R_;
-        } // Second decomposition
+      {
+        throw InvalidArgumentException(HERE) << "The correlation matrix must be definite positive R=" << R_;
+      } // Second decomposition
     } // First decomposition
     inverseCholesky_ = cholesky_.solveLinearSystem(IdentityMatrix(dimension)).getImplementation();
     // Inverse the correlation matrix R = D^(-1).L.L'.D^(-1)

@@ -47,7 +47,7 @@ KarhunenLoeveReduction::KarhunenLoeveReduction(const KarhunenLoeveResult & resul
 
 /* Parameter constructor */
 KarhunenLoeveReduction::KarhunenLoeveReduction(const KarhunenLoeveResult & result,
-                                               const TrendTransform & trend)
+    const TrendTransform & trend)
   : KarhunenLoeveReduction(result)
 {
   setTrend(trend);

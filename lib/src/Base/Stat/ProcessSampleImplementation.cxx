@@ -69,7 +69,7 @@ ProcessSampleImplementation::ProcessSampleImplementation(const Mesh & mesh,
 }
 
 ProcessSampleImplementation::ProcessSampleImplementation(const Mesh & mesh,
-                                                         const SampleCollection & collection)
+    const SampleCollection & collection)
   : PersistentObject()
   , mesh_(mesh)
   , data_(collection)
@@ -276,7 +276,7 @@ Field ProcessSampleImplementation::computeRawMoment(const UnsignedInteger k) con
  * Get the empirical CDF of the sample
  */
 Field ProcessSampleImplementation::computeEmpiricalCDF(const Point & point,
-                            const Bool tail) const
+    const Bool tail) const
 {
   const UnsignedInteger verticesNumber = mesh_.getVerticesNumber();
   Sample values(verticesNumber, 1);
@@ -647,8 +647,8 @@ GridLayout ProcessSampleImplementation::drawCorrelation() const
     {
       Graph graph(drawMarginalCorrelation(i, j));
       graph.setTitle("");
-      graph.setXTitle((i == outputDimension - 1 ) ? OSS() << "marginal " << j << ", s": OSS() << "");
-      graph.setYTitle((j == 0) ? OSS() << "marginal " << i << ", t": OSS() << "");
+      graph.setXTitle((i == outputDimension - 1 ) ? OSS() << "marginal " << j << ", s" : OSS() << "");
+      graph.setYTitle((j == 0) ? OSS() << "marginal " << i << ", t" : OSS() << "");
       grid.setGraph(i, j, graph);
     }
   grid.setTitle("Empirical correlation of marginals");

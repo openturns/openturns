@@ -100,7 +100,7 @@ Matrix AbsoluteExponential::partialGradient(const Point & s,
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;
   Scalar norm1 = 0.0;
-  for (UnsignedInteger i = 0; i < inputDimension_; ++i) 
+  for (UnsignedInteger i = 0; i < inputDimension_; ++i)
     norm1 += std::abs(s[i] - t[i]) / scale_[i];
   // For zero norm
   // Norm1 is null if all elements are zero

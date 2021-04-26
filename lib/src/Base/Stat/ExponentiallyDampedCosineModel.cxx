@@ -87,7 +87,7 @@ Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Point & tau) const
 }
 
 Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
-                                                       const Collection<Scalar>::const_iterator &t_begin) const
+    const Collection<Scalar>::const_iterator &t_begin) const
 {
   Scalar absTau = 0;
   Collection<Scalar>::const_iterator s_it = s_begin;

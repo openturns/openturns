@@ -123,8 +123,8 @@ Bool LinearModelResult::hasIntercept() const
 String LinearModelResult::__repr__() const
 {
   return OSS(true) << "class=" << getClassName()
-  << " beta=" << beta_
-  << " formula=" << condensedFormula_;
+         << " beta=" << beta_
+         << " formula=" << condensedFormula_;
 }
 
 Basis LinearModelResult::getBasis() const

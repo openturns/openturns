@@ -73,7 +73,7 @@ public:
   static Bool IsBoostAvailable();
   static Bool IsMPFRAvailable();
   static Bool IsMPCAvailable();
-  
+
   // Some facilities for NaN and inf
   static Bool IsNaN(const Scalar value);
   static Bool IsInf(const Scalar value);

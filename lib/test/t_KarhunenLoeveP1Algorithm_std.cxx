@@ -81,7 +81,7 @@ int main(int, char *[])
       Point x(1, 0.25);
       for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
         error += std::abs((result.lift(coefficients[i]) - P1LagrangeEvaluation(Field(mesh, processSample[i])))(x)[0]);
-      assert_almost_equal(error, 0.965275 , 1.0e-6, 1.0e-6);
+      assert_almost_equal(error, 0.965275, 1.0e-6, 1.0e-6);
     }
     {
       // 2d output

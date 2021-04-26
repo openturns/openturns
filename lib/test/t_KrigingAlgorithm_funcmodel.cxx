@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of KrigingAlgorithm class using 
+ *  @brief The test file of KrigingAlgorithm class using
  *  StationaryFunctionalCovarianceModel
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca

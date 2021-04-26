@@ -54,7 +54,7 @@ public:
 
   DistributionFactoryResult buildEstimator(const Sample & sample) const override;
 
- private:
+private:
 
   /** Flag to select between robust/nonrobust estimators */
   Bool robust_;

@@ -37,7 +37,7 @@ class OT_API VonMisesFactory
 public:
 
   /** Default constructor */
-  explicit VonMisesFactory(const Bool circular=true);
+  explicit VonMisesFactory(const Bool circular = true);
 
   /** Virtual constructor */
   VonMisesFactory * clone() const override;
@@ -52,11 +52,11 @@ public:
   VonMises buildAsVonMises(const Point & parameters) const;
   VonMises buildAsVonMises() const;
 
- private:
+private:
 
   // Flag to tell if the data have to be treated as in R or R/2piZ
   Bool circular_;
-  
+
 }; /* class VonMisesFactory */
 
 END_NAMESPACE_OPENTURNS

@@ -33,7 +33,7 @@ class XMLH5StorageManagerImplementation
 public:
 
   explicit XMLH5StorageManagerImplementation(const FileName & h5FileName)
-  : h5FileName_(h5FileName)
+    : h5FileName_(h5FileName)
   {}
 
   template <class CPP_Type>
@@ -65,12 +65,24 @@ private:
 };
 
 
-template <> inline std::vector<Scalar> & XMLH5StorageManagerImplementation::getBuffer() { return valBuf_Scalar_; }
-template <> inline std::vector<UnsignedInteger> & XMLH5StorageManagerImplementation::getBuffer() { return valBuf_UnsignedInteger_; }
+template <> inline std::vector<Scalar> & XMLH5StorageManagerImplementation::getBuffer()
+{
+  return valBuf_Scalar_;
+}
+template <> inline std::vector<UnsignedInteger> & XMLH5StorageManagerImplementation::getBuffer()
+{
+  return valBuf_UnsignedInteger_;
+}
 
 template <class CPP_Type> inline H5::DataType getDataType();
-template <> inline H5::DataType getDataType<Scalar>() { return H5::PredType::IEEE_F64LE; }
-template <> inline H5::DataType getDataType<UnsignedInteger>() { return H5::PredType::NATIVE_ULONG; }
+template <> inline H5::DataType getDataType<Scalar>()
+{
+  return H5::PredType::IEEE_F64LE;
+}
+template <> inline H5::DataType getDataType<UnsignedInteger>()
+{
+  return H5::PredType::NATIVE_ULONG;
+}
 
 
 template <class CPP_Type>
@@ -240,7 +252,7 @@ XMLH5StorageManager * XMLH5StorageManager::clone() const
 void XMLH5StorageManager::checkStorageManager()
 {
   if (XML::GetAttributeByName( p_state_->root_, XML_STMGR::manager_attribute::Get()) !=
-     "XMLH5StorageManager")
+      "XMLH5StorageManager")
     throw StudyFileParsingException(HERE) << XML::GetAttributeByName( p_state_->root_, XML_STMGR::manager_attribute::Get())
                                           << " is used in study file. XMLH5StorageManager is expected";
 }

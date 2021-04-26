@@ -57,7 +57,8 @@ int main(int, char *[])
   const char fileName[] = "myStudyH5.xml";
   const char h5fileName[] = "myStudyH5.h5";
 
-  try {
+  try
+  {
 
     // Using wrong type of StorageManager when loading study
     Study study(fileName);
@@ -72,7 +73,9 @@ int main(int, char *[])
     // cleanup
     Os::Remove(fileName);
     Os::Remove(h5fileName);
-  } catch (std::exception& exc) {
+  }
+  catch (std::exception& exc)
+  {
     std::cout << "Expected: " << exc.what() << std::endl;
   }
 

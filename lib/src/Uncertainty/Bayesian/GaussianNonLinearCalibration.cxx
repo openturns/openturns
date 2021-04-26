@@ -396,7 +396,7 @@ Point GaussianNonLinearCalibration::run(const Sample & inputObservations,
   catch (NotDefinedException &) // setStartingPoint is not defined for the solver
   {
     LOGWARN(OSS() << "Candidate=" << getCandidate() << " is ignored because algorithm "
-                  << algorithm_.getImplementation()->getClassName() << " has no setStartingPoint method.");
+            << algorithm_.getImplementation()->getClassName() << " has no setStartingPoint method.");
   }
   algorithm_.run();
   const Point thetaStar(algorithm_.getResult().getOptimalPoint());

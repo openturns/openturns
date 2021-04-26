@@ -110,7 +110,7 @@ TensorizedCovarianceModel * TensorizedCovarianceModel::clone() const
 }
 
 Scalar TensorizedCovarianceModel::computeAsScalar(const Point &s,
-                                                  const Point &t) const
+    const Point &t) const
 {
   if (outputDimension_ != 1)
     throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::computeAsScalar(s,t) should be used only if output dimension is 1."
@@ -121,13 +121,13 @@ Scalar TensorizedCovarianceModel::computeAsScalar(const Point &s,
 Scalar TensorizedCovarianceModel::computeAsScalar(const Point &tau) const
 {
   if (outputDimension_ != 1)
-    throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::computeAsScalar(s,t) should be used only if output dimension is 1." 
+    throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::computeAsScalar(s,t) should be used only if output dimension is 1."
                                          << "Here, output dimension = " << outputDimension_;
   return collection_[0].computeAsScalar(tau);
 }
 
 Scalar TensorizedCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
-                                                  const Collection<Scalar>::const_iterator &t_begin) const
+    const Collection<Scalar>::const_iterator &t_begin) const
 {
   if (outputDimension_ != 1)
     throw InvalidArgumentException(HERE) << "TensorizedCovarianceModel::computeAsScalar(s,t) should be used only if output dimension is 1."
@@ -187,7 +187,7 @@ Matrix TensorizedCovarianceModel::partialGradient(const Point & s,
     const CovarianceModel localCovariance(collection_[k]);
     const Matrix gradient_k(localCovariance.partialGradient(s, t));
     // Gradient gradient_k is of size inputDimension x 1
-    // operator() yields diagonal matrix ==> cov(k,k) 
+    // operator() yields diagonal matrix ==> cov(k,k)
     // cov(k, k) corresponds to the element of index k * dim + k
     const UnsignedInteger columnIndex = k + outputDimension_ * k;
     for (UnsignedInteger i = 0; i < inputDimension_; ++i)

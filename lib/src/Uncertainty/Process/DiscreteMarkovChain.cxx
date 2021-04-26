@@ -304,18 +304,18 @@ UserDefined DiscreteMarkovChain::computeStationaryDistribution() const
   UnsignedInteger indexMax = 0;
   for (UnsignedInteger i = 1; i < dimension; ++i)
     if (!(eigenvalues[i].real() < largestEV))
-      {
-        largestEV = eigenvalues[i].real();
-        indexMax = i;
-      }
+    {
+      largestEV = eigenvalues[i].real();
+      indexMax = i;
+    }
   // Now extract the corresponding eigenvector. We know that it can be chosen with positive components and a L1 norm equal to 1, and it is the probability table of the stationary distribution. There is no need to normalize it as it is done in the UserDefined distribution.
   Sample support(dimension, 1);
   Point probabilities(dimension);
   for (UnsignedInteger i = 0; i < dimension; ++i)
-    {
-      support(i, 0) = i;
-      probabilities[i] = std::abs(eigenvectors(i, indexMax).real());
-    }
+  {
+    support(i, 0) = i;
+    probabilities[i] = std::abs(eigenvectors(i, indexMax).real());
+  }
   return UserDefined(support, probabilities);
 }
 

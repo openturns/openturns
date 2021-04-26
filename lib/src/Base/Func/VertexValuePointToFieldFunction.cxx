@@ -31,14 +31,14 @@ static const Factory<VertexValuePointToFieldFunction> Factory_VertexValuePointTo
 
 /* Default constructor */
 VertexValuePointToFieldFunction::VertexValuePointToFieldFunction()
-: PointToFieldFunctionImplementation()
+  : PointToFieldFunctionImplementation()
 {}
 
 /* Constructor with parameters */
 VertexValuePointToFieldFunction::VertexValuePointToFieldFunction(const Function & function,
-                                                                 const Mesh & mesh)
-: PointToFieldFunctionImplementation(std::max(static_cast<SignedInteger>(function.getInputDimension()) - static_cast<SignedInteger>(mesh.getDimension()), static_cast<SignedInteger>(0)), mesh, function.getOutputDimension())
-, function_(function)
+    const Mesh & mesh)
+  : PointToFieldFunctionImplementation(std::max(static_cast<SignedInteger>(function.getInputDimension()) - static_cast<SignedInteger>(mesh.getDimension()), static_cast<SignedInteger>(0)), mesh, function.getOutputDimension())
+  , function_(function)
 {
   if (!(function_.getInputDimension() >= mesh.getDimension()))
     throw InvalidArgumentException(HERE) << "Error: the given function should have an input dimension at least equal to the mesh dimension=" << mesh.getDimension() << ". Here input dimension=" << function_.getInputDimension();

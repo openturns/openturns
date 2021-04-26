@@ -97,7 +97,7 @@ Scalar StationaryFunctionalCovarianceModel::computeAsScalar(const Scalar tau) co
   const Scalar tauOverThetaNorm = std::abs(tau / scale_[0]);
   if (tauOverThetaNorm <= SpecFunc::ScalarEpsilon)
     return outputCovariance_(0, 0) * (1.0 + nuggetFactor_);
-  const Point tauOverTheta(1, tau / scale_[0]); 
+  const Point tauOverTheta(1, tau / scale_[0]);
   return outputCovariance_(0, 0) * rho_(tauOverTheta)[0];
 }
 
