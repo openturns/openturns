@@ -97,7 +97,7 @@ solver = ot.MultiStart(ot.Cobyla(problem), experiment.generate())
 # -----------------------------------------------------------
 
 # %%
-startingPoints = solver.getStartingPoints()
+startingPoints = solver.getStartingSample()
 graph = rastrigin.draw(lowerbound, upperbound, [100]*dim)
 graph.setTitle("Rastrigin function")
 cloud = ot.Cloud(startingPoints)

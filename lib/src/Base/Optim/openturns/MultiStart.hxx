@@ -72,14 +72,8 @@ public:
   void setStartingSample(const Sample & startingSample);
   Sample getStartingSample() const;
 
-  /** @deprecated getStartingSample alias */
-  Sample getStartingPoints() const;
-
   /** Useless inherited method: throw */
   Point getStartingPoint() const override;
-
-  /** @deprecated Overwrite all starting points */
-  void setStartingPoints(const Sample & sample);
 
   /** Flag for results management accessors */
   Bool getKeepResults() const;
