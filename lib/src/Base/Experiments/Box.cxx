@@ -44,7 +44,7 @@ Box::Box(const Point & levels)
   , bounds_(levels_.getDimension())
 {
   // Check if there is the same number of levels than the dimension of the experiment plane
-  if (!(levels.getDimension() > 0)) throw InvalidArgumentException(HERE) << "Error: the levels dimension is "<< levels.getDimension() << ", it should be > 0.";
+  if (!(levels.getDimension() > 0)) throw InvalidArgumentException(HERE) << "Error: the levels dimension is " << levels.getDimension() << ", it should be > 0.";
   setLevels(levels);
 }
 

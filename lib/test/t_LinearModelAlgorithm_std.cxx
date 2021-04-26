@@ -77,7 +77,7 @@ int main(int, char *[])
       const Point cook(result.getCookDistances());
       const Point cook_reference = {0.0233296, 0.0360369, 0.00178903, 0.0502183, 0.0966701, 0.00562596};
       Point cookFirstElements(cook_reference.getSize());
-      for (UnsignedInteger i = 0; i < cookFirstElements.getSize(); ++i) 
+      for (UnsignedInteger i = 0; i < cookFirstElements.getSize(); ++i)
         cookFirstElements[i] = cook[i];
       assert_almost_equal(cookFirstElements, cook_reference, 1e-5, 0.0);
 

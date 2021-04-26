@@ -67,17 +67,17 @@ Normal NormalFactory::buildAsNormal(const Sample & sample) const
   if (sample.getSize() < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Normal distribution from a sample of size < 2";
   // Robust estimator
   if (robust_)
-    {
-      const UnsignedInteger dimension = sample.getDimension();
-      const Point levels = {0.25, 0.5, 0.75};
-      const Sample quantiles(sample.computeQuantilePerComponent(levels));
-      // Factor to conver inter-quartiles into standard deviation
-      static const Scalar alpha = 1.0 / 1.3489795003921634;
-      const Point std((quantiles[2] - quantiles[0]) * alpha);
-      if (dimension == 1) return Normal(quantiles(1, 0), std[0]);
-      // Robust estimation of the correlation using first Kendall's tau then Spearman's rho
-      return Normal(quantiles[1], std, NormalCopulaFactory().buildAsNormalCopula(sample).getShapeMatrix());
-    } // robust
+  {
+    const UnsignedInteger dimension = sample.getDimension();
+    const Point levels = {0.25, 0.5, 0.75};
+    const Sample quantiles(sample.computeQuantilePerComponent(levels));
+    // Factor to conver inter-quartiles into standard deviation
+    static const Scalar alpha = 1.0 / 1.3489795003921634;
+    const Point std((quantiles[2] - quantiles[0]) * alpha);
+    if (dimension == 1) return Normal(quantiles(1, 0), std[0]);
+    // Robust estimation of the correlation using first Kendall's tau then Spearman's rho
+    return Normal(quantiles[1], std, NormalCopulaFactory().buildAsNormalCopula(sample).getShapeMatrix());
+  } // robust
   // MLE estimator
   const Point mean(sample.computeMean());
   const CovarianceMatrix covariance(sample.computeCovariance());

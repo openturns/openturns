@@ -171,7 +171,7 @@ Scalar DiracCovarianceModel::computeAsScalar(const Point &tau) const
 }
 
 Scalar DiracCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
-                                             const Collection<Scalar>::const_iterator &t_begin) const
+    const Collection<Scalar>::const_iterator &t_begin) const
 {
   if (outputDimension_ > 1)
     throw InvalidArgumentException(HERE) << "Error : DiracCovarianceModel::computeAsScalar(tau) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;

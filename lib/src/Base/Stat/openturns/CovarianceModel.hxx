@@ -60,10 +60,10 @@ public:
 
   /** Compute the covariance function */
   virtual SquareMatrix operator() (const Scalar s,
-                             const Scalar t) const;
+                                   const Scalar t) const;
 
   virtual SquareMatrix operator() (const Point & s,
-                             const Point & t) const;
+                                   const Point & t) const;
 
   virtual Scalar computeAsScalar (const Point & s,
                                   const Point & t) const;

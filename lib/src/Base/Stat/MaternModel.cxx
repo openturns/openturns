@@ -99,7 +99,7 @@ Scalar MaternModel::computeAsScalar(const Point & tau) const
 }
 
 Scalar MaternModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
-    const Collection<Scalar>::const_iterator & t_begin) const
+                                    const Collection<Scalar>::const_iterator & t_begin) const
 {
   Scalar scaledPoint = 0;
   Collection<Scalar>::const_iterator s_it = s_begin;

@@ -315,7 +315,7 @@ Point NonLinearLeastSquaresCalibration::run(const Sample & inputObservations,
   catch (NotDefinedException &) // setStartingPoint is not defined for the solver
   {
     LOGWARN(OSS() << "Candidate=" << candidate << " is ignored because algorithm "
-                  << algorithm_.getImplementation()->getClassName() << " has no setStartingPoint method.");
+            << algorithm_.getImplementation()->getClassName() << " has no setStartingPoint method.");
   }
   algorithm_.run();
   Point optimalPoint(algorithm_.getResult().getOptimalPoint());

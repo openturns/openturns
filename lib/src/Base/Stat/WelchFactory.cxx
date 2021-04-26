@@ -100,7 +100,7 @@ UnsignedInteger WelchFactory::getBlockNumber() const
 
 void WelchFactory::setBlockNumber(const UnsignedInteger blockNumber)
 {
-  if (!(blockNumber>=1)) throw InvalidArgumentException(HERE) << "Error: the number of blocks should be at least 1";
+  if (!(blockNumber >= 1)) throw InvalidArgumentException(HERE) << "Error: the number of blocks should be at least 1";
   blockNumber_ = blockNumber;
 }
 

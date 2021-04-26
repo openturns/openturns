@@ -84,7 +84,7 @@ SquareMatrix ExponentialModel::operator()(const Point &tau) const
   // Return value
   Scalar factor = 1.0;
   if (tauOverThetaNorm == 0.0)
-   factor = 1.0 + nuggetFactor_;
+    factor = 1.0 + nuggetFactor_;
   else
     factor = exp(-tauOverThetaNorm);
   SquareMatrix output(outputCovariance_);
@@ -120,7 +120,7 @@ Scalar ExponentialModel::computeAsScalar(const Point &tau) const
  * C_{i,i}(tau) = amplitude_i^2  * exp(-|tau / scale|)
  */
 Scalar ExponentialModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
-                                         const Collection<Scalar>::const_iterator &t_begin) const
+    const Collection<Scalar>::const_iterator &t_begin) const
 {
   if (outputDimension_ != 1)
     throw InvalidArgumentException(HERE) << "Error : ExponentialModel::computeAsScalar(it, it) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;

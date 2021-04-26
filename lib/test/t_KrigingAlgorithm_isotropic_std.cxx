@@ -47,7 +47,7 @@ static KrigingResult fitKriging(const CovarianceModel & covarianceModel)
   coordinates(7, 1) = 6.0;
   coordinates(8, 0) = 9.0;
   coordinates(8, 1) = 6.0;
-  
+
   Sample observations(9, 1);
   observations(0, 0) = 25.0;
   observations(1, 0) = 25.0;

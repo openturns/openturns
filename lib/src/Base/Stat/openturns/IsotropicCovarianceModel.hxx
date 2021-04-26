@@ -44,13 +44,13 @@ public:
   /** Virtual copy constructor */
   IsotropicCovarianceModel * clone() const override;
 
-  /** Computation of the covariance matrix */  
+  /** Computation of the covariance matrix */
   using CovarianceModelImplementation::computeAsScalar;
 
-  #ifndef SWIG
+#ifndef SWIG
   Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
                          const Collection<Scalar>::const_iterator & t_begin) const override;
-  #endif
+#endif
   Scalar computeAsScalar(const Point & tau) const override;
   Scalar computeAsScalar(const Scalar tau) const override;
 
@@ -72,7 +72,7 @@ public:
   /** Is this a stationary covariance model ? */
   Bool isStationary() const override;
 
-  /** Is it safe to compute discretize etc in parallel? */ 
+  /** Is it safe to compute discretize etc in parallel? */
   Bool isParallel() const override;
 
   /** Indices of the active parameters */
@@ -81,7 +81,7 @@ public:
   /** Full Parameter accessors */
   void setFullParameter(const Point & parameter) override;
   Point getFullParameter() const override;
-  Description getFullParameterDescription() const override; 
+  Description getFullParameterDescription() const override;
 
   /** String converter */
   String __repr__() const override;

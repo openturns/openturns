@@ -206,9 +206,18 @@ class PosteriorDistributionLikelihoodEvaluation : public EvaluationImplementatio
 {
 public:
   PosteriorDistributionLikelihoodEvaluation(const PosteriorDistribution & distribution) : EvaluationImplementation(), distribution_(distribution) {}
-  PosteriorDistributionLikelihoodEvaluation * clone() const override { return new PosteriorDistributionLikelihoodEvaluation(*this); }
-  UnsignedInteger getInputDimension() const override { return distribution_.getDimension(); }
-  UnsignedInteger getOutputDimension() const override { return 1; }
+  PosteriorDistributionLikelihoodEvaluation * clone() const override
+  {
+    return new PosteriorDistributionLikelihoodEvaluation(*this);
+  }
+  UnsignedInteger getInputDimension() const override
+  {
+    return distribution_.getDimension();
+  }
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
 
   Point operator()(const Point & inP) const override
   {

@@ -130,7 +130,7 @@ void XMLStorageManager::setStorageManager()
 void XMLStorageManager::checkStorageManager()
 {
   if (XML::GetAttributeByName( p_state_->root_, XML_STMGR::manager_attribute::Get()) !=
-     "XMLStorageManager")
+      "XMLStorageManager")
     throw StudyFileParsingException(HERE) << XML::GetAttributeByName( p_state_->root_, XML_STMGR::manager_attribute::Get())
                                           << " is used in study file. XMLStorageManager is expected";
 }

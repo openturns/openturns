@@ -47,21 +47,21 @@ KroneckerCovarianceModel::KroneckerCovarianceModel(const UnsignedInteger inputDi
 
 /** Standard constructor with scale and amplitude parameters parameters */
 KroneckerCovarianceModel::KroneckerCovarianceModel(const CovarianceModel &rho,
-                                                   const Point & amplitude)
+    const Point & amplitude)
   : CovarianceModelImplementation(rho.getInputDimension())
   , rho_()
   , extraParameterNumber_(0)
 {
-   outputDimension_ = amplitude.getDimension();
-   amplitude_ = Point(outputDimension_, 1.0);
-   setAmplitude(amplitude);
-   setCorrelationModel(rho);
-  }
+  outputDimension_ = amplitude.getDimension();
+  amplitude_ = Point(outputDimension_, 1.0);
+  setAmplitude(amplitude);
+  setCorrelationModel(rho);
+}
 
 /** Standard constructor with scale and amplitude parameters parameters */
 KroneckerCovarianceModel::KroneckerCovarianceModel(const CovarianceModel & rho,
-                                                   const Point & amplitude,
-                                                   const CorrelationMatrix & spatialCorrelation)
+    const Point & amplitude,
+    const CorrelationMatrix & spatialCorrelation)
   : CovarianceModelImplementation(rho.getInputDimension())
   , rho_()
   , extraParameterNumber_(0)
@@ -75,7 +75,7 @@ KroneckerCovarianceModel::KroneckerCovarianceModel(const CovarianceModel & rho,
 
 /** Standard constructor with scale, amplitude and spatial correlation parameters */
 KroneckerCovarianceModel::KroneckerCovarianceModel(const CovarianceModel & rho,
-                                                   const CovarianceMatrix & sigma)
+    const CovarianceMatrix & sigma)
   : CovarianceModelImplementation(rho.getScale(), sigma)
   , rho_()
   , extraParameterNumber_(0)
@@ -138,7 +138,7 @@ void KroneckerCovarianceModel::setCorrelationModel(const CovarianceModel &rho)
 
   // Extra parameter of the correlation model
   extraParameterNumber_ = rho_.getFullParameter().getSize() - rho_.getScale().getSize() - rho_.getAmplitude().getSize();
-  
+
   if (extraParameterNumber_)
   {
     const Indices rhoActiveParameter(rho_.getActiveParameter());
@@ -186,10 +186,10 @@ Bool KroneckerCovarianceModel::isParallel() const
  * C(t, s)_{i,j} = amplitude_i * R_{i,j} * amplitude_j  * rho(t/scale, s/scale
  */
 SquareMatrix KroneckerCovarianceModel::operator()(const Point &s,
-                                                  const Point &t) const
+    const Point &t) const
 {
   SquareMatrix output(outputCovariance_);
-  return output * rho_.computeAsScalar(s,t);
+  return output * rho_.computeAsScalar(s, t);
 }
 
 SquareMatrix KroneckerCovarianceModel::operator()(const Point &tau) const
@@ -199,7 +199,7 @@ SquareMatrix KroneckerCovarianceModel::operator()(const Point &tau) const
 }
 
 Scalar KroneckerCovarianceModel::computeAsScalar(const Point &s,
-                                                 const Point &t) const
+    const Point &t) const
 {
   if (outputDimension_ > 1)
     throw InvalidArgumentException(HERE) << "In KroneckerCovarianceModel::computeAsScalar: expected output dimension equal to 1. Here output dimension =" << getOutputDimension();
@@ -223,7 +223,7 @@ Scalar KroneckerCovarianceModel::computeAsScalar(const Point &tau) const
 }
 
 Scalar KroneckerCovarianceModel::computeRhoOverSample(const Collection<Scalar>::const_iterator &s_begin,
-                                                      const Collection<Scalar>::const_iterator &t_begin) const
+    const Collection<Scalar>::const_iterator &t_begin) const
 {
   // rho_.computeAsScalar here plays the role of correlation only
   // Purpose is to return the evaluation of rho_ model over a sample
@@ -232,7 +232,7 @@ Scalar KroneckerCovarianceModel::computeRhoOverSample(const Collection<Scalar>::
 }
 
 Scalar KroneckerCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
-                                                 const Collection<Scalar>::const_iterator &t_begin) const
+    const Collection<Scalar>::const_iterator &t_begin) const
 {
   // Limiting outputDimension ==> Make sure there is no other usage
   if (outputDimension_ > 1)
@@ -253,7 +253,7 @@ struct KroneckerModelDiscretizePolicy
   KroneckerModelDiscretizePolicy(const Sample &input,
                                  CovarianceMatrix & output,
                                  const KroneckerCovarianceModel & model)
-      : input_(*input.getImplementation()), output_(*output.getImplementation()), model_(model), inputDimension_(input_.getDimension())
+    : input_(*input.getImplementation()), output_(*output.getImplementation()), model_(model), inputDimension_(input_.getDimension())
   {
   }
 

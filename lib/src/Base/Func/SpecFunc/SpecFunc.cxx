@@ -307,7 +307,7 @@ Scalar SpecFunc::DeltaLogBesselI10(const Scalar x)
   // epsilon machine in double precision (Maple)
   if (!(x > 0.848296173838189821792665527416e-2)) return std::log(0.5 * x) + x * x * (-0.125 + 5.0 * x * x / 384.0);
   // Medium argument
-  if (!(x > 22.0)) return std::log(SmallCaseBesselI1(x) / SmallCaseBesselI0(x));  
+  if (!(x > 22.0)) return std::log(SmallCaseBesselI1(x) / SmallCaseBesselI0(x));
   // Large argument
   else return LargeCaseDeltaLogBesselI10(x);
 }
@@ -316,9 +316,18 @@ class LogBesselKIntegrandEvaluation : public EvaluationImplementation
 {
 public:
   LogBesselKIntegrandEvaluation(const Scalar nu, const Scalar x) : EvaluationImplementation(), nu_(nu), x_(x) {}
-  LogBesselKIntegrandEvaluation * clone() const override { return new LogBesselKIntegrandEvaluation(*this); }
-  UnsignedInteger getInputDimension() const override { return 1; }
-  UnsignedInteger getOutputDimension() const override { return 1; }
+  LogBesselKIntegrandEvaluation * clone() const override
+  {
+    return new LogBesselKIntegrandEvaluation(*this);
+  }
+  UnsignedInteger getInputDimension() const override
+  {
+    return 1;
+  }
+  UnsignedInteger getOutputDimension() const override
+  {
+    return 1;
+  }
 
   Point operator()(const Point & inP) const override
   {
@@ -881,16 +890,16 @@ Scalar SpecFunc::HyperGeom_1_1(const Scalar p1,
   Bool absEps = abs(eps) > Precision;
   Bool absEpsPrec = absEps;
   do
-    {
-      absEpsPrec = absEps;
-      term *= pochhammerP1 * z / (pochhammerQ1 * factorial);
-      pochhammerP1 += 1.0;
-      pochhammerQ1 += 1.0;
-      factorial += 1.0;
-      sum += term;
-      eps = term / sum;
-      absEps = abs(eps) > Precision;
-    }
+  {
+    absEpsPrec = absEps;
+    term *= pochhammerP1 * z / (pochhammerQ1 * factorial);
+    pochhammerP1 += 1.0;
+    pochhammerQ1 += 1.0;
+    factorial += 1.0;
+    sum += term;
+    eps = term / sum;
+    absEps = abs(eps) > Precision;
+  }
   while (absEps || absEpsPrec);
   return sum.convert_to<Scalar>();
 
@@ -943,16 +952,16 @@ Complex SpecFunc::HyperGeom_1_1(const Scalar p1,
   Bool absEps = abs(eps) > Precision;
   Bool absEpsPrec = absEps;
   do
-    {
-      absEpsPrec = absEps;
-      term *= pochhammerP1 * z / (pochhammerQ1 * factorial);
-      pochhammerP1 += 1.0;
-      pochhammerQ1 += 1.0;
-      factorial += 1.0;
-      sum += term;
-      eps = term / sum;
-      absEps = abs(eps) > Precision;
-    }
+  {
+    absEpsPrec = absEps;
+    term *= pochhammerP1 * z / (pochhammerQ1 * factorial);
+    pochhammerP1 += 1.0;
+    pochhammerQ1 += 1.0;
+    factorial += 1.0;
+    sum += term;
+    eps = term / sum;
+    absEps = abs(eps) > Precision;
+  }
   while (absEps || absEpsPrec);
   return sum.convert_to<Complex>();
 #else

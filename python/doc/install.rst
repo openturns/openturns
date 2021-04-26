@@ -73,6 +73,8 @@ We support the following Debian-based distributions:
     +-------------------------------------+---------------------------------------------------------+
     | Ubuntu 20.04 LTS 'Focal Fossa'      | deb https://openturns.github.io/apt/ubuntu focal main   |
     +-------------------------------------+---------------------------------------------------------+
+    | Ubuntu 21.04 'Hirsute Hippo'        | deb https://openturns.github.io/apt/ubuntu hirsute main |
+    +-------------------------------------+---------------------------------------------------------+
     | Debian 9.0 'Stretch'                | deb https://openturns.github.io/apt/debian stretch main |
     +-------------------------------------+---------------------------------------------------------+
     | Debian 10.0 'Buster'                | deb https://openturns.github.io/apt/debian buster main  |
@@ -131,14 +133,14 @@ Add the repository corresponding to your operating system::
     curl http://download.opensuse.org/repositories/science:/openturns/CentOS_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl http://download.opensuse.org/repositories/science:/openturns/Fedora_33/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.2/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/Mageia_7/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/Mageia_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
     rpm --import http://download.opensuse.org/repositories/science:/openturns/CentOS_8/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_33/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.2/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/Mageia_7/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/Mageia_8/repodata/repomd.xml.key
 
 The following packages are available:
 

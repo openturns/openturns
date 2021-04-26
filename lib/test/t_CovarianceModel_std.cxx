@@ -68,7 +68,7 @@ static void test_model(const CovarianceModel & myModel, const Bool test_grad = t
     // Check that discretize & computeAsScalar provide the same values
     for (UnsignedInteger j = 0; j < vertices.getSize(); ++j)
       for (UnsignedInteger i = j; i < vertices.getSize(); ++i)
-        assert_almost_equal(cov(i,j), myModel.computeAsScalar(vertices[i], vertices[j]), 1e-14, 1e-14);
+        assert_almost_equal(cov(i, j), myModel.computeAsScalar(vertices[i], vertices[j]), 1e-14, 1e-14);
   }
   else
   {
@@ -82,10 +82,10 @@ static void test_model(const CovarianceModel & myModel, const Bool test_grad = t
         {
           for (UnsignedInteger localI = 0; localI < dimension; ++localI)
           {
-           localMatrix(localI, localJ) = cov(i * dimension + localI, j * dimension + localJ);
+            localMatrix(localI, localJ) = cov(i * dimension + localI, j * dimension + localJ);
           }
         }
-          assert_almost_equal(localMatrix, myModel(vertices[i], vertices[j]), 1e-14, 1e-14);
+        assert_almost_equal(localMatrix, myModel(vertices[i], vertices[j]), 1e-14, 1e-14);
       }
     }
   }
@@ -373,20 +373,20 @@ int main(int, char *[])
       inputVector[0] = 0.3;
       inputVector[1] = 1.7;
       Point inputVectorNorm(1, inputVector.norm());
-      assert_almost_equal(myOneDimensionalKernel(inputVectorNorm)(0,0), 1.992315565746, 1e-12, 0.0);
-      assert_almost_equal(myIsotropicKernel(inputVector)(0,0), 1.992315565746, 1e-12, 0.0);
+      assert_almost_equal(myOneDimensionalKernel(inputVectorNorm)(0, 0), 1.992315565746, 1e-12, 0.0);
+      assert_almost_equal(myIsotropicKernel(inputVector)(0, 0), 1.992315565746, 1e-12, 0.0);
       Sample inputSample(2, 2);
       inputSample[1] = inputVector;
       Sample inputSampleNorm(2, 1);
       inputSampleNorm[1] = inputVectorNorm;
       CovarianceMatrix oneDimensionalCovMatrix(myOneDimensionalKernel.discretize(inputSampleNorm));
       CovarianceMatrix isotropicCovMatrix(myIsotropicKernel.discretize(inputSample));
-      assert_almost_equal(oneDimensionalCovMatrix(0,0), 2.250000000002, 1e-12, 0.0);
-      assert_almost_equal(oneDimensionalCovMatrix(1,1), 2.250000000002, 1e-12, 0.0);
-      assert_almost_equal(isotropicCovMatrix(0,0), 2.250000000002, 1e-12, 0.0);
-      assert_almost_equal(isotropicCovMatrix(1,1), 2.250000000002, 1e-12, 0.0);
-      assert_almost_equal(oneDimensionalCovMatrix(0,1), 1.992315565746, 1e-12, 0.0);
-      assert_almost_equal(isotropicCovMatrix(0,1), 1.992315565746, 1e-12, 0.0);
+      assert_almost_equal(oneDimensionalCovMatrix(0, 0), 2.250000000002, 1e-12, 0.0);
+      assert_almost_equal(oneDimensionalCovMatrix(1, 1), 2.250000000002, 1e-12, 0.0);
+      assert_almost_equal(isotropicCovMatrix(0, 0), 2.250000000002, 1e-12, 0.0);
+      assert_almost_equal(isotropicCovMatrix(1, 1), 2.250000000002, 1e-12, 0.0);
+      assert_almost_equal(oneDimensionalCovMatrix(0, 1), 1.992315565746, 1e-12, 0.0);
+      assert_almost_equal(isotropicCovMatrix(0, 1), 1.992315565746, 1e-12, 0.0);
     }
 
     // Exponential cov model
@@ -404,7 +404,7 @@ int main(int, char *[])
       if (!checkDiag)
         throw TestFailed(OSS() << "isDiagonal differ between spatial covariance & covariance model");
       const Scalar rho = spatialCovariance(1, 0) / std::sqrt(spatialCovariance(0, 0) * spatialCovariance(1, 1));
-      assert_almost_equal(myModel.getOutputCorrelation()(0,1), rho, 0, 0, "in ExponentialModel correlation");
+      assert_almost_equal(myModel.getOutputCorrelation()(0, 1), rho, 0, 0, "in ExponentialModel correlation");
     }
 
     // Kronecker cov model
@@ -446,7 +446,7 @@ int main(int, char *[])
       assert_almost_equal(myModel.getScale(), scale, 0, 0, "in kronecker scale check");
       // full param size = 5 (scale(1), amplitude(2), spatialCorrelation(1), Matern nu(1))
       Point fullParameter = {1, 1, 2, 0.8, 1.5};
-      assert_almost_equal(myModel.getFullParameter(), fullParameter , 0, 0, "in kronecker full param check");
+      assert_almost_equal(myModel.getFullParameter(), fullParameter, 0, 0, "in kronecker full param check");
       assert_almost_equal(myModel.getFullParameter().getSize(), 5, 0, 0, "in kronecker param size check");
       assert_almost_equal(myModel.getFullParameterDescription().getSize(), 5, 0, 0, "in kronecker param description size check");
       Indices active(3);
@@ -465,7 +465,7 @@ int main(int, char *[])
       Bool checkDesc = myModel.getFullParameterDescription() == description;
       if (!checkDesc)
         throw TestFailed(OSS() << "descriptions differ");
-      }
+    }
   }
   catch (TestFailed & ex)
   {

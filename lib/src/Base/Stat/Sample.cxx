@@ -47,10 +47,10 @@ Sample Sample::ImportFromTextFile(const FileName & fileName,
 
 Sample Sample::BuildFromPoint(const Point &point)
 {
-    const UnsignedInteger size = point.getDimension();
-    Sample sample(size, 1);
-    sample.getImplementation()->setData(point);
-    return sample;
+  const UnsignedInteger size = point.getDimension();
+  Sample sample(size, 1);
+  sample.getImplementation()->setData(point);
+  return sample;
 }
 
 /* Save to CSV file */

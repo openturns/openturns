@@ -48,7 +48,7 @@ CorrelationMatrix::CorrelationMatrix(const MatrixImplementation & i)
 
 /* Constructor from SymmetricMatrix */
 CorrelationMatrix::CorrelationMatrix(const SymmetricMatrix & sym)
-: CovarianceMatrix(sym)
+  : CovarianceMatrix(sym)
 {
   // Nothing to do
 }

@@ -159,36 +159,36 @@ void StandardDistributionPolynomialFactory::checkSpecificFamily()
       // of the family has a different type (Arcsine) than the given distribution
       // First, check if the range is standard
       if (!(parameter[2] == -1.0 && parameter[3] == 1.0))
-        {
-          // If the distribution is not uniform, no specific family
-          if (!(alpha == 0.0 && beta == 0.0))
-            return;
-          // Here we are in the general uniform case
-          const Scalar first = parameter[2];
-          const Point width(1, parameter[3] - first);
-          const Point height(1, 1.0 / width[0]);
-          specificFamily_ = HistogramPolynomialFactory(first, width, height);
-          LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
-          hasSpecificFamily_ = true;
+      {
+        // If the distribution is not uniform, no specific family
+        if (!(alpha == 0.0 && beta == 0.0))
           return;
-        }
+        // Here we are in the general uniform case
+        const Scalar first = parameter[2];
+        const Point width(1, parameter[3] - first);
+        const Point height(1, 1.0 / width[0]);
+        specificFamily_ = HistogramPolynomialFactory(first, width, height);
+        LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
+        hasSpecificFamily_ = true;
+        return;
+      }
       // From here we know the range is [-1.0, 1.0]
       // The return of the uniform case, standard this time...
       if (alpha == 0.0 && beta == 0.0)
-        {
-          specificFamily_ = LegendreFactory();
-          LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
-          hasSpecificFamily_ = true;
-          return;
-        } // Uniform
+      {
+        specificFamily_ = LegendreFactory();
+        LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
+        hasSpecificFamily_ = true;
+        return;
+      } // Uniform
       // The arcsine case
       if (alpha == -0.5 && beta == -0.5)
-        {
-          specificFamily_ = ChebychevFactory();
-          LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
-          hasSpecificFamily_ = true;
-          return;
-        }
+      {
+        specificFamily_ = ChebychevFactory();
+        LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
+        hasSpecificFamily_ = true;
+        return;
+      }
       // The general case
       specificFamily_ = JacobiFactory(beta, alpha);
       LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
@@ -201,12 +201,12 @@ void StandardDistributionPolynomialFactory::checkSpecificFamily()
         specificFamily_ = LegendreFactory();
       // See the general uniform distribution as a special histogram
       else
-        {
-          const Scalar first = parameter[0];
-          const Point width(1, parameter[1] - first);
-          const Point height(1, 1.0 / width[0]);
-          specificFamily_ = HistogramPolynomialFactory(first, width, height);
-        }
+      {
+        const Scalar first = parameter[0];
+        const Point width(1, parameter[1] - first);
+        const Point height(1, 1.0 / width[0]);
+        specificFamily_ = HistogramPolynomialFactory(first, width, height);
+      }
       hasSpecificFamily_ = true;
       LOGDEBUG(OSS() << "measureType=" << measureType << ", specificFamily=" << specificFamily_);
       return;

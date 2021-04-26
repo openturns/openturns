@@ -92,7 +92,7 @@ public:
 
   /** Stationary distribution computation */
   UserDefined computeStationaryDistribution() const;
- 
+
   /** DOT export */
   void exportToDOTFile(const FileName & filename) const;
 

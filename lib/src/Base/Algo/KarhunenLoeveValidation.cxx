@@ -43,7 +43,7 @@ KarhunenLoeveValidation::KarhunenLoeveValidation()
 
 /* Constructor with parameters */
 KarhunenLoeveValidation::KarhunenLoeveValidation(const ProcessSample & sample,
-                                                 const KarhunenLoeveResult & result)
+    const KarhunenLoeveResult & result)
   : PersistentObject()
   , sample_(sample)
   , result_(result)
@@ -54,8 +54,8 @@ KarhunenLoeveValidation::KarhunenLoeveValidation(const ProcessSample & sample,
 
 /* Constructor with parameters */
 KarhunenLoeveValidation::KarhunenLoeveValidation(const ProcessSample & sample,
-                                                 const KarhunenLoeveResult & result,
-                                                 const TrendTransform & trend)
+    const KarhunenLoeveResult & result,
+    const TrendTransform & trend)
   : KarhunenLoeveValidation(sample, result)
 {
   trend_ = trend;
@@ -121,7 +121,7 @@ GridLayout KarhunenLoeveValidation::drawValidation() const
   const Point maxS(fieldSample.getMax());
   for (UnsignedInteger j = 0; j < outputDimension; ++ j)
   {
-    Graph graph("", OSS() << "Observed - " << description[j], OSS() << "Reduced - " << description[j] , true, "topright");
+    Graph graph("", OSS() << "Observed - " << description[j], OSS() << "Reduced - " << description[j], true, "topright");
 
     // diagonal
     Sample diagonalPoints(2, 2);
@@ -147,7 +147,7 @@ Graph KarhunenLoeveValidation::drawObservationWeight(const UnsignedInteger k) co
 {
   const UnsignedInteger K = result_.getEigenvalues().getSize();
   if (!(k < K))
-    throw InvalidArgumentException(HERE) << "k (" << k << ") should be in [0; " << K-1 << "]";
+    throw InvalidArgumentException(HERE) << "k (" << k << ") should be in [0; " << K - 1 << "]";
   const Sample xi(result_.project(sample_));
   const UnsignedInteger size = xi.getSize();
   Point v(size);

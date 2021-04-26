@@ -396,7 +396,7 @@ void EfficientGlobalOptimization::run()
       }
     }
 
-  if (evaluationNumber > 0)
+    if (evaluationNumber > 0)
     {
       KrigingAlgorithm algo(inputSample, outputSample, metaModelResult.getCovarianceModel(), metaModelResult.getBasisCollection());
       LOGINFO(OSS() << "Rebuilding kriging ...");

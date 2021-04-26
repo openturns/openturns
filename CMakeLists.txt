@@ -52,6 +52,11 @@ if (POLICY CMP0068)
   cmake_policy (SET CMP0068 NEW)
 endif ()
 
+if (POLICY CMP0093)
+  # FindBoost reports Boost_VERSION in x.y.z format
+  cmake_policy (SET CMP0093 NEW)
+endif ()
+
 if (USE_COTIRE)
   if (POLICY CMP0058)
     # Ninja requires custom command byproducts to be explicit
@@ -234,6 +239,10 @@ endif ()
 if (USE_BOOST)
   find_package (Boost 1.46)
   if (Boost_FOUND)
+    if (CMAKE_VERSION VERSION_LESS 3.15)
+      # Boost_VERSION reports the integer BOOST_VERSION from boost/version.hpp instead of x.y.z format
+      set (Boost_VERSION "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
+    endif ()
     set (OPENTURNS_HAVE_BOOST TRUE)
     if (USE_MPFR)
       find_package (MPFR)
@@ -530,7 +539,7 @@ include_directories (${OPENTURNS_PRIVATE_INCLUDE_DIRS})
 
 set (CPACK_PACKAGE_NAME          openturns     )
 set (CPACK_PACKAGE_VERSION_MAJOR 1             )
-set (CPACK_PACKAGE_VERSION_MINOR 17dev)
+set (CPACK_PACKAGE_VERSION_MINOR 17rc1)
 set (CPACK_PACKAGE_VERSION_PATCH               )
 set (CPACK_SOURCE_GENERATOR      "TGZ;TBZ2"    )
 set (CPACK_BINARY_STGZ    OFF CACHE BOOL "STGZ")

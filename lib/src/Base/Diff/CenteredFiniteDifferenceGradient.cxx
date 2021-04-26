@@ -105,13 +105,13 @@ Matrix CenteredFiniteDifferenceGradient::gradient(const Point & inP) const
   /* Compute the gradient */
   Matrix result(evaluation_.getInputDimension(), evaluation_.getOutputDimension());
   for (UnsignedInteger i = 0; i < result.getNbRows(); ++i)
-    {
-      // Recompute the actual step in order to take into account the round-off error in inP[i] + step[i] and inP[i] - step[i]
-      const Scalar hi = gridPoints(2 * i, i) - gridPoints(2 * i + 1, i);
-      for (UnsignedInteger j = 0; j < result.getNbColumns(); ++j)
-        /* result(i, j) = (f_j(x + e_i) - f_j(x - e_i)) / (2 * e_i) ~ df_j / dx_i */
-        result(i, j) = (gridValues(2 * i, j) - gridValues(2 * i + 1, j)) / hi;
-    }
+  {
+    // Recompute the actual step in order to take into account the round-off error in inP[i] + step[i] and inP[i] - step[i]
+    const Scalar hi = gridPoints(2 * i, i) - gridPoints(2 * i + 1, i);
+    for (UnsignedInteger j = 0; j < result.getNbColumns(); ++j)
+      /* result(i, j) = (f_j(x + e_i) - f_j(x - e_i)) / (2 * e_i) ~ df_j / dx_i */
+      result(i, j) = (gridValues(2 * i, j) - gridValues(2 * i + 1, j)) / hi;
+  }
   return result;
 }
 
