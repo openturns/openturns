@@ -69,9 +69,6 @@ public:
   /** Eigenvalues accessor */
   Point getEigenvalues() const;
 
-  /** @deprecated Eigenvalues accessor */
-  Point getEigenValues() const;
-
   /** Draw eigen values */
   Graph drawEigenvalues() const;
   Graph drawCumulatedEigenvaluesRemainder() const;

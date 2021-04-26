@@ -214,22 +214,10 @@ void MultiStart::setStartingSample(const Sample & startingSample)
   startingSample_ = startingSample;
 }
 
-void MultiStart::setStartingPoints(const Sample & startingSample)
-{
-  LOGWARN(OSS() << "MultiStart::setStartingPoints is deprecated, use setStartingSample instead.");
-  setStartingSample(startingSample);
-}
-
 /* Starting points accessor */
 Sample MultiStart::getStartingSample() const
 {
   return startingSample_;
-}
-
-Sample MultiStart::getStartingPoints() const
-{
-  LOGWARN(OSS() << "MultiStart::getStartingPoints is deprecated, use getStartingSample instead.");
-  return getStartingSample();
 }
 
 // Check that the optimization problem is consistent with the starting sample

@@ -1,5 +1,27 @@
 = New Features =
 
+== 1.18 release (in progress) == #release-1.18
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+
+==== API changes ====
+ * Removed deprecated MultiStart::setStartingPoints/getStartingPoints
+ * Removed deprecated KarhunenLoeveResult::getEigenValues
+
+=== Documentation ===
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+=== Bug fixes ===
+
+
+
 == 1.17rc1 release (2021-04-26) == #release-1.17rc1
 
 === Library ===
