@@ -151,7 +151,7 @@ which leads to a further reduction of the log-likelihood function where both :ma
 The default optimizer is a :class:`~openturns.MultiStart` :class:`~openturns.TNC` with 20 starting points and can be changed with the :meth:`setOptimizationAlgorithm` method.
 User could also change the default optimization solver by setting:
 
-- the `GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm` resource map key to one of the :class:`~openturns.NLopt` solver names;
+- the `GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm` :class:`~openturns.ResourceMap` key to a solver name;
 - the key `GeneralLinearModelAlgorithm-DefaultUseMultiStart` to control whether or not :class:`~openturns.MultiStart` should be applied by default; if it is *True*, then `GeneralLinearModelAlgorithm-DefaultMultiStartPopulationSize` controls the default number of starting points.
 
 Note that the default optimization solver determines one of its starting points from the parameter values of *covarianceModel*.
