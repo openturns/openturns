@@ -1,14 +1,12 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
-from openturns import *
-from openturns.testing import *
-from math import sqrt
+import openturns as ot
+import openturns.testing as ott
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
 # Set hmat
-ResourceMap.Set("KrigingAlgorithm-LinearAlgebra", "HMAT")
+ot.ResourceMap.SetAsString("KrigingAlgorithm-LinearAlgebra", "HMAT")
 
 # Test 1
 # Test 1
@@ -122,3 +120,7 @@ def test_two_inputs_one_output():
     # Estimation
     ott.assert_almost_equal(outputValidSample,  metaModel(
         inputValidSample), 1.e-1, 1e-1)
+
+if __name__ == "__main__":
+    test_one_input_one_output()
+    test_two_inputs_one_output()
