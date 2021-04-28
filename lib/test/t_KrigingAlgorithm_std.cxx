@@ -62,7 +62,7 @@ int main(int, char *[])
       Sample Y2(model(X2));
 
       Basis basis(ConstantBasisFactory(dimension).build());
-      SquaredExponential covarianceModel(Point(1, 1e-02), Point(1, 4.50736));
+      SquaredExponential covarianceModel;
       KrigingAlgorithm algo(X, Y, covarianceModel, basis);
 
       // set sensible optimization bounds and estimate hyperparameters
@@ -71,6 +71,7 @@ int main(int, char *[])
 
       // perform an evaluation
       KrigingResult result(algo.getResult());
+      LOGWARN(OSS() << "result = " << result.getMetaModel()(X));
 
       assert_almost_equal(result.getMetaModel()(X), Y, 1e-3);
 
@@ -132,7 +133,7 @@ int main(int, char *[])
       // create algorithm
       Basis basis(ConstantBasisFactory(dimension).build());
       Point scale(2);
-      scale[0] = 1e-05;
+      scale[0] = 1e-02;
       scale[1] = 18.9;
       Point amplitude(1,  8.05);
       SquaredExponential covarianceModel(scale, amplitude);
@@ -167,11 +168,11 @@ int main(int, char *[])
       Collection<CovarianceMatrix> coll(result.getConditionalMarginalCovariance(X));
 
       for(UnsignedInteger k = 0; k < coll.getSize(); ++k)
-        assert_almost_equal(coll[k](0, 0), 0.0, 1e-13, 1e-13);
+        assert_almost_equal(coll[k](0, 0), 0.0, 0.0, 1e-12);
 
       // Validation of marginal variance
       const Point marginalVariance(result.getConditionalMarginalVariance(X));
-      assert_almost_equal(marginalVariance, Point(sampleSize), 1e-13, 1e-13);
+      assert_almost_equal(marginalVariance, Point(sampleSize), 0.0, 1e-12);
 
     }
 

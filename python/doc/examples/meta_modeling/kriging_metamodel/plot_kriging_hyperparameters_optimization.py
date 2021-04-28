@@ -38,6 +38,12 @@ import openturns as ot
 ot.Log.Show(ot.Log.NONE)
 
 # %%
+# Since OpenTURNS 1.17, Kriging hyperparameters are by default estimated with the help of a :class:`~openturns.MultiStart` solver. This behavior can be changed with the relevant :class:`~openturns.ResourceMap` key.
+
+# %%
+ot.ResourceMap.SetAsBool("GeneralLinearModelAlgorithm-DefaultUseMultiStart", False)
+
+# %%
 # We define the symbolic function which evaluates the output Y depending on the inputs E, F, L and I.
 
 # %%
@@ -88,7 +94,7 @@ Y_train = model(X_train)
 # --------------------
 
 # %%
-# In order to create the kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class. Then we use a squared exponential covariance model. Finally, we use the `KrigingAlgorithm` class to create the kriging metamodel, taking the training sample, the covariance model and the trend basis as input arguments. 
+# In order to create the kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class. Then we use a squared exponential covariance model. Finally, we use the `KrigingAlgorithm` class to create the kriging metamodel, taking the training sample, the covariance model and the trend basis as input arguments.
 
 # %%
 dimension = myDistribution.getDimension()
@@ -160,7 +166,7 @@ algo.getOptimizeParameters()
 # The starting point of the optimization is based on the parameters of the covariance model. In the following example, we configure the parameters of the covariance model to the arbitrary values `[12.,34.,56.,78.]`.
 
 # %%
-covarianceModel = ot.SquaredExponential([12.,34.,56.,78.], [1.0])
+covarianceModel = ot.SquaredExponential([12.,34.,8.,78.], [1.0])
 algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
 
 # %%
@@ -184,7 +190,7 @@ basic_covariance_model
 # --------------------------
 
 # %%
-# It is sometimes useful to completely disable the optimization of the parameters. In order to see the effect of this, we first initialize the parameters of the covariance model with the arbitrary values `[12.,34.,56.,78.]`. 
+# It is sometimes useful to completely disable the optimization of the parameters. In order to see the effect of this, we first initialize the parameters of the covariance model with the arbitrary values `[12.,34.,8.,78.]`.
 
 # %%
 covarianceModel = ot.SquaredExponential([12.,34.,56.,78.], [91.0])

@@ -89,6 +89,10 @@ int main(int, char *[])
       fullprint << "===================================================\n" << std::endl;
       ResourceMap::SetAsBool("GeneralLinearModelAlgorithm-UseAnalyticalAmplitudeEstimate", false);
       algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel2, basis);
+      const Point p1(2, 0.01);
+      const Point p2(2, 100.0);
+      const Interval bounds(p1, p2);
+      algo.setOptimizationBounds(bounds);
       algo.run();
       result = algo.getResult();
       fullprint << "\ncovariance (full optim)=" << result.getCovarianceModel() << std::endl;

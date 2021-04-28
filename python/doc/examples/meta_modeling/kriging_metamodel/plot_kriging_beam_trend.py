@@ -31,7 +31,7 @@ cb = cantilever_beam.CantileverBeam()
 model = cb.model
 
 # %%
-# Then we define the distribution of the input random vector. 
+# Then we define the distribution of the input random vector.
 dimension = cb.dim # number of inputs
 myDistribution = cb.distribution
 
@@ -53,7 +53,7 @@ Y_train = model(X_train)
 
 # %%
 # In order to create the Kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class. Then we use a squared exponential covariance kernel.
-# The `SquaredExponential` kernel has one amplitude coefficient and 4 scale coefficients. This is because this covariance kernel is anisotropic : each of the 4 input variables is associated with its own scale coefficient. 
+# The `SquaredExponential` kernel has one amplitude coefficient and 4 scale coefficients. This is because this covariance kernel is anisotropic : each of the 4 input variables is associated with its own scale coefficient.
 
 # %%
 basis = ot.ConstantBasisFactory(dimension).build()

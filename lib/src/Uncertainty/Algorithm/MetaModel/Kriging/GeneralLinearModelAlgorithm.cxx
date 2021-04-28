@@ -40,6 +40,10 @@
 #include "openturns/DualLinearCombinationFunction.hxx"
 #include "openturns/MemoizeFunction.hxx"
 #include "openturns/MultiStart.hxx"
+#include "openturns/Uniform.hxx"
+#include "openturns/ComposedDistribution.hxx"
+#include "openturns/LowDiscrepancyExperiment.hxx"
+#include "openturns/SobolSequence.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -366,13 +370,17 @@ void GeneralLinearModelAlgorithm::checkYCentered(const Sample & Y)
 void GeneralLinearModelAlgorithm::initializeDefaultOptimizationAlgorithm()
 {
   const String solverName(ResourceMap::GetAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm"));
-  solver_ = OptimizationAlgorithm::Build(solverName);
-  Cobyla* cobyla = dynamic_cast<Cobyla *>(solver_.getImplementation().get());
+  OptimizationAlgorithm solver(OptimizationAlgorithm::Build(solverName));
+  Cobyla* cobyla = dynamic_cast<Cobyla *>(solver.getImplementation().get());
   if (cobyla)
     cobyla->setIgnoreFailure(true);
-  TNC* tnc = dynamic_cast<TNC *>(solver_.getImplementation().get());
+  TNC* tnc = dynamic_cast<TNC *>(solver.getImplementation().get());
   if (tnc)
     tnc->setIgnoreFailure(true);
+  if (ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-DefaultUseMultiStart"))
+    solver_ = MultiStart(solver, Sample());
+  else
+    solver_ = solver;
 }
 
 /* Virtual constructor */
@@ -534,6 +542,51 @@ void GeneralLinearModelAlgorithm::run()
   hasRun_ = true;
 }
 
+// Select initial parameters for the optimization
+void GeneralLinearModelAlgorithm::selectSolverInitialParameters(const Point & initialParameters)
+{
+  MultiStart* multistart = dynamic_cast<MultiStart *>(solver_.getImplementation().get());
+  if (multistart == 0) // Dynamic cast failed, so solver_ must be single-start
+  {
+    if (!optimizationBounds_.contains(initialParameters))
+      throw InvalidArgumentException(HERE) << "Initial parameter values \n" << initialParameters
+                                           << "\n incompatible with optimization bounds \n" << optimizationBounds_;
+    solver_.setStartingPoint(initialParameters);
+  } // Single-start case
+  else
+  {
+    if (multistart->getStartingSample().getSize() == 0)
+    {
+      // Get MultiStart size
+      const UnsignedInteger size = ResourceMap::GetAsUnsignedInteger("GeneralLinearModelAlgorithm-DefaultMultiStartPopulationSize");
+      if (!(size>1))
+        throw InvalidArgumentException(HERE) << "ResourceMap key 'GeneralLinearModelAlgorithm-DefaultMultiStartPopulationSize' is " << size << " but should be > 1.";
+
+      // initialParameter is the only user-set parameter, so its consistency with optimizationBounds_ must be checked
+      if (!optimizationBounds_.contains(initialParameters))
+        throw InvalidArgumentException(HERE) << "Initial parameter values \n" << initialParameters
+                                             << "\n incompatible with optimization bounds \n" << optimizationBounds_;
+
+      // Adjust maximum evaluation number to size
+      multistart->setMaximumEvaluationNumber(multistart->getOptimizationAlgorithm().getMaximumEvaluationNumber() * size);
+
+      // Create starting sample
+      const UnsignedInteger dimension = optimizationBounds_.getDimension();
+      const Point lowerBound(optimizationBounds_.getLowerBound());
+      const Point upperBound(optimizationBounds_.getUpperBound());
+      Collection<Distribution> uniformCollection;
+      for (UnsignedInteger i = 0; i < dimension; ++ i)
+      {
+        uniformCollection.add(Uniform(lowerBound[i], upperBound[i]));
+      }
+      const LowDiscrepancyExperiment lowDiscrepancyExperiment(SobolSequence(), ComposedDistribution(uniformCollection), size - 1);
+      Sample startingSample(lowDiscrepancyExperiment.generate()); // generate size - 1 points automatically
+      startingSample.add(initialParameters); // add point initialParameters to have exactly size starting points
+      multistart->setStartingSample(startingSample);
+    }
+  } // MultiStart case
+}
+
 // Maximize the log-likelihood of the Gaussian process model wrt the observations
 // If the covariance model has no active parameter, no numerical optimization
 // is done. There are two cases:
@@ -568,15 +621,7 @@ Scalar GeneralLinearModelAlgorithm::maximizeReducedLogLikelihood()
   problem.setMinimization(false);
   problem.setBounds(optimizationBounds_);
   solver_.setProblem(problem);
-  try
-  {
-    // If the solver is single start, we can use its setStartingPoint method
-    solver_.setStartingPoint(initialParameters);
-  }
-  catch (NotDefinedException &) // setStartingPoint is not defined for the solver
-  {
-    // Nothing to do if setStartingPoint is not defined
-  }
+  selectSolverInitialParameters(initialParameters);
   LOGINFO(OSS(false) << "Solve problem=" << problem << " using solver=" << solver_);
   solver_.run();
   const OptimizationAlgorithm::Result result(solver_.getResult());
@@ -781,6 +826,12 @@ OptimizationAlgorithm GeneralLinearModelAlgorithm::getOptimizationAlgorithm() co
 
 void GeneralLinearModelAlgorithm::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
 {
+  MultiStart* multistart = dynamic_cast<MultiStart *>(solver.getImplementation().get());
+  if (multistart != 0) // Dynamic cast succeeded, so solver is MultiStart
+  {
+    if (!(multistart->getStartingSample().getSize()>0))
+      throw InvalidArgumentException(HERE) << "Starting sample of the the MultiStart solver should not be empty.";
+  }
   solver_ = solver;
   hasRun_ = false;
 }
@@ -804,7 +855,12 @@ void GeneralLinearModelAlgorithm::setOptimizeParameters(const Bool optimizeParam
 /* Accessor to optimization bounds */
 void GeneralLinearModelAlgorithm::setOptimizationBounds(const Interval & optimizationBounds)
 {
-  if (!(optimizationBounds.getDimension() == optimizationBounds_.getDimension())) throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << optimizationBounds_.getDimension() << ", got dimension=" << optimizationBounds.getDimension();
+  if (optimizationBounds.getDimension() != optimizationBounds_.getDimension())
+    throw InvalidArgumentException(HERE) << "Error: expected bounds of dimension=" << optimizationBounds_.getDimension() << ", got dimension=" << optimizationBounds.getDimension();
+
+  if (optimizationBounds.isEmpty())
+    throw InvalidArgumentException(HERE) << "Error: the optimization bounds define an empty set.";
+
   optimizationBounds_ = optimizationBounds;
   hasRun_ = false;
 }

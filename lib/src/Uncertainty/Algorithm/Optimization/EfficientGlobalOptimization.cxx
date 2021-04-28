@@ -27,6 +27,7 @@
 #include "openturns/MultiStart.hxx"
 #include "openturns/ComposedDistribution.hxx"
 #include "openturns/Uniform.hxx"
+#include "openturns/TNC.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -231,6 +232,10 @@ void EfficientGlobalOptimization::run()
   // use the provided kriging result at first iteration
   KrigingResult metaModelResult(krigingResult_);
 
+  // EGO expects KrigingAlgorithm to estimate hyperparameters with a single-start OptimizationAlgorithm.
+  TNC krigingSolver;
+  krigingSolver.setIgnoreFailure(true);
+
   while ((!exitLoop) && (evaluationNumber < getMaximumEvaluationNumber()))
   {
     Scalar optimalValueSubstitute = optimalValue;
@@ -400,6 +405,7 @@ void EfficientGlobalOptimization::run()
     {
       KrigingAlgorithm algo(inputSample, outputSample, metaModelResult.getCovarianceModel(), metaModelResult.getBasisCollection());
       LOGINFO(OSS() << "Rebuilding kriging ...");
+      algo.setOptimizationAlgorithm(krigingSolver);
       algo.setOptimizeParameters((parameterEstimationPeriod_ > 0) && ((evaluationNumber % parameterEstimationPeriod_) == 0));
       if (hasNoise)
         algo.setNoise(noise);

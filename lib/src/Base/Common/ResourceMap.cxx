@@ -1239,6 +1239,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("LinearModelStepwiseAlgorithm-MaximumIterationNumber", 1000);
 
   // GeneralLinearModelAlgorithm parameters //
+  addAsBool("GeneralLinearModelAlgorithm-DefaultUseMultiStart", true);
   addAsBool("GeneralLinearModelAlgorithm-KeepCovariance", true);
   addAsBool("GeneralLinearModelAlgorithm-OptimizeParameters", true);
   addAsBool("GeneralLinearModelAlgorithm-UnbiasedVariance", true);
@@ -1251,6 +1252,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("GeneralLinearModelAlgorithm-StartingScaling", 1.0e-13);
   addAsString("GeneralLinearModelAlgorithm-DefaultOptimizationAlgorithm", "TNC");
   addAsString("GeneralLinearModelAlgorithm-LinearAlgebra", "LAPACK");
+  addAsUnsignedInteger("GeneralLinearModelAlgorithm-DefaultMultiStartPopulationSize", 20);
 
   // KrigingAlgorithm parameters //
   addAsScalar("KrigingAlgorithm-MaximalScaling", 1.0e5);

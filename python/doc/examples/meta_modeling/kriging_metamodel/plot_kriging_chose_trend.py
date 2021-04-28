@@ -351,8 +351,9 @@ _ = axes[0].set_ylim(-2.5, 4.0)
 
 
 # %%
-# sphinx_gallery_thumbnail_number = 10
 # The same graphic with the 68% confidence interval.
+
+# sphinx_gallery_thumbnail_number = 10
 boundsPoly = plot_ICBounds(x_test, y_test, nTest, sigma)
 graph.add(boundsPoly)
 graph.setLegends(['exact model','training data','kriging metamodel','quadratic trend', '68% - confidence interval'])
