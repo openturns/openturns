@@ -152,9 +152,8 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
         shutil.move(outfile, infile)
 
 
-def execute(cmd, cwd=None, workdir=None, shell=False, is_shell=False,
-            executable=None, shell_exe=None, hide_win=True,
-            check=True, check_exit_code=True, get_stdout=False, get_stderr=False,
+def execute(cmd, cwd=None, shell=False, executable=None, hide_win=True,
+            check=True, get_stdout=False, get_stderr=False,
             timeout=None, env=None):
     """
     Launch an external process.
@@ -207,22 +206,6 @@ def execute(cmd, cwd=None, workdir=None, shell=False, is_shell=False,
     >>> int(stdout)
     42
     """
-
-    if workdir is not None:
-        warnings.warn('workdir is deprecated in favor of cwd', DeprecationWarning)
-        cwd = workdir
-
-    if is_shell:
-        warnings.warn('is_shell is deprecated in favor of shell', DeprecationWarning)
-        shell = is_shell
-
-    if shell_exe is not None:
-        warnings.warn('shell_exe is deprecated in favor of executable', DeprecationWarning)
-        executable = shell_exe
-
-    if not check_exit_code:
-        warnings.warn('check_exit_code is deprecated in favor of check', DeprecationWarning)
-        check = check_exit_code
 
     # split cmd if not in a shell before passing it to os.execvp()
     try:
