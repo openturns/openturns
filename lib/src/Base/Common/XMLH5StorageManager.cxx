@@ -21,6 +21,7 @@
 
 #include "openturns/XMLH5StorageManager.hxx"
 #include "openturns/PersistentObject.hxx"
+#include "openturns/Os.hxx"
 
 #include <H5Cpp.h>
 #include <libxml/tree.h>
@@ -111,7 +112,9 @@ void XMLH5StorageManagerImplementation::addIndexedValue(Pointer<StorageManager::
   if (index == dsetSize - 1)
   {
     String dataSetName = XML::GetAttributeByName(node, "id");
-    XML::Node child = XML::NewNode(XML_STMGR::string_tag::Get(), h5FileName_ + ":/" + dataSetName);
+    const size_t idx = h5FileName_.find_last_of(Os::GetDirectorySeparator());
+    const FileName h5FileNameRel = h5FileName_.substr(idx + 1);
+    XML::Node child = XML::NewNode(XML_STMGR::string_tag::Get(), h5FileNameRel + ":/" + dataSetName);
     assert(child);
     XML::AddChild( node, child );
   }
