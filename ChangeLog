@@ -110,6 +110,7 @@
  * #1815 (1.16 fails with dlib-cpp-19.22)
  * #1818 (Problem with wilksNumber)
  * #1820 (Incoherent results in LinearModelAnalysis)
+ * #1836 (Hypergeometric results differ without boost)
 
 == 1.16 release (2020-11-16) == #release-1.16
 
