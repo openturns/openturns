@@ -89,6 +89,7 @@
  * #1820 (Incoherent results in LinearModelAnalysis)
  * #1835 (RegularizedIncompleteBeta returns nan)
  * #1836 (Hypergeometric results differ without boost)
+ * #1837 (Poor performance when using pickle on OT objects)
 
 == 1.16 release (2020-11-16) == #release-1.16
 
