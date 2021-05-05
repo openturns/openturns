@@ -21,7 +21,7 @@ trend (reduced, biased)=[[-0.1034,1.014]]
 ===================================================
 
 
-covariance (full optim)=class=AbsoluteExponential scale=class=Point name=Unnamed dimension=1 values=[0.01] amplitude=class=Point name=Unnamed dimension=1 values=[0.1908]
+covariance (full optim)=class=AbsoluteExponential scale=class=Point name=Unnamed dimension=1 values=[0.01021] amplitude=class=Point name=Unnamed dimension=1 values=[0.1908]
 trend (full optim)=[[-0.1109,1.015]]
 ===================================================
 
