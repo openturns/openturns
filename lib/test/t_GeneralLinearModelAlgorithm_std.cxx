@@ -93,8 +93,8 @@ int main(int, char *[])
       algo = GeneralLinearModelAlgorithm(X, Y, covarianceModel2, basis);
       algo.run();
       result = algo.getResult();
-      ref = {0.0102, 0.1908};
-      assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-4, 1e-4);
+      ref = {0.01, 0.1908};
+      assert_almost_equal(result.getCovarianceModel().getParameter(), ref, 1e-2, 1e-2);
       ref = {-0.111, 1.015};
       assert_almost_equal(result.getTrendCoefficients()[0], ref, 1e-4, 1e-4);
     }

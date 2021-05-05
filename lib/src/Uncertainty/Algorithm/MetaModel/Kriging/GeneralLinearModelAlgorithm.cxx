@@ -658,30 +658,42 @@ Scalar GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky() const
     LOGDEBUG("Add noise to the covariance matrix");
     for (UnsignedInteger i = 0; i < C.getDimension(); ++ i) C(i, i) += noise_[i];
   }
-  LOGDEBUG(OSS(false) << "C=\n" << C);
+  if (C.getDimension() < 20)
+    LOGDEBUG(OSS(false) << "C=\n" << C);
   LOGDEBUG("Compute the Cholesky factor of the covariance matrix");
   Bool continuationCondition = true;
+  Scalar maxEV = -1.0;
   const Scalar startingScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-StartingScaling");
   const Scalar maximalScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-MaximalScaling");
   Scalar cumulatedScaling = 0.0;
   Scalar scaling = startingScaling;
-  while (continuationCondition && (cumulatedScaling < maximalScaling))
+  while (continuationCondition)
   {
     try
     {
       covarianceCholeskyFactor_ = C.computeCholesky();
       continuationCondition = false;
     }
-    // If it has not yet been computed, compute it and store it
-    catch (InternalException &)
+    // If the factorization failed regularize the matrix
+    // Here we use a generic exception as different exceptions may be thrown
+    catch (const Exception &)
     {
+      // If the largest eigenvalue module has not been computed yet...
+      if (maxEV < 0.0)
+        {
+          maxEV = C.computeLargestEigenValueModule();
+          LOGDEBUG(OSS() << "maxEV=" << maxEV);
+          scaling *= maxEV;
+        }
       cumulatedScaling += scaling ;
+      LOGDEBUG(OSS() << "scaling=" << scaling << ", cumulatedScaling=" << cumulatedScaling);
       // Unroll the regularization to optimize the computation
       for (UnsignedInteger i = 0; i < C.getDimension(); ++i) C(i, i) += scaling;
       scaling *= 2.0;
+      continuationCondition = scaling < maxEV * maximalScaling;
     }
   }
-  if (scaling >= maximalScaling)
+  if (maxEV > 0.0 && scaling >= maximalScaling * maxEV)
     throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky, could not compute the Cholesky factor."
                                          << " Scaling up to "  << cumulatedScaling << " was not enough";
   if (cumulatedScaling > 0.0)
