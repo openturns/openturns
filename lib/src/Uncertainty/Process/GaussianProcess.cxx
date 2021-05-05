@@ -150,30 +150,40 @@ void GaussianProcess::initialize() const
     Bool continuationCondition = true;
     // Scaling factor of the matrix : M-> M + \lambda I with \lambda very small
     // The regularization is needed for fast decreasing covariance models
-    const Scalar startingScaling = ResourceMap::GetAsScalar("GaussianProcess-StartingScaling");
-    const Scalar maximalScaling = ResourceMap::GetAsScalar("GaussianProcess-MaximalScaling");
+    Scalar maxEV = -1.0;
+    const Scalar startingScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-StartingScaling");
+    const Scalar maximalScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-MaximalScaling");
     Scalar cumulatedScaling = 0.0;
     Scalar scaling = startingScaling;
-    while (continuationCondition && (cumulatedScaling < maximalScaling))
+    while (continuationCondition)
     {
-      const UnsignedInteger fullSize = covarianceMatrix.getDimension();
-      for (UnsignedInteger i = 0; i < fullSize; ++i) covarianceMatrix(i, i) += scaling;
-      LOGINFO(OSS() << "Factor the covariance matrix");
       try
       {
         covarianceCholeskyFactor_ = covarianceMatrix.computeCholesky();
         continuationCondition = false;
       }
-      catch (const NotSymmetricDefinitePositiveException &)
+      // If the factorization failed regularize the matrix
+      // Here we use a generic exception as different exceptions may be thrown
+      catch (Exception &)
       {
+        // If the largest eigenvalue module has not been computed yet...
+        if (maxEV < 0.0)
+        {
+          maxEV = covarianceMatrix.computeLargestEigenValueModule();
+          LOGDEBUG(OSS() << "maxEV=" << maxEV);
+          scaling *= maxEV;
+        }
         cumulatedScaling += scaling ;
+        LOGDEBUG(OSS() << "scaling=" << scaling << ", cumulatedScaling=" << cumulatedScaling);
+        // Unroll the regularization to optimize the computation
+        for (UnsignedInteger i = 0; i < covarianceMatrix.getDimension(); ++i) covarianceMatrix(i, i) += scaling;
         scaling *= 2.0;
+        continuationCondition = scaling < maxEV * maximalScaling;
       }
-    } // While
-    if (scaling >= maximalScaling)
-      throw InvalidArgumentException(HERE) << "Error; Could not compute the Cholesky factor"
+    }
+    if (maxEV > 0.0 && scaling >= maximalScaling * maxEV)
+      throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky, could not compute the Cholesky factor."
                                            << " Scaling up to "  << cumulatedScaling << " was not enough";
-
     if (cumulatedScaling > 0.0)
       LOGWARN(OSS() <<  "Warning! Scaling up to "  << cumulatedScaling << " was needed in order to get an admissible covariance. ");
   } // else samplingMethod_ != 1
