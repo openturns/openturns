@@ -33,9 +33,8 @@ on Linux you can install it from command-line in one go::
     bash /tmp/Miniforge3-Linux-x86_64.sh -b -p $HOME/miniforge
     PATH="$HOME/miniforge/bin:$PATH"
 
-Then update conda if needed and it should be ready to install packages::
+Then it should be ready to install packages::
 
-    conda update -y conda
     conda install -y openturns
 
 Note that conda can be slow or fail at resolving complex environments with many packages
@@ -67,8 +66,6 @@ We support the following Debian-based distributions:
     +-------------------------------------+---------------------------------------------------------+
     | Distribution name                   | Repository address                                      |
     +=====================================+=========================================================+
-    | Ubuntu 16.04 LTS 'Xenial Xerus'     | deb https://openturns.github.io/apt/ubuntu xenial main  |
-    +-------------------------------------+---------------------------------------------------------+
     | Ubuntu 18.04 LTS 'Bionic Beaver'    | deb https://openturns.github.io/apt/ubuntu bionic main  |
     +-------------------------------------+---------------------------------------------------------+
     | Ubuntu 20.04 LTS 'Focal Fossa'      | deb https://openturns.github.io/apt/ubuntu focal main   |
@@ -131,14 +128,14 @@ RPM-based distributions
 Add the repository corresponding to your operating system::
 
     curl http://download.opensuse.org/repositories/science:/openturns/CentOS_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_33/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_34/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.2/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl http://download.opensuse.org/repositories/science:/openturns/Mageia_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
     rpm --import http://download.opensuse.org/repositories/science:/openturns/CentOS_8/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_33/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_34/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.2/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/Mageia_8/repodata/repomd.xml.key
 

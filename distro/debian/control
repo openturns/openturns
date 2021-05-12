@@ -7,7 +7,7 @@ Build-Depends: debhelper (>= 9), dh-python, quilt, g++ (>= 4:5),
  bison, flex, cmake, python3-dev, swig,
  libmuparser-dev, libxml2-dev, libtbb-dev [i386 amd64 ia64], libboost-math-dev, libmpc-dev, libhdf5-dev,
  liblapack-dev, libblas-dev, libhmat-oss-dev, libspectra-dev,
- libnlopt-cxx-dev, libcminpack-dev, libceres-dev, coinor-libipopt-dev,
+ libnlopt-cxx-dev, libcminpack-dev, libceres-dev, coinor-libipopt-dev, libdlib-dev
 Standards-Version: 4.1.3
 Homepage: http://www.openturns.org/
 Vcs-Browser: https://salsa.debian.org/science-team/openturns
@@ -58,7 +58,7 @@ Description: headers and development libraries for OpenTURNS
 Package: python3-openturns
 Section: python
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libopenturns0.18 (= ${binary:Version}), ${python3:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, libopenturns0.18 (= ${binary:Version}), ${python3:Depends}, python3-psutil, python3-dill
 Provides: ${python3:Provides}
 Suggests: python3-matplotlib
 Description: Python3 front-end of OpenTURNS (aka TUI)

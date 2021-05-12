@@ -917,7 +917,7 @@ Scalar SpecFunc::HyperGeom_1_1(const Scalar p1,
   Scalar factorial = 1.0;
   Scalar sum = term;
   Scalar eps = 1.0;
-  Bool absEps = abs(eps) > Precision;
+  Bool absEps = std::abs(eps) > Precision;
   Bool absEpsPrec = absEps;
   do
   {
@@ -928,7 +928,7 @@ Scalar SpecFunc::HyperGeom_1_1(const Scalar p1,
     ++factorial;
     sum += term;
     eps = term / sum;
-    absEps = abs(eps) > Precision;
+    absEps = std::abs(eps) > Precision;
   }
   while (absEps || absEpsPrec);
   return sum;
@@ -971,7 +971,7 @@ Complex SpecFunc::HyperGeom_1_1(const Scalar p1,
   Complex term(1.0);
   Complex sum(term);
   Complex eps(1.0);
-  Bool absEps = abs(eps) > Precision;
+  Bool absEps = std::abs(eps) > Precision;
   Bool absEpsPrec = absEps;
   do
   {
@@ -982,7 +982,7 @@ Complex SpecFunc::HyperGeom_1_1(const Scalar p1,
     ++factorial;
     sum += term;
     eps = term / sum;
-    absEps = abs(eps) > Precision;
+    absEps = std::abs(eps) > Precision;
   }
   while (absEps || absEpsPrec);
   return sum;
@@ -1028,7 +1028,7 @@ Scalar SpecFunc::HyperGeom_2_1(const Scalar p1,
   Scalar term = 1.0;
   Scalar sum = term;
   Scalar eps = 1.0;
-  Bool absEps = abs(eps) > Precision;
+  Bool absEps = std::abs(eps) > Precision;
   Bool absEpsPrec = absEps;
   do
   {
@@ -1040,7 +1040,7 @@ Scalar SpecFunc::HyperGeom_2_1(const Scalar p1,
     ++factorial;
     sum += term;
     eps = std::abs(term / sum);
-    absEps = abs(eps) > Precision;
+    absEps = std::abs(eps) > Precision;
   }
   while (absEps || absEpsPrec);
   return sum;
@@ -1091,7 +1091,7 @@ Scalar SpecFunc::HyperGeom_2_2(const Scalar p1,
   Scalar term = 0.0;
   Scalar sum = term;
   Scalar eps = 1.0;
-  Bool absEps = abs(eps) > Precision;
+  Bool absEps = std::abs(eps) > Precision;
   Bool absEpsPrec = absEps;
   const Scalar logX = std::log(std::abs(x));
   Scalar signX = x > 0.0 ? 1.0 : -1.0;
@@ -1108,7 +1108,7 @@ Scalar SpecFunc::HyperGeom_2_2(const Scalar p1,
     sum += signTerm * std::exp(term);
     signTerm *= signX;
     eps = std::abs(term / sum);
-    absEps = abs(eps) > Precision;
+    absEps = std::abs(eps) > Precision;
   }
   while (absEps || absEpsPrec);
   return sum;

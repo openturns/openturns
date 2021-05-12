@@ -168,6 +168,8 @@ Scalar RegularizedIncompleteBetaP(const Scalar a,
   if ((a <= 0.0) && (b <= 0.0)) throw InvalidArgumentException(HERE) << "Error: a and b cannot be null at the same time";
   if (x <= 0.0) return 0.0;
   if (x >= 1.0) return 1.0;
+  if (a == 0.0) return 1.0;
+  if (b == 0.0) return 0.0;
   if (x * (a + b + 2) < a + 1.0) return RegularizedIncompleteBetaContinuedFraction(a, b, x) * exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log1p(-x)) / a;
   return 1.0 - RegularizedIncompleteBetaContinuedFraction(b, a, 1.0 - x) * exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log1p(-x)) / b;
 }
@@ -181,6 +183,8 @@ Scalar RegularizedIncompleteBetaQ(const Scalar a,
   if ((a <= 0.0) && (b <= 0.0)) throw InvalidArgumentException(HERE) << "Error: a and b cannot be null at the same time";
   if (x >= 1.0) return 0.0;
   if (x <= 0.0) return 1.0;
+  if (a == 0.0) return 0.0;
+  if (b == 0.0) return 1.0;
   if (x * (a + b + 2) < a + 1.0) return 1.0 - RegularizedIncompleteBetaContinuedFraction(a, b, x) * exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log1p(-x)) / a;
   return RegularizedIncompleteBetaContinuedFraction(b, a, 1.0 - x) * exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * log(x) + b * log1p(-x)) / b;
 }
