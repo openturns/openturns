@@ -28,7 +28,7 @@ int main(int, char *[])
 {
   TESTPREAMBLE;
   OStream fullprint(std::cout);
-  setRandomGenerator();
+  PlatformInfo::SetNumericalPrecision(5);
   try
   {
     // Instanciate one distribution object

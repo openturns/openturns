@@ -60,7 +60,9 @@ if ((OPENTURNS_HAVE_BONMIN OR OPENTURNS_HAVE_IPOPT) AND CMAKE_CXX_COMPILER_ID MA
 endif ()
 
 # Exclude spectra sources from unity build (templates take a lot of memory)
-set_source_files_properties (Base/Algo/KarhunenLoeveP1Algorithm.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+if (Spectra_FOUND)
+  set_source_files_properties (Base/Algo/KarhunenLoeveP1Algorithm.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
 
 # Build main library
 foreach (built_source ${BUILT_SOURCEFILES})
