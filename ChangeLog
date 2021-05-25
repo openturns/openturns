@@ -20,6 +20,7 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #1843 (Ali-Mikhail-Haq copula parameter value)
  * #1844 (MaximumDistribution::computePDF is wrong when all the marginals are equal and independent)
 
 
