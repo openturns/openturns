@@ -227,8 +227,10 @@ HMatrixImplementation & HMatrixImplementation::operator=(const HMatrixImplementa
     PersistentObject::operator=(other);
     // destroy current
     if (hmatInterface_ != NULL && hmat_ != NULL)
+    {
       static_cast<hmat_interface_t*>(hmatInterface_)->destroy(static_cast<hmat_matrix_t*>(hmat_));
-
+      static_cast<hmat_interface_t*>(hmatInterface_)->finalize();
+    }
     if (other.hmatClusterTree_.get())
     {
       hmat_cluster_tree_t* ptr_other_ct = static_cast<hmat_cluster_tree_t*>(other.hmatClusterTree_.get()->get());
@@ -254,8 +256,10 @@ HMatrixImplementation * HMatrixImplementation::clone() const
 HMatrixImplementation::~HMatrixImplementation()
 {
 #ifdef OPENTURNS_HAVE_HMAT
-  if (hmatInterface_ != NULL && hmat_ != NULL)
+  if (hmatInterface_ != NULL && hmat_ != NULL){
     static_cast<hmat_interface_t*>(hmatInterface_)->destroy(static_cast<hmat_matrix_t*>(hmat_));
+    static_cast<hmat_interface_t*>(hmatInterface_)->finalize();
+  }
 #endif
 }
 
@@ -277,7 +281,37 @@ HMatrixImplementation::assemble(const HMatrixRealAssemblyFunction& f, char symme
       throw InvalidArgumentException(HERE) << "Error: invalid symmetry flag '" << symmetry << "', must be either 'N' or 'L'";
   }
 
-  static_cast<hmat_interface_t*>(hmatInterface_)->assemble_simple_interaction(static_cast<hmat_matrix_t*>(hmat_), const_cast<HMatrixRealAssemblyFunction*>(&f), &trampoline_simple, sym);
+  hmat_assemble_context_t ctx_assemble;
+  hmat_assemble_context_init(&ctx_assemble);
+  ctx_assemble.lower_symmetric = sym;
+  ctx_assemble.simple_compute = &trampoline_simple;
+  ctx_assemble.user_context = const_cast<HMatrixRealAssemblyFunction*>(&f);
+  ctx_assemble.progress = NULL;
+
+  const Scalar assemblyEpsilon = ResourceMap::GetAsScalar("HMatrix-AssemblyEpsilon");
+
+  const String compressionMethod = ResourceMap::GetAsString("HMatrix-CompressionMethod");
+  if (compressionMethod == "Svd")
+    ctx_assemble.compression = hmat_create_compression_svd(assemblyEpsilon);
+  else if (compressionMethod == "AcaFull")
+    ctx_assemble.compression = hmat_create_compression_aca_full(assemblyEpsilon);
+  else if (compressionMethod == "AcaPartial")
+    ctx_assemble.compression = hmat_create_compression_aca_partial(assemblyEpsilon);
+  else if (compressionMethod == "AcaPlus")
+    ctx_assemble.compression = hmat_create_compression_aca_plus(assemblyEpsilon);
+  else if (compressionMethod == "AcaRandom")
+    ctx_assemble.compression = hmat_create_compression_aca_random(assemblyEpsilon);
+  else
+    LOGWARN( OSS() << "Unknown compression method: " << compressionMethod << ". Valid values are: Svd, AcaFull, AcaPartial or AcaPlus");
+
+  static_cast<hmat_interface_t*>(hmatInterface_)->assemble_generic(static_cast<hmat_matrix_t*>(hmat_), &ctx_assemble);
+  hmat_delete_compression(ctx_assemble.compression);
+
+  // recompression after build
+  const Scalar recompressionEpsilon = ResourceMap::GetAsScalar("HMatrix-RecompressionEpsilon");
+  static_cast<hmat_interface_t*>(hmatInterface_)->set_low_rank_epsilon(static_cast<hmat_matrix_t*>(hmat_), recompressionEpsilon);
+  static_cast<hmat_interface_t*>(hmatInterface_)->truncate(static_cast<hmat_matrix_t*>(hmat_));
+
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
@@ -328,10 +362,39 @@ void HMatrixImplementation::assemble(const HMatrixTensorRealAssemblyFunction& f,
     default:
       throw InvalidArgumentException(HERE) << "Error: invalid symmetry flag '" << symmetry << "', must be either 'N' or 'L'";
   }
-  static_cast<hmat_interface_t*>(hmatInterface_)->assemble(
-    static_cast<hmat_matrix_t*>(hmat_),
-    const_cast<HMatrixTensorRealAssemblyFunction*>(&f),
-    &trampoline_hmat_prepare_block, &trampoline_compute, sym);
+
+  hmat_assemble_context_t ctx_assemble;
+  hmat_assemble_context_init(&ctx_assemble);
+  ctx_assemble.lower_symmetric = sym;
+  ctx_assemble.prepare = &trampoline_hmat_prepare_block;
+  ctx_assemble.block_compute = &trampoline_compute;
+  ctx_assemble.user_context = const_cast<HMatrixTensorRealAssemblyFunction*>(&f);
+  ctx_assemble.progress = NULL;
+
+  const Scalar assemblyEpsilon = ResourceMap::GetAsScalar("HMatrix-AssemblyEpsilon");
+
+  const String compressionMethod = ResourceMap::GetAsString("HMatrix-CompressionMethod");
+  if (compressionMethod == "Svd")
+    ctx_assemble.compression = hmat_create_compression_svd(assemblyEpsilon);
+  else if (compressionMethod == "AcaFull")
+    ctx_assemble.compression = hmat_create_compression_aca_full(assemblyEpsilon);
+  else if (compressionMethod == "AcaPartial")
+    ctx_assemble.compression = hmat_create_compression_aca_partial(assemblyEpsilon);
+  else if (compressionMethod == "AcaPlus")
+    ctx_assemble.compression = hmat_create_compression_aca_plus(assemblyEpsilon);
+  else if (compressionMethod == "AcaRandom")
+    ctx_assemble.compression = hmat_create_compression_aca_random(assemblyEpsilon);
+  else
+    LOGWARN( OSS() << "Unknown compression method: " << compressionMethod << ". Valid values are: Svd, AcaFull, AcaPartial or AcaPlus");
+
+  static_cast<hmat_interface_t*>(hmatInterface_)->assemble_generic(static_cast<hmat_matrix_t*>(hmat_), &ctx_assemble);
+  hmat_delete_compression(ctx_assemble.compression);
+
+  // recompression after build
+  const Scalar recompressionEpsilon = ResourceMap::GetAsScalar("HMatrix-RecompressionEpsilon");
+  static_cast<hmat_interface_t*>(hmatInterface_)->set_low_rank_epsilon(static_cast<hmat_matrix_t*>(hmat_), recompressionEpsilon);
+  static_cast<hmat_interface_t*>(hmatInterface_)->truncate(static_cast<hmat_matrix_t*>(hmat_));
+
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
@@ -403,6 +466,7 @@ void HMatrixImplementation::factorize(const String& method)
 
       // ditch the original instance
       static_cast<hmat_interface_t*>(hmatInterface_)->destroy(static_cast<hmat_matrix_t*>(hmatBackup));
+      static_cast<hmat_interface_t*>(hmatInterface_)->finalize();
 
       done = true;
       LOGDEBUG("Factorization ok");
@@ -414,6 +478,8 @@ void HMatrixImplementation::factorize(const String& method)
 
       // ditch the copy and restart from the original instance
       static_cast<hmat_interface_t*>(hmatInterface_)->destroy(static_cast<hmat_matrix_t*>(hmat_));
+      static_cast<hmat_interface_t*>(hmatInterface_)->finalize();
+
       hmat_ = static_cast<hmat_interface_t*>(hmatInterface_)->copy(static_cast<hmat_matrix_t*>(hmatBackup));
 
       // Double the current regularization factor by adding it another time
@@ -563,46 +629,6 @@ void HMatrixImplementation::dump(const String & name) const
 {
 #ifdef OPENTURNS_HAVE_HMAT
   static_cast<hmat_interface_t*>(hmatInterface_)->dump_info(static_cast<hmat_matrix_t*>(hmat_), const_cast<char*>(name.c_str()));
-#else
-  throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
-#endif
-}
-
-Bool HMatrixImplementation::setKey(const String & name, const String & value)
-{
-#ifdef OPENTURNS_HAVE_HMAT
-  hmat_settings_t settings;
-  hmat_get_parameters(&settings);
-  if (name == "compression")
-  {
-    if (value == "Svd")
-      settings.compressionMethod = hmat_compress_svd;
-    else if (value == "AcaFull")
-      settings.compressionMethod = hmat_compress_aca_full;
-    else if (value == "AcaPartial")
-      settings.compressionMethod = hmat_compress_aca_partial;
-    else if (value == "AcaPlus+")
-      settings.compressionMethod = hmat_compress_aca_plus;
-    else if (value == "AcaRandom")
-      settings.compressionMethod = hmat_compress_aca_random;
-    else
-      LOGWARN( OSS() << "Unknown compression method: " << value << ". Valid values are: SVD, ACAfull, ACApartial or ACA+");
-  }
-  else if (name == "assembly-epsilon")
-  {
-    std::istringstream iss( value );
-    iss >> settings.assemblyEpsilon;
-  }
-  else if (name == "recompression-epsilon")
-  {
-    std::istringstream iss( value );
-    iss >> settings.recompressionEpsilon;
-  }
-  else
-    LOGWARN( OSS() << "Unknown parameter: " << name);
-
-  hmat_set_parameters(&settings);
-  return true;
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif

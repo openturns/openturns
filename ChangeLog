@@ -45,6 +45,7 @@
  * #1858 (Normal::computeCDF(sample) crash for large dimensions)
  * #1861 (Still some instabilities in Kriging with ot.StationaryFunctionalCovarianceModel)
  * #1864 (FORM - IMPORTANCE FACTOR)
+ * #1868 (Not compatible with hmat-oss-1.7.1: no member named 'compressionMethod' in 'hmat_settings_t')
  * #1870 (TruncatedDistribution fails to compute quantiles)
  * #1874 (ProcessSample.getSampleAtVertex() may be useful as a public method)
  * #1877 (How to model singular multivariate distributions?)
