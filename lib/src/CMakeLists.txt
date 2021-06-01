@@ -77,14 +77,8 @@ if (BUILD_SHARED_LIBS)
 endif ()
 
 # soversion
-if (NOT DEFINED LIB_VERSION) 
-  set (LIB_VERSION 0.0.0)
-endif ()
-if (NOT DEFINED LIB_SOVERSION) 
-  set (LIB_SOVERSION 0)
-endif ()
-set_target_properties (OT PROPERTIES SOVERSION ${LIB_SOVERSION})
-set_target_properties (OT PROPERTIES VERSION ${LIB_VERSION})
+set_target_properties (OT PROPERTIES SOVERSION 0.19)
+set_target_properties (OT PROPERTIES VERSION 0.19.0)
 
 if (BISON_FOUND AND FLEX_FOUND)
   add_dependencies (OT generate_csv_lexer)

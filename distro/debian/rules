@@ -71,8 +71,6 @@ cmake-configure-%:
             -DCMAKE_SKIP_INSTALL_RPATH:BOOL=ON \
             -DCMAKE_INSTALL_PREFIX:PATH=/usr \
             -DCMAKE_INSTALL_LIBDIR:PATH=/usr/lib \
-            -DLIB_SOVERSION=0.18 \
-            -DLIB_VERSION=0.18.0 \
             -DOPENTURNS_SYSCONFIG_PATH:PATH=/etc/openturns-1.17 \
             -DINSTALL_DESTDIR:PATH=$(CURDIR)/debian/tmp \
             -DUSE_COTIRE=ON -DCOTIRE_MAXIMUM_NUMBER_OF_UNITY_INCLUDES:STRING='-j32' \
