@@ -62,7 +62,7 @@ view = viewer.View(histo)
 
 # %%
 ot.ResourceMap.SetAsString("KrigingAlgorithm-LinearAlgebra",  "HMAT")
-ot.ResourceMap.SetAsScalar("HMatrix-AssemblyEpsilon",  1e-3)
+ot.ResourceMap.SetAsScalar("HMatrix-AssemblyEpsilon",  1e-5)
 ot.ResourceMap.SetAsScalar( "HMatrix-RecompressionEpsilon",  1e-4)
 
 # %%
