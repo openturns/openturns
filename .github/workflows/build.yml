@@ -24,7 +24,7 @@ jobs:
         cd $HOME/work/openturns
            git clone https://github.com/jeromerobert/hmat-oss.git hmat-oss
            cd hmat-oss/ 
-           git checkout 1ccc7a4
+           git checkout 1.7.0
            cmake -DBUILD_EXAMPLES=OFF -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCMAKE_MACOSX_RPATH=ON .
            make install -j$(sysctl -n hw.logicalcpu)
     - run:  |

@@ -193,7 +193,7 @@ if (USE_EXPRTK)
 endif ()
 
 if (USE_HMAT)
-  find_package (HMAT 1.6 CONFIG)
+  find_package (HMAT 1.7 CONFIG)
 endif ()
 if (HMAT_FOUND)
   message(STATUS "Found HMAT: ${HMAT_DIR}")
