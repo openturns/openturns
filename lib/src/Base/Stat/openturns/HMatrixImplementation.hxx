@@ -183,9 +183,6 @@ public:
   /** Dump HMatrix onto file */
   void dump(const String & name) const;
 
-  /** Change HMatrix settings */
-  Bool setKey(const String & name, const String & value);
-
   /** String converter */
   String __repr__() const override;
 
