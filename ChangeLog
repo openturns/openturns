@@ -20,7 +20,10 @@
 === Miscellaneous ===
 
 === Bug fixes ===
-
+ * #1843 (Ali-Mikhail-Haq copula parameter value)
+ * #1844 (MaximumDistribution::computePDF is wrong when all the marginals are equal and independent)
+ * #1845 (MemoizeFunction does not propagate to finite difference gradient&hessian)
+ * #1847 (ParametricFunction require unnecessary function evaluations)
 
 
 == 1.17 release (2021-05-12) == #release-1.17

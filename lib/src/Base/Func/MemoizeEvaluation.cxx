@@ -320,12 +320,12 @@ Bool MemoizeEvaluation::operator ==(const MemoizeEvaluation & other) const
 /* String converter */
 String MemoizeEvaluation::__repr__() const
 {
-  return OSS(true) << evaluation_.getImplementation()->__repr__();
+  return OSS(true) << "MemoizeEvaluation(" << evaluation_.getImplementation()->__repr__() << ")";
 }
 
 String MemoizeEvaluation::__str__(const String & offset) const
 {
-  return OSS(false) << evaluation_.getImplementation()->__str__(offset);
+  return OSS(false) << "MemoizeEvaluation(" << evaluation_.getImplementation()->__str__(offset) << ")";
 }
 
 /* Is it safe to call in parallel? */
