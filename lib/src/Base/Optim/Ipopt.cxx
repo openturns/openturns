@@ -215,7 +215,7 @@ void Ipopt::run()
     throw InternalException(HERE) << "Ipopt error: " << statusString;
   }
 
-  // Retrieve MemoizeFunction input/output history
+  // Retrieve input/output history
   Sample inputHistory(ipoptProblem->getInputHistory());
   Sample outputHistory(ipoptProblem->getOutputHistory());
 
@@ -226,7 +226,7 @@ void Ipopt::run()
   Scalar residualError = -1.0;
   Scalar constraintError = -1.0;
 
-  /* Populate OptimizationResult from memoize history */
+  /* Populate OptimizationResult from history */
 
   for (UnsignedInteger i = 0; i < inputHistory.getSize(); ++ i)
   {

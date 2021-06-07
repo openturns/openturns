@@ -178,7 +178,7 @@ void Bonmin::run()
   Bab solver;
   solver(app);
 
-  // Retrieve MemoizeFunction input/output history
+  // Retrieve input/output history
   Sample inputHistory(tminlp->getInputHistory());
   Sample outputHistory(tminlp->getOutputHistory());
 
@@ -189,7 +189,7 @@ void Bonmin::run()
   Scalar residualError = -1.0;
   Scalar constraintError = -1.0;
 
-  /* Populate OptimizationResult from memoize history */
+  /* Populate OptimizationResult from history */
 
   for (UnsignedInteger i = 0; i < inputHistory.getSize(); ++ i)
   {
