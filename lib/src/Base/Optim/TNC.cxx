@@ -19,6 +19,7 @@
  *
  */
 #include <cmath> // For HUGE_VAL
+#include <cstring> // std::memset
 
 #include "openturns/TNC.hxx"
 #include "algotnc.h"
@@ -410,24 +411,18 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   Point inP(dimension);
   std::copy(x, x + dimension, inP.begin());
   const OptimizationProblem problem(algorithm->getProblem());
-  for (UnsignedInteger i = 0; i < inP.getDimension(); ++i)
-    if (!SpecFunc::IsNormal(inP[i]))
-    {
-      *f = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
-      /* Convert the gradient into the output format */
-      const Matrix gradient(1, problem.getDimension());
-      std::copy(&gradient(0, 0), &gradient(0, 0) + dimension, g);
-      LOGWARN(OSS() << "TNC went to an abnormal point=" << inP.__str__());
-      return 1;
-    }
 
-  /* Evaluate the objective function at inP */
-  const Point outP(problem.getObjective().operator()(inP));
-  *f = problem.isMinimization() ? outP[0] : -outP[0];
-
-  Point objectiveGradient;
+  // Evaluate the objective function
+  Point outP;
   try
   {
+    for (UnsignedInteger i = 0; i < inP.getDimension(); ++i)
+      if (!SpecFunc::IsNormal(inP[i]))
+        throw InvalidArgumentException(HERE) << "TNC got nan value";
+
+    outP = problem.getObjective().operator()(inP);
+    *f = problem.isMinimization() ? outP[0] : -outP[0];
+
     // Here we take the sign into account and convert the result into a Point in one shot
     const Matrix gradient(problem.isMinimization() ? problem.getObjective().gradient(inP) : -1.0 * problem.getObjective().gradient(inP));
     /* Convert the gradient into the output format */
@@ -435,6 +430,13 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   }
   catch (...)
   {
+    LOGWARN(OSS() << "TNC went to an abnormal point=" << inP.__str__());
+
+    // penalize it
+    *f = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+    std::memset(g, 0, dimension);
+
+    // exit gracefully
     return 1;
   }
 
