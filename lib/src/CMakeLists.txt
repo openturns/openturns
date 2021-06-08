@@ -40,6 +40,11 @@ if (LIBXML2_FOUND AND HDF5_FOUND)
   set_source_files_properties (Base/Common/XMLH5StorageManager.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
 endif ()
 
+# Exclude HMAT sources
+if (HMAT_FOUND)
+  set_source_files_properties (Base/Stat/HMatrixFactory.cxx Base/Stat/HMatrixImplementation.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
+
 # SymbolicParserExprTk.cxx includes exprtk.hpp which is huge, exclude it from cotire builds
 # It also causes problems on Windows
 if (OPENTURNS_HAVE_EXPRTK)
