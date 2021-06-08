@@ -146,7 +146,8 @@ Scalar ExponentialModel::computeAsScalar(const Scalar tau) const
 
   const Scalar tauOverThetaNorm = std::abs(tau / scale_[0]);
   // Return value
-  return (tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance_(0, 0) * (1.0 + nuggetFactor_) : outputCovariance_(0, 0) * exp(-tauOverThetaNorm));
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  return (tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance(0, 0) * (1.0 + nuggetFactor_) : outputCovariance(0, 0) * exp(-tauOverThetaNorm));
 }
 
 /** Gradient */

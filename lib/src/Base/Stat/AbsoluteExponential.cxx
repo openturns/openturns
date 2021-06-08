@@ -66,7 +66,8 @@ Scalar AbsoluteExponential::computeAsScalar(const Point & tau) const
   if (tau.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
   Scalar tauOverThetaNorm = 0.0;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i) tauOverThetaNorm += std::abs(tau[i] / scale_[i]);
-  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance_(0, 0) * (1.0 + nuggetFactor_) : outputCovariance_(0, 0) * exp(-tauOverThetaNorm);
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance(0, 0) * (1.0 + nuggetFactor_) : outputCovariance(0, 0) * exp(-tauOverThetaNorm);
 }
 
 Scalar AbsoluteExponential::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
@@ -79,7 +80,8 @@ Scalar AbsoluteExponential::computeAsScalar(const Collection<Scalar>::const_iter
   {
     tauOverThetaNorm += std::abs(*s_it - *t_it) / scale_[i];
   }
-  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance_(0, 0) * (1.0 + nuggetFactor_) : outputCovariance_(0, 0) * exp(-tauOverThetaNorm);
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance(0, 0) * (1.0 + nuggetFactor_) : outputCovariance(0, 0) * exp(-tauOverThetaNorm);
 }
 
 Scalar AbsoluteExponential::computeAsScalar(const Scalar tau) const
@@ -90,7 +92,8 @@ Scalar AbsoluteExponential::computeAsScalar(const Scalar tau) const
     throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
 
   const Scalar tauOverThetaNorm = std::abs(tau / scale_[0]);
-  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance_(0, 0) * (1.0 + nuggetFactor_) : outputCovariance_(0, 0) * exp(-tauOverThetaNorm);
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  return tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance(0, 0) * (1.0 + nuggetFactor_) : outputCovariance(0, 0) * exp(-tauOverThetaNorm);
 }
 
 /* Gradient */
