@@ -35,8 +35,9 @@
 #include "openturns/Matrix.hxx"
 #include "openturns/PlatformInfo.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/TBB.hxx"
 
-#define TESTPREAMBLE { OT::PlatformInfo::SetTwoDigitExponent(); }
+#define TESTPREAMBLE { OT::PlatformInfo::SetTwoDigitExponent(); OT::TBB::Enable(); }
 
 BEGIN_NAMESPACE_OPENTURNS
 
