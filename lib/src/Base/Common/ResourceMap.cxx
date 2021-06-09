@@ -630,7 +630,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("R-executable-command", "");
 #endif
   addAsString("csv-file-separator", ";");
-#ifndef WIN32
+#ifndef _WIN32
   addAsString("temporary-directory", "/tmp");
   addAsUnsignedInteger("parallel-threads", sysconf(_SC_NPROCESSORS_CONF));
 #else

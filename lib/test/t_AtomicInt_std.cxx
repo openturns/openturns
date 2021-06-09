@@ -59,7 +59,7 @@ int main(int, char *[])
   {
     AtomicInt atom;
 
-#ifndef WIN32
+#ifndef _WIN32
     unsigned int nbThreads = sysconf(_SC_NPROCESSORS_CONF);
 #else
     std::istringstream converter(getenv("NUMBER_OF_PROCESSORS"));

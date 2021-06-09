@@ -338,7 +338,7 @@ SampleImplementation SampleImplementation::BuildFromCSVFile(const FileName & fil
   locale_t new_locale = newlocale (LC_NUMERIC_MASK, "C", NULL);
   locale_t old_locale = uselocale(new_locale);
 #else
-#ifdef WIN32
+#ifdef _WIN32
   _configthreadlocale(_ENABLE_PER_THREAD_LOCALE);
 #endif
   const char * initialLocale = setlocale(LC_NUMERIC, NULL);
@@ -353,7 +353,7 @@ SampleImplementation SampleImplementation::BuildFromCSVFile(const FileName & fil
   uselocale(old_locale);
   freelocale(new_locale);
 #else
-#ifdef WIN32
+#ifdef _WIN32
   _configthreadlocale(_DISABLE_PER_THREAD_LOCALE);
 #endif
   setlocale(LC_NUMERIC, initialLocale);
