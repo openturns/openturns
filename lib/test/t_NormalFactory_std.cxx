@@ -71,8 +71,8 @@ int main(int, char *[])
 
     // Robust estimation
     {
-      NormalFactory factory(true);
-      Distribution estimatedDistribution(factory.build(sample));
+      factory = NormalFactory(true);
+      estimatedDistribution = factory.build(sample);
       fullprint << "Distribution          =" << distribution << std::endl;
       fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
     }
