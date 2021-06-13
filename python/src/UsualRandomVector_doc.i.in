@@ -13,4 +13,4 @@ Examples
 
 Draw a sample:
 
->>> sample = Y.getSample(5)"
+>>> sample = X.getSample(5)"
