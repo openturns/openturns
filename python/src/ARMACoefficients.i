@@ -17,10 +17,10 @@ namespace OT {
   template <>
   inline
   OT::SquareMatrix
-  convert<_PyObject_,OT::SquareMatrix>(PyObject * pyObj)
+  convert<_PyObject_, OT::SquareMatrix>(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (! SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::SquareMatrix *"), 0 |  0 )))
+    if (! SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::SquareMatrix *"), SWIG_POINTER_NO_NULL)))
       throw OT::InvalidArgumentException(HERE) << "Object passed as argument is not a SquareMatrix";
     OT::SquareMatrix * p_sm = reinterpret_cast< OT::SquareMatrix * >( ptr );
     return *p_sm;

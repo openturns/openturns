@@ -558,8 +558,6 @@ static inline
 bool
 canConvertCollectionObjectFromPySequence(PyObject * pyObj)
 {
-  if (pyObj == Py_None)
-    return false;
   try
   {
     check<_PySequence_>(pyObj);
@@ -592,8 +590,6 @@ static inline
 Collection<T> *
 buildCollectionFromPySequence(PyObject * pyObj, int sz = 0)
 {
-  if (pyObj == Py_None)
-    throw OT::InvalidArgumentException(HERE) << "Cannot build Collection from None";
   check<_PySequence_>(pyObj);
   ScopedPyObjectPointer newPyObj(PySequence_Fast(pyObj, ""));
   if (!newPyObj.get()) throw InvalidArgumentException(HERE) << "Not a sequence object";
