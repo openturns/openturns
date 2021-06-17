@@ -425,7 +425,7 @@ void HMatrixImplementation::factorize(const String& method)
     if (done) break;
   } // for
   if (!done)
-    throw InternalException(HERE) << msg;
+    throw InternalException(HERE) << "Factorization failed, msg=" << msg;
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
