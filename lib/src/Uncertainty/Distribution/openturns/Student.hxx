@@ -73,10 +73,12 @@ public:
 
   /** Get one realization of the distribution */
   Point getRealization() const override;
+  Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the CDF of the distribution */
   using EllipticalDistribution::computeCDF;
   Scalar computeCDF(const Point & point) const override;
+  Sample computeCDF(const Sample & sample) const override;
 
   /** Get the probability content of an interval */
   Scalar computeProbability(const Interval & interval) const override;
