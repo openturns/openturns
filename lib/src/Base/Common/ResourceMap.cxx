@@ -256,7 +256,7 @@ String ResourceMap::getType(const String & key) const
       keys.add(it->first);
     }
     MapStringType::const_iterator it = mapString_.find(key);
-    if (it != mapString_.end()) return "string";
+    if (it != mapString_.end()) return "str";
   }
   // Second, try to retrieve the value from the Scalar map
   {
@@ -276,7 +276,7 @@ String ResourceMap::getType(const String & key) const
       keys.add(it->first);
     }
     MapUnsignedIntegerType::const_iterator it = mapUnsignedInteger_.find(key);
-    if (it != mapUnsignedInteger_.end()) return "unsigned int";
+    if (it != mapUnsignedInteger_.end()) return "int";
   }
   // Fourth, try to retrieve the value from the Bool map
   {
@@ -330,11 +330,11 @@ void ResourceMap::removeKey(const String & key)
     throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap";
 
   String keyType(getType(key));
-  if (keyType == "string")
+  if (keyType == "str")
     mapString_.erase(mapString_.find(key));
   if (keyType == "float")
     mapScalar_.erase(mapScalar_.find(key));
-  if (keyType == "unsigned int")
+  if (keyType == "int")
     mapUnsignedInteger_.erase(mapUnsignedInteger_.find(key));
   if (keyType == "bool")
     mapBool_.erase(mapBool_.find(key));

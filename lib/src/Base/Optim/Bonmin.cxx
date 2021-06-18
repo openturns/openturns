@@ -128,11 +128,11 @@ static void GetOptionsFromResourceMap(SmartPtr<OptionsList> options)
       String optionName(keys[i].substr(7));
       String type(ResourceMap::GetType(keys[i]));
       Bool ok = false;
-      if (type == "string")
+      if (type == "str")
         ok = options->SetStringValue(optionName, ResourceMap::GetAsString(keys[i]));
       else if (type == "float")
         ok = options->SetNumericValue(optionName, ResourceMap::GetAsScalar(keys[i]));
-      else if (type == "unsigned int")
+      else if (type == "int")
         ok = options->SetIntegerValue(optionName, ResourceMap::GetAsUnsignedInteger(keys[i]));
       else if (type == "bool")
         ok = options->SetStringValue(optionName, ResourceMap::GetAsBool(keys[i]) ? "yes" : "no");
@@ -294,12 +294,14 @@ String Bonmin::__repr__() const
     {
       String optionName(keys[i].substr(7));
       String type(ResourceMap::GetType(keys[i]));
-      if (type == "string")
+      if (type == "str")
         oss << optionName << "=" << ResourceMap::GetAsString(keys[i]) << "\n";
       else if (type == "float")
         oss << optionName << "=" << ResourceMap::GetAsScalar(keys[i]) << "\n";
-      else if (type == "unsigned int")
+      else if (type == "int")
         oss << optionName << "=" << ResourceMap::GetAsUnsignedInteger(keys[i]) << "\n";
+      else if (type == "bool")
+        oss << optionName << "=" << ResourceMap::GetAsBool(keys[i]) << "\n";
       else
         throw InvalidArgumentException(HERE) << "Unsupported type " << type << " for Bonmin option " << optionName;
     }
