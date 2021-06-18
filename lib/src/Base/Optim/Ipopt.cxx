@@ -135,6 +135,7 @@ void Ipopt::run()
   app->Options()->SetIntegerValue("print_level", 0);
   app->Options()->SetIntegerValue("max_iter", getMaximumIterationNumber());
   app->Options()->SetStringValue("sb", "yes"); // skip banner
+  app->Options()->SetStringValue("honor_original_bounds", "yes");// disabled in ipopt 3.14
   GetOptionsFromResourceMap(app->Options());
   String optlist;
   app->Options()->PrintList(optlist);
