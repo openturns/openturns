@@ -99,14 +99,17 @@ static void GetOptionsFromResourceMap(SmartPtr<OptionsList> options)
     {
       String optionName(keys[i].substr(6));
       String type(ResourceMap::GetType(keys[i]));
+      Bool ok = false;
       if (type == "string")
-        options->SetStringValue(optionName, ResourceMap::GetAsString(keys[i]));
+        ok = options->SetStringValue(optionName, ResourceMap::GetAsString(keys[i]));
       else if (type == "float")
-        options->SetNumericValue(optionName, ResourceMap::GetAsScalar(keys[i]));
+        ok = options->SetNumericValue(optionName, ResourceMap::GetAsScalar(keys[i]));
       else if (type == "unsigned int")
-        options->SetIntegerValue(optionName, ResourceMap::GetAsUnsignedInteger(keys[i]));
-      else
-        throw InvalidArgumentException(HERE) << "Unsupported type " << type << " for Ipopt option " << optionName;
+        ok = options->SetIntegerValue(optionName, ResourceMap::GetAsUnsignedInteger(keys[i]));
+      else if (type == "bool")
+        ok = options->SetStringValue(optionName, ResourceMap::GetAsBool(keys[i]) ? "yes" : "no");
+      if (!ok)
+        throw InvalidArgumentException(HERE) << "Invalid Ipopt option " << optionName;
     }
 }
 
@@ -133,6 +136,9 @@ void Ipopt::run()
   app->Options()->SetIntegerValue("max_iter", getMaximumIterationNumber());
   app->Options()->SetStringValue("sb", "yes"); // skip banner
   GetOptionsFromResourceMap(app->Options());
+  String optlist;
+  app->Options()->PrintList(optlist);
+  LOGDEBUG(optlist);
 
   // Intialize the IpoptApplication and process the options
   ApplicationReturnStatus status = app->Initialize();

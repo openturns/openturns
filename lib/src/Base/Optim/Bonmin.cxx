@@ -114,7 +114,7 @@ void Bonmin::checkProblem(const OptimizationProblem & problem) const
 #ifdef OPENTURNS_HAVE_BONMIN
 
 /** Accessors to Bonmin options */
-static void GetOptionsFromResourceMap(BonminSetup & bonmin)
+static void GetOptionsFromResourceMap(SmartPtr<OptionsList> options)
 {
 //   Get options for Bonmin setup from ResourceMap
 //   See Bonmin/Ipopt user manuals for more details.
@@ -127,14 +127,17 @@ static void GetOptionsFromResourceMap(BonminSetup & bonmin)
     {
       String optionName(keys[i].substr(7));
       String type(ResourceMap::GetType(keys[i]));
+      Bool ok = false;
       if (type == "string")
-        bonmin.options()->SetStringValue(optionName, ResourceMap::GetAsString(keys[i]));
+        ok = options->SetStringValue(optionName, ResourceMap::GetAsString(keys[i]));
       else if (type == "float")
-        bonmin.options()->SetNumericValue(optionName, ResourceMap::GetAsScalar(keys[i]));
+        ok = options->SetNumericValue(optionName, ResourceMap::GetAsScalar(keys[i]));
       else if (type == "unsigned int")
-        bonmin.options()->SetIntegerValue(optionName, ResourceMap::GetAsUnsignedInteger(keys[i]));
-      else
-        throw InvalidArgumentException(HERE) << "Unsupported type " << type << " for Bonmin option " << optionName;
+        ok = options->SetIntegerValue(optionName, ResourceMap::GetAsUnsignedInteger(keys[i]));
+      else if (type == "bool")
+        ok = options->SetStringValue(optionName, ResourceMap::GetAsBool(keys[i]) ? "yes" : "no");
+      if (!ok)
+        throw InvalidArgumentException(HERE) << "Invalid Bonmin option " << optionName;
     }
 }
 
@@ -169,7 +172,10 @@ void Bonmin::run()
   app.options()->SetIntegerValue("bonmin.oa_log_level", 0);
   app.options()->SetIntegerValue("bonmin.fp_log_level", 0);
   app.options()->SetIntegerValue("bonmin.milp_log_level", 0);
-  GetOptionsFromResourceMap(app);
+  GetOptionsFromResourceMap(app.options());
+  String optlist;
+  app.options()->PrintList(optlist);
+  LOGDEBUG(optlist);
 
   // Update setup with BonminProblem
   app.initialize(GetRawPtr(tminlp));
