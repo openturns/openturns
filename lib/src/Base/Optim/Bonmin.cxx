@@ -163,6 +163,7 @@ void Bonmin::run()
   app.options()->SetIntegerValue("max_iter", getMaximumIterationNumber());
   app.options()->SetStringValue("sb", "yes"); // skip ipopt banner
   app.options()->SetIntegerValue("print_level", 0);
+  app.options()->SetStringValue("honor_original_bounds", "yes");// disabled in ipopt 3.14
   app.options()->SetIntegerValue("bonmin.bb_log_level", 0);
   app.options()->SetIntegerValue("bonmin.nlp_log_level", 0);
   app.options()->SetIntegerValue("bonmin.lp_log_level", 0);
