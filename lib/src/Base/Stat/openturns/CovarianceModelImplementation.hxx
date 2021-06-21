@@ -109,6 +109,11 @@ public:
   virtual CovarianceMatrix discretize(const Sample & vertices) const;
   virtual Sample discretizeRow(const Sample & vertices,
                                const UnsignedInteger p) const;
+  virtual Matrix computeCrossCovariance(const Sample &firstSample,
+                                        const Sample &secondSample) const;
+
+  virtual Matrix computeCrossCovariance(const Sample &sample,
+                                        const Point &point) const;
 
   /** Discretize and factorize the covariance function on a given TimeGrid/Mesh */
   virtual TriangularMatrix discretizeAndFactorize(const RegularGrid & timeGrid) const;
