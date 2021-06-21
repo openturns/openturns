@@ -13,6 +13,7 @@
  * Removed deprecated KarhunenLoeveResult::getEigenValues
  * Removed deprecated coupling_tools.execute is_shell/workdir/shell_exe/check_exit_code arguments
  * RandomVector::get/setParameter and getParameterDescription available to PythonRandomVector
+ * Implemented CovarianceModel::computeCrossCovariance
 
 === Documentation ===
 
