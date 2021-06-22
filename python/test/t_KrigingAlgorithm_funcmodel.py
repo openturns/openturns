@@ -38,6 +38,9 @@ algo.setOptimizeParameters(False)
 algo.run()
 result = algo.getResult()
 metaModel = result.getMetaModel()
+variance = result.getConditionalMarginalVariance(inputSample)
+ott.assert_almost_equal(variance, ot.Point(len(inputSample), 0.), 1e-14, 1e-14)
+
 
 # Consistency check: does the reimplementation fit the SquaredExponential class?
 squaredExponential = ot.SquaredExponential(inputDimension)

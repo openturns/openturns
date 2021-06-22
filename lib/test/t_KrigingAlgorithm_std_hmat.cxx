@@ -170,6 +170,19 @@ int main(int, char *[])
 
     }
 
+    {
+      // fix https: //github.com/openturns/openturns/issues/1861
+      RandomGenerator::SetSeed(0);
+      SymbolicFunction rho("tau", "exp(-abs(tau))*cos(2*pi_*abs(tau))");
+      const Point scale = {1.0};
+      StationaryFunctionalCovarianceModel model(scale, scale, rho);
+      const Sample x(Normal(0, 1.0).getSample(20));
+      const Sample y(x + Normal(0, 0.1).getSample(20));
+      KrigingAlgorithm algo(x, y, model, LinearBasisFactory().build());
+      algo.run();
+      KrigingResult result(algo.getResult());
+      assert_almost_equal(result.getConditionalMarginalVariance(x), Point(x.getSize(), 0.), 2e-6, 2e-6);
+    }
   }
   catch (TestFailed & ex)
   {
