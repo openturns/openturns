@@ -8,9 +8,6 @@ ot.TESTPREAMBLE()
 # Set hmat
 ot.ResourceMap.SetAsString("KrigingAlgorithm-LinearAlgebra", "HMAT")
 
-# Test 1
-# Test 1
-
 
 def test_one_input_one_output():
     sampleSize = 6
@@ -121,6 +118,21 @@ def test_two_inputs_one_output():
     ott.assert_almost_equal(outputValidSample,  metaModel(
         inputValidSample), 1.e-1, 1e-1)
 
+def test_stationary_fun():
+    # fix https://github.com/openturns/openturns/issues/1861
+    ot.RandomGenerator.SetSeed(0)
+    rho = ot.SymbolicFunction("tau", "exp(-abs(tau))*cos(2*pi_*abs(tau))")
+    model = ot.StationaryFunctionalCovarianceModel([1], [1], rho)
+    x = ot.Normal().getSample(20)
+    y = x + ot.Normal(0, 0.1).getSample(20)
+
+    algo = ot.KrigingAlgorithm(x, y, model, ot.LinearBasisFactory().build())
+    algo.run()
+    result = algo.getResult()
+    variance = result.getConditionalMarginalVariance(x)
+    ott.assert_almost_equal(variance, ot.Point(len(x), 0.), 2e-6, 2e-6)
+
 if __name__ == "__main__":
     test_one_input_one_output()
     test_two_inputs_one_output()
+    test_stationary_fun()

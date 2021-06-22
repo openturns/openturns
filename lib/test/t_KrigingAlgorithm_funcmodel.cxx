@@ -79,6 +79,8 @@ int main(int, char *[])
     algo.run();
     KrigingResult result(algo.getResult());
     Function metaModel(result.getMetaModel());
+    assert_almost_equal(result.getConditionalMarginalVariance(inputSample),
+                        Point(inputSample.getSize(), 0.), 1e-14, 1e-14);
 
 
     // Consistency check: does the reimplementation fit the SquaredExponential class?

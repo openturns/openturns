@@ -153,8 +153,22 @@ def test_two_outputs():
     assert mm.getOutputDimension() == 2, "wrong output dim"
     ott.assert_almost_equal(mm(sampleX), sampleY)
 
+def test_stationary_fun():
+    # fix https://github.com/openturns/openturns/issues/1861
+    ot.RandomGenerator.SetSeed(0)
+    rho = ot.SymbolicFunction("tau", "exp(-abs(tau))*cos(2*pi_*abs(tau))")
+    model = ot.StationaryFunctionalCovarianceModel([1], [1], rho)
+    x = ot.Normal().getSample(20)
+    y = x + ot.Normal(0, 0.1).getSample(20)
+
+    algo = ot.KrigingAlgorithm(x, y, model, ot.LinearBasisFactory().build())
+    algo.run()
+    result = algo.getResult()
+    variance = result.getConditionalMarginalVariance(x)
+    ott.assert_almost_equal(variance, ot.Point(len(x), 0.), 1e-16, 1e-16)
 
 if __name__ == "__main__":
     test_one_input_one_output()
     test_two_inputs_one_output()
     test_two_outputs()
+    test_stationary_fun()
