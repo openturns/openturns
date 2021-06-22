@@ -66,9 +66,10 @@ Scalar StationaryFunctionalCovarianceModel::computeAsScalar(const Point & tau) c
   // The model is stationary
   // Thus we should care about value for tau=0
   const Scalar tauOverThetaNorm = tauOverTheta.norm();
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
   if (tauOverThetaNorm <= SpecFunc::ScalarEpsilon)
-    return outputCovariance_(0, 0) * (1.0 + nuggetFactor_);
-  return outputCovariance_(0, 0) * rho_(tauOverTheta)[0];
+    return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
+  return outputCovariance(0, 0) * rho_(tauOverTheta)[0];
 }
 
 Scalar StationaryFunctionalCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
@@ -82,9 +83,10 @@ Scalar StationaryFunctionalCovarianceModel::computeAsScalar(const Collection<Sca
   // The model is stationary
   // Thus we should care about value for tau=0
   const Scalar tauOverThetaNorm = tauOverTheta.norm();
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
   if (tauOverThetaNorm <= SpecFunc::ScalarEpsilon)
-    return outputCovariance_(0, 0) * (1.0 + nuggetFactor_);
-  return outputCovariance_(0, 0) * rho_(tauOverTheta)[0];
+    return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
+  return outputCovariance(0, 0) * rho_(tauOverTheta)[0];
 }
 
 Scalar StationaryFunctionalCovarianceModel::computeAsScalar(const Scalar tau) const
@@ -95,10 +97,11 @@ Scalar StationaryFunctionalCovarianceModel::computeAsScalar(const Scalar tau) co
     throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
 
   const Scalar tauOverThetaNorm = std::abs(tau / scale_[0]);
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
   if (tauOverThetaNorm <= SpecFunc::ScalarEpsilon)
-    return outputCovariance_(0, 0) * (1.0 + nuggetFactor_);
+    return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
   const Point tauOverTheta(1, tau / scale_[0]);
-  return outputCovariance_(0, 0) * rho_(tauOverTheta)[0];
+  return outputCovariance(0, 0) * rho_(tauOverTheta)[0];
 }
 
 /* Gradient */

@@ -20,6 +20,7 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #1842 (libOT.so.0.0.0 doesn't have a SONAME)
  * #1843 (Ali-Mikhail-Haq copula parameter value)
  * #1844 (MaximumDistribution::computePDF is wrong when all the marginals are equal and independent)
  * #1845 (MemoizeFunction does not propagate to finite difference gradient&hessian)

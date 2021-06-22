@@ -16,8 +16,8 @@ namespace OT {
   convert< _PyObject_, OT::OptimizationResult >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::OptimizationResult *"), 0))) {
-      OT::OptimizationResult * p_it = reinterpret_cast< OT::OptimizationResult * >( ptr );
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::OptimizationResult *"), SWIG_POINTER_NO_NULL))) {
+      OT::OptimizationResult * p_it = reinterpret_cast< OT::OptimizationResult * >(ptr);
       return *p_it;
     }
     else {

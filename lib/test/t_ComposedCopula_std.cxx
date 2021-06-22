@@ -177,7 +177,7 @@ int main(int, char *[])
     copula = ComposedCopula(collection);
     fullprint << "isoprobabilistic transformation (independent)=" << copula.getIsoProbabilisticTransformation() << std::endl;
     {
-      UnsignedInteger dim = copula.getDimension();
+      dim = copula.getDimension();
       Scalar x = 0.6;
       Point y(dim - 1, 0.2);
       fullprint << "conditional PDF=" << copula.computeConditionalPDF(x, y) << std::endl;
@@ -196,7 +196,7 @@ int main(int, char *[])
     copula = ComposedCopula(collection);
     fullprint << "isoprobabilistic transformation (single contributor)=" << copula.getIsoProbabilisticTransformation() << std::endl;
     {
-      UnsignedInteger dim = copula.getDimension();
+      dim = copula.getDimension();
       Scalar x = 0.6;
       Point y(dim - 1, 0.2);
       fullprint << "conditional PDF=" << copula.computeConditionalPDF(x, y) << std::endl;

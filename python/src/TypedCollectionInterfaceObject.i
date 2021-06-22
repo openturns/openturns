@@ -11,7 +11,7 @@
 %template(CollectionType) OT::Collection<Namespace::Interface>;
 
 %typemap(in) const CollectionType & (OT::Pointer<OT::Collection<Namespace::Interface> > temp) {
-  if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
+  if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
     // From interface class, ok
   } else {
     try {
@@ -24,8 +24,8 @@
 }
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const CollectionType & {
-  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
-    || OT::canConvertCollectionObjectFromPySequence< Namespace::Interface >($input));
+  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL))
+    || OT::canConvertCollectionObjectFromPySequence< Namespace::Interface >($input);
 }
 
 %apply const CollectionType & { const OT::Collection<Namespace::Interface> & };
@@ -56,10 +56,10 @@ namespace OT {
   canConvert< _PyObject_, OT::Interface >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__ ## Interface, 0 ))) {
-      OT::Interface * p_it = reinterpret_cast< OT::Interface * >( ptr );
+    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__ ## Interface, SWIG_POINTER_NO_NULL))) {
+      OT::Interface * p_it = reinterpret_cast< OT::Interface * >(ptr);
       return p_it != NULL;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__ ## Implementation, 0 ))) {
+    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__ ## Implementation, SWIG_POINTER_NO_NULL))) {
       OT::Implementation * p_impl = reinterpret_cast< OT::Implementation * >( ptr );
       return p_impl != NULL;
     }
@@ -72,11 +72,11 @@ namespace OT {
   convert< _PyObject_, OT::Interface >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__ ## Interface, 0 ))) {
-      OT::Interface * p_it = reinterpret_cast< OT::Interface * >( ptr );
+    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__ ## Interface, SWIG_POINTER_NO_NULL))) {
+      OT::Interface * p_it = reinterpret_cast< OT::Interface * >(ptr);
       return *p_it;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__ ## Implementation, 0 ))) {
-      OT::Implementation * p_impl = reinterpret_cast< OT::Implementation * >( ptr );
+    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__ ## Implementation, SWIG_POINTER_NO_NULL))) {
+      OT::Implementation * p_impl = reinterpret_cast< OT::Implementation * >(ptr);
       return *p_impl;
     }
     else {

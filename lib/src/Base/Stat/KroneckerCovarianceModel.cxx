@@ -393,11 +393,11 @@ void KroneckerCovarianceModel::setFullParameter(const Point & parameter)
     // rho parameter
     // amplitude is unchanged (1)
     Point rhoParameter(rho_.getFullParameter());
-    UnsignedInteger index = rhoThetaSize + outputDimension_ * (outputDimension_ + 1) / 2;
+    index = rhoThetaSize + outputDimension_ * (outputDimension_ + 1) / 2;
     for (UnsignedInteger localIndex = 0; localIndex < extraParameterNumber_; ++localIndex)
     {
       rhoParameter[rhoThetaSize + 1 + localIndex] = parameter[index];
-      index++;
+      ++ index;
     }
     rho_.setFullParameter(rhoParameter);
   }

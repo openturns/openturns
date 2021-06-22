@@ -10,7 +10,7 @@
 %template(StringPersistentCollection) OT::PersistentCollection<OT::String>;
 
 %typemap(in) const OT::Description & ($1_basetype temp) {
-  if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
+  if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
     try {
       temp = OT::convert<OT::_PySequence_,OT::Description>( $input );
       $1 = &temp;
@@ -21,8 +21,8 @@
 }
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const OT::Description & {
-  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) ||
-       OT::isAPythonSequenceOf<OT::_PyString_>($input));
+  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL)) ||
+       OT::isAPythonSequenceOf<OT::_PyString_>($input);
 }
 
 %ignore OT::Description::Description(std::initializer_list<String> initList);

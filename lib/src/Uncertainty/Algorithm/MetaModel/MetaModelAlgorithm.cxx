@@ -152,6 +152,7 @@ Distribution MetaModelAlgorithm::BuildDistribution(const Sample & inputSample)
       try
       {
         const Distribution candidateDistribution(factories[j].build(marginalSample));
+        candidateDistribution.getStandardDeviation();// ensure at least 2 first moments are defined for Stieltjes
         const Scalar pValue = FittingTest::Kolmogorov(marginalSample, candidateDistribution, level).getPValue();
         const Bool isKSAccepted = (pValue >= level);
         if (isKSAccepted)

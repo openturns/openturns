@@ -14,11 +14,11 @@ OTTypedInterfaceObjectHelper(Function)
 
 %typemap(in) const FunctionCollection & (OT::Pointer<OT::Collection<OT::Function> > temp) {
   void * ptr = 0;
-  if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
+  if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
     // From interface class, ok
-  } else if (SWIG_IsOK(SWIG_ConvertPtr($input, &ptr, SWIG_TypeQuery("OT::Basis *"), 0))) {
+  } else if (SWIG_IsOK(SWIG_ConvertPtr($input, &ptr, SWIG_TypeQuery("OT::Basis *"), SWIG_POINTER_NO_NULL))) {
     // From Implementation*
-    OT::Basis * p_impl = reinterpret_cast< OT::Basis * >( ptr );
+    OT::Basis * p_impl = reinterpret_cast< OT::Basis * >(ptr);
     $1 = new OT::Collection<OT::Function>(*p_impl);
   } else {
     try {
@@ -31,9 +31,9 @@ OTTypedInterfaceObjectHelper(Function)
 }
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const FunctionCollection & {
-  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
-    || OT::canConvertCollectionObjectFromPySequence< OT::Function >( $input )
-    || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIG_TypeQuery("OT::Basis *"), 0)));
+  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL))
+    || OT::canConvertCollectionObjectFromPySequence< OT::Function >($input)
+    || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, SWIG_TypeQuery("OT::Basis *"), SWIG_POINTER_NO_NULL));
 }
 
 %apply const FunctionCollection & { const OT::Collection<OT::Function> & };

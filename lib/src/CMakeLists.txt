@@ -40,6 +40,11 @@ if (LIBXML2_FOUND AND HDF5_FOUND)
   set_source_files_properties (Base/Common/XMLH5StorageManager.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
 endif ()
 
+# Exclude HMAT sources
+if (HMAT_FOUND)
+  set_source_files_properties (Base/Stat/HMatrixFactory.cxx Base/Stat/HMatrixImplementation.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
+
 # SymbolicParserExprTk.cxx includes exprtk.hpp which is huge, exclude it from cotire builds
 # It also causes problems on Windows
 if (OPENTURNS_HAVE_EXPRTK)
@@ -77,14 +82,8 @@ if (BUILD_SHARED_LIBS)
 endif ()
 
 # soversion
-if (NOT DEFINED LIB_VERSION) 
-  set (LIB_VERSION 0.0.0)
-endif ()
-if (NOT DEFINED LIB_SOVERSION) 
-  set (LIB_SOVERSION 0)
-endif ()
-set_target_properties (OT PROPERTIES SOVERSION ${LIB_SOVERSION})
-set_target_properties (OT PROPERTIES VERSION ${LIB_VERSION})
+set_target_properties (OT PROPERTIES SOVERSION 0.19)
+set_target_properties (OT PROPERTIES VERSION 0.19.0)
 
 if (BISON_FOUND AND FLEX_FOUND)
   add_dependencies (OT generate_csv_lexer)

@@ -169,7 +169,7 @@ int main(int, char *[])
 
     PlatformInfo::SetNumericalPrecision(3);
     // Default input dimension parameter to evaluate the model
-    const UnsignedInteger dimension = 2;
+    UnsignedInteger dimension = 2;
 
     // 1) Squared exponential model
     {
@@ -236,7 +236,7 @@ int main(int, char *[])
       SphericalModel myDefautModel;
       test_model(myDefautModel);
 
-      const UnsignedInteger dimension = 2;
+      dimension = 2;
       SphericalModel myModel(Point(dimension, 2), Point(1, 3), 4.5);
       assert_almost_equal(myModel.getScale(), Point(dimension, 2), 0, 0);
       assert_almost_equal(myModel.getAmplitude(), Point(1, 3), 0, 0);
@@ -262,7 +262,7 @@ int main(int, char *[])
 
       const Point amplitude = {1.5, 3.5};
 
-      const UnsignedInteger dimension = 2;
+      dimension = 2;
       CorrelationMatrix spatialCorrelation(dimension);
       for (UnsignedInteger j = 0; j < dimension; ++j)
         for (UnsignedInteger i = j + 1; j < dimension; ++j)

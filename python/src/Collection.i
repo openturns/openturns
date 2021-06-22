@@ -121,7 +121,7 @@ PyObject * __setitem__(PyObject * arg, PyObject * valObj)
     PySlice_GetIndicesEx(OT::SliceCast(arg), self->getSize(), &start, &stop, &step, &size);
     collectionType temp2;
     collectionType *val2 = 0;
-    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery(#collectionType " *"), 0))) {
+    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery(#collectionType " *"), SWIG_POINTER_NO_NULL))) {
       temp2 = OT::convert< OT::_PySequence_, collectionType >(valObj);
       val2 = &temp2;
     }
@@ -156,7 +156,7 @@ PyObject * __setitem__(PyObject * arg, PyObject * valObj)
     }
     collectionType temp2;
     collectionType *val2 = 0;
-    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery(#collectionType " *"), 0))) {
+    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery(#collectionType " *"), SWIG_POINTER_NO_NULL))) {
       temp2 = OT::convert< OT::_PySequence_, collectionType >(valObj);
       val2 = &temp2;
     }

@@ -114,7 +114,7 @@ int main(int, char *[])
     }
     {
       // 2d input, to check that issue #1660 is solved
-      Mesh mesh(IntervalMesher(Indices(2, 4)).build(Interval(Point(2, -1.2), Point(2, 1.0))));
+      mesh = IntervalMesher(Indices(2, 4)).build(Interval(Point(2, -1.2), Point(2, 1.0)));
       AbsoluteExponential cov2D(Point(2, 1.0));
       KarhunenLoeveP1Algorithm algo(mesh, cov2D, 1e-6);
       algo.run();

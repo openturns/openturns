@@ -25,7 +25,6 @@
 #include "openturns/Normal.hxx"
 #include "openturns/NormalFactory.hxx"
 #include "openturns/KernelSmoothing.hxx"
-#include "openturns/MemoizeFunction.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
 #include "openturns/BootstrapExperiment.hxx"
 #include "openturns/LowDiscrepancyExperiment.hxx"
@@ -334,7 +333,7 @@ void GaussianNonLinearCalibration::run()
   const TriangularMatrix errorInverseCholesky(error.getInverseCholesky());
   const Point thetaStar(run(inputObservations_, outputObservations_, getCandidate(), parameterInverseCholesky, errorInverseCholesky));
   // Build the residual function this way to benefit from the automatic Hessian
-  const MemoizeFunction residualFunction(NonLinearLeastSquaresCalibration::BuildResidualFunction(model_, inputObservations_, outputObservations_));
+  const Function residualFunction(NonLinearLeastSquaresCalibration::BuildResidualFunction(model_, inputObservations_, outputObservations_));
   const Point residuals(residualFunction(thetaStar));
   if (globalErrorCovariance_)
     error.setMean(residuals);
@@ -384,7 +383,7 @@ Point GaussianNonLinearCalibration::run(const Sample & inputObservations,
 {
   // Build the residual function this way to benefit from the automatic Hessian
   const GaussianNonLinearFunctions::CalibrationModelEvaluation residualEvaluation(model_, inputObservations, outputObservations, candidate, parameterInverseCholesky, errorInverseCholesky);
-  MemoizeFunction residualFunction(Function(residualEvaluation, GaussianNonLinearFunctions::CalibrationModelGradient(residualEvaluation), CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), residualEvaluation)));
+  const Function residualFunction(Function(residualEvaluation, GaussianNonLinearFunctions::CalibrationModelGradient(residualEvaluation), CenteredFiniteDifferenceHessian(ResourceMap::GetAsScalar( "CenteredFiniteDifferenceHessian-DefaultEpsilon" ), residualEvaluation)));
   LeastSquaresProblem problem(residualFunction);
   algorithm_.setVerbose(true);
   algorithm_.setProblem(problem);

@@ -1,7 +1,5 @@
 // SWIG file OTtypes.i
 
-%module types
-
 %include std_string.i
 %include std_map.i
 %include std_complex.i
@@ -13,6 +11,11 @@
 %{
 #include "openturns/OT.hxx"
 #include "openturns/PythonWrappingFunctions.hxx"
+
+// ptr conversion argument to handle None correctly in swig 4.x, this just allows to pass compilation with swig 3.x
+#if SWIGVERSION < 0x040000
+#define SWIG_POINTER_NO_NULL 0x0
+#endif
 %}
 
 %typemap(in) UnsignedInteger {
@@ -46,3 +49,4 @@
 %define OTAutodoc(PythonClass)
 %feature("autodoc", "Proxy of C++ OT::" #PythonClass ".") OT::PythonClass;
 %enddef
+

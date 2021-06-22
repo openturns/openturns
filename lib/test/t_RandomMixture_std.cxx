@@ -383,7 +383,7 @@ int main(int, char *[])
     }
     // For ticket 1129
     {
-      RandomMixture distribution(Collection<Distribution>(200, Uniform()));
+      distribution = RandomMixture(Collection<Distribution>(200, Uniform()));
       fullprint << "CDF(0)=" << distribution.computeCDF(0.0) << std::endl;
     }
   }

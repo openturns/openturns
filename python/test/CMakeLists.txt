@@ -722,6 +722,7 @@ ot_pyinstallcheck_test (FunctionalChaosSobolIndices_std)
 ot_pyinstallcheck_test (KrigingAlgorithm_std)
 ot_pyinstallcheck_test (KrigingAlgorithm_funcmodel IGNOREOUT)
 ot_pyinstallcheck_test (KrigingRandomVector_std)
+ot_pyinstallcheck_test (MetaModelAlgorithm_std)
 ot_pyinstallcheck_test (MetaModelValidation_std)
 ot_pyinstallcheck_test (GeneralLinearModelAlgorithm_std)
 if (HMAT_FOUND)
@@ -737,7 +738,6 @@ ot_pyinstallcheck_test (TensorApproximationAlgorithm_std)
 ot_pyinstallcheck_test (LinearModelAlgorithm_std)
 ot_pyinstallcheck_test (LinearModelAnalysis_std)
 ot_pyinstallcheck_test (LinearModelStepwiseAlgorithm_std)
-ot_pyinstallcheck_test (MetaModelValidation_std)
 ot_pyinstallcheck_test (KrigingAlgorithm_isotropic_std IGNOREOUT)
 
 ## Sensitivity
@@ -831,6 +831,9 @@ endif ()
 ot_pyinstallcheck_test (features IGNOREOUT)
 ot_pyinstallcheck_test (coupling_tools)
 ot_pyinstallcheck_test (shims IGNOREOUT)
+if (NOT SWIG_VERSION VERSION_LESS 4)
+  ot_pyinstallcheck_test (None IGNOREOUT)
+endif ()
 
 
 

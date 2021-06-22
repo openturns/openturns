@@ -671,6 +671,22 @@ BlockIndependentDistribution::InverseIsoProbabilisticTransformation BlockIndepen
   return AggregatedFunction(atomTransformations);
 }
 
+/* Get the shifted moments of the distribution */
+Point BlockIndependentDistribution::getShiftedMoment(const UnsignedInteger n, const Point & shift) const
+{
+  Point shiftedMoment;
+  UnsignedInteger index = 0;
+  for (UnsignedInteger i = 0; i < distributionCollection_.getSize(); ++ i)
+  {
+    const UnsignedInteger localDimension = distributionCollection_[i].getDimension();
+    Point localShift(localDimension);
+    std::copy(shift.begin() + index, shift.begin() + index + localDimension, localShift.begin());
+    shiftedMoment.add(distributionCollection_[i].getShiftedMoment(n, localShift));
+    index += localDimension;
+  }
+  return shiftedMoment;
+}
+
 /* Compute the covariance of the distribution */
 void BlockIndependentDistribution::computeCovariance() const
 {
