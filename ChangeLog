@@ -28,6 +28,7 @@
  * #1845 (MemoizeFunction does not propagate to finite difference gradient&hessian)
  * #1847 (ParametricFunction require unnecessary function evaluations)
  * #1861 (Still some instabilities in Kriging with ot.StationaryFunctionalCovarianceModel)
+ * #1864 (FORM - IMPORTANCE FACTOR)
 
 
 == 1.17 release (2021-05-12) == #release-1.17
