@@ -49,6 +49,7 @@ MaternModel::MaternModel(const Point & scale,
   , nu_(0.0)
   , sqrt2nuOverTheta_(Point(scale.getDimension(), 0.0))
 {
+  isStationary_ = true;
   setNu(nu);
 }
 

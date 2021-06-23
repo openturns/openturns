@@ -1,8 +1,8 @@
-myDefautModel = class=DiracCovarianceModel, amplitude=class=Point name=Unnamed dimension=1 values=[1], spatialCorrelation=class=CorrelationMatrix dimension=0 implementation=class=MatrixImplementation name=Unnamed rows=0 columns=0 values=[]
-myModel1 = class=DiracCovarianceModel, amplitude=class=Point name=Unnamed dimension=2 values=[1.5,3.5], spatialCorrelation=class=CorrelationMatrix dimension=0 implementation=class=MatrixImplementation name=Unnamed rows=0 columns=0 values=[]
+myDefautModel = class=DiracCovarianceModel, scale=class=Point name=Unnamed dimension=1 values=[1], amplitude=class=Point name=Unnamed dimension=1 values=[1], spatialCorrelation=class=CorrelationMatrix dimension=0 implementation=class=MatrixImplementation name=Unnamed rows=0 columns=0 values=[]
+myModel1 = class=DiracCovarianceModel, scale=class=Point name=Unnamed dimension=2 values=[1,1], amplitude=class=Point name=Unnamed dimension=2 values=[1.5,3.5], spatialCorrelation=class=CorrelationMatrix dimension=0 implementation=class=MatrixImplementation name=Unnamed rows=0 columns=0 values=[]
 Pretty print of myModel1 = DiracCovarianceModel(t)=[[  2.25  0    ]
  [  0    12.3  ]] * t==[0,0]
-myModel2 = class=DiracCovarianceModel, amplitude=class=Point name=Unnamed dimension=2 values=[1.5,3.5], spatialCorrelation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.5,0.5,1]
+myModel2 = class=DiracCovarianceModel, scale=class=Point name=Unnamed dimension=2 values=[1,1], amplitude=class=Point name=Unnamed dimension=2 values=[1.5,3.5], spatialCorrelation=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0.5,0.5,1]
 Pretty print of myModel2 = DiracCovarianceModel(t)=[[  2.25  2.62 ]
  [  2.62 12.3  ]] * t==[0,0]
 Discretization on a grid of vertices
