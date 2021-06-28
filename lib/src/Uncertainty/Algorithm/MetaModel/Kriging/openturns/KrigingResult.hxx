@@ -151,18 +151,10 @@ public:
 protected:
 
   /** Compute cross matrix method ==> not necessary square matrix  */
-  Matrix getCrossMatrix(const Sample & x) const;
-  Matrix getCrossMatrix(const Point & point) const;
   void computeF() const;
   void computePhi() const;
 
 private:
-
-  // Structures for evaluation of crossCovariance
-  friend struct KrigingResultCrossCovarianceFunctor;
-  friend struct KrigingResultCrossCovarianceFunctor1D;
-  friend struct KrigingResultCrossCovariancePointFunctor;
-  friend struct KrigingResultCrossCovariancePointFunctor1D;
 
   /** input/output samples */
   Sample inputSample_;
