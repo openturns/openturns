@@ -762,6 +762,10 @@ public:
   Bool isParallel() const;
   void setParallel(const Bool flag);
 
+  /** Quantile epsilon accessor */
+  Scalar getQuantileEpsilon() const;
+  void setQuantileEpsilon(const Scalar quantileEpsilon);
+
 protected:
 
   /** Draw the PDF of a discrete distribution */

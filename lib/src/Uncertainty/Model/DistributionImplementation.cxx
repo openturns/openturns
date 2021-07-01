@@ -5229,4 +5229,15 @@ Distribution DistributionImplementation::abs() const
   return new CompositeDistribution(SymbolicFunction("x", "abs(x)"), clone(), bounds, values);
 }
 
+/* Quantile epsilon accessor */
+Scalar DistributionImplementation::getQuantileEpsilon() const
+{
+  return quantileEpsilon_;
+}
+
+void DistributionImplementation::setQuantileEpsilon(const Scalar quantileEpsilon)
+{
+  quantileEpsilon_ = quantileEpsilon;
+}
+
 END_NAMESPACE_OPENTURNS
