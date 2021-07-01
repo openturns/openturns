@@ -62,12 +62,12 @@ Uniform polynomial(3)=-3.96863 * X + 6.61438 * X^3
 Uniform polynomial(4)=1.125 - 11.25 * X^2 + 13.125 * X^4
 Uniform polynomial(4) roots=class=Point name=Unnamed dimension=4 values=[-0.861136,-0.339981,0.339981,0.861136]
 Uniform polynomial(4) nodes=class=Point name=Unnamed dimension=4 values=[-0.861136,-0.339981,0.339981,0.861136] and weights=class=Point name=Unnamed dimension=4 values=[0.173927,0.326073,0.326073,0.173927]
-polynomialFactory(Uniform=class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=Uniform name=Uniform dimension=1 a=-1 b=3 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,-1,0],class=Point name=Unnamed dimension=3 values=[1,-1,-1.33333]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,1.33333] isElliptical=true
+polynomialFactory(Uniform=class=StandardDistributionPolynomialFactory hasSpecificFamily=true specificFamily=class=OrthogonalUniVariatePolynomialFamily implementation=class=HistogramPolynomialFactory measure=class=Histogram name=Histogram dimension=1 first=-1 width=class=Point name=Unnamed dimension=1 values=[4] height=class=Point name=Unnamed dimension=1 values=[0.25] legendre=class=LegendreFactory measure=class=Uniform name=Uniform dimension=1 a=-1 b=1
 Uniform polynomial(0)=1
 Uniform polynomial(1)=-0.866025 + 0.866025 * X
 Uniform polynomial(2)=-0.279508 - 1.67705 * X + 0.838525 * X^2
 Uniform polynomial(3)=1.15752 + 0.496078 * X - 2.48039 * X^2 + 0.826797 * X^3
-Uniform polynomial(4)=-0.867188 + 2.34375 * X + 2.10938 * X^2 - 3.28125 * X^3 + 0.820313 * X^4
+Uniform polynomial(4)=-0.867188 + 2.34375 * X + 2.10938 * X^2 - 3.28125 * X^3 + 0.820312 * X^4
 Uniform polynomial(4) roots=class=Point name=Unnamed dimension=4 values=[-0.722273,0.320038,1.67996,2.72227]
 Uniform polynomial(4) nodes=class=Point name=Unnamed dimension=4 values=[-0.722273,0.320038,1.67996,2.72227] and weights=class=Point name=Unnamed dimension=4 values=[0.173927,0.326073,0.326073,0.173927]
 polynomialFactory(WeibullMin=class=StandardDistributionPolynomialFactory hasSpecificFamily=false orthonormalization algorithm=class=OrthonormalizationAlgorithm implementation=class=AdaptiveStieltjesAlgorithm measure=class=WeibullMin name=WeibullMin dimension=1 beta=1 alpha=3 gamma=0 monicRecurrenceCoefficients=[class=Point name=Unnamed dimension=3 values=[1,-0.89298,0],class=Point name=Unnamed dimension=3 values=[1,-0.947537,-0.105333]] monicSquaredNorms=class=Point name=Unnamed dimension=2 values=[1,0.105333] isElliptical=false

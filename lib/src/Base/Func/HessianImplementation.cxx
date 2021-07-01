@@ -110,7 +110,7 @@ void HessianImplementation::setParameter(const Point & parameter)
 /* Get the i-th marginal function */
 Hessian HessianImplementation::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
   return getMarginal(Indices(1, i));
 }
 

@@ -92,14 +92,15 @@ Scalar MaternModel::computeAsScalar(const Point & tau) const
   Point scaledTau(inputDimension_);
   for(UnsignedInteger i = 0; i < inputDimension_; ++i) scaledTau[i] = tau[i] * sqrt2nuOverTheta_[i];
   const Scalar scaledPoint = scaledTau.norm();
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
-    return outputCovariance_(0, 0) * (1.0 + nuggetFactor_);
+    return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
   else
-    return outputCovariance_(0, 0) * exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
+    return outputCovariance(0, 0) * exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
 }
 
 Scalar MaternModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
-    const Collection<Scalar>::const_iterator & t_begin) const
+                                    const Collection<Scalar>::const_iterator & t_begin) const
 {
   Scalar scaledPoint = 0;
   Collection<Scalar>::const_iterator s_it = s_begin;
@@ -110,10 +111,11 @@ Scalar MaternModel::computeAsScalar(const Collection<Scalar>::const_iterator & s
     scaledPoint += dx * dx;
   }
   scaledPoint = sqrt(scaledPoint);
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
-    return outputCovariance_(0, 0) * (1.0 + nuggetFactor_);
+    return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
   else
-    return outputCovariance_(0, 0) * exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
+    return outputCovariance(0, 0) * exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
 }
 
 Scalar MaternModel::computeAsScalar(const Scalar tau) const
@@ -123,10 +125,11 @@ Scalar MaternModel::computeAsScalar(const Scalar tau) const
   if (outputDimension_ != 1)
     throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
   const Scalar scaledPoint = std::abs(tau * sqrt2nuOverTheta_[0]);
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
   if (scaledPoint <= SpecFunc::ScalarEpsilon)
-    return outputCovariance_(0, 0) * (1.0 + nuggetFactor_);
+    return outputCovariance(0, 0) * (1.0 + nuggetFactor_);
   else
-    return outputCovariance_(0, 0) * exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
+    return outputCovariance(0, 0) * exp(logNormalizationFactor_ + nu_ * std::log(scaledPoint) + SpecFunc::LogBesselK(nu_, scaledPoint));
 }
 
 /* Gradient */
@@ -185,7 +188,7 @@ void MaternModel::setFullParameter(const Point & parameter)
   */
   // Check the size
   const UnsignedInteger totalSize = inputDimension_ + outputDimension_  + 1;
-  if (parameter.getSize() < totalSize)
+  if (!(parameter.getSize() >= totalSize))
     throw InvalidArgumentException(HERE) << "In MaternModel::setFullParameter, points have incompatible size. Point size = " << parameter.getSize()
                                          << " whereas expected size = " << totalSize ;
   // First set the generic parameter using CovarianceModelImplementation::setFullParameter

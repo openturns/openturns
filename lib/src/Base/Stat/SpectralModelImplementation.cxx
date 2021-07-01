@@ -165,7 +165,7 @@ Point SpectralModelImplementation::getAmplitude() const
 void SpectralModelImplementation::setAmplitude(const Point & amplitude)
 {
   for (UnsignedInteger index = 0; index < outputDimension_; ++index)
-    if (amplitude[index] <= 0)
+    if (!(amplitude[index] > 0))
       throw InvalidArgumentException(HERE) << "Error - The component " << index << " of amplitude is non positive" ;
   amplitude_ = amplitude;
   updateOutputCovariance();
@@ -180,7 +180,7 @@ Point SpectralModelImplementation::getScale() const
 void SpectralModelImplementation::setScale(const Point & scale)
 {
   for (UnsignedInteger index = 0; index < inputDimension_; ++index)
-    if (scale[index] <= 0)
+    if (!(scale[index] > 0))
       throw InvalidArgumentException(HERE) << "Error - The component " << index << " of scale is non positive" ;
   scale_ = scale;
 }
@@ -230,8 +230,8 @@ Graph SpectralModelImplementation::draw(const UnsignedInteger rowIndex,
                                         const UnsignedInteger frequencyNumber,
                                         const Bool module) const
 {
-  if (rowIndex >= outputDimension_) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << outputDimension_ << ", here rowIndex=" << rowIndex;
-  if (columnIndex >= outputDimension_) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << outputDimension_ << ", here columnIndex=" << columnIndex;
+  if (!(rowIndex < outputDimension_)) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << outputDimension_ << ", here rowIndex=" << rowIndex;
+  if (!(columnIndex < outputDimension_)) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << outputDimension_ << ", here columnIndex=" << columnIndex;
   Sample data(frequencyNumber, 2);
   for (UnsignedInteger i = 0; i < frequencyNumber; ++i)
   {

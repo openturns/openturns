@@ -7,9 +7,9 @@ Continuous =  True
 Elliptical =  False
 Independent =  False
 oneRealization= class=Point name=Unnamed dimension=7 values=[0.629877,0.893758,0.102726,0.155617,0.816172,0.0632061,0.0560402]
-oneSample first= class=Point name=Unnamed dimension=7 values=[0.714382,0.535485,0.361292,0.857057,0.68437,0.684575,0.881797]  last= class=Point name=Unnamed dimension=7 values=[0.791736,0.439906,0.167406,0.184528,0.064039,0.0580909,0.0426336]
-mean= class=Point name=Unnamed dimension=7 values=[0.499089,0.499413,0.497874,0.501718,0.499415,0.50039,0.499583]
-covariance= class=CovarianceMatrix dimension=7 implementation=class=MatrixImplementation name=Unnamed rows=7 columns=7 values=[0.0852147,0.039409,-0.00137053,-0.00121037,1.81336e-05,0.00156707,0.00146308,0.039409,0.0838797,-0.00165553,-0.000669886,0.000708745,0.00204537,0.0015296,-0.00137053,-0.00165553,0.0831566,0.0407169,0.0200307,0.000666704,-0.00105049,-0.00121037,-0.000669886,0.0407169,0.0830004,2.41466e-06,-0.000754962,-0.00126905,1.81336e-05,0.000708745,0.0200307,2.41466e-06,0.0851139,0.000302005,-0.000421039,0.00156707,0.00204537,0.000666704,-0.000754962,0.000302005,0.0835141,0.057349,0.00146308,0.0015296,-0.00105049,-0.00126905,-0.000421039,0.057349,0.0838099]
+oneSample first= class=Point name=Unnamed dimension=7 values=[0.714382,0.535485,0.551694,0.0925633,0.483697,0.62669,0.843177]  last= class=Point name=Unnamed dimension=7 values=[0.2804,0.270203,0.982939,0.934468,0.850723,0.698151,0.981738]
+mean= class=Point name=Unnamed dimension=7 values=[0.502996,0.501561,0.498392,0.504034,0.49464,0.502793,0.500715]
+covariance= class=CovarianceMatrix dimension=7 implementation=class=MatrixImplementation name=Unnamed rows=7 columns=7 values=[0.0845126,0.0382404,-0.0013059,-0.000645958,-0.00102304,0.000286105,0.000520833,0.0382404,0.0836032,-0.001033,-0.000314606,-0.000448824,0.000484917,0.00115831,-0.0013059,-0.001033,0.084547,0.0395462,0.0209758,-0.000875805,-0.00199626,-0.000645958,-0.000314606,0.0395462,0.0839577,-0.001105,-0.00173284,-0.000908655,-0.00102304,-0.000448824,0.0209758,-0.001105,0.0837096,-0.0004662,-0.0010621,0.000286105,0.000484917,-0.000875805,-0.00173284,-0.0004662,0.0841872,0.0568939,0.000520833,0.00115831,-0.00199626,-0.000908655,-0.0010621,0.0568939,0.0826949]
 Point=  class=Point name=Unnamed dimension=7 values=[0.6,0.6,0.6,0.6,0.6,0.6,0.6]
 ddf     = class=Point name=Unnamed dimension=7 values=[0.580905,0.580905,0.91183,0.260523,0.130261,0.177648,0.177648]
 pdf     =2.185069
@@ -66,7 +66,7 @@ margins PDF=3.086065
 margins CDF=0.005401
 margins quantile= class=Point name=Unnamed dimension=5 values=[0.989493,0.989493,0.989493,0.989493,0.989493]
 margins CDF(quantile)=0.950000
-margins realization= class=Point name=Unnamed dimension=5 values=[0.374352,0.645016,0.316395,0.102431,0.120505]
+margins realization= class=Point name=Unnamed dimension=5 values=[0.66202,0.528162,0.684545,0.181369,0.289273]
 isoprobabilistic transformation (general normal)= [(RosenblattEvaluation(FrankCopula(theta = 3)->Normal(2))o([x0,x1,x2,x3,x4,x5,x6]->[x0,x1]),(NatafEllipticalCopulaEvaluation(Copula(cholesky=[[  1         0         0        ]
  [ -0.57735   1.1547    0        ]
  [ -0.348155  0.174078  1.04447  ]], E=Normal(mu = 0, sigma = 1))->Normal(mu = [0,0,0], sigma = [1,1,1], R = [[ 1 0 0 ]

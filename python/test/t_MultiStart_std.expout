@@ -1,4 +1,0 @@
--- local search x*= [0.296446,0.320196] f(x*)= [-0.0649359]
--- multistart x*= [0.228279,-1.62553] f(x*)= [-6.55113]
-n_local_results= 14
-n_local_results (no keep)= 0

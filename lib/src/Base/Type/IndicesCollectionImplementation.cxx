@@ -138,25 +138,25 @@ UnsignedInteger IndicesCollectionImplementation::getSize() const
 
 IndicesCollectionImplementation::iterator IndicesCollectionImplementation::begin_at(const UnsignedInteger index)
 {
-  if (index >= size_) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
+  if (!(index < size_)) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
   return values_.begin() + offsets_[index];
 }
 
 IndicesCollectionImplementation::iterator IndicesCollectionImplementation::end_at(const UnsignedInteger index)
 {
-  if (index >= size_) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
+  if (!(index < size_)) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
   return values_.begin() + offsets_[index + 1];
 }
 
 IndicesCollectionImplementation::const_iterator IndicesCollectionImplementation::cbegin_at(const UnsignedInteger index) const
 {
-  if (index >= size_) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
+  if (!(index < size_)) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
   return values_.begin() + offsets_[index];
 }
 
 IndicesCollectionImplementation::const_iterator IndicesCollectionImplementation::cend_at(const UnsignedInteger index) const
 {
-  if (index >= size_) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
+  if (!(index < size_)) throw OutOfBoundException(HERE) << "index=" << index << " too large, size=" << size_;
   return values_.begin() + offsets_[index + 1];
 }
 

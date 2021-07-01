@@ -1,16 +1,18 @@
 """
 Estimate moments from Taylor expansions
 =======================================
+In this example we are going to estimate mean and standard deviation of an output variable of interest thanks to the Taylor variance decomposition method of order 1 or 2.
 """
-# %% 
 
 # %%
-# In this example we are going to estimate mean and standard deviation of an output variable of interest thanks to the Taylor variance decomposition method of order 1 or 2.
+# Model definition
+# ----------------
 
 # %%
 from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
+import numpy as np
 from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
@@ -31,8 +33,16 @@ X = ot.RandomVector(distribution)
 Y = ot.CompositeRandomVector(myFunc, X)
 
 # %%
+# Taylor expansion based estimation of the moments
+# ------------------------------------------------
+
+# %%
 # We create a Taylor expansion method to approximate moments
 taylor = ot.TaylorExpansionMoments(Y)
+
+# %%
+# Analysis of the results
+# -----------------------
 
 # %%
 # get 1st order mean
@@ -67,3 +77,42 @@ taylor.getGradientAtMean()
 # Get the hessian value of the output at the mean point
 taylor.getHessianAtMean()
 plt.show()
+
+# %%
+# Using finite difference gradients
+# ---------------------------------
+
+# %%
+# When no gradient and/or functions are provided for the model, a finite difference
+# approach is relied on automatically. However, it is possible to manually specify
+# the characteristic of the considered difference steps.
+def myPythonFunction(X):
+    x1, x2, x3, x4 = X
+    return [np.cos(x2*x2+x4)/(x1*x1+1.+x3**4)]
+myFunc = ot.PythonFunction(4,1,myPythonFunction)
+
+# %%
+# For instance, a user-defined constant step value can be considered
+gradEpsilon = [1e-8]*4
+hessianEpsilon = [1e-7]*4
+gradStep = ot.ConstantStep(gradEpsilon) # Costant gradient step
+hessianStep = ot.ConstantStep(hessianEpsilon)  # Constant Hessian step
+myFunc.setGradient(ot.CenteredFiniteDifferenceGradient(gradStep, myFunc.getEvaluation()))
+myFunc.setHessian(ot.CenteredFiniteDifferenceHessian(hessianStep, myFunc.getEvaluation()))
+
+# %%
+# Alternatively, we can consider a finite difference step value which 
+# depends on the location in the input space by relying on the BlendedStep class:
+gradEpsilon = [1e-8]*4
+hessianEpsilon = [1e-7]*4
+gradStep = ot.BlendedStep(gradEpsilon) # Costant gradient step
+hessianStep = ot.BlendedStep(hessianEpsilon)  # Constant Hessian step
+myFunc.setGradient(ot.CenteredFiniteDifferenceGradient(gradStep, myFunc.getEvaluation()))
+myFunc.setHessian(ot.CenteredFiniteDifferenceHessian(hessianStep, myFunc.getEvaluation()))
+
+# %%
+# We can then proceed in the same way as before
+Y = ot.CompositeRandomVector(myFunc, X)
+taylor = ot.TaylorExpansionMoments(Y)
+
+

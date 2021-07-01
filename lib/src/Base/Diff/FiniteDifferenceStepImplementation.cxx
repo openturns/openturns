@@ -57,7 +57,7 @@ void FiniteDifferenceStepImplementation::setEpsilon(const Point & epsilon)
   const UnsignedInteger dimension = epsilon.getDimension();
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
-    if (epsilon[i] < SpecFunc::MinScalar ) throw InvalidArgumentException(HERE) << "Null epsilon for component " << i;
+    if (!(epsilon[i] >= SpecFunc::MinScalar)) throw InvalidArgumentException(HERE) << "Null epsilon for component " << i;
   }
   epsilon_ = epsilon;
 }

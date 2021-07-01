@@ -38,6 +38,7 @@ CLASSNAMEINIT(LHSResult)
 /* Default constructor */
 LHSResult::LHSResult()
   : PersistentObject()
+  , restart_(0)
   , optimalIndex_(0)
   , criteria_(Sample(0, 4))
 {
@@ -92,6 +93,8 @@ UnsignedInteger LHSResult::getNumberOfRestarts() const
 /** Attributes for getting elements of result */
 Sample LHSResult::getOptimalDesign() const
 {
+  if (!collDesigns_.getSize())
+    InternalException(HERE) << "No design stored!";;
   return collDesigns_[optimalIndex_];
 }
 
@@ -104,6 +107,8 @@ Sample LHSResult::getOptimalDesign(UnsignedInteger restart) const
 
 Scalar LHSResult::getOptimalValue() const
 {
+  if (!criteria_.getSize())
+    InternalException(HERE) << "No design stored!";;
   return criteria_(optimalIndex_, 0);
 }
 
@@ -116,6 +121,8 @@ Scalar LHSResult::getOptimalValue(UnsignedInteger restart) const
 
 Sample LHSResult::getAlgoHistory() const
 {
+  if (!criteria_.getSize())
+    InternalException(HERE) << "No design stored!";;
   return collAlgoHistory_[optimalIndex_];
 }
 
@@ -128,6 +135,8 @@ Sample LHSResult::getAlgoHistory(UnsignedInteger restart) const
 
 Scalar LHSResult::getC2() const
 {
+  if (!criteria_.getSize())
+    InternalException(HERE) << "No design stored!";;
   return criteria_(optimalIndex_, 1);
 }
 
@@ -140,6 +149,8 @@ Scalar LHSResult::getC2(UnsignedInteger restart) const
 
 Scalar LHSResult::getPhiP() const
 {
+  if (!criteria_.getSize())
+    InternalException(HERE) << "No design stored!";;
   return criteria_(optimalIndex_, 2);
 }
 
@@ -152,6 +163,8 @@ Scalar LHSResult::getPhiP(UnsignedInteger restart) const
 
 Scalar LHSResult::getMinDist() const
 {
+  if (!criteria_.getSize())
+    InternalException(HERE) << "No design stored!";;
   return criteria_(optimalIndex_, 3);
 }
 
@@ -164,6 +177,8 @@ Scalar LHSResult::getMinDist(UnsignedInteger restart) const
 
 UnsignedInteger LHSResult::findDescription(const char *text) const
 {
+  if (!collAlgoHistory_.getSize())
+    InternalException(HERE) << "No design stored!";;
   Description description(collAlgoHistory_[0].getDescription());
   for (UnsignedInteger i = 0; i < description.getSize(); ++i)
   {
@@ -189,6 +204,8 @@ Graph LHSResult::drawCurveData(const Sample & data, const String & title) const
 
 Graph LHSResult::drawHistoryCriterion(const String & title) const
 {
+  if (!collAlgoHistory_.getSize())
+    InternalException(HERE) << "No design stored!";;
   String drawTitle(title);
   if (drawTitle.empty())
   {
@@ -218,6 +235,8 @@ Graph LHSResult::drawHistoryCriterion(UnsignedInteger restart, const String & ti
 
 Graph LHSResult::drawHistoryTemperature(const String & title) const
 {
+  if (!collAlgoHistory_.getSize())
+    InternalException(HERE) << "No design stored!";;
   String drawTitle(title);
   if (drawTitle.empty()) drawTitle = "Temperature history of optimal design";
   return drawHistoryTemperature(optimalIndex_, drawTitle);
@@ -241,6 +260,8 @@ Graph LHSResult::drawHistoryTemperature(UnsignedInteger restart, const String & 
 
 Graph LHSResult::drawHistoryProbability(const String & title) const
 {
+  if (!collAlgoHistory_.getSize())
+    InternalException(HERE) << "No design stored!";;
   String drawTitle(title);
   if (drawTitle.empty()) drawTitle = "Probability history of optimal design";
   return drawHistoryProbability(optimalIndex_, drawTitle);

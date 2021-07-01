@@ -16,8 +16,8 @@ namespace OT {
   convert< _PyObject_, OT::FORMResult >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::FORMResult *"), 0))) {
-      OT::FORMResult * p_it = reinterpret_cast< OT::FORMResult * >( ptr );
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIG_TypeQuery("OT::FORMResult *"), SWIG_POINTER_NO_NULL))) {
+      OT::FORMResult * p_it = reinterpret_cast< OT::FORMResult * >(ptr);
       return *p_it;
     }
     else {

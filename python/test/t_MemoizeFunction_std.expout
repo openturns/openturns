@@ -1,4 +1,4 @@
-[x]->[x^2]
+MemoizeEvaluation([x]->[x^2])
 Is history enabled for f?  False
 input history= 
 output history= 

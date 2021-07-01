@@ -51,7 +51,7 @@ ExpertMixture::ExpertMixture(const FunctionCollection & experts,
   , supervised_(supervised)
 {
   // Check if there is at least one expert
-  if (experts.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an ExpertMixture with no expert!";
+  if (!(experts.getSize() > 0)) throw InvalidArgumentException(HERE) << "Error: cannot build an ExpertMixture with no expert!";
   // Check that the experts and the classifier are compatible
   if (supervised_)
   {

@@ -69,7 +69,7 @@ ProcessSampleImplementation::ProcessSampleImplementation(const Mesh & mesh,
 }
 
 ProcessSampleImplementation::ProcessSampleImplementation(const Mesh & mesh,
-                                                         const SampleCollection & collection)
+    const SampleCollection & collection)
   : PersistentObject()
   , mesh_(mesh)
   , data_(collection)
@@ -118,7 +118,7 @@ void ProcessSampleImplementation::add(const Field & field)
 void ProcessSampleImplementation::add(const Sample & values)
 {
   if (values.getSize() != mesh_.getVerticesNumber()) throw InvalidArgumentException(HERE) << "Error: could not add the values. Their size=" << values.getSize() << " does not match the number of vertices=" << mesh_.getVerticesNumber() << " of the mesh.";
-  if ((getSize() > 0) && (data_[0].getDimension() != values.getDimension())) throw InvalidArgumentException(HERE) << "Error: could not add the values. Their dimension=" << values.getDimension() << " does not match the process sample dimension=" << data_[0].getDimension();
+  if (!(getSize() == 0 || data_[0].getDimension() == values.getDimension())) throw InvalidArgumentException(HERE) << "Error: could not add the values. Their dimension=" << values.getDimension() << " does not match the process sample dimension=" << data_[0].getDimension();
   data_.add(values);
 }
 
@@ -126,27 +126,27 @@ void ProcessSampleImplementation::add(const Sample & values)
 /* Operators accessors */
 Field ProcessSampleImplementation::getField(const UnsignedInteger index) const
 {
-  if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
+  if (!(index < data_.getSize())) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
   return Field(mesh_, data_[index]);
 }
 
 void ProcessSampleImplementation::setField(const Field & field,
     const UnsignedInteger index)
 {
-  if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
+  if (!(index < data_.getSize())) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
   if (field.getOutputDimension() != data_[0].getDimension()) throw InvalidArgumentException(HERE) << "Error: expected a field of dimension=" << data_[0].getDimension() << ", got a field of dimension=" << field.getOutputDimension();
   data_[index] = field.getValues();
 }
 
 Sample & ProcessSampleImplementation::operator[] (const UnsignedInteger index)
 {
-  if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
+  if (!(index < data_.getSize())) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
   return data_[index];
 }
 
 const Sample & ProcessSampleImplementation::operator[] (const UnsignedInteger index) const
 {
-  if (index >= data_.getSize()) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
+  if (!(index < data_.getSize())) throw OutOfBoundException(HERE)  << " Error - index should be between 0 and " << data_.getSize() - 1;
   return data_[index];
 }
 
@@ -179,7 +179,7 @@ UnsignedInteger ProcessSampleImplementation::getSize() const
 Field ProcessSampleImplementation::computeMean() const
 {
   const UnsignedInteger size = getSize();
-  if (size == 0) throw InternalException(HERE) << "Error: cannot compute the mean of an empty sample.";
+  if (!(size > 0)) throw InternalException(HERE) << "Error: cannot compute the mean of an empty sample.";
   if (size == 1) return Field(mesh_, data_[0]);
   Sample meanValues(data_[0]);
   for (UnsignedInteger i = 1; i < size; ++i) meanValues += data_[i];
@@ -276,7 +276,7 @@ Field ProcessSampleImplementation::computeRawMoment(const UnsignedInteger k) con
  * Get the empirical CDF of the sample
  */
 Field ProcessSampleImplementation::computeEmpiricalCDF(const Point & point,
-                            const Bool tail) const
+    const Bool tail) const
 {
   const UnsignedInteger verticesNumber = mesh_.getVerticesNumber();
   Sample values(verticesNumber, 1);
@@ -541,7 +541,7 @@ Graph ProcessSampleImplementation::drawMarginal(const UnsignedInteger index,
     const Bool interpolate) const
 {
   if (mesh_.getDimension() != 1) throw NotDefinedException(HERE) << "Error: cannot draw a marginal sample if the mesh is of dimension greater than one. Here dimension=" << mesh_.getDimension();
-  if (index > getDimension() - 1 ) throw InvalidArgumentException(HERE) << "Error : indice should be in {0,...," << getDimension() - 1 << "}";
+  if (!(index < getDimension())) throw InvalidArgumentException(HERE) << "Error : indice should be in {0,...," << getDimension() - 1 << "}";
 
   // Discretization of the x axis
   const String title(OSS() << getName() << " - " << index << " marginal" );
@@ -647,8 +647,8 @@ GridLayout ProcessSampleImplementation::drawCorrelation() const
     {
       Graph graph(drawMarginalCorrelation(i, j));
       graph.setTitle("");
-      graph.setXTitle((i == outputDimension - 1 ) ? OSS() << "marginal " << j << ", s": OSS() << "");
-      graph.setYTitle((j == 0) ? OSS() << "marginal " << i << ", t": OSS() << "");
+      graph.setXTitle((i == outputDimension - 1 ) ? OSS() << "marginal " << j << ", s" : OSS() << "");
+      graph.setYTitle((j == 0) ? OSS() << "marginal " << i << ", t" : OSS() << "");
       grid.setGraph(i, j, graph);
     }
   grid.setTitle("Empirical correlation of marginals");

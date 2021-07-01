@@ -74,7 +74,7 @@ String UniVariateFunctionEvaluation::__str__(const String & ) const
 Point UniVariateFunctionEvaluation::operator() (const Point & inP) const
 {
   const UnsignedInteger inDimension(inP.getDimension());
-  if (inDimension != 1) throw InvalidArgumentException(HERE) << "Error: trying to evaluate an UniVariateFunction with an argument of invalid dimension";
+  if (inDimension != 1) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a UniVariateFunction with an argument of dimension " << inDimension << " when this dimension should be 1.";
   const Point result(1, function_(inP[0]));
   return result;
 }

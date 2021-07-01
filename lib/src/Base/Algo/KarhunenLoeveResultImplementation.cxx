@@ -89,12 +89,6 @@ Point KarhunenLoeveResultImplementation::getEigenvalues() const
   return eigenvalues_;
 }
 
-Point KarhunenLoeveResultImplementation::getEigenValues() const
-{
-  LOGWARN(OSS() << "KarhunenLoeveResult::getEigenValues is deprecated, use getEigenvalues instead");
-  return getEigenvalues();
-}
-
 Graph KarhunenLoeveResultImplementation::drawEigenvalues() const
 {
   Graph graph("Karhunen-Loeve eigenvalues", "Index", "Eigenvalue", true, "topright");

@@ -44,7 +44,7 @@ int main(int, char *[])
   const GeometricProfile geomProfile(T0, c, iMax);
 
   // 1) Simulated Annealing LHS with geometric temperature profile, C2 optimization
-  SimulatedAnnealingLHS optimalSA_C2(lhs, geomProfile, spaceFillingC2);
+  SimulatedAnnealingLHS optimalSA_C2(lhs, spaceFillingC2, geomProfile);
 
   // print lhs
   std::cout << "optimal lhs=" << optimalSA_C2 << std::endl;
@@ -60,7 +60,7 @@ int main(int, char *[])
 
   // 2) Simulated Annealing LHS with linear temperature profile, PhiP optimization
   const LinearProfile linearProfile(T0, iMax);
-  SimulatedAnnealingLHS optimalSA_PhiP(lhs, linearProfile, spaceFillingPhiP);
+  SimulatedAnnealingLHS optimalSA_PhiP(lhs, spaceFillingPhiP, linearProfile);
   // print lhs
   std::cout << "optimal lhs=" << optimalSA_PhiP << std::endl;
 

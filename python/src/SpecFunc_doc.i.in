@@ -1184,3 +1184,30 @@ Returns
 -------
 result : float"
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::IsBoostAvailable
+"Check for Boost availability.
+
+Returns
+-------
+result : bool"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::IsMPFRAvailable
+"Check for MPFR availability.
+
+Returns
+-------
+result : bool"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SpecFunc::IsMPCAvailable
+"Check for MPC availability.
+
+Returns
+-------
+result : bool"
+

@@ -43,6 +43,8 @@ Quantile= [1.28123,1.28123,3.56246,3.56246,3.56246,2.30202,2.30202]
 CDF(quantile)=0.50000
 entropy     =10.96404
 entropy (MC)=10.96560
+standard deviation= class=Point name=Unnamed dimension=7 values=[1,1,2,2,2,1,1]
+kurtosis= class=Point name=Unnamed dimension=7 values=[3,3,3,3,3,9,9]
 covariance= 7x7
 [[ 1       0.184   0       0       0       0       0       ]
  [ 0.184   1       0       0       0       0       0       ]

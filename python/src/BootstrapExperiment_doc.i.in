@@ -13,9 +13,10 @@ sample : 2-d sequence of float
 Notes
 -----
 BootstrapExperiment is a random weighted design of experiments.
-To call the BootstrapExperiment constructor is equivalent to call the
+Calling the :class:`BootstrapExperiment` constructor is equivalent to calling the
 :class:`~openturns.WeightedExperiment` constructor as follows:
-*WeightedExperiment(UserDefined(sample), sample.getSize())*.
+
+``WeightedExperiment(UserDefined(sample), sample.getSize())``
 
 See also
 --------

@@ -43,7 +43,7 @@ public:
   AggregatedHessian();
 
   /** Parameters constructor */
-  AggregatedHessian(const AggregatedEvaluation & evaluation);
+  explicit AggregatedHessian(const AggregatedEvaluation & evaluation);
 
 #ifndef SWIG
   /** Parameters constructor */

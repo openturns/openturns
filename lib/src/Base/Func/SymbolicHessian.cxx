@@ -244,7 +244,7 @@ String SymbolicHessian::getFormula(const UnsignedInteger i,
                                    const UnsignedInteger k) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
-  if ((i >= inputDimension) || (j >= inputDimension) || (k >= getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: cannot access to a formula outside of the hessian dimensions.";
+  if (!(i < inputDimension && j < inputDimension && k < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: cannot access to a formula outside of the hessian dimensions.";
   if (!isInitialized_) initialize();
   // Convert the 3D index into a linear index
   UnsignedInteger rowIndex = i;
@@ -280,14 +280,14 @@ UnsignedInteger SymbolicHessian::getOutputDimension() const
 /* Get the i-th marginal function */
 Hessian SymbolicHessian::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal hessian must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal hessian must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
   return getMarginal(Indices(1, i));
 }
 
 /* Get the function corresponding to indices components */
 Hessian SymbolicHessian::getMarginal(const Indices & indices) const
 {
-  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal hessian must be in the range [0, dim-1] and must be different";
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "The indices of a marginal hessian must be in the range [0, outputDimension-1] and must be different";
   const UnsignedInteger marginalDimension = indices.getSize();
   Description marginalFormulas(marginalDimension);
   Description marginalOutputNames(marginalDimension);

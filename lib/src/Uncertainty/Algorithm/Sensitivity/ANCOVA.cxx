@@ -27,10 +27,11 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /* Constructor */
-ANCOVA::ANCOVA(const FunctionalChaosResult & functionalChaosResult, const Sample & correlatedInput)
-  : functionalChaosResult_(functionalChaosResult),
-    correlatedInput_(correlatedInput),
-    alreadyComputedIndices_(false)
+ANCOVA::ANCOVA(const FunctionalChaosResult & functionalChaosResult,
+               const Sample & correlatedInput)
+  : functionalChaosResult_(functionalChaosResult)
+  , correlatedInput_(correlatedInput)
+  , alreadyComputedIndices_(false)
 {
   if (correlatedInput_.getSize() == 0) throw InvalidArgumentException(HERE) << "Input sample is empty";
   const UnsignedInteger nbInput = functionalChaosResult_.getMetaModel().getInputDimension();
@@ -44,50 +45,49 @@ void ANCOVA::run() const
   const UnsignedInteger inputSize = correlatedInput_.getSize();
 
   const UnsignedInteger nbMarginals = functionalChaosResult_.getMetaModel().getOutputDimension();
-  const Indices coefficientIndices = functionalChaosResult_.getIndices();
-  const EnumerateFunction enumerateFunction = functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction();
-  const FunctionCollection B = functionalChaosResult_.getReducedBasis();
-  const Function T = functionalChaosResult_.getTransformation();
-  const Sample allCoefficients = functionalChaosResult_.getCoefficients();
+  const Indices coefficientIndices(functionalChaosResult_.getIndices());
+  const EnumerateFunction enumerateFunction(functionalChaosResult_.getOrthogonalBasis().getEnumerateFunction());
+  const FunctionCollection B(functionalChaosResult_.getReducedBasis());
+  const Function T(functionalChaosResult_.getTransformation());
+  const Sample allCoefficients(functionalChaosResult_.getCoefficients());
   const UnsignedInteger coefSize = allCoefficients.getSize();
 
   uncorrelatedIndices_ = Sample(nbMarginals, inputDimension);
   indices_ = Sample(nbMarginals, inputDimension);
 
+  const Sample Y(functionalChaosResult_.getMetaModel()(correlatedInput_));
+  const Sample transformedCorrelatedInput(T(correlatedInput_));
+  const Indices nullIndices(inputDimension);
+  Collection<Indices> multiIndices(coefSize);
+  for (UnsignedInteger k = 0; k < coefSize; ++ k)
+    multiIndices[k] = enumerateFunction(coefficientIndices[k]);
   for (UnsignedInteger input_i = 0; input_i < inputDimension; ++input_i)
   {
     // Search univariate polynomials
     Indices coefList;
     for (UnsignedInteger k = 0; k < coefSize; ++ k)
     {
-      const Indices nullIndices(inputDimension);
-      Indices multiIndices(enumerateFunction(coefficientIndices[k]));
-      if (!multiIndices[input_i])
+      Indices indicesK(multiIndices[k]);
+      if (indicesK[input_i] == 0)
         continue;
-      multiIndices[input_i] = 0;
-      if (multiIndices == nullIndices)
+      indicesK[input_i] = 0;
+      if (indicesK == nullIndices)
         coefList.add(k);
     }
     for (UnsignedInteger marginal_k = 0; marginal_k < nbMarginals; ++marginal_k)
     {
-      const Sample coefficients(allCoefficients.getMarginal(marginal_k));
-
-      // Output sample obtained with correlated inputs
-      const Sample Y(functionalChaosResult_.getMetaModel().getMarginal(marginal_k)(correlatedInput_));
-
       // Compute parts of variance
       Sample inputOutput(inputSize, 2);
       for (UnsignedInteger j = 0; j < inputSize; ++j)
       {
-        Scalar temp = 0.;
+        Scalar temp = 0.0;
         for (UnsignedInteger k = 0; k < coefList.getSize(); ++k)
-          temp += coefficients(coefList[k], 0) * B[coefList[k]](T(correlatedInput_[j]))[0];
+          temp += allCoefficients(coefList[k], marginal_k) * B[coefList[k]](transformedCorrelatedInput[j])[0];
 
         inputOutput(j, 0) = temp;
-        inputOutput(j, 1) = Y(j, 0);
+        inputOutput(j, 1) = Y(j, marginal_k);
       }
       const CovarianceMatrix inputOutputCovariance(inputOutput.computeCovariance());
-
       // Compute total part of variance of the marginal_k output due to input_i
       indices_(marginal_k, input_i) = inputOutputCovariance(0, 1) / inputOutputCovariance(1, 1);
       // "uncorrelated" part

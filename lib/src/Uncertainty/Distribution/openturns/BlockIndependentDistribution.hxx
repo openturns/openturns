@@ -154,6 +154,9 @@ public:
   void setParameter(const Point & parameter) override;
   Point getParameter() const override;
 
+  /** Get the shifted moments of the distribution */
+  Point getShiftedMoment(const UnsignedInteger n, const Point & shift) const override;
+
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;
 

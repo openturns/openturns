@@ -102,7 +102,7 @@ void FejerAlgorithm::generateNodesAndWeightsClenshawCurtis(Collection<Point> & m
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const UnsignedInteger integrationNodesNumber = discretization_[i];
-    if (integrationNodesNumber == 0)
+    if (!(integrationNodesNumber > 0))
       throw InvalidArgumentException(HERE) << "Error: the discretization must be positive, here discretization[" << i << "] is null.";
     // Check if we already computed this 1D rule
     // We use the value 'dimension' as a guard
@@ -244,13 +244,13 @@ void FejerAlgorithm::generateNodesAndWeights(const IntegrationMethod method)
 {
   // First, generate the 1D marginal rules over [0, 1]
   const UnsignedInteger dimension = discretization_.getSize();
-  if (dimension == 0)
-    throw InvalidArgumentException(HERE) << "Error: expected a positive dimension";
+  if (!(dimension > 0))
+    throw InvalidArgumentException(HERE) << "Error: expected a positive dimension, here dimension is " << dimension;
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
     const UnsignedInteger integrationNodesNumber = discretization_[i];
-    if (integrationNodesNumber == 0)
-      throw InvalidArgumentException(HERE) << "Error: the discretization must be positive, here discretization[" << i << "] is null.";
+    if (!(integrationNodesNumber > 0))
+      throw InvalidArgumentException(HERE) << "Error: the discretization must be positive, here discretization[" << i << "] has " << integrationNodesNumber << " nodes.";
   }
   Collection<Point> marginalNodes(dimension);
   Collection<Point> marginalWeights(dimension);

@@ -181,6 +181,7 @@ Sample SobolIndicesExperiment::generateWithWeights(Point & weights) const
   {
     marginals[i] = distribution.getMarginal(i);
     marginals[dimension + i] = marginals[i];
+    marginals[dimension + i].setDescription(Description(1, marginals[i].getDescription()[0] + "_2"));
   }
   const ComposedDistribution doubleDistribution(marginals);
   // Generate a 2xdim sample of needed size

@@ -210,6 +210,7 @@ Y.add(yNew)
 # We now plot the updated kriging.
 
 # %%
+# sphinx_gallery_thumbnail_number = 3
 krigResult = createMyBasicKriging(X,Y)
 krigingStep += 1
 myTitle = "Krigeage #%d" % (krigingStep+1)

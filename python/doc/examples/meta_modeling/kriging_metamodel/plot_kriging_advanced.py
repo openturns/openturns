@@ -78,8 +78,8 @@ algokriging = ot.KrigingAlgorithm(x, y, cov, basis)
 
 # 4. Optimization
 # algokriging.setOptimizationAlgorithm(ot.NLopt('GN_DIRECT'))
-startingPoint = ot.LHSExperiment(ot.Uniform(1e-1, 1e2), 50).generate()
-algokriging.setOptimizationAlgorithm(ot.MultiStart(ot.TNC(), startingPoint))
+lhsExperiment = ot.LHSExperiment(ot.Uniform(1e-1, 1e2), 50)
+algokriging.setOptimizationAlgorithm(ot.MultiStart(ot.TNC(), lhsExperiment.generate()))
 algokriging.setOptimizationBounds(ot.Interval([0.1], [1e2]))
 
 # if we choose not to optimize parameters
@@ -148,6 +148,7 @@ fig.suptitle("Kriging result");
 # -------------------------------
 
 # %%
+# sphinx_gallery_thumbnail_number = 3
 level = 0.95
 quantile = ot.Normal().computeQuantile((1-level)/2)[0]
 borne_sup = krigingMeta(x_plot) + quantile * np.sqrt(variance)
@@ -221,4 +222,3 @@ graph =validation.getResidualDistribution().drawPDF()
 graph.setXTitle("Residuals")
 view = viewer.View(graph)
 plt.show()
-

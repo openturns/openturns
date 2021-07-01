@@ -218,8 +218,10 @@ Sample P1LagrangeInterpolation::operator()(const Sample & values) const
 void P1LagrangeInterpolation::save(Advocate & adv) const
 {
   FieldFunctionImplementation::save(adv);
-  adv.saveAttribute("enclosingSimplex_", *(enclosingSimplex_.getImplementation()->emptyClone()));
-  adv.saveAttribute("nearestNeighbour_", *(nearestNeighbour_.getImplementation()->emptyClone()));
+  EnclosingSimplexAlgorithm enclosingSimplexClone(enclosingSimplex_.getImplementation()->emptyClone());
+  NearestNeighbourAlgorithm nearestNeighbourClone(nearestNeighbour_.getImplementation()->emptyClone());
+  adv.saveAttribute("enclosingSimplex_", enclosingSimplexClone);
+  adv.saveAttribute("nearestNeighbour_", nearestNeighbourClone);
 }
 
 /* Method load() reloads the object from the StorageManager */

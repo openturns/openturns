@@ -14,7 +14,7 @@ import pandas as pd
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# create a sample from a 3-d gaussian distribution
+# Create a sample from a 3-d normal distribution
 sample = ot.Normal(3).getSample(10)
 
 # %%

@@ -117,10 +117,8 @@ int main(int, char *[])
     centre[0] = 7.0;
     centre[1] = 10.0;
     // Create the piechart
-#ifdef WIN32
-    OT:: // mingw defined a Pie(...) function
-#endif
-    Pie myPie(data, labels, centre, 4, palette);
+    // wingdi.h defines a Pie(...) function
+    OT::Pie myPie(data, labels, centre, 4, palette);
 
     // Create an empty graph
     Graph myGraph("Cloud/line/pie", "x1", "x2", true, "topright", 1.0);

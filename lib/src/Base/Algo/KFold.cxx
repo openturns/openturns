@@ -82,8 +82,7 @@ Scalar KFold::run(LeastSquaresMethod & method,
 
   if (y.getDimension() != 1) throw InvalidArgumentException( HERE ) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException( HERE ) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
-  if (k_ >= sampleSize) throw InvalidArgumentException( HERE ) << "K (" << k_ << ") should be < size (" << sampleSize << ").";
-  if (!(variance > 0.0)) throw InvalidArgumentException( HERE ) << "Null output sample variance.";
+  if (!(k_ < sampleSize)) throw InvalidArgumentException( HERE ) << "K (" << k_ << ") should be < size (" << sampleSize << ").";
 
   // the size of a subsample
   const UnsignedInteger testSize = sampleSize / k_;
@@ -94,6 +93,7 @@ Scalar KFold::run(LeastSquaresMethod & method,
 
   // We build the test sample by selecting one over k points of the given samples up to the test size, with a varying initial index
   // i is the initial index
+  UnsignedInteger totalTestSize = 0;
   for (UnsignedInteger i = 0; i < k_; ++ i)
   {
     LOGINFO(OSS() << "Sub-sample " << i << " over " << k_ - 1);
@@ -139,15 +139,16 @@ Scalar KFold::run(LeastSquaresMethod & method,
     LOGINFO("Compute the residual");
 
     // The empirical error is the normalized L2 error
-    quadraticResidual += (yTest - yHatTest).normSquare() / yTest.getSize();
+    totalTestSize += yTest.getSize();
+    quadraticResidual += (yTest - yHatTest).normSquare();
 
     LOGINFO(OSS() << "Cumulated residual=" << quadraticResidual);
   }
   // Restore the row filter
   method.getImplementation()->proxy_.setRowFilter(initialRowFilter);
-  const Scalar empiricalError = quadraticResidual / (testSize * k_);
+  const Scalar empiricalError = quadraticResidual / totalTestSize;
 
-  const Scalar relativeError = empiricalError / variance;
+  const Scalar relativeError = (!(variance > 0.0) ? 0.0 : empiricalError / variance);
   LOGINFO(OSS() << "Relative error=" << relativeError);
   return relativeError;
 }
@@ -172,8 +173,8 @@ void KFold::load(Advocate & adv)
 /* K accessor */
 void KFold::setK(const UnsignedInteger k)
 {
-  if ( k < 1 )
-    throw InvalidArgumentException(HERE) << "KFold k parameter should be > 0";
+  if (! (k > 0) )
+    throw InvalidArgumentException(HERE) << "KFold k parameter should be > 0, but is " << k;
   k_ = k;
 }
 

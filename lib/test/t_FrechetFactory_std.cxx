@@ -58,7 +58,7 @@ int main(int, char *[])
 
     // The distributions used :
     Frechet myFrechet(1.0, 1.0, 0.0);
-    Gumbel myGumbel(1.0,3.0);
+    Gumbel myGumbel(1.0, 3.0);
     // We build our mixture sample of size 2*1000=2000.
     Sample mixtureSample(myFrechet.getSample(1000));
     Sample sampleGumbel(myGumbel.getSample(1000));

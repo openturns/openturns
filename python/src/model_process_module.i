@@ -21,6 +21,7 @@
 %import base_module.i
 %import dist_bundle1_module.i
 %import dist_bundle2_module.i
+%import dist_bundle3_module.i
 %import model_copula_module.i
 %import randomvector_module.i
 %import weightedexperiment_module.i

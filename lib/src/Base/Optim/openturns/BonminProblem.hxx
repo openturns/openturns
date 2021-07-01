@@ -24,7 +24,6 @@
 #define OPENTURNS_BONMINPROBLEM_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/MemoizeFunction.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 
 #include <BonTMINLP.hpp>
@@ -179,7 +178,8 @@ public:
 private:
   const OptimizationProblem optimProblem_;
   const Point startingPoint_;
-  MemoizeFunction objectiveFunction_;
+  Sample evaluationInputHistory_;
+  Sample evaluationOutputHistory_;
   Point optimalPoint_;
   Point optimalValue_;
   // Callbacks

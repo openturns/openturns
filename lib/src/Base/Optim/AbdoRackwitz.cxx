@@ -169,7 +169,7 @@ void AbdoRackwitz::run()
     /* Compute the current Lagrange multiplier */
     const Scalar normGradientSquared = currentGradient_.normSquare();
     /* In case of a null gradient, throw an internal exception */
-    if (normGradientSquared == 0)
+    if (!(normGradientSquared > 0))
     {
       throw InternalException(HERE) << "Error in Abdo Rackwitz algorithm: the gradient of the level function is zero at point u=" << currentPoint_;
     }

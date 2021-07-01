@@ -35,6 +35,7 @@ BEGIN_NAMESPACE_OPENTURNS
 
 /** Define DlibMatrix type for better readability **/
 typedef dlib::matrix<double> DlibMatrix;
+typedef dlib::matrix<double, 0, 1> DlibVector;
 
 /** Class DlibGradient to ensure interface between OT::Gradient and dlib functions **/
 class DlibGradient
@@ -72,7 +73,7 @@ class DlibFunction
   CLASSNAME
 
   /** Define types for use with dlib::find_min_trust_region() **/
-  typedef dlib::matrix<double, 0, 1> column_vector;
+  typedef DlibVector column_vector;
   typedef DlibMatrix general_matrix;
 
 public:

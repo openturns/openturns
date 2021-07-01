@@ -170,6 +170,7 @@
 #include "openturns/UserDefined.hxx"
 #include "openturns/UserDefinedFactory.hxx"
 #include "openturns/VonMises.hxx"
+#include "openturns/VonMisesFactory.hxx"
 #include "openturns/WeibullMax.hxx"
 #include "openturns/WeibullMaxFactory.hxx"
 #include "openturns/WeibullMaxMuSigma.hxx"

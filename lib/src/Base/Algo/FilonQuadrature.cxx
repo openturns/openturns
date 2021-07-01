@@ -52,7 +52,7 @@ FilonQuadrature::FilonQuadrature(const UnsignedInteger n,
   , kind_(kind)
 {
   // Check the maximum number of sub-intervals
-  if (n == 0) throw InvalidArgumentException(HERE) << "Error: the discretization must be at least 1, here n=" << n;
+  if (!(n > 0)) throw InvalidArgumentException(HERE) << "Error: the discretization must be at least 1, here n=" << n;
 }
 
 /* Virtual constructor */
@@ -160,7 +160,7 @@ UnsignedInteger FilonQuadrature::getN() const
 
 void FilonQuadrature::setN(const UnsignedInteger n)
 {
-  if (n == 0) throw InvalidArgumentException(HERE) << "Error: n must be at least 1.";
+  if (!(n > 0)) throw InvalidArgumentException(HERE) << "Error: n must be at least 1, here n=" << n;
   n_ = n;
 }
 

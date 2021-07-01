@@ -33,6 +33,6 @@ then
   zip -r openturns-doc.zip ~/.local/share/openturns/doc/html/*
   sudo chown ${uid}:${gid} openturns-doc.zip && sudo cp openturns-doc.zip ${source_dir}
 fi
-ctest -R pyinstallcheck --output-on-failure --timeout 100 ${MAKEFLAGS}
+ctest -R pyinstallcheck --output-on-failure --timeout 100 ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random
 make tests
-ctest -R cppcheck --output-on-failure --timeout 100 ${MAKEFLAGS}
+ctest -R cppcheck --output-on-failure --timeout 100 ${MAKEFLAGS} --repeat after-timeout:2 --schedule-random

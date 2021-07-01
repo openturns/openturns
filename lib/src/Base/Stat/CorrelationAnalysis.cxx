@@ -61,7 +61,7 @@ Point CorrelationAnalysis::SRC(const Sample & inputSample,
                                const Bool normalize)
 {
   const UnsignedInteger dimension = inputSample.getDimension();
-  if (dimension < 2) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1";
+  if (!(dimension >= 2)) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1, here dimension=" << dimension;
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
   // If normalize, then sum is equal to 1
@@ -100,7 +100,7 @@ Point CorrelationAnalysis::SignedSRC(const Sample & inputSample,
                                      const Sample & outputSample)
 {
   const UnsignedInteger dimension = inputSample.getDimension();
-  if (dimension < 2) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1";
+  if (!(dimension >= 2)) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1, here dimension=" << dimension;
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
   // Var(X+a) = Var(X); However for numerical stability, data are centered
@@ -123,7 +123,7 @@ Point CorrelationAnalysis::SignedSRC(const Sample & inputSample,
 Point CorrelationAnalysis::PCC(const Sample & inputSample,
                                const Sample & outputSample)
 {
-  if (inputSample.getDimension() < 2) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1";
+  if (!(inputSample.getDimension() >= 2)) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1, here dimension=" << inputSample.getDimension();
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
   const UnsignedInteger dimension = inputSample.getDimension();
@@ -163,7 +163,7 @@ Point CorrelationAnalysis::SRRC(const Sample & inputSample,
                                 const Bool normalize)
 {
   const UnsignedInteger dimension = inputSample.getDimension();
-  if (dimension < 2) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1";
+  if (!(dimension >= 2)) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1, here dimension=" << dimension;
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
   return SRC(inputSample.rank(), outputSample.rank(), normalize);
@@ -174,7 +174,7 @@ Point CorrelationAnalysis::PRCC(const Sample & inputSample,
                                 const Sample & outputSample)
 {
   // Perform the basic checks of the inputs, to avoid costly ranking if finally PCC will fail
-  if (inputSample.getDimension() < 2) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1";
+  if (!(inputSample.getDimension() >= 2)) throw InvalidDimensionException(HERE) << "Error: input sample must have dimension > 1, here dimension=" << inputSample.getDimension();
   if (outputSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Error: output sample must be 1D";
   if (inputSample.getSize() != outputSample.getSize()) throw InvalidArgumentException(HERE) << "Error: input and output samples must have the same size";
   return PCC(inputSample.rank(), outputSample.rank());

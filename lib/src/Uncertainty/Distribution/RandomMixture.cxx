@@ -989,9 +989,10 @@ void RandomMixture::setDistributionCollectionAndWeights(const DistributionCollec
     constant_[0] = 0.0;
   }
 
-  // We cannot use parallelism if we have more than one atom due to the characteristic function cache
-  if (distributionCollection_.getSize() > 1) setParallel(false);
-  else setParallel(distributionCollection_[0].getImplementation()->isParallel());
+  // We cannot use parallelism if we have more than two atoms due to the characteristic function cache
+  if (distributionCollection_.getSize() == 1) setParallel(distributionCollection_[0].getImplementation()->isParallel());
+  else if (distributionCollection_.getSize() == 2) setParallel(distributionCollection_[0].getImplementation()->isParallel() && distributionCollection_[1].getImplementation()->isParallel());
+  else setParallel(false);
   isAlreadyComputedMean_ = false;
   isAlreadyComputedCovariance_ = false;
   // Need to precompute Mean, Covariance, PositionIndicator, DispersionIndicator, ReferenceBandwidth, EquivalentNormal only if at least two atoms
@@ -1035,7 +1036,7 @@ Point RandomMixture::getConstant() const
 }
 
 /* Distribution collection accessor */
-const DistributionCollection & RandomMixture::getDistributionCollection() const
+DistributionCollection RandomMixture::getDistributionCollection() const
 {
   return distributionCollection_;
 }
@@ -2868,9 +2869,16 @@ Point RandomMixture::getParameter() const
 void RandomMixture::setParameter(const Point & parameter)
 {
   if (parameter.getSize() != getParameter().getSize()) throw InvalidArgumentException(HERE) << "Error: expected " << getParameter().getSize() << " values, got " << parameter.getSize();
-  const Scalar w = getWeight();
-  *this = RandomMixture(distributionCollection_, weights_, constant_);
-  setWeight(w);
+  const UnsignedInteger size = distributionCollection_.getSize();
+  UnsignedInteger shift = 0;
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    Point localParameter(distributionCollection_[i].getParameter());
+    std::copy(parameter.begin() + shift, parameter.begin() + shift + localParameter.getSize(), localParameter.begin());
+    shift += localParameter.getSize();
+    distributionCollection_[i].setParameter(localParameter);
+  }
+  setDistributionCollectionAndWeights(distributionCollection_, weights_, false);
 } // setParameter
 
 /* Parameters value and description accessor */

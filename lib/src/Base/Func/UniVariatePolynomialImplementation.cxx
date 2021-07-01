@@ -287,7 +287,7 @@ UnsignedInteger UniVariatePolynomialImplementation::getDegree() const
 UniVariatePolynomialImplementation::ComplexCollection UniVariatePolynomialImplementation::getRoots() const
 {
   const UnsignedInteger degree = getDegree();
-  if (degree == 0) throw NotDefinedException(HERE) << "Error: cannot compute the roots of a constant polynomial.";
+  if (!(degree > 0)) throw NotDefinedException(HERE) << "Error: cannot compute the roots of a constant polynomial.";
   const Scalar scale = -1.0 / coefficients_[degree];
   SquareMatrix m(degree);
   m(0, degree - 1) = coefficients_[0] * scale;

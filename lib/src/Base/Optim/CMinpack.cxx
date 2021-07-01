@@ -61,7 +61,7 @@ void CMinpack::checkProblem(const OptimizationProblem & problem) const
   if (!problem.hasResidualFunction())
     throw InvalidArgumentException(HERE) << getClassName() << " only supports least-square problems";
 
-  if (problem.getResidualFunction().getInputDimension() > problem.getResidualFunction().getOutputDimension())
+  if (!(problem.getResidualFunction().getInputDimension() <= problem.getResidualFunction().getOutputDimension()))
     throw InvalidArgumentException(HERE) << getClassName() << " does not support underdetermined least squares problems";
 
   if (problem.hasBounds())
@@ -207,7 +207,7 @@ void CMinpack::run()
   const int m = getProblem().getResidualFunction().getOutputDimension();
   const int n = getProblem().getResidualFunction().getInputDimension();
 
-  if (n > m)
+  if (!(n <= m))
     throw InvalidArgumentException(HERE) << "CMinpack does not support underdetermined least squares problems";
 
   int info = 0;

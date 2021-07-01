@@ -36,7 +36,7 @@ result = algo.getResult()
 print('initial design pre-computed. Performing SA optimization...')
 # Use of initial design
 algo = ot.SimulatedAnnealingLHS(
-    initialDesign, distribution, temperatureProfile, space_filling)
+    initialDesign, distribution, space_filling, temperatureProfile)
 # Retrieve optimal design
 input_database = algo.generate()
 

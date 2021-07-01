@@ -34,7 +34,7 @@ EnumerateFunctionImplementation::EnumerateFunctionImplementation(const UnsignedI
   : PersistentObject()
   , dimension_(dimension)
 {
-  if ( dimension == 0 )
+  if (!(dimension > 0))
     throw InvalidArgumentException ( HERE ) << "Cannot build an EnumerateFunction of dimension 0.";
 }
 

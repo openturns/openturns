@@ -124,7 +124,7 @@ Function OptimizationProblemImplementation::getEqualityConstraint() const
 
 void OptimizationProblemImplementation::setEqualityConstraint(const Function & equalityConstraint)
 {
-  if ((equalityConstraint.getInputDimension() > 0) && (equalityConstraint.getInputDimension() != dimension_))
+  if (!(equalityConstraint.getInputDimension() == 0 || equalityConstraint.getInputDimension() == dimension_))
     throw InvalidArgumentException(HERE) << "Error: the given equality constraints have an input dimension=" << equalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
 
   equalityConstraint_ = equalityConstraint;
@@ -143,7 +143,7 @@ Function OptimizationProblemImplementation::getInequalityConstraint() const
 
 void OptimizationProblemImplementation::setInequalityConstraint(const Function & inequalityConstraint)
 {
-  if ((inequalityConstraint.getInputDimension() > 0) && (inequalityConstraint.getInputDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given inequality constraints have an input dimension=" << inequalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
+  if (!(inequalityConstraint.getInputDimension() == 0 || inequalityConstraint.getInputDimension() == dimension_)) throw InvalidArgumentException(HERE) << "Error: the given inequality constraints have an input dimension=" << inequalityConstraint.getInputDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
 
   inequalityConstraint_ = inequalityConstraint;
 }
@@ -161,7 +161,7 @@ Interval OptimizationProblemImplementation::getBounds() const
 
 void OptimizationProblemImplementation::setBounds(const Interval & bounds)
 {
-  if ((bounds.getDimension() > 0) && (bounds.getDimension() != dimension_)) throw InvalidArgumentException(HERE) << "Error: the given bounds are of dimension=" << bounds.getDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
+  if (!(bounds.getDimension() == 0 || bounds.getDimension() == dimension_)) throw InvalidArgumentException(HERE) << "Error: the given bounds are of dimension=" << bounds.getDimension() << " different from the input dimension=" << dimension_ << " of the objective.";
 
   bounds_ = bounds;
 }

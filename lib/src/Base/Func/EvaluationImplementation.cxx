@@ -243,7 +243,7 @@ UnsignedInteger EvaluationImplementation::getParameterDimension() const
 /* Get the i-th marginal function */
 Evaluation EvaluationImplementation::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
   return getMarginal(Indices(1, i));
 }
 
@@ -272,7 +272,7 @@ Bool EvaluationImplementation::isLinear() const
 Bool EvaluationImplementation::isLinearlyDependent(const UnsignedInteger index) const
 {
   // Check dimension consistency
-  if (index > getInputDimension())
+  if (!(index <= getInputDimension()))
     throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
 
   return false;
@@ -304,11 +304,11 @@ Graph EvaluationImplementation::draw(const UnsignedInteger inputMarginal,
                                      const UnsignedInteger pointNumber,
                                      const GraphImplementation::LogScale scale) const
 {
-  if (getInputDimension() < 1) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 1";
-  if (inputMarginal >= getInputDimension()) throw InvalidArgumentException(HERE) << "Error: the given input marginal index=" << inputMarginal << " must be less than the input dimension=" << getInputDimension();
-  if (outputMarginal >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the given output marginal index=" << outputMarginal << " must be less than the output dimension=" << getOutputDimension();
+  if (!(getInputDimension() >= 1)) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 1, here inputDimension=" << getInputDimension();
+  if (!(inputMarginal < getInputDimension())) throw InvalidArgumentException(HERE) << "Error: the given input marginal index=" << inputMarginal << " must be less than the input dimension=" << getInputDimension();
+  if (!(outputMarginal < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the given output marginal index=" << outputMarginal << " must be less than the output dimension=" << getOutputDimension();
   const Bool useLogX = (scale == GraphImplementation::LOGX || scale == GraphImplementation::LOGXY);
-  if (useLogX && ((xMin <= 0.0) || (xMax <= 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values.";
+  if (useLogX && (!(xMin > 0.0 && xMax > 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values.";
   if (centralPoint.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a central point of dimension=" << getInputDimension() << ", got dimension=" << centralPoint.getDimension();
   Sample inputData(pointNumber, centralPoint);
   if (useLogX)
@@ -348,13 +348,13 @@ Graph EvaluationImplementation::draw(const UnsignedInteger firstInputMarginal,
                                      const Indices & pointNumber,
                                      const GraphImplementation::LogScale scale) const
 {
-  if (getInputDimension() < 2) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 2";
-  if ((xMin.getDimension() != 2) || (xMax.getDimension() != 2) || (pointNumber.getSize() != 2)) throw InvalidArgumentException(HERE) << "Error: xMin, xMax and PointNumber must be bidimensional";
-  if ((pointNumber[0] <= 2) || (pointNumber[1] <= 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
+  if (!(getInputDimension() >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot use this version of the draw() method with a function of input dimension less than 2";
+  if (!(xMin.getDimension() == 2 && xMax.getDimension() == 2 && pointNumber.getSize() == 2)) throw InvalidArgumentException(HERE) << "Error: xMin, xMax and PointNumber must be bidimensional";
+  if (!(pointNumber[0] > 2 && pointNumber[1] > 2)) throw InvalidArgumentException(HERE) << "Error: the discretization must have at least 2 points per component";
   const Bool useLogX = (scale == GraphImplementation::LOGX || scale == GraphImplementation::LOGXY);
-  if (useLogX && ((xMin[0] <= 0.0) || (xMax[0] <= 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values for the first argument.";
+  if (useLogX && (!(xMin[0] > 0.0 && xMax[0] > 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values for the first argument.";
   const Bool useLogY = (scale == GraphImplementation::LOGY || scale == GraphImplementation::LOGXY);
-  if (useLogY && ((xMin[1] <= 0.0) || (xMax[1] <= 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values for the second argument.";
+  if (useLogY && (!(xMin[1] > 0.0 && xMax[1] > 0.0))) throw InvalidArgumentException(HERE) << "Error: cannot use logarithmic scale on an interval containing nonpositive values for the second argument.";
   if (centralPoint.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: expected a central point of dimension=" << getInputDimension() << ", got dimension=" << centralPoint.getDimension();
   // Discretization of the first component
   const UnsignedInteger nX = pointNumber[0];

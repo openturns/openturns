@@ -207,7 +207,7 @@ void Pie::checkData(const Point & data) const
 {
   const UnsignedInteger size = data.getSize();
   // Check if there is any data to display
-  if (size == 0)
+  if (!(size > 0))
   {
     throw InvalidArgumentException(HERE) << "No data to display";
   }
@@ -217,18 +217,18 @@ void Pie::checkData(const Point & data) const
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     Scalar x = data[i];
-    if (x < 0.0)
+    if (!(x >= 0.0))
     {
-      throw InvalidArgumentException(HERE) << "Expected positive values";
+      throw InvalidArgumentException(HERE) << "Expected positive values, got " << x;
     }
 
     if (x > max) max = x;
   }
 
   // Check if there is at least one strictly positive data
-  if (max == 0.0)
+  if (!(max > 0.0))
   {
-    throw InvalidArgumentException(HERE) << "Expected at least one strictly positive data";
+    throw InvalidArgumentException(HERE) << "Expected at least one strictly positive data, but max=" << max;
   }
 }
 

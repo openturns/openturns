@@ -256,7 +256,7 @@ inline Bool is_point_inside_bounds(const Point & point, const Point & lowerBound
 {
   for(UnsignedInteger i = 0; i < point.getSize(); ++i)
   {
-    if (point[i] < lowerBounds[i] || point[i] > upperBounds[i])
+    if (!(point[i] >= lowerBounds[i] && point[i] <= upperBounds[i]))
       return false;
   }
   return true;

@@ -45,30 +45,30 @@ public:
   typedef ProjectionStrategyImplementation::FunctionCollection FunctionCollection;
 
   /** Default constructor */
-  explicit LeastSquaresStrategy(const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
+  explicit LeastSquaresStrategy(const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory());
 
   /** Parameter constructor */
   explicit LeastSquaresStrategy(const Distribution & measure,
-                                const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
+                                const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory());
 
   /** Parameter constructor */
   explicit LeastSquaresStrategy(const WeightedExperiment & weightedExperiment,
-                                const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
+                                const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory());
 
   /** Parameter constructor */
   LeastSquaresStrategy(const Distribution & measure,
                        const WeightedExperiment & weightedExperiment,
-                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
+                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory());
 
   /** Parameter constructor */
   LeastSquaresStrategy(const Sample & inputSample,
                        const Point & weights,
                        const Sample & outputSample,
-                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
+                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory());
 
   LeastSquaresStrategy(const Sample & inputSample,
                        const Sample & outputSample,
-                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory(true));
+                       const ApproximationAlgorithmImplementationFactory & factory = PenalizedLeastSquaresAlgorithmFactory());
 
   /** Virtual constructor */
   LeastSquaresStrategy * clone() const override;

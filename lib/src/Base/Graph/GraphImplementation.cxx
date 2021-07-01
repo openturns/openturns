@@ -187,14 +187,14 @@ void GraphImplementation::setDrawables(const DrawableCollection & drawableCollec
 /* Individual drawable accessor */
 Drawable GraphImplementation::getDrawable(const UnsignedInteger index) const
 {
-  if (index >= drawablesCollection_.getSize()) throw InvalidRangeException(HERE) << "Error: trying to get a drawable at position " << index << " from a collection of size " << drawablesCollection_.getSize();
+  if (!(index < drawablesCollection_.getSize())) throw InvalidRangeException(HERE) << "Error: trying to get a drawable at position " << index << " from a collection of size " << drawablesCollection_.getSize();
   return drawablesCollection_[index];
 }
 
 void GraphImplementation::setDrawable(const Drawable & drawable,
                                       const UnsignedInteger index)
 {
-  if (index >= drawablesCollection_.getSize()) throw InvalidRangeException(HERE) << "Error: trying to set a drawable at position " << index << " into a collection of size " << drawablesCollection_.getSize();
+  if (!(index < drawablesCollection_.getSize())) throw InvalidRangeException(HERE) << "Error: trying to set a drawable at position " << index << " into a collection of size " << drawablesCollection_.getSize();
   drawablesCollection_[index] = drawable;
 }
 
@@ -615,7 +615,7 @@ Interval GraphImplementation::getBoundingBox() const
 /* Set the bounding box of the whole plot */
 void GraphImplementation::setBoundingBox(const Interval & boundingBox)
 {
-  if (boundingBox.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: the given bounding box must have a dimension equal to 2";
+  if (boundingBox.getDimension() != 2) throw InvalidArgumentException(HERE) << "Error: the given bounding box must have a dimension equal to 2, but dimension=" << boundingBox.getDimension();
   boundingBox_ = boundingBox;
   automaticBoundingBox_ = false;
 }
@@ -637,7 +637,7 @@ void GraphImplementation::computeBoundingBox() const
   const UnsignedInteger size = drawablesCollection_.getSize();
 
   // First exceptional case: no drawable, we default to default bounding box
-  if (size == 0)
+  if (!(size > 0))
   {
     LOGINFO("Warning: cannot compute the bounding box of a graph with no drawable, switch to [0,1]x[0,1] default bounding box");
     boundingBox_ = Interval(2);
@@ -734,7 +734,7 @@ Scalar GraphImplementation::getLegendFontSize() const
 /* Set the legend font size */
 void GraphImplementation::setLegendFontSize(const Scalar legendFontSize)
 {
-  if(legendFontSize <= 0.0) throw InvalidArgumentException(HERE) << "The given legend font size = " << legendFontSize << " is invalid";
+  if(!(legendFontSize > 0.0)) throw InvalidArgumentException(HERE) << "The given legend font size = " << legendFontSize << " is invalid";
 
   legendFontSize_ = legendFontSize;
 }

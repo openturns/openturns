@@ -359,7 +359,7 @@ String SORMResult::__str__(const String & offset) const
     oss << "Probability estimate    (Breitung)=" << getEventProbabilityBreitung() << Os::GetEndOfLine() << offset;
     oss << "Generalised reliability (Breitung)=" << getGeneralisedReliabilityIndexBreitung() << Os::GetEndOfLine() << offset;
   }
-  catch (...)
+  catch (const NotDefinedException &)
   {
     oss << "Probability estimate and generalised reliability index (Breitung) not defined." << Os::GetEndOfLine() << offset;
   }
@@ -368,7 +368,7 @@ String SORMResult::__str__(const String & offset) const
     oss << "Probability estimate    (Hohenbichler)=" << getEventProbabilityHohenbichler() << Os::GetEndOfLine() << offset;
     oss << "Generalised reliability (Hohenbichler)=" << getGeneralisedReliabilityIndexHohenbichler() << Os::GetEndOfLine() << offset;
   }
-  catch (...)
+  catch (const NotDefinedException &)
   {
     oss << "Probability estimate and generalised reliability index (Hohenbichler) not defined." << Os::GetEndOfLine() << offset;
   }
@@ -377,7 +377,7 @@ String SORMResult::__str__(const String & offset) const
     oss << "Probability estimate (Tvedt)=" << getEventProbabilityTvedt() << Os::GetEndOfLine() << offset;
     oss << "Generalised reliability (Tvedt)" << getGeneralisedReliabilityIndexTvedt() << Os::GetEndOfLine() << offset;
   }
-  catch (...)
+  catch (const NotDefinedException &)
   {
     oss << "Probability estimate and generalised reliability index (Tvedt) not defined." << Os::GetEndOfLine() << offset;
   }

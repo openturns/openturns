@@ -41,5 +41,8 @@
 #include "openturns/MonteCarloExperiment.hxx"
 #include "openturns/WeightedExperiment.hxx"
 #include "openturns/WeightedExperimentImplementation.hxx"
+#include "openturns/SplitterImplementation.hxx"
+#include "openturns/KFoldSplitter.hxx"
+#include "openturns/LeaveOneOutSplitter.hxx"
 
 #endif /* OPENTURNS_OTWEIGHTEDEXPERIMENTS_HXX */

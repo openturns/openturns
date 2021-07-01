@@ -879,9 +879,9 @@ Point DrawableImplementation::ConvertFromHSVIntoRGB(const Scalar hue,
     const Scalar saturation,
     const Scalar value)
 {
-  if (hue < 0.0 || hue > 360.0) throw InvalidArgumentException(HERE) << "Invalid hue=" << hue;
-  if (saturation < 0.0 || saturation > 1.0) throw InvalidArgumentException(HERE) << "Invalid saturation=" << saturation;
-  if (value < 0.0 || value > 1.0) throw InvalidArgumentException(HERE) << "Invalid value=" << value;
+  if (!(hue >= 0.0 && hue <= 360.0)) throw InvalidArgumentException(HERE) << "Invalid hue=" << hue;
+  if (!(saturation >= 0.0 && saturation <= 1.0)) throw InvalidArgumentException(HERE) << "Invalid saturation=" << saturation;
+  if (!(value >= 0.0 && value <= 1.0)) throw InvalidArgumentException(HERE) << "Invalid value=" << value;
   const UnsignedInteger h = static_cast<UnsignedInteger>(hue);
   const UnsignedInteger i = static_cast<UnsignedInteger>((h % 360 + hue - h) / 60.0) % 6;
   const Scalar f = hue / 60.0 - i;
@@ -932,9 +932,9 @@ Point DrawableImplementation::ConvertFromRGBIntoHSV(const Scalar red,
     const Scalar green,
     const Scalar blue)
 {
-  if (red < 0.0 || red > 1.0) throw InvalidArgumentException(HERE) << "Invalid red=" << red;
-  if (green < 0.0 || green > 1.0) throw InvalidArgumentException(HERE) << "Invalid green=" << green;
-  if (blue < 0.0 || blue > 1.0) throw InvalidArgumentException(HERE) << "Invalid blue=" << blue;
+  if (!(red >= 0.0 && red <= 1.0)) throw InvalidArgumentException(HERE) << "Invalid red=" << red;
+  if (!(green >= 0.0 && green <= 1.0)) throw InvalidArgumentException(HERE) << "Invalid green=" << green;
+  if (!(blue >= 0.0 && blue <= 1.0)) throw InvalidArgumentException(HERE) << "Invalid blue=" << blue;
   return ConvertFromRGBIntoHSV(static_cast<UnsignedInteger>(round(255 * red)),
                                static_cast<UnsignedInteger>(round(255 * green)),
                                static_cast<UnsignedInteger>(round(255 * blue)));
@@ -944,9 +944,9 @@ Point DrawableImplementation::ConvertFromRGBIntoHSV(const UnsignedInteger red,
     const UnsignedInteger green,
     const UnsignedInteger blue)
 {
-  if (red > 255) throw InvalidArgumentException(HERE) << "Invalid red=" << red;
-  if (green > 255) throw InvalidArgumentException(HERE) << "Invalid green=" << green;
-  if (blue > 255) throw InvalidArgumentException(HERE) << "Invalid blue=" << blue;
+  if (!(red <= 255)) throw InvalidArgumentException(HERE) << "Invalid red=" << red;
+  if (!(green <= 255)) throw InvalidArgumentException(HERE) << "Invalid green=" << green;
+  if (!(blue <= 255)) throw InvalidArgumentException(HERE) << "Invalid blue=" << blue;
   const Scalar redScalar = red;
   const Scalar greenScalar = green;
   const Scalar blueScalar = blue;
@@ -1131,7 +1131,7 @@ void DrawableImplementation::ScanColorCode(const String & key,
   rgba = Indices(4, 0);
   // First, check if the color is given in RGB format
   const UnsignedInteger keySize = key.size();
-  if (keySize == 0) throw InvalidArgumentException(HERE) << "Empty hex color";
+  if (!(keySize > 0)) throw InvalidArgumentException(HERE) << "Empty hex color";
   // Check if it is a #RRGGBB[AA] rgba
   if (key[0] != '#') throw InvalidArgumentException(HERE) << "Hex color should start with #";
   // First, check the key length:
@@ -1508,7 +1508,7 @@ void DrawableImplementation::setTextSize(const Scalar /*size*/)
 String DrawableImplementation::draw() const
 {
   const UnsignedInteger size = data_.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: trying to build a Drawable with empty data";
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: trying to build a Drawable with empty data";
   // Two strategies: if data is small, it is inlined, else it is passed through a file
   const UnsignedInteger dimension = data_.getDimension();
   dataFileName_ = "";
@@ -1539,7 +1539,7 @@ Description DrawableImplementation::BuildDefaultPalette(const UnsignedInteger si
    Cycle through the hue wheel with 10 nuances and increasing darkness */
 Description DrawableImplementation::BuildRainbowPalette(const UnsignedInteger size)
 {
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: the size must be > 0";
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: the size must be > 0, but is " << size;
   Description palette(size);
   UnsignedInteger phase(ResourceMap::GetAsUnsignedInteger("Drawable-DefaultPalettePhase"));
   if (phase == 0) phase = 1;
@@ -1568,7 +1568,7 @@ Description DrawableImplementation::BuildRainbowPalette(const UnsignedInteger si
 Description DrawableImplementation::BuildTableauPalette(const UnsignedInteger size)
 {
   const UnsignedInteger nBasePalette = 10;
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: the size must be > 0";
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: the size must be > 0, but is " << size;
   const UnsignedInteger phase(ResourceMap::GetAsUnsignedInteger("Drawable-DefaultPalettePhase"));
   // Create base palette
   Description basePalette(nBasePalette);

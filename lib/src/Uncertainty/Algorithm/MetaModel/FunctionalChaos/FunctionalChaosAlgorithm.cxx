@@ -296,6 +296,7 @@ void FunctionalChaosAlgorithm::run()
   Point residuals(outputDimension);
   Point relativeErrors(outputDimension);
   std::map<UnsignedInteger, Point> coefficientsMap;
+  const Scalar smallCoefficient = ResourceMap::GetAsScalar("DualLinearCombinationEvaluation-SmallCoefficient");
   for (UnsignedInteger outputIndex = 0; outputIndex < outputDimension; ++outputIndex)
   {
     LOGINFO(OSS() << "Work on output marginal " << outputIndex << " over " << outputDimension - 1);
@@ -312,7 +313,7 @@ void FunctionalChaosAlgorithm::run()
       // Deal only with non-zero coefficients
       const Scalar marginalAlpha_kj = marginalAlpha_k[j];
       // To avoid -0.0
-      if (std::abs(marginalAlpha_kj) != 0.0)
+      if (std::abs(marginalAlpha_kj) > smallCoefficient)
       {
         // Current index in the decomposition of the current marginal output
         const UnsignedInteger index = marginalIndices[j];

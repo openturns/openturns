@@ -46,7 +46,7 @@ for :math:`H_{ij}=H_i+H_j\neq 1` and:
     \forall s, t\in \Rset, C_{i,j}(s, t)=&\dfrac{\sigma_i\sigma_j}{2}\left\{\rho_{i,j}\left(\left|\dfrac{s}{\theta}\right|+\left|\dfrac{t}{\theta}\right|-\left|\dfrac{t-s}{\theta}\right|\right)-\dfrac{\eta_{i,j}}{\theta}\left(s\log|s|-t\log|t|+(t-s)\log|t-s|\right)\right\}
 
 for :math:`H_i + H_j=1`, where :math:`H_i` is the Hurst exponent of the
-:math:`i`-th component and :math:`\sigma_i` its amplitude. Not that the scale
+:math:`i`-th component and :math:`\sigma_i` its amplitude. Note that the scale
 coefficient simplifies in the antisymmetric part when :math:`H_{ij}=1`. The
 compatibility conditions between the vector of exponents, the correlation matrix
 and the disymmetry matrix are quite evolved, see [amblard2012]_. 

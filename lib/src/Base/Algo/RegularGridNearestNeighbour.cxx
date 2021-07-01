@@ -148,7 +148,7 @@ Indices RegularGridNearestNeighbour::queryK(const Point & x, const UnsignedInteg
 /* Get the indices of the k nearest neighbours of the given scalar */
 Indices RegularGridNearestNeighbour::queryScalarK(const Scalar x, const UnsignedInteger k, const Bool sorted) const
 {
-  if (k > N_) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours than points in the grid!";
+  if (!(k <= N_)) throw InvalidArgumentException(HERE) << "Error: cannot return more neighbours (" << k << ") than points (" << N_ << ") in the grid!";
   Indices result(k);
   // If we need as many neighbours as points in the sample, just return all the possible indices
   if (k == N_ && !sorted)

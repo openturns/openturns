@@ -290,7 +290,7 @@ Matrix KrigingResult::getCrossMatrix(const Sample & x) const
     Matrix result(trainingSize, sampleSize);
     const KrigingResultCrossCovarianceFunctor1D policy(inputSample_, x, result, covarianceModel_);
     // The loop is over the lower block-triangular part
-    TBB::ParallelFor(0, trainingSize, policy);
+    TBB::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, trainingSize, policy);
     return result;
   }
   const UnsignedInteger trainingSize = inputSample_.getSize();
@@ -300,7 +300,7 @@ Matrix KrigingResult::getCrossMatrix(const Sample & x) const
   Matrix result(trainingFullSize, sampleFullSize);
   const KrigingResultCrossCovarianceFunctor policy(inputSample_, x, result, covarianceModel_);
   // The loop is over the lower block-triangular part
-  TBB::ParallelFor( 0, trainingSize * sampleSize, policy );
+  TBB::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, trainingSize * sampleSize, policy);
   return result;
 }
 
@@ -375,13 +375,13 @@ Matrix KrigingResult::getCrossMatrix(const Point & point) const
     Matrix result(trainingSize, 1);
     const KrigingResultCrossCovariancePointFunctor1D policy(inputSample_, point, result, covarianceModel_);
     // The loop is over the lower block-triangular part
-    TBB::ParallelFor(0, trainingSize, policy);
+    TBB::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, trainingSize, policy);
     return result;
   }
   const UnsignedInteger trainingFullSize = trainingSize * covarianceModel_.getOutputDimension();
   Matrix result(trainingFullSize, outputDimension);
   const KrigingResultCrossCovariancePointFunctor policy(inputSample_, point, result, covarianceModel_);
-  TBB::ParallelFor(0, trainingSize, policy);
+  TBB::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, trainingSize, policy);
   return result;
 }
 

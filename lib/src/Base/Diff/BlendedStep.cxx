@@ -75,7 +75,7 @@ Point BlendedStep::operator()(const Point & inP) const
   for (UnsignedInteger i = 0; i < dimension; ++ i)
   {
     result[i] *= ( std::abs( inP[i] ) + eta_[i] );
-    if (result[i] < SpecFunc::MinScalar ) throw InvalidArgumentException(HERE) << "Nul step for component " << i << ": eps=" << epsilon_[i] << " x=" << inP[i];
+    if (!(result[i] >= SpecFunc::MinScalar )) throw InvalidArgumentException(HERE) << "Null step for component " << i << ": eps=" << epsilon_[i] << " x=" << inP[i];
   }
   return result;
 }
@@ -96,10 +96,10 @@ void BlendedStep::load(Advocate & adv)
 void BlendedStep::setEta(const Point & eta)
 {
   const UnsignedInteger dimension = epsilon_.getDimension();
-  if (eta.getDimension() != epsilon_.getDimension()) throw InvalidArgumentException(HERE) << "Invalid dimension: eta dimension doesn't match epsilon dimension";
+  if (eta.getDimension() != epsilon_.getDimension()) throw InvalidArgumentException(HERE) << "Invalid dimension: eta dimension (" << eta.getDimension() << ") doesn't match epsilon dimension (" << epsilon_.getDimension() << ").";
   for( UnsignedInteger i = 0; i < dimension; ++ i )
   {
-    if ( eta[i] < 0.0 ) throw InvalidArgumentException(HERE) << "Negative eta component " << i;
+    if (!(eta[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Negative eta component " << i;
   }
   eta_ = eta;
 }

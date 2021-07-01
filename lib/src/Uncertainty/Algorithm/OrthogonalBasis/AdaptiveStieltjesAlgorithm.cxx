@@ -95,7 +95,7 @@ AdaptiveStieltjesAlgorithm * AdaptiveStieltjesAlgorithm::clone() const
  */
 AdaptiveStieltjesAlgorithm::Coefficients AdaptiveStieltjesAlgorithm::getRecurrenceCoefficients(const UnsignedInteger n) const
 {
-  if (measure_.isIntegral() && (n >= measure_.getSupport().getSize())) throw InvalidArgumentException(HERE) << "Error: cannot build an orthonormal polynomial of index greater than the support size for integral valued distributions. Here, the size=" << measure_.getSupport().getSize() << " and you try to build the " << n << "th polynomial.";
+  if (measure_.isDiscrete() && (n >= measure_.getSupport().getSize())) throw InvalidArgumentException(HERE) << "Error: cannot build an orthonormal polynomial of index greater than the support size for discrete distributions. Here, the size=" << measure_.getSupport().getSize() << " and you are trying to build the " << n + 1 << "th polynomial.";
   // The cache size is at least 1
   const UnsignedInteger cacheSize = monicRecurrenceCoefficients_.getSize();
   // Get the coefficients from the cache if possible
@@ -177,7 +177,7 @@ Point AdaptiveStieltjesAlgorithm::computeDotProduct(const Function & kernel,
   }
   if (measure_.isDiscrete())
   {
-    const Sample nodes(measure_.getSupport());
+    static const Sample nodes(measure_.getSupport());
     return kernel(nodes).computeMean() * nodes.getSize();
   }
   throw NotYetImplementedException(HERE) << "In AdaptiveStieltjesAlgorithm::computeDotProduct";

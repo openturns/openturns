@@ -46,16 +46,16 @@ public:
 
   /** Standard constructor with scale and amplitude parameters parameters */
   KroneckerCovarianceModel(const CovarianceModel &rho,
-                          const Point &amplitude);
+                           const Point &amplitude);
 
   /** Standard constructor with scale and amplitude parameters parameters */
   KroneckerCovarianceModel(const CovarianceModel & rho,
-                          const Point & amplitude,
-                          const CorrelationMatrix & spatialCorrelation);
+                           const Point & amplitude,
+                           const CorrelationMatrix & spatialCorrelation);
 
   /** Standard constructor with scale, amplitude and spatial correlation parameters */
   KroneckerCovarianceModel(const CovarianceModel &rho,
-                          const CovarianceMatrix &sigma);
+                           const CovarianceMatrix &sigma);
 
   /** Virtual copy constructor */
   KroneckerCovarianceModel * clone() const override;
@@ -113,7 +113,7 @@ protected:
                               const Collection<Scalar>::const_iterator &t_begin) const;
 
 private :
-  
+
   // kernel (or correlation) scalar model
   CovarianceModel rho_;
 

@@ -71,6 +71,7 @@ public:
 
   /** Get one realization of the ComposedCopula */
   Point getRealization() const override;
+  Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the DDF of the ComposedCopula */
   using DistributionImplementation::computeDDF;

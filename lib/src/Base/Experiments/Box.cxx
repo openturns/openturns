@@ -44,7 +44,7 @@ Box::Box(const Point & levels)
   , bounds_(levels_.getDimension())
 {
   // Check if there is the same number of levels than the dimension of the experiment plane
-  if (levels.getDimension() == 0) throw InvalidArgumentException(HERE) << "Error: the levels dimension must be > 0";
+  if (!(levels.getDimension() > 0)) throw InvalidArgumentException(HERE) << "Error: the levels dimension is " << levels.getDimension() << ", it should be > 0.";
   setLevels(levels);
 }
 
@@ -55,7 +55,7 @@ Box::Box(const Indices & levels)
 {
   // Check if there is the same number of levels than the dimension of the experiment plane
   const UnsignedInteger size = levels.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: the levels dimension must be > 0";
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: the levels dimension is " << size << ", it should be > 0.";
   setLevels(Collection<Scalar>(levels.begin(), levels.end()));
 }
 
@@ -66,9 +66,9 @@ Box::Box(const Indices & levels,
 {
   // Check if there is the same number of levels than the dimension of the experiment plane
   const UnsignedInteger size = levels.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: the levels dimension must be > 0";
+  if (size == 0) throw InvalidArgumentException(HERE) << "Error: the levels dimension is " << size << ", it should be > 0.";
   setLevels(Collection<Scalar>(levels.begin(), levels.end()));
-  if (bounds.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: the bounds dimension must match the levels dimension";
+  if (bounds.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: the bounds dimension (" << bounds.getDimension() << ") should be equal to the levels dimension (" << size << ").";
 }
 
 
@@ -123,7 +123,7 @@ void Box::setLevels(const Point & levels)
   UnsignedInteger dimension = center_.getDimension();
   UnsignedInteger size = levels.getDimension();
   if (size != dimension) throw InvalidArgumentException(HERE) << "Error: levels dimension must equal center dimension for the Box design of experiment, here levels dimension=" << size << " and center dimension=" << dimension;
-  for (UnsignedInteger i = 0; i < dimension; ++i) if (!(levels[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Error: levels values must be greater or equal to 0 for the Box design of experiment";
+  for (UnsignedInteger i = 0; i < dimension; ++i) if (!(levels[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Error: levels values must be greater or equal to 0 for the Box design of experiment, but levels[" << i << "]=" << levels[i];
   StratifiedExperiment::setLevels(levels);
 }
 

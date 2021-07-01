@@ -17,7 +17,7 @@
 #define OT_TYPECHECK_NUMERICALSAMPLE 5
 
 %typemap(in) const Sample & ($1_basetype temp) {
-  if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
+  if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
     try {
       temp = OT::convert<OT::_PySequence_, OT::Sample>($input);
       $1 = &temp;
@@ -28,15 +28,15 @@
 }
 
 %typemap(typecheck,precedence=OT_TYPECHECK_NUMERICALSAMPLE) const Sample & {
-  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
+  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL))
     || OT::isAPythonBufferOf<OT::Scalar, 2>($input)
-    || OT::isAPythonSequenceOf<OT::_PySequence_>($input));
+    || OT::isAPythonSequenceOf<OT::_PySequence_>($input);
 }
 
 %apply const Sample & { const OT::Sample & };
 
 %typemap(in) const UnsignedIntegerCollection & ($1_basetype temp) {
-  if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
+  if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
     try {
       temp = OT::convert<OT::_PySequence_, OT::Collection<OT::UnsignedInteger> >($input);
       $1 = &temp;
@@ -57,7 +57,7 @@
 
 
 %typemap(in) const SampleCollection & ($1_basetype temp) {
-  if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
+  if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
     try {
       temp = OT::convert<OT::_PySequence_, OT::Collection<OT::Sample> >($input);
       $1 = &temp;
@@ -68,8 +68,8 @@
 }
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const SampleCollection & {
-  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
-    || OT::canConvertCollectionObjectFromPySequence< OT::Sample >( $input );
+  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL))
+    || OT::canConvertCollectionObjectFromPySequence< OT::Sample >($input);
 }
 
 %apply const SampleCollection & { const OT::ProcessSample::SampleCollection &};
@@ -490,7 +490,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj)
       PySlice_GetIndicesEx(OT::SliceCast(args), self->getSize(), &start, &stop, &step, &size);
       OT::Sample temp;
       OT::Sample *val = 0;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, 0))) {
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, SWIG_POINTER_NO_NULL))) {
         temp = OT::convert< OT::_PySequence_, OT::Sample >(valObj);
         val = &temp;
       }
@@ -506,7 +506,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj)
       const Py_ssize_t size = PySequence_Fast_GET_SIZE(seq.get());
       OT::Sample temp;
       OT::Sample *val = 0;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, 0))) {
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, SWIG_POINTER_NO_NULL))) {
         temp = OT::convert< OT::_PySequence_, OT::Sample >(valObj);
         val = &temp;
       }
@@ -543,7 +543,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj)
         throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
       OT::Point temp;
       OT::Point *val = 0;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Point, 0))) {
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Point, SWIG_POINTER_NO_NULL))) {
         temp = OT::convert<OT::_PySequence_, OT::Point>(valObj);
         val = &temp;
       }
@@ -597,7 +597,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj)
 
       OT::Point temp;
       OT::Point *val = 0;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Point, 0))) {
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Point, SWIG_POINTER_NO_NULL))) {
         temp = OT::convert<OT::_PySequence_, OT::Point>(valObj);
         val = &temp;
       }
@@ -630,7 +630,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj)
 
       OT::Point temp;
       OT::Point *val = 0;
-      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Point, 0))) {
+      if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Point, SWIG_POINTER_NO_NULL))) {
         temp = OT::convert<OT::_PySequence_, OT::Point>(valObj);
         val = &temp;
       }
@@ -649,7 +649,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj)
 
     OT::Sample temp;
     OT::Sample *val = 0;
-    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, 0))) {
+    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, SWIG_POINTER_NO_NULL))) {
       temp = OT::convert<OT::_PySequence_, OT::Sample>(valObj);
       val = &temp;
     }
@@ -732,7 +732,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj)
 
     OT::Sample temp;
     OT::Sample *val = 0;
-    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, 0))) {
+    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val, SWIGTYPE_p_OT__Sample, SWIG_POINTER_NO_NULL))) {
       temp = OT::convert<OT::_PySequence_, OT::Sample>(valObj);
       val = &temp;
     }

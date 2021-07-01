@@ -84,7 +84,7 @@ SquareMatrix ExponentialModel::operator()(const Point &tau) const
   // Return value
   Scalar factor = 1.0;
   if (tauOverThetaNorm == 0.0)
-   factor = 1.0 + nuggetFactor_;
+    factor = 1.0 + nuggetFactor_;
   else
     factor = exp(-tauOverThetaNorm);
   SquareMatrix output(outputCovariance_);
@@ -98,7 +98,7 @@ SquareMatrix ExponentialModel::operator()(const Point &tau) const
  */
 Scalar ExponentialModel::computeAsScalar(const Point &tau) const
 {
-  if (outputDimension_ > 1)
+  if (outputDimension_ != 1)
     throw InvalidArgumentException(HERE) << "Error : ExponentialModel::computeAsScalar(tau) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
   if (tau.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In ExponentialModel::computeStandardRepresentative: expected a shift of dimension=" << getInputDimension() << ", got dimension=" << tau.getDimension();
@@ -120,7 +120,7 @@ Scalar ExponentialModel::computeAsScalar(const Point &tau) const
  * C_{i,i}(tau) = amplitude_i^2  * exp(-|tau / scale|)
  */
 Scalar ExponentialModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
-                                         const Collection<Scalar>::const_iterator &t_begin) const
+    const Collection<Scalar>::const_iterator &t_begin) const
 {
   if (outputDimension_ != 1)
     throw InvalidArgumentException(HERE) << "Error : ExponentialModel::computeAsScalar(it, it) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
@@ -146,7 +146,8 @@ Scalar ExponentialModel::computeAsScalar(const Scalar tau) const
 
   const Scalar tauOverThetaNorm = std::abs(tau / scale_[0]);
   // Return value
-  return (tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance_(0, 0) * (1.0 + nuggetFactor_) : outputCovariance_(0, 0) * exp(-tauOverThetaNorm));
+  const CovarianceMatrix & outputCovariance = outputCovariance_;
+  return (tauOverThetaNorm <= SpecFunc::ScalarEpsilon ? outputCovariance(0, 0) * (1.0 + nuggetFactor_) : outputCovariance(0, 0) * exp(-tauOverThetaNorm));
 }
 
 /** Gradient */

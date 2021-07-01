@@ -9,9 +9,9 @@
 OTTypedInterfaceObjectHelper(IndicesCollection)
 
 %typemap(in) const IndicesCollection & ($1_basetype temp) {
-  if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
+  if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
     try {
-      temp = OT::convert<OT::_PySequence_, OT::IndicesCollection>( $input );
+      temp = OT::convert<OT::_PySequence_, OT::IndicesCollection>($input);
       $1 = &temp;
     } catch (OT::InvalidArgumentException &) {
       SWIG_exception(SWIG_TypeError, "Object passed as argument is not convertible to an IndicesCollection");
@@ -20,8 +20,8 @@ OTTypedInterfaceObjectHelper(IndicesCollection)
 }
 
 %typemap(typecheck,precedence=5) const IndicesCollection & {
-  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) ||
-       OT::isAPythonBufferOf<OT::UnsignedInteger, 2>($input) || OT::isAPythonSequenceOf<OT::_PySequence_>($input));
+  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL)) ||
+       OT::isAPythonBufferOf<OT::UnsignedInteger, 2>($input) || OT::isAPythonSequenceOf<OT::_PySequence_>($input);
 }
 
 %apply const IndicesCollection & { const OT::IndicesCollection & };

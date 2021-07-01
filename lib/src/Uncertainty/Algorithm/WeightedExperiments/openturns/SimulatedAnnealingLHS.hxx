@@ -48,14 +48,14 @@ public:
 
   /** SimulatedAnnealingLHS */
   explicit SimulatedAnnealingLHS (const LHSExperiment & lhs,
-                                  const TemperatureProfile & profile = GeometricProfile(),
-                                  const SpaceFilling & spaceFilling = SpaceFillingPhiP());
+                                  const SpaceFilling & spaceFilling = SpaceFillingPhiP(),
+                                  const TemperatureProfile & profile = GeometricProfile());
 
   /** SimulatedAnnealingLHS constructor with LHS*/
   SimulatedAnnealingLHS(const Sample & initialDesign,
                         const Distribution & distribution,
-                        const TemperatureProfile & profile,
-                        const SpaceFilling & spaceFilling);
+                        const SpaceFilling & spaceFilling,
+                        const TemperatureProfile & profile);
 
   /** Virtual constructor method */
   SimulatedAnnealingLHS * clone() const override;

@@ -224,7 +224,7 @@ String SymbolicGradient::getFormula(const UnsignedInteger i,
                                     const UnsignedInteger j) const
 {
   const UnsignedInteger inputDimension = getInputDimension();
-  if ((i >= inputDimension) || (j >= getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: cannot access to a formula outside of the gradient dimensions.";
+  if (!(i < inputDimension && j < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: cannot access to a formula outside of the gradient dimensions.";
   if (!isInitialized_) initialize();
   return parser_.getFormulas()[i + j * inputDimension];
 }
@@ -232,7 +232,7 @@ String SymbolicGradient::getFormula(const UnsignedInteger i,
 /* Get the i-th marginal function */
 Gradient SymbolicGradient::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal gradient must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
   return getMarginal(Indices(1, i));
 }
 

@@ -58,7 +58,7 @@ Bool ComposedEvaluation::operator ==(const ComposedEvaluation & ) const
 /* Get the i-th marginal function */
 Evaluation ComposedEvaluation::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << "and outputDimension=" << getOutputDimension();
   return new ComposedEvaluation(leftFunction_.getMarginal(i), rightFunction_);
 }
 
@@ -93,7 +93,7 @@ String ComposedEvaluation::__str__(const String & offset) const
 /* Operator () */
 Point ComposedEvaluation::operator() (const Point & inP) const
 {
-  if (inP.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a Function with an argument of invalid dimension";
+  if (inP.getDimension() != getInputDimension()) throw InvalidArgumentException(HERE) << "Error: trying to evaluate a Function with an argument of invalid dimension" << inP.getDimension() << ", expected " << getInputDimension();
   callsNumber_.increment();
   const Point rightValue(rightFunction_.operator()(inP));
   const Point leftValue(leftFunction_.operator()(rightValue));

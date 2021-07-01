@@ -65,7 +65,7 @@ KrawtchoukFactory * KrawtchoukFactory::clone() const
    Pn+1(x) = (a0n * x + a1n) * Pn(x) + a2n * Pn-1(x) */
 KrawtchoukFactory::Coefficients KrawtchoukFactory::getRecurrenceCoefficients(const UnsignedInteger n) const
 {
-  if (n > n_) throw InvalidArgumentException(HERE) << "Error: cannot build a Krawtchouk polynomial of index greater than its first parameter n. Here, n=" << n << " and you try to build the " << n << "th polynomial.";
+  if (!(n < n_)) throw InvalidArgumentException(HERE) << "Error: cannot build a Krawtchouk polynomial of index greater than its first parameter n. Here, n=" << n << " and you are trying to build the " << n + 1 << "th polynomial.";
   Coefficients recurrenceCoefficients(3, 0.0);
   if (n == 0)
   {

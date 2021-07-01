@@ -17,10 +17,10 @@ namespace OT {
   convert<_PyObject_, OT::Graph>(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__Graph, 0 |  0 ))) {
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__Graph, SWIG_POINTER_NO_NULL))) {
       OT::Graph * p_graph = reinterpret_cast< OT::Graph * >(ptr);
       return *p_graph;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__GraphImplementation, 0 |  0 ))) {
+    } else if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__GraphImplementation, SWIG_POINTER_NO_NULL))) {
       OT::GraphImplementation * p_graph = reinterpret_cast< OT::GraphImplementation * >(ptr);
       return *p_graph;
     } else {

@@ -47,7 +47,7 @@ ParametricPointToFieldFunction::ParametricPointToFieldFunction (const PointToFie
   const UnsignedInteger setDimension = set.getSize();
 
   // Check if the given parameters positions are compatible with the input dimension of the function
-  if (inputDimension < setDimension)
+  if (!(inputDimension >= setDimension))
     throw InvalidArgumentException(HERE) << "Error: the size of the parameters positions=" << setDimension << " is greater than the input dimension=" << inputDimension << " of the function.";
   // Check if the given indices are valid
   if (!set.check(inputDimension))

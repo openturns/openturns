@@ -152,7 +152,7 @@ Scalar MaximumDistribution::computePDF(const Point & point) const
   if (point.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: the given point must have dimension=1, here dimension=" << point.getDimension();
   if ((point[0] <= getRange().getLowerBound()[0]) || (point[0] >= getRange().getUpperBound()[0])) return 0.0;
   // Special case for identical independent variables
-  if (allSame_) return distribution_.computePDF(point) * std::pow(distribution_.computeCDF(point), static_cast<Scalar>(variablesNumber_) - 1.0);
+  if (allSame_) return variablesNumber_ * distribution_.computePDF(point) * std::pow(distribution_.computeCDF(point), static_cast<Scalar>(variablesNumber_) - 1.0);
   // General case
   if (!distribution_.hasIndependentCopula()) DistributionImplementation::computePDF(point);
   // Special treatment of the independent copula case

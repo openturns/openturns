@@ -51,7 +51,7 @@ int main(int, char *[])
         // We should NEVER go here
         throw TestFailed("Exception NOT thrown");
       }
-      catch (OutOfBoundException & ex)
+      catch (OutOfBoundException &)
       {
         // Nothing to do
       }
@@ -78,7 +78,7 @@ int main(int, char *[])
         // We should NEVER go here
         throw TestFailed("Exception NOT thrown");
       }
-      catch (OutOfBoundException & ex)
+      catch (OutOfBoundException &)
       {
         // Nothing to do
       }

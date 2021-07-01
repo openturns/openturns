@@ -94,7 +94,7 @@ public:
   virtual Sample getStandardizedResiduals() const;
 
   /** Number of degrees of freedom */
-  virtual UnsignedInteger getDegreesOfFreedom() const;
+  virtual SignedInteger getDegreesOfFreedom() const;
 
   /** Leverages accessor */
   virtual Point getLeverages() const;
@@ -104,6 +104,8 @@ public:
 
   /** Cook distance accessor */
   virtual Point getCookDistances() const;
+
+  Bool hasIntercept() const;
 
   /** R-squared */
   Scalar getRSquared() const;
@@ -118,6 +120,8 @@ public:
   void load(Advocate & adv) override;
 
 private:
+
+  void checkIntercept();
 
   /** input data */
   Sample inputSample_;
@@ -157,6 +161,9 @@ private:
 
   /** Sigma2 */
   Scalar sigma2_;
+
+  /** hasIntercept */
+  Bool hasIntercept_;
 
 }; /* class LinearModelResult */
 

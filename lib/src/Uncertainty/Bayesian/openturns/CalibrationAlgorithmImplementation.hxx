@@ -86,9 +86,6 @@ public:
   void load(Advocate & adv) override;
 
 protected:
-  /** compute output at prior and posterior */
-  void computeOutputAtPriorAndPosterior();
-
   /* Model to calibrate */
   Function model_;
 

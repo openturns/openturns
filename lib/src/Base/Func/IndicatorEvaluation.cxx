@@ -108,7 +108,7 @@ Evaluation IndicatorEvaluation::getEvaluation() const
 
 void IndicatorEvaluation::setEvaluation(const Evaluation & evaluation)
 {
-  if (evaluation.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot use an evaluation implementation with output dimension not equal to 1";
+  if (evaluation.getOutputDimension() != 1) throw InvalidArgumentException(HERE) << "Error: cannot use an evaluation implementation with output dimension not equal to 1, here output dimension=" << evaluation.getOutputDimension();
   evaluation_ = evaluation;
 }
 

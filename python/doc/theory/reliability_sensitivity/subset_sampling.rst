@@ -246,7 +246,7 @@ interested reader could refer to the following references
 
 .. topic:: Examples:
 
-    - See :doc:`/auto_reliability_sensitivity/reliability/plot_subsetSampling`
+    - See :doc:`/auto_reliability_sensitivity/reliability/plot_subset_sampling`
 
      
 

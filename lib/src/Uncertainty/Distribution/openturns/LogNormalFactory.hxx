@@ -76,7 +76,7 @@ private:
   public:
     // Constructor from a GLM algorithm
     LogNormalFactoryLMLEParameterConstraint(const Sample &sample)
-        : EvaluationImplementation(), sample_(sample), size_(sample.getSize())
+      : EvaluationImplementation(), sample_(sample), size_(sample.getSize())
     {
       // Nothing to do
     }

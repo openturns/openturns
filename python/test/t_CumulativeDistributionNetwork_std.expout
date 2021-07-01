@@ -5,10 +5,10 @@ Distribution  CumulativeDistributionNetwork([Normal(mu = [0,0], sigma = [1,1], R
 Elliptical =  False
 Continuous =  True
 oneRealization= [0.819143,1.55123]
-oneSample first= [-0.337688,0.500922]  last= [-0.31133,-0.29406]
-mean= [0.57312,0.562745]
-covariance= [[  0.693077  -0.0044764 ]
- [ -0.0044764  0.685993  ]]
+oneSample first= [-0.337688,-0.914279]  last= [0.828313,-0.29406]
+mean= [0.573157,0.562708]
+covariance= [[ 0.7023      7.00129e-05 ]
+ [ 7.00129e-05 0.67677     ]]
 Point=  [1.0, 1.0]
 log pdf =-1.7971e+00
 pdf     =1.6578e-01

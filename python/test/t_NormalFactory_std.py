@@ -42,6 +42,12 @@ try:
     print('Estimated distribution            =', repr(estimatedDistribution))
     parameterDistribution = result.getParameterDistribution()
     print('Parameter distribution            =', parameterDistribution)
+    # Robust estimation
+    factory = NormalFactory(True)
+    estimatedDistribution = factory.build(sample)
+    print("distribution=", distribution)
+    print("Estimated distribution=", estimatedDistribution)
+
 except:
     import sys
     print("t_NormalFactory_std.py", sys.exc_info()[0], sys.exc_info()[1])

@@ -70,7 +70,7 @@ FractionalBrownianMotionModel * FractionalBrownianMotionModel::clone() const
 }
 
 Scalar FractionalBrownianMotionModel::computeAsScalar(const Point &s,
-                                                      const Point &t) const
+    const Point &t) const
 {
   if (s.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
@@ -94,7 +94,7 @@ Scalar FractionalBrownianMotionModel::computeAsScalar(const Point &s,
 }
 
 Scalar FractionalBrownianMotionModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
-                                                      const Collection<Scalar>::const_iterator &t_begin) const
+    const Collection<Scalar>::const_iterator &t_begin) const
 {
   if (outputDimension_ != 1)
     throw InvalidArgumentException(HERE) << "Error : FractionalBrownianMotionModel::computeAsScalar(it, it) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
@@ -244,7 +244,7 @@ CorrelationMatrix FractionalBrownianMotionModel::getRho() const
 void FractionalBrownianMotionModel::setFullParameter(const Point & parameter)
 {
   const UnsignedInteger totalSize = inputDimension_ + outputDimension_ * (outputDimension_ + 1);
-  if (parameter.getSize() < totalSize)
+  if (!(parameter.getSize() >= totalSize))
     throw InvalidArgumentException(HERE) << "In FractionalBrownianMotionModel::setFullParameter, points have incompatible size. Point size = " << parameter.getSize()
                                          << " whereas expected size = " << totalSize ;
   CovarianceModelImplementation::setFullParameter(parameter);

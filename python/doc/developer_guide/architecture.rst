@@ -165,11 +165,11 @@ example this list:
 +--------------------+-------------------+
 | **Distribution**   | **Version**       |
 +====================+===================+
-| Debian             | 8 “Jessie”        |
+| Debian             | 9 “Stretch”       |
 +--------------------+-------------------+
-| Ubuntu             | 14.04 “Trusty”    |
+| Ubuntu             | 18.04 “Bionic”    |
 +--------------------+-------------------+
-| Windows            | 7                 |
+| Windows            | 10                |
 +--------------------+-------------------+
 
 The primary development platform is Linux, and is known to work on
@@ -202,6 +202,10 @@ The tools chosen for the development of the platform are:
 | Legacy analytical parser (optional)   | `muParser <http://muparser.beltoforion.de/>`_                                   | 2.2.3             |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Special functions (optional)          | `Boost <http://www.boost.org/>`_                                                | 1.46              |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Special functions (optional)          | `MPFR <https://www.mpfr.org/>`_                                                 | 4.0.0             |
++---------------------------------------+---------------------------------------------------------------------------------+-------------------+
+| Special functions (optional)          | `MPC <http://www.multiprecision.org/mpc>`_                                      | 1.1.0             |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
 | Optimization (optional)               | `NLopt <http://ab-initio.mit.edu/nlopt>`_                                       | 2.4               |
 +---------------------------------------+---------------------------------------------------------------------------------+-------------------+
@@ -309,7 +313,7 @@ jobs for the different target platforms to be run on several free
 continuous integration services:
 
 - CircleCI (https://circleci.com/) for Linux
-- Travis (https://travis-ci.org/) for macOS
+- Github Actions (https://github.com/actions) for macOS
 - AppVeyor (https://www.appveyor.com/) for Windows
 
 Each of these jobs checks that the library can be successfully compiled and

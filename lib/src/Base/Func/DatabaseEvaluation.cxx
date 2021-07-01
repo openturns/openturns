@@ -114,10 +114,10 @@ void DatabaseEvaluation::setSample(const Sample & inputSample,
 {
   const UnsignedInteger size = inputSample.getSize();
 
-  if(size == 0)
+  if(!(size > 0))
     throw InvalidDimensionException(HERE) << "Empty input sample";
 
-  if (outputSample.getSize() == 0)
+  if (!(outputSample.getSize() > 0))
     throw InvalidDimensionException(HERE) << "Empty output sample";
 
   if (inputSample.getSize() != outputSample.getSize())

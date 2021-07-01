@@ -20,7 +20,6 @@
  */
 
 #include "openturns/ApproximationAlgorithmImplementationFactory.hxx"
-#include "openturns/PenalizedLeastSquaresAlgorithm.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 
@@ -63,7 +62,6 @@ ApproximationAlgorithmImplementation * ApproximationAlgorithmImplementationFacto
     const Indices & ) const
 {
   throw NotYetImplementedException(HERE) << "In ApproximationAlgorithmImplementationFactory::build(const Sample & x, const Sample & y, const Point & weight, const FunctionCollection & psi, const Indices & indices) const";
-  // return new PenalizedLeastSquaresAlgorithm( x, y, weight, psi );
 }
 
 String ApproximationAlgorithmImplementationFactory::__repr__() const

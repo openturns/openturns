@@ -47,8 +47,8 @@ UserDefinedSpectralModel::UserDefinedSpectralModel(const RegularGrid & frequency
   const UnsignedInteger N = frequencyGrid.getN();
   if (N != spectralFunction.getSize())
     throw InvalidArgumentException(HERE) << "Error: Frequency grid and spectral functions have different sizes";
-  if (frequencyGrid.getStart() < 0.0)
-    throw InvalidArgumentException(HERE) << "Error: The frequency grid must contains only nonnegative values";
+  if (!(frequencyGrid.getStart() >= 0.0))
+    throw InvalidArgumentException(HERE) << "Error: The frequency grid must contain only nonnegative values";
   setFrequencyGrid(frequencyGrid);
   DSPCollection_ = HermitianMatrixCollection(N);
   // put the first element

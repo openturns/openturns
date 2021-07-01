@@ -498,7 +498,6 @@ String SobolIndicesAlgorithmImplementation::__repr__() const
 }
 
 // Multiplication and sum of two Samples
-// TODO Write method in Sample ?
 Point SobolIndicesAlgorithmImplementation::computeSumDotSamples(const Sample & x,
     const Sample & y) const
 {
@@ -827,8 +826,8 @@ Graph SobolIndicesAlgorithmImplementation::DrawCorrelationCoefficients(const Poi
   // Add text description
   for (UnsignedInteger k = 0; k < dimension; ++k)
   {
-    data(k, 0) = (k + 1.0) + dimension / 20.0;
-    data(k, 1) = 0.5 * values[k];
+    data(k, 0) = (k + 1.0) + 0.08;
+    data(k, 1) = values[k] - 0.04;
   }
 
   Text text(data, names, "right");

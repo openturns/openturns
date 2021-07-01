@@ -77,7 +77,7 @@ Scalar Brent::solve(const UniVariateFunction & function,
   volatile Scalar b = supPoint;
   Scalar fB = supValue - value;
   if (std::abs(fB) <= getResidualError()) return b;
-  if (!(fA * fB <= 0.0)) throw InternalException(HERE) << "Error: Brent method requires that the function takes different signs at the endpoints of the given starting interval, here infPoint=" << infPoint << ", supPoint=" << supPoint << ", value=" << value << ", f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
+  if ((fA <= 0.0) == (fB <= 0.0)) throw InternalException(HERE) << "Error: Brent method requires that the function takes different signs at the endpoints of the given starting interval, here infPoint=" << infPoint << ", supPoint=" << supPoint << ", value=" << value << ", f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
   volatile Scalar c = a;
   Scalar fC = fA;
   // Main loop
@@ -97,13 +97,13 @@ Scalar Brent::solve(const UniVariateFunction & function,
       fC = fA;
     }
     // Current error on the root
-    const Scalar error = 2.0 * getRelativeError() * std::abs(b) + 0.5 * getAbsoluteError();
+    const Scalar error = getRelativeError() * std::abs(b) + getAbsoluteError();
 
     // Bisection step
     Scalar newDelta = 0.5 * (c - b);
 
     // If the current approximation of the root is good enough, return it
-    if ((std::abs(newDelta) <= error) || (std::abs(fB) <= getResidualError())) break;
+    if (std::abs(newDelta) <= error) break;
 
     // Try an interpolation if the last improvement was large enough
     if ((std::abs(oldDelta) >= error)  && (std::abs(fA) > std::abs(fB)))
@@ -152,8 +152,10 @@ Scalar Brent::solve(const UniVariateFunction & function,
     // New evaluation
     fB = function(b) - value;
     ++usedFunctionEvaluation;
+    // If the current approximation of the root is good enough, return it
+    if (std::abs(fB) <= getResidualError()) break;
     // Enforce that the root is within [b, c]
-    if (fB * fC > 0.0)
+    if ((fB < 0.0) == (fC < 0.0))
     {
       c = a;
       fC = fA;

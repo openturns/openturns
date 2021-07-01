@@ -185,6 +185,7 @@ void TensorApproximationAlgorithm::greedyRankOne (const Sample & x,
   const UnsignedInteger dimension = x.getDimension();
   for (UnsignedInteger i = 0; i < maxRank_; ++ i)
   {
+    LOGINFO(OSS() << "Working on rank=" << i + 1 << " over " << maxRank_);
     tensor.setRank(i + 1);
 
     // initialize tensor coefficients on last rank
@@ -264,7 +265,7 @@ void TensorApproximationAlgorithm::rankOne(const Sample & x,
     const Scalar oldRadius = tensor.getCoefficients(i, 0).norm();
     for (UnsignedInteger j = 0; j < dimension; ++ j)
     {
-      Log::Info(OSS() << " j=" << j << "/" << dimension);
+      Log::Info(OSS() << " j=" << j << "(j varies from 0 to " << dimension - 1 << ")");
       const UnsignedInteger basisSize = tensor.getCoefficients(i, j).getSize();
       Indices full(basisSize);
       full.fill();

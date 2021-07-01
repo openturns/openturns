@@ -50,8 +50,8 @@ Contour::Contour(const UnsignedInteger dimX,
   , labels_(ResourceMap::GetAsUnsignedInteger( "Contour-DefaultLevelsNumber" ))
   , drawLabels_(true)
 {
-  if (dimX < 2) throw InvalidArgumentException(HERE) << "Error: the x dimension must be greater or equal to 2";
-  if (dimY < 2) throw InvalidArgumentException(HERE) << "Error: the y dimension must be greater or equal to 2";
+  if (!(dimX >= 2)) throw InvalidArgumentException(HERE) << "Error: the x dimension must be greater or equal to 2, but is " << dimX;
+  if (!(dimY >= 2)) throw InvalidArgumentException(HERE) << "Error: the y dimension must be greater or equal to 2, but is " << dimY;
   if (dimX * dimY != data.getSize()) throw InvalidArgumentException(HERE) << "Error: the given dimensions are not compatible with the data";
   // Check data validity
   setData(data);

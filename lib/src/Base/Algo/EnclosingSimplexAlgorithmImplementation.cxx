@@ -283,9 +283,7 @@ Bool EnclosingSimplexAlgorithmImplementation::checkPointInSimplex(const Point & 
   // Exit if point is outside simplex bounding box
   for (UnsignedInteger i = 0; i < dimension; ++i)
   {
-    if(point[i] < lowerBoundingBoxSimplices_(index, i))
-      return false;
-    if(point[i] > upperBoundingBoxSimplices_(index, i))
+    if (!(point[i] >= lowerBoundingBoxSimplices_(index, i) && point[i] <= upperBoundingBoxSimplices_(index, i)))
       return false;
   }
 
@@ -302,7 +300,7 @@ Bool EnclosingSimplexAlgorithmImplementation::checkPointInSimplex(const Point & 
     v[i] = point[i];
   const Point coordinates(simplexMatrix.solveLinearSystem(v, false));
   for (UnsignedInteger i = 0; i <= dimension; ++i)
-    if ((coordinates[i] < 0.0) || (coordinates[i] > 1.0))
+    if (!(coordinates[i] >= 0.0 && coordinates[i] <= 1.0))
       return false;
   return true;
 }

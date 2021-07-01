@@ -50,7 +50,9 @@ LinearModelAnalysis::LinearModelAnalysis(const LinearModelResult & linearModelRe
   : PersistentObject()
   , linearModelResult_(linearModelResult)
 {
-  // Nothing to do
+  const SignedInteger dof = linearModelResult_.getDegreesOfFreedom();
+  if (dof <= 0)
+    throw InvalidArgumentException(HERE) << "Cannot perform linear model analysis when DOF is null";
 }
 
 /* Virtual constructor */
@@ -73,12 +75,14 @@ String LinearModelAnalysis::__repr__() const
 String LinearModelAnalysis::__str__(const String & offset) const
 {
   const Point estimates(linearModelResult_.getCoefficients());
+  const UnsignedInteger basisSize = estimates.getSize();
+  const Bool hasIntercept = linearModelResult_.hasIntercept();
   const Point standardErrors(linearModelResult_.getCoefficientsStandardErrors());
   const Point tscores(getCoefficientsTScores());
   const Point pValues(getCoefficientsPValues());
   const Description names(linearModelResult_.getCoefficientsNames());
   const Scalar sigma2 = linearModelResult_.getSampleResiduals().computeRawMoment(2)[0];
-  const UnsignedInteger dof = linearModelResult_.getDegreesOfFreedom();
+  const SignedInteger dof = linearModelResult_.getDegreesOfFreedom();
   const UnsignedInteger n = linearModelResult_.getSampleResiduals().getSize();
   const String separator(" | ");
   const String separatorEndLine(" |");
@@ -131,6 +135,10 @@ String LinearModelAnalysis::__str__(const String & offset) const
   }
   oss << offset << String( awidth, '-' ) << "\n\n";
   oss << offset << "Residual standard error: " <<  std::sqrt(sigma2 * n / dof)  << " on " << dof << " degrees of freedom\n";
+
+  // In case of only intercept in the basis, no more print
+  if ((basisSize == 1) && (hasIntercept))
+    return oss;
   oss << offset << "F-statistic: " << getFisherScore() << " , " << " p-value: " <<  getFisherPValue() << "\n";
 
   //  R-squared & Adjusted R-squared tests
@@ -254,25 +262,58 @@ Scalar LinearModelAnalysis::getFisherScore() const
 {
   // Get residuals and output samples
   const Sample residuals(linearModelResult_.getSampleResiduals());
-  const Sample outputSample = (getLinearModelResult().getOutputSample());
+  const Sample outputSample(getLinearModelResult().getOutputSample());
   const UnsignedInteger size = residuals.getSize();
   // Get the number of parameter p
   const UnsignedInteger p = linearModelResult_.getCoefficients().getSize();
-  // Define RSS and SYY
-  const Scalar RSS = residuals.computeRawMoment(2)[0] * size;
-  const Scalar SYY = outputSample.computeCenteredMoment(2)[0] * size;
-  const Scalar fStatistic = ((SYY - RSS) / (p - 1)) / (RSS / (size - p));
+  // Check if there is an intercept
+  const Bool hasIntercept = linearModelResult_.hasIntercept();
+  // Degrees of freedom (model)
+  UnsignedInteger dofModel = p;
+
+  // Correction of dofModel if intercept
+  if ((hasIntercept) && (p == 1))
+    throw NotDefinedException(HERE) << "Only intercept in the basis. Fisher Test is not defined is such a case.";
+  // Correction of dofModel if intercept
+  if (hasIntercept)
+    dofModel -= 1;
+  // Degrees of freedom (noise)
+  const SignedInteger dof = linearModelResult_.getDegreesOfFreedom();
+  // Sum of Squared Errors (SSE) or Sum of Squared Residuals (SSR/RSS)
+  const Scalar SSR = residuals.computeRawMoment(2)[0] * size;
+  // Sum of Squared Total (SST) = n * var(Y) or n * E(Y^2) depending on intercept
+  Scalar SST = 1.0;
+  if (hasIntercept)
+    SST = outputSample.computeCenteredMoment(2)[0] * size;
+  else
+    SST = outputSample.computeRawMoment(2)[0] * size;
+  // Sum of Squared Model (SSM) = SST - SSE
+  const Scalar SSM = SST - SSR;
+  // Define the statistic
+  // numerator = MSM := SSM/DFM
+  const Scalar numerator = SSM / dofModel;
+  // denominator =  MSE = SSE/DO
+  const Scalar denominator = SSR / dof;
+  const Scalar fStatistic = numerator / denominator;
   return fStatistic;
 }
 
 Scalar LinearModelAnalysis::getFisherPValue() const
 {
-  // size and number of parameters
-  const UnsignedInteger size = linearModelResult_.getSampleResiduals().getSize();
   // Get the number of parameter p
   const UnsignedInteger p = linearModelResult_.getCoefficients().getSize();
+  // Degrees of freedom (model)
+  UnsignedInteger dofModel = p;
+  const Bool hasIntercept = linearModelResult_.hasIntercept();
+  // Correction of dofModel if intercept
+  if ((hasIntercept) && (p == 1))
+    throw NotDefinedException(HERE) << "Only intercept in the basis. Fisher Test is not defined is such a case.";
+  if (hasIntercept)
+    dofModel -= 1;
+  // Degrees of freedom
+  const SignedInteger dof = linearModelResult_.getDegreesOfFreedom();
   const Scalar FStatistic = getFisherScore();
-  return FisherSnedecor(p - 1, size - 1).computeComplementaryCDF(FStatistic);
+  return FisherSnedecor(dofModel, dof).computeComplementaryCDF(FStatistic);
 }
 
 /* Kolmogorov-Smirnov normality test */

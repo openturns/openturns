@@ -78,7 +78,7 @@ void LARS::updateBasis(LeastSquaresMethod & method,
 
   const UnsignedInteger sampleSize = x.getSize();
 
-  if (sampleSize == 0) throw InvalidArgumentException( HERE ) << "Output sample cannot be empty.";
+  if (!(sampleSize > 0)) throw InvalidArgumentException( HERE ) << "Output sample cannot be empty.";
   if (y.getDimension() != 1) throw InvalidArgumentException( HERE ) << "Output sample should be unidimensional (dim=" << y.getDimension() << ").";
   if (y.getSize() != sampleSize) throw InvalidArgumentException( HERE ) << "Samples should be equally sized (in=" << sampleSize << " out=" << y.getSize() << ").";
 //   if (x.getDimension() != psi.getDimension()) throw InvalidArgumentException( HERE ) << "Sample dimension (" << x.getDimension() << ") does not match basis dimension (" << psi.getDimension() << ").";

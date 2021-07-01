@@ -32,8 +32,9 @@ IpoptProblem::IpoptProblem( const OptimizationProblem & optimProblem,
   : TNLP()
   , optimProblem_(optimProblem)
   , startingPoint_(startingPoint)
-  , objectiveFunction_(optimProblem.getObjective())
-  , optimalPoint_(optimProblem_.getDimension())
+  , evaluationInputHistory_(0, optimProblem.getDimension())
+  , evaluationOutputHistory_(0, 1)
+  , optimalPoint_(optimProblem.getDimension())
   , optimalValue_(1)
   , maximumEvaluationNumber_(maximumEvaluationNumber)
   , progressCallback_(std::make_pair<OptimizationAlgorithmImplementation::ProgressCallback, void *>(0, 0))
@@ -45,12 +46,12 @@ IpoptProblem::IpoptProblem( const OptimizationProblem & optimProblem,
 /** Retrieving objective function input.output history */
 Sample IpoptProblem::getInputHistory() const
 {
-  return objectiveFunction_.getInputHistory();
+  return evaluationInputHistory_;
 }
 
 Sample IpoptProblem::getOutputHistory() const
 {
-  return objectiveFunction_.getOutputHistory();
+  return evaluationOutputHistory_;
 }
 
 /** Overloading functions from bonmin/Ipopt
@@ -245,15 +246,20 @@ bool IpoptProblem::eval_f(int n,
   std::copy(x, x + n, xPoint.begin());
 
   // Computing objective function value
+  const Point yPoint(optimProblem_.getObjective()(xPoint));
   if (optimProblem_.isMinimization())
-    obj_value = objectiveFunction_(xPoint)[0];
+    obj_value = yPoint[0];
   else
-    obj_value = -objectiveFunction_(xPoint)[0];
+    obj_value = -yPoint[0];
+
+  // track input/outputs
+  evaluationInputHistory_.add(xPoint);
+  evaluationOutputHistory_.add(yPoint);
 
   // Check callbacks
   if (progressCallback_.first)
   {
-    progressCallback_.first((100.0 * objectiveFunction_.getInputHistory().getSize()) / maximumEvaluationNumber_, progressCallback_.second);
+    progressCallback_.first((100.0 * evaluationInputHistory_.getSize()) / maximumEvaluationNumber_, progressCallback_.second);
   }
   if (stopCallback_.first)
   {
@@ -262,7 +268,7 @@ bool IpoptProblem::eval_f(int n,
       return false;
   }
 
-  return (objectiveFunction_.getInputHistory().getSize() <= maximumEvaluationNumber_);
+  return (evaluationInputHistory_.getSize() <= maximumEvaluationNumber_);
 }
 
 
@@ -276,7 +282,7 @@ bool IpoptProblem::eval_grad_f( int n,
   std::copy(x, x + n, xPoint.begin());
 
   // Computing objective function gradient
-  Matrix gradOT(objectiveFunction_.gradient(xPoint));
+  Matrix gradOT(optimProblem_.getObjective().gradient(xPoint));
 
   // Conversion from OT::Matrix to double array
   for (int i = 0; i < n; ++i)

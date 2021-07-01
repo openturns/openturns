@@ -23,7 +23,7 @@
 #include <cstdlib>                // for getenv
 #include <cstring>                // for strcpy
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <fstream>                // for ofstream
 #include "openturns/OTwindows.h"            // for GetTempFileName, GetModuleFileName
 #ifdef _MSC_VER
@@ -226,7 +226,7 @@ Path::DirectoryList Path::GetConfigDirectoryList()
   if (otHome)
   {
     directory = String(otHome);
-#ifndef WIN32
+#ifndef _WIN32
     directory += "/etc";
     directory += PrefixConfigSubdirectory_;
 #endif
@@ -268,7 +268,7 @@ FileName Path::FindFileByNameInDirectoryList(const FileName & name,
   // and it did not need to be searched in the directory list
   // so we return it as is.
   if (name[0] == '/') return name;
-#ifdef WIN32
+#ifdef _WIN32
   if ((name.size() > 1) && (name[1] == ':')) return name;
 #endif
 
@@ -333,7 +333,7 @@ FileName Path::GetTemporaryDirectory()
   FileName tempDirectory;
 
   String tempStr(ResourceMap::GetAsString("temporary-directory"));
-#ifndef WIN32
+#ifndef _WIN32
   tempDirectory = tempStr;
 #else
   const char * tempEnv = getenv(tempStr.c_str());
@@ -387,7 +387,7 @@ String Path::CreateTemporaryDirectory (const FileName & directoryPrefix)
 {
   if (directoryPrefix.size() == 0) throw InvalidArgumentException(HERE) << "No prefix defined to create temporary directory";
 
-#ifndef WIN32
+#ifndef _WIN32
   String tempDir(GetTemporaryDirectory());
   tempDir += Os::GetDirectorySeparator();
   tempDir += directoryPrefix;
@@ -404,7 +404,7 @@ String Path::CreateTemporaryDirectory (const FileName & directoryPrefix)
   int ret = 0;
   for (int retry = 10000; retry >= 0; --retry)
   {
-    ret = GetTempFileName(GetTemporaryDirectory().c_str(),       // directory for tmp files
+    ret = GetTempFileName(GetTemporaryDirectory().c_str(),             // directory for tmp files
                           TEXT((directoryPrefix + "abc").c_str()),     // temp file name prefix (only 3 characters are used)
                           0,                                           // create unique name
                           temporaryDirName);                           // buffer for name

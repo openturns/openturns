@@ -212,7 +212,7 @@ GridLayout MinimumVolumeClassifier::drawSample(const Sample & sample, const Indi
   if (sample.getDimension() != distribution_.getDimension())
     throw InvalidArgumentException(HERE) << "Error: the sample has dimension=" << sample.getDimension() << " but the classifier expects dimension=" << dimension;
   if (classes.isEmpty() || !classes.check(getNumberOfClasses()))
-    throw InvalidArgumentException(HERE) << "Classes must be in [0,"<<getNumberOfClasses()<<"[";
+    throw InvalidArgumentException(HERE) << "Classes must be in [0," << getNumberOfClasses() << "[";
   GridLayout grid(dimension - 1, dimension - 1);
   const Description description(distribution_.getDescription());
 

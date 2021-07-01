@@ -250,7 +250,7 @@ void PiecewiseLinearEvaluation::setValues(const Point & values)
 void PiecewiseLinearEvaluation::setValues(const Sample & values)
 {
   const UnsignedInteger size = values.getSize();
-  if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise linear interpolation function.";
+  if (!(size >= 2)) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function, but size=" << size;
   if (size != locations_.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of values=" << size << " must match the number of previously set locations=" << locations_.getSize();
   values_ = values;
 }
@@ -259,7 +259,7 @@ void PiecewiseLinearEvaluation::setLocationsAndValues(const Point & locations,
     const Sample & values)
 {
   const UnsignedInteger size = locations.getSize();
-  if (size < 2) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise linear interpolation function.";
+  if (!(size >= 2)) throw InvalidArgumentException(HERE) << "Error: there must be at least 2 points to build a piecewise Hermite interpolation function, but size=" << size;
   if (size != values.getSize()) throw InvalidArgumentException(HERE) << "Error: the number of values=" << values.getSize() << " must match the number of locations=" << size;
   // Sort the data in increasing order according to the locations
   Collection< std::pair<Scalar, UnsignedInteger> > locationAndIndex(size);

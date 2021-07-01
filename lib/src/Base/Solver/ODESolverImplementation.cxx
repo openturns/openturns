@@ -42,7 +42,7 @@ ODESolverImplementation::ODESolverImplementation(const Function & transitionFunc
   , transitionFunction_(transitionFunction)
 {
   if (transitionFunction.getParameter().getDimension() != 1)
-    throw InvalidArgumentException(HERE) << "The function must have one parameter";
+    throw InvalidArgumentException(HERE) << "The function must have one parameter, but has " << transitionFunction.getParameter().getDimension() << " parameters.";
 }
 
 /* Virtual constructor */

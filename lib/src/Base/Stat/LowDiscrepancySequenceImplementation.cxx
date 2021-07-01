@@ -312,7 +312,7 @@ LowDiscrepancySequenceImplementation::Unsigned64BitsIntegerCollection LowDiscrep
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const UnsignedInteger index = indices[i];
-    if (index > MaxPrime) throw InvalidArgumentException(HERE) << "Error: cannot ask for a prime number greater than the " << MaxPrime << "th prime number.";
+    if (!(index <= MaxPrime)) throw InvalidArgumentException(HERE) << "Error: cannot ask for a prime number greater than the " << MaxPrime << "th prime number.";
     result[i] = Table[index];
   }
   return result;

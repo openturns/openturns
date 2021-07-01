@@ -10,12 +10,12 @@ Different types of design of experiments can be determined:
 - some stratified patterns: axial, composite, factorial or box patterns,
 
 - some weighted patterns that we can split into different categories:
-  the random patterns, the low discrepancy sequences and the deterministic
-  patterns.
+  random patterns, low discrepancy sequences and deterministic patterns.
 
 Examples
 --------
 Define a custom design of experiment:
+
 >>> import openturns as ot
 >>> ot.RandomGenerator.SetSeed(0)
 >>> class RandomExp(object):

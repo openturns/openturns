@@ -65,7 +65,7 @@ UserDefinedCovarianceModel * UserDefinedCovarianceModel::clone() const
 }
 
 Scalar UserDefinedCovarianceModel::computeAsScalar(const Point &s,
-                                                   const Point &t) const
+    const Point &t) const
 {
   if (s.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
@@ -76,16 +76,16 @@ Scalar UserDefinedCovarianceModel::computeAsScalar(const Point &s,
 
   const UnsignedInteger N = p_mesh_->getVerticesNumber();
   if (N == 1)
-    return covariance_(0,0);
+    return covariance_(0, 0);
 
   const UnsignedInteger i = nearestNeighbour_.query(s);
   const UnsignedInteger j = nearestNeighbour_.query(t);
   SquareMatrix result(outputDimension_);
-  return covariance_(i ,j);
+  return covariance_(i, j);
 }
 
 Scalar UserDefinedCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
-                                                   const Collection<Scalar>::const_iterator &t_begin) const
+    const Collection<Scalar>::const_iterator &t_begin) const
 {
   if (outputDimension_ != 1)
     throw InvalidArgumentException(HERE) << "Error : UserDefinedCovarianceModel::computeAsScalar(it, it) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;
@@ -96,15 +96,15 @@ Scalar UserDefinedCovarianceModel::computeAsScalar(const Collection<Scalar>::con
   Point t(inputDimension_);
   for (UnsignedInteger i = 0; i < inputDimension_; ++i, ++s_it, ++t_it)
   {
-     s[i] = *s_it;
-     t[i] = *t_it;
+    s[i] = *s_it;
+    t[i] = *t_it;
   }
   return computeAsScalar(s, t);
 }
 
 /* Computation of the covariance density function */
 SquareMatrix UserDefinedCovarianceModel::operator()(const Point &s,
-                                                    const Point &t) const
+    const Point &t) const
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;

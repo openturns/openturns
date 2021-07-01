@@ -35,7 +35,7 @@ int main(int, char *[])
     Description input(1);
     input[0] = "x";
     Description formulas(1);
-    formulas[0] = "x-cos(x)";
+    formulas[0] = "x-cos(2*x)";
     SymbolicFunction analytical(input, formulas);
     Secant myAlgo;
     fullprint << "myAlgo=" << myAlgo << std::endl;

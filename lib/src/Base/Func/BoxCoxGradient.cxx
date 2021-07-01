@@ -98,8 +98,8 @@ Matrix BoxCoxGradient::gradient(const Point & inP) const
   for (UnsignedInteger index = 0; index < dimension; ++index)
   {
     const Scalar x = inP[index] + getShift()[index];
-    if (x <= 0.0)
-      throw InvalidArgumentException(HERE) << "Can not apply the Box Cox gradient function to a negative shifted value x=" << x;
+    if (!(x > 0.0))
+      throw InvalidArgumentException(HERE) << "Can not apply the Box Cox gradient function to a nonpositive shifted value x=" << x;
 
     // Applying the Box-Cox function
     const Scalar lambda_i = getLambda()[index];

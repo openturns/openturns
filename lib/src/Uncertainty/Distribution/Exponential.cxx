@@ -24,6 +24,7 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Distribution.hxx"
+#include "openturns/Gamma.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -266,7 +267,7 @@ Point Exponential::getStandardMoment(const UnsignedInteger n) const
 /* Get the standard representative in the parametric family, associated with the standard moments */
 Distribution Exponential::getStandardRepresentative() const
 {
-  return new Exponential(1.0);
+  return new Gamma(1.0, 1.0, 0.0);
 }
 
 /* Parameters value accessor */

@@ -104,7 +104,7 @@ for dim in range(1, 5):
     CCDF = distribution.computeComplementaryCDF(point)
     print("ccdf=%.6f" % CCDF)
     PDFgr = distribution.computePDFGradient(point)
-    print("pdf gradient     =", repr(PDFgr))
+    print("pdf gradient     =", repr(cleanPoint(PDFgr)))
     # by the finite difference technique
     PDFgrFD = ot.Point(2 * dim)
     for i in range(dim):

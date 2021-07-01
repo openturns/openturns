@@ -187,7 +187,7 @@ void SQP::run()
     const Scalar normGradientSquared = currentGradient_.normSquare();
     /* In case of a null gradient, throw an internal exception */
 
-    if (normGradientSquared == 0)
+    if (!(normGradientSquared > 0))
     {
       throw InternalException(HERE) << "Error in Abdo SQP algorithm: the gradient of the level function is zero at point u=" << currentPoint_;
     }

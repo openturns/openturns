@@ -27,6 +27,9 @@
 #include "openturns/Path.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/XMLToolbox.hxx"
+#ifdef OPENTURNS_HAVE_LIBXML2
+#include <libxml/tree.h>
+#endif
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -253,7 +256,7 @@ String ResourceMap::getType(const String & key) const
       keys.add(it->first);
     }
     MapStringType::const_iterator it = mapString_.find(key);
-    if (it != mapString_.end()) return "string";
+    if (it != mapString_.end()) return "str";
   }
   // Second, try to retrieve the value from the Scalar map
   {
@@ -273,7 +276,7 @@ String ResourceMap::getType(const String & key) const
       keys.add(it->first);
     }
     MapUnsignedIntegerType::const_iterator it = mapUnsignedInteger_.find(key);
-    if (it != mapUnsignedInteger_.end()) return "unsigned int";
+    if (it != mapUnsignedInteger_.end()) return "int";
   }
   // Fourth, try to retrieve the value from the Bool map
   {
@@ -327,11 +330,11 @@ void ResourceMap::removeKey(const String & key)
     throw InternalException(HERE) << "Key '" << key << "' is missing in ResourceMap";
 
   String keyType(getType(key));
-  if (keyType == "string")
+  if (keyType == "str")
     mapString_.erase(mapString_.find(key));
   if (keyType == "float")
     mapScalar_.erase(mapScalar_.find(key));
-  if (keyType == "unsigned int")
+  if (keyType == "int")
     mapUnsignedInteger_.erase(mapUnsignedInteger_.find(key));
   if (keyType == "bool")
     mapBool_.erase(mapBool_.find(key));
@@ -592,6 +595,7 @@ void ResourceMap::readConfigurationFile(const FileName & configurationFile)
     } // for xmlNodePtr
   } // if root
 #else
+  (void)configurationFile;
   LOGWARN(OSS() << "Cannot parse configuration file due to lacking xml support");
 #endif
 }
@@ -626,7 +630,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsString("R-executable-command", "");
 #endif
   addAsString("csv-file-separator", ";");
-#ifndef WIN32
+#ifndef _WIN32
   addAsString("temporary-directory", "/tmp");
   addAsUnsignedInteger("parallel-threads", sysconf(_SC_NPROCESSORS_CONF));
 #else
@@ -661,6 +665,9 @@ void ResourceMap::loadDefaultConfiguration()
 
   // KFold parameters
   addAsUnsignedInteger("KFold-DefaultK", 10);
+
+  // KFold parameters
+  addAsBool("KFoldSplitter-Randomize", false);
 
   // BlendedStep parameters //
   addAsScalar("BlendedStep-DefaultEta", 1.0);
@@ -777,7 +784,7 @@ void ResourceMap::loadDefaultConfiguration()
   // SolverImplementation parameters //
   addAsScalar("Solver-DefaultAbsoluteError",  1.0e-5);
   addAsScalar("Solver-DefaultRelativeError",  1.0e-5);
-  addAsScalar("Solver-DefaultResidualError",  1.0e-8);
+  addAsScalar("Solver-DefaultResidualError",  0.0   );
   addAsUnsignedInteger("Solver-DefaultMaximumFunctionEvaluation", 100);
 
   // GaussKronrod parameters //
@@ -938,12 +945,13 @@ void ResourceMap::loadDefaultConfiguration()
   // ConditionalDistribution parameters //
   addAsUnsignedInteger("ConditionalDistribution-MarginalIntegrationNodesNumber", 256);
   addAsUnsignedInteger("ConditionalDistribution-MaximumIntegrationNodesNumber", 100000);
+  addAsString("ConditionalDistribution-ContinuousDiscretizationMethod", "GaussProduct");
 
   // ComposedDistribution parameters //
   addAsBool("ComposedDistribution-UseGenericCovarianceAlgorithm", false);
 
   // CompositeDistribution parameters //
-  addAsScalar("CompositeDistribution-SolverEpsilon", 1.0e-10);
+  addAsScalar("CompositeDistribution-SolverEpsilon", 1.0e-14);
   addAsUnsignedInteger("CompositeDistribution-StepNumber", 256);
 
   // Dirichlet parameters //
@@ -1094,6 +1102,12 @@ void ResourceMap::loadDefaultConfiguration()
   // UserDefined parameters //
   addAsUnsignedInteger("UserDefined-SmallSize", 10000);
 
+  // VonMisesFactory parameters //
+  addAsScalar("VonMisesFactory-AbsolutePrecision", 1.0e-12);
+  addAsScalar("VonMisesFactory-RelativePrecision", 1.0e-12);
+  addAsScalar("VonMisesFactory-ResidualPrecision", 1.0e-12);
+  addAsUnsignedInteger("VonMisesFactory-MaximumIteration", 10);
+
   // AliMikhailHaqCopulaFactory parameters //
   addAsScalar("AliMikhailHaqCopulaFactory-ThetaEpsilon", 1.0e-14);
 
@@ -1221,7 +1235,7 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("LinearModelAnalysis-Identifiers", 3);
 
   // LinearModelStepwiseAlgorithm parameters //
-  addAsScalar("LinearModelStepwiseAlgorithm-Penalty", -1.0);
+  addAsScalar("LinearModelStepwiseAlgorithm-Penalty", 2.0);
   addAsUnsignedInteger("LinearModelStepwiseAlgorithm-MaximumIterationNumber", 1000);
 
   // GeneralLinearModelAlgorithm parameters //
@@ -1413,8 +1427,12 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FittingTest-LillieforsMinimumSamplingSize", 10);
   addAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize", 100000);
 
+  // PenalizedLeastSquaresAlgorithm parameters //
+  addAsBool("PenalizedLeastSquaresAlgorithm-UseNormal", false);
+
   // LeastSquaresMetaModelSelection parameters //
   addAsScalar("LeastSquaresMetaModelSelection-ErrorThreshold", 0.0);
+  addAsScalar("LeastSquaresMetaModelSelection-MaximumError", 0.5);
   addAsScalar("LeastSquaresMetaModelSelection-MaximumErrorFactor", 2.0);
   addAsString("LeastSquaresMetaModelSelection-DecompositionMethod", "SVD");
 

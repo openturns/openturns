@@ -77,27 +77,29 @@ Scalar Bisection::solve(const UniVariateFunction & function,
   Scalar b = supPoint;
   Scalar fB = supValue - value;
   if (std::abs(fB) <= getResidualError()) return b;
-  if (!(fA * fB <= 0.0)) throw InternalException(HERE) << "Error: bisection method requires that the function takes different signs at the endpoints of the given starting interval, here infPoint=" << infPoint << ", supPoint=" << supPoint << ", value=" << value << ", f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
+  if (!((fA <= 0.0) != (fB <= 0.0))) throw InternalException(HERE) << "Error: bisection method requires that the function takes different signs at the endpoints of the given starting interval, here infPoint=" << infPoint << ", supPoint=" << supPoint << ", value=" << value << ", f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
   Scalar c = a;
   Scalar fC = fA;
   // Main loop
   for (;;)
   {
     // Current error on the root
-    const Scalar error = 2.0 * getRelativeError() * std::abs(c) + 0.5 * getAbsoluteError();
+    const Scalar error = getRelativeError() * std::abs(c) + getAbsoluteError();
     // Mid-point step
     const Scalar delta = 0.5 * (b - a);
-    // If the current approximation of the root is good enough, return it
-    if ((std::abs(delta) <= error) || (std::abs(fC) <= getResidualError())) break;
     // c is now the mid-point
     c = a + delta;
+    // If the bracketing interval is small enough, return its center
+    if (std::abs(delta) <= error) break;
     // If all the evaluation budget has been spent, return the approximation
     if (usedFunctionEvaluation == maximumFunctionEvaluation) break;
     // New evaluation
     fC = function(c) - value;
     ++usedFunctionEvaluation;
+    // If the absolute value of the function is small enough, c is a root
+    if (std::abs(fC) <= getResidualError()) break;
     // If the function takes a value at middle on the same side of value that at left
-    if (fC * fA > 0.0)
+    if ((fC > 0.0) == (fA > 0.0))
     {
       a = c;
       fA = fC;

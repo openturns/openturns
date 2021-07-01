@@ -47,7 +47,7 @@ Building distributions from samples
     HistogramFactory
     InverseNormalFactory
 
-    :template: class.rst_t
+    :template: classWithPlot.rst_t
 
     KernelSmoothing
 
@@ -99,6 +99,7 @@ Building distributions from samples
     TruncatedNormalFactory
     UniformFactory
     UserDefinedFactory
+    VonMisesFactory
     WeibullMinFactory
     WeibullMaxFactory
 

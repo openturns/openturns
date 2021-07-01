@@ -55,7 +55,7 @@ SobolSequence * SobolSequence::clone() const
 /* Initialize the sequence */
 void SobolSequence::initialize(const UnsignedInteger dimension)
 {
-  if((dimension == 0) || (dimension > MaximumDimension))
+  if(!(dimension > 0 && dimension <= MaximumDimension))
     throw InvalidDimensionException(HERE) << "Dimension must be in range [0-" << MaximumDimension << "], here dimension=" << dimension << ".";
   dimension_ = dimension;
   // copy initial direction numbers

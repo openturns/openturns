@@ -37,10 +37,10 @@ This class analyzes the influence of each component of a random vector
 The [martinez2011]_ method is used to estimate both first
 and total order indices.
 
-**The class constructor** ``MartinezSensitivityAlgorithm(inputDesign, outputDesign, N)``
-**requires a specific structure for the ** ``outputDesign`` **, and therefore for the ** ``inputDesign`` **.**
-**The latter should be generated using** :class:`~openturns.SobolIndicesExperiment`
-**(see example below). Otherwise, results will be worthless.**
+The class constructor ``MartinezSensitivityAlgorithm(inputDesign, outputDesign, N)``
+requires a specific structure for the ``outputDesign``, and therefore for the  ``inputDesign``.
+The latter should be generated using :class:`~openturns.SobolIndicesExperiment`
+(see example below). Otherwise, results will be **worthless**.
 
 Notations are defined in the documentation page of the :class:`~openturns.SobolIndicesAlgorithm` class.
 
@@ -49,8 +49,8 @@ The estimators of the first and total order Sobol' indices used by this class ar
 .. math::
 
    \begin{array}{ccc}
-   \hat{S}_i & = & \rho_n(\tilde{G}(\mat{B}), \tilde{G}(\mat{E}^i)) \\
-   \widehat{ST}_i & = & 1 - \rho_n(\tilde{G}(\mat{A}), \tilde{G}(\mat{E}^i)) \\
+   \hat{S}_i & = & \rho_n(\tilde{\vect{g}}(\mat{B}), \tilde{\vect{g}}(\mat{E}^i)) \\
+   \widehat{ST}_i & = & 1 - \rho_n(\tilde{\vect{g}}(\mat{A}), \tilde{\vect{g}}(\mat{E}^i)) \\
    \end{array}
 
 where :math:`\rho_n` is the empirical correlation defined by:
@@ -60,6 +60,8 @@ where :math:`\rho_n` is the empirical correlation defined by:
    \rho_n(\vect{Z}, \vect{Z}') = 
    \frac{\sum_{k=1}^N \vect{Z}_k \vect{Z}_k'}
    {\sqrt{\sum_{k=1}^N \vect{Z}_k^2} \sqrt{\sum_{k=1}^N \left( \vect{Z}_k' \right)^2}}
+
+and :math:`\tilde{\vect{g}}` is the centered model based on the sample. 
 
 See also
 --------

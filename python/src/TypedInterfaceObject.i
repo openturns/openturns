@@ -12,12 +12,9 @@
 
 %typemap(in) const Namespace::Interface & ($1_basetype temp) {
   void * ptr = 0;
-  if ($input == Py_None) {
-    // operators ignore the typecheck
-    SWIG_exception(SWIG_TypeError, "Object passed as argument is None");
-  } else if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
+  if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
     // From interface class, ok
-  } else if (SWIG_IsOK(SWIG_ConvertPtr($input, &ptr, $descriptor(Namespace ## __ ## Implementation *), 0))) {
+  } else if (SWIG_IsOK(SWIG_ConvertPtr($input, &ptr, $descriptor(Namespace ## __ ## Implementation *), SWIG_POINTER_NO_NULL))) {
     // From Implementation*
     Namespace::Implementation * p_impl = reinterpret_cast< Namespace::Implementation * >(ptr);
     temp = Namespace::Interface(*p_impl);
@@ -28,8 +25,8 @@
 }
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const Namespace::Interface & {
-  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0))
-    || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $descriptor(Namespace ## __ ## Implementation *), 0)));
+  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL))
+    || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $descriptor(Namespace ## __ ## Implementation *), SWIG_POINTER_NO_NULL));
 }
 
 %enddef

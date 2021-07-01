@@ -86,7 +86,7 @@ Curve::Curve(const Point & dataX,
   : DrawableImplementation(Sample(0, 2), legend)
 {
   const UnsignedInteger size = dataX.getDimension();
-  if (dataY.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Curve based on two numerical points with different dimension.";
+  if (dataY.getDimension() != size) throw InvalidArgumentException(HERE) << "Error: cannot build a Curve based on two numerical points with different dimensions.";
   Sample dataFull(size, 2);
   for (UnsignedInteger i = 0; i < size; ++i)
   {

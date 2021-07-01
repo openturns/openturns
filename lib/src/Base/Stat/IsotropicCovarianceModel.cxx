@@ -26,7 +26,7 @@ CLASSNAMEINIT(IsotropicCovarianceModel)
 
 /* Parameters constructor */
 IsotropicCovarianceModel::IsotropicCovarianceModel(const CovarianceModel & oneDimensional,
-  const UnsignedInteger inputDimension)
+    const UnsignedInteger inputDimension)
   : CovarianceModelImplementation(inputDimension)
 {
   setKernel(oneDimensional);
@@ -44,12 +44,12 @@ void IsotropicCovarianceModel::setKernel(const CovarianceModel & oneDimensional)
   const UnsignedInteger kernelInputDimension = oneDimensional.getInputDimension();
   if (kernelInputDimension != 1)
   {
-    throw InvalidArgumentException(HERE) << "In IsotropicCovarianceModel::setKernel, the supplied covariance kernel must have input dimension 1, not " << kernelInputDimension <<".";
+    throw InvalidArgumentException(HERE) << "In IsotropicCovarianceModel::setKernel, the supplied covariance kernel must have input dimension 1, not " << kernelInputDimension << ".";
   }
   const UnsignedInteger kernelOutputDimension = oneDimensional.getOutputDimension();
   if (kernelOutputDimension != 1)
   {
-    throw InvalidArgumentException(HERE) << "In IsotropicCovarianceModel::setKernel, the supplied covariance kernel must have output dimension 1, not " << kernelOutputDimension <<".";
+    throw InvalidArgumentException(HERE) << "In IsotropicCovarianceModel::setKernel, the supplied covariance kernel must have output dimension 1, not " << kernelOutputDimension << ".";
   }
   outputDimension_ = kernelOutputDimension;
   kernel_ = oneDimensional;
@@ -87,7 +87,7 @@ Scalar IsotropicCovarianceModel::computeAsScalar(const Scalar tau) const
 }
 
 Scalar IsotropicCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
-                                                 const Collection<Scalar>::const_iterator & t_begin) const
+    const Collection<Scalar>::const_iterator & t_begin) const
 {
   Scalar tauNormSquare = 0;
   Collection<Scalar>::const_iterator s_it = s_begin;
@@ -102,7 +102,7 @@ Scalar IsotropicCovarianceModel::computeAsScalar(const Collection<Scalar>::const
 
 /* Gradient */
 Matrix IsotropicCovarianceModel::partialGradient(const Point & s,
-                                                 const Point & t) const
+    const Point & t) const
 {
   if (s.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point s has dimension=" << s.getDimension() << ", expected dimension=" << inputDimension_;
   if (t.getDimension() != inputDimension_) throw InvalidArgumentException(HERE) << "Error: the point t has dimension=" << t.getDimension() << ", expected dimension=" << inputDimension_;

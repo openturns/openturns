@@ -84,7 +84,7 @@ Scalar Secant::solve(const UniVariateFunction & function,
   Scalar b = supPoint;
   Scalar fB = supValue - value;
   if (std::abs(fB) <= getResidualError()) return b;
-  if (!(fA * fB <= 0.0)) throw InternalException(HERE) << "Error: Secant  method requires that the function takes different signs at the endpoints of the given starting interval, here infPoint=" << infPoint << ", supPoint=" << supPoint << ", value=" << value << ", f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
+  if (!((fA <= 0.0) != (fB <= 0.0))) throw InternalException(HERE) << "Error: Secant  method requires that the function takes different signs at the endpoints of the given starting interval, here infPoint=" << infPoint << ", supPoint=" << supPoint << ", value=" << value << ", f(infPoint) - value=" << fA << " and f(supPoint) - value=" << fB;
   // p will store the previous approximation
   Scalar c = a;
   Scalar fC = fA;
@@ -96,7 +96,7 @@ Scalar Secant::solve(const UniVariateFunction & function,
   for (;;)
   {
     const Scalar h = 0.5 * (b + c);
-    const Scalar error = 0.5 * getRelativeError() * std::abs(c) + 0.5 * getAbsoluteError();
+    const Scalar error = getRelativeError() * std::abs(c) + getAbsoluteError();
     const Scalar delta = std::abs(h - b);
     if (delta < error)
     {
@@ -133,7 +133,7 @@ Scalar Secant::solve(const UniVariateFunction & function,
       // Step adjustment to avoid spurious fixed point
       if (std::abs(e - s) < error) e = s + ((g - s) > 0.0 ? (error) : (-error));
       // If the secant step is not within the current bracketing interval
-      if ((e - h) * (s - e) < 0.0) b = h;
+      if ((e - h < 0.0) != (s - e < 0.0)) b = h;
       else b = e;
     }
     // Else we do a bisection
@@ -146,7 +146,7 @@ Scalar Secant::solve(const UniVariateFunction & function,
     // New evaluation
     fB = function(b) - value;
     ++usedFunctionEvaluation;
-    if (fG * fB < 0.0)
+    if ((fG < 0.0) != (fB < 0.0))
     {
       c = g;
       fC = fG;

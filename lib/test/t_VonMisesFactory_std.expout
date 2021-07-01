@@ -1,0 +1,10 @@
+Distribution (raw)           =class=VonMises name=VonMises dimension=1 mu=0.5 kappa=2.5
+Estimated distribution (raw) =class=VonMises name=VonMises dimension=1 mu=0.498706 kappa=2.54104
+Distribution (circular)           =class=VonMises name=VonMises dimension=1 mu=0.5 kappa=2.5
+Estimated distribution (circular) =class=VonMises name=VonMises dimension=1 mu=0.493856 kappa=2.54088
+Default distribution=class=VonMises name=VonMises dimension=1 mu=0 kappa=1
+Distribution from parameters=class=VonMises name=VonMises dimension=1 mu=0.5 kappa=2.5
+VonMises          =class=VonMises name=VonMises dimension=1 mu=0.5 kappa=2.5
+Estimated vonMises=class=VonMises name=VonMises dimension=1 mu=0.493856 kappa=2.54088
+Default vonMises=class=VonMises name=VonMises dimension=1 mu=0 kappa=1
+VonMises from parameters=class=VonMises name=VonMises dimension=1 mu=0.5 kappa=2.5

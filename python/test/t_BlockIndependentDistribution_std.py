@@ -145,6 +145,14 @@ mean = distribution.getMean()
 # Ensure mean is [0,0,1,1,1,1,1]
 # Following platform, the value slightly differs
 ott.assert_almost_equal(distribution.getMean(), [0, 0, 1, 1, 1, 1, 1])
+
+standardDeviation = distribution.getStandardDeviation()
+print("standard deviation=", repr(standardDeviation))
+skewness = distribution.getSkewness()
+#print("skewness=", repr(skewness))
+kurtosis = distribution.getKurtosis()
+print("kurtosis=", repr(kurtosis))
+
 ot.PlatformInfo.SetNumericalPrecision(4)
 covariance = distribution.getCovariance()
 print("covariance=", covariance)
@@ -213,3 +221,7 @@ print("sequential conditional CDF(", pt, ")=", resCDF)
 print("sequential conditional quantile(", resCDF, ")=",
       distribution.computeSequentialConditionalQuantile(resCDF))
 print('range=', distribution.getRange())
+
+# getStandardDeviation vs Dirac
+distribution2 = ot.BlockIndependentDistribution([ot.Normal(), ot.Dirac(1800)])
+ott.assert_almost_equal(distribution2.getStandardDeviation(), [1, 0])

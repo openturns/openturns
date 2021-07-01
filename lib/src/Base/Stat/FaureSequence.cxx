@@ -46,7 +46,7 @@ FaureSequence * FaureSequence::clone() const
 /* Initialize the sequence */
 void FaureSequence::initialize(const UnsignedInteger dimension)
 {
-  if (dimension == 0) throw InvalidArgumentException(HERE) << "Dimension must be > 0.";
+  if (!(dimension > 0)) throw InvalidArgumentException(HERE) << "Dimension must be > 0.";
   dimension_ = dimension;
   modulus_ = ComputeNextPrimeNumber(dimension);
   modulusInverse_ = 1.0 / modulus_;

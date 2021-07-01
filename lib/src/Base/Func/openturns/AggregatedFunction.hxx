@@ -42,7 +42,7 @@ public:
   AggregatedFunction();
 
   /** Parameter constructor */
-  AggregatedFunction(const FunctionCollection & functionCollection);
+  explicit AggregatedFunction(const FunctionCollection & functionCollection);
 
   /** Comparison operator */
   Bool operator ==(const AggregatedFunction & other) const;

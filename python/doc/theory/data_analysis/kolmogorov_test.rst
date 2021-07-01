@@ -136,3 +136,10 @@ This method is also referred to in the literature as Kolmogorov's Test.
     - [dagostino1986]_
     - [sprent2001]_
     - [bhattacharyya1997]_
+    - [Lilliefors1967]_
+    - [Keutelian1991]_
+    - [AbdiMolinSalkind2007]_
+    - [AbdiMolin1998]_
+    - [ScottStewart2011]_
+    - [NikitinTchirina2007]_
+

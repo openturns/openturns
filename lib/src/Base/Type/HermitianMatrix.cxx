@@ -98,7 +98,7 @@ UnsignedInteger HermitianMatrix::getDimension() const
 HermitianMatrix HermitianMatrix::transpose () const
 {
   // Quick return for empty or scalar HermitianMatrix
-  if (getDimension() <= 1) return (*this);
+  if (!(getDimension() > 1)) return (*this);
   return Implementation(getImplementation()->transposeHerm().clone());
 }
 
@@ -106,7 +106,7 @@ HermitianMatrix HermitianMatrix::transpose () const
 HermitianMatrix HermitianMatrix::conjugate () const
 {
   // Quick return for empty or scalar HermitianMatrix
-  if (getDimension() <= 1) return (*this);
+  if (!(getDimension() > 1)) return (*this);
   return Implementation(getImplementation()->conjugateHerm().clone());
 }
 
@@ -144,7 +144,7 @@ void HermitianMatrix::checkHermitian() const
 Complex & HermitianMatrix::operator () (const UnsignedInteger i,
                                         const UnsignedInteger j)
 {
-  if (i < j) throw InvalidArgumentException(HERE) << "Error: only the lower triangle of an Hermitian matrix can be filled directly.";
+  if (!(i >= j)) throw InvalidArgumentException(HERE) << "Error: only the lower triangle of an Hermitian matrix can be filled directly.";
   copyOnWrite();
   hasBeenHermitianized_ = false;
 

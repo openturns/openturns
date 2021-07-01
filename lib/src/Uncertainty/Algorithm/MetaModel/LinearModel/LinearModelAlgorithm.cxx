@@ -124,8 +124,8 @@ void LinearModelAlgorithm::run()
 
   const UnsignedInteger size = inputSample_.getSize();
   const UnsignedInteger basisSize = basis_.getSize();
-  if(!(size - basisSize > 0))
-    throw InvalidArgumentException(HERE) << "Number of basis elements is great or equals the sample size. Data size = " << outputSample_.getSize()
+  if (basisSize > size)
+    throw InvalidArgumentException(HERE) << "Number of basis elements is greater than sample size. Data size = " << outputSample_.getSize()
                                          << ", basis size = " << basisSize;
 
   // No particular strategy : using the full basis
@@ -164,9 +164,8 @@ void LinearModelAlgorithm::run()
   // Residual sample
   const Sample residualSample(outputSample_ - metaModel(inputSample_));
 
-  // Sigma2
-
-  const Scalar sigma2 = size * residualSample.computeRawMoment(2)[0] / (size - basisSize);
+  // noise variance
+  const Scalar sigma2 = (basisSize >= size) ? 0.0 : size * residualSample.computeRawMoment(2)[0] / (size - basisSize);
 
   Sample standardizedResiduals(size, 1);
 

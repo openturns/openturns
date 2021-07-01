@@ -49,11 +49,12 @@ FiniteDifferenceHessian::FiniteDifferenceHessian(
 {
   /* Check if the dimension of the constant term is compatible with the linear and quadratic terms */
   if (epsilon.getDimension() != evaluation.getInputDimension())
-    throw InvalidDimensionException(HERE) << "Epsilon dimension is incompatible with the given evaluation";
+    throw InvalidDimensionException(HERE) << "Epsilon dimension (" << epsilon.getDimension() << ") is incompatible with the given evaluation";
 
   /* Check if any epsilon component is exactly zero */
   for (UnsignedInteger i = 0; i < epsilon.getDimension(); i++)
-    if (epsilon[i] == 0.0) throw InvalidArgumentException(HERE) << "At least one of the components of epsilon is equal to 0.0, namely component " << i;
+    if (!(epsilon[i] > 0.0 || epsilon[i] < 0.0)) // condition equivalent to epsilon[i] == 0.0, but true if epsilon[i] is NaN
+      throw InvalidArgumentException(HERE) << "At least one of the components of epsilon is null, namely component " << i;
 }
 
 /* SecondParameter constructor */
@@ -64,7 +65,8 @@ FiniteDifferenceHessian::FiniteDifferenceHessian(const Scalar epsilon,
   , finiteDifferenceStep_(Point(evaluation.getInputDimension(), epsilon))
 {
   // Check if epsilon is exactly zero
-  if (epsilon == 0.0) throw InvalidArgumentException(HERE) << "The given scalar epsilon is equal to 0.0";
+  if (!(epsilon > 0.0 || epsilon < 0.0)) // condition equivalent to epsilon == 0.0, but true if epsilon is NaN
+    throw InvalidArgumentException(HERE) << "The given scalar epsilon is null.";
 }
 
 /*  Parameter constructor with FiniteDifferenceStep*/
@@ -77,11 +79,13 @@ FiniteDifferenceHessian::FiniteDifferenceHessian(
 {
   Point epsilon(getEpsilon());
   //Check if the dimension of the constant term is compatible with the linear and quadratic terms
-  if (epsilon.getDimension() != evaluation.getInputDimension()) throw InvalidDimensionException(HERE) << "Epsilon dimension is incompatible with the given evaluation";
+  if (epsilon.getDimension() != evaluation.getInputDimension())
+    throw InvalidDimensionException(HERE) << "Epsilon dimension (" << epsilon.getDimension() << ") is incompatible with the given evaluation";
 
   //Check if any epsilon component is exactly zero
   for (UnsignedInteger i = 0; i < epsilon.getDimension(); i++)
-    if (epsilon[i] == 0.0) throw InvalidArgumentException(HERE) << "At least one of the components of epsilon is equal to 0.0, namely component " << i;
+    if (!(epsilon[i] > 0.0 || epsilon[i] < 0.0)) // condition equivalent to epsilon[i] == 0.0, but true if epsilon[i] is NaN
+      throw InvalidArgumentException(HERE) << "At least one of the components of epsilon is null, namely component " << i;
 }
 
 /* Virtual constructor */

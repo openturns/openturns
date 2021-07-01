@@ -90,21 +90,25 @@ String NonCenteredFiniteDifferenceGradient::__str__(const String & ) const
 Matrix NonCenteredFiniteDifferenceGradient::gradient(const Point & inP) const
 {
   const UnsignedInteger inputDimension = inP.getDimension();
-  Point step(finiteDifferenceStep_.operator()(inP));
-  if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension";
+  const Point step(finiteDifferenceStep_.operator()(inP));
+  if (inputDimension != step.getDimension()) throw InvalidArgumentException(HERE) << "Invalid input dimension " << inputDimension << ", expected " << step.getDimension();
   /* At which points do we have to compute the evaluation for the decentered finite difference. We need 1+dim pionts. */
   Sample gridPoints(inputDimension + 1, inP);
   for(UnsignedInteger i = 0; i < inputDimension; ++i) gridPoints(i + 1, i) += step[i];
   /* Evaluate the evaluation */
-  Sample gridValues(evaluation_.operator()(gridPoints));
+  const Sample gridValues(evaluation_.operator()(gridPoints));
   /* Get the value at the center of the grid */
-  Point center(gridValues[0]);
+  const Point center(gridValues[0]);
   /* Compute the gradient */
   Matrix result(evaluation_.getInputDimension(), evaluation_.getOutputDimension());
   for (UnsignedInteger i = 0; i < result.getNbRows(); ++i)
+  {
+    // Recompute the actual step in order to take into account the round-off error in inP[i] + step[i]
+    const Scalar hi = gridPoints(i + 1, i) - inP[i];
     for (UnsignedInteger j = 0; j < result.getNbColumns(); ++j)
       /* result(i, j) = (f_j(x + e_i) - f_j(x)) / e_i ~ df_j / dx_i */
-      result(i, j) = (gridValues(i + 1, j) - center[j]) / step[i];
+      result(i, j) = (gridValues(i + 1, j) - center[j]) / hi;
+  }
   return result;
 }
 

@@ -30,11 +30,10 @@ CLASSNAMEINIT(MultiStart)
 
 static const Factory<MultiStart> Factory_MultiStart;
 
-/* Constructor with parameters */
+/* Constructor with no parameters */
 MultiStart::MultiStart()
   : OptimizationAlgorithmImplementation()
   , solver_(new Cobyla)
-  , startingPoints_()
   , keepResults_(ResourceMap::GetAsBool("MultiStart-KeepResults"))
   , resultCollection_(0)
 {
@@ -42,28 +41,40 @@ MultiStart::MultiStart()
 }
 
 
-/* Constructor with parameters */
+/* Constructor that sets starting sample */
 MultiStart::MultiStart(const OptimizationAlgorithm & solver,
-                       const Sample & startingPoints)
-  : OptimizationAlgorithmImplementation(solver.getProblem())
+                       const Sample & startingSample)
+  : OptimizationAlgorithmImplementation()
   , solver_(solver)
-  , startingPoints_(startingPoints)
+  , startingSample_(startingSample)
   , keepResults_(ResourceMap::GetAsBool("MultiStart-KeepResults"))
   , resultCollection_(0)
 {
+  checkSolver(solver);
+
   // no global limit unless the maximum eval number is set
-  setMaximumEvaluationNumber(solver.getMaximumEvaluationNumber() * startingPoints.getSize());
+  setMaximumEvaluationNumber(solver.getMaximumEvaluationNumber() * startingSample.getSize());
+
+  setProblem(solver.getProblem());
 }
 
+/* Check that the solver is compatible with MultiStart */
+void MultiStart::checkSolver(const OptimizationAlgorithm & solver) const
+{
+  if (solver.getImplementation()->getClassName() == "MultiStart")
+    throw InvalidArgumentException(HERE) << "Cannot apply MultiStart to a MultiStart.";
+}
 
 void MultiStart::setProblem(const OptimizationProblem & problem)
 {
+  checkStartingSampleConsistentWithOptimizationProblem(startingSample_, problem);
   OptimizationAlgorithmImplementation::setProblem(problem);
   solver_.setProblem(problem);
 }
 
 
-/* Check whether this problem can be solved by this solver.  Must be overloaded by the actual optimisation algorithm */
+/* Check whether this problem can be solved by this solver */
+// Inherited method: never used by MultiStart because solver_ calls its own checkProblem method.
 void MultiStart::checkProblem(const OptimizationProblem & ) const
 {
   // Nothing to do
@@ -72,32 +83,39 @@ void MultiStart::checkProblem(const OptimizationProblem & ) const
 
 void MultiStart::run()
 {
-  if (startingPoints_.getDimension() != getProblem().getDimension())
-    throw InvalidArgumentException(HERE) << "The starting points dimension must match the problem dimension";
+  if (startingSample_.getSize() == 0) throw InvalidArgumentException(HERE) << "No starting points are set.";
+  const UnsignedInteger problemDimension = getProblem().getDimension();
+  if (problemDimension == 0) throw InvalidArgumentException(HERE) << "No problem has been set.";
+  if (problemDimension != startingSample_.getDimension())
+    throw InvalidArgumentException(HERE) << "The starting points dimension (" << startingSample_.getDimension()
+                                         << ") and the problem dimension (" << problemDimension << ") do not match.";
 
   // run the solver with each starting point
   OptimizationAlgorithm solver(solver_);
   resultCollection_.clear();
   Scalar bestValue = getProblem().isMinimization() ? SpecFunc::MaxScalar : SpecFunc::LowestScalar;
-  const UnsignedInteger size = startingPoints_.getSize();
+  const UnsignedInteger size = startingSample_.getSize();
   const UnsignedInteger initialEvaluationNumber = getProblem().getObjective().getEvaluationCallsNumber();
   UnsignedInteger evaluationNumber = 0;
   UnsignedInteger successNumber = 0;
+  UnsignedInteger improvementNumber = 0;
   for (UnsignedInteger i = 0; i < size; ++ i)
   {
-    solver.setStartingPoint(startingPoints_[i]);
-
+    solver.setStartingPoint(startingSample_[i]);
     // ensure we do not exceed the global budget if the maximum eval number is set
     const UnsignedInteger remainingEval = std::max(static_cast<SignedInteger>(getMaximumEvaluationNumber() - evaluationNumber), 0L);
+    LOGDEBUG(OSS() << "Working with starting point[" << i << "]=" << startingSample_[i] << ", " << remainingEval << " remaining evaluations");
     if (remainingEval < solver.getMaximumEvaluationNumber())
       solver.setMaximumEvaluationNumber(remainingEval);
 
     try
     {
       solver.run();
+      ++successNumber;
     }
-    catch (Exception &)
+    catch (Exception & ex)
     {
+      LOGDEBUG(OSS() << "StartingPoint " << i << " failed. Reason=" << ex);
       continue;
     }
 
@@ -110,10 +128,11 @@ void MultiStart::run()
       bestValue = currentValue;
       setResult(result);
       LOGINFO(OSS() << "Best initial point so far=" << result.getOptimalPoint() << " value=" << result.getOptimalValue());
-      ++successNumber;
+      ++improvementNumber;
     }
 
     evaluationNumber += getProblem().getObjective().getEvaluationCallsNumber() - initialEvaluationNumber;
+    LOGDEBUG(OSS() << "Number of evaluations so far=" << evaluationNumber);
     if (evaluationNumber > getMaximumEvaluationNumber())
     {
       break;
@@ -134,9 +153,9 @@ void MultiStart::run()
       }
     }
   }
-  LOGINFO(OSS() << successNumber << " out of " << size << " local searches succeeded");
+  LOGINFO(OSS() << successNumber << " out of " << size << " local searches succeeded, " << improvementNumber << " improvements");
 
-  if (successNumber == 0)
+  if (!(successNumber > 0))
   {
     throw InternalException(HERE) << "None of the local searches succeeded.";
   }
@@ -156,13 +175,16 @@ String MultiStart::__repr__() const
   oss << "class=" << getClassName()
       << " " << OptimizationAlgorithmImplementation::__repr__()
       << " solver=" << solver_
-      << " startingPoints=" << startingPoints_
+      << " startingSample=" << startingSample_
       << " keepResults=" << keepResults_;
   return oss;
 }
 
+/* Accessor to the underlying solver */
 void MultiStart::setOptimizationAlgorithm(const OptimizationAlgorithm & solver)
 {
+  checkSolver(solver);
+  setProblem(solver.getProblem());
   solver_ = solver;
 }
 
@@ -172,17 +194,57 @@ OptimizationAlgorithm MultiStart::getOptimizationAlgorithm() const
 }
 
 
-void MultiStart::setStartingPoints(const Sample & startingPoints)
+/* Useless inherited method: throw */
+void MultiStart::setStartingPoint(const Point &)
 {
-  startingPoints_ = startingPoints;
+  throw NotDefinedException(HERE) << "setStartingPoint makes no sense in a MultiStart context";
+}
+
+/* Useless inherited method: throw */
+Point MultiStart::getStartingPoint() const
+{
+  throw NotDefinedException(HERE) << "getStartingPoint makes no sense in a MultiStart context";
 }
 
 
-Sample MultiStart::getStartingPoints() const
+/* Starting sample accessor */
+void MultiStart::setStartingSample(const Sample & startingSample)
 {
-  return startingPoints_;
+  checkStartingSampleConsistentWithOptimizationProblem(startingSample, getProblem());
+  startingSample_ = startingSample;
 }
 
+/* Starting points accessor */
+Sample MultiStart::getStartingSample() const
+{
+  return startingSample_;
+}
+
+// Check that the optimization problem is consistent with the starting sample
+void MultiStart::checkStartingSampleConsistentWithOptimizationProblem(const Sample & startingSample, const OptimizationProblem & problem) const
+{
+  const UnsignedInteger problemDimension = problem.getDimension();
+  if ( (problemDimension > 0) && (startingSample.getSize() > 0) ) // only perform check if problem is initalized and starting points are already defined
+  {
+    if (problemDimension != startingSample.getDimension())
+    {
+      throw InvalidArgumentException(HERE) << "Proposed starting sample has dimension " << startingSample.getDimension()
+                                           << ", but the optimization problem has dimension " << problemDimension;
+    } // starting sample has the same dimension as the optimization problem
+
+    if (problem.hasBounds())
+    {
+      const Interval optimizationBounds(problem.getBounds());
+      for (UnsignedInteger i = 0; i < startingSample.getSize(); ++ i)
+      {
+        if (!optimizationBounds.contains(startingSample[i]))
+          throw InvalidArgumentException(HERE) << "Optimization bounds inconsistent with starting points of the MultiStart algorithm. \n"
+                                               << "The point of index i=" << i << " is \n" << startingSample[i]
+                                               << "\n and does not belong to the interval \n" << optimizationBounds;
+      } //i
+    } // starting sample is consistent with problem optimization bounds (if any)
+  }
+}
 
 /* Flag for results management accessors */
 Bool MultiStart::getKeepResults() const
@@ -206,7 +268,7 @@ void MultiStart::save(Advocate & adv) const
 {
   OptimizationAlgorithmImplementation::save(adv);
   adv.saveAttribute("solver_", solver_);
-  adv.saveAttribute("startingPoints_", startingPoints_);
+  adv.saveAttribute("startingSample_", startingSample_);
   adv.saveAttribute("keepResults_", keepResults_);
   adv.saveAttribute("resultCollection_", resultCollection_);
 }
@@ -216,7 +278,10 @@ void MultiStart::load(Advocate & adv)
 {
   OptimizationAlgorithmImplementation::load(adv);
   adv.loadAttribute("solver_", solver_);
-  adv.loadAttribute("startingPoints_", startingPoints_);
+  if (adv.hasAttribute("startingSample_"))
+    adv.loadAttribute("startingSample_", startingSample_);
+  else
+    adv.loadAttribute("startingPoints_", startingSample_);
   adv.loadAttribute("keepResults_", keepResults_);
   adv.loadAttribute("resultCollection_", resultCollection_);
 }

@@ -43,7 +43,7 @@ public:
   SymbolicHessian();
 
   /** Default constructor */
-  SymbolicHessian(const SymbolicEvaluation & evaluation);
+  explicit SymbolicHessian(const SymbolicEvaluation & evaluation);
 
 #ifndef SWIG
   /** Parameters constructor */

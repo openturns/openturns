@@ -73,7 +73,7 @@ algo_X = ot.KarhunenLoeveP1Algorithm(mesh, process_X.getCovarianceModel(), thres
 algo_X.run()
 result_X = algo_X.getResult()
 phi_X = result_X.getScaledModesAsProcessSample()
-lambda_X = result_X.getEigenValues()
+lambda_X = result_X.getEigenvalues()
 
 graph_modes_X, graph_ev_X = drawKL(phi_X, lambda_X, mesh, "X")
 view = viewer.View(graph_modes_X)
@@ -132,7 +132,7 @@ algo_Y = ot.KarhunenLoeveSVDAlgorithm(sample_Y, threshold)
 algo_Y.run()
 result_Y = algo_Y.getResult()
 phi_Y = result_Y.getScaledModesAsProcessSample()
-lambda_Y = result_Y.getEigenValues()
+lambda_Y = result_Y.getEigenvalues()
 graph_modes_Y, graph_ev_Y = drawKL(phi_Y, lambda_Y, mesh, "Y")
 view = viewer.View(graph_modes_Y)
 

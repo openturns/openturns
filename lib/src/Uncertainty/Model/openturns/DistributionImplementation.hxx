@@ -152,11 +152,9 @@ protected:
 public:
   /** Get a numerical sample whose elements follow the distributionImplementation */
   virtual Sample getSample(const UnsignedInteger size) const;
-protected:
   virtual Sample getSampleByInversion(const UnsignedInteger size) const;
   virtual Sample getSampleByQMC(const UnsignedInteger size) const;
 
-public:
   /** Get the DDF of the distribution */
   virtual Scalar computeDDF(const Scalar scalar) const;
   virtual Point  computeDDF(const Point & point) const;

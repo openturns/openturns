@@ -1,8 +1,8 @@
 .. image:: https://circleci.com/gh/openturns/openturns.svg?style=shield
     :target: https://circleci.com/gh/openturns/openturns
 
-.. image:: https://travis-ci.org/openturns/openturns.svg?branch=master
-    :target: https://travis-ci.org/openturns/openturns
+.. image:: https://github.com/openturns/openturns/actions/workflows/build.yml/badge.svg?branch=master
+    :target: https://github.com/openturns/openturns/actions/workflows/build.yml
 
 .. image:: https://ci.appveyor.com/api/projects/status/eclivj94bqwhh1mq/branch/master?svg=true
     :target: https://ci.appveyor.com/project/openturns/openturns

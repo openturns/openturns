@@ -71,7 +71,7 @@ TensorizedUniVariateFunctionFactory::TensorizedUniVariateFunctionFactory(const F
     coll_(coll),
     phi_(phi)
 {
-  if (coll.getSize() != phi.getDimension()) throw InvalidArgumentException(HERE) << "Error: the enumerate function must have a dimension equal to the collection size";
+  if (coll.getSize() != phi.getDimension()) throw InvalidArgumentException(HERE) << "Error: the enumerate function must have a dimension equal to the collection size, here dimension=" << phi.getDimension() << " and collection size=" << coll.getSize();
 }
 
 

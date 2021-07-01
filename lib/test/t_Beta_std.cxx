@@ -73,7 +73,7 @@ int main(int, char *[])
     }
 
     // Define a point
-    Point point( distribution.getDimension(), 1.0 );
+    Point point( distribution.getDimension(), 1.5 );
     fullprint << "Point= " << point << std::endl;
 
     // Show PDF and CDF of point

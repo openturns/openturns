@@ -22,11 +22,10 @@
 #include <iostream>
 #include "openturns/DiscreteMarkovChain.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/UserDefined.hxx"
 #include "openturns/Dirac.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/Point.hxx"
-#include "openturns/ResourceMap.hxx"
+#include "openturns/SquareComplexMatrix.hxx"
 #include "openturns/DistFunc.hxx"
 
 
@@ -246,7 +245,7 @@ void DiscreteMarkovChain::setTransitionMatrix(const SquareMatrix & transitionMat
   const Point sums(transitionMatrix * ones);
   for (UnsignedInteger i = 0; i < transitionMatrix.getNbRows(); ++i)
   {
-    if (std::abs(sums[i] - 1.0) > ResourceMap::GetAsScalar("DiscreteMarkovChain-ProbabilitySumPrecision")) throw InvalidArgumentException(HERE) << "Error: the given transition matrix is not stochastic. Sum of line " << i + 1 << " is equal to " << sums[i];
+    if (!(std::abs(sums[i] - 1.0) < ResourceMap::GetAsScalar("DiscreteMarkovChain-ProbabilitySumPrecision"))) throw InvalidArgumentException(HERE) << "Error: the given transition matrix is not stochastic. Sum of line " << i + 1 << " is equal to " << sums[i];
   }
 
   // Set transitionMatrix_ attribute
@@ -292,6 +291,32 @@ void DiscreteMarkovChain::setMesh(const Mesh & mesh)
 {
   if(!mesh.isRegular()) throw InvalidArgumentException(HERE) << "Error: the mesh must be regular.";
   ProcessImplementation::setMesh(mesh);
+}
+
+/* Stationary distribution computation */
+UserDefined DiscreteMarkovChain::computeStationaryDistribution() const
+{
+  const UnsignedInteger dimension = transitionMatrix_.getDimension();
+  SquareComplexMatrix eigenvectors;
+  const SquareMatrix::ComplexCollection eigenvalues(transitionMatrix_.transpose().computeEV(eigenvectors));
+  // Find the largest eigenvalue, exactly equal to one in theory
+  Scalar largestEV = eigenvalues[0].real();
+  UnsignedInteger indexMax = 0;
+  for (UnsignedInteger i = 1; i < dimension; ++i)
+    if (!(eigenvalues[i].real() < largestEV))
+    {
+      largestEV = eigenvalues[i].real();
+      indexMax = i;
+    }
+  // Now extract the corresponding eigenvector. We know that it can be chosen with positive components and a L1 norm equal to 1, and it is the probability table of the stationary distribution. There is no need to normalize it as it is done in the UserDefined distribution.
+  Sample support(dimension, 1);
+  Point probabilities(dimension);
+  for (UnsignedInteger i = 0; i < dimension; ++i)
+  {
+    support(i, 0) = i;
+    probabilities[i] = std::abs(eigenvectors(i, indexMax).real());
+  }
+  return UserDefined(support, probabilities);
 }
 
 /* DOT export */

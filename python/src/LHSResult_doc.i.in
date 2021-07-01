@@ -1,4 +1,4 @@
-%define OT_LHSResult_doc
+%feature("docstring") OT::LHSResult
 "Summarize the results of an LHS optimization.
 
 Available constructor:
@@ -23,50 +23,27 @@ Examples
 >>> profile = ot.GeometricProfile()
 >>> spaceFilling = ot.SpaceFillingC2()
 >>> # Optim algo
->>> algo = ot.SimulatedAnnealingLHS(lhs, profile, spaceFilling)
+>>> algo = ot.SimulatedAnnealingLHS(lhs, spaceFilling, profile)
 >>> # first, generate a design
 >>> design = algo.generate()
 >>> # then, get the result
 >>> result = algo.getResult()
 "
-%enddef
-%feature("docstring") OT::LHSResult
-OT_LHSResult_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_LHSResult_get_optimal_design_doc
+%feature("docstring") OT::LHSResult::getOptimalDesign
 "Accessor to the optimal design.
 
 Returns
 -------
 design : :class:`~openturns.Sample`
     The design that optimizes the criterion.
+"
 
-Examples
---------
->>> import openturns as ot
->>> lhs = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*3), 100)
->>> lhs.setAlwaysShuffle(True) # randomized
->>> spaceFilling = ot.SpaceFillingPhiP(10)
->>> # By Monte Carlo
->>> algoMC = ot.MonteCarloLHS(lhs, 1000, spaceFilling)
->>> # Get LHSResult
->>> optimalDesignMC = algoMC.generate()
->>> resultMC = algoMC.getResult()
->>> # By simulated annealing, with restart
->>> profile = ot.GeometricProfile()
->>> algoSA = ot.SimulatedAnnealingLHS(lhs, profile, spaceFilling)
->>> # Get LHSResult
->>> optimalDesignSA = algoSA.generateWithRestart(5)
->>> resultSA = algoSA.getResult()
->>> # Get optimal results for all restarts
->>> optimRestart = [resultSA.getOptimalDesign(i) for i in range(resultSA.getNumberOfRestarts())]"
-%enddef
-%feature("docstring") OT::LHSResult::getOptimalDesign
-OT_LHSResult_get_optimal_design_doc
 // ---------------------------------------------------------------------
-%define OT_LHSResult_get_algo_history_doc
+
+%feature("docstring") OT::LHSResult::getAlgoHistory
 "Accessor to the internal values computed during optimization algorithm.
 
 Returns
@@ -75,70 +52,29 @@ history : :class:`~openturns.Point`
     Some internal values computed during optimization algorithm.
     SimulatedAnnealingLHS stores criterion value, temperature
     and probability at each iteration.
+"
 
-Examples
---------
->>> import openturns as ot
->>> lhs = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*3), 100)
->>> lhs.setAlwaysShuffle(True) # randomized
->>> profile = ot.GeometricProfile()
->>> spaceFilling = ot.SpaceFillingPhiP(50)
->>> algoSA = ot.SimulatedAnnealingLHS(lhs, profile, spaceFilling)
->>> # Get LHSResult
->>> design = algoSA.generateWithRestart(5)
->>> resultSA = algoSA.getResult()
->>> criterionHistory = resultSA.getAlgoHistory()"
-%enddef
-%feature("docstring") OT::LHSResult::getAlgoHistory
-OT_LHSResult_get_algo_history_doc
 // ---------------------------------------------------------------------
-%define OT_LHSResult_get_c2_doc
+
+%feature("docstring") OT::LHSResult::getC2
 "Accessor to the C2 criterion evaluated on the optimal design.
 
 Returns
 -------
 c2 : float
     The C2 criterion.
+"
 
-Examples
---------
->>> import openturns as ot
->>> lhs = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*3), 100)
->>> lhs.setAlwaysShuffle(True) # randomized
->>> profile = ot.GeometricProfile()
->>> spaceFilling = ot.SpaceFillingPhiP(50)
->>> algoSA = ot.SimulatedAnnealingLHS(lhs, profile, spaceFilling)
->>> # Get LHSResult
->>> design = algoSA.generate()
->>> resultSA = algoSA.getResult()
->>> c2 = resultSA.getC2()"
-%enddef
-%feature("docstring") OT::LHSResult::getC2
-OT_LHSResult_get_c2_doc
 // ---------------------------------------------------------------------
-%define OT_LHSResult_get_phi_p_doc
+
+%feature("docstring") OT::LHSResult::getPhiP
 "Accessor the PhiP criterion evaluated on the optimal design.
 
 Returns
 -------
 phiP : float
     The PhiP criterion.
-
-Examples
---------
->>> import openturns as ot
->>> lhs = ot.LHSExperiment(ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*3), 100)
->>> lhs.setAlwaysShuffle(True) # randomized
->>> profile = ot.GeometricProfile()
->>> spaceFilling = ot.SpaceFillingPhiP(50)
->>> algoSA = ot.SimulatedAnnealingLHS(lhs, profile, spaceFilling)
->>> design = algoSA.generate()
->>> # Get LHSResult
->>> resultSA = algoSA.getResult()
->>> phip = resultSA.getPhiP()"
-%enddef
-%feature("docstring") OT::LHSResult::getPhiP
-OT_LHSResult_get_phi_p_doc
+"
 
 // ---------------------------------------------------------------------
 

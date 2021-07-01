@@ -9,7 +9,7 @@
 #define OT_TYPECHECK_FIELDIMPLEMENTATION 3
 
 %typemap(typecheck,precedence=OT_TYPECHECK_FIELDIMPLEMENTATION) const FieldImplementation & {
-  $1  = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0));
+  $1  = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL));
   // || OT::isAPythonSequenceOf<OT::_PySequence_>( $input );
 }
 

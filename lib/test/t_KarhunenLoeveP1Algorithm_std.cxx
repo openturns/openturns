@@ -81,7 +81,7 @@ int main(int, char *[])
       Point x(1, 0.25);
       for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
         error += std::abs((result.lift(coefficients[i]) - P1LagrangeEvaluation(Field(mesh, processSample[i])))(x)[0]);
-      assert_almost_equal(error, 0.965275 , 1.0e-6, 1.0e-6);
+      assert_almost_equal(error, 0.965275, 1.0e-6, 1.0e-6);
     }
     {
       // 2d output
@@ -114,12 +114,12 @@ int main(int, char *[])
     }
     {
       // 2d input, to check that issue #1660 is solved
-      Mesh mesh(IntervalMesher(Indices(2, 4)).build(Interval(Point(2, -1.2), Point(2, 1.0))));
+      mesh = IntervalMesher(Indices(2, 4)).build(Interval(Point(2, -1.2), Point(2, 1.0)));
       AbsoluteExponential cov2D(Point(2, 1.0));
       KarhunenLoeveP1Algorithm algo(mesh, cov2D, 1e-6);
       algo.run();
       KarhunenLoeveResult result(algo.getResult());
-      Point lambda(result.getEigenValues());
+      Point lambda(result.getEigenvalues());
       ProcessSample KLModesPS(result.getModesAsProcessSample());
       // The output is hidden due to near-zero nonreproducible values
       //fullprint << "KL modes (process sample)=" << KLModesPS << std::endl;
@@ -144,7 +144,7 @@ int main(int, char *[])
       Point x(2, 0.25);
       for (UnsignedInteger i = 0; i < processSample.getSize(); ++i)
         error += ((result.lift(coefficients[i]) - P1LagrangeEvaluation(Field(mesh, processSample[i])))(x)).norm();
-      assert_almost_equal(error, 0.0, 0.0, 1.0e-12);
+      assert_almost_equal(error, 0.0, 0.0, 2.0e-12);
     }
   }
   catch (TestFailed & ex)

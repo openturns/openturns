@@ -128,17 +128,17 @@ void AggregatedEvaluation::setFunctionsCollection(const FunctionCollection & fun
 {
   const UnsignedInteger size = functionsCollection.getSize();
   // Check for empty functions collection
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated function from an empty collection of functions.";
+  if (!(size > 0)) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated function from an empty collection of functions.";
   // Check for coherent input and output dimensions of the functions
   UnsignedInteger inputDimension = functionsCollection[0].getInputDimension();
   outputDimension_ = functionsCollection[0].getOutputDimension();
   Description description(functionsCollection[0].getDescription());
-  if (outputDimension_ == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated function with atoms of null output dimension.";
+  if (!(outputDimension_ > 0)) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated function with atoms of null output dimension.";
   for (UnsignedInteger i = 1; i < size; ++i)
   {
-    if (functionsCollection[i].getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given functions have incompatible input dimension.";
+    if (functionsCollection[i].getInputDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the function with index " << i << "has input dimension " << functionsCollection[i].getInputDimension() << ", whereas the function with index 0 has input dimension " << inputDimension;
     const UnsignedInteger atomOutputDimension = functionsCollection[i].getOutputDimension();
-    if (atomOutputDimension == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated function with atoms of null output dimension.";
+    if (!(atomOutputDimension > 0)) throw InvalidArgumentException(HERE) << "Error: cannot build an aggregated function with atoms of null output dimension.";
     outputDimension_ += atomOutputDimension;
     const Description outputDescription(functionsCollection[i].getOutputDescription());
     for (UnsignedInteger j = 0; j < atomOutputDimension; ++j)

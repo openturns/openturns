@@ -62,6 +62,8 @@ Study::Study(const FileName & fileName,
 #if defined OPENTURNS_HAVE_LIBXML2
   p_storageManager_->setStudy(this);
 #else
+  (void)fileName;
+  (void)compressionLevel;
   throw NotYetImplementedException(HERE) << "Error: no XML support for Study";
 #endif /* OPENTURNS_HAVE_LIBXML2 */
 }

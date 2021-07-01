@@ -37,7 +37,7 @@ class OT_API NormalFactory
 public:
 
   /** Default constructor */
-  NormalFactory();
+  explicit NormalFactory(const Bool robust = false);
 
   /** Virtual constructor */
   NormalFactory * clone() const override;
@@ -54,6 +54,10 @@ public:
 
   DistributionFactoryResult buildEstimator(const Sample & sample) const override;
 
+private:
+
+  /** Flag to select between robust/nonrobust estimators */
+  Bool robust_;
 }; /* class NormalFactory */
 
 

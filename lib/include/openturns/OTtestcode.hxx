@@ -35,8 +35,9 @@
 #include "openturns/Matrix.hxx"
 #include "openturns/PlatformInfo.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/TBB.hxx"
 
-#define TESTPREAMBLE { OT::PlatformInfo::SetTwoDigitExponent(); }
+#define TESTPREAMBLE { OT::PlatformInfo::SetTwoDigitExponent(); OT::TBB::Enable(); }
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -366,7 +367,7 @@ inline void assert_almost_equal(const Matrix &a, const Matrix &b, const Scalar r
 inline void assert_almost_equal(const SymmetricMatrix &a, const SymmetricMatrix &b, const Scalar rtol = 1.0e-5, const Scalar atol = 1.0e-8, const String errMsg = "")
 {
   if (a.getDimension() != b.getDimension())
-    throw InvalidArgumentException(HERE) << "A and B must have the same dimension " << a.getDimension() << " vs " << b.getDimension(); 
+    throw InvalidArgumentException(HERE) << "A and B must have the same dimension " << a.getDimension() << " vs " << b.getDimension();
   const UnsignedInteger dimension = a.getDimension();
 
   for (UnsignedInteger j = 0; j < dimension; ++j)

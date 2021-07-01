@@ -99,14 +99,17 @@ static void GetOptionsFromResourceMap(SmartPtr<OptionsList> options)
     {
       String optionName(keys[i].substr(6));
       String type(ResourceMap::GetType(keys[i]));
-      if (type == "string")
-        options->SetStringValue(optionName, ResourceMap::GetAsString(keys[i]));
+      Bool ok = false;
+      if (type == "str")
+        ok = options->SetStringValue(optionName, ResourceMap::GetAsString(keys[i]));
       else if (type == "float")
-        options->SetNumericValue(optionName, ResourceMap::GetAsScalar(keys[i]));
-      else if (type == "unsigned int")
-        options->SetIntegerValue(optionName, ResourceMap::GetAsUnsignedInteger(keys[i]));
-      else
-        throw InvalidArgumentException(HERE) << "Unsupported type " << type << " for Ipopt option " << optionName;
+        ok = options->SetNumericValue(optionName, ResourceMap::GetAsScalar(keys[i]));
+      else if (type == "int")
+        ok = options->SetIntegerValue(optionName, ResourceMap::GetAsUnsignedInteger(keys[i]));
+      else if (type == "bool")
+        ok = options->SetStringValue(optionName, ResourceMap::GetAsBool(keys[i]) ? "yes" : "no");
+      if (!ok)
+        throw InvalidArgumentException(HERE) << "Invalid Ipopt option " << optionName;
     }
 }
 
@@ -132,7 +135,11 @@ void Ipopt::run()
   app->Options()->SetIntegerValue("print_level", 0);
   app->Options()->SetIntegerValue("max_iter", getMaximumIterationNumber());
   app->Options()->SetStringValue("sb", "yes"); // skip banner
+  app->Options()->SetStringValue("honor_original_bounds", "yes");// disabled in ipopt 3.14
   GetOptionsFromResourceMap(app->Options());
+  String optlist;
+  app->Options()->PrintList(optlist);
+  LOGDEBUG(optlist);
 
   // Intialize the IpoptApplication and process the options
   ApplicationReturnStatus status = app->Initialize();
@@ -215,7 +222,7 @@ void Ipopt::run()
     throw InternalException(HERE) << "Ipopt error: " << statusString;
   }
 
-  // Retrieve MemoizeFunction input/output history
+  // Retrieve input/output history
   Sample inputHistory(ipoptProblem->getInputHistory());
   Sample outputHistory(ipoptProblem->getOutputHistory());
 
@@ -226,7 +233,7 @@ void Ipopt::run()
   Scalar residualError = -1.0;
   Scalar constraintError = -1.0;
 
-  /* Populate OptimizationResult from memoize history */
+  /* Populate OptimizationResult from history */
 
   for (UnsignedInteger i = 0; i < inputHistory.getSize(); ++ i)
   {
@@ -318,12 +325,14 @@ String Ipopt::__repr__() const
     {
       String optionName(keys[i].substr(6));
       String type(ResourceMap::GetType(keys[i]));
-      if (type == "string")
+      if (type == "str")
         oss << optionName << "=" << ResourceMap::GetAsString(keys[i]) << "\n";
       else if (type == "float")
         oss << optionName << "=" << ResourceMap::GetAsScalar(keys[i]) << "\n";
-      else if (type == "unsigned int")
+      else if (type == "int")
         oss << optionName << "=" << ResourceMap::GetAsUnsignedInteger(keys[i]) << "\n";
+      else if (type == "bool")
+        oss << optionName << "=" << ResourceMap::GetAsBool(keys[i]) << "\n";
       else
         throw InvalidArgumentException(HERE) << "Unsupported type " << type << " for Ipopt option " << optionName;
     }

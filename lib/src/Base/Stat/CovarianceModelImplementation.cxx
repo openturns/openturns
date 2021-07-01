@@ -121,7 +121,7 @@ CovarianceModelImplementation::CovarianceModelImplementation(const Point & scale
   , activeParameter_(inputDimension_ + outputDimension_)
 {
   setScale(scale);
-  for (UnsignedInteger i = 0; i < outputDimension_; ++i) 
+  for (UnsignedInteger i = 0; i < outputDimension_; ++i)
   {
     const Scalar amplitudeI = sqrt(spatialCovariance(i, i));
     if (!(amplitudeI > 0.0))
@@ -190,7 +190,7 @@ Scalar CovarianceModelImplementation::computeAsScalar (const Point & s,
   return computeAsScalar(s.begin(), t.begin());
 }
 
-Scalar CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator & ,
+Scalar CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator &,
     const Collection<Scalar>::const_iterator & ) const
 {
   throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::computeAsScalar(const Collection<Scalar>::const_iterator & s_begin, const Collection<Scalar>::const_iterator & t_begin) const";
@@ -204,7 +204,7 @@ Scalar CovarianceModelImplementation::computeAsScalar(const Point &) const
 }
 
 Scalar CovarianceModelImplementation::computeAsScalar(const Scalar s,
-                                                      const Scalar t) const
+    const Scalar t) const
 {
   if (inputDimension_ != 1)
     throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
@@ -232,12 +232,12 @@ SquareMatrix CovarianceModelImplementation::operator() (const Scalar tau) const
 
 SquareMatrix CovarianceModelImplementation::operator() (const Point & tau) const
 {
-  if (isStationary() && (getOutputDimension()==1))
+  if (isStationary() && (getOutputDimension() == 1))
   {
-     SquareMatrix result(1);
-     result(0, 0) = computeAsScalar(tau);
-     return result;
-    }
+    SquareMatrix result(1);
+    result(0, 0) = computeAsScalar(tau);
+    return result;
+  }
 
   if (isStationary())
     throw NotYetImplementedException(HERE) << "In CovarianceModelImplementation::operator()(const Point & tau) const";
@@ -432,8 +432,8 @@ struct CovarianceModelDiscretizeScalarPolicy
   const UnsignedInteger inputDimension_;
 
   CovarianceModelDiscretizeScalarPolicy(const Sample & input,
-      CovarianceMatrix & output,
-      const CovarianceModelImplementation & model)
+                                        CovarianceMatrix & output,
+                                        const CovarianceModelImplementation & model)
     : input_(*input.getImplementation())
     , output_(*output.getImplementation())
     , model_(model)
@@ -662,7 +662,7 @@ void CovarianceModelImplementation::setAmplitude(const Point & amplitude)
   if (amplitude.getDimension() != outputDimension_) throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setAmplitude: the given amplitude has a dimension=" << amplitude.getDimension() << " different from the dimension=" << outputDimension_;
   for (UnsignedInteger index = 0; index < outputDimension_; ++index)
     if (!(amplitude[index] > 0.0))
-      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setAmplitude, the component " << index << " of amplitude is non positive" ;
+      throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setAmplitude, the component " << index << " of amplitude=" << amplitude << " is non positive" ;
   amplitude_ = amplitude;
   updateOutputCovariance();
 }
@@ -732,7 +732,7 @@ void CovarianceModelImplementation::setFullParameter(const Point & parameter)
   UnsignedInteger index = 0;
   // Check the size
   const UnsignedInteger totalSize = inputDimension_ + outputDimension_ * (outputDimension_ + 1) / 2;
-  if (parameter.getSize() < totalSize)
+  if (!(parameter.getSize() >= totalSize))
     throw InvalidArgumentException(HERE) << "In CovarianceModelImplementation::setFullParameter, points have incompatible size. Point size = " << parameter.getSize()
                                          << " whereas expected size = " << totalSize ;
 
@@ -926,9 +926,9 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
     const Bool correlationFlag) const
 {
   if (inputDimension_ != 1) throw NotDefinedException(HERE) << "Error: can draw covariance models only if input dimension=1, here input dimension=" << inputDimension_;
-  if (rowIndex >= outputDimension_) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << outputDimension_ << ", here rowIndex=" << rowIndex;
-  if (columnIndex >= outputDimension_) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << outputDimension_ << ", here columnIndex=" << columnIndex;
-  if (pointNumber < 2) throw InvalidArgumentException(HERE) << "Error: cannot draw the model with pointNumber<2, here pointNumber=" << pointNumber;
+  if (!(rowIndex < outputDimension_)) throw InvalidArgumentException(HERE) << "Error: the given row index must be less than " << outputDimension_ << ", here rowIndex=" << rowIndex;
+  if (!(columnIndex < outputDimension_)) throw InvalidArgumentException(HERE) << "Error: the given column index must be less than " << outputDimension_ << ", here columnIndex=" << columnIndex;
+  if (!(pointNumber >= 2)) throw InvalidArgumentException(HERE) << "Error: cannot draw the model with pointNumber<2, here pointNumber=" << pointNumber;
   // Check if the model is stationary and if we want to draw it this way
   if (asStationary && isStationary())
   {
@@ -955,9 +955,9 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
     curve.setColor("red");
     graph.add(curve);
     return graph;
-  }
+  } // asStationary && isStationary()
   // Here we draw a non-stationary model
-  const Sample gridT = RegularGrid(tMin, (tMax - tMin) / (pointNumber - 1.0), pointNumber).getVertices();
+  const Sample gridT(RegularGrid(tMin, (tMax - tMin) / (pointNumber - 1.0), pointNumber).getVertices());
   CovarianceMatrix matrix(discretize(gridT));
   const UnsignedInteger dimension = matrix.getDimension();
   // Normalize the data if needed
@@ -979,7 +979,25 @@ Graph CovarianceModelImplementation::draw(const UnsignedInteger rowIndex,
   } // correlationFlag
   matrix.checkSymmetry();
   Sample data(pointNumber * pointNumber, 1);
-  data.getImplementation()->setData(*matrix.getImplementation());
+  // Here we extract the relevant data for multidimensional output models
+  if (outputDimension_ == 1)
+    data.getImplementation()->setData(*matrix.getImplementation());
+  else
+  {
+    UnsignedInteger sampleIndex = 0;
+    UnsignedInteger rowShift = 0;
+    for (UnsignedInteger i = 0; i < pointNumber; ++i)
+    {
+      UnsignedInteger columnShift = 0;
+      for (UnsignedInteger j = 0; j < pointNumber; ++j)
+      {
+        data(sampleIndex, 0) = matrix(rowShift + rowIndex, columnShift + columnIndex);
+        ++sampleIndex;
+        columnShift += outputDimension_;
+      } // j
+      rowShift += outputDimension_;
+    } // i
+  } // outputDimension_ > 1
   Graph graph(getName() + (correlationFlag ? String(" correlation") : String (" covariance")), "s", "t", true, "bottomright");
   graph.setGrid(true);
   Contour contour(pointNumber, pointNumber, data);

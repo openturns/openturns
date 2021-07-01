@@ -231,7 +231,7 @@ static SparseMatrix ComputeSparseAugmentedP1Gram(const Mesh & mesh, const Unsign
   const UnsignedInteger simplexSize = verticesDim + 1;
   const UnsignedInteger augmentedDimension = nbVertices * covarianceDimension;
 
-  SquareMatrix elementaryGram(simplexSize, Point(simplexSize * simplexSize, 1.0 / SpecFunc::Gamma(simplexSize + 2.0)));
+  SquareMatrix elementaryGram(simplexSize, Point(simplexSize * simplexSize, 1.0 / (simplexSize * (simplexSize + 1.0))));
   for (UnsignedInteger i = 0; i < simplexSize; ++i) elementaryGram(i, i) *= 2.0;
   const Point simplexVolume(mesh.computeSimplicesVolume());
   Point values;
@@ -365,7 +365,7 @@ void KarhunenLoeveP1Algorithm::run()
       throw InternalException(HERE) << "unknown covariance matrix storage format: " << covarianceMatrixStorage;
 
     // Define convergence index
-    const UnsignedInteger ncv = std::min(3 * nev, augmentedDimension);
+    const UnsignedInteger ncv = std::min(2 * nev + 1, augmentedDimension);
 
     // Solve EV problem
     LOGINFO("Solve the eigenvalue problem");

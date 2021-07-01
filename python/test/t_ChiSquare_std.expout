@@ -39,12 +39,12 @@ mean= class=Point name=Unnamed dimension=1 values=[1.5]
 covariance= class=CovarianceMatrix dimension=1 implementation=class=MatrixImplementation name=Unnamed rows=1 columns=1 values=[3]
 parameters= [class=PointWithDescription name=X0 dimension=1 description=[nu] values=[1.5]]
 standard moment n= 0  value= [1]
-standard moment n= 1  value= [1.5]
-standard moment n= 2  value= [5.25]
-standard moment n= 3  value= [28.875]
-standard moment n= 4  value= [216.56]
-standard moment n= 5  value= [2057.3]
-Standard representative= ChiSquare(nu = 1.5)
+standard moment n= 1  value= [0.75]
+standard moment n= 2  value= [1.3125]
+standard moment n= 3  value= [3.6094]
+standard moment n= 4  value= [13.535]
+standard moment n= 5  value= [64.292]
+Standard representative= Gamma(k = 0.75, lambda = 1, gamma = 0)
 nu= 1.5
 standard deviation= class=Point name=Unnamed dimension=1 values=[1.73205]
 skewness= class=Point name=Unnamed dimension=1 values=[2.3094]

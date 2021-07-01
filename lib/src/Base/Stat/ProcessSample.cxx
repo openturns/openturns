@@ -216,7 +216,7 @@ Field ProcessSample::computeRawMoment(const UnsignedInteger k) const
 
 /* Get the empirical CDF of the sample */
 Field ProcessSample::computeEmpiricalCDF(const Point & point,
-                                         const Bool tail) const
+    const Bool tail) const
 {
   return getImplementation()->computeEmpiricalCDF(point, tail);
 }

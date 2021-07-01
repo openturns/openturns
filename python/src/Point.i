@@ -13,7 +13,7 @@
 %template(ScalarPersistentCollection) OT::PersistentCollection<OT::Scalar>;
 
 %typemap(in) const ScalarCollection & ($1_basetype temp) {
-  if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
+  if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
     try {
       temp = OT::convert<OT::_PySequence_,OT::Collection<OT::Scalar> >( $input );
       $1 = &temp;
@@ -24,7 +24,7 @@
 }
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const ScalarCollection & {
-  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) ||
+  $1 = (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL)) ||
        OT::isAPythonBufferOf<OT::Scalar, 1>($input) || OT::isAPythonSequenceOf<OT::_PyFloat_>($input));
 }
 
@@ -35,7 +35,7 @@
 #define OT_TYPECHECK_NUMERICALPOINT 4
 
 %typemap(in) const Point & ($1_basetype temp) {
-  if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0)))
+  if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL)))
   {
     //Nothing to do for NP
   }
@@ -51,8 +51,8 @@
 }
 
 %typemap(typecheck,precedence=OT_TYPECHECK_NUMERICALPOINT) const Point & {
-  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) ||
-    OT::isAPythonBufferOf<OT::Scalar, 1>($input) || OT::isAPythonSequenceOf<OT::_PyFloat_>($input));
+  $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL)) ||
+    OT::isAPythonBufferOf<OT::Scalar, 1>($input) || OT::isAPythonSequenceOf<OT::_PyFloat_>($input);
 }
 
 %apply const Point & { const OT::Point & };

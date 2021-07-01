@@ -2372,7 +2372,7 @@ point : :class:`~openturns.Point`
 
 See Also
 --------
-getSample, RandomGenerator"
+getSample, getSampleByInversion, getSampleByQMC, RandomGenerator"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getRealization
 OT_Distribution_getRealization_doc
@@ -2420,10 +2420,55 @@ sample : :class:`~openturns.Sample`
 
 See Also
 --------
-getRealization, RandomGenerator"
+getRealization, RandomGenerator, getSampleByInversion, getSampleByQMC"
 %enddef
 %feature("docstring") OT::DistributionImplementation::getSample
 OT_Distribution_getSample_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getSampleByInversion_doc
+"Accessor to a pseudo-random sample from the distribution.
+
+Parameters
+----------
+size : int
+    Sample size.
+
+Returns
+-------
+sample : :class:`~openturns.Sample`
+    A pseudo-random sample of the distribution based on conditional quantiles.
+
+See Also
+--------
+getRealization, RandomGenerator, getSample, getSampleByQMC"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getSampleByInversion
+OT_Distribution_getSampleByInversion_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_Distribution_getSampleByQMC_doc
+"Accessor to a low discrepancy sample from the distribution.
+
+Parameters
+----------
+size : int
+    Sample size.
+
+Returns
+-------
+sample : :class:`~openturns.Sample`
+    A low discrepancy sample of the distribution based on Sobol's sequences
+    and conditional quantiles.
+
+See Also
+--------
+getRealization, RandomGenerator, getSample, getSampleByInversion"
+%enddef
+%feature("docstring") OT::DistributionImplementation::getSampleByQMC
+OT_Distribution_getSampleByQMC_doc
 
 // ---------------------------------------------------------------------
 

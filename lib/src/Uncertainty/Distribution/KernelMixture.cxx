@@ -1,12 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief Class for a product-kernel multidimensional mixture. If K is the
- *         underlying 1D kernel, h=(h_1,\dot,h_n) is the vector of bandwidth
- *         and X=(X^1,\dots,X^N) is the nD sample, the PDF of the kernel mixture
- *         is:
- *         PDF(x) = C\sum_{i=1}^N\prod_{j=1}^n K((x_j - X^i_j)/h_j),
- *         where:
- *         C = \frac{1}{N\prod_{k=1}^n h_k}
+ *  @brief Class for a product-kernel multidimensional mixture.
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *

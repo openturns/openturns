@@ -167,13 +167,8 @@ public:
       return Point(getOutputDimension(), SpecFunc::MaxScalar);
     }
 
-    Point result(getOutputDimension());
-
-    // compute residual of the CDF distribution vs sample
-    const Sample cdfSample(distribution.computeCDF(sample_));
-    for(UnsignedInteger i = 0 ; i < getOutputDimension(); ++ i)
-      result[i] = cdfSample(i, 0) - empiricalCDF_[i];
-    return result;
+    // Compute the residual between the candidate CDF and the empirical CDF
+    return distribution.computeCDF(sample_).asPoint() - empiricalCDF_;
   }
 
 private:
@@ -257,10 +252,10 @@ public:
     // Matrix result
     MatrixImplementation result(parameter.getSize(), getOutputDimension());
     // Evaluate the gradient
-    const Sample logPdfGradientSample(distribution.computeLogPDFGradient(sample_).getMarginal(unknownParameterIndices_));
-    const Point logPdfGradient(logPdfGradientSample.computeMean());
+    const Sample cdfGradientSample(distribution.computeCDFGradient(sample_).getMarginal(unknownParameterIndices_));
+    const Matrix transposedGradient(cdfGradientSample.getDimension(), cdfGradientSample.getSize(), cdfGradientSample.getImplementation()->data_begin(), cdfGradientSample.getImplementation()->data_end());
 
-    return result;
+    return transposedGradient.transpose();
   }
 
 private:
