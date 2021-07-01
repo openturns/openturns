@@ -276,6 +276,9 @@ void TruncatedDistribution::computeRange()
     const Scalar probability = distribution_.computeProbability(range);
     if (!(probability > 0.0)) throw InvalidArgumentException(HERE) << "Error: the truncation interval does not contain a non-empty part of the support of the distribution";
     normalizationFactor_ = 1.0 / probability;
+
+    // scale quantile epsilon of the inner distribution
+    distribution_.getImplementation()->setQuantileEpsilon(ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon") * probability);
   }
   epsilonRange_ = getRange() + Interval(Point(dimension_, -quantileEpsilon_), Point(dimension_, quantileEpsilon_));
 }
