@@ -44,6 +44,7 @@ typedef Collection<Complex> ComplexCollection;
 class KLGenMatProd
 {
 public:
+  using Scalar = double;
 
   KLGenMatProd()
   {
@@ -65,7 +66,7 @@ public:
     throw NotYetImplementedException(HERE) << "method 'cols' not yet implemented";
   }
 
-  virtual void perform_op(const Scalar *, Scalar *)
+  virtual void perform_op(const Scalar *, Scalar *) const
   {
     throw NotYetImplementedException(HERE) << "method 'perform_op' not yet implemented";
   }
@@ -104,7 +105,7 @@ public:
   }
 
   // Matrix/vector product operator
-  void perform_op(const Scalar * x_in, Scalar * y_out)
+  void perform_op(const Scalar * x_in, Scalar * y_out) const
   {
     // Convert double array to Eigen::VectorXd
     Point u(rows_);
@@ -159,7 +160,7 @@ public:
   }
 
   // Matrix/vector product operator
-  void perform_op(const Scalar * x_in, Scalar * y_out)
+  void perform_op(const Scalar * x_in, Scalar * y_out) const
   {
     // Convert double array to Eigen::VectorXd
     Point u(rows_);
@@ -266,12 +267,12 @@ static void ComputeEVWithSpectra(const UnsignedInteger augmentedDimension,
                                  Matrix & eigenvectors)
 {
 #ifdef OPENTURNS_HAVE_SPECTRA
-  Spectra::GenEigsSolver<Scalar, Spectra::LARGEST_MAGN, KLGenMatProd> solver(&(*op), nev, ncv);
+  Spectra::GenEigsSolver<KLGenMatProd> solver(*op, nev, ncv);
   solver.init();
-  solver.compute();
+  solver.compute(Spectra::SortRule::LargestMagn);
 
-  if(solver.info() != Spectra::SUCCESSFUL)
-    throw InternalException(HERE) << "Error while computing the eigenvalues (nev=" << nev << ", ncv=" << ncv << ", solver.info()=" << solver.info() << ")";
+  if(solver.info() != Spectra::CompInfo::Successful)
+    throw InternalException(HERE) << "Error while computing the eigenvalues (nev=" << nev << ", ncv=" << ncv << ", solver.info()=" << static_cast<int>(solver.info()) << ")";
 
   LOGINFO("Post-process the eigenvalue problem");
 
