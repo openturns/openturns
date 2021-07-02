@@ -20,6 +20,9 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #1010 (The doc for ExpectationSimulationAlgorithm is confusing)
+ * #1240 (There is no theory documentation for ExpectationSimulationAlgorithm)
+ * #1656 (The help page of ExpectationSimulationAlgorithm is unclear)
  * #1842 (libOT.so.0.0.0 doesn't have a SONAME)
  * #1843 (Ali-Mikhail-Haq copula parameter value)
  * #1844 (MaximumDistribution::computePDF is wrong when all the marginals are equal and independent)
