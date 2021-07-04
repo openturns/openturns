@@ -11,5 +11,6 @@ Examples
 >>> import openturns as ot
 >>> X = ot.RandomVector(ot.Normal())
 
-# Draw a sample
+Draw a sample:
+
 >>> sample = X.getSample(5)"
