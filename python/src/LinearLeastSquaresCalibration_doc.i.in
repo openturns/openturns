@@ -36,11 +36,11 @@ The posterior distribution of the parameter is :class:`~openturns.Normal` and re
 variability of the optimum parameter depending on the observation sample. 
 The associated covariance matrix may be regularized depending on the value of the 
 key `LinearLeastSquaresCalibration-Regularization` in the :class:`~openturns.ResourceMap`. 
-Let us denote by :math:`s_1` the smallest singular value of the covariance matrix. 
+Let us denote by :math:`\sigma_1` the largest singular value of the covariance matrix. 
 The default value of the `LinearLeastSquaresCalibration-Regularization`, zero, 
 ensures that the singular values of the covariance matrix are left unmodified.  
 If this parameter is set to a nonzero, relatively small, value denoted by :math:`\epsilon`, 
-then all singular values of the covariance matrix are increased by :math:`\epsilon s_1`. 
+then all singular values of the covariance matrix are increased by :math:`\epsilon \sigma_1`. 
 
 The resulting distribution of the output error is :class:`~openturns.Normal` with a zero mean
 and a diagonal covariance matrix computed from the residuals.
