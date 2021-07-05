@@ -22,6 +22,8 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/KarhunenLoeveAlgorithmImplementation.hxx"
 
+#include <limits>
+
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(KarhunenLoeveAlgorithmImplementation)
