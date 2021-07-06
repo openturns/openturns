@@ -162,6 +162,12 @@ Matrix CovarianceModel::computeCrossCovariance(const Sample &sample,
   return getImplementation()->computeCrossCovariance(sample, point);
 }
 
+Matrix CovarianceModel::computeCrossCovariance(const Point &point,
+                                               const Sample &sample) const
+{
+  return getImplementation()->computeCrossCovariance(point, sample);
+}
+
 /** Discretize and factorize the covariance function on a given TimeGrid/Mesh */
 TriangularMatrix CovarianceModel::discretizeAndFactorize(const RegularGrid & timeGrid) const
 {

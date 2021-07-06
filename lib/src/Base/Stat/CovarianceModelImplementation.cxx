@@ -672,6 +672,12 @@ Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &sampl
   return result;
 }
 
+Matrix CovarianceModelImplementation::computeCrossCovariance(const Point &point,
+                                                             const Sample &sample) const
+{
+  return computeCrossCovariance(sample, point).transpose();
+}
+
 CovarianceMatrix CovarianceModelImplementation::discretize(const Mesh & mesh) const
 {
   return discretize(mesh.getVertices());
