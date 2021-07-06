@@ -121,39 +121,6 @@ class PythonRandomVector(object):
         """
         return self.__desc
 
-    def getRealization(self):
-        """
-        Get a realization of the random vector.
-
-        Returns
-        -------
-        realization : :class:`~openturns.Point`
-            Sequence of values randomly determined from the RandomVector definition.
-        """
-        raise RuntimeError('You must define a method getRealization() -> X, where X is a Point')
-
-    def getMean(self):
-        """
-        Get the mean.
-
-        Returns
-        -------
-        mean : :class:`~openturns.Point`
-            Mean of the RandomVector.
-        """
-        raise RuntimeError('You must define a method mean -> X, where X is a Point')
-
-    def getCovariance(self):
-        """
-        Get the covariance.
-
-        Returns
-        -------
-        covariance : :class:`~openturns.CovarianceMatrix`
-            Covariance of the RandomVector.
-        """
-        raise RuntimeError('You must define a method var -> M, where M is a CovarianceMatrix')
-
 %}
 
 OTTypedInterfaceObjectHelper(RandomVector)
