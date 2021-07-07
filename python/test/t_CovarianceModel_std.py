@@ -30,7 +30,7 @@ def test_model(myModel, test_partial_grad=True, x1=None, x2=None):
 
     eps = 1e-3
 
-    mesh = ot.IntervalMesher([9]*inputDimension).build(
+    mesh = ot.IntervalMesher([7]*inputDimension).build(
         ot.Interval([-10]*inputDimension, [10]*inputDimension))
 
     C = myModel.discretize(mesh)
@@ -42,8 +42,7 @@ def test_model(myModel, test_partial_grad=True, x1=None, x2=None):
             for i in range(j, len(vertices)):
                 ott.assert_almost_equal(C[i,j], myModel.computeAsScalar(vertices[i], vertices[j]), 1e-14, 1e-14)
     else:
-        # Check that discretize & operator() provide the
-        # same values
+        # Check that discretize & operator() provide the same values
         vertices = mesh.getVertices()
         localMatrix = ot.SquareMatrix(dimension)
         for j in range(len(vertices)):
@@ -52,6 +51,19 @@ def test_model(myModel, test_partial_grad=True, x1=None, x2=None):
                     for localI in range(dimension):
                         localMatrix[localI, localJ] = C[i * dimension + localI,j * dimension + localJ]
                 ott.assert_almost_equal(localMatrix, myModel(vertices[i], vertices[j]), 1e-14, 1e-14)
+
+    # Now we suppose that discretize is ok
+    # we look at crossCovariance of (vertices, vertices) which should return the same values
+    C.getImplementation().symmetrize()
+    crossCov = myModel.computeCrossCovariance(vertices, vertices)
+    ott.assert_almost_equal(crossCov, C, 1e-14, 1e-14,  "in " + myModel.getClassName() + "::computeCrossCovariance" )
+
+    # Now crossCovariance(sample, sample) is ok
+    # Let us validate crossCovariance(Sample, point) with 1st column(s) of previous calculations
+    crossCovSamplePoint = myModel.computeCrossCovariance(vertices, vertices[0])
+    crossCovCol = crossCov.reshape(crossCov.getNbRows(), dimension)
+    ott.assert_almost_equal(crossCovSamplePoint, crossCovCol, 1e-14, 1e-14,
+                            "in " + myModel.getClassName() + "::computeCrossCovarianceSamplePoint")
 
     if test_partial_grad:
         grad = myModel.partialGradient(x1, x2)
