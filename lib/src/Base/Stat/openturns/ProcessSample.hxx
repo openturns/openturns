@@ -170,6 +170,9 @@ public:
   ProcessSample & operator += (const Sample & translation);
   ProcessSample & operator -= (const Sample & translation);
 
+  /** Extract the sample of values at the given vertex index */
+  Sample getSampleAtVertex(const UnsignedInteger index) const;
+
 private:
 
 }; /* class ProcessSample */

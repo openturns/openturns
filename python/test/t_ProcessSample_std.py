@@ -81,6 +81,8 @@ for i in range(sampleSize):
     processSample[i] = distribution.getSample(mesh.getVerticesNumber())
 mean = processSample.computeMean()
 stddev = processSample.computeStandardDeviation()
+sample_node4 = processSample.getSampleAtVertex(4)
+assert len(sample_node4) == len(processSample), "wrong len"
 print('mean=', mean.getValues())
 print('sttdev=', stddev.getValues())
 graph1 = processSample.draw()
