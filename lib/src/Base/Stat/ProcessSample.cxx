@@ -296,4 +296,9 @@ ProcessSample & ProcessSample::operator -= (const Sample & translation)
   return *this;
 }
 
+Sample ProcessSample::getSampleAtVertex(const UnsignedInteger index) const
+{
+  return getImplementation()->getSampleAtVertex(index);
+}
+
 END_NAMESPACE_OPENTURNS
