@@ -557,3 +557,22 @@ graph : :class:`~openturns.GridLayout`
 %enddef
 %feature("docstring") OT::ProcessSampleImplementation::drawCorrelation
 OT_ProcessSample_drawCorrelation_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_ProcessSample_getSampleAtVertex_doc
+"Extract sample at specific vertex of the mesh.
+
+Parameters
+----------
+index : int, :math:`index < N`
+    Node index in the mesh.
+
+Returns
+-------
+sample_at_i : :class:`Sample`
+    The sample of all values of the trajectories at the desired node.
+"
+%enddef
+%feature("docstring") OT::ProcessSampleImplementation::getSampleAtVertex
+OT_ProcessSample_getSampleAtVertex_doc

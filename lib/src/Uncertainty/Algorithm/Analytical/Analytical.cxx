@@ -43,7 +43,10 @@ Analytical::Analytical(const OptimizationAlgorithm & nearestPointAlgorithm,
     physicalStartingPoint_(physicalStartingPoint)
 {
   const UnsignedInteger dimension = event.getImplementation()->getFunction().getInputDimension();
-  if (physicalStartingPoint.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Starting point dimension (" << physicalStartingPoint.getDimension() << ") does not match event dimension (" << dimension << ").";
+  if (physicalStartingPoint.getDimension() != dimension)
+    throw InvalidArgumentException(HERE) << "Starting point dimension (" << physicalStartingPoint.getDimension() << ") does not match event dimension (" << dimension << ").";
+  if (!event_.getImplementation()->getAntecedent().getDistribution().isContinuous())
+    throw InvalidArgumentException(HERE) << "FORM/SORM only allows for continuous distributions";
   result_ = AnalyticalResult(event_.getImplementation()->getAntecedent().getDistribution().getIsoProbabilisticTransformation().operator()(physicalStartingPoint_), event, true);
 }
 

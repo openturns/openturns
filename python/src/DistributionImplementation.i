@@ -28,6 +28,8 @@
 %ignore OT::DistributionImplementation::getWeight;
 %ignore OT::DistributionImplementation::setParallel;
 %ignore OT::DistributionImplementation::isParallel;
+%ignore OT::DistributionImplementation::setQuantileEpsilon;
+%ignore OT::DistributionImplementation::getQuantileEpsilon;
 
 %include openturns/DistributionImplementation.hxx
 

@@ -357,11 +357,8 @@ int main(int, char *[])
     // Create an Event Object
     ThresholdEvent event;
     {
-      Point point(3);
-      point[0] = 101;
-      point[1] = 202;
-      point[2] = 303;
-      ConstantRandomVector vect(point);
+      const Point mu = {101, 202, 303};
+      RandomVector vect(Normal(mu, Point(3, 1e-6), CorrelationMatrix(3)));
       CompositeRandomVector output(analytical.getMarginal(0), vect);
       event = ThresholdEvent(output, Less(), 50);
     }

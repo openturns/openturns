@@ -56,3 +56,5 @@ OT_ProcessSample_computeEmpiricalCDF_doc
 OT_ProcessSample_getMax_doc
 %feature("docstring") OT::ProcessSample::getMin
 OT_ProcessSample_getMin_doc
+%feature("docstring") OT::ProcessSample::getSampleAtVertex
+OT_ProcessSample_getSampleAtVertex_doc
