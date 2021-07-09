@@ -31,6 +31,7 @@
  * #1864 (FORM - IMPORTANCE FACTOR)
  * #1870 (TruncatedDistribution fails to compute quantiles)
  * #1874 (ProcessSample.getSampleAtVertex() may be useful as a public method)
+ * #1877 (How to model singular multivariate distributions?)
 
 
 == 1.17 release (2021-05-12) == #release-1.17
