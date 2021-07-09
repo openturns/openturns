@@ -27,6 +27,7 @@ jobs:
       - checkout
       - run:
           name: Build and test
+          no_output_timeout: 15m
           command: ./.circleci/run_docker_mingw.sh
 
 workflows:
