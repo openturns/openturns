@@ -253,9 +253,9 @@ Random vectors
     :template: class.rst_t
 
     RandomVector
-    PythonRandomVector
 
     :template: classWithPlot.rst_t
+    PythonRandomVector
     CompositeRandomVector
     ConditionalRandomVector
 
