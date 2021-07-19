@@ -249,6 +249,67 @@ Bool PythonRandomVector::isEvent() const
   }
 }
 
+/* Parameter accessor */
+Point PythonRandomVector::getParameter() const
+{
+  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getParameter")))
+  {
+    ScopedPyObjectPointer callResult(PyObject_CallMethod( pyObj_,
+                                     const_cast<char *>( "getParameter" ),
+                                     const_cast<char *>( "()" ) ));
+    if (callResult.isNull())
+    {
+      handleException();
+    }
+    Point parameter(convert< _PySequence_, Point >(callResult.get()));
+    return parameter;
+  }
+  else
+  {
+    // RandomVectorImplementation::getParameter throws
+    return Point();
+  }
+}
+
+/* Parameter accessor */
+void PythonRandomVector::setParameter(const Point & parameter)
+{
+  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("setParameter")))
+  {
+    ScopedPyObjectPointer methodName(convert< String, _PyString_ >("setParameter"));
+    ScopedPyObjectPointer parameterArg(convert< Point, _PySequence_ >(parameter));
+    ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs( pyObj_,
+                                     methodName.get(),
+                                     parameterArg.get(), NULL));
+    if (callResult.isNull())
+    {
+      handleException();
+    }
+  }
+}
+
+/* Parameter description accessor */
+Description PythonRandomVector::getParameterDescription() const
+{
+  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getParameterDescription")))
+  {
+    ScopedPyObjectPointer callResult(PyObject_CallMethod( pyObj_,
+                                     const_cast<char *>( "getParameterDescription" ),
+                                     const_cast<char *>( "()" ) ));
+    if (callResult.isNull())
+    {
+      handleException();
+    }
+    Description parameterDescription(convert< _PySequence_, Description >(callResult.get()));
+    return parameterDescription;
+  }
+  else
+  {
+    // RandomVectorImplementation::getParameterDescription throws
+    return Description();
+  }
+}
+
 /* Method save() stores the object through the StorageManager */
 void PythonRandomVector::save(Advocate & adv) const
 {
