@@ -141,6 +141,12 @@ String SymbolicFunction::__str__(const String & offset) const
   return getImplementation()->__str__(offset);
 }
 
+/* Accessor to the formulas */
+Description SymbolicFunction::getFormulas() const
+{
+  return dynamic_cast<SymbolicEvaluation*>(getEvaluation().getImplementation().get())->getFormulas();
+}
+
 /* Initialization of the documentation */
 void SymbolicFunction::InitializeDocumentation()
 {

@@ -1,9 +1,6 @@
 %feature("docstring") OT::SymbolicFunction
 "Symbolic function.
 
-Available constructor:
-    SymbolicFunction(*inputs, formulas*)
-
 Parameters
 ----------
 inputs : sequence of str, or str
@@ -145,6 +142,17 @@ The following example illustrates a function for a system of two components.
 
 See the `ExprTk <http://www.partow.net/programming/exprtk/>`_
 documentation for details."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::SymbolicFunction::getFormulas
+"Formulas accessor.
+
+Returns
+-------
+list_functions : :class:`~openturns.Description`
+    List of the formulas.
+"
 
 // ---------------------------------------------------------------------
 
