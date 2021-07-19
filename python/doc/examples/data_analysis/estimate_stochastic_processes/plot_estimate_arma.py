@@ -91,9 +91,9 @@ print("Default spectral model factory = ", factory.getSpectralModelFactory())
 
 # To set the spectral model factory
 # For example, set WelchFactory as SpectralModelFactory
-# with the Hanning filtering window
+# with the Hann filtering window
 # The Welch estimator splits the time series in four blocs without overlap
-myFilteringWindow = ot.Hanning()
+myFilteringWindow = ot.Hann()
 mySpectralFactory = ot.WelchFactory(myFilteringWindow, 4, 0)
 factory.setSpectralModelFactory(mySpectralFactory)
 print("New spectral model factory = ", factory.getSpectralModelFactory())

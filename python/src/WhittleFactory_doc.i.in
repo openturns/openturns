@@ -113,9 +113,9 @@ Check the default SpectralModelFactory:
 
 >>> print(myFactory_42.getSpectralModelFactory())  # doctest: +SKIP
 
-Set a particular spectral model: WelchFactory as SpectralModelFactory with the Hanning filtering window:
+Set a particular spectral model: WelchFactory as SpectralModelFactory with the Hann filtering window:
 
->>> myFilteringWindow = ot. Hanning()
+>>> myFilteringWindow = ot.Hann()
 >>> mySpectralFactory = ot.WelchFactory(myFilteringWindow, 4, 0)
 >>> myFactory_42.setSpectralModelFactory(mySpectralFactory)
 >>> print(myFactory_42.getSpectralModelFactory())  # doctest: +SKIP

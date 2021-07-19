@@ -14,6 +14,7 @@
  * Removed deprecated coupling_tools.execute is_shell/workdir/shell_exe/check_exit_code arguments
  * RandomVector::get/setParameter and getParameterDescription available to PythonRandomVector
  * Implemented CovarianceModel::computeCrossCovariance
+ * Deprecated Hanning in favor of Hann
 
 === Documentation ===
 
@@ -32,6 +33,7 @@
  * #1870 (TruncatedDistribution fails to compute quantiles)
  * #1874 (ProcessSample.getSampleAtVertex() may be useful as a public method)
  * #1877 (How to model singular multivariate distributions?)
+ * #1878 (Rename Hanning filtering window)
 
 
 == 1.17 release (2021-05-12) == #release-1.17

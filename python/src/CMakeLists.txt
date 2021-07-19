@@ -191,7 +191,7 @@ ot_add_python_module(statistics statistics_module.i
                       FilteringWindowsImplementation.i FilteringWindowsImplementation_doc.i.in
                       FilteringWindows.i FilteringWindows_doc.i.in
                       Hamming.i Hamming_doc.i.in
-                      Hanning.i Hanning_doc.i.in
+                      Hann.i Hann_doc.i.in
                       FFTImplementation.i FFTImplementation_doc.i.in
                       FFT.i FFT_doc.i.in
                       SpectralModelImplementation.i SpectralModelImplementation_doc.i.in
