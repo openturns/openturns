@@ -115,9 +115,9 @@ public:
     set_num_residuals(problem.getResidualFunction().getOutputDimension());
   }
 
-  virtual bool Evaluate(double const* const* parameters,
-                        double* residuals,
-                        double** jacobians) const override
+  bool Evaluate(double const* const* parameters,
+                double* residuals,
+                double** jacobians) const override
   {
     const OptimizationProblem problem(algorithm_.getProblem());
     const UnsignedInteger n = problem.getDimension();
@@ -153,14 +153,14 @@ public:
     : ceres::FirstOrderFunction()
     , algorithm_(algorithm) {}
 
-  virtual int NumParameters() const override
+  int NumParameters() const override
   {
     return algorithm_.getProblem().getDimension();
   }
 
-  virtual bool Evaluate(const double * const x,
-                        double * cost,
-                        double * jacobian) const override
+  bool Evaluate(const double * const x,
+                double * cost,
+                double * jacobian) const override
   {
     const OptimizationProblem problem(algorithm_.getProblem());
     const UnsignedInteger n = problem.getDimension();
