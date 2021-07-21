@@ -15,6 +15,7 @@
  * RandomVector::get/setParameter and getParameterDescription available to PythonRandomVector
  * Implemented CovarianceModel::computeCrossCovariance
  * Deprecated Hanning in favor of Hann
+ * Deprecated AdaptiveDirectionalSampling in favor of AdaptiveDirectionalStratification
 
 === Documentation ===
 
@@ -34,6 +35,7 @@
  * #1874 (ProcessSample.getSampleAtVertex() may be useful as a public method)
  * #1877 (How to model singular multivariate distributions?)
  * #1878 (Rename Hanning filtering window)
+ * #1880 (Adaptive Directional Sampling: some enhancements proposed)
 
 
 == 1.17 release (2021-05-12) == #release-1.17

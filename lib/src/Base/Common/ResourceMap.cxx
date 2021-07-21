@@ -1189,10 +1189,10 @@ void ResourceMap::loadDefaultConfiguration()
   // DirectionalSampling parameters //
   addAsUnsignedInteger("DirectionalSampling-MeanContributionIntegrationNodesNumber", 255);
 
-  // AdaptiveDirectionalSampling parameters //
-  addAsScalar("AdaptiveDirectionalSampling-DefaultGamma", 0.5);
-  addAsUnsignedInteger("AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension", 3);
-  addAsUnsignedInteger("AdaptiveDirectionalSampling-DefaultNumberOfSteps", 2);
+  // AdaptiveDirectionalStratification parameters //
+  addAsScalar("AdaptiveDirectionalStratification-DefaultGamma", 0.5);
+  addAsUnsignedInteger("AdaptiveDirectionalStratification-DefaultMaximumStratificationDimension", 3);
+  addAsUnsignedInteger("AdaptiveDirectionalStratification-DefaultNumberOfSteps", 2);
 
   // AnalyticalResult parameters //
   addAsScalar("AnalyticalResult-DefaultWidth", 1.0);

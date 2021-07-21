@@ -1,9 +1,9 @@
 """
-Use the Adaptive Directional Sampling Algorithm
-===============================================
+Use the Adaptive Directional Stratification Algorithm
+=====================================================
 """
 # %%
-# In this example we estimate a failure probability with the adaptive directional simulation algorithm provided by the :class:`~openturns.AdaptiveDirectionalSampling` class.
+# In this example we estimate a failure probability with the adaptive directional simulation algorithm provided by the :class:`~openturns.AdaptiveDirectionalStratification` class.
 
 # %%
 # Introduction
@@ -68,7 +68,7 @@ samplingStrategy = ot.RandomDirection()
 # Create a simulation algorithm.
 
 # %%
-algo = ot.AdaptiveDirectionalSampling(event, rootStrategy, samplingStrategy)
+algo = ot.AdaptiveDirectionalStratification(event, rootStrategy, samplingStrategy)
 algo.setMaximumCoefficientOfVariation(0.1)
 algo.setMaximumOuterSampling(40000)
 algo.setConvergenceStrategy(ot.Full())
@@ -80,5 +80,6 @@ algo.run()
 # %%
 result = algo.getResult()
 probability = result.getProbabilityEstimate()
-print( result )
+print(result)
 print('Pf=', probability)
+print('Iterations=', result.getOuterSampling())
