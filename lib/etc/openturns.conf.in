@@ -151,6 +151,7 @@
 
   <!-- OT::Cobyla parameters -->
   <Cobyla-DefaultRhoBeg value_float="0.1" />
+  <Cobyla-DefaultUseAdaptiveRho value_bool="true" />
   
   <!-- OT::Dlib parameters -->
   <Dlib-DefaultInitialTrustRegionRadius value_float="1.0"     />

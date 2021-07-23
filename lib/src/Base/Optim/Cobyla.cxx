@@ -35,7 +35,7 @@ static const Factory<Cobyla> Factory_Cobyla;
 Cobyla::Cobyla()
   : OptimizationAlgorithmImplementation()
   , rhoBeg_(ResourceMap::GetAsScalar("Cobyla-DefaultRhoBeg"))
-  , ignoreFailure_(false)
+  , useAdaptativeRho_(ResourceMap::GetAsBool("Cobyla-DefaultUseAdaptiveRho"))
 {
   // Nothing to do
 }
@@ -43,7 +43,7 @@ Cobyla::Cobyla()
 Cobyla::Cobyla(const OptimizationProblem & problem)
   : OptimizationAlgorithmImplementation(problem)
   , rhoBeg_(ResourceMap::GetAsScalar("Cobyla-DefaultRhoBeg"))
-  , ignoreFailure_(false)
+  , useAdaptativeRho_(ResourceMap::GetAsBool("Cobyla-DefaultUseAdaptiveRho"))
 {
   checkProblem(problem);
 }
@@ -52,7 +52,7 @@ Cobyla::Cobyla(const OptimizationProblem & problem,
                const Scalar rhoBeg)
   : OptimizationAlgorithmImplementation(problem)
   , rhoBeg_(rhoBeg)
-  , ignoreFailure_(false)
+  , useAdaptativeRho_(ResourceMap::GetAsBool("Cobyla-DefaultUseAdaptiveRho"))
 {
   checkProblem(problem);
 }
@@ -88,6 +88,12 @@ void Cobyla::run()
   if (x.getDimension() != dimension)
     throw InvalidArgumentException(HERE) << "Invalid starting point dimension (" << x.getDimension() << "), expected " << dimension;
 
+  Scalar step = 0.0;
+  Scalar lb = -SpecFunc::MaxScalar;
+  Scalar ub = SpecFunc::MaxScalar;
+  Bool flb = false;
+  Bool fub = false;
+
   if (getProblem().hasBounds())
   {
     Interval bounds(getProblem().getBounds());
@@ -100,9 +106,40 @@ void Cobyla::run()
       if (bounds.getFiniteLowerBound()[i]) ++ m;
       if (bounds.getFiniteUpperBound()[i]) ++ m;
     }
+
+    lb = bounds.getLowerBound()[0];
+    ub = bounds.getUpperBound()[0];
+    flb = bounds.getFiniteLowerBound()[0];
+    fub = bounds.getFiniteUpperBound()[0];
   }
 
+  Scalar rhoBeg = rhoBeg_;
   Scalar rhoEnd = getMaximumAbsoluteError();
+
+  // initialize rhobeg using bound info
+  if (useAdaptativeRho_ && (fub || flb))
+  {
+    if (fub && flb)
+      step = (ub - lb) * 0.25;
+    else if (fub)
+    {
+      if (x[0] < ub)
+        step = (ub - x[0]) * 0.75;
+      else
+        step = (ub - x[0]) * 1.1;
+    }
+    else if (flb)
+    {
+      if (lb < x[0])
+        step = (x[0] - lb) * 0.75;
+      else
+        step = (x[0] - lb) * 1.1;
+    }
+
+    rhoBeg = fabs(step);
+    rhoEnd = getMaximumAbsoluteError() * rhoBeg;
+  }
+
   int maxFun = getMaximumEvaluationNumber();
   cobyla_message message((getVerbose() ? COBYLA_MSG_INFO : COBYLA_MSG_NONE));
 
@@ -131,7 +168,7 @@ void Cobyla::run()
    * extern int cobyla(int n, int m, double *x, double rhobeg, double rhoend,
    *  int message, int *maxfun, cobyla_function *calcfc, void *state);
    */
-  int returnCode = ot_cobyla(n, m, &(*x.begin()), rhoBeg_, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
+  int returnCode = ot_cobyla(n, m, &(*x.begin()), rhoBeg, rhoEnd, message, &maxFun, Cobyla::ComputeObjectiveAndConstraint, (void*) this);
 
   result_ = OptimizationResult(getProblem());
 
@@ -211,6 +248,17 @@ Scalar Cobyla::getRhoBeg() const
 void Cobyla::setRhoBeg(const Scalar rhoBeg)
 {
   rhoBeg_ = rhoBeg;
+}
+
+/* Adaptive rho flag accessor */
+Bool Cobyla::getUseAdaptativeRho() const
+{
+  return useAdaptativeRho_;
+}
+
+void Cobyla::setUseAdaptativeRho(const Bool useAdaptiveRho)
+{
+  useAdaptativeRho_ = useAdaptiveRho;
 }
 
 /* String converter */

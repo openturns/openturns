@@ -59,6 +59,10 @@ public:
   Scalar getRhoBeg() const;
   void setRhoBeg(const Scalar rhoBeg);
 
+  /** Adaptive rho flag accessor */
+  Bool getUseAdaptativeRho() const;
+  void setUseAdaptativeRho(const Bool adaptiveRho);
+
   /** String converter */
   String __repr__() const override;
 
@@ -97,7 +101,10 @@ private:
   Sample inequalityConstraintHistory_;
 
   /** Whether to ignore failure return codes */
-  Bool ignoreFailure_;
+  Bool ignoreFailure_ = false;
+
+  /** Whether to initialize rho parameters according to bounds */
+  Bool useAdaptativeRho_ = false;
 
 }; /* class Cobyla */
 

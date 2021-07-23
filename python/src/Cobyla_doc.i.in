@@ -12,6 +12,7 @@ problem : :class:`~openturns.OptimizationProblem`
     Optimization problem to solve.
 rhoBeg : float
     A reasonable initial change to the variables.
+    Default is to follow `Cobyla-DefaultRhoBeg` key.
 
 Notes
 -----
@@ -54,6 +55,31 @@ Parameters
 ----------
 rhoBeg : float
     A reasonable initial change to the variables."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Cobyla::setUseAdaptativeRho
+"Accessor to the adaptative rho flag.
+
+Parameters
+----------
+useAdaptativeRho : bool
+    Whether to initialize trust-region parameters according to bound info.
+    If True and bounds are available, the rhoBeg internal parameter
+    is relative to the bound values, and rhoEnd is initialized
+    relatively to rhoBeg and maximumRelativeError.
+    If False, rhoBeg value is set with setRhoBeg and rhoEnd is set to maximumAbsoluteError.
+    Default is to follow `Cobyla-DefaultUseAdaptativeRho` key."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::Cobyla::getUseAdaptativeRho
+"Accessor to the adaptative rho flag.
+
+Returns
+----------
+useAdaptativeRho : bool
+    Whether to initialize trust-region parameters according to bound info."
 
 // ---------------------------------------------------------------------
 

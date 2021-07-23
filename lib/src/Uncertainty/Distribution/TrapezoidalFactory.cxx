@@ -83,6 +83,7 @@ Trapezoidal TrapezoidalFactory::buildAsTrapezoidal(const Sample & sample) const
 
   // override solver
   Cobyla solver;
+  solver.setUseAdaptativeRho(false);// use our rhoBeg/rhoEnd
   const Scalar rhoBeg = ResourceMap::GetAsScalar("TrapezoidalFactory-RhoBeg");
   solver.setRhoBeg(rhoBeg);
   const Scalar rhoEnd = ResourceMap::GetAsScalar("TrapezoidalFactory-RhoEnd");

@@ -780,6 +780,7 @@ void ResourceMap::loadDefaultConfiguration()
 
   // Cobyla parameters //
   addAsScalar("Cobyla-DefaultRhoBeg", 0.1);
+  addAsBool("Cobyla-DefaultUseAdaptiveRho", true);
 
   // SolverImplementation parameters //
   addAsScalar("Solver-DefaultAbsoluteError",  1.0e-5);
