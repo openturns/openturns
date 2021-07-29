@@ -37,6 +37,7 @@
  * #1878 (Rename Hanning filtering window)
  * #1879 (Adaptive Directional Sampling Algorithm: the drawProbabilityConvergence graph may be wrong)
  * #1880 (Adaptive Directional Sampling: some enhancements proposed)
+ * #1882 (Is Distribution::getLinearCorrelation useful ?)
 
 
 == 1.17 release (2021-05-12) == #release-1.17

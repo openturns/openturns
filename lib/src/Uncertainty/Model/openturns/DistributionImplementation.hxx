@@ -408,8 +408,7 @@ public:
   /** Correlation matrix accessor */
   CorrelationMatrix getCorrelation() const;
 
-  /** Get the linear correlation of the distribution */
-  virtual CorrelationMatrix getLinearCorrelation() const;
+  /** Get the Pearson correlation of the distribution */
   virtual CorrelationMatrix getPearsonCorrelation() const;
 
   /** Get the Spearman correlation of the distribution */

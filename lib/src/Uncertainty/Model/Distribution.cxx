@@ -339,11 +339,6 @@ CorrelationMatrix Distribution::getCorrelation() const
   return getImplementation()->getCorrelation();
 }
 
-CorrelationMatrix Distribution::getLinearCorrelation() const
-{
-  return getImplementation()->getLinearCorrelation();
-}
-
 CorrelationMatrix Distribution::getPearsonCorrelation() const
 {
   return getImplementation()->getPearsonCorrelation();

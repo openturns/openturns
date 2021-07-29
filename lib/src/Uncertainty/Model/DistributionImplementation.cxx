@@ -3222,11 +3222,6 @@ CorrelationMatrix DistributionImplementation::getCorrelation() const
   return R;
 }
 
-CorrelationMatrix DistributionImplementation::getLinearCorrelation() const
-{
-  return getCorrelation();
-}
-
 CorrelationMatrix DistributionImplementation::getPearsonCorrelation() const
 {
   return getCorrelation();
