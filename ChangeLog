@@ -35,6 +35,7 @@
  * #1874 (ProcessSample.getSampleAtVertex() may be useful as a public method)
  * #1877 (How to model singular multivariate distributions?)
  * #1878 (Rename Hanning filtering window)
+ * #1879 (Adaptive Directional Sampling Algorithm: the drawProbabilityConvergence graph may be wrong)
  * #1880 (Adaptive Directional Sampling: some enhancements proposed)
 
 

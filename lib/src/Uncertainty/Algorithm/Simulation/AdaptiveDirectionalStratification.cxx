@@ -120,6 +120,9 @@ void AdaptiveDirectionalStratification::run()
       const ProbabilitySimulationResult result(directionalSampling.getResult());
       const Scalar pf = result.getProbabilityEstimate();
 
+      // concatenate the convergence history
+      convergenceStrategy_.store(directionalSampling.getConvergenceStrategy().getSample());
+
       if (pf > 0.0)
       {
         probabilityEstimate += w0[i] * pf;
@@ -143,10 +146,6 @@ void AdaptiveDirectionalStratification::run()
 
     // update result
     setResult(ProbabilitySimulationResult(getEvent(), probabilityEstimate, varianceEstimate, n, blockSize));
-
-    // update the convergence history
-    const Point convPt = {probabilityEstimate, varianceEstimate};
-    convergenceStrategy_.store(convPt);
 
     // update weights
     for (UnsignedInteger i = 0; i < m; ++ i)
