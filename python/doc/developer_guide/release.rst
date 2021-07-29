@@ -8,7 +8,7 @@ Release process
 
 2. Reindent sources (utils/reindent.sh)
 
-3. Goto version number X.Yrc1 (utils/setVersionNumber.sh)
+3. Increment version number X.Yrc1 (utils/setVersionNumber.sh) and soversion (lib/src/CMakeLists.txt)
 
 4. Increment rpm package number (distro/rpm)
 
