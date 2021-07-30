@@ -123,6 +123,7 @@ Complex & TriangularComplexMatrix::operator() (const UnsignedInteger i,
     throw InvalidArgumentException(HERE) << "Error; The triangular matrix is upper. "
                                          << "The indices are not valid" ;
 
+  copyOnWrite();
   return  (*getImplementation())(i, j) ;
 }
 
