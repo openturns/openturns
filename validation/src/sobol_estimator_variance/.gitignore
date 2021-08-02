@@ -1,0 +1,5 @@
+*.png
+__pycache__
+graphe_validation/
+graphe_validation_mean_distribution/
+
