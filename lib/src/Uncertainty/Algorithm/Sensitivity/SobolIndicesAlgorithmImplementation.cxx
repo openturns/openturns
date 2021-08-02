@@ -913,7 +913,10 @@ void SobolIndicesAlgorithmImplementation::setDesign(const Sample & inputDesign,
     if (!(referenceVariance_[j] > 0.0))
       throw InvalidArgumentException(HERE) << "Null output sample variance";
 
+  // reset intermediate results
   alreadyComputedIndicesDistribution_ = false;
+  varianceI_.clear();
+  varianceTI_.clear();
 }
 
 /* Method save() stores the object through the StorageManager */

@@ -39,6 +39,7 @@
  * #1880 (Adaptive Directional Sampling: some enhancements proposed)
  * #1882 (Is Distribution::getLinearCorrelation useful ?)
  * #1883 (Strange behavior of FORM ?)
+ * #1884 (setDesign can lead to wrong Sobol' indices)
 
 
 == 1.17 release (2021-05-12) == #release-1.17
