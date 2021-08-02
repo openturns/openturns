@@ -3,8 +3,42 @@
 """
 @author: Michaël Baudin (EDF), Antoine Dumas (Phiméca)
 
-Analyse la précision des estimateurs des intervalles de confiance
-pour la fonction G-Sobol et Ishigami
+Analyse la précision de la distribution de l'estimateur des indices de Sobol'
+pour la fonction G-Sobol et Ishigami.
+
+On cherche à verifier que la distribution produite par la librairie est correcte.
+Lorsqu'on estime cette distribution par son estimateur asymptotique, la loi est
+Gaussienne.
+Le point important dans cette loi n'est pas la moyenne (égale à l'estimateur),
+mais la covariance.
+Cette covariance est estimée par la Delta-méthode.
+
+La distribution asymptotique peut être déterminée de deux manières.
+    - On peut réaliser une seule simulation et récupérer la loi de l'estimateur.
+    Le problème de cette loi est qu'elle est centrée sur une seule estimation,
+    de telle sorte qu'elle peut être décalée par rapport au centre de la
+    distribution réelle.
+    Cela peut être dû, d'une part, à la taille limitée de l'échantillon,
+    et, d'autre part, à un biais de l'estimateur.
+    C'est ce qui est fait si mean_distribution==True.
+    Dans ce cas, les images sont dans le répertoire
+    "graphe_validation_mean_distribution/".
+
+    - On peut répéter l'expérience plusieurs fois et créer une distribution
+    dont la moyenne est égale à la moyenne des moyennes et l'écart-type
+    égal à la moyenne des écart-types.
+    Cela permet de corriger le décalage dû à la taille limitée de l'échantillon,
+    mais ne corrige pas le biais de l'estimateur, si il y en a un.
+    Ainsi, on peut vérifier la présence d'un biais.
+    C'est ce qui est fait si mean_distribution==False.
+    Dans ce cas, les images sont dans le répertoire "graphe_validation/".
+
+La distribution empirique de l'estimateur est déterminée par échantillonnage.
+Pour une taille d'échantillon donnée, on répète l'expérience suivante:
+on estime les indices de Sobol' du premier ordre et totaux.
+
+On compare la loi asymptotique de l'estimateur, obtenue par la librairie et la loi
+empirique de l'échantillon.
 """
 
 
