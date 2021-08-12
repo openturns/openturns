@@ -1,10 +1,13 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
 import openturns as ot
-import openturns.testing as ott
 
 ot.TESTPREAMBLE()
+
+# Indicator function of an Interval of dimension 0
+singleton = ot.Interval()
+assert singleton.contains([])
+assert ot.IndicatorFunction(singleton)([])==ot.Point([1.0])
 
 # Indicator function of an Interval
 

@@ -96,6 +96,7 @@
 %include PointToPointEvaluation.i
 %include PointToPointConnection.i
 %include IndicatorFunction.i
+%include DistanceToDomainFunction.i
 %include ValueFunction.i
 %include VertexValueFunction.i
 %include DualLinearCombinationEvaluation.i
@@ -121,6 +122,7 @@
 %include DatabaseFunction.i
 %include DatabaseEvaluation.i
 %include IndicatorEvaluation.i
+%include DistanceToDomainEvaluation.i
 %include ProductPolynomialEvaluation.i
 %include ParametricEvaluation.i
 %include ParametricGradient.i

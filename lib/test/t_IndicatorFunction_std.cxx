@@ -31,9 +31,16 @@ int main(int, char *[])
 
   try
   {
+     // Indicator function of an Interval of dimension 0
+    const Interval singleton;
+    const Point dimZeroPoint(0);
+    const Point one = {1.0};
+    const IndicatorFunction singletonIndicator(singleton);
+    assert_almost_equal(singletonIndicator(dimZeroPoint), one);
+
+    // Indicator function of an Interval
     const Point lower = {1.2, 0.7};
     const Point upper = {2.0, 1.0};
-    const Point one = {1.0};
     const Point zero = {0.0};
     Sample one_zero(2, 1);
     one_zero(0, 0) = 1.0;
