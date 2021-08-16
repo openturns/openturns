@@ -177,6 +177,32 @@ Bool Interval::contains(const Point & point) const
   return true;
 }
 
+/* Compute the Euclidean distance from a given point to the domain */
+Scalar Interval::computeDistance(const Point & point) const
+{
+    const UnsignedInteger pointDimension = point.getDimension();
+    const UnsignedInteger intervalDimension = getDimension();
+
+    if (pointDimension != intervalDimension) throw InvalidArgumentException(HERE) << "Error: expected a point of dimension=" << pointDimension << ", got dimension=" << intervalDimension;
+
+    if (isEmpty()) return SpecFunc::MaxScalar;
+
+    Point lowerBound = getLowerBound();
+    Point upperBound = getUpperBound();
+    BoolCollection finiteLowerBound = getFiniteLowerBound();
+    BoolCollection finiteUpperBound = getFiniteUpperBound();
+
+    Scalar squaredDistance = 0.0;
+
+    for (UnsignedInteger i = 0; i < intervalDimension; ++i)
+{
+    if (finiteLowerBound[i] && point[i] < lowerBound[i]) squaredDistance += (lowerBound[i] - point[i]) * (lowerBound[i] - point[i]);
+    else if (finiteUpperBound[i] && point[i] > upperBound[i]) squaredDistance += (point[i] - upperBound[i]) * (point[i] - upperBound[i]);
+}
+
+    return sqrt(squaredDistance);
+}
+
 /* Compute the numerical volume of the interval */
 Scalar Interval::getVolume() const
 {
