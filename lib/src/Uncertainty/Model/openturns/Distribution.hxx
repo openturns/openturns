@@ -288,7 +288,6 @@ public:
 
   /** Correlation matrix accessor */
   CorrelationMatrix getCorrelation() const;
-  CorrelationMatrix getLinearCorrelation() const;
   CorrelationMatrix getPearsonCorrelation() const;
 
   /** Get the Spearman correlation of the distribution */

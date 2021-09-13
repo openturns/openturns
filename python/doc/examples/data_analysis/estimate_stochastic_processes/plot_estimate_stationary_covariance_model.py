@@ -49,7 +49,7 @@ covarianceFactory = ot.StationaryCovarianceModelFactory()
 
 # Set the spectral factory algorithm
 segmentNumber = 5
-spectralFactory = ot.WelchFactory(ot.Hanning(), segmentNumber)
+spectralFactory = ot.WelchFactory(ot.Hann(), segmentNumber)
 covarianceFactory.setSpectralModelFactory(spectralFactory)
 
 # Check the current spectral factory

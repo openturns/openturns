@@ -142,7 +142,7 @@ It follows that:
 
     - See :class:`~openturns.StationaryCovarianceModelFactory`
     - See :class:`~openturns.WelchFactory`
-    - See :class:`~openturns.Hanning`
+    - See :class:`~openturns.Hann`
 
 .. topic:: Examples:
 

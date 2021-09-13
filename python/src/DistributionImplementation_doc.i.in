@@ -2137,14 +2137,6 @@ OT_Distribution_getKurtosis_doc
 
 // ---------------------------------------------------------------------
 
-%define OT_Distribution_getLinearCorrelation_doc
-"**(ditch me?)**"
-%enddef
-%feature("docstring") OT::DistributionImplementation::getLinearCorrelation
-OT_Distribution_getLinearCorrelation_doc
-
-// ---------------------------------------------------------------------
-
 %define OT_Distribution_getMarginal_doc
 "Accessor to marginal distributions.
 

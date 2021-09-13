@@ -14,6 +14,8 @@
  * Removed deprecated coupling_tools.execute is_shell/workdir/shell_exe/check_exit_code arguments
  * RandomVector::get/setParameter and getParameterDescription available to PythonRandomVector
  * Implemented CovarianceModel::computeCrossCovariance
+ * Deprecated Hanning in favor of Hann
+ * Deprecated AdaptiveDirectionalSampling in favor of AdaptiveDirectionalStratification
 
 === Documentation ===
 
@@ -27,7 +29,18 @@
  * #1844 (MaximumDistribution::computePDF is wrong when all the marginals are equal and independent)
  * #1845 (MemoizeFunction does not propagate to finite difference gradient&hessian)
  * #1847 (ParametricFunction require unnecessary function evaluations)
+ * #1854 (Sample indexing does not work on np.int64 type)
  * #1861 (Still some instabilities in Kriging with ot.StationaryFunctionalCovarianceModel)
+ * #1864 (FORM - IMPORTANCE FACTOR)
+ * #1870 (TruncatedDistribution fails to compute quantiles)
+ * #1874 (ProcessSample.getSampleAtVertex() may be useful as a public method)
+ * #1877 (How to model singular multivariate distributions?)
+ * #1878 (Rename Hanning filtering window)
+ * #1879 (Adaptive Directional Sampling Algorithm: the drawProbabilityConvergence graph may be wrong)
+ * #1880 (Adaptive Directional Sampling: some enhancements proposed)
+ * #1882 (Is Distribution::getLinearCorrelation useful ?)
+ * #1883 (Strange behavior of FORM ?)
+ * #1884 (setDesign can lead to wrong Sobol' indices)
 
 
 == 1.17 release (2021-05-12) == #release-1.17

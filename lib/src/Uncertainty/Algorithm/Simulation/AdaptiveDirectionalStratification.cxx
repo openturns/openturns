@@ -18,48 +18,48 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/AdaptiveDirectionalSampling.hxx"
+#include "openturns/AdaptiveDirectionalStratification.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/QuadrantSampling.hxx"
 #include "openturns/DirectionalSampling.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(AdaptiveDirectionalSampling)
+CLASSNAMEINIT(AdaptiveDirectionalStratification)
 
 /* Default constructor */
-AdaptiveDirectionalSampling::AdaptiveDirectionalSampling()
+AdaptiveDirectionalStratification::AdaptiveDirectionalStratification()
   : EventSimulation()
   , partialStratification_(false)
-  , maximumStratificationDimension_(ResourceMap::GetAsScalar("AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension"))
+  , maximumStratificationDimension_(ResourceMap::GetAsScalar("AdaptiveDirectionalStratification-DefaultMaximumStratificationDimension"))
 {
   // Nothing to do
 }
 
 /* Constructor with parameters */
-AdaptiveDirectionalSampling::AdaptiveDirectionalSampling(const RandomVector & event,
+AdaptiveDirectionalStratification::AdaptiveDirectionalStratification(const RandomVector & event,
     const RootStrategy & rootStrategy,
     const SamplingStrategy & samplingStrategy)
   : EventSimulation(event)
   , standardEvent_(StandardEvent(event))
   , rootStrategy_(rootStrategy)
   , samplingStrategy_(samplingStrategy)
-  , gamma_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalSampling-DefaultNumberOfSteps"), ResourceMap::GetAsScalar("AdaptiveDirectionalSampling-DefaultGamma"))
+  , gamma_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalStratification-DefaultNumberOfSteps"), ResourceMap::GetAsScalar("AdaptiveDirectionalStratification-DefaultGamma"))
   , partialStratification_(false)
-  , maximumStratificationDimension_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension"))
+  , maximumStratificationDimension_(ResourceMap::GetAsUnsignedInteger("AdaptiveDirectionalStratification-DefaultMaximumStratificationDimension"))
 {
   samplingStrategy_.setDimension(getEvent().getImplementation()->getAntecedent().getDimension());
 }
 
 /* Virtual constructor */
-AdaptiveDirectionalSampling * AdaptiveDirectionalSampling::clone() const
+AdaptiveDirectionalStratification * AdaptiveDirectionalStratification::clone() const
 {
-  return new AdaptiveDirectionalSampling(*this);
+  return new AdaptiveDirectionalStratification(*this);
 }
 
 
 
-void AdaptiveDirectionalSampling::run()
+void AdaptiveDirectionalStratification::run()
 {
 
   // First, reset the convergence history
@@ -120,6 +120,9 @@ void AdaptiveDirectionalSampling::run()
       const ProbabilitySimulationResult result(directionalSampling.getResult());
       const Scalar pf = result.getProbabilityEstimate();
 
+      // concatenate the convergence history
+      convergenceStrategy_.store(directionalSampling.getConvergenceStrategy().getSample());
+
       if (pf > 0.0)
       {
         probabilityEstimate += w0[i] * pf;
@@ -135,7 +138,7 @@ void AdaptiveDirectionalSampling::run()
         }
 
       } // if pf > 0
-      Log::Debug(OSS() << "AdaptiveDirectionalSampling::run n=" << n << " i=" << i << " ni=" << ni << " pf=" << pf << " sigma=" << sigma[i]);
+      Log::Debug(OSS() << "AdaptiveDirectionalStratification::run n=" << n << " i=" << i << " ni=" << ni << " pf=" << pf << " sigma=" << sigma[i]);
 
     } // for i
 
@@ -143,10 +146,6 @@ void AdaptiveDirectionalSampling::run()
 
     // update result
     setResult(ProbabilitySimulationResult(getEvent(), probabilityEstimate, varianceEstimate, n, blockSize));
-
-    // update the convergence history
-    const Point convPt = {probabilityEstimate, varianceEstimate};
-    convergenceStrategy_.store(convPt);
 
     // update weights
     for (UnsignedInteger i = 0; i < m; ++ i)
@@ -163,7 +162,7 @@ void AdaptiveDirectionalSampling::run()
           if ((1 << k) & i)
             T_[k] += std::abs(T0(k, i) - T1(k, i));
 
-        Log::Debug(OSS() << "AdaptiveDirectionalSampling::run T[" << k << "]=" << T_[k]);
+        Log::Debug(OSS() << "AdaptiveDirectionalStratification::run T[" << k << "]=" << T_[k]);
       }
 
       // sort variables according to T statistic
@@ -178,7 +177,7 @@ void AdaptiveDirectionalSampling::run()
             order[j + 1] = swap;
           }
       for (UnsignedInteger k = 0; k < dimension; ++ k)
-        Log::Debug(OSS() << "AdaptiveDirectionalSampling::run #" << k << " T[" << order[k] << "]=" << T_[order[k]]);
+        Log::Debug(OSS() << "AdaptiveDirectionalStratification::run #" << k << " T[" << order[k] << "]=" << T_[order[k]]);
 
       // retrieve the p' variables contributing the most
       strataIndices = Indices();
@@ -222,18 +221,18 @@ void AdaptiveDirectionalSampling::run()
 }
 
 /* Root strategy accessor */
-void AdaptiveDirectionalSampling::setRootStrategy(const RootStrategy & rootStrategy)
+void AdaptiveDirectionalStratification::setRootStrategy(const RootStrategy & rootStrategy)
 {
   rootStrategy_ = rootStrategy;
 }
 
-RootStrategy AdaptiveDirectionalSampling::getRootStrategy() const
+RootStrategy AdaptiveDirectionalStratification::getRootStrategy() const
 {
   return rootStrategy_;
 }
 
 /* Sampling strategy */
-void AdaptiveDirectionalSampling::setSamplingStrategy(const SamplingStrategy & samplingStrategy)
+void AdaptiveDirectionalStratification::setSamplingStrategy(const SamplingStrategy & samplingStrategy)
 {
   const UnsignedInteger dimension = getEvent().getImplementation()->getAntecedent().getDistribution().getDimension();
   if (samplingStrategy.getDimension() != dimension)
@@ -241,12 +240,12 @@ void AdaptiveDirectionalSampling::setSamplingStrategy(const SamplingStrategy & s
   samplingStrategy_ = samplingStrategy;
 }
 
-SamplingStrategy AdaptiveDirectionalSampling::getSamplingStrategy() const
+SamplingStrategy AdaptiveDirectionalStratification::getSamplingStrategy() const
 {
   return samplingStrategy_;
 }
 
-void AdaptiveDirectionalSampling::setGamma(const Point& gamma)
+void AdaptiveDirectionalStratification::setGamma(const Point& gamma)
 {
   const UnsignedInteger dimension = gamma.getDimension();
   if (dimension > 2) throw InvalidDimensionException(HERE) << "gamma dimension is " << dimension;
@@ -260,13 +259,13 @@ void AdaptiveDirectionalSampling::setGamma(const Point& gamma)
   gamma_ = gamma;
 }
 
-Point AdaptiveDirectionalSampling::getGamma() const
+Point AdaptiveDirectionalStratification::getGamma() const
 {
   return gamma_;
 }
 
 
-void AdaptiveDirectionalSampling::setQuadrantOrientation(const OT::Point& quadrantOrientation)
+void AdaptiveDirectionalStratification::setQuadrantOrientation(const OT::Point& quadrantOrientation)
 {
   const UnsignedInteger dimension = getEvent().getImplementation()->getAntecedent().getDimension();
   if ((quadrantOrientation.getDimension() > 0) && (quadrantOrientation.getDimension() != dimension))
@@ -274,50 +273,50 @@ void AdaptiveDirectionalSampling::setQuadrantOrientation(const OT::Point& quadra
   quadrantOrientation_ = quadrantOrientation;
 }
 
-OT::Point AdaptiveDirectionalSampling::getQuadrantOrientation() const
+OT::Point AdaptiveDirectionalStratification::getQuadrantOrientation() const
 {
   return quadrantOrientation_;
 }
 
 
-Sample AdaptiveDirectionalSampling::computeBlockSample()
+Sample AdaptiveDirectionalStratification::computeBlockSample()
 {
   return Sample();
 }
 
 /* String converter */
-String AdaptiveDirectionalSampling::__repr__() const
+String AdaptiveDirectionalStratification::__repr__() const
 {
   OSS oss;
-  oss << "class=" << AdaptiveDirectionalSampling::GetClassName();
+  oss << "class=" << AdaptiveDirectionalStratification::GetClassName();
   return oss;
 }
 
 
-void AdaptiveDirectionalSampling::setPartialStratification(Bool partialStratification)
+void AdaptiveDirectionalStratification::setPartialStratification(Bool partialStratification)
 {
   partialStratification_ = partialStratification;
 }
 
 
-OT::Bool AdaptiveDirectionalSampling::getPartialStratification() const
+OT::Bool AdaptiveDirectionalStratification::getPartialStratification() const
 {
   return partialStratification_;
 }
 
 
-void AdaptiveDirectionalSampling::setMaximumStratificationDimension(OT::UnsignedInteger maximumStratificationDimension)
+void AdaptiveDirectionalStratification::setMaximumStratificationDimension(OT::UnsignedInteger maximumStratificationDimension)
 {
   maximumStratificationDimension_ = maximumStratificationDimension;
 }
 
-OT::UnsignedInteger AdaptiveDirectionalSampling::getMaximumStratificationDimension() const
+OT::UnsignedInteger AdaptiveDirectionalStratification::getMaximumStratificationDimension() const
 {
   return maximumStratificationDimension_;
 }
 
 
-OT::Point AdaptiveDirectionalSampling::getTStatistic() const
+OT::Point AdaptiveDirectionalStratification::getTStatistic() const
 {
   return T_;
 }

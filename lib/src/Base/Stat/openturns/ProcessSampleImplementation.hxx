@@ -174,10 +174,10 @@ public:
   ProcessSampleImplementation & operator += (const Sample & translation);
   ProcessSampleImplementation & operator -= (const Sample & translation);
 
-private:
   /** Extract the sample of values at the given vertex index */
   Sample getSampleAtVertex(const UnsignedInteger index) const;
 
+private:
   /** Mesh on which the ProcessSampleImplementation focuses */
   Mesh mesh_;
 

@@ -49,7 +49,7 @@ sample = process.getSample(1000)
 # Build a spectral model factory
 segmentNumber = 10
 overlapSize = 0.3
-factory = ot.WelchFactory(ot.Hanning(), segmentNumber, overlapSize)
+factory = ot.WelchFactory(ot.Hann(), segmentNumber, overlapSize)
 
 # %%
 # Estimation on a TimeSeries or on a ProcessSample

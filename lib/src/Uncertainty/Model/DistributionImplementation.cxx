@@ -3222,11 +3222,6 @@ CorrelationMatrix DistributionImplementation::getCorrelation() const
   return R;
 }
 
-CorrelationMatrix DistributionImplementation::getLinearCorrelation() const
-{
-  return getCorrelation();
-}
-
 CorrelationMatrix DistributionImplementation::getPearsonCorrelation() const
 {
   return getCorrelation();
@@ -5227,6 +5222,17 @@ Distribution DistributionImplementation::abs() const
   const Point bounds = {a, 0.0, b};
   const Point values = {std::abs(a), 0.0, b};
   return new CompositeDistribution(SymbolicFunction("x", "abs(x)"), clone(), bounds, values);
+}
+
+/* Quantile epsilon accessor */
+Scalar DistributionImplementation::getQuantileEpsilon() const
+{
+  return quantileEpsilon_;
+}
+
+void DistributionImplementation::setQuantileEpsilon(const Scalar quantileEpsilon)
+{
+  quantileEpsilon_ = quantileEpsilon;
 }
 
 END_NAMESPACE_OPENTURNS

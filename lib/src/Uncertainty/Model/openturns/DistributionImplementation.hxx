@@ -408,8 +408,7 @@ public:
   /** Correlation matrix accessor */
   CorrelationMatrix getCorrelation() const;
 
-  /** Get the linear correlation of the distribution */
-  virtual CorrelationMatrix getLinearCorrelation() const;
+  /** Get the Pearson correlation of the distribution */
   virtual CorrelationMatrix getPearsonCorrelation() const;
 
   /** Get the Spearman correlation of the distribution */
@@ -761,6 +760,10 @@ public:
   /** Is it safe to compute PDF/CDF etc in parallel? */
   Bool isParallel() const;
   void setParallel(const Bool flag);
+
+  /** Quantile epsilon accessor */
+  Scalar getQuantileEpsilon() const;
+  void setQuantileEpsilon(const Scalar quantileEpsilon);
 
 protected:
 

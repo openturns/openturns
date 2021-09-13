@@ -567,10 +567,10 @@
   <!-- OT::DirectionalSampling parameters -->
   <DirectionalSampling-MeanContributionIntegrationNodesNumber value_int="255" />
 
-  <!-- OT::AdaptiveDirectionalSampling parameters -->
-  <AdaptiveDirectionalSampling-DefaultGamma                          value_float="0.5"         />
-  <AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension value_int="3" />
-  <AdaptiveDirectionalSampling-DefaultNumberOfSteps                  value_int="2" />
+  <!-- OT::AdaptiveDirectionalStratification parameters -->
+  <AdaptiveDirectionalStratification-DefaultGamma                          value_float="0.5"         />
+  <AdaptiveDirectionalStratification-DefaultMaximumStratificationDimension value_int="3" />
+  <AdaptiveDirectionalStratification-DefaultNumberOfSteps                  value_int="2" />
 
   <!-- OT::AnalyticalResult parameters -->
   <AnalyticalResult-DefaultWidth                    value_float="1.0"           />

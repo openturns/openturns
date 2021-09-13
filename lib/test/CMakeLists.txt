@@ -675,7 +675,7 @@ ot_check_test (PostAnalyticalImportanceSampling_std)
 ot_check_test (Wilks_std)
 ot_check_test (SimulationSensitivityAnalysis_std)
 ot_check_test (QuadrantSampling_std)
-ot_check_test (AdaptiveDirectionalSampling_std)
+ot_check_test (AdaptiveDirectionalStratification_std)
 
 # StatTests
 ot_check_test (VisualTest_std)

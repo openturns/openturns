@@ -28,10 +28,10 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class Hanning
+ * @class Hann
  */
 
-class OT_API Hanning
+class OT_API Hann
   : public FilteringWindowsImplementation
 {
 
@@ -41,10 +41,10 @@ public:
 
 
   /** Default constructor without parameters */
-  Hanning();
+  Hann();
 
   /** Virtual copy constructor */
-  Hanning * clone() const override;
+  Hann * clone() const override;
 
   /** String converter */
   String __repr__() const override;
@@ -61,7 +61,7 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
-} ; /* class Hanning */
+} ; /* class Hann */
 
 END_NAMESPACE_OPENTURNS
 

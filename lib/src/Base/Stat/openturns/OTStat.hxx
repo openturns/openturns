@@ -53,7 +53,7 @@
 #include "openturns/FilteringWindowsImplementation.hxx"
 #include "openturns/FilteringWindows.hxx"
 #include "openturns/Hamming.hxx"
-#include "openturns/Hanning.hxx"
+#include "openturns/Hann.hxx"
 #include "openturns/SpectralModel.hxx"
 #include "openturns/CovarianceModelImplementation.hxx"
 #include "openturns/SpectralModelImplementation.hxx"

@@ -74,7 +74,7 @@ for dim in [3, 5, 8][1:2]:
                     # algo.run()
                     # result = algo.getResult()
                     # print result
-                    algo = ot.AdaptiveDirectionalSampling(event)
+                    algo = ot.AdaptiveDirectionalStratification(event)
                     algo.setMaximumOuterSampling(n)
                     algo.setGamma([gamma1, 1.0 - gamma1])
                     calls0 = function.getEvaluationCallsNumber()

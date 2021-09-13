@@ -30,11 +30,11 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 /**
- * @class AdaptiveDirectionalSampling
+ * @class AdaptiveDirectionalStratification
  *
- * AdaptiveDirectionalSampling
+ * AdaptiveDirectionalStratification
  */
-class OT_API AdaptiveDirectionalSampling
+class OT_API AdaptiveDirectionalStratification
   : public EventSimulation
 {
   CLASSNAME
@@ -42,15 +42,15 @@ class OT_API AdaptiveDirectionalSampling
 public:
 
   /** Default constructor */
-  AdaptiveDirectionalSampling();
+  AdaptiveDirectionalStratification();
 
   /** Constructor with parameters */
-  AdaptiveDirectionalSampling(const RandomVector & event,
+  AdaptiveDirectionalStratification(const RandomVector & event,
                               const RootStrategy & rootStrategy = RootStrategy(),
                               const SamplingStrategy & samplingStrategy = SamplingStrategy());
 
   /** Virtual constructor */
-  AdaptiveDirectionalSampling * clone() const override;
+  AdaptiveDirectionalStratification * clone() const override;
 
   /** String converter */
   String __repr__() const override;
@@ -109,7 +109,7 @@ private:
   // T statistic
   Point T_;
 
-}; /* class AdaptiveDirectionalSampling */
+}; /* class AdaptiveDirectionalStratification */
 
 END_NAMESPACE_OPENTURNS
 

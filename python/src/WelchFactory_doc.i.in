@@ -8,7 +8,7 @@ Parameters
 window : :class:`~openturns.FilteringWindows`
     The filtering window model.
 
-    By default, the filtering window model is the Hanning model.
+    By default, the filtering window model is the Hann model.
 blockNumber : int
     Number of blocks. 
 
@@ -51,7 +51,7 @@ Estimate the spectral model with WelchFactory:
 
 >>> mySegmentNumber = 10
 >>> myOverlapSize = 0.3
->>> myFactory = ot.WelchFactory(ot.Hanning(), mySegmentNumber , myOverlapSize)
+>>> myFactory = ot.WelchFactory(ot.Hann(), mySegmentNumber, myOverlapSize)
 >>> myEstimatedModel_TS = myFactory.build(myTimeSeries)
 
 Change the filtering window:
@@ -93,7 +93,7 @@ Returns
 filteringWindow : :class:`~openturns.FilteringWindows`
     The filtering window used.
 
-    By default, the :class:`~openturns.Hanning` one.
+    By default, the :class:`~openturns.Hann` one.
 "
 
 // ---------------------------------------------------------------------

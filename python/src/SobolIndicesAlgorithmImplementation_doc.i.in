@@ -539,6 +539,8 @@ OT_SobolIndicesAlgorithm_getTotalOrderIndicesDistribution_doc
 %define OT_SobolIndicesAlgorithm_setDesign_doc
 "Sample accessor.
 
+Allows to estimate indices from a predefined Sobol design.
+
 Parameters
 ----------
 inputDesign : :class:`~openturns.Sample`
@@ -548,7 +550,7 @@ outputDesign : :class:`~openturns.Sample`
     Design for the evaluation of sensitivity indices, obtained as the evaluation
     of a Function (model) on the previous inputDesign
 N : int
-    Size of samples to generate"
+    Base size of the Sobol design"
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::setDesign
 OT_SobolIndicesAlgorithm_setDesign_doc
