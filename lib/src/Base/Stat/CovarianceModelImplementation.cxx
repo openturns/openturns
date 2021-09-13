@@ -475,6 +475,210 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
   }
 }
 
+struct CrossCovarianceFunctor1D
+{
+  const SampleImplementation &firstSample_;
+  const SampleImplementation &secondSample_;
+  MatrixImplementation &output_;
+  const CovarianceModelImplementation &model_;
+
+  CrossCovarianceFunctor1D(const Sample &firstSample,
+                           const Sample &secondSample,
+                           Matrix &output,
+                           const CovarianceModelImplementation &model)
+      : firstSample_(*firstSample.getImplementation())
+      , secondSample_(*secondSample.getImplementation())
+      , output_(*output.getImplementation())
+      , model_(model)
+  {
+  }
+
+  inline void operator()(const TBB::BlockedRange<UnsignedInteger> &r) const
+  {
+
+    const UnsignedInteger inputDimension = firstSample_.getDimension();
+    for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
+    {
+      // Fill by column
+      // Fill Matrix is firstSampleSize x secondSampleSize
+      // As we might have strong differences between sizes, the loop rely on final blocksize
+      const UnsignedInteger columnIndex = index / firstSample_.getSize();
+      const UnsignedInteger rowIndex = index - columnIndex * firstSample_.getSize();
+      output_(rowIndex, columnIndex) = model_.computeAsScalar(firstSample_.data_begin() + (rowIndex * inputDimension),
+                                                              secondSample_.data_begin() + (columnIndex * inputDimension));
+    }
+  } // operator()
+};
+/* end struct CrossCovarianceFunctor1D */
+
+struct CrossCovarianceFunctor
+{
+  const SampleImplementation &firstSample_;
+  const SampleImplementation &secondSample_;
+  MatrixImplementation &output_;
+  const CovarianceModelImplementation &model_;
+  const UnsignedInteger dimension_;
+
+  CrossCovarianceFunctor(const Sample &firstSample,
+                         const Sample &secondSample,
+                         Matrix &output,
+                         const CovarianceModelImplementation &model)
+      : firstSample_(*firstSample.getImplementation())
+      , secondSample_(*secondSample.getImplementation())
+      , output_(*output.getImplementation())
+      , model_(model)
+      , dimension_(model.getOutputDimension())
+  {
+  }
+
+  inline void operator()(const TBB::BlockedRange<UnsignedInteger> &r) const
+  {
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      // Fill by column
+      // jLocal ==> which column to fill
+      // jBase : use of block size to determine first element of matrix
+      // iLocal : for a fixed jLocal row, which iLocal-th element to fill
+      // iBase : same as jBase but for rows
+      const UnsignedInteger jLocal = i / firstSample_.getSize();
+      const UnsignedInteger jBase = jLocal * dimension_;
+      const UnsignedInteger iLocal = i - jLocal * firstSample_.getSize();
+      const UnsignedInteger iBase = iLocal * dimension_;
+      // Local covariance matrix
+      const SquareMatrix localCovariance(model_(firstSample_[iLocal], secondSample_[jLocal]));
+      for (UnsignedInteger jj = 0; jj < dimension_; ++jj)
+      {
+        for (UnsignedInteger ii = 0; ii < dimension_; ++ii)
+        {
+          output_(iBase + ii, jBase + jj) = localCovariance(ii, jj);
+        }
+      }
+    }
+  }
+};
+/* end struct CrossCovarianceFunctor */
+
+Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &firstSample,
+                                                             const Sample &secondSample) const
+{
+  if (firstSample.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "Error: the first sample has a dimension=" << firstSample.getDimension() << " different from the input dimension=" << inputDimension_;
+
+  if (secondSample.getDimension() != inputDimension_)
+    throw InvalidArgumentException(HERE) << "Error: the second sample has a dimension=" << secondSample.getDimension() << " different from the input dimension=" << inputDimension_;
+
+  const UnsignedInteger dimension = getOutputDimension();
+  if (dimension == 1)
+  {
+    const UnsignedInteger firstSampleSize = firstSample.getSize();
+    const UnsignedInteger secondSampleSize = secondSample.getSize();
+    Matrix result(firstSampleSize, secondSampleSize);
+    const CrossCovarianceFunctor1D policy(firstSample, secondSample, result, *this);
+    // The loop is over X & Y samples
+    TBB::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, policy);
+    return result;
+  }
+  const UnsignedInteger firstSampleSize = firstSample.getSize();
+  const UnsignedInteger firstSampleFullSize = firstSampleSize * dimension;
+  const UnsignedInteger secondSampleSize = secondSample.getSize();
+  const UnsignedInteger secondSampleFullSize = secondSampleSize * dimension;
+  Matrix result(firstSampleFullSize, secondSampleFullSize);
+  const CrossCovarianceFunctor policy(firstSample, secondSample, result, *this);
+  // The loop is over the lower block-triangular part
+  TBB::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, policy);
+  return result;
+}
+
+struct CrossCovariancePointFunctor1D
+{
+  const SampleImplementation &sample_;
+  const Point &point_;
+  MatrixImplementation &output_;
+  const CovarianceModelImplementation &model_;
+
+  CrossCovariancePointFunctor1D(const Sample &sample,
+                                const Point &point,
+                                Matrix &output,
+                                const CovarianceModelImplementation &model)
+      : sample_(*sample.getImplementation())
+      , point_(point)
+      , output_(*output.getImplementation())
+      , model_(model)
+  {
+  }
+
+  inline void operator()(const TBB::BlockedRange<UnsignedInteger> &r) const
+  {
+
+    const UnsignedInteger inputDimension = point_.getDimension();
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      output_(i, 0) = model_.computeAsScalar(sample_.data_begin() + (i * inputDimension),
+                                             point_.begin());
+    }
+  } // operator()
+};
+/* end struct CrossCovariancePointFunctor1D */
+
+struct CrossCovariancePointFunctor
+{
+  const SampleImplementation &sample_;
+  const Point &point_;
+  MatrixImplementation &output_;
+  const CovarianceModelImplementation &model_;
+
+  CrossCovariancePointFunctor(const Sample &sample,
+                              const Point &point,
+                              Matrix &output,
+                              const CovarianceModelImplementation &model)
+      : sample_(*sample.getImplementation())
+      , point_(point)
+      , output_(*output.getImplementation())
+      , model_(model)
+  {
+  }
+
+  inline void operator()(const TBB::BlockedRange<UnsignedInteger> &r) const
+  {
+    const UnsignedInteger dimension = model_.getOutputDimension();
+    for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
+    {
+      SquareMatrix localCovariance(model_(sample_[i], point_));
+      for (UnsignedInteger columnIndex = 0; columnIndex < dimension; ++columnIndex)
+        for (UnsignedInteger rowIndex = 0; rowIndex < dimension; ++rowIndex)
+          output_(i * dimension + rowIndex, columnIndex) = localCovariance(rowIndex, columnIndex);
+    }
+  } // operator()
+};
+/* end struct CrossCovariancePointFunctor */
+
+Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &sample,
+                                                             const Point &point) const
+{
+  const UnsignedInteger size = sample.getSize();
+  const UnsignedInteger outputDimension = getOutputDimension();
+  if (outputDimension == 1)
+  {
+    Matrix result(size, 1);
+    const CrossCovariancePointFunctor1D policy(sample, point, result, *this);
+    // The loop is over the lower block-triangular part
+    TBB::ParallelForIf(isParallel(), 0, size, policy);
+    return result;
+  }
+  const UnsignedInteger fullSize = size * outputDimension;
+  Matrix result(fullSize, outputDimension);
+  const CrossCovariancePointFunctor policy(sample, point, result, *this);
+  TBB::ParallelForIf(isParallel(), 0, size, policy);
+  return result;
+}
+
+Matrix CovarianceModelImplementation::computeCrossCovariance(const Point &point,
+                                                             const Sample &sample) const
+{
+  // TODO : transposeInPlace
+  return computeCrossCovariance(sample, point).transpose();
+}
+
 CovarianceMatrix CovarianceModelImplementation::discretize(const Mesh & mesh) const
 {
   return discretize(mesh.getVertices());
