@@ -68,9 +68,11 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+ * #1010 (The doc for ExpectationSimulationAlgorithm is confusing)
  * #1052 (The Dirichlet and Normal distributions only have 1D graphics in the doc)
  * #1224 (The examples in the doc of the DomainEvent class are unclear)
  * #1229 (Better encapsulation of optional 3rd-party headers)
+ * #1240 (There is no theory documentation for ExpectationSimulationAlgorithm)
  * #1257 (Cannot create a SimulatedAnnealingLHS without specifying the temperature profile)
  * #1287 (The constructors of KernelSmoothing have no doc)
  * #1418 (The Contour example does not present the second constructor)
@@ -81,6 +83,7 @@
  * #1506 (The Brent class has no example)
  * #1570 (Wrong formula for MauntzKucherenkoSensitivityAlgorithm)
  * #1650 (There is no example of a parametric StationaryFunctionalCovarianceModel)
+ * #1656 (The help page of ExpectationSimulationAlgorithm is unclear)
  * #1661 (XMLH5StorageManager does not store IndicesCollection into HDF5 files)
  * #1662 (Operator() of a CovarianceModel with multidimensional output should yield object of type SquareMatrix)
  * #1680 (QuadraticBasisFactory multiplies cross products by 2)
@@ -109,6 +112,7 @@
  * #1787 (CovarianceMatrix from SymmetricMatrix raises InvalidArgumentException)
  * #1790 (LinearModelResult.getFormula() method is not updated by Stepwise regression)
  * #1794 (Some doc examples seem to behave with new infrastructure)
+<<<<<<< HEAD
  * #1796 (VonMisesFactory is missing)
  * #1803 (The API example of Experiment has a format issue)
  * #1805 (Brent's implementation has a stability issue)
@@ -119,6 +123,8 @@
  * #1835 (RegularizedIncompleteBeta returns nan)
  * #1836 (Hypergeometric results differ without boost)
  * #1837 (Poor performance when using pickle on OT objects)
+=======
+>>>>>>> 6a08c679e... ExpectationSimulationAlgorithm: Fixes the doc.
 
 == 1.16 release (2020-11-16) == #release-1.16
 
