@@ -46,6 +46,9 @@ public:
 
   /** Constructor for multiD normal distribution */
   Normal(const Point & mean,
+         const Point & sigma);
+
+  Normal(const Point & mean,
          const Point & sigma,
          const CorrelationMatrix & R);
 

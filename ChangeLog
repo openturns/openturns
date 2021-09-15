@@ -24,6 +24,7 @@
  * Deprecated TBB.SetNumberOfThreads/GetNumberOfThreads
  * Deprecated MultiFORM.setMaximumNumberOfDesignPoints/getMaximumNumberOfDesignPoints
  * Deprecated SubsetSampling.getNumberOfSteps
+ * Normal and Student distributions: no need to specify the R parameter if it is the identity matrix
 
 === Documentation ===
 

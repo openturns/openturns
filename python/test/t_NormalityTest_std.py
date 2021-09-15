@@ -40,7 +40,7 @@ try:
     distributionCollection.add(truncatednormal)
     continuousDistributionCollection.add(truncatednormal)
 
-    student = Student(10., 10.)
+    student = Student(10., 10., 1.)
     distributionCollection.add(student)
     continuousDistributionCollection.add(student)
 

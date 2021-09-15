@@ -56,7 +56,7 @@ Student::Student(const Scalar nu,
   setNu(nu);
 }
 
-/* Parameters constructor */
+/* Constructor for 1D Student distribution */
 Student::Student(const Scalar nu,
                  const Scalar mu,
                  const Scalar sigma)
@@ -70,7 +70,7 @@ Student::Student(const Scalar nu,
   setNu(nu);
 }
 
-/* Parameters constructor */
+/* Constructor for multiD Student distribution */
 Student::Student(const Scalar nu,
                  const Point & mu,
                  const Point & sigma,
@@ -83,6 +83,14 @@ Student::Student(const Scalar nu,
   setDimension(mu.getDimension());
   // Set nu with checks. This call set also the range.
   setNu(nu);
+}
+
+Student::Student(const Scalar nu,
+                 const Point & mu,
+                 const Point & sigma)
+  : Student(nu, mu, sigma, IdentityMatrix(mu.getDimension()))
+{
+  // Nothing to do
 }
 
 /* Comparison operator */

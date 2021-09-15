@@ -90,6 +90,13 @@ Normal::Normal(const Point & mean,
 }
 
 Normal::Normal(const Point & mean,
+               const Point & sigma)
+  : Normal(mean, sigma, IdentityMatrix(mean.getDimension()))
+{
+  // Nothing to do
+}
+
+Normal::Normal(const Point & mean,
                const CovarianceMatrix & C)
   : EllipticalDistribution(mean
                            , Point(mean.getDimension(), 1.0)
