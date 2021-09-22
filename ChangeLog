@@ -32,6 +32,7 @@
  * #1854 (Sample indexing does not work on np.int64 type)
  * #1856 (Speed up Normal computeSurvivalFunction)
  * #1857 (ProductCovarianceModel fails when constructed with DiracCovarianceModel)
+ * #1858 (Normal::computeCDF(sample) crash for large dimensions)
  * #1861 (Still some instabilities in Kriging with ot.StationaryFunctionalCovarianceModel)
  * #1864 (FORM - IMPORTANCE FACTOR)
  * #1870 (TruncatedDistribution fails to compute quantiles)
