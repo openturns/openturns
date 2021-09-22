@@ -131,7 +131,10 @@ int main(int, char *[])
       fullprint << "survival=" << Survival << std::endl;
       Point InverseSurvival = distribution.computeInverseSurvivalFunction(0.95);
       fullprint << "Inverse survival=" << InverseSurvival << std::endl;
-      fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
+      if (dim <= 3)
+        {
+          fullprint << "Survival(inverse survival)=" << distribution.computeSurvivalFunction(InverseSurvival) << std::endl;
+        }
       Complex CF = distribution.computeCharacteristicFunction( point );
       fullprint << "characteristic function=" << CF << std::endl;
       Complex LCF = distribution.computeLogCharacteristicFunction( point );
@@ -158,8 +161,11 @@ int main(int, char *[])
         sigma[i] += eps;
       }
       fullprint << "pdf gradient (FD)=" << clean(PDFgrFD) << std::endl;
-      Point CDFgr = distribution.computeCDFGradient( point );
-      fullprint << "cdf gradient     =" << CDFgr << std::endl;
+      if (dim <= 3)
+        {
+          Point CDFgr = distribution.computeCDFGradient( point );
+          fullprint << "cdf gradient     =" << CDFgr << std::endl;
+        }
       Point quantile = distribution.computeQuantile( 0.95 );
       int oldPrecision = PlatformInfo::GetNumericalPrecision();
       PlatformInfo::SetNumericalPrecision( 4 );

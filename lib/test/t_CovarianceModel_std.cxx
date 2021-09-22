@@ -321,6 +321,8 @@ int main(int, char *[])
       assert_almost_equal(myModel.computeAsScalar(point), myAbsoluteExponential.computeAsScalar(x) * mySquaredExponential.computeAsScalar(y), 1.0e-15, 1.0e-15);
       // Gradient test in comparison with FD
       test_model(myModel);
+      // Check that a ProductCovarianceModel can be built from a DiracCovarianceModel
+      ProductCovarianceModel cov(Collection<CovarianceModel>(1, DiracCovarianceModel(1)));
     }
 
     // 11) Tensorized model
