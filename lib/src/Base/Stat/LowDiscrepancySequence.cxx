@@ -61,11 +61,11 @@ LowDiscrepancySequence::LowDiscrepancySequence(const LowDiscrepancySequenceImple
 /* Initialize the sequence */
 void LowDiscrepancySequence::initialize(const UnsignedInteger dimension)
 {
-  getImplementation()->initialize(dimension);
+  return getImplementation()->initialize(dimension);
 }
 
 
-/* Dimension accessor*/
+/* Dimension accessor */
 UnsignedInteger LowDiscrepancySequence::getDimension() const
 {
   return getImplementation()->getDimension();

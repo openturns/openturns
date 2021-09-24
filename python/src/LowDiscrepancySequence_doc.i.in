@@ -8,6 +8,10 @@ OT_LowDiscrepancySequence_computeStarDiscrepancy_doc
 OT_LowDiscrepancySequence_generate_doc
 %feature("docstring") OT::LowDiscrepancySequence::getDimension
 OT_LowDiscrepancySequence_getDimension_doc
+%feature("docstring") OT::LowDiscrepancySequence::getScramblingState
+OT_LowDiscrepancySequence_getScramblingState_doc
+%feature("docstring") OT::LowDiscrepancySequence::setScramblingState
+OT_LowDiscrepancySequence_setScramblingState_doc
 %feature("docstring") OT::LowDiscrepancySequence::initialize
 OT_LowDiscrepancySequence_initialize_doc
 

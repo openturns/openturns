@@ -850,10 +850,14 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FaureSequence-InitialSeed", 1);
 
   // HaltonSequence parameters //
+  addAsString("HaltonSequence-Scrambling", "NONE");
   addAsUnsignedInteger("HaltonSequence-InitialSeed", 1);
 
   // HaselgroveSequence parameters //
   addAsUnsignedInteger("HaselgroveSequence-InitialSeed", 1);
+
+  // LowDiscrepancySequence parameters //
+  addAsUnsignedInteger("LowDiscrepancySequence-ScramblingSeed", 0);
 
   // ReverseHaltonSequence parameters //
   addAsUnsignedInteger("ReverseHaltonSequence-InitialSeed", 1);
