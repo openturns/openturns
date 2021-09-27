@@ -3,31 +3,32 @@ on:
     branches: [ master ]
   pull_request:
 jobs:
-  build:
+  macos:
     runs-on: macos-latest
     env:
       LDFLAGS: -L/usr/local/opt/openblas/lib
       CPPFLAGS: -I/usr/local/opt/openblas/include
     steps:
     - uses: actions/checkout@v2
-    - run: brew upgrade
-    - run: brew install openblas swig boost python3 tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt r
-    - run: pip3 install matplotlib scipy chaospy pandas dill
+    - run: |
+        brew upgrade
+        brew install openblas swig boost python3 tbb nlopt cminpack ceres-solver bison flex hdf5 ipopt r
+        pip3 install matplotlib scipy chaospy pandas dill
     - run: |
         cd $HOME/work/openturns
-           git clone https://github.com/yixuan/spectra.git spectra
-           cd spectra/ 
-           git checkout v1.0.0
-           cmake -DCMAKE_INSTALL_PREFIX=$HOME/ .
-           make install -j$(sysctl -n hw.logicalcpu)
+        git clone https://github.com/yixuan/spectra.git spectra
+        cd spectra/ 
+        git checkout v1.0.0
+        cmake -DCMAKE_INSTALL_PREFIX=$HOME/ .
+        make install -j3
     - run: |
         cd $HOME/work/openturns
-           git clone https://github.com/jeromerobert/hmat-oss.git hmat-oss
-           cd hmat-oss/ 
-           git checkout 1.6.1
-           cmake -DBUILD_EXAMPLES=OFF -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCMAKE_MACOSX_RPATH=ON .
-           make install -j$(sysctl -n hw.logicalcpu)
-    - run:  |
+        git clone https://github.com/jeromerobert/hmat-oss.git hmat-oss
+        cd hmat-oss/ 
+        git checkout 1.6.1
+        cmake -DBUILD_EXAMPLES=OFF -DCBLAS_INCLUDE_DIR=/usr/local/opt/openblas/include -DCMAKE_MACOSX_RPATH=ON .
+        make install -j3
+    - run: |
         cmake -DR_EXECUTABLE="dummyR" \
         -DPYTHON_EXECUTABLE=/usr/local/bin/python3 \
         -DFLEX_EXECUTABLE=/usr/local/opt/flex/bin/flex \
@@ -36,6 +37,27 @@ jobs:
         -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror" \
         -DSWIG_COMPILE_FLAGS="-O1 -Wno-unused-parameter -Wno-unused-function -Wno-missing-field-initializers" \
         -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=32 .
-    - run: make install -j$(sysctl -n hw.logicalcpu)
-    - run: make tests -j$(sysctl -n hw.logicalcpu)
-    - run: ctest -E GeneralizedParetoFactory_std -j$(sysctl -n hw.logicalcpu) --output-on-failure --timeout 100
+        make install -j3
+        make tests -j3
+        ctest -E GeneralizedParetoFactory_std -j3 --output-on-failure --timeout 100
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install
+        shell: cmd
+        run: |
+          curl -LO https://github.com/xianyi/OpenBLAS/releases/download/v0.3.17/OpenBLAS-0.3.17-x64.zip
+          mkdir -p C:\Libraries\openblas
+          7z x OpenBLAS-0.3.17-x64.zip -oC:\Libraries\openblas > nul
+          choco install winflexbison3
+      - name: Build
+        shell: cmd
+        run: |
+          mkdir build && cd build
+          cmake -LAH -DCMAKE_INSTALL_PREFIX=%cd:\=/%/install -DLAPACK_LIBRARIES=C:/Libraries/openblas/lib/libopenblas.dll.a  -DCMAKE_SHARED_LINKER_FLAGS_RELEASE="/OPT:NOREF /INCREMENTAL:NO" -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=16 -DSWIG_COMPILE_FLAGS="/bigobj" -DUSE_R=OFF ..
+          cmake --build . --config Release --target install
+          xcopy install\bin\OT.dll install\Lib\site-packages\openturns
+          xcopy C:\Libraries\openblas\bin\libopenblas.dll install\Lib\site-packages\openturns
+          ctest -C Release --output-on-failure --timeout 100 -E "cppcheck|Sequence|Sample_computation|InverseBox" -j2 --repeat after-timeout:2 --schedule-random
