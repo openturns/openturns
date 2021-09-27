@@ -341,8 +341,19 @@ Graph VisualTest::DrawLinearModelResidual(const LinearModelResult & linearModelR
   return VisualTest::DrawLinearModelResidual(sample1, sample2, linearModelResult);
 }
 
-/* Draw the CobWeb visual test */
 Graph VisualTest::DrawCobWeb(const Sample & inputSample,
+                             const Sample & outputSample,
+                             const Scalar minValue,
+                             const Scalar maxValue,
+                             const String & color,
+                             const Bool quantileScale)
+{
+  LOGWARN(OSS() << "VisualTest.DrawCobWeb is deprecated, use DrawParallelCoordinates");
+  return DrawParallelCoordinates(inputSample, outputSample, minValue, maxValue, color, quantileScale);
+}
+
+/* Draw the parallel coordinates visual test */
+Graph VisualTest::DrawParallelCoordinates(const Sample & inputSample,
                              const Sample & outputSample,
                              const Scalar minValue,
                              const Scalar maxValue,
