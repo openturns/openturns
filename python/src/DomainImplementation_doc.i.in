@@ -13,7 +13,7 @@ A Domain object can be created through its derived classes:
 
 - :class:`~openturns.DomainUnion`
 
-- :class:`~openturns.DomainDisjonctiveUnion`
+- :class:`~openturns.DomainDisjunctiveUnion`
 
 - :class:`~openturns.DomainIntersection`
 
@@ -32,12 +32,12 @@ OT_Domain_doc
 
 Parameters
 ----------
-point : sequence of float
-    Point with the same dimension as the current domain's dimension.
+point or sample : sequence of float or 2-d sequence of float
+    Point or Sample with the same dimension as the current domain's dimension.
 
 Returns
 -------
-isInside : bool
+isInside : bool or sequence of bool
     Flag telling whether the given point is inside of the domain."
 %enddef
 %feature("docstring") OT::DomainImplementation::contains

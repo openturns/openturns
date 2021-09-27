@@ -17,6 +17,7 @@
  * Deprecated Hanning in favor of Hann
  * Deprecated AdaptiveDirectionalSampling in favor of AdaptiveDirectionalStratification
  * Deprecated VisualTest::DrawCobWeb in favor of DrawParallelCoordinates
+ * IndicatorFunction constructor takes a Domain as input
 
 === Documentation ===
 

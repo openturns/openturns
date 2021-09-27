@@ -87,7 +87,7 @@ Create a *Function* from another *Function*
 and by using a comparison operator:
 
 >>> analytical = ot.SymbolicFunction(['x0','x1'], ['x0 + x1'])
->>> indicator = ot.IndicatorFunction(analytical, ot.Less(), 0.0)
+>>> indicator = ot.IndicatorFunction(ot.LevelSet(analytical, ot.Less(), 0.0))
 >>> print(indicator([2, 3]))
 [0]
 >>> print(indicator([2, -3]))
