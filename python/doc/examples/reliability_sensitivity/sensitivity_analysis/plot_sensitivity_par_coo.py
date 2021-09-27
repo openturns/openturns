@@ -1,9 +1,9 @@
 """
-Cobweb graph as sensitivity tool
-================================
+Parallel coordinates graph as sensitivity tool
+==============================================
 """
 # %%
-# The Cobweb graph enables to visualize all the combinations of the input
+# The parallel coordinates graph enables to visualize all the combinations of the input
 # variables which lead to a specific range of the output variable.
 #
 # Let us consider a model :math:`f: \mathbb{R}^n \longrightarrow \mathbb{R}`, where :math:`f(\underline{X}) = Y`.
@@ -65,7 +65,7 @@ print(Y.getMin(), Y.getMax(), Y.computeQuantilePerComponent(0.9))
 minValue = 3.35
 maxValue = 20.0
 quantileScale = False
-graphCobweb = ot.VisualTest.DrawCobWeb(X, Y, minValue, maxValue, 'red', quantileScale)
+graphCobweb = ot.VisualTest.DrawParallelCoordinates(X, Y, minValue, maxValue, 'red', quantileScale)
 graphCobweb.setLegendPosition('bottomright')
 view = viewer.View(graphCobweb)
 
@@ -74,7 +74,7 @@ view = viewer.View(graphCobweb)
 minValue = 0.9
 maxValue = 1.0
 quantileScale = True
-graphCobweb = ot.VisualTest.DrawCobWeb(X, Y, minValue, maxValue, 'red', quantileScale)
+graphCobweb = ot.VisualTest.DrawParallelCoordinates(X, Y, minValue, maxValue, 'red', quantileScale)
 graphCobweb.setLegendPosition('bottomright')
 view = viewer.View(graphCobweb)
 plt.show()

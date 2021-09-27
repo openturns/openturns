@@ -16,6 +16,7 @@
  * Implemented CovarianceModel::computeCrossCovariance
  * Deprecated Hanning in favor of Hann
  * Deprecated AdaptiveDirectionalSampling in favor of AdaptiveDirectionalStratification
+ * Deprecated VisualTest::DrawCobWeb in favor of DrawParallelCoordinates
 
 === Documentation ===
 

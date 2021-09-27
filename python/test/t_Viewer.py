@@ -112,7 +112,7 @@ try:
         expression += 'cos(' + str(i + 1) + '*' + inputVar[i] + ')'
     model = ot.SymbolicFunction(inputVar, [expression])
     outputSample = model(inputSample)
-    graph = ot.VisualTest.DrawCobWeb(
+    graph = ot.VisualTest.DrawParallelCoordinates(
         inputSample, outputSample, 2.5, 3.0, 'red', False)
     # graph.draw('curve6.png')
     view = View(graph, legend_kw={'loc': 'lower center'})
