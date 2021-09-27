@@ -1,5 +1,5 @@
 #! /usr/bin/env python
-from __future__ import print_function
+from __future__ import print_function, division
 import openturns as ot
 import math as m
 import openturns.testing as ott
