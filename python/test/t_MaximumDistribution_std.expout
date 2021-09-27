@@ -24,7 +24,7 @@ Survival(inverse survival)=0.95
 quantile= [2.31868]
 cdf(quantile)=0.95
 quantile (tail)= [0.123843]
-cdf (tail)=%.5g 0.95
+cdf (tail)=0.95
 Minimum volume interval= [-0.112778, 2.50221]
 threshold= 0.95
 Minimum volume level set= {x | f(x) <= 2.46478} with f=
@@ -82,7 +82,7 @@ Survival(inverse survival)=0.95
 quantile= [2.31868]
 cdf(quantile)=0.95
 quantile (tail)= [0.123843]
-cdf (tail)=%.5g 0.95
+cdf (tail)=0.95
 Minimum volume interval= [-0.112778, 2.50221]
 threshold= 0.95
 Minimum volume level set= {x | f(x) <= 2.46478} with f=
@@ -130,7 +130,7 @@ Survival(inverse survival)=0.95
 quantile= [2.31868]
 cdf(quantile)=0.95
 quantile (tail)= [0.123843]
-cdf (tail)=%.5g 0.95
+cdf (tail)=0.95
 Minimum volume interval= [-0.112778, 2.50221]
 threshold= 0.95
 Minimum volume level set= {x | f(x) <= 2.46478} with f=

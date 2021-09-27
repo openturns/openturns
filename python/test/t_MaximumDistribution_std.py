@@ -72,7 +72,7 @@ for distribution in coll:
     quantileTail = distribution.computeQuantile( 0.95, True )
     print("quantile (tail)=", quantileTail)
     CDFTail = distribution.computeComplementaryCDF( quantileTail )
-    print("cdf (tail)=%.5g", CDFTail)
+    print("cdf (tail)=%.5g" % CDFTail)
     # Confidence regions
     interval, threshold = distribution.computeMinimumVolumeIntervalWithMarginalProbability(0.95)
     print("Minimum volume interval=", interval)
