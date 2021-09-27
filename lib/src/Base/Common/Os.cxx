@@ -84,11 +84,7 @@ const char * Os::GetDirectoryListSeparator()
 
 const char * Os::GetEndOfLine()
 {
-#ifndef __MINGW32__
   return "\n";
-#else
-  return "\r\n";
-#endif
 }
 
 String Os::GetDeleteCommandOutput()
