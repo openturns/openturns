@@ -640,6 +640,15 @@ void ResourceMap::loadDefaultConfiguration()
   iss >> numberOfProcessors;
   addAsUnsignedInteger("parallel-threads", numberOfProcessors);
 #endif
+  if (const char* env_num_threads = std::getenv("OPENTURNS_NUM_THREADS"))
+  {
+    try {
+      setAsUnsignedInteger("parallel-threads", std::stoi(env_num_threads));
+    }
+    catch (const std::invalid_argument &) {
+      throw InternalException(HERE) << "OPENTURNS_NUM_THREADS must be an integer, got "<< env_num_threads;
+    }
+  }
   addAsUnsignedInteger("cache-max-size", 1024);
   addAsUnsignedInteger("output-files-timeout", 2);
 

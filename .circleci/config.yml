@@ -6,6 +6,7 @@ jobs:
       - image: openturns/archlinux-python
         environment:
           MAKEFLAGS: "-j2"
+          OPENTURNS_NUM_THREADS: "2"
     steps:
       - checkout
       - run:
@@ -23,6 +24,7 @@ jobs:
       - image: openturns/archlinux-mingw
         environment:
           MAKEFLAGS: "-j2"
+          OPENTURNS_NUM_THREADS: "2"
     steps:
       - checkout
       - run:
