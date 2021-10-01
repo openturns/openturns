@@ -76,7 +76,7 @@ UnsignedInteger TBB::GetNumberOfThreads()
 
 void TBB::Enable()
 {
-  const UnsignedInteger nbThreads = ResourceMap::GetAsUnsignedInteger("parallel-threads");
+  const UnsignedInteger nbThreads = ResourceMap::GetAsUnsignedInteger("TBB-ThreadsNumber");
   SetNumberOfThreads(nbThreads);
 }
 

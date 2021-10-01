@@ -102,7 +102,7 @@ int Os::ExecuteCommand(const String & command)
   int rc = -1;
   LOGINFO( OSS() << "Execute command=" << command );
 #ifdef _WIN32
-  if ( ResourceMap::GetAsBool("Os-create-process"))
+  if ( ResourceMap::GetAsBool("Os-CreateProcess"))
   {
     // Startup information
     STARTUPINFO si;
@@ -280,7 +280,7 @@ int Os::DeleteDirectory(const String & path)
 
 #else /* WIN32 */
 
-  UnsignedInteger countdown = ResourceMap::GetAsUnsignedInteger("output-files-timeout");
+  UnsignedInteger countdown = ResourceMap::GetAsUnsignedInteger("OS-DeleteTimeout");
   const String rmdirCmd("rmdir /Q /S \"" + path + "\"" + " > NUL 2>&1");
   Bool directoryExists = true;
 
