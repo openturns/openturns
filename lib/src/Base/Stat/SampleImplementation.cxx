@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <cstdio>        // std::fopen, std::errno
 #include <cstring>       // std::strerror
+#include <regex>
 
 #include "openturns/OTconfig.hxx"
 #include "openturns/SampleImplementation.hxx"
@@ -2324,13 +2325,26 @@ Pointer<SampleImplementation> SampleImplementation::select(const UnsignedInteger
 
 /* Save to CSV file */
 void SampleImplementation::exportToCSVFile(const FileName & filename,
-    const String & csvSeparator) const
+    const String & csvSeparator,
+    const String & numSeparator) const
 {
-
+  if (csvSeparator == numSeparator)
+    throw InvalidArgumentException(HERE) << "Column and decimal separators cannot be identical";
   std::ofstream csvFile(filename.c_str());
   if (csvFile.fail())
     throw FileOpenException(HERE) << "Could not open file " << filename;
+#ifndef __MINGW32__
+  if (numSeparator == ",")
+#ifdef _WIN32
+    csvFile.imbue(std::locale("fra_FRA.1252"));
+#else
+    csvFile.imbue(std::locale("fr_FR.utf-8"));
+#endif
+  else
+    csvFile.imbue(std::locale("C"));
+#else
   csvFile.imbue(std::locale("C"));
+#endif
   csvFile.precision(16);
   csvFile << std::scientific;
   // Export the description
@@ -2350,13 +2364,39 @@ void SampleImplementation::exportToCSVFile(const FileName & filename,
   }
   // Write the data
   UnsignedInteger index = 0;
+#ifdef __MINGW32__
+  // MinGW fails with std::locale("fr_FR.utf-8")
+  std::stringstream ss;
+  ss.imbue(std::locale("C"));
+  ss.precision(16);
+#endif
   for(UnsignedInteger i = 0; i < size_; ++i)
   {
+#ifndef __MINGW32__
     csvFile << data_[index];
+#else
+    // manually replace decimal separator
+    ss.str("");
+    ss << std::scientific << data_[index];
+    std::string str(ss.str());
+    if (numSeparator == ",")
+      str = regex_replace(str, std::regex("\\."), ",");
+    csvFile << str;
+#endif
     ++index;
     for(UnsignedInteger j = 1; j < dimension_; ++j)
     {
+#ifndef __MINGW32__
       csvFile << csvSeparator << data_[index];
+#else
+      // manually replace decimal separator
+      ss.str("");
+      ss << std::scientific << data_[index];
+      std::string str(ss.str());
+      if (numSeparator == ",")
+        str = regex_replace(str, std::regex("\\."), ",");
+      csvFile << csvSeparator << str;
+#endif
       ++index;
     } // j
     csvFile << "\n";
