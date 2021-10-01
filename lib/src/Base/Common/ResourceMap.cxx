@@ -1214,7 +1214,7 @@ void ResourceMap::loadDefaultConfiguration()
   // MultiFORM parameters //
   addAsScalar("MultiFORM-DefaultGamma", 1.1);
   addAsScalar("MultiFORM-DefaultDelta", 0.75);
-  addAsUnsignedInteger("MultiFORM-DefaultMaximumNumberOfDesignPoints", 4);
+  addAsUnsignedInteger("MultiFORM-DefaultMaximumDesignPointsNumber", 4);
 
   // StrongMaximumTest parameters //
   addAsScalar("StrongMaximumTest-DefaultDeltaPrecision", 1.0e-7);

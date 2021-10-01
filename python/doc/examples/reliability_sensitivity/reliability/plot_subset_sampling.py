@@ -140,7 +140,7 @@ print('Size of each subset = ', N)
 # You can get the number :math:`N_s` of steps with: 
 
 # %%
-Ns = algo.getNumberOfSteps()
+Ns = algo.getStepsNumber()
 print('Number of steps= ', Ns)
 
 # %%

@@ -495,11 +495,16 @@ Scalar SubsetSampling::getMinimumProbability() const
 }
 
 
-UnsignedInteger SubsetSampling::getNumberOfSteps()
+UnsignedInteger SubsetSampling::getStepsNumber()
 {
   return numberOfSteps_;
 }
 
+UnsignedInteger SubsetSampling::getNumberOfSteps()
+{
+  LOGWARN(OSS() << "MultiFORM.getNumberOfSteps is deprecated, use getStepsNumber");
+  return getStepsNumber();
+}
 
 Point SubsetSampling::getGammaPerStep() const
 {

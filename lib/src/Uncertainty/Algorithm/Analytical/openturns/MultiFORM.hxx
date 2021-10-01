@@ -53,6 +53,10 @@ public:
   MultiFORMResult getResult() const;
 
   /** Maximum number of design points accessor */
+  void setMaximumDesignPointsNumber(const UnsignedInteger numberOfDesignPoints);
+  UnsignedInteger getMaximumDesignPointsNumber() const;
+
+  /** @deprecated */
   void setMaximumNumberOfDesignPoints(const UnsignedInteger numberOfDesignPoints);
   UnsignedInteger getMaximumNumberOfDesignPoints() const;
 
@@ -70,7 +74,7 @@ public:
 
 private:
 
-  UnsignedInteger maximumNumberOfDesignPoints_;
+  UnsignedInteger maximumDesignPointsNumber_;
   MultiFORMResult result_;
 
 } ; /* class MultiFORM */

@@ -27,7 +27,7 @@ available : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TBB::SetNumberOfThreads
+%feature("docstring") OT::TBB::SetThreadsNumber
 "Accessor to the maximum number of TBB threads.
 
 Parameters
@@ -37,7 +37,7 @@ n_threads : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TBB::GetNumberOfThreads
+%feature("docstring") OT::TBB::GetThreadsNumber
 "Accessor to the maximum number of TBB threads.
 
 Returns

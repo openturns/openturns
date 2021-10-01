@@ -48,7 +48,7 @@ BEGIN_NAMESPACE_OPENTURNS
 static pthread_mutex_t TBB_InstanceMutex_;
 static TBB * TBB_P_instance_ = 0;
 static const TBB_init initializer_TBB;
-UnsignedInteger TBB::NumberOfThreads_ = 1;
+UnsignedInteger TBB::ThreadsNumber_ = 1;
 tbb::task_arena * TBB::P_task_arena_ = 0;
 
 Bool TBB::IsAvailable()
@@ -60,30 +60,42 @@ Bool TBB::IsAvailable()
 #endif
 }
 
-void TBB::SetNumberOfThreads(const UnsignedInteger numberOfThreads)
+void TBB::SetThreadsNumber(const UnsignedInteger threadNumber)
 {
-  if (!numberOfThreads)
+  if (!threadNumber)
     throw InvalidArgumentException(HERE) << "Number of threads must be positive";
-  NumberOfThreads_ = numberOfThreads;
+  ThreadsNumber_ = threadNumber;
   delete P_task_arena_;
-  P_task_arena_ = new tbb::task_arena(NumberOfThreads_);
+  P_task_arena_ = new tbb::task_arena(ThreadsNumber_);
+}
+
+UnsignedInteger TBB::GetThreadsNumber()
+{
+  return ThreadsNumber_;
+}
+
+void TBB::SetNumberOfThreads(const UnsignedInteger threadNumber)
+{
+  LOGWARN(OSS() << "TBB.SetNumberOfThreads is deprecated, use SetThreadsNumber");
+  SetThreadsNumber(threadNumber);
 }
 
 UnsignedInteger TBB::GetNumberOfThreads()
 {
-  return NumberOfThreads_;
+  LOGWARN(OSS() << "TBB.GetNumberOfThreads is deprecated, use GetThreadsNumber");
+  return GetThreadsNumber();
 }
 
 void TBB::Enable()
 {
   const UnsignedInteger nbThreads = ResourceMap::GetAsUnsignedInteger("TBB-ThreadsNumber");
-  SetNumberOfThreads(nbThreads);
+  SetThreadsNumber(nbThreads);
 }
 
 
 void TBB::Disable()
 {
-  SetNumberOfThreads(1);
+  SetThreadsNumber(1);
 }
 
 
@@ -122,7 +134,7 @@ TBBContext::TBBContext()
   , openblasNumThreads_(0)
 {
 #ifdef OPENTURNS_HAVE_TBB
-  if (TBB::GetNumberOfThreads() > 1)
+  if (TBB::GetThreadsNumber() > 1)
   {
     // disable threading
 #ifdef OPENTURNS_HAVE_OPENMP
@@ -142,7 +154,7 @@ TBBContext::TBBContext()
 TBBContext::~TBBContext()
 {
 #ifdef OPENTURNS_HAVE_TBB
-  if (TBB::GetNumberOfThreads() > 1)
+  if (TBB::GetThreadsNumber() > 1)
   {
     // restore threading
 #ifdef OPENTURNS_HAVE_OPENMP

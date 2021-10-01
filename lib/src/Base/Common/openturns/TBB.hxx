@@ -196,7 +196,7 @@ public:
   void ParallelSort( ITERATOR first, ITERATOR last )
   {
     TBBContext context;
-    tbb::task_arena arena(NumberOfThreads_);
+    tbb::task_arena arena(ThreadsNumber_);
     P_task_arena_->execute([&]()
     {
       tbb::parallel_sort(first, last);
@@ -211,13 +211,17 @@ public:
   static void Disable();
 
   /* Accessor to the maximum number of threads */
+  static void SetThreadsNumber(const UnsignedInteger threadsNumber);
+  static UnsignedInteger GetThreadsNumber();
+
+  /** @deprecated */
   static void SetNumberOfThreads(const UnsignedInteger numberOfThreads);
   static UnsignedInteger GetNumberOfThreads();
 
 private:
   friend struct TBB_init;
 
-  static UnsignedInteger NumberOfThreads_;
+  static UnsignedInteger ThreadsNumber_;
   static tbb::task_arena * P_task_arena_;
 
 }; /* end class TBB */
