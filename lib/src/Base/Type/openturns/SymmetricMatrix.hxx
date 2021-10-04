@@ -161,6 +161,9 @@ public:
   /** Comparison operators */
   Bool operator == (const Matrix & rhs) const;
 
+  /** Sum all coefficients */
+  Scalar computeSumElements() const override;
+
 protected:
 
 

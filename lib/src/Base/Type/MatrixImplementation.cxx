@@ -1620,5 +1620,145 @@ UnsignedInteger MatrixImplementation::stride(const UnsignedInteger dim) const
   return stride;
 }
 
+/** Diagonal extraction */
+MatrixImplementation MatrixImplementation::getDiagonal(const SignedInteger k) const
+{
+
+  SignedInteger m = nbRows_;
+  SignedInteger n = nbColumns_;
+  if (k >= n) throw OutOfBoundException(HERE) << "One must have k < nbColumns";
+  if (-k > m) throw OutOfBoundException(HERE) << "One must have -nbRows < k ";
+
+  /* Fisrt step: the size of the diagonal */
+  UnsignedInteger nElt;
+  /* Extraction */
+  if(k >= 0)
+  {
+    nElt = std::min(m, n - k);
+  }
+  else
+  {
+    nElt = std::min(m + k, n);
+  }
+
+  /* Extraction */
+  MatrixImplementation diag(nElt, 1);
+  if(k >= 0)
+  {
+    for(UnsignedInteger l = 0; l < nElt; ++l)
+    {
+      diag(l, 0) = (*this)(l, l + k);
+    }
+  }
+  else
+  {
+    for(UnsignedInteger l = 0; l < nElt; ++l)
+    {
+      diag(l, 0) = (*this)(l - k, l);
+    }
+  }
+  return diag;
+}
+
+/** Fill a diagonal with values */
+void MatrixImplementation::setDiagonal(const Point &diag, const SignedInteger k)
+{
+  SignedInteger m = nbRows_;
+  SignedInteger n = nbColumns_;
+  if (k >= n) throw OutOfBoundException(HERE) << "One must have k < nbColumns";
+  if (-k > m) throw OutOfBoundException(HERE) << "One must have -nbRows < k ";
+
+  /* Fisrt step: the size of the diagonal */
+  UnsignedInteger nElt;
+  if(k >= 0)
+  {
+    nElt = std::min(m, n - k);
+  }
+  else
+  {
+    nElt = std::min(m + k, n);
+  }
+
+  /* Check dimensions */
+  if (nElt != diag.getSize()) throw InvalidDimensionException(HERE) << "Dimension mismatch";
+
+  /* Fill with values */
+  if(k >= 0)
+  {
+    for(UnsignedInteger l = 0; l < nElt; ++l)
+    {
+      (*this)(l, l + k) = diag[l];
+    }
+  }
+  else
+  {
+    for(UnsignedInteger l = 0; l < nElt; ++l)
+    {
+      (*this)(l - k, l) = diag[l];
+    }
+  }
+}
+
+/** Hadamard product aka elementwise product */
+MatrixImplementation MatrixImplementation::computeHadamardProduct(const MatrixImplementation &other) const
+{
+  /* Check sizes */
+  if (other.getNbRows() != nbRows_) throw InvalidDimensionException(HERE) << "Matrices should have the same size!";
+  if (other.getNbColumns() != nbColumns_) throw InvalidDimensionException(HERE) << "Matrices should have the same size!";
+
+  /* Result */
+  MatrixImplementation result(nbRows_, nbColumns_);
+
+  /* TODO: is there any better implementation ? */
+  for(UnsignedInteger j = 0; j < nbColumns_; ++j)
+  {
+    for(UnsignedInteger i = 0; i < nbRows_; ++i)
+    {
+      result(i, j) = (*this)(i, j) * other(i, j);
+    }
+  }
+  return result;
+}
+
+/** Sum of all coefficients */
+Scalar MatrixImplementation::computeSumElements() const
+{
+  /* Check sizes */
+  if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Matrices should have positive dimension!";
+  if (nbColumns_ == 0) throw InvalidDimensionException(HERE) << "Matrices should have positive dimension!";
+
+  /* Result */
+  Scalar sum = 0.0;
+
+  /* TODO: is there any better implementation ? */
+  for(UnsignedInteger j = 0; j < nbColumns_; ++j)
+  {
+    for(UnsignedInteger i = 0; i < nbRows_; ++i)
+    {
+      sum += (*this)(i, j);
+    }
+  }
+
+  return sum;
+}
+
+/** Square all elements */
+void MatrixImplementation::squareElements()
+{
+  /* Check sizes */
+  if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Matrices should have positive dimension!";
+  if (nbColumns_ == 0) throw InvalidDimensionException(HERE) << "Matrices should have positive dimension!";
+
+
+  /* TODO: is there any better implementation ? */
+  for(UnsignedInteger j = 0; j < nbColumns_; ++j)
+  {
+    for(UnsignedInteger i = 0; i < nbRows_; ++i)
+    {
+      (*this)(i, j) *= (*this)(i, j);
+    }
+  }
+}
+
 
 END_NAMESPACE_OPENTURNS
