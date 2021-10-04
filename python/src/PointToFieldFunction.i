@@ -175,7 +175,7 @@ class OpenTURNSPythonPointToFieldFunction(object):
         return Y
 
     def _exec(self, X):
-        raise RuntimeError('You must define a method _exec(X) -> Y, where X is a Point object and Y a Field objects')
+        raise RuntimeError('You must define a method _exec(X) -> Y, where X is a Point object and Y a Field object')
 
     def _exec_sample(self, X):
         res = ProcessSample(self.getOutputMesh(), 0, self.getOutputDimension())
