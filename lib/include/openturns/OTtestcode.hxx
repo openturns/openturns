@@ -37,7 +37,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/TBB.hxx"
 
-#define TESTPREAMBLE { OT::PlatformInfo::SetTwoDigitExponent(); OT::TBB::Enable(); }
+#define TESTPREAMBLE { OT::TBB::Enable(); }
 
 BEGIN_NAMESPACE_OPENTURNS
 
