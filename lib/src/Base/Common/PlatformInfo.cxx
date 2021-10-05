@@ -20,8 +20,7 @@
  */
 #include "openturns/OTconfig.hxx"
 #include "openturns/OTconfigureArgs.hxx"
-#include "openturns/OSS.hxx"
-#include "openturns/Log.hxx"
+#include "openturns/Exception.hxx"
 #include "openturns/PlatformInfo.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -67,7 +66,9 @@ UnsignedInteger PlatformInfo::GetNumericalPrecision()
 
 void PlatformInfo::SetNumericalPrecision(SignedInteger precision)
 {
-  PlatformInfo::Precision_ = (precision >= 0) ? precision : PlatformInfo::Precision_;
+  if (precision < 0)
+    throw InvalidArgumentException(HERE) << "in SetNumericalPrecision, precision must be positive";
+  PlatformInfo::Precision_ = precision;
 }
 
 END_NAMESPACE_OPENTURNS
