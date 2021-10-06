@@ -38,6 +38,7 @@ Algebra of functions
     ComposedFunction
 
     :template: class.rst_t
+    DistanceToDomainFunction
     DualLinearCombinationFunction
 
     :template: classWithPlot.rst_t
@@ -56,7 +57,7 @@ Algebra of functions
     FieldToPointConnection
     PointToFieldConnection
     PointToPointConnection
-    
+
 Field and mixed functions
 =========================
 
@@ -121,6 +122,7 @@ Evaluation functions
     SymbolicEvaluation
     ComposedEvaluation
     DatabaseEvaluation
+    DistanceToDomainEvaluation
     DualLinearCombinationEvaluation
     IndicatorEvaluation
     LinearCombinationEvaluation

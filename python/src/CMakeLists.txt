@@ -331,6 +331,7 @@ ot_add_python_module(func func_module.i
                       KarhunenLoeveProjection.i KarhunenLoeveProjection_doc.i.in
                       KarhunenLoeveLifting.i KarhunenLoeveLifting_doc.i.in
                       IndicatorFunction.i IndicatorFunction_doc.i.in
+                      DistanceToDomainFunction.i DistanceToDomainFunction_doc.i.in
                       ValueFunction.i ValueFunction_doc.i.in
                       VertexValueFunction.i VertexValueFunction_doc.i.in
                       TranslationFunction.i TranslationFunction_doc.i.in
@@ -345,6 +346,7 @@ ot_add_python_module(func func_module.i
                       DatabaseFunction.i DatabaseFunction_doc.i.in
                       DatabaseEvaluation.i DatabaseEvaluation_doc.i.in
                       IndicatorEvaluation.i
+                      DistanceToDomainEvaluation.i
                       PiecewiseLinearEvaluation.i PiecewiseLinearEvaluation_doc.i.in
                       PiecewiseHermiteEvaluation.i PiecewiseHermiteEvaluation_doc.i.in
                       ProductPolynomialEvaluation.i ProductPolynomialEvaluation_doc.i.in

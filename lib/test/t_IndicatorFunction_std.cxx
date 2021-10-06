@@ -31,26 +31,37 @@ int main(int, char *[])
 
   try
   {
+     // Indicator function of an Interval of dimension 0
+    const Interval singleton;
+    const Point dimZeroPoint(0);
+    const Point one = {1.0};
+    const IndicatorFunction singletonIndicator(singleton);
+    assert_almost_equal(singletonIndicator(dimZeroPoint), one);
 
-    /* Analytical construction */
-    Description input(2);
-    input[0] = "x0";
-    input[1] = "x1";
-    Description formulas(1);
-    formulas[0] = "x0+x1";
-    SymbolicFunction analytical(input, formulas);
+    // Indicator function of an Interval
+    const Point lower = {1.2, 0.7};
+    const Point upper = {2.0, 1.0};
+    const Point zero = {0.0};
+    Sample one_zero(2, 1);
+    one_zero(0, 0) = 1.0;
+    one_zero(1, 0) = 0.0;
 
-    fullprint << "function=" << analytical << std::endl;
+    const Interval box(lower, upper);
+    const IndicatorFunction indicator(box);
 
-    /* Create indicator function */
-    IndicatorFunction indicator(analytical, Less(), 0.0);
-    /* Does it work? */
-    Point x(Point(2, 1.0));
-    Scalar value = analytical(x)[0];
-    fullprint << "Value of the function=" << value << " value of the indicator=" << indicator(x) << std::endl;
-    x = Point(2, -1.0);
-    value = analytical(x)[0];
-    fullprint << "Value of the function=" << value << " value of the indicator=" << indicator(x) << std::endl;
+    const Point point1 = {1.5, 0.8};
+    const Point indicator_at_point1 = indicator(point1);
+    assert_almost_equal(indicator_at_point1, one);
+
+    const Point point2 = {1.1, 0.8};
+    const Point indicator_at_point2 = indicator(point2);
+    assert_almost_equal(indicator_at_point2, zero);
+
+    Sample sample(2, 2);
+    sample[0] = point1;
+    sample[1] = point2;
+    const Sample indicator_at_sample = indicator(sample);
+    assert_almost_equal(indicator_at_sample, one_zero);
 
   }
   catch (TestFailed & ex)

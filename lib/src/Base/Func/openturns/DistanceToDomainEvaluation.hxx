@@ -20,8 +20,8 @@
  *
  */
 
-#ifndef OPENTURNS_INDICATORNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
-#define OPENTURNS_INDICATORNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
+#ifndef OPENTURNS_DISTANCETODOMAINNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
+#define OPENTURNS_DISTANCETODOMAINNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
 
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/Domain.hxx"
@@ -32,27 +32,27 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class IndicatorEvaluation
+ * @class DistanceToDomainEvaluation
  *
  * The class that implement the composition of two numerical math functions implementations.
  */
-class OT_API IndicatorEvaluation
+class OT_API DistanceToDomainEvaluation
   : public EvaluationImplementation
 {
   CLASSNAME
 public:
 
   /** Default constructor */
-  IndicatorEvaluation();
+  DistanceToDomainEvaluation();
 
   /** Default constructor */
-  IndicatorEvaluation(const Domain & domain);
+  DistanceToDomainEvaluation(const Domain & domain);
 
   /** Virtual constructor */
-  IndicatorEvaluation * clone() const override;
+  DistanceToDomainEvaluation * clone() const override;
 
   /** Comparison operator */
-  Bool operator ==(const IndicatorEvaluation & other) const;
+  Bool operator ==(const DistanceToDomainEvaluation & other) const;
 
   /** String converter */
   String __repr__() const override;
@@ -78,9 +78,9 @@ private:
 
   Domain domain_;
 
-}; /* class IndicatorEvaluation */
+}; /* class DistanceToDomainEvaluation */
 
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_INDICATORNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX */
+#endif /* OPENTURNS_DISTANCETODOMAINNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX */

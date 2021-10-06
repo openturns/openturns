@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class that implements indicator functions.
+ *  @brief The class that implements DistanceToDomain functions.
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,8 +18,8 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#ifndef OPENTURNS_INDICATORFUNCTION_HXX
-#define OPENTURNS_INDICATORFUNCTION_HXX
+#ifndef OPENTURNS_DISTANCETODOMAINFUNCTION_HXX
+#define OPENTURNS_DISTANCETODOMAINFUNCTION_HXX
 
 #include "openturns/Function.hxx"
 #include "openturns/Domain.hxx"
@@ -28,22 +28,22 @@ BEGIN_NAMESPACE_OPENTURNS
 
 
 /**
- * @class IndicatorFunction
+ * @class DistanceToDomainFunction
  *
  */
-class OT_API IndicatorFunction
+class OT_API DistanceToDomainFunction
   : public Function
 {
   CLASSNAME
 public:
   /* Default constructor */
-  IndicatorFunction();
+  DistanceToDomainFunction();
 
   /** Parameter constructor */
-  IndicatorFunction(const Domain & domain);
+  DistanceToDomainFunction(const Domain & domain);
 
   /** Comparison operator */
-  Bool operator ==(const IndicatorFunction & other) const;
+  Bool operator ==(const DistanceToDomainFunction & other) const;
 
   /** String converter */
   String __repr__() const override;
@@ -54,4 +54,4 @@ public:
 
 END_NAMESPACE_OPENTURNS
 
-#endif /* OPENTURNS_INDICATORFUNCTION_HXX */
+#endif /* OPENTURNS_DISTANCETODOMAINFUNCTION_HXX */

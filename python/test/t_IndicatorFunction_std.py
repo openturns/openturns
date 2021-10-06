@@ -1,30 +1,28 @@
 #! /usr/bin/env python
 
-from __future__ import print_function
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
-try:
+# Indicator function of an Interval of dimension 0
+singleton = ot.Interval()
+assert singleton.contains([])
+assert ot.IndicatorFunction(singleton)([])==ot.Point([1.0])
 
-    # Analytical construction
-    analytical = SymbolicFunction(["x0", "x1"], ["x0+x1"])
-    print("function=", repr(analytical))
+# Indicator function of an Interval
 
-    # Create indicator function
-    indicator = IndicatorFunction(
-        analytical, Less(), 0.0)
-    # Does it work?
-    x = Point(2, 1.0)
-    value = analytical(x)[0]
-    print("Value of the function=", repr(value),
-          " value of the indicator=", repr(indicator(x)))
-    x = Point(2, -1.0)
-    value = analytical(x)[0]
-    print("Value of the function=", repr(value),
-          " value of the indicator=", repr(indicator(x)))
+box = ot.Interval([1.2,0.7], [2.0, 1.0])
+indicator = ot.IndicatorFunction(box)
 
-except:
-    import sys
-    print("t_Function_indicator.py",
-          sys.exc_info()[0], sys.exc_info()[1])
+point1 = ot.Point([1.5, 0.8])
+assert box.contains(point1)
+indicator_at_point1 = indicator(point1)
+assert indicator_at_point1==ot.Point([1.0])
+
+point2 = ot.Point([1.1, 0.8])
+assert not box.contains(point2)
+indicator_at_point2 = indicator(point2)
+assert indicator_at_point2==ot.Point([0.0])
+
+sample = ot.Sample([point1, point2])
+assert indicator(sample)==ot.Sample([[1.0], [0.0]])

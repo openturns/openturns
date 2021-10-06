@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The class that implements indicator functions.
+ *  @brief The class that implements DistanceToDomain functions.
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -18,27 +18,28 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/IndicatorFunction.hxx"
-#include "openturns/IndicatorEvaluation.hxx"
+#include "openturns/DistanceToDomainFunction.hxx"
+#include "openturns/DistanceToDomainEvaluation.hxx"
 #include "openturns/NoGradient.hxx"
 #include "openturns/NoHessian.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-CLASSNAMEINIT(IndicatorFunction)
+CLASSNAMEINIT(DistanceToDomainFunction)
 
 /* Default constructor */
-IndicatorFunction::IndicatorFunction ()
+DistanceToDomainFunction::DistanceToDomainFunction ()
   : Function()
 {
+  // Nothing to do
 }
 
 
 /* Parameter constructor */
-IndicatorFunction::IndicatorFunction (const Domain & domain)
+DistanceToDomainFunction::DistanceToDomainFunction (const Domain & domain)
   : Function()
 {
-  const Pointer<IndicatorEvaluation> p_evaluation = new IndicatorEvaluation(domain);
+  const Pointer<DistanceToDomainEvaluation> p_evaluation = new DistanceToDomainEvaluation(domain);
   setEvaluation(Evaluation(p_evaluation));
   setGradient(NoGradient().clone());
   setHessian(NoHessian().clone());
@@ -46,19 +47,19 @@ IndicatorFunction::IndicatorFunction (const Domain & domain)
 
 
 /* Comparison operator */
-Bool IndicatorFunction::operator ==(const IndicatorFunction & other) const
+Bool DistanceToDomainFunction::operator ==(const DistanceToDomainFunction & other) const
 {
   if (this == &other) return true;
   return getEvaluation() == other.getEvaluation();
 }
 
 /* String converter */
-String IndicatorFunction::__repr__() const
+String DistanceToDomainFunction::__repr__() const
 {
   return getImplementation()->__repr__();
 }
 
-String IndicatorFunction::__str__(const String & offset) const
+String DistanceToDomainFunction::__str__(const String & offset) const
 {
   return getImplementation()->__str__(offset);
 }

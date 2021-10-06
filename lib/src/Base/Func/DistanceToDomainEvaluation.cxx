@@ -20,7 +20,7 @@
  *
  */
 
-#include "openturns/IndicatorEvaluation.hxx"
+#include "openturns/DistanceToDomainEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Interval.hxx"
 
@@ -28,89 +28,85 @@ BEGIN_NAMESPACE_OPENTURNS
 
 typedef Collection<UnsignedInteger>     UnsignedIntegerCollection;
 
-CLASSNAMEINIT(IndicatorEvaluation)
+CLASSNAMEINIT(DistanceToDomainEvaluation)
 
-static const Factory<IndicatorEvaluation> Factory_IndicatorEvaluation;
+static const Factory<DistanceToDomainEvaluation> Factory_DistanceToDomainEvaluation;
 
 /* Default constructor */
-IndicatorEvaluation::IndicatorEvaluation()
+DistanceToDomainEvaluation::DistanceToDomainEvaluation()
   : EvaluationImplementation()
   , domain_(Interval())
 {
   // Nothing to do
-} // IndicatorEvaluation
+} // DistanceToDomainEvaluation
 
 /* Default constructor */
-IndicatorEvaluation::IndicatorEvaluation(const Domain & domain)
+DistanceToDomainEvaluation::DistanceToDomainEvaluation(const Domain & domain)
   : EvaluationImplementation()
   , domain_(domain)
 {
   EvaluationImplementation::setInputDescription(Description::BuildDefault(domain_.getDimension(), "x"));
-} // IndicatorEvaluation
+} // DistanceToDomainEvaluation
 
 /* Virtual constructor */
-IndicatorEvaluation * IndicatorEvaluation::clone() const
+DistanceToDomainEvaluation * DistanceToDomainEvaluation::clone() const
 {
-  return new IndicatorEvaluation(*this);
+  return new DistanceToDomainEvaluation(*this);
 }
 
 
 /* Comparison operator */
-Bool IndicatorEvaluation::operator ==(const IndicatorEvaluation & other) const
+Bool DistanceToDomainEvaluation::operator ==(const DistanceToDomainEvaluation & other) const
 {
   return domain_ == other.domain_;
 }
 
 /* String converter */
-String IndicatorEvaluation::__repr__() const
+String DistanceToDomainEvaluation::__repr__() const
 {
   OSS oss;
-  oss << "class=" << IndicatorEvaluation::GetClassName()
+  oss << "class=" << DistanceToDomainEvaluation::GetClassName()
       << " name=" << getName()
       << " domain=" << domain_.getImplementation()->__repr__();
   return oss;
 }
 
 /* Operator () */
-Point IndicatorEvaluation::operator() (const Point & inP) const
+Point DistanceToDomainEvaluation::operator() (const Point & inP) const
 {
   Point result(1);
-  if (domain_.contains(inP)) result[0] = 1.0;
+  result[0] = domain_.computeDistance(inP);
   callsNumber_.increment();
   return result;
 }
 
-Sample IndicatorEvaluation::operator() (const Sample & inSample) const
+Sample DistanceToDomainEvaluation::operator() (const Sample & inSample) const
 {
-  const UnsignedInteger size = inSample.getSize();
-  const UnsignedIntegerCollection belong(domain_.contains(inSample));
-  Sample result(size, 1);
-  for (UnsignedInteger i = 0; i < size; ++i) result(i, 0) = belong[i];
-  callsNumber_.fetchAndAdd(size);
-  return result;
+  callsNumber_.fetchAndAdd(inSample.getSize());
+  return domain_.computeDistance(inSample);
 }
 
 /* Accessor for input point dimension */
-UnsignedInteger IndicatorEvaluation::getInputDimension() const
+UnsignedInteger DistanceToDomainEvaluation::getInputDimension() const
 {
   return domain_.getDimension();
 }
 
 /* Accessor for output point dimension */
-UnsignedInteger IndicatorEvaluation::getOutputDimension() const
+UnsignedInteger DistanceToDomainEvaluation::getOutputDimension() const
 {
   return 1;
 }
 
 /* Method save() stores the object through the StorageManager */
-void IndicatorEvaluation::save(Advocate & adv) const
+void DistanceToDomainEvaluation::save(Advocate & adv) const
 {
   EvaluationImplementation::save(adv);
   adv.saveAttribute( "domain_", domain_ );
 }
 
 /* Method load() reloads the object from the StorageManager */
-void IndicatorEvaluation::load(Advocate & adv)
+void DistanceToDomainEvaluation::load(Advocate & adv)
 {
   EvaluationImplementation::load(adv);
   adv.loadAttribute( "domain_", domain_ );
