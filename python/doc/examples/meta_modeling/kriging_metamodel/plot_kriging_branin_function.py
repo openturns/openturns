@@ -174,8 +174,8 @@ inputData = ot.Box([N, N]).generate()
 # %%
 # We compute the conditional variance of the model and take the square root to get the deviation :
 condCov = result.getConditionalMarginalVariance( inputData, 0)
-from math import sqrt
-condCovSd = ot.Sample([ [sqrt(condCov[i])] for i in range( (N+2)**2 )] )
+from numpy import sqrt
+condCovSd = sqrt(condCov)
 
 # %%
 # As we have previously done we build contours with the following levels ans labels :

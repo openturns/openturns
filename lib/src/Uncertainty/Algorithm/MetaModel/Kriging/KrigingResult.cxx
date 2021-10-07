@@ -165,13 +165,13 @@ Sample KrigingResult::getCovarianceCoefficients() const
 
 
 /* Compute mean of new points conditionally to observations */
-Point KrigingResult::getConditionalMean(const Sample & xi) const
+Sample KrigingResult::getConditionalMean(const Sample & xi) const
 {
   // For a process of dimension p & xi's size=s,
   // returned matrix should have dimensions (p * s) x (p * s)
   const UnsignedInteger inputDimension = xi.getDimension();
   if (inputDimension != covarianceModel_.getInputDimension())
-    throw InvalidArgumentException(HERE) << " In KrigingResult::getMean, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
+    throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMean, input data should have the same dimension as covariance model's input dimension. Here, (input dimension = " << inputDimension << ", covariance model spatial's dimension = " << covarianceModel_.getInputDimension() << ")";
   const UnsignedInteger sampleSize = xi.getSize();
   if (sampleSize == 0)
     throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMean, expected a non empty sample";
@@ -179,11 +179,7 @@ Point KrigingResult::getConditionalMean(const Sample & xi) const
   // Need to think if it is required to implement a specific method
   // in order to avoid data copy
   // sample is of size xi.getSize() * covarianceModel.getDimension()
-  Sample output = metaModel_.operator()(xi);
-  // Result is a Point ==> data are transformed form Sample to
-  // Point by using a copy
-  Point mean(output.getImplementation()->getData());
-  return mean;
+  return metaModel_.operator()(xi);
 }
 
 /* Compute mean of new points conditionally to observations */
@@ -467,7 +463,9 @@ Normal KrigingResult::operator()(const Sample & xi) const
 {
   // The Normal distribution is defined by its mean & covariance
   LOGINFO("In KrigingResult::operator() : evaluating the mean");
-  const Point mean = getConditionalMean(xi);
+  const Sample meanAsSample = getConditionalMean(xi);
+  // Mean should be a Point ==> data are copied form the Sample to a Point
+  const Point mean(meanAsSample.getImplementation()->getData());
   LOGINFO("In KrigingResult::operator() : evaluating the covariance");
   const CovarianceMatrix covarianceMatrix = getConditionalCovariance(xi);
   // Check the covariance matrix. Indeed, if point is very similar to one of the learning points, covariance is null
@@ -495,7 +493,7 @@ Scalar KrigingResult::getConditionalMarginalVariance(const Point & point,
 }
 
 /** Compute marginal variance conditionally to observations (1 cov / point)*/
-Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
+Sample KrigingResult::getConditionalMarginalVariance(const Sample & xi,
     const UnsignedInteger marginalIndex) const
 {
 
@@ -518,8 +516,8 @@ Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
     // First set sigmaXX
     const Point tau(inputDimension);
     // There is no computeAsScalar(tau) method
-    const Scalar sigma2 = covarianceModel_(tau)(0, 0);
-    Point result(sampleSize, sigma2);
+    const Point sigma2(1, covarianceModel_(tau)(0, 0));
+    Sample result(sampleSize, sigma2);
 
 
     // 2) compute \sigma_{y,x}
@@ -550,7 +548,7 @@ Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
       Scalar sum = 0.0;
       for (UnsignedInteger i = 0; i < B.getNbRows(); ++i)
         sum += B(i, j) * B(i, j);
-      result[j] -= sum;
+      result(j, 0) -= sum;
     }
 
     // Case of simple Kriging
@@ -601,18 +599,18 @@ Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
       Scalar sum = 0.0;
       for (UnsignedInteger i = 0; i < rho.getNbRows(); ++i)
         sum += rho(i, j) * rho(i, j);
-      result[j] += sum;
+      result(j, 0) += sum;
     }
     return result;
   }
 
-  Point marginalVariance(sampleSize);
+  Sample marginalVariance(sampleSize, 1);
 
   Point data(inputDimension);
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
   {
     for (UnsignedInteger j = 0; j < inputDimension; ++j) data[j] = xi(i, j);
-    marginalVariance[i] = getConditionalMarginalVariance(data, marginalIndex);
+    marginalVariance(i, 0) = getConditionalMarginalVariance(data, marginalIndex);
   }
   return marginalVariance;
 }
@@ -633,7 +631,7 @@ Point KrigingResult::getConditionalMarginalVariance(const Point & point,
   return result;
 }
 
-Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
+Sample KrigingResult::getConditionalMarginalVariance(const Sample & xi,
     const Indices & indices) const
 {
 
@@ -647,12 +645,12 @@ Point KrigingResult::getConditionalMarginalVariance(const Sample & xi,
   if (sampleSize == 0)
     throw InvalidArgumentException(HERE) << " In KrigingResult::getConditionalMarginalVariance, expected a non empty sample";
   // Compute the matrix & return only the marginalIndex diagonal element
-  Point result(0);
+  Sample result(inputDimension, indices.getSize());
   Point data(inputDimension);
   for (UnsignedInteger i = 0; i < sampleSize; ++i)
   {
     for (UnsignedInteger j = 0; j < inputDimension; ++j) data[j] = xi(i, j);
-    result.add(getConditionalMarginalVariance(data, indices));
+    result[i] = getConditionalMarginalVariance(data, indices);
   }
   return result;
 }

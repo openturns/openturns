@@ -186,10 +186,9 @@ print("Quantile alpha=%f" % (quantileAlpha))
 
 # %%
 sqrt = ot.SymbolicFunction(["x"],["sqrt(x)"])
-epsilon = ot.Point(n_test,1.e-8)
+epsilon = ot.Sample(n_test,[1.e-8])
 conditionalVariance = result.getConditionalMarginalVariance(x_test)+epsilon
-conditionalVarianceSample = ot.Sample([[cv] for cv in conditionalVariance])
-conditionalSigma = sqrt(conditionalVarianceSample)
+conditionalSigma = sqrt(conditionalVariance)
 
 # %%
 # The following figure presents the conditional standard deviation depending on :math:`x`. 
