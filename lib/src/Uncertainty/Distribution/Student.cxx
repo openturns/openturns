@@ -23,7 +23,6 @@
 
 #include "openturns/Student.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/IdentityMatrix.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
@@ -46,7 +45,7 @@ Student::Student(const Scalar nu,
                  const UnsignedInteger dimension)
   : EllipticalDistribution(Point(dimension, 0.0),
                            Point(dimension, 1.0),
-                           IdentityMatrix(dimension), -1.0)
+                           CorrelationMatrix(dimension), -1.0)
   , nu_(0.0)
   , studentNormalizationFactor_(0.0)
 {
@@ -60,7 +59,7 @@ Student::Student(const Scalar nu,
 Student::Student(const Scalar nu,
                  const Scalar mu,
                  const Scalar sigma)
-  : EllipticalDistribution(Point(1, mu), Point(1, sigma), IdentityMatrix(1), -1.0)
+  : EllipticalDistribution(Point(1, mu), Point(1, sigma), CorrelationMatrix(1), -1.0)
   , nu_(0.0)
   , studentNormalizationFactor_(0.0)
 {
@@ -88,7 +87,7 @@ Student::Student(const Scalar nu,
 Student::Student(const Scalar nu,
                  const Point & mu,
                  const Point & sigma)
-  : Student(nu, mu, sigma, IdentityMatrix(mu.getDimension()))
+  : Student(nu, mu, sigma, CorrelationMatrix(mu.getDimension()))
 {
   // Nothing to do
 }
