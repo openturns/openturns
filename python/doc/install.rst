@@ -169,13 +169,12 @@ Install from `FreshPorts <https://www.freshports.org/math/openturns/>`_::
 
     pkg install openturns
 
+Development version
+===================
 
-From sources
-============
-
-Checkout the required :ref:`dependencies`.
-
-You can checkout the development trunk::
+From source
+-----------
+Install the required :ref:`dependencies` and build the development branch::
 
     git clone https://github.com/openturns/openturns.git
     cd openturns
@@ -184,5 +183,10 @@ You can checkout the development trunk::
 
 .. note::
 
-    When installing into `~/.local` you dont need to set PYTHONPATH
-    environment variable for Python to be able to import openturns
+    When installing into `~/.local` you don't need to set PYTHONPATH environment variable for Python to be able to import openturns
+
+Weekly builds
+-------------
+Weekly built Python binaries are also available with the latest bugfixes and features, but also with new bugs and API changes, use at your own risk::
+
+    pip3 install --pre --extra-index-url https://pypi.anaconda.org/openturns-wheels-nightly/simple --upgrade --force-reinstall openturns

@@ -51,7 +51,7 @@ Buffer_init(Buffer *self, PyObject *args, PyObject *kwds)
   PyObject * ownObj = NULL;
   Py_ssize_t shapeLength;
   Py_ssize_t bufferLength;
-  int i;
+  Py_ssize_t i;
   char own;
   double * data = NULL;
 
@@ -87,7 +87,7 @@ Buffer_init(Buffer *self, PyObject *args, PyObject *kwds)
 
   self->bufferview.own = own;
   self->bufferview.itemsize = sizeof(double);
-  self->bufferview.ndim = shapeLength;
+  self->bufferview.ndim = (int)shapeLength;
   if (shapeLength == 0)
   {
     /* Is this really useful?  Maybe we should return -1 */
@@ -339,7 +339,7 @@ Buffer_setstate(PyObject *obj, PyObject *args)
   {
     return NULL;
   }
-  self->bufferview.ndim = shapeLength;
+  self->bufferview.ndim = (int)shapeLength;
   for(i = 0; i < shapeLength; ++i)
   {
     self->bufferview.shape[i] = PyLong_AsLong(PyTuple_GET_ITEM(shapeObj, i));

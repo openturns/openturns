@@ -1,11 +1,5 @@
 #                                               -*- cmake -*-
 
-if (WIN32)
-  # replace dos eols
-  set (REPLACE_EOL " | tr -d '\\\\015' ")
-endif ()
-
-
 set (PYINSTALLCHECK_ENVIRONMENT "OPENTURNS_CONFIG_PATH=${INSTALL_DESTDIR}${SYSCONFIG_PATH}/openturns"
                                  "PYTHONPATH=${INSTALL_DESTDIR}${PYTHON_MODULE_PATH}${PATH_SEP}$ENV{PYTHONPATH}" "MPLBACKEND=agg"
    )
@@ -42,7 +36,7 @@ macro (ot_pyinstallcheck_test TESTNAME)
     set (TESTNAME_OUT ${TESTNAME_TGT}.expout)
     get_source_file_property (OUTFILE_LOC ${TESTNAME_OUT} LOCATION)
     set (OUTFILE_LOC ${CMAKE_CURRENT_SOURCE_DIR}/${TESTNAME_OUT})
-    set (COMMAND "(${PYTHON_EXECUTABLE} ${TESTNAME_LOC} ${_PARAMS} ${REPLACE_EOL} > ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME_TGT}.out) && diff -u ${OUTFILE_LOC} ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME_TGT}.out")
+    set (COMMAND "(${PYTHON_EXECUTABLE} ${TESTNAME_LOC} ${_PARAMS} > ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME_TGT}.out) && diff -u --strip-trailing-cr ${OUTFILE_LOC} ${CMAKE_CURRENT_BINARY_DIR}/${TESTNAME_TGT}.out")
   endif ()
 
   add_test (pyinstallcheck_${TESTNAME} "sh" "-c" "${COMMAND}")
@@ -713,9 +707,7 @@ ot_pyinstallcheck_test (QuadraticLeastSquares_std)
 ot_pyinstallcheck_test (QuadraticTaylor_std)
 ot_pyinstallcheck_test (FunctionalChaos_ishigami)
 ot_pyinstallcheck_test (FunctionalChaos_ishigami_sparse)
-if (NOT MINGW)# FIXME: bad_alloc when run from Makefile with the new archive, ok from ctest
 ot_pyinstallcheck_test (FunctionalChaos_ishigami_database)
-endif ()
 ot_pyinstallcheck_test (FunctionalChaos_gsobol)
 ot_pyinstallcheck_test (FunctionalChaos_gsobol_sparse)
 ot_pyinstallcheck_test (FunctionalChaos_nd)

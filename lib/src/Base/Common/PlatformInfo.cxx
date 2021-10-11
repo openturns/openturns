@@ -20,13 +20,8 @@
  */
 #include "openturns/OTconfig.hxx"
 #include "openturns/OTconfigureArgs.hxx"
-#include "openturns/OSS.hxx"
-#include "openturns/Log.hxx"
+#include "openturns/Exception.hxx"
 #include "openturns/PlatformInfo.hxx"
-
-#ifdef _MSC_VER
-# include <cstdio>         // for _set_output_format
-#endif
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -71,16 +66,9 @@ UnsignedInteger PlatformInfo::GetNumericalPrecision()
 
 void PlatformInfo::SetNumericalPrecision(SignedInteger precision)
 {
-  PlatformInfo::Precision_ = (precision >= 0) ? precision : PlatformInfo::Precision_;
-}
-
-void PlatformInfo::SetTwoDigitExponent(const Bool enable)
-{
-#if defined(__MINGW32__) || (defined(_MSC_VER) && (_MSC_VER < 1900))
-  _set_output_format(enable ? _TWO_DIGIT_EXPONENT : 0);
-#else
-  (void) enable;
-#endif
+  if (precision < 0)
+    throw InvalidArgumentException(HERE) << "in SetNumericalPrecision, precision must be positive";
+  PlatformInfo::Precision_ = precision;
 }
 
 END_NAMESPACE_OPENTURNS

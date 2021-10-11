@@ -569,7 +569,7 @@ void GraphImplementation::draw(const String & file,
   cmdFile.close();
 
   //execute R and load R script in temporary file
-  const String RExecutable(ResourceMap::GetAsString("R-executable-command"));
+  const String RExecutable(ResourceMap::GetAsString("Graph-RExecutableCommand"));
   OSS systemCommand;
   if (RExecutable != "") systemCommand << "" << RExecutable << "" << " --no-save --silent < \"" << temporaryFileName << "\"" << Os::GetDeleteCommandOutput();
   else throw NotYetImplementedException(HERE) << "In GraphImplementation::draw(): needs R. Please install it and set the absolute path of the R executable in ResourceMap.";

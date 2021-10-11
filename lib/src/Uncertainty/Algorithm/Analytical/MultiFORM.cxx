@@ -35,7 +35,7 @@ static Factory<MultiFORM> Factory_MultiFORM;
 /* Default constructor */
 MultiFORM::MultiFORM()
   : FORM()
-  , maximumNumberOfDesignPoints_(ResourceMap::GetAsUnsignedInteger("MultiFORM-DefaultMaximumNumberOfDesignPoints"))
+  , maximumDesignPointsNumber_(ResourceMap::GetAsUnsignedInteger("MultiFORM-DefaultMaximumDesignPointsNumber"))
 {
   // Nothing to do
 }
@@ -47,7 +47,7 @@ MultiFORM::MultiFORM(const OptimizationAlgorithm & solver,
                      const RandomVector & event,
                      const Point & physicalStartingPoint)
   : FORM(solver, event, physicalStartingPoint)
-  , maximumNumberOfDesignPoints_(ResourceMap::GetAsUnsignedInteger("MultiFORM-DefaultMaximumNumberOfDesignPoints"))
+  , maximumDesignPointsNumber_(ResourceMap::GetAsUnsignedInteger("MultiFORM-DefaultMaximumDesignPointsNumber"))
 {
   // Nothing to do
 }
@@ -138,8 +138,8 @@ void MultiFORM::run()
       formResultCollection.add(formResult);
     }
 
-    // check if we exceeded maximumNumberOfDesignPoints
-    if (numberOfDesignPointsFound >= maximumNumberOfDesignPoints_)
+    // check if we exceeded maximumDesignPointsNumber
+    if (numberOfDesignPointsFound >= maximumDesignPointsNumber_)
       break;
 
     // bulge parameters
@@ -202,7 +202,7 @@ void MultiFORM::run()
 void MultiFORM::save(Advocate & adv) const
 {
   FORM::save(adv);
-  adv.saveAttribute("maximumNumberOfDesignPoints_", maximumNumberOfDesignPoints_);
+  adv.saveAttribute("maximumDesignPointsNumber_", maximumDesignPointsNumber_);
 }
 
 
@@ -210,20 +210,31 @@ void MultiFORM::save(Advocate & adv) const
 void MultiFORM::load(Advocate & adv)
 {
   FORM::load(adv);
-  adv.loadAttribute("maximumNumberOfDesignPoints_", maximumNumberOfDesignPoints_);
+  adv.loadAttribute("maximumDesignPointsNumber_", maximumDesignPointsNumber_);
 }
 
 
 /* Number of design points accessor */
-void MultiFORM::setMaximumNumberOfDesignPoints(const UnsignedInteger maximumNumberOfDesignPoints)
+void MultiFORM::setMaximumDesignPointsNumber(const UnsignedInteger maximumDesignPointsNumber)
 {
-  maximumNumberOfDesignPoints_ = maximumNumberOfDesignPoints;
+  maximumDesignPointsNumber_ = maximumDesignPointsNumber;
 }
 
+UnsignedInteger MultiFORM::getMaximumDesignPointsNumber() const
+{
+  return maximumDesignPointsNumber_;
+}
+
+void MultiFORM::setMaximumNumberOfDesignPoints(const UnsignedInteger maximumDesignPointsNumber)
+{
+  LOGWARN(OSS() << "MultiFORM.setMaximumNumberOfDesignPoints is deprecated, use setMaximumDesignPointsNumber");
+  setMaximumDesignPointsNumber(maximumDesignPointsNumber);
+}
 
 UnsignedInteger MultiFORM::getMaximumNumberOfDesignPoints() const
 {
-  return maximumNumberOfDesignPoints_;
+  LOGWARN(OSS() << "MultiFORM.getMaximumNumberOfDesignPoints is deprecated, use getMaximumDesignPointsNumber");
+  return getMaximumDesignPointsNumber();
 }
 
 

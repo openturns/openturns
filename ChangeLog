@@ -20,6 +20,10 @@
  * Deprecated VisualTest::DrawCobWeb in favor of DrawParallelCoordinates
  * IndicatorFunction constructor takes a Domain as input
  * Intervals and DomainUnions get new method computeDistanceToDomain(Point or Sample)
+ * Renamed some ResourceMap keys: cache-max-size>Cache-MaxSize, parallel-threads>TBB-ThreadsNumber
+ * Deprecated TBB.SetNumberOfThreads/GetNumberOfThreads
+ * Deprecated MultiFORM.setMaximumNumberOfDesignPoints/getMaximumNumberOfDesignPoints
+ * Deprecated SubsetSampling.getNumberOfSteps
 
 === Documentation ===
 

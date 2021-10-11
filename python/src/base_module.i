@@ -17,7 +17,6 @@ def TESTPREAMBLE():
     if '--version' in sys.argv:
         print(sys.argv[0] + ' ' + PlatformInfo.GetVersion())
         sys.exit(0)
-    PlatformInfo.SetTwoDigitExponent()
 %}
 
 %{

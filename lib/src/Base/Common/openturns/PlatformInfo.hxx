@@ -65,9 +65,6 @@ public:
    */
   static void SetNumericalPrecision(SignedInteger precision);
 
-  /** Set two digit exponent format */
-  static void SetTwoDigitExponent(const Bool enable = true);
-
 private:
 
   PlatformInfo();

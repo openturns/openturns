@@ -70,7 +70,7 @@ result : :class:`~openturns.MultiFORMResult`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MultiFORM::setMaximumNumberOfDesignPoints
+%feature("docstring") OT::MultiFORM::setMaximumDesignPointsNumber
 "Accessor to the maximum number of design points.
 
 Parameters
@@ -80,7 +80,7 @@ max_dp : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::MultiFORM::getMaximumNumberOfDesignPoints
+%feature("docstring") OT::MultiFORM::getMaximumDesignPointsNumber
 "Accessor to the maximum number of design points.
 
 Returns

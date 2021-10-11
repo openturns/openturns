@@ -12,19 +12,17 @@
 <!DOCTYPE configuration>
   <openturns-configuration version="1" >
 
-  <R-executable-command    value_str="@R_EXECUTABLE@" />
-  <csv-file-separator      value_str=";"              />
-  <temporary-directory     value_str="@TEMPDIR@"      />
-  <!-- parallel-threads is set by default to the number of core of the machine.
-       To set manually the number of thread used for parallel computing, uncomment the following line: 
+  <Path-TemporaryDirectory     value_str="@TEMPDIR@"      />
+  <!-- TBB-ThreadsNumber is set by default to the number of cores of the machine.
+       To set manually the number of threads used for parallel computing, uncomment the following line:
     -->
-  <!--<parallel-threads    value_int="1"    />-->
-  <cache-max-size          value_int="1024" />
-  <output-files-timeout    value_int="2"    />
+  <!--<TBB-ThreadsNumber    value_int="1"    />-->
+  <Cache-MaxSize          value_int="1024" />
 
   <!-- OT::Os parameters -->
-  <Os-create-process value_bool="false" />
+  <Os-CreateProcess value_bool="false" />
   <Os-RemoveFiles    value_bool="true"  />
+  <OS-DeleteTimeout    value_int="2"    />
   
   <!-- OT::XMLStorageManager parameters -->
   <XMLStorageManager-DefaultCompressionLevel value_int="0" />
@@ -92,6 +90,7 @@
   <Text-DefaultTextSize    value_float="0.75"            />
 
   <!-- OT::GraphImplementation parameters -->
+  <Graph-RExecutableCommand value_str="@R_EXECUTABLE@" />
   <Graph-DefaultHorizontalMargin value_float="0.05"          />
   <Graph-DefaultLegendFontSize   value_float="1.0"           />
   <Graph-DefaultVerticalMargin   value_float="0.05"          />
@@ -265,7 +264,8 @@
   <Field-LevelNumber      value_int="30"     />
 
   <!-- OT::SampleImplementation parameters -->
-  <Sample-CommentMarkers         value_str="#"              />
+  <Sample-CSVFileSeparator      value_str=";"     />
+  <Sample-CommentMarkers         value_str="#"    />
   <Sample-PrintEllipsisSize      value_int="3"    />
   <Sample-PrintEllipsisThreshold value_int="1000" />
   <Sample-SmallKendallTau        value_int="23"   />
@@ -583,7 +583,7 @@
   <!-- OT::MultiFORM parameters -->
   <MultiFORM-DefaultGamma value_float="1.1" />
   <MultiFORM-DefaultDelta value_float="0.75" />
-  <MultiFORM-DefaultMaximumNumberOfDesignPoints value_int="4" />
+  <MultiFORM-DefaultMaximumDesignPointsNumber value_int="4" />
 
   <!-- OT::StrongMaximumTest parameters -->
   <StrongMaximumTest-DefaultDeltaPrecision     value_float="1.0e-7"  />
