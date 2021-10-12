@@ -16,7 +16,10 @@ import openturns as ot
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-from distutils.version import LooseVersion
+try:
+    from pkg_resources import parse_version as LooseVersion
+except ImportError:
+    from distutils.version import LooseVersion
 import os
 import re
 import warnings
@@ -212,7 +215,7 @@ class View(object):
                     axes[0].axison = graphij.getAxes()
                     axes[0].set_title( self._ToUnicode(graphij.getTitle()))
                     # hide frame top/right
-                    if LooseVersion(matplotlib.__version__) > '3.0':
+                    if LooseVersion(matplotlib.__version__) > LooseVersion('3.0'):
                         axes[0].spines['right'].set_visible(False)
                         axes[0].spines['top'].set_visible(False)
                     View(graphij, figure=self._fig, axes=axes, plot_kw=plot_kw,
