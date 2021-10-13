@@ -227,8 +227,10 @@ HMatrixImplementation & HMatrixImplementation::operator=(const HMatrixImplementa
     PersistentObject::operator=(other);
     // destroy current
     if (hmatInterface_ != NULL && hmat_ != NULL)
+    {
       static_cast<hmat_interface_t*>(hmatInterface_)->destroy(static_cast<hmat_matrix_t*>(hmat_));
-
+      static_cast<hmat_interface_t*>(hmatInterface_)->finalize();
+    }
     if (other.hmatClusterTree_.get())
     {
       hmat_cluster_tree_t* ptr_other_ct = static_cast<hmat_cluster_tree_t*>(other.hmatClusterTree_.get()->get());
@@ -464,6 +466,7 @@ void HMatrixImplementation::factorize(const String& method)
 
       // ditch the original instance
       static_cast<hmat_interface_t*>(hmatInterface_)->destroy(static_cast<hmat_matrix_t*>(hmatBackup));
+      static_cast<hmat_interface_t*>(hmatInterface_)->finalize();
 
       done = true;
       LOGDEBUG("Factorization ok");
@@ -475,6 +478,8 @@ void HMatrixImplementation::factorize(const String& method)
 
       // ditch the copy and restart from the original instance
       static_cast<hmat_interface_t*>(hmatInterface_)->destroy(static_cast<hmat_matrix_t*>(hmat_));
+      static_cast<hmat_interface_t*>(hmatInterface_)->finalize();
+
       hmat_ = static_cast<hmat_interface_t*>(hmatInterface_)->copy(static_cast<hmat_matrix_t*>(hmatBackup));
 
       // Double the current regularization factor by adding it another time
