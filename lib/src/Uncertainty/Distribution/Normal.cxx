@@ -31,7 +31,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/MatrixImplementation.hxx"
-#include "openturns/IdentityMatrix.hxx"
 #include "openturns/NormalCopula.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/RandomGenerator.hxx"
@@ -90,10 +89,17 @@ Normal::Normal(const Point & mean,
 }
 
 Normal::Normal(const Point & mean,
+               const Point & sigma)
+  : Normal(mean, sigma, CorrelationMatrix(mean.getDimension()))
+{
+  // Nothing to do
+}
+
+Normal::Normal(const Point & mean,
                const CovarianceMatrix & C)
   : EllipticalDistribution(mean
                            , Point(mean.getDimension(), 1.0)
-                           , IdentityMatrix(mean.getDimension())
+                           , CorrelationMatrix(mean.getDimension())
                            , 1.0)
   , logNormalizationFactor_((-1.0 * mean.getDimension()) * SpecFunc::LOGSQRT2PI)
   , hasIndependentCopula_(false)

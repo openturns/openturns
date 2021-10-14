@@ -93,8 +93,8 @@ int main(int, char *[])
         assert_almost_equal(coll[k](0, 0), 0.0, 1e-14, 1e-13);
 
       // Validation of marginal variance
-      const Point marginalVariance(result.getConditionalMarginalVariance(X));
-      assert_almost_equal(marginalVariance, Point(sampleSize), 1e-14, 1e-13);
+      const Sample marginalVariance(result.getConditionalMarginalVariance(X));
+      assert_almost_equal(marginalVariance, Sample(sampleSize, 1), 1e-14, 1e-13);
 
       // Prediction accuracy
       assert_almost_equal(Y2, result.getMetaModel()(X2), 0.3, 0.0);
@@ -170,8 +170,8 @@ int main(int, char *[])
         assert_almost_equal(coll[k](0, 0), 0.0, 1e-13, 1e-13);
 
       // Validation of marginal variance
-      const Point marginalVariance(result.getConditionalMarginalVariance(X));
-      assert_almost_equal(marginalVariance, Point(sampleSize), 1e-13, 1e-13);
+      const Sample marginalVariance(result.getConditionalMarginalVariance(X));
+      assert_almost_equal(marginalVariance, Sample(sampleSize, 1), 1e-13, 1e-13);
     }
 
     {
@@ -185,7 +185,7 @@ int main(int, char *[])
       KrigingAlgorithm algo(x, y, model, LinearBasisFactory().build());
       algo.run();
       KrigingResult result(algo.getResult());
-      assert_almost_equal(result.getConditionalMarginalVariance(x), Point(x.getSize(), 0.), 1e-16, 1e-16);
+      assert_almost_equal(result.getConditionalMarginalVariance(x), Sample(x.getSize(), 1), 1e-16, 1e-16);
     }
 
   }

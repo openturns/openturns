@@ -239,12 +239,12 @@ void EfficientGlobalOptimization::run()
       // with noisy objective we dont have access to the real current optimal value
       // so consider a quantile of the kriging prediction: argmin_xi mk(xi) + c * sk(xi)
       optimalValueSubstitute = problem.isMinimization() ? SpecFunc::MaxScalar : SpecFunc::LowestScalar;
-      const Point mx(metaModelResult.getConditionalMean(inputSample));
+      const Sample mx(metaModelResult.getConditionalMean(inputSample));
       for (UnsignedInteger i = 0; i < size; ++ i)
       {
         const Point x(inputSample[i]);
         const Scalar sk2 = metaModelResult.getConditionalMarginalVariance(x);
-        const Scalar u = mx[i] + aeiTradeoff_ * sqrt(sk2);
+        const Scalar u = mx(i, 0) + aeiTradeoff_ * sqrt(sk2);
         if ((problem.isMinimization() && (u < optimalValueSubstitute))
             || (!problem.isMinimization() && (u > optimalValueSubstitute)))
         {
