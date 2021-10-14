@@ -191,7 +191,7 @@ public:
 
 private:
   // DO NOT USE
-  void * hmatInterface_;
+  std::shared_ptr<void> hmatInterface_;
   Pointer<HMatrixClusterTree> hmatClusterTree_;
   void * hmat_;
 

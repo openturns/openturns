@@ -178,6 +178,14 @@ HMatrixClusterTree::~HMatrixClusterTree()
 #endif
 }
 
+struct CDeleter
+{
+  void operator ()(void * p)
+  {
+    free(p);
+  }
+};
+
 HMatrixImplementation::HMatrixImplementation()
   : hmatInterface_(NULL)
   , hmatClusterTree_(NULL)
@@ -188,7 +196,7 @@ HMatrixImplementation::HMatrixImplementation()
 
 HMatrixImplementation::HMatrixImplementation(void* ptr_hmat_interface, void* ptr_hmat_cluster_tree, int cluster_size, void* ptr_hmatrix)
   : PersistentObject()
-  , hmatInterface_(ptr_hmat_interface)
+  , hmatInterface_(ptr_hmat_interface, CDeleter())
   , hmatClusterTree_(new HMatrixClusterTree(ptr_hmat_cluster_tree, cluster_size))
   , hmat_(ptr_hmatrix)
 {
@@ -208,7 +216,7 @@ HMatrixImplementation::HMatrixImplementation(const HMatrixImplementation& other)
     hmatClusterTree_ = new HMatrixClusterTree(hmat_copy_cluster_tree(ptr_other_ct), other.hmatClusterTree_.get()->getSize());
     hmat_cluster_tree_t* ptr_ct = static_cast<hmat_cluster_tree_t*>(hmatClusterTree_.get()->get());
 
-    hmat_interface_t* ptr_interface = static_cast<hmat_interface_t*>(hmatInterface_);
+    hmat_interface_t* ptr_interface = static_cast<hmat_interface_t*>(hmatInterface_.get());
     hmat_matrix_t* hmat_copy = ptr_interface->copy(static_cast<hmat_matrix_t*>(other.hmat_));
     ptr_interface->set_cluster_trees(hmat_copy, ptr_ct, ptr_ct);
     hmat_ = hmat_copy;
@@ -228,8 +236,8 @@ HMatrixImplementation & HMatrixImplementation::operator=(const HMatrixImplementa
     // destroy current
     if (hmatInterface_ != NULL && hmat_ != NULL)
     {
-      static_cast<hmat_interface_t*>(hmatInterface_)->destroy(static_cast<hmat_matrix_t*>(hmat_));
-      static_cast<hmat_interface_t*>(hmatInterface_)->finalize();
+      static_cast<hmat_interface_t*>(hmatInterface_.get())->destroy(static_cast<hmat_matrix_t*>(hmat_));
+      static_cast<hmat_interface_t*>(hmatInterface_.get())->finalize();
     }
     if (other.hmatClusterTree_.get())
     {
@@ -237,10 +245,12 @@ HMatrixImplementation & HMatrixImplementation::operator=(const HMatrixImplementa
       hmatClusterTree_ = new HMatrixClusterTree(hmat_copy_cluster_tree(ptr_other_ct), other.hmatClusterTree_.get()->getSize());
       hmat_cluster_tree_t* ptr_ct = static_cast<hmat_cluster_tree_t*>(hmatClusterTree_.get()->get());
 
-      hmat_interface_t* ptr_interface = static_cast<hmat_interface_t*>(other.hmatInterface_);
+      hmat_interface_t* ptr_interface = static_cast<hmat_interface_t*>(other.hmatInterface_.get());
       hmat_matrix_t* hmat_copy = ptr_interface->copy(static_cast<hmat_matrix_t*>(other.hmat_));
       ptr_interface->set_cluster_trees(hmat_copy, ptr_ct, ptr_ct);
       hmat_ = hmat_copy;
+
+      hmatInterface_ = other.hmatInterface_;
     }
   }
 #endif
@@ -257,8 +267,8 @@ HMatrixImplementation::~HMatrixImplementation()
 {
 #ifdef OPENTURNS_HAVE_HMAT
   if (hmatInterface_ != NULL && hmat_ != NULL){
-    static_cast<hmat_interface_t*>(hmatInterface_)->destroy(static_cast<hmat_matrix_t*>(hmat_));
-    static_cast<hmat_interface_t*>(hmatInterface_)->finalize();
+    static_cast<hmat_interface_t*>(hmatInterface_.get())->destroy(static_cast<hmat_matrix_t*>(hmat_));
+    static_cast<hmat_interface_t*>(hmatInterface_.get())->finalize();
   }
 #endif
 }
@@ -304,13 +314,13 @@ HMatrixImplementation::assemble(const HMatrixRealAssemblyFunction& f, char symme
   else
     LOGWARN( OSS() << "Unknown compression method: " << compressionMethod << ". Valid values are: Svd, AcaFull, AcaPartial or AcaPlus");
 
-  static_cast<hmat_interface_t*>(hmatInterface_)->assemble_generic(static_cast<hmat_matrix_t*>(hmat_), &ctx_assemble);
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->assemble_generic(static_cast<hmat_matrix_t*>(hmat_), &ctx_assemble);
   hmat_delete_compression(ctx_assemble.compression);
 
   // recompression after build
   const Scalar recompressionEpsilon = ResourceMap::GetAsScalar("HMatrix-RecompressionEpsilon");
-  static_cast<hmat_interface_t*>(hmatInterface_)->set_low_rank_epsilon(static_cast<hmat_matrix_t*>(hmat_), recompressionEpsilon);
-  static_cast<hmat_interface_t*>(hmatInterface_)->truncate(static_cast<hmat_matrix_t*>(hmat_));
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->set_low_rank_epsilon(static_cast<hmat_matrix_t*>(hmat_), recompressionEpsilon);
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->truncate(static_cast<hmat_matrix_t*>(hmat_));
 
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
@@ -320,7 +330,7 @@ HMatrixImplementation::assemble(const HMatrixRealAssemblyFunction& f, char symme
 void HMatrixImplementation::addIdentity(Scalar alpha)
 {
 #ifdef OPENTURNS_HAVE_HMAT
-  static_cast<hmat_interface_t *>(hmatInterface_)->add_identity(static_cast<hmat_matrix_t *>(hmat_), &alpha);
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->add_identity(static_cast<hmat_matrix_t *>(hmat_), &alpha);
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS had been compiled without HMat support";
 #endif
@@ -387,13 +397,13 @@ void HMatrixImplementation::assemble(const HMatrixTensorRealAssemblyFunction& f,
   else
     LOGWARN( OSS() << "Unknown compression method: " << compressionMethod << ". Valid values are: Svd, AcaFull, AcaPartial or AcaPlus");
 
-  static_cast<hmat_interface_t*>(hmatInterface_)->assemble_generic(static_cast<hmat_matrix_t*>(hmat_), &ctx_assemble);
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->assemble_generic(static_cast<hmat_matrix_t*>(hmat_), &ctx_assemble);
   hmat_delete_compression(ctx_assemble.compression);
 
   // recompression after build
   const Scalar recompressionEpsilon = ResourceMap::GetAsScalar("HMatrix-RecompressionEpsilon");
-  static_cast<hmat_interface_t*>(hmatInterface_)->set_low_rank_epsilon(static_cast<hmat_matrix_t*>(hmat_), recompressionEpsilon);
-  static_cast<hmat_interface_t*>(hmatInterface_)->truncate(static_cast<hmat_matrix_t*>(hmat_));
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->set_low_rank_epsilon(static_cast<hmat_matrix_t*>(hmat_), recompressionEpsilon);
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->truncate(static_cast<hmat_matrix_t*>(hmat_));
 
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
@@ -446,7 +456,7 @@ void HMatrixImplementation::factorize(const String& method)
 
   // create a backup copy as the factorization can leave the matrix in a broken state and should not be reused
   hmat_matrix_t* hmatBackup = static_cast<hmat_matrix_t*>(hmat_);
-  hmat_ = static_cast<hmat_interface_t*>(hmatInterface_)->copy(static_cast<hmat_matrix_t*>(hmatBackup));
+  hmat_ = static_cast<hmat_interface_t*>(hmatInterface_.get())->copy(static_cast<hmat_matrix_t*>(hmatBackup));
 
   // Do regularization
   addIdentity(lambda);
@@ -462,11 +472,11 @@ void HMatrixImplementation::factorize(const String& method)
       hmat_factorization_context_init(&context);
       context.factorization = fact_method;
       context.progress = NULL;
-      static_cast<hmat_interface_t*>(hmatInterface_)->factorize_generic(static_cast<hmat_matrix_t*>(hmat_), &context);
+      static_cast<hmat_interface_t*>(hmatInterface_.get())->factorize_generic(static_cast<hmat_matrix_t*>(hmat_), &context);
 
       // ditch the original instance
-      static_cast<hmat_interface_t*>(hmatInterface_)->destroy(static_cast<hmat_matrix_t*>(hmatBackup));
-      static_cast<hmat_interface_t*>(hmatInterface_)->finalize();
+      static_cast<hmat_interface_t*>(hmatInterface_.get())->destroy(static_cast<hmat_matrix_t*>(hmatBackup));
+      static_cast<hmat_interface_t*>(hmatInterface_.get())->finalize();
 
       done = true;
       LOGDEBUG("Factorization ok");
@@ -477,10 +487,10 @@ void HMatrixImplementation::factorize(const String& method)
       msg = ex.what();
 
       // ditch the copy and restart from the original instance
-      static_cast<hmat_interface_t*>(hmatInterface_)->destroy(static_cast<hmat_matrix_t*>(hmat_));
-      static_cast<hmat_interface_t*>(hmatInterface_)->finalize();
+      static_cast<hmat_interface_t*>(hmatInterface_.get())->destroy(static_cast<hmat_matrix_t*>(hmat_));
+      static_cast<hmat_interface_t*>(hmatInterface_.get())->finalize();
 
-      hmat_ = static_cast<hmat_interface_t*>(hmatInterface_)->copy(static_cast<hmat_matrix_t*>(hmatBackup));
+      hmat_ = static_cast<hmat_interface_t*>(hmatInterface_.get())->copy(static_cast<hmat_matrix_t*>(hmatBackup));
 
       // Double the current regularization factor by adding it another time
       addIdentity(lambda);
@@ -500,7 +510,7 @@ void HMatrixImplementation::factorize(const String& method)
 void HMatrixImplementation::scale(Scalar alpha)
 {
 #ifdef OPENTURNS_HAVE_HMAT
-  static_cast<hmat_interface_t*>(hmatInterface_)->scale(&alpha, static_cast<hmat_matrix_t*>(hmat_));
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->scale(&alpha, static_cast<hmat_matrix_t*>(hmat_));
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
@@ -511,7 +521,7 @@ void HMatrixImplementation::gemv(char trans, Scalar alpha, const Point& x, Scala
 #ifdef OPENTURNS_HAVE_HMAT
   // gemv() below reorders x indices, thus x is not constant.
   Point xcopy(x);
-  static_cast<hmat_interface_t*>(hmatInterface_)->gemv(trans, &alpha, static_cast<hmat_matrix_t*>(hmat_), &xcopy[0], &beta, &y[0], 1);
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->gemv(trans, &alpha, static_cast<hmat_matrix_t*>(hmat_), &xcopy[0], &beta, &y[0], 1);
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
@@ -520,7 +530,7 @@ void HMatrixImplementation::gemv(char trans, Scalar alpha, const Point& x, Scala
 void HMatrixImplementation::gemm(char transA, char transB, Scalar alpha, const HMatrixImplementation& a, const HMatrixImplementation& b, Scalar beta)
 {
 #ifdef OPENTURNS_HAVE_HMAT
-  static_cast<hmat_interface_t*>(hmatInterface_)->gemm(transA, transB, &alpha, static_cast<hmat_matrix_t*>(a.hmat_), static_cast<hmat_matrix_t*>(b.hmat_), &beta, static_cast<hmat_matrix_t*>(hmat_));
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->gemm(transA, transB, &alpha, static_cast<hmat_matrix_t*>(a.hmat_), static_cast<hmat_matrix_t*>(b.hmat_), &beta, static_cast<hmat_matrix_t*>(hmat_));
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
@@ -529,7 +539,7 @@ void HMatrixImplementation::gemm(char transA, char transB, Scalar alpha, const H
 void HMatrixImplementation::transpose()
 {
 #ifdef OPENTURNS_HAVE_HMAT
-  static_cast<hmat_interface_t*>(hmatInterface_)->transpose(static_cast<hmat_matrix_t*>(hmat_));
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->transpose(static_cast<hmat_matrix_t*>(hmat_));
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
@@ -538,7 +548,7 @@ void HMatrixImplementation::transpose()
 Scalar HMatrixImplementation::norm() const
 {
 #ifdef OPENTURNS_HAVE_HMAT
-  return static_cast<hmat_interface_t*>(hmatInterface_)->norm(static_cast<hmat_matrix_t*>(hmat_));
+  return static_cast<hmat_interface_t*>(hmatInterface_.get())->norm(static_cast<hmat_matrix_t*>(hmat_));
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
@@ -548,7 +558,7 @@ Point HMatrixImplementation::getDiagonal() const
 {
 #ifdef OPENTURNS_HAVE_HMAT
   Point diag(hmatClusterTree_.get()->getSize());
-  static_cast<hmat_interface_t*>(hmatInterface_)->extract_diagonal(static_cast<hmat_matrix_t*>(hmat_), &diag[0], diag.getDimension());
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->extract_diagonal(static_cast<hmat_matrix_t*>(hmat_), &diag[0], diag.getDimension());
   return diag;
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
@@ -560,7 +570,7 @@ Point HMatrixImplementation::solve(const Point& b, Bool trans) const
   if (trans) throw NotYetImplementedException(HERE) << "transposed not yet supported in HMatrixImplementation::solve";
 #ifdef OPENTURNS_HAVE_HMAT
   Point result(b);
-  static_cast<hmat_interface_t*>(hmatInterface_)->solve_systems(static_cast<hmat_matrix_t*>(hmat_), &result[0], 1);
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->solve_systems(static_cast<hmat_matrix_t*>(hmat_), &result[0], 1);
   return result;
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
@@ -572,7 +582,7 @@ Matrix HMatrixImplementation::solve(const Matrix& m, Bool trans) const
   if (trans) throw NotYetImplementedException(HERE) << "transposed not yet supported in HMatrixImplementation::solve";
 #ifdef OPENTURNS_HAVE_HMAT
   Matrix result(m);
-  static_cast<hmat_interface_t*>(hmatInterface_)->solve_systems(static_cast<hmat_matrix_t*>(hmat_), &result(0, 0), result.getNbColumns());
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->solve_systems(static_cast<hmat_matrix_t*>(hmat_), &result(0, 0), result.getNbColumns());
   return result;
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
@@ -584,7 +594,7 @@ Point HMatrixImplementation::solveLower(const Point& b, Bool trans) const
 #ifdef OPENTURNS_HAVE_HMAT
   int t = trans;
   Point result(b);
-  static_cast<hmat_interface_t*>(hmatInterface_)->solve_lower_triangular(static_cast<hmat_matrix_t*>(hmat_), t, &result[0], 1);
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->solve_lower_triangular(static_cast<hmat_matrix_t*>(hmat_), t, &result[0], 1);
   return result;
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
@@ -596,7 +606,7 @@ Matrix HMatrixImplementation::solveLower(const Matrix& m, Bool trans) const
 #ifdef OPENTURNS_HAVE_HMAT
   int t = trans;
   Matrix result(m);
-  static_cast<hmat_interface_t*>(hmatInterface_)->solve_lower_triangular(static_cast<hmat_matrix_t*>(hmat_), t, &result(0, 0), result.getNbColumns());
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->solve_lower_triangular(static_cast<hmat_matrix_t*>(hmat_), t, &result(0, 0), result.getNbColumns());
   return result;
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
@@ -607,7 +617,7 @@ std::pair<size_t, size_t> HMatrixImplementation::compressionRatio() const
 {
 #ifdef OPENTURNS_HAVE_HMAT
   hmat_info_t mat_info;
-  static_cast<hmat_interface_t*>(hmatInterface_)->get_info(static_cast<hmat_matrix_t*>(hmat_), &mat_info);
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->get_info(static_cast<hmat_matrix_t*>(hmat_), &mat_info);
   return std::pair<size_t, size_t>(mat_info.compressed_size, mat_info.uncompressed_size);
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
@@ -618,7 +628,7 @@ std::pair<size_t, size_t> HMatrixImplementation::fullrkRatio() const
 {
 #ifdef OPENTURNS_HAVE_HMAT
   hmat_info_t mat_info;
-  static_cast<hmat_interface_t*>(hmatInterface_)->get_info(static_cast<hmat_matrix_t*>(hmat_), &mat_info);
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->get_info(static_cast<hmat_matrix_t*>(hmat_), &mat_info);
   return std::pair<size_t, size_t>(mat_info.full_size, mat_info.uncompressed_size - mat_info.full_size);
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
@@ -628,7 +638,7 @@ std::pair<size_t, size_t> HMatrixImplementation::fullrkRatio() const
 void HMatrixImplementation::dump(const String & name) const
 {
 #ifdef OPENTURNS_HAVE_HMAT
-  static_cast<hmat_interface_t*>(hmatInterface_)->dump_info(static_cast<hmat_matrix_t*>(hmat_), const_cast<char*>(name.c_str()));
+  static_cast<hmat_interface_t*>(hmatInterface_.get())->dump_info(static_cast<hmat_matrix_t*>(hmat_), const_cast<char*>(name.c_str()));
 #else
   throw NotYetImplementedException(HERE) << "OpenTURNS has been compiled without HMat support";
 #endif
