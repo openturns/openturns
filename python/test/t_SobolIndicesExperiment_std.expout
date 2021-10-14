@@ -358,7 +358,7 @@ sample=      [ X0        X1        X2        ]
 62 : [  0.157311 -0.887147  0.157311 ]
 63 : [ -0.157311 -0.488776 -0.157311 ]
 size= 64
-experiment= class=SobolIndicesExperiment name=Unnamed experiment=class=LowDiscrepancyExperiment name=Unnamed sequence=class=LowDiscrepancySequence implementation=class=SobolSequence derived from class=LowDiscrepancySequenceImplementation dimension=2 coefficients=[2305843009213693952,2305843009213693952] seed=1 distribution=class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0,0] sigma=class=Point name=Unnamed dimension=2 values=[1,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1] size=8 restart=true randomize=false computeSecondOrder=false size=32
+experiment= class=SobolIndicesExperiment name=Unnamed experiment=class=LowDiscrepancyExperiment name=Unnamed sequence=class=LowDiscrepancySequence implementation=class=SobolSequence coefficients=[2305843009213693952,2305843009213693952] seed=1 distribution=class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0,0] sigma=class=Point name=Unnamed dimension=2 values=[1,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1] size=8 restart=true randomize=false computeSecondOrder=false size=32
 sample=      [ X0        X1        ]
  0 : [  0         0        ]
  1 : [  0.67449  -0.67449  ]
@@ -393,7 +393,7 @@ sample=      [ X0        X1        ]
 30 : [ -1.15035   1.15035  ]
 31 : [ -0.887147  0.488776 ]
 size= 32
-experiment= class=SobolIndicesExperiment name=Unnamed experiment=class=LowDiscrepancyExperiment name=Unnamed sequence=class=LowDiscrepancySequence implementation=class=SobolSequence derived from class=LowDiscrepancySequenceImplementation dimension=2 coefficients=[2305843009213693952,2305843009213693952] seed=1 distribution=class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0,0] sigma=class=Point name=Unnamed dimension=2 values=[1,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1] size=8 restart=true randomize=false computeSecondOrder=true size=32
+experiment= class=SobolIndicesExperiment name=Unnamed experiment=class=LowDiscrepancyExperiment name=Unnamed sequence=class=LowDiscrepancySequence implementation=class=SobolSequence coefficients=[2305843009213693952,2305843009213693952] seed=1 distribution=class=Normal name=Normal dimension=2 mean=class=Point name=Unnamed dimension=2 values=[0,0] sigma=class=Point name=Unnamed dimension=2 values=[1,1] correlationMatrix=class=CorrelationMatrix dimension=2 implementation=class=MatrixImplementation name=Unnamed rows=2 columns=2 values=[1,0,0,1] size=8 restart=true randomize=false computeSecondOrder=true size=32
 sample=      [ X0        X1        ]
  0 : [  0         0        ]
  1 : [  0.67449  -0.67449  ]
@@ -428,7 +428,7 @@ sample=      [ X0        X1        ]
 30 : [ -1.15035   1.15035  ]
 31 : [ -0.887147  0.488776 ]
 size= 32
-experiment= class=SobolIndicesExperiment name=Unnamed experiment=class=LowDiscrepancyExperiment name=Unnamed sequence=class=LowDiscrepancySequence implementation=class=SobolSequence derived from class=LowDiscrepancySequenceImplementation dimension=3 coefficients=[2305843009213693952,2305843009213693952,2305843009213693952] seed=1 distribution=class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[0,0,0] sigma=class=Point name=Unnamed dimension=3 values=[1,1,1] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1] size=8 restart=true randomize=false computeSecondOrder=false size=40
+experiment= class=SobolIndicesExperiment name=Unnamed experiment=class=LowDiscrepancyExperiment name=Unnamed sequence=class=LowDiscrepancySequence implementation=class=SobolSequence coefficients=[2305843009213693952,2305843009213693952,2305843009213693952] seed=1 distribution=class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[0,0,0] sigma=class=Point name=Unnamed dimension=3 values=[1,1,1] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1] size=8 restart=true randomize=false computeSecondOrder=false size=40
 sample=      [ X0        X1        X2        ]
  0 : [  0         0         0        ]
  1 : [  0.67449  -0.67449   0.67449  ]
@@ -471,7 +471,7 @@ sample=      [ X0        X1        X2        ]
 38 : [ -1.15035   0.318639 -1.15035  ]
 39 : [ -0.887147 -0.488776 -0.887147 ]
 size= 40
-experiment= class=SobolIndicesExperiment name=Unnamed experiment=class=LowDiscrepancyExperiment name=Unnamed sequence=class=LowDiscrepancySequence implementation=class=SobolSequence derived from class=LowDiscrepancySequenceImplementation dimension=3 coefficients=[2305843009213693952,2305843009213693952,2305843009213693952] seed=1 distribution=class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[0,0,0] sigma=class=Point name=Unnamed dimension=3 values=[1,1,1] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1] size=8 restart=true randomize=false computeSecondOrder=true size=64
+experiment= class=SobolIndicesExperiment name=Unnamed experiment=class=LowDiscrepancyExperiment name=Unnamed sequence=class=LowDiscrepancySequence implementation=class=SobolSequence coefficients=[2305843009213693952,2305843009213693952,2305843009213693952] seed=1 distribution=class=Normal name=Normal dimension=3 mean=class=Point name=Unnamed dimension=3 values=[0,0,0] sigma=class=Point name=Unnamed dimension=3 values=[1,1,1] correlationMatrix=class=CorrelationMatrix dimension=3 implementation=class=MatrixImplementation name=Unnamed rows=3 columns=3 values=[1,0,0,0,1,0,0,0,1] size=8 restart=true randomize=false computeSecondOrder=true size=64
 sample=      [ X0        X1        X2        ]
  0 : [  0         0         0        ]
  1 : [  0.67449  -0.67449   0.67449  ]

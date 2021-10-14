@@ -52,6 +52,7 @@
  * #1882 (Is Distribution::getLinearCorrelation useful ?)
  * #1883 (Strange behavior of FORM ?)
  * #1884 (setDesign can lead to wrong Sobol' indices)
+ * #1891 (Correlation of Halton sequence at high dimensions)
 
 
 == 1.17 release (2021-05-12) == #release-1.17

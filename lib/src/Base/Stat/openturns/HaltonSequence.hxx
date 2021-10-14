@@ -22,6 +22,8 @@
 #ifndef OPENTURNS_HALTONSEQUENCE_HXX
 #define OPENTURNS_HALTONSEQUENCE_HXX
 
+#include "openturns/IndicesCollection.hxx"
+#include "openturns/ResourceMap.hxx"
 #include "openturns/LowDiscrepancySequenceImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -37,7 +39,8 @@ class OT_API HaltonSequence :
 public:
 
   /** Constructor with parameters */
-  explicit HaltonSequence(const UnsignedInteger dimension = 1);
+  explicit HaltonSequence(const UnsignedInteger dimension = 1,
+                          const String & scrambling = ResourceMap::GetAsString("HaltonSequence-Scrambling"));
 
   /** Virtual constructor */
   HaltonSequence * clone() const override;
@@ -48,6 +51,13 @@ public:
   /** Generate a quasi-random vector of numbers uniformly distributed over [0, 1[ */
   using LowDiscrepancySequenceImplementation::generate;
   Point generate() const override;
+
+  /** Permutations accessor */
+  Collection<Indices> getPermutations() const;
+  
+  /** Scrambling accessor */
+  void setScrambling(const String & scrambling);
+  String getScrambling() const;
 
   /** String converter */
   String __repr__() const override;
@@ -66,6 +76,12 @@ private:
 
   /** Current seed into the sequence */
   mutable Unsigned64BitsInteger seed_;
+
+  /** Permutation used for scrambling */
+  PersistentCollection<Indices> permutations_;
+
+  /** Scrambling method */
+  String scrambling_;
 
 }; /* class HaltonSequence */
 

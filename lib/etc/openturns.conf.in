@@ -219,10 +219,14 @@
   <FaureSequence-InitialSeed value_int="0" />
 
   <!-- OT::HaltonSequence parameters -->
+  <HaltonSequence-Scrambling value_str="NONE" />
   <HaltonSequence-InitialSeed value_int="0" />
 
   <!-- OT::HaselgroveSequence parameters -->
   <HaselgroveSequence-InitialSeed value_int="0" />
+
+  <!-- OT::LowDiscrepaancySequence parameters -->
+  <LowDiscrepancySequence-ScramblingSeed value_int="0" />
 
   <!-- OT::ReverseHaltonSequence parameters -->
   <ReverseHaltonSequence-InitialSeed value_int="0" />

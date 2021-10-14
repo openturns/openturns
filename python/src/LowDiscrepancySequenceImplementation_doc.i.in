@@ -165,3 +165,30 @@ Examples
 %enddef
 %feature("docstring") OT::LowDiscrepancySequenceImplementation::initialize
 OT_LowDiscrepancySequence_initialize_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_LowDiscrepancySequence_getScramblingState_doc
+"Accessor to the linear congruential generator (LCG) used to scramble the sequences.
+
+Returns
+-------
+state : int
+    The state of the LCG, defined by the recursion :math:`x_{n+1}=(2862933555777941757 * x_n + 3037000493)\mbox{ mod }2^{64}`."
+%enddef
+%feature("docstring") OT::LowDiscrepancySequenceImplementation::getScramblingState
+OT_LowDiscrepancySequence_getScramblingState_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_LowDiscrepancySequence_setScramblingState_doc
+"Accessor to the linear congruential generator (LCG) used to scramble the sequences.
+
+Parameters
+----------
+state : int
+    The state of the LCG, defined by the recursion :math:`x_{n+1}=2862933555777941757 * x_n + 3037000493\mbox{ mod }2^{64}`."
+
+%enddef
+%feature("docstring") OT::LowDiscrepancySequenceImplementation::setScramblingState
+OT_LowDiscrepancySequence_setScramblingState_doc
