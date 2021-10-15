@@ -54,7 +54,7 @@ Then just run installer and follow the instructions.
 
 A non-interactive installation is also possible with the command line::
 
-    openturns-1.17-py38-x86_64.exe /userlevel=1 /S /FORCE /D=%PREFIX%
+    openturns-1.18-py38-x86_64.exe /userlevel=1 /S /FORCE /D=%PREFIX%
 
 Debian/Ubuntu
 -------------
