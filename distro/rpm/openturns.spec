@@ -20,7 +20,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.17
+Version:        1.18rc1
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -51,6 +51,7 @@ BuildRequires:  ceres-solver-devel
 BuildRequires:  coin-or-Ipopt-devel
 BuildRequires:  dlib-devel, pkgconfig(x11), pkgconfig(libpng), pkgconfig(libjpeg), pkgconfig(sqlite3)
 BuildRequires:  flexiblas-devel
+BuildRequires:  primesieve-devel
 %else
 BuildRequires:  lapack-devel
 %endif
@@ -139,6 +140,9 @@ rm -rf %{buildroot}
 %{python_sitearch}/%{name}-*.dist-info/
 
 %changelog
+* Fri Oct 15 2021 Julien Schueller <schueller at phimeca dot com> 1.18-1
+- New upstream release
+
 * Mon Apr 19 2021 Julien Schueller <schueller at phimeca dot com> 1.17-1
 - New upstream release
 
