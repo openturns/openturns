@@ -50,8 +50,8 @@ print(process)
 # This method can be tuned with several parameters. We should concentrate on the easiest ones. 
 
 # %%
-# We set the sampling method to `HMAT` (0 is the classical/dense case).
-process.setSamplingMethod(1)
+# We set the sampling method to `HMAT` (default is the classical/dense case).
+process.setSamplingMethod(ot.GaussianProcess.HMAT)
 
 
 # %%
