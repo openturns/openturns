@@ -52,7 +52,7 @@ KernelSmoothing::KernelSmoothing()
   : DistributionFactoryImplementation()
   , bandwidth_(Point(0))
   , kernel_(Normal())
-  , bined_(true)
+  , binned_(true)
   , binNumber_(ResourceMap::GetAsUnsignedInteger( "KernelSmoothing-BinNumber" ))
   , boundingOption_(NONE)
   , lowerBound_(0.0)
@@ -66,13 +66,13 @@ KernelSmoothing::KernelSmoothing()
 
 /* Parameter constructor */
 KernelSmoothing::KernelSmoothing(const Distribution & kernel,
-                                 const Bool bined,
+                                 const Bool binned,
                                  const UnsignedInteger binNumber,
                                  const Bool boundaryCorrection)
   : DistributionFactoryImplementation()
   , bandwidth_(Point(0))
   , kernel_(kernel)
-  , bined_(bined)
+  , binned_(binned)
   , binNumber_(binNumber)
   , boundingOption_(boundaryCorrection ? BOTH : NONE)
   , lowerBound_(SpecFunc::LowestScalar)
@@ -83,7 +83,7 @@ KernelSmoothing::KernelSmoothing(const Distribution & kernel,
   setName("KernelSmoothing");
   // Only 1D kernel allowed here
   if (kernel.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: only 1D kernel allowed for product kernel smoothing";
-  if (bined && (binNumber < 2)) throw InvalidArgumentException(HERE) << "Error: The number of bins=" << binNumber << " is less than 2.";
+  if (binned && (binNumber < 2)) throw InvalidArgumentException(HERE) << "Error: The number of bins=" << binNumber << " is less than 2.";
 }
 
 /* Virtual constructor */
@@ -343,8 +343,8 @@ Distribution KernelSmoothing::build(const Sample & sample,
   // Here we know that no boundary correction is needed
   // Check if we have to bin the data
   UnsignedInteger size = sample.getSize();
-  const Bool mustBin = bined_ && (dimension * std::log(1.0 * binNumber_) < std::log(1.0 * size));
-  if (bined_ != mustBin) LOGINFO("Will not bin the data because the bin number is greater than the sample size");
+  const Bool mustBin = binned_ && (dimension * std::log(1.0 * binNumber_) < std::log(1.0 * size));
+  if (binned_ != mustBin) LOGINFO("Will not bin the data because the bin number is greater than the sample size");
   // The usual case: no boundary correction, no binning
   if ((dimension > 2) || (!mustBin)) return buildAsKernelMixture(sample, bandwidth);
   // Only binning
@@ -530,8 +530,8 @@ TruncatedDistribution KernelSmoothing::buildAsTruncatedDistribution(const Sample
   SampleImplementation newSample(newSampleData.getSize(), 1);
   newSample.setData(newSampleData);
   size = newSample.getSize();
-  const Bool mustBin = bined_ && (dimension * std::log(1.0 * binNumber_) < std::log(1.0 * size));
-  if (bined_ != mustBin) LOGINFO("Will not bin the data because the bin number is greater than the sample size");
+  const Bool mustBin = binned_ && (dimension * std::log(1.0 * binNumber_) < std::log(1.0 * size));
+  if (binned_ != mustBin) LOGINFO("Will not bin the data because the bin number is greater than the sample size");
   Distribution baseDistribution;
   if (mustBin) baseDistribution = buildAsMixture(newSample, bandwidth);
   else baseDistribution = buildAsKernelMixture(newSample, bandwidth);
@@ -602,7 +602,7 @@ void KernelSmoothing::save(Advocate & adv) const
   DistributionFactoryImplementation::save(adv);
   adv.saveAttribute("bandwidth_", bandwidth_);
   adv.saveAttribute("kernel_", kernel_);
-  adv.saveAttribute("bined_", bined_);
+  adv.saveAttribute("binned_", binned_);
   adv.saveAttribute("binNumber_", binNumber_);
   adv.saveAttribute("boundingOption_", static_cast<UnsignedInteger>(boundingOption_));
   adv.saveAttribute("lowerBound_", lowerBound_);
@@ -617,7 +617,7 @@ void KernelSmoothing::load(Advocate & adv)
   DistributionFactoryImplementation::load(adv);
   adv.loadAttribute("bandwidth_", bandwidth_);
   adv.loadAttribute("kernel_", kernel_);
-  adv.loadAttribute("bined_", bined_);
+  adv.loadAttribute("binned_", binned_);
   adv.loadAttribute("binNumber_", binNumber_);
   UnsignedInteger boundingOption = 0;
   adv.loadAttribute("boundingOption_", boundingOption);
