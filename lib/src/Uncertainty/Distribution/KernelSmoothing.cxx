@@ -373,25 +373,46 @@ Mixture KernelSmoothing::buildAsMixture(const Sample & sample,
   // 2D binning?
   if (dimension == 2)
   {
-    const Point xMin(sample.getMin());
-    const Point xMax(sample.getMax());
+    const Point sMin(sample.getMin());
+    const Scalar xMin = sMin[0];
+    const Scalar yMin = sMin[1];
+    const Point sMax(sample.getMax());
+    const Scalar xMax = sMax[0];
+    const Scalar yMax = sMax[1];
     Point weights((binNumber_ + 1) * (binNumber_ + 1));
     Point gridX(binNumber_ + 1);
     Point gridY(binNumber_ + 1);
-    const Scalar deltaX = (xMax[0] - xMin[0]) / binNumber_;
-    const Scalar deltaY = (xMax[1] - xMin[1]) / binNumber_;
-    const Scalar factor = 1.0 + SpecFunc::Precision;
+    const Scalar deltaX = (xMax - xMin) / binNumber_;
+    const Scalar deltaY = (yMax - yMin) / binNumber_;
     for (UnsignedInteger i = 0; i <= binNumber_; ++i)
     {
-      gridX[i] = xMin[0] + i * deltaX;
-      gridY[i] = xMin[1] + i * deltaY;
+      gridX[i] = xMin + i * deltaX;
+      gridY[i] = yMin + i * deltaY;
     }
     for (UnsignedInteger i = 0; i < size; ++i)
     {
       const Scalar x = sample(i, 0);
-      const UnsignedInteger indexX = static_cast< UnsignedInteger > (trunc(factor * (x - xMin[0]) / deltaX));
+      UnsignedInteger indexX;
+      if (x == xMin) indexX = 0;
+      else if (x == xMax) indexX = binNumber_;
+      else
+        {
+          indexX = static_cast< UnsignedInteger > (trunc((x - xMin) / deltaX));
+          // Here we cannot have indexX == 0 as gridX[0] == xMin <= x
+          if (gridX[indexX] > x) --indexX;
+          if (gridX[indexX + 1] < x) ++indexX;
+        }
       const Scalar y = sample(i, 1);
-      const UnsignedInteger indexY = static_cast< UnsignedInteger > (trunc(factor * (y - xMin[1]) / deltaY));
+      UnsignedInteger indexY;
+      if (y == yMin) indexY = 0;
+      else if (y == yMax) indexY = binNumber_;
+      else
+        {
+          indexY = static_cast< UnsignedInteger > (trunc((y - yMin) / deltaY));
+          // Here we cannot have indexY == 0 as gridY[0] == yMin <= y
+          if (gridY[indexY] > y) --indexY;
+          if (gridY[indexY + 1] < y) ++indexY;
+        }
       const Scalar wRight  = (x - gridX[indexX]) / deltaX;
       const Scalar wLeft   = 1.0 - wRight;
       const Scalar wTop    = (y - gridY[indexY]) / deltaY;
@@ -448,7 +469,6 @@ Mixture KernelSmoothing::buildAsMixture(const Sample & sample,
   Point weights(binNumber_ + 1);
   Point grid(binNumber_ + 1);
   const Scalar delta = (xMax - xMin) / binNumber_;
-  const Scalar factor = 1.0 + SpecFunc::Precision;
   for (UnsignedInteger i = 0; i <= binNumber_; ++i) grid[i] = xMin + i * delta;
   for (UnsignedInteger i = 0; i < size; ++i)
   {
@@ -456,7 +476,16 @@ Mixture KernelSmoothing::buildAsMixture(const Sample & sample,
     // x will be located between grid[index] and grid[index+1] if 0<index<binNumber
     // if index=0 then x=xMin and if index=binNumber then x=xMax
     // Here we increase a little bit the slice number to insure that the max value will have an index equal to binNumber
-    const UnsignedInteger index = static_cast< UnsignedInteger > (trunc(factor * (x - xMin) / delta));
+      UnsignedInteger index;
+      if (x == xMin) index = 0;
+      else if (x == xMax) index = binNumber_;
+      else
+        {
+          index = static_cast< UnsignedInteger > (trunc((x - xMin) / delta));
+          // Here we cannot have indexX == 0 as gridX[0] == xMin <= x
+          if (grid[index] > x) --index;
+          if (grid[index + 1] < x) ++index;
+        }
     // Split the point contribution between the two endpoints of the bin containing
     // the point using a linear split
     if ((index > 0) && (index < binNumber_))
