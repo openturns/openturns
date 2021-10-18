@@ -452,6 +452,10 @@ Returns
 graph : :class:`~openturns.Graph`
     The graph object
 
+Notes
+-----
+The point style and the color are given by 'Drawable-DefaultPointStyle' and 'Drawable-DefaultColor' keys in :class:`~openturns.ResourceMap`.
+
 Examples
 --------
 >>> import openturns as ot

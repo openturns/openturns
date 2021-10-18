@@ -49,7 +49,7 @@ public:
 
   /** Parameter constructor */
   explicit KernelSmoothing(const Distribution & kernel,
-                           const Bool bined = true,
+                           const Bool binned = true,
                            const UnsignedInteger binNumber = ResourceMap::GetAsUnsignedInteger("KernelSmoothing-BinNumber"),
                            const Bool boundaryCorrection = false);
 
@@ -123,8 +123,8 @@ private:
   // 1D kernel for kernel product
   Distribution kernel_;
 
-  // Flag to tell if we compute a bined version of the estimator
-  Bool bined_;
+  // Flag to tell if we compute a binned version of the estimator
+  Bool binned_;
 
   // Number of bins in each dimension
   UnsignedInteger binNumber_;

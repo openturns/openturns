@@ -7,7 +7,7 @@ Parameters
 ----------
 kernel : :class:`~openturns.Distribution`, optional
     Univariate distribution of the kernel that will be used. By default, the standard Normal distribution is used. 
-bined : bool, optional
+binned : bool, optional
     Activates bining mecanism only in the univariate or bivariate cases. It allows to speed up the manipulation of the density function of the resulting distribution.  By default, the mecanism is activated.
 binNumber : int, :math:`binNumber \geq 2`, optional
     Indicates the number of bins used by the bining mecanism. By default, OpenTURNS uses the values stored in the *ResourceMap*.
@@ -66,11 +66,11 @@ Nevertheless, the parameters can be manually set.
 
 >>> kernel = ot.Uniform()
 >>> ks = ot.KernelSmoothing(kernel)
->>> bined = True # by default True
+>>> binned = True # by default True
 >>> binNumber = 64
->>> ks = ot.KernelSmoothing(kernel, bined, binNumber)
+>>> ks = ot.KernelSmoothing(kernel, binned, binNumber)
 >>> boundaryCorrection = True # by default False
->>> ks = ot.KernelSmoothing(kernel, bined, binNumber, boundaryCorrection)
+>>> ks = ot.KernelSmoothing(kernel, binned, binNumber, boundaryCorrection)
 
 Variants of the :meth:`build` method can be used when the distribution to build
 is expected to be of a certain type. In those cases however,

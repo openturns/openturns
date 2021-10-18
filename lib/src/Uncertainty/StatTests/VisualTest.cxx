@@ -221,7 +221,7 @@ GridLayout VisualTest::DrawPairs(const Sample & sample)
     for (UnsignedInteger j = 0; j < i; ++ j)
     {
       const Indices indices = {j, i};
-      const Cloud cloud(sample.getMarginal(indices), "blue", "fsquare", "");
+      const Cloud cloud(sample.getMarginal(indices), ResourceMap::GetAsString("Drawable-DefaultColor"), ResourceMap::GetAsString("Drawable-DefaultPointStyle"));
       Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
       graph.add(cloud);
       int location = GraphImplementation::TICKNONE;
