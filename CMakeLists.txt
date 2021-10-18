@@ -596,6 +596,19 @@ if (BUILD_PYTHON)
   if (SWIG_FOUND)
     include (${SWIG_USE_FILE})
     include (TargetLinkLibrariesWithDynamicLookup)
+
+    # this name was chosen in common with pyagrum for otagrum
+    set (OPENTURNS_SWIG_DEFINITIONS -DSWIG_TYPE_TABLE=pyproba)
+
+    # necessary to link against Py_InitModule64
+    if (MINGW AND CMAKE_SIZEOF_VOID_P EQUAL 8)
+      list (APPEND OPENTURNS_SWIG_DEFINITIONS -DMS_WIN64)
+    endif ()
+
+    # ptr conversion argument to handle None correctly in swig 4.x, this just allows to pass compilation with swig 3.x
+    if (SWIG_VERSION VERSION_LESS 4)
+      list (APPEND OPENTURNS_SWIG_DEFINITIONS -DSWIG_POINTER_NO_NULL=0x0)
+    endif ()
   endif ()
 
   find_package (PythonInterp)
@@ -673,13 +686,6 @@ set (CMAKE_INSTALL_RPATH ${LIBRARY_PATH})
 set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 set (OPENTURNS_SWIG_INCLUDE_DIRS ${INCLUDE_PATH}/openturns/swig)
-set (OPENTURNS_SWIG_DEFINITIONS -DSWIG_TYPE_TABLE=pyproba)
-
-# necessary to link against Py_InitModule64
-if (MINGW AND CMAKE_SIZEOF_VOID_P EQUAL 8)
-  set (OPENTURNS_SWIG_DEFINITIONS "-DMS_WIN64 ${OPENTURNS_SWIG_DEFINITIONS}")
-endif ()
-
 
 add_subdirectory (lib)
 
