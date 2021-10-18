@@ -2,14 +2,14 @@
 Fit a parametric distribution
 =============================
 """
-# %% 
+# %%
 
 
 # %%
 # In this example we estimate the parameters of a distribution from a given sample.
-# Once we are settled on a good candidate, we use the corresponding factory to fit 
-# the distribution. Each distribution factory has one or several estimators available. 
-# They are all derived from either the Maximum Likelihood method or from the method of moments (see :ref:`parametric_estimation`). 
+# Once we are settled on a good candidate, we use the corresponding factory to fit
+# the distribution. Each distribution factory has one or several estimators available.
+# They are all derived from either the Maximum Likelihood method or from the method of moments (see :ref:`parametric_estimation`).
 #
 
 # %%
@@ -18,7 +18,6 @@ import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
-
 
 
 # %%
@@ -50,7 +49,7 @@ view = viewer.View(graph)
 # The Student distribution
 # ------------------------
 #
-# The parameters of the Student law are estimated by a mixed method of moments and reduces MLE. 
+# The parameters of the Student law are estimated by a mixed method of moments and reduces MLE.
 #
 
 # %%

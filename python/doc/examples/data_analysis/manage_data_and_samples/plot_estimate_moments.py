@@ -11,7 +11,7 @@ import openturns as ot
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# Create a sample 
+# Create a sample
 
 # model f
 model = ot.SymbolicFunction(["x1", "x2"], ["x1^2+x2", "x2^2+x1"])

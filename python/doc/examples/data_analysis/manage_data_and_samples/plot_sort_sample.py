@@ -15,7 +15,7 @@ ot.RandomGenerator.SetSeed(0)
 
 # %%
 # We start by defining the distribution of a regular non-biased dice.
-dice_distribution = ot.UserDefined([[i] for i in range(1,7)])
+dice_distribution = ot.UserDefined([[i] for i in range(1, 7)])
 
 # %%
 # We consider now an experiment with two independent dices and build the corresponding random vector :
@@ -25,7 +25,7 @@ two_dices_distribution = ot.ComposedDistribution([dice_distribution]*2)
 # We now build a sample of size :math:`n=5` from this distribution :
 n = 5
 sample = two_dices_distribution.getSample(n)
-print( sample ) 
+print(sample)
 
 # %%
 # Useful methods
@@ -56,8 +56,8 @@ print(sample_dice1)
 # %%
 # We can split a sample in two by giving an index (here 2).
 remaining = sample_dice1.split(2)
-print( sample_dice1 )
-print( remaining )
+print(sample_dice1)
+print(remaining)
 
 
 # %%
@@ -68,42 +68,35 @@ print( remaining )
 # %%
 # We can extract any marginal and sort it by ascending order by specifying the index :
 sorted_marginal = sample.sort(1)
-print( sorted_marginal )
+print(sorted_marginal)
 
 # %%
 # We can sort the sample in place, that is whithout creating a new sample, as well with sortInPlace. When the dimension is greater than one the sort is made according to the first marginal.
 sample.sortInPlace()
-print( sample )
+print(sample)
 
 # %%
-# We can sort the rows according to the second marginal with the `sortAccordingToAComponent` : 
+# We can sort the rows according to the second marginal with the `sortAccordingToAComponent` :
 another_sample = sample.sortAccordingToAComponent(1)
-print( another_sample )
+print(another_sample)
 
 # %%
 # There is also a `sortAccordingToAComponentInPlace` method that does the same without creating a new sample.
 
 # %%
 # We can sort and remove the duplicates at the same time
-print( sample_dice2 )
-print( sample_dice2.sortUnique() )
+print(sample_dice2)
+print(sample_dice2.sortUnique())
 
 # %%
 # We note that the sample is smaller as expected. Sorting in place is also possible :
 sample_dice2.sortUniqueInPlace()
-print( sample_dice2 )
+print(sample_dice2)
 
 # %%
 # Let's try with the sample in dimension 2 :
 sampleUnique = sample.sortUnique()
-print( sampleUnique )
+print(sampleUnique)
 
 # %%
 # Nothing happens here because pairs are already unique !
-
-
-
-
-
-
-

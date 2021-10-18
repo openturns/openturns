@@ -19,8 +19,8 @@
  *
  */
 #include <limits>
-#include <algorithm> 
-#include <string>  
+#include <algorithm>
+#include <string>
 
 #include "openturns/HaltonSequence.hxx"
 #include "openturns/Log.hxx"
@@ -59,30 +59,30 @@ void HaltonSequence::initialize(const UnsignedInteger dimension)
   seed_ = ResourceMap::GetAsUnsignedInteger( "HaltonSequence-InitialSeed" );
   permutations_ = Collection<Indices>(dimension_);
   for (UnsignedInteger i = 0; i < dimension_; ++i)
+  {
+    const UnsignedInteger b = base_[i];
+    Indices permutation(b);
+    if (scrambling_ == "REVERSE")
     {
-      const UnsignedInteger b = base_[i];
-      Indices permutation(b);
-      if (scrambling_ == "REVERSE")
-        {
-          for (UnsignedInteger j = 1; j < b; ++j)
-            permutation[j] = b - j;
-        } // REVERSE
-      else if (scrambling_ == "RANDOM")
-        {
-          Indices buffer(b);
-          buffer.fill();
-          for (UnsignedInteger j = 1; j < b; ++j)
-            {
-              const UnsignedInteger index = j + LCGgenerate() % (b - j);
-              permutation[j] = buffer[index];
-              buffer[index] = buffer[j];
-            }
-        } // RANDOM
-      else // NO SCRAMBLING
-        permutation.fill();
-      LOGDEBUG(OSS() << "b=" << b << ", permutation=" << permutation);
-      permutations_[i] = permutation;
-    } // i
+      for (UnsignedInteger j = 1; j < b; ++j)
+        permutation[j] = b - j;
+    } // REVERSE
+    else if (scrambling_ == "RANDOM")
+    {
+      Indices buffer(b);
+      buffer.fill();
+      for (UnsignedInteger j = 1; j < b; ++j)
+      {
+        const UnsignedInteger index = j + LCGgenerate() % (b - j);
+        permutation[j] = buffer[index];
+        buffer[index] = buffer[j];
+      }
+    } // RANDOM
+    else // NO SCRAMBLING
+      permutation.fill();
+    LOGDEBUG(OSS() << "b=" << b << ", permutation=" << permutation);
+    permutations_[i] = permutation;
+  } // i
 }
 
 /* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
@@ -105,10 +105,10 @@ Point HaltonSequence::generate() const
     const Scalar inverseRadix = 1.0 / radix;
     Scalar inverseRadixN = inverseRadix;
     for (UnsignedInteger j = 0; j < digits.getSize(); ++j)
-      {
-        xI += permutation[digits[j]] * inverseRadixN;
-        inverseRadixN *= inverseRadix;
-      } // j
+    {
+      xI += permutation[digits[j]] * inverseRadixN;
+      inverseRadixN *= inverseRadix;
+    } // j
     realization[i] = xI;
   } // i
   ++seed_;
@@ -125,21 +125,21 @@ Collection<Indices> HaltonSequence::getPermutations() const
 void HaltonSequence::setScrambling(const String & scrambling)
 {
   if (scrambling != scrambling_)
-    {
-      if (scrambling != "NONE" &&
-          scrambling != "REVERSE" &&
-          scrambling != "RANDOM")
-        throw InvalidArgumentException(HERE) << "Error: valid values for scrambling are \"NONE\", \"REVERSE\" and \"RANDOM\"";
-      scrambling_ = scrambling;
-      initialize(dimension_);
-    }
+  {
+    if (scrambling != "NONE" &&
+        scrambling != "REVERSE" &&
+        scrambling != "RANDOM")
+      throw InvalidArgumentException(HERE) << "Error: valid values for scrambling are \"NONE\", \"REVERSE\" and \"RANDOM\"";
+    scrambling_ = scrambling;
+    initialize(dimension_);
+  }
 }
 
 String HaltonSequence::getScrambling() const
 {
   return scrambling_;
 }
-                           
+
 /* String converter */
 String HaltonSequence::__repr__() const
 {

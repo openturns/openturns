@@ -31,7 +31,7 @@ int main(int, char *[])
 
   try
   {
-     // Indicator function of an Interval of dimension 0
+    // Indicator function of an Interval of dimension 0
     const Interval singleton;
     const Point dimZeroPoint(0);
     const Point one = {1.0};

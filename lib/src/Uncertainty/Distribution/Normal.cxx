@@ -185,12 +185,12 @@ Sample Normal::getSample(const UnsignedInteger size) const
   if (dimension == 1)
     result.getImplementation()->setData(sigma_[0] * DistFunc::rNormal(size));
   else
-    {
-      for (UnsignedInteger i = 0; i < size; ++i)
-        for (UnsignedInteger j = 0; j < dimension; ++j) result(i, j) = DistFunc::rNormal();
-      if (hasIndependentCopula_) result *= sigma_;
-      else result = cholesky_.getImplementation()->genSampleProd(result, true, false, 'R');
-    }
+  {
+    for (UnsignedInteger i = 0; i < size; ++i)
+      for (UnsignedInteger j = 0; j < dimension; ++j) result(i, j) = DistFunc::rNormal();
+    if (hasIndependentCopula_) result *= sigma_;
+    else result = cholesky_.getImplementation()->genSampleProd(result, true, false, 'R');
+  }
   result += mean_;
   result.setName(getName());
   result.setDescription(getDescription());

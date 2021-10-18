@@ -11,8 +11,8 @@ Taylor approximations
 #    \underline{y} \, \approx \, \widehat{h}(\underline{x}) \,
 #          = \, h(\underline{x}_0) \, +
 #         \, \sum_{i=1}^{n_{X}} \; \frac{\partial h}{\partial x_i}(\underline{x}_0).\left(x_i - x_{0,i} \right)
-#         
-#         
+#
+#
 # Here :math:`h(x) = [cos(x_1 + x_2), (x2 + 1)* e^{x_1 - 2* x_2}]`.
 #
 
@@ -31,8 +31,8 @@ model = ot.SymbolicFunction(['x1', 'x2'], formulas)
 x0 = [-0.4, -0.4]
 
 # drawing bounds
-a=-0.4
-b=0.0
+a = -0.4
+b = 0.0
 
 # %%
 # create a linear (first order) Taylor approximation
@@ -42,9 +42,11 @@ responseSurface = algo.getMetaModel()
 
 # %%
 # plot 2nd output of our model with x1=x0_1
-graph = ot.ParametricFunction(responseSurface, [0], [x0[1]]).getMarginal(1).draw(a, b)
+graph = ot.ParametricFunction(
+    responseSurface, [0], [x0[1]]).getMarginal(1).draw(a, b)
 graph.setLegends(['taylor'])
-curve = ot.ParametricFunction(model, [0], [x0[1]]).getMarginal(1).draw(a, b).getDrawable(0)
+curve = ot.ParametricFunction(model, [0], [x0[1]]).getMarginal(
+    1).draw(a, b).getDrawable(0)
 curve.setColor('red')
 curve.setLegend('model')
 graph.add(curve)
@@ -54,10 +56,10 @@ view = viewer.View(graph)
 # %%
 # Here is the decomposition at the second order:
 #
-# .. math::\underline{y} \, \approx \, \widehat{h}(\underline{x}) \, = \,                                                                                                                                                                                    
-#         h(\underline{x}_0) \, + \, \sum_{i=1}^{n_{X}} \;                                                                                                                                                                                            
-#       \frac{\partial h}{\partial x_i}(\underline{x}_0).\left(x_i - x_{0,i} \right) \, +                                                                                                                                                          
-#      \, \frac{1}{2} \; \sum_{i,j=1}^{n_X} \;                                                                                                                                                                                                
+# .. math::\underline{y} \, \approx \, \widehat{h}(\underline{x}) \, = \,
+#         h(\underline{x}_0) \, + \, \sum_{i=1}^{n_{X}} \;
+#       \frac{\partial h}{\partial x_i}(\underline{x}_0).\left(x_i - x_{0,i} \right) \, +
+#      \, \frac{1}{2} \; \sum_{i,j=1}^{n_X} \;
 #       \frac{\partial^2 h}{\partial x_i \partial x_j}(\underline{x}_0).\left(x_i - x_{0,i} \right).\left(x_j - x_{0,j} \right):math:``
 
 # %%
@@ -68,9 +70,11 @@ responseSurface = algo.getMetaModel()
 
 # %%
 # plot 2nd output of our model with x1=x0_1
-graph = ot.ParametricFunction(responseSurface, [0], [x0[1]]).getMarginal(1).draw(a, b)
+graph = ot.ParametricFunction(
+    responseSurface, [0], [x0[1]]).getMarginal(1).draw(a, b)
 graph.setLegends(['taylor'])
-curve = ot.ParametricFunction(model, [0], [x0[1]]).getMarginal(1).draw(a, b).getDrawable(0)
+curve = ot.ParametricFunction(model, [0], [x0[1]]).getMarginal(
+    1).draw(a, b).getDrawable(0)
 curve.setColor('red')
 curve.setLegend('model')
 graph.add(curve)

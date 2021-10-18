@@ -2,7 +2,7 @@
 Create your own distribution given its quantile function
 ========================================================
 """
-# %% 
+# %%
 
 # %%
 # We want to create a distribution with CDF :math:`F` from the quantile function :math:`F^{-1}`. In order to implement this, we use the `CompositeDistribution <http://openturns.github.io/openturns/latest/user_manual/_generated/openturns.CompositeDistribution.html#openturns.CompositeDistribution>`_ class.
@@ -14,19 +14,19 @@ Create your own distribution given its quantile function
 #
 # .. math::
 #    F(x) = 1-e^{-\rho^x} \quad \forall x  \in \mathbb{R}.
-# 
 #
-# The quantile function is :math:`F^{-1} : u \rightarrow [0,1]` and writes: 
+#
+# The quantile function is :math:`F^{-1} : u \rightarrow [0,1]` and writes:
 #
 # .. math::
 #    F^{-1}(u) = \dfrac{\log \left[ - \log (1-u) \right] }{\log(\rho)} \quad \forall u  \in [0,1]
-# 
 #
-# Since :math:`U \sim \mathcal{U}(0,1)`, then :math:`(1-U)\sim\mathcal{U}(0,1)`. This is why we can simplify the expression and define the function :math:`G` such as: 
+#
+# Since :math:`U \sim \mathcal{U}(0,1)`, then :math:`(1-U)\sim\mathcal{U}(0,1)`. This is why we can simplify the expression and define the function :math:`G` such as:
 #
 # .. math::
 #    G(u) = \dfrac{\log \left[ - \log u \right] }{\log(\rho)} \quad \forall u  \in [0,1].
-# 
+#
 #
 # Then :math:`G(U)` is distributed according to the :math:`F` distribution.
 
@@ -46,7 +46,7 @@ rho = 2.0
 g = ot.ParametricFunction(gWithParameter, [1], [rho])
 
 # %%
-# We define the distribution distF as the image through :math:`G` of the Uniform(0,1) distribution: 
+# We define the distribution distF as the image through :math:`G` of the Uniform(0,1) distribution:
 
 # %%
 distF = ot.CompositeDistribution(g, ot.Uniform(0.0, 1.0))

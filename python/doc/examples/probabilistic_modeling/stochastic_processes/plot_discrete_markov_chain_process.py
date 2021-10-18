@@ -13,7 +13,7 @@ Create a discrete Markov chain process
 #    \begin{aligned}
 #      \forall k > 0,\: \mathbb{P} ( X_{t_k} \> | \> X_{t_0},...X_{t_{k-1}} )  =  \mathbb{P} ( X_{t_k} \> | \> X_{t_{k-1}} )
 #   \end{aligned}
-# 
+#
 #
 # The transition matrix of the process :math:`\mathcal{M} = (m_{i,j})` can be defined such that:
 #
@@ -37,7 +37,8 @@ origin = ot.Dirac(0.0)
 
 # %%
 # Define the transition matrix
-transition = ot.SquareMatrix([[0.1, 0.3, 0.6], [0.7, 0.1, 0.2], [0.5, 0.3, 0.2]])
+transition = ot.SquareMatrix(
+    [[0.1, 0.3, 0.6], [0.7, 0.1, 0.2], [0.5, 0.3, 0.2]])
 
 # %%
 # Define an 1-d mesh
@@ -53,7 +54,7 @@ view = viewer.View(graph)
 
 # %%
 # Get several realizations
-process.setTimeGrid(ot.RegularGrid(0.0,1.0,20))
+process.setTimeGrid(ot.RegularGrid(0.0, 1.0, 20))
 reals = process.getSample(3)
 graph = reals.drawMarginal(0)
 graph.setTitle('Discrete Markov chain, 3 realizations')
@@ -68,7 +69,7 @@ view = viewer.View(graph)
 
 # %%
 # Markov chain 3 different futures
-futures = process.getFuture(10,3)
+futures = process.getFuture(10, 3)
 graph = futures.drawMarginal(0)
 graph.setTitle('Three Markov chain futures, 10 steps')
 view = viewer.View(graph)

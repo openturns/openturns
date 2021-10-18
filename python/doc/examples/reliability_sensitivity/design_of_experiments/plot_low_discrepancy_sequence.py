@@ -49,7 +49,8 @@ view = viewer.View(graph)
 dimension = 20
 sequence = ot.HaltonSequence(dimension)
 sample = sequence.generate(size).getMarginal([dimension-2, dimension-1])
-graph = ot.Graph("Halton (" + str(dimension - 2) + "," + str(dimension-1) + ")", "dim " + str(dimension-2), "dim " + str(dimension-1), True, "")
+graph = ot.Graph("Halton (" + str(dimension - 2) + "," + str(dimension-1) + ")",
+                 "dim " + str(dimension-2), "dim " + str(dimension-1), True, "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
 view = viewer.View(graph)
@@ -60,7 +61,8 @@ dimension = 20
 sequence = ot.HaltonSequence(dimension)
 sequence.setScrambling("RANDOM")
 sample = sequence.generate(size).getMarginal([dimension-2, dimension-1])
-graph = ot.Graph("Halton (" + str(dimension - 2) + "," + str(dimension-1) + ")", "dim " + str(dimension-2), "dim " + str(dimension-1), True, "")
+graph = ot.Graph("Halton (" + str(dimension - 2) + "," + str(dimension-1) + ")",
+                 "dim " + str(dimension-2), "dim " + str(dimension-1), True, "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
 view = viewer.View(graph)
@@ -70,7 +72,8 @@ view = viewer.View(graph)
 dimension = 2
 sequence = ot.ReverseHaltonSequence(dimension)
 sample = sequence.generate(size)
-print('discrepancy=', ot.LowDiscrepancySequenceImplementation.ComputeStarDiscrepancy(sample))
+print('discrepancy=',
+      ot.LowDiscrepancySequenceImplementation.ComputeStarDiscrepancy(sample))
 graph = ot.Graph("Reverse Halton", "", "", True, "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)
@@ -90,7 +93,8 @@ view = viewer.View(graph)
 # Compare with uniform random sequence
 distribution = ot.ComposedDistribution([ot.Uniform(0.0, 1.0)]*2)
 sample = distribution.getSample(size)
-print('discrepancy=', ot.LowDiscrepancySequenceImplementation.ComputeStarDiscrepancy(sample))
+print('discrepancy=',
+      ot.LowDiscrepancySequenceImplementation.ComputeStarDiscrepancy(sample))
 graph = ot.Graph("Mersenne Twister", "", "", True, "")
 cloud = ot.Cloud(sample)
 graph.add(cloud)

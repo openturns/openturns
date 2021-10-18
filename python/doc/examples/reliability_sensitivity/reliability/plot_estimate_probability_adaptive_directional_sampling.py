@@ -15,7 +15,7 @@ Use the Adaptive Directional Stratification Algorithm
 #    - `RiskyAndFast`
 #    - `MediumSafe`
 #    - `SafeAndSlow`
-#  
+#
 # 2. a *sampling strategy* to choose directions in the standard space. The available strategies are:
 #    - `RandomDirection`
 #    - `OrthogonalDirection`
@@ -25,6 +25,7 @@ Use the Adaptive Directional Stratification Algorithm
 
 # %%
 from __future__ import print_function
+from openturns.usecases import cantilever_beam as cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -32,7 +33,6 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the model from the usecases module :
-from openturns.usecases import cantilever_beam as cantilever_beam
 cb = cantilever_beam.CantileverBeam()
 
 # %%
@@ -68,7 +68,8 @@ samplingStrategy = ot.RandomDirection()
 # Create a simulation algorithm.
 
 # %%
-algo = ot.AdaptiveDirectionalStratification(event, rootStrategy, samplingStrategy)
+algo = ot.AdaptiveDirectionalStratification(
+    event, rootStrategy, samplingStrategy)
 algo.setMaximumCoefficientOfVariation(0.1)
 algo.setMaximumOuterSampling(40000)
 algo.setConvergenceStrategy(ot.Full())

@@ -28,8 +28,8 @@ TESTPREAMBLE()
 
 try:
 
-        # We create a numerical math function
-        # Analytical construction
+    # We create a numerical math function
+    # Analytical construction
     inputFunc = Description(2)
     inputFunc[0] = "x0"
     inputFunc[1] = "x1"

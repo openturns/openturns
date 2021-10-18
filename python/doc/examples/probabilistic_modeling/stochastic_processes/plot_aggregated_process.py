@@ -35,7 +35,8 @@ myAggregatedProcess = ot.AggregatedProcess([myProcess1, myProcess2])
 
 # %%
 # Draw values of the realization on the 2nd marginal
-marginal = ot.HistogramFactory().build(myAggregatedProcess.getRealization().getValues().getMarginal(0))
+marginal = ot.HistogramFactory().build(
+    myAggregatedProcess.getRealization().getValues().getMarginal(0))
 graph = marginal.drawPDF()
 viewer.View(graph)
 plt.show()

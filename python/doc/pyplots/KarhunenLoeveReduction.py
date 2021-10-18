@@ -7,7 +7,7 @@ P = 10
 mean = ot.SymbolicFunction("x", "sign(x)")
 cov = ot.SquaredExponential([1.0], [0.1])
 mesh = ot.IntervalMesher([N]).build(ot.Interval(-2.0, 2.0))
-process = ot.GaussianProcess(ot.TrendTransform(mean, mesh), cov, mesh) 
+process = ot.GaussianProcess(ot.TrendTransform(mean, mesh), cov, mesh)
 sample = process.getSample(M)
 algo = ot.KarhunenLoeveSVDAlgorithm(sample, 1e-6)
 algo.run()

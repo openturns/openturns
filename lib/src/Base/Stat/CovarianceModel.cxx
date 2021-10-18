@@ -151,19 +151,19 @@ Sample CovarianceModel::discretizeRow(const Sample & vertices,
 }
 
 Matrix CovarianceModel::computeCrossCovariance(const Sample &firstSample,
-                                               const Sample &secondSample) const
+    const Sample &secondSample) const
 {
   return getImplementation()->computeCrossCovariance(firstSample, secondSample);
 }
 
 Matrix CovarianceModel::computeCrossCovariance(const Sample &sample,
-                                               const Point &point) const
+    const Point &point) const
 {
   return getImplementation()->computeCrossCovariance(sample, point);
 }
 
 Matrix CovarianceModel::computeCrossCovariance(const Point &point,
-                                               const Sample &sample) const
+    const Sample &sample) const
 {
   return getImplementation()->computeCrossCovariance(point, sample);
 }

@@ -27,17 +27,18 @@ import openturns as ot
 import matplotlib.pyplot as plt
 ot.Log.Show(ot.Log.NONE)
 
-coordinates = ot.Sample([[100.0,100.0],[500.0,100.0],[900.0,100.0], \
-                         [100.0,350.0],[500.0,350.0],[900.0,350.0], \
-                         [100.0,600.0],[500.0,600.0],[900.0,600.0]])
-observations = ot.Sample([[25.0],[25.0],[10.0],[20.0],[25.0],[20.0],[15.0],[25.0],[25.0]])
+coordinates = ot.Sample([[100.0, 100.0], [500.0, 100.0], [900.0, 100.0],
+                         [100.0, 350.0], [500.0, 350.0], [900.0, 350.0],
+                         [100.0, 600.0], [500.0, 600.0], [900.0, 600.0]])
+observations = ot.Sample([[25.0], [25.0], [10.0], [20.0], [
+                         25.0], [20.0], [15.0], [25.0], [25.0]])
 
 # %%
 # Let us plot the data.
 
 # Extract coordinates.
-x = np.array(coordinates[:,0])
-y = np.array(coordinates[:,1])
+x = np.array(coordinates[:, 0])
+y = np.array(coordinates[:, 1])
 
 # Plot the data with a scatter plot and a color map.
 fig = plt.figure()
@@ -56,12 +57,14 @@ plt.show()
 lower = 50.0
 upper = 1000.0
 
+
 def fitKriging(coordinates, observations, covarianceModel, basis):
     '''
-    Fit the parameters of a Kriging metamodel. 
+    Fit the parameters of a Kriging metamodel.
     '''
     # Define the Kriging algorithm.
-    algo = ot.KrigingAlgorithm(coordinates, observations, covarianceModel, basis)
+    algo = ot.KrigingAlgorithm(
+        coordinates, observations, covarianceModel, basis)
 
     # Set the optimization bounds for the scale parameter to sensible values
     # given the data set.
@@ -78,9 +81,10 @@ def fitKriging(coordinates, observations, covarianceModel, basis):
 # %%
 # Let us define a helper function to plot Kriging predictions.
 
+
 def plotKrigingPredictions(krigingMetamodel):
     '''
-    Plot the predictions of a Kriging metamodel. 
+    Plot the predictions of a Kriging metamodel.
     '''
     # Create the mesh of the box [0., 1000.] * [0., 700.]
     myInterval = ot.Interval([0., 0.], [1000., 700.])
@@ -97,9 +101,9 @@ def plotKrigingPredictions(krigingMetamodel):
     predictions = krigingMetamodel(vertices)
 
     # Format for plot
-    X = np.array(vertices[:,0]).reshape((ny,nx))
-    Y = np.array(vertices[:,1]).reshape((ny,nx))
-    predictions_array = np.array(predictions).reshape((ny,nx))
+    X = np.array(vertices[:, 0]).reshape((ny, nx))
+    Y = np.array(vertices[:, 1]).reshape((ny, nx))
+    predictions_array = np.array(predictions).reshape((ny, nx))
 
     # Plot
     plt.figure()
@@ -123,10 +127,12 @@ def plotKrigingPredictions(krigingMetamodel):
 # Our example has two input dimensions,
 # so :math:`\vect{\theta} = (\theta_1, \theta_2)`.
 
+
 inputDimension = 2
 basis = ot.ConstantBasisFactory(inputDimension).build()
 covarianceModel = ot.SquaredExponential(inputDimension)
-krigingResult, krigingMetamodel = fitKriging(coordinates, observations, covarianceModel, basis)
+krigingResult, krigingMetamodel = fitKriging(
+    coordinates, observations, covarianceModel, basis)
 plotKrigingPredictions(krigingMetamodel)
 
 # %%
@@ -151,7 +157,8 @@ print(lower)
 # (i.e. with no priviledged direction),
 # we can embed this information within the covariance kernel.
 
-isotropic = ot.IsotropicCovarianceModel(ot.SquaredExponential(), inputDimension)
+isotropic = ot.IsotropicCovarianceModel(
+    ot.SquaredExponential(), inputDimension)
 
 # %%
 # The :class:`~openturns.IsotropicCovarianceModel` class creates an isotropic
@@ -160,7 +167,8 @@ isotropic = ot.IsotropicCovarianceModel(ot.SquaredExponential(), inputDimension)
 # and it will make sure :math:`\theta_1 = \theta_2 = \theta_{iso}` at all times
 # during the optimization.
 
-krigingResult, krigingMetamodel = fitKriging(coordinates, observations, isotropic, basis)
+krigingResult, krigingMetamodel = fitKriging(
+    coordinates, observations, isotropic, basis)
 print(krigingResult.getCovarianceModel().getScale())
 
 # %%

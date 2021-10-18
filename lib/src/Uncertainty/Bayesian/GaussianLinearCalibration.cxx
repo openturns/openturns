@@ -119,7 +119,7 @@ void GaussianLinearCalibration::run()
     gradientObservations_ = gradientObservations_.transpose();
     parameterPrior_.setDescription(getModel().getParameterDescription());
   }
-  
+
   // Compute the difference of output observations and output predictions
   const Point deltaY(modelObservations_.getImplementation()->getData() - outputObservations_.getImplementation()->getData());
   // Compute inverse of the Cholesky decomposition of the covariance matrix of the parameter

@@ -113,10 +113,12 @@ def test_two_inputs_one_output():
 
     # Variance per marginal
     var = result.getConditionalMarginalVariance(inputSample)
-    ott.assert_almost_equal(var, ot.Sample(inputSample.getSize(), 1), 0.0, 1e-3)
+    ott.assert_almost_equal(var, ot.Sample(
+        inputSample.getSize(), 1), 0.0, 1e-3)
     # Estimation
     ott.assert_almost_equal(outputValidSample,  metaModel(
         inputValidSample), 1.e-1, 1e-1)
+
 
 def test_stationary_fun():
     # fix https://github.com/openturns/openturns/issues/1861
@@ -131,6 +133,7 @@ def test_stationary_fun():
     result = algo.getResult()
     variance = result.getConditionalMarginalVariance(x)
     ott.assert_almost_equal(variance, ot.Sample(len(x), 1), 2e-6, 2e-6)
+
 
 if __name__ == "__main__":
     test_one_input_one_output()

@@ -129,4 +129,3 @@ resCDF = copula6D.computeSequentialConditionalCDF(pt)
 print("sequential conditional CDF(", pt, ")=", resCDF)
 print("sequential conditional quantile(", resCDF, ")=",
       copula6D.computeSequentialConditionalQuantile(resCDF))
-

@@ -2,7 +2,7 @@
 Metamodel of a field function
 =============================
 """
-# %% 
+# %%
 #
 # In this example we are going to create a metamodel of a field function following these steps:
 #
@@ -69,7 +69,8 @@ def drawKL(scaledKL, KLev, mesh, title="Scaled KL modes"):
 # Karhunen-Loeve decomposition of the input process
 print("Compute the decomposition of the input process")
 threshold = 0.0001
-algo_X = ot.KarhunenLoeveP1Algorithm(mesh, process_X.getCovarianceModel(), threshold)
+algo_X = ot.KarhunenLoeveP1Algorithm(
+    mesh, process_X.getCovarianceModel(), threshold)
 algo_X.run()
 result_X = algo_X.getResult()
 phi_X = result_X.getScaledModesAsProcessSample()
@@ -107,7 +108,7 @@ class ConvolutionP1(ot.OpenTURNSPythonFieldFunction):
                 self.mat_W_[i, j] = values_w[j, 0]
         G = mesh.computeP1Gram()
         self.mat_W_ = self.mat_W_ * G
-        
+
     def _exec(self, X):
         point_X = [val[0] for val in X]
         values_Y = self.mat_W_ * point_X
@@ -160,23 +161,30 @@ dimension_xi_X = sample_xi_X.getDimension()
 dimension_xi_Y = sample_xi_Y.getDimension()
 enumerateFunction = ot.LinearEnumerateFunction(dimension_xi_X)
 basis = ot.OrthogonalProductPolynomialFactory(
-        [ot.HermiteFactory()] * dimension_xi_X, enumerateFunction)
+    [ot.HermiteFactory()] * dimension_xi_X, enumerateFunction)
 basisSize = enumerateFunction.getStrataCumulatedCardinal(degree)
 adaptive = ot.FixedStrategy(basis, basisSize)
 projection = ot.LeastSquaresStrategy(
-        ot.LeastSquaresMetaModelSelectionFactory(ot.LARS(), ot.CorrectedLeaveOneOut()))
-ot.ResourceMap.SetAsScalar("LeastSquaresMetaModelSelection-ErrorThreshold", 1.0e-7)
-algo_chaos = ot.FunctionalChaosAlgorithm(sample_xi_X, sample_xi_Y, basis.getMeasure(), adaptive, projection)
+    ot.LeastSquaresMetaModelSelectionFactory(ot.LARS(), ot.CorrectedLeaveOneOut()))
+ot.ResourceMap.SetAsScalar(
+    "LeastSquaresMetaModelSelection-ErrorThreshold", 1.0e-7)
+algo_chaos = ot.FunctionalChaosAlgorithm(
+    sample_xi_X, sample_xi_Y, basis.getMeasure(), adaptive, projection)
 algo_chaos.run()
 result_chaos = algo_chaos.getResult()
 meta_model = result_chaos.getMetaModel()
-print("myConvolution=", myConvolution.getInputDimension(), "->", myConvolution.getOutputDimension())
+print("myConvolution=", myConvolution.getInputDimension(),
+      "->", myConvolution.getOutputDimension())
 preprocessing = ot.KarhunenLoeveProjection(result_X)
-print("preprocessing=", preprocessing.getInputDimension(), "->", preprocessing.getOutputDimension())
-print("meta_model=", meta_model.getInputDimension(), "->", meta_model.getOutputDimension())
+print("preprocessing=", preprocessing.getInputDimension(),
+      "->", preprocessing.getOutputDimension())
+print("meta_model=", meta_model.getInputDimension(),
+      "->", meta_model.getOutputDimension())
 postprocessing = ot.KarhunenLoeveLifting(result_Y)
-print("postprocessing=", postprocessing.getInputDimension(), "->", postprocessing.getOutputDimension())
-meta_model_field = ot.FieldToFieldConnection(postprocessing, ot.FieldToPointConnection(meta_model, preprocessing))
+print("postprocessing=", postprocessing.getInputDimension(),
+      "->", postprocessing.getOutputDimension())
+meta_model_field = ot.FieldToFieldConnection(
+    postprocessing, ot.FieldToPointConnection(meta_model, preprocessing))
 
 
 # %%

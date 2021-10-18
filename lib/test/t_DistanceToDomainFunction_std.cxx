@@ -31,7 +31,7 @@ int main(int, char *[])
 
   try
   {
-     // Distance function from an Interval of dimension 0
+    // Distance function from an Interval of dimension 0
     const Interval singleton;
     const Point dimZeroPoint(0);
     const Point zero = {0.0};

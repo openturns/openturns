@@ -8,3 +8,4 @@ astyle --suffix=none --style=ansi --recursive --indent=spaces=2 --indent-switche
 # python
 /usr/share/doc/python3.8/examples/scripts/reindent.py --verbose --recurse python/
 autopep8 --verbose --in-place --recursive python/
+git checkout python/src/__init__.py # dont reorder swig imports

@@ -4,7 +4,7 @@ from __future__ import print_function
 import openturns as ot
 import numpy as np
 np.set_printoptions(
-formatter={'float': '{: 4.1f}'.format, 'complexfloat': '{: 4.1f}'.format})
+    formatter={'float': '{: 4.1f}'.format, 'complexfloat': '{: 4.1f}'.format})
 
 ot.TESTPREAMBLE()
 
@@ -109,8 +109,11 @@ a1 = np.array(((1., 2., 3., 4.), (5., 6., 7., 8.)))
 print("Sample", F(a1), "= F( array", a1, ")")
 
 # Check Python function / Function interoperability
+
+
 def aFunc(x):
     return [x[0] + x[1] + x[2] + x[3]]
+
 
 PYNMF = ot.PythonFunction(4, 1, aFunc)
 
@@ -121,8 +124,11 @@ print("Sample", PYNMF(a1), "= PYNMF( array", a1, ")")
 
 # Check 2-d array which nested dim is size=1 / Function
 # interoperability
+
+
 def aFunc2(x):
     return [2.0 * x[0]]
+
 
 PYNMF = ot.PythonFunction(1, 1, aFunc2)
 
@@ -341,7 +347,7 @@ print("SymmetricMatrix", m0, "=> array", a1)
 
 a0 = np.array(
     (((1., 2.), (3., 4.), (5., 6.)), ((7., 8.), (9., 10.), (11., 12.)),
-      ((13., 14.), (15., 16.), (17., 18.)), ((19., 20.), (21., 22.), (23., 24.))))
+     ((13., 14.), (15., 16.), (17., 18.)), ((19., 20.), (21., 22.), (23., 24.))))
 m0 = ot.Tensor(a0)
 print("array", a0, "=> Tensor", m0)
 a1 = np.array(m0)
@@ -429,7 +435,7 @@ print('sample[int64]=Point:', s0)
 
 # Sample [int64] indexing
 s0 = ot.Sample(5, 3)
-idx = np.array([1,3,4])
+idx = np.array([1, 3, 4])
 print('sample[[int64]]:', s0[idx])
 s0[idx] = ot.Normal(3).getSample(3)
 print('sample[[int64]]=Sample:', s0)
@@ -443,7 +449,7 @@ print('Description[int64]=str', s0[idx])
 
 # generic [int64] indexing
 s0 = ot.Description(5, 'aa')
-idx = np.array([1,3,4])
+idx = np.array([1, 3, 4])
 print('Description[[int64]]:', s0[idx])
 s0[idx] = ['zou']*3
 print('Description[[int64]]=str', s0[idx])

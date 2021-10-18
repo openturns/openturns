@@ -33,7 +33,7 @@ graph = distribution.drawPDF()
 view = viewer.View(graph)
 
 # %%
-# We might also use substraction even with scalar values : 
+# We might also use substraction even with scalar values :
 
 # %%
 distribution = 3.0 - distribution3
@@ -54,7 +54,7 @@ graph = distribution.drawPDF()
 view = viewer.View(graph)
 
 # %%
-# We could also inverse a distribution : 
+# We could also inverse a distribution :
 
 # %%
 distribution = 1 / distribution1
@@ -77,31 +77,31 @@ view = viewer.View(graph)
 #
 # The library provides methods to get the full distributions of `f(x)` where `f` can be equal to :
 #
-#  - `sin`, 
+#  - `sin`,
 #  - `asin`,
-#  - `cos`, 
-#  - `acos`, 
+#  - `cos`,
+#  - `acos`,
 #  - `tan`,
 #  - `atan`,
-#  - `sinh`, 
+#  - `sinh`,
 #  - `asinh`,
-#  - `cosh`, 
-#  - `acosh`, 
+#  - `cosh`,
+#  - `acosh`,
 #  - `tanh`,
 #  - `atanh`,
-#  - `sqr` (for square), 
-#  - `inverse`, 
+#  - `sqr` (for square),
+#  - `inverse`,
 #  - `sqrt`,
 #  - `exp`,
 #  - `log`/`ln`,
 #  - `abs`,
 #  - `cbrt`.
-#  
+#
 #
 # For example for the usual `log` transformation :
 
 # %%
-graph =distribution1.log().drawPDF()
+graph = distribution1.log().drawPDF()
 view = viewer.View(graph)
 
 # %%
@@ -109,7 +109,7 @@ view = viewer.View(graph)
 
 # %%
 f = ot.SymbolicFunction(['x'], ['log2(x)'])
-f.setDescription(["X","ln(X)"])
+f.setDescription(["X", "ln(X)"])
 graph = ot.CompositeDistribution(f, distribution1).drawPDF()
 view = viewer.View(graph)
 

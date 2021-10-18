@@ -7,13 +7,13 @@ Create a linear combination of functions
 #
 # .. math::
 #    f = \sum \alpha_i f_i
-#   
+#
 # Here
 #
 # .. math::
 #    f_1(x) = [x_1^2+x_2,x_1+x_2+x_3]
 #    f_2(x) = [x_1 + 2 * x_2 + x_3,x_1+x_2+x_3]
-#   
+#
 # with coefficients
 #
 # .. math::

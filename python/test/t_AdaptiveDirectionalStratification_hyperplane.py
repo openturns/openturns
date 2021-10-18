@@ -20,6 +20,7 @@ def hyperplane(coefs):
     function = ot.LinearFunction(center, constant, linear)
     return function
 
+
 # To avoid discrepancy on CI
 ot.ResourceMap.SetAsScalar("Solver-DefaultResidualError",  1.0e-8)
 

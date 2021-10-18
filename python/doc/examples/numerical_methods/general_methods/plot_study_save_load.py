@@ -106,7 +106,7 @@ study.load()
 
 # %%
 # Check the content of the myStudy
-print("Study = " , study)
+print("Study = ", study)
 
 # %%
 # List names of stored objects

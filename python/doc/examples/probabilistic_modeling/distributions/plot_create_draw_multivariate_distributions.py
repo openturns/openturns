@@ -11,7 +11,6 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 
-
 # %%
 # Create a multivariate model with `ComposedDistribution`
 # -------------------------------------------------------
@@ -99,8 +98,8 @@ view = otv.View(graph)
 # The :class:`~openturns.Student` distribution is natively multivariate. Here we define a Student distribution in dimension 2 and display its PDF :
 dim = 2
 R = ot.CorrelationMatrix(dim)
-R[1,0] = -0.2
-distribution = ot.Student(4, [0.0, 1.0], [1.0, 1.0], R )
+R[1, 0] = -0.2
+distribution = ot.Student(4, [0.0, 1.0], [1.0, 1.0], R)
 graph = distribution.drawPDF()
 graph.setTitle("Bivariate Student PDF")
 view = otv.View(graph)
@@ -125,8 +124,8 @@ sample = distUniform2.getSample(N)
 points = []
 weights = []
 for i in range(N):
-    points.append( sample[i,:] )
-    weights.append( (sample[i,0]**2 + sample[i,1]**2)**2 )
+    points.append(sample[i, :])
+    weights.append((sample[i, 0]**2 + sample[i, 1]**2)**2)
 
 # %%
 # We build the distribution :
@@ -135,9 +134,10 @@ graph = distribution.drawPDF()
 graph.setTitle("User defined PDF")
 
 # %%
-# We can draw a sample from this distribution with the `getSample` method : 
+# We can draw a sample from this distribution with the `getSample` method :
 omega = distribution.getSample(100)
-cloud = ot.Cloud(omega, 'black', 'fdiamond', 'Sample from UserDefined distribution')
+cloud = ot.Cloud(omega, 'black', 'fdiamond',
+                 'Sample from UserDefined distribution')
 graph.add(cloud)
 view = otv.View(graph)
 

@@ -7,7 +7,7 @@ Estimate an integral
 #
 # .. math::
 #    I_f = \int_{a}^{b}\, \int_{l_1(x_0)}^{u_1(x_0)}\, \int_{l_2(x_0, x_1)}^{u_2(x_0,x_1)}\, \int_{l_{n-1}(x_0, \dots, x_{n-2})}^{u_{n-1}(x_0, \dots, x_{n-2})} \, f(x_0, \dots, x_{n-1})\mathrm{d}{x_{n-1}}\dots\mathrm{d}{x_0}
-#   
+#
 # with the iterated quadrature algorithm.
 
 # %%
@@ -29,7 +29,7 @@ u = [ot.SymbolicFunction(['x'], ['-2-cos(x)'])]
 # %%
 # Draw the graph of the integrand and the bounds
 g = ot.Graph('Integration nodes', 'x', 'y', True, 'topright')
-g.add(f.draw([a,a],[b,b]))
+g.add(f.draw([a, a], [b, b]))
 curve = l[0].draw(a, b).getDrawable(0)
 curve.setLineWidth(2)
 curve.setColor('red')

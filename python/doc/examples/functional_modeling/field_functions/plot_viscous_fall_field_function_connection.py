@@ -19,12 +19,12 @@ import numpy as np
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# We first define the time grid associated with the model. 
+# We first define the time grid associated with the model.
 
 # %%
-tmin=0.0 # Minimum time
-tmax=12. # Maximum time
-gridsize=100 # Number of time steps
+tmin = 0.0  # Minimum time
+tmax = 12.  # Maximum time
+gridsize = 100  # Number of time steps
 mesh = ot.IntervalMesher([gridsize-1]).build(ot.Interval(tmin, tmax))
 
 # %%
@@ -46,46 +46,49 @@ dimension
 
 
 # %%
-# Then we define the Python function which computes the altitude at each time value. This function has 5 inputs: `z0`, `v0`, `m`, `c` and `zmin`. 
+# Then we define the Python function which computes the altitude at each time value. This function has 5 inputs: `z0`, `v0`, `m`, `c` and `zmin`.
 
 # %%
 def AltiFunc(X):
-    g  = 9.81
+    g = 9.81
     z0 = X[0]
     v0 = X[1]
-    m  = X[2]
-    c  = X[3]
-    zmin  = X[4]
+    m = X[2]
+    c = X[3]
+    zmin = X[4]
     tau = m / c
     vinf = - m * g / c
     t = np.array(vertices)
-    z = z0 + vinf * t + tau * (v0 - vinf) * (1 - np.exp( - t / tau))
-    z = np.maximum(z,zmin)
+    z = z0 + vinf * t + tau * (v0 - vinf) * (1 - np.exp(- t / tau))
+    z = np.maximum(z, zmin)
     return [[zeta[0]] for zeta in z]
 
 
 # %%
 outputDimension = 1
-altitudeWithFiveInputs = ot.PythonPointToFieldFunction(5, mesh, outputDimension, AltiFunc)
+altitudeWithFiveInputs = ot.PythonPointToFieldFunction(
+    5, mesh, outputDimension, AltiFunc)
 
 # %%
 # Restrict the number of inputs
 # -----------------------------
 
 # %%
-# We define a function which has 4 inputs and 5 outputs: the 5th ouput `zmin` is set to zero. 
+# We define a function which has 4 inputs and 5 outputs: the 5th ouput `zmin` is set to zero.
 
 # %%
-projectionFunction = ot.SymbolicFunction(["z0", "v0", "m", "c"], ["z0", "v0", "m", "c", "0.0"])
+projectionFunction = ot.SymbolicFunction(
+    ["z0", "v0", "m", "c"], ["z0", "v0", "m", "c", "0.0"])
 
 # %%
 # Then we use the `PointToFieldConnection` to create a function which has 4 inputs and returns the output field.
 
 # %%
-altitudeWithFourInputs = ot.PointToFieldConnection(altitudeWithFiveInputs, projectionFunction)
+altitudeWithFourInputs = ot.PointToFieldConnection(
+    altitudeWithFiveInputs, projectionFunction)
 
 # %%
-# Sample trajectories 
+# Sample trajectories
 # --------------------
 
 # %%

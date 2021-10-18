@@ -2,7 +2,7 @@
 Time variant system reliability problem
 =======================================
 """
-# %% 
+# %%
 
 # %%
 # The objective is to evaluate the outcrossing rate from a safe to a failure domain in a time variant reliability problem.
@@ -18,25 +18,25 @@ Time variant system reliability problem
 #
 # .. math::
 #    g(t) \leq 0
-# 
+#
 #
 # which means that the resistance at :math:`t` is less thant the stress at :math:`t`.
 #
 #
-# We propose the following probabilistic model: 
+# We propose the following probabilistic model:
 #
-# - :math:`R` is the initial resistance, and :math:`R \sim \mathcal{N}(\mu_R, \sigma_R)`;   
-# - :math:`b` is the deterioration rate of the resistance; it is deterministic; 
+# - :math:`R` is the initial resistance, and :math:`R \sim \mathcal{N}(\mu_R, \sigma_R)`;
+# - :math:`b` is the deterioration rate of the resistance; it is deterministic;
 # - :math:`S(\omega,t)` is the time-varying stress, which is modeled by a stationary Gaussian process of mean value :math:`\mu_S`, standard deviation :math:`\sigma_S` and a squared exponential covariance model :math:`C(s,t)`.
 #
 #
 # The outcrossing rate from the safe to the failure domain at instant :math:`t` is defined by:
 #
 # .. math::
-#    \nu^+(t) = \lim_{\Delta t \rightarrow 0+} \dfrac{\mathbb{P}\{ g(t) \ge 0 \cap g(t+\Delta t) \leq 0\} }{\Delta t} 
-# 
+#    \nu^+(t) = \lim_{\Delta t \rightarrow 0+} \dfrac{\mathbb{P}\{ g(t) \ge 0 \cap g(t+\Delta t) \leq 0\} }{\Delta t}
 #
-# For each :math:`t`, we note the random variable  :math:`Z_t = R - bt - S_t` where :math:`S_t = S(., t)`. 
+#
+# For each :math:`t`, we note the random variable  :math:`Z_t = R - bt - S_t` where :math:`S_t = S(., t)`.
 #
 # To evaluate :math:`\nu^+(t)`, we need to consider the bivariate random vector :math:`(Z_t, Z_{t+\Delta t})`.
 #
@@ -49,17 +49,17 @@ Time variant system reliability problem
 #
 # .. math::
 #    \mathbb{P}\{\mathcal{E}_t^1 \cap \mathcal{E}_t^2\} \quad \forall t \in [0,T]
-# 
+#
 
 # %%
 # 1. Define some useful functions
 # -------------------------------
 
 # %%
-# We define the bivariate random vector :math:`Y_t = (bt + S_t, b(t+\Delta t) + S_{t+\Delta t})`. 
-# Here, :math:`Y_t` is a bivariate Normal random vector: 
+# We define the bivariate random vector :math:`Y_t = (bt + S_t, b(t+\Delta t) + S_{t+\Delta t})`.
+# Here, :math:`Y_t` is a bivariate Normal random vector:
 #
-# - whith mean :math:`[bt, b(t+\delta t)]` and 
+# - whith mean :math:`[bt, b(t+\delta t)]` and
 # - whith covariance matrix :math:`\Sigma` defined by:
 #
 # ..math::
@@ -75,11 +75,16 @@ Time variant system reliability problem
 # This function buils :math:`Y_t =(Y_t^1, Y_t^2)`.
 
 # %%
-def buildNormal(b, t, mu_S, covariance, delta_t = 1e-5):
+from math import sqrt
+from openturns.viewer import View
+from openturns import *
+
+
+def buildNormal(b, t, mu_S, covariance, delta_t=1e-5):
     sigma = CovarianceMatrix(2)
-    sigma[0, 0] = covariance(t, t)[0,0]
-    sigma[0, 1] = covariance(t, t+delta_t)[0,0]
-    sigma[1, 1] = covariance(t+delta_t, t+delta_t)[0,0]
+    sigma[0, 0] = covariance(t, t)[0, 0]
+    sigma[0, 1] = covariance(t, t+delta_t)[0, 0]
+    sigma[1, 1] = covariance(t+delta_t, t+delta_t)[0, 0]
     return Normal([b*t + mu_S, b*(t+delta_t) + mu_S], sigma)
 
 
@@ -87,9 +92,9 @@ def buildNormal(b, t, mu_S, covariance, delta_t = 1e-5):
 # This function creates the trivariate random vector :math:`(R, Y_t^1, Y_t^2)` where :math:`R` is independant from :math:`(Y_t^1, Y_t^2)`. We need to create this random vector because both events  :math:`\mathcal{E}_t^1` and :math:`\mathcal{E}_t^2` must be defined from the same random vector!
 
 # %%
-def buildCrossing(b, t, mu_S, covariance, R, delta_t = 1e-5):
+def buildCrossing(b, t, mu_S, covariance, R, delta_t=1e-5):
     normal = buildNormal(b, t, mu_S, covariance, delta_t)
-    #return BlockIndependentDistribution([R, normal]): only from the 1.16 version!
+    # return BlockIndependentDistribution([R, normal]): only from the 1.16 version!
     marg = [R, normal.getMarginal(0), normal.getMarginal(1)]
     cop = ComposedCopula([IndependentCopula(1), normal.getCopula()])
     return ComposedDistribution(marg, cop)
@@ -116,7 +121,7 @@ def computeCrossingProbability_MonteCarlo(b, t, mu_S, covariance, R, delta_t, n_
 
 
 # %%
-# This function evaluates the probability using the Low Discrepancy sampling. 
+# This function evaluates the probability using the Low Discrepancy sampling.
 
 # %%
 def computeCrossingProbability_QMC(b, t, mu_S, covariance, R, delta_t, n_block, n_iter, CoV):
@@ -127,7 +132,8 @@ def computeCrossingProbability_QMC(b, t, mu_S, covariance, R, delta_t, n_block, 
     f2 = SymbolicFunction(["R", "X1", "X2"], ["X2 - R"])
     e2 = ThresholdEvent(CompositeRandomVector(f2, X), GreaterOrEqual(), 0.0)
     event = IntersectionEvent([e1, e2])
-    algo = ProbabilitySimulationAlgorithm(event, LowDiscrepancyExperiment(SobolSequence(X.getDimension()), n_block, False))
+    algo = ProbabilitySimulationAlgorithm(event, LowDiscrepancyExperiment(
+        SobolSequence(X.getDimension()), n_block, False))
     algo.setBlockSize(n_block)
     algo.setMaximumOuterSampling(n_iter)
     algo.setMaximumCoefficientOfVariation(CoV)
@@ -157,9 +163,6 @@ def computeCrossingProbability_FORM(b, t, mu_S, covariance, R, delta_t):
 # ---------------------------
 
 # %%
-from openturns import *
-from openturns.viewer import View
-from math import sqrt
 
 # %%
 # First, fix some parameters: :math:`(\mu_R, \sigma_R, \mu_S, \sigma_S, \Delta t, T, b)` and the covariance model wich is the Squared Exponential model.
@@ -203,9 +206,12 @@ values_QMC = list()
 values_FORM = list()
 
 for tick in times:
-    values_MC.append(computeCrossingProbability_MonteCarlo(b, tick[0], mu_S, covariance, R, delta_t, 2**12, 2**3, 1e-2))
-    values_QMC.append(computeCrossingProbability_QMC(b, tick[0], mu_S, covariance, R, delta_t, 2**12, 2**3, 1e-2))
-    values_FORM.append(computeCrossingProbability_FORM(b, tick[0], mu_S, covariance, R, delta_t))
+    values_MC.append(computeCrossingProbability_MonteCarlo(
+        b, tick[0], mu_S, covariance, R, delta_t, 2**12, 2**3, 1e-2))
+    values_QMC.append(computeCrossingProbability_QMC(
+        b, tick[0], mu_S, covariance, R, delta_t, 2**12, 2**3, 1e-2))
+    values_FORM.append(computeCrossingProbability_FORM(
+        b, tick[0], mu_S, covariance, R, delta_t))
 
 # %%
 print('Values MC = ', values_MC)
@@ -232,4 +238,3 @@ g.setXTitle("t")
 g.setYTitle("Outcrossing rate")
 view = View(g)
 view.ShowAll()
-

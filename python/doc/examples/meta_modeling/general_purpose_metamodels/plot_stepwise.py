@@ -1,10 +1,10 @@
 """
 Perfom stepwise regression
 ==========================
-In this example we perform the selection of the most suitable function basis for a linear regression model with the help of the stepwise algorithm. 
+In this example we perform the selection of the most suitable function basis for a linear regression model with the help of the stepwise algorithm.
 
 We consider te so-called Linthurst data set, which contains measures of aerial biomass (BIO) as well as 5 five physicochemical properties of the soil: salinity (SAL), pH, K, Na, and Zn.
- 
+
 The data set is taken from the book '*Applied Regression Analysis, A Research Tool*' by John O. Rawlings, Sastry G. Pantula and David A. Dickey and is provided below:
 """
 
@@ -71,9 +71,9 @@ n = sample.getSize()
 # Complete linear model
 # ---------------------
 #
-# We consider a linear model with the purpose of predicting the aerial biomass as a function of the soil physicochemical properties, 
+# We consider a linear model with the purpose of predicting the aerial biomass as a function of the soil physicochemical properties,
 # and we wish to identify the predictive variables which result in the most simple and precise linear regression model.
-# 
+#
 # We start by creating a linear model which takes into account all of the physicochemical variables present within the Linthrust data set.
 #
 # Let us consider the following linear model :math:`\tilde{Y} = a_0 + \sum_{i = 1}^{d} a_i X_i + \epsilon`. If all of the predictive variables
@@ -92,7 +92,7 @@ print('Adjusted R-squared = ', result_full.getAdjustedRSquared())
 # Forward stepwise regression
 # ---------------------------
 #
-# We now wish to perform the selection of the most important predictive variables through a stepwise algorithm. 
+# We now wish to perform the selection of the most important predictive variables through a stepwise algorithm.
 #
 # It is first necessary to define a suitable function basis for the regression. Each variable is associated to a univariate basis
 # and an additional basis is used in order to represent the constant term :math:`a_0`.
@@ -101,11 +101,12 @@ print('Adjusted R-squared = ', result_full.getAdjustedRSquared())
 functions = []
 functions.append(ot.SymbolicFunction(input_description, ['1.0']))
 for i in range(dimension):
-    functions.append(ot.SymbolicFunction(input_description, [input_description[i]]))
+    functions.append(ot.SymbolicFunction(
+        input_description, [input_description[i]]))
 basis = ot.Basis(functions)
 # %%
-# Plese note that this example uses a linear basis with respect to the various predictors for the sake of clarity. 
-# However, this is not a necessity, and more complex and non linear relations between predictors may be considered 
+# Plese note that this example uses a linear basis with respect to the various predictors for the sake of clarity.
+# However, this is not a necessity, and more complex and non linear relations between predictors may be considered
 # (e.g., polynomial bases).
 
 
@@ -119,9 +120,10 @@ basis = ot.Basis(functions)
 
 # %%
 minimalIndices = [0]
-direction = ot.LinearModelStepwiseAlgorithm.FORWARD 
+direction = ot.LinearModelStepwiseAlgorithm.FORWARD
 penalty = 2.0
-algo_forward = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, direction)
+algo_forward = ot.LinearModelStepwiseAlgorithm(
+    input_sample, basis, output_sample, minimalIndices, direction)
 algo_forward.setPenalty(penalty)
 algo_forward.run()
 result_forward = algo_forward.getResult()
@@ -130,27 +132,28 @@ print('R-squared = ', result_forward.getRSquared())
 print('Adjusted R-squared = ', result_forward.getAdjustedRSquared())
 
 # %%
-# With this first forward stepwise regression, the results show that the selected optimal basis contains a constant term, 
+# With this first forward stepwise regression, the results show that the selected optimal basis contains a constant term,
 # plus two linear terms depending respectively on the pH value (pH) and on the sodium concentration (Na).
 #
-# As can be expected, the R-squared value diminishes if compared to the regression on the entire basis, as the stepwise 
-# regression results in a lower number of predictive variables.  However, it can also be seen that the adjusted R-squared, 
-# which is a metric that also takes into account the ratio  between the amount of training data and the number of explanatory 
-# variables, is improved if compared to the complete model. 
+# As can be expected, the R-squared value diminishes if compared to the regression on the entire basis, as the stepwise
+# regression results in a lower number of predictive variables.  However, it can also be seen that the adjusted R-squared,
+# which is a metric that also takes into account the ratio  between the amount of training data and the number of explanatory
+# variables, is improved if compared to the complete model.
 
 # %%
 # Backward stepwise regression
 # ----------------------------
 #
 # We now perform a backward stepwise regression, meaning that rather than iteratively adding predictive variables, we will be removing them,
-# starting from the complete model. 
+# starting from the complete model.
 # This regression is performed by relying on the Bayesian Information Criterion (BIC), which translates into a penalty term equal to :math:`log(n)`.
 
 # %%
 minimalIndices = [0]
 direction = ot.LinearModelStepwiseAlgorithm.BACKWARD
 penalty = np.log(n)
-algo_backward = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, direction)
+algo_backward = ot.LinearModelStepwiseAlgorithm(
+    input_sample, basis, output_sample, minimalIndices, direction)
 algo_backward.setPenalty(penalty)
 algo_backward.run()
 result_backward = algo_backward.getResult()
@@ -171,10 +174,11 @@ print('Adjusted R-squared = ', result_backward.getAdjustedRSquared())
 
 # %%
 minimalIndices = [0]
-startIndices = [0,2,3]
+startIndices = [0, 2, 3]
 penalty = np.log(n)
 direction = ot.LinearModelStepwiseAlgorithm.BOTH
-algo_both = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, direction, startIndices)
+algo_both = ot.LinearModelStepwiseAlgorithm(
+    input_sample, basis, output_sample, minimalIndices, direction, startIndices)
 algo_both.setPenalty(penalty)
 algo_both.run()
 result_both = algo_both.getResult()
@@ -188,10 +192,11 @@ print('Adjusted R-squared = ', result_both.getAdjustedRSquared())
 
 # %%
 minimalIndices = [0]
-startIndices = [0,1]
+startIndices = [0, 1]
 penalty = np.log(n)
 direction = ot.LinearModelStepwiseAlgorithm.BOTH
-algo_both = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, direction, startIndices)
+algo_both = ot.LinearModelStepwiseAlgorithm(
+    input_sample, basis, output_sample, minimalIndices, direction, startIndices)
 algo_both.setPenalty(penalty)
 algo_both.run()
 result_both = algo_both.getResult()
@@ -203,8 +208,8 @@ print('Adjusted R-squared = ', result_both.getAdjustedRSquared())
 # Graphical analyses
 # ------------------
 #
-# Finally, we can rely on the LinearModelAnalysis class in order to analyse 
-# the predictive differences between the obtained models. 
+# Finally, we can rely on the LinearModelAnalysis class in order to analyse
+# the predictive differences between the obtained models.
 
 # %%
 analysis_full = ot.LinearModelAnalysis(result_full)
@@ -213,11 +218,11 @@ analysis_forward = ot.LinearModelAnalysis(result_forward)
 analysis_forward.setName('Forward selection')
 analysis_backward = ot.LinearModelAnalysis(result_backward)
 analysis_backward.setName('Backward selection')
-fig = plt.figure(figsize=(12,8))
-for k,analysis in enumerate([analysis_full, analysis_forward, analysis_backward]):
+fig = plt.figure(figsize=(12, 8))
+for k, analysis in enumerate([analysis_full, analysis_forward, analysis_backward]):
     graph = analysis.drawModelVsFitted()
     ax = fig.add_subplot(3, 1, k + 1)
-    ax.set_title(analysis.getName(), fontdict = {'fontsize': 16}) 
+    ax.set_title(analysis.getName(), fontdict={'fontsize': 16})
     graph.setXTitle('Exact values')
     ax.xaxis.label.set_size(12)
     ax.yaxis.label.set_size(14)
@@ -227,7 +232,7 @@ plt.tight_layout()
 
 
 # %%
-# For illustrative purposes, we show the Bayesian Information Criterion (BIC) and Akaike Information Criterion (AIC) values 
+# For illustrative purposes, we show the Bayesian Information Criterion (BIC) and Akaike Information Criterion (AIC) values
 # which are computed during the iterations of the forward step-wise regression. Please note that in order to do
 # so, we set the penalty parameter to a negligible value (meaning that the basis selection only takes into account the model likelihood,
 # and not the number of parameters characterizing the linear model).
@@ -239,30 +244,32 @@ direction = ot.LinearModelStepwiseAlgorithm.FORWARD
 
 BIC = []
 AIC = []
-for iterations in range(1,6):
-    algo_forward = ot.LinearModelStepwiseAlgorithm(input_sample, basis, output_sample, minimalIndices, direction)
+for iterations in range(1, 6):
+    algo_forward = ot.LinearModelStepwiseAlgorithm(
+        input_sample, basis, output_sample, minimalIndices, direction)
     algo_forward.setPenalty(penalty)
     algo_forward.setMaximumIterationNumber(iterations)
     algo_forward.run()
     result_forward = algo_forward.getResult()
-    
-    RSS = np.sum(np.array(result_forward.getSampleResiduals())**2) #Residual sum of squares
-    LL = n*np.log(RSS/n) #Log-likelihood
-    BIC.append(LL + iterations*np.log(n)) #Bayesian Information Criterion
-    AIC.append(LL + iterations*2) #Akaike Information Criterion
+
+    RSS = np.sum(np.array(result_forward.getSampleResiduals())
+                 ** 2)  # Residual sum of squares
+    LL = n*np.log(RSS/n)  # Log-likelihood
+    BIC.append(LL + iterations*np.log(n))  # Bayesian Information Criterion
+    AIC.append(LL + iterations*2)  # Akaike Information Criterion
     print('Selected basis: ', result_forward.getCoefficientsNames())
 
 
 plt.figure()
-plt.plot(np.arange(1,6), BIC, label = 'BIC')
-plt.plot(np.arange(1,6), AIC, label = 'AIC')
-plt.xticks(np.arange(1,6))
-plt.xlabel('Basis size', fontsize = 14)
-plt.ylabel('Information criterion', fontsize = 14)
-plt.legend(fontsize = 14)
+plt.plot(np.arange(1, 6), BIC, label='BIC')
+plt.plot(np.arange(1, 6), AIC, label='AIC')
+plt.xticks(np.arange(1, 6))
+plt.xlabel('Basis size', fontsize=14)
+plt.ylabel('Information criterion', fontsize=14)
+plt.legend(fontsize=14)
 plt.tight_layout()
 
 # %%
-# The graphic above shows that the optimal linear model in terms of compromise between prediction likelihood and model complexity 
+# The graphic above shows that the optimal linear model in terms of compromise between prediction likelihood and model complexity
 # should take into account the influence of 2 regession variables as well as the constant term. This is coherent with the results previously
 # obtained

@@ -9,9 +9,11 @@ ot.TESTPREAMBLE()
 
 ot.Log.Show(ot.Log.ALL)
 
+
 def test_solver(solver):
     relEps = solver.getRelativeError()
     absEps = solver.getAbsoluteError()
+
     def test_f1(x):
         y = exp(x[0]) - 1.9151695967140057e-174
         return [y]
@@ -25,6 +27,7 @@ def test_solver(solver):
     f2 = ot.PythonFunction(1, 1, test_f2)
     root = solver.solve(f2, 0.0, 350.0, 450.0)
     ott.assert_almost_equal(root, 400.0, relEps, absEps)
+
 
 # 1) Bisection
 algo = ot.Bisection()

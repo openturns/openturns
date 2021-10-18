@@ -91,12 +91,11 @@ print('Component is normal?', resultChi2.getBinaryQualityMeasure(),
       'threshold=%.6g' % resultChi2.getThreshold())
 
 
-
 # %%
 # Test samples independence using regression
 # ------------------------------------------
 #
-# Independence testing with regression is also an option in OpenTURNS. 
+# Independence testing with regression is also an option in OpenTURNS.
 # It consists in detecting a linear relation between two scalar samples.
 #
 

@@ -213,7 +213,7 @@ class View(object):
                     axes = [self._fig.add_subplot(graph.getNbRows(), graph.getNbColumns(
                     ), 1 + i * graph.getNbColumns() + j, **axes_kw)]
                     axes[0].axison = graphij.getAxes()
-                    axes[0].set_title( self._ToUnicode(graphij.getTitle()))
+                    axes[0].set_title(self._ToUnicode(graphij.getTitle()))
                     # hide frame top/right
                     if LooseVersion(matplotlib.__version__) > LooseVersion('3.0'):
                         axes[0].spines['right'].set_visible(False)

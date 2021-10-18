@@ -65,7 +65,7 @@ class ViscousFreeFall():
                    The joint distribution of the input parameters.
 
     alti : `PythonPointToFieldFunction`, the exact solution of the fall
-           ot.PythonPointToFieldFunction(dim, mesh, outputDimension, AltiFunc)          
+           ot.PythonPointToFieldFunction(dim, mesh, outputDimension, AltiFunc)
 
 
     Examples
@@ -77,12 +77,13 @@ class ViscousFreeFall():
 
     def __init__(self):
         self.dim = 4  # number of inputs
-        self.outputDimension = 1 # dimension of the output
+        self.outputDimension = 1  # dimension of the output
 
         self.tmin = 0.0  # Minimum time
         self.tmax = 12.0  # Maximum time
         self.gridsize = 100  # Number of time steps
-        self.mesh = ot.IntervalMesher([self.gridsize-1]).build(ot.Interval(self.tmin, self.tmax))
+        self.mesh = ot.IntervalMesher(
+            [self.gridsize-1]).build(ot.Interval(self.tmin, self.tmax))
         self.vertices = self.mesh.getVertices()
 
         # Marginals
@@ -92,7 +93,9 @@ class ViscousFreeFall():
         self.distC = ot.Uniform(0.0, 30.0)
 
         # Joint distribution
-        self.distribution = ot.ComposedDistribution([self.distZ0, self.distV0, self.distM, self.distC])
+        self.distribution = ot.ComposedDistribution(
+            [self.distZ0, self.distV0, self.distM, self.distC])
 
         # Exact solution
-        self.alti = ot.PythonPointToFieldFunction(self.dim, self.mesh, self.outputDimension, AltiFunc)
+        self.alti = ot.PythonPointToFieldFunction(
+            self.dim, self.mesh, self.outputDimension, AltiFunc)

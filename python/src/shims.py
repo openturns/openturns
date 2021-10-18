@@ -6,6 +6,7 @@ import openturns as ot
 from openturns import *
 ot.common.Log.Warn('openturns.shims compatibility module is deprecated')
 
+
 def Frechet(alpha=1.0, beta=1.0, gamma=0.0):
     """
     Frechet compatibility shim.

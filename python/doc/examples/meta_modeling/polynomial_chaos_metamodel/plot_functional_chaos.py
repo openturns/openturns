@@ -9,18 +9,18 @@ Create a polynomial chaos metamodel
 #
 # .. math::
 #    g(\mathbf{x}) = \left[\cos(x_1 + x_2), (x_2 + 1) e^{x_1}\right]
-# 
 #
-# for any :math:`\mathbf{x}\in\mathbb{R}^2`. 
 #
-# We assume that 
+# for any :math:`\mathbf{x}\in\mathbb{R}^2`.
+#
+# We assume that
 #
 # .. math::
 #    X_1 \sim \mathcal{N}(0,1) \textrm{ and } X_2 \sim \mathcal{N}(0,1)
 #
 # and that :math:`X_1` and :math:`X_2` are independent.
 #
-# An interesting point in this example is that the output is multivariate. This is why we are going to use the `getMarginal` method in the script in order to select the output marginal that we want to manage. 
+# An interesting point in this example is that the output is multivariate. This is why we are going to use the `getMarginal` method in the script in order to select the output marginal that we want to manage.
 
 # %%
 from __future__ import print_function
@@ -45,15 +45,16 @@ model = ot.SymbolicFunction(input_names, formulas)
 # %%
 distribution = ot.Normal(dimension)
 samplesize = 80
-inputSample  = distribution.getSample(samplesize)
+inputSample = distribution.getSample(samplesize)
 outputSample = model(inputSample)
 
 # %%
-# Create a functional chaos model. 
+# Create a functional chaos model.
 # First, we need to fit a distribution on the input sample. We can do this automatically with the Lilliefors test.
 
 # %%
-ot.ResourceMap.SetAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize", 100)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "FittingTest-LillieforsMaximumSamplingSize", 100)
 
 # %%
 algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample)
@@ -62,7 +63,7 @@ result = algo.getResult()
 metamodel = result.getMetaModel()
 
 # %%
-# Plot the second output of our model depending on :math:`x_2` with :math:`x_1=0.5`. In order to do this, we create a `ParametricFunction` and set the value of :math:`x_1`. Then we use the `getMarginal` method to extract the second output (which index is equal to 1). 
+# Plot the second output of our model depending on :math:`x_2` with :math:`x_1=0.5`. In order to do this, we create a `ParametricFunction` and set the value of :math:`x_1`. Then we use the `getMarginal` method to extract the second output (which index is equal to 1).
 
 # %%
 x1index = 0
@@ -74,7 +75,8 @@ metamodelParametric = ot.ParametricFunction(metamodel, [x1index], [x1value])
 graph = metamodelParametric.getMarginal(outputIndex).draw(x2min, x2max)
 graph.setLegends(["Metamodel"])
 modelParametric = ot.ParametricFunction(model, [x1index], [x1value])
-curve = modelParametric.getMarginal(outputIndex).draw(x2min, x2max).getDrawable(0)
+curve = modelParametric.getMarginal(
+    outputIndex).draw(x2min, x2max).getDrawable(0)
 curve.setColor('red')
 curve.setLegend("Model")
 graph.add(curve)
@@ -84,7 +86,7 @@ graph.setTitle("Metamodel Validation, output #%d" % (outputIndex))
 view = viewer.View(graph)
 
 # %%
-# We see that the metamodel fits approximately to the model, except perhaps for extreme values of :math:`x_2`. However, there is a better way of globally validating the metamodel, using the `MetaModelValidation` on a validation design of experiment. 
+# We see that the metamodel fits approximately to the model, except perhaps for extreme values of :math:`x_2`. However, there is a better way of globally validating the metamodel, using the `MetaModelValidation` on a validation design of experiment.
 
 # %%
 n_valid = 100
@@ -111,14 +113,14 @@ view = viewer.View(graph)
 # --------------------------------
 
 # %%
-chaosSI = ot.FunctionalChaosSobolIndices(result) 
+chaosSI = ot.FunctionalChaosSobolIndices(result)
 print(chaosSI.summary())
 
 # %%
 # Let us analyse the results of this global sensitivity analysis.
 #
-# * We see that the first output involves significant multi-indices with total degree 4. The contribution of the interactions are very significant in this model. 
-# * The second output involves multi-indices with total degrees from 1 to 7, with a significant contribution of multi-indices with total degress 5 and 7. The first variable is especially significant, with a significant contribution of the interactions. 
+# * We see that the first output involves significant multi-indices with total degree 4. The contribution of the interactions are very significant in this model.
+# * The second output involves multi-indices with total degrees from 1 to 7, with a significant contribution of multi-indices with total degress 5 and 7. The first variable is especially significant, with a significant contribution of the interactions.
 
 # %%
 # Draw Sobol' indices.
@@ -126,11 +128,13 @@ print(chaosSI.summary())
 # %%
 sensitivityAnalysis = ot.FunctionalChaosSobolIndices(result)
 first_order = [sensitivityAnalysis.getSobolIndex(i) for i in range(dimension)]
-total_order = [sensitivityAnalysis.getSobolTotalIndex(i) for i in range(dimension)]
+total_order = [sensitivityAnalysis.getSobolTotalIndex(
+    i) for i in range(dimension)]
 
 # %%
 input_names = model.getInputDescription()
-graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(input_names, first_order, total_order)
+graph = ot.SobolIndicesAlgorithm.DrawSobolIndices(
+    input_names, first_order, total_order)
 graph.setLegendPosition("center")
 view = viewer.View(graph)
 
@@ -138,10 +142,10 @@ view = viewer.View(graph)
 # Testing the sensitivity to the degree
 # -------------------------------------
 #
-# With the specific constructor of `FunctionalChaosAlgorithm` that we use, the `FunctionalChaosAlgorithm-MaximumTotalDegree` in the `ResourceMap` configure the maximum degree explored by the algorithm. This degree is a trade-off. 
+# With the specific constructor of `FunctionalChaosAlgorithm` that we use, the `FunctionalChaosAlgorithm-MaximumTotalDegree` in the `ResourceMap` configure the maximum degree explored by the algorithm. This degree is a trade-off.
 #
 # * If the maximum degree is too low, the polynomial may miss some coefficients so that the quality is lower than possible.
-# * If the maximum degree is too large, the number of coefficients to explore is too large, so that the coefficients might be poorly estimated. 
+# * If the maximum degree is too large, the number of coefficients to explore is too large, so that the coefficients might be poorly estimated.
 #
 # This is why the following `for` loop explores various degrees to see the sensitivity of the metamodel predictivity depending on the degree.
 
@@ -149,7 +153,8 @@ view = viewer.View(graph)
 # The default value of this parameter is 10.
 
 # %%
-ot.ResourceMap.GetAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree")
+ot.ResourceMap.GetAsUnsignedInteger(
+    "FunctionalChaosAlgorithm-MaximumTotalDegree")
 
 # %%
 # This is why we explore the values from 5 to 15.
@@ -158,23 +163,26 @@ ot.ResourceMap.GetAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree
 degrees = range(5, 12)
 q2 = ot.Sample(len(degrees), 2)
 for maximumDegree in degrees:
-    ot.ResourceMap.SetAsUnsignedInteger("FunctionalChaosAlgorithm-MaximumTotalDegree",maximumDegree)
+    ot.ResourceMap.SetAsUnsignedInteger(
+        "FunctionalChaosAlgorithm-MaximumTotalDegree", maximumDegree)
     print("Maximum total degree =", maximumDegree)
     algo = ot.FunctionalChaosAlgorithm(inputSample, outputSample)
     algo.run()
     result = algo.getResult()
     metamodel = result.getMetaModel()
     for outputIndex in range(2):
-        val = ot.MetaModelValidation(inputTest, outputTest[:,outputIndex], metamodel.getMarginal(outputIndex))
-        q2[maximumDegree - degrees[0], outputIndex] = val.computePredictivityFactor()[0]
+        val = ot.MetaModelValidation(
+            inputTest, outputTest[:, outputIndex], metamodel.getMarginal(outputIndex))
+        q2[maximumDegree - degrees[0],
+            outputIndex] = val.computePredictivityFactor()[0]
 
 # %%
-graph = ot.Graph("Predictivity","Total degree","Q2",True)
-cloud = ot.Cloud([[d] for d in degrees], q2[:,0])
+graph = ot.Graph("Predictivity", "Total degree", "Q2", True)
+cloud = ot.Cloud([[d] for d in degrees], q2[:, 0])
 cloud.setLegend("Output #0")
 cloud.setPointStyle("bullet")
 graph.add(cloud)
-cloud = ot.Cloud([[d] for d in degrees], q2[:,1])
+cloud = ot.Cloud([[d] for d in degrees], q2[:, 1])
 cloud.setLegend("Output #1")
 cloud.setColor("red")
 cloud.setPointStyle("bullet")
@@ -184,11 +192,11 @@ view = viewer.View(graph)
 plt.show()
 
 # %%
-# We see that a total degree lower than 9 is not sufficient to describe the first output with good predictivity. However, the coefficient of predictivity drops when the total degree gets greater than 12. 
-# The predictivity of the second output seems to be much less satisfactory: a little more work would be required to improve the metamodel. 
+# We see that a total degree lower than 9 is not sufficient to describe the first output with good predictivity. However, the coefficient of predictivity drops when the total degree gets greater than 12.
+# The predictivity of the second output seems to be much less satisfactory: a little more work would be required to improve the metamodel.
 #
-# In this situation, the following methods may be used. 
+# In this situation, the following methods may be used.
 #
-# * Since the distribution of the input is known, we may want to give this information to the `FunctionalChaosAlgorithm`. This prevents the algorithm from trying to fit the distribution which best fit to the data. 
+# * Since the distribution of the input is known, we may want to give this information to the `FunctionalChaosAlgorithm`. This prevents the algorithm from trying to fit the distribution which best fit to the data.
 # * We may want to customize the `adaptiveStrategy` by selecting an enumerate function which best fit to this particular situation. In this specific example, the interactions plays a great role so that the linear enumerate function may provide better results than the hyperbolic rule.
 # * We may want to customize the `projectionStrategy` by selecting an method to compute the coefficient which improves the estimation. Given that the function is symbolic and fast, it might be interesting to try an integration rule instead of the least squares method.

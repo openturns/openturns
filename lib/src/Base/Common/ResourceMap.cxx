@@ -636,11 +636,13 @@ void ResourceMap::loadDefaultConfiguration()
 #endif
   if (const char* env_num_threads = std::getenv("OPENTURNS_NUM_THREADS"))
   {
-    try {
+    try
+    {
       setAsUnsignedInteger("TBB-ThreadsNumber", std::stoi(env_num_threads));
     }
-    catch (const std::invalid_argument &) {
-      throw InternalException(HERE) << "OPENTURNS_NUM_THREADS must be an integer, got "<< env_num_threads;
+    catch (const std::invalid_argument &)
+    {
+      throw InternalException(HERE) << "OPENTURNS_NUM_THREADS must be an integer, got " << env_num_threads;
     }
   }
   addAsUnsignedInteger("Cache-MaxSize", 1024);

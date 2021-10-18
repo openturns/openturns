@@ -33,12 +33,11 @@ X1 = ot.Normal(0.0, 1.0)
 X2 = ot.Normal(0.0, 3.0)
 
 
-
 # %%
 # Independent marginals
 # ---------------------
 
-distX = ot.ComposedDistribution([X1,X2])
+distX = ot.ComposedDistribution([X1, X2])
 sample = distX.getSample(1000)
 
 
@@ -79,7 +78,7 @@ view = viewer.View(graph)
 
 # %%
 # We can compute the conditional quantile of :math:`X_1 | X_2` with the `computeConditionalQuantile` method and draw it after.
-# 
+#
 
 # %%
 # We first create N observation points in :math:`[-3.0, 3.0]` :
@@ -94,16 +93,18 @@ sampleObs = ot.Sample([[xi] for xi in xobs])
 
 # %%
 x = [xi for xi in xobs]
-yapp = [estimated.computeConditionalQuantile(0.9, sampleObs[i]) for i in range(N)]
+yapp = [estimated.computeConditionalQuantile(
+    0.9, sampleObs[i]) for i in range(N)]
 yex = [distX.computeConditionalQuantile(0.9, sampleObs[i]) for i in range(N)]
 
 # %%
-cxy_app = ot.Curve(x,yapp)
-cxy_ex = ot.Curve(x,yex)
-graph = ot.Graph('90% quantile of $X_1 | X_2=x_2$', '$x_2$', '$Q_1(x_2)$', True, '')
+cxy_app = ot.Curve(x, yapp)
+cxy_ex = ot.Curve(x, yex)
+graph = ot.Graph('90% quantile of $X_1 | X_2=x_2$',
+                 '$x_2$', '$Q_1(x_2)$', True, '')
 graph.add(cxy_app)
 graph.add(cxy_ex)
-graph.setLegends(["$Q_1$ kernel smoothing","$Q_1$ exact"])
+graph.setLegends(["$Q_1$ kernel smoothing", "$Q_1$ exact"])
 graph.setLegendPosition('bottomright')
 graph.setColors(["red", "blue"])
 view = viewer.View(graph)
@@ -119,11 +120,11 @@ view = viewer.View(graph)
 # We now define a Clayton copula to model the dependance between our marginals.
 # The Clayton copula is a bivariate asymmmetric Archimedean copula, exhibiting greater dependence
 # in the negative tail than in the positive.
-# 
+#
 
 # %%
 copula = ot.ClaytonCopula(2.5)
-distX = ot.ComposedDistribution([X1,X2],copula)
+distX = ot.ComposedDistribution([X1, X2], copula)
 
 # %%
 # We generate a sample from the distribution :
@@ -165,7 +166,7 @@ view = viewer.View(graph)
 
 # %%
 # We can compute the conditional quantile of :math:`X_1 | X_2` with the `computeConditionalQuantile` method and draw it after.
-# 
+#
 
 # %%
 # We first create N observation points in :math:`[-3.0, 3.0]` :
@@ -180,16 +181,18 @@ sampleObs = ot.Sample([[xi] for xi in xobs])
 
 # %%
 x = [xi for xi in xobs]
-yapp = [estimated.computeConditionalQuantile(0.9, sampleObs[i]) for i in range(N)]
+yapp = [estimated.computeConditionalQuantile(
+    0.9, sampleObs[i]) for i in range(N)]
 yex = [distX.computeConditionalQuantile(0.9, sampleObs[i]) for i in range(N)]
 
 # %%
-cxy_app = ot.Curve(x,yapp)
-cxy_ex = ot.Curve(x,yex)
-graph = ot.Graph('90% quantile of $X_1 | X_2=x_2$', '$x_2$', '$Q_1(x_2)$', True, '')
+cxy_app = ot.Curve(x, yapp)
+cxy_ex = ot.Curve(x, yex)
+graph = ot.Graph('90% quantile of $X_1 | X_2=x_2$',
+                 '$x_2$', '$Q_1(x_2)$', True, '')
 graph.add(cxy_app)
 graph.add(cxy_ex)
-graph.setLegends(["$Q_1$ kernel smoothing","$Q_1$ exact"])
+graph.setLegends(["$Q_1$ kernel smoothing", "$Q_1$ exact"])
 graph.setLegendPosition('bottomright')
 graph.setColors(["red", "blue"])
 view = viewer.View(graph)

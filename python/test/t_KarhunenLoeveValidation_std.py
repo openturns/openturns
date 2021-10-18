@@ -5,6 +5,7 @@ import sys
 
 ot.TESTPREAMBLE()
 
+
 class CheckKarhunenLoeveValidation(unittest.TestCase):
     def test_KarhunenLoeveValidation(self):
         # Create the KL result
@@ -56,7 +57,8 @@ class CheckKarhunenLoeveValidation(unittest.TestCase):
         outputDimension = 2
         univariateCovariance = ot.SquaredExponential()
         covarianceCollection = [univariateCovariance] * outputDimension
-        multivariateCovariance = ot.TensorizedCovarianceModel(covarianceCollection)
+        multivariateCovariance = ot.TensorizedCovarianceModel(
+            covarianceCollection)
         process = ot.GaussianProcess(multivariateCovariance, mesh)
         sampleSize = 100
         sampleSize = 10
@@ -79,6 +81,7 @@ class CheckKarhunenLoeveValidation(unittest.TestCase):
         if False:
             from openturns.viewer import View
             View(graph).save('validation2.png')
+
 
 if __name__ == "__main__":
     unittest.main()

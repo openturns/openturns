@@ -28,6 +28,7 @@ Visualize sensitivity
 
 # %%
 from __future__ import print_function
+from openturns.usecases.ishigami_function import IshigamiModel
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -35,7 +36,6 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the :ref:`Ishigami model<use-case-ishigami>` from the `usecases` module :
-from openturns.usecases.ishigami_function import IshigamiModel
 im = IshigamiModel()
 # the Ishigami function
 model = im.model
@@ -72,7 +72,7 @@ print(Y.getMin(), Y.getMax(), Y.computeQuantilePerComponent(0.9))
 # approach is to highlight peculiar lines for which :math:`Y \in [a,b]` with
 # the bounds :math:`a` and :math:`b` well chosen. For example, values greater
 # than 85% of the maximum :
-# 
+#
 #  - :math:`a = 0.85 \max(Y)` ;
 #  - :math:`b = \max(Y)` ;
 #
@@ -81,7 +81,8 @@ maxValue = Y.getMax()[0]
 
 # We deactivate the default quantile scale.
 quantileScale = False
-graph = ot.VisualTest.DrawParallelCoordinates(X, Y, minValue, maxValue, 'red', quantileScale)
+graph = ot.VisualTest.DrawParallelCoordinates(
+    X, Y, minValue, maxValue, 'red', quantileScale)
 graph.setLegendPosition('bottomright')
 view = viewer.View(graph)
 
@@ -94,7 +95,8 @@ view = viewer.View(graph)
 minValue = 0.80 * Y.getMax()[0]
 maxValue = Y.getMax()[0]
 quantileScale = False
-graph = ot.VisualTest.DrawParallelCoordinates(X, Y, minValue, maxValue, 'red', quantileScale)
+graph = ot.VisualTest.DrawParallelCoordinates(
+    X, Y, minValue, maxValue, 'red', quantileScale)
 graph.setLegendPosition('bottomright')
 view = viewer.View(graph)
 
@@ -107,14 +109,15 @@ view = viewer.View(graph)
 # ---------------------------------------------------
 #
 # In this paragraph we use quantile based bounds. We are still interested in
-# the highest values of `Y` more specifically the 95% quantile : 
+# the highest values of `Y` more specifically the 95% quantile :
 
 # %%
 minValue = 0.95
 maxValue = 1.0
 # a quantileScale is used, default behaviour
 quantileScale = True
-graph = ot.VisualTest.DrawParallelCoordinates(X, Y, minValue, maxValue, 'red', quantileScale)
+graph = ot.VisualTest.DrawParallelCoordinates(
+    X, Y, minValue, maxValue, 'red', quantileScale)
 graph.setLegendPosition('bottomright')
 view = viewer.View(graph)
 
@@ -159,7 +162,8 @@ view = viewer.View(graph)
 minValue = 0.48
 maxValue = 0.52
 quantileScale = True
-graph = ot.VisualTest.DrawParallelCoordinates(X, Y, minValue, maxValue, 'red', quantileScale)
+graph = ot.VisualTest.DrawParallelCoordinates(
+    X, Y, minValue, maxValue, 'red', quantileScale)
 graph.setLegendPosition('topright')
 view = viewer.View(graph)
 

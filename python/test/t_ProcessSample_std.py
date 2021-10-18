@@ -97,7 +97,8 @@ if 0:
     View(graph3).save('graph3.png')
 
 # ctor from collection of Samples
-coll=[ot.Normal(outputDimension).getSample(mesh.getVerticesNumber()) for i in range(sampleSize)]
+coll = [ot.Normal(outputDimension).getSample(mesh.getVerticesNumber())
+        for i in range(sampleSize)]
 processSample2 = ot.ProcessSample(mesh, coll)
 assert len(processSample2) == sampleSize, "wrong size"
 
@@ -114,6 +115,8 @@ print('raw moment (3)=', processSample.computeRawMoment(3).getValues())
 x = [0.2]*processSample.getDimension()
 print('median=', processSample.computeMedian().getValues())
 q = 0.3
-print('quantile at level', q, '=', processSample.computeQuantilePerComponent(q).getValues())
+print('quantile at level', q, '=',
+      processSample.computeQuantilePerComponent(q).getValues())
 print('empirical CDF at', x, '=', processSample.computeEmpiricalCDF(x).getValues())
-print('complementary empirical CDF at', x, '=', processSample.computeEmpiricalCDF(x, True).getValues())
+print('complementary empirical CDF at', x, '=',
+      processSample.computeEmpiricalCDF(x, True).getValues())

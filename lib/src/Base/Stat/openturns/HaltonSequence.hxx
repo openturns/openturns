@@ -54,7 +54,7 @@ public:
 
   /** Permutations accessor */
   Collection<Indices> getPermutations() const;
-  
+
   /** Scrambling accessor */
   void setScrambling(const String & scrambling);
   String getScrambling() const;
