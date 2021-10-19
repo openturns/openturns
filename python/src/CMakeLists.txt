@@ -986,7 +986,7 @@ endif ()
 install (TARGETS memoryview LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
 
 
-set (EXTRA_PYTHON_FILES __init__.py dist.py viewer.py coupling_tools.py shims.py)
+set (EXTRA_PYTHON_FILES __init__.py dist.py viewer.py coupling_tools.py)
 
 install (FILES ${EXTRA_PYTHON_FILES}
           DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns

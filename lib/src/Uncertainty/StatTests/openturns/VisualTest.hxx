@@ -95,14 +95,6 @@ public:
                                        const String & color,
                                        const Bool quantileScale = true);
 
-  /** @deprecated */
-  static Graph DrawCobWeb(const Sample & inputSample,
-                          const Sample & outputSample,
-                          const Scalar minValue,
-                          const Scalar maxValue,
-                          const String & color,
-                          const Bool quantileScale = true);
-
   /** Draw the Kendall plot to assess a copula for a bidimensional sample */
   static Graph DrawKendallPlot(const Sample & data,
                                const Distribution & copula);
