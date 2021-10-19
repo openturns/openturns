@@ -1,5 +1,0 @@
-Remove Sample::computeStandardDeviationPerComponent
-Remove Hanning alias
-Remove ADS alias
-Remove deprecated VisualTest::DrawCobWeb method
-Remove shims module

@@ -214,10 +214,6 @@ public:
   static void SetThreadsNumber(const UnsignedInteger threadsNumber);
   static UnsignedInteger GetThreadsNumber();
 
-  /** @deprecated */
-  static void SetNumberOfThreads(const UnsignedInteger numberOfThreads);
-  static UnsignedInteger GetNumberOfThreads();
-
 private:
   friend struct TBB_init;
 

@@ -211,11 +211,6 @@ public:
   Point computeVariance() const;
 
   /**
-   * @deprecated Method computeStandardDeviationPerComponent() gives the standard deviation of each component of the sample
-   */
-  Point computeStandardDeviationPerComponent() const;
-
-  /**
    * Method computePearsonCorrelation() gives the Pearson correlation matrix of the sample
    */
   CorrelationMatrix computeLinearCorrelation() const;

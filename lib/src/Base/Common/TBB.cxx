@@ -74,18 +74,6 @@ UnsignedInteger TBB::GetThreadsNumber()
   return ThreadsNumber_;
 }
 
-void TBB::SetNumberOfThreads(const UnsignedInteger threadNumber)
-{
-  LOGWARN(OSS() << "TBB.SetNumberOfThreads is deprecated, use SetThreadsNumber");
-  SetThreadsNumber(threadNumber);
-}
-
-UnsignedInteger TBB::GetNumberOfThreads()
-{
-  LOGWARN(OSS() << "TBB.GetNumberOfThreads is deprecated, use GetThreadsNumber");
-  return GetThreadsNumber();
-}
-
 void TBB::Enable()
 {
   const UnsignedInteger nbThreads = ResourceMap::GetAsUnsignedInteger("TBB-ThreadsNumber");

@@ -651,11 +651,6 @@ public:
   virtual Point computeStandardDeviation() const;
 
   /**
-   * @deprecated Gives the standard deviation of each component of the sample
-   */
-  virtual Point computeStandardDeviationPerComponent() const;
-
-  /**
    * Gives the Pearson correlation matrix of the sample
    */
   virtual CorrelationMatrix computeLinearCorrelation() const;

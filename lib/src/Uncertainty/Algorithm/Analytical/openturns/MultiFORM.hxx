@@ -56,10 +56,6 @@ public:
   void setMaximumDesignPointsNumber(const UnsignedInteger numberOfDesignPoints);
   UnsignedInteger getMaximumDesignPointsNumber() const;
 
-  /** @deprecated */
-  void setMaximumNumberOfDesignPoints(const UnsignedInteger numberOfDesignPoints);
-  UnsignedInteger getMaximumNumberOfDesignPoints() const;
-
   /** String converter */
   String __repr__() const override;
 

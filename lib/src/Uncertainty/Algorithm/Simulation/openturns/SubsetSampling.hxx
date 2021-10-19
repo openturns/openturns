@@ -57,8 +57,6 @@ public:
 
   /** Accessor to the achieved number of steps */
   UnsignedInteger getStepsNumber();
-  /** @deprecated */
-  UnsignedInteger getNumberOfSteps();
 
   /** Stepwise result accessors */
   Point getThresholdPerStep() const;

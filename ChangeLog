@@ -9,6 +9,13 @@
 ==== New classes ====
 
 ==== API changes ====
+ * Removed deprecated Hanning alias
+ * Removed deprecated AdaptiveDirectionalSampling alias
+ * Removed deprecated VisualTest::DrawCobWeb method
+ * Removed deprecated shims module
+ * Removed deprecated TBB.SetNumberOfThreads/GetNumberOfThreads
+ * Removed deprecated MultiFORM.setMaximumNumberOfDesignPoints/getMaximumNumberOfDesignPoints
+ * Removed deprecated SubsetSampling.getNumberOfSteps
 
 === Documentation ===
 

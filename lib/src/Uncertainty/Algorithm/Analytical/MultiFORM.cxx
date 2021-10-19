@@ -225,17 +225,4 @@ UnsignedInteger MultiFORM::getMaximumDesignPointsNumber() const
   return maximumDesignPointsNumber_;
 }
 
-void MultiFORM::setMaximumNumberOfDesignPoints(const UnsignedInteger maximumDesignPointsNumber)
-{
-  LOGWARN(OSS() << "MultiFORM.setMaximumNumberOfDesignPoints is deprecated, use setMaximumDesignPointsNumber");
-  setMaximumDesignPointsNumber(maximumDesignPointsNumber);
-}
-
-UnsignedInteger MultiFORM::getMaximumNumberOfDesignPoints() const
-{
-  LOGWARN(OSS() << "MultiFORM.getMaximumNumberOfDesignPoints is deprecated, use getMaximumDesignPointsNumber");
-  return getMaximumDesignPointsNumber();
-}
-
-
 END_NAMESPACE_OPENTURNS
