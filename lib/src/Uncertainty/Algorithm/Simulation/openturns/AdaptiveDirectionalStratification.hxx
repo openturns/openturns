@@ -46,8 +46,8 @@ public:
 
   /** Constructor with parameters */
   AdaptiveDirectionalStratification(const RandomVector & event,
-                              const RootStrategy & rootStrategy = RootStrategy(),
-                              const SamplingStrategy & samplingStrategy = SamplingStrategy());
+                                    const RootStrategy & rootStrategy = RootStrategy(),
+                                    const SamplingStrategy & samplingStrategy = SamplingStrategy());
 
   /** Virtual constructor */
   AdaptiveDirectionalStratification * clone() const override;

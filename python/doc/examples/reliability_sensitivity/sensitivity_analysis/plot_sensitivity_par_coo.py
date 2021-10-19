@@ -65,7 +65,8 @@ print(Y.getMin(), Y.getMax(), Y.computeQuantilePerComponent(0.9))
 minValue = 3.35
 maxValue = 20.0
 quantileScale = False
-graphCobweb = ot.VisualTest.DrawParallelCoordinates(X, Y, minValue, maxValue, 'red', quantileScale)
+graphCobweb = ot.VisualTest.DrawParallelCoordinates(
+    X, Y, minValue, maxValue, 'red', quantileScale)
 graphCobweb.setLegendPosition('bottomright')
 view = viewer.View(graphCobweb)
 
@@ -74,7 +75,8 @@ view = viewer.View(graphCobweb)
 minValue = 0.9
 maxValue = 1.0
 quantileScale = True
-graphCobweb = ot.VisualTest.DrawParallelCoordinates(X, Y, minValue, maxValue, 'red', quantileScale)
+graphCobweb = ot.VisualTest.DrawParallelCoordinates(
+    X, Y, minValue, maxValue, 'red', quantileScale)
 graphCobweb.setLegendPosition('bottomright')
 view = viewer.View(graphCobweb)
 plt.show()

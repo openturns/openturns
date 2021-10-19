@@ -96,11 +96,11 @@ DomainUnion::BoolCollection DomainUnion::contains(const Sample & sample) const
 /* Compute the Euclidean distance from a given point to the domain */
 Scalar DomainUnion::computeDistance(const Point & point) const
 {
-    const Scalar distanceLeft = left_.computeDistance(point);
-    if (distanceLeft == 0.0) return 0.0;
-    const Scalar distanceRight = right_.computeDistance(point);
+  const Scalar distanceLeft = left_.computeDistance(point);
+  if (distanceLeft == 0.0) return 0.0;
+  const Scalar distanceRight = right_.computeDistance(point);
 
-    return std::min(distanceLeft, distanceRight);
+  return std::min(distanceLeft, distanceRight);
 }
 
 Bool DomainUnion::operator == (const DomainUnion & other) const

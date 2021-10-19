@@ -354,11 +354,11 @@ Graph VisualTest::DrawCobWeb(const Sample & inputSample,
 
 /* Draw the parallel coordinates visual test */
 Graph VisualTest::DrawParallelCoordinates(const Sample & inputSample,
-                             const Sample & outputSample,
-                             const Scalar minValue,
-                             const Scalar maxValue,
-                             const String & color,
-                             const Bool quantileScale)
+    const Sample & outputSample,
+    const Scalar minValue,
+    const Scalar maxValue,
+    const String & color,
+    const Bool quantileScale)
 {
   const UnsignedInteger size = inputSample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the input sample is empty.";

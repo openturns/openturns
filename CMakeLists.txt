@@ -149,6 +149,9 @@ if (Spectra_FOUND)
   message(STATUS "Found Spectra: ${Spectra_DIR} (found suitable version \"${Spectra_VERSION}\")")
   set (OPENTURNS_HAVE_SPECTRA TRUE)
   list (APPEND OPENTURNS_PRIVATE_LIBRARIES Spectra::Spectra)
+  if (NOT TARGET Eigen3::Eigen)
+    find_package (Eigen3 CONFIG)
+  endif ()
 endif()
 
 if (USE_PRIMESIEVE)
@@ -562,7 +565,7 @@ include_directories (${OPENTURNS_PRIVATE_INCLUDE_DIRS})
 
 set (CPACK_PACKAGE_NAME          openturns     )
 set (CPACK_PACKAGE_VERSION_MAJOR 1             )
-set (CPACK_PACKAGE_VERSION_MINOR 18dev)
+set (CPACK_PACKAGE_VERSION_MINOR 18rc1)
 set (CPACK_PACKAGE_VERSION_PATCH               )
 set (CPACK_SOURCE_GENERATOR      "TGZ;TBZ2"    )
 set (CPACK_BINARY_STGZ    OFF CACHE BOOL "STGZ")
@@ -582,17 +585,6 @@ endif (CPACK_PACKAGE_VERSION_PATCH)
 set (PACKAGE_BUGREPORT      bugs@openturns.org)
 set(CPACK_SOURCE_PACKAGE_FILE_NAME ${PACKAGE_NAME}-${PACKAGE_VERSION})
 
-# uninstall target
-configure_file (
-  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in
-  ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
-  IMMEDIATE @ONLY
-)
-
-add_custom_target (uninstall
-  COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
-)
-
 # The tests can't be run if this function is absent
 enable_testing ()
 add_custom_target (tests COMMENT "Build tests")
@@ -604,6 +596,14 @@ if (BUILD_PYTHON)
   if (SWIG_FOUND)
     include (${SWIG_USE_FILE})
     include (TargetLinkLibrariesWithDynamicLookup)
+
+    # this name was chosen in common with pyagrum for otagrum
+    set (OPENTURNS_SWIG_DEFINITIONS -DSWIG_TYPE_TABLE=pyproba)
+
+    # ptr conversion argument to handle None correctly in swig 4.x, this just allows to pass compilation with swig 3.x
+    if (SWIG_VERSION VERSION_LESS 4)
+      list (APPEND OPENTURNS_SWIG_DEFINITIONS -DSWIG_POINTER_NO_NULL=0x0)
+    endif ()
   endif ()
 
   find_package (PythonInterp)
@@ -681,13 +681,6 @@ set (CMAKE_INSTALL_RPATH ${LIBRARY_PATH})
 set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 set (OPENTURNS_SWIG_INCLUDE_DIRS ${INCLUDE_PATH}/openturns/swig)
-set (OPENTURNS_SWIG_DEFINITIONS -DSWIG_TYPE_TABLE=pyproba)
-
-# necessary to link against Py_InitModule64
-if (MINGW AND CMAKE_SIZEOF_VOID_P EQUAL 8)
-  set (OPENTURNS_SWIG_DEFINITIONS "-DMS_WIN64 ${OPENTURNS_SWIG_DEFINITIONS}")
-endif ()
-
 
 add_subdirectory (lib)
 

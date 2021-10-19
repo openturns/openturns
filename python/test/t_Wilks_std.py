@@ -11,5 +11,5 @@ for a in alpha:
     for b in beta:
         print("alpha=%.2f" % a, "beta=%.2f" % b)
         for i in range(5):
-            print("n(%.2f" % a, ",%.2f" %b, ",", i, ")=",
+            print("n(%.2f" % a, ",%.2f" % b, ",", i, ")=",
                   Wilks.ComputeSampleSize(a, b, i))

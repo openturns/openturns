@@ -16,7 +16,7 @@ Use the FORM - SORM algorithms
 #
 # .. math::
 #    \frac{1}{E_1(-\beta)}\int_{\beta}^{\infty} u_1 p_1(u_1)du_1
-# 
+#
 #
 # where :math:`E_1` is the spheric univariate distribution of the standard space and :math:`\beta` is the reliability index.
 
@@ -26,6 +26,7 @@ Use the FORM - SORM algorithms
 
 # %%
 from __future__ import print_function
+from openturns.usecases import cantilever_beam as cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -33,7 +34,6 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the model from the usecases module :
-from openturns.usecases import cantilever_beam as cantilever_beam
 cb = cantilever_beam.CantileverBeam()
 
 # %%
@@ -104,13 +104,13 @@ view = viewer.View(graph)
 
 # %%
 marginalSensitivity, otherSensitivity = result.drawHasoferReliabilityIndexSensitivity()
-marginalSensitivity.setLegends(["E","F","L","I"])
+marginalSensitivity.setLegends(["E", "F", "L", "I"])
 marginalSensitivity.setLegendPosition('bottom')
 view = viewer.View(marginalSensitivity)
 
 # %%
 marginalSensitivity, otherSensitivity = result.drawEventProbabilitySensitivity()
-marginalSensitivity.setLegends(["E","F","L","I"])
+marginalSensitivity.setLegends(["E", "F", "L", "I"])
 marginalSensitivity.setLegendPosition('bottom')
 view = viewer.View(marginalSensitivity)
 
@@ -163,14 +163,18 @@ plt.show()
 # In this case, a constant step finite difference gradient definition may be used.
 
 # %%
+
+
 def cantilever_beam_python(X):
     E, F, L, I = X
     return [F*L**3/(3*E*I)]
+
+
 cbPythonFunction = ot.PythonFunction(4, 1, func=cantilever_beam_python)
-epsilon = [1e-8]*4 #Here, a constant step of 1e-8 is used for every dimension
-gradStep = ot.ConstantStep(epsilon) 
-cbPythonFunction.setGradient(ot.CenteredFiniteDifferenceGradient(gradStep, \
-cbPythonFunction.getEvaluation()))
+epsilon = [1e-8]*4  # Here, a constant step of 1e-8 is used for every dimension
+gradStep = ot.ConstantStep(epsilon)
+cbPythonFunction.setGradient(ot.CenteredFiniteDifferenceGradient(gradStep,
+                                                                 cbPythonFunction.getEvaluation()))
 G = ot.CompositeRandomVector(cbPythonFunction, vect)
 event = ot.ThresholdEvent(G, ot.Greater(), 0.3)
 event.setName("deviation")
@@ -178,14 +182,15 @@ event.setName("deviation")
 # %%
 # However, given the different nature of the model variables, a blended (variable)
 # finite difference step may be preferable:
-gradStep = ot.BlendedStep(epsilon) #The step depends on the location in the input space
-cbPythonFunction.setGradient(ot.CenteredFiniteDifferenceGradient(gradStep, \
-cbPythonFunction.getEvaluation()))
+# The step depends on the location in the input space
+gradStep = ot.BlendedStep(epsilon)
+cbPythonFunction.setGradient(ot.CenteredFiniteDifferenceGradient(gradStep,
+                                                                 cbPythonFunction.getEvaluation()))
 G = ot.CompositeRandomVector(cbPythonFunction, vect)
 event = ot.ThresholdEvent(G, ot.Greater(), 0.3)
 event.setName("deviation")
 
-#%%
+# %%
 # We can then run the FORM analysis in the same way as before:
 algo = ot.FORM(optimAlgo, event, distribution.getMean())
 algo.run()

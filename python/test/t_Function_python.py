@@ -177,7 +177,7 @@ try:
 except RuntimeError:
     print('ok')
 
-f = ot.PythonFunction(0, 3, lambda x:[42.0]*3)
+f = ot.PythonFunction(0, 3, lambda x: [42.0]*3)
 x = []
 y = f(x)
 print('y=', y)

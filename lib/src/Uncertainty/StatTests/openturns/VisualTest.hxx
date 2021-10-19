@@ -89,11 +89,11 @@ public:
 
   /** Draw the parallel coordinates visual test */
   static Graph DrawParallelCoordinates(const Sample & inputSample,
-                          const Sample & outputSample,
-                          const Scalar minValue,
-                          const Scalar maxValue,
-                          const String & color,
-                          const Bool quantileScale = true);
+                                       const Sample & outputSample,
+                                       const Scalar minValue,
+                                       const Scalar maxValue,
+                                       const String & color,
+                                       const Bool quantileScale = true);
 
   /** @deprecated */
   static Graph DrawCobWeb(const Sample & inputSample,

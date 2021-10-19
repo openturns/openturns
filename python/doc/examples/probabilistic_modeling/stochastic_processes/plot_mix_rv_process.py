@@ -2,7 +2,7 @@
 Create a process from random vectors and processes
 ==================================================
 """
-# %% 
+# %%
 #
 # The objective is to create a process defined from a random vector and a process.
 #
@@ -13,18 +13,18 @@ Create a process from random vectors and processes
 #    g(t)= r(t) - S(t) = R - bt - S(t)
 #    \end{align*}
 #
-# We propose the following probabilistic model: 
-# - :math:`R` is the initial resistance, and :math:`R \sim \mathcal{N}(\mu_R, \sigma_R)`;   
-# - :math:`b` is the deterioration rate of the resistance; it is deterministic; 
+# We propose the following probabilistic model:
+# - :math:`R` is the initial resistance, and :math:`R \sim \mathcal{N}(\mu_R, \sigma_R)`;
+# - :math:`b` is the deterioration rate of the resistance; it is deterministic;
 # - :math:`S(t)` is the time-varying stress, which is modeled by a stationary Gaussian process of mean value :math:`\mu_S`, standard deviation :math:`\sigma_S` and a squared exponential covariance model;
 # - :math:`t` is the time, varying in :math:`[0,T]`.
 #
 
 # %%
-# First, import the python modules: 
+# First, import the python modules:
 
 # %%
-from  openturns import *
+from openturns import *
 from openturns.viewer import View
 from math import *
 
@@ -44,11 +44,11 @@ n = round((tfin-t0)/step)
 myMesh = RegularGrid(t0, step, n)
 
 # %%
-# Create the squared exeponential covariance model: 
-# 
+# Create the squared exeponential covariance model:
+#
 # .. math::
 #    C(s,t) = \sigma^2e^{-\frac{1}{2} \left( \dfrac{s-t}{l} \right)^2}
-# 
+#
 # where the scale parameter is :math:`l=\frac{10}{\sqrt{2}}` and the amplitude :math:`\sigma = 1`.
 #
 
@@ -83,11 +83,11 @@ R = Normal(muR, sigR)
 B = Dirac(b)
 
 # %%
-# Then create the process :math:`(\omega, t) \rightarrow R(\omega)-bt` using the :math:`FunctionalBasisProcess` class and the functional basis :math:`\phi_1 : t \rightarrow 1` and :math:`\phi_2: -t \rightarrow t` : 
-# 
+# Then create the process :math:`(\omega, t) \rightarrow R(\omega)-bt` using the :math:`FunctionalBasisProcess` class and the functional basis :math:`\phi_1 : t \rightarrow 1` and :math:`\phi_2: -t \rightarrow t` :
+#
 # .. math::
 #    R(\omega)-bt = R(\omega)\phi_1(t) + B(\omega) \phi_2(t)
-# 
+#
 # with :math:`(R,B)` independent.
 
 # %%
@@ -110,17 +110,17 @@ R_proc = FunctionalBasisProcess(coef, myBasis, myMesh)
 myRS_proc = AggregatedProcess([R_proc, S_proc])
 
 # %%
-# Then create the spatial field function that acts only on the values of the process, keeping the mesh unchanged, using the *ValueFunction* class. 
+# Then create the spatial field function that acts only on the values of the process, keeping the mesh unchanged, using the *ValueFunction* class.
 # We define the function :math:`g` on :math:`\mathbb{R}^2` by:
-# 
+#
 # .. math::
 #    g(x,y) = x-y
-# 
-# in order to define the spatial field function :math:`g_{dyn}` that acts on fields, defined by: 
-# 
+#
+# in order to define the spatial field function :math:`g_{dyn}` that acts on fields, defined by:
+#
 # .. math::
 #    \forall t\in [0,T], g_{dyn}(X(\omega, t), Y(\omega, t)) = X(\omega, t) - Y(\omega, t)
-# 
+#
 
 # %%
 g = SymbolicFunction(['x1', 'x2'], ['x1-x2'])
@@ -137,7 +137,7 @@ Z_proc = CompositeProcess(gDyn, myRS_proc)
 # ----------------------------------------
 
 # %%
-N=10
+N = 10
 sampleZ_proc = Z_proc.getSample(N)
 graph = sampleZ_proc.drawMarginal(0)
 graph.setTitle(r'Some realizations of $Z(\omega, t)$')
@@ -169,9 +169,9 @@ result = MC_algo.getResult()
 
 proba = result.getProbabilityEstimate()
 print('Probability = ', proba)
-variance =  result.getVarianceEstimate()
+variance = result.getVarianceEstimate()
 print('Variance Estimate = ', variance)
-IC90_low = proba- result.getConfidenceLength(0.90)/2
+IC90_low = proba - result.getConfidenceLength(0.90)/2
 IC90_upp = proba + result.getConfidenceLength(0.90)/2
 print('IC (90%) = [', IC90_low, ', ', IC90_upp, ']')
 view.ShowAll()

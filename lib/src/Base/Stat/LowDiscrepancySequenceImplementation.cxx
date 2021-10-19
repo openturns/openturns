@@ -343,33 +343,33 @@ LowDiscrepancySequenceImplementation::Unsigned64BitsIntegerCollection LowDiscrep
   if (n <= MaxPrime)
     std::copy(&Table[0], &Table[n], result.begin());
   else
+  {
+    // Upper bound of the nth prime number, valid for n>=6, see https://en.wikipedia.org/wiki/Prime-counting_function
+    const Unsigned64BitsInteger upperBound(std::ceil(n * std::log(n * std::log(n))));
+    Indices is_prime(upperBound + 1, 1);
+    // Use the Sieve of Eratosthenes for the prime numbers. There is no significant gain in terms of CPU or RAM trying to reuse Table
+    for (UnsignedInteger p = 2; p * p <= upperBound; ++p)
     {
-      // Upper bound of the nth prime number, valid for n>=6, see https://en.wikipedia.org/wiki/Prime-counting_function
-      const Unsigned64BitsInteger upperBound(std::ceil(n * std::log(n * std::log(n))));
-      Indices is_prime(upperBound + 1, 1);
-      // Use the Sieve of Eratosthenes for the prime numbers. There is no significant gain in terms of CPU or RAM trying to reuse Table
-      for (UnsignedInteger p = 2; p * p <= upperBound; ++p)
-        {
-          // If flags[p] is equal to 1, it is a prime
-          if (is_prime[p])
-            {
-              // Update all multiples of p
-              for (UnsignedInteger i = 2 * p; i <= upperBound; i += p)
-                is_prime[i] = 0;
-            } // flags[p] == 1
-        } // p
-      UnsignedInteger index = 0;
-      for (UnsignedInteger i = 2; i <= upperBound; ++i)
-        {
-          if (is_prime[i])
-            {
-              result[index] = i;
-              ++index;
-              // Exit the loop if we have found enough primes
-              if (index == n) break;
-            } // is_prime
-        } // i
-    } // n > MaxPrime
+      // If flags[p] is equal to 1, it is a prime
+      if (is_prime[p])
+      {
+        // Update all multiples of p
+        for (UnsignedInteger i = 2 * p; i <= upperBound; i += p)
+          is_prime[i] = 0;
+      } // flags[p] == 1
+    } // p
+    UnsignedInteger index = 0;
+    for (UnsignedInteger i = 2; i <= upperBound; ++i)
+    {
+      if (is_prime[i])
+      {
+        result[index] = i;
+        ++index;
+        // Exit the loop if we have found enough primes
+        if (index == n) break;
+      } // is_prime
+    } // i
+  } // n > MaxPrime
   return result;
 #endif
 }

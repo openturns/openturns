@@ -285,7 +285,7 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
     // exit gracefully
     return 1;
   }
-  
+
   UnsignedInteger shift = 0;
 
   /* Compute the inequality constraints at inP */

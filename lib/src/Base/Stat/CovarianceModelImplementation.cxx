@@ -486,10 +486,10 @@ struct CrossCovarianceFunctor1D
                            const Sample &secondSample,
                            Matrix &output,
                            const CovarianceModelImplementation &model)
-      : firstSample_(*firstSample.getImplementation())
-      , secondSample_(*secondSample.getImplementation())
-      , output_(*output.getImplementation())
-      , model_(model)
+    : firstSample_(*firstSample.getImplementation())
+    , secondSample_(*secondSample.getImplementation())
+    , output_(*output.getImplementation())
+    , model_(model)
   {
   }
 
@@ -505,7 +505,7 @@ struct CrossCovarianceFunctor1D
       const UnsignedInteger columnIndex = index / firstSample_.getSize();
       const UnsignedInteger rowIndex = index - columnIndex * firstSample_.getSize();
       output_(rowIndex, columnIndex) = model_.computeAsScalar(firstSample_.data_begin() + (rowIndex * inputDimension),
-                                                              secondSample_.data_begin() + (columnIndex * inputDimension));
+                                       secondSample_.data_begin() + (columnIndex * inputDimension));
     }
   } // operator()
 };
@@ -523,11 +523,11 @@ struct CrossCovarianceFunctor
                          const Sample &secondSample,
                          Matrix &output,
                          const CovarianceModelImplementation &model)
-      : firstSample_(*firstSample.getImplementation())
-      , secondSample_(*secondSample.getImplementation())
-      , output_(*output.getImplementation())
-      , model_(model)
-      , dimension_(model.getOutputDimension())
+    : firstSample_(*firstSample.getImplementation())
+    , secondSample_(*secondSample.getImplementation())
+    , output_(*output.getImplementation())
+    , model_(model)
+    , dimension_(model.getOutputDimension())
   {
   }
 
@@ -559,7 +559,7 @@ struct CrossCovarianceFunctor
 /* end struct CrossCovarianceFunctor */
 
 Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &firstSample,
-                                                             const Sample &secondSample) const
+    const Sample &secondSample) const
 {
   if (firstSample.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "Error: the first sample has a dimension=" << firstSample.getDimension() << " different from the input dimension=" << inputDimension_;
@@ -600,10 +600,10 @@ struct CrossCovariancePointFunctor1D
                                 const Point &point,
                                 Matrix &output,
                                 const CovarianceModelImplementation &model)
-      : sample_(*sample.getImplementation())
-      , point_(point)
-      , output_(*output.getImplementation())
-      , model_(model)
+    : sample_(*sample.getImplementation())
+    , point_(point)
+    , output_(*output.getImplementation())
+    , model_(model)
   {
   }
 
@@ -631,10 +631,10 @@ struct CrossCovariancePointFunctor
                               const Point &point,
                               Matrix &output,
                               const CovarianceModelImplementation &model)
-      : sample_(*sample.getImplementation())
-      , point_(point)
-      , output_(*output.getImplementation())
-      , model_(model)
+    : sample_(*sample.getImplementation())
+    , point_(point)
+    , output_(*output.getImplementation())
+    , model_(model)
   {
   }
 
@@ -653,7 +653,7 @@ struct CrossCovariancePointFunctor
 /* end struct CrossCovariancePointFunctor */
 
 Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &sample,
-                                                             const Point &point) const
+    const Point &point) const
 {
   const UnsignedInteger size = sample.getSize();
   const UnsignedInteger outputDimension = getOutputDimension();
@@ -673,7 +673,7 @@ Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &sampl
 }
 
 Matrix CovarianceModelImplementation::computeCrossCovariance(const Point &point,
-                                                             const Sample &sample) const
+    const Sample &sample) const
 {
   // TODO : transposeInPlace
   return computeCrossCovariance(sample, point).transpose();

@@ -1,6 +1,6 @@
 = New Features =
 
-== 1.18 release (in progress) == #release-1.18
+== 1.18rc1 release (2021-10-18) == #release-1.18rc1
 
 === Library ===
 
@@ -26,6 +26,7 @@
  * Deprecated SubsetSampling.getNumberOfSteps
  * Normal and Student distributions: no need to specify the R parameter if it is the identity matrix
  * KrigingResult::getConditionalMean and getConditionalMarginalVariance yield Samples instead of Points when applied to Samples
+ * Deprecated shims module
 
 === Documentation ===
 

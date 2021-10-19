@@ -24,7 +24,7 @@ dist = ot.Normal(dim)
 # %%
 # We can draw the bidimensional PDF of the distribution `dist` over :math:`[-5,5] \times [-5,5]` :
 ot.ResourceMap_SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 8)
-graphPDF = dist.drawPDF([-5,-5],[5,5])
+graphPDF = dist.drawPDF([-5, -5], [5, 5])
 graphPDF.setTitle(r'2D-PDF of the input variables $(X_1, X_2)$')
 graphPDF.setXTitle(r'$x_1$')
 graphPDF.setYTitle(r'$x_2$')
@@ -32,10 +32,10 @@ graphPDF.setLegendPosition("bottomright")
 view = otv.View(graphPDF)
 
 # %%
-# We then define a model :math:`f` which maps a 2D-vector X = (X_1,X_2) to a 
+# We then define a model :math:`f` which maps a 2D-vector X = (X_1,X_2) to a
 # scalar output `Y = f(X)`.
 f = ot.SymbolicFunction(['x0', 'x1'], ['5.0-x1-0.5*(x0-0.1)^2'])
-graphModel = f.draw([-8.0, -8.0],[8.0,8.0])
+graphModel = f.draw([-8.0, -8.0], [8.0, 8.0])
 graphModel.setXTitle(r'$x_1$')
 graphModel.setXTitle(r'$x_2$')
 graphModel.setTitle(r'Isolines of the model : $Y = f(X)$')
@@ -58,7 +58,7 @@ failureEvent = ot.ThresholdEvent(Y, ot.Less(), 0.0)
 nx, ny = 25, 25
 xx = ot.Box([nx], ot.Interval([-8.0], [8.0])).generate()
 yy = ot.Box([ny], ot.Interval([-8.0], [8.0])).generate()
-inputData = ot.Box([nx,ny], ot.Interval([-8.0, -8.0], [8.0, 8.0])).generate()
+inputData = ot.Box([nx, ny], ot.Interval([-8.0, -8.0], [8.0, 8.0])).generate()
 outputData = f(inputData)
 mycontour = ot.Contour(xx, yy, outputData, [0.0], ["0.0"])
 mycontour.setColor("black")
@@ -90,7 +90,7 @@ result = algo.getResult()
 coll = result.getFORMResultCollection()
 
 # %%
-# The length of this collection is the number of design points : 
+# The length of this collection is the number of design points :
 n_design_pts = len(coll)
 print("Number of design points :", n_design_pts)
 
@@ -105,13 +105,15 @@ print(coll[1].getPhysicalSpaceDesignPoint())
 
 # %%
 # We visualize them on the previous graph with red circle dots.
-cloud = ot.Cloud([designPointPhysicalSpace1[0]], [designPointPhysicalSpace1[1]])
+cloud = ot.Cloud([designPointPhysicalSpace1[0]],
+                 [designPointPhysicalSpace1[1]])
 cloud.setColor("red")
 cloud.setPointStyle("fcircle")
 cloud.setLegend("design point no. 1")
 graphModel.add(cloud)
 
-cloud = ot.Cloud([designPointPhysicalSpace2[0]], [designPointPhysicalSpace2[1]])
+cloud = ot.Cloud([designPointPhysicalSpace2[0]],
+                 [designPointPhysicalSpace2[1]])
 cloud.setColor("red")
 cloud.setPointStyle("fcircle")
 cloud.setLegend("design point no. 2")

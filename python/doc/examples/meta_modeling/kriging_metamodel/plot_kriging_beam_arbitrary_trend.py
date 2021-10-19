@@ -3,7 +3,7 @@ Configuring an arbitrary trend in Kriging
 =========================================
 """
 # %%
-# The goal of this example is to show how to configure an arbitrary trend in a Kriging metamodel. 
+# The goal of this example is to show how to configure an arbitrary trend in a Kriging metamodel.
 #
 # In general, any collection of multivariate functions can be used as the `basis` argument of a `KrigingAlgorithm`. In practice, it might not be convenient to create a multivariate basis and this is why we sometimes create it by tensorization of univariate functions. In this example, we first use Legendre polynomials as our univariate functions, then we create an orthogonal polynomial basis corresponding to the input marginals.
 #
@@ -14,15 +14,15 @@ Configuring an arbitrary trend in Kriging
 # -----------------------
 
 # %%
+from openturns.usecases import cantilever_beam as cantilever_beam
+from matplotlib import pylab as plt
+import openturns.viewer as viewer
 import openturns as ot
 ot.RandomGenerator.SetSeed(0)
-import openturns.viewer as viewer
-from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the cantilever beam use case
-from openturns.usecases import cantilever_beam as cantilever_beam
 cb = cantilever_beam.CantileverBeam()
 
 # %%
@@ -30,8 +30,8 @@ cb = cantilever_beam.CantileverBeam()
 model = cb.model
 
 # %%
-# Then we define the distribution of the input random vector. 
-dimension = cb.dim # number of inputs
+# Then we define the distribution of the input random vector.
+dimension = cb.dim  # number of inputs
 myDistribution = cb.distribution
 
 # %%
@@ -52,13 +52,13 @@ Y_train = model(X_train)
 #
 # We first create a Legendre basis of univariate polynomials. In order to convert then into multivariate polynomials, we use a linear enumerate function.
 #
-# The `LegendreFactory` class creates Legendre polynomials. 
+# The `LegendreFactory` class creates Legendre polynomials.
 
 # %%
 univariateFactory = ot.LegendreFactory()
 
 # %%
-# This factory corresponds to the `Uniform` distribution in the [-1,1] interval. 
+# This factory corresponds to the `Uniform` distribution in the [-1,1] interval.
 
 # %%
 univariateFactory.getMeasure()
@@ -71,7 +71,8 @@ polyColl = [univariateFactory]*dimension
 
 # %%
 enumerateFunction = ot.LinearEnumerateFunction(dimension)
-productBasis = ot.OrthogonalProductPolynomialFactory(polyColl, enumerateFunction)
+productBasis = ot.OrthogonalProductPolynomialFactory(
+    polyColl, enumerateFunction)
 
 # %%
 functions = []
@@ -89,7 +90,7 @@ basis = ot.Basis(functions)
 # --------------------
 
 # %%
-# In order to create the kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class. Then we use a squared exponential covariance model. Finally, we use the `KrigingAlgorithm` class to create the kriging metamodel, taking the training sample, the covariance model and the trend basis as input arguments. 
+# In order to create the kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class. Then we use a squared exponential covariance model. Finally, we use the `KrigingAlgorithm` class to create the kriging metamodel, taking the training sample, the covariance model and the trend basis as input arguments.
 
 # %%
 covarianceModel = ot.SquaredExponential([1.]*dimension, [1.0])
@@ -107,13 +108,13 @@ krigingWithConstantTrend = result.getMetaModel()
 result.getTrendCoefficients()
 
 # %%
-# We see that the number of coefficients in the trend corresponds to the number of functions in the basis. 
+# We see that the number of coefficients in the trend corresponds to the number of functions in the basis.
 
 # %%
 result.getCovarianceModel()
 
 # %%
-# The `SquaredExponential` model has one amplitude coefficient and 4 scale coefficients. This is because this covariance model is anisotropic : each of the 4 input variables is associated with its own scale coefficient. 
+# The `SquaredExponential` model has one amplitude coefficient and 4 scale coefficients. This is because this covariance model is anisotropic : each of the 4 input variables is associated with its own scale coefficient.
 
 # %%
 # Create an orthogonal multivariate polynomial factory
@@ -122,12 +123,13 @@ result.getCovarianceModel()
 # %%
 # In order to create a Legendre basis which better corresponds to the input marginals, we could consider the orthogonal basis which would be associated to uniform marginals. To compute the bounds of these uniform distributions, we may consider the 1% and 99% quantiles of each marginal.
 #
-# There is, however, a simpler way to proceed. We can simply orthogonalize the input marginals and create the orthogonal polynomial basis corresponding to the inputs. This corresponds to the method we would use in the polynomial chaos. 
+# There is, however, a simpler way to proceed. We can simply orthogonalize the input marginals and create the orthogonal polynomial basis corresponding to the inputs. This corresponds to the method we would use in the polynomial chaos.
 #
-# We first create the polynomial basis which corresponds to the inputs. 
+# We first create the polynomial basis which corresponds to the inputs.
 
 # %%
-multivariateBasis = ot.OrthogonalProductPolynomialFactory([cb.E, cb.F, cb.L, cb.I])
+multivariateBasis = ot.OrthogonalProductPolynomialFactory(
+    [cb.E, cb.F, cb.L, cb.I])
 
 # %%
 # Then we create the multivariate basis which has maximum degree equal to 2.
@@ -135,7 +137,8 @@ multivariateBasis = ot.OrthogonalProductPolynomialFactory([cb.E, cb.F, cb.L, cb.
 # %%
 totalDegree = 2
 enumerateFunction = multivariateBasis.getEnumerateFunction()
-numberOfTrendCoefficients = enumerateFunction.getStrataCumulatedCardinal(totalDegree)
+numberOfTrendCoefficients = enumerateFunction.getStrataCumulatedCardinal(
+    totalDegree)
 numberOfTrendCoefficients
 
 # %%
@@ -164,11 +167,11 @@ result.getTrendCoefficients()
 # Conclusion
 # ----------
 #
-# The trend that we have configured corresponds to the basis that we would have used in a full polynomial chaos computed with least squares. 
+# The trend that we have configured corresponds to the basis that we would have used in a full polynomial chaos computed with least squares.
 #
 # Other extensions of this work would be:
 #
 # * to use a Fourier basis with `FourierSeriesFactory`,
 # * wavelets with `HaarWaveletFactory`,
 #
-# or any other univariate factory. 
+# or any other univariate factory.

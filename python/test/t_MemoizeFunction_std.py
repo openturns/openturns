@@ -49,8 +49,10 @@ print('ok')
 
 ot.PlatformInfo.SetNumericalPrecision(20)
 
+
 def py_f(X):
     return X
+
 
 # Check if the meoization propagates through the finite difference gradients
 # Here we use a PythonFunction as its gradient/hessian are based on finite

@@ -266,7 +266,8 @@ HMatrixImplementation * HMatrixImplementation::clone() const
 HMatrixImplementation::~HMatrixImplementation()
 {
 #ifdef OPENTURNS_HAVE_HMAT
-  if (hmatInterface_ != NULL && hmat_ != NULL){
+  if (hmatInterface_ != NULL && hmat_ != NULL)
+  {
     static_cast<hmat_interface_t*>(hmatInterface_.get())->destroy(static_cast<hmat_matrix_t*>(hmat_));
     static_cast<hmat_interface_t*>(hmatInterface_.get())->finalize();
   }

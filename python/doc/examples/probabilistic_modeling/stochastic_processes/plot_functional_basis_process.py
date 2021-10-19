@@ -10,10 +10,10 @@ Create a functional basis process
 # :math:`(\phi_i)_{i=1,\dots,K}: \mathbb{R}^n \rightarrow \mathbb{R}^d`:
 #
 # .. math::
-#     \begin{aligned} 
+#     \begin{aligned}
 #       X(\omega,\underline{t})=\sum_{i=1}^KA_i(\omega)\phi_i(\underline{t})
 #     \end{aligned}
-#   
+#
 # where :math:`\underline{A}=(A_1,\dots, A_K)` is a random vector of dimension :math:`K`.
 #
 # We suppose that :math:`\mathcal{M}` is discretized on the mesh :math:`\mathcal{M}` which has :math:`N`
@@ -21,14 +21,14 @@ Create a functional basis process
 #
 # A realization of :math:`X` on :math:`\mathcal{M}` consists in generating a realization
 # :math:`\underline{\alpha}` of the random vector :math:`\underline{A}` and in evaluating the
-# functions :math:`(\phi_i)_{i=1,\dots,K}` on the mesh :math:`\mathcal{M}`. 
+# functions :math:`(\phi_i)_{i=1,\dots,K}` on the mesh :math:`\mathcal{M}`.
 #
 # If we note
 # :math:`(\underline{x}_0, \dots, \underline{x}_{N-1})` the realization of :math:`X`, where
 # :math:`X(\omega, \underline{t}_k) = \underline{x}_k`, we have:
 #
 # .. math::
-#    \begin{aligned} 
+#    \begin{aligned}
 #      \forall k \in [0, N-1], \quad \underline{x}_k = \sum_{i=1}^K\alpha_i\phi_i(\underline{t}_k)
 #    \end{aligned}
 #

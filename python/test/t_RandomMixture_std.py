@@ -61,7 +61,7 @@ for testIndex in range(len(testCases)):
     PDF = distribution.computePDF(point)
     print("pdf      =%.6f" % PDF)
     print("pdf  (FD)=%.6f" % ((distribution.computeCDF(point + ot.Point(1, eps)) -
-                                distribution.computeCDF(point + ot.Point(1, -eps))) / (2.0 * eps)))
+                               distribution.computeCDF(point + ot.Point(1, -eps))) / (2.0 * eps)))
     print("pdf (ref)=%.6f" % distributionReference.computePDF(point))
     CDF = distribution.computeCDF(point)
     print("cdf      =%.6f" % CDF)
@@ -171,7 +171,7 @@ for i in range(10):
 # Tests of the projection mechanism
 collFactories = [ot.UniformFactory(), ot.NormalFactory(
 ), ot.TriangularFactory(), ot.ExponentialFactory(), ot.GammaFactory()]
-#, TrapezoidalFactory()
+# , TrapezoidalFactory()
 result, norms = distribution.project(collFactories)
 print("projections=", result)
 print("norms=", norms)
@@ -321,7 +321,7 @@ print("CDF(0)=%.5g" % dist.computeCDF([0]))
 # check parameter accessors
 dist = ot.Gumbel() + ot.Normal(0, 0.1)
 print('before', dist)
-p = [1849.41,-133.6,-133.6,359.172]
+p = [1849.41, -133.6, -133.6, 359.172]
 dist.setParameter(p)
 assert p == dist.getParameter(), "wrong parameters"
 print('after ', dist)

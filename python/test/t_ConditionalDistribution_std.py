@@ -18,12 +18,15 @@ coll1.add(Uniform())
 coll1.add(Uniform())
 d1 = ComposedDistribution(coll1)
 # Test the different DOE
-ResourceMap.SetAsUnsignedInteger("ConditionalDistribution-MarginalIntegrationNodesNumber", 256)
-ResourceMap.SetAsUnsignedInteger("ConditionalDistribution-MaximumIntegrationNodesNumber", 10000)
+ResourceMap.SetAsUnsignedInteger(
+    "ConditionalDistribution-MarginalIntegrationNodesNumber", 256)
+ResourceMap.SetAsUnsignedInteger(
+    "ConditionalDistribution-MaximumIntegrationNodesNumber", 10000)
 for method in ["GaussProduct", "QMC", "MC"]:
     print("#"*50)
     print("method=", method)
-    ResourceMap.SetAsString("ConditionalDistribution-ContinuousDiscretizationMethod", method)
+    ResourceMap.SetAsString(
+        "ConditionalDistribution-ContinuousDiscretizationMethod", method)
     distribution = ConditionalDistribution(d1, d2)
     dim = distribution.getDimension()
     print("distribution=", distribution)

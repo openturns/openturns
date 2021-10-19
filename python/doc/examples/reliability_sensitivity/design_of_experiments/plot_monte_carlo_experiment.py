@@ -2,7 +2,7 @@
 Create a Monte Carlo design of experiments
 ==========================================
 """
-# %% 
+# %%
 
 # %%
 # In this example we are going to create a MonteCarlo probabilistic design experiment.
@@ -31,4 +31,3 @@ cloud = ot.Cloud(sample, "blue", "fsquare", "")
 graph.add(cloud)
 view = viewer.View(graph)
 plt.show()
-

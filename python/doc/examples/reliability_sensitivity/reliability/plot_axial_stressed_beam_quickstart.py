@@ -13,6 +13,7 @@ Estimate a probability with Monte-Carlo on axial stressed beam: a quick start gu
 # -----------------------
 
 # %%
+from openturns.usecases import stressed_beam as stressed_beam
 import openturns as ot
 import numpy as np
 import openturns.viewer as viewer
@@ -21,11 +22,10 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the model from the usecases module :
-from openturns.usecases import stressed_beam as stressed_beam
 sm = stressed_beam.AxialStressedBeam()
 
 # %%
-# The limit state function is defined as a symbolic function in the `model` parameter of the `AxialStressedBeam` data class : 
+# The limit state function is defined as a symbolic function in the `model` parameter of the `AxialStressedBeam` data class :
 limitStateFunction = sm.model
 
 # %%
@@ -74,7 +74,8 @@ inputRandomVector = ot.RandomVector(myDistribution)
 # Finally we create a `CompositeRandomVector` by associating the limit state function with the input random vector.
 
 # %%
-outputRandomVector = ot.CompositeRandomVector(limitStateFunction, inputRandomVector)
+outputRandomVector = ot.CompositeRandomVector(
+    limitStateFunction, inputRandomVector)
 
 # %%
 # Exact computation
@@ -119,10 +120,10 @@ view = viewer.View(graph)
 myEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(), 0.0)
 
 # %%
-# The `ProbabilitySimulationAlgorithm` is the main tool to estimate a probability. It is based on a specific design of experiments: in this example, we use the simplest of all, the `MonteCarloExperiment`. 
+# The `ProbabilitySimulationAlgorithm` is the main tool to estimate a probability. It is based on a specific design of experiments: in this example, we use the simplest of all, the `MonteCarloExperiment`.
 
 # %%
-maximumCoV = 0.05 # Coefficient of variation
+maximumCoV = 0.05  # Coefficient of variation
 maximumNumberOfBlocks = 100000
 
 experiment = ot.MonteCarloExperiment()
@@ -144,12 +145,13 @@ initialNumberOfCall = limitStateFunction.getEvaluationCallsNumber()
 algoMC.run()
 
 # %%
-# We can then get the results of the algorithm. 
+# We can then get the results of the algorithm.
 
 # %%
 result = algoMC.getResult()
 probability = result.getProbabilityEstimate()
-numberOfFunctionEvaluations = limitStateFunction.getEvaluationCallsNumber() - initialNumberOfCall
+numberOfFunctionEvaluations = limitStateFunction.getEvaluationCallsNumber() - \
+    initialNumberOfCall
 print('Number of calls to the limit state =', numberOfFunctionEvaluations)
 print('Pf = ', probability)
 print('CV =', result.getCoefficientOfVariation())
@@ -172,7 +174,8 @@ alpha = 0.05
 
 # %%
 pflen = result.getConfidenceLength(1-alpha)
-print("%.2f%% confidence interval = [%f,%f]" % ((1-alpha)*100,probability-pflen/2,probability+pflen/2))
+print("%.2f%% confidence interval = [%f,%f]" % (
+    (1-alpha)*100, probability-pflen/2, probability+pflen/2))
 
 # %%
 # This interval is consistent with the exact probability :math:`P_f=0.02920`.
@@ -181,37 +184,37 @@ print("%.2f%% confidence interval = [%f,%f]" % ((1-alpha)*100,probability-pflen/
 # Appendix: derivation of the failure probability
 # -----------------------------------------------
 #
-# The failure probability is: 
+# The failure probability is:
 #
 # .. math::
 #    P_f = \text{Prob}(R-S \leq 0) = \int_{r-s \leq 0} f_{R, S}(r, s)drds
-# 
+#
 #
 # where :math:`f_{R, S}` is the probability distribution function of the random vector :math:`(R,S)`.
-# If R and S are independent, then: 
+# If R and S are independent, then:
 #
 # .. math::
 #    f_{R, S}(r, s) = f_R(r) f_S(s)
-# 
 #
-# for any :math:`r,s\in\mathbb{R}`, 
+#
+# for any :math:`r,s\in\mathbb{R}`,
 # where :math:`f_S` is the probability distribution function of the random variable :math:`S` and :math:`f_R` is the probability distribution function of the random variable :math:`R`.
 # Therefore,
 #
 # .. math::
 #    P_f = \int_{r-s \leq 0} f_R(r) f_S(s) drds.
-# 
+#
 #
 # This implies:
 #
 # .. math::
 #    P_f = \int_{-\infty}^{+\infty} \left(\int_{r \leq s} f_R(r) dr \right) f_S(s) ds.
-# 
+#
 # Therefore,
 #
 # .. math::
 #    P_f = \int_{-\infty}^{+\infty}f_S(s)F_R(s)ds
-# 
+#
 #
 # where :math:`F_R` is the cumulative distribution function of the random variable :math:`R`.
 #

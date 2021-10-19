@@ -25,8 +25,8 @@ Estimate a multivariate ARMA process
 #    \end{aligned}
 #
 # with E the white noise:
-#   
-# .. math:: 
+#
+# .. math::
 #     E \sim \mathcal{N} ([0,0], [0.1,0.2])
 #
 

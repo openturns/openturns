@@ -38,4 +38,3 @@ sample_i = sample[indices]
 print("sample=", sample, "indices=", indices, "sample_i=", sample_i)
 assert len(sample_i) == len(indices), "wrong selection len"
 assert sample_i[0] == sample[indices[0]], "wrong first item in selection"
-

@@ -17,9 +17,10 @@ ot.Log.Show(ot.Log.NONE)
 # Create 2-d samples to visualize
 N = 500
 R = ot.CorrelationMatrix(2)
-R[0,1] = -0.7
-sample1 = ot.Normal([1.0]*2, [1.0]*2, R).getSample(N) # 2d N(1,1) with correlation
-sample2 = ot.Normal(2).getSample(N) # 2d N(0,1) independent
+R[0, 1] = -0.7
+# 2d N(1,1) with correlation
+sample1 = ot.Normal([1.0]*2, [1.0]*2, R).getSample(N)
+sample2 = ot.Normal(2).getSample(N)  # 2d N(0,1) independent
 
 # %%
 # Create cloud drawables

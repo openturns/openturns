@@ -182,22 +182,22 @@ Sample Student::getSample(const UnsignedInteger size) const
   Sample normalSample(size, dimension);
   Point gammaDeviates(size);
   for (UnsignedInteger i = 0; i < size; ++i)
-    {
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-        normalSample(i, j) = DistFunc::rNormal();
-      gammaDeviates[i] = DistFunc::rGamma(0.5 * nu_);
-    }
+  {
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      normalSample(i, j) = DistFunc::rNormal();
+    gammaDeviates[i] = DistFunc::rGamma(0.5 * nu_);
+  }
   Sample result;
   if (dimension == 1)
     result = normalSample * sigma_[0];
   else
     result = (cholesky_.getImplementation()->genSampleProd(normalSample, true, false, 'R'));
   for (UnsignedInteger i = 0; i < size; ++i)
-    {
-      const Scalar alpha = std::sqrt(0.5 * nu_ / gammaDeviates[i]);
-      for (UnsignedInteger j = 0; j < dimension; ++j)
-        result(i, j) = result(i, j) * alpha + mean_[j];
-    }
+  {
+    const Scalar alpha = std::sqrt(0.5 * nu_ / gammaDeviates[i]);
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      result(i, j) = result(i, j) * alpha + mean_[j];
+  }
   result.setName(getName());
   result.setDescription(getDescription());
   return result;

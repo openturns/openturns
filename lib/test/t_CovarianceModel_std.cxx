@@ -104,45 +104,45 @@ static void test_model(const CovarianceModel & myModel, const Bool test_grad = t
 
   // gradient testing
   if (test_grad)
-    {
-      // Testing partial gradient
-      Matrix grad(myModel.partialGradient(x1, x2));
+  {
+    // Testing partial gradient
+    Matrix grad(myModel.partialGradient(x1, x2));
 
-      Scalar eps = 1.0e-3;
-      if (dimension == 1)
+    Scalar eps = 1.0e-3;
+    if (dimension == 1)
+    {
+      Matrix gradfd(inputDimension, 1);
+      for (UnsignedInteger j = 0; j < inputDimension; ++j)
       {
-        Matrix gradfd(inputDimension, 1);
-        for (UnsignedInteger j = 0; j < inputDimension; ++j)
-        {
-          Point x1_g(x1);
-          Point x1_d(x1);
-          x1_g[j] += eps;
-          x1_d[j] -= eps;
-          gradfd(j, 0) = (myModel(x1_g, x2)(0, 0) - myModel(x1_d, x2)(0, 0)) / (2.0 * eps);
-        }
-        assert_almost_equal(grad, gradfd, 1e-6, 1e-6, OSS() << "in " << myModel.getImplementation()->getClassName() << " grad");
+        Point x1_g(x1);
+        Point x1_d(x1);
+        x1_g[j] += eps;
+        x1_d[j] -= eps;
+        gradfd(j, 0) = (myModel(x1_g, x2)(0, 0) - myModel(x1_d, x2)(0, 0)) / (2.0 * eps);
       }
-      else
-      {
-        Matrix gradfd(inputDimension, dimension * dimension);
-        SquareMatrix covarianceX1X2 = myModel(x1, x2);
-        // Convert result into MatrixImplementation to get the collection
-        MatrixImplementation covarianceX1X2Implementation(*covarianceX1X2.getImplementation());
-        const Point centralValue(covarianceX1X2Implementation);
-        // Loop over the shifted points
-        for (UnsignedInteger i = 0; i < inputDimension; ++i)
-        {
-          Point currentPoint(x1);
-          currentPoint[i] += eps;
-          SquareMatrix localCovariance = myModel(currentPoint, x2);
-          MatrixImplementation localCovarianceImplementation(*localCovariance.getImplementation());
-          const Point currentValue(localCovarianceImplementation);
-          for (UnsignedInteger j = 0; j < centralValue.getDimension(); ++j)
-            gradfd(i, j) = (currentValue[j] - centralValue[j]) / eps;
-        }
-        assert_almost_equal(grad, gradfd, 2e5, 2e-5, OSS() << "in " << myModel.__str__() << " grad");
-      }
+      assert_almost_equal(grad, gradfd, 1e-6, 1e-6, OSS() << "in " << myModel.getImplementation()->getClassName() << " grad");
     }
+    else
+    {
+      Matrix gradfd(inputDimension, dimension * dimension);
+      SquareMatrix covarianceX1X2 = myModel(x1, x2);
+      // Convert result into MatrixImplementation to get the collection
+      MatrixImplementation covarianceX1X2Implementation(*covarianceX1X2.getImplementation());
+      const Point centralValue(covarianceX1X2Implementation);
+      // Loop over the shifted points
+      for (UnsignedInteger i = 0; i < inputDimension; ++i)
+      {
+        Point currentPoint(x1);
+        currentPoint[i] += eps;
+        SquareMatrix localCovariance = myModel(currentPoint, x2);
+        MatrixImplementation localCovarianceImplementation(*localCovariance.getImplementation());
+        const Point currentValue(localCovarianceImplementation);
+        for (UnsignedInteger j = 0; j < centralValue.getDimension(); ++j)
+          gradfd(i, j) = (currentValue[j] - centralValue[j]) / eps;
+      }
+      assert_almost_equal(grad, gradfd, 2e5, 2e-5, OSS() << "in " << myModel.__str__() << " grad");
+    }
+  }
 }
 
 static void test_scalar_model(const CovarianceModel &myModel)

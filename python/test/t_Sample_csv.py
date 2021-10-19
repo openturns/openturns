@@ -86,13 +86,13 @@ aSample.setName("a sample with special chars")
 print("aSample with special chars (see log)=", repr(aSample))
 
 # Print stream to R format
-print ("Stream to R format = ",
-       aSample.getImplementation().streamToRFormat())
+print("Stream to R format = ",
+      aSample.getImplementation().streamToRFormat())
 
 # Store to a temporary file and compute difference with current aSample
 tmpFilename = aSample.getImplementation().storeToTemporaryFile()
 tmpSample = Sample.ImportFromTextFile(tmpFilename)
-#// Difference with aSample
+# // Difference with aSample
 assert_almost_equal(tmpSample, aSample, 1e-15, 1e-15)
 os.remove(tmpFilename)
 

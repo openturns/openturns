@@ -19,14 +19,16 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# The `computeKSStatisticsIndex()` function computes the Kolmogorov-Smirnov 
-# distance between the sample and the distribution. 
-# Furthermore, it returns the index which achieves the maximum distance 
-# in the sorted sample. 
-# The following function is for teaching purposes only: use 
+# The `computeKSStatisticsIndex()` function computes the Kolmogorov-Smirnov
+# distance between the sample and the distribution.
+# Furthermore, it returns the index which achieves the maximum distance
+# in the sorted sample.
+# The following function is for teaching purposes only: use
 # `FittingTest` for real applications.
 
 # %%
+
+
 def computeKSStatisticsIndex(sample, distribution):
     sample = ot.Sample(sample.sort())
     print("Sorted")
@@ -95,8 +97,8 @@ sample = N.getSample(n)
 # Compute the index which achieves the maximum Kolmogorov-Smirnov distance.
 
 # %%
-# We then create a uniform distribution whose parameters are estimated  
-# from the sample.  
+# We then create a uniform distribution whose parameters are estimated
+# from the sample.
 # This way, the K.S. distance is large enough to be graphically significant.
 
 # %%
@@ -117,6 +119,6 @@ view = viewer.View(graph)
 plt.show()
 
 # %%
-# We see that the K.S. statistics is achieved at the observation where the distance  
-# between the empirical distribution function of the sample and the  
+# We see that the K.S. statistics is achieved at the observation where the distance
+# between the empirical distribution function of the sample and the
 # candidate distribution is largest.

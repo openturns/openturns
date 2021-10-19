@@ -52,7 +52,6 @@ graph.setYTitle("")
 view = viewer.View(graph)
 
 
-
 # %%
 # Creation of a mesh
 # ------------------
@@ -77,7 +76,8 @@ view = viewer.View(graph1)
 
 # %%
 # We define a bidimensional mesh :
-vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0], [1.5, 1.0], [2.0, 1.5], [0.5, 1.5]]
+vertices = [[0.0, 0.0], [1.0, 0.0], [1.0, 1.0],
+            [1.5, 1.0], [2.0, 1.5], [0.5, 1.5]]
 simplicies = [[0, 1, 2], [1, 2, 3], [2, 3, 4], [2, 4, 5], [0, 2, 5]]
 mesh2D = ot.Mesh(vertices, simplicies)
 graph2 = mesh2D.draw()
@@ -93,8 +93,8 @@ myMesher = ot.IntervalMesher(myIndices)
 
 # %%
 # We then create the mesh of the box :math:`[0, 2] \times [0, 4]` :
-lowerBound=[0., 0.]
-upperBound=[2., 4.]
+lowerBound = [0., 0.]
+upperBound = [2., 4.]
 myInterval = ot.Interval(lowerBound, upperBound)
 myMeshBox = myMesher.build(myInterval)
 mygraph3 = myMeshBox.draw()
@@ -145,9 +145,9 @@ def meshHeart(ntheta, nr):
             nodes.add([r * cosTheta, r * sinTheta - tau])
     # Second, build the triangles
     triangles = []
-    ## First heart
+    # First heart
     for j in range(ntheta):
-        triangles.append([0, 1 + j * nr, 1 + ((j + 1) % ntheta)* nr])
+        triangles.append([0, 1 + j * nr, 1 + ((j + 1) % ntheta) * nr])
     # Other hearts
     for j in range(ntheta):
         for k in range(nr-1):
@@ -155,9 +155,10 @@ def meshHeart(ntheta, nr):
             i1 = k + 2 + j * nr
             i2 = k + 2 + ((j + 1) % ntheta) * nr
             i3 = k + 1 + ((j + 1) % ntheta) * nr
-            triangles.append([i0, i1, i2%(nr*ntheta)])
-            triangles.append([i0, i2, i3%(nr*ntheta)])
+            triangles.append([i0, i1, i2 % (nr*ntheta)])
+            triangles.append([i0, i2, i3 % (nr*ntheta)])
     return ot.Mesh(nodes, triangles)
+
 
 mesh4 = meshHeart(48, 16)
 graphMesh = mesh4.draw()

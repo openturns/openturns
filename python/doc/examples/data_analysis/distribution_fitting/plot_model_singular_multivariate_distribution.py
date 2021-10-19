@@ -18,6 +18,8 @@ ot.RandomGenerator.SetSeed(0)
 
 # %%
 # routine to draw a distribution cloud and a sample
+
+
 def draw(dist, Y):
     g = ot.Graph()
     g.setAxes(True)
@@ -30,12 +32,15 @@ def draw(dist, Y):
     c.setColor("black")
     c.setPointStyle("bullet")
     g.add(c)
-    g.setBoundingBox(ot.Interval(Y.getMin()-0.5*Y.computeRange(), Y.getMax()+0.5*Y.computeRange()))
+    g.setBoundingBox(ot.Interval(
+        Y.getMin()-0.5*Y.computeRange(), Y.getMax()+0.5*Y.computeRange()))
     return g
+
 
 # %%
 # generate some multivariate data to estimate, with correlation
-f = ot.SymbolicFunction(["U", "xi1", "xi2"], ["sin(U)/(1+cos(U)^2)+0.05*xi1", "sin(U)*cos(U)/(1+cos(U)^2)+0.05*xi2"])
+f = ot.SymbolicFunction(["U", "xi1", "xi2"], [
+                        "sin(U)/(1+cos(U)^2)+0.05*xi1", "sin(U)*cos(U)/(1+cos(U)^2)+0.05*xi2"])
 U = ot.Uniform(-0.85*m.pi, 0.85*m.pi)
 xi = ot.Normal(2)
 X = ot.BlockIndependentDistribution([U, xi])
@@ -50,7 +55,8 @@ view = viewer.View(draw(multi_ks, Y))
 # %%
 # estimation by empirical beta copula
 beta_copula = ot.EmpiricalBernsteinCopula(Y, len(Y))
-marginals = [ot.KernelSmoothing().build(Y.getMarginal(j)) for j in range(Y.getDimension())]
+marginals = [ot.KernelSmoothing().build(Y.getMarginal(j))
+             for j in range(Y.getDimension())]
 beta_dist = ot.ComposedDistribution(marginals, beta_copula)
 view = viewer.View(draw(beta_dist, Y))
 

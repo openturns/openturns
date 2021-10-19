@@ -2,17 +2,17 @@
 Create a conditional distribution
 =================================
 """
-# %% 
+# %%
 
 # %%
 # In this example we are going to build the distribution of the random vector X conditioned by the random variable Theta
 #
-# .. math:: 
+# .. math::
 #    \underline{X}|\underline{\Theta}
-#   
+#
 # with Theta obtained with the random variable Y through a function f
 #
-# .. math:: 
+# .. math::
 #    \underline{\Theta}=f(\underline{Y})
 #
 

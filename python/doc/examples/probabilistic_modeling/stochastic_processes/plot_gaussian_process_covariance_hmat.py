@@ -2,7 +2,7 @@
 Create a gaussian process from a cov. model using HMatrix
 =========================================================
 """
-# %% 
+# %%
 #
 # In this basic example we build a gaussian process from its covariance model and use the `HMatrix` method as a sampling method.
 # Several methods and parameters are presented to set the HMatrix compression.
@@ -13,7 +13,7 @@ from __future__ import print_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
-#ot.Log.Show(ot.Log.NONE)
+# ot.Log.Show(ot.Log.NONE)
 
 # %%
 # Definition of the covariance model
@@ -47,11 +47,11 @@ print(process)
 #
 # The `HMatrix` framework uses efficient linear algebra techniques to speed-up the
 # (Cholesky) factorization of the covariance matrix.
-# This method can be tuned with several parameters. We should concentrate on the easiest ones. 
+# This method can be tuned with several parameters. We should concentrate on the easiest ones.
 
 # %%
-# We set the sampling method to `HMAT` (0 is the classical/dense case).
-process.setSamplingMethod(1)
+# We set the sampling method to `HMAT` (default is the classical/dense case).
+process.setSamplingMethod(ot.GaussianProcess.HMAT)
 
 
 # %%

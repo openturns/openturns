@@ -16,7 +16,7 @@ class AxialStressedBeam():
 
     dim : The dimension of the problem
           dim=2.
- 
+
     D : Constant
         Diameter D = 0.02 (m)
 
@@ -64,7 +64,8 @@ class AxialStressedBeam():
         self.model = ot.SymbolicFunction(['R', 'F'], ['R-F/(pi_/10000.0)'])
 
         # Yield strength
-        self.distribution_R = ot.LogNormalMuSigma(self.muR, self.sigmaR, 0.0).getDistribution()
+        self.distribution_R = ot.LogNormalMuSigma(
+            self.muR, self.sigmaR, 0.0).getDistribution()
         self.distribution_R.setName('Yield strength')
         self.distribution_R.setDescription('R')
         # Traction load
@@ -73,5 +74,5 @@ class AxialStressedBeam():
         self.distribution_F.setDescription('F')
 
         # Joint distribution of the input parameters
-        self.distribution = ot.ComposedDistribution([self.distribution_R, self.distribution_F])
-
+        self.distribution = ot.ComposedDistribution(
+            [self.distribution_R, self.distribution_F])

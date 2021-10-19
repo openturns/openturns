@@ -17,10 +17,10 @@ for name, obj in inspect.getmembers(ot):
             continue
         try:
             instance = obj()
-            print (obj.__name__, 'OK')
+            print(obj.__name__, 'OK')
             instanciables.append(obj)
         except Exception:
-            print (obj.__name__, 'FAIL')
+            print(obj.__name__, 'FAIL')
 
 # save / load
 fileName = 'myStudyStd.xml'
@@ -28,7 +28,7 @@ for class_ in instanciables:
     myStudy = ot.Study()
     myStudy.setStorageManager(ot.XMLStorageManager(fileName))
 
-    print (class_.__name__)
+    print(class_.__name__)
     try:
         instance = class_()
         myStudy.add(class_.__name__, instance)
@@ -39,6 +39,6 @@ for class_ in instanciables:
         os.remove(fileName)
         instance = class_()
         myStudy.fillObject(class_.__name__, instance)
-        print (class_.__name__, 'OK')
+        print(class_.__name__, 'OK')
     except Exception as exc:
         print('--', class_.__name__, exc)
