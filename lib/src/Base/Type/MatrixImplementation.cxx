@@ -1623,7 +1623,6 @@ UnsignedInteger MatrixImplementation::stride(const UnsignedInteger dim) const
 /** Diagonal extraction */
 MatrixImplementation MatrixImplementation::getDiagonal(const SignedInteger k) const
 {
-
   SignedInteger m = nbRows_;
   SignedInteger n = nbColumns_;
   if (k >= n) throw OutOfBoundException(HERE) << "One must have k < nbColumns";
@@ -1703,8 +1702,8 @@ void MatrixImplementation::setDiagonal(const Point &diag, const SignedInteger k)
 MatrixImplementation MatrixImplementation::computeHadamardProduct(const MatrixImplementation &other) const
 {
   /* Check sizes */
-  if (other.getNbRows() != nbRows_) throw InvalidDimensionException(HERE) << "Matrices should have the same size!";
-  if (other.getNbColumns() != nbColumns_) throw InvalidDimensionException(HERE) << "Matrices should have the same size!";
+  if (other.getNbRows() != nbRows_) throw InvalidDimensionException(HERE) << "Matrices should have the same number of rows!";
+  if (other.getNbColumns() != nbColumns_) throw InvalidDimensionException(HERE) << "Matrices should have the same number of columns!";
 
   /* Result */
   MatrixImplementation result(nbRows_, nbColumns_);
@@ -1724,8 +1723,8 @@ MatrixImplementation MatrixImplementation::computeHadamardProduct(const MatrixIm
 Scalar MatrixImplementation::computeSumElements() const
 {
   /* Check sizes */
-  if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Matrices should have positive dimension!";
-  if (nbColumns_ == 0) throw InvalidDimensionException(HERE) << "Matrices should have positive dimension!";
+  if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Matrices should have positive number of rows!";
+  if (nbColumns_ == 0) throw InvalidDimensionException(HERE) << "Matrices should have positive number of columns!";
 
   /* Result */
   Scalar sum = 0.0;
@@ -1746,8 +1745,8 @@ Scalar MatrixImplementation::computeSumElements() const
 void MatrixImplementation::squareElements()
 {
   /* Check sizes */
-  if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Matrices should have positive dimension!";
-  if (nbColumns_ == 0) throw InvalidDimensionException(HERE) << "Matrices should have positive dimension!";
+  if (nbRows_ == 0) throw InvalidDimensionException(HERE) << "Matrices should have positive number of rows!";
+  if (nbColumns_ == 0) throw InvalidDimensionException(HERE) << "Matrices should have positive number of columns!";
 
 
   /* TODO: is there any better implementation ? */

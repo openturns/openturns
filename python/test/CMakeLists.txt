@@ -738,6 +738,14 @@ ot_pyinstallcheck_test (ANCOVA_std)
 ot_pyinstallcheck_test (FAST_std)
 ot_pyinstallcheck_test (SobolIndicesAlgorithm_std)
 ot_pyinstallcheck_test (SobolIndicesExperiment_std)
+ot_pyinstallcheck_test (HSICStat_std IGNOREOUT)
+ot_pyinstallcheck_test (HSICEstimator_std IGNOREOUT)
+ot_pyinstallcheck_test (HSICEstimatorConditionalSensitivity_std IGNOREOUT)
+ot_pyinstallcheck_test (HSICEstimatorTargetSensitivity_std IGNOREOUT)
+ot_pyinstallcheck_test (HSICEstimatorGlobalSensitivity_std IGNOREOUT)
+
+
+
 
 ## Simulation
 ot_pyinstallcheck_test (Wilks_std)

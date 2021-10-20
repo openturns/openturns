@@ -47,6 +47,15 @@
 %include JansenSensitivityAlgorithm.i
 %include MauntzKucherenkoSensitivityAlgorithm.i
 %include SobolIndicesExperiment.i
+%include HSICStatImplementation.i
+%include HSICStat.i
+%include HSICUStat.i
+%include HSICVStat.i
+%include HSICEstimatorImplementation.i
+%include HSICEstimator.i
+%include HSICEstimatorConditionalSensitivity.i
+%include HSICEstimatorGlobalSensitivity.i
+%include HSICEstimatorTargetSensitivity.i
 
 /* Uncertainty/Algorithm/EventSimulation */
 %include SimulationResult.i

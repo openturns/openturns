@@ -1,0 +1,52 @@
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HSICEstimatorGlobalSensitivity
+"Implement a HSIC estimator for global analysis.
+
+Available constructors:
+    HSICEstimatorGlobalSensitivity()
+
+    HSICEstimatorGlobalSensitivity(covarianceList, X, Y, estimatorType)
+
+Parameters
+----------
+covarianceList : list of :class:`~openturns.CovarianceModel`
+    List of all covariance kernels. The :math:`d` first kernels are linked to the input 
+    and the last one is for the output.
+
+X : :class:`~openturns.Sample`
+    The input sample used for the HSIC analysis of dimension :math:`d`.
+
+Y : :class:`~openturns.Sample`
+    The output sample used for the HSIC analysis of dimension 1.
+
+estimatorType : :class:`~openturns.HSICStat`
+    An estimator for internal computations.
+
+See also
+--------
+:class:`~openturns.HSICEstimatorConditionalSensitivity`, :class:`~openturns.HSICEstimatorTargetSensitivity`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HSICEstimatorGlobalSensitivity::getPValuesAsymptotic
+"Get the p-values obtained with an asymptotic formula.
+
+Returns
+-------
+pval : :class:`~openturns.Point`
+       The p-values for all components."
+
+// ---------------------------------------------------------------------
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HSICEstimatorGlobalSensitivity::drawPValuesAsymptotic
+"Draw the p-values obtained with an asymptotic formula.
+
+Returns
+-------
+graph : :class:`~openturns.Graph`
+        The graph of all p-values estimated with an asymptotic formula."
+
+// ---------------------------------------------------------------------

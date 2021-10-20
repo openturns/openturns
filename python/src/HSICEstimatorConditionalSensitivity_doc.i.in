@@ -1,0 +1,53 @@
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HSICEstimatorConditionalSensitivity
+"Implement a HSIC estimator for conditional analysis.
+
+Available constructors:
+    HSICEstimatorConditionalSensitivity()
+
+    HSICEstimatorConditionalSensitivity(covarianceList, X, Y, estimatorType, weightFunction)
+
+Parameters
+----------
+covarianceList : list of :class:`~openturns.CovarianceModel`
+    List of all covariance kernels. The :math:`d` first kernels are linked to the input 
+    and the last one is for the output.
+
+X : :class:`~openturns.Sample`
+    The input sample used for the HSIC analysis of dimension :math:`d`.
+
+Y : :class:`~openturns.Sample`
+    The output sample used for the HSIC analysis of dimension 1.
+
+estimatorType : :class:`~openturns.HSICStat`
+    An estimator for internal computations.
+
+weightFunction : :class:`~openturns.Function`
+    A weight function used for the inputs.
+
+See also
+--------
+:class:`~openturns.HSICEstimatorGlobalSensitivity`, :class:`~openturns.HSICEstimatorTargetSensitivity`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HSICEstimatorConditionalSensitivity::getWeightFunction
+"Get the weight function used.
+
+Returns
+-------
+weightFunction : :class:`~openturns.Function`
+                 The weight function used for the conditional estimator."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HSICEstimatorConditionalSensitivity::setWeightFunction
+"Set the weight function.
+
+Parameters
+----------
+weightFunction : :class:`~openturns.Function`
+                 The weight function used for the conditional estimator."
+
+// ---------------------------------------------------------------------
