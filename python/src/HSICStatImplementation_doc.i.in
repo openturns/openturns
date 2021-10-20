@@ -1,0 +1,86 @@
+%define OT_HSICStat_doc
+"Base class of HSICStat.
+
+Available constructors:
+    HSICStat()
+
+Notes
+-----
+This is a base class for the implementation of an HSIC statistic
+but cannot be used by itself. An HSIC statistic object can created by using the
+derived classes: :class:`~openturns.HSICUStat` and :class:`~openturns.HSICVStat`.
+
+See also
+--------
+:class:`~openturns.HSICUStat`, :class:`~openturns.HSICVStat`"
+%enddef
+%feature("docstring") OT::HSICStatImplementation
+OT_HSICStat_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HSICStat_computeHSICIndex_doc
+"Compute the HSIC index between two samples.
+
+Parameters
+----------
+inSample : :class:`~openturns.Sample`
+    Input sample.
+
+outSample : :class:`~openturns.Sample`
+    Output sample.
+
+inCovariance : :class:`~openturns.CovarianceModel`
+    The covariance model associated with the input sample.
+
+outCovariance : :class:`~openturns.CovarianceModel`
+    The covariance model associated with the output sample.
+
+weightMatrix : :class:`~openturns.Matrix`
+    A weight matrix used for the statistic.
+
+Returns
+-------
+hsicIndex : the HSIC index of the two :class:`~openturns.Sample`."
+%enddef
+%feature("docstring") OT::HSICStatImplementation::computeHSICIndex
+OT_HSICStat_computeHSICIndex_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HSICStat_isCompatibleWithConditionalAnalysis_doc
+"Indicate the compatibility with a conditional HSIC estimator.
+
+Returns
+-------
+isCompatible : boolean flag
+    Indicate the compatibility with a conditional HSIC estimator."
+%enddef
+%feature("docstring") OT::HSICStatImplementation::isCompatibleWithConditionalAnalysis
+OT_HSICStat_isCompatibleWithConditionalAnalysis_doc
+
+// ---------------------------------------------------------------------
+
+%define OT_HSICStat_computePValue_doc
+"Compute the p-value of the statistic.
+
+Parameters
+----------
+dist : :class:`~openturns.Gamma`
+    A :class:`~openturns.Gamma` distribution to compute the p-value.
+
+n : integer
+    The size of the samples.
+
+HSIC_obs : float
+
+mHSIC : float
+
+Returns
+-------
+pvalue : the p-value of the statistic."
+%enddef
+%feature("docstring") OT::HSICStatImplementation::computePValue
+OT_HSICStat_computePValue_doc
+
+// ---------------------------------------------------------------------

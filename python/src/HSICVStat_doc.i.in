@@ -1,0 +1,72 @@
+%feature("docstring") OT::HSICVStat
+"Biased HSIC statistics.
+
+Available constructors:
+    HSICVStat()
+
+Notes
+-----
+This a biased estimator for the computation of an HSIC index.
+
+See also
+--------
+:class:`~openturns.HSICUStat`"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HSICVStat::computeHSICIndex
+"Compute the HSIC index between two samples.
+
+Parameters
+----------
+inSample : :class:`~openturns.Sample`
+    Input sample.
+
+outSample : :class:`~openturns.Sample`
+    Output sample.
+
+inCovariance : :class:`~openturns.CovarianceModel`
+    The covariance model associated with the input sample.
+
+outCovariance : :class:`~openturns.CovarianceModel`
+    The covariance model associated with the output sample.
+
+weightMatrix : :class:`~openturns.Matrix`
+    A weight matrix used for the statistics.
+
+Returns
+-------
+hsicIndex : the HSIC index of the two :class:`~openturns.Sample`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HSICVStat::isCompatibleWithConditionalAnalysis
+"Indicate the compatibility with a conditional HSIC estimator.
+
+Returns
+-------
+isCompatible : boolean flag
+    Indicate the compatibility with a conditional HSIC estimator (true)."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HSICVStat::computePValue
+"Compute the p-value of the statistic.
+
+Parameters
+----------
+dist : :class:`~openturns.Gamma`
+    A :class:`~openturns.Gamma` distribution to compute the p-value.
+
+n : integer
+    The size of the samples.
+
+HSIC_obs : float
+
+mHSIC : float
+
+Returns
+-------
+pvalue : the p-value of the statistic."
+
+// ---------------------------------------------------------------------

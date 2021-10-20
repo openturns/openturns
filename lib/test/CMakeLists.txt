@@ -656,6 +656,11 @@ endif ()
 ot_check_test (ANCOVA_std)
 ot_check_test (FAST_std)
 ot_check_test (SobolIndicesAlgorithm_std)
+ot_check_test (HSICEstimator_std)
+ot_check_test (HSICStat_std)
+ot_check_test (HSICEstimatorConditionalSensitivity_std)
+ot_check_test (HSICEstimatorGlobalSensitivity_std)
+ot_check_test (HSICEstimatorTargetSensitivity_std)
 
 # Simulation
 ot_check_test (DirectionalSampling_std)

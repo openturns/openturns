@@ -168,9 +168,24 @@ Refer to :ref:`sensitivity_sobol`.
     SobolIndicesExperiment
 
     :template: classWithPlot.rst_t
-   
+ 
     SobolSimulationAlgorithm 
     SobolSimulationResult
+
+HSIC Indices 
+============
+
+.. autosummary::
+    :toctree: _generated/
+    :template: class.rst_t
+
+    HSICStat
+    HSICUStat
+    HSICVStat
+    HSICEstimator
+    HSICEstimatorConditionalSensitivity
+    HSICEstimatorGlobalSensitivity
+    HSICEstimatorTargetSensitivity
 
 Statistical tests
 =================
