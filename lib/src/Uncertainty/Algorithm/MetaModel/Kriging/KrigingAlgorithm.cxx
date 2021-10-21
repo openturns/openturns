@@ -50,8 +50,7 @@ KrigingAlgorithm::KrigingAlgorithm()
   , covarianceCholeskyFactorHMatrix_()
 {
   // Force the GLM algo to use the exact same linear algebra as the Kriging algorithm
-  if (ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
-  else glmAlgo_.setMethod(0);
+  setMethod(ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra"));
 }
 
 
@@ -72,8 +71,7 @@ KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
   , covarianceCholeskyFactorHMatrix_()
 {
   // Force the GLM algo to use the exact same linear algebra as the Kriging algorithm
-  if (ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
-  else glmAlgo_.setMethod(0);
+  setMethod(ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra"));
 }
 
 
@@ -94,8 +92,7 @@ KrigingAlgorithm::KrigingAlgorithm(const Sample & inputSample,
   , covarianceCholeskyFactorHMatrix_()
 {
   // Force the GLM algo to use the exact same linear algebra as the Kriging algorithm
-  if (ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra") == "HMAT") glmAlgo_.setMethod(1);
-  else glmAlgo_.setMethod(0);
+  setMethod(ResourceMap::GetAsString("KrigingAlgorithm-LinearAlgebra"));
 }
 
 /* Virtual constructor */
@@ -255,8 +252,9 @@ String KrigingAlgorithm::getMethod() const
 void KrigingAlgorithm::setMethod(const String & method)
 {
   if (method == "HMAT")
-    glmAlgo_.setMethod(1);
-  glmAlgo_.setMethod(0);
+    glmAlgo_.setMethod(GeneralLinearModelAlgorithm::HMAT);
+  else
+    glmAlgo_.setMethod(GeneralLinearModelAlgorithm::LAPACK);
 }
 
 /* Method save() stores the object through the StorageManager */

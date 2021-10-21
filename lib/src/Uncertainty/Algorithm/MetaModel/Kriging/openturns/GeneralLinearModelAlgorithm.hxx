@@ -47,6 +47,8 @@ public:
   typedef GeneralLinearModelResult::BasisCollection BasisCollection;
   typedef GeneralLinearModelResult::BasisPersistentCollection BasisPersistentCollection;
 
+  enum LinearAlgebra { LAPACK, HMAT };
+
   /** Default constructor */
   GeneralLinearModelAlgorithm();
 
@@ -258,13 +260,13 @@ private:
   mutable HMatrix covarianceCholeskyFactorHMatrix_;
 
   /** Boolean argument for keep covariance */
-  Bool keepCholeskyFactor_;
+  Bool keepCholeskyFactor_ = false;
 
-  /** Method : 0 (lapack), 1 (hmat) */
-  UnsignedInteger method_;
+  /** Linear algebra */
+  UnsignedInteger method_ = LAPACK;
 
   /** Bool to tell if optimization has run */
-  mutable Bool hasRun_;
+  mutable Bool hasRun_ = false;
 
   /** Flag to tell if the parameters of the covariance model
       have to be optimized */

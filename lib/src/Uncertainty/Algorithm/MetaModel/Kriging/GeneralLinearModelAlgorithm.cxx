@@ -63,9 +63,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm()
   , basisCollection_()
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
-  , keepCholeskyFactor_(false)
-  , method_(0)
-  , hasRun_(false)
   , optimizeParameters_(true)
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LowestScalar)
@@ -95,8 +92,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
   , keepCholeskyFactor_(keepCholeskyFactor)
-  , method_(0)
-  , hasRun_(false)
   , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LowestScalar)
@@ -134,8 +129,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
   , keepCholeskyFactor_(keepCholeskyFactor)
-  , method_(0)
-  , hasRun_(false)
   , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LowestScalar)
@@ -185,8 +178,6 @@ GeneralLinearModelAlgorithm::GeneralLinearModelAlgorithm(const Sample & inputSam
   , covarianceCholeskyFactor_()
   , covarianceCholeskyFactorHMatrix_()
   , keepCholeskyFactor_(keepCholeskyFactor)
-  , method_(0)
-  , hasRun_(false)
   , optimizeParameters_(ResourceMap::GetAsBool("GeneralLinearModelAlgorithm-OptimizeParameters"))
   , analyticalAmplitude_(false)
   , lastReducedLogLikelihood_(SpecFunc::LowestScalar)
@@ -524,7 +515,7 @@ void GeneralLinearModelAlgorithm::run()
     {
       const Scalar sigma = reducedCovarianceModel_.getAmplitude()[0];
       // Case of LAPACK backend
-      if (method_ == 0) covarianceCholeskyFactor_ = covarianceCholeskyFactor_ * sigma;
+      if (method_ == LAPACK) covarianceCholeskyFactor_ = covarianceCholeskyFactor_ * sigma;
       else covarianceCholeskyFactorHMatrix_.scale(sigma);
     }
     result_.setCholeskyFactor(covarianceCholeskyFactor_, covarianceCholeskyFactorHMatrix_);
@@ -613,7 +604,7 @@ Point GeneralLinearModelAlgorithm::computeReducedLogLikelihood(const Point & par
   reducedCovarianceModel_.setParameter(parameters);
   // First, compute the log-determinant of the Cholesky factor of the covariance
   // matrix. As a by-product, also compute rho.
-  if (method_ == 0)
+  if (method_ == LAPACK)
     logDeterminant = computeLapackLogDeterminantCholesky();
   else
     logDeterminant = computeHMatLogDeterminantCholesky();
@@ -833,7 +824,7 @@ void GeneralLinearModelAlgorithm::setNoise(const Point & noise)
   if (noise.getSize() != size) throw InvalidArgumentException(HERE) << "Noise size=" << noise.getSize()  << " does not match sample size=" << size;
   // Currently setNoise is not handled with HMAT
   // We should first rework on the hmat side to promote this possibility
-  if (getMethod() == 1)
+  if (getMethod() == HMAT)
     throw NotYetImplementedException(HERE) << "Noise is not be handled with HMAT method";
   for (UnsignedInteger i = 0; i < size; ++ i)
     if (!(noise[i] >= 0.0)) throw InvalidArgumentException(HERE) << "Noise must be positive";
@@ -903,7 +894,7 @@ Function GeneralLinearModelAlgorithm::getObjectiveFunction()
 void GeneralLinearModelAlgorithm::initializeMethod()
 {
   if (ResourceMap::GetAsString("GeneralLinearModelAlgorithm-LinearAlgebra") == "HMAT")
-    method_ = 1;
+    method_ = HMAT;
 }
 
 UnsignedInteger GeneralLinearModelAlgorithm::getMethod() const
