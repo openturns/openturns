@@ -8,6 +8,9 @@
 
 %template(SplitterImplementationdInterfaceObject)           OT::TypedInterfaceObject<OT::SplitterImplementation>;
 
+%ignore OT::SplitterImplementation::reset;
+%ignore OT::SplitterImplementation::generate;
+
 %include openturns/SplitterImplementation.hxx
 namespace OT { %extend SplitterImplementation {
 
@@ -26,7 +29,7 @@ PyObject* __next__()
   try {
     indices1 = self->generate(indices2);
   }
-  catch (OT::OutOfBoundException &) {
+  catch (const OT::OutOfBoundException &) {
     SWIG_SetErrorObj(PyExc_StopIteration, SWIG_Py_Void());
     return 0;
   }
@@ -35,7 +38,5 @@ PyObject* __next__()
   PyTuple_SET_ITEM(result, 1, SWIG_NewPointerObj(indices2.clone(), SWIGTYPE_p_OT__Indices, SWIG_POINTER_OWN | 0));
   return result;
 }
-
-PyObject* next() { return OT_SplitterImplementation___next__(self); }
 
 } }

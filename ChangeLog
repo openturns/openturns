@@ -59,6 +59,7 @@
  * #1884 (setDesign can lead to wrong Sobol' indices)
  * #1891 (Correlation of Halton sequence at high dimensions)
  * #1911 (DirectionalSampling freezes python if not correctly initialized)
+ * #1912 (splitter: missing doc)
 
 
 == 1.17 release (2021-05-12) == #release-1.17
