@@ -73,12 +73,6 @@ int main(int, char *[])
     indices.add(1);
     Function marginal(memoMulti.getMarginal(indices));
     fullprint << "memoized marginal=" << marginal << std::endl;
-    // marginal is in fact a MemoizeFunction; to access its history, it
-    // must be wrapped.
-    Sample output2(marginal(input));
-    MemoizeFunction memoMarginal(marginal);
-    fullprint << "input history=" << memoMarginal.getInputHistory() << std::endl;
-    fullprint << "output history=" << memoMarginal.getOutputHistory() << std::endl;
   }
   catch (TestFailed & ex)
   {
