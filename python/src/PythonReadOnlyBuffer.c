@@ -19,6 +19,7 @@
  *
  */
 
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <stdlib.h>
 #include <string.h>
@@ -316,7 +317,7 @@ Buffer_setstate(PyObject *obj, PyObject *args)
   PyObject * shapeObj = NULL;
   PyObject * strideObj = NULL;
   char * rawData;
-  long length = 0;
+  Py_ssize_t length = 0;
   Py_ssize_t shapeLength;
   Py_ssize_t strideLength;
   int i;
