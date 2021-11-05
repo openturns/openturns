@@ -180,6 +180,7 @@ Buffer_iter(PyObject *obj)
 static int
 Buffer_getbuffer(PyObject *obj, Py_buffer *view, int flags)
 {
+  (void)flags;
   Buffer* self = (Buffer*)obj;
   if (view == NULL) {
     PyErr_SetString(PyExc_ValueError, "NULL view in getbuffer");
@@ -191,7 +192,7 @@ Buffer_getbuffer(PyObject *obj, Py_buffer *view, int flags)
   view->len = self->bufferview.length * self->bufferview.itemsize;
   view->readonly = 1;
   view->itemsize = self->bufferview.itemsize;
-  view->format = "d";
+  view->format = (char *)"d";
   view->ndim = self->bufferview.ndim;
   view->shape = self->bufferview.shape;
   view->strides = self->bufferview.strides;
@@ -256,7 +257,7 @@ static PyBufferProcs Buffer_as_buffer = {
 
 /* Forward declaration.
    This method is defined after Buffer_item because it does the opposite job. */
-static PyObject * Buffer_augment(PyObject *obj);
+static PyObject * Buffer_augment(PyObject *obj, PyObject *args);
 
 
 /* This routine is used for pickling; it must return a tuple with 2 to 5 arguments:
@@ -439,8 +440,9 @@ Buffer_item(PyObject *obj, Py_ssize_t index)
 }
 
 static PyObject *
-Buffer_augment(PyObject *obj)
+Buffer_augment(PyObject *obj, PyObject *args)
 {
+  (void)args;
   int j;
   Buffer* self = (Buffer*)obj;
   PyObject * newView;
@@ -518,7 +520,8 @@ static struct module_state _state;
 #if PY_MAJOR_VERSION >= 3
 
 static PyObject *
-error_out(PyObject *m) {
+error_out(PyObject *m, PyObject *args) {
+    (void)args;
     struct module_state *st = GETSTATE(m);
     PyErr_SetString(st->error, "something bad happened");
     return NULL;
@@ -552,6 +555,9 @@ static struct PyModuleDef openturns_memoryview_module = {
 };
 
 #define INITERROR return NULL
+
+PyMODINIT_FUNC
+PyInit_memoryview(void);
 
 PyMODINIT_FUNC
 PyInit_memoryview(void)
