@@ -169,7 +169,7 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
         for (int i = 0; i < m; ++ i)
           jacobian(i, j) *= jacfac[j];
     }
-    std::copy(&jacobian(0, 0), &jacobian(0, 0) + m * n, fjac);
+    std::copy(jacobian.data(), jacobian.data() + m * n, fjac);
   }
   // callbacks
   if (algorithm->progressCallback_.first)
