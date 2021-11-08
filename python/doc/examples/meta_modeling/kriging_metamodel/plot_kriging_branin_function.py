@@ -1,5 +1,5 @@
 """
-Kriging : metamodel of the Branin-Hoo function
+Kriging: metamodel of the Branin-Hoo function
 ==============================================
 """
 # %%
@@ -77,8 +77,8 @@ print(bm.objectiveFunction(sample1))
 
 
 # %%
-# Definition of the kriging
-# -------------------------
+# Definition of the Kriging metamodel
+# -----------------------------------
 #
 # We use the :class:`~openturns.KrigingAlgorithm` class to perform the kriging analysis.
 # We first generate a design of experiments with LHS and store the input trainig points in `xdata`
