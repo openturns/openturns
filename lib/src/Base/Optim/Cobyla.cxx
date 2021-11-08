@@ -111,6 +111,7 @@ void Cobyla::run()
   evaluationOutputHistory_ = Sample(0, 1);
   equalityConstraintHistory_ = Sample(0, getProblem().getEqualityConstraint().getOutputDimension());
   inequalityConstraintHistory_ = Sample(0, getProblem().getInequalityConstraint().getOutputDimension());
+  result_ = OptimizationResult(getProblem());
 
   /*
    * cobyla : minimize a function subject to constraints
@@ -326,6 +327,11 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   // track input/outputs
   algorithm->evaluationInputHistory_.add(inP);
   algorithm->evaluationOutputHistory_.add(outP);
+
+  // update result
+  algorithm->result_.setEvaluationNumber(algorithm->evaluationInputHistory_.getSize());
+  algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
+
   int returnValue = 0;
   if (algorithm->progressCallback_.first)
   {

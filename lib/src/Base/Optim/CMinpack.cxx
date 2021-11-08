@@ -153,6 +153,10 @@ int CMinpack::ComputeObjectiveJacobian(void *p, int m, int n, const Scalar *x, S
     algorithm->evaluationInputHistory_.add(inP);
     algorithm->evaluationOutputHistory_.add(Point(1, 0.5 * outP.normSquare()));
 
+    // update result
+    algorithm->result_.setEvaluationNumber(algorithm->evaluationInputHistory_.getSize());
+    algorithm->result_.store(inP, Point(1, 0.5 * outP.normSquare()), 0.0, 0.0, 0.0, 0.0);
+
     std::copy(outP.begin(), outP.end(), fvec);
   }
   else if (iflag == 2)
@@ -202,6 +206,7 @@ void CMinpack::run()
   // initialize history
   evaluationInputHistory_ = Sample(0, dimension);
   evaluationOutputHistory_ = Sample(0, 1);
+  result_ = OptimizationResult(getProblem());
 
   Point x(startingPoint);
   const int m = getProblem().getResidualFunction().getOutputDimension();

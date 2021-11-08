@@ -152,6 +152,7 @@ void TNC::run()
   // clear history
   evaluationInputHistory_ = Sample(0, dimension);
   evaluationOutputHistory_ = Sample(0, 1);
+  result_ = OptimizationResult(getProblem());
 
   Scalar f = -1.0;
 
@@ -212,8 +213,6 @@ void TNC::run()
 
   int returnCode = tnc((int)dimension, &(*x.begin()), &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &(*low.begin()), &(*up.begin()), refScale, refOffset, message, getMaxCGit(), getMaximumEvaluationNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
   p_nfeval_ = 0;
-
-  result_ = OptimizationResult(getProblem());
 
   // Update the result
   const UnsignedInteger size = evaluationInputHistory_.getSize();
@@ -443,6 +442,10 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   // track input/outputs
   algorithm->evaluationInputHistory_.add(inP);
   algorithm->evaluationOutputHistory_.add(outP);
+
+  // update result
+  algorithm->result_.setEvaluationNumber(algorithm->evaluationInputHistory_.getSize());
+  algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
 
   // callbacks
   if (algorithm->progressCallback_.first)
