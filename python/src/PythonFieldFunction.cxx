@@ -19,7 +19,7 @@
  *
  */
 #include <Python.h>
-#include "openturns/swig_runtime.hxx"
+#include "openturns/swigpyrun.h"
 
 #include "openturns/PythonFieldFunction.hxx"
 #include "openturns/OSS.hxx"
@@ -48,6 +48,7 @@ PythonFieldFunction::PythonFieldFunction(PyObject * pyCallable)
   : FieldFunctionImplementation()
   , pyObj_(pyCallable)
 {
+  InterpreterUnlocker iul;
   Py_XINCREF(pyCallable);
 
   // Set the name of the object as its Python classname
@@ -124,6 +125,7 @@ PythonFieldFunction::PythonFieldFunction(const PythonFieldFunction & other)
   : FieldFunctionImplementation(other)
   , pyObj_()
 {
+  InterpreterUnlocker iul;
   ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
   pyObj_ = pyObjClone.get();
   Py_XINCREF(pyObj_);
@@ -134,6 +136,7 @@ PythonFieldFunction & PythonFieldFunction::operator=(const PythonFieldFunction &
 {
   if (this != &rhs)
   {
+    InterpreterUnlocker iul;
     FieldFunctionImplementation::operator=(rhs);
     ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
     pyObj_ = pyObjClone.get();
@@ -145,6 +148,7 @@ PythonFieldFunction & PythonFieldFunction::operator=(const PythonFieldFunction &
 /* Destructor */
 PythonFieldFunction::~PythonFieldFunction()
 {
+  InterpreterUnlocker iul;
   Py_XDECREF(pyObj_);
 }
 
@@ -181,6 +185,7 @@ String PythonFieldFunction::__str__(const String & ) const
 /* Operator () */
 Sample PythonFieldFunction::operator() (const Sample & inF) const
 {
+  InterpreterUnlocker iul;
   const UnsignedInteger inputDimension = getInputDimension();
   if (inputDimension != inF.getDimension())
     throw InvalidDimensionException(HERE) << "Input field values have incorrect dimension. Got " << inF.getDimension() << ". Expected " << inputDimension;
@@ -234,6 +239,7 @@ Sample PythonFieldFunction::operator() (const Sample & inF) const
 /* Accessor for input point dimension */
 UnsignedInteger PythonFieldFunction::getInputDimension() const
 {
+  InterpreterUnlocker iul;
   ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
                                const_cast<char *>("getInputDimension"),
                                const_cast<char *>("()")));
@@ -245,6 +251,7 @@ UnsignedInteger PythonFieldFunction::getInputDimension() const
 /* Accessor for output point dimension */
 UnsignedInteger PythonFieldFunction::getOutputDimension() const
 {
+  InterpreterUnlocker iul;
   ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
                                const_cast<char *>("getOutputDimension"),
                                const_cast<char *>("()")));
@@ -256,6 +263,7 @@ UnsignedInteger PythonFieldFunction::getOutputDimension() const
 /* Accessor for output point dimension */
 Bool PythonFieldFunction::isActingPointwise() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("isActingPointwise")))
   {
     ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
@@ -271,7 +279,7 @@ Bool PythonFieldFunction::isActingPointwise() const
 void PythonFieldFunction::save(Advocate & adv) const
 {
   FieldFunctionImplementation::save( adv );
-
+  InterpreterUnlocker iul;
   pickleSave(adv, pyObj_);
 }
 
@@ -280,7 +288,7 @@ void PythonFieldFunction::save(Advocate & adv) const
 void PythonFieldFunction::load(Advocate & adv)
 {
   FieldFunctionImplementation::load( adv );
-
+  InterpreterUnlocker iul;
   pickleLoad(adv, pyObj_);
 }
 

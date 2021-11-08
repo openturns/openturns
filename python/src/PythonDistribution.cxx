@@ -19,7 +19,7 @@
  *
  */
 #include <Python.h>
-#include "openturns/swig_runtime.hxx"
+#include "openturns/swigpyrun.h"
 
 #include "openturns/PythonDistribution.hxx"
 #include "openturns/OSS.hxx"
@@ -51,6 +51,7 @@ PythonDistribution::PythonDistribution(PyObject * pyObject)
   : DistributionImplementation(),
     pyObj_(pyObject)
 {
+  InterpreterUnlocker iul;
   // Python memory management is not thread-safe
   setParallel(false);
 
@@ -90,6 +91,7 @@ PythonDistribution::PythonDistribution(const PythonDistribution & other)
   : DistributionImplementation(other),
     pyObj_()
 {
+  InterpreterUnlocker iul;
   ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
   pyObj_ = pyObjClone.get();
   Py_XINCREF(pyObj_);
@@ -100,6 +102,7 @@ PythonDistribution & PythonDistribution::operator=(const PythonDistribution & rh
 {
   if (this != &rhs)
   {
+    InterpreterUnlocker iul;
     DistributionImplementation::operator=(rhs);
     ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
     pyObj_ = pyObjClone.get();
@@ -111,6 +114,7 @@ PythonDistribution & PythonDistribution::operator=(const PythonDistribution & rh
 /* Destructor */
 PythonDistribution::~PythonDistribution()
 {
+  InterpreterUnlocker iul;
   Py_XDECREF(pyObj_);
 }
 
@@ -144,6 +148,7 @@ String PythonDistribution::__str__(const String & ) const
 
 Point PythonDistribution::getRealization() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getRealization") ) )
   {
 
@@ -168,6 +173,7 @@ Point PythonDistribution::getRealization() const
 /* Numerical sample accessor */
 Sample PythonDistribution::getSample(const UnsignedInteger size) const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getSample")))
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_ >("getSample"));
@@ -194,6 +200,7 @@ Sample PythonDistribution::getSample(const UnsignedInteger size) const
 /* Get the DDF of the distribution */
 Point PythonDistribution::computeDDF(const Point & inP) const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeDDF")))
   {
     const UnsignedInteger dimension = inP.getDimension();
@@ -221,6 +228,7 @@ Point PythonDistribution::computeDDF(const Point & inP) const
 /* Get the PDF of the distribution */
 Scalar PythonDistribution::computePDF(const Point & inP) const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computePDF")))
   {
     const UnsignedInteger dimension = inP.getDimension();
@@ -247,6 +255,7 @@ Scalar PythonDistribution::computePDF(const Point & inP) const
 /* Get the PDF of the distribution */
 Scalar PythonDistribution::computeLogPDF(const Point & inP) const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeLogPDF")))
   {
     const UnsignedInteger dimension = inP.getDimension();
@@ -273,6 +282,7 @@ Scalar PythonDistribution::computeLogPDF(const Point & inP) const
 /* Get the CDF of the distribution */
 Scalar PythonDistribution::computeCDF(const Point & inP) const
 {
+  InterpreterUnlocker iul;
   const UnsignedInteger dimension = inP.getDimension();
   if (dimension != getDimension())
     throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << dimension << ". Expected " << getDimension();
@@ -293,6 +303,7 @@ Scalar PythonDistribution::computeCDF(const Point & inP) const
 /* Get the complementary CDF of the distribution */
 Scalar PythonDistribution::computeComplementaryCDF(const Point & inP) const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeComplementaryCDF") ) )
   {
     const UnsignedInteger dimension = inP.getDimension();
@@ -320,6 +331,7 @@ Scalar PythonDistribution::computeComplementaryCDF(const Point & inP) const
 /* Get the quantile of the distribution */
 Point PythonDistribution::computeQuantile(const Scalar prob, const Bool tail) const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeQuantile")))
   {
     const UnsignedInteger dimension = getDimension();
@@ -347,6 +359,7 @@ Point PythonDistribution::computeQuantile(const Scalar prob, const Bool tail) co
 /* Get the characteristic function of the distribution, i.e. phi(u) = E(exp(I*u*X)) */
 Complex PythonDistribution::computeCharacteristicFunction(const Scalar x) const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeCharacteristicFunction")))
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_>("computeCharacteristicFunction"));
@@ -371,6 +384,7 @@ Complex PythonDistribution::computeCharacteristicFunction(const Scalar x) const
 /* Get the PDFGradient of the distribution */
 Point PythonDistribution::computePDFGradient(const Point & inP) const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computePDFGradient")))
   {
     const UnsignedInteger dimension = inP.getDimension();
@@ -398,6 +412,7 @@ Point PythonDistribution::computePDFGradient(const Point & inP) const
 /* Get the CDFGradient of the distribution */
 Point PythonDistribution::computeCDFGradient(const Point & inP) const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeCDFGradient")))
   {
     const UnsignedInteger dimension = inP.getDimension();
@@ -426,6 +441,7 @@ Point PythonDistribution::computeCDFGradient(const Point & inP) const
 Scalar PythonDistribution::computeScalarQuantile(const Scalar prob,
     const Bool tail) const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("computeScalarQuantile") ) )
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_>("computeScalarQuantile"));
@@ -452,6 +468,7 @@ Scalar PythonDistribution::computeScalarQuantile(const Scalar prob,
 /* Get the roughness, i.e. the L2-norm of the PDF */
 Scalar PythonDistribution::getRoughness() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getRoughness")))
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod ( pyObj_,
@@ -473,6 +490,7 @@ Scalar PythonDistribution::getRoughness() const
 /* Mean accessor */
 Point PythonDistribution::getMean() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getMean")))
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod ( pyObj_,
@@ -495,6 +513,7 @@ Point PythonDistribution::getMean() const
 /* Standard deviation accessor */
 Point PythonDistribution::getStandardDeviation() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getStandardDeviation") ) )
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod ( pyObj_,
@@ -517,6 +536,7 @@ Point PythonDistribution::getStandardDeviation() const
 /* Skewness accessor */
 Point PythonDistribution::getSkewness() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getSkewness") ) )
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod ( pyObj_,
@@ -539,6 +559,7 @@ Point PythonDistribution::getSkewness() const
 /* Kurtosis accessor */
 Point PythonDistribution::getKurtosis() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getKurtosis") ) )
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod ( pyObj_,
@@ -562,6 +583,7 @@ Point PythonDistribution::getKurtosis() const
 /* Get the raw moments of the distribution */
 Point PythonDistribution::getStandardMoment(const UnsignedInteger n) const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getStandardMoment") ) )
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_>( "getStandardMoment" ));
@@ -587,6 +609,7 @@ Point PythonDistribution::getStandardMoment(const UnsignedInteger n) const
 /* Get the raw moments of the distribution */
 Point PythonDistribution::getMoment(const UnsignedInteger n) const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getMoment") ) )
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_>( "getMoment" ));
@@ -611,6 +634,7 @@ Point PythonDistribution::getMoment(const UnsignedInteger n) const
 /* Get the centered moments of the distribution */
 Point PythonDistribution::getCenteredMoment(const UnsignedInteger n) const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getCenteredMoment") ) )
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_>( "getCenteredMoment" ));
@@ -636,6 +660,7 @@ Point PythonDistribution::getCenteredMoment(const UnsignedInteger n) const
 /* Check if the distribution is a copula */
 Bool PythonDistribution::isCopula() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("isCopula") ) )
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod ( pyObj_,
@@ -658,6 +683,7 @@ Bool PythonDistribution::isCopula() const
 /* Check if the distribution is elliptical */
 Bool PythonDistribution::isElliptical() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("isElliptical") ) )
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod ( pyObj_,
@@ -680,6 +706,7 @@ Bool PythonDistribution::isElliptical() const
 /* Check if the distribution is continuous */
 Bool PythonDistribution::isContinuous() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("isContinuous") ) )
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod( pyObj_,
@@ -701,6 +728,7 @@ Bool PythonDistribution::isContinuous() const
 
 Bool PythonDistribution::isDiscrete() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("isDiscrete") ) )
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod( pyObj_,
@@ -723,6 +751,7 @@ Bool PythonDistribution::isDiscrete() const
 /* Check if the distribution is integral */
 Bool PythonDistribution::isIntegral() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("isIntegral") ) )
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod ( pyObj_,
@@ -745,6 +774,7 @@ Bool PythonDistribution::isIntegral() const
 /* Tell if the distribution has elliptical copula */
 Bool PythonDistribution::hasEllipticalCopula() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("hasEllipticalCopula") ) )
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod ( pyObj_,
@@ -767,6 +797,7 @@ Bool PythonDistribution::hasEllipticalCopula() const
 /* Tell if the distribution has independent copula */
 Bool PythonDistribution::hasIndependentCopula() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("hasIndependentCopula") ) )
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod ( pyObj_,
@@ -789,6 +820,7 @@ Bool PythonDistribution::hasIndependentCopula() const
 /* Get the distribution of the marginal distribution corresponding to indices dimensions */
 Distribution PythonDistribution::getMarginal(const Indices & indices) const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getMarginal")))
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_ >("getMarginal"));
@@ -829,7 +861,7 @@ Distribution PythonDistribution::getMarginal(const UnsignedInteger i) const
 void PythonDistribution::save(Advocate & adv) const
 {
   DistributionImplementation::save(adv);
-
+  InterpreterUnlocker iul;
   pickleSave(adv, pyObj_);
 }
 
@@ -838,7 +870,7 @@ void PythonDistribution::save(Advocate & adv) const
 void PythonDistribution::load(Advocate & adv)
 {
   DistributionImplementation::load(adv);
-
+  InterpreterUnlocker iul;
   pickleLoad(adv, pyObj_);
 }
 
@@ -912,6 +944,7 @@ convert< _PyObject_, Interval >(PyObject * pyObj)
 /* Compute the numerical range of the distribution given the parameters values */
 void PythonDistribution::computeRange()
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getRange") ) )
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod( pyObj_,
@@ -933,6 +966,7 @@ void PythonDistribution::computeRange()
 /* Get the support of a discrete distribution that intersect a given interval */
 Sample PythonDistribution::getSupport(const Interval & interval) const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getSupport")))
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_ >("getSupport"));
@@ -954,6 +988,7 @@ Sample PythonDistribution::getSupport(const Interval & interval) const
 
 Point PythonDistribution::getParameter() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getParameter")))
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod( pyObj_,
@@ -976,6 +1011,7 @@ Point PythonDistribution::getParameter() const
 
 void PythonDistribution::setParameter(const Point & parameter)
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("setParameter")))
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_ >("setParameter"));
@@ -994,6 +1030,7 @@ void PythonDistribution::setParameter(const Point & parameter)
 
 Description PythonDistribution::getParameterDescription() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getParameterDescription")))
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod( pyObj_,

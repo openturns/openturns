@@ -68,6 +68,7 @@ namespace OT {
 
 Point(PyObject * pyObj)
 {
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
   return new OT::Point(OT::convert<OT::_PySequence_,OT::Point>(pyObj));
 }
 

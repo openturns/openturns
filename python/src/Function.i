@@ -57,6 +57,7 @@ namespace OT {
 
 Function(PyObject * pyObj)
 {
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
   void * ptr = 0;
   if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__Object, 0)))
   {

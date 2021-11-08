@@ -24,6 +24,7 @@ SplitterImplementation * __iter__()
 
 PyObject* __next__()
 {
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
   OT::Indices indices1;
   OT::Indices indices2;
   try {

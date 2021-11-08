@@ -10,6 +10,7 @@ public:
   PythonHMatrixRealAssemblyFunction(PyObject * pyObj)
   : pyObj_(pyObj)
   {
+    OT::InterpreterUnlocker iul;
     if (!PyCallable_Check(pyObj)) {
       throw OT::InvalidArgumentException(HERE) << "Argument is not a callable object.";
     }
@@ -17,6 +18,7 @@ public:
 
   virtual OT::Scalar operator() (OT::UnsignedInteger i, OT::UnsignedInteger j) const
   {
+    OT::InterpreterUnlocker iul;
     OT::ScopedPyObjectPointer index1(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(i));
     OT::ScopedPyObjectPointer index2(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(j));
     OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj_, index1.get(), index2.get(), NULL));
@@ -33,6 +35,7 @@ public:
   PythonHMatrixTensorRealAssemblyFunction(PyObject * pyObj, const OT::UnsignedInteger outputDimension)
   : HMatrixTensorRealAssemblyFunction(outputDimension), pyObj_(pyObj)
   {
+    OT::InterpreterUnlocker iul;
     if (!PyCallable_Check(pyObj)) {
       throw OT::InvalidArgumentException(HERE) << "Argument is not a callable object.";
     }
@@ -40,6 +43,7 @@ public:
 
   virtual void compute(OT::UnsignedInteger i, OT::UnsignedInteger j, OT::Matrix* localValues) const
   {
+    OT::InterpreterUnlocker iul;
     OT::ScopedPyObjectPointer index1(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(i));
     OT::ScopedPyObjectPointer index2(OT::convert< OT::UnsignedInteger, OT::_PyInt_ >(j));
     OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj_, index1.get(), index2.get(), NULL));

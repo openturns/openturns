@@ -32,6 +32,7 @@ template <class T> Collection(const Collection<T> & other)
 %define OT_COLLECTION_GETITEM(collectionType, elementType)
 PyObject * __getitem__(PyObject * arg) const
 {
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
   if (PyInt_Check(arg))
   {
     long val2 = 0;
@@ -60,7 +61,7 @@ PyObject * __getitem__(PyObject * arg) const
     else
       for (Py_ssize_t i = 0; i < size; ++ i)
         result.at(i) = self->at(start + i * step);
-    return SWIG_NewPointerObj((new collectionType(static_cast< const collectionType& >(result))), SWIG_TypeQuery(#collectionType " *"), SWIG_POINTER_OWN |  0);
+    return SWIG_NewPointerObj(new collectionType(result), SWIG_TypeQuery(#collectionType " *"), SWIG_POINTER_OWN);
   }
   else if (PySequence_Check(arg))
   {
@@ -91,7 +92,7 @@ PyObject * __getitem__(PyObject * arg) const
       }
       result[i] = self->at(index);
     }
-    return SWIG_NewPointerObj((new collectionType(static_cast< const collectionType& >(result))), SWIG_TypeQuery(#collectionType " *"), SWIG_POINTER_OWN |  0);
+    return SWIG_NewPointerObj(new collectionType(result), SWIG_TypeQuery(#collectionType " *"), SWIG_POINTER_OWN);
   }
   else if (PyObject_HasAttrString(arg, "__int__"))
   {
@@ -107,6 +108,7 @@ PyObject * __getitem__(PyObject * arg) const
   }
   else
     SWIG_exception(SWIG_TypeError, "Collection.__getitem__ expects int, slice or sequence argument");
+  SWIG_PYTHON_THREAD_END_BLOCK;
 fail:
   return NULL;
 }
@@ -116,6 +118,7 @@ fail:
 %define OT_COLLECTION_SETITEM(collectionType, elementType)
 PyObject * __setitem__(PyObject * arg, PyObject * valObj)
 {
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
   if (PyInt_Check(arg))
   {
     long val2 = 0;
@@ -206,6 +209,7 @@ PyObject * __setitem__(PyObject * arg, PyObject * valObj)
   else
     SWIG_exception(SWIG_TypeError, "Collection.__setitem__ expects int, slice or sequence argument");
   return SWIG_Py_Void();
+  SWIG_PYTHON_THREAD_END_BLOCK;
 fail:
   return NULL;
 }

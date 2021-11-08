@@ -14,7 +14,11 @@ namespace OT {
 
   TriangularComplexMatrix(const TriangularComplexMatrix & other) { return new OT::TriangularComplexMatrix(other); }
 
-  TriangularComplexMatrix(PyObject * pyObj) { return new OT::TriangularComplexMatrix( OT::convert<OT::_PySequence_,OT::TriangularComplexMatrix>(pyObj) ); }
+  TriangularComplexMatrix(PyObject * pyObj)
+  {
+    SWIG_PYTHON_THREAD_BEGIN_BLOCK;
+    return new OT::TriangularComplexMatrix(OT::convert<OT::_PySequence_, OT::TriangularComplexMatrix>(pyObj));
+  }
 
   OTComplexMatrixGetAccessors()
 

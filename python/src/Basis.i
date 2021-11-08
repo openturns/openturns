@@ -44,6 +44,7 @@ OTTypedInterfaceObjectHelper(Basis)
 
 OT::Collection<OT::Function> (PyObject * pyObj)
 {
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
   return OT::buildCollectionFromPySequence<OT::Function>(pyObj);
 }
 
@@ -71,6 +72,7 @@ UnsignedInteger __len__() const
 
 Basis(PyObject * pyObj)
 {
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
   try
   {
     OT::Pointer<OT::Collection<OT::Function> > p_coll =  OT::buildCollectionFromPySequence<OT::Function>( pyObj );

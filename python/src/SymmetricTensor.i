@@ -25,7 +25,11 @@ namespace OT {
 
   SymmetricTensor(const SymmetricTensor & other) { return new OT::SymmetricTensor(other); }
 
-  SymmetricTensor(PyObject * pyObj) { return new OT::SymmetricTensor( OT::convert<OT::_PySequence_,OT::SymmetricTensor>(pyObj) ); }
+  SymmetricTensor(PyObject * pyObj)
+  {
+    SWIG_PYTHON_THREAD_BEGIN_BLOCK;
+    return new OT::SymmetricTensor(OT::convert<OT::_PySequence_, OT::SymmetricTensor>(pyObj));
+  }
 
   OTTensorAccessors(SymmetricTensor, Scalar, _PyFloat_)
 

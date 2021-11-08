@@ -69,6 +69,16 @@ private:
 };
 
 
+/** Aquire/release the GIL */
+class InterpreterUnlocker {
+public:
+  InterpreterUnlocker() : state_(PyGILState_Ensure()) {}
+  ~InterpreterUnlocker() { PyGILState_Release(state_); }
+private:
+  PyGILState_STATE state_;
+};
+
+
 /** These templates are just declared, not defined. Only specializations are. */
 template <class CPP_Type>                    struct traitsPythonType;
 template <class PYTHON_Type>                 static inline int          isAPython(PyObject * pyObj);

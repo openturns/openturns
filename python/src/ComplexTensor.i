@@ -41,7 +41,11 @@ namespace OT {
 
   ComplexTensor(const ComplexTensor & other) { return new OT::ComplexTensor(other); }
 
-  ComplexTensor(PyObject * pyObj) { return new OT::ComplexTensor( OT::convert<OT::_PySequence_,OT::ComplexTensor>(pyObj) ); }
+  ComplexTensor(PyObject * pyObj)
+  {
+    SWIG_PYTHON_THREAD_BEGIN_BLOCK;
+    return new OT::ComplexTensor(OT::convert<OT::_PySequence_,OT::ComplexTensor>(pyObj));
+  }
 
   OTTensorAccessors(ComplexTensor, Complex, _PyComplex_)
 

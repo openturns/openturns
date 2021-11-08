@@ -19,7 +19,7 @@
  *
  */
 #include <Python.h>
-#include "openturns/swig_runtime.hxx"
+#include "openturns/swigpyrun.h"
 
 #include "openturns/PythonPointToFieldFunction.hxx"
 #include "openturns/OSS.hxx"
@@ -48,6 +48,7 @@ PythonPointToFieldFunction::PythonPointToFieldFunction(PyObject * pyCallable)
   : PointToFieldFunctionImplementation()
   , pyObj_(pyCallable)
 {
+  InterpreterUnlocker iul;
   Py_XINCREF(pyCallable);
 
   // Set the name of the object as its Python classname
@@ -111,6 +112,7 @@ PythonPointToFieldFunction::PythonPointToFieldFunction(const PythonPointToFieldF
   : PointToFieldFunctionImplementation(other)
   , pyObj_()
 {
+  InterpreterUnlocker iul;
   ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
   pyObj_ = pyObjClone.get();
   Py_XINCREF(pyObj_);
@@ -121,6 +123,7 @@ PythonPointToFieldFunction & PythonPointToFieldFunction::operator=(const PythonP
 {
   if (this != & rhs)
   {
+    InterpreterUnlocker iul;
     PointToFieldFunctionImplementation::operator=(rhs);
     ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
     pyObj_ = pyObjClone.get();
@@ -132,6 +135,7 @@ PythonPointToFieldFunction & PythonPointToFieldFunction::operator=(const PythonP
 /* Destructor */
 PythonPointToFieldFunction::~PythonPointToFieldFunction()
 {
+  InterpreterUnlocker iul;
   Py_XDECREF(pyObj_);
 }
 
@@ -168,6 +172,7 @@ String PythonPointToFieldFunction::__str__(const String & ) const
 /* Operator () */
 Sample PythonPointToFieldFunction::operator() (const Point & inP) const
 {
+  InterpreterUnlocker iul;
   const UnsignedInteger inputDimension = getInputDimension();
   if (inputDimension != inP.getDimension())
     throw InvalidDimensionException(HERE) << "Input point has incorrect dimension. Got " << inP.getDimension() << ". Expected " << getInputDimension();
@@ -206,6 +211,7 @@ Sample PythonPointToFieldFunction::operator() (const Point & inP) const
 /* Accessor for input point dimension */
 UnsignedInteger PythonPointToFieldFunction::getInputDimension() const
 {
+  InterpreterUnlocker iul;
   ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
                                const_cast<char *>("getInputDimension"),
                                const_cast<char *>("()")));
@@ -217,6 +223,7 @@ UnsignedInteger PythonPointToFieldFunction::getInputDimension() const
 /* Accessor for output point dimension */
 UnsignedInteger PythonPointToFieldFunction::getOutputDimension() const
 {
+  InterpreterUnlocker iul;
   ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
                                const_cast<char *>("getOutputDimension"),
                                const_cast<char *>("()")));
@@ -229,7 +236,7 @@ UnsignedInteger PythonPointToFieldFunction::getOutputDimension() const
 void PythonPointToFieldFunction::save(Advocate & adv) const
 {
   PointToFieldFunctionImplementation::save( adv );
-
+  InterpreterUnlocker iul;
   pickleSave(adv, pyObj_);
 }
 
@@ -238,7 +245,7 @@ void PythonPointToFieldFunction::save(Advocate & adv) const
 void PythonPointToFieldFunction::load(Advocate & adv)
 {
   PointToFieldFunctionImplementation::load( adv );
-
+  InterpreterUnlocker iul;
   pickleLoad(adv, pyObj_);
 }
 

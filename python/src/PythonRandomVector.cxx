@@ -49,30 +49,32 @@ PythonRandomVector::PythonRandomVector(PyObject * pyObject)
   : RandomVectorImplementation(),
     pyObj_(pyObject)
 {
-  if ( !PyObject_HasAttrString( pyObj_, const_cast<char *>("getRealization") ) ) throw InvalidArgumentException(HERE) << "Error: the given object does not have a getRealization() method.";
+  InterpreterUnlocker iul;
+  if (!PyObject_HasAttrString( pyObj_, const_cast<char *>("getRealization")))
+    throw InvalidArgumentException(HERE) << "Error: the given object does not have a getRealization() method.";
 
-  Py_XINCREF( pyObj_ );
+  Py_XINCREF(pyObj_);
 
   // Set the name of the object as its Python classname
   ScopedPyObjectPointer cls(PyObject_GetAttrString ( pyObj_,
-                            const_cast<char *>( "__class__" ) ));
+                            const_cast<char *>( "__class__" )));
   ScopedPyObjectPointer name(PyObject_GetAttrString( cls.get(),
-                             const_cast<char *>( "__name__" ) ));
+                             const_cast<char *>( "__name__" )));
 
-  setName( checkAndConvert< _PyString_, String >(name.get()) );
+  setName(checkAndConvert< _PyString_, String >(name.get()));
 
   const UnsignedInteger dimension  = getDimension();
   Description description(dimension);
   ScopedPyObjectPointer desc(PyObject_CallMethod ( pyObj_,
                              const_cast<char *>( "getDescription" ),
                              const_cast<char *>( "()" ) ));
-  if ( ( desc.get() != NULL )
-       && PySequence_Check( desc.get() )
-       && ( PySequence_Size( desc.get() ) == static_cast<SignedInteger>(dimension) ) )
+  if ((desc.get() != NULL)
+       && PySequence_Check(desc.get())
+       && (PySequence_Size(desc.get()) == static_cast<SignedInteger>(dimension) ) )
   {
     description = convert< _PySequence_, Description >( desc.get() );
   }
-  else for (UnsignedInteger i = 0; i < dimension; ++i) description[i] = (OSS() << "x" << i);
+  else for (UnsignedInteger i = 0; i < dimension; ++ i) description[i] = (OSS() << "x" << i);
   setDescription(description);
 }
 
@@ -87,6 +89,7 @@ PythonRandomVector::PythonRandomVector(const PythonRandomVector & other)
   : RandomVectorImplementation(other),
     pyObj_()
 {
+  InterpreterUnlocker iul;
   ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
   pyObj_ = pyObjClone.get();
   Py_XINCREF(pyObj_);
@@ -97,6 +100,7 @@ PythonRandomVector & PythonRandomVector::operator=(const PythonRandomVector & rh
 {
   if (this != &rhs)
   {
+    InterpreterUnlocker iul;
     RandomVectorImplementation::operator=(rhs);
     ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
     pyObj_ = pyObjClone.get();
@@ -108,6 +112,7 @@ PythonRandomVector & PythonRandomVector::operator=(const PythonRandomVector & rh
 /* Destructor */
 PythonRandomVector::~PythonRandomVector()
 {
+  InterpreterUnlocker iul;
   Py_XDECREF(pyObj_);
 }
 
@@ -143,9 +148,10 @@ String PythonRandomVector::__str__(const String & ) const
 /* Accessor for input point dimension */
 UnsignedInteger PythonRandomVector::getDimension() const
 {
-  ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
-                               const_cast<char *>( "getDimension" ),
-                               const_cast<char *>( "()" ) ));
+  InterpreterUnlocker iul;
+  ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
+                               const_cast<char *>("getDimension"),
+                               const_cast<char *>("()")));
   if ( result.isNull() )
   {
     handleException();
@@ -157,9 +163,10 @@ UnsignedInteger PythonRandomVector::getDimension() const
 
 Point PythonRandomVector::getRealization() const
 {
-  ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
-                               const_cast<char *>( "getRealization" ),
-                               const_cast<char *>( "()" ) ));
+  InterpreterUnlocker iul;
+  ScopedPyObjectPointer result(PyObject_CallMethod(pyObj_,
+                               const_cast<char *>("getRealization"),
+                               const_cast<char *>("()")));
   if ( result.isNull() )
   {
     handleException();
@@ -172,16 +179,17 @@ Point PythonRandomVector::getRealization() const
 /* Numerical sample accessor */
 Sample PythonRandomVector::getSample(const UnsignedInteger size) const
 {
+  InterpreterUnlocker iul;
   Sample sample;
 
-  if ( PyObject_HasAttrString( pyObj_, const_cast<char *>("getSample") ) )
+  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getSample")))
   {
-    ScopedPyObjectPointer methodName(convert< String, _PyString_>( "getSample" ));
+    ScopedPyObjectPointer methodName(convert< String, _PyString_>("getSample"));
     ScopedPyObjectPointer sizeArg(convert< UnsignedInteger, _PyInt_ >(size));
-    ScopedPyObjectPointer result(PyObject_CallMethodObjArgs( pyObj_,
+    ScopedPyObjectPointer result(PyObject_CallMethodObjArgs(pyObj_,
                                  methodName.get(),
-                                 sizeArg.get(), NULL ));
-    if ( result.get() )
+                                 sizeArg.get(), NULL));
+    if (result.get())
     {
       sample = convert<_PySequence_, Sample>(result.get());
       if (sample.getSize() != size) throw InvalidDimensionException(HERE) << "Sample returned by PythonRandomVector has incorrect size. Got " << sample.getSize() << ". Expected" << size;
@@ -198,9 +206,10 @@ Sample PythonRandomVector::getSample(const UnsignedInteger size) const
 /* Mean accessor */
 Point PythonRandomVector::getMean() const
 {
-  ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
-                               const_cast<char *>( "getMean" ),
-                               const_cast<char *>( "()" ) ));
+  InterpreterUnlocker iul;
+  ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
+                               const_cast<char *>("getMean"),
+                               const_cast<char *>("()")));
   if ( result.isNull() )
   {
     handleException();
@@ -214,9 +223,10 @@ Point PythonRandomVector::getMean() const
 /* Covariance accessor */
 CovarianceMatrix PythonRandomVector::getCovariance() const
 {
-  ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
-                               const_cast<char *>( "getCovariance" ),
-                               const_cast<char *>( "()" ) ));
+  InterpreterUnlocker iul;
+  ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
+                               const_cast<char *>("getCovariance"),
+                               const_cast<char *>("()")));
   if ( result.isNull() )
   {
     handleException();
@@ -230,11 +240,12 @@ CovarianceMatrix PythonRandomVector::getCovariance() const
 
 Bool PythonRandomVector::isEvent() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("isEvent")))
   {
-    ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
-                                 const_cast<char *>( "isEvent" ),
-                                 const_cast<char *>( "()" ) ));
+    ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
+                                 const_cast<char *>("isEvent"),
+                                 const_cast<char *>("()")));
     if ( result.isNull() )
     {
       handleException();
@@ -252,11 +263,12 @@ Bool PythonRandomVector::isEvent() const
 /* Parameter accessor */
 Point PythonRandomVector::getParameter() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getParameter")))
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod( pyObj_,
-                                     const_cast<char *>( "getParameter" ),
-                                     const_cast<char *>( "()" ) ));
+                                     const_cast<char *>("getParameter"),
+                                     const_cast<char *>("()")));
     if (callResult.isNull())
     {
       handleException();
@@ -274,6 +286,7 @@ Point PythonRandomVector::getParameter() const
 /* Parameter accessor */
 void PythonRandomVector::setParameter(const Point & parameter)
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("setParameter")))
   {
     ScopedPyObjectPointer methodName(convert< String, _PyString_ >("setParameter"));
@@ -291,11 +304,12 @@ void PythonRandomVector::setParameter(const Point & parameter)
 /* Parameter description accessor */
 Description PythonRandomVector::getParameterDescription() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getParameterDescription")))
   {
     ScopedPyObjectPointer callResult(PyObject_CallMethod( pyObj_,
-                                     const_cast<char *>( "getParameterDescription" ),
-                                     const_cast<char *>( "()" ) ));
+                                     const_cast<char *>("getParameterDescription"),
+                                     const_cast<char *>("()")));
     if (callResult.isNull())
     {
       handleException();
@@ -314,7 +328,7 @@ Description PythonRandomVector::getParameterDescription() const
 void PythonRandomVector::save(Advocate & adv) const
 {
   RandomVectorImplementation::save( adv );
-
+  InterpreterUnlocker iul;
   pickleSave(adv, pyObj_);
 }
 
@@ -323,7 +337,7 @@ void PythonRandomVector::save(Advocate & adv) const
 void PythonRandomVector::load(Advocate & adv)
 {
   RandomVectorImplementation::load( adv );
-
+  InterpreterUnlocker iul;
   pickleLoad(adv, pyObj_);
 }
 

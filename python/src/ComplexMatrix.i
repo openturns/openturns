@@ -49,7 +49,11 @@ namespace OT {
 
   ComplexMatrix(const ComplexMatrix & other) { return new OT::ComplexMatrix(other); }
 
-  ComplexMatrix(PyObject * pyObj) { return new OT::ComplexMatrix( OT::convert<OT::_PySequence_,OT::ComplexMatrix>(pyObj) ); }
+  ComplexMatrix(PyObject * pyObj)
+  {
+    SWIG_PYTHON_THREAD_BEGIN_BLOCK;
+    return new OT::ComplexMatrix(OT::convert<OT::_PySequence_, OT::ComplexMatrix>(pyObj));
+  }
 
   OTComplexMatrixGetAccessors()  
   

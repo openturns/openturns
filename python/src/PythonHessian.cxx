@@ -48,6 +48,7 @@ PythonHessian::PythonHessian(PyObject * pyCallable)
   : HessianImplementation()
   , pyObj_(pyCallable)
 {
+  InterpreterUnlocker iul;
   Py_XINCREF(pyCallable);
 
   // Set the name of the object as its Python classname
@@ -69,6 +70,7 @@ PythonHessian::PythonHessian(const PythonHessian & other)
   : HessianImplementation(other)
   , pyObj_()
 {
+  InterpreterUnlocker iul;
   ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
   pyObj_ = pyObjClone.get();
   Py_XINCREF(pyObj_);
@@ -79,6 +81,7 @@ PythonHessian & PythonHessian::operator=(const PythonHessian & rhs)
 {
   if (this != &rhs)
   {
+    InterpreterUnlocker iul;
     HessianImplementation::operator=(rhs);
     ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
     pyObj_ = pyObjClone.get();
@@ -90,6 +93,7 @@ PythonHessian & PythonHessian::operator=(const PythonHessian & rhs)
 /* Destructor */
 PythonHessian::~PythonHessian()
 {
+  InterpreterUnlocker iul;
   Py_XDECREF(pyObj_);
 }
 
@@ -124,6 +128,7 @@ String PythonHessian::__str__(const String & ) const
 /* Operator () */
 SymmetricTensor PythonHessian::hessian(const Point & inP) const
 {
+  InterpreterUnlocker iul;
   const UnsignedInteger dimension = inP.getDimension();
 
   if (dimension != getInputDimension())
@@ -165,6 +170,7 @@ SymmetricTensor PythonHessian::hessian(const Point & inP) const
 /* Accessor for input point dimension */
 UnsignedInteger PythonHessian::getInputDimension() const
 {
+  InterpreterUnlocker iul;
   ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
                                const_cast<char *>("getInputDimension"),
                                const_cast<char *>("()")));
@@ -176,6 +182,7 @@ UnsignedInteger PythonHessian::getInputDimension() const
 /* Accessor for output point dimension */
 UnsignedInteger PythonHessian::getOutputDimension() const
 {
+  InterpreterUnlocker iul;
   ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
                                const_cast<char *>("getOutputDimension"),
                                const_cast<char *>("()")));
@@ -188,7 +195,7 @@ UnsignedInteger PythonHessian::getOutputDimension() const
 void PythonHessian::save(Advocate & adv) const
 {
   HessianImplementation::save(adv);
-
+  InterpreterUnlocker iul;
   pickleSave(adv, pyObj_);
 }
 
@@ -197,7 +204,7 @@ void PythonHessian::save(Advocate & adv) const
 void PythonHessian::load(Advocate & adv)
 {
   HessianImplementation::load(adv);
-
+  InterpreterUnlocker iul;
   pickleLoad(adv, pyObj_);
 }
 

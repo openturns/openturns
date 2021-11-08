@@ -53,7 +53,8 @@ TestResult(const TestResult & other) { return new OT::TestResult(other); }
 
 TestResult(PyObject * pyObj)
 {
- return new OT::TestResult( OT::convert<OT::_PySequence_,OT::TestResult>(pyObj) );
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
+  return new OT::TestResult(OT::convert<OT::_PySequence_, OT::TestResult>(pyObj));
 }
 
 }

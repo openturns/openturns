@@ -56,7 +56,11 @@ namespace OT {
 
   CovarianceMatrix(const CovarianceMatrix & other) { return new OT::CovarianceMatrix(other); }
   
-  CovarianceMatrix(PyObject * pyObj) { return new OT::CovarianceMatrix( OT::convert<OT::_PySequence_,OT::CovarianceMatrix>(pyObj) ); }
+  CovarianceMatrix(PyObject * pyObj)
+  {
+    SWIG_PYTHON_THREAD_BEGIN_BLOCK;
+    return new OT::CovarianceMatrix( OT::convert<OT::_PySequence_, OT::CovarianceMatrix>(pyObj));
+  }
   
   OTMatrixAccessors()
   

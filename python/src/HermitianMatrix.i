@@ -22,7 +22,11 @@ namespace OT {
 %extend HermitianMatrix {
   HermitianMatrix(const HermitianMatrix & other) { return new  OT::HermitianMatrix(other); }
 
-  HermitianMatrix(PyObject * pyObj) { return new OT::HermitianMatrix( OT::convert<OT::_PySequence_,OT::HermitianMatrix>(pyObj) ); }
+  HermitianMatrix(PyObject * pyObj)
+  {
+    SWIG_PYTHON_THREAD_BEGIN_BLOCK;
+    return new OT::HermitianMatrix(OT::convert<OT::_PySequence_, OT::HermitianMatrix>(pyObj));
+  }
 
   OTComplexMatrixGetAccessors()
 

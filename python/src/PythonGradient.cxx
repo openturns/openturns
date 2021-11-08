@@ -48,6 +48,7 @@ PythonGradient::PythonGradient(PyObject * pyCallable)
   : GradientImplementation()
   , pyObj_(pyCallable)
 {
+  InterpreterUnlocker iul;
   Py_XINCREF(pyCallable);
 
   // Set the name of the object as its Python classname
@@ -69,6 +70,7 @@ PythonGradient::PythonGradient(const PythonGradient & other)
   : GradientImplementation(other)
   , pyObj_()
 {
+  InterpreterUnlocker iul;
   ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
   pyObj_ = pyObjClone.get();
   Py_XINCREF(pyObj_);
@@ -79,6 +81,7 @@ PythonGradient & PythonGradient::operator=(const PythonGradient & rhs)
 {
   if (this != &rhs)
   {
+    InterpreterUnlocker iul;
     GradientImplementation::operator=(rhs);
     ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
     pyObj_ = pyObjClone.get();
@@ -124,6 +127,7 @@ String PythonGradient::__str__(const String & ) const
 /* Operator () */
 Matrix PythonGradient::gradient(const Point & inP) const
 {
+  InterpreterUnlocker iul;
   const UnsignedInteger dimension = inP.getDimension();
 
   if (dimension != getInputDimension())
@@ -161,6 +165,7 @@ Matrix PythonGradient::gradient(const Point & inP) const
 /* Accessor for input point dimension */
 UnsignedInteger PythonGradient::getInputDimension() const
 {
+  InterpreterUnlocker iul;
   ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
                                const_cast<char *>("getInputDimension"),
                                const_cast<char *>("()")));
@@ -172,6 +177,7 @@ UnsignedInteger PythonGradient::getInputDimension() const
 /* Accessor for output point dimension */
 UnsignedInteger PythonGradient::getOutputDimension() const
 {
+  InterpreterUnlocker iul;
   ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
                                const_cast<char *>("getOutputDimension"),
                                const_cast<char *>("()")));
@@ -184,7 +190,7 @@ UnsignedInteger PythonGradient::getOutputDimension() const
 void PythonGradient::save(Advocate & adv) const
 {
   GradientImplementation::save(adv);
-
+  InterpreterUnlocker iul;
   pickleSave(adv, pyObj_);
 }
 
@@ -193,7 +199,7 @@ void PythonGradient::save(Advocate & adv) const
 void PythonGradient::load(Advocate & adv)
 {
   GradientImplementation::load(adv);
-
+  InterpreterUnlocker iul;
   pickleLoad(adv, pyObj_);
 }
 

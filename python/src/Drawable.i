@@ -44,6 +44,7 @@ Drawable(const Drawable & other) { return new OT::Drawable(other); }
 
 Drawable(PyObject * pyObj)
 {
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
   return new OT::Drawable( OT::convert<OT::_PyObject_,OT::Drawable>(pyObj) );
 }
 

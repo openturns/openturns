@@ -25,8 +25,9 @@
 %apply const ScalarCollection & { const OT::Matrix::ScalarCollection & };
 
 %define OTMatrixGetAccessor(baseType, elementType, pythonElementType)
-PyObject * __getitem__(PyObject * args) const {
-
+PyObject * __getitem__(PyObject * args) const
+{
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
   Py_ssize_t start1 = 0;
   Py_ssize_t stop1 = 0;
   Py_ssize_t step1 = 0;
@@ -37,14 +38,14 @@ PyObject * __getitem__(PyObject * args) const {
   { 
     PySlice_GetIndicesEx( OT::SliceCast( args ), self->getNbRows(), &start1, &stop1, &step1, &slicelength1 );
     OT::baseType result(slicelength1, self->getNbColumns());
-    for( OT::UnsignedInteger j = 0; j < self->getNbColumns(); ++ j )
+    for(OT::UnsignedInteger j = 0; j < self->getNbColumns(); ++ j)
     {
-      for ( Py_ssize_t i = 0; i < slicelength1; ++ i )
+      for (Py_ssize_t i = 0; i < slicelength1; ++ i)
       {
         result.operator()(i, j) = self->operator()( start1 + i*step1, j );
       }
     }
-    return SWIG_NewPointerObj((new OT::baseType(static_cast< const OT::baseType& >(result))), SWIG_TypeQuery("OT::" #baseType " *"), SWIG_POINTER_OWN |  0 );
+    return SWIG_NewPointerObj(new OT::baseType(result), SWIG_TypeQuery("OT::" #baseType " *"), SWIG_POINTER_OWN);
   }
 
   PyObject * obj1 = 0 ;
@@ -83,7 +84,7 @@ PyObject * __getitem__(PyObject * args) const {
   // convert second list argument
   if ( PySlice_Check( obj2 ) )
   {
-    PySlice_GetIndicesEx( OT::SliceCast( obj2 ), self->getNbColumns(), &start2, &stop2, &step2, &slicelength2 );
+    PySlice_GetIndicesEx(OT::SliceCast( obj2 ), self->getNbColumns(), &start2, &stop2, &step2, &slicelength2);
   }
   else
   {
@@ -100,45 +101,45 @@ PyObject * __getitem__(PyObject * args) const {
   }
 
   // handle arguments
-  if ( PySlice_Check( obj1 ) )
+  if (PySlice_Check(obj1))
   {
 
-    if ( PySlice_Check( obj2 ) )
+    if (PySlice_Check(obj2))
     {
       // case #1: [slice/slice] => baseType
       OT::baseType result( slicelength1, slicelength2 );
-      for ( Py_ssize_t i = 0; i < slicelength1; ++ i )
+      for (Py_ssize_t i = 0; i < slicelength1; ++ i)
       {
-        for ( Py_ssize_t j = 0; j < slicelength2; ++ j )
+        for (Py_ssize_t j = 0; j < slicelength2; ++ j)
         {
           result.operator()(i, j) = self->operator()( start1 + i*step1, start2 + j*step2 );
         }
       }
-      return SWIG_NewPointerObj((new OT::baseType(static_cast< const OT::baseType& >(result))), SWIG_TypeQuery("OT::" #baseType " *"), SWIG_POINTER_OWN |  0 );
+      return SWIG_NewPointerObj(new OT::baseType(result), SWIG_TypeQuery("OT::" #baseType " *"), SWIG_POINTER_OWN);
     }
     else
     {
       // case #2: [slice/index] => baseType
       OT::baseType result( slicelength1, 1 );
-      for ( Py_ssize_t i = 0; i < slicelength1; ++ i )
+      for (Py_ssize_t i = 0; i < slicelength1; ++ i)
       {
         result.operator()(i, 0) = self->operator()( start1 + i*step1, arg3 );
       }
-      return SWIG_NewPointerObj((new OT::baseType(static_cast< const OT::baseType& >(result))), SWIG_TypeQuery("OT::" #baseType " *"), SWIG_POINTER_OWN |  0 );
+      return SWIG_NewPointerObj(new OT::baseType(result), SWIG_TypeQuery("OT::" #baseType " *"), SWIG_POINTER_OWN);
     }
 
   }
   else
   {
-    if ( PySlice_Check( obj2 ) )
+    if (PySlice_Check(obj2))
     {
       // case #3: [index/slice] => baseType
-      OT::baseType result( 1, slicelength2 );
-      for ( Py_ssize_t j = 0; j < slicelength2; ++ j )
+      OT::baseType result(1, slicelength2);
+      for (Py_ssize_t j = 0; j < slicelength2; ++ j)
       {
         result.operator()(0, j) = self->operator()( arg2, start2 + j*step2 );
       }
-      return SWIG_NewPointerObj((new OT::baseType(static_cast< const OT::baseType& >(result))), SWIG_TypeQuery("OT::" #baseType " *"), SWIG_POINTER_OWN |  0 );
+      return SWIG_NewPointerObj(new OT::baseType(result), SWIG_TypeQuery("OT::" #baseType " *"), SWIG_POINTER_OWN);
     }
     else
     {  
@@ -146,14 +147,16 @@ PyObject * __getitem__(PyObject * args) const {
       return OT::convert< OT::elementType, OT::pythonElementType>( self->operator()(arg2, arg3) );
     }
   }
+  SWIG_PYTHON_THREAD_END_BLOCK;
 fail:
   return NULL;
 }
 %enddef
 
 %define OTMatrixSetAccessor(baseType, elementType, pythonElementType)
-PyObject * __setitem__(PyObject * args, PyObject * valObj) {
-
+PyObject * __setitem__(PyObject * args, PyObject * valObj)
+{
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
   Py_ssize_t start1 = 0;
   Py_ssize_t stop1 = 0;
   Py_ssize_t step1 = 0;
@@ -170,9 +173,9 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
       val2 = &temp2;
     }
     assert( val2 );
-    for ( OT::UnsignedInteger j = 0; j < val2->getNbColumns(); ++ j)
+    for (OT::UnsignedInteger j = 0; j < val2->getNbColumns(); ++ j)
     {
-      for ( Py_ssize_t i = 0; i < slicelength1; ++ i )
+      for (Py_ssize_t i = 0; i < slicelength1; ++ i)
       {
         self->operator()( start1 + i*step1, j ) = val2->operator()(i, j);
       }
@@ -195,7 +198,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
   if (!PyArg_ParseTuple(args,(char *)"OO:" #baseType "___getitem__",&obj1,&obj2)) SWIG_fail;
 
   // convert first list argument 
-  if ( PySlice_Check( obj1 ) )
+  if (PySlice_Check(obj1))
   { 
     PySlice_GetIndicesEx(OT::SliceCast(obj1), self->getNbRows(), &start1, &stop1, &step1, &slicelength1);
   }
@@ -214,7 +217,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
   }
 
   // convert second list argument
-  if ( PySlice_Check( obj2 ) )
+  if (PySlice_Check(obj2))
   {
     PySlice_GetIndicesEx(OT::SliceCast(obj2), self->getNbColumns(), &start2, &stop2, &step2, &slicelength2);
   }
@@ -233,10 +236,10 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
   }
 
   // handle arguments
-  if ( PySlice_Check( obj1 ) )
+  if (PySlice_Check(obj1))
   {
 
-    if ( PySlice_Check( obj2 ) )
+    if (PySlice_Check(obj2))
     {
       // case #1: [slice/slice] <= baseType
       OT::baseType temp2 ;
@@ -245,9 +248,9 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
         temp2 = OT::convert<OT::_PySequence_,OT::baseType>( valObj );
         val2 = &temp2;
       }
-      for ( Py_ssize_t i = 0; i < slicelength1; ++ i )
+      for (Py_ssize_t i = 0; i < slicelength1; ++ i)
       {
-        for ( Py_ssize_t j = 0; j < slicelength2; ++ j )
+        for (Py_ssize_t j = 0; j < slicelength2; ++ j)
         {
           self->operator()( start1 + i*step1, start2 + j*step2 ) = val2->operator()(i, j);
         }
@@ -262,7 +265,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
         temp2 = OT::convert<OT::_PySequence_,OT::baseType>( valObj );
         val2 = &temp2;
       }
-      for ( Py_ssize_t i = 0; i < slicelength1; ++ i )
+      for (Py_ssize_t i = 0; i < slicelength1; ++ i)
       {
         self->operator()( start1 + i*step1, arg3 ) = val2->operator()(i, 0);
       }
@@ -271,7 +274,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
   }
   else
   {
-    if ( PySlice_Check( obj2 ) )
+    if (PySlice_Check(obj2))
     {
       // case #3: [index/slice] <= baseType
       OT::baseType temp2 ;
@@ -280,7 +283,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj) {
         temp2 = OT::convert<OT::_PySequence_,OT::baseType>( valObj );
         val2 = &temp2;
       }
-      for ( Py_ssize_t j = 0; j < slicelength2; ++ j )
+      for (Py_ssize_t j = 0; j < slicelength2; ++ j)
       {
         self->operator()( arg2, start2 + j*step2 ) = val2->operator()(0, j);
       }
@@ -332,7 +335,11 @@ namespace OT {
 
   Matrix(const Matrix & other) { return new OT::Matrix(other); }
 
-  Matrix(PyObject * pyObj) { return new OT::Matrix( OT::convert<OT::_PySequence_,OT::Matrix>(pyObj) ); }
+  Matrix(PyObject * pyObj)
+  {
+    SWIG_PYTHON_THREAD_BEGIN_BLOCK;
+    return new OT::Matrix(OT::convert<OT::_PySequence_, OT::Matrix>(pyObj));
+  }
 
   OTMatrixAccessors()
 

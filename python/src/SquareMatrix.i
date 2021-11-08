@@ -20,7 +20,11 @@ namespace OT {
 
   SquareMatrix(const SquareMatrix & other) { return new OT::SquareMatrix(other); }
 
-  SquareMatrix(PyObject * pyObj) { return new OT::SquareMatrix( OT::convert<OT::_PySequence_,OT::SquareMatrix>(pyObj) ); }
+  SquareMatrix(PyObject * pyObj)
+  {
+    SWIG_PYTHON_THREAD_BEGIN_BLOCK;
+    return new OT::SquareMatrix(OT::convert<OT::_PySequence_, OT::SquareMatrix>(pyObj));
+  }
 
   OTMatrixAccessors()
 

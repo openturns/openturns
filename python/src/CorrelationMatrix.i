@@ -32,7 +32,11 @@ namespace OT {
 
   CorrelationMatrix(const CorrelationMatrix & other) { return new OT::CorrelationMatrix(other); }
 
-  CorrelationMatrix(PyObject * pyObj) { return new OT::CorrelationMatrix(OT::convert<OT::_PySequence_, OT::CorrelationMatrix>(pyObj)); }
+  CorrelationMatrix(PyObject * pyObj)
+  {
+    SWIG_PYTHON_THREAD_BEGIN_BLOCK;
+    return new OT::CorrelationMatrix(OT::convert<OT::_PySequence_, OT::CorrelationMatrix>(pyObj));
+  }
 
   OTMatrixAccessors()
 

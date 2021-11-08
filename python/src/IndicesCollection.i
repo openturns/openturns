@@ -71,7 +71,8 @@ IndicesCollection(const IndicesCollection & other)
 
 IndicesCollection(PyObject * pyObj)
 {
-  return new OT::IndicesCollection( OT::convert< OT::_PySequence_, OT::IndicesCollection >(pyObj) );
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
+  return new OT::IndicesCollection(OT::convert< OT::_PySequence_, OT::IndicesCollection >(pyObj));
 }
 
 }

@@ -5,6 +5,7 @@
 #include "openturns/PythonWrappingFunctions.hxx"
 
 static void SimulationAlgorithm_ProgressCallback(OT::Scalar percent, void * data) {
+  OT::InterpreterUnlocker iul;
   PyObject * pyObj = reinterpret_cast<PyObject *>(data);
   OT::ScopedPyObjectPointer point(OT::convert< OT::Scalar, OT::_PyFloat_ >(percent));
   OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj, point.get(), NULL));
@@ -13,6 +14,7 @@ static void SimulationAlgorithm_ProgressCallback(OT::Scalar percent, void * data
 }
 
 static OT::Bool SimulationAlgorithm_StopCallback(void * data) {
+  OT::InterpreterUnlocker iul;
   PyObject * pyObj = reinterpret_cast<PyObject *>(data);
   OT::ScopedPyObjectPointer result(PyObject_CallFunctionObjArgs(pyObj, NULL));
   if (result.isNull())

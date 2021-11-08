@@ -29,6 +29,7 @@ Distribution(const Distribution & other)
 
 Distribution(PyObject * pyObj)
 {
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
   return new OT::Distribution( new OT::PythonDistribution( pyObj ) );
 }
 

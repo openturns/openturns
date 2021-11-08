@@ -16,7 +16,11 @@ namespace OT {
 
   SquareComplexMatrix(const SquareComplexMatrix & other) { return new OT::SquareComplexMatrix(other); }
 
-  SquareComplexMatrix(PyObject * pyObj) { return new OT::SquareComplexMatrix( OT::convert<OT::_PySequence_,OT::SquareComplexMatrix>(pyObj) ); }
+  SquareComplexMatrix(PyObject * pyObj)
+  {
+    SWIG_PYTHON_THREAD_BEGIN_BLOCK;
+    return new OT::SquareComplexMatrix(OT::convert<OT::_PySequence_, OT::SquareComplexMatrix>(pyObj));
+  }
 
   OTComplexMatrixGetAccessors()
 

@@ -60,8 +60,9 @@ UnsignedInteger __len__() const
   return self->getSize();
 }
 
-PyObject * __getitem__(PyObject * args) const {
-
+PyObject * __getitem__(PyObject * args) const
+{
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
   if (!PyTuple_Check(args))
   {
     if (PyObject_HasAttrString(args, "__int__"))
@@ -76,7 +77,7 @@ PyObject * __getitem__(PyObject * args) const {
       if (index < 0)
         throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
       OT::Point result(self->at(index));
-      return SWIG_NewPointerObj((new OT::Point(static_cast< const OT::Point& >(result))), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN | 0);
+      return SWIG_NewPointerObj(new OT::Point(result), SWIGTYPE_p_OT__Point, SWIG_POINTER_OWN);
     }
   }
 
@@ -116,8 +117,9 @@ fail:
 }
 
 
-void __setitem__(PyObject * args, PyObject * valObj) {
-
+void __setitem__(PyObject * args, PyObject * valObj)
+{
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
   if (!PyTuple_Check(args))
   {
     if (PyObject_HasAttrString(args, "__int__"))

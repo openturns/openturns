@@ -49,7 +49,9 @@ PythonExperiment::PythonExperiment(PyObject * pyObject)
   : ExperimentImplementation(),
     pyObj_(pyObject)
 {
-  if ( !PyObject_HasAttrString( pyObj_, const_cast<char *>("generate") ) ) throw InvalidArgumentException(HERE) << "Error: the given object does not have a generate() method.";
+  InterpreterUnlocker iul;
+  if (!PyObject_HasAttrString( pyObj_, const_cast<char *>("generate")))
+    throw InvalidArgumentException(HERE) << "Error: the given object does not have a generate() method.";
 
   Py_XINCREF(pyObj_);
 
@@ -73,6 +75,7 @@ PythonExperiment::PythonExperiment(const PythonExperiment & other)
   : ExperimentImplementation(other),
     pyObj_()
 {
+  InterpreterUnlocker iul;
   ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
   pyObj_ = pyObjClone.get();
   Py_XINCREF(pyObj_);
@@ -83,6 +86,7 @@ PythonExperiment & PythonExperiment::operator=(const PythonExperiment & rhs)
 {
   if (this != &rhs)
   {
+    InterpreterUnlocker iul;
     ExperimentImplementation::operator=(rhs);
     ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
     pyObj_ = pyObjClone.get();
@@ -94,6 +98,7 @@ PythonExperiment & PythonExperiment::operator=(const PythonExperiment & rhs)
 /* Destructor */
 PythonExperiment::~PythonExperiment()
 {
+  InterpreterUnlocker iul;
   Py_XDECREF(pyObj_);
 }
 
@@ -128,6 +133,7 @@ String PythonExperiment::__str__(const String & ) const
 
 Sample PythonExperiment::generate() const
 {
+  InterpreterUnlocker iul;
   ScopedPyObjectPointer result(PyObject_CallMethod ( pyObj_,
                                const_cast<char *>( "generate" ),
                                const_cast<char *>( "()" ) ));
@@ -144,7 +150,7 @@ Sample PythonExperiment::generate() const
 void PythonExperiment::save(Advocate & adv) const
 {
   ExperimentImplementation::save( adv );
-
+  InterpreterUnlocker iul;
   pickleSave(adv, pyObj_);
 }
 
@@ -153,7 +159,7 @@ void PythonExperiment::save(Advocate & adv) const
 void PythonExperiment::load(Advocate & adv)
 {
   ExperimentImplementation::load( adv );
-
+  InterpreterUnlocker iul;
   pickleLoad(adv, pyObj_);
 }
 

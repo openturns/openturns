@@ -37,7 +37,8 @@ UniVariatePolynomial(const UniVariatePolynomial & other) { return new OT::UniVar
 
 UniVariatePolynomial(PyObject * pyObj)
 {
- return new OT::UniVariatePolynomial( OT::convert<OT::_PySequence_,OT::Point>(pyObj) );
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
+  return new OT::UniVariatePolynomial(OT::convert<OT::_PySequence_, OT::Point>(pyObj));
 }
 
 }

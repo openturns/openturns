@@ -15,7 +15,9 @@
 
 %define OTTensorAccessors(baseType, elementType, pythonElementType)
 
-PyObject * __getitem__(PyObject * args) const {
+PyObject * __getitem__(PyObject * args) const
+{
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
   OT::UnsignedInteger arg2 = 0;
   OT::UnsignedInteger arg3 = 0;
   OT::UnsignedInteger arg4 = 0;
@@ -51,13 +53,14 @@ PyObject * __getitem__(PyObject * args) const {
   }
   arg4 = static_cast< OT::UnsignedInteger >(val4);
 
-  return OT::convert<OT::elementType, OT::pythonElementType>((*self)(arg2,arg3,arg4));
+  return OT::convert<OT::elementType, OT::pythonElementType>((*self)(arg2, arg3, arg4));
 fail:
   return NULL;
 }
 
-PyObject * __setitem__(PyObject * args, elementType val) {
-
+PyObject * __setitem__(PyObject * args, elementType val)
+{
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
   OT::UnsignedInteger arg2 = 0;
   OT::UnsignedInteger arg3 = 0;
   OT::UnsignedInteger arg4 = 0;
@@ -71,7 +74,7 @@ PyObject * __setitem__(PyObject * args, elementType val) {
   PyObject * obj2 = 0 ;
   PyObject * obj3 = 0 ;
 
-  if (!PyArg_ParseTuple(args,(char *)"OOO:" #baseType "___setitem__",&obj1,&obj2,&obj3)) SWIG_fail;
+  if (!PyArg_ParseTuple(args,(char *)"OOO:" #baseType "___setitem__", &obj1, &obj2, &obj3)) SWIG_fail;
 
   ecode2 = SWIG_AsVal_unsigned_SS_long(obj1, &val2);
   if (!SWIG_IsOK(ecode2)) {
@@ -130,7 +133,11 @@ namespace OT {
 
   Tensor(const Tensor & other) { return new OT::Tensor(other); }
 
-  Tensor(PyObject * pyObj) { return new OT::Tensor( OT::convert<OT::_PySequence_,OT::Tensor>(pyObj) ); }
+  Tensor(PyObject * pyObj)
+  {
+    SWIG_PYTHON_THREAD_BEGIN_BLOCK;
+    return new OT::Tensor(OT::convert<OT::_PySequence_, OT::Tensor>(pyObj));
+  }
 
   OTTensorAccessors(Tensor, Scalar, _PyFloat_)
 

@@ -34,7 +34,11 @@ namespace OT {
 
   Indices(const Indices & other) { return new OT::Indices(other); }  
 
-  Indices(PyObject * pyObj) { return new OT::Indices( OT::convert<OT::_PySequence_,OT::Indices>(pyObj) ); }
+  Indices(PyObject * pyObj)
+  {
+    SWIG_PYTHON_THREAD_BEGIN_BLOCK;
+    return new OT::Indices( OT::convert<OT::_PySequence_,OT::Indices>(pyObj) );
+  }
 
   OTCollectionOperatorsHelper(OT::Indices, OT::UnsignedInteger)
 

@@ -176,11 +176,12 @@ namespace OT { %extend RandomVector {
 RandomVector(const RandomVector & other)
 {
   return new OT::RandomVector(other);
-} 
+}
 
 RandomVector(PyObject * pyObj)
 {
-  return new OT::RandomVector( new OT::PythonRandomVector(pyObj) );
+  SWIG_PYTHON_THREAD_BEGIN_BLOCK;
+  return new OT::RandomVector(new OT::PythonRandomVector(pyObj));
 } 
 
 } // class RandomVector

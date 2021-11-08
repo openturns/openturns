@@ -56,6 +56,7 @@ PythonEvaluation::PythonEvaluation(PyObject * pyCallable)
   , pyObj_discard_openturns_memoryview_(true)
   , pyBufferClass_(NULL)
 {
+  InterpreterUnlocker iul;
   Py_XINCREF(pyCallable);
 
   initializePythonState();
@@ -120,6 +121,7 @@ PythonEvaluation::PythonEvaluation(const PythonEvaluation & other)
   , pyObj_discard_openturns_memoryview_(other.pyObj_discard_openturns_memoryview_)
   , pyBufferClass_()
 {
+  InterpreterUnlocker iul;
   ScopedPyObjectPointer pyObjClone(deepCopy(other.pyObj_));
   pyObj_ = pyObjClone.get();
 
@@ -135,6 +137,7 @@ PythonEvaluation& PythonEvaluation::operator=(const PythonEvaluation & rhs)
 {
   if (this != &rhs)
   {
+    InterpreterUnlocker iul;
     EvaluationImplementation::operator=(rhs);
     ScopedPyObjectPointer pyObjClone(deepCopy(rhs.pyObj_));
     pyObj_ = pyObjClone.get();
@@ -154,6 +157,7 @@ PythonEvaluation& PythonEvaluation::operator=(const PythonEvaluation & rhs)
 /* Destructor */
 PythonEvaluation::~PythonEvaluation()
 {
+  InterpreterUnlocker iul;
   Py_XDECREF(pyObj_);
   Py_XDECREF(pyBufferClass_);
 }
@@ -190,6 +194,7 @@ String PythonEvaluation::__str__(const String & ) const
 /* Operator () */
 Point PythonEvaluation::operator() (const Point & inP) const
 {
+  InterpreterUnlocker iul;
   const UnsignedInteger dimension = inP.getDimension();
 
   if (dimension != getInputDimension())
@@ -285,6 +290,7 @@ Point PythonEvaluation::operator() (const Point & inP) const
 /* Operator () */
 Sample PythonEvaluation::operator() (const Sample & inS) const
 {
+  InterpreterUnlocker iul;
   const UnsignedInteger inDim = inS.getDimension();
 
   if (inDim != getInputDimension())
@@ -412,6 +418,7 @@ void PythonEvaluation::initializePythonState()
 /* Accessor for input point dimension */
 UnsignedInteger PythonEvaluation::getInputDimension() const
 {
+  InterpreterUnlocker iul;
   ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
                                const_cast<char *>("getInputDimension"),
                                const_cast<char *>("()")));
@@ -423,6 +430,7 @@ UnsignedInteger PythonEvaluation::getInputDimension() const
 /* Accessor for output point dimension */
 UnsignedInteger PythonEvaluation::getOutputDimension() const
 {
+  InterpreterUnlocker iul;
   ScopedPyObjectPointer result(PyObject_CallMethod (pyObj_,
                                const_cast<char *>("getOutputDimension"),
                                const_cast<char *>("()")));
@@ -433,6 +441,7 @@ UnsignedInteger PythonEvaluation::getOutputDimension() const
 /* Linearity accessors */
 Bool PythonEvaluation::isLinear() const
 {
+  InterpreterUnlocker iul;
   if (PyObject_HasAttrString(pyObj_, "isLinear"))
   {
     ScopedPyObjectPointer result( PyObject_CallMethod (pyObj_,
@@ -448,6 +457,7 @@ Bool PythonEvaluation::isLinear() const
 
 Bool PythonEvaluation::isLinearlyDependent(const UnsignedInteger index) const
 {
+  InterpreterUnlocker iul;
   // Check index consistency
   if (index > getInputDimension())
     throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << getInputDimension() << ")";
@@ -477,6 +487,7 @@ Bool PythonEvaluation::isParallel() const
 void PythonEvaluation::save(Advocate & adv) const
 {
   EvaluationImplementation::save(adv);
+  InterpreterUnlocker iul;
   pickleSave(adv, pyObj_);
   pickleSave(adv, pyBufferClass_, "pyBufferClass_");
   adv.saveAttribute("pyObj_has_exec_", pyObj_has_exec_);
@@ -489,6 +500,7 @@ void PythonEvaluation::save(Advocate & adv) const
 void PythonEvaluation::load(Advocate & adv)
 {
   EvaluationImplementation::load(adv);
+  InterpreterUnlocker iul;
   pickleLoad(adv, pyObj_);
   pickleLoad(adv, pyBufferClass_, "pyBufferClass_");
   adv.loadAttribute("pyObj_has_exec_", pyObj_has_exec_);
