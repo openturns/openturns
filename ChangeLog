@@ -61,6 +61,7 @@
  * #1911 (DirectionalSampling freezes python if not correctly initialized)
  * #1912 (splitter: missing doc)
  * #1915 (computePDFGradient(const Sample &) should rely on computePDFGradient(const Point &) in DistributionImplementation)
+ * #1918 (PythonDistribution does not allow to overload the isDiscrete() method)
 
 
 == 1.17 release (2021-05-12) == #release-1.17
