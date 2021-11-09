@@ -264,11 +264,14 @@ int Cobyla::ComputeObjectiveAndConstraint(int n,
   Point outP;
   try
   {
-    for (UnsignedInteger i = 0; i < inP.getDimension(); ++i)
+    for (UnsignedInteger i = 0; i < inP.getDimension(); ++ i)
       if (!SpecFunc::IsNormal(inP[i]))
-        throw InvalidArgumentException(HERE) << "Cobyla got nan value";
+        throw InvalidArgumentException(HERE) << "Cobyla got a nan input value";
 
     outP = problem.getObjective().operator()(inP);
+
+    if (!SpecFunc::IsNormal(outP[0]))
+      throw InvalidArgumentException(HERE) << "Cobyla got a nan output value";
 
     // cobyla freezes when dealing with SpecFunc::MaxScalar
     if (outP[0] > cobylaMaxScalar) outP[0] = cobylaMaxScalar;

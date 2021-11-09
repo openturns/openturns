@@ -417,9 +417,13 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   {
     for (UnsignedInteger i = 0; i < inP.getDimension(); ++i)
       if (!SpecFunc::IsNormal(inP[i]))
-        throw InvalidArgumentException(HERE) << "TNC got nan value";
+        throw InvalidArgumentException(HERE) << "TNC got a nan input value";
 
     outP = problem.getObjective().operator()(inP);
+
+    if (!SpecFunc::IsNormal(outP[0]))
+      throw InvalidArgumentException(HERE) << "TNC got a nan output value";
+
     *f = problem.isMinimization() ? outP[0] : -outP[0];
 
     // Here we take the sign into account and convert the result into a Point in one shot
