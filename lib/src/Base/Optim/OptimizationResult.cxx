@@ -263,9 +263,14 @@ void OptimizationResult::store(const Point & x,
                                const Scalar residualError,
                                const Scalar constraintError)
 {
-  // assume the last point stored is the optimum
-  optimalPoint_ = x;
-  optimalValue_ = y;
+  if (!optimalValue_.getDimension()
+    || getProblem().hasLevelFunction() // consider the last value as optimal for nearest-point algos
+    || ((getProblem().isMinimization() && y[0] < optimalValue_[0])
+    || (!getProblem().isMinimization() && y[0] > optimalValue_[0])))
+  {
+    optimalPoint_ = x;
+    optimalValue_ = y;
+  }
 
   // update values
   absoluteError_ = absoluteError;

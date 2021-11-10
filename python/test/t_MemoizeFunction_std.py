@@ -86,3 +86,17 @@ res_hess = ot_f.hessian(x)
 n_calls_1 = ot_f.getCallsNumber()
 # 22=1+3(3+1 reused)+18
 assert_almost_equal(n_calls_1 - n_calls_0, 22, 0.0, 0.0)
+
+# check that marginals share the same cache
+def f_py(x):
+    f_py.n += 1
+    x0, x1 = x
+    return [x0+x1, x0-x1]
+f_py.n = 0
+f_test = ot.MemoizeFunction(ot.PythonFunction(2, 2, f_py))
+f1 = f_test.getMarginal(0)
+f2 = f_test.getMarginal(1)
+x = [1, 2]
+f1(x)
+f2(x)
+assert f_py.n == 1, "only one eval"
