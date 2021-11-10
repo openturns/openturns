@@ -12,6 +12,7 @@ jobs:
       - run:
           name: Build and test
           command: ./.circleci/run_docker_linux.sh
+          no_output_timeout: 40m
       - run:
           name: Publish documentation
           command: ./.circleci/upload_github_io.sh
@@ -29,7 +30,7 @@ jobs:
       - checkout
       - run:
           name: Build and test
-          no_output_timeout: 15m
+          no_output_timeout: 20m
           command: ./.circleci/run_docker_mingw.sh
 
 workflows:

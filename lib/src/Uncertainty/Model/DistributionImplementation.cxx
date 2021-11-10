@@ -1808,63 +1808,14 @@ Point DistributionImplementation::computePDFGradient(const Point & point) const
 /* ComputePDFGradient On a Sample */
 Sample DistributionImplementation::computePDFGradient(const Sample & inSample) const
 {
-  const Point initialParameters(getParameter());
-  const UnsignedInteger parametersDimension = initialParameters.getDimension();
   const UnsignedInteger size = inSample.getSize();
-  // Empty sample ==> stack for each parameter
   Sample outSample(size, 0);
-  // Clone the distribution
-  Implementation cloneDistribution(clone());
-  // Increment for centered differences
-  const Scalar eps = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 3.0);
-  // Increment for noncentered differences
-  const Scalar eps2 = std::pow(ResourceMap::GetAsScalar("DistFunc-Precision"), 1.0 / 2.0);
-  Point newParameters(initialParameters);
-  for (UnsignedInteger i = 0; i < parametersDimension; ++i)
+  for (UnsignedInteger i = 0; i < size; ++i)
   {
-    Scalar delta = 0.0;
-    Sample rightPDF;
-    // We will try a centered finite difference approximation
-    try
-    {
-      newParameters[i] = initialParameters[i] + eps;
-      cloneDistribution->setParameter(newParameters);
-      rightPDF = cloneDistribution->computePDF(inSample);
-      delta += eps;
-    }
-    catch (...)
-    {
-      // If something went wrong with the right point, stay at the center point
-      newParameters[i] = initialParameters[i];
-      cloneDistribution->setParameter(newParameters);
-      rightPDF = cloneDistribution->computePDF(inSample);
-    }
-    Sample leftPDF;
-    try
-    {
-      // If something is wrong with the right point, use non-centered finite differences
-      const Scalar leftEpsilon = delta == 0.0 ? eps2 : eps;
-      newParameters[i] = initialParameters[i] - leftEpsilon;
-      cloneDistribution->setParameter(newParameters);
-      leftPDF = cloneDistribution->computePDF(inSample);
-      delta += leftEpsilon;
-    }
-    catch (...)
-    {
-      // If something is wrong with the left point, it is either because the gradient is not computable or because we must use non-centered finite differences, in which case the right point has to be recomputed
-      if (delta == 0.0)
-        throw InvalidArgumentException(HERE) << "Error: cannot compute the PDF gradient at x=" << inSample << " for the current values of the parameters=" << initialParameters;
-      newParameters[i] = initialParameters[i] + eps2;
-      cloneDistribution->setParameter(newParameters);
-      rightPDF = cloneDistribution->computePDF(inSample);
-      delta += eps2;
-      // And the left point will be the center point
-      newParameters[i] = initialParameters[i];
-      cloneDistribution->setParameter(newParameters);
-      leftPDF = cloneDistribution->computePDF(inSample);
-    }
-    outSample.stack((rightPDF - leftPDF) / Point(1, delta));
-    newParameters[i] = initialParameters[i];
+    Point grad(computePDFGradient(inSample[i]));
+    if (i == 0)
+      outSample = Sample(size, grad.getDimension());
+    outSample[i] = grad;
   }
   return outSample;
 }

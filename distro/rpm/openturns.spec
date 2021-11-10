@@ -20,7 +20,7 @@ FFLAGS="${FFLAGS:-%optflags}" ; export FFLAGS ; \
 -DBUILD_SHARED_LIBS:BOOL=ON
 
 Name:           openturns
-Version:        1.18rc1
+Version:        1.18
 Release:        1%{?dist}
 Summary:        Uncertainty treatment library
 Group:          System Environment/Libraries
@@ -49,6 +49,9 @@ BuildRequires:  cminpack-devel
 %if 0%{?fedora_version}
 BuildRequires:  ceres-solver-devel
 BuildRequires:  coin-or-Ipopt-devel
+%if 0%{?fedora_version} == 35
+BuildRequires:  coin-or-Bonmin-devel
+%endif
 BuildRequires:  dlib-devel, pkgconfig(x11), pkgconfig(libpng), pkgconfig(libjpeg), pkgconfig(sqlite3)
 BuildRequires:  flexiblas-devel
 BuildRequires:  primesieve-devel
@@ -108,8 +111,7 @@ make install DESTDIR=%{buildroot}
 rm -r %{buildroot}%{_datadir}/%{name}/doc
 
 %check
-# make tests %{?_smp_mflags}
-LD_LIBRARY_PATH=%{buildroot}%{_libdir} ctest --output-on-failure %{?_smp_mflags} -E cppcheck
+LD_LIBRARY_PATH=%{buildroot}%{_libdir} OPENTURNS_NUM_THREADS=2 ctest --output-on-failure %{?_smp_mflags} -E cppcheck --timeout 1000
 
 %clean
 rm -rf %{buildroot}

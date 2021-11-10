@@ -173,6 +173,10 @@ public:
     algorithm_.evaluationInputHistory_.add(inP);
     algorithm_.evaluationOutputHistory_.add(outP);
 
+    // update result
+    algorithm_.result_.setEvaluationNumber(algorithm_.evaluationInputHistory_.getSize());
+    algorithm_.result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
+
     // gradient
     if (jacobian)
     {
@@ -223,6 +227,7 @@ void Ceres::run()
   // initialize history
   evaluationInputHistory_ = Sample(0, dimension);
   evaluationOutputHistory_ = Sample(0, 1);
+  result_ = OptimizationResult(getProblem());
 
   double optimalValue = 0.0;
   UnsignedInteger iterationNumber = 0;

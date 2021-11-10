@@ -139,16 +139,6 @@ Point SobolIndicesAlgorithmImplementation::getFirstOrderIndices(const UnsignedIn
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalOrderIndices, marginalIndex should be in [0," << outputDimension - 1;
   // return value
   const Point firstOrderSensitivity(varianceI_[marginalIndex] / referenceVariance_[marginalIndex]);
-  for (UnsignedInteger p = 0; p < inputDescription_.getSize(); ++p)
-  {
-    if ((firstOrderSensitivity[p] > 1.0) || firstOrderSensitivity[p] < 0.0)
-      LOGWARN(OSS() << "The estimated first order Sobol index (" << p << ") is not in the range [0, 1]. You may increase the sampling size. HERE we have: S_"
-              << p << "=" <<  firstOrderSensitivity << ", ST_" << p << "=" << varianceTI_(marginalIndex, p) / referenceVariance_[marginalIndex]);
-    // Another case : Si > STi
-    if (varianceI_(marginalIndex, p) > varianceTI_(marginalIndex, p))
-      LOGWARN(OSS() << "The estimated first order Sobol index (" << p << ") is greater than its total order index . You may increase the sampling size. HERE we have: S_"
-              << p << "=" <<  firstOrderSensitivity << ", ST_" << p << "=" << varianceTI_(marginalIndex, p) / referenceVariance_[marginalIndex]);
-  }
   return firstOrderSensitivity;
 }
 
@@ -345,8 +335,6 @@ SymmetricMatrix SobolIndicesAlgorithmImplementation::getSecondOrderIndices(const
           // Sij = (Vij - crossMean)/var - and S_{i}, S_{j}
           const Point firstOrderIndices(getFirstOrderIndices(q));
           secondOrderIndices_(k1, k2, q) = (yEDotyC[q] / (size_ - 1.0) - crossSquareMean[q]) / referenceVariance_[q] - firstOrderIndices[k1] - firstOrderIndices[k2] ;
-          if ((secondOrderIndices_(k1, k2, q) < 0.0) || (secondOrderIndices_(k1, k2, q) > 1.0))
-            LOGWARN(OSS() << "The estimated second order Sobol index (" << k1 << ", " << k2 << ") is not in the range [0, 1]. You may increase the sampling size.");
         }
       }
     }
@@ -366,16 +354,8 @@ Point SobolIndicesAlgorithmImplementation::getTotalOrderIndices(const UnsignedIn
     varianceI_ = computeIndices(outputDesign_, varianceTI_);
   }
   const UnsignedInteger outputDimension = outputDesign_.getDimension();
-  const UnsignedInteger inputDimension = inputDescription_.getSize();
   if (marginalIndex >= outputDimension)
     throw InvalidArgumentException(HERE) << "In SobolIndicesAlgorithmImplementation::getTotalOrderIndices, marginalIndex should be in [0," << outputDimension - 1;
-  for (UnsignedInteger p = 0; p < inputDimension; ++p)
-  {
-    // Another case : Si > STi
-    if (varianceI_(marginalIndex, p) > varianceTI_(marginalIndex, p))
-      LOGWARN(OSS() << "The estimated total order Sobol index (" << p << ") is lesser than first order index . You may increase the sampling size. HERE we have: S_"
-              << p << "=" <<  varianceI_(marginalIndex, p) / referenceVariance_[marginalIndex] << ", ST_" << p << "=" << varianceTI_(marginalIndex, p) / referenceVariance_[marginalIndex]);
-  }
   // return value
   return varianceTI_[marginalIndex] / referenceVariance_[marginalIndex] ;
 }

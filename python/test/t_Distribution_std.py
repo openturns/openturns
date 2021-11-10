@@ -47,6 +47,11 @@ for factory in ot.DistributionFactory.GetContinuousUniVariateFactories():
         CCDF2[i, 0] = 1.0-CCDF2[i, 0]
     ott.assert_almost_equal(CCDF1, CCDF2, 1e-5, 1e-5, str(distribution))
 
+    # pdf grad
+    point = sample[0]
+    PDFgr = distribution.computePDFGradient(point)
+    assert distribution.computePDFGradient([point]).getDimension() == len(PDFgr)
+
     # proba
     interval = distribution.getRange()
     ott.assert_almost_equal(distribution.computeCDF(interval.getLowerBound(
