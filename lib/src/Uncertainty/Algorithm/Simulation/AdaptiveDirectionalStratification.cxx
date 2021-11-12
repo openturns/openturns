@@ -115,6 +115,7 @@ void AdaptiveDirectionalStratification::run()
       quadrantSampling.setStrataIndices(strataIndices);
       DirectionalSampling directionalSampling (getEvent(), rootStrategy_, quadrantSampling);
       directionalSampling.setMaximumOuterSampling (ni);
+      directionalSampling.setMaximumCoefficientOfVariation(getMaximumCoefficientOfVariation());
       directionalSampling.setBlockSize (blockSize);
       directionalSampling.run();
       const ProbabilitySimulationResult result(directionalSampling.getResult());
