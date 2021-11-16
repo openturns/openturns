@@ -392,12 +392,10 @@ void TensorApproximationAlgorithm::rankM (const Sample & x,
     // normalize coefficients
     for (UnsignedInteger i = 0; i < m; ++ i)
     {
-      Scalar radius_i = 1.0;
       for (UnsignedInteger j = 0; j < dimension; ++ j)
       {
         Point coefficients(tensor.getCoefficients(i, j));
         const Scalar norm = coefficients.norm();
-        radius_i *= norm;
         coefficients /= norm;
         tensor.setCoefficients(i, j, coefficients);
       }

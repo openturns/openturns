@@ -223,13 +223,6 @@ bool IpoptProblem::get_starting_point(int /*n*/,
                                       bool /*init_lambda*/,
                                       double* /*lambda*/)
 {
-  // Retrieve number of constraints
-  UnsignedInteger nbConstraints = 0;
-  if (optimProblem_.hasEqualityConstraint())
-    nbConstraints += optimProblem_.getEqualityConstraint().getOutputDimension();
-  if (optimProblem_.hasInequalityConstraint())
-    nbConstraints += optimProblem_.getInequalityConstraint().getOutputDimension();
-
   // Conversion starting point from OT::Point to double array
   std::copy(startingPoint_.begin(), startingPoint_.end(), x);
 
