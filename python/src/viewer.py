@@ -35,8 +35,8 @@ class View(object):
 
     Parameters
     ----------
-    graph : :class:`~openturns.Graph, :class:`~openturns.Drawable`
-        A Graph or Drawable object.
+    graph : :class:`~openturns.Graph`, :class:`~openturns.Drawable` or :class:`~openturns.GridLayout`
+        An object to draw.
 
     pixelsize : 2-tuple of int
         The requested size in pixels (width, height).
