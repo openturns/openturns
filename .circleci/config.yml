@@ -5,8 +5,9 @@ jobs:
     docker:
       - image: openturns/archlinux-python
         environment:
-          MAKEFLAGS: "-j2"
-          OPENTURNS_NUM_THREADS: "2"
+          MAKEFLAGS: "-j4"
+          OPENTURNS_NUM_THREADS: "4"
+    resource_class: large
     steps:
       - checkout
       - run:
@@ -24,8 +25,9 @@ jobs:
     docker:
       - image: openturns/archlinux-mingw
         environment:
-          MAKEFLAGS: "-j2"
-          OPENTURNS_NUM_THREADS: "2"
+          MAKEFLAGS: "-j4"
+          OPENTURNS_NUM_THREADS: "4"
+    resource_class: large
     steps:
       - checkout
       - run:
