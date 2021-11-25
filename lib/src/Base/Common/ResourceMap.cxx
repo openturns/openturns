@@ -1399,16 +1399,16 @@ void ResourceMap::loadDefaultConfiguration()
   // VisualTest parameters //
   addAsUnsignedInteger("VisualTest-KendallPlot-MonteCarloSize", 100);
 
-  // CalibrationStrategyImplementation parameters //
-  addAsScalar("CalibrationStrategy-DefaultExpansionFactor", 1.2);
-  addAsScalar("CalibrationStrategy-DefaultLowerBound", 0.117); // = 0.5 * 0.234
-  addAsScalar("CalibrationStrategy-DefaultShrinkFactor", 0.8);
-  addAsScalar("CalibrationStrategy-DefaultUpperBound", 0.468); // = 2.0 * 0.234
-  addAsUnsignedInteger("CalibrationStrategy-DefaultCalibrationStep", 100);
+  // RandomWalkMetropolisHastings parameters //
+  addAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor", 1.2);
+  addAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationLowerBound", 0.117); // = 0.5 * 0.234
+  addAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationShrinkFactor", 0.8);
+  addAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationUpperBound", 0.468); // = 2.0 * 0.234
+  addAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultAdaptationPeriod", 100);
 
-  // MCMC parameters //
-  addAsUnsignedInteger("MCMC-DefaultBurnIn", 0);
-  addAsUnsignedInteger("MCMC-DefaultThinning", 1);
+  // MetropolisHastingsImplementation parameters //
+  addAsUnsignedInteger("MetropolisHastings-DefaultBurnIn", 0);
+  addAsUnsignedInteger("MetropolisHastings-DefaultThinning", 1);
 
   // GaussianLinearCalibration parameters //
   addAsString("GaussianLinearCalibration-Method", "QR");

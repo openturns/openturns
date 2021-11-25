@@ -1,6 +1,6 @@
 // SWIG file UncertaintyBayesianTemplateDefs.i
 
-%template(CalibrationStrategyImplementationPointer) OT::Pointer<OT::CalibrationStrategyImplementation>;
+%template(MetropolisHastingsImplementationPointer) OT::Pointer<OT::MetropolisHastingsImplementation>;
 
-%template(CalibrationStrategyCollection) OT::Collection<OT::CalibrationStrategy>;
+%template(MetropolisHastingsCollection) OT::Collection<OT::MetropolisHastings>;
 

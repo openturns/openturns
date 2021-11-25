@@ -28,9 +28,6 @@
 
 BEGIN_NAMESPACE_OPENTURNS
 
-TEMPLATE_CLASSNAMEINIT(PersistentCollection<CalibrationStrategy>)
-static const Factory<PersistentCollection<CalibrationStrategy> > Factory_PersistentCollection_CalibrationStrategy;
-
 
 CLASSNAMEINIT(RandomWalkMetropolisHastings)
 
@@ -38,45 +35,37 @@ static const Factory<RandomWalkMetropolisHastings> Factory_RandomWalkMetropolisH
 
 /* Default constructor */
 RandomWalkMetropolisHastings::RandomWalkMetropolisHastings()
-  : MCMC()
-  , calibrationStrategy_(0)
-  , samplesNumber_(0)
-  , acceptedNumber_(0)
-  , currentPenalizedLogLikelihood_(0.)
+  : MetropolisHastingsImplementation()
 {
-  // Nthing to do
+  // Nothing to do
 }
 
 
 /* Parameters constructor */
-RandomWalkMetropolisHastings::RandomWalkMetropolisHastings( const Distribution & prior,
-    const Distribution & conditional,
-    const Sample & observations,
-    const Point & initialState,
-    const DistributionCollection & proposal)
-  : MCMC(prior, conditional, observations, initialState)
-  , calibrationStrategy_(proposal.getSize())
-  , samplesNumber_(0)
-  , acceptedNumber_(initialState.getDimension())
-  , currentPenalizedLogLikelihood_(0.)
+RandomWalkMetropolisHastings::RandomWalkMetropolisHastings(const Distribution & targetDistribution,
+                                                          const Point & initialState,
+                                                          const Distribution & proposal,
+                                                           const Indices & marginalIndices)
+  : MetropolisHastingsImplementation(targetDistribution, initialState, marginalIndices)
+  , adaptationRange_(Interval(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationLowerBound"), ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationUpperBound")))
+  , adaptationExpansionFactor_(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor"))
+  , adaptationShrinkFactor_(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationShrinkFactor"))
+  , adaptationPeriod_(ResourceMap::GetAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultAdaptationPeriod"))
 {
   setProposal(proposal);
 }
 
-
 /* Parameters constructor */
-RandomWalkMetropolisHastings::RandomWalkMetropolisHastings( const Distribution & prior,
-    const Distribution & conditional,
-    const Function & model,
-    const Sample & parameters,
-    const Sample & observations,
-    const Point & initialState,
-    const DistributionCollection & proposal)
-  : MCMC(prior, conditional, model, parameters, observations, initialState)
-  , calibrationStrategy_(proposal.getSize())
-  , samplesNumber_(0)
-  , acceptedNumber_(initialState.getDimension())
-  , currentPenalizedLogLikelihood_(0.)
+RandomWalkMetropolisHastings::RandomWalkMetropolisHastings(const Function & targetLogPDF,
+                                                          const Domain & support,
+                                                          const Point & initialState,
+                                                          const Distribution & proposal,
+                                                           const Indices & marginalIndices)
+  : MetropolisHastingsImplementation(targetLogPDF, support, initialState, marginalIndices)
+  , adaptationRange_(Interval(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationLowerBound"), ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationUpperBound")))
+  , adaptationExpansionFactor_(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationExpansionFactor"))
+  , adaptationShrinkFactor_(ResourceMap::GetAsScalar("RandomWalkMetropolisHastings-DefaultAdaptationShrinkFactor"))
+  , adaptationPeriod_(ResourceMap::GetAsUnsignedInteger("RandomWalkMetropolisHastings-DefaultAdaptationPeriod"))
 {
   setProposal(proposal);
 }
@@ -87,9 +76,8 @@ String RandomWalkMetropolisHastings::__repr__() const
 {
   return OSS() << "class=" << RandomWalkMetropolisHastings::GetClassName()
          << " name=" << getName()
-         << " derived from " << MCMC::__repr__()
-         << " proposal=" << proposal_
-         << " calibrationStrategy=" << calibrationStrategy_;
+         << " derived from " << MetropolisHastingsImplementation::__repr__()
+         << " proposal=" << proposal_;
 }
 
 
@@ -98,198 +86,134 @@ RandomWalkMetropolisHastings* RandomWalkMetropolisHastings::clone() const
   return new RandomWalkMetropolisHastings(*this);
 }
 
-/* Here is the interface that all derived class must implement */
 
-Point RandomWalkMetropolisHastings::getRealization() const
+Point RandomWalkMetropolisHastings::getCandidate() const
 {
-  const UnsignedInteger dimension = initialState_.getDimension();
-
-  // update factor
-  Point delta(dimension, 1.0);
-
-  // number of samples accepted until calibration step
-  Indices accepted(dimension);
-
-  // perform burning if necessary
-  const UnsignedInteger size = getThinning() + ((samplesNumber_ < getBurnIn()) ? getBurnIn() : 0);
-
-  // check the first likelihood
-  if (samplesNumber_ == 0)
+  // re-adapt if necessary
+  if ((samplesNumber_ < getBurnIn()) && ((samplesNumber_ % adaptationPeriod_) == (adaptationPeriod_ - 1)))
   {
-    currentPenalizedLogLikelihood_ = computeLogLikelihood(currentState_) + getPrior().computeLogPDF(currentState_);
-    if (currentPenalizedLogLikelihood_ <= SpecFunc::LowestScalar)
-      throw InvalidArgumentException(HERE) << "The initial state should have non-zero posterior proability density";
+    // compute the current acceptation rate
+    Scalar rho = 1.0 * acceptedNumberAdaptation_ / (1.0 * adaptationPeriod_);
+
+    if (rho < adaptationRange_.getLowerBound()[0])
+      // if the acceptance rate it too low, make smaller steps
+      adaptationFactor_ *= adaptationShrinkFactor_;
+    else if (rho > adaptationRange_.getUpperBound()[0])
+      // if the acceptance rate is too high, make larger steps
+      adaptationFactor_ *= adaptationExpansionFactor_;
+
+    // reset the counter
+    acceptedNumberAdaptation_ = 0;
+
+    if (getVerbose())
+      LOGTRACE(OSS() << "rho=" << rho << " delta=" << adaptationFactor_);
   }
 
-  // for each new sample
-  for (UnsignedInteger i = 0; i < size; ++ i)
-  {
-    // accumulates the updates over each component
-    Point newState(currentState_);
-
-    history_.store(currentState_);
-
-    Scalar logLikelihoodCandidate = currentPenalizedLogLikelihood_;
-
-    // update each chain component
-    for (UnsignedInteger j = 0; j < dimension; ++ j)
-    {
-      // new candidate for the j-th component
-      Point nextState(newState);
-
-      Bool nonRejectedComponent = nonRejectedComponents_.contains(j);
-      if (!nonRejectedComponent)
-      {
-        // regular MCMC
-        nextState[j] += delta[j] * proposal_[j].getRealization()[0];
-      }
-      else
-      {
-        // non-rejected component
-        nextState[j] = getPrior().getMarginal(j).getRealization()[0];
-      }
-
-      const Scalar nextPenalizedLogLikelihood = computeLogLikelihood(nextState) + getPrior().computeLogPDF(nextState);
-
-      // alpha = posterior(newstate)/posterior(oldstate)
-      const Scalar alphaLog = nextPenalizedLogLikelihood  - currentPenalizedLogLikelihood_;
-
-      // acceptance test
-      const Scalar uLog = log(RandomGenerator::Generate());
-      if (nonRejectedComponent || (uLog < alphaLog))
-      {
-        logLikelihoodCandidate = nextPenalizedLogLikelihood;
-        ++ acceptedNumber_[j];
-        ++ accepted[j];
-
-        newState[j] = nextState[j];
-      }
-    }
-
-    // reuse the penalized log-likelihood of the last accepted update
-    currentPenalizedLogLikelihood_ = logLikelihoodCandidate;
-
-    // update state
-    currentState_ = newState;
-
-    // recalibrate each component if necessary
-    if (samplesNumber_ < getBurnIn())
-    {
-      for (UnsignedInteger j = 0; j < dimension; ++ j)
-      {
-        const UnsignedInteger calibrationStep = calibrationStrategy_[j].getCalibrationStep();
-        if ((samplesNumber_ % calibrationStep) == (calibrationStep - 1))
-        {
-          // compute the current acceptation rate
-          Scalar rho = 1.0 * accepted[j] / (1.0 * calibrationStep);
-
-          // compute factor
-          Scalar factor = calibrationStrategy_[j].computeUpdateFactor(rho);
-
-          // update delta
-          delta[j] *= factor;
-
-          // reset the counter
-          accepted[j] = 0;
-
-          if (getVerbose())
-          {
-            LOGINFO( OSS() << "rho=" << rho << " factor=" << factor << " delta=" << delta.getCollection() << " accept=" << getAcceptanceRate().getCollection() );
-          }
-
-        } // calibrationStep
-      } // j
-    } // burn-in
-
-    ++ samplesNumber_;
-
-  } // for i
-
-  // Save the last state
-  history_.store(currentState_);
-  return currentState_;
+  Point prop(adaptationFactor_ * proposal_.getRealization());
+  Point newState(currentState_);
+  for (UnsignedInteger j = 0; j < marginalIndices_.getSize(); ++ j)
+    newState[marginalIndices_[j]] += prop[j];
+  return newState;
 }
 
 
-Point RandomWalkMetropolisHastings::getAcceptanceRate() const
+void RandomWalkMetropolisHastings::setProposal(const Distribution & proposal)
 {
-  const UnsignedInteger dimension = initialState_.getDimension();
-  Point acceptanceRate(dimension);
-  for (UnsignedInteger j = 0; j < dimension; ++ j)
-  {
-    acceptanceRate[j] = static_cast<Scalar>(acceptedNumber_[j]) / samplesNumber_;
-  }
-  return acceptanceRate;
-}
-
-
-void RandomWalkMetropolisHastings::setCalibrationStrategy(const CalibrationStrategy& calibrationStrategy)
-{
-  for (UnsignedInteger i = 0; i < calibrationStrategy_.getSize(); ++ i)
-  {
-    calibrationStrategy_[i] = calibrationStrategy;
-  }
-}
-
-RandomWalkMetropolisHastings::CalibrationStrategyCollection RandomWalkMetropolisHastings::getCalibrationStrategyPerComponent() const
-{
-  return calibrationStrategy_;
-}
-
-void RandomWalkMetropolisHastings::setCalibrationStrategyPerComponent(const CalibrationStrategyCollection& calibrationStrategy)
-{
-  const UnsignedInteger dimension = proposal_.getSize();
-  if(dimension != calibrationStrategy.getSize()) throw InvalidDimensionException(HERE) << "The proposal dimension (" << dimension << ") does not match the calibration strategy size (" << calibrationStrategy.getSize() << ").";
-  calibrationStrategy_ = calibrationStrategy;
-}
-
-
-void RandomWalkMetropolisHastings::setProposal(const RandomWalkMetropolisHastings::DistributionCollection& proposal)
-{
-  const UnsignedInteger dimension = getPrior().getDimension();
-  if (proposal.getSize() != dimension) throw InvalidDimensionException(HERE) << "The proposal dimension (" << proposal.getSize() << ") does not match the prior dimension (" << dimension << ").";
-
-  for (UnsignedInteger i = 0; i < dimension; ++ i)
-  {
-    Bool symmetric = proposal[i].isElliptical();
-    symmetric = symmetric && (std::abs(proposal[i].getMean()[0]) < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon"));
-    if (!symmetric) throw InvalidArgumentException(HERE) << "The proposal density is not symmetric.";
-  }
+  if (proposal.getDimension() != marginalIndices_.getSize())
+    throw InvalidArgumentException(HERE) << "The proposal density dimension (" << proposal.getDimension()
+                                         << ") does not match the block size (" << marginalIndices_.getSize() << ")";
+  if (!(proposal.getSkewness().norm() < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")))
+    throw InvalidArgumentException(HERE) << "The proposal density is not symmetric.";
+  if (!(proposal.getMean().norm() < ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")))
+    throw InvalidArgumentException(HERE) << "The proposal density must have a null mean.";
   proposal_ = proposal;
 }
 
 
-RandomWalkMetropolisHastings::DistributionCollection RandomWalkMetropolisHastings::getProposal() const
+Distribution RandomWalkMetropolisHastings::getProposal() const
 {
   return proposal_;
 }
 
 
+void RandomWalkMetropolisHastings::setAdaptationRange(const Interval & adaptationRange)
+{
+  if (adaptationRange.getDimension() != 1)
+    throw InvalidDimensionException(HERE) << "Range should be 1-d. Got " << adaptationRange.getDimension();
+  adaptationRange_ = adaptationRange;
+}
+
+Interval RandomWalkMetropolisHastings::getAdaptationRange() const
+{
+  return adaptationRange_;
+}
+
+
+void RandomWalkMetropolisHastings::setAdaptationExpansionFactor(Scalar adaptationExpansionFactor)
+{
+  if (!(adaptationExpansionFactor > 1.0))
+    throw InvalidArgumentException(HERE) << "Expansion factor should be > 1. Got " << adaptationExpansionFactor;
+  adaptationExpansionFactor_ = adaptationExpansionFactor;
+}
+
+Scalar RandomWalkMetropolisHastings::getAdaptationExpansionFactor() const
+{
+  return adaptationExpansionFactor_;
+}
+
+
+void RandomWalkMetropolisHastings::setAdaptationShrinkFactor(Scalar adaptationShrinkFactor)
+{
+  if (!(adaptationShrinkFactor > 0.0) || !(adaptationShrinkFactor < 1.0))
+    throw InvalidArgumentException(HERE) << "Shrink factor should be in (0, 1). Got " << adaptationShrinkFactor;
+  adaptationShrinkFactor_ = adaptationShrinkFactor;
+}
+
+Scalar RandomWalkMetropolisHastings::getAdaptationShrinkFactor() const
+{
+  return adaptationShrinkFactor_;
+}
+
+void RandomWalkMetropolisHastings::setAdaptationPeriod(const UnsignedInteger adaptationPeriod)
+{
+  if (!adaptationPeriod)
+    throw InvalidArgumentException(HERE) << "The adaptation period must be positive.";
+  adaptationPeriod_ = adaptationPeriod;
+}
+
+
+UnsignedInteger RandomWalkMetropolisHastings::getAdaptationPeriod() const
+{
+  return adaptationPeriod_;
+}
+
+Scalar RandomWalkMetropolisHastings::getAdaptationFactor() const
+{
+  return adaptationFactor_;
+}
+
 /* Method save() stores the object through the StorageManager */
 void RandomWalkMetropolisHastings::save(Advocate & adv) const
 {
-  MCMC::save(adv);
+  MetropolisHastingsImplementation::save(adv);
   adv.saveAttribute("proposal_", proposal_);
-  adv.saveAttribute("calibrationStrategy_", calibrationStrategy_);
-  adv.saveAttribute("samplesNumber_", samplesNumber_);
-  adv.saveAttribute("acceptedNumber_", acceptedNumber_);
-  adv.saveAttribute("currentPenalizedLogLikelihood_", currentPenalizedLogLikelihood_);
+  adv.saveAttribute("adaptationFactor_", adaptationFactor_);
+  adv.saveAttribute("adaptationRange_", adaptationRange_);
+  adv.saveAttribute("adaptationExpansionFactor_", adaptationExpansionFactor_);
+  adv.saveAttribute("adaptationShrinkFactor_", adaptationShrinkFactor_);
+  adv.saveAttribute("adaptationPeriod_", adaptationPeriod_);
 }
 
 /* Method load() reloads the object from the StorageManager */
 void RandomWalkMetropolisHastings::load(Advocate & adv)
 {
-  MCMC::load(adv);
+  MetropolisHastingsImplementation::load(adv);
   adv.loadAttribute("proposal_", proposal_);
-  adv.loadAttribute("calibrationStrategy_", calibrationStrategy_);
-  adv.loadAttribute("samplesNumber_", samplesNumber_);
-  adv.loadAttribute("acceptedNumber_", acceptedNumber_);
-  if (adv.hasAttribute("currentLogLikelihood_"))
-  {
-    adv.loadAttribute("currentLogLikelihood_", currentPenalizedLogLikelihood_);
-  }
-  else
-    adv.loadAttribute("currentPenalizedLogLikelihood_", currentPenalizedLogLikelihood_);
+  adv.loadAttribute("adaptationFactor_", adaptationFactor_);
+  adv.loadAttribute("adaptationRange_", adaptationRange_);
+  adv.loadAttribute("adaptationExpansionFactor_", adaptationExpansionFactor_);
+  adv.loadAttribute("adaptationShrinkFactor_", adaptationShrinkFactor_);
+  adv.loadAttribute("adaptationPeriod_", adaptationPeriod_);
 }
 
 
