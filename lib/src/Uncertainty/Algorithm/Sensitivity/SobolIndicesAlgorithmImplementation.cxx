@@ -23,7 +23,7 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/RandomGenerator.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 #include "openturns/Cloud.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/Pie.hxx"
@@ -162,7 +162,7 @@ struct BootstrapPolicy
     , bsTO_(bsTO)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     Indices slice(size_);
     Sample VTi;
@@ -202,7 +202,7 @@ void SobolIndicesAlgorithmImplementation::computeBootstrapDistribution() const
     Sample bsFO(0, inputDimension);
     Sample bsTO(0, inputDimension);
     const UnsignedInteger size = size_;
-    // To have the exact same results with TBB, we have to precompute
+    // To have the exact same results with TBBImplementation, we have to precompute
     // RandomGenerator::IntegerGenerate calls and store results in a
     // variable.  This would require lots of memory when bootstrapSize_ is
     // large, thus let user specify block size.
@@ -221,7 +221,7 @@ void SobolIndicesAlgorithmImplementation::computeBootstrapDistribution() const
       const RandomGenerator::UnsignedIntegerCollection randomIndices(RandomGenerator::IntegerGenerate(size * effectiveBlockSize, size));
       const Indices indices(randomIndices.begin(), randomIndices.end());
       const BootstrapPolicy policy( *this, indices, size, bsFOpartial, bsTOpartial );
-      TBB::ParallelFor( 0, effectiveBlockSize, policy );
+      TBBImplementation::ParallelFor( 0, effectiveBlockSize, policy );
 
       bsFO.add(bsFOpartial);
       bsTO.add(bsTOpartial);

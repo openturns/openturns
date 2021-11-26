@@ -24,7 +24,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/HMatrix.hxx"
 #include "openturns/HMatrixFactory.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -220,7 +220,7 @@ struct DiracCovarianceModelDiscretizePolicy
     , dimension_(model.getOutputDimension())
   {}
 
-  inline void operator()(const TBB::BlockedRange<UnsignedInteger> & r) const
+  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
   {
     for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
     {
@@ -247,7 +247,7 @@ CovarianceMatrix DiracCovarianceModel::discretize(const Sample & vertices) const
 
   const DiracCovarianceModelDiscretizePolicy policy( vertices, covarianceMatrix, *this );
   // The loop is over the lower block-triangular part
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
 
   return covarianceMatrix;
 }
@@ -269,7 +269,7 @@ struct DiracCovarianceModelDiscretizeAndFactorizePolicy
     , dimension_(model.getOutputDimension())
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger index = r.begin(); index != r.end(); ++index)
     {
@@ -296,7 +296,7 @@ TriangularMatrix DiracCovarianceModel::discretizeAndFactorize(const Sample & ver
 
   const DiracCovarianceModelDiscretizeAndFactorizePolicy policy( vertices, covarianceFactor, *this );
   // The loop is over the lower block-triangular part
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
 
   return covarianceFactor;
 }

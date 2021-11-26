@@ -73,7 +73,6 @@ Uncertainty treatment library binaries
 Summary:        OpenTURNS development files
 Group:          Development/Libraries/C and C++
 Requires:       %{name}-libs = %{version}
-Requires:       tbb-devel
 Requires:       hmat-oss-devel
 
 %description devel

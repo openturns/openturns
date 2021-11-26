@@ -21,6 +21,7 @@
 #include "openturns/ProductPolynomialEvaluation.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -148,7 +149,7 @@ struct ProductPolynomialEvaluationComputeSamplePolicy
     // Nothing to do
   }
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
@@ -168,7 +169,7 @@ Sample ProductPolynomialEvaluation::operator() (const Sample & inS) const
   const UnsignedInteger size = inS.getSize();
   Sample result(size, getOutputDimension());
   const ProductPolynomialEvaluationComputeSamplePolicy policy( inS, result, polynomials_ );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   result.setDescription(getOutputDescription());
   callsNumber_.fetchAndAdd(size);
   return result;

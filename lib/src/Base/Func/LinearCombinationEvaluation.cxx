@@ -22,6 +22,7 @@
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/IdentityFunction.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -107,13 +108,13 @@ struct LinearCombinationEvaluationPointFunctor
   {}
 
   LinearCombinationEvaluationPointFunctor(const LinearCombinationEvaluationPointFunctor & other,
-                                          TBB::Split)
+                                          TBBImplementation::Split)
     : input_(other.input_)
     , evaluation_(other.evaluation_)
     , accumulator_(Point(other.accumulator_.getDimension()))
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r )
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r )
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i) accumulator_ += evaluation_.coefficients_[i] * evaluation_.functionsCollection_[i](input_);
   } // operator()
@@ -133,7 +134,7 @@ Point LinearCombinationEvaluation::operator () (const Point & inP) const
   if (isZero_) return Point(getOutputDimension());
   const UnsignedInteger size = functionsCollection_.getSize();
   LinearCombinationEvaluationPointFunctor functor( inP, *this );
-  TBB::ParallelReduce( 0, size, functor );
+  TBBImplementation::ParallelReduce( 0, size, functor );
   const Point result(functor.accumulator_);
   callsNumber_.increment();
   return result;

@@ -21,7 +21,6 @@
 #include "openturns/MeshDomain.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/EnclosingSimplexAlgorithm.hxx"
-#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

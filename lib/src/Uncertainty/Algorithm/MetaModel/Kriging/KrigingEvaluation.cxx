@@ -21,6 +21,7 @@
 
 #include "openturns/KrigingEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -111,13 +112,13 @@ struct KrigingEvaluationPointFunctor
   {}
 
   KrigingEvaluationPointFunctor(const KrigingEvaluationPointFunctor & other,
-                                TBB::Split)
+                                TBBImplementation::Split)
     : input_(other.input_)
     , evaluation_(other.evaluation_)
     , accumulator_(other.evaluation_.getOutputDimension())
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r )
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r )
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
@@ -146,13 +147,13 @@ struct KrigingEvaluationPointFunctor1D
   {}
 
   KrigingEvaluationPointFunctor1D(const KrigingEvaluationPointFunctor1D & other,
-                                  TBB::Split)
+                                  TBBImplementation::Split)
     : input_(other.input_)
     , evaluation_(other.evaluation_)
     , accumulator_(0.0)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r )
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r )
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
@@ -177,13 +178,13 @@ Point KrigingEvaluation::operator()(const Point & inP) const
   if (dimension == 1)
   {
     KrigingEvaluationPointFunctor1D functor( inP, *this );
-    TBB::ParallelReduceIf(covarianceModel_.getImplementation()->isParallel(), 0, trainingSize, functor );
+    TBBImplementation::ParallelReduceIf(covarianceModel_.getImplementation()->isParallel(), 0, trainingSize, functor );
     value[0] = functor.accumulator_;
   }
   else
   {
     KrigingEvaluationPointFunctor functor( inP, *this );
-    TBB::ParallelReduceIf(covarianceModel_.getImplementation()->isParallel(), 0, trainingSize, functor );
+    TBBImplementation::ParallelReduceIf(covarianceModel_.getImplementation()->isParallel(), 0, trainingSize, functor );
     value = functor.accumulator_;
   }
   // Evaluate the basis part sequentially
@@ -218,7 +219,7 @@ struct KrigingEvaluationSampleFunctor
     , trainingSize_(evaluation.inputSample_.getSize())
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     const UnsignedInteger dimension = evaluation_.getOutputDimension();
     Matrix R(dimension, trainingSize_ * dimension);
@@ -255,7 +256,7 @@ struct KrigingEvaluationSampleFunctor1D
     // Nothing to do
   }
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     const UnsignedInteger inputDimension = input_.getDimension();
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
@@ -276,12 +277,12 @@ Sample KrigingEvaluation::operator()(const Sample & inS) const
   if (dimension == 1)
   {
     const KrigingEvaluationSampleFunctor1D functor( inS, result, *this);
-    TBB::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor );
+    TBBImplementation::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor );
   }
   else
   {
     const KrigingEvaluationSampleFunctor functor( inS, result, *this );
-    TBB::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor );
+    TBBImplementation::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor );
   }
 
   // Evaluate the basis part sequentially
