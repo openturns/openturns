@@ -68,7 +68,8 @@ assert result.getOutputSample()[0, 1] > 0.0, "no noise"
 # we're not too far from optimum)
 problem.setObjective(model.getMarginal(0))
 algo2 = ot.TNC(problem)
-algo2.setStartingPoint(result.getOptimalPoint())
+# we have to use getFinalPoints as our objective function is 2-d
+algo2.setStartingPoint(result.getFinalPoints()[0])
 algo2.run()
 result = algo2.getResult()
 # print(result)

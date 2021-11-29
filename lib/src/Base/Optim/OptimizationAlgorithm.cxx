@@ -27,6 +27,7 @@
 #include "openturns/Ipopt.hxx"
 #include "openturns/TNC.hxx"
 #include "openturns/NLopt.hxx"
+#include "openturns/Pagmo.hxx"
 #include "openturns/PlatformInfo.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -304,7 +305,8 @@ Description OptimizationAlgorithm::GetAlgorithmNames()
   names.add("TNC");
   if (PlatformInfo::HasFeature("nlopt"))
     names.add(NLopt::GetAlgorithmNames());
-
+  if (PlatformInfo::HasFeature("pagmo"))
+    names.add(Pagmo::GetAlgorithmNames());
   return names;
 }
 

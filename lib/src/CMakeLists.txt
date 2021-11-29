@@ -38,6 +38,10 @@ if (Bonmin_FOUND)
   endif ()
 endif ()
 
+if (Pagmo_FOUND)
+  set_source_files_properties (Base/Optim/Pagmo.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+endif ()
+
 # Exclude LibXML sources
 if (LIBXML2_FOUND)
   set_source_files_properties (Base/Common/XMLStorageManager.cxx Base/Common/XMLToolbox.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)

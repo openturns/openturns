@@ -410,8 +410,8 @@ void EfficientGlobalOptimization::run()
   } // while
 
   krigingResult_ = metaModelResult; // update krigingResult_ to take new points into account
-  result.setOptimalPoint(optimizer);
-  result.setOptimalValue(Point(1, optimalValue));
+  result.setFinalPoints(Sample(1, optimizer));
+  result.setFinalValues(Sample(1, Point(1, optimalValue)));
   result.setEvaluationNumber(evaluationNumber);
   result.setIterationNumber(iterationNumber);
   setResult(result);

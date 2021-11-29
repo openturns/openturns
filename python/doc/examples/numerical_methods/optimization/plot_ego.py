@@ -287,10 +287,11 @@ result = algo.getResult()
 result.getIterationNumber()
 
 # %%
-result.getOptimalPoint()
+# we have to use the multi-objective accessors because the objective is 2-d
+result.getFinalPoints()
 
 # %%
-result.getOptimalValue()
+result.getFinalValues()
 
 # %%
 fexact

@@ -69,6 +69,7 @@ OT::Ceres::Initialize();
 %include SQP.i
 %include MultiStart.i
 %include NLopt.i
+%include Pagmo.i
 
 /* Base/Geom */
 %import geom_module.i

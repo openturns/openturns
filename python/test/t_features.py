@@ -99,22 +99,26 @@ print('ok' if ot.PlatformInfo.HasFeature('bonmin') else 'n/a')
 print('17: optimization (Ipopt)'.ljust(width), end=' ')
 print('ok' if ot.PlatformInfo.HasFeature('ipopt') else 'n/a')
 
+# check that pagmo was found
+print('18: optimization (Pagmo)'.ljust(width), end=' ')
+print('ok' if ot.PlatformInfo.HasFeature('pagmo') else 'n/a')
+
 # check that bison/flex were found
-print('18: CSV parser (bison/flex)'.ljust(width), end=' ')
+print('19: CSV parser (bison/flex)'.ljust(width), end=' ')
 print('ok' if ot.PlatformInfo.HasFeature('bison') else 'n/a')
 
 # check that boost library was found
-print('19: special functions (Boost)'.ljust(width), end=' ')
+print('20: special functions (Boost)'.ljust(width), end=' ')
 print('ok' if ot.PlatformInfo.HasFeature('boost') else 'n/a')
 
 # check that mpfr library was found
-print('20: special functions (MPFR)'.ljust(width), end=' ')
+print('21: special functions (MPFR)'.ljust(width), end=' ')
 print('ok' if ot.PlatformInfo.HasFeature('mpfr') else 'n/a')
 
 # check that mpc library was found
-print('21: special functions (MPC)'.ljust(width), end=' ')
+print('22: special functions (MPC)'.ljust(width), end=' ')
 print('ok' if ot.PlatformInfo.HasFeature('mpc') else 'n/a')
 
 # check that primesieve library was found
-print('22: fast prime numbers (Primesieve)'.ljust(width), end=' ')
+print('23: fast prime numbers (Primesieve)'.ljust(width), end=' ')
 print('ok' if ot.PlatformInfo.HasFeature('primesieve') else 'n/a')

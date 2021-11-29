@@ -780,13 +780,112 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumEvaluationNumber", 1000);
   addAsUnsignedInteger("OptimizationAlgorithm-DefaultMaximumIterationNumber", 100);
 
+  // Pagmo parameters //
+  addAsString("Pagmo-UnconstrainMethod", "death penalty");
+  addAsBool("Pagmo-memory", false);
+  // gaco
+  addAsUnsignedInteger("Pagmo-gaco-ker", 63);
+  addAsScalar("Pagmo-gaco-q", 1.0);
+  addAsScalar("Pagmo-gaco-oracle", 0.0);
+  addAsScalar("Pagmo-gaco-acc", 0.01);
+  addAsUnsignedInteger("Pagmo-gaco-threshold", 1);
+  addAsUnsignedInteger("Pagmo-gaco-n_gen_mark", 7);
+  addAsUnsignedInteger("Pagmo-gaco-impstop", 100000);
+  addAsScalar("Pagmo-gaco-focus", 0.0);
+  // de
+  addAsScalar("Pagmo-de-F", 0.8);
+  addAsScalar("Pagmo-de-CR", 0.9);
+  addAsUnsignedInteger("Pagmo-de-variant", 2);
+  addAsUnsignedInteger("Pagmo-sade-variant", 2);
+  addAsUnsignedInteger("Pagmo-sade-variant_adptv", 1);
+  addAsUnsignedInteger("Pagmo-de1220-variant_adptv", 1);
+  // ihs
+  addAsScalar("Pagmo-ihs-phmcr", 0.85);
+  addAsScalar("Pagmo-ihs-ppar_min", 0.35);
+  addAsScalar("Pagmo-ihs-ppar_max", 0.99);
+  addAsScalar("Pagmo-ihs-bw_min", 1e-5);
+  addAsScalar("Pagmo-ihs-bw_max", 1.0);
+  // pso
+  addAsScalar("Pagmo-pso-omega", 0.7298);
+  addAsScalar("Pagmo-pso-eta1", 2.05);
+  addAsScalar("Pagmo-pso-eta2", 2.05);
+  addAsScalar("Pagmo-pso-max_vel", 0.5);
+  addAsUnsignedInteger("Pagmo-pso-variant", 5);
+  addAsUnsignedInteger("Pagmo-pso-neighb_type", 2);
+  addAsUnsignedInteger("Pagmo-pso-neighb_param", 4);
+  // pso_gen
+  addAsScalar("Pagmo-pso_gen-omega", 0.7298);
+  addAsScalar("Pagmo-pso_gen-eta1", 2.05);
+  addAsScalar("Pagmo-pso_gen-eta2", 2.05);
+  addAsScalar("Pagmo-pso_gen-max_vel", 0.5);
+  addAsUnsignedInteger("Pagmo-pso_gen-variant", 5);
+  addAsUnsignedInteger("Pagmo-pso_gen-neighb_type", 2);
+  addAsUnsignedInteger("Pagmo-pso_gen-neighb_param", 4);
+  // sga
+  addAsScalar("Pagmo-sga-cr", 0.9);
+  addAsScalar("Pagmo-sga-eta_c", 1.0);
+  addAsScalar("Pagmo-sga-m", 0.01);
+  addAsScalar("Pagmo-sga-param_m", 1.0);
+  addAsUnsignedInteger("Pagmo-sga-param_s", 2);
+  addAsString("Pagmo-sga-crossover", "exponential");
+  addAsString("Pagmo-sga-mutation", "polynomial");
+  addAsString("Pagmo-sga-selection", "tournament");
+  // simulated_annealing
+  addAsScalar("Pagmo-simulated_annealing-Ts", 10.0);
+  addAsScalar("Pagmo-simulated_annealing-Tf", 0.1);
+  addAsUnsignedInteger("Pagmo-simulated_annealing-n_T_adj", 10);
+  addAsUnsignedInteger("Pagmo-simulated_annealing-n_range_adj", 1);
+  addAsUnsignedInteger("Pagmo-simulated_annealing-bin_size", 20);
+  addAsScalar("Pagmo-simulated_annealing-start_range", 1.0);
+  // bee_colony
+  addAsUnsignedInteger("Pagmo-bee_colony-limit", 20);
+  // cmaes
+  addAsScalar("Pagmo-cmaes-cc", -1.0);
+  addAsScalar("Pagmo-cmaes-cs", -1.0);
+  addAsScalar("Pagmo-cmaes-c1", -1.0);
+  addAsScalar("Pagmo-cmaes-cmu", -1.0);
+  addAsScalar("Pagmo-cmaes-sigma0", 0.5);
+  // xnes
+  addAsScalar("Pagmo-xnes-eta_mu", -1.0);
+  addAsScalar("Pagmo-xnes-eta_sigma", -1.0);
+  addAsScalar("Pagmo-xnes-eta_b", -1.0);
+  addAsScalar("Pagmo-xnes-sigma0", -1.0);
+  // nsga2
+  addAsScalar("Pagmo-nsga2-cr", 0.95);
+  addAsScalar("Pagmo-nsga2-eta_c", 10.0);
+  addAsScalar("Pagmo-nsga2-m", 0.01);
+  addAsScalar("Pagmo-nsga2-eta_m", 50.0);
+  // moead
+  addAsString("Pagmo-moead-weight_generation", "grid");
+  addAsString("Pagmo-moead-decomposition", "tchebycheff");
+  addAsUnsignedInteger("Pagmo-moead-neighbours", 20);
+  addAsScalar("Pagmo-moead-CR", 1.0);
+  addAsScalar("Pagmo-moead-F", 0.5);
+  addAsScalar("Pagmo-moead-eta_m", 20.0);
+  addAsScalar("Pagmo-moead-realb", 0.9);
+  addAsUnsignedInteger("Pagmo-moead-limit", 2);
+  addAsBool("Pagmo-moead-preserve_diversity", true);
+  // mhaco
+  addAsUnsignedInteger("Pagmo-mhaco-ker", 63);
+  addAsScalar("Pagmo-mhaco-q", 1.0);
+  addAsUnsignedInteger("Pagmo-mhaco-threshold", 1);
+  addAsUnsignedInteger("Pagmo-mhaco-n_gen_mark", 7);
+  addAsScalar("Pagmo-mhaco-focus", 0.0);
+  // nspso
+  addAsScalar("Pagmo-nspso-omega", 0.6);
+  addAsScalar("Pagmo-nspso-c1", 2.0);
+  addAsScalar("Pagmo-nspso-c2", 2.0);
+  addAsScalar("Pagmo-nspso-chi", 1.0);
+  addAsScalar("Pagmo-nspso-v_coeff", 0.5);
+  addAsUnsignedInteger("Pagmo-nspso-leader_selection_range", 60);
+  addAsString("Pagmo-nspso-diversity_mechanism", "crowding distance");
+  
   // Dlib optimization parameters //
   addAsScalar("Dlib-DefaultInitialTrustRegionRadius", 1.0);
   addAsScalar("Dlib-DefaultWolfeRho", 0.01);
   addAsScalar("Dlib-DefaultWolfeSigma", 0.9);
   addAsUnsignedInteger("Dlib-DefaultMaxLineSearchIterations", 100);
   addAsUnsignedInteger("Dlib-DefaultMaxSize", 10);
-
 
   // EfficientGlobalOptimization parameters //
   addAsScalar("EfficientGlobalOptimization-DefaultAEITradeoff", 1.0);

@@ -42,6 +42,8 @@ class OT_API OptimizationProblemImplementation
 public:
 
   /** enum and typedef declarations */
+  typedef Collection<UnsignedInteger>           BoolCollection;
+  typedef PersistentCollection<UnsignedInteger> BoolPersistentCollection;
 
   enum VariableType
   {
@@ -54,7 +56,7 @@ public:
   OptimizationProblemImplementation();
 
   /** Constructor with parameters */
-  explicit OptimizationProblemImplementation(const Function& objective);
+  explicit OptimizationProblemImplementation(const Function & objective);
 
   /** Constructor with parameters */
   OptimizationProblemImplementation(const Function & objective,
@@ -103,13 +105,13 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Minimization accessor */
-  void setMinimization(Bool minimization);
-  Bool isMinimization() const;
+  void setMinimization(Bool minimization, UnsignedInteger marginalIndex = 0);
+  Bool isMinimization(UnsignedInteger marginalIndex = 0) const;
 
   /** Variable types accessors */
   void setVariablesType(const Indices & variableType);
   Indices getVariablesType() const;
-  bool isContinuous() const;
+  Bool isContinuous() const;
 
   /** String converter */
   String __repr__() const override;
@@ -133,8 +135,8 @@ protected:
   // The bounds
   Interval bounds_;
 
-  // Minimization problem
-  Bool minimization_ = true;
+  // Minimization flags
+  BoolPersistentCollection minimizationCollection_;
 
   // The dimension of the search space
   UnsignedInteger dimension_ = 0;

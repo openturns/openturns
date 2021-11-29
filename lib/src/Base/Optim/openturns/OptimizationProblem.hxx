@@ -101,8 +101,8 @@ public:
   UnsignedInteger getDimension() const;
 
   /** Minimization accessor */
-  void setMinimization(Bool minimization);
-  Bool isMinimization() const;
+  void setMinimization(Bool minimization, UnsignedInteger marginalIndex = 0);
+  Bool isMinimization(UnsignedInteger marginalIndex = 0) const;
 
   /** Variable types accessors */
   void setVariablesType(const Indices & variableType);

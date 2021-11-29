@@ -108,6 +108,12 @@ Description PlatformInfo::GetFeatures()
     Features_["cminpack"] = false;
 #endif
 
+#ifdef OPENTURNS_HAVE_PAGMO
+    Features_["pagmo"] = true;
+#else
+    Features_["pagmo"] = false;
+#endif
+
 #ifdef OPENTURNS_HAVE_PRIMESIEVE
     Features_["primesieve"] = true;
 #else
