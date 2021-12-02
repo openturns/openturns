@@ -44,6 +44,12 @@ OrthogonalUniVariatePolynomialFamily::OrthogonalUniVariatePolynomialFamily(const
   // Nothing to do
 }
 
+/* Constructor from implementation pointer */
+OrthogonalUniVariatePolynomialFamily::OrthogonalUniVariatePolynomialFamily(OrthogonalUniVariatePolynomialFactory * p_implementation)
+  : TypedInterfaceObject<OrthogonalUniVariatePolynomialFactory>(p_implementation)
+{
+  // Nothing to do
+}
 
 /* The method to get the polynomial of any degree */
 OrthogonalUniVariatePolynomial OrthogonalUniVariatePolynomialFamily::build(const UnsignedInteger degree) const

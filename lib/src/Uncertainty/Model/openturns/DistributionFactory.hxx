@@ -49,6 +49,11 @@ public:
   /** Parameter constructor */
   DistributionFactory(const DistributionFactoryImplementation & factory);
 
+#ifndef SWIG
+  /** Constructor from implementation pointer */
+  DistributionFactory(DistributionFactoryImplementation * p_implementation);
+#endif
+
   /** String converter */
   String __repr__() const override;
 
