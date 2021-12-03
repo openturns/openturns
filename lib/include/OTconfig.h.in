@@ -116,9 +116,6 @@
 #cmakedefine OPENTURNS_HAVE_TBB
 #cmakedefine OPENTURNS_TBB_NO_IMPLICIT_LINKAGE
 
-/* Define to 1 if you have the <tbb/tbb.h> header file. */
-#cmakedefine OPENTURNS_HAVE_TBB_TBB_H
-
 /* Define to 1 if you have the <unistd.h> header file. */
 #cmakedefine OPENTURNS_HAVE_UNISTD_H
 
