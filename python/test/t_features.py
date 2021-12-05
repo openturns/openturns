@@ -144,3 +144,7 @@ print('ok' if ot.SpecFunc.IsMPFRAvailable() else 'n/a')
 # check that mpc library was found
 print('21: special functions (MPC)'.ljust(width), end=' ')
 print('ok' if ot.SpecFunc.IsMPCAvailable() else 'n/a')
+
+# check that primesieve library was found
+print('22: fast prime numbers (Primesieve)'.ljust(width), end=' ')
+print('ok' if ot.LowDiscrepancySequenceImplementation.IsPrimesieveAvailable() else 'n/a')

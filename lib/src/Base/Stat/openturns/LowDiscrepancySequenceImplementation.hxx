@@ -78,6 +78,9 @@ public:
   /** Method load() reloads the object from the StorageManager */
   void load(Advocate & adv) override;
 
+  /** Whether primesieve support is available */
+  static Bool IsPrimesieveAvailable();
+
 private:
   /** Compute the local discrepancy of a sample, given a multidimensionnal interval */
   static Scalar ComputeLocalDiscrepancy(const Sample & sample,
