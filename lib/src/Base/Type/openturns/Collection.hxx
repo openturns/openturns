@@ -393,6 +393,11 @@ public:
   {
     return sizeof(T);
   }
+
+  inline InternalType toStdVector() const
+  {
+    return coll__;
+  }
 #endif
 
 protected:
