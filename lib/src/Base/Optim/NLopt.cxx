@@ -244,12 +244,8 @@ void NLopt::run()
       throw InvalidArgumentException(HERE) << "Starting point is not inside bounds x=" << startingPoint.__str__() << " bounds=" << bounds;
     Interval::BoolCollection finiteLowerBound(bounds.getFiniteLowerBound());
     Interval::BoolCollection finiteUpperBound(bounds.getFiniteUpperBound());
-    Point lowerBound(bounds.getLowerBound());
-    Point upperBound(bounds.getUpperBound());
-    std::vector<double> lb(dimension, 0.0);
-    std::vector<double> ub(dimension, 0.0);
-    std::copy(lowerBound.begin(), lowerBound.end(), lb.begin());
-    std::copy(upperBound.begin(), upperBound.end(), ub.begin());
+    std::vector<double> lb(bounds.getLowerBound().toStdVector());
+    std::vector<double> ub(bounds.getUpperBound().toStdVector());
     for (UnsignedInteger i = 0; i < dimension; ++ i)
     {
       if (!finiteLowerBound[i]) lb[i] = SpecFunc::LowestScalar;
@@ -276,9 +272,7 @@ void NLopt::run()
   if (initialStep_.getDimension() > 0)
   {
     if (initialStep_.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Invalid dx point dimension, expected " << dimension;
-    std::vector<double> dx(dimension, 0.0);
-    std::copy(initialStep_.begin(), initialStep_.end(), dx.begin());
-    opt.set_default_initial_step(dx);
+    opt.set_default_initial_step(initialStep_.toStdVector());
   }
 
   // some algorithms require a local solver (AUGLAG, MLSL)
@@ -306,15 +300,12 @@ void NLopt::run()
     {
       Point localInitialStep(p_localSolver_->getInitialStep());
       if (localInitialStep.getDimension() != dimension) throw InvalidArgumentException(HERE) << "Invalid local dx point dimension, expected " << dimension;
-      std::vector<double> local_dx(dimension, 0.0);
-      std::copy(localInitialStep.begin(), localInitialStep.end(), local_dx.begin());
-      local_opt.set_default_initial_step(local_dx);
+      local_opt.set_default_initial_step(localInitialStep.toStdVector());
     }
     opt.set_local_optimizer(local_opt);
   }
 
-  std::vector<double> x(dimension, 0.0);
-  std::copy(startingPoint.begin(), startingPoint.end(), x.begin());
+  std::vector<double> x(startingPoint.toStdVector());
   double optimalValue = 0.0;
 
   try
@@ -340,8 +331,7 @@ void NLopt::run()
   }
   p_opt_ = 0;
 
-  Point optimizer(dimension);
-  std::copy(x.begin(), x.end(), optimizer.begin());
+  Point optimizer(x.begin(), x.end());
   OptimizationResult result(getProblem());
 
   const UnsignedInteger size = evaluationInputHistory_.getSize();
@@ -485,8 +475,7 @@ double NLopt::ComputeObjective(const std::vector<double> & x, std::vector<double
 {
   NLopt *algorithm = static_cast<NLopt *>(f_data);
   const UnsignedInteger dimension = algorithm->getProblem().getDimension();
-  Point inP(dimension);
-  std::copy(x.begin(), x.end(), inP.begin());
+  Point inP(x.begin(), x.end());
 
   // evaluation
   Point outP(algorithm->getProblem().getObjective()(inP));
