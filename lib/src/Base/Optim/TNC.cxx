@@ -429,7 +429,7 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
     // Here we take the sign into account and convert the result into a Point in one shot
     const Matrix gradient(problem.isMinimization() ? problem.getObjective().gradient(inP) : -1.0 * problem.getObjective().gradient(inP));
     /* Convert the gradient into the output format */
-    std::copy(&gradient(0, 0), &gradient(0, 0) + dimension, g);
+    std::copy(gradient.data(), gradient.data() + dimension, g);
   }
   catch (...)
   {
