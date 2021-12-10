@@ -84,7 +84,7 @@ void HSICEstimatorGlobalSensitivity::computePValuesAsymptotic()
 
     CovarianceMatrix Kx(coll[dim].discretize(Xi));
     Scalar traceKx = Kx.computeTrace();
-    Scalar sumKx = Kx.computeSumElements() ;
+    Scalar sumKx = Kx.computeSumElements();
     Scalar Ex = (sumKx - traceKx) / n_ / (n_ - 1);
 
     Matrix Bx = H * Kx * H;
