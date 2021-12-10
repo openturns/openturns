@@ -56,7 +56,7 @@ SquareMatrix HSICEstimatorTargetSensitivity::computeWeightMatrix(const Sample&) 
 void HSICEstimatorTargetSensitivity::computePValuesAsymptotic()
 {
   HSICEstimatorImplementation::CovarianceModelCollection coll = covarianceList_;
-  SquareMatrix W = computeWeightMatrix(outputSample_);
+  SquareMatrix W(computeWeightMatrix(outputSample_));
 
   PValuesAsymptotic_ = Point(inputDimension_);
 
@@ -73,7 +73,7 @@ void HSICEstimatorTargetSensitivity::computePValuesAsymptotic()
     H(j, j) += 1.0;
   }
 
-  CovarianceMatrix Ky = coll[inputDimension_].discretize(outputSample_);
+  CovarianceMatrix Ky(coll[inputDimension_].discretize(outputSample_));
   Scalar traceKy = Ky.computeTrace();
   Scalar sumKy = Ky.computeSumElements();
 
@@ -82,17 +82,17 @@ void HSICEstimatorTargetSensitivity::computePValuesAsymptotic()
 
   for(UnsignedInteger dim = 0; dim < inputDimension_; ++dim)
   {
-    Sample Xi = inputSample_.getMarginal(dim);
+    Sample Xi(inputSample_.getMarginal(dim));
     Scalar HSICobs = computeHSICIndex(Xi, outputSample_, coll[dim], coll[inputDimension_], W);
 
-    CovarianceMatrix Kx = coll[dim].discretize(Xi);
+    CovarianceMatrix Kx(coll[dim].discretize(Xi));
     Scalar traceKx = Kx.computeTrace();
     Scalar sumKx = Kx.computeSumElements();
     Scalar Ex = (sumKx - traceKx) / n_ / (n_ - 1);
 
     Matrix Bx = H * Kx * H;
 
-    /* Hadamard Product then square all elements */
+    /* Hadamard product then square all elements */
     Matrix B(n_, n_);
     B = Bx.computeHadamardProduct(By);
     B.squareElements();
@@ -102,8 +102,7 @@ void HSICEstimatorTargetSensitivity::computePValuesAsymptotic()
 
     Scalar mHSIC = (1 + Ex * Ey - Ex - Ey) / n_;
     Scalar factor = 2.0 * (n_ - 4) * (n_ - 5) / n_ / (n_ - 1) / (n_ - 2) / (n_ - 3) / n_ / (n_ - 1);
-    Scalar sumB = B.computeSumElements();
-    Scalar varHSIC = sumB * factor ;
+    Scalar varHSIC = B.computeSumElements() * factor;
 
     Scalar alpha = mHSIC * mHSIC / varHSIC;
     Scalar beta = n_ * varHSIC / mHSIC;
