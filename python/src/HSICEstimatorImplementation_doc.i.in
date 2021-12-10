@@ -4,9 +4,9 @@
 Available constructors:
     HSICEstimator()
 
-    HSICEstimator(covarianceList, X, Y, estimatorType)
+    HSICEstimator(*covarianceList*, *X*, *Y*, *estimatorType*)
 
-    HSICEstimator(covarianceList, X, Y, estimatorType, weightFunction)
+    HSICEstimator(*covarianceList*, *X*, *Y*, *estimatorType*, *weightFunction*)
 
 Notes
 -----

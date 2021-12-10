@@ -6,7 +6,7 @@
 Available constructors:
     HSICEstimatorTargetSensitivity()
 
-    HSICEstimatorImplementation(covarianceList, X, Y, estimatorType, filterFunction)
+    HSICEstimatorImplementation(*covarianceList*, *X*, *Y*, *estimatorType*, *filterFunction*)
 
 Parameters
 ----------

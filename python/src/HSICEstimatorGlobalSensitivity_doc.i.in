@@ -6,7 +6,7 @@
 Available constructors:
     HSICEstimatorGlobalSensitivity()
 
-    HSICEstimatorGlobalSensitivity(covarianceList, X, Y, estimatorType)
+    HSICEstimatorGlobalSensitivity(*covarianceList*, *X*, *Y*, *estimatorType*)
 
 Parameters
 ----------

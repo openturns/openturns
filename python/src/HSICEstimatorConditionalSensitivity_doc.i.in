@@ -6,7 +6,7 @@
 Available constructors:
     HSICEstimatorConditionalSensitivity()
 
-    HSICEstimatorConditionalSensitivity(covarianceList, X, Y, estimatorType, weightFunction)
+    HSICEstimatorConditionalSensitivity(*covarianceList*, *X*, *Y*, *estimatorType*, *weightFunction*)
 
 Parameters
 ----------
