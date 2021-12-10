@@ -7,6 +7,11 @@
 ==== Major changes ====
 
 ==== New classes ====
+ * HSICEstimatorConditionalSensitivity
+ * HSICEstimatorGlobalSensitivity
+ * HSICEstimatorTargetSensitivity
+ * HSICUStat
+ * HSICVStat
 
 ==== API changes ====
  * Removed deprecated Hanning alias
