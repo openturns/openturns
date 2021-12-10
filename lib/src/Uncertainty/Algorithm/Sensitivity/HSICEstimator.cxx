@@ -29,22 +29,6 @@ HSICEstimator::HSICEstimator(): TypedInterfaceObject<HSICEstimatorImplementation
   // Nothing to do
 }
 
-/** Constructor */
-HSICEstimator::HSICEstimator(const CovarianceModelCollection & covarianceList, const Sample & X, const Sample & Y,
-                             const HSICStat & estimatorType): TypedInterfaceObject<HSICEstimatorImplementation>(
-                                 new HSICEstimatorImplementation(covarianceList, X, Y, estimatorType))
-{
-  // Nothing to do
-}
-
-/** Constructor */
-HSICEstimator::HSICEstimator(const CovarianceModelCollection & covarianceList, const Sample & X, const Sample & Y,
-                             const HSICStat & estimatorType, const Function & weightFunction ): TypedInterfaceObject<HSICEstimatorImplementation>(
-                                 new HSICEstimatorImplementation(covarianceList, X, Y, estimatorType, weightFunction ))
-{
-  // Nothing to do
-}
-
 /** Default constructor */
 HSICEstimator::HSICEstimator(const HSICEstimatorImplementation & implementation)
   : TypedInterfaceObject<HSICEstimatorImplementation>(implementation.clone())

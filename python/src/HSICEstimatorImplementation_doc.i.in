@@ -1,37 +1,9 @@
 %define OT_HSICEstimator_doc
-"Base class of HSICEstimator.
-
-Available constructors:
-    HSICEstimator()
-
-    HSICEstimator(*covarianceList*, *X*, *Y*, *estimatorType*)
-
-    HSICEstimator(*covarianceList*, *X*, *Y*, *estimatorType*, *weightFunction*)
+"Base class of HSIC estimators.
 
 Notes
 -----
-This is a base class for the implementation of an HSIC estimator.
-Using *HSICEstimatorImplementation* is equivalent to using its derived class
-:class:`~openturns.HSICEstimatorConditionalSensitivity`.
-Alternative HSIC-based analyses can be performed by using the other derived classes: :class:`~openturns.HSICEstimatorGlobalSensitivity` and :class:`~openturns.HSICEstimatorTargetSensitivity`.
-
-Parameters
-----------
-covarianceList : list of :class:`~openturns.CovarianceModel`
-    List of all covariance kernels. The :math:`d` first kernels are linked to the input 
-    and the last one is for the output.
-
-X : :class:`~openturns.Sample`
-    The input sample used for the HSIC analysis of dimension :math:`d`.
-
-Y : :class:`~openturns.Sample`
-    The output sample used for the HSIC analysis of dimension 1.
-
-estimatorType : :class:`~openturns.HSICStat`
-    An estimator for internal computations.
-
-weightFunction : :class:`~openturns.Function`
-    A weight function used for the inputs.
+HSIC-based analyses must be performed by using the derived classes: :class:`~openturns.HSICEstimatorConditionalSensitivity`, :class:`~openturns.HSICEstimatorGlobalSensitivity` and :class:`~openturns.HSICEstimatorTargetSensitivity`.
 
 See also
 --------

@@ -52,12 +52,6 @@ public:
   /** Default ctor */
   HSICEstimator();
 
-  /** Constructor */
-  HSICEstimator(const CovarianceModelCollection & covarianceList, const Sample & X, const Sample & Y, const HSICStat & estimatorType);
-
-  /** Constructor */
-  HSICEstimator(const CovarianceModelCollection & covarianceList, const Sample & X, const Sample & Y, const HSICStat & estimatorType, const Function & weightFunction);
-
   /** Constructor from implementation */
   HSICEstimator(const HSICEstimatorImplementation & implementation);
 
