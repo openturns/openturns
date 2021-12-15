@@ -46,26 +46,3 @@ namespace std {
 }
 
 
-%pythoncode %{
-class TestFailed:
-    """TestFailed is used to raise an uniform exception in tests."""
-
-    __type = "TestFailed"
-
-    def __init__(self, reason=""):
-        self.reason = reason
-
-    def type(self):
-        return TestFailed.__type
-
-    def what(self):
-        return self.reason
-
-    def __str__(self):
-        return TestFailed.__type + ": " + self.reason
-
-    def __lshift__(self, ch):
-        self.reason += ch
-        return self
-%}
-
