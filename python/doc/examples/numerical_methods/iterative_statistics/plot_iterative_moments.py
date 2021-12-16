@@ -1,40 +1,46 @@
 """
-Iterative mean
-==============
+Using iterative statistics
+==========================
 """
 
 # %%
-# In this example, we show how to use the :class:`~openturns.IterativeMoments` class. This algorithm computes an estimate of the mean using iterative algorithms. In other words, this algorithm can be used to iteratively update the estimate of the mean using one point at a time instead of using the full sample.
+# In this example, we use the :class:`~openturns.IterativeMoments` class to compute iterative statistics.
+# This class stores centered moments up to a prescribed order iteratively. Then several statistics based on the moments are available depending on the chosen order.
 
 # %%
 import openturns as ot
 import openturns.viewer as otv
+ot.RandomGenerator.SetSeed(0)
 
 # %%
-# We create the mean object.
-
-# %%
+# We first create a one-dimensional Gaussian random variable to generate data.
 dim = 1
-myMean = ot.IterativeMoments(1, dim)
+distNormal = ot.Normal(dim)
 
 # %%
-# We can now perform the simulations. In the following session, we increment using the `increment` method one `Point` at a time.
-# The current mean is given by the `getMean` and the current number of iterations
-# is given by the `getIteration` method.
+# Then we use the centered moments up to order 4 with the :class:`~openturns.IterativeMoments` class by giving the order (here 4) and the dimension (here 1):
 
 # %%
-n = ot.Normal(dim)
-size = 200
+order = 4
+iterMoments = ot.IterativeMoments(order, dim)
 
-data = ot.Sample()
+
+# %%
+# We can now perform the simulations.
+# The :class:`~opeturns.IterativeMoments` object stores the centered moments iteratively.
+# We first increment the object with one :class:`~openturns.Point` at a time.
+# At any given step the current mean is obtained thanks to the :meth:`~openturns.IterativeMoments.getMean` method and the
+# current number of iterations is given by the :meth:`~openturns.IterativeMoments.getIteration` method.
+size = 2000
+meanEvolution = ot.Sample()
 for i in range(size):
-    point = n.getRealization()
-    myMean.increment(point)
-    data.add(myMean.getMean())
+    point = distNormal.getRealization()
+    iterMoments.increment(point)
+    meanEvolution.add(iterMoments.getMean())
 
 # %%
 # We display the evolution of the mean.
-curve = ot.Curve(data)
+curve = ot.Curve(meanEvolution)
 graph = ot.Graph("Evolution of the mean", "iteration nb", "mean", True)
 graph.add(curve)
 view = otv.View(graph)
@@ -43,12 +49,18 @@ view = otv.View(graph)
 # We can also increment with a `Sample`.
 
 # %%
-sample = n.getSample(size)
-myMean.increment(sample)
+sample = distNormal.getSample(size)
+iterMoments.increment(sample)
 
 # %%
 # We print the total number of iterations and the mean.
-print ("Total number of iteration " + str(myMean.getIteration()))
-print (myMean.getMean())
+print("Total number of iteration: " + str(iterMoments.getIteration()))
+print("Mean: ", iterMoments.getMean())
+
+# %%
+# We also have access to other statistics such as the variance (order 2), the skewness (order 3) or the kurtosis (order 4).
+print("Variance: ", iterMoments.getVariance())
+print("Skewness: ", iterMoments.getSkewness())
+print("Kurtosis: ", iterMoments.getKurtosis())
 
 otv.View.ShowAll()
