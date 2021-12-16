@@ -46,6 +46,8 @@ Bibliography
     of space filling designs: optimization of Latin hypercube samples and
     subprojection properties.* Journal of Simulation, 7:276-289, 2013.
     `pdf <https://arxiv.org/pdf/1307.6835.pdf>`__
+.. [daveiga2015] Da Veiga, S. (2015). *Global sensitivity analysis with dependence measures.*
+    Journal of Statistical Computation and Simulation, 85(7), 1283-1305.
 .. [devroye1986] Devroye L, *Non-Uniform RandomVariate Generation*,
     Springer-Verlag, New York, 1986
     `pdf <http://www.nrbook.com/devroye/Devroye_files/>`__
@@ -74,6 +76,9 @@ Bibliography
 .. [gamboa2013] Gamboa, F., Janon, A., Klein, T. & Lagnoux, A. *Sensitivity
     analysis for multidimensional and functional outputs.* 2013.
     `pdf <https://arxiv.org/pdf/1311.1797.pdf>`__
+.. [gretton2005] Gretton, A., Bousquet, O., Smola, A., & Schölkopf, B. (2005, October). 
+    *Measuring statistical dependence with Hilbert-Schmidt norms.* In International conference on
+    algorithmic learning theory (pp. 63-77). Springer, Berlin, Heidelberg.
 .. [hormann1993] Hormann W., *The generation of Binomial Random Variates* Journal
     of Statistical Computation and Simulation 46, pp. 101-110, 1993.
     `pdf <https://epub.wu.ac.at/1242/1/document.pdf>`__
@@ -143,6 +148,8 @@ Bibliography
     `pdf <http://academicos.fciencias.unam.mx/wp-content/uploads/sites/91/2015/04/Lillifors_normality_ks.pdf>`__
 .. [loader2000] Loader C. *Fast and Accurate Computation of Binomial Probabilities*,
     `pdf <http://octave.1599824.n4.nabble.com/attachment/3829107/0/loader2000Fast.pdf>`__
+.. [marrel2021] Marrel, A., & Chabridon, V. (2021). *Statistical developments for target and conditional sensitivity analysis: 
+    application on safety studies for nuclear reactor.* Reliability Engineering & System Safety, 107711.
 .. [marsaglia1993] Marsaglia G. and Tsang W. W., *A Simple Method for Generating Gamma*,
     Journal of Statistical Computational and Simulation, vol 46, pp101 - 110,1993.
 .. [martinez2011] Martinez, J-M., *Analyse de sensibilite globale par decomposition de la variance*,
