@@ -1,7 +1,7 @@
 .. _sensitivity_hsic:
 
 Sensitivity analysis using Hilbert-Schmidt Indepencence Criterion (HSIC)
------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 Introduction
 ~~~~~~~~~~~~
