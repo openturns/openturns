@@ -3,21 +3,16 @@
 %feature("docstring") OT::HSICEstimatorConditionalSensitivity
 "Implement a HSIC estimator for conditional analysis.
 
-Available constructors:
-    HSICEstimatorConditionalSensitivity()
-
-    HSICEstimatorConditionalSensitivity(*covarianceList*, *X*, *Y*, *estimatorType*, *weightFunction*)
-
 Parameters
 ----------
 covarianceList : list of :class:`~openturns.CovarianceModel`
     List of all covariance kernels. The :math:`d` first kernels are linked to the input 
     and the last one is for the output.
 
-X : :class:`~openturns.Sample`
+X : 2-d sequence of float
     The input sample used for the HSIC analysis of dimension :math:`d`.
 
-Y : :class:`~openturns.Sample`
+Y : 2-d sequence of float
     The output sample used for the HSIC analysis of dimension 1.
 
 estimatorType : :class:`~openturns.HSICStat`

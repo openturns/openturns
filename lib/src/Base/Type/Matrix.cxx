@@ -317,6 +317,7 @@ Matrix Matrix::getDiagonal(const SignedInteger k) const
 /** Fill a diagonal */
 void Matrix::setDiagonal(const Point &diag, const SignedInteger k)
 {
+  copyOnWrite();
   getImplementation()->setDiagonal(diag, k);
 }
 
@@ -329,6 +330,7 @@ Scalar Matrix::computeSumElements() const
 /** All elements are squared */
 void Matrix::squareElements()
 {
+  copyOnWrite();
   getImplementation()->squareElements();
 }
 
