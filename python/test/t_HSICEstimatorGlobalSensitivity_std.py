@@ -1,21 +1,21 @@
 #! /usr/bin/env python
 
 from __future__ import print_function
-from openturns import *
+import openturns as ot
 import openturns.testing as ott
 import math as m
 
-TESTPREAMBLE()
-RandomGenerator.SetSeed(0)
+ot.TESTPREAMBLE()
+ot.RandomGenerator.SetSeed(0)
 
 
 # Definition of the marginals
-X1 = Uniform(-m.pi, m.pi)
-X2 = Uniform(-m.pi, m.pi)
-X3 = Uniform(-m.pi, m.pi)
+X1 = ot.Uniform(-m.pi, m.pi)
+X2 = ot.Uniform(-m.pi, m.pi)
+X3 = ot.Uniform(-m.pi, m.pi)
 
 # 3d distribution made with independent marginals
-distX = ComposedDistribution([X1, X2, X3])
+distX = ot.ComposedDistribution([X1, X2, X3])
 
 # Get a sample of it
 size = 100
@@ -23,7 +23,7 @@ X = distX.getSample(size)
 
 
 # The Ishigami model
-modelIshigami = SymbolicFunction(
+modelIshigami = ot.SymbolicFunction(
     ["X1", "X2", "X3"], ["sin(X1) + 5.0 * (sin(X2))^2 + 0.1 * X3^4 * sin(X1)"])
 
 # Apply model: Y = m(X)
@@ -31,17 +31,17 @@ Y = modelIshigami(X)
 
 # We define the covariance models for the HSIC indices.
 # For the input, we consider a SquaredExponential covariance model.
-covarianceList = CovarianceModelCollection()
+covarianceList = ot.CovarianceModelCollection()
 
 # Input sample
 for i in range(3):
     Xi = X.getMarginal(i)
-    Cov = SquaredExponential(1)
+    Cov = ot.SquaredExponential(1)
     Cov.setScale(Xi.computeStandardDeviation())
     covarianceList.add(Cov)
 
 # Output sample with squared exponential covariance
-Cov2 = SquaredExponential(1)
+Cov2 = ot.SquaredExponential(1)
 Cov2.setScale(Y.computeStandardDeviation())
 covarianceList.add(Cov2)
 
@@ -49,10 +49,10 @@ covarianceList.add(Cov2)
 #   - unbiased: HSICUStat;
 #   - biased: HSICVStat.
 #
-estimatorType = HSICUStat()
+estimatorType = ot.HSICUStat()
 
 # We eventually build the HSIC object!
-hsic = HSICEstimatorGlobalSensitivity(covarianceList, X, Y, estimatorType)
+hsic = ot.HSICEstimatorGlobalSensitivity(covarianceList, X, Y, estimatorType)
 
 # We get the HSIC indices
 HSICIndices = hsic.getHSICIndices()

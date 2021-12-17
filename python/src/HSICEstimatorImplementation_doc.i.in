@@ -19,7 +19,7 @@ OT_HSICEstimator_doc
 
 Parameters
 ----------
-B : integer
+B : int
     The number of permutation used for p-value estimates."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::setPermutationSize
@@ -33,8 +33,8 @@ OT_HSICEstimator_setPermutationSize_doc
 
 Returns
 -------
-permutationSize : integer
-    The number of permuations."
+permutationSize : int
+    The number of permutations."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::getPermutationSize
 OT_HSICEstimator_getPermutationSize_doc
@@ -84,7 +84,7 @@ OT_HSICEstimator_getInputSample_doc
 
 Parameters
 ----------
-inputSample : :class:`~openturns.Sample`
+inputSample : 2-d sequence of float
               The input sample to be used."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::setInputSample
@@ -110,7 +110,7 @@ OT_HSICEstimator_getOutputSample_doc
 
 Parameters
 ----------
-outputSample : :class:`~openturns.Sample`
+outputSample : 2-d sequence of float
                The output sample to be used."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::setOutputSample
@@ -123,7 +123,7 @@ OT_HSICEstimator_setOutputSample_doc
 
 Returns
 -------
-dim : integer
+dim : int
       The dimension of the input sample."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::getDimension
@@ -136,7 +136,7 @@ OT_HSICEstimator_getDimension_doc
 
 Returns
 -------
-size : integer
+size : int
        The size of the input sample."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::getSize
@@ -240,10 +240,10 @@ OT_HSICEstimator_drawPValuesPermutation_doc
 
 Parameters
 ----------
-values : :class:`~openturns.Point`
+values : sequence of float
     The values to be displayed as a Cloud.
 
-title : :class:`~openturns.String`
+title : str
     The title of the graph.
 
 Returns

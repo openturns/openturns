@@ -70,5 +70,16 @@
 %import model_process_module.i
 %import UncertaintyProcessTemplateDefs.i 
 
+/* Uncertainty/Algorithm/Sensitivity */
+%include HSICStatImplementation.i
+%include HSICStat.i
+%include HSICUStat.i
+%include HSICVStat.i
+%include HSICEstimatorImplementation.i
+%include HSICEstimator.i
+%include HSICEstimatorConditionalSensitivity.i
+%include HSICEstimatorGlobalSensitivity.i
+%include HSICEstimatorTargetSensitivity.i
+
 /* At last we include template definitions */
 %include UncertaintyTemplateDefs.i

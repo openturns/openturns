@@ -1,9 +1,6 @@
 %feature("docstring") OT::HSICUStat
 "Unbiased HSIC statistics.
 
-Available constructors:
-    HSICUStat()
-
 Notes
 -----
 This an unbiased estimator for the computation of an HSIC index.
@@ -19,10 +16,10 @@ See also
 
 Parameters
 ----------
-inSample : :class:`~openturns.Sample`
+inSample : 2-d sequence of float
     Input sample.
 
-outSample : :class:`~openturns.Sample`
+outSample : 2-d sequence of float
     Output sample.
 
 inCovariance : :class:`~openturns.CovarianceModel`
@@ -45,7 +42,7 @@ hsicIndex : the HSIC index of the two :class:`~openturns.Sample`."
 
 Returns
 -------
-isCompatible : boolean flag
+isCompatible : bool
     Indicate the compatibility with a conditional HSIC estimator (false)."
 
 // ---------------------------------------------------------------------
@@ -58,7 +55,7 @@ Parameters
 dist : :class:`~openturns.Gamma`
     A :class:`~openturns.Gamma` distribution to compute the p-value.
 
-n : integer
+n : int
     The size of the samples.
 
 HSIC_obs : float
