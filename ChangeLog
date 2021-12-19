@@ -20,6 +20,7 @@
 === Documentation ===
 
 === Python module ===
+ * Hide C++ getImplementation methods and add Python-specific getImplementation methods with automatic dynamic typecasting
 
 === Miscellaneous ===
 
