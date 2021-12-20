@@ -70,40 +70,40 @@ protected:
   Scalar computeHSICIndex( const Sample & inSample, const Sample & outSample, const CovarianceModel & inCovariance, const CovarianceModel & outCovariance, const SquareMatrix & weightMatrix) const;
 
   /** Compute p-value with permutation */
-  void computePValuesPermutation();
+  void computePValuesPermutation() const;
 
   /** Compute HSIC and R2-HSIC indices */
-  void computeIndices();
+  void computeIndices() const;
 
 public:
   /** Get the HSIC indices.
    *  This is not const as it triggers a computation of the indices
    *  if they are not computed yet.
    * */
-  Point getHSICIndices();
+  Point getHSICIndices() const;
 
   /** Get the R2-HSIC indices.
    *  This is not const as it triggers a computation of the indices
    *  if they are not computed yet.
    * */
-  Point getR2HSICIndices();
+  Point getR2HSICIndices() const;
 
   /** Get the p-values by permutation.
    *  This is not const as it triggers a computation of the values
    *  if they are not computed yet.
    * */
-  Point getPValuesPermutation();
+  Point getPValuesPermutation() const;
 
 
 public:
   /** Graphic methods */
-  Graph drawHSICIndices();
+  Graph drawHSICIndices() const;
 
   /** Graphic methods */
-  Graph drawR2HSICIndices();
+  Graph drawR2HSICIndices() const;
 
   /** Graphic methods */
-  Graph drawPValuesPermutation();
+  Graph drawPValuesPermutation() const;
 
 public:
   /** Set the number of permutation used */

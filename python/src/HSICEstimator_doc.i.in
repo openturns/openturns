@@ -36,3 +36,5 @@ OT_HSICEstimator_drawR2HSICIndices_doc
 OT_HSICEstimator_drawPValuesPermutation_doc
 %feature("docstring") OT::HSICEstimator::drawValues
 OT_HSICEstimator_drawValues_doc
+%feature("docstring") OT::HSICEstimator::run
+OT_HSICEstimator_run_doc
