@@ -9,9 +9,9 @@ ot.PlatformInfo.SetNumericalPrecision(5)
 ot.RandomGenerator.SetSeed(0)
 
 # We create a Sample
-point1 = ot.Point([10., 20.])
-point2 = ot.Point([11., 21.])
-point3 = ot.Point([12., 22.])
+point1 = [10., 20.]
+point2 = [11., 21.]
+point3 = [12., 22.]
 sample1 = ot.Sample([point1, point2, point3])
 referencemin = point1
 referencemax = point3

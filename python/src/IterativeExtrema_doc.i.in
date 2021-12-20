@@ -1,12 +1,9 @@
 %feature("docstring") OT::IterativeExtrema
 "Iterative minimum and maximum.
 
-Available constructor:
-    IterativeExtrema(dimension)
-
 Parameters
 ----------
-dimension : UnsignedInteger
+dimension : int
     Dimension of the input data
 
 Notes

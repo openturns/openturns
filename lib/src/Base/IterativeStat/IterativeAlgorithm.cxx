@@ -61,14 +61,6 @@ IterativeAlgorithm::IterativeAlgorithm(const Implementation & p_implementation)
   // Nothing to do
 }
 
-#ifndef SWIG
-IterativeAlgorithm::IterativeAlgorithm(IterativeAlgorithmImplementation * p_implementation)
-  : TypedInterfaceObject<IterativeAlgorithmImplementation>(p_implementation)
-{
-  // Nothing to do
-}
-#endif
-
 /** Return a pointer to the underlying implementation object viewed as a PersistentObject */
 Pointer<IterativeAlgorithmImplementation> IterativeAlgorithm::getImplementationAsIterativeAlgorithm() const
 {
@@ -89,11 +81,13 @@ void IterativeAlgorithm::setImplementationAsIterativeAlgorithm(const Pointer<Ite
 
 void IterativeAlgorithm::increment(const Point & newData)
 {
+  copyOnWrite();
   return getImplementation()->increment(newData);
 }
 
 void IterativeAlgorithm::increment(const Sample & newData)
 {
+  copyOnWrite();
   return getImplementation()->increment(newData);
 }
 

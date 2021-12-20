@@ -90,10 +90,10 @@ public:
   UnsignedInteger getDimension() const;
 
   /** String converter */
-  virtual String __repr__() const override;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const override;
+  String __str__(const String & offset = "") const override;
 
 }; /* class IterativeAlgorithm */
 
