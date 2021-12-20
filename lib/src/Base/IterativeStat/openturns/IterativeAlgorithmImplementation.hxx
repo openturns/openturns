@@ -59,7 +59,7 @@ public:
    * @warning This method MUST be overloaded in derived classes.
    * @return A pointer to a newly allocated object similar to this one
    */
-  virtual IterativeAlgorithmImplementation * clone() const override;
+  IterativeAlgorithmImplementation * clone() const override;
 
   /**
    * Increment methods
@@ -86,24 +86,24 @@ public:
   UnsignedInteger getDimension() const;
 
   /** String converter */
-  virtual String __repr__() const override;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const override;
+  String __str__(const String & offset = "") const override;
 
   /** Method save() stores the object through the StorageManager
    *
    * @warning This method MUST be overloaded in derived classes.
    * @internal
    */
-  virtual void save(Advocate & adv) const override;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager
    *
    * @warning This method MUST be overloaded in derived classes.
    * @internal
    */
-  virtual void load(Advocate & adv) override;
+  void load(Advocate & adv) override;
 
 protected:
   UnsignedInteger              iteration_;
