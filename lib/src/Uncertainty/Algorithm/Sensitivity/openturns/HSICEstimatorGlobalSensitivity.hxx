@@ -65,19 +65,24 @@ private:
 private:
 
   /** Compute the p-values with asymptotic formula */
-  void computePValuesAsymptotic();
+  void computePValuesAsymptotic() const;
 
 public:
 
   /** Get the asymptotic p-values */
-  Point getPValuesAsymptotic();
+  Point getPValuesAsymptotic() const;
 
   /** Draw the asymptotic p-values */
-  Graph drawPValuesAsymptotic();
+  Graph drawPValuesAsymptotic() const;
 
-private:
+  /** Compute all indices at once */
+  void run() const override;
+
+protected:
+
   /** data */
-  Point PValuesAsymptotic_ ;
+  mutable Point PValuesAsymptotic_ ;
+  mutable Bool isAlreadyComputedPValuesAsymptotic_ ;
 
 };
 

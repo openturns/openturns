@@ -48,47 +48,38 @@ UnsignedInteger HSICEstimator::getPermutationSize() const
   return getImplementation()->getPermutationSize();
 }
 
-/** Get the HSIC indices.
-  *  This is not const as it triggers a computation of the indices
-  *  if they are not computed yet.
-  * */
-Point HSICEstimator::getHSICIndices()
+/** Get the HSIC indices */
+Point HSICEstimator::getHSICIndices() const
 {
   return getImplementation()->getHSICIndices();
 }
 
-/** Get the R2-HSIC indices.
-  *  This is not const as it triggers a computation of the indices
-  *  if they are not computed yet.
-  * */
-Point HSICEstimator::getR2HSICIndices()
+/** Get the R2-HSIC indices */
+Point HSICEstimator::getR2HSICIndices() const
 {
   return getImplementation()->getR2HSICIndices();
 }
 
-/** Get the p-values by permutation.
-  *  This is not const as it triggers a computation of the values
-  *  if they are not computed yet.
-  * */
-Point HSICEstimator::getPValuesPermutation()
+/** Get the p-values by permutation */
+Point HSICEstimator::getPValuesPermutation() const
 {
   return getImplementation()->getPValuesPermutation();
 }
 
 /** Draw the HSIC indices */
-Graph HSICEstimator::drawHSICIndices()
+Graph HSICEstimator::drawHSICIndices() const
 {
   return getImplementation()->drawHSICIndices();
 }
 
 /** Draw the R2HSIC indices */
-Graph HSICEstimator::drawR2HSICIndices()
+Graph HSICEstimator::drawR2HSICIndices() const
 {
   return getImplementation()->drawR2HSICIndices();
 }
 
 /** Draw the p-values obtained with permutation */
-Graph HSICEstimator::drawPValuesPermutation()
+Graph HSICEstimator::drawPValuesPermutation() const
 {
   return getImplementation()->drawPValuesPermutation();
 }

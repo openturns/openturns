@@ -254,3 +254,12 @@ graph : :class:`~openturns.Graph`
 %feature("docstring") OT::HSICEstimatorImplementation::drawValues
 OT_HSICEstimator_drawValues_doc
 // ---------------------------------------------------------------------
+
+// ---------------------------------------------------------------------
+
+%define OT_HSICEstimator_run_doc
+"Compute all values at once."
+%enddef
+%feature("docstring") OT::HSICEstimatorImplementation::run
+OT_HSICEstimator_run_doc
+// ---------------------------------------------------------------------

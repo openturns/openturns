@@ -65,15 +65,15 @@ private:
 private:
 
   /** Compute the p-values with asymptotic formula */
-  void computePValuesAsymptotic();
+  void computePValuesAsymptotic() const;
 
 public:
 
   /** Get the p-values with asymptotic formula */
-  Point getPValuesAsymptotic();
+  Point getPValuesAsymptotic() const;
 
   /** Draw the asymptotic p-values */
-  Graph drawPValuesAsymptotic();
+  Graph drawPValuesAsymptotic() const;
 
   /** Get the filter functon */
   Function getFilterFunction() const;
@@ -81,10 +81,14 @@ public:
   /** Get the filter functon */
   void setFilterFunction(const Function & filterFunction);
 
+  /** Compute all indices at once */
+  void run() const override;
+
 protected:
 
   /* data */
-  Point PValuesAsymptotic_ ;
+  mutable Point PValuesAsymptotic_ ;
+  mutable Bool isAlreadyComputedPValuesAsymptotic_ ;
   Function filterFunction_ ;
 
 };

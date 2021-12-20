@@ -53,7 +53,9 @@ HSICEstimatorImplementation::HSICEstimatorImplementation(): PersistentObject(),
   HSIC_YY_(Point()),
   R2HSICIndices_(Point()),
   PValuesPermutation_(Point()),
-  permutationSize_(0)
+  permutationSize_(0),
+  isAlreadyComputedIndices_(false),
+  isAlreadyComputedPValuesPermutation_(false)
 {
   // Nothing
 }
@@ -74,7 +76,9 @@ HSICEstimatorImplementation::HSICEstimatorImplementation(const CovarianceModelCo
   HSIC_YY_(Point()),
   R2HSICIndices_(Point()),
   PValuesPermutation_(Point()),
-  permutationSize_(100)
+  permutationSize_(100),
+  isAlreadyComputedIndices_(false),
+  isAlreadyComputedPValuesPermutation_(false)
 {
   if(covarianceList_.getSize() != (inputSample_.getDimension() + outputSample_.getDimension())) throw InvalidDimensionException(HERE) << "The number of covariance momdels is the dimension of the input +1";
   if(outputSample_.getDimension() != 1) throw InvalidDimensionException(HERE) << "The dimension of the output is 1.";
@@ -95,7 +99,9 @@ HSICEstimatorImplementation::HSICEstimatorImplementation(const CovarianceModelCo
   HSIC_XX_ (Point()),
   HSIC_YY_ (Point()),
   R2HSICIndices_ (Point()),
-  permutationSize_(100)
+  permutationSize_(100),
+  isAlreadyComputedIndices_(false),
+  isAlreadyComputedPValuesPermutation_(false)
 {
   if(covarianceList_.getSize() != (inputSample_.getDimension() + outputSample_.getDimension())) throw InvalidDimensionException(HERE) << "The number of covariance momdels is the dimension of the input +1";
   if(outputSample_.getDimension() != 1) throw InvalidDimensionException(HERE) << "The dimension of the output is 1.";
@@ -133,7 +139,7 @@ Scalar HSICEstimatorImplementation::computeHSICIndex( const Sample & inSample, c
 }
 
 /** Compute HSIC and R2-HSIC indices */
-void HSICEstimatorImplementation::computeIndices()
+void HSICEstimatorImplementation::computeIndices() const
 {
   /* Compute weigts */
   SquareMatrix W = computeWeightMatrix(outputSample_);
@@ -159,6 +165,7 @@ void HSICEstimatorImplementation::computeIndices()
     R2HSICIndices_[dim] = HSIC_XY_[dim] / sqrt(HSIC_XX_[dim] * HSIC_YY_[0]);
   }
 
+  isAlreadyComputedIndices_ = true ;
 }
 
 /** Set permutation size */
@@ -175,7 +182,7 @@ UnsignedInteger HSICEstimatorImplementation::getPermutationSize() const
 }
 
 /** Compute p-value with permutation */
-void HSICEstimatorImplementation::computePValuesPermutation()
+void HSICEstimatorImplementation::computePValuesPermutation() const
 {
   SquareMatrix Wobs(computeWeightMatrix(outputSample_));
   PValuesPermutation_ = Point(inputDimension_);
@@ -197,50 +204,44 @@ void HSICEstimatorImplementation::computePValuesPermutation()
     /* p-value by permutation */
     PValuesPermutation_[dim] = count * 1.0 / (permutationSize_ + 1) ;
   }
+  isAlreadyComputedPValuesPermutation_ = true ;
 }
 
-/** Get the HSIC indices.
- *  This is not const as it triggers a computation of the indices
- *  if they are not computed yet.
- * */
-Point HSICEstimatorImplementation::getHSICIndices()
+/** Get the HSIC indices */
+Point HSICEstimatorImplementation::getHSICIndices() const
 {
-  if( HSIC_XY_.getDimension() == 0)
+  if(!(isAlreadyComputedIndices_))
   {
     computeIndices();
+    isAlreadyComputedIndices_ = true ; 
   }
-
   return HSIC_XY_;
 }
 
-/** Get the R2-HSIC indices.
- *  This is not const as it triggers a computation of the indices
- *  if they are not computed yet.
- * */
-Point HSICEstimatorImplementation::getR2HSICIndices()
+/** Get the R2-HSIC indices */
+Point HSICEstimatorImplementation::getR2HSICIndices() const
 {
-  if( R2HSICIndices_.getDimension() == 0)
+  if(!(isAlreadyComputedIndices_))
   {
     computeIndices();
+    isAlreadyComputedIndices_ = true ;
   }
   return R2HSICIndices_;
 }
 
-/** Get the p-values by permutation.
- *  This is not const as it triggers a computation of the values
- *  if they are not computed yet.
- * */
-Point HSICEstimatorImplementation::getPValuesPermutation()
+/** Get the p-values by permutation */
+Point HSICEstimatorImplementation::getPValuesPermutation() const
 {
-  if( PValuesPermutation_.getDimension() == 0)
+  if( !(isAlreadyComputedPValuesPermutation_))
   {
     computePValuesPermutation();
+    isAlreadyComputedPValuesPermutation_ = true ;
   }
   return PValuesPermutation_;
 }
 
 /** Draw the HSIC indices */
-Graph HSICEstimatorImplementation::drawValues(const Point &values, String &title)
+Graph HSICEstimatorImplementation::drawValues(const Point &values, String &title) const
 {
 
   if (values.getDimension() == 0) throw InvalidArgumentException(HERE) << "Error: cannot draw cloud based on empty data.";
@@ -303,7 +304,7 @@ Graph HSICEstimatorImplementation::drawValues(const Point &values, String &title
 
 
 /** Draw the HSIC indices */
-Graph HSICEstimatorImplementation::drawHSICIndices()
+Graph HSICEstimatorImplementation::drawHSICIndices() const
 {
   String title = "HSIC indices";
   Graph graph = drawValues(getHSICIndices(), title);
@@ -311,7 +312,7 @@ Graph HSICEstimatorImplementation::drawHSICIndices()
 }
 
 /** Draw the R2-HSIC indices */
-Graph HSICEstimatorImplementation::drawR2HSICIndices()
+Graph HSICEstimatorImplementation::drawR2HSICIndices() const
 {
   String title = "R2-HSIC indices";
   Graph graph = drawValues(getR2HSICIndices(), title);
@@ -319,7 +320,7 @@ Graph HSICEstimatorImplementation::drawR2HSICIndices()
 }
 
 /** Draw the p-values */
-Graph HSICEstimatorImplementation::drawPValuesPermutation()
+Graph HSICEstimatorImplementation::drawPValuesPermutation() const
 {
   String title = "p-values by permutation";
   Graph graph = drawValues(getPValuesPermutation(), title);
@@ -414,6 +415,23 @@ Sample HSICEstimatorImplementation::shuffledCopy(const Sample & inSample) const
     sampleOut[j] = ptmp;
   }
   return sampleOut;
+}
+
+void HSICEstimatorImplementation::run() const
+{
+  /* Compute the HSIC and R2-HSIC indices */
+  if(!(isAlreadyComputedIndices_))
+  {
+    computeIndices();
+    isAlreadyComputedIndices_ = true ;
+  }
+
+  /* Compute the p-values by permutation */
+  if(!(isAlreadyComputedPValuesPermutation_))
+  {
+    computePValuesPermutation();
+    isAlreadyComputedPValuesPermutation_ = true ;
+  }
 }
 
 END_NAMESPACE_OPENTURNS

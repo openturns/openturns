@@ -24,14 +24,16 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(HSICEstimatorTargetSensitivity)
 
 /** Default */
-HSICEstimatorTargetSensitivity::HSICEstimatorTargetSensitivity(): HSICEstimatorImplementation()
+HSICEstimatorTargetSensitivity::HSICEstimatorTargetSensitivity(): HSICEstimatorImplementation(),
+isAlreadyComputedPValuesAsymptotic_(false)
 {
   // Nothing to do
 }
 
 /** Constructor */
 HSICEstimatorTargetSensitivity::HSICEstimatorTargetSensitivity(const CovarianceModelCollection & covarianceList, const Sample & X, const Sample & Y,
-    const HSICStat & estimatorType, const Function & filterFunction ): HSICEstimatorImplementation(covarianceList, X, Y, estimatorType)
+    const HSICStat & estimatorType, const Function & filterFunction ): HSICEstimatorImplementation(covarianceList, X, Y, estimatorType),
+isAlreadyComputedPValuesAsymptotic_(false)
 {
   filterFunction_ =  filterFunction;
   /* apply filter */
@@ -53,7 +55,7 @@ SquareMatrix HSICEstimatorTargetSensitivity::computeWeightMatrix(const Sample&) 
 }
 
 /** Compute the asymptotic p-values */
-void HSICEstimatorTargetSensitivity::computePValuesAsymptotic()
+void HSICEstimatorTargetSensitivity::computePValuesAsymptotic() const
 {
   HSICEstimatorImplementation::CovarianceModelCollection coll = covarianceList_;
   SquareMatrix W(computeWeightMatrix(outputSample_));
@@ -111,15 +113,16 @@ void HSICEstimatorTargetSensitivity::computePValuesAsymptotic()
     Scalar p = estimatorType_.computePValue(distribution, n_, HSICobs, mHSIC);
     PValuesAsymptotic_[dim] = p;
   }
-
+  isAlreadyComputedPValuesAsymptotic_ = true ;
 }
 
 /** Get the asymptotic p-values */
-Point HSICEstimatorTargetSensitivity::getPValuesAsymptotic()
+Point HSICEstimatorTargetSensitivity::getPValuesAsymptotic() const
 {
-  if( PValuesAsymptotic_.getDimension() == 0)
+  if(!(isAlreadyComputedPValuesAsymptotic_))
   {
     computePValuesAsymptotic();
+    isAlreadyComputedPValuesAsymptotic_ = true ;
   }
   return PValuesAsymptotic_;
 }
@@ -140,11 +143,37 @@ void HSICEstimatorTargetSensitivity::setFilterFunction(const Function & filterFu
 }
 
 /** Draw the asymptotic p-values */
-Graph HSICEstimatorTargetSensitivity::drawPValuesAsymptotic()
+Graph HSICEstimatorTargetSensitivity::drawPValuesAsymptotic() const
 {
   String title = "Asymptotic p-values";
   Graph gph = drawValues(getPValuesAsymptotic(), title);
   return gph;
+}
+
+/** Compute all indices at once */
+void HSICEstimatorTargetSensitivity::run() const
+{
+  /* Compute the HSIC and R2-HSIC indices */
+  if(!(isAlreadyComputedIndices_))
+  {
+    computeIndices();
+    isAlreadyComputedIndices_ = true ;
+  }
+
+  /* Compute the p-values by permutation */
+  if(!(isAlreadyComputedPValuesPermutation_))
+  {
+    computePValuesPermutation();
+    isAlreadyComputedPValuesPermutation_ = true ;
+  }
+
+  /* Compute the p-values asymptotically */
+  if(!(isAlreadyComputedPValuesAsymptotic_))
+  {
+    computePValuesAsymptotic();
+    isAlreadyComputedPValuesAsymptotic_ = true ;
+  }
+
 }
 
 END_NAMESPACE_OPENTURNS

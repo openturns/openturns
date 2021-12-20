@@ -24,14 +24,16 @@ BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(HSICEstimatorGlobalSensitivity)
 
 /** Default */
-HSICEstimatorGlobalSensitivity::HSICEstimatorGlobalSensitivity(): HSICEstimatorImplementation()
+HSICEstimatorGlobalSensitivity::HSICEstimatorGlobalSensitivity(): HSICEstimatorImplementation(),
+isAlreadyComputedPValuesAsymptotic_(false)
 {
   // Nothing to do
 }
 
 /** Constructor */
 HSICEstimatorGlobalSensitivity::HSICEstimatorGlobalSensitivity(const CovarianceModelCollection & covarianceList, const Sample & X, const Sample & Y,
-    const HSICStat & estimatorType): HSICEstimatorImplementation(covarianceList, X, Y, estimatorType)
+    const HSICStat & estimatorType): HSICEstimatorImplementation(covarianceList, X, Y, estimatorType),
+isAlreadyComputedPValuesAsymptotic_(false)
 {
   // Nothing to do
 }
@@ -50,7 +52,7 @@ SquareMatrix HSICEstimatorGlobalSensitivity::computeWeightMatrix(const Sample&) 
 }
 
 /** Compute the asymptotic p-values */
-void HSICEstimatorGlobalSensitivity::computePValuesAsymptotic()
+void HSICEstimatorGlobalSensitivity::computePValuesAsymptotic() const
 {
   HSICEstimatorImplementation::CovarianceModelCollection coll = covarianceList_;
   SquareMatrix W(computeWeightMatrix(outputSample_));
@@ -108,25 +110,52 @@ void HSICEstimatorGlobalSensitivity::computePValuesAsymptotic()
     Scalar p = estimatorType_.computePValue(distribution, n_, HSICobs, mHSIC);
     PValuesAsymptotic_[dim] = p;
   }
-
+  isAlreadyComputedPValuesAsymptotic_ = true ;
 }
 
 /** Get the asymptotic p-values */
-Point HSICEstimatorGlobalSensitivity::getPValuesAsymptotic()
+Point HSICEstimatorGlobalSensitivity::getPValuesAsymptotic() const
 {
-  if( PValuesAsymptotic_.getDimension() == 0)
+  if(!(isAlreadyComputedPValuesAsymptotic_))
   {
     computePValuesAsymptotic();
+    isAlreadyComputedPValuesAsymptotic_ = true ;
   }
   return PValuesAsymptotic_;
 }
 
 /** Draw the asymptotic p-values */
-Graph HSICEstimatorGlobalSensitivity::drawPValuesAsymptotic()
+Graph HSICEstimatorGlobalSensitivity::drawPValuesAsymptotic() const
 {
   String title = "Asymptotic p-values";
   Graph gph = drawValues(getPValuesAsymptotic(), title);
   return gph;
+}
+
+/** Compute all indices at once */
+void HSICEstimatorGlobalSensitivity::run() const
+{
+  /* Compute the HSIC and R2-HSIC indices */
+  if(!(isAlreadyComputedIndices_))
+  {
+    computeIndices();
+    isAlreadyComputedIndices_ = true ;
+  }
+
+  /* Compute the p-values by permutation */
+  if(!(isAlreadyComputedPValuesPermutation_))
+  {
+    computePValuesPermutation();
+    isAlreadyComputedPValuesPermutation_ = true ;
+  }
+
+  /* Compute the p-values asymptotically */
+  if(!(isAlreadyComputedPValuesAsymptotic_))
+  {
+    computePValuesAsymptotic();
+    isAlreadyComputedPValuesAsymptotic_ = true ;
+  }
+
 }
 
 END_NAMESPACE_OPENTURNS

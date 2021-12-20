@@ -72,7 +72,7 @@ protected:
   virtual Scalar computeHSICIndex( const Sample & inSample, const Sample & outSample, const CovarianceModel & inCovariance, const CovarianceModel & outCovariance, const SquareMatrix & weightMatrix) const;
 
   /** Compute HSIC and R2-HSIC indices */
-  virtual void computeIndices();
+  virtual void computeIndices() const;
 
 public:
   /** Set the number of permutation used */
@@ -114,7 +114,7 @@ protected:
 
 protected:
   /** Compute p-value with permutation */
-  virtual void computePValuesPermutation();
+  virtual void computePValuesPermutation() const;
 
 public:
 
@@ -122,32 +122,35 @@ public:
   *  This is not const as it triggers a computation of the indices
   *  if they are not computed yet.
   * */
-  Point getHSICIndices();
+  Point getHSICIndices() const;
 
   /** Get the R2-HSIC indices.
    *  This is not const as it triggers a computation of the indices
    *  if they are not computed yet.
    * */
-  Point getR2HSICIndices();
+  Point getR2HSICIndices() const;
 
   /** Get the p-values by permutation.
    *  This is not const as it triggers a computation of the values
    *  if they are not computed yet.
    * */
-  Point getPValuesPermutation();
+  Point getPValuesPermutation() const;
+
+  /** Compute all indices at once */
+  virtual void run() const;
 
 public:
   /** Draw the HSIC indices */
-  Graph drawHSICIndices();
+  Graph drawHSICIndices() const;
 
   /** Draw the R2-HSIC indices */
-  Graph drawR2HSICIndices();
+  Graph drawR2HSICIndices() const;
 
   /** Draw the p-values by permutation */
-  Graph drawPValuesPermutation();
+  Graph drawPValuesPermutation() const;
 protected:
   /** Draw values stored in a point */
-  Graph drawValues(const Point &values, String &title);
+  Graph drawValues(const Point &values, String &title) const;
 
 protected:
   Sample shuffledCopy(const Sample & inSample) const;
@@ -161,12 +164,14 @@ protected:
   Function weightFunction_ ;
   UnsignedInteger n_ ;
   UnsignedInteger inputDimension_ ;
-  Point HSIC_XY_ ;
-  Point HSIC_XX_ ;
-  Point HSIC_YY_ ;
-  Point R2HSICIndices_;
-  Point PValuesPermutation_ ;
-  UnsignedInteger permutationSize_;
+  mutable Point HSIC_XY_ ;
+  mutable Point HSIC_XX_ ;
+  mutable Point HSIC_YY_ ;
+  mutable Point R2HSICIndices_;
+  mutable Point PValuesPermutation_ ;
+  UnsignedInteger permutationSize_ ;
+  mutable Bool isAlreadyComputedIndices_ ;
+  mutable Bool isAlreadyComputedPValuesPermutation_ ;
 };
 
 END_NAMESPACE_OPENTURNS
