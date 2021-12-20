@@ -117,5 +117,9 @@ namespace OT
       // Return child pointer
       return SWIG_NewPointerObj(SWIG_as_voidptr($self->getImplementation().get()), childinfo, 0 | 0);
     }
+
+    // Prevent premature garbage collection of the TypedInterfaceObject self
+    %pythonappend getImplementation
+    %{val.__typedInterfaceObject_reference = self%} // val is the Implementation proxy
   }
 }
