@@ -2,13 +2,10 @@
 "
 Iterative algoritm
 
-Constructor:
-    IterativeAlgorithm(*dimension*)
-
 Parameters
 ----------
-dimension : integer
-    Dimension of the input data. Default : 1
+dimension : int, default=1
+    Dimension of the input data.
 
 Notes
 -----
@@ -26,7 +23,7 @@ OT_IterativeAlgorithm_doc
 
 Parameters
 ----------
-data : :class:`~openturns.Point` or :class:`~openturns.Sample`
+data : sequence of float or 2-d sequence of float
     New input point or sample."
 %enddef
 
@@ -38,7 +35,7 @@ OT_IterativeAlgorithm_increment_doc
 
 Returns
 -------
-iteration : :class:`~openturns.UnsignedInteger`
+iteration : int
     the current iteration of the algorithm"
 %enddef
 
@@ -50,7 +47,7 @@ OT_IterativeAlgorithm_getIteration_doc
 
 Returns
 -------
-dimension : :class:`~openturns.UnsignedInteger`
+dimension : int
     the dimension of the algorithm"
 %enddef
 

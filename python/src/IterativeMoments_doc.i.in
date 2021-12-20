@@ -3,15 +3,12 @@
 %feature("docstring") OT::IterativeMoments
 "Iterative moments.
 
-Available constructor:
-    IterativeMoments(*order*, *dimension*)
-
 Parameters
 ----------
-order : integer
+order : int
     Maximum order of the moments wanted
 
-dimension : integer
+dimension : int
     Dimension of the input data
 
 Notes
@@ -110,7 +107,7 @@ centeredMoments : :class:`~openturns.Sample`
 
 Returns
 -------
-order : integer
+order : int
     Prescribed order of the iterative object."
 
 // ---------------------------------------------------------------------

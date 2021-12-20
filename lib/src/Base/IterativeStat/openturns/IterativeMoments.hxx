@@ -40,10 +40,10 @@ public:
   IterativeMoments * clone() const override;
 
   /** Increment method from a Point */
-  virtual void increment(const Point & newData) override;
+  void increment(const Point & newData) override;
 
   /** Increment method from a Sample */
-  virtual void increment(const Sample & newData) override;
+  void increment(const Sample & newData) override;
 
   /**
    * Comparison operator
@@ -68,10 +68,10 @@ public:
   }
 
   /** String converter */
-  virtual String __repr__() const override;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String & offset = "") const override;
+  String __str__(const String & offset = "") const override;
 
   /** Accessor to the mean */
   Point getMean() const;
@@ -92,10 +92,10 @@ public:
   UnsignedInteger getOrder() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const override;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv) override;
+  void load(Advocate & adv) override;
 
   /** Accessor to the standard error of the mean */
   Point getStandardErrorOfTheMean() const;
@@ -108,7 +108,7 @@ public:
 
 
 private:
-  void UpdateHigherMoments(UnsignedInteger orderMax, const Point & delta, const Point & delta_over_n );
+  void updateHigherMoments(UnsignedInteger orderMax, const Point & delta, const Point & delta_over_n );
 
 
 private:

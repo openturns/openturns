@@ -170,7 +170,7 @@ void IterativeMoments::increment(const Point & newData)
   {
     centeredMoments_(0, d) += newData[d];
   }
-  if(orderMax_ > 1) UpdateHigherMoments(orderMax_, delta, delta_over_n );
+  if(orderMax_ > 1) updateHigherMoments(orderMax_, delta, delta_over_n );
 }
 
 /**  Increment method from a Sample */
@@ -190,14 +190,14 @@ void IterativeMoments::increment(const Sample & newData)
     {
       centeredMoments_(0, d) += newData(j, d);
     }
-    if(orderMax_ > 1) UpdateHigherMoments(orderMax_, delta, delta_over_n );
+    if(orderMax_ > 1) updateHigherMoments(orderMax_, delta, delta_over_n );
   }
 }
 
 /** Update the centered moments higher than 2 using a recurrence relation for 3 and more
     see: Simpler Online Updates for Arbitrary-Order Central Moments, Meng (2015)
 */
-void IterativeMoments::UpdateHigherMoments(UnsignedInteger orderMax, const Point & delta, const Point & delta_over_n )
+void IterativeMoments::updateHigherMoments(UnsignedInteger orderMax, const Point & delta, const Point & delta_over_n )
 {
   /* special case: second centered moment */
   if(orderMax == 2)

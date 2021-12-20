@@ -39,10 +39,10 @@ public:
   IterativeExtrema * clone() const override;
 
   /** Increment method from a Point */
-  virtual void increment(const Point & newData) override;
+  void increment(const Point & newData) override;
 
   /** Increment method from a Sample */
-  virtual void increment(const Sample & newData) override;
+  void increment(const Sample & newData) override;
 
   /**
    * Comparison operator
@@ -67,10 +67,10 @@ public:
   }
 
   /** String converter */
-  virtual String __repr__() const override;
+  String __repr__() const override;
 
   /** String converter */
-  virtual String __str__(const String &) const override;
+  String __str__(const String &) const override;
 
   /** Accessor to the min */
   Point getMin() const;
@@ -79,10 +79,10 @@ public:
   Point getMax() const;
 
   /** Method save() stores the object through the StorageManager */
-  virtual void save(Advocate & adv) const override;
+  void save(Advocate & adv) const override;
 
   /** Method load() reloads the object from the StorageManager */
-  virtual void load(Advocate & adv) override;
+  void load(Advocate & adv) override;
 
 private:
   Point minData_;

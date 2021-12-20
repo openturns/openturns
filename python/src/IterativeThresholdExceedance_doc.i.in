@@ -1,15 +1,14 @@
 %feature("docstring") OT::IterativeThresholdExceedance
 "Iterative minimum and maximum.
 
-Available constructor:
-    IterativeThresholdExceedance(dimension, thresholdValue)
 
 Parameters
 ----------
-dimension : UnsignedInteger
-    Dimension of the input data (default : 1)
-thresholdValue : Scalar
-    Threshold value (default : 0.0)
+dimension : int, default=1
+    Dimension of the input data
+
+thresholdValue : float, default=0.0
+    Threshold value
 
 Notes
 -----
@@ -67,5 +66,5 @@ thresholdExceedance : :class:`~openturns.Point`
 
 Returns
 -------
-thresholdValue : :class:`~openturns.Scalar`
+thresholdValue : float
     the value of the threshold."
