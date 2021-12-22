@@ -31,8 +31,23 @@
 
 %enddef
 
-// SWIG typemaps to convert Pointer<ParentImplementation> objects to ChildImplementation
-// in order to allow Python users access to specialized methods of ChildImplementation
+// Thread-safe initialization - initialize during Python module initialization
+%fragment("typedImplementationObject_reference_init", "init")
+{
+  typedImplementationObject_reference();
+}
+
+%fragment("typedImplementationObject_reference_function", "header", fragment="typedImplementationObject_reference_init")
+{
+  static PyObject *typedImplementationObject_reference()
+  {
+    static PyObject *typedImplementationObject_reference_string = SWIG_Python_str_FromChar("__typedImplementationObject_reference");
+    return typedImplementationObject_reference_string;
+  }
+}
+
+// SWIG typemaps to convert Pointer<ParentImplementation> objects to ChildImplementation.
+// The typemaps implement dynamic typecasting to ChildImplementation for the Python version of TypedInterfaceObject::getImplementation.
 %define OTgetImplementationHelper(Namespace, Interface, ParentImplementation)
 
 // Avoid arbritrary creation of SwigValueWrapper thingies around Pointer<ParentImplementation> type objects
@@ -41,7 +56,7 @@
 %template() OT::Pointer<Namespace::ParentImplementation>;
 
 // Different typemaps are generated for all ParentImplementation classes.
-%typemap(out) Namespace::TypedInterfaceObject< Namespace::ParentImplementation >::Implementation
+%typemap(out) OT::TypedInterfaceObject< Namespace::ParentImplementation >::Implementation
 {
   // Construct the SWIG identifier of the derived class we want to get (say ChildImplementation).
   OT::String childname = "Namespace::";
@@ -51,15 +66,16 @@
 
   // Make the result a PyObject* pointing to the ChildImplementation.
   $result = SWIG_NewPointerObj(SWIG_as_voidptr($1.get()), childinfo, 0 |  0 );
-
-  // Add an attribute to the resulting ChildImplementation that stores a reference to the original TypedInterfaceObject.
-  // This prevents premature garbage collection of the TypedInterfaceObject.
-  PyObject *typedInterfaceObject_reference_string = SWIG_Python_str_FromChar("__typedInterfaceObject_reference");
-  PyObject_SetAttr($result, typedInterfaceObject_reference_string, $self);
-  Py_DecRef(typedInterfaceObject_reference_string);
 }
-%enddef
 
+// Add an attribute to the resulting ChildImplementation that stores a reference to the original TypedInterfaceObject.
+// This prevents premature garbage collection of the TypedInterfaceObject.
+%typemap(ret, fragment="typedImplementationObject_reference_function") OT::TypedInterfaceObject< Namespace::ParentImplementation >::Implementation
+{
+  PyObject_SetAttr($result, typedImplementationObject_reference(), $self);
+}
+
+%enddef
 
 %define OTTypedInterfaceObjectImplementationHelper(Interface, Implementation)
 OTgetImplementationHelper(OT, Interface, Implementation)
@@ -70,7 +86,4 @@ TypedInterfaceObjectImplementationHelper(OT, Interface, Implementation)
 OTTypedInterfaceObjectImplementationHelper(Interface,Interface ## Implementation)
 %enddef
 
-
-
 %include openturns/TypedInterfaceObject.hxx
-
