@@ -4,17 +4,19 @@
 #include "openturns/TypedInterfaceObject.hxx"
 %}
 
-%define TypedInterfaceObjectImplementationHelper(Namespace, Interface, Implementation)
+%ignore OT::TypedInterfaceObject::swap;
 
-%template(Implementation ## TypedInterfaceObject) OT::TypedInterfaceObject<Namespace::Implementation>;
+%define TypedInterfaceObjectImplementationHelper(Namespace, Interface, ParentImplementation)
+
+%template(ParentImplementation ## TypedInterfaceObject) OT::TypedInterfaceObject<Namespace::ParentImplementation>;
 
 %typemap(in) const Namespace::Interface & ($1_basetype temp) {
   void * ptr = 0;
   if (SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
     // From interface class, ok
-  } else if (SWIG_IsOK(SWIG_ConvertPtr($input, &ptr, $descriptor(Namespace ## __ ## Implementation *), SWIG_POINTER_NO_NULL))) {
-    // From Implementation*
-    Namespace::Implementation * p_impl = reinterpret_cast< Namespace::Implementation * >(ptr);
+  } else if (SWIG_IsOK(SWIG_ConvertPtr($input, &ptr, $descriptor(Namespace ## __ ## ParentImplementation *), SWIG_POINTER_NO_NULL))) {
+    // From ParentImplementation*
+    Namespace::ParentImplementation * p_impl = reinterpret_cast< Namespace::ParentImplementation * >(ptr);
     temp = Namespace::Interface(*p_impl);
     $1 = &temp;
   } else {
@@ -24,13 +26,43 @@
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const Namespace::Interface & {
   $1 = SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL))
-    || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $descriptor(Namespace ## __ ## Implementation *), SWIG_POINTER_NO_NULL));
+    || SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $descriptor(Namespace ## __ ## ParentImplementation *), SWIG_POINTER_NO_NULL));
 }
 
 %enddef
 
+// SWIG typemaps to convert Pointer<ParentImplementation> objects to ChildImplementation
+// in order to allow Python users access to specialized methods of ChildImplementation
+%define OTgetImplementationHelper(Namespace, Interface, ParentImplementation)
+
+// Avoid arbritrary creation of SwigValueWrapper thingies around Pointer<ParentImplementation> type objects
+// following SWIG maintainer William Fulton's idea here:
+// https://github.com/swig/swig/blob/90cdbee6a69d13b39d734083b9f91069533b0d7b/Examples/test-suite/template_private_assignment.i
+%template() OT::Pointer<Namespace::ParentImplementation>;
+
+// Different typemaps are generated for all ParentImplementation classes.
+%typemap(out) Namespace::TypedInterfaceObject< Namespace::ParentImplementation >::Implementation
+{
+  // Construct the SWIG identifier of the derived class we want to get (say ChildImplementation).
+  OT::String childname = "Namespace::";
+  childname.append($1->getClassName());
+  childname.append("*");
+  swig_type_info * childinfo = SWIG_TypeQuery(childname.c_str());
+
+  // Make the result a PyObject* pointing to the ChildImplementation.
+  $result = SWIG_NewPointerObj(SWIG_as_voidptr($1.get()), childinfo, 0 |  0 );
+
+  // Add an attribute to the resulting ChildImplementation that stores a reference to the original TypedInterfaceObject.
+  // This prevents premature garbage collection of the TypedInterfaceObject.
+  PyObject *typedInterfaceObject_reference_string = SWIG_Python_str_FromChar("__typedInterfaceObject_reference");
+  PyObject_SetAttr($result, typedInterfaceObject_reference_string, $self);
+  Py_DecRef(typedInterfaceObject_reference_string);
+}
+%enddef
+
 
 %define OTTypedInterfaceObjectImplementationHelper(Interface, Implementation)
+OTgetImplementationHelper(OT, Interface, Implementation)
 TypedInterfaceObjectImplementationHelper(OT, Interface, Implementation)
 %enddef
 
@@ -39,87 +71,6 @@ OTTypedInterfaceObjectImplementationHelper(Interface,Interface ## Implementation
 %enddef
 
 
-/***************************************************************************
- * This section contains the parts of TypedInterfaceObject.hxx
- * that SWIG needs to generate a wrapper.
- *
- * Not all public methods are interfaced in Python.
- * In particular, swap is not interfaced.
- * The accessor getImplementation is also not interfaced and is replaced by
- * a SWIG implementation provided under %extend (see below).
- ***************************************************************************/
 
-BEGIN_NAMESPACE_OPENTURNS
+%include openturns/TypedInterfaceObject.hxx
 
-/**
- * @class TypedInterfaceObject
- * @brief Implements InterfaceObject for a specific class
- * @internal
- * @tparam T The class bound to the interface object
- * @see PersistentObject
- */
-template <class T>
-class TypedInterfaceObject
-  : public InterfaceObject
-{
-public:
-
-  typedef T                                                   ImplementationType;
-  typedef Pointer<ImplementationType>                         Implementation;
-
-  /** Constructor */
-  TypedInterfaceObject();
-  TypedInterfaceObject(const Implementation & impl);
-
-  /** Return a pointer to the underlying implementation object viewed as a PersistentObject */
-  inline virtual ImplementationAsPersistentObject getImplementationAsPersistentObject() const;
-
-  /** Set the pointer to the underlying implementation object */
-  inline virtual void setImplementationAsPersistentObject(const ImplementationAsPersistentObject & obj);
-
-  /** Name accessor */
-  inline virtual void setName(const String & name);
-
-  /** Name accessor */
-  inline virtual String getName() const;
-
-  /** Comparison Operator */
-  inline virtual
-  Bool operator == (const TypedInterfaceObject & other) const;
-
-  /** Comparison Operator */
-  inline virtual
-  Bool operator != (const TypedInterfaceObject & other) const;
-
-}; /* class TypedInterfaceObject */
-
-END_NAMESPACE_OPENTURNS
-
-
-
-/***************************************************************************
- * TypedInterfaceObject class extension
- *
- * Provides a version of getImplementation that performs dynamic casting.
- ***************************************************************************/
-namespace OT
-{
-  %extend TypedInterfaceObject
-  {
-    PyObject * getImplementation()
-    {
-      // Get child info
-      OT::String childname = "OT::";
-      childname.append($self->getImplementation()->getClassName());
-      childname.append("*");
-      swig_type_info * childinfo = SWIG_TypeQuery(childname.c_str());
-
-      // Return child pointer
-      return SWIG_NewPointerObj(SWIG_as_voidptr($self->getImplementation().get()), childinfo, 0 | 0);
-    }
-
-    // Prevent premature garbage collection of the TypedInterfaceObject self
-    %pythonappend getImplementation
-    %{val.__typedInterfaceObject_reference = self%} // val is the Implementation proxy
-  }
-}
