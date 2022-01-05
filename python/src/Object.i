@@ -12,8 +12,6 @@
 namespace OT{ %extend Object { Object(const Object & other) { return new OT::Object(other); } } }
 
 %pythoncode %{
-import os
-
 def Object___getstate__(self):
     import tempfile
     import os
