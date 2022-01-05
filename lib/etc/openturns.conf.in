@@ -269,6 +269,8 @@
 
   <!-- OT::SampleImplementation parameters -->
   <Sample-CSVFileSeparator      value_str=";"     />
+  <Sample-CSVPrecision           value_int="16" />
+  <Sample-CSVFormat              value="scientific" />
   <Sample-CommentMarkers         value_str="#"    />
   <Sample-PrintEllipsisSize      value_int="3"    />
   <Sample-PrintEllipsisThreshold value_int="1000" />

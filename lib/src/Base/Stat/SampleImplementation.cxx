@@ -2316,7 +2316,9 @@ Pointer<SampleImplementation> SampleImplementation::select(const UnsignedInteger
 /* Save to CSV file */
 void SampleImplementation::exportToCSVFile(const FileName & filename,
     const String & csvSeparator,
-    const String & numSeparator) const
+    const String & numSeparator,
+    const UnsignedInteger precision,
+    const String & format) const
 {
   if (csvSeparator == numSeparator)
     throw InvalidArgumentException(HERE) << "Column and decimal separators cannot be identical";
@@ -2335,8 +2337,7 @@ void SampleImplementation::exportToCSVFile(const FileName & filename,
 #else
   csvFile.imbue(std::locale("C"));
 #endif
-  csvFile.precision(16);
-  csvFile << std::scientific;
+
   // Export the description
   if (!p_description_.isNull())
   {
@@ -2352,13 +2353,26 @@ void SampleImplementation::exportToCSVFile(const FileName & filename,
     }
     csvFile << "\n";
   }
+
+  csvFile.precision(precision);
+  if (format == "scientific")
+    csvFile << std::scientific;
+  else if (format == "fixed")
+    csvFile << std::fixed;
+  else if (format != "defaultfloat")
+    throw InvalidArgumentException(HERE) << "Invalid format: " << format << " must be scientific/fixed/defaultfloat";
+
   // Write the data
   UnsignedInteger index = 0;
 #ifdef __MINGW32__
   // MinGW fails with std::locale("fr_FR.utf-8")
   std::stringstream ss;
   ss.imbue(std::locale("C"));
-  ss.precision(16);
+  ss.precision(precision);
+  if (format == "scientific")
+    ss << std::scientific;
+  else if (format == "fixed")
+    ss << std::fixed;
 #endif
   for(UnsignedInteger i = 0; i < size_; ++i)
   {
@@ -2367,7 +2381,7 @@ void SampleImplementation::exportToCSVFile(const FileName & filename,
 #else
     // manually replace decimal separator
     ss.str("");
-    ss << std::scientific << data_[index];
+    ss << data_[index];
     std::string str(ss.str());
     if (numSeparator == ",")
       str = regex_replace(str, std::regex("\\."), ",");
@@ -2381,7 +2395,7 @@ void SampleImplementation::exportToCSVFile(const FileName & filename,
 #else
       // manually replace decimal separator
       ss.str("");
-      ss << std::scientific << data_[index];
+      ss << data_[index];
       std::string str(ss.str());
       if (numSeparator == ",")
         str = regex_replace(str, std::regex("\\."), ",");

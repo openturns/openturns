@@ -797,6 +797,17 @@ separator : str
     Default uses `csv-file-separator` from the :class:`~openturns.ResourceMap`.
 numSeparator : str, default='.'
     Decimal separator.
+precision : int
+    Numerical precision
+    Default takes `Sample-CSVPrecision` entry from :class:`~openturns.ResourceMap`.
+format : str
+    Floating-point formatting, one of:
+
+    - scientific: exponent notation
+    - fixed: constant number of digits
+    - defaultfloat: variable number of digits
+
+    Default takes `Sample-CSVFormat` entry from :class:`~openturns.ResourceMap`.
 
 Notes
 -----
