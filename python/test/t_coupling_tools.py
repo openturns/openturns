@@ -5,6 +5,7 @@ import os
 import time
 import sys
 import openturns.testing as ott
+import subprocess
 
 wanted_lines = '# ooo\nE=@E\nE1=@E\nFE1=@F#oo\nZ=@Z@Z\n# ooo\n'
 semi_parsed = '# ooo\nE=2\nE1=2\nFE1=@F#oo\nZ=@Z@Z\n# ooo\n'
@@ -569,15 +570,20 @@ def check_execute():
     else:
         ct.execute('echo hi', shell=True, executable='/bin/bash')
 
-    ret, stdout = ct.execute(
-        'echo hello', shell=True, get_stdout=True)
-    if ret != 0 or not stdout.decode().startswith('hello'):
+    cp = ct.execute('echo hello', shell=True, capture_output=True)
+    if cp.returncode != 0 or not cp.stdout.decode().startswith('hello'):
         raise Exception("ct.execute error!")
 
-    ret, stdout, stderr = ct.execute('echo hello', shell=True,
-                                     get_stdout=True, get_stderr=True)
-    if ret != 0 or not stdout.decode().startswith('hello') or len(stderr) > 0:
+    cp = ct.execute('echo hello', shell=True, capture_output=True)
+    if cp.returncode != 0 or not cp.stdout.decode().startswith('hello') or len(cp.stderr) > 0:
         raise Exception("ct.execute error!")
+
+    # we expect a subclass of CalledProcessError with the error stream in the exception message
+    try:
+        cp = ct.execute(sys.executable + ' zebuebceb745az4f801m', shell=True, capture_output=True)
+    except subprocess.CalledProcessError as exc:
+        msg = str(exc)
+        assert 'No such file or directory' in msg, 'wrong exception'
 
     print("execute ok")
 
