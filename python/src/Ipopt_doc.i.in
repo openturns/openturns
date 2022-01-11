@@ -85,12 +85,3 @@ Inequality constraints are defined by a function :math:`h` such that :math:`h(x)
 >>> optimalValue = result.getOptimalValue() # doctest: +SKIP
 >>> evaluationNumber = result.getInputSample().getSize() # doctest: +SKIP "
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Ipopt::IsAvailable
-"Retrieves the names of the available optimization algorithms.
-
-Returns
--------
-algoName : bool
-    Returns true if Ipopt support is available, false if not."

@@ -163,15 +163,6 @@ Scalar LowDiscrepancySequenceImplementation::ComputeLocalDiscrepancy(const Sampl
   return std::abs(static_cast<Scalar>(inPoints) / size - interval.getVolume());
 }
 
-Bool LowDiscrepancySequenceImplementation::IsPrimesieveAvailable()
-{
-#ifdef OPENTURNS_HAVE_PRIMESIEVE
-  return true;
-#else
-  return false;
-#endif
-}
-
 /* Get the needed prime numbers */
 /* Get the n first prime numbers */
 LowDiscrepancySequenceImplementation::Unsigned64BitsIntegerCollection LowDiscrepancySequenceImplementation::GetFirstPrimeNumbers(const UnsignedInteger n)

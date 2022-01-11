@@ -53,6 +53,7 @@ tbb::task_arena * TBBImplementation::P_task_arena_ = 0;
 
 Bool TBBImplementation::IsAvailable()
 {
+  LOGWARN(OSS() << "TBB.IsAvailable is deprecated, use PlatformInfo.HasFeature(tbb)");
 #ifdef OPENTURNS_HAVE_TBB
   return true;
 #else

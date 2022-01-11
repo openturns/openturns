@@ -544,6 +544,7 @@ void Ceres::load(Advocate & adv)
 
 Bool Ceres::IsAvailable()
 {
+  LOGWARN(OSS() << "Ceres.IsAvailable is deprecated, use PlatformInfo.HasFeature(ceres)");
 #ifdef OPENTURNS_HAVE_CERES
   return true;
 #else

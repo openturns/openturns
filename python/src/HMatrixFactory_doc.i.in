@@ -25,13 +25,3 @@ Returns
 -------
 mat : :class:`~openturns.HMatrix`
     The compressed representation."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::HMatrixFactory::IsAvailable
-"Ask whether hmat support is available.
-
-Returns
--------
-available : bool
-    Whether hmat support is enabled."

@@ -583,6 +583,7 @@ void NLopt::ComputeEqualityConstraint(unsigned m, double * result, unsigned n, c
 
 Bool NLopt::IsAvailable()
 {
+  LOGWARN(OSS() << "NLopt.IsAvailable is deprecated, use PlatformInfo.HasFeature(nlopt)");
 #ifdef OPENTURNS_HAVE_NLOPT
   return true;
 #else

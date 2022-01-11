@@ -495,6 +495,7 @@ void CMinpack::load(Advocate & adv)
 
 Bool CMinpack::IsAvailable()
 {
+  LOGWARN(OSS() << "CMinpack.IsAvailable is deprecated, use PlatformInfo.HasFeature(cminpack)");
 #ifdef OPENTURNS_HAVE_CMINPACK
   return true;
 #else

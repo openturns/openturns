@@ -5,7 +5,7 @@
 //%feature("autodoc","1");
 
 %pythoncode %{
-from openturns.common import PlatformInfo
+from openturns.typ import PlatformInfo
 def TESTPREAMBLE():
     """
     TESTPREAMBLE handles command-line arguments.
