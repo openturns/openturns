@@ -38,6 +38,7 @@
 %include MetropolisHastings.i
 %include NonLinearLeastSquaresCalibration.i
 %include GaussianNonLinearCalibration.i
+%include RandomVectorMetropolisHastings.i
 %include RandomWalkMetropolisHastings.i
 %include Gibbs.i
 

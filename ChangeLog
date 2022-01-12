@@ -8,7 +8,7 @@
  * RandomWalkMetropolisHastings now updates all components at a time, previously updated componentwise
 
 ==== New classes ====
- * Gibbs
+ * Gibbs, RandomVectorMetropolisHastings
 
 ==== API changes ====
  * Removed deprecated Hanning alias

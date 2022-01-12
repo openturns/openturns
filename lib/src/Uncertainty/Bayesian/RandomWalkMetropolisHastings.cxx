@@ -149,7 +149,7 @@ Interval RandomWalkMetropolisHastings::getAdaptationRange() const
 }
 
 
-void RandomWalkMetropolisHastings::setAdaptationExpansionFactor(Scalar adaptationExpansionFactor)
+void RandomWalkMetropolisHastings::setAdaptationExpansionFactor(const Scalar adaptationExpansionFactor)
 {
   if (!(adaptationExpansionFactor > 1.0))
     throw InvalidArgumentException(HERE) << "Expansion factor should be > 1. Got " << adaptationExpansionFactor;
@@ -162,7 +162,7 @@ Scalar RandomWalkMetropolisHastings::getAdaptationExpansionFactor() const
 }
 
 
-void RandomWalkMetropolisHastings::setAdaptationShrinkFactor(Scalar adaptationShrinkFactor)
+void RandomWalkMetropolisHastings::setAdaptationShrinkFactor(const Scalar adaptationShrinkFactor)
 {
   if (!(adaptationShrinkFactor > 0.0) || !(adaptationShrinkFactor < 1.0))
     throw InvalidArgumentException(HERE) << "Shrink factor should be in (0, 1). Got " << adaptationShrinkFactor;

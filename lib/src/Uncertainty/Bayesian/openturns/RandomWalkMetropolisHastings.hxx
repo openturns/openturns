@@ -71,11 +71,11 @@ public:
   Interval getAdaptationRange() const;
 
   /** Adaptation expansion factor accessor */
-  void setAdaptationExpansionFactor(Scalar expansionFactor);
+  void setAdaptationExpansionFactor(const Scalar expansionFactor);
   Scalar getAdaptationExpansionFactor() const;
 
   /** Adaptation shrink factor accessor */
-  void setAdaptationShrinkFactor(Scalar shrinkFactor);
+  void setAdaptationShrinkFactor(const Scalar shrinkFactor);
   Scalar getAdaptationShrinkFactor() const;
 
   /** Adaptation period accessor */

@@ -28,5 +28,6 @@ Bayesian updating
     :template: class.rst_t
 
     MetropolisHastings
+    RandomVectorMetropolisHastings
     RandomWalkMetropolisHastings
     Gibbs
