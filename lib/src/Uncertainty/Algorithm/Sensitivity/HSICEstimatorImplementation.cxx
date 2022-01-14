@@ -37,8 +37,6 @@ CLASSNAMEINIT(HSICEstimatorImplementation)
 
 static const Factory<HSICEstimatorImplementation> Factory_HSICEstimatorImplementation;
 
-typedef PersistentCollection<CovarianceModel>   CovarianceModelCollection;
-
 /** Default constructor */
 HSICEstimatorImplementation::HSICEstimatorImplementation(): PersistentObject(),
   covarianceList_(CovarianceModelCollection()),

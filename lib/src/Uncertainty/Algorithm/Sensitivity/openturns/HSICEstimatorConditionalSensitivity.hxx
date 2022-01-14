@@ -44,7 +44,7 @@ class OT_API HSICEstimatorConditionalSensitivity
 
 public:
 
-  typedef PersistentCollection<CovarianceModel> CovarianceModelCollection;
+  typedef Collection<CovarianceModel> CovarianceModelCollection;
 
 public:
 
