@@ -4,7 +4,6 @@ The HSIC sensitivity indices: the Ishigami model
 """
 import openturns as ot
 import openturns.viewer as otv
-import numpy as np
 from openturns.usecases import ishigami_function
 
 
@@ -139,7 +138,7 @@ view4 = otv.View(graph4)
 
 # %%
 # We first define a critical domain: in our case that is the :math:`[5,+\infty[` interval.
-criticalDomain = ot.Interval(5, np.inf)
+criticalDomain = ot.Interval(5, float('inf'))
 
 # %%
 # We have access to the distance to this  domain thanks to the

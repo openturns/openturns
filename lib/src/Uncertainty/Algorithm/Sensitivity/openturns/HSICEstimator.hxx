@@ -44,10 +44,8 @@ class OT_API HSICEstimator
 
 public:
 
-  typedef Collection<CovarianceModel> CovarianceModelCollection;
+  typedef PersistentCollection<CovarianceModel> CovarianceModelCollection;
   typedef Pointer<HSICEstimatorImplementation> Implementation;
-
-public:
 
   /** Default ctor */
   HSICEstimator();
@@ -60,22 +58,6 @@ public:
   HSICEstimator(HSICEstimatorImplementation * p_implementation);
 #endif
 
-
-protected:
-
-  /** Compute the weight matrix from the weight function */
-  SquareMatrix computeWeightMatrix(const Sample & Y) const;
-
-  /** Compute a HSIC index (one marginal) by using the underlying estimator (biased or not) */
-  Scalar computeHSICIndex( const Sample & inSample, const Sample & outSample, const CovarianceModel & inCovariance, const CovarianceModel & outCovariance, const SquareMatrix & weightMatrix) const;
-
-  /** Compute p-value with permutation */
-  void computePValuesPermutation() const;
-
-  /** Compute HSIC and R2-HSIC indices */
-  void computeIndices() const;
-
-public:
   /** Get the HSIC indices.
    *  This is not const as it triggers a computation of the indices
    *  if they are not computed yet.
@@ -94,8 +76,6 @@ public:
    * */
   Point getPValuesPermutation() const;
 
-
-public:
   /** Graphic methods */
   Graph drawHSICIndices() const;
 
@@ -105,7 +85,6 @@ public:
   /** Graphic methods */
   Graph drawPValuesPermutation() const;
 
-public:
   /** Set the number of permutation used */
   void setPermutationSize(const UnsignedInteger B);
 
@@ -140,6 +119,19 @@ public:
   HSICStat getEstimator() const;
 
 protected:
+
+  /** Compute the weight matrix from the weight function */
+  SquareMatrix computeWeightMatrix(const Sample & Y) const;
+
+  /** Compute a HSIC index (one marginal) by using the underlying estimator (biased or not) */
+  Scalar computeHSICIndex( const Sample & inSample, const Sample & outSample, const CovarianceModel & inCovariance, const CovarianceModel & outCovariance, const SquareMatrix & weightMatrix) const;
+
+  /** Compute p-value with permutation */
+  void computePValuesPermutation() const;
+
+  /** Compute HSIC and R2-HSIC indices */
+  void computeIndices() const;
+
   /** Reset indices to void */
   void resetIndices();
 

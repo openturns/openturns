@@ -44,9 +44,7 @@ class OT_API HSICEstimatorTargetSensitivity
 
 public:
 
-  typedef Collection<CovarianceModel> CovarianceModelCollection;
-
-public:
+  typedef PersistentCollection<CovarianceModel> CovarianceModelCollection;
 
   /** Default */
   HSICEstimatorTargetSensitivity();
@@ -56,18 +54,6 @@ public:
 
   /** Virtual constructor */
   HSICEstimatorTargetSensitivity* clone() const override;
-
-private:
-
-  /** Compute the weight matrix from the weight function */
-  virtual SquareMatrix computeWeightMatrix(const Sample & Y) const override;
-
-private:
-
-  /** Compute the p-values with asymptotic formula */
-  void computePValuesAsymptotic() const;
-
-public:
 
   /** Get the p-values with asymptotic formula */
   Point getPValuesAsymptotic() const;
@@ -84,12 +70,26 @@ public:
   /** Compute all indices at once */
   void run() const override;
 
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override;
+
 protected:
 
   /* data */
   mutable Point PValuesAsymptotic_ ;
   mutable Bool isAlreadyComputedPValuesAsymptotic_ ;
   Function filterFunction_ ;
+
+private:
+
+  /** Compute the weight matrix from the weight function */
+  virtual SquareMatrix computeWeightMatrix(const Sample & Y) const override;
+
+  /** Compute the p-values with asymptotic formula */
+  void computePValuesAsymptotic() const;
 
 };
 

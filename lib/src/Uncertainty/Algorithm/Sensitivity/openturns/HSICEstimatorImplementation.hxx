@@ -46,9 +46,7 @@ class OT_API HSICEstimatorImplementation
   CLASSNAME
 public:
 
-  typedef Collection <CovarianceModel>  CovarianceModelCollection;
-
-public:
+  typedef PersistentCollection <CovarianceModel>  CovarianceModelCollection;
 
   /** Default constructor */
   HSICEstimatorImplementation();
@@ -60,21 +58,10 @@ public:
   HSICEstimatorImplementation(const CovarianceModelCollection & covarianceList, const Sample & X, const Sample & Y, const HSICStat & estimatorType, const Function & weightFunction );
 
   /* Here is the interface that all derived class must implement */
-public:
+
   /** Virtual constructor */
   HSICEstimatorImplementation * clone() const override;
 
-protected:
-  /** Compute the weight matrix from the weight function */
-  virtual SquareMatrix computeWeightMatrix(const Sample & Y) const;
-
-  /** Compute a HSIC index (one marginal) by using the underlying estimator (biased or not) */
-  virtual Scalar computeHSICIndex( const Sample & inSample, const Sample & outSample, const CovarianceModel & inCovariance, const CovarianceModel & outCovariance, const SquareMatrix & weightMatrix) const;
-
-  /** Compute HSIC and R2-HSIC indices */
-  virtual void computeIndices() const;
-
-public:
   /** Set the number of permutation used */
   void setPermutationSize(const UnsignedInteger B);
 
@@ -108,38 +95,18 @@ public:
   /** Get the underlying estimator: biased or unbiased*/
   HSICStat getEstimator() const;
 
-protected:
-  /** Reset indices to void */
-  void resetIndices();
-
-protected:
-  /** Compute p-value with permutation */
-  virtual void computePValuesPermutation() const;
-
-public:
-
-  /** Get the HSIC indices.
-  *  This is not const as it triggers a computation of the indices
-  *  if they are not computed yet.
-  * */
+  /** Get the HSIC indices */
   Point getHSICIndices() const;
 
-  /** Get the R2-HSIC indices.
-   *  This is not const as it triggers a computation of the indices
-   *  if they are not computed yet.
-   * */
+  /** Get the R2-HSIC indices */
   Point getR2HSICIndices() const;
 
-  /** Get the p-values by permutation.
-   *  This is not const as it triggers a computation of the values
-   *  if they are not computed yet.
-   * */
+  /** Get the p-values by permutation */
   Point getPValuesPermutation() const;
 
   /** Compute all indices at once */
   virtual void run() const;
 
-public:
   /** Draw the HSIC indices */
   Graph drawHSICIndices() const;
 
@@ -148,14 +115,35 @@ public:
 
   /** Draw the p-values by permutation */
   Graph drawPValuesPermutation() const;
+
+  /** Method save() stores the object through the StorageManager */
+  void save(Advocate & adv) const override;
+
+  /** Method load() reloads the object from the StorageManager */
+  void load(Advocate & adv) override;
+
 protected:
+
+  /** Reset indices to void */
+  void resetIndices();
+
+  /** Compute p-value with permutation */
+  virtual void computePValuesPermutation() const;
+
+  /** Compute the weight matrix from the weight function */
+  virtual SquareMatrix computeWeightMatrix(const Sample & Y) const;
+
+  /** Compute a HSIC index (one marginal) by using the underlying estimator (biased or not) */
+  virtual Scalar computeHSICIndex( const Sample & inSample, const Sample & outSample, const CovarianceModel & inCovariance, const CovarianceModel & outCovariance, const SquareMatrix & weightMatrix) const;
+
+  /** Compute HSIC and R2-HSIC indices */
+  virtual void computeIndices() const;
+
   /** Draw values stored in a point */
   Graph drawValues(const Point &values, String &title) const;
 
-protected:
   Sample shuffledCopy(const Sample & inSample) const;
 
-protected:
   /* data */
   CovarianceModelCollection covarianceList_ ;
   Sample inputSample_ ;
