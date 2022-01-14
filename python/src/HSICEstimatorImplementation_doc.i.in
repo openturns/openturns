@@ -46,7 +46,7 @@ OT_HSICEstimator_getPermutationSize_doc
 Returns
 -------
 coll : CovarianceModelCollection
-       The list of all covariance models used. The last one is the ouput covariance model."
+    The list of all covariance models used. The last one is the ouput covariance model."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::getCovarianceList
 OT_HSICEstimator_getCovarianceList_doc
@@ -59,7 +59,7 @@ OT_HSICEstimator_getCovarianceList_doc
 Parameters
 ----------
 coll : CovarianceModelCollection
-       The list of all covariance models."
+    The list of all covariance models."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::setCovarianceList
 OT_HSICEstimator_setCovarianceList_doc
@@ -72,7 +72,7 @@ OT_HSICEstimator_setCovarianceList_doc
 Returns
 -------
 inSample : :class:`~openturns.Sample`
-           The input sample used for analysis."
+    The input sample used for analysis."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::getInputSample
 OT_HSICEstimator_getInputSample_doc
@@ -85,7 +85,7 @@ OT_HSICEstimator_getInputSample_doc
 Parameters
 ----------
 inputSample : 2-d sequence of float
-              The input sample to be used."
+    The input sample to be used."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::setInputSample
 OT_HSICEstimator_setInputSample_doc
@@ -98,7 +98,7 @@ OT_HSICEstimator_setInputSample_doc
 Returns
 -------
 outSample : :class:`~openturns.Sample`
-            The output sample used for analysis."
+    The output sample used for analysis."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::getOutputSample
 OT_HSICEstimator_getOutputSample_doc
@@ -111,7 +111,7 @@ OT_HSICEstimator_getOutputSample_doc
 Parameters
 ----------
 outputSample : 2-d sequence of float
-               The output sample to be used."
+    The output sample to be used."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::setOutputSample
 OT_HSICEstimator_setOutputSample_doc
@@ -124,7 +124,7 @@ OT_HSICEstimator_setOutputSample_doc
 Returns
 -------
 dim : int
-      The dimension of the input sample."
+    The dimension of the input sample."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::getDimension
 OT_HSICEstimator_getDimension_doc
@@ -137,7 +137,7 @@ OT_HSICEstimator_getDimension_doc
 Returns
 -------
 size : int
-       The size of the input sample."
+    The size of the input sample."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::getSize
 OT_HSICEstimator_getSize_doc
@@ -150,7 +150,7 @@ OT_HSICEstimator_getSize_doc
 Returns
 -------
 estimator : :class:`~openturns.HSICStat`
-            The estimator used for internal computations."
+    The estimator used for internal computations."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::getEstimator
 OT_HSICEstimator_getEstimator_doc
@@ -163,7 +163,7 @@ OT_HSICEstimator_getEstimator_doc
 Returns
 -------
 hsicIndices : :class:`~openturns.Point`
-              The HSIC indices of all components."
+    The HSIC indices of all components."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::getHSICIndices
 OT_HSICEstimator_getHSICIndices_doc
@@ -176,7 +176,7 @@ OT_HSICEstimator_getHSICIndices_doc
 Returns
 -------
 r2hsicIndices : :class:`~openturns.Point`
-                The R2-HSIC indices of all components."
+    The R2-HSIC indices of all components."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::getR2HSICIndices
 OT_HSICEstimator_getR2HSICIndices_doc
@@ -189,7 +189,7 @@ OT_HSICEstimator_getR2HSICIndices_doc
 Returns
 -------
 pval : :class:`~openturns.Point`
-       The p-values of all components estimated with permutations of the data."
+    The p-values of all components estimated with permutations of the data."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::getPValuesPermutation
 OT_HSICEstimator_getPValuesPermutation_doc
@@ -202,7 +202,7 @@ OT_HSICEstimator_getPValuesPermutation_doc
 Returns
 -------
 graph : :class:`~openturns.Graph`
-        The graph of all HSIC indices according to components."
+    The graph of all HSIC indices according to components."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::drawHSICIndices
 OT_HSICEstimator_drawHSICIndices_doc
@@ -215,7 +215,7 @@ OT_HSICEstimator_drawHSICIndices_doc
 Returns
 -------
 graph : :class:`~openturns.Graph`
-        The graph of all R2-HSIC indices according to components."
+    The graph of all R2-HSIC indices according to components."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::drawR2HSICIndices
 OT_HSICEstimator_drawR2HSICIndices_doc
@@ -228,7 +228,7 @@ OT_HSICEstimator_drawR2HSICIndices_doc
 Returns
 -------
 graph : :class:`~openturns.Graph`
-        The graph of all p-values by permutation according to components."
+    The graph of all p-values by permutation according to components."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::drawPValuesPermutation
 OT_HSICEstimator_drawPValuesPermutation_doc
@@ -249,7 +249,7 @@ title : str
 Returns
 -------
 graph : :class:`~openturns.Graph`
-        The desired graph."
+    The desired graph."
 %enddef
 %feature("docstring") OT::HSICEstimatorImplementation::drawValues
 OT_HSICEstimator_drawValues_doc

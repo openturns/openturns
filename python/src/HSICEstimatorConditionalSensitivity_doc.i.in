@@ -33,7 +33,7 @@ See also
 Returns
 -------
 weightFunction : :class:`~openturns.Function`
-                 The weight function used for the conditional estimator."
+    The weight function used for the conditional estimator."
 
 // ---------------------------------------------------------------------
 
@@ -43,6 +43,6 @@ weightFunction : :class:`~openturns.Function`
 Parameters
 ----------
 weightFunction : :class:`~openturns.Function`
-                 The weight function used for the conditional estimator."
+    The weight function used for the conditional estimator."
 
 // ---------------------------------------------------------------------
