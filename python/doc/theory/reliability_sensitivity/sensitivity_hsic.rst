@@ -32,7 +32,7 @@ HSIC definition
 
 Suppose :math:`\cX_{i} \ \forall i \ \in \{1,\dots,d\}` and :math:`\cY` are measurable spaces.
 Let :math:`\cF_{i} : \cX_i \rightarrow \Rset` and :math:`\cG : \cY \rightarrow \Rset` 
-be two (universal) Reproducing Kernel Hilbert Spaces (RHKS).
+be two (universal) Reproducing Kernel Hilbert Spaces (RKHS).
 These functional spaces are equipped with their characteristic kernels: (resp.) 
 :math:`\kappa_{i}(\cdot,\cdot)` and :math:`\kappa(\cdot,\cdot)` and the associated
 scalar products are denoted by :math:`\langle \cdot, \cdot \rangle_{\cF_{i}}` and 
@@ -132,7 +132,7 @@ The HSIC can also be used in order to perform screening on a set of input variab
 This can be defined as the the process of identifying the input variables which are 
 significantly influential on the considered output. 
 More specifically, within the framework of HSIC this can be done by relying on 
-statistical hypotheses tests. In practice, we wish to test the the following hypothesis:
+statistical hypothesis tests. In practice, we wish to test the the following hypothesis:
 
 .. math::
     

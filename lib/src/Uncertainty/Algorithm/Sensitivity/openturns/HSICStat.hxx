@@ -53,9 +53,6 @@ public:
   HSICStat(HSICStatImplementation * p_implementation);
 #endif
 
-
-public:
-
   /** Compute the HSIC index for one marginal*/
   virtual Scalar computeHSICIndex(const Sample & inSample, const Sample & outSample, const CovarianceModel & inCovariance, const CovarianceModel & outCovariance, const SquareMatrix & weightMatrix) const;
 
