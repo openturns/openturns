@@ -44,7 +44,7 @@ class OT_API HSICEstimatorTargetSensitivity
 
 public:
 
-  typedef PersistentCollection<CovarianceModel> CovarianceModelCollection;
+  typedef Collection<CovarianceModel> CovarianceModelCollection;
 
   /** Default */
   HSICEstimatorTargetSensitivity();

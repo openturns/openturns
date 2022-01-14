@@ -44,7 +44,7 @@ class OT_API HSICEstimator
 
 public:
 
-  typedef PersistentCollection<CovarianceModel> CovarianceModelCollection;
+  typedef Collection<CovarianceModel> CovarianceModelCollection;
   typedef Pointer<HSICEstimatorImplementation> Implementation;
 
   /** Default ctor */

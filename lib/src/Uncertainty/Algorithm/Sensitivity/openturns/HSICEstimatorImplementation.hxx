@@ -46,7 +46,7 @@ class OT_API HSICEstimatorImplementation
   CLASSNAME
 public:
 
-  typedef PersistentCollection <CovarianceModel>  CovarianceModelCollection;
+  typedef Collection <CovarianceModel>  CovarianceModelCollection;
 
   /** Default constructor */
   HSICEstimatorImplementation();
@@ -69,7 +69,7 @@ public:
   UnsignedInteger getPermutationSize() const;
 
   /** Get the covariance models */
-  CovarianceModelCollection getCovarianceList() const;
+  PersistentCollection <CovarianceModel> getCovarianceList() const;
 
   /** Set the covariance models */
   void setCovarianceList(const CovarianceModelCollection & coll);
@@ -145,7 +145,7 @@ protected:
   Sample shuffledCopy(const Sample & inSample) const;
 
   /* data */
-  CovarianceModelCollection covarianceList_ ;
+  PersistentCollection <CovarianceModel> covarianceList_ ;
   Sample inputSample_ ;
   Sample outputSample_ ;
   HSICStat estimatorType_;
