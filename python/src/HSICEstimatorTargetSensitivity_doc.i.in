@@ -45,7 +45,7 @@ pval : :class:`~openturns.Point`
 Returns
 -------
 filterFunction : :class:`~openturns.Function`
-                 The filter function used for the target estimator."
+    The filter function used for the target estimator."
 
 // ---------------------------------------------------------------------
 
@@ -57,7 +57,7 @@ filterFunction : :class:`~openturns.Function`
 Parameters
 ----------
 filterFunction : :class:`~openturns.Function`
-                 The filter function used for the target estimator."
+    The filter function used for the target estimator."
 
 // ---------------------------------------------------------------------
 
@@ -69,6 +69,6 @@ filterFunction : :class:`~openturns.Function`
 Returns
 -------
 graph : :class:`~openturns.Graph`
-        The graph of all p-values obtained with an asymptotic formula."
+    The graph of all p-values obtained with an asymptotic formula."
 
 // ---------------------------------------------------------------------

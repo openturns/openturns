@@ -30,7 +30,7 @@ See also
 Returns
 -------
 pval : sequence of float
-       The p-values for all components."
+    The p-values for all components."
 
 // ---------------------------------------------------------------------
 
@@ -42,6 +42,6 @@ pval : sequence of float
 Returns
 -------
 graph : :class:`~openturns.Graph`
-        The graph of all p-values estimated with an asymptotic formula."
+    The graph of all p-values estimated with an asymptotic formula."
 
 // ---------------------------------------------------------------------
