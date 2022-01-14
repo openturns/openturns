@@ -39,7 +39,7 @@ Package: libopenturns-dev
 Section: libdevel
 Architecture: any
 Depends: ${misc:Depends}, libopenturns0.19 (= ${binary:Version}),
-  libtbb-dev [i386 amd64 ia64], libhmat-oss-dev, libceres-dev
+  libhmat-oss-dev, libceres-dev
 Replaces: python-openturns-dev (<< 1.5-2)
 Breaks: python-openturns-dev (<< 1.5-2)
 Description: headers and development libraries for OpenTURNS

@@ -29,7 +29,7 @@
 #include "openturns/Contour.hxx"
 #include "openturns/Curve.hxx"
 #include "openturns/CovarianceModel.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -404,7 +404,7 @@ struct CovarianceModelDiscretizePolicy
     , outputDimension_(model.getOutputDimension())
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
@@ -440,7 +440,7 @@ struct CovarianceModelDiscretizeScalarPolicy
     , inputDimension_(input_.getDimension())
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
@@ -461,7 +461,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
     CovarianceMatrix covarianceMatrix(size);
     const CovarianceModelDiscretizeScalarPolicy policy(vertices, covarianceMatrix, *this);
     // The loop is over the lower block-triangular part
-    TBB::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
     return covarianceMatrix;
   }
   else
@@ -470,7 +470,7 @@ CovarianceMatrix CovarianceModelImplementation::discretize(const Sample & vertic
     CovarianceMatrix covarianceMatrix(fullSize);
     const CovarianceModelDiscretizePolicy policy( vertices, covarianceMatrix, *this );
     // The loop is over the lower block-triangular part
-    TBB::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
     return covarianceMatrix;
   }
 }
@@ -493,7 +493,7 @@ struct CrossCovarianceFunctor1D
   {
   }
 
-  inline void operator()(const TBB::BlockedRange<UnsignedInteger> &r) const
+  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> &r) const
   {
 
     const UnsignedInteger inputDimension = firstSample_.getDimension();
@@ -531,7 +531,7 @@ struct CrossCovarianceFunctor
   {
   }
 
-  inline void operator()(const TBB::BlockedRange<UnsignedInteger> &r) const
+  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> &r) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
@@ -575,7 +575,7 @@ Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &first
     Matrix result(firstSampleSize, secondSampleSize);
     const CrossCovarianceFunctor1D policy(firstSample, secondSample, result, *this);
     // The loop is over X & Y samples
-    TBB::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, policy);
     return result;
   }
   const UnsignedInteger firstSampleSize = firstSample.getSize();
@@ -585,7 +585,7 @@ Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &first
   Matrix result(firstSampleFullSize, secondSampleFullSize);
   const CrossCovarianceFunctor policy(firstSample, secondSample, result, *this);
   // The loop is over the lower block-triangular part
-  TBB::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, policy);
+  TBBImplementation::ParallelForIf(isParallel(), 0, firstSampleSize * secondSampleSize, policy);
   return result;
 }
 
@@ -607,7 +607,7 @@ struct CrossCovariancePointFunctor1D
   {
   }
 
-  inline void operator()(const TBB::BlockedRange<UnsignedInteger> &r) const
+  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> &r) const
   {
 
     const UnsignedInteger inputDimension = point_.getDimension();
@@ -638,7 +638,7 @@ struct CrossCovariancePointFunctor
   {
   }
 
-  inline void operator()(const TBB::BlockedRange<UnsignedInteger> &r) const
+  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> &r) const
   {
     const UnsignedInteger dimension = model_.getOutputDimension();
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
@@ -662,13 +662,13 @@ Matrix CovarianceModelImplementation::computeCrossCovariance(const Sample &sampl
     Matrix result(size, 1);
     const CrossCovariancePointFunctor1D policy(sample, point, result, *this);
     // The loop is over the lower block-triangular part
-    TBB::ParallelForIf(isParallel(), 0, size, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
     return result;
   }
   const UnsignedInteger fullSize = size * outputDimension;
   Matrix result(fullSize, outputDimension);
   const CrossCovariancePointFunctor policy(sample, point, result, *this);
-  TBB::ParallelForIf(isParallel(), 0, size, policy);
+  TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
   return result;
 }
 
@@ -704,7 +704,7 @@ TriangularMatrix CovarianceModelImplementation::discretizeAndFactorize(const Sam
     CovarianceMatrix covarianceMatrix(size);
     const CovarianceModelDiscretizeScalarPolicy policy( vertices, covarianceMatrix, *this );
     // The loop is over the lower block-triangular part
-    TBB::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size * (size + 1) / 2, policy);
     // Compute the Cholesky
     return covarianceMatrix.computeCholesky(false);
   }
@@ -734,7 +734,7 @@ struct CovarianceModelScalarDiscretizeRowPolicy
     , model_(model)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_(i, 0) = model_.computeAsScalar(p_, input_[i]);
   }
@@ -760,7 +760,7 @@ struct CovarianceModelDiscretizeRowPolicy
     , outputDimension_(model.getOutputDimension())
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
@@ -783,12 +783,12 @@ Sample CovarianceModelImplementation::discretizeRow(const Sample & vertices,
   if (outputDimension_ == 1)
   {
     const CovarianceModelScalarDiscretizeRowPolicy policy( vertices, p, result, *this );
-    TBB::ParallelForIf(isParallel(), 0, size, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
   }
   else
   {
     const CovarianceModelDiscretizeRowPolicy policy( vertices, p, result, *this );
-    TBB::ParallelForIf(isParallel(), 0, size, policy);
+    TBBImplementation::ParallelForIf(isParallel(), 0, size, policy);
   }
   return result;
 }

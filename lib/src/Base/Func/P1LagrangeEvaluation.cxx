@@ -21,7 +21,7 @@
 #include "openturns/P1LagrangeEvaluation.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Description.hxx"
+#include "openturns/TBBImplementation.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Os.hxx"
 
@@ -230,7 +230,7 @@ public:
     // Nothing to do
   }
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
       output_[i] = lagrange_.evaluate(input_[i]);
@@ -273,7 +273,7 @@ Sample P1LagrangeEvaluation::operator()( const Sample & inS ) const
   else
   {
     const P1LagrangeEvaluationComputeSamplePolicy policy( inS, result, *this );
-    TBB::ParallelFor( 0, size, policy );
+    TBBImplementation::ParallelFor( 0, size, policy );
   } // The input sample is different from
   callsNumber_.fetchAndAdd(size);
   return result;

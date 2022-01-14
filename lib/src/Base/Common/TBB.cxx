@@ -19,140 +19,35 @@
  *
  */
 
-#include <iostream>
-#include <cassert>
-#include <cstdlib>
-#include <errno.h>
-
-#include "openturns/OTconfig.hxx"
-#include "openturns/OTthread.hxx"
-
 #include "openturns/TBB.hxx"
-#include "openturns/ResourceMap.hxx"
-
-#ifdef OPENTURNS_HAVE_OPENMP
-#include <omp.h>
-#endif
-
-#ifdef OPENTURNS_HAVE_OPENBLAS
-extern "C" {
-// This function is private
-  int goto_get_num_procs(void);
-// This one is public but redeclare it in case regular cblas headers are used
-  void openblas_set_num_threads(int num_threads);
-}
-#endif
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
-static pthread_mutex_t TBB_InstanceMutex_;
-static TBB * TBB_P_instance_ = 0;
-static const TBB_init initializer_TBB;
-UnsignedInteger TBB::ThreadsNumber_ = 1;
-tbb::task_arena * TBB::P_task_arena_ = 0;
-
 Bool TBB::IsAvailable()
 {
-#ifdef OPENTURNS_HAVE_TBB
-  return true;
-#else
-  return false;
-#endif
+  return TBBImplementation::IsAvailable();
 }
 
 void TBB::SetThreadsNumber(const UnsignedInteger threadNumber)
 {
-  if (!threadNumber)
-    throw InvalidArgumentException(HERE) << "Number of threads must be positive";
-  ThreadsNumber_ = threadNumber;
-  delete P_task_arena_;
-  P_task_arena_ = new tbb::task_arena(ThreadsNumber_);
+  TBBImplementation::SetThreadsNumber(threadNumber);
 }
 
 UnsignedInteger TBB::GetThreadsNumber()
 {
-  return ThreadsNumber_;
+  return TBBImplementation::GetThreadsNumber();
 }
 
 void TBB::Enable()
 {
-  const UnsignedInteger nbThreads = ResourceMap::GetAsUnsignedInteger("TBB-ThreadsNumber");
-  SetThreadsNumber(nbThreads);
+  TBBImplementation::Enable();
 }
 
 
 void TBB::Disable()
 {
-  SetThreadsNumber(1);
-}
-
-
-
-TBB_init::TBB_init()
-{
-  if (!TBB_P_instance_)
-  {
-#ifndef OT_MUTEXINIT_NOCHECK
-    pthread_mutexattr_t attr;
-    pthread_mutexattr_init( &attr );
-    pthread_mutexattr_settype( &attr, PTHREAD_MUTEX_ERRORCHECK );
-    pthread_mutex_init( &TBB_InstanceMutex_, &attr );
-#else
-    pthread_mutex_init( &TBB_InstanceMutex_, NULL );
-#endif
-
-    TBB_P_instance_ = new TBB;
-  }
-  TBB::Enable();
-}
-
-TBB_init::~TBB_init()
-{
-  if (TBB_P_instance_)
-    pthread_mutex_destroy(&TBB_InstanceMutex_);
-  delete TBB_P_instance_;
-  TBB_P_instance_ = 0;
-  delete TBB::P_task_arena_;
-  TBB::P_task_arena_ = 0;
-}
-
-
-TBBContext::TBBContext()
-  : ompNumThreads_(0)
-  , openblasNumThreads_(0)
-{
-#ifdef OPENTURNS_HAVE_TBB
-  if (TBB::GetThreadsNumber() > 1)
-  {
-    // disable threading
-#ifdef OPENTURNS_HAVE_OPENMP
-    ompNumThreads_ = omp_get_max_threads();
-    omp_set_num_threads(1);
-#endif
-#ifdef OPENTURNS_HAVE_OPENBLAS
-    openblasNumThreads_ = goto_get_num_procs();
-    openblas_set_num_threads(1);
-#endif
-  }
-#endif
-  (void) ompNumThreads_;
-  (void) openblasNumThreads_;
-}
-
-TBBContext::~TBBContext()
-{
-#ifdef OPENTURNS_HAVE_TBB
-  if (TBB::GetThreadsNumber() > 1)
-  {
-    // restore threading
-#ifdef OPENTURNS_HAVE_OPENMP
-    omp_set_num_threads(ompNumThreads_);
-#endif
-#ifdef OPENTURNS_HAVE_OPENBLAS
-    openblas_set_num_threads(openblasNumThreads_);
-#endif
-  }
-#endif
+  TBBImplementation::Disable();
 }
 
 END_NAMESPACE_OPENTURNS

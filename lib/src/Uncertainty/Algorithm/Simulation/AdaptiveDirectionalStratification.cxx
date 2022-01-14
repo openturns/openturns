@@ -115,6 +115,7 @@ void AdaptiveDirectionalStratification::run()
       quadrantSampling.setStrataIndices(strataIndices);
       DirectionalSampling directionalSampling (getEvent(), rootStrategy_, quadrantSampling);
       directionalSampling.setMaximumOuterSampling (ni);
+      directionalSampling.setMaximumCoefficientOfVariation(getMaximumCoefficientOfVariation());
       directionalSampling.setBlockSize (blockSize);
       directionalSampling.run();
       const ProbabilitySimulationResult result(directionalSampling.getResult());
@@ -126,7 +127,7 @@ void AdaptiveDirectionalStratification::run()
       if (pf > 0.0)
       {
         probabilityEstimate += w0[i] * pf;
-        sigma[i] = result.getStandardDeviation();
+        sigma[i] = result.getStandardDeviation() * std::sqrt(ni);
         w0SigmaSum += w0[i] * sigma[i];
 
         for (UnsignedInteger k = 0; k < d; ++ k)

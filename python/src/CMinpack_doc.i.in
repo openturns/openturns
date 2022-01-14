@@ -33,12 +33,3 @@ Examples
 >>> x_star = result.getOptimalPoint()  # doctest: +SKIP
 >>> y_star = result.getOptimalValue()  # doctest: +SKIP"
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::CMinpack::IsAvailable
-"Ask whether CMinpack support is available.
-
-Returns
--------
-available : bool
-    Whether CMinpack support is available."

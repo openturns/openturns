@@ -54,6 +54,7 @@ HMatrixFactory * HMatrixFactory::clone() const
 Bool
 HMatrixFactory::IsAvailable()
 {
+  LOGWARN(OSS() << "HMatrixFactory.IsAvailable is deprecated, use PlatformInfo.HasFeature(hmat)");
 #ifdef OPENTURNS_HAVE_HMAT
   return true;
 #else

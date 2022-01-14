@@ -46,6 +46,11 @@ public:
   /** Constructor from implementation */
   UniVariateFunctionFamily(const UniVariateFunctionFactory & implementation);
 
+#ifndef SWIG
+  /** Constructor from implementation pointer */
+  UniVariateFunctionFamily(UniVariateFunctionFactory * p_implementation);
+#endif
+
   /** String converter */
   String __repr__() const override;
 

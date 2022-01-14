@@ -136,7 +136,7 @@ public:
     if (jacobians)
     {
       const Matrix gradient(problem.getResidualFunction().gradient(inP));
-      std::copy(&gradient(0, 0), &gradient(n - 1, m - 1) + 1, jacobians[0]);
+      std::copy(gradient.data(), gradient.data() + m * n, jacobians[0]);
     }
     return true;
   }
@@ -181,7 +181,7 @@ public:
     if (jacobian)
     {
       const Matrix gradient(problem.isMinimization() ? problem.getObjective().gradient(inP) : -1.0 * problem.getObjective().gradient(inP));
-      std::copy(&gradient(0, 0), &gradient(n - 1, 0) + 1, jacobian);
+      std::copy(gradient.data(), gradient.data() + n, jacobian);
     }
     return true;
   }
@@ -544,6 +544,7 @@ void Ceres::load(Advocate & adv)
 
 Bool Ceres::IsAvailable()
 {
+  LOGWARN(OSS() << "Ceres.IsAvailable is deprecated, use PlatformInfo.HasFeature(ceres)");
 #ifdef OPENTURNS_HAVE_CERES
   return true;
 #else

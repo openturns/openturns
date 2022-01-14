@@ -56,9 +56,11 @@ Sample Sample::BuildFromPoint(const Point &point)
 /* Save to CSV file */
 void Sample::exportToCSVFile(const FileName & filename,
                              const String & csvSeparator,
-                             const String & numSeparator) const
+                             const String & numSeparator,
+                             const UnsignedInteger precision,
+                             const String & format) const
 {
-  getImplementation()->exportToCSVFile(filename, csvSeparator, numSeparator);
+  getImplementation()->exportToCSVFile(filename, csvSeparator, numSeparator, precision, format);
 }
 
 /* Store a sample in a temporary text file, one realization by line. Returns the file name. */

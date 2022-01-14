@@ -1,9 +1,9 @@
 --------------------
 model H0 dim=5 pft=1.00e-06 k=-10.629
-probabilityEstimate=8.726674e-07 varianceEstimate=1.599283e-17 standard deviation=4.00e-09 coefficient of variation=4.58e-03 confidenceLength(0.95)=1.57e-08 outerSampling=978 blockSize=1 callsNumber=14181 gamma=[0.5,0.5]
+probabilityEstimate=8.726674e-07 varianceEstimate=7.190236e-15 standard deviation=8.48e-08 coefficient of variation=9.72e-02 confidenceLength(0.95)=3.32e-07 outerSampling=978 blockSize=1 callsNumber=14181 gamma=[0.5,0.5]
 --------------------
 model H1 dim=5 pft=1.00e-06 k=-9.58083
-probabilityEstimate=1.003733e-06 varianceEstimate=5.854253e-17 standard deviation=7.65e-09 coefficient of variation=7.62e-03 confidenceLength(0.95)=3.00e-08 outerSampling=977 blockSize=1 callsNumber=16656 gamma=[0.5,0.5]
+probabilityEstimate=1.003733e-06 varianceEstimate=1.301757e-14 standard deviation=1.14e-07 coefficient of variation=1.14e-01 confidenceLength(0.95)=4.47e-07 outerSampling=977 blockSize=1 callsNumber=16656 gamma=[0.5,0.5]
 --------------------
 model H2 dim=5 pft=1.00e-06 k=-4.75342
-probabilityEstimate=3.772515e-07 varianceEstimate=1.426490e-16 standard deviation=1.19e-08 coefficient of variation=3.17e-02 confidenceLength(0.95)=4.68e-08 outerSampling=974 blockSize=1 callsNumber=15951 gamma=[0.5,0.5]
+probabilityEstimate=3.772515e-07 varianceEstimate=1.081348e-14 standard deviation=1.04e-07 coefficient of variation=2.76e-01 confidenceLength(0.95)=4.08e-07 outerSampling=974 blockSize=1 callsNumber=15951 gamma=[0.5,0.5]

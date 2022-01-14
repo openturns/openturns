@@ -330,7 +330,7 @@ with transpose, matrix [[ 1.0+3.0j  4.0-9.0j]
  [  (2,-5)  (5,11) ]
  [   (3,7) (6,-13) ]]
 empty array => sample class=Sample name=Unnamed implementation=class=SampleImplementation name=Unnamed size=0 dimension=3 data=[]
-sample => array [] (0,)
+sample => array [] (0, 3)
 sample[int64]: [0,0,0]
 sample[int64]=Point: 0 : [  0  0  0 ]
 1 : [  0  0  0 ]

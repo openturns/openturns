@@ -21,7 +21,7 @@
 
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/ClassifierImplementation.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -84,7 +84,7 @@ struct ClassifyPolicy
     , p_classifier_(p_classifier)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) output_[i] = p_classifier_->classify(input_[i]);
   }
@@ -97,7 +97,7 @@ Indices ClassifierImplementation::classify(const Sample & inS) const
   const UnsignedInteger size = inS.getSize();
   Indices result(size);
   const ClassifyPolicy policy(inS, result, this);
-  TBB::ParallelForIf(isParallel_, 0, size, policy);
+  TBBImplementation::ParallelForIf(isParallel_, 0, size, policy);
   return result;
 }
 
@@ -125,7 +125,7 @@ struct GradePolicy
     , p_classifier_(p_classifier)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) output_[i] = p_classifier_->grade(input_[i], classes_[i]);
   }
@@ -140,7 +140,7 @@ Point ClassifierImplementation::gradeParallel(const Sample & inS,
   const UnsignedInteger size = inS.getSize();
   Point result(size);
   const GradePolicy policy(inS, hClass, result, this);
-  TBB::ParallelFor(0, size, policy);
+  TBBImplementation::ParallelFor(0, size, policy);
   return result;
 }
 

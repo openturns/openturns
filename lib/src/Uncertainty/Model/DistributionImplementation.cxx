@@ -67,7 +67,7 @@
 #include "openturns/Box.hxx"
 #include "openturns/Tuples.hxx"
 #include "openturns/Combinations.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 #include "openturns/GaussKronrod.hxx"
 #include "openturns/GaussLegendre.hxx"
 #include "openturns/IteratedQuadrature.hxx"
@@ -844,7 +844,7 @@ struct ComputeCDFPolicy
     , distribution_(distribution)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) output_(i, 0) = distribution_.computeCDF(input_[i]);
   }
@@ -857,7 +857,7 @@ Sample DistributionImplementation::computeCDFParallel(const Sample & inSample) c
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
   const ComputeCDFPolicy policy( inSample, result, *this );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   return result;
 }
 
@@ -890,7 +890,7 @@ struct ComputeComplementaryCDFPolicy
     , distribution_(distribution)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++ i) output_(i, 0) = distribution_.computeComplementaryCDF(input_[i]);
   }
@@ -903,7 +903,7 @@ Sample DistributionImplementation::computeComplementaryCDFParallel(const Sample 
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
   const ComputeComplementaryCDFPolicy policy( inSample, result, *this );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   return result;
 }
 
@@ -936,7 +936,7 @@ struct ComputeSurvivalFunctionPolicy
     , distribution_(distribution)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_(i, 0) = distribution_.computeSurvivalFunction(input_[i]);
   }
@@ -949,7 +949,7 @@ Sample DistributionImplementation::computeSurvivalFunctionParallel(const Sample 
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
   const ComputeSurvivalFunctionPolicy policy( inSample, result, *this );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   return result;
 }
 
@@ -1389,7 +1389,7 @@ struct ComputeDDFPolicy
     , distribution_(distribution)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     const UnsignedInteger dimension = input_.getDimension();
     UnsignedInteger shift = dimension * r.begin();
@@ -1408,7 +1408,7 @@ Sample DistributionImplementation::computeDDFParallel(const Sample & inSample) c
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
   const ComputeDDFPolicy policy( inSample, result, *this );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   return result;
 }
 
@@ -1444,7 +1444,7 @@ struct ComputePDFPolicy
     , distribution_(distribution)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_(i, 0) = distribution_.computePDF(input_[i]);
   }
@@ -1458,7 +1458,7 @@ Sample DistributionImplementation::computePDFParallel(const Sample & inSample) c
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
   const ComputePDFPolicy policy( inSample, result, *this );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   return result;
 }
 
@@ -1493,7 +1493,7 @@ struct ComputeLogPDFPolicy
     , distribution_(distribution)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i) output_(i, 0) = distribution_.computeLogPDF(input_[i]);
   }
@@ -1506,7 +1506,7 @@ Sample DistributionImplementation::computeLogPDFParallel(const Sample & inSample
   const UnsignedInteger size = inSample.getSize();
   Sample result(size, 1);
   const ComputeLogPDFPolicy policy( inSample, result, *this );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   return result;
 }
 
@@ -1713,7 +1713,7 @@ struct ComputeQuantilePolicy
     , distribution_(distribution)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     const UnsignedInteger dimension = distribution_.getDimension();
     UnsignedInteger shift = dimension * r.begin();
@@ -1733,7 +1733,7 @@ Sample DistributionImplementation::computeQuantileParallel(const Point & prob,
   const UnsignedInteger size = prob.getSize();
   Sample result(size, dimension_);
   const ComputeQuantilePolicy policy( prob, result, tail, *this );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   return result;
 }
 
@@ -1853,7 +1853,7 @@ struct ComputeLogPDFGradientPolicy
     , distribution_(distribution)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
@@ -1885,7 +1885,7 @@ Sample DistributionImplementation::computeLogPDFGradientParallel(const Sample & 
   const UnsignedInteger size = sample.getSize();
   Sample outSample(size, getParameterDimension());
   const ComputeLogPDFGradientPolicy policy( sample, outSample, *this );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   return outSample;
 }
 

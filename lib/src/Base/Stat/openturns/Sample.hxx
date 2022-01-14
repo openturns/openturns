@@ -62,7 +62,9 @@ public:
   /** Export Sample into CSV file */
   void exportToCSVFile(const FileName & fileName,
                        const String & csvSeparator = ResourceMap::GetAsString( "Sample-CSVFileSeparator" ),
-                       const String & numSeparator = ".") const;
+                       const String & numSeparator = ".",
+                       const UnsignedInteger precision = ResourceMap::GetAsUnsignedInteger("Sample-CSVPrecision"),
+                       const String & format = ResourceMap::Get("Sample-CSVFormat")) const;
 
   /** Export a sample as a matrix, one row by realization, in a format suitable to exchange with R. */
   String streamToRFormat() const;

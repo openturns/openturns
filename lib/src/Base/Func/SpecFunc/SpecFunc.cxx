@@ -99,34 +99,6 @@ const Scalar SpecFunc::ScalarEpsilon = std::numeric_limits<Scalar>::epsilon();
 const UnsignedInteger SpecFunc::MaximumIteration = ResourceMap::GetAsUnsignedInteger("SpecFunc-MaximumIteration");
 const Scalar SpecFunc::Precision = ResourceMap::GetAsScalar("SpecFunc-Precision");
 
-// Information about capabilities
-Bool SpecFunc::IsBoostAvailable()
-{
-#ifdef OPENTURNS_HAVE_BOOST
-  return true;
-#else
-  return false;
-#endif
-}
-
-Bool SpecFunc::IsMPFRAvailable()
-{
-#ifdef OPENTURNS_HAVE_MPFR
-  return true;
-#else
-  return false;
-#endif
-}
-
-Bool SpecFunc::IsMPCAvailable()
-{
-#ifdef OPENTURNS_HAVE_MPC
-  return true;
-#else
-  return false;
-#endif
-}
-
 // Some facilities for NaN and inf
 Bool SpecFunc::IsNaN(const Scalar value)
 {

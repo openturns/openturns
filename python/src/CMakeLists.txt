@@ -119,7 +119,6 @@ ot_add_python_module(common common_module.i
                       Less.i Less_doc.i.in
                       LessOrEqual.i LessOrEqual_doc.i.in
                       Cache.i
-                      PlatformInfo.i PlatformInfo_doc.i.in
                       Pointer.i
                       InterfaceObject.i InterfaceObject_doc.i.in
                       TypedInterfaceObject.i
@@ -139,6 +138,7 @@ ot_add_python_module(typ typ_module.i
                       Collection.i Collection_doc.i.in
                       PersistentCollection.i
                       Description.i Description_doc.i.in
+                      PlatformInfo.i PlatformInfo_doc.i.in
                       Point.i Point_doc.i.in
                       PointWithDescription.i PointWithDescription_doc.i.in
                       DomainImplementation.i DomainImplementation_doc.i.in

@@ -1,4 +1,4 @@
-probabilityEstimate=2.786598e-03 varianceEstimate=2.620360e-11 standard deviation=5.12e-06 coefficient of variation=1.84e-03 confidenceLength(0.95)=2.01e-05 outerSampling=9997 blockSize=1
+probabilityEstimate=2.786598e-03 varianceEstimate=2.183423e-08 standard deviation=1.48e-04 coefficient of variation=5.30e-02 confidenceLength(0.95)=5.79e-04 outerSampling=9997 blockSize=1
 T= [0.022501,0.0463237,0.00428767,0.0381024]
-probabilityEstimate=6.950005e-03 varianceEstimate=3.723692e-11 standard deviation=6.10e-06 coefficient of variation=8.78e-04 confidenceLength(0.95)=2.39e-05 outerSampling=9997 blockSize=1
-probabilityEstimate=2.529989e-03 varianceEstimate=1.822558e-11 standard deviation=4.27e-06 coefficient of variation=1.69e-03 confidenceLength(0.95)=1.67e-05 outerSampling=9998 blockSize=1
+probabilityEstimate=6.950005e-03 varianceEstimate=4.893768e-08 standard deviation=2.21e-04 coefficient of variation=3.18e-02 confidenceLength(0.95)=8.67e-04 outerSampling=9997 blockSize=1
+probabilityEstimate=2.529989e-03 varianceEstimate=2.272408e-08 standard deviation=1.51e-04 coefficient of variation=5.96e-02 confidenceLength(0.95)=5.91e-04 outerSampling=9998 blockSize=1

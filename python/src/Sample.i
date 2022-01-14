@@ -86,7 +86,7 @@ def Sample___getattribute__(self, name):
     if name == '__array_interface__':
         self.__dict__['__array_interface__'] = {'shape': (self.getSize(), self.getDimension()),
                                                 'typestr': "|f" + str(self.__elementsize__()),
-                                                'data': (int(self.__baseaddress__()), True),
+                                                'data': (int(self.__baseaddress__() or 1), True),
                                                 'version': 3, 
                                                 }
     return super(Sample, self).__getattribute__(name)

@@ -556,7 +556,7 @@ void NLopt::ComputeInequalityConstraint(unsigned m, double * result, unsigned n,
     Matrix gradient(algorithm->getProblem().getInequalityConstraint().gradient(inP));
     // nlopt solves h(x)<=0
     gradient = gradient * -1.0;
-    std::copy(&gradient(0, 0), &gradient(n - 1, m - 1) + 1, grad);
+    std::copy(gradient.data(), gradient.data() + m * n, grad);
   }
 }
 
@@ -576,13 +576,14 @@ void NLopt::ComputeEqualityConstraint(unsigned m, double * result, unsigned n, c
   if (grad)
   {
     Matrix gradient(algorithm->getProblem().getEqualityConstraint().gradient(inP));
-    std::copy(&gradient(0, 0), &gradient(n - 1, m - 1) + 1, grad);
+    std::copy(gradient.data(), gradient.data() + m * n, grad);
   }
 }
 
 
 Bool NLopt::IsAvailable()
 {
+  LOGWARN(OSS() << "NLopt.IsAvailable is deprecated, use PlatformInfo.HasFeature(nlopt)");
 #ifdef OPENTURNS_HAVE_NLOPT
   return true;
 #else

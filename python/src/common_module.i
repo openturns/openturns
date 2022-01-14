@@ -46,7 +46,6 @@ class XMLH5StorageManager(object):
 %include GreaterOrEqual.i
 %include Less.i
 %include LessOrEqual.i
-%include PlatformInfo.i
 
 /* At last we include template definitions */
 %include BaseCommonTemplateDefs.i

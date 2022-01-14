@@ -793,7 +793,9 @@ public:
   /** Save to CSV file */
   void exportToCSVFile(const FileName & filename,
                        const String & csvSeparator = ResourceMap::GetAsString("Sample-CSVFileSeparator"),
-                       const String & numSeparator = ".") const;
+                       const String & numSeparator = ".",
+                       const UnsignedInteger precision = ResourceMap::GetAsUnsignedInteger("Sample-CSVPrecision"),
+                       const String & format = ResourceMap::Get("Sample-CSVFormat")) const;
 
   /** Method save() stores the object through the StorageManager */
   void save(Advocate & adv) const override;

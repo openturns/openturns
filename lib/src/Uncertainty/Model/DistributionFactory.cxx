@@ -183,6 +183,13 @@ DistributionFactory::DistributionFactory(const DistributionFactoryImplementation
   // Nothing to do
 }
 
+/* Constructor from implementation pointer */
+DistributionFactory::DistributionFactory(DistributionFactoryImplementation * p_implementation)
+  : TypedInterfaceObject<DistributionFactoryImplementation>(p_implementation)
+{
+  // Nothing to do
+}
+
 /* String converter */
 String DistributionFactory::__repr__() const
 {

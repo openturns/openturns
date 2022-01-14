@@ -29,6 +29,7 @@
 #include "openturns/ResourceMap.hxx"
 #include "openturns/LinearCombinationFunction.hxx"
 #include "openturns/AggregatedFunction.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 #include <cmath>
 
@@ -165,7 +166,7 @@ UnsignedInteger LinearModelStepwiseAlgorithm::getMaximumIterationNumber() const
 
 */
 
-/* TBB functor to speed-up forward insertion index computation
+/* TBBImplementation functor to speed-up forward insertion index computation
 
     If X is augmented by one column:
       X_+ = (X x_+)
@@ -210,11 +211,11 @@ struct UpdateForwardFunctor
     : basis_(basis), indexSet_(indexSet), Xmax_(Xmax), residual_(residual), Q_(Q)
     , criterion_(SpecFunc::MaxScalar), bestIndex_(Xmax.getNbColumns()) {}
 
-  UpdateForwardFunctor(const UpdateForwardFunctor & other, TBB::Split)
+  UpdateForwardFunctor(const UpdateForwardFunctor & other, TBBImplementation::Split)
     : basis_(other.basis_), indexSet_(other.indexSet_), Xmax_(other.Xmax_), residual_(other.residual_), Q_(other.Q_)
     , criterion_(other.criterion_), bestIndex_(other.bestIndex_) {}
 
-  void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
+  void operator() (const TBBImplementation::BlockedRange<UnsignedInteger> & r)
   {
     const UnsignedInteger size(Xmax_.getNbRows());
     Matrix xi(size, 1);
@@ -256,7 +257,7 @@ struct UpdateForwardFunctor
   }
 }; /* end struct UpdateForwardFunctor */
 
-/* TBB functor to speed-up backward insertion index computation
+/* TBBImplementation functor to speed-up backward insertion index computation
 
     If column i is removed from X:
       X_{-i} = X where column i is removed
@@ -321,12 +322,12 @@ struct UpdateBackwardFunctor
     , Y_(Y), residual_(residual), Q_(Q), invRt_(invRt)
     , criterion_(SpecFunc::MaxScalar), bestIndex_(invRt.getNbColumns()) {}
 
-  UpdateBackwardFunctor(const UpdateBackwardFunctor & other, TBB::Split)
+  UpdateBackwardFunctor(const UpdateBackwardFunctor & other, TBBImplementation::Split)
     : basis_(other.basis_), indexSet_(other.indexSet_), columnMaxToCurrent_(other.columnMaxToCurrent_), columnCurrentToMax_(other.columnCurrentToMax_)
     , Y_(other.Y_), residual_(other.residual_), Q_(other.Q_), invRt_(other.invRt_)
     , criterion_(other.criterion_), bestIndex_(other.bestIndex_) {}
 
-  void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
+  void operator() (const TBBImplementation::BlockedRange<UnsignedInteger> & r)
   {
     const UnsignedInteger size(Q_.getNbRows());
     const UnsignedInteger p(invRt_.getNbRows());
@@ -439,7 +440,7 @@ void LinearModelStepwiseAlgorithm::run()
           indexSet.add(i);
       }
       UpdateForwardFunctor updateFunctor(basis_, indexSet, maxX_, currentResidual_, currentQ_);
-      TBB::ParallelReduce(0, indexSet.getSize(), updateFunctor);
+      TBBImplementation::ParallelReduce(0, indexSet.getSize(), updateFunctor);
       indexF = updateFunctor.bestIndex_;
       LF = penalty_ * (p + 1) + size * std::log(updateFunctor.criterion_ / size);
       LOGDEBUG(OSS() << "Best candidate in forward direction is " << indexF << "(" << basis_[indexF] << "), squared residual norm=" << updateFunctor.criterion_ << ", criterion=" << LF);
@@ -456,7 +457,7 @@ void LinearModelStepwiseAlgorithm::run()
           indexSet.add(currentIndices_[i]);
       }
       UpdateBackwardFunctor updateFunctor(basis_, indexSet, columnMaxToCurrent, currentIndices_, Y_, currentResidual_, currentQ_, currentInvRt_);
-      TBB::ParallelReduce(0, indexSet.getSize(), updateFunctor);
+      TBBImplementation::ParallelReduce(0, indexSet.getSize(), updateFunctor);
       indexB = updateFunctor.bestIndex_;
       LB = penalty_ * (p - 1) + size * std::log(updateFunctor.criterion_ / size);
       LOGDEBUG(OSS() << "Best candidate in backward direction is " << indexB << "(" << basis_[indexB] << "), squared residual norm=" << updateFunctor.criterion_ << ", criterion=" << LB);

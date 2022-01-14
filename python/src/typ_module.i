@@ -24,6 +24,7 @@
 %template (UnsignedIntegerCollection) OT::Collection<OT::UnsignedInteger>;
 %include PersistentCollection.i
 %include Description.i
+%include PlatformInfo.i
 %include Indices.i
 %include IndicesCollectionImplementation.i
 %include IndicesCollection.i

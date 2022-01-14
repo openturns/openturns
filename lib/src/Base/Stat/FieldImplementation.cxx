@@ -36,6 +36,7 @@
 #include "openturns/Os.hxx"
 #include "openturns/PlatformInfo.hxx"
 #include "openturns/SpecFunc.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -264,10 +265,10 @@ struct FieldInputMeanFunctor
   FieldInputMeanFunctor(const Point & volumes, const FieldImplementation & field)
     : volumes_(volumes), field_(field), accumulator_(field.getOutputDimension(), 0.0) {}
 
-  FieldInputMeanFunctor(const FieldInputMeanFunctor & other, TBB::Split)
+  FieldInputMeanFunctor(const FieldInputMeanFunctor & other, TBBImplementation::Split)
     : volumes_(other.volumes_), field_(other.field_), accumulator_(other.field_.getOutputDimension(), 0.0) {}
 
-  void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
+  void operator() (const TBBImplementation::BlockedRange<UnsignedInteger> & r)
   {
     const UnsignedInteger meshDimension = field_.getInputDimension();
     const UnsignedInteger dimension = field_.getOutputDimension();
@@ -294,7 +295,7 @@ void FieldImplementation::computeInputMean() const
   const Scalar totalVolume(simplicesVolume.norm1());
   if (!(totalVolume > 0.0)) throw InternalException(HERE) << "Error: cannot compute the input mean of a field supported by a mesh of zero volume.";
   FieldInputMeanFunctor functor( simplicesVolume, *this );
-  TBB::ParallelReduce( 0, mesh_.getSimplicesNumber(), functor );
+  TBBImplementation::ParallelReduce( 0, mesh_.getSimplicesNumber(), functor );
   inputMean_ = functor.accumulator_ / totalVolume;
   isAlreadyComputedInputMean_ = true;
 }
