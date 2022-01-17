@@ -23,116 +23,116 @@
 BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(HSICEstimator)
 
-/** Constructor */
+/* Constructor */
 HSICEstimator::HSICEstimator(): TypedInterfaceObject<HSICEstimatorImplementation>(new HSICEstimatorImplementation())
 {
   // Nothing to do
 }
 
-/** Default constructor */
+/* Default constructor */
 HSICEstimator::HSICEstimator(const HSICEstimatorImplementation & implementation)
   : TypedInterfaceObject<HSICEstimatorImplementation>(implementation.clone())
 {
   // Nothing to do
 }
 
-/** Set the number of permutation used */
+/* Set the number of permutation used */
 void HSICEstimator::setPermutationSize(const UnsignedInteger B)
 {
   getImplementation()->setPermutationSize( B );
 }
 
-/** Get the number of permutation used */
+/* Get the number of permutation used */
 UnsignedInteger HSICEstimator::getPermutationSize() const
 {
   return getImplementation()->getPermutationSize();
 }
 
-/** Get the HSIC indices */
+/* Get the HSIC indices */
 Point HSICEstimator::getHSICIndices() const
 {
   return getImplementation()->getHSICIndices();
 }
 
-/** Get the R2-HSIC indices */
+/* Get the R2-HSIC indices */
 Point HSICEstimator::getR2HSICIndices() const
 {
   return getImplementation()->getR2HSICIndices();
 }
 
-/** Get the p-values by permutation */
+/* Get the p-values by permutation */
 Point HSICEstimator::getPValuesPermutation() const
 {
   return getImplementation()->getPValuesPermutation();
 }
 
-/** Draw the HSIC indices */
+/* Draw the HSIC indices */
 Graph HSICEstimator::drawHSICIndices() const
 {
   return getImplementation()->drawHSICIndices();
 }
 
-/** Draw the R2HSIC indices */
+/* Draw the R2HSIC indices */
 Graph HSICEstimator::drawR2HSICIndices() const
 {
   return getImplementation()->drawR2HSICIndices();
 }
 
-/** Draw the p-values obtained with permutation */
+/* Draw the p-values obtained with permutation */
 Graph HSICEstimator::drawPValuesPermutation() const
 {
   return getImplementation()->drawPValuesPermutation();
 }
 
-/** Get the covariance models */
+/* Get the covariance models */
 HSICEstimatorImplementation::CovarianceModelCollection HSICEstimator::getCovarianceList() const
 {
   return getImplementation()->getCovarianceList();
 }
 
-/** Set the covariance models */
+/* Set the covariance models */
 void HSICEstimator::setCovarianceList(const CovarianceModelCollection & coll)
 {
   getImplementation()->setCovarianceList(coll);
 }
 
-/** Get the input sample */
+/* Get the input sample */
 Sample HSICEstimator::getInputSample() const
 {
   return getImplementation()->getInputSample();
 }
 
-/** Set the input sample */
+/* Set the input sample */
 void HSICEstimator::setInputSample(const Sample & inputSample)
 {
   getImplementation()->setInputSample(inputSample);
 }
 
-/** Get the output sample */
+/* Get the output sample */
 Sample HSICEstimator::getOutputSample() const
 {
   return getImplementation()->getOutputSample();
 }
 
-/** Set the output sample */
+/* Set the output sample */
 void HSICEstimator::setOutputSample(const Sample & outputSample)
 {
   getImplementation()->setOutputSample(outputSample);
 }
 
-/** Get the dimension of the indices: the number of marginals */
+/* Get the dimension of the indices: the number of marginals */
 UnsignedInteger HSICEstimator::getDimension() const
 {
   return getImplementation()->getDimension();
 }
 
-/** Get the size of the study sample */
+/* Get the size of the study sample */
 UnsignedInteger HSICEstimator::getSize() const
 {
   return getImplementation()->getSize();
 }
 
-/** Get the underlying estimator: biased or unbiased*/
+/* Get the underlying estimator: biased or unbiased*/
 HSICStat HSICEstimator::getEstimator() const
 {
   return getImplementation()->getEstimator();

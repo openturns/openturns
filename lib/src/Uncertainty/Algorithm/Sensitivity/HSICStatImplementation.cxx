@@ -29,32 +29,40 @@ BEGIN_NAMESPACE_OPENTURNS
 static const Factory<HSICStatImplementation> Factory_HSICStatImplementation;
 
 CLASSNAMEINIT(HSICStatImplementation)
-/** Default constructor */
-HSICStatImplementation::HSICStatImplementation(): PersistentObject()
+/* Default constructor */
+HSICStatImplementation::HSICStatImplementation()
+  : PersistentObject()
 {
   // Nothing
 };
 
-/** Virtual constructor */
+/* Virtual constructor */
 HSICStatImplementation * HSICStatImplementation::clone() const
 {
   return new HSICStatImplementation(*this);
 }
 
-/** Compute the HSIC index for one marginal*/
-Scalar HSICStatImplementation::computeHSICIndex(const Sample&, const Sample&, const CovarianceModel&, const CovarianceModel&, const SquareMatrix&) const
+/* Compute the HSIC index for one marginal*/
+Scalar HSICStatImplementation::computeHSICIndex(const Sample&,
+                                                const Sample&,
+                                                const CovarianceModel&,
+                                                const CovarianceModel&,
+                                                const SquareMatrix&) const
 {
   throw NotYetImplementedException(HERE) << "You must use a derived class such as HSICUStat or HSICVStat.";
 }
 
-/** Is compatible with a Conditional HSIC Estimator ? */
+/* Is compatible with a Conditional HSIC Estimator ? */
 Bool HSICStatImplementation::isCompatibleWithConditionalAnalysis() const
 {
   throw NotYetImplementedException(HERE) << "You must use a derived class such as HSICUStat or HSICVStat.";
 }
 
-/** Compute the asymptotic p-value */
-Scalar HSICStatImplementation::computePValue(const Gamma&, const UnsignedInteger, const Scalar, const Scalar) const
+/* Compute the asymptotic p-value */
+Scalar HSICStatImplementation::computePValue(const Gamma&,
+                                             const UnsignedInteger,
+                                             const Scalar,
+                                             const Scalar) const
 {
   throw NotYetImplementedException(HERE) << "You must use a derived class such as HSICUStat or HSICVStat.";
 }

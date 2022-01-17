@@ -23,97 +23,93 @@
 BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(HSICEstimatorGlobalSensitivity)
 
-/** Default */
-HSICEstimatorGlobalSensitivity::HSICEstimatorGlobalSensitivity(): HSICEstimatorImplementation(),
-isAlreadyComputedPValuesAsymptotic_(false)
+/* Default */
+HSICEstimatorGlobalSensitivity::HSICEstimatorGlobalSensitivity()
+  : HSICEstimatorImplementation()
+  , isAlreadyComputedPValuesAsymptotic_(false)
 {
   // Nothing to do
 }
 
-/** Constructor */
-HSICEstimatorGlobalSensitivity::HSICEstimatorGlobalSensitivity(const CovarianceModelCollection & covarianceList, const Sample & X, const Sample & Y,
-    const HSICStat & estimatorType): HSICEstimatorImplementation(covarianceList, X, Y, estimatorType),
-isAlreadyComputedPValuesAsymptotic_(false)
+/* Constructor */
+HSICEstimatorGlobalSensitivity::HSICEstimatorGlobalSensitivity(
+  const CovarianceModelCollection & covarianceList
+  , const Sample & X
+  , const Sample & Y,
+  const HSICStat & estimatorType)
+  : HSICEstimatorImplementation(covarianceList, X, Y, estimatorType)
+  , isAlreadyComputedPValuesAsymptotic_(false)
 {
   // Nothing to do
 }
 
-/** Virtual constructor */
+/* Virtual constructor */
 HSICEstimatorGlobalSensitivity* HSICEstimatorGlobalSensitivity::clone() const
 {
   return new HSICEstimatorGlobalSensitivity(*this);
 }
 
-/** Compute the weight matrix from the weight function */
+/* Compute the weight matrix from a sample */
 SquareMatrix HSICEstimatorGlobalSensitivity::computeWeightMatrix(const Sample&) const
 {
   IdentityMatrix mat(n_);
   return mat;
 }
 
-/** Compute the asymptotic p-values */
+/* Compute the asymptotic p-values */
 void HSICEstimatorGlobalSensitivity::computePValuesAsymptotic() const
 {
-  HSICEstimatorImplementation::CovarianceModelCollection coll = covarianceList_;
   SquareMatrix W(computeWeightMatrix(outputSample_));
 
   PValuesAsymptotic_ = Point(inputDimension_);
 
-  Matrix H(n_, n_);
-  for(UnsignedInteger j = 0; j < n_; ++j)
-  {
-    for(UnsignedInteger i = 0; i < n_; ++i)
-    {
-      H(i, j) = -1.0 / n_;
-    }
-  }
+  SquareMatrix H(n_, Collection<Scalar>(n_ * n_, -1.0 / n_));
   for(UnsignedInteger j = 0; j < n_; ++j)
   {
     H(j, j) += 1.0;
   }
 
-  CovarianceMatrix Ky(coll[inputDimension_].discretize(outputSample_));
-  Scalar traceKy = Ky.computeTrace();
-  Scalar sumKy = Ky.computeSumElements();
+  const CovarianceMatrix Ky(covarianceList_[inputDimension_].discretize(outputSample_));
+  const Scalar traceKy = Ky.computeTrace();
+  const Scalar sumKy = Ky.computeSumElements();
 
-  Scalar Ey = (sumKy - traceKy) / n_ / (n_ - 1 );
-  Matrix By = H * Ky * H;
+  const Scalar Ey = (sumKy - traceKy) / n_ / (n_ - 1 );
+  const Matrix By = H * Ky * H;
 
   for(UnsignedInteger dim = 0; dim < inputDimension_; ++dim)
   {
-    Sample Xi(inputSample_.getMarginal(dim));
-    Scalar HSICobs = computeHSICIndex(Xi, outputSample_, coll[dim], coll[inputDimension_], W);
+    const Sample Xi(inputSample_.getMarginal(dim));
+    const Scalar HSICobs = computeHSICIndex(Xi, outputSample_, covarianceList_[dim], covarianceList_[inputDimension_], W);
 
-    CovarianceMatrix Kx(coll[dim].discretize(Xi));
-    Scalar traceKx = Kx.computeTrace();
-    Scalar sumKx = Kx.computeSumElements();
-    Scalar Ex = (sumKx - traceKx) / n_ / (n_ - 1);
+    const CovarianceMatrix Kx(covarianceList_[dim].discretize(Xi));
+    const Scalar traceKx = Kx.computeTrace();
+    const Scalar sumKx = Kx.computeSumElements();
+    const Scalar Ex = (sumKx - traceKx) / n_ / (n_ - 1);
 
-    Matrix Bx = H * Kx * H;
+    const Matrix Bx = H * Kx * H;
 
     /* Hadamard product then square all elements */
-    Matrix B(n_, n_);
-    B = Bx.computeHadamardProduct(By);
+    SquareMatrix B(Bx.computeHadamardProduct(By).getImplementation());
     B.squareElements();
 
-    Point nullDiag(n_);
+    const Point nullDiag(n_);
     B.setDiagonal(nullDiag, 0);
 
-    Scalar mHSIC = (1 + Ex * Ey - Ex - Ey) / n_;
-    Scalar factor = 2.0 * (n_ - 4) * (n_ - 5) / n_ / (n_ - 1) / (n_ - 2) / (n_ - 3) / n_ / (n_ - 1);
-    Scalar varHSIC = B.computeSumElements() * factor;
+    const Scalar mHSIC = (1 + Ex * Ey - Ex - Ey) / n_;
+    const Scalar factor = 2.0 * (n_ - 4) * (n_ - 5) / n_ / (n_ - 1) / (n_ - 2) / (n_ - 3) / n_ / (n_ - 1);
+    const Scalar varHSIC = B.computeSumElements() * factor;
 
-    Scalar alpha = mHSIC * mHSIC / varHSIC;
-    Scalar beta = n_ * varHSIC / mHSIC;
+    const Scalar alpha = mHSIC * mHSIC / varHSIC;
+    const Scalar beta = n_ * varHSIC / mHSIC;
 
-    Gamma distribution(alpha, 1.0 / beta);
-    Scalar p = estimatorType_.computePValue(distribution, n_, HSICobs, mHSIC);
+    const Gamma distribution(alpha, 1.0 / beta);
+    const Scalar p = estimatorType_.computePValue(distribution, n_, HSICobs, mHSIC);
     PValuesAsymptotic_[dim] = p;
   }
   isAlreadyComputedPValuesAsymptotic_ = true ;
 }
 
-/** Get the asymptotic p-values */
+/* Get the asymptotic p-values */
 Point HSICEstimatorGlobalSensitivity::getPValuesAsymptotic() const
 {
   if(!(isAlreadyComputedPValuesAsymptotic_))
@@ -124,15 +120,13 @@ Point HSICEstimatorGlobalSensitivity::getPValuesAsymptotic() const
   return PValuesAsymptotic_;
 }
 
-/** Draw the asymptotic p-values */
+/* Draw the asymptotic p-values */
 Graph HSICEstimatorGlobalSensitivity::drawPValuesAsymptotic() const
 {
-  String title = "Asymptotic p-values";
-  Graph gph = drawValues(getPValuesAsymptotic(), title);
-  return gph;
+  return drawValues(getPValuesAsymptotic(), "Asymptotic p-values");
 }
 
-/** Compute all indices at once */
+/* Compute all indices at once */
 void HSICEstimatorGlobalSensitivity::run() const
 {
   /* Compute the HSIC and R2-HSIC indices */

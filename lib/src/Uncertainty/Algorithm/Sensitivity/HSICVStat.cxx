@@ -25,20 +25,24 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(HSICVStat)
-/** Default constructor */
+/* Default constructor */
 HSICVStat::HSICVStat()
 {
   // Nothing
 }
 
-/** Virtual constructor */
+/* Virtual constructor */
 HSICVStat* HSICVStat::clone() const
 {
   return new HSICVStat(*this);
 }
 
-/** Compute the HSIC index for one marginal*/
-Scalar HSICVStat::computeHSICIndex(const Sample & inSample, const Sample & outSample, const CovarianceModel & inCovariance, const CovarianceModel & outCovariance, const SquareMatrix & weightMatrix) const
+/* Compute the HSIC index for one marginal*/
+Scalar HSICVStat::computeHSICIndex(const Sample & inSample,
+                                   const Sample & outSample,
+                                   const CovarianceModel & inCovariance,
+                                   const CovarianceModel & outCovariance,
+                                   const SquareMatrix & weightMatrix) const
 {
   if(inSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Input Sample must be of dimension 1";
   if(outSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Output Sample must be of dimension 1";
@@ -51,40 +55,36 @@ Scalar HSICVStat::computeHSICIndex(const Sample & inSample, const Sample & outSa
   UnsignedInteger n = weightMatrix.getNbColumns();
 
   /* U = ones((n, n)) */
-  SquareMatrix U(n);
-  for(UnsignedInteger j = 0; j < n; ++j)
-  {
-    for(UnsignedInteger i = 0; i < n; ++i)
-    {
-      U(i, j) = 1.0 ;
-    }
-  }
+  const SquareMatrix U(n, Collection<Scalar>(n * n, 1.0));
 
   SquareMatrix H1(n);
   SquareMatrix H2(n);
-  Point diag(n, 1.0);
+  const Point diag(n, 1.0);
   H1.setDiagonal(diag);
   H2.setDiagonal(diag);
 
   H1 = H1 - U * weightMatrix / n ;
   H2 = H2 - weightMatrix * U / n ;
 
-  CovarianceMatrix Kv1 = inCovariance.discretize(inSample);
-  CovarianceMatrix Kv2 = outCovariance.discretize(outSample);
+  const CovarianceMatrix Kv1(inCovariance.discretize(inSample));
+  const CovarianceMatrix Kv2(outCovariance.discretize(outSample));
 
-  SquareMatrix M = weightMatrix * Kv1 * weightMatrix * H1 * Kv2 * H2 / n / n;
-  Scalar trace = M.computeTrace();
+  const SquareMatrix M = weightMatrix * Kv1 * weightMatrix * H1 * Kv2 * H2 / n / n;
+  const Scalar trace = M.computeTrace();
 
   return trace;
 }
 
-/** Compute the asymptotic p-value */
-Scalar HSICVStat::computePValue(const Gamma &dist, const UnsignedInteger n, const Scalar HSIC_obs, const Scalar) const
+/* Compute the asymptotic p-value */
+Scalar HSICVStat::computePValue(const Gamma &dist,
+                                const UnsignedInteger n,
+                                const Scalar HSIC_obs,
+                                const Scalar) const
 {
   return dist.computeComplementaryCDF(HSIC_obs * n);
 }
 
-/** Is compatible with a Conditional HSIC Estimator ? Yes! */
+/* Is compatible with a Conditional HSIC Estimator ? Yes! */
 Bool HSICVStat::isCompatibleWithConditionalAnalysis() const
 {
   return true;

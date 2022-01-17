@@ -26,20 +26,24 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(HSICUStat)
-/** Default constructor */
+/* Default constructor */
 HSICUStat::HSICUStat()
 {
   // Nothing
 };
 
-/** Virtual constructor */
+/* Virtual constructor */
 HSICUStat* HSICUStat::clone() const
 {
   return new HSICUStat(*this);
 }
 
-/** Compute the HSIC index for one marginal*/
-Scalar HSICUStat::computeHSICIndex(const Sample & inSample, const Sample & outSample, const CovarianceModel & inCovariance, const CovarianceModel & outCovariance, const SquareMatrix & weightMatrix) const
+/* Compute the HSIC index for one marginal*/
+Scalar HSICUStat::computeHSICIndex(const Sample & inSample,
+                                   const Sample & outSample,
+                                   const CovarianceModel & inCovariance,
+                                   const CovarianceModel & outCovariance,
+                                   const SquareMatrix & weightMatrix) const
 {
   if(inSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Input Sample must be of dimension 1";
   if(outSample.getDimension() != 1) throw InvalidDimensionException(HERE) << "Output Sample must be of dimension 1";
@@ -50,22 +54,22 @@ Scalar HSICUStat::computeHSICIndex(const Sample & inSample, const Sample & outSa
   if(inSample.getSize() != outSample.getSize()) throw InvalidDimensionException(HERE) << "Input and Output Samples must have the same size";
 
   Scalar hsic = 0.0;
-  SignedInteger n = weightMatrix.getNbColumns();
+  const SignedInteger n = weightMatrix.getNbColumns();
 
-  CovarianceMatrix Kv1 = inCovariance.discretize(inSample);
-  CovarianceMatrix Kv2 = outCovariance.discretize(outSample);
+  CovarianceMatrix Kv1(inCovariance.discretize(inSample));
+  CovarianceMatrix Kv2(outCovariance.discretize(outSample));
 
-  Point nullDiag(n);
+  const Point nullDiag(n);
   Kv1.setDiagonal(nullDiag, 0);
   Kv2.setDiagonal(nullDiag, 0);
 
 
-  SquareMatrix Kv = Kv1 * Kv2;
+  const SquareMatrix Kv = Kv1 * Kv2;
 
-  Scalar trace = Kv.computeTrace();
-  Scalar sumKv = Kv.computeSumElements();
-  Scalar sumKv1 = Kv1.computeSumElements();
-  Scalar sumKv2 = Kv2.computeSumElements();
+  const Scalar trace = Kv.computeTrace();
+  const Scalar sumKv = Kv.computeSumElements();
+  const Scalar sumKv1 = Kv1.computeSumElements();
+  const Scalar sumKv2 = Kv2.computeSumElements();
 
   hsic = trace - 2 * sumKv / (n - 2) + sumKv1 * sumKv2 / (n - 1) / (n - 2);
   hsic /= n * (n - 3);
@@ -73,13 +77,16 @@ Scalar HSICUStat::computeHSICIndex(const Sample & inSample, const Sample & outSa
   return hsic;
 }
 
-/** Compute the asymptotic p-value */
-Scalar HSICUStat::computePValue(const Gamma &dist, const UnsignedInteger n, const Scalar HSIC_obs, const Scalar mHSIC) const
+/* Compute the asymptotic p-value */
+Scalar HSICUStat::computePValue(const Gamma &dist,
+                                const UnsignedInteger n,
+                                const Scalar HSIC_obs,
+                                const Scalar mHSIC) const
 {
   return dist.computeComplementaryCDF(HSIC_obs * n + mHSIC * n);
 }
 
-/** Is compatible with a Conditional HSIC Estimator ? No! */
+/* Is compatible with a Conditional HSIC Estimator ? No! */
 Bool HSICUStat::isCompatibleWithConditionalAnalysis() const
 {
   return false;

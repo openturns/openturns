@@ -23,33 +23,38 @@
 BEGIN_NAMESPACE_OPENTURNS
 CLASSNAMEINIT(HSICEstimatorConditionalSensitivity)
 
-/** Default */
-HSICEstimatorConditionalSensitivity::HSICEstimatorConditionalSensitivity(): HSICEstimatorImplementation()
+/* Default */
+HSICEstimatorConditionalSensitivity::HSICEstimatorConditionalSensitivity()
+  : HSICEstimatorImplementation()
 {
   // Nothing to do
 }
 
-/** Constructor */
-HSICEstimatorConditionalSensitivity::HSICEstimatorConditionalSensitivity(const CovarianceModelCollection & covarianceList, const Sample & X, const Sample & Y,
-    const HSICStat & estimatorType, const Function & weightFunction ): HSICEstimatorImplementation(covarianceList, X, Y, estimatorType)
+/* Constructor */
+HSICEstimatorConditionalSensitivity::HSICEstimatorConditionalSensitivity(
+  const CovarianceModelCollection & covarianceList
+  , const Sample & X, const Sample & Y
+  , const HSICStat & estimatorType
+  , const Function & weightFunction)
+  : HSICEstimatorImplementation(covarianceList, X, Y, estimatorType)
 {
   if (!estimatorType_.isCompatibleWithConditionalAnalysis()) throw InvalidArgumentException(HERE) << "You must use an appropriate HSICStat object for ConditionalSensitivity";
   weightFunction_ = weightFunction;
 }
 
-/** Virtual constructor */
+/* Virtual constructor */
 HSICEstimatorConditionalSensitivity* HSICEstimatorConditionalSensitivity::clone() const
 {
   return new HSICEstimatorConditionalSensitivity(*this);
 }
 
-/** Get the weight function */
+/* Get the weight function */
 Function HSICEstimatorConditionalSensitivity::getWeightFunction() const
 {
   return weightFunction_;
 }
 
-/** Set the weight function: user should check properties! */
+/* Set the weight function: user should check properties! */
 void HSICEstimatorConditionalSensitivity::setWeightFunction(const Function & weightFunction)
 {
   weightFunction_ = weightFunction;

@@ -26,34 +26,41 @@
 BEGIN_NAMESPACE_OPENTURNS
 
 CLASSNAMEINIT(HSICStat)
-/** Default constructor */
-HSICStat::HSICStat(): TypedInterfaceObject<HSICStatImplementation>(
-    new HSICStatImplementation())
+/* Default constructor */
+HSICStat::HSICStat()
+  : TypedInterfaceObject<HSICStatImplementation>(new HSICStatImplementation())
 {
   // Nothing to do
 }
 
-/** Constructor from implementation */
+/* Constructor from implementation */
 HSICStat::HSICStat(const HSICStatImplementation & implementation)
   : TypedInterfaceObject<HSICStatImplementation>(implementation.clone())
 {
   // Nothing to do
 }
 
-/** Compute the HSIC index for one marginal*/
-Scalar HSICStat::computeHSICIndex(const Sample & inSample, const Sample & outSample, const CovarianceModel & inCovariance, const CovarianceModel & outCovariance, const SquareMatrix & weightMatrix) const
+/* Compute the HSIC index for one marginal*/
+Scalar HSICStat::computeHSICIndex(const Sample & inSample, 
+                                  const Sample & outSample, 
+                                  const CovarianceModel & inCovariance, 
+                                  const CovarianceModel & outCovariance, 
+                                  const SquareMatrix & weightMatrix) const
 {
   return getImplementation()->computeHSICIndex(inSample, outSample, inCovariance, outCovariance, weightMatrix);
 }
 
-/** Is compatible with a Conditional HSIC Estimator ? */
+/* Is compatible with a Conditional HSIC Estimator ? */
 Bool HSICStat::isCompatibleWithConditionalAnalysis() const
 {
   return getImplementation()->isCompatibleWithConditionalAnalysis();
 }
 
-/** Compute the asymptotic p-value */
-Scalar HSICStat::computePValue(const Gamma &dist, const UnsignedInteger n, const Scalar HSIC_obs, const Scalar mHSIC) const
+/* Compute the asymptotic p-value */
+Scalar HSICStat::computePValue(const Gamma &dist, 
+                               const UnsignedInteger n, 
+                               const Scalar HSIC_obs, 
+                               const Scalar mHSIC) const
 {
   return getImplementation()->computePValue(dist, n, HSIC_obs, mHSIC);
 }
