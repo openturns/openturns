@@ -126,8 +126,8 @@ HSICEstimatorImplementation * HSICEstimatorImplementation::clone() const
 /* Compute the weight matrix from the weight function */
 SquareMatrix HSICEstimatorImplementation::computeWeightMatrix(const Sample & Y) const
 {
-  const Sample wY = weightFunction_(Y);
-  const Scalar meanWY = wY.computeMean()[0];
+  const Sample wY(weightFunction_(Y));
+  const Scalar meanWY(wY.computeMean()[0]);
   SquareMatrix mat(n_);
   mat.setDiagonal(wY.asPoint() / meanWY);
   return mat;
