@@ -43,3 +43,29 @@ Returns
 precision : int
     String ouput numerical precision."
 
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlatformInfo::GetFeatures
+"Accessor to the features list.
+
+Returns
+-------
+features : :class:`~openturns.Description`
+    Features list."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlatformInfo::HasFeature
+"Test a feature's availability.
+
+Parameters
+----------
+feature : str
+    The desired feature, often associated to a software dependency,
+    e.g. 'libxml2' to test whether XML serialization is available.
+    Call :meth:`GetFeatures` for the possible feature values.
+
+Returns
+-------
+has_feature : bool
+    Whether the designated feature is available."
