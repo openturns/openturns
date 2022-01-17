@@ -49,7 +49,7 @@ HSICEstimatorGlobalSensitivity* HSICEstimatorGlobalSensitivity::clone() const
   return new HSICEstimatorGlobalSensitivity(*this);
 }
 
-/* Compute the weight matrix from a sample */
+/* Compute the weight matrix */
 SquareMatrix HSICEstimatorGlobalSensitivity::computeWeightMatrix(const Sample&) const
 {
   IdentityMatrix mat(n_);
