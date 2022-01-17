@@ -39,17 +39,17 @@ scalar products are denoted by :math:`\langle \cdot, \cdot \rangle_{\cF_{i}}` an
 :math:`\langle \cdot, \cdot \rangle_{\cG}`. This allows to define the evaluation
 operator: :math:`f \in \cF_i \rightarrow  f(\mathbf{x}) = \langle f, \kappa_i (\mathbf{x}, \cdot) \rangle_{\cF_{i}}`
 
-Let us now consider  :math:`\cV`, an RKHS over :math:`\cX \times \cY`
-with kernel :math:`v(\cdot, \cdot)`. We can define the mean embedding of :math:`P_YP_{X_i}`
-and :math:`P_{Y,X_i}` in :math:`\mathcal{V}` as:
+Let us now consider  :math:`\cV_{i}`, an RKHS over :math:`\cX_{i} \times \cY`
+with kernel :math:`v_{i}(\cdot, \cdot)`. We can define the mean embedding of :math:`P_YP_{X_i}`
+and :math:`P_{Y,X_i}` in :math:`\mathcal{V}_{i}` as:
 
 .. math::
 
-    \mu [ P_YP_{X_i} ]  = \Eset_{Y} \Eset_{X_i} [v((Y, X_i),\cdot) ] 
+    \mu [ P_YP_{X_i} ]  = \Eset_{Y} \Eset_{X_i} [v_{i}((Y, X_i),\cdot) ] 
 
 .. math::
 
-    \mu [ P_{Y,X_i} ] = \Eset_{Y,X_i} [v((Y, X_i),\cdot) ]	
+    \mu [ P_{Y,X_i} ] = \Eset_{Y,X_i} [v_{i}((Y, X_i),\cdot) ]	
     
 We can then define a dependence measure between :math:`Y^k` and :math:`X^i`, under
 the form of HSIC, as the squared distance between the mean embeddings of
@@ -59,7 +59,7 @@ the form of HSIC, as the squared distance between the mean embeddings of
 
     \mathrm{HSIC}(X_i,Y)_{\cF_{i},\cG} := || \mu [ P_{Y,X_i} ] - \mu [ P_YP_{X_i} ]  ||^2
 
-Assuming :math:`v((Y, X_i),(Y', X_i') ) = \kappa(Y,Y') \kappa_i (X_i, X_i')`, it can be shown that:
+Assuming :math:`v_{i}((Y, X_i),(Y', X_i') ) = \kappa(Y,Y') \kappa_i (X_i, X_i')`, it can be shown that:
 
 .. math::
 
@@ -78,18 +78,18 @@ based on V-statistics:
 
 .. math::
 
-    \widehat{\mathrm{HSIC}}(X_i,Y) = \frac{1}{n^2} \mathrm{Tr}(L_i HLH)
+    \widehat{\mathrm{HSIC}}(X_i,Y) = \frac{1}{n^2} \mathrm{Tr}(\mat{L_iHLH})
 
-where :math:`L_i` and :math:`L` are Gram matrices computed with the respective kernels 
+where :math:`\mat{L_i}` and :math:`\mat{L}` are Gram matrices computed with the respective kernels 
 :math:`L_{i_{j,k}} = \kappa_i(x_i^j,x_i^k)` and :math:`L_{j,k}= \kappa(y^j,y^k)`, 
-while :math:`H` a shift matrix defined as:
+while :math:`\mat{H}` a shift matrix defined as:
 :math:`H_{j,k} = \left(\delta_{j,k} - \frac{1}{n}\right)_{1 \leq j, k \leq n}`.
 
 The second estimator is an unbiased estimator based on U-statistics:
 
 .. math::
 
-	\widehat{\mathrm{HSIC}}(X_i,Y) = \frac{1}{(m)(m-3)} \left[\mathrm{Tr}(\tilde{L}_i \tilde{L}) + \frac{\mathbf{1}^{\top} \tilde{L}_i \mathbf{1}\mathbf{1}^{\top} \tilde{L} \mathbf{1}}{(m-1)(m-2)} - \frac{2}{m-2} \mathbf{1}^{\top} \tilde{L}_i \tilde{L} \mathbf{1}\right]
+	\widehat{\mathrm{HSIC}}(X_i,Y) = \frac{1}{(m)(m-3)} \left[\mathrm{Tr}(\mat{\tilde{L}_i \tilde{L}}) + \frac{\mathbf{1}^{\top} \mat{\tilde{L}_i} \mathbf{1}\mathbf{1}^{\top} \mat{\tilde{L}} \mathbf{1}}{(m-1)(m-2)} - \frac{2}{m-2} \mathbf{1}^{\top} \mat{\tilde{L}_i} \mat{\tilde{L}} \mathbf{1}\right]
 
 
 where :math:`\tilde{L}_{i_{j,k}}` and :math:`\tilde{L}_{j,k}` are computed as:
@@ -121,7 +121,7 @@ empirical variance. In this case, we obtain :
 
 .. math::
 
-    \kappa_i(x_i^j,x_i^k) = \exp (\theta_i ||x_i^j - x_i^k||^2_2) 
+    \kappa_i(x_i^j,x_i^k) = \exp (\theta_i (x_i^j - x_i^k)^2) 
 
 with :math:`\theta_i = 1/\sigma_i^2`, where :math:`\sigma_i^2` is the empirical 
 variance of the sample :math:`X_i`.
@@ -259,9 +259,9 @@ by relying on an adapted V-statistics estimator:
 
 .. math::
 
-    \widehat{\mathrm{C-HSIC} (X_i,Y)} = \frac{1}{n^2} \mathrm{Tr} (\hat{W} L_i \hat{W} H_1 L H_2)
+    \widehat{\mathrm{C-HSIC}} (X_i,Y) = \frac{1}{n^2} \mathrm{Tr} (\hat{W} L_i \hat{W} H_1 L H_2)
 
-where :math:`\hat{W} = \frac{W}{\Eset[W]}`, :math:`H_1 = I_n - \frac{1}{n} U\hat{W}`
+where :math:`\hat{W} = \frac{W}{\frac{1}{n}\sum_{j = 1}^{n} W_{j,j} }`, :math:`H_1 = I_n - \frac{1}{n} U\hat{W}`
 and :math:`H_2 = I_n - \frac{1}{n} \hat{W}U`.
 
 Please note that no U-statistics estimator exists for the conditional HSIC. Furhtermore,
