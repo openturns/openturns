@@ -41,11 +41,6 @@ String PlatformInfo::GetVersion()
   return PACKAGE_VERSION;
 }
 
-String PlatformInfo::GetName()
-{
-  return PACKAGE_NAME;
-}
-
 String PlatformInfo::GetRevision()
 {
   return Revision;

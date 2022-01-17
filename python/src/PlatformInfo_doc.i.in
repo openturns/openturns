@@ -5,6 +5,26 @@ No constructor, only static methods are available."
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::PlatformInfo::GetDate
+"Accessor to the build date.
+
+Returns
+-------
+date : str
+    Build date."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::PlatformInfo::GetInstallationDirectory
+"Accessor to the install prefix.
+
+Returns
+-------
+prefix : str
+    Installation prefix."
+
+// ---------------------------------------------------------------------
+
 %feature("docstring") OT::PlatformInfo::GetVersion
 "Accessor to the version string.
 
