@@ -140,7 +140,7 @@ protected:
   virtual void computeIndices() const;
 
   /** Draw values stored in a point */
-  Graph drawValues(const Point &values, String &title) const;
+  Graph drawValues(const Point &values, const String &title) const;
 
   Sample shuffledCopy(const Sample & inSample) const;
 
