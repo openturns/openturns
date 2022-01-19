@@ -31,6 +31,7 @@ Examples
 >>> size = 50
 
 Increment with 50 points:
+
 >>> for i in range(size):
 ...     point = n.getRealization()
 ...     myThresholdExceedance.increment(point)
@@ -41,6 +42,7 @@ Increment with 50 points:
 50
 
 Increment with one sample of size 50:
+
 >>> sample = n.getSample(size)
 >>> myThresholdExceedance.increment(sample)
 
