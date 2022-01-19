@@ -61,18 +61,6 @@ IterativeAlgorithm::IterativeAlgorithm(const Implementation & p_implementation)
   // Nothing to do
 }
 
-/** Return a pointer to the underlying implementation object viewed as a PersistentObject */
-Pointer<IterativeAlgorithmImplementation> IterativeAlgorithm::getImplementationAsIterativeAlgorithm() const
-{
-  return p_implementation_;
-}
-
-/** Set the pointer to the underlying implementation object */
-void IterativeAlgorithm::setImplementationAsIterativeAlgorithm(const Pointer<IterativeAlgorithmImplementation> & obj)
-{
-  p_implementation_.assign(obj);
-}
-
 /**
  * Increment methods
  *

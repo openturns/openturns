@@ -59,12 +59,6 @@ public:
   IterativeAlgorithm(IterativeAlgorithmImplementation * p_implementation);
 #endif
 
-  /** Return a pointer to the underlying implementation object viewed as a PersistentObject */
-  Pointer<IterativeAlgorithmImplementation> getImplementationAsIterativeAlgorithm() const;
-
-  /** Set the pointer to the underlying implementation object */
-  void setImplementationAsIterativeAlgorithm(const Pointer<IterativeAlgorithmImplementation> & obj);
-
   /**
    * Increment methods
    *
