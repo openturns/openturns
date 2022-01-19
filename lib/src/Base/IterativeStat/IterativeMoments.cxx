@@ -95,7 +95,7 @@ Point IterativeMoments::getMean() const
 Point IterativeMoments::getVariance() const
 {
   if (!(iteration_ > 0)) throw InternalException(HERE) << "Error: cannot compute the variance per component of an empty sample.";
-  if ((orderMax_ < 2)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum order is lower than 2.";
+  if (!(orderMax_ >= 2)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum should be at least 2.";
 
   /* Special case for a size 1 */
   if (iteration_ == 1) return Point(dimension_, 0.0);
@@ -108,7 +108,7 @@ Point IterativeMoments::getVariance() const
 Point IterativeMoments::getSkewness() const
 {
   if (!(iteration_ >= 2)) throw InternalException(HERE) << "Error: cannot compute the skewness per component of a sample of size less than 2.";
-  if ((orderMax_ < 3)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum order is lower than 3.";
+  if (!(orderMax_ >= 3)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum order should be at least 3.";
 
   /* Special case for a size 2 */
   if (iteration_ == 2) return Point(dimension_, 0.0);
@@ -128,7 +128,7 @@ Point IterativeMoments::getSkewness() const
 Point IterativeMoments::getKurtosis() const
 {
   if (!(iteration_ >= 3)) throw InternalException(HERE) << "Error: cannot compute the kurtosis per component of a sample of size less than 3.";
-  if ((orderMax_ < 4)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum order is lower than 4.";
+  if ((orderMax_ >= 4)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum order is lower than 4.";
 
   /* Special case for a size 3 */
   if (iteration_ == 3) return Point(dimension_, 0.0);

@@ -4,7 +4,7 @@ Iterative threshold exceedance
 """
 
 # %%
-# In this example, we use the :class:`~openturns.IterativeThresholdExceedance` class to count the number of threshold exceedance.
+# In this example, we use the :class:`~openturns.IterativeThresholdExceedance` class to count the number of threshold exceedances.
 
 # %%
 import openturns as ot
@@ -17,7 +17,7 @@ dim = 1
 distNormal = ot.Normal(dim)
 
 # %%
-# For illustration sake, let us consider a threshold value of 3.0. Each time the data is higher than 3.0 we count one exceedance. The counter used by the :class:`~openturns.IterativeThresholdExceedance` class is updated iteratively.
+# Let us consider a threshold value of 3.0. Each data value higher than 3.0 is counted as one exceedance. The counter used by the :class:`~openturns.IterativeThresholdExceedance` class is updated iteratively.
 
 # %%
 thresholdValue = 3.0
@@ -25,11 +25,11 @@ iterThreshold = ot.IterativeThresholdExceedance(dim, thresholdValue)
 
 # %%
 # We can now perform the simulations.
-# In our case most of the data fall below the specified threshold value so the number of exceedance should be low.
+# In our case most of the data fall below the specified threshold value so the number of exceedances should be low.
 
 # %%
-# We first increment the object with one :class:`~openturns.Point` at a time.
-# At any given step the current number of exceedance is obtained thanks to
+# We first increment the object one :class:`~openturns.Point` at a time.
+# At any given step the current number of exceedance is obtained with
 # the :meth:`~openturns.IterativeThresholdExceedance.getThresholdExceedance()` method.
 
 # %%
@@ -41,7 +41,7 @@ for i in range(size):
     exceedanceNumbers.add(iterThreshold.getThresholdExceedance())
 
 # %%
-# We display the evolution of the number of exceedance.
+# We display the evolution of the number of exceedances.
 
 # %%
 curve = ot.Curve(exceedanceNumbers)
