@@ -4,7 +4,7 @@ Estimate iterative extrema
 """
 
 # %%
-# In this example, we use the :class:`~openturns.IterativeExtrema` class to compute iterative extrema.
+# In this example, we compute extrema iteratively.
 
 # %%
 import openturns as ot
@@ -17,7 +17,7 @@ dim = 1
 distNormal = ot.Normal(dim)
 
 # %%
-# Then we update the extrema of the data iteratively with the :class:`~openturns.IterativeExtrema` class by giving the dimension (here 1):
+# The :class:`~openturns.IterativeExtrema` class needs to know the dimension of the sample (here 1):
 
 # %%
 iterExtrema = ot.IterativeExtrema(dim)

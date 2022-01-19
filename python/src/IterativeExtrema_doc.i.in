@@ -8,9 +8,8 @@ dimension : int
 
 Notes
 -----
-This class iteratively computes the min and the max of several :class:`~openturns.Point` or :class:`~openturns.Sample`.
-
-This class does not store the input data in memory.
+This class iteratively computes the minimum and maximum over an iteratively increasing
+dataset without storing any data in memory.
 
 See also
 --------
@@ -25,31 +24,26 @@ Examples
 >>> n = ot.Normal(dim)
 >>> size = 50
 
-Increment with 50 points:
+Increment the data one point at a time:
 
 >>> for i in range(size):
 ...     point = n.getRealization()
 ...     myExtrema.increment(point)
-
 >>> print (myExtrema.getIteration())
 50
-
 >>> print (myExtrema.getMin())
 [-2.4067,-2.53986,-2.29006,-3.09737,-2.18139]
-
 >>> print (myExtrema.getMax())
 [3.01263,3.02799,1.85579,2.11968,1.36783]
 
-Increment with one sample of size 50:
+Increment with 50 additional points simultaneously and recompute the extrema:
 
 >>> sample = n.getSample(size)
 >>> myExtrema.increment(sample)
 >>> print (myExtrema.getIteration())
 100
-
 >>> print (myExtrema.getMin())
 [-2.4067,-2.53986,-2.72106,-3.09737,-2.18139]
-
 >>> print (myExtrema.getMax())
 [3.01263,3.02799,2.24097,2.11968,2.55533]"
 
@@ -61,7 +55,7 @@ Increment with one sample of size 50:
 Returns
 -------
 min : :class:`~openturns.Point`
-    current values of the iterative min."
+    current values of the iterative minimum."
 
 // ---------------------------------------------------------------------
 
@@ -71,4 +65,4 @@ min : :class:`~openturns.Point`
 Returns
 -------
 max : :class:`~openturns.Point`
-    current values of the iterative max."
+    current values of the iterative maximum."

@@ -83,7 +83,6 @@ UnsignedInteger IterativeAlgorithmImplementation::getDimension() const
 void IterativeAlgorithmImplementation::increment(const Point & /*newData*/)
 {
   throw NotYetImplementedException(HERE) << "You must use a derived class of IterativeAlgorithm!";
-
 }
 
 /** Increment method from a Sample */

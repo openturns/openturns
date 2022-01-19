@@ -13,7 +13,8 @@ dimension : int
 
 Notes
 -----
-This class iteratively computes the centered moments up to a prescribed order of several :class:`~openturns.Point` or :class:`~openturns.Sample`.
+This class iteratively computes the centered moments of an iteratively increasing
+dataset without storing any data in memory.
 
 See also
 --------

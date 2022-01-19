@@ -27,7 +27,7 @@ iterMoments = ot.IterativeMoments(order, dim)
 
 # %%
 # We can now perform the simulations.
-# The :class:`~opeturns.IterativeMoments` object stores the centered moments iteratively.
+# The :class:`~openturns.IterativeMoments` object stores the centered moments iteratively.
 # We first increment the object with one :class:`~openturns.Point` at a time.
 # At any given step the current mean is obtained thanks to the :meth:`~openturns.IterativeMoments.getMean` method and the
 # current number of iterations is given by the :meth:`~openturns.IterativeMoments.getIteration` method.
@@ -46,7 +46,7 @@ graph.add(curve)
 view = otv.View(graph)
 
 # %%
-# We can also increment with a `Sample`.
+# We can also increment with a :class:`~openturns.Sample`.
 
 # %%
 sample = distNormal.getSample(size)
