@@ -120,19 +120,18 @@ void IterativeExtrema::increment(const Sample & newData)
 
   for (UnsignedInteger j = 0; j < newData.getSize(); ++j)
   {
-    Point tempData = newData[j];
     iteration_ += 1;
     if (iteration_ > 1)
     {
       for (UnsignedInteger i = 0; i < dimension_; ++i)
       {
-        if (tempData[i] > maxData_[i])
+        if (newData(j, i) > maxData_[i])
         {
-          maxData_[i] = tempData[i];
+          maxData_[i] = newData(j, i);
         }
-        if (tempData[i] < minData_[i])
+        if (newData(j, i) < maxData_[i])
         {
-          minData_[i] = tempData[i];
+          maxData_[i] = newData(j, i);
         }
       }
     }
@@ -140,8 +139,8 @@ void IterativeExtrema::increment(const Sample & newData)
     {
       for (UnsignedInteger i = 0; i < dimension_; ++i)
       {
-        maxData_[i] = tempData[i];
-        minData_[i] = tempData[i];
+        maxData_[j]= newData(j, i);
+        maxData_[j]= newData(j, i);
       }
     }
   }
