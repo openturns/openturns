@@ -19,7 +19,7 @@ OT_IterativeAlgorithm_doc
 // ---------------------------------------------------------------------
 
 %define OT_IterativeAlgorithm_increment_doc
-"increment the internal data of the IterativeAlgorithm.
+"Increment the internal data.
 
 Parameters
 ----------
@@ -36,7 +36,7 @@ OT_IterativeAlgorithm_increment_doc
 Returns
 -------
 iteration : int
-    the current iteration of the algorithm"
+    Current iteration of the algorithm"
 %enddef
 
 %feature("docstring") OT::IterativeAlgorithmImplementation::getIteration
@@ -48,7 +48,7 @@ OT_IterativeAlgorithm_getIteration_doc
 Returns
 -------
 dimension : int
-    the dimension of the algorithm"
+    Dimension of the algorithm"
 %enddef
 
 %feature("docstring") OT::IterativeAlgorithmImplementation::getDimension

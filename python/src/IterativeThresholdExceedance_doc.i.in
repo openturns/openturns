@@ -12,9 +12,9 @@ thresholdValue : float, default=0.0
 
 Notes
 -----
-This class iteratively counts the threshold exceedance of the input :class:`~openturns.Point` or :class:`~openturns.Sample`.
-
-This class does not store the input data in memory.
+This class iteratively counts the number of threshold exceedances
+of an iteratively increasing
+dataset without storing any data in memory.
 
 See also
 --------
