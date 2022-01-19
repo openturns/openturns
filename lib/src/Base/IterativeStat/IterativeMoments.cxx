@@ -128,7 +128,7 @@ Point IterativeMoments::getSkewness() const
 Point IterativeMoments::getKurtosis() const
 {
   if (!(iteration_ >= 3)) throw InternalException(HERE) << "Error: cannot compute the kurtosis per component of a sample of size less than 3.";
-  if ((orderMax_ >= 4)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum order is lower than 4.";
+  if (!(orderMax_ >= 4)) throw InternalException(HERE) << "Error: unavailable method, the declared maximum order is lower than 4.";
 
   /* Special case for a size 3 */
   if (iteration_ == 3) return Point(dimension_, 0.0);
