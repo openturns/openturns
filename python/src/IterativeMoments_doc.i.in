@@ -33,7 +33,7 @@ kurtosis : :class:`~openturns.Point`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::IterativeMoments::getSkewness
-"Returns the current value of the skewness from internal data
+"Returns the current value of the skewness
 
 Returns
 -------
@@ -43,7 +43,7 @@ skewness : :class:`~openturns.Point`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::IterativeMoments::getVariance
-"Returns the current value of the variance from internal data
+"Returns the current value of the variance
 
 Returns
 -------
@@ -63,7 +63,7 @@ error : :class:`~openturns.Point`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::IterativeMoments::getCoefficientOfVariation
-"Returns the coefficient of variation from internal data
+"Returns the coefficient of variation
 
 Returns
 -------
@@ -74,7 +74,7 @@ coefficientOfvariation : :class:`~openturns.Point`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::IterativeMoments::getStandardDeviation
-"Returns the standard deviation from internal data
+"Returns the standard deviation
 
 Returns
 -------
@@ -84,7 +84,7 @@ standardDeviation : :class:`~openturns.Point`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::IterativeMoments::getMean
-"Returns the values of the mean from internal data
+"Returns the values of the mean
 
 Returns
 -------
@@ -94,7 +94,7 @@ mean : :class:`~openturns.Point`
 // ---------------------------------------------------------------------
 
 %feature("docstring") OT::IterativeMoments::getCenteredMoments
-"Returns the centered moments from internal data
+"Returns the centered moments
 
 Returns
 -------

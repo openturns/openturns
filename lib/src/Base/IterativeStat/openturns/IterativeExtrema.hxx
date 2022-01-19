@@ -50,9 +50,9 @@ public:
    * This method compares objects based on their content.
    */
   inline
-  Bool operator ==(const IterativeExtrema & /*other*/) const
+  Bool operator ==(const IterativeExtrema & other) const
   {
-    return true;
+    return (dimension_ == other.dimension_) && (minData_ == other.minData_) && (maxData_ == other.maxData_);
   }
 
   /**

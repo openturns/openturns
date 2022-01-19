@@ -926,7 +926,7 @@ ot_add_python_module(analytical analytical_module.i
                    )
 
 ot_add_python_module(simulation simulation_module.i
-	                    ANCOVA.i ANCOVA_doc.i.in
+	              ANCOVA.i ANCOVA_doc.i.in
                       SobolIndicesAlgorithmImplementation.i SobolIndicesAlgorithmImplementation_doc.i.in
                       SobolIndicesAlgorithm.i SobolIndicesAlgorithm_doc.i.in
                       MartinezSensitivityAlgorithm.i MartinezSensitivityAlgorithm_doc.i.in

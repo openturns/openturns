@@ -51,9 +51,9 @@ public:
    * This method compares objects based on their content.
    */
   inline
-  Bool operator ==(const IterativeMoments & /*other*/) const
+  Bool operator ==(const IterativeMoments & other) const
   {
-    return true;
+    return (dimension_ == other.dimension_) && (orderMax_ == other.orderMax_) && (centeredMoments_ == other.centeredMoments_);
   }
 
   /**
