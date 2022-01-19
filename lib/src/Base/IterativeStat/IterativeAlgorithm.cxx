@@ -70,13 +70,15 @@ IterativeAlgorithm::IterativeAlgorithm(const Implementation & p_implementation)
 void IterativeAlgorithm::increment(const Point & newData)
 {
   copyOnWrite();
-  return getImplementation()->increment(newData);
+   copyOnWrite();
+   return getImplementation()->increment(newData);
 }
 
 void IterativeAlgorithm::increment(const Sample & newData)
 {
   copyOnWrite();
-  return getImplementation()->increment(newData);
+   copyOnWrite();
+   return getImplementation()->increment(newData);
 }
 
 /**
