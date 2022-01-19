@@ -129,9 +129,9 @@ void IterativeExtrema::increment(const Sample & newData)
         {
           maxData_[i] = newData(j, i);
         }
-        if (newData(j, i) < maxData_[i])
+        if (newData(j, i) < minData_[i])
         {
-          maxData_[i] = newData(j, i);
+          minData_[i] = newData(j, i);
         }
       }
     }
@@ -139,8 +139,8 @@ void IterativeExtrema::increment(const Sample & newData)
     {
       for (UnsignedInteger i = 0; i < dimension_; ++i)
       {
-        maxData_[j]= newData(j, i);
-        maxData_[j]= newData(j, i);
+        minData_[i]= newData(j, i);
+        maxData_[i]= newData(j, i);
       }
     }
   }
