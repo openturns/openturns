@@ -58,7 +58,7 @@ print("Total number of iteration: " + str(iterMoments.getIteration()))
 print("Mean: ", iterMoments.getMean())
 
 # %%
-# We also have access to other statistics such as the variance (order 2), the skewness (order 3) or the kurtosis (order 4).
+# For the order of the `iterMoments` object is 4, we also have access to other statistics such as the variance (order 2), the skewness (order 3) or the kurtosis (order 4). For instance, a specified order of 3 would leave only the variance and the skewness available.
 print("Variance: ", iterMoments.getVariance())
 print("Skewness: ", iterMoments.getSkewness())
 print("Kurtosis: ", iterMoments.getKurtosis())

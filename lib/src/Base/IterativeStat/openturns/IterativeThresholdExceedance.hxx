@@ -51,9 +51,9 @@ public:
    * This method compares objects based on their content.
    */
   inline
-  Bool operator ==(const IterativeThresholdExceedance & /*other*/) const
+  Bool operator ==(const IterativeThresholdExceedance & other) const
   {
-    return true;
+    return (dimension_ == other.dimension_) && (thresholdValue_ == other.thresholdValue_) && (data_ == other.data_) ;
   }
 
   /**
