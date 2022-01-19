@@ -42,7 +42,7 @@ iterthresholdMixed.increment(point1)
 iterthresholdMixed.increment(point2)
 iterthresholdMixed.increment(point3)
 computedthreshold = iterthresholdMixed.getThresholdExceedance()
-referencethreshold *= 2
+referencethreshold = [0, 6]
 ott.assert_almost_equal(referencethreshold, computedthreshold)
 iteration = iterthresholdMixed.getIteration()
 ott.assert_almost_equal(iteration, 6)
