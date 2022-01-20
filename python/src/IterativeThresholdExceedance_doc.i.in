@@ -35,7 +35,6 @@ Increment with 50 points:
 >>> for i in range(size):
 ...     point = n.getRealization()
 ...     myThresholdExceedance.increment(point)
-
 >>> print (myThresholdExceedance.getThresholdExceedance())
 [14,14,14,17,12]
 >>> print (myThresholdExceedance.getIteration())
@@ -45,7 +44,6 @@ Increment with one sample of size 50:
 
 >>> sample = n.getSample(size)
 >>> myThresholdExceedance.increment(sample)
-
 >>> print (myThresholdExceedance.getIteration())
 100
 >>> print (myThresholdExceedance.getThresholdExceedance())
