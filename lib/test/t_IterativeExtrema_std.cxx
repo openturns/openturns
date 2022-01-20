@@ -24,6 +24,18 @@
 using namespace OT;
 using namespace OT::Test;
 
+// Check if bool is true
+void assertTrue(bool condition)
+{
+  if (!condition) throw TestFailed("Boolean is not true");
+}
+
+// Check if bool is false
+void assertFalse(bool condition)
+{
+  if (condition) throw TestFailed("Boolean is not false");
+}
+
 int main(int, char *[])
 {
   TESTPREAMBLE;
@@ -68,9 +80,9 @@ int main(int, char *[])
     IterativeExtrema iterextremaSample(dimension);
     iterextremaSample.increment(sample1);
     computedmin = iterextremaSample.getMin();
-    assert_almost_equal(referencemin, computedmin, 1e-8, 0);
+    assert_almost_equal(referencemin, computedmin, 0, 0);
     computedmax = iterextremaSample.getMax();
-    assert_almost_equal(referencemax, computedmax, 1e-8, 0);
+    assert_almost_equal(referencemax, computedmax, 0, 0);
     iteration = iterextremaSample.getIteration();
     assert_almost_equal(iteration, 3);
 
@@ -81,11 +93,14 @@ int main(int, char *[])
     iterextremaMixed.increment(point2);
     iterextremaMixed.increment(point3);
     computedmin = iterextremaMixed.getMin();
-    assert_almost_equal(referencemin, computedmin, 1e-8, 0);
+    assert_almost_equal(referencemin, computedmin, 0, 0);
     computedmax = iterextremaMixed.getMax();
-    assert_almost_equal(referencemax, computedmax, 1e-8, 0);
+    assert_almost_equal(referencemax, computedmax, 0, 0);
     iteration = iterextremaMixed.getIteration();
     assert_almost_equal(iteration, 6);
+
+    /* check whether objects are the same */
+    assertTrue(iterextremaSample == iterextremaPoint);
   }
   catch (TestFailed & ex)
   {
