@@ -69,7 +69,8 @@ iterThreshold.increment(sample)
 print("Number of exceedance: ", iterThreshold.getThresholdExceedance())
 
 # %%
-# A simple computation gives the probability of the data to be higher than 3 is approximatively 0.0013 that we compare with empirical probability. We see the probalities are close.
+# A simple computation shows that the probability of the data being higher than :math:`3` is approximately :math:`0.0013`.
+# The empirical probability is close to this value:
 print("Exceedance prb: ", 0.0013)
 print(
     "Empirical exceedance prb: ",
