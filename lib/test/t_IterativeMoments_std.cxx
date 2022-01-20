@@ -24,6 +24,18 @@
 using namespace OT;
 using namespace OT::Test;
 
+// Check if bool is true
+void assertTrue(bool condition)
+{
+  if (!condition) throw TestFailed("Boolean is not true");
+}
+
+// Check if bool is false
+void assertFalse(bool condition)
+{
+  if (condition) throw TestFailed("Boolean is not false");
+}
+
 int main(int, char *[])
 {
   TESTPREAMBLE;
@@ -100,6 +112,8 @@ int main(int, char *[])
     assert_almost_equal(iterMoments3.getVariance(), referenceMixedVariance);
     assert_almost_equal(iterMoments3.getSkewness(), referenceMixedSkewness);
 
+    /* check whether objects are different */
+    assertTrue(iterMoments2 != iterMoments3);
   }
   catch (TestFailed & ex)
   {
