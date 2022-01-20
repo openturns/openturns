@@ -24,6 +24,18 @@
 using namespace OT;
 using namespace OT::Test;
 
+// Check if bool is true
+void assertTrue(bool condition)
+{
+  if (!condition) throw TestFailed("Boolean is not true");
+}
+
+// Check if bool is false
+void assertFalse(bool condition)
+{
+  if (condition) throw TestFailed("Boolean is not false");
+}
+
 int main(int, char *[])
 {
   TESTPREAMBLE;
@@ -82,6 +94,9 @@ int main(int, char *[])
     assert_almost_equal(referencethreshold, computedthreshold);
     iteration = iterthresholdMixed.getIteration();
     assert_almost_equal(iteration, 6);
+
+    /* check whether objects are the same */
+    assertTrue(iterthresholdSample == iterthresholdPoint);
   }
   catch (TestFailed & ex)
   {
