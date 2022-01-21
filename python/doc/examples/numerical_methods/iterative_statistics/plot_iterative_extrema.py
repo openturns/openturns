@@ -27,7 +27,7 @@ iterExtrema = ot.IterativeExtrema(dim)
 # In our case most of the data should be in the [-3,3] interval. Consequently with few samples the expected minimum should be around -3 and the expected maximum should be around 3.
 # We first increment the object with one :class:`~openturns.Point` at a time.
 # At any given step the current minimum is obtained thanks to the :meth:`~openturns.IterativeExtrema.getMin` method, the current maximum with the :meth:`~openturns.IterativeExtrema.getMax` method and the
-# current number of iterations is given by the :meth:`~openturns.IterativeMoments.getIteration` method.
+# current number of iterations is given by the :meth:`~openturns.IterativeMoments.getIterationNumber` method.
 
 # %%
 size = 2000
@@ -69,7 +69,7 @@ iterExtrema.increment(sample)
 
 # %%
 # We print the total number of iterations and the extrema.
-print("Total number of iteration: " + str(iterExtrema.getIteration()))
+print("Total number of iteration: " + str(iterExtrema.getIterationNumber()))
 print("Minimum: ", iterExtrema.getMin())
 print("Maximum: ", iterExtrema.getMax())
 

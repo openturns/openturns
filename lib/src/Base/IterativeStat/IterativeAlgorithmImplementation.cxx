@@ -64,7 +64,7 @@ String IterativeAlgorithmImplementation::__str__(const String &) const
  *
  * This method returns the current iteration number of the algorithm.
  */
-UnsignedInteger IterativeAlgorithmImplementation::getIteration() const
+UnsignedInteger IterativeAlgorithmImplementation::getIterationNumber() const
 {
   return iteration_;
 }

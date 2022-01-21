@@ -29,7 +29,7 @@ Increment the data one point at a time:
 >>> for i in range(size):
 ...     point = n.getRealization()
 ...     myExtrema.increment(point)
->>> print (myExtrema.getIteration())
+>>> print (myExtrema.getIterationNumber())
 50
 >>> print (myExtrema.getMin())
 [-2.4067,-2.53986,-2.29006,-3.09737,-2.18139]
@@ -40,7 +40,7 @@ Increment with 50 additional points simultaneously and recompute the extrema:
 
 >>> sample = n.getSample(size)
 >>> myExtrema.increment(sample)
->>> print (myExtrema.getIteration())
+>>> print (myExtrema.getIterationNumber())
 100
 >>> print (myExtrema.getMin())
 [-2.4067,-2.53986,-2.72106,-3.09737,-2.18139]

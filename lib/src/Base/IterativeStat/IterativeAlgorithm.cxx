@@ -86,9 +86,9 @@ void IterativeAlgorithm::increment(const Sample & newData)
  *
  * This method returns the current iteration number of the algorithm.
  */
-UnsignedInteger IterativeAlgorithm::getIteration() const
+UnsignedInteger IterativeAlgorithm::getIterationNumber() const
 {
-  return getImplementation()->getIteration();
+  return getImplementation()->getIterationNumber();
 }
 
 /**

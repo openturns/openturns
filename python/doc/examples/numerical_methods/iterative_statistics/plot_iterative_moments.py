@@ -30,7 +30,7 @@ iterMoments = ot.IterativeMoments(order, dim)
 # The :class:`~openturns.IterativeMoments` object stores the centered moments iteratively.
 # We first increment the object with one :class:`~openturns.Point` at a time.
 # At any given step the current mean is obtained thanks to the :meth:`~openturns.IterativeMoments.getMean` method and the
-# current number of iterations is given by the :meth:`~openturns.IterativeMoments.getIteration` method.
+# current number of iterations is given by the :meth:`~openturns.IterativeMoments.getIterationNumber` method.
 size = 2000
 meanEvolution = ot.Sample()
 for i in range(size):
@@ -54,7 +54,7 @@ iterMoments.increment(sample)
 
 # %%
 # We print the total number of iterations and the mean.
-print("Total number of iteration: " + str(iterMoments.getIteration()))
+print("Total number of iteration: " + str(iterMoments.getIterationNumber()))
 print("Mean: ", iterMoments.getMean())
 
 # %%

@@ -103,7 +103,7 @@ int main(int, char *[])
     /* Here we declare an iterative object of maximum order 3 */
     IterativeMoments iterMoments3(3, dimension);
     iterMoments3.increment(mixedSample);
-    assert_almost_equal(iterMoments3.getIteration(), 8);
+    assert_almost_equal(iterMoments3.getIterationNumber(), 8);
     assert_almost_equal(iterMoments3.getDimension(), 2);
     assert_almost_equal(iterMoments3.getOrder(), 3);
 
