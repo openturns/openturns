@@ -72,7 +72,7 @@ int main(int, char *[])
     iterthresholdPoint.increment(point3);
     Point computedthreshold = iterthresholdPoint.getThresholdExceedance();
     assert_almost_equal(referencethreshold, computedthreshold);
-    UnsignedInteger iteration = iterthresholdPoint.getIteration();
+    UnsignedInteger iteration = iterthresholdPoint.getIterationNumber();
     assert_almost_equal(iteration, 3);
 
     /* Iterative threshold, one single sample */
@@ -80,7 +80,7 @@ int main(int, char *[])
     iterthresholdSample.increment(sample1);
     computedthreshold = iterthresholdSample.getThresholdExceedance();
     assert_almost_equal(referencethreshold, computedthreshold);
-    iteration = iterthresholdSample.getIteration();
+    iteration = iterthresholdSample.getIterationNumber();
     assert_almost_equal(iteration, 3);
 
     /* Iterative threshold, one single sample, then one point at a time */
@@ -92,7 +92,7 @@ int main(int, char *[])
     computedthreshold = iterthresholdMixed.getThresholdExceedance();
     referencethreshold *= 2;
     assert_almost_equal(referencethreshold, computedthreshold);
-    iteration = iterthresholdMixed.getIteration();
+    iteration = iterthresholdMixed.getIterationNumber();
     assert_almost_equal(iteration, 6);
 
     /* check whether objects are the same */

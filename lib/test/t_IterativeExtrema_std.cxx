@@ -73,7 +73,7 @@ int main(int, char *[])
     assert_almost_equal(referencemin, computedmin, 0, 0);
     Point computedmax = iterextremaPoint.getMax();
     assert_almost_equal(referencemax, computedmax, 0, 0);
-    UnsignedInteger iteration = iterextremaPoint.getIteration();
+    UnsignedInteger iteration = iterextremaPoint.getIterationNumber();
     assert_almost_equal(iteration, 3);
 
     // Iterative extrema, one single sample
@@ -83,7 +83,7 @@ int main(int, char *[])
     assert_almost_equal(referencemin, computedmin, 0, 0);
     computedmax = iterextremaSample.getMax();
     assert_almost_equal(referencemax, computedmax, 0, 0);
-    iteration = iterextremaSample.getIteration();
+    iteration = iterextremaSample.getIterationNumber();
     assert_almost_equal(iteration, 3);
 
     // Iterative extrema, one single sample, then one point at a time
@@ -96,7 +96,7 @@ int main(int, char *[])
     assert_almost_equal(referencemin, computedmin, 0, 0);
     computedmax = iterextremaMixed.getMax();
     assert_almost_equal(referencemax, computedmax, 0, 0);
-    iteration = iterextremaMixed.getIteration();
+    iteration = iterextremaMixed.getIterationNumber();
     assert_almost_equal(iteration, 6);
 
     /* check whether objects are the same */

@@ -74,7 +74,7 @@ print("Number of exceedance: ", iterThreshold.getThresholdExceedance())
 print("Exceedance prb: ", 0.0013)
 print(
     "Empirical exceedance prb: ",
-    iterThreshold.getThresholdExceedance()[0] / iterThreshold.getIteration(),
+    iterThreshold.getThresholdExceedance()[0] / iterThreshold.getIterationNumber(),
 )
 
 otv.View.ShowAll()
