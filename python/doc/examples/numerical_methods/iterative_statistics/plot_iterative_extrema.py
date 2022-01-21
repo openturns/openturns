@@ -69,7 +69,7 @@ iterExtrema.increment(sample)
 
 # %%
 # We print the total number of iterations and the extrema.
-print("Total number of iteration: " + str(iterExtrema.getIterationNumber()))
+print("Total number of iterations: " + str(iterExtrema.getIterationNumber()))
 print("Minimum: ", iterExtrema.getMin())
 print("Maximum: ", iterExtrema.getMax())
 
