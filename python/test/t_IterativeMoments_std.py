@@ -44,7 +44,7 @@ ott.assert_almost_equal(iterPoint.getSkewness(), referenceSkewness)
 ott.assert_almost_equal(iterPoint.getKurtosis(), referenceKurtosis)
 ott.assert_almost_equal(iterPoint.getDimension(), 2)
 ott.assert_almost_equal(iterPoint.getOrder(), 4)
-ott.assert_almost_equal(iterPoint.getIteration(), 4)
+ott.assert_almost_equal(iterPoint.getIterationNumber(), 4)
 
 
 # Iterative moments, one single sample
@@ -56,7 +56,7 @@ ott.assert_almost_equal(iterSample.getSkewness(), referenceSkewness)
 ott.assert_almost_equal(iterSample.getKurtosis(), referenceKurtosis)
 ott.assert_almost_equal(iterSample.getDimension(), 2)
 ott.assert_almost_equal(iterSample.getOrder(), 4)
-ott.assert_almost_equal(iterSample.getIteration(), 4)
+ott.assert_almost_equal(iterSample.getIterationNumber(), 4)
 
 
 # Iterative moments, sample and points
@@ -72,4 +72,4 @@ ott.assert_almost_equal(iterMixed.getSkewness(), referenceMixedSkewness)
 ott.assert_almost_equal(iterMixed.getKurtosis(), referenceMixedKurtosis)
 ott.assert_almost_equal(iterMixed.getDimension(), 2)
 ott.assert_almost_equal(iterMixed.getOrder(), 4)
-ott.assert_almost_equal(iterMixed.getIteration(), 8)
+ott.assert_almost_equal(iterMixed.getIterationNumber(), 8)
