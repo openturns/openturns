@@ -76,7 +76,7 @@ public:
    *
    * This method returns the current iteration number of the algorithm.
    */
-  UnsignedInteger getIteration() const;
+  UnsignedInteger getIterationNumber() const;
 
   /**
    * Dimension accessor

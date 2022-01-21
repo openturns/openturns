@@ -30,7 +30,7 @@ data : sequence of float or 2-d sequence of float
 %feature("docstring") OT::IterativeAlgorithmImplementation::increment
 OT_IterativeAlgorithm_increment_doc
 
-%define OT_IterativeAlgorithm_getIteration_doc
+%define OT_IterativeAlgorithm_getIterationNumber_doc
 "Get the current iteration of the algorithm
 
 Returns
@@ -39,8 +39,8 @@ iteration : int
     Current iteration of the algorithm"
 %enddef
 
-%feature("docstring") OT::IterativeAlgorithmImplementation::getIteration
-OT_IterativeAlgorithm_getIteration_doc
+%feature("docstring") OT::IterativeAlgorithmImplementation::getIterationNumber
+OT_IterativeAlgorithm_getIterationNumber_doc
 
 %define OT_IterativeAlgorithm_getDimension_doc
 "Get the dimension of the algorithm
