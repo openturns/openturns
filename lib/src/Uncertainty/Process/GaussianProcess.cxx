@@ -128,14 +128,14 @@ void GaussianProcess::initialize() const
     if (covarianceModel_.getOutputDimension() == 1)
     {
       CovarianceAssemblyFunction simple(covarianceModel_, mesh_.getVertices());
-      covarianceHMatrix_.assemble(simple, 'L');
+      covarianceHMatrix_.assemble(simple, hmatrixParameters, 'L');
     }
     else
     {
       CovarianceBlockAssemblyFunction block(covarianceModel_, mesh_.getVertices());
-      covarianceHMatrix_.assemble(block, 'L');
+      covarianceHMatrix_.assemble(block, hmatrixParameters, 'L');
     }
-    covarianceHMatrix_.factorize("LLt");
+    covarianceHMatrix_.factorize(hmatrixParameters.getFactorizationMethod());
   } // samplingMethod_ == 1, ie hmat
   // Other sampling methods
   else

@@ -756,7 +756,7 @@ Scalar GeneralLinearModelAlgorithm::computeHMatLogDeterminantCholesky() const
     covarianceCholeskyFactorHMatrix_.assemble(block, 'L');
   }
   // Factorize
-  covarianceCholeskyFactorHMatrix_.factorize("LLt");
+  covarianceCholeskyFactorHMatrix_.factorize(hmatrixParameters.getFactorizationMethod());
   // y corresponds to output data
   // The PersistentCollection is returned as Point with the right memory map
   Point y(outputSample_.getImplementation()->getData());

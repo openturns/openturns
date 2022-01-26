@@ -741,6 +741,7 @@
   <HMatrix-ValidationError      value_float="0.0"            />
   <HMatrix-ClusteringAlgorithm  value_str="median"         />
   <HMatrix-CompressionMethod    value_str="AcaRandom"    />
+  <HMatrix-FactorizationMethod    value_str="LLt"    />
   <HMatrix-FactorizationIterations value_int="10"  />
   <HMatrix-LargestEigenValueIterations value_int="10"  />
   <HMatrix-MaxLeafSize          value_int="250"  />

@@ -108,3 +108,23 @@ method : str
 
 // ---------------------------------------------------------------------
 
+%feature("docstring") OT::HMatrixParameters::getFactorizationMethod
+"Return the factorization method.
+
+Returns
+-------
+method : str
+    Factorization method (either 'LU', 'LDLt', or 'LLt')"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HMatrixParameters::setFactorizationMethod
+"Set the factorization method.
+
+Parameters
+----------
+method : str
+    Factorization method (either 'LU', 'LDLt', or 'LLt')"
+
+// ---------------------------------------------------------------------
+
