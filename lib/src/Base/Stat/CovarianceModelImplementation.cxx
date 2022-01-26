@@ -815,12 +815,12 @@ HMatrix CovarianceModelImplementation::discretizeHMatrix(const Sample & vertices
   if (outputDimension_ == 1)
   {
     CovarianceAssemblyFunction simple(*this, vertices);
-    covarianceHMatrix.assemble(simple, 'L');
+    covarianceHMatrix.assemble(simple, parameters, 'L');
   }
   else
   {
     CovarianceBlockAssemblyFunction block(*this, vertices);
-    covarianceHMatrix.assemble(block, 'L');
+    covarianceHMatrix.assemble(block, parameters, 'L');
   }
   return covarianceHMatrix;
 #else
