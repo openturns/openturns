@@ -93,7 +93,7 @@ cardinal : int
 Examples
 --------
 >>> import openturns as ot
->>> enumerateFunction = ot.EnumerateFunction(ot.LinearEnumerateFunction(2))
+>>> enumerateFunction = ot.LinearEnumerateFunction(2)
 >>> for i in range(6):
 ...     indices = enumerateFunction(i)
 ...     degree = sum(indices)
@@ -113,7 +113,7 @@ OT_EnumerateFunction_getMaximumDegreeCardinal_doc
 // ---------------------------------------------------------------------
 
 %define OT_EnumerateFunction_getMaximumDegreeStrataIndex_doc
-"Get the index of the strata of degree inferior to a given value.
+"Get the largest index of the strata of degree lower or equal to a given value.
 
 Parameters
 ----------
@@ -123,12 +123,12 @@ maximumDegree : int
 Returns
 -------
 index : int
-    Index of the strata of degree :math:`max \leq maximumDegree`.
+    Index of the last strata of degree :math:`max \leq maximumDegree`.
 
 Examples
 --------
 >>> import openturns as ot
->>> enumerateFunction = ot.EnumerateFunction(ot.LinearEnumerateFunction(2))
+>>> enumerateFunction = ot.LinearEnumerateFunction(2)
 >>> for i in [1, 2]:
 ...     indices = enumerateFunction(i)
 ...     strataIndex = sum(indices) + 1
@@ -162,7 +162,7 @@ cardinal : int
 Examples
 --------
 >>> import openturns as ot
->>> enumerateFunction = ot.EnumerateFunction(ot.LinearEnumerateFunction(2))
+>>> enumerateFunction = ot.LinearEnumerateFunction(2)
 >>> for i in [3, 4, 5]:
 ...     indices = enumerateFunction(i)
 ...     degree = sum(indices)
@@ -198,7 +198,7 @@ cardinal : int
 Examples
 --------
 >>> import openturns as ot
->>> enumerateFunction = ot.EnumerateFunction(ot.LinearEnumerateFunction(2))
+>>> enumerateFunction = ot.LinearEnumerateFunction(2)
 >>> for i in range(6):
 ...     indices = enumerateFunction(i)
 ...     degree = sum(indices)
@@ -233,7 +233,7 @@ antecedent : int
 Examples
 --------
 >>> import openturns as ot
->>> enumerateFunction = ot.EnumerateFunction(ot.LinearEnumerateFunction(2))
+>>> enumerateFunction = ot.LinearEnumerateFunction(2)
 >>> for i in range(6):
 ...     print(str(i)+' '+str(enumerateFunction(i)))
 0 [0,0]

@@ -1,15 +1,15 @@
 #! /usr/bin/env python
 
 from __future__ import print_function
-from openturns import *
+import openturns as ot
 
-TESTPREAMBLE()
+ot.TESTPREAMBLE()
 
-print('Default q :', ResourceMap.GetAsScalar(
+print('Default q :', ot.ResourceMap.GetAsScalar(
     'HyperbolicAnisotropicEnumerateFunction-DefaultQ'), '\n')
 
 # check weight constructor
-f = HyperbolicAnisotropicEnumerateFunction((1., 2., 3., 4., 5.), 0.75)
+f = ot.HyperbolicAnisotropicEnumerateFunction((1., 2., 3., 4., 5.), 0.75)
 
 # check inverse when the cache is empty
 print("inverse([0,0,0,0,0])=", f.inverse([0, 0, 0, 0, 0]))
@@ -23,8 +23,8 @@ print("inverse([2,0,0,0,0])=", f.inverse([2, 0, 0, 0, 0]))
 size = 10
 stratas = 5
 for dimension in range(1, 4):
-    f = HyperbolicAnisotropicEnumerateFunction(dimension, 1.0)
-    g = LinearEnumerateFunction(dimension)
+    f = ot.HyperbolicAnisotropicEnumerateFunction(dimension, 1.0)
+    g = ot.LinearEnumerateFunction(dimension)
     print("First", size, "values for dimension", dimension)
     for index in range(size):
         if (not f(index) == g(index)):
@@ -38,16 +38,10 @@ for dimension in range(1, 4):
 
 # now let q vary
 size = 25
-qValues = []
-qValues.append(0.75)
-qValues.append(0.5)
-qValues.append(0.25)
-
 for dimension in range(2, 5):
-    for j in range(len(qValues)):
-        q = qValues[j]
+    for q in [0.75, 0.5, 0.25]:
         print('First', size, 'values dimension=', dimension, ' q=', q)
-        f = HyperbolicAnisotropicEnumerateFunction(dimension, q)
+        f = ot.HyperbolicAnisotropicEnumerateFunction(dimension, q)
         for index in range(size):
             print("index=", index, repr(f(index)))
         strataCardinal = []
@@ -59,3 +53,10 @@ for dimension in range(2, 5):
         for deg in range(5):
             cardinalsPerDegree.append(int(f.getMaximumDegreeCardinal(deg)))
         print('Cardinals per degree=', cardinalsPerDegree, '\n')
+
+for dimension in range(1, 4):
+    q = 0.8
+    f = ot.HyperbolicAnisotropicEnumerateFunction(dimension, q)
+    for d in range(10):
+        idx = f.getMaximumDegreeStrataIndex(d)
+        print('dim', dimension, 'degree', d, 'max_degree_strata_index', idx)
