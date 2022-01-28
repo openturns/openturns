@@ -145,8 +145,8 @@ void GaussianProcess::initialize() const
     // Scaling factor of the matrix : M-> M + \lambda I with \lambda very small
     // The regularization is needed for fast decreasing covariance models
     Scalar maxEV = -1.0;
-    const Scalar startingScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-StartingScaling");
-    const Scalar maximalScaling = ResourceMap::GetAsScalar("GeneralLinearModelAlgorithm-MaximalScaling");
+    const Scalar startingScaling = ResourceMap::GetAsScalar("GaussianProcess-StartingScaling");
+    const Scalar maximalScaling = ResourceMap::GetAsScalar("GaussianProcess-MaximalScaling");
     Scalar cumulatedScaling = 0.0;
     Scalar scaling = startingScaling;
     while (continuationCondition)
@@ -176,8 +176,8 @@ void GaussianProcess::initialize() const
       }
     }
     if (maxEV > 0.0 && scaling >= maximalScaling * maxEV)
-      throw InvalidArgumentException(HERE) << "In GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky, could not compute the Cholesky factor."
-                                           << " Scaling up to "  << cumulatedScaling << " was not enough";
+      throw InvalidArgumentException(HERE) << "In GaussianProcess, could not compute the Cholesky factor."
+                                           << " Scaling up to " << cumulatedScaling << " was not enough";
     if (cumulatedScaling > 0.0)
       LOGWARN(OSS() <<  "Warning! Scaling up to "  << cumulatedScaling << " was needed in order to get an admissible covariance. ");
   } // else samplingMethod_ != 1
