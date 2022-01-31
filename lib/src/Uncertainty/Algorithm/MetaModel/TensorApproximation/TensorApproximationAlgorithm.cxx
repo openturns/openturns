@@ -66,7 +66,7 @@ TensorApproximationAlgorithm::TensorApproximationAlgorithm(const Sample & inputS
     const OrthogonalProductFunctionFactory & basisFactory,
     const Indices & degrees,
     const UnsignedInteger maxRank)
-  : MetaModelAlgorithm(distribution, Function(FunctionImplementation(new DatabaseEvaluation(inputSample, outputSample))))
+  : MetaModelAlgorithm(distribution)
   , inputSample_(inputSample)
   , outputSample_(outputSample)
   , maxRank_(maxRank)
@@ -120,11 +120,7 @@ void TensorApproximationAlgorithm::run()
   inverseTransformation_ = transformation.inverse();
 
   // Build the composed model g = f o T^{-1}, which is a function of Z so it can be decomposed upon an orthonormal basis based on Z distribution
-  const Bool noTransformation = (measure == distribution_);
   LOGINFO("Transform the input sample in the measure space if needed");
-  if (noTransformation) composedModel_ = model_;
-  else composedModel_ = ComposedFunction(model_, inverseTransformation_);
-
   transformedInputSample_ = transformation_(inputSample_);
 
   FunctionCollection marginals(0);
@@ -135,7 +131,7 @@ void TensorApproximationAlgorithm::run()
     runMarginal(outputIndex, residuals[outputIndex], relativeErrors[outputIndex]);
   }
   // Build the result
-  result_ = TensorApproximationResult(distribution_, transformation_, inverseTransformation_, composedModel_, tensor_, residuals, relativeErrors);
+  result_ = TensorApproximationResult(distribution_, transformation_, inverseTransformation_, tensor_, residuals, relativeErrors);
 }
 
 /* Marginal computation */

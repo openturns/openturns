@@ -39,16 +39,6 @@ metamodel : :class:`~openturns.Function`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::TensorApproximationResult::getComposedModel
-"Get the composed model.
-
-Returns
--------
-composedModel : :class:`~openturns.Function`
-    :math:`f = g\circ T^{-1}`."
-
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::TensorApproximationResult::getDistribution
 "Get the input distribution.
 

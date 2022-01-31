@@ -53,7 +53,7 @@ LinearModelResult::LinearModelResult(const Sample & inputSample,
                                      const Point & leverages,
                                      const Point & cookDistances,
                                      const Scalar sigma2)
-  : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, Point(1, 0.0), Point(1, 0.0))
+  : MetaModelResult(metaModel, Point(1, 0.0), Point(1, 0.0))
   , inputSample_(inputSample)
   , basis_(basis)
   , design_(design)

@@ -54,15 +54,13 @@ TensorApproximationResult::TensorApproximationResult(
   const Distribution & distribution,
   const Function & transformation,
   const Function & inverseTransformation,
-  const Function & composedModel,
   const Collection<CanonicalTensorEvaluation> & tensorCollection,
   const Point & residuals,
   const Point & relativeErrors)
-  : MetaModelResult(Function(), Function(), residuals, relativeErrors)
+  : MetaModelResult(Function(), residuals, relativeErrors)
   , distribution_(distribution)
   , transformation_(transformation)
   , inverseTransformation_(inverseTransformation)
-  , composedModel_(composedModel)
   , tensorCollection_(tensorCollection)
   , composedMetaModel_()
 {
@@ -96,7 +94,6 @@ String TensorApproximationResult::__repr__() const
          << " distribution=" << distribution_
          << " transformation=" << transformation_
          << " inverseTransformation=" << inverseTransformation_
-         << " composedModel=" << composedModel_
          << " relativeErrors=" << relativeErrors_
          << " composedMetaModel=" << composedMetaModel_
          << " metaModel=" << metaModel_;
@@ -131,7 +128,8 @@ Function TensorApproximationResult::getInverseTransformation() const
 /* Composed model accessor */
 Function TensorApproximationResult::getComposedModel() const
 {
-  return composedModel_;
+  LOGWARN(OSS() << "TensorApproximationResult.getComposedModel is deprecated");
+  return Function();
 }
 
 /* Composed meta model accessor */
@@ -152,7 +150,6 @@ void TensorApproximationResult::save(Advocate & adv) const
   adv.saveAttribute("distribution_", distribution_);
   adv.saveAttribute("transformation_", transformation_);
   adv.saveAttribute("inverseTransformation_", inverseTransformation_);
-  adv.saveAttribute("composedModel_", composedModel_);
   adv.saveAttribute("tensorCollection_", tensorCollection_);
   adv.saveAttribute("composedMetaModel_", composedMetaModel_);
 }
@@ -165,7 +162,6 @@ void TensorApproximationResult::load(Advocate & adv)
   adv.loadAttribute("distribution_", distribution_);
   adv.loadAttribute("transformation_", transformation_);
   adv.loadAttribute("inverseTransformation_", inverseTransformation_);
-  adv.loadAttribute("composedModel_", composedModel_);
   adv.loadAttribute("tensorCollection_", tensorCollection_);
   adv.loadAttribute("composedMetaModel_", composedMetaModel_);
 }

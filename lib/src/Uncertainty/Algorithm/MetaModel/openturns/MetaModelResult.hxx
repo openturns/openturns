@@ -44,15 +44,14 @@ public:
   MetaModelResult();
 
   /** Standard constructor */
-  MetaModelResult(const Function & model,
-                  const Function & metaModel,
+  MetaModelResult(const Function & metaModel,
                   const Point & residuals,
                   const Point & relativeErrors);
 
   /** Virtual constructor */
   MetaModelResult * clone() const override;
 
-  /** Model accessor */
+  /** @deprecated Model accessor */
   virtual void setModel(const Function & model);
   virtual Function getModel() const;
 
@@ -78,10 +77,6 @@ public:
   void load(Advocate & adv) override;
 
 protected:
-
-  // The initial model
-  Function model_;
-
   // The corresponding meta-model
   Function metaModel_;
 

@@ -47,8 +47,7 @@ public:
   MetaModelAlgorithm();
 
   /** Constructor with parameters */
-  MetaModelAlgorithm(const Distribution & distribution,
-                     const Function & model);
+  explicit MetaModelAlgorithm(const Distribution & distribution);
 
   /** Virtual constructor */
   MetaModelAlgorithm * clone() const override;
@@ -81,7 +80,7 @@ protected:
   /** The input vector distribution */
   Distribution distribution_;
 
-  /** The model */
+  /** @deprecated The model */
   Function model_;
 
 

@@ -18,6 +18,8 @@
  * Removed deprecated SubsetSampling.getNumberOfSteps
  * coupling_tools.execute: deprecated get_stderr,get_stdout for capture_output, returns CompletedProcess
  * Deprecated Nlopt|Ceres|Bonmin|CMinpack|Ipopt|TBB|HMatrixFactory::IsAvailable in favor of PlatformInfo::HasFeature, see also GetFeatures
+ * Deprecated FunctionalChaosAlgorithm Function ctors
+ * Deprecated FunctionalChaosResult.getComposedModel
 
 === Documentation ===
 

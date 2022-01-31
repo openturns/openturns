@@ -44,11 +44,9 @@ MetaModelAlgorithm::MetaModelAlgorithm()
 }
 
 /* Constructor with parameters */
-MetaModelAlgorithm::MetaModelAlgorithm(const Distribution & distribution,
-                                       const Function & model)
+MetaModelAlgorithm::MetaModelAlgorithm(const Distribution & distribution)
   : PersistentObject()
   , distribution_(distribution)
-  , model_(model)
 {
   // Nothing to do
 }
@@ -253,7 +251,6 @@ void MetaModelAlgorithm::save(Advocate & adv) const
   PersistentObject::save(adv);
   adv.saveAttribute( "distribution_", distribution_ );
   adv.saveAttribute( "model_", model_ );
-
 }
 
 /* Method load() reloads the object from the StorageManager */

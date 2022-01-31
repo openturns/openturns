@@ -37,12 +37,10 @@ MetaModelResult::MetaModelResult()
 }
 
 /* Standard constructor */
-MetaModelResult::MetaModelResult(const Function & model,
-                                 const Function & metaModel,
+MetaModelResult::MetaModelResult(const Function & metaModel,
                                  const Point & residuals,
                                  const Point & relativeErrors)
   : PersistentObject()
-  , model_(model)
   , metaModel_(metaModel)
   , residuals_(residuals)
   , relativeErrors_(relativeErrors)
@@ -57,14 +55,15 @@ MetaModelResult * MetaModelResult::clone() const
 }
 
 /* Model accessor */
-void MetaModelResult::setModel(const Function & model)
+void MetaModelResult::setModel(const Function &)
 {
-  model_ = model;
+  LOGWARN(OSS() << "MetaModelResult.setModel is deprecated");
 }
 
 Function MetaModelResult::getModel() const
 {
-  return model_;
+  LOGWARN(OSS() << "MetaModelResult.getModel is deprecated");
+  return Function();
 }
 
 /* MetaModel accessor */
@@ -104,8 +103,7 @@ Point MetaModelResult::getRelativeErrors() const
 String MetaModelResult::__repr__() const
 {
   OSS oss;
-  oss << "model=" << model_
-      << " metaModel=" << metaModel_
+  oss << "metaModel=" << metaModel_
       << " residuals=" << residuals_
       << " relativeErrors=" << relativeErrors_;
   return oss;
@@ -115,7 +113,6 @@ String MetaModelResult::__repr__() const
 void MetaModelResult::save(Advocate & adv) const
 {
   PersistentObject::save(adv);
-  adv.saveAttribute( "model_", model_ );
   adv.saveAttribute( "metaModel_", metaModel_ );
   adv.saveAttribute( "residuals_", residuals_ );
   adv.saveAttribute( "relativeErrors_", relativeErrors_ );
@@ -125,7 +122,6 @@ void MetaModelResult::save(Advocate & adv) const
 void MetaModelResult::load(Advocate & adv)
 {
   PersistentObject::load(adv);
-  adv.loadAttribute( "model_", model_ );
   adv.loadAttribute( "metaModel_", metaModel_ );
   adv.loadAttribute( "residuals_", residuals_ );
   adv.loadAttribute( "relativeErrors_", relativeErrors_ );

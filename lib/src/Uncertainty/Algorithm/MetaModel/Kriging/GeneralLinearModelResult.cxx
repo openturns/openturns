@@ -50,7 +50,7 @@ GeneralLinearModelResult::GeneralLinearModelResult(const Sample & inputSample,
     const PointCollection & trendCoefficients,
     const CovarianceModel & covarianceModel,
     const Scalar optimalLogLikelihood)
-  : MetaModelResult(DatabaseFunction(inputSample, outputSample), metaModel, residuals, relativeErrors)
+  : MetaModelResult(metaModel, residuals, relativeErrors)
   , inputData_(inputSample)
   , basis_(basis)
   , beta_(trendCoefficients)

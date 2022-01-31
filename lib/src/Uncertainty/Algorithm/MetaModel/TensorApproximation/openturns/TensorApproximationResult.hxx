@@ -59,7 +59,6 @@ public:
   TensorApproximationResult(const Distribution & distribution,
                             const Function & transformation,
                             const Function & inverseTransformation,
-                            const Function & composedModel,
                             const Collection<CanonicalTensorEvaluation> & tensorCollection,
                             const Point & residuals,
                             const Point & relativeErrors);
@@ -80,7 +79,7 @@ public:
   /** InverseIsoProbabilisticTransformation accessor */
   virtual Function getInverseTransformation() const;
 
-  /** Composed model accessor */
+  /** @deprecated Composed model accessor */
   virtual Function getComposedModel() const;
 
   /** Composed meta model accessor */
