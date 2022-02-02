@@ -5,7 +5,8 @@ In this example we perform the selection of the most suitable function basis for
 
 We consider te so-called Linthurst data set, which contains measures of aerial biomass (BIO) as well as 5 five physicochemical properties of the soil: salinity (SAL), pH, K, Na, and Zn.
 
-The data set is taken from the book '*Applied Regression Analysis, A Research Tool*' by John O. Rawlings, Sastry G. Pantula and David A. Dickey and is provided below:
+The data set is taken from the book [rawlings2001]_
+and is provided below:
 """
 
 # %%
