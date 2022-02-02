@@ -3,13 +3,12 @@
 
 Implements generic estimation by method of moments.
 
-Available constructor:
-    MethodOfMomentsFactory(*distribution*)
-
 Parameters
 ----------
 distribution : :class:`~openturns.Distribution`
     The distribution defining the parametric model to be adjusted to data.
+bounds : :class:`~openturns.Interval`, optional
+    Parameter bounds
 
 Notes
 -----
@@ -34,6 +33,12 @@ Examples
 >>> distribution = ot.Normal(0.9, 1.7)
 >>> sample = distribution.getSample(10)
 >>> factory = ot.MethodOfMomentsFactory(ot.Normal())
+>>> inf_distribution = factory.build(sample)
+
+With parameter bounds:
+
+>>> bounds = ot.Interval([0.8, 1.6], [1.0, 1.8])
+>>> factory = ot.MethodOfMomentsFactory(ot.Normal(), bounds)
 >>> inf_distribution = factory.build(sample)"
 
 // ---------------------------------------------------------------------
