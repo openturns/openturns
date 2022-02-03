@@ -27,7 +27,7 @@
 === Miscellaneous ===
 
 === Bug fixes ===
-
+* #1947 (The constructor of FunctionalChaosResult is undocumented)
 
 == 1.18 release (2021-11-10) == #release-1.18
 
