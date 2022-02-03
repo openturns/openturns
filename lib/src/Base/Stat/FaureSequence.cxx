@@ -29,8 +29,8 @@ CLASSNAMEINIT(FaureSequence)
 static const Factory<FaureSequence> Factory_FaureSequence;
 
 /* Constructor with parameters */
-FaureSequence::FaureSequence(const UnsignedInteger dimension) :
-  LowDiscrepancySequenceImplementation(dimension)
+FaureSequence::FaureSequence(const UnsignedInteger dimension)
+  : LowDiscrepancySequenceImplementation(dimension)
 {
   initialize(dimension);
 }
@@ -46,9 +46,8 @@ FaureSequence * FaureSequence::clone() const
 /* Initialize the sequence */
 void FaureSequence::initialize(const UnsignedInteger dimension)
 {
-  if (!(dimension > 0)) throw InvalidArgumentException(HERE) << "Dimension must be > 0.";
-  dimension_ = dimension;
-  modulus_ = ComputeNextPrimeNumber(dimension);
+  LowDiscrepancySequenceImplementation::initialize(dimension);
+  modulus_ = GetNextPrimeNumber(dimension_);
   modulusInverse_ = 1.0 / modulus_;
   // Initialize the seed at a value large enough to avoid some of the correlation problems
   seed_ = ResourceMap::GetAsUnsignedInteger("FaureSequence-InitialSeed");
@@ -126,7 +125,6 @@ String FaureSequence::__repr__() const
 {
   OSS oss;
   oss << "class=" << FaureSequence::GetClassName()
-      << " derived from " << LowDiscrepancySequenceImplementation::__repr__()
       << " modulus=" << modulus_
       << " seed=" << seed_;
   return oss;
@@ -192,7 +190,6 @@ void FaureSequence::save(Advocate & adv) const
 void FaureSequence::load(Advocate & adv)
 {
   LowDiscrepancySequenceImplementation::load(adv);
-  initialize(dimension_);
   adv.loadAttribute( "coefficients_", coefficients_);
   adv.loadAttribute( "modulus_", modulus_);
   adv.loadAttribute( "modulusInverse_", modulusInverse_);

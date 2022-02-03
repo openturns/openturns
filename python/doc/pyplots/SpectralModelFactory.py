@@ -25,7 +25,7 @@ mySegmentNumber = 10
 myOverlapSize = 0.3
 
 # Build a spectral model factory
-myFactory = ot.WelchFactory(ot.Hanning(), mySegmentNumber, myOverlapSize)
+myFactory = ot.WelchFactory(ot.Hann(), mySegmentNumber, myOverlapSize)
 
 # Estimation on a TimeSeries or on a ProcessSample
 # myEstimatedModel_TS = myFactory.build(myTimeSeries)

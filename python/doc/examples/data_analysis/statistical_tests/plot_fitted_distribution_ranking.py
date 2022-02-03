@@ -35,7 +35,8 @@ factories = [ot.BetaFactory(), ot.TriangularFactory()]
 
 # %%
 # Rank the continuous models by the Lilliefors p-values:
-estimated_distribution, test_result = ot.FittingTest.BestModelLilliefors(sample, factories)
+estimated_distribution, test_result = ot.FittingTest.BestModelLilliefors(
+    sample, factories)
 test_result
 
 # %%
@@ -59,7 +60,8 @@ distributions = [ot.Beta(2.0, 2.0, 0.0, 1.0), ot.Triangular(0.0, 0.5, 1.0)]
 
 # %%
 # Rank the continuous models by the Kolmogorov p-values:
-estimated_distribution, test_result = ot.FittingTest.BestModelKolmogorov(sample, distributions)
+estimated_distribution, test_result = ot.FittingTest.BestModelKolmogorov(
+    sample, distributions)
 test_result
 
 # %%
@@ -90,7 +92,8 @@ distributions = [ot.Poisson(2.0), ot.Geometric(0.1)]
 
 # %%
 # Rank the discrete models wrt the ChiSquared p-values:
-estimated_distribution, test_result = ot.FittingTest.BestModelChiSquared(sample, distributions)
+estimated_distribution, test_result = ot.FittingTest.BestModelChiSquared(
+    sample, distributions)
 test_result
 
 # %%

@@ -32,11 +32,13 @@ import openturns.viewer as viewer
 import numpy as np
 ot.Log.Show(ot.Log.NONE)
 
+
 def rastriginPy(X):
     A = 10.0
     delta = [x**2 - A * np.cos(2 * np.pi * x) for x in X]
     y = A + sum(delta)
     return [y]
+
 
 dim = 2
 rastrigin = ot.PythonFunction(dim, 1, rastriginPy)
@@ -70,7 +72,8 @@ bounds = ot.Interval(lowerbound, upperbound)
 # %%
 graph = rastrigin.draw(lowerbound, upperbound, [100]*dim)
 graph.setTitle("Rastrigin function")
-view = viewer.View(graph, legend_kw={'bbox_to_anchor':(1,1), 'loc':"upper left"})
+view = viewer.View(graph, legend_kw={
+                   'bbox_to_anchor': (1, 1), 'loc': "upper left"})
 view.getFigure().tight_layout()
 
 # %%
@@ -88,8 +91,10 @@ problem = ot.OptimizationProblem(rastrigin)
 
 # %%
 size = 64
-distribution = ot.ComposedDistribution([ot.Uniform(lowerbound[0], upperbound[0])] * dim)
-experiment = ot.LowDiscrepancyExperiment(ot.SobolSequence(), distribution, size)
+distribution = ot.ComposedDistribution(
+    [ot.Uniform(lowerbound[0], upperbound[0])] * dim)
+experiment = ot.LowDiscrepancyExperiment(
+    ot.SobolSequence(), distribution, size)
 solver = ot.MultiStart(ot.Cobyla(problem), experiment.generate())
 
 # %%
@@ -149,7 +154,8 @@ cloud = ot.Cloud(inputSample)
 cloud.setPointStyle("bullet")
 cloud.setColor("black")
 graph.add(cloud)
-view = viewer.View(graph, legend_kw={'bbox_to_anchor':(1,1), 'loc':"upper left"})
+view = viewer.View(graph, legend_kw={
+                   'bbox_to_anchor': (1, 1), 'loc': "upper left"})
 view.getFigure().tight_layout()
 
 # %%
@@ -174,7 +180,8 @@ cloud = ot.Cloud(inputSample)
 cloud.setPointStyle("bullet")
 cloud.setColor("black")
 graph.add(cloud)
-view = viewer.View(graph, legend_kw={'bbox_to_anchor':(1,1), 'loc':"upper left"})
+view = viewer.View(graph, legend_kw={
+                   'bbox_to_anchor': (1, 1), 'loc': "upper left"})
 view.getFigure().tight_layout()
 
 # %%

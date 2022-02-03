@@ -23,11 +23,11 @@ Link to a computer code with coupling tools
 # * `execute`: executes an external computer code,
 # * `get` (and `get_line_col`): reads values from a file.
 #
-# Moreover, the `coupling_tools` module can be useful outside the library, for example to evaluate a design of experiments on a cluster. 
+# Moreover, the `coupling_tools` module can be useful outside the library, for example to evaluate a design of experiments on a cluster.
 #
 # There are several advantages over basic Python scripting while using the module.
 #
-# * It is much simpler than using regular expressions. 
+# * It is much simpler than using regular expressions.
 # * Skipping lines, columns or text blocks is allowed.
 #
 # It is easy to use if the input or output files are based on structured text files. With a little more Python scripting, it is even possible to parallelize it.
@@ -65,11 +65,11 @@ code = '''
 import sys
 inFile = sys.argv[1]
 exec(open(inFile).read())
- 
+
 # 2. Compute
 Y0 = X0 + X1 + X2
 Y1 = X0 + X1 * X2
- 
+
 # 3. Write output
 f = open("output.txt", "w")
 f.write("Y0=%.17e\\n" % (Y0))
@@ -83,7 +83,7 @@ f.write(code)
 f.close()
 
 # %%
-# Let us see the content of the `input.txt` file: the content is in Python format, so that reading the file is easier. 
+# Let us see the content of the `input.txt` file: the content is in Python format, so that reading the file is easier.
 
 # %%
 content = '''
@@ -128,25 +128,25 @@ f.close()
 
 
 # %%
-# The simulator is implemented this way: 
+# The simulator is implemented this way:
 #
-# * we first use the `replace` function in order to generate the actual input file, 
+# * we first use the `replace` function in order to generate the actual input file,
 # * then we evaluate the external computer code with a system command with the `execute` function,
 # * and we read the output file with the `get` function.
 
 # %%
-def mySimulator ( X ):
+def mySimulator(X):
     # 1. Create input file
-    infile ="input_template.txt"
+    infile = "input_template.txt"
     outfile = "input.txt"
-    tokens =["@X0","@X1","@X2"]
-    ct.replace (infile , outfile ,tokens ,X)
+    tokens = ["@X0", "@X1", "@X2"]
+    ct.replace(infile, outfile, tokens, X)
     # 2. Compute
     program = sys.executable + " external_program.py"
-    cmd = program +" "+ outfile
-    ct.execute (cmd)
+    cmd = program + " " + outfile
+    ct.execute(cmd)
     # 3. Parse output file
-    Y = ct.get ("output.txt", tokens =["Y0=","Y1="])
+    Y = ct.get("output.txt", tokens=["Y0=", "Y1="])
     return Y
 
 
@@ -154,13 +154,13 @@ def mySimulator ( X ):
 # In order to create the function, we simply use the `PythonFunction` class.
 
 # %%
-myWrapper = ot.PythonFunction (3 ,2 , mySimulator )
+myWrapper = ot.PythonFunction(3, 2, mySimulator)
 
 # %%
 # We can check that this function can be evaluated.
 
 # %%
-X = [1.2 , 45, 91.8]
+X = [1.2, 45, 91.8]
 Y = myWrapper(X)
 print(Y)
 
@@ -180,17 +180,17 @@ print(Y)
 # * `values` is a list of N items (strings, floats, etc...), the values to replace.
 
 # %%
-X = [1.2 , 45, 91.8]
-infile ="input_template.txt"
-outfile ="input.txt"
-tokens =["@X0", "@X1", "@X2"]
-ct.replace (infile , outfile , tokens , X)
+X = [1.2, 45, 91.8]
+infile = "input_template.txt"
+outfile = "input.txt"
+tokens = ["@X0", "@X1", "@X2"]
+ct.replace(infile, outfile, tokens, X)
 
 # %%
 # To see the change, let us look at the `input.txt` file.
 
 # %%
-f = open("input.txt", "r") 
+f = open("input.txt", "r")
 print(f.read())
 
 # %%
@@ -233,5 +233,5 @@ f.close()
 # We want to read the number `9`.
 
 # %%
-Y = ct.get_value ("results.txt" , skip_line = 1, skip_col = 2)
+Y = ct.get_value("results.txt", skip_line=1, skip_col=2)
 Y

@@ -30,7 +30,11 @@ for x in [-4.0, 4.0, 9.0]:
             continue
         print('x=', x, 'n=', n, 'iroot=',  ot.SpecFunc.IRoot(x, n))
 
-print('ibeta(2.0, 0.0, 0.95)=', ot.SpecFunc.RegularizedIncompleteBeta(2.0, 0.0, 0.95))
-print('ibeta(0.0, 1.0, 0.95)=', ot.SpecFunc.RegularizedIncompleteBeta(0.0, 1.0, 0.95))
-print('ibeta(2.0, 0.0, 0.95, tail)=', ot.SpecFunc.RegularizedIncompleteBeta(2.0, 0.0, 0.95, True))
-print('ibeta(0.0, 1.0, 0.95, tail)=', ot.SpecFunc.RegularizedIncompleteBeta(0.0, 1.0, 0.95, True))
+print('ibeta(2.0, 0.0, 0.95)=',
+      ot.SpecFunc.RegularizedIncompleteBeta(2.0, 0.0, 0.95))
+print('ibeta(0.0, 1.0, 0.95)=',
+      ot.SpecFunc.RegularizedIncompleteBeta(0.0, 1.0, 0.95))
+print('ibeta(2.0, 0.0, 0.95, tail)=',
+      ot.SpecFunc.RegularizedIncompleteBeta(2.0, 0.0, 0.95, True))
+print('ibeta(0.0, 1.0, 0.95, tail)=',
+      ot.SpecFunc.RegularizedIncompleteBeta(0.0, 1.0, 0.95, True))

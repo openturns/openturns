@@ -21,6 +21,7 @@
 
 #include "openturns/InverseBoxCoxEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -117,7 +118,7 @@ struct InverseBoxCoxEvaluationComputeSamplePolicy
     , evaluation_(evaluation)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
@@ -139,7 +140,7 @@ Sample InverseBoxCoxEvaluation::operator() (const Sample & inS) const
   const UnsignedInteger size = inS.getSize();
   Sample result(size, getInputDimension());
   const InverseBoxCoxEvaluationComputeSamplePolicy policy( inS, result, *this );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   callsNumber_.fetchAndAdd(size);
   result.setDescription(getOutputDescription());
   return result;

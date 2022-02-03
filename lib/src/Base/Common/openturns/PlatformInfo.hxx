@@ -21,7 +21,9 @@
 #ifndef OPENTURNS_PLATFORMINFO_HXX
 #define OPENTURNS_PLATFORMINFO_HXX
 
+#include <map>
 #include "openturns/OTprivate.hxx"
+#include "openturns/Description.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -65,13 +67,15 @@ public:
    */
   static void SetNumericalPrecision(SignedInteger precision);
 
-  /** Set two digit exponent format */
-  static void SetTwoDigitExponent(const Bool enable = true);
+  /** Features accessor */
+  static Description GetFeatures();
+  static Bool HasFeature(const String & feature);
 
 private:
 
   PlatformInfo();
 
+  static std::map<String, Bool> Features_;
 
 }; /* class PlatformInfo */
 

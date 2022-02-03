@@ -1,4 +1,4 @@
-%feature("docstring") OT::AdaptiveDirectionalSampling
+%feature("docstring") OT::AdaptiveDirectionalStratification
 "Adaptative directional simulation.
 
 Parameters
@@ -144,7 +144,7 @@ EventSimulation"
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::AdaptiveDirectionalSampling::getRootStrategy
+%feature("docstring") OT::AdaptiveDirectionalStratification::getRootStrategy
 "Get the root strategy.
 
 Returns
@@ -154,7 +154,7 @@ strategy : :class:`~openturns.RootStrategy`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::AdaptiveDirectionalSampling::setRootStrategy
+%feature("docstring") OT::AdaptiveDirectionalStratification::setRootStrategy
 "Set the root strategy.
 
 Parameters
@@ -164,7 +164,7 @@ strategy : :class:`~openturns.RootStrategy`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::AdaptiveDirectionalSampling::getSamplingStrategy
+%feature("docstring") OT::AdaptiveDirectionalStratification::getSamplingStrategy
 "Get the direction sampling strategy.
 
 Returns
@@ -174,7 +174,7 @@ strategy : :class:`~openturns.SamplingStrategy`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::AdaptiveDirectionalSampling::setSamplingStrategy
+%feature("docstring") OT::AdaptiveDirectionalStratification::setSamplingStrategy
 "Set the direction sampling strategy.
 
 Parameters
@@ -184,7 +184,7 @@ strategy : :class:`~openturns.SamplingStrategy`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::AdaptiveDirectionalSampling::setPartialStratification
+%feature("docstring") OT::AdaptiveDirectionalStratification::setPartialStratification
 "Partial stratification accessor.
 
 Parameters
@@ -194,7 +194,7 @@ partialStratification : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::AdaptiveDirectionalSampling::getPartialStratification
+%feature("docstring") OT::AdaptiveDirectionalStratification::getPartialStratification
 "Partial stratification accessor.
 
 Returns
@@ -204,7 +204,7 @@ partialStratification : bool
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::AdaptiveDirectionalSampling::setQuadrantOrientation
+%feature("docstring") OT::AdaptiveDirectionalStratification::setQuadrantOrientation
 "Quadrant orientation accessor.
 
 Parameters
@@ -214,7 +214,7 @@ orientation : sequence of float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::AdaptiveDirectionalSampling::getQuadrantOrientation
+%feature("docstring") OT::AdaptiveDirectionalStratification::getQuadrantOrientation
 "Quadrant orientation accessor.
 
 Returns
@@ -224,7 +224,7 @@ orientation : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::AdaptiveDirectionalSampling::setMaximumStratificationDimension
+%feature("docstring") OT::AdaptiveDirectionalStratification::setMaximumStratificationDimension
 "Maximum stratification dimension accessor.
 
 Parameters
@@ -234,7 +234,7 @@ max : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::AdaptiveDirectionalSampling::getMaximumStratificationDimension
+%feature("docstring") OT::AdaptiveDirectionalStratification::getMaximumStratificationDimension
 "Maximum stratification dimension accessor.
 
 Returns
@@ -244,7 +244,7 @@ max : int
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::AdaptiveDirectionalSampling::setGamma
+%feature("docstring") OT::AdaptiveDirectionalStratification::setGamma
 "Gamma accessor.
 
 The computational budget per step :math:`\gamma_l`.
@@ -256,7 +256,7 @@ gamma : sequence of float
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::AdaptiveDirectionalSampling::getGamma
+%feature("docstring") OT::AdaptiveDirectionalStratification::getGamma
 "Gamma accessor.
 
 The computational budget per step :math:`\gamma_l`.
@@ -268,7 +268,7 @@ gamma : :class:`~openturns.Point`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::AdaptiveDirectionalSampling::getTStatistic
+%feature("docstring") OT::AdaptiveDirectionalStratification::getTStatistic
 "T statistic accessor.
 
 The statistic :math:`\tilde T_k` aggregates the sensitivity of expectation.

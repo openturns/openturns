@@ -25,7 +25,7 @@
 #include "openturns/Function.hxx"
 #include "openturns/Drawable.hxx"
 #include "openturns/NonStationaryCovarianceModelFactory.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 #include "openturns/Os.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -370,7 +370,7 @@ struct ComputeQuantilePerComponentPolicy
     , beta_(beta)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     Point::iterator it = contiguous_.begin() + r.begin() * size_;
     SampleImplementation::data_iterator resultIt = output_.data_begin() + r.begin();
@@ -448,7 +448,7 @@ Field ProcessSampleImplementation::computeQuantilePerComponent(const Scalar prob
 
   SampleImplementation result(length, dimension);
   const ComputeQuantilePerComponentPolicy policy( contiguous, result, size, index, beta);
-  TBB::ParallelFor( 0, sampleSize, policy );
+  TBBImplementation::ParallelFor( 0, sampleSize, policy );
   return Field(mesh_, result);
 }
 
@@ -498,7 +498,7 @@ ProcessSampleImplementation ProcessSampleImplementation::computeQuantilePerCompo
       index = 0;
     }
     const ComputeQuantilePerComponentPolicy policy( contiguous, output, size, index, beta);
-    TBB::ParallelFor( 0, sampleSize, policy );
+    TBBImplementation::ParallelFor( 0, sampleSize, policy );
     result.add(output);
   }
   return result;

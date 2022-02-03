@@ -2,11 +2,12 @@
 Validate a polynomial chaos
 ===========================
 """
-# %% 
+# %%
 #
 # In this example, we show how to perform the draw validation of a polynomial chaos for the :ref:`Ishigami function <use-case-ishigami>`.
 
 # %%
+from openturns.usecases import ishigami_function as ishigami_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -19,7 +20,6 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the Ishigami test function from the usecases module :
-from openturns.usecases import ishigami_function as ishigami_function
 im = ishigami_function.IshigamiModel()
 
 # %%
@@ -28,7 +28,7 @@ im = ishigami_function.IshigamiModel()
 input_names = im.distributionX.getDescription()
 
 # %%
-N = 100 
+N = 100
 inputTrain = im.distributionX.getSample(N)
 outputTrain = im.model(inputTrain)
 
@@ -37,7 +37,7 @@ outputTrain = im.model(inputTrain)
 # ----------------
 
 # %%
-# We could use only the input and output training samples: in this case, the distribution of the input sample is computed by selecting the best distribution that fits the data. 
+# We could use only the input and output training samples: in this case, the distribution of the input sample is computed by selecting the best distribution that fits the data.
 
 # %%
 chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain)
@@ -46,7 +46,8 @@ chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain)
 # Since the input distribution is known in our particular case, we instead create the multivariate basis from the distribution, that is three independent variables X1, X2 and X3.
 
 # %%
-multivariateBasis = ot.OrthogonalProductPolynomialFactory([im.X1, im.X2, im.X3])
+multivariateBasis = ot.OrthogonalProductPolynomialFactory(
+    [im.X1, im.X2, im.X3])
 totalDegree = 8
 enumfunc = multivariateBasis.getEnumerateFunction()
 P = enumfunc.getStrataCumulatedCardinal(totalDegree)
@@ -54,10 +55,12 @@ adaptiveStrategy = ot.FixedStrategy(multivariateBasis, P)
 
 # %%
 selectionAlgorithm = ot.LeastSquaresMetaModelSelectionFactory()
-projectionStrategy = ot.LeastSquaresStrategy(inputTrain, outputTrain, selectionAlgorithm)
+projectionStrategy = ot.LeastSquaresStrategy(
+    inputTrain, outputTrain, selectionAlgorithm)
 
 # %%
-chaosalgo = ot.FunctionalChaosAlgorithm(inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy)
+chaosalgo = ot.FunctionalChaosAlgorithm(
+    inputTrain, outputTrain, im.distributionX, adaptiveStrategy, projectionStrategy)
 
 # %%
 chaosalgo.run()

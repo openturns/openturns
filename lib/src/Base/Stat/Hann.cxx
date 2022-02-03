@@ -18,50 +18,50 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-#include "openturns/Hanning.hxx"
+#include "openturns/Hann.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
 /**
- * @class Hanning
+ * @class Hann
  */
 
-CLASSNAMEINIT(Hanning)
+CLASSNAMEINIT(Hann)
 
-static const Factory<Hanning> Factory_Hanning;
+static const Factory<Hann> Factory_Hann;
 
 /* Constructor with parameters */
-Hanning::Hanning()
+Hann::Hann()
   : FilteringWindowsImplementation()
 {
   // Nothing to do
 }
 
 /* Virtual constructor */
-Hanning * Hanning::clone() const
+Hann * Hann::clone() const
 {
-  return new Hanning(*this);
+  return new Hann(*this);
 }
 
 /* String converter */
-String Hanning::__repr__() const
+String Hann::__repr__() const
 {
   OSS oss(true);
-  oss << "class=" << Hanning::GetClassName();
+  oss << "class=" << Hann::GetClassName();
   return oss;
 }
 
 /* String converter */
-String Hanning::__str__(const String & ) const
+String Hann::__str__(const String & ) const
 {
   OSS oss(false);
-  oss << "class=" << Hanning::GetClassName();
+  oss << "class=" << Hann::GetClassName();
   return oss;
 }
 
-/* Evaluation of Hanning filter */
-Scalar Hanning::operator()(const Scalar t) const
+/* Evaluation of Hann filter */
+Scalar Hann::operator()(const Scalar t) const
 {
   if ((t <= 0.0) || (t >= 1.0))
     return 0.0;
@@ -71,13 +71,13 @@ Scalar Hanning::operator()(const Scalar t) const
 }
 
 /* Method save() stores the object through the StorageManager */
-void Hanning::save(Advocate & adv) const
+void Hann::save(Advocate & adv) const
 {
   FilteringWindowsImplementation::save(adv);
 }
 
 /* Method load() reloads the object from the StorageManager */
-void Hanning::load(Advocate & adv)
+void Hann::load(Advocate & adv)
 {
   FilteringWindowsImplementation::load(adv);
 }

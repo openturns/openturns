@@ -1,3 +1,20 @@
+openturns (1.18-1) unstable; urgency=low
+
+  [ Julien Schueller ]
+
+  * New upstream release.
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 8 Nov 2021 13:14:47 +0100
+
+openturns (1.18~rc1-1) unstable; urgency=low
+
+  [ Julien Schueller ]
+
+  * New upstream pre-release.
+  * debian/control: Add primesieve dependency
+
+ -- Denis Barbier <barbier@debian.org>  Mon, 19 Apr 2021 13:14:47 +0200
+
 openturns (1.17-1) unstable; urgency=low
 
   [ Julien Schueller ]

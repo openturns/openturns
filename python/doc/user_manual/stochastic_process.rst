@@ -81,7 +81,7 @@ Spectral information
 
     :template: FilteringWindow.rst_t
 
-    Hanning
+    Hann
     Hamming
 
 Gaussian process

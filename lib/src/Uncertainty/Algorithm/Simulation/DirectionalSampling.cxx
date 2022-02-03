@@ -43,7 +43,7 @@ DirectionalSampling::DirectionalSampling()
   , standardFunction_(standardEvent_.getImplementation()->getFunction())
   , inputDistribution_(standardEvent_.getImplementation()->getAntecedent().getDistribution())
 {
-  // Nothing to do
+  samplingStrategy_ = SamplingStrategy(inputDistribution_.getDimension());
 }
 
 /* Constructor with parameters */

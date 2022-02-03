@@ -183,7 +183,7 @@ prob_min : float
 
 // ---------------------------------------------------------------------------
 
-%feature("docstring") OT::SubsetSampling::getNumberOfSteps
+%feature("docstring") OT::SubsetSampling::getStepsNumber
 "Subset steps number accessor.
 
 Returns

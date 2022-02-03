@@ -495,7 +495,7 @@ Scalar SubsetSampling::getMinimumProbability() const
 }
 
 
-UnsignedInteger SubsetSampling::getNumberOfSteps()
+UnsignedInteger SubsetSampling::getStepsNumber()
 {
   return numberOfSteps_;
 }

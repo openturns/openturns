@@ -150,6 +150,24 @@ Sample CovarianceModel::discretizeRow(const Sample & vertices,
   return getImplementation()->discretizeRow(vertices, p);
 }
 
+Matrix CovarianceModel::computeCrossCovariance(const Sample &firstSample,
+    const Sample &secondSample) const
+{
+  return getImplementation()->computeCrossCovariance(firstSample, secondSample);
+}
+
+Matrix CovarianceModel::computeCrossCovariance(const Sample &sample,
+    const Point &point) const
+{
+  return getImplementation()->computeCrossCovariance(sample, point);
+}
+
+Matrix CovarianceModel::computeCrossCovariance(const Point &point,
+    const Sample &sample) const
+{
+  return getImplementation()->computeCrossCovariance(point, sample);
+}
+
 /** Discretize and factorize the covariance function on a given TimeGrid/Mesh */
 TriangularMatrix CovarianceModel::discretizeAndFactorize(const RegularGrid & timeGrid) const
 {

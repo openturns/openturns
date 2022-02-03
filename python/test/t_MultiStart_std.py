@@ -24,10 +24,12 @@ solver.setStartingPoint([0.0] * dim)
 algo = solver
 algo.run()
 result = algo.getResult()
-local_optimal_point = [0.296446,0.320196]
+local_optimal_point = [0.296446, 0.320196]
 local_optimal_value = [-0.0649359]
-ott.assert_almost_equal(result.getOptimalPoint(), local_optimal_point, 1e-5, 0.0)
-ott.assert_almost_equal(result.getOptimalValue(), local_optimal_value, 1e-5, 0.0)
+ott.assert_almost_equal(result.getOptimalPoint(),
+                        local_optimal_point, 1e-5, 0.0)
+ott.assert_almost_equal(result.getOptimalValue(),
+                        local_optimal_value, 1e-5, 0.0)
 
 
 # multistart
@@ -44,13 +46,15 @@ algo = ot.MultiStart(solver, startingSample)
 algo.setMaximumEvaluationNumber(2000)
 algo.run()
 result = algo.getResult()
-true_optimal_point = [0.228279,-1.62553]
+true_optimal_point = [0.228279, -1.62553]
 true_optimal_value = [-6.55113]
-ott.assert_almost_equal(result.getOptimalPoint(), true_optimal_point, 1e-5, 0.0)
-ott.assert_almost_equal(result.getOptimalValue(), true_optimal_value, 1e-5, 0.0)
+ott.assert_almost_equal(result.getOptimalPoint(),
+                        true_optimal_point, 1e-5, 0.0)
+ott.assert_almost_equal(result.getOptimalValue(),
+                        true_optimal_value, 1e-5, 0.0)
 n_local_results = algo.getResultCollection().getSize()
-assert n_local_results==13, "n_local_results is wrong"
+assert n_local_results == 13, "n_local_results is wrong"
 algo.setKeepResults(False)
 algo.run()
 n_local_results_nokeep = algo.getResultCollection().getSize()
-assert n_local_results_nokeep==0 , "n_local_results_nokeep is wrong"
+assert n_local_results_nokeep == 0, "n_local_results_nokeep is wrong"

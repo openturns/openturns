@@ -37,11 +37,13 @@ print(myDistribution.getActualDistribution())
 # %%
 # We draw its PDF and CDF :
 graphPDF = myDistribution.drawPDF()
-graphPDF.setTitle(r"PDF of the GEV with parameters $\mu = 0.0$, $\sigma = 1.0$ and $\xi = 0.0$ ")
+graphPDF.setTitle(
+    r"PDF of the GEV with parameters $\mu = 0.0$, $\sigma = 1.0$ and $\xi = 0.0$ ")
 view = otv.View(graphPDF)
 
 graphCDF = myDistribution.drawCDF()
-graphCDF.setTitle(r"CDF of the GEV with parameters $\mu = 0.0$, $\sigma = 1.0$ and $\xi = 0.0$ ")
+graphCDF.setTitle(
+    r"CDF of the GEV with parameters $\mu = 0.0$, $\sigma = 1.0$ and $\xi = 0.0$ ")
 view = otv.View(graphCDF)
 
 # %%
@@ -50,18 +52,20 @@ view = otv.View(graphCDF)
 #
 # In this paragraph we turn to the definition of a :class:`~openturns.GeneralizedPareto` distribution.
 # For instance we build a generalized Pareto distribution with parameters :math:`\sigma = 1.0`, :math:`\xi = 0.0` and :math:`u = 0.0` :
-# 
+#
 myGPD = ot.GeneralizedPareto(1.0, 0.0, 0.0)
 
 # %%
 # We draw its PDF and CDF :
 graphPDF = myGPD.drawPDF()
-graphPDF.setTitle(r"PDF of the GPD with parameters $\sigma = 1.0$, $\xi = 0.0$ and $u = 0.0$ ")
+graphPDF.setTitle(
+    r"PDF of the GPD with parameters $\sigma = 1.0$, $\xi = 0.0$ and $u = 0.0$ ")
 view = otv.View(graphPDF)
 
-#%%
+# %%
 graphCDF = myGPD.drawCDF()
-graphCDF.setTitle(r"CDF of the GPD with parameters $\sigma = 1.0$, $\xi = 0.0$ and $u = 0.0$ ")
+graphCDF.setTitle(
+    r"CDF of the GPD with parameters $\sigma = 1.0$, $\xi = 0.0$ and $u = 0.0$ ")
 view = otv.View(graphCDF)
 
 # %%

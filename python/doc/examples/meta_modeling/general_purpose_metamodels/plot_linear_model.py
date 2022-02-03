@@ -4,7 +4,7 @@ Create a linear model
 In this example we create a surrogate model using linear model approximation.
 """
 # %%
-# The following 2-dimensional function is used in this example 
+# The following 2-dimensional function is used in this example
 # :math:`h(x,y) = 2x - y + 3 + 0.05 \sin(0.8x)`.
 #
 
@@ -16,12 +16,12 @@ import openturns.viewer as viewer
 # Generation of the data set
 # --------------------------
 #
-# We first generate the data and we add noise to the output observations: 
+# We first generate the data and we add noise to the output observations:
 
 # %%
 ot.RandomGenerator.SetSeed(0)
 distribution = ot.Normal(2)
-distribution.setDescription(['x','y'])
+distribution.setDescription(['x', 'y'])
 func = ot.SymbolicFunction(['x', 'y'], ['2 * x - y + 3 + 0.05 * sin(0.8*x)'])
 input_sample = distribution.getSample(30)
 epsilon = ot.Normal(0, 0.1).getSample(30)
@@ -66,14 +66,14 @@ print(result.getNoiseDistribution())
 # ANOVA table
 # -----------
 #
-# In order to post-process the linear regression results, the `LinearModelAnalysis` class can be used: 
+# In order to post-process the linear regression results, the `LinearModelAnalysis` class can be used:
 
 # %%
 analysis = ot.LinearModelAnalysis(result)
 print(analysis)
 
 # %%
-# The results seem to indicate that the linear hypothesis can be accepted. Indeed, the `R-Squared` value is nearly `1`. Furthermore, the adjusted value, which takes into account the data set size and the number of hyperparameters, is similar to `R-Squared`. 
+# The results seem to indicate that the linear hypothesis can be accepted. Indeed, the `R-Squared` value is nearly `1`. Furthermore, the adjusted value, which takes into account the data set size and the number of hyperparameters, is similar to `R-Squared`.
 #
 # We can also notice that the `Fisher-Snedecor` and `Student` p-values detailed above are lower than 1%. This ensures an acceptable quality of the linear model.
 
@@ -141,4 +141,3 @@ alpha = 0.95
 interval = analysis.getCoefficientsConfidenceInterval(alpha)
 print("confidence intervals with level=%1.2f : " % (alpha))
 print("%s" % (interval))
-

@@ -80,8 +80,10 @@ print("error=", algo.getResult().getObservationsError())
 # test output at mean
 modelX.setParameter(algo.getResult().getParameterPrior().getMean())
 outputAtPriorMean = modelX(x)
-ott.assert_almost_equal(algo.getResult().getOutputAtPriorMean(), outputAtPriorMean)
+ott.assert_almost_equal(
+    algo.getResult().getOutputAtPriorMean(), outputAtPriorMean)
 
 modelX.setParameter(algo.getResult().getParameterPosterior().getMean())
 outputAtPosteriorMean = modelX(x)
-ott.assert_almost_equal(algo.getResult().getOutputAtPosteriorMean(), outputAtPosteriorMean)
+ott.assert_almost_equal(
+    algo.getResult().getOutputAtPosteriorMean(), outputAtPosteriorMean)

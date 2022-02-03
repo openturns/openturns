@@ -36,4 +36,3 @@ print("Default gamma=", estimatedGamma)
 estimatedGamma = factory.buildAsGamma(
     distribution.getParameter())
 print("Gamma from parameters=", estimatedGamma)
-

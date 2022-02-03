@@ -7,7 +7,6 @@ import openturns as ot
 import math as m
 
 
-
 def g(X):
     a = 20.0
     b = 0.2
@@ -48,7 +47,7 @@ class AckleyModel():
     upperbound : `Point` in dimension dim.
                  Default is +15.0 for each dimension.
 
-    x0 : `Point` 
+    x0 : `Point`
          The global minimum :math:`x_0 = 0 \in \mathbb{R}^{dim}`.
 
     Examples

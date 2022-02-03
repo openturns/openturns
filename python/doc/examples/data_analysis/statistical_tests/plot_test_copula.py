@@ -32,13 +32,14 @@ sample2.setName('sample2')
 
 # %%
 # We change the parameter for the evaluation of E(Wi) thanks to the `ResourceMap` :
-ot.ResourceMap.SetAsUnsignedInteger('VisualTest-KendallPlot-MonteCarloSize', 25)
+ot.ResourceMap.SetAsUnsignedInteger(
+    'VisualTest-KendallPlot-MonteCarloSize', 25)
 
 # %%
 # We can test a specific copula model for a given sample,
 copula_test = ot.GumbelCopula(3)
 graph = ot.VisualTest.DrawKendallPlot(sample1, copula_test)
-view =viewer.View(graph)
+view = viewer.View(graph)
 
 # %%
 # or test whether two samples have the same copula model
@@ -47,7 +48,6 @@ view = viewer.View(graph)
 
 # %%
 # The first test gives a positive result as the blue curve is near the identity line which is not the case for the second test.
-
 
 
 # %%
@@ -70,13 +70,15 @@ estimated = ot.ClaytonCopulaFactory().build(sample)
 
 # %%
 # We represent data as a cloud in the rank space :
-ranksTransf = ot.MarginalTransformationEvaluation(marginals, ot.MarginalTransformationEvaluation.FROM)
+ranksTransf = ot.MarginalTransformationEvaluation(
+    marginals, ot.MarginalTransformationEvaluation.FROM)
 rankSample = ranksTransf(sample)
 rankCloud = ot.Cloud(rankSample, 'blue', 'plus', 'sample')
 
 # %%
 # We can plot the graph with rank sample and estimated copula :
-myGraph = ot.Graph('Parametric estimation of the copula', 'X', 'Y', True, 'topleft')
+myGraph = ot.Graph('Parametric estimation of the copula',
+                   'X', 'Y', True, 'topleft')
 myGraph.setLegendPosition('bottomright')
 myGraph.add(rankCloud)
 
@@ -107,4 +109,3 @@ view = viewer.View(myGraph)
 # %%
 # Display figures
 plt.show()
-

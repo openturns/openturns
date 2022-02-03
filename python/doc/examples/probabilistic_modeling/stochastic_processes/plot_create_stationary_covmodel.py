@@ -7,7 +7,7 @@ Create a stationary covariance model
 #
 # .. math::
 #    \rho(\underline{s}, \underline{t} ) = e^{-\left\| \underline{s}- \underline{t} \right\|_2} \quad \forall (\underline{s}, \underline{t}) \in \mathcal{D}
-#   
+#
 # It is possible to define the exponential model from the spatial covariance matrix :math:`\underline{\underline{C}}^{spat}` rather than the correlation matrix :math:`\underline{\underline{R}}`:
 #
 # .. math::
@@ -17,7 +17,7 @@ Create a stationary covariance model
 #
 # .. math::
 #    \underline{\underline{A}} = \mbox{Diag}(a_1, \dots, a_d)
-#   
+#
 # We call :math:`\underline{a}` the amplitude vector and :math:`\underline{\lambda}` the scale vector.
 #
 # The library implements the multivariate exponential model thanks to the object *ExponentialModel* which is created from:

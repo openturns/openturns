@@ -119,7 +119,6 @@ ot_add_python_module(common common_module.i
                       Less.i Less_doc.i.in
                       LessOrEqual.i LessOrEqual_doc.i.in
                       Cache.i
-                      PlatformInfo.i PlatformInfo_doc.i.in
                       Pointer.i
                       InterfaceObject.i InterfaceObject_doc.i.in
                       TypedInterfaceObject.i
@@ -139,6 +138,7 @@ ot_add_python_module(typ typ_module.i
                       Collection.i Collection_doc.i.in
                       PersistentCollection.i
                       Description.i Description_doc.i.in
+                      PlatformInfo.i PlatformInfo_doc.i.in
                       Point.i Point_doc.i.in
                       PointWithDescription.i PointWithDescription_doc.i.in
                       DomainImplementation.i DomainImplementation_doc.i.in
@@ -191,7 +191,7 @@ ot_add_python_module(statistics statistics_module.i
                       FilteringWindowsImplementation.i FilteringWindowsImplementation_doc.i.in
                       FilteringWindows.i FilteringWindows_doc.i.in
                       Hamming.i Hamming_doc.i.in
-                      Hanning.i Hanning_doc.i.in
+                      Hann.i Hann_doc.i.in
                       FFTImplementation.i FFTImplementation_doc.i.in
                       FFT.i FFT_doc.i.in
                       SpectralModelImplementation.i SpectralModelImplementation_doc.i.in
@@ -331,6 +331,7 @@ ot_add_python_module(func func_module.i
                       KarhunenLoeveProjection.i KarhunenLoeveProjection_doc.i.in
                       KarhunenLoeveLifting.i KarhunenLoeveLifting_doc.i.in
                       IndicatorFunction.i IndicatorFunction_doc.i.in
+                      DistanceToDomainFunction.i DistanceToDomainFunction_doc.i.in
                       ValueFunction.i ValueFunction_doc.i.in
                       VertexValueFunction.i VertexValueFunction_doc.i.in
                       TranslationFunction.i TranslationFunction_doc.i.in
@@ -345,6 +346,7 @@ ot_add_python_module(func func_module.i
                       DatabaseFunction.i DatabaseFunction_doc.i.in
                       DatabaseEvaluation.i DatabaseEvaluation_doc.i.in
                       IndicatorEvaluation.i
+                      DistanceToDomainEvaluation.i
                       PiecewiseLinearEvaluation.i PiecewiseLinearEvaluation_doc.i.in
                       PiecewiseHermiteEvaluation.i PiecewiseHermiteEvaluation_doc.i.in
                       ProductPolynomialEvaluation.i ProductPolynomialEvaluation_doc.i.in
@@ -945,7 +947,7 @@ ot_add_python_module(simulation simulation_module.i
                       SafeAndSlow.i SafeAndSlow_doc.i.in
                       SubsetSamplingResult.i SubsetSamplingResult_doc.i.in
                       SubsetSampling.i SubsetSampling_doc.i.in
-                      AdaptiveDirectionalSampling.i AdaptiveDirectionalSampling_doc.i.in
+                      AdaptiveDirectionalStratification.i AdaptiveDirectionalStratification_doc.i.in
                       ExpectationSimulationAlgorithm.i ExpectationSimulationAlgorithm_doc.i.in
                       ExpectationSimulationResult.i ExpectationSimulationResult_doc.i.in
                       SobolSimulationAlgorithm.i SobolSimulationAlgorithm_doc.i.in
@@ -984,7 +986,7 @@ endif ()
 install (TARGETS memoryview LIBRARY DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns)
 
 
-set (EXTRA_PYTHON_FILES __init__.py dist.py viewer.py coupling_tools.py shims.py)
+set (EXTRA_PYTHON_FILES __init__.py dist.py viewer.py coupling_tools.py)
 
 install (FILES ${EXTRA_PYTHON_FILES}
           DESTINATION ${OPENTURNS_PYTHON_MODULE_PATH}/openturns

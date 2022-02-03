@@ -22,7 +22,7 @@
 #include "openturns/LinearCombinationEvaluation.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/Description.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -167,13 +167,13 @@ struct DualLinearCombinationEvaluationPointFunctor
   {}
 
   DualLinearCombinationEvaluationPointFunctor(const DualLinearCombinationEvaluationPointFunctor & other,
-      TBB::Split)
+      TBBImplementation::Split)
     : input_(other.input_)
     , evaluation_(other.evaluation_)
     , accumulator_(Point(other.accumulator_.getDimension()))
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r )
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r )
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i) accumulator_ += evaluation_.coefficients_[i] * evaluation_.functionsCollection_[i](input_)[0];
   } // operator()
@@ -192,7 +192,7 @@ Point DualLinearCombinationEvaluation::operator () (const Point & inP) const
   if (inP.getDimension() != inputDimension) throw InvalidArgumentException(HERE) << "Error: the given point has an invalid dimension. Expect a dimension " << inputDimension << ", got " << inP.getDimension();
   const UnsignedInteger size = functionsCollection_.getSize();
   DualLinearCombinationEvaluationPointFunctor functor( inP, *this );
-  TBB::ParallelReduce( 0, size, functor );
+  TBBImplementation::ParallelReduce( 0, size, functor );
   const Point result(functor.accumulator_);
   callsNumber_.increment();
   return result;

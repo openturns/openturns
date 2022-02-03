@@ -14,21 +14,23 @@ Parameters
 ----------
 d : int, :math:`d \geq 1`
     Dimension.
-mu : float :math:`\mu`, sequence of float, :math:`\vect{\mu} \in \Rset^d`, optional
+
+mu : float :math:`\mu`, sequence of float, :math:`\vect{\mu} \in \Rset^d`
     Mean.
 
     Default is :math:`\vect{\mu} = (0, \dots, 0) \in \Rset^d`.
-sigma : float :math:`\sigma`, sequence of float, :math:`\vect{\sigma} \in \Rset^{*d}_+`, optional
+
+sigma : float :math:`\sigma`, sequence of float, :math:`\vect{\sigma} \in \Rset^{*d}_+`
     Scale parameter.
 
-    Default is :math:`\vect{\sigma}= (1, \dots, 1) \in \Rset^d`.
-R : :class:`~openturns.CorrelationMatrix` :math:`\mat{R} \in \Rset^d \times \Rset^d`, optional
-    If :math:`\nu > 2`: correlation matrix.
+    Default is :math:`\vect{\sigma} = (1, \dots, 1) \in \Rset^{*d}_+`.
 
-    If :math:`\nu \leq 2`: generalized correlation matrix.
+R : :class:`~openturns.CorrelationMatrix` :math:`\mat{R} \in  \cM_{d \times d}(\Rset)`
+    Correlation matrix.
 
-    Default is :math:`\mat{R} = I_d \in \Rset^d \times \Rset^d`.
-Sigma : :class:`~openturns.CovarianceMatrix` :math:`\mat{\Sigma} \in \Rset^d \times \Rset^d`
+    By default the identity matrix.
+
+Sigma : :class:`~openturns.CovarianceMatrix` :math:`\mat{\Sigma} \in  \cM_{d \times d}(\Rset)`
     Covariance matrix.
 
 Notes
@@ -43,11 +45,10 @@ Its probability density function is defined as:
              \displaystyle exp \left(-\frac{1}{2}\Tr{(\vect{x} - \vect{\mu})}
                                      \mat{\Sigma}^{-1}(\vect{x} - \vect{\mu})\right)
 
-with :math:`\mat{\Sigma} = \mat{\Lambda}(\vect{\sigma}) \mat{R} \mat{\Lambda}(\vect{\sigma})`,
-:math:`\mat{\Lambda}(\vect{\sigma}) = \diag(\vect{\sigma})` and
-:math:`\mat{R}` symmetric positive definite.
+with :math:`\mat{\Sigma} = \diag(\vect{\sigma}) \mat{R} \diag(\vect{\sigma})`.
+Both :math:`\mat{R}` and :math:`\mat{\Sigma}` are symmetric positive definite.
 
-Its first moments are:
+The first moments of the distribution are:
 
 .. math::
     :nowrap:

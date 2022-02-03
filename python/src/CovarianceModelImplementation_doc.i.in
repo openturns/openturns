@@ -43,6 +43,45 @@ OT_CovarianceModel_computeAsScalar_doc
 
 // ---------------------------------------------------------------------
 
+%define OT_CovarianceModel_computeCrossCovariance_doc
+"computeCrossCovariance the covariance function on a given mesh.
+
+Parameters
+----------
+firstVertices : :class:`~openturns.Sample` or :class:`~openturns.Point`
+    Container of the first discretization vertices
+
+secondVertices : :class:`~openturns.Sample` or :class:`~openturns.Point`
+    Container of the second discretization vertices
+
+Returns
+-------
+Matrix : :class:`~openturns.Matrix`
+    Container of the cross covariance
+
+Notes
+-----
+This method computes a cross-covariance matrix.
+The cross-covariance is the evaluation of the covariance model 
+on both `firstVertices` and `secondVertices`.
+
+If :math:`firstVertices` contains :math:`n_1` points and :math:`secondVertices` contains :math:`n_2` points,
+the method returns an :math:`n_1 d \times n_2 d` matrix (:math:`d` being the output dimension).
+
+To make things easier, let us focus on the :math:`d=1` case.
+Let :math:`\vect{x}_0, \dots, \vect{x}_{n_1-1}` be the points of `firstVertices`
+and let :math:`\vect{y}_0, \dots, \vect{y}_{n_2-1}` be the points of `secondVertices`.
+The result is the :math:`n_1 \times n_2` matrix :math:`\mat{M}`
+such that for any nonnegative integers :math:`i < n_1` and :math:`j < n_2`,
+:math:`\mat{M}_{i,j} = \mathcal{C}(\vect{x}_i, \vect{y}_j)`.
+
+"
+%enddef
+%feature("docstring") OT::CovarianceModelImplementation::computeCrossCovariance
+OT_CovarianceModel_computeCrossCovariance_doc
+
+// ---------------------------------------------------------------------
+
 %define OT_CovarianceModel_discretize_doc
 "Discretize the covariance function on a given mesh.
 

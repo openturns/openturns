@@ -23,7 +23,6 @@
 
 #include "openturns/EvaluationImplementation.hxx"
 #include "openturns/CovarianceModel.hxx"
-#include "openturns/TBB.hxx"
 #include "openturns/Collection.hxx"
 #include "openturns/Basis.hxx"
 

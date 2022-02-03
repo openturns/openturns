@@ -65,6 +65,7 @@ Bonmin * Bonmin::clone() const
 /** Bonmin static methods */
 Bool Bonmin::IsAvailable()
 {
+  LOGWARN(OSS() << "Bonmin.IsAvailable is deprecated, use PlatformInfo.HasFeature(bonmin)");
 #ifdef OPENTURNS_HAVE_BONMIN
   return true;
 #else

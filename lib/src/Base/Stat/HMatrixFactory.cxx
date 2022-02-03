@@ -54,6 +54,7 @@ HMatrixFactory * HMatrixFactory::clone() const
 Bool
 HMatrixFactory::IsAvailable()
 {
+  LOGWARN(OSS() << "HMatrixFactory.IsAvailable is deprecated, use PlatformInfo.HasFeature(hmat)");
 #ifdef OPENTURNS_HAVE_HMAT
   return true;
 #else
@@ -79,11 +80,8 @@ HMatrixFactory::build(const Sample & sample, UnsignedInteger outputDimension, Bo
     hmat_init_default_interface(hmatInterface, HMAT_DOUBLE_PRECISION);
 
   hmat_get_parameters(&settings);
-  settings.compressionMethod = parameters.getCompressionMethodAsUnsignedInteger();
-  settings.assemblyEpsilon = parameters.getAssemblyEpsilon();
-  settings.recompressionEpsilon = parameters.getRecompressionEpsilon();
-  settings.maxLeafSize = ResourceMap::GetAsUnsignedInteger("HMatrix-MaxLeafSize");
 
+  settings.maxLeafSize = ResourceMap::GetAsUnsignedInteger("HMatrix-MaxLeafSize");
   settings.validationErrorThreshold = ResourceMap::GetAsScalar("HMatrix-ValidationError");
   settings.validateCompression = settings.validationErrorThreshold > 0;
   settings.validationReRun = ResourceMap::GetAsUnsignedInteger("HMatrix-ValidationRerun");

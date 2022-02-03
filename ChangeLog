@@ -1,6 +1,6 @@
 = New Features =
 
-== 1.18 release (in progress) == #release-1.18
+== 1.19 release (in-progress) == #release-1.19
 
 === Library ===
 
@@ -9,10 +9,15 @@
 ==== New classes ====
 
 ==== API changes ====
- * Removed deprecated MultiStart::setStartingPoints/getStartingPoints
- * Removed deprecated KarhunenLoeveResult::getEigenValues
- * Removed deprecated coupling_tools.execute is_shell/workdir/shell_exe/check_exit_code arguments
- * RandomVector::get/setParameter and getParameterDescription available to PythonRandomVector
+ * Removed deprecated Hanning alias
+ * Removed deprecated AdaptiveDirectionalSampling alias
+ * Removed deprecated VisualTest::DrawCobWeb method
+ * Removed deprecated shims module
+ * Removed deprecated TBB.SetNumberOfThreads/GetNumberOfThreads
+ * Removed deprecated MultiFORM.setMaximumNumberOfDesignPoints/getMaximumNumberOfDesignPoints
+ * Removed deprecated SubsetSampling.getNumberOfSteps
+ * coupling_tools.execute: deprecated get_stderr,get_stdout for capture_output, returns CompletedProcess
+ * Deprecated Nlopt|Ceres|Bonmin|CMinpack|Ipopt|TBB|HMatrixFactory::IsAvailable in favor of PlatformInfo::HasFeature, see also GetFeatures
 
 === Documentation ===
 
@@ -21,12 +26,70 @@
 === Miscellaneous ===
 
 === Bug fixes ===
+
+
+== 1.18 release (2021-11-10) == #release-1.18
+
+=== Library ===
+
+==== Major changes ====
+
+==== New classes ====
+ * DistanceToDomainFunction
+
+==== API changes ====
+ * Removed deprecated MultiStart::setStartingPoints/getStartingPoints
+ * Removed deprecated KarhunenLoeveResult::getEigenValues
+ * Removed deprecated coupling_tools.execute is_shell/workdir/shell_exe/check_exit_code arguments
+ * RandomVector::get/setParameter and getParameterDescription available to PythonRandomVector
+ * Implemented CovarianceModel::computeCrossCovariance
+ * Deprecated Hanning in favor of Hann
+ * Deprecated AdaptiveDirectionalSampling in favor of AdaptiveDirectionalStratification
+ * Deprecated VisualTest::DrawCobWeb in favor of DrawParallelCoordinates
+ * IndicatorFunction constructor takes a Domain as input
+ * Intervals and DomainUnions get new method computeDistanceToDomain(Point or Sample)
+ * Renamed some ResourceMap keys: cache-max-size>Cache-MaxSize, parallel-threads>TBB-ThreadsNumber
+ * Deprecated TBB.SetNumberOfThreads/GetNumberOfThreads
+ * Deprecated MultiFORM.setMaximumNumberOfDesignPoints/getMaximumNumberOfDesignPoints
+ * Deprecated SubsetSampling.getNumberOfSteps
+ * Normal and Student distributions: no need to specify the R parameter if it is the identity matrix
+ * KrigingResult::getConditionalMean and getConditionalMarginalVariance yield Samples instead of Points when applied to Samples
+ * Deprecated shims module
+
+=== Documentation ===
+
+=== Python module ===
+
+=== Miscellaneous ===
+
+=== Bug fixes ===
+ * #1840 (HMatrixFactory leaks)
  * #1842 (libOT.so.0.0.0 doesn't have a SONAME)
  * #1843 (Ali-Mikhail-Haq copula parameter value)
  * #1844 (MaximumDistribution::computePDF is wrong when all the marginals are equal and independent)
  * #1845 (MemoizeFunction does not propagate to finite difference gradient&hessian)
  * #1847 (ParametricFunction require unnecessary function evaluations)
+ * #1854 (Sample indexing does not work on np.int64 type)
+ * #1856 (Speed up Normal computeSurvivalFunction)
+ * #1857 (ProductCovarianceModel fails when constructed with DiracCovarianceModel)
+ * #1858 (Normal::computeCDF(sample) crash for large dimensions)
  * #1861 (Still some instabilities in Kriging with ot.StationaryFunctionalCovarianceModel)
+ * #1864 (FORM - IMPORTANCE FACTOR)
+ * #1868 (Not compatible with hmat-oss-1.7.1: no member named 'compressionMethod' in 'hmat_settings_t')
+ * #1870 (TruncatedDistribution fails to compute quantiles)
+ * #1874 (ProcessSample.getSampleAtVertex() may be useful as a public method)
+ * #1877 (How to model singular multivariate distributions?)
+ * #1878 (Rename Hanning filtering window)
+ * #1879 (Adaptive Directional Sampling Algorithm: the drawProbabilityConvergence graph may be wrong)
+ * #1880 (Adaptive Directional Sampling: some enhancements proposed)
+ * #1882 (Is Distribution::getLinearCorrelation useful ?)
+ * #1883 (Strange behavior of FORM ?)
+ * #1884 (setDesign can lead to wrong Sobol' indices)
+ * #1891 (Correlation of Halton sequence at high dimensions)
+ * #1911 (DirectionalSampling freezes python if not correctly initialized)
+ * #1912 (splitter: missing doc)
+ * #1915 (computePDFGradient(const Sample &) should rely on computePDFGradient(const Point &) in DistributionImplementation)
+ * #1918 (PythonDistribution does not allow to overload the isDiscrete() method)
 
 
 == 1.17 release (2021-05-12) == #release-1.17
@@ -122,6 +185,7 @@
  * #1835 (RegularizedIncompleteBeta returns nan)
  * #1836 (Hypergeometric results differ without boost)
  * #1837 (Poor performance when using pickle on OT objects)
+
 
 == 1.16 release (2020-11-16) == #release-1.16
 

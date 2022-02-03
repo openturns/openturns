@@ -55,9 +55,12 @@ Sample Sample::BuildFromPoint(const Point &point)
 
 /* Save to CSV file */
 void Sample::exportToCSVFile(const FileName & filename,
-                             const String & csvSeparator) const
+                             const String & csvSeparator,
+                             const String & numSeparator,
+                             const UnsignedInteger precision,
+                             const String & format) const
 {
-  getImplementation()->exportToCSVFile(filename, csvSeparator);
+  getImplementation()->exportToCSVFile(filename, csvSeparator, numSeparator, precision, format);
 }
 
 /* Store a sample in a temporary text file, one realization by line. Returns the file name. */
@@ -433,14 +436,6 @@ CovarianceMatrix Sample::computeCovariance() const
 Point Sample::computeStandardDeviation() const
 {
   return getImplementation()->computeStandardDeviation();
-}
-
-/*
- * Method computeStandardDeviationPerComponent() gives the standard deviation of each component of the sample
- */
-Point Sample::computeStandardDeviationPerComponent() const
-{
-  return getImplementation()->computeStandardDeviationPerComponent();
 }
 
 /*

@@ -347,6 +347,7 @@ CLASSNAMEINIT(Dlib)
 
 Bool Dlib::IsAvailable()
 {
+  LOGWARN(OSS() << "Dlib.IsAvailable is deprecated, use PlatformInfo.HasFeature(dlib)");
 #ifdef OPENTURNS_HAVE_DLIB
   return true;
 #else

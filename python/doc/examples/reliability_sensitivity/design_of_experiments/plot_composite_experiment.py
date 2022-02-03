@@ -2,7 +2,7 @@
 Create a composite design of experiments
 ========================================
 """
-# %% 
+# %%
 
 # %%
 # In this example we create a deterministic design experiment with the `Composite` class.

@@ -40,12 +40,12 @@ Estimate a scalar ARMA process
 #     the estimated models thanks to the method *getHistory* of the object
 #     *WhittleFactory*. If the *build* has been parameterized by a *Point*
 #     of size 0, the user also has access to all the quantified criteria.
-#     
+#
 # The synthetic data is generated using the following 1-d ARMA process:
 #
 # .. math::
 #     X_{0,t} + 0.4 X_{0,t-1} + 0.3 X_{0,t-2} + 0.2 X_{0,t-3} + 0.1 X_{0,t-4} = E_{0,t} + 0.4 E_{0,t-1} + 0.3 E_{0,t-2}
-#   
+#
 # with the noise :math:`E` defined as:
 #
 # .. math::
@@ -91,9 +91,9 @@ print("Default spectral model factory = ", factory.getSpectralModelFactory())
 
 # To set the spectral model factory
 # For example, set WelchFactory as SpectralModelFactory
-# with the Hanning filtering window
+# with the Hann filtering window
 # The Welch estimator splits the time series in four blocs without overlap
-myFilteringWindow = ot.Hanning()
+myFilteringWindow = ot.Hann()
 mySpectralFactory = ot.WelchFactory(myFilteringWindow, 4, 0)
 factory.setSpectralModelFactory(mySpectralFactory)
 print("New spectral model factory = ", factory.getSpectralModelFactory())

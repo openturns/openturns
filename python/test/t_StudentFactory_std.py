@@ -8,7 +8,7 @@ RandomGenerator.SetSeed(0)
 PlatformInfo.SetNumericalPrecision(3)
 
 try:
-    distributions = [Student(3.5, 2.5)]
+    distributions = [Student(3.5, 2.5, 1.0)]
     R = CorrelationMatrix([[1.0, 0.5], [0.5, 1.0]])
     distributions.append(Student(4.5, [2.5]*2, [1.5]*2, R))
     R = CorrelationMatrix(10)

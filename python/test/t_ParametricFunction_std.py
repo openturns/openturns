@@ -41,10 +41,13 @@ print(mycf.parameterGradient(s).transpose())
 # Check if parametric functions and memoize functions work well together
 
 n_calls = 0
+
+
 def py_f(X):
     global n_calls
     n_calls += 1
     return X
+
 
 ot_f = ot.MemoizeFunction(ot.PythonFunction(3, 3, py_f))
 param_f = ot.ParametricFunction(ot_f, [0, 1], [1.0, 2.0])
@@ -54,14 +57,16 @@ y = [1.5]
 n_calls_0 = ot_f.getCallsNumber()
 par_grad = param_f.parameterGradient(x)
 n_calls_1 = ot_f.getCallsNumber()
-assert n_calls_1 - n_calls_0 == 4, "Expected n_calls_1 - n_calls_0 == 4, here n_calls_1 - n_calls_0 == " + str(n_calls_1 - n_calls_0)
+assert n_calls_1 - n_calls_0 == 4, "Expected n_calls_1 - n_calls_0 == 4, here n_calls_1 - n_calls_0 == " + \
+    str(n_calls_1 - n_calls_0)
 assert n_calls == 4, "Expected n_calls == 4, here n_calls == " + str(n_calls)
 
 n_calls = 0
 n_calls_0 = ot_f.getCallsNumber()
 f_grad = param_f.gradient(y)
 n_calls_1 = ot_f.getCallsNumber()
-assert n_calls_1 - n_calls_0 == 2, "Expected n_calls_1 - n_calls_0 == 2, here n_calls_1 - n_calls_0 == " + str(n_calls_1 - n_calls_0)
+assert n_calls_1 - n_calls_0 == 2, "Expected n_calls_1 - n_calls_0 == 2, here n_calls_1 - n_calls_0 == " + \
+    str(n_calls_1 - n_calls_0)
 assert n_calls == 2, "Expected n_calls == 2, here n_calls == " + str(n_calls)
 
 eps = 1e-7
@@ -75,12 +80,14 @@ y = [2.5]
 n_calls_0 = ot_f.getCallsNumber()
 par_grad = param_f.parameterGradient(x)
 n_calls_1 = ot_f.getCallsNumber()
-assert n_calls_1 - n_calls_0 == 3, "Expected n_calls_1 - n_calls_0 == 3, here n_calls_1 - n_calls_0 == " + str(n_calls_1 - n_calls_0)
+assert n_calls_1 - n_calls_0 == 3, "Expected n_calls_1 - n_calls_0 == 3, here n_calls_1 - n_calls_0 == " + \
+    str(n_calls_1 - n_calls_0)
 assert n_calls == 3, "Expected n_calls == 3, here n_calls == " + str(n_calls)
 
 n_calls = 0
 n_calls_0 = ot_f.getCallsNumber()
 f_grad = param_f.gradient(y)
 n_calls_1 = ot_f.getCallsNumber()
-assert n_calls_1 - n_calls_0 == 2, "Expected n_calls_1 - n_calls_0 == 2, here n_calls_1 - n_calls_0 == " + str(n_calls_1 - n_calls_0)
+assert n_calls_1 - n_calls_0 == 2, "Expected n_calls_1 - n_calls_0 == 2, here n_calls_1 - n_calls_0 == " + \
+    str(n_calls_1 - n_calls_0)
 assert n_calls == 2, "Expected n_calls == 2, here n_calls == " + str(n_calls)

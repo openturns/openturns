@@ -16,6 +16,7 @@ Choose the trend basis of a kriging metamodel
 # -----------------------
 
 # %%
+from openturns.usecases import cantilever_beam as cantilever_beam
 import openturns as ot
 from openturns.viewer import View
 ot.RandomGenerator.SetSeed(0)
@@ -23,7 +24,6 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the use case :
-from openturns.usecases import cantilever_beam as cantilever_beam
 cb = cantilever_beam.CantileverBeam()
 
 # %%
@@ -31,8 +31,8 @@ cb = cantilever_beam.CantileverBeam()
 model = cb.model
 
 # %%
-# Then we define the distribution of the input random vector. 
-dimension = cb.dim # number of inputs
+# Then we define the distribution of the input random vector.
+dimension = cb.dim  # number of inputs
 myDistribution = cb.distribution
 
 # %%
@@ -53,7 +53,7 @@ Y_train = model(X_train)
 
 # %%
 # In order to create the Kriging metamodel, we first select a constant trend with the `ConstantBasisFactory` class. Then we use a squared exponential covariance kernel.
-# The `SquaredExponential` kernel has one amplitude coefficient and 4 scale coefficients. This is because this covariance kernel is anisotropic : each of the 4 input variables is associated with its own scale coefficient. 
+# The `SquaredExponential` kernel has one amplitude coefficient and 4 scale coefficients. This is because this covariance kernel is anisotropic : each of the 4 input variables is associated with its own scale coefficient.
 
 # %%
 basis = ot.ConstantBasisFactory(dimension).build()
@@ -72,7 +72,8 @@ print(X_train.getMin(), X_train.getMax())
 # Note that since the amplitude parameter is computed analytically (this is possible when the output dimension is 1), we only need to set bounds on the scale parameter.
 
 # %%
-scaleOptimizationBounds = ot.Interval([1.0, 1.0, 1.0, 1.0e-10], [1.0e11, 1.0e3, 1.0e1, 1.0e-5])
+scaleOptimizationBounds = ot.Interval(
+    [1.0, 1.0, 1.0, 1.0e-10], [1.0e11, 1.0e3, 1.0e1, 1.0e-5])
 
 # %%
 # Finally, we use the `KrigingAlgorithm` class to create the Kriging metamodel.
@@ -120,12 +121,12 @@ krigingWithLinearTrend = result.getMetaModel()
 result.getTrendCoefficients()
 
 # %%
-# The number of coefficients in the linear and quadratic trends depends on the number of inputs, which is 
-# equal to 
+# The number of coefficients in the linear and quadratic trends depends on the number of inputs, which is
+# equal to
 #
 # .. math::
-#    dim = 4 
-# 
+#    dim = 4
+#
 #
 # in the cantilever beam case.
 #
@@ -153,13 +154,13 @@ print(result.getCovarianceModel())
 # * 4 coefficients for the linear part,
 # * 10 coefficients for the quadratic part.
 #
-# This is because the number of coefficients in the quadratic part has 
+# This is because the number of coefficients in the quadratic part has
 #
 # .. math::
 #    \frac{dim (dim+1)}{2}=\frac{4\times 5}{2}=10
-# 
 #
-# coefficients, associated with the symmetric matrix of the quadratic function. 
+#
+# coefficients, associated with the symmetric matrix of the quadratic function.
 
 # %%
 # Validate the metamodel
@@ -180,7 +181,7 @@ def drawMetaModelValidation(X_test, Y_test, krigingMetamodel, title):
     Q2 = val.computePredictivityFactor()[0]
     graph = val.drawValidation().getGraph(0, 0)
     graph.setLegends([""])
-    graph.setLegends(["%s, Q2 = %.2f%%" % (title, 100*Q2),""])
+    graph.setLegends(["%s, Q2 = %.2f%%" % (title, 100*Q2), ""])
     graph.setLegendPosition("topleft")
     return graph
 
@@ -188,16 +189,19 @@ def drawMetaModelValidation(X_test, Y_test, krigingMetamodel, title):
 # %%
 grid = ot.GridLayout(1, 3)
 grid.setTitle("Different trends")
-graphConstant = drawMetaModelValidation(X_test, Y_test, krigingWithConstantTrend, "Constant")
-graphLinear = drawMetaModelValidation(X_test, Y_test, krigingWithLinearTrend, "Linear")
-graphQuadratic = drawMetaModelValidation(X_test, Y_test, krigingWithQuadraticTrend, "Quadratic")
+graphConstant = drawMetaModelValidation(
+    X_test, Y_test, krigingWithConstantTrend, "Constant")
+graphLinear = drawMetaModelValidation(
+    X_test, Y_test, krigingWithLinearTrend, "Linear")
+graphQuadratic = drawMetaModelValidation(
+    X_test, Y_test, krigingWithQuadraticTrend, "Quadratic")
 grid.setGraph(0, 0, graphConstant)
 grid.setGraph(0, 1, graphLinear)
 grid.setGraph(0, 2, graphQuadratic)
-_ = View(grid, figure_kw={'figsize':(13, 4)})
+_ = View(grid, figure_kw={'figsize': (13, 4)})
 
 # %%
-# We observe that the three trends perform very well in this case. With more coefficients, the Kriging metamodel is more flexibile and can adjust better to the training sample. This does not mean, however, that the trend coefficients will provide a good fit for the validation sample. 
+# We observe that the three trends perform very well in this case. With more coefficients, the Kriging metamodel is more flexibile and can adjust better to the training sample. This does not mean, however, that the trend coefficients will provide a good fit for the validation sample.
 #
 # The number of parameters in each Kriging metamodel is the following:
 #

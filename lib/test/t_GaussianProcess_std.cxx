@@ -59,9 +59,9 @@ int main(int, char *[])
     GaussianProcess myProcess1(myCovModel, myTimeGrid);
     fullprint << "myProcess1=" << myProcess1 << std::endl;
     fullprint << "is stationary? " << myProcess1.isStationary() << std::endl;
-    myProcess1.setSamplingMethod(0);
+    myProcess1.setSamplingMethod(GaussianProcess::CHOLESKY);
     fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
-    myProcess1.setSamplingMethod(2);
+    myProcess1.setSamplingMethod(GaussianProcess::GIBBS);
     fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
 
     /* With constant trend */
@@ -69,9 +69,9 @@ int main(int, char *[])
     GaussianProcess myProcess2(trend, myCovModel, myTimeGrid);
     fullprint << "myProcess2=" << myProcess2 << std::endl;
     fullprint << "is stationary? " << myProcess2.isStationary() << std::endl;
-    myProcess1.setSamplingMethod(0);
+    myProcess1.setSamplingMethod(GaussianProcess::CHOLESKY);
     fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
-    myProcess1.setSamplingMethod(2);
+    myProcess1.setSamplingMethod(GaussianProcess::GIBBS);
     fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
 
     /* With varying trend */
@@ -79,9 +79,9 @@ int main(int, char *[])
     GaussianProcess myProcess3(trend3, myCovModel, myTimeGrid);
     fullprint << "myProcess3=" << myProcess3 << std::endl;
     fullprint << "is stationary? " << myProcess3.isStationary() << std::endl;
-    myProcess1.setSamplingMethod(0);
+    myProcess1.setSamplingMethod(GaussianProcess::CHOLESKY);
     fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
-    myProcess1.setSamplingMethod(2);
+    myProcess1.setSamplingMethod(GaussianProcess::GIBBS);
     fullprint << "mean over " << size << " realizations=" << myProcess1.getSample(size).computeMean() << std::endl;
   }
   catch (TestFailed & ex)

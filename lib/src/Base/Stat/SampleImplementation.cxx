@@ -27,6 +27,7 @@
 #include <cstdlib>
 #include <cstdio>        // std::fopen, std::errno
 #include <cstring>       // std::strerror
+#include <regex>
 
 #include "openturns/OTconfig.hxx"
 #include "openturns/SampleImplementation.hxx"
@@ -35,7 +36,7 @@
 #include "openturns/Log.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/Path.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 #include "kendall.h"
 #include "openturns/IdentityMatrix.hxx"
 #include "openturns/SpecFunc.hxx"
@@ -1130,10 +1131,10 @@ struct ReductionFunctor
   ReductionFunctor(const SampleImplementation & nsi, const OP & op = OP())
     : nsi_(nsi), op_(op), accumulator_(OP::GetInvariant(nsi_)) {}
 
-  ReductionFunctor(const ReductionFunctor & other, TBB::Split)
+  ReductionFunctor(const ReductionFunctor & other, TBBImplementation::Split)
     : nsi_(other.nsi_), op_(other.op_), accumulator_(OP::GetInvariant(nsi_)) {}
 
-  void operator() (const TBB::BlockedRange<UnsignedInteger> & r)
+  void operator() (const TBBImplementation::BlockedRange<UnsignedInteger> & r)
   {
     NSI_const_iterator it = nsi_.begin() + r.begin();
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i, ++it) op_.inplace_op( accumulator_, *it );
@@ -1155,7 +1156,7 @@ class ParallelFunctor
 public:
   ParallelFunctor(SampleImplementation & nsi, const OP & op) : nsi_(nsi), op_(op) {}
 
-  void operator() (const TBB::BlockedRange<UnsignedInteger> & r) const
+  void operator() (const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i) op_.inplace_op( nsi_[i] );
   }
@@ -1273,16 +1274,6 @@ Point SampleImplementation::computeVariance() const
 
 }
 
-/*
- * Gives the standard deviation of each component of the sample
- */
-Point SampleImplementation::computeStandardDeviationPerComponent() const
-{
-  LOGWARN(OSS() << "Sample.computeStandardDeviationPerComponent is deprecated, use computeStandardDeviation");
-  return computeStandardDeviation();
-}
-
-
 
 /*
  * Gives the Pearson correlation matrix of the sample
@@ -1380,7 +1371,7 @@ Pointer<SampleImplementation> SampleImplementation::rank() const
       sortedMarginalSamples[j].index_ = j;
     }
     // sort
-    TBB::ParallelSort(sortedMarginalSamples.begin(), sortedMarginalSamples.end());
+    TBBImplementation::ParallelSort(sortedMarginalSamples.begin(), sortedMarginalSamples.end());
     // rank
     Scalar lastValue = sortedMarginalSamples[0].value_;
     UnsignedInteger lastIndex = 0;
@@ -1455,14 +1446,14 @@ Pointer<SampleImplementation> SampleImplementation::sort() const
   if (dimension_ == 1)
   {
     Point sortedData(data_);
-    TBB::ParallelSort(sortedData.begin(), sortedData.end());
+    TBBImplementation::ParallelSort(sortedData.begin(), sortedData.end());
     sortedSample->setData(sortedData);
     return sortedSample;
   }
   // The nD samples
   Collection<NSI_Sortable> sortables(size_);
   for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = NSI_Sortable(this, i);
-  TBB::ParallelSort(sortables.begin(), sortables.end());
+  TBBImplementation::ParallelSort(sortables.begin(), sortables.end());
   for (UnsignedInteger i = 0; i < size_; ++i) sortedSample->operator[](i) = sortables[i];
   if (!p_description_.isNull()) sortedSample->setDescription(getDescription());
   return sortedSample;
@@ -1475,14 +1466,14 @@ void SampleImplementation::sortInPlace()
   // Special case for 1D sample
   if (dimension_ == 1)
   {
-    TBB::ParallelSort(data_.begin(), data_.end());
+    TBBImplementation::ParallelSort(data_.begin(), data_.end());
     return;
   }
   // The nD samples
   Collection<NSI_Sortable> sortables(size_);
   SampleImplementation work(*this);
   for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = NSI_Sortable(&work, i);
-  TBB::ParallelSort(sortables.begin(), sortables.end());
+  TBBImplementation::ParallelSort(sortables.begin(), sortables.end());
   for (UnsignedInteger i = 0; i < size_; ++i) (*this)[i] = sortables[i];
 }
 
@@ -1517,7 +1508,7 @@ Pointer<SampleImplementation> SampleImplementation::sortAccordingToAComponent(co
 
   Collection<Sortable> sortables(size_);
   for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = Sortable((*this)[i], index);
-  TBB::ParallelSort(sortables.begin(), sortables.end());
+  TBBImplementation::ParallelSort(sortables.begin(), sortables.end());
   Pointer<SampleImplementation> sortedSample = new SampleImplementation(size_, dimension_);
   UnsignedInteger shift = 0;
   for (UnsignedInteger i = 0; i < size_; ++i)
@@ -1538,7 +1529,7 @@ void SampleImplementation::sortAccordingToAComponentInPlace(const UnsignedIntege
   Collection<Sortable> sortables(size_);
   SampleImplementation work(*this);
   for (UnsignedInteger i = 0; i < size_; ++i) sortables[i] = Sortable(work[i], index);
-  TBB::ParallelSort(sortables.begin(), sortables.end());
+  TBBImplementation::ParallelSort(sortables.begin(), sortables.end());
   UnsignedInteger shift = 0;
   for (UnsignedInteger i = 0; i < size_; ++i)
   {
@@ -1617,7 +1608,7 @@ struct ComputeKendallPolicy
     , smallCase_(smallCase)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     const UnsignedInteger size = input_.getSize();
     Point x(size);
@@ -1663,7 +1654,7 @@ CorrelationMatrix SampleImplementation::computeKendallTau() const
   // Now the computation
   Point result(caseNumber);
   const ComputeKendallPolicy policy( *this, result, indX, indY, smallCase );
-  TBB::ParallelFor( 0, caseNumber, policy );
+  TBBImplementation::ParallelFor( 0, caseNumber, policy );
   index = 0;
   for (UnsignedInteger i = 0; i < dimension_ - 1; ++i)
   {
@@ -2021,7 +2012,7 @@ Scalar SampleImplementation::computeEmpiricalCDF(const Point & point,
 
   const CDFPolicy policy( *this, point, tail );
   ReductionFunctor<CDFPolicy> functor( *this, policy );
-  TBB::ParallelReduce( 0, size_, functor );
+  TBBImplementation::ParallelReduce( 0, size_, functor );
   return static_cast < Scalar > (functor.accumulator_) / size_;
 }
 
@@ -2324,15 +2315,29 @@ Pointer<SampleImplementation> SampleImplementation::select(const UnsignedInteger
 
 /* Save to CSV file */
 void SampleImplementation::exportToCSVFile(const FileName & filename,
-    const String & csvSeparator) const
+    const String & csvSeparator,
+    const String & numSeparator,
+    const UnsignedInteger precision,
+    const String & format) const
 {
-
+  if (csvSeparator == numSeparator)
+    throw InvalidArgumentException(HERE) << "Column and decimal separators cannot be identical";
   std::ofstream csvFile(filename.c_str());
   if (csvFile.fail())
     throw FileOpenException(HERE) << "Could not open file " << filename;
+#ifndef __MINGW32__
+  if (numSeparator == ",")
+#ifdef _WIN32
+    csvFile.imbue(std::locale("fra_FRA.1252"));
+#else
+    csvFile.imbue(std::locale("fr_FR.utf-8"));
+#endif
+  else
+    csvFile.imbue(std::locale("C"));
+#else
   csvFile.imbue(std::locale("C"));
-  csvFile.precision(16);
-  csvFile << std::scientific;
+#endif
+
   // Export the description
   if (!p_description_.isNull())
   {
@@ -2348,15 +2353,54 @@ void SampleImplementation::exportToCSVFile(const FileName & filename,
     }
     csvFile << "\n";
   }
+
+  csvFile.precision(precision);
+  if (format == "scientific")
+    csvFile << std::scientific;
+  else if (format == "fixed")
+    csvFile << std::fixed;
+  else if (format != "defaultfloat")
+    throw InvalidArgumentException(HERE) << "Invalid format: " << format << " must be scientific/fixed/defaultfloat";
+
   // Write the data
   UnsignedInteger index = 0;
+#ifdef __MINGW32__
+  // MinGW fails with std::locale("fr_FR.utf-8")
+  std::stringstream ss;
+  ss.imbue(std::locale("C"));
+  ss.precision(precision);
+  if (format == "scientific")
+    ss << std::scientific;
+  else if (format == "fixed")
+    ss << std::fixed;
+#endif
   for(UnsignedInteger i = 0; i < size_; ++i)
   {
+#ifndef __MINGW32__
     csvFile << data_[index];
+#else
+    // manually replace decimal separator
+    ss.str("");
+    ss << data_[index];
+    std::string str(ss.str());
+    if (numSeparator == ",")
+      str = regex_replace(str, std::regex("\\."), ",");
+    csvFile << str;
+#endif
     ++index;
     for(UnsignedInteger j = 1; j < dimension_; ++j)
     {
+#ifndef __MINGW32__
       csvFile << csvSeparator << data_[index];
+#else
+      // manually replace decimal separator
+      ss.str("");
+      ss << data_[index];
+      std::string str(ss.str());
+      if (numSeparator == ",")
+        str = regex_replace(str, std::regex("\\."), ",");
+      csvFile << csvSeparator << str;
+#endif
       ++index;
     } // j
     csvFile << "\n";

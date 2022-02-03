@@ -33,6 +33,7 @@ option (USE_COTIRE                   "Use cotire for unity builds"              
 option (USE_IPOPT                    "Use Ipopt for MINLP problems"                                          ON)
 option (USE_BONMIN                   "Use Bonmin for MINLP problems"                                         ON)
 option (USE_SPECTRA                  "Use Spectra for eigenvalues computation"                               ON)
+option (USE_PRIMESIEVE               "Use primesieve for prime numbers generation"                           ON)
 option (USE_OPENMP                   "Use OpenMP to disable threading"                                       ON)
 option (USE_OPENBLAS                 "Use OpenBLAS to disable threading"                                     ON)
 
@@ -148,7 +149,27 @@ if (Spectra_FOUND)
   message(STATUS "Found Spectra: ${Spectra_DIR} (found suitable version \"${Spectra_VERSION}\")")
   set (OPENTURNS_HAVE_SPECTRA TRUE)
   list (APPEND OPENTURNS_PRIVATE_LIBRARIES Spectra::Spectra)
+  if (NOT TARGET Eigen3::Eigen)
+    find_package (Eigen3 CONFIG)
+  endif ()
 endif()
+
+if (USE_PRIMESIEVE)
+  find_package (primesieve CONFIG)
+  if (primesieve_FOUND)
+    set (OPENTURNS_HAVE_PRIMESIEVE TRUE)
+    message (STATUS "Found primesieve: ${primesieve_DIR} (found version ${primesieve_VERSION})")
+    list (APPEND OPENTURNS_PRIVATE_LIBRARIES primesieve::primesieve)
+  else ()
+    # fallback to our macro if primesieveConfig is not provided
+    find_package (primesieve)
+    if (primesieve_FOUND)
+      set (OPENTURNS_HAVE_PRIMESIEVE TRUE)
+      list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${PRIMESIEVE_INCLUDE_DIRS})
+      list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${PRIMESIEVE_LIBRARIES})
+    endif ()
+  endif ()
+endif ()
 
 if (USE_BISON)
   find_package (BISON 2.4)
@@ -165,13 +186,21 @@ if (USE_FLEX)
 endif ()
 
 if (USE_TBB)
-  find_package (TBB)
+  find_package (TBB CONFIG)
+  if (TBB_FOUND)
+    message (STATUS "Found TBB: ${TBB_DIR} (found version ${TBB_VERSION})")
+    set (TBB_LIBRARIES TBB::tbb)
+  else ()
+    # fallback to our macro
+    find_package (TBB)
+  endif ()
 endif ()
 if (TBB_FOUND)
-  set (OPENTURNS_HAVE_TBB_TBB_H TRUE)
   set (OPENTURNS_HAVE_TBB TRUE)
-  list (APPEND OPENTURNS_INCLUDE_DIRS ${TBB_INCLUDE_DIRS})
-  list (APPEND OPENTURNS_LIBRARIES ${TBB_LIBRARIES})
+  if (TBB_INCLUDE_DIRS)
+    list (APPEND OPENTURNS_PRIVATE_INCLUDE_DIRS ${TBB_INCLUDE_DIRS})
+  endif ()
+  list (APPEND OPENTURNS_PRIVATE_LIBRARIES ${TBB_LIBRARIES})
   if (MSVC OR WINTEL)
     set (OPENTURNS_TBB_NO_IMPLICIT_LINKAGE ON CACHE BOOL "Prevent implicit linkage against tbb.lib ")
   endif ()
@@ -194,7 +223,7 @@ if (USE_EXPRTK)
 endif ()
 
 if (USE_HMAT)
-  find_package (HMAT 1.6 CONFIG)
+  find_package (HMAT 1.7 CONFIG)
 endif ()
 if (HMAT_FOUND)
   message(STATUS "Found HMAT: ${HMAT_DIR} (found suitable version \"${HMAT_VERSION}\")")
@@ -377,8 +406,12 @@ if (USE_OPENMP)
   find_package (OpenMP)
   if (OPENMP_FOUND)
     set (OPENTURNS_HAVE_OPENMP TRUE)
-    set (CMAKE_CXX_FLAGS "${OpenMP_CXX_FLAGS} ${CMAKE_CXX_FLAGS}")
-    set (CMAKE_SHARED_LINKER_FLAGS "${OpenMP_CXX_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS}")
+    if (TARGET OpenMP::OpenMP_CXX)
+      list (APPEND OPENTURNS_PRIVATE_LIBRARIES OpenMP::OpenMP_CXX)
+    else ()
+      set (CMAKE_CXX_FLAGS "${OpenMP_CXX_FLAGS} ${CMAKE_CXX_FLAGS}")
+      set (CMAKE_SHARED_LINKER_FLAGS "${OpenMP_CXX_FLAGS} ${CMAKE_SHARED_LINKER_FLAGS}")
+    endif ()
   endif ()
 endif ()
 
@@ -540,7 +573,7 @@ include_directories (${OPENTURNS_PRIVATE_INCLUDE_DIRS})
 
 set (CPACK_PACKAGE_NAME          openturns     )
 set (CPACK_PACKAGE_VERSION_MAJOR 1             )
-set (CPACK_PACKAGE_VERSION_MINOR 18dev)
+set (CPACK_PACKAGE_VERSION_MINOR 19dev)
 set (CPACK_PACKAGE_VERSION_PATCH               )
 set (CPACK_SOURCE_GENERATOR      "TGZ;TBZ2"    )
 set (CPACK_BINARY_STGZ    OFF CACHE BOOL "STGZ")
@@ -560,17 +593,6 @@ endif (CPACK_PACKAGE_VERSION_PATCH)
 set (PACKAGE_BUGREPORT      bugs@openturns.org)
 set(CPACK_SOURCE_PACKAGE_FILE_NAME ${PACKAGE_NAME}-${PACKAGE_VERSION})
 
-# uninstall target
-configure_file (
-  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in
-  ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
-  IMMEDIATE @ONLY
-)
-
-add_custom_target (uninstall
-  COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
-)
-
 # The tests can't be run if this function is absent
 enable_testing ()
 add_custom_target (tests COMMENT "Build tests")
@@ -582,6 +604,14 @@ if (BUILD_PYTHON)
   if (SWIG_FOUND)
     include (${SWIG_USE_FILE})
     include (TargetLinkLibrariesWithDynamicLookup)
+
+    # this name was chosen in common with pyagrum for otagrum
+    set (OPENTURNS_SWIG_DEFINITIONS -DSWIG_TYPE_TABLE=pyproba)
+
+    # ptr conversion argument to handle None correctly in swig 4.x, this just allows to pass compilation with swig 3.x
+    if (SWIG_VERSION VERSION_LESS 4)
+      list (APPEND OPENTURNS_SWIG_DEFINITIONS -DSWIG_POINTER_NO_NULL=0x0)
+    endif ()
   endif ()
 
   find_package (PythonInterp)
@@ -659,13 +689,6 @@ set (CMAKE_INSTALL_RPATH ${LIBRARY_PATH})
 set (CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 set (OPENTURNS_SWIG_INCLUDE_DIRS ${INCLUDE_PATH}/openturns/swig)
-set (OPENTURNS_SWIG_DEFINITIONS -DSWIG_TYPE_TABLE=pyproba)
-
-# necessary to link against Py_InitModule64
-if (MINGW AND CMAKE_SIZEOF_VOID_P EQUAL 8)
-  set (OPENTURNS_SWIG_DEFINITIONS "-DMS_WIN64 ${OPENTURNS_SWIG_DEFINITIONS}")
-endif ()
-
 
 add_subdirectory (lib)
 

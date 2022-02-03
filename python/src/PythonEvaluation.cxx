@@ -217,7 +217,7 @@ Point PythonEvaluation::operator() (const Point & inP) const
     //    openturns.memoryview.Buffer((int(&inP[0]), False), (inP.getSize(),))
     // First argument
     ScopedPyObjectPointer ptrTuple(PyTuple_New(2));
-    PyTuple_SetItem(ptrTuple.get(), 0, PyLong_FromVoidPtr(static_cast<void *>(const_cast<double*>(&inP[0]))));
+    PyTuple_SetItem(ptrTuple.get(), 0, PyLong_FromVoidPtr(static_cast<void *>(const_cast<double*>(inP.data()))));
     PyTuple_SetItem(ptrTuple.get(), 1, PyBool_FromLong(0));  // We do not own memory
 
     // Second argument

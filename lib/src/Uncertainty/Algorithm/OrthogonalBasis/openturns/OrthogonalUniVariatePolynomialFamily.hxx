@@ -48,6 +48,11 @@ public:
   /** Constructor from implementation */
   OrthogonalUniVariatePolynomialFamily(const OrthogonalUniVariatePolynomialFactory & implementation);
 
+#ifndef SWIG
+  /** Constructor from implementation */
+  OrthogonalUniVariatePolynomialFamily(OrthogonalUniVariatePolynomialFactory * p_implementation);
+#endif
+
   /** String converter */
   String __repr__() const override;
 

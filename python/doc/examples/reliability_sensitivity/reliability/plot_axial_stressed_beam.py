@@ -17,6 +17,8 @@ Axial stressed beam : comparing different methods to estimate a probability
 
 # %%
 from __future__ import print_function
+import numpy as np
+from openturns.usecases import stressed_beam as stressed_beam
 
 import openturns as ot
 import openturns.viewer as viewer
@@ -25,7 +27,6 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the model from the usecases module :
-from openturns.usecases import stressed_beam as stressed_beam
 sm = stressed_beam.AxialStressedBeam()
 
 # %%
@@ -57,7 +58,8 @@ myDistribution = sm.distribution
 
 # %%
 inputRandomVector = ot.RandomVector(myDistribution)
-outputRandomVector = ot.CompositeRandomVector(limitStateFunction, inputRandomVector)
+outputRandomVector = ot.CompositeRandomVector(
+    limitStateFunction, inputRandomVector)
 myEvent = ot.ThresholdEvent(outputRandomVector, ot.Less(), 0.0)
 
 # %%
@@ -87,8 +89,10 @@ algoMC.run()
 # %%
 result = algoMC.getResult()
 probabilityMonteCarlo = result.getProbabilityEstimate()
-numberOfFunctionEvaluationsMonteCarlo = limitStateFunction.getEvaluationCallsNumber() - initialNumberOfCall
-print('Number of calls to the limit state =', numberOfFunctionEvaluationsMonteCarlo)
+numberOfFunctionEvaluationsMonteCarlo = limitStateFunction.getEvaluationCallsNumber() - \
+    initialNumberOfCall
+print('Number of calls to the limit state =',
+      numberOfFunctionEvaluationsMonteCarlo)
 print('Pf = ', probabilityMonteCarlo)
 print('CV =', result.getCoefficientOfVariation())
 
@@ -130,7 +134,8 @@ algoFORM.run()
 
 # %%
 resultFORM = algoFORM.getResult()
-numberOfFunctionEvaluationsFORM = limitStateFunction.getEvaluationCallsNumber() - initialNumberOfCall
+numberOfFunctionEvaluationsFORM = limitStateFunction.getEvaluationCallsNumber() - \
+    initialNumberOfCall
 probabilityFORM = resultFORM.getEventProbability()
 print('Number of calls to the limit state =', numberOfFunctionEvaluationsFORM)
 print('Pf =', probabilityFORM)
@@ -166,8 +171,10 @@ algoDS.run()
 # %%
 result = algoDS.getResult()
 probabilityDirectionalSampling = result.getProbabilityEstimate()
-numberOfFunctionEvaluationsDirectionalSampling = limitStateFunction.getEvaluationCallsNumber() - initialNumberOfCall
-print('Number of calls to the limit state =', numberOfFunctionEvaluationsDirectionalSampling)
+numberOfFunctionEvaluationsDirectionalSampling = limitStateFunction.getEvaluationCallsNumber() - \
+    initialNumberOfCall
+print('Number of calls to the limit state =',
+      numberOfFunctionEvaluationsDirectionalSampling)
 print('Pf = ', probabilityDirectionalSampling)
 print('CV =', result.getCoefficientOfVariation())
 
@@ -212,7 +219,7 @@ experiment = ot.ImportanceSamplingExperiment(myImportance)
 standardEvent = ot.StandardEvent(myEvent)
 
 # %%
-# We then create the simulation algorithm. 
+# We then create the simulation algorithm.
 
 # %%
 algo = ot.ProbabilitySimulationAlgorithm(standardEvent, experiment)
@@ -230,8 +237,10 @@ algo.run()
 # retrieve results
 result = algo.getResult()
 probabilityFORMIS = result.getProbabilityEstimate()
-numberOfFunctionEvaluationsFORMIS = limitStateFunction.getEvaluationCallsNumber() - initialNumberOfCall
-print('Number of calls to the limit state =', numberOfFunctionEvaluationsFORMIS)
+numberOfFunctionEvaluationsFORMIS = limitStateFunction.getEvaluationCallsNumber() - \
+    initialNumberOfCall
+print('Number of calls to the limit state =',
+      numberOfFunctionEvaluationsFORMIS)
 print('Pf = ', probabilityFORMIS)
 print('CV =', result.getCoefficientOfVariation())
 
@@ -243,7 +252,6 @@ print('CV =', result.getCoefficientOfVariation())
 # We now compare the different methods in terms of accuracy and speed.
 
 # %%
-import numpy as np
 
 
 # %%
@@ -261,11 +269,12 @@ def computeLogRelativeError(exact, computed):
 # %%
 def printMethodSummary(name, computedProbability, numberOfFunctionEvaluations):
     print("---")
-    print(name,":")
+    print(name, ":")
     print('Number of calls to the limit state =', numberOfFunctionEvaluations)
     print('Pf = ', computedProbability)
     exactProbability = 0.02919819462483051
-    logRelativeError = computeLogRelativeError(exactProbability, computedProbability)
+    logRelativeError = computeLogRelativeError(
+        exactProbability, computedProbability)
     print("Number of correct digits=%.3f" % (logRelativeError))
     performance = logRelativeError/numberOfFunctionEvaluations
     print("Performance=%.2e (correct digits/evaluation)" % (performance))
@@ -273,10 +282,13 @@ def printMethodSummary(name, computedProbability, numberOfFunctionEvaluations):
 
 
 # %%
-printMethodSummary("Monte-Carlo", probabilityMonteCarlo, numberOfFunctionEvaluationsMonteCarlo)
+printMethodSummary("Monte-Carlo", probabilityMonteCarlo,
+                   numberOfFunctionEvaluationsMonteCarlo)
 printMethodSummary("FORM", probabilityFORM, numberOfFunctionEvaluationsFORM)
-printMethodSummary("DirectionalSampling", probabilityDirectionalSampling, numberOfFunctionEvaluationsDirectionalSampling)
-printMethodSummary("FORM-IS", probabilityFORMIS, numberOfFunctionEvaluationsFORMIS)
+printMethodSummary("DirectionalSampling", probabilityDirectionalSampling,
+                   numberOfFunctionEvaluationsDirectionalSampling)
+printMethodSummary("FORM-IS", probabilityFORMIS,
+                   numberOfFunctionEvaluationsFORMIS)
 
 # %%
 # We see that all three methods produce the correct probability, but not with the same accuracy. In this case, we have found the correct order of magnitude of the probability, i.e. between one and two correct digits. There is, however, a significant difference in computational performance (measured here by the number of function evaluations).

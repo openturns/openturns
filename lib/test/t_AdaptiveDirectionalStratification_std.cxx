@@ -1,6 +1,6 @@
 //                                               -*- C++ -*-
 /**
- *  @brief The test file of class AdaptiveDirectionalSampling for standard methods
+ *  @brief The test file of class AdaptiveDirectionalStratification for standard methods
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -78,7 +78,7 @@ int main(int, char *[])
 
 
   /* We create a Directional Sampling algorithm */
-  AdaptiveDirectionalSampling myAlgo(myEvent);
+  AdaptiveDirectionalStratification myAlgo(myEvent);
 //   myAlgo.setPartialStratification(true);
 //   myAlgo.setMaximumStratificationDimension(2);
   myAlgo.setMaximumOuterSampling(n);

@@ -31,7 +31,6 @@
 #include "openturns/PersistentObjectFactory.hxx"
 #include "openturns/Matrix.hxx"
 #include "openturns/MatrixImplementation.hxx"
-#include "openturns/IdentityMatrix.hxx"
 #include "openturns/NormalCopula.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/RandomGenerator.hxx"
@@ -90,10 +89,17 @@ Normal::Normal(const Point & mean,
 }
 
 Normal::Normal(const Point & mean,
+               const Point & sigma)
+  : Normal(mean, sigma, CorrelationMatrix(mean.getDimension()))
+{
+  // Nothing to do
+}
+
+Normal::Normal(const Point & mean,
                const CovarianceMatrix & C)
   : EllipticalDistribution(mean
                            , Point(mean.getDimension(), 1.0)
-                           , IdentityMatrix(mean.getDimension())
+                           , CorrelationMatrix(mean.getDimension())
                            , 1.0)
   , logNormalizationFactor_((-1.0 * mean.getDimension()) * SpecFunc::LOGSQRT2PI)
   , hasIndependentCopula_(false)
@@ -176,10 +182,15 @@ Sample Normal::getSample(const UnsignedInteger size) const
 {
   const UnsignedInteger dimension = getDimension();
   Sample result(size, dimension);
-  for (UnsignedInteger i = 0; i < size; ++i)
-    for (UnsignedInteger j = 0; j < dimension; ++j) result(i, j) = DistFunc::rNormal();
-  if (hasIndependentCopula_) result *= sigma_;
-  else result = cholesky_.getImplementation()->genSampleProd(result, true, false, 'R');
+  if (dimension == 1)
+    result.getImplementation()->setData(sigma_[0] * DistFunc::rNormal(size));
+  else
+  {
+    for (UnsignedInteger i = 0; i < size; ++i)
+      for (UnsignedInteger j = 0; j < dimension; ++j) result(i, j) = DistFunc::rNormal();
+    if (hasIndependentCopula_) result *= sigma_;
+    else result = cholesky_.getImplementation()->genSampleProd(result, true, false, 'R');
+  }
   result += mean_;
   result.setName(getName());
   result.setDescription(getDescription());
@@ -343,31 +354,20 @@ Scalar Normal::computeCDF(const Point & point) const
   Scalar value = 0.0;
   Scalar variance = 0.0;
   Scalar a99 = DistFunc::qNormal(0.995);
-  UnsignedInteger outerMax = 10 * ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ) / ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" );
+  const UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" );
+  UnsignedInteger outerMax = 10 * ResourceMap::GetAsUnsignedInteger( "Normal-MaximumNumberOfPoints" ) / blockSize;
   Scalar precision = 0.0;
   for (UnsignedInteger indexOuter = 0; indexOuter < outerMax; ++indexOuter)
   {
-    Scalar valueBlock = 0.0;
-    Scalar varianceBlock = 0.0;
-    for (UnsignedInteger indexSample = 0; indexSample < ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ); ++indexSample)
-    {
-      Bool inside = true;
-      Point realization(getRealization());
-      // Check if the realization is in the integration domain
-      for (UnsignedInteger i = 0; i < dimension; ++i)
-      {
-        inside = realization[i] <= point[i];
-        if (!inside) break;
-      }
-      // ind value is 1.0 if the realization is inside of the integration domain, 0.0 else.
-      Scalar ind = inside;
-      Scalar norm = 1.0 / (indexSample + 1.0);
-      varianceBlock = (varianceBlock * indexSample + (1.0 - norm) * (valueBlock - ind) * (valueBlock - ind)) * norm;
-      valueBlock = (valueBlock * indexSample + ind) * norm;
-    }
-    Scalar norm = 1.0 / (indexOuter + 1.0);
+    const Sample sample(getSample(blockSize));
+    LOGDEBUG(OSS(false) << "indexOuter=" << indexOuter << ", point=" << point << ", sample=" << sample);
+    const Scalar valueBlock = sample.computeEmpiricalCDF(point);
+    const Scalar varianceBlock = valueBlock * (1.0 - valueBlock) / blockSize;
+    LOGDEBUG(OSS(false) << "valueBlock=" << valueBlock << ", varianceBlock=" << varianceBlock);
+    const Scalar norm = 1.0 / (indexOuter + 1.0);
     variance = (varianceBlock + indexOuter * variance + (1.0 - norm) * (value - valueBlock) * (value - valueBlock)) * norm;
     value = (value * indexOuter + valueBlock) * norm;
+    LOGDEBUG(OSS(false) << "value=" << value << ", variance=" << variance);
     // Quick return for value = 1
     if ((value >= 1.0 - ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")) && (variance == 0.0)) return 1.0;
     precision = a99 * std::sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Normal-MinimumNumberOfPoints" ));
@@ -378,6 +378,13 @@ Scalar Normal::computeCDF(const Point & point) const
   RandomGenerator::SetState(initialState);
   return value;
 } // computeCDF
+
+Sample Normal::computeCDF(const Sample & sample) const
+{
+  if (dimension_ <= ResourceMap::GetAsUnsignedInteger("Normal-SmallDimension"))
+    return DistributionImplementation::computeCDFParallel(sample);
+  return DistributionImplementation::computeCDFSequential(sample);
+}
 
 Scalar Normal::computeComplementaryCDF(const Scalar x) const
 {

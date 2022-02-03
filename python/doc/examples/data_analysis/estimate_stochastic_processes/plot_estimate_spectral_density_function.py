@@ -49,7 +49,7 @@ sample = process.getSample(1000)
 # Build a spectral model factory
 segmentNumber = 10
 overlapSize = 0.3
-factory = ot.WelchFactory(ot.Hanning(), segmentNumber, overlapSize)
+factory = ot.WelchFactory(ot.Hann(), segmentNumber, overlapSize)
 
 # %%
 # Estimation on a TimeSeries or on a ProcessSample
@@ -62,7 +62,8 @@ factory.setFilteringWindows(ot.Hamming())
 
 # %%
 # Get the frequencyGrid
-frequencyGrid = ot.SpectralGaussianProcess(estimatedModel_PS, tgrid).getFrequencyGrid()
+frequencyGrid = ot.SpectralGaussianProcess(
+    estimatedModel_PS, tgrid).getFrequencyGrid()
 
 # %%
 
@@ -79,7 +80,7 @@ for k in range(frequencyGrid.getN()):
 
 # Some cosmetics : labels, legend position, ...
 graph = ot.Graph("Estimated spectral function - Validation", "Frequency",
-              "Spectral density function", True, "topright", 1.0, ot.GraphImplementation.LOGY)
+                 "Spectral density function", True, "topright", 1.0, ot.GraphImplementation.LOGY)
 
 # The first curve is the estimate density as function of frequency
 curve1 = ot.Curve(plotSample.getMarginal([0, 1]))

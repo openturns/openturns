@@ -40,7 +40,7 @@ tgrid = ot.RegularGrid(0.0, 1.0, 500)
 
 # %%
 # 1-d random walk and discrete distribution
-dist = ot.UserDefined([[-1], [10]],[0.9, 0.1] )
+dist = ot.UserDefined([[-1], [10]], [0.9, 0.1])
 process = ot.RandomWalk(origin, dist, tgrid)
 sample = process.getSample(5)
 graph = sample.drawMarginal(0)
@@ -70,7 +70,7 @@ dist = ot.UserDefined([[-1., -2.], [1., 3.]], [0.5, 0.5])
 process = ot.RandomWalk(origin, dist, tgrid)
 sample = process.getSample(5)
 graph = ot.Graph('2D Random Walk with discrete steps', 'X1', 'X2', True)
-for i in range(5) :
+for i in range(5):
     graph.add(ot.Curve(sample[i], pal[i % len(pal)], 'solid'))
 view = viewer.View(graph)
 
@@ -80,7 +80,7 @@ dist = ot.Normal(2)
 process = ot.RandomWalk(origin, dist, tgrid)
 sample = process.getSample(5)
 graph = ot.Graph('2D Random Walk with continuous steps', 'X1', 'X2', True)
-for i in range(5) :
+for i in range(5):
     graph.add(ot.Curve(sample[i], pal[i % len(pal)], 'solid'))
 view = viewer.View(graph)
 plt.show()

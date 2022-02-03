@@ -33,7 +33,7 @@
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -130,7 +130,7 @@ struct NormalCopulaComputeSamplePolicy
     , dimension_(input.getDimension())
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
       for (UnsignedInteger j = 0; j < dimension_; ++j)
@@ -158,7 +158,7 @@ Sample NormalCopula::getSampleParallel(const UnsignedInteger size) const
     const Sample normalSample(normal_.getSample(size));
     Sample result(size, dimension);
     const NormalCopulaComputeSamplePolicy policy( normalSample, result );
-    TBB::ParallelFor( 0, size, policy );
+    TBBImplementation::ParallelFor( 0, size, policy );
     result.setName(getName());
     result.setDescription(getDescription());
     return result;

@@ -3,10 +3,14 @@
 from __future__ import print_function
 import openturns as ot
 
-print("Continuous univariate factories=", ot.DistributionFactory.GetContinuousUniVariateFactories())
-print("Continuous multivariate factories=", ot.DistributionFactory.GetContinuousMultiVariateFactories())
-print("Discrete univariate factories=", ot.DistributionFactory.GetDiscreteUniVariateFactories())
-print("Discrete multivariate factories=", ot.DistributionFactory.GetDiscreteMultiVariateFactories())
+print("Continuous univariate factories=",
+      ot.DistributionFactory.GetContinuousUniVariateFactories())
+print("Continuous multivariate factories=",
+      ot.DistributionFactory.GetContinuousMultiVariateFactories())
+print("Discrete univariate factories=",
+      ot.DistributionFactory.GetDiscreteUniVariateFactories())
+print("Discrete multivariate factories=",
+      ot.DistributionFactory.GetDiscreteMultiVariateFactories())
 print("Univariate factories=", ot.DistributionFactory.GetUniVariateFactories())
 print("Multivariate factories=", ot.DistributionFactory.GetMultiVariateFactories())
 

@@ -18,7 +18,12 @@
  *  along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+#include <limits>
+#include <algorithm>
+#include <string>
+
 #include "openturns/HaltonSequence.hxx"
+#include "openturns/Log.hxx"
 #include "openturns/ResourceMap.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
@@ -29,10 +34,13 @@ CLASSNAMEINIT(HaltonSequence)
 static const Factory<HaltonSequence> Factory_HaltonSequence;
 
 /* Constructor with parameters */
-HaltonSequence::HaltonSequence(const UnsignedInteger dimension) :
-  LowDiscrepancySequenceImplementation(dimension)
+HaltonSequence::HaltonSequence(const UnsignedInteger dimension,
+                               const String & scrambling)
+  : LowDiscrepancySequenceImplementation(dimension)
+  , scrambling_("") // To force a check in setScrambling
 {
-  initialize(dimension);
+  // This call will check the value of scrambling and trigger the initialization
+  setScrambling(scrambling);
 }
 
 
@@ -46,10 +54,35 @@ HaltonSequence * HaltonSequence::clone() const
 /* Initialize the sequence */
 void HaltonSequence::initialize(const UnsignedInteger dimension)
 {
-  if (!(dimension > 0)) throw InvalidArgumentException(HERE) << "Dimension must be > 0.";
-  dimension_ = dimension;
-  base_ = ComputeFirstPrimeNumbers(dimension);
+  LowDiscrepancySequenceImplementation::initialize(dimension);
+  base_ = GetFirstPrimeNumbers(dimension_);
   seed_ = ResourceMap::GetAsUnsignedInteger( "HaltonSequence-InitialSeed" );
+  permutations_ = Collection<Indices>(dimension_);
+  for (UnsignedInteger i = 0; i < dimension_; ++i)
+  {
+    const UnsignedInteger b = base_[i];
+    Indices permutation(b);
+    if (scrambling_ == "REVERSE")
+    {
+      for (UnsignedInteger j = 1; j < b; ++j)
+        permutation[j] = b - j;
+    } // REVERSE
+    else if (scrambling_ == "RANDOM")
+    {
+      Indices buffer(b);
+      buffer.fill();
+      for (UnsignedInteger j = 1; j < b; ++j)
+      {
+        const UnsignedInteger index = j + LCGgenerate() % (b - j);
+        permutation[j] = buffer[index];
+        buffer[index] = buffer[j];
+      }
+    } // RANDOM
+    else // NO SCRAMBLING
+      permutation.fill();
+    LOGDEBUG(OSS() << "b=" << b << ", permutation=" << permutation);
+    permutations_[i] = permutation;
+  } // i
 }
 
 /* Generate a pseudo-random vector of independant numbers uniformly distributed over [0, 1[ */
@@ -59,32 +92,63 @@ Point HaltonSequence::generate() const
   // Loop over the components
   for (UnsignedInteger i = 0; i < dimension_; ++i)
   {
-    Scalar xI = 0.0;
     const Unsigned64BitsInteger radix = base_[i];
-    const Scalar inverseRadix = 1.0 / radix;
-    Scalar inverseRadixN = inverseRadix;
     Unsigned64BitsInteger currentSeed = seed_;
+    Indices permutation(permutations_[i]);
+    Indices digits(0);
     while (currentSeed > 0)
     {
-      xI += (currentSeed % radix) * inverseRadixN;
+      digits.add(currentSeed % radix);
       currentSeed /= radix;
+    } // while
+    Scalar xI = 0.0;
+    const Scalar inverseRadix = 1.0 / radix;
+    Scalar inverseRadixN = inverseRadix;
+    for (UnsignedInteger j = 0; j < digits.getSize(); ++j)
+    {
+      xI += permutation[digits[j]] * inverseRadixN;
       inverseRadixN *= inverseRadix;
-    }
+    } // j
     realization[i] = xI;
-  }
+  } // i
   ++seed_;
   return realization;
 }
 
+/** Permutations accessor */
+Collection<Indices> HaltonSequence::getPermutations() const
+{
+  return permutations_;
+}
+
+/* Scrambling accessor */
+void HaltonSequence::setScrambling(const String & scrambling)
+{
+  if (scrambling != scrambling_)
+  {
+    if (scrambling != "NONE" &&
+        scrambling != "REVERSE" &&
+        scrambling != "RANDOM")
+      throw InvalidArgumentException(HERE) << "Error: valid values for scrambling are \"NONE\", \"REVERSE\" and \"RANDOM\"";
+    scrambling_ = scrambling;
+    initialize(dimension_);
+  }
+}
+
+String HaltonSequence::getScrambling() const
+{
+  return scrambling_;
+}
 
 /* String converter */
 String HaltonSequence::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << HaltonSequence::GetClassName()
-      << " derived from " << LowDiscrepancySequenceImplementation::__repr__()
       << " base=" << base_
-      << " seed=" << seed_;
+      << " seed=" << seed_
+      << " permutations=" << permutations_
+      << " scrambling=" << scrambling_;
   return oss;
 }
 
@@ -92,10 +156,11 @@ String HaltonSequence::__repr__() const
 String HaltonSequence::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << HaltonSequence::GetClassName()
-      << " derived from " << LowDiscrepancySequenceImplementation::__str__(offset)
+  oss << offset << "class=" << HaltonSequence::GetClassName()
       << " base=" << base_
-      << " seed=" << seed_;
+      << " seed=" << seed_
+      << " permutations=" << permutations_
+      << " scrambling=" << scrambling_;
   return oss;
 }
 
@@ -105,6 +170,8 @@ void HaltonSequence::save(Advocate & adv) const
   LowDiscrepancySequenceImplementation::save(adv);
   adv.saveAttribute( "base_", base_);
   adv.saveAttribute( "seed_", seed_);
+  adv.saveAttribute( "permutations_", permutations_);
+  adv.saveAttribute( "scrambling_", scrambling_);
 }
 
 
@@ -112,9 +179,10 @@ void HaltonSequence::save(Advocate & adv) const
 void HaltonSequence::load(Advocate & adv)
 {
   LowDiscrepancySequenceImplementation::load(adv);
-  initialize(dimension_);
   adv.loadAttribute( "base_", base_);
   adv.loadAttribute( "seed_", seed_);
+  adv.loadAttribute( "permutations_", permutations_);
+  adv.loadAttribute( "scrambling_", scrambling_);
 }
 
 

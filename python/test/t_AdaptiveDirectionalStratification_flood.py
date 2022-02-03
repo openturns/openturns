@@ -55,7 +55,7 @@ for k in [0.0, 2.0, 5.0, 8.][0:1]:
             algo.run()
             result = algo.getResult()
             print(result)
-            algo = ot.AdaptiveDirectionalSampling(event)
+            algo = ot.AdaptiveDirectionalStratification(event)
             algo.setMaximumOuterSampling(n)
             algo.setGamma([gamma1, 1.0 - gamma1])
             calls0 = function.getEvaluationCallsNumber()

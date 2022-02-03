@@ -10,7 +10,7 @@ Value function
 #
 # .. math::
 #    \begin{aligned} f_{value}(\underline{t}, \underline{x})=(\underline{t}, g(\underline{x}))\end{aligned}
-#   
+#
 # Let's note that the input dimension of :math:`f_{value}` still designs the
 # dimension of :math:`\underline{x}` : :math:`d`. Its output dimension is equal to :math:`q`.
 #
@@ -23,7 +23,7 @@ Value function
 #
 # The use case illustrates the creation of a spatial (field) function
 # from the function :math:`g: \mathbb{R}^2  \rightarrow \mathbb{R}^2` such as :
-# 
+#
 # .. math::
 #    \begin{aligned}
 #      g(\underline{x})=(x_1^2, x_1+x_2)

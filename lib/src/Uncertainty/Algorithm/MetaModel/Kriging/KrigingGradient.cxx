@@ -60,9 +60,6 @@ KrigingGradient::KrigingGradient(const BasisCollection & basis,
   {
     if (basis.getSize() != covarianceModel.getOutputDimension())
       throw InvalidArgumentException(HERE) << "In KrigingGradient::KrigingGradient, output sample dimension (" << covarianceModel.getOutputDimension()  << ") does not match multi-basis dimension (" << basis_.getSize() << ")";
-    // Total basis size = sum of all sizes
-    UnsignedInteger basisCollectionTotalSize = 0;
-    for (UnsignedInteger i = 0; i < basis.getSize(); ++i) basisCollectionTotalSize += basis[i].getSize();
   }
   if (covarianceModel.getInputDimension() != inputSample.getDimension()) throw InvalidArgumentException(HERE) << "In KrigingGradient::KrigingGradient, error: the input dimension=" << covarianceModel.getInputDimension() << " of the covariance model should match the dimension=" << inputSample.getDimension() << " of the input sample";
   if (gamma.getSize() != inputSample.getSize()) throw InvalidArgumentException(HERE) << "In KrigingGradient::KrigingGradient, error: the number of covariance coefficients=" << gamma.getSize() << " is different from the output sample dimension=" << covarianceModel.getOutputDimension();

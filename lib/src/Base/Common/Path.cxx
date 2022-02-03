@@ -332,7 +332,7 @@ FileName Path::GetTemporaryDirectory()
 {
   FileName tempDirectory;
 
-  String tempStr(ResourceMap::GetAsString("temporary-directory"));
+  String tempStr(ResourceMap::GetAsString("Path-TemporaryDirectory"));
 #ifndef _WIN32
   tempDirectory = tempStr;
 #else

@@ -59,11 +59,11 @@ for i in range(inputDimension):
 formula[0] = expression
 model = ot.SymbolicFunction(inputVar, formula)
 outputSample = model(inputSample)
-cobwebValue = ot.VisualTest.DrawCobWeb(
+cobwebValue = ot.VisualTest.DrawParallelCoordinates(
     inputSample, outputSample, 2.5, 3.0, "red", False)
 print("cobwebValue = ", cobwebValue)
 
-cobwebQuantile = ot.VisualTest.DrawCobWeb(
+cobwebQuantile = ot.VisualTest.DrawParallelCoordinates(
     inputSample, outputSample, 0.7, 0.9, "red", False)
 print("cobwebQuantile = ", cobwebQuantile)
 

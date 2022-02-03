@@ -7,6 +7,7 @@ Estimate a probability with Latin Hypercube Sampling
 
 # %%
 from __future__ import print_function
+from openturns.usecases import stressed_beam as stressed_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -14,7 +15,6 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the model from the usecases module :
-from openturns.usecases import stressed_beam as stressed_beam
 sm = stressed_beam.AxialStressedBeam()
 
 # %%
@@ -49,4 +49,3 @@ algo.run()
 result = algo.getResult()
 probability = result.getProbabilityEstimate()
 print('Pf=', probability)
-

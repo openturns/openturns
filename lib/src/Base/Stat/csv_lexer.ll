@@ -37,6 +37,7 @@
 %option noyywrap
 %option nounput
 %option noinput
+%option never-interactive
 
 digit     [0-9]
 sign      [+-]

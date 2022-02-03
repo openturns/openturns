@@ -104,7 +104,7 @@ public:
   virtual Sample getCovarianceCoefficients() const;
 
   /** Compute mean of new points conditionnaly to observations */
-  virtual Point getConditionalMean(const Sample & xi) const;
+  virtual Sample getConditionalMean(const Sample & xi) const;
 
   /** Compute mean of new points conditionnaly to observations */
   virtual Point getConditionalMean(const Point & xi) const;
@@ -126,13 +126,13 @@ public:
       const UnsignedInteger marginalIndex = 0) const;
 
   /** Compute marginal variance conditionnaly to observations (1 cov / point)*/
-  virtual Point getConditionalMarginalVariance(const Sample & xi,
+  virtual Sample getConditionalMarginalVariance(const Sample & xi,
       const UnsignedInteger marginalIndex = 0) const;
 
   virtual Point getConditionalMarginalVariance(const Point & point,
       const Indices & indices) const;
 
-  virtual Point getConditionalMarginalVariance(const Sample & xi,
+  virtual Sample getConditionalMarginalVariance(const Sample & xi,
       const Indices & indices) const;
 
   /** Compute joint normal distribution conditionnaly to observations*/
@@ -151,18 +151,10 @@ public:
 protected:
 
   /** Compute cross matrix method ==> not necessary square matrix  */
-  Matrix getCrossMatrix(const Sample & x) const;
-  Matrix getCrossMatrix(const Point & point) const;
   void computeF() const;
   void computePhi() const;
 
 private:
-
-  // Structures for evaluation of crossCovariance
-  friend struct KrigingResultCrossCovarianceFunctor;
-  friend struct KrigingResultCrossCovarianceFunctor1D;
-  friend struct KrigingResultCrossCovariancePointFunctor;
-  friend struct KrigingResultCrossCovariancePointFunctor1D;
 
   /** input/output samples */
   Sample inputSample_;

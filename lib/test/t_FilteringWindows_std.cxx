@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
  *  @brief The test file of class FilteringWindows
- *         This tests the Hamming and Hanning classes
+ *         This tests the Hamming and Hann classes
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -34,8 +34,8 @@ int main(int, char *[])
   {
 
 
-    /* Hanning filter */
-    Hanning myHanningFilter;
+    /* Hann filter */
+    Hann myHanningFilter;
     fullprint << "myHanningFilter = " << myHanningFilter << std::endl;
 
     /* Hamming filter */
@@ -52,7 +52,7 @@ int main(int, char *[])
     {
       const Scalar t = tMin + i * tStep;
       fullprint << "t = " << t
-                << " Hanning = " << myHanningFilter(t)
+                << " Hann = " << myHanningFilter(t)
                 << " Hamming = " << myHammingFilter(t) << std::endl;
     }
 

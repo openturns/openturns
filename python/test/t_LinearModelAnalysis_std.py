@@ -63,7 +63,7 @@ print("confidence intervals with level=%1.2f : %s" % (alpha, interval))
 
 # https://github.com/openturns/openturns/issues/1729
 ot.RandomGenerator.SetSeed(1789)
-sample_size = 14605 # 14604 : OK, 14605 : Fail
+sample_size = 14605  # 14604 : OK, 14605 : Fail
 a0 = 0.6
 a1 = 2.0
 x = ot.Normal(0.5, 0.2).getSample(sample_size)
@@ -86,5 +86,7 @@ linear_result = linear_model.getResult()
 test_result = ot.LinearModelTest.LinearModelFisher(
     firstSample, secondSample, linear_result)
 linear_model_analysis = ot.LinearModelAnalysis(linear_result)
-ott.assert_almost_equal(test_result.getStatistic(), linear_model_analysis.getFisherScore(), 1e-13, 0)
-ott.assert_almost_equal(test_result.getPValue(), linear_model_analysis.getFisherPValue(), 0, 0)
+ott.assert_almost_equal(test_result.getStatistic(),
+                        linear_model_analysis.getFisherScore(), 1e-13, 0)
+ott.assert_almost_equal(test_result.getPValue(),
+                        linear_model_analysis.getFisherPValue(), 0, 0)

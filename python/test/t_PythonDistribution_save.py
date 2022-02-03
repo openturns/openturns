@@ -10,6 +10,7 @@ dill.settings['recurse'] = True
 
 ot.TESTPREAMBLE()
 
+
 class UniformNdPy(ot.PythonDistribution):
 
     def __init__(self, a=[-1.0], b=[1.0]):
@@ -64,6 +65,7 @@ class UniformNdPy(ot.PythonDistribution):
         for i in range(len(self.a)):
             mu.append(0.5 * (self.a[i] + self.b[i]))
         return mu
+
 
 d = ot.Distribution(UniformNdPy())
 print(d.getKurtosis())

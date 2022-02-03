@@ -7,6 +7,7 @@ Use a randomized QMC algorithm
 
 # %%
 from __future__ import print_function
+from openturns.usecases import cantilever_beam as cantilever_beam
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -14,7 +15,6 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the data class containing the probabilistic modeling of the beam.
-from openturns.usecases import cantilever_beam as cantilever_beam
 cb = cantilever_beam.CantileverBeam()
 
 # %%

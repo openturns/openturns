@@ -214,13 +214,3 @@ Parameters
 ----------
 seed : int
     The RNG seed."
-
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::NLopt::IsAvailable
-"Ask whether NLopt support is available.
-
-Returns
--------
-available : bool
-    Whether NLopt support is available."

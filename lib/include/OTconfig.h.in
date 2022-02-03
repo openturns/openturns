@@ -116,9 +116,6 @@
 #cmakedefine OPENTURNS_HAVE_TBB
 #cmakedefine OPENTURNS_TBB_NO_IMPLICIT_LINKAGE
 
-/* Define to 1 if you have the <tbb/tbb.h> header file. */
-#cmakedefine OPENTURNS_HAVE_TBB_TBB_H
-
 /* Define to 1 if you have the <unistd.h> header file. */
 #cmakedefine OPENTURNS_HAVE_UNISTD_H
 
@@ -136,6 +133,9 @@
 
 /* Define to 1 if the system has MPC libraries. */
 #cmakedefine OPENTURNS_HAVE_MPC
+
+/* Define to 1 if the system has PRIMESIEVE libraries. */
+#cmakedefine OPENTURNS_HAVE_PRIMESIEVE
 
 /* Define to the full path where OpenTURNS is installed */
 #define INSTALL_PATH "@NATIVE_INSTALL_PATH@"
