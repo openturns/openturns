@@ -11,6 +11,7 @@ X : :class:`~openturns.RandomVector`
 
 Notes
 -----
+Let :math:`\vect{X}\in\Rset^{n_X}` be a random vector. 
 This algorithm estimates :math:`\Expect{\vect{X}}` using the smallest possible sample 
 size which satisfies pre-defined stopping rules. 
 It increases the sample size :math:`n` incrementally until a stopping criterion is met. 
@@ -19,11 +20,6 @@ For example, consider the Student distribution with :math:`\nu` degrees of freed
 If :math:`\nu=1` (where the expectation is undefined) 
 or :math:`\nu=2` (where the variance is undefined), 
 then the algorithm cannot succeed. 
-
-This algorithm estimates :math:`\Expect{\vect{X}}` based on a trade-off between 
-performance and accuracy, using the smallest possible sample 
-(blockwise) size which satisfies pre-defined stopping rules. 
-It increases the sample size :math:`n` incrementally until a stopping criteria is met. 
 
 The algorithm is based on two nested loops:
 
@@ -45,7 +41,6 @@ The latter stopping criterion is based on either the coefficient of variation of
 sample mean (relative criterion) or the standard deviation of the sample 
 mean (absolute criterion). 
 
-Let :math:`\vect{X}\in\Rset^{n_X}` be the random vector. 
 We consider :math:`\vect{n}` independent realizations :math:`\vect{x}^{(1)}`, 
 ..., :math:`\vect{x}^{(n)}\in\Rset^{n_X}` of the random vector :math:`\vect{X}`. 
 We estimate :math:`\Expect{\vect{X}}` with the sample mean:
@@ -111,7 +106,7 @@ There are 3 mathematical stopping criteria available:
 
 A low coefficient of variation guarantees relative accuracy, while a low standard deviation guarantees absolute accuracy. 
 
-If any of the three previous conditions is true, the algorithm stops.
+If the chosen condition is found to be true, the algorithm stops.
 
 Let :math:`n_X` be the dimension of the random vector :math:`\vect{X}`. 
 Let :math:`\max_{cov}\in\Rset` be the maximum coefficient of variation. 
@@ -193,7 +188,17 @@ following keys of the :class:`~openturns.ResourceMap`:
 - `SimulationAlgorithm-DefaultMaximumCoefficientOfVariation`,
 - `SimulationAlgorithm-DefaultMaximumStandardDeviation`.
 
-In general, criteria based on coefficients of variation (C.O.V.) should be used because they guarantee a relative accuracy on the estimate of the mean. However, we may happen to estimate an expected value equal to zero (perhaps for teaching or research purposes). The default value of `SimulationAlgorithm-DefaultMaximumStandardDeviation` is `0`, which means that standard deviation-based criteria are disabled by default (in order to let C.O.V.-based criteria be used by default). If the expected value of :math:`\vect{X}` is zero, the algorithm is likely to reach the maximum number of outer iterations. If this happens, please configure the maximum standard deviation in order to match the scale of the random variable at hand.
+In general, criteria based on coefficients of variation (C.O.V.) should be used because
+they guarantee a relative accuracy on the estimate of the mean.
+However, we may happen to estimate an expected value equal to zero
+(perhaps for teaching or research purposes).
+The default value of `SimulationAlgorithm-DefaultMaximumStandardDeviation` is
+:math:`0`, which means that standard deviation-based criteria are disabled by default
+(in order to let C.O.V.-based criteria be used by default).
+If the expected value of :math:`\vect{X}` is zero,
+the algorithm is likely to reach the maximum number of outer iterations.
+If this happens, please configure the maximum standard deviation
+in order to match the scale of the random variable at hand.
 
 See also
 --------
