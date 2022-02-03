@@ -31,20 +31,6 @@
 
 %enddef
 
-// Thread-safe initialization - initialize during Python module initialization
-%fragment("typedImplementationObject_reference_init", "init")
-{
-  typedImplementationObject_reference();
-}
-
-%fragment("typedImplementationObject_reference_function", "header", fragment="typedImplementationObject_reference_init")
-{
-  static PyObject *typedImplementationObject_reference()
-  {
-    static PyObject *typedImplementationObject_reference_string = SWIG_Python_str_FromChar("__typedImplementationObject_reference");
-    return typedImplementationObject_reference_string;
-  }
-}
 
 // SWIG typemaps to convert Pointer<ParentImplementation> objects to ChildImplementation.
 // The typemaps implement dynamic typecasting to ChildImplementation for the Python version of TypedInterfaceObject::getImplementation.
@@ -65,14 +51,7 @@
   swig_type_info * childinfo = SWIG_TypeQuery(childname.c_str());
 
   // Make the result a PyObject* pointing to the ChildImplementation.
-  $result = SWIG_NewPointerObj(SWIG_as_voidptr($1.get()), childinfo, 0 |  0 );
-}
-
-// Add an attribute to the resulting ChildImplementation that stores a reference to the original TypedInterfaceObject.
-// This prevents premature garbage collection of the TypedInterfaceObject.
-%typemap(ret, fragment="typedImplementationObject_reference_function") OT::TypedInterfaceObject< Namespace::ParentImplementation >::Implementation
-{
-  PyObject_SetAttr($result, typedImplementationObject_reference(), $self);
+  $result = SWIG_NewPointerObj(SWIG_as_voidptr($1.get()->clone()), childinfo, SWIG_POINTER_OWN);
 }
 
 %enddef
