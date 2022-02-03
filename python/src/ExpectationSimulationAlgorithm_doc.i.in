@@ -111,7 +111,7 @@ There are 3 mathematical stopping criteria available:
 
 A low coefficient of variation guarantees relative accuracy, while a low standard deviation guarantees absolute accuracy. 
 
-If any of the three previous conditions is true, the algorithm stops.
+If the chosen condition is found to be true, the algorithm stops.
 
 Let :math:`n_X` be the dimension of the random vector :math:`\vect{X}`. 
 Let :math:`\max_{cov}\in\Rset` be the maximum coefficient of variation. 
