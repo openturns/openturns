@@ -193,7 +193,17 @@ following keys of the :class:`~openturns.ResourceMap`:
 - `SimulationAlgorithm-DefaultMaximumCoefficientOfVariation`,
 - `SimulationAlgorithm-DefaultMaximumStandardDeviation`.
 
-In general, criteria based on coefficients of variation (C.O.V.) should be used because they guarantee a relative accuracy on the estimate of the mean. However, we may happen to estimate an expected value equal to zero (perhaps for teaching or research purposes). The default value of `SimulationAlgorithm-DefaultMaximumStandardDeviation` is `0`, which means that standard deviation-based criteria are disabled by default (in order to let C.O.V.-based criteria be used by default). If the expected value of :math:`\vect{X}` is zero, the algorithm is likely to reach the maximum number of outer iterations. If this happens, please configure the maximum standard deviation in order to match the scale of the random variable at hand.
+In general, criteria based on coefficients of variation (C.O.V.) should be used because
+they guarantee a relative accuracy on the estimate of the mean.
+However, we may happen to estimate an expected value equal to zero
+(perhaps for teaching or research purposes).
+The default value of `SimulationAlgorithm-DefaultMaximumStandardDeviation` is
+:math:`0`, which means that standard deviation-based criteria are disabled by default
+(in order to let C.O.V.-based criteria be used by default).
+If the expected value of :math:`\vect{X}` is zero,
+the algorithm is likely to reach the maximum number of outer iterations.
+If this happens, please configure the maximum standard deviation
+in order to match the scale of the random variable at hand.
 
 See also
 --------
