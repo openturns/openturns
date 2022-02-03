@@ -6,7 +6,7 @@
 
 Checks the distribution of the sensitivity indices estimators.
 
-We comapre the asymptotic distribution with an empirical sample of Sobol'
+We compare the asymptotic distribution with an empirical sample of Sobol'
 indices estimates.
 
 We want to check that the distribution computed by the library is OK.
@@ -194,10 +194,10 @@ class SensitivityConfidenceTest:
         # compute empirical variance
         self.std_first_empirical = ot.Sample(
             sampleFirst
-        ).computeStandardDeviationPerComponent()
+        ).computeStandardDeviation()
         self.std_total_empirical = ot.Sample(
             sampleTotal
-        ).computeStandardDeviationPerComponent()
+        ).computeStandardDeviation()
         return (
             sampleFirst,
             sampleTotal,
