@@ -10,7 +10,7 @@ env
 # build with frozen date unless on release for reproducible builds
 if test "${CIRCLE_BRANCH}" = "master"
 then
-  export SOURCE_DATE_EPOCH=1514764800
+  export SOURCE_DATE_EPOCH=1640991600
 fi
 
 if test -d "/io"
