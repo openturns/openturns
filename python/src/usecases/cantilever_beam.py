@@ -19,7 +19,7 @@ class CantileverBeam():
 
     E : `Beta` distribution
         ot.Beta(0.9, 3.5, 65.0e9, 75.0e9)
-        
+
     F : `LogNormal` distribution
         ot.LogNormalMuSigma()([300.0, 30.0, 0.0])
 
@@ -33,7 +33,7 @@ class CantileverBeam():
 
     R : `CorrelationMatrix`
         Correlation matrix used to define the copula.
- 
+
     copula : `NormalCopula`
              Copula of the model.
 
@@ -49,7 +49,7 @@ class CantileverBeam():
     >>> from openturns.usecases import cantilever_beam as cantilever_beam
     >>> # Load the cantilever beam model
     >>> cb = cantilever_beam.CantileverBeam()
-    """                                                                                       
+    """
 
     def __init__(self):
         self.dim = 4  # number of inputs
@@ -75,14 +75,17 @@ class CantileverBeam():
         self.I.setName("Inertia")
 
         # physical model
-        self.model = ot.SymbolicFunction(['E', 'F', 'L', 'I'], ['F*L^3/(3*E*I)'])
+        self.model = ot.SymbolicFunction(
+            ['E', 'F', 'L', 'I'], ['F*L^3/(3*E*I)'])
 
         # correlation matrix
         self.R = ot.CorrelationMatrix(self.dim)
         self.R[2, 3] = -0.2
-        self.copula = ot.NormalCopula(ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(self.R))
-        self.distribution = ot.ComposedDistribution([self.E, self.F, self.L, self.I], self.copula)
+        self.copula = ot.NormalCopula(
+            ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(self.R))
+        self.distribution = ot.ComposedDistribution(
+            [self.E, self.F, self.L, self.I], self.copula)
 
         # special case of an independent copula
-        self.independentDistribution = ot.ComposedDistribution([self.E, self.F, self.L, self.I])
-
+        self.independentDistribution = ot.ComposedDistribution(
+            [self.E, self.F, self.L, self.I])

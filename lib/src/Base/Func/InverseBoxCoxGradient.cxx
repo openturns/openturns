@@ -21,7 +21,6 @@
 
 #include "openturns/InverseBoxCoxGradient.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
-#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

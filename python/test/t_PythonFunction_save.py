@@ -10,10 +10,13 @@ dill.settings['recurse'] = True
 
 ot.TESTPREAMBLE()
 
+
 def g(X):
     a, b = X
     Y = [a*m.sin(b)]
     return Y
+
+
 f = ot.PythonFunction(2, 1, g)
 x = [4, 5]
 print(f(x))

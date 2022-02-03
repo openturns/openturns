@@ -808,10 +808,10 @@ Scalar DistFunc::logdHypergeometric(const UnsignedInteger n,
   if (x == m) nkmx = (n - k) * log1p(-p);
   else if (m - x == n - k) nkmx = (m - x) * std::log(p);
   else
-    {
-      const UnsignedInteger delta = n - k + x - m;
-      nkmx = -SpecFunc::LOGSQRT2PI - 0.5 * std::log((m - x) * (1.0 - (1.0 * (m - x)) / (n - k))) + SpecFunc::Stirlerr(n - k) - SpecFunc::Stirlerr(m - x) - SpecFunc::Stirlerr(delta) - bd0(m - x, (n - k) * p) - bd0(delta, (n - k) * (1.0 - p));
-    }
+  {
+    const UnsignedInteger delta = n - k + x - m;
+    nkmx = -SpecFunc::LOGSQRT2PI - 0.5 * std::log((m - x) * (1.0 - (1.0 * (m - x)) / (n - k))) + SpecFunc::Stirlerr(n - k) - SpecFunc::Stirlerr(m - x) - SpecFunc::Stirlerr(delta) - bd0(m - x, (n - k) * p) - bd0(delta, (n - k) * (1.0 - p));
+  }
   return kx + nkmx - nm;
 #endif
 }

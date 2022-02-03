@@ -680,11 +680,11 @@ Scalar GeneralLinearModelAlgorithm::computeLapackLogDeterminantCholesky() const
     {
       // If the largest eigenvalue module has not been computed yet...
       if (maxEV < 0.0)
-        {
-          maxEV = C.computeLargestEigenValueModule();
-          LOGDEBUG(OSS() << "maxEV=" << maxEV);
-          scaling *= maxEV;
-        }
+      {
+        maxEV = C.computeLargestEigenValueModule();
+        LOGDEBUG(OSS() << "maxEV=" << maxEV);
+        scaling *= maxEV;
+      }
       cumulatedScaling += scaling ;
       LOGDEBUG(OSS() << "scaling=" << scaling << ", cumulatedScaling=" << cumulatedScaling);
       // Unroll the regularization to optimize the computation

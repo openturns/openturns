@@ -69,7 +69,7 @@ try:
     sample3.add(anotherNewPoint)
     print("sample3=", repr(sample3))
 
-    #... then the first point again
+    # ... then the first point again
     sample3.add(samePoint)
     print("sample3=", repr(sample3))
 

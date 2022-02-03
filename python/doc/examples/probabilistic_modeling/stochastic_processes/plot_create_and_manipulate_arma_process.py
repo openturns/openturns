@@ -75,7 +75,6 @@ process = ot.ARMA(myARCoef, myMACoef, myWhiteNoise)
 print(process)
 
 
-
 # %%
 # ARMA process manipulation
 # -------------------------
@@ -116,7 +115,7 @@ print(myWhiteNoise)
 
 
 # %%
-# We generate a possible time series realization : 
+# We generate a possible time series realization :
 ts = process.getRealization()
 ts.setName('ARMA realization')
 
@@ -137,7 +136,7 @@ view = viewer.View(graph0)
 # Then get the current state of the ARMA
 #armaState = process.getState()
 #print("armaState = ")
-#print(armaState)
+# print(armaState)
 
 # %%
 # We draw a sample of size 6 : it is six different time series.
@@ -148,7 +147,7 @@ graph.setTitle("Six realizations of the ARMA process")
 graph.setXTitle("t")
 graph.setYTitle(r"$X_t$")
 view = viewer.View(graph)
-#plt.show()
+# plt.show()
 
 # We can obtain the current state of the ARMA process :
 armaState = process.getState()
@@ -166,20 +165,20 @@ print(armaState)
 # From the aforementioned `armaState`, we can get the last values of :math:`X_t` and the last values
 # of the white noise :math:`E_t`.
 myLastValues = armaState.getX()
-print( myLastValues )
+print(myLastValues)
 myLastEpsilonValues = armaState.getEpsilon()
 print(myLastEpsilonValues)
 
 # %%
-# We have access to the number of iterations before getting a stationary state with 
+# We have access to the number of iterations before getting a stationary state with
 Ntherm = process.getNThermalization()
-print("ThermalValue : %d"%Ntherm)
+print("ThermalValue : %d" % Ntherm)
 
 # %%
 # This may be important to evaluate it with another precision epsilon :
 epsilon = 1e-8
 newThermalValue = process.computeNThermalization(epsilon)
-print("newThermalValue : %d"%newThermalValue)
+print("newThermalValue : %d" % newThermalValue)
 process.setNThermalization(newThermalValue)
 
 # %%

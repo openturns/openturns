@@ -19,8 +19,13 @@
  *
  */
 #include "openturns/LowDiscrepancySequenceImplementation.hxx"
+#include "openturns/SpecFunc.hxx"
 #include "openturns/Exception.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+
+#ifdef OPENTURNS_HAVE_PRIMESIEVE
+#include <primesieve.hpp>
+#endif
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -35,11 +40,12 @@ CLASSNAMEINIT(LowDiscrepancySequenceImplementation)
 static const Factory<LowDiscrepancySequenceImplementation> Factory_LowDiscrepancySequenceImplementation;
 
 /* Constructor with parameters */
-LowDiscrepancySequenceImplementation::LowDiscrepancySequenceImplementation(const UnsignedInteger dimension) :
-  PersistentObject(),
-  dimension_(dimension)
+LowDiscrepancySequenceImplementation::LowDiscrepancySequenceImplementation(const UnsignedInteger dimension)
+  : PersistentObject()
+  , dimension_(dimension)
+  , LCGState_(0)
 {
-  // Nothing to do
+  initialize(dimension);
 }
 
 
@@ -50,10 +56,12 @@ LowDiscrepancySequenceImplementation * LowDiscrepancySequenceImplementation::clo
 }
 
 
-/* initialize the sequence */
-void LowDiscrepancySequenceImplementation::initialize(const UnsignedInteger )
+/* Initialize the sequence */
+void LowDiscrepancySequenceImplementation::initialize(const UnsignedInteger dimension)
 {
-  throw NotYetImplementedException(HERE) << "In LowDiscrepancySequenceImplementation::initialize(const UnsignedInteger dimension)";
+  if (!(dimension > 0)) throw InvalidArgumentException(HERE) << "Dimension must be > 0.";
+  dimension_ = dimension;
+  LCGState_ = ResourceMap::GetAsUnsignedInteger("LowDiscrepancySequence-ScramblingSeed");
 }
 
 
@@ -75,7 +83,7 @@ Point LowDiscrepancySequenceImplementation::generate() const
 Sample LowDiscrepancySequenceImplementation::generate(const UnsignedInteger size) const
 {
   Sample sequenceSample(size, dimension_);
-  for(UnsignedInteger i = 0; i < size ; ++i) sequenceSample[i] = generate();
+  for (UnsignedInteger i = 0; i < size ; ++i) sequenceSample[i] = generate();
   return sequenceSample;
 }
 
@@ -92,11 +100,23 @@ Scalar LowDiscrepancySequenceImplementation::ComputeStarDiscrepancy(const Sample
   for(UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar local = ComputeLocalDiscrepancy(sample, Interval(lowerPoint, sample[i]));
-    if(local > discrepancy)
+    if (local > discrepancy)
       discrepancy = local;
   }
   return discrepancy;
 }
+
+/* Scrambling seed accessor */
+void LowDiscrepancySequenceImplementation::setScramblingState(const UnsignedInteger state)
+{
+  LCGState_ = state;
+}
+
+Unsigned64BitsInteger LowDiscrepancySequenceImplementation::getScramblingState() const
+{
+  return LCGState_;
+}
+
 
 
 /* String converter */
@@ -104,7 +124,8 @@ String LowDiscrepancySequenceImplementation::__repr__() const
 {
   OSS oss;
   oss << "class=" << LowDiscrepancySequenceImplementation::GetClassName()
-      << " dimension=" << dimension_;
+      << " dimension=" << dimension_
+      << " LCGState=" << LCGState_;
   return oss;
 }
 
@@ -114,6 +135,7 @@ void LowDiscrepancySequenceImplementation::save(Advocate & adv) const
   PersistentObject::save(adv);
 
   adv.saveAttribute("dimension_", dimension_);
+  adv.saveAttribute("LCGState_", LCGState_);
 }
 
 /** Method load() reloads the object from the StorageManager */
@@ -122,6 +144,7 @@ void LowDiscrepancySequenceImplementation::load(Advocate & adv)
   PersistentObject::load(adv);
 
   adv.loadAttribute("dimension_", dimension_);
+  adv.loadAttribute("LCGState_", LCGState_);
 }
 
 
@@ -141,8 +164,17 @@ Scalar LowDiscrepancySequenceImplementation::ComputeLocalDiscrepancy(const Sampl
 }
 
 /* Get the needed prime numbers */
-LowDiscrepancySequenceImplementation::Unsigned64BitsIntegerCollection LowDiscrepancySequenceImplementation::GetPrimeNumbers(const Indices & indices)
+/* Get the n first prime numbers */
+LowDiscrepancySequenceImplementation::Unsigned64BitsIntegerCollection LowDiscrepancySequenceImplementation::GetFirstPrimeNumbers(const UnsignedInteger n)
 {
+  if (n == 0) throw InvalidArgumentException(HERE) << "Error: cannot ask for no prime number";
+#ifdef OPENTURNS_HAVE_PRIMESIEVE
+  Unsigned64BitsIntegerCollection result(n);
+  primesieve::iterator it;
+  for (UnsignedInteger i = 0; i < n; ++i)
+    result[i] = it.next_prime();
+  return result;
+#else
   static const UnsignedInteger MaxPrime(1600);
   static const Unsigned64BitsInteger Table[MaxPrime] =
   {
@@ -307,36 +339,56 @@ LowDiscrepancySequenceImplementation::Unsigned64BitsIntegerCollection LowDiscrep
     13313, 13327, 13331, 13337, 13339, 13367, 13381, 13397, 13399, 13411,
     13417, 13421, 13441, 13451, 13457, 13463, 13469, 13477, 13487, 13499
   };
-  const UnsignedInteger size = indices.getSize();
-  Unsigned64BitsIntegerCollection result(size);
-  for (UnsignedInteger i = 0; i < size; ++i)
+  Unsigned64BitsIntegerCollection result(n);
+  if (n <= MaxPrime)
+    std::copy(&Table[0], &Table[n], result.begin());
+  else
   {
-    const UnsignedInteger index = indices[i];
-    if (!(index <= MaxPrime)) throw InvalidArgumentException(HERE) << "Error: cannot ask for a prime number greater than the " << MaxPrime << "th prime number.";
-    result[i] = Table[index];
-  }
+    // Upper bound of the nth prime number, valid for n>=6, see https://en.wikipedia.org/wiki/Prime-counting_function
+    const Unsigned64BitsInteger upperBound(std::ceil(n * std::log(n * std::log(n))));
+    Indices is_prime(upperBound + 1, 1);
+    // Use the Sieve of Eratosthenes for the prime numbers. There is no significant gain in terms of CPU or RAM trying to reuse Table
+    for (UnsignedInteger p = 2; p * p <= upperBound; ++p)
+    {
+      // If flags[p] is equal to 1, it is a prime
+      if (is_prime[p])
+      {
+        // Update all multiples of p
+        for (UnsignedInteger i = 2 * p; i <= upperBound; i += p)
+          is_prime[i] = 0;
+      } // flags[p] == 1
+    } // p
+    UnsignedInteger index = 0;
+    for (UnsignedInteger i = 2; i <= upperBound; ++i)
+    {
+      if (is_prime[i])
+      {
+        result[index] = i;
+        ++index;
+        // Exit the loop if we have found enough primes
+        if (index == n) break;
+      } // is_prime
+    } // i
+  } // n > MaxPrime
   return result;
-}
-
-/* Compute the n first prime numbers */
-LowDiscrepancySequenceImplementation::Unsigned64BitsIntegerCollection LowDiscrepancySequenceImplementation::ComputeFirstPrimeNumbers(const UnsignedInteger n)
-{
-  Indices indices(n);
-  indices.fill();
-  return GetPrimeNumbers(indices);
+#endif
 }
 
 /* Compute the least prime number greater or equal to n */
-Unsigned64BitsInteger LowDiscrepancySequenceImplementation::ComputeNextPrimeNumber(const UnsignedInteger n)
+Unsigned64BitsInteger LowDiscrepancySequenceImplementation::GetNextPrimeNumber(const UnsignedInteger n)
 {
+  if (n == 0) return 2;
+#ifdef OPENTURNS_HAVE_PRIMESIEVE
+  primesieve::iterator it;
+  it.skipto(n - 1);
+  return it.next_prime();
+#else
+  const Unsigned64BitsIntegerCollection primes(GetFirstPrimeNumbers(static_cast<UnsignedInteger>(n / SpecFunc::LambertW(n))));
   UnsignedInteger i = 0;
-  Unsigned64BitsIntegerCollection primes(GetPrimeNumbers(Indices(1, i)));
-  while (primes[0] < n)
-  {
-    primes = GetPrimeNumbers(Indices(1, i));
+  while (primes[i] < n)
     ++i;
-  }
-  return primes[0];
+  return primes[i];
+#endif
 }
 
 END_NAMESPACE_OPENTURNS

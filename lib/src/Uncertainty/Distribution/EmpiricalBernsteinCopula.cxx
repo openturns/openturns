@@ -450,12 +450,6 @@ Point EmpiricalBernsteinCopula::computeSequentialConditionalPDF(const Point & x)
 }
 
 /* Compute the CDF of Xi | X1, ..., Xi-1. x = Xi, y = (X1,...,Xi-1) */
-/*    Scalar cdfAtom = 1.0;
-    for (UnsignedInteger j = 0; j < dimension; ++j)
-    {
-      cdfAtom *= SpecFunc::RegularizedIncompleteBeta(logFactors_(i, j), binNumber_ - logFactors_(i, j) + 1.0, point[j]);
-    } // j
-    cdfValue += cdfAtom;*/
 Scalar EmpiricalBernsteinCopula::computeConditionalCDF(const Scalar x,
     const Point & y) const
 {

@@ -25,7 +25,6 @@
 #include "openturns/CorrelationMatrix.hxx"
 #include "openturns/Normal.hxx"
 #include "openturns/DistFunc.hxx"
-#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

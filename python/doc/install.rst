@@ -54,7 +54,7 @@ Then just run installer and follow the instructions.
 
 A non-interactive installation is also possible with the command line::
 
-    openturns-1.16-py38-x86_64.exe /userlevel=1 /S /FORCE /D=%PREFIX%
+    openturns-1.18-py38-x86_64.exe /userlevel=1 /S /FORCE /D=%PREFIX%
 
 Debian/Ubuntu
 -------------
@@ -63,19 +63,19 @@ We support the following Debian-based distributions:
 
 .. table::
 
-    +-------------------------------------+---------------------------------------------------------+
-    | Distribution name                   | Repository address                                      |
-    +=====================================+=========================================================+
-    | Ubuntu 18.04 LTS 'Bionic Beaver'    | deb https://openturns.github.io/apt/ubuntu bionic main  |
-    +-------------------------------------+---------------------------------------------------------+
-    | Ubuntu 20.04 LTS 'Focal Fossa'      | deb https://openturns.github.io/apt/ubuntu focal main   |
-    +-------------------------------------+---------------------------------------------------------+
-    | Ubuntu 21.04 'Hirsute Hippo'        | deb https://openturns.github.io/apt/ubuntu hirsute main |
-    +-------------------------------------+---------------------------------------------------------+
-    | Debian 9.0 'Stretch'                | deb https://openturns.github.io/apt/debian stretch main |
-    +-------------------------------------+---------------------------------------------------------+
-    | Debian 10.0 'Buster'                | deb https://openturns.github.io/apt/debian buster main  |
-    +-------------------------------------+---------------------------------------------------------+
+    +-------------------------------------+----------------------------------------------------------+
+    | Distribution name                   | Repository address                                       |
+    +=====================================+==========================================================+
+    | Ubuntu 18.04 LTS 'Bionic Beaver'    | deb https://openturns.github.io/apt/ubuntu bionic main   |
+    +-------------------------------------+----------------------------------------------------------+
+    | Ubuntu 20.04 LTS 'Focal Fossa'      | deb https://openturns.github.io/apt/ubuntu focal main    |
+    +-------------------------------------+----------------------------------------------------------+
+    | Ubuntu 21.10 'Impish Indri'         | deb https://openturns.github.io/apt/ubuntu impish main   |
+    +-------------------------------------+----------------------------------------------------------+
+    | Debian 10.0 'Buster'                | deb https://openturns.github.io/apt/debian buster main   |
+    +-------------------------------------+----------------------------------------------------------+
+    | Debian 11.0 'Bullseye'              | deb https://openturns.github.io/apt/debian bullseye main |
+    +-------------------------------------+----------------------------------------------------------+
 
 Add the mirror signature::
 
@@ -128,15 +128,15 @@ RPM-based distributions
 Add the repository corresponding to your operating system::
 
     curl http://download.opensuse.org/repositories/science:/openturns/CentOS_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_34/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.2/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_35/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.3/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
     curl http://download.opensuse.org/repositories/science:/openturns/Mageia_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
     rpm --import http://download.opensuse.org/repositories/science:/openturns/CentOS_8/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_34/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.2/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_35/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.3/repodata/repomd.xml.key
     rpm --import http://download.opensuse.org/repositories/science:/openturns/Mageia_8/repodata/repomd.xml.key
 
 The following packages are available:
@@ -169,13 +169,12 @@ Install from `FreshPorts <https://www.freshports.org/math/openturns/>`_::
 
     pkg install openturns
 
+Development version
+===================
 
-From sources
-============
-
-Checkout the required :ref:`dependencies`.
-
-You can checkout the development trunk::
+From source
+-----------
+Install the required :ref:`dependencies` and build the development branch::
 
     git clone https://github.com/openturns/openturns.git
     cd openturns
@@ -184,5 +183,10 @@ You can checkout the development trunk::
 
 .. note::
 
-    When installing into `~/.local` you dont need to set PYTHONPATH
-    environment variable for Python to be able to import openturns
+    When installing into `~/.local` you don't need to set PYTHONPATH environment variable for Python to be able to import openturns
+
+Weekly builds
+-------------
+Weekly built Python binaries are also available with the latest bugfixes and features, but also with new bugs and API changes, use at your own risk::
+
+    pip3 install --pre --extra-index-url https://pypi.anaconda.org/openturns-wheels-nightly/simple --upgrade --force-reinstall openturns

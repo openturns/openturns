@@ -24,6 +24,7 @@ If you want to use it, add it to *startingSample*.
 Starting points provided through the *startingSample* parameter
 should be within the bounds of the
 :class:`~openturns.OptimizationProblem`, but this is not checked.
+
 Examples
 --------
 First define the :class:`~openturns.OptimizationAlgorithm` to be run from multiple starting points.

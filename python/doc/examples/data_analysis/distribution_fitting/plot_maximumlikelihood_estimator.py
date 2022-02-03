@@ -27,7 +27,8 @@ lowerBound = [-1.0, 1.0e-4]
 upperBound = [-1.0, -1.0]
 finiteLowerBound = [False, True]
 finiteUpperBound = [False, False]
-bounds = ot.Interval(lowerBound, upperBound, finiteLowerBound, finiteUpperBound)
+bounds = ot.Interval(lowerBound, upperBound,
+                     finiteLowerBound, finiteUpperBound)
 
 # %%
 # Create the starting point of the research:

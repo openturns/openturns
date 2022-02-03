@@ -187,6 +187,9 @@ Their confidence level can be adjusted with :meth:`setConfidenceLevel`.
 The default confidence level is stored in the :class:`~openturns.ResourceMap`
 and can be accessed with the `SobolIndicesAlgorithm-DefaultConfidenceLevel` key.
 
+Indices estimates can be slightly outside of [0,1] if the estimator has not converged.
+For the same reason some first order indices estimates can be greater than the corresponding total order indices estimates.
+
 The asymptotic estimator of the distribution requires an asymptotic estimate
 of its variance, which is computed using the [janon2014]_
 delta method, as expained in the technical report [pmfre01116]_.
@@ -539,6 +542,8 @@ OT_SobolIndicesAlgorithm_getTotalOrderIndicesDistribution_doc
 %define OT_SobolIndicesAlgorithm_setDesign_doc
 "Sample accessor.
 
+Allows to estimate indices from a predefined Sobol design.
+
 Parameters
 ----------
 inputDesign : :class:`~openturns.Sample`
@@ -548,7 +553,7 @@ outputDesign : :class:`~openturns.Sample`
     Design for the evaluation of sensitivity indices, obtained as the evaluation
     of a Function (model) on the previous inputDesign
 N : int
-    Size of samples to generate"
+    Base size of the Sobol design"
 %enddef
 %feature("docstring") OT::SobolIndicesAlgorithmImplementation::setDesign
 OT_SobolIndicesAlgorithm_setDesign_doc

@@ -44,7 +44,7 @@ def drawBidimensionalSample(sample, title):
 levels = [1.0, 1.5, 3.0]
 experiment = ot.Axial(2, levels)
 sample = experiment.generate()
-graph = drawBidimensionalSample(sample,"Axial")
+graph = drawBidimensionalSample(sample, "Axial")
 view = viewer.View(graph)
 
 # %%
@@ -53,7 +53,7 @@ view = viewer.View(graph)
 # %%
 sample *= 2.0
 sample += [5.0, 8.0]
-graph = drawBidimensionalSample(sample,"Axial")
+graph = drawBidimensionalSample(sample, "Axial")
 view = viewer.View(graph)
 
 # %%
@@ -66,7 +66,7 @@ experiment = ot.Factorial(2, levels)
 sample = experiment.generate()
 sample *= 2.0
 sample += [5.0, 8.0]
-graph = drawBidimensionalSample(sample,"Factorial")
+graph = drawBidimensionalSample(sample, "Factorial")
 view = viewer.View(graph)
 
 # %%
@@ -78,7 +78,7 @@ experiment = ot.Composite(2, levels)
 sample = experiment.generate()
 sample *= 2.0
 sample += [5.0, 8.0]
-graph = drawBidimensionalSample(sample,"Composite")
+graph = drawBidimensionalSample(sample, "Composite")
 view = viewer.View(graph)
 
 # %%
@@ -92,6 +92,6 @@ experiment = ot.Box(levels)
 sample = experiment.generate()
 sample *= 2.0
 sample += [5.0, 8.0]
-graph = drawBidimensionalSample(sample,"Box")
+graph = drawBidimensionalSample(sample, "Box")
 view = viewer.View(graph)
 plt.show()

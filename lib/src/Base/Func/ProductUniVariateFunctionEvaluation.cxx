@@ -21,6 +21,7 @@
 #include "openturns/ProductUniVariateFunctionEvaluation.hxx"
 #include "openturns/OSS.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -102,7 +103,7 @@ struct ProductUniVariateFunctionEvaluationComputeSamplePolicy
     // Nothing to do
   }
 
-  inline void operator()(const TBB::BlockedRange<UnsignedInteger> & r) const
+  inline void operator()(const TBBImplementation::BlockedRange<UnsignedInteger> & r) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++ i)
     {
@@ -122,7 +123,7 @@ Sample ProductUniVariateFunctionEvaluation::operator() (const Sample & inS) cons
   const UnsignedInteger size = inS.getSize();
   Sample result(size, getOutputDimension());
   const ProductUniVariateFunctionEvaluationComputeSamplePolicy policy( inS, result, functions_ );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   result.setDescription(getOutputDescription());
   callsNumber_.fetchAndAdd(size);
   return result;

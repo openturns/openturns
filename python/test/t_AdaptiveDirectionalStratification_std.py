@@ -20,7 +20,7 @@ event = ot.ThresholdEvent(composite, ot.Less(), -3.0)
 
 # create an ADS algorithm
 n = int(1e4)
-algo = ot.AdaptiveDirectionalSampling(event)
+algo = ot.AdaptiveDirectionalStratification(event)
 algo.setMaximumOuterSampling(n)
 algo.setGamma([0.6, 0.4])
 

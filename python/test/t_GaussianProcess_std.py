@@ -27,17 +27,17 @@ print("myCovModel = ", myCovModel)
 myProcess1 = ot.GaussianProcess(myCovModel, myTimeGrid)
 print("myProcess1 = ", myProcess1)
 print("is stationary? ", myProcess1.isStationary())
-myProcess1.setSamplingMethod(0)
+myProcess1.setSamplingMethod(ot.GaussianProcess.CHOLESKY)
 print("mean over ", size, " realizations = ",
       myProcess1.getSample(size).computeMean())
-myProcess1.setSamplingMethod(2)
+myProcess1.setSamplingMethod(ot.GaussianProcess.GIBBS)
 print("mean over ", size, " realizations = ",
       myProcess1.getSample(size).computeMean())
 
 # With constant trend
 trend = ot.TrendTransform(ot.SymbolicFunction("t", "4.0"), myTimeGrid)
 myProcess2 = ot.GaussianProcess(trend, myCovModel, myTimeGrid)
-myProcess2.setSamplingMethod(2)
+myProcess2.setSamplingMethod(ot.GaussianProcess.GIBBS)
 print("myProcess2 = ", myProcess2)
 print("is stationary? ", myProcess2.isStationary())
 print("mean over ", size, " realizations= ",
@@ -48,10 +48,10 @@ trend3 = ot.TrendTransform(ot.SymbolicFunction("t", "sin(t)"), myTimeGrid)
 myProcess3 = ot.GaussianProcess(trend3, myCovModel, myTimeGrid)
 print("myProcess3 = ", myProcess3)
 print("is stationary? ", myProcess3.isStationary())
-myProcess3.setSamplingMethod(0)
+myProcess3.setSamplingMethod(ot.GaussianProcess.CHOLESKY)
 print("mean over ", size, " realizations = ",
       myProcess3.getSample(size).computeMean())
-myProcess3.setSamplingMethod(2)
+myProcess3.setSamplingMethod(ot.GaussianProcess.GIBBS)
 print("mean over ", size, " realizations = ",
       myProcess3.getSample(size).computeMean())
 

@@ -7,7 +7,7 @@ Create a Bayes distribution
 #
 # .. math::
 #    ( \underline{X}|\underline{\Theta}, \underline{Y})
-#   
+#
 # with X conditioned by the random variable Theta obtained with the random variable Y through a function f
 #
 # .. math::

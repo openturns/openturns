@@ -206,7 +206,7 @@ Graphical tests
 
     VisualTest_DrawPairs
     VisualTest_DrawPairsMarginals
-    VisualTest_DrawCobWeb
+    VisualTest_DrawParallelCoordinates
     VisualTest_DrawHenryLine
     VisualTest_DrawKendallPlot
     VisualTest_DrawLinearModel

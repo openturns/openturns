@@ -119,7 +119,7 @@ subset.setBlockSize(18)
 subset.run()
 result = subset.getResult()
 print('SUBSET:', result)
-assert subset.getNumberOfSteps() == 1, "wrong steps"
+assert subset.getStepsNumber() == 1, "wrong steps"
 assert result.getProbabilityEstimate() == 1.0, "wrong pf"
 assert result.getVarianceEstimate() == 0.0, "wrong var"
 
@@ -134,7 +134,7 @@ subset = ot.SubsetSampling(event)
 subset.setMaximumOuterSampling(500)
 subset.run()
 print('SUBSET:', subset.getResult())
-print('steps=', subset.getNumberOfSteps())
+print('steps=', subset.getStepsNumber())
 print('T=', subset.getThresholdPerStep())
 
 # case with last step threshold close from global threshold (after)
@@ -149,5 +149,5 @@ subset.setConvergenceStrategy(ot.Full())
 subset.setMaximumOuterSampling(500)
 subset.run()
 print('SUBSET:', subset.getResult())
-print('steps=', subset.getNumberOfSteps())
+print('steps=', subset.getStepsNumber())
 print('T=', subset.getThresholdPerStep())

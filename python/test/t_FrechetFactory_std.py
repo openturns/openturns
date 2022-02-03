@@ -29,7 +29,7 @@ print('Typed distribution from parameters=', typedFromParameterDistribution)
 
 # The distributions used :
 myFrechet = ot.Frechet(1.0, 1.0, 0.0)
-myGumbel = ot.Gumbel(1.0,3.0)
+myGumbel = ot.Gumbel(1.0, 3.0)
 # We build our mixture sample of size 2*1000=2000.
 mixtureSample = ot.Sample()
 sampleFrechet = myFrechet.getSample(1000)

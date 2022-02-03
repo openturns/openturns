@@ -2,7 +2,7 @@
 Function manipulation
 =====================
 """
-# %% 
+# %%
 #
 # In this example we are going to exhibit some of the generic function services such as:
 #
@@ -38,7 +38,8 @@ func1 = ot.SymbolicFunction(['x'], ['x^2'])
 func2 = ot.SymbolicFunction(['x', 'y'], ['x*y'])
 
 # Create a vectorial function R ^3 --> R^2
-func3 = ot.SymbolicFunction(['x1', 'x2', 'x3'], ['1+2*x1+x2+x3^3', '2+sin(x1+2*x2)-sin(x3) * x3^4'])
+func3 = ot.SymbolicFunction(
+    ['x1', 'x2', 'x3'], ['1+2*x1+x2+x3^3', '2+sin(x1+2*x2)-sin(x3) * x3^4'])
 
 # Create a second vectorial function R ^n --> R^p
 # for example R^2 --> R^2
@@ -49,6 +50,8 @@ def python_eval(X):
     a, b = X
     y = a+b
     return [y]
+
+
 func4 = ot.PythonFunction(2, 1, python_eval)
 
 # %%
@@ -176,7 +179,7 @@ outputMarg = 1
 # Specify the point number of the final curve
 ptNb = [101, 101]
 graph = func3.draw(firstInputMarg, secondInputMarg,
-           outputMarg, centralPt, inputMin2, inputMax2, ptNb)
+                   outputMarg, centralPt, inputMin2, inputMax2, ptNb)
 view = viewer.View(graph)
 
 # %%

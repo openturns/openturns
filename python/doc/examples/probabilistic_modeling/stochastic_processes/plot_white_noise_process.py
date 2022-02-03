@@ -57,10 +57,11 @@ view = viewer.View(graph)
 # Draw a sample
 sample = process.getSample(5)
 graph = sample.drawMarginal(0)
-graph.setTitle(str(sample.getSize()) + ' realizations of a white noise with distribution N(0,1)')
+graph.setTitle(str(sample.getSize()) +
+               ' realizations of a white noise with distribution N(0,1)')
 for k in range(sample.getSize()):
-  drawable = graph.getDrawable(k)
-  drawable.setLegend('realization ' + str(k+1))
-  graph.setDrawable(drawable, k)
+    drawable = graph.getDrawable(k)
+    drawable.setLegend('realization ' + str(k+1))
+    graph.setDrawable(drawable, k)
 view = viewer.View(graph)
 plt.show()

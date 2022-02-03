@@ -25,6 +25,7 @@ reliability analysis.
 - 2018: (1.11, 1.12) Domains arithmetic, asymptotic Sobol' estimators, new simulation algorithms
 - 2019: (1.13, 1.14) Calibration, new optimization algorithms, system events
 - 2020: (1.15, 1.16) hmat AcaRandom compression, Spectra iterative SVD, examples gallery, C++11, XML/H5 storage
+- 2021: (1.17, 1.18) Karhunen-Loeve validation, new covariance models
 
 People
 ------

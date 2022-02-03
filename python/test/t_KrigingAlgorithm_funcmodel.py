@@ -25,7 +25,8 @@ outputValidSample = model(inputValidSample)
 # Reimplement the squared exponential covariance model
 rho = ot.SymbolicFunction(
     ['x', 'y'], ['exp(-0.5* (x * x + y * y))'])
-covarianceModel = ot.StationaryFunctionalCovarianceModel([6.0, 2.0], [1.5], rho)
+covarianceModel = ot.StationaryFunctionalCovarianceModel([6.0, 2.0], [
+                                                         1.5], rho)
 
 # Basis definition
 basis = ot.LinearBasisFactory(inputDimension).build()
@@ -39,13 +40,15 @@ algo.run()
 result = algo.getResult()
 metaModel = result.getMetaModel()
 variance = result.getConditionalMarginalVariance(inputSample)
-ott.assert_almost_equal(variance, ot.Point(len(inputSample), 0.), 1e-14, 1e-14)
+ott.assert_almost_equal(variance, ot.Sample(
+    inputSample.getSize(), 1), 1e-14, 1e-14)
 
 
 # Consistency check: does the reimplementation fit the SquaredExponential class?
 squaredExponential = ot.SquaredExponential(inputDimension)
 squaredExponential.setParameter([6.0, 2.0, 1.5])
-algoSE = ot.KrigingAlgorithm(inputSample, outputSample, squaredExponential, basis)
+algoSE = ot.KrigingAlgorithm(
+    inputSample, outputSample, squaredExponential, basis)
 loglikelihoodSE = algoSE.getReducedLogLikelihoodFunction()(start)
 ott.assert_almost_equal(loglikelihood, loglikelihoodSE, 1e-8, 1e-8)
 
@@ -54,7 +57,9 @@ algoSE.setOptimizeParameters(False)
 algoSE.run()
 resultSE = algoSE.getResult()
 metaModelSE = resultSE.getMetaModel()
-ott.assert_almost_equal(metaModel(inputValidSample), metaModelSE(inputValidSample), 1e-8, 1e-8)
+ott.assert_almost_equal(metaModel(inputValidSample),
+                        metaModelSE(inputValidSample), 1e-8, 1e-8)
 
 # Validate the metamodel
-ott.assert_almost_equal(outputValidSample, metaModel(inputValidSample), 5.0e-3, 5.0e-3)
+ott.assert_almost_equal(outputValidSample, metaModel(
+    inputValidSample), 5.0e-3, 5.0e-3)

@@ -22,6 +22,7 @@
 
 #include "openturns/MemoizeEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/MarginalEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -200,10 +201,12 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
 /* Get the evaluation corresponding to indices components */
 Evaluation MemoizeEvaluation::getMarginal(const Indices & indices) const
 {
-  MemoizeEvaluation* marginal = new MemoizeEvaluation(evaluation_.getMarginal(indices), inputStrategy_);
-  if (isCacheEnabled())
-    marginal->addCacheContent(getCacheInput(), getCacheOutput().getMarginal(indices));
-  return marginal;
+  // dont rely on the proxy here, we want a marginal on the memoized original evaluation
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal evaluation must be in the range [0, outputDimension-1] and must be different";
+  Indices full(getOutputDimension());
+  full.fill();
+  if (indices == full) return clone();
+  return new MarginalEvaluation(clone(), indices);
 }
 
 /* Enable or disable the internal cache */

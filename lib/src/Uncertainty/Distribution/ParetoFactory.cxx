@@ -166,6 +166,8 @@ public:
   {
     const Scalar gamma = parameter[0];
     const UnsignedInteger size = sample_.getSize();
+    if (gamma >= sample_.getMin()[0])
+      return Point(size, std::sqrt(SpecFunc::MaxScalar / (10.0 * size)));
     Sample dataIn(size, 1);
     for (UnsignedInteger i = 0; i < size; ++ i)
       dataIn(i, 0) = std::log(sample_(i, 0) - gamma);

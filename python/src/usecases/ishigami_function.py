@@ -106,16 +106,21 @@ class IshigamiModel():
         self.X3.setName("X1")
 
         # Input distribution
-        self.distributionX = ot.ComposedDistribution([self.X1, self.X2, self.X3])
+        self.distributionX = ot.ComposedDistribution(
+            [self.X1, self.X2, self.X3])
         self.distributionX.setDescription(['X1', 'X2', 'X3'])
 
-        self.ishigami = ot.SymbolicFunction(['X1', 'X2', 'X3', 'a', 'b'], ['sin(X1) + a * sin(X2)^2 + b * X3^4 * sin(X1)'])
+        self.ishigami = ot.SymbolicFunction(['X1', 'X2', 'X3', 'a', 'b'], [
+                                            'sin(X1) + a * sin(X2)^2 + b * X3^4 * sin(X1)'])
         # The Ishigami model
-        self.model = ot.ParametricFunction(self.ishigami, [3, 4], [self.a, self.b])
+        self.model = ot.ParametricFunction(
+            self.ishigami, [3, 4], [self.a, self.b])
 
         self.expectation = self.a / 2.0
-        self.variance = 1.0/2 + self.a**2/8.0 + self.b*m.pi**4/5.0 + self.b**2*m.pi**8/18.0
-        self.S1 = (1.0/2.0 + self.b*m.pi**4/5.0+self.b**2*m.pi**8/50.0)/self.variance
+        self.variance = 1.0/2 + self.a**2/8.0 + \
+            self.b*m.pi**4/5.0 + self.b**2*m.pi**8/18.0
+        self.S1 = (1.0/2.0 + self.b*m.pi**4/5.0 +
+                   self.b**2*m.pi**8/50.0)/self.variance
         self.S2 = (self.a**2/8.0)/self.variance
         self.S3 = 0.0
         self.S12 = 0.0

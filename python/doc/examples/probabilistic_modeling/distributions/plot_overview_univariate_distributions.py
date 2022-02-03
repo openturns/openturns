@@ -6,7 +6,7 @@ Overview of univariate distribution management
 # Abstract
 # --------
 #
-# In this example, we present the following topics: 
+# In this example, we present the following topics:
 #
 # - the distributions with several parametrizations (particularly with the `Beta` distribution),
 # - the arithmetic of distributions and functions of distributions,
@@ -24,9 +24,9 @@ ot.Log.Show(ot.Log.NONE)
 # -------------------------------------------
 
 # %%
-# By default, any univariate distribution uses its native parameters. For some few distributions, alternative parameters might be used to define the distribution. 
+# By default, any univariate distribution uses its native parameters. For some few distributions, alternative parameters might be used to define the distribution.
 #
-# For example, the `Beta` distribution has several parametrizations. 
+# For example, the `Beta` distribution has several parametrizations.
 #
 # The native parametrization uses the following parameters:
 #
@@ -39,15 +39,15 @@ ot.Log.Show(ot.Log.NONE)
 #
 # .. math::
 #    f(x) = \frac{(x-a)^{\alpha - 1} (b - x)^{\beta - 1}}{(b - a)^{\alpha + \beta - 1} B(\alpha, \beta)}
-# 
 #
-# for any :math:`x\in[a,b]`, where :math:`B` is Euler's beta function. 
+#
+# for any :math:`x\in[a,b]`, where :math:`B` is Euler's beta function.
 #
 # For any :math:`y,z>0`, the beta function is:
 #
 # .. math::
 #    B(y,z) = \int_0^1 t^{y-1} (1-t)^{z-1} dt.
-# 
+#
 
 # %%
 # The `Beta` class uses the native parametrization.
@@ -62,26 +62,26 @@ view = viewer.View(graph)
 #
 # .. math::
 #    \mu = a + \frac{(b-a)\alpha}{\alpha+\beta}
-# 
+#
 #
 # and
 #
 # .. math::
 #    \sigma^2 = \left(\frac{b-a}{\alpha+\beta}\right)^2 \frac{\alpha\beta}{\alpha+\beta+1}.
-# 
+#
 #
 # Inverting the equations, we get:
 #
 #
 # .. math::
 #    \alpha =  \left(\dfrac{\mu-a}{b-a}\right) \left( \dfrac{(b-\mu)(\mu-a)}{\sigma^2}-1\right) \\
-# 
+#
 #
 # and
 #
 # .. math::
 #    \beta  =  \left( \dfrac{b-\mu}{\mu-a}\right) \alpha
-# 
+#
 
 # %%
 # The following session creates a beta random variable with parameters :math:`\mu=0.2`, :math:`\sigma=0.6`, :math:`a=-1` et :math:`b=2`.
@@ -109,16 +109,16 @@ param_dist
 #
 # It also provides methods to get the full distributions of `f(x)` where `f` can be equal to :
 #
-#  - `sin`, 
-#  - `cos`, 
-#  - `acos`, 
+#  - `sin`,
+#  - `cos`,
+#  - `acos`,
 #  - `asin`
-#  - `square`, 
-#  - `inverse`, 
+#  - `square`,
+#  - `inverse`,
 #  - `sqrt`.
 
 # %%
-# In the following example, we create a beta and an exponential variable. Then we create the random variable equal to the sum of the two previous variables. 
+# In the following example, we create a beta and an exponential variable. Then we create the random variable equal to the sum of the two previous variables.
 
 # %%
 B = ot.Beta(5, 2, 9, 10)
@@ -162,14 +162,14 @@ N = ot.Normal(0.0, 1.0)
 N.setDescription(["Normal"])
 
 # %%
-# Secondly, we create a function. 
+# Secondly, we create a function.
 
 # %%
 f = ot.SymbolicFunction(['x'], ['exp(x)'])
-f.setDescription(["X","Exp(X)"])
+f.setDescription(["X", "Exp(X)"])
 
 # %%
-# Finally, we create the distribution equal to the exponential of the gaussian random variable. 
+# Finally, we create the distribution equal to the exponential of the gaussian random variable.
 
 # %%
 dist = ot.CompositeDistribution(f, N)
@@ -193,32 +193,32 @@ view = viewer.View(graph)
 # The `PythonDistribution` class
 # ------------------------------
 #
-# Another possibility is to define our own `distribution`. 
+# Another possibility is to define our own `distribution`.
 #
-# For example let us implement the `Quartic` kernel (also known as the `Biweight` kernel, see `here <https://en.wikipedia.org/wiki/Kernel_(statistics)#Kernel_functions_in_common_use>`_), which is sometimes used in the context of kernel smoothing. 
+# For example let us implement the `Quartic` kernel (also known as the `Biweight` kernel, see `here <https://en.wikipedia.org/wiki/Kernel_(statistics)#Kernel_functions_in_common_use>`_), which is sometimes used in the context of kernel smoothing.
 # The PDF of the kernel is defined by:
 #
 # .. math::
 #    f(u) = \frac{15}{16} (1 - u^2)^2
-# 
 #
-# for any :math:`u\in[-1,1]` and :math:`f(u)=0` otherwise. 
+#
+# for any :math:`u\in[-1,1]` and :math:`f(u)=0` otherwise.
 #
 # Expanding the previous square, we find:
 #
 # .. math::
 #    f(u) = \frac{15}{16} (1 - 2 u^2 + u^4)
-# 
 #
-# for any :math:`u\in[-1,1]`. 
+#
+# for any :math:`u\in[-1,1]`.
 #
 # Integrating the previous equation leads to the CDF:
 #
 # .. math::
 #    F(u) = \frac{1}{2} + \frac{15}{16} u - \frac{5}{8} u^3 + \frac{3}{16} u^5
-# 
 #
-# for any :math:`u\in[-1,1]` and :math:`F(u)=0` otherwise. 
+#
+# for any :math:`u\in[-1,1]` and :math:`F(u)=0` otherwise.
 #
 # The only required method is `computeCDF`. Since the PDF is easy to define in our example, we implement it as well. Here, the distribution is defined on the interval :math:`[-1,1]`, so that we define the `getRange` method.
 
@@ -226,12 +226,13 @@ view = viewer.View(graph)
 class Quartic(ot.PythonDistribution):
     """
     Quartic (biweight) kernel
-    See https://en.wikipedia.org/wiki/Kernel_(statistics)#Kernel_functions_in_common_use for more details 
+    See https://en.wikipedia.org/wiki/Kernel_(statistics)#Kernel_functions_in_common_use for more details
     """
+
     def __init__(self):
         super(Quartic, self).__init__(1)
         self.c = 15.0 / 16
-    
+
     def computeCDF(self, x):
         u = x[0]
         if u <= -1:
@@ -239,7 +240,7 @@ class Quartic(ot.PythonDistribution):
         elif u >= 1:
             p = 1.0
         else:
-            p = 0.5 + 15./16 * u - 5. / 8 * pow(u,3) + 3./16 * pow(u,5)
+            p = 0.5 + 15./16 * u - 5. / 8 * pow(u, 3) + 3./16 * pow(u, 5)
         return p
 
     def computePDF(self, x):
@@ -247,7 +248,7 @@ class Quartic(ot.PythonDistribution):
         if u < -1 or u > 1:
             y = 0.0
         else:
-            y = self.c * (1 - u **2)**2
+            y = self.c * (1 - u ** 2)**2
         return y
 
     def getRange(self):

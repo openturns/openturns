@@ -23,7 +23,6 @@
 
 #include "openturns/Student.hxx"
 #include "openturns/Distribution.hxx"
-#include "openturns/IdentityMatrix.hxx"
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
@@ -46,7 +45,7 @@ Student::Student(const Scalar nu,
                  const UnsignedInteger dimension)
   : EllipticalDistribution(Point(dimension, 0.0),
                            Point(dimension, 1.0),
-                           IdentityMatrix(dimension), -1.0)
+                           CorrelationMatrix(dimension), -1.0)
   , nu_(0.0)
   , studentNormalizationFactor_(0.0)
 {
@@ -56,11 +55,11 @@ Student::Student(const Scalar nu,
   setNu(nu);
 }
 
-/* Parameters constructor */
+/* Constructor for 1D Student distribution */
 Student::Student(const Scalar nu,
                  const Scalar mu,
                  const Scalar sigma)
-  : EllipticalDistribution(Point(1, mu), Point(1, sigma), IdentityMatrix(1), -1.0)
+  : EllipticalDistribution(Point(1, mu), Point(1, sigma), CorrelationMatrix(1), -1.0)
   , nu_(0.0)
   , studentNormalizationFactor_(0.0)
 {
@@ -70,7 +69,7 @@ Student::Student(const Scalar nu,
   setNu(nu);
 }
 
-/* Parameters constructor */
+/* Constructor for multiD Student distribution */
 Student::Student(const Scalar nu,
                  const Point & mu,
                  const Point & sigma,
@@ -83,6 +82,14 @@ Student::Student(const Scalar nu,
   setDimension(mu.getDimension());
   // Set nu with checks. This call set also the range.
   setNu(nu);
+}
+
+Student::Student(const Scalar nu,
+                 const Point & mu,
+                 const Point & sigma)
+  : Student(nu, mu, sigma, CorrelationMatrix(mu.getDimension()))
+{
+  // Nothing to do
 }
 
 /* Comparison operator */
@@ -169,6 +176,34 @@ Point Student::getRealization() const
 }
 
 
+Sample Student::getSample(const UnsignedInteger size) const
+{
+  const UnsignedInteger dimension = getDimension();
+  Sample normalSample(size, dimension);
+  Point gammaDeviates(size);
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      normalSample(i, j) = DistFunc::rNormal();
+    gammaDeviates[i] = DistFunc::rGamma(0.5 * nu_);
+  }
+  Sample result;
+  if (dimension == 1)
+    result = normalSample * sigma_[0];
+  else
+    result = (cholesky_.getImplementation()->genSampleProd(normalSample, true, false, 'R'));
+  for (UnsignedInteger i = 0; i < size; ++i)
+  {
+    const Scalar alpha = std::sqrt(0.5 * nu_ / gammaDeviates[i]);
+    for (UnsignedInteger j = 0; j < dimension; ++j)
+      result(i, j) = result(i, j) * alpha + mean_[j];
+  }
+  result.setName(getName());
+  result.setDescription(getDescription());
+  return result;
+}
+
+
 /* Get the CDF of the distribution */
 Scalar Student::computeCDF(const Point & point) const
 {
@@ -187,45 +222,43 @@ Scalar Student::computeCDF(const Point & point) const
     return ContinuousDistribution::computeCDF(point);
   }
   // For very large dimension, use a MonteCarlo algorithm
-  LOGWARN(OSS() << "Warning, in Student::computeCDF(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10.0 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for small values of the CDF...");
+  LOGWARN(OSS() << "Warning, in Student::computeCDF(), the dimension is very high. We will use a Monte Carlo method for the computation with a relative precision of 0.1% at 99% confidence level and a maximum of " << 10 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) << " realizations. Expect a long running time and a poor accuracy for small values of the CDF...");
+  RandomGeneratorState initialState(RandomGenerator::GetState());
+  RandomGenerator::SetSeed(ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
   Scalar value = 0.0;
   Scalar variance = 0.0;
   Scalar a99 = DistFunc::qNormal(0.995);
-  UnsignedInteger outerMax = 10 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) / ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" );
+  const UnsignedInteger blockSize = ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" );
+  UnsignedInteger outerMax = 10 * ResourceMap::GetAsUnsignedInteger( "Student-MaximumNumberOfPoints" ) / blockSize;
   Scalar precision = 0.0;
   for (UnsignedInteger indexOuter = 0; indexOuter < outerMax; ++indexOuter)
   {
-    Scalar valueBlock = 0.0;
-    Scalar varianceBlock = 0.0;
-    for (UnsignedInteger indexSample = 0; indexSample < ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ); ++indexSample)
-    {
-      Bool inside = true;
-      Point realization(getRealization());
-      // Check if the realization is in the integration domain
-      for (UnsignedInteger i = 0; i < dimension; ++i)
-      {
-        inside = realization[i] <= point[i];
-        if (!inside) break;
-      }
-      // ind value is 1.0 if the realization is inside of the integration domain, 0.0 else.
-      Scalar ind = inside;
-      Scalar norm = 1.0 / (indexSample + 1.0);
-      varianceBlock = (varianceBlock * indexSample + (1.0 - norm) * (valueBlock - ind) * (valueBlock - ind)) * norm;
-      valueBlock = (valueBlock * indexSample + ind) * norm;
-    }
-    Scalar norm = 1.0 / (indexOuter + 1.0);
+    const Sample sample(getSample(blockSize));
+    LOGDEBUG(OSS(false) << "indexOuter=" << indexOuter << ", point=" << point << ", sample=" << sample);
+    const Scalar valueBlock = sample.computeEmpiricalCDF(point);
+    const Scalar varianceBlock = valueBlock * (1.0 - valueBlock) / blockSize;
+    LOGDEBUG(OSS(false) << "valueBlock=" << valueBlock << ", varianceBlock=" << varianceBlock);
+    const Scalar norm = 1.0 / (indexOuter + 1.0);
     variance = (varianceBlock + indexOuter * variance + (1.0 - norm) * (value - valueBlock) * (value - valueBlock)) * norm;
     value = (value * indexOuter + valueBlock) * norm;
+    LOGDEBUG(OSS(false) << "value=" << value << ", variance=" << variance);
     // Quick return for value = 1
-    const Scalar quantileEpsilon = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
-    if ((value >= 1.0 - quantileEpsilon) && (variance == 0.0)) return 1.0;
+    if ((value >= 1.0 - ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon")) && (variance == 0.0)) return 1.0;
     precision = a99 * std::sqrt(variance / (indexOuter + 1.0) / ResourceMap::GetAsUnsignedInteger( "Student-MinimumNumberOfPoints" ));
     if (precision < ResourceMap::GetAsScalar( "Student-MinimumCDFEpsilon" ) * value) return value;
     // 0.1 * ((1000 * indexOuter) / outerMax) is to print percents with one figure after the decimal point
     LOGINFO(OSS() << 0.1 * ((1000 * indexOuter) / outerMax) << "% value=" << value << " absolute precision(99%)=" << precision << " relative precision(99%)=" << ((value > 0.0) ? precision / value : -1.0));
   }
+  RandomGenerator::SetState(initialState);
   return value;
 } // computeCDF
+
+Sample Student::computeCDF(const Sample & sample) const
+{
+  if (dimension_ <= ResourceMap::GetAsUnsignedInteger("Student-SmallDimension"))
+    return DistributionImplementation::computeCDFParallel(sample);
+  return DistributionImplementation::computeCDFSequential(sample);
+}
 
 /* Compute the probability content of an interval */
 Scalar Student::computeProbability(const Interval & interval) const

@@ -47,7 +47,7 @@ MinimumVolumeClassifier::MinimumVolumeClassifier(const Distribution & distributi
   if (!distribution.isContinuous())
     throw InvalidArgumentException(HERE) << "Distribution must be continuous";
   std::sort(alpha_.begin(), alpha_.end());
-  std::unique(alpha_.begin(), alpha_.end());
+  (void)std::unique(alpha_.begin(), alpha_.end());
   if (alpha != alpha_)
     throw InvalidArgumentException(HERE) << "Alpha must be sorted and unique";
   const UnsignedInteger size = alpha_.getSize();

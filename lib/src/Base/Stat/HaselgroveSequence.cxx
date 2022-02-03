@@ -29,8 +29,8 @@ CLASSNAMEINIT(HaselgroveSequence)
 static const Factory<HaselgroveSequence> Factory_HaselgroveSequence;
 
 /* Constructor with parameters */
-HaselgroveSequence::HaselgroveSequence(const UnsignedInteger dimension) :
-  LowDiscrepancySequenceImplementation(dimension)
+HaselgroveSequence::HaselgroveSequence(const UnsignedInteger dimension)
+  : LowDiscrepancySequenceImplementation(dimension)
 {
   initialize(dimension);
 }
@@ -39,7 +39,6 @@ HaselgroveSequence::HaselgroveSequence(const UnsignedInteger dimension) :
 HaselgroveSequence::HaselgroveSequence(const Point & base) :
   LowDiscrepancySequenceImplementation(base.getDimension())
 {
-  dimension_ = base.getDimension();
   base_ = base;
   seed_ = ResourceMap::GetAsUnsignedInteger( "HaselgroveSequence-InitialSeed" );
 }
@@ -53,11 +52,10 @@ HaselgroveSequence * HaselgroveSequence::clone() const
 /* Initialize the sequence */
 void HaselgroveSequence::initialize(const UnsignedInteger dimension)
 {
-  if (!(dimension > 0)) throw InvalidArgumentException(HERE) << "Dimension must be > 0.";
-  dimension_ = dimension;
-  const Unsigned64BitsIntegerCollection directions(ComputeFirstPrimeNumbers(dimension));
-  base_ = Point(dimension);
-  for (UnsignedInteger i = 0; i < dimension; ++i) base_[i] = sqrt(1.0 * directions[i]);
+  LowDiscrepancySequenceImplementation::initialize(dimension);
+  const Unsigned64BitsIntegerCollection directions(GetFirstPrimeNumbers(dimension_));
+  base_ = Point(dimension_);
+  for (UnsignedInteger i = 0; i < dimension_; ++i) base_[i] = sqrt(1.0 * directions[i]);
   seed_ = ResourceMap::GetAsUnsignedInteger( "HaselgroveSequence-InitialSeed" );
 }
 
@@ -77,7 +75,6 @@ String HaselgroveSequence::__repr__() const
 {
   OSS oss(true);
   oss << "class=" << HaselgroveSequence::GetClassName()
-      << " derived from " << LowDiscrepancySequenceImplementation::__repr__()
       << " base=" << base_
       << " seed=" << seed_;
   return oss;
@@ -87,8 +84,7 @@ String HaselgroveSequence::__repr__() const
 String HaselgroveSequence::__str__(const String & offset) const
 {
   OSS oss(false);
-  oss << "class=" << HaselgroveSequence::GetClassName()
-      << " derived from " << LowDiscrepancySequenceImplementation::__str__(offset)
+  oss << offset << "class=" << HaselgroveSequence::GetClassName()
       << " base=" << base_
       << " seed=" << seed_;
   return oss;
@@ -106,7 +102,6 @@ void HaselgroveSequence::save(Advocate & adv) const
 void HaselgroveSequence::load(Advocate & adv)
 {
   LowDiscrepancySequenceImplementation::load(adv);
-  initialize(dimension_);
   adv.loadAttribute( "base_", base_);
   adv.loadAttribute( "seed_", seed_);
 }

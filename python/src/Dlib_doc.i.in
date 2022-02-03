@@ -237,16 +237,6 @@ problem : :class:`~openturns.OptimizationProblem`
 
 // ---------------------------------------------------------------------
 
-%feature("docstring") OT::Dlib::IsAvailable
-"Check if dlib functions are available for use in openturns.
-
-Returns
--------
-isAvailable : bool
-    Whether dlib algorithms can be used or not."
-    
-// ---------------------------------------------------------------------
-
 %feature("docstring") OT::Dlib::GetAlgorithmNames
 "List of dlib available optimization algorithms.
 

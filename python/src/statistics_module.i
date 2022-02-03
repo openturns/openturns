@@ -52,7 +52,7 @@
 %include FilteringWindowsImplementation.i
 %include FilteringWindows.i
 %include Hamming.i
-%include Hanning.i
+%include Hann.i
 %include FFTImplementation.i
 %include FFT.i
 %include SpectralModelImplementation.i

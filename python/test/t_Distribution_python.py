@@ -251,3 +251,35 @@ copula = myDist.getCopula()
 
 # Test computePDF over a sample (ticket #899)
 res = copula.computePDF([[0.5] * 2] * 10)
+
+# Test a discrete distribution
+class PoissonPy(ot.PythonDistribution):
+
+    def __init__(self, lamb):
+        super(PoissonPy, self).__init__(1)
+        if lamb <= 0.0:
+            raise ValueError('Expected a positive lambda')
+        self.poisson_ = ot.Poisson(lamb)
+
+    def getRange(self):
+        return self.poisson_.getRange()
+
+    def computeCDF(self, X):
+        return self.poisson_.computeCDF(X)
+
+    def computePDF(self, X):
+        return self.poisson_.computeCDF(X)
+
+    def isDiscrete(self):
+        return True
+
+    def getSupport(self, interval):
+        return self.poisson_.getSupport(interval)
+
+    def isIntegral(self):
+        return True
+
+dist = ot.Distribution(PoissonPy(2.5))
+print("Is discrete?", dist.isDiscrete())
+print("Is integral?", dist.isIntegral())
+print("pdf graph=", dist.drawPDF())

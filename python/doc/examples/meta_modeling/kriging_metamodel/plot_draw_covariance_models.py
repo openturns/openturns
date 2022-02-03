@@ -104,12 +104,12 @@ ax_pdf = fig.add_subplot(1, 2, 1)
 _ = otv.View(graphModel, figure=fig, axes=[ax_pdf])
 ax_cdf = fig.add_subplot(1, 2, 2)
 _ = otv.View(graphTraj, figure=fig, axes=[ax_cdf])
-_ = fig.suptitle(r"Generalized Exponential Model : influence of the p parameter")
+_ = fig.suptitle(
+    r"Generalized Exponential Model : influence of the p parameter")
 
 # %%
 # The blue trajectory corresponding to the parameter :math:`p=2` is smooth as expected as compared with
 # the :math:`p=0.25` process which is less regular.
-
 
 
 # %%
@@ -129,7 +129,7 @@ covarianceModel = ot.GeneralizedExponential([0.01], 1.0)
 covarianceModel2 = ot.GeneralizedExponential([0.1], 1.0)
 
 # %%
-# with correlation length :math:`\theta = 1.0` 
+# with correlation length :math:`\theta = 1.0`
 covarianceModel3 = ot.GeneralizedExponential([1.0], 1.0)
 
 # %%
@@ -186,11 +186,11 @@ ax_pdf = fig.add_subplot(1, 2, 1)
 _ = otv.View(graphModel, figure=fig, axes=[ax_pdf])
 ax_cdf = fig.add_subplot(1, 2, 2)
 _ = otv.View(graphTraj, figure=fig, axes=[ax_cdf])
-_ = fig.suptitle(r"Exponential Model : influence of correlation length $\theta$")
+_ = fig.suptitle(
+    r"Exponential Model : influence of correlation length $\theta$")
 
 # %%
 # We observe a smoother trajectory with a high correlation value.
-
 
 
 # %%
@@ -211,7 +211,7 @@ covarianceModel = ot.GeneralizedExponential([0.01], 2.0)
 covarianceModel2 = ot.GeneralizedExponential([0.1], 2.0)
 
 # %%
-# with correlation length :math:`\theta = 1.0` 
+# with correlation length :math:`\theta = 1.0`
 covarianceModel3 = ot.GeneralizedExponential([1.0], 2.0)
 
 # %%
@@ -269,7 +269,8 @@ ax_pdf = fig.add_subplot(1, 2, 1)
 _ = otv.View(graphModel, figure=fig, axes=[ax_pdf])
 ax_cdf = fig.add_subplot(1, 2, 2)
 _ = otv.View(graphTraj, figure=fig, axes=[ax_cdf])
-_ = fig.suptitle(r"Squared exponential model : influence of correlation length $\theta$")
+_ = fig.suptitle(
+    r"Squared exponential model : influence of correlation length $\theta$")
 
 # %%
 # Execpt for very small values of the correlation length, trajectories are usually smooth. It is the
@@ -366,7 +367,6 @@ _ = fig.suptitle(r"Matern model : influence of the regularity $\nu$ parameter")
 # the blue trajectory is more smooth as expected.
 
 
-
 # %%
 # Variation of the correlation length
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -398,7 +398,8 @@ graphModel.setColors(["green", "orange", "blue"])
 graphModel.setXTitle(r"$\tau = \|s-t\|$")
 graphModel.setYTitle(r"$C(\tau)$")
 graphModel.setTitle("Matern covariance model with \nu = 3/2")
-graphModel.setLegends([r"$\theta = 0.01$", r"$\theta = 0.1$", r"$\theta = 1.0$"])
+graphModel.setLegends(
+    [r"$\theta = 0.01$", r"$\theta = 0.1$", r"$\theta = 1.0$"])
 
 # %%
 # For each covariance model we build a gaussian process and generate a random trajectory of
@@ -433,7 +434,8 @@ graphTraj.add(sample3.drawMarginal(0))
 graphTraj.setXTitle(r"$x$")
 graphTraj.setYTitle(r"$GP_{\theta}(x)$")
 graphTraj.setColors(["green", "orange", "blue"])
-graphTraj.setLegends([r"$\theta = 0.01$", r"$\theta = 0.1$", r"$\theta = 1.0$"])
+graphTraj.setLegends(
+    [r"$\theta = 0.01$", r"$\theta = 0.1$", r"$\theta = 1.0$"])
 
 # %%
 # We present each covariance model and the corresponding tracjectory side by side.
@@ -451,4 +453,3 @@ _ = fig.suptitle("The Matern model : variation of the correlation length")
 # %%
 # Display figures
 plt.show()
-

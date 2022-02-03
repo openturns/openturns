@@ -282,13 +282,4 @@ Examples
 >>> print(ot.Ceres.GetAlgorithmNames())
 [LEVENBERG_MARQUARDT,DOGLEG,STEEPEST_DESCENT,NONLINEAR_CONJUGATE_GRADIENT,LBFGS,BFGS]"
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::Ceres::IsAvailable
-"Ask whether Ceres support is available.
-
-Returns
--------
-available : bool
-    Whether Ceres support is available."
 

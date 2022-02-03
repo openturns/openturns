@@ -22,7 +22,7 @@ ot.RandomGenerator.SetSeed(0)
 # -------------------
 # The parameters of the standard normal distribution are estimated by a method of moments method.
 # Thus the asymptotic parameters distribution is normal and estimated by bootstrap on the initial data.
-# 
+#
 distribution = ot.Normal(0.0, 1.0)
 sample = distribution.getSample(50)
 estimated = ot.NormalFactory().build(sample)

@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 import openturns as ot
+import openturns.testing as ott
 
 ot.TESTPREAMBLE()
 ot.PlatformInfo.SetNumericalPrecision(2)
@@ -25,10 +26,12 @@ for bootstrapSize in bootstrapSizes:
     algo.run()
     # To avoid discrepance between the plaforms with or without CMinpack
     print("result (Auto)=", algo.getResult().getParameterMAP())
-    print("error=", algo.getResult().getObservationsError())
+    ott.assert_almost_equal(algo.getResult().getObservationsError().getMean(), [
+                            0.0051, -0.0028], 1e-1, 1e-3)
     algo.setOptimizationAlgorithm(ot.MultiStart(ot.TNC(), ot.LowDiscrepancyExperiment(ot.SobolSequence(), ot.Normal(candidate, ot.CovarianceMatrix(
         ot.Point(candidate).getDimension())), ot.ResourceMap.GetAsUnsignedInteger("NonLinearLeastSquaresCalibration-MultiStartSize")).generate()))
     algo.run()
     # To avoid discrepance between the plaforms with or without CMinpack
     print("result  (TNC)=", algo.getResult().getParameterMAP())
-    print("error=", algo.getResult().getObservationsError())
+    ott.assert_almost_equal(algo.getResult().getObservationsError().getMean(), [
+                            0.0051, -0.0028], 1e-1, 1e-3)

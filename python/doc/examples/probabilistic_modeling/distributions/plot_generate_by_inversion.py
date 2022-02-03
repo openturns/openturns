@@ -2,7 +2,7 @@
 Generate random variates by inverting the CDF
 =============================================
 """
-# %% 
+# %%
 #
 # Abstract
 # --------
@@ -19,7 +19,7 @@ Generate random variates by inverting the CDF
 #
 # .. math::
 #    F(x) = 1 - \exp\left(-\frac{x-\gamma}{\beta}\right)^\alpha,
-# 
+#
 #
 # for any :math:`x\geq \gamma`. For the sake of simplicity, we set :math:`\gamma=0`
 #
@@ -29,7 +29,7 @@ Generate random variates by inverting the CDF
 #
 # .. math::
 #    F^{-1}(x) = \beta \left(-\log(1-p)\right)^{\frac{1}{\alpha}}
-# 
+#
 #
 # for any :math:`x\geq 0`.
 #
@@ -39,21 +39,21 @@ Generate random variates by inverting the CDF
 # Loss of accuracy when the probability is close to 1
 # ---------------------------------------------------
 #
-# In practice, if the probability :math:`p` is *very* close to 1, then the complementary probability :math:`1-p` is close to zero. This can lead to a significant loss of accuracy when we evaluate the subtraction :math:`1-p` with floating point numbers because :math:`p` and 1 have lots of common digits. This is called a *loss of accuracy by catastrophic cancellation*, a problem which is common in extreme events. 
+# In practice, if the probability :math:`p` is *very* close to 1, then the complementary probability :math:`1-p` is close to zero. This can lead to a significant loss of accuracy when we evaluate the subtraction :math:`1-p` with floating point numbers because :math:`p` and 1 have lots of common digits. This is called a *loss of accuracy by catastrophic cancellation*, a problem which is common in extreme events.
 #
 # We can use the :math:`\textrm{expm1}` function, defined by the equation:
 #
 # .. math::
 #    \textrm{expm1}(x) = \exp(x)-1,
-# 
 #
-# for any :math:`x\in\mathbb{R}`. This is *not* numerically equivalent to computing `exp` and then subtracting 1. Indeed, the `expm1` function is more accurate when its argument `x` is close to zero. 
+#
+# for any :math:`x\in\mathbb{R}`. This is *not* numerically equivalent to computing `exp` and then subtracting 1. Indeed, the `expm1` function is more accurate when its argument `x` is close to zero.
 #
 # The CDF is then:
 #
 # .. math::
 #    F(x) = -\textrm{expm1} \left(\left(-\frac{x}{\beta}\right)^\alpha\right),
-# 
+#
 #
 # for any :math:`x\geq 0`.
 #
@@ -61,7 +61,7 @@ Generate random variates by inverting the CDF
 #
 # .. math::
 #    \textrm{log1p}(x) = \log(1+x)
-# 
+#
 #
 # for any :math:`x>-1`.
 #
@@ -69,7 +69,7 @@ Generate random variates by inverting the CDF
 #
 # .. math::
 #    x = \beta \left(-\textrm{log1p}(-p)\right)^{\frac{1}{\alpha}}
-# 
+#
 #
 # for :math:`x\geq 0`.
 #
@@ -77,7 +77,7 @@ Generate random variates by inverting the CDF
 #
 # .. math::
 #    x = \gamma + \beta \left(-\textrm{log1p}(-p)\right)^{\frac{1}{\alpha}}
-# 
+#
 #
 # with :math:`x\geq \gamma`.
 #
@@ -120,14 +120,14 @@ alpha = 10.0
 beta = 1.0
 
 # %%
-quantile = ot.ParametricFunction(quantileFunction,[1,2], [alpha,beta])
+quantile = ot.ParametricFunction(quantileFunction, [1, 2], [alpha, beta])
 quantile
 
 # %%
 # In the library, the uniform distribution is by default over the :math:`[-1,1]` interval. To obtain a uniform distribution over :math:`[0,1]`, we need to set the bounds explicitly.
 
 # %%
-U = ot.Uniform(0.,1.)
+U = ot.Uniform(0., 1.)
 
 # %%
 # Then we generate a sample of size 1000 from the uniform distribution.
@@ -146,11 +146,11 @@ weibullSample = quantile(uniformSample)
 # In order to compare the results, we use the `WeibullMin` class (using the default value of the location parameter :math:`\gamma=0`).
 
 # %%
-W = ot.WeibullMin(beta,alpha)
+W = ot.WeibullMin(beta, alpha)
 
 # %%
 histo = ot.HistogramFactory().build(weibullSample).drawPDF()
-histo.setTitle("Weibull alpha=%s, beta=%s, n=%d" % (alpha,beta,n))
+histo.setTitle("Weibull alpha=%s, beta=%s, n=%d" % (alpha, beta, n))
 histo.setLegends(["Sample"])
 wpdf = W.drawPDF()
 wpdf.setColors(["blue"])
@@ -176,31 +176,33 @@ uniformSample = U.getSample(n)
 weibullSample = quantile(uniformSample)
 
 # %%
-# We sort the sample by increasing order. 
+# We sort the sample by increasing order.
 
 # %%
-data = ot.Sample(n,2)
-data[:,0] = weibullSample
-data[:,1] = uniformSample
-data.setDescription(["x","p"])
+data = ot.Sample(n, 2)
+data[:, 0] = weibullSample
+data[:, 1] = uniformSample
+data.setDescription(["x", "p"])
 
 # %%
 sample = ot.Sample(data.sort())
-sample[0:5,:]
+sample[0:5, :]
 
 # %%
-weibullSample = sample[:,0]
-uniformSample = sample[:,1]
+weibullSample = sample[:, 0]
+uniformSample = sample[:, 1]
 
 # %%
-graph = ot.Graph("Weibull alpha=%s, beta=%s, n=%s" % (alpha,beta,n),"x","U",True)
+graph = ot.Graph("Weibull alpha=%s, beta=%s, n=%s" %
+                 (alpha, beta, n), "x", "U", True)
 # Add the CDF plot
 curve = W.drawCDF()
 curve.setColors(["blue"])
 graph.add(curve)
 # Plot dashed horizontal & vertical lines
 for i in range(n):
-    curve = ot.Curve([0.,weibullSample[i,0], weibullSample[i,0]],[uniformSample[i,0],uniformSample[i,0], 0.])
+    curve = ot.Curve([0., weibullSample[i, 0], weibullSample[i, 0]], [
+                     uniformSample[i, 0], uniformSample[i, 0], 0.])
     curve.setColor("red")
     curve.setLineStyle("dashed")
     graph.add(curve)

@@ -136,8 +136,6 @@ OT_Distribution_getIsoProbabilisticTransformation_doc
 OT_Distribution_getKendallTau_doc
 %feature("docstring") OT::Distribution::getKurtosis
 OT_Distribution_getKurtosis_doc
-%feature("docstring") OT::Distribution::getLinearCorrelation
-OT_Distribution_getLinearCorrelation_doc
 %feature("docstring") OT::Distribution::getMarginal
 OT_Distribution_getMarginal_doc
 %feature("docstring") OT::Distribution::getMean

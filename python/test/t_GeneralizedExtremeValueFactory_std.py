@@ -11,7 +11,7 @@ size = 10000
 
 for distribution in [ot.GeneralizedExtremeValue(2.0, 1.5, -0.15),
                      ot.GeneralizedExtremeValue(2.0, 1.5,  0.0)]:
-                     # ot.GeneralizedExtremeValue(2.0, 1.5,  0.15)]:
+    # ot.GeneralizedExtremeValue(2.0, 1.5,  0.15)]:
 
     sample = distribution.getSample(size)
     factory = ot.GeneralizedExtremeValueFactory()

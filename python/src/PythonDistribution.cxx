@@ -699,6 +699,27 @@ Bool PythonDistribution::isContinuous() const
 }
 
 
+Bool PythonDistribution::isDiscrete() const
+{
+  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("isDiscrete") ) )
+  {
+    ScopedPyObjectPointer callResult(PyObject_CallMethod( pyObj_,
+                                     const_cast<char *>( "isDiscrete" ),
+                                     const_cast<char *>( "()" ) ));
+    if (callResult.isNull())
+    {
+      handleException();
+    }
+    Bool result = convert< _PyBool_, Bool >(callResult.get());
+    return result;
+  }
+  else
+  {
+    return DistributionImplementation::isDiscrete();
+  }
+}
+
+
 /* Check if the distribution is integral */
 Bool PythonDistribution::isIntegral() const
 {
@@ -906,6 +927,27 @@ void PythonDistribution::computeRange()
   else
   {
     DistributionImplementation::computeRange();
+  }
+}
+
+/* Get the support of a discrete distribution that intersect a given interval */
+Sample PythonDistribution::getSupport(const Interval & interval) const
+{
+  if (PyObject_HasAttrString(pyObj_, const_cast<char *>("getSupport")))
+  {
+    ScopedPyObjectPointer methodName(convert< String, _PyString_ >("getSupport"));
+    ScopedPyObjectPointer pyInterval(SWIG_NewPointerObj(new Interval(interval), SWIG_TypeQuery("OT::Interval *"), SWIG_POINTER_OWN));
+    ScopedPyObjectPointer callResult(PyObject_CallMethodObjArgs(pyObj_, methodName.get(), pyInterval.get(), NULL));
+    if (callResult.isNull())
+    {
+      handleException();
+    }
+    Sample result(convert< _PySequence_, Sample >(callResult.get()));
+    return result;
+  }
+  else
+  {
+    return DistributionImplementation::getSupport(interval);
   }
 }
 

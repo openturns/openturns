@@ -584,7 +584,7 @@ Point ConditionalDistribution::computeExpectation(const Function & f,
   {
     Point currentTheta(theta);
     // Get the discrete values
-    Bool rejectNode;
+    Bool rejectNode = false;
     for (UnsignedInteger j = 0; j < discreteDimension; ++j)
     {
       const Scalar value = discreteNodes_(i, j);

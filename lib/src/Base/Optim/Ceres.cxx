@@ -115,9 +115,9 @@ public:
     set_num_residuals(problem.getResidualFunction().getOutputDimension());
   }
 
-  virtual bool Evaluate(double const* const* parameters,
-                        double* residuals,
-                        double** jacobians) const override
+  bool Evaluate(double const* const* parameters,
+                double* residuals,
+                double** jacobians) const override
   {
     const OptimizationProblem problem(algorithm_.getProblem());
     const UnsignedInteger n = problem.getDimension();
@@ -136,7 +136,7 @@ public:
     if (jacobians)
     {
       const Matrix gradient(problem.getResidualFunction().gradient(inP));
-      std::copy(&gradient(0, 0), &gradient(n - 1, m - 1) + 1, jacobians[0]);
+      std::copy(gradient.data(), gradient.data() + m * n, jacobians[0]);
     }
     return true;
   }
@@ -153,14 +153,14 @@ public:
     : ceres::FirstOrderFunction()
     , algorithm_(algorithm) {}
 
-  virtual int NumParameters() const override
+  int NumParameters() const override
   {
     return algorithm_.getProblem().getDimension();
   }
 
-  virtual bool Evaluate(const double * const x,
-                        double * cost,
-                        double * jacobian) const override
+  bool Evaluate(const double * const x,
+                double * cost,
+                double * jacobian) const override
   {
     const OptimizationProblem problem(algorithm_.getProblem());
     const UnsignedInteger n = problem.getDimension();
@@ -173,11 +173,15 @@ public:
     algorithm_.evaluationInputHistory_.add(inP);
     algorithm_.evaluationOutputHistory_.add(outP);
 
+    // update result
+    algorithm_.result_.setEvaluationNumber(algorithm_.evaluationInputHistory_.getSize());
+    algorithm_.result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
+
     // gradient
     if (jacobian)
     {
       const Matrix gradient(problem.isMinimization() ? problem.getObjective().gradient(inP) : -1.0 * problem.getObjective().gradient(inP));
-      std::copy(&gradient(0, 0), &gradient(n - 1, 0) + 1, jacobian);
+      std::copy(gradient.data(), gradient.data() + n, jacobian);
     }
     return true;
   }
@@ -223,6 +227,7 @@ void Ceres::run()
   // initialize history
   evaluationInputHistory_ = Sample(0, dimension);
   evaluationOutputHistory_ = Sample(0, 1);
+  result_ = OptimizationResult(getProblem());
 
   double optimalValue = 0.0;
   UnsignedInteger iterationNumber = 0;
@@ -539,6 +544,7 @@ void Ceres::load(Advocate & adv)
 
 Bool Ceres::IsAvailable()
 {
+  LOGWARN(OSS() << "Ceres.IsAvailable is deprecated, use PlatformInfo.HasFeature(ceres)");
 #ifdef OPENTURNS_HAVE_CERES
   return true;
 #else

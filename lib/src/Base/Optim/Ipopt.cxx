@@ -60,6 +60,7 @@ Ipopt * Ipopt::clone() const
 /** Ipopt static methods */
 Bool Ipopt::IsAvailable()
 {
+  LOGWARN(OSS() << "Ipopt.IsAvailable is deprecated, use PlatformInfo.HasFeature(ipopt)");
 #ifdef OPENTURNS_HAVE_IPOPT
   return true;
 #else

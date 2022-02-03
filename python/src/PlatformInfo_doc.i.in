@@ -43,14 +43,3 @@ Returns
 precision : int
     String ouput numerical precision."
 
-// ---------------------------------------------------------------------
-
-%feature("docstring") OT::PlatformInfo::SetTwoDigitExponent
-"Use two digits for exponent format.
-
-For testing purposes with pre 2015 MSVC compilers.
-
-Parameters
-----------
-enable : bool, default=True
-    Whether to switch to two digits exponent."

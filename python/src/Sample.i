@@ -86,7 +86,7 @@ def Sample___getattribute__(self, name):
     if name == '__array_interface__':
         self.__dict__['__array_interface__'] = {'shape': (self.getSize(), self.getDimension()),
                                                 'typestr': "|f" + str(self.__elementsize__()),
-                                                'data': (int(self.__baseaddress__()), True),
+                                                'data': (int(self.__baseaddress__() or 1), True),
                                                 'version': 3, 
                                                 }
     return super(Sample, self).__getattribute__(name)
@@ -199,19 +199,23 @@ PyObject * __getitem__(PyObject * args) const
       for (Py_ssize_t i = 0; i < size; ++ i)
       {
         PyObject * elt = PySequence_Fast_GET_ITEM(seq.get(), i);
+        long index = 0;
         if (PyInt_Check(elt))
+          index = PyInt_AsLong(elt);
+        else if (PyObject_HasAttrString(elt, "__int__"))
         {
-          long index = PyInt_AsLong(elt);
-          if (index < 0)
-            index += self->getSize();
-          if (index < 0)
-            throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
-          result.at(i) = self->at(index);
+          OT::ScopedPyObjectPointer intValue(PyObject_CallMethod(elt, const_cast<char *>("__int__"), const_cast<char *>("()")));
+          if (intValue.isNull())
+            OT::handleException();
+          index = PyInt_AsLong(intValue.get());
         }
         else
-        {
           throw OT::InvalidArgumentException(HERE) << "Indexing list expects int type";
-        }
+        if (index < 0)
+          index += self->getSize();
+        if (index < 0)
+          throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
+        result.at(i) = self->at(index);
       }
       result.setDescription(self->getDescription());
       return SWIG_NewPointerObj((new OT::Sample(static_cast< const OT::Sample& >(result))), SWIGTYPE_p_OT__Sample, SWIG_POINTER_OWN | 0);
@@ -476,7 +480,7 @@ fail:
 
 
 
-PyObject * __setitem__(PyObject * args, PyObject * valObj)
+void __setitem__(PyObject * args, PyObject * valObj)
 {
   if (!PyTuple_Check(args))
   {
@@ -515,19 +519,23 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj)
       for (Py_ssize_t i = 0; i < size; ++ i)
       {
         PyObject * elt = PySequence_Fast_GET_ITEM(seq.get(), i);
+        long index = 0;
         if (PyInt_Check(elt))
+          index = PyInt_AsLong(elt);
+        else if (PyObject_HasAttrString(elt, "__int__"))
         {
-          long index = PyInt_AsLong(elt);
-          if (index < 0)
-            index += self->getSize();
-          if (index < 0)
-            throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
-          self->at(index) = val->at(i);
+          OT::ScopedPyObjectPointer intValue(PyObject_CallMethod(elt, const_cast<char *>("__int__"), const_cast<char *>("()")));
+          if (intValue.isNull())
+            OT::handleException();
+          index = PyInt_AsLong(intValue.get());
         }
         else
-        {
           throw OT::InvalidArgumentException(HERE) << "Indexing list expects int type";
-        }
+        if (index < 0)
+          index += self->getSize();
+        if (index < 0)
+          throw OT::OutOfBoundException(HERE) << "index should be in [-" << size << ", " << size - 1 << "]." ;
+        self->at(index) = val->at(i);
       }
     }
     else if (PyObject_HasAttrString(args, "__int__"))
@@ -550,7 +558,7 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj)
       assert(val);
       self->at(index) = temp;
     }
-    return SWIG_Py_Void();
+    return;
   }
 
   PyObject * obj1 = 0;
@@ -792,9 +800,8 @@ PyObject * __setitem__(PyObject * args, PyObject * valObj)
   }
   else
     SWIG_exception(SWIG_TypeError, "Sample.__setitem__ expects int, slice or sequence arguments");
-  return SWIG_Py_Void();
 fail:
-  return NULL;
+  return;
 }
 
 Sample(const Sample & other)

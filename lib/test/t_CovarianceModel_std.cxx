@@ -50,7 +50,7 @@ static void test_model(const CovarianceModel & myModel, const Bool test_grad = t
   // interval mesher
   Indices levels(inputDimension);
   for (UnsignedInteger k = 0; k < inputDimension; ++k)
-    levels[k] = 9;
+    levels[k] = 7;
   IntervalMesher intervalMesher(levels);
 
   // Building interval
@@ -89,6 +89,18 @@ static void test_model(const CovarianceModel & myModel, const Bool test_grad = t
       }
     }
   }
+
+  // Now we suppose that discretize is ok
+  // we look at crossCovariance of (vertices, vertices) which should return the same values
+  cov.getImplementation()->symmetrize();
+  const Matrix crossCov(myModel.computeCrossCovariance(vertices, vertices));
+  assert_almost_equal(crossCov, cov, 1e-14, 1e-14, OSS() << "in " << myModel.getImplementation()->getClassName() << "::computeCrossCovariance" );
+
+  // Now crossCovariance(sample, sample) is ok
+  // Let us validate crossCovariance(Sample, point) with 1st column(s) of previous calculations
+  const Matrix crossCovSamplePoint(myModel.computeCrossCovariance(vertices, vertices[0]));
+  const Matrix crossCovCol(crossCov.reshape(crossCov.getNbRows(), dimension));
+  assert_almost_equal(crossCovSamplePoint, crossCovCol, 1e-14, 1e-14,  OSS() << "in " << myModel.getImplementation()->getClassName() << "::computeCrossCovarianceSamplePoint");
 
   // gradient testing
   if (test_grad)
@@ -309,6 +321,8 @@ int main(int, char *[])
       assert_almost_equal(myModel.computeAsScalar(point), myAbsoluteExponential.computeAsScalar(x) * mySquaredExponential.computeAsScalar(y), 1.0e-15, 1.0e-15);
       // Gradient test in comparison with FD
       test_model(myModel);
+      // Check that a ProductCovarianceModel can be built from a DiracCovarianceModel
+      ProductCovarianceModel cov(Collection<CovarianceModel>(1, DiracCovarianceModel(1)));
     }
 
     // 11) Tensorized model

@@ -56,9 +56,9 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 model = ot.SymbolicFunction(['x1', 'x2'], ['x1^2+x2'])
 R = ot.CorrelationMatrix(2)
-R[0,1] = -0.6
-inputDist = ot.Normal([0.,0.], R)
-inputDist.setDescription(['X1','X2'])
+R[0, 1] = -0.6
+inputDist = ot.Normal([0., 0.], R)
+inputDist.setDescription(['X1', 'X2'])
 inputVector = ot.RandomVector(inputDist)
 
 # Create the output random vector Y=model(X)
@@ -98,7 +98,7 @@ print(infQuantile, empiricalQuantile, supQuantile)
 
 # %%
 # Wilks number
-i = N - (min_i+max_i)//2 # compute wilks with the same sample size
+i = N - (min_i+max_i)//2  # compute wilks with the same sample size
 wilksNumber = ot.Wilks.ComputeSampleSize(alpha, beta, i)
 print('wilksNumber =', wilksNumber)
 

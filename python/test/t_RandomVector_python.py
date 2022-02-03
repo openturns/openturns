@@ -14,7 +14,8 @@ class RVEC(ot.PythonRandomVector):
         self._offset = 2.0
 
     def getRealization(self):
-        X = [ot.RandomGenerator.Generate(), self._offset + ot.RandomGenerator.Generate()]
+        X = [ot.RandomGenerator.Generate(), self._offset +
+             ot.RandomGenerator.Generate()]
         return X
 
     def getSample(self, size):

@@ -624,28 +624,33 @@ void ResourceMap::loadConfigurationFile()
 /* Load the configuration defined at installation time */
 void ResourceMap::loadDefaultConfiguration()
 {
-#ifdef R_EXECUTABLE
-  addAsString("R-executable-command", R_EXECUTABLE);
-#else
-  addAsString("R-executable-command", "");
-#endif
-  addAsString("csv-file-separator", ";");
 #ifndef _WIN32
-  addAsString("temporary-directory", "/tmp");
-  addAsUnsignedInteger("parallel-threads", sysconf(_SC_NPROCESSORS_CONF));
+  addAsString("Path-TemporaryDirectory", "/tmp");
+  addAsUnsignedInteger("TBBImplementation-ThreadsNumber", sysconf(_SC_NPROCESSORS_CONF));
 #else
-  addAsString("temporary-directory", "TEMP");
+  addAsString("Path-TemporaryDirectory", "TEMP");
   UnsignedInteger numberOfProcessors = 0;
   std::istringstream iss(getenv("NUMBER_OF_PROCESSORS"));
   iss >> numberOfProcessors;
-  addAsUnsignedInteger("parallel-threads", numberOfProcessors);
+  addAsUnsignedInteger("TBBImplementation-ThreadsNumber", numberOfProcessors);
 #endif
-  addAsUnsignedInteger("cache-max-size", 1024);
-  addAsUnsignedInteger("output-files-timeout", 2);
+  if (const char* env_num_threads = std::getenv("OPENTURNS_NUM_THREADS"))
+  {
+    try
+    {
+      setAsUnsignedInteger("TBBImplementation-ThreadsNumber", std::stoi(env_num_threads));
+    }
+    catch (const std::invalid_argument &)
+    {
+      throw InternalException(HERE) << "OPENTURNS_NUM_THREADS must be an integer, got " << env_num_threads;
+    }
+  }
+  addAsUnsignedInteger("Cache-MaxSize", 1024);
 
   // Os parameters
-  addAsBool("Os-create-process", "false");
+  addAsBool("Os-CreateProcess", "false");
   addAsBool("Os-RemoveFiles", "true");
+  addAsUnsignedInteger("OS-DeleteTimeout", 2);
 
   // XMLStorageManager parameters
   addAsUnsignedInteger("XMLStorageManager-DefaultCompressionLevel", 0);
@@ -713,6 +718,11 @@ void ResourceMap::loadDefaultConfiguration()
   addAsScalar("Text-DefaultTextSize", 0.75);
 
   // GraphImplementation parameters //
+#ifdef R_EXECUTABLE
+  addAsString("Graph-RExecutableCommand", R_EXECUTABLE);
+#else
+  addAsString("Graph-RExecutableCommand", "");
+#endif
   addAsScalar("Graph-DefaultHorizontalMargin", 0.05);
   addAsScalar("Graph-DefaultLegendFontSize", 1.0);
   addAsScalar("Graph-DefaultVerticalMargin", 0.05);
@@ -842,10 +852,14 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("FaureSequence-InitialSeed", 1);
 
   // HaltonSequence parameters //
+  addAsString("HaltonSequence-Scrambling", "NONE");
   addAsUnsignedInteger("HaltonSequence-InitialSeed", 1);
 
   // HaselgroveSequence parameters //
   addAsUnsignedInteger("HaselgroveSequence-InitialSeed", 1);
+
+  // LowDiscrepancySequence parameters //
+  addAsUnsignedInteger("LowDiscrepancySequence-ScramblingSeed", 0);
 
   // ReverseHaltonSequence parameters //
   addAsUnsignedInteger("ReverseHaltonSequence-InitialSeed", 1);
@@ -887,6 +901,9 @@ void ResourceMap::loadDefaultConfiguration()
   addAsUnsignedInteger("Field-LevelNumber", 30);
 
   // SampleImplementation parameters
+  addAsString("Sample-CSVFileSeparator", ";");
+  addAsUnsignedInteger("Sample-CSVPrecision", 16);
+  addAsString("Sample-CSVFormat", "scientific");
   addAsString("Sample-CommentMarkers", "#");
   addAsUnsignedInteger("Sample-PrintEllipsisSize", 3);
   addAsUnsignedInteger("Sample-PrintEllipsisThreshold", 1000);
@@ -1189,10 +1206,10 @@ void ResourceMap::loadDefaultConfiguration()
   // DirectionalSampling parameters //
   addAsUnsignedInteger("DirectionalSampling-MeanContributionIntegrationNodesNumber", 255);
 
-  // AdaptiveDirectionalSampling parameters //
-  addAsScalar("AdaptiveDirectionalSampling-DefaultGamma", 0.5);
-  addAsUnsignedInteger("AdaptiveDirectionalSampling-DefaultMaximumStratificationDimension", 3);
-  addAsUnsignedInteger("AdaptiveDirectionalSampling-DefaultNumberOfSteps", 2);
+  // AdaptiveDirectionalStratification parameters //
+  addAsScalar("AdaptiveDirectionalStratification-DefaultGamma", 0.5);
+  addAsUnsignedInteger("AdaptiveDirectionalStratification-DefaultMaximumStratificationDimension", 3);
+  addAsUnsignedInteger("AdaptiveDirectionalStratification-DefaultNumberOfSteps", 2);
 
   // AnalyticalResult parameters //
   addAsScalar("AnalyticalResult-DefaultWidth", 1.0);
@@ -1205,7 +1222,7 @@ void ResourceMap::loadDefaultConfiguration()
   // MultiFORM parameters //
   addAsScalar("MultiFORM-DefaultGamma", 1.1);
   addAsScalar("MultiFORM-DefaultDelta", 0.75);
-  addAsUnsignedInteger("MultiFORM-DefaultMaximumNumberOfDesignPoints", 4);
+  addAsUnsignedInteger("MultiFORM-DefaultMaximumDesignPointsNumber", 4);
 
   // StrongMaximumTest parameters //
   addAsScalar("StrongMaximumTest-DefaultDeltaPrecision", 1.0e-7);

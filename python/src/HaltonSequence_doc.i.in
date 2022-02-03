@@ -1,13 +1,15 @@
 %feature("docstring") OT::HaltonSequence
 "Halton sequence.
 
-Available constructors:
-    HaltonSequence(*dimension=1*)
-
 Parameters
 ----------
-dimension : positive int
+dimension : positive int, default = 1
     Dimension of the points.
+scrambling : str
+    Identifier of the scrambling method. Available methods: reverse scrambling
+    (scrambling='REVERSE'), random scrambling (scrambling='RANDOM') or no
+    scrambling ('NONE', default value). Default value is given by the
+    'HaltonSequence-Scrambling' key in the :class:`~openturns.ResourceMap`.
 
 Examples
 --------
@@ -19,3 +21,24 @@ Examples
 2 : [ 0.75     0.111111 ]
 3 : [ 0.125    0.444444 ]
 4 : [ 0.625    0.777778 ]"
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HaltonSequence::getPermutations
+"Accessor to the permutations used to scramble the sequence.
+
+Returns
+-------
+coll : :class:`~openturns.Collection` of :class:`~openturns.Indices`
+    Collection containing the permutations used to scramble each component of the sequence.
+    Its size is the dimension of the sequence."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::HaltonSequence::getScrambling
+"Accessor to the scrambling method.
+
+Returns
+-------
+scrambling : str
+    Name of the scrambling method. Possible values are 'NONE', 'REVERSE' and 'RANDOM'."

@@ -11,16 +11,16 @@ Create an event based on a process
 # We define the event :math:`\mathcal{E}` as:
 #
 # .. math::
-#    \begin{aligned} 
-#      \displaystyle \mathcal{E}(X) = \bigcup_{\underline{t}\in \mathcal{M}}\left\{X_{\underline{t}} \in \mathcal{A} \right\} 
+#    \begin{aligned}
+#      \displaystyle \mathcal{E}(X) = \bigcup_{\underline{t}\in \mathcal{M}}\left\{X_{\underline{t}} \in \mathcal{A} \right\}
 #    \end{aligned}
-#   
+#
 # where :math:`\mathcal{A}` is a domain of :math:`\mathbb{R}^d`.
 #
 # A particular domain :math:`\mathcal{A}` is the cartesian product of type:
 #
 # .. math::
-#    \begin{aligned} 
+#    \begin{aligned}
 #      \mathcal{A} = \prod_{i=1}^d [a_i,b_i]
 #    \end{aligned}
 #

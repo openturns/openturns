@@ -45,3 +45,4 @@ no function detected : ok.
 exception handling: ok
 exception handling: ok
 index check: ok
+y= [42,42,42]

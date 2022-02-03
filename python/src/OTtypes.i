@@ -11,11 +11,6 @@
 %{
 #include "openturns/OT.hxx"
 #include "openturns/PythonWrappingFunctions.hxx"
-
-// ptr conversion argument to handle None correctly in swig 4.x, this just allows to pass compilation with swig 3.x
-#if SWIGVERSION < 0x040000
-#define SWIG_POINTER_NO_NULL 0x0
-#endif
 %}
 
 %typemap(in) UnsignedInteger {

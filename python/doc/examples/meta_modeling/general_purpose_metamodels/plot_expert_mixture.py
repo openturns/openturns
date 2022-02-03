@@ -14,7 +14,7 @@ Mixture of experts
 #      f(\underline{x}) = f_k(\underline{x}) \quad \forall \underline{z} \in Class\, k
 #      \dots
 #      f(\underline{x}) = f_N(\underline{x}) \quad \forall \underline{z} \in Class\, N
-#    \end{align} 
+#    \end{align}
 #
 # where the N classes are defined by the classifier.
 #
@@ -25,9 +25,9 @@ Mixture of experts
 #
 # The classifier is MixtureClassifier based on a MixtureDistribution defined as:
 #
-# .. math::  
+# .. math::
 #    p(\underline{x}) = \sum_{i=1}^N w_ip_i(\underline{x})
-#   
+#
 #
 # The rule to assign a point to a class is defined as follows: :math:`\underline{x}` is assigned to the class :math:`j=argmax_j \log w_kp_k(\underline{z})`.
 #
@@ -49,6 +49,8 @@ ot.Log.Show(ot.Log.NONE)
 dimension = 1
 
 # Define the piecewise model we want to rebuild
+
+
 def piecewise(X):
     # if x < 0.0:
     #     f = (x+0.75)**2-0.75**2
@@ -56,6 +58,8 @@ def piecewise(X):
     #     f = 2.0-x**2
     xarray = np.array(X, copy=False)
     return np.piecewise(xarray, [xarray < 0, xarray >= 0], [lambda x: x*(x+1.5), lambda x: 2.0 - x*x])
+
+
 f = ot.PythonFunction(1, 1, func_sample=piecewise)
 
 # %%
@@ -63,9 +67,12 @@ f = ot.PythonFunction(1, 1, func_sample=piecewise)
 degree = 5
 samplingSize = 100
 enumerateFunction = ot.LinearEnumerateFunction(dimension)
-productBasis = ot.OrthogonalProductPolynomialFactory([ot.LegendreFactory()] * dimension, enumerateFunction)
-adaptiveStrategy = ot.FixedStrategy(productBasis, enumerateFunction.getStrataCumulatedCardinal(degree))
-projectionStrategy = ot.LeastSquaresStrategy(ot.MonteCarloExperiment(samplingSize))
+productBasis = ot.OrthogonalProductPolynomialFactory(
+    [ot.LegendreFactory()] * dimension, enumerateFunction)
+adaptiveStrategy = ot.FixedStrategy(
+    productBasis, enumerateFunction.getStrataCumulatedCardinal(degree))
+projectionStrategy = ot.LeastSquaresStrategy(
+    ot.MonteCarloExperiment(samplingSize))
 
 # %%
 # Segment 1: (-1.0; 0.0)
@@ -82,14 +89,14 @@ d2 = ot.Uniform(0.0, 1.0)
 fc2 = ot.FunctionalChaosAlgorithm(f, d2, adaptiveStrategy, projectionStrategy)
 fc2.run()
 mm2 = fc2.getResult().getMetaModel()
-graph = mm2.draw(1e-6,1.0)
+graph = mm2.draw(1e-6, 1.0)
 view = viewer.View(graph)
 
 # %%
 # Define the mixture
 R = ot.CorrelationMatrix(2)
-d1 = ot.Normal([-1.0, -1.0], [1.0]*2, R)# segment 1
-d2 = ot.Normal([1.0, 1.0], [1.0]*2, R)# segment 2
+d1 = ot.Normal([-1.0, -1.0], [1.0]*2, R)  # segment 1
+d2 = ot.Normal([1.0, 1.0], [1.0]*2, R)  # segment 2
 weights = [1.0]*2
 atoms = [d1, d2]
 mixture = ot.Mixture(atoms, weights)
@@ -112,4 +119,3 @@ moe = ot.Function(evaluation)
 graph = moe.draw(-1.0, 1.0)
 view = viewer.View(graph)
 plt.show()
-

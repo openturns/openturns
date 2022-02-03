@@ -2,7 +2,7 @@
 Viscous free fall: metamodel of a field function
 ================================================
 """
-# %% 
+# %%
 #
 # In this example, we present how to create the metamodel of a field function. This examples considers the :ref:`free fall model <use-case-viscous-fall>`. We first compute the Karhunen-Loève decomposition of a sample of trajectories. Then we create a create a polynomial chaos which takes the inputs and returns the KL decomposition modes as outputs. Finally, we create a metamodel by combining the KL decomposition and the polynomial chaos.
 
@@ -19,12 +19,12 @@ from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# We first define the time grid associated with the model. 
+# We first define the time grid associated with the model.
 
 # %%
-tmin=0.0 # Minimum time
-tmax=12. # Maximum time
-gridsize=100 # Number of time steps
+tmin = 0.0  # Minimum time
+tmax = 12.  # Maximum time
+gridsize = 100  # Number of time steps
 mesh = ot.IntervalMesher([gridsize-1]).build(ot.Interval(tmin, tmax))
 
 # %%
@@ -50,16 +50,16 @@ dimension
 
 # %%
 def AltiFunc(X):
-    g  = 9.81
+    g = 9.81
     z0 = X[0]
     v0 = X[1]
-    m  = X[2]
-    c  = X[3]
+    m = X[2]
+    c = X[3]
     tau = m / c
     vinf = - m * g / c
     t = np.array(vertices)
-    z = z0 + vinf * t + tau * (v0 - vinf) * (1 - np.exp( - t / tau))
-    z = np.maximum(z,0.)
+    z = z0 + vinf * t + tau * (v0 - vinf) * (1 - np.exp(- t / tau))
+    z = np.maximum(z, 0.)
     return [[zeta[0]] for zeta in z]
 
 
@@ -68,7 +68,8 @@ def AltiFunc(X):
 
 # %%
 outputDimension = 1
-alti = ot.PythonPointToFieldFunction(dimension, mesh, outputDimension, AltiFunc)
+alti = ot.PythonPointToFieldFunction(
+    dimension, mesh, outputDimension, AltiFunc)
 
 # %%
 # Compute a training sample.
@@ -97,13 +98,13 @@ graph.setYTitle(r'$z$')
 view = viewer.View(graph)
 
 # %%
-# We create the `postProcessingKL` function which takes coefficients of the the K.-L. modes as inputs and returns the trajectories. 
+# We create the `postProcessingKL` function which takes coefficients of the the K.-L. modes as inputs and returns the trajectories.
 
 # %%
 karhunenLoeveLiftingFunction = ot.KarhunenLoeveLifting(KLResult)
 
 # %%
-# The `project` method computes the projection of the output sample (i.e. the trajectories) onto the K.-L. modes. 
+# The `project` method computes the projection of the output sample (i.e. the trajectories) onto the K.-L. modes.
 
 # %%
 outputSampleChaos = KLResult.project(outputSample)
@@ -112,10 +113,11 @@ outputSampleChaos = KLResult.project(outputSample)
 # We limit the sampling size of the Lilliefors selection in order to reduce the computational burden.
 
 # %%
-ot.ResourceMap.SetAsUnsignedInteger("FittingTest-LillieforsMaximumSamplingSize", 1)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "FittingTest-LillieforsMaximumSamplingSize", 1)
 
 # %%
-# We create a polynomial chaos metamodel which takes the input sample and returns the K.-L. modes. 
+# We create a polynomial chaos metamodel which takes the input sample and returns the K.-L. modes.
 
 # %%
 algo = ot.FunctionalChaosAlgorithm(inputSample, outputSampleChaos)
@@ -126,7 +128,8 @@ chaosMetamodel = algo.getResult().getMetaModel()
 # The final metamodel is a composition of the KL lifting function and the polynomial chaos metamodel. In order to combine these two functions, we use the `PointToFieldConnection` class.
 
 # %%
-metaModel = ot.PointToFieldConnection(karhunenLoeveLiftingFunction, chaosMetamodel)
+metaModel = ot.PointToFieldConnection(
+    karhunenLoeveLiftingFunction, chaosMetamodel)
 
 # %%
 # Validate the metamodel

@@ -4,9 +4,6 @@
 .. image:: https://github.com/openturns/openturns/actions/workflows/build.yml/badge.svg?branch=master
     :target: https://github.com/openturns/openturns/actions/workflows/build.yml
 
-.. image:: https://ci.appveyor.com/api/projects/status/eclivj94bqwhh1mq/branch/master?svg=true
-    :target: https://ci.appveyor.com/project/openturns/openturns
-
 .. image:: https://badges.gitter.im/openturns/community.svg
     :target: https://gitter.im/openturns/community
 

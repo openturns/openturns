@@ -42,12 +42,16 @@ public:
   explicit Student(const Scalar nu = 3.0,
                    const UnsignedInteger dimension = 1);
 
-  /** Parameters constructor */
+  /** Dimension 1 constructor */
   Student(const Scalar nu,
           const Scalar mu,
-          const Scalar sigma = 1.0);
+          const Scalar sigma);
 
-  /** Parameters constructor */
+  /** Constructor for multiD Student distribution */
+  Student(const Scalar nu,
+          const Point & mu,
+          const Point & sigma);
+
   Student(const Scalar nu,
           const Point & mu,
           const Point & sigma,
@@ -73,10 +77,12 @@ public:
 
   /** Get one realization of the distribution */
   Point getRealization() const override;
+  Sample getSample(const UnsignedInteger size) const override;
 
   /** Get the CDF of the distribution */
   using EllipticalDistribution::computeCDF;
   Scalar computeCDF(const Point & point) const override;
+  Sample computeCDF(const Sample & sample) const override;
 
   /** Get the probability content of an interval */
   Scalar computeProbability(const Interval & interval) const override;

@@ -2,7 +2,7 @@
 Mix/max search using optimization
 =================================
 """
-# %% 
+# %%
 #
 # In this example we are going to evaluate the min and max values of the output variable of interest in a domain using an optimization algorithm.
 
@@ -52,9 +52,11 @@ solver.setStartingPoint(distribution.getMean())
 solver.setProblem(minProblem)
 solver.run()
 minResult = solver.getResult()
-print('min: y=', minResult.getOptimalValue(), 'with x=', minResult.getOptimalPoint())
+print('min: y=', minResult.getOptimalValue(),
+      'with x=', minResult.getOptimalPoint())
 
 solver.setProblem(maxProblem)
 solver.run()
 maxResult = solver.getResult()
-print('max: y=', maxResult.getOptimalValue(), 'with x=', maxResult.getOptimalPoint())
+print('max: y=', maxResult.getOptimalValue(),
+      'with x=', maxResult.getOptimalPoint())

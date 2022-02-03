@@ -221,7 +221,7 @@ GridLayout VisualTest::DrawPairs(const Sample & sample)
     for (UnsignedInteger j = 0; j < i; ++ j)
     {
       const Indices indices = {j, i};
-      const Cloud cloud(sample.getMarginal(indices), "blue", "fsquare", "");
+      const Cloud cloud(sample.getMarginal(indices), ResourceMap::GetAsString("Drawable-DefaultColor"), ResourceMap::GetAsString("Drawable-DefaultPointStyle"));
       Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
       graph.add(cloud);
       int location = GraphImplementation::TICKNONE;
@@ -341,13 +341,13 @@ Graph VisualTest::DrawLinearModelResidual(const LinearModelResult & linearModelR
   return VisualTest::DrawLinearModelResidual(sample1, sample2, linearModelResult);
 }
 
-/* Draw the CobWeb visual test */
-Graph VisualTest::DrawCobWeb(const Sample & inputSample,
-                             const Sample & outputSample,
-                             const Scalar minValue,
-                             const Scalar maxValue,
-                             const String & color,
-                             const Bool quantileScale)
+/* Draw the parallel coordinates visual test */
+Graph VisualTest::DrawParallelCoordinates(const Sample & inputSample,
+    const Sample & outputSample,
+    const Scalar minValue,
+    const Scalar maxValue,
+    const String & color,
+    const Bool quantileScale)
 {
   const UnsignedInteger size = inputSample.getSize();
   if (size == 0) throw InvalidArgumentException(HERE) << "Error: the input sample is empty.";

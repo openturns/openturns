@@ -7,7 +7,7 @@ bandwidth = [0.9]
 fittedDist = ks.build(sample, bandwidth)
 
 graph = fittedDist.drawPDF()
-graph.add( ot.Gamma(6.0, 1.0).drawPDF())
+graph.add(ot.Gamma(6.0, 1.0).drawPDF())
 graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 graph.setLegends(['KS dist', 'Gamma'])
 View(graph)

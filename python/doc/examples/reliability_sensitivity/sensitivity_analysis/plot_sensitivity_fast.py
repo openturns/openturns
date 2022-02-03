@@ -24,6 +24,7 @@ FAST sensitivity indices
 
 # %%
 from __future__ import print_function
+from openturns.usecases import ishigami_function as ishigami_function
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -31,7 +32,6 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the :ref:`Ishigami model <use-case-ishigami>` from the usecases module :
-from openturns.usecases import ishigami_function as ishigami_function
 im = ishigami_function.IshigamiModel()
 
 # %%
@@ -41,7 +41,6 @@ distribution = im.distributionX
 # %%
 # and the Ishigami function :
 model = im.model
-
 
 
 # %%
@@ -59,11 +58,13 @@ print('First order FAST indices:', firstOrderIndices)
 print('Total order FAST indices:', totalOrderIndices)
 
 # %%
-graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(firstOrderIndices, distribution.getDescription(), 'FAST first order indices')
+graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(
+    firstOrderIndices, distribution.getDescription(), 'FAST first order indices')
 view = viewer.View(graph)
 
 # %%
-graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(totalOrderIndices, distribution.getDescription(), 'FAST total order indices')
+graph = ot.SobolIndicesAlgorithm.DrawImportanceFactors(
+    totalOrderIndices, distribution.getDescription(), 'FAST total order indices')
 view = viewer.View(graph)
 plt.show()
 

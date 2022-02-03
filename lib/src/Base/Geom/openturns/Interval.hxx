@@ -74,6 +74,10 @@ public:
   Bool contains(const Point & point) const override;
   using DomainImplementation::contains;
 
+  /** Compute the Euclidean distance from a given point to the domain */
+  Scalar computeDistance(const Point & point) const override;
+  using DomainImplementation::computeDistance;
+
   /** Check if the given point is numerically inside of the closed interval, i.e. using only the bounds part of the interval */
   Bool numericallyContains(const Point & point) const;
 

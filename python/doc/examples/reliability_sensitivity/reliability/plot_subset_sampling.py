@@ -2,7 +2,7 @@
 Subset Sampling
 ===============
 """
-# %% 
+# %%
 #
 # The objective is to evaluate a probability from the Subset sampling technique.
 #
@@ -13,7 +13,7 @@ Subset Sampling
 #   g(X)= 20-(x_1-x_2)^2-8(x_1+x_2-4)^3
 #   \end{align*}
 #
-# and the input random vector :math:`X = (X_1, X_2)` which follows a Normal distribution with independent components, and identical marginals with 0.25 mean and unit variance: 
+# and the input random vector :math:`X = (X_1, X_2)` which follows a Normal distribution with independent components, and identical marginals with 0.25 mean and unit variance:
 #
 # .. math::
 #   \begin{align*}
@@ -29,7 +29,7 @@ Subset Sampling
 #
 
 # %%
-# First, import the python modules: 
+# First, import the python modules:
 
 # %%
 import openturns as ot
@@ -49,7 +49,7 @@ X = ot.RandomVector(ot.Normal([0.25]*2, [1]*2, ot.IdentityMatrix(2)))
 # Create the function :math:`g`:
 
 # %%
-g=ot.SymbolicFunction(['x1', 'x2'], ['20-(x1-x2)^2-8*(x1+x2-4)^3'])
+g = ot.SymbolicFunction(['x1', 'x2'], ['20-(x1-x2)^2-8*(x1+x2-4)^3'])
 print('function g: ', g)
 
 # %%
@@ -62,14 +62,14 @@ g = ot.MemoizeFunction(g)
 # Create the output random vector :math:`Y = g(X)`:
 
 # %%
-Y = ot.CompositeRandomVector(g,X)
+Y = ot.CompositeRandomVector(g, X)
 
 # %%
 # Create the event :math:`\{ Y = g(X) \leq 0 \}`
 # ----------------------------------------------
 
 # %%
-myEvent = ot.ThresholdEvent(Y, ot.LessOrEqual(), 0.0) 
+myEvent = ot.ThresholdEvent(Y, ot.LessOrEqual(), 0.0)
 
 # %%
 # Evaluate the probability with the subset sampling technique
@@ -94,7 +94,8 @@ algo.run()
 result = algo.getResult()
 proba = result.getProbabilityEstimate()
 print('Proba Subset = ',  proba)
-print('Current coefficient of variation = ', result.getCoefficientOfVariation())
+print('Current coefficient of variation = ',
+      result.getCoefficientOfVariation())
 
 # %%
 # The length of the confidence interval of level :math:`95\%` is:
@@ -104,16 +105,17 @@ length95 = result.getConfidenceLength()
 print('Confidence length (0.95) = ', result.getConfidenceLength())
 
 # %%
-# which enables to build the confidence interval: 
+# which enables to build the confidence interval:
 
 # %%
-print('Confidence intervalle (0.95) = [', proba - length95/2, ', ', proba + length95/2, ']')
+print('Confidence intervalle (0.95) = [', proba -
+      length95/2, ', ', proba + length95/2, ']')
 
 # %%
 # You can also get the succesive thresholds used by the algorithm:
 
 # %%
-levels =  algo.getThresholdPerStep()
+levels = algo.getThresholdPerStep()
 print('Levels of g = ', levels)
 
 # %%
@@ -122,7 +124,7 @@ print('Levels of g = ', levels)
 #
 # The following manipulations are possible onfly if you have created a *MemoizeFunction* that enables to store all the inputs and output of the function :math:`g`.
 #
-# Get all the inputs where :math:`g` were evaluated: 
+# Get all the inputs where :math:`g` were evaluated:
 
 # %%
 inputSampleSubset = g.getInputHistory()
@@ -130,17 +132,17 @@ nTotal = inputSampleSubset.getSize()
 print('Number of evaluations of g = ', nTotal)
 
 # %%
-# Within each step of the algorithm, a sample of size :math:`N` is created, where: 
+# Within each step of the algorithm, a sample of size :math:`N` is created, where:
 
 # %%
-N =  algo.getMaximumOuterSampling()*algo.getBlockSize()
+N = algo.getMaximumOuterSampling()*algo.getBlockSize()
 print('Size of each subset = ', N)
 
 # %%
-# You can get the number :math:`N_s` of steps with: 
+# You can get the number :math:`N_s` of steps with:
 
 # %%
-Ns = algo.getNumberOfSteps()
+Ns = algo.getStepsNumber()
 print('Number of steps= ', Ns)
 
 # %%
@@ -150,12 +152,12 @@ print('Number of steps= ', Ns)
 print('nTotal / N = ', int(nTotal / N))
 
 # %%
-# Now, we can split the initial sample into subset samples of size :math:`N_s`: 
+# Now, we can split the initial sample into subset samples of size :math:`N_s`:
 
 # %%
 list_subSamples = list()
 for i in range(Ns):
-    list_subSamples.append(inputSampleSubset[i*N:i*N +N])
+    list_subSamples.append(inputSampleSubset[i*N:i*N + N])
 
 # %%
 # The following graph draws each subset sample and the frontier :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
@@ -175,7 +177,7 @@ graph.setLegendPosition('bottomleft')
 # %%
 for i in range(Ns):
     cloud = ot.Cloud(list_subSamples[i])
-    #cloud.setPointStyle("dot")
+    # cloud.setPointStyle("dot")
     graph.add(cloud)
 col = ot.Drawable().BuildDefaultPalette(Ns)
 graph.setColors(col)
@@ -184,7 +186,7 @@ graph.setColors(col)
 # Add the frontiers :math:`g(x_1, x_2) = l_i` where :math:`l_i` is the threshold at the step :math:`i`:
 
 # %%
-gIsoLines =  g.draw([-3]*2, [5]*2, [128]*2)
+gIsoLines = g.draw([-3]*2, [5]*2, [128]*2)
 dr = gIsoLines.getDrawable(0)
 for i in range(levels.getSize()):
     dr.setLevels([levels[i]])
@@ -204,7 +206,7 @@ View(graph)
 # The following graph enables to understand the progresison of the algorithm:
 
 # %%
-graph=ot.Graph()
+graph = ot.Graph()
 graph.setAxes(True)
 graph.setGrid(True)
 dr = gIsoLines.getDrawable(0)
@@ -245,13 +247,13 @@ inputEventSample = transformFunc(inputEventSample)
 # Draw them! They are all in the event space.
 
 # %%
-graph=ot.Graph()
+graph = ot.Graph()
 graph.setAxes(True)
 graph.setGrid(True)
 cloud = ot.Cloud(inputEventSample)
 cloud.setPointStyle('dot')
 graph.add(cloud)
-gIsoLines =  g.draw([-3]*2, [5]*2, [1000]*2)
+gIsoLines = g.draw([-3]*2, [5]*2, [1000]*2)
 dr = gIsoLines.getDrawable(0)
 dr.setLevels([0.0])
 dr.setColor('red')

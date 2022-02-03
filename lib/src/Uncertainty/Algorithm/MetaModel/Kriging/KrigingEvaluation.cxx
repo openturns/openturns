@@ -21,6 +21,7 @@
 
 #include "openturns/KrigingEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/TBBImplementation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -56,9 +57,6 @@ KrigingEvaluation::KrigingEvaluation (const BasisCollection & basis,
   {
     if (basis.getSize() != covarianceModel.getOutputDimension())
       throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, output sample dimension (" << covarianceModel.getOutputDimension()  << ") does not match multi-basis dimension (" << basis_.getSize() << ")";
-    // Total basis size = sum of all sizes
-    UnsignedInteger basisCollectionTotalSize = 0;
-    for (UnsignedInteger i = 0; i < basis.getSize(); ++i) basisCollectionTotalSize += basis[i].getSize();
   }
   if (covarianceModel.getInputDimension() != inputSample.getDimension()) throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, error: the input dimension=" << covarianceModel.getInputDimension() << " of the covariance model should match the dimension=" << inputSample.getDimension() << " of the input sample";
   if (gamma.getSize() != inputSample.getSize()) throw InvalidArgumentException(HERE) << "In KrigingEvaluation::KrigingEvaluation, error: the number of covariance coefficients=" << gamma.getSize() << " is different from the output sample dimension=" << covarianceModel.getOutputDimension();
@@ -114,13 +112,13 @@ struct KrigingEvaluationPointFunctor
   {}
 
   KrigingEvaluationPointFunctor(const KrigingEvaluationPointFunctor & other,
-                                TBB::Split)
+                                TBBImplementation::Split)
     : input_(other.input_)
     , evaluation_(other.evaluation_)
     , accumulator_(other.evaluation_.getOutputDimension())
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r )
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r )
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
@@ -149,13 +147,13 @@ struct KrigingEvaluationPointFunctor1D
   {}
 
   KrigingEvaluationPointFunctor1D(const KrigingEvaluationPointFunctor1D & other,
-                                  TBB::Split)
+                                  TBBImplementation::Split)
     : input_(other.input_)
     , evaluation_(other.evaluation_)
     , accumulator_(0.0)
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r )
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r )
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
     {
@@ -180,13 +178,13 @@ Point KrigingEvaluation::operator()(const Point & inP) const
   if (dimension == 1)
   {
     KrigingEvaluationPointFunctor1D functor( inP, *this );
-    TBB::ParallelReduceIf(covarianceModel_.getImplementation()->isParallel(), 0, trainingSize, functor );
+    TBBImplementation::ParallelReduceIf(covarianceModel_.getImplementation()->isParallel(), 0, trainingSize, functor );
     value[0] = functor.accumulator_;
   }
   else
   {
     KrigingEvaluationPointFunctor functor( inP, *this );
-    TBB::ParallelReduceIf(covarianceModel_.getImplementation()->isParallel(), 0, trainingSize, functor );
+    TBBImplementation::ParallelReduceIf(covarianceModel_.getImplementation()->isParallel(), 0, trainingSize, functor );
     value = functor.accumulator_;
   }
   // Evaluate the basis part sequentially
@@ -221,7 +219,7 @@ struct KrigingEvaluationSampleFunctor
     , trainingSize_(evaluation.inputSample_.getSize())
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     const UnsignedInteger dimension = evaluation_.getOutputDimension();
     Matrix R(dimension, trainingSize_ * dimension);
@@ -258,7 +256,7 @@ struct KrigingEvaluationSampleFunctor1D
     // Nothing to do
   }
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     const UnsignedInteger inputDimension = input_.getDimension();
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
@@ -279,12 +277,12 @@ Sample KrigingEvaluation::operator()(const Sample & inS) const
   if (dimension == 1)
   {
     const KrigingEvaluationSampleFunctor1D functor( inS, result, *this);
-    TBB::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor );
+    TBBImplementation::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor );
   }
   else
   {
     const KrigingEvaluationSampleFunctor functor( inS, result, *this );
-    TBB::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor );
+    TBBImplementation::ParallelForIf(covarianceModel_.getImplementation()->isParallel(), 0, size, functor );
   }
 
   // Evaluate the basis part sequentially

@@ -3,7 +3,7 @@ Visualize sensitivity
 =====================
 """
 # %%
-# The Cobweb graph enables to visualize all the combinations of the input
+# The parallel coordinates graph enables to visualize all the combinations of the input
 # variables which lead to a specific range of the output variable. It is a very simple and cheap tool to visualize sensitivity from the raw data.
 #
 # Let us consider a model :math:`f: \mathbb{R}^n \longrightarrow \mathbb{R}`, where :math:`f(\underline{X}) = Y`.
@@ -28,6 +28,7 @@ Visualize sensitivity
 
 # %%
 from __future__ import print_function
+from openturns.usecases.ishigami_function import IshigamiModel
 import openturns as ot
 import openturns.viewer as viewer
 from matplotlib import pylab as plt
@@ -35,7 +36,6 @@ ot.Log.Show(ot.Log.NONE)
 
 # %%
 # We load the :ref:`Ishigami model<use-case-ishigami>` from the `usecases` module :
-from openturns.usecases.ishigami_function import IshigamiModel
 im = IshigamiModel()
 # the Ishigami function
 model = im.model
@@ -72,7 +72,7 @@ print(Y.getMin(), Y.getMax(), Y.computeQuantilePerComponent(0.9))
 # approach is to highlight peculiar lines for which :math:`Y \in [a,b]` with
 # the bounds :math:`a` and :math:`b` well chosen. For example, values greater
 # than 85% of the maximum :
-# 
+#
 #  - :math:`a = 0.85 \max(Y)` ;
 #  - :math:`b = \max(Y)` ;
 #
@@ -81,9 +81,10 @@ maxValue = Y.getMax()[0]
 
 # We deactivate the default quantile scale.
 quantileScale = False
-graphCobweb = ot.VisualTest.DrawCobWeb(X, Y, minValue, maxValue, 'red', quantileScale)
-graphCobweb.setLegendPosition('bottomright')
-view = viewer.View(graphCobweb)
+graph = ot.VisualTest.DrawParallelCoordinates(
+    X, Y, minValue, maxValue, 'red', quantileScale)
+graph.setLegendPosition('bottomright')
+view = viewer.View(graph)
 
 # %%
 # Here we would like to conclude that the highest values of `Y` are obtained from a specific input as the highlighted lines clearly follow one only path.
@@ -94,12 +95,13 @@ view = viewer.View(graphCobweb)
 minValue = 0.80 * Y.getMax()[0]
 maxValue = Y.getMax()[0]
 quantileScale = False
-graphCobweb = ot.VisualTest.DrawCobWeb(X, Y, minValue, maxValue, 'red', quantileScale)
-graphCobweb.setLegendPosition('bottomright')
-view = viewer.View(graphCobweb)
+graph = ot.VisualTest.DrawParallelCoordinates(
+    X, Y, minValue, maxValue, 'red', quantileScale)
+graph.setLegendPosition('bottomright')
+view = viewer.View(graph)
 
 # %%
-# A new path is then available ! That is the reason why we chose a quantile based ranking as the value based cobweb involves a bit of guessing.
+# A new path is then available ! That is the reason why we chose a quantile based ranking as the value based parallel plot involves a bit of guessing.
 
 
 # %%
@@ -107,19 +109,20 @@ view = viewer.View(graphCobweb)
 # ---------------------------------------------------
 #
 # In this paragraph we use quantile based bounds. We are still interested in
-# the highest values of `Y` more specifically the 95% quantile : 
+# the highest values of `Y` more specifically the 95% quantile :
 
 # %%
 minValue = 0.95
 maxValue = 1.0
 # a quantileScale is used, default behaviour
 quantileScale = True
-graphCobweb = ot.VisualTest.DrawCobWeb(X, Y, minValue, maxValue, 'red', quantileScale)
-graphCobweb.setLegendPosition('bottomright')
-view = viewer.View(graphCobweb)
+graph = ot.VisualTest.DrawParallelCoordinates(
+    X, Y, minValue, maxValue, 'red', quantileScale)
+graph.setLegendPosition('bottomright')
+view = viewer.View(graph)
 
 # %%
-# The cobweb obtained is helpful : we see peculiar values for each marginal.
+# The parallel coordinates plot obtained is helpful : we see peculiar values for each marginal.
 #
 #
 
@@ -138,8 +141,8 @@ view = viewer.View(graphCobweb)
 # - the :math:`7sin^2(X_2)` term around :math:`X_2 = -\pi / 2` and :math:`X_2 = \pi / 2` ;
 # - the :math:`X_3^4 sin(X_1)` term around :math:`X_1 = \pi / 2` and :math:`X_3 = \{ -\pi, \pi}`.
 #
-# These values can be seen on the cobweb as for each marginal there is a cluster around respectively 1, 2 and 2 values for :math`X_1`, :math`X_2` and :math`X_3`.
-# This amounts to 4 different values 'realizing' the maximum and we can observe 4 distinct paths on the cobweb as well.
+# These values can be seen on the parallel plot as for each marginal there is a cluster around respectively 1, 2 and 2 values for :math`X_1`, :math`X_2` and :math`X_3`.
+# This amounts to 4 different values 'realizing' the maximum and we can observe 4 distinct paths on the parallel plot as well.
 #
 
 # %%
@@ -149,23 +152,24 @@ view = viewer.View(graphCobweb)
 # A dependence between these two marginals would have presented unbalanced paths.
 
 # %%
-# When the cobweb brings nothing
-# ------------------------------
+# When the parallel plot brings nothing
+# -------------------------------------
 #
-# To conclude our tour on the cobweb graph we look at the 50% quantile : that is
+# To conclude our tour on the parallel plot we look at the 50% quantile : that is
 # values around the mean :
 
 # %%
 minValue = 0.48
 maxValue = 0.52
 quantileScale = True
-graphCobweb = ot.VisualTest.DrawCobWeb(X, Y, minValue, maxValue, 'red', quantileScale)
-graphCobweb.setLegendPosition('topright')
-view = viewer.View(graphCobweb)
+graph = ot.VisualTest.DrawParallelCoordinates(
+    X, Y, minValue, maxValue, 'red', quantileScale)
+graph.setLegendPosition('topright')
+view = viewer.View(graph)
 
 # %%
-# We cannot extract any useful information from this cobweb. In fact it is the expected behaviour as mean values should be attained from various combinations of# the input variables.
-# The cobweb graph is a cheap tool and highly useful to explore more extreme values !
+# We cannot extract any useful information from this parallel plot. In fact it is the expected behaviour as mean values should be attained from various combinations of# the input variables.
+# The parallel coordinates graph is a cheap tool and highly useful to explore more extreme values !
 
 # %%
 # Display figures

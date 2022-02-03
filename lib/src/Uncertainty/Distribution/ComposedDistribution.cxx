@@ -38,7 +38,7 @@
 #include "openturns/IndependentCopula.hxx"
 #include "openturns/NormalCopula.hxx"
 #include "openturns/Log.hxx"
-#include "openturns/TBB.hxx"
+#include "openturns/TBBImplementation.hxx"
 #include "openturns/ComposedFunction.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -288,7 +288,7 @@ struct ComposedDistributionComputeSamplePolicy
     , dimension_(distributionCollection.getSize())
   {}
 
-  inline void operator()( const TBB::BlockedRange<UnsignedInteger> & r ) const
+  inline void operator()( const TBBImplementation::BlockedRange<UnsignedInteger> & r ) const
   {
     for (UnsignedInteger i = r.begin(); i != r.end(); ++i)
       for (UnsignedInteger j = 0; j < dimension_; ++j)
@@ -329,7 +329,7 @@ Sample ComposedDistribution::getSampleParallel(const UnsignedInteger size) const
   const Sample copulaSample(copula_.getSample(size));
   Sample result(size, dimension);
   const ComposedDistributionComputeSamplePolicy policy( copulaSample, result, distributionCollection_ );
-  TBB::ParallelFor( 0, size, policy );
+  TBBImplementation::ParallelFor( 0, size, policy );
   result.setName(getName());
   result.setDescription(getDescription());
   return result;

@@ -44,7 +44,7 @@
 #include "openturns/SubsetSamplingResult.hxx"
 #include "openturns/SubsetSampling.hxx"
 #include "openturns/QuadrantSampling.hxx"
-#include "openturns/AdaptiveDirectionalSampling.hxx"
+#include "openturns/AdaptiveDirectionalStratification.hxx"
 #include "openturns/ProbabilitySimulationAlgorithm.hxx"
 #include "openturns/ExpectationSimulationAlgorithm.hxx"
 #include "openturns/SobolSimulationAlgorithm.hxx"

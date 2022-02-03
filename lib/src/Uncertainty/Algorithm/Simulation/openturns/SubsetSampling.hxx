@@ -56,7 +56,7 @@ public:
   Scalar getMinimumProbability() const;
 
   /** Accessor to the achieved number of steps */
-  UnsignedInteger getNumberOfSteps();
+  UnsignedInteger getStepsNumber();
 
   /** Stepwise result accessors */
   Point getThresholdPerStep() const;

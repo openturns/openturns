@@ -40,7 +40,8 @@ field = myProcess.getRealization()
 
 # %%
 # Create a field from a mesh and some values
-values = ot.Normal([0.0]*2, [1.0]*2, ot.CorrelationMatrix(2)).getSample(len(mesh.getVertices()))
+values = ot.Normal([0.0]*2, [1.0]*2, ot.CorrelationMatrix(2)
+                   ).getSample(len(mesh.getVertices()))
 for i in range(len(values)):
     x = values[i]
     values[i] = 0.05 * x / x.norm()

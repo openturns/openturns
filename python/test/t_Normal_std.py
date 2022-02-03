@@ -125,7 +125,7 @@ for dim in range(1, 5):
         sigma[i] += eps
     print("pdf gradient (FD)=", repr(cleanPoint(PDFgrFD)))
 
-    # derivative of the PDF with regards the parameters of the distribution
+    # derivative of the CDF with regards the parameters of the distribution
     #   CDFgr = distribution.computeCDFGradient( point )
     #     print "cdf gradient     =" , CDFgr
 
@@ -137,8 +137,9 @@ for dim in range(1, 5):
     inverseSurvival = ot.Point(
         distribution.computeInverseSurvivalFunction(0.95))
     print("InverseSurvival=", repr(inverseSurvival))
-    print("Survival(inverseSurvival)=%.6f" %
-          distribution.computeSurvivalFunction(inverseSurvival))
+    if dim < 4:
+        print("Survival(inverseSurvival)=%.6f" %
+              distribution.computeSurvivalFunction(inverseSurvival))
     print("entropy=%.6f" % distribution.computeEntropy())
     # Confidence regions
     if distribution.getDimension() <= 2:
