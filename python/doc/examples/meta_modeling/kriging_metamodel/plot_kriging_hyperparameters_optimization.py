@@ -35,6 +35,7 @@ Kriging :configure the optimization solver
 
 # %%
 import openturns as ot
+
 ot.Log.Show(ot.Log.NONE)
 
 # %%
@@ -52,10 +53,10 @@ E = ot.Beta(0.9, 2.27, 2.5e7, 5.0e7)  # in N/m^2
 E.setDescription("E")
 # Load F
 F = ot.LogNormal()  # in N
-F.setParameter(ot.LogNormalMuSigma()([30.e3, 9e3, 15.e3]))
+F.setParameter(ot.LogNormalMuSigma()([30.0e3, 9e3, 15.0e3]))
 F.setDescription("F")
 # Length L
-L = ot.Uniform(250., 260.)  # in cm
+L = ot.Uniform(250.0, 260.0)  # in cm
 L.setDescription("L")
 # Moment of inertia I
 I = ot.Beta(2.5, 1.5, 310, 450)  # in cm^4
@@ -68,8 +69,7 @@ I.setDescription("I")
 dim = 4  # number of inputs
 R = ot.CorrelationMatrix(dim)
 R[2, 3] = -0.2
-myCopula = ot.NormalCopula(
-    ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(R))
+myCopula = ot.NormalCopula(ot.NormalCopula.GetCorrelationFromSpearmanCorrelation(R))
 myDistribution = ot.ComposedDistribution([E, F, L, I], myCopula)
 
 # %%
@@ -94,8 +94,23 @@ Y_train = model(X_train)
 # %%
 dimension = myDistribution.getDimension()
 basis = ot.ConstantBasisFactory(dimension).build()
-covarianceModel = ot.SquaredExponential([1.]*dimension, [1.0])
+
+# Trick B, v2
+x_range = X_train.getMax() - X_train.getMin()
+print("x_range:")
+print(x_range)
+scale_max_factor = 4.0  # Must be > 1, tune this to match your problem
+scale_min_factor = 0.1  # Must be < 1, tune this to match your problem
+maximum_scale_bounds = scale_max_factor * x_range
+minimum_scale_bounds = scale_min_factor * x_range
+scaleOptimizationBounds = ot.Interval(minimum_scale_bounds, maximum_scale_bounds)
+print("scaleOptimizationBounds")
+print(scaleOptimizationBounds)
+
+covarianceModel = ot.SquaredExponential([1.0] * dimension, [1.0])
+covarianceModel.setScale(maximum_scale_bounds)  # Trick A
 algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
+algo.setOptimizationBounds(scaleOptimizationBounds)
 algo.run()
 result = algo.getResult()
 krigingMetamodel = result.getMetaModel()
@@ -113,7 +128,7 @@ result.getTrendCoefficients()
 
 # %%
 basic_covariance_model = result.getCovarianceModel()
-basic_covariance_model
+print(basic_covariance_model)
 
 # %%
 # Get the optimizer algorithm
@@ -141,17 +156,21 @@ bounds.getDimension()
 
 # %%
 lbounds = bounds.getLowerBound()
-lbounds
+print("lbounds")
+print(lbounds)
 
 # %%
 ubounds = bounds.getUpperBound()
-ubounds
+print("ubounds")
+print(ubounds)
 
 # %%
 # The `getOptimizeParameters` method returns `True` if these parameters are to be optimized.
 
 # %%
-algo.getOptimizeParameters()
+isOptimize = algo.getOptimizeParameters()
+print(isOptimize)
+
 
 # %%
 # Configure the starting point of the optimization
@@ -161,21 +180,24 @@ algo.getOptimizeParameters()
 # The starting point of the optimization is based on the parameters of the covariance model. In the following example, we configure the parameters of the covariance model to the arbitrary values `[12.,34.,56.,78.]`.
 
 # %%
-covarianceModel = ot.SquaredExponential([12., 34., 56., 78.], [1.0])
+covarianceModel = ot.SquaredExponential([12.0, 34.0, 56.0, 78.0], [1.0])
+covarianceModel.setScale(maximum_scale_bounds)  # Trick A
 algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
+algo.setOptimizationBounds(scaleOptimizationBounds)  # Trick B
 
 # %%
 algo.run()
 
 # %%
 result = algo.getResult()
-result.getCovarianceModel()
+new_covariance_model = result.getCovarianceModel()
+print(new_covariance_model)
 
 # %%
 # In order to see the difference with the default optimization, we print the previous optimized covariance model.
 
 # %%
-basic_covariance_model
+print(basic_covariance_model)
 
 # %%
 # We observe that this does not change much the values of the parameters in this case.
@@ -188,8 +210,9 @@ basic_covariance_model
 # It is sometimes useful to completely disable the optimization of the parameters. In order to see the effect of this, we first initialize the parameters of the covariance model with the arbitrary values `[12.,34.,56.,78.]`.
 
 # %%
-covarianceModel = ot.SquaredExponential([12., 34., 56., 78.], [91.0])
+covarianceModel = ot.SquaredExponential([12.0, 34.0, 56.0, 78.0], [91.0])
 algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
+algo.setOptimizationBounds(scaleOptimizationBounds)  # Trick B
 
 # %%
 # The `setOptimizeParameters` method can be used to disable the optimization of the parameters.
@@ -205,10 +228,12 @@ algo.run()
 result = algo.getResult()
 
 # %%
-# We observe that the covariance model is unchanged.
+# We observe that the covariance model is unchanged:
+# the parameters have not been optimized, as required.
 
 # %%
-result.getCovarianceModel()
+updated_covariance_model = result.getCovarianceModel()
+print(updated_covariance_model)
 
 # %%
 # The trend, however, is still optimized, using linear least squares.
@@ -228,12 +253,14 @@ result.getTrendCoefficients()
 # %%
 dimension = myDistribution.getDimension()
 basis = ot.ConstantBasisFactory(dimension).build()
-covarianceModel = ot.SquaredExponential([1.]*dimension, [1.0])
+covarianceModel = ot.SquaredExponential([1.0] * dimension, [1.0])
+covarianceModel.setScale(maximum_scale_bounds)  # Trick A
 algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
+algo.setOptimizationBounds(scaleOptimizationBounds)  # Trick B
 algo.run()
 result = algo.getResult()
 covarianceModel = result.getCovarianceModel()
-covarianceModel
+print(covarianceModel)
 
 # %%
 # Step 2: Create a new point and add it to the previous training design.
@@ -259,7 +286,7 @@ algo.setOptimizeParameters(False)
 algo.run()
 result = algo.getResult()
 notUpdatedCovarianceModel = result.getCovarianceModel()
-notUpdatedCovarianceModel
+print(notUpdatedCovarianceModel)
 
 
 # %%
@@ -279,8 +306,34 @@ printCovarianceParameterChange(covarianceModel, notUpdatedCovarianceModel)
 # We see that the parameters did not change *at all*: disabling the optimization allows to keep a constant covariance model. In a practical algorithm, we may, for example, add a block of 10 new points before updating the parameters of the covariance model. At this point, we may reuse the previous covariance model so that the optimization starts from a better point, compared to the parameters default values. This will reduce the cost of the optimization.
 
 # %%
-# Configure the optimization solver
-# ---------------------------------
+# Configure the local optimization solver
+# ---------------------------------------
+
+# %%
+# The following example shows how to set the local optimization solver.
+# We choose the SLSQP algorithm from NLOPT.
+
+# %%
+problem = solver.getProblem()
+local_solver = ot.NLopt(problem, "LD_SLSQP")
+covarianceModel = ot.SquaredExponential([1.0] * dimension, [1.0])
+covarianceModel.setScale(maximum_scale_bounds)  # Trick A
+algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
+algo.setOptimizationBounds(scaleOptimizationBounds)  # Trick B
+algo.setOptimizationAlgorithm(local_solver)
+algo.run()
+
+# %%
+finetune_covariance_model = result.getCovarianceModel()
+print(finetune_covariance_model)
+
+# %%
+printCovarianceParameterChange(finetune_covariance_model, basic_covariance_model)
+
+
+# %%
+# Configure the global optimization solver
+# ----------------------------------------
 
 # %%
 # The following example checks the robustness of the optimization of the kriging algorithm with respect to the optimization of the likelihood function in the covariance model parameters estimation. We use a `MultiStart` algorithm in order to avoid to be trapped by a local minimum. Furthermore, we generate the design of experiments using a `LHSExperiments`, which guarantees that the points will fill the space.
@@ -306,9 +359,8 @@ boundedDistribution = ot.ComposedDistribution(distributions)
 K = 25  # design size
 LHS = ot.LHSExperiment(boundedDistribution, K)
 LHS.setAlwaysShuffle(True)
-SA_profile = ot.GeometricProfile(10., 0.95, 20000)
-LHS_optimization_algo = ot.SimulatedAnnealingLHS(
-    LHS, ot.SpaceFillingC2(), SA_profile)
+SA_profile = ot.GeometricProfile(10.0, 0.95, 20000)
+LHS_optimization_algo = ot.SimulatedAnnealingLHS(LHS, ot.SpaceFillingC2(), SA_profile)
 LHS_optimization_algo.generate()
 LHS_design = LHS_optimization_algo.getResult()
 starting_points = LHS_design.getOptimalDesign()
@@ -318,7 +370,7 @@ starting_points.getSize()
 # We can check that the minimum and maximum in the sample correspond to the bounds of the design of experiment.
 
 # %%
-lbounds, ubounds
+print(lbounds, ubounds)
 
 # %%
 starting_points.getMin(), starting_points.getMax()
@@ -335,17 +387,16 @@ multiStartSolver = ot.MultiStart(solver, starting_points)
 
 # %%
 algo = ot.KrigingAlgorithm(X_train, Y_train, covarianceModel, basis)
-algo.setOptimizationBounds(bounds)
+algo.setOptimizationBounds(scaleOptimizationBounds)  # Trick B
 algo.setOptimizationAlgorithm(multiStartSolver)
 algo.run()
 
 # %%
 finetune_covariance_model = result.getCovarianceModel()
-finetune_covariance_model
+print(finetune_covariance_model)
 
 # %%
-printCovarianceParameterChange(
-    finetune_covariance_model, basic_covariance_model)
+printCovarianceParameterChange(finetune_covariance_model, basic_covariance_model)
 
 # %%
 # We see that there are no changes in the estimated parameters. This shows that the first optimization of the parameters worked fine.
