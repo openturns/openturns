@@ -112,7 +112,6 @@
  * #1787 (CovarianceMatrix from SymmetricMatrix raises InvalidArgumentException)
  * #1790 (LinearModelResult.getFormula() method is not updated by Stepwise regression)
  * #1794 (Some doc examples seem to behave with new infrastructure)
-<<<<<<< HEAD
  * #1796 (VonMisesFactory is missing)
  * #1803 (The API example of Experiment has a format issue)
  * #1805 (Brent's implementation has a stability issue)
@@ -123,8 +122,6 @@
  * #1835 (RegularizedIncompleteBeta returns nan)
  * #1836 (Hypergeometric results differ without boost)
  * #1837 (Poor performance when using pickle on OT objects)
-=======
->>>>>>> 6a08c679e... ExpectationSimulationAlgorithm: Fixes the doc.
 
 == 1.16 release (2020-11-16) == #release-1.16
 

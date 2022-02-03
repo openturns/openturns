@@ -11,6 +11,7 @@ X : :class:`~openturns.RandomVector`
 
 Notes
 -----
+Let :math:`\vect{X}\in\Rset^{n_X}` be a random vector. 
 This algorithm estimates :math:`\Expect{\vect{X}}` using the smallest possible sample 
 size which satisfies pre-defined stopping rules. 
 It increases the sample size :math:`n` incrementally until a stopping criterion is met. 
@@ -19,11 +20,6 @@ For example, consider the Student distribution with :math:`\nu` degrees of freed
 If :math:`\nu=1` (where the expectation is undefined) 
 or :math:`\nu=2` (where the variance is undefined), 
 then the algorithm cannot succeed. 
-
-This algorithm estimates :math:`\Expect{\vect{X}}` based on a trade-off between 
-performance and accuracy, using the smallest possible sample 
-(blockwise) size which satisfies pre-defined stopping rules. 
-It increases the sample size :math:`n` incrementally until a stopping criteria is met. 
 
 The algorithm is based on two nested loops:
 
@@ -45,7 +41,6 @@ The latter stopping criterion is based on either the coefficient of variation of
 sample mean (relative criterion) or the standard deviation of the sample 
 mean (absolute criterion). 
 
-Let :math:`\vect{X}\in\Rset^{n_X}` be the random vector. 
 We consider :math:`\vect{n}` independent realizations :math:`\vect{x}^{(1)}`, 
 ..., :math:`\vect{x}^{(n)}\in\Rset^{n_X}` of the random vector :math:`\vect{X}`. 
 We estimate :math:`\Expect{\vect{X}}` with the sample mean:
