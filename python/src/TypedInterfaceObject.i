@@ -45,9 +45,7 @@
 %typemap(out) OT::TypedInterfaceObject< Namespace::ParentImplementation >::Implementation
 {
   // Construct the SWIG identifier of the derived class we want to get (say ChildImplementation).
-  OT::String childname = "Namespace::";
-  childname.append($1->getClassName());
-  childname.append("*");
+  const OT::String childname = "Namespace::" + $1->getClassName() + "*";
   swig_type_info * childinfo = SWIG_TypeQuery(childname.c_str());
 
   // Make the result a PyObject* pointing to the ChildImplementation.

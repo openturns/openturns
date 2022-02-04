@@ -170,6 +170,18 @@ ott.assert_almost_equal(myModel.getAmplitude(), [3], 0, 0)
 ott.assert_almost_equal(myModel.getNu(), 1.5, 0, 0)
 test_model(myModel)
 
+# Retrieve a copy of the actual implementation from the interface class
+myModelInterface = ot.CovarianceModel(myModel)
+myModelImplementation = myModelInterface.getImplementation()
+
+# Works because myModelImplementation is a MaternModel
+myModelImplementation.setNu(2.5)
+ott.assert_almost_equal(myModelImplementation.getNu(), 2.5, 0, 0)
+
+# Original myModel still has the original nu because in Python
+# getImplementation clones the underlying implementation
+ott.assert_almost_equal(myModel.getNu(), 1.5, 0, 0)
+
 # 5) ExponentiallyDampedCosineModel
 myModel = ot.ExponentiallyDampedCosineModel([2.0], [3.0], 1)
 ott.assert_almost_equal(myModel.getScale(), [2], 0, 0)
