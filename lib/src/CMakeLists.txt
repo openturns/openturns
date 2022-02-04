@@ -21,13 +21,21 @@ if (dlib_FOUND)
   set_source_files_properties (Base/Optim/Dlib.cxx Base/Optim/DlibFunctions.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
 endif ()
 
-if (IPOPT_FOUND)
+# Exclude Ipopt sources
+if (Ipopt_FOUND)
   set_source_files_properties (Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
 endif ()
 
-# Exclude Bonmin/Ipopt sources
-if (BONMIN_FOUND)
+# Exclude Bonmin sources
+if (Bonmin_FOUND)
   set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx PROPERTIES COTIRE_EXCLUDED ON SKIP_UNITY_BUILD_INCLUSION ON)
+  if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7)
+      set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=unused-parameter")
+    else ()
+      set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=unused-parameter -Wno-error=implicit-fallthrough")
+    endif ()
+  endif ()
 endif ()
 
 # Exclude LibXML sources
@@ -55,14 +63,6 @@ if (OPENTURNS_HAVE_EXPRTK)
     set_source_files_properties ("Base/Func/SymbolicParserExprTk.cxx" PROPERTIES COMPILE_FLAGS "/bigobj")
   endif ()
 endif()
-
-if ((OPENTURNS_HAVE_BONMIN OR OPENTURNS_HAVE_IPOPT) AND CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-  if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 7)
-    set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=unused-parameter")
-  else ()
-    set_source_files_properties (Base/Optim/Bonmin.cxx Base/Optim/BonminProblem.cxx Base/Optim/Ipopt.cxx Base/Optim/IpoptProblem.cxx PROPERTIES COMPILE_FLAGS "-Wno-error=unused-parameter -Wno-error=implicit-fallthrough")
-  endif ()
-endif ()
 
 # Exclude spectra sources from unity build (templates take a lot of memory)
 if (Spectra_FOUND)
