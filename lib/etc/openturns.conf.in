@@ -737,6 +737,7 @@
   <HMatrix-ForceSequential      value_bool="false"            />
   <HMatrix-AdmissibilityFactor  value_float="100.0"            />
   <HMatrix-AssemblyEpsilon      value_float="1.0e-4"         />
+  <HMatrix-RegularizationEpsilon value_float="1.0e-4"         />
   <HMatrix-RecompressionEpsilon value_float="1.0e-4"         />
   <HMatrix-ValidationError      value_float="0.0"            />
   <HMatrix-ClusteringAlgorithm  value_str="median"         />

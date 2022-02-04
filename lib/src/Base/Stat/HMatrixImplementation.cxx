@@ -473,7 +473,7 @@ void HMatrixImplementation::factorize(const String& method)
     LOGWARN( OSS() << "Unknown factorization method: " << method << ". Valid values are: LU, LDLt, or LLt.");
 
   // Compute a reasonable regularization factor
-  Scalar lambda = 2.0 * computeApproximateLargestEigenValue() * ResourceMap::GetAsScalar("HMatrix-AssemblyEpsilon");
+  Scalar lambda = 2.0 * computeApproximateLargestEigenValue() * ResourceMap::GetAsScalar("HMatrix-RegularizationEpsilon");
 
   // create a backup copy as the factorization can leave the matrix in a broken state and should not be reused
   hmat_matrix_t* hmatBackup = static_cast<hmat_matrix_t*>(hmat_);
