@@ -133,7 +133,7 @@ public:
   ScalarCollection operator * (const ScalarCollection & p) const;
 
   /** Multiplication with a Point (must have consistent dimensions) */
-  ScalarCollection operator * (const Point & p) const;
+  Point operator * (const Point & p) const;
 
   /** Division by a Scalar */
   TriangularMatrix operator / (const Scalar s) const;

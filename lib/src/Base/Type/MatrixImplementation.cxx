@@ -1407,7 +1407,7 @@ MatrixImplementation::ScalarCollection MatrixImplementation::triangularVectProd(
   return x;
 }
 
-MatrixImplementation::ScalarCollection MatrixImplementation::triangularVectProd(const Point & pt,
+Point MatrixImplementation::triangularVectProd(const Point & pt,
     const char side,
     const Bool transpose) const
 {

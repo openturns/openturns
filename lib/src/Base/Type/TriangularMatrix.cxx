@@ -231,7 +231,7 @@ TriangularMatrix::ScalarCollection TriangularMatrix::operator * (const ScalarCol
 }
 
 /* Multiplication with a Point (must have consistent dimensions) */
-TriangularMatrix::ScalarCollection TriangularMatrix::operator * (const Point & pt) const
+Point TriangularMatrix::operator * (const Point & pt) const
 {
   char uplo(isLowerTriangular() ? 'L' : 'U');
   return getImplementation()->triangularVectProd(pt, uplo) ;

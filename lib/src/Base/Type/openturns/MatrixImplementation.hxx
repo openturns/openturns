@@ -158,12 +158,14 @@ public:
   Point symVectProd (const Point & pt) const;
 
   /** Using triangular matrix */
+#ifndef SWIG
   ScalarCollection triangularVectProd (const ScalarCollection & pt,
                                        const char side = 'L',
                                        const Bool transpose = false) const;
-  ScalarCollection triangularVectProd (const Point & pt,
-                                       const char side = 'L',
-                                       const Bool transpose = false) const;
+#endif
+  Point triangularVectProd (const Point & pt,
+                            const char side = 'L',
+                            const Bool transpose = false) const;
 
   /** Multiplication with a Scalar */
   MatrixImplementation operator * (const Scalar s) const;
