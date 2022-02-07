@@ -67,9 +67,7 @@ int main(int, char *[])
       for (UnsignedInteger j = 0; j < i; ++j)
         globalErrorCovariance(i, j) = 0.01 / (1.0 + i + j);
     }
-    Indices bootstrapSizes(0);
-    bootstrapSizes.add(0);
-    bootstrapSizes.add(100);
+    const Indices bootstrapSizes = {0, 20};
     for (UnsignedInteger n = 0; n < bootstrapSizes.getSize(); ++n)
     {
       // With default optim

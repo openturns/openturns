@@ -15,7 +15,10 @@
 import sys
 import os
 import subprocess
-from distutils.version import LooseVersion
+try:
+    from pkg_resources import parse_version as LooseVersion
+except ImportError:
+    from distutils.version import LooseVersion
 import sphinx
 import sphinx_gallery
 from sphinx_gallery.sorting import ExplicitOrder
@@ -38,7 +41,7 @@ extensions = []
 
 extensions.append('sphinx.ext.autodoc')
 
-if LooseVersion(sphinx.__version__) >= '1.8':
+if LooseVersion(sphinx.__version__) >= LooseVersion('1.8'):
     autodoc_default_options = {'members': None, 'inherited-members': None, 'exclude-members': 'thisown'}
 else:
     autodoc_default_flags =  ['members', 'inherited-members']

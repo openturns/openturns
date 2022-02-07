@@ -29,8 +29,8 @@ CLASSNAMEINIT(ReverseHaltonSequence)
 static const Factory<ReverseHaltonSequence> Factory_ReverseHaltonSequence;
 
 /* Constructor with parameters */
-ReverseHaltonSequence::ReverseHaltonSequence(const UnsignedInteger dimension) :
-  LowDiscrepancySequenceImplementation(dimension)
+ReverseHaltonSequence::ReverseHaltonSequence(const UnsignedInteger dimension)
+  : LowDiscrepancySequenceImplementation(dimension)
 {
   initialize(dimension);
 }
@@ -46,9 +46,8 @@ ReverseHaltonSequence * ReverseHaltonSequence::clone() const
 /* Initialize the sequence */
 void ReverseHaltonSequence::initialize(const UnsignedInteger dimension)
 {
-  if (dimension == 0) throw InvalidArgumentException(HERE) << "Dimension must be > 0.";
-  dimension_ = dimension;
-  base_ = ComputeFirstPrimeNumbers(dimension);
+  LowDiscrepancySequenceImplementation::initialize(dimension);
+  base_ = GetFirstPrimeNumbers(dimension_);
   seed_ = ResourceMap::GetAsUnsignedInteger( "ReverseHaltonSequence-InitialSeed" );
 }
 
@@ -84,7 +83,6 @@ String ReverseHaltonSequence::__repr__() const
 {
   OSS oss;
   oss << "class=" << ReverseHaltonSequence::GetClassName()
-      << " derived from " << LowDiscrepancySequenceImplementation::__repr__()
       << " base=" << base_
       << " seed=" << seed_;
   return oss;
@@ -102,7 +100,6 @@ void ReverseHaltonSequence::save(Advocate & adv) const
 void ReverseHaltonSequence::load(Advocate & adv)
 {
   LowDiscrepancySequenceImplementation::load(adv);
-  initialize(dimension_);
   adv.loadAttribute( "base_", base_);
   adv.loadAttribute( "seed_", seed_);
 }

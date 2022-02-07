@@ -1,5 +1,5 @@
 """
-Kriging : propagate uncertainties 
+Kriging : propagate uncertainties
 =================================
 """
 import openturns as ot
@@ -33,7 +33,7 @@ ydata = model(xdata)
 
 # %%
 # We define our kriging strategy :
-# 
+#
 #  - a constant basis in :math:`\mathbb{R}^3` ;
 #  - a squared exponential covariance function.
 #
@@ -77,8 +77,8 @@ result = algo.getResult()
 expectation = result.getExpectationEstimate()
 
 # %%
-# The mean estimate of the metamodel is 
-print("Mean of the Ishigami metamodel : %.3e"%expectation[0])
+# The mean estimate of the metamodel is
+print("Mean of the Ishigami metamodel : %.3e" % expectation[0])
 
 # %%
 # We draw the convergence history.
@@ -87,6 +87,6 @@ view = otv.View(graph)
 
 # %%
 # For reference, the exact mean of the Ishigami model is :
-print("Mean of the Ishigami model : %.3e"%im.expectation)
+print("Mean of the Ishigami model : %.3e" % im.expectation)
 
 plt.show()

@@ -140,6 +140,9 @@ public:
   /** Check if the distribution is continuous */
   Bool isContinuous() const override;
 
+  /** Check if the distribution is discrete */
+  Bool isDiscrete() const override;
+
   /** Check if the distribution is integral */
   Bool isIntegral() const override;
 
@@ -162,6 +165,9 @@ public:
   /** Compute the numerical range of the distribution given the parameters values */
   void computeRange() override;
 
+  /** Get the support of a discrete distribution that intersect a given interval */
+  using DistributionImplementation::getSupport;
+  Sample getSupport(const Interval & interval) const override;
 
 protected:
 

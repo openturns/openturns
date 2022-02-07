@@ -53,14 +53,6 @@ int main(int, char *[])
     fullprint << "Default weibull=" << estimatedWeibull << std::endl;
     estimatedWeibull = factory.buildAsWeibullMin(distribution.getParameter());
     fullprint << "WeibullMin from parameters=" << estimatedWeibull << std::endl;
-    // Test for constant sample
-    sample = Sample(size, Point(1, 0.0));
-    estimatedDistribution = factory.build(sample);
-    fullprint << "Estimated distribution=" << estimatedDistribution << std::endl;
-    sample = Sample(size, Point(1, 1.0));
-    estimatedDistribution = factory.build(sample);
-    const Point ref = {0, 1, 1};
-    assert_almost_equal(estimatedDistribution.getParameter(), ref, 0.0, 1e-4);
   }
   catch (TestFailed & ex)
   {

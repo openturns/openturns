@@ -12,8 +12,8 @@ namespace OT {
   convert< OT::_PySequence_, OT::Collection<OT::Sample> >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Collection<OT::Sample> *"), 0))) {
-      OT::Collection<OT::Sample> * p_it = reinterpret_cast< OT::Collection<OT::Sample> * >( ptr );
+    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIG_TypeQuery("OT::Collection<OT::Sample> *"), SWIG_POINTER_NO_NULL))) {
+      OT::Collection<OT::Sample> * p_it = reinterpret_cast< OT::Collection<OT::Sample> * >(ptr);
       return *p_it;
     }
     else {
@@ -33,7 +33,8 @@ namespace OT {
   inline
   bool canConvert<OT::_PySequence_, OT::Sample >(_object * pyObj)
   {
-   return SWIG_IsOK(SWIG_ConvertPtr(pyObj, NULL, SWIG_TypeQuery("OT::Sample *"), 0)) || OT::isAPythonBufferOf<OT::Scalar, 2>(pyObj) || OT::isAPythonSequenceOf<OT::_PySequence_>(pyObj);
+    return SWIG_IsOK(SWIG_ConvertPtr(pyObj, NULL, SWIG_TypeQuery("OT::Sample *"), SWIG_POINTER_NO_NULL))
+             || OT::isAPythonBufferOf<OT::Scalar, 2>(pyObj) || OT::isAPythonSequenceOf<OT::_PySequence_>(pyObj);
   }
 }
 %}

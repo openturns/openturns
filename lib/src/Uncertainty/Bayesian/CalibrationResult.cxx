@@ -54,7 +54,14 @@ CalibrationResult::CalibrationResult(const Distribution & parameterPrior,
   , outputObservations_(outputObservations)
   , residualFunction_(residualFunction)
 {
-  // Nothing to do
+  // compute output at prior/posterior mean using the fact that model(inputObs)|p = residualFunction(p) + outputObs as the model is not available
+  SampleImplementation outputAtPriorMean(outputObservations_.getSize(), outputObservations_.getDimension());
+  outputAtPriorMean.setData(residualFunction_(parameterPrior_.getMean()) + outputObservations_.getImplementation()->getData());
+  outputAtPriorMean_ = outputAtPriorMean;
+
+  SampleImplementation outputAtPosteriorMean(outputObservations_.getSize(), outputObservations_.getDimension());
+  outputAtPosteriorMean.setData(residualFunction_(parameterPosterior_.getMean()) + outputObservations_.getImplementation()->getData());
+  outputAtPosteriorMean_ = outputAtPosteriorMean;
 }
 
 

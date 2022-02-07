@@ -2,7 +2,7 @@
 Mix/max search and sensitivity from design
 ==========================================
 """
-# %% 
+# %%
 #
 # In this example we are going to evaluate the min and max values of the output variable of interest from a sample and to evaluate the gradient of the limit state function defining the output variable of interest at a particular point.
 

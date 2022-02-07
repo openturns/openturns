@@ -7,7 +7,7 @@ Parameters
 ----------
 kernel : :class:`~openturns.Distribution`, optional
     Univariate distribution of the kernel that will be used. By default, the standard Normal distribution is used. 
-bined : bool, optional
+binned : bool, optional
     Activates bining mecanism only in the univariate or bivariate cases. It allows to speed up the manipulation of the density function of the resulting distribution.  By default, the mecanism is activated.
 binNumber : int, :math:`binNumber \geq 2`, optional
     Indicates the number of bins used by the bining mecanism. By default, OpenTURNS uses the values stored in the *ResourceMap*.
@@ -17,16 +17,16 @@ boundaryCorrection : bool, optional
 
 Notes
 -----
-The binning mecanism creates a regular grid of *binNumber* intervals in each
+The binning mechanism creates a regular grid of *binNumber* intervals in each
 dimension, then the unit weight of each point is linearly affected to the vertices
 of the bin containing the point. See [wand1994]_ for the details.
 
 The boundary correction is available only in one dimension, and it is done using
-the mirroring technique. See the notes of the *setBoundingOption* method for the
+the mirroring technique. See the notes of the :meth:`setBoundingOption` method for
 details.
 
 When applied to multivariate samples, the kernel is the kernel product of the
-univariate distribution specified in the constructor. 
+univariate distribution specified in the constructor.
 
 Examples
 --------
@@ -34,16 +34,58 @@ Fit a distribution on data thanks to the kernel smoothing technique:
 
 >>> import openturns as ot
 >>> sample = ot.Gamma(6.0, 1.0).getSample(100)
->>> kernel = ot.KernelSmoothing()
->>> fittedDist = kernel.build(sample)
+>>> ks = ot.KernelSmoothing()
+>>> fittedDist = ks.build(sample)
+>>> print(fittedDist.getClassName())
+Distribution
+
+The :meth:`build` method produces a generic :class:`~openturns.Distribution`
+object. Other build methods (detailed below) produce more specific objects.
+
+Get the bandwidth:
+
+>>> bandwidth = ks.getBandwidth()
+>>> print(bandwidth)
+[1.03374]
+
+The bandwidth was guessed by the :meth:`build` method.
+It could also have been provided by the user.
+
+>>> bandwidth = [0.9]
+>>> fittedDist = ks.build(sample, bandwidth)
 
 Compare the PDFs:
 
 >>> graph = fittedDist.drawPDF()
 >>> graph.add( ot.Gamma(6.0, 1.0).drawPDF())
->>> graph.setColors(['blue', 'red'])
+>>> graph.setColors(ot.Drawable.BuildDefaultPalette(2))
 >>> graph.setLegends(['KS dist', 'Gamma'])
-"
+
+The default values of the parameters of the constructor usually provide good results.
+Nevertheless, the parameters can be manually set.
+
+>>> kernel = ot.Uniform()
+>>> ks = ot.KernelSmoothing(kernel)
+>>> binned = True # by default True
+>>> binNumber = 64
+>>> ks = ot.KernelSmoothing(kernel, binned, binNumber)
+>>> boundaryCorrection = True # by default False
+>>> ks = ot.KernelSmoothing(kernel, binned, binNumber, boundaryCorrection)
+
+Variants of the :meth:`build` method can be used when the distribution to build
+is expected to be of a certain type. In those cases however,
+the bandwidth must be user-specified.
+To use :meth:`buildAsTruncatedDistribution`, boundary correction must be enabled.
+
+>>> distribution = ks.buildAsKernelMixture(sample, bandwidth)
+>>> print(distribution.getClassName())
+KernelMixture
+>>> distribution = ks.buildAsMixture(sample, bandwidth)
+>>> print(distribution.getClassName())
+Mixture
+>>> distribution = ks.buildAsTruncatedDistribution(sample, bandwidth)
+>>> print(distribution.getClassName())
+TruncatedDistribution"
 
 // ---------------------------------------------------------------------
 %feature("docstring") OT::KernelSmoothing::buildAsKernelMixture
@@ -53,7 +95,7 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Data on which the distribution is fitted. Any dimension.
-bandwidth : :class:`~openturns.Point`, optional
+bandwidth : :class:`~openturns.Point`
     Contains the bandwith in each direction.
 
 Returns
@@ -82,7 +124,7 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Data on which the distribution is fitted. Any dimension.
-bandwidth : :class:`~openturns.Point`, optional
+bandwidth : :class:`~openturns.Point`
     Contains the bandwith in each direction.
 
 Returns
@@ -111,7 +153,7 @@ Parameters
 ----------
 sample : 2-d sequence of float
     Data on which the distribution is fitted. Any dimension.
-bandwidth : :class:`~openturns.Point`, optional
+bandwidth : :class:`~openturns.Point`
     Contains the bandwith in each direction.
 
 Returns

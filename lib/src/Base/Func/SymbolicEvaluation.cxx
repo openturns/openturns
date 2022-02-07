@@ -151,7 +151,7 @@ UnsignedInteger SymbolicEvaluation::getOutputDimension() const
 /* Get the i-th marginal function */
 Evaluation SymbolicEvaluation::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
   return new SymbolicEvaluation(inputVariablesNames_, Description(1, outputVariablesNames_[i]), Description(1, formulas_[i]));
 }
 
@@ -234,7 +234,7 @@ Bool SymbolicEvaluation::isLinearlyDependent(const UnsignedInteger index) const
   const UnsignedInteger outputSize = outputVariablesNames_.getSize();
 
   // Check index consistency
-  if (index >= inputSize)
+  if (!(index < inputSize))
     throw InvalidDimensionException(HERE) << "index (" << index << ") exceeds function input dimension (" << inputSize << ")";
 
   // Function depends linearly on variable i if all its marginals do

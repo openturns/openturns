@@ -108,3 +108,39 @@ Parameters
 ----------
 axes : bool
     *True* to draw the axes, *False* to hide the axes."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GridLayout::getGraphCollection
+"Accessor to the collection of graphs.
+
+Returns
+-------
+coll : :class:`~openturns.Collection` of :class:`~openturns.Graph`
+    The graphs stored into the :class:`~openturns.GridLayout`."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GridLayout::setGraphCollection
+"Accessor to the collection of graphs.
+
+Parameters
+----------
+coll : sequence of :class:`~openturns.Graph`
+    The graphs to store into the :class:`~openturns.GridLayout`. The collection must have at most :math:`nbRows\times nbColumns` elements."
+
+// ---------------------------------------------------------------------
+
+%feature("docstring") OT::GridLayout::setLayout
+"Accessor to the layout.
+
+Parameters
+----------
+nbRows : int
+    The new number of rows.
+nbColumns : int
+    The new number of columns.
+
+Notes
+-----
+If the new layout contains fewer graphs than the old layout, the remaining graphs are removed from the layout."

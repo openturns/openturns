@@ -25,7 +25,6 @@
 #include "openturns/SparseMethod.hxx"
 #include "openturns/TriangularMatrix.hxx"
 #include "openturns/SpecFunc.hxx"
-#include "openturns/PenalizedLeastSquaresAlgorithm.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -111,13 +110,13 @@ Point SparseMethod::solve(const Point & rhs)
     }
     else
     {
-      if (error > alpha * minimumError)
+      if (!(error <= alpha * minimumError))
       {
         LOGINFO(OSS() << "Error=" << error << " larger than " << alpha << "*" << minimumError << "=" << alpha * minimumError);
         break;
       }
     }
-    if (minimumError < errorThreshold)
+    if (!(minimumError >= errorThreshold))
     {
       LOGINFO(OSS() << "Minimum error=" << minimumError << " smaller than threshold=" << errorThreshold);
       break;

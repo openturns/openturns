@@ -90,7 +90,7 @@ Bool FieldToFieldConnection::operator ==(const FieldToFieldConnection & other) c
 /* Get the i-th marginal function */
 FieldToFieldConnection::Implementation FieldToFieldConnection::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
   return getMarginal(Indices(1, i));
 }
 

@@ -11,7 +11,7 @@ Vertex value function
 #
 # .. math::
 #    \begin{aligned} f_{vertexvalue}(\underline{t}, \underline{x})=(\underline{t}, h(\underline{t},\underline{x}))\end{aligned}
-#   
+#
 # Let's note that the input dimension of :math:`f_{vertexvalue}` still design the
 # dimension of :math:`\underline{x}` : :math:`d`. Its output dimension is equal to :math:`q`.
 #
@@ -23,7 +23,7 @@ Vertex value function
 # :math:`h:\mathbb{R}\times\mathbb{R}^2` such as:
 #
 # .. math::
-#    \begin{aligned} 
+#    \begin{aligned}
 #       h(\underline{t}, \underline{x})=(t+x_1^2+x_2^2)
 #    \end{aligned}
 #

@@ -50,6 +50,9 @@ public:
   /** Constructor with implementation */
   CorrelationMatrix(const MatrixImplementation & i);
 
+  /** Constructor from SymmetricMatrix */
+  explicit CorrelationMatrix(const SymmetricMatrix & sym);
+
   /** Constructor with size */
   explicit CorrelationMatrix(const UnsignedInteger dim);
 

@@ -108,7 +108,7 @@ Sample ValueFunction::operator() (const Sample & inFld) const
 /* Get the i-th marginal function */
 ValueFunction::Implementation ValueFunction::getMarginal(const UnsignedInteger i) const
 {
-  if (i >= getOutputDimension()) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1]";
+  if (!(i < getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the index of a marginal function must be in the range [0, outputDimension-1], here index=" << i << " and outputDimension=" << getOutputDimension();
   return new ValueFunction(function_.getMarginal(i), getInputMesh());
 }
 

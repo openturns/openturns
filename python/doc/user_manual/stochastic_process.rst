@@ -37,6 +37,12 @@ Refer to :ref:`covariance_model`, :ref:`stationary_covariance_model`.
     ExponentiallyDampedCosineModel
     FractionalBrownianMotionModel
     GeneralizedExponential
+
+    :template: class.rst_t
+    IsotropicCovarianceModel
+    KroneckerCovarianceModel
+
+    :template: CovarianceModel.rst_t
     MaternModel
     ProductCovarianceModel
     RankMCovarianceModel
@@ -75,7 +81,7 @@ Spectral information
 
     :template: FilteringWindow.rst_t
 
-    Hanning
+    Hann
     Hamming
 
 Gaussian process
@@ -188,4 +194,3 @@ Karhunen Loeve decomposition
     KarhunenLoeveResult
     KarhunenLoeveProjection
     KarhunenLoeveLifting
-

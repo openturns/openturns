@@ -37,88 +37,84 @@ except:
 
 # check XML support
 print(' 4: serialization (LibXML2)'.ljust(width), end=' ')
-try:
-    ot.XMLStorageManager('myFile.xml')
-    print('ok')
-except:
-    print('n/a')
+print('ok' if ot.PlatformInfo.HasFeature('libxml2') else 'n/a')
 
 # check HDF5 support
-print(' 5: HDF5 compatibility '.ljust(width), end=' ')
-try:
-    ot.XMLH5StorageManager('myFile.xml')
-    print('ok')
-except:
-    print('n/a')
-
-# check that math parser is available
-print(' 6: legacy symbolic function (muParser)'.ljust(width), end=' ')
-try:
-    ot.ResourceMap.Set("SymbolicParser-Backend", "MuParser")
-    f = ot.SymbolicFunction(['x1', 'x2'], ['x1+x2'])
-    print('ok')
-except:
-    print('n/a')
-
-# check that hmat library was found
-print(' 7: h-matrix (hmat-oss)'.ljust(width), end=' ')
-print('ok' if ot.HMatrixFactory.IsAvailable() else 'n/a')
-
-# check that spectra library was found
-print(' 8: iterative SVD (Spectra)'.ljust(width), end=' ')
-ot.ResourceMap.SetAsString(
-    "KarhunenLoeveP1Algorithm-EigenvaluesSolver", "SPECTRA")
-mesh = ot.IntervalMesher([9]).build(ot.Interval(-1.0, 1.0))
-cov1D = ot.AbsoluteExponential([1.0])
-algo = ot.KarhunenLoeveP1Algorithm(mesh, cov1D, 1e-3)
-try:
-    algo.run()
-    result = algo.getResult()
-    lambd = result.getEigenvalues()
-    print('ok')
-except:
-    print('n/a')
-
-# check that TBB library was found
-print(' 9: multithreading (TBB)'.ljust(width), end=' ')
-print('ok' if ot.TBB.IsAvailable() else 'n/a')
-
-# check that psutil was found
-print('10: process control (psutil)'.ljust(width), end=' ')
-try:
-    import psutil
-    print('ok')
-except ImportError:
-    print('n/a')
+print(' 5: serialization (HDF5)'.ljust(width), end=' ')
+print('ok' if ot.PlatformInfo.HasFeature('hdf5') else 'n/a')
 
 # check that dill was found
-print('11: serialization (dill)'.ljust(width), end=' ')
+print(' 6: serialization (dill)'.ljust(width), end=' ')
 try:
     import dill
     print('ok')
 except ImportError:
     print('n/a')
 
+# check that math parser is available
+print(' 7: legacy symbolic function (muParser)'.ljust(width), end=' ')
+print('ok' if ot.PlatformInfo.HasFeature('muparser') else 'n/a')
+
+# check that hmat library was found
+print(' 8: h-matrix (hmat-oss)'.ljust(width), end=' ')
+print('ok' if ot.PlatformInfo.HasFeature('hmat') else 'n/a')
+
+# check that spectra library was found
+print(' 9: iterative SVD (Spectra)'.ljust(width), end=' ')
+print('ok' if ot.PlatformInfo.HasFeature('spectra') else 'n/a')
+
+# check that TBB library was found
+print(' 10: multithreading (TBB)'.ljust(width), end=' ')
+print('ok' if ot.PlatformInfo.HasFeature('tbb') else 'n/a')
+
+# check that psutil was found
+print('11: process control (psutil)'.ljust(width), end=' ')
+try:
+    import psutil
+    print('ok')
+except ImportError:
+    print('n/a')
+
 # check that nlopt library was found
 print('12: optimization (NLopt)'.ljust(width), end=' ')
-print('ok' if ot.NLopt.IsAvailable() else 'n/a')
+print('ok' if ot.PlatformInfo.HasFeature('nlopt') else 'n/a')
 
 # check that cminpack was found
 print('13: optimization (CMinpack)'.ljust(width), end=' ')
-print('ok' if ot.CMinpack.IsAvailable() else 'n/a')
+print('ok' if ot.PlatformInfo.HasFeature('cminpack') else 'n/a')
 
 # check that ceres was found
 print('14: optimization (Ceres Solver)'.ljust(width), end=' ')
-print('ok' if ot.Ceres.IsAvailable() else 'n/a')
+print('ok' if ot.PlatformInfo.HasFeature('ceres') else 'n/a')
 
 # check that dlib was found
 print('15: optimization (Dlib)'.ljust(width), end=' ')
-print('ok' if ot.Dlib.IsAvailable() else 'n/a')
+print('ok' if ot.PlatformInfo.HasFeature('dlib') else 'n/a')
 
 # check that dlib was found
 print('16: optimization (Bonmin)'.ljust(width), end=' ')
-print('ok' if ot.Bonmin.IsAvailable() else 'n/a')
+print('ok' if ot.PlatformInfo.HasFeature('bonmin') else 'n/a')
 
 # check that ipopt was found
 print('17: optimization (Ipopt)'.ljust(width), end=' ')
-print('ok' if ot.Ipopt.IsAvailable() else 'n/a')
+print('ok' if ot.PlatformInfo.HasFeature('ipopt') else 'n/a')
+
+# check that bison/flex were found
+print('18: CSV parser (bison/flex)'.ljust(width), end=' ')
+print('ok' if ot.PlatformInfo.HasFeature('bison') else 'n/a')
+
+# check that boost library was found
+print('19: special functions (Boost)'.ljust(width), end=' ')
+print('ok' if ot.PlatformInfo.HasFeature('boost') else 'n/a')
+
+# check that mpfr library was found
+print('20: special functions (MPFR)'.ljust(width), end=' ')
+print('ok' if ot.PlatformInfo.HasFeature('mpfr') else 'n/a')
+
+# check that mpc library was found
+print('21: special functions (MPC)'.ljust(width), end=' ')
+print('ok' if ot.PlatformInfo.HasFeature('mpc') else 'n/a')
+
+# check that primesieve library was found
+print('22: fast prime numbers (Primesieve)'.ljust(width), end=' ')
+print('ok' if ot.PlatformInfo.HasFeature('primesieve') else 'n/a')

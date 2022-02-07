@@ -3,8 +3,8 @@ Polynomial chaos graphs
 =======================
 """
 # %%
-# In this example we are going to create some graphs useful after the launch of a polynomial chaos algorithm. 
-# More precisely, we draw some members of the 1D polynomial family. 
+# In this example we are going to create some graphs useful after the launch of a polynomial chaos algorithm.
+# More precisely, we draw some members of the 1D polynomial family.
 
 # %%
 from __future__ import print_function
@@ -20,11 +20,13 @@ def drawFamily(factory, degreeMax=5):
     colorList = ot.Drawable.BuildDefaultPalette(degreeMax)
 
     # Create a fine title
-    titleJacobi = factory.__class__.__name__.replace('Factory', '') + " polynomials"
+    titleJacobi = factory.__class__.__name__.replace(
+        'Factory', '') + " polynomials"
 
     # Create an empty graph which will be fullfilled
     # with curves
-    graphJacobi = ot.Graph(titleJacobi, "z", "polynomial values", True, "topright")
+    graphJacobi = ot.Graph(
+        titleJacobi, "z", "polynomial values", True, "topright")
 
     # Fix the number of points for the graph
     pointNumber = 101
@@ -58,7 +60,7 @@ view = viewer.View(graph)
 
 # %%
 laguerreFamily = ot.LaguerreFactory(2.75, 1)
-graph =drawFamily(laguerreFamily)
+graph = drawFamily(laguerreFamily)
 view = viewer.View(graph)
 
 # %%

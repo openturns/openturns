@@ -53,8 +53,8 @@ public:
   MultiFORMResult getResult() const;
 
   /** Maximum number of design points accessor */
-  void setMaximumNumberOfDesignPoints(const UnsignedInteger numberOfDesignPoints);
-  UnsignedInteger getMaximumNumberOfDesignPoints() const;
+  void setMaximumDesignPointsNumber(const UnsignedInteger numberOfDesignPoints);
+  UnsignedInteger getMaximumDesignPointsNumber() const;
 
   /** String converter */
   String __repr__() const override;
@@ -70,7 +70,7 @@ public:
 
 private:
 
-  UnsignedInteger maximumNumberOfDesignPoints_;
+  UnsignedInteger maximumDesignPointsNumber_;
   MultiFORMResult result_;
 
 } ; /* class MultiFORM */

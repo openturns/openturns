@@ -22,9 +22,9 @@
 #define OPENTURNS_IPOPTPROBLEM_HXX
 
 #include "openturns/OTprivate.hxx"
-#include "openturns/MemoizeFunction.hxx"
 #include "openturns/OptimizationAlgorithmImplementation.hxx"
 
+#define HAVE_CSTDDEF // for 3.11 in debian
 #include <IpTNLP.hpp>
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -160,7 +160,8 @@ public:
 private:
   const OptimizationProblem optimProblem_;
   const Point startingPoint_;
-  MemoizeFunction objectiveFunction_;
+  Sample evaluationInputHistory_;
+  Sample evaluationOutputHistory_;
   Point optimalPoint_;
   Point optimalValue_;
   // Callbacks

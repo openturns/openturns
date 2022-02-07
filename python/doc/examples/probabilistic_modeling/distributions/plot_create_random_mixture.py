@@ -15,9 +15,9 @@ ot.Log.Show(ot.Log.NONE)
 #
 # We define an affine combination of input random variables.
 #
-# .. math:: 
+# .. math::
 #    Y = 2 + 5 X_1 + X_2
-#   
+#
 # where:
 #
 # - :math:`X_1 \sim \mathcal{E}(\lambda=1.5)`
@@ -47,22 +47,22 @@ print(distribution)
 # %%
 # We get its mean :
 mean = distribution.getMean()[0]
-print("Mean : %.3f"%mean)
+print("Mean : %.3f" % mean)
 
 # %%
 # its variance :
 variance = distribution.getCovariance()[0, 0]
-print("Variance : %.3f"%variance)
+print("Variance : %.3f" % variance)
 
 # %%
 # the 90% quantile :
 quantile = distribution.computeQuantile(0.9)[0]
-print("0.9-quantile : %.3f"%quantile)
+print("0.9-quantile : %.3f" % quantile)
 
 # %%
 # We can get the probability of the :math:`Y` random variable to exceed 10.0 :
 prb = distribution.computeSurvivalFunction(10.0)
-print("Probability : %.3f"%prb)
+print("Probability : %.3f" % prb)
 
 # %%
 # We draw its PDF :
@@ -81,15 +81,15 @@ view = viewer.View(graph)
 #
 # In this paragraph we build the distribution of the value of the sum of 20 dice rolls.
 #
-# .. math:: 
+# .. math::
 #    Y = \sum_{i=1}^{20} X_i
-#   
+#
 # where :math:`X_i \sim U(1,2,3,4,5,6)`
 #
 
 # %%
 # We create the distribution associated to the dice roll :
-X = ot.UserDefined([[i] for i in range(1,7)])
+X = ot.UserDefined([[i] for i in range(1, 7)])
 
 # %%
 # Let's roll the dice a few times !
@@ -110,7 +110,7 @@ distribution = ot.RandomMixture(coll, weight)
 
 # %%
 # We compute the probability to exceed a sum of 100 after 20 dice rolls :
-print("Probability : %.3g"%distribution.computeComplementaryCDF(100) )
+print("Probability : %.3g" % distribution.computeComplementaryCDF(100))
 
 # %%
 # We draw its PDF :

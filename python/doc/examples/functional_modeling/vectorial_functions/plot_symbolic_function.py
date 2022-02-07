@@ -5,9 +5,9 @@ Create a symbolic function
 # %%
 # In this example we are going to create a function from mathematical formulas:
 #
-# .. math:: 
+# .. math::
 #    f(x_1, x_2) = -(6 + x_0^2 - x_1)
-#   
+#
 # Analytical expressions of the gradient and hessian are automatically computed except if the function is not differentiable everywhere. In that case a finite difference method is used.
 
 # %%

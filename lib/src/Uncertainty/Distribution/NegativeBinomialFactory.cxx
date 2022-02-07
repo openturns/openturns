@@ -94,7 +94,7 @@ Distribution NegativeBinomialFactory::build() const
 NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Sample & sample) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a NegativeBinomial distribution from an empty sample";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a NegativeBinomial distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a NegativeBinomial distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   Scalar mean = 0.0;
   Scalar var = 0.0;
@@ -102,6 +102,7 @@ NegativeBinomial NegativeBinomialFactory::buildAsNegativeBinomial(const Sample &
   for (UnsignedInteger i = 0; i < size; ++i)
   {
     const Scalar x = sample(i, 0);
+    if (!SpecFunc::IsNormal(x)) throw InvalidArgumentException(HERE) << "Error: cannot build a NegativeBinomial distribution if data contains NaN or Inf";
     const int iX(static_cast<int>(round(x)));
     // The sample must be made of nonnegative integral values
     if (std::abs(x - iX) > supportEpsilon || (iX < 0)) throw InvalidArgumentException(HERE) << "Error: can build a NegativeBinomial distribution only from a sample made of nonnegative integers, here x=" << x;

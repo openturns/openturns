@@ -32,8 +32,8 @@ inputVector = ot.RandomVector(distribution)
 outputVector = ot.CompositeRandomVector(model, inputVector)
 
 # %%
-# The mean of the output vector is 
-print("Mean of the output random vector : %.5f"%im.expectation)
+# The mean of the output vector is
+print("Mean of the output random vector : %.5f" % im.expectation)
 
 
 # %%
@@ -64,21 +64,22 @@ view = otv.View(graphConvergence)
 # :class:~openturns.ExpectationSimulationResult` class.
 
 # %%
-# The expected value of the mean is given by the `getExpectationEstimate` method : 
+# The expected value of the mean is given by the `getExpectationEstimate` method :
 expectation = result.getExpectationEstimate()
-print("Estimated mean of the output random vector : %.5f"%expectation[0])
+print("Estimated mean of the output random vector : %.5f" % expectation[0])
 
 # %%
-# The variance and standard deviation of the estimated mean are respectively given by `getVarianceEstimate` and `getStandardDeviation`: 
+# The variance and standard deviation of the estimated mean are respectively given by `getVarianceEstimate` and `getStandardDeviation`:
 expectationVariance = result.getVarianceEstimate()
-print("Variance of the estimated mean of the output random vector : %.5f"%expectationVariance[0])
+print("Variance of the estimated mean of the output random vector : %.5f" %
+      expectationVariance[0])
 standardDeviation = result.getStandardDeviation()
-print("Standard deviation : %.5f"%standardDeviation[0])
+print("Standard deviation : %.5f" % standardDeviation[0])
 
 # %%
 # This variance and this standard deviation must not to be confused with the variance and the standard deviation of the Ishigami model!
-print("Ishigami variance : %.5f"%im.variance)
-print("Ishigami standard deviation : %.5f"%im.variance**(1/2))
+print("Ishigami variance : %.5f" % im.variance)
+print("Ishigami standard deviation : %.5f" % im.variance**(1/2))
 
 
 # %%
@@ -89,7 +90,8 @@ print(expectationDistribution)
 # %%
 # Let us draw it:
 graphExpectationDistribution = expectationDistribution.drawPDF()
-graphExpectationDistribution.setTitle("Normal asymptotic distribution of the mean estimate")
+graphExpectationDistribution.setTitle(
+    "Normal asymptotic distribution of the mean estimate")
 view = otv.View(graphExpectationDistribution)
 
 # %%

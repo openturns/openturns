@@ -118,4 +118,3 @@ try:
     weights = mesh.computeWeights()
 except Exception:
     print('ok')
-

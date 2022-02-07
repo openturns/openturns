@@ -62,4 +62,4 @@ standard moment n=2, value=class=Point name=Unnamed dimension=1 values=[2]
 standard moment n=3, value=class=Point name=Unnamed dimension=1 values=[6]
 standard moment n=4, value=class=Point name=Unnamed dimension=1 values=[24]
 standard moment n=5, value=class=Point name=Unnamed dimension=1 values=[120]
-Standard representative=Exponential(lambda = 1, gamma = 0)
+Standard representative=Gamma(k = 1, lambda = 1, gamma = 0)

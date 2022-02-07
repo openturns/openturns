@@ -19,6 +19,7 @@
  *
  */
 
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 #include <stdlib.h>
 #include <string.h>
@@ -51,7 +52,7 @@ Buffer_init(Buffer *self, PyObject *args, PyObject *kwds)
   PyObject * ownObj = NULL;
   Py_ssize_t shapeLength;
   Py_ssize_t bufferLength;
-  int i;
+  Py_ssize_t i;
   char own;
   double * data = NULL;
 
@@ -87,7 +88,7 @@ Buffer_init(Buffer *self, PyObject *args, PyObject *kwds)
 
   self->bufferview.own = own;
   self->bufferview.itemsize = sizeof(double);
-  self->bufferview.ndim = shapeLength;
+  self->bufferview.ndim = (int)shapeLength;
   if (shapeLength == 0)
   {
     /* Is this really useful?  Maybe we should return -1 */
@@ -180,6 +181,7 @@ Buffer_iter(PyObject *obj)
 static int
 Buffer_getbuffer(PyObject *obj, Py_buffer *view, int flags)
 {
+  (void)flags;
   Buffer* self = (Buffer*)obj;
   if (view == NULL) {
     PyErr_SetString(PyExc_ValueError, "NULL view in getbuffer");
@@ -191,7 +193,7 @@ Buffer_getbuffer(PyObject *obj, Py_buffer *view, int flags)
   view->len = self->bufferview.length * self->bufferview.itemsize;
   view->readonly = 1;
   view->itemsize = self->bufferview.itemsize;
-  view->format = "d";
+  view->format = (char *)"d";
   view->ndim = self->bufferview.ndim;
   view->shape = self->bufferview.shape;
   view->strides = self->bufferview.strides;
@@ -256,7 +258,7 @@ static PyBufferProcs Buffer_as_buffer = {
 
 /* Forward declaration.
    This method is defined after Buffer_item because it does the opposite job. */
-static PyObject * Buffer_augment(PyObject *obj);
+static PyObject * Buffer_augment(PyObject *obj, PyObject *args);
 
 
 /* This routine is used for pickling; it must return a tuple with 2 to 5 arguments:
@@ -315,7 +317,7 @@ Buffer_setstate(PyObject *obj, PyObject *args)
   PyObject * shapeObj = NULL;
   PyObject * strideObj = NULL;
   char * rawData;
-  long length = 0;
+  Py_ssize_t length = 0;
   Py_ssize_t shapeLength;
   Py_ssize_t strideLength;
   int i;
@@ -339,7 +341,7 @@ Buffer_setstate(PyObject *obj, PyObject *args)
   {
     return NULL;
   }
-  self->bufferview.ndim = shapeLength;
+  self->bufferview.ndim = (int)shapeLength;
   for(i = 0; i < shapeLength; ++i)
   {
     self->bufferview.shape[i] = PyLong_AsLong(PyTuple_GET_ITEM(shapeObj, i));
@@ -439,8 +441,9 @@ Buffer_item(PyObject *obj, Py_ssize_t index)
 }
 
 static PyObject *
-Buffer_augment(PyObject *obj)
+Buffer_augment(PyObject *obj, PyObject *args)
 {
+  (void)args;
   int j;
   Buffer* self = (Buffer*)obj;
   PyObject * newView;
@@ -518,7 +521,8 @@ static struct module_state _state;
 #if PY_MAJOR_VERSION >= 3
 
 static PyObject *
-error_out(PyObject *m) {
+error_out(PyObject *m, PyObject *args) {
+    (void)args;
     struct module_state *st = GETSTATE(m);
     PyErr_SetString(st->error, "something bad happened");
     return NULL;
@@ -552,6 +556,9 @@ static struct PyModuleDef openturns_memoryview_module = {
 };
 
 #define INITERROR return NULL
+
+PyMODINIT_FUNC
+PyInit_memoryview(void);
 
 PyMODINIT_FUNC
 PyInit_memoryview(void)

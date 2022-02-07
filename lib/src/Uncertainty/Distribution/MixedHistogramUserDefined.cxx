@@ -276,7 +276,6 @@ Scalar MixedHistogramUserDefined::computeCDF(const Point & point) const
     const Point ticks(ticksCollection_[discreteIndices_[j]]);
     const Scalar x = point[discreteIndices_[j]];
     UnsignedInteger index = ticks.getSize();
-    // TODO: Add Collection::find(T value)->UnsignedInteger
     for (UnsignedInteger i = 0; i < ticks.getSize(); ++i)
       if (ticks[i] <= x)
         index = i;

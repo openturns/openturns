@@ -60,6 +60,28 @@ int main(int, char *[])
   try
   {
 
+    // Using wrong type of StorageManager when loading study
+    Study study(fileName);
+    study.setStorageManager(XMLH5StorageManager(fileName));
+    Point point(2, 1.0);
+    study.add("point", point);
+    study.save();
+    Study study2(fileName);
+    study2.setStorageManager(XMLStorageManager(fileName));
+    study2.load();
+
+    // cleanup
+    Os::Remove(fileName);
+    Os::Remove(h5fileName);
+  }
+  catch (std::exception& exc)
+  {
+    std::cout << "Expected: " << exc.what() << std::endl;
+  }
+
+  try
+  {
+
     // Create a Study Object by giving its name
     {
       Study study(fileName);
@@ -367,11 +389,8 @@ int main(int, char *[])
     // Create an Event Object
     ThresholdEvent event;
     {
-      Point point(3);
-      point[0] = 101;
-      point[1] = 202;
-      point[2] = 303;
-      ConstantRandomVector vect(point);
+      const Point mu = {101, 202, 303};
+      RandomVector vect(Normal(mu, Point(3, 1e-6), CorrelationMatrix(3)));
       CompositeRandomVector output(analytical.getMarginal(0), vect);
       event = ThresholdEvent(output, Less(), 50);
     }

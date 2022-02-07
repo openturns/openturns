@@ -82,18 +82,18 @@ Scalar UserDefinedStationaryCovarianceModel::computeAsScalar(const Point &tau) c
     throw InvalidArgumentException(HERE) << "In UserDefinedStationaryCovarianceModel::computeStandardRepresentative: expected a shift of dimension=" << getInputDimension() << ", got dimension=" << tau.getDimension();
   // We filter the collection & return corresponding values
   if (mesh_.getN() == 1)
-    return covarianceCollection_[0](0,0);
+    return covarianceCollection_[0](0, 0);
   UnsignedInteger index;
   if (tau[0] < 0.0)
-     index = nearestNeighbour_.query(tau * (-1.0));
-    else
-      index = nearestNeighbour_.query(tau);
+    index = nearestNeighbour_.query(tau * (-1.0));
+  else
+    index = nearestNeighbour_.query(tau);
   // index
-  return covarianceCollection_[index](0,0);
+  return covarianceCollection_[index](0, 0);
 }
 
 Scalar UserDefinedStationaryCovarianceModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
-                                                             const Collection<Scalar>::const_iterator &t_begin) const
+    const Collection<Scalar>::const_iterator &t_begin) const
 {
   if (outputDimension_ != 1)
     throw InvalidArgumentException(HERE) << "Error : UserDefinedStationaryCovarianceModel::computeAsScalar(it, it) should be only used if output dimension is 1. Here, output dimension = " << outputDimension_;

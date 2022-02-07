@@ -87,13 +87,13 @@ public:
   /** Draw the visual test for a 1D LinearModel's residuals using the training Samples */
   static Graph DrawLinearModelResidual(const LinearModelResult & linearModelResult);
 
-  /** Draw the CobWeb visual test */
-  static Graph DrawCobWeb(const Sample & inputSample,
-                          const Sample & outputSample,
-                          const Scalar minValue,
-                          const Scalar maxValue,
-                          const String & color,
-                          const Bool quantileScale = true);
+  /** Draw the parallel coordinates visual test */
+  static Graph DrawParallelCoordinates(const Sample & inputSample,
+                                       const Sample & outputSample,
+                                       const Scalar minValue,
+                                       const Scalar maxValue,
+                                       const String & color,
+                                       const Bool quantileScale = true);
 
   /** Draw the Kendall plot to assess a copula for a bidimensional sample */
   static Graph DrawKendallPlot(const Sample & data,

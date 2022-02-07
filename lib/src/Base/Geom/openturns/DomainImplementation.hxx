@@ -53,6 +53,12 @@ public:
   /** Check if the closed domain contains given points */
   virtual BoolCollection contains(const Sample & sample) const;
 
+  /** Compute the Euclidean distance from a given point to the domain */
+  virtual Scalar computeDistance(const Point & point) const;
+
+  /** Compute the Euclidean distance from given points to the domain */
+  virtual Sample computeDistance(const Sample & sample) const;
+
   /** String converter */
   String __repr__() const override;
   String __str__(const String & offset = "") const override;

@@ -23,6 +23,7 @@
 #include "openturns/RandomGenerator.hxx"
 #include "openturns/SpecFunc.hxx"
 #include "openturns/DistFunc.hxx"
+#include "openturns/Beta.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
@@ -197,6 +198,12 @@ Point Epanechnikov::getStandardMoment(const UnsignedInteger n) const
 {
   if (n % 2 == 1) return Point(1, 0.0);
   return Point(1, 3.0 / (3.0 + n * (4.0 + n)));
+}
+
+/* Get the standard representative in the parametric family, associated with the standard moments */
+Distribution Epanechnikov::getStandardRepresentative() const
+{
+  return new Beta(2.0, 2.0, -1.0, 1.0);
 }
 
 /* Compute the covariance of the distribution */

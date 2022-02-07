@@ -4,7 +4,7 @@ Control algorithm termination
 """
 # %%
 # In this examples we are going to expose ways to control the termination of optimization and simulation algorithms using callbacks.
-#     
+#
 
 # %%
 from __future__ import print_function
@@ -48,6 +48,8 @@ myCobyla.setMaximumConstraintError(1.0e-10)
 # Define the stopping criterion
 def stop():
     return myFunction.getCallsNumber() > 100
+
+
 myCobyla.setStopCallback(stop)
 
 # %%

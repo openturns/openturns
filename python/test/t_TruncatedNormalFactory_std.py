@@ -43,14 +43,7 @@ for i in range(4):
     print('Estimated distribution with moments=', estimatedDistribution)
     estimatedDistribution = factory.buildMethodOfLikelihoodMaximization(sample)
     print('Estimated distribution with likelihoodMax.=', estimatedDistribution)
-sample = [[0.0]] * size
-estimatedDistribution = factory.build(sample)
-print("Estimated distribution with default estimator=",
-      repr(estimatedDistribution))
-sample = [[1.0]] * size
-estimatedDistribution = factory.build(sample)
-print("Estimated distribution with default estimator=",
-      repr(estimatedDistribution))
+
 
 # Build method of moments
 print("Build method of moments")
@@ -96,7 +89,7 @@ ott.assert_almost_equal(exact_b, computed_b, 0.0, 20.0 / size)
 print("A tricky case")
 data = [0.6852, 0.9349, 0.5884, 1.727, 1.581, 0.3193, -0.5701, 1.623, 2.210,
         -0.3440, -0.1646]
-sample = ot.Sample(data, 1)
+sample = [[x] for x in data]
 factory = ot.TruncatedNormalFactory()
 estimatedTN = factory.buildMethodOfMoments(sample)
 exact_mu = -1.0

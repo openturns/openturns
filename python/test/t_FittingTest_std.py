@@ -40,7 +40,7 @@ truncatednormal = ot.TruncatedNormal(1.0, 1.0, 0.0, 3.0)
 distributionCollection.add(truncatednormal)
 continuousDistributionCollection.add(truncatednormal)
 
-student = ot.Student(10.0, 10.0)
+student = ot.Student(10.0, 10.0, 1.0)
 distributionCollection.add(student)
 continuousDistributionCollection.add(student)
 

@@ -134,6 +134,8 @@ public:
 
   /** Get a numerical sample whose elements follow the distribution */
   Sample getSample(const UnsignedInteger size) const;
+  Sample getSampleByInversion(const UnsignedInteger size) const;
+  Sample getSampleByQMC(const UnsignedInteger size) const;
 
   /** Get the DDF of the distribution */
   Scalar computeDDF(const Scalar scalar) const;
@@ -286,7 +288,6 @@ public:
 
   /** Correlation matrix accessor */
   CorrelationMatrix getCorrelation() const;
-  CorrelationMatrix getLinearCorrelation() const;
   CorrelationMatrix getPearsonCorrelation() const;
 
   /** Get the Spearman correlation of the distribution */

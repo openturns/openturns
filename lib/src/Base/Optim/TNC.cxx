@@ -19,6 +19,7 @@
  *
  */
 #include <cmath> // For HUGE_VAL
+#include <cstring> // std::memset
 
 #include "openturns/TNC.hxx"
 #include "algotnc.h"
@@ -151,6 +152,7 @@ void TNC::run()
   // clear history
   evaluationInputHistory_ = Sample(0, dimension);
   evaluationOutputHistory_ = Sample(0, 1);
+  result_ = OptimizationResult(getProblem());
 
   Scalar f = -1.0;
 
@@ -209,10 +211,8 @@ void TNC::run()
    *
    */
 
-  int returnCode = tnc((int)dimension, &x[0], &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &low[0], &up[0], refScale, refOffset, message, getMaxCGit(), getMaximumEvaluationNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
+  int returnCode = tnc((int)dimension, &(*x.begin()), &f, NULL, TNC::ComputeObjectiveAndGradient, (void*) this, &(*low.begin()), &(*up.begin()), refScale, refOffset, message, getMaxCGit(), getMaximumEvaluationNumber(), getEta(), getStepmx(), getAccuracy(), getFmin(), getMaximumResidualError(), getMaximumAbsoluteError(), getMaximumConstraintError(), getRescale(), &nfeval);
   p_nfeval_ = 0;
-
-  result_ = OptimizationResult(getProblem());
 
   // Update the result
   const UnsignedInteger size = evaluationInputHistory_.getSize();
@@ -410,37 +410,46 @@ int TNC::ComputeObjectiveAndGradient(double *x, double *f, double *g, void *stat
   Point inP(dimension);
   std::copy(x, x + dimension, inP.begin());
   const OptimizationProblem problem(algorithm->getProblem());
-  for (UnsignedInteger i = 0; i < inP.getDimension(); ++i)
-    if (!SpecFunc::IsNormal(inP[i]))
-      {
-        *f = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
-        /* Convert the gradient into the output format */
-        const Matrix gradient(1, problem.getDimension());
-        std::copy(&gradient(0, 0), &gradient(0, 0) + dimension, g);
-        LOGWARN(OSS() << "TNC went to an abnormal point=" << inP.__str__());
-        return 1;
-      }
 
-  /* Evaluate the objective function at inP */
-  const Point outP(problem.getObjective().operator()(inP));
-  *f = problem.isMinimization() ? outP[0] : -outP[0];
-
-  Point objectiveGradient;
+  // Evaluate the objective function
+  Point outP;
   try
   {
+    for (UnsignedInteger i = 0; i < inP.getDimension(); ++i)
+      if (!SpecFunc::IsNormal(inP[i]))
+        throw InvalidArgumentException(HERE) << "TNC got a nan input value";
+
+    outP = problem.getObjective().operator()(inP);
+
+    if (!SpecFunc::IsNormal(outP[0]))
+      throw InvalidArgumentException(HERE) << "TNC got a nan output value";
+
+    *f = problem.isMinimization() ? outP[0] : -outP[0];
+
     // Here we take the sign into account and convert the result into a Point in one shot
     const Matrix gradient(problem.isMinimization() ? problem.getObjective().gradient(inP) : -1.0 * problem.getObjective().gradient(inP));
     /* Convert the gradient into the output format */
-    std::copy(&gradient(0, 0), &gradient(0, 0) + dimension, g);
+    std::copy(gradient.data(), gradient.data() + dimension, g);
   }
   catch (...)
   {
+    LOGWARN(OSS() << "TNC went to an abnormal point=" << inP.__str__());
+
+    // penalize it
+    *f = problem.isMinimization() ? SpecFunc::MaxScalar : -SpecFunc::MaxScalar;
+    std::memset(g, 0, dimension);
+
+    // exit gracefully
     return 1;
   }
 
   // track input/outputs
   algorithm->evaluationInputHistory_.add(inP);
   algorithm->evaluationOutputHistory_.add(outP);
+
+  // update result
+  algorithm->result_.setEvaluationNumber(algorithm->evaluationInputHistory_.getSize());
+  algorithm->result_.store(inP, outP, 0.0, 0.0, 0.0, 0.0);
 
   // callbacks
   if (algorithm->progressCallback_.first)

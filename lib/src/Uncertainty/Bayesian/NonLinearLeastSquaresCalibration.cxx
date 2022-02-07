@@ -23,7 +23,6 @@
 #include "openturns/Normal.hxx"
 #include "openturns/NormalFactory.hxx"
 #include "openturns/KernelSmoothing.hxx"
-#include "openturns/MemoizeFunction.hxx"
 #include "openturns/CenteredFiniteDifferenceHessian.hxx"
 #include "openturns/BootstrapExperiment.hxx"
 #include "openturns/LowDiscrepancyExperiment.hxx"
@@ -293,9 +292,8 @@ void NonLinearLeastSquaresCalibration::run()
     parameterPosterior = linearAlgo.getResult().getParameterPosterior();
   }
   parameterPosterior.setDescription(parameterPrior_.getDescription());
-  const MemoizeFunction residualFunction(BuildResidualFunction(model_, inputObservations_, outputObservations_));
+  const Function residualFunction(BuildResidualFunction(model_, inputObservations_, outputObservations_));
   result_ = CalibrationResult(parameterPrior_, parameterPosterior, thetaStar, error, inputObservations_, outputObservations_, residualFunction);
-  computeOutputAtPriorAndPosterior();
 }
 
 /* Perform a unique estimation */
@@ -304,11 +302,20 @@ Point NonLinearLeastSquaresCalibration::run(const Sample & inputObservations,
     const Point & candidate,
     Sample & residual)
 {
-  const MemoizeFunction residualFunction(BuildResidualFunction(model_, inputObservations, outputObservations));
+  const Function residualFunction(BuildResidualFunction(model_, inputObservations, outputObservations));
   LeastSquaresProblem problem(residualFunction);
   algorithm_.setVerbose(true);
   algorithm_.setProblem(problem);
-  algorithm_.setStartingPoint(candidate);
+  try
+  {
+    // If the solver is single start, we can use its setStartingPoint method
+    algorithm_.setStartingPoint(candidate);
+  }
+  catch (NotDefinedException &) // setStartingPoint is not defined for the solver
+  {
+    LOGWARN(OSS() << "Candidate=" << candidate << " is ignored because algorithm "
+            << algorithm_.getImplementation()->getClassName() << " has no setStartingPoint method.");
+  }
   algorithm_.run();
   Point optimalPoint(algorithm_.getResult().getOptimalPoint());
   // If asked for the residual values

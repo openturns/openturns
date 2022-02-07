@@ -347,6 +347,7 @@ CLASSNAMEINIT(Dlib)
 
 Bool Dlib::IsAvailable()
 {
+  LOGWARN(OSS() << "Dlib.IsAvailable is deprecated, use PlatformInfo.HasFeature(dlib)");
 #ifdef OPENTURNS_HAVE_DLIB
   return true;
 #else
@@ -562,13 +563,13 @@ void Dlib::run()
   DlibGradient objectiveDlibGradient(objectiveDlibFunction.getGradient());
 
   /** STARTING POINT: Convert startingPoint to dlib::matrix */
-  DlibMatrix optimPoint(dimension, 1);
+  DlibVector optimPoint(dimension, 1);
   for (UnsignedInteger i = 0; i < startingPoint.getDimension(); ++ i)
     optimPoint(i, 0) = startingPoint[i];
 
   /** BOUNDS **/
-  DlibMatrix lb(dimension, 1);
-  DlibMatrix ub(dimension, 1);
+  DlibVector lb(dimension, 1);
+  DlibVector ub(dimension, 1);
 
   if (getProblem().hasBounds())
   {
@@ -683,11 +684,12 @@ void Dlib::run()
       return objectiveDlibFunction(input);
     };
 
+    const std::vector<bool> is_integer_variable(dimension, false);
     if (getProblem().isMinimization())
       globalOptimResult = dlib::find_min_global(objectiveLambdaFunction,
                           lb,
                           ub,
-                          std::vector<bool>(dimension, false),
+                          is_integer_variable,
                           dlib::max_function_calls(getMaximumEvaluationNumber()),
                           std::chrono::nanoseconds(dlib::FOREVER),
                           getMaximumAbsoluteError());
@@ -695,7 +697,7 @@ void Dlib::run()
       globalOptimResult = dlib::find_max_global(objectiveLambdaFunction,
                           lb,
                           ub,
-                          std::vector<bool>(dimension, false),
+                          is_integer_variable,
                           dlib::max_function_calls(getMaximumEvaluationNumber()),
                           std::chrono::nanoseconds(dlib::FOREVER),
                           getMaximumAbsoluteError());
@@ -752,7 +754,7 @@ void Dlib::run()
       list[i] = i;
 
     // Create parameters vector
-    DlibMatrix params(dimension, 1);
+    DlibVector params(dimension, 1);
     std::copy(startingPoint.begin(), startingPoint.end(), params.begin());
 
     // Call to dlib::solve_least_squares: modification of params
@@ -788,7 +790,7 @@ void Dlib::run()
       list[i] = i;
 
     // Create parameters vector
-    DlibMatrix params(dimension, 1);
+    DlibVector params(dimension, 1);
     std::copy(startingPoint.begin(), startingPoint.end(), params.begin());
 
     // Call to dlib::solve_least_squares: modification of params

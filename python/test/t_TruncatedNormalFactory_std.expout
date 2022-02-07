@@ -42,8 +42,6 @@ TruncatedNormal from parameters= TruncatedNormal(mu = 0, sigma = 1, a = 3, b = 6
 Estimated distribution with default estimator = TruncatedNormal(mu = -0.072, sigma = 1, a = 3, b = 5)
 Estimated distribution with moments= TruncatedNormal(mu = -0.43, sigma = 1.1, a = 3, b = 5)
 Estimated distribution with likelihoodMax.= TruncatedNormal(mu = -0.072, sigma = 1, a = 3, b = 5)
-Estimated distribution with default estimator= class=TruncatedNormal name=TruncatedNormal dimension=1 mu=0 sigma=1 a=-2.2e-15 b=2.2e-15
-Estimated distribution with default estimator= class=TruncatedNormal name=TruncatedNormal dimension=1 mu=1 sigma=1 a=1 b=1
 Build method of moments
 Build method of likelihood maximization
 A tricky case

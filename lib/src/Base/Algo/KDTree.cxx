@@ -338,7 +338,7 @@ void KDTree::insert(UnsignedInteger & inode,
                     const UnsignedInteger index,
                     const UnsignedInteger activeDimension)
 {
-  if (index >= points_.getSize()) throw InvalidArgumentException(HERE) << "Error: expected an index less than " << points_.getSize() << ", got " << index;
+  if (!(index < points_.getSize())) throw InvalidArgumentException(HERE) << "Error: expected an index less than " << points_.getSize() << ", got " << index;
   // We are on a leaf
   if (inode == 0)
   {
@@ -369,7 +369,7 @@ UnsignedInteger KDTree::getNearestNeighbourIndex(const UnsignedInteger inode,
     Point & upperBoundingBox,
     const UnsignedInteger activeDimension) const
 {
-  if (inode == 0) throw NotDefinedException(HERE) << "Error: cannot find a nearest neighbour in an empty tree";
+  if (!(inode > 0)) throw NotDefinedException(HERE) << "Error: cannot find a nearest neighbour in an empty tree";
   // Set delta = x[activeDimension] - points_(tree_[3*inode], activeDimension)
   // sameSide = tree_(inode,  0) if delta < 0, tree_[3*inode+2] else
   // oppositeSide = tree_[3*inode+2] if delta < 0, tree_(inode,  0) else

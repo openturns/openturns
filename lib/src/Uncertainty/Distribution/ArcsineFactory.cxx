@@ -67,7 +67,7 @@ DistributionFactoryResult ArcsineFactory::buildEstimator(const Sample & sample) 
 
 Arcsine ArcsineFactory::buildAsArcsine(const Sample & sample) const
 {
-  if (sample.getSize() == 0) throw InvalidArgumentException(HERE) << "Error: cannot build a Arcsine distribution from an empty sample";
+  if (sample.getSize() < 2) throw InvalidArgumentException(HERE) << "Error: cannot build a Arcsine distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build a Arcsine distribution only from a sample of dimension 1, here dimension=" << sample.getDimension();
   Scalar mean = sample.computeMean()[0];
   Scalar standardDeviation = sample.computeStandardDeviation()[0];

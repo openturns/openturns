@@ -24,20 +24,20 @@ function.setOutputDescription(['v1', 'v2'])
 parametric = ot.ParametricPointToFieldFunction(function, [0], [5.0])
 
 # properties
-print ('dim=', parametric.getInputDimension(), parametric.getOutputDimension())
-print ('description=', parametric.getInputDescription(),
-       parametric.getOutputDescription())
-print ('mesh=', parametric.getOutputMesh())
+print('dim=', parametric.getInputDimension(), parametric.getOutputDimension())
+print('description=', parametric.getInputDescription(),
+      parametric.getOutputDescription())
+print('mesh=', parametric.getOutputMesh())
 
 # op(Point)
 x = [1.0]
 y = parametric(x)
 print('y=', y)
-print ('calls=', parametric.getCallsNumber())
+print('calls=', parametric.getCallsNumber())
 
 
 # op(Sample)
 X = [[1.0], [7.0]]
 Y = parametric(X)
 print('Y=', Y)
-print ('calls=', parametric.getCallsNumber())
+print('calls=', parametric.getCallsNumber())

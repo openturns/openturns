@@ -7,10 +7,6 @@ Installation
 From binary packages
 ====================
 
-.. note::
-
-    Since v1.15, only Python 3.x binaries are provided.
-
 Pip
 ---
 Install the package from `PyPI <https://pypi.org/project/openturns/>`_::
@@ -24,19 +20,26 @@ Conda
 -----
 This is relevant to the `Conda <http://conda.pydata.org/>`_ userland Python package manager.
 
-On Linux/Mac, to avoid package conflicts we suggest installing conda from
-`Miniconda <https://docs.conda.io/en/latest/miniconda.html>`_ instead of Anaconda::
+As binary dependency packages from the `conda-forge <https://conda-forge.org>`_
+channel are not compatible with ones from the default channel, openturns packages
+are not working on top of Anaconda.
+Instead, we recommend installing conda from `Miniforge <https://github.com/conda-forge/miniforge>`_
+where conda is configured to prioritize packages from conda-forge out of the box.
+This can also be achieved with Miniconda with extra steps.
+On Windows just download the matching miniforge exe and follow the instructions,
+on Linux you can install it from command-line in one go::
 
-    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -P /tmp
-    bash /tmp/Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/miniconda
-    PATH="$HOME/miniconda/bin:$PATH"
+    wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh -P /tmp
+    bash /tmp/Miniforge3-Linux-x86_64.sh -b -p $HOME/miniforge
+    PATH="$HOME/miniforge/bin:$PATH"
 
-Then install from the `conda-forge <https://conda-forge.org>`_ channel::
+Then it should be ready to install packages::
 
-    conda config --add channels conda-forge
-    conda config --set channel_priority strict
-    conda update -y conda
-    conda install openturns
+    conda install -y openturns
+
+Note that conda can be slow or fail at resolving complex environments with many packages
+so when a full upgrade is needed our advice is to create a new environment from scratch
+(see also `Mamba <https://github.com/mamba-org/mamba/>`_).
 
 Alternatively, you can download the `otconda <https://github.com/openturns/otconda>`_ bundle
 containing the library and its modules that allows for an offline installation.
@@ -49,9 +52,9 @@ Windows
 Download the installer matching your python version and architecture from `GitHub <https://github.com/openturns/build/releases>`_
 Then just run installer and follow the instructions.
 
-A command-line installation is also possible::
+A non-interactive installation is also possible with the command line::
 
-    openturns-1.16-py38-x86_64.exe /userlevel=1 /S /FORCE /D=%PREFIX%
+    openturns-1.18-py38-x86_64.exe /userlevel=1 /S /FORCE /D=%PREFIX%
 
 Debian/Ubuntu
 -------------
@@ -60,19 +63,19 @@ We support the following Debian-based distributions:
 
 .. table::
 
-    +-------------------------------------+---------------------------------------------------------+
-    | Distribution name                   | Repository address                                      |
-    +=====================================+=========================================================+
-    | Ubuntu 16.04 LTS 'Xenial Xerus'     | deb https://openturns.github.io/apt/ubuntu xenial main  |
-    +-------------------------------------+---------------------------------------------------------+
-    | Ubuntu 18.04 LTS 'Bionic Beaver'    | deb https://openturns.github.io/apt/ubuntu bionic main  |
-    +-------------------------------------+---------------------------------------------------------+
-    | Ubuntu 20.04 LTS 'Focal Fossa'      | deb https://openturns.github.io/apt/ubuntu focal main   |
-    +-------------------------------------+---------------------------------------------------------+
-    | Debian 9.0 'Stretch'                | deb https://openturns.github.io/apt/debian stretch main |
-    +-------------------------------------+---------------------------------------------------------+
-    | Debian 10.0 'Buster'                | deb https://openturns.github.io/apt/debian buster main  |
-    +-------------------------------------+---------------------------------------------------------+
+    +-------------------------------------+----------------------------------------------------------+
+    | Distribution name                   | Repository address                                       |
+    +=====================================+==========================================================+
+    | Ubuntu 18.04 LTS 'Bionic Beaver'    | deb https://openturns.github.io/apt/ubuntu bionic main   |
+    +-------------------------------------+----------------------------------------------------------+
+    | Ubuntu 20.04 LTS 'Focal Fossa'      | deb https://openturns.github.io/apt/ubuntu focal main    |
+    +-------------------------------------+----------------------------------------------------------+
+    | Ubuntu 21.10 'Impish Indri'         | deb https://openturns.github.io/apt/ubuntu impish main   |
+    +-------------------------------------+----------------------------------------------------------+
+    | Debian 10.0 'Buster'                | deb https://openturns.github.io/apt/debian buster main   |
+    +-------------------------------------+----------------------------------------------------------+
+    | Debian 11.0 'Bullseye'              | deb https://openturns.github.io/apt/debian bullseye main |
+    +-------------------------------------+----------------------------------------------------------+
 
 Add the mirror signature::
 
@@ -125,16 +128,16 @@ RPM-based distributions
 Add the repository corresponding to your operating system::
 
     curl http://download.opensuse.org/repositories/science:/openturns/CentOS_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_33/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.2/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
-    curl http://download.opensuse.org/repositories/science:/openturns/Mageia_7/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/Fedora_35/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.3/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
+    curl http://download.opensuse.org/repositories/science:/openturns/Mageia_8/science:openturns.repo -o /etc/yum.repos.d/science-openturns.repo
 
 Import the gpg key corresponding to your operating system::
 
     rpm --import http://download.opensuse.org/repositories/science:/openturns/CentOS_8/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_33/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.2/repodata/repomd.xml.key
-    rpm --import http://download.opensuse.org/repositories/science:/openturns/Mageia_7/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/Fedora_35/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/openSUSE_Leap_15.3/repodata/repomd.xml.key
+    rpm --import http://download.opensuse.org/repositories/science:/openturns/Mageia_8/repodata/repomd.xml.key
 
 The following packages are available:
 
@@ -166,13 +169,12 @@ Install from `FreshPorts <https://www.freshports.org/math/openturns/>`_::
 
     pkg install openturns
 
+Development version
+===================
 
-From sources
-============
-
-Checkout the required :ref:`dependencies`.
-
-You can checkout the development trunk::
+From source
+-----------
+Install the required :ref:`dependencies` and build the development branch::
 
     git clone https://github.com/openturns/openturns.git
     cd openturns
@@ -181,5 +183,10 @@ You can checkout the development trunk::
 
 .. note::
 
-    When installing into `~/.local` you dont need to set PYTHONPATH
-    environment variable for Python to be able to import openturns
+    When installing into `~/.local` you don't need to set PYTHONPATH environment variable for Python to be able to import openturns
+
+Weekly builds
+-------------
+Weekly built Python binaries are also available with the latest bugfixes and features, but also with new bugs and API changes, use at your own risk::
+
+    pip3 install --pre --extra-index-url https://pypi.anaconda.org/openturns-wheels-nightly/simple --upgrade --force-reinstall openturns

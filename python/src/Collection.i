@@ -32,7 +32,7 @@ template <class T> Collection(const Collection<T> & other)
 %define OT_COLLECTION_GETITEM(collectionType, elementType)
 PyObject * __getitem__(PyObject * arg) const
 {
-  if (OT::isAPython< OT::_PyInt_ >(arg))
+  if (PyInt_Check(arg))
   {
     long val2 = 0;
     int ecode2 = 0;
@@ -70,21 +70,40 @@ PyObject * __getitem__(PyObject * arg) const
     for (Py_ssize_t i = 0; i < size; ++ i)
     {
       PyObject * elt = PySequence_Fast_GET_ITEM(newPyObj.get(), i);
+      long index = 0;
       if (PyInt_Check(elt))
+        index = PyInt_AsLong(elt);
+      else if (PyObject_HasAttrString(elt, "__int__"))
       {
-        long index = PyInt_AsLong(elt);
-        if (index < 0) {
-          index += self->getSize();
-        }
-        if (index < 0) {
-          throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
-        }
-        result[i] = self->at(index);
+        OT::ScopedPyObjectPointer intValue(PyObject_CallMethod(elt, const_cast<char *>("__int__"), const_cast<char *>("()")));
+        if (intValue.isNull())
+          OT::handleException();
+        index = PyInt_AsLong(intValue.get());
       }
       else
-        SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
+        throw OT::InvalidArgumentException(HERE) << "Indexing list expects int type";
+
+      if (index < 0) {
+        index += self->getSize();
+      }
+      if (index < 0) {
+        throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
+      }
+      result[i] = self->at(index);
     }
     return SWIG_NewPointerObj((new collectionType(static_cast< const collectionType& >(result))), SWIG_TypeQuery(#collectionType " *"), SWIG_POINTER_OWN |  0);
+  }
+  else if (PyObject_HasAttrString(arg, "__int__"))
+  {
+    OT::ScopedPyObjectPointer intValue(PyObject_CallMethod(arg, const_cast<char *>("__int__"), const_cast<char *>("()")));
+    if (intValue.isNull())
+      OT::handleException();
+    long index = PyInt_AsLong(intValue.get());
+    if (index < 0) {
+      index += self->getSize();
+    }
+    OT::UnsignedInteger arg2 = static_cast< OT::UnsignedInteger >(index);
+    return OT::convert< elementType, OT::traitsPythonType<elementType>::Type>(self->at(arg2));
   }
   else
     SWIG_exception(SWIG_TypeError, "Collection.__getitem__ expects int, slice or sequence argument");
@@ -97,7 +116,7 @@ fail:
 %define OT_COLLECTION_SETITEM(collectionType, elementType)
 PyObject * __setitem__(PyObject * arg, PyObject * valObj)
 {
-  if (OT::isAPython< OT::_PyInt_ >(arg))
+  if (PyInt_Check(arg))
   {
     long val2 = 0;
     int ecode2 = 0;
@@ -109,7 +128,7 @@ PyObject * __setitem__(PyObject * arg, PyObject * valObj)
       val2 += self->getSize();
     }
     OT::UnsignedInteger arg2 = static_cast< OT::UnsignedInteger >(val2);
-    elementType val = OT::convert< OT::traitsPythonType<elementType>::Type, elementType >(valObj);
+    elementType val = OT::checkAndConvert< OT::traitsPythonType<elementType>::Type, elementType >(valObj);
     self->at(arg2) = val;
   }
   else if (PySlice_Check(arg))
@@ -121,7 +140,7 @@ PyObject * __setitem__(PyObject * arg, PyObject * valObj)
     PySlice_GetIndicesEx(OT::SliceCast(arg), self->getSize(), &start, &stop, &step, &size);
     collectionType temp2;
     collectionType *val2 = 0;
-    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery(#collectionType " *"), 0))) {
+    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery(#collectionType " *"), SWIG_POINTER_NO_NULL))) {
       temp2 = OT::convert< OT::_PySequence_, collectionType >(valObj);
       val2 = &temp2;
     }
@@ -140,29 +159,49 @@ PyObject * __setitem__(PyObject * arg, PyObject * valObj)
     for (Py_ssize_t i = 0; i < size; ++ i)
     {
       PyObject * elt = PySequence_Fast_GET_ITEM(newPyObj.get(), i);
+      long index = 0;
       if (PyInt_Check(elt))
+        index = PyInt_AsLong(elt);
+      else if (PyObject_HasAttrString(elt, "__int__"))
       {
-        long index = PyInt_AsLong(elt);
-        if (index < 0) {
-          index += self->getSize();
-        }
-        if (index < 0) {
-          throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
-        }
-        indices[i] = index;
+        OT::ScopedPyObjectPointer intValue(PyObject_CallMethod(elt, const_cast<char *>("__int__"), const_cast<char *>("()")));
+        if (intValue.isNull())
+          OT::handleException();
+        index = PyInt_AsLong(intValue.get());
       }
       else
-        SWIG_exception(SWIG_TypeError, "Indexing list expects int type");
+        throw OT::InvalidArgumentException(HERE) << "Indexing list expects int type";
+
+      if (index < 0) {
+        index += self->getSize();
+      }
+      if (index < 0) {
+        throw OT::OutOfBoundException(HERE) << "index should be in [-" << self->getSize() << ", " << self->getSize() - 1 << "]." ;
+      }
+      indices[i] = index;
     }
     collectionType temp2;
     collectionType *val2 = 0;
-    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery(#collectionType " *"), 0))) {
+    if (! SWIG_IsOK(SWIG_ConvertPtr(valObj, (void **) &val2, SWIG_TypeQuery(#collectionType " *"), SWIG_POINTER_NO_NULL))) {
       temp2 = OT::convert< OT::_PySequence_, collectionType >(valObj);
       val2 = &temp2;
     }
     assert(val2);
     for (Py_ssize_t i = 0; i < size; ++ i)
       self->at(indices[i]) = val2->at(i);
+  }
+  else if (PyObject_HasAttrString(arg, "__int__"))
+  {
+    OT::ScopedPyObjectPointer intValue(PyObject_CallMethod(arg, const_cast<char *>("__int__"), const_cast<char *>("()")));
+    if (intValue.isNull())
+      OT::handleException();
+    long index = PyInt_AsLong(intValue.get());
+    if (index < 0) {
+      index += self->getSize();
+    }
+    OT::UnsignedInteger arg2 = static_cast< OT::UnsignedInteger >(index);
+    elementType val = OT::checkAndConvert< OT::traitsPythonType<elementType>::Type, elementType >(valObj);
+    self->at(arg2) = val;
   }
   else
     SWIG_exception(SWIG_TypeError, "Collection.__setitem__ expects int, slice or sequence argument");

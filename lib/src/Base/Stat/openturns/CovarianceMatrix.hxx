@@ -49,6 +49,9 @@ public:
   /** Constructor with implementation */
   CovarianceMatrix(const MatrixImplementation & i);
 
+  /** Constructor from SymmetricMatrix */
+  explicit CovarianceMatrix(const SymmetricMatrix & sym);
+
   /** Constructor with size */
   explicit CovarianceMatrix(const UnsignedInteger dim);
 

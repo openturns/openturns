@@ -108,7 +108,39 @@ public:
   /** Standard deviation accessor */
   Field computeStandardDeviation() const;
 
-  /**  Method computeQuantilePerComponent() gives the quantile per component of the sample */
+  /** Gives the range of the sample (by component) */
+  Field computeRange() const;
+
+  /** Gives the median of the sample (by component) */
+  Field computeMedian() const;
+
+  /** Gives the variance of the sample (by component) */
+  Field computeVariance() const;
+
+  /** Gives the skewness of the sample (by component) */
+  Field computeSkewness() const;
+
+  /** Gives the kurtosis of the sample (by component) */
+  Field computeKurtosis() const;
+
+  /** Gives the centered moment of order k of the sample (by component) */
+  Field computeCenteredMoment(const UnsignedInteger k) const;
+
+  /** Gives the raw moment of order k of the sample (by component) */
+  Field computeRawMoment(const UnsignedInteger k) const;
+
+  /** Get the empirical CDF of the sample */
+  Field computeEmpiricalCDF(const Point & point,
+                            const Bool tail = false) const;
+
+  /** Maximum accessor */
+  Field getMax() const;
+
+  /** Minimum accessor */
+  Field getMin() const;
+
+  /** Method computeQuantilePerComponent() gives the quantile per component of the sample */
+
   Field computeQuantilePerComponent(const Scalar prob) const;
   ProcessSampleImplementation computeQuantilePerComponent(const Point & prob) const;
 
@@ -142,8 +174,10 @@ public:
   ProcessSampleImplementation & operator += (const Sample & translation);
   ProcessSampleImplementation & operator -= (const Sample & translation);
 
-private:
+  /** Extract the sample of values at the given vertex index */
+  Sample getSampleAtVertex(const UnsignedInteger index) const;
 
+private:
   /** Mesh on which the ProcessSampleImplementation focuses */
   Mesh mesh_;
 

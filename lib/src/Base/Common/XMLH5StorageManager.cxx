@@ -21,8 +21,10 @@
 
 #include "openturns/XMLH5StorageManager.hxx"
 #include "openturns/PersistentObject.hxx"
+#include "openturns/Os.hxx"
 
 #include <H5Cpp.h>
+#include <libxml/tree.h>
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -32,7 +34,7 @@ class XMLH5StorageManagerImplementation
 public:
 
   explicit XMLH5StorageManagerImplementation(const FileName & h5FileName)
-  : h5FileName_(h5FileName)
+    : h5FileName_(h5FileName)
   {}
 
   template <class CPP_Type>
@@ -51,6 +53,10 @@ private:
   // Buffer size for writing hdf5 slabs
   const UnsignedInteger BufferSize = 1048576;
 
+  // 30kB (max recommended dataset header size)
+  // https://support.hdfgroup.org/HDF5/doc/UG/HDF5_Users_Guide.pdf
+  const UnsignedInteger MaxHeaderSize = 30720;
+
   template <class CPP_Type> inline std::vector<CPP_Type> & getBuffer();
 
   FileName h5FileName_;
@@ -60,12 +66,24 @@ private:
 };
 
 
-template <> inline std::vector<Scalar> & XMLH5StorageManagerImplementation::getBuffer() { return valBuf_Scalar_; }
-template <> inline std::vector<UnsignedInteger> & XMLH5StorageManagerImplementation::getBuffer() { return valBuf_UnsignedInteger_; }
+template <> inline std::vector<Scalar> & XMLH5StorageManagerImplementation::getBuffer()
+{
+  return valBuf_Scalar_;
+}
+template <> inline std::vector<UnsignedInteger> & XMLH5StorageManagerImplementation::getBuffer()
+{
+  return valBuf_UnsignedInteger_;
+}
 
 template <class CPP_Type> inline H5::DataType getDataType();
-template <> inline H5::DataType getDataType<Scalar>() { return H5::PredType::IEEE_F64LE; }
-template <> inline H5::DataType getDataType<UnsignedInteger>() { return H5::PredType::NATIVE_ULONG; }
+template <> inline H5::DataType getDataType<Scalar>()
+{
+  return H5::PredType::IEEE_F64LE;
+}
+template <> inline H5::DataType getDataType<UnsignedInteger>()
+{
+  return H5::PredType::NATIVE_ULONG;
+}
 
 
 template <class CPP_Type>
@@ -94,7 +112,9 @@ void XMLH5StorageManagerImplementation::addIndexedValue(Pointer<StorageManager::
   if (index == dsetSize - 1)
   {
     String dataSetName = XML::GetAttributeByName(node, "id");
-    XML::Node child = XML::NewNode(XML_STMGR::string_tag::Get(), h5FileName_ + ":/" + dataSetName);
+    const size_t idx = h5FileName_.find_last_of(Os::GetDirectorySeparator());
+    const FileName h5FileNameRel = h5FileName_.substr(idx + 1);
+    XML::Node child = XML::NewNode(XML_STMGR::string_tag::Get(), h5FileNameRel + ":/" + dataSetName);
     assert(child);
     XML::AddChild( node, child );
   }
@@ -124,10 +144,22 @@ void XMLH5StorageManagerImplementation::writeToH5(const String & dataSetName)
   {
     //Dataset does not exist, need to create it and initialize it with first chunk
     const hsize_t maxdims[1] = { H5S_UNLIMITED };
-    //Set dataspace to unlimited
-    H5::DataSpace dsp(1, dims, maxdims);
-    //Propagate dataspace properties to dataset
+    H5::DataSpace dsp;
     H5::DSetCreatPropList prop;
+    if (getBuffer<CPP_Type>().size() < BufferSize)
+    {
+      dsp = H5::DataSpace(1, dims, dims);
+      // Set dataspace compact if dataset can fit into dataset header
+      // Set it contiguous otherwise
+      if (getBuffer<CPP_Type>().size()*sizeof(CPP_Type) < MaxHeaderSize)
+        prop.setLayout(H5D_COMPACT);
+      else
+        prop.setLayout(H5D_CONTIGUOUS);
+    }
+    //Set dataspace to unlimited if full buffer
+    else
+      dsp = H5::DataSpace(1, dims, maxdims);
+    //Propagate dataspace properties to dataset
     prop.setChunk(1, dims);
     //Create new dataset and write it
     H5::DataSet dset(h5File.createDataSet(dataSetName, getDataType<CPP_Type>(), dsp, prop));
@@ -218,6 +250,22 @@ XMLH5StorageManager * XMLH5StorageManager::clone() const
 {
   return new XMLH5StorageManager(*this);
 }
+
+
+void XMLH5StorageManager::checkStorageManager()
+{
+  if (XML::GetAttributeByName( p_state_->root_, XML_STMGR::manager_attribute::Get()) !=
+      "XMLH5StorageManager")
+    throw StudyFileParsingException(HERE) << XML::GetAttributeByName( p_state_->root_, XML_STMGR::manager_attribute::Get())
+                                          << " is used in study file. XMLH5StorageManager is expected";
+}
+
+
+void XMLH5StorageManager::setStorageManager()
+{
+  XML::SetAttribute(p_state_->root_, XML_STMGR::manager_attribute::Get(), "XMLH5StorageManager");
+}
+
 
 void XMLH5StorageManager::addIndexedValue(Pointer<InternalObject> & p_obj, UnsignedInteger index, Scalar value)
 {

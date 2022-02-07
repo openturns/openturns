@@ -1,7 +1,7 @@
 //                                               -*- C++ -*-
 /**
- *  @brief This class is enables to build an exponential covariance
- *  model, a second order model's implementation
+ *  @brief This class is enables to build an exponentially damped cosine
+ * covariance model.
  *
  *  Copyright 2005-2021 Airbus-EDF-IMACS-ONERA-Phimeca
  *
@@ -63,13 +63,10 @@ public:
   Scalar computeAsScalar(const Collection<Scalar>::const_iterator & s_begin,
                          const Collection<Scalar>::const_iterator & t_begin) const override;
 #endif
+  Scalar computeAsScalar(const Scalar tau) const override;
 
   using CovarianceModelImplementation::operator();
   SquareMatrix operator() (const Point & tau) const override;
-
-  /** Discretize the covariance function on a given TimeGrid */
-  using CovarianceModelImplementation::discretize;
-  CovarianceMatrix discretize(const RegularGrid & regularGrid) const override;
 
   /** String converter */
   String __repr__() const override;

@@ -20,12 +20,12 @@ import numpy as np
 ot.Log.Show(ot.Log.NONE)
 
 # %%
-# We first define the time grid associated with the model. 
+# We first define the time grid associated with the model.
 
 # %%
-tmin=0.0 # Minimum time
-tmax=12. # Maximum time
-gridsize=100 # Number of time steps
+tmin = 0.0  # Minimum time
+tmax = 12.  # Maximum time
+gridsize = 100  # Number of time steps
 mesh = ot.IntervalMesher([gridsize-1]).build(ot.Interval(tmin, tmax))
 
 # %%
@@ -51,20 +51,20 @@ dimension
 
 
 # %%
-# Then we define the Python function which computes the altitude at each time value. In order to compute all altitudes with a vectorized evaluation, we first convert the vertices into a `numpy` `array` and use the `numpy` function `exp` and `maximum`: this increases the evaluation performance of the script. 
+# Then we define the Python function which computes the altitude at each time value. In order to compute all altitudes with a vectorized evaluation, we first convert the vertices into a `numpy` `array` and use the `numpy` function `exp` and `maximum`: this increases the evaluation performance of the script.
 
 # %%
 def AltiFunc(X):
-    g  = 9.81
+    g = 9.81
     z0 = X[0]
     v0 = X[1]
-    m  = X[2]
-    c  = X[3]
+    m = X[2]
+    c = X[3]
     tau = m / c
     vinf = - m * g / c
     t = np.array(vertices)
-    z = z0 + vinf * t + tau * (v0 - vinf) * (1 - np.exp( - t / tau))
-    z = np.maximum(z,0.)
+    z = z0 + vinf * t + tau * (v0 - vinf) * (1 - np.exp(- t / tau))
+    z = np.maximum(z, 0.)
     return [[zeta[0]] for zeta in z]
 
 
@@ -73,7 +73,8 @@ def AltiFunc(X):
 
 # %%
 outputDimension = 1
-alti = ot.PythonPointToFieldFunction(dimension, mesh, outputDimension, AltiFunc)
+alti = ot.PythonPointToFieldFunction(
+    dimension, mesh, outputDimension, AltiFunc)
 
 # %%
 # Sample trajectories

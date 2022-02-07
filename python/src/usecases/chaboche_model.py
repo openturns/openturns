@@ -4,12 +4,12 @@ Use case : the Chaboche mechanical model
 """
 from __future__ import print_function
 import openturns as ot
-import numpy as np
+import math as m
 
 
 def g(X):
     strain, R, C, gamma = X
-    stress = R + C * (1 - np.exp(-gamma * strain)) / gamma
+    stress = R - C * m.expm1(-gamma * strain) / gamma
     return [stress]
 
 
@@ -27,7 +27,7 @@ class ChabocheModel():
     Strain : `Uniform` distribution
               ot.Uniform(0.0, 0.07)
 
-    R : `Dirac` distribution 
+    R : `Dirac` distribution
         ot.Dirac(750.0e6)
 
     C : `Dirac` distribution
@@ -68,6 +68,8 @@ class ChabocheModel():
         self.Gamma = ot.Dirac(self.unknownGamma)
         self.Gamma.setDescription(["Gamma"])
 
-        self.inputDistribution = ot.ComposedDistribution([self.Strain, self.R, self.C, self.Gamma])
+        self.inputDistribution = ot.ComposedDistribution(
+            [self.Strain, self.R, self.C, self.Gamma])
 
         self.model = ot.PythonFunction(4, 1, g)
+        self.model.setInputDescription(["Strain", "R", "C", "Gamma"])

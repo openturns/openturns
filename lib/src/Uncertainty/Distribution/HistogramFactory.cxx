@@ -84,20 +84,16 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
     const Scalar bandwidth) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram based on an empty sample.";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build an Histogram only if dimension equals 1, here dimension=" << sample.getDimension();
   if (!(bandwidth > 0.0)) throw InvalidArgumentException(HERE) << "Error: expected a positive bandwidth, got bandwidth=" << bandwidth;
   // Construct the histogram
+  const Scalar mean = sample.computeMean()[0];
+  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
   // It will extends from min to max.
   const Scalar min = sample.getMin()[0];
   const Scalar max = sample.getMax()[0];
-  if (!SpecFunc::IsNormal(min) || !SpecFunc::IsNormal(max)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
-  if (max == min)
-  {
-    Histogram result(min - 0.5 * bandwidth, Point(1, bandwidth), Point(1, 1.0));
-    result.setDescription(sample.getDescription());
-    return result;
-  }
+  if (max == min) throw InvalidArgumentException(HERE) << "Error: cannot estimate an Histogram distribution from a constant sample.";
   const UnsignedInteger binNumber = static_cast<UnsignedInteger>(ceil((max - min) / bandwidth + 0.5));
   return buildAsHistogram(sample, binNumber);
 }
@@ -106,22 +102,16 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
     const UnsignedInteger binNumber) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram based on an empty sample.";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build an Histogram only if dimension equals 1, here dimension=" << sample.getDimension();
   if (binNumber == 0) throw InvalidArgumentException(HERE) << "Error: expected a positive number of bin, got 0.";
   // Construct the histogram
+  const Scalar mean = sample.computeMean()[0];
+  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
   // It will extends from min to max.
   const Scalar min = sample.getMin()[0];
   const Scalar max = sample.getMax()[0];
-  if (!SpecFunc::IsNormal(min) || !SpecFunc::IsNormal(max)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
-  if (max == min)
-  {
-    const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-DefaultCDFEpsilon");
-    const Scalar delta = std::max(std::abs(min), 10.0) * epsilon;
-    Histogram result(min - 0.5 * delta, Point(1, delta), Point(1, 1.0));
-    result.setDescription(sample.getDescription());
-    return result;
-  }
+  if (max == min) throw InvalidArgumentException(HERE) << "Error: cannot estimate an Histogram distribution from a constant sample.";
   // Adjust the bin with in order to match the bin number. Add a small adjustment in order to have bins defined as [x_k, x_k+1[ intervals
   const Scalar delta = ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon") * (max - min);
   const Scalar hOpt = ((max - min) + delta) / binNumber;
@@ -145,25 +135,19 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
     const Point & width) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram based on an empty sample.";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution from a sample of size < 2";
   if (sample.getDimension() != 1) throw InvalidArgumentException(HERE) << "Error: can build an Histogram only if dimension equals 1, here dimension=" << sample.getDimension();
   const UnsignedInteger binNumber = width.getSize();
   if (binNumber == 0) throw InvalidArgumentException(HERE) << "Error: expected a positive number of bin, got 0.";
   // Construct the histogram
   Point heights(binNumber);
+  const Scalar mean = sample.computeMean()[0];
+  if (!SpecFunc::IsNormal(mean)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
   // It will extends from min to max.
-  const Scalar minvalue = sample.getMin()[0];
-  const Scalar maxvalue = sample.getMax()[0];
-  if (!SpecFunc::IsNormal(minvalue) || !SpecFunc::IsNormal(maxvalue)) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution if data contains NaN or Inf";
-  if (maxvalue == minvalue)
-  {
-    const Scalar epsilon = ResourceMap::GetAsScalar("Distribution-DefaultCDFEpsilon");
-    const Scalar delta = std::max(std::abs(minvalue), 10.0) * epsilon;
-    Histogram result(minvalue - 0.5 * delta, Point(1, delta), Point(1, 1.0));
-    result.setDescription(sample.getDescription());
-    return result;
-  }
-  if (minvalue < first) throw InvalidArgumentException(HERE) << "Error: the minimum of the sample is smaller than first";
+  const Scalar xMin = sample.getMin()[0];
+  const Scalar xMax = sample.getMax()[0];
+  if (xMin == xMax) throw InvalidArgumentException(HERE) << "Error: cannot estimate an Histogram distribution from a constant sample.";
+  if (xMin < first) throw InvalidArgumentException(HERE) << "Error: the minimum of the sample is smaller than first";
   // Compute the right bound of the histogram = first + the sum of the widths
   Scalar rightBound = first;
   for(UnsignedInteger j = 0; j < binNumber; ++j)
@@ -171,7 +155,7 @@ Histogram HistogramFactory::buildAsHistogram(const Sample & sample,
     if (width[j] <= 0.) throw InvalidArgumentException(HERE) << "Error: at least one width is nonpositive";
     rightBound += width[j];
   }
-  if (maxvalue >= rightBound) throw InvalidArgumentException(HERE) << "Error: the maximum of the sample is greater than the right boundary of the histogram";
+  if (xMax >= rightBound) throw InvalidArgumentException(HERE) << "Error: the maximum of the sample is greater than the right boundary of the histogram";
   // Count the number of points in each class with a naive loop
   Scalar left = first;
   Scalar right;
@@ -209,7 +193,7 @@ Scalar HistogramFactory::computeBandwidth(const Sample & sample,
     const Bool useQuantile) const
 {
   const UnsignedInteger size = sample.getSize();
-  if (size == 0) throw InvalidArgumentException(HERE) << "Error: cannot compute the bandwidth based on an empty sample.";
+  if (size < 2) throw InvalidArgumentException(HERE) << "Error: cannot build an Histogram distribution from a sample of size < 2";
   Scalar hOpt = 0;
   if (useQuantile)
   {
@@ -222,13 +206,8 @@ Scalar HistogramFactory::computeBandwidth(const Sample & sample,
   if (hOpt == 0.0)
   {
     // We use the standard deviation
-    hOpt = sample.computeStandardDeviation()[0] * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0);
-    // If we get zero it is due to a constant sample
-    if (hOpt == 0.0)
-    {
-      LOGWARN(OSS() << "All the values are equal in the given sample. We switch to a bandwidth equal to QuantileEpsilon.");
-      hOpt =  ResourceMap::GetAsScalar("Distribution-DefaultQuantileEpsilon");
-    }
+    const Scalar sigma = sample.computeStandardDeviation()[0];
+    hOpt = sigma * std::pow(24.0 * std::sqrt(M_PI) / size, 1.0 / 3.0);
   }
   return hOpt;
 }

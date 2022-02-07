@@ -43,9 +43,6 @@ default_encoding = sys.getdefaultencoding()
 
 def check_param(obj, obj_type):
     """Assert obj as type obj_type."""
-    # int casts into long ; long is deprecated
-    if (obj_type == int) and (sys.version_info[0] < 3):
-        obj_type = long
 
     try:
         obj_type(obj)
@@ -152,9 +149,14 @@ def replace(infile, outfile, tokens, values, formats=None, encoding=default_enco
         shutil.move(outfile, infile)
 
 
-def execute(cmd, cwd=None, workdir=None, shell=False, is_shell=False,
-            executable=None, shell_exe=None, hide_win=True,
-            check=True, check_exit_code=True, get_stdout=False, get_stderr=False,
+class OTCalledProcessError(subprocess.CalledProcessError):
+    def __str__(self):
+        err_msg = (':\n' + self.stderr[:200].decode()) if self.stderr is not None else ''
+        return super(OTCalledProcessError, self).__str__() + err_msg
+
+
+def execute(cmd, cwd=None, shell=False, executable=None, hide_win=True,
+            check=True, capture_output=False, get_stdout=False, get_stderr=False,
             timeout=None, env=None):
     """
     Launch an external process.
@@ -173,10 +175,8 @@ def execute(cmd, cwd=None, workdir=None, shell=False, is_shell=False,
         Hide cmd.exe popup on windows platform.
     check : bool, default=True
         If set to True: raise RuntimeError if return code of process != 0
-    get_stdout : bool, default=False
-        Whether the standard output of the command is returned
-    get_stderr : bool, default=False
-        Whether the standard error of the command is returned
+    capture_output : bool, default=False
+        Whether the output/error streams will be captured
     timeout : int
         Process timeout (Python >=3.3 only)
         On timeout and if psutil is available the children of the process
@@ -186,12 +186,8 @@ def execute(cmd, cwd=None, workdir=None, shell=False, is_shell=False,
 
     Returns
     -------
-    ret : int
-        The exit code of the command
-    stdout_data : str
-        The stdout data if get_stdout parameter is set
-    stderr_data : str
-        The stderr data if get_stderr parameter is set
+    cp : subprocess.CompletedProcess
+        Process state info
 
     Raises
     ------
@@ -201,28 +197,20 @@ def execute(cmd, cwd=None, workdir=None, shell=False, is_shell=False,
     Examples
     --------
     >>> import openturns.coupling_tools as ct
-    >>> ret, stdout = ct.execute('echo 42', get_stdout=True, shell=True)
-    >>> ret
+    >>> cp = ct.execute('echo 42', capture_output=True, shell=True)
+    >>> cp.returncode
     0
-    >>> int(stdout)
+    >>> int(cp.stdout)
     42
     """
 
-    if workdir is not None:
-        warnings.warn('workdir is deprecated in favor of cwd', DeprecationWarning)
-        cwd = workdir
+    if get_stdout:
+        warnings.warn('get_stdout is deprecated in favor of capture_output', DeprecationWarning)
+        capture_output = True
 
-    if is_shell:
-        warnings.warn('is_shell is deprecated in favor of shell', DeprecationWarning)
-        shell = is_shell
-
-    if shell_exe is not None:
-        warnings.warn('shell_exe is deprecated in favor of executable', DeprecationWarning)
-        executable = shell_exe
-
-    if not check_exit_code:
-        warnings.warn('check_exit_code is deprecated in favor of check', DeprecationWarning)
-        check = check_exit_code
+    if get_stderr:
+        warnings.warn('get_stderr is deprecated in favor of capture_output', DeprecationWarning)
+        capture_output = True
 
     # split cmd if not in a shell before passing it to os.execvp()
     try:
@@ -241,47 +229,36 @@ def execute(cmd, cwd=None, workdir=None, shell=False, is_shell=False,
         else:
             startupinfo.dwFlags |= 1
 
-    stdout = subprocess.PIPE if get_stdout else None
-    stderr = subprocess.PIPE if get_stderr else None
-    proc = subprocess.Popen(process_args, shell=shell, cwd=cwd,
-                            executable=executable, stdout=stdout, stderr=stderr,
-                            startupinfo=startupinfo, env=env)
-    if sys.version_info >= (3, 3,):
+    stdout = subprocess.PIPE if capture_output else None
+    stderr = subprocess.PIPE if capture_output else None
+    process = subprocess.Popen(process_args, shell=shell, cwd=cwd,
+                              executable=executable, stdout=stdout, stderr=stderr,
+                              startupinfo=startupinfo, env=env)
+    stdout_data = None
+    stderr_data = None
+    try:
+        stdout_data, stderr_data = process.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        # kill children is psutil is available
         try:
-            stdout_data, stderr_data = proc.communicate(timeout=timeout)
-        except subprocess.TimeoutExpired:
-            # kill children is psutil is available
-            try:
-                import psutil
-            except ImportError:
-                pass
-            else:
-                parent = psutil.Process(proc.pid)
-                for child in parent.children(recursive=True):
-                    child.kill()
-            proc.kill()
-            stdout_data, stderr_data = proc.communicate()
-            raise RuntimeError('Command "' + cmd + '" times out after ' +
-                               str(timeout) + 's')
-    else:
-        stdout_data, stderr_data = proc.communicate()
-    ret = proc.poll()
+            import psutil
+        except ImportError:
+            pass
+        else:
+            parent = psutil.Process(process.pid)
+            for child in parent.children(recursive=True):
+                child.kill()
+        process.kill()
+        stdout_data, stderr_data = process.communicate()
+        raise RuntimeError('Command "' + cmd + '" times out after ' +
+                            str(timeout) + 's')
+    returncode = process.poll()
 
     # check return code
-    if check and ret != 0:
-        # append sample of stderr to the exception message if available
-        err_msg = (':\n' + stderr_data[:200].decode()
-                   ) if stderr_data is not None else ''
-        raise RuntimeError('Command "' + cmd +
-                           '" returned exit code ' + str(ret) + err_msg)
+    if check and returncode:
+        raise OTCalledProcessError(returncode, cmd, stdout_data, stderr_data)
 
-    if get_stdout and get_stderr:
-        return ret, stdout_data, stderr_data
-    elif get_stdout:
-        return ret, stdout_data
-    elif get_stderr:
-        return ret, stderr_data
-    return ret
+    return subprocess.CompletedProcess(cmd, returncode, stdout=stdout_data, stderr=stderr_data)
 
 
 def get_regex(filename, patterns, encoding=default_encoding):

@@ -262,7 +262,7 @@ graph.setLegends(["original", "KS", "KS with boundary correction"])
 graph.setLegendPosition("topright")
 view = viewer.View(graph)
 
-#%%
+# %%
 # The boundary correction made has a remarkable impact on the quality of the estimate for the small values.
 
 

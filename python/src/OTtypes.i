@@ -1,7 +1,5 @@
 // SWIG file OTtypes.i
 
-%module types
-
 %include std_string.i
 %include std_map.i
 %include std_complex.i
@@ -46,3 +44,4 @@
 %define OTAutodoc(PythonClass)
 %feature("autodoc", "Proxy of C++ OT::" #PythonClass ".") OT::PythonClass;
 %enddef
+

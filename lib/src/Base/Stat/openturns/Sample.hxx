@@ -49,7 +49,7 @@ public:
 
   /** Factory of Sample from CSV file */
   static Sample ImportFromCSVFile(const FileName & fileName,
-                                  const String & csvSeparator = ResourceMap::GetAsString( "csv-file-separator" ));
+                                  const String & csvSeparator = ResourceMap::GetAsString( "Sample-CSVFileSeparator" ));
 
   /** Factory of Sample from Text file */
   static Sample ImportFromTextFile(const FileName & fileName,
@@ -61,7 +61,10 @@ public:
 
   /** Export Sample into CSV file */
   void exportToCSVFile(const FileName & fileName,
-                       const String & csvSeparator = ResourceMap::GetAsString( "csv-file-separator" )) const;
+                       const String & csvSeparator = ResourceMap::GetAsString( "Sample-CSVFileSeparator" ),
+                       const String & numSeparator = ".",
+                       const UnsignedInteger precision = ResourceMap::GetAsUnsignedInteger("Sample-CSVPrecision"),
+                       const String & format = ResourceMap::Get("Sample-CSVFormat")) const;
 
   /** Export a sample as a matrix, one row by realization, in a format suitable to exchange with R. */
   String streamToRFormat() const;
@@ -208,11 +211,6 @@ public:
    * Method computeVariance() gives the variance of the sample (by component)
    */
   Point computeVariance() const;
-
-  /**
-   * @deprecated Method computeStandardDeviationPerComponent() gives the standard deviation of each component of the sample
-   */
-  Point computeStandardDeviationPerComponent() const;
 
   /**
    * Method computePearsonCorrelation() gives the Pearson correlation matrix of the sample

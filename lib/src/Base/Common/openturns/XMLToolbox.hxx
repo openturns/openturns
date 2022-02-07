@@ -26,14 +26,19 @@
 #include "openturns/OTprivate.hxx"
 #include "openturns/OTconfig.hxx"
 
-#if defined OPENTURNS_HAVE_LIBXML2
-#include <libxml/parser.h>
-#define XML_SUPPORTED
-#endif
+
+// pre-declare libxml types
+struct _xmlDoc;
+typedef struct _xmlDoc xmlDoc;
+typedef xmlDoc * xmlDocPtr;
+
+struct _xmlNode;
+typedef struct _xmlNode xmlNode;
+typedef xmlNode * xmlNodePtr;
+typedef unsigned char xmlChar;
 
 BEGIN_NAMESPACE_OPENTURNS
 
-#if defined OPENTURNS_HAVE_LIBXML2
 
 /**
  * @class XMLDoc
@@ -149,7 +154,6 @@ protected:
 
 OT_API std::ostream & operator <<(std::ostream & os, const xmlNodePtr & node);
 
-#endif /* OPENTURNS_HAVE_LIBXML2 */
 
 END_NAMESPACE_OPENTURNS
 

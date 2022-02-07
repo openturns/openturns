@@ -17,7 +17,7 @@ ot.Log.Show(ot.Log.NONE)
 # %%
 # assume f, g functions
 g = ot.SymbolicFunction(['x1', 'x2'],
-                        ['x1 + x2','3 * x1 * x2'])
+                        ['x1 + x2', '3 * x1 * x2'])
 f = ot.SymbolicFunction(['x1', 'x2'], ['2 * x1 - x2'])
 
 # %%

@@ -74,18 +74,20 @@ Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Point & tau) const
 {
   if (tau.getDimension() != inputDimension_)
     throw InvalidArgumentException(HERE) << "In ExponentiallyDampedCosineModel::computeAsScalar: expected a shift of dimension=" << inputDimension_ << ", got dimension=" << tau.getDimension();
-  Point tauOverTheta(inputDimension_);
+  Scalar absTau = 0;
   for (UnsignedInteger i = 0; i < inputDimension_; ++i)
-    tauOverTheta[i] = tau[i] / scale_[i];
-
-  const Scalar absTau = tauOverTheta.norm();
+  {
+    const Scalar dx = tau[i] / scale_[i];
+    absTau += dx * dx;
+  }
+  absTau = sqrt(absTau);
   if (absTau <= SpecFunc::ScalarEpsilon)
-    return 1.0 + nuggetFactor_;
-  return amplitude_[0] * exp(-absTau) * cos(2.0 * M_PI * absTau);
+    return amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_);
+  return amplitude_[0] * amplitude_[0] * exp(-absTau) * cos(2.0 * M_PI * frequency_ * absTau);
 }
 
 Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Collection<Scalar>::const_iterator &s_begin,
-                                                                     const Collection<Scalar>::const_iterator &t_begin) const
+    const Collection<Scalar>::const_iterator &t_begin) const
 {
   Scalar absTau = 0;
   Collection<Scalar>::const_iterator s_it = s_begin;
@@ -98,30 +100,20 @@ Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Collection<Scalar>:
   absTau = sqrt(absTau);
   if (absTau <= SpecFunc::ScalarEpsilon)
     return amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_);
-  return amplitude_[0] * amplitude_[0] * exp(-absTau) * cos(2.0 * M_PI * absTau);
+  return amplitude_[0] * amplitude_[0] * exp(-absTau) * cos(2.0 * M_PI * frequency_ * absTau);
 }
 
-/* Discretize the covariance function on a given TimeGrid */
-CovarianceMatrix ExponentiallyDampedCosineModel::discretize(const RegularGrid & timeGrid) const
+Scalar ExponentiallyDampedCosineModel::computeAsScalar(const Scalar tau) const
 {
-  const UnsignedInteger size = timeGrid.getN();
-  const UnsignedInteger fullSize = size * outputDimension_;
-  const Scalar timeStep = timeGrid.getStep();
+  if (inputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has input dimension=" << inputDimension_ << ", expected input dimension=1.";
+  if (outputDimension_ != 1)
+    throw NotDefinedException(HERE) << "Error: the covariance model has output dimension=" << outputDimension_ << ", expected dimension=1.";
 
-  CovarianceMatrix cov(fullSize);
-
-  // The stationary property of this model allows to optimize the discretization
-  // over a regular time grid: the large covariance matrix is block-diagonal
-  // Fill the matrix by block-diagonal
-  // The main diagonal has a specific treatment as only its lower triangular part
-  // has to be copied
-  for (UnsignedInteger diag = 0; diag < size; ++diag)
-  {
-    const Scalar covTau = computeAsScalar(Point(1, diag * timeStep));
-    for (UnsignedInteger i = 0; i < size - diag; ++i) cov(i, i + diag) = covTau;
-  }
-
-  return cov;
+  const Scalar absTau = std::abs(tau / scale_[0]);
+  if (absTau <= SpecFunc::ScalarEpsilon)
+    return amplitude_[0] * amplitude_[0] * (1.0 + nuggetFactor_);
+  return amplitude_[0] * amplitude_[0] * exp(-absTau) * cos(2.0 * M_PI * frequency_ * absTau);
 }
 
 /* String converter */

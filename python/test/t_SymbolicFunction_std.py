@@ -183,8 +183,9 @@ except:
     print(f, ", f([-1]) not defined")
 
 f = ot.SymbolicFunction("x", "sqrt(x)")
-f.getEvaluation().getImplementation().setCheckOutput(False)
-print(f, ", f([-1]) is normal?", ot.SpecFunc.IsNormal(f([-1.0])[0]))
+ev = f.getEvaluation()
+ev.setCheckOutput(False) # triggers copyOnWrite, ev is no longer the Evaluation of f
+print(f, ", f([-1]) is normal?", ot.SpecFunc.IsNormal(ev([-1.0])[0]))
 
 # joe copula bug
 f = ot.SymbolicFunction(['t'], ['(t*3)^(-1)'])

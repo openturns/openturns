@@ -93,6 +93,17 @@ Scalar CovarianceModel::computeAsScalar(const Point &tau) const
   return getImplementation()->computeAsScalar(tau);
 }
 
+Scalar CovarianceModel::computeAsScalar(const Scalar s,
+                                        const Scalar t) const
+{
+  return getImplementation()->computeAsScalar(s, t);
+}
+
+Scalar CovarianceModel::computeAsScalar(const Scalar tau) const
+{
+  return getImplementation()->computeAsScalar(tau);
+}
+
 SquareMatrix CovarianceModel::operator() (const Scalar tau) const
 {
   return getImplementation()->operator() (tau);
@@ -137,6 +148,24 @@ Sample CovarianceModel::discretizeRow(const Sample & vertices,
                                       const UnsignedInteger p) const
 {
   return getImplementation()->discretizeRow(vertices, p);
+}
+
+Matrix CovarianceModel::computeCrossCovariance(const Sample &firstSample,
+    const Sample &secondSample) const
+{
+  return getImplementation()->computeCrossCovariance(firstSample, secondSample);
+}
+
+Matrix CovarianceModel::computeCrossCovariance(const Sample &sample,
+    const Point &point) const
+{
+  return getImplementation()->computeCrossCovariance(sample, point);
+}
+
+Matrix CovarianceModel::computeCrossCovariance(const Point &point,
+    const Sample &sample) const
+{
+  return getImplementation()->computeCrossCovariance(point, sample);
 }
 
 /** Discretize and factorize the covariance function on a given TimeGrid/Mesh */

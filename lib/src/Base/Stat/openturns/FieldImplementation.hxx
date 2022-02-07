@@ -26,7 +26,6 @@
 #include "openturns/Sample.hxx"
 #include "openturns/Mesh.hxx"
 #include "openturns/RegularGrid.hxx"
-#include "openturns/TBB.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 

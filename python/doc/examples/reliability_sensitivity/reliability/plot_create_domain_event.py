@@ -66,25 +66,25 @@ event = ot.DomainEvent(vecY, domain)
 # %%
 # We  represent the first marginal of `vecY`.
 ot.ResourceMap_SetAsUnsignedInteger("Contour-DefaultLevelsNumber", 7)
-graphModel0 = f.draw(0, 1, 0, [0.0, 0.0], [-5.0, -5.0],[5.0,5.0])
+graphModel0 = f.draw(0, 1, 0, [0.0, 0.0], [-5.0, -5.0], [5.0, 5.0])
 graphModel0.setXTitle(r'$x_1$')
 graphModel0.setYTitle(r'$x_2$')
 graphModel0.setTitle(r'Isolines of the model : $Y = f(X)$, first marginal')
 
 # %%
 # We represent the second marginal of `vecY`.
-graphModel1 = f.draw(0, 1, 1, [0.0, 0.0], [-5.0, -5.0],[5.0,5.0])
+graphModel1 = f.draw(0, 1, 1, [0.0, 0.0], [-5.0, -5.0], [5.0, 5.0])
 graphModel1.setXTitle(r'$x_1$')
 graphModel1.setYTitle(r'$x_2$')
 graphModel1.setTitle(r'Isolines of the model : $Y = f(X)$, second marginal')
 
 # %%
 # We shall now represent the curves delimiting the domain of interest :
-# 
+#
 nx, ny = 15, 15
 xx = ot.Box([nx], ot.Interval([-5.0], [5.0])).generate()
 yy = ot.Box([ny], ot.Interval([-5.0], [5.0])).generate()
-inputData = ot.Box([nx,ny], ot.Interval([-5.0, -5.0], [5.0, 5.0])).generate()
+inputData = ot.Box([nx, ny], ot.Interval([-5.0, -5.0], [5.0, 5.0])).generate()
 outputData = f(inputData)
 
 # %%
@@ -123,19 +123,20 @@ view = otv.View(graphModel1)
 # The domain event :math:`\mathcal{D}` is the intersection of these two areas.
 # Here the intersection of both events is a parallelogram with the following
 # vertices :
-data = [[0.0, 0.0], [0.5, -0.5], [0.5, 0.5],[0.0, 1.0],[0.0,0.0]]
+data = [[0.0, 0.0], [0.5, -0.5], [0.5, 0.5], [0.0, 1.0], [0.0, 0.0]]
 
 # %%
 # We create a polygon from these vertices with the :class:`~openturns.Polygon`
-# class : that is our domain event. 
+# class : that is our domain event.
 myGraph = ot.Graph('Domain event', r'$x_1$', r'$x_2$', True, '', 1.0)
 myPolygon = ot.Polygon(data)
 myPolygon.setColor('darkgray')
 myPolygon.setEdgeColor('darkgray')
 myGraph.add(myPolygon)
 
-# Some annotation                                                                             
-texts = [r'$\mathcal{D} = \{ x=(x_1, x_2) \in \mathbb{R}^2 / x_1+x_2 \in [0,1] \mathrm{~and~} 2x_1 \in [0,1] \}$']
+# Some annotation
+texts = [
+    r'$\mathcal{D} = \{ x=(x_1, x_2) \in \mathbb{R}^2 / x_1+x_2 \in [0,1] \mathrm{~and~} 2x_1 \in [0,1] \}$']
 
 myText = ot.Text([0.25], [0.0], texts)
 myText.setTextSize(1)
@@ -175,8 +176,8 @@ algoMC.setMaximumOuterSampling(1000)
 algoMC.setBlockSize(100)
 algoMC.setMaximumCoefficientOfVariation(0.02)
 algoMC.run()
-#print(algoMC.getResult())
-print("Pf = %.4f"%algoMC.getResult().getProbabilityEstimate() )
+# print(algoMC.getResult())
+print("Pf = %.4f" % algoMC.getResult().getProbabilityEstimate())
 
 
 # %%
@@ -187,8 +188,8 @@ view = otv.View(graphConvergence)
 # %%
 # We can use the `getSample` method of the event to estimate the probability :math:`P_f`. This method draws realizations of the underlying random input vector `vecX` and returns `True` if the corresponding output random vector is in the domain event. Then the ratio between the number of realizations in the domain and the total of realizations is a rough estimate of the probability :math:`P_f` which we compare with the previous MC estimator.
 N = 30000
-samples =  event.getSample(N)
-print( "Basic estimator : %.4f"%(sum(samples)[0] / N) )
+samples = event.getSample(N)
+print("Basic estimator : %.4f" % (sum(samples)[0] / N))
 
 
 # %%

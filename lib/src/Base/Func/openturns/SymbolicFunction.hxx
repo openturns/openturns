@@ -59,7 +59,10 @@ public:
   String __repr__() const override;
   String __str__(const String & offset = "") const override;
 
-  /** Static methods for documentation of analytical fnctions */
+  /** Accessor to the formulas */
+  Description getFormulas() const;
+
+  /** Static methods for documentation of analytical fonctions */
   static Description GetValidParsers();
   static Description GetValidConstants();
   static Description GetValidFunctions();

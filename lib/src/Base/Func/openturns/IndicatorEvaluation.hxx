@@ -24,8 +24,7 @@
 #define OPENTURNS_INDICATORNUMERICALMATHFUNCTIONIMPLEMENTATION_HXX
 
 #include "openturns/EvaluationImplementation.hxx"
-#include "openturns/Evaluation.hxx"
-#include "openturns/ComparisonOperator.hxx"
+#include "openturns/Domain.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -47,9 +46,7 @@ public:
   IndicatorEvaluation();
 
   /** Default constructor */
-  IndicatorEvaluation(const Evaluation & evaluation,
-                      const ComparisonOperator & comparisonOperator,
-                      const Scalar threshold);
+  IndicatorEvaluation(const Domain & domain);
 
   /** Virtual constructor */
   IndicatorEvaluation * clone() const override;
@@ -63,18 +60,7 @@ public:
   /** Operator () */
   using EvaluationImplementation::operator();
   Point operator() (const Point & inP) const override;
-
-  /** Accessor for the underlying evaluation */
-  Evaluation getEvaluation() const;
-  void setEvaluation(const Evaluation & evaluation);
-
-  /** Accessor for the comparison operator */
-  ComparisonOperator getComparisonOperator() const;
-  void setComparisonOperator(const ComparisonOperator & comparisonOperator);
-
-  /** Accessor for the threshold */
-  Scalar getThreshold() const;
-  void setThreshold(const Scalar threshold);
+  Sample operator() (const Sample & inSample) const override;
 
   /** Accessor for input point dimension */
   UnsignedInteger getInputDimension() const override;
@@ -90,9 +76,7 @@ public:
 
 private:
 
-  Evaluation evaluation_;
-  ComparisonOperator comparisonOperator_;
-  Scalar threshold_;
+  Domain domain_;
 
 }; /* class IndicatorEvaluation */
 

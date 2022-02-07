@@ -12,6 +12,10 @@ ot.ResourceMap.SetAsBool('Distribution-MinimumVolumeLevelSetBySampling', True)
 ot.ResourceMap.SetAsUnsignedInteger(
     'Distribution-MinimumVolumeLevelSetSamplingSize', 500)
 
+# 1-d test
+dists = [ot.Normal(-1.0, 1.0), ot.Normal(2.0, 1.5)]
+mixture = ot.Mixture(dists)
+
 # 2-d test
 dists = [ot.Normal([-1.0, 2.0], [1.0]*2, ot.CorrelationMatrix(2)),
          ot.Normal([1.0, -2.0], [1.5]*2, ot.CorrelationMatrix(2))]
@@ -51,7 +55,7 @@ contour_alpha = [0.1, 0.5, 0.8]
 graph4 = algo.drawContour(contour_alpha)
 graph5 = algo.drawContourAndSample(contour_alpha, sample, [0, 1])
 
-algo = ot.MinimumVolumeClassifier(distribution, [0.2,0.5,0.8])
+algo = ot.MinimumVolumeClassifier(distribution, [0.2, 0.5, 0.8])
 threshold = algo.getThreshold()
 print("threshold=", threshold)
 for i in range(35):
@@ -65,8 +69,8 @@ graph7 = algo.drawContourAndSample(contour_alpha, sample, [0, 1, 2, 3])
 
 if 0:
     from openturns.viewer import View
-    #View(graph3).show()
-    #View(graph4).show()
+    # View(graph3).show()
+    # View(graph4).show()
     view = View(graph5)
     view.save('mvc.png')
     View(graph6).show()

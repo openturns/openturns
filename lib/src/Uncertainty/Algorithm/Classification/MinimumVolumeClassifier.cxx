@@ -47,7 +47,7 @@ MinimumVolumeClassifier::MinimumVolumeClassifier(const Distribution & distributi
   if (!distribution.isContinuous())
     throw InvalidArgumentException(HERE) << "Distribution must be continuous";
   std::sort(alpha_.begin(), alpha_.end());
-  std::unique(alpha_.begin(), alpha_.end());
+  (void)std::unique(alpha_.begin(), alpha_.end());
   if (alpha != alpha_)
     throw InvalidArgumentException(HERE) << "Alpha must be sorted and unique";
   const UnsignedInteger size = alpha_.getSize();
@@ -209,12 +209,10 @@ GridLayout MinimumVolumeClassifier::drawContour(const Point & contourAlpha) cons
 GridLayout MinimumVolumeClassifier::drawSample(const Sample & sample, const Indices & classes) const
 {
   const UnsignedInteger dimension = distribution_.getDimension();
-  if (dimension < 2)
-    throw InvalidArgumentException(HERE) << "Cannot draw 1-d sample";
   if (sample.getDimension() != distribution_.getDimension())
     throw InvalidArgumentException(HERE) << "Error: the sample has dimension=" << sample.getDimension() << " but the classifier expects dimension=" << dimension;
   if (classes.isEmpty() || !classes.check(getNumberOfClasses()))
-    throw InvalidArgumentException(HERE) << "Classes must be in [0,"<<getNumberOfClasses()<<"[";
+    throw InvalidArgumentException(HERE) << "Classes must be in [0," << getNumberOfClasses() << "[";
   GridLayout grid(dimension - 1, dimension - 1);
   const Description description(distribution_.getDescription());
 
@@ -230,19 +228,34 @@ GridLayout MinimumVolumeClassifier::drawSample(const Sample & sample, const Indi
     }
   }
   Description colors = DrawableImplementation::BuildDefaultPalette(getNumberOfClasses());
-  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  if (dimension == 1)
   {
-    for (UnsignedInteger j = 0; j < i; ++ j)
+    grid = GridLayout(1, 1);
+    Graph graph("", description[0], "", true, "topright");
+    for (UnsignedInteger k = 0; k < classes.getSize(); ++ k)
     {
-      const Indices indices = {j, i};
-      Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
-      for (UnsignedInteger k = 0; k < classes.getSize(); ++ k)
-        if (classes.getSize() > k)
+      Sample sampleXC(separatedSamples[k]);
+      sampleXC.stack(Sample(sampleXC.getSize(), 1));
+      const Cloud cloud(sampleXC, colors[classes[k]], "fsquare", "");
+      graph.add(cloud);
+    }
+    grid.setGraph(0, 0, graph);
+  }
+  else
+  {
+    for (UnsignedInteger i = 0; i < dimension; ++ i)
+    {
+      for (UnsignedInteger j = 0; j < i; ++ j)
+      {
+        const Indices indices = {j, i};
+        Graph graph("", i == dimension - 1 ? description[j] : "", j == 0 ? description[i] : "", true, "topright");
+        for (UnsignedInteger k = 0; k < classes.getSize(); ++ k)
         {
           const Cloud cloud(separatedSamples[k].getMarginal(indices), colors[classes[k]], "fsquare", "");
           graph.add(cloud);
         }
-      grid.setGraph(i - 1, j, graph);
+        grid.setGraph(i - 1, j, graph);
+      }
     }
   }
   return grid;
@@ -254,12 +267,13 @@ GridLayout MinimumVolumeClassifier::drawContourAndSample(const Point & alpha, co
   const UnsignedInteger dimension = distribution_.getDimension();
   GridLayout grid(drawContour(alpha));
   GridLayout gridSamples(drawSample(sample, classes));
-  for (UnsignedInteger i = 0; i < dimension; ++ i)
+  if (dimension == 1)
+    grid.getGraph(0, 0).getImplementation()->add(*gridSamples.getGraph(0, 0).getImplementation());
+  else
   {
-    for (UnsignedInteger j = 0; j < i; ++ j)
-    {
-      grid.getGraph(i, j).getImplementation()->add(*gridSamples.getGraph(i - 1, j).getImplementation());
-    }
+    for (UnsignedInteger i = 0; i < dimension; ++ i)
+      for (UnsignedInteger j = 0; j < i; ++ j)
+        grid.getGraph(i, j).getImplementation()->add(*gridSamples.getGraph(i - 1, j).getImplementation());
   }
   return grid;
 }

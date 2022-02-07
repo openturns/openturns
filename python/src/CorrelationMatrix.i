@@ -9,7 +9,7 @@
 %apply const ScalarCollection & { const OT::CorrelationMatrix::ScalarCollection & };
 
 %typemap(in) const CorrelationMatrix & ($1_basetype temp) {
-  if (! SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, 0))) {
+  if (!SWIG_IsOK(SWIG_ConvertPtr($input, (void **) &$1, $1_descriptor, SWIG_POINTER_NO_NULL))) {
     try {
       temp = OT::convert<OT::_PySequence_, OT::CorrelationMatrix>($input);
       $1 = &temp;
@@ -20,7 +20,7 @@
 }
 
 %typemap(typecheck,precedence=SWIG_TYPECHECK_POINTER) const CorrelationMatrix & {
-  $1 = ($input != Py_None) && (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, 0)) ||
+  $1 = (SWIG_IsOK(SWIG_ConvertPtr($input, NULL, $1_descriptor, SWIG_POINTER_NO_NULL)) ||
        OT::isAPythonBufferOf<OT::Scalar, 2>($input) || OT::isAPythonSequenceOf<OT::_PySequence_>($input));
 }
 

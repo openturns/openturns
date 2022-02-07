@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 import openturns as ot
+from openturns.usecases import ishigami_function
 
 ot.TESTPREAMBLE()
 
@@ -161,3 +162,33 @@ for method in methods:
     interval_to = sensitivity_algorithm.getTotalOrderIndicesInterval()
     print("Aggregated first order indices interval = ", interval_fo)
     #print("Aggregated total order indices interval = ", interval_to)
+
+# setDesign must reset results across runs
+ot.Log.Show(ot.Log.NONE)
+im = ishigami_function.IshigamiModel()
+exact_first_order = ot.Point([im.S1, im.S2, im.S3])
+exact_total_order = ot.Point([im.ST1, im.ST2, im.ST3])
+sobolIndicesAlgorithmB = ot.SaltelliSensitivityAlgorithm()
+for sample_size in [100, 1000, 10000]:
+    print("Size:", sample_size)
+
+    # Method A : classical
+    X = ot.SobolIndicesExperiment(im.distributionX, sample_size).generate()
+    Y = im.model(X)
+    sobolIndicesAlgorithmA = ot.SaltelliSensitivityAlgorithm(X, Y, sample_size)
+    computed_first_orderA = sobolIndicesAlgorithmA.getFirstOrderIndices()
+    computed_total_orderA = sobolIndicesAlgorithmA.getTotalOrderIndices()
+    first_error = computed_first_orderA - exact_first_order
+    total_error = computed_total_orderA - exact_total_order
+    print("Method A :", first_error, total_error)
+
+    # Method B : setDesign
+    sobolIndicesAlgorithmB.setDesign(X, Y, sample_size)
+    computed_first_orderB = sobolIndicesAlgorithmB.getFirstOrderIndices()
+    computed_total_orderB = sobolIndicesAlgorithmB.getTotalOrderIndices()
+
+    first_error = computed_first_orderB - exact_first_order
+    total_error = computed_total_orderB - exact_total_order
+    print("Method B :", first_error, total_error)
+    assert computed_first_orderB == computed_first_orderA, "wrong first"
+    assert computed_total_orderB == computed_total_orderA, "wrong total"

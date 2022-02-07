@@ -1,0 +1,24 @@
+%feature("docstring") OT::DistanceToDomainFunction
+"Function which outputs the Euclidean distance to a :class:`~openturns.Domain` :math:`\mathcal{D}`.
+
+.. math::
+
+    \left.\begin{array}{rcl}
+                  \Rset^n & \rightarrow & [0, +\infty( \\
+                  \vect{X} & \mapsto & \displaystyle \inf \{ \| \vect{X} - \vect{Y} \| : \vect{Y} \in \mathcal{D} \}
+           \end{array} \right.
+
+Parameters
+----------
+domain : :class:`~openturns.Domain`
+    The :class:`~openturns.Function` will output the Euclidean distance to this domain.
+
+Examples
+--------
+Distance to an :class:`~openturns.Interval`:
+
+>>> import openturns as ot
+>>> domain = ot.Interval([0.0, 1.0], [1.0, 3.0])
+>>> distanceToDomain = ot.DistanceToDomainFunction(domain)
+>>> print(distanceToDomain([1.2, 1.5]))
+[0.2]"

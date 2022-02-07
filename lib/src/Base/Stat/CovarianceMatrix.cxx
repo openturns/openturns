@@ -45,6 +45,13 @@ CovarianceMatrix::CovarianceMatrix(const MatrixImplementation & i)
   // Nothing to do
 }
 
+/* Constructor from SymmetricMatrix */
+CovarianceMatrix::CovarianceMatrix(const SymmetricMatrix & sym)
+  : SymmetricMatrix(sym)
+{
+  // Nothing to do
+}
+
 /* Constructor with size (dim, which is the same for nbRows_ and nbColumns_ )*/
 CovarianceMatrix::CovarianceMatrix(const UnsignedInteger dim)
   : SymmetricMatrix(dim)

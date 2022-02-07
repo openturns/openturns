@@ -33,15 +33,6 @@
 #include "openturns/OTconfig.hxx"
 #include "openturns/SpecFunc.hxx"
 
-
-#ifndef WIN32
-#ifndef SWIG
-#ifndef XML_SUPPORTED
-#error "XML support is mandatory. Check configuration."
-#endif
-#endif
-#endif
-
 BEGIN_NAMESPACE_OPENTURNS
 
 
@@ -60,8 +51,8 @@ XMLStorageManager::XMLStorageManager(const FileName & filename,
                                      const UnsignedInteger compressionLevel)
   : StorageManager(OPENTURNS_VERSION),
     p_state_(new XMLStorageManagerState),
-    fileName_(filename),
     p_document_(),
+    fileName_(filename),
     compressionLevel_(std::min(compressionLevel, 9UL))
 {
   // Nothing to do
@@ -126,7 +117,24 @@ void XMLStorageManager::initialize(const SaveAction )
   p_state_->root_ = XML::NewNode( XML_STMGR::root_tag::Get() );
   XML::SetAttribute(p_state_->root_, XML_STMGR::version_attribute::Get(), oss);
   XML::SetRootNode(*p_document_, p_state_->root_);
+  setStorageManager();
 }
+
+
+void XMLStorageManager::setStorageManager()
+{
+  XML::SetAttribute(p_state_->root_, XML_STMGR::manager_attribute::Get(), "XMLStorageManager");
+}
+
+
+void XMLStorageManager::checkStorageManager()
+{
+  if (XML::GetAttributeByName( p_state_->root_, XML_STMGR::manager_attribute::Get()) !=
+      "XMLStorageManager")
+    throw StudyFileParsingException(HERE) << XML::GetAttributeByName( p_state_->root_, XML_STMGR::manager_attribute::Get())
+                                          << " is used in study file. XMLStorageManager is expected";
+}
+
 
 /* Do some administrative tasks before saving/reloading */
 void XMLStorageManager::initialize(const LoadAction )
@@ -163,6 +171,9 @@ void XMLStorageManager::read()
   std::istringstream iss (stul);
   iss >> version;
   setStudyVersion(version);
+  if (!XML::ElementHasAttribute( p_state_->root_, XML_STMGR::manager_attribute::Get()))
+    setStorageManager();
+  checkStorageManager();
 }
 
 /* Write the internal representation */

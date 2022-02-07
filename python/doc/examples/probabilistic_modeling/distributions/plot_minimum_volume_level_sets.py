@@ -8,7 +8,7 @@ import openturns.viewer as viewer
 from matplotlib import pylab as plt
 ot.Log.Show(ot.Log.NONE)
 
-# %% 
+# %%
 # Draw minimum volume level set in 1D
 # -----------------------------------
 #
@@ -42,9 +42,9 @@ levelSet.contains([0.])
 
 
 # %%
-def computeSampleInLevelSet(distribution, levelSet, sampleSize = 1000):
+def computeSampleInLevelSet(distribution, levelSet, sampleSize=1000):
     """
-    Generate a sample from given distribution. 
+    Generate a sample from given distribution.
     Extract the sub-sample which is contained in the levelSet.
     """
     sample = distribution.getSample(sampleSize)
@@ -56,7 +56,7 @@ def computeSampleInLevelSet(distribution, levelSet, sampleSize = 1000):
             inLevelSet.append(x)
     # Extract the sub-sample of the points in the LevelSet
     numberOfPointsInLevelSet = len(inLevelSet)
-    inLevelSetSample = ot.Sample(numberOfPointsInLevelSet,dim)
+    inLevelSetSample = ot.Sample(numberOfPointsInLevelSet, dim)
     for i in range(numberOfPointsInLevelSet):
         inLevelSetSample[i] = inLevelSet[i]
     return inLevelSetSample
@@ -68,24 +68,25 @@ def from1Dto2Dsample(oldSample):
     Create a 2D sample from a 1D sample with zero ordinate (for the graph).
     """
     size = oldSample.getSize()
-    newSample = ot.Sample(size,2)
+    newSample = ot.Sample(size, 2)
     for i in range(size):
-        newSample[i,0] = oldSample[i,0]
+        newSample[i, 0] = oldSample[i, 0]
     return newSample
 
 
 # %%
-def drawLevelSet1D(distribution, levelSet, alpha, threshold, sampleSize = 100):
+def drawLevelSet1D(distribution, levelSet, alpha, threshold, sampleSize=100):
     '''
     Draw a 1D sample included in a given levelSet.
     The sample is generated from the distribution.
     '''
-    inLevelSample = computeSampleInLevelSet(distribution,levelSet,sampleSize)
+    inLevelSample = computeSampleInLevelSet(distribution, levelSet, sampleSize)
     cloudSample = from1Dto2Dsample(inLevelSample)
     graph = distribution.drawPDF()
     mycloud = ot.Cloud(cloudSample)
     graph.add(mycloud)
-    graph.setTitle("%.2f%% of the distribution, sample size = %d, " % (100*alpha, sampleSize))
+    graph.setTitle("%.2f%% of the distribution, sample size = %d, " %
+                   (100*alpha, sampleSize))
     return graph
 
 
@@ -111,10 +112,11 @@ def drawPDFAndInterval1D(distribution, interval, alpha):
     xmax = interval.getUpperBound()[0]
     graph = distribution.drawPDF()
     yvalue = distribution.computePDF(xmin)
-    curve = ot.Curve([[xmin,0.],[xmin,yvalue],[xmax,yvalue],[xmax,0.]])
+    curve = ot.Curve([[xmin, 0.], [xmin, yvalue], [xmax, yvalue], [xmax, 0.]])
     curve.setColor("black")
     graph.add(curve)
-    graph.setTitle("%.2f%% of the distribution, lower bound = %.3f, upper bound = %.3f" % (100*alpha, xmin,xmax))
+    graph.setTitle("%.2f%% of the distribution, lower bound = %.3f, upper bound = %.3f" % (
+        100*alpha, xmin, xmax))
     return graph
 
 
@@ -130,7 +132,7 @@ view = viewer.View(graph)
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 # %%
-m = ot.Mixture([ot.Normal(-5.,1.),ot.Normal(5.,1.)],[0.2,0.8])
+m = ot.Mixture([ot.Normal(-5., 1.), ot.Normal(5., 1.)], [0.2, 0.8])
 
 # %%
 graph = m.drawPDF()
@@ -164,7 +166,7 @@ graph = drawPDFAndInterval1D(m, interval, alpha)
 view = viewer.View(graph)
 
 
-# %% 
+# %%
 # Draw minimum volume level set in 2D
 # -----------------------------------
 #
@@ -181,22 +183,23 @@ x2 = ot.Normal(2, 1)
 x_funk = ot.ComposedDistribution([x1, x2], copula)
 
 # Create a second gaussian
-x1 = ot.Normal(1.,1)
-x2 = ot.Normal(-2,1)
+x1 = ot.Normal(1., 1)
+x2 = ot.Normal(-2, 1)
 x_punk = ot.ComposedDistribution([x1, x2], copula)
 
 # Mix the distributions
-mixture = ot.Mixture([x_funk, x_punk], [0.5,1.])
+mixture = ot.Mixture([x_funk, x_punk], [0.5, 1.])
 
 # %%
 graph = mixture.drawPDF()
 view = viewer.View(graph)
 
 # %%
-# For a multivariate distribution (with dimension greater than 1), the `computeMinimumVolumeLevelSetWithThreshold` uses Monte-Carlo sampling. 
+# For a multivariate distribution (with dimension greater than 1), the `computeMinimumVolumeLevelSetWithThreshold` uses Monte-Carlo sampling.
 
 # %%
-ot.ResourceMap.SetAsUnsignedInteger("Distribution-MinimumVolumeLevelSetSamplingSize",1000)
+ot.ResourceMap.SetAsUnsignedInteger(
+    "Distribution-MinimumVolumeLevelSetSamplingSize", 1000)
 
 # %%
 # We want to compute the minimum volume LevelSet which contains `alpha`=90% of the distribution. The `threshold` is the value of the PDF corresponding the `alpha`-probability: the points contained in the LevelSet have a PDF value lower or equal to this threshold.
@@ -208,12 +211,12 @@ threshold
 
 
 # %%
-def drawLevelSetContour2D(distribution, numberOfPointsInXAxis, alpha, threshold, sampleSize= 500):
+def drawLevelSetContour2D(distribution, numberOfPointsInXAxis, alpha, threshold, sampleSize=500):
     '''
-    Compute the minimum volume LevelSet of measure equal to alpha and get the 
+    Compute the minimum volume LevelSet of measure equal to alpha and get the
     corresponding density value (named threshold).
-    Generate a sample of the distribution and draw it. 
-    Draw a contour plot for the distribution, where the PDF is equal to threshold. 
+    Generate a sample of the distribution and draw it.
+    Draw a contour plot for the distribution, where the PDF is equal to threshold.
     '''
     sample = distribution.getSample(sampleSize)
     X1min = sample[:, 0].getMin()[0]
@@ -231,7 +234,8 @@ def drawLevelSetContour2D(distribution, numberOfPointsInXAxis, alpha, threshold,
     labels = ["%.2f%%" % (100*alpha)]
     contour = ot.Contour(xx, yy, data, [threshold], labels)
     contour.setColor('black')
-    graph.setTitle("%.2f%% of the distribution, sample size = %d" % (100*alpha,sampleSize))
+    graph.setTitle("%.2f%% of the distribution, sample size = %d" %
+                   (100*alpha, sampleSize))
     graph.add(contour)
     cloud = ot.Cloud(sample)
     graph.add(cloud)

@@ -5,3 +5,4 @@ ComposedDistribution(WeibullMin(beta = 0.626, alpha = 1.25, gamma = -0.496), Gam
 ComposedDistribution(Beta(alpha = 0.495, beta = 0.485, a = 5.2, b = 11.6), Beta(alpha = 0.449, beta = 0.47, a = 5.2, b = 11.6), IndependentCopula(dimension = 2))
 ComposedDistribution(Normal(mu = 3.02, sigma = 1.99), Normal(mu = 3.03, sigma = 2.05), NormalCopula(R = [[ 1     0.493 ]
  [ 0.493 1     ]]))
+ComposedDistribution(Uniform(a = -100, b = 1.1e+03))

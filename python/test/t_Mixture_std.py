@@ -106,6 +106,7 @@ print("cdf=%.6f" % CDF)
 CCDF = distribution.computeComplementaryCDF(point)
 print("ccdf=%.6f" % CCDF)
 PDFgr = distribution.computePDFGradient(point)
+assert distribution.computePDFGradient([point]).getDimension() == len(PDFgr)
 print("pdf gradient=", PDFgr)
 # by the finite difference technique
 # PDFgrFD = Point(4)

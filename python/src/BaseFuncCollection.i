@@ -20,15 +20,15 @@ namespace OT {
   canConvert< _PyObject_, OT::Function >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__Function, 0))) {
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__Function, SWIG_POINTER_NO_NULL))) {
       OT::Function * p_nmf = reinterpret_cast< OT::Function * >(ptr);
       return p_nmf != NULL;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FunctionImplementation, 0))) {
+    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FunctionImplementation, SWIG_POINTER_NO_NULL))) {
       OT::FunctionImplementation * p_impl = reinterpret_cast< OT::FunctionImplementation * >(ptr);
       return p_impl != NULL;
     } else {
       // pure callable
-      return PyCallable_Check(pyObj) && !SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__Object, 0));
+      return PyCallable_Check(pyObj) && !SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__Object, SWIG_POINTER_NO_NULL));
     }
     return false;
   }
@@ -42,10 +42,10 @@ namespace OT {
     if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__Function, 0))) {
       OT::Function * p_nmf = reinterpret_cast< OT::Function * >(ptr);
       return *p_nmf;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FunctionImplementation, 0))) {
+    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__FunctionImplementation, SWIG_POINTER_NO_NULL))) {
       OT::FunctionImplementation * p_impl = reinterpret_cast< OT::FunctionImplementation * >(ptr);
       return *p_impl;
-    } else if (!PyCallable_Check(pyObj) || SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__Object, 0))) {
+    } else if (!PyCallable_Check(pyObj) || SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__Object, SWIG_POINTER_NO_NULL))) {
       throw OT::InvalidArgumentException(HERE) << "Argument is not a pure callable object (function or class) - can not be convertible to a Function";
     }
     OT::Function pythonFunction(new OT::FunctionImplementation(new OT::PythonEvaluation(pyObj)));
@@ -73,10 +73,10 @@ namespace OT {
   canConvert< _PyObject_, OT::Basis >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__Basis, 0))) {
+    if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__Basis, SWIG_POINTER_NO_NULL))) {
       OT::Basis * p_nmf = reinterpret_cast< OT::Basis * >(ptr);
       return p_nmf != NULL;
-    } else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__BasisImplementation, 0 ))) {
+    } else if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__BasisImplementation, SWIG_POINTER_NO_NULL))) {
       OT::BasisImplementation * p_impl = reinterpret_cast< OT::BasisImplementation * >(ptr);
       return p_impl != NULL;
     }
@@ -90,12 +90,12 @@ namespace OT {
   convert< _PyObject_, OT::Basis >(PyObject * pyObj)
   {
     void * ptr = 0;
-    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__Basis, 0)))
+    if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__Basis, SWIG_POINTER_NO_NULL)))
     {
       OT::Basis * p_nmf = reinterpret_cast< OT::Basis * >(ptr);
       return *p_nmf;
     }
-    else if (SWIG_IsOK(SWIG_ConvertPtr( pyObj, &ptr, SWIGTYPE_p_OT__BasisImplementation, 0)))
+    else if (SWIG_IsOK(SWIG_ConvertPtr(pyObj, &ptr, SWIGTYPE_p_OT__BasisImplementation, SWIG_POINTER_NO_NULL)))
     {
       OT::BasisImplementation * p_impl = reinterpret_cast< OT::BasisImplementation * >(ptr);
       return *p_impl;

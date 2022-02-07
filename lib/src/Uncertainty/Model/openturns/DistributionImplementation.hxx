@@ -152,11 +152,9 @@ protected:
 public:
   /** Get a numerical sample whose elements follow the distributionImplementation */
   virtual Sample getSample(const UnsignedInteger size) const;
-protected:
   virtual Sample getSampleByInversion(const UnsignedInteger size) const;
   virtual Sample getSampleByQMC(const UnsignedInteger size) const;
 
-public:
   /** Get the DDF of the distribution */
   virtual Scalar computeDDF(const Scalar scalar) const;
   virtual Point  computeDDF(const Point & point) const;
@@ -410,8 +408,7 @@ public:
   /** Correlation matrix accessor */
   CorrelationMatrix getCorrelation() const;
 
-  /** Get the linear correlation of the distribution */
-  virtual CorrelationMatrix getLinearCorrelation() const;
+  /** Get the Pearson correlation of the distribution */
   virtual CorrelationMatrix getPearsonCorrelation() const;
 
   /** Get the Spearman correlation of the distribution */
@@ -763,6 +760,10 @@ public:
   /** Is it safe to compute PDF/CDF etc in parallel? */
   Bool isParallel() const;
   void setParallel(const Bool flag);
+
+  /** Quantile epsilon accessor */
+  Scalar getQuantileEpsilon() const;
+  void setQuantileEpsilon(const Scalar quantileEpsilon);
 
 protected:
 

@@ -22,6 +22,7 @@
 
 #include "openturns/MemoizeEvaluation.hxx"
 #include "openturns/PersistentObjectFactory.hxx"
+#include "openturns/MarginalEvaluation.hxx"
 
 BEGIN_NAMESPACE_OPENTURNS
 
@@ -200,10 +201,12 @@ Sample MemoizeEvaluation::operator() (const Sample & inSample) const
 /* Get the evaluation corresponding to indices components */
 Evaluation MemoizeEvaluation::getMarginal(const Indices & indices) const
 {
-  MemoizeEvaluation* marginal = new MemoizeEvaluation(evaluation_.getMarginal(indices), inputStrategy_);
-  if (isCacheEnabled())
-    marginal->addCacheContent(getCacheInput(), getCacheOutput().getMarginal(indices));
-  return marginal;
+  // dont rely on the proxy here, we want a marginal on the memoized original evaluation
+  if (!indices.check(getOutputDimension())) throw InvalidArgumentException(HERE) << "Error: the indices of a marginal evaluation must be in the range [0, outputDimension-1] and must be different";
+  Indices full(getOutputDimension());
+  full.fill();
+  if (indices == full) return clone();
+  return new MarginalEvaluation(clone(), indices);
 }
 
 /* Enable or disable the internal cache */
@@ -241,28 +244,27 @@ void MemoizeEvaluation::addCacheContent(const Sample& inSample, const Sample& ou
 
 Sample MemoizeEvaluation::getCacheInput() const
 {
-  Bool cacheEnabled = isCacheEnabled();
+  const Bool cacheEnabled = isCacheEnabled();
   enableCache();
-  PersistentCollection<CacheKeyType> keyColl(p_cache_->getKeys());
+  const PersistentCollection<CacheKeyType> keyColl(p_cache_->getKeys());
   if (!cacheEnabled)
     disableCache();
   Sample inSample(0, getInputDimension());
-  for (UnsignedInteger i = 0; i < keyColl.getSize(); ++ i) inSample.add(keyColl[i]);
+  for (UnsignedInteger i = 0; i < keyColl.getSize(); ++ i)
+    inSample.add(keyColl[i]);
   return inSample;
 }
 
 Sample MemoizeEvaluation::getCacheOutput() const
 {
-  Bool cacheEnabled = isCacheEnabled();
+  const Bool cacheEnabled = isCacheEnabled();
   enableCache();
-  PersistentCollection<CacheValueType> valuesColl(p_cache_->getValues());
-  if (! cacheEnabled)
+  const PersistentCollection<CacheValueType> valuesColl(p_cache_->getValues());
+  if (!cacheEnabled)
     disableCache();
   Sample outSample(0, getOutputDimension());
   for (UnsignedInteger i = 0; i < valuesColl.getSize(); ++ i)
-  {
     outSample.add(valuesColl[i]);
-  }
   return outSample;
 }
 
@@ -321,12 +323,12 @@ Bool MemoizeEvaluation::operator ==(const MemoizeEvaluation & other) const
 /* String converter */
 String MemoizeEvaluation::__repr__() const
 {
-  return OSS(true) << evaluation_.getImplementation()->__repr__();
+  return OSS(true) << "MemoizeEvaluation(" << evaluation_.getImplementation()->__repr__() << ")";
 }
 
 String MemoizeEvaluation::__str__(const String & offset) const
 {
-  return OSS(false) << evaluation_.getImplementation()->__str__(offset);
+  return OSS(false) << "MemoizeEvaluation(" << evaluation_.getImplementation()->__str__(offset) << ")";
 }
 
 /* Is it safe to call in parallel? */
@@ -342,7 +344,12 @@ void MemoizeEvaluation::save(Advocate & adv) const
   adv.saveAttribute("inputStrategy_", inputStrategy_);
   adv.saveAttribute("outputStrategy_", outputStrategy_);
   adv.saveAttribute("isHistoryEnabled_", isHistoryEnabled_);
-  adv.saveAttribute("cache_", *p_cache_);
+  const Bool cacheEnabled = isCacheEnabled();
+  adv.saveAttribute("cacheEnabled", cacheEnabled);
+  const Sample cacheInput(getCacheInput());
+  const Sample cacheOutput(getCacheOutput());
+  adv.saveAttribute("cacheInput", cacheInput);
+  adv.saveAttribute("cacheOutput", cacheOutput);
 }
 
 /* Method load() reloads the object from the StorageManager */
@@ -352,7 +359,20 @@ void MemoizeEvaluation::load(Advocate & adv)
   adv.loadAttribute("inputStrategy_", inputStrategy_);
   adv.loadAttribute("outputStrategy_", outputStrategy_);
   adv.loadAttribute("isHistoryEnabled_", isHistoryEnabled_);
-  adv.loadAttribute("cache_", *p_cache_);
+  if (adv.hasAttribute("cacheEnabled"))
+  {
+    Bool cacheEnabled = true;
+    adv.loadAttribute("cacheEnabled", cacheEnabled);
+    Sample cacheInput;
+    Sample cacheOutput;
+    adv.loadAttribute("cacheInput", cacheInput);
+    adv.loadAttribute("cacheOutput", cacheOutput);
+    addCacheContent(cacheInput, cacheOutput); // enables the cache
+    if (!cacheEnabled)
+      disableCache();
+  }
+  else // old approach
+    adv.loadAttribute("cache_", *p_cache_);
 }
 
 END_NAMESPACE_OPENTURNS

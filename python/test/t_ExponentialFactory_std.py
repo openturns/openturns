@@ -27,12 +27,6 @@ try:
     estimatedExponential = factory.buildAsExponential(
         distribution.getParameter())
     print("Exponential from parameters=", estimatedExponential)
-    sample = [[0.0]] * size
-    estimatedDistribution = factory.build(sample)
-    print("Estimated distribution=", repr(estimatedDistribution))
-    sample = [[1.0]] * size
-    estimatedDistribution = factory.build(sample)
-    print("Estimated distribution=", repr(estimatedDistribution))
 
 except:
     import sys

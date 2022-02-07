@@ -25,4 +25,5 @@ distribution = ot.PoissonFactory().build(sample)
 # %%
 # Test the fitted distribution
 result = ot.FittingTest.ChiSquared(sample, distribution, 0.01)
-print('Conclusion=', result.getBinaryQualityMeasure(), 'P-value=', result.getPValue())
+print('Conclusion=', result.getBinaryQualityMeasure(),
+      'P-value=', result.getPValue())

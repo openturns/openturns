@@ -44,6 +44,10 @@ public:
   /** Default constructor */
   Drawable(const DrawableImplementation & implementation);
 
+#ifndef SWIG
+  /** Constructor from implementation pointer */
+  Drawable(DrawableImplementation * p_implementation);
+#endif
 
   /** String converter */
   String __repr__() const override;
