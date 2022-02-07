@@ -16,12 +16,6 @@ Examples
 >>> import openturns as ot
 >>> g = ot.SymbolicFunction(['x1', 'x2'], ['x1'])
 >>> f = ot.SymbolicFunction(['x1', 'x2'], ['x2'])
->>> product = ot.ProductFunction(f.getImplementation(), g.getImplementation())
+>>> product = f * g
 >>> print(product([3, 4]))
-[12]
-
-Or, shorter:
-
->>> product = f * g"
-
-
+[12]"

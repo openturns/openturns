@@ -264,7 +264,7 @@ OT_Function_getMarginal_doc
 Returns
 -------
 function : :class:`~openturns.FunctionImplementation`
-    The evaluation, gradient and hessian function.
+    A copy of the evaluation, gradient and hessian functions.
 
 Examples
 --------
